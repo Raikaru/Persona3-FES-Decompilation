@@ -119,36 +119,38 @@ u8 H_Cdvd_Destroy(HCdvd* cdvd)
 // FUN_00101010
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
-    // Need to rework a little bit
-
+    char currChar;
     char* pathBase;
     size_t basePathLen;
-    char* dstPtr;
     u32 i;
-    char currChar;
+    char* dstPtr;
+    s32 slash;
+    s32 backslash;
 
     pathBase = "VOL:\\";
-    strcpy(pathBase, dst);
+    strcpy(dst, pathBase);
     basePathLen = strlen(pathBase);
-
-    dstPtr = dst + basePathLen;
     i = 0;
-    while (i < 256)
+    dstPtr = dst + basePathLen;
+    asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
+    asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
+
+    while (i < 0xff)
     {
         currChar = src[i];
         if (currChar == '\0')
         {
-            dstPtr[i] = '\0';
+            dst[i + basePathLen] = '\0';
             return;
         }
 
-        if (currChar == '/')
+        if (currChar == slash)
         {
-            dstPtr[i] = '\\';
+            dstPtr[i] = backslash;
         }
         else if (currChar >= 'a' && currChar <= 'z')
         {
-            dstPtr[i] = currChar - 0x20; // to upper
+            dstPtr[i] = currChar - 0x20;
         }
         else
         {
