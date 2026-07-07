@@ -1,7 +1,14 @@
 #include "Battle/battle.h"
+#include "Battle/btlFade.h"
 #include "Kosaka/Field/k_fldrc.h"
 #include "Scene/mt_scene.h"
 #include "temporary.h"
+
+void btlSound002dced0(u16 param_1);
+void btlSound002dcf80(s32 param_1, u16 param_2);
+void btlBoss002f6e00();
+void datAddBattleCount(s32 amount);
+void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
 
 void btlMainInitStateNon(BtlStateWork* work);
 u32 btlMainUpdateStateNon(BtlStateWork* work);
@@ -90,7 +97,11 @@ u32 btlMainUpdateStateNon(BtlStateWork* work)
 // FUN_0029b100
 void btlMainInitStateInit(BtlStateWork* work)
 {
-    // TODO
+    btlSound002dcf80(3, 0);
+    btlSound002dcf80(4, 0);
+    btlSound002dced0(0);
+    btlBoss002f6e00();
+    datAddBattleCount(1);
 }
 // FUN_0029b160
 u32 btlMainUpdateStateInit(BtlStateWork* work)
@@ -312,7 +323,8 @@ void btlMainInitStateTest(BtlStateWork* work)
 // FUN_0029ddc0
 u32 btlMainUpdateStateTest(BtlStateWork* work)
 {
-    // TODO
+    scrClearTextBox(0, 0, 3, 0);
+    btlFadeCreateTask(0);
 
     return BTL_STATE_INIT;
 }
