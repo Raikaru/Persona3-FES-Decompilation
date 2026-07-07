@@ -1,6 +1,8 @@
 #include "Scene/mt_sceneFunc.h"
 #include "Kernel/Kwln/kwlnTask.h"
 
+void FUN_003bcc80();
+
 // FUN_003bd0b0
 void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
 {
@@ -12,7 +14,7 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
 // FUN_003bcd80
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
 {
-    // TODO
+    FUN_003bcc80();
 }
 
 // FUN_003bcd80

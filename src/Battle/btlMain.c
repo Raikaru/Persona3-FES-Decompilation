@@ -25,6 +25,15 @@ void FUN_002fb690();
 void FUN_0029e3c0();
 void FUN_002bfc50(s32 param_1);
 
+u32 FUN_001fecc0();
+u32 FUN_002e42c0();
+u32 FUN_002e4290(BtlAction* action);
+void FUN_0029b040();
+void FUN_001fdd20();
+void FUN_003c7b90();
+u32 FUN_003c7850();
+u32 FUN_003c7610();
+void FUN_001ff3b0();
 void btlMainInitStateNon(BtlStateWork* work);
 u32 btlMainUpdateStateNon(BtlStateWork* work);
 void btlMainInitStateInit(BtlStateWork* work);
@@ -176,9 +185,28 @@ void btlMainInitStateStart(BtlStateWork* work)
 // FUN_0029c290
 u32 btlMainUpdateStateStart(BtlStateWork* work)
 {
-    // TODO
+    u32 ret;
 
-    return BTL_STATE_NULL;
+    if (FUN_001fecc0() == 0 && btlPacketCount() == 0 && FUN_002e42c0() == 0)
+    {
+        if (FUN_002e4290(gBtl->actionList.head) != 0)
+        {
+            ret = BTL_STATE_NULL;
+        }
+        else
+        {
+            FUN_0029b040();
+            FUN_001fdd20();
+            gBtl->flags |= 0x800;
+            ret = BTL_STATE_ACTION;
+        }
+    }
+    else
+    {
+        ret = BTL_STATE_NULL;
+    }
+
+    return ret;
 }
 
 // FUN_0029c330
@@ -202,9 +230,28 @@ void btlMainInitStateRevivalMes(BtlStateWork* work)
 // FUN_0029c680
 u32 btlMainUpdateStateRevivalMes(BtlStateWork* work)
 {
-    // TODO
+    u32 ret;
 
-    return BTL_STATE_NULL;
+    FUN_003c7b90();
+    if (FUN_003c7850() == 0)
+    {
+        if (FUN_003c7610() == 0)
+        {
+            FUN_001ff3b0();
+            ret = BTL_STATE_REVIVAL;
+        }
+        else
+        {
+            gBtl->flags &= ~0x800000;
+            ret = BTL_STATE_ACTION;
+        }
+    }
+    else
+    {
+        ret = BTL_STATE_NULL;
+    }
+
+    return ret;
 }
 
 // FUN_0029c700
