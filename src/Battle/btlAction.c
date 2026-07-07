@@ -89,6 +89,7 @@ void btlActionUpdateStateTest(BtlAction* action);
 
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 void FUN_002dc5e0();
+void FUN_001fdd40();
 
 // 12 bytes
 typedef struct
@@ -734,7 +735,14 @@ void btlActionUpdateStateDead(BtlAction* action)
 // FUN_00299aa0
 void btlActionInitStateExit(BtlAction* action)
 {
-    // TODO
+    if (action->unk_1a & (1 << 0))
+    {
+        if (action->unit->flags3 & BTLUNIT_FLAG3_UNK08)
+        {
+            action->unit->flags3 &= ~BTLUNIT_FLAG3_UNK08;
+            FUN_001fdd40();
+        }
+    }
 }
 // FUN_00299b00
 void btlActionUpdateStateExit(BtlAction* action)

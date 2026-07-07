@@ -7,6 +7,8 @@
 void btlSound002dced0(u16 param_1);
 void btlSound002dcf80(s32 param_1, u16 param_2);
 void btlBoss002f6e00();
+void btlFade002ff2d0(u16 param_1);
+u32 btl002facc0();
 void datAddBattleCount(s32 amount);
 void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
 
@@ -152,7 +154,11 @@ u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
 // FUN_0029c250
 void btlMainInitStateStart(BtlStateWork* work)
 {
-    // TODO
+    if (gBtl->unk_10 & 1)
+    {
+        btlFade002ff2d0(3);
+        btl002facc0();
+    }
 }
 // FUN_0029c290
 u32 btlMainUpdateStateStart(BtlStateWork* work)
