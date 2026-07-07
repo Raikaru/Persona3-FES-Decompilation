@@ -4,6 +4,11 @@
 #include "h_cdvd.h"
 #include "temporary.h"
 
+extern u32 FUN_004c2090(void* param_1);
+extern f32 FUN_004b1a70(u32 param_1);
+extern f32 FUN_004b1a60(u32 param_1);
+extern f32 fGpffff80e4;
+
 // FUN_00111610
 void* H_Maestro_UpdateTask(KwlnTask* hmaestroTask)
 {
@@ -75,9 +80,22 @@ KwlnTask* H_Maestro_CreateTask(KwlnTask* parent, u32 priority, const char* path)
 // FUN_00111cb0
 u32 H_Maestro_00111cb0(KwlnTask* hmaestroTask)
 {
-    // TODO
+    HMaestro* work;
+    u32 anim;
+    f32 animEnd;
+    f32 animCurrent;
 
-    return 0;
+    work = (HMaestro*)hmaestroTask->workData;
+    if (work->state == HMAESTRO_STATE_DRAW)
+    {
+        anim = FUN_004c2090(*(void**)((u8*)work->maestro + 8));
+        animEnd = FUN_004b1a70(anim + 4);
+        animCurrent = FUN_004b1a60(anim + 4);
+
+        return !(animEnd > fGpffff80e4 + animCurrent);
+    }
+
+    return true;
 }
 
 // FUN_00111ec0
