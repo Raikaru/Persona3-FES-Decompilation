@@ -1,6 +1,8 @@
 #include "Main/Battle/Panel/bp_root.h"
 #include "Kernel/Kwln/kwlnTask.h"
 
+void FUN_0025d760();
+
 // FUN_001fd630
 KwlnTask* bpRootCreateTasks(KwlnTask* parent)
 {
@@ -24,5 +26,5 @@ void bpRootDestroy(KwlnTask* btlPanelTask)
 // FUN_001ff350
 void bpRoot001ff350()
 {
-    // TODO
+    FUN_0025d760();
 }

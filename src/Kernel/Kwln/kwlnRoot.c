@@ -6,6 +6,8 @@
 #include "h_snd.h"
 #include "h_fade.h"
 #include "h_dbprt.h"
+#include "Kosaka/Field/k_sceneDraw.h"
+#include "Main/Game/gm_root.h"
 
 KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
@@ -14,11 +16,97 @@ KwlnTask* kwlnRootCreate3DOn2DZClearTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
 KwlnTask* kwlnRootCreateEtcDrawTask();
+void FUN_00103580();
+u32 H_Snd_FUN_00109df0(s32 param);
+KwlnTask* FUN_00199440(KwlnTask* rootTask);
+KwlnTask* FUN_001993d0();
+KwlnTask* FUN_00199080();
+KwlnTask* FUN_00199100();
+KwlnTask* FUN_00199360();
+KwlnTask* FUN_00192de0();
+void kwlnInitGameData();
+extern u32 DAT_007ce12c;
+extern u32 DAT_007ce114;
+void FUN_001120c0();
+void FUN_001125d0();
 
 // FUN_00198650
 void* kwlnRootUpdateTask(KwlnTask* rootTask)
 {
-    // TODO
+    KwlnRootWork* work;
+    KwlnTask* task;
+
+    work = rootTask->workData;
+    switch (work->state)
+    {
+        case 0:
+            FUN_00103580();
+            if (H_Snd_FUN_00109df0(0) != 0)
+            {
+                K_SceneDraw_CreateTasks(rootTask);
+                FUN_00199440(rootTask);
+                task = kwlnRootCreate2DDrawBeginTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreate2DDrawBeginPreEndTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreate2DDrawEndTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreate3DOn2DZClearTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreate3DOn2DDrawBeginTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreate3DOn2DDrawEndTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = FUN_001993d0();
+                kwlnTaskAddChild(rootTask, task);
+                task = FUN_00199080();
+                kwlnTaskAddChild(rootTask, task);
+                task = kwlnRootCreateEtcDrawTask();
+                kwlnTaskAddChild(rootTask, task);
+                task = FUN_00199100();
+                kwlnTaskAddChild(rootTask, task);
+                task = FUN_00199360();
+                kwlnTaskAddChild(rootTask, task);
+                work->state++;
+            }
+            break;
+        case 1:
+            FUN_00103580();
+            DAT_007ce12c = 0;
+            work->state++;
+            break;
+        case 2:
+            if (work->unk_04 == 0)
+            {
+                kwlnSetFlags(0x80000000, 0);
+                DAT_007ce114 = 1;
+                gmRootCreateTask(rootTask);
+            }
+            work->state = 3;
+            break;
+        case 3:
+            if (work->unk_04 != 0 && kwlnTaskExists((KwlnTask*)work->unk_04) == 0)
+            {
+                work->unk_04 = 0;
+                work->state = 2;
+            }
+            break;
+        case 4:
+            return KWLNTASK_STOP;
+        case 5:
+            kwlnSetFlags(0x80000000, 0);
+            work->unk_04 = (u32)FUN_00192de0();
+            work->state = 6;
+            break;
+        case 6:
+            if (kwlnTaskExists((KwlnTask*)work->unk_04) == 0)
+            {
+                kwlnInitGameData();
+                work->unk_04 = 0;
+                work->state = 2;
+            }
+            break;
+    }
 
     return KWLNTASK_CONTINUE;
 }
@@ -53,7 +141,27 @@ KwlnTask* kwlnRootCreateTask()
 // FUN_001989e0
 void* kwlnRootUpdate2DDrawBeginTask(KwlnTask* drawBegin2dTask)
 {
-    // TODO
+    RwRenderStateSetFunc* setRenderState;
+
+    RwCameraClear(kwlnGetMainCamera(), kwlnGetClearColor(), rwCAMERACLEARZ);
+    if (kwlnCameraBeginUpdate() != NULL)
+    {
+        kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
+        kwlnSetFlags(KWLN_FLAG_2DDRAW, true);
+        setRenderState = &rwGlobals.device.setRenderState;
+        (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)false);
+        FUN_001120c0();
+        FUN_001125d0();
+    }
+    else
+    {
+        K_ASSERT(false, 393);
+        kwlnSetFlags(KWLN_FLAG_ERR, true);
+    }
 
     return KWLNTASK_CONTINUE;
 }

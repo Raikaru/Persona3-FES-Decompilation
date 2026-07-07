@@ -6,13 +6,14 @@
 
 static u32 sNextId = 1; // 007cc51c
 
-static const f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
+static f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
 
 RwV3d gUnk_00957188; // 00957188
 
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
+void FUN_00287b20(BtlUnit* unit, s16 param_2);
 
 // 12 bytes
 typedef struct BtlUnitPacketResNullifiedAnim
@@ -698,9 +699,93 @@ void btlUnitInitLookAtPacket(void* work)
 // FUN_00288190
 u32 btlUnitUpdateLookAtPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketLookAt* packet;
+    Battle* btl;
+    BtlUnit* curr;
+    BtlUnit* unit;
+    f32 maxPitchAngle1;
+    f32 maxYawAngle1;
+    f32 maxPitchAngle2;
+    f32 maxYawAngle2;
+    f32 maxPitchArg1;
+    f32 maxYawArg1;
+    f32 maxPitchArg2;
+    f32 maxYawArg2;
 
-    return false;
+    packet = (BtlUnitPacketLookAt*)work;
+
+    if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLPLAYER)
+    {
+        btl = gBtl;
+        curr = btl->unitLists[UNIT_GENUS_PC].tail;
+        while (curr != NULL)
+        {
+            if (curr->flags3 & BTLUNIT_FLAG3_UNK08)
+            {
+                if (&maxPitchAngle1 != NULL)
+                {
+                    maxPitchAngle1 = 70.0f;
+                }
+
+                if (&maxYawAngle1 != NULL)
+                {
+                    maxYawAngle1 = 75.0f;
+                }
+
+                maxYawArg1 = maxYawAngle1;
+                maxPitchArg1 = maxPitchAngle1;
+
+                if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                {
+                    mdlLookAtSetMaxAngles(curr->mdl, maxPitchArg1, maxYawArg1);
+                }
+
+                if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                {
+                    mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
+                }
+
+                curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
+                curr->lookAtTargetPos = packet->targetPos;
+                FUN_00287b20(curr, 3);
+            }
+
+            curr = curr->prev;
+        }
+    }
+    else
+    {
+        unit = packet->unit;
+
+        if (&maxPitchAngle2 != NULL)
+        {
+            maxPitchAngle2 = 70.0f;
+        }
+
+        if (&maxYawAngle2 != NULL)
+        {
+            maxYawAngle2 = 75.0f;
+        }
+
+        maxYawArg2 = maxYawAngle2;
+        maxPitchArg2 = maxPitchAngle2;
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            mdlLookAtSetMaxAngles(unit->mdl, maxPitchArg2, maxYawArg2);
+        }
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            mdlLookAtSetBlendRotFactor(unit->mdl, gUnk_007cad7c);
+        }
+
+        unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
+        unit->lookAtTargetPos = packet->targetPos;
+        FUN_00287b20(unit, 3);
+    }
+
+    return true;
 }
 
 // FUN_00288340
@@ -755,9 +840,143 @@ void btlUnitInitLookAtUnitPacket(void* work)
 // FUN_00288430
 u32 btlUnitUpdateLookAtUnitPacket(void* work)
 {
-    // TODO
+    BtlUnit* curr;
+    BtlUnit* targetUnit;
+    BtlUnitPacketLookAtUnit* packet;
+    Battle* btl;
+    BtlUnit* unit;
+    f32 maxPitchAngle1;
+    f32 maxYawAngle1;
+    f32 maxPitchAngle2;
+    f32 maxYawAngle2;
+    f32 maxPitchAngle3;
+    f32 maxYawAngle3;
+    f32 maxPitchArg1;
+    f32 maxYawArg1;
+    f32 maxPitchArg2;
+    f32 maxYawArg2;
+    f32 maxPitchArg3;
+    f32 maxYawArg3;
 
-    return false;
+    packet = (BtlUnitPacketLookAtUnit*)work;
+
+    if ((packet->flags & (BTLUNIT_LOOKAT_FLAG_ALLPLAYER | BTLUNIT_LOOKAT_FLAG_ALLENEMY)) != 0)
+    {
+        if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLPLAYER)
+        {
+            btl = gBtl;
+            curr = btl->unitLists[UNIT_GENUS_PC].tail;
+            while (curr != NULL)
+            {
+                if (curr->flags3 & BTLUNIT_FLAG3_UNK08)
+                {
+                    targetUnit = packet->targetUnit;
+                    if (&maxPitchAngle1 != NULL)
+                    {
+                        maxPitchAngle1 = 70.0f;
+                    }
+
+                    if (&maxYawAngle1 != NULL)
+                    {
+                        maxYawAngle1 = 75.0f;
+                    }
+
+                    maxYawArg1 = maxYawAngle1;
+                    maxPitchArg1 = maxPitchAngle1;
+
+                    if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                    {
+                        mdlLookAtSetMaxAngles(curr->mdl, maxPitchArg1, maxYawArg1);
+                    }
+
+                    if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                    {
+                        mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
+                    }
+
+                    curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
+                    curr->lookAtTargetId = targetUnit->id;
+                    FUN_00287b20(curr, 3);
+                }
+
+                curr = curr->prev;
+            }
+        }
+
+        if (packet->flags & BTLUNIT_LOOKAT_FLAG_ALLENEMY)
+        {
+            btl = gBtl;
+            curr = btl->unitLists[UNIT_GENUS_EC].tail;
+            while (curr != NULL)
+            {
+                if (curr->flags3 & BTLUNIT_FLAG3_UNK08)
+                {
+                    targetUnit = packet->targetUnit;
+                    if (&maxPitchAngle2 != NULL)
+                    {
+                        maxPitchAngle2 = 70.0f;
+                    }
+
+                    if (&maxYawAngle2 != NULL)
+                    {
+                        maxYawAngle2 = 75.0f;
+                    }
+
+                    maxYawArg2 = maxYawAngle2;
+                    maxPitchArg2 = maxPitchAngle2;
+
+                    if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                    {
+                        mdlLookAtSetMaxAngles(curr->mdl, maxPitchArg2, maxYawArg2);
+                    }
+
+                    if (curr->flags2 & BTLUNIT_FLAG2_UPDATE)
+                    {
+                        mdlLookAtSetBlendRotFactor(curr->mdl, gUnk_007cad7c);
+                    }
+
+                    curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
+                    curr->lookAtTargetId = targetUnit->id;
+                    FUN_00287b20(curr, 3);
+                }
+
+                curr = curr->prev;
+            }
+        }
+    }
+    else
+    {
+        targetUnit = packet->targetUnit;
+        unit = packet->unit;
+        if (&maxPitchAngle3 != NULL)
+        {
+            maxPitchAngle3 = 70.0f;
+        }
+
+        if (&maxYawAngle3 != NULL)
+        {
+            maxYawAngle3 = 75.0f;
+        }
+
+        maxYawArg3 = maxYawAngle3;
+        maxPitchArg3 = maxPitchAngle3;
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            mdlLookAtSetMaxAngles(unit->mdl, maxPitchArg3, maxYawArg3);
+        }
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            mdlLookAtSetBlendRotFactor(unit->mdl, gUnk_007cad7c);
+        }
+
+        unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
+        unit->lookAtTargetId = targetUnit->id;
+        FUN_00287b20(unit, 3);
+    }
+
+    return true;
 }
 
 // FUN_002886b0

@@ -5,17 +5,25 @@
 typedef RwV3d* (*RwV3dTransformPointFn)(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix);
 
 extern RwInt32 rwV3dTransformPointOffset;
+extern RwInt32 rwMatrixTolerancesOffset;
 
 // 00960070
 RwGlobals rwGlobals;
 
 // FUN_004c2cc0
+#pragma optimization_level 3
 RwBool RwEngineGetMatrixTolerances(RwMatrixTolerance* const tolerance)
 {
-    // TODO
+    RwUInt8* globals;
+    RwBool result;
 
-    return true;
+    globals = (RwUInt8*)&rwGlobals;
+    result = true;
+    *tolerance = *(RwMatrixTolerance*)(globals + rwMatrixTolerancesOffset + 0xc);
+
+    return result;
 }
+#pragma optimization_level 2
 
 // FUN_004c2d20
 RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance)
