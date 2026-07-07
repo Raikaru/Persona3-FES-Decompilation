@@ -75,7 +75,8 @@ struct BtlAction
         u32 movedAwayFromHome;  // 0x484
         u32 passiveSkillsFlags; // 0x484. See 'PASSIVESKILL_FLAG_*'
     };
-    u8 unkData4[0x14];
+    u32 unk_488;             // 0x488
+    u8 unkData4[0x10];
     u16 stateAfterEvt;       // 0x49c
     u32 (*evtFunc)();        // 0x4a0
     BtlAction* next;         // 0x4a4

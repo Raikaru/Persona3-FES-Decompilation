@@ -88,6 +88,7 @@ void btlActionInitStateTest(BtlAction* action);
 void btlActionUpdateStateTest(BtlAction* action);
 
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
+void FUN_002dc5e0();
 
 // 12 bytes
 typedef struct
@@ -427,7 +428,9 @@ void btlActionUpdateStateSupport(BtlAction* action)
 // FUN_0028d560
 void btlActionInitStateBad(BtlAction* action)
 {
-    // TODO
+    FUN_002dc5e0();
+    action->movedAwayFromHome = true;
+    action->unk_488 = 0;
 }
 // FUN_0028d5a0
 void btlActionUpdateStateBad(BtlAction* action)
