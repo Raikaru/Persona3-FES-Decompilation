@@ -129,7 +129,39 @@ void btlDestroyTask(KwlnTask* btlTask)
 // FUN_0027ced0
 void btlCreate()
 {
-    // TODO
+    s32 i;
+
+    sUID = 1;
+    sCurrCharResId = BTL_CHAR_RESID_BASE;
+
+    gBtl = RwMalloc(sizeof(Battle), rwMEMHINTDUR_GLOBAL);
+    memset(gBtl, 0, sizeof(Battle));
+
+    gBtl->mesHandleIdx = itfMesMngInitialize(gBtlMessageBmd);
+
+    for (i = 0x1540; i <= 0x15bf; i++)
+    {
+        btlLoadResource(i);
+    }
+
+    for (i = 0x15c0; i <= 0x15ff; i++)
+    {
+        btlLoadResource(i);
+    }
+
+    btlTarget002d3d70();
+    btlPacket0027edf0();
+    btlCamera002a4a70();
+    btlSound002dcbc0();
+    btlVoice002e2f30();
+    btlFormation002bb760();
+    btlOrderInit();
+    btlMainSetStateNon();
+    btlMsg002db8d0();
+    btlFormation002bf970();
+    datSetFlag(0x1407, true);
+
+    gBtl->flags |= 0x481077c;
 }
 
 // FUN_0027d020
