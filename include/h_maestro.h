@@ -33,7 +33,8 @@ typedef struct HMaestro
     char path[256];       // 0x18
     u32 shouldLoop;       // 0x118
     u32 noDeltaTime;      // 0x11c
-    u8 unkData1[0x08];
+    u32 unk_120;          // 0x120
+    u32 unk_124;          // 0x124
     f32 alphaMult;        // 0x128
     u32 useCdvd;          // 0x12c. Request cdvd or not
     s32 unk_130;          // 0x130
