@@ -2,6 +2,7 @@
 #include "Battle/btlFade.h"
 #include "Kosaka/Field/k_fldrc.h"
 #include "Scene/mt_scene.h"
+#include "Kernel/Kwln/kwlnTask.h"
 #include "h_fade.h"
 #include "temporary.h"
 
@@ -15,11 +16,14 @@ void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
 void FUN_001f1b60(void* param_1);
 u32 FUN_001f1b00(void* param_1);
 u32 FUN_001f1b40(void* param_1);
+void FUN_001f1b20(void* param_1);
 void FUN_001f1c20(void* param_1);
 u32 FUN_001f1f40();
 u32 FUN_002dba60();
 void FUN_002dcf10();
 void FUN_002fb690();
+void FUN_0029e3c0();
+void FUN_002bfc50(s32 param_1);
 
 void btlMainInitStateNon(BtlStateWork* work);
 u32 btlMainUpdateStateNon(BtlStateWork* work);
@@ -281,7 +285,22 @@ u32 btlMainUpdateStateLose(BtlStateWork* work)
 // FUN_0029d760
 void btlMainInitStateFadeOut(BtlStateWork* work)
 {
-    // TODO
+    gBtl->flags &= ~0x800;
+
+    if (*(u16*)((u8*)gBtl + 0x1c) != 2)
+    {
+        if (gBtl->flags & 0x400)
+        {
+            FUN_001f1b20(*(void**)((u8*)gBtl + 0xd28));
+        }
+    }
+    else
+    {
+        H_Fade_FadeOut();
+        H_Fade_SetType(HFADE_CUSTOM);
+        H_Fade_SetCustomColor(0, 0, 0);
+        H_Fade_SetDuration(30);
+    }
 }
 // FUN_0029d800
 u32 btlMainUpdateStateFadeOut(BtlStateWork* work)
@@ -309,9 +328,21 @@ void btlMainInitStateEnd(BtlStateWork* work)
 // FUN_0029db60
 u32 btlMainUpdateStateEnd(BtlStateWork* work)
 {
-    // TODO
+    if (gBtl->actionList.tail != NULL)
+    {
+        return BTL_STATE_NULL;
+    }
 
-    return BTL_STATE_NULL;
+    FUN_0029e3c0();
+    kwlnTaskDestroyWithHierarchy(gBtl->btlPanelTask);
+    FUN_002bfc50(1);
+
+    if ((gBtl->flags & 0x400) && *(u16*)((u8*)gBtl + 0x1c) != 2)
+    {
+        return BTL_STATE_RESULT;
+    }
+
+    return BTL_STATE_EXIT;
 }
 
 // FUN_0029dbf0

@@ -92,6 +92,8 @@ void FUN_002dc5e0();
 void FUN_001fdd40();
 u8 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
 u32 FUN_002c0970(BtlTarget* target);
+u32 FUN_002e4330(BtlAction* action);
+u32 FUN_002e43a0();
 
 // 12 bytes
 typedef struct
@@ -559,7 +561,25 @@ void btlActionUpdateStateError(BtlAction* action)
 // FUN_00295f00
 void btlActionInitStateEndure(BtlAction* action)
 {
-    // TODO
+    u16 skillId;
+
+    action->unit->flags3 &= ~BTLUNIT_FLAG3_ENDURE;
+
+    skillId = *(u16*)&action->unkData3[0x3d8];
+    switch (skillId)
+    {
+        case 0x23b:
+            action->unit->datUnit->flags |= 8;
+            break;
+        case 0x23c:
+            action->unit->datUnit->flags |= 0x400;
+            break;
+    }
+
+    if (*(u16*)&action->unkData3[0x3d8] == 0)
+    {
+        btlActionSetState(action, BTLACTION_STATE_STANDBY);
+    }
 }
 // FUN_00295fa0
 void btlActionUpdateStateEndure(BtlAction* action)
@@ -661,7 +681,31 @@ void btlActionUpdateStatePacket(BtlAction* action)
 // FUN_00299170
 void btlActionInitStateEnd(BtlAction* action)
 {
-    // TODO
+    if (action->unk_18 & 0x4000)
+    {
+        gBtl->flags |= 0x400000;
+        *(u16*)((u8*)gBtl + 0x18) |= 6;
+        action->unk_18 &= ~0x4000;
+    }
+    action->unk_18 &= ~0x100;
+
+    if (action->unk_18 & 0x200)
+    {
+        gBtl->flags |= 0x400000;
+        *(u16*)((u8*)gBtl + 0x18) |= 0x20;
+        action->unk_18 &= ~0x200;
+    }
+
+    if (FUN_002e4330(action) != 0)
+    {
+        action->evtFunc = FUN_002e43a0;
+        action->stateAfterEvt = BTLACTION_STATE_END;
+        btlActionSetState(action, BTLACTION_STATE_EVENT);
+    }
+    else
+    {
+        action->unk_18 &= 0xc7ff;
+    }
 }
 // FUN_00299270
 void btlActionUpdateStateEnd(BtlAction* action)

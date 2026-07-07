@@ -2,6 +2,10 @@
 
 #include "temporary.h"
 
+typedef RwV3d* (*RwV3dTransformPointFn)(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix);
+
+extern RwInt32 rwV3dTransformPointOffset;
+
 // 00960070
 RwGlobals rwGlobals;
 
@@ -91,12 +95,14 @@ RwReal RwV2dLength(const RwV2d* in)
 #pragma optimization_level 2
 
 // FUN_004c6be0
+#pragma optimization_level 3
 RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix)
 {
-    // TODO
+    (*(RwV3dTransformPointFn*)((RwUInt8*)&rwGlobals + rwV3dTransformPointOffset + 8))(pointOut, pointIn, matrix);
 
     return pointOut;
 }
+#pragma optimization_level 2
 
 // FUN_004ca510
 RwUInt32 RwEngineGetVersion()
