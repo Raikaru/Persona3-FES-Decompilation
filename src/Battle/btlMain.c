@@ -2,6 +2,7 @@
 #include "Battle/btlFade.h"
 #include "Kosaka/Field/k_fldrc.h"
 #include "Scene/mt_scene.h"
+#include "h_fade.h"
 #include "temporary.h"
 
 void btlSound002dced0(u16 param_1);
@@ -12,6 +13,12 @@ u32 btl002facc0();
 void datAddBattleCount(s32 amount);
 void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
 void FUN_001f1b60(void* param_1);
+u32 FUN_001f1b00(void* param_1);
+u32 FUN_001f1b40(void* param_1);
+void FUN_001f1c20(void* param_1);
+u32 FUN_001f1f40();
+u32 FUN_002dba60();
+void FUN_002dcf10();
 void FUN_002fb690();
 
 void btlMainInitStateNon(BtlStateWork* work);
@@ -279,7 +286,17 @@ void btlMainInitStateFadeOut(BtlStateWork* work)
 // FUN_0029d800
 u32 btlMainUpdateStateFadeOut(BtlStateWork* work)
 {
-    // TODO
+    if (*(u16*)((u8*)gBtl + 0x1c) != 2)
+    {
+        if (FUN_001f1b40(*(void**)((u8*)gBtl + 0xd28)) == 0)
+        {
+            return BTL_STATE_END;
+        }
+    }
+    else if (H_Fade_IsFadeOutDone() == 1)
+    {
+        return BTL_STATE_END;
+    }
 
     return BTL_STATE_NULL;
 }
@@ -305,9 +322,26 @@ void btlMainInitStateResult(BtlStateWork* work)
 // FUN_0029dc20
 u32 btlMainUpdateStateResult(BtlStateWork* work)
 {
-    // TODO
+    if (!(gBtl->flags & BTL_FLAG_EXIT) && FUN_001f1f40() == 1)
+    {
+        K_Fldrc_RequestArchives();
+        gBtl->flags |= BTL_FLAG_EXIT;
+    }
 
-    return BTL_STATE_NULL;
+    if (FUN_001f1b00(*(void**)((u8*)gBtl + 0xd28)) != 0)
+    {
+        return BTL_STATE_NULL;
+    }
+
+    FUN_001f1c20(*(void**)((u8*)gBtl + 0xd28));
+    *(void**)((u8*)gBtl + 0xd28) = NULL;
+
+    if (gBtl->hasNoStartInfo == 1 && (gBtl->flags & 0x400))
+    {
+        H_Fade_FadeIn();
+    }
+
+    return BTL_STATE_EXIT;
 }
 
 // FUN_0029dcf0
@@ -325,7 +359,11 @@ void btlMainInitStateExit(BtlStateWork* work)
 // FUN_0029dd50
 u32 btlMainUpdateStateExit(BtlStateWork* work)
 {
-    // TODO
+    if (btlPacketCount() == 0 && FUN_002dba60() == 0)
+    {
+        FUN_002dcf10();
+        gBtl->flags &= ~BTL_FLAG_ACTIVE;
+    }
 
     return BTL_STATE_NULL;
 }

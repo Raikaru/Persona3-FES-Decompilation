@@ -14,7 +14,6 @@ void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
 // FUN_001007f0
 void H_Cdvd_001007f0()
 {
-    // stub
 }
 
 // FUN_00100800

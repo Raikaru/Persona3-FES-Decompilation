@@ -1,5 +1,7 @@
 #include "rw/rwplcore.h"
 
+#include "temporary.h"
+
 // 00960070
 RwGlobals rwGlobals;
 
@@ -78,12 +80,15 @@ RwReal RwV3dLength(const RwV3d* in)
 }
 
 // FUN_004c6af0
+#pragma optimization_level 3
 RwReal RwV2dLength(const RwV2d* in)
 {
-    // TODO
+    RwReal y = in->y;
+    RwReal x = in->x;
 
-    return 0.0f;
+    return sqrtf((y * y) + (x * x));
 }
+#pragma optimization_level 2
 
 // FUN_004c6be0
 RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix)

@@ -3,9 +3,6 @@
 // FUN_0019d3f0
 void K_Assert(const char* file, s32 line)
 {
-    // stub func in retail
-
-    return;
 }
 
 // FUN_0019d400
