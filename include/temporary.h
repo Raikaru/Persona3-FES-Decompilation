@@ -32,5 +32,17 @@ float fabsf(float x);
 void kwlnSetDrawLayer(s32 layer);
 void btlUnitDrawAll();
 void btlEffectDrawAll();
+void btl002d1ac0();
+void btlOrder0029ae40();
+void btlMain0029e420();
+void btlUnit00286540();
+void btlMsg002db960();
+void btlFormation002bf990();
+void btlAction002891e0();
+void btlMain0029e4b0();
+void btlFormation002bf9a0();
+void btlVoice002e2f20();
+void btlSound002dcc40();
+
 
 #endif

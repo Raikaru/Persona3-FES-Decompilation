@@ -1,4 +1,5 @@
 #include "Battle/battle.h"
+#include "Battle/btlAction.h"
 #include "Battle/btlFade.h"
 #include "Kosaka/k_data.h"
 #include "Kosaka/k_misc.h"
@@ -58,7 +59,27 @@ u16 btlFindFreeCharResId()
 // FUN_0027cc30
 void* btlUpdateTask(KwlnTask* btlTask)
 {
-    // TODO
+    if (gBtl->flags & BTL_FLAG_ACTIVE)
+    {
+        kwlnSetDrawLayer(2);
+        btl002d1ac0();
+        btlPacketUpdateList(BTLPACKET_TYPE_0);
+        btlMainUpdateState();
+        btlActionUpdateAll();
+        btlOrder0029ae40();
+        btlMain0029e420();
+        btlUnit00286540();
+        btlMsg002db960();
+        btlFormation002bf990();
+        btlCameraMain();
+        btlVoice002e2f20();
+        btlSound002dcc40();
+        btlPacketUpdateList(BTLPACKET_TYPE_1);
+    }
+    else
+    {
+        btlStop();
+    }
 
     return KWLNTASK_CONTINUE;
 }
@@ -82,7 +103,8 @@ void* btlUpdateDraw3DTask(KwlnTask* btlDraw3DTask)
 // FUN_0027cd70
 void* btlUpdateDraw3DFrontTask(KwlnTask* btlDraw3DFrontTask)
 {
-    // TODO
+    kwlnSetDrawLayer(3);
+    btlAction002891e0();
 
     return KWLNTASK_CONTINUE;
 }
@@ -90,7 +112,10 @@ void* btlUpdateDraw3DFrontTask(KwlnTask* btlDraw3DFrontTask)
 // FUN_0027cda0
 void* btlUpdateDraw2DTask(KwlnTask* btlDraw2DTask)
 {
-    // TODO
+    kwlnSetDrawLayer(5);
+    btlPacketUpdateList(BTLPACKET_TYPE_2D);
+    btlMain0029e4b0();
+    btlFormation002bf9a0();
 
     return KWLNTASK_CONTINUE;
 }
