@@ -397,7 +397,7 @@ void btlActionUpdateStateTarget(BtlAction* action)
 // FUN_0028c9f0
 void btlActionInitStateAnalyze(BtlAction* action)
 {
-    // TODO
+    action->movedAwayFromHome = true;
 }
 // FUN_0028ca00
 void btlActionUpdateStateAnalyze(BtlAction* action)
@@ -767,7 +767,97 @@ void btlActionInitStateEnd(BtlAction* action)
 // FUN_00299270
 void btlActionUpdateStateEnd(BtlAction* action)
 {
-    // TODO
+    if ((gBtl->flags & 0x80) == 0)
+    {
+        if ((action->unk_18 & 8) && FUN_0028a200() != 0)
+        {
+            if (btlPacketCountById(0x504) != 0)
+            {
+                return;
+            }
+            if (btlPacketCountById(0x506) != 0)
+            {
+                return;
+            }
+            btlActionSetState(action, 0x1c);
+            return;
+        }
+
+        if ((action->unk_18 & 0x8004) == 0)
+        {
+            action->unk_20++;
+        }
+
+        if (FUN_0027d380() == 0)
+        {
+            if ((action->unk_18 & 0x8004) == 0)
+            {
+                if ((&action->unk_28)[1] > 0)
+                {
+                    if (action->unk_28 == 0 && datCalcIsDead(action->unit->datUnit, 0) == 0)
+                    {
+                        (&action->unk_28)[1]--;
+                    }
+                    else
+                    {
+                        (&action->unk_28)[1] = 0;
+                    }
+                }
+
+                if (action->unk_28 == 0 && (&action->unk_28)[1] == 0)
+                {
+                    FUN_00302d40(action->unit->datUnit);
+                    FUN_002dae30(1);
+                    FUN_0029abe0(action);
+                }
+                else
+                {
+                    FUN_0029ac70(action);
+                    FUN_002dae30(0);
+                }
+            }
+            else
+            {
+                FUN_0029abe0(action);
+            }
+        }
+        else
+        {
+            gBtl->flags |= 0x80;
+        }
+
+        action->unk_18 &= 0x7fff;
+        if ((gBtl->flags & 0x80) == 0)
+        {
+            if ((action->unk_18 & 0x20) == 0)
+            {
+                btlActionSetState(action, 0x20);
+            }
+            else
+            {
+                FUN_0029a320(action);
+                if (action->unit->genus == UNIT_GENUS_EC)
+                {
+                    FUN_003004f0(action->unit->datUnit, 0x80000);
+                    FUN_002ffd90(action->unit->datUnit, 0);
+                }
+
+                if (FUN_0027d380() != 0)
+                {
+                    gBtl->flags |= 0x80;
+                }
+                btlActionSetState(action, 0x22);
+            }
+        }
+        else
+        {
+            if (datCalcIsDead(action->unit->datUnit, 0) != 0)
+            {
+                FUN_002d7560(action);
+                btlActionSetState(action, BTLACTION_STATE_STANDBY);
+            }
+        }
+    }
 }
 
 // FUN_00299520
