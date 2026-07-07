@@ -1,0 +1,90 @@
+#include "Kosaka/k_data.h"
+#include "Kosaka/Field/k_dungeon.h"
+#include "Kosaka/k_assert.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Graphics/Model/mdlManager.h"
+#include "Main/g_data.h"
+#include "h_cdvd.h"
+#include "temporary.h"
+
+void* gFldScrMemory; // 007ce228
+u32 gFldScrSize;     // 007ce224
+Model* gFldBaseMdl;  // 007ce21c
+u32 gTraceCode;      // 007ce208
+
+FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
+
+// FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize'
+void K_Data_LoadFldMainScript()
+{
+    char buffer[128];
+    HCdvd* cdvd;
+    u32 scrSize;
+    void* scrMemory;
+
+    sprintf(buffer, "field/script/field.bf");
+
+    cdvd = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
+    H_Cdvd_ReadSync(cdvd);
+
+    // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
+    scrSize = cdvd->fileSize;
+    scrMemory = gFldScrMemory = RwCalloc(1, scrSize, rwMEMHINTDUR_GLOBAL);
+    scrSize = gFldScrSize = cdvd->fileSize;
+
+    memcpy(scrMemory, cdvd->fileMemory, scrSize);
+
+    H_Cdvd_Destroy(cdvd);
+}
+
+// FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData'
+void K_Data_LoadDngFloorsData(u32 scenarioMode)
+{
+    char buffer[128];
+    HCdvd* cdvd;
+    u32 fileSize;
+
+    if (scenarioMode == SCENARIO_MODE_JOURNEY)
+    {
+        sprintf(buffer, "field/table/dungeonAT.bin");
+    }
+    else
+    {
+        sprintf(buffer, "field/table/dungeonFES.bin");
+    }
+
+    cdvd = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
+    H_Cdvd_ReadSync(cdvd);
+
+    fileSize = cdvd->fileSize;
+
+    K_ASSERT(fileSize < 0x2000, 170);
+
+    fileSize = cdvd->fileSize;
+    memcpy((u8*)gFldDngFloorsData, (u8*)cdvd->fileMemory, fileSize);
+
+    H_Cdvd_Destroy(cdvd);
+}
+
+// FUN_001b7dc0
+void K_Data_CreateFldBaseMdl()
+{
+    HCdvd* cdvd;
+
+    cdvd = H_Cdvd_Request("field/base.RMD", HCDVD_FILENORMAL);
+    H_Cdvd_ReadSync(cdvd);
+
+    gFldBaseMdl = mdlCreateFromRmdMemory(MODEL_TYPE_FLD,
+                                         2000,
+                                         cdvd->fileMemory,
+                                         cdvd->fileSize,
+                                         MDL_READASYNC);
+
+    // ??? never destroying the cdvd
+}
+
+// FUN_001b7e30
+u32 K_Data_ChkFldBaseMdlStream()
+{
+    return mdlStreamRead(gFldBaseMdl) != false;
+}

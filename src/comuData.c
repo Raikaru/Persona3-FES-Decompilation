@@ -1,0 +1,87 @@
+#include "comuData.h"
+#include "Main/g_data.h"
+#include "Kosaka/k_assert.h"
+
+static const char* daysStrings[CALENDAR_DAY_MAX] =
+{
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+};
+
+// 006a3ca0 (ultimate social link personas)
+static const char* ultSLPersonasStrings[22] = 
+{
+    "Susano-o", "Surt", "Scathach",
+    "Alilat", "Odin", "Kohryu",
+    "Cybele", "Thor", "Melchizedek",
+    "Arahabaki", "Norn", "Siegfried",
+    "Attis", "Thanatos", "Yurlungur",
+    "Beelzebub", "Chi You", "Helel",
+    "Sandalaphon", "Asura", "Messiah",
+    "Metatron"
+};
+
+// 006a3b40 (Will see were those strings are used in game later)
+static const char* unkStrings1[5] = 
+{
+    "A perfect gift to capture a woman's heart!",
+    "This'll make you much stronger!",
+    "Provides excellent protection!",
+    "Functional and fashionable!",
+    "Guaranteed to make your friends jealous!"
+};
+
+// FUN_003c4130
+const char* Day_GetCurrentDayString(u32 month, u32 day)
+{
+    const char* dayString;
+    u32 currentDay;
+
+    currentDay = clndGetDaysSinceStartFromDate(month, day);
+    currentDay = clndGetWeekDay(currentDay);
+
+    switch(currentDay)
+    {
+        case CALENDAR_DAY_SUNDAY:
+            dayString = daysStrings[CALENDAR_DAY_SUNDAY];
+            break;
+        case CALENDAR_DAY_MONDAY:
+            dayString = daysStrings[CALENDAR_DAY_MONDAY];
+            break;
+        case CALENDAR_DAY_TUESDAY:
+            dayString = daysStrings[CALENDAR_DAY_TUESDAY];
+            break;
+        case CALENDAR_DAY_WEDNESDAY:
+            dayString = daysStrings[CALENDAR_DAY_WEDNESDAY];
+            break;
+        case CALENDAR_DAY_THURSDAY:
+            dayString = daysStrings[CALENDAR_DAY_THURSDAY];
+            break;
+        case CALENDAR_DAY_FRIDAY:
+            dayString = daysStrings[CALENDAR_DAY_FRIDAY];
+            break;
+        case CALENDAR_DAY_SATURDAY:
+            dayString = daysStrings[CALENDAR_DAY_SATURDAY];
+            break;
+        default:
+            K_ASSERT(false, 136);
+            dayString = NULL;
+    }
+
+    return dayString;
+}
+
+// FUN_003c4210
+const char* ComuData_FUN_003c4210(u32 idx)
+{
+    K_ASSERT(idx < ARRAY_SIZE(unkStrings1), 147);
+
+    return unkStrings1[idx];
+}
+
+const char* ComuData_GetUltSLPersonasString(u32 idx)
+{
+    idx--;
+    K_ASSERT(idx > 0 && idx < ARRAY_SIZE(ultSLPersonasStrings) - 1, 198);
+
+    return ultSLPersonasStrings[idx];
+}

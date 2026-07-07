@@ -1,0 +1,32 @@
+#ifndef K_DATA_H
+#define K_DATA_H
+
+#include "Utils.h"
+
+#define FLDSCR_DIED_IN_TARTAROS 1
+
+typedef struct Model Model;
+
+// 16 bytes
+typedef struct FldDungeonFloorData
+{
+    u16 majorId;        // 0x00
+    u16 minorId;        // 0x02
+    u8 unkData1[0x08];
+    u8 blockId;         // 0x0c. Tartarus block
+    u8 unkData[0x04];
+} FldDungeonFloorData;
+
+extern void* gFldScrMemory;
+extern u32 gFldScrSize;
+extern Model* gFldBaseMdl;
+extern u32 gTraceCode;
+
+extern FldDungeonFloorData gFldDngFloorsData[500];
+
+void K_Data_LoadFldMainScript();
+void K_Data_LoadDngFloorsData(u32 scenarioMode);
+void K_Data_CreateFldBaseMdl();
+u32 K_Data_ChkFldBaseMdlStream();
+
+#endif

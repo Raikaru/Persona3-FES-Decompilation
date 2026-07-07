@@ -1,0 +1,34 @@
+#ifndef FLAGS_H
+#define FLAGS_H
+
+// !! 'gGlobalFlags' array is in 'g_data.c' file !!
+
+#define FLG_PENDING_DUNGEON      2565 // idx 80  (1 << 5). When activated and time is dark hour, tp to tartarus 1F
+#define FLG_DAY_IS_MONDAY        2568 // idx 80  (1 << 8)
+#define FLG_DAY_IS_TUESDAY       2569 // idx 80  (1 << 9)
+#define FLG_DAY_IS_WEDNESDAY     2570 // idx 80  (1 << 10)
+#define FLG_DAY_IS_THURSDAY      2571 // idx 80  (1 << 11)
+#define FLG_DAY_IS_FRIDAY        2572 // idx 80  (1 << 12)
+#define FLG_DAY_IS_SATURDAY      2573 // idx 80  (1 << 13)
+#define FLG_DAY_IS_SUNDAY        2574 // idx 80  (1 << 14). DAYOFF flag is also activated when it's sunday
+#define FLG_DAY_IS_DAYOFF        2575 // idx 80  (1 << 15). Holiday or sunday
+#define FLG_MAP_STUD_HELP_SEEN   2680 // idx 83  (1 << 24). "When you speak to this student, the Town Map will be displayed."
+#define FLG_TIME_IS_EARLY_MORN   2688 // idx 84  (1 << 0). Early morning
+#define FLG_TIME_IS_MORNING      2689 // idx 84  (1 << 1)
+#define FLG_TIME_IS_LUNCH        2690 // idx 84  (1 << 2)
+#define FLG_TIME_IS_AFTERNOON    2691 // idx 84  (1 << 3)
+#define FLG_TIME_IS_AFTER_SCHOOL 2692 // idx 84  (1 << 4)
+#define FLG_TIME_IS_EVENING      2693 // idx 84  (1 << 5)
+#define FLG_TIME_IS_LATE_NIGHT   2694 // idx 84  (1 << 6)
+#define FLG_TIME_IS_DARK_HOUR    2695 // idx 84  (1 << 7)
+#define FLG_ROOM_HELP_SEEN       3086 // idx 96  (1 << 14). "If you go back into your room, it will become midnight"
+#define FLG_HERO_HANDS_IN_POCKET 3125 // idx 98  (1 << 21)
+#define FLG_HIDE_DATE_HUD        5127 // idx 160 (1 << 7)
+#define FLG_BATTLE_MC            5147 // idx 160 (1 << 27)
+#define FLG_HERO_DIED            5149 // idx 160 (1 << 29)
+
+#define FLG_MAX 5632
+
+#define FLG_ARR_SIZE (FLG_MAX / 32)
+
+#endif

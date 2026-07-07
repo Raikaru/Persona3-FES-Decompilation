@@ -1,0 +1,58 @@
+#ifndef K_FLDCAMERA_H
+#define K_FLDCAMERA_H
+
+#include "Utils.h"
+#include "rw/rwcore.h"
+
+#define FLDCAMERA_FLAG_DRAWDEADZONE (1 << 31) // 0x80000000. Draw a cylinder that represents the current deadzone
+
+typedef struct ResrcModelChar ResrcModelChar;
+typedef struct KwlnTask KwlnTask;
+
+typedef enum
+{
+    // TODO
+    FLDCAMERA_TYPE_0,
+    FLDCAMERA_TYPE_FIXED
+} FldCameraType;
+
+typedef enum
+{
+    FLDCAMERA_STATE_UPDATE,
+    FLDCAMERA_STATE_IDLE
+} FldCameraState;
+
+// 112 bytes. Content of a '.CMR' file
+typedef struct CmrFile
+{
+    u8 unkData1[0x08];
+    f32 fov;           // 0x08. Fov in deg
+    s32 unk_0c;        // 0x0c
+    RwMatrix mat;      // 0x10
+    u16 type;          // 0x50. See enum 'FieldCameraType'
+    RwV3d posOffset;   // 0x54
+    f32 xzDeadZone;    // 0x60
+    f32 yDeadZone;     // 0x64
+    u8 unkData2[0x08];
+} CmrFile;
+
+// 208 bytes. Work Data for "field camera controler" task
+typedef struct FldCamera
+{
+    u32 state;                   // 0x00. See 'FldCameraState' enum
+    u32 flags;                   // 0x04. See 'FLDCAMERA_FLAG_*'
+    u32 type;                    // 0x08
+    RwFrame* frame;              // 0x0c. frame controlling the RwCamera (parent of the RwCamera's frame)
+    RwFrame* parentFrame;        // 0x10
+    RwV3d posOffset;             // 0x14
+    f32 xzDeadZone;              // 0x20
+    f32 yDeadZone;               // 0x24
+    u8 unkData3[0xa4];
+    ResrcModelChar* playerResrc; // 0xcc
+} FldCamera;
+
+u32 K_FldCamera_GetType(KwlnTask* fldCameraTask);
+RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask);
+void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId);
+
+#endif

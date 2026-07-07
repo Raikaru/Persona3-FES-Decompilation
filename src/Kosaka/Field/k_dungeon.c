@@ -1,0 +1,243 @@
+#include "Kosaka/Field/k_dungeon.h"
+#include "Kosaka/k_data.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "Main/g_data.h"
+#include "Graphics/Model/mdlManager.h"
+#include "rw/rwplcore.h"
+#include "temporary.h"
+#include "h_cdvd.h"
+
+KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
+Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
+
+#define DUNGEON_GET_WORK() ((FldDungeon*)gDungeonTask->workData)
+
+HCdvd* K_FldDungeon_RequestScript();
+void K_FldDungeon_DestroyScrMemory();
+u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd);
+
+void K_FldDungeon_FUN_001c03f0();
+
+// FUN_001bf570
+void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
+{
+    // TODO
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001bfaf0
+void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
+{
+    // TODO
+}
+
+// FUN_001bfbc0
+KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
+{
+    KwlnTask* dungeonTask;
+    FldDungeon* dungeon;
+
+    dungeon = (FldDungeon*)RwCalloc(1, sizeof(FldDungeon), rwMEMHINTDUR_GLOBAL);
+    if (dungeon == NULL)
+    {
+        return NULL;
+    }
+
+    dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
+                                                 10,
+                                                 "automatic dungeon ",
+                                                 K_FldDungeon_UpdateTask,
+                                                 K_FldDungeon_DestroyTask,
+                                                 dungeon);
+    gDungeonTask = dungeonTask;
+
+    dungeon->currFloor = floor;
+    dungeon->unk_08 = param_3;
+
+    if (floor > 1)
+    {
+        gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD,
+                                          0xffff,
+                                          "field/grmd/fobj000.RMD",
+                                          MDL_READASYNC);
+
+        dungeon->scrCdvd = K_FldDungeon_RequestScript();
+
+        K_FldDungeon_FUN_001c03f0();
+    }
+
+    return dungeonTask;
+}
+
+// FUN_001bff00
+void K_FldDungeon_RequestShutdown()
+{
+    if (gDungeonTask != NULL)
+    {
+        DUNGEON_GET_WORK()->shouldShutdown = true;
+    }
+}
+
+// FUN_001bff20
+u32 K_FldDungeon_GetCurrentFloor()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return DUNGEON_GET_WORK()->currFloor;
+}
+
+// FUN_001bff50
+u8 K_FldDungeon_IsCurrentFloorExplorable()
+{
+    u32 currFloor;
+
+    if (gDungeonTask == NULL)
+    {
+        currFloor = 0;
+    }
+    else 
+    {
+        currFloor = DUNGEON_GET_WORK()->currFloor;
+    }
+
+    if (currFloor < 2 || currFloor >= 400)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+// FUN_001bffa0
+FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return &DUNGEON_GET_WORK()->floorsData[DUNGEON_GET_WORK()->currFloor];
+}
+
+// FUN_001bffe0
+void* K_FldDungeon_GetScrMemory()
+{
+    if (gDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    return DUNGEON_GET_WORK()->scrMemory;
+}
+
+// FUN_001c0010
+u32 K_FldDungeon_GetScrSize()
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+
+    return DUNGEON_GET_WORK()->scrSize;
+}
+
+// FUN_001c0190. Request a cdvd stream to load main tartarus script
+HCdvd* K_FldDungeon_RequestScript()
+{
+    HCdvd* cdvd;
+
+    cdvd = NULL;
+    if (gDungeonTask == NULL)
+    {
+        return NULL;
+    }
+
+    if (DUNGEON_GET_WORK()->scrMemory == NULL)
+    {
+        if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat.bf", HCDVD_FILENORMAL);
+        }
+        else
+        {
+            cdvd = H_Cdvd_Request("field/script/dungeonat_aegis.bf", HCDVD_FILENORMAL);
+        }
+    }
+
+    return cdvd;
+}
+
+// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
+u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
+{
+    FldDungeon* dungeon;
+
+    if (gDungeonTask == NULL)
+    {
+        return true;
+    }
+
+    dungeon = DUNGEON_GET_WORK();
+    if (scrCdvd == NULL)
+    {
+        return true;
+    }
+
+    if (H_Cdvd_IsFileLoaded(scrCdvd))
+    {
+        // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
+
+        dungeon->scrMemory = RwCalloc(1, scrCdvd->fileSize, rwMEMHINTDUR_GLOBAL);
+        dungeon->scrSize = scrCdvd->fileSize;
+        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
+
+        H_Cdvd_Destroy(scrCdvd);
+
+        return true;
+    }
+
+    return false;
+}
+
+// FUN_001c02e0
+void K_FldDungeon_DestroyScrMemory()
+{
+    FldDungeon* dungeon;
+
+    if (gDungeonTask != NULL)
+    {
+        dungeon = DUNGEON_GET_WORK();
+        if (dungeon->scrMemory != NULL)
+        {
+            RwFree(dungeon->scrMemory);
+            dungeon->scrMemory = NULL;
+        }
+    }
+}
+
+// FUN_001c0330. Request a cdvd stream to load tartarus block specific script (thebel, arqa, etc...)
+HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
+{
+    char buffer[128];
+
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        sprintf(buffer, "field/script/dungeonat%02d.bf", blockId);
+    }
+    else
+    {
+        sprintf(buffer, "field/script/dungeonat%02d_aegis.bf", blockId);
+    }
+
+    return H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
+}
+
+// FUN_001c03f0
+void K_FldDungeon_FUN_001c03f0()
+{
+    // TODO
+}

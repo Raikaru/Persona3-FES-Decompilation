@@ -1,0 +1,96 @@
+#ifndef SCR_H
+#define SCR_H
+
+#include "Utils.h"
+#include "Script/scrTypes.h"
+
+#define SCR_STACK_MAX 28
+#define SCR_STACK_RET 27
+#define SCR_STACK_USE 26
+
+typedef struct KwlnTask KwlnTask;
+typedef struct BmdHeader BmdHeader;
+
+// 16 bytes
+typedef struct
+{
+    u32 contentType;  // 0x00. See enum 'ScrContentType'
+    u32 unk_04;
+    s32 elementCount; // 0x08
+    u32 offset;       // 0x0c. To get the addr of the content: addr = header + header->entry[type].offset
+} ScrContentEntry;
+
+// 112 bytes
+typedef struct ScrHeader
+{
+    s32 unk_00;                                    // 0x00
+    u32 scrSize;                                   // 0x04. size of the .BF file (in bytes)
+    char magic[4];                                 // 0x08. "FLW0"
+    u32 unk_0c;
+    u32 totalEntries;                              // 0x10
+    s16 localIntNum;                               // 0x14
+    s16 localFloatNum;                             // 0x16
+    s32 unk_18;                                    // 0x18
+    s32 unk_1c;                                    // 0x1c
+    ScrContentEntry entries[SCR_CONTENT_TYPE_MAX]; // 0x20
+} ScrHeader;
+
+// 4 bytes
+typedef union 
+{
+    s32 iVal;
+    f32 fVal;
+    char* strVal;
+} ScrValues;
+
+// 32 bytes. Label or procedure (this name is horrible)
+typedef struct
+{
+    char name[24]; // 0x00
+    u32 addr;      // 0x18. Offset in bytes from which the label/procedure starts by instructions base address
+    s32 unk_1c;    // 0x1c
+} ScrLblPrcd;
+
+// 4 bytes
+typedef union
+{
+    struct
+    {
+        u16 opCode;
+        s16 sOperand;
+    } opOperand16;
+    
+    s32 iOperand;
+    f32 fOperand;
+} ScrInstruction;
+
+// 252 bytes
+typedef struct ScrData
+{
+    char scrName[24];                     // 0x00. Name of the current procedure (same as task->taskName)
+    s32 pc;                               // 0x18. Program counter
+    s32 sp;                               // 0x1c. Stack pointer
+    s8 stackTypes[SCR_STACK_MAX];         // 0x20. Types of each variables in the stack. See enum 'ScrValueType'
+    ScrValues stackValues[SCR_STACK_MAX]; // 0x3c. Values of each variables in the stack
+    ScrHeader* scrHeader;                 // 0xac
+    ScrContentEntry* entries;             // 0xb0
+    ScrLblPrcd* proceduresContent;        // 0xb4
+    ScrLblPrcd* labelsContent;            // 0xb8
+    ScrInstruction* instrContent;         // 0xbc
+    BmdHeader* msgContentHeader;          // 0xc0
+    char* stringsContent;                 // 0xc4
+    u32 prcdIdx;                          // 0xc8
+    s32 mesHandleIdx;                     // 0xcc
+    u32 timer;                            // 0xd0
+    u32 cmdTimer;                         // 0xd4
+    void* scriptMemory;                   // 0xd8
+    s32* localInt;                        // 0xdc
+    f32* localFloat;                      // 0xe0
+    KwlnTask* task;                       // 0xe4
+    struct ScrData* prev;                 // 0xe8
+    struct ScrData* next;                 // 0xec
+    s32 unk_f0;                           // 0xf0
+    u8 unkData1[0x08];
+} ScrData;
+
+#endif
