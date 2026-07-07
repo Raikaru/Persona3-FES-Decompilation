@@ -52,6 +52,10 @@ void btlUnitInitEnmDodgeAnimPacket(void* work);
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work);
 void btlUnitDestroyEnmDodgeAnimPacket(void* work);
 
+void btlUnit002862a0(void* work);
+u32 btlUnit002862c0(void* work);
+void btlUnit00286300(void* work);
+
 // FUN_0027f650
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
 {
@@ -655,9 +659,19 @@ BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 // FUN_00286320
 BtlPacket* btlUnit00286320(BtlUnit* unit)
 {
-    // TODO
+    BtlPacket* packet;
+    BtlUnit** work;
 
-    return NULL;
+    packet = btlPacketCreate(BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 0x1a), sizeof(BtlUnit*));
+
+    packet->initFunc = btlUnit002862a0;
+    packet->updateFunc = btlUnit002862c0;
+    packet->destroyFunc = btlUnit00286300;
+
+    work = (BtlUnit**)packet->workData;
+    *work = unit;
+
+    return packet;
 }
 
 // FUN_002875a0
