@@ -2,6 +2,8 @@
 #include "Battle/battle.h"
 #include "h_cdvd.h"
 
+extern const BtlCameraStateEntry gBtlBossCameraStateEntries[][BTLCAMERA_STATE_MAX];
+
 // FUN_002f7dc0
 void btlBoss002f7dc0()
 {
@@ -11,9 +13,23 @@ void btlBoss002f7dc0()
 // FUN_002f8840
 const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
 {
-    // TODO
+    const BtlCameraStateEntry* entry;
+    s16 bossCameraSet;
 
-    return NULL;
+    if (!(gBtl->unk_10 & 0x10))
+    {
+        return NULL;
+    }
+
+    bossCameraSet = *(s16*)((u8*)gBtl + 0xb84);
+    entry = &gBtlBossCameraStateEntries[bossCameraSet][cameraState];
+
+    if (entry->init == NULL && entry->update == NULL)
+    {
+        return NULL;
+    }
+
+    return entry;
 }
 
 // FUN_002f9710

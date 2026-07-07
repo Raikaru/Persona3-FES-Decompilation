@@ -4,6 +4,10 @@
 #include "Utils.h"
 #include "Battle/btlPacket.h"
 
+#ifndef BTLPACKET_MODULE_BOSS
+#define BTLPACKET_MODULE_BOSS 14
+#endif
+
 typedef struct BtlCameraStateEntry BtlCameraStateEntry;
 
 typedef enum
