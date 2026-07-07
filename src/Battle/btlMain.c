@@ -11,6 +11,8 @@ void btlFade002ff2d0(u16 param_1);
 u32 btl002facc0();
 void datAddBattleCount(s32 amount);
 void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
+void FUN_001f1b60(void* param_1);
+void FUN_002fb690();
 
 void btlMainInitStateNon(BtlStateWork* work);
 u32 btlMainUpdateStateNon(BtlStateWork* work);
@@ -223,7 +225,8 @@ u32 btlMainUpdateStateWin(BtlStateWork* work)
 // FUN_0029cde0
 void btlMainInitStateEnemyDead(BtlStateWork* work)
 {
-    // TODO
+    FUN_002fb690();
+    gBtl->flags |= 0x80000;
 }
 // FUN_0029ce20
 u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
@@ -241,8 +244,14 @@ void btlMainInitStateCondition(BtlStateWork* work)
 // FUN_0029d6e0
 u32 btlMainUpdateStateCondition(BtlStateWork* work)
 {
-    // TODO
+    if (btlPacketCount() != 0)
+    {
+        goto returnNull;
+    }
 
+    return BTL_STATE_FADEOUT;
+
+returnNull:
     return BTL_STATE_NULL;
 }
 
@@ -291,7 +300,7 @@ u32 btlMainUpdateStateEnd(BtlStateWork* work)
 // FUN_0029dbf0
 void btlMainInitStateResult(BtlStateWork* work)
 {
-    // TODO
+    FUN_001f1b60(*(void**)((u8*)gBtl + 0xd28));
 }
 // FUN_0029dc20
 u32 btlMainUpdateStateResult(BtlStateWork* work)

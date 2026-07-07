@@ -90,6 +90,8 @@ void btlActionUpdateStateTest(BtlAction* action);
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 void FUN_002dc5e0();
 void FUN_001fdd40();
+u8 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
+u32 FUN_002c0970(BtlTarget* target);
 
 // 12 bytes
 typedef struct
@@ -407,7 +409,9 @@ void btlActionUpdateStateAI(BtlAction* action)
 // FUN_0028cf20
 void btlActionInitStateAuto(BtlAction* action)
 {
-    // TODO
+    btlTargetReset(&action->target);
+    FUN_002bff60(action, (BtlTarget*)action->unkData3, 0, 0);
+    FUN_002c0970((BtlTarget*)action->unkData3);
 }
 // FUN_0028cf80
 void btlActionUpdateStateAuto(BtlAction* action)
