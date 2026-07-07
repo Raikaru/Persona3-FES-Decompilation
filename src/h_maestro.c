@@ -101,5 +101,5 @@ void H_Maestro_SetShouldLoop(KwlnTask* hmaestroTask, u32 shouldLoop)
 // FUN_00111f20
 void H_Maestro_00111f20(KwlnTask* hmaestroTask, u32 param_2)
 {
-    // TODO
+    ((HMaestro*)hmaestroTask->workData)->unk_120 = param_2;
 }
