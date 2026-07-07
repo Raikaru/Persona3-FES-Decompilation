@@ -80,7 +80,9 @@ typedef struct Battle
     BtlStateWork stateWork;                        // 0x2b4
     u8 unkData5[0x854];
     HCdvd* bossPakCdvd;                            // 0xb14
-    u8 unkData6[0x8d];
+    u8 unkData6[0x88];
+    s32 mesHandleIdx;                              // 0xba0
+    u8 unk_ba4;
     u8 hasNoStartInfo;                             // 0xba5
     BtlStartInfo startInfo;                        // 0xba8
     u8 unkData7[0x13c];

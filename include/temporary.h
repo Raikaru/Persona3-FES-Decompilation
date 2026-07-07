@@ -44,5 +44,20 @@ void btlFormation002bf9a0();
 void btlVoice002e2f20();
 void btlSound002dcc40();
 
+typedef struct BmdHeader BmdHeader;
+
+extern BmdHeader* gBtlMessageBmd;
+s32 itfMesMngInitialize(BmdHeader* bmdHeader);
+
+void btlLoadResource(s32 resId);
+void btlTarget002d3d70();
+void btlPacket0027edf0();
+void btlCamera002a4a70();
+void btlSound002dcbc0();
+void btlVoice002e2f30();
+void btlFormation002bb760();
+void btlMsg002db8d0();
+void btlFormation002bf970();
+
 
 #endif
