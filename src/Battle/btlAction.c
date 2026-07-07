@@ -94,6 +94,10 @@ u8 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4
 u32 FUN_002c0970(BtlTarget* target);
 u32 FUN_002e4330(BtlAction* action);
 u32 FUN_002e43a0();
+BtlAction* FUN_002c0880(BtlTarget* target);
+void FUN_002c08a0(BtlTarget* target, BtlAction* action);
+BtlPacket* FUN_002db740(BtlAction* action, u16 param_2, u32 param_3, u32 param_4, u32 param_5);
+u16 FUN_00308930(DatUnit* unit);
 
 // 12 bytes
 typedef struct
@@ -418,7 +422,27 @@ void btlActionInitStateAuto(BtlAction* action)
 // FUN_0028cf80
 void btlActionUpdateStateAuto(BtlAction* action)
 {
-    // TODO
+    BtlPacket* packet;
+
+    action->target.commandId = 1;
+    action->target.specificId = FUN_00308930(action->unit->datUnit);
+    action->target.targetedActions[0] = FUN_002c0880((BtlTarget*)action->unkData3);
+    action->target.targetedCount = 1;
+    FUN_002c08a0((BtlTarget*)action->unkData3, action->target.targetedActions[0]);
+
+    if (action->unit->genus == UNIT_GENUS_PC && action->unit->charId == 1)
+    {
+        packet = FUN_002db740(action, 1, 0, 0, 0);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    if (gBtl->flags & 0x4000000)
+    {
+        action->unk_18 |= 0x4000;
+    }
+
+    action->unk_18 |= 2;
+    btlActionSetState(action, BTLACTION_STATE_READY);
 }
 
 // FUN_0028d070
@@ -530,7 +554,11 @@ void btlActionInitStateAssist(BtlAction* action)
 // FUN_00295b20
 void btlActionUpdateStateAssist(BtlAction* action)
 {
-    // TODO
+    if (btlPacketCountById(0x506) == 0 && btlPacketCountById(0x800) == 0)
+    {
+        action->unk_18 |= 0x100;
+        btlActionSetState(action, BTLACTION_STATE_READY);
+    }
 }
 
 // FUN_00295b90
