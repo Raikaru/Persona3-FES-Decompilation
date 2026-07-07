@@ -37,9 +37,9 @@ RpUserDataFormat RpUserDataArrayGetFormat(RpUserDataArray* userData)
 }
 
 // FUN_0048ef40
+#pragma optimization_level 3
 RwInt32 RpUserDataArrayGetInt(RpUserDataArray* userData, RwInt32 index)
 {
-    // TODO
-
-    return 0;
+    return ((RwInt32*)userData->data)[index];
 }
+#pragma optimization_level 2
