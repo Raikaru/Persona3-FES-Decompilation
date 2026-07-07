@@ -20,12 +20,14 @@ RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance)
 }
 
 // FUN_004c2f10
+#pragma optimization_level 3
 RwMatrix* RwMatrixUpdate(RwMatrix* matrix)
 {
-    // TODO
+    matrix->flags &= ~(rwMATRIXTYPEMASK | rwMATRIXINTERNALIDENTITY);
 
-    return NULL;
+    return matrix;
 }
+#pragma optimization_level 2
 
 // FUN_004c2f30
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
