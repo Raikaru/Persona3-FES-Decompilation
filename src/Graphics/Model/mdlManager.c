@@ -276,7 +276,12 @@ f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
 // FUN_003189f0
 void mdlAnimSetSpeed(Model* mdl, u16 slotIdx, f32 speed)
 {
-    // TODO
+    mdl->animSlots[slotIdx].anim.speed = speed;
+
+    if (slotIdx == 0)
+    {
+        *(f32*)((u8*)mdl + 0x36c) = speed;
+    }
 }
 
 // FUN_00318a30
