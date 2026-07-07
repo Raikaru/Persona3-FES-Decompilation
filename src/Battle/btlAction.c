@@ -96,6 +96,10 @@ u32 FUN_002e4330(BtlAction* action);
 u32 FUN_002e43a0();
 BtlAction* FUN_002c0880(BtlTarget* target);
 void FUN_002c08a0(BtlTarget* target, BtlAction* action);
+u32 FUN_002c08c0(BtlTarget* target);
+u32 FUN_002c7250(BtlTarget* target);
+void FUN_002c70d0(BtlAction* action, BtlTarget* target);
+u32 FUN_002c7280(BtlTarget* target);
 BtlPacket* FUN_002db740(BtlAction* action, u16 param_2, u32 param_3, u32 param_4, u32 param_5);
 u16 FUN_00308930(DatUnit* unit);
 
@@ -404,12 +408,37 @@ void btlActionUpdateStateAnalyze(BtlAction* action)
 // FUN_0028cda0
 void btlActionInitStateAI(BtlAction* action)
 {
-    // TODO
+    if (action->unit->genus == UNIT_GENUS_PC &&
+        *(s8*)&action->unit->datUnit->aiTactic == 7 &&
+        FUN_002c08c0((BtlTarget*)action->unkData3) == 0)
+    {
+        action->unit->datUnit->aiTactic = 1;
+        btlPacketRegister(btlVoice002e2be0(action, 0xb, 0, 0, 0), BTLPACKET_TYPE_1);
+    }
+
+    btlTargetReset(&action->target);
 }
 // FUN_0028ce50
 void btlActionUpdateStateAI(BtlAction* action)
 {
-    // TODO
+    if (FUN_002c7250(&action->target) == 0)
+    {
+        FUN_002c70d0(action, &action->target);
+    }
+
+    if (FUN_002c7280(&action->target) != 0)
+    {
+        if ((gBtl->flags & 0x2000) &&
+            (gBtl->flags & 0x4000000) &&
+            action->unit->genus == UNIT_GENUS_EC &&
+            action->target.commandId == 1)
+        {
+            action->unk_18 |= 0x4000;
+        }
+
+        action->unk_18 |= 2;
+        btlActionSetState(action, BTLACTION_STATE_READY);
+    }
 }
 
 // FUN_0028cf20
