@@ -14,6 +14,44 @@ BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
 
+// 12 bytes
+typedef struct BtlUnitPacketResNullifiedAnim
+{
+    BtlUnit* unit; // 0x00
+    f32 unk_4;     // 0x04
+    u8 unkData[4];
+} BtlUnitPacketResNullifiedAnim;
+
+void btlUnitInitResNullifiedAnimPacket(void* work);
+u32 btlUnitUpdateResNullifiedAnimPacket(void* work);
+void btlUnitDestroyResNullifiedAnimPacket(void* work);
+
+// 24 bytes
+typedef struct BtlUnitPacket00284900
+{
+    u8 unkData1[0x0c];
+    BtlUnit* unit; // 0x0c
+    s16 unk_10;    // 0x10
+    s16 unk_12;    // 0x12
+    u8 unkData2[0x04];
+} BtlUnitPacket00284900;
+
+void btlUnitInit00284900Packet(void* work);
+u32 btlUnitUpdate00284900Packet(void* work);
+void btlUnitDestroy00284900Packet(void* work);
+
+// 16 bytes
+typedef struct BtlUnitPacketEnmDodgeAnim
+{
+    BtlUnit* unit; // 0x00
+    s32 unk_4;     // 0x04
+    u8 unkData[0x08];
+} BtlUnitPacketEnmDodgeAnim;
+
+void btlUnitInitEnmDodgeAnimPacket(void* work);
+u32 btlUnitUpdateEnmDodgeAnimPacket(void* work);
+void btlUnitDestroyEnmDodgeAnimPacket(void* work);
+
 // FUN_0027f650
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
 {
@@ -556,25 +594,62 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
 // FUN_00284600
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
 {
-    // TODO
+    BtlPacket* packet;
+    BtlUnitPacketResNullifiedAnim* work;
 
-    return NULL;
+    packet = btlPacketCreate(0x107, sizeof(BtlUnitPacketResNullifiedAnim));
+
+    packet->initFunc = btlUnitInitResNullifiedAnimPacket;
+    packet->updateFunc = btlUnitUpdateResNullifiedAnimPacket;
+    packet->destroyFunc = btlUnitDestroyResNullifiedAnimPacket;
+
+    work = (BtlUnitPacketResNullifiedAnim*)packet->workData;
+
+    work->unit = unit;
+    work->unk_4 = param_2;
+
+    return packet;
 }
 
 // FUN_00284900
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
 {
-    // TODOD
+    BtlPacket* packet;
+    BtlUnitPacket00284900* work;
 
-    return NULL;
+    packet = btlPacketCreate(0x108, sizeof(BtlUnitPacket00284900));
+
+    packet->initFunc = btlUnitInit00284900Packet;
+    packet->updateFunc = btlUnitUpdate00284900Packet;
+    packet->destroyFunc = btlUnitDestroy00284900Packet;
+
+    work = (BtlUnitPacket00284900*)packet->workData;
+
+    work->unit = unit;
+    work->unk_10 = param_2;
+    work->unk_12 = 0;
+
+    return packet;
 }
 
 // FUN_00284b70
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 {
-    // TODO
+    BtlPacket* packet;
+    BtlUnitPacketEnmDodgeAnim* work;
 
-    return NULL;
+    packet = btlPacketCreate(0x109, sizeof(BtlUnitPacketEnmDodgeAnim));
+
+    packet->initFunc = btlUnitInitEnmDodgeAnimPacket;
+    packet->updateFunc = btlUnitUpdateEnmDodgeAnimPacket;
+    packet->destroyFunc = btlUnitDestroyEnmDodgeAnimPacket;
+
+    work = (BtlUnitPacketEnmDodgeAnim*)packet->workData;
+
+    work->unit = unit;
+    work->unk_4 = 0;
+
+    return packet;
 }
 
 // FUN_00286320
