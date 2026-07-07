@@ -29,4 +29,8 @@ float tanf(float x);
 float sqrtf(float x);
 float fabsf(float x);
 
+void kwlnSetDrawLayer(s32 layer);
+void btlUnitDrawAll();
+void btlEffectDrawAll();
+
 #endif
