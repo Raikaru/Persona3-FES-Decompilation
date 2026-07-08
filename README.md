@@ -114,9 +114,12 @@ already-matching function, read against the retail bytes, gives the resolved
 value of the symbol it references (a callee, a global, a gp-relative offset).
 Each matched function's compiled-C relocations are then re-encoded from that
 map and written over its region of the image — so the linked bytes come from
-your C, not the disassembly. Today 726 of 739 matched functions link cleanly
-this way; a handful with a shared-`%hi`/multiple-`%lo` pattern still fall back
-to the assembly baseline, so the image is byte-identical either way.
+your C, not the disassembly. Today 734 of 739 matched functions link cleanly
+this way; the last 5 (`rwGlobals`/gp-relative struct-member access via a
+shared `%hi`) still fall back to the assembly baseline, so the image is
+byte-identical either way. Because this resolution is stricter than the
+reloc-masked gate, it also caught real struct-offset bugs the gate had hidden
+(`activeSocialLink`, `socialLinkStat`, `equipmentsIdx`), now fixed.
 
 `tools/verify.py` remains the per-function gate (`make verify`): it compiles
 each `src/` file and byte-compares every `// FUN_xxxxxxxx` function against

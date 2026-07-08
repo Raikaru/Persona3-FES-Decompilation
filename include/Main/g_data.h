@@ -178,6 +178,7 @@ typedef struct DatHeroStatus
     DatSocial socialStats;
     u32 nextExp;
     DatPhysical physicalState;
+    u8 unk_12[2];              // pad: activeSocialLink is at heroStatus+0x14
     s16 activeSocialLink;
     s8 socialLinkStat[30];
 } DatHeroStatus;
@@ -190,9 +191,10 @@ typedef struct DatPc
     DatSocial socialStats;
     u8 unkData1[0x06];
     DatPhysical physicalState;
+    u8 unk_52[2];               // pad: equipmentsIdx is at DatPc+0x54
     s16 equipmentsIdx[4];       // always 0, 1, 2, 3
     DatEquipment equipments[4];
-    u8 unkData2[0x30];
+    u8 unkData2[0x2e];
     DatPersonaWork persona;
     u8 unkData3[0x254];         // TODO
 } DatPc;

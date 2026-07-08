@@ -1017,6 +1017,8 @@ void FUN_00172e10()
 // FUN_00175be0
 void datInitPersona(s16 pcId)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         gGlobalWork.heroPersona.equippedPersona = -1;
@@ -1024,7 +1026,10 @@ void datInitPersona(s16 pcId)
 
         return;
     }
-    memset(&gPcs[pcId - 2].persona, 0, sizeof(DatPersonaWork));
+
+    pc = &gPcs[2];
+
+    memset(&pc[pcId - 2].persona, 0, sizeof(DatPersonaWork));
 }
 
 // FUN_00175c70
