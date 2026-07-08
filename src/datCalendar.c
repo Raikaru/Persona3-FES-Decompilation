@@ -266,19 +266,18 @@ u8 clndIsHolidayOrSunday()
     return false;
 }
 
-// FUN_0017e480 NONMATCHING
+// FUN_0017e480
 u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
-    u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
-    u32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
-    u16 currDaysSinceApr5 = datGetDaysSinceApr5();
+    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
 
-    if (currDaysSinceApr5 < startDate || endDate < currDaysSinceApr5)
+    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
     {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 // FUN_0017e520
@@ -298,12 +297,11 @@ u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
     return false;
 }
 
-// FUN_0017e5d0 NONMATCHING
+// FUN_0017e5d0
 u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
 {
-    u32 startDate;
-    u32 endDate;
-    u16 daysSinceApr5;
+    s32 startDate;
+    s32 endDate;
 
     if (range == 0)
     {
@@ -312,15 +310,14 @@ u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
     }
 
     startDate = clndGetDaysSinceStartFromDate(month, day);
-    endDate = startDate + range - 1;
-    daysSinceApr5 = datGetDaysSinceApr5();
+    endDate = startDate + (range - 1);
 
-    if (daysSinceApr5 < startDate || endDate < daysSinceApr5)
+    if (datGetDaysSinceApr5() >= startDate && datGetDaysSinceApr5() <= endDate)
     {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 // FUN_0017e680
