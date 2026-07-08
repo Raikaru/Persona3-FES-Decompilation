@@ -412,6 +412,67 @@ void datSetHp(s16 pcId, u16 hp)
     }
 }
 
+// FUN_0016cf90
+void datSetSp(s16 pcId, u16 sp)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.sp = sp;
+    }
+    else
+    {
+        gPcs[pcId].unit.sp = sp;
+    }
+}
+
+// FUN_0016cef0
+void datSetLevel(s16 pcId, u8 level)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.level = level;
+    }
+    else
+    {
+        K_ASSERT(false, 770);
+    }
+}
+
+// FUN_0016d230
+void datSetNextExp(s16 pcId, u32 nextExp)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroStatus.nextExp = nextExp;
+    }
+    else
+    {
+        K_ASSERT(false, 858);
+    }
+}
+
+// FUN_0016c9f0
+u16 datGetFatigueCounter(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.physicalState.fatigueCounter;
+    }
+
+    return gPcs[pcId].physicalState.fatigueCounter;
+}
+
+// FUN_0016ca40
+u16 datGetOldFatigueCounter(s16 pcId)
+{
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
+    }
+
+    return gPcs[pcId].physicalState.oldFatigueCounter;
+}
+
 // FUN_0016e920
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
