@@ -5,7 +5,7 @@
 #include "temporary.h"
 #include "h_cdvd.h"
 
-const f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
+f32 gFrameDuration = (1.0f / 30.0f);   // 007cadd4. 33.3ms. Not sure where to place this
 
 static Model* sMdlListTails[MODEL_TYPE_MAX]; // 009571f0. Tails of each model type
 
@@ -226,7 +226,7 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
     // TODO
 }
 
-// FUN_00318870 NONMATCHING
+// FUN_00318870
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
 {
     f32 duration;
@@ -258,7 +258,7 @@ f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
     return duration / gFrameDuration;
 }
 
-// FUN_00318910 NONMATCHING
+// FUN_00318910
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
 {
     f32 duration;
@@ -275,7 +275,7 @@ f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
     return duration / gFrameDuration;
 }
 
-// FUN_00318990 NONMATCHING
+// FUN_00318990
 f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
 {
     f32 currTime;

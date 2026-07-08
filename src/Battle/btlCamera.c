@@ -148,7 +148,7 @@ void btlCameraCheckUnitFade()
     }
 }
 
-// FUN_002a46e0 NONMATCHING
+// FUN_002a46e0
 void btlCameraMain()
 {
     const BtlCameraStateEntry* entry;

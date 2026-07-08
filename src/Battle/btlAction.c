@@ -280,7 +280,7 @@ void btlActionUpdateStateStartHome(BtlAction* action)
     }
 }
 
-// FUN_0028ba50 NONMATCHING
+// FUN_0028ba50
 void btlActionInitStateChangeFormation(BtlAction* action)
 {
     BtlPacket* formPacket1;
