@@ -216,7 +216,7 @@ u32 btlUnitIsMoving(BtlUnit* unit);
 void btlUnitStopMoving(BtlUnit* unit);
 void btlUnitStopRotating(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);
-void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode);
+void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u16 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id);
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId);

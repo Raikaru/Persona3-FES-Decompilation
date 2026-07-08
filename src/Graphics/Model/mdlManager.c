@@ -309,7 +309,7 @@ void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combine
     RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
 }
 
-// FUN_00318a50 NONMATCHING
+// FUN_00318a90
 void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
 {
     mdl->scale = *scale;

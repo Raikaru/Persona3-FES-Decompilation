@@ -115,7 +115,7 @@ void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_
     // TODO
 }
 
-// FUN_0027fd70 NONMATCHING
+// FUN_0027fd70
 void btlUnitInitPosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -125,7 +125,7 @@ void btlUnitInitPosRotColPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_0027fe70 NONMATCHING
+// FUN_0027fd90
 u32 btlUnitUpdatePosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -152,16 +152,18 @@ u32 btlUnitUpdatePosRotColPacket(void* work)
 
     if (packet->flags & BTLUNIT_POSROTCOL_FLAG_SETCOL)
     {
-        unit = packet->unit;
+        BtlUnit* colUnit;
 
-        unit->cols[BTLUNIT_COL_MAIN] = packet->col;
-        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+        colUnit = packet->unit;
+
+        colUnit->cols[BTLUNIT_COL_MAIN] = packet->col;
+        colUnit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     }
 
     return true;
 }
 
-// FUN_0027fd70 NONMATCHING
+// FUN_0027fe70
 void btlUnitDestroyPosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -320,7 +322,7 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
     return false;
 }
 
-// FUN_00281ab0 NONMATCHING
+// FUN_00281e60
 void btlUnitDestroyMoveToUnitPacket(void* work)
 {
     BtlUnitPacketMoveToUnit* packet;
@@ -461,7 +463,7 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
     return false;
 }
 
-// FUN_00282380 NONMATCHING
+// FUN_00282620
 void btlUnitDestroyRotateTowardUnitPacket(void* work)
 {
     BtlUnitPacketRotateTowardUnit* packet;
@@ -502,7 +504,7 @@ u32 btlUnit00282c60(BtlUnit* unit)
 }
 
 // FUN_00282d40
-void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 mode)
+void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
     // TODO
 }
@@ -528,7 +530,7 @@ void btlUnitInitAnimPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284190 NONMATCHING
+// FUN_00284190
 u32 btlUnitUpdateAnimPacket(void* work)
 {
     BtlUnitPacketAnim* packet;
@@ -1015,7 +1017,7 @@ BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16
     return packet;
 }
 
-// FUN_00288760 NONMATCHING
+// FUN_00288760
 void btlUnitInitLookAtDeactivatePacket(void* work)
 {
     BtlUnitPacketLookAtDeactivate* packet;
@@ -1024,7 +1026,7 @@ void btlUnitInitLookAtDeactivatePacket(void* work)
 
     if (packet->unit != NULL)
     {
-        packet->unit->packetCount--;
+        packet->unit->packetCount++;
     }
 }
 
