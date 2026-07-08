@@ -54,6 +54,14 @@ void FUN_0016f3e0(u32 idx, u32 value)
     gGlobalWork.unk_0083a4dc[idx] = value;
 }
 
+// FUN_0016f380
+u32 FUN_0016f380(u32 idx)
+{
+    K_ASSERT((s32)idx < 128, 2001);
+
+    return gGlobalWork.unk_0083a4dc[idx];
+}
+
 // FUN_0016c860
 u16 datGetPersonaId(s16 pcId)
 {
