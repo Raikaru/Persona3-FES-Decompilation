@@ -5,8 +5,8 @@
 
 // TODO
 
-const char* h_camp_getAcademicLevelString(u16 idx);
-const char* h_camp_getCharmLevelString(u16 idx);
-const char* h_camp_getCourageLevelString(u16 idx);
+const char* h_camp_getAcademicLevelString(s16 idx);
+const char* h_camp_getCharmLevelString(s16 idx);
+const char* h_camp_getCourageLevelString(s16 idx);
 
 #endif
