@@ -258,6 +258,37 @@ How C reaches the image: a source file links as a real C object once it is fully
 
    Leave `NONMATCHING` only for real work-in-progress C that intentionally does not match yet.
 
+## Automated matching (permuter)
+
+When a function is implemented and semantically correct but still differs from
+retail only in register allocation, instruction scheduling, or comparison /
+eval-order codegen, `tools/permute.py` can search for a byte-exact source
+variant automatically. It mutates only the target function's source text
+(optimization_level pragma, local-declaration reorder, statement reorder,
+commutative operand swap, additive reassociation, integer relational-bound
+rewrite, compound-assignment expansion, and parameter-copy temporaries),
+recompiles the translation unit with the project mwccps2 flags, and scores each
+candidate with `verify.py`'s reloc-masked comparison.
+
+```sh
+python tools/permute.py src/path/file.c functionName --time 60
+```
+
+On a hit it prints the winning region and writes it to `--out` (or
+`file.match.c`). Apply it by hand, drop the `NONMATCHING` tag, and re-confirm
+with `tools/verify.py` -- a permuter hit is a byte match, not a proof of
+semantics, so read the diff before committing.
+
+Sweep every non-matching function with a worker pool:
+
+```sh
+python tools/permute_sweep.py --time 30 --workers 3
+```
+
+The permuter is strongest on functions with several locals or statements
+(reordering room); tiny control-flow stubs usually need a hand-chosen structure
+(for example `switch` vs `if`/`||`).
+
 ## Conventions
 
 ### Function markers
@@ -335,6 +366,8 @@ tools/recover_symbols.py    recover data-symbol addresses + _gp from retail
 tools/mwccgap/              vendored mwcc global assembly processor
 tools/verify.py             per-function C verifier
 tools/fndiff.py             single-function diff helper
+tools/permute.py            per-function source-mutation permuter
+tools/permute_sweep.py      batch permuter driver
 tools/m2ctx.py              decomp.me context generator
 tools/progress.py           progress report
 tools/gen_objdiff.py        objdiff target/base object generator
