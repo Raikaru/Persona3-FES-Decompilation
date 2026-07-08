@@ -86,12 +86,16 @@ RwReal RwV3dNormalize(RwV3d* out, const RwV3d* in)
 }
 
 // FUN_004c6ac0
+#pragma optimization_level 3
 RwReal RwV3dLength(const RwV3d* in)
 {
-    // TODO
+    RwReal y = in->y;
+    RwReal x = in->x;
+    RwReal z = in->z;
 
-    return 0.0f;
+    return sqrtf((x * x) + (y * y) + (z * z));
 }
+#pragma optimization_level 2
 
 // FUN_004c6af0
 #pragma optimization_level 3
