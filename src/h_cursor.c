@@ -71,10 +71,10 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00100570 NONMATCHING
-u32 H_Cursor_GetShouldDraw(KwlnTask* hcursorTask)
+// FUN_00100570
+u32* H_Cursor_GetShouldDraw(KwlnTask* hcursorTask)
 {
-    return ((HCursorWork*)hcursorTask->workData)->shouldDraw;
+    return &((HCursorWork*)hcursorTask->workData)->shouldDraw;
 }
 
 // FUN_00100580

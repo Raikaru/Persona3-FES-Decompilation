@@ -70,10 +70,10 @@ const char* Day_GetCurrentDayString(u32 month, u32 day)
     return dayString;
 }
 
-// FUN_003c4210 NONMATCHING
-const char* ComuData_FUN_003c4210(u32 idx)
+// FUN_003c4210
+const char* ComuData_FUN_003c4210(s32 idx)
 {
-    K_ASSERT(idx < ARRAY_SIZE(unkStrings1), 147);
+    K_ASSERT(idx < 6, 147);
 
     return unkStrings1[idx];
 }

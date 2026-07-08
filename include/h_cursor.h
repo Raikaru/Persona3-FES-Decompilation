@@ -28,7 +28,7 @@ typedef struct HCursorWork
 } HCursorWork;
 
 KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect rect, RwRGBA color);
-u32 H_Cursor_GetShouldDraw(KwlnTask* hcursorTask);
+u32* H_Cursor_GetShouldDraw(KwlnTask* hcursorTask);
 void H_Cursor_SetPos(KwlnTask* hcursorTask, RwV2d pos);
 void H_Cursor_SetRect(KwlnTask* hcursorTask, RwRect rect);
 void H_Cursor_SetZOffset(KwlnTask* hcursorTask, f32 zOffset);
