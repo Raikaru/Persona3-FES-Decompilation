@@ -220,6 +220,12 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
     return true;
 }
 
+// FUN_00318770
+void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
+{
+    // TODO
+}
+
 // FUN_00318870 NONMATCHING
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
 {

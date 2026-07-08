@@ -183,6 +183,7 @@ void mdl00317730(Model* mdl);
 u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags);
 s16 mdlAnimGetId(Model* mdl, u16 slotIdx);
 u32 mdlAnim003185b0(Model* mdl, u16 slotIdx);;
+void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame);
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx);
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId);
 f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx);
