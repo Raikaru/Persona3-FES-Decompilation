@@ -46,7 +46,7 @@ DatPc gPcs[PC_MAX];    // 00833948
 void FUN_00172890();
 void FUN_00172e10();
 
-// TODO
+// FUN_0016f3e0
 void FUN_0016f3e0(u32 idx, u32 value)
 {
     K_ASSERT((s32)idx < 128, 2007);
@@ -399,17 +399,17 @@ void datSetFatigueCounter(s16 pcId, u16 fatigueCounter)
     gPcs[pcId].physicalState.fatigueCounter = fatigueCounter;
 }
 
+// FUN_0016cf40
 void datSetHp(s16 pcId, u16 hp)
 {
-    u16 tmp = hp;
-
-    if (!IS_HERO(pcId))
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroUnit.hp = hp;
+    }
+    else
     {
         gPcs[pcId].unit.hp = hp;
-        tmp = gGlobalWork.heroUnit.hp;
     }
-
-    gGlobalWork.heroUnit.hp = tmp;
 }
 
 // FUN_0016e920
@@ -666,7 +666,7 @@ s16 datGetCouragePoint(s16 pcId)
     return gPcs[pcId].socialStats.couragePoint;
 }
 
-// TODO
+// FUN_0016ca90 NONMATCHING
 void FUN_0016ca90(s16 pcId, u16 param_2)
 {
     u16 oldFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
@@ -932,7 +932,8 @@ void FUN_00172e10()
     // TODO
 }
 
-void datInitPersona(u32 pcId)
+// FUN_00175be0
+void datInitPersona(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -941,8 +942,7 @@ void datInitPersona(u32 pcId)
 
         return;
     }
-
-    memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
+    memset(&gPcs[pcId - 2].persona, 0, sizeof(DatPersonaWork));
 }
 
 // FUN_00175c70
