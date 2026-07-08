@@ -55,7 +55,7 @@ void FUN_0016f3e0(u32 idx, u32 value)
 }
 
 // FUN_0016c860 NONMATCHING
-u16 datGetPersonaId(u16 pcId)
+u16 datGetPersonaId(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -110,7 +110,7 @@ void datInitUnit(s16 pcId)
 }
 
 // FUN_0016c470 NONMATCHING
-u8 datGetLevel(u16 pcId)
+u8 datGetLevel(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -121,7 +121,7 @@ u8 datGetLevel(u16 pcId)
 }
 
 // FUN_0016c970 NONMATCHING
-u32 datGetBadStatusNoDown(u16 pcId)
+u32 datGetBadStatusNoDown(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -132,7 +132,7 @@ u32 datGetBadStatusNoDown(u16 pcId)
 }
 
 // FUN_0016d8b0 NONMATCHING
-void datSetBadStatus(u16 pcId, u32 flags)
+void datSetBadStatus(s16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
     {
@@ -143,8 +143,8 @@ void datSetBadStatus(u16 pcId, u32 flags)
     datCalcSetBadStatus(&gPcs[pcId].unit, flags);
 }
 
-// FUN_0016d980 NONMATCHING
-void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
+// FUN_0016d980
+void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter)
 {
     if (IS_HERO(pcId))
     {
@@ -156,7 +156,7 @@ void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
 }
 
 // FUN_0016d9d0 NONMATCHING
-void datClearBadStatus(u16 pcId, u32 flags)
+void datClearBadStatus(s16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
     {
@@ -168,7 +168,7 @@ void datClearBadStatus(u16 pcId, u32 flags)
 }
 
 // FUN_0016d2f0 NONMATCHING
-u32 datGetExpUntilNextLevel(u16 pcId)
+u32 datGetExpUntilNextLevel(s16 pcId)
 {
     u32 nextExpTmp;
     u32 nextExp = gGlobalWork.heroStatus.nextExp;
@@ -204,7 +204,7 @@ u32 datGetExpUntilNextLevel(u16 pcId)
 }
 
 // FUN_0016d560 NONMATCHING
-u8 datDidCharacterLevelUp(u16 pcId, u32 expGain)
+u8 datDidCharacterLevelUp(s16 pcId, u32 expGain)
 {
     u8 level;
     u8 i;
@@ -236,7 +236,7 @@ u8 datDidCharacterLevelUp(u16 pcId, u32 expGain)
 }
 
 // FUN_0016dad0 NONMATCHING
-void datSetAiTactic(u16 pcId, u8 aiTacticId)
+void datSetAiTactic(s16 pcId, u8 aiTacticId)
 {
     K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
 
@@ -262,7 +262,7 @@ s16 datGetPartyId(s32 idx)
 }
 
 // FUN_0016dd80 NONMATCHING
-u8 datGetAiTactic(u16 pcId)
+u8 datGetAiTactic(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -273,7 +273,7 @@ u8 datGetAiTactic(u16 pcId)
 }
 
 // FUN_0016d6b0 NONMATCHING
-void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
+void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
 {
     u16 currentPhysicalCondition = gGlobalWork.heroStatus.physicalState.physicalCondition;
     u16 oldFatigueCounter;
@@ -327,8 +327,8 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
     gGlobalWork.heroStatus.physicalState.physicalCondition = currentPhysicalCondition;
 }
 
-// FUN_0016d930 NONMATCHING
-void datSetFatigueCounter(u16 pcId, u16 fatigueCounter)
+// FUN_0016d930
+void datSetFatigueCounter(s16 pcId, u16 fatigueCounter)
 {
     if (IS_HERO(pcId))
     {
@@ -339,7 +339,7 @@ void datSetFatigueCounter(u16 pcId, u16 fatigueCounter)
     gPcs[pcId].physicalState.fatigueCounter = fatigueCounter;
 }
 
-void datSetHp(u16 pcId, u16 hp)
+void datSetHp(s16 pcId, u16 hp)
 {
     u16 tmp = hp;
 
@@ -528,7 +528,7 @@ u32 datGetSkipToTarget()
 }
 
 // FUN_0016cfe0 NONMATCHING
-void datSetAcademicPoint(u16 pcId, u16 academicPoint)
+void datSetAcademicPoint(s16 pcId, u16 academicPoint)
 {
     K_ASSERT(academicPoint > SOCIAL_STAT_MIN_POINT && academicPoint < SOCIAL_STAT_MAX_POINT, 797);
 
@@ -542,7 +542,7 @@ void datSetAcademicPoint(u16 pcId, u16 academicPoint)
 }
 
 // FUN_0016d090 NONMATCHING
-void datSetCharmPoint(u16 pcId, u16 charmPoint)
+void datSetCharmPoint(s16 pcId, u16 charmPoint)
 {
     K_ASSERT(charmPoint > SOCIAL_STAT_MIN_POINT && charmPoint < SOCIAL_STAT_MAX_POINT, 808);
 
@@ -558,7 +558,7 @@ void datSetCharmPoint(u16 pcId, u16 charmPoint)
 }
 
 // FUN_0016d160 NONMATCHING
-void datSetCouragePoint(u16 pcId, u16 couragePoint)
+void datSetCouragePoint(s16 pcId, u16 couragePoint)
 {
     K_ASSERT(couragePoint > SOCIAL_STAT_MIN_POINT && couragePoint < SOCIAL_STAT_MAX_POINT, 828);
 
@@ -573,46 +573,41 @@ void datSetCouragePoint(u16 pcId, u16 couragePoint)
     gPcs[pcId].socialStats.couragePoint = couragePoint;
 }
 
-static inline u16 Inl_Character_GetSocialStatPoint(u16 pcId, u16 baseHeroPoint, u16 baseOtherCharPoint)
+// FUN_0016c6f0
+s16 datGetAcademicPoint(s16 pcId)
 {
-    u16 point = baseHeroPoint;
-
-    if (!IS_HERO(pcId))
+    if (IS_HERO(pcId))
     {
-        point = baseOtherCharPoint;
+        return gGlobalWork.heroStatus.socialStats.academicPoint;
     }
 
-    return point;
+    return gPcs[pcId].socialStats.academicPoint;
 }
 
-// FUN_0016c6f0 NONMATCHING
-u16 datGetAcademicPoint(u16 pcId)
+// FUN_0016c740
+s16 datGetCharmPoint(s16 pcId)
 {
-    return Inl_Character_GetSocialStatPoint(
-        pcId,
-        gGlobalWork.heroStatus.socialStats.academicPoint,
-        gPcs[pcId].socialStats.academicPoint);
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.socialStats.charmPoint;
+    }
+
+    return gPcs[pcId].socialStats.charmPoint;
 }
 
-// FUN_0016c6f0 NONMATCHING
-u16 datGetCharmPoint(u16 pcId)
+// FUN_0016c790
+s16 datGetCouragePoint(s16 pcId)
 {
-    return Inl_Character_GetSocialStatPoint(
-        pcId,
-        gGlobalWork.heroStatus.socialStats.charmPoint,
-        gPcs[pcId].socialStats.charmPoint);
-}
+    if (IS_HERO(pcId))
+    {
+        return gGlobalWork.heroStatus.socialStats.couragePoint;
+    }
 
-u16 datGetCouragePoint(u16 pcId)
-{
-    return Inl_Character_GetSocialStatPoint(
-        pcId,
-        gGlobalWork.heroStatus.socialStats.couragePoint,
-        gPcs[pcId].socialStats.couragePoint);
+    return gPcs[pcId].socialStats.couragePoint;
 }
 
 // TODO
-void FUN_0016ca90(u16 pcId, u16 param_2)
+void FUN_0016ca90(s16 pcId, u16 param_2)
 {
     u16 oldFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
     u16 fatigueCounter = gGlobalWork.heroStatus.physicalState.fatigueCounter;
@@ -638,8 +633,8 @@ void FUN_0016ca90(u16 pcId, u16 param_2)
     datSetFatigueCounter(pcId, uVar3);
 }
 
-// FUN_0016c7e0 NONMATCHING
-u32 datGetNextExp(u16 pcId)
+// FUN_0016c7e0
+u32 datGetNextExp(s16 pcId)
 {
     DatPersonaWork* persona; // per
 
@@ -654,8 +649,8 @@ u32 datGetNextExp(u16 pcId)
     return datPersonaGetNextExp(persona);
 }
 
-// FUN_0016c920 NONMATCHING
-u16 datGetPhysicalCondition(u16 pcId)
+// FUN_0016c920
+u16 datGetPhysicalCondition(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -686,7 +681,7 @@ u8 datSocialLinkLevelIsNotZero(u16 socialLink)
 }
 
 // FUN_0016cb80 NONMATCHING
-u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType)
+u16 datGetEquipmentIdx(s16 pcId, u16 equipmentType)
 {
     if (IS_HERO(pcId))
     {
@@ -801,22 +796,24 @@ void datSetFlag(s32 bit, u8 enabled)
     gGlobalWork.flags[idx] &= ~mask;
 }
 
-// FUN_0016f2e0 NONMATCHING
+// FUN_0016f2e0
 void datClearFlagAll()
 {
     s32 i;
-    u32* flags;
+    DatGlobal* work;
+    u32* p;
 
     i = 0;
-    flags = gGlobalWork.flags;
+    work = &gGlobalWork;
     for (; i < FLG_ARR_SIZE; i++)
     {
-        flags[i] = 0;
+        p = work->flags + i;
+        *p = 0;
     }
 }
 
 // FUN_0016f630
-u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx)
+u16 datGetEquipmentId(s16 pcId, u16 equipmentIdx)
 {
     // TODO
     
@@ -837,7 +834,7 @@ u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx)
 }
 
 // FUN_0016f900 NONMATCHING
-u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx)
+u8 datGetEquipmentEffect(s16 pcId, u16 equipmentIdx)
 {
     if (pcId == -1)
     {
