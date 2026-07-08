@@ -45,9 +45,9 @@ static const Holiday sHolidays[] =
     {CALENDAR_MONTH_MARCH, 22}, {-1, -1},
 };
 
-const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX] =
-{    /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
-   -1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX - 1] =
+{  /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
+     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
 
 // 005e38d0. Moon phases for every day (april 5th 2009 to march 31st 2010)
@@ -94,18 +94,27 @@ static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
 s32 clndFindAndExecSiteibiEvents();
 
 // FUN_0017d830 NONMATCHING
-u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
+s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
-    u16 month = CALENDAR_MONTH_APRIL;
+    s16 month;
+    s16 days;
+    const s16* numOfDays;
 
-    daysSinceApr5 += 4;
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+    numOfDays = gNumOfDaysInMonths;
 
-    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
+    while (true)
     {
-        daysSinceApr5 -= gNumOfDaysInMonths[month];
+        if (days < numOfDays[month - 1])
+        {
+            break;
+        }
+
+        days -= numOfDays[month - 1];
         month++;
 
-        if (month >= CALENDAR_MONTH_DECEMBER)
+        if (month >= CALENDAR_MONTH_MAX)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
@@ -115,13 +124,18 @@ u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 }
 
 // FUN_0017d8b0 NONMATCHING
-u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
+s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
-    u32 m = CALENDAR_MONTH_APRIL;
-    u32 dayAccumulator = 0;
+    s32 dayAccumulator = 0;
+    s32 m = CALENDAR_MONTH_APRIL;
 
-    while (month != CALENDAR_MONTH_APRIL)
+    while (true)
     {
+        if (month == CALENDAR_MONTH_APRIL)
+        {
+            break;
+        }
+
         dayAccumulator += gNumOfDaysInMonths[m - 1];
         m++;
         month--;
@@ -130,7 +144,7 @@ u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
         {
             month = CALENDAR_MONTH_DECEMBER;
         }
-        if (m > CALENDAR_MONTH_DECEMBER)
+        if (m == CALENDAR_MONTH_MAX)
         {
             m = CALENDAR_MONTH_JANUARY;
         }
@@ -160,15 +174,24 @@ u32 clndGetCurrentMonth()
 }
 
 // FUN_0017d9c0 NONMATCHING
-u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
+s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
-    u16 month = CALENDAR_MONTH_APRIL;
+    s16 month;
+    s16 days;
+    const s16* numOfDays;
 
-    daysSinceApr5 += 4;
+    month = CALENDAR_MONTH_APRIL;
+    days = daysSinceApr5 + 4;
+    numOfDays = gNumOfDaysInMonths;
 
-    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
+    while (true)
     {
-        daysSinceApr5 -= gNumOfDaysInMonths[month];
+        if (days < numOfDays[month - 1])
+        {
+            break;
+        }
+
+        days -= numOfDays[month - 1];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
@@ -177,7 +200,7 @@ u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
         }
     }
 
-    return daysSinceApr5 + 1;
+    return days + 1;
 }
 
 // FUN_0017da40. Return the current day of the month NONMATCHING
@@ -200,8 +223,8 @@ u32 clndGetCurrentDay()
     return daysSinceApr5 + 1;
 }
 
-// FUN_0017dae0 NONMATCHING
-u32 clndGetWeekDay(u32 daysSinceApr5)
+// FUN_0017dae0
+s32 clndGetWeekDay(s32 daysSinceApr5)
 {
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
