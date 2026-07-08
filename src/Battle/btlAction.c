@@ -553,10 +553,12 @@ void btlActionUpdateStateSkill(BtlAction* action)
     // TODO
 }
 
-// FUN_00294d10 NONMATCHING
+// FUN_00294d10
 void btlActionInitStateReinforce(BtlAction* action)
 {
-    // nothing
+    action->unit->flags3 |= BTLUNIT_FLAG3_UNK08;
+
+    gBtl->unk_a06 &= ~(1 << 0);
 }
 // FUN_00294d40
 void btlActionUpdateStateReinforce(BtlAction* action)
@@ -1120,7 +1122,7 @@ void btlActionUpdateAll()
     }
 }
 
-// FUN_0029a140 NONMATCHING
+// FUN_0029a140
 void btlActionDestroyAll()
 {
     BtlAction* currAction;
@@ -1135,13 +1137,13 @@ void btlActionDestroyAll()
             prevAction->next = currAction->next;
         }
 
-        if (currAction->next == NULL)
+        if (currAction->next != NULL)
         {
-            gBtl->actionList.tail = currAction->prev;
+            currAction->next->prev = currAction->prev;
         }
         else
         {
-            currAction->next->prev = currAction->prev;
+            gBtl->actionList.tail = currAction->prev;
         }
 
         RwFree(currAction);
