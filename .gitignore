@@ -19,6 +19,9 @@
 /asm/chunks/
 /asm/*_raw.s
 /asm/*.o
+/**/.permute_*.c
+/**/.permute_*.o
+/**/*.match.c
 /ctx.c
 /include/macro.inc
 /undefined_funcs_auto.txt
