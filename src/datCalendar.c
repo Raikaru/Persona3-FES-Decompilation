@@ -159,9 +159,9 @@ u32 clndGetCurrentMonth()
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
-    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month - 1] <= daysSinceApr5)
     {
-        daysSinceApr5 -= gNumOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
@@ -209,9 +209,9 @@ u32 clndGetCurrentDay()
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
     u16 month = CALENDAR_MONTH_APRIL;
 
-    while (gNumOfDaysInMonths[month] <= daysSinceApr5)
+    while (gNumOfDaysInMonths[month - 1] <= daysSinceApr5)
     {
-        daysSinceApr5 -= gNumOfDaysInMonths[month];
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
         month++;
 
         if (month >= CALENDAR_MONTH_MAX)
