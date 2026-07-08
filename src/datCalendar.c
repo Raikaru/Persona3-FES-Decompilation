@@ -475,12 +475,12 @@ u8 clndGetMoonPhase(u32 daysSinceApr5)
     return daysMoonPhases[daysSinceApr5];
 }
 
-// FUN_00188510 NONMATCHING
+// FUN_00188510
 u32 clndScrCmd_SET_DATE()
 {
     u32 month;
     u32 day;
-    u8 time;
+    s32 time;
     u32 daysSinceApr5;
 
     month = scrGetIntPara(0);

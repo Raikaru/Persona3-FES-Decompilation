@@ -763,7 +763,7 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
 }
 
 // FUN_0016f150
-void datSetTime(s8 time)
+void datSetTime(u8 time)
 {
     gGlobalWork.calendarWork.time = time;
 }
