@@ -267,7 +267,7 @@ u32 datGetNextExp(s16 pcId);
 u16 datGetPhysicalCondition(s16 pcId);
 s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType);
 void datSetDaysSinceApr5(s16 daysSinceApr5);
-void datSetTime(s8 time);
+void datSetTime(u8 time);
 void datSetDaysSkipTarget(s16 days);
 void datSetTimeSkipTarget(s8 time);
 void datSetSkipToTarget(u32 val);
