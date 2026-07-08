@@ -32,24 +32,24 @@ u32 datCalcRand(u32 max)
     return rand;
 }
 
-// FUN_002ffcc0 NONMATCHING
+// FUN_002ffcc0
 u8 datCalcGetLevel(DatUnit* unit){
     u8 level;
     DatPersonaWork* persona;
 
-    if (!(unit->flags & UNIT_FLAG_ENEMY) && !IS_HERO(unit->id))
+    if (unit->flags & UNIT_FLAG_ENEMY || IS_HERO(unit->id))
+    {
+        level = unit->level;
+    }
+    else
     {
         persona = datPersonaGetByPcId(unit->id);
         K_ASSERT(persona != NULL, 66);
 
         level = datPersonaGetLevel(persona);
     }
-    else 
-    {
-        level = unit->level;
-    }
 
-    K_ASSERT(level != 0, 70);
+    K_ASSERT(level > 0, 70);
 
     return level;
 }
@@ -99,10 +99,13 @@ u16 datCalcGetMaxHp(DatUnit* unit)
 // FUN_003004f0 NONMATCHING
 void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
 {
-    if (!(badStatus & 0x000FFFFF))
+    u32 low;
+
+    low = badStatus & 0x000FFFFF;
+
+    if (low != 0)
     {
-        unit->bad = (unit->bad & 0xFFF00000) |
-                                       (badStatus & 0x000FFFFF);
+        unit->bad = (unit->bad & 0xFFF00000) | low;
     }
 
     unit->bad |= (badStatus & 0xFFF00000);
