@@ -48,7 +48,7 @@ The PS2 R5900 core does not have 64-bit `ddiv` or `ddivu` instructions. If a dis
 
 ### FLEXlm DLL quirk
 
-The 3.0.1 toolchain has a FLEXlm DLL issue. Copy `LMGR326B.DLL` from `mwcps2-3.0b52` into the 3.0.1 toolchain directory twice, using both of these destination names:
+The 3.0.1 toolchain has a FLEXlm DLL issue. Copy `LMGR326B.DLL` from the decomp.dev GC compilers into the 3.0.1 toolchain directory twice, using both of these destination names:
 
 ```text
 LMGR326B.DLL
