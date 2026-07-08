@@ -239,34 +239,60 @@ def recover_section_bases(obj, real, retail, gp):
 
 def plan_data_sections(obj, real, retail, gp, resolvable):
     """Decide whether all of a TU's owned data sections can be placed byte-exact.
-    Returns (ok, {section_name: (base, size)}). A section is placeable when its
-    base is recovered and it is either reloc-free and byte-matches retail, a
-    reloc-bearing section whose every target is resolvable, or NOBITS (zeros)."""
+    Returns (ok, {section_name: (base, size)}).
+
+    mwldps2 concatenates same-name sections in object order, aligning each to its
+    addralign, so the region size is that simulated layout length -- not just the
+    span of recovered symbol addresses (which can disagree when the source indexes
+    an array out of bounds). The region base comes from the first section whose
+    address is reliably recovered; each section is then checked at base+offset:
+    reloc-free PROGBITS must byte-match retail, reloc-bearing sections need every
+    target resolvable, and NOBITS regions must be zero in retail."""
+    import collections
     local_syms = {s["name"] for s in obj.symbols if s["name"] and s.get("shndx", 0) != 0}
     bases = recover_section_bases(obj, real, retail, gp)
-    per_name = {}
+    by_name = collections.defaultdict(list)
     for s in obj.sh:
-        name = s.get("name", "")
-        if name not in DATA_SECTIONS or not s["size"]:
-            continue
-        base = bases.get(s["idx"])
+        if s.get("name") in DATA_SECTIONS and s["size"]:
+            by_name[s["name"]].append(s)
+    per_name = {}
+    for name, secs in by_name.items():
+        secs.sort(key=lambda s: s["idx"])
+        offsets = []
+        off = 0
+        for s in secs:
+            align = s["addralign"] or 1
+            off = (off + align - 1) & ~(align - 1)
+            offsets.append(off)
+            off += s["size"]
+        total = off
+        base = None
+        for s, o in zip(secs, offsets):
+            if s["idx"] in bases:
+                base = bases[s["idx"]] - o
+                break
         if base is None:
             return False, {}
-        if s["type"] == 8:  # NOBITS: linked as zero-filled PROGBITS, must be zero in retail
-            if any(retail.bytes_at(base, s["size"])):
+        for s, o in zip(secs, offsets):
+            addr = base + o
+            # a recovered address that disagrees with the concat layout means the
+            # source's data model does not reproduce retail (e.g. aliased arrays);
+            # refuse rather than emit a wrong image.
+            if s["idx"] in bases and bases[s["idx"]] != addr:
                 return False, {}
-        else:
-            body = obj.data[s["offset"]:s["offset"] + s["size"]]
-            relocs = section_relocs(obj, s["idx"])
-            if relocs:
-                for _o, _t, nm in relocs:
-                    if nm and nm not in local_syms and nm not in resolvable:
+            if s["type"] == 8:  # NOBITS -> zero-filled PROGBITS; retail must be zero
+                if any(retail.bytes_at(addr, s["size"])):
+                    return False, {}
+            else:
+                relocs = section_relocs(obj, s["idx"])
+                if relocs:
+                    if any(nm and nm not in local_syms and nm not in resolvable
+                           for _o, _t, nm in relocs):
                         return False, {}
-            elif bytes(body) != retail.bytes_at(base, s["size"]):
-                return False, {}
-        lo, hi = per_name.get(name, (base, base + s["size"]))
-        per_name[name] = (min(lo, base), max(hi, base + s["size"]))
-    return True, {n: (lo, hi - lo) for n, (lo, hi) in per_name.items()}
+                elif obj.data[s["offset"]:s["offset"] + s["size"]] != retail.bytes_at(addr, s["size"]):
+                    return False, {}
+        per_name[name] = (base, total)
+    return True, per_name
 
 
 def eligible_c_objects(c, resolvable, boundaries, gp):
