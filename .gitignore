@@ -31,6 +31,8 @@
 /LMGR326B.DLL
 /LMGR8C.DLL
 *.exe
+/tools/decomp-permuter
+/**/*.ast.c
 
 # --- local machine config / editor / caches ---
 /tools/verify_config.local.json
