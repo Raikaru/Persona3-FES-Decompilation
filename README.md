@@ -16,22 +16,24 @@ assemble back to the exact retail bytes.
 
 | Artifact | State |
 | --- | --- |
-| Loadable image (code + data), rebuilt from split sources | **byte-identical** to retail |
+| Full retail ELF, rebuilt from split sources (`make` → `build/SLUS_216.21`) | **byte-identical** to retail (SHA-1 `3929cd7c…`) |
 | Functions in the executable | 13,407 |
 | Function map (`config/symbol_addrs.txt`) | complete |
 | Decompiled to matching C | ongoing (see `make verify`) |
 
-The disassembly of the whole image reassembles and links to a program image
-whose SHA-1 matches retail; decompilation replaces that assembly with C
-function by function.
+`make` disassembles, reassembles, and links the whole image with the original
+toolchain, splices it into the retail ELF wrapper, and checks the result is
+byte-for-byte identical to retail. Decompilation replaces the assembly with C
+function by function, each verified against retail.
 
 ## Target
 
 - `SLUS_216.21`, SHA-1 `3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb`.
-- Single loadable segment at VRAM `0x100000` (7.1 MB code + data) plus BSS at
-  `0x9acc80`. The retail ELF is stripped (no symbol table). Machine is the
-  MIPS **R5900** Emotion Engine (little-endian). Note the R5900 omits the 64-bit
-  `ddiv`/`ddivu` instructions, so any such disassembly is really data.
+- Single loadable segment at VRAM `0x100000` (`0x8acc80` bytes, ~8.7 MiB of
+  code + data) plus BSS at `0x9acc80`. The retail ELF is stripped (no symbol
+  table). Machine is the MIPS **R5900** Emotion Engine (little-endian). Note the
+  R5900 omits the 64-bit `ddiv`/`ddivu` instructions, so any such disassembly is
+  really data.
 - The `.comment` section reads `MW MIPS C Compiler (2.4.1.01)`, but that string
   ships in MWLD across many CodeWarrior releases. Codegen evidence (far-global
   addressing bakes the symbol+offset into the hi16/lo16 relocs using an
@@ -66,17 +68,19 @@ make setup
 # 3. split it into asm/ + data (run once, or after a config change)
 make split
 
-# 4. assemble + link + verify the rebuilt image is byte-identical
+# 4. assemble + link, splice into the ELF wrapper, verify byte-identical,
+#    then check every decompiled C function matches
 make
 
-# per-function C match report
+# just the per-function C match report
 make verify
 ```
 
-A successful `make` prints:
+A successful `make` prints (and writes the runnable ELF to `build/SLUS_216.21`):
 
 ```
 loadable image sha1: 9203646d9aa48ff24eb4ba4b328b02df468a9483  OK
+SLUS_216.21 sha1:    3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb  OK
 ```
 
 ## How the matching build works
@@ -94,19 +98,24 @@ retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x1
         │        assembler rejects or that differs from retail into a .word/.byte
         │        of its original bytes — this is how data-as-code becomes data
         ▼
-   *.o  ──mwldps2 + build/slus21621.lcf──▶ build/slus21621.elf
+   *.o  ──mwldps2 + build/slus21621.lcf──▶ linked loadable image
         ▼
-   verify: linked loadable payload SHA-1 == retail loadable image
+   splice into the retail ELF wrapper ──▶ build/SLUS_216.21
+        ▼
+   verify: whole-file SHA-1 == retail (3929cd7c…)
 ```
 
 `tools/build.py` drives the whole pipeline; `make` is a thin wrapper over it.
 
 Decompiled C in `src/` is validated per function by `tools/verify.py`, which
 compiles each file and byte-compares every `// FUN_xxxxxxxx`-marked function
-against retail (relocated fields masked, tail padding checked). Wiring matched
-C into the linked image (per-file asm↔C swap) is the next infrastructure step;
-until then the link uses the assembly baseline and `verify.py` is the
-authoritative per-function match gate.
+against retail (relocated fields masked, tail padding checked). `make` runs
+this after the image build, so a decompiled function must both compile and
+match. Physically linking the C objects into the image in place of their
+assembly (rather than validating them alongside it) needs a complete data /
+global symbol map on top of the function map — that is the next infrastructure
+step; today the linked bytes come from the disassembly, which is byte-identical
+to the matched C.
 
 ## Contributing
 
