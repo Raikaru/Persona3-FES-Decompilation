@@ -27,8 +27,9 @@ typedef struct CylinderDrawWork
 typedef struct PositionDrawWork
 {
     RwMatrix mat;     // 0x00
+    u8 unkData1[0x04];
     RwRGBA color;     // 0x44
-    u8 unkData[0x0c];
+    u8 unkData2[0x08];
 } PositionDrawWork;
 
 KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent);
