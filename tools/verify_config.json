@@ -1,0 +1,5 @@
+{
+  "_comment": "Committed defaults. Do NOT put machine-local absolute paths here; override via tools/verify_config.local.json (gitignored) or the P3_MWCC / P3_RETAIL_ELF environment variables.",
+  "mwcc": null,
+  "retail_elf": null
+}
