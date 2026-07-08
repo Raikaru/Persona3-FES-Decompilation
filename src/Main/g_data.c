@@ -830,6 +830,19 @@ s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
     return pc[pcId - 2].equipmentsIdx[equipmentType];
 }
 
+// FUN_0016da50
+void datSetEquipmentIdx(s16 pcId, s16 equipmentType, u16 equipmentIdx)
+{
+    if (IS_HERO(pcId))
+    {
+        gGlobalWork.heroEquip.equipmentsIdx[equipmentType] = equipmentIdx;
+    }
+    else
+    {
+        gPcs[pcId].equipmentsIdx[equipmentType] = equipmentIdx;
+    }
+}
+
 // FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
 void datSetDaysSinceApr5(s16 daysSinceApr5)
 {

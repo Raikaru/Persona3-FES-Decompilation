@@ -275,6 +275,7 @@ s16 datGetCourageLevel(s16 couragePoint);
 u32 datGetNextExp(s16 pcId);
 u16 datGetPhysicalCondition(s16 pcId);
 s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType);
+void datSetEquipmentIdx(s16 pcId, s16 equipmentType, u16 equipmentIdx);
 void datSetDaysSinceApr5(s16 daysSinceApr5);
 void datSetTime(u8 time);
 void datSetDaysSkipTarget(s16 days);
