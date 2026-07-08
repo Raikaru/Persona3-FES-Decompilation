@@ -749,7 +749,7 @@ static u32 CodeFunc_Or(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e650 NONMATCHING
+// FUN_0035e690
 static u32 CodeFunc_And(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_AND);

@@ -4,8 +4,8 @@
 // FUN_0027e390
 BtlPacket* btlPacketFindFirstByActionUID(u64 actionUID, u64 mask)
 {
-    Battle* btl;
     u32 i;
+    Battle* btl;
     BtlPacketList* currList;
     BtlPacket* curr;
 
@@ -34,9 +34,9 @@ BtlPacket* btlPacketFindFirstByActionUID(u64 actionUID, u64 mask)
 // FUN_0027e410
 u32 btlPacketCount()
 {
-    Battle* btl;
     u32 total;
     u32 i;
+    Battle* btl;
     BtlPacketList* currList;
     BtlPacket* curr;
     
@@ -60,19 +60,18 @@ u32 btlPacketCount()
 }
 
 // FUN_0027e470
-u32 btlPacketCountById(u16 id)
+u32 btlPacketCountById(u32 id)
 {
-    Battle* btl;
     BtlPacketList* currList;
     BtlPacket* curr;
     u32 total;
     u32 i;
-    u32 _id;
-    
+    Battle* btl;
+
     total = 0;
     i = 0;
     btl = gBtl;
-    _id = id;
+    id = (u16)id;
     for (; i < BTLPACKET_TYPE_MAX; i++)
     {
         currList = &btl->packetLists[i];
@@ -80,7 +79,7 @@ u32 btlPacketCountById(u16 id)
 
         while (curr != NULL)
         {
-            if (curr->id == _id)
+            if (curr->id == id)
             {
                 total++;
             }
@@ -95,7 +94,28 @@ u32 btlPacketCountById(u16 id)
 // FUN_0027e4d0
 void btlPacket0027e4d0()
 {
-    // TODO
+    BtlPacketList* currList;
+    BtlPacket* curr;
+    u32 i;
+    u32 flags;
+
+    i = 0;
+    for (; i < BTLPACKET_TYPE_MAX; i++)
+    {
+        currList = &gBtl->packetLists[i];
+        curr = currList->head;
+
+        while (curr != NULL)
+        {
+            flags = curr->unk_47;
+            if (flags & (1 << 0))
+            {
+                curr->unk_47 = flags | (1 << 2);
+            }
+
+            curr = curr->prev;
+        }
+    }
 }
 
 // FUN_0027ec10
