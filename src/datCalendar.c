@@ -475,6 +475,12 @@ u8 clndGetMoonPhase(u32 daysSinceApr5)
     return daysMoonPhases[daysSinceApr5];
 }
 
+// FUN_001833e0
+void clnd001833e0(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
 // FUN_00184d90
 u32 clnd00184d90(KwlnTask* task)
 {
