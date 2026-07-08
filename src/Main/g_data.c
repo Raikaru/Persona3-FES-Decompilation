@@ -162,6 +162,12 @@ u16 datGetSp(s16 pcId)
     return datCalcGetSp(&pc[pcId - 2].unit);
 }
 
+// FUN_0016c910
+s16 datGetEquippedPersona()
+{
+    return gGlobalWork.heroPersona.equippedPersona;
+}
+
 // FUN_0016c970
 u32 datGetBadStatusNoDown(s16 pcId)
 {
