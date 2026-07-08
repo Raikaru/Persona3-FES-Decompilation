@@ -1086,6 +1086,12 @@ s16 datGetCourageLevel(s16 couragePoint)
     }
 }
 
+// FUN_0017b160
+void datResetTotalBtl()
+{
+    gGlobalWork.totalBtl = 0;
+}
+
 // FUN_0017b170
 u32 datGetTotalBtl()
 {
