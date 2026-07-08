@@ -49,10 +49,10 @@ u32 scrCommand_SYNC()
     return scrGetCmdTimer() != 0;
 }
 
-// FUN_0035b030 NONMATCHING
+// FUN_0035b030
 u32 scrCommand_WAIT()
 {
-    u32 cmdTimer;
+    s32 cmdTimer;
 
     if (scrGetIntPara(0) < 1)
     {
