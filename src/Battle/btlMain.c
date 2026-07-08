@@ -318,10 +318,10 @@ void btlMainInitStateLose(BtlStateWork* work)
 {
     // nothing
 }
-// FUN_0029d730 NONMATCHING
+// FUN_0029d730
 u32 btlMainUpdateStateLose(BtlStateWork* work)
 {
-    if (work->stateTimer >= 31)
+    if (work->stateTimer > 30)
     {
         return BTL_STATE_FADEOUT;
     }
