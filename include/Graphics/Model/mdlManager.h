@@ -179,6 +179,7 @@ u32 mdlStreamRead(Model* mdl);
 Model* mdlClone(const Model* mdl);
 void mdlDestroy(Model* mdl);
 void mdl00317730(Model* mdl);
+u32 mdl00319770(Model* mdl, u16 wpnIdx);
 
 u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags);
 s16 mdlAnimGetId(Model* mdl, u16 slotIdx);

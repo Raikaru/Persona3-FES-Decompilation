@@ -19,3 +19,9 @@ u8 mdlFileIsTypePac(u16 type)
 
     return false;
 }
+
+// FUN_0031d530
+void mdlFile0031d530(u16 type, u16 id, char* dst)
+{
+    // TODO
+}
