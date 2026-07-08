@@ -113,7 +113,7 @@ u32 K_Cmd_GET_TIME()
     return true;
 }
 
-// FUN_001c2780 NONMATCHING
+// FUN_001c2780
 u32 K_Cmd_DATE_IN_RANGE()
 {
     u32 startMonth;
@@ -126,7 +126,7 @@ u32 K_Cmd_DATE_IN_RANGE()
     endMonth = scrGetIntPara(2);
     endDay = scrGetIntPara(3);
 
-    if (clndIsDateInRange(startMonth, startDay, endMonth, endDay))
+    if (clndIsDateInRange(startMonth, startDay, endMonth, endDay) == 1)
     {
         scrSetIntReturnVal(1);
     }
