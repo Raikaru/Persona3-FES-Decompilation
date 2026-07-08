@@ -111,10 +111,14 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001988f0 NONMATCHING
+void FUN_00108f70();
+void FUN_003b5ab0();
+
+// FUN_001988f0
 void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
-    // TODO
+    FUN_00108f70();
+    FUN_003b5ab0();
 
     RwFree(rootTask->workData);
 }
@@ -206,16 +210,20 @@ void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00198c60 NONMATCHING
+// FUN_00198c60
 void* kwlnRootUpdate3DOn2DDrawBeginTask()
 {
+    RwRenderStateSetFunc* setRenderState;
+
     if (kwlnCameraBeginUpdate() != NULL)
     {
         kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
         kwlnSetFlags(KWLN_FLAG_3DDRAW, true);
 
-        RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-        RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+        setRenderState = &rwGlobals.device.setRenderState;
+
+        (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
     }
     else
     {
@@ -226,14 +234,18 @@ void* kwlnRootUpdate3DOn2DDrawBeginTask()
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00198d20 NONMATCHING
+// FUN_00198d20
 void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
+    RwRenderStateSetFunc* setRenderState;
+
     if (gFogEnabled == true)
     {
-        RwRenderStateSet(rwRENDERSTATEFOGENABLE, true);
-        RwRenderStateSet(rwRENDERSTATEFOGCOLOR, PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
-        RwRenderStateSet(rwRENDERSTATEFOGTYPE, rwFOGTYPELINEAR);
+        setRenderState = &rwGlobals.device.setRenderState;
+
+        (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEFOGCOLOR, (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+        (*setRenderState)(rwRENDERSTATEFOGTYPE, (void*)rwFOGTYPELINEAR);
     }
 
     kwlnCameraEndUpdate();
