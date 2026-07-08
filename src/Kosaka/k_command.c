@@ -391,7 +391,7 @@ u32 K_Cmd_CREATE_NPC_SYNC()
     return isNpcCreated;
 }
 
-// FUN_001c4b30 NONMATCHING
+// FUN_001c4b30
 u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 {
     s32 resTypeId;
@@ -421,9 +421,9 @@ u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 
                 if (npc->baseMdl != NULL)
                 {
-                    baseMdlScale.x = sphereCollisRadius;
-                    baseMdlScale.y = sphereCollisRadius;
                     baseMdlScale.z = sphereCollisRadius;
+                    baseMdlScale.y = sphereCollisRadius;
+                    baseMdlScale.x = sphereCollisRadius;
 
                     mdlScale(npc->baseMdl, &baseMdlScale, rwCOMBINEPOSTCONCAT);
                     mdl00317730(npc->baseMdl);
