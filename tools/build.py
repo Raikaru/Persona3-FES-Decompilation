@@ -257,7 +257,7 @@ def plan_data_sections(obj, real, retail, gp, resolvable):
             by_name[s["name"]].append(s)
     per_name = {}
     for name, secs in by_name.items():
-        secs.sort(key=lambda s: s["idx"])
+        secs.sort(key=lambda s: s["idx"])  # mwld concatenates same-name sections in shndx order
         offsets = []
         off = 0
         for s in secs:
