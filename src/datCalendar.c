@@ -475,6 +475,24 @@ u8 clndGetMoonPhase(u32 daysSinceApr5)
     return daysMoonPhases[daysSinceApr5];
 }
 
+// FUN_00184d90
+u32 clnd00184d90(KwlnTask* task)
+{
+    return ((CalendarTaskWork*)task->workData)->state == 2;
+}
+
+// FUN_00187520
+void clnd00187520(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
+// FUN_00187ea0
+void clnd00187ea0(KwlnTask* task)
+{
+    ((CalendarTaskWork*)task->workData)->state = 3;
+}
+
 // FUN_00188510
 u32 clndScrCmd_SET_DATE()
 {
