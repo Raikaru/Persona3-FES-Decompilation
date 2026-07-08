@@ -182,21 +182,15 @@ u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
     return true;
 }
 
-// FUN_00318540 NONMATCHING
+// FUN_00318540
 s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
 {
-    s16 id;
-
     if (mdlAnim003185b0(mdl, slotIdx))
     {
-        id = mdl->animSlots[slotIdx].anim.id;
+        return mdl->animSlots[slotIdx].anim.id;
     }
-    else
-    {
-        id = -1;
-    }
-    
-    return id;
+
+    return -1;
 }
 
 // FUN_003185b0

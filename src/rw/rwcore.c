@@ -15,17 +15,21 @@ static RwCamera* CameraEndUpdate(RwCamera* camera)
     return camera;
 }
 
-// FUN_004c9d00 NONMATCHING
+// FUN_004c9d00
+#pragma optimization_level 3
 RwCamera* RwCameraEndUpdate(RwCamera* camera)
 {
     return camera->endUpdate(camera);
 }
+#pragma optimization_level 2
 
-// FUN_004c9d10 NONMATCHING
+// FUN_004c9d10
+#pragma optimization_level 3
 RwCamera* RwCameraBeginUpdate(RwCamera* camera)
 {
     return camera->beginUpdate(camera);
 }
+#pragma optimization_level 2
 
 // FUN_004c9e90 NONMATCHING
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
