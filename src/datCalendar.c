@@ -461,10 +461,10 @@ s32 clndFindAndExecSiteibiEvents()
     return -1;
 }
 
-// FUN_00181b10 NONMATCHING
+// FUN_00181b10
 u8 clndGetCurrentMoonPhase()
 {
-    u16 daysSinceApr5 = datGetDaysSinceApr5();
+    s16 daysSinceApr5 = datGetDaysSinceApr5();
 
     return daysMoonPhases[daysSinceApr5];
 }

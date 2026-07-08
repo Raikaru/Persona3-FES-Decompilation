@@ -723,7 +723,6 @@ s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
 void datSetDaysSinceApr5(s16 daysSinceApr5)
 {
     u32 currentWeekDay;
-    u8 holidayOrSunday;
 
     datSetFlag(FLG_DAY_IS_MONDAY, false);
     datSetFlag(FLG_DAY_IS_TUESDAY, false);
@@ -755,8 +754,7 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
         case CALENDAR_DAY_SATURDAY:  datSetFlag(FLG_DAY_IS_SATURDAY, true);  break;
     }
 
-    holidayOrSunday = clndIsHolidayOrSunday();
-    if (holidayOrSunday)
+    if (clndIsHolidayOrSunday())
     {
         datSetFlag(FLG_DAY_IS_DAYOFF, true);
     }
