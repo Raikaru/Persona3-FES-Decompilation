@@ -54,25 +54,31 @@ void FUN_0016f3e0(u32 idx, u32 value)
     gGlobalWork.unk_0083a4dc[idx] = value;
 }
 
-// FUN_0016c860 NONMATCHING
+// FUN_0016c860
 u16 datGetPersonaId(s16 pcId)
 {
+    DatPc* pc;
+    s16 equipped;
+
     if (IS_HERO(pcId))
     {
-        if (gGlobalWork.heroPersona.equippedPersona < ARRAY_SIZE(gGlobalWork.heroPersona.personas))
-        {
-            return gGlobalWork.heroPersona.personas[gGlobalWork.heroPersona.equippedPersona].id;
-        }
+        equipped = gGlobalWork.heroPersona.equippedPersona;
 
-        K_ASSERT(false, 633);
+        K_ASSERT(equipped < 12, 633);
+
+        return gGlobalWork.heroPersona.personas[equipped].id;
     }
 
-    return gPcs[pcId].persona.id;
+    pc = &gPcs[2];
+
+    return pc[pcId - 2].persona.id;
 }
 
-// FUN_0016cd60 NONMATCHING
+// FUN_0016cd60
 DatUnit* datGetUnit(s16 pcId)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         return &gGlobalWork.heroUnit;
@@ -80,7 +86,9 @@ DatUnit* datGetUnit(s16 pcId)
 
     K_ASSERT(pcId < PC_MAX, 737);
 
-    return &gPcs[pcId].unit;
+    pc = &gPcs[2];
+
+    return &pc[pcId - 2].unit;
 }
 
 // FUN_0016cdf0
@@ -109,38 +117,50 @@ void datInitUnit(s16 pcId)
     gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
 }
 
-// FUN_0016c470 NONMATCHING
+// FUN_0016c470
 u8 datGetLevel(s16 pcId)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         return datCalcGetLevel(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetLevel(&gPcs[pcId].unit);
+    pc = &gPcs[2];
+
+    return datCalcGetLevel(&pc[pcId - 2].unit);
 }
 
-// FUN_0016c970 NONMATCHING
+// FUN_0016c970
 u32 datGetBadStatusNoDown(s16 pcId)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         return datCalcGetBadStatusNoDown(&gGlobalWork.heroUnit);
     }
 
-    return datCalcGetBadStatusNoDown(&gPcs[pcId].unit);
+    pc = &gPcs[2];
+
+    return datCalcGetBadStatusNoDown(&pc[pcId - 2].unit);
 }
 
-// FUN_0016d8b0 NONMATCHING
+// FUN_0016d8b0
 void datSetBadStatus(s16 pcId, u32 flags)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         datCalcSetBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcSetBadStatus(&gPcs[pcId].unit, flags);
+    pc = &gPcs[2];
+
+    datCalcSetBadStatus(&pc[pcId - 2].unit, flags);
 }
 
 // FUN_0016d980
@@ -155,16 +175,20 @@ void datSetOldFatigueCounter(s16 pcId, u16 oldFatigueCounter)
     gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
-// FUN_0016d9d0 NONMATCHING
+// FUN_0016d9d0
 void datClearBadStatus(s16 pcId, u32 flags)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         datCalcClearBadStatus(&gGlobalWork.heroUnit, flags);
         return;
     }
 
-    datCalcClearBadStatus(&gPcs[pcId].unit, flags);
+    pc = &gPcs[2];
+
+    datCalcClearBadStatus(&pc[pcId - 2].unit, flags);
 }
 
 // FUN_0016d2f0 NONMATCHING
@@ -680,15 +704,19 @@ u8 datSocialLinkLevelIsNotZero(u16 socialLink)
     return gGlobalWork.heroStatus.socialLinkStat[socialLink] > 0;
 }
 
-// FUN_0016cb80 NONMATCHING
-u16 datGetEquipmentIdx(s16 pcId, u16 equipmentType)
+// FUN_0016cb80
+s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
 {
+    DatPc* pc;
+
     if (IS_HERO(pcId))
     {
         return gGlobalWork.heroEquip.equipmentsIdx[equipmentType];
     }
 
-    return gPcs[pcId].equipmentsIdx[equipmentType];
+    pc = &gPcs[2];
+
+    return pc[pcId - 2].equipmentsIdx[equipmentType];
 }
 
 // FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags NONMATCHING
