@@ -61,8 +61,8 @@ u8 datPersonaGetNaturalStat(DatPersonaWork* persona, u16 statId)
     return persona->naturalStats[statId];
 }
 
-// FUN_00173b00 NONMATCHING
-u8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId)
+// FUN_00173b00
+s8 datPersonaGetBonusStat(DatPersonaWork* persona, u16 statId)
 {
     K_ASSERT(statId < PERSONA_STAT_MAX, 454);
 
@@ -85,10 +85,10 @@ void datPersonaAddToBonusStatByPcId(u16 pcId, u16 statId, s8 amount)
     persona->bonusStats[statId] += amount;
 }
 
-// FUN_00173c00 NONMATCHING
-u8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId)
+// FUN_00173c00
+s8 datPersonaGetStat3(DatPersonaWork* persona, u16 statId)
 {
-    K_ASSERT(statId <= PERSONA_STAT_LUCK, 503);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 503);
 
     return persona->stats3[statId];
 }
@@ -183,7 +183,7 @@ DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
     return persona;
 }
 
-// FUN_001757f0 NONMATCHING
+// FUN_001757f0
 void datPersonaClearHeroPersonas()
 {
     memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));

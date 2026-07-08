@@ -503,8 +503,8 @@ s16 datGetDaysSinceApr5()
     return gGlobalWork.calendarWork.daysSinceApr5;
 }
 
-// FUN_0016ef30 NONMATCHING
-s8 datGetTime()
+// FUN_0016ef30
+u8 datGetTime()
 {
     return gGlobalWork.calendarWork.time;
 }
@@ -665,8 +665,8 @@ u16 datGetPhysicalCondition(u16 pcId)
     return gPcs[pcId].physicalState.physicalCondition;
 }
 
-// FUN_0016dd40 NONMATCHING
-u16 datGetActiveSocialLink()
+// FUN_0016dd40
+s16 datGetActiveSocialLink()
 {
     return gGlobalWork.heroStatus.activeSocialLink;
 }
@@ -880,7 +880,7 @@ void datInitPersona(u32 pcId)
     memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
 }
 
-// FUN_00175c70 NONMATCHING
+// FUN_00175c70
 void datCompendiumInit()
 {
     memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));

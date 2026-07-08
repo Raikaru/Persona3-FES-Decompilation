@@ -105,7 +105,7 @@ u32 K_Cmd_GET_DAY_OF_WEEK()
     return true;
 }
 
-// FUN_001c2750 NONMATCHING
+// FUN_001c2750
 u32 K_Cmd_GET_TIME()
 {
     scrSetIntReturnVal(datGetTime());

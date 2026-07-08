@@ -331,7 +331,7 @@ u32 H_Fade_FadeOut()
     return sFadeActive;
 }
 
-// FUN_001085c0 NONMATCHING
+// FUN_001085c0
 u32 H_Fade_FadeIn()
 {
     if (sFadeActive && sFadeState == HFADE_STATE_HOLD)
