@@ -112,7 +112,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
     return false;
 }
 
-// FUN_001bffa0 NONMATCHING
+// FUN_001bffa0
 FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
     if (gDungeonTask == NULL)

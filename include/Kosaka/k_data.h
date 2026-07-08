@@ -14,7 +14,7 @@ typedef struct FldDungeonFloorData
     u16 minorId;        // 0x02
     u8 unkData1[0x08];
     u8 blockId;         // 0x0c. Tartarus block
-    u8 unkData[0x04];
+    u8 unkData[0x03];
 } FldDungeonFloorData;
 
 extern void* gFldScrMemory;
