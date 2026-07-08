@@ -97,7 +97,7 @@ u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amo
 
 DatPersonaWork* datPersonaGetByPcId(u16 pcId);
 u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx);
-DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx);
+DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx);
 void datPersonaClearHeroPersonas();
 
 void datPersonaAddExp(DatPersonaWork* persona, s32 exp);

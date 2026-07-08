@@ -129,7 +129,7 @@ u16 datPersonaAddToNaturalStatHeroPersona(u16 heroPersonaIdx, u16 statId, s8 amo
     return datPersonaAddToNaturalStat(heroPersona, statId, amount); // was inlined
 }
 
-// FUN_00174800 NONMATCHING
+// FUN_00174800
 DatPersonaWork* datPersonaGetByPcId(u16 pcId)
 {
     DatPersonaWork* persona;
@@ -161,7 +161,7 @@ u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
 }
 
 // FUN_00174a90 NONMATCHING
-DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx)
+DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx)
 {
     DatPersonaWork* persona;
 
