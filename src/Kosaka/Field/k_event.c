@@ -11,6 +11,8 @@
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
+extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
+
 // FUN_001c5ee0
 u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
 {
@@ -344,13 +346,16 @@ KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
 // FUN_001cd650
 void K_FldEvent_001cd650(KwlnTask* fldEventTask, u32 param_2)
 {
-    // TODO
+    if (fldEventTask != NULL)
+    {
+        ((u32*)fldEventTask->workData)[1] = param_2;
+    }
 }
 
 // FUN_001cd690
 void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {
-    // TODO
+    FUN_003b2cb0(0.0f, 0x140, 0xe0, -1, 0, 0, *(u32*)drawCmdTask->workData, 0, 0);
 
     return KWLNTASK_CONTINUE;
 }
