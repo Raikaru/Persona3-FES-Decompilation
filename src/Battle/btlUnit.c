@@ -14,6 +14,7 @@ BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
 void FUN_00287b20(BtlUnit* unit, s16 param_2);
+void FUN_00287cf0(BtlUnit* unit, s16 param_2);
 
 // 12 bytes
 typedef struct BtlUnitPacketResNullifiedAnim
@@ -52,6 +53,41 @@ typedef struct BtlUnitPacketEnmDodgeAnim
 void btlUnitInitEnmDodgeAnimPacket(void* work);
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work);
 void btlUnitDestroyEnmDodgeAnimPacket(void* work);
+
+// 4 bytes
+typedef struct BtlUnitPacket00284c90
+{
+    BtlUnit* unit; // 0x00
+} BtlUnitPacket00284c90;
+
+void btlUnitInit00284c90Packet(void* work);
+u32 btlUnitUpdate00284c90Packet(void* work);
+void btlUnitDestroy00284c90Packet(void* work);
+
+// 8 bytes
+typedef struct BtlUnitPacket00284d80
+{
+    BtlUnit* unit; // 0x00
+    s16 unk_4;     // 0x04
+    u8 unkData[0x02];
+} BtlUnitPacket00284d80;
+
+void btlUnitInit00284d80Packet(void* work);
+u32 btlUnitUpdate00284d80Packet(void* work);
+void btlUnitDestroy00284d80Packet(void* work);
+
+// 16 bytes
+typedef struct BtlUnitPacket00284f50
+{
+    BtlUnit* unit; // 0x00
+    u16 unk_4;     // 0x04
+    f32 unk_8;     // 0x08
+    u16 unk_c;     // 0x0c
+} BtlUnitPacket00284f50;
+
+void btlUnitInit00284f50Packet(void* work);
+u32 btlUnitUpdate00284f50Packet(void* work);
+void btlUnitDestroy00284f50Packet(void* work);
 
 void btlUnit002862a0(void* work);
 u32 btlUnit002862c0(void* work);
@@ -504,17 +540,17 @@ u32 btlUnit00282c60(BtlUnit* unit)
 }
 
 // FUN_00282d40
-void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u16 mode)
+void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
     // TODO
 }
 
-// FUN_00283ba0 NONMATCHING
+// FUN_00283ba0
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
-        return mdlAnimGetCurrentFrame(unit->mdl, 0);
+        return (s32)mdlAnimGetCurrentFrame(unit->mdl, 0);
     }
 
     return 0;
@@ -598,7 +634,35 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
     return packet;
 }
 
-// FUN_00284600 NONMATCHING
+// FUN_00284450
+void btlUnitInitResNullifiedAnimPacket(void* work)
+{
+    BtlUnitPacketResNullifiedAnim* packet;
+
+    packet = (BtlUnitPacketResNullifiedAnim*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284470
+u32 btlUnitUpdateResNullifiedAnimPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_002845e0
+void btlUnitDestroyResNullifiedAnimPacket(void* work)
+{
+    BtlUnitPacketResNullifiedAnim* packet;
+
+    packet = (BtlUnitPacketResNullifiedAnim*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284600
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
 {
     BtlPacket* packet;
@@ -618,7 +682,35 @@ BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
     return packet;
 }
 
-// FUN_00284900 NONMATCHING
+// FUN_00284670
+void btlUnitInit00284900Packet(void* work)
+{
+    BtlUnitPacket00284900* packet;
+
+    packet = (BtlUnitPacket00284900*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284690
+u32 btlUnitUpdate00284900Packet(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_002848e0
+void btlUnitDestroy00284900Packet(void* work)
+{
+    BtlUnitPacket00284900* packet;
+
+    packet = (BtlUnitPacket00284900*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284900
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
 {
     BtlPacket* packet;
@@ -639,7 +731,35 @@ BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
     return packet;
 }
 
-// FUN_00284b70 NONMATCHING
+// FUN_00284980
+void btlUnitInitEnmDodgeAnimPacket(void* work)
+{
+    BtlUnitPacketEnmDodgeAnim* packet;
+
+    packet = (BtlUnitPacketEnmDodgeAnim*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_002849a0
+u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00284b50
+void btlUnitDestroyEnmDodgeAnimPacket(void* work)
+{
+    BtlUnitPacketEnmDodgeAnim* packet;
+
+    packet = (BtlUnitPacketEnmDodgeAnim*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284b70
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 {
     BtlPacket* packet;
@@ -655,6 +775,220 @@ BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 
     work->unit = unit;
     work->unk_4 = 0;
+
+    return packet;
+}
+
+// FUN_00284be0
+void btlUnitInit00284c90Packet(void* work)
+{
+    BtlUnitPacket00284c90* packet;
+
+    packet = (BtlUnitPacket00284c90*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284c00
+u32 btlUnitUpdate00284c90Packet(void* work)
+{
+    BtlUnitPacket00284c90* packet;
+    BtlUnit* unit;
+    s16 current;
+
+    packet = (BtlUnitPacket00284c90*)work;
+
+    unit = packet->unit;
+
+    switch (unit->genus)
+    {
+        case UNIT_GENUS_PC:
+        case UNIT_GENUS_EC:
+            if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+            {
+                current = unit->unk_9ce;
+            }
+            else
+            {
+                current = 0;
+            }
+
+            return unit->unk_9e0 == current;
+    }
+
+    return false;
+}
+
+// FUN_00284c70
+void btlUnitDestroy00284c90Packet(void* work)
+{
+    BtlUnitPacket00284c90* packet;
+
+    packet = (BtlUnitPacket00284c90*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284c90
+BtlPacket* btlUnit00284c90(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacket00284c90* work;
+
+    packet = btlPacketCreate(0x105, sizeof(BtlUnitPacket00284c90));
+
+    packet->initFunc = btlUnitInit00284c90Packet;
+    packet->updateFunc = btlUnitUpdate00284c90Packet;
+    packet->destroyFunc = btlUnitDestroy00284c90Packet;
+
+    work = (BtlUnitPacket00284c90*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_00284cf0
+void btlUnitInit00284d80Packet(void* work)
+{
+    BtlUnitPacket00284d80* packet;
+
+    packet = (BtlUnitPacket00284d80*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284d10 NONMATCHING
+u32 btlUnitUpdate00284d80Packet(void* work)
+{
+    BtlUnitPacket00284d80* packet;
+    s16 frame;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacket00284d80*)work;
+
+    frame = packet->unk_4;
+    unit = packet->unit;
+
+    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    {
+        mdlAnim00318770(unit->mdl, 0, frame);
+    }
+
+    return true;
+}
+
+// FUN_00284d60
+void btlUnitDestroy00284d80Packet(void* work)
+{
+    BtlUnitPacket00284d80* packet;
+
+    packet = (BtlUnitPacket00284d80*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284d80
+BtlPacket* btlUnit00284d80(BtlUnit* unit, s16 param_2)
+{
+    BtlPacket* packet;
+    BtlUnitPacket00284d80* work;
+
+    packet = btlPacketCreate(0x102, sizeof(BtlUnitPacket00284d80));
+
+    packet->initFunc = btlUnitInit00284d80Packet;
+    packet->updateFunc = btlUnitUpdate00284d80Packet;
+    packet->destroyFunc = btlUnitDestroy00284d80Packet;
+
+    work = (BtlUnitPacket00284d80*)packet->workData;
+
+    work->unit = unit;
+    work->unk_4 = param_2;
+
+    return packet;
+}
+
+// FUN_00284df0
+void btlUnitInit00284f50Packet(void* work)
+{
+    BtlUnitPacket00284f50* packet;
+
+    packet = (BtlUnitPacket00284f50*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284e10
+u32 btlUnitUpdate00284f50Packet(void* work)
+{
+    BtlUnitPacket00284f50* packet;
+    BtlUnit* unit;
+    f32 speed;
+    u16 blendFrameCount;
+    u16 mode;
+    s16 frame;
+
+    packet = (BtlUnitPacket00284f50*)work;
+
+    mode = packet->unk_c;
+    speed = packet->unk_8;
+    blendFrameCount = packet->unk_4;
+    unit = packet->unit;
+
+    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    {
+        FUN_00287cf0(unit, 4);
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            frame = (s32)mdlAnimGetCurrentFrame(unit->mdl, 0);
+        }
+        else
+        {
+            frame = 0;
+        }
+
+        btlUnitAnimate(unit, unit->unk_9ce, blendFrameCount, speed, mode);
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            mdlAnim00318770(unit->mdl, 0, frame);
+        }
+
+        FUN_00287b20(unit, 4);
+    }
+
+    return true;
+}
+
+// FUN_00284f30
+void btlUnitDestroy00284f50Packet(void* work)
+{
+    BtlUnitPacket00284f50* packet;
+
+    packet = (BtlUnitPacket00284f50*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00284f50
+BtlPacket* btlUnit00284f50(BtlUnit* unit, u16 param_2, f32 speed, u16 param_4)
+{
+    BtlPacket* packet;
+    BtlUnitPacket00284f50* work;
+
+    packet = btlPacketCreate(0x103, sizeof(BtlUnitPacket00284f50));
+
+    packet->initFunc = btlUnitInit00284f50Packet;
+    packet->updateFunc = btlUnitUpdate00284f50Packet;
+    packet->destroyFunc = btlUnitDestroy00284f50Packet;
+
+    work = (BtlUnitPacket00284f50*)packet->workData;
+
+    work->unit = unit;
+    work->unk_4 = param_2;
+    work->unk_8 = speed;
+    work->unk_c = param_4;
 
     return packet;
 }

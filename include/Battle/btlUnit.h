@@ -79,7 +79,11 @@ struct BtlUnit
     s32 unk_e8;                   // 0xe8
     u8 unkData5[0x40c];
     s32 unk_4f8;                  // 0x4f8
-    u8 unkData6[0x4f6];
+    u8 unkData6[0x4d2];
+    s16 unk_9ce;                  // 0x9ce
+    u8 unkData6b[0x10];
+    s16 unk_9e0;                  // 0x9e0
+    u8 unkData6c[0x10];
     u16 resTypeId;                // 0x9f2
     Model* mdl;                   // 0x9f4
     u8 unkData7[0x08];
@@ -216,7 +220,7 @@ u32 btlUnitIsMoving(BtlUnit* unit);
 void btlUnitStopMoving(BtlUnit* unit);
 void btlUnitStopRotating(BtlUnit* unit);
 u32 btlUnit00282c60(BtlUnit* unit);
-void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u16 mode);
+void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id);
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId);
