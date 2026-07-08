@@ -168,7 +168,7 @@ struct Model
     u8 unkData4[0x08];
 };
 
-extern const f32 gFrameDuration;
+extern f32 gFrameDuration;
 
 Model* mdlInit(u16 type, u16 id);
 Model* mdlSearch(u16 type, u16 id, u16 flags);

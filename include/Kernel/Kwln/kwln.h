@@ -26,12 +26,12 @@ extern u32 gFogEnabled;
 
 extern u32 gCurrWorldIdx;
 
-extern const f32 g18deg;
-extern const f32 gRadToDegFactor;
-extern const f32 gPI;
-extern const f32 gUnk_007cadd0;
-extern const f32 gRadToDegFactor2;
-extern const f32 gAspectRatio;
+extern f32 g18deg;
+extern f32 gRadToDegFactor;
+extern f32 gPI;
+extern f32 gUnk_007cadd0;
+extern f32 gRadToDegFactor2;
+extern f32 gAspectRatio;
 
 void kwlnMain();
 
