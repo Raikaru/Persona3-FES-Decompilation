@@ -766,9 +766,13 @@ void datSetSkipToTarget(u32 val)
 // FUN_0016f190
 u32 datGetFlag(s32 bit)
 {
-    // TODO
+    s32 mask;
+    s32 idx;
 
-    return false;
+    idx = bit / 32;
+    mask = bit % 32;
+
+    return (gGlobalWork.flags[idx] & (1 << mask)) != 0;
 }
 
 // FUN_0016f1f0. See 'g_flags.h' !!!
