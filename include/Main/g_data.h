@@ -233,6 +233,7 @@ void datInitUnit(s16 pcId);
 u8 datGetLevel(s16 pcId);
 u16 datGetHp(s16 pcId);
 u16 datGetSp(s16 pcId);
+s16 datGetEquippedPersona();
 u16 datGetPersonaId(s16 pcId);
 u32 datGetBadStatusNoDown(s16 pcId);
 void datSetBadStatus(s16 pcId, u32 flags);
