@@ -663,7 +663,15 @@ void btlActionInitStatePersona(BtlAction* action)
 // FUN_002976d0
 void btlActionUpdateStatePersona(BtlAction* action)
 {
-    // TODO
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        if (action->unit->genus == UNIT_GENUS_PC)
+        {
+            action->unk_18 &= ~0x400;
+        }
+
+        btlActionSetState(action, action->unk_14);
+    }
 }
 
 // FUN_00297750
