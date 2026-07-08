@@ -379,11 +379,12 @@ BtlPacket* btlCreateSetFlagsPacket(u32 flags)
     return packet;
 }
 
-// FUN_0027dc50 NONMATCHING
+// FUN_0027dc50
+#pragma optimization_level 1
 u32 btlUpdateRemoveFlagsPacket(void* work)
 {
-    Battle* btl;
     BtlBattleFlagPacket* packet;
+    Battle* btl;
 
     btl = gBtl;
     packet = (BtlBattleFlagPacket*)work;
@@ -392,6 +393,7 @@ u32 btlUpdateRemoveFlagsPacket(void* work)
 
     return true;
 }
+#pragma optimization_level 2
 
 // FUN_0027dc80
 BtlPacket* btlCreateRemoveFlagsPacket(u32 flags)

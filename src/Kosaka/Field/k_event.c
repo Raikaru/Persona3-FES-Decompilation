@@ -324,11 +324,11 @@ void K_FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
     RwFree(fldEventTask->workData);
 }
 
-// FUN_001cd5a0. Create 'field event' and 'draw command' tasks NONMATCHING
+// FUN_001cd5a0. Create 'field event' and 'draw command' tasks
 KwlnTask* K_FldEvent_CreateTasks(KwlnTask* fldRootTask)
 {
-    FldEvent* fldEvent;
     KwlnTask* fldEventTask;
+    FldEvent* fldEvent;
 
     fldEvent = (FldEvent*)RwCalloc(1, sizeof(FldEvent), rwMEMHINTDUR_GLOBAL);
     if (fldEvent == NULL)
