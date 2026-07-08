@@ -51,9 +51,6 @@ function by function, each verified against retail.
   (Debian/WSL package: `binutils-mipsel-linux-gnu`).
 - Your own retail `SLUS_216.21`.
 
-FLEXlm note: the 3.0.1 toolchain wants `LMGR326B.DLL` from the older
-`mwcps2-3.0b52` release copied over **both** `LMGR326B.DLL` and `LMGR8C.DLL` in
-the toolchain directory.
 
 ## Quick start
 
