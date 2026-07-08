@@ -1,0 +1,108 @@
+{
+  "$schema": "https://raw.githubusercontent.com/encounter/objdiff/main/config.schema.json",
+  "custom_make": "make",
+  "build_target": false,
+  "watch_patterns": [
+    "*.c",
+    "*.h",
+    "*.s"
+  ],
+  "units": [
+    {
+      "name": "Main/main.c",
+      "target_path": "build/objdiff/target/Main_main.o",
+      "base_path": "build/objdiff/base/Main_main.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Kosaka/k_assert.c",
+      "target_path": "build/objdiff/target/Kosaka_k_assert.o",
+      "base_path": "build/objdiff/base/Kosaka_k_assert.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Kosaka/k_view.c",
+      "target_path": "build/objdiff/target/Kosaka_k_view.o",
+      "base_path": "build/objdiff/base/Kosaka_k_view.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Kosaka/k_clump.c",
+      "target_path": "build/objdiff/target/Kosaka_k_clump.o",
+      "base_path": "build/objdiff/base/Kosaka_k_clump.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Kosaka/Field/k_enemy.c",
+      "target_path": "build/objdiff/target/Kosaka_Field_k_enemy.o",
+      "base_path": "build/objdiff/base/Kosaka_Field_k_enemy.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Main/OpEd/op_fade.c",
+      "target_path": "build/objdiff/target/Main_OpEd_op_fade.o",
+      "base_path": "build/objdiff/base/Main_OpEd_op_fade.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Battle/btlTarget.c",
+      "target_path": "build/objdiff/target/Battle_btlTarget.o",
+      "base_path": "build/objdiff/base/Battle_btlTarget.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Battle/btlVoice.c",
+      "target_path": "build/objdiff/target/Battle_btlVoice.o",
+      "base_path": "build/objdiff/base/Battle_btlVoice.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Main/Battle/Data/datScript.c",
+      "target_path": "build/objdiff/target/Main_Battle_Data_datScript.o",
+      "base_path": "build/objdiff/base/Main_Battle_Data_datScript.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "dds3Process.c",
+      "target_path": "build/objdiff/target/dds3Process.o",
+      "base_path": "build/objdiff/base/dds3Process.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Yajima/y_misc.c",
+      "target_path": "build/objdiff/target/Yajima_y_misc.o",
+      "base_path": "build/objdiff/base/Yajima_y_misc.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
+      "name": "Yajima/y_timeLimit.c",
+      "target_path": "build/objdiff/target/Yajima_y_timeLimit.o",
+      "base_path": "build/objdiff/base/Yajima_y_timeLimit.o",
+      "metadata": {
+        "complete": true
+      }
+    }
+  ]
+}

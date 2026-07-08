@@ -4,10 +4,10 @@ A work-in-progress matching decompilation of **Shin Megami Tensei: Persona 3 FES
 (USA, `SLUS_216.21`) for the Sony PlayStation 2.
 
 This repo splits the retail executable into assembly and data with
-[splat](https://github.com/ethteck/splat) and rebuilds a **byte-identical**
-program image using the game's original **CodeWarrior for PlayStation 2**
-toolchain. Functions are decompiled to C one at a time; each is verified to
-assemble back to the exact retail bytes.
+[splat](https://github.com/ethteck/splat), assembles the generated R5900 GAS
+with GNU `mipsel-linux-gnu-as`, and links a **byte-identical** program image
+with the game's original CodeWarrior PS2 linker. Functions are decompiled to C
+one at a time; each is verified against the exact retail bytes.
 
 > This project needs a copy of the game you legally own. No copyrighted data
 > (the ELF or any extracted bytes) is included in this repository.
@@ -21,9 +21,9 @@ assemble back to the exact retail bytes.
 | Function map (`config/symbol_addrs.txt`) | complete |
 | Decompiled to matching C | ongoing (see `make verify`) |
 
-`make` disassembles, reassembles, and links the whole image with the original
-toolchain, splices it into the retail ELF wrapper, and checks the result is
-byte-for-byte identical to retail. Decompilation replaces the assembly with C
+`make` assembles the splat output with GNU R5900 binutils, links the whole image
+with mwldps2, splices it into the retail ELF wrapper, and checks the result is
+byte-for-byte identical to retail. Decompilation replaces assembly with C
 function by function, each verified against retail.
 
 ## Target
@@ -45,8 +45,10 @@ function by function, each verified against retail.
 
 - **Python 3.8+** and splat: `pip install splat64`
 - The **CodeWarrior PS2** toolchain `mwcps2-3.0.1b210-060308`
-  (`mwccps2.exe`, `asm_r5900_elf.exe`, `mwldps2.exe`). Windows-native, or run
-  the whole flow under Wine.
+  (`mwccps2.exe`, `mwldps2.exe`). Windows-native, or run under Wine/wibo.
+- GNU MIPS little-endian binutils with R5900 support:
+  `mipsel-linux-gnu-as` and `mipsel-linux-gnu-objcopy`
+  (Debian/WSL package: `binutils-mipsel-linux-gnu`).
 - Your own retail `SLUS_216.21`.
 
 FLEXlm note: the 3.0.1 toolchain wants `LMGR326B.DLL` from the older
@@ -91,15 +93,20 @@ retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x1
    splat split (config/slus21621.yaml, numeric registers)
         ▼
    asm/code1.s asm/code2.s  +  data ranges
-        │  tools/desym.py     (%hi/%lo → literals, jal sym → jal 0xADDR,
-        │                       div/mult 3-op → 2-op, `not` → explicit `nor`)
+        │
+        ├─ decompiled TUs ─ src/*.c ─ tools/mwccgap ─▶ C objects
+        │      (mwccps2 compiles C; GNU as assembles any INCLUDE_ASM;
+        │       the retail range is carved out of the asm baseline)
+        │
+        └─ everything else ─ tools/asm.py ─▶ asm objects
+               mipsel-linux-gnu-as -march=r5900 -mabi=eabi
+               - keeps real %hi/%lo/jal relocations for mwldps2
+               - rewrites data-disguised-as-code to .word from retail bytes
         ▼
-   tools/asm.py  (asm_r5900_elf -gnu): assembles, and rewrites any line the
-        │        assembler rejects or that differs from retail into a .word/.byte
-        │        of its original bytes — this is how data-as-code becomes data
-        ▼
-   *.o  ──mwldps2 + build/slus21621.lcf──▶ linked loadable image
-        │  tools/link_c.py: overlay compiled C for matched functions
+   all objects ──mwldps2 + generated build/slus21621.lcf──▶ loadable image
+        │      the LCF defines _gp and data-symbol addresses recovered from
+        │      matched relocations (config/symbols_recovered.txt) plus splat's
+        │      undefined_syms_auto.txt / undefined_funcs_auto.txt
         ▼
    splice into the retail ELF wrapper ──▶ build/SLUS_216.21
         ▼
@@ -108,22 +115,22 @@ retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x1
 
 `tools/build.py` drives the whole pipeline; `make` is a thin wrapper over it.
 
-Decompiled C is linked into the image. Because the retail ELF is stripped,
-`tools/link_c.py` first *recovers* a symbol table: every relocation in an
-already-matching function, read against the retail bytes, gives the resolved
-value of the symbol it references (a callee, a global, a gp-relative offset).
-Each matched function's compiled-C relocations are then re-encoded from that
-map and written over its region of the image — so the linked bytes come from
-your C, not the disassembly. Today 734 of 739 matched functions link cleanly
-this way; the last 5 (`rwGlobals`/gp-relative struct-member access via a
-shared `%hi`) still fall back to the assembly baseline, so the image is
-byte-identical either way. Because this resolution is stricter than the
-reloc-masked gate, it also caught real struct-offset bugs the gate had hidden
-(`activeSocialLink`, `socialLinkStat`, `equipmentsIdx`), now fixed.
+Decompiled files link as **real C objects** the standard mwcc way (`mwccgap` +
+`mwldps2`), not via a post-link byte overlay. Because the retail ELF is
+stripped, `tools/recover_symbols.py` bootstraps the symbol table: it reads each
+matched function's relocations against retail, backs out the addend, and keeps
+only cross-file-consistent symbol addresses (`make symbols` →
+`config/symbols_recovered.txt`, plus `_gp` from the ELF `.reginfo`). The build
+automatically links every fully-decompiled, contiguous TU whose owned data
+sections can be placed byte-exact — `.rodata`/`.data`/`.sdata` at their recovered
+addresses (carved out of the data blob) and `.sbss`/`.bss` as zero-filled
+PROGBITS. A file stays on the asm baseline only when a data symbol's address
+can't be recovered, a reloc target is unresolvable, or a function is WIP. The
+image is byte-identical either way.
 
-`tools/verify.py` remains the per-function gate (`make verify`): it compiles
-each `src/` file and byte-compares every `// FUN_xxxxxxxx` function against
-retail (relocated fields masked, tail padding checked).
+`tools/verify.py` is the per-function gate (`make verify`): it compiles each
+`src/` file and byte-compares every `// FUN_xxxxxxxx` function against retail
+(relocated fields masked, tail padding checked).
 
 ## Contributing
 
@@ -139,13 +146,27 @@ python tools/fndiff.py src/path/file.c yourFunction   # 0 diffs == match
 python tools/verify.py src/path/file.c
 ```
 
+Helper tools / targets:
+
+```sh
+make progress                 # matched-function / byte progress report
+make ctx FILE=src/…/foo.c     # flatten includes -> ctx.c for decomp.me
+make symbols                  # regenerate config/symbols_recovered.txt
+make objdiff                  # regenerate objdiff.json + target/base objects
+make format                   # clang-format the C sources
+./diff.py -o <func>           # asm-differ (see diff_settings.py)
+```
+`objdiff.json`, `diff_settings.py`, `permuter_settings.toml`, the `Dockerfile`,
+and CI (`.github/workflows/ci.yml`) follow the standard mwcc/PS2 decomp layout.
+
 ## Layout
 
 ```
-config/     splat config + symbol map (symbol_addrs.txt)
-tools/      build.py, desym.py, asm.py, verify.py, fndiff.py
-asm/        macro.inc (committed); *.s / *.o are generated (gitignored)
+config/     splat config, symbol_addrs.txt, generated symbols_recovered.txt
+tools/      build.py, asm.py, verify.py, fndiff.py, recover_symbols.py,
+            m2ctx.py, progress.py, gen_objdiff.py, vendored mwccgap/
+asm/        macro.inc (committed); *.s / *.o / chunks are generated (gitignored)
 src/        decompiled C
-include/     headers
-build/      build outputs (gitignored)
+include/    headers (include_asm.h defines INCLUDE_ASM/INCLUDE_RODATA)
+build/      build outputs, objects, objdiff inputs (gitignored)
 ```
