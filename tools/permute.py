@@ -34,8 +34,11 @@ import argparse
 import json
 import random
 import re
+import atexit
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -56,6 +59,8 @@ def all_boundaries(sizes):
     if lw:
         bounds.add(last + lw)
     for c in sorted((REPO / "src").rglob("*.c")):
+        if c.name.startswith(".permute_"):
+            continue
         for m in scan_markers(c):
             bounds.add(m["addr"])
     return sorted(bounds)
@@ -100,8 +105,13 @@ class Target:
         s, e, o = find_region(self.lines, mk["line"] - 1)
         self.start, self.end, self.open_line = s, e, o
         self.region = self.lines[s:e + 1]
+        hdr = " ".join(strip_line_comment(l) for l in self.lines[s + 1:o + 1]
+                       if not strip_line_comment(l).strip().startswith("#"))
+        self.params = parse_params(hdr)
         self.win_bytes = retail.bytes_at(self.addr, self.window)
         self._n = 0
+        self.tmpdir = Path(tempfile.mkdtemp(prefix="p3perm_"))
+        atexit.register(shutil.rmtree, self.tmpdir, ignore_errors=True)
 
     def score(self, region):
         """Compile the TU with `region` substituted; return (score, match, log).
@@ -109,7 +119,7 @@ class Target:
         self._n += 1
         content = "\n".join(self.lines[:self.start] + region +
                             self.lines[self.end + 1:]) + "\n"
-        tmp = self.dir / f".permute_{self.name}_{self._n % 4}.c"
+        tmp = self.tmpdir / f"{self.name}.c"
         tmp.write_text(content, newline="\n")
         opath = tmp.with_suffix(".o")
         try:
@@ -273,10 +283,86 @@ def mut_compare(region, open_line_local, rng):
     return out
 
 
-MUTATORS = [mut_opt, mut_decls, mut_stmts, mut_operands, mut_reassoc, mut_compare]
+COMPOUND_RE = re.compile(
+    r"^(\s*)([A-Za-z_][\w.\->\[\]]*)\s*(\+|\-|\*|&|\||\^|<<|>>)=\s*(.+);\s*$")
 
 
-def mutate(region, marker_idx_local, open_line_local, rng):
+def mut_compound(region, open_line_local, rng):
+    """Expand `x OP= y;` into `x = x OP (y);` (identical semantics, different
+    codegen for the intermediate)."""
+    b0, b1 = body_span(region, open_line_local)
+    idxs = [i for i in range(b0, b1) if COMPOUND_RE.match(region[i])]
+    if not idxs:
+        return None
+    i = rng.choice(idxs)
+    ind, lhs, op, rhs = COMPOUND_RE.match(region[i]).groups()
+    out = region[:]
+    out[i] = f"{ind}{lhs} = {lhs} {op} ({rhs});"
+    return out
+
+
+PARAM_RE = re.compile(
+    r"^\s*((?:const\s+|volatile\s+|unsigned\s+|signed\s+|struct\s+|union\s+|enum\s+)*"
+    r"[A-Za-z_]\w*(?:\s*\*+|\s+))\s*([A-Za-z_]\w*)\s*$")
+
+
+def parse_params(header):
+    """Parse a function header's parameter list -> [(type, name)]. Bails (returns
+    []) on anything with function-pointer / array params."""
+    lp, rp = header.find("("), header.rfind(")")
+    if lp < 0 or rp < lp:
+        return []
+    inner = header[lp + 1:rp].strip()
+    if inner in ("", "void"):
+        return []
+    out = []
+    for part in inner.split(","):
+        if "(" in part or "[" in part:
+            return []
+        m = PARAM_RE.match(part)
+        if not m:
+            return []
+        out.append((m.group(1).strip(), m.group(2)))
+    return out
+
+
+def mut_param_temp(region, open_line_local, rng, params):
+    """Copy a parameter into a fresh local of its declared type and substitute a
+    random subset of its uses -- a signature-typed regalloc lever."""
+    if not params:
+        return None
+    typ, name = rng.choice(params)
+    b0, b1 = body_span(region, open_line_local)
+    wb = re.compile(r"\b" + re.escape(name) + r"\b")
+    lines_with = [i for i in range(b0, b1) if wb.search(region[i])]
+    if not lines_with:
+        return None
+    nn = name + "_p"
+    out = region[:]
+    flips = [0]
+
+    def repl(_m):
+        if rng.random() < 0.6:
+            flips[0] += 1
+            return nn
+        return name
+    for i in lines_with:
+        out[i] = wb.sub(repl, out[i])
+    if flips[0] == 0:
+        i = lines_with[0]
+        out[i] = wb.sub(nn, region[i], count=1)
+    sep = "    " if not typ.endswith("*") else "    "
+    out = out[:b0] + [f"{sep}{typ} {nn} = {name};"] + out[b0:]
+    return out
+
+
+MUTATORS = [mut_opt, mut_decls, mut_stmts, mut_operands, mut_reassoc, mut_compare,
+            mut_compound]
+
+
+def mutate(region, marker_idx_local, open_line_local, rng, params):
+    if params and rng.random() < 0.25:
+        return mut_param_temp(region, open_line_local, rng, params)
     m = rng.choice(MUTATORS)
     if m is mut_opt:
         return m(region, marker_idx_local, rng)
@@ -328,7 +414,7 @@ def main():
     for it in range(args.iters):
         if args.time and time.time() - t0 > args.time:
             break
-        cand = mutate(cur, marker_local, base_open, rng)
+        cand = mutate(cur, marker_local, base_open, rng, t.params)
         if cand is None or cand == cur:
             continue
         sc, match, _ = t.score(cand)

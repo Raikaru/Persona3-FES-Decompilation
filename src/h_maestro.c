@@ -46,11 +46,11 @@ void H_Maestro_DestroyTask(KwlnTask* hmaestroTask)
     RwFree(work);
 }
 
-// FUN_00111dd0 NONMATCHING
+// FUN_00111dd0
 KwlnTask* H_Maestro_CreateTask(KwlnTask* parent, u32 priority, const char* path)
 {
-    HMaestro* work;
     KwlnTask* task;
+    HMaestro* work;
 
     work = RwCalloc(1, sizeof(HMaestro), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
