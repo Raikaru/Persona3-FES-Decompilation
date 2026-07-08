@@ -33,17 +33,21 @@ RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 
     return NULL;
 }
 
-// FUN_0048ef10 NONMATCHING
+// FUN_0048ef10
+#pragma optimization_level 3
 RwChar* RpUserDataArrayGetName(RpUserDataArray* userData)
 {
     return userData->name;
 }
+#pragma optimization_level 2
 
-// FUN_0048ef20 NONMATCHING
+// FUN_0048ef20
+#pragma optimization_level 3
 RpUserDataFormat RpUserDataArrayGetFormat(RpUserDataArray* userData)
 {
     return userData->format;
 }
+#pragma optimization_level 2
 
 // FUN_0048ef40
 #pragma optimization_level 3
