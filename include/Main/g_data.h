@@ -287,6 +287,7 @@ u16 datGetEquipmentId(s16 pcId, u16 equipmentIdx);
 u8 datGetEquipmentEffect(s16 pcId, u16 equipmentIdx);
 void datInitPersona(s16 pcId);
 void datCompendiumInit();
+void datInitSocialLink();
 s16 datGetActiveSocialLink();
 s8 datGetSocialLinkLevel(s16 socialLink);
 u32 datGetTotalBtl();

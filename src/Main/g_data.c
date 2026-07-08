@@ -1012,6 +1012,12 @@ void datCompendiumInit()
     memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
 }
 
+// FUN_0016db70
+void datInitSocialLink()
+{
+    memset(&gGlobalWork.heroStatus.activeSocialLink, 0, 0x508);
+}
+
 // FUN_00177280 NONMATCHING
 s16 datGetAcademicLevel(s16 academicPoint)
 {
