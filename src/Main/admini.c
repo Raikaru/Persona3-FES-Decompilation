@@ -309,7 +309,7 @@ void adminiDestroyTask(KwlnTask* adminiTask)
 KwlnTask* adminiCreateTask()
 {
     AdminiWork* admini;
-    u32 i;
+    s32 i;
 
     if (kwlnTaskGetTaskByName("admini") != NULL)
     {
