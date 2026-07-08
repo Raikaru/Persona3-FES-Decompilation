@@ -603,7 +603,22 @@ BtlPacket* btlUnitCreateRotateTowardUnitPacket(BtlUnit* unit, BtlUnit* targetUni
 // FUN_00282c60
 u32 btlUnit00282c60(BtlUnit* unit)
 {
-    // TODO
+    s16 val;
+
+    switch (unit->genus)
+    {
+    case 0:
+    case 1:
+        if ((unit->flags2 & 2) != 0)
+        {
+            val = unit->unk_9ce;
+        }
+        else
+        {
+            val = 0;
+        }
+        return unit->unk_9e0 == val;
+    }
 
     return false;
 }
