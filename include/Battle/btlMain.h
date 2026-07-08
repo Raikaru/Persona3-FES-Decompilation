@@ -32,7 +32,7 @@ typedef struct BtlStateWork
 {
     u32 currState;  // 0x0. See enum 'BtlState'
     u32 stateToSet; // 0x4. See enum 'BtlState'
-    u32 stateTimer; // 0x8. Reset on state change
+    s32 stateTimer; // 0x8. Reset on state change
 } BtlStateWork;
 
 void btlMainSetState(u32 state);
