@@ -136,13 +136,18 @@ RwRGBAReal* K_Scene_GetFldAmbLightColor()
     return &res->ambLightColor;
 }
 
-// FUN_001a0a10 NONMATCHING
+// FUN_001a0a10
 RwRGBAReal* K_Scene_GetCharAmbLightColor()
 {
     ResrcLightChar* res;
 
     res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
-    return &res->ambientColor;
+    if (res != NULL)
+    {
+        return &res->directionalColor;
+    }
+
+    return NULL;
 }
 
 // FUN_001a0250
