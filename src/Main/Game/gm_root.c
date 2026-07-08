@@ -37,7 +37,7 @@ static inline KwlnTask* createTask(KwlnTask* parent)
     return task;
 }
 
-// FUN_002664c0 NONMATCHING
+// FUN_002664c0
 KwlnTask* gmRootCreateTask(KwlnTask* parent)
 {
     GmRootWork* work;
@@ -70,7 +70,7 @@ void* gmRootUpdateTask(KwlnTask* gmRootTask)
     return KWLNTASK_STOP;
 }
 
-// FUN_00266600 NONMATCHING
+// FUN_00266600
 void gmRootDestroyTask(KwlnTask* gmRootTask)
 {
     K_ASSERT(sWork != NULL, 90);

@@ -361,7 +361,7 @@ u32 K_Cmd_CREATE_MDL()
     return true;
 }
 
-// FUN_001c4a60 NONMATCHING
+// FUN_001c4a60
 u32 K_Cmd_CREATE_NPC_SYNC()
 {
     Model* mdl;

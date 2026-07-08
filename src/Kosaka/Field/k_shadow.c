@@ -98,7 +98,7 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d270 NONMATCHING
+// FUN_0019d270
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
 {
     RwFree(fldShadowMapTask->workData);

@@ -83,7 +83,7 @@ DatUnit* datGetUnit(s16 pcId)
     return &gPcs[pcId].unit;
 }
 
-// FUN_0016cdf0 NONMATCHING
+// FUN_0016cdf0
 void datInitUnit(s16 pcId)
 {
     u32 idx;
@@ -249,7 +249,7 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
     gPcs[pcId].unit.aiTactic = aiTacticId;
 }
 
-// FUN_0016dd50 NONMATCHING
+// FUN_0016dd50
 s32 datGetMoney()
 {
     return gGlobalWork.heroMoney;
@@ -352,13 +352,13 @@ void datSetHp(u16 pcId, u16 hp)
     gGlobalWork.heroUnit.hp = tmp;
 }
 
-// FUN_0016e920 NONMATCHING
+// FUN_0016e920
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
     gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
 }
 
-// FUN_0016e930 NONMATCHING
+// FUN_0016e930
 void datSetMoney(u32 money)
 {
     K_ASSERT(money <= 9999999, 1674);
@@ -372,7 +372,7 @@ void datSetPartyId(s32 idx, s16 pcId)
     gGlobalWork.partyIds[idx] = pcId;
 }
 
-// FUN_0016e9b0 NONMATCHING
+// FUN_0016e9b0
 u32 datAddMoney(s32 amount)
 {
     s32 finalMoney;
@@ -446,7 +446,7 @@ u32 datScrCmd_GET_PARTY_ID()
     return true;
 }
 
-// FUN_0016edd0 NONMATCHING
+// FUN_0016edd0
 u32 datScrCmd_GET_MONEY()
 {
     scrSetIntReturnVal(gGlobalWork.heroMoney);
@@ -454,7 +454,7 @@ u32 datScrCmd_GET_MONEY()
     return true;
 }
 
-// FUN_0016ee00 NONMATCHING
+// FUN_0016ee00
 u32 datScrCmd_ADD_MONEY()
 {
     s32 baseMoney;
@@ -474,7 +474,7 @@ u32 datScrCmd_ADD_MONEY()
     return true;
 }
 
-// FUN_0016ee90 NONMATCHING
+// FUN_0016ee90
 u32 datScrCmd_REMOVE_MONEY()
 {
     s32 baseMoney;
@@ -497,7 +497,7 @@ u32 datScrCmd_REMOVE_MONEY()
     return true;
 }
 
-// FUN_0016ef20 NONMATCHING
+// FUN_0016ef20
 s16 datGetDaysSinceApr5()
 {
     return gGlobalWork.calendarWork.daysSinceApr5;
@@ -509,7 +509,7 @@ s8 datGetTime()
     return gGlobalWork.calendarWork.time;
 }
 
-// FUN_0016ef40 NONMATCHING
+// FUN_0016ef40
 s16 datGetDaysSkipTarget()
 {
     return gGlobalWork.calendarWork.daysSkipTarget;
@@ -521,7 +521,7 @@ s8 datGetTimeSkipTarget()
     return gGlobalWork.calendarWork.timeSkipTarget;
 }
 
-// FUN_0016ef60 NONMATCHING
+// FUN_0016ef60
 u32 datGetSkipToTarget()
 {
     return gGlobalWork.calendarWork.skipToTarget;
@@ -739,25 +739,25 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
     }
 }
 
-// FUN_0016f150 NONMATCHING
+// FUN_0016f150
 void datSetTime(s8 time)
 {
     gGlobalWork.calendarWork.time = time;
 }
 
-// FUN_0016f160 NONMATCHING
+// FUN_0016f160
 void datSetDaysSkipTarget(s16 days)
 {
     gGlobalWork.calendarWork.daysSkipTarget = days;
 }
 
-// FUN_0016f170 NONMATCHING
+// FUN_0016f170
 void datSetTimeSkipTarget(s8 time)
 {
     gGlobalWork.calendarWork.timeSkipTarget = time;
 }
 
-// FUN_0016f180 NONMATCHING
+// FUN_0016f180
 void datSetSkipToTarget(u32 val)
 {
     gGlobalWork.calendarWork.skipToTarget = val;
@@ -775,7 +775,7 @@ u32 datGetFlag(s32 bit)
     return (gGlobalWork.flags[idx] & (1 << mask)) != 0;
 }
 
-// FUN_0016f1f0. See 'g_flags.h' !!! NONMATCHING
+// FUN_0016f1f0. See 'g_flags.h' !!!
 void datSetFlag(s32 bit, u8 enabled)
 {
     s32 mask;
@@ -914,7 +914,7 @@ u16 datGetCourageLevel(u16 couragePoint)
     return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
 }
 
-// FUN_0017b170 NONMATCHING
+// FUN_0017b170
 u32 datGetTotalBtl()
 {
     return gGlobalWork.totalBtl;

@@ -154,7 +154,7 @@ static const BtlActionStateEntry sActionStateTable[] =
 
 static u32 sNextId = 1; // 007cc530
 
-// FUN_00289860 NONMATCHING
+// FUN_00289860
 u32 btlActionIdleWeaponAnim(BtlAction* action)
 {
     BtlPacket* animPacket;
@@ -262,7 +262,7 @@ void btlActionInitStateStartHome(BtlAction* action)
 {
     // TODO
 }
-// FUN_0028b9c0 NONMATCHING
+// FUN_0028b9c0
 void btlActionUpdateStateStartHome(BtlAction* action)
 {
     RwV3d rot;
@@ -873,7 +873,7 @@ void btlActionInitStateEndHome(BtlAction* action)
 {
     // TODO
 }
-// FUN_00299760 NONMATCHING
+// FUN_00299760
 void btlActionUpdateStateEndHome(BtlAction* action)
 {
     RwV3d rot;
@@ -1002,7 +1002,7 @@ void btlActionSetUnit(BtlAction* action, BtlUnit* unit)
     action->unk_1a |= (1 << 0);
 }
 
-// FUN_00299e90 NONMATCHING
+// FUN_00299e90
 BtlAction* btlActionCreate()
 {
     BtlAction* action;
@@ -1050,7 +1050,7 @@ BtlAction* btlActionCreate()
     return action;
 }
 
-// FUN_00299fb0 NONMATCHING
+// FUN_00299fb0
 void btlActionUpdateAll()
 {
     BtlAction* curr;

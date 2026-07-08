@@ -77,13 +77,13 @@ f32 effMiscRandFloat(EffRandState* state)
     return (f32)(effMiscRand(state) & 0xFFFFFF) / 16777216.0f;
 }
 
-// FUN_003580b0. [0;max[ NONMATCHING
+// FUN_003580b0. [0;max[
 u32 effMiscRandRange(EffRandState* state, u32 max)
 {
     return effMiscRand(state) % max;
 }
 
-// FUN_003580f0 NONMATCHING
+// FUN_003580f0
 void effMiscRandInit(EffRandState* state, u32 seed)
 {
     u32 x;

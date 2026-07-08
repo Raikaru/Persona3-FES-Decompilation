@@ -53,13 +53,13 @@ void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a5e70 NONMATCHING
+// FUN_001a5e70
 void K_Misc_DestroyDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
 {
     RwFree(delayMdlFreeTask->workData);
 }
 
-// FUN_001a5ea0 NONMATCHING
+// FUN_001a5ea0
 KwlnTask* K_Misc_CreateDelayMdlFreeTask(Model* mdlToDestroy)
 {
     DelayMdlFreeWork* work;
@@ -91,13 +91,13 @@ void* K_Misc_UpdateScrShutdownTask(KwlnTask* scrShutdownTask)
     return KWLNTASK_STOP;
 }
 
-// FUN_001a6290 NONMATCHING
+// FUN_001a6290
 void K_Misc_DestroyScrShutdownTask(KwlnTask* scrShutdownTask)
 {
     RwFree(scrShutdownTask->workData);
 }
 
-// FUN_001a62c0 NONMATCHING
+// FUN_001a62c0
 KwlnTask* K_Misc_CreateScrShutdownTask(KwlnTask* scrTask)
 {
     ScrShutdownWork* work;

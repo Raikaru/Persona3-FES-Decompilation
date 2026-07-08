@@ -39,7 +39,7 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     return false;
 }
 
-// FUN_001ad2f0 NONMATCHING
+// FUN_001ad2f0
 void* K_FldFrame_UpdateCtlTask(KwlnTask* collisCtlTask)
 {
     CollisCtl* ctl;
@@ -137,7 +137,7 @@ void* K_FldFrame_UpdateCtlTask(KwlnTask* collisCtlTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001ad630 NONMATCHING
+// FUN_001ad630
 void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
 {
     RwFree(collisCtlTask->workData);
@@ -255,7 +255,7 @@ s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask)
     return ((CollisCtl*)collisCtlTask->workData)->zGrid;
 }
 
-// FUN_001ad940 NONMATCHING
+// FUN_001ad940
 void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask)
 {
     CollisCtl* ctl = (CollisCtl*)collisCtlTask->workData;
@@ -275,7 +275,7 @@ void K_FldFrame_CtlUpdateMdlMat(KwlnTask* collisCtlTask, const RwMatrix* mat)
     // TODO
 }
 
-// FUN_001addf0 NONMATCHING
+// FUN_001addf0
 void K_FldFrame_CtlMoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* normalizedDir)
 {
     CollisCtl* ctl;
@@ -297,7 +297,7 @@ void K_FldFrame_CtlMoveInDir(f32 dist, KwlnTask* collisCtlTask, const RwV3d* nor
     }
 }
 
-// FUN_001adec0 NONMATCHING
+// FUN_001adec0
 void K_FldFrame_CtlMoveForward(f32 dist, KwlnTask* collisCtlTask)
 {
     CollisCtl* ctl = (CollisCtl*)collisCtlTask->workData;
@@ -319,7 +319,7 @@ void K_FldFrame_CtlMoveForward(f32 dist, KwlnTask* collisCtlTask)
     }
 }
 
-// FUN_001adff0 NONMATCHING
+// FUN_001adff0
 void K_FldFrame_CtlRotate(KwlnTask* collisCtlTask, const RwV3d* axis, f32 angle)
 {
     CollisCtl* ctl;
@@ -350,13 +350,13 @@ void* K_FldFrame_UpdateCollisSphereTask(KwlnTask* collisSphereTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001ae3c0 NONMATCHING
+// FUN_001ae3c0
 void K_FldFrame_DestroyCollisSphereTask(KwlnTask* collisSphereTask)
 {
     RwFree(collisSphereTask->workData);
 }
 
-// FUN_001ae3f0 NONMATCHING
+// FUN_001ae3f0
 KwlnTask* K_FldFrame_CreateCollisSphereTask(KwlnTask* parent)
 {
     CollisSphereDebug* work;

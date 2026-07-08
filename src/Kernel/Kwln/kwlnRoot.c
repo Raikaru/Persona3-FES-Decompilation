@@ -119,7 +119,7 @@ void kwlnRootDestroyTask(KwlnTask* rootTask)
     RwFree(rootTask->workData);
 }
 
-// FUN_00198940 NONMATCHING
+// FUN_00198940
 KwlnTask* kwlnRootCreateTask()
 {
     KwlnTask* rootTask;

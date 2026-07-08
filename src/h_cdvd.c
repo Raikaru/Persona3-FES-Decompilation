@@ -16,7 +16,7 @@ void H_Cdvd_001007f0()
 {
 }
 
-// FUN_00100800 NONMATCHING
+// FUN_00100800
 void H_Cdvd_Init()
 {
     s32 i;
@@ -139,7 +139,7 @@ u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
     return cdvd->readState == 4;
 }
 
-// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN) NONMATCHING
+// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
 void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
 {
     ArchiveEntryHeader entryHeader;

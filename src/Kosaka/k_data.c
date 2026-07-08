@@ -37,7 +37,7 @@ void K_Data_LoadFldMainScript()
     H_Cdvd_Destroy(cdvd);
 }
 
-// FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData' NONMATCHING
+// FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData'
 void K_Data_LoadDngFloorsData(u32 scenarioMode)
 {
     char buffer[128];

@@ -13,7 +13,7 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
 extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
 
-// FUN_001c5ee0 NONMATCHING
+// FUN_001c5ee0
 u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
 {
     u16 resTypeId;
@@ -66,7 +66,7 @@ u16 K_FldEvent_FindFldHitAt(const RwV3d* heroPos, ResrcFldHit** fldHitDst)
     return resTypeId;
 }
 
-// FUN_001c7b30. Temp name ? First condition is weird NONMATCHING
+// FUN_001c7b30. Temp name ? First condition is weird
 u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
 {
     u32 isNear;
@@ -167,7 +167,7 @@ u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDis
     return withinDist;
 }
 
-// FUN_001c74c0 NONMATCHING
+// FUN_001c74c0
 ResrcModelNpc* K_FldEvent_FindInteractableNpc()
 {
     ResrcModelNpc* npc;
@@ -261,7 +261,7 @@ u32 K_FldEvent_IsUnitHero(const FldUnit* fldUnit)
     return fldUnit == &gFldUnitsPc[FLDUNIT_PC_HERO];
 }
 
-// FUN_001c7ce0. Temp name maybe NONMATCHING
+// FUN_001c7ce0. Temp name maybe
 u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
 {
     u32 ret;
@@ -318,7 +318,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001cd570 NONMATCHING
+// FUN_001cd570
 void K_FldEvent_DestroyFldEventTask(KwlnTask* fldEventTask)
 {
     RwFree(fldEventTask->workData);
@@ -360,13 +360,13 @@ void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001cd6e0 NONMATCHING
+// FUN_001cd6e0
 void K_FldEvent_DestroyDrawCmdTask(KwlnTask* drawCmdTask)
 {
     RwFree(drawCmdTask->workData);
 }
 
-// FUN_001cd710 NONMATCHING
+// FUN_001cd710
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
 {
     FldDrawCmd* drawCmd;

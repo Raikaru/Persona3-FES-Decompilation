@@ -5,7 +5,7 @@
 
 static u32 sPrevPercentRand; // 007ce510
 
-// FUN_002ffbc0 NONMATCHING
+// FUN_002ffbc0
 u32 datCalcRand(u32 max)
 {
     u32 rand;
@@ -290,7 +290,7 @@ u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
     return (unit->hp + hpDelta) <= 0;
 }
 
-// FUN_0030b5e0 NONMATCHING
+// FUN_0030b5e0
 u32 datCalcIsLowHp(DatUnit* unit)
 {
     u16 hp;

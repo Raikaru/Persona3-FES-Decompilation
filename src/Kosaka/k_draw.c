@@ -22,13 +22,13 @@ void* K_Draw_UpdatePointTask(KwlnTask* pointTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a46c0 NONMATCHING
+// FUN_001a46c0
 void K_Draw_DestroyPointTask(KwlnTask* pointTask)
 {
     RwFree(pointTask->workData);
 }
 
-// FUN_001a46f0. Tiny sphere NONMATCHING
+// FUN_001a46f0. Tiny sphere
 KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent)
 {
     PointDrawWork* work;
@@ -80,13 +80,13 @@ void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a4830 NONMATCHING
+// FUN_001a4830
 void K_Draw_DestroyCylinderTask(KwlnTask* cylinderTask)
 {
     RwFree(cylinderTask->workData);
 }
 
-// FUN_001a4860 NONMATCHING
+// FUN_001a4860
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent)
 {
     CylinderDrawWork* work;
@@ -147,7 +147,7 @@ void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a4ca0 NONMATCHING
+// FUN_001a4ca0
 void K_Draw_DestroyPositionTask(KwlnTask* positionTask)
 {
     RwFree(positionTask->workData);

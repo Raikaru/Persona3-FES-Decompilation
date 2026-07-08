@@ -98,7 +98,7 @@ RwReal RwV2dLength(const RwV2d* in)
     RwReal y = in->y;
     RwReal x = in->x;
 
-    return sqrtf((y * y) + (x * x));
+    return sqrtf((x * x) + (y * y));
 }
 #pragma optimization_level 2
 

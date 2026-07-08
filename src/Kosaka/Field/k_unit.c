@@ -23,7 +23,7 @@ void K_FldUnit_DestroyPcMdl(s32 unitId)
     }
 }
 
-// FUN_001cd940 NONMATCHING
+// FUN_001cd940
 FldUnit* K_FldUnit_FindFreePc()
 {
     FldUnit* units;
@@ -47,7 +47,7 @@ FldUnit* K_FldUnit_FindFreePc()
     return free;
 }
 
-// FUN_001cfc50 NONMATCHING
+// FUN_001cfc50
 FldUnit* K_FldUnit_CreateReaper(u32 unused, const RwV3d* spawnPos)
 {
     FldUnit* units;

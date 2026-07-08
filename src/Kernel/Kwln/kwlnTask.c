@@ -31,7 +31,7 @@ void kwlnTaskDestroy(KwlnTask* task);
 void kwlnTaskDetachAllChildren(KwlnTask* task);
 void kwlnTaskDestroyHierarchy(KwlnTask* task);
 
-// FUN_001939d0. Remove a task from a list by its current state NONMATCHING
+// FUN_001939d0. Remove a task from a list by its current state
 void kwlnTaskRemoveFromList(KwlnTask* task)
 {
     KwlnTask* next;
@@ -407,7 +407,7 @@ void kwlnTaskDestroy(KwlnTask* task)
     }
 }
 
-// FUN_00194750 NONMATCHING
+// FUN_00194750
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
 {
     printf("%s+-%s [%d]", sPrintIndent, task->name, task->priority);
@@ -624,7 +624,7 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
     return task;
 }
 
-// FUN_00194c50. Init a new task. See 'kwlnTaskInitEx' for adjustable 'runningDelay' and 'destroyDelay' NONMATCHING
+// FUN_00194c50. Init a new task. See 'kwlnTaskInitEx' for adjustable 'runningDelay' and 'destroyDelay'
 KwlnTask* kwlnTaskInit(const char* name,
                        u32 priority,
                        KwlnTaskUpdateFunc update,
@@ -690,7 +690,7 @@ KwlnTask* kwlnTaskInit(const char* name,
     return task;
 }
 
-// FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay' NONMATCHING
+// FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay'
 KwlnTask* kwlnTaskInitEx(const char* name,
                          u32 priority,
                          s32 runningDelay,
