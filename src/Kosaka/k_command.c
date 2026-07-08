@@ -368,7 +368,6 @@ u32 K_Cmd_CREATE_NPC_SYNC()
     s32 param2;
     s32 resTypeId;
     u32 isNpcCreated;
-    u32 resId;
     ResrcModelNpc* npc;
 
     mdl = (Model*)scrGetIntPara(0);
@@ -379,8 +378,7 @@ u32 K_Cmd_CREATE_NPC_SYNC()
 
     if (mdlStreamRead(mdl) == true)
     {
-        resId = K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC);
-        resTypeId = MT_Scene_CreateResModelNpc(resId, param2, mdl);
+        resTypeId = MT_Scene_CreateResModelNpc(K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC), param2, mdl);
 
         npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
         npc->baseMdl = mdlClone(gFldBaseMdl);

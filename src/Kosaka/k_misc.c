@@ -5,7 +5,7 @@
 #include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"
 
-// FUN_001a5c50 NONMATCHING
+// FUN_001a5c50
 u32 K_Misc_FindNextFreeResId(u16 resType)
 {
     u32 currId;
@@ -26,7 +26,7 @@ u32 K_Misc_FindNextFreeResId(u16 resType)
         }
     }
 
-    return currId;
+    return (u16)currId;
 }
 
 // FUN_001a5de0
