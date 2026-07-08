@@ -49,6 +49,14 @@
       }
     },
     {
+      "name": "Main/Battle/Panel/bs_root.c",
+      "target_path": "build/objdiff/target/Main_Battle_Panel_bs_root.o",
+      "base_path": "build/objdiff/base/Main_Battle_Panel_bs_root.o",
+      "metadata": {
+        "complete": true
+      }
+    },
+    {
       "name": "Main/OpEd/op_fade.c",
       "target_path": "build/objdiff/target/Main_OpEd_op_fade.o",
       "base_path": "build/objdiff/base/Main_OpEd_op_fade.o",
