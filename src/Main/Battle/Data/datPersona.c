@@ -189,10 +189,10 @@ void datPersonaClearHeroPersonas()
     memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 }
 
-// FUN_001764b0 NONMATCHING
-void datPersonaAddExp(DatPersonaWork* persona, u32 exp)
+// FUN_001764b0
+void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
 {
-    K_ASSERT(exp > 0, 1458);
+    K_ASSERT(exp >= 0, 1458);
 
     persona->nextExp += exp;
 }

@@ -100,7 +100,7 @@ u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx);
 DatPersonaWork* datPersonaGetHeroPersona(u16 heroPersonaIdx);
 void datPersonaClearHeroPersonas();
 
-void datPersonaAddExp(DatPersonaWork* persona, u32 exp);
+void datPersonaAddExp(DatPersonaWork* persona, s32 exp);
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona);
 u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId);
 u8 datPersonaResetSkill(DatPersonaWork* persona, u16 skillId);

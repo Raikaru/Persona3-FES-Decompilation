@@ -43,13 +43,15 @@ RwMatrix* RwMatrixUpdate(RwMatrix* matrix)
 }
 #pragma optimization_level 2
 
-// FUN_004c2f30 NONMATCHING
+// FUN_004c2f30
+#pragma optimization_level 3
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
 {
     RwMatrixMultiplyVUMacro(matrixOut, matrixIn1, matrixIn2);
 
     return matrixOut;
 }
+#pragma optimization_level 2
 
 // FUN_004c31b0
 RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp)
@@ -112,11 +114,13 @@ RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix
 }
 #pragma optimization_level 2
 
-// FUN_004ca510 NONMATCHING
+// FUN_004ca510
+#pragma optimization_level 3
 RwUInt32 RwEngineGetVersion()
 {
     return RW_LIB_VERSION;
 }
+#pragma optimization_level 2
 
 // FUN_004ca850
 RwBool RwEngineInit(const RwMemoryFunctions* memFuncs, RwUInt32 flags, RwUInt32 resArenaSize)
