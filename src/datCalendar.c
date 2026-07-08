@@ -267,7 +267,7 @@ u8 clndIsHolidayOrSunday()
 }
 
 // FUN_0017e480 NONMATCHING
-u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
+u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
     u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
     u32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
