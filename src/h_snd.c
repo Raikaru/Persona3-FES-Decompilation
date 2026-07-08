@@ -2,6 +2,20 @@
 #include "Main/g_data.h"
 #include "temporary.h"
 
+typedef struct HsndSlotWork
+{
+    s16 state;
+    s16 param2;
+    s16 param1;
+    s16 pad6;
+    u32 unk8;
+    u16 unkC;
+    u8 padE[0x1a];
+} HsndSlotWork;
+
+static HsndSlotWork sSlotWork[8];
+extern char D_005c8858;
+
 // 007cb2a8. See enum BgmId
 static const char* sBgmAdxStrings[82] = 
 {
@@ -96,7 +110,26 @@ u8 H_Snd_PlayBgm(s16 id, s32 unused)
 // FUN_00109ca0
 u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2)
 {
-    // TODO
+    if (FUN_00109df0() != 0)
+    {
+        if (param_2 == sSlotWork[param_1].param2)
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if (sSlotWork[param_1].state == 3 && param_2 != sSlotWork[param_1].param2)
+        {
+            FUN_0019d3f0(&D_005c8858, 0x34b);
+        }
+    }
+
+    sSlotWork[param_1].unkC = 0;
+    sSlotWork[param_1].unk8 = 0;
+    sSlotWork[param_1].param1 = param_1;
+    sSlotWork[param_1].param2 = param_2;
+    sSlotWork[param_1].state = 2;
 
     return true;
 }
