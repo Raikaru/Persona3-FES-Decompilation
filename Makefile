@@ -5,19 +5,21 @@
 #      ("mwcc" -> mwccps2.exe, "retail_elf" -> SLUS_216.21) at it
 #   2. make setup      # extract the loadable image from the ELF
 #   3. make split      # splat -> asm/ (only needed once, or after a config change)
-#   4. make            # assemble + link -> build/slus21621.elf, verify byte-match
+#   4. make            # build byte-identical SLUS_216.21 + verify
 #
-# Toolchain: the original CodeWarrior PS2 suite (mwccps2 / asm_r5900_elf / mwldps2).
+# Toolchain: mwccps2/mwldps2 plus GNU mipsel binutils (`mipsel-linux-gnu-as`,
+# `mipsel-linux-gnu-objcopy`; Debian/WSL package binutils-mipsel-linux-gnu).
 
 PYTHON ?= python
 SPLAT_CONFIG = config/slus21621.yaml
+C_SRCS := $(shell find src -name '*.c' 2>/dev/null)
 
-.PHONY: all build setup split verify check clean distclean
+.PHONY: all build setup split verify check symbols objdiff ctx progress format clean distclean
 
 all: build verify
 
-# Assemble every segment, link the loadable image, and splice it into the
-# retail ELF wrapper -> build/SLUS_216.21, verified byte-identical to retail.
+# Assemble asm + compile decompiled C objects, link the loadable image with
+# mwldps2, splice into the retail ELF wrapper -> build/SLUS_216.21, verify.
 build:
 	$(PYTHON) tools/build.py
 
@@ -33,8 +35,29 @@ split:
 verify check:
 	$(PYTHON) tools/verify.py
 
+# Regenerate the recovered symbol table (data-symbol addresses + _gp).
+symbols:
+	$(PYTHON) tools/recover_symbols.py
+
+# Regenerate objdiff target/base objects + objdiff.json.
+objdiff:
+	$(PYTHON) tools/gen_objdiff.py
+
+# Decomp.me context for a file:  make ctx FILE=src/Battle/btlFade.c
+ctx:
+	$(PYTHON) tools/m2ctx.py $(FILE)
+
+# Decompilation progress report.
+progress:
+	$(PYTHON) tools/progress.py
+
+# Format decompiled C in place.
+format:
+	clang-format -i $(C_SRCS)
+
 clean:
-	-rm -f asm/*.o asm/*_raw.s build/slus21621.elf build/slus21621.lcf build/SLUS_216.21
+	-rm -rf build/obj build/objdiff asm/chunks
+	-rm -f asm/*.o build/slus21621.elf build/slus21621.lcf build/slus21621.map build/SLUS_216.21
 
 distclean: clean
 	-rm -f image.bin

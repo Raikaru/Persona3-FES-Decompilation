@@ -295,6 +295,24 @@ def window_for(addr, boundaries):
     return None
 
 
+def compile_object(cpath, cfg, objdir=None):
+    """Compile a src/ file with the project flags. Returns (ObjectFile, log) or
+    (None, log) on failure. objdir defaults to a temp dir."""
+    import tempfile
+    rel = cpath.relative_to(REPO)
+    tmp = None
+    if objdir is None:
+        tmp = tempfile.mkdtemp()
+        objdir = Path(tmp)
+    opath = Path(objdir) / (rel.as_posix().replace("/", "_") + ".o")
+    proc = subprocess.run(
+        [cfg["mwcc"], "-O2", "-Iinclude", "-c", str(cpath), "-o", str(opath)],
+        cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    if proc.returncode or not opath.is_file():
+        return None, proc.stdout
+    return ObjectFile(opath), proc.stdout
+
+
 def verify_file(cpath, cfg, retail, boundaries, objdir):
     rel = cpath.relative_to(REPO)
     markers = scan_markers(cpath)

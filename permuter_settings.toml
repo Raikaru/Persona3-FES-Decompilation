@@ -1,0 +1,13 @@
+# Settings for decomp-permuter (https://github.com/simonlindholm/decomp-permuter).
+# Point import.py at a function with:
+#   ./import.py <path/to/file.c> <function_name>
+# then:
+#   ./permuter.py <dir>
+
+compiler_command = "mwccps2.exe -O2 -Iinclude -c"
+assembler_command = "mipsel-linux-gnu-as -EL -march=r5900 -mabi=eabi -G128 -no-pad-sections"
+compiler_type = "mwcc"
+
+[preserve_macros]
+# Macros to keep opaque to the permuter (do not expand).
+"K_ASSERT\\(.*\\)" = "void"

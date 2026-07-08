@@ -24,7 +24,7 @@ Loadable size: 0x8acc80
 Symbols: stripped, no symtab
 ```
 
-The current matching build links the asm baseline. Decompiled C in `src/` is validated per function by `tools/verify.py`. Treat `verify.py` as the C match gate.
+The matching build links fully-decompiled source files as real C objects (mwccps2 via `tools/mwccgap`) and the rest of the disassembly as asm objects, then links everything with mwldps2 to a byte-identical image. A file links as a C object when every function matches, its range is contiguous, and its owned data sections are placeable byte-exact (`.rodata`/`.data`/`.sdata` at recovered addresses, `.sbss`/`.bss` as zero-filled PROGBITS); otherwise it stays on the asm baseline. `tools/verify.py` is the per-function C match gate in all cases.
 
 ## Required local setup
 
@@ -36,13 +36,21 @@ Required version:
 mwcps2-3.0.1b210-060308
 ```
 
-Required programs:
+Required CodeWarrior programs:
 
 ```text
 mwccps2.exe
-asm_r5900_elf.exe
 mwldps2.exe
 ```
+
+Required GNU binutils programs:
+
+```text
+mipsel-linux-gnu-as
+mipsel-linux-gnu-objcopy
+```
+
+On Debian/WSL, install them with `binutils-mipsel-linux-gnu`.
 
 C compiler flags used by the verifier:
 
@@ -365,36 +373,25 @@ Use this model when debugging build or asm issues:
    mips_abi_gpr: numeric
    ```
 
-2. `tools/desym.py` rewrites splat GAS asm into raw-immediate asm accepted by the CodeWarrior assembler:
+2. `tools/asm.py` assembles splat GAS with GNU binutils:
 
    ```text
-   %hi/%lo(sym[+off]) -> literal hi/lo
-   jal/j sym           -> jal/j 0xADDR
-   div/divu/mult/multu 3-operand form -> 2-operand form
-   not pseudo          -> nor rd,rs,$0
+   mipsel-linux-gnu-as -EL -G 128 -march=r5900 -mabi=eabi -no-pad-sections
    ```
 
-   Symbols are resolved through `config/symbol_addrs.txt` or through `func_` / `D_` addresses in names.
+   It keeps real `%hi`/`%lo`/`jal` relocations for mwldps2, strips GNU-only
+   empty sections that mwldps2 rejects, and rewrites executable-range data to
+   `.word` from the original byte comments when the assembler rejects it or when
+   a non-relocated word differs from retail.
 
-3. `tools/asm.py` assembles with:
+3. `tools/recover_symbols.py` recovers data-symbol addresses and `_gp` from
+   matched relocations against retail (`config/symbols_recovered.txt`).
 
-   ```text
-   asm_r5900_elf -gnu -endian little
-   ```
-
-   If the assembler rejects a line, or if an assembled word differs from the retail image, `tools/asm.py` rewrites that original byte range as `.word` or `.byte`. This keeps generated objects byte-exact and handles data inside code.
-
-4. `tools/build.py` patches bogus section alignment to 1, links with:
-
-   ```text
-   build/slus21621.lcf
-   ```
-
-   The generated linker command file places `code1`, `data1`, `code2`, and `data2` contiguously from:
-
-   ```text
-   0x100000
-   ```
+4. `tools/build.py` compiles each eligible source file to a C object via
+   `tools/mwccgap`, carves its function range and its owned data ranges out of
+   the asm/data baseline, writes `build/slus21621.lcf`, and links all objects
+   with mwldps2. The LCF defines `_gp`, the recovered data symbols, and splat's
+   `undefined_syms_auto.txt` / `undefined_funcs_auto.txt`, placing objects contiguously from `0x100000`.
 
 5. The build verifies the linked loadable image sha1:
 
@@ -402,18 +399,25 @@ Use this model when debugging build or asm issues:
    9203646d9aa48ff24eb4ba4b328b02df468a9483
    ```
 
-Remember: this is currently an asm-baseline matching build. The C acceptance gate is per-function verification.
+Remember: eligible fully-decompiled files (functions + data) link as real C objects; everything
+else is the asm baseline. The per-function C acceptance gate is `verify.py`. A
+green `make` proves the image is byte-identical, not that a specific function's
+C was the source of its bytes — cite `verify.py` for that.
 
 ## Repo map
 
 ```text
 config/slus21621.yaml       splat config
 config/symbol_addrs.txt     function symbol map, about 13,407 entries
-tools/build.py              build driver
-tools/desym.py              asm rewrite step
-tools/asm.py                assembler wrapper and byte-correction step
+tools/build.py              build driver (asm carve + C objects + link)
+tools/asm.py                GNU as wrapper and byte-correction step
+tools/recover_symbols.py    recover data-symbol addresses + _gp
+tools/mwccgap/              vendored mwcc global assembly processor
 tools/verify.py             per-function C verifier
 tools/fndiff.py             single-function diff helper
+tools/m2ctx.py              decomp.me context generator
+tools/progress.py           progress report
+tools/gen_objdiff.py        objdiff target/base object generator
 asm/macro.inc               committed assembler macro include
 asm/*.s                     generated disassembly, gitignored
 asm/*.o                     generated objects, gitignored
@@ -440,4 +444,4 @@ The claim must be limited to what those commands prove:
 
 - Say `MATCH` only when `verify.py` says `MATCH`.
 - Say `NONMATCHING` when the implementation is useful but not byte-exact and the marker says `// FUN_XXXXXXXX NONMATCHING`.
-- Do not present the asm-baseline `make` result as proof that C functions are linked into the final image.
+- A green `make` proves byte-identical output; cite `verify.py` (not `make`) as proof that a specific function's C matches.

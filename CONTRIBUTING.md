@@ -8,7 +8,7 @@ The target ELF is stripped, little-endian MIPS R5900 code for the PS2 Emotion En
 3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb  SLUS_216.21
 ```
 
-The build extracts the single loadable image from that ELF, assembles the current asm baseline, links it with the original CodeWarrior PS2 tools, and verifies the linked loadable image. Decompiled C in `src/` is validated per function with `tools/verify.py`.
+The build extracts the single loadable image from that ELF, compiles the fully-decompiled source files into real C objects (mwccps2 via `tools/mwccgap`), assembles the rest of the disassembly with GNU R5900 binutils, links everything with the original CodeWarrior PS2 linker, and verifies the linked loadable image is byte-identical to retail. Decompiled C in `src/` is validated per function with `tools/verify.py`.
 
 ## Prerequisites
 
@@ -26,9 +26,17 @@ Required programs from that toolchain:
 
 ```text
 mwccps2.exe
-asm_r5900_elf.exe
 mwldps2.exe
 ```
+
+Required GNU binutils programs:
+
+```text
+mipsel-linux-gnu-as
+mipsel-linux-gnu-objcopy
+```
+
+On Debian/WSL, install them with `binutils-mipsel-linux-gnu`.
 
 C files are compiled with these verified compiler flags:
 
@@ -198,7 +206,7 @@ STUB
 NONMATCHING
 ```
 
-Important limitation: the matching build currently links the asm baseline. Decompiled C in `src/` is accepted by the per-function `tools/verify.py` gate. Swapping matched C into the linked image per file is the next infrastructure step.
+How C reaches the image: a source file links as a real C object once it is fully decompiled (no stub/NONMATCHING functions), contiguous, and every owned data section is placeable byte-exact. The build carves the function range out of the asm baseline and places the `mwccgap`-built object's `.text` there; it likewise carves and places the object's `.rodata`/`.data`/`.sdata` at their recovered addresses and links `.sbss`/`.bss` as zero-filled PROGBITS. A file stays on the asm baseline only when a data symbol's address can't be recovered, a data relocation target is unresolvable, or a function is WIP. `config/symbols_recovered.txt` (regenerate with `make symbols`) supplies the data-symbol addresses and `_gp` the linker needs.
 
 ## The matching workflow
 
@@ -321,11 +329,15 @@ Some differences often resist clean source-level matching. It is acceptable to l
 ```text
 config/slus21621.yaml       splat config
 config/symbol_addrs.txt     function symbol map, about 13,407 entries
-tools/build.py              build driver
-tools/desym.py              asm rewrite step for CodeWarrior tools
-tools/asm.py                assembler wrapper and byte-correction step
+tools/build.py              build driver (asm carve + C objects + link)
+tools/asm.py                GNU as wrapper and byte-correction step
+tools/recover_symbols.py    recover data-symbol addresses + _gp from retail
+tools/mwccgap/              vendored mwcc global assembly processor
 tools/verify.py             per-function C verifier
 tools/fndiff.py             single-function diff helper
+tools/m2ctx.py              decomp.me context generator
+tools/progress.py           progress report
+tools/gen_objdiff.py        objdiff target/base object generator
 asm/macro.inc               committed assembler macro include
 asm/*.s                     generated disassembly, gitignored
 asm/*.o                     generated objects, gitignored

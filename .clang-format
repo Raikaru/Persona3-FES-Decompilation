@@ -1,0 +1,14 @@
+# Style for decompiled C. Match the existing sources (Allman braces, 4 spaces).
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ColumnLimit: 120
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+PointerAlignment: Left
+AlignAfterOpenBracket: Align
+SpaceAfterCStyleCast: false
+SortIncludes: false
