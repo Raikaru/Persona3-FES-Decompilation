@@ -56,7 +56,7 @@ void H_Dbprt_Init()
     sText3DList = NULL;
 }
 
-// FUN_001043b0 NONMATCHING
+// FUN_001043b0
 void H_Dbprt_Flush()
 {
     HDbText3D* curr;
@@ -66,8 +66,13 @@ void H_Dbprt_Flush()
     
     curr = sText3DList;
     sText3DList = NULL;
-    while (curr != NULL)
+    while (true)
     {
+        if (curr == NULL)
+        {
+            break;
+        }
+
         next = curr->next;
         RwFree(curr);
         curr = next;

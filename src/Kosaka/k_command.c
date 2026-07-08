@@ -254,10 +254,10 @@ u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
     return true;
 }
 
-// FUN_001c2c80 NONMATCHING
+// FUN_001c2c80
 u32 K_Cmd_RESRC_MODEL_SCALE()
 {
-    u32 resTypeId;
+    s32 resTypeId;
     RwV3d scale;
     Resrc* res;
 
