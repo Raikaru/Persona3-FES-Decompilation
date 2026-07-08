@@ -36,16 +36,20 @@ void H_Fade_ReadPak()
     H_Cdvd_ReadSync(cdvd);
 }
 
-// FUN_00107060 NONMATCHING
+// FUN_00107060
 void H_Fade_Main()
 {
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDINVSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERLINEAR);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+    RwRenderStateSetFunc* setRenderState;
+
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
 
     if (sFadeActive)
     {
