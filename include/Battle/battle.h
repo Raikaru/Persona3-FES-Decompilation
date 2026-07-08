@@ -78,7 +78,9 @@ typedef struct Battle
     u16 fldMinorId;                                // 0x246
     BtlOrder order;                                // 0x248
     BtlStateWork stateWork;                        // 0x2b4
-    u8 unkData5[0x854];
+    u8 unkData5[0x746];
+    u16 unk_a06;                                   // 0xa06
+    u8 unkData5b[0x10c];
     HCdvd* bossPakCdvd;                            // 0xb14
     u8 unkData6[0x88];
     s32 mesHandleIdx;                              // 0xba0
