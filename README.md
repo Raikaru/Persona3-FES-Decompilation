@@ -99,6 +99,7 @@ retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x1
         │        of its original bytes — this is how data-as-code becomes data
         ▼
    *.o  ──mwldps2 + build/slus21621.lcf──▶ linked loadable image
+        │  tools/link_c.py: overlay compiled C for matched functions
         ▼
    splice into the retail ELF wrapper ──▶ build/SLUS_216.21
         ▼
@@ -107,15 +108,19 @@ retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x1
 
 `tools/build.py` drives the whole pipeline; `make` is a thin wrapper over it.
 
-Decompiled C in `src/` is validated per function by `tools/verify.py`, which
-compiles each file and byte-compares every `// FUN_xxxxxxxx`-marked function
-against retail (relocated fields masked, tail padding checked). `make` runs
-this after the image build, so a decompiled function must both compile and
-match. Physically linking the C objects into the image in place of their
-assembly (rather than validating them alongside it) needs a complete data /
-global symbol map on top of the function map — that is the next infrastructure
-step; today the linked bytes come from the disassembly, which is byte-identical
-to the matched C.
+Decompiled C is linked into the image. Because the retail ELF is stripped,
+`tools/link_c.py` first *recovers* a symbol table: every relocation in an
+already-matching function, read against the retail bytes, gives the resolved
+value of the symbol it references (a callee, a global, a gp-relative offset).
+Each matched function's compiled-C relocations are then re-encoded from that
+map and written over its region of the image — so the linked bytes come from
+your C, not the disassembly. Today 726 of 739 matched functions link cleanly
+this way; a handful with a shared-`%hi`/multiple-`%lo` pattern still fall back
+to the assembly baseline, so the image is byte-identical either way.
+
+`tools/verify.py` remains the per-function gate (`make verify`): it compiles
+each `src/` file and byte-compares every `// FUN_xxxxxxxx` function against
+retail (relocated fields masked, tail padding checked).
 
 ## Contributing
 

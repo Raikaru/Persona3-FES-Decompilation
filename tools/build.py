@@ -11,7 +11,7 @@ Pipeline (all with the original CodeWarrior EE toolchain):
 Config lives in config/slus21621.yaml; toolchain paths come from
 tools/verify_config*.json or P3_MWCC / P3_RETAIL_ELF.
 """
-import hashlib, json, os, struct, subprocess, sys
+import bisect, hashlib, json, os, struct, subprocess, sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[1]
@@ -126,6 +126,64 @@ def link(c):
         "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf")] + objs)
 
 
+def overlay_c(payload, c):
+    """Link decompiled C physically into the loadable image: compile each
+    src/*.c, recover a symbol map from the matched functions (see link_c), then
+    re-encode each matched function's compiled-C relocations from that map and
+    write the result over its region in the payload. Only functions whose
+    resolved C reproduces retail exactly are overlaid; the rest keep the
+    assembly baseline, so the image stays byte-identical either way.
+    Returns (payload, n_linked, n_matched)."""
+    import verify as V
+    import link_c as L
+    retail = V.RetailElf(c["retail_elf"])
+    bounds = sorted(int(k, 16) for k in
+                    json.loads((REPO / "tools/slus21621_functions.json").read_text())["windows"])
+
+    def window_for(a):
+        i = bisect.bisect_right(bounds, a)
+        return bounds[i] - a if i < len(bounds) else None
+
+    payload = bytearray(payload)
+    n_linked = n_matched = 0
+    for cpath in sorted((REPO / "src").rglob("*.c")):
+        mks = V.scan_markers(cpath)
+        if not mks:
+            continue
+        op = BUILD / "c_obj.o"
+        p = subprocess.run([c["mwcc"], "-O2", "-Iinclude", "-c", str(cpath), "-o", str(op)],
+                           cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        if p.returncode:
+            continue
+        obj = V.ObjectFile(op)
+        ff = []
+        for mk in mks:
+            if mk["stub"] or mk["nonmatching"] or not mk["name"]:
+                continue
+            try:
+                body, rels = obj.function(mk["name"])
+            except KeyError:
+                continue
+            w = window_for(mk["addr"])
+            if not w or w > 0x10000:
+                continue
+            win = retail.bytes_at(mk["addr"], w)
+            if V.compare(body, rels, win)[0] != 0:
+                continue
+            ff.append((mk["addr"], body, rels, win[:len(body)]))
+        if not ff:
+            continue
+        symmap, _ = L.recover_symbols([(a, b, r, w) for a, b, r, w in ff])
+        for addr, body, rels, win in ff:
+            n_matched += 1
+            resolved, missing = L.resolve_function(addr, body, rels, symmap)
+            if not missing and resolved == win:
+                o = addr - VRAM
+                payload[o:o + len(resolved)] = resolved
+                n_linked += 1
+    return bytes(payload), n_linked, n_matched
+
+
 def build_matching_elf(c):
     """Splice our built loadable payload into the retail ELF structure and
     write the full, runnable, byte-identical SLUS_216.21. Returns exit status."""
@@ -141,6 +199,10 @@ def build_matching_elf(c):
     if payload is None:
         print("build: no loadable segment in linked output")
         return 1
+    if c.get("retail_elf"):
+        payload, n_linked, n_matched = overlay_c(payload, c)
+        print(f"C linked into image: {n_linked}/{n_matched} matched functions "
+              f"(rest use the asm baseline)")
     img_ok = payload == img
     print(f"loadable image sha1: {hashlib.sha1(payload).hexdigest()}  "
           f"{'OK' if img_ok else 'MISMATCH'}")
