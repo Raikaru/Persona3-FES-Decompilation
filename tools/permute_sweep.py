@@ -44,14 +44,15 @@ def discover_targets():
     return [(f["file"].replace("\\", "/"), f["name"], f["normalized_diff"]) for f in res]
 
 
-def run_one(file, func, seconds, seed, outdir):
+def run_one(file, func, seconds, seed, outdir, tool="text"):
     outp = outdir / f"{func}.c"
+    script = "permute_ast.py" if tool == "ast" else "permute.py"
     try:
         proc = subprocess.run(
-            [sys.executable, str(TOOLS / "permute.py"), file, func,
+            [sys.executable, str(TOOLS / script), file, func,
              "--iters", "100000000", "--time", str(seconds), "--seed", str(seed),
              "--out", str(outp)],
-            cwd=str(REPO), capture_output=True, text=True, timeout=seconds + 40)
+            cwd=str(REPO), capture_output=True, text=True, timeout=seconds + 60)
         out = (proc.stdout or "") + (proc.stderr or "")
     except subprocess.TimeoutExpired:
         return dict(func=func, file=file, matched=False, note="hard-timeout")
@@ -80,6 +81,8 @@ def main():
     ap.add_argument("--time", type=float, default=30.0, help="seconds per function")
     ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--tool", choices=["text", "ast"], default="text",
+                    help="text = permute.py, ast = permute_ast.py")
     ap.add_argument("--max-ndiff", type=int, default=10 ** 9,
                     help="skip discovered targets whose baseline diff exceeds this")
     ap.add_argument("--outdir", default="build/permute")
@@ -101,7 +104,7 @@ def main():
     results = []
     t0 = time.time()
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
-        futs = {ex.submit(run_one, f, n, args.time, args.seed, outdir): (f, n)
+        futs = {ex.submit(run_one, f, n, args.time, args.seed, outdir, args.tool): (f, n)
                 for f, n, _ in targets}
         done = 0
         for fut in as_completed(futs):
