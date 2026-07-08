@@ -202,7 +202,20 @@ s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
 // FUN_003185b0
 u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
 {
-    // TODO
+    if (slotIdx == 0)
+    {
+        if (mdl->animSlots[0].anim.table == NULL && mdl->unk_35c == NULL)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (mdl->animSlots[slotIdx].anim.table == NULL)
+        {
+            return false;
+        }
+    }
     
     return true;
 }
