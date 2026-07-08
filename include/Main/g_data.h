@@ -162,7 +162,7 @@ typedef struct DatEquipment
 // 16 bytes
 typedef struct DatHeroEquipment
 {
-    u16 equipmentsIdx[4];     // See enum EquipmentTypes to access each idx
+    s16 equipmentsIdx[4];     // See enum EquipmentTypes to access each idx
     DatEquipment* equipments; // 00836794 -> 010c15f0
     void* unkPtr;             // 00836798 -> 010c2d90
 } DatHeroEquipment;
@@ -190,7 +190,7 @@ typedef struct DatPc
     DatSocial socialStats;
     u8 unkData1[0x06];
     DatPhysical physicalState;
-    u16 equipmentsIdx[4];       // always 0, 1, 2, 3
+    s16 equipmentsIdx[4];       // always 0, 1, 2, 3
     DatEquipment equipments[4];
     u8 unkData2[0x30];
     DatPersonaWork persona;
@@ -265,7 +265,7 @@ u16 datGetCharmLevel(u16 charmPoint);
 u16 datGetCourageLevel(u16 couragePoint);
 u32 datGetNextExp(s16 pcId);
 u16 datGetPhysicalCondition(s16 pcId);
-u16 datGetEquipmentIdx(s16 pcId, u16 equipmentType);
+s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType);
 void datSetDaysSinceApr5(s16 daysSinceApr5);
 void datSetTime(s8 time);
 void datSetDaysSkipTarget(s16 days);
