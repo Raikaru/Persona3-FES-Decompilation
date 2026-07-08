@@ -32,7 +32,7 @@ void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
     // TODO
 }
 
-// FUN_001bfbc0 NONMATCHING
+// FUN_001bfbc0
 KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 {
     KwlnTask* dungeonTask;
@@ -44,13 +44,12 @@ KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
         return NULL;
     }
 
-    dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
-                                                 10,
-                                                 "automatic dungeon ",
-                                                 K_FldDungeon_UpdateTask,
-                                                 K_FldDungeon_DestroyTask,
-                                                 dungeon);
-    gDungeonTask = dungeonTask;
+    gDungeonTask = dungeonTask = kwlnTaskCreateWithAutoPriority(parentTask,
+                                                                10,
+                                                                "automatic dungeon ",
+                                                                K_FldDungeon_UpdateTask,
+                                                                K_FldDungeon_DestroyTask,
+                                                                dungeon);
 
     dungeon->currFloor = floor;
     dungeon->unk_08 = param_3;
