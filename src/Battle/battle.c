@@ -336,15 +336,15 @@ u32 btlScrCommand_ENCOUNT_FADE()
     return true;
 }
 
-// FUN_0027d880 NONMATCHING
+// FUN_0027d880
 KwlnTask* btlGetTask()
 {
-    if (gBtl == NULL)
+    if (gBtl != NULL)
     {
-        return NULL;
+        return gBtl->btlTask;
     }
 
-    return gBtl->btlTask;
+    return NULL;
 }
 
 // FUN_0027d8b0
@@ -365,7 +365,7 @@ u32 btlUpdateSetFlagsPacket(void* work)
     return true;
 }
 
-// FUN_0027dc00 NONMATCHING
+// FUN_0027dc00
 BtlPacket* btlCreateSetFlagsPacket(u32 flags)
 {
     BtlPacket* packet;
@@ -373,6 +373,34 @@ BtlPacket* btlCreateSetFlagsPacket(u32 flags)
     packet = btlPacketCreate(BTLBATTLE_PACKET_SETFLAGS, sizeof(BtlBattleFlagPacket));
 
     packet->updateFunc = btlUpdateSetFlagsPacket;
+
+    ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
+
+    return packet;
+}
+
+// FUN_0027dc50 NONMATCHING
+u32 btlUpdateRemoveFlagsPacket(void* work)
+{
+    Battle* btl;
+    BtlBattleFlagPacket* packet;
+
+    btl = gBtl;
+    packet = (BtlBattleFlagPacket*)work;
+
+    btl->flags &= ~packet->flags;
+
+    return true;
+}
+
+// FUN_0027dc80
+BtlPacket* btlCreateRemoveFlagsPacket(u32 flags)
+{
+    BtlPacket* packet;
+
+    packet = btlPacketCreate(BTLBATTLE_PACKET_REMOVEFLAGS, sizeof(BtlBattleFlagPacket));
+
+    packet->updateFunc = btlUpdateRemoveFlagsPacket;
 
     ((BtlBattleFlagPacket*)packet->workData)->flags = flags;
 
