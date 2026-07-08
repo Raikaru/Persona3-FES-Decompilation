@@ -90,7 +90,7 @@ u32 K_FldDungeon_GetCurrentFloor()
     return DUNGEON_GET_WORK()->currFloor;
 }
 
-// FUN_001bff50 NONMATCHING
+// FUN_001bff50
 u8 K_FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
@@ -104,12 +104,12 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
         currFloor = DUNGEON_GET_WORK()->currFloor;
     }
 
-    if (currFloor < 2 || currFloor >= 400)
+    if (currFloor >= 2 && currFloor < 400)
     {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 // FUN_001bffa0 NONMATCHING

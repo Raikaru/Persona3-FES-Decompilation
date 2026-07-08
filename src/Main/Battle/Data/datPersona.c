@@ -284,17 +284,19 @@ s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
     return -1;
 }
 
-// FUN_00176a30 NONMATCHING
+// FUN_00176a30
 u32 datPersonaCountValidSkills(DatPersonaWork* persona)
 {
-    u32 skillIdx;
+    s32 skillIdx;
+    u16* skillSlot;
     u32 validSkills = 0;
 
     K_ASSERT(persona != NULL, 1601);
 
-    for (skillIdx = 0; skillIdx < ARRAY_SIZE(persona->skills); skillIdx++)
+    for (skillIdx = 0; skillIdx < PERSONA_MAX_SKILLS; skillIdx++)
     {
-        if (persona->skills[skillIdx] != SKILL_SLASH_ATTACK)
+        skillSlot = &persona->skills[skillIdx];
+        if (*skillSlot != SKILL_SLASH_ATTACK)
             validSkills++;
     }
 
