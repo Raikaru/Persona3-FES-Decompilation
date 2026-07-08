@@ -284,6 +284,23 @@ s32 datPersonaFindSkillIdx(DatPersonaWork* persona, u16 skillId)
     return -1;
 }
 
+// FUN_00175ca0
+s32 FUN_00175ca0(DatPersonaWork* persona)
+{
+    s32 result;
+
+    if (persona->id >= 0xc0 && persona->id <= 0xdf)
+    {
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+
+    return result;
+}
+
 // FUN_00176a30
 u32 datPersonaCountValidSkills(DatPersonaWork* persona)
 {
