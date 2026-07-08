@@ -132,6 +132,36 @@ u8 datGetLevel(s16 pcId)
     return datCalcGetLevel(&pc[pcId - 2].unit);
 }
 
+// FUN_0016c4f0
+u16 datGetHp(s16 pcId)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        return datCalcGetHp(&gGlobalWork.heroUnit);
+    }
+
+    pc = &gPcs[2];
+
+    return datCalcGetHp(&pc[pcId - 2].unit);
+}
+
+// FUN_0016c570
+u16 datGetSp(s16 pcId)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        return datCalcGetSp(&gGlobalWork.heroUnit);
+    }
+
+    pc = &gPcs[2];
+
+    return datCalcGetSp(&pc[pcId - 2].unit);
+}
+
 // FUN_0016c970
 u32 datGetBadStatusNoDown(s16 pcId)
 {
