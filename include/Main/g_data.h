@@ -179,7 +179,7 @@ typedef struct DatHeroStatus
     u32 nextExp;
     DatPhysical physicalState;
     s16 activeSocialLink;
-    u8 socialLinkStat[30];
+    s8 socialLinkStat[30];
 } DatHeroStatus;
 
 // 868 bytes
@@ -244,7 +244,7 @@ void datSetMoney(u32 money);
 u32 datAddMoney(s32 amount);
 s16 datGetPartyId(s32 idx);
 void datSetPartyId(s32 idx, s16 pcId);
-u8 datGetAiTactic(s16 pcId);
+s8 datGetAiTactic(s16 pcId);
 void datSetPhysicalCondition(s16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(s16 pcId, u16 fatigueCounter);
 void datSetHp(s16 pcId, u16 hp);
@@ -252,7 +252,7 @@ void datSetActiveSocialLink(u16 activeSocialLink);
 s16 datGetDaysSinceApr5();
 u8 datGetTime();
 s16 datGetDaysSkipTarget();
-s8 datGetTimeSkipTarget();
+u8 datGetTimeSkipTarget();
 u32 datGetSkipToTarget();
 void datSetAcademicPoint(s16 pcId, u16 academicPoint);
 void datSetCharmPoint(s16 pcId, u16 charmPoint);
@@ -279,7 +279,7 @@ u8 datGetEquipmentEffect(s16 pcId, u16 equipmentIdx);
 void datInitPersona(u32 pcId);
 void datCompendiumInit();
 s16 datGetActiveSocialLink();
-u8 datGetSocialLinkLevel(u16 socialLink);
+s8 datGetSocialLinkLevel(s16 socialLink);
 u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
 

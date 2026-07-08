@@ -38,7 +38,7 @@ typedef struct DatUnit
     u16 hp;            // 0x08
     u16 sp;            // 0x0a
     u32 bad;           // 0x0c. See 'UNIT_BADSTATUS_*'
-    u8 aiTactic;       // 0x10. See enum 'AiTactic'
+    s8 aiTactic;       // 0x10. See enum 'AiTactic'
     u8 unkData1[0x28];
 } DatUnit;
 

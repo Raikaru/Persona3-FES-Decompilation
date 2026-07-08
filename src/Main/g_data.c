@@ -261,8 +261,8 @@ s16 datGetPartyId(s32 idx)
     return gGlobalWork.partyIds[idx];
 }
 
-// FUN_0016dd80 NONMATCHING
-u8 datGetAiTactic(s16 pcId)
+// FUN_0016dd80
+s8 datGetAiTactic(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -515,8 +515,8 @@ s16 datGetDaysSkipTarget()
     return gGlobalWork.calendarWork.daysSkipTarget;
 }
 
-// FUN_0016ef50 NONMATCHING
-s8 datGetTimeSkipTarget()
+// FUN_0016ef50
+u8 datGetTimeSkipTarget()
 {
     return gGlobalWork.calendarWork.timeSkipTarget;
 }
@@ -666,8 +666,8 @@ s16 datGetActiveSocialLink()
     return gGlobalWork.heroStatus.activeSocialLink;
 }
 
-// FUN_0016dba0 NONMATCHING
-u8 datGetSocialLinkLevel(u16 socialLink)
+// FUN_0016dba0
+s8 datGetSocialLinkLevel(s16 socialLink)
 {
     return gGlobalWork.heroStatus.socialLinkStat[socialLink];
 }
