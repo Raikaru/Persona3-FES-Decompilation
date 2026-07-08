@@ -252,6 +252,7 @@ void datSetPhysicalCondition(s16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(s16 pcId, u16 fatigueCounter);
 void datSetHp(s16 pcId, u16 hp);
 void datSetActiveSocialLink(u16 activeSocialLink);
+s16 *datGetActiveSocialLinkPtr();
 s16 datGetDaysSinceApr5();
 u8 datGetTime();
 s16 datGetDaysSkipTarget();

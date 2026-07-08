@@ -726,6 +726,12 @@ s16 datGetActiveSocialLink()
     return gGlobalWork.heroStatus.activeSocialLink;
 }
 
+// FUN_001717b0
+s16 *datGetActiveSocialLinkPtr()
+{
+    return &gGlobalWork.heroStatus.activeSocialLink;
+}
+
 // FUN_0016dba0
 s8 datGetSocialLinkLevel(s16 socialLink)
 {
