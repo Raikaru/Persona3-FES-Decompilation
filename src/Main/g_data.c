@@ -49,7 +49,7 @@ void FUN_00172e10();
 // TODO
 void FUN_0016f3e0(u32 idx, u32 value)
 {
-    K_ASSERT(idx <= 127, 2007);
+    K_ASSERT((s32)idx < 128, 2007);
 
     gGlobalWork.unk_0083a4dc[idx] = value;
 }
