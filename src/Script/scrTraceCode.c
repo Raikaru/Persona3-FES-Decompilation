@@ -666,7 +666,7 @@ static u32 CodeFunc_Div(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e0e0 NONMATCHING
+// FUN_0035e0e0
 static u32 CodeFunc_Minus(ScrData* scr)
 {
     s32 sp;
@@ -698,7 +698,7 @@ static u32 CodeFunc_Minus(ScrData* scr)
             *f = -(*f);
             break;
         
-        default: K_ABORT("CodeFunc_Minus(..) invalid stack type(?)!!\n", 648);
+        default: K_ABORT("CodeFunc_Minus(..) invalid stack type(?)!!\n", 662);
     }
 
     scr->pc++;

@@ -27,14 +27,14 @@ void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown)
     work->shouldShutdown = shouldShutdown;
 }
 
-// FUN_001bab20. Get field major id by the root field task. Not really used that much, 'gMtScene' is used instead NONMATCHING
-s16 K_Field_GetMajorId(KwlnTask* fldRootTask)
+// FUN_001bab20. Get field major id by the root field task. Not really used that much, 'gMtScene' is used instead
+u16 K_Field_GetMajorId(KwlnTask* fldRootTask)
 {
     return ((FldRootWork*)fldRootTask->workData)->majorId;
 }
 
-// FUN_001bab30. Get field minor id by the root field task. Not really used that much, 'gMtScene' is used instead NONMATCHING
-s16 K_Field_GetMinorId(KwlnTask* fldRootTask)
+// FUN_001bab30. Get field minor id by the root field task. Not really used that much, 'gMtScene' is used instead
+u16 K_Field_GetMinorId(KwlnTask* fldRootTask)
 {
     return ((FldRootWork*)fldRootTask->workData)->minorId;
 }
