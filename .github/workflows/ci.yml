@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  # Checks that run without the proprietary CodeWarrior compiler or the
+  # copyrighted retail image. These gate every push/PR.
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install toolchain deps
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y $(cat tools/requirements-debian.txt)
+          python3 -m pip install -r tools/requirements-python.txt
+
+      - name: Byte-compile Python tools
+        run: python3 -m compileall -q tools diff_settings.py
+
+      - name: Validate configs
+        run: |
+          python3 -c "import json,sys; json.load(open('objdiff.json')); print('objdiff.json ok')"
+          python3 -c "import yaml,sys; yaml.safe_load(open('config/slus21621.yaml')); print('splat config ok')"
+
+      - name: Assemble a splat asm sanity object (GNU as, R5900)
+        run: |
+          printf '.set noat\n.set noreorder\n.section .text,"ax"\n.global t\nt:\n padduw $1,$0,$0\n jr $31\n nop\n' > /tmp/t.s
+          mipsel-linux-gnu-as -EL -march=r5900 -mabi=eabi -G128 -no-pad-sections -o /tmp/t.o /tmp/t.s
+          echo "GNU as R5900 ok"
+
+  # Full byte-match build. Requires the CodeWarrior toolchain and a legally
+  # owned retail image, neither of which can be published, so this only runs on
+  # a self-hosted runner that provides them. Configure a runner labelled
+  # `codewarrior` with P3_MWCC and P3_RETAIL_ELF set, then this gate enforces
+  # byte-exactness on every push.
+  build:
+    runs-on: [self-hosted, codewarrior]
+    if: ${{ false }} # enable once a self-hosted CodeWarrior runner is available
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python3 -m pip install -r tools/requirements-python.txt
+      - name: Setup, split, build, verify
+        run: |
+          make setup
+          make split
+          make            # links + checks byte-identical SLUS_216.21
+          make verify

@@ -16,8 +16,10 @@
 /asm/data1.s
 /asm/data2.s
 /asm/data/
+/asm/chunks/
 /asm/*_raw.s
 /asm/*.o
+/ctx.c
 /include/macro.inc
 /undefined_funcs_auto.txt
 /undefined_syms_auto.txt
