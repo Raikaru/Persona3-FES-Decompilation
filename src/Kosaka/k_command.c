@@ -215,10 +215,10 @@ u32 K_Cmd_RESRC_MDL_ANIM()
     return true;
 }
 
-// FUN_001c2b80 NONMATCHING
+// FUN_001c2b80
 u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
 {
-    u32 resTypeId;
+    s32 resTypeId;
     Resrc* res;
 
     resTypeId = scrGetIntPara(0);
