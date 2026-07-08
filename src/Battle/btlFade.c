@@ -31,3 +31,25 @@ KwlnTask* btlFadeCreateTask(s32 param_1)
 
     return task;
 }
+
+// FUN_002ff2d0
+void btlFadeStart(u16 delay)
+{
+    sBtlFadeWork.timer = 0;
+    sBtlFadeWork.delay = delay;
+    sBtlFadeWork.state = 1;
+}
+
+// FUN_002ff2f0
+void btlFadeStartImmediate(void)
+{
+    sBtlFadeWork.timer = 0;
+    sBtlFadeWork.delay = 0;
+    sBtlFadeWork.state = 1;
+}
+
+// FUN_002ff320
+s32 btlFadeIsActive(void)
+{
+    return sBtlFadeWork.state != 0;
+}
