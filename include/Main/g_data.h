@@ -178,7 +178,7 @@ typedef struct DatHeroStatus
     DatSocial socialStats;
     u32 nextExp;
     DatPhysical physicalState;
-    u16 activeSocialLink;
+    s16 activeSocialLink;
     u8 socialLinkStat[30];
 } DatHeroStatus;
 
@@ -194,7 +194,7 @@ typedef struct DatPc
     DatEquipment equipments[4];
     u8 unkData2[0x30];
     DatPersonaWork persona;
-    u8 unkData3[0x25c];         // TODO
+    u8 unkData3[0x254];         // TODO
 } DatPc;
 
 // at least 17656 bytes
@@ -208,9 +208,7 @@ typedef struct DatGlobal
     CalendarWork calendarWork;      // 0083679c
     u8 unkData3[0x400];
     DatHeroPersona heroPersona;     // 00836ba8
-    u8 unkData4[0x60];
     DatPersonaWork compendium[256]; // 00836e1c
-    u8 unkData5[0x800];
     u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
     u32 unk_0083a4dc[128];          // 0083a4dc
     s32 heroMoney;                  // 0083a6dc
@@ -252,7 +250,7 @@ void datSetFatigueCounter(u16 pcId, u16 fatigueCounter);
 void datSetHp(u16 pcId, u16 hp);
 void datSetActiveSocialLink(u16 activeSocialLink);
 s16 datGetDaysSinceApr5();
-s8 datGetTime();
+u8 datGetTime();
 s16 datGetDaysSkipTarget();
 s8 datGetTimeSkipTarget();
 u32 datGetSkipToTarget();
@@ -280,7 +278,7 @@ u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx);
 u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx);
 void datInitPersona(u32 pcId);
 void datCompendiumInit();
-u16 datGetActiveSocialLink();
+s16 datGetActiveSocialLink();
 u8 datGetSocialLinkLevel(u16 socialLink);
 u32 datGetTotalBtl();
 DatPersonaWork* datGetPersonaByCompendium(s32 idx);
