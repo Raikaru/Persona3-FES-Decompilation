@@ -154,7 +154,7 @@ static const BtlActionStateEntry sActionStateTable[] =
 
 static u32 sNextId = 1; // 007cc530
 
-// FUN_00289860
+// FUN_00289860 NONMATCHING
 u32 btlActionIdleWeaponAnim(BtlAction* action)
 {
     BtlPacket* animPacket;
@@ -262,7 +262,7 @@ void btlActionInitStateStartHome(BtlAction* action)
 {
     // TODO
 }
-// FUN_0028b9c0
+// FUN_0028b9c0 NONMATCHING
 void btlActionUpdateStateStartHome(BtlAction* action)
 {
     RwV3d rot;
@@ -280,7 +280,7 @@ void btlActionUpdateStateStartHome(BtlAction* action)
     }
 }
 
-// FUN_0028ba50
+// FUN_0028ba50 NONMATCHING
 void btlActionInitStateChangeFormation(BtlAction* action)
 {
     BtlPacket* formPacket1;
@@ -553,7 +553,7 @@ void btlActionUpdateStateSkill(BtlAction* action)
     // TODO
 }
 
-// FUN_00294d10
+// FUN_00294d10 NONMATCHING
 void btlActionInitStateReinforce(BtlAction* action)
 {
     // nothing
@@ -873,7 +873,7 @@ void btlActionInitStateEndHome(BtlAction* action)
 {
     // TODO
 }
-// FUN_00299760
+// FUN_00299760 NONMATCHING
 void btlActionUpdateStateEndHome(BtlAction* action)
 {
     RwV3d rot;
@@ -1002,7 +1002,7 @@ void btlActionSetUnit(BtlAction* action, BtlUnit* unit)
     action->unk_1a |= (1 << 0);
 }
 
-// FUN_00299e90
+// FUN_00299e90 NONMATCHING
 BtlAction* btlActionCreate()
 {
     BtlAction* action;
@@ -1050,7 +1050,7 @@ BtlAction* btlActionCreate()
     return action;
 }
 
-// FUN_00299fb0
+// FUN_00299fb0 NONMATCHING
 void btlActionUpdateAll()
 {
     BtlAction* curr;
@@ -1120,7 +1120,7 @@ void btlActionUpdateAll()
     }
 }
 
-// FUN_0029a140
+// FUN_0029a140 NONMATCHING
 void btlActionDestroyAll()
 {
     BtlAction* currAction;

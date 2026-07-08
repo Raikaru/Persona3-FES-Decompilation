@@ -19,7 +19,7 @@ static ShadowColors gShadowColors =
     {0, 0, 0, 255}
 };
 
-// FUN_001997e0
+// FUN_001997e0 NONMATCHING
 //
 // to help visualizing:
 //
@@ -98,13 +98,13 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d270
+// FUN_0019d270 NONMATCHING
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
 {
     RwFree(fldShadowMapTask->workData);
 }
 
-// FUN_0019d2a0
+// FUN_0019d2a0 NONMATCHING
 KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
 {
     FldShadowMap* fldShadowMap;

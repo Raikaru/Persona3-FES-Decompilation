@@ -63,7 +63,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019ee40. qsort comparator
+// FUN_0019ee40. qsort comparator NONMATCHING
 s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
 {
     RwFrame* camFrame;
@@ -136,7 +136,7 @@ RwRGBAReal* K_Scene_GetFldAmbLightColor()
     return &res->ambLightColor;
 }
 
-// FUN_001a0a10
+// FUN_001a0a10 NONMATCHING
 RwRGBAReal* K_Scene_GetCharAmbLightColor()
 {
     ResrcLightChar* res;
@@ -145,7 +145,7 @@ RwRGBAReal* K_Scene_GetCharAmbLightColor()
     return &res->ambientColor;
 }
 
-// FUN_001a0250
+// FUN_001a0250 NONMATCHING
 u32 K_Scene_001a0250()
 {
     s32 fldMajor;

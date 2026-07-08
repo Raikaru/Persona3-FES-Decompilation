@@ -7,7 +7,7 @@ void btlTargetInit(BtlTarget* target)
     memset(target, 0, sizeof(BtlTarget));
 }
 
-// FUN_002d15a0
+// FUN_002d15a0 NONMATCHING
 void btlTargetReset(BtlTarget* target)
 {
     target->targetedCount = 0;

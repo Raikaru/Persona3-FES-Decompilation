@@ -22,13 +22,13 @@ void* K_Draw_UpdatePointTask(KwlnTask* pointTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a46c0
+// FUN_001a46c0 NONMATCHING
 void K_Draw_DestroyPointTask(KwlnTask* pointTask)
 {
     RwFree(pointTask->workData);
 }
 
-// FUN_001a46f0. Tiny sphere
+// FUN_001a46f0. Tiny sphere NONMATCHING
 KwlnTask* K_Draw_CreatePointTask(KwlnTask* parent)
 {
     PointDrawWork* work;
@@ -59,7 +59,7 @@ void K_Draw_SetPointCenter(KwlnTask* pointTask, const RwV3d* center)
     ((PointDrawWork*)pointTask->workData)->center = *center;
 }
 
-// FUN_001a47e0
+// FUN_001a47e0 NONMATCHING
 void K_Draw_SetPointColor(KwlnTask* pointTask, const RwRGBA* color)
 {
     ((PointDrawWork*)pointTask->workData)->color = *color;
@@ -80,13 +80,13 @@ void* K_Draw_UpdateCylinderTask(KwlnTask* cylinderTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a4830
+// FUN_001a4830 NONMATCHING
 void K_Draw_DestroyCylinderTask(KwlnTask* cylinderTask)
 {
     RwFree(cylinderTask->workData);
 }
 
-// FUN_001a4860
+// FUN_001a4860 NONMATCHING
 KwlnTask* K_Draw_CreateCylinderTask(KwlnTask* parent)
 {
     CylinderDrawWork* work;
@@ -129,7 +129,7 @@ void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
     ((CylinderDrawWork*)cylinderTask->workData)->height = height;
 }
 
-// FUN_001a4c10
+// FUN_001a4c10 NONMATCHING
 void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
 {
     PositionDrawWork* work;
@@ -147,13 +147,13 @@ void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001a4ca0
+// FUN_001a4ca0 NONMATCHING
 void K_Draw_DestroyPositionTask(KwlnTask* positionTask)
 {
     RwFree(positionTask->workData);
 }
 
-// FUN_001a4cd0
+// FUN_001a4cd0 NONMATCHING
 KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent)
 {
     PositionDrawWork* work;
@@ -181,7 +181,7 @@ KwlnTask* K_Draw_CreatePositionTask(KwlnTask* parent)
     return positionTask;
 }
 
-// FUN_001a4dc0
+// FUN_001a4dc0 NONMATCHING
 void K_Draw_SetPositionColor(KwlnTask* positionTask, const RwRGBA* color)
 {
     ((PositionDrawWork*)positionTask->workData)->color = *color;
@@ -217,7 +217,7 @@ void K_Draw_SetPositionPos(KwlnTask* positionTask, const RwV3d* pos)
     RwMatrixUpdate(&work->mat);
 }
 
-// FUN_001a4ed0
+// FUN_001a4ed0 NONMATCHING
 void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir)
 {
     PositionDrawWork* work;
@@ -232,7 +232,7 @@ void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir
     RwMatrixTranslate(&work->mat, &translation, rwCOMBINEPOSTCONCAT);
 }
 
-// FUN_001a4f40
+// FUN_001a4f40 NONMATCHING
 void K_Draw_RotatePosition(f32 angle, KwlnTask* positionTask, const RwV3d* axis)
 {
     PositionDrawWork* work;

@@ -41,7 +41,7 @@ static const char* sBgmAdxStrings[82] =
 static BgmWork sBgmWork;  // 007e4430
 static char sBuffer[256]; // 007e4446
 
-// FUN_00108e50
+// FUN_00108e50 NONMATCHING
 s16 H_Snd_GetCurrentBgmId()
 {
     if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)
@@ -52,7 +52,7 @@ s16 H_Snd_GetCurrentBgmId()
     return sBgmWork.id;
 }
 
-// FUN_00108f70
+// FUN_00108f70 NONMATCHING
 void H_Snd_StopBgm()
 {
     if (sBgmWork.isBgmPlaying != HSND_BGM_NOT_PLAYING)
@@ -76,7 +76,7 @@ void H_Snd_00109180(s32 param_1)
     // TODO
 }
 
-// FUN_001099d0
+// FUN_001099d0 NONMATCHING
 u8 H_Snd_PlayBgm(s16 id, s32 unused)
 {
     // WIP

@@ -137,7 +137,7 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     return total;
 }
 
-// FUN_003b6030
+// FUN_003b6030 NONMATCHING
 u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
 {
     ResrcManager* resManager;
@@ -175,7 +175,7 @@ u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
     return resTypeId;
 }
 
-// FUN_003b6270
+// FUN_003b6270 NONMATCHING
 u16 MT_Scene_CreateResModelNpc(u32 resId, u16 param_2, Model* mdl)
 {
     ResrcManager* resManager;

@@ -2,7 +2,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
 
-// FUN_00100230
+// FUN_00100230 NONMATCHING
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 {
     // TODO: fix stack frame (should be 0x30 instead of 0x20)
@@ -71,19 +71,19 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00100570
+// FUN_00100570 NONMATCHING
 u32 H_Cursor_GetShouldDraw(KwlnTask* hcursorTask)
 {
     return ((HCursorWork*)hcursorTask->workData)->shouldDraw;
 }
 
-// FUN_00100580
+// FUN_00100580 NONMATCHING
 void H_Cursor_DestroyTask(KwlnTask* hcursorTask)
 {
     RwFree(hcursorTask->workData);
 }
 
-// FUN_001005b0
+// FUN_001005b0 NONMATCHING
 KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect rect, RwRGBA color)
 {
     HCursorWork* work;
@@ -121,7 +121,7 @@ KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect r
     return task;
 }
 
-// FUN_00100710
+// FUN_00100710 NONMATCHING
 void H_Cursor_SetPos(KwlnTask* hcursorTask, RwV2d pos)
 {
     ((HCursorWork*)hcursorTask->workData)->pos = pos;
@@ -139,7 +139,7 @@ void H_Cursor_SetZOffset(KwlnTask* hcursorTask, f32 zOffset)
     ((HCursorWork*)hcursorTask->workData)->zOffset = zOffset;
 }
 
-// FUN_00100780
+// FUN_00100780 NONMATCHING
 void H_Cursor_SetColor(KwlnTask* hcursorTask, RwRGBA color)
 {
     HCursorWork* work;

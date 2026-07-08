@@ -20,7 +20,7 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
     // TODO
 }
 
-// FUN_0010bda0
+// FUN_0010bda0 NONMATCHING
 KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
 {
     KwlnTask* task;
@@ -52,7 +52,7 @@ KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
     return task;
 }
 
-// FUN_0010be60
+// FUN_0010be60 NONMATCHING
 u32 H_SfdPlayCmd_CALL_MOVIE()
 {
     HSfd* work;

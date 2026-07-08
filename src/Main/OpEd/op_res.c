@@ -5,7 +5,7 @@
 
 static OpResWork* sWork; // 007ce394
 
-// FUN_00266710
+// FUN_00266710 NONMATCHING
 void opResUpdate()
 {
     OpResWork* work;

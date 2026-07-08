@@ -32,10 +32,26 @@ python tools/verify.py --show-mismatches        # per-function failure detail
 python tools/verify.py --json report.json       # full machine-readable report
 ```
 
-Statuses: `MATCH` (byte-equivalent), `STUB` (`// TODO` body), `MISMATCH`,
+Statuses: `MATCH` (byte-equivalent), `STUB` (`// TODO` body), `NONMATCHING`
+(explicitly tagged WIP, see below), `STALE_NONMATCHING`, `MISMATCH`,
 `SIZE_MISMATCH`, `NO_SYMBOL`, `COMPILE_ERROR`, `UNKNOWN_ADDR`. The exit code
-is nonzero if anything other than `MATCH`/`STUB` is found, so the tool can be
-used as a pre-commit / CI gate.
+is nonzero if anything other than `MATCH`/`STUB`/`NONMATCHING` is found, so
+the tool can be used as a pre-commit / CI gate.
+
+### NONMATCHING convention
+
+A function that is implemented but not yet byte-equivalent MUST carry the tag
+on its marker line:
+
+```c
+// FUN_0029a2c0 NONMATCHING
+u32 btlOrderAddAction(BtlAction* action)
+```
+
+Untagged implementations are treated as match claims and fail verification if
+they differ from retail. When a tagged function is brought to a byte-match,
+the verifier reports `STALE_NONMATCHING` until the tag is removed. Commit
+messages should only say "match" for functions that verify as `MATCH`.
 
 `tools/slus21621_functions.json` holds the function-entry map exported from
 Ghidra; function windows are entry-to-next-entry distances, tightened by the

@@ -5,7 +5,7 @@
 
 static u32 sPrevPercentRand; // 007ce510
 
-// FUN_002ffbc0
+// FUN_002ffbc0 NONMATCHING
 u32 datCalcRand(u32 max)
 {
     u32 rand;
@@ -32,7 +32,7 @@ u32 datCalcRand(u32 max)
     return rand;
 }
 
-// FUN_002ffcc0
+// FUN_002ffcc0 NONMATCHING
 u8 datCalcGetLevel(DatUnit* unit){
     u8 level;
     DatPersonaWork* persona;
@@ -96,7 +96,7 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     return 0;
 }
 
-// FUN_003004f0
+// FUN_003004f0 NONMATCHING
 void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
 {
     if (!(badStatus & 0x000FFFFF))
@@ -120,13 +120,13 @@ u32 datCalcGetBadStatus(DatUnit* unit)
     return unit->bad;
 }
 
-// FUN_00300560
+// FUN_00300560 NONMATCHING
 void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
 {
     unit->bad &= ~badStatus;
 }
 
-// FUN_00300580
+// FUN_00300580 NONMATCHING
 u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 {
     return (unit->bad & badStatus);
@@ -140,7 +140,7 @@ u32 datCalcHasSkill(DatUnit* unit, u16 skillId)
     return false;
 }
 
-// FUN_00300870. Return the number of equipments with the effect
+// FUN_00300870. Return the number of equipments with the effect NONMATCHING
 u8 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
 {
     u8 equipWithEffectNum = 0;
@@ -167,7 +167,7 @@ u8 datCalcCountEquipmentWithEffectById(u16 pcId, u16 effect)
     return equipWithEffectNum;
 }
 
-// FUN_003009a0. Return the number of equipments with the effect
+// FUN_003009a0. Return the number of equipments with the effect NONMATCHING
 u8 datCalcCountEquipmentWithEffect(DatUnit* unit, u16 effect)
 {
     if (unit->flags & UNIT_FLAG_ENEMY)
@@ -223,7 +223,7 @@ u32 datCalcGetPassiveSkillFlags(DatUnit* unit)
     return flags;
 }
 
-// FUN_00308c60
+// FUN_00308c60 NONMATCHING
 u32 datCalcGetHeldWeaponType(DatUnit* unit)
 {
     // WIP
@@ -290,7 +290,7 @@ u32 datCalcIsDead(const DatUnit* unit, s32 hpDelta)
     return (unit->hp + hpDelta) <= 0;
 }
 
-// FUN_0030b5e0
+// FUN_0030b5e0 NONMATCHING
 u32 datCalcIsLowHp(DatUnit* unit)
 {
     u16 hp;

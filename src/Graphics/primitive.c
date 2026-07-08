@@ -49,7 +49,7 @@ void primQuad3D(const RwV3d* pos, const RwRGBA* col, f32 size, u32 saveAndRestor
     // TODO
 }
 
-// FUN_00359110
+// FUN_00359110 NONMATCHING
 void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;
@@ -96,7 +96,7 @@ void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color,
     }
 }
 
-// FUN_00359380. Draw 3 lines representing the XYZ axis
+// FUN_00359380. Draw 3 lines representing the XYZ axis NONMATCHING
 void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderState)
 {
     u32 i;
@@ -154,7 +154,7 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     // TODO
 }
 
-// FUN_00359b40. Draw a wireframe sphere
+// FUN_00359b40. Draw a wireframe sphere NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;

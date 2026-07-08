@@ -88,7 +88,7 @@ void btlUnitSetScale(BtlUnit* unit, f32 scale)
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
 
-// FUN_0027f730
+// FUN_0027f730 NONMATCHING
 void btlUnitSetColor(BtlUnit* unit, RwRGBA col)
 {
     unit->cols[BTLUNIT_COL_MAIN] = col;
@@ -115,7 +115,7 @@ void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_
     // TODO
 }
 
-// FUN_0027fd70
+// FUN_0027fd70 NONMATCHING
 void btlUnitInitPosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -125,7 +125,7 @@ void btlUnitInitPosRotColPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_0027fe70
+// FUN_0027fe70 NONMATCHING
 u32 btlUnitUpdatePosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -161,7 +161,7 @@ u32 btlUnitUpdatePosRotColPacket(void* work)
     return true;
 }
 
-// FUN_0027fd70
+// FUN_0027fd70 NONMATCHING
 void btlUnitDestroyPosRotColPacket(void* work)
 {
     BtlUnitPacketPosRotCol* packet;
@@ -209,7 +209,7 @@ BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const R
     return packet;
 }
 
-// FUN_0027ffb0
+// FUN_0027ffb0 NONMATCHING
 void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst)
 {
     RwV3d scaledCenter;
@@ -272,7 +272,7 @@ void btlUnitDestroyMovePacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_002819d0
+// FUN_002819d0 NONMATCHING
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags)
 {
     BtlPacket* packet;
@@ -320,7 +320,7 @@ u32 btlUnitUpdateMoveToUnitPacket(void* work)
     return false;
 }
 
-// FUN_00281ab0
+// FUN_00281ab0 NONMATCHING
 void btlUnitDestroyMoveToUnitPacket(void* work)
 {
     BtlUnitPacketMoveToUnit* packet;
@@ -363,7 +363,7 @@ void btlUnitInitRotatePacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_002821b0
+// FUN_002821b0 NONMATCHING
 u32 btlUnitUpdateRotatePacket(void* work)
 {
     BtlUnitPacketRotate* packet;
@@ -413,7 +413,7 @@ void btlUnitDestroyRotatePacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_002822b0
+// FUN_002822b0 NONMATCHING
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
 {
     BtlPacket* packet;
@@ -461,7 +461,7 @@ u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
     return false;
 }
 
-// FUN_00282380
+// FUN_00282380 NONMATCHING
 void btlUnitDestroyRotateTowardUnitPacket(void* work)
 {
     BtlUnitPacketRotateTowardUnit* packet;
@@ -507,7 +507,7 @@ void btlUnitAnimate(BtlUnit* unit, s16 id, u16 blendFrameCount, f32 speed, u32 m
     // TODO
 }
 
-// FUN_00283ba0
+// FUN_00283ba0 NONMATCHING
 s16 btlUnitGetAnimFrame(BtlUnit* unit)
 {
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
@@ -528,7 +528,7 @@ void btlUnitInitAnimPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284190
+// FUN_00284190 NONMATCHING
 u32 btlUnitUpdateAnimPacket(void* work)
 {
     BtlUnitPacketAnim* packet;
@@ -557,7 +557,7 @@ void btlUnitDestroyAnimPacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_00284200
+// FUN_00284200 NONMATCHING
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
     BtlPacket* packet;
@@ -596,7 +596,7 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
     return packet;
 }
 
-// FUN_00284600
+// FUN_00284600 NONMATCHING
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
 {
     BtlPacket* packet;
@@ -616,7 +616,7 @@ BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2)
     return packet;
 }
 
-// FUN_00284900
+// FUN_00284900 NONMATCHING
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
 {
     BtlPacket* packet;
@@ -637,7 +637,7 @@ BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2)
     return packet;
 }
 
-// FUN_00284b70
+// FUN_00284b70 NONMATCHING
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused)
 {
     BtlPacket* packet;
@@ -1015,7 +1015,7 @@ BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16
     return packet;
 }
 
-// FUN_00288760
+// FUN_00288760 NONMATCHING
 void btlUnitInitLookAtDeactivatePacket(void* work)
 {
     BtlUnitPacketLookAtDeactivate* packet;

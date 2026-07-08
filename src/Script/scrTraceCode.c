@@ -229,7 +229,7 @@ static u32 CodeFunc_PushLFX(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035c7c0
+// FUN_0035c7c0 NONMATCHING
 static u32 CodeFunc_PushSTR(ScrData* scr)
 {
     PushString(scr, scr->stringsContent + scr->instrContent[scr->pc].opOperand16.sOperand); // TODO: fix load order
@@ -302,7 +302,7 @@ static u32 CodeFunc_Proc(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035cf20. Call a native function
+// FUN_0035cf20. Call a native function NONMATCHING
 static u32 CodeFunc_Comm(ScrData* scr)
 {
     ScrCmdFunc cmdFunc;
@@ -333,7 +333,7 @@ static u32 CodeFunc_Comm(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035d040
+// FUN_0035d040 NONMATCHING
 static u32 CodeFunc_End(ScrData* scr)
 {
     if (scr->sp == 0)
@@ -390,7 +390,7 @@ static u32 CodeFunc_Goto(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035d350
+// FUN_0035d350 NONMATCHING
 static void scrOperation(ScrData* scr, u32 type)
 {
     K_ASSERT(scr->sp >= 2, 441);
@@ -666,7 +666,7 @@ static u32 CodeFunc_Div(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e0e0
+// FUN_0035e0e0 NONMATCHING
 static u32 CodeFunc_Minus(ScrData* scr)
 {
     s32 sp;
@@ -749,7 +749,7 @@ static u32 CodeFunc_Or(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e650
+// FUN_0035e650 NONMATCHING
 static u32 CodeFunc_And(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_AND);
@@ -860,7 +860,7 @@ static u32 CodeFunc_IF(ScrData* scr)
     return CODEFUNC_NEXTINSTR;   
 }
 
-// FUN_0035ebf0
+// FUN_0035ebf0 NONMATCHING
 u32 scrTraceCode(ScrData* scr)
 {
     s16 opCode;

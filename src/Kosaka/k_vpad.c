@@ -12,13 +12,13 @@ void* K_VPad_UpdateTask(KwlnTask* rotatePcTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001e1200
+// FUN_001e1200 NONMATCHING
 void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {
     RwFree(rotatePcTask->workData);
 }
 
-// FUN_001e1230
+// FUN_001e1230 NONMATCHING
 KwlnTask* K_VPad_CreateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
 {
     KwlnTask* task;
@@ -44,7 +44,7 @@ KwlnTask* K_VPad_CreateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* md
     return task;
 }
 
-// FUN_001e13f0
+// FUN_001e13f0 NONMATCHING
 void* K_VPad_UpdateRotateTask(KwlnTask* rotatePcTask)
 {
     static const RwV3d sAxis = { 0.0f, 1.0f, 0.0f }; // 00683da0
@@ -74,13 +74,13 @@ void* K_VPad_UpdateRotateTask(KwlnTask* rotatePcTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001e14b0
+// FUN_001e14b0 NONMATCHING
 void K_VPad_DestroyRotateTask(KwlnTask* rotatePcTask)
 {
     RwFree(rotatePcTask->workData);
 }
 
-// FUN_001e14e0
+// FUN_001e14e0 NONMATCHING
 KwlnTask* K_VPad_CreateRotateTask(KwlnTask* parent, KwlnTask* collisCtlTask, Model* mdl)
 {
     PcRotateWork* work;

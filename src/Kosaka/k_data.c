@@ -14,7 +14,7 @@ u32 gTraceCode;      // 007ce208
 
 FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
 
-// FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize'
+// FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize' NONMATCHING
 void K_Data_LoadFldMainScript()
 {
     char buffer[128];
@@ -37,7 +37,7 @@ void K_Data_LoadFldMainScript()
     H_Cdvd_Destroy(cdvd);
 }
 
-// FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData'
+// FUN_001b7c40. Read 'dungeonAT.bin' or 'dungeonFES.bin' and copy its content in 'gFldDngFloorsData' NONMATCHING
 void K_Data_LoadDngFloorsData(u32 scenarioMode)
 {
     char buffer[128];

@@ -57,7 +57,7 @@ void kwlnInitGameData()
     // TODO
 }
 
-// FUN_00196770
+// FUN_00196770 NONMATCHING
 void kwlnPushCommonRenderStates()
 {
     s32 i;
@@ -68,7 +68,7 @@ void kwlnPushCommonRenderStates()
     }
 }
 
-// FUN_00196fe0
+// FUN_00196fe0 NONMATCHING
 s32 kwlnT0OverflowHandler(s32 intc)
 {
     if (intc == INTC_TIM0 && 
@@ -84,7 +84,7 @@ s32 kwlnT0OverflowHandler(s32 intc)
     return 0;
 }
 
-// FUN_00197030. HPad, memcard and IOP module init
+// FUN_00197030. HPad, memcard and IOP module init NONMATCHING
 void kwlnInitPS2Systems()
 {
     char img[64];
@@ -161,7 +161,7 @@ u8 kwlnUpdate()
     return true;
 }
 
-// FUN_001984c0. Initialize everything + main loop
+// FUN_001984c0. Initialize everything + main loop NONMATCHING
 void kwlnMain()
 {
     kwlnInitPS2Systems();

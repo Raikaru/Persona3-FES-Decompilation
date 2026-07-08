@@ -31,7 +31,7 @@ void kwlnTaskDestroy(KwlnTask* task);
 void kwlnTaskDetachAllChildren(KwlnTask* task);
 void kwlnTaskDestroyHierarchy(KwlnTask* task);
 
-// FUN_001939d0. Remove a task from a list by its current state
+// FUN_001939d0. Remove a task from a list by its current state NONMATCHING
 void kwlnTaskRemoveFromList(KwlnTask* task)
 {
     KwlnTask* next;
@@ -93,7 +93,7 @@ void kwlnTaskRemoveFromList(KwlnTask* task)
     }
 }
 
-// FUN_00193ba0. Add a task from a list by its current state
+// FUN_00193ba0. Add a task from a list by its current state NONMATCHING
 void kwlnTaskAddToList(KwlnTask* task)
 {
     KwlnTask* list;
@@ -220,7 +220,7 @@ void kwlnTaskAddToList(KwlnTask* task)
     }
 }
 
-// FUN_00193ec0
+// FUN_00193ec0 NONMATCHING
 u8 kwlnTaskUpdate(KwlnTask* task)
 {
     s32 i;
@@ -291,7 +291,7 @@ u8 kwlnTaskUpdate(KwlnTask* task)
     return true;
 }
 
-// FUN_00194100
+// FUN_00194100 NONMATCHING
 void kwlnTaskUpdateAll()
 {
     KwlnTask* currTask = sRunningTaskHead;
@@ -368,7 +368,7 @@ void kwlnTaskDestroyHierarchy(KwlnTask* task)
     }
 }
 
-// FUN_00194280. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately
+// FUN_00194280. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately NONMATCHING
 void kwlnTaskDestroy(KwlnTask* task)
 {
     u32 state;
@@ -407,7 +407,7 @@ void kwlnTaskDestroy(KwlnTask* task)
     }
 }
 
-// FUN_00194750
+// FUN_00194750 NONMATCHING
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
 {
     printf("%s+-%s [%d]", sPrintIndent, task->name, task->priority);
@@ -452,7 +452,7 @@ void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
     }
 }
 
-// FUN_001948b0
+// FUN_001948b0 NONMATCHING
 void kwlnTaskPrintTrees()
 {
     s32 i;
@@ -583,7 +583,7 @@ KwlnTask* kwlnTaskCreate(KwlnTask* parentTask,
     return task;
 }
 
-// FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
+// FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL NONMATCHING
 KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, 
                                          u32 priority, 
                                          const char* name, 
@@ -624,7 +624,7 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
     return task;
 }
 
-// FUN_00194c50. Init a new task. See 'kwlnTaskInitEx' for adjustable 'runningDelay' and 'destroyDelay'
+// FUN_00194c50. Init a new task. See 'kwlnTaskInitEx' for adjustable 'runningDelay' and 'destroyDelay' NONMATCHING
 KwlnTask* kwlnTaskInit(const char* name,
                        u32 priority,
                        KwlnTaskUpdateFunc update,
@@ -690,7 +690,7 @@ KwlnTask* kwlnTaskInit(const char* name,
     return task;
 }
 
-// FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay'
+// FUN_00194e10. Init a new task with adjustable 'runningDelay' and 'destroyDelay' NONMATCHING
 KwlnTask* kwlnTaskInitEx(const char* name,
                          u32 priority,
                          s32 runningDelay,
@@ -772,7 +772,7 @@ u8 kwlnTaskDestroyWithHierarchyByName(const char* name)
     return kwlnTaskDestroyWithHierarchy(task);
 }
 
-// FUN_00195020. Destroy a task and its hierarchy
+// FUN_00195020. Destroy a task and its hierarchy NONMATCHING
 u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 {
     u32 state;
@@ -874,7 +874,7 @@ u32 kwlnTaskGetState(KwlnTask* task)
     return KWLNTASK_STATE_NULL;
 }
 
-// FUN_00195340
+// FUN_00195340 NONMATCHING
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
     KwlnTask* list;
@@ -928,7 +928,7 @@ KwlnTask* kwlnTaskGetUpdating()
     return sTaskUpdating;
 }
 
-// FUN_00195460. Return true if 'task' is in a list
+// FUN_00195460. Return true if 'task' is in a list NONMATCHING
 u32 kwlnTaskExists(KwlnTask* task)
 {
     KwlnTask* currTask;
@@ -1020,7 +1020,7 @@ void kwlnTaskAddChild(KwlnTask* parentTask, KwlnTask* childTask)
     }
 }
 
-// FUN_001955f0
+// FUN_001955f0 NONMATCHING
 void kwlnTaskDetachParent(KwlnTask* childTask) 
 {
     KwlnTask* parentTask;

@@ -35,7 +35,7 @@ ScrCommandTable gScrCmdTable =
     ARRAY_SIZE(gScrCmdTable.cmds)
 };
 
-// FUN_0035afb0
+// FUN_0035afb0 NONMATCHING
 u32 scrCommand_RAND()
 {
     scrSetIntReturnVal(RpRandom() % (scrGetIntPara(0) + 1));
@@ -49,7 +49,7 @@ u32 scrCommand_SYNC()
     return scrGetCmdTimer() != 0;
 }
 
-// FUN_0035b030
+// FUN_0035b030 NONMATCHING
 u32 scrCommand_WAIT()
 {
     u32 cmdTimer;
@@ -111,7 +111,7 @@ u32 scrCommand_SWITCH()
     return true;
 }
 
-// FUN_0035b280
+// FUN_0035b280 NONMATCHING
 u32 scrCommand_SCR_RUN()
 {
     s32 prcdIdx;

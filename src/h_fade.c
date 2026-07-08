@@ -26,7 +26,7 @@ static void H_Fade_White();
 static void H_Fade_Day();
 static void H_Fade_Custom();
 
-// FUN_00107020
+// FUN_00107020 NONMATCHING
 void H_Fade_ReadPak()
 {
     HCdvd* cdvd;
@@ -36,7 +36,7 @@ void H_Fade_ReadPak()
     H_Cdvd_ReadSync(cdvd);
 }
 
-// FUN_00107060
+// FUN_00107060 NONMATCHING
 void H_Fade_Main()
 {
     RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
@@ -81,7 +81,7 @@ void H_Fade_Clear()
     }
 }
 
-// FUN_001071f0
+// FUN_001071f0 NONMATCHING
 static void H_Fade_Anim()
 {
     RwIm2DVertex vertices[4];
@@ -217,7 +217,7 @@ static void H_Fade_Transition()
     // TODO
 }
 
-// FUN_001078a0
+// FUN_001078a0 NONMATCHING
 static void H_Fade_White()
 {
     // TODO: fix stack frame size (the problem is caused by RwRenderStateSet)
@@ -331,7 +331,7 @@ u32 H_Fade_FadeOut()
     return sFadeActive;
 }
 
-// FUN_001085c0
+// FUN_001085c0 NONMATCHING
 u32 H_Fade_FadeIn()
 {
     if (sFadeActive && sFadeState == HFADE_STATE_HOLD)

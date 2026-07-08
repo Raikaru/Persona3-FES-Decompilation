@@ -54,7 +54,7 @@ void FUN_0016f3e0(u32 idx, u32 value)
     gGlobalWork.unk_0083a4dc[idx] = value;
 }
 
-// FUN_0016c860
+// FUN_0016c860 NONMATCHING
 u16 datGetPersonaId(u16 pcId)
 {
     if (IS_HERO(pcId))
@@ -70,7 +70,7 @@ u16 datGetPersonaId(u16 pcId)
     return gPcs[pcId].persona.id;
 }
 
-// FUN_0016cd60
+// FUN_0016cd60 NONMATCHING
 DatUnit* datGetUnit(s16 pcId)
 {
     if (IS_HERO(pcId))
@@ -83,7 +83,7 @@ DatUnit* datGetUnit(s16 pcId)
     return &gPcs[pcId].unit;
 }
 
-// FUN_0016cdf0
+// FUN_0016cdf0 NONMATCHING
 void datInitUnit(s16 pcId)
 {
     u32 idx;
@@ -109,7 +109,7 @@ void datInitUnit(s16 pcId)
     gPcs[pcId].unit.aiTactic = AI_TACTIC_ACT_FREELY;
 }
 
-// FUN_0016c470
+// FUN_0016c470 NONMATCHING
 u8 datGetLevel(u16 pcId)
 {
     if (IS_HERO(pcId))
@@ -120,7 +120,7 @@ u8 datGetLevel(u16 pcId)
     return datCalcGetLevel(&gPcs[pcId].unit);
 }
 
-// FUN_0016c970
+// FUN_0016c970 NONMATCHING
 u32 datGetBadStatusNoDown(u16 pcId)
 {
     if (IS_HERO(pcId))
@@ -131,7 +131,7 @@ u32 datGetBadStatusNoDown(u16 pcId)
     return datCalcGetBadStatusNoDown(&gPcs[pcId].unit);
 }
 
-// FUN_0016d8b0
+// FUN_0016d8b0 NONMATCHING
 void datSetBadStatus(u16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
@@ -143,7 +143,7 @@ void datSetBadStatus(u16 pcId, u32 flags)
     datCalcSetBadStatus(&gPcs[pcId].unit, flags);
 }
 
-// FUN_0016d980
+// FUN_0016d980 NONMATCHING
 void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
 {
     if (IS_HERO(pcId))
@@ -155,7 +155,7 @@ void datSetOldFatigueCounter(u16 pcId, u16 oldFatigueCounter)
     gPcs[pcId].physicalState.oldFatigueCounter = oldFatigueCounter;
 }
 
-// FUN_0016d9d0
+// FUN_0016d9d0 NONMATCHING
 void datClearBadStatus(u16 pcId, u32 flags)
 {
     if (IS_HERO(pcId))
@@ -167,7 +167,7 @@ void datClearBadStatus(u16 pcId, u32 flags)
     datCalcClearBadStatus(&gPcs[pcId].unit, flags);
 }
 
-// FUN_0016d2f0
+// FUN_0016d2f0 NONMATCHING
 u32 datGetExpUntilNextLevel(u16 pcId)
 {
     u32 nextExpTmp;
@@ -203,7 +203,7 @@ u32 datGetExpUntilNextLevel(u16 pcId)
     return nextExp;
 }
 
-// FUN_0016d560
+// FUN_0016d560 NONMATCHING
 u8 datDidCharacterLevelUp(u16 pcId, u32 expGain)
 {
     u8 level;
@@ -235,7 +235,7 @@ u8 datDidCharacterLevelUp(u16 pcId, u32 expGain)
     return count != level;
 }
 
-// FUN_0016dad0
+// FUN_0016dad0 NONMATCHING
 void datSetAiTactic(u16 pcId, u8 aiTacticId)
 {
     K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
@@ -249,7 +249,7 @@ void datSetAiTactic(u16 pcId, u8 aiTacticId)
     gPcs[pcId].unit.aiTactic = aiTacticId;
 }
 
-// FUN_0016dd50
+// FUN_0016dd50 NONMATCHING
 s32 datGetMoney()
 {
     return gGlobalWork.heroMoney;
@@ -261,7 +261,7 @@ s16 datGetPartyId(s32 idx)
     return gGlobalWork.partyIds[idx];
 }
 
-// FUN_0016dd80
+// FUN_0016dd80 NONMATCHING
 u8 datGetAiTactic(u16 pcId)
 {
     if (IS_HERO(pcId))
@@ -272,7 +272,7 @@ u8 datGetAiTactic(u16 pcId)
     return gPcs[pcId].unit.aiTactic;
 }
 
-// FUN_0016d6b0
+// FUN_0016d6b0 NONMATCHING
 void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
 {
     u16 currentPhysicalCondition = gGlobalWork.heroStatus.physicalState.physicalCondition;
@@ -327,7 +327,7 @@ void datSetPhysicalCondition(u16 pcId, u16 physicalCondition)
     gGlobalWork.heroStatus.physicalState.physicalCondition = currentPhysicalCondition;
 }
 
-// FUN_0016d930
+// FUN_0016d930 NONMATCHING
 void datSetFatigueCounter(u16 pcId, u16 fatigueCounter)
 {
     if (IS_HERO(pcId))
@@ -352,13 +352,13 @@ void datSetHp(u16 pcId, u16 hp)
     gGlobalWork.heroUnit.hp = tmp;
 }
 
-// FUN_0016e920
+// FUN_0016e920 NONMATCHING
 void datSetActiveSocialLink(u16 activeSocialLink)
 {
     gGlobalWork.heroStatus.activeSocialLink = activeSocialLink;
 }
 
-// FUN_0016e930
+// FUN_0016e930 NONMATCHING
 void datSetMoney(u32 money)
 {
     K_ASSERT(money <= 9999999, 1674);
@@ -372,7 +372,7 @@ void datSetPartyId(s32 idx, s16 pcId)
     gGlobalWork.partyIds[idx] = pcId;
 }
 
-// FUN_0016e9b0
+// FUN_0016e9b0 NONMATCHING
 u32 datAddMoney(s32 amount)
 {
     s32 finalMoney;
@@ -394,7 +394,7 @@ u32 datAddMoney(s32 amount)
     return finalMoney;
 }
 
-// FUN_0016eb80
+// FUN_0016eb80 NONMATCHING
 u32 datScrCmd_SAVE_PARTY()
 {
     s16 i;
@@ -412,7 +412,7 @@ u32 datScrCmd_SAVE_PARTY()
     return true;
 }
 
-// FUN_0016ebe0
+// FUN_0016ebe0 NONMATCHING
 u32 datScrCmd_RESTORE_PARTY()
 {
     s16 i;
@@ -446,7 +446,7 @@ u32 datScrCmd_GET_PARTY_ID()
     return true;
 }
 
-// FUN_0016edd0
+// FUN_0016edd0 NONMATCHING
 u32 datScrCmd_GET_MONEY()
 {
     scrSetIntReturnVal(gGlobalWork.heroMoney);
@@ -454,7 +454,7 @@ u32 datScrCmd_GET_MONEY()
     return true;
 }
 
-// FUN_0016ee00
+// FUN_0016ee00 NONMATCHING
 u32 datScrCmd_ADD_MONEY()
 {
     s32 baseMoney;
@@ -474,7 +474,7 @@ u32 datScrCmd_ADD_MONEY()
     return true;
 }
 
-// FUN_0016ee90
+// FUN_0016ee90 NONMATCHING
 u32 datScrCmd_REMOVE_MONEY()
 {
     s32 baseMoney;
@@ -497,37 +497,37 @@ u32 datScrCmd_REMOVE_MONEY()
     return true;
 }
 
-// FUN_0016ef20
+// FUN_0016ef20 NONMATCHING
 s16 datGetDaysSinceApr5()
 {
     return gGlobalWork.calendarWork.daysSinceApr5;
 }
 
-// FUN_0016ef30
+// FUN_0016ef30 NONMATCHING
 s8 datGetTime()
 {
     return gGlobalWork.calendarWork.time;
 }
 
-// FUN_0016ef40
+// FUN_0016ef40 NONMATCHING
 s16 datGetDaysSkipTarget()
 {
     return gGlobalWork.calendarWork.daysSkipTarget;
 }
 
-// FUN_0016ef50
+// FUN_0016ef50 NONMATCHING
 s8 datGetTimeSkipTarget()
 {
     return gGlobalWork.calendarWork.timeSkipTarget;
 }
 
-// FUN_0016ef60
+// FUN_0016ef60 NONMATCHING
 u32 datGetSkipToTarget()
 {
     return gGlobalWork.calendarWork.skipToTarget;
 }
 
-// FUN_0016cfe0
+// FUN_0016cfe0 NONMATCHING
 void datSetAcademicPoint(u16 pcId, u16 academicPoint)
 {
     K_ASSERT(academicPoint > SOCIAL_STAT_MIN_POINT && academicPoint < SOCIAL_STAT_MAX_POINT, 797);
@@ -541,7 +541,7 @@ void datSetAcademicPoint(u16 pcId, u16 academicPoint)
     gPcs[pcId].socialStats.academicPoint = academicPoint;
 }
 
-// FUN_0016d090
+// FUN_0016d090 NONMATCHING
 void datSetCharmPoint(u16 pcId, u16 charmPoint)
 {
     K_ASSERT(charmPoint > SOCIAL_STAT_MIN_POINT && charmPoint < SOCIAL_STAT_MAX_POINT, 808);
@@ -557,7 +557,7 @@ void datSetCharmPoint(u16 pcId, u16 charmPoint)
     gPcs[pcId].socialStats.charmPoint = charmPoint;
 }
 
-// FUN_0016d160
+// FUN_0016d160 NONMATCHING
 void datSetCouragePoint(u16 pcId, u16 couragePoint)
 {
     K_ASSERT(couragePoint > SOCIAL_STAT_MIN_POINT && couragePoint < SOCIAL_STAT_MAX_POINT, 828);
@@ -585,7 +585,7 @@ static inline u16 Inl_Character_GetSocialStatPoint(u16 pcId, u16 baseHeroPoint, 
     return point;
 }
 
-// FUN_0016c6f0
+// FUN_0016c6f0 NONMATCHING
 u16 datGetAcademicPoint(u16 pcId)
 {
     return Inl_Character_GetSocialStatPoint(
@@ -594,7 +594,7 @@ u16 datGetAcademicPoint(u16 pcId)
         gPcs[pcId].socialStats.academicPoint);
 }
 
-// FUN_0016c6f0
+// FUN_0016c6f0 NONMATCHING
 u16 datGetCharmPoint(u16 pcId)
 {
     return Inl_Character_GetSocialStatPoint(
@@ -638,7 +638,7 @@ void FUN_0016ca90(u16 pcId, u16 param_2)
     datSetFatigueCounter(pcId, uVar3);
 }
 
-// FUN_0016c7e0
+// FUN_0016c7e0 NONMATCHING
 u32 datGetNextExp(u16 pcId)
 {
     DatPersonaWork* persona; // per
@@ -654,7 +654,7 @@ u32 datGetNextExp(u16 pcId)
     return datPersonaGetNextExp(persona);
 }
 
-// FUN_0016c920
+// FUN_0016c920 NONMATCHING
 u16 datGetPhysicalCondition(u16 pcId)
 {
     if (IS_HERO(pcId))
@@ -665,19 +665,19 @@ u16 datGetPhysicalCondition(u16 pcId)
     return gPcs[pcId].physicalState.physicalCondition;
 }
 
-// FUN_0016dd40
+// FUN_0016dd40 NONMATCHING
 u16 datGetActiveSocialLink()
 {
     return gGlobalWork.heroStatus.activeSocialLink;
 }
 
-// FUN_0016dba0
+// FUN_0016dba0 NONMATCHING
 u8 datGetSocialLinkLevel(u16 socialLink)
 {
     return gGlobalWork.heroStatus.socialLinkStat[socialLink];
 }
 
-// FUN_0016e100
+// FUN_0016e100 NONMATCHING
 u8 datSocialLinkLevelIsNotZero(u16 socialLink)
 {
     K_ASSERT(socialLink > SOCIAL_LINK_SEES && socialLink < SOCIAL_LINK_NYX_TEAM, 1429);
@@ -685,7 +685,7 @@ u8 datSocialLinkLevelIsNotZero(u16 socialLink)
     return gGlobalWork.heroStatus.socialLinkStat[socialLink] > 0;
 }
 
-// FUN_0016cb80
+// FUN_0016cb80 NONMATCHING
 u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType)
 {
     if (IS_HERO(pcId))
@@ -696,7 +696,7 @@ u16 datGetEquipmentIdx(u16 pcId, u16 equipmentType)
     return gPcs[pcId].equipmentsIdx[equipmentType];
 }
 
-// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
+// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags NONMATCHING
 void datSetDaysSinceApr5(s16 daysSinceApr5)
 {
     u32 currentWeekDay;
@@ -739,25 +739,25 @@ void datSetDaysSinceApr5(s16 daysSinceApr5)
     }
 }
 
-// FUN_0016f150
+// FUN_0016f150 NONMATCHING
 void datSetTime(s8 time)
 {
     gGlobalWork.calendarWork.time = time;
 }
 
-// FUN_0016f160
+// FUN_0016f160 NONMATCHING
 void datSetDaysSkipTarget(s16 days)
 {
     gGlobalWork.calendarWork.daysSkipTarget = days;
 }
 
-// FUN_0016f170
+// FUN_0016f170 NONMATCHING
 void datSetTimeSkipTarget(s8 time)
 {
     gGlobalWork.calendarWork.timeSkipTarget = time;
 }
 
-// FUN_0016f180
+// FUN_0016f180 NONMATCHING
 void datSetSkipToTarget(u32 val)
 {
     gGlobalWork.calendarWork.skipToTarget = val;
@@ -775,7 +775,7 @@ u32 datGetFlag(s32 bit)
     return (gGlobalWork.flags[idx] & (1 << mask)) != 0;
 }
 
-// FUN_0016f1f0. See 'g_flags.h' !!!
+// FUN_0016f1f0. See 'g_flags.h' !!! NONMATCHING
 void datSetFlag(s32 bit, u8 enabled)
 {
     s32 mask;
@@ -801,7 +801,7 @@ void datSetFlag(s32 bit, u8 enabled)
     gGlobalWork.flags[idx] &= ~mask;
 }
 
-// FUN_0016f2e0
+// FUN_0016f2e0 NONMATCHING
 void datClearFlagAll()
 {
     s32 i;
@@ -836,7 +836,7 @@ u16 datGetEquipmentId(u16 pcId, u16 equipmentIdx)
     // return (&DAT_007fd6c8 + equipmentIdx * 0x14 + pcId * 0x364);
 }
 
-// FUN_0016f900
+// FUN_0016f900 NONMATCHING
 u8 datGetEquipmentEffect(u16 pcId, u16 equipmentIdx)
 {
     if (pcId == -1)
@@ -880,7 +880,7 @@ void datInitPersona(u32 pcId)
     memset(&gPcs[pcId].persona, 0, sizeof(DatPersonaWork));
 }
 
-// FUN_00175c70
+// FUN_00175c70 NONMATCHING
 void datCompendiumInit()
 {
     memset(gGlobalWork.compendium, 0, sizeof(gGlobalWork.compendium));
@@ -896,31 +896,31 @@ static inline u16 Inl_Character_GetSocialStatLevel(u16 point, const u16* thresho
     return idx;
 }
 
-// FUN_00177280
+// FUN_00177280 NONMATCHING
 u16 datGetAcademicLevel(u16 academicPoint)
 {
     return Inl_Character_GetSocialStatLevel(academicPoint, academicLevelThreshold, 6);
 }
 
-// FUN_001772f0
+// FUN_001772f0 NONMATCHING
 u16 datGetCharmLevel(u16 charmPoint)
 {
     return Inl_Character_GetSocialStatLevel(charmPoint, charmLevelThreshold, 6);
 }
 
-// FUN_00177360
+// FUN_00177360 NONMATCHING
 u16 datGetCourageLevel(u16 couragePoint)
 {
     return Inl_Character_GetSocialStatLevel(couragePoint, courageLevelThreshold, 6);
 }
 
-// FUN_0017b170
+// FUN_0017b170 NONMATCHING
 u32 datGetTotalBtl()
 {
     return gGlobalWork.totalBtl;
 }
 
-// FUN_0017c8c0
+// FUN_0017c8c0 NONMATCHING
 DatPersonaWork* datGetPersonaByCompendium(s32 idx)
 {
     K_ASSERT(idx > 0 && idx < 256, 6177);

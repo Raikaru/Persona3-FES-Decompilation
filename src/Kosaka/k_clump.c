@@ -2,7 +2,7 @@
 #include "rw/rpusrdat.h"
 #include "temporary.h"
 
-// FUN_001a6400
+// FUN_001a6400 NONMATCHING
 s32 K_Clump_MatUsrDataGetInt(const RpMaterial* material, const char* name)
 {
     s32 i;

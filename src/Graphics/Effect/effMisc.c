@@ -23,7 +23,7 @@ void effMiscQuatMultiplyVU()
     );
 }
 
-// FUN_00357e00
+// FUN_00357e00 NONMATCHING
 void effMiscNormalizeVU()
 {
     __asm__ volatile (
@@ -77,13 +77,13 @@ f32 effMiscRandFloat(EffRandState* state)
     return (f32)(effMiscRand(state) & 0xFFFFFF) / 16777216.0f;
 }
 
-// FUN_003580b0. [0;max[
+// FUN_003580b0. [0;max[ NONMATCHING
 u32 effMiscRandRange(EffRandState* state, u32 max)
 {
     return effMiscRand(state) % max;
 }
 
-// FUN_003580f0
+// FUN_003580f0 NONMATCHING
 void effMiscRandInit(EffRandState* state, u32 seed)
 {
     u32 x;
