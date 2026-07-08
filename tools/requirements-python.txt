@@ -1,0 +1,4 @@
+# Python dependencies for the Persona 3 FES decompilation.
+# Install with:  python3 -m pip install -r tools/requirements-python.txt
+splat64>=0.39
+pyelftools>=0.29
