@@ -23,6 +23,8 @@ IMAGE = REPO / "image.bin"
 IMAGE_SHA1 = "9203646d9aa48ff24eb4ba4b328b02df468a9483"
 IMAGE_SIZE = 0x8ACC80
 VRAM = 0x100000
+RETAIL_SHA1 = "3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb"
+RETAIL_PAYLOAD_OFF = 0x80
 SEGMENTS = [
     ("code1", "code", 0x000000, 0x4A2000),
     ("data1", "data", 0x4A2000, 0x67F710),
@@ -124,20 +126,47 @@ def link(c):
         "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf")] + objs)
 
 
-def verify():
+def build_matching_elf(c):
+    """Splice our built loadable payload into the retail ELF structure and
+    write the full, runnable, byte-identical SLUS_216.21. Returns exit status."""
     be = (BUILD / "slus21621.elf").read_bytes()
     img = IMAGE.read_bytes()
     phoff = struct.unpack_from("<I", be, 0x1c)[0]
+    payload = None
     for i in range(struct.unpack_from("<H", be, 0x2c)[0]):
         t, off, va, pa, fsz, msz = struct.unpack_from("<IIIIII", be, phoff + i * 0x20)
         if t == 1 and va == VRAM:
             payload = be[off:off + fsz]
-            got = hashlib.sha1(payload).hexdigest()
-            ok = got == IMAGE_SHA1 and payload == img
-            print(f"loadable image sha1: {got}  {'OK' if ok else 'MISMATCH'}")
-            return 0 if ok else 1
-    print("build: no loadable segment in output")
-    return 1
+            break
+    if payload is None:
+        print("build: no loadable segment in linked output")
+        return 1
+    img_ok = payload == img
+    print(f"loadable image sha1: {hashlib.sha1(payload).hexdigest()}  "
+          f"{'OK' if img_ok else 'MISMATCH'}")
+    out = BUILD / "SLUS_216.21"
+    if not c.get("retail_elf"):
+        print("build: retail_elf not set; skipping whole-file assembly")
+        return 0 if img_ok else 1
+    retail = Path(c["retail_elf"]).read_bytes()
+    # find the retail loadable segment's file offset (don't assume 0x80)
+    rphoff = struct.unpack_from("<I", retail, 0x1c)[0]
+    roff = None
+    for i in range(struct.unpack_from("<H", retail, 0x2c)[0]):
+        t, off, va, pa, fsz, msz = struct.unpack_from("<IIIIII", retail, rphoff + i * 0x20)
+        if t == 1 and va == VRAM:
+            roff = off
+            break
+    if roff is None:
+        print("build: no loadable segment in retail ELF")
+        return 1
+    # replace only the loadable payload region; keep the exact ELF wrapper
+    final = retail[:roff] + payload + retail[roff + len(payload):]
+    out.write_bytes(final)
+    got = hashlib.sha1(final).hexdigest()
+    whole_ok = got == RETAIL_SHA1
+    print(f"SLUS_216.21 sha1:    {got}  {'OK' if whole_ok else 'MISMATCH'}")
+    return 0 if (img_ok and whole_ok) else 1
 
 
 def main():
@@ -171,7 +200,7 @@ def main():
                 os.chdir(cwd)
     write_lcf()
     link(c)
-    sys.exit(verify())
+    sys.exit(build_matching_elf(c))
 
 
 if __name__ == "__main__":

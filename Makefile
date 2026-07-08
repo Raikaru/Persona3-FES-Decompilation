@@ -14,9 +14,10 @@ SPLAT_CONFIG = config/slus21621.yaml
 
 .PHONY: all build setup split verify check clean distclean
 
-all: build
+all: build verify
 
-# Assemble every segment, link, and verify the loadable image is byte-identical.
+# Assemble every segment, link the loadable image, and splice it into the
+# retail ELF wrapper -> build/SLUS_216.21, verified byte-identical to retail.
 build:
 	$(PYTHON) tools/build.py
 
@@ -33,7 +34,7 @@ verify check:
 	$(PYTHON) tools/verify.py
 
 clean:
-	-rm -f asm/*.o asm/*_raw.s build/slus21621.elf build/slus21621.lcf
+	-rm -f asm/*.o asm/*_raw.s build/slus21621.elf build/slus21621.lcf build/SLUS_216.21
 
 distclean: clean
 	-rm -f image.bin
