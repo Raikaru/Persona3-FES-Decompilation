@@ -289,6 +289,29 @@ The permuter is strongest on functions with several locals or statements
 (reordering room); tiny control-flow stubs usually need a hand-chosen structure
 (for example `switch` vs `if`/`||`).
 
+### AST search (decomp-permuter randomizer)
+
+For register-allocation and scheduling walls that text mutation can't reach,
+`tools/permute_ast.py` drives the full upstream decomp-permuter randomizer
+(~30 AST-level passes: temporary-for-expression, type randomization, statement
+reordering, reassociation, ...) against this repo's mwccps2 compile and
+`verify.py` scoring.
+
+```sh
+python tools/permute_ast.py src/Battle/btlMain.c btlMainUpdateStateLose --time 120
+```
+
+On first run it clones decomp-permuter into `tools/decomp-permuter` (gitignored).
+It requires WSL Debian with `cpp` (from `build-essential`) and a system Python
+with `pycparser`, `attrs`, and `toml`; it preprocesses the TU with `cpp
+-nostdinc` (the repo is self-contained), parses it with decomp-permuter's
+pycparser, and hill-climbs one mutation at a time.
+
+A hit's source is normally heavily mutated (dead temporaries, `if (1)`,
+reassociations) yet compiles byte-exact. Read it, extract the single change
+that matters, write clean C, and re-confirm with `tools/verify.py` -- the raw
+output is a lead, not a patch. This is the standard decomp-permuter workflow.
+
 ## Conventions
 
 ### Function markers
@@ -368,6 +391,7 @@ tools/verify.py             per-function C verifier
 tools/fndiff.py             single-function diff helper
 tools/permute.py            per-function source-mutation permuter
 tools/permute_sweep.py      batch permuter driver
+tools/permute_ast.py        AST-level permuter (decomp-permuter randomizer)
 tools/m2ctx.py              decomp.me context generator
 tools/progress.py           progress report
 tools/gen_objdiff.py        objdiff target/base object generator
