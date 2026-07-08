@@ -154,10 +154,10 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId)
     return persona;
 }
 
-// FUN_00174960 NONMATCHING
-u8 datPersonaHeroPersonaValid(u16 heroPersonaIdx)
+// FUN_00174960
+u8 datPersonaHeroPersonaValid(s16 heroPersonaIdx)
 {
-    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID);
+    return (gGlobalWork.heroPersona.personas[heroPersonaIdx].flags & PERSONA_FLAG_VALID) != 0;
 }
 
 // FUN_00174a90 NONMATCHING
