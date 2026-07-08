@@ -3,6 +3,18 @@
 
 u8 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader);
 
+#define ITFMES_HANDLE_STRIDE            0x34
+#define ITFMES_HANDLE_ACTIVE_MES_OFFSET 0x2c
+
+typedef struct ItfMesHandleSystem
+{
+    u8 bytes[0x100];
+} ItfMesHandleSystem;
+
+static ItfMesHandleSystem sItfMesHandleSystem;
+
+extern void FUN_003a4dd0(s32 mesHandleIdx);
+
 // FUN_003a2d80
 s32 itfMesMngInitialize(BmdHeader* bmdHeader)
 {
@@ -14,7 +26,13 @@ s32 itfMesMngInitialize(BmdHeader* bmdHeader)
 // FUN_003a3060
 void itfMesMngDestroyHandle(s32 mesHandleIdx)
 {
-    // TODO
+    if (mesHandleIdx >= 0
+        && *(ItfMes**)((u8*)&sItfMesHandleSystem
+                       + mesHandleIdx * ITFMES_HANDLE_STRIDE
+                       + ITFMES_HANDLE_ACTIVE_MES_OFFSET) != NULL)
+    {
+        FUN_003a4dd0(mesHandleIdx);
+    }
 }
 
 // FUN_003a4990
