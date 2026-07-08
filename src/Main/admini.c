@@ -283,7 +283,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
     return adminiUpdateTask_Exit;
 }
 
-// FUN_0027c840 NONMATCHING
+// FUN_0027c840
 void adminiDestroyTask(KwlnTask* adminiTask)
 {
     AdminiWork* admini;

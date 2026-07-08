@@ -30,7 +30,7 @@ static const char* unkStrings1[5] =
     "Guaranteed to make your friends jealous!"
 };
 
-// FUN_003c4130 NONMATCHING
+// FUN_003c4130
 const char* Day_GetCurrentDayString(u32 month, u32 day)
 {
     const char* dayString;

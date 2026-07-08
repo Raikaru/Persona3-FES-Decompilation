@@ -26,7 +26,7 @@ static void H_Fade_White();
 static void H_Fade_Day();
 static void H_Fade_Custom();
 
-// FUN_00107020 NONMATCHING
+// FUN_00107020
 void H_Fade_ReadPak()
 {
     HCdvd* cdvd;

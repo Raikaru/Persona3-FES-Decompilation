@@ -7,11 +7,14 @@ The goal is to fully decompile the game.
 
 - `SLUS_216.21` (sha1 `3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb`)
 - The retail ELF's `.comment` section says it was built with
-  `MW MIPS C Compiler (2.4.1.01)`. This project currently matches against
-  `mwcps2-3.0b52-030722` with `-O2` (the decomp.me preset in use); functions
-  verified as byte-equivalent are equivalent regardless of compiler, but some
-  functions may need unidiomatic source shapes under 3.0 that the original
-  2.4.1 compiler would have produced from plainer code.
+  `MW MIPS C Compiler (2.4.1.01)`, but that string comes from MWLD and is
+  shared across many CodeWarrior releases. Codegen evidence (far-global
+  addressing uses an allocated register with the symbol+offset baked into the
+  hi16/lo16 relocs, instead of the `$at`-based form emitted by 3.0/earlier)
+  pins the compiler to the `3.0.1` line, build 198 (Oct 2005) or later.
+  This project matches against `mwcps2-3.0.1b210-060308` with `-O2`; the
+  switch from `mwcps2-3.0b52-030722` turned 120 previously NONMATCHING
+  functions into byte-equivalent matches with their plain source shapes.
 
 ## Verification
 

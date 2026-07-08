@@ -18,7 +18,7 @@ static u32 sScrNo;        // 007ce57c
 void scrDestroyTask(KwlnTask* scrTask);
 void* scrScriptProcess(KwlnTask* scrTask);
 
-// FUN_0035b570 NONMATCHING
+// FUN_0035b570
 ScrData* scrStartScript(ScrHeader* header,
                         ScrContentEntry* entries,
                         ScrLblPrcd* prcd,
@@ -405,7 +405,7 @@ void scrAllReleaseScript()
     printf("after = %d\n", sScrNo);
 }
 
-// FUN_0035c090 NONMATCHING
+// FUN_0035c090
 s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name)
 {
     ScrContentEntry* entries;

@@ -116,13 +116,13 @@ void* K_Fldrc_UpdateFilterTask(KwlnTask* fldFilterTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001b5880 NONMATCHING
+// FUN_001b5880
 void K_Fldrc_DestroyFilterTask(KwlnTask* fldFilterTask)
 {
     RwFree(fldFilterTask->workData);
 }
 
-// FUN_001b58b0 NONMATCHING
+// FUN_001b58b0
 KwlnTask* K_Fldrc_CreateFilterTask(KwlnTask* parent)
 {
     FldFilterWork* work;

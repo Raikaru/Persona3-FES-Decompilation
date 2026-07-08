@@ -193,7 +193,7 @@ void btlUnitSetScale(BtlUnit* unit, f32 scale)
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
 
-// FUN_0027f730 NONMATCHING
+// FUN_0027f730
 void btlUnitSetColor(BtlUnit* unit, RwRGBA col)
 {
     unit->cols[BTLUNIT_COL_MAIN] = col;
@@ -316,7 +316,7 @@ BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const R
     return packet;
 }
 
-// FUN_0027ffb0 NONMATCHING
+// FUN_0027ffb0
 void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst)
 {
     RwV3d scaledCenter;
@@ -379,7 +379,7 @@ void btlUnitDestroyMovePacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_002819d0 NONMATCHING
+// FUN_002819d0
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags)
 {
     BtlPacket* packet;
@@ -470,7 +470,7 @@ void btlUnitInitRotatePacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_002821b0 NONMATCHING
+// FUN_002821b0
 u32 btlUnitUpdateRotatePacket(void* work)
 {
     BtlUnitPacketRotate* packet;
@@ -520,7 +520,7 @@ void btlUnitDestroyRotatePacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_002822b0 NONMATCHING
+// FUN_002822b0
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags)
 {
     BtlPacket* packet;
@@ -927,7 +927,7 @@ void btlUnitInit00284d80Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284d10 NONMATCHING
+// FUN_00284d10
 u32 btlUnitUpdate00284d80Packet(void* work)
 {
     BtlUnitPacket00284d80* packet;
@@ -1742,7 +1742,7 @@ void btlUnitInitLookAtUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
-// FUN_00288430
+// FUN_00288430 NONMATCHING
 u32 btlUnitUpdateLookAtUnitPacket(void* work)
 {
     BtlUnit* curr;

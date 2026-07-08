@@ -35,7 +35,7 @@ ScrCommandTable gScrCmdTable =
     ARRAY_SIZE(gScrCmdTable.cmds)
 };
 
-// FUN_0035afb0 NONMATCHING
+// FUN_0035afb0
 u32 scrCommand_RAND()
 {
     scrSetIntReturnVal(RpRandom() % (scrGetIntPara(0) + 1));
@@ -111,7 +111,7 @@ u32 scrCommand_SWITCH()
     return true;
 }
 
-// FUN_0035b280 NONMATCHING
+// FUN_0035b280
 u32 scrCommand_SCR_RUN()
 {
     s32 prcdIdx;

@@ -326,7 +326,7 @@ void clndReqSkip()
     }
 }
 
-// FUN_0017faa0 NONMATCHING
+// FUN_0017faa0
 void clndDestroyTask(KwlnTask* clndTask)
 {
     RwFree(clndTask->workData);

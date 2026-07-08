@@ -41,7 +41,7 @@ static const char* sBgmAdxStrings[82] =
 static BgmWork sBgmWork;  // 007e4430
 static char sBuffer[256]; // 007e4446
 
-// FUN_00108e50 NONMATCHING
+// FUN_00108e50
 s16 H_Snd_GetCurrentBgmId()
 {
     if (sBgmWork.isBgmPlaying == HSND_BGM_NOT_PLAYING)

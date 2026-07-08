@@ -126,7 +126,7 @@ void btlDestroyTask(KwlnTask* btlTask)
     btlDestroy();
 }
 
-// FUN_0027ced0 NONMATCHING
+// FUN_0027ced0
 void btlCreate()
 {
     s32 i;
@@ -249,7 +249,7 @@ KwlnTask* btlStart(BtlStartInfo* startInfo)
     return btlTask;
 }
 
-// FUN_0027d5e0 NONMATCHING
+// FUN_0027d5e0
 u32 btlScrCmd_CALL_BATTLE()
 {
     BtlEncountTable* encount;

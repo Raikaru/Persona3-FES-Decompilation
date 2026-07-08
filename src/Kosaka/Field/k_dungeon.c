@@ -203,7 +203,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
     return false;
 }
 
-// FUN_001c02e0 NONMATCHING
+// FUN_001c02e0
 void K_FldDungeon_DestroyScrMemory()
 {
     FldDungeon* dungeon;

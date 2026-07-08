@@ -95,7 +95,7 @@ Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
     return mdl;
 }
 
-// FUN_00316bd0. Create a model with a loaded .RMD file in memory NONMATCHING
+// FUN_00316bd0. Create a model with a loaded .RMD file in memory
 Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
 {
     Model* mdl;
@@ -450,7 +450,7 @@ u32 mdl00319770(Model* mdl, u16 wpnIdx)
     return false;
 }
 
-// FUN_00319840 NONMATCHING
+// FUN_00319840
 void mdlStreamInit(Model* mdl)
 {
     MdlStream* stream;
@@ -480,7 +480,7 @@ void mdlStreamRequestCdvd(Model* mdl, const char* path)
     stream->rws = NULL;
 }
 
-// FUN_00319910 NONMATCHING
+// FUN_00319910
 void mdlStreamDestroy(Model* mdl)
 {
     if (mdl->stream->unk_0c != NULL)

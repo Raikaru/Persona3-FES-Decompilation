@@ -77,13 +77,13 @@ u32 H_Cursor_GetShouldDraw(KwlnTask* hcursorTask)
     return ((HCursorWork*)hcursorTask->workData)->shouldDraw;
 }
 
-// FUN_00100580 NONMATCHING
+// FUN_00100580
 void H_Cursor_DestroyTask(KwlnTask* hcursorTask)
 {
     RwFree(hcursorTask->workData);
 }
 
-// FUN_001005b0 NONMATCHING
+// FUN_001005b0
 KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect rect, RwRGBA color)
 {
     HCursorWork* work;
@@ -121,7 +121,7 @@ KwlnTask* H_Cursor_CreateTask(KwlnTask* parent, f32 zOffset, RwV2d pos, RwRect r
     return task;
 }
 
-// FUN_00100710 NONMATCHING
+// FUN_00100710
 void H_Cursor_SetPos(KwlnTask* hcursorTask, RwV2d pos)
 {
     ((HCursorWork*)hcursorTask->workData)->pos = pos;
@@ -139,7 +139,7 @@ void H_Cursor_SetZOffset(KwlnTask* hcursorTask, f32 zOffset)
     ((HCursorWork*)hcursorTask->workData)->zOffset = zOffset;
 }
 
-// FUN_00100780 NONMATCHING
+// FUN_00100780
 void H_Cursor_SetColor(KwlnTask* hcursorTask, RwRGBA color)
 {
     HCursorWork* work;

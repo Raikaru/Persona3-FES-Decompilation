@@ -302,7 +302,7 @@ static u32 CodeFunc_Proc(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035cf20. Call a native function NONMATCHING
+// FUN_0035cf20. Call a native function
 static u32 CodeFunc_Comm(ScrData* scr)
 {
     ScrCmdFunc cmdFunc;
@@ -333,7 +333,7 @@ static u32 CodeFunc_Comm(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035d040 NONMATCHING
+// FUN_0035d040
 static u32 CodeFunc_End(ScrData* scr)
 {
     if (scr->sp == 0)

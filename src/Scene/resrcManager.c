@@ -4,7 +4,7 @@
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
-// FUN_003b4fc0 NONMATCHING
+// FUN_003b4fc0
 ResrcManager* resrcMngCreate()
 {
     ResrcManager* resMgr;
@@ -15,7 +15,7 @@ ResrcManager* resrcMngCreate()
     return resMgr;
 }
 
-// FUN_003b5020 NONMATCHING
+// FUN_003b5020
 void resrcMngDestroy(ResrcManager* resManager)
 {
     s32 i;
