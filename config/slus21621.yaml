@@ -1,0 +1,30 @@
+name: Persona 3 FES (SLUS_216.21)
+sha1: 9203646d9aa48ff24eb4ba4b328b02df468a9483
+options:
+  platform: ps2
+  basename: slus21621
+  base_path: ..
+  target_path: image.bin
+  asm_path: asm
+  src_path: src
+  asset_path: assets
+  ld_script_path: build/slus21621.ld
+  symbol_addrs_path: config/symbol_addrs.txt
+  mips_abi_gpr: numeric
+  mips_abi_float_regs: numeric
+  find_file_boundaries: True
+  use_legacy_include_asm: False
+  disasm_unknown: True
+  asm_inc_header: ""
+segments:
+  - name: main
+    type: code
+    start: 0x0
+    vram: 0x100000
+    subsegments:
+      - [0x0, asm, code1]
+      - [0x4a2000, bin, data1]
+      - [0x67f710, asm, code2]
+      - [0x681000, bin, data2]
+  - [0x8acc80, bss, bss]
+  - [0x8acc80]

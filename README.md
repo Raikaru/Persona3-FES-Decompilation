@@ -1,61 +1,134 @@
-# Persona 3 FES (USA) Decompilation
+# Persona 3 FES
 
-This is a WIP matching decompilation of Shin Megami Tensei: Persona 3 FES.
-The goal is to fully decompile the game.
+A work-in-progress matching decompilation of **Shin Megami Tensei: Persona 3 FES**
+(USA, `SLUS_216.21`) for the Sony PlayStation 2.
+
+This repo splits the retail executable into assembly and data with
+[splat](https://github.com/ethteck/splat) and rebuilds a **byte-identical**
+program image using the game's original **CodeWarrior for PlayStation 2**
+toolchain. Functions are decompiled to C one at a time; each is verified to
+assemble back to the exact retail bytes.
+
+> This project needs a copy of the game you legally own. No copyrighted data
+> (the ELF or any extracted bytes) is included in this repository.
+
+## Status
+
+| Artifact | State |
+| --- | --- |
+| Loadable image (code + data), rebuilt from split sources | **byte-identical** to retail |
+| Functions in the executable | 13,407 |
+| Function map (`config/symbol_addrs.txt`) | complete |
+| Decompiled to matching C | ongoing (see `make verify`) |
+
+The disassembly of the whole image reassembles and links to a program image
+whose SHA-1 matches retail; decompilation replaces that assembly with C
+function by function.
 
 ## Target
 
-- `SLUS_216.21` (sha1 `3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb`)
-- The retail ELF's `.comment` section says it was built with
-  `MW MIPS C Compiler (2.4.1.01)`, but that string comes from MWLD and is
-  shared across many CodeWarrior releases. Codegen evidence (far-global
-  addressing uses an allocated register with the symbol+offset baked into the
-  hi16/lo16 relocs, instead of the `$at`-based form emitted by 3.0/earlier)
-  pins the compiler to the `3.0.1` line, build 198 (Oct 2005) or later.
-  This project matches against `mwcps2-3.0.1b210-060308` with `-O2`; the
-  switch from `mwcps2-3.0b52-030722` turned 120 previously NONMATCHING
-  functions into byte-equivalent matches with their plain source shapes.
+- `SLUS_216.21`, SHA-1 `3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb`.
+- Single loadable segment at VRAM `0x100000` (7.1 MB code + data) plus BSS at
+  `0x9acc80`. The retail ELF is stripped (no symbol table). Machine is the
+  MIPS **R5900** Emotion Engine (little-endian). Note the R5900 omits the 64-bit
+  `ddiv`/`ddivu` instructions, so any such disassembly is really data.
+- The `.comment` section reads `MW MIPS C Compiler (2.4.1.01)`, but that string
+  ships in MWLD across many CodeWarrior releases. Codegen evidence (far-global
+  addressing bakes the symbol+offset into the hi16/lo16 relocs using an
+  allocated register, not the `$at` form of 3.0/earlier) pins the compiler to
+  the **3.0.1** line, build 198+ . This project builds with
+  `mwcps2-3.0.1b210-060308` at `-O2`.
 
-## Verification
+## Prerequisites
 
-Every decompiled function carries a `// FUN_xxxxxxxx` marker with its retail
-address. `tools/verify.py` compiles each source file with the project
-toolchain and byte-compares every marked function against the retail ELF
-(relocated instruction fields masked, retail tail padding checked so stubs
-cannot false-pass):
+- **Python 3.8+** and splat: `pip install splat64`
+- The **CodeWarrior PS2** toolchain `mwcps2-3.0.1b210-060308`
+  (`mwccps2.exe`, `asm_r5900_elf.exe`, `mwldps2.exe`). Windows-native, or run
+  the whole flow under Wine.
+- Your own retail `SLUS_216.21`.
+
+FLEXlm note: the 3.0.1 toolchain wants `LMGR326B.DLL` from the older
+`mwcps2-3.0b52` release copied over **both** `LMGR326B.DLL` and `LMGR8C.DLL` in
+the toolchain directory.
+
+## Quick start
 
 ```sh
-# one-time machine setup: point the tool at your compiler and retail ELF
-# either export P3_MWCC / P3_RETAIL_ELF, or create tools/verify_config.local.json:
-#   {"mwcc": "<path>/mwccps2.exe", "retail_elf": "<path>/SLUS_216.21"}
+# 1. tell the tools where your compiler and retail ELF live (gitignored)
+cat > tools/verify_config.local.json <<'JSON'
+{ "mwcc": "D:/mwcps2-3.0.1b210-060308/mwccps2.exe",
+  "retail_elf": "C:/path/to/SLUS_216.21" }
+JSON
 
-python tools/verify.py                          # verify the whole repo
-python tools/verify.py src/rw/rprandom.c        # verify one file
-python tools/verify.py --show-mismatches        # per-function failure detail
-python tools/verify.py --json report.json       # full machine-readable report
+# 2. extract the loadable image from your ELF
+make setup
+
+# 3. split it into asm/ + data (run once, or after a config change)
+make split
+
+# 4. assemble + link + verify the rebuilt image is byte-identical
+make
+
+# per-function C match report
+make verify
 ```
 
-Statuses: `MATCH` (byte-equivalent), `STUB` (`// TODO` body), `NONMATCHING`
-(explicitly tagged WIP, see below), `STALE_NONMATCHING`, `MISMATCH`,
-`SIZE_MISMATCH`, `NO_SYMBOL`, `COMPILE_ERROR`, `UNKNOWN_ADDR`. The exit code
-is nonzero if anything other than `MATCH`/`STUB`/`NONMATCHING` is found, so
-the tool can be used as a pre-commit / CI gate.
+A successful `make` prints:
 
-### NONMATCHING convention
-
-A function that is implemented but not yet byte-equivalent MUST carry the tag
-on its marker line:
-
-```c
-// FUN_0029a2c0 NONMATCHING
-u32 btlOrderAddAction(BtlAction* action)
+```
+loadable image sha1: 9203646d9aa48ff24eb4ba4b328b02df468a9483  OK
 ```
 
-Untagged implementations are treated as match claims and fail verification if
-they differ from retail. When a tagged function is brought to a byte-match,
-the verifier reports `STALE_NONMATCHING` until the tag is removed. Commit
-messages should only say "match" for functions that verify as `MATCH`.
+## How the matching build works
 
-`tools/slus21621_functions.json` holds the function-entry map exported from
-Ghidra; function windows are entry-to-next-entry distances, tightened by the
-marker addresses present in the source tree.
+```
+retail SLUS_216.21 ──extract──▶ image.bin  (loadable payload, VRAM 0x100000)
+        │
+   splat split (config/slus21621.yaml, numeric registers)
+        ▼
+   asm/code1.s asm/code2.s  +  data ranges
+        │  tools/desym.py     (%hi/%lo → literals, jal sym → jal 0xADDR,
+        │                       div/mult 3-op → 2-op, `not` → explicit `nor`)
+        ▼
+   tools/asm.py  (asm_r5900_elf -gnu): assembles, and rewrites any line the
+        │        assembler rejects or that differs from retail into a .word/.byte
+        │        of its original bytes — this is how data-as-code becomes data
+        ▼
+   *.o  ──mwldps2 + build/slus21621.lcf──▶ build/slus21621.elf
+        ▼
+   verify: linked loadable payload SHA-1 == retail loadable image
+```
+
+`tools/build.py` drives the whole pipeline; `make` is a thin wrapper over it.
+
+Decompiled C in `src/` is validated per function by `tools/verify.py`, which
+compiles each file and byte-compares every `// FUN_xxxxxxxx`-marked function
+against retail (relocated fields masked, tail padding checked). Wiring matched
+C into the linked image (per-file asm↔C swap) is the next infrastructure step;
+until then the link uses the assembly baseline and `verify.py` is the
+authoritative per-function match gate.
+
+## Contributing
+
+New here? See **[CONTRIBUTING.md](CONTRIBUTING.md)**. Working with an AI agent?
+See **[AGENTS.md](AGENTS.md)**. Naming conventions live in
+[`docs/prefixes.md`](docs/prefixes.md).
+
+The short version: pick an unmapped `func_XXXXXXXX`, write C for it with a
+`// FUN_XXXXXXXX` marker and a header prototype, then iterate with
+
+```sh
+python tools/fndiff.py src/path/file.c yourFunction   # 0 diffs == match
+python tools/verify.py src/path/file.c
+```
+
+## Layout
+
+```
+config/     splat config + symbol map (symbol_addrs.txt)
+tools/      build.py, desym.py, asm.py, verify.py, fndiff.py
+asm/        macro.inc (committed); *.s / *.o are generated (gitignored)
+src/        decompiled C
+include/     headers
+build/      build outputs (gitignored)
+```
