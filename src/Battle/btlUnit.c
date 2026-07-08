@@ -3,6 +3,8 @@
 #include "Battle/battle.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Main/Battle/Data/datUnit.h"
+#include "Graphics/Model/mdlFile.h"
+#include "h_cdvd.h"
 
 static u32 sNextId = 1; // 007cc51c
 
@@ -13,7 +15,11 @@ RwV3d gUnk_00957188; // 00957188
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
+void FUN_00287490(BtlUnit* unit);
+void FUN_00287510(BtlUnit* unit);
 void FUN_00287b20(BtlUnit* unit, s16 param_2);
+void FUN_003b7090(u16 resTypeId);
+void FUN_002bbbc0(void* param);
 void FUN_00287cf0(BtlUnit* unit, s16 param_2);
 
 // 12 bytes
@@ -88,6 +94,69 @@ typedef struct BtlUnitPacket00284f50
 void btlUnitInit00284f50Packet(void* work);
 u32 btlUnitUpdate00284f50Packet(void* work);
 void btlUnitDestroy00284f50Packet(void* work);
+
+// 16 bytes
+typedef struct BtlUnitPacketModel
+{
+    BtlUnit* unit; // 0x00
+    u16 type;      // 0x04. See enum 'ModelType'
+    u16 id;        // 0x06
+    u16 flags;     // 0x08
+    u8 unkData[0x02];
+    HCdvd* cdvd;   // 0x0c
+} BtlUnitPacketModel;
+
+void btlUnitInitModelPacket(void* work);
+u32 btlUnitUpdateModelPacket(void* work);
+void btlUnitDestroyModelPacket(void* work);
+
+// 4 bytes
+typedef struct BtlUnitPacket002857f0
+{
+    BtlUnit* unit; // 0x00
+} BtlUnitPacket002857f0;
+
+void btlUnitInit002857f0Packet(void* work);
+u32 btlUnitUpdate002857f0Packet(void* work);
+void btlUnitDestroy002857f0Packet(void* work);
+
+// 20 bytes
+typedef struct BtlUnitPacket00285d30
+{
+    BtlUnit* unit; // 0x00
+    u32 startCol;  // 0x04
+    u32 targetCol; // 0x08
+    s16 unk_c;     // 0x0c
+    s16 unk_e;     // 0x0e
+    u8 mode;       // 0x10
+    u8 flags;      // 0x11
+    s16 counter;   // 0x12
+} BtlUnitPacket00285d30;
+
+void btlUnitInit00285d30Packet(void* work);
+u32 btlUnitUpdate00285d30Packet(void* work);
+void btlUnitDestroy00285d30Packet(void* work);
+
+// 4 bytes
+typedef struct BtlUnitPacketUnitPtr
+{
+    BtlUnit* unit; // 0x00
+} BtlUnitPacketUnitPtr;
+
+void btlUnitInit00285e50Packet(void* work);
+u32 btlUnitUpdate00285e50Packet(void* work);
+void btlUnitDestroy00285e50Packet(void* work);
+
+void btlUnitInit00285f20Packet(void* work);
+u32 btlUnitUpdate00285f20Packet(void* work);
+void btlUnitDestroy00285f20Packet(void* work);
+
+void btlUnitInit002860b0Packet(void* work);
+u32 btlUnitUpdate00286240Packet(void* work);
+void btlUnitInit00286240Packet(void* work);
+void btlUnitDestroy00286240Packet(void* work);
+u32 btlUnitUpdate002860b0Packet(void* work);
+void btlUnitDestroy002860b0Packet(void* work);
 
 void btlUnit002862a0(void* work);
 u32 btlUnit002862c0(void* work);
@@ -991,6 +1060,506 @@ BtlPacket* btlUnit00284f50(BtlUnit* unit, u16 param_2, f32 speed, u16 param_4)
     work->unk_c = param_4;
 
     return packet;
+}
+
+// FUN_00284fe0
+void btlUnitInitModelPacket(void* work)
+{
+    BtlUnitPacketModel* packet;
+    BtlUnit* unit;
+    Model* mdl;
+    u32 flags;
+    char path[128];
+
+    packet = (BtlUnitPacketModel*)work;
+
+    unit = packet->unit;
+
+    unit->packetCount++;
+
+    if (unit->mdl != NULL)
+    {
+        if (packet->type == unit->mdl->type && packet->id == unit->mdl->id)
+        {
+            return;
+        }
+
+        mdlDestroy(unit->mdl);
+        unit->mdl = NULL;
+    }
+
+    mdl = mdlSearch(packet->type, packet->id, 0);
+
+    if (mdl != NULL)
+    {
+        unit->mdl = mdlClone(mdl);
+
+        flags = unit->flags2 | BTLUNIT_FLAG2_UPDATE;
+        unit->flags2 = flags;
+        unit->flags2 = flags | BTLUNIT_FLAG2_UNK01;
+    }
+    else
+    {
+        if (!(packet->flags & (1 << 4)))
+        {
+            mdlFile0031d530(packet->type, packet->id, path);
+            packet->cdvd = H_Cdvd_Request(path, 0);
+            unit->flags2 |= BTLUNIT_FLAG2_UNK01;
+        }
+
+        unit->flags2 &= ~BTLUNIT_FLAG2_UPDATE;
+    }
+}
+
+// FUN_002850f0
+u32 btlUnitUpdateModelPacket(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00285670
+void btlUnitDestroyModelPacket(void* work)
+{
+    BtlUnitPacketModel* packet;
+
+    packet = (BtlUnitPacketModel*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00285690
+BtlPacket* btlUnitCreateModelPacket(BtlUnit* unit, u16 id, u16 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketModel* work;
+
+    packet = btlPacketCreate(0x10f, sizeof(BtlUnitPacketModel));
+
+    packet->unk_47 &= ~(1 << 0);
+
+    packet->initFunc = btlUnitInitModelPacket;
+    packet->updateFunc = btlUnitUpdateModelPacket;
+    packet->destroyFunc = btlUnitDestroyModelPacket;
+
+    work = (BtlUnitPacketModel*)packet->workData;
+
+    work->unit = unit;
+    work->flags = flags;
+    work->type = unit->genus + 1;
+    work->id = id;
+
+    return packet;
+}
+
+// FUN_00285730
+void btlUnitInit002857f0Packet(void* work)
+{
+    BtlUnitPacket002857f0* packet;
+
+    packet = (BtlUnitPacket002857f0*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00285750
+u32 btlUnitUpdate002857f0Packet(void* work)
+{
+    BtlUnitPacket002857f0* packet;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacket002857f0*)work;
+
+    unit = packet->unit;
+
+    if (unit->resTypeId != 0)
+    {
+        FUN_003b7090(unit->resTypeId);
+        unit->resTypeId = 0;
+    }
+    else
+    {
+        mdlDestroy(unit->mdl);
+    }
+
+    unit->mdl = NULL;
+
+    unit->flags2 &= ~BTLUNIT_FLAG2_UPDATE;
+
+    FUN_00287510(unit);
+
+    return true;
+}
+
+// FUN_002857d0
+void btlUnitDestroy002857f0Packet(void* work)
+{
+    BtlUnitPacket002857f0* packet;
+
+    packet = (BtlUnitPacket002857f0*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_002857f0
+BtlPacket* btlUnit002857f0(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacket002857f0* work;
+
+    packet = btlPacketCreate(0x110, sizeof(BtlUnitPacket002857f0));
+
+    packet->unk_47 &= ~(1 << 0);
+
+    packet->initFunc = btlUnitInit002857f0Packet;
+    packet->updateFunc = btlUnitUpdate002857f0Packet;
+    packet->destroyFunc = btlUnitDestroy002857f0Packet;
+
+    work = (BtlUnitPacket002857f0*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_00285860
+void btlUnitInit00285d30Packet(void* work)
+{
+    BtlUnitPacket00285d30* packet;
+
+    packet = (BtlUnitPacket00285d30*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00285880
+u32 btlUnitUpdate00285d30Packet(void* work)
+{
+    // TODO
+
+    return false;
+}
+
+// FUN_00285d10
+void btlUnitDestroy00285d30Packet(void* work)
+{
+    BtlUnitPacket00285d30* packet;
+
+    packet = (BtlUnitPacket00285d30*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00285d30
+BtlPacket* btlUnit00285d30(BtlUnit* unit, u32 targetCol, s16 param_3, s16 param_4, u8 mode, u8 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacket00285d30* work;
+
+    packet = btlPacketCreate(0x112, sizeof(BtlUnitPacket00285d30));
+
+    packet->initFunc = btlUnitInit00285d30Packet;
+    packet->updateFunc = btlUnitUpdate00285d30Packet;
+    packet->destroyFunc = btlUnitDestroy00285d30Packet;
+
+    work = (BtlUnitPacket00285d30*)packet->workData;
+
+    work->unit = unit;
+    work->targetCol = targetCol;
+    work->unk_c = param_3;
+    work->unk_e = param_4;
+    work->mode = mode;
+    work->flags = flags;
+
+    return packet;
+}
+
+// FUN_00285de0
+void btlUnitInit00285e50Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00285e00
+u32 btlUnitUpdate00285e50Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    FUN_00287490(packet->unit);
+
+    return true;
+}
+
+// FUN_00285e30
+void btlUnitDestroy00285e50Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00285e50
+BtlPacket* btlUnit00285e50(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacketUnitPtr* work;
+
+    packet = btlPacketCreate(0x113, sizeof(BtlUnitPacketUnitPtr));
+
+    packet->initFunc = btlUnitInit00285e50Packet;
+    packet->updateFunc = btlUnitUpdate00285e50Packet;
+    packet->destroyFunc = btlUnitDestroy00285e50Packet;
+
+    work = (BtlUnitPacketUnitPtr*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_00285eb0
+void btlUnitInit00285f20Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00285ed0
+u32 btlUnitUpdate00285f20Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    FUN_00287510(packet->unit);
+
+    return true;
+}
+
+// FUN_00285f00
+void btlUnitDestroy00285f20Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00285f20
+BtlPacket* btlUnit00285f20(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacketUnitPtr* work;
+
+    packet = btlPacketCreate(0x114, sizeof(BtlUnitPacketUnitPtr));
+
+    packet->initFunc = btlUnitInit00285f20Packet;
+    packet->updateFunc = btlUnitUpdate00285f20Packet;
+    packet->destroyFunc = btlUnitDestroy00285f20Packet;
+
+    work = (BtlUnitPacketUnitPtr*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_00285f80
+void btlUnitInit002860b0Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00285fa0 NONMATCHING
+u32 btlUnitUpdate002860b0Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+    u16 i;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    unit = packet->unit;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
+    {
+        return true;
+    }
+
+    if (unit->mdl == NULL)
+    {
+        return true;
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        if (unit->mdl->attachedWpns[i].flags & (1 << 0) &&
+            unit->mdl->attachedWpns[i].wpnMdl != NULL)
+        {
+            if (mdl00319770(unit->mdl, i))
+            {
+                unit->mdl->attachedWpns[i].wpnMdl->flags &= ~(1 << 1);
+            }
+        }
+    }
+
+    return true;
+}
+
+// FUN_00286090
+void btlUnitDestroy002860b0Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_002860b0
+BtlPacket* btlUnit002860b0(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacketUnitPtr* work;
+
+    packet = btlPacketCreate(0x115, sizeof(BtlUnitPacketUnitPtr));
+
+    packet->initFunc = btlUnitInit002860b0Packet;
+    packet->updateFunc = btlUnitUpdate002860b0Packet;
+    packet->destroyFunc = btlUnitDestroy002860b0Packet;
+
+    work = (BtlUnitPacketUnitPtr*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_00286110
+void btlUnitInit00286240Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00286130 NONMATCHING
+u32 btlUnitUpdate00286240Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+    u16 i;
+    BtlUnit* unit;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    unit = packet->unit;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
+    {
+        return true;
+    }
+
+    if (unit->mdl == NULL)
+    {
+        return true;
+    }
+
+    for (i = 0; i < 5; i++)
+    {
+        if (unit->mdl->attachedWpns[i].flags & (1 << 0) &&
+            unit->mdl->attachedWpns[i].wpnMdl != NULL)
+        {
+            if (mdl00319770(unit->mdl, i))
+            {
+                unit->mdl->attachedWpns[i].wpnMdl->flags |= (1 << 1);
+            }
+        }
+    }
+
+    return true;
+}
+
+// FUN_00286220
+void btlUnitDestroy00286240Packet(void* work)
+{
+    BtlUnitPacketUnitPtr* packet;
+
+    packet = (BtlUnitPacketUnitPtr*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_00286240
+BtlPacket* btlUnit00286240(BtlUnit* unit)
+{
+    BtlPacket* packet;
+    BtlUnitPacketUnitPtr* work;
+
+    packet = btlPacketCreate(0x116, sizeof(BtlUnitPacketUnitPtr));
+
+    packet->initFunc = btlUnitInit00286240Packet;
+    packet->updateFunc = btlUnitUpdate00286240Packet;
+    packet->destroyFunc = btlUnitDestroy00286240Packet;
+
+    work = (BtlUnitPacketUnitPtr*)packet->workData;
+
+    work->unit = unit;
+
+    return packet;
+}
+
+// FUN_002862a0
+void btlUnit002862a0(void* work)
+{
+    BtlUnit* unit;
+
+    unit = *(BtlUnit**)work;
+
+    unit->packetCount++;
+}
+
+// FUN_002862c0
+u32 btlUnit002862c0(void* work)
+{
+    BtlUnit* unit;
+
+    unit = *(BtlUnit**)work;
+
+    if (unit->unk_9fc != NULL)
+    {
+        FUN_002bbbc0(unit->unk_9fc);
+    }
+
+    return true;
+}
+
+// FUN_00286300
+void btlUnit00286300(void* work)
+{
+    BtlUnit* unit;
+
+    unit = *(BtlUnit**)work;
+
+    unit->packetCount--;
 }
 
 // FUN_00286320

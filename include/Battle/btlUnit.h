@@ -7,6 +7,7 @@
 
 #define BTLUNIT_FLAG_FADE (1 << 0) // 0x01
 
+#define BTLUNIT_FLAG2_UNK01  (1 << 0)  // 0x01
 #define BTLUNIT_FLAG2_UPDATE (1 << 1)  // 0x02
 #define BTLUNIT_FLAG2_DIRTY  (1 << 2)  // 0x04
 
@@ -86,7 +87,8 @@ struct BtlUnit
     u8 unkData6c[0x10];
     u16 resTypeId;                // 0x9f2
     Model* mdl;                   // 0x9f4
-    u8 unkData7[0x08];
+    u8 unkData7[0x04];
+    void* unk_9fc;                // 0x9fc
     BtlUnit* personaUnit;         // 0xa00
     u8 unkData8[0x28];
     DatUnit* datUnit;             // 0xa2c

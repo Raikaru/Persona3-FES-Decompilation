@@ -442,6 +442,14 @@ void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
     mdl->animSlots[0].lookAt.targetScale = *scale;
 }
 
+// FUN_00319770
+u32 mdl00319770(Model* mdl, u16 wpnIdx)
+{
+    // TODO
+
+    return false;
+}
+
 // FUN_00319840 NONMATCHING
 void mdlStreamInit(Model* mdl)
 {
