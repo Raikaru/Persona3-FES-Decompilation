@@ -84,7 +84,10 @@ struct BtlUnit
     s16 unk_9ce;                  // 0x9ce
     u8 unkData6b[0x10];
     s16 unk_9e0;                  // 0x9e0
-    u8 unkData6c[0x10];
+    u8 unkData6c[0x02];
+    f32 unk_9e4;                  // 0x9e4
+    s8 unk_9e8;                   // 0x9e8
+    u8 unkData6d[0x09];
     u16 resTypeId;                // 0x9f2
     Model* mdl;                   // 0x9f4
     u8 unkData7[0x04];

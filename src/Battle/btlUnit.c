@@ -664,7 +664,7 @@ void btlUnitDestroyAnimPacket(void* work)
     packet->unit->packetCount--;
 }
 
-// FUN_00284200 NONMATCHING
+// FUN_00284200
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
     BtlPacket* packet;
@@ -699,6 +699,82 @@ BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f
     work->blendFrameCount = blendFrameCount;
     work->speed = speed;
     work->mode = mode;
+
+    return packet;
+}
+
+// 8 bytes
+typedef struct BtlUnitPacket002843e0
+{
+    BtlUnit* unit; // 0x00
+    s16 unk_4;     // 0x04
+    u8 unkData[0x02];
+} BtlUnitPacket002843e0;
+
+// FUN_00284330
+void btlUnitInit002843e0Packet(void* work)
+{
+    BtlUnitPacket002843e0* packet;
+
+    packet = (BtlUnitPacket002843e0*)work;
+
+    packet->unit->packetCount++;
+}
+
+// FUN_00284350 NONMATCHING
+u32 btlUnitUpdate002843e0Packet(void* work)
+{
+    BtlUnitPacket002843e0* packet;
+    BtlUnit* unit;
+    s16 frame;
+
+    packet = (BtlUnitPacket002843e0*)work;
+
+    unit = packet->unit;
+
+    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    {
+        frame = unit->unk_9ce;
+    }
+    else
+    {
+        frame = 0;
+    }
+
+    if (unit->unk_9e0 != frame)
+    {
+        btlUnitAnimate(unit, unit->unk_9e0, packet->unk_4, unit->unk_9e4, unit->unk_9e8);
+    }
+
+    return true;
+}
+
+// FUN_002843c0
+void btlUnitDestroy002843e0Packet(void* work)
+{
+    BtlUnitPacket002843e0* packet;
+
+    packet = (BtlUnitPacket002843e0*)work;
+
+    packet->unit->packetCount--;
+}
+
+// FUN_002843e0
+BtlPacket* btlUnit002843e0(BtlUnit* unit, s16 param_2)
+{
+    BtlPacket* packet;
+    BtlUnitPacket002843e0* work;
+
+    packet = btlPacketCreate(0x104, sizeof(BtlUnitPacket002843e0));
+
+    packet->initFunc = btlUnitInit002843e0Packet;
+    packet->updateFunc = btlUnitUpdate002843e0Packet;
+    packet->destroyFunc = btlUnitDestroy002843e0Packet;
+
+    work = (BtlUnitPacket002843e0*)packet->workData;
+
+    work->unit = unit;
+    work->unk_4 = param_2;
 
     return packet;
 }
