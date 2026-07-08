@@ -959,17 +959,17 @@ u32 datGetTotalBtl()
     return gGlobalWork.totalBtl;
 }
 
-// FUN_0017c8c0 NONMATCHING
+// FUN_0017c8c0
 DatPersonaWork* datGetPersonaByCompendium(s32 idx)
 {
-    K_ASSERT(idx > 0 && idx < 256, 6177);
+    K_ASSERT(idx >= 0 && idx < 256, 6177);
 
-    if (!(gGlobalWork.compendium[idx].flags & PERSONA_FLAG_VALID))
+    if (gGlobalWork.compendium[idx].flags & PERSONA_FLAG_VALID)
     {
-        return NULL;
+        return &gGlobalWork.compendium[idx];
     }
 
-    return &gGlobalWork.compendium[idx];
+    return NULL;
 }
 
 // FUN_0017d7f0
