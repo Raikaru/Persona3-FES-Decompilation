@@ -281,21 +281,21 @@ u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
     return true;
 }
 
-// FUN_0017e520 NONMATCHING
+// FUN_0017e520
 u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
                                   u32 startMonth, u32 startDay,
                                   u32 endMonth, u32 endDay)
 {
-    u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
-    u32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
-    u32 testDate = clndGetDaysSinceStartFromDate(monthToTest, dayToTest);
+    s32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
+    s32 endDate = clndGetDaysSinceStartFromDate(endMonth, endDay);
+    s32 testDate = clndGetDaysSinceStartFromDate(monthToTest, dayToTest);
 
-    if (testDate < startDate || endDate < testDate)
+    if (testDate >= startDate && testDate <= endDate)
     {
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 // FUN_0017e5d0 NONMATCHING

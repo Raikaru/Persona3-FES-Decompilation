@@ -129,10 +129,10 @@ void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
     unit->bad &= ~badStatus;
 }
 
-// FUN_00300580 NONMATCHING
+// FUN_00300580
 u32 datCalcChkBadStatus(DatUnit* unit, u32 badStatus)
 {
-    return (unit->bad & badStatus);
+    return (unit->bad & badStatus) != 0;
 }
 
 // FUN_003005e0
