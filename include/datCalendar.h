@@ -108,14 +108,14 @@ typedef struct CalendarTaskWork
     u8 unkData[0x20];
 } CalendarTaskWork;
 
-extern const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX];
+extern const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX - 1];
 
-u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5);
-u32 clndGetDaysSinceStartFromDate(u32 month, u32 day);
+s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5);
+s32 clndGetDaysSinceStartFromDate(s32 month, s32 day);
 u32 clndGetCurrentMonth();
-u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5);
+s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5);
 u32 clndGetCurrentDay();
-u32 clndGetWeekDay(u32 daysSinceApr5);
+s32 clndGetWeekDay(s32 daysSinceApr5);
 u32 clndGetCurrentWeekDay();
 u8 clndIsHolidayOrSunday();
 u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
