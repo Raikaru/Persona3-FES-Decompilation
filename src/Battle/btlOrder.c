@@ -37,12 +37,12 @@ u32 btlOrderRemoveAction(BtlAction** actions, u32 arrSize, BtlAction* action)
     return true;
 }
 
-// FUN_0029a2c0 NONMATCHING
+// FUN_0029a2c0
 u32 btlOrderAddAction(BtlAction* action)
 {
     BtlAction** actions;
     BtlAction* curr;
-    s32 i;
+    u32 i;
 
     actions = gBtl->order.actions;
     for (i = 0; i < BTL_MAXACTIONS; i++)
