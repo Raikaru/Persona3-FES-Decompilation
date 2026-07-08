@@ -229,10 +229,10 @@ s32 clndGetWeekDay(s32 daysSinceApr5)
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
-// FUN_0017db00 NONMATCHING
+// FUN_0017db00
 u32 clndGetCurrentWeekDay()
 {
-    u16 daysSinceApr5 = datGetDaysSinceApr5();
+    s32 daysSinceApr5 = datGetDaysSinceApr5();
 
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
