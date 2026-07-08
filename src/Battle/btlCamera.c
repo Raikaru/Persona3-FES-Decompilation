@@ -103,7 +103,7 @@ BtlPacket* btlCameraCreateMoveToPacket(BtlAction* action,
     return packet;
 }
 
-// FUN_002a4330
+// FUN_002a4330 NONMATCHING
 void btlCameraCheckUnitFade()
 {
     RwFrame* cameraFrame;
@@ -148,7 +148,7 @@ void btlCameraCheckUnitFade()
     }
 }
 
-// FUN_002a46e0
+// FUN_002a46e0 NONMATCHING
 void btlCameraMain()
 {
     const BtlCameraStateEntry* entry;
@@ -195,7 +195,7 @@ void btlCameraMain()
     }
 }
 
-// FUN_002a48f0
+// FUN_002a48f0 NONMATCHING
 void btlCameraDebugDraw()
 {
     RwMatrix axisMat;

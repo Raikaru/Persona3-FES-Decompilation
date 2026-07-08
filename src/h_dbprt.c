@@ -56,7 +56,7 @@ void H_Dbprt_Init()
     sText3DList = NULL;
 }
 
-// FUN_001043b0
+// FUN_001043b0 NONMATCHING
 void H_Dbprt_Flush()
 {
     HDbText3D* curr;

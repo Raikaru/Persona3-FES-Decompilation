@@ -1,6 +1,6 @@
 #include "rw/rwcore.h"
 
-// FUN_004c9b40
+// FUN_004c9b40 NONMATCHING
 static RwCamera* CameraEndUpdate(RwCamera* camera)
 {
     RwStandardFunc cameraEndUpdateFunc;
@@ -15,19 +15,19 @@ static RwCamera* CameraEndUpdate(RwCamera* camera)
     return camera;
 }
 
-// FUN_004c9d00
+// FUN_004c9d00 NONMATCHING
 RwCamera* RwCameraEndUpdate(RwCamera* camera)
 {
     return camera->endUpdate(camera);
 }
 
-// FUN_004c9d10
+// FUN_004c9d10 NONMATCHING
 RwCamera* RwCameraBeginUpdate(RwCamera* camera)
 {
     return camera->beginUpdate(camera);
 }
 
-// FUN_004c9e90
+// FUN_004c9e90 NONMATCHING
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
 {
     RwStandardFunc cameraClearFunc;

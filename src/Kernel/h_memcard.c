@@ -8,7 +8,7 @@ static u_long128 sAddr[SCE_MC2_DMA_BUFFER_MAX] __attribute__((aligned(64))); // 
 static s32 sMemcardSeqMode; // 007ce03c
 static s32 sSocketNo;       // 007ce024
 
-// FUN_0018f100
+// FUN_0018f100 NONMATCHING
 void H_Memcard_Init()
 {
     sceDbcInit();

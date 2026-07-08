@@ -35,7 +35,7 @@ static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] =
 
 void* adminiUpdateTask_Check(KwlnTask* adminiTask);
 
-// FUN_0027c080
+// FUN_0027c080 NONMATCHING
 void adminiChangeSeq(s8 seqId, void* seqData, u8 seqDataSize, u8 isNotRestorable)
 {
     KwlnTask* adminiTask;
@@ -129,7 +129,7 @@ s8 adminiGetNextSeqId()
     return admini->nextSeqId;
 }
 
-// FUN_0027c3b0
+// FUN_0027c3b0 NONMATCHING
 void* adminiUpdateTask_Call(KwlnTask* adminiTask)
 {
     AdminiWork* admini;
@@ -218,7 +218,7 @@ void* adminiUpdateTask_Exit(KwlnTask* adminiTask)
     return adminiUpdateTask_Call;
 }
 
-// FUN_0027c650
+// FUN_0027c650 NONMATCHING
 void* adminiUpdateTask_Check(KwlnTask* adminiTask)
 {
     AdminiWork* admini;
@@ -283,7 +283,7 @@ void* adminiUpdateTask_Check(KwlnTask* adminiTask)
     return adminiUpdateTask_Exit;
 }
 
-// FUN_0027c840
+// FUN_0027c840 NONMATCHING
 void adminiDestroyTask(KwlnTask* adminiTask)
 {
     AdminiWork* admini;
@@ -305,7 +305,7 @@ void adminiDestroyTask(KwlnTask* adminiTask)
     RwFree(admini);
 }
 
-// FUN_0027c8f0
+// FUN_0027c8f0 NONMATCHING
 KwlnTask* adminiCreateTask()
 {
     AdminiWork* admini;

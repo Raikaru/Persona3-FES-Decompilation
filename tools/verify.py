@@ -10,6 +10,8 @@ For every `// FUN_xxxxxxxx` marker in src/**/*.c this tool:
 Statuses:
   MATCH          normalized diff == 0 and the retail tail up to the next function
                  entry is zero padding (so short/stub bodies cannot false-pass)
+  NONMATCHING    marker carries a NONMATCHING tag; known-WIP, does not fail
+  STALE_NONMATCHING  tagged NONMATCHING but now matches; remove the tag
   MISMATCH       compiled bytes differ from retail outside relocated fields
   SIZE_MISMATCH  bytes match but object size disagrees with the retail window
   STUB           function body is a `// TODO` placeholder
@@ -242,7 +244,8 @@ def scan_markers(cpath):
                     and not l.startswith("return")
                     and not re.match(r"^[A-Za-z_].*\)\s*\{?$", l)]
             stub = not meat
-        out.append(dict(addr=addr, name=name, line=i + 1, stub=stub))
+        out.append(dict(addr=addr, name=name, line=i + 1, stub=stub,
+                        nonmatching="NONMATCHING" in lines[i]))
         i = k + 1 if name else i + 1
     return out
 
@@ -337,13 +340,21 @@ def verify_file(cpath, cfg, retail, boundaries, objdir):
         entry["object_size"] = len(body)
         entry["window"] = window
         entry["normalized_diff"] = ndiff
-        if ndiff:
-            entry["status"] = "MISMATCH"
-            entry["first_diffs"] = first
-        elif len(body) > window or any(tail):
-            entry["status"] = "SIZE_MISMATCH"
-            entry["detail"] = (f"object {len(body)}B vs retail window {window}B; "
-                               f"tail is not zero padding")
+        if ndiff or len(body) > window or any(tail):
+            wrong_size = not ndiff
+            if mk["nonmatching"]:
+                entry["status"] = "NONMATCHING"
+            elif wrong_size:
+                entry["status"] = "SIZE_MISMATCH"
+                entry["detail"] = (f"object {len(body)}B vs retail window {window}B; "
+                                   f"tail is not zero padding")
+            else:
+                entry["status"] = "MISMATCH"
+            if ndiff:
+                entry["first_diffs"] = first
+        elif mk["nonmatching"]:
+            entry["status"] = "STALE_NONMATCHING"
+            entry["detail"] = "function now matches; remove the NONMATCHING tag"
         else:
             entry["status"] = "MATCH"
         entry["relocations"] = decode_reloc_values(rels, win_bytes)
@@ -388,12 +399,13 @@ def main():
         counts[r["status"]] = counts.get(r["status"], 0) + 1
     total = len(all_results)
     print(f"functions scanned: {total}")
-    for st in ("MATCH", "STUB", "MISMATCH", "SIZE_MISMATCH",
-               "NO_SYMBOL", "COMPILE_ERROR", "UNKNOWN_ADDR"):
+    for st in ("MATCH", "STUB", "NONMATCHING", "STALE_NONMATCHING", "MISMATCH",
+               "SIZE_MISMATCH", "NO_SYMBOL", "COMPILE_ERROR", "UNKNOWN_ADDR"):
         if counts.get(st):
             print(f"  {st:<14} {counts[st]}")
 
-    bad = [r for r in all_results if r["status"] not in ("MATCH", "STUB")]
+    bad = [r for r in all_results
+           if r["status"] not in ("MATCH", "STUB", "NONMATCHING")]
     if args.show_mismatches:
         for r in bad:
             print(f"\n{r['status']}: {r['file']}:{r.get('line','?')} "

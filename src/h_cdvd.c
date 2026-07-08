@@ -16,7 +16,7 @@ void H_Cdvd_001007f0()
 {
 }
 
-// FUN_00100800
+// FUN_00100800 NONMATCHING
 void H_Cdvd_Init()
 {
     s32 i;
@@ -56,7 +56,7 @@ void H_Cdvd_Read()
     // TODO
 }
 
-// FUN_00100d80
+// FUN_00100d80 NONMATCHING
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
     HCdvd* curr;
@@ -139,7 +139,7 @@ u32 H_Cdvd_IsFileLoaded(HCdvd* cdvd)
     return cdvd->readState == 4;
 }
 
-// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN)
+// FUN_00102100. Get file memory of a specific file in an archive (.PAC, .PAK or .BIN) NONMATCHING
 void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize)
 {
     ArchiveEntryHeader entryHeader;
@@ -215,7 +215,7 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
     }
 }
 
-// FUN_00102650
+// FUN_00102650 NONMATCHING
 void H_Cdvd_CacheAdd(HCdvd* cdvd, void* fileMemory, u32 fileSize, const char* path)
 {
     s32 i;

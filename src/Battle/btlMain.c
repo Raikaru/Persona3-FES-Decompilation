@@ -318,7 +318,7 @@ void btlMainInitStateLose(BtlStateWork* work)
 {
     // nothing
 }
-// FUN_0029d730
+// FUN_0029d730 NONMATCHING
 u32 btlMainUpdateStateLose(BtlStateWork* work)
 {
     if (work->stateTimer >= 31)

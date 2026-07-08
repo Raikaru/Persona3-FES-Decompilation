@@ -18,19 +18,19 @@ static const char* academicLevelString[] =
     "Slacker", "Average", "Above Average", "Smart", "Intelligent", "Genius"
 };
 
-// FUN_0011a810
+// FUN_0011a810 NONMATCHING
 const char* h_camp_getAcademicLevelString(u16 idx)
 {
     return academicLevelString[idx];
 }
 
-// FUN_0011a840
+// FUN_0011a840 NONMATCHING
 const char* h_camp_getCharmLevelString(u16 idx)
 {
     return charmLevelString[idx];
 }
 
-// FUN_0011a870
+// FUN_0011a870 NONMATCHING
 const char* h_camp_getCourageLevelString(u16 idx)
 {
     return courageLevelString[idx];

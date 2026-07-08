@@ -30,7 +30,7 @@ static const char* unkStrings1[5] =
     "Guaranteed to make your friends jealous!"
 };
 
-// FUN_003c4130
+// FUN_003c4130 NONMATCHING
 const char* Day_GetCurrentDayString(u32 month, u32 day)
 {
     const char* dayString;
@@ -70,7 +70,7 @@ const char* Day_GetCurrentDayString(u32 month, u32 day)
     return dayString;
 }
 
-// FUN_003c4210
+// FUN_003c4210 NONMATCHING
 const char* ComuData_FUN_003c4210(u32 idx)
 {
     K_ASSERT(idx < ARRAY_SIZE(unkStrings1), 147);

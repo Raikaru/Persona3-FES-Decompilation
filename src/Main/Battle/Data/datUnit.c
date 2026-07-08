@@ -4,7 +4,7 @@
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
-// FUN_002ff340
+// FUN_002ff340 NONMATCHING
 DatUnitPc* datUnitCreatePc(u16 pcId)
 {
     DatUnitPc* pc;
@@ -21,7 +21,7 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
     return pc;
 }
 
-// FUN_002ff3e0
+// FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
 {
     u16 i;
@@ -66,7 +66,7 @@ DatUnitEc* datUnitCreateEc(u16 encountId)
     return ec;
 }
 
-// FUN_002ff660
+// FUN_002ff660 NONMATCHING
 DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id)
 {
     u16 i;
@@ -93,7 +93,7 @@ DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id)
     return curr;
 }
 
-// FUN_002ff660
+// FUN_002ff660 NONMATCHING
 void datUnitEcRemoveEnemy(DatUnitEc* ec, DatUnit* unit)
 {
     u16 i;
@@ -118,7 +118,7 @@ void datUnitEcRemoveEnemy(DatUnitEc* ec, DatUnit* unit)
     K_ASSERT(i < 6, 147);
 }
 
-// FUN_002ff760
+// FUN_002ff760 NONMATCHING
 void datUnitDestroyGenus(DatUnitGenusBase* genusBase)
 {
     RwFree(genusBase);

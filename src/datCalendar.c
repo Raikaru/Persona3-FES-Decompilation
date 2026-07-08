@@ -93,7 +93,7 @@ static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
 
 s32 clndFindAndExecSiteibiEvents();
 
-// FUN_0017d830
+// FUN_0017d830 NONMATCHING
 u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
@@ -114,7 +114,7 @@ u32 clndGetMonthFromDaysSinceApr5(u16 daysSinceApr5)
     return month;
 }
 
-// FUN_0017d8b0
+// FUN_0017d8b0 NONMATCHING
 u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
 {
     u32 m = CALENDAR_MONTH_APRIL;
@@ -139,7 +139,7 @@ u32 clndGetDaysSinceStartFromDate(u32 month, u32 day)
     return dayAccumulator + day - 5; // - 5 because the game starts in april 5th
 }
 
-// FUN_0017d920
+// FUN_0017d920 NONMATCHING
 u32 clndGetCurrentMonth()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
@@ -159,7 +159,7 @@ u32 clndGetCurrentMonth()
     return month;
 }
 
-// FUN_0017d9c0
+// FUN_0017d9c0 NONMATCHING
 u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
 {
     u16 month = CALENDAR_MONTH_APRIL;
@@ -180,7 +180,7 @@ u32 clndGetDayOfMonthFromDaysSinceApr5(u16 daysSinceApr5)
     return daysSinceApr5 + 1;
 }
 
-// FUN_0017da40. Return the current day of the month
+// FUN_0017da40. Return the current day of the month NONMATCHING
 u32 clndGetCurrentDay()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5() + 4;
@@ -200,13 +200,13 @@ u32 clndGetCurrentDay()
     return daysSinceApr5 + 1;
 }
 
-// FUN_0017dae0
+// FUN_0017dae0 NONMATCHING
 u32 clndGetWeekDay(u32 daysSinceApr5)
 {
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
-// FUN_0017db00
+// FUN_0017db00 NONMATCHING
 u32 clndGetCurrentWeekDay()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
@@ -214,7 +214,7 @@ u32 clndGetCurrentWeekDay()
     return (daysSinceApr5 + CALENDAR_DAY_MAX) % CALENDAR_DAY_MAX;
 }
 
-// FUN_0017dcf0
+// FUN_0017dcf0 NONMATCHING
 u8 clndIsHolidayOrSunday()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
@@ -243,7 +243,7 @@ u8 clndIsHolidayOrSunday()
     return false;
 }
 
-// FUN_0017e480
+// FUN_0017e480 NONMATCHING
 u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
 {
     u32 startDate = clndGetDaysSinceStartFromDate(startMonth, startDay);
@@ -258,7 +258,7 @@ u8 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay)
     return true;
 }
 
-// FUN_0017e520
+// FUN_0017e520 NONMATCHING
 u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
                                   u32 startMonth, u32 startDay,
                                   u32 endMonth, u32 endDay)
@@ -275,7 +275,7 @@ u8 clndIsDateInRangeFromDate(u32 monthToTest, u32 dayToTest,
     return true;
 }
 
-// FUN_0017e5d0
+// FUN_0017e5d0 NONMATCHING
 u8 clndIsDateInRangeFromStart(u32 month, u32 day, u32 range)
 {
     u32 startDate;
@@ -326,14 +326,14 @@ void clndReqSkip()
     }
 }
 
-// FUN_0017faa0
+// FUN_0017faa0 NONMATCHING
 void clndDestroyTask(KwlnTask* clndTask)
 {
     RwFree(clndTask->workData);
     sClndTask = NULL;
 }
 
-// FUN_0017fb90
+// FUN_0017fb90 NONMATCHING
 KwlnTask* clndCreateTask()
 {
     KwlnTask* clndTask;
@@ -364,7 +364,7 @@ KwlnTask* clndCreateTask()
     return clndTask;
 }
 
-// FUN_00181720. Check if a siteibi event can be executed. If found, return its index. Return -1 if no event was found
+// FUN_00181720. Check if a siteibi event can be executed. If found, return its index. Return -1 if no event was found NONMATCHING
 s32 clndFindAndExecSiteibiEvents()
 {
     SiteibiEventTable* siteibiTable;
@@ -441,7 +441,7 @@ s32 clndFindAndExecSiteibiEvents()
     return -1;
 }
 
-// FUN_00181b10
+// FUN_00181b10 NONMATCHING
 u8 clndGetCurrentMoonPhase()
 {
     u16 daysSinceApr5 = datGetDaysSinceApr5();
@@ -455,7 +455,7 @@ u8 clndGetMoonPhase(u32 daysSinceApr5)
     return daysMoonPhases[daysSinceApr5];
 }
 
-// FUN_00188510
+// FUN_00188510 NONMATCHING
 u32 clndScrCmd_SET_DATE()
 {
     u32 month;

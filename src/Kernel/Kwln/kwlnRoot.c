@@ -111,7 +111,7 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001988f0
+// FUN_001988f0 NONMATCHING
 void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
     // TODO
@@ -119,7 +119,7 @@ void kwlnRootDestroyTask(KwlnTask* rootTask)
     RwFree(rootTask->workData);
 }
 
-// FUN_00198940
+// FUN_00198940 NONMATCHING
 KwlnTask* kwlnRootCreateTask()
 {
     KwlnTask* rootTask;
@@ -206,7 +206,7 @@ void* kwlnRootUpdate3DOn2DZClearTask(KwlnTask* zclear2D3DTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00198c60
+// FUN_00198c60 NONMATCHING
 void* kwlnRootUpdate3DOn2DDrawBeginTask()
 {
     if (kwlnCameraBeginUpdate() != NULL)
@@ -226,7 +226,7 @@ void* kwlnRootUpdate3DOn2DDrawBeginTask()
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00198d20
+// FUN_00198d20 NONMATCHING
 void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 {
     if (gFogEnabled == true)

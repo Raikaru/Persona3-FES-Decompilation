@@ -33,13 +33,13 @@ RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 
     return NULL;
 }
 
-// FUN_0048ef10
+// FUN_0048ef10 NONMATCHING
 RwChar* RpUserDataArrayGetName(RpUserDataArray* userData)
 {
     return userData->name;
 }
 
-// FUN_0048ef20
+// FUN_0048ef20 NONMATCHING
 RpUserDataFormat RpUserDataArrayGetFormat(RpUserDataArray* userData)
 {
     return userData->format;

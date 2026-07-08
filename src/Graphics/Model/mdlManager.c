@@ -14,7 +14,7 @@ void mdlStreamSetRmdFileMemory(Model* mdl, const MdlRmdFileMemory* rmd);
 void mdlStreamRequestCdvd(Model* mdl, const char* path);
 void mdlStreamDestroy(Model* mdl);
 
-// FUN_00311310
+// FUN_00311310 NONMATCHING
 MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 {
     MdlAnimEntryTable* table;
@@ -46,7 +46,7 @@ Model* mdlInit(u16 type, u16 id)
     return NULL;
 }
 
-// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
+// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter NONMATCHING
 Model* mdlSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
@@ -95,7 +95,7 @@ Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
     return mdl;
 }
 
-// FUN_00316bd0. Create a model with a loaded .RMD file in memory
+// FUN_00316bd0. Create a model with a loaded .RMD file in memory NONMATCHING
 Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode)
 {
     Model* mdl;
@@ -182,7 +182,7 @@ u32 mdlAnimSet(Model* mdl, u16 slotIdx, s16 id, u16 blendFrameCount, u16 flags)
     return true;
 }
 
-// FUN_00318540
+// FUN_00318540 NONMATCHING
 s16 mdlAnimGetId(Model* mdl, u16 slotIdx)
 {
     s16 id;
@@ -220,7 +220,7 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
     return true;
 }
 
-// FUN_00318870
+// FUN_00318870 NONMATCHING
 f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
 {
     f32 duration;
@@ -252,7 +252,7 @@ f32 mdlAnimGetDurationInFrame(Model* mdl, u16 slotIdx)
     return duration / gFrameDuration;
 }
 
-// FUN_00318910
+// FUN_00318910 NONMATCHING
 f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
 {
     f32 duration;
@@ -269,7 +269,7 @@ f32 mdlAnimGetDurationInFrameById(Model* mdl, u16 slotIdx, s16 animId)
     return duration / gFrameDuration;
 }
 
-// FUN_00318990
+// FUN_00318990 NONMATCHING
 f32 mdlAnimGetCurrentFrame(Model* mdl, u16 slotIdx)
 {
     f32 currTime;
@@ -309,7 +309,7 @@ void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combine
     RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
 }
 
-// FUN_00318a50
+// FUN_00318a50 NONMATCHING
 void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
 {
     mdl->scale = *scale;
@@ -436,7 +436,7 @@ void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
     mdl->animSlots[0].lookAt.targetScale = *scale;
 }
 
-// FUN_00319840
+// FUN_00319840 NONMATCHING
 void mdlStreamInit(Model* mdl)
 {
     MdlStream* stream;
@@ -466,7 +466,7 @@ void mdlStreamRequestCdvd(Model* mdl, const char* path)
     stream->rws = NULL;
 }
 
-// FUN_00319910
+// FUN_00319910 NONMATCHING
 void mdlStreamDestroy(Model* mdl)
 {
     if (mdl->stream->unk_0c != NULL)

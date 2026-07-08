@@ -105,7 +105,7 @@ u32 K_Cmd_GET_DAY_OF_WEEK()
     return true;
 }
 
-// FUN_001c2750
+// FUN_001c2750 NONMATCHING
 u32 K_Cmd_GET_TIME()
 {
     scrSetIntReturnVal(datGetTime());
@@ -113,7 +113,7 @@ u32 K_Cmd_GET_TIME()
     return true;
 }
 
-// FUN_001c2780
+// FUN_001c2780 NONMATCHING
 u32 K_Cmd_DATE_IN_RANGE()
 {
     u32 startMonth;
@@ -215,7 +215,7 @@ u32 K_Cmd_RESRC_MDL_ANIM()
     return true;
 }
 
-// FUN_001c2b80
+// FUN_001c2b80 NONMATCHING
 u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
 {
     u32 resTypeId;
@@ -254,7 +254,7 @@ u32 K_Cmd_RESRC_MDL_ANIM_SYNC()
     return true;
 }
 
-// FUN_001c2c80
+// FUN_001c2c80 NONMATCHING
 u32 K_Cmd_RESRC_MODEL_SCALE()
 {
     u32 resTypeId;
@@ -361,7 +361,7 @@ u32 K_Cmd_CREATE_MDL()
     return true;
 }
 
-// FUN_001c4a60
+// FUN_001c4a60 NONMATCHING
 u32 K_Cmd_CREATE_NPC_SYNC()
 {
     Model* mdl;
@@ -393,7 +393,7 @@ u32 K_Cmd_CREATE_NPC_SYNC()
     return isNpcCreated;
 }
 
-// FUN_001c4b30
+// FUN_001c4b30 NONMATCHING
 u32 K_Cmd_RESRC_MDL_SET_COLLIS_RADIUS()
 {
     s32 resTypeId;

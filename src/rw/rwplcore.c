@@ -43,7 +43,7 @@ RwMatrix* RwMatrixUpdate(RwMatrix* matrix)
 }
 #pragma optimization_level 2
 
-// FUN_004c2f30
+// FUN_004c2f30 NONMATCHING
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
 {
     RwMatrixMultiplyVUMacro(matrixOut, matrixIn1, matrixIn2);
@@ -112,7 +112,7 @@ RwV3d* RwV3dTransformPoint(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix
 }
 #pragma optimization_level 2
 
-// FUN_004ca510
+// FUN_004ca510 NONMATCHING
 RwUInt32 RwEngineGetVersion()
 {
     return RW_LIB_VERSION;

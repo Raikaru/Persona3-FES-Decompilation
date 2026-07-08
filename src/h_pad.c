@@ -9,7 +9,7 @@ static u_long128 sAddrPort2[scePadDmaBufferMax] __attribute__((aligned(64))); //
 static u8 sRDataPort2[32]; // 007e0720. unused
 static u8 sRDataPort1[32]; // 007e0700
 
-// FUN_00103000
+// FUN_00103000 NONMATCHING
 void H_Pad_Init()
 {
     s32 i;

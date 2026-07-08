@@ -18,7 +18,7 @@ static u32 sScrNo;        // 007ce57c
 void scrDestroyTask(KwlnTask* scrTask);
 void* scrScriptProcess(KwlnTask* scrTask);
 
-// FUN_0035b570
+// FUN_0035b570 NONMATCHING
 ScrData* scrStartScript(ScrHeader* header,
                         ScrContentEntry* entries,
                         ScrLblPrcd* prcd,
@@ -154,7 +154,7 @@ ScrData* scrStartScript(ScrHeader* header,
     return scr;
 }
 
-// FUN_0035b930
+// FUN_0035b930 NONMATCHING
 ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 {
     ScrLblPrcd* prcd;
@@ -251,7 +251,7 @@ KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
     return scrTask;
 }
 
-// FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it
+// FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it NONMATCHING
 KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scriptSize, u32 prcdIdx)
 {
     void* script;
@@ -405,7 +405,7 @@ void scrAllReleaseScript()
     printf("after = %d\n", sScrNo);
 }
 
-// FUN_0035c090
+// FUN_0035c090 NONMATCHING
 s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name)
 {
     ScrContentEntry* entries;

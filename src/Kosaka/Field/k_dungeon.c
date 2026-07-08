@@ -32,7 +32,7 @@ void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
     // TODO
 }
 
-// FUN_001bfbc0
+// FUN_001bfbc0 NONMATCHING
 KwlnTask* K_FldDungeon_CreateTask(KwlnTask* parentTask, u32 floor, u32 param_3)
 {
     KwlnTask* dungeonTask;
@@ -90,7 +90,7 @@ u32 K_FldDungeon_GetCurrentFloor()
     return DUNGEON_GET_WORK()->currFloor;
 }
 
-// FUN_001bff50
+// FUN_001bff50 NONMATCHING
 u8 K_FldDungeon_IsCurrentFloorExplorable()
 {
     u32 currFloor;
@@ -112,7 +112,7 @@ u8 K_FldDungeon_IsCurrentFloorExplorable()
     return true;
 }
 
-// FUN_001bffa0
+// FUN_001bffa0 NONMATCHING
 FldDungeonFloorData* K_FldDungeon_GetCurrentFloorData()
 {
     if (gDungeonTask == NULL)
@@ -171,7 +171,7 @@ HCdvd* K_FldDungeon_RequestScript()
     return cdvd;
 }
 
-// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
+// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory' NONMATCHING
 u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 {
     FldDungeon* dungeon;
@@ -203,7 +203,7 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
     return false;
 }
 
-// FUN_001c02e0
+// FUN_001c02e0 NONMATCHING
 void K_FldDungeon_DestroyScrMemory()
 {
     FldDungeon* dungeon;

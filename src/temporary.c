@@ -8,7 +8,7 @@ void* memcpy(void* dst, const void* src, u32 size)
     return dst;
 }
 
-// FUN_00521408
+// FUN_00521408 NONMATCHING
 void* memset(void* dst, u8 value, u32 size)
 {
     // TODO
@@ -23,7 +23,7 @@ void* memset(void* dst, u8 value, u32 size)
     return dst;
 }
 
-// FUN_005225a8
+// FUN_005225a8 NONMATCHING
 int printf(const char* fmt, ...)
 {
 
@@ -35,7 +35,7 @@ int sprintf(char* buffer, const char* fmt, ...)
     // TODO
 }
 
-// FUN_00523e68
+// FUN_00523e68 NONMATCHING
 char* strcat(char* str1, char* str2)
 {
     return str1;
@@ -65,25 +65,25 @@ size_t strlen(const char* str)
     return 0;
 }
 
-// FUN_0052e408
+// FUN_0052e408 NONMATCHING
 float atanf(float x)
 {
     return 0.0f;
 }
 
-// FUN_0052e6d8
+// FUN_0052e6d8 NONMATCHING
 float cosf(float x)
 {
     return 0.0f;
 }
 
-// FUN_0052e878
+// FUN_0052e878 NONMATCHING
 float sinf(float x)
 {
     return 0.0f;
 }
 
-// FUN_0052e930
+// FUN_0052e930 NONMATCHING
 float tanf(float x)
 {
     return 0.0f;

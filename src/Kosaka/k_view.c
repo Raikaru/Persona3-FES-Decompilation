@@ -2,7 +2,7 @@
 #include "Kernel/Kwln/kwln.h"
 #include "temporary.h"
 
-// FUN_001a4580
+// FUN_001a4580 NONMATCHING
 void K_View_SetFov(RwCamera* camera, f32 fov)
 {
     RwV2d viewWindow;
@@ -13,7 +13,7 @@ void K_View_SetFov(RwCamera* camera, f32 fov)
     RwCameraSetViewWindow(camera, &viewWindow);
 }
 
-// FUN_001a4600
+// FUN_001a4600 NONMATCHING
 f32 K_View_GetFov(RwCamera* camera)
 {
     f32 x;

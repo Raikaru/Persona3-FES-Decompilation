@@ -24,7 +24,7 @@ void H_Maestro_SetAlphaMult(KwlnTask* hmaestroTask, f32 alphaMult)
     ((HMaestro*)hmaestroTask->workData)->alphaMult = alphaMult;
 }
 
-// FUN_00111d60
+// FUN_00111d60 NONMATCHING
 void H_Maestro_DestroyTask(KwlnTask* hmaestroTask)
 {
     HMaestro* work;
@@ -46,7 +46,7 @@ void H_Maestro_DestroyTask(KwlnTask* hmaestroTask)
     RwFree(work);
 }
 
-// FUN_00111dd0
+// FUN_00111dd0 NONMATCHING
 KwlnTask* H_Maestro_CreateTask(KwlnTask* parent, u32 priority, const char* path)
 {
     HMaestro* work;

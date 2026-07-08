@@ -126,7 +126,7 @@ void btlDestroyTask(KwlnTask* btlTask)
     btlDestroy();
 }
 
-// FUN_0027ced0
+// FUN_0027ced0 NONMATCHING
 void btlCreate()
 {
     s32 i;
@@ -249,7 +249,7 @@ KwlnTask* btlStart(BtlStartInfo* startInfo)
     return btlTask;
 }
 
-// FUN_0027d5e0
+// FUN_0027d5e0 NONMATCHING
 u32 btlScrCmd_CALL_BATTLE()
 {
     BtlEncountTable* encount;
@@ -293,7 +293,7 @@ u32 btlScrCmd_CALL_BATTLE()
     return true;
 }
 
-// FUN_0027d730
+// FUN_0027d730 NONMATCHING
 u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
 {
     if (scrGetIntPara(0) > 10) // ?
@@ -336,7 +336,7 @@ u32 btlScrCommand_ENCOUNT_FADE()
     return true;
 }
 
-// FUN_0027d880
+// FUN_0027d880 NONMATCHING
 KwlnTask* btlGetTask()
 {
     if (gBtl == NULL)
@@ -365,7 +365,7 @@ u32 btlUpdateSetFlagsPacket(void* work)
     return true;
 }
 
-// FUN_0027dc00
+// FUN_0027dc00 NONMATCHING
 BtlPacket* btlCreateSetFlagsPacket(u32 flags)
 {
     BtlPacket* packet;
