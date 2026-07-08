@@ -719,7 +719,7 @@ s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType)
     return pc[pcId - 2].equipmentsIdx[equipmentType];
 }
 
-// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags NONMATCHING
+// FUN_0016ef70. Updates 'daysSinceApr5' and sets the correct 'FLG_DAY_*' flags
 void datSetDaysSinceApr5(s16 daysSinceApr5)
 {
     u32 currentWeekDay;
