@@ -1,0 +1,178 @@
+#!/usr/bin/env python3
+"""Persona 3 FES matching build driver.
+
+Pipeline (all with the original CodeWarrior EE toolchain):
+  retail ELF --extract--> image.bin (loadable PT_LOAD payload, vram 0x100000)
+  code segs:  splat asm --desym.py--> raw asm --asm.py--> byte-exact .o
+  data segs:  .incbin from image.bin --asm--> .o
+  all .o   --mwldps2 + build/slus21621.lcf--> build/slus21621.elf
+  verify:  linked PT_LOAD payload sha1 == retail loadable image
+
+Config lives in config/slus21621.yaml; toolchain paths come from
+tools/verify_config*.json or P3_MWCC / P3_RETAIL_ELF.
+"""
+import hashlib, json, os, struct, subprocess, sys
+from pathlib import Path
+
+REPO = Path(__file__).resolve().parents[1]
+BUILD = REPO / "build"
+ASM = REPO / "asm"
+IMAGE = REPO / "image.bin"
+
+# loadable image layout (rom offset into image.bin, vram, kind)
+IMAGE_SHA1 = "9203646d9aa48ff24eb4ba4b328b02df468a9483"
+IMAGE_SIZE = 0x8ACC80
+VRAM = 0x100000
+SEGMENTS = [
+    ("code1", "code", 0x000000, 0x4A2000),
+    ("data1", "data", 0x4A2000, 0x67F710),
+    ("code2", "code", 0x67F710, 0x681000),
+    ("data2", "data", 0x681000, 0x8ACC80),
+]
+
+
+def cfg():
+    c = {}
+    for n in ("verify_config.json", "verify_config.local.json"):
+        p = REPO / "tools" / n
+        if p.is_file():
+            c.update(json.loads(p.read_text()))
+    c["mwcc"] = os.environ.get("P3_MWCC", c.get("mwcc"))
+    c["retail_elf"] = os.environ.get("P3_RETAIL_ELF", c.get("retail_elf"))
+    if not c.get("mwcc"):
+        sys.exit("build: set mwcc in tools/verify_config.local.json or P3_MWCC")
+    d = Path(c["mwcc"]).parent
+    c["asm_exe"] = str(d / "asm_r5900_elf.exe")
+    c["ld_exe"] = str(d / "mwldps2.exe")
+    return c
+
+
+def sh(cmd):
+    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    if p.returncode:
+        sys.stderr.write(p.stdout)
+        sys.exit(f"build: command failed: {cmd[0]}")
+    return p.stdout
+
+
+def extract_image(c):
+    """Write image.bin = the retail ELF's loadable PT_LOAD payload."""
+    elf = Path(c["retail_elf"]).read_bytes()
+    phoff = struct.unpack_from("<I", elf, 0x1c)[0]
+    for i in range(struct.unpack_from("<H", elf, 0x2c)[0]):
+        t, off, va, pa, fsz, msz = struct.unpack_from("<IIIIII", elf, phoff + i * 0x20)
+        if t == 1 and va == VRAM:
+            IMAGE.write_bytes(elf[off:off + fsz])
+            return
+    sys.exit("build: could not find loadable segment in retail ELF")
+
+
+def patch_align1(path, sec):
+    d = bytearray(path.read_bytes())
+    shoff = struct.unpack_from("<I", d, 0x20)[0]
+    she, shn, shx = struct.unpack_from("<HHH", d, 0x2e)
+    sto = struct.unpack_from("<IIIIII", d, shoff + shx * she)[4]
+
+    def nm(n):
+        e = d.find(b"\0", sto + n)
+        return d[sto + n:e].decode()
+    for i in range(shn):
+        o = shoff + i * she
+        if nm(struct.unpack_from("<I", d, o)[0]) == sec:
+            struct.pack_into("<I", d, o + 0x20, 1)
+    path.write_bytes(d)
+
+
+def build_code(c, name, lo, hi):
+    src = ASM / f"{name}.s"
+    raw = ASM / f"{name}_raw.s"
+    obj = ASM / f"{name}.o"
+    raw.write_text(subprocess.run([sys.executable, str(REPO / "tools/desym.py"), str(src)],
+                                  stdout=subprocess.PIPE, text=True).stdout)
+    sh([sys.executable, str(REPO / "tools/asm.py"), str(raw), str(obj),
+        str(IMAGE), hex(VRAM + lo), hex(lo)])
+    patch_align1(obj, ".text")
+
+
+def build_data(c, name, lo, hi):
+    src = ASM / f"{name}.s"
+    obj = ASM / f"{name}.o"
+    src.write_text(f'.section .{name}, "aw"\n.incbin "../image.bin", {hex(lo)}, {hex(hi - lo)}\n')
+    sh([c["asm_exe"], "-gnu", "-endian", "little", "-o", obj.name, src.name])  # cwd=asm below
+    patch_align1(obj, f".{name}")
+
+
+def write_lcf():
+    body = []
+    for name, kind, lo, hi in SEGMENTS:
+        sec = ".text" if kind == "code" else f".{name}"
+        body.append(f"        {name}.o({sec})")
+    lcf = (
+        "MEMORY {\n"
+        f"    image : ORIGIN = {hex(VRAM)}, LENGTH = {hex(IMAGE_SIZE)}\n"
+        "}\n"
+        "SECTIONS {\n"
+        "    .image : {\n" + "\n".join(body) + "\n    } > image\n"
+        "}\n"
+    )
+    (BUILD / "slus21621.lcf").write_text(lcf)
+
+
+def link(c):
+    objs = [str(ASM / f"{n}.o") for n, _, _, _ in SEGMENTS]
+    sh([c["ld_exe"], "-nostdlib", "-nodeadstrip", "-m", "func_00100008",
+        "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf")] + objs)
+
+
+def verify():
+    be = (BUILD / "slus21621.elf").read_bytes()
+    img = IMAGE.read_bytes()
+    phoff = struct.unpack_from("<I", be, 0x1c)[0]
+    for i in range(struct.unpack_from("<H", be, 0x2c)[0]):
+        t, off, va, pa, fsz, msz = struct.unpack_from("<IIIIII", be, phoff + i * 0x20)
+        if t == 1 and va == VRAM:
+            payload = be[off:off + fsz]
+            got = hashlib.sha1(payload).hexdigest()
+            ok = got == IMAGE_SHA1 and payload == img
+            print(f"loadable image sha1: {got}  {'OK' if ok else 'MISMATCH'}")
+            return 0 if ok else 1
+    print("build: no loadable segment in output")
+    return 1
+
+
+def main():
+    c = cfg()
+    BUILD.mkdir(exist_ok=True)
+    ASM.mkdir(exist_ok=True)
+    if "--setup-only" in sys.argv:
+        if not c.get("retail_elf"):
+            sys.exit("build: set retail_elf in tools/verify_config.local.json or P3_RETAIL_ELF")
+        extract_image(c)
+        print("wrote image.bin")
+        return
+    if not IMAGE.is_file():
+        if not c.get("retail_elf"):
+            sys.exit("build: image.bin missing; set retail_elf and run `make setup`")
+        extract_image(c)
+    for name, kind, lo, hi in SEGMENTS:
+        if kind == "code" and not (ASM / f"{name}.s").is_file():
+            sys.exit(f"build: {name}.s missing; run `make split` (python -m splat "
+                     "split config/slus21621.yaml) first")
+    # data objects are assembled from asm/ so the incbin relative path resolves
+    for name, kind, lo, hi in SEGMENTS:
+        if kind == "code":
+            build_code(c, name, lo, hi)
+        else:
+            cwd = os.getcwd()
+            os.chdir(ASM)
+            try:
+                build_data(c, name, lo, hi)
+            finally:
+                os.chdir(cwd)
+    write_lcf()
+    link(c)
+    sys.exit(verify())
+
+
+if __name__ == "__main__":
+    main()
