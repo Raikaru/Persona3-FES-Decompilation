@@ -356,17 +356,86 @@ def mut_param_temp(region, open_line_local, rng, params):
     return out
 
 
+ASSIGN_RE = re.compile(r"^(\s*)([A-Za-z_][\w.\->\[\]]*)\s*=\s*(.+);\s*$")
+
+
+def _stmt_runs(region, b0, b1):
+    """Maximal runs (>=2) of adjacent single-line simple statements."""
+    runs, cur = [], []
+    for i in range(b0, b1):
+        if simple_stmt(region[i]):
+            cur.append(i)
+        else:
+            if len(cur) >= 2:
+                runs.append(cur)
+            cur = []
+    if len(cur) >= 2:
+        runs.append(cur)
+    return runs
+
+
+def mut_reverse_run(region, open_line_local, rng):
+    """Reverse a random slice of a run of adjacent simple statements. Reaches
+    non-adjacent reorderings (e.g. x,y,z -> z,y,x) that single adjacent swaps
+    cannot without crossing a worse-scoring intermediate."""
+    b0, b1 = body_span(region, open_line_local)
+    runs = _stmt_runs(region, b0, b1)
+    if not runs:
+        return None
+    run = rng.choice(runs)
+    if len(run) < 2:
+        return None
+    a = rng.randrange(len(run) - 1)
+    b = rng.randrange(a + 1, len(run))
+    idxs = run[a:b + 1]
+    out = region[:]
+    vals = [region[i] for i in idxs][::-1]
+    for i, v in zip(idxs, vals):
+        out[i] = v
+    return out
+
+
+def mut_chain_assign(region, open_line_local, rng):
+    """Fuse `a = EXPR;` immediately followed by `b = a;` into `b = a = EXPR;`
+    (stores the fresh value to both targets before it is only in a saved reg)."""
+    b0, b1 = body_span(region, open_line_local)
+    cands = []
+    for i in range(b0, b1 - 1):
+        m1 = ASSIGN_RE.match(region[i])
+        m2 = ASSIGN_RE.match(region[i + 1])
+        if m1 and m2 and m2.group(3).strip() == m1.group(2).strip():
+            cands.append((i, m1, m2))
+    if not cands:
+        return None
+    i, m1, m2 = rng.choice(cands)
+    ind = m1.group(1)
+    out = region[:]
+    out[i] = f"{ind}{m2.group(2)} = {m1.group(2)} = {m1.group(3)};"
+    del out[i + 1]
+    return out
+
+
 MUTATORS = [mut_opt, mut_decls, mut_stmts, mut_operands, mut_reassoc, mut_compare,
-            mut_compound]
+            mut_compound, mut_reverse_run, mut_chain_assign]
+
+
+def _open_line(region, marker_idx_local):
+    """Locate the function's opening-brace line in the current region (robust to
+    pragma insertions that shift it relative to the base)."""
+    j = marker_idx_local + 1
+    while j < len(region) and "{" not in strip_line_comment(region[j]):
+        j += 1
+    return j
 
 
 def mutate(region, marker_idx_local, open_line_local, rng, params):
+    oll = _open_line(region, marker_idx_local)
     if params and rng.random() < 0.25:
-        return mut_param_temp(region, open_line_local, rng, params)
+        return mut_param_temp(region, oll, rng, params)
     m = rng.choice(MUTATORS)
     if m is mut_opt:
         return m(region, marker_idx_local, rng)
-    return m(region, open_line_local, rng)
+    return m(region, oll, rng)
 
 
 # ------------------------------------------------------------------ search
