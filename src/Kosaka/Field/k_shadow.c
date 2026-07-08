@@ -104,7 +104,7 @@ void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
     RwFree(fldShadowMapTask->workData);
 }
 
-// FUN_0019d2a0 NONMATCHING
+// FUN_0019d2a0
 KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
 {
     FldShadowMap* fldShadowMap;
@@ -116,4 +116,12 @@ KwlnTask* K_FldShadow_CreateShadowMapTask(KwlnTask* fldSceneDrawTask)
     }
 
     return kwlnTaskCreate(fldSceneDrawTask, "shadow map camera", 2068, K_FldShadow_UpdateShadowMapTask, K_FldShadow_DestroyShadowMapTask, fldShadowMap);
+}
+
+// FUN_0019d320
+s32 FUN_0019d320()
+{
+    // TODO
+
+    return 0;
 }
