@@ -318,6 +318,30 @@ u32 K_Cmd_GET_DUNGEON_FLOOR()
     return true;
 }
 
+// FUN_001c2ed0
+u32 K_Cmd_001c2ed0()
+{
+    scrSetIntReturnVal(datGetLevel(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c2fa0
+u32 K_Cmd_001c2fa0()
+{
+    scrSetIntReturnVal(datGetHp(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c30a0
+u32 K_Cmd_001c30a0()
+{
+    scrSetIntReturnVal(datGetSp(scrGetIntPara(0)));
+
+    return true;
+}
+
 // FUN_001c45e0
 u32 K_Cmd_CREATE_FLD_MDL()
 {
