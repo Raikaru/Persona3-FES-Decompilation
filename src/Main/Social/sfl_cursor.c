@@ -48,3 +48,15 @@ void sflCursor0025b3b0(u32 param_1)
     *work |= 2;
     FUN_0025aad0();
 }
+
+// FUN_0025aa70
+void sflCursor0025aa70(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sSflCursor != NULL, 0x47);
+    puVar1 = sSflCursor;
+    puVar1[10] = 0;
+    puVar1[0x328] = 3;
+    *puVar1 |= 2;
+}

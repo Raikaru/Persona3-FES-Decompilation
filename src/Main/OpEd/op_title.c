@@ -55,3 +55,15 @@ u32 opTitle00269640(void)
     K_ASSERT(sOpTitle != NULL, 0x8e);
     return *sOpTitle & 4;
 }
+
+// FUN_002695b0
+void opTitle002695b0(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sOpTitle != NULL, 0x8e);
+    puVar1 = sOpTitle;
+    K_ASSERT((*sOpTitle & 4) != 0, 0x4bc);
+    K_ASSERT(puVar1[2] == 0, 0x4bd);
+    puVar1[1] = 200;
+}
