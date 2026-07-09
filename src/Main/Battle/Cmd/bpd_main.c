@@ -17,3 +17,10 @@ void bpd00252e90(void)
     K_ASSERT(sBpd660 != NULL, 0x25);
     *sBpd660 |= 1;
 }
+
+// FUN_00252ee0
+void bpd00252ee0(void)
+{
+    K_ASSERT(sBpd660 != NULL, 0x25);
+    *sBpd660 &= ~1;
+}
