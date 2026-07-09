@@ -313,6 +313,19 @@ void bpRoot001fe1a0()
     *flags &= ~0x10;
 }
 
+void FUN_0024cf00();
+
+// FUN_001fec50
+void bpRoot001fec50()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 0x4000, 0x3ac);
+    FUN_0024cf00(flags[0xccc4]);
+    *flags |= 0x8000;
+}
+
 void FUN_0020f3b0();
 
 // FUN_001fdd20
