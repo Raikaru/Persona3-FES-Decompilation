@@ -60,3 +60,28 @@ u32 opWait0026ee80(void)
     K_ASSERT(sOpWait != NULL, 0xdb);
     return *sOpWait & 8;
 }
+
+// FUN_0026ebf0
+void opWait0026ebf0(void)
+{
+    u32 uVar1;
+
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    uVar1 = *sOpWait & 0xfffffffe;
+    *sOpWait = uVar1;
+    if ((uVar1 & 2) != 0) {
+        FUN_0026ed40();
+    }
+}
+
+// FUN_0026edd0
+void opWait0026edd0(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    puVar1 = sOpWait;
+    sOpWait[2] = 0;
+    puVar1[1] = 1;
+    *puVar1 |= 4;
+}
