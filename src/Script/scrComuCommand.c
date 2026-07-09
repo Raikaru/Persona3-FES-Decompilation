@@ -18,6 +18,13 @@ u32 FUN_00173220();
 void FUN_003a4220();
 void FUN_00171c40();
 void FUN_00172200();
+short FUN_00175360();
+void FUN_00174710(u16, u16, char);
+void FUN_0016e920(short);
+int FUN_003be8e0();
+u32 FUN_003c3f40();
+extern u8 DAT_00958400[];
+extern u8 DAT_0095841e[];
 
 static u32 sDat007ce5d4; // DAT_007ce5d4
 
@@ -215,5 +222,37 @@ u32 scrComu003606f0(void)
         return 1;
     }
     FUN_00172200(uVar1, lVar2 != 0);
+    return 1;
+}
+
+// FUN_0035fbd0
+u32 scrComu0035fbd0(void)
+{
+    int uVar1;
+    short uVar2;
+    int uVar3;
+
+    uVar3 = FUN_0035ed20(0);
+    K_ASSERT(uVar3 < 5, 0x186);
+    uVar1 = FUN_0035ed20(1);
+    uVar2 = FUN_00175360();
+    FUN_00174710(uVar2, uVar3 & 0xffff, uVar1);
+    return 1;
+}
+
+// FUN_0035f680
+u32 scrComu0035f680(void)
+{
+    int uVar1;
+    int lVar2;
+
+    uVar1 = FUN_0035ed20(0);
+    lVar2 = FUN_003be8e0(uVar1, DAT_00958400);
+    K_ASSERT(lVar2 != 0, 0xd7);
+    FUN_0016e920(uVar1);
+    lVar2 = FUN_0035f140();
+    if (lVar2 >= 0) {
+        FUN_003a4220(lVar2, 0, FUN_003c3f40(DAT_0095841e[0]));
+    }
     return 1;
 }
