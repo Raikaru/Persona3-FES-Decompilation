@@ -23,6 +23,8 @@ void FUN_00174710(u16, u16, char);
 void FUN_0016e920(short);
 int FUN_003be8e0();
 u32 FUN_003c3f40();
+void FUN_00173bb0();
+int FUN_00173780(u16, u16);
 extern u8 DAT_00958400[];
 extern u8 DAT_0095841e[];
 
@@ -254,5 +256,33 @@ u32 scrComu0035f680(void)
     if (lVar2 >= 0) {
         FUN_003a4220(lVar2, 0, FUN_003c3f40(DAT_0095841e[0]));
     }
+    return 1;
+}
+
+// FUN_0035fc70
+u32 scrComu0035fc70(void)
+{
+    int uVar1;
+    int uVar2;
+    int uVar3;
+
+    uVar1 = FUN_0035ed20(0);
+    uVar2 = FUN_0035ed20(1);
+    K_ASSERT(uVar2 < 5, 0x19a);
+    uVar3 = FUN_0035ed20(2);
+    FUN_00173bb0(uVar1 & 0xffff, uVar2 & 0xffff, uVar3);
+    return 1;
+}
+
+// FUN_0035fd00
+u32 scrComu0035fd00(void)
+{
+    short uVar2;
+    int uVar3;
+
+    uVar3 = FUN_0035ed20(0);
+    K_ASSERT(uVar3 < 5, 0x1af);
+    uVar2 = FUN_00175360();
+    FUN_0035f060(FUN_00173780(uVar2, uVar3 & 0xffff) & 0xff);
     return 1;
 }
