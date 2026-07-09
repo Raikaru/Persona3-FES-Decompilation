@@ -54,3 +54,21 @@ u32 bpPersona00267210(void)
     K_ASSERT(sBpPersona != NULL, 0x24);
     return *sBpPersona & 2;
 }
+
+u32 FUN_001749a0();
+void FUN_003c9b00();
+
+// FUN_00267070
+void bpPersona00267070(u32 param_1)
+{
+    u32* work;
+    u32 uVar2;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    K_ASSERT((u16)sBpPersona[2] != (u16)param_1, 0x5c);
+    *(u16*)(work + 2) = param_1;
+    uVar2 = FUN_001749a0(param_1);
+    FUN_003c9b00(work[1], uVar2, 0);
+    *work |= 2;
+}
