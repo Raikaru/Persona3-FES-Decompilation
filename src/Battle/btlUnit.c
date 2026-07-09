@@ -640,6 +640,29 @@ u32 btlUnit00282c60(BtlUnit* unit)
     return false;
 }
 
+// FUN_00282cd0
+u32 btlUnit00282cd0(BtlUnit* unit)
+{
+    s16 val;
+
+    switch (unit->genus)
+    {
+    case 0:
+    case 1:
+        if ((unit->flags2 & 2) != 0)
+        {
+            val = unit->unk_9ce;
+        }
+        else
+        {
+            val = 0;
+        }
+        return val == 1;
+    }
+
+    return false;
+}
+
 // FUN_00282d40
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
@@ -655,6 +678,15 @@ s16 btlUnitGetAnimFrame(BtlUnit* unit)
     }
 
     return 0;
+}
+
+// FUN_00283c00
+void btlUnit00283c00(BtlUnit* unit, s32 param_2)
+{
+    if ((unit->flags2 & 2) != 0)
+    {
+        mdlAnim00318770(unit->mdl, 0, (f32)param_2);
+    }
 }
 
 // FUN_00284170
