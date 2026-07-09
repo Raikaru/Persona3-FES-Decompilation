@@ -129,6 +129,12 @@ void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
     ((CylinderDrawWork*)cylinderTask->workData)->height = height;
 }
 
+// FUN_001a4b40
+void K_Draw_001a4b40(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
 // FUN_001a4c10
 void* K_Draw_UpdatePositionTask(KwlnTask* positionTask)
 {
