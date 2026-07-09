@@ -23,7 +23,7 @@ void effMiscQuatMultiplyVU()
     );
 }
 
-// FUN_00357e00 NONMATCHING
+// FUN_00357e00
 void effMiscNormalizeVU()
 {
     __asm__ volatile (
@@ -32,7 +32,7 @@ void effMiscNormalizeVU()
         "vaddax.w ACC, vf2, vf2    \n"
         "vmadday.w ACC, vf0, vf2   \n"
         "vmaddz.w vf3, vf0, vf2    \n"
-        "vrsqrt Q, vf0, vf3        \n"
+        "vrsqrt Q, vf0w, vf3w      \n"
         "vwaitq                    \n"
         "vmulq.xyzw vf10, vf10, Q  \n"
         ".set reorder"
