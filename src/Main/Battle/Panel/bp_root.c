@@ -1,5 +1,6 @@
 #include "Main/Battle/Panel/bp_root.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Kosaka/k_assert.h"
 
 void FUN_0025d760();
 
@@ -227,6 +228,32 @@ void bpRoot001fe120()
     }
     FUN_00208b30();
     *flags |= 0x10;
+}
+
+void FUN_0021b830();
+
+// FUN_001fe430
+void bpRoot001fe430()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 0x200, 0x29a);
+    *flags &= ~0x200;
+    FUN_0021b830();
+}
+
+void FUN_0024a7a0();
+
+// FUN_001fe4a0
+void bpRoot001fe4a0()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 0x2000, 0x2a8);
+    *flags &= ~0x2000;
+    FUN_0024a7a0();
 }
 
 void FUN_0020f3b0();
