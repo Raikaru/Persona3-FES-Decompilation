@@ -1,6 +1,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
+#include "rw/rtquat.h"
 
 // FUN_00250480
 void gcPose00250480(int param_1)
@@ -60,4 +61,19 @@ void gcPose00250500(int param_1, RwV3d *param_2, int param_3)
     *(u32*)(param_1 + 0x10) = 0;
     *(int*)(param_1 + 0x2c) = param_3 << 0x10;
     *(u32*)(param_1 + 0x28) |= 1;
+}
+
+// FUN_0024faa0
+RwV3d* gcPose0024faa0(int param_1)
+{
+    K_ASSERT(*(int*)(param_1 + 0x20) < 2, 0x38e);
+    return (RwV3d*)(param_1 + 0x14);
+}
+
+// FUN_0024fba0
+void gcPose0024fba0(int param_1, RtQuat *param_2)
+{
+    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x3a6);
+    K_ASSERT(*(int*)(param_1 + 0x24) < 5, 0x3a7);
+    *param_2 = *(RtQuat*)(param_1 + 0x14);
 }
