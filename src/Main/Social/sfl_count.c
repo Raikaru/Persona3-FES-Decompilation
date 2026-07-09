@@ -20,3 +20,17 @@ void sflCount0025b5f0(void)
     work[2] = 0;
     *work |= 2;
 }
+
+// FUN_0025b4b0
+void sflCount0025b4b0(void)
+{
+    K_ASSERT(sSflCount != NULL, 0x2b);
+    sSflCount = NULL;
+}
+
+// FUN_0025b640
+u32 sflCount0025b640(void)
+{
+    K_ASSERT(sSflCount != NULL, 0x2b);
+    return *sSflCount & 1;
+}
