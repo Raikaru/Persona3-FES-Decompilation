@@ -88,3 +88,40 @@ void sflCamera0024d2e0(int param_1, u32* param_2)
     }
     param_2[0x10] = 0;
 }
+
+// FUN_0024d3b0
+u32 sflCamera0024d3b0(int param_1)
+{
+    int iVar1;
+    int key;
+
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    iVar1 = sSflCamera[1];
+    key = param_1 & 0xffff;
+    while (iVar1 != 0) {
+        if (*(u16*)(iVar1 + 4) == key) {
+            return 1;
+        }
+        iVar1 = *(int*)(iVar1 + 0xc);
+    }
+    return 0;
+}
+
+// FUN_0024d430
+int sflCamera0024d430(int param_1)
+{
+    int iVar1;
+    int key;
+
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    iVar1 = sSflCamera[1];
+    key = param_1 & 0xffff;
+    while (iVar1 != 0) {
+        if (*(u16*)(iVar1 + 4) == key) {
+            return iVar1;
+        }
+        iVar1 = *(int*)(iVar1 + 0xc);
+    }
+    K_ASSERT(0, 0xaf);
+    return 0;
+}
