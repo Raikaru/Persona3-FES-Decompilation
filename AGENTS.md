@@ -303,6 +303,60 @@ Common compiler-artifact blockers:
 - Instruction scheduling.
 - VU/COP2 macro output.
 
+Before settling for `NONMATCHING` on any of these blockers, run the repo's permuter
+(next section). Register allocation, evaluation order, and scheduling walls are
+exactly what it cracks.
+
+## Permuter workflow (register-allocation and scheduling walls)
+
+The repo has a custom permuter wired to the project's own mwccps2 invocation and
+verify.py's reloc-masked scoring, so hits are byte-exact by construction. Use it
+when a function is semantically correct but `fndiff.py` shows only register
+choice, operand order, or schedule differences. Escalation ladder:
+
+1. Text permuter — cheap, run it first:
+
+   ```sh
+   python tools/permute.py src/path/file.c functionName --time 60
+   ```
+
+   Mutates only the target function's text (optimization pragma cycling,
+   local-declaration reorder, adjacent-statement reorder, commutative operand
+   swaps, additive reassociation) and hill-climbs to `normalized_diff == 0`.
+   On a hit it writes the winning region to `--out` (default `file.match.c`).
+   Strongest on functions with several locals or statements; tiny control-flow
+   stubs usually need a hand-chosen structure instead (`switch` vs `if`/`||`).
+
+2. AST permuter — for walls text mutation can't reach:
+
+   ```sh
+   python tools/permute_ast.py src/path/file.c functionName --time 120
+   ```
+
+   Drives the upstream decomp-permuter randomizer (~30 AST passes:
+   temporary-for-expression, type randomization, statement reordering, ...)
+   against the same compile + scoring. Needs WSL Debian `cpp` and Python
+   `pycparser`/`attrs`/`toml`; clones decomp-permuter into
+   `tools/decomp-permuter` on first run.
+
+3. Batch sweep — run overnight across every NONMATCHING function:
+
+   ```sh
+   python tools/permute_sweep.py --time 30 --workers 3
+   ```
+
+Rules for applying a hit:
+
+- A permuter hit is a byte match, not a semantic proof. Read the diff.
+- AST-permuter output is heavily mutated (dead temps, `if (1)`, reassociation
+  noise). Extract the ONE change that matters, write clean C by hand, and only
+  then drop the `NONMATCHING` tag.
+- Always re-confirm with `python tools/verify.py src/path/file.c` before
+  claiming the match.
+- Known permuter-confirmed walls (param vs surviving-local `s0` fights, etc.)
+  are cataloged in [`docs/matching.md`](docs/matching.md) — check there before
+  burning an hour on a lost cause.
+
 ## Fingerprint checklist
 
 Before changing types or control flow, check the retail asm for these fingerprints.
