@@ -134,3 +134,9 @@ void H_Maestro_00111f20(KwlnTask* hmaestroTask, u32 param_2)
 {
     ((HMaestro*)hmaestroTask->workData)->unk_120 = param_2;
 }
+
+// FUN_00111f30
+u32 H_Maestro_00111f30(s16* param_1)
+{
+    return *param_1 == 5;
+}
