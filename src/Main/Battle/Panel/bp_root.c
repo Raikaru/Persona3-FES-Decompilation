@@ -29,7 +29,7 @@ void FUN_00251f30();
 void FUN_002484a0();
 void FUN_00251060();
 void FUN_0021b660();
-void FUN_0024a6d0();
+void basShutdown(void); // bas_main.c
 void FUN_00249250();
 void FUN_00242c60();
 void FUN_0023f500();
@@ -55,7 +55,7 @@ void bpRootDestroy(KwlnTask* btlPanelTask)
     FUN_002484a0();
     FUN_00251060();
     FUN_0021b660();
-    FUN_0024a6d0();
+    basShutdown();
     FUN_00249250();
     FUN_00242c60();
     FUN_0023f500();
@@ -286,17 +286,17 @@ void bpRoot001fe430()
     FUN_0021b830();
 }
 
-void FUN_0024a7a0();
+void basClearAnalyzePending(void); // bas_main.c
 
-// FUN_001fe4a0
-void bpRoot001fe4a0()
+// FUN_001fe4a0. Battle command menu's analyze request (bas_main.c) was serviced
+void bpRootCompleteAnalyze()
 {
     u32* flags;
 
     flags = sBtlPanelTask->workData;
     K_ASSERT(*flags & 0x2000, 0x2a8);
     *flags &= ~0x2000;
-    FUN_0024a7a0();
+    basClearAnalyzePending();
 }
 
 // FUN_001fe510
@@ -310,15 +310,15 @@ void bpRoot001fe510(u32 param_1)
     flags[3] = param_1;
 }
 
-// FUN_001fe580
-void bpRoot001fe580(u32 param_1)
+// FUN_001fe580. Request the enemy analyze page (from bas_main.c)
+void bpRootRequestAnalyze(u32 unitId)
 {
     u32* flags;
 
     flags = sBtlPanelTask->workData;
     K_ASSERT(*flags & 4, 0x2ba);
     *flags |= 0x2000;
-    flags[4] = param_1;
+    flags[4] = unitId;
 }
 
 void FUN_0021b8b0();
