@@ -28,6 +28,19 @@ static u32 sIsDead;           // 007ce3f0
 Battle* gBtl;                 // 007ce3ec. NULL when not in a battle
 
 u32 btlDestroy();
+void btlMain0029dfb0(void);
+void btlMain0029e370(void);
+void func_0027f1c0(void);
+void func_002879f0(void);
+void func_002a4c20(void);
+void func_002bb770(void);
+void func_002bf980(void);
+void func_002db980(void);
+void func_002dcd20(void);
+void func_002e2f80(void);
+void func_002f8790(void);
+void func_001f1c20(void* param);
+void itfMesMngDestroyHandle(s32 mesHandleIdx);
 
 // FUN_0027cb80
 u64 btlGetUID()
@@ -164,10 +177,64 @@ void btlCreate()
     gBtl->flags |= 0x481077c;
 }
 
-// FUN_0027d020
+// FUN_0027d020 NONMATCHING
 u32 btlDestroy()
 {
-    // TODO
+    u16 i;
+    Battle* btl;
+    void* unkTask;
+
+    btlActionDestroyAll();
+    func_002879f0();
+    btlMain0029e370();
+    btlMain0029dfb0();
+    func_002bb770();
+    func_002e2f80();
+    func_002dcd20();
+    func_002a4c20();
+    func_002db980();
+    func_002bf980();
+    func_002f8790();
+    func_0027f1c0();
+    itfMesMngDestroyHandle(gBtl->mesHandleIdx);
+    datSetFlag(0x1407, false);
+
+    unkTask = *(void**)((u8*)gBtl + 0xd28);
+    if (unkTask != NULL)
+    {
+        func_001f1c20(unkTask);
+    }
+
+    if (gBtl->flags & BTL_FLAG_UNK8000)
+    {
+        for (i = 0; i < UNIT_GENUS_MAX; i++)
+        {
+            btl = gBtl;
+            if (*(void**)((u8*)btl + (i & 0xffff) * 4 + 0xbac) != NULL)
+            {
+                datUnitDestroyGenus(*(DatUnitGenusBase**)((u8*)btl + (i & 0xffff) * 4 + 0xbac));
+            }
+        }
+
+        for (i = 0; i < 3U; i++)
+        {
+            btl = gBtl;
+            if (*(void**)((u8*)btl + (i & 0xffff) * 8 + 0xbc4) != NULL)
+            {
+                datUnitDestroyGenus(*(DatUnitGenusBase**)((u8*)btl + (i & 0xffff) * 8 + 0xbc4));
+            }
+        }
+
+        datUnitDestroyGenus(&gBtl->startInfo.enmUnits->base);
+    }
+
+    if (kwlnTaskGetTaskByName("battle") != NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(gBtl->btlTask);
+    }
+
+    RwFree(gBtl);
+    gBtl = NULL;
 
     return false;
 }
@@ -293,10 +360,12 @@ u32 btlScrCmd_CALL_BATTLE()
     return true;
 }
 
-// FUN_0027d730 NONMATCHING
+// FUN_0027d730
+#pragma optimization_level 1
 u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
 {
-    if (scrGetIntPara(0) > 10) // ?
+    u32 scrSize;
+    if ((s32)scrGetCmdTimer() > 10)
     {
         if (gBtl != NULL)
         {
@@ -312,8 +381,7 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
 
                 Y_TimeLimit_0045a400();
 
-                // TODO: lw a2, %gp_rel(gFldScrSize) before other args
-                scrCreateTaskFromScriptMemory(10, gFldScrMemory, gFldScrSize, FLDSCR_DIED_IN_TARTAROS);
+                scrCreateTaskFromScriptMemory((scrSize = gFldScrSize, 10), gFldScrMemory, scrSize, FLDSCR_DIED_IN_TARTAROS);
                 K_Misc_CreateScrShutdownTask(scrGetCurrent()->task);
 
                 sIsDead = true;
@@ -327,6 +395,7 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
 
     return false;
 }
+#pragma optimization_level 2
 
 // FUN_0027d810
 u32 btlScrCommand_ENCOUNT_FADE()
