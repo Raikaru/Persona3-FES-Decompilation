@@ -48,6 +48,12 @@ void btlFadeStartImmediate(void)
     sBtlFadeWork.state = 1;
 }
 
+// FUN_002ff310
+s32 btlFade002ff310(void)
+{
+    return 1;
+}
+
 // FUN_002ff320
 s32 btlFadeIsActive(void)
 {
