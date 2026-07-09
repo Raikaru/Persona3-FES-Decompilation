@@ -10,6 +10,18 @@ u32 FUN_0015c460();
 u32 FUN_00420340();
 int FUN_00108e50();
 void FUN_001099d0();
+void FUN_00269f50();
+void FUN_0026c710();
+void FUN_0026e000();
+void FUN_0026cc90();
+void FUN_00268e20();
+void FUN_002720c0();
+void FUN_00108f70();
+void FUN_00266b30();
+void FUN_0026ebf0();
+void FUN_002694b0();
+void FUN_0026da10();
+void FUN_00266cb0();
 
 // FUN_00265b30
 void opRoot00265b30(void)
@@ -78,4 +90,26 @@ void opRoot002660d0(void)
     }
     *(u32*)(base + 0x4524) = 0;
     *(u32*)(base + 4) = 0x11;
+}
+
+// FUN_00265e30
+u32 opRoot00265e30(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    puVar1 = sOpRoot;
+    if (puVar1[1] != 5 && (~*puVar1 & 1) == 0) {
+        FUN_00269f50();
+        if (puVar1[1] != 0xb) {
+            FUN_0026c710();
+        }
+        FUN_0026e000();
+        if (puVar1[1] != 0xb) {
+            FUN_0026cc90();
+            FUN_00268e20();
+        }
+        FUN_002720c0();
+    }
+    return 0;
 }
