@@ -42,6 +42,14 @@ static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
 
 DatGlobal gGlobalWork; // 00836200
 DatPc gPcs[PC_MAX];    // 00833948
+extern u8 D_007FD6C8[];
+extern u8 D_007FD6D1[];
+extern u8 D_008339A4[];
+extern u8 D_008339AD[];
+extern u8 D_00833E80[];
+extern u8 D_00833E89[];
+extern u8 D_00836458[];
+extern u8 D_00836498[];
 
 void FUN_00172890();
 void FUN_00172e10();
@@ -318,8 +326,8 @@ u8 datDidCharacterLevelUp(s16 pcId, u32 expGain)
     return count != level;
 }
 
-// FUN_0016dad0 NONMATCHING
-void datSetAiTactic(s16 pcId, u8 aiTacticId)
+// FUN_0016dad0
+void datSetAiTactic(s16 pcId, s16 aiTacticId)
 {
     K_ASSERT(aiTacticId < AI_TACTIC_MAX, 999);
 
@@ -546,11 +554,11 @@ u32 datScrCmd_SAVE_PARTY()
     s16* savedIds;
 
     i = 0;
-    globalWork = &gGlobalWork; // TODO: should be a1 instead of a2
-    savedIds = sSavedPartyIds; // TODO: should be v1 instead of a1
+    globalWork = &gGlobalWork;
+    savedIds = sSavedPartyIds;
     for (; i < 4; i++)
     {
-        savedIds[i] = globalWork->partyIds[i];
+        *(s16*)((s32)savedIds + i * 2) = *(s16*)((s32)globalWork + i * 2 + 0x44e0);
     }
 
     return true;
@@ -564,11 +572,11 @@ u32 datScrCmd_RESTORE_PARTY()
     DatGlobal* globalWork;
 
     i = 0;
-    savedIds = sSavedPartyIds; // TODO: should be a1 instead of a2
-    globalWork = &gGlobalWork; // TODO: should be v1 instead of a1
+    savedIds = sSavedPartyIds;
+    globalWork = &gGlobalWork;
     for (; i < 4; i++)
     {
-        globalWork->partyIds[i] = savedIds[i];
+        *(s16*)((s32)globalWork + i * 2 + 0x44e0) = *(s16*)((s32)savedIds + i * 2);
     }
 
     return true;
@@ -671,10 +679,10 @@ u32 datGetSkipToTarget()
     return gGlobalWork.calendarWork.skipToTarget;
 }
 
-// FUN_0016cfe0 NONMATCHING
-void datSetAcademicPoint(s16 pcId, u16 academicPoint)
+// FUN_0016cfe0
+void datSetAcademicPoint(s16 pcId, s16 academicPoint)
 {
-    K_ASSERT(academicPoint > SOCIAL_STAT_MIN_POINT && academicPoint < SOCIAL_STAT_MAX_POINT, 797);
+    K_ASSERT(academicPoint >= SOCIAL_STAT_MIN_POINT && academicPoint <= SOCIAL_STAT_MAX_POINT, 797);
 
     if (IS_HERO(pcId))
     {
@@ -686,9 +694,9 @@ void datSetAcademicPoint(s16 pcId, u16 academicPoint)
 }
 
 // FUN_0016d090 NONMATCHING
-void datSetCharmPoint(s16 pcId, u16 charmPoint)
+void datSetCharmPoint(s16 pcId, s16 charmPoint)
 {
-    K_ASSERT(charmPoint > SOCIAL_STAT_MIN_POINT && charmPoint < SOCIAL_STAT_MAX_POINT, 808);
+    K_ASSERT(charmPoint >= SOCIAL_STAT_MIN_POINT && charmPoint <= SOCIAL_STAT_MAX_POINT, 808);
 
     if (IS_HERO(pcId))
     {
@@ -702,9 +710,9 @@ void datSetCharmPoint(s16 pcId, u16 charmPoint)
 }
 
 // FUN_0016d160 NONMATCHING
-void datSetCouragePoint(s16 pcId, u16 couragePoint)
+void datSetCouragePoint(s16 pcId, s16 couragePoint)
 {
-    K_ASSERT(couragePoint > SOCIAL_STAT_MIN_POINT && couragePoint < SOCIAL_STAT_MAX_POINT, 828);
+    K_ASSERT(couragePoint >= SOCIAL_STAT_MIN_POINT && couragePoint <= SOCIAL_STAT_MAX_POINT, 828);
 
     if (IS_HERO(pcId))
     {
@@ -834,9 +842,9 @@ s8 datGetSocialLinkLevel(s16 socialLink)
 }
 
 // FUN_0016e100 NONMATCHING
-u8 datSocialLinkLevelIsNotZero(u16 socialLink)
+u8 datSocialLinkLevelIsNotZero(s16 socialLink)
 {
-    K_ASSERT(socialLink > SOCIAL_LINK_SEES && socialLink < SOCIAL_LINK_NYX_TEAM, 1429);
+    K_ASSERT(socialLink >= SOCIAL_LINK_SEES && socialLink < 30, 1429);
 
     return gGlobalWork.heroStatus.socialLinkStat[socialLink] > 0;
 }
@@ -1005,55 +1013,63 @@ void dat0016f450(void)
 }
 
 // FUN_0016f630
-u16 datGetEquipmentId(s16 pcId, u16 equipmentIdx)
+u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx)
 {
-    // TODO
-    
-    if (pcId == -1) // ?
-    {
-        // return (&DAT_00833e80)[equipmentIdx * 10];
-    }
-    else if (IS_HERO(pcId))
-    {
-        return gGlobalWork.heroEquip.equipments[equipmentIdx].id;
-    }
-    else if (pcId <= 255)
-    {
-        return gPcs[pcId].equipments[equipmentIdx].id;
-    }
+    s32 offset;
+    u8* equipment;
 
-    // return (&DAT_007fd6c8 + equipmentIdx * 0x14 + pcId * 0x364);
-}
-
-// FUN_0016f900 NONMATCHING
-u8 datGetEquipmentEffect(s16 pcId, u16 equipmentIdx)
-{
     if (pcId == -1)
     {
-        // return (&DAT_00833e89)[pcId * 0x14];
+        offset = equipmentIdx * 0x14;
+        return *(u16*)(D_00833E80 + offset);
     }
     else if (IS_HERO(pcId))
     {
-        return gGlobalWork.heroEquip.equipments[equipmentIdx].effect;
+        offset = equipmentIdx * 0x14;
+        equipment = (u8*)gGlobalWork.heroEquip.equipments;
+        return *(u16*)(equipment + offset);
     }
-    else if (pcId <= 255)
+    else if (pcId >= 0x100)
     {
-        return gPcs[pcId].equipments[equipmentIdx].effect;
+        return *(u16*)(D_007FD6C8 + pcId * 0x364 + equipmentIdx * 0x14);
     }
 
-    // return (equpementIdx * 0x14 + pcId * 0x364 + 0x7fd6d1);
+    return *(u16*)(D_008339A4 + pcId * 0x364 + equipmentIdx * 0x14);
+}
+
+// FUN_0016f900
+u8 datGetEquipmentEffect(s16 pcId, s32 equipmentIdx)
+{
+    u8* base;
+
+    if (pcId == -1)
+    {
+        return *(u8*)(D_00833E89 + equipmentIdx * 0x14);
+    }
+    else if (IS_HERO(pcId))
+    {
+        base = (u8*)gGlobalWork.heroEquip.equipments;
+        return base[equipmentIdx * 0x14 + 9];
+    }
+    else if (pcId >= 0x100)
+    {
+        return *(u8*)(D_007FD6D1 + pcId * 0x364 + equipmentIdx * 0x14);
+    }
+
+    return *(u8*)(D_008339AD + pcId * 0x364 + equipmentIdx * 0x14);
 }
 
 // FUN_00172890
 void FUN_00172890()
 {
-    // TODO
+    btlLoadResource(0x980);
+    memset(D_00836458, 0, 0x38);
 }
 
 // FUN_00172e10
 void FUN_00172e10()
 {
-    // TODO
+    memset(D_00836498, 0, 0x24);
 }
 
 // FUN_00175be0
