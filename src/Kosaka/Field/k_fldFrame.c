@@ -220,6 +220,18 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
     return task;
 }
 
+// FUN_001ad870
+void K_FldFrame_CtlSetFlags(KwlnTask* collisCtlTask, u32 flags)
+{
+    ((CollisCtl*)collisCtlTask->workData)->flags |= flags;
+}
+
+// FUN_001ad890
+void K_FldFrame_CtlClearFlags(KwlnTask* collisCtlTask, u32 flags)
+{
+    ((CollisCtl*)collisCtlTask->workData)->flags &= ~flags;
+}
+
 // FUN_001ad8b0
 f32 K_FldFrame_CtlGetSphereCollisRadius(KwlnTask* collisCtlTask)
 {
@@ -253,6 +265,12 @@ s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask)
 s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask)
 {
     return ((CollisCtl*)collisCtlTask->workData)->zGrid;
+}
+
+// FUN_001ad930
+u32 K_FldFrame_CtlGetTotalDist(KwlnTask* collisCtlTask)
+{
+    return ((CollisCtl*)collisCtlTask->workData)->totalDist;
 }
 
 // FUN_001ad940
