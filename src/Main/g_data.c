@@ -795,6 +795,17 @@ s16 datGetActiveSocialLink()
     return gGlobalWork.heroStatus.activeSocialLink;
 }
 
+// FUN_00171360
+u32 dat00171360(u16 param_1)
+{
+    if (param_1 < 5000)
+    {
+        return 0;
+    }
+
+    return param_1 < 0x1408;
+}
+
 // FUN_001717b0
 s16 *datGetActiveSocialLinkPtr()
 {
@@ -1123,6 +1134,14 @@ void FUN_00403130();
 void dat0017c6c0(void)
 {
     FUN_00403130();
+}
+
+void FUN_00403220();
+
+// FUN_0017c6e0
+void dat0017c6e0(void)
+{
+    FUN_00403220();
 }
 
 // FUN_0017c8c0
