@@ -125,6 +125,73 @@ void bpRoot001fe2e0(void* param_1)
     *flags |= 0x100;
 }
 
+void FUN_002449d0();
+
+// FUN_001fe8d0
+void bpRoot001fe8d0()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_002449d0();
+    FUN_002086d0();
+    *flags &= ~0x10000;
+}
+
+void FUN_00215a40();
+
+// FUN_001febb0
+void bpRoot001febb0()
+{
+    FUN_00215a40((u8*)sBtlPanelTask->workData + 0x119b0);
+}
+
+void FUN_00248500();
+void FUN_00245e00();
+
+// FUN_001fe9b0
+void bpRoot001fe9b0()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_00248500();
+    if (*flags & 0x10000)
+    {
+        FUN_00245e00();
+        *flags |= 0x20000;
+    }
+}
+
+void FUN_00248580();
+
+// FUN_001fea10
+void bpRoot001fea10()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_00248580();
+    if (*flags & 0x10000)
+    {
+        FUN_00245e00();
+        *flags |= 0x20000;
+    }
+}
+
+void FUN_0021bb00();
+
+// FUN_001febf0
+void bpRoot001febf0(u32 param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    flags[0xccc4] = param_1;
+    *flags |= 0x4000;
+    FUN_0021bb00();
+}
+
 void FUN_0020f3b0();
 
 // FUN_001fdd20
