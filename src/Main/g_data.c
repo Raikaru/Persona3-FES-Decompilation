@@ -170,6 +170,21 @@ u16 datGetSp(s16 pcId)
     return datCalcGetSp(&pc[pcId - 2].unit);
 }
 
+// FUN_0016c5f0
+u16 datGetMaxHp(s16 pcId)
+{
+    DatPc* pc;
+
+    if (IS_HERO(pcId))
+    {
+        return datCalcGetMaxHp(&gGlobalWork.heroUnit);
+    }
+
+    pc = &gPcs[2];
+
+    return datCalcGetMaxHp(&pc[pcId - 2].unit);
+}
+
 // FUN_0016c910
 s16 datGetEquippedPersona()
 {
