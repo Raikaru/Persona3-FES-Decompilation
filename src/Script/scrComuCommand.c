@@ -16,6 +16,8 @@ int FUN_00172f70();
 int FUN_0016dbc0(short, int*);
 u32 FUN_00173220();
 void FUN_003a4220();
+void FUN_00171c40();
+void FUN_00172200();
 
 static u32 sDat007ce5d4; // DAT_007ce5d4
 
@@ -175,5 +177,43 @@ u32 scrComu00360b70(void)
     } else {
         FUN_0035f060(0);
     }
+    return 1;
+}
+
+// FUN_00360640
+u32 scrComu00360640(void)
+{
+    int uVar1;
+    int lVar2;
+    int lVar3;
+
+    uVar1 = FUN_0035ed20(0);
+    lVar2 = FUN_0035ed20(1);
+    lVar3 = FUN_0016dce0(uVar1);
+    K_ASSERT(lVar3 != 0, 0x306);
+    lVar3 = FUN_0016e100(uVar1);
+    if (lVar3 == 0) {
+        return 1;
+    }
+    FUN_00171c40(uVar1, lVar2 != 0);
+    return 1;
+}
+
+// FUN_003606f0
+u32 scrComu003606f0(void)
+{
+    int uVar1;
+    int lVar2;
+    int lVar3;
+
+    uVar1 = FUN_0035ed20(0);
+    lVar2 = FUN_0035ed20(1);
+    lVar3 = FUN_0016dce0(uVar1);
+    K_ASSERT(lVar3 != 0, 0x321);
+    lVar3 = FUN_0016e100(uVar1);
+    if (lVar3 == 0) {
+        return 1;
+    }
+    FUN_00172200(uVar1, lVar2 != 0);
     return 1;
 }
