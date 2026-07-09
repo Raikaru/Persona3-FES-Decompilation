@@ -85,3 +85,10 @@ void opWait0026edd0(void)
     puVar1[1] = 1;
     *puVar1 |= 4;
 }
+
+// FUN_0026ee30
+u32 opWait0026ee30(void)
+{
+    K_ASSERT(sOpWait != NULL, 0xdb);
+    return *sOpWait & 4;
+}
