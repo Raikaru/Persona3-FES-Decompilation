@@ -1,5 +1,6 @@
 #include "itfMesManager.h"
 #include "Script/scr.h"
+#include "Kosaka/k_assert.h"
 
 u8 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader);
 
@@ -61,4 +62,34 @@ u8 itfMesMngCheckBmdMagic(BmdHeader* bmdHeader)
     }
     
     return false;
+}
+
+// FUN_003a3ba0
+void itfMesMng003a3ba0(s32 mesHandleIdx, u32 param_2)
+{
+    int iVar1;
+
+    iVar1 = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(iVar1 != 0, 0x956);
+    *(u32*)(iVar1 + 0x50) = param_2;
+}
+
+// FUN_003a3e10
+void itfMesMng003a3e10(s32 mesHandleIdx, u32 param_2)
+{
+    u32* puVar1;
+
+    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(puVar1 != NULL, 0xa81);
+    *puVar1 |= param_2 & 0xffff0000;
+}
+
+// FUN_003a3e90
+void itfMesMng003a3e90(s32 mesHandleIdx, u32 param_2)
+{
+    u32* puVar1;
+
+    puVar1 = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(puVar1 != NULL, 0xa96);
+    *puVar1 &= ~(param_2 & 0xffff0000);
 }
