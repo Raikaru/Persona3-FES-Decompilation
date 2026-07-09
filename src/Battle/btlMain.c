@@ -520,6 +520,14 @@ void btlMain0029dfb0(void)
 {
 }
 
+void FUN_003b5ab0();
+
+// FUN_0029e370
+void btlMain0029e370(void)
+{
+    FUN_003b5ab0();
+}
+
 // FUN_0029e390
 void btlMainLoadScene()
 {
