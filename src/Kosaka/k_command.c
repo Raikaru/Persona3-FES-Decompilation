@@ -376,6 +376,22 @@ u32 K_Cmd_001c3410()
     return true;
 }
 
+// FUN_001c3460
+u32 K_Cmd_001c3460()
+{
+    scrSetIntReturnVal(datGetPhysicalCondition(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c3540
+u32 K_Cmd_001c3540()
+{
+    scrSetIntReturnVal(datGetBadStatusNoDown(scrGetIntPara(0)));
+
+    return true;
+}
+
 // FUN_001c45e0
 u32 K_Cmd_CREATE_FLD_MDL()
 {
