@@ -1157,6 +1157,14 @@ DatPersonaWork* datGetPersonaByCompendium(s32 idx)
     return NULL;
 }
 
+void FUN_0017d700(s32 param_1, s32 param_2, void *param_3);
+
+// FUN_0017d6d0
+void dat0017d6d0(s32 param_1, void *param_2)
+{
+    FUN_0017d700(param_1, 1, param_2);
+}
+
 void FUN_003d74b0();
 
 // FUN_0017d790
