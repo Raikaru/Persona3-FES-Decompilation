@@ -40,6 +40,18 @@ u32 K_Cmd_REQ_CLND_SKIP()
     return true;
 }
 
+void FUN_001d0270();
+void FUN_001bfcc0();
+
+// FUN_001c2580
+u32 K_Cmd_001c2580()
+{
+    FUN_001d0270();
+    FUN_001bfcc0();
+
+    return true;
+}
+
 // FUN_001c25b0
 u32 K_Cmd_FADE_IN()
 {
