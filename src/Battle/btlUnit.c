@@ -606,6 +606,17 @@ BtlPacket* btlUnitCreateRotateTowardUnitPacket(BtlUnit* unit, BtlUnit* targetUni
     return packet;
 }
 
+// FUN_00282c30
+s16 btlUnit00282c30(BtlUnit* unit)
+{
+    if ((unit->flags2 & 2) != 0)
+    {
+        return unit->unk_9ce;
+    }
+
+    return 0;
+}
+
 // FUN_00282c60
 u32 btlUnit00282c60(BtlUnit* unit)
 {
@@ -1689,6 +1700,15 @@ BtlUnit* btlUnitCreate(u8 genus)
     // TODO
 
     return NULL;
+}
+
+// FUN_002880e0
+void btlUnit002880e0(BtlUnit* unit, u8 param_2)
+{
+    if (unit != NULL && unit->genus == 2)
+    {
+        *(u8*)&unit->unk_ac = param_2;
+    }
 }
 
 // FUN_00288170
