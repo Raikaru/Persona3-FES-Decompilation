@@ -291,6 +291,30 @@ void bpRoot001ff330()
     FUN_0025d850();
 }
 
+void FUN_00244e10();
+
+// FUN_001fe990
+void bpRoot001fe990()
+{
+    FUN_00244e10();
+}
+
+void FUN_00208010();
+
+// FUN_001fea90
+void bpRoot001fea90()
+{
+    FUN_00208010();
+}
+
+void FUN_00242ae0();
+
+// FUN_001feb50
+void bpRoot001feb50()
+{
+    FUN_00242ae0();
+}
+
 // FUN_001ff350
 void bpRoot001ff350()
 {
