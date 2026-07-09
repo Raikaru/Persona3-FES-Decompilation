@@ -493,6 +493,14 @@ void clnd00187520(KwlnTask* task)
     RwFree(task->workData);
 }
 
+void H_Free(void* memory);
+
+// FUN_00187df0
+void clnd00187df0(KwlnTask* task)
+{
+    H_Free(task->workData);
+}
+
 // FUN_00187ea0
 void clnd00187ea0(KwlnTask* task)
 {
