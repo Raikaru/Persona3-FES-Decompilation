@@ -59,3 +59,48 @@ void sflScript00259c60(u16 param_1)
     arg = param_1;
     FUN_00259850(7, &arg);
 }
+
+s32 FUN_00256430();
+
+// FUN_00259690
+void sflScript00259690(u32 param_1, u32 param_2)
+{
+    u32* work;
+
+    K_ASSERT(sSflScript != NULL, 0x43);
+    work = sSflScript;
+    work[1] = param_1;
+    work[3] = param_1;
+    work[4] = param_2;
+}
+
+// FUN_002596f0
+u32 sflScript002596f0(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    return *sSflScript & 1;
+}
+
+// FUN_00259c10
+void sflScript00259c10(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    FUN_00259850(6, 0);
+}
+
+// FUN_00259cc0
+void sflScript00259cc0(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    FUN_00259850(8, 0);
+}
+
+// FUN_00259e00
+u32 sflScript00259e00(void)
+{
+    K_ASSERT(sSflScript != NULL, 0x43);
+    if (FUN_00256430() != 0) {
+        return 0;
+    }
+    return 1;
+}
