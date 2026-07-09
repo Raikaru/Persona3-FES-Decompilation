@@ -1098,6 +1098,17 @@ u32 datGetTotalBtl()
     return gGlobalWork.totalBtl;
 }
 
+// FUN_0017bf70
+u32 dat0017bf70(u16 param_1)
+{
+    if (param_1 < 0x1bf)
+    {
+        return 0;
+    }
+
+    return param_1 < 0x1d0;
+}
+
 // FUN_0017c8c0
 DatPersonaWork* datGetPersonaByCompendium(s32 idx)
 {
