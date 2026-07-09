@@ -392,8 +392,12 @@ def main():
     sizes = json.loads((TOOLS / "slus21621_functions.json").read_text())
     retail = RetailElf(cfg["retail_elf"], expect_sha1=sizes.get("sha1"))
 
+    def is_generated(p):
+        # permuter droppings: hit regions (*.match.c) and scratch TUs (.permute_*)
+        return p.name.endswith(".match.c") or p.name.startswith(".permute_")
+
     files = ([Path(f).resolve() for f in args.files] if args.files
-             else sorted((REPO / "src").rglob("*.c")))
+             else sorted(p for p in (REPO / "src").rglob("*.c") if not is_generated(p)))
 
     # Function boundaries: every Ghidra entry plus every marker address in the
     # whole repo (Ghidra misses many small functions; markers fill the gaps).
@@ -402,7 +406,7 @@ def main():
     last_window = sizes["windows"][f"{last:08x}"]
     if last_window:
         bounds.add(last + last_window)
-    for cpath in sorted((REPO / "src").rglob("*.c")):
+    for cpath in sorted(p for p in (REPO / "src").rglob("*.c") if not is_generated(p)):
         for mk in scan_markers(cpath):
             bounds.add(mk["addr"])
     boundaries = sorted(bounds)
