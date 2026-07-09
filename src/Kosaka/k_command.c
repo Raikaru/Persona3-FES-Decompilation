@@ -32,6 +32,16 @@ u32 K_Cmd_SKIP_TO_DARK_HOUR()
     return true;
 }
 
+void FUN_001a0150();
+
+// FUN_001c2500
+u32 K_Cmd_001c2500()
+{
+    FUN_001a0150((u16)scrGetIntPara(0), scrGetIntPara(1));
+
+    return true;
+}
+
 // FUN_001c2550
 u32 K_Cmd_REQ_CLND_SKIP()
 {
@@ -146,6 +156,16 @@ u32 K_Cmd_DATE_IN_RANGE()
     {
         scrSetIntReturnVal(0);
     }
+
+    return true;
+}
+
+void FUN_00103cb0();
+
+// FUN_001c28d0
+u32 K_Cmd_001c28d0()
+{
+    FUN_00103cb0();
 
     return true;
 }
