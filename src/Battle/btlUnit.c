@@ -1527,12 +1527,14 @@ void btlUnitInit002860b0Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00285fa0 NONMATCHING
+// FUN_00285fa0
 u32 btlUnitUpdate002860b0Packet(void* work)
 {
     BtlUnitPacketUnitPtr* packet;
     u16 i;
     BtlUnit* unit;
+    Model* mdl;
+    Model* m;
 
     packet = (BtlUnitPacketUnitPtr*)work;
 
@@ -1550,12 +1552,14 @@ u32 btlUnitUpdate002860b0Packet(void* work)
 
     for (i = 0; i < 5; i++)
     {
-        if (unit->mdl->attachedWpns[i].flags & (1 << 0) &&
-            unit->mdl->attachedWpns[i].wpnMdl != NULL)
+        mdl = unit->mdl;
+
+        if ((m = mdl)->attachedWpns[i].flags & (1 << 0) &&
+            m->attachedWpns[i].wpnMdl != NULL)
         {
             if (mdl00319770(unit->mdl, i))
             {
-                unit->mdl->attachedWpns[i].wpnMdl->flags &= ~(1 << 1);
+                (m = unit->mdl)->attachedWpns[i].wpnMdl->flags &= ~(1 << 1);
             }
         }
     }
@@ -1602,12 +1606,14 @@ void btlUnitInit00286240Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00286130 NONMATCHING
+// FUN_00286130
 u32 btlUnitUpdate00286240Packet(void* work)
 {
     BtlUnitPacketUnitPtr* packet;
     u16 i;
     BtlUnit* unit;
+    Model* mdl;
+    Model* m;
 
     packet = (BtlUnitPacketUnitPtr*)work;
 
@@ -1625,12 +1631,14 @@ u32 btlUnitUpdate00286240Packet(void* work)
 
     for (i = 0; i < 5; i++)
     {
-        if (unit->mdl->attachedWpns[i].flags & (1 << 0) &&
-            unit->mdl->attachedWpns[i].wpnMdl != NULL)
+        mdl = unit->mdl;
+
+        if ((m = mdl)->attachedWpns[i].flags & (1 << 0) &&
+            m->attachedWpns[i].wpnMdl != NULL)
         {
             if (mdl00319770(unit->mdl, i))
             {
-                unit->mdl->attachedWpns[i].wpnMdl->flags |= (1 << 1);
+                (m = unit->mdl)->attachedWpns[i].wpnMdl->flags |= (1 << 1);
             }
         }
     }

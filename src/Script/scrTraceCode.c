@@ -229,10 +229,14 @@ static u32 CodeFunc_PushLFX(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035c7c0 NONMATCHING
+// FUN_0035c7c0
 static u32 CodeFunc_PushSTR(ScrData* scr)
 {
-    PushString(scr, scr->stringsContent + scr->instrContent[scr->pc].opOperand16.sOperand); // TODO: fix load order
+    char* str;
+
+    str = scr->stringsContent;
+    str += scr->instrContent[scr->pc].opOperand16.sOperand;
+    PushString(scr, str);
     scr->pc++;
 
     return CODEFUNC_NEXTINSTR;
@@ -860,7 +864,7 @@ static u32 CodeFunc_IF(ScrData* scr)
     return CODEFUNC_NEXTINSTR;   
 }
 
-// FUN_0035ebf0 NONMATCHING
+// FUN_0035ebf0
 u32 scrTraceCode(ScrData* scr)
 {
     s16 opCode;
@@ -874,7 +878,10 @@ u32 scrTraceCode(ScrData* scr)
 
         if (gTraceCode == true)
         {
-            H_Dbprt_FmtLog(">>>SCRIPT TRACE <0x%X>\n", scr->instrContent[scr->pc].opOperand16.sOperand);
+            // The struct-copy through the comma operator loads the whole
+            // operand word before extracting sOperand, matching retail's
+            // load order (plain .sOperand access emits lh directly).
+            H_Dbprt_FmtLog(">>>SCRIPT TRACE <0x%X>\n", (0, scr->instrContent[scr->pc].opOperand16).sOperand);
         }
 
         codeFuncRet = sCodeFuncTable[opCode](scr);
