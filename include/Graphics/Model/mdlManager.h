@@ -32,6 +32,7 @@ typedef struct HCdvd HCdvd;
 #define MDLLOOKAT_FLAG_XYZ      (1 << 6)  // 0x40
 #define MDLLOOKAT_FLAG_XY       (1 << 7)  // 0x80
 #define MDLLOOKAT_FLAG_NOTARGET (1 << 8)  // 0x100
+#define MDLLOOKAT_FLAG_UNK200   (1 << 9)  // 0x200
 #define MDLLOOKAT_FLAG_UNK1000  (1 << 12) // 0x1000
 
 typedef enum

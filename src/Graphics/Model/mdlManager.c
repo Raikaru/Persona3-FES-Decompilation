@@ -47,6 +47,15 @@ void* mdl00311610(void* param_1)
     return param_1;
 }
 
+void FUN_004916d0();
+void FUN_00316410();
+
+// FUN_003164c0
+void mdl003164c0(void* param_1)
+{
+    FUN_004916d0(param_1, FUN_00316410, 0);
+}
+
 // FUN_00316690. TODO
 Model* mdlInit(u16 type, u16 id)
 {
@@ -436,6 +445,12 @@ void mdlLookAtSetTargetPosXY(Model* mdl, f32 xTarget, f32 yTarget)
 void mdlLookAtDisableTarget(Model* mdl)
 {
     mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_NOTARGET;
+}
+
+// FUN_003191b0
+void mdl003191b0(Model* mdl)
+{
+    mdl->animSlots[0].lookAt.flags |= MDLLOOKAT_FLAG_UNK200;
 }
 
 // FUN_003191d0
