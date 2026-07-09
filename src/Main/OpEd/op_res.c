@@ -174,3 +174,53 @@ RwRaster* opResGetLogoRaster(u32 id)
 
     return sWork->logoRasters[id];
 }
+
+void FUN_004cde90();
+void FUN_0021cc20();
+
+// FUN_00266b30
+void opRes00266b30(void)
+{
+    OpResWork* work;
+    s32 i;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+    for (i = 0; i < OPRES_TITLE_TMXCOUNT; i++) {
+        FUN_004cde90(*(RwRaster**)((int)work + i * 4 + 0xc));
+    }
+    for (i = 0; i < OPRES_TITLE_SPRCOUNT; i++) {
+        FUN_0021cc20(*(void**)((int)work + i * 4 + 0x44));
+    }
+    work->destroyFlags &= ~OPRES_FLAG_TITLE;
+}
+
+// FUN_00266dc0
+void opRes00266dc0(void)
+{
+    OpResWork* work;
+    s32 i;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+    for (i = 0; i < OPRES_LOGO_MAX; i++) {
+        FUN_004cde90(*(RwRaster**)((int)work + i * 4 + 0x4c));
+    }
+    work->destroyFlags &= ~OPRES_FLAG_LOGO;
+}
+
+// FUN_00266690
+void opRes00266690(void)
+{
+    OpResWork* work;
+
+    K_ASSERT(sWork != NULL, 68);
+    work = sWork;
+    if (work->destroyFlags & OPRES_FLAG_TITLE) {
+        opRes00266b30();
+    }
+    if (work->destroyFlags & OPRES_FLAG_LOGO) {
+        opRes00266dc0();
+    }
+    sWork = NULL;
+}
