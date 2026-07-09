@@ -77,7 +77,7 @@ void FUN_003952d0();
 int FUN_003951d0();
 short FUN_0038d6f0();
 int FUN_0036f500();
-short FUN_001752b0();
+u16 FUN_001752b0();
 void FUN_00172e50();
 void printf();
 void memset();
@@ -474,6 +474,7 @@ typedef struct
 // FUN_0035f4a0 NONMATCHING
 u32 scrComu0035f4a0(int* startedFlag)
 {
+    u32 result;
     int data;
     int lVar3;
     int iVar4;
@@ -498,9 +499,11 @@ u32 scrComu0035f4a0(int* startedFlag)
             *startedFlag = 1;
             adminiChangeSeq(3, &req, 0x1c, 0);
         }
-        return 1;
+        result = 1;
+    } else {
+        result = 0;
     }
-    return 0;
+    return result;
 }
 
 // FUN_0035f5b0
@@ -545,11 +548,12 @@ u32 scrComu0035f730(void)
 // FUN_0035f7a0 NONMATCHING
 u32 scrComu0035f7a0(void)
 {
+    u32 result;
     int lVar2;
     ScrComuEventReq req;
-    u32 a;
-    u32 b;
     u32 c;
+    u32 b;
+    u32 a;
 
     c = 0;
     b = 0;
@@ -557,19 +561,23 @@ u32 scrComu0035f7a0(void)
     if (scrGetCmdTimer() == 0) {
         lVar2 = FUN_003bffa0(&c, &b, &a);
         if (lVar2 == 0) {
-            return 1;
+            result = 1;
+        } else {
+            datSetActiveSocialLink(0xff);
+            req.unk_0c = c;
+            req.unk_10 = b;
+            req.unk_14 = a;
+            adminiChangeSeq(3, &req, 0x1c, 0);
+            result = 0;
         }
-        datSetActiveSocialLink(0xff);
-        req.unk_0c = c;
-        req.unk_10 = b;
-        req.unk_14 = a;
-        adminiChangeSeq(3, &req, 0x1c, 0);
-        return 0;
+    } else {
+        if (adminiGetNowSeqId() == 0 && adminiGetNextSeqId() == -1) {
+            result = 1;
+        } else {
+            result = 0;
+        }
     }
-    if (adminiGetNowSeqId() == 0 && adminiGetNextSeqId() == -1) {
-        return 1;
-    }
-    return 0;
+    return result;
 }
 
 // FUN_0035f880 NONMATCHING
@@ -588,11 +596,14 @@ u32 scrComu0035f880(void)
     oldStr = NULL;
     newStr = NULL;
     lVar4 = scrGetMesHandleIdx();
-    if (lVar4 >= 0) {
-        statType = scrGetIntPara(0);
-        K_ASSERT(statType <= 2, 0x139);
-        points = scrGetIntPara(1);
-        if (statType == 1) {
+    if (lVar4 < 0) {
+        return 1;
+    }
+    statType = scrGetIntPara(0);
+    K_ASSERT(statType <= 2, 0x139);
+    points = scrGetIntPara(1);
+        switch (statType) {
+        case 1:
             oldLevel = datGetCharmLevel(datGetCharmPoint());
             points += datGetCharmPoint();
             if (points > 999) {
@@ -600,7 +611,8 @@ u32 scrComu0035f880(void)
             }
             newLevel = datGetCharmLevel(points);
             datSetCharmPoint(points);
-        } else if (statType == 0) {
+            break;
+        case 0:
             oldLevel = datGetAcademicLevel(datGetAcademicPoint());
             points += datGetAcademicPoint();
             if (points > 999) {
@@ -608,7 +620,8 @@ u32 scrComu0035f880(void)
             }
             newLevel = datGetAcademicLevel(points);
             datSetAcademicPoint(points);
-        } else if (statType == 2) {
+            break;
+        case 2:
             oldLevel = datGetCourageLevel(datGetCouragePoint());
             points += datGetCouragePoint();
             if (points > 999) {
@@ -616,42 +629,46 @@ u32 scrComu0035f880(void)
             }
             newLevel = datGetCourageLevel(points);
             datSetCouragePoint(points);
+            break;
         }
         if (oldLevel == newLevel) {
             scrSetIntReturnVal(0);
         } else {
-            if (statType == 1) {
+            switch (statType) {
+            case 1:
                 oldStr = h_camp_getCharmLevelString(oldLevel);
                 newStr = h_camp_getCharmLevelString(newLevel);
-            } else if (statType == 0) {
+                break;
+            case 0:
                 oldStr = h_camp_getAcademicLevelString(oldLevel);
                 newStr = h_camp_getAcademicLevelString(newLevel);
-            } else if (statType == 2) {
+                break;
+            case 2:
                 oldStr = h_camp_getCourageLevelString(oldLevel);
                 newStr = h_camp_getCourageLevelString(newLevel);
+                break;
             }
             FUN_003a4220(lVar4, 0, oldStr);
             FUN_003a4220(lVar4, 1, newStr);
             scrSetIntReturnVal(1);
         }
-    }
     return 1;
 }
 
-// FUN_0035fd80 NONMATCHING
+// FUN_0035fd80
 u32 scrComu0035fd80(void)
 {
-    short uVar1;
+    u16 uVar1;
 
     uVar1 = FUN_001752b0();
     scrSetIntReturnVal(uVar1);
     return 1;
 }
 
-// FUN_0035fdb0 NONMATCHING
+// FUN_0035fdb0
 u32 scrComu0035fdb0(void)
 {
-    u16 uVar1;
+    int uVar1;
     int data;
     int lVar3;
     int i;
@@ -667,7 +684,7 @@ u32 scrComu0035fdb0(void)
         sDat007ce5b8 = data;
         for (i = 0; i < 4; i++) {
             uVar1 = *(u16*)(data + i * 2 + 4);
-            FUN_00171110(uVar1, 2);
+            FUN_00171110((s16)uVar1, 2);
             FUN_003a4270(handle, i, uVar1);
             FUN_003a4270(handle, i + 0xd, 2);
         }
@@ -721,23 +738,25 @@ u32 scrComu00360020(void)
 // FUN_00360110 NONMATCHING
 u32 scrComu00360110(void)
 {
-    u8 bVar1;
-    u16 uVar3;
+    int uVar3;
     u8 uVar2;
+    int d4;
     int slPtr;
     int data;
     int handle;
-    int i;
     int idx;
+    int i;
+    u8 bVar1;
 
     slPtr = datGetActiveSocialLinkPtr();
-    data = FUN_003beb10(sDat007ce5d4);
+    d4 = sDat007ce5d4;
+    data = FUN_003beb10(d4);
     handle = scrGetMesHandleIdx();
     K_ASSERT(handle >= 0, 0x25e);
-    bVar1 = *(u8*)(sDat007ce5d4 + slPtr + 0x480);
+    bVar1 = *(u8*)(d4 + slPtr + 0x480);
     for (i = 0; i < bVar1 + 2; i++) {
         idx = i * 2;
-        uVar3 = *(u16*)(data + idx + 4);
+        uVar3 = *(s16*)(data + idx + 4);
         uVar2 = *(u8*)(data + i + 0xc);
         FUN_00171110(uVar3, 2);
         FUN_003a4270(handle, idx, uVar3);
@@ -845,7 +864,7 @@ u32 scrComu00360b00(void)
     return 0;
 }
 
-// FUN_00360c50 NONMATCHING
+// FUN_00360c50
 u32 scrComu00360c50(void)
 {
     int uVar1;
@@ -855,10 +874,13 @@ u32 scrComu00360c50(void)
     uVar1 = scrGetIntPara(0);
     uVar2 = scrGetIntPara(1);
     uVar3 = scrGetIntPara(2);
-    if (uVar1 == 1) {
-        FUN_00395350(uVar2 + 3, 0);
-    } else if (uVar1 == 0) {
+    switch (uVar1) {
+    case 0:
         FUN_003952d0(0, uVar3, uVar2 + 3);
+        break;
+    case 1:
+        FUN_00395350(uVar2 + 3, 0);
+        break;
     }
     return 1;
 }
