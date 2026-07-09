@@ -1109,6 +1109,14 @@ u32 dat0017bf70(u16 param_1)
     return param_1 < 0x1d0;
 }
 
+void FUN_00403130();
+
+// FUN_0017c6c0
+void dat0017c6c0(void)
+{
+    FUN_00403130();
+}
+
 // FUN_0017c8c0
 DatPersonaWork* datGetPersonaByCompendium(s32 idx)
 {
@@ -1120,6 +1128,14 @@ DatPersonaWork* datGetPersonaByCompendium(s32 idx)
     }
 
     return NULL;
+}
+
+void FUN_003d74b0();
+
+// FUN_0017d790
+void dat0017d790(void)
+{
+    FUN_003d74b0();
 }
 
 // FUN_0017d7f0
