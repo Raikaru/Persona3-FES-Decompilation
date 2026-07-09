@@ -256,6 +256,63 @@ void bpRoot001fe4a0()
     FUN_0024a7a0();
 }
 
+// FUN_001fe510
+void bpRoot001fe510(u32 param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 4, 0x2b1);
+    *flags |= 0x200;
+    flags[3] = param_1;
+}
+
+// FUN_001fe580
+void bpRoot001fe580(u32 param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 4, 0x2ba);
+    *flags |= 0x2000;
+    flags[4] = param_1;
+}
+
+void FUN_0021b8b0();
+
+// FUN_001fe3b0
+void bpRoot001fe3b0(void* param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    K_ASSERT(*flags & 0x200, 0x28c);
+    *flags &= ~0x200;
+    FUN_0021b8b0(param_1);
+}
+
+void FUN_00201e00();
+void FUN_0020fc90();
+void FUN_00208630();
+void FUN_002094f0();
+
+// FUN_001fe1a0
+void bpRoot001fe1a0()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    if (*flags & 4)
+    {
+        FUN_00201e00();
+        *flags &= ~0x40000;
+        FUN_0020fc90();
+        FUN_00208630();
+    }
+    FUN_002094f0();
+    *flags &= ~0x10;
+}
+
 void FUN_0020f3b0();
 
 // FUN_001fdd20
