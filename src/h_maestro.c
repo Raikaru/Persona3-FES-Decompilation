@@ -140,3 +140,11 @@ u32 H_Maestro_00111f30(s16* param_1)
 {
     return *param_1 == 5;
 }
+
+extern void* D_00833a40[];
+
+// FUN_001120a0
+void* H_Maestro_001120a0(int param_1)
+{
+    return D_00833a40[param_1];
+}
