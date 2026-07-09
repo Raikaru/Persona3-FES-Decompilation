@@ -3,6 +3,9 @@
 #include "rw/rwplcore.h"
 
 void* FUN_00122940(KwlnTask*);
+void FUN_00133d30();
+void FUN_00100ec0();
+void FUN_004d0f00();
 
 // FUN_00122fd0
 void h_campPersona00122fd0(int param_1)
@@ -28,4 +31,28 @@ KwlnTask* h_campPersona00123000(KwlnTask* parent, u32 param_2)
     workData[4] = param_2;
     *(u16*)((int)workData + 0x18) = 1;
     return task;
+}
+
+// FUN_00133900
+void h_campPersona00133900(int param_1)
+{
+    int* workData;
+
+    workData = *(int**)(param_1 + 0x3c);
+    if (workData[8] != 0) {
+        FUN_00133d30(workData[8], workData[9]);
+        workData[8] = 0;
+        workData[9] = 0;
+        workData[0xa] = 0;
+    } else {
+        if (workData[9] != 0) {
+            FUN_00100ec0(workData[9]);
+            workData[9] = 0;
+        }
+        if (workData[0xa] != 0) {
+            FUN_004d0f00(workData[0xa]);
+            workData[0xa] = 0;
+        }
+    }
+    RwFree(workData);
 }
