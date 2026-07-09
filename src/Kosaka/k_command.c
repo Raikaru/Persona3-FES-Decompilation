@@ -424,6 +424,19 @@ u32 K_Cmd_001c3f60()
     return true;
 }
 
+// FUN_001c3f90
+u32 K_Cmd_001c3f90()
+{
+    s32 idx;
+    u32* arr;
+
+    idx = scrGetIntPara(0);
+    arr = FUN_0035f160();
+    scrSetIntReturnVal(arr[idx + 1]);
+
+    return true;
+}
+
 u32 FUN_0016f380(u32 idx);
 
 // FUN_001c3c40
