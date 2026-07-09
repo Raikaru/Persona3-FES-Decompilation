@@ -226,6 +226,12 @@ u32 datCalcGetPassiveSkillFlags(DatUnit* unit)
     return flags;
 }
 
+// FUN_00308ba0
+u32 datCalc00308ba0(void)
+{
+    return 8;
+}
+
 // FUN_00308c60 NONMATCHING
 u32 datCalcGetHeldWeaponType(DatUnit* unit)
 {
