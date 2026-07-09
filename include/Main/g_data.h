@@ -196,7 +196,8 @@ typedef struct DatPc
     DatEquipment equipments[4];
     u8 unkData2[0x2e];
     DatPersonaWork persona;
-    u8 unkData3[0x254];         // TODO
+    u8 unkData3[0x250];         // TODO
+    u32 unk_360;
 } DatPc;
 
 // at least 17656 bytes
