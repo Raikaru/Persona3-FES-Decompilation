@@ -652,7 +652,7 @@ static u32 CodeFunc_Sub(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035e60
+// FUN_0035e060
 static u32 CodeFunc_Mul(ScrData* scr)
 {
     scrOperation(scr, SCR_OPERATION_MUL);
@@ -1023,8 +1023,20 @@ u32 scrGetCmdTimer()
     return sCurrScript->cmdTimer;
 }
 
+// FUN_0035f140
+s32 scrGetMesHandleIdx()
+{
+    return sCurrScript->mesHandleIdx;
+}
+
 // FUN_0035f150
 ScrData* scrGetCurrent()
 {
     return sCurrScript;
+}
+
+// FUN_0035f160
+s32 scrGetUnkF0()
+{
+    return sCurrScript->unk_f0;
 }
