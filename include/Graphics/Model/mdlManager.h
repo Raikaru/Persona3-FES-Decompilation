@@ -19,6 +19,7 @@ typedef struct HCdvd HCdvd;
 #define MDL_FLAG_NODRAW      (1 << 1)  // 0x02.   Don't draw the model
 #define MDL_FLAG_ZTEST       (1 << 3)  // 0x08.   Depth testing
 #define MDL_FLAG_ZWRITE      (1 << 4)  // 0x10
+#define MDL_FLAG_UNK20       (1 << 5)  // 0x20
 #define MDL_FLAG_CULLFRONT   (1 << 6)  // 0x40.   Use 'rwCULLMODEFRONT', otherwise 'rwCULLMODEBACK'
 #define MDL_FLAG_FOG         (1 << 8)  // 0x100.  Enable fog for the model
 #define MDL_FLAG_STREAMDONE  (1 << 12) // 0x1000
