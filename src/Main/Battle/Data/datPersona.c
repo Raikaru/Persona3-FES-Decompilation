@@ -22,6 +22,14 @@ u32 datPersonaGetNextExp(DatPersonaWork* persona)
     return persona->nextExp;
 }
 
+void FUN_00176210();
+
+// FUN_00173340
+void datPersona00173340(DatPersonaWork* persona)
+{
+    FUN_00176210(persona, (u16)(persona->level + 1));
+}
+
 // FUN_00173370
 u16* datPersonaGetSkills(DatPersonaWork* persona)
 {
