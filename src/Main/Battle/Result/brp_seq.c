@@ -7,6 +7,10 @@ void FUN_0024b8a0();
 void FUN_00279750();
 void FUN_0010a4e0();
 void FUN_003c7430();
+u32 FUN_00173220();
+void FUN_003c7bc0();
+void FUN_003c74e0();
+void FUN_003c7560();
 
 // FUN_002737a0
 void brpSeq002737a0(void)
@@ -52,4 +56,24 @@ void brpSeq00273e10(void)
     K_ASSERT(*(int*)(iVar1 + 0x74) == 9, 0x40e);
     FUN_003c7430(3);
     *(u32*)(iVar1 + 0x18) = 2;
+}
+
+// FUN_00273c70
+void brpSeq00273c70(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+
+    K_ASSERT(sBrpSeq != NULL, 0xb0);
+    puVar1 = sBrpSeq;
+    *puVar1 &= 0xffffffef;
+    K_ASSERT((~puVar1[2] & 1) != 0, 0x3ef);
+    uVar2 = FUN_00173220(*(u16*)((int)puVar1 + 4));
+    FUN_003c7bc0(0, uVar2);
+    FUN_003c7430(8);
+    FUN_003c74e0(9);
+    FUN_003c7560(0);
+    FUN_0010a4e0(1, 0, 8, 4);
+    puVar1[7] = 0;
+    puVar1[4] = 5;
 }
