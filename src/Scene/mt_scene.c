@@ -137,6 +137,12 @@ u32 MT_Scene_GetTotalResInList(u32 resType)
     return total;
 }
 
+// FUN_003b6000
+void MT_Scene_003b6000(u16 resId, Model* mdl)
+{
+    MT_Scene_CreateResModelChar(resId, 0, mdl);
+}
+
 // FUN_003b6030
 u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl)
 {
