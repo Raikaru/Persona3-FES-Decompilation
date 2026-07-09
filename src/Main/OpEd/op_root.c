@@ -8,27 +8,27 @@ static u32 D_007ce00c;
 void FUN_00265030();
 u32 FUN_0015c460();
 u32 FUN_00420340();
-int FUN_00108e50();
-void FUN_001099d0();
+int H_Snd_GetCurrentBgmId();
+void H_Snd_PlayBgm();
 void FUN_00269f50();
 void FUN_0026c710();
 void FUN_0026e000();
 void FUN_0026cc90();
 void FUN_00268e20();
 void FUN_002720c0();
-void FUN_00108f70();
+void H_Snd_StopBgm();
 void FUN_00266b30();
 void FUN_0026ebf0();
 void FUN_002694b0();
 void FUN_0026da10();
-void FUN_00266cb0();
+void opResRequestLogo();
 void FUN_00269d10();
 void FUN_002673f0();
 void FUN_0026dd60();
 void FUN_0026a280();
 void FUN_00271d70();
 void FUN_00266690();
-void FUN_00191a10();
+void H_Free();
 
 // FUN_00265b30
 void opRoot00265b30(void)
@@ -78,8 +78,8 @@ void opRoot00266060(void)
 
     K_ASSERT(sOpRoot != NULL, 0x9a);
     base = (int)sOpRoot;
-    if (FUN_00108e50() != 0x36) {
-        FUN_001099d0(0x36, 1);
+    if (H_Snd_GetCurrentBgmId() != 0x36) {
+        H_Snd_PlayBgm(0x36, 1);
     }
     *(u32*)(base + 0x4524) = 0;
     *(u32*)(base + 4) = 9;
@@ -92,8 +92,8 @@ void opRoot002660d0(void)
 
     K_ASSERT(sOpRoot != NULL, 0x9a);
     base = (int)sOpRoot;
-    if (FUN_00108e50() != 0x36) {
-        FUN_001099d0(0x36, 1);
+    if (H_Snd_GetCurrentBgmId() != 0x36) {
+        H_Snd_PlayBgm(0x36, 1);
     }
     *(u32*)(base + 0x4524) = 0;
     *(u32*)(base + 4) = 0x11;
@@ -133,5 +133,5 @@ void opRoot00265ef0(int param_1)
     FUN_00266b30();
     FUN_00266690();
     sOpRoot = NULL;
-    FUN_00191a10(*(u32*)(param_1 + 0x3c));
+    H_Free(*(u32*)(param_1 + 0x3c));
 }

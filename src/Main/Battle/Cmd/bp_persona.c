@@ -4,7 +4,6 @@
 static u32* sBpPersona; // DAT_007ce398
 
 void FUN_00267120();
-void FUN_00195020();
 long FUN_003c9ab0();
 
 // FUN_00266eb0
@@ -32,7 +31,7 @@ void bpPersona00267120(void)
 
     K_ASSERT(sBpPersona != NULL, 0x24);
     work = sBpPersona;
-    FUN_00195020(work[1]);
+    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
     *work &= 0xfffffffe;
 }
 

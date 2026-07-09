@@ -38,7 +38,7 @@ const char* h_camp_getCourageLevelString(s16 idx)
     return courageLevelString[idx];
 }
 
-void FUN_0016f1f0();
+void datSetFlag();
 
 static u32 uGpffffb260;
 static u32 uGpffffb264;
@@ -55,7 +55,7 @@ void h_camp0011a710(int param_1)
     uGpffffb268 = 0;
     uGpffffb260 = 0;
     uGpffffb26c = 0;
-    FUN_0016f1f0(0x1407, 0);
+    datSetFlag(0x1407, 0);
     RwFree(workData);
 }
 

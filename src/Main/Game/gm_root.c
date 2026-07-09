@@ -79,11 +79,11 @@ void gmRootDestroyTask(KwlnTask* gmRootTask)
     RwFree(gmRootTask->workData);
 }
 
-void FUN_00195de0(void);
+void kwlnInitGameData(void);
 u32 FUN_00265c20(KwlnTask* task);
 long FUN_00188660(void);
 void FUN_00188680(void);
-u32 FUN_0017fb90(void);
+u32 clndCreateTask(void);
 
 // FUN_002663c0
 void gmRoot002663c0(void)
@@ -92,7 +92,7 @@ void gmRoot002663c0(void)
 
     K_ASSERT(sWork != NULL, 90);
     work = sWork;
-    FUN_00195de0();
+    kwlnInitGameData();
     work->unk_0c = FUN_00265c20(work->task);
     work->flags |= GMROOT_FLAG_UNK2;
     work->unk_04 = 1;
@@ -107,7 +107,7 @@ void gmRoot00266430(void)
     work = sWork;
     K_ASSERT(FUN_00188660(), 0xfd);
     FUN_00188680();
-    work->unk_10 = FUN_0017fb90();
+    work->unk_10 = clndCreateTask();
     work->flags |= GMROOT_FLAG_UNK4;
     work->unk_04 = 2;
 }

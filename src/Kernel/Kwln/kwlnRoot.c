@@ -111,13 +111,13 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
     return KWLNTASK_CONTINUE;
 }
 
-void FUN_00108f70();
+void H_Snd_StopBgm();
 void FUN_003b5ab0();
 
 // FUN_001988f0
 void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
-    FUN_00108f70();
+    H_Snd_StopBgm();
     FUN_003b5ab0();
 
     RwFree(rootTask->workData);
