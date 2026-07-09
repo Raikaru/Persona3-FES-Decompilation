@@ -144,6 +144,14 @@ RwRaster* opResGetTitleRaster(u32 id)
     return sWork->titleRasters[id];
 }
 
+// FUN_00266c50
+void* opRes00266c50(u32 id)
+{
+    K_ASSERT(sWork != NULL, 68);
+
+    return sWork->unk_44[id];
+}
+
 // FUN_00266cb0
 void opResRequestLogo()
 {
