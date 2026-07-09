@@ -515,6 +515,11 @@ void btlMainSetStateNon()
     gBtl->stateWork.stateToSet = BTL_STATE_NULL;
 }
 
+// FUN_0029dfb0
+void btlMain0029dfb0(void)
+{
+}
+
 // FUN_0029e390
 void btlMainLoadScene()
 {
