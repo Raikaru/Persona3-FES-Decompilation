@@ -83,3 +83,9 @@ KwlnTask* h_campStatus001336b0(KwlnTask* parent, u32 priority, CampVec2 param_3,
     *(u16*)((int)workData + 0x18) = param_4;
     return task;
 }
+
+// FUN_001266e0
+void h_campStatus001266e0(int param_1)
+{
+    RwFree(*(void**)(param_1 + 0x3c));
+}
