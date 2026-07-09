@@ -352,6 +352,30 @@ u32 K_Cmd_001c30a0()
     return true;
 }
 
+// FUN_001c3370
+u32 K_Cmd_001c3370()
+{
+    scrSetIntReturnVal(datGetFatigueCounter(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c33c0
+u32 K_Cmd_001c33c0()
+{
+    scrSetIntReturnVal(datGetOldFatigueCounter(scrGetIntPara(0)));
+
+    return true;
+}
+
+// FUN_001c3410
+u32 K_Cmd_001c3410()
+{
+    scrSetIntReturnVal(datGetNextExp(scrGetIntPara(0)));
+
+    return true;
+}
+
 // FUN_001c45e0
 u32 K_Cmd_CREATE_FLD_MDL()
 {
