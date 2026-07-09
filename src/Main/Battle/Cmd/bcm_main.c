@@ -44,7 +44,7 @@ void bcm00203360(void)
     K_ASSERT(sBcmWork != NULL, 0x164);
     puVar1 = (u32*)sBcmWork;
     for (iVar2 = 0; iVar2 < (int)puVar1[0x97]; iVar2++) {
-        FUN_003b0170(puVar1[iVar2 + 0x23]);
+        FUN_003b0170(*(u32*)((int)puVar1 + iVar2 * 4 + 0x8c));
     }
     if ((*puVar1 & 0x20) != 0) {
         FUN_003b0170(puVar1[0x99]);
