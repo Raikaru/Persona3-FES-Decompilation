@@ -6,6 +6,7 @@ extern u32 DAT_00960070[];
 u32 FUN_0024d430();
 void FUN_0024d5e0();
 void FUN_0024d7d0();
+u32 FUN_0024d3b0();
 
 // FUN_0024d110
 void sflCamera0024d110(u32* param_1)
@@ -63,4 +64,27 @@ void sflCamera0024d1c0(void)
         FUN_0024d5e0(uVar2);
         FUN_0024d7d0(puVar1[4], uVar2);
     }
+}
+
+// FUN_0024d2e0
+void sflCamera0024d2e0(int param_1, u32* param_2)
+{
+    u32* puVar1;
+
+    K_ASSERT(sSflCamera != NULL, 0x3b);
+    puVar1 = sSflCamera;
+    K_ASSERT(FUN_0024d3b0(param_1) == 0, 0x79);
+    *(u16*)((int)param_2 + 4) = (u16)param_1;
+    if (puVar1[1] != 0) {
+        param_2[2] = puVar1[2];
+        param_2[3] = 0;
+        *(u32*)((int)puVar1[2] + 0xc) = (u32)param_2;
+        puVar1[2] = (u32)param_2;
+    } else {
+        param_2[3] = 0;
+        param_2[2] = 0;
+        puVar1[1] = (u32)param_2;
+        puVar1[2] = (u32)param_2;
+    }
+    param_2[0x10] = 0;
 }
