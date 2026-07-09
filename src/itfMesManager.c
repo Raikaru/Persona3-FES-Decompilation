@@ -93,3 +93,23 @@ void itfMesMng003a3e90(s32 mesHandleIdx, u32 param_2)
     K_ASSERT(puVar1 != NULL, 0xa96);
     *puVar1 &= ~(param_2 & 0xffff0000);
 }
+
+// FUN_003a3da0
+u32 itfMesMng003a3da0(s32 mesHandleIdx)
+{
+    u32* p;
+
+    p = *(u32**)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(p != NULL, 0xa54);
+    return *p;
+}
+
+// FUN_003a3f20
+s16 itfMesMng003a3f20(s32 mesHandleIdx)
+{
+    int p;
+
+    p = *(int*)((u8*)&sItfMesHandleSystem + mesHandleIdx * ITFMES_HANDLE_STRIDE);
+    K_ASSERT(p != 0, 0xaa9);
+    return *(s16*)(p + 0x56);
+}
