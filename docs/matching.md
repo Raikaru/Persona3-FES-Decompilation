@@ -156,6 +156,16 @@ When no order matches after trying these, drop the function. Indexed getters/set
 usual victims. Before dropping, give `tools/permute_ast.py` 120s — it found every one of the
 levers above.
 
+## Return-block layout (boolean-result tails; wall)
+
+For functions ending `... result = 1; } else { result = 0; } return result;` (or early-return
+equivalents), retail sometimes places the 0-materialization block AFTER the main body but BEFORE
+the 1-materialization (`b L1 / L0: move v0,0; b end / L1: li v0,1`), while mwcc emits the
+1-block first regardless of source shape. Tried and failed on scrComu 35f4a0/35f7a0: early
+returns, single-exit result variable, inverted branch polarity, pre-initialized default, and a
+600s permute_ast run (best residual 17). Tag NONMATCHING and move on; if a lever is ever found
+it will unlock 35f4a0, 35f7a0, 360110's tail, and battle.c btlDestroy at once.
+
 ## Commutative-`mul.s` (float, frequent wall)
 
 The float analog of commutative-`addu`. For `fresh * invariant` — e.g. `(a - b) * scale` where
