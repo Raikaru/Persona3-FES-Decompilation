@@ -309,6 +309,14 @@ void mdlRotate(Model* mdl, const RwV3d* axis, f32 angle, RwOpCombineType combine
     RwMatrixRotate(&mdl->mat, axis, angle, combineOp);
 }
 
+void FUN_004c3760(void);
+
+// FUN_00318a70
+void mdl00318a70(void)
+{
+    FUN_004c3760();
+}
+
 // FUN_00318a90
 void mdlScale(Model* mdl, const RwV3d* scale, RwOpCombineType combineOp)
 {
@@ -357,6 +365,12 @@ void mdlEnableFullShadow(Model* mdl)
 void mdlDisableFullShadow(Model* mdl)
 {
     mdl->flags &= ~MDL_FLAG_FULLSHADOW;
+}
+
+// FUN_00319050
+void mdl00319050(Model* mdl)
+{
+    mdl->flags |= MDL_FLAG_UNK20;
 }
 
 // FUN_00319090
