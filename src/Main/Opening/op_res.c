@@ -54,3 +54,38 @@ u32 opRes00266bf0(int param_1)
     K_ASSERT(sOpRes != NULL, 0x44);
     return sOpRes[param_1 + 3];
 }
+
+// FUN_00266c50
+u32 opRes00266c50(int param_1)
+{
+    K_ASSERT(sOpRes != NULL, 0x44);
+    return sOpRes[param_1 + 0x11];
+}
+
+// FUN_00266d70
+u32 opRes00266d70(void)
+{
+    K_ASSERT(sOpRes != NULL, 0x44);
+    return *sOpRes & 2;
+}
+
+// FUN_00266dc0
+void opRes00266dc0(void)
+{
+    int base;
+    int i;
+
+    K_ASSERT(sOpRes != NULL, 0x44);
+    base = (int)sOpRes;
+    for (i = 0; i < 2; i++) {
+        FUN_004cde90(*(u32*)(base + i * 4 + 0x4c));
+    }
+    *(u32*)(base + 4) &= 0xfffffffd;
+}
+
+// FUN_00266e50
+u32 opRes00266e50(int param_1)
+{
+    K_ASSERT(sOpRes != NULL, 0x44);
+    return sOpRes[param_1 + 0x13];
+}
