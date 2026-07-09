@@ -1098,6 +1098,14 @@ u32 datGetTotalBtl()
     return gGlobalWork.totalBtl;
 }
 
+void FUN_00300af0();
+
+// FUN_0017b4e0
+void dat0017b4e0(void)
+{
+    FUN_00300af0();
+}
+
 // FUN_0017bf70
 u32 dat0017bf70(u16 param_1)
 {
