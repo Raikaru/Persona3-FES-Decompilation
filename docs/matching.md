@@ -140,6 +140,9 @@ source-reachable. Levers to try, in order:
 - **Named temp for the scaled index** (permuter-found, scrComu 35ff80/360020): hoisting
   `idx = i * 4;` and indexing `*(u32*)(idx + base + off)` flips the `addu` where inline
   `i * 4 + base + off` and all its reassociations do not.
+- **Pointer-typed base + array index** (g_data 16f900): `u8* base = ...; base[i * 0x14 + 9]`
+  flips the `addu` where the int-arithmetic forms (`(s32)base + i * 0x14 + 9`, temp-hoisted or
+  not) stay in the wrong order. Also hoists the base load before the index math.
 - **Inline pointer copy** (permuter-found, btlUnit 285fa0/286130): with `mdl = unit->mdl;` cached,
   `(m = mdl)->attachedWpns[i].flags` flips the condition's `addu` to retail's `index + base`, and
   `(m = unit->mdl)->attachedWpns[i].wpnMdl->flags |= x` does the same for a store path, while a
