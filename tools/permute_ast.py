@@ -29,10 +29,12 @@ Usage:
   python tools/permute_ast.py <file.c> <func> [--time S] [--iters N] [--seed S] [--out F]
 """
 import argparse
+import atexit
 import copy
 import json
 import os
 import shlex
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -61,7 +63,6 @@ DP = find_dp()
 sys.path.insert(0, str(DP))
 sys.path.insert(0, str(TOOLS))
 from src import ast_util
-import perm_pycparser.c_ast as ca
 from src.randomizer import Randomizer
 from src.helpers import get_default_randomization_weights
 from verify import (ObjectFile, RetailElf, compare, load_config, scan_markers,
@@ -77,9 +78,10 @@ def preprocess(rel):
     # Repo is self-contained, so -nostdinc is safe and keeps output pycparser-clean.
     flags = ["-Iinclude", "-nostdinc", "-undef", "-D__MWERKS__=1", rel]
     if os.name == "nt":
-        # Windows: cpp lives in WSL Debian; run there against the /mnt path.
+        # Windows: cpp lives in WSL; distro overridable via P3_WSL_DISTRO.
+        distro = os.environ.get("P3_WSL_DISTRO", "Debian")
         inner = f"cd {shlex.quote(wslpath(REPO))} && cpp " + " ".join(shlex.quote(f) for f in flags)
-        r = subprocess.run(["wsl", "-d", "Debian", "--", "bash", "-lc", inner],
+        r = subprocess.run(["wsl", "-d", distro, "--", "bash", "-lc", inner],
                            capture_output=True, text=True)
     else:
         r = subprocess.run(["cpp"] + flags, cwd=str(REPO), capture_output=True, text=True)
@@ -90,6 +92,10 @@ def preprocess(rel):
 
 def all_boundaries(sizes):
     bounds = {int(a, 16) for a in sizes["windows"]}
+    last = max(bounds)
+    lw = sizes["windows"][f"{last:08x}"]
+    if lw:
+        bounds.add(last + lw)  # close the final window (parity with permute.py)
     for c in (REPO / "src").rglob("*.c"):
         for m in scan_markers(c):
             bounds.add(m["addr"])
@@ -124,6 +130,7 @@ def main():
 
     rnd = Randomizer(get_default_randomization_weights("mwcc"), args.seed)
     tmpdir = Path(tempfile.mkdtemp(prefix="p3ast_"))
+    atexit.register(shutil.rmtree, tmpdir, ignore_errors=True)
     ncompiles = [0]
 
     def make_ast(fn):

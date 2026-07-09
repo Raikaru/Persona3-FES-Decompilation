@@ -13,7 +13,7 @@ Usage:
   python tools/permute_sweep.py --targets targets.json --time 60 --workers 3
   python tools/permute_sweep.py --outdir build/permute --json build/sweep.json
 
-Each per-function subprocess is hard-bounded (budget + 40s) so a stuck compile
+Each per-function subprocess is hard-bounded (budget + 60s) so a stuck compile
 cannot wedge the sweep. Re-confirm every hit with `python tools/verify.py`
 before committing; a permuter match is a byte match, not a semantic proof.
 """
@@ -25,6 +25,7 @@ import json
 import subprocess
 import sys
 import time
+import zlib
 
 TOOLS = Path(__file__).resolve().parent
 REPO = TOOLS.parent
@@ -45,7 +46,11 @@ def discover_targets():
 
 
 def run_one(file, func, seconds, seed, outdir, tool="text"):
+    # Derive a deterministic per-function seed so different targets (and re-runs
+    # with a bumped --seed) explore different mutation paths, reproducibly.
+    seed = (seed * 1000003 + zlib.crc32(func.encode())) % (2 ** 31 - 1)
     outp = outdir / f"{func}.c"
+    outp.unlink(missing_ok=True)  # drop a stale region from an earlier sweep
     script = "permute_ast.py" if tool == "ast" else "permute.py"
     try:
         proc = subprocess.run(
@@ -103,6 +108,9 @@ def main():
 
     results = []
     t0 = time.time()
+    report = Path(args.json) if args.json else None
+    if report and report.is_file():
+        report.unlink()  # never leave a stale report masquerading as this run's
     with ThreadPoolExecutor(max_workers=args.workers) as ex:
         futs = {ex.submit(run_one, f, n, args.time, args.seed, outdir, args.tool): (f, n)
                 for f, n, _ in targets}
@@ -114,6 +122,8 @@ def main():
             tag = "MATCH " if r["matched"] else "      "
             print(f"[{done}/{len(targets)}] {tag} {r['func']:40s} "
                   f"best={r.get('best')}  ({r['note']})", flush=True)
+            if report:  # incremental: crash/kill still leaves a usable report
+                report.write_text(json.dumps(results, indent=1), newline="\n")
 
     hits = [r for r in results if r["matched"]]
     print(f"\nsweep done in {time.time()-t0:.0f}s: {len(hits)} MATCH / "
