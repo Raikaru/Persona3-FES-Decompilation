@@ -97,6 +97,34 @@ void bpRoot001fe920()
     *flags &= ~0x10000;
 }
 
+void FUN_0020fce0();
+void FUN_00208680();
+void FUN_0020fe30();
+
+// FUN_001fe270
+void bpRoot001fe270(void* param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_0020fce0();
+    FUN_00208680();
+    FUN_0020fe30(flags + 0x466c, 0, param_1);
+    *flags |= 0x100;
+}
+
+// FUN_001fe2e0
+void bpRoot001fe2e0(void* param_1)
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_0020fce0();
+    FUN_00208680();
+    FUN_0020fe30(flags + 0x466c, 1, param_1);
+    *flags |= 0x100;
+}
+
 void FUN_0020f3b0();
 
 // FUN_001fdd20
