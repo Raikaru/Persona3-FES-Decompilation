@@ -99,6 +99,12 @@ Rules of engagement:
   that reload the global for each store also need `work = sG;`. Getters/setters that touch the base
   more than once almost always need this even when Ghidra prints the global at each access
   (sfl_cursor 25aa70, sfl_result).
+- **Cache a global pointer into a local for indexed RMW stores.** A `static T* g;` accessed as
+  `g[i] = g[i] + 1` (indexed read-modify-write) makes mwcc precompute the element address
+  (`addiu v1,base,off; sw v0,(v1)`); retail keeps the base and uses `sw v0,off(base)`. Assign
+  `T* p = g;` after the assert and use `p[0]`/`p[i]` throughout — mwcc then addresses every access as
+  base+offset (bpo_main 252060). Writing `g[i]` directly (even with a temp for the value) keeps the
+  precomputed-address form.
 - **Cache the *cleared* value for a read-modify-test.** When retail clears one bit and tests another
   that the clear does not touch, it reuses the cleared register: `uVar1 = *g & ~1; *g = uVar1;
   if (uVar1 & 2) ...` reproduces `andi v1,v1,2` (op_wait 26ebf0).
@@ -128,8 +134,21 @@ Rules of engagement:
 ## Commutative-`addu` (frequent wall)
 
 Retail's `addu` operand order for `base + index*scale` is context-dependent and often not
-source-reachable. The raw byte-offset form (above) flips it in some functions; when neither order
-matches after trying both, drop the function. Indexed getters/setters are the usual victims.
+source-reachable. Levers to try, in order:
+
+- The raw byte-offset form (above) flips it in some functions.
+- **Inline pointer copy** (permuter-found, btlUnit 285fa0/286130): with `mdl = unit->mdl;` cached,
+  `(m = mdl)->attachedWpns[i].flags` flips the condition's `addu` to retail's `index + base`, and
+  `(m = unit->mdl)->attachedWpns[i].wpnMdl->flags |= x` does the same for a store path, while a
+  plain `mdl->attachedWpns[i]` emits `base + index`.
+- **Comma struct-copy for load order** (permuter-found, scrTraceCode 35ebf0):
+  `(0, p[i].unionField).member` copies the whole operand word before extracting the member,
+  reproducing retail's `lw`-then-`lh` order where plain `.member` access reorders the loads.
+  A plain two-step temp (`str = base; str += off;`) is enough in simpler cases (CodeFunc_PushSTR).
+
+When no order matches after trying these, drop the function. Indexed getters/setters are the
+usual victims. Before dropping, give `tools/permute_ast.py` 120s — it found every one of the
+levers above.
 
 ## Commutative-`mul.s` (float, frequent wall)
 
