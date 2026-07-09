@@ -997,6 +997,18 @@ void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay)
     action->pendingStateTimer = delay;
 }
 
+// FUN_00299e30
+void btlAction00299e30(BtlAction* action)
+{
+    action->unk_18 |= (1 << 0);
+}
+
+// FUN_00299e50
+void btlAction00299e50(BtlAction* action)
+{
+    action->unk_18 &= ~(1 << 0);
+}
+
 // FUN_00299e70
 void btlActionSetUnit(BtlAction* action, BtlUnit* unit)
 {
