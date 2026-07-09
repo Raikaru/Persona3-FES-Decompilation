@@ -215,6 +215,82 @@ void bpRoot001ff310()
     FUN_0025d800();
 }
 
+void FUN_00242b80();
+
+// FUN_001fef10
+void bpRoot001fef10()
+{
+    FUN_00242b80();
+}
+
+void FUN_00251f40();
+
+// FUN_001fef30
+void bpRoot001fef30()
+{
+    FUN_00251f40();
+}
+
+void FUN_00252e90();
+
+// FUN_001fef50
+void bpRoot001fef50()
+{
+    FUN_00252e90();
+}
+
+void FUN_00252ee0();
+
+// FUN_001fef70
+void bpRoot001fef70()
+{
+    FUN_00252ee0();
+}
+
+void FUN_0025c190();
+
+// FUN_001ff100
+void bpRoot001ff100()
+{
+    FUN_0025c190();
+}
+
+void FUN_0025c1e0();
+
+// FUN_001ff120
+void bpRoot001ff120()
+{
+    FUN_0025c1e0();
+}
+
+void FUN_0025c110();
+
+// FUN_001ff140
+void bpRoot001ff140()
+{
+    FUN_0025c110();
+}
+
+// FUN_001ff2d0
+void bpRoot001ff2d0()
+{
+    FUN_0025c1e0();
+}
+
+// FUN_001ff2f0
+void bpRoot001ff2f0()
+{
+    FUN_0025c110();
+}
+
+void FUN_0025d850();
+
+// FUN_001ff330
+void bpRoot001ff330()
+{
+    FUN_0025d850();
+}
+
 // FUN_001ff350
 void bpRoot001ff350()
 {
