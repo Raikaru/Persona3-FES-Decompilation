@@ -147,6 +147,14 @@ void kwlnInitRenderer()
     // TODO
 }
 
+void FUN_005225a8();
+
+// FUN_00197fb0
+void kwln00197fb0(void* param_1, void* param_2)
+{
+    FUN_005225a8(param_2);
+}
+
 // FUN_00198010. A lot of random init (CRI ROFS, admini task, dbprt etc...)
 void kwln00198010()
 {
