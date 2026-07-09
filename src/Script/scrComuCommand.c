@@ -29,6 +29,7 @@ extern u8 DAT_00958400[];
 extern u8 DAT_0095841e[];
 
 static u32 sDat007ce5d4; // DAT_007ce5d4
+static int sDat007ce5a8; // DAT_007ce5a8
 
 // FUN_00360280
 u32 scrComu00360280(void)
@@ -285,4 +286,10 @@ u32 scrComu0035fd00(void)
     uVar2 = FUN_00175360();
     FUN_0035f060(FUN_00173780(uVar2, uVar3 & 0xffff) & 0xff);
     return 1;
+}
+
+// FUN_0035f130
+u32 scrComu0035f130(void)
+{
+    return *(u32*)(sDat007ce5a8 + 0xd4);
 }
