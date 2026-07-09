@@ -11,6 +11,10 @@ int FUN_001717c0();
 int FUN_00172160();
 void FUN_0016e410(short, char);
 int FUN_003bded0();
+int FUN_0035f140();
+int FUN_00172f70();
+
+static u32 sDat007ce5d4; // DAT_007ce5d4
 
 // FUN_00360280
 u32 scrComu00360280(void)
@@ -126,5 +130,23 @@ u32 scrComu003608e0(void)
     lVar2 = FUN_0016e100(uVar1);
     K_ASSERT(lVar2 != 0, 0x36a);
     FUN_0035f060(FUN_003bded0(uVar1));
+    return 1;
+}
+
+// FUN_00360090
+u32 scrComu00360090(void)
+{
+    int lVar1;
+    int uStack_4;
+
+    lVar1 = FUN_0035f140();
+    K_ASSERT(lVar1 >= 0, 0x23d);
+    lVar1 = FUN_00172f70(&uStack_4);
+    if (lVar1 == 1) {
+        sDat007ce5d4 = uStack_4;
+        FUN_0035f060(1);
+    } else {
+        FUN_0035f060(0);
+    }
     return 1;
 }
