@@ -307,6 +307,10 @@ Common compiler-artifact blockers:
 
 Before changing types or control flow, check the retail asm for these fingerprints.
 
+For the reusable source-rewrites that turn these fingerprints into matches (branch polarity,
+loop-invariant mask hoisting, base-pointer caching, EE float ABI, typed sign-extension params,
+known walls, and more), see [`docs/matching.md`](docs/matching.md).
+
 Signedness and widths:
 
 - `lb` means signed 8-bit load.
