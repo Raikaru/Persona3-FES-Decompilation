@@ -415,8 +415,68 @@ def mut_chain_assign(region, open_line_local, rng):
     return out
 
 
+PTR_DECL_RE = re.compile(
+    r"^(\s*)((?:const\s+|volatile\s+|struct\s+|union\s+)*[A-Za-z_]\w*\s*\*+)\s*([A-Za-z_]\w*)\s*;\s*$")
+ARROW_RE = re.compile(r"\b([A-Za-z_]\w*)->")
+
+
+def mut_ptr_copy(region, open_line_local, rng):
+    """Rewrite one `p->...` use as `(p_c = p)->...` through a fresh twin local.
+    The inline register copy flips commutative-addu operand order in indexed
+    member accesses (permuter-proven: btlUnit 285fa0/286130)."""
+    b0, b1 = body_span(region, open_line_local)
+    decls = {}
+    for i in leading_decls(region, b0, b1):
+        m = PTR_DECL_RE.match(strip_line_comment(region[i]))
+        if m:
+            decls[m.group(3)] = (i, m.group(1), m.group(2))
+    if not decls:
+        return None
+    cands = []
+    for i in range(b0, b1):
+        code = strip_line_comment(region[i])
+        for m in ARROW_RE.finditer(code):
+            if m.group(1) in decls and not code[:m.start()].rstrip().endswith(")"):
+                cands.append((i, m.start(), m.group(1)))
+    if not cands:
+        return None
+    i, pos, name = rng.choice(cands)
+    di, ind, typ = decls[name]
+    twin = name + "_c"
+    out = region[:]
+    line = out[i]
+    out[i] = line[:pos] + f"({twin} = {name})" + line[pos + len(name):]
+    out.insert(di + 1, f"{ind}{typ} {twin};")
+    return out
+
+
+MEMBER_CHAIN_RE = re.compile(
+    r"\b([A-Za-z_]\w*(?:(?:->|\.)\w+|\[[^\][]*\])+)\.(\w+)\b(?!\s*[=([])")
+
+
+def mut_comma_copy(region, open_line_local, rng):
+    """Rewrite `chain.member` as `(0, chain).member`. The comma expression
+    copies the aggregate before extracting the member, forcing a whole-word
+    load and retail's load order (permuter-proven: scrTraceCode 35ebf0)."""
+    b0, b1 = body_span(region, open_line_local)
+    hits = []
+    for i in range(b0, b1):
+        code = strip_line_comment(region[i])
+        for m in MEMBER_CHAIN_RE.finditer(code):
+            after = code[m.end():].lstrip()
+            if not after.startswith("=") or after.startswith("=="):
+                hits.append((i, m))
+    if not hits:
+        return None
+    i, m = rng.choice(hits)
+    out = region[:]
+    line = out[i]
+    out[i] = line[:m.start()] + f"(0, {m.group(1)}).{m.group(2)}" + line[m.end():]
+    return out
+
+
 MUTATORS = [mut_opt, mut_decls, mut_stmts, mut_operands, mut_reassoc, mut_compare,
-            mut_compound, mut_reverse_run, mut_chain_assign]
+            mut_compound, mut_reverse_run, mut_chain_assign, mut_ptr_copy, mut_comma_copy]
 
 
 def _open_line(region, marker_idx_local):
