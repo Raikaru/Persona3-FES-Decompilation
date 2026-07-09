@@ -24,3 +24,11 @@ void bcm00207bf0(void)
     K_ASSERT(sBcmWork != NULL, 0x164);
     *(u32*)(sBcmWork + 0x77a0) &= ~1;
 }
+
+void FUN_00208360();
+
+// FUN_00201ad0
+void bcm00201ad0(void)
+{
+    FUN_00208360();
+}
