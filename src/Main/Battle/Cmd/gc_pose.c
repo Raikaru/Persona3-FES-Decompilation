@@ -31,3 +31,12 @@ u32 gcPose00250e70(int param_1)
     K_ASSERT(*(int*)(param_1 + 0x24) == 3, 0x57e);
     return *(u32*)(param_1 + 0x2c) & 1;
 }
+
+// FUN_00250ef0
+void gcPose00250ef0(int param_1, float param_2)
+{
+    K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x588);
+    K_ASSERT(*(int*)(param_1 + 0x24) == 4, 0x589);
+    *(float*)(param_1 + 0x6c) = param_2;
+    *(u32*)(param_1 + 8) |= 2;
+}
