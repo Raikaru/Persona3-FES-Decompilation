@@ -352,6 +352,15 @@ void K_FldEvent_001cd650(KwlnTask* fldEventTask, u32 param_2)
     }
 }
 
+// FUN_001cd670
+void K_FldEvent_001cd670(KwlnTask* fldEventTask, u32 param_2)
+{
+    if (fldEventTask != NULL)
+    {
+        ((u32*)fldEventTask->workData)[2] = param_2;
+    }
+}
+
 // FUN_001cd690
 void* K_FldEvent_UpdateDrawCmdTask(KwlnTask* drawCmdTask)
 {
