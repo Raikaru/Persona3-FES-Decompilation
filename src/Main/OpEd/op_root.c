@@ -22,6 +22,13 @@ void FUN_0026ebf0();
 void FUN_002694b0();
 void FUN_0026da10();
 void FUN_00266cb0();
+void FUN_00269d10();
+void FUN_002673f0();
+void FUN_0026dd60();
+void FUN_0026a280();
+void FUN_00271d70();
+void FUN_00266690();
+void FUN_00191a10();
 
 // FUN_00265b30
 void opRoot00265b30(void)
@@ -112,4 +119,19 @@ u32 opRoot00265e30(void)
         FUN_002720c0();
     }
     return 0;
+}
+
+// FUN_00265ef0
+void opRoot00265ef0(int param_1)
+{
+    K_ASSERT(sOpRoot != NULL, 0x9a);
+    FUN_00269d10();
+    FUN_002673f0();
+    FUN_0026dd60();
+    FUN_0026a280();
+    FUN_00271d70();
+    FUN_00266b30();
+    FUN_00266690();
+    sOpRoot = NULL;
+    FUN_00191a10(*(u32*)(param_1 + 0x3c));
 }
