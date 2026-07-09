@@ -52,3 +52,10 @@ u32 opMenu0026dcc0(void)
     K_ASSERT(sOpMenu != NULL, 0x87);
     return *sOpMenu & 8;
 }
+
+// FUN_0026dbd0
+void opMenu0026dbd0(void)
+{
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    *sOpMenu |= 0x20;
+}
