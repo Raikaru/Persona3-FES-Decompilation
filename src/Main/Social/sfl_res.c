@@ -32,3 +32,28 @@ u32 sflRes0020ec00(void)
     K_ASSERT(sSflRes != NULL, 0x65);
     return *sSflRes & 0x10;
 }
+
+void FUN_0021cc20();
+
+// FUN_0020ec50
+u32 sflRes0020ec50(void)
+{
+    int base;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    base = (int)sSflRes;
+    K_ASSERT(*(u32*)(base + 4) & 0x10, 0x22a);
+    return *(u32*)(base + 0x80);
+}
+
+// FUN_0020ecc0
+void sflRes0020ecc0(void)
+{
+    int base;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    base = (int)sSflRes;
+    K_ASSERT(*(u32*)(base + 4) & 0x10, 0x232);
+    FUN_0021cc20(*(void**)(base + 0x80));
+    *(u32*)(base + 4) &= 0xffffffef;
+}
