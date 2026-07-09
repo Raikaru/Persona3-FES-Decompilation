@@ -209,3 +209,60 @@ void sflCard002537f0(u16 param_1)
     node[4] = a[0x499f];
     a[0x499f]++;
 }
+
+void FUN_0010a4e0();
+
+// FUN_00258090
+void sflCard00258090(void)
+{
+    K_ASSERT(sSflCard354 != NULL, 0xbc);
+    *sSflCard354 |= 0x2000;
+    FUN_00258140();
+}
+
+// FUN_00258a50
+void sflCard00258a50(void)
+{
+    u32* work;
+    u32 v;
+
+    K_ASSERT(sSflCardB664 != NULL, 0xbc);
+    work = sSflCardB664;
+    FUN_0010a4e0(0, 0, 0, 2);
+    work[0x4a1f] = 0;
+    work[0x4a1e] = 0;
+    work[0x4a1c] = 2;
+    *work |= 0x40;
+    *work |= 0x80;
+}
+
+// FUN_00258af0
+u32 sflCard00258af0(void)
+{
+    K_ASSERT(sSflCardB664 != NULL, 0xbc);
+    return *sSflCardB664 & 0x80;
+}
+
+// FUN_002595c0
+u32 sflCard002595c0(void)
+{
+    K_ASSERT(sSflCardB664 != NULL, 0xbc);
+    return *sSflCardB664 & 0x1000;
+}
+
+// FUN_00259190
+void sflCard00259190(u32 param_1, int param_2, int* param_3)
+{
+    u32* p;
+    int count;
+
+    K_ASSERT(sSflCardB664 != NULL, 0xbc);
+    count = 0;
+    for (p = (u32*)sSflCardB664[0x4997]; p != NULL; p = (u32*)p[0x3f1]) {
+        if ((~*p & 2) == 0 && p[0x3f2] == param_1) {
+            *(u32*)(param_2 + p[4] * 4) = (u32)p;
+            count++;
+        }
+    }
+    *param_3 = count;
+}
