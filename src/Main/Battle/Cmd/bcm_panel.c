@@ -10,6 +10,8 @@ void FUN_00222d60();
 void FUN_0021e380();
 void FUN_0022c210();
 void FUN_00238980();
+void FUN_00222b90();
+void FUN_002230e0();
 
 // FUN_0022b4e0
 u32 bcmPanel0022b4e0(void)
@@ -130,4 +132,87 @@ void bcmPanel00222930(void)
     uVar3 = FUN_0021cca0(uVar2, 0x23);
     FUN_0021e380(puVar1 + 0x10cc, uVar3, 1);
     FUN_00222d60();
+}
+
+// FUN_00222a60
+void bcmPanel00222a60(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+    u32 uVar3;
+
+    K_ASSERT(sBcmPanel != NULL, 0xe6);
+    puVar1 = sBcmPanel;
+    uVar2 = FUN_0021c3f0(0);
+    *puVar1 |= 2;
+    puVar1[1] = 0;
+    puVar1[1] |= 2;
+    puVar1[0x118c] = 3;
+    puVar1[0x1190] = puVar1[0x118f];
+    puVar1[0x118f] = 2;
+    puVar1[0x1194] = 0;
+    puVar1[0x1191] = 0;
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d]);
+    FUN_0021d3b0(puVar1 + 0x48c, uVar3);
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d] + 7);
+    FUN_0021d3b0(puVar1 + 0x4cc, uVar3);
+    FUN_00226320();
+    uVar3 = FUN_0021cca0(uVar2, 0x23);
+    FUN_0021d3b0(puVar1 + 0x108c, uVar3);
+    uVar3 = FUN_0021cca0(uVar2, 0x23);
+    FUN_0021e380(puVar1 + 0x10cc, uVar3, 1);
+    FUN_00222b90();
+}
+
+// FUN_00222ed0
+void bcmPanel00222ed0(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+    u32 uVar3;
+
+    K_ASSERT(sBcmPanel != NULL, 0xe6);
+    puVar1 = sBcmPanel;
+    uVar2 = FUN_0021c3f0(0);
+    *puVar1 |= 2;
+    puVar1[0x118c] = 3;
+    puVar1[0x1190] = puVar1[0x118f];
+    puVar1[0x118f] = 0;
+    puVar1[0x1194] = 0;
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d]);
+    FUN_0021d3b0(puVar1 + 0x48c, uVar3);
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d] + 7);
+    FUN_0021d3b0(puVar1 + 0x4cc, uVar3);
+}
+
+// FUN_00222fa0
+void bcmPanel00222fa0(void)
+{
+    u32* puVar1;
+    u32 uVar2;
+    u32 uVar3;
+
+    K_ASSERT(sBcmPanel != NULL, 0xe6);
+    puVar1 = sBcmPanel;
+    uVar2 = FUN_0021c3f0(0);
+    *puVar1 |= 2;
+    puVar1[1] = 0;
+    puVar1[1] |= 4;
+    puVar1[0x118c] = 3;
+    puVar1[0x1190] = puVar1[0x118f];
+    puVar1[0x118f] = 3;
+    puVar1[0x1191] = 0;
+    puVar1[0x1192] = 0xffffffff;
+    puVar1[0x1194] = 0;
+    puVar1[0x1196] = 0;
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d]);
+    FUN_0021d3b0(puVar1 + 0x48c, uVar3);
+    uVar3 = FUN_0021cca0(uVar2, puVar1[0x118d] + 7);
+    FUN_0021d3b0(puVar1 + 0x4cc, uVar3);
+    FUN_00226320();
+    uVar3 = FUN_0021cca0(uVar2, 0x24);
+    FUN_0021d3b0(puVar1 + 0x108c, uVar3);
+    uVar3 = FUN_0021cca0(uVar2, 0x24);
+    FUN_0021e380(puVar1 + 0x10cc, uVar3, 1);
+    FUN_002230e0();
 }
