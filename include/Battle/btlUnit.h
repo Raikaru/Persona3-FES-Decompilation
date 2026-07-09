@@ -15,6 +15,7 @@
 #define BTLUNIT_FLAG3_UNK08  (1 << 3) // 0x08
 #define BTLUNIT_FLAG3_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG3_UNK40  (1 << 6) // 0x40
+#define BTLUNIT_FLAG3_UNK1000 (1 << 12) // 0x1000
 #define BTLUNIT_FLAG3_NOROT  (1 << 13) // 0x2000
 
 #define BTLUNIT_MOVEMENTFLAGS_MOVE   (1 << 0) // 0x01

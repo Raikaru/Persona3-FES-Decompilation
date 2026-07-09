@@ -220,6 +220,12 @@ void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_
     // TODO
 }
 
+// FUN_0027f930
+s32 btlUnit0027f930(s32 param_1)
+{
+    return param_1 + 0x4e;
+}
+
 // FUN_0027fd70
 void btlUnitInitPosRotColPacket(void* work)
 {
@@ -1669,6 +1675,12 @@ BtlPacket* btlUnit00286320(BtlUnit* unit)
     *work = unit;
 
     return packet;
+}
+
+// FUN_00287580
+u32 btlUnit00287580(BtlUnit* unit)
+{
+    return !(unit->flags3 & BTLUNIT_FLAG3_UNK1000);
 }
 
 // FUN_002875a0
