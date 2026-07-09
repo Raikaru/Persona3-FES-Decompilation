@@ -56,3 +56,11 @@ void bpm0024ba30(u32* param_1)
     param_1[1] = 0;
     sBpm644 = param_1;
 }
+
+s32 FUN_0016f190();
+
+// FUN_00249650
+u32 bpm00249650(u16 param_1)
+{
+    return !FUN_0016f190(param_1 + 0x12c0);
+}
