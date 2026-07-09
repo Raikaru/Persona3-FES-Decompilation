@@ -26,7 +26,7 @@ before committing.
 Usage:
   python tools/permute.py src/Battle/btlMain.c btlMainUpdateStateLose --iters 4000
   python tools/permute.py <file.c> <func> [--iters N] [--seed S] [--out best.c]
-                          [--time SECONDS] [--start-opt N]
+                          [--time SECONDS]
 """
 
 from pathlib import Path
