@@ -137,6 +137,9 @@ Retail's `addu` operand order for `base + index*scale` is context-dependent and 
 source-reachable. Levers to try, in order:
 
 - The raw byte-offset form (above) flips it in some functions.
+- **Named temp for the scaled index** (permuter-found, scrComu 35ff80/360020): hoisting
+  `idx = i * 4;` and indexing `*(u32*)(idx + base + off)` flips the `addu` where inline
+  `i * 4 + base + off` and all its reassociations do not.
 - **Inline pointer copy** (permuter-found, btlUnit 285fa0/286130): with `mdl = unit->mdl;` cached,
   `(m = mdl)->attachedWpns[i].flags` flips the condition's `addu` to retail's `index + base`, and
   `(m = unit->mdl)->attachedWpns[i].wpnMdl->flags |= x` does the same for a store path, while a
