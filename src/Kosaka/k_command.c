@@ -424,6 +424,16 @@ u32 K_Cmd_001c3f60()
     return true;
 }
 
+u32 FUN_0016f380(u32 idx);
+
+// FUN_001c3c40
+u32 K_Cmd_001c3c40()
+{
+    scrSetIntReturnVal(FUN_0016f380(scrGetIntPara(0)));
+
+    return true;
+}
+
 // FUN_001c45e0
 u32 K_Cmd_CREATE_FLD_MDL()
 {
