@@ -74,8 +74,25 @@ def wslpath(p):
     return "/mnt/" + s[0].lower() + s[2:]
 
 
-def preprocess(rel):
-    # Repo is self-contained, so -nostdinc is safe and keeps output pycparser-clean.
+def _clean_mwcc_pp(out):
+    """Strip mwcc -E artifacts pycparser cannot digest: the '###' banner and
+    '/* #line ... */' markers."""
+    lines = []
+    for ln in out.splitlines():
+        s = ln.lstrip()
+        if s.startswith("###") or s.startswith("#") or s.startswith("/* #line"):
+            continue
+        lines.append(ln)
+    return "\n".join(lines)
+
+
+def preprocess(rel, cfg):
+    # Primary: the project compiler's own preprocessor (definitionally correct,
+    # no WSL dependency). Fallback: GNU cpp (WSL on Windows).
+    r = subprocess.run([cfg["mwcc"], "-E", "-Iinclude", rel],
+                       cwd=str(REPO), capture_output=True, text=True)
+    if r.returncode == 0 and len(r.stdout) > 100:
+        return _clean_mwcc_pp(r.stdout)
     flags = ["-Iinclude", "-nostdinc", "-undef", "-D__MWERKS__=1", rel]
     if os.name == "nt":
         # Windows: cpp lives in WSL; distro overridable via P3_WSL_DISTRO.
@@ -86,7 +103,7 @@ def preprocess(rel):
     else:
         r = subprocess.run(["cpp"] + flags, cwd=str(REPO), capture_output=True, text=True)
     if r.returncode or len(r.stdout) < 100:
-        sys.exit(f"cpp preprocessing failed: {r.stderr[:600]}")
+        sys.exit(f"preprocessing failed (mwcc -E and cpp): {r.stderr[:600]}")
     return r.stdout
 
 
@@ -123,8 +140,13 @@ def main():
     window = window_for(addr, all_boundaries(sizes))
     win_bytes = retail.bytes_at(addr, window)
 
-    source = ast_util.process_pragmas(preprocess(args.file))
-    base_ast = ast_util.parse_c(source, from_import=True)
+    source = ast_util.process_pragmas(preprocess(args.file, cfg))
+    try:
+        base_ast = ast_util.parse_c(source, from_import=True)
+    except Exception as e:
+        sys.exit(f"pycparser cannot parse the preprocessed TU ({e.__class__.__name__}): "
+                 f"likely inline __asm__ or unsupported syntax. The AST permuter "
+                 f"cannot handle this file; use tools/permute.py (text) instead.")
     orig_fn, fn_index = ast_util.extract_fn(base_ast, args.function)
     ast_util.normalize_ast(orig_fn, base_ast)
 
@@ -162,7 +184,9 @@ def main():
     print(f"[{args.function}] addr={addr:#010x} window={window} "
           f"base_score={base_score} match={base_match}", flush=True)
     if base_score >= 10 ** 6:
-        sys.exit("base TU does not compile (check cpp / preprocessing)")
+        sys.exit("base TU failed the parse->unparse->compile round-trip (inline "
+                 "__asm__ or constructs lost by the AST printer). The AST permuter "
+                 "cannot handle this file; use tools/permute.py (text) instead.")
 
     best_fn, best_score = orig_fn, base_score
     cur_fn, cur_score = orig_fn, base_score

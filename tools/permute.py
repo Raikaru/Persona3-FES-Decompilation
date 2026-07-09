@@ -43,7 +43,7 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from verify import (REPO, TOOLS, ObjectFile, RetailElf, compare, load_config,
-                    scan_markers, strip_line_comment, window_for)
+                    mask_bytes, scan_markers, strip_line_comment, window_for)
 
 DECL_RE = re.compile(
     r"^\s*(?:const\s+|volatile\s+|unsigned\s+|signed\s+|struct\s+|union\s+|enum\s+)*"
@@ -144,6 +144,59 @@ class Target:
         match = ndiff == 0 and size_ok
         sc = ndiff + (0 if size_ok else 500 + abs(len(body) - self.window))
         return sc, match, ""
+
+    def residual(self, region):
+        """Recompile `region` and classify its remaining differing words into
+        known wall classes (informational; see docs/matching.md)."""
+        import collections
+        content = "\n".join(self.lines[:self.start] + region +
+                            self.lines[self.end + 1:]) + "\n"
+        tmp = self.tmpdir / f"{self.name}.c"
+        tmp.write_text(content, newline="\n")
+        opath = tmp.with_suffix(".o")
+        try:
+            proc = subprocess.run(
+                [self.cfg["mwcc"], "-O2", "-Iinclude", "-c", str(tmp), "-o", str(opath)],
+                cwd=str(REPO), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+            if proc.returncode or not opath.is_file():
+                return None
+            try:
+                body, rels = ObjectFile(opath).function(self.name)
+            except KeyError:
+                return None
+        finally:
+            for p in (tmp, opath):
+                try:
+                    p.unlink()
+                except OSError:
+                    pass
+        n = len(body)
+        mask = mask_bytes(n, rels)
+        words = sorted({i & ~3 for i in range(n)
+                        if not mask[i] and i < len(self.win_bytes)
+                        and self.win_bytes[i] != body[i]})
+        kinds = collections.Counter()
+        for o in words:
+            mine = int.from_bytes(body[o:o + 4], "little")
+            ret = int.from_bytes(self.win_bytes[o:o + 4], "little")
+            op_m, op_r = mine >> 26, ret >> 26
+            if op_m == op_r == 0 and (mine & 0x3F) == (ret & 0x3F) and (mine & 0x3F) in (0x21, 0x2D):
+                # addu/daddu with rd equal and {rs, rt} swapped
+                if ((mine >> 11) & 31) == ((ret >> 11) & 31) and \
+                   {(mine >> 21) & 31, (mine >> 16) & 31} == {(ret >> 21) & 31, (ret >> 16) & 31}:
+                    kinds["commutative-addu operand swap"] += 1
+                    continue
+            if op_m == op_r == 0x11 and (mine & 0x3F) == (ret & 0x3F) == 0x02:
+                # mul.fmt with fd equal and {fs, ft} swapped
+                if ((mine >> 6) & 31) == ((ret >> 6) & 31) and \
+                   {(mine >> 11) & 31, (mine >> 16) & 31} == {(ret >> 11) & 31, (ret >> 16) & 31}:
+                    kinds["commutative-mul.s operand swap"] += 1
+                    continue
+            if op_m == op_r and (op_m != 0 or (mine & 0x3F) == (ret & 0x3F)):
+                kinds["register allocation / scheduling"] += 1
+            else:
+                kinds["other/structural"] += 1
+        return kinds
 
 
 # ------------------------------------------------------------------ mutations
@@ -576,6 +629,11 @@ def main():
 
     print(f"[{args.function}] no match. best_score={best_score} "
           f"after {t._n} compiles / {time.time()-t0:.0f}s", flush=True)
+    kinds = t.residual(best)
+    if kinds:
+        parts = ", ".join(f"{c}x {k}" for k, c in kinds.most_common())
+        print(f"[{args.function}] residual: {parts} -- see docs/matching.md "
+              f"for lever/wall status of each class", flush=True)
     sys.exit(1)
 
 
