@@ -1,5 +1,6 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "rw/rwplcore.h"
 
 // FUN_00250480
 void gcPose00250480(int param_1)
@@ -39,4 +40,24 @@ void gcPose00250ef0(int param_1, float param_2)
     K_ASSERT(*(int*)(param_1 + 0x24) == 4, 0x589);
     *(float*)(param_1 + 0x6c) = param_2;
     *(u32*)(param_1 + 8) |= 2;
+}
+
+// FUN_0024f960
+void gcPose0024f960(int param_1, RwV3d *param_2)
+{
+    K_ASSERT(*(int*)(param_1 + 0xc) == 0, 0x375);
+    K_ASSERT(*(int*)(param_1 + 0x20) < 4, 0x376);
+    *param_2 = *(RwV3d*)(param_1 + 0x14);
+}
+
+// FUN_00250500
+void gcPose00250500(int param_1, RwV3d *param_2, int param_3)
+{
+    K_ASSERT(*(int*)(param_1 + 0x20) == 3, 0x471);
+    *(u32*)(param_1 + 0x24) = 0;
+    *(RwV3d*)(param_1 + 0x30) = *param_2;
+    *(RwV3d*)(param_1 + 0x3c) = *(RwV3d*)(param_1 + 0x14);
+    *(u32*)(param_1 + 0x10) = 0;
+    *(int*)(param_1 + 0x2c) = param_3 << 0x10;
+    *(u32*)(param_1 + 0x28) |= 1;
 }
