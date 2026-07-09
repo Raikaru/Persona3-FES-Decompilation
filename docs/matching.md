@@ -43,8 +43,10 @@ Rules of engagement:
   `lui;mtc1` with no rodata `lwc1` — declare the callee `void f(float,...)` and pass `100.0f`.
 - **By-value 2-float struct param** (`sd`-spill + `lwc1/swc1` copy at the call): pass a
   `typedef struct { f32 x, y; }` by value.
-- **12-byte float block copy** → struct assignment `*(Vec3*)dst = *(Vec3*)src` via
-  `typedef struct { f32 a, b, c; } Vec3;`.
+- **12-byte float block copy** (retail loads all three then stores all three:
+  `lwc1 f2,f1,f0` / `swc1 f2,f1,f0`) → struct assignment `*(RwV3d*)dst = *(RwV3d*)src` using the
+  existing `RwV3d` (`#include "rw/rwplcore.h"`; `{ float x, y, z; }`). Plain per-field float
+  assignments interleave `lwc1/swc1` and will not match (gc_pose 24f960/250500).
 - **u16 field load width.** A direct `*(u16*)((int)p + off)` emits `lhu`; `*(short*)` emits `lh`.
   Only add a `(u16)`/`(short)` cast on the *other* operand when retail actually emits `andi`/sign-extend.
 
@@ -65,6 +67,12 @@ Rules of engagement:
   explicit `slti $v0`. mwcc canonicalizes `>=` and `!(x<k)` to the `$v0` form, so the `$at`-pseudo
   layout is not always reachable while preserving the required inline/out-line arrangement
   (bp_persona 266f60).
+- **Assert `field <= N` vs `field < N+1` flips the `slti` dest register.** When the compared value is
+  dead after the test (e.g. an `K_ASSERT(field <= 3, line)` on a struct field never reused), retail
+  reuses the value's own register (`lw $v1,off(base); slti $v1,$v1,4`). mwcc lowers the literal `<= N`
+  through the `$at` pseudo (`slti $at,$v1,4`); rewriting it as the equivalent `< N+1` keeps the value's
+  register and matches. If the value *is* reused after the test, retail itself uses `$at` — then keep
+  `<= N` (gc_pose 24f960 vs 252060).
 - **Switch case-order wall.** mwcc emits switch compares in **numeric-ascending** case order. If retail
   tests a higher case first, no switch or if-chain reproduces it (op_root 265f80: mwcc 8/9/0x11,
   retail 0x11/9/8). When retail *does* check the lowest case first, `switch (e) { case a: case b: ... }`
@@ -123,6 +131,15 @@ Retail's `addu` operand order for `base + index*scale` is context-dependent and 
 source-reachable. The raw byte-offset form (above) flips it in some functions; when neither order
 matches after trying both, drop the function. Indexed getters/setters are the usual victims.
 
+## Commutative-`mul.s` (float, frequent wall)
+
+The float analog of commutative-`addu`. For `fresh * invariant` — e.g. `(a - b) * scale` where
+`scale` is a loop-invariant `div.s` result forced into a higher FPU reg (`$f2`) and the subtraction
+lands in the lowest free reg (`$f0`) — mwcc canonicalizes to *invariant-first* (`mul.s $f0,$f2,$f0`)
+while retail emits *fresh-first* (`mul.s $f0,$f0,$f2`). Neither `(a-b)*scale` nor `scale*(a-b)` in the
+source changes it; the operand registers are fixed by allocation. Drop when only this remains
+(gc_pose 250a30 — otherwise a full byte match).
+
 ## Process
 
 - **Disassemble before modeling any multi-call handler** (`disassemble_function`). Resolve ambiguous
@@ -148,5 +165,6 @@ matches after trying both, drop the function. Indexed getters/setters are the us
 
 Register allocation; param-vs-local `s0/s1`; instruction scheduling / subexpression evaluation order;
 FPU-register allocation; u16-mask propagation (retail re-masks per use, mwcc elides); switch
-case-order; the `slti $at` branch-temp idiom; commutative-`addu` operand order; render/float-math
-update functions (`(*DAT_00960090)()` indirect draw calls, per-frame vector transforms).
+case-order; the `slti $at` branch-temp idiom; commutative-`addu` and commutative-`mul.s` operand
+order; render/float-math update functions (`(*DAT_00960090)()` indirect draw calls, per-frame vector
+transforms).
