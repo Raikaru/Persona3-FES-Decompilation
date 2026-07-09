@@ -35,3 +35,14 @@ void bpDialog0025be00(void)
     }
     sBpDialog368 = NULL;
 }
+
+// FUN_0025c110
+void bpDialog0025c110(void)
+{
+    u32* puVar1;
+
+    K_ASSERT(sBpDialog368 != NULL, 0x3c);
+    puVar1 = sBpDialog368;
+    K_ASSERT((*sBpDialog368 & 1) != 0, 0xa7);
+    *puVar1 |= 8;
+}
