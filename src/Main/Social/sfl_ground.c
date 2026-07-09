@@ -41,3 +41,17 @@ void sflGround0023d240(void)
     *(u32*)(base + 8) = 0;
     *(u32*)(base + 0xc) = 5;
 }
+
+// FUN_0023c350
+u32 sflGround0023c350(void)
+{
+    K_ASSERT(sSflGround != NULL, 0x87);
+    return *sSflGround & 1;
+}
+
+// FUN_0023cd50
+u32 sflGround0023cd50(void)
+{
+    K_ASSERT(sSflGround != NULL, 0x87);
+    return *sSflGround & 2;
+}
