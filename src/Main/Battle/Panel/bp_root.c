@@ -3,6 +3,8 @@
 
 void FUN_0025d760();
 
+static KwlnTask* sBtlPanelTask; // 007ce2e4
+
 // FUN_001fd630
 KwlnTask* bpRootCreateTasks(KwlnTask* parent)
 {
@@ -21,6 +23,50 @@ void bpRootDestroyTask(KwlnTask* btlPanelTask)
 void bpRootDestroy(KwlnTask* btlPanelTask)
 {
     // TODO
+}
+
+// FUN_001fe630
+u32 bpRoot001fe630()
+{
+    return *(u32*)sBtlPanelTask->workData & 0x400;
+}
+
+// FUN_001feb30
+u32 bpRoot001feb30()
+{
+    return *(u32*)sBtlPanelTask->workData & 0x1000;
+}
+
+void FUN_001ff890();
+
+// FUN_001fdd60
+void bpRoot001fdd60()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_001ff890();
+    *flags |= 4;
+}
+
+void FUN_0021b940();
+
+// FUN_001fe5f0
+void bpRoot001fe5f0()
+{
+    u32* flags;
+
+    flags = sBtlPanelTask->workData;
+    FUN_0021b940();
+    *flags |= 0x400;
+}
+
+void FUN_00215a30();
+
+// FUN_001feb70
+void bpRoot001feb70()
+{
+    FUN_00215a30((u8*)sBtlPanelTask->workData + 0x119b0);
 }
 
 void FUN_0020f3b0();
