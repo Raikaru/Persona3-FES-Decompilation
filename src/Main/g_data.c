@@ -973,6 +973,22 @@ void datClearFlagAll()
     }
 }
 
+// FUN_0016f450
+void dat0016f450(void)
+{
+    s32 i;
+    DatGlobal* work;
+    u32* p;
+
+    i = 0;
+    work = &gGlobalWork;
+    for (; i < 0x7f; i++)
+    {
+        p = work->unk_0083a4dc + i;
+        *p = 0;
+    }
+}
+
 // FUN_0016f630
 u16 datGetEquipmentId(s16 pcId, u16 equipmentIdx)
 {
