@@ -647,12 +647,12 @@ u32 K_Cmd_GET_NPC_COUNT()
     return true;
 }
 
-u8 FUN_00181b10();
+u8 clndGetCurrentMoonPhase();
 
 // FUN_001c58d0
 u32 K_Cmd_001c58d0()
 {
-    scrSetIntReturnVal(FUN_00181b10());
+    scrSetIntReturnVal(clndGetCurrentMoonPhase());
 
     return true;
 }

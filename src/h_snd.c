@@ -121,7 +121,7 @@ u8 H_Snd_FUN_00109ca0(s16 param_1, s16 param_2)
     {
         if (sSlotWork[param_1].state == 3 && param_2 != sSlotWork[param_1].param2)
         {
-            FUN_0019d3f0(&D_005c8858, 0x34b);
+            K_Assert(&D_005c8858, 0x34b);
         }
     }
 

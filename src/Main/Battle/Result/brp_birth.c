@@ -3,9 +3,9 @@
 
 static u32* sBrpBirthWork; // puGpffffb640
 
-void FUN_00108570();
-void FUN_00108670();
-void FUN_001085c0();
+void H_Fade_FadeOut();
+void H_Fade_SetType();
+void H_Fade_FadeIn();
 void FUN_0024be40();
 void FUN_0021a920();
 
@@ -16,9 +16,9 @@ void brpBirth0024aa90(void)
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
-    FUN_00108570();
-    FUN_00108670(2);
-    FUN_001085c0();
+    H_Fade_FadeOut();
+    H_Fade_SetType(2);
+    H_Fade_FadeIn();
     work[1] |= 1;
     work[2] = 8;
 }

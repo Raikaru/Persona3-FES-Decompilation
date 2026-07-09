@@ -4,7 +4,6 @@
 static u32* sBrPersona; // DAT_007ce380
 
 void FUN_00264f90();
-void FUN_00195020();
 u32 FUN_001749a0();
 u32 FUN_003c9850();
 void FUN_003c9b00();
@@ -36,7 +35,7 @@ void brPersona00264f90(void)
 
     K_ASSERT(sBrPersona != NULL, 0x27);
     work = sBrPersona;
-    FUN_00195020(work[1]);
+    kwlnTaskDestroyWithHierarchy((KwlnTask*)work[1]);
     *work &= 0xfffffffe;
 }
 

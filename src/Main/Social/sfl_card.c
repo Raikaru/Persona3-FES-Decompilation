@@ -210,7 +210,7 @@ void sflCard002537f0(u16 param_1)
     a[0x499f]++;
 }
 
-void FUN_0010a4e0();
+void scrClearTextBox();
 
 // FUN_00258090
 void sflCard00258090(void)
@@ -228,7 +228,7 @@ void sflCard00258a50(void)
 
     K_ASSERT(sSflCardB664 != NULL, 0xbc);
     work = sSflCardB664;
-    FUN_0010a4e0(0, 0, 0, 2);
+    scrClearTextBox(0, 0, 0, 2);
     work[0x4a1f] = 0;
     work[0x4a1e] = 0;
     work[0x4a1c] = 2;

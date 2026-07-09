@@ -848,8 +848,8 @@ void btlActionUpdateStateEnd(BtlAction* action)
                 FUN_0029a320(action);
                 if (action->unit->genus == UNIT_GENUS_EC)
                 {
-                    FUN_003004f0(action->unit->datUnit, 0x80000);
-                    FUN_002ffd90(action->unit->datUnit, 0);
+                    datCalcSetBadStatus(action->unit->datUnit, 0x80000);
+                    datCalcSetHp(action->unit->datUnit, 0);
                 }
 
                 if (FUN_0027d380() != 0)
