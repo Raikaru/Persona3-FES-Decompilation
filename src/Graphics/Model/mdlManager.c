@@ -38,6 +38,15 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
     return table;
 }
 
+void FUN_0048a2a0(void);
+
+// FUN_00311610
+void* mdl00311610(void* param_1)
+{
+    FUN_0048a2a0();
+    return param_1;
+}
+
 // FUN_00316690. TODO
 Model* mdlInit(u16 type, u16 id)
 {
@@ -498,6 +507,12 @@ void mdlStreamRequestCdvd(Model* mdl, const char* path)
 
     stream->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
     stream->rws = NULL;
+}
+
+// FUN_00319900
+void mdl00319900(Model* mdl, u32 value)
+{
+    mdl->stream->isInPacFile = value;
 }
 
 // FUN_00319910
