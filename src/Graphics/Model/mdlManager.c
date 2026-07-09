@@ -373,6 +373,12 @@ void mdl00319050(Model* mdl)
     mdl->flags |= MDL_FLAG_UNK20;
 }
 
+// FUN_00319070
+void mdl00319070(Model* mdl)
+{
+    mdl->flags &= ~MDL_FLAG_UNK20;
+}
+
 // FUN_00319090
 void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor)
 {
@@ -448,6 +454,12 @@ u16 mdlLookAtGetFlags(Model* mdl)
 void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale)
 {
     mdl->animSlots[0].lookAt.targetScale = *scale;
+}
+
+// FUN_003196d0
+void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value)
+{
+    mdl->attachedWpns[wpnIdx].unk_08 = value;
 }
 
 // FUN_00319770
