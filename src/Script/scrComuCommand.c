@@ -10,6 +10,7 @@ void FUN_0016e2b0(short, int);
 int FUN_001717c0();
 int FUN_00172160();
 void FUN_0016e410(short, char);
+int FUN_003bded0();
 
 // FUN_00360280
 u32 scrComu00360280(void)
@@ -110,5 +111,20 @@ u32 scrComu00360570(void)
     if (cVar1 > 0 && cVar1 < 10) {
         FUN_0016e410(uVar2, cVar1 + 1);
     }
+    return 1;
+}
+
+// FUN_003608e0
+u32 scrComu003608e0(void)
+{
+    int uVar1;
+    int lVar2;
+
+    uVar1 = FUN_0035ed20(0);
+    lVar2 = FUN_0016dce0(uVar1);
+    K_ASSERT(lVar2 != 0, 0x367);
+    lVar2 = FUN_0016e100(uVar1);
+    K_ASSERT(lVar2 != 0, 0x36a);
+    FUN_0035f060(FUN_003bded0(uVar1));
     return 1;
 }
