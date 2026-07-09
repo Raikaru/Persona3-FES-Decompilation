@@ -1,5 +1,6 @@
 #include "Camp/h_camp.h"
 #include "rw/rwplcore.h"
+#include "Kernel/Kwln/kwlnTask.h"
 
 
 // TODO
@@ -56,4 +57,23 @@ void h_camp0011a710(int param_1)
     uGpffffb26c = 0;
     FUN_0016f1f0(0x1407, 0);
     RwFree(workData);
+}
+
+void* FUN_0011a050(KwlnTask*);
+
+// FUN_0011a770
+KwlnTask* h_camp0011a770(KwlnTask* parent)
+{
+    void* workData;
+    KwlnTask* task;
+
+    workData = RwCalloc(1, 0x48, 0x40000);
+    if (workData == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampDraw", 0x18bf, FUN_0011a050, (KwlnTaskDestroyFunc)h_camp0011a710, workData);
+    if (task == NULL) {
+        return NULL;
+    }
+    return task;
 }
