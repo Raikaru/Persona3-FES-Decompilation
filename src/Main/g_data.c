@@ -1113,6 +1113,18 @@ s16 datGetCourageLevel(s16 couragePoint)
     }
 }
 
+// FUN_00177ce0
+void dat00177ce0(s32 param_1, u32 param_2)
+{
+    gPcs[param_1].unk_360 = param_2;
+}
+
+// FUN_00177d10
+u32 dat00177d10(s32 param_1)
+{
+    return gPcs[param_1].unk_360;
+}
+
 // FUN_0017b160
 void datResetTotalBtl()
 {
