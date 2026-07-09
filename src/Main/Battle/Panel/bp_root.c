@@ -1,6 +1,7 @@
 #include "Main/Battle/Panel/bp_root.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "rw/rwplcore.h"
 
 void FUN_0025d760();
 
@@ -20,10 +21,52 @@ void bpRootDestroyTask(KwlnTask* btlPanelTask)
     bpRootDestroy(btlPanelTask);
 }
 
+void FUN_00266f00();
+void FUN_0025cf10();
+void FUN_0025be00();
+void FUN_00252e80();
+void FUN_00251f30();
+void FUN_002484a0();
+void FUN_00251060();
+void FUN_0021b660();
+void FUN_0024a6d0();
+void FUN_00249250();
+void FUN_00242c60();
+void FUN_0023f500();
+void FUN_00208b20();
+void FUN_00201780();
+void FUN_0020edc0();
+void FUN_00215770();
+void FUN_0021bb60();
+void FUN_0027b5d0();
+
 // FUN_001fdc00
 void bpRootDestroy(KwlnTask* btlPanelTask)
 {
-    // TODO
+    u32* workData;
+
+    workData = (u32*)btlPanelTask->workData;
+    K_ASSERT((~*workData & 0x400) != 0, 0x182);
+    FUN_00266f00();
+    FUN_0025cf10();
+    FUN_0025be00();
+    FUN_00252e80();
+    FUN_00251f30();
+    FUN_002484a0();
+    FUN_00251060();
+    FUN_0021b660();
+    FUN_0024a6d0();
+    FUN_00249250();
+    FUN_00242c60();
+    FUN_0023f500();
+    FUN_00208b20();
+    FUN_00201780();
+    FUN_0020edc0();
+    FUN_00215770(workData + 0x466c);
+    FUN_0021bb60(workData + 0x7023);
+    FUN_0027b5d0();
+    sBtlPanelTask = NULL;
+    RwFree(btlPanelTask->workData);
 }
 
 // FUN_001fe630
