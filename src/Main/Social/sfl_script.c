@@ -104,3 +104,11 @@ u32 sflScript00259e00(void)
     }
     return 1;
 }
+
+// FUN_00259610
+void sflScript00259610(u32* param_1)
+{
+    *param_1 = 0;
+    param_1[5] = 0;
+    sSflScript = param_1;
+}
