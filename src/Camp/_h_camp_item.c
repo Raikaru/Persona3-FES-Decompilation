@@ -4,15 +4,16 @@
 
 extern u32 DAT_00833a50[];
 void FUN_001124b0();
-void FUN_00100ec0();
+void H_Cdvd_Destroy();
 
-// FUN_0014ed20
-void h_campItem0014ed20(int param_1)
+// workData[2] holds the "camp/camp_item.pak" cdvd handle.
+// FUN_0014ed20. Destroy callback of the "H_CampNewItem" (item screen) task
+void h_campItemDestroyNewItemTask(KwlnTask* task)
 {
     int* workData;
     int i;
 
-    workData = *(int**)(param_1 + 0x3c);
+    workData = (int*)task->workData;
     for (i = 0; i < 3; i++) {
         if (*(int*)((int)workData + i * 4 + 0xb0) != 0) {
             FUN_001124b0(*(int*)((int)workData + i * 4 + 0xb0));
@@ -21,7 +22,7 @@ void h_campItem0014ed20(int param_1)
         }
     }
     if (workData[2] != 0) {
-        FUN_00100ec0(workData[2]);
+        H_Cdvd_Destroy(workData[2]);
         workData[2] = 0;
     }
     if (workData[0x29] != 0) {

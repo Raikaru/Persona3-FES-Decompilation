@@ -4,15 +4,16 @@
 
 extern u32 DAT_00833a50[];
 void FUN_001124b0();
-void FUN_00100ec0();
+void H_Cdvd_Destroy();
 
-// FUN_001616d0
-void h_campSkill001616d0(int param_1)
+// workData[0xc] holds the "camp/camp_skil.pak" cdvd handle.
+// FUN_001616d0. Destroy callback of the "H_NewCampSkillDraw" (skill screen) task
+void h_campSkillDestroySkillDrawTask(KwlnTask* task)
 {
     int* workData;
     int i;
 
-    workData = *(int**)(param_1 + 0x3c);
+    workData = (int*)task->workData;
     if (workData[0xe] != 0) {
         RwFree((void*)workData[0xe]);
     }
@@ -29,7 +30,7 @@ void h_campSkill001616d0(int param_1)
         DAT_00833a50[i] = 0;
     }
     if (workData[0xc] != 0) {
-        FUN_00100ec0(workData[0xc]);
+        H_Cdvd_Destroy(workData[0xc]);
     }
     workData[0xc] = 0;
     RwFree(workData);
