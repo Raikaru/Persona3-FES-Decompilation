@@ -19,6 +19,12 @@
 #include "h_snd.h"
 #include "temporary.h"
 #include "Kernel/Kwln/kwlnTask.h"
+/*
+ * Retail k_command passes the resource ID untruncated and narrows the second
+ * argument. The mt_scene definition uses the opposite source widths, so keep
+ * this translation unit's original ABI declaration local.
+ */
+extern u16 MT_Scene_CreateResModelNpc(s32 resId, u16 param_2, Model* mdl);
 extern s32 scrGetUnkF0(void);
 extern void func_001a0150(u16 resourceId, u32 value);
 extern void func_00103c30(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
@@ -602,13 +608,13 @@ u32 K_Cmd_CREATE_MDL()
     return true;
 }
 
-// FUN_001c4a60 NONMATCHING
+// FUN_001c4a60
 u32 K_Cmd_CREATE_NPC_SYNC()
 {
     Model* mdl;
-    s32 param2;
     s32 resTypeId;
     u32 isNpcCreated;
+    s32 param2;
     ResrcModelNpc* npc;
 
     mdl = (Model*)scrGetIntPara(0);
@@ -619,7 +625,8 @@ u32 K_Cmd_CREATE_NPC_SYNC()
 
     if (mdlStreamRead(mdl) == true)
     {
-        resTypeId = MT_Scene_CreateResModelNpc(K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC), param2, mdl);
+        resTypeId = MT_Scene_CreateResModelNpc(
+            K_Misc_FindNextFreeResId(RESRC_TYPE_MODELNPC), param2, mdl);
 
         npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
         npc->baseMdl = mdlClone(gFldBaseMdl);
