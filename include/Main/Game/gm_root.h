@@ -17,7 +17,8 @@ typedef struct GmRootWork
     KwlnTask* task;           // 0x08
     u32 unk_0c;               // 0x0c
     u32 unk_10;               // 0x10
-    u8 unkData[0x14];
+    u32 unk_14;               // 0x14, opaque task result
+    u8 unkData[0x10];         // 0x18
     KwlnTask* chkMemcardTask; // 0x28
 } GmRootWork;
 

@@ -76,8 +76,8 @@ typedef struct DatPersonaWork
     u32 nextExp;                       // For characters other than HERO, their exp is linked to their persona
     u16 skills[PERSONA_MAX_SKILLS];    // See enum 'Skills'
     u8 naturalStats[PERSONA_STAT_MAX]; // stats gained naturally. See enum PersonaStats
-    u8 bonusStats[PERSONA_STAT_MAX];   // stats gained through incense cards. See enum PersonaStats
-    u8 stats3[PERSONA_STAT_MAX];       // ??
+    u8 bonusStats[PERSONA_STAT_MAX]; // stats gained through incense cards. See enum PersonaStats
+    s8 stats3[PERSONA_STAT_MAX];      // temporary stat modifiers. See enum PersonaStats
     u8 unkData[0x08];
 } DatPersonaWork;
 

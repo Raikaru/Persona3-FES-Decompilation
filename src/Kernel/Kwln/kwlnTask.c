@@ -8,6 +8,10 @@
 
 #define KWLNTASK_MAXINLIST 10000
 
+// Scheduler gates owned by the task-control helpers at 00195750-00195790.
+static u32 sTaskPriorityGateB; // 007ce090
+static u32 sTaskPriorityGateA; // 007ce08c
+
 static KwlnTask* sTaskUpdating; // 007ce088. Current task updating
 
 // for 'KWLNTASK_STATE_RUNNING' state
@@ -93,7 +97,7 @@ void kwlnTaskRemoveFromList(KwlnTask* task)
     }
 }
 
-// FUN_00193ba0. Add a task from a list by its current state NONMATCHING
+// FUN_00193ba0. Add a task to the priority-sorted list for its current state NONMATCHING
 void kwlnTaskAddToList(KwlnTask* task)
 {
     KwlnTask* list;
@@ -226,67 +230,73 @@ u8 kwlnTaskUpdate(KwlnTask* task)
     s32 i;
     HPad* pad;
     KwlnTaskUpdateFunc updateFunc;
-    void* updateRes;
+    void* updateResult;
 
-    // WIP: Need to do the first if
-
-    sTaskUpdating = task;
-
-    if (task->stateAndFlags & KWLNTASK_FLAG_UNK10)
+    if (((kwlnGetFlags() & 0xC0000000) == 0 ||
+         task->priority < 0x816 ||
+         0x1CE5 < task->priority) &&
+        (sTaskPriorityGateA == 0 ||
+         task->priority < 0x833 ||
+         0x103D < task->priority) &&
+        (sTaskPriorityGateB == 0 ||
+         task->priority < 0x1064 ||
+         0x1CD9 < task->priority) &&
+        (task->stateAndFlags & KWLNTASK_FLAG_SUSPENDED) == 0)
     {
-        memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
 
-        i = 0;
-        pad = gPads;
-        // ???
-        for (; i < HPAD_PORT_MAX; i++)
+        sTaskUpdating = task;
+
+        if (task->stateAndFlags & KWLNTASK_FLAG_DISABLE_PAD)
         {
-            pad[i].btn[1].justPressed = HPAD_BTN_SQUARE;
-            pad[i].btn[1].released = HPAD_BTN_SQUARE;
-            pad[i].btn[1].justReleased = HPAD_BTN_SQUARE;
+            memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
 
-            pad[i].lstickX = 128;
-            pad[i].lstickY = 128;
-            pad[i].rstickX = 128;
-            pad[i].rstickY = 128;
+            pad = gPads;
+            for (i = 0; i < HPAD_PORT_MAX; i++)
+            {
+                pad[i].btn[1].justPressed = HPAD_BTN_SQUARE;
+                pad[i].btn[1].released = HPAD_BTN_SQUARE;
+                pad[i].virtualPreviousPressed = HPAD_BTN_SQUARE;
+                pad[i].lstickX = 128;
+                pad[i].lstickY = 128;
+                pad[i].rstickX = 128;
+                pad[i].rstickY = 128;
+            }
         }
+        else
+        {
+            memcpy(gPads, gWorkPads, HPAD_PORT_MAX * sizeof(HPad));
+        }
+
+        updateFunc = task->update;
+        if (updateFunc != NULL && updateFunc != (KwlnTaskUpdateFunc)0xFFFFFFFF)
+        {
+            updateResult = updateFunc(task);
+            if (updateResult != KWLNTASK_CONTINUE)
+            {
+                task->update = updateResult;
+            }
+
+            if (updateResult == KWLNTASK_STOP &&
+                KWLNTASK_GET_STATE(task) == KWLNTASK_STATE_RUNNING)
+            {
+                kwlnTaskDestroy(task);
+                kwlnTaskDestroyHierarchy(task->child);
+                sTaskUpdating = NULL;
+
+                return false;
+            }
+
+            if (task->stateAndFlags == KWLNTASK_STATE_DESTROY)
+            {
+                sTaskUpdating = NULL;
+
+                return false;
+            }
+        }
+
+        task->timer++;
+        sTaskUpdating = NULL;
     }
-    else
-    {
-        memcpy(gPads, &gWorkPads, HPAD_PORT_MAX * sizeof(HPad));
-    }
-
-    updateFunc = task->update;
-    // i don't think 0xFFFFFFFF is KWLNTASK_STOP here
-    if (updateFunc != NULL && updateFunc != (KwlnTaskUpdateFunc)0xFFFFFFFF) 
-    {
-        updateRes = updateFunc(task);
-        if (updateRes != KWLNTASK_CONTINUE)
-        {
-            task->update = updateRes;
-        }
-
-        if (updateRes == KWLNTASK_STOP && 
-           (KWLNTASK_GET_STATE(task) == KWLNTASK_STATE_RUNNING))
-        {
-            kwlnTaskDestroy(task);
-            kwlnTaskDestroyHierarchy(task->child);
-            sTaskUpdating = NULL;
-
-            return false;
-        }
-
-        // no it doesn't use KWLNTASK_GET_STATE here
-        if (task->stateAndFlags == KWLNTASK_STATE_DESTROY)
-        {
-            sTaskUpdating = NULL;
-            
-            return false;
-        }
-    }
-
-    task->timer++;
-    sTaskUpdating = NULL;
 
     return true;
 }
@@ -304,7 +314,11 @@ void kwlnTaskUpdateAll()
         {
             prevTask = currTask->prev;
 
-            if (!kwlnTaskUpdate(currTask))
+            if (kwlnTaskUpdate(currTask))
+            {
+                currTask = currTask->next;
+            }
+            else
             {
                 currTask = sRunningTaskHead;
 
@@ -330,10 +344,6 @@ void kwlnTaskUpdateAll()
                         currTask = cursor->next;
                     }
                 }
-            }
-            else
-            {
-                currTask = currTask->next;
             }
         }
     }
@@ -407,17 +417,177 @@ void kwlnTaskDestroy(KwlnTask* task)
     }
 }
 
+// FUN_001943B0 NONMATCHING. Set task flags recursively through the child hierarchy.
+void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
+{
+    KwlnTask* child;
+    KwlnTask* grandchild;
+    u32 maskedFlags;
+
+    maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+    if (enabled != 0)
+    {
+        task->stateAndFlags |= maskedFlags;
+    }
+    else
+    {
+        task->stateAndFlags &= ~maskedFlags;
+    }
+
+    child = task->child;
+    while (child != NULL)
+    {
+        maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+        if (enabled != 0)
+        {
+            child->stateAndFlags |= maskedFlags;
+        }
+        else
+        {
+            child->stateAndFlags &= ~maskedFlags;
+        }
+
+        grandchild = child->child;
+        while (grandchild != NULL)
+        {
+            kwlnTaskSetFlagsRecursive(enabled, grandchild, flags);
+            grandchild = grandchild->sibling;
+        }
+
+        child = child->sibling;
+    }
+}
+
+// FUN_001944C0 NONMATCHING. Set task flags for one task, its hierarchy, or the task lists.
+void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
+{
+    KwlnTask* currentTask;
+    u32 maskedFlags;
+
+    switch (scope)
+    {
+        case 2:
+            if (task == NULL)
+            {
+                K_ASSERT(false, 703);
+            }
+
+            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+            if (enabled != 0)
+            {
+                task->stateAndFlags |= maskedFlags;
+            }
+            else
+            {
+                task->stateAndFlags &= ~maskedFlags;
+            }
+
+            currentTask = task->child;
+            while (currentTask != NULL)
+            {
+                kwlnTaskSetFlagsRecursive(enabled, currentTask, flags);
+                currentTask = currentTask->sibling;
+            }
+            return;
+
+        case 1:
+            if (task == NULL)
+            {
+                K_ASSERT(false, 677);
+            }
+            break;
+
+        case 0:
+            if (task == NULL)
+            {
+                K_ASSERT(false, 669);
+            }
+
+            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+            if (enabled != 0)
+            {
+                task->stateAndFlags |= maskedFlags;
+            }
+            else
+            {
+                task->stateAndFlags &= ~maskedFlags;
+            }
+            return;
+
+        case 3:
+            break;
+
+        default:
+            K_ASSERT(false, 708);
+            return;
+    }
+
+    currentTask = sStagedTaskHead;
+    while (currentTask != NULL)
+    {
+        if (scope == 3 || currentTask != task)
+        {
+            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+            if (enabled != 0)
+            {
+                currentTask->stateAndFlags |= maskedFlags;
+            }
+            else
+            {
+                currentTask->stateAndFlags &= ~maskedFlags;
+            }
+        }
+        currentTask = currentTask->next;
+    }
+
+    currentTask = sRunningTaskHead;
+    while (currentTask != NULL)
+    {
+        if (scope == 3 || currentTask != task)
+        {
+            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+            if (enabled != 0)
+            {
+                currentTask->stateAndFlags |= maskedFlags;
+            }
+            else
+            {
+                currentTask->stateAndFlags &= ~maskedFlags;
+            }
+        }
+        currentTask = currentTask->next;
+    }
+
+    currentTask = sDestroyTaskHead;
+    while (currentTask != NULL)
+    {
+        if (scope == 3 || currentTask != task)
+        {
+            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+            if (enabled != 0)
+            {
+                currentTask->stateAndFlags |= maskedFlags;
+            }
+            else
+            {
+                currentTask->stateAndFlags &= ~maskedFlags;
+            }
+        }
+        currentTask = currentTask->next;
+    }
+}
+
 // FUN_00194750
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
 {
     printf("%s+-%s [%d]", sPrintIndent, task->name, task->priority);
 
-    if (task->stateAndFlags & KWLNTASK_FLAG_UNK20)
+    if (task->stateAndFlags & KWLNTASK_FLAG_SUSPENDED)
     {
         printf(" <S>");
     }
 
-    if (task->stateAndFlags & KWLNTASK_FLAG_UNK10)
+    if (task->stateAndFlags & KWLNTASK_FLAG_DISABLE_PAD)
     {
         printf(" <!P>");
     }
@@ -456,16 +626,18 @@ void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
 void kwlnTaskPrintTrees()
 {
     s32 i;
+    u32 space;
     char* indent;
     KwlnTask* currTask;
 
     printf("<<< process tree >>>\n");
 
     i = 0;
+    space = ' ';
     indent = sPrintIndent;
     for (; i < 64; i++)
     {
-        indent[i] = ' '; // TODO: load 0x20 (' ') before the loop
+        indent[i] = (char)space;
     }
 
     currTask = sStagedTaskHead;
@@ -511,7 +683,7 @@ void kwlnTaskPrintTrees()
 }
 
 // FUN_001949e0. Called every frame in the game main loop
-u8 kwlnTaskMain()
+u32 kwlnTaskMain()
 {
     KwlnTask* nextTask;
     KwlnTask* currTask;
@@ -591,14 +763,14 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
                                          KwlnTaskDestroyFunc destroy, 
                                          void* workData)
 {
-    KwlnTask* task;
     KwlnTask* currParent;
+    KwlnTask* task;
     u32 maxPriority;
 
+    currParent = parentTask;
     if (parentTask != NULL)
     {
         maxPriority = 0;
-        currParent = parentTask;
 
         while (currParent != NULL)
         {
@@ -799,7 +971,6 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
                     KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
                     kwlnTaskAddToList(task);
 
-                    // never true
                     if (task->destroyDelay == 0)
                     {
                         kwlnTaskRemoveFromList(task);
@@ -878,6 +1049,9 @@ u32 kwlnTaskGetState(KwlnTask* task)
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
     KwlnTask* list;
+    KwlnTask* stagedList;
+    KwlnTask* runningList;
+    KwlnTask* destroyList;
     u32 i;
     u32 j;
     u32 k;
@@ -888,14 +1062,18 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
     {
         nameHash += name[i];
     }
+    stagedList = sStagedTaskHead;
+    runningList = sRunningTaskHead;
+    destroyList = sDestroyTaskHead;
+
 
     for (j = 0; j < 3; j++)
     {
         switch (j)
         {
-            case 0: list = sStagedTaskHead;  break;
-            case 1: list = sRunningTaskHead; break;
-            case 2: list = sDestroyTaskHead; break;
+            case 0: list = stagedList;  break;
+            case 1: list = runningList; break;
+            case 2: list = destroyList; break;
         }
 
         while (list != NULL)
@@ -1021,7 +1199,7 @@ void kwlnTaskAddChild(KwlnTask* parentTask, KwlnTask* childTask)
 }
 
 // FUN_001955f0 NONMATCHING
-void kwlnTaskDetachParent(KwlnTask* childTask) 
+void kwlnTaskDetachParent(KwlnTask* childTask)
 {
     KwlnTask* parentTask;
     KwlnTask* currSibling;
@@ -1029,19 +1207,19 @@ void kwlnTaskDetachParent(KwlnTask* childTask)
     KwlnTask** childPtr;
 
     parentTask = childTask->parent;
-    if (parentTask == NULL) 
+    if (parentTask == NULL)
     {
         K_ASSERT(childTask->sibling == NULL, 1519);
         return;
-    } 
+    }
 
     childPtr = &parentTask->child;
-    currSibling = *childPtr;
-    if (currSibling == childTask) 
+    prevSibling = *childPtr;
+    if (prevSibling == childTask)
     {
         *childPtr = childTask->sibling;
-    } 
-    else 
+    }
+    else
     {
         while ((currSibling = prevSibling->sibling) != childTask)
         {
@@ -1073,4 +1251,333 @@ void kwlnTaskDetachAllChildren(KwlnTask* parentTask)
         currTask->parent = NULL;
         currTask->sibling = NULL;
     }
+}
+// FUN_001956D0
+void kwlnTaskEnableFlags(KwlnTask* task, u32 flags, u32 scope)
+{
+    kwlnTaskSetFlags(1, task, flags, scope);
+}
+
+// FUN_00195710
+void kwlnTaskDisableFlags(KwlnTask* task, u32 flags, u32 scope)
+{
+    kwlnTaskSetFlags(0, task, flags, scope);
+}
+
+// FUN_00195750
+u32 kwlnTaskIsPriorityGateAOpen()
+{
+    return sTaskPriorityGateA != 1;
+}
+
+// FUN_00195770
+void kwlnTaskSetPriorityGateB(u32 enabled)
+{
+    sTaskPriorityGateB = enabled != 1;
+}
+
+// FUN_00195790
+u32 kwlnTaskIsPriorityGateBOpen()
+{
+    return sTaskPriorityGateB != 1;
+}
+
+// FUN_001957B0 NONMATCHING. Move a task immediately after another running task.
+void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
+{
+    KwlnTask* current;
+    KwlnTask* next;
+    KwlnTask* previous;
+
+    task->priority = sourceTask->priority;
+
+    current = sRunningTaskHead;
+    while (current != NULL)
+    {
+        if (current == task)
+        {
+            previous = task->prev;
+            next = task->next;
+            if (previous != NULL)
+            {
+                previous->next = next;
+            }
+            if (next != NULL)
+            {
+                next->prev = previous;
+            }
+            break;
+        }
+        current = current->next;
+    }
+
+    current = sRunningTaskHead;
+    while (current != NULL && current != sourceTask)
+    {
+        current = current->next;
+    }
+
+    if (current == NULL)
+    {
+        return;
+    }
+
+    next = current->next;
+    task->prev = current;
+    task->next = next;
+    if (next != NULL)
+    {
+        next->prev = task;
+    }
+    current->next = task;
+}
+
+// FUN_001958A0 NONMATCHING. Move a task immediately before another running task.
+void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
+{
+    KwlnTask* current;
+    KwlnTask* next;
+    KwlnTask* previous;
+
+    task->priority = sourceTask->priority;
+
+    current = sRunningTaskHead;
+    while (current != NULL)
+    {
+        if (current == task)
+        {
+            previous = task->prev;
+            next = task->next;
+            if (previous != NULL)
+            {
+                previous->next = next;
+            }
+            if (next != NULL)
+            {
+                next->prev = previous;
+            }
+            break;
+        }
+        current = current->next;
+    }
+
+    current = sRunningTaskHead;
+    while (current != NULL && current != sourceTask)
+    {
+        current = current->next;
+    }
+
+    if (current == NULL)
+    {
+        return;
+    }
+
+    previous = current->prev;
+    task->prev = previous;
+    task->next = current;
+    if (previous != NULL)
+    {
+        previous->next = task;
+    }
+    current->prev = task;
+}
+
+typedef struct KwlnTaskCameraView
+{
+    RwV2d offset;
+    u32 width;
+    u32 height;
+} KwlnTaskCameraView;
+
+static u32 sCameraViewWidth;          // 00847e98
+static u32 sCameraViewHeight;         // 00847e9c
+static u32 sCameraViewCacheOffsetX;   // 00847e90
+static u32 sCameraViewCacheOffsetY;   // 00847e94
+static u32 sCameraViewFallbackWidth;  // 00847ea8
+static u32 sCameraViewFallbackHeight; // 00847eac
+static u32 sCameraViewFallbackOffsetX;// 00847ea0
+static u32 sCameraViewFallbackOffsetY;// 00847ea4
+
+extern const void* func_004ca5b0(void);
+extern void func_004ca560(u32* output, const void* descriptor);
+extern RwCamera* func_004ca090(void);
+extern RwCamera* func_004ca030(RwCamera* camera);
+extern RwFrame* func_004caf10(void);
+extern RwFrame* func_004caf80(RwFrame* frame);
+extern RwCamera* func_004d1840(RwCamera* camera, RwFrame* frame);
+extern RwRaster* func_004cde90(RwRaster* raster);
+
+// FUN_00195980 NONMATCHING. Replace a camera's rasters and update its view window.
+void func_00195980(f32 scale,
+                   f32 aspectRatio,
+                   RwCamera* camera,
+                   KwlnTaskCameraView* requestedView)
+{
+    u32 displayInfo[4];
+    KwlnTaskCameraView fallbackView;
+    KwlnTaskCameraView* view;
+    RwRaster* frameBuffer;
+    RwRaster* zBuffer;
+    RwRaster* newFrameBuffer;
+    RwRaster* newZBuffer;
+    f32 viewWindow[2];
+
+    if (camera == NULL)
+    {
+        return;
+    }
+
+    if (sCameraViewWidth == 0 || sCameraViewHeight == 0)
+    {
+        sCameraViewCacheOffsetX = 0;
+        sCameraViewCacheOffsetY = 0;
+        sCameraViewWidth = camera->frameBuffer->width;
+        sCameraViewHeight = camera->frameBuffer->height;
+    }
+
+    func_004ca560(displayInfo, func_004ca5b0());
+
+    if (requestedView == NULL)
+    {
+        fallbackView.offset.x = 0;
+        fallbackView.offset.y = 0;
+        fallbackView.width = sCameraViewWidth;
+        fallbackView.height = sCameraViewHeight;
+        sCameraViewFallbackOffsetX = 0;
+        sCameraViewFallbackOffsetY = 0;
+        sCameraViewFallbackWidth = fallbackView.width;
+        sCameraViewFallbackHeight = fallbackView.height;
+        view = &fallbackView;
+    }
+    else
+    {
+        view = (KwlnTaskCameraView*)requestedView;
+    }
+
+    if ((displayInfo[3] & 1) != 0)
+    {
+        view->offset.x = 0;
+        view->offset.y = 0;
+        view->width = displayInfo[0];
+        view->height = displayInfo[1];
+    }
+
+    if (view->width <= 0 || view->height <= 0)
+    {
+        return;
+    }
+
+    frameBuffer = camera->frameBuffer;
+    if (frameBuffer != NULL)
+    {
+        func_004cde90(frameBuffer);
+    }
+
+    zBuffer = camera->zBuffer;
+    if (zBuffer != NULL)
+    {
+        func_004cde90(zBuffer);
+    }
+
+    newFrameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
+    newZBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
+    if (newFrameBuffer == NULL || newZBuffer == NULL)
+    {
+        if (newFrameBuffer != NULL)
+        {
+            func_004cde90(newFrameBuffer);
+        }
+        if (newZBuffer != NULL)
+        {
+            func_004cde90(newZBuffer);
+        }
+
+        view->width = sCameraViewWidth;
+        view->height = sCameraViewHeight;
+        camera->frameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
+        camera->zBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
+        return;
+    }
+
+    camera->frameBuffer = newFrameBuffer;
+    camera->zBuffer = newZBuffer;
+
+    if ((displayInfo[3] & 1) == 0)
+    {
+        view->width = camera->frameBuffer->width;
+        view->height = camera->frameBuffer->height;
+
+        if (view->height < view->width)
+        {
+            viewWindow[0] = scale;
+            viewWindow[1] = ((f32)view->height * scale) / (f32)view->width;
+        }
+        else
+        {
+            viewWindow[0] = ((f32)view->width * scale) / (f32)view->height;
+            viewWindow[1] = scale;
+        }
+    }
+    else
+    {
+        viewWindow[0] = scale * aspectRatio;
+        viewWindow[1] = scale;
+    }
+
+    RwCameraSetViewWindow(camera, (RwV2d*)viewWindow);
+}
+
+// FUN_00195C80 NONMATCHING. Create a camera with frame and optional z-buffer rasters.
+RwCamera* func_00195c80(u32 width, u32 height, u32 createZBuffer)
+{
+    RwCamera* camera;
+    RwFrame* frame;
+    RwRaster* frameBuffer;
+    RwRaster* zBuffer;
+
+    camera = func_004ca090();
+    if (camera != NULL)
+    {
+        frame = func_004caf10();
+        func_004d1840(camera, frame);
+
+        frameBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPECAMERA);
+        camera->frameBuffer = frameBuffer;
+        if (createZBuffer != 0)
+        {
+            zBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPEZBUFFER);
+            camera->zBuffer = zBuffer;
+        }
+
+        if (camera->object.object.parent != NULL &&
+            camera->frameBuffer != NULL &&
+            (createZBuffer == 0 || camera->zBuffer != NULL))
+        {
+            return camera;
+        }
+    }
+
+    if (camera != NULL)
+    {
+        frame = (RwFrame*)camera->object.object.parent;
+        if (frame != NULL)
+        {
+            func_004d1840(camera, NULL);
+            func_004caf80(frame);
+        }
+
+        if (camera->frameBuffer != NULL)
+        {
+            func_004cde90(camera->frameBuffer);
+            camera->frameBuffer = NULL;
+        }
+        if (camera->zBuffer != NULL)
+        {
+            func_004cde90(camera->zBuffer);
+            camera->zBuffer = NULL;
+        }
+        func_004ca030(camera);
+    }
+
+    return NULL;
 }

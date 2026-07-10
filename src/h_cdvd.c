@@ -4,12 +4,139 @@
 #include "rw/rwplcore.h"
 #include "temporary.h"
 
+typedef struct HCdvdStreamContext HCdvdStreamContext;
+typedef struct HCdvdStreamSlot HCdvdStreamSlot;
+typedef struct HCdvdStreamPosition HCdvdStreamPosition;
+
+/*
+ * The CDVD callbacks are also used by the ADX/CRI streaming backends.  These
+ * records are intentionally described by their retail offsets: the backend
+ * hands us opaque records, but the callbacks below operate on the fields
+ * shown here (rather than relying on untyped address arithmetic).
+ */
+struct HCdvdStreamContext
+{
+    u32 reserved00;
+    u32 count; // 0x04
+    u8 reserved08[0x0c];
+    void* callback14;
+    void* callback18;
+    u8 reserved1c[0x0c];
+    void* callback28;
+    void* callback2c;
+    void* callback30;
+    void* callback34;
+    void* callback38;
+    u8 reserved3c[8];
+    void* callback44;
+    u8 reserved48[4];
+    void* callback4c;
+    u8 reserved50[8];
+    HCdvdStreamSlot* slots; // 0x58
+};
+
+struct HCdvdStreamSlot
+{
+    u8 reserved00[0x50];
+    HCdvdStreamContext* context; // 0x50
+    u8 reserved54[0x18];
+    u8* source; // 0x68
+    u32 sourceStride; // 0x6c
+    u8 reserved70[0x1c];
+    u32 capacity; // 0x8c
+    u32 cursor; // 0x90
+    u8 reserved94[0x64];
+    u8* fileMemory; // 0xf8
+    u32 fileSize; // 0xfc
+    u32 fileOffset; // 0x100
+};
+
+struct HCdvdStreamPosition
+{
+    s64 position;
+    u32 unused0;
+    u32 unused1;
+};
+
+extern u32 D_00960184[];
+extern u32 jtbl_0096017C[];
+extern u32 D_0096013C[];
+extern const char* D_005CDD80[];
+extern const char* D_005CDDF0[];
+extern const char* D_005CE590[];
+extern const char* D_005CE780[];
+
+extern void* func_004bfd50(void* key);
+extern s32 func_004bf6e0(void* context, s32 count, void* key, void* callbackData);
+extern void func_004bfbb0(s64 key);
+extern void* func_004c0fd0(s32 count, void* source, s32 stride, void* key0, void* key1);
+extern void func_004c0230(void* context);
+extern void* func_0054d390(void);
+extern void func_0054b2e8(void* handle, const char* name);
+extern void func_0054d0a0(void* handle, const char* name);
+extern void* func_0053b868(void* source, const char* name, const char* table, void* callback);
+extern s32 func_00508670(const char* path, u32 mode, u32 flags);
+extern s32 func_00508a78(s32 fd, s32 value, s32 origin);
+extern void func_00508900(s32 fd);
+extern s32 func_00508cb8(s32 fd, const void* dst, u32 size);
+extern s32 func_00508f28(s32 fd, void* dst, u32 size);
+extern void func_0050a888(const char* path);
+extern void func_00505e48(const char* message, ...);
+extern s32 func_00566b08(void* output, const void* source);
+extern s32 func_0053c268(void* source);
+extern void func_00580378(void* handle, const char* name);
+extern void func_00584290(void* handle, const char* name);
+
+#define HCDVD_ALLOC(count, size, flags) \
+    (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
+#define HCDVD_FREE(ptr) (*(void (**)(void*))jtbl_0096017C)((ptr))
+extern void* func_004bfc80(void* context);
+extern void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
+                          const char* path);
+
+extern void func_00101100(const char* path, char* fileNameDst, char* dirDst);
+extern void func_00101520(const char* dir);
+extern void func_00101e30(void* requestData);
+extern ADXF func_0053c910(const char* path, s32 mode);
+extern void func_0053cdd0(ADXF adxf);
+extern u32 func_0053d380(ADXF adxf, u32 sectorCount, void* buffer);
+extern u32 func_0053d968(ADXF adxf);
+extern u32 func_0053db90(ADXF adxf);
+
 #define HCDVD_CACHE_MAX 256
 
 static HCdvd sCdvdListHead;                    // 007e0380. Dummy head
 static HCdvdCache sCdvdCache[HCDVD_CACHE_MAX]; // 007d6f80
 
-void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst);
+static const char* sCdvdBtlDirectories[] = {
+    "\\",
+    "\\BATTLE\\",
+    "\\BATTLE\\CUTIN\\",
+    "\\BATTLE\\CUTIN\\C71_C80_L_L_1\\",
+    "\\BATTLE\\CUTIN\\C82_L_L_1\\",
+    "\\BATTLE\\CUTIN\\C90_L_L_1\\",
+    "\\BATTLE\\CUTIN\\C93_L_L_1\\",
+    "\\BATTLE\\CUTIN\\EPL\\",
+    "\\BATTLE\\CUTIN\\MIXRAID\\",
+    "\\BATTLE\\EFFECT\\",
+    "\\BATTLE\\PANEL\\",
+    "\\BATTLE\\RESULT\\",
+    "\\BATTLE\\SHUFFLE\\",
+    "\\MODEL\\",
+    "\\MODEL\\FACILITYP\\",
+    "\\MODEL\\FIELD\\",
+    "\\MODEL\\NPC\\",
+    "\\MODEL\\PACK\\",
+    "\\MODEL\\PERSONA\\",
+    "\\MODEL\\SYMBOL\\",
+    "\\MODEL\\WEAPON\\",
+    "\\SKILL\\",
+    "\\SND_BENC\\",
+    "\\SND_BENC\\BOSS\\",
+    "\\SND_BENC\\PANEL\\",
+    ""
+};
+
 
 // FUN_001007f0
 void H_Cdvd_001007f0()
@@ -30,7 +157,7 @@ void H_Cdvd_Init()
     sCdvdListHead.next = NULL;
     sCdvdListHead.fileMemory = NULL;
     sCdvdListHead.fileSize = 0;
-    sCdvdListHead.unk_08 = 0;
+    sCdvdListHead.hasExternalMemory = false;
 
     i = 0;
     cache = sCdvdCache;
@@ -45,92 +172,418 @@ void H_Cdvd_Init()
 // FUN_001008b0
 u32 H_Cdvd_FileExists(const char* path)
 {
-    // TODO
+    char unusedUppercasePath[256];
+    char fileName[256];
+    char dir[256];
+    char uppercasePath[256];
+    ADXF adxf;
 
+    H_Dbprt_FmtLog(" Exist %s\n", path);
+    H_Cdvd_BuildPathUppercase(path, unusedUppercasePath);
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    func_00101100(uppercasePath, fileName, dir);
+    func_00101520(dir);
+
+    adxf = func_0053c910(fileName, 0);
+    if (adxf == NULL)
+    {
+        H_Dbprt_FmtLog(" FALSE \n");
+        return false;
+    }
+
+    func_0053cdd0(adxf);
+    H_Dbprt_FmtLog(" TRUE \n");
     return true;
 }
 
-// FUN_00100980. Asynchronous read
+// FUN_00100980 NONMATCHING
 void H_Cdvd_Read()
 {
-    // TODO
+    HCdvd* cdvd;
+    HCdvd* next;
+    HCdvdCache* cache;
+    s32 i;
+    u32 readResult;
+
+    cdvd = sCdvdListHead.next;
+    while (cdvd != NULL)
+    {
+        if (cdvd->readState == HCDVD_READ_COMPLETE)
+        {
+            goto complete;
+        }
+        if (cdvd->readState == HCDVD_READ_FINALIZING)
+        {
+            goto finalizing;
+        }
+        if (cdvd->readState == HCDVD_READ_IN_PROGRESS)
+        {
+            goto inProgress;
+        }
+        if (cdvd->readState == HCDVD_READ_OPENED)
+        {
+            goto opened;
+        }
+        if (!cdvd->readState)
+        {
+            goto queued;
+        }
+        goto complete;
+
+queued:
+        cdvd->readPollCount = 0;
+        func_00101520(cdvd->dir);
+        cdvd->adxf = func_0053c910(cdvd->fileName, 0);
+        if (cdvd->adxf == NULL)
+        {
+            return;
+        }
+
+        cdvd->readByteSize = cdvd->adxf->fileSize;
+        cdvd->fileSize = cdvd->readByteSize;
+        cdvd->readState = HCDVD_READ_OPENED;
+
+opened:
+        if (cdvd->fileMemory == NULL)
+        {
+            if (cdvd->fileMode == HCDVD_FILENORMAL)
+            {
+                cdvd->unalignedFileMemory =
+                    RwMalloc(func_0053d968(cdvd->adxf) * 0x800 + 0x40, rwMEMHINTDUR_GLOBAL);
+            }
+            else
+            {
+                cdvd->unalignedFileMemory =
+                    RwMalloc(func_0053d968(cdvd->adxf) * 0x800 + 0x140, rwMEMHINTDUR_GLOBAL);
+            }
+
+            if (cdvd->unalignedFileMemory == NULL)
+            {
+                return;
+            }
+
+            cdvd->fileMemory =
+                (void*)(((uintptr_t)cdvd->unalignedFileMemory + 0x3f) & ~(uintptr_t)0x3f);
+        }
+
+        readResult = func_0053d380(cdvd->adxf, func_0053d968(cdvd->adxf), cdvd->fileMemory);
+        if (readResult != func_0053d968(cdvd->adxf))
+        {
+            func_0053cdd0(cdvd->adxf);
+            cdvd->adxf = NULL;
+
+            if (cdvd->hasExternalMemory == false)
+            {
+                RwFree(cdvd->unalignedFileMemory);
+                cdvd->fileMemory = NULL;
+                cdvd->unalignedFileMemory = NULL;
+            }
+
+            cdvd->readState = HCDVD_READ_QUEUED;
+            return;
+        }
+
+        cdvd->readState = HCDVD_READ_IN_PROGRESS;
+
+inProgress:
+        cdvd->readPollCount++;
+        readResult = func_0053db90(cdvd->adxf);
+        if (readResult == HCDVD_READ_FINALIZING)
+        {
+            cdvd->readState = HCDVD_READ_FINALIZING;
+            if (cdvd->fileMode != HCDVD_FILENORMAL)
+            {
+                memset((u8*)cdvd->fileMemory + cdvd->readByteSize, 0, 0x100);
+            }
+        }
+        else if (readResult == HCDVD_READ_COMPLETE)
+        {
+            func_0053cdd0(cdvd->adxf);
+            cdvd->adxf = NULL;
+            cdvd->readState = HCDVD_READ_QUEUED;
+
+            if (cdvd->hasExternalMemory == false)
+            {
+                RwFree(cdvd->unalignedFileMemory);
+                cdvd->fileMemory = NULL;
+                cdvd->unalignedFileMemory = NULL;
+            }
+
+            return;
+        }
+
+        if (cdvd->readState != HCDVD_READ_FINALIZING)
+        {
+            goto complete;
+        }
+
+finalizing:
+        func_00101e30(&cdvd->hasExternalMemory);
+        cdvd->readState = HCDVD_READ_COMPLETE;
+        func_0053cdd0(cdvd->adxf);
+        cdvd->adxf = NULL;
+
+complete:
+        if (cdvd->readState != HCDVD_READ_COMPLETE)
+        {
+            return;
+        }
+
+        next = cdvd->next;
+        cdvd->refCount -= cdvd->pendingDestroyCount;
+        cdvd->pendingDestroyCount = 0;
+        if (cdvd->refCount < 1)
+        {
+            cdvd->prev->next = cdvd->next;
+            if (cdvd->next != NULL)
+            {
+                cdvd->next->prev = cdvd->prev;
+            }
+
+            if (cdvd->fileMemory != NULL && cdvd->hasExternalMemory == false)
+            {
+                RwFree(cdvd->unalignedFileMemory);
+                cdvd->fileMemory = NULL;
+                cdvd->unalignedFileMemory = NULL;
+            }
+
+            for (i = 0, cache = sCdvdCache; i < HCDVD_CACHE_MAX; i++)
+            {
+                if (cache[i].isValid && cache[i].requestData == &cdvd->hasExternalMemory)
+                {
+                    cache[i].isValid = false;
+                }
+            }
+
+            if (cdvd->adxf != NULL)
+            {
+                func_0053cdd0(cdvd->adxf);
+                cdvd->adxf = NULL;
+            }
+
+            RwFree(cdvd);
+        }
+
+        cdvd = next;
+    }
 }
 
 // FUN_00100d80 NONMATCHING
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
     HCdvd* curr;
+    HCdvd* previous;
     HCdvd* cdvd;
     char uppercasePath[256];
 
     H_Dbprt_FmtLog("REQ CDVD %s", path);
-
-    curr = sCdvdListHead.next; // TODO: lui s0, %hi(...) instead of lui v0, %hi(...)
-
+    previous = &sCdvdListHead;
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
 
-    if (sCdvdListHead.next != NULL)
+    curr = sCdvdListHead.next;
+    while (curr != NULL)
     {
-        while (true)
+        if (strcmp(uppercasePath, curr->path) == 0)
         {
-            if (strcmp(uppercasePath, curr->path) == 0)
-            {
-                curr->refCount++;
-                return curr;
-            }
-
-            if (curr->next != NULL)
-            {
-                curr = curr->next;
-            }
-            else
-            {
-                break;
-            }
+            curr->refCount++;
+            return curr;
         }
+
+        previous = curr;
+        curr = curr->next;
     }
 
-    cdvd = RwCalloc(1, sizeof(HCdvd), rwMEMHINTDUR_GLOBAL);
-
+    cdvd = ((void* (*)(u32, u32, u32))((void**)&rwGlobals)[0x61])(1, sizeof(HCdvd), rwMEMHINTDUR_GLOBAL);
     H_Cdvd_BuildPathUppercase(path, cdvd->path);
     H_Cdvd_BuildVolumePaths(cdvd->path, cdvd->fileName, cdvd->dir);
 
-    cdvd->readState = 0;
-    curr->next = cdvd;
+    cdvd->readState = HCDVD_READ_QUEUED;
+    previous->next = cdvd;
+    cdvd->prev = previous;
     cdvd->next = NULL;
     cdvd->fileMemory = NULL;
-    cdvd->unk_08 = 0;
+    cdvd->hasExternalMemory = false;
     cdvd->fileMode = fileMode;
     cdvd->refCount = 1;
     cdvd->adxf = NULL;
-
     return cdvd;
 }
 
-// FUN_00100ec0
-u8 H_Cdvd_Destroy(HCdvd* cdvd)
+// FUN_00100ec0 NONMATCHING
+u32 H_Cdvd_Destroy(HCdvd* cdvd)
 {
-    // TODO
+    void* requestData;
+    HCdvdCache* cache;
+    s32 i;
+    HCdvd* prev;
+    HCdvd* next;
 
+    if (cdvd->readState != HCDVD_READ_QUEUED)
+    {
+        cdvd->pendingDestroyCount++;
+        return true;
+    }
+
+    cdvd->refCount--;
+    if (cdvd->refCount > 0)
+    {
+        return true;
+    }
+
+    prev = cdvd->prev;
+    next = cdvd->next;
+    prev->next = next;
+    if (next != NULL)
+    {
+        next->prev = prev;
+    }
+
+    if (cdvd->fileMemory != NULL && cdvd->hasExternalMemory == false)
+    {
+        RwFree(cdvd->unalignedFileMemory);
+        cdvd->fileMemory = NULL;
+        cdvd->unalignedFileMemory = NULL;
+    }
+
+    i = 0;
+    cache = sCdvdCache;
+    requestData = &cdvd->hasExternalMemory;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        if (cache[i].isValid && cache[i].requestData == requestData)
+        {
+            cache[i].isValid = false;
+        }
+    }
+
+    if (cdvd->adxf != NULL)
+    {
+        func_0053cdd0(cdvd->adxf);
+        cdvd->adxf = NULL;
+    }
+
+    RwFree(cdvd);
     return true;
 }
 
-// FUN_00101010
+// FUN_00101010 NONMATCHING
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
-    // TODO
+    u32 i;
+    u32 prefixLength;
+    const char* prefix;
+    char* dstBase;
+    char c;
+
+    prefix = "VOL:\\";
+    strcpy(dst, prefix);
+    prefixLength = strlen(prefix);
+    dstBase = dst + prefixLength;
+    for (i = 0; i < 0xff; i++)
+    {
+        c = src[i];
+        if (c == '\0')
+        {
+            dstBase[i] = '\0';
+            return;
+        }
+
+        if (c == '/')
+        {
+            dstBase[i] = '\\';
+        }
+        else if (c >= 'a' && c <= 'z')
+        {
+            dstBase[i] = c - ('a' - 'A');
+        }
+        else
+        {
+            dstBase[i] = c;
+        }
+    }
 }
 
-// FUN_00101240
+// FUN_00101240 NONMATCHING
 void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
 {
-    // TODO
+    char normalizedDir[256];
+    char reverseFileName[257];
+    u32 pathLength;
+    u32 fileNameLength;
+    u32 i;
+
+    strcpy(dirDst, path);
+    pathLength = strlen(dirDst);
+    for (i = 1; i < pathLength; i++)
+    {
+        reverseFileName[i] = dirDst[pathLength - i];
+        if (reverseFileName[i] == '\\')
+        {
+            dirDst[pathLength - i + 1] = '\0';
+            reverseFileName[i] = '\0';
+            break;
+        }
+    }
+
+    H_Cdvd_NormalizePath(dirDst, normalizedDir);
+    strcpy(fileNameDst, "VOL:");
+    for (i = 0; i < 0xc8 && sCdvdBtlDirectories[i][0] != '\0'; i++)
+    {
+        if (strcmp(sCdvdBtlDirectories[i], &normalizedDir[4]) == 0)
+        {
+            strcpy(fileNameDst, "BTL:");
+        }
+    }
+
+    fileNameLength = strlen(&reverseFileName[1]);
+    for (i = 0; i < fileNameLength; i++)
+    {
+        fileNameDst[strlen(fileNameDst) + fileNameLength - i - 1] = reverseFileName[i + 1];
+    }
+    fileNameDst[strlen(fileNameDst) + fileNameLength] = '\0';
 }
 
-// FUN_001013f0
+// FUN_001013f0 NONMATCHING
 void H_Cdvd_NormalizePath(const char* src, char* dst)
 {
-    // TODO
+    s32 readIndex;
+    s32 writeIndex;
+    s32 scanIndex;
+
+    writeIndex = 0;
+    for (readIndex = 0; readIndex <= 0xfc; readIndex++)
+    {
+        if (src[readIndex] == '\0')
+        {
+            dst[writeIndex] = '\0';
+            return;
+        }
+
+        if (src[readIndex] == '.' && src[readIndex + 1] == '.' &&
+            (src[readIndex + 2] == '\\' || src[readIndex + 2] == '/'))
+        {
+            readIndex += 2;
+            if (writeIndex > 2)
+            {
+                for (scanIndex = writeIndex - 2; scanIndex >= 0; scanIndex--)
+                {
+                    if (dst[scanIndex] == '\\' || dst[scanIndex] == '/')
+                    {
+                        writeIndex = scanIndex + 1;
+                        break;
+                    }
+                }
+            }
+        }
+        else if (src[readIndex] == '.' && (src[readIndex + 1] == '\\' || src[readIndex + 1] == '/'))
+        {
+            readIndex++;
+        }
+        else
+        {
+            dst[writeIndex++] = src[readIndex];
+        }
+    }
 }
 
 // FUN_001016b0
@@ -216,34 +669,7 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
 }
 
 // FUN_00102650 NONMATCHING
-void H_Cdvd_CacheAdd(HCdvd* cdvd, void* fileMemory, u32 fileSize, const char* path)
-{
-    s32 i;
-    HCdvdCache* curr;
-    HCdvdCache* cache;
-
-    i = 0;
-    cache = sCdvdCache; // regswap (t2 instead of t1)
-    for (; i < HCDVD_CACHE_MAX; i++)
-    {
-        curr = &cache[i];
-
-        if (!curr->isValid)
-        {
-            curr->isValid = true;
-            sCdvdCache[i].cdvd = cdvd;
-            sCdvdCache[i].fileMemory = fileMemory;
-            sCdvdCache[i].fileSize = fileSize;
-            sCdvdCache[i].unk_110 = 0;
-            memcpy(&sCdvdCache[i].path, path, 128);
-
-            return;
-        }
-    }
-}
-
-// FUN_00102870
-void H_Cdvd_CacheRemove(HCdvd* cdvd)
+void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const char* path)
 {
     s32 i;
     HCdvdCache* cache;
@@ -255,9 +681,831 @@ void H_Cdvd_CacheRemove(HCdvd* cdvd)
     {
         curr = &cache[i];
 
-        if (curr->isValid && curr->cdvd == cdvd)
+        if (!curr->isValid)
+        {
+            curr->isValid = true;
+            sCdvdCache[i].requestData = requestData;
+            sCdvdCache[i].fileMemory = fileMemory;
+            sCdvdCache[i].fileSize = fileSize;
+            sCdvdCache[i].unk_110 = 0;
+            memcpy(&sCdvdCache[i].path, path, 128);
+            return;
+        }
+    }
+}
+
+// FUN_00102870
+void H_Cdvd_CacheRemove(void* requestData)
+{
+    s32 i;
+    HCdvdCache* cache;
+    HCdvdCache* curr;
+
+    i = 0;
+    cache = sCdvdCache;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        curr = &cache[i];
+
+        if (curr->isValid && curr->requestData == requestData)
         {
             curr->isValid = false;
         }
     }
+}
+
+// FUN_00101100 NONMATCHING
+void func_00101100(const char* path, char* fileNameDst, char* dirDst)
+{
+    char reversedName[257];
+    size_t pathLength;
+    size_t nameLength;
+    size_t i;
+    size_t slashOffset;
+
+    strcpy(fileNameDst, "VOL:");
+    strcpy(dirDst, path);
+    pathLength = strlen(dirDst);
+    slashOffset = pathLength;
+    while (slashOffset > 0)
+    {
+        if (dirDst[slashOffset - 1] == '\\' || dirDst[slashOffset - 1] == '/')
+        {
+            break;
+        }
+        slashOffset--;
+    }
+
+    if (slashOffset == 0)
+    {
+        reversedName[0] = '\0';
+    }
+    else
+    {
+        strcpy(reversedName, dirDst + slashOffset);
+        dirDst[slashOffset] = '\0';
+    }
+
+
+    nameLength = strlen(reversedName);
+    for (i = 0; i < nameLength; i++)
+    {
+        fileNameDst[4 + nameLength - i - 1] = reversedName[i];
+    }
+    fileNameDst[4 + nameLength] = '\0';
+}
+
+// FUN_00101520 NONMATCHING
+void func_00101520(const char* dir)
+{
+    char normalized[256];
+    s32 i;
+
+    H_Cdvd_NormalizePath(dir, normalized);
+    for (i = 0; i < 300; i++)
+    {
+        const char* source = D_005CDD80[i];
+        if (source == NULL || source[0] == '\0')
+        {
+            break;
+        }
+        if (strcmp(source, normalized) == 0)
+        {
+            do
+            {
+                if (func_00566b08((void*)0x007d4780, D_005CDDF0[i]) == 0)
+                {
+                    return;
+                }
+            } while (true);
+        }
+    }
+
+    for (i = 0; i < 300; i++)
+    {
+        const char* source = D_005CE590[i];
+        if (source == NULL || source[0] == '\0')
+        {
+            break;
+        }
+        if (strcmp(source, normalized) == 0)
+        {
+            while (func_00566b08((void*)0x007d4784, D_005CE780[i]) != 0)
+            {
+                printf("CDVD mount retry: %s\n", normalized);
+            }
+            return;
+        }
+    }
+
+    printf("CDVD path not mapped: %s\n", normalized);
+}
+
+static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, s32 index)
+{
+    if (index < 0 || (u32)index >= context->count)
+    {
+        return NULL;
+    }
+    return &context->slots[index];
+}
+
+static void H_Cdvd_StreamNoop(void)
+{
+}
+
+static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
+{
+    return slot->fileOffset >= slot->fileSize ? (u32)-1 : 0;
+}
+
+// FUN_001016d0 NONMATCHING
+s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
+{
+    char uppercasePath[256];
+    char normalizedPath[256];
+    char cachePath[256];
+    s32 i;
+    HCdvdStreamSlot* slot = (HCdvdStreamSlot*)slotData;
+
+    (void)unused;
+    if (pathOrMode == 1)
+    {
+        return 2;
+    }
+
+    H_Cdvd_BuildPathUppercase((const char*)pathOrMode, uppercasePath);
+    H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
+    for (i = 0; i < HCDVD_CACHE_MAX; i++)
+    {
+        if (!sCdvdCache[i].isValid)
+        {
+            continue;
+        }
+        H_Cdvd_NormalizePath(sCdvdCache[i].path, cachePath);
+        if (strcmp(cachePath, normalizedPath) == 0)
+        {
+            memcpy((u8*)slot + 0x70, &sCdvdCache[i], sizeof(HCdvdCache));
+            slot->fileOffset = 0;
+            *(u64*)((u8*)slot + 0x00) = slot->fileSize;
+            *(u64*)((u8*)slot + 0x10) = 0;
+            *(u32*)((u8*)slot + 0x20) = 0;
+            *(u32*)((u8*)slot + 0x30) = 0;
+            *(u32*)((u8*)slot + 0x38) = 2;
+            *(u32*)((u8*)slot + 0x3c) = 1;
+            return 1;
+        }
+    }
+    return 2;
+}
+
+// FUN_00101810 NONMATCHING
+u32 func_00101810(void* slotData, void* dst, u32 size)
+{
+    u32 available;
+    u32 amount;
+    HCdvdStreamSlot* slot = (HCdvdStreamSlot*)slotData;
+
+    if (slot->fileOffset >= slot->fileSize)
+    {
+        return 0;
+    }
+    available = slot->fileSize - slot->fileOffset;
+    amount = size < available ? size : available;
+    memcpy(dst, slot->fileMemory + slot->fileOffset, amount);
+    slot->fileOffset += amount;
+    return amount;
+}
+
+static void H_Cdvd_StreamSetPosition(HCdvdStreamPosition* result,
+                                     HCdvdStreamSlot* slot, u32 amount, s32 mode)
+{
+    u32 position;
+
+    if (mode == 1)
+    {
+        position = slot->fileOffset + amount;
+        if (position > slot->fileSize)
+        {
+            position = slot->fileSize;
+        }
+    }
+    else if (mode == 2)
+    {
+        if (amount > slot->fileSize)
+        {
+            amount = slot->fileSize;
+        }
+        position = slot->fileOffset + amount;
+    }
+    else if (mode == 3)
+    {
+        position = slot->fileOffset + amount;
+        if (position > slot->fileSize)
+        {
+            position = slot->fileSize - 1;
+        }
+    }
+    else
+    {
+        position = 1;
+    }
+
+    slot->fileOffset = position;
+    result->position = position;
+    result->unused0 = 0;
+    result->unused1 = 0;
+}
+
+static void H_Cdvd_StreamSetPositionCallback(HCdvdStreamPosition* result,
+                                              HCdvdStreamSlot* slot,
+                                              u32 amount, s32 mode)
+{
+    H_Cdvd_StreamSetPosition(result, slot, amount, mode);
+}
+
+// FUN_001018c0 NONMATCHING
+void func_001018c0(void* resultData, void* slotData,
+                   u32 amount, s32 mode)
+{
+    HCdvdStreamPosition* result = (HCdvdStreamPosition*)resultData;
+    HCdvdStreamSlot* slot = (HCdvdStreamSlot*)slotData;
+    H_Cdvd_StreamSetPositionCallback(result, slot, amount, mode);
+}
+// FUN_001019e0
+void func_001019e0(void* contextData)
+{
+    HCdvdStreamContext* context = (HCdvdStreamContext*)contextData;
+    HCDVD_FREE(context->slots);
+}
+
+// FUN_00101a10
+s32 func_00101a10(void* unused, const char* path)
+{
+    char uppercasePath[256];
+    char normalizedPath[256];
+    char cachePath[256];
+    s32 i;
+
+    (void)unused;
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    H_Cdvd_NormalizePath(uppercasePath, normalizedPath);
+    for (i = 0; i < HCDVD_CACHE_MAX; i++)
+    {
+        if (sCdvdCache[i].isValid)
+        {
+            H_Cdvd_NormalizePath(sCdvdCache[i].path, cachePath);
+            if (strcmp(cachePath, normalizedPath) == 0)
+            {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+static void H_Cdvd_SetStreamCallback(HCdvdStreamContext* context, u32 offset,
+                                     void* callback)
+{
+    *(void (**)(void))((u8*)context + offset) = (void (*)(void))callback;
+}
+
+// FUN_00101ad0 NONMATCHING
+void* func_00101ad0(s32 count, void* source, s32 stride,
+                                   void* callbackData, void* key)
+{
+    HCdvdStreamContext* context;
+    s32 i;
+
+    if (func_004bfd50(key) != NULL)
+    {
+        return NULL;
+    }
+
+    context = (HCdvdStreamContext*)HCDVD_ALLOC(1, 0x5c, 0x40000);
+    if (context == NULL)
+    {
+        return NULL;
+    }
+    H_Cdvd_SetStreamCallback(context, 0x14, (void*)H_Cdvd_StreamGetSlot);
+    H_Cdvd_SetStreamCallback(context, 0x18, (void*)func_001019e0);
+    H_Cdvd_SetStreamCallback(context, 0x28, (void*)func_001016d0);
+    H_Cdvd_SetStreamCallback(context, 0x2c, (void*)H_Cdvd_StreamNoop);
+    H_Cdvd_SetStreamCallback(context, 0x30, (void*)func_00101810);
+    H_Cdvd_SetStreamCallback(context, 0x38, (void*)func_001018c0);
+    H_Cdvd_SetStreamCallback(context, 0x44, (void*)H_Cdvd_StreamComplete);
+    H_Cdvd_SetStreamCallback(context, 0x4c, (void*)func_00101a10);
+    context->count = count;
+    context->slots = (HCdvdStreamSlot*)HCDVD_ALLOC(count, 0x110, 0x40000);
+    if (context->slots == NULL)
+    {
+        return context;
+    }
+    for (i = 0; i < count; i++)
+    {
+        context->slots[i].context = context;
+        context->slots[i].source = (u8*)source + i * stride;
+        context->slots[i].sourceStride = stride;
+    }
+    if (func_004bf6e0(context, count, key, callbackData) != 1)
+    {
+        printf("CDVD stream registration failed: %d\n", count);
+    }
+    return context;
+}
+
+// FUN_00101c70 NONMATCHING
+void func_00101c70(void)
+{
+    static u8 key0[16];
+    static u8 key1[16];
+    static u8 key2[16];
+    static u8 key3[16];
+    void* context;
+
+    func_004bfbb0(-1);
+    ((void (*)(void*, void*))D_0096013C)(key0, key1);
+    ((void (*)(void*, void*))D_0096013C)(key2, key3);
+    context = func_004c0fd0(5, (void*)0x007d4780, 0x800, key0, key2);
+    if (context == NULL)
+    {
+        return;
+    }
+    if (func_004bfc80(context) == NULL)
+    {
+        printf("CDVD stream group registration failed\n");
+        return;
+    }
+    ((void (*)(void*, void*))D_0096013C)(key0, key1);
+    ((void (*)(void*, void*))D_0096013C)(key2, key3);
+    context = func_00101ad0(5, (void*)0x007d1f80, 0x800, key0, key2);
+    if (context != NULL)
+    {
+        if (func_004bfc80(context) != NULL)
+        {
+            func_004c0230(context);
+        }
+        else
+        {
+            printf("CDVD stream group 2 registration failed\n");
+        }
+    }
+    ((void (*)(void*, void*))D_0096013C)(key0, key1);
+    ((void (*)(void*, void*))D_0096013C)(key2, key3);
+    context = func_00102e50(5, (void*)0x007cf780, 0x800, key0, key2);
+    if (context != NULL && func_004bfc80(context) == NULL)
+    {
+        printf("CDVD stream group 3 registration failed\n");
+    }
+}
+
+static u32 H_Cdvd_Align64(u32 size)
+{
+    return (size + 0x3f) & ~0x3f;
+}
+
+static void H_Cdvd_CopyArchiveEntries(void* requestData, u8* archive,
+                                      u32 archiveSize, const char* basePath)
+{
+    u32 offset = 0;
+    char fullPath[256];
+    char entryName[256];
+
+    while (offset + sizeof(ArchiveEntryHeader) <= archiveSize)
+    {
+        ArchiveEntryHeader header;
+        memcpy(&header, archive + offset, sizeof(header));
+        if (header.fileName[0] == '\0')
+        {
+            break;
+        }
+        strcpy(fullPath, basePath);
+        strcat(fullPath, header.fileName);
+        H_Cdvd_BuildPathUppercase(fullPath, entryName);
+        H_Cdvd_CacheAdd(requestData, archive + offset + sizeof(header),
+                        header.fileSize, entryName);
+        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+    }
+}
+
+// FUN_00101e30 NONMATCHING
+void func_00101e30(void* requestData)
+{
+    HCdvd* cdvd = (HCdvd*)((u8*)requestData - 8);
+    u8* source;
+    u32 sourceSize;
+    char directory[256];
+    char entryPath[256];
+    char normalizedDirectory[256];
+    u32 offset;
+
+    if (*(u32*)((u8*)cdvd + 0x148) == 0)
+    {
+        func_00102030(requestData, *(u8**)((u8*)cdvd + 0x108),
+                      *(u32*)((u8*)cdvd + 0x11c), requestData);
+        *(s16*)((u8*)cdvd + 0x350) = 1;
+        return;
+    }
+
+    source = *(u8**)((u8*)cdvd + 0x108);
+    sourceSize = *(u32*)((u8*)cdvd + 0x11c);
+    memcpy(directory, cdvd->path, sizeof(directory));
+    directory[sizeof(directory) - 1] = '\0';
+    for (offset = 0; offset < sizeof(directory); offset++)
+    {
+        if (directory[offset] == '\0')
+        {
+            u32 end = offset;
+            while (end > 0 && directory[end - 1] != '\\')
+            {
+                end--;
+            }
+            directory[end] = '\0';
+            break;
+        }
+    }
+    H_Cdvd_NormalizePath(directory, normalizedDirectory);
+    *(s16*)((u8*)cdvd + 0x350) = 0;
+    offset = 0;
+    while (offset + sizeof(ArchiveEntryHeader) <= sourceSize)
+    {
+        ArchiveEntryHeader header;
+        memcpy(&header, source + offset, sizeof(header));
+        if (header.fileName[0] == '\0')
+        {
+            break;
+        }
+        strcpy(entryPath, normalizedDirectory);
+        strcat(entryPath, header.fileName);
+        H_Cdvd_BuildPathUppercase(entryPath, entryPath);
+        H_Cdvd_CacheAdd(requestData, source + offset + sizeof(header),
+                        header.fileSize, entryPath);
+        *(s16*)((u8*)cdvd + 0x350) += 1;
+        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+    }
+}
+
+// FUN_00102030 NONMATCHING
+void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
+                   const char* path)
+{
+    H_Cdvd_CacheAdd(requestData, fileMemory, fileSize, path);
+}
+
+// FUN_001022e0 NONMATCHING
+const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
+{
+    u8* entry;
+    s32 i;
+
+    entry = (u8*)cdvd->fileMemory;
+    for (i = 0; i < entryIndex; i++)
+    {
+        ArchiveEntryHeader header;
+        memcpy(&header, entry, sizeof(header));
+        entry += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+    }
+    if (entry == NULL || *(char*)entry == '\0')
+    {
+        return NULL;
+    }
+    return (const char*)entry;
+}
+
+// FUN_001023f0
+void func_001023f0(void* handle, const char* path, s32 synchronous)
+{
+    static char uppercasePath[256];
+    static char fileName[256];
+    static char directory[256];
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    func_00101100(uppercasePath, fileName, directory);
+    func_00101520(directory);
+    if (synchronous)
+    {
+        func_00584290(handle, fileName);
+    }
+    else
+    {
+        func_00580378(handle, fileName);
+    }
+}
+
+// FUN_001024a0
+void func_001024a0(void* source, const char* path, s32 flags, void* callback)
+{
+    static char uppercasePath[256];
+    static char fileName[256];
+    static char directory[256];
+    extern const char D_00638320[];
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    func_00101100(uppercasePath, fileName, directory);
+    func_0053b868(source, fileName, D_00638320, callback);
+    (void)flags;
+}
+
+// FUN_00102530
+void func_00102530(void* handle, const char* path)
+{
+    static char uppercasePath[256];
+    static char fileName[256];
+    static char directory[256];
+    void* stream;
+
+    stream = func_0054d390();
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    func_00101100(uppercasePath, fileName, directory);
+    func_00101520(directory);
+    func_0054b2e8(stream, fileName);
+    (void)handle;
+}
+
+// FUN_001025c0 NONMATCHING
+void func_001025c0(void* handle, const char* path)
+{
+    static char uppercasePath[256];
+    static char fileName[256];
+    static char directory[256];
+    void* stream;
+
+    stream = func_0054d390();
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    func_00101100(uppercasePath, fileName, directory);
+    func_00101520(directory);
+    func_0054d0a0(handle != NULL ? handle : stream, fileName);
+}
+
+// FUN_00102720 NONMATCHING
+void func_00102720(const char* path, const void* archive)
+{
+    char uppercasePath[256];
+    char entryPath[256];
+    const u8* source = (const u8*)archive;
+    u32 offset = 0;
+
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    while (true)
+    {
+        ArchiveEntryHeader header;
+        memcpy(&header, source + offset, sizeof(header));
+        if (header.fileName[0] == '\0')
+        {
+            return;
+        }
+        strcpy(entryPath, uppercasePath);
+        strcat(entryPath, header.fileName);
+        H_Cdvd_BuildPathUppercase(entryPath, entryPath);
+        H_Cdvd_CacheAdd((void*)archive, (void*)(source + offset + sizeof(header)),
+                        header.fileSize, entryPath);
+        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+    }
+}
+
+// FUN_001028d0
+void func_001028d0(void)
+{
+    func_00505e48("CDVD file context destroyed");
+}
+
+typedef struct HCdvdFileContext HCdvdFileContext;
+
+struct HCdvdFileContext
+{
+    u32 reserved00;
+    u32 count;
+    u8 reserved08[0x0c];
+    void* callback14;
+    void* callback18;
+    u8 reserved1c[0x0c];
+    void* callback28;
+    void* callback2c;
+    void* callback30;
+    void* callback34;
+    void* callback38;
+    u8 reserved3c[8];
+    void* callback44;
+    u8 reserved48[4];
+    void* callback4c;
+    u8 reserved50[8];
+    u8* slots;
+};
+
+static s64* H_Cdvd_FilePosition(void* slot)
+{
+    return (s64*)((u8*)slot + 0x10);
+}
+
+// FUN_00102900 NONMATCHING
+s32 func_00102900(void* unused, void* slot, const char* path, u32 flags)
+{
+    char uppercasePath[256];
+    u32 openFlags = 0;
+    s32 fd;
+
+    (void)unused;
+    if (path == NULL)
+    {
+        return 2;
+    }
+    func_00505e48("CDVD open %s", path);
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    if ((flags & 1) != 0 && (flags & 2) != 0)
+    {
+        openFlags |= 3;
+    }
+    else
+    {
+        if ((flags & 1) != 0)
+        {
+            openFlags |= 1;
+        }
+        if ((flags & 2) != 0)
+        {
+            openFlags |= 2;
+        }
+    }
+    if ((flags & 4) != 0)
+    {
+        openFlags |= 0x200;
+    }
+    if ((flags & 2) != 0 && (flags & 8) == 0)
+    {
+        openFlags |= 0x400;
+    }
+
+    *(u32*)((u8*)slot + 0x30) = 0;
+    *H_Cdvd_FilePosition(slot) = 0;
+    fd = func_00508670(uppercasePath, openFlags, 0x1ff);
+    *(s32*)((u8*)slot + 0x74) = fd;
+    if (fd < 0)
+    {
+        return 3;
+    }
+    *H_Cdvd_FilePosition(slot) = func_00508a78(fd, 0, 2);
+    func_00508a78(fd, 0, 0);
+    *(u32*)((u8*)slot + 0x3c) = 1;
+    return 1;
+}
+
+// FUN_00102a70 NONMATCHING
+void func_00102a70(void* slot)
+{
+    func_00505e48("CDVD close");
+    *(u32*)((u8*)slot + 0x38) = 1;
+    func_00508900(*(s32*)((u8*)slot + 0x74));
+    func_0050a888("VOL:\\");
+}
+
+// FUN_00102ad0 NONMATCHING
+s32 func_00102ad0(void* slot, void* dst, u32 size)
+{
+    s32 amount;
+
+    func_00505e48("CDVD read");
+    amount = func_00508cb8(*(s32*)((u8*)slot + 0x74), dst, size);
+    if (amount < 0)
+    {
+        return 0;
+    }
+    *(u32*)((u8*)slot + 0x38) = 3;
+    *H_Cdvd_FilePosition(slot) += amount;
+    return amount;
+}
+
+// FUN_00102b60 NONMATCHING
+s32 func_00102b60(void* slot, void* dst, u32 size)
+{
+    s32 amount;
+
+    func_00505e48("CDVD read direct");
+    amount = func_00508f28(*(s32*)((u8*)slot + 0x74), dst, size);
+    if (amount >= 0)
+    {
+        *H_Cdvd_FilePosition(slot) += amount;
+    }
+    return amount < 0 ? 0 : amount;
+}
+
+// FUN_00102bf0 NONMATCHING
+void func_00102bf0(void* resultData, void* slot,
+                   s32 amount, s32 mode)
+{
+    HCdvdStreamPosition* result = (HCdvdStreamPosition*)resultData;
+    s64 position;
+
+    func_00505e48("CDVD seek");
+    position = *H_Cdvd_FilePosition(slot);
+    if (mode == 1)
+    {
+        position = amount;
+    }
+    else if (mode == 2)
+    {
+        position += amount;
+    }
+    else if (mode == 3)
+    {
+        position -= amount;
+    }
+    else
+    {
+        position = -1;
+        result->position = position;
+        result->unused0 = 0;
+        result->unused1 = 0;
+        return;
+    }
+    if (position < 0)
+    {
+        position = 0;
+    }
+    *H_Cdvd_FilePosition(slot) = position;
+    func_00508a78(*(s32*)((u8*)slot + 0x74), (s32)position, 0);
+    result->position = position;
+    result->unused0 = 0;
+    result->unused1 = 0;
+}
+
+// FUN_00102d10 NONMATCHING
+s32 func_00102d10(void* unused, const char* path)
+{
+    char uppercasePath[256];
+    s32 fd;
+
+    (void)unused;
+    H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    fd = func_00508670(uppercasePath, 1, 0);
+    if (fd >= 0)
+    {
+        func_00508900(fd);
+        return 1;
+    }
+    return 0;
+}
+
+// FUN_00102d90 NONMATCHING
+void* func_00102d90(void* contextData, u32 index)
+{
+    HCdvdFileContext* context = (HCdvdFileContext*)contextData;
+    if (index >= context->count)
+    {
+        return NULL;
+    }
+    return context->slots + index * 0x90;
+}
+
+// FUN_00102e00
+void func_00102e00(void* contextData)
+{
+    HCdvdFileContext* context = (HCdvdFileContext*)contextData;
+    func_00505e48("CDVD file context cleanup");
+    HCDVD_FREE(context->slots);
+}
+
+// FUN_00102e50 NONMATCHING
+void* func_00102e50(s32 count, void* source, s32 stride,
+                                 void* callbackData, void* key)
+{
+    HCdvdFileContext* context;
+    s32 i;
+
+    if (func_004bfd50(key) != NULL)
+    {
+        return NULL;
+    }
+
+    context = (HCdvdFileContext*)HCDVD_ALLOC(1, 0x5c, 0x40000);
+    if (context == NULL)
+    {
+        return NULL;
+    }
+    context->callback14 = (void*)func_00102d90;
+    context->callback18 = (void*)func_00102e00;
+    context->callback28 = (void*)func_00102900;
+    context->callback2c = (void*)func_00102a70;
+    context->callback30 = (void*)func_00102ad0;
+    context->callback34 = (void*)func_00102b60;
+    context->callback38 = (void*)func_00102bf0;
+    context->callback44 = (void*)func_001028d0;
+    context->callback4c = (void*)func_00102d10;
+    context->count = count;
+    context->slots = (u8*)HCDVD_ALLOC(count, 0x90, 0x40000);
+    if (context->slots == NULL)
+    {
+        return context;
+    }
+    for (i = 0; i < count; i++)
+    {
+        u8* slot = context->slots + i * 0x90;
+        *(void**)(slot + 0x50) = context;
+        *(u8**)(slot + 0x68) = (u8*)source + i * stride;
+        *(u32*)(slot + 0x6c) = stride;
+    }
+    if (func_004bf6e0(context, count, key, callbackData) != 1)
+    {
+        printf("CDVD file context registration failed: %d\n", count);
+    }
+    return context;
 }

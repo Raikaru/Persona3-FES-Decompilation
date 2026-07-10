@@ -1,27 +1,287 @@
 #include "Kosaka/Field/k_dungeon.h"
 #include "Kosaka/k_data.h"
+#include "Kosaka/Field/k_field.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Main/g_data.h"
+#include "Scene/mt_scene.h"
+#include "Scene/resrcManager.h"
 #include "Graphics/Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
 #include "h_cdvd.h"
+#include "Main/admini.h"
+#include "Kosaka/k_sequence.h"
+#include "Kosaka/Field/k_unit.h"
+#include "Script/scrTraceCode.h"
 
 KwlnTask* gDungeonTask; // 007ce268. NULL when not in tartarus. Task name = "automatic dungeon"
 Model* gDungeonTpMdl;   // 007ce280. FOBJ000.RMD, model for the teleport pad. Maybe a cache ?
 
 #define DUNGEON_GET_WORK() ((FldDungeon*)gDungeonTask->workData)
 
+static HCdvd* sDngBtlEffectCdvd; // 007ce258. field/btl_effect/btl_eff.pac
+
+extern void* D_0086BDC0[];
+extern u32 D_0086E580[];
+extern u32 D_0086E694[];
+extern u32 D_006833C0[];
+extern void* DAT_0096017c[];
+extern void* DAT_00960184[];
+
 HCdvd* K_FldDungeon_RequestScript();
 void K_FldDungeon_DestroyScrMemory();
-u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd);
-
+u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd);
 void K_FldDungeon_FUN_001c03f0();
+
+s32 func_001bf340(FldDungeonFloorData* floorData);
+u32 func_001c0440(void);
+u32 func_001c0740(void);
+void func_001c07f0(void);
+KwlnTask* func_001a9080(KwlnTask* parentTask, const char* path, s32 param_3, HCdvd* cdvd);
+u32 func_001a9180(KwlnTask* eplTask);
+s32 func_001a91b0(KwlnTask* eplTask, void* data);
+KwlnTask* func_001ba5f0(KwlnTask* parentTask, u16 majorId, u16 minorId, u16 param_4,
+                         u16 param_5, u16 param_6, u32 flags, u8 param_8, u8 param_9,
+                         s16 param_10, s32 param_11, s32 param_12, s32 param_13,
+                         s32 param_14);
+void func_001baa50(KwlnTask* fldRootTask, u32 enabled);
+KwlnTask* func_00447e70(KwlnTask* parentTask, u8 param_2, u8 param_3);
+void func_001b3c90(void* resource);
+
+extern void func_001d4180(void);
+extern void* func_001a9470(void* resource);
+extern void* func_00195020(void* task);
+extern void* func_001ad050(void* clump, const RwV3d* center,
+                           const RwV3d* extents, void* result);
+extern void* func_001ad220(void* object, const RwV3d* point, void* result);
+extern void* func_00198590(void);
+extern void* func_004cb2f0(void* camera);
+extern void func_004c69f0(RwV3d* out, const RwV3d* in);
+extern void* func_00318b00(void* model);
+extern void* func_00318b80(void* model);
+extern void* kwlnGetMainCamera(void);
 
 // FUN_001bf570
 void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
 {
-    // TODO
+    FldDungeon* dungeon;
+    char eplPath[48];
+    u8 effectData[12];
+    u8 reloadEffectData[12];
+    u32 i;
+    u8* effectDataPtr;
+    s32 j;
+
+    dungeon = (FldDungeon*)dungeonTask->workData;
+
+    switch (dungeon->state)
+    {
+        case FLDDUNGEON_STATE_INITIALIZE:
+            if (gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl))
+            {
+                break;
+            }
+
+            if (!K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
+            {
+                break;
+            }
+
+            dungeon->scrCdvd = NULL;
+            if (!func_001c0440())
+            {
+                break;
+            }
+
+            if (!func_001c0740())
+            {
+                break;
+            }
+
+            dungeon->floorsData = gFldDngFloorsData;
+            j = dungeon->currFloor << 4;
+            if (*(u8*)(j + (s32)dungeon->floorsData + 0x1d) < 0xff)
+            {
+                sprintf(eplPath, "field/effect/DNG%02d.EPL",
+                        *(u8*)(j + (s32)dungeon->floorsData + 0x0d));
+                dungeon->effectEplTask = func_001a9080(dungeonTask, eplPath, -1, NULL);
+            }
+            else
+            {
+                dungeon->effectEplTask = NULL;
+            }
+
+            dungeon->state++;
+
+        case FLDDUNGEON_STATE_WAIT_EFFECT:
+            effectDataPtr = effectData;
+            j = 12;
+            if (effectDataPtr != NULL)
+            {
+                do
+                {
+                    *effectDataPtr++ = 0;
+                    j--;
+                } while (j != 0);
+            }
+            if (dungeon->effectEplTask != NULL)
+            {
+                if (!func_001a9180(dungeon->effectEplTask))
+                {
+                    break;
+                }
+
+                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, effectData);
+            }
+
+            dungeon->state++;
+
+        case FLDDUNGEON_STATE_CREATE_FIELD:
+            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
+            D_0086E580[0] = 0;
+            dungeon->fieldFlags = dungeon->floorsData[dungeon->currFloor].fieldFlags | 0x80000000;
+            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
+                                                  dungeon->floorsData[dungeon->currFloor].majorId,
+                                                  dungeon->floorsData[dungeon->currFloor].minorId,
+                                                  (u16)dungeon->unk_08,
+                                                  0,
+                                                  0,
+                                                  dungeon->fieldFlags,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
+                                                  -1,
+                                                  -1,
+                                                  -1,
+                                                  -1);
+            dungeon->fieldFlags = 0;
+
+            i = 0;
+            while (i < 6)
+            {
+                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
+                    dungeon->currFloor == D_006833C0[i])
+                {
+                    break;
+                }
+                i++;
+            }
+
+            if (i < 6)
+            {
+                func_001baa50(dungeon->fldRootTask, true);
+                datSetFlag(0x1421, true);
+                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
+                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
+            }
+            else
+            {
+                dungeon->state++;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_IDLE:
+            if (dungeon->shouldShutdown == true)
+            {
+                dungeon->state = FLDDUNGEON_STATE_STOP;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_UNK_04:
+        case FLDDUNGEON_STATE_UNK_05:
+        case FLDDUNGEON_STATE_UNK_06:
+            dungeon->state++;
+            break;
+
+        case FLDDUNGEON_STATE_RELOAD_FIELD:
+            effectDataPtr = reloadEffectData;
+            j = 12;
+            if (effectDataPtr != NULL)
+            {
+                do
+                {
+                    *effectDataPtr++ = 0;
+                    j--;
+                } while (j != 0);
+            }
+
+            if ((gDungeonTpMdl != NULL && !mdlStreamRead(gDungeonTpMdl)) ||
+                !K_FldDungeon_CreateScrMemory(dungeon->scrCdvd))
+            {
+                break;
+            }
+
+            dungeon->scrCdvd = NULL;
+            if (!func_001c0440() || !func_001c0740())
+            {
+                break;
+            }
+
+            if (dungeon->effectEplTask != NULL)
+            {
+                if (!func_001a9180(dungeon->effectEplTask))
+                {
+                    break;
+                }
+
+                dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, reloadEffectData);
+            }
+
+            dungeon->encounterResult = func_001bf340(&dungeon->floorsData[dungeon->currFloor]);
+            D_0086E580[0] = 0;
+            dungeon->fieldFlags |= dungeon->floorsData[dungeon->currFloor].fieldFlags;
+            dungeon->fldRootTask = func_001ba5f0(dungeonTask,
+                                                  dungeon->floorsData[dungeon->currFloor].majorId,
+                                                  dungeon->floorsData[dungeon->currFloor].minorId,
+                                                  (u16)dungeon->unk_08,
+                                                  0,
+                                                  0,
+                                                  dungeon->fieldFlags,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_06,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_07,
+                                                  dungeon->floorsData[dungeon->currFloor].unk_04,
+                                                  -1,
+                                                  -1,
+                                                  -1,
+                                                  -1);
+            dungeon->fieldFlags = 0;
+
+            i = 0;
+            while (i < 6)
+            {
+                if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY &&
+                    dungeon->currFloor == D_006833C0[i])
+                {
+                    break;
+                }
+                i++;
+            }
+
+            if (i < 6)
+            {
+                func_001baa50(dungeon->fldRootTask, true);
+                datSetFlag(0x1421, true);
+                dungeon->transitionTask = func_00447e70(dungeonTask, 0, 0);
+                dungeon->state = FLDDUNGEON_STATE_WAIT_TRANSITION;
+            }
+            else
+            {
+                dungeon->state = FLDDUNGEON_STATE_IDLE;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_WAIT_TRANSITION:
+            if (kwlnTaskExists(dungeon->transitionTask) != true)
+            {
+                datSetFlag(0x1421, false);
+                func_001baa50(dungeon->fldRootTask, false);
+                dungeon->state = FLDDUNGEON_STATE_IDLE;
+            }
+            break;
+
+        case FLDDUNGEON_STATE_STOP:
+            return KWLNTASK_STOP;
+    }
 
     return KWLNTASK_CONTINUE;
 }
@@ -29,7 +289,30 @@ void* K_FldDungeon_UpdateTask(KwlnTask* dungeonTask)
 // FUN_001bfaf0
 void K_FldDungeon_DestroyTask(KwlnTask* dungeonTask)
 {
-    // TODO
+    s32 i;
+
+    func_001c07f0();
+    K_FldDungeon_DestroyScrMemory();
+    gDungeonTask = NULL;
+    gMtScene->fldMajorId = 0;
+
+    for (i = 0; i < 9; i++)
+    {
+        if (D_0086BDC0[i] != NULL)
+        {
+            func_001b3c90(D_0086BDC0[i]);
+            D_0086BDC0[i] = NULL;
+        }
+    }
+
+    if (gDungeonTpMdl != NULL)
+    {
+        mdlDestroy(gDungeonTpMdl);
+        gDungeonTpMdl = NULL;
+        D_0086E694[0] = 0;
+    }
+
+    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(dungeonTask->workData);
 }
 
 // FUN_001bfbc0
@@ -171,9 +454,10 @@ HCdvd* K_FldDungeon_RequestScript()
 }
 
 // FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory' NONMATCHING
-u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
+u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 {
     FldDungeon* dungeon;
+    u32 fileSize;
 
     if (gDungeonTask == NULL)
     {
@@ -188,9 +472,8 @@ u8 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 
     if (H_Cdvd_IsFileLoaded(scrCdvd))
     {
-        // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
-
-        dungeon->scrMemory = RwCalloc(1, scrCdvd->fileSize, rwMEMHINTDUR_GLOBAL);
+        fileSize = scrCdvd->fileSize;
+        dungeon->scrMemory = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, fileSize, rwMEMHINTDUR_GLOBAL);
         dungeon->scrSize = scrCdvd->fileSize;
         memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
 
@@ -238,5 +521,651 @@ HCdvd* K_FldDungeon_RequestBlockScript(u32 blockId)
 // FUN_001c03f0
 void K_FldDungeon_FUN_001c03f0()
 {
-    // TODO
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL && sDngBtlEffectCdvd == NULL)
+    {
+        sDngBtlEffectCdvd = H_Cdvd_Request("field/btl_effect/btl_eff.pac", HCDVD_FILEARCHIVE);
+    }
+}
+
+// FUN_001bfcc0 NONMATCHING
+void func_001bfcc0(void)
+{
+    FldDungeon* dungeon;
+    FldDungeonFloorData* floorData;
+    char eplPath[48];
+    s32 i;
+
+    if (gDungeonTask == NULL)
+    {
+        return;
+    }
+
+    dungeon = DUNGEON_GET_WORK();
+    dungeon->unk_08 = 0;
+    func_001a9470(*(void**)((u8*)K_Field_Get() + 0x1200));
+    func_001d4180();
+    floorData = &dungeon->floorsData[dungeon->currFloor];
+    if (floorData->effectId == floorData[1].effectId)
+    {
+        if (dungeon->effectEplTask != NULL)
+        {
+            func_001a9400(dungeon->effectEplTask, dungeon->effectEplSlot);
+        }
+    }
+    else
+    {
+        if (dungeon->effectEplTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(dungeon->effectEplTask);
+        }
+        if (floorData->effectId < 0xff)
+        {
+            sprintf(eplPath, "field/effect/DNG%02d.EPL", floorData->effectId);
+            dungeon->effectEplTask = func_001a9080(
+                gDungeonTask, eplPath, -1, NULL);
+        }
+        else
+        {
+            dungeon->effectEplTask = NULL;
+        }
+    }
+
+    if (dungeon->currFloor + 1 > 1)
+    {
+        if (gDungeonTpMdl == NULL)
+        {
+            gDungeonTpMdl = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
+                                               "field/grmd/fobj000.RMD",
+                                               MDL_READASYNC);
+        }
+        dungeon->scrCdvd = K_FldDungeon_RequestScript();
+        K_FldDungeon_FUN_001c03f0();
+    }
+
+    floorData = &dungeon->floorsData[dungeon->currFloor];
+    if (floorData->majorId != floorData[1].majorId ||
+        floorData->minorId != floorData[1].minorId)
+    {
+        dungeon->fieldFlags |= 0x80000000;
+        if (K_Scene_001a0250() == true || func_001a02c0() == true)
+        {
+            for (i = 0; i < 9; i++)
+            {
+                if (D_0086BDC0[i] != NULL)
+                {
+                    func_001b3c90(D_0086BDC0[i]);
+                    D_0086BDC0[i] = NULL;
+                }
+            }
+        }
+    }
+
+    dungeon->currFloor++;
+    if (dungeon->fldRootTask != NULL)
+    {
+        K_Field_SetShouldShutdown(dungeon->fldRootTask, true);
+    }
+    dungeon->state = FLDDUNGEON_STATE_UNK_04;
+}
+
+// FUN_001c0040
+u32 func_001c0040(void)
+{
+    if (gDungeonTask == NULL)
+    {
+        return 0;
+    }
+    return DUNGEON_GET_WORK()->encounterResult;
+}
+
+// FUN_001c0070
+f32 func_001c0070(void)
+{
+    f32 result;
+    s32 encounterResult;
+
+    result = 1.0f;
+    if (gDungeonTask == NULL)
+    {
+        encounterResult = 0;
+    }
+    else
+    {
+        encounterResult = DUNGEON_GET_WORK()->encounterResult;
+    }
+    switch (encounterResult)
+    {
+        case 1:
+        case 3:
+            result = 2.0f;
+            break;
+        default:
+            break;
+    }
+    return result;
+}
+
+// FUN_001c00d0
+void func_001c00d0(void)
+{
+    if (gDungeonTask != NULL && DUNGEON_GET_WORK()->effectEplTask != NULL)
+    {
+        func_001a9400(DUNGEON_GET_WORK()->effectEplTask,
+                      DUNGEON_GET_WORK()->effectEplSlot);
+    }
+}
+
+// FUN_001c0110
+void func_001c0110(void)
+{
+    FldDungeon* dungeon;
+    u8 data[12];
+    u8* dataPtr;
+    s32 i;
+
+    if (gDungeonTask == NULL)
+    {
+        return;
+    }
+    dungeon = DUNGEON_GET_WORK();
+    if (dungeon->effectEplTask == NULL)
+    {
+        return;
+    }
+    dataPtr = data;
+    i = sizeof(data);
+    if (dataPtr != NULL)
+    {
+        do
+        {
+            *dataPtr = 0;
+            dataPtr++;
+            i--;
+        } while (i != 0);
+    }
+    dungeon->effectEplSlot = func_001a91b0(dungeon->effectEplTask, data);
+}
+
+// FUN_001c03b0
+u32 func_001c03b0(HCdvd* cdvd)
+{
+    if (cdvd == NULL)
+    {
+        return true;
+    }
+    return H_Cdvd_IsFileLoaded(cdvd) != false;
+}
+
+// FUN_001c0440
+u32 func_001c0440(void)
+{
+    if (sDngBtlEffectCdvd == NULL)
+    {
+        return true;
+    }
+    if (!H_Cdvd_IsFileLoaded(sDngBtlEffectCdvd))
+    {
+        return false;
+    }
+
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4) =
+            func_001a9080(NULL, "field/effect/DNG_BTL.EPL", 30,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11f8) =
+            func_001a9080(NULL, "field/effect/DNG_BTL2.EPL", -1,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x11fc) =
+            func_001a9080(NULL, "field/effect/DNG_BTL3.EPL", 60,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1200) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1200) =
+            func_001a9080(NULL, "field/effect/DNG_BTL4.EPL", -1,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1204) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1204) =
+            func_001a9080(NULL, "field/effect/DNG_BTL5.EPL", 40,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1208) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1208) =
+            func_001a9080(NULL, "field/effect/DNG_BTL6.EPL", 30,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x120c) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x120c) =
+            func_001a9080(NULL, "field/effect/DNG_BTL7.EPL", 40,
+                          sDngBtlEffectCdvd);
+    }
+    if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
+    {
+        return true;
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1210) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1210) =
+            func_001a9080(NULL, "field/effect/DNG_BTL8.EPL", 8,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1214) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1214) =
+            func_001a9080(NULL, "field/effect/DNG_BTL9.EPL", 20,
+                          sDngBtlEffectCdvd);
+    }
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1218) == NULL)
+    {
+        *(KwlnTask**)((u8*)K_Field_Get() + 0x1218) =
+            func_001a9080(NULL, "field/effect/DNG_BTL10.EPL", 50,
+                          sDngBtlEffectCdvd);
+    }
+    return true;
+}
+
+// FUN_001c0740
+u32 func_001c0740(void)
+{
+    s32 i;
+
+    for (i = 0; i < 10; i++)
+    {
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL &&
+            !func_001a9180(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4)))
+        {
+            return false;
+        }
+    }
+    if (sDngBtlEffectCdvd != NULL)
+    {
+        H_Cdvd_Destroy(sDngBtlEffectCdvd);
+        sDngBtlEffectCdvd = NULL;
+    }
+    return true;
+}
+
+// FUN_001c07f0 NONMATCHING
+void func_001c07f0(void)
+{
+    s32 i;
+
+    for (i = 0; i < 10; i++)
+    {
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(
+                *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4));
+            *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) = NULL;
+        }
+    }
+}
+
+// FUN_001c0920
+void func_001c0920(KwlnTask* task)
+{
+    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x20) = 0;
+    ((void (*)(void*))DAT_0096017c[0])(task->workData);
+}
+
+static void dungeonSetAlpha(Model* model, u8 alpha)
+{
+    RwRGBA color;
+
+    if (model == NULL)
+    {
+        return;
+    }
+    color = *mdlGetColor(model);
+    color.a = alpha;
+    mdlSetColor(model, &color);
+}
+
+// FUN_001c0960 NONMATCHING
+void* func_001c0960(KwlnTask* task)
+{
+    u8* work;
+    Model* model;
+    RwRGBA color;
+    f32 current;
+    f32 target;
+    u8 alpha;
+
+    work = (u8*)task->workData;
+    model = *(Model**)(work + 0x104);
+    color = *mdlGetColor(model);
+    if (*(u32*)work == 1)
+    {
+        return KWLNTASK_STOP;
+    }
+    if (*(u32*)work == 0)
+    {
+        current = (f32)color.a / 255.0f;
+        target = *(f32*)(work + 0x0c);
+        if (*(u32*)(work + 0x08) == 0)
+        {
+            alpha = (u8)(target * 255.0f);
+            *(u32*)work = 1;
+        }
+        else
+        {
+            current += (target - current) / (f32)*(u32*)(work + 0x08);
+            alpha = (u8)(current * 255.0f);
+            *(u32*)(work + 0x08) -= 1;
+        }
+        dungeonSetAlpha(model, alpha);
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001c0d30
+void func_001c0d30(KwlnTask* task)
+{
+    *(u32*)((u8*)*(void**)((u8*)task->workData + 4) + 0x108) = 0;
+    ((void (*)(void*))DAT_0096017c[0])(task->workData);
+}
+
+// FUN_001c0d70 NONMATCHING
+void* func_001c0d70(KwlnTask* task)
+{
+    Resrc* resource;
+    KwlnTask* child;
+    Model* model;
+    RwRGBA color;
+    u8 alpha;
+    u32 fadeFrames;
+    u8* work;
+
+    work = (u8*)task->workData;
+    if (*(u32*)work == 1)
+    {
+        return KWLNTASK_STOP;
+    }
+
+    resource = MT_Scene_GetResListHead(RESRC_TYPE_MODELCHAR);
+    while (resource != NULL)
+    {
+        model = *(Model**)((u8*)resource + 0x128);
+        if ((resource->flags & 2) != 0 && model != NULL)
+        {
+            color = *mdlGetColor(model);
+            alpha = color.a;
+            fadeFrames = (alpha == 0) ? 5 : 10;
+            if (*(KwlnTask**)((u8*)resource + 0x1e0) == NULL)
+            {
+                child = kwlnTaskCreateWithAutoPriority(
+                    task, 10, "field model alpha", func_001c0960,
+                    func_001c0d30, resource);
+                if (child != NULL)
+                {
+                    *(KwlnTask**)((u8*)resource + 0x108) = child;
+                    *(u32*)((u8*)resource + 0x10c) = fadeFrames;
+                    *(f32*)((u8*)child->workData + 0x0c) =
+                        (alpha == 0) ? 0.0f : 1.0f;
+                }
+            }
+        }
+        resource = resource->next;
+    }
+
+    resource = MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    while (resource != NULL)
+    {
+        model = *(Model**)((u8*)resource + 0x128);
+        if ((resource->flags & 2) != 0 && model != NULL)
+        {
+            color = *mdlGetColor(model);
+            alpha = color.a;
+            if (*(KwlnTask**)((u8*)resource + 0x108) == NULL &&
+                ((alpha == 0 && resource->unk_20 == 0.0f) ||
+                 (alpha == 255 && resource->unk_20 == 1.0f)))
+            {
+                child = kwlnTaskCreateWithAutoPriority(
+                    task, 10, "field npc alpha", func_001c0960,
+                    func_001c0920, resource);
+                if (child != NULL)
+                {
+                    *(KwlnTask**)((u8*)resource + 0x108) = child;
+                    *(u32*)((u8*)resource + 0x10c) = (alpha == 0) ? 10 : 5;
+                    *(f32*)((u8*)child->workData + 0x0c) =
+                        (alpha == 0) ? 0.0f : 1.0f;
+                }
+            }
+        }
+        resource = resource->next;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
+extern void func_001c1e20(KwlnTask* transWallTask);
+extern void func_0017f8d0(void);
+extern void func_001d0270(void);
+extern void func_00171b50(u32 socialLink);
+
+// 0x20c bytes. The transition controller keeps its collision-controller task
+// at offset 0x204; the remaining tail is reserved by the retail work layout.
+typedef struct
+{
+    u8 unkData[0x204];
+    KwlnTask* collisionTask;
+    u8 reserved[4];
+} TransWallCtlWork;
+
+// 28-byte payload used when switching to the field sequence.
+typedef struct
+{
+    u16 unk_00;
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06;
+    u16 unk_08;
+    u8 unkData[0x12];
+} FieldSequenceData;
+
+// 28-byte payload used when switching to the social-link event sequence.
+typedef struct
+{
+    u8 unkData[0x0c];
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} SocialLinkSequenceData;
+
+#define DUNGEON_SEQUENCE_FLAG (*(u32*)((u8*)&gDungeonTask + 4)) // 007ce26c
+
+// FUN_001C1F30
+KwlnTask* FUN_001c1f30(KwlnTask* parentTask, KwlnTask* collisionTask)
+{
+    KwlnTask* task;
+    TransWallCtlWork* work;
+    void* camera;
+    RwV3d collisionPosition;
+
+    work = (TransWallCtlWork*)((void* (*)(u32, u32, u32))DAT_00960184[0])(
+        1, sizeof(TransWallCtlWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parentTask,
+                                          0x83d,
+                                          "trans wall CTL",
+                                          func_001c0d70,
+                                          func_001c1e20,
+                                          work);
+    work->collisionTask = collisionTask;
+
+    camera = kwlnGetMainCamera();
+    func_004cb2f0(*(void**)((u8*)camera + 4));
+    K_FldFrame_CtlCopyPos(&collisionPosition, collisionTask);
+
+    return task;
+}
+
+// FUN_001C2000
+void FUN_001c2000(KwlnTask* transWallTask, KwlnTask* collisionTask)
+{
+    TransWallCtlWork* work;
+
+    work = (TransWallCtlWork*)transWallTask->workData;
+    work->collisionTask = collisionTask;
+}
+
+// FUN_001C2010
+u32 FUN_001c2010(void)
+{
+    FieldSequenceData data;
+
+    func_0017f8d0();
+    memset(&data, 0, sizeof(data));
+    data.unk_00 = (u16)scrGetIntPara(0);
+    data.unk_02 = (u16)scrGetIntPara(1);
+    data.unk_04 = (u16)scrGetIntPara(2);
+    data.unk_08 = (u16)scrGetIntPara(3);
+    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
+    func_001d0270();
+
+    return true;
+}
+
+// FUN_001C20B0
+u32 FUN_001c20b0(void)
+{
+    FieldSequenceData data;
+
+    gMtScene->unk_14 = -1;
+    func_0017f8d0();
+    memset(&data, 0, sizeof(data));
+    data.unk_00 = (u16)scrGetIntPara(0);
+    data.unk_02 = (u16)scrGetIntPara(1);
+    data.unk_04 = (u16)scrGetIntPara(2);
+    data.unk_08 = (u16)scrGetIntPara(3);
+    adminiChangeSeq(ADMINI_SEQ_FIELD, &data, 0x1c, false);
+    func_001d0270();
+
+    return true;
+}
+
+// FUN_001C2160 NONMATCHING
+u32 FUN_001c2160(void)
+{
+    SocialLinkSequenceData data;
+    u32 cmdTimer;
+
+    datSetActiveSocialLink(0xff);
+    memset(&data, 0, sizeof(data));
+    data.unk_0c = (u32)scrGetIntPara(0);
+    data.unk_10 = (u32)scrGetIntPara(1);
+    data.unk_14 = (u32)scrGetIntPara(2);
+
+    cmdTimer = scrGetCmdTimer();
+    if (cmdTimer == 0)
+    {
+        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+    }
+    else if (cmdTimer > 10)
+    {
+        if (adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
+            adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
+// FUN_001C2240 NONMATCHING
+u32 FUN_001c2240(void)
+{
+    SocialLinkSequenceData data;
+    u32 socialLink;
+    u32 cmdTimer;
+
+    socialLink = (u32)scrGetIntPara(3);
+    datSetActiveSocialLink((u16)socialLink);
+    memset(&data, 0, sizeof(data));
+    data.unk_0c = (u32)scrGetIntPara(0);
+    data.unk_10 = (u32)scrGetIntPara(1);
+    data.unk_14 = (u32)scrGetIntPara(2);
+
+    cmdTimer = scrGetCmdTimer();
+    if (cmdTimer == 0)
+    {
+        adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+    }
+    else if (cmdTimer > 10)
+    {
+        if (adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
+            adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
+        {
+            func_00171b50(socialLink);
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
+// FUN_001C2340
+u32 FUN_001c2340(void)
+{
+    SeqDungeon data;
+
+    func_0017f8d0();
+    data.floor = (u32)scrGetIntPara(0);
+    data.unk_04 = 0;
+    if (data.floor == 1)
+    {
+        DUNGEON_SEQUENCE_FLAG = 1;
+    }
+    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
+    func_001d0270();
+
+    return true;
+}
+
+// FUN_001C23B0
+u32 FUN_001c23b0(void)
+{
+    SeqDungeon data;
+    s32 i;
+    KwlnTask* task;
+
+    func_0017f8d0();
+    data.floor = (u32)scrGetIntPara(0);
+    data.unk_04 = (u32)scrGetIntPara(1);
+    if (data.floor == 1)
+    {
+        DUNGEON_SEQUENCE_FLAG = 1;
+    }
+    adminiChangeSeq(ADMINI_SEQ_DUNGEON, &data, sizeof(data), false);
+
+    for (i = 0; i < FLDUNIT_PC_MAX; i++)
+    {
+        task = *(KwlnTask**)((u8*)gFldUnitsPc + i * sizeof(FldUnit) + 0x16c);
+        if (task != NULL)
+        {
+            kwlnTaskEnableFlags(task, KWLNTASK_FLAG_SUSPENDED, 0);
+        }
+    }
+
+    return true;
 }

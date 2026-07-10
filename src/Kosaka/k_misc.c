@@ -1,9 +1,23 @@
+#include "Main/g_data.h"
+#include "datCalendar.h"
+#include "libm.h"
 #include "Kosaka/k_misc.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
 #include "rw/rwplcore.h"
+#include "rw/rpusrdat.h"
+#include "temporary.h"
+typedef struct RmdFadeWork
+{
+    u32 unk_00;             // 0x00
+    Model* mdl;             // 0x04
+    f32 targetAlpha;        // 0x08
+    f32 currentAlpha;       // 0x0c
+    s32 framesRemaining;    // 0x10
+} RmdFadeWork;
+
 
 // FUN_001a5c50
 u32 K_Misc_FindNextFreeResId(u16 resType)
@@ -28,6 +42,115 @@ u32 K_Misc_FindNextFreeResId(u16 resType)
 
     return (u16)currId;
 }
+// FUN_001A5CD0 NONMATCHING
+void func_001a5cd0(void)
+{
+    u8 usePrimaryFlag;
+    u8 inFirstDateRange;
+    u8 inSecondDateRange;
+    u8 inThirdDateRange;
+
+    usePrimaryFlag = true;
+    if (clndIsHolidayOrSunday() == true)
+    {
+        inFirstDateRange = clndIsDateInRange(7, 0x1b, 8, 2) == true;
+        inSecondDateRange = clndIsDateInRange(8, 10, 8, 0xf) == true;
+        inThirdDateRange = clndIsDateInRange(0xb, 0x11, 0xb, 0x14) == true;
+        usePrimaryFlag = inFirstDateRange || inSecondDateRange || inThirdDateRange;
+    }
+
+    if (usePrimaryFlag == true)
+    {
+        datSetFlag(0xa88, true);
+        datSetFlag(0xa89, false);
+    }
+    else
+    {
+        datSetFlag(0xa88, false);
+        datSetFlag(0xa89, true);
+    }
+}
+
+// FUN_001A5F30 NONMATCHING
+void* func_001a5f30(KwlnTask* rmdFadeTask)
+{
+    RmdFadeWork* work;
+    RwRGBA color;
+
+    work = (RmdFadeWork*)rmdFadeTask->workData;
+    (void)sinf((3.14159274f * (f32)work->framesRemaining) / 30.0f);
+
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    if (work->framesRemaining < 1)
+    {
+        color.a = (u8)(s32)work->targetAlpha;
+        mdlSetColor(work->mdl, &color);
+        return KWLNTASK_STOP;
+    }
+
+    work->currentAlpha +=
+        (work->targetAlpha - work->currentAlpha) / (f32)work->framesRemaining;
+    color.a = (u8)(s32)work->currentAlpha;
+    mdlSetColor(work->mdl, &color);
+    work->framesRemaining--;
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001A60A0
+void func_001a60a0(KwlnTask* rmdFadeTask)
+{
+    RwFree(rmdFadeTask->workData);
+}
+
+// FUN_001A60D0 NONMATCHING
+KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl, u32 targetAlpha, s32 frames)
+{
+    RmdFadeWork* work;
+    KwlnTask* task;
+    RwRGBA color;
+
+    if (mdl == NULL)
+    {
+        return NULL;
+    }
+
+    work = RwCalloc(1, sizeof(RmdFadeWork), rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    task = kwlnTaskCreateWithAutoPriority(parentTask,
+                                          0x106f,
+                                          "rmd fade(kosaka)",
+                                          func_001a5f30,
+                                          func_001a60a0,
+                                          work);
+
+    work->mdl = mdl;
+    work->targetAlpha = (f32)targetAlpha;
+    work->framesRemaining = frames;
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    if (targetAlpha == 0)
+    {
+        work->currentAlpha = 255.0f;
+        color.a = 255;
+    }
+    else
+    {
+        work->currentAlpha = 0.0f;
+        color.a = 0;
+    }
+    mdlSetColor(mdl, &color);
+
+    return task;
+}
+
 
 // FUN_001a5de0
 void* K_Misc_UpdateDelayMdlFreeTask(KwlnTask* delayMdlFreeTask)
@@ -119,4 +242,24 @@ KwlnTask* K_Misc_CreateScrShutdownTask(KwlnTask* scrTask)
     work->scrTask = scrTask;
 
     return task;
+}
+
+// FUN_001a6350 NONMATCHING
+RpUserDataArray* func_001a6350(const RpMaterial* material, const char* name)
+{
+    RpUserDataArray* userData;
+    s32 i;
+
+    userData = NULL;
+    i = 0;
+    while (i < RpMaterialGetUserDataArrayCount(material))
+    {
+        userData = RpMaterialGetUserDataArray(material, i);
+        if (strcmp(RpUserDataArrayGetName(userData), name) == 0)
+        {
+            break;
+        }
+        i++;
+    }
+    return userData;
 }

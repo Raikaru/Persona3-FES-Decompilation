@@ -1,11 +1,52 @@
 #include "Camp/_h_camp_persona.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "libm.h"
 #include "rw/rwplcore.h"
+#include "Camp/h_camp.h"
 
 void* FUN_00122940(KwlnTask*);
 void FUN_00133d30();
 void H_Cdvd_Destroy();
 void FUN_004d0f00();
+extern void (*jtbl_0096017C)(void* memory);
+extern s32 FUN_00174800();
+extern void FUN_00124e00(CampVec2 position, CampVec2 otherPosition,
+                         f32 alpha, void* persona,
+                         s32 mode, s32 frame, s32 fade);
+extern void* FUN_00173220(u16 personaId);
+extern s32 FUN_00173280();
+extern s32 FUN_00176600(void* persona);
+extern s32 FUN_00177790();
+extern s32 FUN_001120a0();
+extern s32 FUN_001159f0(f32 x, f32 y, f32 alpha, ...);
+extern s32 FUN_00114450();
+extern s32 FUN_0011bba0();
+extern s32 FUN_001158b0();
+extern s32 FUN_001127d0();
+extern s32 FUN_00115980();
+extern s32 FUN_001126b0();
+extern s32 FUN_00112740();
+extern void FUN_003b32d0();
+extern void FUN_00523ac8();
+extern KwlnTask* DAT_007cdf60;
+extern void* DAT_00833B78;
+extern void* DAT_00833B90;
+extern void* DAT_00833B88;
+extern char gp0xffff897c[];
+extern void* h_campUpdatePanelTransition(KwlnTask* task);
+
+
+typedef struct CampPersonaKaniWork
+{
+    s32 state;
+    s32 timer;
+    s32 reserved08;
+    s32 command;
+    void* persona;
+    s32 visible;
+    s16 personaId;
+    s16 screen;
+} CampPersonaKaniWork;
 
 // FUN_00122fd0. Destroy callback of the "h_camp_persona_kani_control" task
 void h_campPersonaDestroyKaniControlTask(KwlnTask* task)
@@ -55,4 +96,517 @@ void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task)
         }
     }
     RwFree(workData);
+}
+
+// FUN_00122630
+void FUN_00122630(KwlnTask* task)
+{
+    RwFree(task->workData);
+}
+
+// FUN_00122660
+KwlnTask* FUN_00122660(KwlnTask* parent)
+{
+    CampPanelTransitionWork* work;
+    KwlnTask* task;
+
+    work = RwCalloc(1, sizeof(*work), 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampPanelTransition", 0x18C1,
+                          h_campUpdatePanelTransition, FUN_00122630, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    work->unused_0c = 0;
+    work->drawId = 1;
+    return task;
+}
+
+// FUN_00122710 NONMATCHING
+u32 FUN_00122710(KwlnTask* task, u32 command)
+{
+    CampPanelTransitionWork* work;
+
+    work = task->workData;
+    switch (command) {
+    case 0: case 4: case 5: case 6: case 7: case 8: case 9: case 10:
+        work->state = 5;
+        break;
+    case 1: case 2: case 3:
+        work->state = 1;
+        break;
+    case 11:
+        work->state = 3;
+        break;
+    case 12: case 13: case 14:
+        work->state = 5;
+        break;
+    case 15:
+        work->state = 7;
+        break;
+    case 16:
+        work->state = 9;
+        break;
+    default:
+        work->unused_0c = command;
+        return 1;
+    }
+    work->unused_0c = command;
+    return 1;
+}
+
+// FUN_00122940 NONMATCHING
+void* FUN_00122940(KwlnTask* task)
+{
+    CampPersonaKaniWork* work;
+    s32 alpha;
+    f32 displacement;
+
+    work = task->workData;
+    work->persona = (void*)FUN_00174800(work->personaId);
+    switch (work->state) {
+    case 0:
+        if (work->visible != 0) {
+            if (work->screen == 1) {
+                FUN_00124e00((CampVec2){12.0f, 96.0f}, (CampVec2){12.0f, 96.0f}, 100.0f, work->persona, 1, 0, 0);
+            } else if (work->screen == 0) {
+                FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            }
+        }
+        break;
+    case 1:
+        work->state = 2;
+        work->timer = 0;
+        break;
+    case 2:
+        if (++work->timer == 30) {
+            work->screen = 0;
+            work->state = 0;
+        }
+        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 0, work->timer, 0);
+        work->visible = 1;
+        break;
+    case 3:
+        work->state = 4;
+        work->timer = 0;
+        break;
+    case 4:
+        if (++work->timer == 20) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 0;
+        }
+        alpha = 0xFF - work->timer * 0xFF / 20;
+        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, alpha);
+        break;
+    case 5:
+        if (work->visible == 0) {
+            work->state = 0;
+        } else {
+            work->timer = 0;
+            FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            work->state = 6;
+        }
+        break;
+    case 6:
+        if (++work->timer == 20) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 0;
+        }
+        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0,
+                      work->timer * 0xFF / 20);
+        break;
+    case 7:
+        if (work->visible == 0) {
+            work->state = 0;
+        } else {
+            work->timer = 0;
+            FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            work->state = 8;
+        }
+        break;
+    case 8:
+        if (++work->timer == 8) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 0;
+        }
+        displacement = 30.0f;
+        alpha = 0;
+        if (work->timer > 2) {
+            displacement += (work->timer - 2) * 80.0f;
+            alpha = (work->timer - 2) * 0xFF / 5;
+        }
+        FUN_00124e00((CampVec2){30.0f, displacement}, (CampVec2){30.0f, displacement}, 100.0f, work->persona, 1, 0, alpha);
+        break;
+    case 9:
+        work->state = 10;
+        work->timer = 0;
+        /* fall through */
+    case 10:
+        if (++work->timer == 10) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 1;
+        }
+        displacement = 12.0f + (10 - work->timer) * 40.0f;
+        FUN_00124e00((CampVec2){displacement, displacement}, (CampVec2){displacement, displacement}, 100.0f, work->persona, 1, 0,
+                      0xFF - work->timer * 0xFF / 10);
+        break;
+    case 11:
+        work->state = 12;
+        work->timer = 0;
+        /* fall through */
+    case 12:
+        if (++work->timer == 10) {
+            work->visible = 0;
+            work->state = 0;
+            work->screen = 1;
+        }
+        displacement = 12.0f + work->timer * 80.0f;
+        FUN_00124e00((CampVec2){displacement, displacement}, (CampVec2){displacement, displacement}, 100.0f, work->persona, 1, 0,
+                      work->timer * 0xFF / 10);
+        break;
+    case 13:
+        work->state = 14;
+        work->timer = 0;
+        /* fall through */
+    case 14:
+        if (++work->timer == 20) {
+            work->visible = 1;
+            work->state = 0;
+            work->screen = 0;
+        }
+        alpha = work->timer * 0xFF / 20;
+        FUN_00124e00((CampVec2){12.0f, 96.0f}, (CampVec2){12.0f, 96.0f}, 100.0f, work->persona, 1, 0, alpha);
+        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0xFF - alpha);
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+typedef struct CampPersonaTransitionWork
+{
+    s32 state;
+    s16 mode;
+    s16 timer;
+} CampPersonaTransitionWork;
+
+typedef struct CampPersonaParticle
+{
+    u8 reserved00[0x10];
+    f32 x;
+    f32 y;
+    s8 alpha;
+    u8 reserved19[3];
+    u16 scaleX;
+    u16 scaleY;
+} CampPersonaParticle;
+
+static s32 campPersonaClampFade(s32 fade)
+{
+    if (fade < 0) {
+        return 0;
+    }
+    if (fade > 0xff) {
+        return 0xff;
+    }
+    return fade;
+}
+
+static void campPersonaDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
+{
+    FUN_001120a0(2);
+    FUN_001159f0(x, y, alpha, digit);
+}
+
+static void campPersonaDrawLevel(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
+{
+    u8 level;
+    s32 bright;
+
+    if (persona == NULL) {
+        return;
+    }
+    level = *((u8*)persona + 4);
+    bright = campPersonaClampFade(fade);
+    if (level < 10) {
+        campPersonaDrawDigit(alpha, x + 75.0f, y + 127.0f, level);
+    } else {
+        campPersonaDrawDigit(alpha, x + 67.0f, y + 127.0f, level / 10);
+        campPersonaDrawDigit(alpha, x + 82.0f, y + 127.0f, level % 10);
+    }
+}
+
+static void campPersonaDrawName(f32 alpha, f32 x, f32 y, void* persona, s32 fade)
+{
+    char text[0x100];
+    void* name;
+    s32 bright;
+
+    if (persona == NULL) {
+        return;
+    }
+    name = FUN_00173220(*(u16*)((u8*)persona + 2));
+    FUN_00523ac8(text, (void*)0x7cb66c, name);
+    bright = campPersonaClampFade(fade);
+    FUN_003b32d0(alpha, (s32)(x + 111.0f), (s32)(y + 122.0f),
+                 bright | 0xffffff00, 10, 1, text, 0x10, 0x74);
+}
+
+static void campPersonaDrawEffectParticle(f32 alpha, f32 x, f32 y,
+                                           s32 slot, s32 scale)
+{
+    CampPersonaParticle* particle;
+
+    particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, slot);
+    if (particle == NULL) {
+        return;
+    }
+    *(void**)((u8*)particle + 0x2c) = DAT_00833B90;
+    particle->x = x;
+    particle->y = y;
+    particle->alpha = (s8)campPersonaClampFade((s32)alpha);
+    particle->scaleX = (u16)scale;
+    particle->scaleY = (u16)scale;
+    FUN_001127d0(particle, 0);
+    FUN_00115980(particle);
+}
+
+// FUN_00124E00
+void FUN_00124e00(CampVec2 position, CampVec2 otherPosition, f32 alpha,
+                  void* persona, s32 mode, s32 frame, s32 fade)
+{
+    if (mode == 1) {
+        goto drawStatus;
+    }
+    switch (mode) {
+    case 0:
+        FUN_00125740(position, alpha, persona, frame);
+        break;
+    default:
+        goto done;
+    }
+    goto done;
+drawStatus:
+    FUN_00125b40(position, otherPosition, alpha, persona, fade);
+done:;
+}
+
+// FUN_00124E60 NONMATCHING
+void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
+{
+    u8 level;
+
+    if (persona == NULL) {
+        return;
+    }
+    level = *((u8*)persona + 4);
+    if (level < 10) {
+        campPersonaDrawDigit(alpha, position.x + 75.0f,
+                             position.y + 127.0f, level);
+    } else {
+        campPersonaDrawDigit(alpha, position.x + 67.0f,
+                             position.y + 127.0f, level / 10);
+        level = *((u8*)persona + 4);
+        campPersonaDrawDigit(alpha, position.x + 82.0f,
+                             position.y + 127.0f, level % 10);
+    }
+    if (fade != 0) {
+        FUN_001159f0(position.x + 67.0f, position.y + 127.0f,
+                     alpha, fade);
+    }
+}
+
+// FUN_00124FD0 NONMATCHING
+void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
+{
+    s32 i;
+    f32 effectAlpha;
+
+    campPersonaDrawName(alpha, position.x, position.y, persona, fade);
+    if (persona == NULL || FUN_00176600(persona) == 0) {
+        return;
+    }
+    effectAlpha = (f32)campPersonaClampFade(0xff - fade);
+    FUN_001120a0(2);
+    FUN_001159f0(position.x + 252.0f, position.y + 110.0f, alpha, 6);
+    for (i = 0; i < 3; i++) {
+        campPersonaDrawEffectParticle(effectAlpha,
+                                      position.x + 256.0f + (f32)(i * 8),
+                                      position.y + 112.0f + (f32)(i * 5),
+                                      0x1b + i, 0x1000);
+    }
+}
+
+// FUN_00125740 NONMATCHING
+void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
+                  s32 frame)
+{
+    s32 localFrame;
+    s32 bright;
+    f32 slide;
+
+    if (frame <= 14) {
+        return;
+    }
+    localFrame = frame - 15;
+    bright = 0;
+    slide = 0.0f;
+    if (localFrame < 3) {
+        bright = 0xff - (localFrame * 0xff) / 3;
+        slide = (f32)(((3 - localFrame) * 0x14) / 3);
+    }
+    FUN_001159f0(position.x + 22.0f - slide, position.y + 117.0f,
+                 alpha, DAT_00833B90, 0, bright);
+    if (localFrame > 0) {
+        FUN_00173280(*(u16*)((u8*)persona + 2));
+        FUN_001159f0(position.x + 105.0f, position.y + 142.0f,
+                     alpha, bright);
+    }
+    if (localFrame > 4) {
+        FUN_00124e60(position, alpha, persona, bright);
+    }
+    if (localFrame > 5) {
+        if (localFrame < 9) {
+            bright = 0xff - ((localFrame - 6) * 0xff) / 3;
+        } else {
+            bright = 0;
+        }
+        FUN_00124fd0(position, alpha, persona, bright);
+    }
+}
+
+// FUN_00125B40 NONMATCHING
+void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
+                  void* persona, s32 fade)
+{
+    s32 personaId;
+
+    if (persona == NULL) {
+        return;
+    }
+    personaId = *(u16*)((u8*)persona + 2);
+    FUN_001159f0(position.x + 22.0f, position.y + 117.0f,
+                 alpha, DAT_00833B90, 1, campPersonaClampFade(fade));
+    personaId = FUN_00173280(personaId) - 1;
+    FUN_001159f0(position.x + 105.0f, position.y + 142.0f,
+                 alpha, DAT_00833B88, personaId, fade);
+    FUN_00124e60(position, alpha, persona, fade);
+    FUN_00124fd0(position, alpha, persona, fade);
+}
+
+static s32 campPersonaTransitionIsReady(void)
+{
+    if (DAT_007cdf60 == NULL || DAT_007cdf60->workData == NULL) {
+        return 0;
+    }
+    return *((s32*)DAT_007cdf60->workData) == 3;
+}
+
+// FUN_00125D70 NONMATCHING
+void* FUN_00125d70(KwlnTask* task)
+{
+    CampPersonaTransitionWork* work;
+    s32 i;
+    s32 fade;
+    f32 x;
+    f32 y;
+    CampPersonaParticle* particle;
+
+    work = task->workData;
+    if (work->state != 0 && work->state != 1) {
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->state == 0) {
+        work->state = 1;
+        work->timer = 0;
+    }
+    if (work->mode == 0) {
+        if (work->timer < 5) {
+            if (campPersonaTransitionIsReady()) {
+                FUN_00114450(102.0f, 0.0f, -87.0f, -1, 0x4fa4ff19, 0x280, 0x280);
+            }
+            FUN_0011bba0(0, 0, 102.0f, 0, 0);
+            campPersonaDrawEffectParticle(0.0f, 202.0f, 27.0f, 0, 0);
+        }
+        if (work->timer > 4 && work->timer < 20) {
+            fade = ((work->timer - 5) * 0xff) / 15;
+            if (campPersonaTransitionIsReady()) {
+                FUN_00114450(102.0f, (f32)(-fade * 800 / 15),
+                             (f32)(fade * 800 / 15 - 87), -1,
+                             0x4fa4ff19, 0x280, 0x280);
+            }
+            FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
+        }
+        if (work->timer > 14) {
+            fade = campPersonaClampFade((20 - work->timer) * 0xff / 5);
+            x = 428.0f + (f32)((work->timer - 15) * 21 / 10);
+            y = 27.0f + (f32)((work->timer - 15) * 2 / 10);
+            particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+            if (particle != NULL) {
+                particle->x = x;
+                particle->y = y;
+                particle->alpha = (s8)fade;
+                particle->scaleX = 0xe28;
+                particle->scaleY = 0xe28;
+                FUN_001127d0(particle, 1);
+                FUN_00115980(particle);
+            }
+            FUN_001159f0(528.0f, 207.0f, 200.0f);
+            FUN_001159f0(50.0f, 207.0f, 200.0f);
+            FUN_001159f0(194.0f, 207.0f, 200.0f);
+            FUN_001159f0(560.0f, 207.0f, 200.0f);
+            FUN_001159f0(382.0f, 207.0f, 200.0f);
+        }
+        if (work->timer < 20) {
+            work->timer++;
+        } else {
+            work->state = 2;
+        }
+    } else if (work->mode == 1) {
+        fade = work->timer == 8 ? 0 : 0xff - (work->timer * 0xff) / 8;
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+        if (particle != NULL) {
+            particle->x = 449.0f;
+            particle->y = 29.0f;
+            particle->alpha = (s8)fade;
+            particle->scaleX = 0xe28;
+            particle->scaleY = 0xe28;
+            FUN_001127d0(particle, 1);
+            FUN_00115980(particle);
+        }
+        FUN_001159f0(528.0f, 207.0f, 200.0f);
+        FUN_001159f0(50.0f, 207.0f, 200.0f);
+        FUN_001159f0(194.0f, 207.0f, 200.0f);
+        FUN_001159f0(560.0f, 207.0f, 200.0f);
+        FUN_001159f0(382.0f, 207.0f, 200.0f);
+        if (work->timer < 8) {
+            work->timer++;
+        } else {
+            work->state = 2;
+        }
+    } else if (work->mode == 2 && work->timer != 8) {
+        fade = (work->timer * 0xff) / 8;
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+        if (particle != NULL) {
+            particle->x = 449.0f;
+            particle->y = 29.0f;
+            particle->alpha = (s8)fade;
+            particle->scaleX = 0xe28;
+            particle->scaleY = 0xe28;
+            FUN_001127d0(particle, 1);
+            FUN_00115980(particle);
+        }
+        FUN_001159f0(528.0f, 207.0f, 200.0f);
+        FUN_001159f0(50.0f, 207.0f, 200.0f);
+        FUN_001159f0(194.0f, 207.0f, 200.0f);
+        FUN_001159f0(560.0f, 207.0f, 200.0f);
+        FUN_001159f0(382.0f, 207.0f, 200.0f);
+        work->timer++;
+    }
+    (void)i;
+    return KWLNTASK_CONTINUE;
 }

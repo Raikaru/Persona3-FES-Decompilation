@@ -1,69 +1,730 @@
 #include "Kosaka/Field/k_sceneDraw.h"
+#include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_shadow.h"
+#include "Kosaka/k_assert.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Scene/mt_scene.h"
 #include "Scene/resrcManager.h"
+#include "rw/rwcore.h"
 #include "rw/rwplcore.h"
+#include "temporary.h"
 
-// FUN_0019d410. 'draw opac field'
-void* K_SceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFld)
+extern RpLight* func_00198580();
+extern RwRGBAReal* func_0019fd70();
+extern RwMatrix* func_0019fda0();
+extern s32 func_001a7660(void* param);
+extern s32 func_001a76e0(void* param);
+extern void func_001a8b10(u32* param);
+extern void func_001b3e50(RwCamera* camera, void* fieldData);
+extern void func_001b4720(RwCamera* camera, void* fieldData);
+extern void func_001bd950();
+extern void func_00317a20(Model* mdl);
+extern s32 func_00318ed0(Model* mdl, s32 param, RwV3d* position);
+extern void func_00319230(Model* mdl, s32 param);
+extern void func_0034fd30(Model* mdl);
+extern void func_001b56f0(void* fieldData, const void* color);
+extern void func_001b5950(void* fieldData, const void* position);
+extern void func_001b5990(void* fieldData, const void* position);
+extern void func_001b59c0(void* fieldData, const void* position);
+extern void func_001b5a00(void* fieldData, const void* position);
+extern void* func_001e78c0(s32 width, s32 height);
+extern void func_001e7aa0(void* work, s32 index, void* data);
+extern void* func_00494be0(void);
+extern void func_004c31b0(f32 angle, RwMatrix* matrix, const RwV3d* axis, RwOpCombineType combineOp);
+extern void func_004cb270(void* cameraData);
+extern void* func_004d0f00(void* resource);
+extern void* func_004d1110(void* manager, void* object);
+extern void* func_004d1170(void* manager, void* object);
+extern void* func_004d11f0(void);
+extern void func_00524270(void* texture, void* object);
+extern void* D_00960184[];
+extern void func_005225a8(const char* name, void* object, u8 type);
+extern void* D_0096017c[];
+void func_001a0040(u32 visible, u32 updateField);
+u32 func_001a02c0();
+extern void func_0034fd70(Model* mdl, s32 param);
+extern void func_0034fdf0(Model* mdl, RwV3d* position);
+extern void func_004944b0(RpLight* light, const RwRGBAReal* color);
+extern void func_0049c3d0(RpWorld* world, RpLight* light);
+extern void func_0049c480(RpWorld* world, RpLight* light);
+void func_0019db10(KwlnTask* task);
+void func_0019de80(KwlnTask* task);
+s32 func_0019e1f0(const void* charPtr1, const void* charPtr2);
+extern u32 gUnk_008668f0[];
+
+#define SCENEDRAW_RESRC_PTR(resource, type, offset) (*(type**)((u8*)(resource) + (offset)))
+#define SCENEDRAW_RESRC_COLOR(resource, offset)     ((RwRGBAReal*)((u8*)(resource) + (offset)))
+#define SCENEDRAW_RESRC_MATRIX(resource, offset)    ((RwMatrix*)((u8*)(resource) + (offset)))
+
+#define SCENEDRAW_RESRC_FLAG_VISIBLE         0x00000002
+#define SCENEDRAW_RESRC_FLAG_DRAW_BASE        0x20000000
+#define SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT     0x80000000
+#define SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY 0x40000000
+#define SCENEDRAW_RESRC_FLAG_PERSONA          0x00010000
+#define SCENEDRAW_RESRC_TYPE_MODELFLD2        11
+#define SCENEDRAW_MAX_SORTED_MODELS            64
+
+// FUN_0019d410
+void* K_SceneDraw_UpdateDrwOpcFldTask(KwlnTask* drwOpcFldTask)
 {
-    // TODO
-    
+    ResrcFld* fld;
+    Field* field;
+
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    field = K_Field_Get();
+    if (*(s32*)((u8*)field + 0x34) == 0)
+    {
+        func_001bd950();
+    }
+
+    while (fld != NULL)
+    {
+        if (fld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        {
+            func_001b3e50(kwlnGetMainCamera(), fld->unk_160);
+        }
+
+        fld = (ResrcFld*)fld->base.next;
+    }
+
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d4a0. 'draw trans field'
+// FUN_0019d4a0
 void* K_SceneDraw_UpdateDrwTrnsFldTask(KwlnTask* drwTrnsFldTask)
 {
-    // TODO
+    ResrcFld* fld;
+
+    if (gMtScene->fldMajorId < 200)
+    {
+        fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+        while (fld != NULL)
+        {
+            if (fld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+            {
+                func_001b4720(kwlnGetMainCamera(), fld->unk_160);
+            }
+
+            fld = (ResrcFld*)fld->base.next;
+        }
+    }
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d530. 'draw trans field(sort)'
+// FUN_0019d530
 void* K_SceneDraw_UpdateDrwTrnsFldSrtTask(KwlnTask* drwTrnsFldSrtTask)
 {
-    // TODO
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+
+    if (gUnk_008668f0[0] == 0)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+
+    func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
+    func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     (const RwMatrix*)func_0019fda0(),
+                     rwCOMBINEREPLACE);
+    kwlnGetDirectionalLight()->object.object.flags = 3;
+    kwlnGetDirectionalLight();
+
+    func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+    {
+        func_001a8b10(gUnk_008668f0);
+        RwCameraEndUpdate(kwlnGetMainCamera());
+    }
+
+    func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+    func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+    func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     &directionalMatrix,
+                     rwCOMBINEREPLACE);
+    kwlnGetDirectionalLight()->object.object.flags = 3;
+    kwlnGetDirectionalLight();
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019d780. 'draw opac field object'
-void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldTask)
+// FUN_0019d780 NONMATCHING
+void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
 {
-    // TODO
-    
+    ResrcModelFld* modelFld;
+    Resrc* modelFld2;
+    ResrcFld* fld;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+
+    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    modelFld2 = MT_Scene_GetResListHead(SCENEDRAW_RESRC_TYPE_MODELFLD2);
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+
+    if (fld == NULL)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+    func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
+    func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     (const RwMatrix*)func_0019fda0(),
+                     rwCOMBINEREPLACE);
+
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+    {
+        while (modelFld != NULL)
+        {
+            if (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+            {
+                if (func_001a7660(modelFld->mdl->unk_e0) == 0)
+                {
+                    func_00317a20(modelFld->mdl);
+                    if (SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c) != NULL &&
+                        (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                    {
+                        func_00317a20(SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c));
+                    }
+                }
+            }
+
+            modelFld = (ResrcModelFld*)modelFld->base.next;
+        }
+
+        RwCameraEndUpdate(kwlnGetMainCamera());
+    }
+    else
+    {
+        K_Assert("k_sceneDraw.c", 0x100);
+    }
+
+    func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+    func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+    func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     &directionalMatrix,
+                     rwCOMBINEREPLACE);
+
+    while (modelFld2 != NULL)
+    {
+        if (modelFld2->flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        {
+            func_0034fd30(SCENEDRAW_RESRC_PTR(modelFld2, Model, 0x104));
+            func_0034fd70(SCENEDRAW_RESRC_PTR(modelFld2, Model, 0x104), 3);
+        }
+
+        modelFld2 = modelFld2->next;
+    }
+
+    if (gMtScene->fldMajorId < 200)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    while (fld != NULL)
+    {
+        if (fld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        {
+            func_001b4720(kwlnGetMainCamera(), fld->unk_160);
+        }
+
+        fld = (ResrcFld*)fld->base.next;
+    }
+
+    func_0019de80(drwOpcFldObjTask);
+    func_0019db10(drwOpcFldObjTask);
+
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019de40. 'draw trans field object'
+// FUN_0019db10 NONMATCHING
+void func_0019db10(KwlnTask* task)
+{
+    ResrcModelFld* modelFld;
+    ResrcFld* fld;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+    RwRenderStateSetFunc* setRenderState;
+
+    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+
+    if (fld != NULL)
+    {
+        func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
+        func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         (const RwMatrix*)func_0019fda0(),
+                         rwCOMBINEREPLACE);
+
+        if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+        {
+            if (gCurrWorldIdx == 1)
+            {
+                setRenderState = &rwGlobals.device.setRenderState;
+                (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
+                (*setRenderState)(rwRENDERSTATEFOGCOLOR,
+                                  (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+                (*setRenderState)(rwRENDERSTATEFOGTYPE, (void*)true);
+            }
+
+            while (modelFld != NULL)
+            {
+                if (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+                {
+                    if (func_001a7660(modelFld->mdl->unk_e0) == 1)
+                    {
+                        func_00317a20(modelFld->mdl);
+                        if (SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c) != NULL &&
+                            (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                        {
+                            func_00317a20(SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c));
+                        }
+                    }
+                }
+
+                modelFld = (ResrcModelFld*)modelFld->base.next;
+            }
+
+            RwCameraEndUpdate(kwlnGetMainCamera());
+        }
+        else
+        {
+            K_Assert("k_sceneDraw.c", 0x151);
+        }
+
+        func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+        func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         &directionalMatrix,
+                         rwCOMBINEREPLACE);
+    }
+}
+
+// FUN_0019de40
 void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 {
-    // TODO
+    if (gMtScene->fldMajorId < 200)
+    {
+        func_0019db10(drwTrnsFldObjTask);
+    }
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019e1b0. 'draw trans field obj preChar'
+// FUN_0019de80 NONMATCHING
+void func_0019de80(KwlnTask* task)
+{
+    ResrcModelFld* modelFld;
+    ResrcFld* fld;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+    RwRenderStateSetFunc* setRenderState;
+
+    modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+
+    if (fld != NULL)
+    {
+        func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
+        func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         (const RwMatrix*)func_0019fda0(),
+                         rwCOMBINEREPLACE);
+
+        if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+        {
+            if (gCurrWorldIdx == 1)
+            {
+                setRenderState = &rwGlobals.device.setRenderState;
+                (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
+                (*setRenderState)(rwRENDERSTATEFOGCOLOR,
+                                  (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+                (*setRenderState)(rwRENDERSTATEFOGTYPE, (void*)true);
+            }
+
+            while (modelFld != NULL)
+            {
+                if (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+                {
+                    if (func_001a76e0(modelFld->mdl->unk_e0) == 1)
+                    {
+                        func_00317a20(modelFld->mdl);
+                        if (SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c) != NULL &&
+                            (modelFld->base.flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                        {
+                            func_00317a20(SCENEDRAW_RESRC_PTR(modelFld, Model, 0x12c));
+                        }
+                    }
+                }
+
+                modelFld = (ResrcModelFld*)modelFld->base.next;
+            }
+
+            RwCameraEndUpdate(kwlnGetMainCamera());
+        }
+        else
+        {
+            K_Assert("k_sceneDraw.c", 0x198);
+        }
+
+        func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+        func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         &directionalMatrix,
+                         rwCOMBINEREPLACE);
+    }
+}
+
+// FUN_0019e1b0
 void* K_SceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 {
-    // TODO
+    if (gMtScene->fldMajorId < 200)
+    {
+        func_0019de80(drwTrnsFldObjPCTask);
+    }
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019e330. 'draw character model'
+// FUN_0019e1f0
+s32 func_0019e1f0(const void* charPtr1, const void* charPtr2)
+{
+    RwFrame* cameraFrame;
+    const ResrcModelChar* char1;
+    const ResrcModelChar* char2;
+    RwV3d diffToCam1;
+    RwV3d diffToCam2;
+    RwV3d cameraPos;
+
+    cameraFrame = (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+    cameraPos = RwFrameGetLTM(cameraFrame)->pos;
+
+    char1 = *(const ResrcModelChar**)charPtr1;
+    char2 = *(const ResrcModelChar**)charPtr2;
+
+    diffToCam1.x = mdlGetMatrix(char1->mdl)->pos.x - cameraPos.x;
+    diffToCam1.y = mdlGetMatrix(char1->mdl)->pos.y - cameraPos.y;
+    diffToCam1.z = mdlGetMatrix(char1->mdl)->pos.z - cameraPos.z;
+
+    diffToCam2.x = mdlGetMatrix(char2->mdl)->pos.x - cameraPos.x;
+    diffToCam2.y = mdlGetMatrix(char2->mdl)->pos.y - cameraPos.y;
+    diffToCam2.z = mdlGetMatrix(char2->mdl)->pos.z - cameraPos.z;
+
+    return (s32)(RwV3dLength(&diffToCam1) - RwV3dLength(&diffToCam2));
+}
+
+// FUN_0019e330 NONMATCHING
 void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 {
-    // TODO
+    ResrcModelChar* charRes;
+    ResrcModelChar* charList[SCENEDRAW_MAX_SORTED_MODELS] = { NULL };
+    ResrcModelNpc* npcRes;
+    ResrcModelNpc* npcList;
+    Resrc* modelUnk;
+    ResrcLightNpc* npcLight;
+    ResrcLightChar* charLight;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+    RwRGBAReal secondaryDirectionalColor;
+    RwMatrix secondaryDirectionalMatrix;
+    RwV3d position;
+    s32 charCount;
+    s32 i;
+    s32 slot;
+    u32 flags;
+
+    charRes = (ResrcModelChar*)MT_Scene_GetResListHead(RESRC_TYPE_MODELCHAR);
+    npcList = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    modelUnk = MT_Scene_GetResListHead(RESRC_TYPE_MODELUNK);
+    npcLight = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    charLight = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+    secondaryDirectionalColor = func_00198580()->color;
+    secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
+
+    charCount = 0;
+    while (charRes != NULL)
+    {
+        if ((u32)charCount >= SCENEDRAW_MAX_SORTED_MODELS)
+        {
+            K_Assert("k_sceneDraw.c", 0x1d7);
+        }
+
+        charList[charCount] = charRes;
+        charRes = (ResrcModelChar*)charRes->base.next;
+        charCount++;
+    }
+
+    if (gMtScene->shouldSortChars == true)
+    {
+        qsort(charList, charCount, sizeof(charList[0]), func_0019e1f0);
+    }
+
+    for (i = charCount - 1; i >= 0; i--)
+    {
+        func_004944b0(kwlnGetAmbientLight(), &charLight->ambientColor);
+        func_004944b0(func_00198580(), &charLight->directionalColor);
+        func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(charLight, 0x160));
+        RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                         SCENEDRAW_RESRC_MATRIX(charLight, 0x120),
+                         rwCOMBINEREPLACE);
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         SCENEDRAW_RESRC_MATRIX(charLight, 0x170),
+                         rwCOMBINEREPLACE);
+
+        charRes = charList[i];
+        flags = charRes->base.flags;
+        if (flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT)
+        {
+            func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(charRes, 0x12c));
+            func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(charRes, 0x13c));
+            func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(charRes, 0x190));
+            RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(charRes, 0x150),
+                             rwCOMBINEREPLACE);
+            RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(charRes, 0x1a0),
+                             rwCOMBINEREPLACE);
+        }
+        else if (flags & SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY)
+        {
+            func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(charRes, 0x190));
+            RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(charRes, 0x1a0),
+                             rwCOMBINEREPLACE);
+        }
+        else
+        {
+            func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(charLight, 0x160));
+            RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(charLight, 0x170),
+                             rwCOMBINEREPLACE);
+        }
+
+        if (flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        {
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+            {
+                func_00317a20(charRes->mdl);
+                if (charRes->baseMdl != NULL && (flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                {
+                    func_00317a20(charRes->baseMdl);
+                }
+
+                for (slot = 0; slot < 3; slot++)
+                {
+                    if (SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
+                    {
+                        if (func_00318ed0(charRes->mdl, 2, &position) == 0)
+                        {
+                            position = mdlGetMatrix(charRes->mdl)->pos;
+                            position.y += 175.0f;
+                        }
+
+                        func_0034fdf0(SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                        func_0034fd70(SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)), 5);
+                    }
+                }
+
+                RwCameraEndUpdate(kwlnGetMainCamera());
+            }
+            else
+            {
+                K_Assert("k_sceneDraw.c", 0x225);
+            }
+        }
+    }
+
+    if (npcList != NULL)
+    {
+        func_004944b0(kwlnGetAmbientLight(), &npcLight->ambColor);
+        func_004944b0(func_00198580(), &npcLight->dirColor);
+        func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(npcLight, 0x160));
+        RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                         SCENEDRAW_RESRC_MATRIX(npcLight, 0x120),
+                         rwCOMBINEREPLACE);
+        RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                         SCENEDRAW_RESRC_MATRIX(npcLight, 0x170),
+                         rwCOMBINEREPLACE);
+
+        if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+        {
+            npcRes = npcList;
+            while (npcRes != NULL)
+            {
+                if (mdlGetColor(npcRes->mdl)->a == 255)
+                {
+                    flags = npcRes->base.flags;
+                    if (!(flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT) &&
+                        (flags & SCENEDRAW_RESRC_FLAG_VISIBLE))
+                    {
+                        func_00317a20(npcRes->mdl);
+                        if (npcRes->baseMdl != NULL && (flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                        {
+                            func_00317a20(npcRes->baseMdl);
+                        }
+
+                        for (slot = 0; slot < 3; slot++)
+                        {
+                            if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
+                            {
+                                if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
+                                {
+                                    position = mdlGetMatrix(npcRes->mdl)->pos;
+                                    position.y += 175.0f;
+                                }
+
+                                func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                                func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
+                            }
+                        }
+                    }
+                }
+
+                npcRes = (ResrcModelNpc*)npcRes->base.next;
+            }
+
+            RwCameraEndUpdate(kwlnGetMainCamera());
+        }
+        else
+        {
+            K_Assert("k_sceneDraw.c", 0x262);
+        }
+    }
+
+    npcRes = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    while (npcRes != NULL)
+    {
+        if (mdlGetColor(npcRes->mdl)->a == 255)
+        {
+            flags = npcRes->base.flags;
+            if ((flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT) &&
+                (flags & SCENEDRAW_RESRC_FLAG_VISIBLE))
+            {
+                func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x12c));
+                func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(npcRes, 0x13c));
+                func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x190));
+                RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x150),
+                                 rwCOMBINEREPLACE);
+                RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x1a0),
+                                 rwCOMBINEREPLACE);
+
+                if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+                {
+                    func_00317a20(npcRes->mdl);
+                    if (npcRes->baseMdl != NULL && (flags & SCENEDRAW_RESRC_FLAG_DRAW_BASE))
+                    {
+                        func_00317a20(npcRes->baseMdl);
+                    }
+
+                    for (slot = 0; slot < 3; slot++)
+                    {
+                        if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
+                        {
+                            if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
+                            {
+                                position = mdlGetMatrix(npcRes->mdl)->pos;
+                                position.y += 175.0f;
+                            }
+
+                            func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                            func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
+                        }
+                    }
+
+                    RwCameraEndUpdate(kwlnGetMainCamera());
+                }
+                else
+                {
+                    K_Assert("k_sceneDraw.c", 0x299);
+                }
+            }
+        }
+
+        npcRes = (ResrcModelNpc*)npcRes->base.next;
+    }
+
+    while (modelUnk != NULL)
+    {
+        flags = modelUnk->flags;
+        if ((flags & SCENEDRAW_RESRC_FLAG_VISIBLE) &&
+            (flags & SCENEDRAW_RESRC_FLAG_PERSONA))
+        {
+            func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x11c));
+            func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x12c));
+            func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x180));
+            RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(modelUnk, 0x140),
+                             rwCOMBINEREPLACE);
+            RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(modelUnk, 0x190),
+                             rwCOMBINEREPLACE);
+
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+            {
+                func_00319230(SCENEDRAW_RESRC_PTR(modelUnk, Model, 0x118), 3);
+                func_00317a20(SCENEDRAW_RESRC_PTR(modelUnk, Model, 0x118));
+                RwCameraEndUpdate(kwlnGetMainCamera());
+            }
+            else
+            {
+                K_Assert("k_sceneDraw.c", 0x2b7);
+            }
+        }
+
+        modelUnk = modelUnk->next;
+    }
+
+    func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+    func_004944b0(func_00198580(), &secondaryDirectionalColor);
+    func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+    RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                     &secondaryDirectionalMatrix,
+                     rwCOMBINEREPLACE);
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     &directionalMatrix,
+                     rwCOMBINEREPLACE);
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019ee40. qsort comparator
+// FUN_0019ee40
 s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
 {
     RwFrame* camFrame;
@@ -90,18 +751,177 @@ s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
     return (s32)(RwV3dLength(&diffToCam1) - RwV3dLength(&diffToCam2));
 }
 
-// FUN_0019ef80. 'draw trans NPC(sort)'
+// FUN_0019ef80 NONMATCHING
 void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
-    // TODO
+    ResrcModelNpc* npcRes;
+    ResrcModelNpc* npcList[SCENEDRAW_MAX_SORTED_MODELS] = { NULL };
+    ResrcLightNpc* npcLight;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+    RwRGBAReal secondaryDirectionalColor;
+    RwMatrix secondaryDirectionalMatrix;
+    RwV3d position;
+    s32 npcCount;
+    s32 i;
+    s32 slot;
+    u32 flags;
+
+    npcRes = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
+    npcLight = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+    secondaryDirectionalColor = func_00198580()->color;
+    secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
+
+    npcCount = 0;
+    while (npcRes != NULL)
+    {
+        if (mdlGetColor(npcRes->mdl)->a < 255)
+        {
+            npcList[npcCount] = npcRes;
+            npcCount++;
+        }
+
+        npcRes = (ResrcModelNpc*)npcRes->base.next;
+    }
+
+    if (gMtScene->shouldSortNpcs == true)
+    {
+        qsort(npcList, npcCount, sizeof(npcList[0]), K_SceneDraw_CompareNpcDistToCamera);
+    }
+
+    for (i = npcCount - 1; i >= 0; i--)
+    {
+        npcRes = npcList[i];
+        flags = npcRes->base.flags;
+        if (flags & SCENEDRAW_RESRC_FLAG_VISIBLE)
+        {
+            if (flags & SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT)
+            {
+                func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x12c));
+                func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(npcRes, 0x13c));
+                func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(npcRes, 0x190));
+                RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x150),
+                                 rwCOMBINEREPLACE);
+                RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcRes, 0x1a0),
+                                 rwCOMBINEREPLACE);
+            }
+            else
+            {
+                func_004944b0(kwlnGetAmbientLight(), &npcLight->ambColor);
+                func_004944b0(func_00198580(), &npcLight->dirColor);
+                func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(npcLight, 0x160));
+                RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcLight, 0x120),
+                                 rwCOMBINEREPLACE);
+                RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                                 SCENEDRAW_RESRC_MATRIX(npcLight, 0x170),
+                                 rwCOMBINEREPLACE);
+            }
+
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+            {
+                func_00317a20(npcRes->mdl);
+                for (slot = 0; slot < 3; slot++)
+                {
+                    if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
+                    {
+                        if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
+                        {
+                            position = mdlGetMatrix(npcRes->mdl)->pos;
+                            position.y += 175.0f;
+                        }
+
+                        func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                        func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
+                    }
+                }
+
+                RwCameraEndUpdate(kwlnGetMainCamera());
+            }
+            else
+            {
+                K_Assert("k_sceneDraw.c", 0x335);
+            }
+        }
+    }
+
+    func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+    func_004944b0(func_00198580(), &secondaryDirectionalColor);
+    func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+    RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                     &secondaryDirectionalMatrix,
+                     rwCOMBINEREPLACE);
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     &directionalMatrix,
+                     rwCOMBINEREPLACE);
 
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0019f470. 'draw persona model'
+// FUN_0019f470
 void* K_SceneDraw_UpdateDrwPrsnaMdlTask(KwlnTask* drwPrsnaMdlTask)
 {
-    // TODO
+    Resrc* modelUnk;
+    RwRGBAReal ambientColor;
+    RwRGBAReal directionalColor;
+    RwMatrix directionalMatrix;
+    RwRGBAReal secondaryDirectionalColor;
+    RwMatrix secondaryDirectionalMatrix;
+    u32 flags;
+
+    modelUnk = MT_Scene_GetResListHead(RESRC_TYPE_MODELUNK);
+    ambientColor = kwlnGetAmbientLight()->color;
+    directionalColor = kwlnGetDirectionalLight()->color;
+    directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
+    secondaryDirectionalColor = func_00198580()->color;
+    secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
+
+    while (modelUnk != NULL)
+    {
+        flags = modelUnk->flags;
+        if ((flags & SCENEDRAW_RESRC_FLAG_VISIBLE) &&
+            !(flags & SCENEDRAW_RESRC_FLAG_PERSONA))
+        {
+            func_004944b0(kwlnGetAmbientLight(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x11c));
+            func_004944b0(func_00198580(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x12c));
+            func_004944b0(kwlnGetDirectionalLight(), SCENEDRAW_RESRC_COLOR(modelUnk, 0x180));
+            RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(modelUnk, 0x140),
+                             rwCOMBINEREPLACE);
+            RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                             SCENEDRAW_RESRC_MATRIX(modelUnk, 0x190),
+                             rwCOMBINEREPLACE);
+
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+            {
+                func_00319230(*(Model**)((u32*)modelUnk + 70), 3);
+                func_00317a20(*(Model**)((s32)modelUnk + 0x118));
+                RwCameraEndUpdate(kwlnGetMainCamera());
+            }
+            else
+            {
+                K_Assert("k_sceneDraw.c", 0x36b);
+            }
+        }
+
+        modelUnk = modelUnk->next;
+    }
+
+    func_004944b0(kwlnGetAmbientLight(), &ambientColor);
+    func_004944b0(func_00198580(), &secondaryDirectionalColor);
+    func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
+    RwFrameTransform((RwFrame*)func_00198580()->object.object.parent,
+                     &secondaryDirectionalMatrix,
+                     rwCOMBINEREPLACE);
+    RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
+                     &directionalMatrix,
+                     rwCOMBINEREPLACE);
 
     return KWLNTASK_CONTINUE;
 }
@@ -176,4 +996,690 @@ void K_Scene_SetShouldSortChars(u32 shouldSortChars)
 void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
 {
     gMtScene->shouldSortNpcs = shouldSortNpcs;
+}
+// FUN_0019f8f0 NONMATCHING
+void func_0019f8f0(const RwRGBAReal* color)
+{
+    ResrcFld* fld;
+    RwRGBA* clearColor;
+    u32 red;
+    u32 green;
+    u32 blue;
+    u32 alpha;
+
+    fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    while (fld != NULL)
+    {
+        func_001b56f0(fld->unk_160, color);
+        fld = (ResrcFld*)fld->base.next;
+    }
+
+    if ((color->r <= 0.0f && color->g <= 0.0f && color->b <= 0.0f) || color->a <= 0.0f)
+    {
+        func_001a0040(0, 1);
+    }
+    else
+    {
+        func_001a0040(1, 1);
+    }
+
+    clearColor = kwlnGetClearColor();
+    if (clearColor == NULL)
+    {
+        return;
+    }
+
+    red = (u32)((f32)clearColor->r * color->r);
+    green = (u32)((f32)clearColor->g * color->g);
+    blue = (u32)((f32)clearColor->b * color->b);
+    alpha = (u32)((f32)clearColor->a * color->a);
+    if (red > 255) red = 255;
+    if (green > 255) green = 255;
+    if (blue > 255) blue = 255;
+    if (alpha > 255) alpha = 255;
+    kwlnSetClearColor((u8)red, (u8)green, (u8)blue, (u8)alpha);
+
+    red = (u32)((f32)gFogRed * color->r);
+    green = (u32)((f32)gFogGreen * color->g);
+    blue = (u32)((f32)gFogBlue * color->b);
+    alpha = (u32)((f32)gFogAlpha * color->a);
+    if (red > 255) red = 255;
+    if (green > 255) green = 255;
+    if (blue > 255) blue = 255;
+    if (alpha > 255) alpha = 255;
+    gFogRed = (u8)red;
+    gFogGreen = (u8)green;
+    gFogBlue = (u8)blue;
+    gFogAlpha = (u8)alpha;
+}
+
+// FUN_0019fd70
+RwRGBAReal* func_0019fd70()
+{
+    ResrcFld* res;
+
+    res = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    return &res->dirLightColor;
+}
+
+// FUN_0019fda0
+RwMatrix* func_0019fda0()
+{
+    ResrcFld* res;
+
+    res = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    return &res->dirLightMat;
+}
+
+// FUN_0019fdd0
+void func_0019fdd0(const void* position)
+{
+    MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    func_001b5950(gMtScene->fldFilterTask, position);
+}
+
+// FUN_0019fe20
+void func_0019fe20(const void* position)
+{
+    MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    func_001b5990(gMtScene->fldFilterTask, position);
+}
+
+// FUN_0019fe70
+void func_0019fe70(const void* position)
+{
+    MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    func_001b59c0(gMtScene->fldFilterTask, position);
+}
+
+// FUN_0019fec0
+void func_0019fec0(const void* position)
+{
+    MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    func_001b5a00(gMtScene->fldFilterTask, position);
+}
+
+// FUN_0019ff10 NONMATCHING
+void func_0019ff10()
+{
+    ResrcFld* field;
+    RwV3d axisY;
+    RwV3d axisX;
+
+    field = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    axisY.x = 0.0f;
+    axisY.y = 1.0f;
+    axisY.z = 0.0f;
+    axisX.x = 1.0f;
+    axisX.y = 0.0f;
+    axisX.z = 0.0f;
+
+    if (field != NULL)
+    {
+        field->ambLightColor.r = 0.65f;
+        field->ambLightColor.g = 0.65f;
+        field->ambLightColor.b = 0.65f;
+        field->ambLightColor.a = 0.0f;
+        field->dirLightColor.r = 0.5f;
+        field->dirLightColor.g = 0.5f;
+        field->dirLightColor.b = 0.5f;
+        field->dirLightColor.a = 0.0f;
+        RwMatrixSetIdentity(&field->dirLightMat);
+        RwMatrixRotate(&field->dirLightMat, &axisY, -180.0f, rwCOMBINEPOSTCONCAT);
+        RwMatrixRotate(&field->dirLightMat, &axisX, -45.0f, rwCOMBINEPOSTCONCAT);
+    }
+}
+
+// FUN_001a0040 NONMATCHING
+void func_001a0040(u32 visible, u32 updateField)
+{
+    Resrc* res;
+    Field* field;
+
+    field = K_Field_Get();
+    res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    while (res != NULL)
+    {
+        if (visible == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+            *(u32*)((u8*)field + 0x34) = 0;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+            *(u32*)((u8*)field + 0x34) = 1;
+        }
+        res = res->next;
+    }
+
+    if (updateField == 1)
+    {
+        res = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
+        while (res != NULL)
+        {
+            if (visible == 1)
+            {
+                res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+            }
+            else
+            {
+                res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+            }
+            res = res->next;
+        }
+    }
+}
+
+// FUN_001a0150
+void func_001a0150(u16 resTypeId, u32 visible)
+{
+    Resrc* res;
+
+    res = MT_Scene_GetRes(resTypeId);
+    if (res != NULL)
+    {
+        if (visible == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+        }
+    }
+}
+
+// FUN_001a01c0 NONMATCHING
+u32 func_001a01c0()
+{
+    if (K_Scene_001a0250() == 1 || func_001a02c0() == 1)
+    {
+        return true;
+    }
+
+    return (gMtScene->fldMajorId >= 30 && gMtScene->fldMajorId <= 38);
+}
+
+// FUN_001a02c0
+u32 func_001a02c0()
+{
+    s32 fldMajor;
+
+    fldMajor = gMtScene->fldMajorId;
+    if ((fldMajor >= 51 && fldMajor <= 58) || (fldMajor >= 71 && fldMajor <= 78))
+    {
+        return true;
+    }
+
+    return false;
+}
+
+// FUN_001a0310 NONMATCHING
+u32 func_001a0310()
+{
+    s32 major;
+    s32 minor;
+
+    major = gMtScene->fldMajorId;
+    minor = gMtScene->fldMinorId;
+    if ((major == 8 && minor == 3) ||
+        (major == 32 && minor == 2) ||
+        (major == 26 && (minor == 51 || minor == 52 || minor == 53)) ||
+        (major == 37 && minor == 1) ||
+        (major == 35 && minor == 1) ||
+        major == 4 ||
+        major == 5)
+    {
+        return true;
+    }
+
+    return false;
+}
+// FUN_001a0430 NONMATCHING
+void func_001a0430(u16 resTypeId, u32 customLight)
+{
+    Resrc* res;
+    u32 type;
+
+    type = RESRC_GET_TYPE(resTypeId);
+    if (type != RESRC_TYPE_MODELCHAR &&
+        type != RESRC_TYPE_MODELNPC &&
+        type != RESRC_TYPE_MODELUNK)
+    {
+        return;
+    }
+
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return;
+    }
+
+    if (customLight == 1)
+    {
+        res->flags |= SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+    }
+    else
+    {
+        res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+    }
+}
+
+// FUN_001a0590 NONMATCHING
+void func_001a0590(u16 resTypeId, u32 directionalOnly)
+{
+    Resrc* res;
+    u32 type;
+
+    type = RESRC_GET_TYPE(resTypeId);
+    if (type != RESRC_TYPE_MODELCHAR &&
+        type != RESRC_TYPE_MODELNPC &&
+        type != RESRC_TYPE_MODELUNK)
+    {
+        return;
+    }
+
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return;
+    }
+
+    if (directionalOnly == 1)
+    {
+        res->flags |= SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+    }
+    else
+    {
+        res->flags &= ~SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+    }
+}
+
+// FUN_001a0700 NONMATCHING
+void* func_001a0700(u16 resTypeId)
+{
+    Resrc* res;
+    u32 type;
+
+    type = RESRC_GET_TYPE(resTypeId);
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return NULL;
+    }
+
+    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    {
+        return (u8*)res + 0x12c;
+    }
+    if (type == RESRC_TYPE_MODELUNK)
+    {
+        return (u8*)res + 0x11c;
+    }
+
+    return NULL;
+}
+
+// FUN_001a07f0 NONMATCHING
+void* func_001a07f0(u16 resTypeId)
+{
+    Resrc* res;
+    u32 type;
+
+    type = RESRC_GET_TYPE(resTypeId);
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return NULL;
+    }
+
+    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    {
+        return (u8*)res + 0x190;
+    }
+    if (type == RESRC_TYPE_MODELUNK)
+    {
+        return (u8*)res + 0x180;
+    }
+
+    return NULL;
+}
+
+// FUN_001a08e0 NONMATCHING
+void* func_001a08e0(u16 resTypeId)
+{
+    Resrc* res;
+    u32 type;
+
+    type = RESRC_GET_TYPE(resTypeId);
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return NULL;
+    }
+
+    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    {
+        return (u8*)res + 0x1a0;
+    }
+    if (type == RESRC_TYPE_MODELUNK)
+    {
+        return (u8*)res + 0x190;
+    }
+
+    return NULL;
+}
+
+// FUN_001a09d0
+RwRGBAReal* func_001a09d0()
+{
+    ResrcLightChar* res;
+
+    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        return (RwRGBAReal*)((u8*)res + 0x100);
+    }
+    return NULL;
+}
+
+// FUN_001a0a50
+RwMatrix* func_001a0a50()
+{
+    ResrcLightChar* res;
+
+    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        return (RwMatrix*)((u8*)res + 0x120);
+    }
+    return NULL;
+}
+
+// FUN_001a0a90 NONMATCHING
+void K_Scene_InitCharLight()
+{
+    ResrcLightChar* res;
+    RwV3d axisY;
+    RwV3d axisX;
+
+    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    axisY.x = 0.0f;
+    axisY.y = 1.0f;
+    axisY.z = 0.0f;
+    axisX.x = 1.0f;
+    axisX.y = 0.0f;
+    axisX.z = 0.0f;
+    if (res == NULL)
+    {
+        return;
+    }
+
+    res->ambientColor.r = 0.65f;
+    res->ambientColor.g = 0.65f;
+    res->ambientColor.b = 0.65f;
+    res->ambientColor.a = 0.0f;
+    res->directionalColor.r = 0.0f;
+    res->directionalColor.g = 0.0f;
+    res->directionalColor.b = 0.0f;
+    res->directionalColor.a = 0.0f;
+    RwMatrixSetIdentity(&res->directionalMat);
+    RwMatrixRotate(&res->directionalMat, &axisY, -180.0f, rwCOMBINEPOSTCONCAT);
+    RwMatrixRotate(&res->directionalMat, &axisX, -45.0f, rwCOMBINEPOSTCONCAT);
+}
+
+// FUN_001a0d00
+RwRGBAReal* func_001a0d00()
+{
+    ResrcLightNpc* res;
+
+    res = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    if (res != NULL)
+    {
+        return (RwRGBAReal*)((u8*)res + 0x100);
+    }
+    return NULL;
+}
+
+// FUN_001a0d40
+RwRGBAReal* func_001a0d40()
+{
+    ResrcLightNpc* res;
+
+    res = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    if (res != NULL)
+    {
+        return (RwRGBAReal*)((u8*)res + 0x110);
+    }
+    return NULL;
+}
+
+// FUN_001a0d80
+RwMatrix* func_001a0d80()
+{
+    ResrcLightNpc* res;
+
+    res = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    if (res != NULL)
+    {
+        return (RwMatrix*)((u8*)res + 0x120);
+    }
+    return NULL;
+}
+
+// FUN_001a0dc0 NONMATCHING
+void func_001a0dc0(u16 resTypeId, u32 visible)
+{
+    Resrc* res;
+
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return;
+    }
+    if (visible == 1)
+    {
+        res->flags |= SCENEDRAW_RESRC_FLAG_VISIBLE;
+    }
+    else
+    {
+        res->flags &= ~SCENEDRAW_RESRC_FLAG_VISIBLE;
+    }
+}
+
+// FUN_001a0e50 NONMATCHING
+void func_001a0e50(u16 resTypeId, u32 persona)
+{
+    Resrc* res;
+
+    res = MT_Scene_GetRes(resTypeId);
+    if (res == NULL)
+    {
+        return;
+    }
+    if (persona == 1)
+    {
+        res->flags |= SCENEDRAW_RESRC_FLAG_PERSONA;
+    }
+    else
+    {
+        res->flags &= ~SCENEDRAW_RESRC_FLAG_PERSONA;
+    }
+}
+
+// FUN_001a0ee0 NONMATCHING
+void K_Scene_InitNpcLight()
+{
+    ResrcLightNpc* res;
+    RwV3d axisY;
+    RwV3d axisX;
+
+    res = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
+    axisY.x = 0.0f;
+    axisY.y = 1.0f;
+    axisY.z = 0.0f;
+    axisX.x = 1.0f;
+    axisX.y = 0.0f;
+    axisX.z = 0.0f;
+    if (res == NULL)
+    {
+        return;
+    }
+
+    res->ambColor.r = 0.0f;
+    res->ambColor.g = 0.0f;
+    res->ambColor.b = 0.0f;
+    res->ambColor.a = 0.0f;
+    res->dirColor.r = 0.5f;
+    res->dirColor.g = 0.5f;
+    res->dirColor.b = 0.5f;
+    res->dirColor.a = 0.0f;
+    RwMatrixSetIdentity(&res->dirMat);
+    RwMatrixRotate(&res->dirMat, &axisY, -180.0f, rwCOMBINEPOSTCONCAT);
+    RwMatrixRotate(&res->dirMat, &axisX, -45.0f, rwCOMBINEPOSTCONCAT);
+}
+// FUN_001a1150
+u32 func_001a1150()
+{
+    Resrc* res;
+    u32 value;
+
+    res = MT_Scene_GetResListHead(RESRC_TYPE_20);
+    value = 0;
+    if (res != NULL)
+    {
+        value = *(u32*)((u8*)res + 0x108);
+    }
+    return value;
+}
+
+// FUN_001a1190
+f32 func_001a1190()
+{
+    Resrc* res;
+    f32 value;
+
+    res = MT_Scene_GetResListHead(RESRC_TYPE_20);
+    value = 0.0f;
+    if (res != NULL)
+    {
+        value = *(f32*)((u8*)res + 0x104);
+    }
+    return value;
+}
+
+// FUN_001a11d0
+u32 func_001a11d0()
+{
+    Resrc* res;
+    u32 value;
+
+    res = MT_Scene_GetResListHead(RESRC_TYPE_20);
+    value = (res != NULL);
+    if (value != 0)
+    {
+        value = *(u32*)((u8*)res + 0x100) == 1;
+    }
+    return value;
+}
+
+// FUN_001a1210 NONMATCHING
+void func_001a1210(void* camera, const RwV3d* target, const RwV3d* position, const RwV3d* upVector)
+{
+    u8* data;
+    RwV3d* right;
+    RwV3d* up;
+    RwV3d* at;
+    RwV3d* cameraPosition;
+    RwV3d defaultUp;
+
+    data = (u8*)(*(void**)((u8*)camera + 4));
+    right = (RwV3d*)(data + 0x10);
+    up = (RwV3d*)(data + 0x20);
+    at = (RwV3d*)(data + 0x30);
+    cameraPosition = (RwV3d*)(data + 0x40);
+    defaultUp.x = 0.0f;
+    defaultUp.y = 1.0f;
+    defaultUp.z = 0.0f;
+
+    *cameraPosition = *target;
+    at->x = position->x - cameraPosition->x;
+    at->y = position->y - cameraPosition->y;
+    at->z = position->z - cameraPosition->z;
+    RwV3dNormalize(at, at);
+    if (upVector == NULL)
+    {
+        upVector = &defaultUp;
+    }
+
+    right->x = at->y * upVector->z - at->z * upVector->y;
+    right->y = at->z * upVector->x - at->x * upVector->z;
+    right->z = at->x * upVector->y - at->y * upVector->x;
+    RwV3dNormalize(right, right);
+    up->x = at->y * right->z - at->z * right->y;
+    up->y = at->z * right->x - at->x * right->z;
+    up->z = at->x * right->y - at->y * right->x;
+    RwV3dNormalize(up, up);
+    RwMatrixUpdate((RwMatrix*)(data + 0x10));
+    func_004cb270(data);
+}
+
+// FUN_001a13b0 NONMATCHING
+void* func_001a13b0(void* object, void** listHead)
+{
+    void* manager;
+    void* resource;
+    void* allocation;
+    void** tail;
+
+    func_005225a8("draw object", (u8*)object + 0x10, *((u8*)object + 0x50));
+    manager = func_004d11f0();
+    resource = func_004d1170(manager, (u8*)object + 0x10);
+    if (resource == NULL)
+    {
+        manager = func_004d11f0();
+        func_004d1110(manager, object);
+        allocation = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x44, 0x40000);
+        func_00524270(allocation, (u8*)object + 0x10);
+        if (*listHead == NULL)
+        {
+            *listHead = allocation;
+        }
+        else
+        {
+            tail = (void**)*listHead;
+            while (tail[0x10] != NULL)
+            {
+                tail = (void**)tail[0x10];
+            }
+            tail[0x10] = allocation;
+        }
+    }
+
+    return object;
+}
+
+// FUN_001a14c0 NONMATCHING
+void func_001a14c0(void* list)
+{
+    void* manager;
+    void* resource;
+    void* next;
+
+    while (list != NULL)
+    {
+        next = *(void**)((u8*)list + 0x40);
+        manager = func_004d11f0();
+        resource = func_004d1170(manager, list);
+        func_004d0f00(resource);
+        (*(void (**)(void*))D_0096017c)(list);
+        list = next;
+    }
+}
+
+// FUN_001a1540
+void* func_001a1540()
+{
+    return KWLNTASK_CONTINUE;
 }

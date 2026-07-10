@@ -18,6 +18,21 @@ Rules of engagement:
   mask-fold, or commutative-`addu` operand order remains after exhausting these, it is a
   compiler-artifact wall — mark `NONMATCHING` and move on.
 
+## Progress metrics
+
+The generated [`progress/metrics.json`](../progress/metrics.json) measures
+function-level verifier progress. Its denominator is the set of authoritative
+mapped window addresses, so each address counts once even when multiple source
+markers or aliases resolve to it. Asm-only labels and other verifier rows outside
+those mapped windows are excluded from the metric.
+
+A mapped address is in the matching numerator when at least one verifier row at
+that address has the exact status `MATCH`; duplicate rows and unknown extra rows
+cannot increase progress. Other verifier statuses do not make an address match.
+The C-linked metric is a strict subset: it includes only matching functions that
+also linked successfully as byte-identical C. The number of matched body bytes is
+supplemental diagnostic data; it is not the denominator for an
+executable-percent metric.
 ---
 
 ## Types and the EE ABI
@@ -127,6 +142,11 @@ Rules of engagement:
 - **Absolute globals outside the gp window** (`0x833xxx`, `0x871exx`, `0x95xxxx`, `0x96xxxx`, read as a
   value via `lui;lw`) → declare `extern T DAT_addr[]; DAT_addr[0]` (HI16/LO16 relocs). A `static`
   would emit GPREL16 and mismatch (datScript `DAT_00957190`, sfl_camera `DAT_00960070`).
+- **Absolute function-pointer slots use the same array idiom.** For a retail `lui; lw; jalr` through
+  an address outside the gp window, declare `extern void* DAT_addr[];` and call
+  `((Ret (*)(Args...))DAT_addr[0])(...)`. Declaring `extern Ret (*DAT_addr)(Args...)` can place the
+  slot in small data and emit `lw ..., GPREL16(gp); jalr`, one instruction shorter than retail
+  (`K_FldUnit_Destroy` 1d0110).
 - **gp base = `0x7d2cf0`** (`_mips_gp0_value`). This maps `puGpffffbXXX` (gp offset, sign-extended) to
   the absolute `DAT_007ceXXX` it aliases — e.g. `puGpffffb5f8` = `0x7d2cf0 - 0x4a08` = `0x7ce2e8`.
   Use it to avoid declaring a duplicate global for the same variable.

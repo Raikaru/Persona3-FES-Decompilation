@@ -186,7 +186,6 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 
     i = 0;
     totalEntries = header->totalEntries;
-    // TODO: load 1, 2, 3 and 4 in a2, a3, t0 and t1 before the loop
     for (; i < totalEntries; i++)
     {
         currEntry = &entries[i];
@@ -211,8 +210,8 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
             case SCR_CONTENT_TYPE_STRINGS:
                 strings = (char*)((uintptr_t)header + currEntry->offset);
                 break;
-            
-            default: 
+
+            default:
                 K_ABORT("scrStartScript2(..) Invalid type!!\n", 306);
                 return NULL;
         }
@@ -254,8 +253,9 @@ KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
 // FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it NONMATCHING
 KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scriptSize, u32 prcdIdx)
 {
-    void* script;
     ScrData* scr;
+    void* script;
+    ScrData* taskScript;
     KwlnTask* scrTask;
 
     script = H_Malloc(scriptSize);
@@ -267,14 +267,14 @@ KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scrip
 
     scr->scriptMemory = script;
 
-    scrTask = dds3InitProcess(scr->proceduresContent[scr->prcdIdx].name,
+    scrTask = dds3InitProcess((taskScript = scr)->proceduresContent[scr->prcdIdx].name,
                               priority, 
                               1, 
                               1,
                               scrScriptProcess, 
                               scrDestroyTask, 
                               scr);
-    K_ASSERT(scrTask != NULL, 395);
+    K_ASSERT(NULL != scrTask, 395);
 
     scr->task = scrTask;
 
@@ -452,6 +452,17 @@ s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name)
     }
 
     return -1;
+}
+
+// FUN_0035c1a0
+void func_0035c1a0(KwlnTask* task, s32 value)
+{
+    ScrData* scr;
+
+    scr = (ScrData*)dds3GetProcessWorkData(task);
+    K_ASSERT(scr != NULL, 1052);
+
+    scr->unk_f0 = value;
 }
 
 // FUN_0035c200

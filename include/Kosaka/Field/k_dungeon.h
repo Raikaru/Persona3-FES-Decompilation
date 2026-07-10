@@ -10,26 +10,37 @@ typedef struct FldDungeonFloorData FldDungeonFloorData;
 
 typedef enum
 {
-    FLDDUNGEON_STATE_IDLE = 3, // Player is exploring a floor
-    FLDDUNGEON_STATE_STOP = 9, // Destroy dungeon task
+    FLDDUNGEON_STATE_INITIALIZE,
+    FLDDUNGEON_STATE_WAIT_EFFECT,
+    FLDDUNGEON_STATE_CREATE_FIELD,
+    FLDDUNGEON_STATE_IDLE,              // Player is exploring a floor
+    FLDDUNGEON_STATE_UNK_04,
+    FLDDUNGEON_STATE_UNK_05,
+    FLDDUNGEON_STATE_UNK_06,
+    FLDDUNGEON_STATE_RELOAD_FIELD,
+    FLDDUNGEON_STATE_WAIT_TRANSITION,
+    FLDDUNGEON_STATE_STOP,              // Destroy dungeon task
 } FldDungeonState;
 
 // 64 bytes
 typedef struct FldDungeon
 {
-    u16 state;                       // 0x00. See enum 'FldDungeonState'
-    u32 currFloor;                   // 0x04
-    s32 unk_08;                      // 0x08
-    u32 shouldShutdown;              // 0x0c. If true, set state to 'DUNGEON_STATE_STOP'
-    s32 unk_10;                      // 0x10
-    HCdvd* scrCdvd;                  // 0x14
-    KwlnTask* fldRootTask;           // 0x18
-    KwlnTask* eplKosakaTask;         // 0x1c
-    FldDungeonFloorData* floorsData; // 0x20. Ptr to 'gFldDngFloorsData'
-    u8 unkData2[0x10];
-    void* scrMemory;                 // 0x34. script memory of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF'
-    u32 scrSize;                     // 0x38. Size in bytes of 'DUNGEONAT.BF' or 'DUNGEONAT_AEGIS.BF'
-    s32 unk_3c;                      // 0x3c
+    FldDungeonState state;              // 0x00
+    u32 currFloor;                      // 0x04
+    s32 unk_08;                         // 0x08
+    u32 shouldShutdown;                 // 0x0c. Transitions to FLDDUNGEON_STATE_STOP when 1
+    s32 unk_10;                         // 0x10
+    HCdvd* scrCdvd;                     // 0x14
+    KwlnTask* fldRootTask;              // 0x18
+    KwlnTask* transitionTask;           // 0x1c
+    FldDungeonFloorData* floorsData;    // 0x20. Ptr to gFldDngFloorsData
+    u32 fieldFlags;                     // 0x24. Passed to the field root task
+    s32 encounterResult;                // 0x28
+    KwlnTask* effectEplTask;            // 0x2c
+    s32 effectEplSlot;                  // 0x30
+    void* scrMemory;                    // 0x34. dungeonat.bf or dungeonat_aegis.bf contents
+    u32 scrSize;                        // 0x38. Size of scrMemory in bytes
+    s32 unk_3c;                         // 0x3c
 } FldDungeon;
 
 extern KwlnTask* gDungeonTask;

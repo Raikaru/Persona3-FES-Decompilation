@@ -43,3 +43,159 @@ void dds3SetProcessWorkData(KwlnTask* task, void* workData)
 {
     kwlnTaskSetWorkData(task, workData);
 }
+
+
+/* ---- Recovered range 0x35AE50-0x35AFA0 (Ghidra reference, pending match) ---- */
+#include "Script/scrTraceCode.h"
+#include "Kosaka/k_assert.h"
+extern void scrSetIntReturnVal(s32 value);
+extern u64 FUN_003951d0(u64 value);
+extern void FUN_00395170(u32 value);
+extern void FUN_003951a0(u32 value);
+
+// FUN_0035AE50
+
+
+void FUN_0035ae50(void)
+
+
+
+{
+
+  return;
+
+}
+
+// FUN_0035AE60
+
+
+void FUN_0035ae60(void)
+
+
+
+{
+
+  return;
+
+}
+
+// FUN_0035AE70
+
+
+void FUN_0035ae70(void)
+
+
+
+{
+
+  return;
+
+}
+
+// FUN_0035AE80
+
+
+void FUN_0035ae80(void)
+
+
+
+{
+
+  return;
+
+}
+
+// FUN_0035AE90
+
+
+u64 FUN_0035ae90(void)
+
+
+
+{
+
+  return 0;
+
+}
+
+// FUN_0035AEA0
+
+
+u64 FUN_0035aea0(void)
+
+
+
+{
+
+  return 0;
+
+}
+
+// FUN_0035AEB0 NONMATCHING
+
+
+u32 FUN_0035aeb0(void)
+
+
+
+{
+
+  u64 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  uVar1 = FUN_003951d0(uVar1);
+
+  scrSetIntReturnVal(uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035AEF0
+
+
+u32 FUN_0035aef0(void)
+
+
+
+{
+
+  u32 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  K_ASSERT(uVar1 < 0x1600, 0x75);
+
+  FUN_00395170(uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035AF50
+
+
+u32 FUN_0035af50(void)
+
+
+
+{
+
+  u32 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  K_ASSERT(uVar1 < 0x1600, 0x84);
+
+  FUN_003951a0(uVar1);
+
+  return 1;
+
+}

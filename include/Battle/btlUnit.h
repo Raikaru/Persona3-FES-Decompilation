@@ -12,11 +12,13 @@
 #define BTLUNIT_FLAG2_DIRTY  (1 << 2)  // 0x04
 
 #define BTLUNIT_FLAG3_DEAD   (1 << 0) // 0x01
+#define BTLUNIT_FLAG3_UNK02  (1 << 1) // 0x02
 #define BTLUNIT_FLAG3_UNK08  (1 << 3) // 0x08
 #define BTLUNIT_FLAG3_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG3_UNK40  (1 << 6) // 0x40
 #define BTLUNIT_FLAG3_UNK1000 (1 << 12) // 0x1000
 #define BTLUNIT_FLAG3_NOROT  (1 << 13) // 0x2000
+#define BTLUNIT_FLAG3_UNK400 (1 << 10) // 0x400
 
 #define BTLUNIT_MOVEMENTFLAGS_MOVE   (1 << 0) // 0x01
 #define BTLUNIT_MOVEMENTFLAGS_ROTATE (1 << 1) // 0x02
@@ -62,7 +64,8 @@ struct BtlUnit
     RwV3d sphereCenter;           // 0x80
     f32 unk_8c;                   // 0x8c
     f32 sphereRadius;             // 0x90
-    s32 unk_94;                   // 0x94
+    s16 unk_94;                   // 0x94
+    s16 unk_96;                   // 0x96
     u32 flags2;                   // 0x98. Temp name. See 'BTLUNIT_FLAG2_*'
     u32 flags3;                   // 0x9c. Temp name. See 'BTLUNIT_FLAG3_*'
     u16 packetCount;              // 0xa0
@@ -75,23 +78,40 @@ struct BtlUnit
     RwV3d lookAtTargetPos;        // 0xb8
     u32 unk_c4;                   // 0xc4
     u16 movementFlags;            // 0xc8. See 'BTLUNIT_MOVEMENTFLAGS_*'
-    u8 unkData2[0x06];
+    u8 unkData2[0x02];
+    f32 unk_cc;                   // 0xcc
     RwV3d targetRot;              // 0xd0
-    u8 unkData3[0x0c];
+    RwV3d unk_dc;                 // 0xdc
     s32 unk_e8;                   // 0xe8
-    u8 unkData5[0x40c];
+    RwV3d unk_ec;                 // 0xec
+    f32 unk_f8;                   // 0xf8
+    u8 unkData5[0x3f0];
+    s16 unk_4ec;                  // 0x4ec
+    u8 unkData5a[0x02];
+    u8 unk_4f0;                   // 0x4f0
+    u8 unkData5b[0x03];
+    f32 unk_4f4;                  // 0x4f4
     s32 unk_4f8;                  // 0x4f8
-    u8 unkData6[0x4d2];
+    u8 unkData6[0x4d0];
+    u16 unk_9cc;                  // 0x9cc
     s16 unk_9ce;                  // 0x9ce
-    u8 unkData6b[0x10];
+    u16 unk_9d0;                  // 0x9d0
+    f32 unk_9d4;                  // 0x9d4
+    u16 unk_9d8;                  // 0x9d8
+    s16 unk_9da;                  // 0x9da
+    s16 unk_9dc;                  // 0x9dc
+    u8 unkData6b[0x02];
     s16 unk_9e0;                  // 0x9e0
-    u8 unkData6c[0x02];
+    s16 unk_9e2;                  // 0x9e2
     f32 unk_9e4;                  // 0x9e4
     s8 unk_9e8;                   // 0x9e8
-    u8 unkData6d[0x09];
+    u8 unkData6c[0x03];
+    void* unk_9ec;                // 0x9ec
+    s8 unk_9f0;                   // 0x9f0
+    u8 unk_9f1;
     u16 resTypeId;                // 0x9f2
     Model* mdl;                   // 0x9f4
-    u8 unkData7[0x04];
+    void* unk_9f8;                // 0x9f8
     void* unk_9fc;                // 0x9fc
     BtlUnit* personaUnit;         // 0xa00
     u8 unkData8[0x28];
@@ -148,7 +168,8 @@ typedef struct BtlUnitPacketMove
     RwV3d targetPos;  // 0x04 
     u32 flags;        // 0x10
     u16 state;        // 0x14
-    u8 unkData[0x06];
+    u8 unkData[0x02];
+    u32 timer;        // 0x18
     f32 unk_1c;       // 0x1c
     f32 speed;        // 0x20
 } BtlUnitPacketMove;
@@ -225,6 +246,7 @@ void btlUnitGetSphereWorldCenter(BtlUnit* unit, RwV3d* dst);
 u32 btlUnitIsMoving(BtlUnit* unit);
 void btlUnitStopMoving(BtlUnit* unit);
 void btlUnitStopRotating(BtlUnit* unit);
+BtlUnit* btlUnitCreate(u8 genus);
 u32 btlUnit00282c60(BtlUnit* unit);
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode);
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
@@ -235,9 +257,11 @@ BtlUnit* btlUnitFindFromId(u16 id);
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);
 BtlPacket* btlUnitCreateMovePacket(BtlUnit* unit, const RwV3d* targetPos, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotatePacket(BtlUnit* unit, const RwV3d* rot, u32 flags);
+BtlPacket* btlUnitCreateMoveToUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, f32 param_3, f32 speed, u32 flags);
 BtlPacket* btlUnitCreateRotateTowardUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u32 flags);
 BtlPacket* btlUnit00286320(BtlUnit* unit);
 BtlPacket* btlUnitCreateLookAtPacket(BtlUnit* unit, const RwV3d* targetPos, u16 flags);
+BtlPacket* btlUnitCreateModelPacket(BtlUnit* unit, u16 id, u16 flags);
 BtlPacket* btlUnitCreateLookAtUnitPacket(BtlUnit* unit, BtlUnit* targetUnit, u16 flags);
 BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags);
 BtlPacket* btlUnitCreatePosRotColPacket(BtlUnit* unit, const RwV3d* pos, const RtQuat* rot, const RwRGBA* col);

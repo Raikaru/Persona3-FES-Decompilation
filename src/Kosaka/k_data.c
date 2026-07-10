@@ -6,6 +6,40 @@
 #include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "temporary.h"
+#include "Kosaka/Field/k_field.h"
+#include "Scene/mt_scene.h"
+#include "rw/rwplcore.h"
+#include "Kosaka/Field/k_fldrc.h"
+#include "Script/scr.h"
+
+/*
+ * The field data helpers below share the root-field scratch area.  The
+ * retail layout keeps these values in the tail of Field; using offsets here
+ * avoids inventing a second public work structure while retaining the
+ * ownership and lifetime rules observed in the original code.
+ */
+#define FIELD_DATA_AT(field, offset, type) (*(type*)((u8*)(field) + (offset)))
+
+extern u32 func_0010a720(void);
+extern u32 func_0010a770();
+extern u32 func_0016dba0(u16 value);
+extern u32 func_0016ef30(void);
+extern u32 func_0016f190(u32 id);
+extern u32 func_0017d920(void);
+extern u32 func_0017da40(void);
+extern u32 func_0017e480(u16 major, u16 minor, u16 mode, u16 limit);
+extern void* func_001021c0(void* source, u32* size);
+extern u32 func_001023a0(void* request);
+extern void* func_001016b0(void* request);
+extern void* func_00194b80(KwlnTask* parent, u32 priority, const char* name,
+                           void* update, void* destroy, void* work);
+extern void* func_001d4360(void);
+extern u32 func_001d43e0(void);
+extern void func_0019d3f0(const char* file, s32 line);
+extern void* func_00316bd0(u32 type, u32 priority, void* data, u32 size, u32 mode);
+extern u32 func_00316f70(Model* model);
+extern u32* PTR_DAT_007cd540;
+extern u16* puGpffffa850;
 
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
@@ -13,6 +47,62 @@ Model* gFldBaseMdl;  // 007ce21c
 u32 gTraceCode;      // 007ce208
 
 FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
+
+/* These symbols are consumed by the field encounter/script modules. */
+ScrHeader* D_007CE220;
+void* D_007CE218;
+void* D_007CE214;
+
+static void* sFieldMainTable;
+static u32 sFieldMainTableCount;
+static void* sFieldMainTableCursor;
+static void* sFieldMainTableEnd;
+static void* sFieldNmScript;
+static u32 sFieldNmScriptSize;
+static void* sFieldNsScript;
+static u32 sFieldNsScriptSize;
+static s16* sComuTable;
+static u32 sComuTableRecords;
+static u32 sComuTableEmptyRecords;
+static void* sNpcComuScript;
+static u32 sNpcComuScriptSize;
+
+typedef struct FieldLoadWork
+{
+    u32 state;
+    u32 scenarioMode;
+    HCdvd* request;
+    void* enemyTableRequest;
+} FieldLoadWork;
+
+static u32 fieldCurrentMajor(void)
+{
+    return (u32)gMtScene->fldMajorId;
+}
+
+static u32 fieldCurrentMinor(void)
+{
+    return (u32)gMtScene->fldMinorId;
+}
+
+static void fieldSetTableBounds(void* table)
+{
+    u32 count;
+
+    sFieldMainTable = table;
+    if (table == NULL)
+    {
+        sFieldMainTableCount = 0;
+        sFieldMainTableCursor = NULL;
+        sFieldMainTableEnd = NULL;
+        return;
+    }
+
+    count = *(u32*)table;
+    sFieldMainTableCount = count;
+    sFieldMainTableCursor = (u8*)table + 0x20;
+    sFieldMainTableEnd = (u8*)sFieldMainTableCursor + count * 0x20;
+}
 
 // FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize' NONMATCHING
 void K_Data_LoadFldMainScript()
@@ -87,4 +177,695 @@ void K_Data_CreateFldBaseMdl()
 u32 K_Data_ChkFldBaseMdlStream()
 {
     return mdlStreamRead(gFldBaseMdl) != false;
+}
+
+static void fieldReplaceBuffer(void** destination, u32* destinationSize,
+                               const void* source, u32 sourceSize)
+{
+    void* buffer;
+
+    if (*destination != NULL)
+    {
+        RwFree(*destination);
+        *destination = NULL;
+    }
+    if (destinationSize != NULL)
+    {
+        *destinationSize = sourceSize;
+    }
+    if (source == NULL || sourceSize == 0)
+    {
+        return;
+    }
+    buffer = RwCalloc(1, sourceSize, rwMEMHINTDUR_GLOBAL);
+    if (buffer != NULL)
+    {
+        memcpy(buffer, source, sourceSize);
+        *destination = buffer;
+    }
+}
+
+// FUN_001b7bb0 NONMATCHING
+void func_001b7bb0(void)
+{
+    HCdvd* request;
+
+    request = H_Cdvd_Request("field/script/fuka.bf", HCDVD_FILENORMAL);
+    if (request == NULL)
+    {
+        D_007CE220 = NULL;
+        return;
+    }
+    H_Cdvd_ReadSync(request);
+    fieldReplaceBuffer((void**)&D_007CE220, NULL, request->fileMemory,
+                       request->fileSize);
+    H_Cdvd_Destroy(request);
+}
+
+// FUN_001b7d00 NONMATCHING
+void func_001b7d00(void)
+{
+    D_007CE218 = RwCalloc(1, 0x34c, rwMEMHINTDUR_GLOBAL);
+    if (D_007CE218 != NULL)
+    {
+        D_007CE214 = (void*)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
+    }
+}
+
+// FUN_001b7d60 NONMATCHING
+u32 func_001b7d60(void)
+{
+    if (D_007CE214 == NULL)
+    {
+        return true;
+    }
+    if (func_0010a720() == 0)
+    {
+        return false;
+    }
+    D_007CE214 = NULL;
+    return true;
+}
+
+// FUN_001b7e60 NONMATCHING
+void* func_001b7e60(KwlnTask* task)
+{
+    FieldLoadWork* work;
+    HCdvd* request;
+    void* source;
+    u32 sourceSize;
+
+    work = (FieldLoadWork*)task->workData;
+    if (work == NULL)
+    {
+        return KWLNTASK_STOP;
+    }
+    if (work->state == 2)
+    {
+        return KWLNTASK_STOP;
+    }
+    if (work->state != 0 && work->state != 1)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+
+    if (work->state == 0)
+    {
+        request = H_Cdvd_Request(work->scenarioMode == 0
+                                     ? "field/table/dungeonAT.bin"
+                                     : "field/table/dungeonFES.bin",
+                                 HCDVD_FILENORMAL);
+        work->request = request;
+        work->enemyTableRequest = func_001d4360();
+        work->state = 1;
+    }
+
+    if (work->request != NULL && H_Cdvd_IsFileLoaded(work->request) != 0)
+    {
+        source = work->request->fileMemory;
+        sourceSize = work->request->fileSize;
+        if (sourceSize > sizeof(gFldDngFloorsData))
+        {
+            sourceSize = sizeof(gFldDngFloorsData);
+        }
+        if (source != NULL)
+        {
+            memcpy(gFldDngFloorsData, source, sourceSize);
+        }
+        H_Cdvd_Destroy(work->request);
+        work->request = NULL;
+    }
+    if (work->enemyTableRequest != NULL && func_001d43e0() != 0)
+    {
+        work->enemyTableRequest = NULL;
+    }
+    if (work->request == NULL && work->enemyTableRequest == NULL)
+    {
+        work->state++;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001b8000 NONMATCHING
+void func_001b8000(KwlnTask* task)
+{
+    if (task != NULL && task->workData != NULL)
+    {
+        RwFree(task->workData);
+        task->workData = NULL;
+    }
+}
+
+// FUN_001b8030 NONMATCHING
+KwlnTask* func_001b8030(KwlnTask* parent)
+{
+    FieldLoadWork* work;
+
+    work = (FieldLoadWork*)RwCalloc(1, sizeof(FieldLoadWork),
+                                    rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    work->scenarioMode = 0;
+    return kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
+                                          func_001b7e60, func_001b8000, work);
+}
+
+// FUN_001b80c0 NONMATCHING
+KwlnTask* func_001b80c0(KwlnTask* parent)
+{
+    FieldLoadWork* work;
+
+    work = (FieldLoadWork*)RwCalloc(1, sizeof(FieldLoadWork),
+                                    rwMEMHINTDUR_GLOBAL);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+    work->scenarioMode = 1;
+    return kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
+                                          func_001b7e60, func_001b8000, work);
+}
+
+// FUN_001b8160 NONMATCHING
+void* func_001b8160(void)
+{
+    char path[128];
+
+    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    {
+        return (void*)1;
+    }
+    sprintf(path, "field/table/n%03d_%03d.bin", fieldCurrentMajor(),
+            fieldCurrentMinor());
+    if (H_Cdvd_FileExists(path) == 0)
+    {
+        return NULL;
+    }
+    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+}
+
+// FUN_001b81f0 NONMATCHING
+u32 func_001b81f0(HCdvd* request)
+{
+    char path[128];
+    void* source;
+    u32 sourceSize;
+    u32 cachedSize;
+    Field* field;
+
+    if (request == NULL)
+    {
+        return true;
+    }
+    field = K_Field_Get();
+    source = NULL;
+    sourceSize = 0;
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        if (H_Cdvd_IsFileLoaded(request) != 0)
+        {
+            source = request->fileMemory;
+            sourceSize = request->fileSize;
+        }
+    }
+    else
+    {
+        sprintf(path, "field/pack/n%03d_%03d.bin", fieldCurrentMajor(),
+                fieldCurrentMinor());
+        source = H_Cdvd_CacheFindFile(path, &cachedSize);
+        sourceSize = cachedSize;
+    }
+    if (source == NULL || sourceSize == 0)
+    {
+        return false;
+    }
+    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x1158, void*),
+                       NULL, source, sourceSize);
+    FIELD_DATA_AT(field, 0x115c, u32) =
+        *(u32*)FIELD_DATA_AT(field, 0x1158, void*);
+    FIELD_DATA_AT(field, 0x1160, void*) =
+        (u8*)FIELD_DATA_AT(field, 0x1158, void*) + 0x20;
+    FIELD_DATA_AT(field, 0x1164, void*) =
+        (u8*)FIELD_DATA_AT(field, 0x1160, void*) +
+        FIELD_DATA_AT(field, 0x115c, u32) * 0x20;
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        H_Cdvd_Destroy(request);
+    }
+    return true;
+}
+
+// FUN_001b83f0 NONMATCHING
+u16* func_001b83f0(void)
+{
+    Field* field;
+    u16* record;
+    u16* best;
+    u16 fallbackMajor;
+    u16 fallbackMinor;
+    u16 fallbackDay;
+    u32 i;
+    u32 count;
+    u32 currentDay;
+
+    field = K_Field_Get();
+    record = (u16*)FIELD_DATA_AT(field, 0x1160, void*);
+    count = FIELD_DATA_AT(field, 0x115c, u32);
+    if (record == NULL || count == 0)
+    {
+        return NULL;
+    }
+    record += (count - 1) * 0x10;
+    best = record;
+    fallbackMajor = 3;
+    fallbackMinor = 0x1f;
+    fallbackDay = 8;
+    currentDay = func_0016ef30() & 0xff;
+    for (i = 0; i < count; i++)
+    {
+        if (func_0017e480(record[0], record[1], 3, 0x1f) != 0)
+        {
+            if (record[0] == func_0017d920() &&
+                record[1] == func_0017da40() &&
+                record[2] <= currentDay &&
+                fallbackMajor == 3 && fallbackMinor == 0x1f)
+            {
+                return record;
+            }
+            if (record[4] != 0xffff && func_0016f190(record[4]) == 0)
+            {
+                return record;
+            }
+        }
+        fallbackMajor = record[0];
+        fallbackMinor = record[1];
+        fallbackDay = record[2];
+        (void)fallbackMajor;
+        (void)fallbackMinor;
+        (void)fallbackDay;
+        if (record == (u16*)FIELD_DATA_AT(field, 0x1160, void*))
+        {
+            break;
+        }
+        record -= 0x10;
+    }
+    return best == record ? NULL : record;
+}
+
+// FUN_001b85a0 NONMATCHING
+void func_001b85a0(u32 index)
+{
+    Field* field;
+    s16* record;
+    u32 emptyCount;
+
+    field = K_Field_Get();
+    record = (s16*)FIELD_DATA_AT(field, 0x1164, void*);
+    if (record == NULL)
+    {
+        return;
+    }
+    emptyCount = 0;
+    while (emptyCount != index)
+    {
+        if (*record == -1)
+        {
+            emptyCount++;
+        }
+        record += 0x10;
+    }
+}
+
+// FUN_001b8600 NONMATCHING
+void func_001b8600(void)
+{
+    Field* field;
+
+    field = K_Field_Get();
+    if (FIELD_DATA_AT(field, 0x1158, void*) != NULL)
+    {
+        RwFree(FIELD_DATA_AT(field, 0x1158, void*));
+        FIELD_DATA_AT(field, 0x1158, void*) = NULL;
+        FIELD_DATA_AT(field, 0x115c, u32) = 0;
+        FIELD_DATA_AT(field, 0x1160, void*) = NULL;
+        FIELD_DATA_AT(field, 0x1164, void*) = NULL;
+    }
+}
+
+// FUN_001b8680 NONMATCHING
+void* func_001b8680(void)
+{
+    char path[128];
+
+    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    {
+        return (void*)1;
+    }
+    sprintf(path, "field/script/nm%03d_%03d.bmd", fieldCurrentMajor(),
+            fieldCurrentMinor());
+    if (H_Cdvd_FileExists(path) == 0)
+    {
+        return NULL;
+    }
+    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+}
+
+// FUN_001b8710 NONMATCHING
+u32 func_001b8710(HCdvd* request)
+{
+    char path[128];
+    void* source;
+    u32 sourceSize;
+    u32 cachedSize;
+    Field* field;
+
+    if (request == NULL)
+    {
+        return true;
+    }
+    field = K_Field_Get();
+    source = NULL;
+    sourceSize = 0;
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        if (H_Cdvd_IsFileLoaded(request) != 0)
+        {
+            source = request->fileMemory;
+            sourceSize = request->fileSize;
+        }
+    }
+    else
+    {
+        sprintf(path, "field/pack/nm%03d_%03d.bmd", fieldCurrentMajor(),
+                fieldCurrentMinor());
+        source = H_Cdvd_CacheFindFile(path, &cachedSize);
+        sourceSize = cachedSize;
+    }
+    if (source == NULL || sourceSize == 0)
+    {
+        return false;
+    }
+    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x1154, void*), NULL,
+                       source, sourceSize);
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        H_Cdvd_Destroy(request);
+    }
+    return true;
+}
+
+// FUN_001b8870 NONMATCHING
+void func_001b8870(void)
+{
+    Field* field;
+
+    field = K_Field_Get();
+    if (FIELD_DATA_AT(field, 0x1154, void*) != NULL)
+    {
+        RwFree(FIELD_DATA_AT(field, 0x1154, void*));
+        FIELD_DATA_AT(field, 0x1154, void*) = NULL;
+    }
+}
+
+// FUN_001b88d0 NONMATCHING
+void* func_001b88d0(void)
+{
+    char path[128];
+
+    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    {
+        return (void*)1;
+    }
+    sprintf(path, "field/script/ns%03d_%03d.bf", fieldCurrentMajor(),
+            fieldCurrentMinor());
+    if (H_Cdvd_FileExists(path) == 0)
+    {
+        return NULL;
+    }
+    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+}
+
+// FUN_001b8960 NONMATCHING
+u32 func_001b8960(HCdvd* request)
+{
+    char path[128];
+    void* source;
+    u32 sourceSize;
+    u32 cachedSize;
+    Field* field;
+
+    if (request == NULL)
+    {
+        return true;
+    }
+    field = K_Field_Get();
+    source = NULL;
+    sourceSize = 0;
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        if (H_Cdvd_IsFileLoaded(request) != 0)
+        {
+            source = request->fileMemory;
+            sourceSize = request->fileSize;
+        }
+    }
+    else
+    {
+        sprintf(path, "field/pack/ns%03d_%03d.bf", fieldCurrentMajor(),
+                fieldCurrentMinor());
+        source = H_Cdvd_CacheFindFile(path, &cachedSize);
+        sourceSize = cachedSize;
+    }
+    if (source == NULL || sourceSize == 0)
+    {
+        return false;
+    }
+    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x114c, void*), NULL,
+                       source, sourceSize);
+    FIELD_DATA_AT(field, 0x1150, u32) = sourceSize;
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
+    {
+        H_Cdvd_Destroy(request);
+    }
+    return true;
+}
+
+// FUN_001b8ae0 NONMATCHING
+void func_001b8ae0(void)
+{
+    Field* field;
+
+    field = K_Field_Get();
+    if (FIELD_DATA_AT(field, 0x114c, void*) != NULL)
+    {
+        RwFree(FIELD_DATA_AT(field, 0x114c, void*));
+        FIELD_DATA_AT(field, 0x114c, void*) = NULL;
+        FIELD_DATA_AT(field, 0x1150, u32) = 0;
+    }
+}
+
+// FUN_001b8b40 NONMATCHING
+void func_001b8b40(void)
+{
+    HCdvd* request;
+    s16* record;
+    u32 i;
+
+    request = H_Cdvd_Request("field/table/comutbl.bin", HCDVD_FILENORMAL);
+    if (request == NULL)
+    {
+        return;
+    }
+    H_Cdvd_ReadSync(request);
+    fieldReplaceBuffer((void**)&sComuTable, NULL, request->fileMemory,
+                       request->fileSize);
+    sComuTableRecords = request->fileSize >> 7;
+    sComuTableEmptyRecords = 0;
+    record = sComuTable;
+    for (i = 0; record != NULL && i < sComuTableRecords; i++)
+    {
+        if (record[0] == -1)
+        {
+            sComuTableEmptyRecords++;
+        }
+        record += 0x40;
+    }
+    H_Cdvd_Destroy(request);
+}
+
+// FUN_001b8c40 NONMATCHING
+void func_001b8c40(void)
+{
+    HCdvd* request;
+
+    request = H_Cdvd_Request("field/script/npccomu.bf", HCDVD_FILENORMAL);
+    if (request == NULL)
+    {
+        return;
+    }
+    H_Cdvd_ReadSync(request);
+    fieldReplaceBuffer(&sNpcComuScript, &sNpcComuScriptSize,
+                       request->fileMemory, request->fileSize);
+    H_Cdvd_Destroy(request);
+}
+
+// FUN_001b8cf0 NONMATCHING
+void func_001b8cf0(u8* work)
+{
+    if (work == NULL)
+    {
+        return;
+    }
+    if (FIELD_DATA_AT(work, 0x14, void*) != NULL)
+    {
+        RwFree(FIELD_DATA_AT(work, 0x14, void*));
+        FIELD_DATA_AT(work, 0x14, void*) = NULL;
+    }
+    if (FIELD_DATA_AT(work, 0x1c, void*) != NULL)
+    {
+        RwFree(FIELD_DATA_AT(work, 0x1c, void*));
+        FIELD_DATA_AT(work, 0x1c, void*) = NULL;
+    }
+}
+
+// FUN_001b8d60 NONMATCHING
+void func_001b8d60(u32 index)
+{
+    s16* record;
+    u32 i;
+    u32 emptyCount;
+
+    record = sComuTable;
+    i = 0;
+    emptyCount = 0;
+    while (record != NULL && i < sComuTableRecords &&
+           emptyCount != index)
+    {
+        if (record[0] == -1)
+        {
+            emptyCount++;
+        }
+        i++;
+        record += 0x40;
+    }
+}
+
+// FUN_001b8db0 NONMATCHING
+s16* func_001b8db0(s16* table)
+{
+    s16* record;
+    s16* previous;
+    s16 chosenMajor;
+    s16 chosenMinor;
+    u16 chosenDay;
+    u32 count;
+    u32 i;
+    u32 slot;
+    u32 day;
+
+    if (table == NULL)
+    {
+        return NULL;
+    }
+    count = 0;
+    record = table;
+    while (*record != -1)
+    {
+        count++;
+        record += 0x40;
+    }
+    chosenMajor = 3;
+    chosenMinor = 0x1f;
+    chosenDay = 8;
+    day = func_0016ef30() & 0xff;
+    record = table + count * 0x40;
+    for (i = 0; i < count; i++)
+    {
+        previous = record - 0x40;
+        if (puGpffffa850 != NULL &&
+            (u16)puGpffffa850[0] == (u16)record[-0x10] &&
+            (u16)puGpffffa850[1] == (u16)record[-0x0f] &&
+            func_0017e480((u16)previous[1], (u16)previous[2], 3, 0x1f) != 0)
+        {
+            if ((u16)previous[1] == func_0017d920() &&
+                (u16)previous[2] == func_0017da40() &&
+                day < chosenDay)
+            {
+                chosenMajor = previous[1];
+                chosenMinor = previous[2];
+                chosenDay = previous[3];
+            }
+            else
+            {
+                for (slot = 0; slot < 0x0f; slot++)
+                {
+                    if (previous[slot + 9] == -1 ||
+                        func_0016f190((u16)previous[slot + 9]) != 1)
+                    {
+                        break;
+                    }
+                }
+                if (slot == 0x0f)
+                {
+                    for (slot = 0; slot < 7; slot++)
+                    {
+                        if (previous[slot + 2] == -1 ||
+                            func_0016f190((u16)previous[slot + 2]) != 1)
+                        {
+                            break;
+                        }
+                    }
+                    if (slot < 7)
+                    {
+                        return previous;
+                    }
+                }
+            }
+        }
+        chosenMajor = previous[1];
+        chosenMinor = previous[2];
+        chosenDay = previous[3];
+        record = previous;
+    }
+    (void)chosenMajor;
+    (void)chosenMinor;
+    return NULL;
+}
+
+// FUN_001b8fd0 NONMATCHING
+u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
+{
+    const u8* record;
+    u32 count;
+    u32 i;
+    u32 type;
+
+    if (unit == NULL || records == NULL || byteSize < 0x0c)
+    {
+        return 0;
+    }
+    count = byteSize / 0x0c;
+    record = records + count * 0x0c;
+    for (i = 0; i < count; i++)
+    {
+        record -= 0x0c;
+        type = *(const u32*)(record + 0);
+        if (type == 1)
+        {
+            return *(const u32*)(record + 4);
+        }
+        if (type == 2 && func_0016f190(*(const u32*)(record + 8)) == 1)
+        {
+            return *(const u32*)(record + 4);
+        }
+        if (type == 3 &&
+            (s32)*(const u32*)(record + 8) ==
+                (s32)func_0016dba0(*(const u16*)(unit + 0x6c)))
+        {
+            return *(const u32*)(record + 4);
+        }
+    }
+    return 0;
 }

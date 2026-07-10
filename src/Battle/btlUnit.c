@@ -1,33 +1,140 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlPacket.h"
 #include "Battle/battle.h"
+#include "Battle/btlAction.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Main/Battle/Data/datUnit.h"
+#include "Main/Battle/Data/datCalc.h"
+#include "Scene/mt_scene.h"
 #include "Graphics/Model/mdlFile.h"
 #include "h_cdvd.h"
+
+
+/* Recovered battle-misc support prelude */
+typedef int (*code)(...);
+void FUN_00287b20(int param_1,short param_2);
+void FUN_00287cf0(int param_1,short param_2);
+void FUN_00287ea0(long param_1);
+void FUN_00288110(int param_1);
+int FUN_00288da0(int param_1,short param_2);
+int FUN_00288fe0(u32 param_1,short param_2);
+int FUN_002890a0(int *param_1,int *param_2);
+void FUN_002891e0(void);
+u64 FUN_00289650(short param_1,u32 param_2,long param_3);
+extern f32 DAT_007cad78;
+extern u8* DAT_007cada4;
+extern u32 DAT_007cb0cc;
+extern code DAT_00960090;
+extern int iGpffffa850;
+extern int iGpffffb6fc;
 
 static u32 sNextId = 1; // 007cc51c
 
 static f32 gUnk_007cad7c = 0.3f; // 007cad7c. No idea where to put this
 
 RwV3d gUnk_00957188; // 00957188
+extern RwV3d D_00697870;
+extern RwV3d D_00697880;
+extern RwV3d D_00697890;
+extern RwV3d D_006978A0;
+extern f32 D_00957180[];
+#define BTL_UNIT_PTR(addr) (*(u8**)(uintptr_t)(addr))
 
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
 BtlPacket* btlUnitCreateEnmDodgeAnimPacket(BtlUnit* unit, s32 unused);
 void FUN_00287490(BtlUnit* unit);
 void FUN_00287510(BtlUnit* unit);
-void FUN_00287b20(BtlUnit* unit, s16 param_2);
 void FUN_003b7090(u16 resTypeId);
 void FUN_002bbbc0(void* param);
-void FUN_00287cf0(BtlUnit* unit, s16 param_2);
+
+typedef struct BtlUnitAnimInfo
+{
+    s16 unk_0;
+    s16 speedPercent;
+    s16 unk_4;
+    s16 unk_6;
+    s16 unk_8;
+} BtlUnitAnimInfo;
+
+typedef struct BtlUnitAnimBounds
+{
+    s16 centerX;
+    s16 centerY;
+    s16 centerZ;
+    u16 unk_6;
+    u16 radius;
+} BtlUnitAnimBounds;
+typedef struct BtlUnitPacketBackstep
+{
+    RwV3d origin;          // 0x00
+    RwV3d displacement;    // 0x0c
+    BtlUnit* unit;         // 0x18
+    s16 blendFrameCount;   // 0x1c
+    s16 counter;           // 0x1e
+    f32 phase;             // 0x20
+} BtlUnitPacketBackstep;
+
+void func_0027f530(BtlUnit* unit);
+void func_00280050(void* param_1, RwV3d* param_2);
+f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3, f32* param_4, f32* param_5, u32 param_6);
+u32 func_002f8ea0(BtlUnit* unit, RwV3d* param_2);
+void func_002d1de0(RwV3d* dst, const RwV3d* from, const RwV3d* to);
+void func_002d4800(RwV3d* param_1);
+void func_002d48c0(RwV3d* param_1, const RwV3d* param_2, const RwV3d* param_3, f32 param_4);
+void func_00288110(BtlUnit* unit);
+void func_002831c0(BtlUnit* unit, s32 param_2);
+s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id);
+s16 func_00283510(BtlUnit* unit, s32 id);
+const BtlUnitAnimBounds* func_00288da0(BtlUnit* unit, s32 id);
+void* func_002bbc00(BtlUnit* unit);
+void* func_002bb7d0(void);
+void func_002bcde0(BtlUnit* unit, void* param_2);
+f32 func_0052ea18(f32 x, f32 z);
+void func_004bdde0(RtQuat* dst, const RwV3d* axis, s32 param_3, f32 angle);
+f32 effMiscRandFloat(s32 param_1);
+Model* func_00316c70(u16 type, u16 id, HCdvd* cdvd, u32 readMode);
+void func_0031c1d0(Model* mdl);
+void func_001a0590(u16 resTypeId, u32 param_2);
+u32 func_002d5cf0(BtlUnit* unit);
+void func_00319230(Model* mdl, u32 param_2);
+u32 func_0017c0e0(u16 id);
+u16 func_003b6180(u16 id, Model* mdl);
+void func_002d3e00(BtlUnit* unit, s32 param_2);
+void func_00280130(BtlUnit* unit, RwV3d* param_2);
+void func_00280200(BtlUnit* unit, const s16* param_2, RwV3d* param_3);
+void func_002802d0(BtlUnit* unit, BtlUnit* target, RwV3d* param_3);
+void func_00280390(BtlUnit* unit, BtlUnit* target, RwV3d* param_3);
+void func_00280480(BtlUnit* unit, BtlUnit* target, RwV3d* param_3);
+void func_00280580(BtlUnit* unit, RwV3d* param_2);
+void func_002806d0(BtlUnit* unit, RwV3d* param_2);
+void func_002807a0(BtlUnit* unit, RwV3d* param_2);
+void func_00280da0(BtlUnit* unit);
+f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id);
+void func_002826d0(BtlUnit* unit);
+void func_00282bc0(BtlUnit* unit);
+s16 func_002f9560(BtlUnit* unit, u16* flags);
+s16 func_002835e0(f32 scale, BtlUnit* unit, s16 id);
+s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id);
+u16 func_002ffbc0(u32 max);
+f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 id);
+s32 func_00318ed0(Model* mdl, s32 param_2, RwV3d* pos);
+u32 func_00281f20(void* work);
+BtlPacket* func_00282130(BtlUnit* unit, u16 blendFrameCount);
+u32 func_00318620(Model* mdl, u16 slotIdx, s16 id);
+u32 func_003186e0(Model* mdl, u16 slotIdx, s16 id);
+u32 func_0017d800(void);
+s16 btlUnit00282c30(BtlUnit* unit);
+u32 btlUnit00282c60(BtlUnit* unit);
+u32 btlUnit00282cd0(BtlUnit* unit);
+void btlUnit00283c00(BtlUnit* unit, s32 param_2);
 
 // 12 bytes
 typedef struct BtlUnitPacketResNullifiedAnim
 {
     BtlUnit* unit; // 0x00
     f32 unk_4;     // 0x04
-    u8 unkData[4];
+    u32 counter;   // 0x08
 } BtlUnitPacketResNullifiedAnim;
 
 void btlUnitInitResNullifiedAnimPacket(void* work);
@@ -37,11 +144,11 @@ void btlUnitDestroyResNullifiedAnimPacket(void* work);
 // 24 bytes
 typedef struct BtlUnitPacket00284900
 {
-    u8 unkData1[0x0c];
+    RwV3d pos;     // 0x00
     BtlUnit* unit; // 0x0c
     s16 unk_10;    // 0x10
     s16 unk_12;    // 0x12
-    u8 unkData2[0x04];
+    f32 phase;     // 0x14
 } BtlUnitPacket00284900;
 
 void btlUnitInit00284900Packet(void* work);
@@ -53,7 +160,8 @@ typedef struct BtlUnitPacketEnmDodgeAnim
 {
     BtlUnit* unit; // 0x00
     s32 unk_4;     // 0x04
-    u8 unkData[0x08];
+    f32 phase;     // 0x08
+    f32 step;      // 0x0c
 } BtlUnitPacketEnmDodgeAnim;
 
 void btlUnitInitEnmDodgeAnimPacket(void* work);
@@ -161,6 +269,819 @@ void btlUnitDestroy002860b0Packet(void* work);
 void btlUnit002862a0(void* work);
 u32 btlUnit002862c0(void* work);
 void btlUnit00286300(void* work);
+// FUN_00280050
+void func_00280050(void* param_1, RwV3d* param_2)
+{
+    BtlUnit* unit;
+    RwV3d scaled;
+    RwV3d transformed;
+
+    unit = (BtlUnit*)param_1;
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_2->x = transformed.x + (unit->unk_94 * 25 - 0x6d6);
+    param_2->y = transformed.y + unit->pos.y;
+    param_2->z = transformed.z + (unit->unk_96 * 25 - 0x6d6);
+}
+
+// FUN_00280130 NONMATCHING
+void func_00280130(BtlUnit* unit, RwV3d* param_2)
+{
+    const BtlUnitAnimBounds* bounds;
+    RwV3d scaled;
+    RwV3d transformed;
+
+    bounds = func_00288da0(unit, 0);
+    scaled.y = bounds->centerY * unit->scale;
+    scaled.z = bounds->centerZ * unit->scale;
+    scaled.x = bounds->centerX * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_2->x = transformed.x + unit->pos.x;
+    param_2->y = transformed.y + unit->pos.y;
+    param_2->z = transformed.z + unit->pos.z;
+}
+
+// FUN_00280200 NONMATCHING
+void func_00280200(BtlUnit* unit, const s16* param_2, RwV3d* param_3)
+{
+    RwV3d scaled;
+    RwV3d transformed;
+
+    scaled.y = param_2[1] * unit->scale;
+    scaled.z = param_2[2] * unit->scale;
+    scaled.x = param_2[0] * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_3->x = transformed.x + unit->pos.x;
+    param_3->y = transformed.y + unit->pos.y;
+    param_3->z = transformed.z + unit->pos.z;
+}
+
+// FUN_002802D0
+void func_002802d0(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
+{
+    RtQuat rotation;
+    RwV3d scaled;
+    RwV3d transformed;
+
+    func_002d1de0((RwV3d*)&rotation, &unit->pos, &target->pos);
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &rotation);
+    param_3->x = transformed.x + unit->pos.x;
+    param_3->y = transformed.y + unit->pos.y;
+    param_3->z = transformed.z + unit->pos.z;
+}
+
+// FUN_00280390 NONMATCHING
+void func_00280390(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
+{
+    const BtlUnitAnimBounds* bounds;
+    RtQuat rotation;
+    RwV3d scaled;
+    RwV3d transformed;
+
+    func_002d1de0((RwV3d*)&rotation, &unit->pos, &target->pos);
+    bounds = func_00288da0(unit, 9);
+    scaled.x = bounds->centerX * unit->scale;
+    scaled.y = bounds->centerY * unit->scale;
+    scaled.z = bounds->centerZ * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &rotation);
+    param_3->x = transformed.x + unit->pos.x;
+    param_3->y = transformed.y + unit->pos.y;
+    param_3->z = transformed.z + unit->pos.z;
+}
+
+// FUN_00280480
+void func_00280480(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
+{
+    RtQuat rotation;
+    RwV3d scaled;
+    RwV3d transformed;
+
+    func_002d1de0((RwV3d*)&rotation, &unit->pos, &target->pos);
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &rotation);
+    param_3->x = transformed.x + (unit->unk_94 * 25 - 0x6d6);
+    param_3->y = transformed.y + unit->pos.y;
+    param_3->z = transformed.z + (unit->unk_96 * 25 - 0x6d6);
+}
+
+// FUN_00280580 NONMATCHING
+void func_00280580(BtlUnit* unit, RwV3d* param_2)
+{
+    RwV3d scaled;
+    RwV3d transformed;
+
+    if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0 &&
+        func_00318ed0(unit->mdl, 0, param_2) != 0)
+    {
+        return;
+    }
+
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_2->x = transformed.x + unit->pos.x;
+    param_2->y = transformed.y + unit->pos.y;
+    param_2->z = transformed.z + unit->pos.z;
+}
+
+// FUN_002806D0 NONMATCHING
+void func_002806d0(BtlUnit* unit, RwV3d* param_2)
+{
+    RwV3d scaled;
+    RwV3d transformed;
+
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_2->x = transformed.x + unit->pos.x;
+    param_2->y = transformed.y + unit->pos.y +
+                 unit->unk_8c * unit->scale * 0.1f;
+    param_2->z = transformed.z + unit->pos.z;
+}
+
+// FUN_002807A0 NONMATCHING
+void func_002807a0(BtlUnit* unit, RwV3d* param_2)
+{
+    RwV3d scaled;
+    RwV3d transformed;
+
+    scaled.x = unit->sphereCenter.x * unit->scale;
+    scaled.y = unit->sphereCenter.y * unit->scale;
+    scaled.z = unit->sphereCenter.z * unit->scale;
+    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+    param_2->x = transformed.x + unit->pos.x;
+    param_2->y = transformed.y + unit->pos.y +
+                 unit->unk_8c * unit->scale * 0.25f;
+    param_2->z = transformed.z + unit->pos.z;
+}
+
+// FUN_00280870 NONMATCHING
+f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
+                  f32* param_4, f32* param_5, u32 param_6)
+{
+    BtlUnit* unit;
+    BtlUnit* lastUnit;
+    RwV3d scaled;
+    RwV3d transformed;
+    RwV3d center;
+    RwV3d delta;
+    f32 sumX;
+    f32 sumY;
+    f32 sumZ;
+    f32 maxY;
+    f32 minY;
+    f32 radius;
+    f32 extent;
+    u32 count;
+    u32 genus;
+
+    sumX = 0.0f;
+    sumY = 0.0f;
+    sumZ = 0.0f;
+    maxY = 0.0f;
+    minY = 100000000.0f;
+    count = 0;
+    lastUnit = NULL;
+
+    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+    {
+        if ((param_1 & (1u << genus)) == 0)
+        {
+            continue;
+        }
+
+        for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+        {
+            f32 top;
+
+            if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
+                (unit->flags3 & param_2) != 0)
+            {
+                continue;
+            }
+
+            if ((param_6 & 1) == 0)
+            {
+                scaled.x = unit->sphereCenter.x * unit->scale;
+                scaled.y = unit->sphereCenter.y * unit->scale;
+                scaled.z = unit->sphereCenter.z * unit->scale;
+                RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+                center.x = transformed.x + unit->pos.x;
+                center.y = transformed.y + unit->pos.y;
+                center.z = transformed.z + unit->pos.z;
+            }
+            else
+            {
+                center.x = unit->unk_94 * 25 - 0x6d6;
+                center.y = unit->sphereCenter.y * unit->scale + unit->pos.y;
+                center.z = unit->unk_96 * 25 - 0x6d6;
+            }
+
+            sumX += center.x;
+            sumY += center.y;
+            sumZ += center.z;
+            top = center.y + unit->unk_8c * unit->scale * 0.5f;
+            if (top > maxY)
+            {
+                maxY = top;
+            }
+            if (top < minY)
+            {
+                minY = top;
+            }
+            count++;
+            lastUnit = unit;
+        }
+    }
+
+    if (count == 0)
+    {
+        return 0.0f;
+    }
+
+    if (count == 1)
+    {
+        center.x = sumX;
+        center.y = sumY;
+        center.z = sumZ;
+        extent = lastUnit->unk_8c * lastUnit->scale * 0.5f;
+        radius = lastUnit->sphereRadius * lastUnit->scale;
+        if (radius < extent)
+        {
+            radius = extent;
+        }
+    }
+    else
+    {
+        f32 invCount;
+
+        invCount = 1.0f / count;
+        center.x = sumX * invCount;
+        center.y = sumY * invCount;
+        center.z = sumZ * invCount;
+        radius = 0.0f;
+
+        for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+        {
+            if ((param_1 & (1u << genus)) == 0)
+            {
+                continue;
+            }
+
+            for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+            {
+                if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
+                    (unit->flags3 & param_2) != 0)
+                {
+                    continue;
+                }
+
+                if ((param_6 & 1) == 0)
+                {
+                    scaled.x = unit->sphereCenter.x * unit->scale;
+                    scaled.y = unit->sphereCenter.y * unit->scale;
+                    scaled.z = unit->sphereCenter.z * unit->scale;
+                    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
+                    delta.x = transformed.x + unit->pos.x - center.x;
+                    delta.z = transformed.z + unit->pos.z - center.z;
+                }
+                else
+                {
+                    delta.x = (unit->unk_94 * 25 - 0x6d6) - center.x;
+                    delta.z = (unit->unk_96 * 25 - 0x6d6) - center.z;
+                }
+                delta.y = 0.0f;
+                extent = RwV3dLength(&delta) + unit->sphereRadius * unit->scale;
+                if (extent > radius)
+                {
+                    radius = extent;
+                }
+            }
+        }
+    }
+
+    if (param_3 != NULL)
+    {
+        *param_3 = center;
+    }
+    if (param_4 != NULL)
+    {
+        *param_4 = maxY;
+    }
+    if (param_5 != NULL)
+    {
+        *param_5 = minY;
+    }
+    return radius;
+}
+
+// FUN_00280DA0 NONMATCHING
+void func_00280da0(BtlUnit* unit)
+{
+    f32* path;
+    RwV2d start;
+    RwV2d segment;
+    RwV2d toLast;
+    RwV3d forward;
+    RtQuat targetRot;
+    u16 pointCount;
+    u16 pointIndex;
+    f32 remaining;
+    f32 segmentLength;
+    f32 lastLength;
+    f32 distanceToTarget;
+    f32 angle;
+    f32 currentAngle;
+    f32 angleDelta;
+    f32 angleMagnitude;
+
+    path = (f32*)((u8*)unit + 0xf4);
+    pointCount = unit->unk_4ec;
+    pointIndex = *(u16*)((u8*)unit + 0x4ee);
+    remaining = unit->unk_cc;
+    segmentLength = 0.0f;
+
+    if ((unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE) != 0 &&
+        (unit->movementFlags & 0x10) != 0)
+    {
+        start.x = unit->pos.x;
+        start.y = unit->pos.z;
+
+        while (pointIndex < pointCount - 1)
+        {
+            remaining -= segmentLength;
+            segment.x = path[pointIndex * 2] - start.x;
+            segment.y = path[pointIndex * 2 + 1] - start.y;
+            segmentLength = RwV2dNormalize(&segment, &segment);
+            if (remaining <= segmentLength)
+            {
+                break;
+            }
+            start.x = path[pointIndex * 2];
+            start.y = path[pointIndex * 2 + 1];
+            pointIndex++;
+        }
+
+        if ((unit->unk_c4 & 1) != 0)
+        {
+            pointIndex = pointCount - 1;
+        }
+
+        if (pointIndex < pointCount - 1)
+        {
+            f32 step;
+
+            step = remaining;
+            unit->pos.x = start.x + segment.x * step;
+            unit->pos.z = start.y + segment.y * step;
+            toLast.x = start.x - path[(pointCount - 1) * 2];
+            toLast.y = start.y - path[(pointCount - 1) * 2 + 1];
+            lastLength = RwV2dLength(&toLast);
+            if (lastLength < unit->unk_e8)
+            {
+                step = (lastLength + remaining) - unit->unk_e8;
+                unit->pos.x = start.x + segment.x * step;
+                unit->pos.z = start.y + segment.y * step;
+                unit->movementFlags &= (u16)~BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags &= (u16)~0x10;
+            }
+            unit->targetRot.x = unit->pos.x + segment.x;
+            unit->targetRot.y = unit->pos.y;
+            unit->targetRot.z = unit->pos.z + segment.y;
+        }
+        else
+        {
+            unit->pos.x = path[pointIndex * 2];
+            unit->pos.z = path[pointIndex * 2 + 1];
+            unit->movementFlags &= (u16)~BTLUNIT_MOVEMENTFLAGS_MOVE;
+            unit->movementFlags &= (u16)~0x10;
+            unit->targetRot.x = unit->pos.x;
+            unit->targetRot.y = unit->pos.y;
+            unit->targetRot.z = unit->pos.z;
+        }
+
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+        *(u16*)((u8*)unit + 0x4ee) = pointIndex;
+        unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_ROTATE;
+    }
+
+    if ((unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE) == 0)
+    {
+        return;
+    }
+
+    forward.x = unit->targetRot.x - unit->pos.x;
+    forward.y = unit->targetRot.z - unit->pos.z;
+    if ((forward.x == 0.0f && forward.y == 0.0f) ||
+        (unit->flags3 & BTLUNIT_FLAG3_NOROT) != 0)
+    {
+        unit->movementFlags &= (u16)~BTLUNIT_MOVEMENTFLAGS_ROTATE;
+        return;
+    }
+
+    angle = func_0052ea18(forward.x, forward.y) * 57.295776f;
+    RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
+    currentAngle = func_0052ea18(forward.x, unit->targetRot.z - unit->pos.z) * 57.295776f;
+    angleDelta = angle - currentAngle;
+    angleMagnitude = angleDelta;
+    if (angleMagnitude < 0.0f)
+    {
+        angleMagnitude = -angleMagnitude;
+    }
+
+    if (angleMagnitude <= 5.0f || (unit->unk_c4 & 2) != 0)
+    {
+        func_004bdde0(&targetRot, &D_00697880, 0, angle);
+        unit->rot = targetRot;
+        unit->movementFlags &= (u16)~BTLUNIT_MOVEMENTFLAGS_ROTATE;
+    }
+    else
+    {
+        if (angleMagnitude > 180.0f)
+        {
+            if (angleDelta > 0.0f)
+            {
+                angleDelta -= 360.0f;
+            }
+            else
+            {
+                angleDelta += 360.0f;
+            }
+        }
+        if (unit->unk_4f4 != 0.0f)
+        {
+            func_004bdde0((RtQuat*)&unit->rot, &D_00697880, 2,
+                          angleDelta / unit->unk_4f4);
+        }
+    }
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+}
+
+// FUN_002812D0 NONMATCHING
+f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
+{
+    const BtlUnitAnimInfo* animInfo;
+    s16 animId;
+    f32 offset;
+    f32 targetOffset;
+
+    animId = func_00283510(unit, id);
+    if (animId < 0 || animId >= unit->unk_9d8)
+    {
+        return 0.0f;
+    }
+
+    animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
+    offset = unit->scale * animInfo[animId].unk_6;
+    targetOffset = func_002fc5d0(unit, target, id);
+    if (targetOffset >= 0.0f)
+    {
+        offset += targetOffset;
+    }
+    else
+    {
+        offset += target->sphereRadius * target->scale;
+    }
+    return unit->sphereCenter.z * unit->scale + offset;
+}
+
+// FUN_002826D0 NONMATCHING
+void func_002826d0(BtlUnit* unit)
+{
+    Model* mdl;
+    s16 current;
+    s16 reported;
+    s16 blend;
+    s16 animId;
+    u32 animIndex;
+
+    if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) == 0)
+    {
+        return;
+    }
+
+    mdl = unit->mdl;
+    if ((unit->unk_9cc & 2) != 0)
+    {
+        mdlAnimSetSpeed(mdl, 0, 0.0f);
+        return;
+    }
+
+    if ((unit->unk_9cc & 4) != 0 &&
+        btlUnitGetAnimFrame(unit) >= unit->unk_9da && unit->unk_9dc > 0)
+    {
+        mdlAnimSetSpeed(mdl, 0, 0.0f);
+        unit->unk_9dc--;
+        return;
+    }
+
+    mdlAnimSetSpeed(mdl, 0, unit->unk_9d4);
+    if ((unit->unk_9cc & 8) == 0)
+    {
+        if ((unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_MOVE) != 0 &&
+            (unit->movementFlags & 4) == 0)
+        {
+            if (!btlUnit00282cd0(unit))
+            {
+                btlUnitAnimate(unit, 1, 4,
+                               (unit->unk_c4 & 4) != 0 ? 2.0f : 1.0f, 1);
+            }
+        }
+        else if (btlUnit00282cd0(unit) && !btlUnit00282c60(unit))
+        {
+            btlUnitAnimate(unit, unit->unk_9e0, 6, unit->unk_9e4, unit->unk_9e8);
+        }
+    }
+
+    switch (unit->unk_9d0)
+    {
+    case 0:
+        if (mdl->animSlots[0].anim.isAnimEnd == 1)
+        {
+            current = unit->unk_9e0;
+            reported = btlUnit00282c30(unit);
+            if (current != reported)
+            {
+                blend = func_002f9560(unit, &unit->unk_9cc);
+                if (blend == -1 && unit->unk_9e2 < 1)
+                {
+                    if (current == 0x11 || current == 0xd || current == 3)
+                    {
+                        animId = func_00283510(unit, current);
+                        animIndex = (u32)(u16)animId;
+                        if (animIndex < unit->unk_9d8)
+                        {
+                            blend = ((const BtlUnitAnimInfo*)unit->unk_9ec)[animIndex].unk_8;
+                        }
+                        else
+                        {
+                            blend = 6;
+                        }
+                    }
+                    else
+                    {
+                        blend = 0;
+                    }
+                }
+                else if (blend == -1)
+                {
+                    blend = unit->unk_9e2;
+                }
+                btlUnitAnimate(unit, current, blend, unit->unk_9e4, unit->unk_9e8);
+            }
+        }
+        break;
+
+    case 3:
+        if (mdl->animSlots[0].anim.blendFactor >= 1.0f)
+        {
+            mdlAnimSetSpeed(mdl, 0, 0.0f);
+        }
+        break;
+
+    case 4:
+        if (mdl->animSlots[0].anim.isAnimEnd == 1 && btlUnit00282c30(unit) != 0xd)
+        {
+            btlUnitAnimate(unit, 0xd, 0, 1.0f, 1);
+        }
+        break;
+
+    case 5:
+        if (mdl->animSlots[0].anim.isAnimEnd == 1 && btlUnit00282c30(unit) != 0xf)
+        {
+            btlUnitAnimate(unit, 0xf, 0, 1.0f, 2);
+        }
+        break;
+
+    case 6:
+        if (mdl->animSlots[0].anim.isAnimEnd == 1 && btlUnit00282c30(unit) != 0x18)
+        {
+            btlUnitAnimate(unit, 0x18, 0, 1.0f, 2);
+        }
+        break;
+
+    case 7:
+        if (mdl->animSlots[0].anim.isAnimEnd == 1 && btlUnit00282c30(unit) != 0x19)
+        {
+            btlUnitAnimate(unit, 0x19, 0, 1.0f, 2);
+        }
+        break;
+    }
+
+    unit->unk_9cc &= (u16)~8;
+}
+
+// FUN_00282BC0 NONMATCHING
+void func_00282bc0(BtlUnit* unit)
+{
+    s16 animation;
+
+    animation = btlUnit00282c30(unit);
+    animation = (s16)func_002838d0(1.0f, unit, animation);
+    animation = (s16)func_002ffbc0((u16)animation);
+    btlUnit00283c00(unit, animation);
+}
+// FUN_00281F20 NONMATCHING
+u32 func_00281f20(void* workData)
+{
+    BtlUnitPacketBackstep* work;
+    BtlUnit* unit;
+    RwV3d transformed;
+    f32 phase;
+    f32 factor;
+    f32 step;
+    u16 blendFrameCount;
+
+    work = (BtlUnitPacketBackstep*)workData;
+    unit = work->unit;
+    if (work->counter == 0)
+    {
+        work->phase = 0.6f;
+        work->origin = unit->pos;
+        RtQuatTransformVectors(&transformed, &D_006978A0, 1, &unit->rot);
+        work->displacement.x = transformed.x * 400.0f;
+        work->displacement.y = transformed.y * 400.0f;
+        work->displacement.z = transformed.z * 400.0f;
+    }
+
+    blendFrameCount = (u16)work->blendFrameCount;
+    if (blendFrameCount == 0)
+    {
+        step = 1.0f;
+    }
+    else
+    {
+        step = 1.0f / ((f32)blendFrameCount * 2.0f);
+    }
+    work->phase += step;
+    phase = work->phase;
+    factor = ((phase * 4.0f + phase * (-2.0f * phase) - 1.0f) - 0.5f) * 2.0f;
+    if (factor < 1.0f)
+    {
+        transformed.x = work->displacement.x * factor;
+        transformed.y = work->displacement.y * factor;
+        transformed.z = work->displacement.z * factor;
+    }
+    else
+    {
+        transformed = work->displacement;
+    }
+
+    unit->pos.x = work->origin.x + transformed.x;
+    unit->pos.y = work->origin.y + transformed.y;
+    unit->pos.z = work->origin.z + transformed.z;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    work->counter++;
+    return factor >= 1.0f;
+}
+
+// FUN_00282130
+BtlPacket* func_00282130(BtlUnit* unit, u16 blendFrameCount)
+{
+    BtlPacket* packet;
+    BtlUnitPacketBackstep* work;
+
+    packet = btlPacketCreate(BTLPACKET_MAKE_ID(BTLPACKET_MODULE_UNIT, 12),
+                             sizeof(BtlUnitPacketBackstep));
+    packet->updateFunc = func_00281f20;
+    work = (BtlUnitPacketBackstep*)packet->workData;
+    work->unit = unit;
+    work->blendFrameCount = (s16)blendFrameCount;
+    work->counter = 0;
+    return packet;
+}
+
+// FUN_002831C0 NONMATCHING
+void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
+{
+    u32 canUseLowHp;
+    s16 animation;
+    s16 nextAnimation;
+    s16 mode;
+    f32 speed;
+    u16 blend;
+
+    nextAnimation = 0;
+    canUseLowHp = 0;
+    if (datCalcIsLowHp(unit->datUnit) != 0 && (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
+    {
+        animation = func_00283510(unit, 0x11);
+        if (func_00318620(unit->mdl, 0, animation) != 0 &&
+            func_003186e0(unit->mdl, 0, animation) != 1)
+        {
+            canUseLowHp = 1;
+        }
+    }
+    if (canUseLowHp)
+    {
+        nextAnimation = 0x11;
+    }
+    if (datCalcChkBadStatus(unit->datUnit, 0xffeff) != 0)
+    {
+        nextAnimation = 3;
+    }
+    if (datCalcChkBadStatus(unit->datUnit, UNIT_BADSTATUS_DOWN) != 0)
+    {
+        nextAnimation = 9;
+    }
+    if (datCalcIsDead(unit->datUnit, 0) != 0 &&
+        (unit->flags3 & BTLUNIT_FLAG3_UNK40) != 0 &&
+        (unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0)
+    {
+        animation = func_00283510(unit, 0x12);
+        if (func_00318620(unit->mdl, 0, animation) != 0 &&
+            func_003186e0(unit->mdl, 0, animation) != 1)
+        {
+            nextAnimation = 0x12;
+        }
+    }
+
+    if (nextAnimation == 0x12)
+    {
+        mode = 2;
+        blend = 0;
+    }
+    else
+    {
+        mode = 1;
+        blend = (u16)unit->unk_9e2;
+    }
+
+    switch (datCalcGetBadStatusNoDown(unit->datUnit))
+    {
+    case 0x100:
+        speed = func_0017d800() == 0 ? 3.0f : 2.0f;
+        break;
+    case 0x20:
+        speed = 0.5f;
+        break;
+    default:
+        speed = 1.0f;
+        break;
+    }
+
+    if (btlUnit00282c60(unit) && unit->unk_9e0 != nextAnimation)
+    {
+        btlUnitAnimate(unit, nextAnimation, blend, speed, mode);
+    }
+    unit->unk_9e0 = nextAnimation;
+    unit->unk_9e2 = blend;
+    unit->unk_9e4 = speed;
+    unit->unk_9e8 = (s8)mode;
+
+    (void)blendFrameCount;
+}
+// FUN_0027F530 NONMATCHING
+void func_0027f530(BtlUnit* unit)
+{
+    u8* bytes;
+
+    bytes = (u8*)unit;
+    *(f32*)(bytes + 0x2c) = 1.0f;
+    *(f32*)(bytes + 0x04) = D_00957180[0];
+    *(f32*)(bytes + 0x08) = D_00957180[1];
+    *(f32*)(bytes + 0x0c) = D_00957180[2];
+    *(f32*)(bytes + 0x10) = D_00957180[0];
+    *(f32*)(bytes + 0x14) = D_00957180[1];
+    *(f32*)(bytes + 0x18) = D_00957180[2];
+    *(f32*)(bytes + 0x28) = 1.0f;
+    *(f32*)(bytes + 0x1c) = 0.0f;
+    *(f32*)(bytes + 0x20) = 0.0f;
+    *(f32*)(bytes + 0x24) = 0.0f;
+    bytes[0x30] = 0xff;
+    bytes[0x31] = 0xff;
+    bytes[0x32] = 0xff;
+    bytes[0x33] = 0xff;
+    bytes[0x34] = bytes[0x30];
+    bytes[0x35] = bytes[0x31];
+    bytes[0x36] = bytes[0x32];
+    bytes[0x37] = bytes[0x33];
+    bytes[0x3c] = bytes[0x30];
+    bytes[0x3d] = bytes[0x31];
+    bytes[0x3e] = bytes[0x32];
+    bytes[0x3f] = bytes[0x33];
+    bytes[0x40] = bytes[0x30];
+    bytes[0x41] = bytes[0x31];
+    bytes[0x42] = bytes[0x32];
+    bytes[0x43] = bytes[0x33];
+    *(u16*)(bytes + 0x4c) = 0;
+    *(f32*)(bytes + 0x54) = D_00957180[0];
+    *(f32*)(bytes + 0x58) = D_00957180[1];
+    *(f32*)(bytes + 0x5c) = D_00957180[2];
+    *(f32*)(bytes + 0x70) = 0.0f;
+    *(f32*)(bytes + 0x74) = 0.0f;
+    *(f32*)(bytes + 0x78) = 0.0f;
+    *(f32*)(bytes + 0x7c) = 0.5f;
+}
 
 // FUN_0027f650
 void btlUnitSetPos(BtlUnit* unit, const RwV3d* pos)
@@ -217,7 +1138,44 @@ void btlUnitClearFlags(BtlUnit* unit, u16 flags)
 // FUN_0027f7c0
 void btlUnit0027f7c0(BtlUnit* unit, RwV3d* param_2, RwV3d* parm_3, RwV3d* param_4)
 {
-    // TODO
+    RwV3d base;
+    RwV3d target;
+
+    base.x = unit->unk_94 * 25 - 0x6d6;
+    base.y = unit->pos.y;
+    base.z = unit->unk_96 * 25 - 0x6d6;
+
+    if (param_2 != NULL)
+    {
+        *param_2 = base;
+    }
+
+    if (param_4 != NULL || parm_3 != NULL)
+    {
+        switch (unit->genus)
+        {
+        case UNIT_GENUS_PC:
+            func_00280870(2, 1, &target, 0, 0, 1);
+            break;
+
+        case UNIT_GENUS_EC:
+            if (func_002f8ea0(unit, &target) != 1)
+            {
+                func_00280050(gBtl->actionList.head->unit, &target);
+            }
+            break;
+        }
+
+        if (param_4 != NULL)
+        {
+            *param_4 = target;
+        }
+
+        if (parm_3 != NULL)
+        {
+            func_002d1de0(parm_3, &base, &target);
+        }
+    }
 }
 
 // FUN_0027f930
@@ -225,6 +1183,106 @@ s32 btlUnit0027f930(s32 param_1)
 {
     return param_1 + 0x4e;
 }
+// FUN_0027f940 NONMATCHING
+void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
+                   u16 tableIndex, RwV3d* position, void* rotationOut, u8 mode)
+{
+    u8* table;
+    u8* entry;
+    u16 charId;
+    f32 distance;
+    f32 scale;
+    RwV3d origin;
+    RwV3d firstOffset;
+    RwV3d secondOffset;
+    RwV3d transformed;
+    RwV3d positionValue;
+    RwV3d center;
+    RtQuat rotation;
+
+    table = BTL_UNIT_PTR(0x007ce42c);
+    charId = unit->charId;
+
+    if (mode == 2)
+    {
+        func_002802d0(target, source, &origin);
+        distance = func_002812d0(unit, target, tableIndex);
+        rotation.real = 0.0f;
+        func_002d1de0((RwV3d*)&rotation, &source->pos, &origin);
+        RtQuatTransformVectors(&firstOffset, &D_006978A0, 1, &rotation);
+
+        entry = table + ((charId * 11) * 8);
+        scale = (f32)*(s16*)(entry + 0x0c) * unit->scale;
+        RtQuatTransformVectors(&secondOffset, &D_00697870, 1, &rotation);
+
+        positionValue.x = origin.x + firstOffset.x * (distance + 50.0f) + secondOffset.x * scale;
+        positionValue.y = 0.0f;
+        positionValue.z = origin.z + firstOffset.z * (distance + 50.0f) + secondOffset.z * scale;
+        if (position != NULL)
+        {
+            *position = positionValue;
+        }
+        if (rotationOut != NULL)
+        {
+            func_002d1de0((RwV3d*)rotationOut, &positionValue, &origin);
+        }
+    }
+    else
+    {
+        if (rotationOut != NULL)
+        {
+            *(RtQuat*)rotationOut = source->rot;
+        }
+        if (position != NULL)
+        {
+            btlUnitGetSphereWorldCenter(source, &center);
+            center.y -= source->unk_8c * source->scale * 0.5f;
+            entry = table + ((charId * 11) * 8) + mode * 6;
+            secondOffset.x = (f32)*(s16*)(entry + 0x0c) * unit->scale;
+            secondOffset.y = (f32)*(s16*)(entry + 0x0e) * unit->scale;
+            secondOffset.z = (f32)*(s16*)(entry + 0x10) * unit->scale;
+            RtQuatTransformVectors(&transformed, &secondOffset, 1, &source->rot);
+            position->x = transformed.x + center.x;
+            position->y = transformed.y + center.y;
+            position->z = transformed.z + center.z;
+        }
+    }
+}
+
+// FUN_0027FC80 NONMATCHING
+u32 func_0027fc80(BtlUnit* unit)
+{
+    u8* table;
+    u8* entry;
+
+    if (unit->genus != UNIT_GENUS_PS)
+    {
+        return 0xffffffff;
+    }
+    if (unit->charId == 0xcf)
+    {
+        return 0xffffffff;
+    }
+
+    table = BTL_UNIT_PTR(0x007ce42c);
+    entry = table + unit->charId * 0x58;
+    return ((u32)entry[0x56] << 24) | 0xffffff;
+}
+
+// FUN_0027FCF0
+void func_0027fcf0(BtlUnit* unit, const RwV3d* target)
+{
+    RtQuat rotation;
+
+    func_002d1de0((RwV3d*)&rotation, &unit->pos, target);
+    if ((unit->flags3 & BTLUNIT_FLAG3_NOROT) == 0)
+    {
+        unit->rot = rotation;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
+    func_00288110(unit);
+}
+
 
 // FUN_0027fd70
 void btlUnitInitPosRotColPacket(void* work)
@@ -271,7 +1329,7 @@ u32 btlUnitUpdatePosRotColPacket(void* work)
         colUnit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_0027fe70
@@ -367,12 +1425,142 @@ void btlUnitInitMovePacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_002813f0
+// FUN_002813f0 NONMATCHING
 u32 btlUnitUpdateMovePacket(void* work)
 {
-    // TODO
+    BtlUnitPacketMove* packet;
+    BtlUnit* unit;
+    RwV3d direction;
+    RwV3d target;
+    RwV3d start;
+    RwV3d end;
 
-    return false;
+    packet = (BtlUnitPacketMove*)work;
+    unit = packet->unit;
+
+    if (packet->flags & 8)
+    {
+        switch (packet->state)
+        {
+        case 0:
+            if (packet->flags & 0x10)
+            {
+                btlUnit0027f7c0(unit, &packet->targetPos, NULL, NULL);
+            }
+            packet->state++;
+            break;
+
+        case 1:
+            func_002d4800(&unit->unk_ec);
+            unit->unk_e8 = packet->unk_1c;
+            unit->unk_c4 = packet->flags;
+            unit->unk_cc = 27.0f * packet->speed;
+
+            if (!(packet->flags & 1))
+            {
+                unit->unk_ec.x = unit->pos.x;
+                unit->unk_ec.y = unit->pos.z;
+                unit->unk_ec.z = packet->targetPos.x;
+                unit->unk_f8 = packet->targetPos.z;
+                unit->unk_4ec = 2;
+                unit->movementFlags &= ~0x20;
+                unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags |= 0x10;
+            }
+            else
+            {
+                target = packet->targetPos;
+                if (packet->unk_1c != 0.0f)
+                {
+                    direction.x = unit->pos.x - packet->targetPos.x;
+                    direction.y = 0.0f;
+                    direction.z = unit->pos.z - packet->targetPos.z;
+                    RwV3dNormalize(&direction, &direction);
+                    target.x += direction.x * packet->unk_1c;
+                    target.y += direction.y * packet->unk_1c;
+                    target.z += direction.z * packet->unk_1c;
+                }
+
+                target.y = unit->pos.y;
+                unit->pos = target;
+                unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+                unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags &= ~0x10;
+            }
+
+            unit->unk_dc = packet->targetPos;
+            packet->state++;
+            break;
+
+        case 2:
+            if (!(unit->movementFlags & (BTLUNIT_MOVEMENTFLAGS_MOVE | BTLUNIT_MOVEMENTFLAGS_ROTATE)))
+            {
+                return 1;
+            }
+            break;
+        }
+    }
+    else
+    {
+        switch (packet->state)
+        {
+        case 0:
+            if (packet->flags & 0x10)
+            {
+                btlUnit0027f7c0(unit, &packet->targetPos, NULL, NULL);
+            }
+            packet->state++;
+            break;
+
+        case 1:
+            func_002d4800(&unit->unk_ec);
+            unit->unk_e8 = packet->unk_1c;
+            unit->unk_c4 = packet->flags;
+            unit->unk_cc = 27.0f * packet->speed;
+            start.x = unit->pos.x;
+            start.y = unit->pos.z;
+            start.z = 0.0f;
+            end.x = packet->targetPos.x;
+            end.y = packet->targetPos.z;
+            end.z = 0.0f;
+            func_002d48c0(&unit->unk_ec, &start, &end, 50.0f);
+            unit->unk_dc = packet->targetPos;
+            packet->state++;
+            break;
+
+        case 2:
+            if (unit->unk_4f0 == 2)
+            {
+                unit->movementFlags &= ~0x20;
+                unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags |= 0x10;
+                packet->state++;
+            }
+            else if (unit->unk_4f0 == 3)
+            {
+                unit->unk_ec.x = unit->pos.x;
+                unit->unk_ec.y = unit->pos.z;
+                unit->unk_ec.z = packet->targetPos.x;
+                unit->unk_f8 = packet->targetPos.z;
+                unit->unk_4ec = 3;
+                unit->movementFlags &= ~0x20;
+                unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_MOVE;
+                unit->movementFlags |= 0x10;
+                packet->state++;
+            }
+            break;
+
+        case 3:
+            if (!(unit->movementFlags & (BTLUNIT_MOVEMENTFLAGS_MOVE | BTLUNIT_MOVEMENTFLAGS_ROTATE)))
+            {
+                return 1;
+            }
+            break;
+        }
+    }
+
+    packet->timer++;
+    return 0;
 }
 
 // FUN_002819b0
@@ -425,12 +1613,75 @@ void btlUnitInitMoveToUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
-// FUN_00281ad0
+// FUN_00281ad0 NONMATCHING
 u32 btlUnitUpdateMoveToUnitPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketMoveToUnit* packet;
+    BtlUnit* targetUnit;
+    BtlUnit* unit;
+    const BtlUnitAnimBounds* bounds;
+    RwV3d targetPos;
+    RwV3d scaledCenter;
+    RwV3d rotatedCenter;
+    RtQuat targetRot;
+    RwV3d offset;
 
-    return false;
+    packet = (BtlUnitPacketMoveToUnit*)work;
+
+    if (packet->move.timer == 0)
+    {
+        targetUnit = packet->targetUnit;
+        unit = packet->move.unit;
+
+        if (!(targetUnit->flags3 & BTLUNIT_FLAG3_NOROT))
+        {
+            func_002d1de0((RwV3d*)&targetRot, &targetUnit->pos, &unit->pos);
+            if (packet->move.flags & 0x40)
+            {
+                bounds = func_00288da0(targetUnit, 0);
+                scaledCenter.x = bounds->centerX * targetUnit->scale;
+                scaledCenter.y = bounds->centerY * targetUnit->scale;
+                scaledCenter.z = bounds->centerZ * targetUnit->scale;
+            }
+            else
+            {
+                scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
+            }
+            RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetRot);
+        }
+        else
+        {
+            if (packet->move.flags & 0x40)
+            {
+                bounds = func_00288da0(targetUnit, 0);
+                scaledCenter.x = bounds->centerX * targetUnit->scale;
+                scaledCenter.y = bounds->centerY * targetUnit->scale;
+                scaledCenter.z = bounds->centerZ * targetUnit->scale;
+            }
+            else
+            {
+                scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
+            }
+            RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetUnit->rot);
+        }
+
+        targetPos.x = targetUnit->pos.x + rotatedCenter.x;
+        targetPos.y = targetUnit->pos.y + rotatedCenter.y;
+        targetPos.z = targetUnit->pos.z + rotatedCenter.z;
+
+        RtQuatTransformVectors(&offset, &D_00697890, 1, &targetUnit->rot);
+        targetPos.x += offset.x * packet->move.unk_1c;
+        targetPos.y += offset.y * packet->move.unk_1c;
+        targetPos.z += offset.z * packet->move.unk_1c;
+        packet->move.targetPos = targetPos;
+        packet->move.unk_1c = 0.0f;
+    }
+
+    return btlUnitUpdateMovePacket(&packet->move);
 }
 
 // FUN_00281e60
@@ -508,12 +1759,12 @@ u32 btlUnitUpdateRotatePacket(void* work)
     // !(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE)
     if (!(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE ? 1 : 0))
     {
-        return true;
+        return 1;
     }
 
     packet->timer++;
 
-    return false;
+    return 0;
 }
 
 // FUN_00282290
@@ -566,12 +1817,81 @@ void btlUnitInitRotateTowardUnitPacket(void* work)
     packet->targetUnit->packetCount++;
 }
 
-// FUN_002823b0
+// FUN_002823b0 NONMATCHING
 u32 btlUnitUpdateRotateTowardUnitPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketRotateTowardUnit* packet;
+    BtlUnit* unit;
+    BtlUnit* targetUnit;
+    RwV3d scaledCenter;
+    RwV3d rotatedCenter;
+    RwV3d targetRot;
+    RtQuat rot;
+    f32 x;
+    f32 z;
+    f32 angle;
 
-    return false;
+    packet = (BtlUnitPacketRotateTowardUnit*)work;
+    unit = packet->unit;
+
+    if (packet->timer == 0)
+    {
+        targetUnit = packet->targetUnit;
+
+        if (packet->flags & 2)
+        {
+            if (packet->flags & 0x20)
+            {
+                scaledCenter.x = targetUnit->sphereCenter.x * targetUnit->scale;
+                scaledCenter.y = targetUnit->sphereCenter.y * targetUnit->scale;
+                scaledCenter.z = targetUnit->sphereCenter.z * targetUnit->scale;
+                RtQuatTransformVectors(&rotatedCenter, &scaledCenter, 1, &targetUnit->rot);
+                x = rotatedCenter.x + targetUnit->unk_94 * 25 - 0x6d6 - unit->pos.x;
+                z = rotatedCenter.z + targetUnit->unk_96 * 25 - 0x6d6 - unit->pos.z;
+            }
+            else
+            {
+                x = targetUnit->pos.x - unit->pos.x;
+                z = targetUnit->pos.z - unit->pos.z;
+            }
+
+            if (x != 0.0f || z != 0.0f)
+            {
+                angle = func_0052ea18(x, z) * 57.295776f;
+                func_004bdde0(&rot, &D_00697880, 0, angle);
+                if (!(unit->flags3 & BTLUNIT_FLAG3_NOROT))
+                {
+                    unit->rot = rot;
+                    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+                }
+            }
+
+            unit->movementFlags &= ~BTLUNIT_MOVEMENTFLAGS_ROTATE;
+            func_00288110(unit);
+        }
+        else
+        {
+            if (packet->flags & 0x20)
+            {
+                btlUnit0027f7c0(targetUnit, &unit->targetRot, NULL, NULL);
+            }
+            else
+            {
+                unit->targetRot = targetUnit->pos;
+            }
+
+            unit->unk_c4 |= packet->flags;
+            unit->movementFlags |= BTLUNIT_MOVEMENTFLAGS_ROTATE;
+        }
+    }
+
+    if (!(unit->movementFlags & BTLUNIT_MOVEMENTFLAGS_ROTATE))
+    {
+        return 1;
+    }
+
+    packet->timer++;
+    return 0;
 }
 
 // FUN_00282620
@@ -637,7 +1957,7 @@ u32 btlUnit00282c60(BtlUnit* unit)
         return unit->unk_9e0 == val;
     }
 
-    return false;
+    return 0;
 }
 
 // FUN_00282cd0
@@ -660,13 +1980,121 @@ u32 btlUnit00282cd0(BtlUnit* unit)
         return val == 1;
     }
 
-    return false;
+    return 0;
 }
 
-// FUN_00282d40
+// FUN_00282d40 NONMATCHING
 void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 mode)
 {
-    // TODO
+    const BtlUnitAnimInfo* animInfo;
+    const BtlUnitAnimBounds* bounds;
+    s16 animId;
+    u16 mdlFlags;
+
+    unit->unk_9d0 = mode;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
+    {
+        return;
+    }
+
+    unit->unk_9ce = id;
+    animId = func_00283510(unit, id);
+    animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
+
+    if (animId < unit->unk_9d8)
+    {
+        unit->unk_9d4 = speed * ((f32)animInfo[animId].speedPercent / 100.0f);
+    }
+    else
+    {
+        unit->unk_9d4 = 1.0f;
+    }
+
+    if (mode == BTLUNIT_ANIM_MODE_ONCE)
+    {
+        mdlFlags = 0;
+    }
+    else
+    {
+        mdlFlags = MDLANIM_FLAG_LOOP;
+    }
+
+    if (speed != 1.0f &&
+        (id == 4 || id == 5 || id == 6 || id == 11))
+    {
+        mdlFlags |= 0x60;
+    }
+
+    mdlAnimSet(unit->mdl, 0, animId, blendFrameCount, mdlFlags);
+    mdlAnimSetSpeed(unit->mdl, 0, unit->unk_9d4);
+
+    bounds = func_00288da0(unit, id);
+    unit->sphereCenter.x = bounds->centerX;
+    unit->sphereCenter.y = bounds->centerY;
+    unit->sphereCenter.z = bounds->centerZ;
+    unit->unk_8c = bounds->unk_6;
+    unit->sphereRadius = bounds->radius;
+
+    if (id == 15 || id == 7)
+    {
+        if (animId < unit->unk_9d8 &&
+            animInfo[animId].unk_0 >= 0 &&
+            animInfo[animId].unk_4 > 0)
+        {
+            unit->unk_9cc |= 4;
+            unit->unk_9da = animInfo[animId].unk_0;
+            unit->unk_9dc = animInfo[animId].unk_4;
+        }
+    }
+    else
+    {
+        unit->unk_9cc &= ~4;
+    }
+
+    if (mode != BTLUNIT_ANIM_MODE_ONCE)
+    {
+        return;
+    }
+
+    switch (id)
+    {
+    case 19:
+    case 22:
+    case 21:
+    case 10:
+    case 8:
+    case 11:
+    case 7:
+    case 2:
+        unit->unk_9e2 = 0;
+        break;
+
+    case 6:
+    case 5:
+    case 4:
+        if (unit->genus == UNIT_GENUS_PC && unit->datUnit != NULL &&
+            datCalcGetHeldWeaponType(unit->datUnit) == 6)
+        {
+            unit->unk_9e2 = 0;
+        }
+        else
+        {
+            unit->unk_9e2 = unit->genus == UNIT_GENUS_PC ? 5 : 0;
+        }
+        break;
+
+    default:
+        if (animId < unit->unk_9d8)
+        {
+            unit->unk_9e2 = animInfo[animId].unk_8;
+        }
+        else
+        {
+            unit->unk_9e2 = 0;
+        }
+        break;
+    }
 }
 
 // FUN_00283ba0
@@ -715,7 +2143,7 @@ u32 btlUnitUpdateAnimPacket(void* work)
                        packet->mode);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_002841e0
@@ -789,28 +2217,27 @@ void btlUnitInit002843e0Packet(void* work)
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
     BtlUnitPacket002843e0* packet;
-    BtlUnit* unit;
     s16 frame;
 
     packet = (BtlUnitPacket002843e0*)work;
+    work = packet->unit;
 
-    unit = packet->unit;
-
-    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    if (((BtlUnit*)work)->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
-        frame = unit->unk_9ce;
+        frame = ((BtlUnit*)work)->unk_9ce;
     }
     else
     {
         frame = 0;
     }
 
-    if (unit->unk_9e0 != frame)
+    if (((BtlUnit*)work)->unk_9e0 != frame)
     {
-        btlUnitAnimate(unit, unit->unk_9e0, packet->unk_4, unit->unk_9e4, unit->unk_9e8);
+        btlUnitAnimate(work, ((BtlUnit*)work)->unk_9e0, packet->unk_4, ((BtlUnit*)work)->unk_9e4,
+                       ((BtlUnit*)work)->unk_9e8);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_002843c0
@@ -856,9 +2283,45 @@ void btlUnitInitResNullifiedAnimPacket(void* work)
 // FUN_00284470
 u32 btlUnitUpdateResNullifiedAnimPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketResNullifiedAnim* packet;
+    BtlUnit* unit;
+    RwV3d direction;
+    f32 magnitude;
 
-    return false;
+    packet = (BtlUnitPacketResNullifiedAnim*)work;
+    unit = packet->unit;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+
+    if (packet->unk_4 > 0.5f)
+    {
+        RtQuatTransformVectors(&direction, &D_00697870, 1, &unit->rot);
+
+        if (packet->counter & 1)
+        {
+            magnitude = packet->unk_4 * (0.5f + 0.5f * effMiscRandFloat(0));
+        }
+        else
+        {
+            magnitude = -packet->unk_4 * (0.5f + 0.5f * effMiscRandFloat(0));
+        }
+
+        unit->posOffset.x = direction.x * magnitude;
+        unit->posOffset.y = direction.y * magnitude;
+        unit->posOffset.z = direction.z * magnitude;
+        packet->unk_4 *= gUnk_007cad7c;
+        unit->unk_9cc |= 1;
+    }
+    else
+    {
+        unit->posOffset.x = 0.0f;
+        unit->posOffset.y = 0.0f;
+        unit->posOffset.z = 0.0f;
+        unit->unk_9cc &= ~1;
+        return 1;
+    }
+
+    packet->counter++;
+    return 0;
 }
 
 // FUN_002845e0
@@ -901,12 +2364,53 @@ void btlUnitInit00284900Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284690
+// FUN_00284690 NONMATCHING
 u32 btlUnitUpdate00284900Packet(void* work)
 {
-    // TODO
+    BtlUnitPacket00284900* packet;
+    BtlUnit* unit;
+    RwV3d direction;
+    RwV3d offset;
+    f32 phase;
+    f32 magnitude;
+    f32 arcScale;
 
-    return false;
+    packet = (BtlUnitPacket00284900*)work;
+    unit = packet->unit;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+
+    if (packet->unk_12 == 0)
+    {
+        packet->phase = 1.0f;
+        packet->pos = unit->pos;
+    }
+
+    phase = packet->phase + 1.0f / (2.0f * (f32)packet->unk_10);
+    packet->phase = phase;
+    arcScale = 2.0f * ((-2.0f * phase * phase) + (4.0f * phase) - 1.5f);
+
+    RtQuatTransformVectors(&direction, &D_00697870, 1, &unit->rot);
+    magnitude = unit->sphereRadius * unit->scale * 1.25f;
+    if (magnitude < 75.0f)
+    {
+        magnitude = 75.0f;
+    }
+
+    magnitude *= arcScale;
+    offset.x = direction.x * magnitude;
+    offset.y = direction.y * magnitude;
+    offset.z = direction.z * magnitude;
+
+    if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
+    {
+        unit->pos.x = packet->pos.x + offset.x;
+        unit->pos.y = packet->pos.y + offset.y;
+        unit->pos.z = packet->pos.z + offset.z;
+        unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    }
+
+    packet->unk_12++;
+    return 0;
 }
 
 // FUN_002848e0
@@ -950,12 +2454,66 @@ void btlUnitInitEnmDodgeAnimPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_002849a0
+// FUN_002849a0 NONMATCHING
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketEnmDodgeAnim* packet;
+    BtlUnit* unit;
+    RwV3d direction;
+    f32 magnitude;
 
-    return false;
+    packet = (BtlUnitPacketEnmDodgeAnim*)work;
+    unit = packet->unit;
+
+    magnitude = unit->sphereRadius * unit->scale * 0.3f;
+    if (magnitude > 100.0f)
+    {
+        magnitude = 100.0f;
+    }
+
+    if (packet->unk_4 == 0)
+    {
+        packet->phase = 0.0f;
+        packet->step = 0.3f;
+    }
+
+    if (packet->step >= 0.0f)
+    {
+        magnitude *= packet->phase;
+        packet->phase += (1.0f - packet->phase) * packet->step;
+        packet->step += 0.05f;
+        if (packet->phase >= 1.0f)
+        {
+            packet->step = -0.3f;
+        }
+    }
+    else
+    {
+        magnitude *= packet->phase;
+        packet->phase -= packet->phase * -packet->step;
+        packet->step -= 0.05f;
+        if (packet->phase <= 0.0f)
+        {
+            if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
+            {
+                unit->posOffset.x = 0.0f;
+                unit->posOffset.y = 0.0f;
+                unit->posOffset.z = 0.0f;
+            }
+            return 1;
+        }
+    }
+
+    if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
+    {
+        RtQuatTransformVectors(&direction, &D_00697870, 1, &unit->rot);
+        unit->posOffset.x = direction.x * magnitude;
+        unit->posOffset.y = direction.y * magnitude;
+        unit->posOffset.z = direction.z * magnitude;
+    }
+
+    packet->unk_4++;
+    return 0;
 }
 
 // FUN_00284b50
@@ -1025,7 +2583,7 @@ u32 btlUnitUpdate00284c90Packet(void* work)
             return unit->unk_9e0 == current;
     }
 
-    return false;
+    return 0;
 }
 
 // FUN_00284c70
@@ -1084,7 +2642,7 @@ u32 btlUnitUpdate00284d80Packet(void* work)
         mdlAnim00318770(unit->mdl, 0, frame);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00284d60
@@ -1127,7 +2685,7 @@ void btlUnitInit00284f50Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284e10
+// FUN_00284e10 NONMATCHING
 u32 btlUnitUpdate00284f50Packet(void* work)
 {
     BtlUnitPacket00284f50* packet;
@@ -1146,7 +2704,6 @@ u32 btlUnitUpdate00284f50Packet(void* work)
 
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
-        FUN_00287cf0(unit, 4);
 
         if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
         {
@@ -1164,10 +2721,9 @@ u32 btlUnitUpdate00284f50Packet(void* work)
             mdlAnim00318770(unit->mdl, 0, frame);
         }
 
-        FUN_00287b20(unit, 4);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00284f30
@@ -1242,7 +2798,7 @@ void btlUnitInitModelPacket(void* work)
     {
         if (!(packet->flags & (1 << 4)))
         {
-            mdlFile0031d530(packet->type, packet->id, path);
+            mdlFileResolvePackPath(packet->type, packet->id, path);
             packet->cdvd = H_Cdvd_Request(path, 0);
             unit->flags2 |= BTLUNIT_FLAG2_UNK01;
         }
@@ -1251,12 +2807,159 @@ void btlUnitInitModelPacket(void* work)
     }
 }
 
-// FUN_002850f0
+// FUN_002850f0 NONMATCHING
 u32 btlUnitUpdateModelPacket(void* work)
 {
-    // TODO
+    BtlUnitPacketModel* packet;
+    BtlUnit* unit;
+    Model* mdl;
+    const BtlUnitAnimInfo* animInfo;
+    s16 animId;
+    f32 duration;
+    u32 frame;
+    u16 dataFlags;
+    char path[128];
 
-    return false;
+    packet = (BtlUnitPacketModel*)work;
+    unit = packet->unit;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UNK01))
+    {
+        mdl = mdlSearch(packet->type, packet->id, 0);
+        if (mdl != NULL)
+        {
+            unit->mdl = mdlClone(mdl);
+        }
+        else
+        {
+            mdlFileResolvePackPath(packet->type, packet->id, path);
+            packet->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            unit->flags2 |= BTLUNIT_FLAG2_UNK01;
+        }
+    }
+
+    if (unit->mdl == NULL)
+    {
+        if (!H_Cdvd_IsFileLoaded(packet->cdvd))
+        {
+            return 0;
+        }
+
+        unit->mdl = func_00316c70(packet->type, packet->id, packet->cdvd, HCDVD_FILENORMAL);
+        if (packet->type == MODEL_TYPE_BTLCHAR)
+        {
+            func_0031c1d0(unit->mdl);
+        }
+        return 0;
+    }
+    else if (!mdlStreamRead(unit->mdl))
+    {
+        return 0;
+    }
+
+    if (packet->flags & 4)
+    {
+        switch (unit->genus)
+        {
+        case UNIT_GENUS_PC:
+            unit->resTypeId = MT_Scene_CreateResModelChar(unit->charId, 0, unit->mdl);
+            func_001a0590(unit->resTypeId, 1);
+            if (func_002d5cf0(unit))
+            {
+                unit->mdl->flags |= 0x400;
+            }
+            func_00319230(unit->mdl, 1);
+            break;
+
+        case UNIT_GENUS_EC:
+            unit->resTypeId = MT_Scene_CreateResModelChar(btlFindFreeCharResId(), 0, unit->mdl);
+            func_001a0590(unit->resTypeId, 1);
+            func_00319230(unit->mdl, 1);
+
+            dataFlags = *(const u16*)((const u8*)func_00288da0(unit, 0) + 0x18);
+            if (dataFlags & 2)
+            {
+                unit->mdl->flags |= 0x200;
+            }
+            if (dataFlags & 8)
+            {
+                unit->mdl->flags |= 0x400;
+            }
+            if (dataFlags & 0x10)
+            {
+                unit->mdl->flags |= 0x800;
+            }
+            break;
+
+        case UNIT_GENUS_PS:
+            unit->mdl->flags &= ~0x100;
+            dataFlags = func_0017c0e0(unit->charId);
+            if (dataFlags & 2)
+            {
+                unit->mdl->flags |= 0x200;
+            }
+            else if (dataFlags & 4)
+            {
+                packet->flags &= ~1;
+            }
+            if (dataFlags & 8)
+            {
+                unit->mdl->flags |= 0x400;
+            }
+            unit->resTypeId = func_003b6180(unit->charId, unit->mdl);
+            func_00319230(unit->mdl, 8);
+            break;
+        }
+    }
+
+    unit->flags2 &= ~BTLUNIT_FLAG2_UPDATE;
+    unit->flags2 |= BTLUNIT_FLAG2_UPDATE;
+
+    if (packet->flags & 8)
+    {
+        unit->cols[BTLUNIT_COL_MAIN].a = 0;
+    }
+    if (packet->flags & 1)
+    {
+    }
+    if (packet->flags & 2)
+    {
+    }
+    if (packet->flags & 0x100)
+    {
+        unit->mdl->unkData2[0x48] = 0;
+        unit->mdl->unkData2[0x49] = 0;
+        unit->mdl->unkData2[0x4a] = 0;
+    }
+    if (packet->flags & 0x40)
+    {
+        func_002d3e00(unit, 0);
+    }
+    if (packet->flags & 0x20)
+    {
+        func_002831c0(unit, 0);
+        btlUnitAnimate(unit, unit->unk_9e0, 0, unit->unk_9e4, unit->unk_9e8);
+
+        if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+        {
+            animId = func_00283510(unit, unit->unk_9ce);
+            duration = mdlAnimGetDurationInFrameById(unit->mdl, 0, animId);
+            animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
+            if (animId < unit->unk_9d8)
+            {
+                duration /= (f32)animInfo[animId].speedPercent / 100.0f;
+            }
+            frame = datCalcRand((u32)duration);
+            mdlAnim00318770(unit->mdl, 0, (f32)frame);
+        }
+    }
+
+    if (packet->cdvd != NULL)
+    {
+        H_Cdvd_Destroy(packet->cdvd);
+    }
+
+    return 1;
 }
 
 // FUN_00285670
@@ -1329,7 +3032,7 @@ u32 btlUnitUpdate002857f0Packet(void* work)
 
     FUN_00287510(unit);
 
-    return true;
+    return 1;
 }
 
 // FUN_002857d0
@@ -1373,12 +3076,117 @@ void btlUnitInit00285d30Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00285880
+// FUN_00285880 NONMATCHING
 u32 btlUnitUpdate00285d30Packet(void* work)
 {
-    // TODO
+    BtlUnitPacket00285d30* packet;
+    BtlUnit* unit;
+    s16 rgbStart;
+    s16 rgbDuration;
+    s16 alphaStart;
+    s16 alphaDuration;
+    s16 end;
+    f32 factor;
+    RwRGBA start;
+    RwRGBA target;
+    RwRGBA color;
 
-    return false;
+    packet = (BtlUnitPacket00285d30*)work;
+    unit = packet->unit;
+
+    switch (packet->mode)
+    {
+    case 1:
+        rgbStart = packet->unk_c + 1;
+        rgbDuration = packet->unk_e;
+        alphaStart = 0;
+        alphaDuration = packet->unk_c;
+        end = packet->unk_c + packet->unk_e;
+        break;
+
+    case 2:
+        rgbStart = 0;
+        rgbDuration = packet->unk_e;
+        alphaStart = packet->unk_e + 1;
+        alphaDuration = packet->unk_c;
+        end = packet->unk_c + packet->unk_e;
+        break;
+
+    default:
+        rgbStart = 0;
+        rgbDuration = packet->unk_c;
+        alphaStart = 0;
+        alphaDuration = packet->unk_e;
+        end = packet->unk_c < packet->unk_e ? packet->unk_e : packet->unk_c;
+        break;
+    }
+
+    if (packet->counter == 0)
+    {
+        packet->startCol = *(u32*)&unit->cols[BTLUNIT_COL_MAIN];
+        if (packet->flags & 1)
+        {
+            packet->startCol &= 0x00ffffff;
+        }
+        if (packet->flags & 2)
+        {
+            packet->startCol = (packet->startCol & 0x00ffffff) | 0xff000000;
+        }
+        if (packet->flags & 4)
+        {
+            packet->startCol = 0;
+        }
+        if (packet->flags & 8)
+        {
+            packet->startCol = 0xffffffff;
+        }
+        FUN_00287490(unit);
+    }
+
+    start = *(RwRGBA*)&packet->startCol;
+    target = *(RwRGBA*)&packet->targetCol;
+    color = start;
+
+    if (packet->counter >= rgbStart)
+    {
+        if (rgbDuration > 0 && packet->counter < rgbStart + rgbDuration)
+        {
+            factor = (f32)(packet->counter - rgbStart) / (f32)rgbDuration;
+        }
+        else
+        {
+            factor = 1.0f;
+        }
+
+        color.r = (u8)((1.0f - factor) * start.r + factor * target.r);
+        color.g = (u8)((1.0f - factor) * start.g + factor * target.g);
+        color.b = (u8)((1.0f - factor) * start.b + factor * target.b);
+    }
+
+    if (packet->counter >= alphaStart)
+    {
+        if (alphaDuration > 0 && packet->counter < alphaStart + alphaDuration)
+        {
+            factor = (f32)(packet->counter - alphaStart) / (f32)alphaDuration;
+        }
+        else
+        {
+            factor = 1.0f;
+        }
+
+        color.a = (u8)((1.0f - factor) * start.a + factor * target.a);
+    }
+
+    unit->cols[BTLUNIT_COL_MAIN] = color;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+
+    if (packet->counter > end)
+    {
+        return 1;
+    }
+
+    packet->counter++;
+    return 0;
 }
 
 // FUN_00285d10
@@ -1434,7 +3242,7 @@ u32 btlUnitUpdate00285e50Packet(void* work)
 
     FUN_00287490(packet->unit);
 
-    return true;
+    return 1;
 }
 
 // FUN_00285e30
@@ -1485,7 +3293,7 @@ u32 btlUnitUpdate00285f20Packet(void* work)
 
     FUN_00287510(packet->unit);
 
-    return true;
+    return 1;
 }
 
 // FUN_00285f00
@@ -1542,12 +3350,12 @@ u32 btlUnitUpdate002860b0Packet(void* work)
 
     if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
     {
-        return true;
+        return 1;
     }
 
     if (unit->mdl == NULL)
     {
-        return true;
+        return 1;
     }
 
     for (i = 0; i < 5; i++)
@@ -1564,7 +3372,7 @@ u32 btlUnitUpdate002860b0Packet(void* work)
         }
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00286090
@@ -1621,12 +3429,12 @@ u32 btlUnitUpdate00286240Packet(void* work)
 
     if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
     {
-        return true;
+        return 1;
     }
 
     if (unit->mdl == NULL)
     {
-        return true;
+        return 1;
     }
 
     for (i = 0; i < 5; i++)
@@ -1643,7 +3451,7 @@ u32 btlUnitUpdate00286240Packet(void* work)
         }
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00286220
@@ -1697,7 +3505,7 @@ u32 btlUnit002862c0(void* work)
         FUN_002bbbc0(unit->unk_9fc);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00286300
@@ -1737,9 +3545,60 @@ u32 btlUnit00287580(BtlUnit* unit)
 // FUN_002875a0
 BtlUnit* btlUnitCreate(u8 genus)
 {
-    // TODO
+    BtlUnit* unit;
+    u32 id;
+    f32 moveScale;
 
-    return NULL;
+    unit = RwMalloc(sizeof(BtlUnit), rwMEMHINTDUR_GLOBAL);
+    memset(unit, 0, sizeof(BtlUnit));
+
+    unit->genus = genus;
+
+    if (sNextId >= 0x0fffffff)
+    {
+        sNextId = 1;
+    }
+    id = sNextId;
+    sNextId = id + 1;
+    unit->id = id;
+
+    func_0027f530(unit);
+
+    unit->unk_8c = 150.0f;
+    unit->sphereRadius = 50.0f;
+    unit->sphereCenter.x = 0.0f;
+    unit->sphereCenter.y = unit->unk_8c * 0.5f;
+    unit->sphereCenter.z = 0.0f;
+    unit->movementFlags = 0;
+    unit->unk_cc = 27.0f;
+    if (unit->genus == UNIT_GENUS_PC)
+    {
+        moveScale = 8.0f;
+    }
+    else
+    {
+        moveScale = 14.0f;
+    }
+    unit->unk_4f4 = 0.5f * moveScale;
+    unit->unk_9d4 = 1.0f;
+    unit->unk_9f0 = -1;
+    unit->unk_9f8 = func_002bbc00(unit);
+    unit->unk_9fc = func_002bb7d0();
+
+    unit->prev = NULL;
+    if (gBtl->unitLists[genus].head != NULL)
+    {
+        gBtl->unitLists[genus].head->prev = unit;
+        unit->next = gBtl->unitLists[genus].head;
+    }
+    else
+    {
+        gBtl->unitLists[genus].tail = unit;
+        unit->next = NULL;
+    }
+    gBtl->unitLists[genus].head = unit;
+
+    return unit;
 }
 
 // FUN_002880e0
@@ -1764,7 +3623,7 @@ void btlUnitInitLookAtPacket(void* work)
     }
 }
 
-// FUN_00288190
+// FUN_00288190 NONMATCHING
 u32 btlUnitUpdateLookAtPacket(void* work)
 {
     BtlUnitPacketLookAt* packet;
@@ -1815,7 +3674,6 @@ u32 btlUnitUpdateLookAtPacket(void* work)
 
                 curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
                 curr->lookAtTargetPos = packet->targetPos;
-                FUN_00287b20(curr, 3);
             }
 
             curr = curr->prev;
@@ -1850,10 +3708,9 @@ u32 btlUnitUpdateLookAtPacket(void* work)
 
         unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
         unit->lookAtTargetPos = packet->targetPos;
-        FUN_00287b20(unit, 3);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00288340
@@ -1926,6 +3783,8 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
     f32 maxPitchArg3;
     f32 maxYawArg3;
 
+
+
     packet = (BtlUnitPacketLookAtUnit*)work;
 
     if ((packet->flags & (BTLUNIT_LOOKAT_FLAG_ALLPLAYER | BTLUNIT_LOOKAT_FLAG_ALLENEMY)) != 0)
@@ -1964,7 +3823,6 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
                     curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
                     curr->lookAtTargetId = targetUnit->id;
-                    FUN_00287b20(curr, 3);
                 }
 
                 curr = curr->prev;
@@ -2005,7 +3863,6 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
                     curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
                     curr->lookAtTargetId = targetUnit->id;
-                    FUN_00287b20(curr, 3);
                 }
 
                 curr = curr->prev;
@@ -2041,10 +3898,9 @@ u32 btlUnitUpdateLookAtUnitPacket(void* work)
 
         unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETUNIT;
         unit->lookAtTargetId = targetUnit->id;
-        FUN_00287b20(unit, 3);
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_002886b0
@@ -2161,7 +4017,7 @@ u32 btlUnitUpdateLookAtDeactivatePacket(void* work)
         }
     }
 
-    return true;
+    return 1;
 }
 
 // FUN_00288930
@@ -2197,10 +4053,64 @@ BtlPacket* btlUnitCreateLookAtDeactivatePacket(BtlUnit* unit, u16 flags)
     return packet;
 }
 
-// FUN_002889c0
+// FUN_002889c0 NONMATCHING
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id)
 {
-    // TODO
+    const BtlUnitAnimBounds* bounds;
+    const u8* data;
+    s16 scale;
+
+    unit->charId = id;
+
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_PC:
+        unit->datUnit->id = id;
+        datUnitInit(unit->datUnit, UNIT_GENUS_PC, id);
+        break;
+
+    case UNIT_GENUS_EC:
+    case UNIT_GENUS_PS:
+        unit->datUnit->id = id;
+        break;
+    }
+
+    bounds = func_00288da0(unit, 0);
+    data = (const u8*)bounds;
+
+    unit->sphereCenter.x = bounds->centerX;
+    unit->sphereCenter.y = bounds->centerY;
+    unit->sphereCenter.z = bounds->centerZ;
+    unit->unk_8c = bounds->unk_6;
+    unit->sphereRadius = bounds->radius;
+
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_PC:
+        scale = *(const s16*)(data + 0x14);
+        unit->unk_9ec = (void*)(data + 0x24);
+        unit->unk_9d8 = id == 1 ? 0x1a : 0x17;
+        break;
+
+    case UNIT_GENUS_EC:
+        scale = *(const s16*)(data + 0x14);
+        unit->unk_9ec = (void*)(data + 0x2a);
+        unit->unk_9d8 = 0x13;
+        break;
+
+    case UNIT_GENUS_PS:
+        scale = *(const s16*)(data + 0x16);
+        unit->unk_9ec = (void*)(data + 0x18);
+        unit->unk_9d8 = 6;
+        break;
+
+    default:
+        return;
+    }
+
+    unit->scale = (f32)scale / 100.0f;
+    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+    func_002bcde0(unit, &unit->unkData8);
 }
 
 // FUN_00288f80
@@ -2242,4 +4152,1614 @@ BtlUnit* btlUnitFindFromId(u16 id)
     }
 
     return NULL;
+}
+/* Data tables used by the retail animation and character helpers. */
+extern const u8 DAT_00693290[];
+extern const u8 DAT_006932e0[];
+extern const u8 iGpffffb718[];
+extern const u8 iGpffffb71c[];
+extern const u8 iGpffffb728[];
+extern const u8 iGpffffb73c[];
+extern const u16 gp0xffff9828[];
+extern const u8 DAT_007ce400[];
+
+extern u16 func_002fb860(void);
+extern void* func_002fc410(void);
+extern void* func_00308c60(DatUnit* unit);
+extern s16 func_003082f0(DatUnit* unit, u16 id);
+extern long func_002d6370(u64 id);
+extern f32 func_00318910(Model* mdl, u32 slot, u16 id);
+extern void func_002d4040(BtlUnit* unit);
+extern void func_001a0dc0(u16 resTypeId, u32 enable);
+extern void func_0031c7e0(void);
+extern u32 func_0031ebe0(void* data);
+extern void func_002bbd00(void* data);
+extern void func_002bb8f0(void* data);
+extern void func_002b7000(BtlUnit* unit, s8 slot, u32 value);
+extern f32 func_004c6ac0(const RwV3d* value);
+extern void* func_00174800(u64 id);
+extern u32 func_0030b5a0(DatUnit* unit, u32 flag);
+extern void func_002f9c10(BtlAction* action);
+
+static u16 btlUnitResolveAnimId(const BtlUnit* unit, u32 id)
+{
+    u16 special;
+
+    if (unit->genus == UNIT_GENUS_EC)
+    {
+        special = func_002fb860();
+        if (special != 0xffff)
+        {
+            return special;
+        }
+    }
+    else if (unit->genus != UNIT_GENUS_PC && unit->genus != UNIT_GENUS_PS)
+    {
+        return 0;
+    }
+
+    return DAT_00693290[(u32)unit->genus * 26 + (id & 0xffff)];
+}
+
+// FUN_00283510 NONMATCHING
+s16 func_00283510(BtlUnit* unit, s32 id)
+{
+    return (s16)btlUnitResolveAnimId(unit, (u32)id);
+}
+
+// FUN_002835E0 NONMATCHING
+s16 func_002835e0(f32 scale, BtlUnit* unit, s16 id)
+{
+    u16 animId;
+    const BtlUnitAnimInfo* info;
+
+    animId = btlUnitResolveAnimId(unit, (u32)id);
+    if ((s16)animId >= (s16)unit->unk_9d8)
+    {
+        return 0;
+    }
+
+    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
+    return (s16)((f32)info->unk_0 / (scale * ((f32)info->speedPercent / 100.0f)));
+}
+
+// FUN_00283750 NONMATCHING
+s16 func_00283750(f32 scale, BtlUnit* unit, s16 id)
+{
+    u16 animId;
+    const BtlUnitAnimInfo* info;
+    s16 frames;
+
+    animId = btlUnitResolveAnimId(unit, (u32)id);
+    if ((s16)animId >= (s16)unit->unk_9d8)
+    {
+        return 0;
+    }
+
+    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
+    frames = info->unk_4;
+    if (frames < 0)
+    {
+        return 0;
+    }
+
+    return (s16)((f32)frames / (scale * ((f32)info->speedPercent / 100.0f)));
+}
+
+// FUN_002838D0 NONMATCHING
+s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id)
+{
+    u16 animId;
+    f32 duration;
+    const BtlUnitAnimInfo* info;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE) || unit->mdl == NULL)
+    {
+        return 0;
+    }
+
+    animId = btlUnitResolveAnimId(unit, (u32)id);
+    duration = func_00318910(unit->mdl, 0, animId);
+    if ((s16)animId < (s16)unit->unk_9d8)
+    {
+        info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
+        duration /= scale * ((f32)info->speedPercent / 100.0f);
+    }
+
+    return (s16)duration;
+}
+
+// FUN_00283A70 NONMATCHING
+s16 func_00283a70(BtlUnit* unit, s32 id)
+{
+    u16 animId;
+    const BtlUnitAnimInfo* info;
+
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
+    {
+        return 6;
+    }
+
+    animId = btlUnitResolveAnimId(unit, (u32)id);
+    if ((s16)animId >= (s16)unit->unk_9d8)
+    {
+        return 6;
+    }
+
+    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
+    return info->unk_8;
+}
+
+// FUN_00283C50
+void func_00283c50(f32 speed, BtlUnit* unit)
+{
+    if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+    {
+        unit->unk_9d4 = speed;
+    }
+}
+
+static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
+{
+    if (unit->genus == UNIT_GENUS_EC)
+    {
+        if (id == 4 || id == 5 || id == 6)
+        {
+            return 0;
+        }
+        return -1;
+    }
+
+    if (id == 4)
+    {
+        return 0;
+    }
+    if (id == 5)
+    {
+        return 1;
+    }
+    if (id == 6)
+    {
+        return 2;
+    }
+    return -1;
+}
+
+// FUN_00283C70 NONMATCHING
+u16 func_00283c70(BtlUnit* unit, u16 id)
+{
+    s16 category;
+    u16 charId;
+    u32 unitId;
+    const u8* table;
+
+    category = btlUnitAnimCategory(unit, (s16)id);
+    if (category < 0)
+    {
+        return 1;
+    }
+
+    charId = unit->charId;
+    if (unit->genus == UNIT_GENUS_EC)
+    {
+        table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1a;
+        return *(const u16*)(table + category * 4);
+    }
+
+    if (charId == 4)
+    {
+        return gp0xffff9828[id];
+    }
+
+    if (charId == 1)
+    {
+        unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
+        table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x18;
+    }
+    else
+    {
+        table = iGpffffb71c + ((u32)charId * 0x10a) + 0x18;
+    }
+
+    return *(const u16*)(table + category * 4);
+}
+
+// FUN_00283E40 NONMATCHING
+u16 func_00283e40(BtlUnit* unit, s16 id)
+{
+    s16 category;
+    u16 charId;
+    u32 unitId;
+    const u8* table;
+
+    category = btlUnitAnimCategory(unit, id);
+    if (category < 0)
+    {
+        return 0;
+    }
+
+    charId = unit->charId;
+    if (unit->genus == UNIT_GENUS_EC)
+    {
+        table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1c;
+        return *(const u16*)(table + category * 4);
+    }
+
+    if (charId == 1)
+    {
+        unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
+        table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x1a;
+    }
+    else
+    {
+        table = iGpffffb71c + ((u32)charId * 0x10a) + 0x1a;
+    }
+
+    return *(const u16*)(table + category * 4);
+}
+
+// FUN_00283FE0 NONMATCHING
+const void* func_00283fe0(BtlUnit* unit, u32 id)
+{
+    if (unit->genus != UNIT_GENUS_EC && unit->charId == 4)
+    {
+        return DAT_006932e0 + ((id & 0xffff) - 4) * 8;
+    }
+    return NULL;
+}
+
+// FUN_00284040 NONMATCHING
+u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
+{
+    s16 skillId;
+    u16 flags;
+    s16 type;
+
+    (void)unused;
+    skillId = (s16)id;
+    if (skillId < 0 || skillId > 0x1cf)
+    {
+        return 1;
+    }
+
+    if (func_002d6370(id) == 0)
+    {
+        type = func_003082f0(unit->datUnit, (u16)id);
+        return (type == 0x10 || type == 0x11) ? 1 : 3;
+    }
+
+    flags = *(const u16*)(DAT_007ce400 + 2 + (u32)skillId * 0x1c);
+    if (flags & 0x200)
+    {
+        return 0;
+    }
+    if (param_4 != 0 && (flags & 1))
+    {
+        return 2;
+    }
+    return 1;
+}
+
+typedef struct BtlUnitPacketResource
+{
+    BtlUnit* unit;
+    u16 type;
+    u16 id;
+    u16 flags;
+    u8 unkData[2];
+    u32 state;
+} BtlUnitPacketResource;
+
+// FUN_00286380 NONMATCHING
+void func_00286380(void* work)
+{
+    BtlUnitPacketResource* packet;
+
+    packet = (BtlUnitPacketResource*)work;
+    packet->unit->packetCount++;
+    if (!(packet->flags & 0x10))
+    {
+        if (packet->unit->mdl != NULL &&
+            packet->unit->mdl->runtimeData.animationData == NULL)
+        {
+            func_0031c7e0();
+        }
+        packet->state = 1;
+    }
+}
+
+// FUN_002863F0 NONMATCHING
+u32 func_002863f0(void* work)
+{
+    BtlUnitPacketResource* packet;
+
+    packet = (BtlUnitPacketResource*)work;
+    if (packet->state == 0)
+    {
+        if (packet->unit->mdl != NULL &&
+            packet->unit->mdl->runtimeData.animationData == NULL)
+        {
+            func_0031c7e0();
+        }
+        packet->state = 1;
+        return 0;
+    }
+
+    if (packet->unit->mdl != NULL &&
+        packet->unit->mdl->runtimeData.animationData != NULL &&
+        func_0031ebe0(packet->unit->mdl->runtimeData.animationData))
+    {
+        return 1;
+    }
+    return 0;
+}
+
+// FUN_002864A0
+BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
+{
+    BtlPacket* packet;
+    BtlUnitPacketResource* work;
+
+    packet = btlPacketCreate(0x111, sizeof(BtlUnitPacketResource));
+    packet->unk_47 &= ~(1 << 0);
+    packet->initFunc = func_00286380;
+    packet->updateFunc = func_002863f0;
+    packet->destroyFunc = btlUnitDestroyModelPacket;
+
+    work = (BtlUnitPacketResource*)packet->workData;
+    work->unit = unit;
+    work->flags = flags;
+    work->type = unit->genus + 1;
+    work->id = id;
+    work->state = 0;
+    return packet;
+}
+
+// FUN_00286540 NONMATCHING
+void func_00286540(void)
+{
+    u32 genus;
+    BtlUnit* unit;
+
+    if (gBtl == NULL)
+    {
+        return;
+    }
+
+    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+    {
+        unit = gBtl->unitLists[genus].head;
+        while (unit != NULL)
+        {
+            func_00280da0(unit);
+            func_002826d0(unit);
+
+            if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) && unit->mdl != NULL)
+            {
+                mdlSetColor(unit->mdl, &unit->cols[BTLUNIT_COL_MAIN]);
+                mdl00317730(unit->mdl);
+                func_002d4040(unit);
+                unit->flags2 &= ~BTLUNIT_FLAG2_DIRTY;
+            }
+
+            unit = unit->next;
+        }
+    }
+}
+extern void func_00287ea0(BtlUnit* unit);
+extern u32 DAT_007cc970;
+void FUN_002878d0(BtlUnit* unit);
+extern void func_002d3fe0(BtlUnit* unit);
+extern void mdl00319050(Model* mdl);
+extern void mdl00319070(Model* mdl);
+extern void mdl003191b0(Model* mdl);
+extern u32 func_0017d800(void);
+extern void* kwlnGetAmbientLight(void);
+extern void* kwlnGetDirectionalLight(void);
+extern void* func_00198580(void);
+extern void* func_003b54c0(void* value);
+extern void* func_003b5d50(u32 value);
+extern void func_004944b0(void* dst, const void* src);
+extern void func_004cb7f0(void* dst, const void* src, u32 mode);
+extern u32 func_004c9d10(void* value);
+extern void func_004c9d00(void* value);
+extern void func_004d7f60(u32 group, u32 value);
+extern void func_003294d0(void);
+extern void func_00329550(void);
+extern void func_00358460(const RwRGBA* color, u32 mode);
+extern u32 func_00198560(void);
+extern u32 func_00198570(void);
+extern u32 func_00198590(void);
+extern void func_00317a20(Model* mdl);
+
+extern void* DAT_0096017c[];
+static void btlUnitUnlinkAndFree(BtlUnit* unit)
+{
+    BtlUnitList* list;
+
+    list = &gBtl->unitLists[unit->genus];
+    if (unit->prev != NULL)
+    {
+        unit->prev->next = unit->next;
+    }
+    else
+    {
+        list->head = unit->next;
+    }
+    if (unit->next != NULL)
+    {
+        unit->next->prev = unit->prev;
+    }
+    else
+    {
+        list->tail = unit->prev;
+    }
+    RwFree(unit);
+}
+
+// FUN_00287400
+void func_00287400(void)
+{
+    u32 genus;
+    BtlUnit* unit;
+
+    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+    {
+        unit = *(BtlUnit**)((u8*)gBtl + 0x154 + (genus << 3));
+        while (unit != NULL)
+        {
+            if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+            {
+                func_00287ea0(unit);
+            }
+            unit = unit->prev;
+        }
+    }
+}
+
+// FUN_00287490 NONMATCHING
+void FUN_00287490(BtlUnit* unit)
+{
+    unit->flags3 &= ~BTLUNIT_FLAG3_UNK1000;
+    if (unit->resTypeId != 0)
+    {
+        func_001a0dc0(unit->resTypeId, 1);
+        unit->flags3 &= ~BTLUNIT_FLAG3_UNK02;
+    }
+    else
+    {
+        unit->flags3 |= BTLUNIT_FLAG3_UNK02;
+    }
+}
+
+// FUN_00287510 NONMATCHING
+void FUN_00287510(BtlUnit* unit)
+{
+    unit->flags3 |= BTLUNIT_FLAG3_UNK1000;
+    if (unit->resTypeId != 0)
+    {
+        func_001a0dc0(unit->resTypeId, 0);
+    }
+    unit->flags3 &= ~BTLUNIT_FLAG3_UNK02;
+}
+
+
+// FUN_00287740 NONMATCHING
+void func_00287740(BtlUnit* unit)
+{
+    s32 category;
+
+    if (unit->resTypeId != 0)
+    {
+        category = (unit->resTypeId & 0xffc00) >> 10;
+        func_003b7090(unit->resTypeId);
+        if (unit->mdl != NULL)
+        {
+            mdlSetColor(unit->mdl, (const RwRGBA*)&DAT_007cc970);
+            mdlAnimSetSpeed(unit->mdl, 0, 1.0f);
+            if (category == 1 && !(unit->flags2 & (1 << 3)))
+            {
+                mdlDestroy(unit->mdl);
+            }
+        }
+        unit->resTypeId = 0;
+    }
+    else
+    {
+        if (unit->mdl != NULL)
+        {
+            mdlDestroy(unit->mdl);
+        }
+    }
+    unit->mdl = NULL;
+    unit->flags2 &= ~BTLUNIT_FLAG2_UPDATE;
+}
+
+// FUN_00287860
+void func_00287860(BtlUnit* unit)
+{
+    func_00287740(unit);
+    if (unit->personaUnit != NULL)
+    {
+        FUN_002878d0(unit->personaUnit);
+    }
+    if (unit->unk_9f8 != NULL)
+    {
+        func_002bbd00(unit->unk_9f8);
+        unit->unk_9f8 = NULL;
+    }
+    if (unit->unk_9fc != NULL)
+    {
+        func_002bb8f0(unit->unk_9fc);
+        unit->unk_9fc = NULL;
+    }
+}
+
+// FUN_002878D0
+void FUN_002878d0(BtlUnit* unit)
+{
+    u8 genus;
+
+    genus = unit->genus;
+    func_00287740(unit);
+    if (unit->personaUnit != NULL)
+    {
+        FUN_002878d0(unit->personaUnit);
+    }
+    if (unit->unk_9f8 != NULL)
+    {
+        func_002bbd00(unit->unk_9f8);
+        unit->unk_9f8 = NULL;
+    }
+    if (unit->unk_9fc != NULL)
+    {
+        func_002bb8f0(unit->unk_9fc);
+        unit->unk_9fc = NULL;
+    }
+    func_002d3fe0(unit);
+    if (unit->unk_9f0 >= 0)
+    {
+        func_002b7000(unit, unit->unk_9f0, 0);
+    }
+    if (unit->next != NULL)
+    {
+        unit->next->prev = unit->prev;
+    }
+    else
+    {
+        gBtl->unitLists[genus].tail = unit->prev;
+    }
+    if (unit->prev != NULL)
+    {
+        unit->prev->next = unit->next;
+    }
+    else
+    {
+        gBtl->unitLists[genus].head = unit->next;
+    }
+    ((void (*)(void*))DAT_0096017c[0])(unit);
+}
+
+// FUN_002879F0
+void func_002879f0(void)
+{
+    BtlUnit* unit;
+    BtlUnit* next;
+    u32 genus;
+    u8 unitGenus;
+
+    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+    {
+        unit = *(BtlUnit**)((u8*)gBtl + 0x150 + (genus << 3));
+        while (unit != NULL)
+        {
+            next = unit->next;
+            unitGenus = unit->genus;
+            func_00287860(unit);
+            func_002d3fe0(unit);
+            if (unit->unk_9f0 >= 0)
+            {
+                func_002b7000(unit, unit->unk_9f0, 0);
+            }
+            if (unit->next != NULL)
+            {
+                unit->next->prev = unit->prev;
+            }
+            else
+            {
+                *(BtlUnit**)((u8*)gBtl + 0x154 + ((u32)unitGenus << 3)) = unit->prev;
+            }
+            if (unit->prev != NULL)
+            {
+                unit->prev->next = unit->next;
+            }
+            else
+            {
+                *(BtlUnit**)((u8*)gBtl + 0x150 + ((u32)unitGenus << 3)) = unit->next;
+            }
+            ((void (*)(void*))DAT_0096017c[0])(unit);
+            unit = next;
+        }
+    }
+}
+
+/* Recovered battle-misc harvest: 0x00287EA0-0x00289650 */
+// FUN_00287EA0 NONMATCHING
+
+
+void FUN_00287ea0(long param_1)
+
+
+
+{
+
+  long lVar1;
+
+  u32 uVar2;
+
+  short sVar3;
+
+  u32 uVar4;
+
+  int iVar5;
+
+  int iVar6;
+
+  float fStack_30;
+
+  float fStack_2c;
+
+  float fStack_28;
+
+  float fStack_20;
+
+  float fStack_1c;
+
+  float fStack_18;
+
+  float fStack_10;
+
+  float fStack_c;
+
+  float fStack_8;
+
+  
+
+  iVar5 = (int)param_1;
+
+  uVar4 = *(u32 *)(iVar5 + 0x98) & 2;
+
+  if (uVar4 != 0) {
+
+    if (uVar4 == 0) {
+
+      sVar3 = 0;
+
+    }
+
+    else {
+
+      sVar3 = *(short *)(iVar5 + 0x9ce);
+
+    }
+
+    if (sVar3 == 0x10) {
+
+      lVar1 = FUN_003191d0(*(u32 *)(iVar5 + 0x9f4));
+
+      if (lVar1 != 0) {
+
+        FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
+
+      }
+
+    }
+
+    else if (sVar3 == 0) {
+
+      if (((*(short *)(iVar5 + 0xb0) != 0) && (1.0 <= *(float *)(*(int *)(iVar5 + 0x9f4) + 0x108)))
+
+         && (uVar2 = FUN_00319200(), (uVar2 & 0x200) == 0)) {
+
+        if (*(short *)(iVar5 + 0xb0) == 2) {
+
+          if (*(u32 *)(iVar5 + 0xb4) != 0) {
+
+            lVar1 = FUN_00289030(*(u32 *)(iVar5 + 0xb4) & 0xffff);
+
+            if ((lVar1 == 0) || (lVar1 == param_1)) {
+
+              FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
+
+              *(u32 *)(iVar5 + 0xb4) = 0;
+
+            }
+
+            else {
+
+              iVar6 = (int)lVar1;
+
+              fStack_18 = *(float *)(iVar6 + 0x2c);
+
+              fStack_20 = *(float *)(iVar6 + 0x80) * fStack_18;
+
+              fStack_1c = *(float *)(iVar6 + 0x84) * fStack_18;
+
+              fStack_18 = *(float *)(iVar6 + 0x88) * fStack_18;
+
+              FUN_004be1e0(&fStack_30,&fStack_20,1,iVar6 + 0x1c);
+
+              fStack_10 = fStack_30 + *(float *)(iVar6 + 4);
+
+              fStack_8 = fStack_28 + *(float *)(iVar6 + 0xc);
+
+              fStack_c = DAT_007cb0cc * *(float *)(iVar6 + 0x8c) * *(float *)(iVar6 + 0x2c) +
+
+                         fStack_2c + *(float *)(iVar6 + 8) + 0.0;
+
+              FUN_003190b0(*(u32 *)(iVar5 + 0x9f4),&fStack_10);
+
+            }
+
+          }
+
+        }
+
+        else if (*(short *)(iVar5 + 0xb0) == 1) {
+
+          FUN_003190b0(*(u32 *)(iVar5 + 0x9f4),iVar5 + 0xb8);
+
+        }
+
+      }
+
+    }
+
+    else {
+
+      lVar1 = FUN_003191d0(*(u32 *)(iVar5 + 0x9f4));
+
+      if (lVar1 != 0) {
+
+        FUN_003191b0(*(u32 *)(iVar5 + 0x9f4));
+
+        FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
+
+      }
+
+    }
+
+  }
+
+  return;
+
+}
+
+// FUN_00288110 NONMATCHING
+
+
+void FUN_00288110(int param_1)
+
+
+
+{
+
+  long lVar1;
+
+  
+
+  if (((*(u32 *)(param_1 + 0x98) & 2) != 0) &&
+
+     (lVar1 = FUN_003191d0(*(u32 *)(param_1 + 0x9f4)), lVar1 != 0)) {
+
+    FUN_003191b0(*(u32 *)(param_1 + 0x9f4));
+
+    FUN_00319190(*(u32 *)(param_1 + 0x9f4));
+
+  }
+
+  return;
+
+}
+
+// FUN_00288DA0 NONMATCHING
+
+
+int FUN_00288da0(int param_1,short param_2)
+
+
+
+{
+
+  u8 bVar1;
+
+  char cVar2;
+
+  int iVar3;
+
+  u32 uVar4;
+
+  
+
+  uVar4 = (u32)*(u16 *)(param_1 + 0xa4);
+
+  bVar1 = param_2 != 9;
+
+  cVar2 = *(char *)(param_1 + 0xa2);
+
+  if (cVar2 == '\x02') {
+
+    iVar3 = (int)(uintptr_t)(iGpffffb73c + uVar4 * 0x58 + 2);
+
+  }
+
+  else if (cVar2 == '\x01') {
+
+    iVar3 = FUN_002fc410();
+
+    if (iVar3 == 0) {
+
+      if (bVar1) {
+
+        iVar3 = (int)(uintptr_t)(iGpffffb728 + uVar4 * 0xe8);
+
+      }
+
+      else {
+
+        iVar3 = (int)(uintptr_t)(iGpffffb728 + uVar4 * 0xe8 + 10);
+
+      }
+
+    }
+
+  }
+
+  else if (cVar2 == '\0') {
+
+    if (uVar4 == 1) {
+
+      uVar4 = FUN_00308c60(*(u32 *)(param_1 + 0xa2c));
+
+      if (bVar1) {
+
+        iVar3 = (int)(uintptr_t)(iGpffffb718 + (uVar4 & 0xff) * 0x128);
+
+      }
+
+      else {
+
+        iVar3 = (int)(uintptr_t)(iGpffffb718 + (uVar4 & 0xff) * 0x128 + 10);
+
+      }
+
+    }
+
+    else if (bVar1) {
+
+      iVar3 = (int)(uintptr_t)(iGpffffb71c + uVar4 * 0x10a);
+
+    }
+
+    else {
+
+      iVar3 = (int)(uintptr_t)(iGpffffb71c + uVar4 * 0x10a + 10);
+
+    }
+
+  }
+
+  else {
+
+    iVar3 = 0;
+
+  }
+
+  return iVar3;
+
+}
+
+// FUN_00288FE0 NONMATCHING
+
+
+int FUN_00288fe0(u32 param_1,short param_2)
+
+
+
+{
+
+  int iVar1;
+
+  
+
+  iVar1 = *(int *)((param_1 & 0xffff) * 8 + iGpffffb6fc + 0x154);
+
+  while( 1 ) {
+
+    if (iVar1 == 0) {
+
+      return 0;
+
+    }
+
+    if (*(short *)(iVar1 + 0xa4) == param_2) break;
+
+    iVar1 = *(int *)(iVar1 + 0xa30);
+
+  }
+
+  return iVar1;
+
+}
+
+// FUN_002890A0 NONMATCHING
+
+
+int FUN_002890a0(int *param_1,int *param_2)
+
+
+
+{
+
+  int iVar1;
+
+  int iVar2;
+
+  int iVar3;
+
+  float fVar4;
+
+  float fVar5;
+
+  float fVar6;
+
+  float fStack_20;
+
+  float fStack_1c;
+
+  float fStack_18;
+
+  float fStack_10;
+
+  float fStack_c;
+
+  float fStack_8;
+
+  
+
+  iVar2 = FUN_00198590();
+
+  iVar2 = FUN_004cb2f0(*(u32 *)(iVar2 + 4));
+
+  fVar6 = *(float *)(iVar2 + 0x30);
+
+  fVar4 = *(float *)(iVar2 + 0x34);
+
+  fVar5 = *(float *)(iVar2 + 0x38);
+
+  iVar2 = *param_1;
+
+  iVar1 = *param_2;
+
+  iVar3 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
+
+  fStack_10 = *(float *)(iVar3 + 0x30) - fVar6;
+
+  iVar3 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
+
+  fStack_c = *(float *)(iVar3 + 0x34) - fVar4;
+
+  iVar2 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
+
+  fStack_8 = *(float *)(iVar2 + 0x38) - fVar5;
+
+  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
+
+  fStack_20 = *(float *)(iVar2 + 0x30) - fVar6;
+
+  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
+
+  fStack_1c = *(float *)(iVar2 + 0x34) - fVar4;
+
+  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
+
+  fStack_18 = *(float *)(iVar2 + 0x38) - fVar5;
+
+  fVar4 = (float)FUN_004c6ac0(&fStack_10);
+
+  fVar5 = (float)FUN_004c6ac0(&fStack_20);
+
+  return (int)(fVar4 - fVar5);
+
+}
+
+// FUN_002891E0 NONMATCHING
+
+
+void FUN_002891e0(void)
+
+
+
+{
+
+  u16 uVar1;
+
+  u32 uVar2;
+
+  u32 uVar3;
+
+  u8 bVar4;
+
+  int iVar5;
+
+  int iVar6;
+
+  int iVar7;
+
+  u64 uVar8;
+
+  long lVar9;
+
+  u32 *puVar10;
+
+  u32 *puVar11;
+
+  int iVar12;
+
+  u32 auStack_f0 [16];
+
+  u32 auStack_b0 [16];
+
+  u32 uStack_70;
+
+  u32 uStack_6c;
+
+  u32 uStack_68;
+
+  u32 uStack_64;
+
+  u32 uStack_60;
+
+  u32 uStack_5c;
+
+  u32 uStack_58;
+
+  u32 uStack_54;
+
+  u32 uStack_50;
+
+  u32 uStack_4c;
+
+  u32 uStack_48;
+
+  u32 uStack_44;
+
+  int aiStack_40 [15];
+
+  u8 uStack_4;
+
+  u8 uStack_3;
+
+  u8 uStack_2;
+
+  u8 uStack_1;
+
+  
+
+  iVar12 = 0;
+
+  for (iVar6 = 0; iVar6 < 2; iVar6 = iVar6 + 1) {
+
+    for (iVar7 = *(int *)(iGpffffb6fc + iVar6 * 8 + 0x154); iVar7 != 0;
+
+        iVar7 = *(int *)(iVar7 + 0xa30)) {
+
+      if ((((*(u32 *)(iVar7 + 0x9c) & 0x800) != 0) && (*(short *)(iVar7 + 0x9f2) != 0)) &&
+
+         (iVar5 = FUN_003b54c0(*(u32 *)(iGpffffa850 + 8)), (*(u32 *)(iVar5 + 0x28) & 2) == 0
+
+         )) {
+
+        aiStack_40[iVar12] = iVar5;
+
+        iVar12 = iVar12 + 1;
+
+      }
+
+    }
+
+  }
+
+  if (iVar12 != 0) {
+
+    bVar4 = 1;
+
+    iVar6 = FUN_00198560();
+
+    uStack_50 = *(u32 *)(iVar6 + 0x18);
+
+    uStack_4c = *(u32 *)(iVar6 + 0x1c);
+
+    uStack_48 = *(u32 *)(iVar6 + 0x20);
+
+    uStack_44 = *(u32 *)(iVar6 + 0x24);
+
+    iVar6 = FUN_00198570();
+
+    uStack_60 = *(u32 *)(iVar6 + 0x18);
+
+    uStack_5c = *(u32 *)(iVar6 + 0x1c);
+
+    uStack_58 = *(u32 *)(iVar6 + 0x20);
+
+    uStack_54 = *(u32 *)(iVar6 + 0x24);
+
+    iVar6 = FUN_00198570();
+
+    puVar11 = (u32 *)(*(int *)(iVar6 + 4) + 0x10);
+
+    puVar10 = auStack_b0;
+
+    iVar6 = 8;
+
+    do {
+
+      uVar2 = *puVar11;
+
+      uVar3 = puVar11[1];
+
+      puVar11 = puVar11 + 2;
+
+      iVar6 = iVar6 + -1;
+
+      *puVar10 = uVar2;
+
+      puVar10[1] = uVar3;
+
+      puVar10 = puVar10 + 2;
+
+    } while (0 < iVar6);
+
+    iVar6 = FUN_00198580();
+
+    uStack_70 = *(u32 *)(iVar6 + 0x18);
+
+    uStack_6c = *(u32 *)(iVar6 + 0x1c);
+
+    uStack_68 = *(u32 *)(iVar6 + 0x20);
+
+    uStack_64 = *(u32 *)(iVar6 + 0x24);
+
+    iVar6 = FUN_00198580();
+
+    puVar11 = (u32 *)(*(int *)(iVar6 + 4) + 0x10);
+
+    puVar10 = auStack_f0;
+
+    iVar6 = 8;
+
+    do {
+
+      uVar2 = *puVar11;
+
+      uVar3 = puVar11[1];
+
+      puVar11 = puVar11 + 2;
+
+      iVar6 = iVar6 + -1;
+
+      *puVar10 = uVar2;
+
+      puVar10[1] = uVar3;
+
+      puVar10 = puVar10 + 2;
+
+    } while (0 < iVar6);
+
+    FUN_005225f8(aiStack_40,iVar12,4,0x2890a0);
+
+    iVar6 = FUN_003b5d50(4);
+
+    uVar8 = FUN_00198560();
+
+    FUN_004944b0(uVar8,iVar6 + 0x100);
+
+    uVar8 = FUN_00198580();
+
+    FUN_004944b0(uVar8,iVar6 + 0x110);
+
+    iVar7 = FUN_00198580();
+
+    FUN_004cb7f0(*(u32 *)(iVar7 + 4),iVar6 + 0x120,0);
+
+    while (iVar12 = iVar12 + -1, -1 < iVar12) {
+
+      iVar6 = aiStack_40[iVar12];
+
+      uVar8 = FUN_00198570();
+
+      FUN_004944b0(uVar8,iVar6 + 400);
+
+      iVar7 = FUN_00198570();
+
+      FUN_004cb7f0(*(u32 *)(iVar7 + 4),iVar6 + 0x1a0,0);
+
+      uVar8 = FUN_00198590();
+
+      lVar9 = FUN_004c9d10(uVar8);
+
+      if (lVar9 != 0) {
+
+        if (bVar4) {
+
+          FUN_004d7f60(2,0x44);
+
+          FUN_004d7f60(3,0x717fb);
+
+          (*DAT_00960090)(7,2);
+
+          (*DAT_00960090)(0xe,0);
+
+          (*DAT_00960090)(6,0);
+
+          (*DAT_00960090)(8,0);
+
+          (*DAT_00960090)(9,2);
+
+          (*DAT_00960090)(0xc,1);
+
+          (*DAT_00960090)(1,0);
+
+          FUN_003294d0();
+
+          uStack_4 = 0;
+
+          uStack_3 = 0;
+
+          uStack_2 = 0;
+
+          uStack_1 = 0xff;
+
+          FUN_00358460(&uStack_4,0);
+
+          FUN_00329550();
+
+          bVar4 = 0;
+
+        }
+
+        uVar1 = *(u16 *)(*(int *)(iVar6 + 0x128) + 0x418);
+
+        FUN_00319230(*(int *)(iVar6 + 0x128),3);
+
+        FUN_00317a20(*(u32 *)(iVar6 + 0x128));
+
+        FUN_00319230(*(u32 *)(iVar6 + 0x128),uVar1);
+
+        uVar8 = FUN_00198590();
+
+        FUN_004c9d00(uVar8);
+
+      }
+
+    }
+
+    uVar8 = FUN_00198560();
+
+    FUN_004944b0(uVar8,&uStack_50);
+
+    uVar8 = FUN_00198580();
+
+    FUN_004944b0(uVar8,&uStack_70);
+
+    uVar8 = FUN_00198570();
+
+    FUN_004944b0(uVar8,&uStack_60);
+
+    iVar12 = FUN_00198580();
+
+    FUN_004cb7f0(*(u32 *)(iVar12 + 4),auStack_f0,0);
+
+    iVar12 = FUN_00198570();
+
+    FUN_004cb7f0(*(u32 *)(iVar12 + 4),auStack_b0,0);
+
+  }
+
+  return;
+
+}
+
+// FUN_00289650 NONMATCHING
+
+
+u64 FUN_00289650(short param_1,u32 param_2,long param_3)
+
+
+
+{
+
+  u32 uVar1;
+
+  int iVar2;
+
+  long lVar3;
+
+  int iVar4;
+
+  u64 unaff_s1;
+
+  u64 uVar5;
+
+  
+
+  uVar5 = 0;
+
+  if (param_1 == 1) {
+
+    unaff_s1 = FUN_002875a0();
+
+    uVar5 = FUN_00299e90();
+
+    FUN_00299e70(uVar5,unaff_s1);
+
+    FUN_0029a2c0(uVar5);
+
+    FUN_00299e30(uVar5);
+
+    FUN_00299d60(uVar5,1);
+
+  }
+
+  else if (param_1 == 0) {
+
+    unaff_s1 = FUN_002875a0(0);
+
+    uVar5 = FUN_00299e90();
+
+    FUN_00299e70(uVar5,unaff_s1);
+
+    FUN_0029a2c0(uVar5);
+
+    FUN_00299e30(uVar5);
+
+    FUN_00299d60(uVar5,1);
+
+    iVar4 = (int)uVar5;
+
+    if ((param_2 & 0xffff) == 1) {
+
+      *(u16 *)(iVar4 + 0x14) = 5;
+
+      *(int *)(iGpffffb6fc + 0x148) = iVar4;
+
+    }
+
+    iVar2 = FUN_00174800(param_2);
+
+    FUN_00288f80(unaff_s1,*(u16 *)(iVar2 + 2));
+
+    *(u16 *)(iVar4 + 0x1a) = *(u16 *)(iVar4 + 0x1a) | 0x10;
+
+  }
+
+  iVar4 = (int)unaff_s1;
+
+  if (param_3 != 0) {
+
+    *(int *)(iVar4 + 0xa2c) = (int)param_3;
+
+    FUN_002889c0(unaff_s1,param_2 & 0xffff);
+
+    lVar3 = FUN_0030b5a0(param_3,0);
+
+    if (lVar3 != 0) {
+
+      *(u32 *)(iVar4 + 0x9c) = *(u32 *)(iVar4 + 0x9c) | 1;
+
+    }
+
+  }
+
+  iVar2 = (int)uVar5;
+
+  *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) = *(u32 *)(*(int *)(iVar2 + 0x30) + 0x9c) | 8;
+
+  *(u16 *)(iVar2 + 0x1a) = *(u16 *)(iVar2 + 0x1a) | 8;
+
+  if ((param_1 != 1) && (param_1 == 0)) {
+
+    uVar1 = *(u32 *)(iVar4 + 0x9c);
+
+    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x20;
+
+    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x60;
+
+    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0xe0;
+
+    *(u32 *)(iVar4 + 0x9c) = uVar1 | 0x2e0;
+
+  }
+
+  FUN_002f9c10(uVar5);
+
+  return uVar5;
+
+}
+
+/* Recovered battle-misc harvest: 0x00287B20-0x00287CF0 */
+// FUN_00287B20 NONMATCHING
+
+
+void FUN_00287b20(int param_1,short param_2)
+
+
+
+{
+
+  u16 uVar1;
+
+  u32 uVar2;
+
+  short sVar3;
+
+  u32 uVar4;
+
+  
+
+  uVar4 = *(u32 *)(param_1 + 0x98) & 2;
+
+  if (uVar4 != 0) {
+
+    if (param_2 == 4) {
+
+      *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) =
+
+           *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) | 0x10;
+
+    }
+
+    else if (param_2 == 3) {
+
+      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 | 0x1000);
+
+      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 | 0x2000);
+
+      uVar2 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar2 & 0xf7ff);
+
+    }
+
+    else if (param_2 == 2) {
+
+      FUN_00319050(*(u32 *)(param_1 + 0x9f4));
+
+    }
+
+    else if (param_2 == 1) {
+
+      FUN_00319010(*(u32 *)(param_1 + 0x9f4));
+
+      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x39c) = DAT_007cad78;
+
+      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x3a0) =
+
+           *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x39c);
+
+      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x3a4) = 0x3f800000;
+
+    }
+
+    else if ((((param_2 == 5) && ((*(u32 *)(param_1 + 0x9c) & 0x800) == 0)) &&
+
+             (*(short *)(param_1 + 0x9f2) != 0)) && ((*(u32 *)(param_1 + 0x9c) & 8) != 0)) {
+
+      if (uVar4 == 0) {
+
+        sVar3 = 0;
+
+      }
+
+      else {
+
+        sVar3 = *(short *)(param_1 + 0x9ce);
+
+      }
+
+      if (sVar3 != 0x12) {
+
+        FUN_001a0dc0(*(short *)(param_1 + 0x9f2),0);
+
+        *(u32 *)(param_1 + 0x9c) = *(u32 *)(param_1 + 0x9c) | 0x800;
+
+      }
+
+    }
+
+  }
+
+  return;
+
+}
+
+// FUN_00287CF0 NONMATCHING
+
+
+void FUN_00287cf0(int param_1,short param_2)
+
+
+
+{
+
+  u32 uVar1;
+
+  
+
+  if ((*(u32 *)(param_1 + 0x98) & 2) != 0) {
+
+    if (param_2 == 4) {
+
+      *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) =
+
+           *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) & 0xffef;
+
+    }
+
+    else if (param_2 == 3) {
+
+      FUN_00319090(DAT_007cada4,*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003190a0(0x428c0000,0x42a00000,*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191b0(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_00319190(*(u32 *)(param_1 + 0x9f4));
+
+      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 & 0xdfff);
+
+      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
+
+      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 & 0xefff);
+
+      *(u16 *)(param_1 + 0xb0) = 0;
+
+    }
+
+    else if (param_2 == 2) {
+
+      FUN_00319070(*(u32 *)(param_1 + 0x9f4));
+
+    }
+
+    else if (param_2 == 1) {
+
+      FUN_00319030(*(u32 *)(param_1 + 0x9f4));
+
+      *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x388) =
+
+           *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x388) & 0xe2;
+
+    }
+
+    else if (((param_2 == 5) && ((*(u32 *)(param_1 + 0x9c) & 0x800) != 0)) &&
+
+            (*(short *)(param_1 + 0x9f2) != 0)) {
+
+      FUN_001a0dc0(*(short *)(param_1 + 0x9f2),(*(u32 *)(param_1 + 0x9c) & 0x1000) == 0);
+
+      *(u32 *)(param_1 + 0x9c) = *(u32 *)(param_1 + 0x9c) & 0xfffff7ff;
+
+    }
+
+  }
+
+  return;
+
 }

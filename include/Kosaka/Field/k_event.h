@@ -11,10 +11,12 @@ typedef struct FldUnit FldUnit;
 
 typedef enum
 {
-    // TODO
-    FLDEVENT_TYPE_OBJ_INTERACT = 2,  // Player is interacting with an object
-    FLDEVENT_TYPE_NPC_INTERACT = 21, // Player is interacting with an NPC
-    FLDEVENT_TYPE_DESTROY = 32       // destroy 'field event' task
+    FLDEVENT_TYPE_INIT = 0,
+    FLDEVENT_TYPE_IDLE = 1,
+    FLDEVENT_TYPE_OBJ_INTERACT = 2,
+    FLDEVENT_TYPE_FLDHIT_INTERACT = 3,
+    FLDEVENT_TYPE_NPC_INTERACT = 0x15,
+    FLDEVENT_TYPE_DESTROY = 0x20
 } FldEventType;
 
 // 4 bytes
@@ -29,8 +31,11 @@ typedef struct FldDrawCmd
 // 288 bytes
 typedef struct FldEvent
 {
-    u32 eventType;                  // 0x00
-    u8 unkData1[0x10];
+    FldEventType eventType;         // 0x00
+    u32 inputLocked;                // 0x04
+    u32 interactionLocked;          // 0x08
+    u32 unk_0c;                     // 0x0c
+    u32 unk_10;                     // 0x10
     ResrcModelChar* heroRes;        // 0x14
     s32 unk_18;                     // 0x18
     ResrcModelNpc* interactableNpc; // 0x1c. Npc the player can currently interact with (in FOV and nearby)
@@ -40,6 +45,7 @@ typedef struct FldEvent
     u8 unkData3[0xbc];
 } FldEvent;
 
+u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos, f32 fov);
 u32 K_FldEvent_IsUnitWithinDistOfHero(const FldUnit* fldUnit, f32 maxDist);
 u32 K_FldEvent_AreUnitsWithinDist(const FldUnit* fldUnitA, const FldUnit* fldUnitB, f32 maxDist);
 u32 K_FldEvent_ArePosWithinDist(const RwV3d* posA, const RwV3d* posB, f32 maxDist);

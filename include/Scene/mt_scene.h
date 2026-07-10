@@ -13,7 +13,7 @@ typedef struct HCdvd HCdvd;
 typedef struct KwlnTask KwlnTask;
 typedef struct Model Model;
 
-// 40 bytes ? Not sure
+// 40 bytes
 typedef struct
 {
     s32 fldMajorId;           // 0x00
@@ -40,7 +40,7 @@ Resrc* MT_Scene_GetRes(u16 resTypeId);
 Resrc* MT_Scene_GetResListHead(u32 resType);
 u32 MT_Scene_GetTotalResInList(u32 resType);
 u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl);
-u16 MT_Scene_CreateResModelNpc(u32 resId, u16 param_2, Model* mdl);
+u16 MT_Scene_CreateResModelNpc(u16 resId, s32 param_2, Model* mdl);
 u16 MT_Scene_CreateResLightChar(u16 resId);
 u16 MT_Scene_CreateResLightNpc(u16 resId);
 u16 MT_Scene_CreateResModelFld(u16 resId, Model* mdl);

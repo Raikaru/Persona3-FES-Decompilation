@@ -5,6 +5,6 @@
 
 void RpRandomSeedMT(RwUInt32 seed);
 void RpRandomSeed(RwUInt32 seed);
-RwUInt32 RpRandom();
+RwUInt32 RpRandom(void);
 
 #endif

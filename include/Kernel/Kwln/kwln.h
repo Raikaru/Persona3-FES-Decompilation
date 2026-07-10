@@ -34,6 +34,11 @@ extern f32 gRadToDegFactor2;
 extern f32 gAspectRatio;
 
 void kwlnMain();
+void kwlnInitGameData(void);
+void kwlnInitPS2Systems(void);
+void kwlnInitRenderer(void);
+void kwln00198010(void);
+u8 kwlnUpdate(void);
 
 void kwlnPushCommonRenderStates();
 RpWorld* kwlnGetWorld(u32 worldIdx);

@@ -1,0 +1,2529 @@
+#include "Camp/h_camp.h"
+#include "h_cdvd.h"
+#include "Main/g_data.h"
+#include "Main/Game/game_support.h"
+#include "Kernel/Kwln/kwlnTask.h"
+
+/* Camp persona display control state (0x12c bytes, matching the retail task work area). */
+typedef struct CampPersonaDispCtlWork
+{
+    u32 state;
+    u32 personaId;
+    u32 reserved08;
+    u32 mode;
+    f32 alpha;
+    f32 slideStep;
+    f32 slidePosition;
+    f32 depth;
+    void* parseRequest;
+    HCdvd* cdvd;
+    void* resource;
+    char path[0x100];
+} CampPersonaDispCtlWork;
+
+typedef struct CampTextureParserWork
+{
+    void* stream;
+    HCdvd* cdvd;
+} CampTextureParserWork;
+
+extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
+extern void (*jtbl_0096017C)(void* memory);
+extern const char D_005DB190[];
+extern const char D_005DB1B0[];
+extern const char D_005DB1D0[];
+extern const char D_005DB1F0[];
+extern const char D_005DB210[];
+
+extern void* func_0010c3a0(void* stream, u32* wasReady, s32* byteCount);
+extern void func_004d0f00(void* resource);
+extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
+extern void* func_00133780(KwlnTask* task);
+extern void FUN_00114450(f32 alpha, f32 slidePosition, f32 depth, u32 mode,
+                         u32 color, u32 width, u32 height, void* resource);
+extern s32 printf(const char* format, ...);
+extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
+
+
+// FUN_001339A0 NONMATCHING
+KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
+                       f32 alpha)
+{
+    CampPersonaDispCtlWork* work;
+    KwlnTask* task;
+
+    work = (CampPersonaDispCtlWork*)DAT_00960184(1, 0x12c, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, D_005DB190, priority, func_00133780,
+                          h_campPersonaDestroyDispCtlDrawTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    work->personaId = personaId;
+    work->mode = mode;
+    work->alpha = alpha;
+    return task;
+}
+
+// FUN_00133A80 NONMATCHING
+void FUN_00133a80(KwlnTask* task)
+{
+    CampPersonaDispCtlWork* work;
+
+    work = (CampPersonaDispCtlWork*)task->workData;
+    if (work->state == 3 && work->personaId != 0) {
+        if (work->slidePosition != 60.0f) {
+            work->slidePosition -= work->slideStep;
+            work->slideStep += 5.0f;
+            if (work->slidePosition < 60.0f) {
+                work->slidePosition = 60.0f;
+            }
+        }
+        FUN_00114450(work->alpha, work->slidePosition, work->depth, work->mode,
+                     0x4FA4FF19, 0x280, 0x280, work->resource);
+    }
+}
+
+// FUN_00133B40
+void FUN_00133b40(KwlnTask* task, u32 mode)
+{
+    CampPersonaDispCtlWork* work;
+
+    work = (CampPersonaDispCtlWork*)task->workData;
+    work->mode = (work->mode & 0xffffff00) | (mode & 0xff);
+}
+
+// FUN_00133B70
+u32 FUN_00133b70(KwlnTask* task)
+{
+    CampPersonaDispCtlWork* work;
+
+    work = (CampPersonaDispCtlWork*)task->workData;
+    return work->mode;
+}
+
+// FUN_00133B80 NONMATCHING
+void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode)
+{
+    CampPersonaDispCtlWork* work;
+
+    work = (CampPersonaDispCtlWork*)task->workData;
+    if (work->personaId != personaId || work->mode != mode) {
+        if (work->parseRequest == NULL) {
+            if (work->cdvd != NULL) {
+                H_Cdvd_Destroy(work->cdvd);
+                work->cdvd = NULL;
+            }
+            if (work->resource != NULL) {
+                func_004d0f00(work->resource);
+                work->resource = NULL;
+            }
+        } else {
+            FUN_00133d30(work->parseRequest, work->cdvd);
+            work->parseRequest = NULL;
+            work->cdvd = NULL;
+            work->resource = NULL;
+        }
+        work->mode = mode;
+        work->personaId = personaId;
+        work->state = 0;
+    }
+}
+
+// FUN_00133C40 NONMATCHING
+void* FUN_00133c40(KwlnTask* task)
+{
+    CampTextureParserWork* work;
+    u32 wasReady;
+    void* resource;
+
+    work = (CampTextureParserWork*)task->workData;
+    resource = func_0010c3a0(work->stream, &wasReady, NULL);
+    if (wasReady == 0) {
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->cdvd == NULL) {
+        printf(D_005DB1D0);
+    } else {
+        printf(D_005DB1B0, work->cdvd->path);
+    }
+    if (resource != NULL) {
+        func_004d0f00(resource);
+    }
+    if (work->cdvd != NULL) {
+        H_Cdvd_Destroy(work->cdvd);
+    }
+    return KWLNTASK_STOP;
+}
+
+// FUN_00133D00 NONMATCHING
+void FUN_00133d00(KwlnTask* task)
+{
+    jtbl_0096017C(task->workData);
+}
+
+// FUN_00133D30 NONMATCHING
+KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd)
+{
+    CampTextureParserWork* work;
+    KwlnTask* task;
+
+    work = (CampTextureParserWork*)DAT_00960184(1, 8, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf, FUN_00133c40,
+                          FUN_00133d00, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    if (cdvd != NULL) {
+        printf(D_005DB210, cdvd->path);
+    }
+    work->stream = stream;
+    work->cdvd = cdvd;
+    return task;
+}
+
+
+/* ---- Camp slice continuation ---- */
+
+#include "Utils.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/g_data.h"
+#include "h_maestro.h"
+extern void* H_Maestro_001120a0(s32 font);
+
+/*
+ * Camp's list renderer uses a 0x44-byte record.  The animation setup code
+ * fills the interpolation fields at 0x28..0x34; these callbacks consume the
+ * settled position, sprite scale, and alpha fields below.
+ */
+typedef struct CampMainDrawItem
+{
+    u32 owner;             /* 0x00 */
+    u32 active;            /* 0x04 */
+    void* resource0;       /* 0x08 */
+    void* resource1;       /* 0x0c */
+    void* resource2;       /* 0x10 */
+    void* resource3;       /* 0x14 */
+    u32 progress;          /* 0x18 */
+    u32 startFrame;        /* 0x1c */
+    u32 endFrame;          /* 0x20 */
+    f32 spriteScale;       /* 0x24 */
+    f32 startX;            /* 0x28 */
+    f32 startY;            /* 0x2c */
+    f32 scrollX;           /* 0x30 */
+    f32 scrollY;           /* 0x34 */
+    f32 x;                 /* 0x38 */
+    f32 y;                 /* 0x3c */
+    u32 alpha;             /* 0x40 */
+} CampMainDrawItem;
+
+/* The sprite list node allocated by FUN_001158b0. */
+typedef struct CampMainSpriteNode
+{
+    void* next;            /* 0x00 */
+    void* previous;        /* 0x04 */
+    void* resource;        /* 0x08 */
+    s32 frame;             /* 0x0c */
+    f32 x;                 /* 0x10 */
+    f32 y;                 /* 0x14 */
+    u8 alpha;              /* 0x18 */
+    u8 reserved19[0x13];   /* 0x19 */
+    f32 spriteScale;       /* 0x2c */
+} CampMainSpriteNode;
+
+extern CampMainSpriteNode* FUN_001158b0(void* owner, void* resource, s32 frame);
+extern void FUN_001127d0(CampMainSpriteNode* node, u32 enabled);
+extern void FUN_00115980(void* node);
+extern void FUN_001159f0(void* ignored, void* resource, s32 frame, u32 alpha,
+                         f32 x, f32 y, f32 spriteScale);
+extern void FUN_0012b860(u64 packedPosition, u64 auxiliaryPosition,
+                         DatPersonaWork* persona, u32 alpha, f32 spriteScale);
+extern void FUN_00125b40(u64 packedPosition, u64 auxiliaryPosition,
+                         DatPersonaWork* persona, u32 alpha, f32 spriteScale);
+extern const char* FUN_00173220(u16 personaId);
+extern void FUN_003b2cb0(f32 scale, s32 x, s32 y, s32 color, u32 font,
+                         u32 alignment, const char* text, u32 maxWidth,
+                         u32 shadow);
+extern int sprintf(char* buffer, const char* format, ...);
+extern void* D_00833BA4;
+extern char gp0xffff897c[];
+
+/* Pack the two f32 coordinates exactly as the retail ld/sd pair does. */
+typedef union CampMainPackedPosition
+{
+    struct
+    {
+        f32 x;
+        f32 y;
+    } coordinates;
+    u64 value;
+} CampMainPackedPosition;
+
+static u64 campMainPackPosition(f32 x, f32 y)
+{
+    CampMainPackedPosition position;
+
+    position.coordinates.x = x;
+    position.coordinates.y = y;
+    return position.value;
+}
+
+static void* campMainResource(const void* resources, s32 index)
+{
+    return ((void* const*)resources)[index];
+}
+
+static void campMainDrawSprite(const CampMainDrawItem* item, void* resource,
+                               s32 frame, f32 x, f32 y)
+{
+    FUN_001159f0(NULL, resource, frame, (u8)item->alpha, x, y,
+                 item->spriteScale);
+}
+
+static void campMainQueueSprite(const CampMainDrawItem* item, void* resource,
+                                s32 frame, f32 x, f32 y)
+{
+    CampMainSpriteNode* node;
+
+    node = FUN_001158b0(NULL, resource, frame);
+    node->spriteScale = item->spriteScale;
+    node->x = x;
+    node->y = y;
+    node->alpha = (u8)item->alpha;
+    FUN_001127d0(node, 1);
+    FUN_00115980(node);
+}
+
+static void campMainDrawFontDigit(const CampMainDrawItem* item, s32 font,
+                                  s32 digit, f32 x, f32 y)
+{
+    void* fontResource;
+
+    fontResource = H_Maestro_001120a0(font);
+    campMainDrawSprite(item, fontResource, digit + 11, x, y);
+}
+
+static void campMainDrawPersonaRow(const CampMainDrawItem* item,
+                                   const void* resources, const s16* personaIds,
+                                   s32 row, s32 selected)
+{
+    DatPersonaWork* persona;
+    u8 level;
+    s32 tens;
+    s32 ones;
+    s32 equippedPersona;
+
+    persona = datPersonaGetHeroPersona(personaIds[row]);
+    if (row == selected) {
+        campMainDrawSprite(item, campMainResource(resources, 1), 8,
+                           item->x + 60.0f, item->y + 3.0f);
+    } else {
+        equippedPersona = datGetPersonaId(1);
+        if (persona->id == (u16)equippedPersona) {
+            campMainDrawSprite(item, campMainResource(resources, 1), 8,
+                               item->x + 60.0f, item->y + 3.0f);
+        } else {
+            campMainDrawSprite(item, campMainResource(resources, 1), 8,
+                               item->x + 60.0f, item->y + 3.0f);
+        }
+    }
+
+    level = persona->level;
+    if (level > 9) {
+        tens = level / 10;
+        campMainDrawFontDigit(item, 1, tens, item->x + 88.0f,
+                              item->y + 12.0f);
+    }
+    ones = level % 10;
+    campMainDrawFontDigit(item, row == selected ? 1 : 2, ones,
+                          item->x + 104.0f, item->y + 12.0f);
+}
+
+// FUN_00133E10 NONMATCHING
+void FUN_00133E10(CampMainDrawItem* item, const void* resources, s32 mode,
+                  const s16* personaIds, s16 selected)
+{
+    DatPersonaWork* persona;
+    const char* personaName;
+    char text[0x100];
+    s32 personaIndex;
+    u32 textColor;
+
+    if (mode == 0x1d) {
+        return;
+    }
+
+    if (mode == 0x1c) {
+        campMainDrawSprite(item, campMainResource(resources, 2), 0,
+                           item->x, item->y);
+        campMainDrawSprite(item, campMainResource(resources, 2), 1,
+                           item->x + 16.0f, item->y);
+        campMainDrawSprite(item, D_00833BA4, 1, item->x + 431.0f,
+                           item->y);
+        campMainDrawSprite(item, D_00833BA4, 3, item->x + 527.0f,
+                           item->y);
+        campMainDrawSprite(item, D_00833BA4, 4, item->x + 336.0f,
+                           item->y);
+        return;
+    }
+
+    if (mode == 0x1b) {
+        campMainDrawSprite(item, campMainResource(resources, 0), 4,
+                           item->x, item->y);
+        return;
+    }
+
+    if (mode == 0) {
+        campMainQueueSprite(item, campMainResource(resources, 0), 0,
+                            item->x + 250.0f, item->y);
+        campMainQueueSprite(item, campMainResource(resources, 0), 0,
+                            item->x + 1000.0f, item->y);
+        item->scrollX -= 1.0f;
+        if (item->scrollX < -750.0f) {
+            item->scrollX += 750.0f;
+        }
+        return;
+    }
+
+    if (mode < 0x0e) {
+        personaIndex = mode - 1;
+        persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
+        personaName = FUN_00173220(persona->id);
+        sprintf(text, gp0xffff897c, personaName);
+        textColor = (0xffU - item->alpha) | 0xffffff00U;
+        FUN_003b2cb0(100.0f, (s32)item->x, (s32)item->y,
+                     (s32)textColor, 10, 1, text, 0x10, 0);
+        return;
+    }
+
+    personaIndex = mode - 0x0e;
+    campMainDrawPersonaRow(item, resources, personaIds, personaIndex,
+                           (s32)selected);
+}
+
+// FUN_001344B0 NONMATCHING
+u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
+                 const s16* personaIds, s16 selected)
+{
+    CampMainDrawItem* item;
+    u32 complete;
+    s32 i;
+
+    complete = 1;
+    for (i = 0; i < 100; i++) {
+        item = (CampMainDrawItem*)((u8*)items + i * 0x44);
+        if (item->active != 0) {
+            if (func_0018b700(item) != 0) {
+                FUN_00133E10(item, resources, i, personaIds, selected);
+            }
+            if (item->progress != item->endFrame) {
+                complete = 0;
+            }
+        }
+    }
+    return complete;
+}
+
+static void campMainDrawPersonaCard(const CampMainDrawItem* item,
+                                    const s16* personaIds, s32 personaIndex,
+                                    f32 xOffset, f32 yOffset)
+{
+    DatPersonaWork* persona;
+    u64 position;
+
+    persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
+    position = campMainPackPosition(item->x + xOffset, item->y + yOffset);
+    FUN_0012b860(position, 0, persona, (u8)item->alpha,
+                 item->spriteScale);
+    position = campMainPackPosition(item->x + xOffset + 12.0f,
+                                    item->y + yOffset + 96.0f);
+    FUN_00125b40(position, position, persona, (u8)item->alpha,
+                 item->spriteScale);
+}
+
+// FUN_001345B0 NONMATCHING
+void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
+                  const s16* personaIds, s32 personaIndex,
+                  s32 alternatePersonaIndex)
+{
+
+    switch (mode) {
+    case 0:
+        campMainDrawPersonaCard(item, personaIds, personaIndex, 0.0f, 0.0f);
+        break;
+    case 1:
+        campMainDrawPersonaCard(item, personaIds, alternatePersonaIndex,
+                                0.0f, 0.0f);
+        break;
+    case 2:
+        campMainDrawSprite(item, campMainResource(resources, 0), 2,
+                           item->x, item->y);
+        break;
+    case 3:
+        campMainDrawSprite(item, campMainResource(resources, 0), 3,
+                           item->x, item->y);
+        break;
+    case 4:
+        campMainDrawSprite(item, campMainResource(resources, 0), 1,
+                           item->x, item->y);
+        break;
+    case 5:
+        campMainDrawSprite(item, campMainResource(resources, 0), 0,
+                           item->x, item->y);
+        campMainDrawSprite(item, campMainResource(resources, 2), 2,
+                           item->x + 16.0f, item->y);
+        campMainDrawSprite(item, D_00833BA4, 2, item->x + 433.0f,
+                           item->y);
+        campMainDrawSprite(item, D_00833BA4, 3, item->x + 527.0f,
+                           item->y);
+        break;
+    default:
+        break;
+    }
+}
+
+// FUN_00134900 NONMATCHING
+u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
+                 const s16* personaIds, s16 selected, s16 personaIndex)
+{
+    CampMainDrawItem* item;
+    u32 complete;
+    s32 i;
+
+    complete = 1;
+    for (i = 0; i < 10; i++) {
+        item = (CampMainDrawItem*)((u8*)items + i * 0x44);
+        if (item->active != 0) {
+            if (func_0018b700(item) != 0) {
+                FUN_001345B0(item, resources, i, personaIds,
+                             (s32)selected, (s32)personaIndex);
+            }
+            if (item->progress != item->endFrame) {
+                complete = 0;
+            }
+        }
+    }
+    return complete;
+}
+
+
+/* ---- Camp slice continuation ---- */
+
+#include "Camp/h_camp.h"
+#include "Main/g_data.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "h_cdvd.h"
+#include "h_maestro.h"
+#include "rw/rwplcore.h"
+
+extern void* FUN_00133c40(KwlnTask* task);
+extern void FUN_00133d00(KwlnTask* task);
+extern void* FUN_0010c1a0(void* owner, const char* path, s32 arg3, s32 arg4,
+                          s32 arg5, s32 arg6, s32 arg7, s32 arg8,
+                          s32 arg9, s32 arg10, const char* resourcePath,
+                          s32 resourceId);
+extern void* FUN_0010c3a0(void* resource, s32* size, s32 mode);
+extern void FUN_003c7d80(s32 slot, void* memory);
+extern void FUN_004d0f00(void* resource);
+extern void FUN_005225a8(const char* message, ...);
+extern void FUN_00523ac8(char* dst, const char* format, ...);
+extern void* FUN_00172160(s32 id);
+extern void* FUN_001717c0(s32 id);
+extern u32 FUN_0016e100(s16 id);
+extern s32 FUN_0016f190(s32 id);
+extern void FUN_0010a4e0(s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+extern void FUN_00136820(f32 alpha, u64 packedPosition, const s32* entries,
+                         s32 count, s32 offset, s32 selected, s32 mode,
+                         s32 frame, s32 extra);
+extern void FUN_00138e80(f32 alpha, u64 packedPosition, const s32* entries,
+                         s32 count, s32 offset, s32 selected, s32 menuFlags,
+                         s32 mode, s32 frame, s32 extra0, s32 extra1);
+extern int printf(const char* format, ...);
+
+extern const char D_005DBA00[];
+extern const char D_005DBA20[];
+extern const char D_005DBAE0[];
+extern const char D_005DBA38[];
+extern const char D_005DB1F0[];
+extern const char D_005DBA50[];
+extern const char D_005DBA70[];
+extern const char D_005DBA80[];
+extern const char D_005DBAA0[];
+extern const char D_005DBAC0[];
+extern const char D_005DB210[];
+extern const char D_005DBBC0[];
+extern const char D_005DBBF0[];
+extern const char* D_005DB940[];
+extern const char* D_005DB998[];
+extern const char D_005E3220[];
+extern const u16 D_005DBB00[];
+
+extern s16 DAT_00833A60[9];
+extern void* DAT_00833A80[0x17];
+extern void* DAT_00833B40[0x0b];
+extern u32 DAT_00833AD8;
+extern KwlnTask* DAT_007cdf50;
+extern u32 DAT_007cdf6c;
+extern u32 DAT_007cdf70;
+extern u32 DAT_007cdf74;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e095a;
+
+
+static void h_campQueueResourceTaskForCurrent(void* resource, void* archive)
+{
+    KwlnTask* task;
+    u32* work;
+
+    work = (u32*)RwCalloc(1, 8, 0x40000);
+    if (work == NULL) {
+        return;
+    }
+    task = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                          FUN_00133c40, FUN_00133d00, work);
+    if (task == NULL) {
+        return;
+    }
+    if (archive != NULL) {
+        printf(D_005DB210, ((HCdvd*)archive)->path);
+    }
+    work[0] = (u32)resource;
+    work[1] = (u32)archive;
+}
+
+static void h_campBuildCardPath(char* path, s32 entry, s32 cardIndex)
+{
+    u16 cardId;
+    void* knownText;
+
+    if (entry == 0 || entry == 0x1d) {
+        cardId = (u16)DAT_00833A60[cardIndex];
+    } else {
+        cardId = D_005DBB00[entry * 3 + cardIndex];
+    }
+    knownText = FUN_00172160(entry);
+    if (knownText == NULL) {
+        knownText = FUN_001717c0(entry);
+    }
+    if (knownText == NULL) {
+        FUN_00523ac8(path, D_005DBBF0, cardId);
+    } else {
+        FUN_00523ac8(path, D_005DBBC0, cardId);
+    }
+}
+
+
+static void h_campDestroyRequestAndResource(u32* work,
+                                             u32 requestIndex,
+                                             u32 resourceIndex)
+{
+    HCdvd* request;
+    void* resource;
+
+    request = (HCdvd*)work[requestIndex];
+    if (request != NULL) {
+        H_Cdvd_Destroy(request);
+        work[requestIndex] = 0;
+    }
+    resource = (void*)work[resourceIndex];
+    if (resource != NULL) {
+        FUN_004d0f00(resource);
+        work[resourceIndex] = 0;
+    }
+}
+
+// FUN_00134a10 NONMATCHING
+void* FUN_00134a10(KwlnTask* task)
+{
+    u32* work;
+    u32 archiveSize;
+    u32 i;
+    u32 ready;
+    s32 resourceSize;
+    void* source;
+    void* resource;
+
+    work = (u32*)task->workData;
+    switch (work[0]) {
+    case 0:
+        work[0x30] = (u32)H_Cdvd_Request(D_005DBA00, 1);
+        work[0] = 1;
+        break;
+    case 1:
+        if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x30])) {
+            for (i = 0; i < 0x0b; i++) {
+                source = H_Cdvd_ArchiveGetFile((HCdvd*)work[0x30], (s32)i,
+                                                &archiveSize);
+                work[0x34 + i] = (u32)func_00112420(source);
+            }
+            work[0] = 2;
+        }
+        break;
+    case 2:
+        ready = 1;
+        for (i = 0; i < 0x0b; i++) {
+            if (!H_Maestro_00111f30((s16*)work[0x34 + i])) {
+                ready = 0;
+            }
+        }
+        if (ready != 0) {
+            for (i = 0; i < 0x0b; i++) {
+                DAT_00833B40[i] = (void*)work[0x34 + i];
+            }
+            H_Cdvd_Destroy((HCdvd*)work[0x30]);
+            work[0x30] = 0;
+            work[0] = 3;
+        }
+        break;
+    case 3:
+        work[0x30] = (u32)H_Cdvd_Request(D_005DBA20, 1);
+        work[0] = 4;
+        break;
+    case 4:
+        if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x30])) {
+            for (i = 0; i < 0x17; i++) {
+                work[2 + i] = (u32)FUN_0010c1a0(
+                    NULL, D_005DB940[i], 0, 0, 0, 0, 0, 0,
+                    0, 0, D_005DBA38, 0xcb);
+            }
+            work[0] = 5;
+        }
+        break;
+    case 5:
+        ready = 1;
+        for (i = 0; i < 0x17; i++) {
+            if (work[0x19 + i] == 0) {
+                resourceSize = 0;
+                resource = FUN_0010c3a0((void*)work[2 + i],
+                                        &resourceSize, 0);
+                work[0x19 + i] = (u32)resource;
+                if (resourceSize == 0) {
+                    ready = 0;
+                    work[0x19 + i] = 0;
+                    DAT_00833A80[i] = NULL;
+                } else {
+                    work[2 + i] = 0;
+                    DAT_00833A80[i] = resource;
+                    FUN_005225a8(D_005DBA50, i);
+                }
+            }
+        }
+        if (ready != 0) {
+            work[1] = 0x17;
+            FUN_005225a8(D_005DBA70);
+            H_Cdvd_Destroy((HCdvd*)work[0x30]);
+            work[0x30] = 0;
+            FUN_005225a8(D_005DBA80);
+            work[0] = 9;
+        }
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00134d80 NONMATCHING
+void FUN_00134d80(KwlnTask* task)
+{
+    u32* work;
+    u32 i;
+    s32 state;
+    void* resource;
+    void* archive;
+    void* record;
+    KwlnTask* queued;
+
+    work = (u32*)task->workData;
+    for (i = 0; i < 0x17; i++) {
+        resource = (void*)work[0x19 + i];
+        if (resource != NULL) {
+            FUN_004d0f00(resource);
+            work[0x19 + i] = 0;
+        }
+        DAT_00833A80[i] = NULL;
+    }
+    for (i = 0; i < 0x0b; i++) {
+        resource = (void*)work[0x34 + i];
+        if (resource != NULL) {
+            func_001124b0(resource);
+        }
+        DAT_00833B40[i] = NULL;
+    }
+
+    state = (s32)work[0];
+    if (state == 5) {
+        for (i = 0; i < 0x17; i++) {
+            resource = (void*)work[2 + i];
+            if (resource == NULL) {
+                continue;
+            }
+            printf(D_005DBAA0, i);
+            if (i == 0x2c) {
+                archive = (void*)work[0x30];
+                record = RwCalloc(1, 8, 0x40000);
+                if (record != NULL) {
+                    queued = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                                            FUN_00133c40, FUN_00133d00,
+                                            record);
+                    if (queued != NULL) {
+                        if (archive != NULL) {
+                            printf(D_005DB210, ((HCdvd*)archive)->path);
+                        }
+                        ((u32*)record)[0] = (u32)resource;
+                        ((u32*)record)[1] = (u32)archive;
+                    }
+                }
+                work[0x30] = 0;
+            } else {
+                record = RwCalloc(1, 8, 0x40000);
+                if (record != NULL) {
+                    queued = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                                            FUN_00133c40, FUN_00133d00,
+                                            record);
+                    if (queued != NULL) {
+                        ((u32*)record)[0] = (u32)resource;
+                        ((u32*)record)[1] = 0;
+                    }
+                }
+            }
+        }
+        FUN_005225a8(D_005DBAC0);
+        archive = (void*)work[0x30];
+        if (archive != NULL) {
+            H_Cdvd_Destroy((HCdvd*)archive);
+            work[0x30] = 0;
+        }
+    } else if (state == 9) {
+        archive = (void*)work[0x30];
+        if (archive != NULL) {
+            H_Cdvd_Destroy((HCdvd*)archive);
+            work[0x30] = 0;
+        }
+    } else if (state < 6) {
+        archive = (void*)work[0x30];
+        if (archive != NULL) {
+            H_Cdvd_Destroy((HCdvd*)archive);
+            work[0x30] = 0;
+        }
+    } else {
+        resource = (void*)work[work[1] + 2];
+        if (resource == NULL) {
+            archive = (void*)work[0x30];
+            if (archive != NULL) {
+                H_Cdvd_Destroy((HCdvd*)archive);
+                work[0x30] = 0;
+            }
+        } else {
+            archive = (void*)work[0x30];
+            h_campQueueResourceTaskForCurrent(resource, archive);
+            work[0x30] = 0;
+        }
+    }
+    RwFree(work);
+}
+
+// FUN_00135120 NONMATCHING
+void FUN_00135120(KwlnTask* task)
+{
+    u32* work;
+    void* resource;
+    void* oldRequest;
+    void* record;
+    KwlnTask* queued;
+    s32 selected;
+    char path[256];
+    work = (u32*)task->workData;
+    DAT_007cdf70 = 0;
+
+    resource = (void*)work[0x59];
+    if (resource == NULL) {
+        h_campDestroyRequestAndResource(work, 0x56, 0x5b);
+    } else {
+        oldRequest = (void*)work[0x56];
+        record = RwCalloc(1, 8, 0x40000);
+        if (record != NULL) {
+            queued = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                                    FUN_00133c40, FUN_00133d00, record);
+            if (queued != NULL) {
+                if (oldRequest != NULL) {
+                    printf(D_005DB210, ((HCdvd*)oldRequest)->path);
+                }
+                ((u32*)record)[0] = (u32)resource;
+                ((u32*)record)[1] = (u32)oldRequest;
+            }
+        }
+        work[0x59] = 0;
+        work[0x56] = 0;
+    }
+
+    selected = (s32)work[work[1] + work[2] + 8];
+    if (selected == 0 || selected == 0x1d) {
+        if (DAT_00833A60[work[5]] == 0) {
+            work[0x56] = 0;
+        } else {
+            h_campBuildCardPath(path, selected, work[5]);
+            work[0x56] = (u32)H_Cdvd_Request(path, 0);
+        }
+    } else if (D_005DBB00[selected * 3 + work[5]] == 0) {
+        work[0x56] = 0;
+    } else {
+        h_campBuildCardPath(path, selected, work[5]);
+        work[0x56] = (u32)H_Cdvd_Request(path, 0);
+    }
+}
+
+// FUN_00135460 NONMATCHING
+void FUN_00135460(KwlnTask* task)
+{
+    u32* work;
+    void* resource;
+    void* oldRequest;
+    void* record;
+    KwlnTask* queued;
+    s8 cardType;
+    s16 selected;
+
+    work = (u32*)task->workData;
+    DAT_007cdf74 = 0;
+
+    resource = (void*)work[0x5a];
+    if (resource == NULL) {
+        h_campDestroyRequestAndResource(work, 0x57, 0x5c);
+    } else {
+        oldRequest = (void*)work[0x57];
+        record = RwCalloc(1, 8, 0x40000);
+        if (record != NULL) {
+            queued = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                                    FUN_00133c40, FUN_00133d00, record);
+            if (queued != NULL) {
+                if (oldRequest != NULL) {
+                    printf(D_005DB210, ((HCdvd*)oldRequest)->path);
+                }
+                ((u32*)record)[0] = (u32)resource;
+                ((u32*)record)[1] = (u32)oldRequest;
+            }
+        }
+        work[0x5a] = 0;
+        work[0x57] = 0;
+    }
+
+    selected = (s16)work[work[1] + work[2] + 8];
+    cardType = (s8)func_0016df30(selected);
+    work[0x57] = (u32)H_Cdvd_Request(D_005DB998[(s32)cardType], 0);
+}
+
+// FUN_001355c0 NONMATCHING
+void* FUN_001355c0(KwlnTask* task)
+{
+    u32* work;
+    u32 i;
+    u32 j;
+    s32 current;
+    s32 next;
+    s32 available;
+    s32 resourceSize;
+    s32 index;
+    s32 key;
+    void* resource;
+    char path[256];
+
+    work = (u32*)task->workData;
+    switch (work[0]) {
+    case 0:
+        if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x54])) {
+            FUN_003c7d80(0x0b, ((HCdvd*)work[0x54])->fileMemory);
+            index = 0;
+            for (j = 0; j < 9; j++) {
+                if (j == 5) {
+                    if (FUN_0016f190(0x1a) != 0) {
+                        DAT_00833A60[index++] = 7;
+                    }
+                } else if (j != 7 && FUN_0016f190((s32)j + 0x150) != 0) {
+                    switch (j) {
+                    case 0: DAT_00833A60[index++] = 2; break;
+                    case 1: DAT_00833A60[index++] = 3; break;
+                    case 2: DAT_00833A60[index++] = 4; break;
+                    case 3: DAT_00833A60[index++] = 5; break;
+                    case 4: DAT_00833A60[index++] = 6; break;
+                    case 6: DAT_00833A60[index++] = 8; break;
+                    case 8: DAT_00833A60[index++] = 10; break;
+                    }
+                }
+            }
+            if (FUN_0016f190(0x157) != 0) {
+                DAT_00833A60[index++] = 9;
+            }
+            if (index != 9) {
+                DAT_00833A60[index] = 0;
+            }
+            work[0] = 2;
+        }
+        break;
+    case 2:
+        if (h_campRequestRootMenuTransition(DAT_007cdf50, 7) == 0) {
+            return KWLNTASK_CONTINUE;
+        }
+        if (work[0x5d] == 0) {
+            work[0x5d] = (u32)RwCalloc(1, 0xf8, 0x40000);
+            if (work[0x5d] != 0) {
+                work[0x5d] = (u32)kwlnTaskCreateWithAutoPriority(
+                    task, 0x106f, D_005DBAE0, FUN_00134a10,
+                    FUN_00134d80, (void*)work[0x5d]);
+            }
+            index = 0;
+            for (j = 0; j < 0x1e; j++) {
+                work[8 + j] = (u32)-1;
+                if (FUN_0016e100((s16)j) != 0) {
+                    work[8 + index] = j;
+                    index++;
+                }
+            }
+            work[4] = index;
+            for (i = 0, j = 0; i < work[4]; i++, j = i) {
+                while (j + 1 < work[4]) {
+                    current = (s32)work[8 + i];
+                    next = (s32)work[8 + j + 1];
+                    j++;
+                    key = (s8)D_005E3220[next];
+                    if (key < (s8)D_005E3220[current]) {
+                        work[8 + i] = (u32)next;
+                        work[8 + j] = (u32)current;
+                    }
+                }
+            }
+        }
+        work[0] = 3;
+        break;
+    case 3:
+        if (((u32*)DAT_007cdf50->workData)[4] != 0) {
+            work[0] = 4;
+        }
+        break;
+    case 4:
+        if (((u32*)((KwlnTask*)work[0x5d])->workData)[0] < 3) {
+            return KWLNTASK_CONTINUE;
+        }
+        work[3]++;
+        if (work[3] > 0x1e) {
+            work[0] = 5;
+        }
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 0, (s32)work[3], 0);
+        break;
+    case 5:
+        if ((DAT_007e094e & 0x20) != 0) {
+            FUN_0010a4e0(0, 0, 0, 2);
+            return KWLNTASK_STOP;
+        }
+        if ((DAT_007e0952 & 0x40) == 0) {
+            h_campUpdatePagedCursor(work[4], 5,
+                                    (s32*)&work[2], (s32*)&work[1]);
+        } else if ((s32)work[work[2] + work[1] + 8] != -1) {
+            FUN_0010a4e0(0, 0, 0, 1);
+            DAT_007cdf6c = (u32)-200;
+            FUN_0010a4e0(0, 0, 0, 1);
+            work[0] = 6;
+        }
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 1, 0, 0);
+        break;
+    case 6:
+        if (DAT_00833AD8 != 0) {
+            if (work[0x5b] != 0) {
+                FUN_004d0f00((void*)work[0x5b]);
+                work[0x5b] = 0;
+                DAT_007cdf70 = 0;
+            }
+            if (work[0x5c] != 0) {
+                FUN_004d0f00((void*)work[0x5c]);
+                work[0x5c] = 0;
+                DAT_007cdf74 = 0;
+            }
+            work[0] = 7;
+        }
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 2, 0, 0);
+        break;
+    case 7:
+        work[5] = 0;
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 2, 0, 0);
+        work[0] = 8;
+        break;
+    case 8:
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 2, 0, 0);
+        if (h_campRequestRootMenuTransition(DAT_007cdf50, 8) == 0) {
+            return KWLNTASK_CONTINUE;
+        }
+        FUN_00135460(task);
+        FUN_00135120(task);
+        work[3] = 0;
+        work[0] = 9;
+        break;
+    case 9:
+        if (((u32*)((KwlnTask*)work[0x5d])->workData)[0] < 9) {
+            return KWLNTASK_CONTINUE;
+        }
+        if (((u32*)DAT_007cdf50->workData)[4] != 0) {
+            work[0] = 0x0b;
+        }
+        FUN_00136820(100.0f, 0, (s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], 2, 0, 0);
+        break;
+    case 0x0b:
+        if ((s32)work[3] < 0x14) {
+            work[3]++;
+        }
+        if (work[0x57] != 0) {
+            if (work[0x5a] == 0) {
+                if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x57])) {
+                    s8 cardType;
+                    cardType = (s8)func_0016df30(
+                        (s16)work[work[1] + work[2] + 8]);
+                    work[0x5a] = (u32)FUN_0010c1a0(
+                        NULL, D_005DB998[(s32)cardType], 0, 0, 0, 0, 0, 0,
+                        0, 0, D_005DBA38, 0x2ea);
+                }
+            } else {
+                resourceSize = 0;
+                resource = FUN_0010c3a0((void*)work[0x5a],
+                                        &resourceSize, 0);
+                work[0x5c] = (u32)resource;
+                if (resourceSize == 0) {
+                    DAT_007cdf74 = 0;
+                } else {
+                    work[7] = 0;
+                    work[0x5a] = 0;
+                    DAT_007cdf74 = (u32)resource;
+                    H_Cdvd_Destroy((HCdvd*)work[0x57]);
+                    work[0x57] = 0;
+                }
+            }
+        }
+        if (work[0x56] != 0) {
+            if (work[0x59] == 0) {
+                if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x56])) {
+                    current = (s32)work[work[1] + work[2] + 8];
+                    h_campBuildCardPath(path, current, work[5]);
+                    work[0x59] = (u32)FUN_0010c1a0(
+                        NULL, path, 0, 0, 0, 0, 0, 0,
+                        0, 0, D_005DBA38, 0x313);
+                }
+            } else {
+                resourceSize = 0;
+                resource = FUN_0010c3a0((void*)work[0x59],
+                                        &resourceSize, 0);
+                work[0x5b] = (u32)resource;
+                if (resourceSize == 0) {
+                    DAT_007cdf70 = 0;
+                } else {
+                    work[6] = 0;
+                    work[0x59] = 0;
+                    DAT_007cdf70 = (u32)resource;
+                    H_Cdvd_Destroy((HCdvd*)work[0x56]);
+                    work[0x56] = 0;
+                }
+            }
+        }
+
+        index = (s32)work[1] + (s32)work[2];
+        current = (s32)work[8 + index];
+        available = 0;
+        if (current == 0) {
+            for (i = 0; i < 9 && DAT_00833A60[i] != 0; i++) {
+                available++;
+            }
+        } else if (current == 0x1d) {
+            for (i = 0; i < 8 && DAT_00833A60[i] != 0; i++) {
+                available++;
+            }
+        } else {
+            for (i = 0; i < 3 && D_005DBB00[current * 3 + i] != 0; i++) {
+                available++;
+            }
+        }
+
+        if ((DAT_007e0952 & 4) == 0) {
+            if ((DAT_007e0952 & 8) == 0) {
+                if ((DAT_007e0952 & 0x1000) == 0 &&
+                    (DAT_007e095a & 0x1000) == 0) {
+                    if ((DAT_007e0952 & 0x4000) == 0 &&
+                        (DAT_007e095a & 0x4000) == 0) {
+                        if ((DAT_007e094e & 0x20) != 0) {
+                            FUN_0010a4e0(0, 0, 0, 2);
+                            work[0] = 2;
+                        } else if ((s32)work[5] < available - 1) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                            work[5]++;
+                            FUN_00135120(task);
+                        }
+                    } else if (work[5] != 0) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        work[5]--;
+                        FUN_00135120(task);
+                    }
+                }
+            } else {
+                if ((s32)work[4] < 6) {
+                    current = (s32)work[1];
+                    work[1] = (u32)(current + 1);
+                    if (current + 1 == (s32)work[4]) {
+                        work[2] = 0;
+                        work[1] = 0;
+                        if (work[4] != 1) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                        }
+                    }
+                } else {
+                    FUN_0010a4e0(0, 0, 0, 0);
+                    current = (s32)work[1];
+                    if (current == 3) {
+                        if ((s32)work[2] + 5 < (s32)work[4]) {
+                            work[2]++;
+                        } else {
+                            work[1] = 4;
+                        }
+                    } else if (current == 4) {
+                        work[2] = 0;
+                        work[1] = 0;
+                    } else {
+                        work[1] = (u32)(current + 1);
+                    }
+                }
+                if (index != (s32)work[1] + (s32)work[2]) {
+                    FUN_0010a4e0(0, 0, 0, 0);
+                    work[5] = 0;
+                    FUN_00135460(task);
+                    FUN_00135120(task);
+                    work[3] = 0;
+                }
+            }
+        } else {
+            current = (s32)work[1];
+            if (current == 1) {
+                if (work[2] == 0) {
+                    work[1]--;
+                } else {
+                    work[2]--;
+                }
+            } else if (current == 0) {
+                if ((s32)work[4] < 5) {
+                    work[2] = 0;
+                    work[1] = work[4] - 1;
+                } else {
+                    work[1] = 4;
+                    work[2] = work[4] - 5;
+                }
+            } else {
+                work[1]--;
+            }
+            if (index != (s32)work[1] + (s32)work[2]) {
+                FUN_0010a4e0(0, 0, 0, 0);
+                work[5] = 0;
+                FUN_00135460(task);
+                FUN_00135120(task);
+                work[3] = 0;
+            }
+        }
+
+        FUN_00138e80(100.0f, 0, (const s32*)&work[8], (s32)work[4],
+                     (s32)work[2], (s32)work[1], (s32)work[5], 0,
+                     (s32)work[3], 0, 0);
+        if ((s32)work[3] > 9 && (s32)work[6] < 10) {
+            work[6]++;
+        }
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+
+/* ---- Camp slice continuation ---- */
+
+#include "Utils.h"
+#include "Camp/h_camp.h"
+#include "Kernel/Kwln/kwlnTask.h"
+#include "h_cdvd.h"
+
+/* Camp social-card carousel helpers.  The retail code uses packed f32 pairs
+ * and a shared sprite queue; these layouts expose only the fields touched by
+ * this module while keeping the asynchronous resource ownership explicit. */
+typedef union CampCarouselPackedPosition
+{
+    struct { f32 x; f32 y; } value;
+    u64 packed;
+} CampCarouselPackedPosition;
+
+typedef struct CampCardWork
+{
+    u8 opaque[0x150];
+    void* iconResource;
+    void* cardResources[2];
+    void* archive;
+    u8 reserved[0x1a0 - 0x15c];
+} CampCardWork;
+
+typedef struct CampCardSprite
+{
+    u8 opaque00[0x10];
+    f32 x;
+    f32 y;
+    u8 opaque18[0x10];
+    u16 frame;
+    u16 scale;
+    f32 spriteScale;
+    u8 alpha;
+} CampCardSprite;
+
+extern void* (*DAT_00960184)(u32 count, u32 size, u32 heap);
+extern void (*jtbl_0096017C)(void* work);
+extern void* DAT_00833B40[0x0b];
+extern void* DAT_00833B48;
+extern void* DAT_00833A50;
+extern void* DAT_00833A80[];
+extern s16 DAT_00833A60[];
+extern s32 DAT_007cdf9c;
+extern u32 DAT_007cdf70;
+extern u32 DAT_007cdf74;
+extern u32 DAT_007cdf6c;
+extern u32 DAT_00833AD8;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e095a;
+extern s32 iGpffffb280;
+extern s32 iGpffffb27c;
+extern s32 iGpffffb2a0;
+extern s32 iGpffffb2a8;
+extern s32 iGpffffb284;
+extern const s8 DAT_005E3220[];
+extern const char* D_005D80E4[];
+extern const u16 D_005DBB00[];
+extern const s16 D_005D7004[];
+extern const s16 D_005D7006[];
+extern const s16 D_005D6FEE[];
+extern const s16 D_005D72AA[];
+extern char gp0xffff897c[];
+
+extern void* FUN_001158B0(void* owner, void* resource, s32 frame);
+extern void FUN_001127D0(void* sprite, s32 enabled);
+extern void FUN_00115980(void* sprite);
+extern void FUN_001159F0();
+extern void FUN_00115BC0();
+extern void FUN_00115AD0();
+extern void FUN_001140D0();
+extern void FUN_00114E70();
+extern void FUN_003B2F90();
+extern void FUN_003C7E20();
+extern void FUN_003C7E50();
+extern void FUN_003C7DD0(s32 slot);
+extern void FUN_001120A0(s32 font);
+extern void FUN_005225A8();
+extern void FUN_00523AC8();
+extern s32 FUN_0016DBA0(s16 id);
+extern void* FUN_0016E100(s16 id);
+extern s32 FUN_0016F190(s32 id);
+extern void* FUN_00172160(s32 id);
+extern void* FUN_001717C0(s32 id);
+extern s16 FUN_001775A0();
+extern void* FUN_00194B20();
+extern void* FUN_00194B80();
+extern void* FUN_00100D80();
+extern void FUN_00100EC0();
+extern void* FUN_001016B0();
+extern void* FUN_00102100();
+extern void* FUN_00112420();
+extern void FUN_001124B0();
+extern s32 FUN_0011E380();
+extern s32 FUN_0011ABD0();
+extern void FUN_0010A4E0();
+extern s32 FUN_0016DF30(s16 id);
+extern s16 FUN_0016DD60(s32 slot);
+extern s32 FUN_001C7CE0(s16 id);
+extern s64 FUN_0017BC20();
+extern s64 FUN_0017B860();
+extern KwlnTask* FUN_001355C0(KwlnTask* task);
+extern void FUN_00134D80(KwlnTask* task);
+extern void FUN_00133C40(KwlnTask* task);
+extern void FUN_00133D00(KwlnTask* task);
+
+extern void func_004d0f00(void* resource);
+extern void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha);
+extern void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha, s32 frame);
+extern void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha);
+extern void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
+extern void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
+extern void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count, s32 offset, s32 selected, s32 frame);
+
+static CampCarouselPackedPosition campCarouselUnpackPosition(u64 packed)
+{
+    CampCarouselPackedPosition p;
+    p.packed = packed;
+    return p;
+}
+
+static u64 campCarouselPackPosition(f32 x, f32 y)
+{
+    CampCarouselPackedPosition p;
+    p.value.x = x;
+    p.value.y = y;
+    return p.packed;
+}
+
+static CampCardSprite* campQueueCardSprite(void* resource, s32 frame,
+                                             f32 scale, f32 x, f32 y, u8 alpha)
+{
+    CampCardSprite* sprite;
+
+    sprite = (CampCardSprite*)FUN_001158B0(NULL, resource, frame);
+    if (sprite == NULL) {
+        return NULL;
+    }
+    sprite->spriteScale = scale;
+    sprite->x = x;
+    sprite->y = y;
+    sprite->alpha = alpha;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+    return sprite;
+}
+
+static void campDrawCardSprite(void* resource, s32 frame, f32 scale,
+                               f32 x, f32 y, s32 alpha)
+{
+    FUN_001159f0(NULL, resource, frame, (u32)alpha, x, y, scale);
+}
+
+static void campDrawCardText(f32 scale, f32 x, f32 y, u32 color,
+                             s32 font, const char* text)
+{
+    (void)scale;
+    FUN_003B2F90(100.0f, (s32)x, (s32)y, color, font, 1, text, 0x10, -1);
+}
+
+// FUN_001365B0 NONMATCHING
+void FUN_001365b0(KwlnTask* task)
+{
+    u8* work;
+    s32 i;
+
+    work = (u8*)task->workData;
+    DAT_007cdf70 = 0;
+    DAT_007cdf74 = 0;
+    for (i = 0; i < 2; i++) {
+        u8* slot = work + i * 4;
+        void* pending = *(void**)(slot + 0x164);
+        void* request = *(void**)(slot + 0x158);
+        if (pending != NULL) {
+            void* owner = DAT_00960184(1, 8, 0x40000);
+            if (owner != NULL && FUN_00194B20(NULL, "camp_resource_task", 0x18bf,
+                                               FUN_00133C40, FUN_00133D00, owner) != NULL) {
+                ((void**)owner)[0] = pending;
+                ((void**)owner)[1] = request;
+            }
+            *(void**)(slot + 0x164) = NULL;
+            *(void**)(slot + 0x158) = NULL;
+        } else {
+            if (request != NULL) {
+                H_Cdvd_Destroy((HCdvd*)request);
+                *(void**)(slot + 0x158) = NULL;
+            }
+            if (*(void**)(slot + 0x16c) != NULL) {
+                func_004d0f00(*(void**)(slot + 0x16c));
+                *(void**)(slot + 0x16c) = NULL;
+            }
+        }
+    }
+    if (*(void**)(work + 0x150) != NULL) {
+        H_Cdvd_Destroy(*(HCdvd**)(work + 0x150));
+        *(void**)(work + 0x150) = NULL;
+    }
+    FUN_003C7DD0(0x0b);
+    jtbl_0096017C(work);
+}
+
+// FUN_00136750 NONMATCHING
+KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
+{
+    void* work;
+    KwlnTask* task;
+
+    work = DAT_00960184(1, 0x1a0, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampCommuRoot", priority,
+                          (void* (*)(KwlnTask*))FUN_001355C0,
+                          (void (*)(KwlnTask*))FUN_001365b0, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    *(void**)((u8*)work + 0x150) = H_Cdvd_Request("camp_comu.pak", 0);
+    return task;
+}
+
+// FUN_00136820 NONMATCHING
+void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
+                  s32 offset, s32 selected, s32 mode, s32 frame, s32 extra)
+{
+    (void)extra;
+    if (mode == 0) {
+        FUN_00137580(alpha, position, entries, count, offset, selected, frame);
+    } else if (mode == 1) {
+        FUN_001380e0(alpha, position, entries, count, offset, selected, frame);
+    } else if (mode == 2) {
+        FUN_001387b0(alpha, position, entries, count, offset, selected, frame);
+    }
+}
+
+// FUN_001368A0 NONMATCHING
+void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
+{
+    CampCarouselPackedPosition p;
+    CampCardSprite* sprite;
+
+    p = campCarouselUnpackPosition(position);
+    sprite = campQueueCardSprite(DAT_00833B40, 1, alpha,
+                                 p.value.x + 218.0f,
+                                 p.value.y + 20.0f + (f32)DAT_007cdf9c,
+                                 drawAlpha);
+    if (sprite != NULL) {
+        campQueueCardSprite(DAT_00833B40, 1, alpha,
+                            p.value.x + 218.0f,
+                            p.value.y + 1126.0f + (f32)DAT_007cdf9c,
+                            drawAlpha);
+    }
+    DAT_007cdf9c--;
+    if (DAT_007cdf9c < -0x452) {
+        DAT_007cdf9c += 0x452;
+    }
+}
+
+// FUN_00136A10 NONMATCHING
+void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
+{
+    CampCarouselPackedPosition p;
+    s32 kind;
+    s32 glyphCount;
+    s32 i;
+    u32 color;
+    char text[0x100];
+    const char* label;
+
+    p = campCarouselUnpackPosition(position);
+    kind = FUN_0016DBA0((s16)id);
+    color = (0xffU - (u32)textAlpha) | 0xffffff00U;
+    label = D_005D80E4[id * 10 + kind];
+    FUN_00523AC8(text, gp0xffff897c, label);
+    if (selected == 0) {
+        campDrawCardText(alpha, p.value.x + 173.0f, p.value.y + 53.0f,
+                         color, 10, text);
+    } else {
+        campDrawCardText(alpha, p.value.x + 173.0f, p.value.y + 53.0f,
+                         color, 6, text);
+    }
+    if (FUN_00172160(id) == NULL && FUN_001717C0(id) == NULL) {
+        campDrawCardSprite(DAT_00833B40, 0, alpha,
+                           p.value.x + 165.0f, p.value.y + 34.0f, textAlpha);
+        glyphCount = FUN_0016DBA0((s16)id);
+        for (i = 0; i < glyphCount; i++) {
+            campDrawCardSprite(DAT_00833B40, i + 1, alpha,
+                               p.value.x + 174.0f + i * 17.0f,
+                               p.value.y + 71.0f, textAlpha);
+        }
+    } else {
+        campDrawCardSprite(DAT_00833B40, 0, alpha,
+                           p.value.x + 165.0f, p.value.y + 34.0f, textAlpha);
+    }
+}
+
+/* Draw the common five-card carousel frame used by all three modes. */
+static void campDrawCarousel(f32 alpha, u64 position, const s32* entries,
+                             s32 count, s32 offset, s32 selected,
+                             s32 frame, u8 finalAlpha)
+{
+    CampCarouselPackedPosition p;
+    s32 i;
+    s32 visible;
+    s32 index;
+    s32 id;
+    s32 fade;
+
+    p = campCarouselUnpackPosition(position);
+    campDrawCardSprite(DAT_00833B48, 0, alpha, p.value.x, p.value.y, finalAlpha);
+    for (i = 0; i < 5; i++) {
+        index = offset + i;
+        if (index >= count) {
+            break;
+        }
+        id = entries[index];
+        visible = frame - i * 3;
+        if (visible < 0) {
+            continue;
+        }
+        fade = visible < 8 ? ((8 - visible) * 0xff) / 8 : 0;
+        if (visible < 8) {
+            fade = 0xff - fade;
+        } else {
+            fade = 0xff;
+        }
+        campDrawCardSprite(DAT_00833B48, 0xd, alpha,
+                           p.value.x + 73.0f + i * 64.0f,
+                           p.value.y + 49.0f + i * 64.0f, fade);
+        FUN_00136a10(alpha, campCarouselPackPosition(p.value.x + i * 64.0f,
+                                             p.value.y + i * 64.0f), id,
+                     i == selected, fade);
+        FUN_00137300(alpha, campCarouselPackPosition(p.value.x + i * 64.0f,
+                                              p.value.y + i * 64.0f), id,
+                     i == selected, fade, 0);
+    }
+    if (count < 10) {
+        FUN_001368a0(alpha, position, (u8)((10 - count) * 0xff / 10));
+    }
+}
+
+// FUN_00137300 NONMATCHING
+void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
+                  s32 textAlpha, s32 frame)
+{
+    CampCarouselPackedPosition p;
+    void* resource;
+    s32 kind;
+    u32 color;
+
+    (void)selected;
+    (void)frame;
+    p = campCarouselUnpackPosition(position);
+    kind = (u8)DAT_005E3220[id] - 1;
+    resource = DAT_00833A80[kind];
+    if (resource == NULL) {
+        return;
+    }
+    color = (0xffU - (u32)textAlpha) | 0xffffff00U;
+    if (FUN_001717C0(id) == NULL) {
+        FUN_001140D0(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
+                     color, 0x40, 0x40, resource);
+    } else {
+        FUN_00114E70(alpha, p.value.x + 24.0f, p.value.y + 23.0f,
+                     1.0f, 1.0f, 2, color, 0x40, 0x40, resource);
+    }
+    if (FUN_00172160(id) != NULL || FUN_001717C0(id) != NULL ||
+        FUN_0016DBA0((s16)id) == '\n') {
+        campDrawCardSprite(DAT_00833B40, kind + 1, alpha,
+                           p.value.x + 10.0f, p.value.y + 5.0f, textAlpha);
+    }
+}
+
+// FUN_00137580 NONMATCHING
+void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
+                  s32 offset, s32 selected, s32 frame)
+{
+    campDrawCarousel(alpha, position, entries, count, offset, selected,
+                     frame, frame < 10 ? (u8)((10 - frame) * 0xff / 10) : 0);
+}
+
+// FUN_001380E0 NONMATCHING
+void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
+                  s32 offset, s32 selected, s32 frame)
+{
+    campDrawCarousel(alpha, position, entries, count, offset, selected,
+                     frame, (u8)frame);
+    campDrawCardSprite(DAT_00833B40, 0, alpha, 1040.0f, -520.0f, 0);
+}
+
+// FUN_001387B0 NONMATCHING
+void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
+                  s32 offset, s32 selected, s32 frame)
+{
+    campDrawCarousel(alpha, position, entries, count, offset, selected,
+                     frame, (u8)frame);
+    campDrawCardSprite(DAT_00833B40, 0, alpha, 1040.0f, -520.0f, 0);
+    campDrawCardSprite(DAT_00833B48, 1, alpha, 528.0f, 415.0f, 0);
+}
+
+extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
+                         s32 count, s32 offset, s32 selected, s64 frame,
+                         s64 transition);
+extern void FUN_0013AFD0(f32 alpha, u64 position, const s32* entries, u64 unused,
+                         s32 count, s32 offset, u64 transition);
+
+// FUN_00138E80 NONMATCHING
+void FUN_00138E80(f32 alpha, u64 position, const s32* entries, u64 unused,
+                  s32 count, s32 offset, s32 selected, s32 mode,
+                  s64 frame, s64 transition, s64 extra)
+{
+    if (mode == 1) {
+        FUN_0013AFD0(alpha, position, entries, unused, count, offset,
+                     transition);
+    } else if (mode == 0) {
+        FUN_00139FC0(alpha, position, entries, unused, count, offset,
+                     selected, frame, transition);
+    }
+    (void)extra;
+}
+
+// FUN_00138EE0 NONMATCHING
+void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused)
+{
+    CampCarouselPackedPosition p;
+    s32 kind;
+
+    p = campCarouselUnpackPosition(position);
+    kind = FUN_0016DBA0((s16)id);
+    FUN_00115BC0(p.value.x + 24.0f, p.value.y + 37.0f, alpha);
+    FUN_00115BC0(p.value.x + 24.0f, p.value.y + 169.0f, alpha);
+    FUN_00115BC0(p.value.x + 34.0f, p.value.y + 18.0f, alpha);
+    FUN_00115BC0(p.value.x + 34.0f, p.value.y + 150.0f, alpha);
+    if (kind == '\n') {
+        FUN_001159F0(p.value.x + 51.0f, p.value.y + 23.0f, alpha);
+    } else {
+        FUN_001159F0(p.value.x + 42.0f, p.value.y + 23.0f, alpha);
+        FUN_001120A0(1);
+        FUN_001159F0(p.value.x + 105.0f, p.value.y + 24.0f, alpha);
+    }
+}
+
+// FUN_001392D0 NONMATCHING
+void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha)
+{
+    CampCarouselPackedPosition p;
+    u32 color;
+
+    iGpffffb2a8++;
+    if (iGpffffb2a8 > 0x13) {
+        iGpffffb2a8 = 0;
+    }
+    if (iGpffffb284 != 0) {
+        color = (0xffU - (u32)textAlpha) | 0xffffff00U;
+        if (FUN_00172160((s32)resource) == NULL && FUN_001717C0((s32)resource) == NULL) {
+            FUN_00114E70(alpha, campCarouselUnpackPosition(position).value.x + 28.0f,
+                         campCarouselUnpackPosition(position).value.y + 43.0f,
+                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
+        } else {
+            p = campCarouselUnpackPosition(position);
+            FUN_00114E70(alpha, p.value.x + 28.0f, p.value.y + 43.0f,
+                         1.0f, 1.0f, 0, color, 0x62, 0x7e, iGpffffb284);
+            FUN_001159F0(p.value.x + 15.0f, p.value.y + 33.0f, alpha);
+            FUN_001159F0(p.value.x + 26.0f, p.value.y + 148.0f, alpha);
+        }
+    }
+}
+
+// FUN_00139660 NONMATCHING
+void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected,
+                  s32 textAlpha)
+{
+    CampCarouselPackedPosition p;
+    s32 maxEntries;
+    s32 i;
+    s32 icon;
+    s16 entryId;
+    char text[0x100];
+    u32 color;
+
+    p = campCarouselUnpackPosition(position);
+    color = (0xffU - (u32)textAlpha) | 0xffffff00U;
+    if (id == 0) {
+        maxEntries = 9;
+        for (i = 0; i < maxEntries && DAT_00833A60[i] != 0; i++) {
+            entryId = DAT_00833A60[i];
+            FUN_00523AC8(text, gp0xffff897c, FUN_001775A0(entryId));
+            campDrawCardSprite(DAT_00833B40, 0, alpha,
+                               p.value.x + 35.0f,
+                               p.value.y + 196.0f + i * 24.0f, textAlpha);
+            campDrawCardText(alpha, p.value.x + 56.0f,
+                             p.value.y + 194.0f + i * 24.0f,
+                             color, i == selected ? 6 : 10, text);
+        }
+    } else if (id == 0x1d) {
+        for (i = 0; i < 8 && DAT_00833A60[i] != 0; i++) {
+            entryId = DAT_00833A60[i];
+            FUN_00523AC8(text, gp0xffff897c, FUN_001775A0(entryId));
+            campDrawCardText(alpha, p.value.x + 56.0f,
+                             p.value.y + 194.0f + i * 24.0f,
+                             color, i == selected ? 6 : 10, text);
+        }
+    } else {
+        for (i = 0; i < 3; i++) {
+            entryId = D_005DBB00[id * 3 + i];
+            if (entryId == 0) {
+                break;
+            }
+            icon = FUN_001775A0(entryId);
+            FUN_00523AC8(text, gp0xffff897c, icon);
+            campDrawCardText(alpha, p.value.x + 56.0f,
+                             p.value.y + 194.0f + i * 24.0f,
+                             color, i == selected ? 6 : 10, text);
+        }
+    }
+}
+
+
+/* ---- Camp slice continuation ---- */
+
+#include "Utils.h"
+#include "rw/rwcore.h"
+#include "rw/rwplcore.h"
+
+/* The six routines below are the Camp carousel renderer and its input/state
+ * helpers.  Their retail call graph is intentionally kept explicit: the
+ * renderer is shared by the normal and alternate carousel paths, while the
+ * late routines own the cursor texture and party-selection transitions. */
+
+typedef struct CampPackedPosition
+{
+    f32 x;
+    f32 y;
+} CampPackedPosition;
+
+typedef struct CampSpriteRecord
+{
+    u8 reserved00[0x10];
+    f32 x;
+    f32 y;
+    u8 alpha;
+    u8 reserved19[0x13];
+    f32 spriteScale;
+} CampSpriteRecord;
+
+static f32 campPackedX(u64 value)
+{
+    CampPackedPosition position;
+    *(u64*)&position = value;
+    return position.x;
+}
+
+static f32 campPackedY(u64 value)
+{
+    CampPackedPosition position;
+    *(u64*)&position = value;
+    return position.y;
+}
+
+static u64 campPackPosition(f32 x, f32 y)
+{
+    CampPackedPosition position;
+    position.x = x;
+    position.y = y;
+    return *(u64*)&position;
+}
+
+extern void* kwlnGetMainCamera(void);
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
+extern f32 D_00960088;
+
+extern void FUN_00139DC0(f32 param_1);
+extern void FUN_001368A0();
+extern void FUN_00138EE0(f32 alpha, u64 position, s32 id, s32 unused);
+extern void FUN_001392D0(f32 alpha, u64 position, s32 resource, s32 textAlpha);
+extern void FUN_00139660(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha);
+extern void FUN_001140D0();
+extern void FUN_001159F0();
+static void campDrawSprite(void* resource, s32 frame, u32 alpha, f32 x, f32 y, f32 scale)
+{
+    FUN_001159F0(NULL, resource, frame, alpha, x, y, scale);
+}
+extern s32 FUN_0016DBA0(s16 id);
+extern void* FUN_00172160(s32 id);
+extern void* FUN_001717C0(s32 id);
+extern void FUN_003B2F90();
+extern void FUN_003C7E20();
+extern void FUN_003C7E50();
+extern void FUN_00523AC8();
+extern s32 sprintf(char* buffer, const char* format, ...);
+
+extern const s8 DAT_005E3220[];
+extern const char* D_005D80E4[];
+extern const s16 D_005D7004[];
+extern const s16 D_005D7006[];
+extern const s16 D_005D6FEE[];
+extern const s16 D_005D72AA[];
+extern const u16 D_005DBB00[];
+extern s16 D_00833A60[];
+extern void* D_00833B44;
+extern void* D_00833B58;
+extern void* D_00833B60;
+extern void* D_00833B64;
+extern void* D_00833B68;
+extern void* D_00833BA4;
+extern char gp0xffff897c[];
+extern s32 iGpffffb280;
+extern s32 iGpffffb27c;
+extern s32 iGpffffb2a0;
+extern void* DAT_00833A50;
+
+extern void* FUN_001158B0();
+extern void FUN_001127D0();
+extern void FUN_00115980();
+extern s64 FUN_0017BC20();
+extern s64 FUN_0017B860();
+extern s16 datGetPartyId(s32 index);
+extern s32 K_FldEvent_IsCharNearHeroBeforeBtl(s16 id);
+
+// FUN_00139DC0 NONMATCHING
+void FUN_00139DC0(f32 param_1)
+{
+    RwIm2DVertex vertices[3];
+    f32 positions[6];
+    f32 recipZ;
+    f32 z;
+    f32* vertex;
+    void* camera;
+    s32 i;
+
+    camera = kwlnGetMainCamera();
+    recipZ = 1.0f / *(f32*)((u8*)camera + 0x80);
+
+    (*D_00960090)(6, 1);
+    (*D_00960090)(7, 2);
+    (*D_00960090)(8, 1);
+    (*D_00960090)(9, 1);
+    (*D_00960090)(0xC, 1);
+    (*D_00960090)(0xB, 6);
+    (*D_00960090)(0xA, 5);
+    (*D_00960090)(2, 4);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    RpSkyRenderStateSet(3, (void*)0x717FB);
+
+    positions[0] = 319.0f;
+    positions[1] = 448.0f;
+    positions[2] = 640.0f;
+    positions[3] = 328.0f;
+    positions[4] = 640.0f;
+    positions[5] = 448.0f;
+    z = D_00960088 - (param_1 - 1.0f);
+    for (i = 0; i < 3; i++)
+    {
+        vertex = (f32*)&vertices[i];
+        vertex[2] = z;
+        vertex[6] = recipZ;
+        vertex[8] = 0.0f;
+        vertex[9] = 0.0f;
+        vertex[10] = 0.0f;
+        vertex[11] = 0.0f;
+        vertex[0] = positions[i * 2];
+        vertex[1] = positions[i * 2 + 1];
+    }
+    (*D_00960090)(1, 0);
+    (*D_009600A0)(rwPRIMTYPETRILIST, vertices, 3);
+}
+
+// FUN_00139FC0 NONMATCHING
+void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
+                  s32 param_5, s32 param_6, s32 param_7, s64 param_8, s64 param_9)
+{
+    CampPackedPosition position;
+    const s32* item;
+    s32 id;
+    s32 i;
+    s32 alpha;
+    s32 textAlpha;
+    s32 mark;
+    s32 socialLevel;
+    s32 levelId;
+    s16 level;
+    u16 reward;
+    void* hasResource;
+    const char* text;
+    char textBuffer[256];
+    f32 x;
+    f32 y;
+    f32 rowY;
+    u64 shiftedPosition;
+    s32 itemOffset;
+
+    (void)param_4;
+    FUN_00139DC0(param_1);
+    FUN_001368A0(param_1, 0, 0);
+
+    position.x = campPackedX(param_2);
+    position.y = campPackedY(param_2);
+    itemOffset = param_5 + param_6;
+    item = param_3 + itemOffset;
+    id = *item;
+
+    if (param_8 > 7)
+    {
+        if ((s32)param_8 - 8 < 5)
+        {
+            i = 5 - ((s32)param_8 - 8);
+            x = (position.x - (f32)((i * 0xDC) / 5)) - 5.0f;
+            y = (f32)((i * 0x32) / 5) + position.y + 10.0f;
+            shiftedPosition = campPackPosition(x, y);
+            FUN_00138EE0(param_1, shiftedPosition, id, 0);
+            x += 5.0f;
+            y -= 10.0f;
+            shiftedPosition = campPackPosition(x, y);
+            FUN_001392D0(param_1, shiftedPosition, DAT_005E3220[id], 0);
+        }
+        else
+        {
+            FUN_00138EE0(param_1, param_2, id, 0);
+            FUN_001392D0(param_1, param_2, DAT_005E3220[id], 0);
+        }
+    }
+
+    if (param_8 > 4)
+    {
+        if ((s32)param_8 - 5 < 5)
+        {
+            alpha = ((5 - ((s32)param_8 - 5)) * 0xFF) / 5;
+        }
+        else
+        {
+            alpha = 0;
+        }
+        FUN_00139660(param_1, param_2, id, param_7, alpha);
+    }
+
+    if (param_9 < 2)
+    {
+        alpha = 0xFF;
+    }
+    else if (param_9 < 7)
+    {
+        alpha = ((7 - (s32)param_9) * 0xFF) / 5;
+    }
+    else
+    {
+        alpha = 0;
+    }
+
+    if (iGpffffb280 != 0)
+    {
+        textAlpha = 0xFF - alpha;
+        if (textAlpha > 0xB2)
+        {
+            textAlpha = 0xB2;
+        }
+        FUN_001140D0(param_1, position.x + 374.0f, position.y + 109.0f, textAlpha, 300, 300);
+    }
+
+    if (param_9 < 5)
+    {
+        alpha = ((5 - (s32)param_9) * 0xFF) / 5;
+    }
+    else
+    {
+        alpha = 0;
+    }
+    id = *item;
+    if (iGpffffb280 != 0)
+    {
+        FUN_001140D0(param_1, position.x + 360.0f, position.y + 114.0f,
+                     (0xFF - alpha) | 0xFFFFFF00, 300, 300);
+        hasResource = FUN_00172160(id);
+        if (hasResource == 0)
+        {
+            hasResource = FUN_001717C0(id);
+            if (hasResource != 0)
+            {
+                campDrawSprite(D_00833B64, 3, (u8)alpha,
+                               position.x + 519.0f, position.y + 135.0f, param_1);
+            }
+        }
+        else
+        {
+            campDrawSprite(D_00833B64, 2, (u8)alpha,
+                           position.x + 519.0f, position.y + 135.0f, param_1);
+        }
+    }
+
+    if (param_8 > 1)
+    {
+        if ((s32)param_8 - 2 < 5)
+        {
+            alpha = ((5 - ((s32)param_8 - 2)) * 0xFF) / 5;
+        }
+        else
+        {
+            alpha = 0;
+        }
+        id = *item;
+        campDrawSprite(D_00833B58, DAT_005E3220[id] - 1, (u8)alpha,
+                       position.x + 140.0f, position.y + 18.0f, param_1);
+        rowY = position.y + 40.0f;
+        campDrawSprite(D_00833B58, 0x2B, (u8)alpha,
+                       position.x + 142.0f, rowY, param_1);
+        campDrawSprite(D_00833B58, 0x2C, (u8)alpha,
+                       position.x + 548.0f, rowY, param_1);
+        campDrawSprite(D_00833B44, DAT_005E3220[id] + 0x31, (u8)alpha,
+                       position.x + 147.0f, position.y + 40.0f, param_1);
+        campDrawSprite(D_00833B58, 0x2D, (u8)alpha,
+                       position.x + 231.0f, position.y + 48.0f, param_1);
+    }
+
+    if (param_8 > 2)
+    {
+        if ((s32)param_8 - 3 < 5)
+        {
+            alpha = ((5 - ((s32)param_8 - 3)) * 0xFF) / 5;
+        }
+        else
+        {
+            alpha = 0;
+        }
+        id = *item;
+        textAlpha = 0xFF - alpha;
+        mark = FUN_0016DBA0((s16)id);
+        text = D_005D80E4[id * 10 + mark];
+        FUN_00523AC8(textBuffer, gp0xffff897c, text);
+        FUN_003B2F90(100.0f, (s32)(position.x - 3.0f), (s32)(position.y + 48.0f),
+                     textAlpha | 0xFFFFFF00, 6, 1, textBuffer, 0x10, -1);
+
+        mark = FUN_0016DBA0((s16)*item);
+        id = *item;
+        if (mark != 0)
+        {
+            hasResource = FUN_001717C0(id);
+            if (hasResource == 0)
+            {
+                hasResource = FUN_00172160(id);
+                if (hasResource == 0)
+                {
+                    FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                                 (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
+                                 1, 10, 7, D_005D6FEE[id * 0x0C + mark]);
+                }
+                else
+                {
+                    FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                                 (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
+                                 1, 10, 7, D_005D7006[id * 0x0C]);
+                }
+            }
+            else
+            {
+                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                             (s32)(position.y + 65.0f), textAlpha | 0xFFFFFF00,
+                             1, 10, 7, D_005D7004[id * 0x0C]);
+            }
+        }
+    }
+
+    if (param_8 > 4)
+    {
+        if ((s32)param_8 - 5 < 5)
+        {
+            alpha = ((5 - ((s32)param_8 - 5)) * 0xFF) / 5;
+        }
+        else
+        {
+            alpha = 0;
+        }
+        rowY = position.y + 415.0f;
+        campDrawSprite(D_00833B68, 0, (u8)alpha,
+                       position.x + 36.0f, rowY, param_1 - 4.0f);
+        campDrawSprite(D_00833B68, 7, (u8)alpha,
+                       position.x + 52.0f, rowY, param_1 - 4.0f);
+        campDrawSprite(D_00833BA4, 3, (u8)alpha,
+                       position.x + 561.0f, rowY, param_1 - 4.0f);
+        campDrawSprite(D_00833BA4, 8, (u8)alpha,
+                       position.x + 427.0f, rowY, param_1 - 4.0f);
+        id = *item;
+        if (id == 0 || id == 0x1D)
+        {
+            mark = FUN_0016DBA0((s16)id);
+            level = D_00833A60[param_7];
+            rowY = position.y + 334.0f;
+            campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
+                           position.x + 272.0f, rowY, param_1 - 2.0f);
+            campDrawSprite(D_00833B58, 0x20, (u8)alpha,
+                           position.x + 607.0f, rowY, param_1 - 2.0f);
+            if (mark != 0)
+            {
+                FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                             (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
+                             1, 10, 0, 7, D_005D72AA[level * 10 + mark]);
+            }
+        }
+        else
+        {
+            mark = FUN_0016DBA0((s16)id);
+            reward = D_005DBB00[param_7 + id * 3];
+            rowY = position.y + 334.0f;
+            campDrawSprite(D_00833B58, 0x1F, (u8)alpha,
+                           position.x + 272.0f, rowY, param_1 - 2.0f);
+            campDrawSprite(D_00833B58, 0x20, (u8)alpha,
+                           position.x + 607.0f, rowY, param_1 - 2.0f);
+            if (mark != 0)
+            {
+                FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                             (s32)(position.y + 333.0f), (0xFF - alpha) | 0xFFFFFF00,
+                             1, 10, 0, 7, D_005D72AA[reward * 10 + mark]);
+            }
+        }
+    }
+
+    if (param_8 < 5)
+    {
+        alpha = ((5 - (s32)param_8) * 0xFF) / 5;
+    }
+    else
+    {
+        alpha = 0;
+    }
+    iGpffffb27c++;
+    if (iGpffffb27c > 0x1C0)
+    {
+        iGpffffb27c = 0;
+    }
+    x = position.x + 576.0f;
+    shiftedPosition = campPackPosition(x, position.y + 199.0f + (f32)iGpffffb27c);
+    campDrawSprite(D_00833B60, 0, (u8)alpha,
+                   campPackedX(shiftedPosition), campPackedY(shiftedPosition),
+                   param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 1, (u8)alpha,
+                   x, position.y + (f32)iGpffffb27c, param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 0, (u8)alpha,
+                   x, position.y + 199.0f + (f32)iGpffffb27c - 448.0f,
+                   param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 1, (u8)alpha,
+                   x, position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
+}
+
+// FUN_0013AFD0 NONMATCHING
+void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
+                  s32 param_5, s32 param_6, u64 param_7)
+{
+    CampPackedPosition position;
+    const s32* item;
+    s32 id;
+    s32 alpha;
+    s32 mark;
+    void* hasResource;
+    s16 level;
+    u16 reward;
+    s32 socialLevel;
+    char textBuffer[256];
+    const char* text;
+    f32 rowY;
+    f32 x;
+
+    (void)param_4;
+    FUN_00139DC0(param_1);
+    FUN_001368A0(param_1, 0, 0);
+
+    position.x = campPackedX(param_2);
+    position.y = campPackedY(param_2);
+    item = param_3 + param_5 + param_6;
+    id = *item;
+    FUN_00138EE0(param_1, param_2, DAT_005E3220[id], 0);
+    FUN_001392D0(param_1, param_2, DAT_005E3220[id], 0);
+    FUN_00139660(param_1, param_2, id, (s32)param_7, 0);
+    FUN_00139DC0(param_1);
+
+    if (iGpffffb280 != 0)
+    {
+        FUN_001140D0(param_1, position.x + 374.0f, position.y + 109.0f, 0xB2, 300, 300);
+    }
+    id = *item;
+    if (iGpffffb280 != 0)
+    {
+        FUN_001140D0(param_1, position.x + 360.0f, position.y + 114.0f,
+                     0xFFFFFF00, 300, 300);
+        hasResource = FUN_00172160(id);
+        if (hasResource == 0)
+        {
+            hasResource = FUN_001717C0(id);
+            if (hasResource != 0)
+            {
+                campDrawSprite(D_00833B64, 3, 0,
+                               position.x + 519.0f, position.y + 135.0f, param_1);
+            }
+        }
+        else
+        {
+            campDrawSprite(D_00833B64, 2, 0,
+                           position.x + 519.0f, position.y + 135.0f, param_1);
+        }
+    }
+
+    campDrawSprite(D_00833B58, DAT_005E3220[id] - 1, 0,
+                   position.x + 140.0f, position.y + 18.0f, param_1);
+    rowY = position.y + 40.0f;
+    campDrawSprite(D_00833B58, 0x2B, 0,
+                   position.x + 142.0f, rowY, param_1);
+    campDrawSprite(D_00833B58, 0x2C, 0,
+                   position.x + 548.0f, rowY, param_1);
+    campDrawSprite(D_00833B44, DAT_005E3220[id] + 0x31, 0,
+                   position.x + 147.0f, position.y + 40.0f, param_1);
+    campDrawSprite(D_00833B58, 0x2D, 0,
+                   position.x + 231.0f, position.y + 48.0f, param_1);
+
+    id = *item;
+    mark = FUN_0016DBA0((s16)id);
+    text = D_005D80E4[id * 10 + mark];
+    FUN_00523AC8(textBuffer, gp0xffff897c, text);
+    FUN_003B2F90(100.0f, (s32)(position.x - 3.0f), (s32)(position.y + 48.0f),
+                 0xFFFFFFFF, 6, 1, textBuffer, 0x10, -1);
+
+    rowY = position.y + 415.0f;
+    campDrawSprite(D_00833B68, 0, 0,
+                   position.x + 36.0f, rowY, param_1 - 4.0f);
+    campDrawSprite(D_00833B68, 7, 0,
+                   position.x + 52.0f, rowY, param_1 - 4.0f);
+    campDrawSprite(D_00833BA4, 3, 0,
+                   position.x + 561.0f, rowY, param_1 - 4.0f);
+    campDrawSprite(D_00833BA4, 8, 0,
+                   position.x + 427.0f, rowY, param_1 - 4.0f);
+
+    mark = FUN_0016DBA0((s16)*item);
+    id = *item;
+    if (mark != 0)
+    {
+        hasResource = FUN_001717C0(id);
+        if (hasResource == 0)
+        {
+            hasResource = FUN_00172160(id);
+            if (hasResource == 0)
+            {
+                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                             (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
+                             D_005D6FEE[id * 0x0C + mark]);
+            }
+            else
+            {
+                FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                             (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
+                             D_005D7006[id * 0x0C]);
+            }
+        }
+        else
+        {
+            FUN_003C7E20(param_1 - 2.0f, (s32)(position.x + 129.0f),
+                         (s32)(position.y + 65.0f), 0xFFFFFFFF, 1, 10, 7,
+                         D_005D7004[id * 0x0C]);
+        }
+    }
+
+    id = *item;
+    if (id == 0 || id == 0x1D)
+    {
+        mark = FUN_0016DBA0((s16)id);
+        level = D_00833A60[(s32)param_7];
+        rowY = position.y + 334.0f;
+        campDrawSprite(D_00833B58, 0x1F, 0,
+                       position.x + 272.0f, rowY, param_1 - 2.0f);
+        campDrawSprite(D_00833B58, 0x20, 0,
+                       position.x + 607.0f, rowY, param_1 - 2.0f);
+        if (mark != 0)
+        {
+            FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                         (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
+                         D_005D72AA[level * 10 + mark]);
+        }
+    }
+    else
+    {
+        mark = FUN_0016DBA0((s16)id);
+        reward = D_005DBB00[(s32)param_7 + id * 3];
+        rowY = position.y + 334.0f;
+        campDrawSprite(D_00833B58, 0x1F, 0,
+                       position.x + 272.0f, rowY, param_1 - 2.0f);
+        campDrawSprite(D_00833B58, 0x20, 0,
+                       position.x + 607.0f, rowY, param_1 - 2.0f);
+        if (mark != 0)
+        {
+            FUN_003C7E50(param_1 - 2.0f, (s32)(position.x + 285.0f),
+                         (s32)(position.y + 333.0f), 0xFFFFFFFF, 1, 10, 0, 7,
+                         D_005D72AA[reward * 10 + mark]);
+        }
+    }
+
+    iGpffffb27c++;
+    if (iGpffffb27c > 0x1C0)
+    {
+        iGpffffb27c = 0;
+    }
+    x = position.x + 576.0f;
+    campDrawSprite(D_00833B60, 0, (u8)param_7, x,
+                   position.y + 199.0f + (f32)iGpffffb27c, param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 1, (u8)param_7, x,
+                   position.y + (f32)iGpffffb27c, param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 0, (u8)param_7, x,
+                   position.y + 199.0f + (f32)iGpffffb27c - 448.0f,
+                   param_1 - 3.0f);
+    campDrawSprite(D_00833B60, 1, (u8)param_7, x,
+                   position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
+}
+
+// FUN_0013BCB0 NONMATCHING
+const char* FUN_0013BCB0(s32 param_1, s32 param_2)
+{
+    return D_005D80E4[param_1 * 10 + param_2];
+}
+
+// FUN_0013BCE0 NONMATCHING
+void FUN_0013BCE0(u8 param_1)
+{
+    CampSpriteRecord* sprite;
+    f32 position;
+    s32 shifted;
+
+    if (iGpffffb2a0 < -100)
+    {
+        shifted = iGpffffb2a0 + 0x2D0;
+        sprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50, 0x3A);
+        sprite->spriteScale = 104.0f;
+        sprite->x = (f32)shifted;
+        *(u32*)&sprite->y = 0x439A8000;
+        sprite->alpha = param_1;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    }
+
+    position = (f32)iGpffffb2a0;
+    sprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50, 0x3A);
+    sprite->spriteScale = 104.0f;
+    sprite->x = position;
+    *(u32*)&sprite->y = 0x439A8000;
+    sprite->alpha = param_1;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+
+    iGpffffb2a0--;
+    if ((f32)iGpffffb2a0 < -720.0f)
+    {
+        iGpffffb2a0 = (s32)((f32)iGpffffb2a0 + 720.0f);
+    }
+}
+
+// FUN_0013BE50 NONMATCHING
+s32 FUN_0013BE50(s32 param_1, s32 param_2)
+{
+    s32 total;
+    s32 cursor;
+    s32 i;
+    s32 j;
+    s32 count;
+    s32 changed;
+    s16 member;
+    s16 candidate;
+    u16 itemId;
+    u16 partyId;
+    void* item;
+    s64 result;
+
+    total = *(s32*)((u8*)param_1 + 0x970) + *(s32*)((u8*)param_1 + 0x974);
+    itemId = *(u16*)((u8*)param_1 + total * 8 + 0x0C);
+    item = func_00170e90((s16)itemId);
+    changed = 0;
+
+    if (param_2 == -2)
+    {
+        result = FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1);
+        if (result == 0)
+        {
+            changed = 1;
+            FUN_0017B860(1, 1, *(u16*)((u8*)item + 8), 1);
+        }
+        for (i = 0; i < 3; i++)
+        {
+            member = datGetPartyId(i);
+            if (member != 0)
+            {
+                candidate = datGetPartyId(i);
+                if (K_FldEvent_IsCharNearHeroBeforeBtl(candidate) != 0)
+                {
+                    partyId = (u16)datGetPartyId(i);
+                    result = FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1);
+                    if (result == 0)
+                    {
+                        changed = 1;
+                        FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
+                    }
+                }
+            }
+        }
+    }
+    else if (param_2 == 0)
+    {
+        result = FUN_0017BC20(1, 1, *(u16*)((u8*)item + 8), 1);
+        if (result == 0)
+        {
+            changed = 1;
+            FUN_0017B860(1, 1, *(u16*)((u8*)item + 8), 1);
+        }
+    }
+    else
+    {
+        count = 0;
+        for (j = 0; j < 3; j++)
+        {
+            member = datGetPartyId(j);
+            if (member != 0)
+            {
+                count++;
+                if (param_2 == count)
+                {
+                    candidate = datGetPartyId(j);
+                    if (K_FldEvent_IsCharNearHeroBeforeBtl(candidate) != 0)
+                    {
+                        partyId = (u16)datGetPartyId(j);
+                        result = FUN_0017BC20(1, partyId, *(u16*)((u8*)item + 8), 1);
+                        if (result == 0)
+                        {
+                            changed = 1;
+                            FUN_0017B860(1, partyId, *(u16*)((u8*)item + 8), 1);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    if (changed != 0)
+    {
+        cursor = *(s32*)((u8*)param_1 + total * 8 + 0x10);
+        if (cursor == 1)
+        {
+            func_00170860(1, (s16)itemId, 0);
+            for (i = total; i < *(s32*)((u8*)param_1 + 0x96C) - 1; i++)
+            {
+                *(s32*)((u8*)param_1 + i * 8 + 0x0C) =
+                    *(s32*)((u8*)param_1 + (i + 1) * 8 + 0x0C);
+                *(s32*)((u8*)param_1 + i * 8 + 0x10) =
+                    *(s32*)((u8*)param_1 + (i + 1) * 8 + 0x10);
+            }
+            *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x0C) = -1;
+            *(s32*)((u8*)param_1 + *(s32*)((u8*)param_1 + 0x96C) * 8 + 0x10) = 0;
+            count = *(s32*)((u8*)param_1 + 0x96C) - 1;
+            *(s32*)((u8*)param_1 + 0x96C) = count;
+            if (count == 0)
+            {
+                *(s32*)((u8*)param_1 + 0x974) = 0;
+                *(s32*)((u8*)param_1 + 0x970) = 0;
+            }
+            else if (*(s32*)((u8*)param_1 + 0x970) < count)
+            {
+                if (count < 5)
+                {
+                    *(s32*)((u8*)param_1 + 0x974) = 0;
+                }
+                else if (count - 5 < *(s32*)((u8*)param_1 + 0x974))
+                {
+                    *(s32*)((u8*)param_1 + 0x974) = count - 5;
+                }
+            }
+            else
+            {
+                *(s32*)((u8*)param_1 + 0x970) = count - 1;
+                *(s32*)((u8*)param_1 + 0x974) = 0;
+            }
+        }
+        else
+        {
+            *(s32*)((u8*)param_1 + total * 8 + 0x10) = cursor - 1;
+            func_00170860(1, (s16)itemId, *(u16*)((u8*)param_1 + total * 8 + 0x10));
+        }
+    }
+    return changed;
+}

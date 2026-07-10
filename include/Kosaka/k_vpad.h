@@ -10,11 +10,24 @@ typedef struct Model Model;
 // 144 bytes
 typedef struct VPadWork
 {
-    u8 unkData1[0x50];
-    KwlnTask* rotateTask;    // 0x50
-    KwlnTask* collisCtlTask; // 0x54
-    Model* mdl;              // 0x58
-    u8 unkData2[0x34];
+    u32 state;                // 0x00
+    u8 unkData1[0x4c];        // 0x04
+    KwlnTask* rotateTask;     // 0x50
+    KwlnTask* collisCtlTask;  // 0x54
+    Model* mdl;               // 0x58
+    u32 controlMode;          // 0x5c
+    u32 controlFlags;         // 0x60
+    u8 unkData2[0x08];        // 0x64
+    u32 animState;            // 0x6c
+    s16 animId;               // 0x70
+    u16 unk_72;
+    f32 cameraHeading;        // 0x74
+    u32 moveTimer;            // 0x78
+    u32 animDebounce;         // 0x7c
+    u32 stationaryFrames;     // 0x80
+    KwlnTask* cameraTask;     // 0x84
+    KwlnTask* eventTask;      // 0x88
+    u8 unkData3[0x04];        // 0x8c
 } VPadWork;
 
 typedef enum

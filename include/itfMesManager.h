@@ -22,6 +22,6 @@ typedef struct ItfMes
 
 s32 itfMesMngInitialize(BmdHeader* bmdHeader);
 void itfMesMngDestroyHandle(s32 mesHandleIdx);
-void itfMesMngChangeWindowType(s32 mesHandleIdx, u16 type, u32 param_3);
+void itfMesMngChangeWindowType(s32 mesHandleIdx, s32 type, u32 param_3);
 
 #endif

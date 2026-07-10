@@ -1,7 +1,8 @@
+#include "Main/Battle/Cmd/bcm_main.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
-static u8* sBcmWork; // 007ce2e8
+u8* gBcmWork; // 007ce2e8
 
 s32 FUN_0017d2e0();
 
@@ -14,15 +15,15 @@ u32 bcm00207930(u16 param_1)
 // FUN_00207a10
 void bcm00207a10(void)
 {
-    K_ASSERT(sBcmWork != NULL, 0x164);
-    *(u32*)(sBcmWork + 0x77a0) |= 2;
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) |= 2;
 }
 
 // FUN_00207bf0
 void bcm00207bf0(void)
 {
-    K_ASSERT(sBcmWork != NULL, 0x164);
-    *(u32*)(sBcmWork + 0x77a0) &= ~1;
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    *(u32*)(gBcmWork + 0x77a0) &= ~1;
 }
 
 void FUN_00208360();
@@ -41,8 +42,8 @@ void bcm00203360(void)
     u32* puVar1;
     int iVar2;
 
-    K_ASSERT(sBcmWork != NULL, 0x164);
-    puVar1 = (u32*)sBcmWork;
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    puVar1 = (u32*)gBcmWork;
     for (iVar2 = 0; iVar2 < (int)puVar1[0x97]; iVar2++) {
         FUN_003b0170(*(u32*)((int)puVar1 + iVar2 * 4 + 0x8c));
     }

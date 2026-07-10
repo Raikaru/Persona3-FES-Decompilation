@@ -65,9 +65,12 @@ void opResUpdate();
 void opResRequestTitle();
 u32 opResCheckRequestTitle();
 RwRaster* opResGetTitleRaster(u32 id);
+void* opResGetTitleSprite(u32 id);
 
 void opResRequestLogo();
 u32 opResCheckRequestLogo();
 RwRaster* opResGetLogoRaster(u32 id);
+void opResDestroyTitle(void);
+void opResDestroyLogo(void);
 
 #endif

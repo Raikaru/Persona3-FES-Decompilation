@@ -27,7 +27,7 @@ typedef struct FldRootWork
 } FldRootWork;
 
 void K_Field_Init();
-Field* K_Field_Get();
+Field* K_Field_Get(void);
 
 void K_Field_SetShouldShutdown(KwlnTask* fldRootTask, u32 shouldShutdown);
 u16 K_Field_GetMajorId(KwlnTask* fldRootTask);

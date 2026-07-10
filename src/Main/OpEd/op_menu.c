@@ -1,11 +1,161 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "Main/OpEd/op_res.h"
+
+extern void func_0021eae0(void* destination, const f32* layout);
+extern void func_0021eac0(s32 mode, void* destination);
+extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d890(void* destination, const f32* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021d3b0(void* destination, void* source);
+extern void* func_0021cca0(void* resource, u32 index);
+extern void* func_0021cce0(void* frame);
+extern void func_004d7f60(s32 state, u32 value);
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern f32 func_0052e878(f32 value);
+extern f32 func_0052e6d8(f32 value);
+extern void* func_00198590(void);
+extern f32 fGpffff8248;
+extern f32 fGpffff80c0;
+extern f32 fGpffff82fc;
+extern f32 fGpffff819c;
+extern f32 fGpffff8478;
+extern f32 fGpffff847c;
+extern f32 fGpffff8480;
+extern f32 fGpffff809c;
+extern f32 fGpffff83a4;
 
 static u32* sOpMenu; // DAT_007ce3b4 / puGpffffb6c4
+static inline u8* opMenuData(u32 offset)
+{
+    return (u8*)sOpMenu + offset;
+}
 
-void FUN_0026da90();
-void FUN_0026db30();
-void FUN_0026dc20();
+static inline u32 opMenuGet(u32 offset)
+{
+    return *(u32*)opMenuData(offset);
+}
+
+static inline s32 opMenuGetS(u32 offset)
+{
+    return *(s32*)opMenuData(offset);
+}
+
+static inline void opMenuPut(u32 offset, u32 value)
+{
+    *(u32*)opMenuData(offset) = value;
+}
+
+static inline void opMenuColor(void* quad, f32 alpha)
+{
+    u8 color[4];
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)alpha;
+    func_0021d950(quad, color);
+}
+
+static inline f32 opMenuClamp01(s32 value, s32 begin, s32 end)
+{
+    if (value <= begin)
+        return 0.0f;
+    if (value >= end)
+        return 1.0f;
+    return (f32)(value - begin) / (f32)(end - begin);
+}
+
+static void opMenuSetRect(u32 offset, f32 x, f32 y, f32 width, f32 height)
+{
+    f32 rect[4];
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = width;
+    rect[3] = height;
+    func_0021d8e0(opMenuData(offset), rect);
+}
+
+static void opMenuSetPoly(u32 offset, f32 x, f32 y, f32 width, f32 height,
+                          f32 angle, f32 scaleX, f32 scaleY)
+{
+    f32 poly[8];
+    f32 centerX = width * 0.5f;
+    f32 centerY = height * 0.5f;
+    f32 sine = func_0052e6d8(angle);
+    f32 cosine = func_0052e878(angle);
+    s32 i;
+
+    poly[0] = -centerX;
+    poly[1] = -centerY;
+    poly[2] = centerX;
+    poly[3] = -centerY;
+    poly[4] = centerX;
+    poly[5] = centerY;
+    poly[6] = -centerX;
+    poly[7] = centerY;
+    for (i = 0; i < 4; i++)
+    {
+        f32 px = poly[i * 2] * scaleX;
+        f32 py = poly[i * 2 + 1] * scaleY;
+        poly[i * 2] = px * cosine - py * sine + x + centerX;
+        poly[i * 2 + 1] = px * sine + py * cosine + y + centerY;
+    }
+    func_0021d890(opMenuData(offset), poly);
+}
+
+static void opMenuSetIcon(u32 offset, void* frame, f32 x, f32 y)
+{
+    f32 rect[4];
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0x0c);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    func_0021d8e0(opMenuData(offset), rect);
+}
+
+
+// FUN_0026DA90 NONMATCHING
+void opMenu0026da90(s32 param_1)
+{
+    u32* base;
+    u32* work;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    base = sOpMenu;
+    work = base + param_1 * 0xc4;
+    work[0x2c0] = 8;
+    base[base[0x2be] * 0xc4 + 0x2c1] = 0;
+    base[0x2be] = param_1;
+    work[0x2c0] = 0;
+    work[0x2c1] = 0;
+}
+
+// FUN_0026DB30 NONMATCHING
+void opMenu0026db30(s32 param_1)
+{
+    u8* base;
+    u8* work;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    base = (u8*)sOpMenu;
+    work = base + param_1 * 0x310;
+    *(u32*)(work + 0x1a60) = 8;
+    *(u32*)(base + *(u32*)(base + 0x1a50) * 0x310 + 0x1a64) = 0;
+    *(u32*)(base + 0x1a50) = param_1;
+    *(u32*)(work + 0x1a60) = 0;
+    *(u32*)(work + 0x1a64) = 0;
+}
+ 
+
+
+
+// FUN_0026DC20
+void opMenu0026dc20(void)
+{
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    *sOpMenu &= ~0x20u;
+}
 
 // FUN_0026a230
 void opMenu0026a230(u32* param_1)
@@ -29,9 +179,9 @@ void opMenu0026da10(void)
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
-    FUN_0026da90(0);
-    FUN_0026db30(0);
-    FUN_0026dc20();
+    opMenu0026da90(0);
+    opMenu0026db30(0);
+    opMenu0026dc20();
     *work &= 0xfffffffe;
 }
 
@@ -58,4 +208,458 @@ void opMenu0026dbd0(void)
 {
     K_ASSERT(sOpMenu != NULL, 0x87);
     *sOpMenu |= 0x20;
+}
+
+// FUN_0026A2C0 NONMATCHING
+void opMenu0026a2c0(void)
+{
+    void* sprite;
+    void* frame;
+    f32 alpha;
+    f32 angle;
+    f32 pulse;
+    f32 rect[4];
+    s32 i;
+    s32 count;
+    u32 base;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    sprite = opResGetTitleSprite(0);
+    if ((opMenuGet(0) & 1) == 0)
+        return;
+
+    opMenuPut(0x910, (opMenuGet(0x910) + 1) % 0x514);
+    opMenuPut(0x914, (opMenuGet(0x914) + 1) % 500);
+    opMenuPut(0x918, (opMenuGet(0x918) + 1) % 0x96);
+    opMenuPut(0xae4, (opMenuGet(0xae4) + 1) % 0x96);
+    opMenuPut(0xae0, (opMenuGet(0xae0) + 1) % 0x50);
+    opMenuPut(0xae8, (opMenuGet(0xae8) + 1) % 0x96);
+    opMenuPut(0xaf0, (opMenuGet(0xaf0) + 1) % 0x96);
+    opMenuPut(0xaec, (opMenuGet(0xaec) + 1) % 0x96);
+
+    if (opMenuGetS(0xaf4) < 0x28)
+        opMenuPut(0xaf4, opMenuGet(0xaf4) + 1);
+    else
+        opMenuPut(0, opMenuGet(0) & ~8u);
+    if (opMenuGet(0) & 4)
+    {
+        if (opMenuGetS(0x91c) < 0x50)
+            opMenuPut(0x91c, opMenuGet(0x91c) + 1);
+        else
+            opMenuPut(0, opMenuGet(0) & ~4u);
+    }
+
+    count = (opMenuGet(0) & 0x20) != 0 ? 4 : 2;
+    base = count == 4 ? 0xb00 : 0x1a60;
+    for (i = 0; i < count; i++)
+    {
+        u32 slot = base + (u32)i * 0x310;
+        if (opMenuGetS(slot) < 8)
+            opMenuPut(slot, opMenuGet(slot) + 1);
+        if ((u32)i != (count == 4 ? opMenuGet(0xaf8) : opMenuGet(0x1a50)) &&
+            opMenuGetS(slot + 4) < 0x10)
+            opMenuPut(slot + 4, opMenuGet(slot + 4) + 1);
+    }
+    if (count == 4 && opMenuGetS(0x1740) < 8)
+        opMenuPut(0x1740, opMenuGet(0x1740) + 1);
+
+    alpha = opMenuClamp01(opMenuGetS(0x91c), 0, 0x46);
+    opMenuSetRect(0x10, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuColor(opMenuData(0x10), alpha * 255.0f);
+
+    /*
+     * The two large title strips scroll in opposite directions.  They are
+     * ordinary rectangles in the retail work, so preserve their independent
+     * positions rather than collapsing them into one draw call.
+     */
+    pulse = func_0052e878(fGpffff8248 *
+                          ((f32)opMenuGetS(0x914) / 500.0f) * 2.0f);
+    opMenuSetRect(0x110,
+                  -320.0f - (1.0f - (f32)opMenuGetS(0x910) / 1300.0f) * 1100.0f,
+                  0.0f, 1280.0f, 448.0f);
+    opMenuSetRect(0x210,
+                  780.0f - (1.0f - (f32)opMenuGetS(0x910) / 1300.0f) * 1100.0f,
+                  0.0f, 1280.0f, 448.0f);
+    opMenuColor(opMenuData(0x110), alpha * 255.0f * (pulse * 0.25f + fGpffff80c0));
+    opMenuColor(opMenuData(0x210), alpha * 255.0f * (pulse * 0.25f + fGpffff80c0));
+
+    angle = fGpffff8248 *
+            ((f32)opMenuGetS(0xae8) / 150.0f) * 2.0f;
+    pulse = fGpffff8248 * ((func_0052e878(angle) * 1.5f) / 360.0f) * 2.0f;
+    opMenuSetPoly(0x310, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
+                  fGpffff80c0, fGpffff80c0);
+
+    angle = fGpffff8248 *
+            (fGpffff82fc + (f32)opMenuGetS(0xaf0) / 150.0f) * 2.0f;
+    pulse = fGpffff8248 * ((func_0052e878(angle) * 1.5f) / 360.0f) * 2.0f;
+    {
+        f32 scale = fGpffff80c0;
+        if (opMenuGetS(0xaec) > 0x40 && opMenuGetS(0xaec) < 0x5f)
+            scale += fGpffff82fc * (f32)(opMenuGetS(0xaec) - 0x41) / 30.0f;
+        opMenuSetPoly(0x410, 0.0f, 0.0f, 640.0f, 448.0f, pulse,
+                      scale, scale);
+    }
+    opMenuColor(opMenuData(0x310), 255.0f);
+    opMenuColor(opMenuData(0x410), 255.0f);
+
+    alpha = opMenuClamp01(opMenuGetS(0x91c), 0, 0x46);
+    angle = fGpffff8248 *
+            (fGpffff82fc + (f32)opMenuGetS(0xae4) / 150.0f) * 2.0f;
+    pulse = fGpffff8248 * ((func_0052e878(angle) * 25.0f) / 360.0f) * 2.0f;
+    opMenuSetPoly(0x510, 0.0f, 0.0f, 640.0f, 448.0f,
+                  pulse, fGpffff819c, fGpffff819c);
+    opMenuSetPoly(0x610, 0.0f, 0.0f, 640.0f, 448.0f,
+                  pulse, fGpffff819c, fGpffff819c);
+    opMenuColor(opMenuData(0x510), alpha * 255.0f);
+    opMenuColor(opMenuData(0x610), alpha * 255.0f * 0.6f);
+
+    alpha = opMenuClamp01(opMenuGetS(0x91c), 0x14, 0x32);
+    opMenuSetRect(0x710, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuColor(opMenuData(0x710), alpha * 204.0f);
+    alpha = opMenuClamp01(opMenuGetS(0x91c), 0x0a, 0x50);
+    opMenuSetRect(0x810, 0.0f, 0.0f, 640.0f, 448.0f);
+    opMenuColor(opMenuData(0x810), alpha * 255.0f);
+
+    /* Sliding menu labels.  The per-slot state is deliberately retained in
+     * the work object: changing the selected item only changes the offset
+     * and alpha; texture selection remains stable across frames. */
+    alpha = opMenuClamp01(opMenuGetS(0x91c), 0x14, 0x28);
+    if (count == 2)
+    {
+        static const u32 iconA[2] = {0x1c, 0x1e};
+        static const u32 iconB[2] = {0x1d, 0x1f};
+        static const f32 x[2] = {345.0f, 382.0f};
+        for (i = 0; i < 2; i++)
+        {
+            s32 delta = i * 5 + 0x14;
+            f32 slide = opMenuGetS(0x91c) < delta ? -50.0f :
+                        opMenuGetS(0x91c) < delta + 0x0a ?
+                        (1.0f - (opMenuClamp01(opMenuGetS(0x91c), delta,
+                                               delta + 0x0a) * 2.0f -
+                                  opMenuClamp01(opMenuGetS(0x91c), delta,
+                                               delta + 0x0a) *
+                                  opMenuClamp01(opMenuGetS(0x91c), delta,
+                                               delta + 0x0a))) * -50.0f : 0.0f;
+            f32 shown = opMenuGetS(0x91c) < delta ? 0.0f :
+                        opMenuClamp01(opMenuGetS(0x91c), delta, delta + 0x0a);
+            frame = func_0021cca0(sprite, iconA[i]);
+            opMenuSetIcon(0x1b00 + (u32)i * 0x310, frame,
+                          x[i] + slide + 26.0f, *(s32*)((u8*)frame + 0x10));
+            opMenuColor(opMenuData(0x1b00 + (u32)i * 0x310),
+                        (1.0f - (f32)opMenuGetS(0x1a64 + (u32)i * 0x310) / 16.0f) *
+                        255.0f * shown);
+            frame = func_0021cca0(sprite, iconB[i]);
+            opMenuSetIcon(0x1b40 + (u32)i * 0x310, frame,
+                          x[i] + slide + 26.0f, *(s32*)((u8*)frame + 0x10));
+            opMenuColor(opMenuData(0x1b40 + (u32)i * 0x310),
+                        (f32)opMenuGetS(0x1a64 + (u32)i * 0x310) / 16.0f *
+                        255.0f * shown);
+        }
+    }
+    else
+    {
+        static const u32 topIcons[4] = {0, 2, 4, 0x19};
+        static const u32 bottomIcons[4] = {1, 3, 5, 0x1a};
+        static const u32 secondIcons[4] = {6, 7, 8, 0x1b};
+        static const f32 x[4] = {298.0f, 323.0f, 346.0f, 371.0f};
+        for (i = 0; i < 4; i++)
+        {
+            s32 delta = i * 5 + 0x14;
+            f32 shown = opMenuClamp01(opMenuGetS(0x91c), delta, delta + 0x0a);
+            f32 slide = (1.0f - (shown * 2.0f - shown * shown)) * -50.0f;
+            frame = func_0021cca0(sprite, topIcons[i]);
+            opMenuSetIcon(0xb10 + (u32)i * 0x310, frame,
+                          x[i] + slide + 20.0f, *(s32*)((u8*)frame + 0x10));
+            opMenuColor(opMenuData(0xb10 + (u32)i * 0x310),
+                        (1.0f - (f32)opMenuGetS(0xb04 + (u32)i * 0x310) / 8.0f) *
+                        127.5f * shown);
+            frame = func_0021cca0(sprite, bottomIcons[i]);
+            opMenuSetIcon(0xb50 + (u32)i * 0x310, frame,
+                          x[i] + slide + 20.0f, *(s32*)((u8*)frame + 0x10));
+            opMenuColor(opMenuData(0xb50 + (u32)i * 0x310),
+                        (f32)opMenuGetS(0xb04 + (u32)i * 0x310) / 16.0f *
+                        255.0f * shown);
+            frame = func_0021cca0(sprite, secondIcons[i]);
+            opMenuSetIcon(0xb90 + (u32)i * 0x310, frame,
+                          x[i] + slide + 20.0f, *(s32*)((u8*)frame + 0x10));
+            opMenuColor(opMenuData(0xb90 + (u32)i * 0x310),
+                        (f32)opMenuGetS(0xb04 + (u32)i * 0x310) / 16.0f *
+                        255.0f * shown);
+        }
+        frame = func_0021cca0(sprite, 0x22);
+        opMenuSetIcon(0x1750, frame, 115.0f, *(s32*)((u8*)frame + 0x10));
+        frame = func_0021cca0(sprite, 0x23);
+        opMenuSetIcon(0x1850, frame, 115.0f, *(s32*)((u8*)frame + 0x10));
+        opMenuColor(opMenuData(0x1750), (f32)opMenuGetS(0x1740) / 8.0f * 255.0f);
+        opMenuColor(opMenuData(0x1850), (f32)opMenuGetS(0x1740) / 8.0f * 255.0f);
+    }
+
+    /*
+     * Keep the final two geometry records in work in sync with the
+     * renderer.  They are consumed by 26C710/26CC90 and are intentionally
+     * written even when the menu is in its fade-out phase.
+     */
+    rect[0] = 0.0f;
+    rect[1] = -448.0f;
+    rect[2] = 640.0f;
+    rect[3] = 0.0f;
+    angle = fGpffff8248 * ((f32)opMenuGetS(0x918) / 150.0f) * 2.0f;
+    pulse = func_0052e878(angle);
+    rect[0] = -88.0f;
+    rect[1] = 1086.0f;
+    rect[2] = 448.0f;
+    rect[3] = 0.0f;
+    opMenuPut(0xa20, (u32)rect[0]);
+    opMenuPut(0xa24, (u32)rect[1]);
+    opMenuPut(0xa60, (u32)rect[2]);
+    opMenuPut(0xa64, (u32)rect[3]);
+    opMenuPut(0xa40, 0x41200000);
+    opMenuPut(0xa44, 0x41880000);
+    opMenuPut(0xa48, 0x42400000);
+    opMenuPut(0xa4c, 0);
+    opMenuPut(0xa80, 0);
+    opMenuPut(0xa84, 0x40e00000);
+    opMenuPut(0xa88, 0x42180000);
+    opMenuPut(0xa8c, 0);
+    opMenuPut(0xac0, 0);
+    opMenuPut(0xac4, 0x40e00000);
+    opMenuPut(0xac8, 0x42180000);
+    opMenuPut(0xacc, (u32)(fGpffff8480 * alpha));
+    (void)pulse;
+}
+
+// FUN_0026C710 NONMATCHING
+void opMenu0026c710(void)
+{
+    RwRaster* raster;
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    (void)opResGetTitleSprite(0);
+    if ((opMenuGet(0) & 1) == 0)
+        return;
+    D_00960090(8, 0);
+    D_00960090(6, 0);
+    D_00960090(9, 2);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x44);
+    raster = opResGetTitleRaster(1);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x10), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x10), 4, 0, 2, 3);
+    func_004d7f60(3, 0x71801);
+    func_004d7f60(2, 0x48);
+    raster = opResGetTitleRaster(0);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x110), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x110), 4, 0, 2, 3);
+    D_0096009C(opMenuData(0x210), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x210), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x6a);
+    raster = opResGetTitleRaster(3);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x510), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x510), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x58);
+    raster = opResGetTitleRaster(4);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x310), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x310), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x6a);
+    raster = opResGetTitleRaster(3);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x610), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x610), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x58);
+    raster = opResGetTitleRaster(4);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x710), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x710), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x44);
+    D_00960090(1, 0);
+    D_0096009C(opMenuData(0xa20), 3, 0, 1, 2);
+    func_004d7f60(3, 0x71801);
+    func_004d7f60(2, 0x48);
+    raster = opResGetTitleRaster(5);
+    D_00960090(1, (u32)(unsigned long)raster);
+    D_0096009C(opMenuData(0x810), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x810), 4, 0, 2, 3);
+}
+
+// FUN_0026CC90 NONMATCHING
+void opMenu0026cc90(void)
+{
+    void* atlas;
+    void* frame;
+    u32 id;
+    s32 i;
+    static const u32 sideA[2] = {0x1c, 0x1e};
+    static const u32 sideB[2] = {0x1d, 0x1f};
+    static const u32 choiceA[4] = {0, 2, 4, 0x19};
+    static const u32 choiceB[4] = {6, 7, 8, 0x1b};
+    static const u32 choiceC[4] = {1, 3, 5, 0x1a};
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    atlas = opResGetTitleSprite(0);
+    if ((opMenuGet(0) & 1) == 0)
+        return;
+    D_00960090(8, 0);
+    D_00960090(6, 0);
+    D_00960090(9, 2);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x44);
+    frame = func_0021cce0(func_0021cca0(atlas, 0x15));
+    D_00960090(1, (u32)(unsigned long)frame);
+    D_0096009C(opMenuData(0x920), 4, 0, 1, 2);
+    D_0096009C(opMenuData(0x920), 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x44);
+
+    if ((opMenuGet(0) & 0x20) == 0)
+    {
+        for (i = 0; i < 2; i++)
+        {
+            frame = func_0021cce0(func_0021cca0(atlas, sideA[i]));
+            D_00960090(1, (u32)(unsigned long)frame);
+            D_0096009C(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 2, 3);
+        }
+        func_004d7f60(3, 0x71801);
+        func_004d7f60(2, 0x48);
+        for (i = 0; i < 2; i++)
+        {
+            frame = func_0021cce0(func_0021cca0(atlas, sideB[i]));
+            D_00960090(1, (u32)(unsigned long)frame);
+            D_0096009C(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 2, 3);
+        }
+    }
+    else
+    {
+        for (i = 0; i < 4; i++)
+        {
+            frame = func_0021cce0(func_0021cca0(atlas, choiceA[i]));
+            D_00960090(1, (u32)(unsigned long)frame);
+            D_0096009C(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 2, 3);
+            frame = func_0021cce0(func_0021cca0(atlas, choiceB[i]));
+            D_00960090(1, (u32)(unsigned long)frame);
+            D_0096009C(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 2, 3);
+            id = choiceC[i];
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            D_00960090(1, (u32)(unsigned long)frame);
+            D_0096009C(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 2, 3);
+        }
+        func_004d7f60(3, 0x71801);
+        func_004d7f60(2, 0x48);
+        id = opMenuGet(0x1a50) + 0x22;
+        frame = func_0021cce0(func_0021cca0(atlas, id));
+        D_00960090(1, (u32)(unsigned long)frame);
+        if (opMenuGet(0x1a50) == 0)
+        {
+            D_0096009C(opMenuData(0x1750), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0x1750), 4, 0, 2, 3);
+        }
+        else
+        {
+            D_0096009C(opMenuData(0x1850), 4, 0, 1, 2);
+            D_0096009C(opMenuData(0x1850), 4, 0, 2, 3);
+        }
+    }
+}
+
+// FUN_0026D430 NONMATCHING
+void opMenu0026d430(void)
+{
+    void* atlas;
+    u8* camera;
+    f32 layout[4];
+    f32 inverseZ;
+    void* frame;
+    s32 i;
+    static const u32 choiceA[4] = {0, 2, 4, 0x19};
+    static const u32 choiceB[4] = {1, 3, 5, 0x1a};
+    static const u32 choiceC[4] = {6, 7, 8, 0x1b};
+    static const u32 sideA[2] = {0x1c, 0x1e};
+    static const u32 sideB[2] = {0x1d, 0x1f};
+
+    K_ASSERT(sOpMenu != NULL, 0x87);
+    atlas = opResGetTitleSprite(0);
+    camera = (u8*)func_00198590();
+    inverseZ = 1.0f / *(f32*)(camera + 0x80);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
+    for (i = 0; i < 9; i++)
+    {
+        u32 offset = 0x10 + (u32)i * 0x100;
+        func_0021eae0(opMenuData(offset), layout);
+        func_0021eac0(0, opMenuData(offset));
+    }
+    frame = func_0021cca0(atlas, 0x15);
+    func_0021d3b0(opMenuData(0x920), frame);
+
+    opMenuPut(0xaf8, 0);
+    for (i = 0; i < 4; i++)
+    {
+        u32 choice = 0xb00 + (u32)i * 0x310;
+        opMenuPut(choice, i == 0 ? 0 : 8);
+        opMenuPut(choice + 4, 0);
+        frame = func_0021cca0(atlas, choiceA[i]);
+        func_0021d3b0(opMenuData(0xb10 + (u32)i * 0x310), frame);
+        frame = func_0021cca0(atlas, choiceB[i]);
+        func_0021d3b0(opMenuData(0xc10 + (u32)i * 0x310), frame);
+        frame = func_0021cca0(atlas, choiceC[i]);
+        func_0021d3b0(opMenuData(0xd10 + (u32)i * 0x310), frame);
+    }
+    opMenuPut(0x1740, 0);
+    opMenuPut(0x1744, 0);
+    frame = func_0021cca0(atlas, 0x22);
+    func_0021d3b0(opMenuData(0x1750), frame);
+    frame = func_0021cca0(atlas, 0x23);
+    func_0021d3b0(opMenuData(0x1850), frame);
+
+    opMenuPut(0x1a50, 0);
+    for (i = 0; i < 2; i++)
+    {
+        u32 side = 0x1a60 + (u32)i * 0x310;
+        opMenuPut(side, i == 0 ? 0 : 8);
+        opMenuPut(side + 4, 0);
+        frame = func_0021cca0(atlas, sideA[i]);
+        func_0021d3b0(opMenuData(0x1a70 + (u32)i * 0x310), frame);
+        frame = func_0021cca0(atlas, sideB[i]);
+        func_0021d3b0(opMenuData(0x1b70 + (u32)i * 0x310), frame);
+    }
+
+    opMenuPut(0xa28, 0);
+    opMenuPut(0xa30, 0);
+    opMenuPut(0xa34, 0);
+    opMenuPut(0xa38, *(u32*)&inverseZ);
+    opMenuPut(0xa68, 0);
+    opMenuPut(0xa70, 0);
+    opMenuPut(0xa74, 0);
+    opMenuPut(0xa78, *(u32*)&inverseZ);
+    opMenuPut(0xaa8, 0);
+    opMenuPut(0xab0, 0);
+    opMenuPut(0xab4, 0);
+    opMenuPut(0xab8, *(u32*)&inverseZ);
+    opMenuPut(0x910, 0);
+    opMenuPut(0x914, 0);
+    opMenuPut(0x918, 0);
+    opMenuPut(0xae0, 0);
+    opMenuPut(0xae4, 0);
+    opMenuPut(0xae8, 0);
+    opMenuPut(0xaec, 0);
+    opMenuPut(0xaf0, 0);
+    opMenuPut(0xaf4, 0);
+    *sOpMenu |= 8;
+    opMenu0026dc70();
+    *sOpMenu |= 1;
 }

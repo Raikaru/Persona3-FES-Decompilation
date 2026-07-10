@@ -14,6 +14,7 @@ KwlnTask* scrCreateTask(u32 priority, ScrHeader* header, ScrContentEntry* entrie
 void scrReleaseScript(ScrData* scr);
 void scrAllReleaseScript();
 s32 scrFindPrcdIdxByName(ScrHeader* header, const char* name);
+void func_0035c1a0(KwlnTask* task, s32 value);
 void scrForceTraceCode(ScrData* scr);
 
 #endif

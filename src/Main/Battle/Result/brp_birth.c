@@ -1,13 +1,173 @@
+#include "Main/Social/sfl_res.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "rw/rwplcore.h"
 
 static u32* sBrpBirthWork; // puGpffffb640
 
-void H_Fade_FadeOut();
-void H_Fade_SetType();
-void H_Fade_FadeIn();
-void FUN_0024be40();
-void FUN_0021a920();
+typedef struct BrpBirthVec
+{
+    f32 x;
+    f32 y;
+    f32 z;
+} BrpBirthVec;
+
+typedef struct BrpBirthColor
+{
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+} BrpBirthColor;
+extern f32 fGpffff8248;
+extern f32 fGpffff8088;
+static const BrpBirthVec sBrpBirthTranslation = {0.0f, 100.0f, 200.0f};
+static const BrpBirthVec sBrpBirthAxis = {0.0f, 1.0f, 0.0f};
+static const BrpBirthVec sBrpBirthRotation = {1.0f, 0.0f, 0.0f};
+extern void* kwlnGetMainCamera(void);
+extern void func_00219c90(void* work);
+extern void func_00239170(void* work);
+extern void func_00239280(void);
+extern void func_002392d0(void);
+extern void func_0023b990(void);
+extern void func_0023d240(void);
+extern void func_0020a800(void* frame);
+extern void func_0020c5f0(void* frame, s32 value, s32 count);
+extern void func_00209f00(void* frame);
+extern void func_0020c590(void* frame, s16 value);
+extern void func_0020cd50(void* frame, void* resource);
+extern void func_00219d90(void);
+extern void func_0020ac80(void* frame);
+extern void func_0020ac90(void* frame);
+extern void func_0020b250(void* frame);
+extern void func_0021a1b0(void);
+extern void func_0021a920(s32 mode, s32 value);
+extern void func_0021ab80(s32 value);
+extern u32 func_0021a120(void);
+extern void func_0020cc80(void* frame, const BrpBirthColor* color);
+extern void func_004bdde0(f32 angle, void* frame, const BrpBirthVec* vector, u32 mode);
+extern void func_004c9d70(void* camera, f32 value);
+extern void func_004c9db0(void* camera, f32 value);
+extern void func_004cb890(void* frame, f32 value, const BrpBirthVec* vector, u32 mode);
+extern void func_004cb750(void* frame, const BrpBirthVec* vector, u32 mode);
+extern void* func_0034fcd0(const void* resource);
+extern void func_0034fcf0(void* resource);
+extern void func_0034fdf0(void* resource, const BrpBirthVec* position);
+extern void func_0034ff90(void* resource, const BrpBirthColor* color);
+extern void func_0034fd30(void* resource);
+extern void func_0034fd70(void* resource, s32 layer);
+extern void func_0034ff70(void* resource, f32 scalar);
+extern u32 func_003cda60(s32 mode, s32 value);
+extern void func_003cdba0(u32 object, s16 value);
+extern u32 func_003cdc80(u32 object);
+extern void func_003cdcd0(u32 object, s32 a, s32 b, s32 c);
+extern void func_003cde00(u32 object, s32 value);
+extern void func_003c72d0(u32 value);
+extern u32 func_003c7bc0(s32 mode, u32 value);
+extern u32 func_00173220(s16 value);
+extern u32 func_0017d790(s16 value);
+extern void func_003c7430(u32 value);
+extern void func_003c7990(s32 value);
+extern u32 func_003c7850(void);
+extern void func_003c7650(s32 value);
+extern void func_003c77a0(void);
+extern f32 func_0052e878(f32 value);
+extern f32 func_0052e6d8(f32 value);
+extern void func_00195020(void* task);
+extern void H_Fade_FadeOut(void);
+extern void H_Fade_SetType(s32 type);
+extern void H_Fade_FadeIn(void);
+extern u32 H_Fade_IsFadeOutDone(void);
+extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern void func_0024be40(void);
+extern void func_0024ba50(void);
+extern void func_0024bb30(void);
+extern void func_0024bf80(void);
+extern u32 brpRes0024bed0(void);
+extern u32 brpRes0024bf20(s32 index);
+extern u32 brpRes0024c040(void);
+extern u32 brpRes0024c090(void);
+extern void brpRes0024ba30(u32* work);
+extern u32 D_00960178[];
+
+#define BRP_BIRTH_ALLOC(size, flags) \
+    (*(void* (**)(u32, u32))D_00960178)((size), (flags))
+
+// FUN_0024A7F0
+void func_0024a7f0(void)
+{
+    u32* work;
+
+    work = (u32*)BRP_BIRTH_ALLOC(0xC570, 0x40000);
+    func_00219c90((u8*)work + 0xFD4);
+    sflRes0020d7d0((u8*)work + 0x3730);
+    brpRes0024ba30((u32*)((u8*)work + 0x3704));
+    func_00239170((u8*)work + 0x37C0);
+    work[1] = 0;
+    work[2] = 0;
+    sBrpBirthWork = work;
+}
+
+// FUN_0024A870 NONMATCHING
+void func_0024a870(void)
+{
+    u32* work;
+    void* camera;
+    void* frame;
+    void* resource;
+    BrpBirthColor color;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    camera = kwlnGetMainCamera();
+    frame = *(void**)((u8*)camera + 4);
+    func_004c9d70(camera, 100.0f);
+    func_004c9db0(camera, 1000.0f);
+    func_004cb890(frame, 180.0f, &sBrpBirthAxis, 0);
+    func_004cb750(frame, &sBrpBirthTranslation, 2);
+
+    if (work[0] == 1)
+    {
+        func_0020a800((u8*)work + 0x1C);
+        func_0020c5f0((u8*)work + 0x1C, 0, 0xE);
+    
+    }
+    else if (work[0] == 0)
+    {
+        func_00209f00((u8*)work + 0x1C);
+        func_0020c590((u8*)work + 0x1C, (s16)work[3]);
+    }
+    func_0020cd50((u8*)work + 0x1C, (u8*)work + 0x61C);
+
+    ((f32*)work)[0x3EC] = 500.0f;
+    ((f32*)work)[0x3ED] = 100.0f;
+    ((f32*)work)[0x3EE] = 500.0f;
+    frame = (u8*)work + 0x1C;
+    ((f32*)frame)[8] = 0.0f;
+    ((f32*)frame)[9] = 100.0f;
+    ((f32*)frame)[10] = 0.0f;
+    ((f32*)frame)[7] = 1.0f;
+    ((f32*)frame)[4] = 0.0f;
+    ((f32*)frame)[5] = 0.0f;
+    ((f32*)frame)[6] = 0.0f;
+    ((f32*)frame)[11] = 10.0f;
+    ((f32*)frame)[12] = 10.0f;
+    ((f32*)frame)[13] = 10.0f;
+
+    H_Fade_FadeIn();
+    func_0023d240();
+    work[5] = 0;
+    resource = (void*)(uintptr_t)brpRes0024bf20(0);
+    work[0x3F3] = (u32)(uintptr_t)func_0034fcd0(resource);
+    work[1] |= 0x40;
+    color.r = 0xFF;
+    color.g = 0xFF;
+    color.b = 0xFF;
+    color.a = 0xFF;
+    func_0034ff90((void*)(uintptr_t)work[0x3F3], &color);
+    work[1] |= 1;
+    work[2] = 1;
+}
 
 // FUN_0024aa90
 void brpBirth0024aa90(void)
@@ -30,8 +190,8 @@ void brpBirth0024abd0(void)
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
-    FUN_0024be40();
-    FUN_0021a920(0, 0xe);
+    func_0024be40();
+    func_0021a920(0, 0xe);
     *work = 1;
     work[1] |= 2;
 }
@@ -48,4 +208,400 @@ u32 brpBirth0024b9e0(void)
 {
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     return sBrpBirthWork[1] & 1;
+}
+
+// FUN_0024AB10 NONMATCHING
+void func_0024ab10(s32 date)
+{
+    u32* work;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    *(s16*)((u8*)work + 0x0C) = (s16)date;
+    work[0x3158] = (u32)func_003cda60(0, 1);
+    work[1] |= 0x80;
+    func_003cdba0(work[0x3158], (s16)work[3]);
+    func_0024be40();
+    func_0021ab80(date);
+    work[0] = 0;
+    work[1] |= 2;
+}
+
+// FUN_0024AC90 NONMATCHING
+void func_0024ac90(void)
+{
+    u32* work;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    K_ASSERT((work[1] & 2) != 0, 0x103);
+    func_00239280();
+    sflRes0020e030();
+    func_0024ba50();
+    func_0021a1b0();
+    if ((work[1] & 0x10) != 0)
+    {
+        func_0034fcf0((void*)(uintptr_t)work[0x3F1]);
+    }
+    if ((work[1] & 0x20) != 0)
+    {
+        func_0034fcf0((void*)(uintptr_t)work[0x3F2]);
+    }
+    if ((work[1] & 0x40) != 0)
+    {
+        func_0034fcf0((void*)(uintptr_t)work[0x3F3]);
+    }
+    if ((work[1] & 0x100) != 0)
+    {
+        func_0034fcf0((void*)(uintptr_t)work[0x3F4]);
+    }
+    if ((work[1] & 4) != 0)
+    {
+        func_00195020((void*)(uintptr_t)work[0x3158]);
+    }
+    if ((work[1] & 8) != 0)
+    {
+        func_0020ac80((u8*)work + 0x1C);
+    }
+    RwFree(work);
+    sBrpBirthWork = NULL;
+}
+
+static void brpBirthSetColor(void* resource, u8 r, u8 g, u8 b, u8 a)
+{
+    BrpBirthColor color;
+
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    color.a = a;
+    func_0034ff90(resource, &color);
+}
+
+static void brpBirthSetOrigin(void* resource, f32 x, f32 y, f32 z)
+{
+    BrpBirthVec origin;
+
+    origin.x = x;
+    origin.y = y;
+    origin.z = z;
+    func_0034fdf0(resource, &origin);
+}
+
+// FUN_0024ADF0 NONMATCHING
+void func_0024adf0(void)
+{
+    u32* work;
+    u32 flags;
+    u32 value;
+    f32 opacity;
+    f32 angle;
+    f32 wave;
+    BrpBirthColor color;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    func_0024bb30();
+    sflRes0020d820();
+    func_00219d90();
+
+    flags = work[1];
+    if ((flags & 2) != 0)
+    {
+        if (work[0] == 1)
+        {
+            if ((flags & 8) == 0 && func_0021a120() == 0)
+            {
+                work[1] |= 8;
+            }
+            if ((work[1] & 8) != 0 && brpRes0024bed0() == 0)
+            {
+                work[1] &= ~2;
+            }
+        }
+        else if (work[0] == 0)
+        {
+            if ((flags & 4) == 0 &&
+                func_003cdc80(work[0x3158]) == 0)
+            {
+                func_003cdcd0(work[0x3158], 0, 0, 1);
+                work[1] |= 4;
+            }
+            if ((work[1] & 8) == 0 && func_0021a120() == 0)
+            {
+                work[1] |= 8;
+            }
+            if ((work[1] & 0xC) == 0xC && brpRes0024bed0() == 0)
+            {
+                work[1] &= ~2;
+            }
+        }
+    }
+
+    if (work[2] != 0)
+    {
+        func_002392d0();
+        switch (work[2])
+        {
+            case 1:
+                if (H_Fade_IsFadeOutDone() != 0)
+                {
+                    work[4] = 0;
+                    work[2] = 2;
+                }
+                break;
+
+            case 2:
+                if (work[4] < 0x1E)
+                {
+                    work[4]++;
+                }
+                else
+                {
+                    work[4] = 0;
+                    work[2] = 3;
+                }
+                break;
+
+            case 3:
+                if (work[4] < 0x28)
+                {
+                    work[4]++;
+                }
+                else
+                {
+                    func_0010a4e0(1, 0, 8, 5);
+                    work[4] = 0;
+                    work[2] = 4;
+                }
+                break;
+
+            case 4:
+                if (work[4] < 0x14)
+                {
+                    u8 alpha;
+                    work[4]++;
+                    alpha = (u8)(255.0f - ((f32)work[4] * 255.0f) / 20.0f);
+                    brpBirthSetColor((void*)(uintptr_t)work[0x3F3], 0xFF, 0, 0, alpha);
+                }
+                else
+                {
+                    if (work[0] == 1)
+                    {
+                        work[0x3F2] = (u32)(uintptr_t)
+                            func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(1));
+                        work[1] |= 0x20;
+                        brpBirthSetOrigin((void*)(uintptr_t)work[0x3F2], 0.0f, 100.0f, 0.0f);
+                        func_0010a4e0(1, 0, 8, 6);
+                        work[1] &= ~1;
+                        work[2] = 7;
+                    }
+                    else if (work[0] == 0)
+                    {
+                        work[4] = 0;
+                        work[2] = 5;
+                    }
+                    brpBirthSetColor((void*)(uintptr_t)work[0x3F3], 0, 0, 0, 0);
+                }
+                break;
+
+            case 5:
+                if (work[4] < 0x1E)
+                {
+                    work[4]++;
+                }
+                else
+                {
+                    K_ASSERT((work[1] & 0x10) == 0, 0x1BF);
+                    work[0x3F1] = (u32)(uintptr_t)
+                        func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(2));
+                    work[1] |= 0x10;
+                    brpBirthSetOrigin((void*)(uintptr_t)work[0x3F1], 0.0f, 100.0f, -500.0f);
+                    func_0010a4e0(1, 0, 8, 6);
+                    work[4] = 0;
+                    work[2] = 6;
+                }
+                break;
+
+            case 6:
+                if (work[4] == 0x1E)
+                {
+                    func_003cde00(work[0x3158], 1);
+                    K_ASSERT((work[1] & 0x100) == 0, 0x1D6);
+                    work[0x3F4] = (u32)(uintptr_t)
+                        func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(3));
+                    work[1] |= 0x100;
+                    brpBirthSetOrigin((void*)(uintptr_t)work[0x3F4], -60.0f, -50.0f, 0.0f);
+                }
+                if (work[4] < 0x3C)
+                {
+                    work[4]++;
+                }
+                else
+                {
+                    work[4] = 0;
+                    func_0024bf80();
+                    work[2] = 10;
+                }
+                break;
+
+            case 8:
+                if (H_Fade_IsFadeOutDone() != 0)
+                {
+                    if ((work[1] & 0x10) != 0)
+                    {
+                        func_0034fcf0((void*)(uintptr_t)work[0x3F1]);
+                        work[1] &= ~0x10;
+                    }
+                    if ((work[1] & 0x100) != 0)
+                    {
+                        func_0034fcf0((void*)(uintptr_t)work[0x3F4]);
+                        work[1] &= ~0x100;
+                    }
+                    if ((work[1] & 0x20) != 0)
+                    {
+                        func_0034fcf0((void*)(uintptr_t)work[0x3F2]);
+                        work[1] &= ~0x20;
+                    }
+                    if ((work[1] & 0x40) != 0)
+                    {
+                        func_0034fcf0((void*)(uintptr_t)work[0x3F3]);
+                        work[1] &= ~0x40;
+                    }
+                    work[1] &= ~1;
+                    work[2] = 0;
+                }
+                break;
+
+            case 10:
+                if (brpRes0024c040() == 0)
+                {
+                    value = brpRes0024c090();
+                    func_003c72d0(value);
+                    value = func_00173220((s16)work[3]);
+                    func_003c7bc0(1, value);
+                    value = func_0017d790((s16)work[3]);
+                    func_003c7430(value);
+                    work[2] = 0xB;
+                }
+                break;
+
+            case 0xB:
+                func_003c7990(1);
+                if (func_003c7850() == 0)
+                {
+                    func_003c7650(1);
+                    func_003c77a0();
+                    work[2] = 7;
+                    work[1] &= ~1;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        opacity = 0.0f;
+        switch (work[2])
+        {
+            case 1:
+            case 2:
+                opacity = 0.0f;
+                break;
+            case 3:
+                opacity = (f32)work[4] / 40.0f;
+                break;
+            case 4:
+            case 5:
+                opacity = 1.0f;
+                break;
+            case 6:
+                opacity = 1.0f - (f32)work[4] / 60.0f;
+                break;
+            case 7:
+            case 8:
+                opacity = work[0] == 1 ? 1.0f : 0.0f;
+                break;
+            default:
+                break;
+        }
+
+        work[5]++;
+        wave = fGpffff8248 * -((f32)work[5] / 50.0f) * 2.0f;
+        ((f32*)work)[0x3EC] = func_0052e878(wave) * -300.0f;
+        ((f32*)work)[0x3EE] = func_0052e6d8(wave) * -300.0f;
+        ((f32*)work)[0x3ED] =
+            func_0052e6d8(fGpffff8248 * ((f32)work[5] / 30.0f) * 2.0f) *
+            400.0f + 100.0f;
+        color.r = 0xFF;
+        color.g = 0xFF;
+        color.b = 0xFF;
+        color.a = (u8)(opacity * 255.0f);
+        func_0020cc80((u8*)work + 0x1C, &color);
+
+        switch (work[2])
+        {
+            case 1:
+            case 2:
+            case 3:
+                angle = 180.0f;
+                break;
+            case 4:
+                angle = (1.0f - (f32)work[4] / 20.0f) * 180.0f;
+                break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                angle = 0.0f;
+                break;
+            default:
+                angle = 0.0f;
+                break;
+        }
+        func_004bdde0(angle, (u8*)work + 0x2C, &sBrpBirthRotation, 0);
+        if ((work[1] & 0x80) != 0)
+        {
+            func_003cdba0(work[0x3158], (s16)work[3]);
+        }
+    }
+}
+
+// FUN_0024B8A0 NONMATCHING
+void func_0024b8a0(void)
+{
+    u32* work;
+
+    K_ASSERT(sBrpBirthWork != NULL, 0x7f);
+    work = sBrpBirthWork;
+    if (work[2] != 0)
+    {
+        func_0023b990();
+        if ((work[1] & 8) != 0)
+        {
+            func_0020ac90((u8*)work + 0x1C);
+            func_0020b250((u8*)work + 0x1C);
+        }
+        if ((work[1] & 0x10) != 0)
+        {
+            func_0034fd30((void*)(uintptr_t)work[0x3F1]);
+            func_0034fd70((void*)(uintptr_t)work[0x3F1], 5);
+        }
+        if ((work[1] & 0x100) != 0)
+        {
+            func_0034ff70((void*)(uintptr_t)work[0x3F4], fGpffff8088);
+            func_0034fd30((void*)(uintptr_t)work[0x3F4]);
+            func_0034fd70((void*)(uintptr_t)work[0x3F4], 5);
+        }
+        if ((work[1] & 0x20) != 0)
+        {
+            func_0034fd30((void*)(uintptr_t)work[0x3F2]);
+            func_0034fd70((void*)(uintptr_t)work[0x3F2], 5);
+        }
+        if ((work[1] & 0x40) != 0)
+        {
+            func_0034fd30((void*)(uintptr_t)work[0x3F3]);
+            func_0034fd70((void*)(uintptr_t)work[0x3F3], 5);
+        }
+    }
 }

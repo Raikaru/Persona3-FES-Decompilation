@@ -5,6 +5,14 @@ static u32* sBpPersona; // DAT_007ce398
 
 void FUN_00267120();
 long FUN_003c9ab0();
+u32 FUN_001749a0(u32 param_1);
+u32 FUN_003c9850(u32 param_1, u32 param_2, u32 param_3, u32 param_4);
+void FUN_003c9b00(u32 param_1, u32 param_2, u32 param_3);
+void FUN_003c9cd0(u32 param_1, s64 param_2);
+void FUN_003c9d00(u32 param_1, u32 param_2);
+u16 FUN_001756f0(void);
+void FUN_003c9e00(u32 param_1, u32 param_2);
+
 
 // FUN_00266eb0
 void bpPersona00266eb0(u32* param_1)
@@ -22,6 +30,33 @@ void bpPersona00266f00(void)
         FUN_00267120();
     }
     sBpPersona = NULL;
+}
+// FUN_00266F60 NONMATCHING
+void bpPersona00266f60(u32 param_1)
+{
+    u32* work;
+    u32 persona;
+    u16 region;
+
+    K_ASSERT(sBpPersona != NULL, 0x24);
+    work = sBpPersona;
+    *(u16*)(work + 2) = (u16)param_1;
+    persona = FUN_001749a0(param_1);
+    work[1] = FUN_003c9850(0, 0, 5, 0);
+    FUN_003c9b00(work[1], persona, 0);
+    FUN_003c9cd0(work[1], (s64)-1);
+    FUN_003c9d00(work[1], 8);
+    region = FUN_001756f0();
+    if (region < 2)
+    {
+        FUN_003c9e00(work[1], 0);
+    }
+    else
+    {
+        FUN_003c9e00(work[1], 1);
+    }
+    *work |= 2;
+    *work |= 1;
 }
 
 // FUN_00267120

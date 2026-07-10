@@ -1,9 +1,16 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+int func_0016dbc0(short, int*);
+char func_0016df30(short);
+void func_00171110(short, short);
+char datGetSocialLinkLevel(short);
+void datPersonaAddToNaturalStatHeroPersona(u16, u16, char);
+void datSetActiveSocialLink(short);
+void datPersonaAddToBonusStatByPcId();
+int datGetActiveSocialLinkPtr();
 
 int scrGetIntPara();
 int FUN_0016dce0(short);
-char datGetSocialLinkLevel(short);
 int datSocialLinkLevelIsNotZero(short);
 void scrSetIntReturnVal();
 void FUN_0016e2b0(short, int);
@@ -13,17 +20,13 @@ void FUN_0016e410(short, char);
 int FUN_003bded0();
 int FUN_0035f140();
 int FUN_00172f70();
-int FUN_0016dbc0(short, int*);
-u32 FUN_00173220();
+u32 FUN_00173220(u16);
 void FUN_003a4220();
 void FUN_00171c40();
 void FUN_00172200();
 short FUN_00175360();
-void datPersonaAddToNaturalStatHeroPersona(u16, u16, char);
-void datSetActiveSocialLink(short);
 int FUN_003be8e0();
 u32 FUN_003c3f40();
-void datPersonaAddToBonusStatByPcId();
 int FUN_00173780(u16, u16);
 extern u8 DAT_00958400[];
 extern u8 DAT_0095841e[];
@@ -31,7 +34,6 @@ extern u8 DAT_0095841e[];
 s32 scrGetCmdTimer();
 s32 scrGetMesHandleIdx();
 void FUN_0016dfb0(short);
-int datGetActiveSocialLinkPtr();
 int FUN_00172990();
 int adminiGetNowSeqId();
 int adminiGetNextSeqId();
@@ -39,18 +41,18 @@ void adminiChangeSeq();
 int FUN_003c33c0();
 void FUN_001728d0();
 int FUN_003bffa0();
-short datGetAcademicPoint();
-short datGetCharmPoint();
-short datGetCouragePoint();
-short datGetAcademicLevel();
-short datGetCharmLevel();
-short datGetCourageLevel();
-void datSetAcademicPoint();
-void datSetCharmPoint();
-void datSetCouragePoint();
-const char* h_camp_getAcademicLevelString();
-const char* h_camp_getCharmLevelString();
-const char* h_camp_getCourageLevelString();
+short datGetAcademicPoint(short);
+short datGetCharmPoint(short);
+short datGetCouragePoint(short);
+short datGetAcademicLevel(short);
+short datGetCharmLevel(short);
+short datGetCourageLevel(short);
+void datSetAcademicPoint(short, short);
+void datSetCharmPoint(short, short);
+void datSetCouragePoint(short, short);
+const char* h_camp_getAcademicLevelString(short);
+const char* h_camp_getCharmLevelString(short);
+const char* h_camp_getCourageLevelString(short);
 void FUN_003a4270();
 void FUN_003a4010();
 u32 clndGetCurrentMonth();
@@ -58,13 +60,11 @@ u32 clndGetCurrentDay();
 int FUN_003beab0();
 int FUN_003beb10();
 u32 ComuData_FUN_003c4210();
-void FUN_00171110();
 u32 FUN_003c43f0();
-void FUN_00176fb0();
+void FUN_00176fb0(u16, u16*, int*);
 u32 FUN_0030bb40();
-u32 FUN_0030bbb0();
+u32 FUN_0030bbb0(u8);
 u32 FUN_003c3f80();
-u8 FUN_0016df30();
 void FUN_00173040();
 int FUN_003beca0();
 int FUN_003bee80();
@@ -75,17 +75,17 @@ u32 kwlnTaskExists();
 void FUN_00395350();
 void FUN_003952d0();
 int FUN_003951d0();
-short FUN_0038d6f0();
+int FUN_0038d6f0(short);
 int FUN_0036f500();
 u16 FUN_001752b0();
 void FUN_00172e50();
 void printf();
 void memset();
-extern u16 DAT_007cca60;
-extern u16 DAT_007cca62;
-extern u16 DAT_007cca64;
-extern u16 DAT_007cca66;
-extern u8 DAT_007ce420[];
+extern s16 DAT_007cca60;
+extern s16 DAT_007cca62;
+extern s16 DAT_007cca64;
+extern s16 DAT_007cca66;
+extern u8* DAT_007ce420;
 
 static int sDat007ce5ac;   // DAT_007ce5ac
 static int sDat007ce5b0;   // DAT_007ce5b0
@@ -247,7 +247,7 @@ u32 scrComu00360b70(void)
     lVar2 = FUN_0016dce0(uVar1);
     K_ASSERT(lVar2 != 0, 0x3d9);
     lVar2 = FUN_0035f140();
-    lVar3 = FUN_0016dbc0(uVar1, &uStack_4);
+    lVar3 = func_0016dbc0(uVar1, &uStack_4);
     if (lVar3 == 1) {
         if (lVar2 >= 0) {
             FUN_003a4220(lVar2, 0, FUN_00173220((u16)uStack_4));
@@ -392,28 +392,26 @@ typedef struct
 static const s16 sReverseLinkIds[6] = { 6, 7, 8, 9, 10, 11 }; // DAT_0069d518
 
 #pragma optimization_level 1
-// FUN_0035f210 NONMATCHING
+// FUN_0035f210
 u32 scrComu0035f210(void)
 {
     s16 links[6];
-    int best;
-    int bestIdx;
     int i;
-    s16 linkId;
+    int bestIdx;
+    int best;
+    int linkId;
     int lVar4;
-    char cVar3;
 
     *(ScrComuLinkIds*)links = *(ScrComuLinkIds*)sReverseLinkIds;
-    best = -1;
-    bestIdx = best;
+    bestIdx = -1;
+    best = bestIdx;
     for (i = 0; i < 6; i++) {
         linkId = links[i];
         lVar4 = datSocialLinkLevelIsNotZero(linkId);
         if (lVar4 != 0 && FUN_001717c0(linkId) != 1 && FUN_00172160(linkId) != 1 &&
             best < datGetSocialLinkLevel(linkId)) {
-            cVar3 = datGetSocialLinkLevel(linkId);
-            best = cVar3;
             bestIdx = i;
+            best = datGetSocialLinkLevel(linkId);
         }
     }
     if (bestIdx == -1) {
@@ -426,31 +424,37 @@ u32 scrComu0035f210(void)
 #pragma optimization_level 2
 
 #pragma optimization_level 1
-// FUN_0035f360 NONMATCHING
+// FUN_0035f360
 u32 scrComu0035f360(void)
 {
-    u16 links[4];
-    int best;
-    int bestIdx;
+    s16 links[4];
     int i;
-    u16 linkId;
+    int bestIdx;
+    int best;
+    int linkId;
     int lVar3;
-    char cVar2;
+    s16 link0;
+    s16 link1;
+    s16 link2;
+    s16 link3;
 
-    links[0] = DAT_007cca60;
-    links[1] = DAT_007cca62;
-    links[2] = DAT_007cca64;
-    links[3] = DAT_007cca66;
-    best = -1;
-    bestIdx = best;
+    link0 = DAT_007cca60;
+    link1 = DAT_007cca62;
+    link2 = DAT_007cca64;
+    link3 = DAT_007cca66;
+    links[0] = link0;
+    links[1] = link1;
+    links[2] = link2;
+    links[3] = link3;
+    bestIdx = -1;
+    best = bestIdx;
     for (i = 0; i < 4; i++) {
         linkId = links[i];
         lVar3 = datSocialLinkLevelIsNotZero(linkId);
         if (lVar3 != 0 && FUN_001717c0(linkId) != 1 && FUN_00172160(linkId) != 1 &&
             best < datGetSocialLinkLevel(linkId)) {
-            cVar2 = datGetSocialLinkLevel(linkId);
-            best = cVar2;
             bestIdx = i;
+            best = datGetSocialLinkLevel(linkId);
         }
     }
     if (bestIdx == -1) {
@@ -471,16 +475,14 @@ typedef struct
     u32 unk_14;     // 0x14
 } ScrComuEventReq;
 
-// FUN_0035f4a0 NONMATCHING
+// FUN_0035f4a0
 u32 scrComu0035f4a0(int* startedFlag)
 {
-    u32 result;
     int data;
-    int lVar3;
-    int iVar4;
-    u32 force;
-    ScrComuEventReq req;
+    int result;
+    int force;
     int idx;
+    ScrComuEventReq req;
 
     idx = 0;
     force = 0;
@@ -489,21 +491,20 @@ u32 scrComu0035f4a0(int* startedFlag)
         force = 1;
         *startedFlag = 0;
     }
-    lVar3 = FUN_003c33c0(data, &idx, force);
-    if (lVar3 == 1) {
+    result = FUN_003c33c0(data, &idx, force);
+    if (result == 1) {
         if (idx != 0) {
-            iVar4 = data + (idx - 1) * 6;
-            req.unk_0c = *(u16*)(iVar4 + 0x20);
-            req.unk_10 = *(u8*)(iVar4 + 0x22);
-            req.unk_14 = *(u8*)(iVar4 + 0x23);
+            data += (idx - 1) * 6;
+            req.unk_0c = *(u16*)(data + 0x20);
+            req.unk_10 = *(u8*)(data + 0x22);
+            req.unk_14 = *(u8*)(data + 0x23);
             *startedFlag = 1;
             adminiChangeSeq(3, &req, 0x1c, 0);
         }
-        result = 1;
     } else {
-        result = 0;
+        return 0;
     }
-    return result;
+    return 1;
 }
 
 // FUN_0035f5b0
@@ -545,11 +546,10 @@ u32 scrComu0035f730(void)
     return 0;
 }
 
-// FUN_0035f7a0 NONMATCHING
+// FUN_0035f7a0
 u32 scrComu0035f7a0(void)
 {
-    u32 result;
-    int lVar2;
+    int result;
     ScrComuEventReq req;
     u32 c;
     u32 b;
@@ -559,99 +559,109 @@ u32 scrComu0035f7a0(void)
     b = 0;
     a = 0;
     if (scrGetCmdTimer() == 0) {
-        lVar2 = FUN_003bffa0(&c, &b, &a);
-        if (lVar2 == 0) {
-            result = 1;
+        result = FUN_003bffa0(&c, &b, &a);
+        if (result == 0) {
+            return 1;
         } else {
             datSetActiveSocialLink(0xff);
             req.unk_0c = c;
             req.unk_10 = b;
             req.unk_14 = a;
             adminiChangeSeq(3, &req, 0x1c, 0);
-            result = 0;
         }
     } else {
         if (adminiGetNowSeqId() == 0 && adminiGetNextSeqId() == -1) {
-            result = 1;
+            return 1;
         } else {
-            result = 0;
+            return 0;
         }
     }
-    return result;
+    return 0;
 }
 
-// FUN_0035f880 NONMATCHING
+// FUN_0035f880
 u32 scrComu0035f880(void)
 {
-    short oldLevel;
-    short newLevel;
-    int points;
-    int lVar4;
-    int statType;
+    int oldLevel;
+    int newLevel;
     const char* oldStr;
     const char* newStr;
+    int statType;
+    int points;
+    int handle;
 
     oldLevel = 0;
     newLevel = 0;
     oldStr = NULL;
     newStr = NULL;
-    lVar4 = scrGetMesHandleIdx();
-    if (lVar4 < 0) {
+    handle = scrGetMesHandleIdx();
+    if (handle < 0) {
         return 1;
     }
     statType = scrGetIntPara(0);
-    K_ASSERT(statType <= 2, 0x139);
+    K_ASSERT(statType < 3, 0x139);
     points = scrGetIntPara(1);
+    switch (statType) {
+    case 2:
+        oldLevel = datGetCourageLevel(datGetCouragePoint(1));
+        points += datGetCouragePoint(1);
+        if (points > 999) {
+            points = 999;
+        }
+        newLevel = datGetCourageLevel(points);
+        datSetCouragePoint(1, points);
+        break;
+    case 0:
+        oldLevel = datGetAcademicLevel(datGetAcademicPoint(1));
+        points += datGetAcademicPoint(1);
+        if (points > 999) {
+            points = 999;
+        }
+        newLevel = datGetAcademicLevel(points);
+        datSetAcademicPoint(1, points);
+        break;
+    case 1:
+        oldLevel = datGetCharmLevel(datGetCharmPoint(1));
+        points += datGetCharmPoint(1);
+        if (points > 999) {
+            points = 999;
+        }
+        newLevel = datGetCharmLevel(points);
+        datSetCharmPoint(1, points);
+        break;
+    }
+    if (oldLevel != newLevel) {
         switch (statType) {
-        case 1:
-            oldLevel = datGetCharmLevel(datGetCharmPoint());
-            points += datGetCharmPoint();
-            if (points > 999) {
-                points = 999;
-            }
-            newLevel = datGetCharmLevel(points);
-            datSetCharmPoint(points);
-            break;
-        case 0:
-            oldLevel = datGetAcademicLevel(datGetAcademicPoint());
-            points += datGetAcademicPoint();
-            if (points > 999) {
-                points = 999;
-            }
-            newLevel = datGetAcademicLevel(points);
-            datSetAcademicPoint(points);
-            break;
         case 2:
-            oldLevel = datGetCourageLevel(datGetCouragePoint());
-            points += datGetCouragePoint();
-            if (points > 999) {
-                points = 999;
-            }
-            newLevel = datGetCourageLevel(points);
-            datSetCouragePoint(points);
-            break;
+            goto Charm;
+        case 0:
+            goto Academic;
+        case 1:
+            goto Courage;
         }
-        if (oldLevel == newLevel) {
-            scrSetIntReturnVal(0);
-        } else {
-            switch (statType) {
-            case 1:
-                oldStr = h_camp_getCharmLevelString(oldLevel);
-                newStr = h_camp_getCharmLevelString(newLevel);
-                break;
-            case 0:
-                oldStr = h_camp_getAcademicLevelString(oldLevel);
-                newStr = h_camp_getAcademicLevelString(newLevel);
-                break;
-            case 2:
-                oldStr = h_camp_getCourageLevelString(oldLevel);
-                newStr = h_camp_getCourageLevelString(newLevel);
-                break;
-            }
-            FUN_003a4220(lVar4, 0, oldStr);
-            FUN_003a4220(lVar4, 1, newStr);
-            scrSetIntReturnVal(1);
-        }
+        goto Render;
+
+    Charm:
+        oldStr = h_camp_getCharmLevelString(oldLevel);
+        newStr = h_camp_getCharmLevelString(newLevel);
+        goto Render;
+
+    Academic:
+        oldStr = h_camp_getAcademicLevelString(oldLevel);
+        newStr = h_camp_getAcademicLevelString(newLevel);
+        goto Render;
+
+    Courage:
+        oldStr = h_camp_getCourageLevelString(oldLevel);
+        newStr = h_camp_getCourageLevelString(newLevel);
+
+    Render:
+        FUN_003a4220(handle, 0, oldStr);
+        FUN_003a4220(handle, 1, newStr);
+        scrSetIntReturnVal(1);
+    } else {
+        scrSetIntReturnVal(0);
+    }
     return 1;
 }
 
@@ -684,7 +694,7 @@ u32 scrComu0035fdb0(void)
         sDat007ce5b8 = data;
         for (i = 0; i < 4; i++) {
             uVar1 = *(u16*)(data + i * 2 + 4);
-            FUN_00171110((s16)uVar1, 2);
+            func_00171110((s16)uVar1, 2);
             FUN_003a4270(handle, i, uVar1);
             FUN_003a4270(handle, i + 0xd, 2);
         }
@@ -738,15 +748,15 @@ u32 scrComu00360020(void)
 // FUN_00360110 NONMATCHING
 u32 scrComu00360110(void)
 {
+    int i;
+    int bVar1;
+    int handle;
+    int uVar2;
     int uVar3;
-    u8 uVar2;
     int d4;
     int slPtr;
     int data;
-    int handle;
     int idx;
-    int i;
-    u8 bVar1;
 
     slPtr = datGetActiveSocialLinkPtr();
     d4 = sDat007ce5d4;
@@ -754,12 +764,12 @@ u32 scrComu00360110(void)
     handle = scrGetMesHandleIdx();
     K_ASSERT(handle >= 0, 0x25e);
     bVar1 = *(u8*)(d4 + slPtr + 0x480);
-    for (i = 0; i < bVar1 + 2; i++) {
+    for (i = 0; bVar1 + 2 > i; i++) {
         idx = i * 2;
         uVar3 = *(s16*)(data + idx + 4);
         uVar2 = *(u8*)(data + i + 0xc);
-        FUN_00171110(uVar3, 2);
-        FUN_003a4270(handle, idx, uVar3);
+        func_00171110(uVar3, 2);
+        FUN_003a4270(handle, idx, (short)uVar3);
         FUN_003a4010(handle, idx + 1, uVar2, 0);
         FUN_003a4270(handle, i + 0xd, 2);
     }
@@ -776,14 +786,14 @@ u32 scrComu00360250(void)
 }
 
 #pragma optimization_level 1
-// FUN_003607a0 NONMATCHING
+// FUN_003607a0
 u32 scrComu003607a0(void)
 {
-    char level;
-    u8 uVar2;
     int uVar3;
-    int lVar4;
     int handle;
+    int level;
+    char uVar2;
+    int lVar4;
 
     uVar3 = scrGetIntPara(0);
     level = 0;
@@ -795,7 +805,7 @@ u32 scrComu003607a0(void)
         level = datGetSocialLinkLevel(uVar3);
     }
     FUN_003a4220(handle, 0, FUN_003c3f80(uVar3));
-    uVar2 = FUN_0016df30(uVar3);
+    uVar2 = func_0016df30(uVar3);
     FUN_003a4220(handle, 1, FUN_0030bbb0(uVar2));
     FUN_003a4010(handle, 2, level, 0);
     return 1;
@@ -897,27 +907,28 @@ u32 scrComu00360cf0(void)
     return 1;
 }
 
-// FUN_00360d40 NONMATCHING
+// FUN_00360d40
 u32 scrComu00360d40(void)
 {
-    u16 personaId;
-    int i;
+    int personaId;
+    int blankSkillIdx;
     int handle;
     u16 skills[14];
     int skillCount;
+    int learnedSkillIdx;
 
     personaId = *(u16*)(sDat007ce5cc + sDat007ce5c8 * 2);
     handle = scrGetMesHandleIdx();
     K_ASSERT(handle >= 0, 0x424);
-    K_ASSERT(sDat007ce5c8 < sDat007ce5d0, 0x427);
+    K_ASSERT(sDat007ce5d0 > sDat007ce5c8, 0x427);
     FUN_003a4010(handle, 0, DAT_007ce420[personaId * 0xe + 3], 0);
     FUN_003a4220(handle, 1, FUN_00173220(personaId));
-    for (i = 0; i < 3; i++) {
-        FUN_003a4220(handle, i + 2, FUN_003c43f0());
+    for (blankSkillIdx = 0; blankSkillIdx < 3; blankSkillIdx++) {
+        FUN_003a4220(handle, blankSkillIdx + 2, FUN_003c43f0());
     }
     FUN_00176fb0(personaId, skills, &skillCount);
-    for (i = 0; i < skillCount; i++) {
-        FUN_003a4220(handle, i + 2, FUN_0030bb40(skills[i]));
+    for (learnedSkillIdx = 0; learnedSkillIdx < skillCount; learnedSkillIdx++) {
+        FUN_003a4220(handle, learnedSkillIdx + 2, FUN_0030bb40(skills[learnedSkillIdx]));
     }
     sDat007ce5c8++;
     return 1;
@@ -928,40 +939,58 @@ u32 scrComu00360ed0(int param_1)
 {
     char cVar1;
     u8 bVar2;
-    u32 result;
-    short sVar4;
+    int sVar4;
     int lVar5;
     int flag;
+    u32 result;
 
     flag = 0;
     lVar5 = FUN_0036f500(*(u32*)(param_1 + 0x38));
     if (lVar5 == 0) {
-        return 1;
+        result = 1;
+        goto ReturnResult;
     }
     cVar1 = *(char*)(param_1 + 0xc);
     if (cVar1 == 2) {
-        bVar2 = *(u8*)(param_1 + 0xe);
-        if (bVar2 < 3) {
-            if (bVar2 == 2) {
-                flag = 0x1000;
-            } else if (bVar2 == 1) {
-                flag = 0x400;
-            }
-            if (*(short*)(param_1 + 10) == 0) {
-                return FUN_003951d0(*(short*)(param_1 + 8) + flag) == 0;
-            }
-            return FUN_003951d0(*(short*)(param_1 + 8) + flag) == 1;
-        }
-        return 0;
+        goto CheckFlagCondition;
     }
     result = 1;
     if (cVar1 == 1) {
-        sVar4 = FUN_0038d6f0(*(u16*)(param_1 + 8));
-        result = *(short*)(param_1 + 10) == sVar4;
-    } else if (cVar1 != 0) {
-        printf("ASSERT!! Comp flag Invalid Value!! objtype =%d\n", *(u32*)(param_1 + 0x38));
-        memset(param_1 + 8, 0, 8);
-        result = 1;
+        goto CheckValueCondition;
     }
+    if (cVar1 == 0) {
+        goto ReturnResult;
+    }
+    goto InvalidCondition;
+
+CheckValueCondition:
+    sVar4 = FUN_0038d6f0(*(short*)(param_1 + 8));
+    result = *(short*)(param_1 + 10) == sVar4;
+    goto ReturnResult;
+
+CheckFlagCondition:
+    bVar2 = *(u8*)(param_1 + 0xe);
+    if (bVar2 >= 3) {
+        result = 0;
+        goto ReturnResult;
+    }
+    if (bVar2 == 2) {
+        flag = 0x1000;
+    } else if (bVar2 == 1) {
+        flag = 0x400;
+    }
+    if (*(short*)(param_1 + 10) == 0) {
+        result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 0;
+    } else {
+        result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 1;
+    }
+    goto ReturnResult;
+
+InvalidCondition:
+    printf("ASSERT!! Comp flag Invalid Value!! objtype =%d\n", *(u32*)(param_1 + 0x38));
+    memset(param_1 + 8, 0, 8);
+    result = 1;
+
+ReturnResult:
     return result;
 }

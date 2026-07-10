@@ -2,6 +2,7 @@
 #define H_PAD_H
 
 #include "Utils.h"
+#include "rw/rwplcore.h"
 #include "sce/libpad.h"
 
 #define HPAD_BTN_L2       SCE_PADL2     // 0x01
@@ -34,40 +35,65 @@ typedef enum
 
 typedef enum
 {
-    // TODO
-    HPAD_STATE_READY = 5,
+    HPAD_STATE_INITIALIZING,
+    HPAD_STATE_WAITING_FOR_MODE,
+    HPAD_STATE_MODE_REQUESTED,
+    HPAD_STATE_CONFIGURING_ACTUATORS,
+    HPAD_STATE_WAITING_FOR_ACTUATORS,
+    HPAD_STATE_READY
 } HPadState;
 
 // 8 bytes
 typedef struct HPadButtons
 {
-    u16 pressed;      // 0x00
-    u16 justPressed;  // 0x02
-    u16 released;     // 0x04
-    u16 justReleased; // 0x06
+    u16 pressed;      // 0x00: current state for btn[0]
+    u16 justPressed;  // 0x02: rising-edge state for btn[0]
+    u16 released;     // 0x04: previous state for btn[0]
+    u16 justReleased; // 0x06: repeat event state for btn[0]
 } HPadButtons;
 
 // 54 bytes
 typedef struct HPad
 {
-    s16 unk_00;         // 0x00
-    u16 state;          // 0x02. See 'HPadState' enum
-    s16 unk_04;         // 0x04
-    s16 unk_06;         // 0x06
-    u16 port;           // 0x08
-    u16 slot;           // 0x0a
-    HPadButtons btn[2]; // 0x0c. Second index is the same as the first one, but ignoring dpad
-    u16 unk_1c;         // 0x1c
-    s8 lstickX;         // 0x1e
-    s8 lstickY;         // 0x1f
-    s8 rstickX;         // 0x20
-    s8 rstickY;         // 0x21
-    u8 unkData[0x14];
+    u16 mainMode;                    // 0x00: last requested pad main mode
+    u16 state;                       // 0x02: HPadState
+    u16 requestedMainMode;           // 0x04
+    u16 unknown06;                   // 0x06
+    u16 port;                        // 0x08
+    u16 slot;                        // 0x0a
+    HPadButtons btn[2];              // 0x0c: raw and virtual button state
+    u16 virtualPreviousPressed;      // 0x1c
+    s8 lstickX;                      // 0x1e
+    s8 lstickY;                      // 0x1f
+    s8 rstickX;                      // 0x20
+    s8 rstickY;                      // 0x21
+    u8 repeatTimer[12];              // 0x22
+    u16 actuator0;                   // 0x2e
+    u16 actuator1;                   // 0x30
+    u16 appliedActuator0;            // 0x32
+    u16 appliedActuator1;            // 0x34
 } HPad;
 
 extern HPad gWorkPads[HPAD_PORT_MAX];
 extern HPad gPads[HPAD_PORT_MAX];
 
-void H_Pad_Init();
+void H_Pad_Init(void);
+void H_Pad_Poll(HPad* pad);
+void H_Pad_Update(void);
+void H_Pad_UpdateButtonStates(HPadPort port);
+void H_Pad_UpdateFaceButtonRepeat(HPadPort port, u16 buttons, u8 repeatIndex);
+void H_Pad_UpdateDirectionalButtonRepeat(HPadPort port, u16 buttons, u8 repeatIndex);
+void H_Pad_UpdateRumble(void);
+void H_Pad_StartRumblePattern(s16 duration, u16 intensity, s16 onFrames, s16 offFrames);
+void H_Pad_StopRumble(void);
+void H_Pad_IgnoreRumbleCallback(void);
+
+void H_Pad_RwFreeRaw(void* memory);
+void* H_Pad_RwAllocateRaw(size_t size);
+void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint);
+void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint);
+RwMemoryFunctions* H_Pad_GetRwMemoryFunctions(void);
+void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint);
+void H_Pad_RwFree(void* memory);
 
 #endif

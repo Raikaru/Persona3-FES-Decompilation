@@ -46,3 +46,9 @@ RwRaster* bsRootGetRaster(u32 id)
 {
     return sRasters[id];
 }
+
+// FUN_00267390
+void* bsRootGetRushRaster(void)
+{
+    return sRushRaster;
+}

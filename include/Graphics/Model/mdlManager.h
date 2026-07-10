@@ -27,6 +27,7 @@ typedef struct HCdvd HCdvd;
 #define MDL_FLAG_STREAMSYNC  (1 << 14) // 0x4000. Synchronous stream read
 
 #define MDLANIM_FLAG_LOOP (1 << 0) // 0x01
+#define MDLANIM_FLAG_FRAMESET (1 << 2) // 0x04. A caller set an explicit frame
 
 #define MDLLOOKAT_FLAG_XYZCS    (1 << 5)  // 0x20. Cutscenes
 #define MDLLOOKAT_FLAG_XYZ      (1 << 6)  // 0x40
@@ -70,6 +71,8 @@ typedef struct MdlAnimEntryTable
     u8 unkData[0x08];
 } MdlAnimEntryTable;
 
+typedef struct MdlAnimResourceSet MdlAnimResourceSet;
+
 // 76 bytes
 typedef struct MdlAnim
 {
@@ -86,12 +89,22 @@ typedef struct MdlAnim
     RtAnimInterpolator* oldInterp;  // 0x24. Old animation data
     RtAnimInterpolator* nextInterp; // 0x28. Animation data of the next animation to play
     MdlAnimEntryTable* table;       // 0x2c
-    void* unk_30;                   // 0x30
+    MdlAnimResourceSet* resources;  // 0x30. Per-animation cloned resources
     u32 keyframeIdx;                // 0x34. Unknown purpose
     RwV3d keyframeVec;              // 0x38. Unknown purpose. Used in a RtAnimKeyFrameApplyCallBack func
     f32 unk_44;                     // 0x44
     f32 unk_48;                     // 0x48
 } MdlAnim;
+// Variable-sized resource tables retained by an animation slot.
+struct MdlAnimResourceSet
+{
+    u16 count;              // 0x00
+    u8 unk_02[0x12];
+    void** primary;         // 0x14
+    u8 unk_18[0x08];
+    void** secondary;       // 0x20
+};
+
 
 // 80 bytes
 typedef struct MdlLookAt
@@ -143,6 +156,14 @@ typedef struct MdlStream
     u8 unk_48;            // 0x48
     u32 isInPacFile;      // 0x4c
 } MdlStream;
+// 48 bytes. Resources shared by model animation and attachment state.
+typedef struct MdlRuntimeData
+{
+    void* refCountedData; // 0x00. Reference count stored at +0x02
+    void* motionData;     // 0x04
+    u8 animationData[0x28];
+} MdlRuntimeData;
+
 
 // 1072 bytes
 struct Model
@@ -163,11 +184,11 @@ struct Model
     void* unk_35c;                  // 0x35c
     u8 unkData2[0x54];
     MdlAttachedWpn attachedWpns[5]; // 0x3b4. Only for 'MODEL_TYPE_BTLCHAR'
-    u8 unkData3[0x30];
+    MdlRuntimeData runtimeData;      // 0x3f0
     Model* next;                    // 0x420
     Model* prev;                    // 0x424
     MdlStream* stream;              // 0x428
-    u8 unkData4[0x08];
+    u8 unkData4[0x04];
 };
 
 extern f32 gFrameDuration;
@@ -178,6 +199,7 @@ Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode);
 Model* mdlCreateFromRmdMemory(u16 type, u16 id, void* rmdMemory, u32 rmdSize, u32 readMode);
 Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode);
 u32 mdlStreamRead(Model* mdl);
+void mdlCopy(const Model* src, Model* dst);
 Model* mdlClone(const Model* mdl);
 void mdlDestroy(Model* mdl);
 void mdl00317730(Model* mdl);

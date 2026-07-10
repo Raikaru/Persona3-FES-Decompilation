@@ -2,17 +2,309 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
+#include "Main/Battle/Cmd/bcm_main.h"
+#include "Main/Battle/Cmd/bpp_main.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/g_data.h"
+
+typedef struct PanelSkillRow
+{
+    u32 flags;
+    u32 handle;
+    u32 type;
+    u32 icon;
+} PanelSkillRow;
+
+static u8* panelWork(void)
+{
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    return gBcmWork;
+}
+
+static u32 panelWork32(u32 offset)
+{
+    return *(u32*)(panelWork() + offset);
+}
+
+static void panelSetWork32(u32 offset, u32 value)
+{
+    *(u32*)(panelWork() + offset) = value;
+}
+
+static u16 panelWork16(u32 offset)
+{
+    return *(u16*)(panelWork() + offset);
+}
+
+static void panelSetWork16(u32 offset, u16 value)
+{
+    *(u16*)(panelWork() + offset) = value;
+}
+
+void FUN_00201880(void);
+void FUN_002024B0(void);
+void FUN_002025E0(void);
+void FUN_00202A10(void);
+void FUN_00203030(void);
+void FUN_002031C0(void);
+void FUN_00203410(void);
+void FUN_00203990(void);
+void FUN_00203C30(void);
+void FUN_00203DE0(void);
+void FUN_00204760(void);
+void FUN_00205000(void);
+u32 FUN_002055F0(u16 id);
+void FUN_002057C0(void);
+void FUN_00205D60(void);
+void FUN_00206170(void);
+void FUN_00206310(void);
+void FUN_00206740(void);
+void FUN_00206E40(void);
+void FUN_00206EB0(void);
+void FUN_00206F70(void);
+void FUN_00207010(void);
+void FUN_00207340(void);
+void FUN_002078A0(void);
+u32 FUN_00207960(u32 id);
+void FUN_002079C0(void);
+void FUN_00207A60(void);
+void FUN_00207AB0(void);
+void FUN_00207B00(void);
+void FUN_00207B50(void);
+void FUN_00207BA0(void);
+void FUN_00202BC0(void);
+void FUN_00202C90(void);
+void FUN_00202D70(void);
+void FUN_00203630(void);
+void FUN_00203760(void);
+void FUN_00203850(void);
+void FUN_00203B70(void);
+void FUN_00204000(void);
+void FUN_00204480(void);
+void FUN_00204AF0(void);
+void FUN_00204BE0(void);
+void FUN_00204CC0(void);
+u32 FUN_002053C0(void);
+void FUN_00205410(void);
+u32 FUN_002054C0(void);
+u16 FUN_00205500(void);
+u16 FUN_00205550(void);
+u16 FUN_002055A0(void);
+u32 FUN_00205650(s16 id);
+void FUN_002056A0(void);
+void FUN_00205700(void);
+void FUN_00205760(void);
+void FUN_002060B0(void);
+void FUN_002063F0(void);
+void FUN_002065A0(void);
+
+void FUN_002082C0(void* context);
+void FUN_00208360(void);
+void FUN_00208570(void* descriptor);
+void FUN_002085E0(void);
+void FUN_00208790(void);
+void FUN_00208860(u16 id);
+void FUN_002094F0(void);
+void FUN_0020FC40(void);
+void FUN_0020FC90(void);
+void FUN_0020FE30(void*, u32, void*);
+void FUN_00222A60(void);
+void FUN_00222B90(void);
+void FUN_00222D60(void);
+void FUN_00229300(void);
+void FUN_00224660(void);
+void FUN_00224860(void);
+void FUN_0022BF60(void);
+void FUN_0022C0E0(void);
+void FUN_002230E0(void);
+void FUN_002254A0(void);
+void FUN_002255F0(void);
+void FUN_00225670(void);
+void FUN_002DB450(u32);
+void FUN_002DB480(void);
+void FUN_002DB9F0(u32, u32);
+void FUN_002DBA80(u32);
+void FUN_003A5540(u32, u32, s32, u32, u32, void*);
+void FUN_003B0170(u32);
+void FUN_003B0970(u32, u32, s32, u32, u32, u32, u32, u32);
+void FUN_003B0D70(u32, u32, u32);
+void FUN_003B0E20(u32, s32);
+void FUN_003B0E70(u32);
+void FUN_003B0E90(u32);
+void FUN_003B2C60(u32);
+void FUN_003C72D0(void);
+void FUN_003C7430(u32);
+void FUN_003C74E0(u32);
+void FUN_003C7D60(u32);
+u32 FUN_0030C0C0(void);
+u32 FUN_003086F0(u32, u16);
+u32 FUN_003083F0(u32, u16);
+u32 FUN_0030BB40(u16);
+u32 FUN_0030BC20(u16);
+u32 FUN_00173220(u16);
+u32 FUN_001775A0(u32);
+u32 FUN_00177790(u32);
+u32 FUN_001756F0(void);
+u32 FUN_0016F380(u32);
+void FUN_0016F3E0(u32, u32);
+void FUN_0021B670(void);
+void FUN_0021C720(void);
+u32 FUN_0022D5550(void);
+u32 FUN_002D5550(void);
+u32 FUN_001FF430(u32);
+void FUN_002C0A50(u32, u32);
+void datSetAiTactic(s16, s16);
+u32 datGetScenarioMode(void);
+void datSetScenarioMode(u32);
+u32 datGetFlag(s32);
+int printf(const char*, ...);
+void* func_0021f410(void);
+void func_00221b60(void);
+void func_0021f140(void);
+void func_0021f150(u32);
+void func_0022c0a0(void);
+void func_0022c1d0(void);
+void func_002230e0(void);
+void func_00224660(void);
+void func_00224860(void);
+void func_002254a0(void);
+void func_002255f0(void);
+void func_00225670(void);
+void func_002082c0(u32);
+void func_00208360(void);
+void func_002083d0(void);
+void func_00208570(void*);
+void func_002085e0(void);
+void func_00208790(void);
+void func_00208860(u16);
+void func_0022bf60(void);
+void func_0023c0a0(void);
+void func_003b0170(u32);
+u32 func_003b0970(u32, ...);
+void func_003b0d70(u32, ...);
+void func_003b0e20(u32, s32);
+void func_003b0e70(u32);
+void func_003b0e90(u32);
+void func_003b2c60(u32);
+u32 func_003a5540(u32, ...);
+void* func_0030c0c0(void);
+u32 func_003086f0(u32, u16);
+u32 func_003083f0(u32, u16);
+u32 func_0030bb40(u16);
+u32 func_0030bc20(u16);
+void* func_00170e90(s16);
+u16 func_00170760(s16, s16);
+const char* func_00171110(s16, s16);
+u32 func_00173220(u16);
+u32 func_001775a0(u32, ...);
+u32 func_00177790(s16);
+u32 func_001756f0(void);
+u32 func_002db450(u32);
+u32 func_002db480(void);
+u32 func_002db9f0(u32, u32);
+u32 func_002dba80(u32);
+u32 func_002d5550(void);
+u32 func_003c72d0(void);
+u32 func_003c7430(u32);
+u32 func_003c74e0(u32);
+u32 func_003c7d60(u32);
+void FUN_0010a4e0(u32, u32, u32, u32);
+u32 FUN_0017d2e0(u16);
+u32 func_00249420(u16, u16, u16);
 
 void FUN_0025d760();
 
+void FUN_001FDDA0(void);
+u32 FUN_001FDDF0(void);
+void FUN_001FDF10(void*);
+u32 FUN_001FE220(void);
+void FUN_001FE650(void*);
+void FUN_001FE810(s32);
+void FUN_001FEAB0(void);
+u32 FUN_001FEEC0(void);
+void FUN_001FEF90(u32);
+void FUN_001FF160(u32);
+void FUN_001FF370(void);
+void FUN_001FF390(void);
+void FUN_001FF3B0(void);
+void FUN_001FF3D0(void);
+void FUN_001FF3F0(void);
+void FUN_001FF410(void);
+u32 FUN_001FF630(u32);
+void FUN_001ff890(void);
+void FUN_001FFC60(void);
+void FUN_001FFF40(void);
+
+static u8* panelMiscWork(void)
+{
+    return *(u8**)0x007CE3EC;
+}
 static KwlnTask* sBtlPanelTask; // 007ce2e4
 
-// FUN_001fd630
+void* FUN_001fd890(KwlnTask*);
+void* FUN_001fdac0(KwlnTask*);
+void FUN_00208ad0(void*);
+void FUN_00201730(void*);
+void bppMain0020ed50(u32*);
+void FUN_0020fe20(void*);
+void FUN_0021b650(void*);
+void FUN_0021b920(void*);
+void FUN_0023f480(void*);
+void FUN_00242c40(void*);
+void FUN_00248490(void*);
+void FUN_00249240(void*);
+void FUN_0024a6c0(void*);
+void FUN_0024c100(void*);
+void FUN_00251050(void*);
+void FUN_00251a70(void*);
+void FUN_00251f20(void*);
+void FUN_00252e60(void*);
+void FUN_0025bdf0(void*);
+void FUN_0025cf00(void*);
+void FUN_00266eb0(void*);
+void FUN_0027b5b0(void*);
+void bppMain0020ed70(void);
+void FUN_0025cf20(void);
+void bpRootDestroyTask(KwlnTask*);
+// FUN_001fd630 NONMATCHING
 KwlnTask* bpRootCreateTasks(KwlnTask* parent)
 {
-    // TODO
+    KwlnTask* task;
+    u32* workData;
+    KwlnTask* drawTask;
 
-    return NULL;
+    workData = (u32*)RwMalloc(0x35030, 0x40000);
+    workData[0] = 0;
+    workData[1] = 0;
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, "battle panel",
+                                          FUN_001fd890, bpRootDestroyTask,
+                                          workData);
+    drawTask = kwlnTaskInitEx("battle panel draw", 0x106f, 1, 2,
+                              FUN_001fdac0, NULL, workData);
+    workData[2] = (u32)drawTask;
+    kwlnTaskAddChild(task, drawTask);
+    sBtlPanelTask = task;
+    FUN_00208ad0(workData + 0x1df8);
+    FUN_00201730(workData + 8);
+    bppMain0020ed50(workData + 0x2fd0);
+    FUN_0020fe20(workData + 0x466c);
+    FUN_0021b650(workData + 0x7020);
+    FUN_0021b920(workData + 0x7023);
+    FUN_0023f480(workData + 0x7048);
+    FUN_00242c40(workData + 0xad88);
+    FUN_00248490(workData + 0xca44);
+    FUN_00249240(workData + 0xcbc8);
+    FUN_0024a6c0(workData + 0xcbcc);
+    FUN_0024c100(workData + 0xcbd0);
+    FUN_00251050(workData + 0xccc5);
+    FUN_00251a70(workData + 0xccca);
+    FUN_00251f20(workData + 0xccd0);
+    FUN_00252e60(workData + 0xcd94);
+    FUN_0025bdf0(workData + 0xd06c);
+    FUN_00266eb0(workData + 0xd3c0);
+    FUN_0027b5b0(workData + 0xd3c4);
+    bppMain0020ed70();
+    return task;
 }
 
 // FUN_001fdbe0
@@ -35,12 +327,12 @@ void FUN_00242c60();
 void FUN_0023f500();
 void FUN_00208b20();
 void FUN_00201780();
-void FUN_0020edc0();
+void bppMain0020edc0();
 void FUN_00215770();
 void FUN_0021bb60();
 void FUN_0027b5d0();
 
-// FUN_001fdc00
+// FUN_001fdc00 NONMATCHING
 void bpRootDestroy(KwlnTask* btlPanelTask)
 {
     u32* workData;
@@ -48,12 +340,9 @@ void bpRootDestroy(KwlnTask* btlPanelTask)
     workData = (u32*)btlPanelTask->workData;
     K_ASSERT((~*workData & 0x400) != 0, 0x182);
     FUN_00266f00();
-    FUN_0025cf10();
     FUN_0025be00();
-    FUN_00252e80();
     FUN_00251f30();
     FUN_002484a0();
-    FUN_00251060();
     FUN_0021b660();
     basShutdown();
     FUN_00249250();
@@ -61,7 +350,7 @@ void bpRootDestroy(KwlnTask* btlPanelTask)
     FUN_0023f500();
     FUN_00208b20();
     FUN_00201780();
-    FUN_0020edc0();
+    bppMain0020edc0();
     FUN_00215770(workData + 0x466c);
     FUN_0021bb60(workData + 0x7023);
     FUN_0027b5d0();
@@ -81,7 +370,6 @@ u32 bpRoot001feb30()
     return *(u32*)sBtlPanelTask->workData & 0x1000;
 }
 
-void FUN_001ff890();
 
 // FUN_001fdd60
 void bpRoot001fdd60()
@@ -252,7 +540,7 @@ void bpRoot001fe350()
 }
 
 void FUN_00201c30();
-void FUN_0020fc40();
+void bppMain0020fc40();
 void FUN_002085e0();
 void FUN_00208b30();
 
@@ -266,7 +554,7 @@ void bpRoot001fe120()
     {
         FUN_00201c30();
         *flags |= 0x40000;
-        FUN_0020fc40();
+        bppMain0020fc40();
         FUN_002085e0();
     }
     FUN_00208b30();
@@ -335,7 +623,7 @@ void bpRoot001fe3b0(void* param_1)
 }
 
 void FUN_00201e00();
-void FUN_0020fc90();
+void bppMain0020fc90();
 void FUN_00208630();
 void FUN_002094f0();
 
@@ -349,7 +637,7 @@ void bpRoot001fe1a0()
     {
         FUN_00201e00();
         *flags &= ~0x40000;
-        FUN_0020fc90();
+        bppMain0020fc90();
         FUN_00208630();
     }
     FUN_002094f0();
@@ -369,20 +657,20 @@ void bpRoot001fec50()
     *flags |= 0x8000;
 }
 
-void FUN_0020f3b0();
+void bppMain0020f3b0();
 
 // FUN_001fdd20
 void bpRoot001fdd20()
 {
-    FUN_0020f3b0();
+    bppMain0020f3b0();
 }
 
-void FUN_0020f570();
+void bppMain0020f570();
 
 // FUN_001fdd40
 void bpRoot001fdd40()
 {
-    FUN_0020f570();
+    bppMain0020f570();
 }
 
 void FUN_00244120();
@@ -537,12 +825,10 @@ void bpRoot001fee80()
     FUN_00207dd0();
 }
 
-void FUN_0020f9a0();
-
 // FUN_001feea0
-void bpRoot001feea0()
+void bpRoot001feea0(s16 pcId)
 {
-    FUN_0020f9a0();
+    bppMain0020f9a0(pcId);
 }
 
 void FUN_0025c190();
@@ -571,10 +857,9 @@ void bpRoot001fef10()
 
 void FUN_00251f40();
 
-// FUN_001fef30
+// FUN_001fef30 NONMATCHING
 void bpRoot001fef30()
 {
-    FUN_00251f40();
 }
 
 void FUN_00252e90();
@@ -665,4 +950,2812 @@ void bpRoot001feb50()
 void bpRoot001ff350()
 {
     FUN_0025d760();
+}
+static u32 panelDataType(u16 id)
+{
+    void* record;
+
+    record = func_00170e90((s16)id);
+    if (record == NULL)
+    {
+        return 0;
+    }
+    return ((u8*)record)[3];
+}
+
+void bpMisc001ff500(u32);
+u32 bpMisc001ff740(void);
+void bcmPanel00222a60(void);
+void bcmPanel00222b90(void);
+void bcmPanel00222930(void);
+void bcmPanel00222d60(void);
+void bcmPanel0022bf60(void);
+void func_0021f0c0(void*);
+
+// FUN_002016B0 NONMATCHING
+void FUN_002016B0(void)
+{
+    u32 state;
+
+    state = panelWork32(0x10);
+    if (state != 9 && state != 10 && state != 11)
+    {
+        func_0021f410();
+        func_00221b60();
+    }
+}
+
+// FUN_00201730
+void FUN_00201730(void* work)
+{
+    u8* p;
+
+    p = (u8*)work;
+    *(u32*)p = 0;
+    *(u32*)(p + 0x77a0) = 0;
+    *(u32*)(p + 8) = 0;
+    *(u32*)(p + 0x20) = bpMisc001ff740();
+    func_0021f0c0(p + 0x430);
+    gBcmWork = p;
+}
+
+// FUN_00201780 NONMATCHING
+void FUN_00201780(void)
+{
+    u32 flags;
+
+    flags = panelWork32(0);
+    if (flags & 0x800000)
+    {
+        func_002083d0();
+    }
+    if (flags & 0x2000)
+    {
+        FUN_00206EB0();
+    }
+    if (flags & 0x1000)
+    {
+        FUN_00206310();
+    }
+    if (flags & 2)
+    {
+        FUN_00202BC0();
+    }
+    if (flags & 4)
+    {
+        bcm00203360();
+    }
+    if (flags & 8)
+    {
+        FUN_00203B70();
+    }
+    if (flags & 0x10)
+    {
+        FUN_00204BE0();
+    }
+    func_0021f140();
+    gBcmWork = NULL;
+}
+
+// FUN_00201880 NONMATCHING
+void FUN_00201880(void)
+{
+    u32 i;
+    u32 request;
+    u8* entry;
+    u32 table[] = { 0x20, 1, 2, 4, 8, 0x10, 0x40 };
+
+    for (i = 0; i < 7; i++)
+    {
+        entry = panelWork() + i * 4;
+        *(u32*)(entry + 0x1640) &= ~2u;
+        request = 0;
+        if (panelWork32(0xc) & table[i])
+        {
+            request = 1;
+        }
+        if (request)
+        {
+            *(u32*)(entry + 0x1640) |= 1;
+        }
+    }
+    if (panelWork32(0) & 0x800000)
+    {
+        func_00208360();
+    }
+    request = func_003a5540(100, 100, -0x4e, 2, 6,
+                            *(void**)(panelWork() + 0x7790),
+                            panelWork32(0x24));
+    func_002082c0(request);
+    panelSetWork32(0x6d28, 0);
+}
+
+// FUN_00201A50 NONMATCHING
+void FUN_00201A50(void)
+{
+    FUN_00201880();
+    panelSetWork32(0, panelWork32(0) | 0x40);
+    func_0021f150(panelWork32(0x24));
+    FUN_0010a4e0(1, 0xf, 2, 0x11);
+    panelSetWork32(0x10, 0);
+}
+
+// FUN_00201AF0 NONMATCHING
+u32 FUN_00201AF0(void)
+{
+    u32 flags;
+
+    flags = panelWork32(0);
+    return ((flags & 1) != 0 || (flags & 0x20000000) != 0);
+}
+
+// FUN_00201B50 NONMATCHING
+void FUN_00201B50(void)
+{
+    u32 flags;
+
+    panelSetWork32(0, panelWork32(0) | 1);
+    FUN_00201880();
+    flags = panelWork32(0);
+    if (flags & 2) FUN_002025E0();
+    if (flags & 4) FUN_002031C0();
+    if (flags & 8) FUN_00203C30();
+    if (flags & 0x10) FUN_00204CC0();
+}
+
+// FUN_00201C30 NONMATCHING
+void FUN_00201C30(void)
+{
+    u32 flags;
+
+    panelSetWork32(0, panelWork32(0) | 0x20000000);
+    FUN_00201880();
+    flags = panelWork32(0);
+    if (flags & 2) FUN_002025E0();
+    if (flags & 4) FUN_002031C0();
+    if (flags & 8) FUN_00203C30();
+    if (flags & 0x10) FUN_00204CC0();
+}
+
+// FUN_00201D10 NONMATCHING
+void FUN_00201D10(void)
+{
+    u32 flags;
+
+    flags = panelWork32(0) & ~1u;
+    panelSetWork32(0, flags | 0x40);
+    FUN_00201880();
+    flags = panelWork32(0);
+    if (flags & 2) FUN_002025E0();
+    if (flags & 4) FUN_002031C0();
+    if (flags & 8) FUN_00203C30();
+    if (flags & 0x10) FUN_00204CC0();
+}
+
+// FUN_00201E00 NONMATCHING
+void FUN_00201E00(void)
+{
+    u32 flags;
+
+    flags = panelWork32(0) & ~0x20000000u;
+    panelSetWork32(0, flags | 0x40);
+    FUN_00201880();
+    flags = panelWork32(0);
+    if (flags & 2) FUN_002025E0();
+    if (flags & 4) FUN_002031C0();
+    if (flags & 8) FUN_00203C30();
+    if (flags & 0x10) FUN_00204CC0();
+}
+
+// FUN_00201EF0 NONMATCHING
+void FUN_00201EF0(void)
+{
+    DatPersonaWork* persona;
+    u16* skills;
+    u32 count;
+    u32 i;
+    u32 found;
+    u32* work;
+
+    work = (u32*)panelWork();
+    persona = datPersonaGetByPcId(1);
+    count = datPersonaCountValidSkills(persona);
+    skills = datPersonaGetSkills(persona);
+    found = 0;
+    for (i = 0; i < count; i++)
+    {
+        if (FUN_002055F0(skills[i]))
+        {
+            found = 1;
+            break;
+        }
+    }
+    if (func_0030c0c0() == NULL && i == count)
+    {
+        work[0] |= 0x80;
+    }
+    else if ((work[0x77a0 / 4] & 2) == 0)
+    {
+        work[3] |= 1;
+    }
+    (void)found;
+}
+
+static u32 panelSkillAccept(u16 id)
+{
+    return FUN_002055F0(id);
+}
+
+static PanelSkillRow* panelSkillRow(u32 index)
+{
+    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x2d0);
+}
+
+// FUN_00202010 NONMATCHING
+void FUN_00202010(void)
+{
+    u8* p;
+    DatPersonaWork* persona;
+    u16* skills;
+    u32 count;
+    u32 i;
+    u32 out;
+    u32 selected;
+    PanelSkillRow* row;
+    u32 icon;
+    u32* rec;
+
+    p = panelWork();
+    K_ASSERT((*(u32*)p & 2) != 0, 0x7c0);
+    persona = datPersonaGetByPcId(1);
+    count = datPersonaCountValidSkills(persona);
+    skills = datPersonaGetSkills(persona);
+    out = 0;
+    if (func_0030c0c0() != NULL)
+    {
+        rec = (u32*)(p + out * 8);
+        rec[0x28 / 4] = 2;
+        rec[0x2c / 4] = skills[0];
+        if (func_003086f0(*(u32*)(p + 0xa2c), (u16)rec[0x2c / 4]))
+        {
+            rec[0x28 / 4] |= 1;
+        }
+        out++;
+    }
+    for (i = 0; i < count && out < 10; i++)
+    {
+        if (!panelSkillAccept(skills[i]))
+        {
+            continue;
+        }
+        rec = (u32*)(p + out * 8);
+        rec[0x28 / 4] = 0;
+        rec[0x2c / 4] = skills[i];
+        if (func_003086f0(*(u32*)(p + 0xa2c), skills[i]))
+        {
+            rec[0x28 / 4] |= 1;
+        }
+        out++;
+    }
+    K_ASSERT(out != 0, 0x7e3);
+    K_ASSERT(out < 10, 0x7e4);
+    panelSetWork32(0x74, out);
+    panelSetWork32(0x70, out < 5 ? out : 4);
+    panelSetWork32(0x7658, 0);
+    panelSetWork32(0x7660, panelWork32(0x70));
+    panelSetWork32(0x7668, panelWork32(0x74));
+    func_00208570(panelWork() + 0x7658);
+    selected = 0;
+    if (datGetFlag(0x186) && FUN_0016F380(0x31))
+    {
+        for (i = 0; i < out; i++)
+        {
+            if (panelWork16(0x2c + i * 8) == (u16)FUN_0016F380(0x31))
+            {
+                selected = i;
+                break;
+            }
+        }
+    }
+    panelSetWork32(0x7664, selected);
+    panelSetWork32(0x765c, selected > 3 ? selected - 3 : 0);
+    FUN_002024B0();
+    for (i = 0; i < panelWork32(0x3ac); i++)
+    {
+        row = panelSkillRow(i);
+        row->flags = 0;
+        if (i < panelWork32(0x70))
+        {
+            rec = (u32*)(p + (panelWork32(0x765c) + i) * 8);
+            row->handle = rec[0x78 / 4];
+            row->type = (rec[0x28 / 4] & 2) ? 1 : 0;
+            icon = func_003083f0(*(u32*)(p + 0xa2c), (u16)rec[0x2c / 4]);
+            row->icon = icon;
+        }
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, panelWork32(0x70));
+    panelSetWork32(0x6498, panelWork32(0x7664));
+    panelSetWork32(0x649c, panelWork32(0x765c));
+    panelSetWork32(0x64a4, panelWork32(0x74));
+    panelSetWork32(0x6d24, 0);
+    panelSetWork32(0x6d28, 0);
+    if (bcm00207930((u16)panelWork16(0x2c + panelWork32(0x7664) * 8)))
+    {
+        panelSetWork32(0x6d28, 1);
+        panelSetWork32(0x6d24, FUN_00207960(panelWork16(0x2c + panelWork32(0x7664) * 8)));
+    }
+    bcmPanel00222a60();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x10, 1);
+}
+
+// FUN_002024B0 NONMATCHING
+void FUN_002024B0(void)
+{
+    u32 i;
+    u32 handle;
+    u16 id;
+    u32 count;
+
+    func_003b0e70(1);
+    func_003b0e90(2);
+    count = panelWork32(0x70);
+    for (i = 0; i < count; i++)
+    {
+        id = panelWork16(0x2c + i * 8);
+        handle = func_003b0970(func_0030bb40(id), 2, i == 0 ? 6 : 0, 0, 0);
+        func_003b2c60(handle);
+        func_003b0e20(handle, -1);
+        *(u32*)(panelWork() + 0x78 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0, panelWork32(0) | 2);
+}
+
+// FUN_002025E0 NONMATCHING
+void FUN_002025E0(void)
+{
+    u32 i;
+    u32 start;
+    u32* rec;
+    PanelSkillRow* row;
+    u16 id;
+
+    K_ASSERT((panelWork32(0) & 2) != 0, 0x87c);
+    start = panelWork32(0x765c);
+    for (i = 0; i < panelWork32(0x70); i++)
+    {
+        rec = (u32*)(panelWork() + (start + i) * 8);
+        row = panelSkillRow(i);
+        row->flags = 0;
+        row->handle = rec[0x78 / 4];
+        row->flags |= rec[0x28 / 4] & 3;
+        id = (u16)rec[0x2c / 4];
+        row->type = panelDataType(id) == 2 ? 1 : 0;
+        row->icon = func_003083f0(*(u32*)(panelWork() + 0xa2c), id);
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, panelWork32(0x70));
+    panelSetWork32(0x6498, panelWork32(0x7664));
+    panelSetWork32(0x649c, panelWork32(0x765c));
+    panelSetWork32(0x64a4, panelWork32(0x74));
+    panelSetWork32(0x6d28, 0);
+    if (bcm00207930(FUN_00205500()))
+    {
+        panelSetWork32(0x6d28, 1);
+        panelSetWork32(0x6d24, FUN_00207960(FUN_00205500()));
+    }
+    bcmPanel00222b90();
+}
+
+// FUN_00202830 NONMATCHING
+void FUN_00202830(void)
+{
+    u32* p;
+    u32* rec;
+    u16 id;
+    u32 handle;
+
+    p = (u32*)panelWork();
+    p[0] |= 0x20;
+    id = FUN_00205500();
+    handle = func_003b0970(func_0030bb40(id), 2, 6, 0, 0);
+    p[0x88 / 4] = handle;
+    p[0x7130 / 4] = 0;
+    p[0x7134 / 4] = handle;
+    rec = p + p[0x7664] * 2;
+    p[0x7130 / 4] = rec[0x28 / 4] & 3;
+    p[0x7138 / 4] = panelDataType(id);
+    p[0x713c / 4] = func_003083f0(p[0xa2c / 4], id);
+    func_0022bf60();
+    FUN_0016F3E0(0x31, id);
+}
+
+// FUN_00202A10 NONMATCHING
+void FUN_00202A10(void)
+{
+    u32 i;
+    u32 count;
+    u32 handle;
+    u16 id;
+
+    count = panelWork32(0x70);
+    for (i = 0; i < count; i++)
+    {
+        handle = *(u32*)(panelWork() + 0x78 + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x78 + i * 4) = 0;
+    }
+    if (panelWork32(0) & 0x800000)
+    {
+        func_00208360();
+    }
+    func_003c7d60(7);
+    for (i = 0; i < count; i++)
+    {
+        id = panelWork16(0x2c + i * 8);
+        handle = func_003b0970(func_0030bb40(id), 2,
+                               i == panelWork32(0x7664) - panelWork32(0x765c) ? 6 : 0,
+                               0, 0);
+        *(u32*)(panelWork() + 0x78 + i * 4) = handle;
+    }
+    panelSetWork32(0, panelWork32(0) | 2);
+}
+
+// FUN_00202BC0 NONMATCHING
+void FUN_00202BC0(void)
+{
+    u32 i;
+
+    K_ASSERT((panelWork32(0) & 2) != 0, 0x910);
+    for (i = 0; i < panelWork32(0x70); i++)
+    {
+        if (*(u32*)(panelWork() + 0x78 + i * 4) != 0)
+            func_003b0170(*(u32*)(panelWork() + 0x78 + i * 4));
+    }
+    if (panelWork32(0) & 0x20)
+    {
+        func_003b0170(panelWork32(0x88));
+    }
+    panelSetWork32(0, panelWork32(0) & ~3u);
+}
+static PanelSkillRow* panelItemRow(u32 index)
+{
+    return (PanelSkillRow*)(panelWork() + 0x4a90 + index * 0x310);
+}
+
+// FUN_00202C90 NONMATCHING
+void FUN_00202C90(void)
+{
+    u32 id;
+    u32 found;
+
+    found = 0;
+    for (id = 0xfa0; id < 0x107f; id++)
+    {
+        if (FUN_00205650((s16)id) &&
+            func_00170760(1, (s16)id) != 0)
+        {
+            found = 1;
+            break;
+        }
+    }
+    if (!found)
+    {
+        panelSetWork32(0, panelWork32(0) | 0x100);
+    }
+    else if ((panelWork32(0x77a0) & 4) == 0)
+    {
+        panelSetWork32(0xc, panelWork32(0xc) | 2);
+    }
+}
+
+// FUN_00202D70 NONMATCHING
+void FUN_00202D70(void)
+{
+    u32 id;
+    u32 out;
+    u32 i;
+    u32 visible;
+    u16 selected;
+    PanelSkillRow* row;
+
+    out = 0;
+    for (id = 0xfa0; id < 0x107f && out < 0x100; id++)
+    {
+        if (FUN_00205650((s16)id) &&
+            func_00170760(1, (s16)id) != 0)
+        {
+            panelSetWork16(0x9c + out * 2, (u16)id);
+            out++;
+        }
+    }
+    panelSetWork32(0x260, out);
+    FUN_00203030();
+    panelSetWork32(0x768c, 0);
+    panelSetWork32(0x7694, panelWork32(0x25c));
+    panelSetWork32(0x769c, panelWork32(0x260));
+    func_00208570(panelWork() + 0x768c);
+    selected = 0;
+    if (datGetFlag(0x186) && FUN_0016F380(0x32))
+    {
+        for (i = 0; i < out; i++)
+        {
+            if (panelWork16(0x9c + i * 2) == (u16)FUN_0016F380(0x32))
+            {
+                selected = (u16)i;
+                break;
+            }
+        }
+    }
+    panelSetWork32(0x7698, selected);
+    panelSetWork32(0x7690, selected > 3 ? selected - 3 : 0);
+    visible = panelWork32(0x25c);
+    for (i = 0; i < visible; i++)
+    {
+        row = panelItemRow(i);
+        row->flags = 0;
+        row->handle = *(u32*)(panelWork() + 0x8c + i * 4);
+        row->type = 0;
+        row->icon = func_00170760(1, panelWork16(0x9c + i * 2));
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, visible);
+    panelSetWork32(0x6498, panelWork32(0x7698));
+    panelSetWork32(0x649c, panelWork32(0x7690));
+    panelSetWork32(0x64a4, panelWork32(0x260));
+    panelSetWork32(0x6d28, 0);
+    bcmPanel00222930();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x10, 2);
+}
+
+// FUN_00203030 NONMATCHING
+void FUN_00203030(void)
+{
+    u32 i;
+    u32 count;
+    u32 handle;
+    const char* name;
+
+    count = panelWork32(0x260);
+    for (i = 0; i < panelWork32(0x25c); i++)
+    {
+        handle = *(u32*)(panelWork() + 0x8c + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x8c + i * 4) = 0;
+    }
+    func_003b0e70(1);
+    func_003b0e90(2);
+    if (count > 4) count = 4;
+    for (i = 0; i < count; i++)
+    {
+        name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
+        handle = func_003b0970((u32)name, 2, i == 0 ? 6 : 0, 0, 0);
+        *(u32*)(panelWork() + 0x8c + i * 4) = handle;
+    }
+    panelSetWork32(0x25c, count);
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0, panelWork32(0) | 4);
+}
+
+// FUN_002031C0 NONMATCHING
+void FUN_002031C0(void)
+{
+    u32 i;
+    u32 start;
+    u16 id;
+    PanelSkillRow* row;
+
+    K_ASSERT((panelWork32(0) & 4) != 0, 0x9e0);
+    FUN_00203410();
+    start = panelWork32(0x7690);
+    for (i = 0; i < panelWork32(0x25c) && i < 4; i++)
+    {
+        id = panelWork16(0x9c + (start + i) * 2);
+        row = panelItemRow(i);
+        row->flags = 0;
+        row->handle = *(u32*)(panelWork() + 0x8c + i * 4);
+        row->type = 0;
+        row->icon = func_00170760(1, id);
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, panelWork32(0x25c));
+    panelSetWork32(0x6498, panelWork32(0x7698));
+    panelSetWork32(0x649c, panelWork32(0x7690));
+    panelSetWork32(0x64a4, panelWork32(0x260));
+    panelSetWork32(0x6d28, 0);
+    id = FUN_00205550();
+    id = func_0030bc20(id);
+    if (bcm00207930(id))
+    {
+        panelSetWork32(0x6d28, 1);
+        panelSetWork32(0x6d24, FUN_00207960(id));
+    }
+    bcmPanel00222d60();
+}
+
+// FUN_00203410 NONMATCHING
+void FUN_00203410(void)
+{
+    u32 i;
+    u32 count;
+    u32 handle;
+    const char* name;
+
+    count = panelWork32(0x260);
+    for (i = 0; i < panelWork32(0x25c); i++)
+    {
+        handle = *(u32*)(panelWork() + 0x8c + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x8c + i * 4) = 0;
+    }
+    if (panelWork32(0) & 0x800000)
+    {
+        func_00208360();
+    }
+    func_003c7d60(5);
+    for (i = 0; i < count && i < 4; i++)
+    {
+        name = func_00171110((s16)panelWork16(0x9c + i * 2), 0);
+        handle = func_003b0970((u32)name, 2,
+                               i == panelWork32(0x7698) - panelWork32(0x7690) ? 6 : 0,
+                               0, 0);
+        *(u32*)(panelWork() + 0x8c + i * 4) = handle;
+    }
+    panelSetWork32(0x25c, count < 4 ? count : 4);
+}
+
+// FUN_00203630 NONMATCHING
+void FUN_00203630(void)
+{
+    u32* p;
+    u16 id;
+    u32 handle;
+
+    p = (u32*)panelWork();
+    p[0] |= 0x20;
+    id = FUN_00205550();
+    handle = func_003b0970((u32)func_00171110((s16)id, 0), 2, 6, 0, 0);
+    p[0x264 / 4] = handle;
+    p[0x7130 / 4] = handle;
+    p[0x7134 / 4] = func_00170760(1, id);
+    func_0022c0a0();
+    FUN_0016F3E0(0x32, id);
+}
+
+// FUN_00203760 NONMATCHING
+void FUN_00203760(void)
+{
+    u32 i;
+    u32 count;
+    u16 heroId;
+    u32 found;
+    DatPersonaWork* persona;
+
+    heroId = datPersonaGetByPcId(1)->id;
+    count = func_001756f0();
+    found = 0;
+    for (i = 0; i < count; i++)
+    {
+        persona = datPersonaGetHeroPersona((s16)i);
+        if (persona != NULL && persona->id == heroId)
+        {
+            found = 1;
+            break;
+        }
+    }
+    if (!found)
+    {
+        panelSetWork32(0, panelWork32(0) | 0x400);
+    }
+    else if ((panelWork32(0x77a0) & 8) == 0)
+    {
+        panelSetWork32(0xc, panelWork32(0xc) | 8);
+    }
+}
+
+// FUN_00203850 NONMATCHING
+void FUN_00203850(void)
+{
+    u32 i;
+    u32 count;
+    PanelSkillRow* row;
+    u32 index;
+
+    FUN_00203990();
+    panelSetWork32(0x76c0, 0);
+    panelSetWork32(0x76c4, 0);
+    panelSetWork32(0x76cc, 0);
+    panelSetWork32(0x76c8, panelWork32(0x2d8));
+    panelSetWork32(0x76d0, panelWork32(0x2dc));
+    func_00208570(panelWork() + 0x76c0);
+    count = panelWork32(0x2d8);
+    for (i = 0; i < count && i < 4; i++)
+    {
+        index = panelWork32(0x76c4) + i;
+        row = panelItemRow(i);
+        row->flags = 0;
+        row->handle = *(u32*)(panelWork() + 0x2c8 + i * 4);
+        row->type = 0;
+        row->icon = *(u32*)(panelWork() + 0x26c + index * 8);
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, count);
+    panelSetWork32(0x6498, panelWork32(0x76cc));
+    panelSetWork32(0x649c, panelWork32(0x76c4));
+    panelSetWork32(0x64a4, panelWork32(0x2dc));
+    bcmPanel00224660();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x14, 0);
+    panelSetWork32(0x10, 3);
+}
+
+// FUN_00203990 NONMATCHING
+void FUN_00203990(void)
+{
+    u32 i;
+    u32 count;
+    u16 heroId;
+    DatPersonaWork* persona;
+    u32 handle;
+
+    heroId = datPersonaGetByPcId(1)->id;
+    *(u16*)(panelWork() + 0x268) = heroId;
+    *(u32*)(panelWork() + 0x26c) = func_00173220(heroId);
+    count = 1;
+    for (i = 0; i < func_001756f0() && count < 12; i++)
+    {
+        persona = datPersonaGetHeroPersona((s16)i);
+        if (persona == NULL || persona->id == heroId) continue;
+        *(u16*)(panelWork() + 0x268 + count * 8) = persona->id;
+        *(u32*)(panelWork() + 0x26c + count * 8) = func_00173220(persona->id);
+        count++;
+    }
+    panelSetWork32(0x2dc, count);
+    panelSetWork32(0x2d8, count < 5 ? count : 4);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < panelWork32(0x2d8); i++)
+    {
+        handle = func_003b0970(*(u32*)(panelWork() + 0x26c + i * 8),
+                               2, i == 0 ? 6 : 0, 0, 0);
+        func_003b0d70(handle, 0x730, i * 0x48);
+        func_003b2c60(handle);
+        func_003b0e20(handle, -1);
+        *(u32*)(panelWork() + 0x2c8 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0, panelWork32(0) | 8);
+}
+
+// FUN_00203B70 NONMATCHING
+void FUN_00203B70(void)
+{
+    u32 i;
+
+    K_ASSERT((panelWork32(0) & 8) != 0, 0xaf6);
+    for (i = 0; i < panelWork32(0x2d8); i++)
+    {
+        if (*(u32*)(panelWork() + 0x2c8 + i * 4) != 0)
+            func_003b0170(*(u32*)(panelWork() + 0x2c8 + i * 4));
+    }
+    panelSetWork32(0, panelWork32(0) & ~9u);
+}
+
+// FUN_00203C30 NONMATCHING
+void FUN_00203C30(void)
+{
+    u32 i;
+    u32 start;
+    u32 count;
+    PanelSkillRow* row;
+    u32 index;
+
+    K_ASSERT((panelWork32(0) & 8) != 0, 0xb07);
+    FUN_00203DE0();
+    start = panelWork32(0x76c4);
+    count = panelWork32(0x2d8);
+    for (i = 0; i < count && i < 4; i++)
+    {
+        index = start + i;
+        row = panelItemRow(i);
+        row->flags = 0;
+        row->handle = *(u32*)(panelWork() + 0x2c8 + i * 4);
+        row->type = 0;
+        row->icon = *(u32*)(panelWork() + 0x26c + index * 8);
+    }
+    panelSetWork32(0x7640, 0);
+    panelSetWork32(0x64a0, count);
+    panelSetWork32(0x6498, panelWork32(0x76cc));
+    panelSetWork32(0x649c, panelWork32(0x76c4));
+    panelSetWork32(0x64a4, panelWork32(0x2dc));
+    bcmPanel00224860();
+}
+
+// FUN_00203DE0 NONMATCHING
+void FUN_00203DE0(void)
+{
+    u32 i;
+    u32 count;
+    u32 selected;
+    u16 heroId;
+    u16 id;
+    u32 handle;
+    s32 tint;
+
+    heroId = datPersonaGetByPcId(1)->id;
+    count = panelWork32(0x2d8);
+    selected = panelWork32(0x76cc) - panelWork32(0x76c4);
+    for (i = 0; i < count; i++)
+    {
+        id = panelWork16(0x268 + (panelWork32(0x76c4) + i) * 8);
+        handle = *(u32*)(panelWork() + 0x2c8 + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        handle = func_003b0970(*(u32*)(panelWork() + 0x26c +
+                                        (panelWork32(0x76c4) + i) * 8),
+                               2, (i == selected || id == heroId) ? 6 : 0,
+                               0, 0);
+        func_003b0d70(handle, 0x730, i * 0x48);
+        func_003b2c60(handle);
+        if (id == heroId && i == selected)
+            tint = (s32)0xffe678ff;
+        else if (i == selected)
+            tint = (s32)0x785a28ff;
+        else
+            tint = -1;
+        func_003b0e20(handle, tint);
+        *(u32*)(panelWork() + 0x2c8 + i * 4) = handle;
+    }
+}
+// FUN_00204000 NONMATCHING
+void FUN_00204000(void)
+{
+    u8* p;
+    u8* entry;
+    u32 count;
+    u32 i;
+    u32 flags;
+    u32 state;
+    u32 row;
+
+    p = panelWork();
+    K_ASSERT((*(u32*)p & 0x10) != 0, 0xb85);
+    count = 0;
+    entry = *(u8**)(p + 0x150);
+    while (entry != NULL && count < 16)
+    {
+        if ((*(u32*)(entry + 0x9c) & 8) == 0 &&
+            *(u16*)(*(u32*)(entry + 0xa2c) + 2) != 1)
+        {
+            *(u32*)(p + 0x2e0 + count * 0x18) = 0;
+            *(u32*)(p + 0x2e4 + count * 0x18) = 1;
+            *(u32*)(p + 0x2e8 + count * 0x18) = *(u32*)(entry + 0xa8);
+            *(u16*)(p + 0x2ec + count * 0x18) = *(u16*)(*(u32*)(entry + 0xa2c) + 2);
+            *(u32*)(p + 0x2f0 + count * 0x18) =
+                (u32)datGetAiTactic((s16)*(u16*)(*(u32*)(entry + 0xa2c) + 2));
+            count++;
+        }
+        entry = *(u8**)(entry + 0xa34);
+    }
+    for (i = 0; i < count; i++)
+    {
+        state = *(u32*)(p + 0x2e4 + i * 0x18);
+        if (state == 1 && *(u32*)(p + 0x2f0 + i * 0x18) == 10 &&
+            datGetScenarioMode() != 0)
+        {
+            *(u32*)(p + 0x2e0 + i * 0x18) = 0;
+            *(u32*)(p + 0x2e4 + i * 0x18) = 2;
+        }
+    }
+    if (count > 1)
+    {
+        *(u32*)(p + 0x2e0) = 0;
+        *(u32*)(p + 0x2e4) = 0;
+    }
+    flags = panelWork32(0) & ~0x4001u;
+    flags &= ~0x8000u;
+    flags &= ~0x10000u;
+    flags &= ~0x20000u;
+    flags &= ~0x40000u;
+    flags &= ~0x80000u;
+    panelSetWork32(0, flags);
+    if (func_002db450(2))
+        panelSetWork32(0, panelWork32(0) | 0x24000);
+    if (func_002db450(1))
+        panelSetWork32(0, panelWork32(0) | 0x48000);
+    if (func_002db450(0))
+        panelSetWork32(0, panelWork32(0) | 0x810000);
+    if (datGetFlag(0x1300))
+        panelSetWork32(0, panelWork32(0) | 0x100000);
+    if (func_002db480())
+        panelSetWork32(0, panelWork32(0) | 0x200000);
+    panelSetWork32(0x77b0, func_002db480());
+    row = panelWork32(0x20);
+    if (row != 2)
+    {
+        panelSetWork32(0x3a8, count);
+        panelSetWork32(0x3ac, count > 7 ? 7 : count);
+    }
+    else
+    {
+        panelSetWork32(0x3a8, 1);
+        panelSetWork32(0x3ac, 1);
+    }
+    if ((panelWork32(0x77a0) & 0x40) == 0)
+    {
+        if (panelWork32(0x3ac) != 0)
+            panelSetWork32(0xc, panelWork32(0xc) | 4);
+    }
+    else if (panelWork32(0x3ac) == 0)
+    {
+        panelSetWork32(0, panelWork32(0) | 0x200);
+    }
+}
+
+// FUN_00204480 NONMATCHING
+void FUN_00204480(void)
+{
+    u32 i;
+    u32 count;
+    u32 visible;
+    PanelSkillRow* row;
+
+    count = panelWork32(0x3ac);
+    panelSetWork32(0x76f4, 0);
+    panelSetWork32(0x76fc, count);
+    panelSetWork32(0x7704, panelWork32(0x3a8));
+    func_00208570(panelWork() + 0x76f4);
+    if (datGetFlag(0x186) && FUN_0016F380(0x33))
+    {
+        for (i = 0; i < panelWork32(0x3a8); i++)
+        {
+            row = (PanelSkillRow*)(panelWork() + 0x2e0 + i * 0x18);
+            if ((row->type == 1 && row->icon == FUN_0016F380(0x33)) ||
+                (row->type == 0 && row->icon == 0xc))
+            {
+                panelSetWork32(0x7700, i);
+                break;
+            }
+        }
+        if (i == panelWork32(0x3a8))
+        {
+            panelSetWork32(0x7700, 0);
+            panelSetWork32(0x76f8, 0);
+        }
+    }
+    else
+    {
+        panelSetWork32(0x7700, 0);
+        panelSetWork32(0x76f8, 0);
+    }
+    FUN_00204760();
+    visible = panelWork32(0x3ac);
+    for (i = 0; i < visible; i++)
+    {
+        row = panelItemRow(i);
+        row->flags = 0;
+        if (i < visible)
+        {
+            row->handle = *(u32*)(panelWork() + 0x370 + i * 8);
+            row->type = *(u32*)(panelWork() + 0x2e4 + i * 0x18);
+            row->icon = *(u32*)(panelWork() + 0x374 + i * 8);
+        }
+    }
+    panelSetWork32(0x7640, visible < 5 ? 0 : visible - 4);
+    panelSetWork32(0x64a0, visible);
+    panelSetWork32(0x6498, panelWork32(0x7700));
+    panelSetWork32(0x649c, panelWork32(0x76f8));
+    panelSetWork32(0x64a4, panelWork32(0x3a8));
+    bcmPanel00222fa0();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x10, 4);
+}
+
+// FUN_00204760 NONMATCHING
+void FUN_00204760(void)
+{
+    u32 i;
+    u32 count;
+    u32 type;
+    u32 alpha;
+    u32 handle;
+    u16 id;
+
+    count = panelWork32(0x3ac);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < count; i++)
+    {
+        type = panelWork32(0x2e4 + i * 0x18);
+        alpha = i == panelWork32(0x7700) - panelWork32(0x76f8) ? 6 : 0;
+        id = panelWork16(0x2ec + i * 0x18);
+        if (type == 0)
+        {
+            handle = func_003b0970(0, 2, alpha, 0, 0);
+            func_003b2c60(handle);
+            func_003b0e20(handle, -1);
+            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+        }
+        else if (type == 1)
+        {
+            handle = func_003b0970(func_00177790((s16)id), 2, alpha, 0, 0);
+            func_003b2c60(handle);
+            func_003b0e20(handle, -1);
+            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+            *(u32*)(panelWork() + 0x374 + i * 8) =
+                func_003b0970(0, 2, alpha, 0, 0);
+        }
+        else
+        {
+            handle = func_003b0970(func_00177790(4), 2, alpha, 0, 0);
+            func_003b2c60(handle);
+            func_003b0e20(handle, -1);
+            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+            *(u32*)(panelWork() + 0x374 + i * 8) = 0;
+        }
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0, panelWork32(0) | 0x10);
+}
+
+// FUN_00204AF0 NONMATCHING
+void FUN_00204AF0(void)
+{
+    u32 i;
+    u8* row;
+    u32 tactic;
+
+    for (i = 0; i < panelWork32(0x3a8); i++)
+    {
+        row = panelWork() + 0x2e0 + i * 0x18;
+        if (*(u32*)(row + 4) != 1)
+            continue;
+        datSetAiTactic((s16)*(u16*)(row + 0xc), (s16)*(u16*)(row + 0x10));
+        tactic = *(u32*)(row + 0x10);
+        if (tactic == 7)
+        {
+            tactic = FUN_001FF430((u16)*(u32*)(row + 8));
+            FUN_002C0A50(tactic, *(u32*)(row + 0x14));
+        }
+    }
+    panelSetWork32(4, panelWork32(4) | 4);
+}
+
+// FUN_00204BE0 NONMATCHING
+void FUN_00204BE0(void)
+{
+    u32 i;
+    u32 handle;
+
+    K_ASSERT((panelWork32(0) & 0x10) != 0, 0xd30);
+    for (i = 0; i < panelWork32(0x3ac); i++)
+    {
+        handle = *(u32*)(panelWork() + 0x370 + i * 8);
+        if (handle != 0) func_003b0170(handle);
+        handle = *(u32*)(panelWork() + 0x374 + i * 8);
+        if (handle != 0) func_003b0170(handle);
+    }
+    panelSetWork32(0, panelWork32(0) & ~0x11u);
+}
+
+// FUN_00204CC0 NONMATCHING
+void FUN_00204CC0(void)
+{
+    u32 i;
+    u32 start;
+    u32 type;
+    u32 handle;
+    s32 color;
+    PanelSkillRow* row;
+
+    K_ASSERT((panelWork32(0) & 0x10) != 0, 0xd47);
+    FUN_00205000();
+    start = panelWork32(0x76f8);
+    for (i = 0; i < panelWork32(0x3ac); i++)
+    {
+        row = panelItemRow(i);
+        type = panelWork32(0x2e4 + (start + i) * 0x18);
+        handle = *(u32*)(panelWork() + 0x370 + (start + i) * 8);
+        color = (i == panelWork32(0x7700) ? 0xffffffff : 0x8080ffff);
+        row->flags = type;
+        row->handle = handle;
+        if (type == 1)
+        {
+            func_003b0d70(handle, 0x730, i * 0x48);
+            func_003b0e20(handle, color);
+        }
+        else if (type == 0)
+        {
+            row->type = 0;
+            func_003b0d70(handle, 0x730, i * 0x48);
+            func_003b0e20(handle, color);
+        }
+        else
+        {
+            row->type = 2;
+            func_003b0d70(handle, 0x730, i * 0x48);
+            func_003b0e20(handle, color);
+        }
+        row->icon = *(u32*)(panelWork() + 0x374 + (start + i) * 8);
+    }
+    panelSetWork32(0x64a0, panelWork32(0x3ac));
+    panelSetWork32(0x6498, panelWork32(0x7700));
+    panelSetWork32(0x649c, panelWork32(0x76f8));
+    panelSetWork32(0x64a4, panelWork32(0x3a8));
+    func_002230e0();
+}
+
+// FUN_00205000 NONMATCHING
+void FUN_00205000(void)
+{
+    u32 i;
+    u32 count;
+    u32 type;
+    u32 handle;
+    u16 id;
+
+    count = panelWork32(0x3ac);
+    for (i = 0; i < count; i++)
+    {
+        handle = *(u32*)(panelWork() + 0x370 + i * 8);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x370 + i * 8) = 0;
+        handle = *(u32*)(panelWork() + 0x374 + i * 8);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x374 + i * 8) = 0;
+    }
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < count; i++)
+    {
+        type = panelWork32(0x2e4 + i * 0x18);
+        id = panelWork16(0x2ec + i * 0x18);
+        if (type == 0)
+        {
+            handle = func_003b0970(0, 2, i == panelWork32(0x7700) ? 6 : 0, 0, 0);
+            func_003b2c60(handle);
+            func_003b0e20(handle, -1);
+            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+        }
+        else
+        {
+            handle = func_003b0970(func_00177790((s16)id), 2,
+                                    i == panelWork32(0x7700) ? 6 : 0, 0, 0);
+            func_003b2c60(handle);
+            func_003b0e20(handle, -1);
+            *(u32*)(panelWork() + 0x370 + i * 8) = handle;
+            if (type == 1)
+            {
+                *(u32*)(panelWork() + 0x374 + i * 8) =
+                    func_003b0970(0, 2, 0, 0, 0);
+            }
+        }
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    func_002230e0();
+    panelSetWork32(0x1c, 2);
+}
+
+// FUN_002053C0 NONMATCHING
+u32 FUN_002053C0(void)
+{
+    return panelWork32(0) & 0x20;
+}
+
+// FUN_00205410 NONMATCHING
+void FUN_00205410(void)
+{
+    u32 state;
+
+    state = panelWork32(0x10);
+    if (state == 1)
+    {
+        func_003b0170(panelWork32(0x88));
+        func_0022c0a0();
+    }
+    else if (state == 2)
+    {
+        func_003b0170(panelWork32(0x264));
+        func_0022c1d0();
+    }
+    panelSetWork32(0, panelWork32(0) & ~0x21u);
+}
+
+// FUN_002054C0 NONMATCHING
+u32 FUN_002054C0(void)
+{
+    return panelWork32(0x24);
+}
+
+// FUN_00205500 NONMATCHING
+u16 FUN_00205500(void)
+{
+    return panelWork16(0x2c + panelWork32(0x7664) * 8);
+}
+
+// FUN_00205550 NONMATCHING
+u16 FUN_00205550(void)
+{
+    return panelWork16(0x9c + panelWork32(0x7698) * 2);
+}
+
+// FUN_002055A0 NONMATCHING
+u16 FUN_002055A0(void)
+{
+    return panelWork16(0x268 + panelWork32(0x76cc) * 8);
+}
+
+// FUN_002055F0 NONMATCHING
+u32 FUN_002055F0(u16 id)
+{
+    void* record;
+
+    if (id >= 0x1d0)
+        return 0;
+    record = func_00170e90((s16)id);
+    if (record != NULL)
+        return ((((u8*)record)[1] & 2) == 0);
+    return 1;
+}
+
+// FUN_00205650 NONMATCHING
+u32 FUN_00205650(s16 id)
+{
+    void* record;
+
+    record = func_00170e90(id);
+    if (record == NULL)
+        return 0;
+    return (*(u32*)((u8*)record + 4) == 0 ||
+            *(u32*)((u8*)record + 4) == 1);
+}
+
+// FUN_002056A0 NONMATCHING
+void FUN_002056A0(void)
+{
+    if ((panelWork32(0x77a0) & 1) == 0)
+        panelSetWork32(0xc, panelWork32(0xc) | 0x20);
+}
+
+// FUN_00205700 NONMATCHING
+void FUN_00205700(void)
+{
+    if ((panelWork32(0x77a0) & 0x10) == 0)
+        panelSetWork32(0xc, panelWork32(0xc) | 0x10);
+}
+
+// FUN_00205760 NONMATCHING
+void FUN_00205760(void)
+{
+    if ((panelWork32(0x77a0) & 0x20) == 0)
+        panelSetWork32(0xc, panelWork32(0xc) | 0x40);
+}
+// FUN_002057C0 NONMATCHING
+void FUN_002057C0(void)
+{
+    u32 i;
+    u32 count;
+    u32 id;
+    u32 handle;
+
+    K_ASSERT((panelWork32(0) & 0x1000) == 0, 0xe89);
+    count = 0;
+    for (id = 1; id <= 10 && count < 10; id++)
+    {
+        if (datGetFlag(0x1219 + id) != 0)
+            continue;
+        if (datGetScenarioMode() != 0 && id == 9 &&
+            panelDataType((u16)id) == 3)
+            continue;
+        *(u32*)(panelWork() + 0x3b0 + count * 4) = id;
+        count++;
+    }
+    panelSetWork32(0x400, count);
+    panelSetWork32(0x404, count < 5 ? count : 4);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < panelWork32(0x404); i++)
+    {
+        handle = func_003b0970(*(u32*)(panelWork() + 0x3b0 + i * 4),
+                               2, i == 0 ? 6 : 0, 0, 0);
+        *(u32*)(panelWork() + 0x3d8 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0x772c, 0);
+    panelSetWork32(0x7730, panelWork32(0x404));
+    panelSetWork32(0x7738, panelWork32(0x400));
+    panelSetWork32(0x7734, 0);
+    func_00208570(panelWork() + 0x772c);
+    panelSetWork32(0x77a8, panelWork32(0x3d8));
+    panelSetWork32(0x77ac, panelWork32(0x3dc));
+    panelSetWork32(0x1000, panelWork32(0x1000) | 1);
+}
+
+// FUN_00205D60 NONMATCHING
+void FUN_00205D60(void)
+{
+    u32 i;
+    u32 count;
+    u32 start;
+    u32 handle;
+    u32 type;
+    s32 color;
+    PanelSkillRow* row;
+
+    count = panelWork32(0x404);
+    start = panelWork32(0x772c);
+    for (i = 0; i < count; i++)
+    {
+        row = panelItemRow(i);
+        type = (i + start == panelWork32(0x7734)) ? 1 : 0;
+        color = type ? (s32)0xffffffff : (s32)0x8080ffff;
+        row->flags = 0;
+        row->type = type;
+        handle = *(u32*)(panelWork() + 0x3d8 + (start + i) * 4);
+        row->handle = handle;
+        row->icon = *(u32*)(panelWork() + 0x3b0 + (start + i) * 4);
+        if (handle != 0)
+        {
+            func_003b0d70(handle, 0x730, i * 0x48);
+            func_003b0e20(handle, color);
+        }
+    }
+    panelSetWork32(0x64a0, count);
+    panelSetWork32(0x6498, panelWork32(0x7734));
+    panelSetWork32(0x649c, panelWork32(0x772c));
+    panelSetWork32(0x64a4, panelWork32(0x400));
+    func_002254a0();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x10, 5);
+    panelSetWork32(0x1c, 0);
+    panelSetWork32(0, panelWork32(0) | 0x1000);
+}
+
+// FUN_002060B0 NONMATCHING
+void FUN_002060B0(void)
+{
+    u32 i;
+
+    FUN_00206170();
+    for (i = 0; i < panelWork32(0x6a0c); i++)
+    {
+        *(u32*)(panelWork() + 0x64b0 + i * 0x18) = 0;
+        *(u32*)(panelWork() + 0x64b4 + i * 0x18) = 0;
+    }
+    panelSetWork32(0x6a00, panelWork32(0x404));
+    panelSetWork32(0x6a04, panelWork32(0x7734));
+    panelSetWork32(0x6a08, panelWork32(0x772c));
+    panelSetWork32(0x6a0c, panelWork32(0x400));
+    panelSetWork32(0x6d28, 0);
+    func_00225670();
+}
+
+// FUN_00206170 NONMATCHING
+void FUN_00206170(void)
+{
+    u32 i;
+    u32 count;
+    u32 handle;
+    u32 id;
+
+    count = panelWork32(0x404);
+    for (i = 0; i < count; i++)
+    {
+        handle = *(u32*)(panelWork() + 0x3d8 + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x3d8 + i * 4) = 0;
+    }
+    if (panelWork32(0) & 0x800000)
+        func_00208360();
+    handle = func_003a5540(100, 100, -1, 2, 6, NULL, 0);
+    func_002082c0(handle);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < count; i++)
+    {
+        id = panelWork32(0x3b0 + i * 4);
+        handle = func_003b0970(id, 2, i == panelWork32(0x7734) ? 6 : 0, 0, 0);
+        *(u32*)(panelWork() + 0x3d8 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+}
+
+// FUN_00206310 NONMATCHING
+void FUN_00206310(void)
+{
+    u32 i;
+
+    K_ASSERT((panelWork32(0) & 0x1000) != 0, 0x105c);
+    if (panelWork32(0x77a8) != 0)
+        func_003b0170(panelWork32(0x77a8));
+    if (panelWork32(0x77ac) != 0)
+        func_003b0170(panelWork32(0x77ac));
+    for (i = 0; i < panelWork32(0x404); i++)
+    {
+        if (*(u32*)(panelWork() + 0x3d8 + i * 4) != 0)
+            func_003b0170(*(u32*)(panelWork() + 0x3d8 + i * 4));
+    }
+    panelSetWork32(0, panelWork32(0) & ~0x1000u);
+}
+
+// FUN_002063F0 NONMATCHING
+void FUN_002063F0(void)
+{
+    u32 index;
+    u32 id;
+    u32 handle;
+    u32 type;
+
+    index = panelWork32(0x7734);
+    id = panelWork32(0x3b0 + index * 4);
+    type = panelDataType((u16)id);
+    if (type == 7)
+    {
+        func_0021b670();
+        func_002085e0();
+        panelSetWork32(0x1c, 1);
+    }
+    else if (type == 0)
+    {
+        panelSetWork32(0x10, 0);
+        panelSetWork32(0x3b0 + index * 4, id);
+        func_00208790();
+    }
+    else if (type == 1)
+    {
+        func_00208860((u16)id);
+    }
+    FUN_00205D60();
+    (void)handle;
+}
+
+// FUN_002065A0 NONMATCHING
+void FUN_002065A0(void)
+{
+    u32 i;
+    u32 index;
+    u32 id;
+    u32 type;
+
+    index = panelWork32(0x7734);
+    for (i = 0; i < panelWork32(0x404); i++)
+    {
+        id = panelWork32(0x3b0 + i * 4);
+        type = panelDataType((u16)id);
+        if (type == 0)
+        {
+            panelSetWork32(0x3b0 + i * 4, id);
+            panelSetWork32(0x414 + i * 4, panelWork32(0x428));
+            func_00208790();
+        }
+        else if (type == 1)
+        {
+            func_00208860((u16)id);
+        }
+    }
+    panelSetWork32(0x7734, index);
+    FUN_00205D60();
+}
+// FUN_00206740 NONMATCHING
+void FUN_00206740(void)
+{
+    u32 i;
+    u32 mode;
+    u32 count;
+    u32 start;
+    u32 type;
+    u32 handle;
+    u16 id;
+    u16* skills;
+    DatPersonaWork* persona;
+
+    K_ASSERT((panelWork32(0) & 0x2000) != 0, 0x109f);
+    mode = panelWork32(0x20);
+    count = 0;
+    for (i = 0; i < 3; i++)
+        panelSetWork32(0x408 + i * 4, 0);
+    if (mode == 1)
+    {
+        panelSetWork32(0x408, 1);
+        count = 1;
+    }
+    else if (mode == 2)
+    {
+        persona = datPersonaGetByPcId(6);
+        skills = datPersonaGetSkills(persona);
+        for (i = 0; i < datPersonaCountValidSkills(persona); i++)
+        {
+            if (skills[i] == 0x145)
+            {
+                panelSetWork32(0x408, 2);
+                count = 1;
+                break;
+            }
+        }
+    }
+    panelSetWork32(0x420, count);
+    panelSetWork32(0x424, count < 5 ? count : 4);
+    panelSetWork32(0x775c, 0);
+    panelSetWork32(0x776c, count);
+    panelSetWork32(0x7764, 0);
+    func_00208570(panelWork() + 0x775c);
+    if (datGetFlag(0x186) && FUN_0016F380(0x34))
+    {
+        for (i = 0; i < count; i++)
+            if (panelWork32(0x408 + i * 4) == FUN_0016F380(0x34))
+                panelSetWork32(0x7768, i);
+    }
+    else
+    {
+        panelSetWork32(0x7768, 0);
+    }
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < count; i++)
+    {
+        type = panelWork32(0x408 + i * 4);
+        id = (u16)type;
+        handle = func_003b0970(func_00177790((s16)id), 2,
+                                i == panelWork32(0x7768) ? 6 : 0, 0, 0);
+        *(u32*)(panelWork() + 0x414 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    panelSetWork32(0x77a8, *(u32*)(panelWork() + 0x414));
+    for (i = 0; i < count; i++)
+    {
+        type = panelWork32(0x408 + i * 4);
+        handle = *(u32*)(panelWork() + 0x414 + i * 4);
+        panelSetWork32(0x64b0 + i * 0x18,
+                       type == 1 ? 1 : (type == 2 ? 2 : 0));
+        panelSetWork32(0x64b4 + i * 0x18, handle);
+    }
+    panelSetWork32(0x6a04, panelWork32(0x7768));
+    panelSetWork32(0x6a08, 0);
+    panelSetWork32(0x6a10, panelWork32(0x77a8));
+    panelSetWork32(0x6a14, 0);
+    func_002254a0();
+    FUN_0010a4e0(0, 0, 0, 3);
+    panelSetWork32(0x18, 6);
+}
+
+// FUN_00206E40 NONMATCHING
+void FUN_00206E40(void)
+{
+    func_002255f0();
+    FUN_0010a4e0(0, 0, 0, 4);
+    panelSetWork32(0x18, 9);
+}
+
+// FUN_00206EB0 NONMATCHING
+void FUN_00206EB0(void)
+{
+    u32 i;
+    u32 handle;
+
+    K_ASSERT((panelWork32(0) & 0x2000) != 0, 0x1192);
+    handle = panelWork32(0x77a8);
+    if (handle != 0) func_003b0170(handle);
+    for (i = 0; i < panelWork32(0x424); i++)
+    {
+        handle = *(u32*)(panelWork() + 0x414 + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x414 + i * 4) = 0;
+    }
+    panelSetWork32(0, panelWork32(0) & ~0x2001u);
+}
+
+// FUN_00206F70 NONMATCHING
+void FUN_00206F70(void)
+{
+    u32 i;
+    u32 count;
+
+    FUN_00207010();
+    count = panelWork32(0x424);
+    for (i = 0; i < count; i++)
+        panelSetWork32(0x64b4 + i * 0x18,
+                       panelWork32(0x414 + i * 4));
+    panelSetWork32(0x6a04, panelWork32(0x7768));
+    panelSetWork32(0x6a08, 0);
+    func_00225670();
+}
+
+// FUN_00207010 NONMATCHING
+void FUN_00207010(void)
+{
+    u32 i;
+    u32 count;
+    u32 handle;
+    u32 type;
+    u32 alpha;
+
+    count = panelWork32(0x424);
+    for (i = 0; i < count; i++)
+    {
+        handle = *(u32*)(panelWork() + 0x414 + i * 4);
+        if (handle != 0) func_003b0170(handle);
+        *(u32*)(panelWork() + 0x414 + i * 4) = 0;
+    }
+    if (panelWork32(0) & 0x800000)
+        func_00208360();
+    func_003a5540(100, 100, -1, 2, 6, NULL, 0);
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < count; i++)
+    {
+        type = panelWork32(0x408 + i * 4);
+        alpha = i == panelWork32(0x7768) - panelWork32(0x7760) ? 6 : 0;
+        handle = func_003b0970(func_00177790((s16)type), 2, alpha, 0, 0);
+        *(u32*)(panelWork() + 0x414 + i * 4) = handle;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+}
+
+static void panelTargetEffect(u32 first, u32 second)
+{
+    func_003c7430(first);
+    func_003c74e0(second);
+}
+
+// FUN_00207340 NONMATCHING
+void FUN_00207340(void)
+{
+    u32 selected;
+    u32 type;
+    u32 mode;
+    u32 effect;
+    u32 flags;
+
+    selected = panelWork32(0x7768) + panelWork32(0x7760);
+    type = panelWork32(0x408 + selected * 4);
+    mode = panelWork32(0x20);
+    flags = panelWork32(0);
+    if (mode == 0)
+    {
+        if (flags & 0x4000)
+        {
+            func_002dba80(0);
+            func_0021c720();
+            func_003c72d0();
+            effect = bpMisc001ff740();
+            if (effect == 0) panelTargetEffect(0, 1);
+            else if (effect == 1) panelTargetEffect(3, 4);
+            else panelTargetEffect(6, 7);
+            panelSetWork32(0x18, 3);
+        }
+        else
+        {
+            func_0021b670();
+            panelSetWork32(0x18, 1);
+        }
+    }
+    else if (mode == 1)
+    {
+        if (flags & 0x200000)
+        {
+            func_002dba80(0);
+            panelTargetEffect(0xbc + (panelWork32(0x77b0) == 2),
+                              0xbe + (panelWork32(0x77b0) == 2));
+            panelSetWork32(0x18, 9);
+        }
+        else if (flags & 0x10000)
+        {
+            panelTargetEffect(9, 10);
+            panelSetWork32(0x18, 5);
+        }
+        else
+        {
+            func_002db9f0(0x20, 0xb8);
+            panelSetWork32(0, flags | 0x10000);
+            panelSetWork32(0x18, 9);
+        }
+    }
+    else
+    {
+        if (flags & 0x100000)
+        {
+            panelTargetEffect(0xf, 0x10);
+            panelSetWork32(0x18, 7);
+        }
+        else
+        {
+            func_002db9f0(0x20, 0xaf);
+            panelSetWork32(0, flags | 0x8000);
+            panelSetWork32(0x18, 9);
+        }
+    }
+    FUN_0016F3E0(0x34, type);
+}
+
+// FUN_002078A0 NONMATCHING
+void FUN_002078A0(void)
+{
+    u16* values;
+
+    values = (u16*)func_0030c0c0();
+    K_ASSERT(values != NULL, 0x12d0);
+    func_00249420(values[0], values[1], values[2]);
+    panelSetWork32(0x10, 9);
+}
+
+// FUN_00207960 NONMATCHING
+u32 FUN_00207960(u32 id)
+{
+    u32 status;
+
+    status = FUN_0017d2e0((u16)id);
+    K_ASSERT((status ^ 0xc) != 0, 0x12f2);
+    return FUN_0017d2e0((u16)id);
+}
+
+// FUN_002079C0 NONMATCHING
+void FUN_002079C0(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 1);
+}
+
+// FUN_00207A60 NONMATCHING
+void FUN_00207A60(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 4);
+}
+
+// FUN_00207AB0 NONMATCHING
+void FUN_00207AB0(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 8);
+}
+
+// FUN_00207B00 NONMATCHING
+void FUN_00207B00(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 0x10);
+}
+
+// FUN_00207B50 NONMATCHING
+void FUN_00207B50(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 0x20);
+}
+
+// FUN_00207BA0 NONMATCHING
+void FUN_00207BA0(void)
+{
+    panelSetWork32(0x77a0, panelWork32(0x77a0) | 0x40);
+}
+
+void func_0021bcb0(void);
+void func_0024c110(void);
+u32 bpRush0025d020(void);
+u32 bpRes0021bab0(void);
+void bpd00253410(void);
+void func_00210d90(void*);
+void func_002510d0(void);
+void func_00251a80(void);
+void bppMain0020edf0(void);
+u32 baiMain0024d0c0(void);
+void func_0021c7e0(void);
+void bpo00252060(void);
+void func_002492b0(void);
+u32 bpe00249600(void);
+void func_00248620(void);
+void func_00242cc0(void);
+void func_0025c220(void);
+void bpPersona00267180(void);
+void func_0027b610(void);
+u32 func_00249130(void);
+void func_00245e50(void);
+void func_00213e80(void*);
+void func_00252f30(void);
+void func_00209540(void);
+void func_0023f540(void);
+void func_0024cca0(void);
+void func_002095a0(void);
+void func_002532b0(void);
+void func_0020f260(void);
+void func_00243150(void);
+void func_00241910(void);
+void func_00248bb0(void);
+void func_002520f0(void);
+void func_0025c9c0(void);
+void func_0025d470(void);
+void func_0027b880(void);
+u32 func_00208720(void);
+void* btlUnitFindFromId(u16);
+u32 func_00242a60(void);
+void* func_00242260(void);
+void func_00242320(void*, u32);
+void func_00242a50(void*, u32);
+void func_00242600(void*, u32);
+void func_00242720(void*, u32);
+void func_00242a30(void*);
+void func_00242c20(void*, u32);
+void func_00242540(void*);
+void func_002453d0(s32);
+void func_002441b0(s32);
+u32 func_00207f70(void);
+u32 func_00207fc0(void);
+
+// FUN_001FD890 NONMATCHING
+void* FUN_001fd890(KwlnTask* task)
+{
+    u32* work;
+    u32* misc;
+    u32 flags;
+
+    work = (u32*)task->workData;
+    func_0021bcb0();
+    func_0024c110();
+    bpRush0025d020();
+    flags = work[0];
+    if (flags & 0x400)
+    {
+        if (bpRes0021bab0())
+        {
+            return NULL;
+        }
+        bpd00253410();
+        work[0] = flags & ~0x401u;
+    }
+    misc = (u32*)panelMiscWork();
+    K_ASSERT(misc != NULL, 0x164);
+    if ((misc[3] & 0x80) && !(misc[3] & 0x800))
+    {
+        return NULL;
+    }
+    func_00210d90((u8*)work + 0x119b0);
+    func_002510d0();
+    func_00251a80();
+    flags = work[0];
+    if ((flags & 4) && !(flags & 8) && FUN_002053C0())
+    {
+        FUN_00201B50();
+        work[0] = flags | 8;
+    }
+    bppMain0020edf0();
+    flags = work[0];
+    if ((flags & 0x8000) && !baiMain0024d0c0())
+    {
+        func_0021c7e0();
+        work[0] = flags & ~0x8000u;
+    }
+    bpo00252060();
+    func_002492b0();
+    flags = work[0];
+    if ((flags & 0x1000) && !bpe00249600())
+    {
+        func_00248620();
+        flags = work[0];
+        work[0] = flags & ~0x1001u;
+    }
+    func_00242cc0();
+    func_0025c220();
+    bpPersona00267180();
+    func_0027b610();
+    flags = work[0];
+    if ((flags & 0x1000000) && !func_00249130() &&
+        (flags & 0x200000))
+    {
+        func_00245e50();
+        work[0] = flags & ~0x200000u;
+    }
+    return NULL;
+}
+
+// FUN_001FDAC0 NONMATCHING
+void* FUN_001fdac0(KwlnTask* task)
+{
+    u32* work;
+    u32* misc;
+    u32 flags;
+
+    work = (u32*)task->workData;
+    misc = (u32*)panelMiscWork();
+    K_ASSERT(misc != NULL, 0x164);
+    if ((misc[3] & 0x80) && !(misc[3] & 0x800))
+    {
+        return NULL;
+    }
+    func_00213e80((u8*)work + 0x119b0);
+    func_00252f30();
+    func_00209540();
+    func_0023f540();
+    func_0024cca0();
+    func_002095a0();
+    func_002532b0();
+    flags = work[0];
+    if ((flags & 4) && !(flags & 0x20))
+    {
+        FUN_002016B0();
+    }
+    func_0020f260();
+    if (!(work[0] & 0x40000))
+    {
+        func_00243150();
+    }
+    func_00241910();
+    func_00248bb0();
+    func_002520f0();
+    func_0025c9c0();
+    func_0025d470();
+    func_0027b880();
+    return NULL;
+}
+
+// FUN_001FDDA0 NONMATCHING
+void FUN_001FDDA0(void)
+{
+    u32* work;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    work = (u32*)sBtlPanelTask->workData;
+    FUN_001FFC60();
+    work[0] &= ~5u;
+}
+
+// FUN_001FDDF0 NONMATCHING
+u32 FUN_001FDDF0(void)
+{
+    u32 flags;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    flags = *(u32*)sBtlPanelTask->workData;
+    if (!(flags & 4))
+    {
+        K_ASSERT(0, 0x1d3);
+        return 0;
+    }
+    if (flags & 0x200)
+    {
+        if (!(flags & 8))
+        {
+            K_ASSERT(0, 0x1c4);
+        }
+        return 1;
+    }
+    if (flags & 0x2000)
+    {
+        if (!(flags & 8))
+        {
+            K_ASSERT(0, 0x1c9);
+        }
+        return 1;
+    }
+    return flags & 8;
+}
+
+// FUN_001FDF10 NONMATCHING
+void FUN_001FDF10(void* out)
+{
+    u32* work;
+    u32 flags;
+    u32 mode;
+    u16 value;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    work = (u32*)sBtlPanelTask->workData;
+    flags = work[0];
+    K_ASSERT((flags & 4) != 0, 0x1e9);
+    *(u32*)out = 0;
+    if (flags & 0x2000)
+    {
+        *(u32*)((u8*)out + 4) = 10;
+        *(u32*)((u8*)out + 0x10) = work[4];
+        return;
+    }
+    if (flags & 0x200)
+    {
+        *(u32*)((u8*)out + 4) = 4;
+        mode = work[3];
+        if (mode == 0)
+        {
+            *(u32*)out |= 1;
+            *(u16*)((u8*)out + 0xA) = 0;
+        }
+        else if (mode == 1)
+        {
+            *(u32*)out |= 2;
+            *(u16*)((u8*)out + 0xA) = 0x144;
+        }
+        else
+        {
+            K_ASSERT(0, 0x200);
+        }
+        return;
+    }
+    if (func_00207f70())
+    {
+        *(u32*)((u8*)out + 4) = 13;
+        return;
+    }
+    if (func_00207fc0())
+    {
+        *(u32*)((u8*)out + 4) = 7;
+        return;
+    }
+    mode = FUN_002054C0();
+    switch (mode)
+    {
+    case 0:
+        *(u32*)((u8*)out + 4) = 1;
+        break;
+    case 1:
+        *(u32*)((u8*)out + 4) = 2;
+        value = FUN_00205500();
+        *(u16*)((u8*)out + 0xA) = value;
+        break;
+    case 2:
+        *(u32*)((u8*)out + 4) = 3;
+        value = FUN_00205550();
+        *(u16*)((u8*)out + 8) = value;
+        break;
+    case 3:
+        *(u32*)((u8*)out + 4) = 5;
+        value = FUN_002055A0();
+        *(u16*)((u8*)out + 0xC) = value;
+        break;
+    case 4:
+        *(u32*)((u8*)out + 4) = 6;
+        break;
+    case 5:
+        *(u32*)((u8*)out + 4) = 7;
+        break;
+    default:
+        K_ASSERT(0, 0x229);
+        break;
+    }
+}
+
+// FUN_001FE220 NONMATCHING
+u32 FUN_001FE220(void)
+{
+    u32 flags;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    if (func_00208720())
+    {
+        return 1;
+    }
+    flags = *(u32*)sBtlPanelTask->workData;
+    return (flags & 0x1000000) != 0;
+}
+
+// FUN_001FE650 NONMATCHING
+void FUN_001FE650(void* descriptor)
+{
+    void* unit;
+    void* resource;
+    u32 flags;
+
+    unit = btlUnitFindFromId(*(u16*)((u8*)descriptor + 0x10));
+    K_ASSERT(unit != NULL, 0x2d5);
+    resource = (void*)func_00242a60();
+    if (resource == NULL)
+    {
+        return;
+    }
+    flags = *(u32*)((u8*)descriptor + 8);
+    if (flags & 1) func_00242320(resource, 0);
+    else if (flags & 2) func_00242320(resource, 1);
+    else if (flags & 4) func_00242320(resource, 3);
+    else if (flags & 8) func_00242320(resource, 2);
+    func_00242a50(resource, *(u32*)((u8*)descriptor + 0x10));
+    if (flags & 0x10) func_00242600(resource, *(u32*)descriptor);
+    if (flags & 0x20) func_00242720(resource, *(u32*)((u8*)descriptor + 4));
+    if (flags & 0x40) func_00242a30(resource);
+    if (*(u32*)((u8*)descriptor + 0x14) >= 2)
+    {
+        func_00242c20(resource, *(u32*)((u8*)descriptor + 0x18));
+    }
+    func_00242540(resource);
+}
+
+// FUN_001FE810 NONMATCHING
+void FUN_001FE810(s32 id)
+{
+    u32* work;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    work = (u32*)sBtlPanelTask->workData;
+    if (id == -1)
+    {
+        func_002453d0(0);
+        func_002441b0(1);
+    }
+    else
+    {
+        func_002453d0((s16)id);
+        func_002441b0(0);
+    }
+    work[0] |= 0x1000000;
+    if (id == 0x14f || id == 0x144)
+    {
+        func_00208680();
+    }
+}
+
+// FUN_001FEAB0 NONMATCHING
+void FUN_001FEAB0(void)
+{
+    u16* values;
+    u32* work;
+
+    K_ASSERT(sBtlPanelTask != NULL, 0x164);
+    work = (u32*)sBtlPanelTask->workData;
+    values = (u16*)func_0030c0c0();
+    K_ASSERT(values != NULL, 0x371);
+    func_00249420(values[0], values[1], values[2]);
+    work[0] |= 0x1000;
+}
+
+u32 func_00208010(void);
+u32 func_00208050(void);
+u32 func_00208130(void);
+void func_0025be60(u16, u16, u16);
+void bpRush0025d7b0(void);
+void func_0020fd80(void);
+void func_0020fdd0(void);
+void func_0027b9f0(void);
+void func_0027ba90(void);
+void func_0027bae0(void);
+
+// FUN_001FEEC0 NONMATCHING
+u32 FUN_001FEEC0(void)
+{
+    u32 result;
+
+    result = func_00208010();
+    if (!result)
+    {
+        result = func_00208050();
+    }
+    if (!result)
+    {
+        result = func_00208130();
+    }
+    return result != 0;
+}
+
+// FUN_001FEF90 NONMATCHING
+void FUN_001FEF90(u32 id)
+{
+    u16 first;
+    u16 second;
+    u16 third;
+
+    switch ((u16)id)
+    {
+    case 0:
+        first = 0xe3; second = 0xe4; third = 0xe5;
+        break;
+    case 1:
+        first = 0xe6;
+        if (datGetFlag(0xdf)) first = 0xe7;
+        second = 0xe8; third = 0xe9;
+        break;
+    case 2:
+        first = 0xea; second = 0xeb; third = 0xec;
+        break;
+    case 3:
+        first = 0xed; second = 0xee; third = 0xef;
+        break;
+    case 4:
+        first = 0xf0; second = 0xf1; third = 0xf2;
+        break;
+    case 5:
+        first = 0xf3; second = 0xf4; third = 0xf5;
+        break;
+    case 6:
+        if (datGetScenarioMode())
+        {
+            first = 0xfc; second = 0xfd; third = 0xfe;
+        }
+        else
+        {
+            first = 0xf6; second = 0xf7; third = 0xf8;
+        }
+        break;
+    case 7:
+        first = 0xf9; second = 0xfa; third = 0xfb;
+        break;
+    default:
+        K_ASSERT(0, 0x468);
+        return;
+    }
+    func_0025be60(first, second, third);
+}
+
+// FUN_001FF160 NONMATCHING
+void FUN_001FF160(u32 id)
+{
+    u16 first;
+    u16 second;
+    u16 third;
+
+    switch ((u16)id)
+    {
+    case 0:
+        first = 0xff; second = 0x100; third = 0x101;
+        break;
+    case 1:
+        first = 0x102; second = 0x103; third = 0x104;
+        break;
+    case 2:
+        first = 0x105; second = 0x106; third = 0x107;
+        break;
+    case 3:
+        first = 0x108; second = 0x109; third = 0x10a;
+        break;
+    case 4:
+        first = 0x10b; second = 0x10c; third = 0x10d;
+        break;
+    case 5:
+        first = 0x10e; second = 0x10f; third = 0x110;
+        break;
+    case 6:
+        if (datGetScenarioMode())
+        {
+            first = 0x117; second = 0x118; third = 0x119;
+        }
+        else
+        {
+            first = 0x111; second = 0x112; third = 0x113;
+        }
+        break;
+    case 7:
+        first = 0x114; second = 0x115; third = 0x116;
+        break;
+    default:
+        K_ASSERT(0, 0x4be);
+        return;
+    }
+    func_0025be60(first, second, third);
+}
+
+// FUN_001FF370
+void FUN_001FF370(void)
+{
+    bpRush0025d7b0();
+}
+
+// FUN_001FF390
+void FUN_001FF390(void)
+{
+    func_0020fd80();
+}
+
+// FUN_001FF3B0
+void FUN_001FF3B0(void)
+{
+    func_0020fdd0();
+}
+
+// FUN_001FF3D0
+void FUN_001FF3D0(void)
+{
+    func_0027b9f0();
+}
+
+// FUN_001FF3F0
+void FUN_001FF3F0(void)
+{
+    func_0027ba90();
+}
+
+// FUN_001FF410
+void FUN_001FF410(void)
+{
+    func_0027bae0();
+}
+
+// FUN_001FF430 NONMATCHING
+u32 FUN_001FF430(u32 id)
+{
+    u32 i;
+    u8* base;
+    u8* node;
+
+    base = panelMiscWork();
+    K_ASSERT(base != NULL, 0x2f);
+    for (i = 0; i < 4; i++)
+    {
+        node = *(u8**)(base + 0x150 + i * 8);
+        while (node != NULL)
+        {
+            if ((~*(u32*)(node + 0x9c) & 8) == 0 &&
+                *(u32*)(node + 0xa8) == id)
+            {
+                return (u32)node;
+            }
+            node = *(u8**)(node + 0xa34);
+        }
+    }
+    K_ASSERT(0, 0x3d);
+    return 0;
+}
+
+// FUN_001FF630 NONMATCHING
+u32 FUN_001FF630(u32 index)
+{
+    u8* base;
+    u8* node;
+    u32 count;
+    u32 active;
+
+    base = panelMiscWork();
+    K_ASSERT(base != NULL, 0x88);
+    count = 0;
+    node = *(u8**)(base + 0x150);
+    while (node != NULL)
+    {
+        if ((~*(u32*)(node + 0x9c) & 8) != 0)
+        {
+            count++;
+        }
+        node = *(u8**)(node + 0xa34);
+    }
+    if (count == 0)
+    {
+        K_ASSERT(0, 0x99);
+        return 0;
+    }
+    active = count - 1;
+    node = *(u8**)(base + 0x150);
+    while (node != NULL)
+    {
+        if ((~*(u32*)(node + 0x9c) & 8) != 0)
+        {
+            if (active == index)
+            {
+                return *(u16*)(node + 0xa4);
+            }
+            active--;
+        }
+        node = *(u8**)(node + 0xa34);
+    }
+    K_ASSERT(0, 0x99);
+    return 0;
+}
+
+void* func_0021c5d0(void);
+void* func_0021c640(void);
+void* func_0021c6b0(void);
+u32 itfMesMngInitialize(void*);
+void itfMesMngDestroyHandle(u32);
+void func_00207e20(void);
+void func_00207f10(void);
+void func_002db420(s32);
+void func_002db650(u32);
+void func_002db2a0(s32);
+void func_0021f3c0(void);
+void bpRush0025d6c0(void);
+void bpRush0025d710(void);
+void func_002083d0(void);
+
+// FUN_001FF890 NONMATCHING
+void FUN_001ff890(void)
+{
+    u32* work;
+    u32 flags;
+    u32 panelFlags;
+    void* message;
+
+    work = (u32*)panelWork();
+    panelFlags = work[0x77a0 / 4];
+    printf("battle panel request mask %08x\n", panelFlags);
+    flags = work[0];
+    if (flags & 0x20) printf(" battle panel cancel\n");
+    if (flags & 0x400) printf(" battle panel command\n");
+    if (flags & 0x800) printf(" battle panel item\n");
+    if (flags & 0x1000) printf(" battle panel skill\n");
+    if (flags & 0x2000) printf(" battle panel target\n");
+    if (flags & 0x4000) printf(" battle panel support\n");
+    work[0] &= ~0x21u;
+    work[0] &= ~2u;
+    work[0] &= ~0x20000000u;
+    work[0] &= ~0x02000000u;
+    work[0] &= ~0x00040000u;
+    work[1] = 0;
+    work[3] = 0;
+    if (datGetFlag(0x186))
+    {
+        work[0x24 / 4] = FUN_0016F380(0x30);
+    }
+    else
+    {
+        work[0x24 / 4] = 0;
+    }
+    message = func_0021c5d0();
+    work[0x7794 / 4] = itfMesMngInitialize(message);
+    message = func_0021c640();
+    work[0x7790 / 4] = itfMesMngInitialize(message);
+    message = func_0021c6b0();
+    work[0x7798 / 4] = itfMesMngInitialize(message);
+    work[0x77a4 / 4] = 0;
+    FUN_002056A0();
+    FUN_00201EF0();
+    FUN_00202C90();
+    FUN_00204000();
+    FUN_00203760();
+    FUN_00205700();
+    FUN_00205760();
+    work[2] = 0;
+    if (func_00208010()) work[2] |= 1;
+    if (func_00208050()) work[2] |= 2;
+    if (func_00208130()) work[2] |= 4;
+    if (work[2] & 2)
+    {
+        func_00207e20();
+    }
+    else if (work[2] & 4)
+    {
+        func_00207f10();
+    }
+    else if (work[2] & 1)
+    {
+        FUN_002078A0();
+    }
+    else
+    {
+        FUN_00201A50();
+    }
+    bpRush0025d6c0();
+}
+
+// FUN_001FFC60 NONMATCHING
+void FUN_001FFC60(void)
+{
+    u32* work;
+    u8* record;
+    u32 i;
+    u32 flags;
+
+    work = (u32*)panelWork();
+    for (i = 0; i < work[0x3a8 / 4]; i++)
+    {
+        record = (u8*)work + 0x2e0 + i * 0x18;
+        if ((*(u32*)record & 1) == 0 && *(u32*)(record + 4) == 1)
+        {
+            datSetAiTactic(*(s16*)(record + 0xc), *(s16*)(record + 0x10));
+            if (*(u32*)(record + 0x10) == 7)
+            {
+                u32 target;
+                target = FUN_001FF430(*(u32*)(record + 8));
+                func_002C0A50(target, *(u32*)(record + 0x14));
+            }
+        }
+    }
+    flags = work[0];
+    if (flags & 0x20000)
+    {
+        if (!(flags & 0x4000))
+        {
+            func_002db420(2);
+        }
+        else
+        {
+            func_002db650(work[0x7654 / 4]);
+            func_002db2a0(2);
+        }
+    }
+    if (flags & 0x40000)
+    {
+        if (!(flags & 0x8000)) func_002db420(1);
+        else func_002db2a0(1);
+    }
+    if (flags & 0x80000)
+    {
+        if (!(flags & 0x100000)) func_002db420(0);
+        else func_002db2a0(0);
+    }
+    if (flags & 0x800000) func_002083d0();
+    if (flags & 0x2000) FUN_00206EB0();
+    if (flags & 0x1000) FUN_00206310();
+    if (flags & 2) FUN_00202BC0();
+    if (flags & 4) bcm00203360();
+    if (flags & 8) FUN_00203B70();
+    if (flags & 0x10) FUN_00204BE0();
+    itfMesMngDestroyHandle(work[0x7790 / 4]);
+    itfMesMngDestroyHandle(work[0x7794 / 4]);
+    itfMesMngDestroyHandle(work[0x7798 / 4]);
+    func_0021f3c0();
+    bpRush0025d710();
+}
+
+u32 func_002519d0(void);
+u32 func_00251e80(void);
+u32 bcmPanel0022b4e0(void);
+u32 bcmPanel0022b530(void);
+void bcmPanel00222870(void);
+void bcmPanel002226f0(u32);
+void bcmPanel002227b0(u32);
+void func_002bf850(void);
+void func_002bf8b0(void);
+void func_002bf8e0(void);
+void func_002bf910(void);
+void func_002bf880(void);
+void func_002bf940(void);
+void func_002d1a70(void);
+void func_00266f60(u16);
+void func_00208630(void);
+u32 basRequestAnalyze(u32);
+u32 basIsAnalyzePending(void);
+u32 func_0021b6f0(void);
+u32 func_0021b740(void);
+u32 func_0021b7c0(void);
+void func_002dbac0(void);
+u32 func_003c7990(u32);
+u32 func_003c7850(u32);
+u32 func_003c7650(u32);
+u32 func_003c7610(u32);
+u32 func_003c77a0(u32);
+void func_0024a260(void*);
+void bpPersona00267210(void);
+void bpPersona00267120(void);
+void bpPersona00267070(u16);
+
+static u16 panelRootInputFlags(void)
+{
+    return *(u16*)0x007E094E;
+}
+
+static u16 panelRootTargetFlags(void)
+{
+    return *(u16*)0x007E0952;
+}
+
+// FUN_001FFF40 NONMATCHING
+void FUN_001FFF40(void)
+{
+    u32* work;
+    u32 flags;
+    u32 panelFlags;
+    u32 renderFlags;
+    u32 state;
+    u32 mode;
+    u16 input;
+    u16 target;
+
+    work = (u32*)panelWork();
+    renderFlags = 0;
+    flags = work[0];
+    panelFlags = work[1];
+    if (flags & 0x18000000)
+    {
+        if (work[0x77a4 / 4] != 0)
+        {
+            work[0x77a4 / 4]--;
+        }
+    }
+    else if (work[0x77a4 / 4] < 0x10)
+    {
+        work[0x77a4 / 4]++;
+    }
+    work[0x7644 / 4] = work[0x77a4 / 4] / 0x10;
+    if ((panelFlags & 1) && !bcmPanel0022b4e0())
+    {
+        FUN_00202BC0();
+        work[1] &= ~2u;
+        panelFlags = work[1];
+    }
+    if ((panelFlags & 2) && !bcmPanel0022b4e0())
+    {
+        bcm00203360();
+        work[1] &= ~3u;
+        panelFlags = work[1];
+    }
+    if ((panelFlags & 4) && !bcmPanel0022b4e0())
+    {
+        FUN_00204BE0();
+        work[1] &= ~5u;
+    }
+
+    state = work[4];
+    input = panelRootInputFlags();
+    target = panelRootTargetFlags();
+    switch (state)
+    {
+    case 0:
+        if (!func_002519d0())
+        {
+            bppMain0020fc90();
+            if (work[2] & 4) func_00207f10();
+            else if (work[2] & 1) FUN_002078A0();
+            else FUN_00201A50();
+        }
+        break;
+    case 1:
+        if (!func_00251e80())
+        {
+            bppMain0020fc90();
+            if (work[2] & 1) FUN_002078A0();
+            else FUN_00201A50();
+        }
+        break;
+    case 2:
+        if (!bpe00249600())
+        {
+            FUN_00201A50();
+        }
+        break;
+    case 3:
+        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
+        {
+            if (input & 4)
+            {
+                work[4] = 6;
+                work[6] = 1;
+                work[0] |= 0x80000000u;
+                FUN_0010A4E0(0, 0, 0, 3);
+            }
+            else
+            {
+                FUN_0010A4E0(0, 0, 0, 8);
+            }
+        }
+        break;
+    case 4:
+        if (!(input & 2))
+        {
+            bcm00201ad0();
+            FUN_00202010();
+            renderFlags |= 3;
+        }
+        else if (flags & 0x100)
+        {
+            bpRoot001fea10();
+        }
+        else
+        {
+            func_002bf8e0();
+        }
+        break;
+    case 5:
+        if (!(input & 4))
+        {
+            bcm00201ad0();
+            FUN_00202D70();
+            renderFlags |= 5;
+        }
+        else if (flags & 0x200)
+        {
+            bpRoot001fea10();
+        }
+        else
+        {
+            func_002bf910();
+        }
+        break;
+    case 6:
+        if (!(input & 8))
+        {
+            bcm00201ad0();
+            FUN_00203850();
+            renderFlags |= 9;
+        }
+        else
+        {
+            func_002bf880();
+        }
+        break;
+    case 7:
+        if (!(input & 0x10))
+        {
+            bcm00201ad0();
+            printf("battle panel command accepted\n");
+            work[0] |= 0x20;
+        }
+        else
+        {
+            func_002bf940();
+        }
+        FUN_0016F3E0(0x30, work[0x24 / 4]);
+        break;
+    case 8:
+        if (target & 0x20)
+        {
+            FUN_00206E40();
+            renderFlags |= 1;
+        }
+        else if (target & 0x40)
+        {
+            FUN_00207340();
+            renderFlags |= 1;
+        }
+        else
+        {
+            work[0x775c / 4] &= ~2u;
+            func_0024a260((u8*)work + 0x775c);
+            if (work[0x775c / 4] & 1) renderFlags |= 0x40;
+        }
+        break;
+    case 9:
+        mode = work[6];
+        if (mode == 1)
+        {
+            if (target & 0x20) FUN_00206E40();
+            else if (target & 0x40) FUN_00203630();
+            else
+            {
+                FUN_00203B70();
+                FUN_002060B0();
+                renderFlags |= 1;
+            }
+        }
+        else
+        {
+            if (target & 0x20) FUN_00206E40();
+            else if (target & 0x40) FUN_00202830();
+            else
+            {
+                work[0x768c / 4] &= ~2u;
+                func_0024a260((u8*)work + 0x768c);
+                if (work[0x768c / 4] & 1) renderFlags |= 4;
+            }
+        }
+        break;
+    case 10:
+        if (FUN_00201AF0())
+        {
+            break;
+        }
+        if (target & 0x20)
+        {
+            FUN_00206E40();
+            renderFlags |= 1;
+        }
+        else if (target & 0x40)
+        {
+            FUN_00207340();
+            renderFlags |= 0x10;
+        }
+        else
+        {
+            FUN_00206310();
+            work[4] = 4;
+        }
+        break;
+    case 11:
+        if (target & 0x20)
+        {
+            FUN_00206E40();
+            renderFlags |= 1;
+        }
+        else if (target & 0x40)
+        {
+            FUN_00207340();
+            renderFlags |= 0x20;
+        }
+        else if (!bcmPanel0022b530())
+        {
+            FUN_00206EB0();
+            work[4] = 4;
+        }
+        break;
+    default:
+        break;
+    }
+
+    if (renderFlags & 1) FUN_00201880();
+    if (renderFlags & 2) FUN_002025E0();
+    if (renderFlags & 4) FUN_002031C0();
+    if (renderFlags & 8) FUN_00203C30();
+    if (renderFlags & 0x10) FUN_00204CC0();
+    if (renderFlags & 0x20) FUN_002060B0();
+    if (renderFlags & 0x40) FUN_00206F70();
+    if (work[0] & 0x40)
+    {
+        work[0] &= ~0x40u;
+    }
 }

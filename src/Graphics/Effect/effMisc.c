@@ -1,6 +1,25 @@
 #include "Graphics/Effect/effMisc.h"
+#include "Kernel/Kwln/kwln.h"
+#include "sce/eestruct.h"
+#include "temporary.h"
 
 static EffRandState sRandState; // 00957bf0
+
+typedef struct EffRenderState
+{
+    u32 renderState;
+    u32 value;
+} EffRenderState;
+
+static const EffRenderState sEffRenderStates[6] =
+{
+    {rwRENDERSTATEFOGENABLE, false},
+    {rwRENDERSTATEVERTEXALPHAENABLE, true},
+    {rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD},
+    {rwRENDERSTATECULLMODE, rwCULLMODECULLNONE},
+    {rwRENDERSTATEZTESTENABLE, true},
+    {rwRENDERSTATEZWRITEENABLE, false}
+};
 
 // FUN_00357dd0
 void effMiscQuatMultiplyVU()
@@ -39,6 +58,83 @@ void effMiscNormalizeVU()
         :
         :
         : "vf2", "vf3", "ACC", "Q", "memory"
+    );
+}
+
+// FUN_00357e30
+void func_00357e30(void)
+{
+    __asm__ volatile (
+        ".set noreorder                              \n"
+        "vaddw.xyz vf1, vf0, vf0w                    \n"
+        "vadd.xyzw vf2, vf10, vf10                   \n"
+        "vmulx.w vf28, vf0, vf0x                     \n"
+        "vmulx.w vf29, vf0, vf0x                     \n"
+        "vmulx.w vf30, vf0, vf0x                     \n"
+        "vmul.xyzw vf3, vf10, vf2                    \n"
+        "vmuly.xyzw vf4, vf10, vf2y                  \n"
+        "vmulz.xyzw vf5, vf10, vf2z                  \n"
+        "vmulx.xyzw vf6, vf10, vf2x                  \n"
+        "vaddaw.xyz ACC, vf0, vf0w                   \n"
+        "vmsubay.x ACC, vf1, vf3y                    \n"
+        "vmsubz.x vf28, vf1, vf3z                    \n"
+        "vmsubax.y ACC, vf1, vf3x                    \n"
+        "vmsubz.y vf29, vf1, vf3z                    \n"
+        "vmsubax.z ACC, vf1, vf3x                    \n"
+        "vmsuby.z vf30, vf1, vf3y                    \n"
+        "vmulax.y ACC, vf1, vf4x                     \n"
+        "vmsubw.y vf28, vf1, vf5w                    \n"
+        "vaddw.x vf29, vf4, vf5w                     \n"
+        "vsubw.x vf30, vf5, vf4w                     \n"
+        "vmulax.z ACC, vf1, vf5x                     \n"
+        "vmaddw.z vf28, vf1, vf4w                    \n"
+        "vmulay.z ACC, vf1, vf5y                     \n"
+        "vmsubw.z vf29, vf1, vf6w                    \n"
+        "vaddw.y vf30, vf5, vf6w                     \n"
+        "vmove.xyzw vf31, vf0                        \n"
+        ".set reorder"
+        :
+        :
+        : "vf1", "vf2", "vf3", "vf4", "vf5", "vf6", "vf28", "vf29", "vf30", "vf31", "ACC", "memory"
+    );
+}
+
+// FUN_00357ea0 NONMATCHING
+void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
+{
+    RwV4d quaternion;
+    f32 halfX;
+    f32 halfY;
+    f32 halfZ;
+    f32 cosX;
+    f32 sinX;
+    f32 cosY;
+    f32 sinY;
+    f32 cosZ;
+    f32 sinZ;
+
+    halfX = -0.5f * angleX;
+    cosX = cosf(halfX);
+    sinX = sinf(halfX);
+    halfY = -0.5f * angleY;
+    cosY = cosf(halfY);
+    sinY = sinf(halfY);
+    halfZ = -0.5f * angleZ;
+    cosZ = cosf(halfZ);
+    sinZ = sinf(halfZ);
+
+    quaternion.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
+    quaternion.y = cosX * sinY * cosZ - sinX * cosY * sinZ;
+    quaternion.z = sinX * sinY * cosZ + cosX * cosY * sinZ;
+    quaternion.w = sinX * cosY * cosZ - cosX * sinY * sinZ;
+
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf10, 0(%0)        \n"
+        ".set reorder"
+        :
+        : "r" (&quaternion)
+        : "vf10", "memory"
     );
 }
 
@@ -105,4 +201,245 @@ void effMiscRandInit(EffRandState* state, u32 seed)
 
     x = x ^ 0x11BE81C7;
     state->x[3] = (x << 0x18) | (x >> 0x08);
+}
+
+// FUN_00358160 NONMATCHING
+void func_00358160(f32 angle)
+{
+    RwMatrix matrix;
+    f32 cosine;
+    f32 sine;
+
+    cosine = cosf(angle);
+    sine = sinf(angle);
+
+    matrix.right.x = 1.0f;
+    matrix.right.y = 0.0f;
+    matrix.right.z = 0.0f;
+    matrix.flags = 0;
+    matrix.up.x = 0.0f;
+    matrix.up.y = cosine;
+    matrix.up.z = sine;
+    matrix.pad1 = 0;
+    matrix.at.x = 0.0f;
+    matrix.at.y = -sine;
+    matrix.at.z = cosine;
+    matrix.pad2 = 0;
+    matrix.pos.x = 0.0f;
+    matrix.pos.y = 0.0f;
+    matrix.pos.z = 0.0f;
+    matrix.pad3 = 1;
+
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf28, 0(%0)        \n"
+        "lqc2 vf29, 16(%0)       \n"
+        "lqc2 vf30, 32(%0)       \n"
+        "lqc2 vf31, 48(%0)       \n"
+        ".set reorder"
+        :
+        : "r" (&matrix)
+        : "vf28", "vf29", "vf30", "vf31", "memory"
+    );
+}
+
+// FUN_003581f0 NONMATCHING
+void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
+{
+    RwV3d normalizedAxis;
+    f32 cosine;
+    f32 sine;
+    f32 oneMinusCosine;
+    f32 x;
+    f32 y;
+    f32 z;
+
+    RwV3dNormalize(&normalizedAxis, axis);
+    cosine = cosf(angle);
+    sine = sinf(angle);
+    oneMinusCosine = 1.0f - cosine;
+    x = normalizedAxis.x;
+    y = normalizedAxis.y;
+    z = normalizedAxis.z;
+
+    matrix->right.x = x * x + (1.0f - x * x) * cosine;
+    matrix->right.y = z * sine + x * y * oneMinusCosine;
+    matrix->right.z = x * z * oneMinusCosine - y * sine;
+    matrix->flags = 0;
+
+    matrix->up.x = x * y * oneMinusCosine - z * sine;
+    matrix->up.y = y * y + (1.0f - y * y) * cosine;
+    matrix->up.z = x * sine + y * z * oneMinusCosine;
+    matrix->pad1 = 0;
+
+    matrix->at.x = x * z * oneMinusCosine + y * sine;
+    matrix->at.y = y * z * oneMinusCosine - x * sine;
+    matrix->at.z = z * z + (1.0f - z * z) * cosine;
+    matrix->pad2 = 0;
+
+    matrix->pos.x = 0.0f;
+    matrix->pos.y = 0.0f;
+    matrix->pos.z = 0.0f;
+    matrix->pad3 = 1;
+}
+
+// FUN_00358340
+void func_00358340(const RwV3d* axis, f32 angle)
+{
+    RwMatrix matrix;
+
+    func_003581f0(axis, &matrix, angle);
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf28, 0(%0)        \n"
+        "lqc2 vf29, 16(%0)       \n"
+        "lqc2 vf30, 32(%0)       \n"
+        "lqc2 vf31, 48(%0)       \n"
+        ".set reorder"
+        :
+        : "r" (&matrix)
+        : "vf28", "vf29", "vf30", "vf31", "memory"
+    );
+}
+
+// FUN_00358380 NONMATCHING
+void func_00358380(f32 angle)
+{
+    RwMatrix matrix;
+    f32 cosine;
+    f32 sine;
+
+    cosine = cosf(angle);
+    sine = sinf(angle);
+
+    matrix.right.x = cosine;
+    matrix.right.y = 0.0f;
+    matrix.right.z = -sine;
+    matrix.flags = 0;
+    matrix.up.x = 0.0f;
+    matrix.up.y = 1.0f;
+    matrix.up.z = 0.0f;
+    matrix.pad1 = 0;
+    matrix.at.x = sine;
+    matrix.at.y = 0.0f;
+    matrix.at.z = cosine;
+    matrix.pad2 = 0;
+    matrix.pos.x = 0.0f;
+    matrix.pos.y = 0.0f;
+    matrix.pos.z = 0.0f;
+    matrix.pad3 = 1;
+
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf24, 0(%0)        \n"
+        "lqc2 vf25, 16(%0)       \n"
+        "lqc2 vf26, 32(%0)       \n"
+        "lqc2 vf27, 48(%0)       \n"
+        ".set reorder"
+        :
+        : "r" (&matrix)
+        : "vf24", "vf25", "vf26", "vf27", "memory"
+    );
+}
+
+// FUN_00358410
+void func_00358410(void)
+{
+    __asm__ volatile (
+        ".set noreorder                              \n"
+        "vmulax.xyzw ACC, vf24, vf28x                \n"
+        "vmadday.xyzw ACC, vf25, vf28y               \n"
+        "vmaddaz.xyzw ACC, vf26, vf28z               \n"
+        "vmaddw.xyzw vf28, vf27, vf28w               \n"
+        "vmulax.xyzw ACC, vf24, vf29x                \n"
+        "vmadday.xyzw ACC, vf25, vf29y               \n"
+        "vmaddaz.xyzw ACC, vf26, vf29z               \n"
+        "vmaddw.xyzw vf29, vf27, vf29w               \n"
+        "vmulax.xyzw ACC, vf24, vf30x                \n"
+        "vmadday.xyzw ACC, vf25, vf30y               \n"
+        "vmaddaz.xyzw ACC, vf26, vf30z               \n"
+        "vmaddw.xyzw vf30, vf27, vf30w               \n"
+        "vmulax.xyzw ACC, vf24, vf31x                \n"
+        "vmadday.xyzw ACC, vf25, vf31y               \n"
+        "vmaddaz.xyzw ACC, vf26, vf31z               \n"
+        "vmaddw.xyzw vf31, vf27, vf31w               \n"
+        ".set reorder"
+        :
+        :
+        : "vf28", "vf29", "vf30", "vf31", "ACC", "memory"
+    );
+}
+
+// FUN_00358460 NONMATCHING
+void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
+{
+    u32 i;
+    const EffRenderState* renderState;
+    u32 savedRenderStates[6];
+    RwIm2DVertex vertices[4];
+    f32 zBufferNear;
+    f32 recipZ;
+
+    if (saveAndRestoreRenderState)
+    {
+        for (i = 0; i < 6; i++)
+        {
+            renderState = &sEffRenderStates[i];
+            RwRenderStateGet(renderState->renderState, &savedRenderStates[i]);
+            RwRenderStateSet(renderState->renderState, renderState->value);
+        }
+
+        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+        RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
+        RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 5, 127, 0, 0, 0, 1, 3));
+    }
+
+    zBufferNear = rwGlobals.device.zBufferNear;
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+    vertices[0].u.els.scrVertex.z = zBufferNear;
+    vertices[0].u.els.recipZ = recipZ;
+    vertices[0].u.els.color.r = (f32)color->r;
+    vertices[0].u.els.color.g = (f32)color->g;
+    vertices[0].u.els.color.b = (f32)color->b;
+    vertices[0].u.els.color.a = (f32)color->a;
+
+    vertices[1].u.els.scrVertex.x = 0.0f;
+    vertices[1].u.els.scrVertex.y = 448.0f;
+    vertices[1].u.els.scrVertex.z = zBufferNear;
+    vertices[1].u.els.recipZ = recipZ;
+    vertices[1].u.els.color.r = (f32)color->r;
+    vertices[1].u.els.color.g = (f32)color->g;
+    vertices[1].u.els.color.b = (f32)color->b;
+    vertices[1].u.els.color.a = (f32)color->a;
+
+    vertices[2].u.els.scrVertex.x = 640.0f;
+    vertices[2].u.els.scrVertex.y = 0.0f;
+    vertices[2].u.els.scrVertex.z = zBufferNear;
+    vertices[2].u.els.recipZ = recipZ;
+    vertices[2].u.els.color.r = (f32)color->r;
+    vertices[2].u.els.color.g = (f32)color->g;
+    vertices[2].u.els.color.b = (f32)color->b;
+    vertices[2].u.els.color.a = (f32)color->a;
+
+    vertices[3].u.els.scrVertex.x = 640.0f;
+    vertices[3].u.els.scrVertex.y = 448.0f;
+    vertices[3].u.els.scrVertex.z = zBufferNear;
+    vertices[3].u.els.recipZ = recipZ;
+    vertices[3].u.els.color.r = (f32)color->r;
+    vertices[3].u.els.color.g = (f32)color->g;
+    vertices[3].u.els.color.b = (f32)color->b;
+    vertices[3].u.els.color.a = (f32)color->a;
+
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+
+    if (saveAndRestoreRenderState)
+    {
+        for (i = 0; i < 6; i++)
+        {
+            RwRenderStateSet(sEffRenderStates[i].renderState, savedRenderStates[i]);
+        }
+    }
 }

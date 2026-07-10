@@ -59,3 +59,9 @@ s32 btlFadeIsActive(void)
 {
     return sBtlFadeWork.state != 0;
 }
+
+// FUN_002ff330
+u64 func_002ff330(void)
+{
+    return 0;
+}
