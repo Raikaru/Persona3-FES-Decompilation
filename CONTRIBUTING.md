@@ -258,6 +258,27 @@ How C reaches the image: a source file links as a real C object once it is fully
 
    Leave `NONMATCHING` only for real work-in-progress C that intentionally does not match yet.
 
+## Optional compiler-debugger workflow
+
+For a semantically correct function whose residual appears to be instruction
+selection, evaluation order, scheduling, or register allocation, the sibling
+`mwccps2-debugger` project can capture selected internal stages of the exact
+b210 compiler.
+
+Read [`docs/mwccps2-debugger.md`](docs/mwccps2-debugger.md) before using it.
+The short workflow is:
+
+1. establish the exact residual with `fndiff.py` and `verify.py`;
+2. create a minimal source-variant experiment in the sibling debugger;
+3. require equal direct and instrumented object hashes;
+4. locate the first semantic PCode divergence;
+5. apply one evidence-backed source change here;
+6. rerun `tools/verify.py`.
+
+The debugger is optional and is not imported by the P3 build. It cannot observe
+the retail compiler's transient AST, PCode, scheduler queue, or interference
+graph. Only `tools/verify.py` can establish a function `MATCH`.
+
 ## Automated matching (permuter)
 
 When a function is implemented and semantically correct but still differs from
