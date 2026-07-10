@@ -90,22 +90,49 @@ typedef struct CalendarWork
     s8 timeSkipTarget;  // see enum 'CalendarTime'
 } CalendarWork;
 
-// TODO
 typedef enum
 {
-    CLNDTASK_STATE_DEBUGINIT,    // Create a blue rectangle for the bg and a red cursor
-    CLNDTASK_STATE_DEBUGUPDATE,
-    CLNDTASK_STATE_REQSKIP = 18,
-    CLNDTASK_STATE_SKIP = 22
+    CLNDTASK_STATE_DEBUG_INIT,
+    CLNDTASK_STATE_DEBUG_UPDATE,
+    CLNDTASK_STATE_DEBUG_WAIT_OPEN,
+    CLNDTASK_STATE_DEBUG_WAIT_CLOSE,
+    CLNDTASK_STATE_BEGIN_DAY,
+    CLNDTASK_STATE_BEGIN_DAY_05,
+    CLNDTASK_STATE_BEGIN_DAY_06,
+    CLNDTASK_STATE_BEGIN_DAY_07,
+    CLNDTASK_STATE_BEGIN_DAY_08,
+    CLNDTASK_STATE_BEGIN_DAY_09,
+    CLNDTASK_STATE_BEGIN_DAY_10,
+    CLNDTASK_STATE_BEGIN_DAY_11,
+    CLNDTASK_STATE_BEGIN_DAY_12,
+    CLNDTASK_STATE_SELECT_TIME_ACTION,
+    CLNDTASK_STATE_WAIT_ACTION_START,
+    CLNDTASK_STATE_WAIT_ACTION_FINISH,
+    CLNDTASK_STATE_CONFIRM_DAY_CHANGE,
+    CLNDTASK_STATE_WAIT_SKIP_CONFIRM,
+    CLNDTASK_STATE_REQSKIP,
+    CLNDTASK_STATE_CREATE_SKIP_MESSAGE,
+    CLNDTASK_STATE_WAIT_SKIP_MESSAGE,
+    CLNDTASK_STATE_APPLY_SKIP,
+    CLNDTASK_STATE_SKIP,
+    CLNDTASK_STATE_RESTART_SKIP,
+    CLNDTASK_STATE_STOP_DELAY
 } CalendarTaskState;
 
 // 44 bytes
 typedef struct CalendarTaskWork
 {
-    u32 state;              // 0x00. See enum 'CalendarTaskState'
-    KwlnTask* dbgHCursor;   // 0x04. Red cursor for the debug menu
-    KwlnTask* dbgHCursorBg; // 0x08. Blue background for the debug menu
-    u8 unkData[0x20];
+    u32 state;                    // 0x00. See CalendarTaskState.
+    KwlnTask* debugCursor;        // 0x04. Red cursor for the debug menu.
+    KwlnTask* debugCursorBg;      // 0x08. Blue background for the debug menu.
+    KwlnTask* actionTask;         // 0x0c. Current time-of-day action task.
+    KwlnTask* confirmationTask;   // 0x10. Date-change confirmation task.
+    u32 reserved14;               // 0x14
+    u32 reserved18;               // 0x18
+    u32 reserved1c;               // 0x1c
+    u32 stopDelay;                // 0x20. Frames remaining before task termination.
+    u32 validateSkipTarget;       // 0x24. Verify the selected date/time pair before advancing.
+    u32 reserved28;               // 0x28
 } CalendarTaskWork;
 
 extern const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX - 1];

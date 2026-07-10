@@ -6,7 +6,7 @@
 
 typedef struct HDbText3D HDbText3D;
 
-// 448 bytes. Temp name
+// 280 bytes
 struct HDbText3D
 {
     HDbText3D* next; // 0x00
@@ -16,14 +16,14 @@ struct HDbText3D
     RwRGBA color;    // 0x114
 };
 
-void H_Dbprt_Init();
-void H_Dbprt_Flush();
-void H_Dbprt_Main();
+void H_Dbprt_Init(void);
+void H_Dbprt_Flush(void);
+void H_Dbprt_Main(void);
 
 void H_Dbprt_FmtAt(RwV2d pos, const char* fmt, ...);
-void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA col, const char* fmt, ...);
+void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...);
 void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...);
-void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, const char* fmt, ...);
+void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, RwRGBA color, const char* fmt, ...);
 void H_Dbprt_FmtLog(const char* fmt, ...);
 
 #endif

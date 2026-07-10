@@ -1,5 +1,6 @@
 #include "h_dbprt.h"
 #include "h_cdvd.h"
+#include "Kernel/Kwln/kwln.h"
 #include "temporary.h"
 
 typedef char* va_list;
@@ -9,23 +10,27 @@ extern int vsprintf(char* buffer, const char* fmt, va_list args);
 
 #define HDBPRT_LOG_MAXLINE 15
 #define HDBPRT_LOG_MAXCHAR 256
-
-// divided by 12 because a single character in the texture is 12 * 12 pixels
 #define HDBPRT_GRID_WIDTH  (640 / 12)
 #define HDBPRT_GRID_HEIGHT (480 / 12)
 
-const RwV2d sLogBoxPos = {28.0f, 42.0f};     // 007cb290
-const RwV2d sLogStringsPos = {36.0f, 50.0f}; // 007cb298
+const RwV2d sLogBoxPos = {28.0f, 42.0f};
+const RwV2d sLogStringsPos = {36.0f, 50.0f};
 
-static RwRaster* sFontRaster;  // 007cded0
-static RwImage* sFontImage;    // 007cdecc
-static HDbText3D* sText3DList; // 007cdec8. Linked list of """3D""" strings
-static s8 sLogLine;            // 007cdec4. Current line in the log
-static u32 sDrawLogEnabled;    // 007cdec0
-static char sGrid[HDBPRT_GRID_HEIGHT][HDBPRT_GRID_WIDTH];  // 007e1e30. Grids of characters wherever on the screen
-static char sLogs[HDBPRT_LOG_MAXLINE][HDBPRT_LOG_MAXCHAR]; // 007e0a30. Strings in the log box
+static RwRaster* sFontRaster;
+static RwImage* sFontImage;
+static HDbText3D* sText3DList;
+static s8 sLogLine;
+static u32 sDrawLogEnabled;
+static char sGrid[HDBPRT_GRID_HEIGHT][HDBPRT_GRID_WIDTH];
+static char sLogs[HDBPRT_LOG_MAXLINE][HDBPRT_LOG_MAXCHAR];
 
-// FUN_001042e0
+static void H_Dbprt_DrawText3D(void);
+static f32 H_Dbprt_CalculateScreenZ(f32 zOffset);
+static void H_Dbprt_DrawLog(void);
+static void H_Dbprt_DrawGlyph(f32 x, f32 y, f32 z, f32 recipZ, const RwRGBA* color, s32 glyph);
+static void H_Dbprt_AppendText3D(HDbText3D* text);
+
+// FUN_001042E0
 void H_Dbprt_Init()
 {
     HCdvd* cdvd;
@@ -42,7 +47,7 @@ void H_Dbprt_Init()
                             sFontImage->height,
                             4,
                             rwRASTERTYPETEXTURE |
-                            rwRASTERFORMATPAL4  |
+                            rwRASTERFORMATPAL4 |
                             rwRASTERFORMAT8888);
     sFontRaster = raster;
     RwRasterSetFromImage(raster, sFontImage);
@@ -56,14 +61,14 @@ void H_Dbprt_Init()
     sText3DList = NULL;
 }
 
-// FUN_001043b0
+// FUN_001043B0
 void H_Dbprt_Flush()
 {
     HDbText3D* curr;
     HDbText3D* next;
 
     memset(sGrid, ' ', sizeof(sGrid));
-    
+
     curr = sText3DList;
     sText3DList = NULL;
     while (true)
@@ -79,37 +84,257 @@ void H_Dbprt_Flush()
     }
 }
 
-// FUN_00104420
+// FUN_00104420 NONMATCHING
 void H_Dbprt_Main()
 {
-    // TODO
+    RwRGBA color;
+    f32 recipZ;
+    f32 z;
+    s32 row;
+    s32 column;
+    u8 glyph;
+
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+
+    kwlnPushCommonRenderStates();
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
+
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    color.a = 255;
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    z = RwIm2DGetNearScreenZ();
+
+    for (row = 0; row < HDBPRT_GRID_HEIGHT; row++)
+    {
+        for (column = 0; column < HDBPRT_GRID_WIDTH; column++)
+        {
+            glyph = (u8)sGrid[row][column];
+            if (glyph != ' ')
+            {
+                H_Dbprt_DrawGlyph(12.0f * (f32)column,
+                                   12.0f * (f32)row,
+                                   z,
+                                   recipZ,
+                                   &color,
+                                   (s32)glyph - ' ');
+            }
+        }
+    }
+
+    H_Dbprt_DrawText3D();
+    H_Dbprt_DrawLog();
 }
 
-// FUN_00104d10
+// FUN_00104710 NONMATCHING
+static void H_Dbprt_DrawText3D(void)
+{
+    HDbText3D* text;
+    f32 recipZ;
+    f32 z;
+    s32 character;
+    s8 glyph;
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    kwlnPushCommonRenderStates();
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
+
+    text = sText3DList;
+    while (text != NULL)
+    {
+        if (text->pos.z == 0.0f)
+        {
+            z = RwIm2DGetNearScreenZ() - text->zOffset;
+        }
+        else
+        {
+            z = H_Dbprt_CalculateScreenZ(text->pos.z);
+        }
+
+        for (character = 0; character < HDBPRT_LOG_MAXCHAR; character++)
+        {
+            glyph = (s8)text->text[character];
+            if (glyph == '\0')
+            {
+                break;
+            }
+
+            if (glyph != ' ')
+            {
+                H_Dbprt_DrawGlyph(text->pos.x + 12.0f * (f32)character,
+                                   text->pos.y,
+                                   z,
+                                   recipZ,
+                                   &text->color,
+                                   (s32)glyph - ' ');
+            }
+        }
+
+        text = text->next;
+    }
+}
+
+// FUN_00104D10 NONMATCHING
 void H_Dbprt_FmtAt(RwV2d pos, const char* fmt, ...)
 {
-    // TODO
+    char buffer[HDBPRT_LOG_MAXCHAR];
+    s32 character;
+    s32 baseX;
+    s32 x;
+    s32 y;
+    char glyph;
+    va_list args;
+
+    va_start(args, fmt);
+    vsprintf(buffer, fmt, args);
+
+    baseX = (s32)pos.x;
+    x = baseX;
+    y = (s32)pos.y;
+    for (character = 0;
+         character < HDBPRT_LOG_MAXCHAR && pos.x < HDBPRT_GRID_WIDTH && pos.y < HDBPRT_GRID_HEIGHT &&
+             x < HDBPRT_GRID_WIDTH && y < HDBPRT_GRID_HEIGHT && (glyph = buffer[character]) != '\0';
+         character++)
+    {
+        if (glyph == '\n')
+        {
+            x = baseX;
+            y++;
+        }
+        else
+        {
+            if (y == HDBPRT_GRID_HEIGHT - 1 && x >= HDBPRT_GRID_WIDTH)
+            {
+                printf("ERROR \n");
+            }
+            else
+            {
+                sGrid[y][x] = glyph;
+            }
+            x++;
+        }
+    }
 }
 
-// FUN_00104eb0. Forces to be in 2D (with color)
-void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA col, const char* fmt, ...)
+static inline void H_Dbprt_AppendText3D(HDbText3D* text)
 {
-    // TODO
+    HDbText3D* last;
+
+    if (sText3DList == NULL)
+    {
+        sText3DList = text;
+        return;
+    }
+
+    last = sText3DList;
+    for (;;)
+    {
+        if (last->next == NULL)
+        {
+            last->next = text;
+            break;
+        }
+        last = last->next;
+    }
 }
 
-// FUN_00104fd0. Forces to be in 2D
+// FUN_00104EB0 NONMATCHING
+void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...)
+{
+    HDbText3D* text;
+    va_list args;
+
+    text = RwCalloc(1, sizeof(HDbText3D), rwMEMHINTDUR_GLOBAL);
+    va_start(args, fmt);
+    vsprintf(text->text, fmt, args);
+
+    text->pos.x = pos.x;
+    text->pos.y = pos.y;
+    text->pos.z = 0.0f;
+    text->zOffset = 0.0f;
+    text->color.r = color.r;
+    text->color.g = color.g;
+    text->color.b = color.b;
+    text->color.a = color.a;
+
+    H_Dbprt_AppendText3D(text);
+}
+
+// FUN_00104FD0
 void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...)
 {
-    // TODO
+    HDbText3D* text;
+    va_list args;
+
+    text = RwCalloc(1, sizeof(HDbText3D), rwMEMHINTDUR_GLOBAL);
+    va_start(args, fmt);
+    vsprintf(text->text, fmt, args);
+
+    text->pos.x = pos.x;
+    text->pos.y = pos.y;
+    text->pos.z = 0.0f;
+    text->zOffset = 0.0f;
+    text->color.a = 255;
+    text->color.b = 255;
+    text->color.g = 255;
+    text->color.r = 255;
+
+    H_Dbprt_AppendText3D(text);
 }
 
-// FUN_001050e0. Forces to be in 2D (with a Z offset)
-void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, const char* fmt, ...)
+// FUN_001050E0 NONMATCHING
+void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, RwRGBA color, const char* fmt, ...)
 {
-    // TODO
+    HDbText3D* text;
+    va_list args;
+
+    text = RwCalloc(1, sizeof(HDbText3D), rwMEMHINTDUR_GLOBAL);
+    va_start(args, fmt);
+    vsprintf(text->text, fmt, args);
+
+    text->pos.x = pos.x;
+    text->pos.y = pos.y;
+    text->pos.z = 0.0f;
+    text->zOffset = zOffset;
+    text->color.r = color.r;
+    text->color.g = color.g;
+    text->color.b = color.b;
+    text->color.a = color.a;
+
+    H_Dbprt_AppendText3D(text);
 }
 
-// FUN_001052b0
+// FUN_00105210
+static f32 H_Dbprt_CalculateScreenZ(f32 zOffset)
+{
+    f32 zBufferFar;
+    f32 zBufferNear;
+    f32 farPlane;
+    f32 nearPlane;
+    f32 z;
+
+    zBufferFar = rwGlobals.device.zBufferFar;
+    zBufferNear = rwGlobals.device.zBufferNear;
+    farPlane = kwlnGetMainCamera()->farPlane;
+    nearPlane = kwlnGetMainCamera()->nearPlane;
+
+    z = 0.0f + zBufferFar + (nearPlane / zOffset) *
+                                ((zOffset - farPlane) * ((zBufferNear - zBufferFar) / (nearPlane - farPlane)));
+    if (z < 0.0f)
+    {
+        z = 0.0f;
+    }
+
+    return z;
+}
+
+// FUN_001052B0
 void H_Dbprt_FmtLog(const char* fmt, ...)
 {
     char buffer[HDBPRT_LOG_MAXCHAR];
@@ -136,4 +361,130 @@ void H_Dbprt_FmtLog(const char* fmt, ...)
 
     memcpy(sLogs[sLogLine], buffer, HDBPRT_LOG_MAXCHAR);
     sLogLine++;
+}
+
+// FUN_001053F0 NONMATCHING
+static void H_Dbprt_DrawLog(void)
+{
+    RwIm2DVertex vertices[4];
+    RwRGBA color;
+    f32 recipZ;
+    f32 z;
+    s32 vertex;
+    s32 row;
+    s32 column;
+    u8 glyph;
+
+    if (sDrawLogEnabled == 0)
+    {
+        return;
+    }
+
+    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
+    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
+    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
+    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
+    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+
+    kwlnPushCommonRenderStates();
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+
+    color.r = 64;
+    color.g = 64;
+    color.b = 64;
+    color.a = 128;
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    z = RwIm2DGetNearScreenZ();
+
+    for (vertex = 0; vertex < 4; vertex++)
+    {
+        vertices[vertex].u.els.scrVertex.z = z;
+        vertices[vertex].u.els.recipZ = recipZ;
+        vertices[vertex].u.els.color.r = (f32)color.r;
+        vertices[vertex].u.els.color.g = (f32)color.g;
+        vertices[vertex].u.els.color.b = (f32)color.b;
+        vertices[vertex].u.els.color.a = (f32)color.a;
+    }
+
+    vertices[0].u.els.scrVertex.x = sLogBoxPos.x;
+    vertices[0].u.els.scrVertex.y = sLogBoxPos.y;
+    vertices[1].u.els.scrVertex.x = sLogBoxPos.x + 480.0f;
+    vertices[1].u.els.scrVertex.y = sLogBoxPos.y;
+    vertices[2].u.els.scrVertex.x = sLogBoxPos.x;
+    vertices[2].u.els.scrVertex.y = sLogBoxPos.y + 196.0f;
+    vertices[3].u.els.scrVertex.x = sLogBoxPos.x + 480.0f;
+    vertices[3].u.els.scrVertex.y = sLogBoxPos.y + 196.0f;
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+
+    kwlnPushCommonRenderStates();
+    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
+
+    color.r = 255;
+    color.g = 255;
+    color.b = 255;
+    color.a = 255;
+    for (row = 0; row < sLogLine; row++)
+    {
+        for (column = 0; column < HDBPRT_GRID_WIDTH; column++)
+        {
+            glyph = (u8)sLogs[row][column];
+            if (glyph == '\0')
+            {
+                break;
+            }
+
+            if (glyph != ' ')
+            {
+                H_Dbprt_DrawGlyph(sLogStringsPos.x + 12.0f * (f32)column,
+                                   sLogStringsPos.y + 12.0f * (f32)row,
+                                   z,
+                                   recipZ,
+                                   &color,
+                                   (s32)glyph - ' ');
+            }
+        }
+    }
+}
+
+static void H_Dbprt_DrawGlyph(f32 x, f32 y, f32 z, f32 recipZ, const RwRGBA* color, s32 glyph)
+{
+    RwIm2DVertex vertices[4];
+    f32 u;
+    f32 v;
+    s32 vertex;
+
+    u = 0.0625f * (f32)(glyph % 16);
+    v = 0.0625f * (f32)(glyph / 16);
+
+    for (vertex = 0; vertex < 4; vertex++)
+    {
+        vertices[vertex].u.els.scrVertex.z = z;
+        vertices[vertex].u.els.recipZ = recipZ;
+        vertices[vertex].u.els.color.r = (f32)color->r;
+        vertices[vertex].u.els.color.g = (f32)color->g;
+        vertices[vertex].u.els.color.b = (f32)color->b;
+        vertices[vertex].u.els.color.a = (f32)color->a;
+    }
+
+    vertices[0].u.els.scrVertex.x = x;
+    vertices[0].u.els.scrVertex.y = y;
+    vertices[0].u.els.u = u;
+    vertices[0].u.els.v = v;
+
+    vertices[1].u.els.scrVertex.x = x + 12.0f;
+    vertices[1].u.els.scrVertex.y = y;
+    vertices[1].u.els.u = u + 0.0625f;
+    vertices[1].u.els.v = v;
+
+    vertices[2].u.els.scrVertex.x = x;
+    vertices[2].u.els.scrVertex.y = y + 12.0f;
+    vertices[2].u.els.u = u;
+    vertices[2].u.els.v = v + 0.0625f;
+
+    vertices[3].u.els.scrVertex.x = x + 12.0f;
+    vertices[3].u.els.scrVertex.y = y + 12.0f;
+    vertices[3].u.els.u = u + 0.0625f;
+    vertices[3].u.els.v = v + 0.0625f;
+
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }

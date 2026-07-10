@@ -1,17 +1,2747 @@
 #include "Main/Battle/Panel/bp_tex.h"
+#include "Kosaka/k_assert.h"
+#include "rw/rwplcore.h"
+#include "rw/rwcore.h"
 
-// FUN_0021c9f0
+typedef struct RtQuat RtQuat;
+
+#define BP_TEX_GLOBAL (*(u32**)0x007ce354)
+#define BP_TEX_U32(base, offset) (*(u32*)((u8*)(base) + (offset)))
+#define BP_TEX_S32(base, offset) (*(s32*)((u8*)(base) + (offset)))
+#define BP_TEX_F32(base, offset) (*(f32*)((u8*)(base) + (offset)))
+#define BP_TEX_PTR(base, offset) (*(u32**)((u8*)(base) + (offset)))
+#define BP_TEX_NODE_FLAGS(node) ((node)[0])
+#define BP_TEX_NODE_NEXT(node) ((u32*)(node)[0x3f1])
+#define BP_TEX_NODE_PREV(node) ((u32*)(node)[0x3f0])
+#define BP_TEX_NODE_OWNER(node) ((u32*)(node)[0x3f2])
+
+extern void* func_00198590(void);
+extern RwMatrix* func_004cb2f0(void* frame);
+extern f32 func_004c6ac0(const RwV3d* value);
+extern void func_0021a920(u32 value, u32 arg);
+extern void func_0021ab80(s16 value);
+extern void func_0020b250(void* value);
+extern void func_0020cc80(void* value, const void* color);
+extern void func_0020ac90(void* value);
+extern void func_0024dc90(void* value);
+extern void func_0024f090(void* value);
+extern void func_0024f2c0(void* state, f32 value);
+extern void func_0024f960(void* state, void* value);
+extern void func_0024f9f0(void* state, void* value);
+extern void func_0024faf0(void* state, void* value);
+extern void func_0024fba0(void* state, void* value);
+extern void func_0024fc40(void* state, void* value);
+extern void func_0024fda0(void* value);
+extern void func_0024fe00(void* value);
+extern void func_00250ef0(f32 value, void* state);
+extern void func_0024da60(void* state);
+extern void func_0024daf0(void* state);
+extern u32 func_00250b90(void* state);
+extern void func_00251030(void* state);
+extern f32 func_0020c660(u32 index, s32 count);
+extern void func_00250cf0(f32 value, u32 mode, void* state, void* value2, u32 count);
+extern void func_002505b0(void* state, void* value, s32 duration, const f32* offsets);
+extern void func_005225a8(u32 id, ...);
+extern void func_004bdde0(s32 mode, void* value, void* pos, s32 flags);
+extern u32 func_00488f30(void);
+extern s32 func_0051e0e0(s32 value);
+extern f32 func_0052e878(f32 value);
+extern f32 func_0052e6d8(f32 value);
+extern u32 func_0020c500(f32 value, void* object);
+extern void func_0020c400(u32 value, void* object, void* pos, void* out);
+extern void func_00259190(void* node, void* values, s32* count);
+extern void func_00258f80(void* node);
+extern void func_00258630(void* node);
+extern void func_00257d00(void* out, u32 index, void* source, s32 count);
+extern void func_00257d90(void* out, void* source);
+extern void func_00256f20(void* node, void* values, s32* count);
+extern void func_00256fa0(void* node, void* values, s32* count);
+extern void func_002564c0(void* node);
+extern void func_00250a30(void* state, void* value, u32 duration);
+extern void func_002508c0(void* state, void* value, s32 duration);
+extern void func_00255b20(void);
+extern void func_0025b300(void);
+extern void func_0025b3b0(void);
+extern void FUN_0010a4e0(u32, u32, u32, u32);
+extern void func_0019d3f0(const char* file, s32 line);
+extern void func_004c69f0(void* output, const void* input);
+extern void func_0034ff90(void* resource, const void* color);
+extern void func_0034ff70(void* resource, f32 scalar);
+extern void func_0034fdf0(void* resource, const void* position);
+extern void func_0034fe30(u32 a, u32 b, u32 c, void* resource);
+extern void func_0034fd30(void* resource);
+extern void func_0034fd70(void* resource, u32 layer);
+extern f32 DAT_007cad60;
+
+extern void* (*jtbl_00960178)(u32 size, u32 hint);
+extern void (*jtbl_0096017C)(void* memory);
+extern void func_004cde90(void* resource);
+extern RwCamera* kwlnGetMainCamera(void);
+extern f32 func_0052ea18(f32 x, f32 y);
+extern f32 D_00960088;
+extern f32 sqrtf(f32 value);
+extern RwRaster* func_004ce0f0(u32 width, u32 height, u32 depth, u32 flags);
+extern void* func_004cdf30(RwRaster* raster, u32 palette);
+extern void* func_004ce200(RwRaster* raster, void* mipData, u32 level);
+extern void func_004cde40(RwRaster* raster);
+extern RwRaster* func_004cde00(RwRaster* raster);
+extern void* memcpy(void* destination, const void* source, u32 size);
+typedef struct BpTexFrameData
+{
+    u32 texture;
+    u32 id;
+    u32 rasterIndex;
+    s32 width;
+    s32 height;
+    s32 x;
+    s32 y;
+    u8 color[16];
+} BpTexFrameData;
+
+static u32 bpTexByteToFloatBits(u8 value)
+{
+    f32 converted;
+
+    converted = (f32)value;
+    return *(u32*)&converted;
+}
+
+static void bpTexWriteColor(void* destination, const u8* color)
+{
+    BP_TEX_U32(destination, 0x20) = bpTexByteToFloatBits(color[0]);
+    BP_TEX_U32(destination, 0x24) = bpTexByteToFloatBits(color[1]);
+    BP_TEX_U32(destination, 0x28) = bpTexByteToFloatBits(color[2]);
+    BP_TEX_U32(destination, 0x2c) = bpTexByteToFloatBits(color[3]);
+}
+
+static void bpTexWriteVertex(void* destination,
+                             f32 u,
+                             f32 v,
+                             const u8* color,
+                             f32 depth,
+                             f32 reciprocalDepth)
+{
+    BP_TEX_F32(destination, 0x10) = u;
+    BP_TEX_F32(destination, 0x14) = v;
+    BP_TEX_F32(destination, 0x18) = reciprocalDepth;
+    BP_TEX_F32(destination, 0x08) = depth;
+    bpTexWriteColor(destination, color);
+}
+// FUN_0021c9f0 NONMATCHING
 void* bpTex0021c9f0(void* sprMemory)
 {
-    // TODO
+    u8* source;
+    u16 rasterCount;
+    u16 frameCount;
+    u32 frameTableOffset;
+    u32 rasterTableOffset;
+    u32 allocationSize;
+    u8* texture;
+    u8* frames;
+    u8* rasters;
+    u32 i;
 
+    source = (u8*)sprMemory;
+    rasterCount = *(u16*)(source + 0x14);
+    frameCount = *(u16*)(source + 0x16);
+    frameTableOffset = *(u32*)(source + 0x1c);
+    rasterTableOffset = *(u32*)(source + 0x18);
+    allocationSize = 0x14 + (u32)rasterCount * 4 +
+                     (u32)frameCount * sizeof(BpTexFrameData);
+    texture = (u8*)(*jtbl_00960178)(allocationSize, 0x40000);
+    if (texture == NULL)
+    {
+        return NULL;
+    }
+
+    frames = texture + 0x14;
+    rasters = frames + (u32)frameCount * sizeof(BpTexFrameData);
+    BP_TEX_U32(texture, 4) = (u32)frames;
+    BP_TEX_U32(texture, 8) = (u32)rasters;
+    BP_TEX_U32(texture, 0x0c) = rasterCount;
+    BP_TEX_U32(texture, 0x10) = frameCount;
+
+    for (i = 0; i < rasterCount; i++)
+    {
+        u8* entry;
+        void* raster;
+
+        entry = source + rasterTableOffset + i * 8;
+        raster = bpTexCreateTmxRaster(source + *(u32*)(entry + 4));
+        BP_TEX_U32(rasters, i * 4) = (u32)raster;
+    }
+
+    for (i = 0; i < frameCount; i++)
+    {
+        u8* entry;
+        BpTexFrameData* frame;
+        u32 color;
+        u32 j;
+
+        entry = source + frameTableOffset + i * 8;
+        frame = (BpTexFrameData*)(frames + i * sizeof(BpTexFrameData));
+        frame->texture = (u32)texture;
+        frame->id = *(u32*)(source + *(u32*)(entry + 4) + 0x18);
+        frame->rasterIndex = *(u32*)(source + *(u32*)(entry + 4) + 0x14);
+        frame->width = *(s32*)(source + *(u32*)(entry + 4) + 0x5c) -
+                       *(s32*)(source + *(u32*)(entry + 4) + 0x54);
+        frame->height = *(s32*)(source + *(u32*)(entry + 4) + 0x60) -
+                        *(s32*)(source + *(u32*)(entry + 4) + 0x58);
+        frame->x = *(s32*)(source + *(u32*)(entry + 4) + 0x54);
+        frame->y = *(s32*)(source + *(u32*)(entry + 4) + 0x58);
+        for (j = 0; j < 4; j++)
+        {
+            color = *(u32*)(source + *(u32*)(entry + 4) + 0x64 + j * 4);
+            frame->color[j * 4 + 0] = (u8)(((color >> 24) * 0xff) >> 7);
+            frame->color[j * 4 + 1] = (u8)((((color >> 16) & 0xff) * 0xff) >> 7);
+            frame->color[j * 4 + 2] = (u8)((((color >> 8) & 0xff) * 0xff) >> 7);
+            frame->color[j * 4 + 3] = (u8)(((color & 0xff) * 0xff) >> 7);
+        }
+    }
+
+    return texture;
+}
+
+// FUN_0021ec40 NONMATCHING
+RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
+{
+    u8* source;
+    u8 format;
+    u32 depth;
+    u32 flags;
+    u32 width;
+    u32 height;
+    u32 paletteBytes;
+    u32 pixelBytes;
+    u8* palette;
+    u8* pixels;
+    RwRaster* raster;
+    void* locked;
+
+    source = (u8*)tmxMemory;
+    format = source[0x16];
+    depth = 0;
+    flags = 4;
+    paletteBytes = 0;
+    switch (format)
+    {
+    case 0:
+        depth = 0x20;
+        flags |= 0x500;
+        break;
+    case 1:
+        depth = 1;
+        flags |= 0x4500;
+        paletteBytes = 0x100;
+        break;
+    case 2:
+    case 0x0a:
+        depth = 0x10;
+        flags |= 0x1000;
+        break;
+    case 0x13:
+    case 0x1b:
+        depth = 8;
+        flags |= 0x2500;
+        paletteBytes = 0x400;
+        break;
+    case 0x14:
+    case 0x24:
+    case 0x2c:
+        depth = 4;
+        flags |= 0x4500;
+        paletteBytes = 0x100;
+        break;
+    default:
+        K_ASSERT(false, 0x65);
+        depth = 0x20;
+        flags |= 0x500;
+        break;
+    }
+
+    source += 0x40;
+    width = *(u16*)(source - 0x2e);
+    height = *(u16*)(source - 0x2c);
+    raster = func_004ce0f0(width, height, depth, flags);
+    if (paletteBytes != 0)
+    {
+        palette = source;
+        pixels = source + paletteBytes;
+        locked = func_004cdf30(raster, 1);
+        memcpy(locked, palette, paletteBytes);
+    }
+    else
+    {
+        pixels = source;
+    }
+
+    if (depth == 4)
+    {
+        pixelBytes = (width * height) >> 1;
+    }
+    else if (depth == 1)
+    {
+        pixelBytes = (width * height) >> 3;
+    }
+    else
+    {
+        pixelBytes = width * height * ((depth + 7) >> 3);
+    }
+    locked = func_004ce200(raster, NULL, 1);
+    memcpy(locked, pixels, pixelBytes);
+    func_004cde40(raster);
+    return func_004cde00(raster);
+}
+
+// FUN_0021cc20 NONMATCHING
+void func_0021cc20(void* texture)
+{
+    u32* rasterList;
+    u32 count;
+    u32 i;
+
+    rasterList = BP_TEX_PTR(texture, 8);
+    count = BP_TEX_U32(texture, 0x0c);
+    for (i = 0; i < count; i++)
+    {
+        func_004cde90((void*)rasterList[i]);
+    }
+    (*jtbl_0096017C)(texture);
+}
+
+// FUN_0021cca0
+void* func_0021cca0(void* texture, s32 index)
+{
+    if (texture == NULL)
+    {
+        return NULL;
+    }
+    return (u8*)BP_TEX_PTR(texture, 4) + index * (s32)sizeof(BpTexFrameData);
+}
+
+// FUN_0021cce0
+u32 func_0021cce0(void* frameData)
+{
+    u8* frame;
+    u8* texture;
+    u32* rasterList;
+
+    frame = (u8*)frameData;
+    texture = (u8*)(uintptr_t)BP_TEX_U32(frame, 0);
+    rasterList = BP_TEX_PTR(texture, 8);
+    return rasterList[BP_TEX_U32(frame, 8)];
+}
+
+static void bpTexSetUvAxis(f32 start,
+                            f32 end,
+                            s32 size,
+                            u32 flip,
+                            u32 mode,
+                            f32* first,
+                            f32* second)
+{
+    f32 extent;
+
+    extent = (f32)size;
+    if (mode == 2)
+    {
+        if ((flip & 1) != 0)
+        {
+            *first = (start + 1.0f) / extent;
+            *second = start / extent;
+        }
+        else
+        {
+            *first = (end - 1.0f) / extent;
+            *second = end / extent;
+        }
+    }
+    else if (mode == 1)
+    {
+        if ((flip & 1) != 0)
+        {
+            *first = end / extent;
+            *second = (end - 1.0f) / extent;
+        }
+        else
+        {
+            *first = start / extent;
+            *second = (start + 1.0f) / extent;
+        }
+    }
+    else if ((flip & 1) != 0)
+    {
+        *first = end / extent;
+        *second = start / extent;
+    }
+    else
+    {
+        *first = start / extent;
+        *second = end / extent;
+    }
+}
+
+// FUN_0021cd00 NONMATCHING
+void func_0021cd00(void* frameData, f32* uv)
+{
+    BpTexFrameData* frame;
+    u8* texture;
+    u8* rasterList;
+    u8* raster;
+    s32 rasterWidth;
+    s32 rasterHeight;
+    f32 x;
+    f32 xEnd;
+    f32 y;
+    f32 yEnd;
+
+    frame = (BpTexFrameData*)frameData;
+    texture = (u8*)(uintptr_t)frame->texture;
+    rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
+    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, frame->rasterIndex * 4);
+    rasterWidth = *(s32*)(raster + 0x0c);
+    rasterHeight = *(s32*)(raster + 0x10);
+    x = (f32)frame->x;
+    xEnd = (f32)(frame->x + frame->width);
+    y = (f32)frame->y;
+    yEnd = (f32)(frame->y + frame->height);
+
+    bpTexSetUvAxis(x, xEnd, rasterWidth, frame->id, 0,
+                   &uv[0], &uv[2]);
+    bpTexSetUvAxis(y, yEnd, rasterHeight, frame->id >> 1, 0,
+                   &uv[1], &uv[3]);
+}
+
+// FUN_0021cec0 NONMATCHING
+void func_0021cec0(void* frameData, f32* uv, u32 mode)
+{
+    static const u8 xModes[8] = {0, 2, 0, 1, 2, 2, 2, 1};
+    static const u8 yModes[8] = {1, 0, 2, 0, 1, 2, 1, 1};
+    BpTexFrameData* frame;
+    u8* texture;
+    u8* rasterList;
+    u8* raster;
+    s32 rasterWidth;
+    s32 rasterHeight;
+    f32 x;
+    f32 xEnd;
+    f32 y;
+    f32 yEnd;
+    u32 xMode;
+    u32 yMode;
+
+    frame = (BpTexFrameData*)frameData;
+    texture = (u8*)(uintptr_t)frame->texture;
+    rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
+    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, frame->rasterIndex * 4);
+    rasterWidth = *(s32*)(raster + 0x0c);
+    rasterHeight = *(s32*)(raster + 0x10);
+    x = (f32)frame->x;
+    xEnd = (f32)(frame->x + frame->width);
+    y = (f32)frame->y;
+    yEnd = (f32)(frame->y + frame->height);
+    xMode = 0;
+    yMode = 0;
+    if (mode < 8)
+    {
+        xMode = xModes[mode];
+        yMode = yModes[mode];
+    }
+
+    bpTexSetUvAxis(x, xEnd, rasterWidth, frame->id, xMode,
+                   &uv[0], &uv[2]);
+    bpTexSetUvAxis(y, yEnd, rasterHeight, frame->id >> 1, yMode,
+                   &uv[1], &uv[3]);
+}
+
+// FUN_0021d3b0 NONMATCHING
+void func_0021d3b0(void* destination, void* frameData)
+{
+    BpTexFrameData* frame;
+    RwCamera* camera;
+    f32 uv[4];
+    f32 reciprocalDepth;
+
+    frame = (BpTexFrameData*)frameData;
+    camera = kwlnGetMainCamera();
+    reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
+    func_0021cd00(frame, uv);
+    bpTexWriteVertex(destination, uv[0], uv[1], frame->color,
+                     D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0x40, uv[2], uv[1],
+                     frame->color + 4, D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0x80, uv[2], uv[3],
+                     frame->color + 8, D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0xc0, uv[0], uv[3],
+                     frame->color + 12, D_00960088, reciprocalDepth);
+}
+
+// FUN_0021d890
+void func_0021d890(void* destination, const f32* vertices)
+{
+    BP_TEX_F32(destination, 0) = vertices[0];
+    BP_TEX_F32(destination, 4) = vertices[1];
+    BP_TEX_F32(destination, 0x40) = vertices[2];
+    BP_TEX_F32(destination, 0x44) = vertices[3];
+    BP_TEX_F32(destination, 0x80) = vertices[4];
+    BP_TEX_F32(destination, 0x84) = vertices[5];
+    BP_TEX_F32(destination, 0xc0) = vertices[6];
+    BP_TEX_F32(destination, 0xc4) = vertices[7];
+}
+
+// FUN_0021d8e0
+void func_0021d8e0(void* destination, const f32* rect)
+{
+    BP_TEX_F32(destination, 0) = rect[0];
+    BP_TEX_F32(destination, 4) = rect[1];
+    BP_TEX_F32(destination, 0x40) = rect[0] + rect[2];
+    BP_TEX_F32(destination, 0x44) = rect[1];
+    BP_TEX_F32(destination, 0x80) = rect[0] + rect[2];
+    BP_TEX_F32(destination, 0x84) = rect[1] + rect[3];
+    BP_TEX_F32(destination, 0xc0) = rect[0];
+    BP_TEX_F32(destination, 0xc4) = rect[1] + rect[3];
+}
+
+// FUN_0021d950 NONMATCHING
+void func_0021d950(void* destination, const u8* color)
+{
+    bpTexWriteColor(destination, color);
+    bpTexWriteColor((u8*)destination + 0x40, color);
+    bpTexWriteColor((u8*)destination + 0x80, color);
+    bpTexWriteColor((u8*)destination + 0xc0, color);
+}
+
+// FUN_0021dd60 NONMATCHING
+void func_0021dd60(void* destination, const u8* colors)
+{
+    bpTexWriteColor(destination, colors);
+    bpTexWriteColor((u8*)destination + 0x40, colors + 4);
+    bpTexWriteColor((u8*)destination + 0x80, colors + 8);
+    bpTexWriteColor((u8*)destination + 0xc0, colors + 12);
+}
+
+// FUN_0021e170 NONMATCHING
+void func_0021e170(void* destination,
+                   const f32* center,
+                   const f32* direction,
+                   const f32* size)
+{
+    f32 points[8];
+    f32 length;
+    f32 angle;
+    f32 sine;
+    f32 cosine;
+    f32 x;
+    f32 y;
+    s32 i;
+
+    length = sqrtf(direction[0] * direction[0] +
+                   direction[1] * direction[1]);
+    angle = func_0052ea18(direction[0] / length,
+                          -(direction[1] / length));
+    points[0] = -size[0] / 2.0f;
+    points[1] = -size[1] / 2.0f;
+    points[2] = size[0] / 2.0f;
+    points[3] = points[1];
+    points[4] = points[2];
+    points[5] = size[1] / 2.0f;
+    points[6] = points[0];
+    points[7] = points[5];
+    for (i = 0; i < 4; i++)
+    {
+        x = points[i * 2];
+        y = points[i * 2 + 1];
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
+        points[i * 2] = x * cosine - y * sine;
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
+        points[i * 2 + 1] = x * sine + y * cosine;
+        points[i * 2] += center[0];
+        points[i * 2 + 1] += center[1];
+    }
+    func_0021d890(destination, points);
+}
+
+// FUN_0021e380 NONMATCHING
+void func_0021e380(void* destination, void* frameData, u32 mode)
+{
+    BpTexFrameData* frame;
+    RwCamera* camera;
+    const u8* firstColor;
+    const u8* secondColor;
+    const u8* thirdColor;
+    const u8* fourthColor;
+    f32 uv[4];
+    f32 reciprocalDepth;
+
+    frame = (BpTexFrameData*)frameData;
+    camera = kwlnGetMainCamera();
+    reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
+    firstColor = frame->color;
+    secondColor = frame->color;
+    thirdColor = frame->color;
+    fourthColor = frame->color;
+    switch (mode)
+    {
+        case 0:
+            func_0021cec0(frame, uv, 0);
+            firstColor = frame->color;
+            secondColor = frame->color + 4;
+            thirdColor = frame->color + 4;
+            fourthColor = frame->color;
+            break;
+        case 1:
+            func_0021cec0(frame, uv, 1);
+            firstColor = frame->color + 4;
+            secondColor = frame->color + 4;
+            thirdColor = frame->color + 8;
+            fourthColor = frame->color + 8;
+            break;
+        case 2:
+            func_0021cec0(frame, uv, 2);
+            firstColor = frame->color + 12;
+            secondColor = frame->color + 8;
+            thirdColor = frame->color + 8;
+            fourthColor = frame->color + 12;
+            break;
+        case 3:
+            func_0021cec0(frame, uv, 3);
+            firstColor = frame->color;
+            secondColor = frame->color;
+            thirdColor = frame->color + 12;
+            fourthColor = frame->color + 12;
+            break;
+        case 4:
+            func_0021cec0(frame, uv, 4);
+            firstColor = frame->color + 4;
+            secondColor = frame->color + 4;
+            thirdColor = frame->color + 4;
+            fourthColor = frame->color + 4;
+            break;
+        case 5:
+            func_0021cec0(frame, uv, 5);
+            firstColor = frame->color + 8;
+            secondColor = frame->color + 8;
+            thirdColor = frame->color + 8;
+            fourthColor = frame->color + 8;
+            break;
+        case 6:
+            func_0021cec0(frame, uv, 6);
+            firstColor = frame->color + 12;
+            secondColor = frame->color + 12;
+            thirdColor = frame->color + 12;
+            fourthColor = frame->color + 12;
+            break;
+        case 7:
+            func_0021cec0(frame, uv, 7);
+            firstColor = frame->color;
+            secondColor = frame->color;
+            thirdColor = frame->color;
+            fourthColor = frame->color;
+            break;
+        default:
+            func_0021cec0(frame, uv, mode);
+            break;
+    }
+    bpTexWriteVertex(destination, uv[0], uv[1], firstColor,
+                     D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0x40, uv[2], uv[1], secondColor,
+                     D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0x80, uv[2], uv[3], thirdColor,
+                     D_00960088, reciprocalDepth);
+    bpTexWriteVertex((u8*)destination + 0xc0, uv[0], uv[3], fourthColor,
+                     D_00960088, reciprocalDepth);
+}
+
+// FUN_0021ea00 NONMATCHING
+f32 func_0021ea00(s32 duration)
+{
+    RwCamera* camera;
+    f32 nearPlane;
+    f32 farPlane;
+    f32 value;
+
+    camera = kwlnGetMainCamera();
+    nearPlane = *(f32*)((u8*)camera + 0x80);
+    camera = kwlnGetMainCamera();
+    farPlane = *(f32*)((u8*)camera + 0x84);
+    value = (f32)duration;
+    return (farPlane * nearPlane * -65535.0f) /
+           (farPlane * -65535.0f -
+            (value - 65535.0f) * (farPlane - nearPlane));
+}
+
+// FUN_0021eac0
+void func_0021eac0(void* destination, f32 value)
+{
+    BP_TEX_F32(destination, 8) = value;
+    BP_TEX_F32(destination, 0x48) = value;
+    BP_TEX_F32(destination, 0x88) = value;
+    BP_TEX_F32(destination, 0xc8) = value;
+}
+
+// FUN_0021eae0
+void func_0021eae0(void* destination, const f32* rect)
+{
+    RwCamera* camera;
+    f32 reciprocalDepth;
+
+    camera = kwlnGetMainCamera();
+    reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
+    BP_TEX_F32(destination, 0x10) = rect[0];
+    BP_TEX_F32(destination, 0x14) = rect[1];
+    BP_TEX_F32(destination, 0x18) = reciprocalDepth;
+    BP_TEX_F32(destination, 0x50) = rect[2];
+    BP_TEX_F32(destination, 0x54) = rect[1];
+    BP_TEX_F32(destination, 0x58) = reciprocalDepth;
+    BP_TEX_F32(destination, 0x90) = rect[2];
+    BP_TEX_F32(destination, 0x94) = rect[3];
+    BP_TEX_F32(destination, 0x98) = reciprocalDepth;
+    BP_TEX_F32(destination, 0xd0) = rect[0];
+    BP_TEX_F32(destination, 0xd4) = rect[3];
+    BP_TEX_F32(destination, 0xd8) = reciprocalDepth;
+}
+
+// FUN_0021eb80
+void func_0021eb80(void* destination, const f32* rect)
+{
+    RwCamera* camera;
+    f32 reciprocalDepth;
+
+    camera = kwlnGetMainCamera();
+    reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
+    BP_TEX_F32(destination, 0x10) = rect[0];
+    BP_TEX_F32(destination, 0x14) = rect[1];
+    BP_TEX_F32(destination, 0x18) = reciprocalDepth;
+    BP_TEX_F32(destination, 0x50) = rect[0] + rect[2];
+    BP_TEX_F32(destination, 0x54) = rect[1];
+    BP_TEX_F32(destination, 0x58) = reciprocalDepth;
+    BP_TEX_F32(destination, 0x90) = rect[0] + rect[2];
+    BP_TEX_F32(destination, 0x94) = rect[1] + rect[3];
+    BP_TEX_F32(destination, 0x98) = reciprocalDepth;
+    BP_TEX_F32(destination, 0xd0) = rect[0];
+    BP_TEX_F32(destination, 0xd4) = rect[1] + rect[3];
+    BP_TEX_F32(destination, 0xd8) = reciprocalDepth;
+}
+static u32* bpTexWork(void)
+{
+    u32* work;
+
+    work = BP_TEX_GLOBAL;
+    K_ASSERT(work != NULL, 0xbc);
+    return work;
+}
+
+static u32* bpTexNodeNext(u32* node)
+{
+    return (u32*)node[0x3f1];
+}
+
+static u32* bpTexFindNode(u32 ordinal)
+{
+    u32* node;
+
+    for (node = BP_TEX_PTR(bpTexWork(), 0x1265c);
+         node != NULL;
+         node = bpTexNodeNext(node))
+    {
+        if ((node[0] & 2) == 0 && node[4] == ordinal)
+        {
+            return node;
+        }
+    }
+
+    K_ASSERT(false, 0x47a);
     return NULL;
 }
 
-// FUN_0021ec40
-RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
+static s32 bpTexNodeCount(void)
 {
-    // TODO
+    s32 count;
+    u32* node;
 
+    count = 0;
+    for (node = BP_TEX_PTR(bpTexWork(), 0x1265c);
+         node != NULL;
+         node = bpTexNodeNext(node))
+    {
+        if ((node[0] & 2) == 0)
+        {
+            count++;
+        }
+    }
+    return count;
+}
+
+static void bpTexCollect(void* node, u32** values, s32* count)
+{
+    func_00256fa0(node, values, count);
+}
+
+static u32* bpTexActionRecord(void)
+{
+    u32* work;
+    u32 index;
+
+    work = bpTexWork();
+    index = BP_TEX_U32(work, 0x127a8);
+    return (u32*)((u8*)work + 0x12688 + index * 0x24);
+}
+
+static void bpTexQueueNodeAction(u32 type, u32* node, u32 duration)
+{
+    u32* work;
+    u32* action;
+
+    work = bpTexWork();
+    action = bpTexActionRecord();
+    action[0] = type;
+    action[1] = duration;
+    action[2] = (u32)node;
+    action[3] = 0;
+    BP_TEX_U32(work, 0x127a8)++;
+}
+
+// FUN_00254B90 NONMATCHING
+void bpTexSortVisibleNodes(void)
+{
+    u32* work;
+    void* camera;
+    RwMatrix* cameraMatrix;
+    u32* nodes[8];
+    u32* groups[8];
+    f32 distance[8];
+    u32* leaves[8];
+    s32 nodeCount;
+    s32 groupCount;
+    s32 leafCount;
+    s32 i;
+    s32 j;
+
+    work = bpTexWork();
+    if ((*work & 1) == 0)
+    {
+        return;
+    }
+
+    camera = func_00198590();
+    cameraMatrix = func_004cb2f0(camera != NULL ? *(void**)((u8*)camera + 4) : NULL);
+    nodeCount = bpTexNodeCount();
+    groupCount = 0;
+    for (i = 0; i < nodeCount && groupCount < 8; i++)
+    {
+        nodes[groupCount] = bpTexFindNode(i);
+        bpTexCollect(nodes[groupCount], leaves, &leafCount);
+        for (j = 0; j < leafCount && groupCount < 8; j++)
+        {
+            groups[groupCount] = leaves[j];
+            if (cameraMatrix != NULL)
+            {
+                RwV3d delta;
+                delta.x = BP_TEX_F32(groups[groupCount], 0x38) - cameraMatrix->pos.x;
+                delta.y = BP_TEX_F32(groups[groupCount], 0x3c) - cameraMatrix->pos.y;
+                delta.z = BP_TEX_F32(groups[groupCount], 0x40) - cameraMatrix->pos.z;
+                distance[groupCount] = func_004c6ac0(&delta);
+            }
+            else
+            {
+                distance[groupCount] = 0.0f;
+            }
+            groupCount++;
+        }
+    }
+
+    for (i = 0; i < groupCount; i++)
+    {
+        for (j = i + 1; j < groupCount; j++)
+        {
+            if (distance[j] > distance[i])
+            {
+                f32 d;
+                u32* node;
+                d = distance[i];
+                distance[i] = distance[j];
+                distance[j] = d;
+                node = groups[i];
+                groups[i] = groups[j];
+                groups[j] = node;
+            }
+        }
+    }
+
+    for (i = 0; i < groupCount; i++)
+    {
+        bpTexCollect(groups[i], leaves, &leafCount);
+        for (j = 0; j < leafCount; j++)
+        {
+            func_0020b250(leaves[j]);
+        }
+    }
+}
+
+// FUN_00254E10 NONMATCHING
+void bpTexFinishNodeStreams(void)
+{
+    u32* work;
+    s32 i;
+
+    work = bpTexWork();
+    for (i = 0; i < 0x10; i++)
+    {
+        u32* record;
+        record = work + i * 0x499;
+        if ((record[1] & 4) != 0)
+        {
+            K_ASSERT((record[1] & 8) != 0, 0x38d);
+            if (record[2] == 1)
+            {
+                func_0021a920(record[3], record[4]);
+            }
+            else if (record[2] == 0)
+            {
+                func_0021ab80((s16)record[3]);
+            }
+        }
+    }
+    *work |= 0x600;
+}
+
+// FUN_00254F20 NONMATCHING
+u32 bpTexIsReady(void)
+{
+    return bpTexWork()[0] & 0x200;
+}
+
+// FUN_00254F70 NONMATCHING
+void bpTexBeginRender(void)
+{
+    u32* work;
+    u32* node;
+    u32 origin[3];
+
+    work = bpTexWork();
+    origin[0] = *(u32*)0x0068ea30;
+    origin[1] = *(u32*)0x0068ea34;
+    origin[2] = *(u32*)0x0068ea38;
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = bpTexNodeNext(node))
+    {
+        func_00258630(node);
+    }
+    BP_TEX_U32(work, 0x12680) = 0;
+    func_0024fda0((u8*)work + 0x127d4);
+    func_0024faf0((u8*)work + 0x127d4, origin);
+    func_0024da60((u8*)work + 0x127d4);
+    func_0024f090((u8*)work + 0x127d4);
+    func_0024fe00((u8*)work + 0x12800);
+    func_0024da60((u8*)work + 0x12800);
+    func_0024f090((u8*)work + 0x12800);
+    *work |= 1;
+}
+
+// FUN_002550B0 NONMATCHING
+void bpTexEndRender(void)
+{
+    u32* work;
+
+    work = bpTexWork();
+    func_0024daf0((u8*)work + 0x127d4);
+    func_0024daf0((u8*)work + 0x12800);
+    *work &= ~1;
+}
+
+// FUN_00255130 NONMATCHING
+void bpTexResetNodes(void)
+{
+    bpTexWork();
+    (void)bpTexNodeCount();
+}
+
+// FUN_002551B0
+void bpTexSetTransitionPending(u32* work)
+{
+    *work |= 0x400;
+}
+
+// FUN_002551D0 NONMATCHING
+void bpTexQueueNodePair(u32 first, u32 second)
+{
+    u32* work;
+    u32* left;
+    u32* right;
+    u32* action;
+
+    work = bpTexWork();
+    func_00257e20();
+    left = bpTexFindNode(first);
+    right = bpTexFindNode(second);
+    K_ASSERT((*left & 0x20) == 0, 0x421);
+    K_ASSERT((*right & 0x20) == 0, 0x422);
+    *left |= 0x20;
+    *right |= 0x20;
+    action = bpTexActionRecord();
+    action[0] = 0;
+    action[1] = BP_TEX_U32(work, 0x127b0);
+    action[2] = (u32)left;
+    action[3] = (u32)right;
+    BP_TEX_U32(work, 0x127a8)++;
+}
+static u32* bpTexAllocNode(void)
+{
+    u32* work;
+    u32* node;
+    s32 i;
+
+    work = bpTexWork();
+    for (i = 0; i < 0x10; i++)
+    {
+        node = (u32*)((u8*)work + i * 0x1264 + 4);
+        if ((node[0] & 4) == 0)
+        {
+            return node;
+        }
+    }
+    K_ASSERT(false, 0x45f);
     return NULL;
+}
+
+// FUN_00255390 NONMATCHING
+u32* bpTexFindFreeNode(void)
+{
+    return bpTexAllocNode();
+}
+
+// FUN_00255440 NONMATCHING
+u32* bpTexFindNodeByIndex(u32 index)
+{
+    return bpTexFindNode(index);
+}
+
+// FUN_002554F0 NONMATCHING
+s32 bpTexGetNodeCount(void)
+{
+    return bpTexNodeCount();
+}
+
+// FUN_00255570 NONMATCHING
+void bpTexQueueNodeRange(s32 start, s32 count)
+{
+    u32* work;
+    u32* selected[7];
+    u32* node;
+    u32* action;
+    s32 total;
+    s32 i;
+
+    work = bpTexWork();
+    total = bpTexNodeCount();
+    K_ASSERT(total <= 6, 0x49f);
+    K_ASSERT(start >= 0 && start + count <= total, 0x4a4);
+    for (i = 0; i < total; i++)
+    {
+        selected[i] = bpTexFindNode((u32)i);
+    }
+    for (i = 0; i < count; i++)
+    {
+        node = selected[start + i];
+        node[0] |= 0x20;
+    }
+    action = bpTexActionRecord();
+    action[0] = 1;
+    action[1] = BP_TEX_U32(work, 0x127b0);
+    action[8] = 0;
+    for (i = 0; i < count; i++)
+    {
+        action[2 + i] = (u32)selected[start + i];
+        action[8]++;
+    }
+    BP_TEX_U32(work, 0x127a8)++;
+}
+
+// FUN_00255810 NONMATCHING
+void bpTexRemoveNodeAt(s32 index)
+{
+    u32* work;
+    u32* node;
+    u32* children[8];
+    s32 childCount;
+    s32 count;
+    s32 i;
+
+    work = bpTexWork();
+    count = BP_TEX_S32(work, 0x12684);
+    K_ASSERT(index >= 0 && index < count, 0x4c9);
+    index = count - 1 - index;
+    node = BP_TEX_PTR(work, 0x12664 + index * 4);
+    K_ASSERT((*node & 2) == 0, 0x4cf);
+    func_00259190(node, children, &childCount);
+    for (i = 0; i < childCount; i++)
+    {
+        children[i][0] |= 0x20;
+    }
+    for (i = index; i < count - 1; i++)
+    {
+        BP_TEX_PTR(work, 0x12664 + i * 4) =
+            BP_TEX_PTR(work, 0x12664 + (i + 1) * 4);
+    }
+    BP_TEX_S32(work, 0x12684) = count - 1;
+    bpTexQueueNodeAction(2, node, BP_TEX_U32(work, 0x127b0));
+}
+
+// FUN_00255B20 NONMATCHING
+void bpTexShuffleNodes(void)
+{
+    u32* work;
+    u32* node;
+    u32* positions[8];
+    u32 order[16];
+    s32 count;
+    s32 nodeCount;
+    s32 leafCount;
+    s32 i;
+    s32 j;
+    u32 tmp;
+    s32 selected;
+    f32 position[3];
+
+    work = bpTexWork();
+    count = (s32)BP_TEX_U32(work, 0x1267c);
+    nodeCount = bpTexNodeCount();
+    func_005225a8(0x68ea40, BP_TEX_U32(work, 0x126b0));
+    BP_TEX_U32(work, 0x4a22 * 4) =
+        (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 10.0f + 3.0f);
+    BP_TEX_U32(work, 0x4a23 * 4) =
+        (u32)(((f32)((s32)BP_TEX_U32(work, 0x126b0) - 4) / 14.0f) * 3.0f + 5.0f);
+    for (i = 0; i < count; i++)
+    {
+        order[i] = (u32)i;
+        BP_TEX_U32(work, (0x49ef + i) * 4) = (u32)i;
+    }
+    for (i = 0; i < 0x100 + (s32)(func_00488f30() & 1); i++)
+    {
+        j = (s32)(func_00488f30() % (u32)count);
+        selected = (s32)(func_00488f30() % (u32)(count - 1));
+        if (j <= selected)
+        {
+            selected++;
+        }
+        tmp = BP_TEX_U32(work, (0x49ef + j) * 4);
+        BP_TEX_U32(work, (0x49ef + j) * 4) =
+            BP_TEX_U32(work, (0x49ef + selected) * 4);
+        BP_TEX_U32(work, (0x49ef + selected) * 4) = tmp;
+    }
+    for (i = 0; i < count; i++)
+    {
+        order[i] = BP_TEX_U32(work, (0x49ef + i) * 4);
+        if (order[i] == 0)
+        {
+            break;
+        }
+    }
+    K_ASSERT(i < count, 0x47a);
+    node = bpTexFindNode((u32)i);
+    bpTexCollectLeafPos(node, positions, &leafCount);
+    bpTexBuildPosition(position,
+                       (u32)i,
+                       (void*)positions[0],
+                       nodeCount);
+    position[1] += 200.0f;
+    func_00250a30((u8*)node + 0x1094,
+                  position,
+                  BP_TEX_U32(work, 0x4a23 * 4));
+    *node |= 0x60;
+    BP_TEX_U32(work, 0x49ed * 4) = 0;
+    BP_TEX_U32(work, 0x49ee * 4) = 0;
+    *work |= 0x10;
+}
+
+// FUN_00255F30 NONMATCHING
+u32 bpTexIsShuffleActive(void)
+{
+    return bpTexWork()[0] & 0x10;
+}
+
+// FUN_00255F80 NONMATCHING
+void bpTexStartShuffle(void)
+{
+    u32* work;
+
+    work = bpTexWork();
+    BP_TEX_U32(work, 0x49eb * 4) = 0;
+    *work |= 4;
+    *work &= ~8;
+}
+
+// FUN_00255FE0 NONMATCHING
+void bpTexStopShuffle(void)
+{
+    *bpTexWork() &= ~4;
+}
+
+// FUN_00256030 NONMATCHING
+u32* bpTexGetCurrentNode(void)
+{
+    return bpTexFindNode(BP_TEX_U32(bpTexWork(), 0x127ac));
+}
+
+// FUN_00256110 NONMATCHING
+u32* bpTexFindNodeById(u32 id)
+{
+    return bpTexFindNode(id);
+}
+// FUN_002561E0 NONMATCHING
+void bpTexApplyGlobalAlpha(f32 amount, void* node)
+{
+    u32 color;
+    RwRGBA rgba;
+    u32* leaves[8];
+    s32 count;
+    s32 i;
+
+    color = *(u32*)0x007cc470;
+    rgba.r = (u8)(((s32)(color & 0xff) - 0xff) * amount + 255.0f);
+    rgba.g = (u8)(((s32)((color >> 8) & 0xff) - 0xff) * amount + 255.0f);
+    rgba.b = (u8)(((s32)((color >> 16) & 0xff) - 0xff) * amount + 255.0f);
+    rgba.a = (u8)(((s32)(color >> 24) - 0xff) * amount + 255.0f);
+    bpTexCollect(node, leaves, &count);
+    for (i = 0; i < count; i++)
+    {
+        func_0020cc80((u8*)leaves[i] + 0x18, &rgba);
+    }
+}
+
+// FUN_00256430 NONMATCHING
+u32 bpTexHasPendingNode(void)
+{
+    u32* node;
+
+    for (node = BP_TEX_PTR(bpTexWork(), 0x1265c);
+         node != NULL;
+         node = bpTexNodeNext(node))
+    {
+        if ((*node & 0x20) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// FUN_002564C0 NONMATCHING
+void bpTexUpdateNode(void* nodeData)
+{
+    u32* work;
+    u32* node;
+    u32* leaves[8];
+    u32* parents[8];
+    s32 count;
+    s32 parentCount;
+    s32 i;
+    f32 phase;
+    f32 offsetX;
+    f32 offsetY;
+    f32 offsetZ;
+    f32 rotation[4];
+    f32 position[3];
+    f32 direction[3];
+    u8 color[4];
+    u32 mode;
+    void* camera;
+    RwMatrix* cameraMatrix;
+    void* resource;
+
+    work = bpTexWork();
+    node = (u32*)nodeData;
+    phase = (f32)BP_TEX_S32(work, 0x12680) / 300.0f;
+    offsetX = func_0052e878(*(f32*)0x007caf38 * phase * -2.0f) * -1000.0f;
+    offsetY = func_0052e6d8(*(f32*)0x007caf38 *
+                            ((f32)BP_TEX_S32(work, 0x12680) / 80.0f) * 2.0f) *
+              100.0f + 120.0f;
+    offsetZ = func_0052e6d8(*(f32*)0x007caf38 * phase * -2.0f) *
+              -200.0f + 360.0f;
+
+    if ((*node & 0x80) != 0)
+    {
+        node[0x496] = (node[0x496] + 1) % 0x5a;
+    }
+    bpTexCollect(node, leaves, &count);
+    for (i = 0; i < count; i++)
+    {
+        BP_TEX_F32(leaves[i], 0xfac) = offsetX;
+        BP_TEX_F32(leaves[i], 0xfb0) = offsetY;
+        BP_TEX_F32(leaves[i], 0xfb4) = offsetZ;
+    }
+
+    if ((*node & 0x200) != 0)
+    {
+        node[0x494]++;
+        mode = node[0x493];
+        if (mode == 3)
+        {
+            node[0x497] = (u32)((f32)node[0x494] /
+                                (f32)node[0x495] * 256.0f);
+        }
+        else if (mode == 2)
+        {
+            node[0x497] = (u32)((1.0f - (f32)node[0x494] /
+                                (f32)node[0x495]) * 256.0f);
+        }
+        else if (mode == 1)
+        {
+            phase = (f32)node[0x494] / (f32)node[0x495];
+            func_0024f2c0((u8*)node + 0x1030, phase);
+            func_00250ef0(phase, (u8*)node + 0x11d8);
+            func_00251030((u8*)node + 0xfcc);
+            func_0024dc90((u8*)node + 0xfcc);
+            func_00251030((u8*)node + 0x10f8);
+            func_0024dc90((u8*)node + 0x10f8);
+        }
+        else if (mode == 0)
+        {
+            phase = 1.0f - (f32)node[0x494] / (f32)node[0x495];
+            func_00259190(node, parents, &parentCount);
+            for (i = 0; i < parentCount; i++)
+            {
+                func_0024f2c0((u8*)parents[i] + 0x1030, phase);
+                func_00250ef0(phase, (u8*)parents[i] + 0x11d8);
+                func_00251030((u8*)parents[i] + 0xfcc);
+                func_0024dc90((u8*)parents[i] + 0xfcc);
+                func_00251030((u8*)parents[i] + 0x10f8);
+                func_0024dc90((u8*)parents[i] + 0x10f8);
+            }
+        }
+        if (node[0x494] == node[0x495])
+        {
+            *node &= ~0x200;
+        }
+    }
+
+    if ((*node & 8) != 0)
+    {
+        if ((*node & 0x10) == 0)
+        {
+            if ((*node & 0x20) != 0 &&
+                func_00250b90((u8*)node + 0x1094) == 0)
+            {
+                *node &= ~0x20;
+            }
+        }
+        else
+        {
+            K_ASSERT((*node & 0x20) != 0, 0x643);
+            func_00259190(node, parents, &parentCount);
+            for (i = 0; i < parentCount; i++)
+            {
+                if ((parents[i][0] & 0x20) != 0 &&
+                    func_00250b90((u8*)parents[i] + 0x1094) == 0)
+                {
+                    parents[i][0] &= ~0x20;
+                }
+            }
+            for (i = 0; i < parentCount; i++)
+            {
+                if ((parents[i][0] & 0x20) != 0)
+                {
+                    break;
+                }
+            }
+            if (i == parentCount)
+            {
+                *node &= ~0x30;
+            }
+        }
+        func_00259190(node, parents, &parentCount);
+        bpTexCollect(node, leaves, &count);
+        if ((*node & 0x10) == 0)
+        {
+            for (i = 0; i < count; i++)
+            {
+                func_0024f960((u8*)node + 0x3f3,
+                              (u8*)leaves[i] + 0x38);
+                func_0024fba0((u8*)node + 0x43e, rotation);
+                BP_TEX_F32(leaves[i], 0x28) = rotation[0];
+                BP_TEX_F32(leaves[i], 0x2c) = rotation[1];
+                BP_TEX_F32(leaves[i], 0x30) = rotation[2];
+                BP_TEX_F32(leaves[i], 0x34) = rotation[3];
+                func_0020ac90((u8*)leaves[i] + 0x18);
+            }
+        }
+        else
+        {
+            for (i = 0; i < count; i++)
+            {
+                func_0024f960((u8*)parents[i] + 0xfcc,
+                              (u8*)leaves[i] + 0x38);
+                func_0024fba0((u8*)parents[i] + 0x10f8, rotation);
+                BP_TEX_F32(leaves[i], 0x28) = rotation[0];
+                BP_TEX_F32(leaves[i], 0x2c) = rotation[1];
+                BP_TEX_F32(leaves[i], 0x30) = rotation[2];
+                BP_TEX_F32(leaves[i], 0x34) = rotation[3];
+                func_0020ac90((u8*)leaves[i] + 0x18);
+            }
+        }
+    }
+    else
+    {
+        if ((*node & 0x20) != 0 &&
+            func_00250b90((u8*)node + 0x1094) == 0)
+        {
+            *node &= ~0x20;
+        }
+        func_0024f960((u8*)node + 0x3f3, (u8*)node + 0x38);
+        func_0024fba0((u8*)node + 0x43e, rotation);
+        BP_TEX_F32(node, 0x28) = rotation[0];
+        BP_TEX_F32(node, 0x2c) = rotation[1];
+        BP_TEX_F32(node, 0x30) = rotation[2];
+        BP_TEX_F32(node, 0x34) = rotation[3];
+        func_0020ac90((u8*)node + 0x18);
+    }
+
+    if ((*node & 0x80) != 0 && node[0x497] != 0)
+    {
+        camera = func_00198590();
+        cameraMatrix = func_004cb2f0(*(void**)((u8*)camera + 4));
+        bpTexCollect(node, leaves, &count);
+        for (i = 0; i < count; i++)
+        {
+            resource = (void*)(uintptr_t)leaves[i][0x1248];
+            func_0024f960((u8*)node + 0x3f3, position);
+            position[1] -= 50.0f;
+            direction[0] = position[0] - cameraMatrix->pos.x;
+            direction[1] = position[1] - cameraMatrix->pos.y;
+            direction[2] = position[2] - cameraMatrix->pos.z;
+            func_004c69f0(direction, direction);
+            position[0] += direction[0];
+            position[1] += direction[1];
+            position[2] += direction[2];
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+            color[3] = (u8)((f32)node[0x497] * 255.0f / 256.0f);
+            func_0034ff90(resource, color);
+            func_0034ff70(resource, DAT_007cad60);
+            func_0034fdf0(resource, position);
+            func_0034fe30(0x80000000, 0, 0, resource);
+            func_0034fd30(resource);
+            func_0034fd70(resource, 5);
+        }
+    }
+
+    bpTexCollect(node, leaves, &count);
+    for (i = 0; i < count; i++)
+    {
+        f32 alpha;
+        alpha = (f32)BP_TEX_U32(work, 0x12880) / 256.0f;
+        if ((*node & 0x80) != 0)
+        {
+            func_0052e878(*(f32*)0x007caf38 *
+                          ((f32)node[0x496] / 90.0f) * 2.0f);
+        }
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = (u8)(alpha * 255.0f *
+                        ((f32)leaves[i][0x1260] / 256.0f));
+        func_0020cc80((u8*)leaves[i] + 0x18, color);
+        if ((*node & 0x80) != 0)
+        {
+            func_0020d770(1.0f, (u8*)leaves[i] + 0x18);
+        }
+    }
+}
+
+// FUN_00256F20 NONMATCHING
+void bpTexCollectLeafPos(void* node, void* values, s32* count)
+{
+    u32* children[8];
+    s32 childCount;
+    s32 i;
+
+    func_00256fa0(node, children, &childCount);
+    for (i = 0; i < childCount; i++)
+    {
+        ((u32*)values)[i] = (u32)((u8*)children[i] + 0x18);
+    }
+    *count = childCount;
+}
+
+// FUN_00256FA0 NONMATCHING
+void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
+{
+    u32* node;
+    u32* stack[8];
+    u32* leaves[8];
+    s32 stackCount;
+    s32 leafCount;
+    s32 i;
+    s32 initialCount;
+
+    node = (u32*)nodeData;
+    if ((*node & 8) == 0)
+    {
+        ((u32*)values)[0] = (u32)node;
+        *count = 1;
+        return;
+    }
+
+    func_00259190(node, stack, &stackCount);
+    initialCount = stackCount;
+    while (stackCount > 0)
+    {
+        u32* child;
+        child = stack[--stackCount];
+        if ((*child & 8) == 0)
+        {
+            leaves[leafCount++] = child;
+        }
+        else
+        {
+            u32* nested[8];
+            s32 nestedCount;
+            func_00259190(child, nested, &nestedCount);
+            for (i = 0; i < nestedCount; i++)
+            {
+                stack[stackCount++] = nested[i];
+            }
+        }
+    }
+    K_ASSERT(initialCount == leafCount, 0x702);
+    for (i = 0; i < leafCount; i++)
+    {
+        ((u32*)values)[i] = (u32)leaves[leafCount - 1 - i];
+    }
+    *count = ((*node & 0x10) == 0) ? 1 : leafCount;
+}
+// FUN_00257130 NONMATCHING
+void bpTexApplyActions(void)
+{
+    u32* work;
+    u32* action;
+    u32* node;
+    u32* child;
+    u32* leaves[8];
+    u32* direct[8];
+    s32 actionCount;
+    s32 nodeCount;
+    s32 leafCount;
+    s32 i;
+    s32 j;
+    s32 frame;
+    s32 directCount;
+    u32* first;
+    u32* tail;
+    u32 rootCount;
+    u8 quad[16];
+    f32 position[3];
+    f32 offsets[3];
+    s32 difference;
+    u32 tempIndex;
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
+    actionCount = BP_TEX_S32(work, 0x127a8);
+    frame = BP_TEX_S32(work, 0x1267c);
+    for (i = 0; i < actionCount; i++)
+    {
+        action = (u32*)((u8*)work + 0x12688 + i * 0x24);
+        if (action[0] == 2)
+        {
+            directCount = 0;
+            for (child = BP_TEX_PTR(work, 0x1265c);
+                 child != NULL;
+                 child = bpTexNodeNext(child))
+            {
+                if ((child[0] & 2) == 0 && child[0x3f2] == action[2])
+                {
+                    directCount++;
+                }
+            }
+            frame += directCount - 1;
+        }
+        else if (action[0] == 1)
+        {
+            frame -= (s32)action[8] - 1;
+        }
+    }
+
+    for (i = 0; i < actionCount; i++)
+    {
+        action = (u32*)((u8*)work + 0x12688 + i * 0x24);
+        if (action[0] == 2)
+        {
+            node = (u32*)action[2];
+            func_00259190(node, direct, &directCount);
+            func_00258f80(node);
+            for (j = 0; j < directCount; j++)
+            {
+                child = direct[j];
+                bpTexCollect(child, leaves, &leafCount);
+                bpTexBuildPosition(position,
+                                    child[4],
+                                    (u8*)leaves[0] + 0x18,
+                                    frame);
+                func_002508c0((u8*)child + 0x1094,
+                              position,
+                              action[1]);
+                child[0x494] = 0;
+                child[0x495] = action[1];
+                child[0x493] = 1;
+                child[0] |= 0x200;
+            }
+            FUN_0010a4e0(1, 0, 6,
+                         action[1] < 5 ? 4 :
+                         action[1] < 10 ? 3 : 2);
+        }
+        else if (action[0] == 1)
+        {
+            first = (u32*)action[2];
+            K_ASSERT(first != NULL, 0x780);
+            node = bpTexAllocNode();
+            K_ASSERT(node != NULL, 0x780);
+            node[0x3f1] = 0;
+            node[0x3f0] = 0;
+            tail = BP_TEX_PTR(work, 0x12660);
+            if (tail == NULL)
+            {
+                BP_TEX_PTR(work, 0x1265c) = node;
+            }
+            else
+            {
+                tail[0x3f1] = (u32)node;
+                node[0x3f0] = (u32)tail;
+            }
+            BP_TEX_PTR(work, 0x12660) = node;
+            node[0] |= 0x3c;
+            node[4] = first[4];
+            func_00258630(node);
+            func_004bdde0(0, quad, (void*)0x0068ea70, 0);
+            func_0024fc40((u8*)node + 0x45a, quad);
+            for (j = 0; j < (s32)action[8]; j++)
+            {
+                child = (u32*)action[2 + j];
+                child[0x3f2] = (u32)node;
+                child[0] |= 2;
+                child[4] -= node[4];
+            }
+            rootCount = BP_TEX_U32(work, 0x12684);
+            K_ASSERT(rootCount < 6, 0x784);
+            BP_TEX_PTR(work, 0x12664 + rootCount * 4) = node;
+            BP_TEX_U32(work, 0x12684) = rootCount + 1;
+            bpTexCollect(node, leaves, &leafCount);
+            bpTexBuildPosition(position,
+                                node[4],
+                                (u8*)leaves[0] + 0x18,
+                                frame);
+            func_0024f9f0((u8*)node + 0x1094, position);
+            for (j = 0; j < (s32)action[8]; j++)
+            {
+                child = (u32*)action[2 + j];
+                bpTexCollect(child, leaves, &leafCount);
+                bpTexBuildPosition(position,
+                                    node[4],
+                                    (u8*)leaves[0] + 0x18,
+                                    frame);
+                func_002508c0((u8*)child + 0x1094,
+                              position,
+                              action[1]);
+            }
+            for (tail = BP_TEX_PTR(work, 0x1265c);
+                 tail != NULL;
+                 tail = bpTexNodeNext(tail))
+            {
+                if ((tail[0] & 2) == 0 && node[4] < tail[4])
+                {
+                    tail[4] -= (s32)action[8] - 1;
+                }
+            }
+            node[0x494] = 0;
+            node[0x495] = action[1];
+            node[0x493] = 0;
+            *node |= 0x200;
+            BP_TEX_U32(work, 0x1267c) = frame;
+            FUN_0010a4e0(1, 0, 6,
+                         action[1] < 5 ? 4 :
+                         action[1] < 10 ? 3 : 2);
+        }
+        else if (action[0] == 0)
+        {
+            u32* left;
+            u32* right;
+            left = (u32*)action[2];
+            right = (u32*)action[3];
+            difference = (s32)left[4] - (s32)right[4];
+            bpTexCollect(left, leaves, &leafCount);
+            bpTexBuildPosition(position,
+                                right[4],
+                                (u8*)leaves[0] + 0x18,
+                                frame);
+            offsets[0] = (f32)func_0051e0e0(difference) * 100.0f + 100.0f;
+            offsets[1] = (f32)func_0051e0e0(difference) * 100.0f + 400.0f;
+            offsets[2] = (f32)func_0051e0e0(difference) * 100.0f + 200.0f;
+            func_002505b0((u8*)left + 0x1094,
+                          position,
+                          action[1],
+                          offsets);
+            bpTexCollect(right, leaves, &leafCount);
+            bpTexBuildPosition(position,
+                                left[4],
+                                (u8*)leaves[0] + 0x18,
+                                frame);
+            offsets[0] = -100.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            offsets[1] = -400.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            offsets[2] = -200.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            func_002505b0((u8*)right + 0x1094,
+                          position,
+                          action[1],
+                          offsets);
+            tempIndex = left[4];
+            left[4] = right[4];
+            right[4] = tempIndex;
+            BP_TEX_U32(work, 0x1267c) = frame;
+            FUN_0010a4e0(1, 0, 6,
+                         action[1] < 5 ? 4 :
+                         action[1] < 10 ? 3 : 2);
+        }
+    }
+
+    nodeCount = bpTexNodeCount();
+    for (i = 0; i < nodeCount; i++)
+    {
+        node = bpTexFindNode((u32)i);
+        if ((*node & 0x20) == 0)
+        {
+            bpTexCollect(node, leaves, &leafCount);
+            func_002508c0((u8*)node + 0x1094,
+                          (u8*)leaves[0] + 0x18,
+                          BP_TEX_U32(work, 0x127b0));
+        }
+    }
+    BP_TEX_U32(work, 0x127a8) = 0;
+    func_005225a8(0x68ea80, BP_TEX_U32(work, 0x127b0));
+}
+
+// FUN_00257D00 NONMATCHING
+void bpTexBuildPosition(void* output, u32 index, void* source, s32 count)
+{
+    f32 vector[2];
+    u32 scale;
+
+    vector[0] = func_0020c660(index, count);
+    vector[1] = 184.0f;
+    scale = func_0020c500(90.0f, source);
+    func_0020c400(scale, source, vector, output);
+    BP_TEX_F32(output, 4) += 100.0f;
+}
+
+// FUN_00257D90 NONMATCHING
+void bpTexBuildFixedPosition(void* output, void* source)
+{
+    f32 vector[2];
+    u32 scale;
+
+    vector[0] = 320.0f;
+    vector[1] = 184.0f;
+    scale = func_0020c500(200.0f, source);
+    func_0020c400(scale, source, vector, output);
+    BP_TEX_F32(output, 4) += 100.0f;
+}
+
+// FUN_00257E20 NONMATCHING
+void bpTexDumpNodes(void)
+{
+    u32* work;
+    u32* node;
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
+    func_005225a8(0x7cc478);
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = bpTexNodeNext(node))
+    {
+        func_005225a8(0x7cc480, node[5]);
+        if ((node[0] & 2) != 0)
+        {
+            func_005225a8(0x7cc484);
+        }
+        if ((node[0] & 8) != 0)
+        {
+            func_005225a8(0x7cc488);
+        }
+        if ((node[0] & 0x20) != 0)
+        {
+            func_005225a8(0x7cc48c);
+        }
+        func_005225a8(0x7cc490);
+    }
+    func_005225a8(0x7cc494);
+}
+
+// FUN_00257F10 NONMATCHING
+void bpTexPrepareNodes(void)
+{
+    u32* work;
+    u32* node;
+    s32 i;
+    u32 origin[3];
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        func_0019d3f0((const char*)0x0068ea00, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
+    origin[0] = *(u32*)0x0068ea90;
+    origin[1] = *(u32*)0x0068ea94;
+    origin[2] = *(u32*)0x0068ea98;
+    for (i = 0; i < (s32)BP_TEX_U32(work, 0x499f * 4); i++)
+    {
+        node = bpTexFindNode((u32)i);
+        func_00250cf0(*(f32*)0x007caf38, 0, (u8*)node + 0x45a, origin, 0xc);
+        node[0x494] = 0;
+        node[0x495] = 0xc;
+        node[0x493] = 2;
+        *node |= 0x200;
+    }
+    *work |= 2;
+    BP_TEX_U32(work, 0x4a1c * 4) = 0;
+    *work |= 0x40;
+}
+/*
+ * The command-panel work area lives in the same GP slot used by bcm_panel.c.
+ * Keep the absolute slot here so the resource setup and animation/render
+ * passes share state even though the helpers are split across translation
+ * units.
+ */
+#define BP_PANEL_GLOBAL (*(u8**)0x007ce308)
+
+extern void* func_0021c3f0(s32 texture);
+extern void* func_0021cca0(void* texture, s32 frame);
+extern u32 func_0021cce0(void* frame);
+extern void func_0021d3b0(void* destination, void* frame);
+extern void func_0021d8e0(void* destination, const f32* rect);
+extern void func_0021d890(void* destination, const f32* vertices);
+extern void func_0021d950(void* destination, const u8* color);
+extern u32 func_002d1a70(void);
+extern void bcmPanel0022b580(void);
+
+static s32 bpPanelFrameWidth(void* frame)
+{
+    return *(s32*)((u8*)frame + 0x0c);
+}
+
+static s32 bpPanelFrameHeight(void* frame)
+{
+    return *(s32*)((u8*)frame + 0x10);
+}
+
+static int bpPanelInTransition(u32 value)
+{
+    return value >= 1 && value <= 4;
+}
+
+static u8 bpPanelColor(f32 value)
+{
+    return (u8)value;
+}
+
+static void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
+{
+    f32 rect[4];
+
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = (f32)bpPanelFrameWidth(frame);
+    rect[3] = (f32)bpPanelFrameHeight(frame);
+    func_0021d8e0(destination, rect);
+}
+
+static void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
+{
+    u8 color[4];
+
+    color[0] = red;
+    color[1] = green;
+    color[2] = blue;
+    color[3] = bpPanelColor(alpha);
+    func_0021d950(destination, color);
+}
+
+// FUN_0021f0c0 NONMATCHING
+void func_0021f0c0(void* work)
+{
+    u32* words;
+    s32 i;
+
+    K_ASSERT(BP_PANEL_GLOBAL == NULL, 0xee);
+    words = (u32*)work;
+    words[0] = 0;
+    words[1] = 0;
+    for (i = 0; i < 7; i++)
+    {
+        *(u32*)((u8*)work + 0x1210 + i * 4) = 0;
+    }
+    BP_PANEL_GLOBAL = (u8*)work;
+}
+
+// FUN_0021f140 NONMATCHING
+void func_0021f140(void)
+{
+    BP_PANEL_GLOBAL = NULL;
+}
+
+// FUN_0021f150 NONMATCHING
+void func_0021f150(u32 selection)
+{
+    u8* work;
+    void* texture;
+    void* frame;
+    u32* words;
+    s32 i;
+
+    K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
+    work = BP_PANEL_GLOBAL;
+    words = (u32*)work;
+    K_ASSERT((words[0] & 1) != 0, 0x103);
+    words[0] &= ~0x11;
+    if (func_002d1a70() == 0)
+    {
+        words[0] |= 0x10;
+    }
+
+    texture = func_0021c3f0(0);
+    frame = func_0021cca0(texture, 0x10);
+    func_0021d3b0(work + 0x10, frame);
+    frame = func_0021cca0(texture, 0x1b);
+    func_0021d3b0(work + 0x110, frame);
+    frame = func_0021cca0(texture, 0x1c);
+    func_0021d3b0(work + 0x210, frame);
+    frame = func_0021cca0(texture, 0x22);
+    func_0021d3b0(work + 0x1430, frame);
+    frame = func_0021cca0(texture, 0x0e);
+    func_0021d3b0(work + 0x310, frame);
+    frame = func_0021cca0(texture, (s32)selection);
+    func_0021d3b0(work + 0x1230, frame);
+    for (i = 0; i < 7; i++)
+    {
+        u32 id;
+
+        id = (*(u32*)(work + 0x1210 + i * 4) & 1) != 0 ? (u32)(i + 0x11) : (u32)(i + 0x41);
+        frame = func_0021cca0(texture, (s32)id);
+        func_0021d3b0(work + 0x410 + i * 0x100, frame);
+    }
+    for (i = 0; i < 7; i++)
+    {
+        frame = func_0021cca0(texture, i + 0x14);
+        func_0021d3b0(work + 0xb10 + i * 0x100, frame);
+    }
+    bcmPanel0022b580();
+    *(u32*)(work + 0x4634) = selection;
+    *(u32*)(work + 0x4638) = 0xffffffff;
+    *(u32*)(work + 0x463c) = 0;
+    *(u32*)(work + 0x4640) = 0xffffffff;
+    *(u32*)(work + 0x4630) = 0;
+    words[0] |= 1;
+}
+
+// FUN_0021f3c0 NONMATCHING
+void func_0021f3c0(void)
+{
+    u32* words;
+
+    K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
+    words = (u32*)BP_PANEL_GLOBAL;
+    words[0] &= ~2;
+}
+extern void func_0022b630(void);
+extern void func_002265d0(void);
+extern void func_00227f30(void);
+extern void func_0022c2d0(void);
+extern void func_00228e40(void);
+extern void func_0022a2b0(void);
+extern void func_00224940(void);
+extern void func_00223290(void);
+extern void func_002257f0(void);
+extern void func_0022bcf0(void);
+extern void func_00227800(void);
+extern void func_0022c5a0(void);
+extern void func_00229b40(void);
+extern void func_0022ae80(void);
+extern void func_00225040(void);
+extern void func_00224150(void);
+extern void func_002289b0(void);
+extern void func_00226040(void);
+extern void (*D_00960090)(u32, u32);
+extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+
+static void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32* y)
+{
+    if (mode == 3)
+    {
+        if (sub == 0)
+        {
+            *x = 61.5f + 41.5f * timer / 3.0f;
+            *y = 388.5f - 27.5f * timer / 3.0f;
+        }
+        else if (bpPanelInTransition(sub))
+        {
+            *x = 103.0f - 41.5f * timer / 3.0f;
+            *y = 361.0f + 27.5f * timer / 3.0f;
+        }
+        else
+        {
+            K_ASSERT(false, 0x185);
+            *x = 103.0f;
+            *y = 361.0f;
+        }
+    }
+    else if (sub == 0)
+    {
+        *x = 103.0f;
+        *y = 361.0f;
+    }
+    else if (bpPanelInTransition(sub))
+    {
+        *x = 61.5f;
+        *y = 388.5f;
+    }
+    else
+    {
+        K_ASSERT(false, 0x185);
+        *x = 103.0f;
+        *y = 361.0f;
+    }
+    (void)work;
+}
+
+static void bpPanelGetCommandPosition(u32 mode, u32 sub, f32 timer, f32* x, f32* y)
+{
+    if (mode == 3)
+    {
+        if (sub == 0)
+        {
+            *x = 82.0f - 68.0f * timer / 3.0f;
+            *y = 369.0f - 23.0f * timer / 3.0f;
+        }
+        else if (bpPanelInTransition(sub))
+        {
+            *x = 14.0f + 68.0f * timer / 3.0f;
+            *y = 346.0f + 23.0f * timer / 3.0f;
+        }
+        else
+        {
+            *x = 14.0f;
+            *y = 346.0f;
+        }
+    }
+    else if (sub == 0)
+    {
+        *x = 14.0f;
+        *y = 346.0f;
+    }
+    else
+    {
+        *x = 82.0f;
+        *y = 369.0f;
+    }
+}
+
+static void bpPanelSetCenteredRect(void* destination, f32 x, f32 y, void* frame)
+{
+    f32 halfWidth;
+    f32 halfHeight;
+
+    halfWidth = (f32)(bpPanelFrameWidth(frame) / 2);
+    halfHeight = (f32)(bpPanelFrameHeight(frame) / 2);
+    bpPanelSetRect(destination, x - halfWidth, y - halfHeight, frame);
+}
+
+static void bpPanelSetRotatedQuad(void* destination,
+                                  f32 centerX,
+                                  f32 centerY,
+                                  f32 left,
+                                  f32 top,
+                                  void* frame,
+                                  f32 angle)
+{
+    f32 vertices[8];
+    f32 width;
+    f32 height;
+    f32 sine;
+    f32 cosine;
+    f32 sourceX[4];
+    f32 sourceY[4];
+    s32 i;
+
+    width = (f32)bpPanelFrameWidth(frame);
+    height = (f32)bpPanelFrameHeight(frame);
+    sourceX[0] = left;
+    sourceY[0] = top;
+    sourceX[1] = left + width;
+    sourceY[1] = top;
+    sourceX[2] = left + width;
+    sourceY[2] = top + height;
+    sourceX[3] = left;
+    sourceY[3] = top + height;
+    sine = func_0052e878(angle);
+    cosine = func_0052e6d8(angle);
+    for (i = 0; i < 4; i++)
+    {
+        f32 dx;
+        f32 dy;
+
+        dx = sourceX[i] - centerX;
+        dy = sourceY[i] - centerY;
+        vertices[i * 2] = centerX + dx * cosine - dy * sine;
+        vertices[i * 2 + 1] = centerY + dx * sine + dy * cosine;
+    }
+    func_0021d890(destination, vertices);
+}
+
+static void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
+{
+    D_00960090(1, func_0021cce0(frame));
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_0096009C((u32*)(work + offset), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + offset), 4, 0, 2, 3);
+}
+
+// FUN_0021f410 NONMATCHING
+void func_0021f410(void)
+{
+    u8* work;
+    void* texture;
+    void* frame;
+    u32 mode;
+    u32 sub;
+    u32 previous;
+    u32 timerA;
+    u32 timerB;
+    u32 timerC;
+    f32 dt;
+    f32 centerX;
+    f32 centerY;
+    f32 commandX;
+    f32 commandY;
+    f32 alpha;
+    f32 factor;
+    f32 angle;
+    f32 phase;
+    f32 arcX;
+    f32 arcY;
+    f32 arrowFactor;
+    f32 slotFactor;
+    f32 baseX;
+    f32 baseY;
+    f32 pi;
+    u32 flags;
+    u32 i;
+
+    K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
+    work = BP_PANEL_GLOBAL;
+    K_ASSERT((*(u32*)work & 1) != 0, 0x151);
+    texture = func_0021c3f0(0);
+    dt = *(f32*)(work + 0x7214);
+    func_0022b630();
+
+    mode = *(u32*)(work + 0x4630);
+    timerA = *(u32*)(work + 0x464c);
+    timerB = *(u32*)(work + 0x4650);
+    timerC = *(u32*)(work + 0x4658);
+    if (mode == 1 || mode == 2 || mode == 8)
+    {
+        if (timerA < 4)
+        {
+            timerA++;
+            *(u32*)(work + 0x464c) = timerA;
+        }
+    }
+    else if (mode == 3)
+    {
+        if (timerB < 3)
+        {
+            timerB++;
+            *(u32*)(work + 0x4650) = timerB;
+            if (timerB == 3)
+            {
+                *(u32*)work &= ~3;
+            }
+        }
+    }
+    else if (mode == 4 || mode == 5)
+    {
+        if (timerC < 6)
+        {
+            timerC++;
+            *(u32*)(work + 0x4658) = timerC;
+            if (timerC == 6)
+            {
+                *(u32*)work &= ~9;
+            }
+        }
+    }
+
+    mode = *(u32*)(work + 0x4630);
+    sub = *(u32*)(work + 0x463c);
+    timerB = *(u32*)(work + 0x4650);
+    bpPanelGetCenter(work, mode, sub, (f32)timerB, &centerX, &centerY);
+    baseX = centerX + 57.0f;
+    baseY = centerY;
+
+    frame = func_0021cca0(texture, 0x10);
+    bpPanelSetRect(work + 0x10, centerX - 62.5f, centerY - 62.5f, frame);
+    bpPanelSetColor(work + 0x10, 0xff, 0xff, 0xff, 255.0f * dt);
+
+    bpPanelGetCommandPosition(mode, sub, (f32)timerB, &commandX, &commandY);
+    frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+    bpPanelSetRect(work + 0x1230, commandX, commandY, frame);
+    if ((mode == 1 || mode == 2 || mode == 8) && *(u32*)(work + 0x464c) == 4)
+    {
+        /* The old image is intentionally left untouched at the end of a fade. */
+    }
+    else
+    {
+        if (mode == 1 || mode == 2 || mode == 8)
+        {
+            frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
+        }
+        else
+        {
+            frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
+        }
+        bpPanelSetRect(work + 0x1330, commandX, commandY, frame);
+    }
+
+    if (mode == 3)
+    {
+        if (sub == 0)
+        {
+            factor = (f32)timerB / 3.0f;
+            alpha = (3.0f - (f32)timerB) / 3.0f;
+        }
+        else if (bpPanelInTransition(sub))
+        {
+            factor = (3.0f - (f32)timerB) / 3.0f;
+            alpha = (f32)timerB / 3.0f;
+        }
+        else
+        {
+            factor = 0.0f;
+            alpha = 0.0f;
+        }
+        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
+    }
+    else if (mode == 1 || mode == 2 || mode == 8)
+    {
+        u32 selectedFlag;
+
+        timerA = *(u32*)(work + 0x464c);
+        selectedFlag = *(u32*)(work + 0x1210 + *(u32*)(work + 0x4634) * 4);
+        factor = (f32)timerA / 4.0f;
+        if ((selectedFlag & 1) == 0)
+        {
+            factor *= 0.5f;
+        }
+        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff,
+                        255.0f * (4.0f - (f32)timerA) / 4.0f * dt);
+    }
+    else if (sub == 0)
+    {
+        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * dt);
+        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 0.0f);
+    }
+    else if (bpPanelInTransition(sub))
+    {
+        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 0.0f);
+        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * dt);
+    }
+
+    frame = func_0021cca0(texture, 0x1b);
+    if (mode == 3 && bpPanelInTransition(sub))
+    {
+        angle = (f32)timerB * 0.785398185f / 4.0f;
+    }
+    else if (mode == 3 && sub == 0)
+    {
+        angle = (3.0f - (f32)timerB) * 0.785398185f / 4.0f;
+    }
+    else if (bpPanelInTransition(sub))
+    {
+        angle = 0.785398185f;
+    }
+    else
+    {
+        angle = 0.0f;
+    }
+    bpPanelSetRotatedQuad(work + 0x110, centerX, centerY, centerX - 91.5f, centerY - 90.5f, frame, angle);
+    bpPanelSetColor(work + 0x110, 0xff, 0xff, 0xff, 255.0f * dt);
+
+    frame = func_0021cca0(texture, 0x1c);
+    bpPanelSetRotatedQuad(work + 0x210, centerX, centerY, centerX - 79.5f, centerY - 85.5f, frame, angle);
+    if (mode == 3 && sub == 0)
+    {
+        factor = (f32)timerB / 3.0f;
+    }
+    else if (mode == 3 && bpPanelInTransition(sub))
+    {
+        factor = (3.0f - (f32)timerB) / 3.0f;
+    }
+    else if (sub == 0)
+    {
+        factor = 1.0f;
+    }
+    else
+    {
+        factor = 0.0f;
+    }
+    bpPanelSetColor(work + 0x210, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+
+    frame = func_0021cca0(texture, 0x22);
+    if (mode == 3 && bpPanelInTransition(sub))
+    {
+        angle = -0.1256637126f - 1.57079637f * (f32)timerB / 4.0f;
+    }
+    else if (mode == 3 && sub == 0)
+    {
+        angle = -0.1256637126f - 1.57079637f * (3.0f - (f32)timerB) / 4.0f;
+    }
+    else
+    {
+        angle = -0.1256637126f;
+    }
+    bpPanelSetRotatedQuad(work + 0x1430, centerX, centerY, centerX - 50.5f, centerY - 30.5f, frame, angle);
+    if (mode == 3 && sub == 0)
+    {
+        factor = (3.0f - (f32)timerB) / 3.0f;
+    }
+    else if (mode == 3 && bpPanelInTransition(sub))
+    {
+        factor = (f32)timerB / 3.0f;
+    }
+    else if (sub == 0)
+    {
+        factor = 0.0f;
+    }
+    else
+    {
+        factor = 1.0f;
+    }
+    bpPanelSetColor(work + 0x1430, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+
+    pi = 3.1415927f;
+    arrowFactor = factor;
+    *(f32*)(work + 0x7210) = -57.0f;
+    for (i = 0; i < 7; i++)
+    {
+        s32 selected;
+        f32 halfWidth;
+        f32 halfHeight;
+        u32 id;
+
+        if (mode == 1)
+        {
+            phase = (1.0f + (f32)i - (f32)*(u32*)(work + 0x4634) -
+                     (f32)*(u32*)(work + 0x464c) / 4.0f) / 7.0f;
+        }
+        else if (mode == 2)
+        {
+            phase = ((f32)*(u32*)(work + 0x464c) / 4.0f + (f32)i -
+                     (f32)*(u32*)(work + 0x4634) - 1.0f) / 7.0f;
+        }
+        else
+        {
+            phase = ((f32)i - (f32)*(u32*)(work + 0x4634)) / 7.0f;
+        }
+        angle = 2.0f * pi * phase;
+        arcX = -57.0f * func_0052e6d8(angle);
+        arcY = -57.0f * func_0052e878(angle);
+        if ((*(u32*)(work + 0x1210 + i * 4) & 1) != 0)
+        {
+            id = i + 0x11;
+        }
+        else
+        {
+            id = i + 0x41;
+        }
+        frame = func_0021cca0(texture, (s32)id);
+        halfWidth = (f32)(bpPanelFrameWidth(frame) / 2);
+        halfHeight = (f32)(bpPanelFrameHeight(frame) / 2);
+        bpPanelSetRect(work + 0x410 + i * 0x100,
+                       arcX - halfWidth + baseX, arcY - halfHeight + baseY, frame);
+        frame = func_0021cca0(texture, i + 0x14);
+        halfWidth = (f32)(bpPanelFrameWidth(frame) / 2);
+        halfHeight = (f32)(bpPanelFrameHeight(frame) / 2);
+        bpPanelSetRect(work + 0xb10 + i * 0x100,
+                       arcX - halfWidth + baseX, arcY - halfHeight + baseY, frame);
+        selected = (i == (s32)*(u32*)(work + 0x4634));
+        (void)selected;
+    }
+
+    if (bpPanelInTransition(sub))
+    {
+        arrowFactor = (3.0f - (f32)*(u32*)(work + 0x4650)) / 3.0f;
+    }
+    else if (sub == 0 &&
+             bpPanelInTransition(*(u32*)(work + 0x4640)) &&
+             *(u32*)(work + 0x4650) != 3)
+    {
+        arrowFactor = (f32)*(u32*)(work + 0x4650) / 3.0f;
+    }
+    else if (sub == 0)
+    {
+        arrowFactor = 1.0f;
+    }
+    frame = func_0021cca0(texture, 0x0e);
+    bpPanelSetRect(work + 0x310, centerX + 23.0f, centerY - 9.0f, frame);
+    bpPanelSetColor(work + 0x310, 0xff, 0xff, 0xff, 255.0f * arrowFactor * dt);
+
+    for (i = 0; i < 7; i++)
+    {
+        u32 slotFlags;
+        f32 brightness;
+        f32 selectionFactor;
+        u8 red;
+        u8 green;
+        u8 blue;
+
+        if (mode == 1)
+        {
+            selectionFactor = (f32)*(u32*)(work + 0x464c) / 4.0f;
+            phase = (1.0f + (f32)i - (f32)*(u32*)(work + 0x4634) - selectionFactor) / 7.0f;
+        }
+        else if (mode == 2)
+        {
+            selectionFactor = (f32)*(u32*)(work + 0x464c) / 4.0f;
+            phase = ((f32)i - (f32)*(u32*)(work + 0x4634) - 1.0f + selectionFactor) / 7.0f;
+        }
+        else
+        {
+            selectionFactor = 1.0f;
+            phase = ((f32)i - (f32)*(u32*)(work + 0x4634)) / 7.0f;
+        }
+        angle = 2.0f * pi * phase;
+        brightness = (65.0f + 25.0f * (114.0f -
+                    (*(f32*)(work + 0x7210) * func_0052e6d8(angle) + 57.0f)) / 114.0f) / 100.0f;
+        slotFlags = *(u32*)(work + 0x1210 + i * 4);
+        if (i == *(u32*)(work + 0x4634))
+        {
+            if ((slotFlags & 1) != 0)
+            {
+                f32 q;
+
+                q = 1.0f - selectionFactor;
+                red = bpPanelColor(255.0f - 204.0f * q);
+                green = bpPanelColor(120.0f - 37.0f * q);
+                blue = bpPanelColor(175.0f - 85.0f * q);
+            }
+            else
+            {
+                red = 115;
+                green = 116;
+                blue = 116;
+            }
+            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
+                            255.0f * brightness * dt);
+            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
+                            255.0f * brightness * (1.0f - selectionFactor) * dt);
+        }
+        else if (i == *(u32*)(work + 0x4638))
+        {
+            if ((slotFlags & 1) != 0)
+            {
+                f32 q;
+
+                q = 1.0f - selectionFactor;
+                red = bpPanelColor(255.0f - 204.0f * q);
+                green = bpPanelColor(120.0f - 37.0f * q);
+                blue = bpPanelColor(175.0f - 85.0f * q);
+            }
+            else
+            {
+                red = 115;
+                green = 116;
+                blue = 116;
+            }
+            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
+                            255.0f * brightness * arrowFactor * dt);
+            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
+                            255.0f * arrowFactor * brightness * selectionFactor * dt);
+        }
+        else
+        {
+            if ((slotFlags & 1) != 0)
+            {
+                red = 0x3c;
+                green = 0x5e;
+                blue = 0x64;
+            }
+            else
+            {
+                red = 0x73;
+                green = 0x74;
+                blue = 0x74;
+            }
+            bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
+                            255.0f * arrowFactor * dt);
+        }
+    }
+
+    sub = *(u32*)(work + 0x463c);
+    previous = *(u32*)(work + 0x4640);
+    if (bpPanelInTransition(sub) ||
+        (sub == 0 && bpPanelInTransition(previous) && *(u32*)(work + 0x4650) != 3))
+    {
+        func_002265d0();
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 3)
+    {
+        if (*(u32*)(work + 0x4644) == 1 ||
+            (*(u32*)(work + 0x4644) == 0 &&
+             *(u32*)(work + 0x4648) == 1 &&
+             *(u32*)(work + 0x4658) != 6))
+        {
+            func_00227f30();
+        }
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (bpPanelInTransition(sub) &&
+        (*(u32*)(work + 0x4644) == 0 ||
+         *(u32*)(work + 0x4644) == 3 ||
+         *(u32*)(work + 0x4644) == 4))
+    {
+        func_0022c2d0();
+    }
+    sub = *(u32*)(work + 0x463c);
+    previous = *(u32*)(work + 0x4640);
+    if (sub == 2 || (sub == 0 && previous == 2 && *(u32*)(work + 0x4650) < 3))
+    {
+        func_00228e40();
+    }
+    else if (sub == 1 || (sub == 0 && previous == 1 && *(u32*)(work + 0x4650) < 3))
+    {
+        func_0022a2b0();
+    }
+    else if (sub == 4 || (sub == 0 && previous == 4 && *(u32*)(work + 0x4650) < 3))
+    {
+        func_00224940();
+    }
+    else if (sub == 3 || (sub == 0 && previous == 3 && *(u32*)(work + 0x4650) < 3))
+    {
+        func_00223290();
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 3 &&
+        (*(u32*)(work + 0x4644) == 1 ||
+         (*(u32*)(work + 0x4644) == 0 &&
+          (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
+          *(u32*)(work + 0x4658) < 6)))
+    {
+        func_002257f0();
+    }
+}
+
+static void bpPanelDrawBridgeQuad(u8* work, u32 offset, void* texture, s32 frameId)
+{
+    void* frame;
+
+    frame = func_0021cca0(texture, frameId);
+    bpPanelBindAndDraw(work, offset, frame);
+}
+
+// FUN_00221b60 NONMATCHING
+void func_00221b60(void)
+{
+    u8* work;
+    void* texture;
+    u32 mode;
+    u32 mask;
+    u32 current;
+    u32 previous;
+    u32 sub;
+    u32 previousSub;
+    u32 timer;
+    u32 i;
+    void* frame;
+
+    K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
+    work = BP_PANEL_GLOBAL;
+    K_ASSERT((*(u32*)work & 1) != 0, 0x47b);
+    texture = func_0021c3f0(0);
+    D_00960090(9, 2);
+    D_00960090(0x14, 2);
+    D_00960090(8, 0);
+    D_00960090(6, 1);
+    D_00960090(0x0e, 0);
+    func_0022bcf0();
+
+    bpPanelDrawBridgeQuad(work, 0x10, texture, 0x10);
+    bpPanelDrawBridgeQuad(work, 0x110, texture, 0x1b);
+    bpPanelDrawBridgeQuad(work, 0x210, texture, 0x1c);
+    bpPanelDrawBridgeQuad(work, 0x1430, texture, 0x22);
+
+    mode = *(u32*)(work + 0x4630);
+    current = *(u32*)(work + 0x4634);
+    previous = *(u32*)(work + 0x4638);
+    sub = *(u32*)(work + 0x463c);
+    previousSub = *(u32*)(work + 0x4640);
+    timer = *(u32*)(work + 0x4650);
+    (void)sub;
+    (void)previousSub;
+    mask = 0;
+    if (mode == 1 || mode == 2)
+    {
+        frame = func_0021cca0(texture, (s32)current);
+        (void)frame;
+        mask |= 1;
+        if (*(u32*)(work + 0x464c) != 4)
+        {
+            mask |= 2;
+        }
+    }
+    else if (mode == 3)
+    {
+        frame = func_0021cca0(texture, (s32)current);
+        (void)frame;
+        if (*(u32*)(work + 0x463c) >= 1 && *(u32*)(work + 0x463c) <= 4)
+        {
+            mask |= 2;
+            if (timer != 3)
+            {
+                mask |= 1;
+            }
+        }
+        else if (*(u32*)(work + 0x463c) == 0)
+        {
+            mask |= 1;
+            if (timer != 3)
+            {
+                mask |= 2;
+            }
+        }
+    }
+    else
+    {
+        if (*(u32*)(work + 0x463c) == 0)
+        {
+            mask |= 1;
+        }
+        else if (*(u32*)(work + 0x463c) >= 1 && *(u32*)(work + 0x463c) <= 4)
+        {
+            mask |= 2;
+        }
+    }
+    if ((mask & 1) != 0)
+    {
+        frame = func_0021cca0(texture, (s32)current);
+        bpPanelBindAndDraw(work, 0x1230, frame);
+    }
+    if ((mask & 2) != 0)
+    {
+        if (mode == 1 || mode == 2)
+        {
+            frame = func_0021cca0(texture, (s32)previous);
+        }
+        else
+        {
+            frame = func_0021cca0(texture, (s32)(current + 7));
+        }
+        bpPanelBindAndDraw(work, 0x1330, frame);
+    }
+    if ((*(u32*)work & 0x10) == 0)
+    {
+        frame = func_0021cca0(texture, 0x0e);
+        bpPanelBindAndDraw(work, 0x310, frame);
+    }
+
+    for (i = 0; i < 7; i++)
+    {
+        s32 frameId;
+
+        frameId = (*(u32*)(work + 0x1210 + i * 4) & 1) != 0 ? (s32)(i + 0x11) : (s32)(i + 0x41);
+        frame = func_0021cca0(texture, frameId);
+        bpPanelBindAndDraw(work, 0x410 + i * 0x100, frame);
+    }
+    for (i = 0; i < 7; i++)
+    {
+        frame = func_0021cca0(texture, i + 0x14);
+        bpPanelBindAndDraw(work, 0xb10 + i * 0x100, frame);
+    }
+
+    sub = *(u32*)(work + 0x463c);
+    previousSub = *(u32*)(work + 0x4640);
+    timer = *(u32*)(work + 0x4650);
+    if (sub == 3 || sub == 4 ||
+        (sub == 0 && (previousSub == 3 || previousSub == 4) && timer != 3))
+    {
+        func_00227800();
+    }
+    sub = *(u32*)(work + 0x463c);
+    previousSub = *(u32*)(work + 0x4640);
+    timer = *(u32*)(work + 0x4650);
+    if (sub == 2 || (sub == 0 && previousSub == 2 && timer < 3))
+    {
+        if (*(u32*)(work + 0x4644) == 3)
+        {
+            func_0022c5a0();
+        }
+        else if (*(u32*)(work + 0x4644) == 0)
+        {
+            func_00227800();
+        }
+        func_00229b40();
+    }
+    else if (sub == 1 || (sub == 0 && previousSub == 1 && timer < 3))
+    {
+        if (*(u32*)(work + 0x4644) == 4)
+        {
+            func_0022c5a0();
+        }
+        else if (*(u32*)(work + 0x4644) == 0)
+        {
+            func_00227800();
+        }
+        func_0022ae80();
+    }
+    else if (sub == 4 || (sub == 0 && previousSub == 4 && timer < 3))
+    {
+        func_00225040();
+    }
+    sub = *(u32*)(work + 0x463c);
+    previousSub = *(u32*)(work + 0x4640);
+    timer = *(u32*)(work + 0x4650);
+    if (sub == 3 || (sub == 0 && previousSub == 3 && timer < 3))
+    {
+        func_00224150();
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 3)
+    {
+        if (*(u32*)(work + 0x4644) == 1 ||
+            (*(u32*)(work + 0x4644) == 0 &&
+             *(u32*)(work + 0x4648) == 1 &&
+             *(u32*)(work + 0x4658) != 6))
+        {
+            func_002289b0();
+        }
+    }
+    sub = *(u32*)(work + 0x463c);
+    if (sub == 3 &&
+        (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2 ||
+         (*(u32*)(work + 0x4644) == 0 &&
+          (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
+          *(u32*)(work + 0x4658) < 6)))
+    {
+        func_00226040();
+    }
 }

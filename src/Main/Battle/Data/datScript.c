@@ -27,3 +27,33 @@ u32 datScript00311250(void)
     K_ASSERT(DAT_0095719c[0] < 0x1d0, 0x222);
     return (sUnk_007ce3f8[DAT_0095719c[0] * 0x2c] & 2) != 0;
 }
+
+/* ---- Straggler recovery: 0x311190-0x3112E0 ---- */
+extern u32 DAT_009571a4;
+extern u32 DAT_00957198;
+extern void FUN_0035f060(u32 value);
+extern void FUN_0030c440(void);
+// FUN_00311190 NONMATCHING
+void FUN_00311190(u32 param_1)
+
+{
+  DAT_009571a4 = DAT_009571a4 | 1;
+  DAT_00957198 = param_1;
+  return;
+}
+
+// FUN_003111C0
+u32 FUN_003111c0(void)
+
+{
+  FUN_0035f060(1);
+  return 1;
+}
+
+// FUN_003112E0
+u32 FUN_003112e0(void)
+
+{
+  FUN_0030c440();
+  return 1;
+}

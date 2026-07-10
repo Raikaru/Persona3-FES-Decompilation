@@ -1,4 +1,6 @@
 # Persona 3 FES
+[![Matching progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Fmatching.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/matching.json)
+[![C-linked progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Flinked.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/linked.json)
 
 A work-in-progress matching decompilation of **Shin Megami Tensei: Persona 3 FES**
 (USA, `SLUS_216.21`) for the Sony PlayStation 2.
@@ -8,6 +10,11 @@ This repo splits the retail executable into assembly and data with
 with GNU `mipsel-linux-gnu-as`, and links a **byte-identical** program image
 with the game's original CodeWarrior PS2 linker. Functions are decompiled to C
 one at a time; each is verified against the exact retail bytes.
+
+Progress metrics: **matching** counts exact verifier `MATCH` results across all
+mapped function windows; **C-linked** is the stricter subset successfully linked
+as byte-identical C. The generated source data is
+[`progress/metrics.json`](progress/metrics.json).
 
 > This project needs a copy of the game you legally own. No copyrighted data
 > (the ELF or any extracted bytes) is included in this repository.

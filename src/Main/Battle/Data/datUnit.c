@@ -3,6 +3,10 @@
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
+#include "Main/Battle/Data/datCalc.h"
+
+extern u8* DAT_007CE410;
+extern void func_00301540(DatUnit* unit, u8 index);
 
 // FUN_002ff340
 DatUnitPc* datUnitCreatePc(u16 pcId)
@@ -124,10 +128,124 @@ void datUnitDestroyGenus(DatUnitGenusBase* genusBase)
     RwFree(genusBase);
 }
 
-// FUN_002ff890
+// FUN_002ff790 NONMATCHING
+u32 func_002ff790(DatUnitGenusBase* genusBase)
+{
+    u16 i;
+
+    if (genusBase->genus == UNIT_GENUS_EC)
+    {
+        for (i = 0; i < 6; i++)
+        {
+            DatUnit* unit = &genusBase->unit[i];
+
+            if (unit->id != 0 && datCalcIsDead(unit, 0) == 0)
+            {
+                return 0;
+            }
+        }
+    }
+    else
+    {
+        K_ASSERT(genusBase->count == 1, 0xb9);
+
+        if (datCalcIsDead(genusBase->unit, 0) == 0)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+
+// FUN_002ff890 NONMATCHING
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id)
 {
-    // TODO
+    u8* enemy;
+    u16 enemyFlags;
+    u16 i;
+
+    if (genus == UNIT_GENUS_EC)
+    {
+        K_ASSERT(id <= 0x14f, 0xd9);
+
+        enemy = DAT_007CE410 + id * 0x3e;
+        enemyFlags = *(u16*)enemy;
+        unit->flags = UNIT_FLAG_ENEMY;
+        unit->level = enemy[3];
+        unit->hp = *(u16*)(enemy + 4);
+        unit->sp = *(u16*)(enemy + 6);
+        unit->bad = 0;
+
+        if (enemyFlags & 8)
+        {
+            unit->flags |= 0x10;
+        }
+        if (enemyFlags & 0x10)
+        {
+            unit->flags |= 0x20;
+        }
+        if (enemyFlags & 0x100)
+        {
+            unit->flags |= 0x80;
+        }
+        if (enemyFlags & 0x200)
+        {
+            unit->flags |= 0x100;
+        }
+
+        for (i = 0; i < 8; i++)
+        {
+            u16 skill = *(u16*)(enemy + i * 2 + 0xe);
+
+            if (skill == 0x220 || skill == 0x221 || skill == 0x222)
+            {
+                unit->flags |= 0x200;
+            }
+        }
+    }
+    else if (genus == UNIT_GENUS_PC)
+    {
+        K_ASSERT(id <= 10, 0xd3);
+        unit->flags &= ~(UNIT_FLAG_ENEMY | 0x10 | 0x20);
+    }
+    else
+    {
+        K_ASSERT(0, 0xfd);
+    }
+
+    for (i = 0; i < 0x15; i++)
+    {
+        func_00301540(unit, (u8)i);
+    }
+
+    unit->id = id;
+    unit->id2 = id;
+    unit->flags |= UNIT_FLAG_ACTIVE;
 
     return true;
+}
+
+// FUN_002ffb00 NONMATCHING
+void func_002ffb00(DatUnitGenusBase* genusBase)
+{
+    u16 pcId;
+    u16 condition;
+
+    if (genusBase->genus == UNIT_GENUS_PC)
+    {
+        pcId = genusBase->unit->id;
+        FUN_0016ca90(pcId, -1);
+
+        if (datGetFatigueCounter(pcId) == 0)
+        {
+            condition = datGetPhysicalCondition(pcId);
+
+            if (condition == 0 || condition == 1 || condition == 2)
+            {
+                datSetPhysicalCondition(pcId, 3);
+            }
+        }
+    }
 }

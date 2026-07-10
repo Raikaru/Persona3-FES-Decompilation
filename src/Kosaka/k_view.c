@@ -1,6 +1,6 @@
 #include "Kosaka/k_view.h"
 #include "Kernel/Kwln/kwln.h"
-#include "temporary.h"
+#include "libm.h"
 
 // FUN_001a4580
 void K_View_SetFov(RwCamera* camera, f32 fov)

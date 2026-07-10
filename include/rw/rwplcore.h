@@ -234,7 +234,7 @@ typedef struct RwObject
     void* parent;         // 0x04
 } RwObject;
 
-typedef struct RwStream RwStream; // TODO
+typedef struct RwStream RwStream;
 
 
 // 64 bytes
@@ -398,7 +398,7 @@ typedef struct RwDevice
     RwRenderStateGetFunc getRenderState; // 0x14                 
     u8 unkData1[0x08];
     RwIm2DRenderPrimitiveFunction fpIm2DRenderPrimitive;
-    u8 unkData2[0x00];
+    u8 unkData2[0x14];
 } RwDevice;
 
 typedef enum
@@ -430,7 +430,10 @@ typedef struct
     RwStandardFunc stdFunc[rwSTANDARDMAX]; // 0x48
     u8 unkData2[0x4c];
     RwMemoryFunctions memFuncs;            // 0x108
-    u8 unkData3[0x10];
+    void (*internalMalloc)(void);          // 0x118
+    void (*internalFree)(void);            // 0x11c
+    u8 unkData3[0x04];
+    RwBool engineInitialized;              // 0x124
     RwUInt32 resArenaSize;                 // 0x128
 } RwGlobals;
 

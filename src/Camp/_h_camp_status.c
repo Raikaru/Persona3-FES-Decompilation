@@ -1,17 +1,509 @@
 #include "Camp/_h_camp_status.h"
+#include "Camp/h_camp.h"
+#include "h_cdvd.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Main/g_data.h"
+#include "Main/Game/game_support.h"
+#include "libm.h"
 #include "rw/rwplcore.h"
 
-void* FUN_001230c0(KwlnTask*);
+void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
-void H_Cdvd_Destroy();
+extern void (*jtbl_0096017C)(void* memory);
+extern s32 FUN_001159f0();
+extern s32 FUN_001120a0();
+extern s32 FUN_00113a30();
+extern s32 FUN_00114450();
+extern s32 FUN_0011bba0();
+extern s32 FUN_0011e380();
+extern s32 FUN_0011d3a0();
+extern s32 FUN_0010a4e0();
+extern s32 FUN_0010c1a0();
+extern s32 FUN_0010c3a0();
+extern s32 FUN_00174800();
+extern s32 FUN_0016c860();
+extern s32 FUN_0016d2f0();
+extern s32 FUN_00177280();
+extern s32 FUN_001772f0();
+extern s32 FUN_00177360();
+extern s32 FUN_00173220();
+extern s32 FUN_00173280();
+extern s32 FUN_001733b0();
+extern s32 FUN_00173340();
+extern s32 FUN_00173330();
+extern s32 FUN_00173580();
+extern s32 FUN_00173660();
+extern s32 FUN_00198590();
+extern s32 FUN_00195290();
+extern s32 FUN_00194b20();
+extern s32 FUN_001158b0();
+extern s32 FUN_001127d0();
+extern s32 FUN_00115980();
+extern s32 FUN_001126b0();
+extern s32 FUN_00112740();
+extern s32 FUN_00128140();
+extern s32 FUN_001281e0();
+extern s32 FUN_00128480();
+extern s32 FUN_00128720();
+extern s32 FUN_00128c40();
+extern s32 FUN_00129160();
+extern s32 FUN_001293b0();
+extern s32 FUN_00129b30();
+extern s32 FUN_0012a560();
+extern s32 FUN_0012ac60();
+extern s32 FUN_001339a0();
+extern s32 FUN_00133a80();
+extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
+extern s32 FUN_00121de0();
+extern s32 FUN_00122710();
+extern s32 FUN_00127af0(KwlnTask* task);
+extern KwlnTask* FUN_00127b00();
+extern s32 FUN_00127ad0(KwlnTask* task);
+extern s32 FUN_00128030(KwlnTask* task);
+extern KwlnTask* FUN_00128040();
+extern void FUN_00127ab0(KwlnTask* task);
+extern void FUN_00127ff0(KwlnTask* task);
+extern void FUN_00128010(KwlnTask* task);
+extern void FUN_003b32d0();
+extern void FUN_00523ac8();
+extern void* DAT_00833B90;
+extern char gp0xffff897c[];
+extern f32 DAT_007caf38;
+extern void* DAT_00833B88;
+extern void* FUN_00177790(s16 pcId);
+extern void* func_00112420(void* source);
+extern u32 FUN_001344B0();
+extern u32 FUN_00134900();
+extern void FUN_00124e60(CampVec2 position, f32 alpha, void* persona,
+                         s32 fade);
+extern void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona,
+                         s32 fade);
+extern const char D_005DB140[];
+extern const char D_005DB158[];
+extern const char D_005DACB0[];
+extern const char D_005DB170[];
+extern void* func_0010c1a0();
+extern void* func_0010c3a0();
+extern int printf(const char* format, ...);
+extern void FUN_00174c10();
+extern void FUN_00175200();
+extern u32 FUN_003c7430();
+extern u32 FUN_003c74e0();
+extern u32 FUN_003c7560();
+extern u32 FUN_003c7610();
+extern u32 FUN_003c7700();
+extern u32 FUN_003c7850();
 
-typedef struct
+typedef struct CampStatusWork
 {
+    s32 state;
+    s32 selectedScreen;
+    s32 timer;
+    s32 command;
+    s32 alpha;
+    KwlnTask* child;
+    s32 transitionTimer;
+    s32 inputResult;
+    s32 unused20;
+    KwlnTask* partsTask;
+    void* resource;
+    s32 scrollY;
+    s32 appearance;
+    s32 reserved34;
+    s16 openingTimer;
+    s16 mode;
+    s16 closeTimer;
+    s16 detailTimer;
+} CampStatusWork;
+
+extern KwlnTask* DAT_007cdf50;
+extern KwlnTask* DAT_007cdf54;
+extern KwlnTask* DAT_007cdf58;
+extern KwlnTask* DAT_007cdf5c;
+extern KwlnTask* DAT_007cdf60;
+extern s32 DAT_007cdf64;
+extern s32 DAT_007cdf68;
+extern s32 DAT_007e094e;
+extern s32 DAT_007e0958;
+extern s32 DAT_007e0952;
+extern s32 DAT_007e095a;
+
+extern void FUN_0012b300(CampVec2 position, f32 scale, void* persona,
+                         u8 alpha);
+
+void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
+                                s32 stat, s32 alpha);
+void h_campStatusDrawStatLabels(CampVec2 position, f32 scale,
+                                void* persona, s32 alpha);
+void h_campStatusDrawStatValues(CampVec2 position, f32 scale,
+                                void* bonus, void* persona, s32 alpha);
+void h_campStatusDrawSkillValues(CampVec2 position, f32 scale,
+                                 void* bonus, void* persona, s32 alpha);
+void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
+                               s32 value, s32 extra, s32 alpha);
+void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
+                               void* bonus, void* persona, s32 alpha);
+typedef struct CampStatusParticle
+{
+    u8 reserved00[0x10];
     f32 x;
     f32 y;
-} CampVec2;
+    s8 alpha;
+} CampStatusParticle;
+
+static s32 sCampStatusScrollX;
+
+static s32 campStatusClampFade(s32 fade)
+{
+    if (fade < 0) {
+        return 0;
+    }
+    if (fade > 0xff) {
+        return 0xff;
+    }
+    return fade;
+}
+
+static void campStatusDrawDigit(f32 alpha, f32 x, f32 y, s32 digit)
+{
+    FUN_001120a0(2);
+    FUN_001159f0(x, y, alpha, digit);
+}
+
+static void campStatusDrawNumber(f32 alpha, f32 x, f32 y, u32 value)
+{
+    if (value >= 100) {
+        campStatusDrawDigit(alpha, x, y, value / 100);
+        value %= 100;
+    }
+    if (value >= 10) {
+        campStatusDrawDigit(alpha, x + 15.0f, y, value / 10);
+        value %= 10;
+    }
+    campStatusDrawDigit(alpha, x + 30.0f, y, value);
+}
+
+static void campStatusDrawParticle(f32 texture, f32 x, f32 y, s8 alpha,
+                                   s32 slot)
+{
+    CampStatusParticle* particle;
+
+    particle = (CampStatusParticle*)FUN_001158b0(0, DAT_00833B90, slot);
+    if (particle == NULL) {
+        return;
+    }
+    *(f32*)((u8*)particle + 0x2c) = texture;
+    particle->x = x;
+    particle->y = y;
+    particle->alpha = alpha;
+    FUN_001127d0(particle, 1);
+    FUN_00115980(particle);
+}
+
+// FUN_001230C0 NONMATCHING
+void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
+{
+    CampStatusWork* work;
+    s32 result;
+
+    work = task->workData;
+    switch (work->state) {
+    case 4:
+        if (work->alpha != 0xff) {
+            work->alpha += 5;
+            if (work->alpha > 0xff) {
+                work->alpha = 0xff;
+            }
+        }
+        FUN_001159f0((f32)sCampStatusScrollX, 0.0f, 104.0f);
+        FUN_001159f0((f32)(sCampStatusScrollX + 0x280), 0.0f, 104.0f);
+        sCampStatusScrollX--;
+        if (sCampStatusScrollX < -400) {
+            sCampStatusScrollX += 0x280;
+        }
+        if (FUN_00195290(work->child) == 3) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    case 2:
+    case 1:
+        if (work->alpha != 0) {
+            work->alpha -= 5;
+            if (work->alpha < 0) {
+                work->alpha = 0;
+            }
+        }
+        FUN_001159f0((f32)sCampStatusScrollX, 0.0f, 104.0f);
+        FUN_001159f0((f32)(sCampStatusScrollX + 0x280), 0.0f, 104.0f);
+        sCampStatusScrollX--;
+        if (sCampStatusScrollX < -400) {
+            sCampStatusScrollX += 0x280;
+        }
+        if (work->state == 2) {
+            if (work->selectedScreen == 1) {
+                FUN_00128010(work->child);
+                work->selectedScreen = 0;
+                work->child = FUN_00127b00(NULL, task, 0x18be, 0, 1, 1);
+            } else {
+                FUN_00127ad0(work->child);
+                work->selectedScreen = 1;
+                work->child = FUN_00128040(NULL, task, 0x18be, 0, 1, 0);
+            }
+            work->state = 1;
+        } else {
+            result = work->selectedScreen == 0
+                   ? FUN_00127af0(work->child)
+                   : FUN_00128030(work->child);
+            if (result == -1) {
+                if (work->selectedScreen == 1) {
+                    FUN_00127ff0(work->child);
+                } else {
+                    FUN_00127ab0(work->child);
+                }
+                work->state = 4;
+            } else if (result == 1) {
+                work->inputResult = 0;
+                work->state = 2;
+            }
+        }
+        break;
+    case 0:
+        sCampStatusScrollX = 0x140;
+        work->selectedScreen = 0;
+        work->child = FUN_00127b00(NULL, task, 0x18be, 0, 1, 0);
+        work->timer = 0x1e;
+        work->alpha = 0;
+        work->state = 1;
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
+                             f32 alpha, s16 pcId, s32 fade);
+void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
+                                       s16 pcId, s32 phase);
+void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
+                        s32 barOffset, s32 fade);
+// FUN_00123640
+void h_campStatusDrawScreen(CampVec2 position, CampVec2 otherPosition,
+                            f32 alpha, s16 pcId, s32 mode,
+                            s32 phase, s32 fade)
+{
+    if (mode == 1) {
+        goto drawStatus;
+    }
+    switch (mode) {
+    case 0:
+        h_campStatusDrawStatusTransition(position, alpha, pcId, phase);
+        break;
+    default:
+        goto done;
+    }
+    goto done;
+drawStatus:
+    h_campStatusDrawStatus(position, otherPosition, alpha, pcId, fade);
+done:;
+}
+
+// FUN_001236A0 NONMATCHING
+void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
+                        s32 barOffset, s32 fade)
+{
+    char text[0x100];
+    u32 current;
+    u32 maximum;
+    s32 bright;
+
+    FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
+    bright = campStatusClampFade(0xff - fade);
+    FUN_003b32d0(alpha - 1.0f, (s32)(position.x + 125.0f),
+                 (s32)(position.y + 36.0f),
+                 bright | 0xffffff00, 10, 1, text, 0x10, 0x78);
+    if (barOffset != 0) {
+        FUN_00113a30(alpha - 1.0f, position.y + 196.0f +
+                     (f32)(0x4c - barOffset),
+                     position.x + 59.0f, 0xffffff00, barOffset, 10);
+    }
+    current = datGetHp(pcId);
+    maximum = datGetMaxHp(pcId);
+    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 58.0f,
+                         current);
+    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 58.0f,
+                         maximum);
+}
+
+// FUN_00123B70 NONMATCHING
+void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
+                        s32 barOffset, s32 fade)
+{
+    u32 current;
+    u32 maximum;
+
+    if (barOffset != 0) {
+        FUN_00113a30(alpha - 1.0f, position.y + 196.0f +
+                     (f32)(0x4c - barOffset),
+                     position.x + 75.0f, 0xffffff00, barOffset, 10);
+    }
+    current = datGetSp(pcId);
+    maximum = func_0016c670(pcId);
+    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 73.0f,
+                         current);
+    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 73.0f,
+                         maximum);
+}
+
+// FUN_00123F80 NONMATCHING
+void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
+                                        s16 pcId, s32 fade)
+{
+    s32 icon;
+
+    switch (datGetPhysicalCondition(pcId)) {
+    case 0: icon = 0x2b; break;
+    case 1: icon = 0x0b; break;
+    case 2: icon = 0x0d; break;
+    case 3: icon = 0x0c; break;
+    case 4: icon = 0x10; break;
+    case 5: icon = 0x0e; break;
+    default: icon = 0x0f; break;
+    }
+    FUN_001159f0(position.x + 184.0f, position.y + 76.0f, alpha,
+                 DAT_00833B90, icon, campStatusClampFade(fade));
+}
+
+// FUN_00124090 NONMATCHING
+void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
+                               s32 fade)
+{
+    s32 i;
+    u32 offset;
+    s32 angle;
+    f32 radius;
+    f32 sine;
+    f32 cosine;
+    s8 particleAlpha;
+    u32 badStatus;
+
+    badStatus = datGetBadStatusNoDown(pcId);
+    if ((badStatus & 0x80) == 0) {
+        return;
+    }
+    DAT_007cdf64++;
+    if (DAT_007cdf64 >= 100) {
+        DAT_007cdf64 = 0;
+    }
+    for (i = 0; i < 12; i++) {
+        offset = (DAT_007cdf64 + i * 15) % 100;
+        if (offset <= 50) {
+            continue;
+        }
+        angle = (i / 3) * 40;
+        radius = (f32)(angle / 4 + 40);
+        sine = sinf((DAT_007caf38 * radius) / 180.0f);
+        cosine = cosf((DAT_007caf38 * radius) / 180.0f);
+        radius = (f32)((offset - 50) * 50 / 50);
+        if (offset - 50 < 10) {
+            particleAlpha = (s8)(-1 - ((offset - 50) * 0xff) / 10);
+        } else if (offset - 50 < 40) {
+            particleAlpha = 0;
+        } else {
+            particleAlpha = (s8)(((offset - 90) * 0xff) / 10);
+        }
+        campStatusDrawParticle(alpha, position.x + 265.0f +
+                               radius * cosine,
+                               position.y - 13.0f - radius * sine,
+                               particleAlpha, i % 3 + 7);
+    }
+}
+
+// FUN_00124370 NONMATCHING
+void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
+                                       s16 pcId, s32 phase)
+{
+    s32 fade;
+    s32 hpFade;
+    s32 spFade;
+    s32 conditionFade;
+    s32 effectFade;
+    f32 slide;
+    u32 level;
+
+    if (phase < 3) {
+        fade = 0xff - phase * 0xff / 3;
+        slide = (f32)(((3 - phase) * 0x14) / 3);
+    } else {
+        fade = 0;
+        slide = 0.0f;
+    }
+    FUN_001159f0(position.x - slide + 22.0f, position.y + 27.0f,
+                 alpha, DAT_00833B90, 0, fade);
+    if (phase != 0) {
+        if (phase < 4) {
+            fade = 0xff - ((phase - 1) * 0xff) / 3;
+        } else {
+            fade = 0;
+        }
+    }
+    if (phase > 3) {
+        level = datGetLevel(pcId);
+        campStatusDrawNumber((f32)campStatusClampFade(fade),
+                             position.x + 81.0f, position.y + 40.0f,
+                             level);
+        campStatusDrawNumber((f32)campStatusClampFade(fade),
+                             position.x + 96.0f, position.y + 40.0f,
+                             level);
+    }
+    hpFade = phase < 9 ? 0xff - ((phase - 4) * 0xff) / 4 : 0;
+    spFade = phase < 0x13 ? 0xff - ((phase - 0xf) * 0xff) / 4 : 0;
+    conditionFade = phase < 0x13 ? 0xff - ((phase - 0xf) * 0xff) / 4 : 0;
+    effectFade = phase < 0x14 ? 0xff - ((phase - 0x10) * 0xff) / 4 : 0;
+    if (phase > 10) {
+        h_campStatusDrawHp(position, alpha, pcId, 0x4c, hpFade);
+    }
+    if (phase > 14) {
+        h_campStatusDrawSp(position, alpha, pcId, 0x4c, spFade);
+        h_campStatusDrawPhysicalCondition(position, alpha, pcId,
+                                          conditionFade);
+    }
+    if (phase > 15) {
+        h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
+    }
+}
+
+// FUN_00124B30 NONMATCHING
+void h_campStatusDrawStatus(CampVec2 position, CampVec2 unused,
+                            f32 alpha, s16 pcId, s32 fade)
+{
+    u32 level;
+    u32 hp;
+    u32 maxHp;
+    u32 sp;
+    u32 maxSp;
+    s32 bright;
+
+    bright = campStatusClampFade(fade);
+    FUN_001159f0(position.x + 22.0f, position.y + 27.0f, alpha,
+                 DAT_00833B90, 0, bright);
+    level = datGetLevel(pcId);
+    campStatusDrawNumber(alpha, position.x + 81.0f, position.y + 40.0f,
+                         level);
+    campStatusDrawNumber(alpha, position.x + 96.0f, position.y + 40.0f,
+                         level);
+    hp = datGetHp(pcId);
+    maxHp = datGetMaxHp(pcId);
+    sp = datGetSp(pcId);
+    maxSp = func_0016c670(pcId);
+    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 58.0f, hp);
+    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 58.0f,
+                         maxHp);
+    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 73.0f, sp);
+    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 73.0f,
+                         maxSp);
+    h_campStatusDrawPhysicalCondition(position, alpha, pcId, bright);
+    h_campStatusDrawBadStatus(position, alpha, pcId, bright);
+}
 
 // FUN_00123540. Destroy callback of the "H_CampPcStatusRoot" task
 void h_campStatusDestroyPcStatusRootTask(KwlnTask* task)
@@ -29,7 +521,7 @@ KwlnTask* h_campStatusCreatePcStatusRootTask(KwlnTask* parent, u32 priority, sho
     if (workData == NULL) {
         return NULL;
     }
-    task = kwlnTaskCreate(parent, "H_CampPcStatusRoot", priority, FUN_001230c0, h_campStatusDestroyPcStatusRootTask, workData);
+    task = kwlnTaskCreate(parent, "H_CampPcStatusRoot", priority, h_campStatusUpdatePcStatusRootTask, h_campStatusDestroyPcStatusRootTask, workData);
     if (task == NULL) {
         return NULL;
     }
@@ -59,7 +551,7 @@ void h_campStatusDestroyPersonaDrawTask(KwlnTask* task)
     }
     workData[0x1a] = 0;
     if (workData[0x14] != 0) {
-        H_Cdvd_Destroy(workData[0x14]);
+        H_Cdvd_Destroy((HCdvd*)workData[0x14]);
     }
     workData[0x14] = 0;
     RwFree(workData);
@@ -88,4 +580,1876 @@ KwlnTask* h_campStatusCreatePersonaDrawTask(KwlnTask* parent, u32 priority, Camp
 void h_campStatusDestroyPcStatusPartsTask(KwlnTask* task)
 {
     RwFree(task->workData);
+}
+extern void* DAT_00833B98;
+extern int sprintf(char* buffer, const char* format, ...);
+
+typedef struct CampStatusSprite
+{
+    u8 reserved00[0x10];
+    f32 x;
+    f32 y;
+    u8 alpha;
+    u8 reserved19[3];
+    s16 value;
+    u8 reserved1e[0x0e];
+    f32 scale;
+} CampStatusSprite;
+
+typedef s32 (*CampStatusRawSpriteFn)(void* parent, void* resource,
+                                     s32 frame, u32 alpha, f32 x, f32 y,
+                                     f32 scale);
+
+static void campStatusDrawSprite(void* resource, s32 frame, f32 x, f32 y,
+                                 f32 scale, s32 alpha)
+{
+    CampStatusRawSpriteFn draw;
+
+    draw = (CampStatusRawSpriteFn)FUN_001159f0;
+    draw((void*)(u32)0x42c80000, resource, frame, (u32)alpha, x, y,
+         scale);
+}
+
+static void campStatusDrawBar(f32 scale, f32 x, f32 y, u8 alpha,
+                              s32 frame, s32 value)
+{
+    CampStatusSprite* sprite;
+
+    sprite = (CampStatusSprite*)(u32)FUN_001158b0(0, DAT_00833B98, frame);
+    sprite->scale = scale;
+    sprite->x = x;
+    sprite->y = y;
+    sprite->alpha = alpha;
+    sprite->value = (s16)((value * 0xe3) / 99);
+    FUN_001127d0(sprite, 1);
+    FUN_00115980(sprite);
+}
+
+static void campStatusDrawValue(f32 scale, f32 x, f32 y,
+                                u8 alpha, s32 value)
+{
+    campStatusDrawBar(scale, x, y, alpha, 0x18, value);
+}
+
+static s32 campStatusGetDisplayedValue(void* persona, void* bonus,
+                                       s32 index, s32 useSkillAccessors)
+{
+    s32 value;
+
+    if (useSkillAccessors != 0) {
+        value = FUN_00173580(persona, index) & 0xff;
+    } else {
+        value = FUN_00173660(persona, index) & 0xff;
+    }
+    if (bonus != NULL) {
+        value += *((u8*)bonus + 0x38 + index);
+    }
+    return value;
+}
+
+static void campStatusDrawDigits(CampVec2 position, f32 scale,
+                                 void* bonus, void* persona, s32 alpha,
+                                 s32 useSkillAccessors)
+{
+    s32 i;
+    s32 value;
+    f32 y;
+
+    for (i = 0; i < 5; i++) {
+        value = campStatusGetDisplayedValue(persona, bonus, i,
+                                             useSkillAccessors);
+        y = position.y + 106.0f + (f32)(i * 19);
+        if (value >= 10) {
+            campStatusDrawSprite(DAT_00833B98, value / 10 + 0xb,
+                                 position.x + 69.0f, y, scale, alpha);
+        }
+        campStatusDrawSprite(DAT_00833B98, value % 10 + 0xb,
+                             position.x + 85.0f, y, scale, alpha);
+    }
+}
+
+static void campStatusDrawStats(CampVec2 position, f32 scale, void* persona,
+                                u8 alpha, u8 drawCurrent)
+{
+    s32 i;
+    s32 value;
+    s32 current;
+
+    for (i = 0; i < 5; i++) {
+        value = FUN_00173660(persona, i) & 0xff;
+        current = 0;
+        if (drawCurrent != 0) {
+            current = *((u8*)persona + 0x38 + i);
+        }
+        h_campStatusDrawRankValue(position, scale, i, value, current, alpha);
+    }
+}
+
+static void campStatusDrawExp(CampVec2 position, f32 scale, void* bonus,
+                              void* persona, u8 alpha)
+{
+    char text[0x100];
+    s32 current;
+    s32 next;
+
+    h_campStatusDrawEquipment(position, scale, bonus, persona, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x11, position.x + 33.0f,
+                         position.y + 278.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B90, 0x22, position.x + 287.0f,
+                         position.y + 280.0f, scale, alpha);
+    if (*((u8*)persona + 4) == 0x63) {
+        sprintf(text, "%d", 0);
+    } else {
+        current = FUN_00173340(persona);
+        next = FUN_00173330(persona);
+        sprintf(text, "%d", current - next);
+    }
+    FUN_0040eb50((s32)(position.x + 287.0f), (s32)(position.y + 280.0f),
+                 (u8)(0xff - alpha), 4, text, 1);
+}
+
+// FUN_0012B300 NONMATCHING
+void FUN_0012b300(CampVec2 position, f32 scale, void* persona, u8 alpha)
+{
+    s32 i;
+
+    for (i = 0; i < 9; i++) {
+        h_campStatusRenderStatIcon(position, scale, i, alpha);
+    }
+    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
+                         position.y + 100.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
+                         position.y + 159.0f, scale, alpha);
+    h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
+    campStatusDrawStats(position, scale, persona, alpha, 0);
+    campStatusDrawExp(position, scale, NULL, persona, alpha);
+}
+
+// FUN_0012B860 NONMATCHING
+void FUN_0012b860(CampVec2 position, f32 scale, void* currentStats,
+                  void* persona, u8 alpha)
+{
+    s32 i;
+    s32 value;
+    s32 current;
+
+    for (i = 0; i < 9; i++) {
+        h_campStatusRenderStatIcon(position, scale, i, alpha);
+    }
+    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
+                         position.y + 100.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
+                         position.y + 159.0f, scale, alpha);
+    h_campStatusDrawStatValues(position, scale, currentStats, persona, alpha);
+    for (i = 0; i < 5; i++) {
+        value = FUN_00173660(persona, i) & 0xff;
+        current = currentStats != NULL
+            ? *((u8*)currentStats + 0x38 + i)
+            : 0;
+        h_campStatusDrawRankValue(position, scale, i, value, current, alpha);
+    }
+    campStatusDrawExp(position, scale, currentStats, persona, alpha);
+}
+
+// FUN_0012BCE0 NONMATCHING
+void FUN_0012bce0(CampVec2 position, f32 scale, void* unused,
+                  void* persona, u8 alpha)
+{
+    s32 i;
+
+    (void)unused;
+    for (i = 0; i < 9; i++) {
+        h_campStatusRenderStatIcon(position, scale, i, alpha);
+    }
+    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
+                         position.y + 100.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
+                         position.y + 159.0f, scale, alpha);
+    campStatusDrawExp(position, scale, NULL, persona, alpha);
+}
+
+// FUN_0012BFB0 NONMATCHING
+void FUN_0012bfb0(CampVec2 position, f32 scale, void* currentStats,
+                  void* persona, u8 alpha)
+{
+    s32 i;
+    s32 value;
+    s32 current;
+
+    for (i = 0; i < 9; i++) {
+        h_campStatusRenderStatIcon(position, scale, i, alpha);
+    }
+    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x12, position.x + 30.0f,
+                         position.y + 100.0f, scale, alpha);
+    campStatusDrawSprite(DAT_00833B98, 0x13, position.x + 30.0f,
+                         position.y + 159.0f, scale, alpha);
+    h_campStatusDrawSkillValues(position, scale, currentStats, persona,
+                                alpha);
+    for (i = 0; i < 5; i++) {
+        value = FUN_00173580(persona, i) & 0xff;
+        current = currentStats != NULL
+            ? *((u8*)currentStats + 0x38 + i)
+            : 0;
+        h_campStatusDrawRankValue(position, scale, i, value, current, alpha);
+    }
+    campStatusDrawExp(position, scale, currentStats, persona, alpha);
+}
+/*
+ * Status-screen renderer and transition tasks.
+ *
+ * The retail status UI keeps two small task work areas: the first owns the
+ * archive/texture used by the PC status parts task, while the second drives
+ * the animated stat panel.  Keep the offsets explicit here; these layouts are
+ * shared with the callbacks registered by the surrounding camp code.
+ */
+typedef struct CampStatusPartsWork
+{
+    u32 state;                 /* 0x00 */
+    f32 x;                     /* 0x04 */
+    f32 y;                     /* 0x08 */
+    s16 alpha;                 /* 0x0c */
+    s16 mode;                  /* 0x0e */
+    s16 screen;                /* 0x10 */
+    s16 detailFrame;           /* 0x12 */
+    u32 flags;                 /* 0x14 */
+    u32 ready;                 /* 0x18 */
+    s32 result;                /* 0x1c */
+    u32 reserved20[6];         /* 0x20..0x34 */
+    void* ownedResource;       /* 0x38 */
+    void* archive;             /* 0x3c */
+    void* parsedResource;      /* 0x40 */
+    f32 scrollY;               /* 0x44 */
+} CampStatusPartsWork;
+
+typedef struct CampStatusPanelWork
+{
+    u32 state;                 /* 0x00 */
+    f32 x;                     /* 0x04 */
+    f32 y;                     /* 0x08 */
+    s16 alpha;                 /* 0x0c */
+    s16 priorityMode;          /* 0x0e */
+    s16 animationFrame;        /* 0x10 */
+    s16 panelMode;             /* 0x12 */
+    s32 result;                /* 0x14 */
+    u32 ready;                 /* 0x18 */
+    KwlnTask* child;           /* 0x1c */
+} CampStatusPanelWork;
+
+typedef struct CampStatusVertex
+{
+    RwV3d position;
+    f32 cameraZ;
+    f32 u;
+    f32 v;
+    f32 recipZ;
+    f32 pad0;
+    RwRGBAReal color;
+    RwV3d normal;
+    f32 pad1;
+} CampStatusVertex;
+
+extern void (*DAT_00960090)();
+extern void (*DAT_009600A0)();
+extern f32 DAT_00960088;
+extern s32 FUN_00198590();
+extern void (*jtbl_007B5B60[9])();
+extern void* DAT_00833B98;
+extern s32 iGpffffb7fc;
+extern const void* gp0xffff8978;
+extern const void* gp0xffff8980;
+extern s32 FUN_00100ec0();
+extern s32 FUN_004d0f00();
+extern s32 FUN_001fc230();
+extern s32 FUN_001fc3c0();
+extern s32 FUN_001fb1f0();
+extern void FUN_003b32d0();
+extern void FUN_00523ac8();
+
+static void h_campStatusDrawQuad(f32 x, f32 y, f32 width, f32 height,
+                                  u32 texture, s32 alpha)
+{
+    CampStatusVertex vertices[4];
+    void* camera;
+    f32 recipZ;
+    s32 i;
+
+    camera = (void*)FUN_00198590();
+    recipZ = 1.0f / *((f32*)camera + 0x20);
+    DAT_00960090(6, 1);
+    DAT_00960090(7, 2);
+    DAT_00960090(8, 1);
+    DAT_00960090(11, 6);
+    DAT_00960090(10, 5);
+    DAT_00960090(9, 2);
+    DAT_00960090(12, 1);
+    DAT_00960090(2, 4);
+    for (i = 0; i < 4; i++) {
+        vertices[i].position.z = 0.0f;
+        vertices[i].cameraZ = 0.0f;
+        vertices[i].u = 0.0f;
+        vertices[i].v = 0.0f;
+        vertices[i].recipZ = recipZ;
+        vertices[i].color.r = 255.0f;
+        vertices[i].color.g = 255.0f;
+        vertices[i].color.b = 255.0f;
+        vertices[i].color.a = (f32)alpha;
+    }
+    vertices[0].position.x = x;
+    vertices[0].position.y = y;
+    vertices[1].position.x = x + width;
+    vertices[1].position.y = y;
+    vertices[2].position.x = x;
+    vertices[2].position.y = y + height;
+    vertices[3].position.x = x + width;
+    vertices[3].position.y = y + height;
+    DAT_00960090(1, texture);
+    DAT_009600A0(4, vertices, 4);
+}
+
+static void h_campStatusDrawStatIcon(u32 parent, CampVec2 position,
+                                      s32 stat, s32 alpha)
+{
+    static const s32 iconX[9] = { 29, 69, 109, 159, 199, 239, 279, 319, 359 };
+    f32 x;
+    f32 y;
+
+    if (stat < 0 || stat >= 9) {
+        return;
+    }
+    x = position.x + (f32)iconX[stat];
+    y = position.y + 44.0f;
+    FUN_001159f0(x, y, parent, DAT_00833B98, stat, alpha & 0xff);
+}
+
+static void h_campStatusDrawStatIcons(u32 parent, CampVec2 position,
+                                       void* persona, s32 alpha)
+{
+    static const s32 accessor[9] = { 0, 1, 2, 3, 4, 5, 6, 8, 9 };
+    s32 i;
+
+    for (i = 0; i < 9; i++) {
+        FUN_001733b0(persona, accessor[i]);
+        h_campStatusDrawStatIcon(parent, position, i, alpha);
+    }
+}
+
+static s32 h_campStatusStatValue(void* persona, void* bonus, s32 index)
+{
+    s32 value;
+
+    value = (s32)(FUN_00173660(persona, index) & 0xff);
+    if (bonus != NULL) {
+        value += *((u8*)bonus + 0x38 + index);
+    }
+    return value;
+}
+
+static s32 h_campStatusSkillValue(void* persona, void* bonus, s32 index)
+{
+    s32 value;
+
+    value = (s32)(FUN_00173580(persona, index) & 0xff);
+    if (bonus != NULL) {
+        value += *((u8*)bonus + 0x38 + index);
+    }
+    return value;
+}
+
+static void h_campStatusDrawLabelRow(u32 parent, CampVec2 position,
+                                     void* persona, void* bonus, s32 alpha,
+                                     s32 useSkillAccessors)
+{
+    s32 i;
+    s32 value;
+    s32 x;
+    f32 y;
+
+    for (i = 0; i < 5; i++) {
+        value = useSkillAccessors
+            ? h_campStatusSkillValue(persona, bonus, i)
+            : h_campStatusStatValue(persona, bonus, i);
+        x = (s32)position.x + 104;
+        y = position.y + 129.0f + (f32)(i * 19) - 25.0f;
+        FUN_001159f0((f32)x, y, parent, DAT_00833B98, 20, alpha & 0xff);
+        FUN_001159f0(position.x + 333.0f, y, parent, DAT_00833B98, 21,
+                     alpha & 0xff);
+        {
+            void* text;
+            text = (void*)(u32)FUN_001158b0(0, DAT_00833B98, 0x18);
+            *((u32*)text + 11) = parent;
+            *((f32*)text + 4) = (f32)x + 4.0f;
+            *((f32*)text + 5) = y + 1.0f;
+            *((u8*)text + 0x18) = (u8)alpha;
+            *((s16*)text + 0x0e) = (s16)((value * 0xe3) / 99);
+            FUN_001127d0(text, 1);
+            FUN_00115980(text);
+        }
+    }
+}
+
+static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
+                                            void* persona, void* bonus,
+                                            s32 alpha)
+{
+    u16 equipped[8];
+    char text[44];
+    s32 i;
+    s32 row;
+    s32 col;
+    s32 item;
+    s32 disabled;
+    s32 count;
+
+    for (row = 0; row < 2; row++) {
+        for (col = 0; col < 4; col++) {
+            i = row * 4 + col;
+            FUN_001159f0(position.x + 34.0f + (f32)(row * 190),
+                         position.y + 316.0f + (f32)(col * 24), parent);
+            item = *((u16*)persona + 3 + i);
+            if (item == 0) {
+                continue;
+            }
+            disabled = bonus == NULL || *((s16*)((u8*)bonus + 0x3e + i * 2)) == 0;
+            FUN_00523ac8(text, gp0xffff897c,
+                         iGpffffb7fc + item * 0x13);
+            FUN_003b32d0(parent,
+                         (s32)position.x + 44 + row * 190,
+                         (s32)position.y + 320 + col * 24,
+                         disabled ? ((0xff - alpha) | 0x95b9ff00)
+                                  : ((0xff - alpha) | 0x77ffcf00),
+                         6, 1, text, 0x10, 0x78);
+        }
+    }
+    if (FUN_001fc230(persona) != 0) {
+        FUN_001159f0(position.x + 411.0f, position.y + 326.0f, parent);
+        FUN_001159f0(position.x + 557.0f, position.y + 326.0f, parent);
+        count = FUN_001fc3c0(persona);
+        if (count < 10) {
+            FUN_001120a0(2);
+            FUN_001159f0(position.x + 534.0f, position.y + 328.0f,
+                         parent);
+        }
+        else {
+            FUN_001120a0(2);
+            FUN_001159f0(position.x + 526.0f, position.y + 328.0f,
+                         parent);
+            FUN_001120a0(2);
+            FUN_001159f0(position.x + 541.0f, position.y + 328.0f,
+                         parent);
+        }
+    }
+    count = 0;
+    FUN_001fb1f0(persona, equipped, &count);
+    if (count > 7) {
+        count = 7;
+    }
+    for (i = 0; i < count; i++) {
+        if (equipped[i] != 0) {
+            FUN_001159f0(position.x + 414.0f + (f32)((i / 2) * 62),
+                         position.y + 340.0f + (f32)((i & 1) * 24), parent);
+            FUN_00523ac8(text, gp0xffff897c,
+                         iGpffffb7fc + equipped[i] * 0x13);
+            FUN_003b32d0(parent,
+                         (s32)position.x + 424 + (i / 2) * 62,
+                         (s32)position.y + 344 + (i & 1) * 24,
+                         (0xff - alpha) | 0x95b9ff00,
+                         6, 1, text, 0x10, 0x78);
+        }
+    }
+}
+
+// FUN_00126710 NONMATCHING
+void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
+                              s32 alpha)
+{
+    (void)x;
+    h_campStatusDrawQuad(position.x, position.y, 512.0f, 1024.0f,
+                         (u32)texture, alpha);
+    h_campStatusDrawQuad(position.x, position.y + 80.0f, 512.0f, 1024.0f,
+                         (u32)texture, alpha);
+}
+
+static void h_campStatusDrawPanel(CampStatusPartsWork* work, s32 alpha,
+                                  f32 yOffset, void* persona, void* bonus)
+{
+    CampVec2 position;
+
+    position.x = 188.0f - yOffset;
+    position.y = work->scrollY;
+    h_campStatusDrawViewport(105.0f, work->parsedResource, position, alpha);
+    h_campStatusDrawStatIcons(0x42c80000, position, persona, alpha);
+    h_campStatusDrawLabelRow(0x42c80000, position, persona, bonus, alpha, 0);
+    h_campStatusDrawEquipmentSlots(0x42c80000, position, persona, bonus,
+                                    alpha);
+}
+
+static void h_campStatusResetInput(CampStatusPartsWork* work, s32 mask)
+{
+    if ((DAT_007e094e & 0x20) != 0) {
+        FUN_0010a4e0(0, 0, 0, 2);
+        work->result = -1;
+    }
+    else if ((DAT_007e094e & mask) != 0 ||
+             (DAT_007e0958 & mask) != 0) {
+        FUN_0010a4e0(0, 0, 0, 0);
+        work->result = 1;
+    }
+}
+
+// FUN_001269A0 NONMATCHING
+void* h_campStatusUpdatePartsTask(KwlnTask* task)
+{
+    CampStatusPartsWork* work;
+    KwlnTask* root;
+    CampVec2 position;
+    s32 done;
+    s32 alpha;
+    s32 frame;
+
+    work = (CampStatusPartsWork*)task->workData;
+    root = DAT_007cdf50;
+    position.x = 188.0f;
+    position.y = work->scrollY;
+    switch (work->state) {
+    case 0:
+        work->scrollY = -20.0f;
+        if (FUN_0017d800() == 0) {
+            work->archive = (void*)FUN_0010c1a0(0, 0x5db0a0, 0, 0, 0, 0, 0,
+                                                0);
+        }
+        else {
+            work->archive = (void*)FUN_0010c1a0(0, 0x5db050, 0, 0, 0, 0, 0,
+                                                0);
+        }
+        work->state = 1;
+        break;
+    case 1:
+        work->parsedResource = (void*)FUN_0010c3a0(work->archive, &done, 0);
+        if (done != 0) {
+            work->state = 2;
+        }
+        break;
+    case 2:
+        if (FUN_0011e380(DAT_007cdf50, 2) != 0) {
+            work->state = 3;
+        }
+        break;
+    case 3:
+        if (root != NULL && root->workData != NULL &&
+            *((s32*)((u8*)root->workData + 0x10)) != 0) {
+            if (work->screen == 0) {
+                work->detailFrame = 0;
+                if (DAT_007cdf5c != NULL &&
+                    DAT_007cdf5c->workData != NULL) {
+                    h_campDrawRootMenuEntriesClosing(
+                        (CampRootDrawWork*)DAT_007cdf5c->workData, 100.0f);
+                    *((u32*)DAT_007cdf5c->workData) = 8;
+                    *((u32*)DAT_007cdf5c->workData + 1) = 0x16;
+                }
+            }
+            else if (work->screen == 1) {
+                work->detailFrame = 0;
+            }
+            work->ownedResource = (void*)FUN_00194b20(
+                task, 0x5db030, 0x18be, h_campStatusUpdatePartsTask,
+                h_campStatusDestroyPcStatusPartsTask, 0);
+            if (work->ownedResource != NULL &&
+                ((KwlnTask*)work->ownedResource)->workData != NULL) {
+                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 4)) =
+                    work->mode;
+            }
+            if (DAT_007cdf54 != NULL) {
+                FUN_00121de0(DAT_007cdf54, 2);
+            }
+            if (DAT_007cdf58 != NULL) {
+                FUN_00122710(DAT_007cdf58, 2);
+            }
+            if (work->ownedResource != NULL &&
+                ((KwlnTask*)work->ownedResource)->workData != NULL) {
+                *((s32*)((u8*)((KwlnTask*)work->ownedResource)->workData + 8)) =
+                    work->alpha;
+            }
+            work->state = 4;
+        }
+        break;
+    case 4:
+        if (work->alpha != 0xff) {
+            work->alpha += 10;
+            if (work->alpha > 0xff) {
+                work->alpha = 0xff;
+            }
+        }
+        if (work->ownedResource != NULL &&
+            ((KwlnTask*)work->ownedResource)->workData != NULL &&
+            work->screen != 0) {
+            *((s32*)((u8*)((KwlnTask*)work->ownedResource)->workData + 8)) =
+                work->alpha;
+        }
+        position.x = 188.0f;
+        position.y = work->scrollY;
+        if (work->screen == 1) {
+            frame = work->detailFrame;
+            if (frame == 8) {
+                h_campStatusDrawViewport(105.0f, work->parsedResource,
+                                         position, 0xff);
+                h_campStatusDrawPanel(work, 0, 0.0f, work->parsedResource,
+                                      NULL);
+                h_campStatusResetInput(work, 0x2000);
+            }
+            else {
+                position.x = 188.0f - (f32)((8 - frame) * 25) / 8.0f;
+                h_campStatusDrawViewport(105.0f, work->parsedResource,
+                                         position, 0xff);
+                h_campStatusDrawPanel(work, 0,
+                                      -(f32)((8 - frame) * 500) / 8.0f,
+                                      work->parsedResource, NULL);
+                work->detailFrame++;
+            }
+            h_campStatusDrawLabelRow(0x42c80000, position,
+                                     work->parsedResource, NULL,
+                                     0xff - frame * 31, 0);
+        }
+        else {
+            if (work->detailFrame == 8) {
+                h_campStatusDrawViewport(105.0f, work->parsedResource,
+                                         position, 0xff);
+                h_campStatusDrawPanel(work, 0, 0.0f, work->parsedResource,
+                                      NULL);
+                h_campStatusResetInput(work, 0x2000);
+            }
+            else {
+                h_campStatusDrawViewport(105.0f, work->parsedResource,
+                                         position, 0xff);
+                work->detailFrame++;
+            }
+        }
+        break;
+    case 5:
+        if (FUN_0011e380(DAT_007cdf50, 1) != 0) {
+            work->state = 6;
+        }
+        position.x = 188.0f;
+        position.y = work->scrollY;
+        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
+                                 0xff);
+        if (work->scrollY > -1064.0f) {
+            work->scrollY -= 1.0f;
+        }
+        break;
+    case 6:
+        work->alpha -= 25;
+        if (work->alpha < 0) {
+            return KWLNTASK_STOP;
+        }
+        position.x = 188.0f;
+        position.y = work->scrollY;
+        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
+                                 0xff);
+        break;
+    case 7:
+        position.x = 188.0f;
+        position.y = work->scrollY;
+        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
+                                 0xff);
+        if (FUN_0011e380(DAT_007cdf50, 0) != 0) {
+            work->detailFrame = 0;
+            if (work->ownedResource != NULL &&
+                ((KwlnTask*)work->ownedResource)->workData != NULL) {
+                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 4)) =
+                    2;
+                *((s16*)((u8*)((KwlnTask*)work->ownedResource)->workData + 6)) =
+                    0;
+            }
+            work->state = 8;
+        }
+        break;
+    case 8:
+        work->detailFrame++;
+        if (work->detailFrame == 8) {
+            return KWLNTASK_STOP;
+        }
+        position.x = 188.0f;
+        position.y = work->scrollY - (f32)(work->detailFrame * 125) / 2.0f;
+        alpha = work->detailFrame * 255 / 8;
+        h_campStatusDrawViewport(105.0f, work->parsedResource, position,
+                                 alpha);
+        break;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001273B0 NONMATCHING
+void h_campStatusDrawPanelFrame(u32 parent, CampVec2 position, s32 alpha)
+{
+    f32 left;
+    f32 right;
+    f32 y;
+    s32 count;
+
+    left = position.x + 21.0f;
+    right = position.x + 127.0f;
+    y = position.y + 49.0f;
+    FUN_001159f0(left, y, 0x42c80000);
+    FUN_001159f0(right, y, 0x42c80000);
+    FUN_001159f0(left, y, 0x42c80000);
+    FUN_001159f0(right, y, 0x42c80000);
+    count = FUN_00177280(FUN_0016c6f0(parent));
+    FUN_001159f0(position.x + 129.0f, position.y + 72.0f,
+                 0x42c80000);
+    FUN_001159f0(right, position.y + 63.0f, 0x42c80000);
+    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
+                 position.y + 63.0f, 0x42c80000);
+    FUN_001159f0(left, position.y + 97.0f, 0x42c80000);
+    FUN_001159f0(right, position.y + 97.0f, 0x42c80000);
+    count = FUN_001772F0(FUN_0016c740(parent));
+    FUN_001159f0(position.x + 129.0f, position.y + 120.0f,
+                 0x42c80000);
+    FUN_001159f0(right, position.y + 111.0f, 0x42c80000);
+    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
+                 position.y + 111.0f, 0x42c80000);
+    FUN_001159f0(left, position.y + 145.0f, 0x42c80000);
+    FUN_001159f0(right, position.y + 145.0f, 0x42c80000);
+    count = FUN_00177360(FUN_0016c790(parent));
+    FUN_001159f0(position.x + 129.0f, position.y + 168.0f,
+                 0x42c80000);
+    FUN_001159f0(right, position.y + 159.0f, 0x42c80000);
+    FUN_001159f0(position.x + 128.0f + (f32)((count - 1) * 20),
+                 position.y + 159.0f, 0x42c80000);
+    y = position.y + 320.0f;
+    FUN_001159f0(position.x + 51.0f, y, 0x42c80000);
+    FUN_001159f0(position.x + 305.0f, y, 0x42c80000);
+    {
+        char text[264];
+        FUN_00523ac8(text, gp0xffff8980, FUN_0016d2f0(parent));
+        FUN_0040eb50(0x42c80000, (s32)position.x + 559,
+                     (s32)position.y + 341, -1 - alpha, 4, text, 1);
+    }
+}
+
+// FUN_00127A40
+void h_campStatusDestroyPartsTask(KwlnTask* task)
+{
+    CampStatusPartsWork* work;
+
+    work = (CampStatusPartsWork*)task->workData;
+    if (work->ownedResource != NULL) {
+        H_Cdvd_Destroy(work->ownedResource);
+        work->ownedResource = NULL;
+    }
+    if (work->parsedResource != NULL) {
+        FUN_004d0f00(work->parsedResource);
+        work->parsedResource = NULL;
+    }
+    RwFree(work);
+}
+
+// FUN_00127AB0
+void h_campStatusBeginClose(KwlnTask* task)
+{
+    CampStatusPartsWork* work;
+
+    work = (CampStatusPartsWork*)task->workData;
+    work->state = 5;
+}
+
+// FUN_00127AD0
+void h_campStatusBeginFade(KwlnTask* task)
+{
+    CampStatusPartsWork* work;
+
+    work = (CampStatusPartsWork*)task->workData;
+    work->state = 7;
+}
+
+// FUN_00127AF0
+s32 h_campStatusGetResult(KwlnTask* task)
+{
+    CampStatusPartsWork* work;
+
+    work = (CampStatusPartsWork*)task->workData;
+    return work->result;
+}
+
+// FUN_00127B00 NONMATCHING
+KwlnTask* h_campStatusCreatePartsTask(KwlnTask* parent, u32 priority,
+                                      CampVec2 position, s16 mode,
+                                      s16 screen)
+{
+    CampStatusPartsWork* work;
+    KwlnTask* task;
+
+    work = (CampStatusPartsWork*)RwCalloc(1, sizeof(CampStatusPartsWork),
+                                           0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampPcStatusParts", priority,
+                          h_campStatusUpdatePartsTask,
+                          h_campStatusDestroyPartsTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    work->x = position.x;
+    work->y = position.y;
+    work->ready = 1;
+    work->mode = mode;
+    work->screen = screen;
+    if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL) {
+        *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) = 0;
+    }
+    return task;
+}
+
+// FUN_00127C00 NONMATCHING
+void* h_campStatusUpdatePanelTask(KwlnTask* task)
+{
+    CampStatusPanelWork* work;
+    CampVec2 position;
+    s32 done;
+    s32 i;
+    s32 alpha;
+    s32 input;
+
+    work = (CampStatusPanelWork*)task->workData;
+    position.x = work->x;
+    position.y = work->y;
+    switch (work->state) {
+    case 0:
+        if (FUN_0011e380(DAT_007cdf50, 3) != 0) {
+            work->child = (KwlnTask*)FUN_001339a0(0x42c80000, task, 0x18bf,
+                                                  FUN_0016c860(1), -1);
+            work->state = 1;
+        }
+        break;
+    case 1:
+        if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL &&
+            *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) != 0) {
+            work->animationFrame = 0;
+            if (DAT_007cdf54 != NULL) {
+                FUN_00121de0(DAT_007cdf54, 3);
+            }
+            if (DAT_007cdf58 != NULL) {
+                FUN_00122710(DAT_007cdf58, 3);
+            }
+            work->state = 2;
+        }
+        break;
+    case 2:
+        if (work->child != NULL) {
+            FUN_00133a80(work->child);
+        }
+        if (work->panelMode == 0) {
+            input = 0;
+            if (work->animationFrame < 0x14) {
+                work->animationFrame++;
+            }
+            else {
+                input = 1;
+            }
+            if (work->animationFrame != 0) {
+                h_campStatusDrawPanelFrame(0x42c80000, position, 0xff);
+            }
+            if (input != 0) {
+                if ((DAT_007e094e & 0x20) != 0) {
+                    FUN_0010a4e0(0, 0, 0, 2);
+                    work->result = -1;
+                }
+                else if ((DAT_007e094e & 0x8000) != 0 ||
+                         (DAT_007e0958 & 0x8000) != 0) {
+                    FUN_0010a4e0(0, 0, 0, 0);
+                    work->result = 1;
+                }
+            }
+        }
+        else {
+            if (work->alpha == 0xff) {
+                work->alpha = 0;
+            }
+            else {
+                work->alpha += 10;
+                if (work->alpha > 0xff) {
+                    work->alpha = 0xff;
+                }
+            }
+            h_campStatusDrawPanelFrame(0x42c80000, position,
+                                       0xff - work->alpha);
+        }
+        break;
+    case 3:
+        work->alpha -= 25;
+        if (work->alpha < 0) {
+            return KWLNTASK_STOP;
+        }
+        h_campStatusDrawPanelFrame(0x42c80000, position, work->alpha);
+        break;
+    case 4:
+        h_campStatusDrawPanelFrame(0x42c80000, position, 0);
+        if (FUN_0011e380(DAT_007cdf50, 0) != 0) {
+            work->animationFrame = 0;
+            work->state = 5;
+        }
+        break;
+    case 5:
+        work->animationFrame++;
+        if (work->animationFrame >= 10) {
+            return KWLNTASK_STOP;
+        }
+        h_campStatusDrawPanelFrame(0x42c80000, position,
+                                   work->animationFrame * 25);
+        break;
+    }
+    (void)done;
+    (void)i;
+    (void)alpha;
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00127FC0
+void h_campStatusDestroyPanelTask(KwlnTask* task)
+{
+    CampStatusPanelWork* work;
+
+    work = (CampStatusPanelWork*)task->workData;
+    RwFree(task->workData);
+}
+
+// FUN_00127FF0
+void h_campStatusBeginPanelClose(KwlnTask* task)
+{
+    CampStatusPanelWork* work;
+
+    work = (CampStatusPanelWork*)task->workData;
+    work->alpha = 0xff;
+    work->state = 3;
+}
+
+// FUN_00128010
+void h_campStatusBeginPanelFade(KwlnTask* task)
+{
+    CampStatusPanelWork* work;
+
+    work = (CampStatusPanelWork*)task->workData;
+    work->animationFrame = 0;
+    work->state = 4;
+}
+
+// FUN_00128030
+s32 h_campStatusGetPanelMode(KwlnTask* task)
+{
+    CampStatusPanelWork* work;
+
+    work = (CampStatusPanelWork*)task->workData;
+    return work->result;
+}
+
+// FUN_00128040 NONMATCHING
+KwlnTask* h_campStatusCreatePanelTask(KwlnTask* parent, u32 priority,
+                                      CampVec2 position, s16 mode,
+                                      s16 panelMode)
+{
+    CampStatusPanelWork* work;
+    KwlnTask* task;
+
+    work = (CampStatusPanelWork*)RwCalloc(1, sizeof(CampStatusPanelWork),
+                                           0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+    task = kwlnTaskCreate(parent, "H_CampStatusParts", priority,
+                          h_campStatusUpdatePanelTask,
+                          h_campStatusDestroyPanelTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+    work->x = position.x;
+    work->y = position.y;
+    work->ready = 1;
+    work->priorityMode = mode;
+    work->panelMode = panelMode;
+    if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL) {
+        *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) = 0;
+    }
+    return task;
+}
+
+void h_campStatusDrawTransition(CampVec2 position, f32 scale,
+                                void* persona, s32 frame);
+void h_campStatusDrawEntering(CampVec2 position, f32 scale,
+                              void* persona, s32 frame);
+void h_campStatusDrawSteady(CampVec2 position, f32 scale,
+                            void* persona, s32 alpha);
+// FUN_00128140 NONMATCHING
+void h_campStatusRenderMode(CampVec2 position, f32 scale, s32 mode,
+                            void* persona, s32 alpha)
+{
+    if (mode == 0) {
+        h_campStatusDrawTransition(position, scale, persona, alpha);
+    }
+    else if (mode == 1) {
+        h_campStatusDrawEntering(position, scale, persona, alpha);
+    }
+    else if (mode == 2) {
+        h_campStatusDrawSteady(position, scale, persona, alpha);
+    }
+    else if (mode == 3) {
+        FUN_0012b300(position, scale, persona, (u8)alpha);
+    }
+}
+
+// FUN_001281E0 NONMATCHING
+void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
+                                s32 stat, s32 alpha)
+{
+    (void)scale;
+    h_campStatusDrawStatIcon(0x42c80000, position, stat, alpha);
+}
+
+// FUN_00128480 NONMATCHING
+void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
+                                s32 alpha)
+{
+    (void)scale;
+    h_campStatusDrawStatIcons(0x42c80000, position, persona, alpha);
+}
+
+// FUN_00128720 NONMATCHING
+void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
+                                void* persona, s32 alpha)
+{
+    campStatusDrawDigits(position, scale, bonus, persona, alpha, 0);
+}
+
+// FUN_00128C40 NONMATCHING
+void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
+                                 void* persona, s32 alpha)
+{
+    campStatusDrawDigits(position, scale, bonus, persona, alpha, 1);
+}
+
+// FUN_00129160 NONMATCHING
+void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
+                               s32 value, s32 extra, s32 alpha)
+{
+    void* text;
+    s32 length;
+    u32 parent;
+
+    (void)scale;
+    parent = 0x42c80000;
+    FUN_001159f0(position.x + 104.0f,
+                 position.y + 129.0f + (f32)(row * 19) - 25.0f, parent);
+    FUN_001159f0(position.x + 333.0f,
+                 position.y + 129.0f + (f32)(row * 19) - 25.0f, parent);
+    length = (value * 0xe3) / 99;
+    text = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
+    *((u32*)text + 11) = parent;
+    *((f32*)text + 4) = position.x + 108.0f;
+    *((f32*)text + 5) =
+        position.y + 130.0f + (f32)(row * 19) - 25.0f;
+    *((u8*)text + 0x18) = (u8)alpha;
+    *((s16*)text + 0x0e) = (s16)length;
+    FUN_001127d0(text, 1);
+    FUN_00115980(text);
+    if (extra != 0) {
+        text = (void*)FUN_001158b0(0, DAT_00833B98, 0x10);
+        *((u32*)text + 11) = parent;
+        *((f32*)text + 4) = position.x + 108.0f + (f32)length + 2.0f;
+        *((f32*)text + 5) =
+            position.y + 130.0f + (f32)(row * 19) - 25.0f;
+        *((u8*)text + 0x18) = (u8)alpha;
+        *((s16*)text + 0x0e) = (s16)((extra * 0xe3) / 99);
+        FUN_001127d0(text, 1);
+        FUN_00115980(text);
+    }
+}
+
+// FUN_001293B0 NONMATCHING
+void h_campStatusDrawEquipment(CampVec2 position, f32 scale,
+                               void* bonus, void* persona, s32 alpha)
+{
+    (void)scale;
+    h_campStatusDrawEquipmentSlots(0x42c80000, position, persona, bonus,
+                                    alpha);
+}
+
+static void h_campStatusDrawBody(u32 parent, CampVec2 position, void* persona,
+                                 void* bonus, s32 alpha)
+{
+    s32 i;
+    s32 value;
+    s32 x;
+    s32 y;
+    char text[264];
+    void* glyph;
+    CampVec2 labelPos;
+
+    h_campStatusDrawStatLabels(position, 0.0f, persona, alpha);
+    h_campStatusDrawStatValues(position, 0.0f, bonus, persona, alpha);
+    h_campStatusDrawEquipmentSlots(parent, position, persona, bonus, alpha);
+    labelPos.x = position.x + 12.0f;
+    labelPos.y = position.y + 96.0f;
+    FUN_001159f0(labelPos.x + 21.0f, labelPos.y + 182.0f, parent);
+    FUN_001159f0(labelPos.x + 296.0f, labelPos.y + 182.0f, parent);
+    if (*((char*)persona + 4) == 'c') {
+        FUN_00523ac8(text, gp0xffff8980);
+    }
+    else {
+        value = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, value);
+    }
+    FUN_0040eb50(parent, (s32)(labelPos.x + 275.0f),
+                 (s32)(labelPos.y + 184.0f), 0xff - alpha, 4, text, 1);
+    glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
+    *((u32*)glyph + 11) = parent;
+    *((f32*)glyph + 4) = position.x + 108.0f;
+    *((f32*)glyph + 5) = position.y + 130.0f;
+    *((u8*)glyph + 0x18) = (u8)alpha;
+    value = FUN_00173660(persona, 0) & 0xff;
+    *((s16*)glyph + 0x0e) = (s16)((value * 0xe3) / 99);
+    FUN_001127d0(glyph, 1);
+    FUN_00115980(glyph);
+    for (i = 0; i < 5; i++) {
+        x = (s32)position.x + 104;
+        y = (s32)position.y + 129 + i * 19 - 25;
+        FUN_001159f0((f32)x, (f32)y, parent);
+    }
+}
+
+// FUN_00129B30 NONMATCHING
+void h_campStatusDrawTransition(CampVec2 position, f32 scale,
+                                void* persona, s32 frame)
+{
+    CampVec2 drawPos;
+    s32 i;
+    s32 alpha;
+
+    drawPos = position;
+    if (frame >= 0 && frame < 5) {
+        drawPos.x = position.x + 300.0f - (f32)((frame * 300) / 5);
+        alpha = 0xff - (frame * 0xff) / 5;
+    }
+    else {
+        alpha = 0;
+    }
+    for (i = 0; i < 9; i++) {
+        if (i <= frame) {
+            drawPos.x = position.x + 500.0f -
+                        (f32)(((frame - i) * 500) / 10);
+            h_campStatusRenderStatIcon(drawPos, scale, i, alpha);
+        }
+    }
+    if (frame > 2) {
+        drawPos.x = position.x + 100.0f -
+                    (f32)(((frame - 3) * 100) / 5);
+        h_campStatusDrawStatLabels(drawPos, scale, persona, alpha);
+        h_campStatusDrawBody(0x42c80000, drawPos, persona, NULL, alpha);
+    }
+}
+
+// FUN_0012A560 NONMATCHING
+void h_campStatusDrawEntering(CampVec2 position, f32 scale,
+                              void* persona, s32 frame)
+{
+    CampVec2 drawPos;
+    s32 alpha;
+
+    if (frame >= 5) {
+        return;
+    }
+    drawPos = position;
+    drawPos.x += (f32)((frame * 300) / 5);
+    alpha = (frame * 0xff) / 5;
+    h_campStatusDrawBody(0x42c80000, drawPos, persona, NULL, alpha);
+    (void)scale;
+}
+
+// FUN_0012AC60 NONMATCHING
+void h_campStatusDrawSteady(CampVec2 position, f32 scale,
+                            void* persona, s32 alpha)
+{
+    h_campStatusDrawBody(0x42c80000, position, persona, NULL, alpha);
+    (void)scale;
+}
+/*
+ * Persona status draw task.
+ *
+ * The retail callback owns the asynchronous archive used by the status
+ * carousel and keeps the selected hero-persona list in the task work area.
+ * The state values below mirror the observed loading, draw, transition, and
+ * close phases; offsets are kept explicit because the task is shared with
+ * the destroy/create callbacks above.
+ */
+typedef union CampStatusPackedPosition
+{
+    struct
+    {
+        f32 x;
+        f32 y;
+    } coordinates;
+    u64 value;
+} CampStatusPackedPosition;
+
+typedef s32 (*CampStatusSpriteDrawFn)(void* parent, void* resource,
+                                      s32 frame, u32 alpha, f32 x, f32 y,
+                                      f32 scale);
+typedef KwlnTask* (*CampStatusPersonaChildCreateFn)(KwlnTask* parent,
+                                                    u32 priority,
+                                                    u32 personaId, u32 mode,
+                                                    f32 alpha);
+
+static u64 campStatusPackPosition(CampVec2 position)
+{
+    CampStatusPackedPosition packed;
+
+    packed.coordinates.x = position.x;
+    packed.coordinates.y = position.y;
+    return packed.value;
+}
+
+static void campStatusAnimateRecord(void* records, s32 index, s32 alphaMode,
+                                    CampVec2 start, CampVec2 end,
+                                    s32 startFrame, s32 endFrame)
+{
+    func_0018bc10(100.0f, (u8*)records + index * 0x44, 0, 2, alphaMode,
+                  campStatusPackPosition(start), campStatusPackPosition(end),
+                  0, 0, startFrame, endFrame);
+}
+
+static CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
+{
+    CampVec2 position;
+
+    position.x = alternate != 0 ? -11.0f : 119.0f;
+    position.y = alternate != 0 ? 63.0f : 73.0f;
+    position.y += (f32)(row * 29);
+    if (selected != 0) {
+        position.x += 21.0f;
+    }
+    return position;
+}
+
+static void campStatusInitializePersonaList(void* records, s32 selected,
+                                            s32 count)
+{
+    CampVec2 zero;
+    CampVec2 position;
+    CampVec2 start;
+    s32 i;
+
+    zero.x = 0.0f;
+    zero.y = 0.0f;
+    campStatusAnimateRecord(records, 0, 1, zero, zero, 5, 5);
+    for (i = 0; i < count; i++) {
+        position = campStatusListPosition(i, i == selected, 0);
+        start = position;
+        start.x -= 600.0f;
+        campStatusAnimateRecord(records, i + 1, 1, start, position, 0, 10);
+        position = campStatusListPosition(i, i == selected, 1);
+        start = position;
+        start.x -= 600.0f;
+        campStatusAnimateRecord(records, i + 14, 1, start, position, 0, 6);
+    }
+    position.x = 497.0f;
+    position.y = 26.0f;
+    start = position;
+    start.x += 600.0f;
+    campStatusAnimateRecord(records, 27, 1, start, position, 0, 10);
+    position.x = 34.0f;
+    position.y = 415.0f;
+    start = position;
+    start.x += 600.0f;
+    campStatusAnimateRecord(records, 28, 1, start, position, 0, 10);
+}
+
+static void campStatusClosePersonaList(void* records, s32 selected, s32 count)
+{
+    CampVec2 position;
+    s32 i;
+
+    position.x = *((f32*)((u8*)records + 0x38));
+    position.y = *((f32*)((u8*)records + 0x3c));
+    campStatusAnimateRecord(records, 0, 2, position, position, 5, 5);
+    for (i = 0; i < count; i++) {
+        position = campStatusListPosition(i, i == selected, 0);
+        campStatusAnimateRecord(records, i + 1, 2, position, position, 0,
+                                10);
+        position = campStatusListPosition(i, i == selected, 1);
+        campStatusAnimateRecord(records, i + 14, 2, position, position, 0,
+                                6);
+    }
+    position.x = 497.0f;
+    position.y = 26.0f;
+    campStatusAnimateRecord(records, 27, 2, position, position, 0, 10);
+    position.x = 34.0f;
+    position.y = 415.0f;
+    campStatusAnimateRecord(records, 28, 2, position, position, 0, 10);
+}
+
+static void campStatusAnimateSelection(void* records, s32 oldSelected,
+                                       s32 selected)
+{
+    CampVec2 start;
+    CampVec2 end;
+
+    start = campStatusListPosition(oldSelected, 1, 0);
+    end = campStatusListPosition(oldSelected, 0, 0);
+    campStatusAnimateRecord(records, oldSelected + 1, 0, start, end, 0, 2);
+    start = campStatusListPosition(oldSelected, 1, 1);
+    end = campStatusListPosition(oldSelected, 0, 1);
+    campStatusAnimateRecord(records, oldSelected + 14, 0, start, end, 0, 2);
+    start = campStatusListPosition(selected, 0, 0);
+    end = campStatusListPosition(selected, 1, 0);
+    campStatusAnimateRecord(records, selected + 1, 0, start, end, 0, 2);
+    start = campStatusListPosition(selected, 0, 1);
+    end = campStatusListPosition(selected, 1, 1);
+    campStatusAnimateRecord(records, selected + 14, 0, start, end, 0, 2);
+}
+
+static void campStatusInitializeDetail(void* records, s32 alphaMode)
+{
+    CampVec2 position;
+
+    position.x = 0.0f;
+    position.y = 0.0f;
+    campStatusAnimateRecord(records, 0, alphaMode, position, position, 0,
+                            10);
+    position.x = 42.0f;
+    position.y = 12.0f;
+    campStatusAnimateRecord(records, 2, alphaMode, position, position, 0, 8);
+    position.x = 519.0f;
+    position.y = 12.0f;
+    campStatusAnimateRecord(records, 3, alphaMode, position, position, 0, 8);
+    position.x = 170.0f;
+    position.y = 8.0f;
+    campStatusAnimateRecord(records, 4, alphaMode, position, position, 0, 8);
+    position.x = 34.0f;
+    position.y = 415.0f;
+    campStatusAnimateRecord(records, 5, alphaMode, position, position, 0, 8);
+}
+
+static void campStatusAnimateDetailSelection(void* records)
+{
+    CampVec2 zero;
+
+    zero.x = 0.0f;
+    zero.y = 0.0f;
+    campStatusAnimateRecord(records, 0, 1, zero, zero, 0, 10);
+    campStatusAnimateRecord(records, 1, 2, zero, zero, 0, 10);
+}
+
+static void campStatusUpdatePersonaChild(u8* work, s32 selected)
+{
+    KwlnTask* child;
+    u32 personaId;
+
+    child = *(KwlnTask**)(work + 0x54);
+    personaId = *(u16*)(work + 0x1a + selected * 2);
+    FUN_00133b80(child, personaId, (u32)-1);
+    FUN_00133a80(child);
+}
+
+static void campStatusDrawMain(u8* work, s32 selected)
+{
+    u32 result;
+
+    campStatusUpdatePersonaChild(work, selected);
+    result = FUN_001344B0(*(void**)(work + 0x64), work + 0x58,
+                          work + 0x32, (s16)selected);
+    *(u32*)(work + 0x4c) = result;
+}
+static void campStatusDrawMainDiscardResult(u8* work, s32 selected)
+{
+    campStatusUpdatePersonaChild(work, selected);
+    FUN_001344B0(*(void**)(work + 0x64), work + 0x58, work + 0x32,
+                 (s16)selected);
+}
+
+static void campStatusDrawDetail(u8* work, s32 selected, s32 previous)
+{
+    u32 result;
+
+    campStatusUpdatePersonaChild(work, selected);
+    FUN_001344B0(*(void**)(work + 0x64), work + 0x58, work + 0x32,
+                 (s16)selected);
+    result = FUN_00134900(*(void**)(work + 0x68), work + 0x58,
+                          work + 0x32, (s16)selected, (s16)previous);
+    *(u32*)(work + 0x4c) = result;
+}
+
+static void campStatusDrawDetailDiscardResult(u8* work, s32 selected,
+                                              s32 previous)
+{
+    campStatusUpdatePersonaChild(work, selected);
+    FUN_001344B0(*(void**)(work + 0x64), work + 0x58, work + 0x32,
+                 (s16)selected);
+    FUN_00134900(*(void**)(work + 0x68), work + 0x58, work + 0x32,
+                 (s16)selected, (s16)previous);
+}
+
+static void campStatusRebuildPersonaList(u8* work)
+{
+    DatPersonaWork* persona;
+    s32 count;
+    s32 i;
+
+    count = 0;
+    for (i = 0; i < 12; i++) {
+        *(u16*)(work + 0x1a + count * 2) = 0;
+        if (datPersonaHeroPersonaValid((s16)i) != 0) {
+            persona = datPersonaGetHeroPersona((s16)i);
+            printf(D_005DB158, persona->id);
+            *(u16*)(work + 0x1a + count * 2) = persona->id;
+            *(u16*)(work + 0x32 + count * 2) = (u16)i;
+            count++;
+        }
+    }
+    *(s16*)(work + 0x4a) = (s16)count;
+    if (*(s32*)(work + 0x4) >= count) {
+        *(s32*)(work + 0x4) = count - 1;
+    }
+}
+
+static void campStatusResetPersonaAnimations(void* records)
+{
+    u8* record;
+    s32 i;
+
+    for (i = 0; i < 12; i++) {
+        record = (u8*)records + i * 0x44;
+        *(u32*)(record + 0x48) = 0;
+        *(u32*)(record + 0x3bc) = 0;
+    }
+}
+
+// FUN_00133180 NONMATCHING
+void FUN_00133180(CampVec2 position, f32 alpha, void* currentStats,
+                  void* persona, s32 fade)
+{
+    CampVec2 drawPosition;
+    CampStatusSpriteDrawFn drawSprite;
+    s32 drawAlpha;
+    s32 arcanaFrame;
+
+    drawAlpha = 0xff - fade;
+    FUN_0012b860(position, alpha, currentStats, persona, (u8)drawAlpha);
+    drawPosition = position;
+    drawPosition.x += 12.0f;
+    drawPosition.y += 96.0f;
+    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
+    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
+               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
+    arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
+    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
+               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
+    FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
+    FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
+}
+
+// FUN_001332F0 NONMATCHING
+void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
+                  void* persona, s32 fade)
+{
+    CampVec2 drawPosition;
+    CampStatusSpriteDrawFn drawSprite;
+    s32 drawAlpha;
+    s32 arcanaFrame;
+
+    drawAlpha = 0xff - fade;
+    FUN_0012bce0(position, alpha, unused, persona, (u8)drawAlpha);
+    drawPosition = position;
+    drawPosition.x += 12.0f;
+    drawPosition.y += 96.0f;
+    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
+    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
+               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
+    arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
+    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
+               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
+    FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
+    FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
+}
+
+// FUN_00133460 NONMATCHING
+void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
+                  void* persona, s32 fade)
+{
+    CampVec2 drawPosition;
+    CampStatusSpriteDrawFn drawSprite;
+    s32 drawAlpha;
+    s32 arcanaFrame;
+
+    drawAlpha = 0xff - fade;
+    FUN_0012bfb0(position, alpha, currentStats, persona, (u8)drawAlpha);
+    drawPosition = position;
+    drawPosition.x += 12.0f;
+    drawPosition.y += 96.0f;
+    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
+    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
+               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
+    arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
+    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
+               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
+    FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
+    FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
+}
+
+// FUN_001311D0 NONMATCHING
+void* FUN_001311d0(KwlnTask* task)
+{
+    u8* work;
+    void* primaryRecords;
+    void* detailRecords;
+    void** resources;
+    HCdvd* cdvd;
+    void* archiveFile;
+    DatPersonaWork* persona;
+    CampVec2 position;
+    u32 fileSize;
+    u32 state;
+    u32 input;
+    s32 result;
+    s32 selected;
+    s32 previous;
+    s32 count;
+    s32 i;
+
+    work = (u8*)task->workData;
+    state = *(u32*)work;
+    primaryRecords = *(void**)(work + 0x64);
+    detailRecords = *(void**)(work + 0x68);
+    resources = (void**)(work + 0x58);
+    selected = *(s32*)(work + 0x4);
+    previous = *(s32*)(work + 0xc);
+    count = *(s16*)(work + 0x4a);
+    position = *(CampVec2*)(work + 0x10);
+    switch (state) {
+    case 0:
+        if (h_campRequestRootMenuTransition(DAT_007cdf50, 4) == 0) {
+            return KWLNTASK_CONTINUE;
+        }
+        primaryRecords = func_0018b6d0(100);
+        detailRecords = func_0018b6d0(10);
+        *(void**)(work + 0x64) = primaryRecords;
+        *(void**)(work + 0x68) = detailRecords;
+        cdvd = H_Cdvd_Request(D_005DB140, HCDVD_FILEARCHIVE);
+        *(HCdvd**)(work + 0x50) = cdvd;
+        count = 0;
+        for (i = 0; i < 12; i++) {
+            *(u16*)(work + 0x1a + count * 2) = 0;
+            if (datPersonaHeroPersonaValid((s16)i) != 0) {
+                persona = datPersonaGetHeroPersona((s16)i);
+                printf(D_005DB158, persona->id);
+                *(u16*)(work + 0x1a + count * 2) = persona->id;
+                *(u16*)(work + 0x32 + count * 2) = (u16)i;
+                count++;
+            }
+        }
+        *(s16*)(work + 0x4a) = (s16)count;
+        *(u32*)work = 1;
+        break;
+    case 1:
+        cdvd = *(HCdvd**)(work + 0x50);
+        if (H_Cdvd_IsFileLoaded(cdvd) == 0) {
+            return KWLNTASK_CONTINUE;
+        }
+        for (i = 0; i < 3; i++) {
+            archiveFile = H_Cdvd_ArchiveGetFile(cdvd, i, &fileSize);
+            resources[i] = func_00112420(archiveFile);
+        }
+        *(KwlnTask**)(work + 0x54) =
+            ((CampStatusPersonaChildCreateFn)FUN_001339a0)(
+                task, 0x18bf, *(u16*)(work + 0x1a), (u32)-1, 100.0f);
+        *(u32*)work = 2;
+        break;
+    case 2:
+        if (H_Maestro_00111f30((s16*)resources[0]) == 0 ||
+            H_Maestro_00111f30((s16*)resources[1]) == 0 ||
+            H_Maestro_00111f30((s16*)resources[2]) == 0) {
+            return KWLNTASK_CONTINUE;
+        }
+        *(u32*)work = 3;
+        break;
+    case 3:
+        campStatusInitializePersonaList(primaryRecords, selected, count);
+        *(u32*)work = 4;
+        break;
+    case 4:
+        if (*(u32*)(work + 0x4c) != 0) {
+            input = (u32)DAT_007e094e;
+            if ((input & 0x40) != 0) {
+                FUN_0010a4e0(0, 0, 0, 1);
+                *(u32*)work = 7;
+            } else if ((input & 0x80) != 0) {
+                FUN_0010a4e0(0, 0, 0, 1);
+                *(u32*)work = 11;
+            } else if ((input & 0x20) != 0) {
+                FUN_0010a4e0(0, 0, 0, 2);
+                *(u32*)work = 5;
+            } else {
+                s32 oldSelected;
+                s32 changed;
+                u32 held;
+
+                oldSelected = selected;
+                changed = 0;
+                held = ((u32)DAT_007e0952 & 0x1000) != 0 ||
+                        ((u32)DAT_007e095a & 0x1000) != 0;
+                if (held != 0) {
+                    if (selected != 0) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        selected--;
+                        changed = 1;
+                    } else if (((input & 0x1000) != 0) ||
+                               (((u32)DAT_007e0958 & 0x1000) != 0 &&
+                                count != 1)) {
+                        if (count != 1) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                            selected = count - 1;
+                            changed = 1;
+                        }
+                    }
+                } else {
+                    held = ((u32)DAT_007e0952 & 0x4000) != 0 ||
+                           ((u32)DAT_007e095a & 0x4000) != 0;
+                    if (held != 0) {
+                        if (selected != count - 1) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                            selected++;
+                            changed = 1;
+                        } else if (((input & 0x4000) != 0) ||
+                                   ((u32)DAT_007e0958 & 0x4000) != 0) {
+                            if (count != 1) {
+                                FUN_0010a4e0(0, 0, 0, 0);
+                                selected = 0;
+                                changed = 1;
+                            }
+                        }
+                    }
+                }
+                if (changed != 0) {
+                    *(s32*)(work + 0x4) = selected;
+                    campStatusAnimateSelection(primaryRecords, oldSelected,
+                                               selected);
+                }
+            }
+        }
+        campStatusDrawMain(work, selected);
+        break;
+    case 5:
+        campStatusClosePersonaList(primaryRecords, selected, count);
+        FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                     (s16)selected);
+        *(u32*)work = 6;
+        break;
+    case 6:
+        result = FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                              (s16)selected);
+        if (result != 0) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    case 7:
+        if (h_campRequestRootMenuTransition(DAT_007cdf50, 5) != 0) {
+            campStatusInitializePersonaList(primaryRecords, selected, count);
+            campStatusInitializeDetail(detailRecords, 1);
+            *(u32*)(work + 0x8) = 0;
+            *(u32*)(work + 0x4c) = 0;
+            *(u32*)work = 8;
+        }
+        campStatusDrawMainDiscardResult(work, selected);
+        break;
+    case 8:
+        if (*(u32*)(work + 0x4c) != 0) {
+            *(s32*)(work + 0xc) = selected;
+            previous = selected;
+        input = (u32)DAT_007e094e;
+        if ((input & 0x40) != 0) {
+            FUN_0010a4e0(0, 0, 0, 1);
+            *(u32*)work = 14;
+        } else if ((input & 0x20) != 0) {
+            FUN_0010a4e0(0, 0, 0, 2);
+            *(u32*)work = 9;
+        } else if ((input & 0x4) != 0) {
+            s32 oldSelection;
+
+            oldSelection = selected;
+            if (selected != 0) {
+                FUN_0010a4e0(0, 0, 0, 0);
+                selected--;
+            } else if (count != 1) {
+                FUN_0010a4e0(0, 0, 0, 0);
+                selected = count - 1;
+            }
+            if (selected != oldSelection) {
+                *(s32*)(work + 0x4) = selected;
+                if (selected != *(s32*)(work + 0xc)) {
+                    campStatusAnimateDetailSelection(detailRecords);
+                }
+            }
+        } else if ((input & 0x8) != 0) {
+            s32 oldSelection;
+
+            oldSelection = selected;
+            if (selected != count - 1) {
+                FUN_0010a4e0(0, 0, 0, 0);
+                selected++;
+            } else if (count != 1) {
+                FUN_0010a4e0(0, 0, 0, 0);
+                selected = 0;
+            }
+            if (selected != oldSelection) {
+                *(s32*)(work + 0x4) = selected;
+                if (selected != *(s32*)(work + 0xc)) {
+                    campStatusAnimateDetailSelection(detailRecords);
+                }
+            }
+        }
+        }
+        campStatusDrawDetail(work, selected, previous);
+        break;
+    case 9:
+        if (h_campRequestRootMenuTransition(DAT_007cdf50, 4) != 0) {
+            campStatusInitializePersonaList(primaryRecords, selected, count);
+            campStatusInitializeDetail(detailRecords, 2);
+            *(u32*)(work + 0x8) = 0;
+            *(u32*)(work + 0x4c) = 0;
+            *(u32*)work = 10;
+        }
+        campStatusDrawDetailDiscardResult(work, selected, previous);
+        break;
+    case 10:
+        result = FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                              (s16)selected);
+        if (result != 0) {
+            *(u32*)work = 4;
+        }
+        campStatusDrawDetailDiscardResult(work, selected, previous);
+        break;
+    case 11:
+        campStatusDrawMainDiscardResult(work, selected);
+        if (*(u16*)(work + 0x32 + selected * 2) ==
+            (u16)datGetEquippedPersona(1)) {
+            FUN_003c7430(2);
+            *(u32*)work = 13;
+        } else {
+            FUN_003c7430(1);
+            FUN_003c74e0(0);
+            FUN_003c7560(0);
+            *(u32*)work = 12;
+        }
+        break;
+    case 12:
+        campStatusDrawMainDiscardResult(work, selected);
+        if (FUN_003c7850() != 0) {
+            break;
+        }
+        result = FUN_003c7610();
+        if (result == 0) {
+            FUN_0010a4e0(0, 0, 2, 4);
+            FUN_00175200(*(u16*)(work + 0x32 + selected * 2));
+            h_campReplacePersonaTextureControlResource(datGetPersonaId(1));
+        }
+        FUN_003c7700();
+        *(u32*)work = 8;
+        break;
+    case 13:
+        campStatusDrawMainDiscardResult(work, selected);
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            *(u32*)work = 4;
+        }
+        break;
+    case 14:
+        campStatusDrawDetailDiscardResult(work, selected, previous);
+        FUN_003c7430(3);
+        FUN_003c74e0(0);
+        FUN_003c7560(0);
+        *(u32*)work = 15;
+        break;
+    case 15:
+        campStatusDrawDetailDiscardResult(work, selected, previous);
+        if (FUN_003c7850() != 0) {
+            break;
+        }
+        result = FUN_003c7610();
+        if (result == 0) {
+            FUN_00174c10(*(u16*)(work + 0x32 + selected * 2));
+            campStatusRebuildPersonaList(work);
+            primaryRecords = *(void**)(work + 0x64);
+            campStatusResetPersonaAnimations(primaryRecords);
+            selected = *(s32*)(work + 0x4);
+            count = *(s16*)(work + 0x4a);
+            campStatusInitializePersonaList(primaryRecords, selected, count);
+        }
+        FUN_003c7700();
+        *(u32*)work = 4;
+        break;
+    default:
+        return KWLNTASK_CONTINUE;
+    }
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00133780 NONMATCHING
+void* func_00133780(KwlnTask* task)
+{
+    u8* work;
+    u32 wasReady;
+    u32 state;
+    HCdvd* cdvd;
+
+    work = (u8*)task->workData;
+    state = *(u32*)work;
+    switch (state) {
+    case 0:
+        if (*(u32*)(work + 4) == 0) {
+            *(u32*)work = 3;
+            break;
+        }
+        sprintf((char*)(work + 0x2c), D_005DACB0,
+                *(u32*)(work + 4));
+        cdvd = H_Cdvd_Request((char*)(work + 0x2c), HCDVD_FILENORMAL);
+        *(HCdvd**)(work + 0x24) = cdvd;
+        *(u32*)work = 1;
+        *(f32*)(work + 0x18) = 700.0f;
+        *(f32*)(work + 0x1c) = -117.0f;
+        *(f32*)(work + 0x14) = 10.0f;
+        break;
+
+    case 1:
+        cdvd = *(HCdvd**)(work + 0x24);
+        if (cdvd != NULL && H_Cdvd_IsFileLoaded(cdvd) != 0) {
+            *(void**)(work + 0x20) = func_0010c1a0(
+                NULL, (char*)(work + 0x2c), 0, 0, 0, 0, 0, 0, 0, 0,
+                D_005DB170, 0x3c0);
+            *(u32*)work = 2;
+        }
+        break;
+
+    case 2:
+        if (*(void**)(work + 0x20) != NULL) {
+            *(void**)(work + 0x28) =
+                func_0010c3a0(*(void**)(work + 0x20),
+                              &wasReady, NULL);
+            if (wasReady != 0) {
+                *(void**)(work + 0x20) = NULL;
+                cdvd = *(HCdvd**)(work + 0x24);
+                if (cdvd != NULL) {
+                    H_Cdvd_Destroy(cdvd);
+                    *(HCdvd**)(work + 0x24) = NULL;
+                }
+                *(u32*)work = 3;
+            }
+        }
+        break;
+
+    case 3:
+    default:
+        break;
+    }
+    return KWLNTASK_CONTINUE;
 }

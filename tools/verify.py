@@ -402,10 +402,9 @@ def main():
     # Function boundaries: every Ghidra entry plus every marker address in the
     # whole repo (Ghidra misses many small functions; markers fill the gaps).
     bounds = {int(a, 16) for a in sizes["windows"]}
-    last = max(bounds)
-    last_window = sizes["windows"][f"{last:08x}"]
-    if last_window:
-        bounds.add(last + last_window)
+    for address, window in sizes["windows"].items():
+        if window:
+            bounds.add(int(address, 16) + window)
     for cpath in sorted(p for p in (REPO / "src").rglob("*.c") if not is_generated(p)):
         for mk in scan_markers(cpath):
             bounds.add(mk["addr"])

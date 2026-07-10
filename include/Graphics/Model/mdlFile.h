@@ -4,6 +4,6 @@
 #include "Utils.h"
 
 u8 mdlFileIsTypePac(u16 type);
-void mdlFile0031d530(u16 type, u16 id, char* dst);
+u32 mdlFileResolvePackPath(u16 type, u16 id, char* dst);
 
 #endif

@@ -4,19 +4,43 @@
 #include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "h_maestro.h"
+#include "libm.h"
 
-static s16 sFadeType;             // 007cdf08
-static s16 sFadeCounter;          // 007cdf04
-static s16 sFadeDuration;         // 007cdf00. In frames
-static s16 sFadeState;            // 007cdefc
-static u8 sFadeRed;               // 007cdef8
-u8 sbssPad1[3];
-static u8 sFadeBlue;              // 007cdef4
-u8 sbssPad1[3];
-static u8 sFadeGreen;             // 007cdef0
-static KwlnTask* sMaestroInTask;  // 007cdedc
-static KwlnTask* sMaestroOutTask; // 007cded8
-static u32 sFadeActive;           // 007cded4
+typedef struct FadeDayEpl FadeDayEpl;
+typedef struct FadeDayTmx FadeDayTmx;
+typedef struct HSfdAsyncEntry HSfdAsyncEntry;
+
+extern const f32 DAT_007caf38;
+
+extern FadeDayEpl* func_0034fcd0(const void* eplBlob);
+extern void func_0034fcf0(FadeDayEpl* epl);
+extern void func_0034fd30(FadeDayEpl* epl);
+extern void func_0034fd70(FadeDayEpl* epl, s32 layer);
+extern void func_0034fdf0(FadeDayEpl* epl, const RwV3d* position);
+extern void func_0034ff70(FadeDayEpl* epl, f32 scalar);
+extern void func_0034ff90(FadeDayEpl* epl, const RwRGBA* color);
+extern void* func_0010c1a0(void* param_1, const char* path, ...);
+extern void* func_0010c3a0(void* stream, u32* finished, u32 param_3);
+extern void func_001140d0(u32 rgba, s32 width, s32 height, const FadeDayTmx* texture,
+                           f32 depthOffset, f32 x, f32 y);
+extern void func_004d0f00(void* resource);
+
+static s16 sFadeType;                  // 007cdf08
+static s16 sFadeCounter;               // 007cdf04
+static s16 sFadeDuration;              // 007cdf00. In frames
+static s16 sFadeState;                 // 007cdefc
+static u8 sFadeRed;                    // 007cdef8
+static u8 sbssPadRed[3];
+static u8 sFadeGreen;                  // 007cdef4
+static u8 sbssPadGreen[3];
+static u8 sFadeBlue;                   // 007cdef0
+static s16 sFadeDayEplAlphaFrame;      // 007cdeec
+static HSfdAsyncEntry* sFadeDayTmxRequest; // 007cdee8
+static FadeDayTmx* sFadeDayTmx;        // 007cdee4
+static FadeDayEpl* sFadeDayEpl;        // 007cdee0
+static KwlnTask* sMaestroInTask;       // 007cdedc
+static KwlnTask* sMaestroOutTask;      // 007cded8
+static u32 sFadeActive;                // 007cded4
 
 static HCdvd* cdvds[8]; // 007e39d0
 
@@ -91,6 +115,10 @@ static void H_Fade_Anim()
     RwIm2DVertex vertices[4];
     f32 recipZ;
     f32 z;
+    f32 red;
+    f32 green;
+    f32 blue;
+    f32 alpha;
     s32 i;
 
     switch (sFadeState)
@@ -122,7 +150,7 @@ static void H_Fade_Anim()
                 H_Maestro_RequestDraw(sMaestroOutTask);
                 sFadeState = HFADE_STATE_OUT;
             }
-            return;
+            break;
 
         case HFADE_STATE_OUT:
             if (H_Maestro_00111cb0(sMaestroOutTask))
@@ -135,7 +163,7 @@ static void H_Fade_Anim()
                     sMaestroOutTask = NULL;
                 }
             }
-            return;
+            break;
 
         case HFADE_STATE_HOLD: break;
         
@@ -165,7 +193,7 @@ static void H_Fade_Anim()
                 sFadeActive = false;
                 sMaestroInTask = NULL;
             }
-            return;
+            break;
 
         case HFADE_STATE_MAESTROIN:
             if (H_Maestro_FinishedInit(sMaestroInTask))
@@ -177,26 +205,29 @@ static void H_Fade_Anim()
                     kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
                     sMaestroOutTask = NULL;
                 }
+
+                sFadeState = HFADE_STATE_IN;
             }
-            sFadeState = HFADE_STATE_IN;
             break;
 
         default: return;
     }
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    red = 15.0f;
+    green = 31.0f;
+    blue = 40.0f;
+    alpha = 255.0f;
     i = 0;
     z = RwIm2DGetNearScreenZ() - 100.0f;
-    for(; i < 4; i++)
+    for (; i < 4; i++)
     {
         vertices[i].u.els.scrVertex.z = z;
         vertices[i].u.els.recipZ = recipZ;
-
-        // TODO: load these values before the loop
-        vertices[i].u.els.color.r = 15.0f;
-        vertices[i].u.els.color.g = 31.0f;
-        vertices[i].u.els.color.b = 40.0f;
-        vertices[i].u.els.color.a = 255.0f;
+        vertices[i].u.els.color.r = red;
+        vertices[i].u.els.color.g = green;
+        vertices[i].u.els.color.b = blue;
+        vertices[i].u.els.color.a = alpha;
     }
 
     vertices[0].u.els.scrVertex.x = 0.0f;
@@ -215,31 +246,130 @@ static void H_Fade_Anim()
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// FUN_001075b0
+// FUN_001075b0 NONMATCHING
 static void H_Fade_Transition()
 {
-    // TODO
+    RwRenderStateSetFunc* setRenderState;
+    RwIm2DVertex vertices[4];
+    s16 alpha;
+    f32 recipZ;
+    f32 z;
+    s16 i;
+
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+
+    switch (sFadeState)
+    {
+        case HFADE_STATE_INIT_OUT:
+            sFadeState = HFADE_STATE_OUT;
+            sFadeCounter = 0;
+            // fallthrough
+
+        case HFADE_STATE_OUT:
+            sFadeCounter++;
+            if (sFadeCounter == sFadeDuration)
+            {
+                sFadeState = HFADE_STATE_HOLD;
+            }
+            break;
+
+        case HFADE_STATE_HOLD:
+            sFadeCounter = sFadeDuration;
+
+            if (sMaestroOutTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                sMaestroOutTask = NULL;
+            }
+
+            if (sMaestroInTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroInTask);
+                sMaestroInTask = NULL;
+            }
+            break;
+
+        case HFADE_STATE_INIT_IN:
+            if (sMaestroOutTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                sMaestroOutTask = NULL;
+            }
+
+            if (sMaestroInTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroInTask);
+                sMaestroInTask = NULL;
+            }
+
+            sFadeCounter = sFadeDuration;
+            sFadeState = HFADE_STATE_IN;
+            break;
+
+        case HFADE_STATE_IN:
+            sFadeCounter--;
+            if (sFadeCounter == 0)
+            {
+                sFadeActive = false;
+            }
+            break;
+    }
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    alpha = (sFadeCounter * 255) / sFadeDuration;
+    i = 0;
+    z = RwIm2DGetNearScreenZ() - 100.0f;
+    for (; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.z = z;
+        vertices[i].u.els.recipZ = recipZ;
+        vertices[i].u.els.color.r = 15.0f;
+        vertices[i].u.els.color.g = 31.0f;
+        vertices[i].u.els.color.b = 40.0f;
+        vertices[i].u.els.color.a = (f32)alpha;
+    }
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+    vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[1].u.els.scrVertex.y = 0.0f;
+    vertices[2].u.els.scrVertex.x = 0.0f;
+    vertices[2].u.els.scrVertex.y = SCREEN_HEIGHT;
+    vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
+
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_001078a0 NONMATCHING
 static void H_Fade_White()
 {
-    // TODO: fix stack frame size (the problem is caused by RwRenderStateSet)
-
+    RwRenderStateSetFunc* setRenderState;
     RwIm2DVertex vertices[4];
-    f32 alpha;
+    s16 alpha;
     f32 recipZ;
     s16 i;
     f32 z;
     f32 col;
 
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDINVSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERLINEAR);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
 
     switch (sFadeState)
     {
@@ -271,19 +401,18 @@ static void H_Fade_White()
     }
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-    alpha = (f32)((sFadeCounter * 255) / sFadeDuration);
+    alpha = (sFadeCounter * 255) / sFadeDuration;
     i = 0;
     z = RwIm2DGetNearScreenZ() - 100.0f;
-    col = 255.0f; // TODO: lui v1, 0x437f here and not in the loop body
-    for(; i < 4; i++)
+    col = 255.0f;
+    for (; i < 4; i++)
     {
         vertices[i].u.els.scrVertex.z = z;
         vertices[i].u.els.recipZ = recipZ;
-
         vertices[i].u.els.color.r = col;
         vertices[i].u.els.color.g = col;
         vertices[i].u.els.color.b = col;
-        vertices[i].u.els.color.a = alpha;
+        vertices[i].u.els.color.a = (f32)alpha;
     }
 
     vertices[0].u.els.scrVertex.x = 0.0f;
@@ -298,20 +427,342 @@ static void H_Fade_White()
     vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
     vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
 
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
-// FUN_00107b20
+// FUN_00107b20 NONMATCHING
 static void H_Fade_Day()
 {
-    // TODO
+    RwRenderStateSetFunc* setRenderState;
+    RwIm2DVertex vertices[4];
+    RwV3d origin;
+    RwRGBA eplColor;
+    u32 fileSizeOut;
+    u32 fileSizeIn;
+    u32 resourceReady;
+    u32 drawDayTexture;
+    f32 recipZ;
+    f32 z;
+    s16 alpha;
+    s16 i;
+
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+
+    drawDayTexture = false;
+    switch (sFadeState)
+    {
+        case HFADE_STATE_INIT_OUT:
+            sFadeState = HFADE_STATE_OUT;
+            sFadeCounter = 0;
+            // fallthrough
+
+        case HFADE_STATE_OUT:
+            sFadeCounter++;
+            if (sFadeCounter == sFadeDuration)
+            {
+                sFadeState = HFADE_STATE_HOLD;
+            }
+            break;
+
+        case HFADE_STATE_HOLD:
+            if (sFadeDayEpl == NULL)
+            {
+                sFadeDayEpl = func_0034fcd0(H_Cdvd_CacheFindFile("camp/camp/I_25.EPL", &fileSizeOut));
+                sFadeDayEplAlphaFrame = 0;
+            }
+
+            origin.z = 0.0f;
+            origin.y = 0.0f;
+            origin.x = 0.0f;
+            func_0034fdf0(sFadeDayEpl, &origin);
+            func_0034ff70(sFadeDayEpl, 1.0f);
+            func_0034fd30(sFadeDayEpl);
+
+            eplColor.r = 255;
+            eplColor.g = 255;
+            eplColor.b = 255;
+            if (sFadeDayEplAlphaFrame >= 100)
+            {
+                eplColor.a = 255;
+            }
+            else
+            {
+                sFadeDayEplAlphaFrame++;
+                eplColor.a = (u8)((sFadeDayEplAlphaFrame * 255) / 100);
+            }
+            func_0034ff90(sFadeDayEpl, &eplColor);
+            func_0034fd70(sFadeDayEpl, 7);
+            sFadeCounter = sFadeDuration;
+            break;
+
+        case HFADE_STATE_INIT_IN:
+            if (sMaestroOutTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                sMaestroOutTask = NULL;
+            }
+
+            if (sMaestroInTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroInTask);
+                sMaestroInTask = NULL;
+            }
+
+            sFadeCounter = sFadeDuration;
+            if (sFadeDayEpl == NULL)
+            {
+                sFadeDayEpl = func_0034fcd0(H_Cdvd_CacheFindFile("camp/camp/I_25.EPL", &fileSizeIn));
+                sFadeDayEplAlphaFrame = 0;
+            }
+
+            origin.z = 0.0f;
+            origin.y = 0.0f;
+            origin.x = 0.0f;
+            func_0034fdf0(sFadeDayEpl, &origin);
+            func_0034ff70(sFadeDayEpl, 1.0f);
+            func_0034fd30(sFadeDayEpl);
+            func_0034fd70(sFadeDayEpl, 7);
+
+            if (sFadeDayTmx != NULL)
+            {
+                func_004d0f00(sFadeDayTmx);
+                sFadeDayTmx = NULL;
+            }
+
+            sFadeDayTmxRequest = func_0010c1a0(NULL, "camp/camp/i_time25_01.tmx",
+                                                 NULL, NULL, NULL, NULL, NULL, NULL,
+                                                 NULL, NULL, "h_fade.c", 0x223);
+            sFadeState = HFADE_STATE_MAESTROIN;
+            break;
+
+        case HFADE_STATE_IN:
+            sFadeCounter--;
+            if (sFadeCounter == 0)
+            {
+                func_0034fcf0(sFadeDayEpl);
+                sFadeDayEpl = NULL;
+                sFadeActive = false;
+
+                if (sFadeDayTmx != NULL)
+                {
+                    func_004d0f00(sFadeDayTmx);
+                }
+                sFadeDayTmx = NULL;
+            }
+            else
+            {
+                origin.z = 0.0f;
+                origin.y = 0.0f;
+                origin.x = 0.0f;
+                func_0034fdf0(sFadeDayEpl, &origin);
+                func_0034ff70(sFadeDayEpl, 1.0f);
+                func_0034fd30(sFadeDayEpl);
+                drawDayTexture = true;
+            }
+            break;
+
+        case HFADE_STATE_MAESTROIN:
+            origin.z = 0.0f;
+            origin.y = 0.0f;
+            origin.x = 0.0f;
+            func_0034fdf0(sFadeDayEpl, &origin);
+            func_0034ff70(sFadeDayEpl, 1.0f);
+            func_0034fd30(sFadeDayEpl);
+            func_0034fd70(sFadeDayEpl, 7);
+
+            sFadeDayTmx = func_0010c3a0(sFadeDayTmxRequest, &resourceReady, 0);
+            if (resourceReady == 0)
+            {
+                sFadeDayTmx = NULL;
+            }
+            else
+            {
+                sFadeDayTmxRequest = NULL;
+                sFadeState = HFADE_STATE_IN;
+            }
+            break;
+    }
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    alpha = (sFadeCounter * 255) / sFadeDuration;
+    i = 0;
+    z = RwIm2DGetNearScreenZ() - 100.0f;
+    for (; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.z = z;
+        vertices[i].u.els.recipZ = recipZ;
+        vertices[i].u.els.color.r = 15.0f;
+        vertices[i].u.els.color.g = 31.0f;
+        vertices[i].u.els.color.b = 40.0f;
+        vertices[i].u.els.color.a = (f32)alpha;
+    }
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+    vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[1].u.els.scrVertex.y = 0.0f;
+    vertices[2].u.els.scrVertex.x = 0.0f;
+    vertices[2].u.els.scrVertex.y = SCREEN_HEIGHT;
+    vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
+
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
+    if (!drawDayTexture)
+    {
+        RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+        return;
+    }
+
+    {
+        u32 packedColor;
+        s32 travel;
+        s32 halfTravel;
+
+        if (sFadeState == HFADE_STATE_IN)
+        {
+            s32 degrees;
+            s32 alphaByte;
+
+            if (sFadeCounter != 0)
+            {
+                degrees = (sFadeCounter * 90) / sFadeDuration;
+            }
+            else
+            {
+                degrees = 90;
+            }
+
+            alphaByte = (s32)(sinf((DAT_007caf38 * (f32)degrees) / 180.0f) * 255.0f);
+            packedColor = (u32)alphaByte | 0x00242000;
+        }
+        else
+        {
+            packedColor = 0x002420FF;
+        }
+
+        travel = ((sFadeDuration - sFadeCounter) * 5000) / sFadeDuration;
+        halfTravel = travel / 2;
+        func_001140d0(packedColor, travel + 640, travel + 640, sFadeDayTmx,
+                       99.0f, (f32)-halfTravel, (f32)(-96 - halfTravel));
+    }
 }
 
-// FUN_001081e0
+// FUN_001081e0 NONMATCHING
 static void H_Fade_Custom()
 {
-    // TODO
+    RwRenderStateSetFunc* setRenderState;
+    RwIm2DVertex vertices[4];
+    f32 alpha;
+    f32 recipZ;
+    f32 z;
+    f32 red;
+    f32 green;
+    f32 blue;
+    s16 i;
+
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDINVSRCALPHA);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+
+    switch (sFadeState)
+    {
+        case HFADE_STATE_INIT_OUT:
+            sFadeState = HFADE_STATE_OUT;
+            sFadeCounter = 0;
+            // fallthrough
+
+        case HFADE_STATE_OUT:
+            sFadeCounter++;
+            if (sFadeCounter == sFadeDuration)
+            {
+                sFadeState = HFADE_STATE_HOLD;
+            }
+            break;
+
+        case HFADE_STATE_HOLD:
+            sFadeCounter = sFadeDuration;
+
+            if (sMaestroOutTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                sMaestroOutTask = NULL;
+            }
+
+            if (sMaestroInTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroInTask);
+                sMaestroInTask = NULL;
+            }
+            break;
+
+        case HFADE_STATE_INIT_IN:
+            if (sMaestroOutTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroOutTask);
+                sMaestroOutTask = NULL;
+            }
+
+            if (sMaestroInTask != NULL)
+            {
+                kwlnTaskDestroyWithHierarchy(sMaestroInTask);
+                sMaestroInTask = NULL;
+            }
+
+            sFadeCounter = sFadeDuration;
+            sFadeState = HFADE_STATE_IN;
+            break;
+
+        case HFADE_STATE_IN:
+            sFadeCounter--;
+            if (sFadeCounter == 0)
+            {
+                sFadeActive = false;
+            }
+            break;
+    }
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    alpha = (f32)((sFadeCounter * 255) / sFadeDuration);
+    red = (f32)sFadeRed;
+    green = (f32)sFadeGreen;
+    blue = (f32)sFadeBlue;
+    i = 0;
+    z = RwIm2DGetNearScreenZ() - 100.0f;
+    for (; i < 4; i++)
+    {
+        vertices[i].u.els.scrVertex.z = z;
+        vertices[i].u.els.recipZ = recipZ;
+        vertices[i].u.els.color.r = red;
+        vertices[i].u.els.color.g = green;
+        vertices[i].u.els.color.b = blue;
+        vertices[i].u.els.color.a = alpha;
+    }
+
+    vertices[0].u.els.scrVertex.x = 0.0f;
+    vertices[0].u.els.scrVertex.y = 0.0f;
+    vertices[1].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[1].u.els.scrVertex.y = 0.0f;
+    vertices[2].u.els.scrVertex.x = 0.0f;
+    vertices[2].u.els.scrVertex.y = SCREEN_HEIGHT;
+    vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
+    vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
+
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
+    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_00108570

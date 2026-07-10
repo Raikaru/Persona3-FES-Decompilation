@@ -149,14 +149,16 @@ typedef struct DatPhysical
 // 20 bytes
 typedef struct DatEquipment
 {
-    u16 id;
-    u32 type;
-    u8 cUnk1;
-    u8 effect;
-    u16 firstStat;
-    u16 secondStat;
-    u16 sUnk2;
-    u8 unkData[0x04];
+    u16 id;          // 0x00
+    u16 unk_02;      // 0x02
+    u32 type;        // 0x04
+    u8 unk_08;       // 0x08
+    u8 effect;       // 0x09
+    u16 firstStat;   // 0x0a
+    u16 secondStat;  // 0x0c
+    u16 unk_0e;      // 0x0e
+    u16 unk_10;      // 0x10
+    u8 unk_12[2];    // 0x12
 } DatEquipment;
 
 // 16 bytes
@@ -173,14 +175,17 @@ typedef struct DatHeroPersona
     DatPersonaWork personas[12];
 } DatHeroPersona;
 
+// 0x52c bytes. datInitSocialLink clears 0x508 bytes beginning at +0x14.
 typedef struct DatHeroStatus
 {
-    DatSocial socialStats;
-    u32 nextExp;
-    DatPhysical physicalState;
-    u8 unk_12[2];              // pad: activeSocialLink is at heroStatus+0x14
-    s16 activeSocialLink;
-    s8 socialLinkStat[30];
+    DatSocial socialStats;       // 0x00
+    u32 nextExp;                 // 0x08
+    DatPhysical physicalState;   // 0x0c
+    u8 unk_12[2];
+    s16 activeSocialLink;        // 0x14
+    s8 socialLinkStat[30];       // 0x16
+    u8 socialLinkData[0x4e8];    // 0x34
+    u8 unk_51c[0x10];
 } DatHeroStatus;
 
 // 868 bytes
@@ -193,43 +198,53 @@ typedef struct DatPc
     DatPhysical physicalState;
     u8 unk_52[2];               // pad: equipmentsIdx is at DatPc+0x54
     s16 equipmentsIdx[4];       // always 0, 1, 2, 3
-    DatEquipment equipments[4];
+    DatEquipment equipments[4]; // 0x5c
     u8 unkData2[0x2e];
     DatPersonaWork persona;
-    u8 unkData3[0x250];         // TODO
+    u8 unk_110[0x250];
     u32 unk_360;
 } DatPc;
 
-// at least 17656 bytes
+// 17656 bytes through savedDungeonFloor
 typedef struct DatGlobal
 {
     u8 unkData1[0x24];
     DatUnit heroUnit;               // 00836224
     DatHeroStatus heroStatus;       // 00836260
-    u8 unkData2[0x4f6];
     DatHeroEquipment heroEquip;     // 0083678c
     CalendarWork calendarWork;      // 0083679c
     u8 unkData3[0x400];
     DatHeroPersona heroPersona;     // 00836ba8
     DatPersonaWork compendium[256]; // 00836e1c
-    u32 flags[FLG_ARR_SIZE];        // 0083a21c. See 'g_flags.h'
-    u32 unk_0083a4dc[128];          // 0083a4dc
+    u32 flags[FLG_ARR_SIZE];        // 0083a21c. See g_flags.h.
+    u32 auxData[128];               // 0083a4dc
     s32 heroMoney;                  // 0083a6dc
     s16 partyIds[4];                // 0083a6e0
     u32 totalBtl;                   // 0083a6e8
     u32 savedFldMajorId;            // 0083a6ec
     u32 savedFldMinorId;            // 0083a6f0
     u32 savedDungeonFloor;          // 0083a6f4
-    // TODO: other data
 } DatGlobal;
 
 extern DatGlobal gGlobalWork;
 extern DatPc gPcs[PC_MAX];
 
 void datSetScenarioMode(u32 scenario);
-u32 datGetScenarioMode();
+u32 datGetScenarioMode(void);
 
+u16 func_0016c670(s16 pcId);
+u8 func_0016dbc0(s16 socialLink, u32* personaId);
+u8 func_0016df30(s16 socialLink);
+u16 func_00170760(s16 pcId, s16 index);
+void func_00170860(s16 pcId, s16 index, u16 value);
+void* func_00170e90(s16 id);
+void* func_00170ed0(s16 id, s32* category);
+const char* func_00171110(s16 id, s16 field);
+void func_0016f320(void);
+u32 FUN_0016f380(u32 idx);
 void FUN_0016f3e0(u32 idx, u32 value);
+void dat0016f450(void);
+s32 func_0016f490(s16 pcId);
 
 DatUnit* datGetUnit(s16 pcId);
 void datInitUnit(s16 pcId);
@@ -253,8 +268,9 @@ void datSetPartyId(s32 idx, s16 pcId);
 s8 datGetAiTactic(s16 pcId);
 void datSetPhysicalCondition(s16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(s16 pcId, u16 fatigueCounter);
-void datSetHp(s16 pcId, u16 hp);
-void datSetSp(s16 pcId, u16 sp);
+void FUN_0016ca90(s16 pcId, s16 fatigueChange);
+void datSetHp(s16 pcId, s16 hp);
+void datSetSp(s16 pcId, s16 sp);
 void datSetLevel(s16 pcId, u8 level);
 void datSetNextExp(s16 pcId, u32 nextExp);
 u16 datGetFatigueCounter(s16 pcId);
@@ -278,7 +294,7 @@ s16 datGetCourageLevel(s16 couragePoint);
 u32 datGetNextExp(s16 pcId);
 u16 datGetPhysicalCondition(s16 pcId);
 s16 datGetEquipmentIdx(s16 pcId, s16 equipmentType);
-void datSetEquipmentIdx(s16 pcId, s16 equipmentType, u16 equipmentIdx);
+void datSetEquipmentIdx(s16 pcId, s16 equipmentType, s16 equipmentIdx);
 void datSetDaysSinceApr5(s16 daysSinceApr5);
 void datSetTime(u8 time);
 void datSetDaysSkipTarget(s16 days);
@@ -288,7 +304,22 @@ u32 datGetFlag(s32 bit);
 void datSetFlag(s32 bit, u8 enabled);
 void datClearFlagAll();
 u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx);
+u32 func_0016f720(s16 pcId, s32 equipmentIdx);
+u8 func_0016f810(s16 pcId, s32 equipmentIdx);
 u8 datGetEquipmentEffect(s16 pcId, s32 equipmentIdx);
+u16 func_0016f9f0(s16 pcId, s32 equipmentIdx);
+u16 func_0016fae0(s16 pcId, s32 equipmentIdx);
+u16 func_0016fbd0(s16 pcId, s32 equipmentIdx);
+u16 func_0016fcc0(s16 pcId, s32 equipmentIdx);
+DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx);
+void func_0016fea0(s16 pcId, s32 equipmentIdx, u16 value);
+void func_0016ff90(s16 pcId, s32 equipmentIdx, u32 value);
+void func_00170080(s16 pcId, s32 equipmentIdx, u8 value);
+void func_00170170(s16 pcId, s32 equipmentIdx, u8 value);
+void func_00170260(s16 pcId, s32 equipmentIdx, u16 value);
+void func_00170350(s16 pcId, s32 equipmentIdx, u16 value);
+void func_00170440(s16 pcId, s32 equipmentIdx, u16 value);
+void func_00170530(s16 pcId, s32 equipmentIdx, u16 value);
 void datInitPersona(s16 pcId);
 void datCompendiumInit();
 void datInitSocialLink();

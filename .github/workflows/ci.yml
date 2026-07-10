@@ -32,6 +32,10 @@ jobs:
           python3 -c "import json,sys; json.load(open('objdiff.json')); print('objdiff.json ok')"
           python3 -c "import yaml,sys; yaml.safe_load(open('config/slus21621.yaml')); print('splat config ok')"
 
+      - name: Validate progress snapshots
+        if: ${{ hashFiles('progress/*.json') != '' }}
+        run: python tools/progress.py --validate-dir progress
+
       - name: Assemble a splat asm sanity object (GNU as, R5900)
         run: |
           printf '.set noat\n.set noreorder\n.section .text,"ax"\n.global t\nt:\n padduw $1,$0,$0\n jr $31\n nop\n' > /tmp/t.s

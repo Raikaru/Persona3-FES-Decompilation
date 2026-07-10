@@ -11,23 +11,28 @@
 
 #define QUARTER_PI ((PI) / 4)
 
-// libc
+// CodeWarrior libc core
 void* memcpy(void* dst, const void* src, u32 size);
+void* memmove(void* dst, const void* src, u32 size);
 void* memset(void* dst, u8 value, u32 size);
 int printf(const char* fmt, ...);
 int sprintf(char* buffer, const char* fmt, ...);
-char* strcat(char*, char*);
-int strcmp(const char* str1, const char* str2);
+int sscanf(const char* input, const char* fmt, ...);
+void qsort(void* base, u32 count, u32 width, int (*compare)(const void*, const void*));
+void* realloc(void* block, u32 size);
+char* strcat(char* dst, const char* src);
+char* strchr(const char* string, int character);
+int strcasecmp(const char* left, const char* right);
+int strcmp(const char* left, const char* right);
 char* strcpy(char* dst, const char* src);
-size_t strlen(const char* str);
+size_t strlen(const char* string);
+f64 copysign(f64 value, f64 sign);
+f32 copysignf(f32 value, f32 sign);
+f64 ldexp(f64 value, s32 exponent);
+f32 scalbnf(f32 value, s32 exponent);
 
-float atanf(float x);
-float cosf(float x);
-float sinf(float x);
-float tanf(float x);
 
 float sqrtf(float x);
-float fabsf(float x);
 
 void kwlnSetDrawLayer(s32 layer);
 void btlUnitDrawAll();

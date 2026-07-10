@@ -3,7 +3,7 @@
 
 #include "rw/rwplcore.h"
 
-typedef struct RpMaterial RpMaterial; // TODO: Create in 'rpworld.h'
+typedef struct RpMaterial RpMaterial;
 
 typedef enum
 {

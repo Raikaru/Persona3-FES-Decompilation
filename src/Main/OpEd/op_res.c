@@ -144,8 +144,8 @@ RwRaster* opResGetTitleRaster(u32 id)
     return sWork->titleRasters[id];
 }
 
-// FUN_00266c50
-void* opRes00266c50(u32 id)
+// FUN_00266C50
+void* opResGetTitleSprite(u32 id)
 {
     K_ASSERT(sWork != NULL, 68);
 
@@ -187,7 +187,7 @@ void FUN_004cde90();
 void FUN_0021cc20();
 
 // FUN_00266b30
-void opRes00266b30(void)
+void opResDestroyTitle(void)
 {
     OpResWork* work;
     s32 i;
@@ -204,7 +204,7 @@ void opRes00266b30(void)
 }
 
 // FUN_00266dc0
-void opRes00266dc0(void)
+void opResDestroyLogo(void)
 {
     OpResWork* work;
     s32 i;
@@ -225,10 +225,10 @@ void opRes00266690(void)
     K_ASSERT(sWork != NULL, 68);
     work = sWork;
     if (work->destroyFlags & OPRES_FLAG_TITLE) {
-        opRes00266b30();
+        opResDestroyTitle();
     }
     if (work->destroyFlags & OPRES_FLAG_LOGO) {
-        opRes00266dc0();
+        opResDestroyLogo();
     }
     sWork = NULL;
 }

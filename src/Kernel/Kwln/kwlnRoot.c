@@ -8,6 +8,11 @@
 #include "h_dbprt.h"
 #include "Kosaka/Field/k_sceneDraw.h"
 #include "Main/Game/gm_root.h"
+#include "h_chrdsp.h"
+#include "Yajima/y_misc.h"
+#include "Kosaka/k_spipe.h"
+#include "rw/rprandom.h"
+#include "sce/eeregs.h"
 
 KwlnTask* kwlnRootCreate2DDrawBeginTask();
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask();
@@ -29,6 +34,40 @@ extern u32 DAT_007ce12c;
 extern u32 DAT_007ce114;
 void FUN_001120c0();
 void FUN_001125d0();
+
+extern u32 jtbl_00960178[];
+extern u32 jtbl_0096017C[];
+extern u32 D_00960184[];
+#define KWLN_ALLOC2(size, flags) (*(void* (**)(u32, u32))jtbl_00960178)((size), (flags))
+#define KWLN_FREE(memory) (*(void (**)(void*))jtbl_0096017C)(memory)
+#define KWLN_ALLOC3(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
+void* func_004c9ed0(RwCamera* camera, u32 param_2, u32 param_3);
+int func_004c4d20(void);
+void* func_004ce200(RwRaster* raster, u32 param2, s32 param3);
+void* func_004cbf20(void* image);
+void* func_004cdc70(void* image, RwRaster* raster);
+void* func_004cde00(RwRaster* raster);
+void func_004c7cf0(s32 value);
+void func_0010bff0(void);
+void func_0010c5f0(void);
+void func_005810f0(void);
+
+/*
+ * These globals belong to the RenderWare show-raster/spipe state block.
+ * The retail image stores them in the Kwln small-data area; they remain
+ * separate here so the update paths retain the original state transitions.
+ */
+static u32 sShowRasterUpdatePending;
+static u32 sShowRasterCurrentCount;
+static void* sShowRasterImage;
+static u32 sShowRasterResult;
+static u32 sShowRasterRasterA;
+static u32 sShowRasterRasterB;
+static u32 sShowRasterEnabled;
+static KwlnTask* sDraw3DTask;
+static f32 sShowRasterDelta;
+static f32 sShowRasterCurrent;
+static f32 sShowRasterPercent;
 
 // FUN_00198650
 void* kwlnRootUpdateTask(KwlnTask* rootTask)
@@ -271,6 +310,34 @@ KwlnTask* kwlnRootCreate3DOn2DDrawEndTask()
     return kwlnTaskInit("3D on 2D Draw End", 6320, kwlnRootUpdate3DOn2DDrawEndTask, NULL, NULL);
 }
 
+// FUN_00198e90
+void* FUN_00198e90(KwlnTask* etcDrawBeginTask)
+{
+    RwRenderStateSetFunc* setRenderState;
+    RwCamera* camera;
+
+    camera = kwlnGetMainCamera();
+    RwCameraClear(camera, kwlnGetClearColor(), rwCAMERACLEARZ);
+
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+    {
+        kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
+        kwlnSetFlags(KWLN_FLAG_2DDRAW, true);
+
+        setRenderState = &rwGlobals.device.setRenderState;
+        (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)false);
+    }
+    else
+    {
+        K_ASSERT(false, 0x347);
+        kwlnSetFlags(KWLN_FLAG_ERR, true);
+    }
+
+    return KWLNTASK_CONTINUE;
+}
+
 // FUN_00198f90
 void* kwlnRootUpdateEtcDrawTask(KwlnTask* etcDrawTask)
 {
@@ -282,8 +349,174 @@ void* kwlnRootUpdateEtcDrawTask(KwlnTask* etcDrawTask)
     return KWLNTASK_CONTINUE;
 }
 
+// FUN_00198fd0
+void* FUN_00198fd0(KwlnTask* etcDrawEndTask)
+{
+    RwRenderStateSetFunc* setRenderState;
+
+    if (gFogEnabled == true)
+    {
+        setRenderState = &rwGlobals.device.setRenderState;
+
+        (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
+        (*setRenderState)(rwRENDERSTATEFOGCOLOR, (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
+        (*setRenderState)(rwRENDERSTATEFOGTYPE, (void*)rwFOGTYPELINEAR);
+    }
+
+    kwlnCameraEndUpdate();
+
+    return KWLNTASK_CONTINUE;
+}
+
 // FUN_001990c0
 KwlnTask* kwlnRootCreateEtcDrawTask()
 {
     return kwlnTaskInit("etc Draw", 6335, kwlnRootUpdateEtcDrawTask, NULL, NULL);
+}
+
+// FUN_00199080
+KwlnTask* FUN_00199080()
+{
+    return kwlnTaskInit("etc Draw Begin", 6323, FUN_00198e90, NULL, NULL);
+}
+
+// FUN_00199100
+KwlnTask* FUN_00199100()
+{
+    return kwlnTaskInit("etc Draw End", 7379, FUN_00198fd0, NULL, NULL);
+}
+
+// FUN_00199140 NONMATCHING
+void* FUN_00199140(KwlnTask* showRasterTask)
+{
+    RwCamera* camera;
+    RwRaster* raster;
+    RwUInt8* oldPixels;
+    RwUInt8* newPixels;
+    u32 allocationSize;
+    u32 currentCount;
+    s32 delta;
+
+    sShowRasterResult = (u32)func_004c4d20();
+
+    if (sShowRasterUpdatePending == 1)
+    {
+        camera = kwlnGetMainCamera();
+        raster = camera->frameBuffer;
+        oldPixels = raster->cpPixels;
+        allocationSize = (raster->depth >> 3) * raster->width * raster->height;
+        newPixels = (RwUInt8*)KWLN_ALLOC2(allocationSize, 0x40000);
+        if (newPixels != NULL)
+        {
+            raster->cpPixels = newPixels;
+            if (func_004ce200(raster, 0, 2) == NULL)
+            {
+                raster->cpPixels = oldPixels;
+                KWLN_FREE(newPixels);
+            }
+
+            func_004cbf20(sShowRasterImage);
+            func_004cdc70(sShowRasterImage, raster);
+            func_004cde00(raster);
+            raster->cpPixels = oldPixels;
+            KWLN_FREE(newPixels);
+        }
+        sShowRasterUpdatePending = 0;
+    }
+
+    camera = kwlnGetMainCamera();
+    func_004c9ed0(camera, 0, 0);
+
+    currentCount = Y_Misc_GetT0Count();
+    sShowRasterCurrentCount = currentCount;
+    delta = (s32)(currentCount - gT0CountVal);
+    if (delta >= 0)
+    {
+        sShowRasterDelta = (f32)delta;
+    }
+    else
+    {
+        u32 halfDelta = ((u32)delta >> 1) | ((u32)delta & 1);
+        sShowRasterDelta = (f32)(s32)halfDelta * 2.0f;
+    }
+
+    if ((s32)currentCount >= 0)
+    {
+        sShowRasterCurrent = (f32)(s32)currentCount;
+    }
+    else
+    {
+        u32 halfCount = (currentCount >> 1) | (currentCount & 1);
+        sShowRasterCurrent = (f32)(s32)halfCount * 2.0f;
+    }
+
+    sShowRasterPercent = (sShowRasterDelta / 520.0f) * 100.0f;
+    DPUT_T0_COUNT(0);
+    sShowRasterEnabled = 1;
+    func_004c7cf0(0);
+    func_0010bff0();
+    func_0010c5f0();
+    func_005810f0();
+    RpRandom();
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_00199360
+KwlnTask* FUN_00199360()
+{
+    return kwlnTaskInit("<<< show raster >>>", 7396, FUN_00199140, NULL, NULL);
+}
+
+// FUN_001993a0
+void* FUN_001993a0(KwlnTask* drawBustupTask)
+{
+    H_Chrdsp_Main();
+
+    return KWLNTASK_CONTINUE;
+}
+
+// FUN_001993d0
+KwlnTask* FUN_001993d0()
+{
+    return kwlnTaskInit("drawBustupProc", 5276, FUN_001993a0, NULL, NULL);
+}
+
+// FUN_00199410
+void FUN_00199410(KwlnTask* draw3DTask)
+{
+    KWLN_FREE(draw3DTask->workData);
+    sDraw3DTask = NULL;
+}
+
+typedef struct KwlnDraw3DWork
+{
+    u32 rasterA;
+    u32 rasterB;
+} KwlnDraw3DWork;
+
+// FUN_00199440
+KwlnTask* FUN_00199440(KwlnTask* rootTask)
+{
+    KwlnDraw3DWork* work;
+
+    if (sDraw3DTask != NULL)
+    {
+        K_Assert("k_spipe.c", 0x76);
+    }
+
+    work = (KwlnDraw3DWork*)KWLN_ALLOC3(1, sizeof(KwlnDraw3DWork), 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
+    }
+
+    sDraw3DTask = kwlnTaskCreate(rootTask, "3D Draw", 5, NULL, FUN_00199410, work);
+    work->rasterA = sShowRasterRasterB;
+    work->rasterB = sShowRasterRasterA;
+    K_SPipe_CreateShadowNodeTask(sDraw3DTask);
+    K_SPipe_Create3DDrwBeginTask(sDraw3DTask);
+    K_SPipe_Create3DDrwEndTask(sDraw3DTask);
+
+    return sDraw3DTask;
 }

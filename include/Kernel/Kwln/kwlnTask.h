@@ -14,8 +14,8 @@
 #define KWLNTASK_CONTINUE ((void*)0)
 #define KWLNTASK_STOP     ((void*)0xFFFFFFFF)
 
-#define KWLNTASK_FLAG_UNK10 (1 << 4) // 0x10
-#define KWLNTASK_FLAG_UNK20 (1 << 5) // 0x20
+#define KWLNTASK_FLAG_DISABLE_PAD (1 << 4) // 0x10. Present a neutral controller state to the task update.
+#define KWLNTASK_FLAG_SUSPENDED   (1 << 5) // 0x20. Exclude the task from scheduler updates.
 
 typedef enum
 {
@@ -56,7 +56,7 @@ struct KwlnTask
     s32 unk_64;                   // 0x64
 };
 
-u8 kwlnTaskMain();
+u32 kwlnTaskMain();
 
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth);
 void kwlnTaskPrintTrees();

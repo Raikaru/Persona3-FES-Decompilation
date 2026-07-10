@@ -19,6 +19,7 @@ data sections yet, and every external symbol it references must be resolvable.
 Config: config/slus21621.yaml; toolchain via tools/verify_config*.json or
 P3_MWCC / P3_RETAIL_ELF.  GNU binutils on PATH or through WSL Debian.
 """
+import argparse
 import hashlib
 import json
 import os
@@ -166,6 +167,25 @@ def load_symbol_names():
             if m:
                 names.add(m.group(1))
     return names
+
+
+def load_symbol_addr_map():
+    """name -> address for every entry in config/symbol_addrs.txt."""
+    out = {}
+    p = REPO / "config" / "symbol_addrs.txt"
+    if p.is_file():
+        for line in p.read_text().splitlines():
+            m = re.match(r"\s*([A-Za-z_.$][\w.$]*)\s*=\s*(0[xX][0-9A-Fa-f]+|\d+)\s*;", line)
+            if m:
+                out[m.group(1)] = int(m.group(2), 0)
+    return out
+
+
+def c_object_exports(obj_path):
+    """Global defined symbol names exported by a compiled C object."""
+    obj = V.ObjectFile(obj_path)
+    return {s["name"] for s in obj.symbols
+            if s["name"] and s.get("shndx", 0) != 0}
 
 
 def load_windows():
@@ -346,7 +366,7 @@ def eligible_c_objects(c, resolvable, boundaries, gp):
         if not data_ok:
             continue
         out.append(dict(src=cpath, start=addrs[0][0], end=addrs[-1][0] + addrs[-1][1],
-                        funcs=[m["name"] for m in real], sections=sections))
+                        funcs=real, sections=sections))
     out.sort(key=lambda d: d["start"])
     return out
 
@@ -516,6 +536,78 @@ def link(c, entries):
         "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf")] + objs)
 
 
+
+def linked_function_records(cobjs, windows):
+    """Return unique C-owned functions at authoritative window starts.
+
+    ``scan_markers`` normally provides integer addresses, but progress-verifier
+    rows encode them as hexadecimal strings. Normalize either representation
+    before comparing against the integer window map loaded for this build.
+    """
+    authoritative_addresses = set(windows)
+    by_address = {}
+    for obj in cobjs:
+        source = obj["src"].relative_to(REPO).as_posix()
+        for func in obj["funcs"]:
+            marker_address = func["addr"]
+            try:
+                address = (int(marker_address, 16)
+                           if isinstance(marker_address, str) else int(marker_address))
+            except (TypeError, ValueError):
+                sys.exit(
+                    f"build: invalid marker address {marker_address!r} "
+                    f"for {func['name']} in {source}"
+                )
+            if address not in authoritative_addresses:
+                sys.exit(
+                    f"build: marker address {address:#010x} for {func['name']} "
+                    f"in {source} is not an authoritative function window"
+                )
+            record = (func["name"], source)
+            previous = by_address.get(address)
+            if previous is not None and previous != record:
+                sys.exit(
+                    f"build: conflicting markers at {address:#010x}: "
+                    f"{previous[0]} in {previous[1]} vs {record[0]} in {record[1]}"
+                )
+            by_address[address] = record
+    return [
+        {"address": f"{address:08x}", "name": name, "file": source}
+        for address, (name, source) in sorted(by_address.items())
+    ]
+
+
+def write_progress_report(path, image_sha1, retail_sha1, function_total, cobjs, linked_functions):
+    """Atomically publish successful real-C linkage information."""
+    import tempfile
+
+    path = Path(path)
+    report = {
+        "schema_version": 1,
+        "build_succeeded": True,
+        "image_sha1": image_sha1,
+        "retail_sha1": retail_sha1,
+        "function_total": function_total,
+        "linked_tu_count": len(cobjs),
+        "linked_function_count": len(linked_functions),
+        "linked_functions": linked_functions,
+    }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w", encoding="utf-8", dir=path.parent,
+            prefix=f".{path.name}.", suffix=".tmp", delete=False,
+        ) as temp:
+            temp_path = Path(temp.name)
+            json.dump(report, temp, indent=2, sort_keys=True)
+            temp.write("\n")
+        os.replace(temp_path, path)
+    except Exception:
+        if temp_path is not None:
+            temp_path.unlink(missing_ok=True)
+        raise
+
 def build_matching_elf(c, n_cobj):
     be = (BUILD / "slus21621.elf").read_bytes()
     img = IMAGE.read_bytes()
@@ -530,9 +622,9 @@ def build_matching_elf(c, n_cobj):
         print("build: no loadable segment in linked output")
         return 1
     print(f"C objects linked from source: {n_cobj}")
+    image_sha1 = hashlib.sha1(payload).hexdigest()
     img_ok = payload == img
-    print(f"loadable image sha1: {hashlib.sha1(payload).hexdigest()}  "
-          f"{'OK' if img_ok else 'MISMATCH'}")
+    print(f"loadable image sha1: {image_sha1}  {'OK' if img_ok else 'MISMATCH'}")
     if not img_ok:
         # report first divergence to aid debugging
         for i in range(min(len(payload), len(img))):
@@ -562,11 +654,15 @@ OBJCOPY_TOOL = None
 
 def main():
     global AS_TOOL, OBJCOPY_TOOL
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--progress-report", type=Path, metavar="PATH")
+    parser.add_argument("--setup-only", action="store_true")
+    args, _unknown = parser.parse_known_args()
     c = cfg()
     BUILD.mkdir(exist_ok=True)
     OBJ.mkdir(parents=True, exist_ok=True)
     ASM.mkdir(exist_ok=True)
-    if "--setup-only" in sys.argv:
+    if args.setup_only:
         if not c.get("retail_elf"):
             sys.exit("build: set retail_elf in tools/verify_config.local.json or P3_RETAIL_ELF")
         extract_image(c)
@@ -589,6 +685,7 @@ def main():
     cobjs = eligible_c_objects(c, resolvable, boundaries, gp) if c.get("retail_elf") else []
     print(f"eligible C objects: {len(cobjs)}  "
           f"({', '.join(o['src'].name for o in cobjs) if cobjs else 'none'})")
+    linked_functions = linked_function_records(cobjs, boundaries)
 
     entries = []
     # Compile each decompiled TU once; place its .text and every owned data
@@ -605,6 +702,19 @@ def main():
             entries.append((base, cobj, sname))
             data_carves.append((base, base + size))
 
+    # Splat asm references carved functions by their symbol_addrs names; when a
+    # C object exports a canonical name instead, define the splat name as an
+    # absolute address (the C object is placed byte-exact at retail).
+    if c_text_ranges:
+        exported = set()
+        for o in cobjs:
+            exported |= c_object_exports(o["obj"])
+        for nm, addr in load_symbol_addr_map().items():
+            if nm in exported or nm in defs:
+                continue
+            if any(s <= addr < e for s, e, _o in c_text_ranges):
+                defs[nm] = addr
+
     for name, kind, lo, hi in SEGMENTS:
         if kind == "code":
             if any(VRAM + lo <= s < VRAM + hi for s, _e, _o in c_text_ranges):
@@ -615,7 +725,17 @@ def main():
             build_data_carved(name, lo, hi, data_carves, entries)
     write_lcf(entries, gp, defs)
     link(c, entries)
-    sys.exit(build_matching_elf(c, len(cobjs)))
+    status = build_matching_elf(c, len(cobjs))
+    if status == 0 and args.progress_report is not None:
+        write_progress_report(
+            args.progress_report,
+            hashlib.sha1(IMAGE.read_bytes()).hexdigest(),
+            hashlib.sha1((BUILD / "SLUS_216.21").read_bytes()).hexdigest(),
+            len(boundaries),
+            cobjs,
+            linked_functions,
+        )
+    sys.exit(status)
 
 
 if __name__ == "__main__":

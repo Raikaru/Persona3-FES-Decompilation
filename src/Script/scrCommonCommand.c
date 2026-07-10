@@ -235,3 +235,69 @@ u32 scrCommand_SQRT()
     scrSetFloatReturnVal(sqrtf(param));
     // BUG: no return
 }
+
+
+/* ---- Recovered range 0x35B1B0-0x35B260 (Ghidra reference, pending match) ---- */
+extern u16 DAT_007e094c;
+extern u16 DAT_007e094e;
+
+// FUN_0035B1B0 NONMATCHING
+
+
+u32 FUN_0035b1b0(void)
+
+
+
+{
+
+  u16 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  scrSetIntReturnVal(DAT_007e094e & uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035B1F0 NONMATCHING
+
+
+u32 FUN_0035b1f0(void)
+
+
+
+{
+
+  u16 uVar1;
+
+  
+
+  uVar1 = scrGetIntPara(0);
+
+  scrSetIntReturnVal(DAT_007e094c & uVar1);
+
+  return 1;
+
+}
+
+// FUN_0035B230 NONMATCHING
+
+
+u32 FUN_0035b230(void)
+
+
+
+{
+
+  scrGetIntPara(0);
+
+  scrGetIntPara(1);
+
+  scrGetIntPara(2);
+
+  return 1;
+
+}

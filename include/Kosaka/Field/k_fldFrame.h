@@ -13,6 +13,11 @@ typedef struct FldUnit FldUnit;
 #define COLLISCTL_FLAG_GROUNDSNAP (1 << 30) // 0x40000000
 #define COLLISCTL_FLAG_DEBUGDRAW  (1 << 31) // 0x80000000. Draw collisions
 
+#define FLDFRAME_COLLIS_FLAG_STATICWORLD (1 << 0) // 0x01. Use the static collision world
+
+// Location of Field's frame collision state pointer.
+#define FLDFRAME_FIELD_STATE_OFFSET 0x116c
+
 typedef enum
 {
     COLLISCTL_STATE_DIRTY,
@@ -37,11 +42,31 @@ typedef struct CollisCtl
     s32 zGrid;              // 0x30. Current Z grid
 } CollisCtl;
 
-// 4 bytes. Task data for a 'collis sphere' task
+// 4 bytes. Task data for the collision-sphere debug child task.
 typedef struct CollisSphereDebug
 {
     u32 drawEnabled; // 0x00
 } CollisSphereDebug;
+
+// 16 bytes. Collision state referenced by Field at FLDFRAME_FIELD_STATE_OFFSET.
+typedef struct FldFrameCollisionState
+{
+    u32 flags;               // 0x00. See FLDFRAME_COLLIS_FLAG_*.
+    u32 unk_04;              // 0x04
+    void* collisionWorld;    // 0x08. Dynamic field collision world.
+    void* staticCollision;   // 0x0c. Static collision tree.
+} FldFrameCollisionState;
+
+// 44 bytes. Callback state passed through RenderWare field raycasts.
+typedef struct FldFrameRaycast
+{
+    RwV3d* hitPointDst;    // 0x00
+    u32 didHit;            // 0x04
+    RwV3d line[2];         // 0x08
+    u32 intersectionType;  // 0x20. RpIntersection line type.
+    f32 nearestFraction;   // 0x24
+    void* hitObject;       // 0x28
+} FldFrameRaycast;
 
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal);
 u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst);

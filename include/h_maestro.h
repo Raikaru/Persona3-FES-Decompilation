@@ -40,6 +40,46 @@ typedef struct HMaestro
     s32 unk_130;          // 0x130
 } HMaestro;
 
+void func_001102e0(KwlnTask* task);
+KwlnTask* func_001103e0(KwlnTask* parent, u32 priority, u32 param_3, u32 resourceCount);
+u32 func_001104b0(KwlnTask* task);
+u32 func_001104d0(KwlnTask* task);
+u32 func_00110510(KwlnTask* task);
+void func_001105d0(KwlnTask* task, s32 index, void* resource);
+void func_00110620(KwlnTask* task, s16 index, s16 param_3, s16 param_4, s16 param_5);
+void func_00110650(void* work, s32 sourceIndex, s32 destinationIndex);
+void* func_001107d0(KwlnTask* task);
+void func_00110e70(KwlnTask* task);
+KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions);
+KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions);
+KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive);
+KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u32 param_3, void* archive, s16 dim0, s16 dim1, s16 dim2, s16 dim3);
+u32 func_001114b0(KwlnTask* task);
+void func_00111500(KwlnTask* task);
+void func_00111520(KwlnTask* task, s16 count);
+u32 func_00111530(KwlnTask* task);
+void func_00111570(KwlnTask* task, u32 value);
+void func_00111580(KwlnTask* task, u64 packedCoordinates);
+void func_001115b0(KwlnTask* task);
+void func_001115e0(KwlnTask* task);
+void H_Maestro_00111c50(KwlnTask* task);
+void func_00111ca0(KwlnTask* task, u32 value);
+void func_00111f10(KwlnTask* task, u32 noDeltaTime);
+void func_00111f50(void);
+void func_001120c0(void);
+void func_00112110(void* node);
+void* func_00112370(const char* path);
+void* func_00112420(void* source);
+void func_001124b0(void* node);
+void func_001125d0(void);
+f32 func_001126b0(void* sample);
+f32 func_00112740(void* sample);
+void func_001127d0(void* node, u32 enabled);
+
+void* H_Maestro_UpdateTask(KwlnTask* task);
+void H_Maestro_DestroyTask(KwlnTask* task);
+u32 H_Maestro_00111f30(s16* state);
+
 KwlnTask* H_Maestro_CreateTask(KwlnTask* parent, u32 priority, const char* path);
 void H_Maestro_SetAlphaMult(KwlnTask* hmaestroTask, f32 alphaMult);
 u32 H_Maestro_00111cb0(KwlnTask* hmaestroTask);

@@ -19,6 +19,8 @@ u8 adminiSeqCheckTest();
 void adminiSeqCallBtl(u8 isRestored, void* seqData);
 s32 adminiSeqExitBtl();
 u8 adminiSeqCheckBtl();
+extern void FUN_003e0780(u32 value);
+extern u32 FUN_003e0920(void);
 
 // 0068f020
 static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] = 
@@ -382,4 +384,15 @@ s32 adminiSeqExitBtl()
 u8 adminiSeqCheckBtl()
 {
     return btlGetTask() == NULL;
+}
+// FUN_0027CB10 NONMATCHING
+void func_0027cb10(void* unused, u32* param_2)
+{
+    FUN_003e0780(*param_2);
+}
+
+// FUN_0027CB50
+u32 func_0027cb50(void)
+{
+    return FUN_003e0920() == 0;
 }

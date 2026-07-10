@@ -15,16 +15,28 @@ typedef struct Model Model;
 
 typedef enum
 {
-    // TODO
     RESRC_TYPE_MODELCHAR = 1,
     RESRC_TYPE_MODELUNK,
     RESRC_TYPE_MODELNPC,
     RESRC_TYPE_LIGHTCHAR,
     RESRC_TYPE_LIGHTNPC,
-    RESRC_TYPE_MODELFLD = 10,
-    RESRC_TYPE_FLD = 12,
+    RESRC_TYPE_06,
+    RESRC_TYPE_07,
+    RESRC_TYPE_08,
+    RESRC_TYPE_09,
+    RESRC_TYPE_MODELFLD,
+    RESRC_TYPE_11,
+    RESRC_TYPE_FLD,
     RESRC_TYPE_FLDHIT,
-    RESRC_TYPE_MAX = 22
+    RESRC_TYPE_14,
+    RESRC_TYPE_15,
+    RESRC_TYPE_16,
+    RESRC_TYPE_17,
+    RESRC_TYPE_18,
+    RESRC_TYPE_19,
+    RESRC_TYPE_20,
+    RESRC_TYPE_21,
+    RESRC_TYPE_MAX
 } ResrcType;
 
 typedef struct Resrc Resrc;
@@ -38,7 +50,9 @@ struct Resrc
     f32 unk_20;        // 0x20
     f32 unk_24;        // 0x24
     u32 flags;         // 0x28
-    u8 unkData[0xcc];
+    u8 unkData[0x28];
+    void* ownedData;    // 0x54. Freed by resrcMngDestroyRes when non-NULL
+    u8 unkData2[0xa0];
     Resrc* next;       // 0xf8
     Resrc* prev;       // 0xfc
 };

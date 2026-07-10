@@ -1,14 +1,642 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
+#include "Main/Battle/Data/datPersona.h"
+#include "Main/Social/sfl_psel.h"
+#include "Main/Social/sfl_res.h"
 
 static u32* sSflPsel; // puGpffffb688
-u32 FUN_0020ec50();
 u32 FUN_0021cca0();
 void FUN_0021d3b0();
 float FUN_0021ea00();
 void FUN_0021eac0(void*, float);
 void FUN_00260c20();
 void FUN_00261480();
+extern void FUN_0021d8e0(void*, const void*);
+extern void FUN_0021d950(void*, const void*);
+extern void (*D_00960090)(u32, u32);
+extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+extern void RpSkyRenderStateSet(u32, void*);
+extern float fGpffff8300;
+extern f32 D_00960088;
+extern u16 DAT_007e0952;
+extern u32 func_00173220(u16 id);
+extern u32 func_00173280(u16 id);
+extern u8* DAT_007ce420;
+extern u32 func_00175410(void);
+extern u32 func_001756f0(void);
+extern void* func_001749a0(u16 id);
+extern DatPersonaWork* datPersonaGetHeroPersona(s16 index);
+extern DatPersonaWork* datPersonaGetByPcId(u16 pcId);
+extern u32 func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern u32 func_0021cca0(u32 texture, s32 frame);
+extern u32 func_0021cce0(u32 frame);
+extern void func_0021d3b0(void* destination, u32 frame);
+extern void func_0021d8e0(void* destination, const f32* rect);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021e380(void* destination, u32 frame, s32 mode);
+extern f32 func_0021ea00(s32 duration);
+extern void func_0021eac0(void* animation, f32 value);
+extern void func_00238980(void* destination, s32 count, u32 value, s32 mode);
+extern void* func_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* origin);
+extern u32 func_00239140(s32 font);
+extern void func_0024a260(u32* state);
+extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
+extern void func_003b0d70(u32 resource, s32 x, s32 y);
+extern void func_003b0e54(u32 resource, u32 value);
+extern void func_003b0e70(s32 mode);
+extern void func_003b0e90(s32 mode);
+extern void func_003b1360(u32 resource, s32 mode, s32 value);
+extern void func_003b0170(u32 resource);
+extern void func_003b2c60(u32 resource, f32 value);
+extern u32 func_003c7610(void);
+extern void func_003c7650(s32 mode);
+extern u32 func_003c7850(void);
+extern u32 func_003c78d0(void);
+extern void func_003c7990(s32 mode);
+extern void func_003c7bc0(s32 mode, u32 value);
+extern void func_003c7430(u32 value);
+extern void func_0027bc00(u16 id);
+extern void func_0027bd10(u16 id);
+extern void func_0027bdf0(void);
+extern u32 func_0027bf60(void);
+extern void func_0027bfb0(void);
+extern u32 func_0027c020(void);
+extern void func_00523ac8(char* destination, const char* format, ...);
+extern s32 func_00524388(const char* text);
+extern void func_0019d3f0(const char* file, s32 line);
+extern void func_003c74e0(u32 value);
+
+typedef void (*SflPselStateCallback)(u32 state, u32 value);
+typedef void (*SflPselDrawCallback)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+
+extern u32 FUN_0021cce0(u32 frame);
+
+static u8* sflPselBytes(u32* work, u32 offset)
+{
+    return (u8*)work + offset;
+}
+
+static u32 sflPselReadU32(const void* object, u32 offset)
+{
+    return *(const u32*)((const u8*)object + offset);
+}
+
+static s32 sflPselReadS32(const void* object, u32 offset)
+{
+    return *(const s32*)((const u8*)object + offset);
+}
+
+static u8* sflPselEntry(u32* work, s32 index)
+{
+    u8* entries;
+
+    entries = (u8*)(uintptr_t)sflPselReadU32(work, 0x184);
+    return entries + index * 0x80;
+}
+
+static void sflPselSetAlpha(void* object, u8 alpha)
+{
+    u8 color[4];
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alpha;
+    FUN_0021d950(object, color);
+}
+
+static void sflPselDraw(void* object)
+{
+    D_0096009C((u32*)object, 4, 0, 1, 2);
+    D_0096009C((u32*)object, 4, 0, 2, 3);
+}
+
+// FUN_00260430 NONMATCHING
+void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
+{
+    static const u8 axisModes[8][2] = {
+        {0, 1}, {2, 0}, {0, 2}, {1, 0},
+        {2, 1}, {2, 2}, {2, 1}, {1, 1}
+    };
+    u8* entry;
+    u8* resource;
+    u32* resourceTable;
+    u32 flags;
+    u32 xMode;
+    u32 yMode;
+    float x0;
+    float x1;
+    float y0;
+    float y1;
+    float width;
+    float height;
+
+    entry = sflPselEntry(base, index);
+    resourceTable = (u32*)(uintptr_t)sflPselReadU32(base, 0x104);
+    resource = *(u8**)((u8*)resourceTable + sflPselReadU32(entry, 0x14) * 4);
+    flags = sflPselReadU32(entry, 0x18);
+    x0 = (float)sflPselReadS32(entry, 0x54);
+    x1 = (float)sflPselReadS32(entry, 0x5c);
+    y0 = (float)sflPselReadS32(entry, 0x58);
+    y1 = (float)sflPselReadS32(entry, 0x60);
+    width = (float)sflPselReadS32(resource, 0x0c);
+    height = (float)sflPselReadS32(resource, 0x10);
+
+    if (axis >= 8) {
+        return;
+    }
+    xMode = axisModes[axis][0];
+    yMode = axisModes[axis][1];
+
+    if (xMode == 2) {
+        if ((flags & 1) == 0) {
+            uv[0] = (x0 + 1.0f) / width;
+            uv[2] = x0 / width;
+        } else {
+            uv[0] = (x1 - 1.0f) / width;
+            uv[2] = x1 / width;
+        }
+    } else if (xMode == 1) {
+        if ((flags & 1) == 0) {
+            uv[0] = x1 / width;
+            uv[2] = (x1 - 1.0f) / width;
+        } else {
+            uv[0] = x0 / width;
+            uv[2] = (x0 + 1.0f) / width;
+        }
+    } else if (xMode == 0) {
+        if ((flags & 1) == 0) {
+            uv[0] = x1 / width;
+            uv[2] = x0 / width;
+        } else {
+            uv[0] = x0 / width;
+            uv[2] = x1 / width;
+        }
+    }
+
+    if (yMode == 2) {
+        if ((flags & 2) == 0) {
+            uv[1] = (y0 + 1.0f) / height;
+            uv[3] = y0 / height;
+        } else {
+            uv[1] = (y1 - 1.0f) / height;
+            uv[3] = y1 / height;
+        }
+    } else if (yMode == 1) {
+        if ((flags & 2) == 0) {
+            uv[1] = y1 / height;
+            uv[3] = (y1 - 1.0f) / height;
+        } else {
+            uv[1] = y0 / height;
+            uv[3] = (y0 + 1.0f) / height;
+        }
+    } else if (yMode == 0) {
+        if ((flags & 2) == 0) {
+            uv[1] = y1 / height;
+            uv[3] = y0 / height;
+        } else {
+            uv[1] = y0 / height;
+            uv[3] = y1 / height;
+        }
+    }
+}
+
+// FUN_00260900 NONMATCHING
+s32 sflPsel00260900(u32* base, s32 index)
+{
+    u32 offset;
+    u8* table;
+    u8* entry;
+
+    offset = index * 0x80;
+    table = (u8*)(uintptr_t)base[0x61];
+    entry = table + offset;
+    return *(s32*)(entry + 0x5c) - *(s32*)(entry + 0x54);
+}
+
+// FUN_00260920 NONMATCHING
+s32 sflPsel00260920(u32* base, s32 index)
+{
+    u32 offset;
+    u8* table;
+    u8* entry;
+
+    offset = index * 0x80;
+    table = (u8*)(uintptr_t)base[0x61];
+    entry = table + offset;
+    return *(s32*)(entry + 0x60) - *(s32*)(entry + 0x58);
+}
+
+// FUN_00260940 NONMATCHING
+u32 sflPsel00260940(u32* base, s32 index)
+{
+    u32 offset;
+    u8* table;
+    u8* entry;
+    u8* resourceTable;
+
+    offset = index * 0x80;
+    table = (u8*)(uintptr_t)base[0x61];
+    entry = table + offset;
+    resourceTable = (u8*)base + 0x104;
+    return *(u32*)(resourceTable + *(u32*)(entry + 0x14) * 4);
+}
+
+// FUN_00260970
+void sflPsel00260970(u8* work)
+{
+    float frame[4];
+    u8 color[4];
+
+    *(u32*)work = 0;
+    frame[0] = 0.0f;
+    frame[1] = 0.0f;
+    frame[2] = 640.0f;
+    frame[3] = 448.0f;
+    FUN_0021d8e0(work + 0x310, frame);
+    FUN_0021eac0(work + 0x310, FUN_0021ea00(10));
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0;
+    FUN_0021d950(work + 0x310, color);
+    sSflPsel = (u32*)work;
+}
+
+// FUN_00260d20 NONMATCHING
+void sflPsel00260d20(void)
+{
+    u32* work;
+
+    K_ASSERT(sSflPsel != NULL, 0x57);
+    work = sSflPsel;
+    if (((~*work) & 1) != 0)
+        return;
+
+    if (work[1] == 1)
+    {
+        if ((s32)work[2] < 10)
+            work[2] += 1;
+        else
+            *work &= ~2u;
+    }
+    if (work[1] == 0)
+    {
+        if ((s32)work[2] < 10)
+            work[2] += 1;
+        else
+            *work &= ~2u;
+    }
+    FUN_00261480();
+}
+
+// FUN_00260e00 NONMATCHING
+void sflPsel00260e00(void)
+{
+    u32* work;
+    u32 texture;
+
+    K_ASSERT(sSflPsel != NULL, 0x57);
+    work = sSflPsel;
+    if ((*work & 1) == 0)
+        return;
+
+    texture = sflRes0020ec50();
+    D_00960090(9, 2);
+    D_00960090(0x14, 2);
+    D_00960090(8, 1);
+    D_00960090(6, 0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(1, 0);
+    sflPselDraw(sflPselBytes(work, 0x310));
+
+    D_00960090(0x14, 2);
+    D_00960090(8, 1);
+    D_00960090(6, 0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(1, 0);
+    sflPselDraw(sflPselBytes(work, 0x10));
+
+    D_00960090(8, 0);
+    D_00960090(6, 1);
+    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x3a));
+    D_00960090(1, texture);
+    sflPselDraw(sflPselBytes(work, 0x710));
+    D_00960090(1, 0);
+    sflPselDraw(sflPselBytes(work, 0x810));
+
+    D_00960090(8, 1);
+    D_00960090(6, 1);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(6, 1);
+    D_00960090(6, 1);
+    D_00960090(8, 1);
+    D_00960090(1, 0);
+    sflPselDraw(sflPselBytes(work, 0x210));
+
+    if (work[1] == 1) {
+        D_00960090(6, 0);
+        D_00960090(8, 1);
+        D_00960090(1, 0);
+        sflPselDraw(sflPselBytes(work, 0x110));
+    } else if (work[1] == 0) {
+        D_00960090(6, 1);
+        D_00960090(8, 1);
+        D_00960090(1, 0);
+        sflPselDraw(sflPselBytes(work, 0x110));
+    }
+
+    D_00960090(6, 1);
+    D_00960090(6, 1);
+    D_00960090(8, 0);
+    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x34));
+    D_00960090(1, texture);
+    sflPselDraw(sflPselBytes(work, 0x410));
+    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x35));
+    D_00960090(1, texture);
+    sflPselDraw(sflPselBytes(work, 0x510));
+    texture = FUN_0021cce0(FUN_0021cca0(texture, 0x36));
+    D_00960090(1, texture);
+    sflPselDraw(sflPselBytes(work, 0x610));
+}
+
+extern void FUN_0021d890(void*, const void*);
+
+// FUN_00261480 NONMATCHING
+void sflPsel00261480(void)
+{
+    u8 color[4];
+    u32* work;
+    u32 texture;
+    u8* resource34;
+    u8* resource35;
+    u8* resource36;
+    void* object;
+    float rect[4];
+    float quad[8];
+    float progress;
+    float alpha;
+    float diagonal;
+    float height;
+    float delta;
+    s32 frame;
+    s32 mode;
+
+    K_ASSERT(sSflPsel != NULL, 0x57);
+    work = sSflPsel;
+    texture = sflRes0020ec50();
+    resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x34);
+    resource35 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x35);
+    resource36 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x36);
+    frame = (s32)work[2];
+    mode = (s32)work[1];
+    diagonal = 1.4142135f;
+
+    if (mode == 1) {
+        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
+        rect[0] = progress * 150.0f + 6.0f;
+        rect[1] = rect[0];
+        alpha = 1.0f - progress;
+    } else {
+        alpha = 1.0f;
+        if (frame < 5) {
+            progress = (float)frame / 5.0f;
+            height = (float)sflPselReadS32(resource34, 0x10);
+            rect[0] = progress * (6.0f - (height + 12.0f)) + (height + 12.0f);
+            rect[1] = progress * (6.0f - (6.0f - (height + 6.0f))) +
+                      (6.0f - (height + 6.0f));
+        } else {
+            rect[0] = 6.0f;
+            rect[1] = 6.0f;
+        }
+    }
+    rect[2] = (float)sflPselReadS32(resource34, 0x0c);
+    rect[3] = (float)sflPselReadS32(resource34, 0x10);
+    object = sflPselBytes(work, 0x410);
+    FUN_0021d8e0(object, rect);
+    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+
+    if (mode == 1) {
+        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
+        rect[0] = progress * 150.0f + 23.0f;
+        rect[1] = progress * 150.0f + 109.0f;
+        alpha = 1.0f - progress;
+    } else {
+        alpha = 1.0f;
+        if (frame < 6) {
+            float from0;
+            float from1;
+
+            progress = (float)frame / 6.0f;
+            height = (float)sflPselReadS32(resource35, 0x10);
+            from0 = height + 109.0f;
+            from1 = from0 + 23.0f;
+            rect[0] = progress * (23.0f - from1) + from1;
+            from0 = 109.0f - from0;
+            rect[1] = progress * (109.0f - from0) + from0;
+        } else {
+            rect[0] = 23.0f;
+            rect[1] = 109.0f;
+        }
+    }
+    rect[2] = (float)sflPselReadS32(resource35, 0x0c);
+    rect[3] = (float)sflPselReadS32(resource35, 0x10);
+    object = sflPselBytes(work, 0x510);
+    FUN_0021d8e0(object, rect);
+    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+
+    if (mode == 1) {
+        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
+        rect[0] = progress * 150.0f + 116.0f;
+        rect[1] = progress * 150.0f + 22.0f;
+        alpha = 1.0f - progress;
+    } else {
+        alpha = 1.0f;
+        if (frame < 6) {
+            float from0;
+            float from1;
+
+            progress = (float)frame / 6.0f;
+            height = (float)sflPselReadS32(resource36, 0x10);
+            from0 = height + 109.0f;
+            from1 = from0 + 116.0f;
+            rect[0] = progress * (116.0f - from1) + from1;
+            from0 = 22.0f - from0;
+            rect[1] = progress * (22.0f - from0) + from0;
+        } else {
+            rect[0] = 116.0f;
+            rect[1] = 22.0f;
+        }
+    }
+    rect[2] = (float)sflPselReadS32(resource36, 0x0c);
+    rect[3] = (float)sflPselReadS32(resource36, 0x10);
+    object = sflPselBytes(work, 0x610);
+    FUN_0021d8e0(object, rect);
+    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+
+    if (mode == 1) {
+        if (frame < 10) {
+            progress = (float)frame / 10.0f;
+            delta = (1.0f - progress) *
+                    (544.0f - (256.0f - fGpffff8300) / diagonal);
+            quad[0] = 320.0f - delta;
+            quad[1] = 768.0f - delta;
+            quad[2] = 864.0f - delta;
+            quad[3] = 224.0f - delta;
+            quad[4] = 864.0f;
+            quad[5] = 224.0f;
+            quad[6] = 320.0f;
+            quad[7] = 768.0f;
+        } else {
+            delta = (1088.0f / diagonal) / diagonal;
+            quad[0] = delta - (448.0f / diagonal) / diagonal;
+            quad[1] = delta + 224.0f;
+            quad[2] = delta + 320.0f;
+            quad[3] = delta - (640.0f / diagonal) / diagonal;
+            quad[4] = quad[2];
+            quad[5] = quad[3];
+            quad[6] = quad[0];
+            quad[7] = quad[1];
+        }
+    } else {
+        if (frame < 8) {
+            progress = (float)frame / 8.0f;
+            delta = progress * 1088.0f / diagonal;
+            quad[0] = 320.0f;
+            quad[1] = -320.0f;
+            quad[2] = -224.0f;
+            quad[3] = 224.0f;
+            quad[4] = delta - 224.00002f;
+            quad[5] = delta + 224.0f;
+            quad[6] = delta + 320.0f;
+            quad[7] = delta - 320.0f;
+        } else {
+            delta = 1088.0f / diagonal;
+            quad[0] = 320.0f;
+            quad[1] = -320.0f;
+            quad[2] = -224.0f;
+            quad[3] = 224.0f;
+            quad[4] = delta - 224.0f;
+            quad[5] = delta + 224.0f;
+            quad[6] = delta + 320.0f;
+            quad[7] = delta - 320.0f;
+        }
+    }
+    object = sflPselBytes(work, 0x10);
+    FUN_0021d890(object, quad);
+    FUN_0021eac0(object, FUN_0021ea00(0x32));
+    color[0] = 0;
+    color[1] = 0;
+    color[2] = 0;
+    color[3] = 0;
+    FUN_0021d950(object, color);
+
+    if (mode == 1) {
+        if (frame < 10) {
+            progress = (float)frame / 10.0f;
+            alpha = 1.0f - progress;
+            delta = progress * (544.0f -
+                                (181.01933f - fGpffff8300) / diagonal);
+            quad[0] = delta + 291.71573f;
+            quad[1] = delta - 348.28427f;
+            quad[2] = delta - 252.28427f;
+            quad[3] = delta + 195.71573f;
+            quad[4] = quad[2] + 136.28427f;
+            quad[5] = quad[3] + 136.28427f;
+            quad[6] = quad[0] + 136.28427f;
+            quad[7] = quad[1] + 136.28427f;
+        } else {
+            alpha = 0.0f;
+            quad[0] = 0.0f;
+            quad[1] = 0.0f;
+            quad[2] = 0.0f;
+            quad[3] = 0.0f;
+            quad[4] = 0.0f;
+            quad[5] = 0.0f;
+            quad[6] = 0.0f;
+            quad[7] = 0.0f;
+        }
+    } else {
+        alpha = 1.0f;
+        quad[0] = 320.0f;
+        quad[1] = -320.0f;
+        quad[2] = -224.0f;
+        quad[3] = 224.0f;
+        quad[4] = -116.0f;
+        quad[5] = 332.0f;
+        quad[6] = 428.0f;
+        quad[7] = -212.0f;
+    }
+    object = sflPselBytes(work, 0x110);
+    FUN_0021d890(object, quad);
+    FUN_0021eac0(object, FUN_0021ea00(0x23));
+    color[0] = 4;
+    color[1] = 0x29;
+    color[2] = 0x46;
+    color[3] = (u8)(alpha * 255.0f);
+    FUN_0021d950(object, color);
+
+    if (mode == 1) {
+        delta = (181.01933f - fGpffff8300) / diagonal;
+        progress = (float)frame / 10.0f;
+        alpha = progress * (544.0f - delta);
+        quad[0] = delta + 320.0f + alpha;
+        quad[1] = delta - 320.0f + alpha;
+        quad[2] = delta - 224.0f + alpha;
+        quad[3] = delta + 224.0f + alpha;
+        quad[4] = alpha - 96.0f;
+        quad[5] = alpha + 352.0f;
+        quad[6] = alpha + 448.0f;
+        quad[7] = alpha - 192.0f;
+    } else {
+        quad[0] = 320.0f;
+        quad[1] = -320.0f;
+        quad[2] = -224.0f;
+        quad[3] = 224.0f;
+        quad[4] = -96.0f;
+        quad[5] = 352.0f;
+        quad[6] = 448.0f;
+        quad[7] = -192.0f;
+    }
+    object = sflPselBytes(work, 0x210);
+    FUN_0021d890(object, quad);
+    FUN_0021eac0(object, FUN_0021ea00(0x23));
+    color[0] = 0x4f;
+    color[1] = 0xa4;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    FUN_0021d950(object, color);
+
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    object = sflPselBytes(work, 0x710);
+    FUN_0021d8e0(object, rect);
+    sflPselSetAlpha(object, 0xff);
+
+    *(u32*)sflPselBytes(work, 0x810) = 0x44014000;
+    *(u32*)sflPselBytes(work, 0x814) = 0x43e00000;
+    *(u32*)sflPselBytes(work, 0x850) = 0x44200000;
+    *(u32*)sflPselBytes(work, 0x854) = 0x43a28000;
+    *(u32*)sflPselBytes(work, 0x890) = 0x44200000;
+    *(u32*)sflPselBytes(work, 0x894) = 0x43e00000;
+    *(u32*)sflPselBytes(work, 0x830) = 0x429e0000;
+    *(u32*)sflPselBytes(work, 0x834) = 0x43240000;
+    *(u32*)sflPselBytes(work, 0x838) = 0x437f0000;
+    *(u32*)sflPselBytes(work, 0x83c) = 0x437f0000;
+    *(u32*)sflPselBytes(work, 0x870) = 0x429e0000;
+    *(u32*)sflPselBytes(work, 0x874) = 0x43240000;
+    *(u32*)sflPselBytes(work, 0x878) = 0x437f0000;
+    *(u32*)sflPselBytes(work, 0x87c) = 0x437f0000;
+    *(u32*)sflPselBytes(work, 0x8b0) = 0x429e0000;
+    *(u32*)sflPselBytes(work, 0x8b4) = 0x43240000;
+    *(u32*)sflPselBytes(work, 0x8b8) = 0x437f0000;
+    *(u32*)sflPselBytes(work, 0x8bc) = 0x437f0000;
+}
 
 // FUN_00260a10
 void sflPsel00260a10(void)
@@ -66,7 +694,7 @@ void sflPsel00260a50(void)
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     puVar1 = sSflPsel;
-    uVar2 = FUN_0020ec50();
+    uVar2 = sflRes0020ec50();
     uVar3 = FUN_0021cca0(uVar2, 0x34);
     FUN_0021d3b0(puVar1 + 0x104, uVar3);
     fVar4 = FUN_0021ea00(0x1e);
@@ -90,4 +718,1282 @@ void sflPsel00260a50(void)
     FUN_00260c20();
     FUN_00261480();
     *puVar1 |= 1;
+}
+// FUN_00215A50
+void func_00215a50(u32* work)
+{
+    if (sSflPsel != NULL)
+    {
+        K_ASSERT(0, 0xd1);
+    }
+    work[0] = 0;
+    work[1] = 0;
+    sSflPsel = work;
+}
+
+// FUN_00215AA0
+void func_00215aa0(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    if ((*sSflPsel & 1) != 0)
+    {
+        func_00216800();
+    }
+    sSflPsel = NULL;
+}
+
+// FUN_00215B00 NONMATCHING
+void func_00215b00(void)
+{
+    u8* work;
+    DatPersonaWork* hero;
+    u32 heroCount;
+    u32 totalCount;
+    u32 count;
+    u32 texture;
+    u32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    texture = sflRes0020ec50();
+    hero = datPersonaGetByPcId(1);
+    heroCount = func_001756f0();
+    totalCount = func_00175410() & 0xffff;
+    *(u32*)(work + 8) = totalCount;
+    count = *(u32*)(work + 4);
+    for (i = 0; i < heroCount; i++)
+    {
+        DatPersonaWork* persona;
+        u8* entry;
+
+        persona = datPersonaGetHeroPersona((s16)i);
+        entry = work + 0x10 + count * 0x10;
+        *(u32*)entry = 0;
+        *(u16*)(entry + 4) = persona->id;
+        if (persona->id != hero->id)
+        {
+            count++;
+        }
+    }
+    *(u32*)(work + 4) = count;
+    *(f32*)(work + 0x5c40) = 1.0f;
+    if ((s32)count < 9)
+    {
+        *(u32*)(work + 0xc) = count;
+    }
+    else
+    {
+        *(u32*)(work + 0xc) = 8;
+    }
+    for (i = 0; i < count; i++)
+    {
+        *(u32*)(work + 0x52e0 + i * 4) = i;
+    }
+    *(u32*)(work + 0x5330) = count;
+    for (i = 0; i < count; i++)
+    {
+        u8* entry;
+        u16 id;
+
+        entry = work + 0x10 + i * 0x10;
+        id = *(u16*)(entry + 4);
+        if ((*(u32*)entry & 2) != 0)
+        {
+            *(u32*)(entry + 0xc) = DAT_007ce420[(u32)id * 0xe + 3];
+        }
+        else
+        {
+            *(u32*)(entry + 0xc) = ((u8*)func_001749a0(id))[4];
+        }
+        *(u32*)(entry + 8) = func_00173280(id) & 0xff;
+    }
+    {
+        u32 frame;
+
+        frame = func_0021cca0(texture, 0x31);
+        func_0021d3b0(work + 0x5340, frame);
+        func_0021eac0(work + 0x5340, func_0021ea00(0x28));
+        frame = func_0021cca0(texture, 0x32);
+        func_0021d3b0(work + 0x5440, frame);
+        func_0021eac0(work + 0x5440, func_0021ea00(0x28));
+        frame = func_0021cca0(texture, 0x38);
+        func_0021d3b0(work + 0x5540, frame);
+        func_0021eac0(work + 0x5540, func_0021ea00(0x28));
+        frame = func_0021cca0(texture, 0x39);
+        func_0021d3b0(work + 0x5640, frame);
+        func_0021eac0(work + 0x5640, func_0021ea00(0x28));
+        frame = func_0021cca0(texture, 0x33);
+        func_0021d3b0(work + 0x5740, frame);
+        func_0021eac0(work + 0x5740, func_0021ea00(0x28));
+    }
+    *(u32*)(work + 0x5c5c) = 0;
+    *(u32*)(work + 0x5c68) = 0;
+    *(u32*)(work + 0x5c60) = 0;
+    *(u32*)(work + 0x5c64) = *(u32*)(work + 0xc);
+    *(u32*)(work + 0x5c6c) = *(u32*)(work + 4);
+    *(u32*)(work + 0x5c5c) |= 4;
+    for (i = 0; i < 8; i++)
+    {
+        *(u8*)(work + 0x5c70 + i * 4) = 0;
+        *(u8*)(work + 0x5c71 + i * 4) = 0;
+        *(u8*)(work + 0x5c72 + i * 4) = 0;
+    }
+    *(u8*)(work + 0x5c73) = 0;
+    *(u8*)(work + 0x5c77) = 0;
+    *(u8*)(work + 0x5c7b) = 0;
+    *(u8*)(work + 0x5c7f) = 0;
+    *(u8*)(work + 0x5c87) = 0;
+    *(u8*)(work + 0x5c83) = 0;
+    *(u8*)(work + 0x5c8f) = 0;
+    *(u8*)(work + 0x5c8b) = 0;
+    func_002170c0();
+    func_00217610();
+    sflPsel00260a50();
+    func_002187b0();
+    func_0021d3b0(work + 0x5f90, func_0021cca0(texture, 0x1d));
+    func_0021eac0(work + 0x5f90, func_0021ea00(0x28));
+    texture = func_0021cca0(texture, 0x1e);
+    func_0021d3b0(work + 0x5c90, texture);
+    func_0021eac0(work + 0x5c90, func_0021ea00(0x28));
+    func_0021e380(work + 0x5d90, texture, 2);
+    func_0021eac0(work + 0x5d90, func_0021ea00(0x28));
+    texture = func_0021cca0(sflRes0020ec50(), 0x1f);
+    func_0021d3b0(work + 0x5e90, texture);
+    func_0021eac0(work + 0x5e90, func_0021ea00(0x28));
+    *(u32*)(work + 0x5334) = 0;
+    *(u32*)(work + 0x5338) = 0;
+    *sSflPsel |= 0x20;
+    *sSflPsel |= 1;
+}
+
+// FUN_00215FC0 NONMATCHING
+void func_00215fc0(void)
+{
+    u8* work;
+    u32 flags;
+    u32 updateSelection;
+    u32 updateList;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    sflPsel00260d20();
+    flags = *(u32*)work;
+    if ((flags & 1) == 0)
+    {
+        return;
+    }
+    if ((flags & 4) != 0)
+    {
+        if (*(u32*)(work + 0x5c48) == 1)
+        {
+            u32 frame = *(u32*)(work + 0x5c44) + 1;
+            *(u32*)(work + 0x5c44) = frame;
+            if (frame == 6)
+            {
+                *(u32*)work &= ~4u;
+            }
+            *(f32*)(work + 0x5c40) = (f32)(s32)frame / 6.0f;
+        }
+        else if (*(u32*)(work + 0x5c48) == 0)
+        {
+            u32 frame = *(u32*)(work + 0x5c44) + 1;
+            *(u32*)(work + 0x5c44) = frame;
+            if (frame == 6)
+            {
+                *(u32*)work &= ~4u;
+            }
+            *(f32*)(work + 0x5c40) = 1.0f - (f32)(s32)frame / 6.0f;
+        }
+    }
+    if ((*(u32*)work & 0x10) != 0)
+    {
+        if (*(u32*)(work + 0x5c54) == 1)
+        {
+            u32 frame = *(u32*)(work + 0x5c50) + 1;
+            *(u32*)(work + 0x5c50) = frame;
+            if (frame == 3)
+            {
+                *(u32*)work &= ~0x10u;
+            }
+            *(f32*)(work + 0x5c4c) = (f32)(s32)frame / 3.0f;
+        }
+        else if (*(u32*)(work + 0x5c54) == 0)
+        {
+            u32 frame = *(u32*)(work + 0x5c50) + 1;
+            *(u32*)(work + 0x5c50) = frame;
+            if (frame == 3)
+            {
+                func_00219b00();
+                *(u32*)work &= ~0x10u;
+            }
+            *(f32*)(work + 0x5c4c) = 1.0f - (f32)(s32)frame / 3.0f;
+        }
+    }
+    updateSelection = 0;
+    updateList = 0;
+    switch (*(u32*)(work + 0x5334))
+    {
+    case 0:
+        switch (*(u32*)(work + 0x5338))
+        {
+        case 2:
+            if (func_0027c020() == 0)
+            {
+                func_0027bdf0();
+                if (*(u32*)(work + 0x6090) == 1)
+                {
+                    *(u32*)(work + 0x5338) = 3;
+                }
+                else if (*(u32*)(work + 0x6090) == 0)
+                {
+                    func_00219b90();
+                }
+            }
+            break;
+        case 1:
+            if (func_0027bf60() == 0 && func_0027c020() == 0)
+            {
+                if ((DAT_007e0952 & 0x40) != 0)
+                {
+                    *(u32*)(work + 0x6090) = 0;
+                    func_0027bfb0();
+                    *(u32*)(work + 0x5338) = 2;
+                }
+                else if ((DAT_007e0952 & 0x20) != 0)
+                {
+                    func_0010a4e0(0, 0, 0, 2);
+                    *(u32*)(work + 0x6090) = 1;
+                    func_0027bfb0();
+                    *(u32*)(work + 0x5338) = 2;
+                }
+                else if ((DAT_007e0952 & 8) != 0)
+                {
+                    u32 current = *(u32*)(work + 0x5c68);
+                    u32 total = *(u32*)(work + 0x5c6c);
+                    if (current < total - 1)
+                    {
+                        current++;
+                        *(u32*)(work + 0x5c68) = current;
+                        if (current >= *(u32*)(work + 0x5c60) + *(u32*)(work + 0x5c64) - 1 &&
+                            *(u32*)(work + 0x5c60) < total - *(u32*)(work + 0x5c64))
+                        {
+                            (*(u32*)(work + 0x5c60))++;
+                        }
+                    }
+                    else
+                    {
+                        *(u32*)(work + 0x5c68) = 0;
+                        *(u32*)(work + 0x5c60) = 0;
+                    }
+                    updateSelection = 1;
+                    updateList = 1;
+                    func_0010a4e0(0, 0, 0, 0);
+                    func_0027bd10((u16)*(u16*)(work + 0x10 +
+                                                *(u32*)(work + 0x52e0 +
+                                                        *(u32*)(work + 0x5c68) * 4) *
+                                                    0x10 + 4));
+                }
+                else if ((DAT_007e0952 & 4) != 0)
+                {
+                    u32 current = *(u32*)(work + 0x5c68);
+                    u32 total = *(u32*)(work + 0x5c6c);
+                    if (current > 0)
+                    {
+                        current--;
+                        *(u32*)(work + 0x5c68) = current;
+                        if (*(u32*)(work + 0x5c60) >= current &&
+                            *(u32*)(work + 0x5c60) > 0)
+                        {
+                            (*(u32*)(work + 0x5c60))--;
+                        }
+                    }
+                    else
+                    {
+                        *(u32*)(work + 0x5c68) = total - 1;
+                        *(u32*)(work + 0x5c60) = total - *(u32*)(work + 0x5c64);
+                    }
+                    updateSelection = 1;
+                    updateList = 1;
+                    func_0010a4e0(0, 0, 0, 0);
+                    func_0027bd10((u16)*(u16*)(work + 0x10 +
+                                                *(u32*)(work + 0x52e0 +
+                                                        *(u32*)(work + 0x5c68) * 4) *
+                                                    0x10 + 4));
+                }
+            }
+            break;
+        case 0:
+            if ((*(u32*)work & 0x10) == 0)
+            {
+                if ((DAT_007e0952 & 0x40) != 0)
+                {
+                    func_00219b90();
+                    break;
+                }
+                if ((DAT_007e0952 & 0x80) != 0)
+                {
+                    func_0010a4e0(0, 0, 0, 0);
+                    func_0027bc00((u16)*(u16*)(work + 0x10 +
+                                                *(u32*)(work + 0x52e0 +
+                                                        *(u32*)(work + 0x5c68) * 4) *
+                                                    0x10 + 4));
+                    *(u32*)(work + 0x5338) = 1;
+                    break;
+                }
+            }
+            *(u32*)(work + 0x5c5c) &= ~1u;
+            func_0024a260((u32*)(work + 0x5c5c));
+            if ((*(u32*)(work + 0x5c5c) & 1) != 0)
+            {
+                updateSelection = 1;
+                updateList = 1;
+            }
+            break;
+        case 4:
+            *(u32*)(work + 0x5338) = 0;
+            break;
+        case 3:
+            *(u32*)(work + 0x5338) = 4;
+            break;
+        }
+        break;
+    case 1:
+        func_003c7990(0);
+        if (func_003c7850() == 0)
+        {
+            *(u32*)(work + 0x5334) = 2;
+        }
+        break;
+    case 2:
+        if (func_003c78d0() == 0)
+        {
+            u32 result = func_003c7610();
+            if (result == 1)
+            {
+                func_003c7650(0);
+                func_002187b0();
+                func_00219ab0();
+                *(u32*)(work + 0x5334) = 0;
+                *(u32*)(work + 0x5338) = 0;
+            }
+            else if (result == 0)
+            {
+                u32 selected = *(u32*)(work + 0x52e0 + *(u32*)(work + 0x5c68) * 4);
+                u32 i;
+                u32 total;
+
+                func_003c7650(0);
+                func_002172c0();
+                for (i = *(u32*)(work + 0x5c68), total = *(u32*)(work + 0x5330) - 1;
+                     i < total; i++)
+                {
+                    *(u32*)(work + 0x52e0 + i * 4) =
+                        *(u32*)(work + 0x52e0 + (i + 1) * 4);
+                }
+                *(u32*)(work + 0x5330) = total;
+                *(u32*)(work + 0xc) = total < 9 ? total : 8;
+                *(u32*)(work + 0x5c68) = 0;
+                *(u32*)(work + 0x5c60) = 0;
+                *(u32*)(work + 0x5c64) = *(u32*)(work + 0xc);
+                *(u32*)(work + 0x5c6c) = *(u32*)(work + 0x5330);
+                updateSelection = 0;
+                updateList = 1;
+                *(u32*)(work + 0x10 + selected * 0x10) |= 1;
+                func_002170c0();
+                func_003c7bc0(0, func_00173220(*(u16*)(work + 0x10 + selected * 0x10 + 4)));
+                func_003c7430(0x2f);
+                *(u32*)(work + 0x5334) = 3;
+            }
+        }
+        break;
+    case 3:
+        func_003c7990(1);
+        if (func_003c7850() == 0)
+        {
+            func_003c7650(1);
+            if (*(u32*)(work + 0x5330) == *(u32*)(work + 8) - 1)
+            {
+                sflPsel00260c70();
+                *(u32*)(work + 0x5334) = 6;
+            }
+            else
+            {
+                func_002187b0();
+                func_00219ab0();
+                *(u32*)(work + 0x5334) = 0;
+                *(u32*)(work + 0x5338) = 0;
+            }
+        }
+        break;
+    case 4:
+        func_003c7990(1);
+        if (func_003c7850() == 0)
+        {
+            func_003c7650(1);
+            func_002187b0();
+            func_00219ab0();
+            *(u32*)(work + 0x5334) = 0;
+        }
+        break;
+    case 6:
+        if (sflPsel00260cd0() == 0)
+        {
+            *(u32*)(work + 0x5334) = 5;
+            *(u32*)work &= ~0x20u;
+        }
+        break;
+    }
+    if (updateSelection != 0)
+    {
+        func_00217350();
+    }
+    if (updateList != 0)
+    {
+        func_00217610();
+    }
+    func_00217780();
+}
+// FUN_00216800 NONMATCHING
+void func_00216800(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    K_ASSERT((*sSflPsel & 1) != 0, 0x2af);
+    sflPsel00260bd0();
+    func_002172c0();
+    if ((*sSflPsel & 8) != 0)
+    {
+        func_00219b00();
+    }
+    *sSflPsel &= ~1u;
+}
+
+// FUN_002168A0
+u32 func_002168a0(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    return *sSflPsel & 0x20;
+}
+
+// FUN_002168F0 NONMATCHING
+void func_002168f0(void)
+{
+    u8* work;
+    u32 texture;
+    s32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    sflPsel00260e00();
+    if ((*(u32*)work & 1) == 0)
+    {
+        return;
+    }
+    texture = sflRes0020ec50();
+    D_00960090(6, 1);
+    D_00960090(8, 0);
+    D_00960090(1, 0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
+    {
+        u32 listIndex = *(u32*)(work + 0x5c60 + i * 4);
+        u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
+        func_00219370(work + 0x150 + i * 0x910,
+                      (u32*)(work + 0x10 + entryIndex * 0x10),
+                      *(u32*)(work + 0x5c68) == listIndex);
+    }
+    RpSkyRenderStateSet(3, (void*)0x71801);
+    RpSkyRenderStateSet(2, (void*)0x48);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x31)));
+    sflPselDraw(work + 0x5340);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x32)));
+    sflPselDraw(work + 0x5440);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x38)));
+    sflPselDraw(work + 0x5540);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x39)));
+    sflPselDraw(work + 0x5640);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x33)));
+    sflPselDraw(work + 0x5740);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    for (i = 0; i < 2; i++)
+    {
+        sflPselDraw(work + 0x5840 + i * 0x40);
+    }
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    for (i = 0; i < 2; i++)
+    {
+        sflPselDraw(work + 0x5a40 + i * 0x40);
+    }
+    if ((*(u32*)work & 8) != 0)
+    {
+        u32 entryIndex = *(u32*)(work + 0x5c58);
+        func_00219370(work + 0x49d0,
+                      (u32*)(work + 0x10 + entryIndex * 0x10), 0);
+    }
+    D_00960090(6, 1);
+    D_00960090(8, 0);
+    RpSkyRenderStateSet(3, (void*)0x71801);
+    RpSkyRenderStateSet(2, (void*)0x48);
+    texture = func_0021cce0(func_0021cca0(texture, 0x1e));
+    D_00960090(1, texture);
+    sflPselDraw(work + 0x5c90);
+    sflPselDraw(work + 0x5d90);
+    texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1f));
+    D_00960090(1, texture);
+    sflPselDraw(work + 0x5e90);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    if (*(u32*)(work + 0x5330) > 8)
+    {
+        texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1d));
+        D_00960090(1, texture);
+        sflPselDraw(work + 0x5f90);
+    }
+}
+
+// FUN_002170C0 NONMATCHING
+void func_002170c0(void)
+{
+    u8* work;
+    u32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    func_003b0e70(1);
+    func_003b0e90(2);
+    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    {
+        u32 listIndex = i + *(u32*)(work + 0x5c60);
+        u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
+        u8* entry = work + 0x10 + entryIndex * 0x10;
+        u32 handle;
+        u32 color;
+
+        handle = func_003b0970(func_00173220(*(u16*)(entry + 4)), 1,
+                               *(u32*)(work + 0x5c68) == listIndex ? 6 : 0,
+                               0, 0);
+        func_003b2c60(handle, D_00960088 - func_0021ea00(0x28));
+        *(u32*)(work + 0xa50 + i * 0x910) = handle;
+        (void)color;
+    }
+    func_003b0e90(1);
+    func_003b0e70(2);
+    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    {
+        u32 handle = *(u32*)(work + 0xa50 + i * 0x910);
+        func_003b0d70(handle, 0x1220, (s32)(i * 0x21 + 0x5d) * 8);
+        func_003b0e54(handle,
+                      *(u32*)(work + 0x5c68) == i + *(u32*)(work + 0x5c60) ?
+                          0xffffffffu : 0x64648cffu);
+    }
+}
+
+// FUN_002172C0 NONMATCHING
+void func_002172c0(void)
+{
+    u8* work;
+    u32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    {
+        func_003b0170(*(u32*)(work + 0xa50 + i * 0x910));
+    }
+}
+
+// FUN_00217350 NONMATCHING
+void func_00217350(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    func_002172c0();
+    func_002170c0();
+}
+
+// FUN_00217410 NONMATCHING
+void func_00217410(u16* ids, s32* count)
+{
+    u8* work;
+    s32 i;
+    s32 output;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    output = 0;
+    for (i = 0; i < (s32)*(u32*)(work + 4); i++)
+    {
+        u8* entry = work + 0x10 + i * 0x10;
+        u32 flags = *(u32*)entry;
+        if ((flags & 2) != 0 && (flags & 1) == 0)
+        {
+            ids[output++] = *(u16*)(entry + 4);
+        }
+    }
+    *count = output;
+}
+
+// FUN_002174D0 NONMATCHING
+void func_002174d0(u16* ids, s32* count)
+{
+    u8* work;
+    s32 i;
+    s32 output;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    output = 0;
+    for (i = 0; i < (s32)*(u32*)(work + 4); i++)
+    {
+        u8* entry = work + 0x10 + i * 0x10;
+        u32 flags = *(u32*)entry;
+        if ((flags & 2) == 0 && (flags & 1) != 0)
+        {
+            ids[output++] = *(u16*)(entry + 4);
+        }
+    }
+    *count = output;
+}
+
+// FUN_00217590
+void func_00217590(u16 id)
+{
+    u8* work;
+    u8* entry;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    entry = work + 0x10 + *(u32*)(work + 4) * 0x10;
+    *(u32*)entry = 0;
+    *(u16*)(entry + 4) = id;
+    *(u32*)entry |= 2;
+    (*(u32*)(work + 4))++;
+}
+
+// FUN_00217610 NONMATCHING
+void func_00217610(void)
+{
+    u8* work;
+    u32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    (void)sflRes0020ec50();
+    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    {
+        u32 listIndex = i + *(u32*)(work + 0x5c60);
+        u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
+        func_00218810(work + 0x150 + i * 0x910,
+                      (u32*)(work + 0x10 + entryIndex * 0x10),
+                      *(u32*)(work + 0x5c68) == listIndex);
+    }
+    func_00218250(work + 0x5840, 2);
+    for (i = 0; i < 2; i++)
+    {
+        func_0021eac0(work + 0x5840 + i * 0x100, func_0021ea00(0x28));
+    }
+    func_00218250(work + 0x5a40, 2);
+    for (i = 0; i < 2; i++)
+    {
+        func_0021eac0(work + 0x5a40 + i * 0x100, func_0021ea00(0x28));
+    }
+}
+// FUN_00217780 NONMATCHING
+void func_00217780(void)
+{
+    u8* work;
+    u32 texture;
+    s32 i;
+    f32 origin[4];
+    u8 color[4];
+    f32 alpha;
+    u8 alphaByte;
+    u8* frame;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    texture = sflRes0020ec50();
+    alpha = *(f32*)(work + 0x5c40);
+    alphaByte = (u8)(alpha * 255.0f);
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
+    {
+        origin[0] = 198.0f;
+        origin[1] = (f32)(i * 0x21) + 90.0f;
+        func_00218b20(alpha, work + 0x150 + i * 0x910,
+                      (u32*)(work + 0x10 +
+                             *(u32*)(work + 0x52e0 +
+                                     (i + *(u32*)(work + 0x5c60)) * 4) *
+                                 0x10),
+                      *(u32*)(work + 0x5c68) == (u32)(i + *(u32*)(work + 0x5c60)),
+                      origin);
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x31);
+    origin[0] = 240.0f;
+    origin[1] = 18.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5340, origin);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x32);
+    origin[0] = 448.0f;
+    origin[1] = 18.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5440, origin);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    for (i = 0; i < 2; i++)
+    {
+        func_0021d950(work + 0x5340 + i * 0x40, color);
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x38);
+    origin[0] = 13.0f;
+    origin[1] = 408.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5540, origin);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x39);
+    origin[0] = 83.0f;
+    origin[1] = 408.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5640, origin);
+    for (i = 0; i < 2; i++)
+    {
+        func_0021d950(work + 0x5540 + i * 0x40, color);
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x33);
+    origin[0] = 421.0f;
+    origin[1] = 379.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5740, origin);
+    func_0021d950(work + 0x5740, color);
+    origin[0] = 503.0f;
+    origin[1] = 384.0f;
+    func_00218370(work + 0x5840, 2, *(u32*)(work + 0x5330) + 1, origin);
+    color[0] = 0x71;
+    color[1] = 0xbf;
+    color[2] = 0xff;
+    for (i = 0; i < 2; i++)
+    {
+        func_0021d950(work + 0x5840 + i * 0x40, color);
+    }
+    origin[0] = 559.0f;
+    origin[1] = 404.0f;
+    func_00218570(work + 0x5a40, 2, *(u32*)(work + 8), origin);
+    color[0] = 4;
+    color[1] = 0x29;
+    color[2] = 0x46;
+    for (i = 0; i < 2; i++)
+    {
+        func_0021d950(work + 0x5a40 + i * 0x40, color);
+    }
+    if ((*(u32*)work & 8) != 0)
+    {
+        origin[0] = 198.0f;
+        origin[1] = 123.0f;
+        func_00218b20(*(f32*)(work + 0x5c4c), work + 0x49d0,
+                      (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10),
+                      0, origin);
+    }
+    origin[0] = 573.0f;
+    if (*(u32*)(work + 0x5330) < 9)
+    {
+        origin[1] = 0.0f;
+    }
+    else
+    {
+        origin[1] = (f32)*(u32*)(work + 0x5c60) * 214.0f /
+                    (f32)(*(u32*)(work + 0x5330) - 8) + 89.0f;
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1d);
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5f90, origin);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    func_0021d950(work + 0x5f90, color);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1e);
+    origin[0] = 573.0f;
+    origin[1] = 85.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5c90, origin);
+    origin[0] = 573.0f;
+    origin[1] = (f32)*(s32*)(frame + 0x10) + 85.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = 244.0f;
+    func_0021d8e0(work + 0x5d90, origin);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x1f);
+    origin[0] = 573.0f;
+    origin[1] = 344.0f;
+    origin[2] = (f32)*(s32*)(frame + 0xc);
+    origin[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(work + 0x5e90, origin);
+    func_0021d950(work + 0x5c90, color);
+    func_0021d950(work + 0x5d90, color);
+    func_0021d950(work + 0x5e90, color);
+}
+
+// FUN_002180B0 NONMATCHING
+u32 func_002180b0(u32 value)
+{
+    u32 texture;
+    u32 frame;
+
+    texture = sflRes0020ec50();
+    frame = 0;
+    switch (value)
+    {
+    case 1: frame = 10; break;
+    case 2: frame = 0xb; break;
+    case 3: frame = 0xc; break;
+    case 4: frame = 0xd; break;
+    case 5: frame = 0xe; break;
+    case 6: frame = 0xf; break;
+    case 7: frame = 0x10; break;
+    case 8: frame = 0x11; break;
+    case 9: frame = 0x12; break;
+    case 10: frame = 0x13; break;
+    case 0xb: frame = 0x14; break;
+    case 0xc: frame = 0x15; break;
+    case 0xd: frame = 0; break;
+    case 0xe: frame = 1; break;
+    case 0xf: frame = 2; break;
+    case 0x10: frame = 3; break;
+    case 0x11: frame = 4; break;
+    case 0x12: frame = 5; break;
+    case 0x13: frame = 6; break;
+    case 0x14: frame = 7; break;
+    case 0x15: frame = 8; break;
+    case 0x16: frame = 9; break;
+    default:
+        K_ASSERT(0, 0x604);
+        break;
+    }
+    return func_0021cca0(texture, frame);
+}
+
+// FUN_00218250 NONMATCHING
+void func_00218250(void* glyphs, s32 capacity)
+{
+    char text[257];
+    s32 length;
+    s32 i;
+
+    func_00523ac8(text, (const char*)0x7cc424);
+    length = func_00524388(text);
+    if (capacity < length)
+    {
+        K_ASSERT(0, 0x612);
+    }
+    for (i = 0; i < length; i++)
+    {
+        func_00218310((u8*)glyphs + i * 0x100, (u8)text[length - 1 - i] - 0x30);
+    }
+}
+
+// FUN_00218310
+void func_00218310(void* glyph, s32 digit)
+{
+    func_0021d3b0(glyph, func_0021cca0(sflRes0020ec50(), digit + 0x27));
+}
+
+// FUN_00218370 NONMATCHING
+void func_00218370(void* glyphs, s32 capacity, u32 value, const f32* origin)
+{
+    char text[256];
+    s32 length;
+    s32 i;
+    s32 totalSpacing;
+    s32 maxSpacing;
+    s32 center;
+    f32 rect[4];
+    u32 texture;
+
+    texture = sflRes0020ec50();
+    func_00523ac8(text, (const char*)0x7cc424, value);
+    length = func_00524388(text);
+    if (capacity < length)
+    {
+        K_ASSERT(0, 0x62c);
+    }
+    totalSpacing = capacity * 0x1b;
+    maxSpacing = length * 0x1b;
+    center = (totalSpacing / 2) - (maxSpacing / 2);
+    for (i = 0; i < length; i++)
+    {
+        u8* frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x27);
+        rect[0] = (f32)center + origin[0] + (f32)((length - 1 - i) * 0x1b);
+        rect[1] = origin[1];
+        rect[2] = (f32)*(s32*)(frame + 0xc);
+        rect[3] = (f32)*(s32*)(frame + 0x10);
+        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+    }
+    for (; i < capacity; i++)
+    {
+        rect[0] = origin[0];
+        rect[1] = origin[1];
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+    }
+}
+
+// FUN_00218570 NONMATCHING
+void func_00218570(void* glyphs, s32 capacity, u32 value, const f32* origin)
+{
+    char text[256];
+    s32 length;
+    s32 i;
+    s32 totalSpacing;
+    s32 maxSpacing;
+    s32 center;
+    f32 rect[4];
+    u8* frame;
+    u32 texture;
+
+    texture = sflRes0020ec50();
+    func_00523ac8(text, (const char*)0x7cc424, value);
+    length = func_00524388(text);
+    if (capacity < length)
+    {
+        K_ASSERT(0, 0x64d);
+    }
+    totalSpacing = capacity * 0x13;
+    maxSpacing = length * 0x13;
+    center = (totalSpacing / 2) - (maxSpacing / 2);
+    for (i = 0; i < length; i++)
+    {
+        frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x27);
+        rect[0] = (f32)center + origin[0] + (f32)((length - 1 - i) * 0x13);
+        rect[1] = origin[1];
+        rect[2] = (f32)((*(s32*)(frame + 0xc) * 0x49) / 100);
+        rect[3] = (f32)((*(s32*)(frame + 0x10) * 0x49) / 100);
+        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+    }
+    for (; i < capacity; i++)
+    {
+        rect[0] = origin[0];
+        rect[1] = origin[1];
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+    }
+}
+
+// FUN_002187B0 NONMATCHING
+void func_002187b0(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    *(u32*)((u8*)sSflPsel + 0x5c44) = 0;
+    *(u32*)((u8*)sSflPsel + 0x5c48) = 1;
+    *sSflPsel |= 4;
+}
+
+// FUN_00218810 NONMATCHING
+void func_00218810(void* panel, const u32* entry, s32 selected)
+{
+    u8* destination;
+    u32 texture;
+    u32 frame;
+    u32 value;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    destination = (u8*)panel;
+    texture = sflRes0020ec50();
+    if (selected == 0)
+    {
+        frame = (*entry & 2) == 0 ? 0x21 : 0x23;
+        value = (*entry & 2) == 0 ? 0x22 : 0x24;
+    }
+    else
+    {
+        frame = 0x1b;
+        value = 0x1c;
+    }
+    func_0021d3b0(destination, func_0021cca0(texture, frame));
+    func_0021eac0(destination, func_0021ea00(0x28));
+    func_0021e380(destination + 0x100, func_0021cca0(texture, frame), 1);
+    func_0021eac0(destination + 0x100, func_0021ea00(0x28));
+    func_0021d3b0(destination + 0x200, func_0021cca0(texture, value));
+    func_0021eac0(destination + 0x200, func_0021ea00(0x28));
+    frame = selected != 0 ? 0x1a : ((*entry & 2) == 0 ? 0x18 : 0x3b);
+    func_0021d3b0(destination + 0x300, func_0021cca0(texture, frame));
+    func_0021eac0(destination + 0x300, func_0021ea00(0x28));
+    func_0021d3b0(destination + 0x400, func_002180b0(entry[2]));
+    func_0021eac0(destination + 0x400, func_0021ea00(0x28));
+    if ((*entry & 2) != 0)
+    {
+        func_0021d3b0(destination + 0x500, func_0021cca0(texture, 0x25));
+        func_0021eac0(destination + 0x500, func_0021ea00(0x28));
+    }
+    frame = selected != 0 ? 0x1a : 0x19;
+    func_0021d3b0(destination + 0x600, func_0021cca0(texture, frame));
+    func_0021eac0(destination + 0x600, func_0021ea00(0x28));
+    func_00238980(destination + 0x700, 2, entry[3], selected != 0 ? 1 : 2);
+    func_0021eac0(destination + 0x700, func_0021ea00(0x28));
+    func_0021eac0(destination + 0x800, func_0021ea00(0x28));
+}
+
+// FUN_00218B20 NONMATCHING
+void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
+                   const f32* origin)
+{
+    u8* destination;
+    u32 texture;
+    u8 color[4];
+    f32 rect[4];
+    f32 x;
+    f32 y;
+    u8 alphaByte;
+    u8* frame;
+    void* handle;
+    u32 colorValue;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    destination = (u8*)panel;
+    texture = sflRes0020ec50();
+    x = origin[0] - 198.0f;
+    y = origin[1] - 90.0f;
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x21);
+    rect[0] = x + 198.0f;
+    rect[1] = y + 90.0f;
+    rect[2] = (f32)*(s32*)(frame + 0xc);
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination, rect);
+    rect[0] = x + 198.0f + (f32)*(s32*)(frame + 0xc);
+    rect[1] = y + 90.0f;
+    rect[2] = 349.0f;
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination + 0x100, rect);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x22);
+    rect[0] = x + 557.0f;
+    rect[1] = y + 90.0f;
+    rect[2] = (f32)*(s32*)(frame + 0xc);
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination + 0x200, rect);
+    alphaByte = (u8)(alpha * 255.0f);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    func_0021d950(destination, color);
+    func_0021d950(destination + 0x100, color);
+    func_0021d950(destination + 0x200, color);
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x17);
+    rect[0] = x + 202.0f;
+    rect[1] = y + 93.0f;
+    rect[2] = (f32)*(s32*)(frame + 0xc);
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination + 0x300, rect);
+    func_0021d950(destination + 0x300, color);
+    frame = (u8*)(uintptr_t)func_002180b0(entry[2]);
+    rect[0] = x + 202.0f;
+    rect[1] = y + 93.0f;
+    rect[2] = (f32)*(s32*)(frame + 0xc);
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination + 0x400, rect);
+    func_0021d950(destination + 0x400, color);
+    if (selected == 0)
+    {
+        if ((*entry & 2) == 0)
+        {
+            color[0] = 0x71;
+            color[1] = 0xbf;
+            color[2] = 0xff;
+        }
+        else
+        {
+            color[0] = 0xff;
+            color[1] = 0xfe;
+            color[2] = 0xbb;
+        }
+    }
+    else
+    {
+        color[0] = 4;
+        color[1] = 0x29;
+        color[2] = 0x46;
+    }
+    func_0021d950(destination + 0x400, color);
+    if ((*entry & 2) != 0)
+    {
+        frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x25);
+        rect[0] = x + 148.0f;
+        rect[1] = y + 108.0f;
+        rect[2] = (f32)*(s32*)(frame + 0xc);
+        rect[3] = (f32)*(s32*)(frame + 0x10);
+        func_0021d8e0(destination + 0x500, rect);
+        func_0021d950(destination + 0x500, color);
+    }
+    frame = (u8*)(uintptr_t)func_0021cca0(texture, selected == 0 ? 0x19 : 0x1a);
+    rect[0] = x + 482.0f;
+    rect[1] = y + 105.0f;
+    rect[2] = (f32)*(s32*)(frame + 0xc);
+    rect[3] = (f32)*(s32*)(frame + 0x10);
+    func_0021d8e0(destination + 0x600, rect);
+    func_0021d950(destination + 0x600, color);
+    rect[0] = x + 514.0f;
+    rect[1] = y + 105.0f;
+    rect[2] = 0.0f;
+    rect[3] = 0.0f;
+    handle = func_00238dc0(destination + 0x700, 2, entry[3],
+                           selected == 0 ? 2 : 1, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    func_0021d950(destination + 0x700, color);
+    func_0021d950(destination + 0x800, color);
+    rect[0] = x + 290.0f;
+    rect[1] = y + 90.0f;
+    func_003b0d70(*(u32*)(destination + 0x900),
+                  (s32)rect[0] << 4, (s32)rect[1] << 3);
+    colorValue = alphaByte | (selected == 0 ? 0x64648c00u : 0xffffff00u);
+    func_003b0e54(*(u32*)(destination + 0x900), colorValue);
+    (void)handle;
+}
+// FUN_00219370 NONMATCHING
+void func_00219370(void* panel, const u32* entry, s32 selected)
+{
+    u8* destination;
+    u32 texture;
+    u32 frame;
+    u32 value;
+    s32 i;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    destination = (u8*)panel;
+    texture = sflRes0020ec50();
+    D_00960090(6, 1);
+    D_00960090(8, 0);
+    D_00960090(1, 0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    if (selected != 0)
+    {
+        RpSkyRenderStateSet(3, (void*)0x71801);
+        RpSkyRenderStateSet(2, (void*)0x48);
+        frame = 0x1b;
+        value = 0x1c;
+    }
+    else if ((*entry & 2) != 0)
+    {
+        RpSkyRenderStateSet(3, (void*)0x71801);
+        RpSkyRenderStateSet(2, (void*)0x48);
+        frame = 0x23;
+        value = 0x24;
+    }
+    else
+    {
+        frame = 0x21;
+        value = 0x22;
+    }
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
+    sflPselDraw(destination);
+    sflPselDraw(destination + 0x100);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, value)));
+    sflPselDraw(destination + 0x200);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    frame = selected != 0 ? 0x1a : ((*entry & 2) != 0 ? 0x3b : 0x18);
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
+    sflPselDraw(destination + 0x300);
+    D_00960090(1, func_0021cce0(func_002180b0(entry[2])));
+    sflPselDraw(destination + 0x400);
+    frame = selected != 0 ? 0x1a : 0x19;
+    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
+    sflPselDraw(destination + 0x600);
+    D_00960090(1, func_00239140(selected != 0 ? 1 : 2));
+    for (i = 0; i < 2; i++)
+    {
+        sflPselDraw(destination + 0x700 + i * 0x100);
+    }
+    if ((*entry & 2) != 0)
+    {
+        D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x25)));
+        sflPselDraw(destination + 0x500);
+    }
+    func_003b1360(*(u32*)(destination + 0x900), 1, 0);
+}
+
+// FUN_00219970 NONMATCHING
+void func_00219970(void)
+{
+    u8* work;
+    u32 listIndex;
+    u8* entry;
+    u32 handle;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    listIndex = *(u32*)(work + 0x5c68);
+    *(u32*)(work + 0x5c58) = *(u32*)(work + 0x52e0 + listIndex * 4);
+    entry = work + 0x10 + *(u32*)(work + 0x5c58) * 0x10;
+    func_003b0e70(1);
+    func_003b0e90(2);
+    handle = func_003b0970(func_00173220(*(u16*)(entry + 4)), 1, 0, 0, 0);
+    func_003b0e90(1);
+    func_003b0e70(2);
+    func_003b2c60(handle, D_00960088 - func_0021ea00(0x28));
+    *(u32*)(work + 0x52d0) = handle;
+    func_00218810(work + 0x49d0, (u32*)entry, 0);
+    *(u32*)(work + 0x5c50) = 0;
+    *(u32*)(work + 0x5c54) = 1;
+    *sSflPsel |= 0x10;
+    *sSflPsel |= 8;
+}
+
+// FUN_00219AB0 NONMATCHING
+void func_00219ab0(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    *(u32*)((u8*)sSflPsel + 0x5c50) = 0;
+    *(u32*)((u8*)sSflPsel + 0x5c54) = 0;
+    *sSflPsel |= 0x10;
+}
+
+// FUN_00219B00 NONMATCHING
+void func_00219b00(void)
+{
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    K_ASSERT((*sSflPsel & 8) != 0, 0x81b);
+    func_003b0170(*(u32*)((u8*)sSflPsel + 0x52d0));
+    *sSflPsel &= ~8u;
+}
+
+// FUN_00219B90 NONMATCHING
+void func_00219b90(void)
+{
+    u8* work;
+    u8* entry;
+
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    entry = work + 0x10 + *(u32*)(work + 0x52e0 +
+                                   *(u32*)(work + 0x5c68) * 4) * 0x10;
+    if ((*(u32*)entry & 4) != 0)
+    {
+        func_003c7430(0x31);
+        *(u32*)(work + 0x5334) = 4;
+    }
+    else
+    {
+        func_003c7430(0x2e);
+        func_003c74e0(0x30);
+        *(u32*)(work + 0x5c44) = 0;
+        *(u32*)(work + 0x5c48) = 0;
+        *sSflPsel |= 4;
+        func_00219970();
+        *(u32*)(work + 0x5334) = 1;
+    }
+    func_0010a4e0(0, 0, 0, 1);
 }

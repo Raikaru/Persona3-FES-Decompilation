@@ -188,11 +188,20 @@ typedef struct RwCamera* (*RwCameraEndUpdateFunc)(struct RwCamera* camera);
 
 typedef enum
 {
-    rwPROJECTION0,
-    rwPERSPECTIVE
+    rwNACAMERAPROJECTION,
+    rwPERSPECTIVE,
+    rwPARALLEL
 } RwCameraProjection;
 
-// TODO
+// 20 bytes
+typedef struct RwFrustumPlane
+{
+    RwV3d normal;        // 0x00
+    RwReal distance;     // 0x0c
+    RwUInt32 pad;        // 0x10
+} RwFrustumPlane;
+
+// 268 bytes through frustum planes
 struct RwCamera
 {
     RwObjectHasFrame object;             // 0x00
@@ -210,14 +219,14 @@ struct RwCamera
     RwReal fogPlane;                     // 0x88
     RwReal zScale;                       // 0x8c
     RwReal zShift;                       // 0x90
+    RwFrustumPlane frustumPlanes[6];     // 0x94
 };
 
 typedef enum
 {
-    // TODO: names
     rwCAMERACLEAR0,
     rwCAMERACLEAR1,
-    rwCAMERACLEARZ  // clear Z buffer
+    rwCAMERACLEARZ
 } RwCameraClearMode;
 
 typedef enum

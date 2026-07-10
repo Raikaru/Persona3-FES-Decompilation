@@ -27,12 +27,17 @@ typedef enum
     BTL_STATE_MC
 } BtlState;
 
-// at least 12 bytes
+// 24 bytes
 typedef struct BtlStateWork
 {
-    u32 currState;  // 0x0. See enum 'BtlState'
-    u32 stateToSet; // 0x4. See enum 'BtlState'
-    s32 stateTimer; // 0x8. Reset on state change
+    u32 currState;       // 0x0. See enum 'BtlState'
+    u32 stateToSet;      // 0x4. See enum 'BtlState'
+    s32 stateTimer;      // 0x8. Reset on state change
+    u16 winPacketFrame;  // 0xc. Frame at which the victory packets begin
+    u16 winWaitFrames;   // 0xe. Victory animation wait duration
+    u16 winAnimFrame;    // 0x10. Animation-frame gate for input advance
+    u16 unk_12;          // 0x12
+    s32 winInputSeen;    // 0x14. Set after player input advances victory
 } BtlStateWork;
 
 void btlMainSetState(u32 state);
