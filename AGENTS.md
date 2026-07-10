@@ -303,9 +303,38 @@ Common compiler-artifact blockers:
 - Instruction scheduling.
 - VU/COP2 macro output.
 
-Before settling for `NONMATCHING` on any of these blockers, run the repo's permuter
-(next section). Register allocation, evaluation order, and scheduling walls are
-exactly what it cracks.
+Before settling for `NONMATCHING` on any of these blockers, use the optional
+compiler debugger when the responsible phase or useful source lever is unclear,
+then run the repo's permuter. The debugger localizes behavior; the permuter
+searches source variants.
+
+## Optional MWCCPS2 compiler debugger
+
+When this repository is checked out beside `mwccps2-debugger`, read
+[`docs/mwccps2-debugger.md`](docs/mwccps2-debugger.md) before using it. The full
+tool documentation is in `../mwccps2-debugger/README.md` and its `docs/`
+directory.
+
+Use the debugger only after the function compiles and its C semantics, types,
+calls, and control flow are credible. It is useful for residual register
+assignment, evaluation/operand order, scheduling, extension/mask placement, and
+frontend block-layout questions.
+
+Required agent procedure:
+
+1. Record the exact `fndiff.py` instruction residual and `verify.py` status.
+2. Reduce one compiler question into source variants under the debugger's
+   `experiments/`.
+3. Run `mwccps2_experiment.py` with a fresh ignored `build/` output.
+4. Reject the capture unless direct and GDB-instrumented object SHA-256 values
+   match.
+5. Classify with `earliest_pcode_divergence`, not a raw graph difference.
+6. Apply one evidence-backed source change to P3.
+7. Rerun `fndiff.py` and `verify.py`; only `verify.py` may establish `MATCH`.
+
+Never claim the debugger observed retail AST, PCode, scheduler state, or an
+interference graph. It observes a local run of the exact b210 compiler; retail
+phase attribution remains an explicitly labeled inference.
 
 ## Permuter workflow (register-allocation and scheduling walls)
 

@@ -132,8 +132,9 @@ image is byte-identical either way.
 ## Contributing
 
 New here? See **[CONTRIBUTING.md](CONTRIBUTING.md)**. Working with an AI agent?
-See **[AGENTS.md](AGENTS.md)**. Naming conventions live in
-[`docs/prefixes.md`](docs/prefixes.md).
+See **[AGENTS.md](AGENTS.md)**. Compiler-artifact mismatches can use the optional
+**[MWCCPS2 debugger workflow](docs/mwccps2-debugger.md)**. Naming conventions
+live in [`docs/prefixes.md`](docs/prefixes.md).
 
 The short version: pick an unmapped `func_XXXXXXXX`, write C for it with a
 `// FUN_XXXXXXXX` marker and a header prototype, then iterate with
