@@ -181,8 +181,8 @@ u16 datCalcGetMaxHp(DatUnit* unit)
     return (u16)hp;
 }
 
-// FUN_003004f0 NONMATCHING
-void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
+// FUN_003004f0
+u32 datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
 {
     u32 low;
 
@@ -193,7 +193,7 @@ void datCalcSetBadStatus(DatUnit* unit, u32 badStatus)
         unit->bad = (unit->bad & 0xFFF00000) | low;
     }
 
-    unit->bad |= (badStatus & 0xFFF00000);
+    return unit->bad |= (badStatus & 0xFFF00000);
 }
 
 // FUN_00300530
@@ -208,10 +208,10 @@ u32 datCalcGetBadStatus(DatUnit* unit)
     return unit->bad;
 }
 
-// FUN_00300560 NONMATCHING
-void datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
+// FUN_00300560
+u32 datCalcClearBadStatus(DatUnit* unit, u32 badStatus)
 {
-    unit->bad = ~badStatus & unit->bad;
+    return unit->bad &= ~badStatus;
 }
 
 // FUN_00300580
@@ -558,7 +558,7 @@ extern u32 FUN_003951d0();
 u32 FUN_00300100(u32 param_1);
 u32 FUN_00300410(u32 param_1,int param_2);
 u32 FUN_00300480(u32 param_1,int param_2);
-u32 FUN_003005a0(u16 *param_1);
+u32 FUN_003005a0(u16* param);
 u8 FUN_00300700(u16 *param_1,u16 param_2);
 u8 FUN_00300750(u16 param_1,u16 param_2);
 u8 FUN_00300af0(u32 param_1);
@@ -856,19 +856,15 @@ u32 FUN_00300480(u32 param_1,int param_2)
 
 
 
-// FUN_003005a0 NONMATCHING
-u32 FUN_003005a0(u16 *param_1)
-
+// FUN_003005a0
+u32 FUN_003005a0(u16* param)
 {
-  u32 uVar1;
-  
-  if ((*param_1 & 4) == 0) {
-    uVar1 = FUN_0016c920(param_1[1]);
-  }
-  else {
-    uVar1 = 0;
-  }
-  return uVar1;
+    if ((*param & 4) != 0)
+    {
+        return 0;
+    }
+
+    return FUN_0016c920(((s16*)param)[1]);
 }
 
 

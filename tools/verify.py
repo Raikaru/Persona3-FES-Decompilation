@@ -197,10 +197,65 @@ NAME_RE = re.compile(r"([A-Za-z_][A-Za-z0-9_]*)\s*\(")
 def strip_line_comment(line):
     return line.split("//", 1)[0]
 
+def sanitize_c_lines(lines):
+    """Replace comments and string/character literals while preserving layout."""
+    out_lines = []
+    state = "code"
+    escaped = False
+    for line in lines:
+        out = []
+        i = 0
+        while i < len(line):
+            ch = line[i]
+            nxt = line[i + 1] if i + 1 < len(line) else ""
+            if state == "block":
+                if ch == "*" and nxt == "/":
+                    out.extend("  ")
+                    i += 2
+                    state = "code"
+                else:
+                    out.append(" ")
+                    i += 1
+                continue
+            if state in ("string", "char"):
+                out.append(" ")
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif (state == "string" and ch == '"') or (state == "char" and ch == "'"):
+                    state = "code"
+                i += 1
+                continue
+            if ch == "/" and nxt == "/":
+                out.extend(" " * (len(line) - i))
+                i = len(line)
+            elif ch == "/" and nxt == "*":
+                out.extend("  ")
+                i += 2
+                state = "block"
+            elif ch == '"':
+                out.append(" ")
+                i += 1
+                state = "string"
+            elif ch == "'":
+                out.append(" ")
+                i += 1
+                state = "char"
+            else:
+                out.append(ch)
+                i += 1
+        out_lines.append("".join(out))
+        if state in ("string", "char") and not escaped:
+            state = "code"
+        escaped = False
+    return out_lines
+
 
 def scan_markers(cpath):
     """-> list of dicts {addr, name, line, stub} for each // FUN_ marker."""
     lines = cpath.read_text(errors="replace").splitlines()
+    code_lines = sanitize_c_lines(lines)
     out = []
     i = 0
     while i < len(lines):
@@ -214,7 +269,9 @@ def scan_markers(cpath):
         j = i + 1
         header = ""
         while j < len(lines) and j < i + 12:
-            code = strip_line_comment(lines[j]).strip()
+            if MARKER_RE.match(lines[j]):
+                break
+            code = code_lines[j].strip()
             if code.startswith("#"):  # pragma etc.
                 j += 1
                 continue
@@ -225,13 +282,18 @@ def scan_markers(cpath):
         nm = NAME_RE.search(header.split("{", 1)[0])
         if nm:
             name = nm.group(1)
+        if name is None:
+            out.append(dict(addr=addr, name=None, line=i + 1, stub=False,
+                            nonmatching="NONMATCHING" in lines[i]))
+            i += 1
+            continue
         # stub detection: body up to matching '}' contains only TODO / return
         stub = False
         depth = 0
         body_lines = []
         k = j
         while k < len(lines):
-            code = strip_line_comment(lines[k])
+            code = code_lines[k]
             depth += code.count("{") - code.count("}")
             body_lines.append(lines[k])
             if depth <= 0 and "{" in "".join(body_lines):

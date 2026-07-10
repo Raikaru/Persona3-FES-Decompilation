@@ -68,7 +68,7 @@ void bpIFont00238a50(void* glyphs, s32 capacity, s32 value, s32 font, const floa
     }
 }
 
-// FUN_00238bf0 NONMATCHING
+// FUN_00238bf0
 void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, const float* origin)
 {
     float rect[4];
@@ -78,6 +78,7 @@ void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, con
     s32 i;
     s32 length;
     s32 offset;
+    float x;
 
     fontData = H_Maestro_001120a0(font);
     sprintf(digits, "%s", text);
@@ -89,7 +90,8 @@ void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, con
         s32 index = length - 1 - i;
 
         character = *(u8**)((u8*)fontData + 0x184) + (digits[index] - 0x25) * 0x80;
-        rect[0] = origin[0] + (float)(index * 15) + (float)offset;
+        x = origin[0] + (float)(index * 15);
+        rect[0] = x + (float)offset;
         rect[1] = origin[1];
         rect[2] = (float)(*(s32*)(character + 0x5c) - *(s32*)(character + 0x54));
         rect[3] = (float)(*(s32*)(character + 0x60) - *(s32*)(character + 0x58));

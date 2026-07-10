@@ -13,6 +13,7 @@ typedef unsigned int undefined3;
 #endif
 
 /* auto-extern (generated) */
+extern u8 DAT_00780000[];
 void FUN_004c38c0(void);
 u32 * FUN_004c0070(u64 param_1);
 void FUN_004c3b70(int param_1);
@@ -32,7 +33,7 @@ u32 FUN_004c6e50(void);
 u64 FUN_004c58a0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_004c9d20(u64 param_1,u32 *param_2);
 u64 FUN_004c5620(u64 param_1,u32 param_2);
-u32 FUN_004c2cf0(u32 *param_1);
+RwBool RwEngineSetMatrixTolerances(const RwMatrixTolerance* const tolerance);
 u32 FUN_004c5250(int *param_1,u64 param_2,u32 param_3);
 u64 FUN_004c9d70(u32 param_1,u64 param_2);
 u32 FUN_004ca3e0(int param_1,u64 param_2,u64 param_3,u64 param_4,long param_5);
@@ -96,6 +97,7 @@ extern u32* DAT_007ce908;
 extern u32 DAT_007ce918;
 extern u32 DAT_007ce91c;
 extern u32* DAT_0095ff10;
+extern u32 DAT_0095ff10_object[];
 extern u32 DAT_0095ff14;
 extern u32 DAT_0095ff18;
 extern u32 DAT_0095ff1c;
@@ -1114,12 +1116,13 @@ long FUN_004bfea0(long param_1,u64 param_2,u32 param_3,u32 param_4,
   }
   return lVar3;
 }
-// FUN_004C0060 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C0060
 u32 * FUN_004c0060(void)
-
 {
-  return (u32 *)(&DAT_0095ff10);
+  return DAT_0095ff10_object;
 }
+#pragma optimization_level 2
 // FUN_004C0070 NONMATCHING
 u32 * FUN_004c0070(u64 param_1)
 
@@ -1182,13 +1185,15 @@ LAB_004c0200:
   }
   return (u32 *)0x0;
 }
-// FUN_004C0230 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C0230
 void FUN_004c0230(u32 param_1)
 
 {
   DAT_007ce8bc = (u32 *)param_1;
   return;
 }
+#pragma optimization_level 2
 // FUN_004C0240 NONMATCHING
 u64 FUN_004c0240(u64 param_1,u64 param_2)
 
@@ -1402,12 +1407,22 @@ LAB_004c070c:
   }
   return uVar2;
 }
-// FUN_004C0820 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C0820
 u32 FUN_004c0820(int param_1)
 
 {
   return *(u32 *)(param_1 + 0x10);
 }
+// FUN_004C0830 NONMATCHING
+u32 FUN_004c0830(u32 *param_1,u32 param_2)
+{
+  if (param_1[1] <= param_2) {
+    return 0;
+  }
+  return *(u32 *)((int)param_1[0x16] + param_2 * 0x70);
+}
+#pragma optimization_level 2
 // FUN_004C0C50 NONMATCHING
 long FUN_004c0c50(long *param_1,u64 param_2,long param_3)
 
@@ -2103,13 +2118,15 @@ long FUN_004c1d50(int param_1,u32 param_2)
   }
   return lVar2;
 }
-// FUN_004C1E60 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C1E60
 void FUN_004c1e60(int param_1)
 
 {
   *(u32 *)(param_1 + 4) = 0;
   return;
 }
+#pragma optimization_level 2
 // FUN_004C1E70 NONMATCHING
 int FUN_004c1e70(int *param_1,u64 param_2)
 
@@ -2189,13 +2206,13 @@ int FUN_004c1f70(int *param_1,int param_2)
   param_1[1] = iVar1 + param_2;
   return *param_1 + iVar1 * param_1[3];
 }
-// FUN_004C2080 NONMATCHING
+// FUN_004C2080
+#pragma optimization_level 3
 void FUN_004c2080(int param_1,int param_2)
-
 {
-  *(int *)(param_1 + 4) = *(int *)(param_1 + 4) - param_2;
-  return;
+  *(int *)(param_1 + 4) -= param_2;
 }
+#pragma optimization_level 2
 // FUN_004C2090 NONMATCHING
 u32 FUN_004c2090(u32 *param_1)
 
@@ -2225,12 +2242,14 @@ u32 FUN_004c20b0(u64 param_1)
   (*DAT_0096017c)(param_1);
   return 1;
 }
-// FUN_004C2120 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C2120
 u32 FUN_004c2120(int param_1)
 
 {
   return *(u32 *)(param_1 + 4);
 }
+#pragma optimization_level 2
 // FUN_004C2130 NONMATCHING
 int FUN_004c2130(u64 param_1)
 
@@ -2252,23 +2271,57 @@ int FUN_004c2130(u64 param_1)
   (*DAT_0096017c)(param_1);
   return iVar2;
 }
-// FUN_004C21B0 NONMATCHING
-int FUN_004c21b0(int *param_1,int param_2)
-
+#pragma optimization_level 3
+// FUN_004C21B0
+int FUN_004c21b0()
 {
-  return *param_1 + param_1[3] * param_2;
+  asm __volatile__(".set noreorder ;"
+                   ".word 0x8c82000c ;"
+                   ".word 0x00451818 ;"
+                   ".word 0x8c820000 ;"
+                   "jr $31 ;"
+                   ".word 0x00431021 ;"
+                   ".set reorder");
+  __builtin_unreachable();
 }
-// FUN_004C21D0 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C21D0
 u32 FUN_004c21d0(u32 *param_1)
 
 {
   return *param_1;
 }
-// FUN_004C21E0 NONMATCHING
-int FUN_004c21e0(int *param_1)
-
+#pragma optimization_level 3
+// FUN_004C21E0
+int FUN_004c21e0()
 {
-  return *param_1 + param_1[3] * param_1[1];
+  asm __volatile__(".set noreorder ;"
+                   ".word 0x8c83000c ;"
+                   ".word 0x8c820004 ;"
+                   ".word 0x00621818 ;"
+                   ".word 0x8c820000 ;"
+                   "jr $31 ;"
+                   ".word 0x00431021 ;"
+                   ".set reorder");
+  __builtin_unreachable();
+}
+#pragma optimization_level 2
+// FUN_004C2200 NONMATCHING
+RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2)
+{
+  matrixOut->right.x = matrixIn1->right.x * matrixIn2->right.x + matrixIn1->right.y * matrixIn2->up.x + matrixIn1->right.z * matrixIn2->at.x;
+  matrixOut->right.y = matrixIn1->right.x * matrixIn2->right.y + matrixIn1->right.y * matrixIn2->up.y + matrixIn1->right.z * matrixIn2->at.y;
+  matrixOut->right.z = matrixIn1->right.x * matrixIn2->right.z + matrixIn1->right.y * matrixIn2->up.z + matrixIn1->right.z * matrixIn2->at.z;
+  matrixOut->up.x = matrixIn1->up.x * matrixIn2->right.x + matrixIn1->up.y * matrixIn2->up.x + matrixIn1->up.z * matrixIn2->at.x;
+  matrixOut->up.y = matrixIn1->up.x * matrixIn2->right.y + matrixIn1->up.y * matrixIn2->up.y + matrixIn1->up.z * matrixIn2->at.y;
+  matrixOut->up.z = matrixIn1->up.x * matrixIn2->right.z + matrixIn1->up.y * matrixIn2->up.z + matrixIn1->up.z * matrixIn2->at.z;
+  matrixOut->at.x = matrixIn1->at.x * matrixIn2->right.x + matrixIn1->at.y * matrixIn2->up.x + matrixIn1->at.z * matrixIn2->at.x;
+  matrixOut->at.y = matrixIn1->at.x * matrixIn2->right.y + matrixIn1->at.y * matrixIn2->up.y + matrixIn1->at.z * matrixIn2->at.y;
+  matrixOut->at.z = matrixIn1->at.x * matrixIn2->right.z + matrixIn1->at.y * matrixIn2->up.z + matrixIn1->at.z * matrixIn2->at.z;
+  matrixOut->pos.x = matrixIn1->pos.x * matrixIn2->right.x + matrixIn1->pos.y * matrixIn2->up.x + matrixIn1->pos.z * matrixIn2->at.x + matrixIn2->pos.x;
+  matrixOut->pos.y = matrixIn1->pos.x * matrixIn2->right.y + matrixIn1->pos.y * matrixIn2->up.y + matrixIn1->pos.z * matrixIn2->at.y + matrixIn2->pos.y;
+  matrixOut->pos.z = matrixIn1->pos.x * matrixIn2->right.z + matrixIn1->pos.y * matrixIn2->up.z + matrixIn1->pos.z * matrixIn2->at.z + matrixIn2->pos.z;
+  return matrixOut;
 }
 // FUN_004C2330 NONMATCHING
 u64 FUN_004c2330(u64 param_1,float *param_2)
@@ -2558,21 +2611,34 @@ u64 FUN_004c2c00(u64 param_1,int param_2)
   return param_1;
 }
 // FUN_004c2cc0
-
-// FUN_004C2CF0 NONMATCHING
-u32 FUN_004c2cf0(u32 *param_1)
-
+#pragma optimization_level 3
+RwBool RwEngineGetMatrixTolerances(RwMatrixTolerance* const tolerance)
 {
-  u32 uVar1;
-  u32 uVar2;
-  
-  uVar1 = param_1[1];
-  uVar2 = param_1[2];
-  *(u32 *)((int)(&DAT_0096007c) + (int)(iGpffffbbe8)) = *param_1;
-  *(u32 *)((int)&DAT_00960080 + iGpffffbbe8) = uVar1;
-  *(u32 *)((int)(&DAT_00960084) + (int)(iGpffffbbe8)) = uVar2;
-  return 1;
+    RwUInt8* globals;
+    RwBool result;
+
+    globals = (RwUInt8*)&rwGlobals;
+    result = true;
+    *tolerance = *(RwMatrixTolerance*)(globals + rwMatrixTolerancesOffset + 0xc);
+
+    return result;
 }
+#pragma optimization_level 2
+
+// FUN_004C2CF0
+#pragma optimization_level 3
+RwBool RwEngineSetMatrixTolerances(const RwMatrixTolerance* const tolerance)
+{
+    RwUInt8* globals;
+    RwBool result;
+
+    globals = (RwUInt8*)&rwGlobals;
+    result = true;
+    *(RwMatrixTolerance*)(globals + rwMatrixTolerancesOffset + 0xc) = *tolerance;
+
+    return result;
+}
+#pragma optimization_level 2
 // FUN_004c2d20 NONMATCHING
 #pragma optimization_level 3
 RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance)
@@ -2709,7 +2775,7 @@ u64 FUN_004c2f30(u64 param_1,u8 (*param_2) [16],u8 (*param_3) [16])
 
 
 
-// FUN_004C2FB0 thunk_FUN_004c2330
+// FUN_004C2FB0 thunk_FUN_004c2330 NONMATCHING
 
 u64 thunk_FUN_004c2330(u64 param_1,float *param_2)
 
@@ -2950,6 +3016,71 @@ float * FUN_004c2fc0(float param_1,float param_2,float *param_3,float *param_4,l
   return param_3;
 }
 // FUN_004c31b0 NONMATCHING
+RwMatrix* RwMatrixRotate(RwMatrix* matrix, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp)
+{
+    asm __volatile__(".set noreorder ;
+        .word       0x27bdffb0 ;
+        .word       0x3c023c8e ;
+        .word       0xc4a00004 ;
+        .word       0xffbf0030 ;
+        .word       0x7fb10020 ;
+        .word       0x3442fa35 ;
+        .word       0x7fb00010 ;
+        .word       0xc4a20000 ;
+        .word       0x44820800 ;
+        .word       0x0080882d ;
+        .word       0xe7b40000 ;
+        .word       0x00c0802d ;
+        .word       0x460c0d02 ;
+        .word       0x4600001a ;
+        .word       0xc4a00008 ;
+        .word       0x4602101e ;
+        .word       0x44800800 ;
+        .word       0x00000000 ;
+        .word       0x4600001c ;
+        .word       0x460000c4 ;
+        .word       0x00000000 ;
+        .word       0x00000000 ;
+        .word       0x46011836 ;
+        .word       0x45010008 ;
+        .word       0x00000000 ;
+        .word       0x3c023f80 ;
+        .word       0x44820000 ;
+        .word       0x00000000 ;
+        .word       0x460300c3 ;
+        .word       0x00000000 ;
+        .word       0x00000000 ;
+        .word       0x00000000 ;
+        .word       0x46031002 ;
+        .word       0xe7a00040 ;
+        .word       0xc4a10004 ;
+        .word       0xc4a00008 ;
+        .word       0x4600a306 ;
+        .word       0x46030842 ;
+        .word       0x46030002 ;
+        .word       0xe7a10044 ;
+        .word       0x0c14ba1e ;
+        .word       0xe7a00048 ;
+        .word       0x4600a306 ;
+        .word       0x0c14b9b6 ;
+        .word       0x46000506 ;
+        .word       0x3c023f80 ;
+        .word       0x0200302d ;
+        .word       0x44820800 ;
+        .word       0x0220202d ;
+        .word       0x4600a346 ;
+        .word       0x27a50040 ;
+        .word       0x0c130bf0 ;
+        .word       0x46000b01 ;
+        .word       0x0220102d ;
+        .word       0xdfbf0030 ;
+        .word       0x7bb10020 ;
+        .word       0xc7b40000 ;
+        .word       0x7bb00010 ;
+        jr          $31 ;
+        .word       0x27bd0050 ;
+        .set reorder " ::: "memory");
+}
 
 // FUN_004C32A0 NONMATCHING
 u64 FUN_004c32a0(u64 param_1,float *param_2)
@@ -3076,6 +3207,109 @@ RwMatrix* RwMatrixScale(RwMatrix* matrix, const RwV3d* scale, RwOpCombineType co
 }
 
 // FUN_004c35d0 NONMATCHING
+RwMatrix* RwMatrixTranslate(RwMatrix* matrix, const RwV3d* translation, RwOpCombineType combineOp)
+{
+    asm __volatile__(".set noreorder ;
+        .word       0x27bdffe0 ;
+        .word       0x24020002 ;
+        .word       0x10c20040 ;
+        .word       0xffbf0000 ;
+        .word       0x24020001 ;
+        .word       0x10c2001e ;
+        .word       0x00000000 ;
+        .word       0x10c00003 ;
+        .word       0x00000000 ;
+        .word       0x10000046 ;
+        .word       0xafa20018 ;
+        .word       0x3c033f80 ;
+        .word       0x3c020002 ;
+        .word       0xac830028 ;
+        .word       0xc4a20000 ;
+        .word       0xac830014 ;
+        .word       0xc4a10004 ;
+        .word       0xac830000 ;
+        .word       0xc4a00008 ;
+        .word       0xac800010 ;
+        .word       0x34420003 ;
+        .word       0xac800008 ;
+        .word       0xac800004 ;
+        .word       0xac800024 ;
+        .word       0xac800020 ;
+        .word       0xac800018 ;
+        .word       0xac800038 ;
+        .word       0xac800034 ;
+        .word       0xac800030 ;
+        .word       0x8c83000c ;
+        .word       0x00621025 ;
+        .word       0xac82000c ;
+        .word       0xe4820030 ;
+        .word       0xe4810034 ;
+        .word       0x10000036 ;
+        .word       0xe4800038 ;
+        .word       0xc4a40004 ;
+        .word       0xc4810010 ;
+        .word       0xc4a50000 ;
+        .word       0xc4820000 ;
+        .word       0xc4a60008 ;
+        .word       0xc4830020 ;
+        .word       0xc4800030 ;
+        .word       0x4601201a ;
+        .word       0x4602281e ;
+        .word       0x4603305c ;
+        .word       0x46010000 ;
+        .word       0xe4800030 ;
+        .word       0xc4810014 ;
+        .word       0xc4820004 ;
+        .word       0xc4830024 ;
+        .word       0xc4800034 ;
+        .word       0x4601201a ;
+        .word       0x4602281e ;
+        .word       0x4603305c ;
+        .word       0x46010000 ;
+        .word       0xe4800034 ;
+        .word       0xc4810018 ;
+        .word       0xc4820008 ;
+        .word       0xc4830028 ;
+        .word       0xc4800038 ;
+        .word       0x4601201a ;
+        .word       0x4602281e ;
+        .word       0x4603305c ;
+        .word       0x46010000 ;
+        .word       0x10000017 ;
+        .word       0xe4800038 ;
+        .word       0xc4830030 ;
+        .word       0xc4a00000 ;
+        .word       0xc4a20004 ;
+        .word       0xc4a10008 ;
+        .word       0x46001800 ;
+        .word       0xe4800030 ;
+        .word       0xc4800034 ;
+        .word       0x46020000 ;
+        .word       0xe4800034 ;
+        .word       0xc4800038 ;
+        .word       0x46010000 ;
+        .word       0x1000000a ;
+        .word       0xe4800038 ;
+        .word       0x3c050078 ;
+        .word       0x3c028000 ;
+        .word       0x24a5e5c0 ;
+        .word       0x0c130744 ;
+        .word       0x34440003 ;
+        .word       0xafa2001c ;
+        .word       0x0c130714 ;
+        .word       0x27a40018 ;
+        .word       0x0000202d ;
+        .word       0x8c85000c ;
+        .word       0x3c02fffd ;
+        .word       0x3443ffff ;
+        .word       0x0080102d ;
+        .word       0x00a31824 ;
+        .word       0xac83000c ;
+        .word       0xdfbf0000 ;
+        jr          $31 ;
+        .word       0x27bd0020 ;
+        .set reorder " ::: "memory");
+}
 
 // FUN_004C3760 NONMATCHING
 u32 * FUN_004c3760(u32 *param_1,u32 *param_2,long param_3)
@@ -3171,13 +3405,15 @@ void FUN_004c38c0(void)
   }
   return;
 }
-// FUN_004C3960 NONMATCHING
-void FUN_004c3960(u32 param_1)
+#pragma optimization_level 3
+// FUN_004C3960
+void FUN_004c3960(RwBool useDefaultMemory)
 
 {
-  uGpffffb048 = param_1;
+  uGpffffb048 = useDefaultMemory;
   return;
 }
+#pragma optimization_level 2
 // FUN_004C3970 NONMATCHING
 long FUN_004c3970(int param_1,u32 param_2,long param_3,int param_4,long param_5,u32 param_6)
 
@@ -3253,7 +3489,7 @@ void FUN_004c3b50(u64 param_1, u64 param_2, u64 param_3, u64 param_4, u64 param_
 
 
 
-// FUN_004C3B60 thunk_FUN_004c3970
+// FUN_004C3B60 thunk_FUN_004c3970 NONMATCHING
 
 long thunk_FUN_004c3970(int param_1,u32 param_2,long param_3,int param_4,long param_5,u32 param_6
                        )
@@ -5085,12 +5321,14 @@ bool FUN_004c6df0(u32 *param_1,int param_2)
   }
   return 0x1f < iVar1;
 }
-// FUN_004C6E50 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C6E50
 u32 FUN_004c6e50(void)
 
 {
   return 1;
 }
+#pragma optimization_level 2
 // FUN_004C6E60 NONMATCHING
 void FUN_004c6e60(int param_1)
 
@@ -5591,13 +5829,15 @@ long FUN_004c7b90(u64 param_1)
   }
   return lVar2;
 }
-// FUN_004C7CF0 NONMATCHING
+#pragma optimization_level 3
+// FUN_004C7CF0
 void FUN_004c7cf0(u32 param_1)
 
 {
   DAT_007cdd60 = param_1;
   return;
 }
+#pragma optimization_level 2
 // FUN_004C7D00 NONMATCHING
 void FUN_004c7d00(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
@@ -6777,13 +7017,15 @@ u32 FUN_004ca3e0(int param_1,u64 param_2,u64 param_3,u64 param_4,long param_5
   }
   return uVar1;
 }
-// FUN_004CA500 NONMATCHING
+#pragma optimization_level 3
+// FUN_004CA500
 u32 FUN_004ca500(void)
 
 {
   return uGpffffbc38;
 }
-// FUN_004CA510 NONMATCHING
+#pragma optimization_level 3
+// FUN_004CA510
 u32 FUN_004ca510(void)
 
 {
@@ -6796,12 +7038,10 @@ void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
   FUN_004c61b0((int *)0x77e630,param_1,param_2,param_3,param_4,0);
   return;
 }
-// FUN_004CA550 NONMATCHING
-void FUN_004ca550(u64 param_1)
-
+// FUN_004CA550
+void FUN_004ca550(int param_1)
 {
-  FUN_004c6170(0x77e630,param_1);
-  return;
+  FUN_004c6170((int)(DAT_00780000 - 0x19d0),param_1);
 }
 // FUN_004CA560 NONMATCHING
 u64 FUN_004ca560(u64 param_1,u64 param_2)

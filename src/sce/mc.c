@@ -16,8 +16,8 @@ u64 FUN_004238b0(u64 param_1,char param_2,char param_3,char param_4,char param_5
 
             char param_7,char param_8);
 void FUN_004202e0(int param_1);
-u8 FUN_00423bf0(int param_1);
-u8 FUN_00423b50(int param_1);
+int FUN_00423bf0(int param_1);
+char FUN_00423b50(int param_1);
 u32 FUN_0041ec70(int param_1);
 void FUN_004215b0(u64 param_1,u32 param_2);
 extern u32 DAT_007e0958;
@@ -1701,7 +1701,7 @@ u64 FUN_0041eb50(void)
 
 }
 
-// FUN_0041EC30 NONMATCHING
+// FUN_0041EC30
 
 
 void FUN_0041ec30(int param_1)
@@ -1716,16 +1716,22 @@ void FUN_0041ec30(int param_1)
 
 }
 
-// FUN_0041EC70 NONMATCHING
+// FUN_0041EC60
+void FUN_0041ec60(void)
+{
+}
 
+
+// FUN_0041EC70
 
 u32 FUN_0041ec70(int param_1)
 
 
 
 {
+  u32 uVar1;
 
-  return *(u32 *)((**(int **)(*(int *)(param_1 + 0x39c) + 0xc) + -1) * 4 + param_1 + 0x14);
+  return *(u32 *)((**(int **)(*(int *)(param_1 + 0x39c) + 0xc) - 1) * 4 + (uVar1 = param_1) + 0x14);
 
 }
 
@@ -2449,7 +2455,7 @@ void FUN_0041ff50(u64 param_1,int param_2,int param_3)
 
 }
 
-// FUN_004202E0 NONMATCHING
+// FUN_004202E0
 
 
 void FUN_004202e0(int param_1)
@@ -2458,9 +2464,11 @@ void FUN_004202e0(int param_1)
 
 {
 
-  if (*(int *)(param_1 + 0x3b0) != 0) {
+  void H_Cdvd_Destroy(struct HCdvd *cdvd);
 
-    H_Cdvd_Destroy();
+  if (*(struct HCdvd **)(param_1 + 0x3b0) != 0) {
+
+    H_Cdvd_Destroy(*(struct HCdvd **)(param_1 + 0x3b0));
 
   }
 
@@ -5714,10 +5722,10 @@ FUN_004238b0(u64 param_1,char param_2,char param_3,char param_4,char param_5,cha
 
 }
 
-// FUN_00423B50 NONMATCHING
 
+// FUN_00423B50
 
-u8 FUN_00423b50(int param_1)
+char FUN_00423b50(int param_1)
 
 
 
@@ -5771,17 +5779,10 @@ void FUN_00423ba0(int param_1)
 
 }
 
-// FUN_00423BF0 NONMATCHING
-
-
-bool FUN_00423bf0(int param_1)
-
-
-
+// FUN_00423BF0
+int FUN_00423bf0(int param_1)
 {
-
-  return '\x01' < **(char **)(param_1 + 0x3c);
-
+  return **(char**)(param_1 + 0x3c) > 1;
 }
 
 // FUN_00423C10 NONMATCHING

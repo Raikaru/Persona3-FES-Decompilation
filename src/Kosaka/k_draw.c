@@ -402,12 +402,12 @@ void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir
     RwMatrixTranslate(&work->mat, &translation, rwCOMBINEPOSTCONCAT);
 }
 
-// FUN_001a4f40 NONMATCHING
-void K_Draw_RotatePosition(f32 angle, KwlnTask* positionTask, const RwV3d* axis)
+// FUN_001a4f40
+void K_Draw_RotatePosition(KwlnTask* positionTask, const RwV3d* axis, f32 angle)
 {
-    PositionDrawWork* work;
     RwV3d originalPos;
     RwV3d negPos;
+    PositionDrawWork* work;
 
     work = (PositionDrawWork*)positionTask->workData;
     originalPos = work->mat.pos;

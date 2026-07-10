@@ -105,6 +105,11 @@ typedef union GsPackedPosition
     f32 valueF[2];
 } GsPackedPosition;
 
+typedef struct GsPosition
+{
+    f32 valueF[2];
+} GsPosition;
+
 typedef union GsPackedDimensions
 {
     u64 value;
@@ -504,10 +509,10 @@ void func_0018b270(KwlnTask* task)
     GS_FREE(work);
 }
 
-// FUN_0018B360 NONMATCHING
+// FUN_0018B360
 s32 func_0018b360(KwlnTask* task)
 {
-    return GS_U32(task->workData, 0) > 3;
+    return GS_S32(task->workData, 0) > 3;
 }
 
 static KwlnTask* gsCreateAnimation(KwlnTask* parent, const char* name,
@@ -745,16 +750,15 @@ void func_0018ba60(void* transition, u8* alpha)
     }
 }
 
-// FUN_0018BB20 NONMATCHING
+// FUN_0018BB20
 u32 func_0018bb20(void* transition)
 {
-    f32 position[2];
+    GsPosition position;
     u8 alpha;
 
-    func_0018b7b0(transition, position);
+    func_0018b7b0(transition, position.valueF);
     func_0018ba60(transition, &alpha);
-    GS_F32(transition, 0x38) = position[0];
-    GS_F32(transition, 0x3c) = position[1];
+    *(GsPosition*)((u8*)transition + 0x38) = position;
     GS_U32(transition, 0x40) = alpha;
     return alpha != 0xff;
 }
@@ -1508,7 +1512,7 @@ void func_0018e490(KwlnTask* task, s32 visible)
     GS_S32((u8*)task->workData, 0x24) = visible;
 }
 
-// FUN_0018E4A0 NONMATCHING
+// FUN_0018E4A0
 void func_0018e4a0(void)
 {
     HCdvd* cdvd;
@@ -1522,7 +1526,7 @@ void func_0018e4a0(void)
     do
     {
         func_001120c0();
-    } while (H_Maestro_00111f30((s16*)DAT_007ce008) == 0);
+    } while (H_Maestro_00111f30((s16*)DAT_007ce008) ? 0 : 1);
     H_Cdvd_Destroy(cdvd);
 }
 
@@ -1817,10 +1821,10 @@ u32 func_0018f0b0(KwlnTask* task)
     return GS_U32(task->workData, 0x60);
 }
 
-// FUN_0018F0C0 NONMATCHING
+// FUN_0018F0C0
 u32 func_0018f0c0(KwlnTask* task)
 {
-    return GS_U32(task->workData, 0x60) > 0x31;
+    return GS_S32(task->workData, 0x60) > 0x31;
 }
 
 // FUN_0018F0E0

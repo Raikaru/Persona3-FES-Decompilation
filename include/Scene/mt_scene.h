@@ -43,6 +43,6 @@ u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl);
 u16 MT_Scene_CreateResModelNpc(u16 resId, s32 param_2, Model* mdl);
 u16 MT_Scene_CreateResLightChar(u16 resId);
 u16 MT_Scene_CreateResLightNpc(u16 resId);
-u16 MT_Scene_CreateResModelFld(u16 resId, Model* mdl);
+u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl);
 
 #endif

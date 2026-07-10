@@ -697,10 +697,10 @@ void func_001d8cb0(void)
     func_00434f70();
 }
 
-// FUN_001d8cf0 NONMATCHING
+// FUN_001d8cf0
 void func_001d8cf0(void)
 {
-    u32 i;
+    s32 i;
     for (i = 0; i < 3; ++i)
     {
         if (D_00875A40[i] != NULL)

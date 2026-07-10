@@ -2261,11 +2261,11 @@ void func_00182720(KwlnTask* task)
     sClndTask = NULL;
 }
 
-// FUN_00182750 NONMATCHING
+// FUN_00182750
 KwlnTask* func_00182750(KwlnTask* parent)
 {
-    void* work;
     KwlnTask* task;
+    void* work;
 
     work = RwCalloc(1, 0x18, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -4191,11 +4191,11 @@ void func_001868f0(KwlnTask* task)
     CLND_FREE(work);
 }
 
-// FUN_00186960 NONMATCHING
+// FUN_00186960
 KwlnTask* func_00186960(KwlnTask* parent, s32 currentValue, s32 targetValue)
 {
-    CalendarMoonWork* work;
     KwlnTask* task;
+    CalendarMoonWork* work;
 
     work = CLND_ALLOC(1, sizeof(CalendarMoonWork), 0x40000);
     if (work == NULL)
@@ -4484,7 +4484,7 @@ void* func_001871a0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00187550 NONMATCHING
+// FUN_00187550
 KwlnTask* func_00187550(KwlnTask* parent)
 {
     CalendarRecoveredColdWork* work;
@@ -4501,6 +4501,10 @@ KwlnTask* func_00187550(KwlnTask* parent)
                           func_001871a0,
                           clnd00187520,
                           work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
     return task;
 }
 
@@ -4640,7 +4644,7 @@ void* func_00187be0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00187E20 NONMATCHING
+// FUN_00187E20
 KwlnTask* func_00187e20(void)
 {
     CalendarSkipDrawWork* work;
@@ -4657,6 +4661,10 @@ KwlnTask* func_00187e20(void)
                           func_00187be0,
                           clnd00187df0,
                           work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
     return task;
 }
 

@@ -787,17 +787,18 @@ void* h_campUpdateMenuTask(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0011f120 NONMATCHING
+// FUN_0011f120
 void h_campDestroyMenuTask(KwlnTask* task)
 {
     s32 i;
     CampMenuWork* work;
+    CampMenuWork* menu;
 
     work = task->workData;
     for (i = 0; i < 2; i++) {
-        if (work->cdvdTasks[i] != NULL) {
-            H_Cdvd_Destroy(work->cdvdTasks[i]);
-            work->cdvdTasks[i] = NULL;
+        if ((menu = work)->cdvdTasks[i] != NULL) {
+            H_Cdvd_Destroy(menu->cdvdTasks[i]);
+            menu->cdvdTasks[i] = NULL;
         }
     }
     RwFree(work);

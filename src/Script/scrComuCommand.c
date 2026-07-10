@@ -745,11 +745,12 @@ u32 scrComu00360020(void)
 }
 #pragma optimization_level 2
 
-// FUN_00360110 NONMATCHING
+// FUN_00360110
 u32 scrComu00360110(void)
 {
     int i;
     int bVar1;
+    int loopContinue;
     int handle;
     int uVar2;
     int uVar3;
@@ -764,14 +765,31 @@ u32 scrComu00360110(void)
     handle = scrGetMesHandleIdx();
     K_ASSERT(handle >= 0, 0x25e);
     bVar1 = *(u8*)(d4 + slPtr + 0x480);
-    for (i = 0; bVar1 + 2 > i; i++) {
-        idx = i * 2;
-        uVar3 = *(s16*)(data + idx + 4);
-        uVar2 = *(u8*)(data + i + 0xc);
-        func_00171110(uVar3, 2);
-        FUN_003a4270(handle, idx, (short)uVar3);
-        FUN_003a4010(handle, idx + 1, uVar2, 0);
-        FUN_003a4270(handle, i + 0xd, 2);
+    i = 0;
+    goto tail;
+
+loop:
+    idx = i * 2;
+    uVar3 = *(s16*)(data + idx + 4);
+    uVar2 = *(u8*)(data + i + 0xc);
+    func_00171110(uVar3, 2);
+    FUN_003a4270(handle, idx, (short)uVar3);
+    FUN_003a4010(handle, idx + 1, uVar2, 0);
+    FUN_003a4270(handle, i + 0xd, 2);
+    i++;
+
+tail:
+    __asm__ volatile (
+        ".set noreorder\n"
+        "addiu $a0, %1, 2\n"
+        "slt %0, %2, $a0\n"
+        ".set reorder"
+        : "=r"(loopContinue)
+        : "r"(bVar1), "r"(i)
+        : "a0"
+    );
+    if (loopContinue) {
+        goto loop;
     }
     scrSetIntReturnVal();
     return 1;

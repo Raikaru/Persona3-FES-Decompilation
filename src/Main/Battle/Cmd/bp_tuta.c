@@ -9,6 +9,9 @@ void FUN_00251e10(void);
 u32 FUN_00251e80(void);
 void FUN_00251ed0(void);
 extern int iGpffffb658;
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern const char DAT_0068e9d0[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
 
 static u32* sBpTutaWork; // puGpffffb658
 
@@ -279,7 +282,7 @@ void FUN_00251a80(void)
 
 }
 
-// FUN_00251E10 NONMATCHING
+// FUN_00251E10
 
 
 void FUN_00251e10(void)
@@ -293,8 +296,7 @@ void FUN_00251e10(void)
   
 
   if (sBpTutaWork == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68e9d0,0x31);
+    FUN_0019d3f0(DAT_0068e9d0,0x31);
 
   }
 
@@ -312,7 +314,7 @@ void FUN_00251e10(void)
 
 }
 
-// FUN_00251E80 NONMATCHING
+// FUN_00251E80
 
 
 u32 FUN_00251e80(void)
@@ -322,8 +324,7 @@ u32 FUN_00251e80(void)
 {
 
   if (sBpTutaWork == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68e9d0,0x31);
+    FUN_0019d3f0(DAT_0068e9d0,0x31);
 
   }
 
@@ -331,7 +332,7 @@ u32 FUN_00251e80(void)
 
 }
 
-// FUN_00251ED0 NONMATCHING
+// FUN_00251ED0
 
 
 void FUN_00251ed0(void)
@@ -341,8 +342,7 @@ void FUN_00251ed0(void)
 {
 
   if (iGpffffb658 == 0) {
-
-    FUN_0019d3f0(0x68e9d0,0x31);
+    FUN_0019d3f0(DAT_0068e9d0,0x31);
 
   }
 

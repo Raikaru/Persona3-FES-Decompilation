@@ -1,37 +1,50 @@
 #include "Battle/btlEfficacy.h"
+#include "Main/Battle/Data/datUnit.h"
 
-int func_002d4e10();
+extern int func_002d4e10(u32 genusMask, u32 excludedBadStatus);
+
+enum
+{
+    BTL_EFFICACY_ENEMY_GENUS_MASK = 1 << UNIT_GENUS_EC,
+    BTL_EFFICACY_NO_RESULT = -1,
+    BTL_EFFICACY_ONE_TO_FOUR_ENEMY_COUNT_END = 5,
+    BTL_EFFICACY_TWO_TO_FIVE_ENEMY_COUNT_START = 2,
+    BTL_EFFICACY_TWO_TO_FIVE_ENEMY_COUNT_END = 6,
+    BTL_EFFICACY_ONE_TO_FOUR_RESULT_BASE = 0x6C,
+    BTL_EFFICACY_TWO_TO_FIVE_RESULT_BASE = 0x72
+};
 
 // FUN_002d8780
-int btlEfficacy002d8780(void)
+int btlEfficacyGetResultIndexForOneToFourEnemies(void)
 {
-    int v;
+    int activeEnemyCount;
 
-    v = func_002d4e10(2, 0x80000) & 0xffff;
-    if (v >= 5)
+    activeEnemyCount = func_002d4e10(BTL_EFFICACY_ENEMY_GENUS_MASK, UNIT_BADSTATUS_DEAD) & 0xffff;
+    if (activeEnemyCount >= BTL_EFFICACY_ONE_TO_FOUR_ENEMY_COUNT_END)
     {
-        return -1;
+        return BTL_EFFICACY_NO_RESULT;
     }
-    if (v == 0)
+    if (activeEnemyCount == 0)
     {
-        return -1;
+        return BTL_EFFICACY_NO_RESULT;
     }
-    return 0x6c - v;
+    return BTL_EFFICACY_ONE_TO_FOUR_RESULT_BASE - activeEnemyCount;
 }
 
 // FUN_002d87e0
-int btlEfficacy002d87e0(void)
+int btlEfficacyGetResultIndexForTwoToFiveEnemies(void)
 {
-    int v;
+    int activeEnemyCount;
 
-    v = func_002d4e10(2, 0x80000) & 0xffff;
-    if (v > 5)
+    activeEnemyCount = func_002d4e10(BTL_EFFICACY_ENEMY_GENUS_MASK, UNIT_BADSTATUS_DEAD) & 0xffff;
+    // Keep the retail comparison forms: this callback accepts enemy counts [2, 5].
+    if (activeEnemyCount > 5)
     {
-        return -1;
+        return BTL_EFFICACY_NO_RESULT;
     }
-    if (v < 2)
+    if (activeEnemyCount < 2)
     {
-        return -1;
+        return BTL_EFFICACY_NO_RESULT;
     }
-    return 0x72 - v;
+    return BTL_EFFICACY_TWO_TO_FIVE_RESULT_BASE - activeEnemyCount;
 }

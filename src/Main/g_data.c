@@ -1723,10 +1723,10 @@ void func_0016ddd0(s32 index)
     }
 }
 
-// FUN_0016de50 NONMATCHING
+// FUN_0016de50
 u8 func_0016de50(s32 index)
 {
-    K_ASSERT(index >= 0 && index < 8, 1290);
+    K_ASSERT(index < 8 && index >= 0, 1290);
 
     return gGlobalWork.heroStatus.socialLinkData[0x4df + index];
 }

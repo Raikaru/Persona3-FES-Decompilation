@@ -403,7 +403,7 @@ Some differences often resist clean source-level matching. It is acceptable to l
 
 ```text
 config/slus21621.yaml       splat config
-config/symbol_addrs.txt     function symbol map, about 13,407 entries
+config/symbol_addrs.txt     function symbol map, about 13,586 entries
 tools/build.py              build driver (asm carve + C objects + link)
 tools/asm.py                GNU as wrapper and byte-correction step
 tools/recover_symbols.py    recover data-symbol addresses + _gp from retail

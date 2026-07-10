@@ -440,6 +440,7 @@ typedef struct
 extern RwGlobals rwGlobals; // not sure where to place this
 
 RwBool RwEngineGetMatrixTolerances(RwMatrixTolerance* const tolerance);
+RwBool RwEngineSetMatrixTolerances(const RwMatrixTolerance* const tolerance);
 RwMatrix* RwMatrixOptimize(RwMatrix* matrix, const RwMatrixTolerance* tolerance);
 RwMatrix* RwMatrixUpdate(RwMatrix* matrix);
 RwMatrix* RwMatrixMultiply(RwMatrix* matrixOut, const RwMatrix* matrixIn1, const RwMatrix* matrixIn2);

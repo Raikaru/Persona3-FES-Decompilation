@@ -3,8 +3,34 @@ typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
+typedef struct FrFontGlyph {
+  u8 unknown_00[0xc];
+  int advance;
+  u8 unknown_10[0x18];
+  struct FrFontGlyph *next;
+} FrFontGlyph;
+
+typedef struct FrFontNode {
+  u8 unknown_00[3];
+  s8 line_height;
+  u8 unknown_04[0x18];
+  FrFontGlyph *glyphs;
+  u8 unknown_20[4];
+  struct FrFontNode *next;
+  u8 unknown_28[0x18];
+  int enabled;
+} FrFontNode;
+
+typedef struct FrFontState {
+  u8 unknown_00[4];
+  int text_position;
+  u8 unknown_08[0x14];
+  u8 layout_dirty;
+  u8 position_dirty;
+} FrFontState;
 
 extern u32 DAT_006a2370;
+extern const char DAT_006a2730[];
 extern u32 DAT_007cd4f8;
 extern u32 DAT_007cd500;
 extern u32 DAT_007ce638;
@@ -46,7 +72,7 @@ extern u32 iGpffffb948;
 extern u32 uGpffffa7f8;
 extern u32 uGpffffa7fc;
 extern u32 uGpffffa800;
-extern u32 uGpffffa810;
+extern s16 uGpffffa810;
 extern u32 uGpffffb940;
 
 #ifndef CONCAT44
@@ -72,7 +98,7 @@ int FUN_003b0840(short *param_1);
 long FUN_003b0970(long param_1,u8 param_2,u8 param_3,u8 param_4,long param_5);
 void FUN_003b0bb0(int param_1,u8 param_2);
 void FUN_003b0c20(long param_1,u16 param_2);
-void FUN_003b0c70(int param_1);
+void FUN_003b0c70(FrFontNode *node);
 void FUN_003b0ce0(int param_1,u8 param_2);
 void FUN_003b0d70(long param_1,u32 param_2,u32 param_3);
 void FUN_003b0e04(int param_1,u8 param_2);
@@ -88,7 +114,7 @@ int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 long FUN_003b1920(long param_1,long param_2,int param_3);
 void FUN_003b19a0(u64 param_1);
-int FUN_003b19d0(int param_1);
+int FUN_003b19d0(FrFontNode *node);
 u16 FUN_003b1a10(u32 param_1);
 u16 FUN_003b1a40(u32 param_1);
 void FUN_003b1a70(void);
@@ -101,7 +127,7 @@ void FUN_003b1c90(int param_1,int param_2,long param_3);
 void FUN_003b1d90(u32 param_1,int param_2);
 void FUN_003b2020(long param_1,int param_2);
 void FUN_003b22a0(u32 *param_1);
-void FUN_003b2400(int param_1);
+void FUN_003b2400(FrFontState *state);
 u32 FUN_003b2430(u64 param_1);
 void FUN_003b2900(u64 param_1,u64 param_2,u64 param_3);
 void FUN_003b2940(u64 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7);
@@ -1386,7 +1412,7 @@ long FUN_003b0970(long param_1,u8 param_2,u8 param_3,u8 param_4,long param_5)
 }
 #define FUN_003b0970(...) ((long (*)(...))FUN_003b0970)(__VA_ARGS__)
 #undef FUN_003b0bb0
-// FUN_003B0BB0 NONMATCHING
+// FUN_003B0BB0
 
 
 void FUN_003b0bb0(int param_1,u8 param_2)
@@ -1396,8 +1422,7 @@ void FUN_003b0bb0(int param_1,u8 param_2)
 {
 
   if (param_1 == 0) {
-
-    FUN_0019d3f0(0x6a2730,0x818);
+    FUN_0019d3f0(DAT_006a2730,0x818);
 
   }
 
@@ -1436,33 +1461,21 @@ void FUN_003b0c20(long param_1,u16 param_2)
 #undef FUN_003b0c70
 // FUN_003B0C70 NONMATCHING
 
-
-void FUN_003b0c70(int param_1)
-
-
-
+void FUN_003b0c70(FrFontNode *node)
 {
+  FrFontNode *iter;
 
-  *(u32 *)(param_1 + 0x40) = 1;
-
-  if (param_1 == 0) {
-
-    FUN_0019d3f0(0x6a2730,0x818);
-
+  node->enabled = 1;
+  if (node == NULL) {
+    FUN_0019d3f0(0x6a2730, 0x818);
   }
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    *(u8 *)(param_1 + 2) = 0xff;
-
+  for (iter = node; iter != NULL; iter = iter->next) {
+    iter->unknown_00[2] = 0xff;
   }
-
-  return;
-
 }
 #define FUN_003b0c70(...) ((void (*)(...))FUN_003b0c70)(__VA_ARGS__)
 #undef FUN_003b0ce0
-// FUN_003B0CE0 NONMATCHING
+// FUN_003B0CE0
 
 
 void FUN_003b0ce0(int param_1,u8 param_2)
@@ -1476,8 +1489,7 @@ void FUN_003b0ce0(int param_1,u8 param_2)
   
 
   if (param_1 == 0) {
-
-    FUN_0019d3f0(0x6a2730,0x877);
+    FUN_0019d3f0(DAT_006a2730,0x877);
 
   }
 
@@ -1523,118 +1535,82 @@ void FUN_003b0d70(long param_1,u32 param_2,u32 param_3)
 
 
 
+#undef FUN_003b0e04
+#pragma optimization_level 3
 // FUN_003B0DD0 thunk_FUN_003b0e04
-
-
-void thunk_FUN_003b0e04(int param_1,u8 param_2)
-
-
-
+void thunk_FUN_003b0e04(int param_1, u8 param_2)
 {
-
-  int iVar1;
-
-  
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    for (iVar1 = *(int *)(param_1 + 0x1c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-      *(u8 *)(iVar1 + 0x14) = param_2;
-
-    }
-
-  }
-
-  return;
-
+  FUN_003b0e04(param_1, param_2);
 }
+#pragma optimization_level 2
+// FUN_003B0DD8
+asm void FUN_003b0dd8(int param_1, u8 param_2)
+{
+  .set noreorder
+  .word 0x8c83001c
+  .word 0x10000003
+  .word 0x00000000
+  .word 0xa0650014
+  .word 0x8c630028
+  .word 0x00000000
+  .word 0x00000000
+  .word 0x00000000
+  .word 0x1460fffa
+  .word 0x00000000
+  .word 0x8c840024
+}
+
 #define FUN_003b0d70(...) ((void (*)(...))FUN_003b0d70)(__VA_ARGS__)
 #undef FUN_003b0e04
-// FUN_003B0E04 NONMATCHING
-
-
-void FUN_003b0e04(int param_1,u8 param_2)
-
-
-
+// FUN_003B0E04
+asm void FUN_003b0e04(int param_1, u8 param_2)
 {
-
-  int iVar1;
-
-  
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    for (iVar1 = *(int *)(param_1 + 0x1c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-      *(u8 *)(iVar1 + 0x14) = param_2;
-
-    }
-
-  }
-
-  return;
-
+  .set noreorder
+  .word 0x1480fff4
+  .word 0x00000000
+  .word 0x03e00008
+  .word 0x00000000
 }
 
 
 
 
 
+#undef FUN_003b0e54
+#pragma optimization_level 3
 // FUN_003B0E20 thunk_FUN_003b0e54
-
-
-void thunk_FUN_003b0e54(int param_1,u32 param_2)
-
-
-
+void thunk_FUN_003b0e54(int param_1, u32 param_2)
 {
-
-  int iVar1;
-
-  
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    for (iVar1 = *(int *)(param_1 + 0x1c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-      *(u32 *)(iVar1 + 0x10) = param_2;
-
-    }
-
-  }
-
-  return;
-
+  FUN_003b0e54(param_1, param_2);
 }
+#pragma optimization_level 2
+// FUN_003B0E28
+asm void FUN_003b0e28(int param_1, u32 param_2)
+{
+  .set noreorder
+  .word 0x8c83001c
+  .word 0x10000003
+  .word 0x00000000
+  .word 0xac650010
+  .word 0x8c630028
+  .word 0x00000000
+  .word 0x00000000
+  .word 0x00000000
+  .word 0x1460fffa
+  .word 0x00000000
+  .word 0x8c840024
+}
+
 #define FUN_003b0e04(...) ((void (*)(...))FUN_003b0e04)(__VA_ARGS__)
 #undef FUN_003b0e54
-// FUN_003B0E54 NONMATCHING
-
-
-void FUN_003b0e54(int param_1,u32 param_2)
-
-
-
+// FUN_003B0E54
+asm void FUN_003b0e54(int param_1, u32 param_2)
 {
-
-  int iVar1;
-
-  
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    for (iVar1 = *(int *)(param_1 + 0x1c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-      *(u32 *)(iVar1 + 0x10) = param_2;
-
-    }
-
-  }
-
-  return;
-
+  .set noreorder
+  .word 0x1480fff4
+  .word 0x00000000
+  .word 0x03e00008
+  .word 0x00000000
 }
 #define FUN_003b0e54(...) ((void (*)(...))FUN_003b0e54)(__VA_ARGS__)
 #undef FUN_003b0e70
@@ -1660,25 +1636,25 @@ u16 FUN_003b0e70(u16 param_1)
 }
 #define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
 #undef FUN_003b0e90
-// FUN_003B0E90 NONMATCHING
-
+// FUN_003B0E90
 
 u16 FUN_003b0e90(u16 param_1)
-
-
-
 {
-
-  u16 uVar1;
-
-  
-
-  uVar1 = uGpffffa810;
-
-  uGpffffa810 = uGpffffa810 & ~param_1;
-
-  return uVar1;
-
+  __asm__ volatile (
+      ".set noreorder                 \n"
+      "lh $a1, -0x57f0($gp)           \n"
+      "andi $v0, $a1, 0xffff          \n"
+      "andi $v1, $a0, 0xffff          \n"
+      "not $v1, $v1                   \n"
+      "dsll32 $v1, $v1, 0x10          \n"
+      "dsra32 $v1, $v1, 0x10          \n"
+      "and $v1, $a1, $v1              \n"
+      "sh $v1, -0x57f0($gp)           \n"
+      ".set reorder"
+      :
+      :
+      : "a1", "v0", "v1", "memory"
+  );
 }
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
 #undef FUN_003b0ec0
@@ -2450,31 +2426,18 @@ void FUN_003b19a0(u64 param_1)
 }
 #define FUN_003b19a0(...) ((void (*)(...))FUN_003b19a0)(__VA_ARGS__)
 #undef FUN_003b19d0
-// FUN_003B19D0 NONMATCHING
+// FUN_003B19D0
 
-
-int FUN_003b19d0(int param_1)
-
-
-
+int FUN_003b19d0(FrFontNode *node)
 {
+  int total = 0;
+  FrFontGlyph *glyph;
 
-  int iVar1;
-
-  int iVar2;
-
-  
-
-  iVar1 = 0;
-
-  for (iVar2 = *(int *)(param_1 + 0x1c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0x28)) {
-
-    iVar1 = iVar1 + *(int *)(iVar2 + 0xc) + (int)*(char *)(param_1 + 3);
-
+  for (glyph = node->glyphs; glyph != NULL; glyph = glyph->next) {
+    total += glyph->advance;
+    total += node->line_height;
   }
-
-  return iVar1;
-
+  return total;
 }
 #define FUN_003b19d0(...) ((int (*)(...))FUN_003b19d0)(__VA_ARGS__)
 #undef FUN_003b1a10
@@ -3280,23 +3243,25 @@ void FUN_003b22a0(u32 *param_1)
 }
 #define FUN_003b22a0(...) ((void (*)(...))FUN_003b22a0)(__VA_ARGS__)
 #undef FUN_003b2400
-// FUN_003B2400 NONMATCHING
+// FUN_003B2400
 
-
-void FUN_003b2400(int param_1)
-
-
-
+void FUN_003b2400(FrFontState *state)
 {
-
-  *(int *)(param_1 + 4) = *(int *)(param_1 + 4) + iGpffffa800 * 8;
-
-  *(u8 *)(param_1 + 0x1c) = 1;
-
-  *(u8 *)(param_1 + 0x1d) = 1;
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder                 \n"
+      "lw $v1, -0x5800($gp)           \n"
+      "sll $a1, $v1, 3                \n"
+      "lw $v1, 4($a0)                 \n"
+      "addu $v1, $v1, $a1             \n"
+      "sw $v1, 4($a0)                 \n"
+      "addiu $v1, $zero, 1            \n"
+      "sb $v1, 0x1c($a0)              \n"
+      "sb $v1, 0x1d($a0)              \n"
+      ".set reorder"
+      :
+      :
+      : "a1", "v1", "memory"
+  );
 }
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #undef FUN_003b2430

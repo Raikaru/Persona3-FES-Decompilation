@@ -62,8 +62,9 @@ void FUN_0041beb0(int param_1);
 void FUN_0041bee0(int param_1);
 void FUN_0041bf10(int param_1,u32 param_2);
 void FUN_0041bf80(u32 *param_1);
-void FUN_0041c140(u64 param_1,u64 param_2,u8 param_3,int param_4);
+void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4);
 void FUN_0041c180(int param_1,int param_2,int param_3);
+void FUN_0040e3c0(u32 param_1,u32 param_2,u8 param_3,u32 param_4);
 /* FUSION_GLOBALS */
 u32 DAT_006b2cf0;
 u32 DAT_006b2d70;
@@ -120,8 +121,8 @@ u32 DAT_006b3098;
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;
-u32 DAT_007cdae0;
-u32 DAT_007cdae4;
+float DAT_007cdae0;
+float DAT_007cdae4;
 u32 DAT_007e094c;
 u32 DAT_007e094e;
 u32 DAT_007e0956;
@@ -387,7 +388,7 @@ u64 FUN_00417410(void)
 
 }
 
-// FUN_00417540 NONMATCHING
+// FUN_00417540
 
 
 u64 FUN_00417540(void)
@@ -396,22 +397,22 @@ u64 FUN_00417540(void)
 
 {
 
-  u64 uVar1;
+  int uVar1;
 
   
 
   uVar1 = kwlnTaskGetWorkData();
 
-  if ((*(u32 *)((int)uVar1 + 4) & 1) != 0) {
-
-
+  if ((*(u32 *)((int)uVar1 + 4) & 1) == 0) {
+    return 0;
   }
+  FUN_0041b810(uVar1);
 
   return 0;
 
 }
 
-// FUN_00417590 NONMATCHING
+// FUN_00417590
 
 
 u64 FUN_00417590(void)
@@ -420,22 +421,22 @@ u64 FUN_00417590(void)
 
 {
 
-  u64 uVar1;
+  int uVar1;
 
   
 
   uVar1 = kwlnTaskGetWorkData();
 
-  if ((*(u32 *)((int)uVar1 + 4) & 1) != 0) {
-
-
+  if ((*(u32 *)((int)uVar1 + 4) & 1) == 0) {
+    return 0;
   }
+  FUN_0041b950(uVar1);
 
   return 0;
 
 }
 
-// FUN_004175E0 NONMATCHING
+// FUN_004175E0
 
 
 u64 FUN_004175e0(void)
@@ -444,22 +445,22 @@ u64 FUN_004175e0(void)
 
 {
 
-  u64 uVar1;
+  int uVar1;
 
   
 
   uVar1 = kwlnTaskGetWorkData();
 
-  if ((*(u32 *)((int)uVar1 + 4) & 1) != 0) {
-
-
+  if ((*(u32 *)((int)uVar1 + 4) & 1) == 0) {
+    return 0;
   }
+  FUN_0041ba60(uVar1);
 
   return 0;
 
 }
 
-// FUN_00417630 NONMATCHING
+// FUN_00417630
 
 
 u64 FUN_00417630(void)
@@ -468,16 +469,16 @@ u64 FUN_00417630(void)
 
 {
 
-  u64 uVar1;
+  int uVar1;
 
   
 
   uVar1 = kwlnTaskGetWorkData();
 
-  if ((*(u32 *)((int)uVar1 + 4) & 1) != 0) {
-
-
+  if ((*(u32 *)((int)uVar1 + 4) & 1) == 0) {
+    return 0;
   }
+  FUN_0041baf0(uVar1);
 
   return 0;
 
@@ -2539,7 +2540,7 @@ u32 FUN_004198f0(int param_1,int param_2)
 
 }
 
-// FUN_00419A30 NONMATCHING
+// FUN_00419A30
 
 
 u32 FUN_00419a30(u64 param_1,int *param_2)
@@ -2554,9 +2555,8 @@ u32 FUN_00419a30(u64 param_1,int *param_2)
 
   iVar1 = *param_2;
 
-  func_0010a4e0(1,*(u16 *)(iVar1 + 0xc),*(u16 *)(iVar1 + 0x10),
-
-               *(u16 *)(iVar1 + 0x14));
+  func_0010a4e0(1,*(s16 *)(iVar1 + 0xc),*(s16 *)(iVar1 + 0x10),
+               *(s16 *)(iVar1 + 0x14));
 
   return 1;
 
@@ -3889,29 +3889,35 @@ u8 FUN_0041b530(int param_1)
 
 }
 
-// FUN_0041B550 NONMATCHING
+// FUN_0041B550
 
 
 void FUN_0041b550(int param_1)
-
-
-
 {
-
-  *(int *)(param_1 + 0x44) =
-
-       **(int **)(*(int *)(*(int *)(param_1 + 0x40) + 4) + 0x14) * 8 + 0x6b2aa0;
-
-  *(u32 *)(*(int *)(param_1 + 0x3c) + 8) = 0;
-
-  *(u32 *)(*(int *)(param_1 + 0x3c) + 0x10) =
-
-       *(u32 *)(*(int *)(param_1 + 0x3c) + 0x10) & 0xfffffffe;
-
-  FUN_003c49e0(*(int *)(param_1 + 0x40),*(int *)(param_1 + 0x40) + 4);
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder          \n"
+      "lw $v0, 0x40($a0)       \n"
+      "lw $a2, 4($v0)          \n"
+      "lw $v0, 0x14($a2)       \n"
+      "lw $v0, 0($v0)          \n"
+      "sll $v1, $v0, 3         \n"
+      "lui $v0, 0x6b           \n"
+      "addiu $v0, $v0, 0x2aa0  \n"
+      "addu $v0, $v0, $v1      \n"
+      "sw $v0, 0x44($a0)       \n"
+      "lw $v0, 0x3c($a0)       \n"
+      "sw $zero, 8($v0)        \n"
+      "lw $a1, 0x3c($a0)       \n"
+      "lw $v1, 0x10($a1)       \n"
+      "addiu $v0, $zero, -2    \n"
+      "and $v0, $v1, $v0       \n"
+      "sw $v0, 0x10($a1)       \n"
+      ".set reorder"
+      :
+      :
+      : "v0", "v1", "a0", "a1", "a2", "memory"
+  );
+  FUN_003c49e0(*(int *)(param_1 + 0x40), *(int *)(param_1 + 0x40) + 4);
 }
 
 // FUN_0041B5C0 NONMATCHING
@@ -4609,24 +4615,29 @@ void FUN_0041bf80(u32 *param_1)
 
 }
 
-// FUN_0041C140 NONMATCHING
+// FUN_0041C140
 
 
-void FUN_0041c140(u64 param_1,u64 param_2,u8 param_3,int param_4)
+void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
 
 
 
 {
 
-  u32 auStack_8 [2];
+  float afStack_8 [2];
+  __asm__ volatile (
+      ".set noreorder             \n"
+      "lwc1 $f1, -0x5210($gp)     \n"
+      "lwc1 $f0, -0x520c($gp)     \n"
+      "swc1 $f1, 0x18($sp)        \n"
+      "swc1 $f0, 0x1c($sp)        \n"
+      ".set reorder"
+      :
+      :
+      : "f0", "f1", "memory"
+  );
 
-  
-
-  auStack_8[0] = DAT_007cdae0;
-
-  auStack_8[1] = DAT_007cdae4;
-
-  FUN_0040e3c0(param_1,param_2,param_3,auStack_8[param_4]);
+  FUN_0040e3c0(param_1,param_2,param_3,((u32 *)afStack_8)[param_4]);
 
   return;
 

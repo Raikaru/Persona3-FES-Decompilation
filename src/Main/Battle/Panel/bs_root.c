@@ -5,31 +5,32 @@
 
 #define BSROOT_INIT_TMXCOUNT 2
 
+// `bpTex0021c9f0` returns an opaque rush-panel sprite resource.
 static void* sRushRaster;                        // 007ce3a8
 static RwRaster* sRasters[BSROOT_INIT_TMXCOUNT]; // 007ce3a0
 
 // FUN_00267260
-void bsRootInit()
+void bsRootInit(void)
 {
     HCdvd* cdvd;
-    s32 i;
+    s32 contentId;
     void* file;
     u32 fileSize;
 
     cdvd = H_Cdvd_Request("battle/panel/bs_init.bin", HCDVD_FILENORMAL); // BUG: should be 'HCDVD_FILEARCHIVE'
     H_Cdvd_ReadSync(cdvd);
 
-    for (i = 0; i < BSROOT_INIT_MAX; i++)
+    for (contentId = 0; contentId < BSROOT_INIT_MAX; contentId++)
     {
-        file = H_Cdvd_ArchiveGetFile(cdvd, i, &fileSize);
+        file = H_Cdvd_ArchiveGetFile(cdvd, contentId, &fileSize);
 
-        switch (i)
+        switch (contentId)
         {
             case BSROOT_INIT_PCADVANTAGE:
-                sRasters[i] = bpTexCreateTmxRaster(file);
+                sRasters[contentId] = bpTexCreateTmxRaster(file);
                 break;
             case BSROOT_INIT_ECADVANTAGE:
-                sRasters[i] = bpTexCreateTmxRaster(file);
+                sRasters[contentId] = bpTexCreateTmxRaster(file);
                 break;
 
             case BSROOT_INIT_RUSH:

@@ -4,7 +4,7 @@
 #include "Utils.h"
 
 int main(int argc, char* argv[]);
-void initAndLoop(s32 unused);
+void initAndLoop(s32 unusedStartupArgument);
 void func_00100008(void);
 void func_00100218(s32 status);
 

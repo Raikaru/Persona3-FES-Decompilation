@@ -350,15 +350,17 @@ void FUN_00172820(s16 pcId)
     datSetPhysicalCondition(1, pcId);
 }
 
-// FUN_00172860 NONMATCHING
+#pragma optimization_level 0
+// FUN_00172860
 u8 FUN_00172860(void)
 {
-    if ((*(u32*)D_0083A34C & 0x400) == 0)
+    if ((*(u32*)D_0083A34C & 0x400) != 0)
     {
-        return false;
+        return 1;
     }
-    return true;
+    return 0;
 }
+#pragma optimization_level 2
 
 // FUN_001728D0 NONMATCHING
 void FUN_001728d0(const u32* values)

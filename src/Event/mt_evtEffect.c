@@ -5,6 +5,7 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern u32 DAT_006a0eb0;
+extern char DAT_006a0ea0[];
 extern u32 DAT_006a0eb4;
 extern u32 DAT_006a0eb8;
 extern u32 DAT_006a0ebc;
@@ -70,6 +71,7 @@ extern u32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
 extern u32 _DAT_006a0f1c;
+extern void FUN_00194b20(u64, const char *, u32, u64 (*)(int), void *, void *);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -94,7 +96,7 @@ void FUN_00395430(int param_1,long param_2,long param_3,long param_4,u32 param_5
 void FUN_003954e0(long param_1);
 void FUN_00395550(long param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
-void FUN_003957d0(u32 param_1,int param_2,u32 *param_3);
+void FUN_003957d0(f32 param_1, int param_2, u32 *param_3);
 void FUN_00395810(int param_1);
 void FUN_00395910(long param_1);
 void FUN_00395930(long param_1,u32 param_2,u32 param_3);
@@ -139,7 +141,7 @@ u32  FUN_00396c70(long param_1,int param_2,int param_3,u16 param_4,u16 param_5, 
 #define FUN_003954e0(...) ((void (*)(...))FUN_003954e0)(__VA_ARGS__)
 #define FUN_00395550(...) ((void (*)(...))FUN_00395550)(__VA_ARGS__)
 #define FUN_00395570(...) ((void (*)(...))FUN_00395570)(__VA_ARGS__)
-#define FUN_003957d0(...) ((void (*)(...))FUN_003957d0)(__VA_ARGS__)
+#define FUN_003957d0(...) ((void (*)(f32, int, u32*))FUN_003957d0)(__VA_ARGS__)
 #define FUN_00395810(...) ((void (*)(...))FUN_00395810)(__VA_ARGS__)
 #define FUN_00395910(...) ((void (*)(...))FUN_00395910)(__VA_ARGS__)
 #define FUN_00395930(...) ((void (*)(...))FUN_00395930)(__VA_ARGS__)
@@ -385,7 +387,7 @@ u64 FUN_003953b0(int param_1)
 }
 #define FUN_003953b0(...) ((u64 (*)(...))FUN_003953b0)(__VA_ARGS__)
 #undef FUN_003953e0
-// FUN_003953E0 NONMATCHING
+// FUN_003953E0
 
 
 void FUN_003953e0(u64 param_1)
@@ -394,7 +396,7 @@ void FUN_003953e0(u64 param_1)
 
 {
 
-  FUN_00194b20(param_1,0x6a0ea0,0x106f,0x3953b0,0,0);
+  FUN_00194b20(param_1,DAT_006a0ea0,0x106f,FUN_003953b0,0,0);
 
   return;
 
@@ -655,10 +657,10 @@ void FUN_00395570(int param_1)
 }
 #define FUN_00395570(...) ((void (*)(...))FUN_00395570)(__VA_ARGS__)
 #undef FUN_003957d0
-// FUN_003957D0 NONMATCHING
+// FUN_003957D0
 
 
-void FUN_003957d0(u32 param_1,int param_2,u32 *param_3)
+void FUN_003957d0(f32 param_1, int param_2, u32 *param_3)
 
 
 
@@ -668,16 +670,14 @@ void FUN_003957d0(u32 param_1,int param_2,u32 *param_3)
 
   u32 uVar2;
 
-  int iVar3;
-
   u32 *puVar4;
+
+  int iVar3;
 
   
 
   *(u32 *)(param_2 + 0x694) = 1;
-
   puVar4 = (u32 *)(param_2 + 0x6a0);
-
   iVar3 = 8;
 
   do {
@@ -698,12 +698,12 @@ void FUN_003957d0(u32 param_1,int param_2,u32 *param_3)
 
   } while (0 < iVar3);
 
-  *(u32 *)(param_2 + 0x6e0) = param_1;
+  *(f32 *)(param_2 + 0x6e0) = param_1;
 
   return;
 
 }
-#define FUN_003957d0(...) ((void (*)(...))FUN_003957d0)(__VA_ARGS__)
+#define FUN_003957d0(...) ((void (*)(f32, int, u32*))FUN_003957d0)(__VA_ARGS__)
 #undef FUN_00395810
 // FUN_00395810 NONMATCHING
 
@@ -1566,16 +1566,16 @@ void FUN_00396410(u64 param_1)
 
 {
 
-  FUN_00194b20(param_1,0x6a0f50,0x1056,0x3962c0,0,0);
+  FUN_00194b20(param_1,(const char *)0x6a0f50,0x1056,(u64 (*)(int))0x3962c0,0,0);
 
-  FUN_00194b20(param_1,0x6a0f60,0x106f,0x3963c0,0,0);
+  FUN_00194b20(param_1,(const char *)0x6a0f60,0x106f,(u64 (*)(int))0x3963c0,0,0);
 
   return;
 
 }
 #define FUN_00396410(...) ((void (*)(...))FUN_00396410)(__VA_ARGS__)
 #undef FUN_00396480
-// FUN_00396480 NONMATCHING
+// FUN_00396480
 
 
 void FUN_00396480(int param_1,u32 param_2)
@@ -1588,7 +1588,8 @@ void FUN_00396480(int param_1,u32 param_2)
 
   
 
-  iVar1 = *(int *)(param_1 + 4) * 0x2c + param_1;
+  iVar1 = *(int *)(param_1 + 4) * 0x2c;
+  iVar1 = iVar1 + param_1;
 
   *(u8 *)(iVar1 + 0x14) = 0;
 
@@ -2094,7 +2095,7 @@ void FUN_00396bf0(u64 param_1)
 
   FUN_00521408(uVar1,0,0x24);
 
-  FUN_00194b20(param_1,0x6a1030,0x10,0x396a70,0x396ba0,uVar1);
+  FUN_00194b20(param_1,(const char *)0x6a1030,0x10,(u64 (*)(int))0x396a70,(void *)0x396ba0,(void *)uVar1);
 
   return;
 

@@ -9,6 +9,7 @@
 #include "rw/rprandom.h"
 
 extern u8 D_0067F600[];
+extern const char D_0067F5E0[];
 extern u8 D_0067F720[];
 extern u8 D_0067FA26[];
 extern u8 D_00681560[];
@@ -79,7 +80,7 @@ extern Resrc* MT_Scene_GetResListHead(u32 resType);
 extern void func_001a0150(u16 resourceId, u32 visible);
 extern s32 K_FldFrame_CtlGetXGrid(KwlnTask* collisCtlTask);
 extern s32 K_FldFrame_CtlGetZGrid(KwlnTask* collisCtlTask);
-extern void Y_TimeLimit_0045a400(void);
+extern void Y_TimeLimit_Stop(void);
 extern void H_Fade_FadeOut(void);
 extern void H_Fade_SetType(s16 type);
 extern void H_Snd_StopBgmFade(s16 fadeDuration);
@@ -230,10 +231,13 @@ Field* K_Field_Get()
 extern RwMatrix* FUN_00318b60(void* model);
 extern u32 FUN_001d5a90(KwlnTask* task);
 extern void func_001d8cb0(void);
-// FUN_001b9130 NONMATCHING
-u32 func_001b9130(void)
+// FUN_001B9130
+asm u32 func_001b9130(void)
 {
-    return FIELD_U32(0x007ce24c);
+    .set noreorder
+    lw $v0, -0x4aa4($gp)
+    jr $ra
+    nop
 }
 
 // FUN_001b9140 NONMATCHING
@@ -838,7 +842,7 @@ void func_001ba8d0(void)
 
     resource = MT_Scene_GetResListHead(3);
     other = MT_Scene_GetResListHead(0x0b);
-    Y_TimeLimit_0045a400();
+    Y_TimeLimit_Stop();
     func_001a0040(0, 1);
     while (resource != NULL)
     {
@@ -872,14 +876,14 @@ void func_001ba8d0(void)
     func_00109f60(4, 0);
 }
 
-// FUN_001baa50 NONMATCHING
+// FUN_001baa50
 void func_001baa50(KwlnTask* fldRootTask, u32 enabled)
 {
     FldRootWork* work;
 
     work = (FldRootWork*)fldRootTask->workData;
-    printf((const char*)0x0067f5e0);
-    *(u32*)((u8*)work + 0x04) = enabled;
+    printf(D_0067F5E0);
+    work->unk_04 = enabled;
 }
 
 // FUN_001baaa0

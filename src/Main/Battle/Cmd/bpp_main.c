@@ -301,7 +301,7 @@ void bppMain0020f570(void)
     }
 }
 
-// FUN_0020f680 NONMATCHING
+// FUN_0020f680
 void bppMain0020f680(void)
 {
     u32* work;
@@ -310,7 +310,7 @@ void bppMain0020f680(void)
     K_ASSERT(sBppMain != NULL, 0x43);
     work = sBppMain;
     for (i = 0; i < (s32)work[0x1694]; i++) {
-        func_0022c850(bppMainEntry(i) + 0x30);
+        func_0022c850((u8*)work + i * BPP_MAIN_ENTRY_STRIDE + 0x30);
     }
     work[0x1694] = 0;
     *work &= ~2u;

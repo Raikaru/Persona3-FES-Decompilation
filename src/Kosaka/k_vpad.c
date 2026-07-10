@@ -563,8 +563,11 @@ s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix,
     return 1;
 }
 
-// FUN_001e1840 NONMATCHING
-void* func_001e1840(void)
+// FUN_001E1840
+asm void* func_001e1840(void)
 {
-    return (void*)0x007CE2B8;
+    .set noreorder
+    addiu $v0, $gp, -0x4a38
+    jr $ra
+    nop
 }

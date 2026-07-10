@@ -3,8 +3,8 @@
 #include "sce/sifrpc.h"
 
 /* auto-extern (generated) */
-void FUN_0050b788(void);
-extern u32 DAT_0077f558;
+u32 FUN_0050b710(u32 param_1);
+extern int DAT_0077f558;
 extern u32 DAT_00969d40;
 extern u32 DAT_00969d80;
 extern u32 DAT_00969d84;
@@ -57,7 +57,21 @@ int sceSifInitIopHeap(void)
 }
 
 // FUN_0050B620 NONMATCHING
+u32 FUN_0050b620(u32 param_1)
+{
+    long result;
 
+    if (DAT_0077f558 >= 0)
+    {
+        DAT_00969d80 = param_1;
+        result = FUN_00507230(0x969d00, 1, 0, 0x969d80, 4, 0x969d40, 4, 0);
+        if (result >= 0)
+        {
+            return DAT_00969d40;
+        }
+    }
+    return 0;
+}
 // FUN_0050B690 NONMATCHING
 u32 FUN_0050b690(u32 param_1,u32 param_2,u32 param_3)
 
@@ -79,13 +93,41 @@ u32 FUN_0050b690(u32 param_1,u32 param_2,u32 param_3)
   return uVar1;
 }
 // FUN_0050B710 NONMATCHING
-
-// FUN_0050B788 NONMATCHING
-void FUN_0050b788(void)
-
+u32 FUN_0050b710(param_1)
+u32 param_1;
 {
-  FUN_0050b710();
-  return;
+    u32 result;
+    long call_result;
+
+    if (DAT_0077f558 < 0)
+    {
+        result = 0;
+    }
+    else
+    {
+        DAT_00969d80 = param_1;
+        call_result = FUN_00507230(0x969d00, 2, 0, 0x969d80, 4, 0x969d40, 4, 0);
+        result = DAT_00969d40;
+        if (call_result < 0)
+        {
+            result = 0xffffffff;
+        }
+    }
+    return result;
+}
+// FUN_0050B788
+asm int FUN_0050b788(void* address)
+{
+  .set noreorder
+  addiu $sp, $sp, -0x10
+  sd $ra, 0($sp)
+  jal FUN_0050b710
+  nop
+  ld $ra, 0($sp)
+  jr $ra
+  addiu $sp, $sp, 0x10
+  nop
+  .set reorder
 }
 // FUN_0050B7A8 NONMATCHING
 int sceSifLoadIopHeap(const char* path, void* address)

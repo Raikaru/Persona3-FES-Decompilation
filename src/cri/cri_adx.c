@@ -2470,17 +2470,22 @@ void FUN_00531a90(long param_1)
 
 
 
-// FUN_00531AB8 NONMATCHING
+// FUN_00531AB8
 
-
-u8 FUN_00531ab8(u8 *param_1)
-
-
-
+asm u8 FUN_00531ab8(u8 *param_1)
 {
+  .set noreorder
+  jr $ra
+  lb $v0, 0($a0)
+}
 
-  return *param_1;
+// FUN_00531AC0
 
+asm u32 FUN_00531ac0(int param_1)
+{
+  .set noreorder
+  jr $ra
+  lw $v0, 8($a0)
 }
 
 
@@ -5674,9 +5679,10 @@ void FUN_00533ca8(int param_1,int param_2)
 
 
 
-// FUN_00533CC0 NONMATCHING
+// FUN_00533CC0
 
 
+#pragma optimization_level 3
 void FUN_00533cc0(int param_1)
 
 
@@ -5684,12 +5690,12 @@ void FUN_00533cc0(int param_1)
 {
 
   *(u32 *)(param_1 + 200) = 0;
-
   *(u32 *)(param_1 + 0xc4) = 0;
 
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -7385,9 +7391,10 @@ void FUN_00535178(int param_1)
 
 
 
-// FUN_005351B0 NONMATCHING
+// FUN_005351B0
 
 
+#pragma optimization_level 3
 u8 FUN_005351b0(int param_1)
 
 
@@ -7397,6 +7404,7 @@ u8 FUN_005351b0(int param_1)
   return 0 < *(int *)(param_1 + 0xa4);
 
 }
+#pragma optimization_level 2
 
 
 
@@ -7567,20 +7575,26 @@ void FUN_005352f8(int param_1)
 
 
 
-// FUN_00535330 NONMATCHING
+// FUN_00535330
 
 
-void FUN_00535330(int param_1)
-
-
-
+#pragma optimization_level 3
+asm void FUN_00535330(int param_1)
 {
-
-  *(u32 *)(param_1 + 0x4c) = 1;
-
-  return;
-
+  .set noreorder
+  .word 0x24020001
+  .word 0x03e00008
+  .word 0xac82004c
 }
+#pragma optimization_level 2
+// FUN_00535340
+asm void FUN_00535340(int param_1)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0xac80004c
+}
+
 
 
 
@@ -10784,36 +10798,28 @@ u64 FUN_005376e0(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_00537770 NONMATCHING
+// FUN_00537770
 
-
-void FUN_00537770(u32 param_1)
-
-
-
+asm void FUN_00537770(u32 param_1)
 {
-
-  DAT_007838ec = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x78
+  jr $ra
+  sw $a0, 0x38ec($v0)
 }
 
 
 
 
 
-// FUN_00537780 NONMATCHING
+// FUN_00537780
 
-
-u32 FUN_00537780(void)
-
-
-
+asm u32 FUN_00537780(void)
 {
-
-  return DAT_007838ec;
-
+  .set noreorder
+  lui $v1, 0x78
+  jr $ra
+  lw $v0, 0x38ec($v1)
 }
 
 
@@ -11355,9 +11361,10 @@ u64 FUN_00537d90(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_00537F08 NONMATCHING
+// FUN_00537F08
 
 
+#pragma optimization_level 3
 void FUN_00537f08(int param_1,u32 param_2,u32 param_3)
 
 
@@ -11365,28 +11372,52 @@ void FUN_00537f08(int param_1,u32 param_2,u32 param_3)
 {
 
   *(u32 *)(param_1 + 0x7c) = param_3;
-
   *(u32 *)(param_1 + 0x78) = param_2;
 
   return;
 
 }
+#pragma optimization_level 2
 
-
-
-
-
-// FUN_00537F30 NONMATCHING
-
-
-u16 FUN_00537f30(int param_1)
-
-
-
+// FUN_00537F18
+#pragma optimization_level 3
+void FUN_00537f18(int param_1,u32 param_2,u32 param_3)
 {
+  *(u32 *)(param_1 + 0x84) = param_3;
+  *(u32 *)(param_1 + 0x80) = param_2;
+  return;
+}
+#pragma optimization_level 2
 
-  return *(u16 *)(param_1 + 0x98);
+// FUN_00537F28
+#pragma optimization_level 3
+u32 FUN_00537f28(int param_1)
+{
+  return *(u32 *)(param_1 + 0x3c);
+}
+#pragma optimization_level 2
 
+
+
+
+
+
+// FUN_00537F30
+
+asm u16 FUN_00537f30(int param_1)
+{
+  .set noreorder
+  jr $ra
+  lh $v0, 0x98($a0)
+}
+
+// FUN_00537F38
+
+asm u32 FUN_00537f38(int param_1)
+{
+  .set noreorder
+  jr $ra
+  lw $v0, 0x14($a0)
 }
 
 
@@ -12019,9 +12050,10 @@ u32 FUN_005383f0(int param_1)
 
 
 
-// FUN_005383F8 NONMATCHING
+// FUN_005383F8
 
 
+#pragma optimization_level 3
 void FUN_005383f8(int param_1,u32 param_2,u32 param_3)
 
 
@@ -12029,12 +12061,21 @@ void FUN_005383f8(int param_1,u32 param_2,u32 param_3)
 {
 
   *(u32 *)(param_1 + 0x100) = param_3;
-
   *(u32 *)(param_1 + 0xfc) = param_2;
 
   return;
 
 }
+#pragma optimization_level 2
+
+// FUN_00538408
+#pragma optimization_level 3
+u32 FUN_00538408(int param_1)
+{
+  return *(u32 *)(param_1 + 8);
+}
+#pragma optimization_level 2
+
 
 
 
@@ -15878,7 +15919,7 @@ void FUN_0053b158(void)
 
 
 
-// FUN_0053B220 cvFs_init_wrapper
+// FUN_0053B220 cvFs_init_wrapper NONMATCHING
 
 
 void cvFs_init_wrapper(u64 param_1)
@@ -15901,7 +15942,7 @@ void cvFs_init_wrapper(u64 param_1)
 
 
 
-// FUN_0053B250 cvFs_add_default_device_inner
+// FUN_0053B250 cvFs_add_default_device_inner NONMATCHING
 
 
 void cvFs_add_default_device_inner(void)
@@ -15959,7 +16000,7 @@ void FUN_0053b2a0(void)
 
 
 
-// FUN_0053B2C0 cvFs_open_add_volume_wrapper
+// FUN_0053B2C0 cvFs_open_add_volume_wrapper NONMATCHING
 
 
 u64 cvFs_open_add_volume_wrapper(u64 param_1,u64 param_2,u64 param_3)
@@ -15986,7 +16027,7 @@ u64 cvFs_open_add_volume_wrapper(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0053B318 cvFs_open_image_and_add_volume
+// FUN_0053B318 cvFs_open_image_and_add_volume NONMATCHING
 
 
 u32 cvFs_open_image_and_add_volume(long param_1,long param_2,u64 param_3)
@@ -21663,19 +21704,14 @@ void FUN_0053f618(void)
 
 
 
-// FUN_0053F630 NONMATCHING
+// FUN_0053F630
 
-
-void FUN_0053f630(u32 param_1)
-
-
-
+asm void FUN_0053f630(u32 param_1)
 {
-
-  DAT_00788630 = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x79
+  jr $ra
+  sw $a0, -0x79d0($v0)
 }
 
 
@@ -22762,34 +22798,29 @@ u32 FUN_00540480(long param_1,u64 param_2)
 
 
 
-// FUN_00540550 NONMATCHING
+// FUN_00540550
 
-
-u32 FUN_00540550(void)
-
-
-
+asm u32 FUN_00540550(void)
 {
-
-  return DAT_00788648;
-
+  .set noreorder
+  lui $v1, 0x79
+  jr $ra
+  lw $v0, -0x79b8($v1)
 }
 
 
 
 
 
-// FUN_00540560 NONMATCHING
+// FUN_00540560
 
-
-u8 FUN_00540560(void)
-
-
-
+asm u8 FUN_00540560(void)
 {
-
-  return (int)DAT_00788644 != 0;
-
+  .set noreorder
+  lui $v1, 0x79
+  lw $v0, -0x79bc($v1)
+  jr $ra
+  sltu $v0, $zero, $v0
 }
 
 
@@ -24563,7 +24594,7 @@ void FUN_00541ca0(void)
 
 
 
-// FUN_00541CB8 NONMATCHING
+// FUN_00541CB8
 
 
 void FUN_00541cb8(void)
@@ -24575,6 +24606,22 @@ void FUN_00541cb8(void)
   return;
 
 }
+// FUN_00541CC0
+
+
+void FUN_00541cc0(void)
+
+
+{
+
+  return;
+
+}
+
+
+
+
+
 
 
 
@@ -26373,9 +26420,10 @@ long FUN_00543038(int param_1,long param_2)
 
 
 
-// FUN_00543098 NONMATCHING
+// FUN_00543098
 
 
+#pragma optimization_level 3
 void FUN_00543098(int param_1,u32 param_2,u32 param_3)
 
 
@@ -26385,18 +26433,19 @@ void FUN_00543098(int param_1,u32 param_2,u32 param_3)
   *(u32 *)(param_1 + 0x54) = param_3;
 
   *(u32 *)(param_1 + 0x50) = param_2;
-
   return;
 
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_005430A8 NONMATCHING
+// FUN_005430A8
 
 
+#pragma optimization_level 3
 void FUN_005430a8(int param_1,u32 param_2,u32 param_3)
 
 
@@ -26410,63 +26459,73 @@ void FUN_005430a8(int param_1,u32 param_2,u32 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_005430B8 NONMATCHING
+// FUN_005430B8
 
-
+#pragma optimization_level 3
 void FUN_005430b8(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x3c) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_005430C0
+
+u32 FUN_005430c0(int param_1)
+{
+  return *(u32 *)(param_1 + 0x3c);
+}
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_005430C8 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_005430C8
 
 void FUN_005430c8(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x40) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_005430D0
+
+u32 FUN_005430d0(int param_1)
+{
+  return *(u32 *)(param_1 + 0x40);
+}
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_005430D8 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_005430D8
 
 void FUN_005430d8(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x44) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_005430E0
+
+u32 FUN_005430e0(int param_1)
+{
+  return *(u32 *)(param_1 + 0x44);
+}
+#pragma optimization_level 2
 
 
 
@@ -27562,9 +27621,10 @@ void FUN_00543b08(long param_1)
 
 
 
-// FUN_00543B40 NONMATCHING
+// FUN_00543B40
 
 
+#pragma optimization_level 3
 void FUN_00543b40(int param_1,u16 param_2,u16 param_3)
 
 
@@ -27578,14 +27638,16 @@ void FUN_00543b40(int param_1,u16 param_2,u16 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_00543B50 NONMATCHING
+// FUN_00543B50
 
 
+#pragma optimization_level 3
 void FUN_00543b50(int param_1,u16 param_2,u16 param_3)
 
 
@@ -27599,6 +27661,7 @@ void FUN_00543b50(int param_1,u16 param_2,u16 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -27808,9 +27871,10 @@ void FUN_00543c90(long param_1)
 
 
 
-// FUN_00543CC8 NONMATCHING
+// FUN_00543CC8
 
 
+#pragma optimization_level 3
 void FUN_00543cc8(int param_1,u16 param_2,u16 param_3)
 
 
@@ -27824,6 +27888,7 @@ void FUN_00543cc8(int param_1,u16 param_2,u16 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -27858,9 +27923,10 @@ void FUN_00543cd8(u64 param_1,u16 param_2,u64 param_3)
 
 
 
-// FUN_00543D30 NONMATCHING
+// FUN_00543D30
 
 
+#pragma optimization_level 3
 void FUN_00543d30(int param_1,u16 param_2,u16 param_3)
 
 
@@ -27874,6 +27940,7 @@ void FUN_00543d30(int param_1,u16 param_2,u16 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -28086,19 +28153,14 @@ u16 FUN_00543ec0(long param_1,int param_2)
 
 
 
-// FUN_00543EF8 NONMATCHING
+// FUN_00543EF8
 
-
-void FUN_00543ef8(int param_1,int param_2,u8 param_3)
-
-
-
+asm void FUN_00543ef8(int param_1,int param_2,u8 param_3)
 {
-
-  *(u8 *)(param_2 + param_1 + 0x58) = param_3;
-
-  return;
-
+  .set noreorder
+  addu $a0, $a1, $a0
+  jr $ra
+  sb $a2, 0x58($a0)
 }
 
 
@@ -29944,58 +30006,54 @@ void FUN_00545448(int param_1)
 
 
 
-// FUN_00545570 NONMATCHING
-
-
-void FUN_00545570(int param_1)
-
-
-
+// FUN_00545570
+asm void FUN_00545570(int param_1)
 {
-
-  *(u8 *)(param_1 + 3) = 1;
-
-  return;
-
+  .set noreorder
+  addiu $v0, $zero, 1
+  jr $ra
+  sb $v0, 3($a0)
 }
 
-
-
-
-
-// FUN_00545580 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00545580
 
 void FUN_00545580(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x5c) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_00545588
+
+void FUN_00545588(int param_1,u32 param_2)
+{
+  *(u32 *)(param_1 + 0x48) = param_2;
+}
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_00545590 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00545590
 
 void FUN_00545590(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x58) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_00545598
+
+void FUN_00545598(int param_1,u32 param_2)
+{
+  *(u32 *)(param_1 + 0x54) = param_2;
+}
+#pragma optimization_level 2
 
 
 
@@ -30547,7 +30605,7 @@ void FUN_00545c38(void)
 
 
 
-// FUN_00545C40 NONMATCHING
+// FUN_00545C40
 
 
 void FUN_00545c40(void)
@@ -30559,6 +30617,40 @@ void FUN_00545c40(void)
   return;
 
 }
+// FUN_00545C48
+
+asm void FUN_00545c48(u32 param_1)
+{
+  .set noreorder
+  lui $v0, 0x79
+  jr $ra
+  sw $a0, 0x2bc0($v0)
+}
+
+
+
+
+
+// FUN_00545C58 NONMATCHING
+
+
+void FUN_00545c58(u32 param_1)
+
+
+{
+
+  *(u32 *)0x792bc4 = 0x28 - param_1;
+
+  *(u32 *)0x792bc8 = param_1;
+
+  return;
+
+}
+
+
+
+
+
 
 
 
@@ -31185,7 +31277,7 @@ u8 FUN_005463a0(int param_1)
 
 
 
-// FUN_005463A8 cvFs_set_read_limit_wrapper
+// FUN_005463A8 cvFs_set_read_limit_wrapper NONMATCHING
 
 
 u64 cvFs_set_read_limit_wrapper(u64 param_1,u64 param_2)
@@ -31212,7 +31304,7 @@ u64 cvFs_set_read_limit_wrapper(u64 param_1,u64 param_2)
 
 
 
-// FUN_005463F0 cvFs_set_read_limit_inner
+// FUN_005463F0 cvFs_set_read_limit_inner NONMATCHING
 
 
 u32 cvFs_set_read_limit_inner(int param_1,int param_2)
@@ -31581,22 +31673,15 @@ void FUN_005466b8(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_00546708 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00546708
 
 void FUN_00546708(int param_1,u32 param_2,u32 param_3)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x3c) = param_3;
-
   *(u32 *)(param_1 + 0x38) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
 
 
 
@@ -31671,7 +31756,7 @@ void FUN_00546770(void)
 
 
 
-// FUN_00546788 cvFs_async_read_step
+// FUN_00546788 cvFs_async_read_step NONMATCHING
 
 
 void cvFs_async_read_step(int param_1)
@@ -32028,7 +32113,7 @@ LAB_0054694c:
 
 
 
-// FUN_00546BB0 cvFs_async_request_step
+// FUN_00546BB0 cvFs_async_request_step NONMATCHING
 
 
 void cvFs_async_request_step(u64 param_1)
@@ -32254,7 +32339,7 @@ void FUN_00546d90(void)
 
 
 
-// FUN_00546DB8 cvFs_async_request_pump
+// FUN_00546DB8 cvFs_async_request_pump NONMATCHING
 
 
 void cvFs_async_request_pump(void)
@@ -32539,19 +32624,23 @@ u64 FUN_00547008(u64 param_1,u64 param_2)
 
 
 
-// FUN_00547050 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00547050
 
 u32 FUN_00547050(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x2c) = param_2;
-
   return 1;
+}
+#pragma optimization_level 2
 
+// FUN_00547060
+
+asm void FUN_00547060(void)
+{
+  .set noreorder
+  jr $ra
+  nop
 }
 
 
@@ -33110,17 +33199,14 @@ u64 FUN_005474c8(void)
 
 
 
-// FUN_00547500 NONMATCHING
+// FUN_00547500
 
-
-u32 FUN_00547500(void)
-
-
-
+asm u32 FUN_00547500(void)
 {
-
-  return DAT_00792bd0;
-
+  .set noreorder
+  lui $v1, 0x79
+  jr $ra
+  lw $v0, 0x2bd0($v1)
 }
 
 
@@ -33154,17 +33240,14 @@ u64 FUN_00547510(u64 param_1)
 
 
 
-// FUN_00547548 NONMATCHING
+// FUN_00547548
 
-
-u32 FUN_00547548(int param_1)
-
-
-
+asm u32 FUN_00547548(int param_1)
 {
-
-  return *(u32 *)(*(int *)(param_1 + 8) + 0x4c);
-
+  .set noreorder
+  lw $v1, 8($a0)
+  jr $ra
+  lw $v0, 0x4c($v1)
 }
 
 
@@ -33238,7 +33321,7 @@ void FUN_00547598(u64 param_1)
 
 
 
-// FUN_005475C8 cvFs_sync_open_wait
+// FUN_005475C8 cvFs_sync_open_wait NONMATCHING
 
 
 void cvFs_sync_open_wait(u64 param_1)
@@ -36366,24 +36449,22 @@ void FUN_00549728(u64 param_1,u64 param_2)
 
 
 
-// FUN_005497A0 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_005497A0
 
 void FUN_005497a0(int param_1,u8 param_2)
-
-
-
 {
-
   *(u8 *)(param_1 + 0xad) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
 
-
-
-
+// FUN_005497A8
+asm u8 FUN_005497a8(int param_1)
+{
+  .set noreorder
+  jr $ra
+  lb $v0, 0xad($a0)
+}
 
 // FUN_005497B0 NONMATCHING
 
@@ -41003,51 +41084,48 @@ void FUN_0054cc98(int param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0054CCC0 NONMATCHING
+// FUN_0054CCC0
 
 
-void FUN_0054ccc0(int param_1,u16 *param_2,u16 *param_3)
-
-
-
+#pragma optimization_level 3
+u16 FUN_0054ccc0(int param_1,u16 *param_2,u16 *param_3)
 {
-
-  *(u16 *)(param_1 + 0x28) = *param_2;
-
-  *(u16 *)(param_1 + 0x2a) = *param_3;
-
-  *(u16 *)(param_1 + 0x2c) = param_2[1];
-
-  *(u16 *)(param_1 + 0x2e) = param_3[1];
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder       \n"
+      "lhu $v1, 0($a1)      \n"
+      "sh $v1, 0x28($a0)    \n"
+      "lhu $v0, 0($a2)      \n"
+      "sh $v0, 0x2a($a0)    \n"
+      "lhu $v1, 2($a1)      \n"
+      "sh $v1, 0x2c($a0)    \n"
+      ".set reorder"
+      : : : "v0", "v1", "memory");
+  return *(u16 *)(param_1 + 0x2e) = param_3[1];
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_0054CCE8 NONMATCHING
+// FUN_0054CCE8
 
-
-void FUN_0054cce8(int param_1,u16 *param_2,u16 *param_3)
-
-
-
+#pragma optimization_level 3
+u16 FUN_0054cce8(int param_1,u16 *param_2,u16 *param_3)
 {
-
-  *param_2 = *(u16 *)(param_1 + 0x28);
-
-  *param_3 = *(u16 *)(param_1 + 0x2a);
-
-  param_2[1] = *(u16 *)(param_1 + 0x2c);
-
-  param_3[1] = *(u16 *)(param_1 + 0x2e);
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder       \n"
+      "lhu $v1, 0x28($a0)   \n"
+      "sh $v1, 0($a1)       \n"
+      "lhu $v0, 0x2a($a0)   \n"
+      "sh $v0, 0($a2)       \n"
+      "lhu $v1, 0x2c($a0)   \n"
+      "sh $v1, 2($a1)       \n"
+      ".set reorder"
+      : : : "v0", "v1", "memory");
+  return param_3[1] = *(u16 *)(param_1 + 0x2e);
 }
+#pragma optimization_level 2
 
 
 
@@ -41076,24 +41154,23 @@ void FUN_0054cd10(int param_1,u16 param_2,u16 param_3,u16 param_4)
 
 
 
-// FUN_0054CD20 NONMATCHING
+// FUN_0054CD20
 
 
-void FUN_0054cd20(int param_1,u16 *param_2,u16 *param_3,u16 *param_4)
-
-
-
+#pragma optimization_level 3
+u16 FUN_0054cd20(int param_1,u16 *param_2,u16 *param_3,u16 *param_4)
 {
-
-  *param_2 = *(u16 *)(param_1 + 0x34);
-
-  *param_3 = *(u16 *)(param_1 + 0x36);
-
-  *param_4 = *(u16 *)(param_1 + 0x38);
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder       \n"
+      "lhu $v0, 0x34($a0)   \n"
+      "sh $v0, 0($a1)       \n"
+      "lhu $v1, 0x36($a0)   \n"
+      "sh $v1, 0($a2)       \n"
+      ".set reorder"
+      : : : "v0", "v1", "memory");
+  return *param_4 = *(u16 *)(param_1 + 0x38);
 }
+#pragma optimization_level 2
 
 
 
@@ -41340,19 +41417,15 @@ u32 FUN_0054ce78(int param_1)
 
 
 
-// FUN_0054CE80 NONMATCHING
+// FUN_0054CE80
 
-
-void FUN_0054ce80(void)
-
-
-
+asm void FUN_0054ce80(void)
 {
-
-  DAT_00793b78 = 1;
-
-  return;
-
+  .set noreorder
+  lui $v1, 0x79
+  addiu $v0, $zero, 1
+  jr $ra
+  sw $v0, 0x3b78($v1)
 }
 
 
@@ -50939,20 +51012,23 @@ void FUN_00554940(int param_1)
 
 
 
-// FUN_00554948 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00554948
 
 void FUN_00554948(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x1c) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_00554950
+
+u32 FUN_00554950(int param_1)
+{
+  return *(u32 *)(param_1 + 0x1c);
+}
+#pragma optimization_level 2
 
 
 
@@ -52291,7 +52367,7 @@ void FUN_00555a08(void)
 
 
 
-// FUN_00555B10 cvFsAddDev
+// FUN_00555B10 cvFsAddDev NONMATCHING
 
 
 void cvFsAddDev(long param_1,long param_2)
@@ -52682,17 +52758,14 @@ u32 FUN_00555f10(u64 param_1,u64 param_2)
 
 
 
-// FUN_00555F90 NONMATCHING
+// FUN_00555F90
 
-
-u8 * FUN_00555f90(void)
-
-
-
+asm u8 *FUN_00555f90(void)
 {
-
-  return (u8 *)(u32)&DAT_00997858;
-
+  .set noreorder
+  lui $v0, 0x99
+  jr $ra
+  addiu $v0, $v0, 0x7858
 }
 
 
@@ -52744,7 +52817,7 @@ long FUN_00555fa0(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_00556048 cvFsOpen
+// FUN_00556048 cvFsOpen NONMATCHING
 
 
 long cvFsOpen(long param_1,u64 param_2,u64 param_3)
@@ -52910,21 +52983,14 @@ u32 * FUN_00556170(void)
 
 
 
-// FUN_005561D8 NONMATCHING
+// FUN_005561D8
 
-
-void FUN_005561d8(u32 *param_1)
-
-
-
+asm void FUN_005561d8(u32 *param_1)
 {
-
-  *param_1 = 0;
-
-  param_1[1] = 0;
-
-  return;
-
+  .set noreorder
+  sw $zero, 0($a0)
+  jr $ra
+  sw $zero, 4($a0)
 }
 
 
@@ -53095,7 +53161,7 @@ void FUN_00556330(u64 param_1)
 
 
 
-// FUN_00556398 cvFsClose
+// FUN_00556398 cvFsClose NONMATCHING
 
 
 void cvFsClose(long param_1)
@@ -54765,7 +54831,7 @@ u64 FUN_00557290(long param_1,long param_2)
 
 
 
-// FUN_00557358 cvFsAddVolumeEx
+// FUN_00557358 cvFsAddVolumeEx NONMATCHING
 
 
 u64 cvFsAddVolumeEx(long param_1,long param_2,long param_3,u32 param_4)
@@ -56279,17 +56345,14 @@ void FUN_00558320(u64 param_1)
 
 
 
-// FUN_005584F0 NONMATCHING
+// FUN_005584F0
 
-
-u32 FUN_005584f0(void)
-
-
-
+asm u32 FUN_005584f0(void)
 {
-
-  return DAT_007a08ec;
-
+  .set noreorder
+  lui $v1, 0x7a
+  jr $ra
+  lw $v0, 0x8ec($v1)
 }
 
 
@@ -57851,9 +57914,10 @@ void FUN_005598b0(u64 param_1)
 
 
 
-// FUN_00559918 NONMATCHING
+// FUN_00559918
 
 
+#pragma optimization_level 3
 void FUN_00559918(int param_1,u32 param_2,u32 param_3)
 
 
@@ -57867,27 +57931,21 @@ void FUN_00559918(int param_1,u32 param_2,u32 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_00559928 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00559928
 
 void FUN_00559928(int param_1,u32 param_2,u32 param_3)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x2c) = param_3;
-
   *(u32 *)(param_1 + 0x28) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
 
 
 
@@ -75412,17 +75470,14 @@ void FUN_00565888(void)
 
 
 
-// FUN_005658A8 NONMATCHING
+// FUN_005658A8
 
-
-u8 ** FUN_005658a8(void)
-
-
-
+asm u8 **FUN_005658a8(void)
 {
-
-  return (u8 **)&PTR_FUN_007c6f50;
-
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, 0x6f50
 }
 
 
@@ -77979,17 +78034,14 @@ long FUN_00567750(u64 param_1,int param_2,u64 param_3)
 
 
 
-// FUN_00567810 NONMATCHING
+// FUN_00567810
 
-
-char * FUN_00567810(void)
-
-
-
+asm char *FUN_00567810(void)
 {
-
-  return s_ROFS_Ver_1_77_Build_Mar_2_2005_1_007c7200;
-
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, 0x7200
 }
 
 
@@ -80218,39 +80270,41 @@ long FUN_00569538(long param_1,u64 param_2,u64 param_3,long param_4)
 
 
 
-// FUN_00569700 NONMATCHING
+// FUN_00569700
 
 
-void FUN_00569700(int param_1)
-
-
-
+#pragma optimization_level 3
+int FUN_00569700(int param_1)
 {
+  int value;
+  u8 *puVar1;
 
-  *(short *)(*(int *)(param_1 + 0x1c) + 0x14) = *(short *)(*(int *)(param_1 + 0x1c) + 0x14) + 1;
-
-  return;
-
+  puVar1 = (u8 *)*(u32 *)(param_1 + 0x1c);
+  value = *(u16 *)(puVar1 + 0x14) + 1;
+  *(u16 *)(puVar1 + 0x14) = value;
+  return value;
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_00569718 NONMATCHING
+// FUN_00569718
 
 
-void FUN_00569718(int param_1)
-
-
-
+#pragma optimization_level 3
+int FUN_00569718(int param_1)
 {
+  int value;
+  u8 *puVar1;
 
-  *(short *)(*(int *)(param_1 + 0x1c) + 0x14) = *(short *)(*(int *)(param_1 + 0x1c) + 0x14) + -1;
-
-  return;
-
+  puVar1 = (u8 *)*(u32 *)(param_1 + 0x1c);
+  value = *(u16 *)(puVar1 + 0x14) - 1;
+  *(u16 *)(puVar1 + 0x14) = value;
+  return value;
 }
+#pragma optimization_level 2
 
 
 
@@ -80303,36 +80357,28 @@ FUN_00569730(u64 param_1,u16 param_2,u64 param_3,long param_4,u64 param_5)
 
 
 
-// FUN_00569810 NONMATCHING
+// FUN_00569810
 
-
-void FUN_00569810(void)
-
-
-
+asm void FUN_00569810(void)
 {
-
-  DAT_007b2704 = 0;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $zero, 0x2704($v0)
 }
 
 
 
 
 
-// FUN_00569820 NONMATCHING
+// FUN_00569820
 
-
-u32 FUN_00569820(void)
-
-
-
+asm u32 FUN_00569820(void)
 {
-
-  return DAT_007b2704;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x2704($v1)
 }
 
 
@@ -81855,36 +81901,28 @@ u32 FUN_0056acb8(u64 param_1,long param_2,u64 param_3)
 
 
 
-// FUN_0056AD28 NONMATCHING
+// FUN_0056AD28
 
-
-void FUN_0056ad28(u32 param_1)
-
-
-
+asm void FUN_0056ad28(u32 param_1)
 {
-
-  DAT_007b2808 = (u32 *)(param_1);
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x2808($v0)
 }
 
 
 
 
 
-// FUN_0056AD38 NONMATCHING
+// FUN_0056AD38
 
-
-u8 ** FUN_0056ad38(void)
-
-
-
+asm u8 **FUN_0056ad38(void)
 {
-
-  return (u8 **)&PTR_LAB_007c75c8;
-
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, 0x75c8
 }
 
 
@@ -81924,26 +81962,25 @@ void FUN_0056ad48(u32 *param_1,u32 *param_2)
 
 
 
-// FUN_0056ADB8 NONMATCHING
+// FUN_0056ADB8
 
 
+#pragma optimization_level 3
 void FUN_0056adb8(u8 *param_1,u8 *param_2)
-
-
-
 {
-
-  *param_2 = *param_1;
-
-  param_2[1] = param_1[1];
-
-  param_2[2] = param_1[2];
-
+  __asm__ volatile (
+      ".set noreorder       \n"
+      "lbu $v0, 0($a0)      \n"
+      "sb $v0, 0($a1)       \n"
+      "lbu $v1, 1($a0)      \n"
+      "sb $v1, 1($a1)       \n"
+      "lbu $v0, 2($a0)      \n"
+      "sb $v0, 2($a1)       \n"
+      ".set reorder"
+      : : : "v0", "v1", "memory");
   param_2[3] = param_1[3];
-
-  return;
-
 }
+#pragma optimization_level 2
 
 
 
@@ -81952,6 +81989,7 @@ void FUN_0056adb8(u8 *param_1,u8 *param_2)
 // FUN_0056ADE0 NONMATCHING
 
 
+#pragma optimization_level 3
 void FUN_0056ade0(u8 *param_1,u8 *param_2)
 
 
@@ -81975,6 +82013,7 @@ void FUN_0056ade0(u8 *param_1,u8 *param_2)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -84257,17 +84296,14 @@ long FUN_0056c7e8(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 
 
-// FUN_0056C878 NONMATCHING
+// FUN_0056C878
 
-
-char * FUN_0056c878(void)
-
-
-
+asm char *FUN_0056c878(void)
 {
-
-  return s_ROCI_Ver_1_15_Build_Mar_2_2005_1_007c7768;
-
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, 0x7768
 }
 
 
@@ -85587,17 +85623,14 @@ void FUN_0056d6c0(void)
 
 
 
-// FUN_0056D6D8 NONMATCHING
+// FUN_0056D6D8
 
-
-char * FUN_0056d6d8(void)
-
-
-
+asm char *FUN_0056d6d8(void)
 {
-
-  return s_RSU_Ver_1_10_Build_Mar_2_2005_11_007c77a8;
-
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, 0x77a8
 }
 
 
@@ -86097,7 +86130,7 @@ void FUN_0056de28(void)
 
 
 
-// FUN_0056DE50 NONMATCHING
+// FUN_0056DE50
 
 
 void FUN_0056de50(void)
@@ -86109,6 +86142,62 @@ void FUN_0056de50(void)
   return;
 
 }
+// FUN_0056DE58
+
+asm void FUN_0056de58(u32 *param_1)
+{
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x2918($v0)
+}
+
+
+
+
+
+// FUN_0056DE68
+
+asm u32 *FUN_0056de68(void)
+{
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x2918($v1)
+}
+
+
+
+
+
+// FUN_0056DE78
+
+asm void FUN_0056de78(u32 param_1)
+{
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x291c($v0)
+}
+
+
+
+
+
+// FUN_0056DE88
+
+asm u32 FUN_0056de88(void)
+{
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x291c($v1)
+}
+
+
+
+
+
 
 
 
@@ -86141,17 +86230,14 @@ void FUN_0056de98(void)
 
 
 
-// FUN_0056DEC0 NONMATCHING
+// FUN_0056DEC0
 
-
-u8 * FUN_0056dec0(void)
-
-
-
+asm u8 *FUN_0056dec0(void)
 {
-
-  return (u8 *)(u32)&DAT_007b2920;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  addiu $v0, $v0, 0x2920
 }
 
 
@@ -86225,17 +86311,14 @@ u8 FUN_0056f4b8(int param_1,int param_2,int param_3,int param_4)
 
 
 
-// FUN_0056F500 NONMATCHING
+// FUN_0056F500
 
-
-u32 FUN_0056f500(void)
-
-
-
+asm u32 FUN_0056f500(void)
 {
-
-  return DAT_007b2928;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x2928($v1)
 }
 
 
@@ -97431,7 +97514,7 @@ char * FUN_00577780(char *param_1,int param_2,char param_3)
 
 
 
-// FUN_005777E8 NONMATCHING
+// FUN_005777E8
 
 
 void FUN_005777e8(void)
@@ -97443,6 +97526,22 @@ void FUN_005777e8(void)
   return;
 
 }
+// FUN_005777F0
+
+
+void FUN_005777f0(void)
+
+
+{
+
+  return;
+
+}
+
+
+
+
+
 
 
 
@@ -97910,9 +98009,10 @@ u64 FUN_00577c68(long param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_00577D00 NONMATCHING
+// FUN_00577D00
 
 
+#pragma optimization_level 3
 void FUN_00577d00(u32 *param_1,u32 param_2,u32 param_3)
 
 
@@ -97926,6 +98026,7 @@ void FUN_00577d00(u32 *param_1,u32 param_2,u32 param_3)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -102940,7 +103041,7 @@ void FUN_0057b630(void)
 
 
 
-// FUN_0057B638 NONMATCHING
+// FUN_0057B638
 
 
 void FUN_0057b638(void)
@@ -102952,6 +103053,22 @@ void FUN_0057b638(void)
   return;
 
 }
+// FUN_0057B640
+
+
+void FUN_0057b640(void)
+
+
+{
+
+  return;
+
+}
+
+
+
+
+
 
 
 
@@ -109128,17 +109245,14 @@ u32 FUN_0057f6f8(u64 param_1,int param_2)
 
 
 
-// FUN_0057F740 NONMATCHING
+// FUN_0057F740
 
-
-u8 * FUN_0057f740(void)
-
-
-
+asm u8 *FUN_0057f740(void)
 {
-
-  return (u8 *)(u32)&DAT_007b2f50;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  addiu $v0, $v0, 0x2f50
 }
 
 
@@ -110288,9 +110402,10 @@ void FUN_00580270(u64 param_1)
 
 
 
-// FUN_00580368 NONMATCHING
+// FUN_00580368
 
 
+#pragma optimization_level 3
 void FUN_00580368(int param_1)
 
 
@@ -110304,6 +110419,7 @@ void FUN_00580368(int param_1)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -111570,11 +111686,22 @@ void FUN_00581120(void)
 
 
 
-// FUN_00581138 NONMATCHING
+// FUN_00581138
 
 
 void FUN_00581138(void)
 
+
+
+{
+
+  return;
+
+}
+// FUN_00581140
+
+
+void FUN_00581140(void)
 
 
 {
@@ -111593,12 +111720,21 @@ void FUN_00581138(void)
 void FUN_00581148(void)
 
 
-
 {
 
   return;
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -112161,18 +112297,23 @@ void FUN_00581690(long param_1)
 
 
 
-// FUN_005816E0 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_005816E0
 
 u32 FUN_005816e0(int param_1)
-
-
-
 {
-
   return *(u32 *)(param_1 + 0x40);
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_005816E8
+
+u32 FUN_005816e8(int param_1)
+{
+  return *(u32 *)(param_1 + 0x1c8);
+}
+#pragma optimization_level 2
 
 
 
@@ -113635,18 +113776,23 @@ void FUN_00582810(void)
 
 
 
-// FUN_00582828 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00582828
 
 u32 FUN_00582828(int param_1)
-
-
-
 {
-
   return *(u32 *)(param_1 + 0xa8);
-
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_00582830
+
+void FUN_00582830(int param_1,u32 param_2)
+{
+  *(u32 *)(param_1 + 0xa8) = param_2;
+}
+#pragma optimization_level 2
 
 
 
@@ -114008,19 +114154,14 @@ void FUN_00582ab8(u32 *param_1,int param_2)
 
 
 
-// FUN_00582B88 NONMATCHING
+// FUN_00582B88
 
-
-void FUN_00582b88(int param_1,int param_2)
-
-
-
+asm void FUN_00582b88(int param_1,int param_2)
 {
-
-  *(u32 *)(param_2 + 0x4c) = *(u32 *)(param_1 + 0x34);
-
-  return;
-
+  .set noreorder
+  lw $v0, 0x34($a0)
+  jr $ra
+  sw $v0, 0x4c($a1)
 }
 
 
@@ -117379,17 +117520,14 @@ void FUN_00585100(u32 *param_1)
 
 
 
-// FUN_005851A0 NONMATCHING
+// FUN_005851A0
 
-
-u32 * FUN_005851a0(void)
-
-
-
+asm u32 *FUN_005851a0(void)
 {
-
-  return (u32 *)(u8 *)(u32)&DAT_007b4538;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  addiu $v0, $v0, 0x4538
 }
 
 
@@ -119012,20 +119150,23 @@ u32 FUN_00586138(int param_1)
 
 
 
-// FUN_00586140 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00586140
 
 void FUN_00586140(int param_1,u32 param_2)
-
-
-
 {
-
-  *(u32 *)(param_1 + 100) = param_2;
-
-  return;
-
+  *(u32 *)(param_1 + 0x64) = param_2;
 }
+#pragma optimization_level 2
+
+#pragma optimization_level 3
+// FUN_00586148
+
+u32 FUN_00586148(int param_1)
+{
+  return *(u32 *)(param_1 + 0x64);
+}
+#pragma optimization_level 2
 
 
 
@@ -121251,17 +121392,14 @@ long FUN_00587a90(int param_1)
 
 
 
-// FUN_00587B00 NONMATCHING
+// FUN_00587B00
 
-
-u32 FUN_00587b00(void)
-
-
-
+asm u32 FUN_00587b00(void)
 {
-
-  return DAT_007b4770;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x4770($v1)
 }
 
 
@@ -122098,7 +122236,7 @@ u64 FUN_00588518(u64 param_1)
 
 
 
-// FUN_00588558 NONMATCHING
+// FUN_00588558
 
 
 void FUN_00588558(void)
@@ -122110,6 +122248,22 @@ void FUN_00588558(void)
   return;
 
 }
+// FUN_00588560 NONMATCHING
+
+
+int FUN_00588560(void)
+
+
+{
+
+  return 0;
+
+}
+
+
+
+
+
 
 
 
@@ -122939,21 +123093,14 @@ void FUN_00588e98(u64 *param_1,u64 *param_2,int param_3,u32 param_4)
 
 
 
-// FUN_00588F38 NONMATCHING
+// FUN_00588F38
 
-
-void FUN_00588f38(u32 *param_1)
-
-
-
+asm void FUN_00588f38(u32 *param_1)
 {
-
-  param_1[1] = 0;
-
-  *param_1 = 0;
-
-  return;
-
+  .set noreorder
+  sw $zero, 4($a0)
+  jr $ra
+  sw $zero, 0($a0)
 }
 
 
@@ -126550,18 +126697,14 @@ u32 FUN_0058bbe8(int param_1)
 
 
 
-// FUN_0058BC20 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_0058BC20
 
 u8 FUN_0058bc20(u64 param_1,long param_2)
-
-
-
 {
-
   return param_2 == 0x37b0;
-
 }
+#pragma optimization_level 2
 
 
 
@@ -126661,21 +126804,15 @@ void FUN_0058bc98(u64 *param_1)
 
 
 
-// FUN_0058BD58 NONMATCHING
+// FUN_0058BD58
 
-
-void FUN_0058bd58(int param_1)
-
-
-
+asm void FUN_0058bd58(int param_1)
 {
-
-  *(u32 *)(param_1 + 0x200) = 0;
-
-  *(u32 *)(param_1 + 0x1fc) = 0;
-
-  return;
-
+  .set noreorder
+  addiu $a0, $a0, 0x1fc
+  sw $zero, 4($a0)
+  jr $ra
+  sw $zero, 0($a0)
 }
 
 
@@ -126926,21 +127063,14 @@ u64 FUN_0058bef0(long param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0058BF88 NONMATCHING
+// FUN_0058BF88
 
-
-void FUN_0058bf88(u32 *param_1,u32 param_2,u32 param_3)
-
-
-
+asm void FUN_0058bf88(u32 *param_1,u32 param_2,u32 param_3)
 {
-
-  param_1[1] = param_3;
-
-  *param_1 = param_2;
-
-  return;
-
+  .set noreorder
+  sw $a2, 4($a0)
+  jr $ra
+  sw $a1, 0($a0)
 }
 
 
@@ -129016,20 +129146,18 @@ u32 FUN_0058d578(u64 param_1)
 
 
 
-// FUN_0058D5E8 NONMATCHING
 
 
-void FUN_0058d5e8(int param_1)
-
-
-
+#pragma optimization_level 3
+// FUN_0058D5E8
+u32 FUN_0058d5e8(int param_1)
 {
+  u8 *puVar1;
 
-  *(int *)(*(int *)(param_1 + 0x1f7c) + 0x20) = *(int *)(*(int *)(param_1 + 0x1f7c) + 0x20) + 1;
-
-  return;
-
+  puVar1 = (u8 *)*(u32 *)(param_1 + 0x1f7c);
+  return *(u32 *)(puVar1 + 0x20) += 1;
 }
+#pragma optimization_level 2
 
 
 
@@ -130088,22 +130216,14 @@ int FUN_0058e200(int param_1)
 
 
 
-// FUN_0058E250 NONMATCHING
-
-
-u32 FUN_0058e250(int param_1)
-
-
-
+// FUN_0058E250
+asm u32 FUN_0058e250(int param_1)
 {
-
-  return *(u32 *)(*(int *)(param_1 + 0x1f7c) + 0x20);
-
+  .set noreorder
+  lw $v1, 0x1f7c($a0)
+  jr $ra
+  lw $v0, 0x20($v1)
 }
-
-
-
-
 
 // FUN_0058E260 NONMATCHING
 
@@ -134388,6 +134508,7 @@ void FUN_00591298(int param_1,long param_2,u32 *param_3)
 // FUN_005913B8 NONMATCHING
 
 
+#pragma optimization_level 3
 void FUN_005913b8(u32 *param_1,u32 param_2,u32 *param_3,u32 param_4)
 
 
@@ -134421,6 +134542,7 @@ void FUN_005913b8(u32 *param_1,u32 param_2,u32 *param_3,u32 param_4)
   return;
 
 }
+#pragma optimization_level 2
 
 
 
@@ -137691,41 +137813,23 @@ void FUN_00593948(int param_1)
 
 
 
-// FUN_00593958 NONMATCHING
-
-
-u32 FUN_00593958(int param_1)
-
-
-
+// FUN_00593958
+asm u32 FUN_00593958(int param_1)
 {
-
-  return *(u32 *)(*(int *)(param_1 + 0x1fc0) + 0x7c);
-
+  .set noreorder
+  lw $v1, 0x1fc0($a0)
+  jr $ra
+  lw $v0, 0x7c($v1)
 }
 
-
-
-
-
-// FUN_00593968 NONMATCHING
-
-
-void FUN_00593968(int param_1,u32 param_2)
-
-
-
+// FUN_00593968
+asm void FUN_00593968(int param_1,u32 param_2)
 {
-
-  *(u32 *)(*(int *)(param_1 + 0x1fc0) + 0x80) = param_2;
-
-  return;
-
+  .set noreorder
+  lw $v0, 0x1fc0($a0)
+  jr $ra
+  sw $a1, 0x80($v0)
 }
-
-
-
-
 
 // FUN_00593978 NONMATCHING
 
@@ -139535,19 +139639,14 @@ void FUN_00594b18(int param_1)
 
 
 
-// FUN_00594B68 NONMATCHING
+// FUN_00594B68
 
-
-void FUN_00594b68(u32 param_1)
-
-
-
+asm void FUN_00594b68(u32 param_1)
 {
-
-  DAT_007b47a8 = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x47a8($v0)
 }
 
 
@@ -139729,22 +139828,14 @@ void FUN_00594c38(u64 param_1)
 
 
 
-// FUN_00594E50 NONMATCHING
-
-
-u32 FUN_00594e50(int param_1)
-
-
-
+// FUN_00594E50
+asm u32 FUN_00594e50(int param_1)
 {
-
-  return *(u32 *)(*(int *)(param_1 + 0x1fc0) + 0x11fc);
-
+  .set noreorder
+  lw $v1, 0x1fc0($a0)
+  jr $ra
+  lw $v0, 0x11fc($v1)
 }
-
-
-
-
 
 // FUN_00594E60 NONMATCHING
 
@@ -140259,22 +140350,14 @@ u64 FUN_00595390(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 
 
-// FUN_005954D8 NONMATCHING
-
-
-u32 FUN_005954d8(int param_1)
-
-
-
+// FUN_005954D8
+asm u32 FUN_005954d8(int param_1)
 {
-
-  return *(u32 *)(*(int *)(param_1 + 0x1fc0) + 0x1158);
-
+  .set noreorder
+  lw $v1, 0x1fc0($a0)
+  jr $ra
+  lw $v0, 0x1158($v1)
 }
-
-
-
-
 
 // FUN_005954E8 NONMATCHING
 
@@ -143453,36 +143536,28 @@ long FUN_005973c0(u64 param_1)
 
 
 
-// FUN_00597428 NONMATCHING
+// FUN_00597428
 
-
-void FUN_00597428(u32 param_1)
-
-
-
+asm void FUN_00597428(u32 param_1)
 {
-
-  DAT_007b476c = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x476c($v0)
 }
 
 
 
 
 
-// FUN_00597438 NONMATCHING
+// FUN_00597438
 
-
-u32 FUN_00597438(void)
-
-
-
+asm u32 FUN_00597438(void)
 {
-
-  return DAT_007b476c;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x476c($v1)
 }
 
 
@@ -147656,22 +147731,15 @@ u64 FUN_00599f28(int param_1,u64 param_2,int *param_3)
 
 
 
-// FUN_00599FA0 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00599FA0
 
 void FUN_00599fa0(int param_1,u32 param_2,u32 param_3)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x148) = param_3;
-
   *(u32 *)(param_1 + 0x144) = param_2;
-
-  return;
-
 }
+#pragma optimization_level 2
 
 
 
@@ -151631,32 +151699,52 @@ void FUN_0059cc08(u64 param_1)
 
 
 
-// FUN_0059CC30 NONMATCHING
+#pragma optimization_level 3
+// FUN_0059CC30
 
 
 void FUN_0059cc30(u32 *param_1,u32 param_2,u32 param_3,u32 param_4,
-
-                 u32 param_5)
-
-
-
+                  u32 param_5)
 {
-
   param_1[3] = param_5;
-
   *param_1 = param_2;
-
   param_1[1] = param_3;
-
   param_1[2] = param_4;
-
-  return;
-
 }
 
 
 
 
+
+// FUN_0059CC48
+u32 FUN_0059cc48(void)
+{
+  return 0;
+}
+
+// FUN_0059CC50
+u32 FUN_0059cc50(void)
+{
+  return 0;
+}
+
+// FUN_0059CC58
+u32 FUN_0059cc58(void)
+{
+  return 0;
+}
+
+// FUN_0059CC60
+u32 FUN_0059cc60(void)
+{
+  return 0;
+}
+
+// FUN_0059CC68
+u32 FUN_0059cc68(void)
+{
+  return 0;
+}
 
 // FUN_0059CC70 NONMATCHING
 
@@ -151823,7 +151911,7 @@ void FUN_0059ce28(u64 param_1)
 
 
 
-// FUN_0059CEA8 NONMATCHING
+// FUN_0059CEA8
 
 
 u32 FUN_0059cea8(void)
@@ -151840,7 +151928,7 @@ u32 FUN_0059cea8(void)
 
 
 
-// FUN_0059CEB0 NONMATCHING
+// FUN_0059CEB0
 
 
 u64 FUN_0059ceb0(void)
@@ -151852,6 +151940,49 @@ u64 FUN_0059ceb0(void)
   return 0;
 
 }
+// FUN_0059CEB8
+asm u64 FUN_0059ceb8(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+// FUN_0059CEC0
+asm u64 FUN_0059cec0(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+// FUN_0059CEC8
+asm u64 FUN_0059cec8(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+// FUN_0059CED0
+asm u64 FUN_0059ced0(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+// FUN_0059CED8
+asm u64 FUN_0059ced8(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+// FUN_0059CEE0
+asm u64 FUN_0059cee0(void)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0x0000102d
+}
+
 
 
 
@@ -151895,7 +152026,7 @@ void FUN_0059cf70(int param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0059CFA0 NONMATCHING
+// FUN_0059CFA0
 
 
 char * FUN_0059cfa0(void)
@@ -151907,6 +152038,15 @@ char * FUN_0059cfa0(void)
   return s_CRI_SFH_PS2EE_Ver_1_19_Build_Mar_007ca590;
 
 }
+// FUN_0059CFB0
+asm u32 FUN_0059cfb0(u32 param_1)
+{
+  .set noreorder
+  .word 0x38820002
+  .word 0x03e00008
+  .word 0x2c420001
+}
+
 
 
 
@@ -152060,7 +152200,7 @@ void FUN_0059d160(void)
 
 
 
-// FUN_0059D190 NONMATCHING
+// FUN_0059D190
 
 
 void FUN_0059d190(u32 *param_1)
@@ -152083,7 +152223,7 @@ void FUN_0059d190(u32 *param_1)
 
 
 
-// FUN_0059D1A0 NONMATCHING
+// FUN_0059D1A0
 
 
 void FUN_0059d1a0(u32 *param_1,u32 param_2,u32 param_3)
@@ -152106,25 +152246,16 @@ void FUN_0059d1a0(u32 *param_1,u32 param_2,u32 param_3)
 
 
 
-// FUN_0059D1B0 NONMATCHING
+#pragma optimization_level 3
+// FUN_0059D1B0
 
 
 void FUN_0059d1b0(u32 *param_1)
-
-
-
 {
-
   param_1[3] = 0;
-
   *param_1 = 0;
-
   param_1[1] = 0;
-
   param_1[2] = 0;
-
-  return;
-
 }
 
 
@@ -154715,7 +154846,7 @@ void FUN_0059e998(int param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0059E9D0 NONMATCHING
+// FUN_0059E9D0
 
 
 u32 FUN_0059e9d0(int param_1)
@@ -155387,7 +155518,7 @@ void FUN_0059f008(u64 param_1,u64 param_2)
 
 
 
-// FUN_0059F080 NONMATCHING
+// FUN_0059F080
 
 
 void FUN_0059f080(int param_1,u32 param_2)
@@ -155400,68 +155531,54 @@ void FUN_0059f080(int param_1,u32 param_2)
 
   return;
 
+#pragma optimization_level 3
 }
-
-
-
-
-
-// FUN_0059F090 NONMATCHING
-
-
-void FUN_0059f090(int param_1,u32 param_2)
-
-
-
+// FUN_0059F088
+void FUN_0059f088(int param_1,u32 param_2)
 {
-
-  *(u32 *)(*(int *)(param_1 + 0x30) + 0x18) = param_2;
-
-  return;
-
+  *(u32 *)(param_1 + 0x6c) = param_2;
 }
+#pragma optimization_level 2
 
 
 
 
 
-// FUN_0059F0A0 NONMATCHING
 
-
-void FUN_0059f0a0(int param_1,u32 param_2)
-
-
-
+// FUN_0059F090
+asm void FUN_0059f090(int param_1,u32 param_2)
 {
-
-  *(u32 *)(*(int *)(param_1 + 0x30) + 0x20) = param_2;
-
-  return;
-
+  .set noreorder
+  .word 0x8c820030
+  .word 0x03e00008
+  .word 0xac450018
 }
 
-
-
-
-
-// FUN_0059F0B0 NONMATCHING
-
-
-void FUN_0059f0b0(int param_1,u32 param_2)
-
-
-
+// FUN_0059F0A0
+asm void FUN_0059f0a0(int param_1,u32 param_2)
 {
-
-  *(u32 *)(*(int *)(param_1 + 0x30) + 0x1c) = param_2;
-
-  return;
-
+  .set noreorder
+  .word 0x8c820030
+  .word 0x03e00008
+  .word 0xac450020
 }
 
+// FUN_0059F0B0
+asm void FUN_0059f0b0(int param_1,u32 param_2)
+{
+  .set noreorder
+  .word 0x8c820030
+  .word 0x03e00008
+  .word 0xac45001c
+}
 
-
-
+// FUN_0059F0C0
+asm void FUN_0059f0c0(int param_1,u32 param_2)
+{
+  .set noreorder
+  .word 0x03e00008
+  .word 0xac850070
+}
 
 // FUN_0059F0C8 NONMATCHING
 
@@ -156535,41 +156652,67 @@ void FUN_0059fd10(u64 param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0059FD50 NONMATCHING
-
-
-void FUN_0059fd50(u32 param_1)
-
-
-
+// FUN_0059FD50
+asm void FUN_0059fd50(u32 param_1)
 {
-
-  DAT_007b4934 = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x4934($v0)
 }
 
-
-
-
-
-// FUN_0059FD60 NONMATCHING
-
-
-u32 FUN_0059fd60(void)
-
-
-
+// FUN_0059FD60
+asm u32 FUN_0059fd60(void)
 {
-
-  return DAT_007b4934;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x4934($v1)
 }
 
+// FUN_0059FD70
+asm void FUN_0059fd70(u32 param_1)
+{
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x491c($v0)
+}
 
+// FUN_0059FD80
+asm u32 FUN_0059fd80(void)
+{
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x491c($v1)
+}
 
+// FUN_0059FD90
+asm void FUN_0059fd90(int param_1,int param_2)
+{
+  .set noreorder
+  lw $v0, 0x24($a0)
+  jr $ra
+  sw $a1, 0x44($v0)
+}
 
+// FUN_0059FDA0
+asm void FUN_0059fda0(int param_1,int param_2)
+{
+  .set noreorder
+  lw $v0, 0x24($a0)
+  jr $ra
+  sw $a1, 0x48($v0)
+}
+
+// FUN_0059FDB0
+asm void FUN_0059fdb0(int param_1,u32 param_2)
+{
+  .set noreorder
+  jr $ra
+  sw $a1, 4($a0)
+}
 
 // FUN_0059FDB8 NONMATCHING
 
@@ -156588,42 +156731,33 @@ u32 FUN_0059fdb8(int param_1)
 
 
 
-// FUN_0059FDC0 NONMATCHING
+#pragma optimization_level 3
+// FUN_0059FDC0
 
 
 void FUN_0059fdc0(int param_1,u32 param_2,u32 param_3)
-
-
-
 {
-
   *(u32 *)(param_1 + 0xc) = param_3;
-
   *(u32 *)(param_1 + 8) = param_2;
-
-  return;
-
 }
 
 
 
 
 
-// FUN_0059FDD0 NONMATCHING
+// FUN_0059FDD0
 
-
-void FUN_0059fdd0(int param_1,u32 *param_2,u32 *param_3)
-
-
-
+asm void FUN_0059fdd0(int param_1,u32 *param_2,u32 *param_3)
 {
-
-  *param_2 = *(u32 *)(param_1 + 8);
-
-  *param_3 = *(u32 *)(param_1 + 0xc);
-
-  return;
-
+  .set noreorder
+  lw $v0, 8($a0)
+  sw $v0, 0($a1)
+  lw $v1, 0xc($a0)
+  jr $ra
+  sw $v1, 0($a2)
+  nop
+  jr $ra
+  sw $a1, 0x10($a0)
 }
 
 
@@ -156651,24 +156785,17 @@ void FUN_0059fdf0(u64 param_1,int param_2,u32 param_3)
 
 
 
-// FUN_0059FE40 NONMATCHING
-
-
-u32 FUN_0059fe40(int param_1,int param_2)
-
-
-
+// FUN_0059FE40
+asm u32 FUN_0059fe40(int param_1,int param_2)
 {
-
-  return *(u32 *)(param_2 * 4 + param_1 + 0x38);
-
+  .set noreorder
+  sll $a1, $a1, 2
+  addu $a1, $a1, $a0
+  jr $ra
+  lw $v0, 0x38($a1)
 }
 
-
-
-
-
-// FUN_0059FE50 NONMATCHING
+// FUN_0059FE50
 
 
 void FUN_0059fe50(int param_1,u32 param_2)
@@ -156682,6 +156809,14 @@ void FUN_0059fe50(int param_1,u32 param_2)
   return;
 
 }
+#pragma optimization_level 3
+// FUN_0059FE58
+u32 FUN_0059fe58(int param_1)
+{
+  return *(u32 *)(param_1 + 0x34);
+}
+#pragma optimization_level 2
+
 
 
 
@@ -156908,6 +157043,16 @@ u32 FUN_005a0048(int param_1)
   return *(u32 *)(param_1 + 100);
 
 }
+// FUN_005A0050 NONMATCHING
+void FUN_005a0050(int param_1, int param_2)
+{
+  int even = param_2 / 2 << 1;
+  int half = even >> 1;
+  FUN_005a00b0((int *)(param_1 + 4), even);
+  FUN_005a00b0((int *)(param_1 + 0x14), half);
+  FUN_005a00b0((int *)(param_1 + 0x24), half);
+}
+
 
 
 
@@ -157900,41 +158045,23 @@ u32 FUN_005a0bb0(int param_1)
 
 
 
-// FUN_005A0BE0 NONMATCHING
-
-
-void FUN_005a0be0(u32 param_1)
-
-
-
+// FUN_005A0BE0
+asm void FUN_005a0be0(u32 param_1)
 {
-
-  DAT_007b4dec = param_1;
-
-  return;
-
+  .set noreorder
+  lui $v0, 0x7b
+  jr $ra
+  sw $a0, 0x4dec($v0)
 }
 
-
-
-
-
-// FUN_005A0BF0 NONMATCHING
-
-
-u32 FUN_005a0bf0(void)
-
-
-
+// FUN_005A0BF0
+asm u32 FUN_005a0bf0(void)
 {
-
-  return DAT_007b4dec;
-
+  .set noreorder
+  lui $v1, 0x7b
+  jr $ra
+  lw $v0, 0x4dec($v1)
 }
-
-
-
-
 
 // FUN_005A0C00 NONMATCHING
 
@@ -158155,24 +158282,23 @@ u32 FUN_005a1088(u32 param_1)
 
 
 
-// FUN_005A10E8 NONMATCHING
-
-
-void FUN_005a10e8(int param_1,u32 param_2)
-
-
-
+// FUN_005A10E8
+asm void FUN_005a10e8(int param_1,u32 param_2)
 {
-
-  *(u32 *)(*(int *)(param_1 + 0x24) + 4) = param_2;
-
-  return;
-
+  .set noreorder
+  .word 0x8c820024
+  .word 0x03e00008
+  .word 0xac450004
 }
 
-
-
-
+// FUN_005A10F8
+asm u32 FUN_005a10f8(int param_1)
+{
+  .set noreorder
+  .word 0x8c830024
+  .word 0x03e00008
+  .word 0x8c620004
+}
 
 // FUN_005A1108 NONMATCHING
 

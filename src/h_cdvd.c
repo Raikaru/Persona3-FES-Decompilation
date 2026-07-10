@@ -810,6 +810,7 @@ static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, s32 in
     return &context->slots[index];
 }
 
+// FUN_00101800
 static void H_Cdvd_StreamNoop(void)
 {
 }
@@ -819,7 +820,7 @@ static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
     return slot->fileOffset >= slot->fileSize ? (u32)-1 : 0;
 }
 
-// FUN_001016d0 NONMATCHING
+// FUN_001016d0
 s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
 {
     char uppercasePath[256];
@@ -846,10 +847,10 @@ s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
         if (strcmp(cachePath, normalizedPath) == 0)
         {
             memcpy((u8*)slot + 0x70, &sCdvdCache[i], sizeof(HCdvdCache));
-            slot->fileOffset = 0;
-            *(u64*)((u8*)slot + 0x00) = slot->fileSize;
+            *(u32*)((u8*)slot + 0x100) = 0;
+            *(u64*)((u8*)slot + 0x00) = *(s32*)((u8*)slot + 0xfc);
+            *(u64*)((u8*)slot + 0x20) = 0;
             *(u64*)((u8*)slot + 0x10) = 0;
-            *(u32*)((u8*)slot + 0x20) = 0;
             *(u32*)((u8*)slot + 0x30) = 0;
             *(u32*)((u8*)slot + 0x38) = 2;
             *(u32*)((u8*)slot + 0x3c) = 1;

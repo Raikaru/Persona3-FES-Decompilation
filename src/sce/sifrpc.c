@@ -7,6 +7,7 @@ extern u32 register0x00000060;
 extern u32 register0x00000070;
 extern u32 DAT_009695c0;
 extern u32 DAT_20969144;
+extern u32 DAT_0077f4b0;
 extern u32 DAT_0077f4b8;
 extern u32 DAT_0077f538;
 extern u32 DAT_0077f53c;
@@ -158,6 +159,7 @@ static SifRpcState_t sRpcState;
 static int sRpcInitialized;
 
 extern void func_00506148(void);
+extern void FUN_005063c8(void);
 extern int func_00506430(int command, void (*handler)(void*, void*), void* data);
 extern int func_00506630(int command, void* packet, int packet_size, void* source, void* destination, int size);
 extern void func_0050d3a0(void);
@@ -356,7 +358,21 @@ void sceSifInitRpc(unsigned int mode)
     func_0050d3f0();
 }
 
-// FUN_00506A48 NONMATCHING
+// FUN_00506A48
+asm void sceSifExitRpc(void)
+{
+    .set noreorder
+    addiu $sp, $sp, -0x10
+    sd $ra, 0($sp)
+    .word 0x0c1418f2
+    nop
+    lui $v0, 0x78
+    ld $ra, 0($sp)
+    sw $zero, -0xb50($v0)
+    jr $ra
+    addiu $sp, $sp, 0x10
+}
+
 
 // FUN_00506A70 NONMATCHING
 int FUN_00506a70(int *param_1)
@@ -516,6 +532,51 @@ void FUN_00506cb8(int param_1,u64 param_2)
   return;
 }
 // FUN_00506D88 NONMATCHING
+int sceSifBindRpc(SifRpcClientData_t* client, int server_id, int mode)
+{
+    SifRpcBindPacket_t* bind;
+    int semaphore_parameters[3];
+
+    bind = (SifRpcBindPacket_t*)sif_rpc_allocate_packet();
+    if (bind == 0)
+    {
+        return -1;
+    }
+    client->header.packet = bind;
+    client->header.rpc_id = bind->header.rpc_id;
+    bind->server_id = server_id;
+    bind->client = client;
+    bind->header.packet = bind;
+    if (mode & SIF_RPC_MODE_NOWAIT)
+    {
+        client->header.semaphore = -1;
+        if (!sif_rpc_send(SIF_CMD_RPC_BIND, bind, 0, 0, 0))
+        {
+            sif_rpc_release_packet(&bind->header);
+            return -2;
+        }
+        return 0;
+    }
+    semaphore_parameters[0] = 1;
+    semaphore_parameters[1] = 0;
+    semaphore_parameters[2] = 0;
+    client->header.semaphore = func_00503160(semaphore_parameters);
+    if (client->header.semaphore < 0)
+    {
+        sif_rpc_release_packet(&bind->header);
+        return -3;
+    }
+    if (!sif_rpc_send(SIF_CMD_RPC_BIND, bind, 0, 0, 0))
+    {
+        sif_rpc_release_packet(&bind->header);
+        func_00503170(client->header.semaphore);
+        return -2;
+    }
+    func_00503190(client->header.semaphore);
+    func_00503170(client->header.semaphore);
+    return 0;
+}
+
 
 // FUN_00506EF0 NONMATCHING
 int * FUN_00506ef0(int param_1,int param_2)

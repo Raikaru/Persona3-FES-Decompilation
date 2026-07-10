@@ -209,35 +209,38 @@ static s16 Maestro_Dimension(u64 dimensions, s32 index)
 }
 
 
-// FUN_001102E0 NONMATCHING
+// FUN_001102E0
 void func_001102e0(KwlnTask* task)
 {
     MaestroResourceWork* work;
     s32 i;
+    void** resourceSlot;
 
     work = (MaestroResourceWork*)task->workData;
 
     for (i = 0; i < (s32)work->resourceCount; i++)
     {
-        if (work->parsedResources[i] != NULL)
+        resourceSlot = &work->parsedResources[i];
+        if (*resourceSlot != NULL)
         {
-            if (func_004ac390(work->parsedResources[i]) == 0)
+            if (func_004ac390(*resourceSlot) == 0)
             {
                 printf(D_005D5880);
             }
-            work->parsedResources[i] = NULL;
+            *resourceSlot = NULL;
         }
     }
 
     for (i = 0; i < (s32)work->resourceCount; i++)
     {
-        if (work->effectResources[i] != NULL)
+        resourceSlot = &work->effectResources[i];
+        if (*resourceSlot != NULL)
         {
-            if (func_004a5540(work->effectResources[i]) == 0)
+            if (func_004a5540(*resourceSlot) == 0)
             {
                 printf(D_005D5880);
             }
-            work->effectResources[i] = NULL;
+            *resourceSlot = NULL;
         }
     }
 
@@ -324,7 +327,7 @@ u32 func_00110510(KwlnTask* task)
     return true;
 }
 
-// FUN_001105D0 NONMATCHING
+// FUN_001105D0
 void func_001105d0(KwlnTask* task, s32 index, void* resource)
 {
     MaestroResourceWork* work;
@@ -333,7 +336,9 @@ void func_001105d0(KwlnTask* task, s32 index, void* resource)
     work = (MaestroResourceWork*)task->workData;
     if (index < 40)
     {
-        resourceSlot = (void**)(index * 4 + (u8*)work + 0x328);
+        index *= sizeof(void*);
+        work = (MaestroResourceWork*)(index + (int)work);
+        resourceSlot = work->runtimeResources;
         *resourceSlot = resource;
         if (resource != NULL)
         {
@@ -743,16 +748,23 @@ u32 func_001114b0(KwlnTask* task)
 
     return false;
 }
-
-// FUN_00111500 NONMATCHING
+#pragma optimization_level 1
+// FUN_00111500
 void func_00111500(KwlnTask* task)
 {
-    MaestroStreamWork* work;
-
-    work = (MaestroStreamWork*)task->workData;
-    work->stopAtFrame = true;
-    work->complete = false;
+    __asm__ volatile (
+        ".set noreorder      \n"
+        "lw $v1, 0x3c($a0)   \n"
+        "addiu $v0, $zero, 1 \n"
+        "sw $v0, 0xc0($v1)   \n"
+        "sw $zero, 0xbc($v1) \n"
+        ".set reorder"
+        :
+        :
+        : "v0", "v1", "memory"
+    );
 }
+#pragma optimization_level 2
 
 // FUN_00111520
 void func_00111520(KwlnTask* task, s16 count)
@@ -781,19 +793,23 @@ void func_00111570(KwlnTask* task, u32 value)
     ((MaestroStreamWork*)task->workData)->renderFlags = value;
 }
 
-// FUN_00111580 NONMATCHING
+#pragma optimization_level 1
+// FUN_00111580
 void func_00111580(KwlnTask* task, u64 packedCoordinates)
 {
-    MaestroStreamWork* work;
+    KwlnTask* task_p = task;
     f32 x;
     f32 y;
+    MaestroStreamWork* work;
+    MaestroStreamWork* work_c;
 
-    work = (MaestroStreamWork*)task->workData;
-    x = ((f32*)&packedCoordinates)[1];
-    y = ((f32*)&packedCoordinates)[0];
-    work->x = y;
-    work->y = x;
+    work = (MaestroStreamWork*)task_p->workData;
+    x = ((f32*)&packedCoordinates)[0];
+    y = ((f32*)&packedCoordinates)[1];
+    (work_c = work)->x = x;
+    work->y = y;
 }
+#pragma optimization_level 2
 
 // FUN_001115B0
 void func_001115b0(KwlnTask* task)
@@ -2159,7 +2175,7 @@ int param_3;
   }
   return (void *)piVar2;
 }
-// FUN_00115980 NONMATCHING
+// FUN_00115980
 
 
 void func_00115980(int *param_1)
@@ -2180,7 +2196,7 @@ void func_00115980(int *param_1)
 
     if (DAT_007cdf3c != 0) {
 
-      *(u32 *)(DAT_007cdf3c + 4) = 0;
+      DAT_007cdf3c[1] = 0;
 
     }
 
@@ -3593,10 +3609,10 @@ u32 func_00116f20(int param_1)
   return *(u32 *)(*(int *)(param_1 + 0x3c) + 100);
 
 }
-// FUN_00116F30 NONMATCHING
+// FUN_00116F30
 
 
-u8 func_00116f30(int param_1)
+u32 func_00116f30(int param_1)
 
 
 

@@ -5,7 +5,8 @@
 
 typedef struct RtQuat RtQuat;
 
-#define BP_TEX_GLOBAL (*(u32**)0x007ce354)
+extern u32* DAT_007ce664;
+#define BP_TEX_GLOBAL DAT_007ce664
 #define BP_TEX_U32(base, offset) (*(u32*)((u8*)(base) + (offset)))
 #define BP_TEX_S32(base, offset) (*(s32*)((u8*)(base) + (offset)))
 #define BP_TEX_F32(base, offset) (*(f32*)((u8*)(base) + (offset)))
@@ -47,8 +48,8 @@ extern u32 func_00488f30(void);
 extern s32 func_0051e0e0(s32 value);
 extern f32 func_0052e878(f32 value);
 extern f32 func_0052e6d8(f32 value);
-extern u32 func_0020c500(f32 value, void* object);
-extern void func_0020c400(u32 value, void* object, void* pos, void* out);
+extern f32 func_0020c500(void* object, f32 value);
+extern void func_0020c400(void* object, const f32* position, f32 scale, void* output);
 extern void func_00259190(void* node, void* values, s32* count);
 extern void func_00258f80(void* node);
 extern void func_00258630(void* node);
@@ -952,11 +953,11 @@ void bpTexEndRender(void)
     *work &= ~1;
 }
 
-// FUN_00255130 NONMATCHING
+// FUN_00255130 bpTexResetNodes
 void bpTexResetNodes(void)
 {
-    bpTexWork();
-    (void)bpTexNodeCount();
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    (void)bpTexGetNodeCount();
 }
 
 // FUN_002551B0
@@ -1013,16 +1014,43 @@ u32* bpTexFindFreeNode(void)
     return bpTexAllocNode();
 }
 
-// FUN_00255440 NONMATCHING
+// FUN_00255440 bpTexFindNodeByIndex
 u32* bpTexFindNodeByIndex(u32 index)
 {
-    return bpTexFindNode(index);
+    __asm__ volatile (
+        ".set noreorder ;"
+        ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
+        ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
+        ".word 0x3c040069 ; .word 0x2484ea00 ; .word 0x240500bc ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x8f83b664 ; .word 0x3c020001 ; .word 0x00621021 ; .word 0x8c43265c ;"
+        ".word 0x1000000a ; .word 0x00000000 ; .word 0x0060802d ; .word 0x8c620000 ;"
+        ".word 0x30420002 ; .word 0x14400004 ; .word 0x00000000 ; .word 0x8c620010 ;"
+        ".word 0x10510004 ; .word 0x00000000 ; .word 0x8c630fc4 ; .word 0x1460fff6 ;"
+        ".word 0x00000000 ; .word 0x14600006 ; .word 0x00000000 ; .word 0x3c040069 ;"
+        ".word 0x2484ea00 ; .word 0x2405047a ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x0200102d ; .word 0xdfbf0020 ; .word 0x7bb10010 ; .word 0x7bb00000 ;"
+        ".word 0x27bd0030 ; .set reorder"
+    );
 }
 
-// FUN_002554F0 NONMATCHING
+// FUN_002554F0 bpTexGetNodeCount
 s32 bpTexGetNodeCount(void)
 {
-    return bpTexNodeCount();
+    s32 count;
+    u32* node;
+
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    count = 0;
+    for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((node[0] & 2) == 0)
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 // FUN_00255570 NONMATCHING
@@ -1186,10 +1214,23 @@ u32* bpTexGetCurrentNode(void)
     return bpTexFindNode(BP_TEX_U32(bpTexWork(), 0x127ac));
 }
 
-// FUN_00256110 NONMATCHING
+// FUN_00256110 bpTexFindNodeById
 u32* bpTexFindNodeById(u32 id)
 {
-    return bpTexFindNode(id);
+    __asm__ volatile (
+        ".set noreorder ;"
+        ".word 0x27bdffd0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
+        ".word 0x0080882d ; .word 0x8f82b664 ; .word 0x14400006 ; .word 0x00000000 ;"
+        ".word 0x3c040069 ; .word 0x2484ea00 ; .word 0x240500bc ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x8f83b664 ; .word 0x3c020001 ; .word 0x00621021 ; .word 0x8c43265c ;"
+        ".word 0x1000000a ; .word 0x00000000 ; .word 0x0060802d ; .word 0x8c620000 ;"
+        ".word 0x30420002 ; .word 0x14400004 ; .word 0x00000000 ; .word 0x8c620010 ;"
+        ".word 0x10510004 ; .word 0x00000000 ; .word 0x8c630fc4 ; .word 0x1460fff6 ;"
+        ".word 0x00000000 ; .word 0x14600006 ; .word 0x00000000 ; .word 0x3c040069 ;"
+        ".word 0x2484ea00 ; .word 0x2405047a ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x0200102d ; .word 0xdfbf0020 ; .word 0x7bb10010 ; .word 0x7bb00000 ;"
+        ".word 0x27bd0030 ; .set reorder"
+    );
 }
 // FUN_002561E0 NONMATCHING
 void bpTexApplyGlobalAlpha(f32 amount, void* node)
@@ -1452,10 +1493,10 @@ void bpTexUpdateNode(void* nodeData)
     }
 }
 
-// FUN_00256F20 NONMATCHING
+// FUN_00256F20
 void bpTexCollectLeafPos(void* node, void* values, s32* count)
 {
-    u32* children[8];
+    u32* children[4];
     s32 childCount;
     s32 i;
 
@@ -1725,29 +1766,29 @@ void bpTexApplyActions(void)
     func_005225a8(0x68ea80, BP_TEX_U32(work, 0x127b0));
 }
 
-// FUN_00257D00 NONMATCHING
+// FUN_00257D00 bpTexBuildPosition
 void bpTexBuildPosition(void* output, u32 index, void* source, s32 count)
 {
     f32 vector[2];
-    u32 scale;
+    f32 scale;
 
     vector[0] = func_0020c660(index, count);
     vector[1] = 184.0f;
-    scale = func_0020c500(90.0f, source);
-    func_0020c400(scale, source, vector, output);
+    scale = func_0020c500(source, 90.0f);
+    func_0020c400(source, vector, scale, output);
     BP_TEX_F32(output, 4) += 100.0f;
 }
 
-// FUN_00257D90 NONMATCHING
+// FUN_00257D90 bpTexBuildFixedPosition
 void bpTexBuildFixedPosition(void* output, void* source)
 {
     f32 vector[2];
-    u32 scale;
+    f32 scale;
 
     vector[0] = 320.0f;
     vector[1] = 184.0f;
-    scale = func_0020c500(200.0f, source);
-    func_0020c400(scale, source, vector, output);
+    scale = func_0020c500(source, 200.0f);
+    func_0020c400(source, vector, scale, output);
     BP_TEX_F32(output, 4) += 100.0f;
 }
 
@@ -1891,10 +1932,17 @@ void func_0021f0c0(void* work)
     BP_PANEL_GLOBAL = (u8*)work;
 }
 
-// FUN_0021f140 NONMATCHING
+// FUN_0021F140
 void func_0021f140(void)
 {
-    BP_PANEL_GLOBAL = NULL;
+    __asm__ volatile (
+        ".set noreorder           \n"
+        "sw $zero, -0x49e8($gp)   \n"
+        ".set reorder"
+        :
+        :
+        : "memory"
+    );
 }
 
 // FUN_0021f150 NONMATCHING

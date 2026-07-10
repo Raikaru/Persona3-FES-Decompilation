@@ -14,6 +14,7 @@ extern int memcmp(const void* left, const void* right, u32 size);
 extern void qsort(void* base, u32 count, u32 width, int (*compare)(const void*, const void*));
 extern int printf(const char* fmt, ...);
 extern void FUN_0019d3f0(u32 file, u32 line);
+extern void FUN_00521408(void* dst, s32 value, u32 size);
 extern void func_001828d0(u16 id, void* record);
 extern void func_001830c0(void* record);
 extern s16 FUN_003082f0(s32 category, u64 id);
@@ -41,6 +42,9 @@ extern u32 D_00960178[];
 extern u32 D_0096017C[];
 extern u32 D_00960184[];
 extern u8 DAT_0083a718[];
+extern u8 DAT_00836200[];
+extern u8 D_0083A6FC[];
+extern const char D_005e3098[];
 
 #define PTR8(addr) ((u8*)(addr))
 #define PTR16(addr) ((u16*)(addr))
@@ -687,7 +691,7 @@ u32 FUN_0017c0e0(u32 id)
     return 0;
 }
 
-// FUN_0017C190 NONMATCHING
+// FUN_0017C190
 
 
 void func_0017c190(void)
@@ -696,26 +700,26 @@ void func_0017c190(void)
 
 {
 
-  FUN_00521408(0x83a6fc,0,0x1c);
+  FUN_00521408(D_0083A6FC,0,0x1c);
 
   return;
 
 }
-// FUN_0017c1c0 NONMATCHING
+// FUN_0017c1c0
 void FUN_0017c1c0(const void* source)
 {
-    if (source == NULL) FUN_0019d3f0(0x5e3098, 0x176d);
-    memcpy(PTR8(0x0083a6fc), source, 0x1c);
+    if (source == NULL) FUN_0019d3f0((u32)D_005e3098, 0x176d);
+    memcpy(D_0083A6FC, source, 0x1c);
 }
 
-// FUN_0017c220 NONMATCHING
+// FUN_0017c220
 void FUN_0017c220(void* destination)
 {
-    if (destination == NULL) FUN_0019d3f0(0x5e3098, 0x1775);
-    memcpy(destination, PTR8(0x0083a6fc), 0x1c);
+    if (destination == NULL) FUN_0019d3f0((u32)D_005e3098, 0x1775);
+    memcpy(destination, D_0083A6FC, 0x1c);
 }
 
-// FUN_0017C280 NONMATCHING
+// FUN_0017C280
 
 
 void func_0017c280(void)
@@ -724,19 +728,15 @@ void func_0017c280(void)
 
 {
 
-  int iVar1;
+    u8* entry;
+    int i;
 
-  
-
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-
-    FUN_00521408(DAT_0083a718 + iVar1 * 4,0,4);
-
-    *(u16 *)(DAT_0083a718 + iVar1 * 4) = 0xffff;
-
-  }
-
-  return;
+    for (i = 0; i < 4; i++)
+    {
+        entry = DAT_00836200 + i * 4;
+        FUN_00521408(entry + 0x4518, 0, 4);
+        *(s16*)(entry + 0x4518) = -1;
+    }
 
 }
 // FUN_0017c2f0 NONMATCHING

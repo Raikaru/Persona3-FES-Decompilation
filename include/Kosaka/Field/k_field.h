@@ -18,7 +18,8 @@ typedef struct Field
 // 104 bytes. Task data for "field root" task
 typedef struct FldRootWork
 {
-    u8 unkData1[0x08];
+    u8 unkData1[0x04];
+    u32 unk_04;         // 0x04
     u32 shouldShutdown; // 0x08
     s32 unk_0c;         // 0x0c
     u16 majorId;        // 0x10

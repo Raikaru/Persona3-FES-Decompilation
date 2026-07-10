@@ -135,12 +135,13 @@ extern u64 FUN_002a1280();
 extern u64 FUN_002a16c0();
 extern u64 FUN_002a1b00();
 extern u64 FUN_002a1db0();
-extern u64 FUN_002a2290();
-extern u64 FUN_002a3110();
+extern void FUN_002a2170(void *param_1, const f32 *param_2);
+extern void FUN_002a2290(void *param_1, const f32 *param_2, const f32 *param_3, int param_4);
+extern void FUN_002a3110(void *param_1, float param_2);
 extern u64 FUN_002a3b40();
 extern u64 FUN_002a3d70();
 extern u64 FUN_002a3e80();
-extern u64 FUN_002a4690();
+extern void FUN_002a4690(void *param_1, const void *param_2, const void *param_3, const void *axis);
 extern u64 FUN_002b71e0();
 extern u64 FUN_002b8d60();
 extern u64 FUN_002b8f90();
@@ -1094,13 +1095,13 @@ void func_002f2250(void)
   return;
 }
 
-// FUN_002f23d0 NONMATCHING
-void func_002f23d0(int param_1)
+// FUN_002f23d0
+u32 func_002f23d0(int param_1)
 
 {
   FUN_00302380(*(u32 *)(param_1 + 0xa2c),0x4000000,1);
   *(u32 *)(iGpffffb6fc + 0xb50) = 1;
-  return;
+  return 1;
 }
 
 // FUN_002f2410
@@ -3087,24 +3088,24 @@ u32 func_002f6ab0(u64 *param_1)
   return lVar1 != 0;
 }
 
-// FUN_002f6bf0 NONMATCHING
+// FUN_002f6bf0
 void func_002f6bf0(u32 param_1)
 
 {
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
+  if (*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
     *(u32 *)(DAT_007ce3ec + 0xb48) = 0;
     *(u32 *)(DAT_007ce3ec + 0xb4c) = param_1;
   }
   return;
 }
 
-// FUN_002f6c20 NONMATCHING
+// FUN_002f6c20
 u32 func_002f6c20(void)
 
 {
   u32 uVar1;
   
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
+  if (*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
     uVar1 = *(u32 *)(DAT_007ce3ec + 0xb48);
   }
   else {
@@ -3499,6 +3500,11 @@ typedef u8 undefined1; typedef u16 undefined2; typedef u32 undefined4; typedef u
 typedef u8 undefined; typedef u32 uint3;
 typedef u64 (*code)();
 #define CONCAT44(a, b) ((((u64)(u32)(a)) << 32) | (u32)(b))
+typedef struct {
+  f32 x;
+  f32 y;
+  f32 z;
+} VoiceVector;
 
 extern u32 DAT_00697c80;
 extern u32 DAT_00697c84;
@@ -3508,13 +3514,16 @@ extern u32 DAT_00697c9c;
 extern u32 DAT_00697ca0;
 extern u32 DAT_00697ca4;
 extern u8 DAT_00698d40[];
-extern u32 DAT_00699240;
-extern u32 DAT_00699244;
-extern u32 DAT_00699248;
-extern u32 DAT_0069924c;
-extern u32 DAT_0069925c;
-extern u32 DAT_00699260;
-extern u32 DAT_00699264;
+extern f32 D_00697880[];
+extern s16 DAT_00699240[];
+extern f32 DAT_00699244[];
+extern f32 DAT_00699248[];
+extern f32 DAT_0069924c[];
+extern f32 DAT_00699250[];
+extern f32 DAT_0069925c[];
+extern f32 DAT_00699260[];
+extern f32 DAT_00699264[];
+extern f32 DAT_00699268[];
 extern u32 DAT_00699be0;
 extern u32 DAT_00699be4;
 extern u32 DAT_00699be8;
@@ -3583,7 +3592,7 @@ extern u32 (*DAT_0096017c)();
 extern u32 iGpffffb6fc;
 extern u32 iGpffffb70c;
 extern u32 iGpffffb810;
-extern u32 uGpffff8108;
+extern float uGpffff8108;
 extern u32 uGpffffb21c;
 extern u32 uGpffff9c98;
 extern u32 uGpffff9c9a;
@@ -3678,13 +3687,13 @@ extern u64 FUN_0029ea60();
 extern u64 FUN_0029ec00();
 extern u64 FUN_0029ec50();
 extern u64 FUN_0029ec80();
-extern u64 FUN_002a2170();
+extern void FUN_002a2170(void *param_1, const f32 *param_2);
 extern u64 FUN_002a3750();
 extern u64 FUN_002a3b40();
 extern u64 FUN_002a3d70();
-extern u64 FUN_002a4470();
-extern u64 FUN_002a44b0();
-extern u64 FUN_002a44f0();
+extern void FUN_002a4470(f32* dst, f32* src);
+extern void FUN_002a44b0(f32* dst, f32* src);
+extern void FUN_002a44f0(f32* dst, f32* src);
 extern u64 FUN_002a54f0();
 extern u64 FUN_002a5f40();
 extern u64 FUN_002a7830();
@@ -3696,7 +3705,7 @@ extern u64 FUN_002b1e00();
 extern u64 FUN_002b2060();
 extern u64 FUN_002b2800();
 extern u64 FUN_002b2880();
-extern u64 FUN_002b4db0();
+extern void FUN_002b4db0(float);
 extern u64 FUN_002b4f40();
 extern u64 FUN_002b6070();
 extern u64 FUN_002b6460();
@@ -3875,7 +3884,7 @@ void func_002e8a40(u64 param_1);
 void func_002e8c90(int param_1);
 void func_002e8d20(void);
 void func_002e8d40(void);
-void func_002e8d70(u64 param_1);
+void func_002e8d70(void *param_1);
 void func_002e8e20(void);
 void func_002e8f40(void);
 void func_002e9060(void);
@@ -6118,13 +6127,16 @@ void func_002e70b0(u64 param_1)
   return;
 }
 
-// FUN_002e71c0 NONMATCHING
+// FUN_002e71c0
 void func_002e71c0(int param_1)
 
 {
-  if (((*(int *)(param_1 + 0xe0) != 0) && ((*(u16 *)(*(int *)(param_1 + 0xe0) + 0x1a) & 1) != 0))
-     && (*(short *)(DAT_007ce3ec + 0xb78) == 1)) {
-    FUN_002b0210();
+
+  if ((*(int *)(param_1 + 0xe0) != 0) &&
+      ((*(u16 *)(*(int *)(param_1 + 0xe0) + 0x1a) & 1) != 0)) {
+    if (*(u16 *)(DAT_007ce3ec + 0xb78) == 1) {
+      FUN_002b0210(param_1);
+    }
   }
   return;
 }
@@ -6853,21 +6865,20 @@ void func_002e8a40(u64 param_1)
   return;
 }
 
-// FUN_002e8c90 NONMATCHING
+// FUN_002e8c90
 void func_002e8c90(int param_1)
-
 {
-  int iVar1;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u32 uStack_18;
-  u8 auStack_14 [20];
-  
-  iVar1 = *(int *)(iGpffffb6fc + 0xb18);
-  uStack_20 = *(u32 *)(iVar1 + 0x37c);
-  uStack_1c = *(u32 *)(iVar1 + 0x380);
-  uStack_18 = *(u32 *)(iVar1 + 900);
-  return;
+  f32 *voiceData;
+  struct {
+    VoiceVector position;
+    u8 transform[20];
+  } work;
+
+  voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) + 0x37c);
+  FUN_002a4690(work.transform, voiceData, voiceData + 3, &D_00697880);
+  work.position = *(VoiceVector *)voiceData;
+  FUN_002a2170((void *)(iGpffffb6fc + 0x20), (f32 *)&work.position);
+  FUN_002a44b0((f32 *)(param_1 + 0x9c), (f32 *)&work.position);
 }
 
 // FUN_002e8d20
@@ -6878,7 +6889,7 @@ void func_002e8d20(void)
   return;
 }
 
-// FUN_002e8d40 NONMATCHING
+// FUN_002e8d40
 void func_002e8d40(void)
 
 {
@@ -6886,22 +6897,24 @@ void func_002e8d40(void)
   return;
 }
 
-// FUN_002e8d70 NONMATCHING
-void func_002e8d70(u64 param_1)
-
+// FUN_002e8d70
+void func_002e8d70(void *param_1)
 {
-  int iVar1;
-  u8 auStack_40 [28];
-  u32 uStack_24;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u8 auStack_18 [24];
-  
-  iVar1 = *(int *)(iGpffffb6fc + 0xb18);
-  uStack_24 = *(u32 *)(iVar1 + 0x364);
-  uStack_20 = *(u32 *)(iVar1 + 0x368);
-  uStack_1c = *(u32 *)(iVar1 + 0x36c);
-  return;
+  void *action;
+  f32 *voiceData;
+  struct {
+    f32 start[7];
+    VoiceVector position;
+    f32 end[6];
+  } work;
+
+  action = (void *)param_1;
+  FUN_002a4470(work.start, (f32 *)((u8 *)param_1 + 0x9c));
+  voiceData = (f32 *)(*(int *)(iGpffffb6fc + 0xb18) + 0x364);
+  FUN_002a4690(work.end, voiceData, voiceData + 3, &D_00697880);
+  work.position = *(VoiceVector *)voiceData;
+  FUN_002a2290(action, work.start, (f32 *)&work.position, 1);
+  FUN_002a3110(action, 0.75f);
 }
 
 // FUN_002e8e20 NONMATCHING
@@ -6960,28 +6973,24 @@ void func_002e8f40(void)
   return;
 }
 
-// FUN_002e9060 NONMATCHING
+// FUN_002e9060
 void func_002e9060(void)
-
 {
-  int iVar1;
-  u32 uStack_40;
-  u32 uStack_3c;
-  u32 uStack_38;
-  u8 auStack_34 [16];
-  u32 uStack_24;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u8 auStack_18 [24];
-  
-  uStack_40 = DAT_00699244;
-  uStack_3c = DAT_00699248;
-  uStack_38 = DAT_0069924c;
-  uStack_24 = DAT_0069925c;
-  uStack_20 = DAT_00699260;
-  uStack_1c = DAT_00699264;
-  iVar1 = (int)DAT_00699240;
-  return;
+  struct {
+    VoiceVector startPosition;
+    f32 start[4];
+    VoiceVector endPosition;
+    f32 end[6];
+  } work;
+  float duration;
+
+  FUN_002a4690(work.start, DAT_00699244, DAT_00699250, &D_00697880);
+  work.startPosition = *(VoiceVector *)DAT_00699244;
+  FUN_002a4690(work.end, DAT_0069925c, DAT_00699268, &D_00697880);
+  work.endPosition = *(VoiceVector *)DAT_0069925c;
+  duration = (float)DAT_00699240[0] / 30.0f;
+  FUN_002a2290((void *)(iGpffffb6fc + 0x20), (f32 *)&work.startPosition, (f32 *)&work.endPosition, 1);
+  FUN_002a3110((void *)(iGpffffb6fc + 0x20), duration);
 }
 
 // FUN_002e9170 NONMATCHING
@@ -8488,24 +8497,24 @@ void func_002ec4b0(int param_1)
   return;
 }
 
-// FUN_002ec560 NONMATCHING
+// FUN_002ec560
 void func_002ec560(u32 param_1)
 
 {
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
+  if (*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
     *(u32 *)(DAT_007ce3ec + 0xb44) = 1;
     *(u32 *)(DAT_007ce3ec + 0xb48) = param_1;
   }
   return;
 }
 
-// FUN_002ec590 NONMATCHING
+// FUN_002ec590
 u32 func_002ec590(void)
 
 {
   u32 uVar1;
   
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
+  if (*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
     uVar1 = *(u32 *)(DAT_007ce3ec + 0xb44);
   }
   else {

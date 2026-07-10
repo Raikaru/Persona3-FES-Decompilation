@@ -5,7 +5,12 @@
 
 typedef struct KwlnTask KwlnTask;
 
-KwlnTask* btlFadeCreateTask(s32 param_1);
+KwlnTask* btlFadeCreateTask(s32 fadeType);
+void btlFadeStart(u16 delay);
+void btlFadeStartImmediate(void);
+s32 btlFadeAllowsBattleTransition(void);
+s32 btlFadeIsActive(void);
 
-u64 func_002ff330(void);
+// Preserves the retail u64 callback ABI while exposing its boolean predicate.
+u64 btlFadeSuppressesFormationUpdates(void);
 #endif

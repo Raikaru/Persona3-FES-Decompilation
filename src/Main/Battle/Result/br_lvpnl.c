@@ -1,37 +1,53 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 
-static u32* sBrLvpnl; // DAT_007ce3c8
+typedef struct
+{
+    u32 flags;
+    u32 unused[0x183];
+    u32 animationFrame;
+    u32 animationMode;
+} BrLvpnlWork;
+
+enum
+{
+    BR_LVPNL_FLAG_ACTIVE = 1 << 0,
+    BR_LVPNL_FLAG_ANIMATING = 1 << 1,
+    BR_LVPNL_FLAG_VISIBLE = 1 << 2,
+    BR_LVPNL_FLAG_DRAW_DISABLED = 1 << 3,
+};
+
+static BrLvpnlWork* sBrLvpnl; // DAT_007ce3c8
 
 // FUN_002767e0
-void brLvpnl002767e0(void)
+void brLvpnlStartEntranceAnimation(void)
 {
-    u32* work;
+    BrLvpnlWork* work;
 
     K_ASSERT(sBrLvpnl != NULL, 0x3b);
     work = sBrLvpnl;
-    if (*work & 4) {
-        work[0x185] = 1;
-        work[0x184] = 0;
-        *work |= 2;
+    if (work->flags & BR_LVPNL_FLAG_VISIBLE) {
+        work->animationMode = 1;
+        work->animationFrame = 0;
+        work->flags |= BR_LVPNL_FLAG_ANIMATING;
     } else {
-        work[0x185] = 0;
-        work[0x184] = 0;
-        *work |= 2;
-        *work |= 4;
+        work->animationMode = 0;
+        work->animationFrame = 0;
+        work->flags |= BR_LVPNL_FLAG_ANIMATING;
+        work->flags |= BR_LVPNL_FLAG_VISIBLE;
     }
 }
 
 // FUN_00276870
-void brLvpnl00276870(void)
+void brLvpnlDisableDrawing(void)
 {
     K_ASSERT(sBrLvpnl != NULL, 0x3b);
-    *sBrLvpnl |= 8;
+    sBrLvpnl->flags |= BR_LVPNL_FLAG_DRAW_DISABLED;
 }
 
 // FUN_002768c0
-void brLvpnl002768c0(void)
+void brLvpnlEnableDrawing(void)
 {
     K_ASSERT(sBrLvpnl != NULL, 0x3b);
-    *sBrLvpnl &= 0xfffffff7;
+    sBrLvpnl->flags &= ~BR_LVPNL_FLAG_DRAW_DISABLED;
 }

@@ -119,7 +119,7 @@ extern u32 FUN_00177c10();
 extern u32 FUN_001830c0();
 extern u32 FUN_00194b20();
 extern u32 FUN_00195290();
-extern u32 FUN_0019d3f0();
+extern void FUN_0019d3f0(const char*, s32);
 extern u32 FUN_0021ea00();
 extern u32 FUN_0025f370();
 extern u32 FUN_0025f570();
@@ -155,6 +155,7 @@ extern const char D_005DBF70[];
 extern const char D_005DBFA0[];
 extern const char D_005DBFD0[];
 extern const char D_005DC000[];
+extern const char D_005E3098[];
 
 /* Target entry prototypes keep all callbacks visible before their first use. */
 void FUN_001675b0(KwlnTask*);
@@ -194,8 +195,8 @@ f32 FUN_0016bc00(u32, u32);
 void FUN_0016bc80(u32, u32, f32*);
 void FUN_0016bdb0(u32, u32, f32*);
 void FUN_0016bee0(u32, u32, void*);
-void FUN_0016bf80(u32, u32, void*);
-void FUN_0016c010(void);
+void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
+void FUN_0016c010(void) __attribute__((aligned(16)));
 void FUN_0016c1d0(void);
 void FUN_0016c2f0(void);
 void FUN_0016a700(undefined4, undefined8, undefined8, s32, s32);
@@ -1947,52 +1948,40 @@ f32 FUN_0016ba00(u32 param_1, u32 param_2)
                     *(u32*)((param_1 & 0xffff) * 0x10 + iGpffffb2c0 + 8) + 8);
 }
 
-// FUN_0016BA80 NONMATCHING
+// FUN_0016BA80
 f32 FUN_0016ba80(u32 param_1, u32 param_2)
 {
-    CampDataBridgeGroup* group;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0x8b);
+        FUN_0019d3f0(D_005E3098, 0x8b);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    return (f32)(s32)group->records[param_2 & 0xffff].axis0;
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis0;
 }
 
-// FUN_0016BB00 NONMATCHING
+// FUN_0016BB00
 f32 FUN_0016bb00(u32 param_1, u32 param_2)
 {
-    CampDataBridgeGroup* group;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0x90);
+        FUN_0019d3f0(D_005E3098, 0x90);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    return (f32)(s32)group->records[param_2 & 0xffff].axis1;
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis1;
 }
 
-// FUN_0016BB80 NONMATCHING
+// FUN_0016BB80
 f32 FUN_0016bb80(u32 param_1, u32 param_2)
 {
-    CampDataBridgeGroup* group;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0x95);
+        FUN_0019d3f0(D_005E3098, 0x95);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    return (f32)(s32)group->records[param_2 & 0xffff].axis2;
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis2;
 }
 
-// FUN_0016BC00 NONMATCHING
+// FUN_0016BC00
 f32 FUN_0016bc00(u32 param_1, u32 param_2)
 {
-    CampDataBridgeGroup* group;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0x9a);
+        FUN_0019d3f0(D_005E3098, 0x9a);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    return (f32)(s32)group->records[param_2 & 0xffff].axis3;
+    return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis3;
 }
 
 // FUN_0016BC80 NONMATCHING
@@ -2029,30 +2018,31 @@ void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
     param_3[3] = (f32)(color & 0xff) / 255.0f;
 }
 
-// FUN_0016BEE0 NONMATCHING
+// FUN_0016BEE0
 void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
 {
     CampDataBridgeGroup* group;
     CampDataBridgeRecord* record;
+    u32 offset;
 
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0xb8);
+        FUN_0019d3f0(D_005E3098, 0xb8);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    record = &group->records[param_2 & 0xffff];
+    offset = (param_1 & 0xffff) * 0x10;
+    __asm__ volatile ("addu %0, %1, %2" : "=r"(group) : "r"(offset), "r"(iGpffffb2c0));
+    record = group->records;
+    offset = (param_2 & 0xffff) * 0x20;
+    __asm__ volatile ("addu %0, %1, %2" : "=r"(record) : "r"(offset), "r"(record));
     FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
 }
 
-// FUN_0016BF80 NONMATCHING
+// FUN_0016BF80
 void FUN_0016bf80(u32 param_1, u32 param_2, void* param_3)
 {
-    CampDataBridgeGroup* group;
-
     if (param_3 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0xc3);
+        FUN_0019d3f0(D_005E3098, 0xc3);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    FUN_00521250(param_3, &group->records[param_2 & 0xffff], 0x20);
+    FUN_00521250(param_3, &iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff], 0x20);
 }
 
 // FUN_0016C010 NONMATCHING

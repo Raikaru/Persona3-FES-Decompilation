@@ -705,12 +705,12 @@ void bpRoot001fec30()
     FUN_0021bb50();
 }
 
-void FUN_0024d0c0();
+u32 baiMainIsActive(void);
 
 // FUN_001fecc0
 void bpRoot001fecc0()
 {
-    FUN_0024d0c0();
+    baiMainIsActive();
 }
 
 void FUN_00207bf0();
@@ -857,9 +857,10 @@ void bpRoot001fef10()
 
 void FUN_00251f40();
 
-// FUN_001fef30 NONMATCHING
+// FUN_001fef30
 void bpRoot001fef30()
 {
+    FUN_00251f40();
 }
 
 void FUN_00252e90();
@@ -2744,7 +2745,7 @@ void func_00210d90(void*);
 void func_002510d0(void);
 void func_00251a80(void);
 void bppMain0020edf0(void);
-u32 baiMain0024d0c0(void);
+u32 baiMainIsActive(void);
 void func_0021c7e0(void);
 void bpo00252060(void);
 void func_002492b0(void);
@@ -2825,7 +2826,7 @@ void* FUN_001fd890(KwlnTask* task)
     }
     bppMain0020edf0();
     flags = work[0];
-    if ((flags & 0x8000) && !baiMain0024d0c0())
+    if ((flags & 0x8000) && !baiMainIsActive())
     {
         func_0021c7e0();
         work[0] = flags & ~0x8000u;

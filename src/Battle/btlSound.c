@@ -324,8 +324,8 @@ void func_002dd180(u16* work)
     H_Snd_FUN_0010a0e0(0, (s16)*work);
 }
 
-// FUN_002dd1b0 NONMATCHING
-u32 func_002dd1b0(u16* work)
+// FUN_002dd1b0
+u32 func_002dd1b0(s16* work)
 {
     func_0010a4e0(0, work[0], work[1], work[2]);
     return 1;
@@ -533,7 +533,7 @@ u32 func_002ddc80(u16 charId)
 }
 
 /* Recovered battle-misc harvest: 0x002DD8E0-0x002E2A60 */
-// FUN_002DD8E0 NONMATCHING
+// FUN_002DD8E0
 
 
 void FUN_002dd8e0(u32 param_1)
@@ -554,6 +554,20 @@ void FUN_002dd8e0(u32 param_1)
 
   return;
 
+}
+
+// FUN_002DD930
+int func_002DD930(int* param_1)
+{
+    int battleWork;
+
+    if ((*(u32*)(*param_1 + 0x98) & 2) != 0)
+    {
+        battleWork = *(int*)(*param_1 + 0x9f4);
+        *(u16*)(battleWork + 0x3fe) &= 0xffdf;
+    }
+
+    return 1;
 }
 
 // FUN_002DD960
