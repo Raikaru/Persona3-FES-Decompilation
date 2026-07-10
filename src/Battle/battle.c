@@ -65,7 +65,6 @@ extern void func_002b6490(void);
 extern void func_002bc6d0(void);
 extern void func_002dd9b0(void);
 extern void func_00177270(void);
-extern u32 btlFade002ff310(void);
 
 // FUN_0027cb80
 u64 btlGetUID()
@@ -404,7 +403,7 @@ u32 btlScrCmd_CHK_HERO_DIED_TARTAROS()
             {
                 datSetFlag(FLG_HERO_DIED, true);
 
-                Y_TimeLimit_0045a400();
+                Y_TimeLimit_Stop();
 
                 scrCreateTaskFromScriptMemory((scrSize = gFldScrSize, 10), gFldScrMemory, scrSize, FLDSCR_DIED_IN_TARTAROS);
                 K_Misc_CreateScrShutdownTask(scrGetCurrent()->task);
@@ -502,16 +501,16 @@ BtlPacket* btlCreateRemoveFlagsPacket(u32 flags)
 
     return packet;
 }
-// FUN_0027CE50 NONMATCHING
+// FUN_0027CE50
 void func_0027ce50(void)
 {
     s32 i;
 
-    for (i = 0x1540; i < 0x15c0; i++)
+    for (i = 0x1540; i <= 0x15bf; i++)
     {
         btlLoadResource(i);
     }
-    for (i = 0x15c0; i < 0x1600; i++)
+    for (i = 0x15c0; i <= 0x15ff; i++)
     {
         btlLoadResource(i);
     }
@@ -610,7 +609,7 @@ u32 func_0027d840(void)
         return false;
     }
 
-    return btlFade002ff310() != 0;
+    return btlFadeAllowsBattleTransition() != 0;
 }
 
 // FUN_0027D8D0 NONMATCHING

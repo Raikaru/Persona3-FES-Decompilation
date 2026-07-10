@@ -26,14 +26,14 @@ extern void func_00279120(void);
 extern void func_002791b0(u16 skillId);
 extern void func_002792c0(void);
 extern void func_00279330(u32 value);
-extern void func_00279450(u32 value);
-extern void func_002794c0(u32 value);
+extern void brpParamSetUnlockedSkillLevel(u32 level);
+extern void brpParamSetUnlockedSkillIndex(u32 index);
 extern void func_00279510(u32 slot, u8 value);
 extern void func_00279580(u32 slot, u8 value);
 extern void func_002795f0(u32 slot, u8 value);
 extern u32 func_00276cc0(void);
-extern void func_00276870(void);
-extern void func_002768c0(void);
+extern void brLvpnlDisableDrawing(void);
+extern void brLvpnlEnableDrawing(void);
 extern void scrClearTextBox(s32, s32, s32, s32);
 extern void FUN_003c77a0(void);
 extern void FUN_003c7990(s32);
@@ -600,7 +600,7 @@ void func_00272810(void)
                 {
                     func_00276a80();
                     func_002798f0();
-                    func_00276870();
+                    brLvpnlDisableDrawing();
                     FUN_0024a870();
                     brpSeqPutU32(0x1c, 4);
                 }
@@ -639,7 +639,7 @@ void func_00272810(void)
                     brpSeqPutU32(0, brpSeqU32(0) & ~0x40u);
                     func_002798f0();
                     func_00276b10();
-                    func_002768c0();
+                    brLvpnlEnableDrawing();
                     brpSeqPutU32(0x1c, 6);
                 }
                 break;
@@ -1033,9 +1033,9 @@ void func_00274c00(void)
     if (func_00274d40() != 0)
     {
         func_00279330(func_00274d90());
-        func_00279450(func_00274e10());
+        brpParamSetUnlockedSkillLevel(func_00274e10());
     }
-    func_002794c0((u32)func_00274e90());
+    brpParamSetUnlockedSkillIndex((u32)func_00274e90());
     for (i = 0; i < 5; i++)
     {
         skill = (u16)FUN_00173580(persona, (u16)i);
@@ -1046,11 +1046,11 @@ void func_00274c00(void)
     }
 }
 
-// FUN_00274D40 NONMATCHING
+// FUN_00274D40
 u8 func_00274d40(void)
 {
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    return brpSeqU32(0x1b0) < brpSeqU32(0x1c0);
+    return brpSeqS32(0x1b0) < brpSeqS32(0x1c0);
 }
 
 // FUN_00274D90 NONMATCHING

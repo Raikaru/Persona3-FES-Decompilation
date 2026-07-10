@@ -9,6 +9,9 @@ void FUN_004d0f00();
 void FUN_001124b0();
 void H_Cdvd_Destroy();
 void FUN_003c7dd0();
+extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
+extern u32 FUN_0017d800(void);
+extern KwlnTask *FUN_00194B20(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
 // FUN_00154770. Destroy callback of the "H_CampSystemMenuDraw" task
 void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
 {
@@ -44,6 +47,31 @@ void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
         *(int*)((int)workData + i * 4 + 0x24) = 0;
     }
     RwFree(workData);
+}
+
+// FUN_001548A0 NONMATCHING
+KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
+{
+    KwlnTask *task;
+    void *work;
+
+    work = (*DAT_00960184)(1, 0x17c, 0x40000);
+    if (work == NULL) {
+        return NULL;
+    }
+
+    task = FUN_00194B20(parent, (const char *)(uintptr_t)0x005dbd00, priority,
+                        (KwlnTaskUpdateFunc)(uintptr_t)0x0014f7d0,
+                        h_campSystemDestroyMenuDrawTask, work);
+    if (task == NULL) {
+        return NULL;
+    }
+
+    if (FUN_0017d800() != 0) {
+        *(u32 *)((u8 *)work + 4) = 4;
+    }
+
+    return task;
 }
 
 

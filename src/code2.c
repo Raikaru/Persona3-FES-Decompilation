@@ -63,7 +63,7 @@ extern int func_0x00076160();
 extern int func_0x00076460();
 extern int func_0x00076680();
 
-// FUN_0077F710
+// FUN_0077F710 NONMATCHING
 int FUN_0077f710(u32 param_1)
 {
   int iVar1;
@@ -101,7 +101,7 @@ int FUN_0077f710(u32 param_1)
   return iVar2;
 }
 
-// FUN_0077FDC0
+// FUN_0077FDC0 NONMATCHING
 void FUN_0077fdc0(void)
 {
   int iVar3;
@@ -121,7 +121,7 @@ void FUN_0077fdc0(void)
   return;
 }
 
-// FUN_0077FFA0
+// FUN_0077FFA0 NONMATCHING
 void FUN_0077ffa0(void)
 {
   u32 uVar1;
@@ -141,7 +141,7 @@ void FUN_0077ffa0(void)
   return;
 }
 
-// FUN_00780070
+// FUN_00780070 NONMATCHING
 int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
 {
   int iVar1;
@@ -198,7 +198,7 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   return param_1;
 }
 
-// FUN_007803F8
+// FUN_007803F8 NONMATCHING
 int FUN_007803f8(int param_1,int param_2)
 {
   int iVar3;
@@ -228,7 +228,7 @@ int FUN_007803f8(int param_1,int param_2)
   return iVar4;
 }
 
-// FUN_00780500
+// FUN_00780500 NONMATCHING
 int FUN_00780500(u32 param_1,u32 param_2,u32 param_3)
 {
   int iVar2;
@@ -272,7 +272,7 @@ LAB_007805a0:
   return lVar4;
 }
 
-// FUN_00780640
+// FUN_00780640 NONMATCHING
 int FUN_00780640(int param_1)
 {
   int iVar3;
@@ -324,7 +324,7 @@ int FUN_00780640(int param_1)
   return iVar6;
 }
 
-// FUN_007807E0
+// FUN_007807E0 NONMATCHING
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
@@ -332,7 +332,7 @@ void FUN_007807e0(u16 param_1)
   return;
 }
 
-// FUN_00780828
+// FUN_00780828 NONMATCHING
 void FUN_00780828(void)
 {
   int sVar1;

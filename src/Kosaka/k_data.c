@@ -20,7 +20,7 @@
  */
 #define FIELD_DATA_AT(field, offset, type) (*(type*)((u8*)(field) + (offset)))
 
-extern u32 func_0010a720(void);
+extern u32 func_0010a720(u32 request);
 extern u32 func_0010a770();
 extern u32 func_0016dba0(u16 value);
 extern u32 func_0016ef30(void);
@@ -51,7 +51,7 @@ FldDungeonFloorData gFldDngFloorsData[500]; // 00867f60
 /* These symbols are consumed by the field encounter/script modules. */
 ScrHeader* D_007CE220;
 void* D_007CE218;
-void* D_007CE214;
+s32 D_007CE214;
 
 static void* sFieldMainTable;
 static u32 sFieldMainTableCount;
@@ -228,22 +228,22 @@ void func_001b7d00(void)
     D_007CE218 = RwCalloc(1, 0x34c, rwMEMHINTDUR_GLOBAL);
     if (D_007CE218 != NULL)
     {
-        D_007CE214 = (void*)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
+        D_007CE214 = (s32)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
     }
 }
 
-// FUN_001b7d60 NONMATCHING
+// FUN_001b7d60
 u32 func_001b7d60(void)
 {
-    if (D_007CE214 == NULL)
+    if (D_007CE214 == 0)
     {
         return true;
     }
-    if (func_0010a720() == 0)
+    if (func_0010a720(D_007CE214) == 0)
     {
         return false;
     }
-    D_007CE214 = NULL;
+    D_007CE214 = 0;
     return true;
 }
 

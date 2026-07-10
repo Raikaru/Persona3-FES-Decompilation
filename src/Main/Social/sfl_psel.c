@@ -204,42 +204,28 @@ void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
 // FUN_00260900 NONMATCHING
 s32 sflPsel00260900(u32* base, s32 index)
 {
-    u32 offset;
-    u8* table;
     u8* entry;
-
-    offset = index * 0x80;
-    table = (u8*)(uintptr_t)base[0x61];
-    entry = table + offset;
+    index <<= 7;
+    entry = (u8*)(uintptr_t)base[0x61] + index;
     return *(s32*)(entry + 0x5c) - *(s32*)(entry + 0x54);
 }
 
 // FUN_00260920 NONMATCHING
 s32 sflPsel00260920(u32* base, s32 index)
 {
-    u32 offset;
-    u8* table;
     u8* entry;
-
-    offset = index * 0x80;
-    table = (u8*)(uintptr_t)base[0x61];
-    entry = table + offset;
+    index <<= 7;
+    entry = (u8*)(uintptr_t)base[0x61] + index;
     return *(s32*)(entry + 0x60) - *(s32*)(entry + 0x58);
 }
 
 // FUN_00260940 NONMATCHING
 u32 sflPsel00260940(u32* base, s32 index)
 {
-    u32 offset;
-    u8* table;
     u8* entry;
-    u8* resourceTable;
-
-    offset = index * 0x80;
-    table = (u8*)(uintptr_t)base[0x61];
-    entry = table + offset;
-    resourceTable = (u8*)base + 0x104;
-    return *(u32*)(resourceTable + *(u32*)(entry + 0x14) * 4);
+    index <<= 7;
+    entry = (u8*)(uintptr_t)base[0x61] + index;
+    return base[0x41 + *(u32*)(entry + 0x14)];
 }
 
 // FUN_00260970
@@ -1292,15 +1278,15 @@ void func_002170c0(void)
     }
 }
 
-// FUN_002172C0 NONMATCHING
+// FUN_002172C0
 void func_002172c0(void)
 {
     u8* work;
-    u32 i;
+    s32 i;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
-    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    for (i = 0; i < *(s32*)(work + 0xc); i++)
     {
         func_003b0170(*(u32*)(work + 0xa50 + i * 0x910));
     }

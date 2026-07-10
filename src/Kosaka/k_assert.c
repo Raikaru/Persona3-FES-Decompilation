@@ -1,5 +1,6 @@
 #include "Kosaka/k_assert.h"
 
+// Retail assertion hook is intentionally a no-op.
 // FUN_0019d3f0
 void K_Assert(const char* file, s32 line)
 {

@@ -237,53 +237,23 @@ u32 scrCommand_SQRT()
 }
 
 
-/* ---- Recovered range 0x35B1B0-0x35B260 (Ghidra reference, pending match) ---- */
-extern u16 DAT_007e094c;
-extern u16 DAT_007e094e;
-
-// FUN_0035B1B0 NONMATCHING
-
-
+// FUN_0035B1B0
 u32 FUN_0035b1b0(void)
-
-
-
 {
+    scrSetIntReturnVal(*(u16*)0x007e094e & scrGetIntPara(0));
 
-  u16 uVar1;
-
-  
-
-  uVar1 = scrGetIntPara(0);
-
-  scrSetIntReturnVal(DAT_007e094e & uVar1);
-
-  return 1;
-
+    return true;
 }
 
-// FUN_0035B1F0 NONMATCHING
-
-
+// FUN_0035B1F0
 u32 FUN_0035b1f0(void)
-
-
-
 {
+    scrSetIntReturnVal(*(u16*)0x007e094c & scrGetIntPara(0));
 
-  u16 uVar1;
-
-  
-
-  uVar1 = scrGetIntPara(0);
-
-  scrSetIntReturnVal(DAT_007e094c & uVar1);
-
-  return 1;
-
+    return true;
 }
 
-// FUN_0035B230 NONMATCHING
+// FUN_0035B230
 
 
 u32 FUN_0035b230(void)
@@ -300,4 +270,10 @@ u32 FUN_0035b230(void)
 
   return 1;
 
+}
+
+// FUN_0035B270
+u32 FUN_0035b270(void)
+{
+  return 1;
 }

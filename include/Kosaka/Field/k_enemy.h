@@ -5,6 +5,6 @@
 
 typedef struct HCdvd HCdvd;
 
-HCdvd* K_FldEnemy_RequestTable();
+HCdvd* K_FldEnemy_RequestTable(void);
 
 #endif

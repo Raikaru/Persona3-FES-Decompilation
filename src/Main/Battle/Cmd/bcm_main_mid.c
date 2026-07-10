@@ -252,25 +252,27 @@ void func_00208460(void)
     work[4] = 0;
 }
 
-// FUN_00208570 NONMATCHING
-void func_00208570(u8* panel)
+// FUN_00208570
+void func_00208570(u32* panel)
 {
     s32 i;
+    u8* entry;
 
     panel[0] |= 4;
     for (i = 0; i < 8; i++) {
-        panel[i * 4 + 0x14] = 0;
-        panel[i * 4 + 0x15] = 0;
-        panel[i * 4 + 0x16] = 0;
+        entry = (u8*)&panel[i];
+        entry[0x14] = 0;
+        entry[0x15] = 0;
+        entry[0x16] = 0;
     }
-    panel[0x17] = 0;
-    panel[0x1b] = 0;
-    panel[0x1f] = 5;
-    panel[0x23] = 5;
-    panel[0x2b] = 0;
-    panel[0x27] = 0;
-    panel[0x33] = 5;
-    panel[0x2f] = 5;
+    ((u8*)panel)[0x17] = 0;
+    ((u8*)panel)[0x1b] = 0;
+    ((u8*)panel)[0x1f] = 5;
+    ((u8*)panel)[0x23] = 5;
+    ((u8*)panel)[0x2b] = 0;
+    ((u8*)panel)[0x27] = 0;
+    ((u8*)panel)[0x33] = 5;
+    ((u8*)panel)[0x2f] = 5;
 }
 
 // FUN_002085e0

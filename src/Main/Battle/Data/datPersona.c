@@ -1398,7 +1398,7 @@ u64 FUN_00176c80(DatPersonaWork* persona, DatPersonaWork* source)
     return 0;
 }
 
-// FUN_00176d10 NONMATCHING
+// FUN_00176d10
 u64 FUN_00176d10(DatPersonaWork* persona, DatPersonaWork* source)
 {
     s32 statIdx;
@@ -1407,7 +1407,8 @@ u64 FUN_00176d10(DatPersonaWork* persona, DatPersonaWork* source)
 
     for (statIdx = 0; statIdx < PERSONA_STAT_MAX; statIdx++)
     {
-        persona->stats3[statIdx] = source->bonusStats[statIdx];
+        ((DatPersonaWork*)((u8*)persona + statIdx))->stats3[0] =
+            ((DatPersonaWork*)((u8*)source + statIdx))->bonusStats[0];
     }
     return 0;
 }

@@ -15,7 +15,7 @@ extern void* btlFadeUpdate(KwlnTask* task);
 static BtlFadeWork sBtlFadeWork;
 
 // FUN_002ff260
-KwlnTask* btlFadeCreateTask(s32 param_1)
+KwlnTask* btlFadeCreateTask(s32 fadeType)
 {
     KwlnTask* task;
 
@@ -24,7 +24,7 @@ KwlnTask* btlFadeCreateTask(s32 param_1)
     if (task == NULL)
     {
         sBtlFadeWork.state = 2;
-        sBtlFadeWork.fadeType = param_1;
+        sBtlFadeWork.fadeType = fadeType;
 
         task = kwlnTaskCreate(NULL, "battle_encount_fade", 0x1cbf, btlFadeUpdate, NULL, &sBtlFadeWork);
     }
@@ -49,7 +49,7 @@ void btlFadeStartImmediate(void)
 }
 
 // FUN_002ff310
-s32 btlFade002ff310(void)
+s32 btlFadeAllowsBattleTransition(void)
 {
     return 1;
 }
@@ -61,7 +61,7 @@ s32 btlFadeIsActive(void)
 }
 
 // FUN_002ff330
-u64 func_002ff330(void)
+u64 btlFadeSuppressesFormationUpdates(void)
 {
     return 0;
 }

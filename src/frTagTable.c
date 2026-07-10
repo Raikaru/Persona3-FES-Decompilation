@@ -435,7 +435,7 @@ u64 FUN_003ae970(void)
 }
 #define FUN_003ae970(...) ((u64 (*)(...))FUN_003ae970)(__VA_ARGS__)
 #undef FUN_003ae9b0
-// FUN_003AE9B0 NONMATCHING
+// FUN_003AE9B0
 
 
 u64 FUN_003ae9b0(u64 param_1,u64 param_2)
@@ -444,40 +444,37 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 
 {
 
-  u8 uVar1;
+  char cVar1;
 
-  u8 uVar2;
+  char cVar2;
 
+  char *pcVar3;
+  u8 *puVar4;
   int iVar3;
 
-  u8 *puVar4;
-
-  u8 *puVar5;
 
   u8 auStack_40 [64];
 
   
 
-  puVar5 = DAT_006a26b0;
-
+  pcVar3 = (char *)DAT_006a26b0;
   puVar4 = auStack_40;
 
   iVar3 = 0x1c;
 
   do {
 
-    uVar1 = *puVar5;
+    cVar1 = *pcVar3;
 
-    uVar2 = puVar5[1];
+    cVar2 = pcVar3[1];
 
-    puVar5 = puVar5 + 2;
+    pcVar3 = pcVar3 + 2;
 
     iVar3 = iVar3 + -1;
 
-    *puVar4 = uVar1;
+    *puVar4 = cVar1;
 
-    puVar4[1] = uVar2;
-
+    puVar4[1] = cVar2;
     puVar4 = puVar4 + 2;
 
   } while (0 < iVar3);
@@ -1238,7 +1235,7 @@ u64 FUN_003af110(u64 param_1,int param_2)
 }
 #define FUN_003af110(...) ((u64 (*)(...))FUN_003af110)(__VA_ARGS__)
 #undef FUN_003af360
-// FUN_003AF360 NONMATCHING
+// FUN_003AF360
 
 
 u32 FUN_003af360(void)
@@ -1247,12 +1244,11 @@ u32 FUN_003af360(void)
 
 {
 
-  return DAT_0095abe0;
-
+  return *(u32 *)0x0095abe0;
 }
 #define FUN_003af360(...) ((u32 (*)(...))FUN_003af360)(__VA_ARGS__)
 #undef FUN_003af370
-// FUN_003AF370 NONMATCHING
+// FUN_003AF370
 
 
 u32 FUN_003af370(void)
@@ -1261,12 +1257,11 @@ u32 FUN_003af370(void)
 
 {
 
-  return DAT_0095abe4;
-
+  return *(u32 *)0x0095abe4;
 }
 #define FUN_003af370(...) ((u32 (*)(...))FUN_003af370)(__VA_ARGS__)
 #undef FUN_003af380
-// FUN_003AF380 NONMATCHING
+// FUN_003AF380
 
 
 u32 FUN_003af380(void)
@@ -1275,12 +1270,11 @@ u32 FUN_003af380(void)
 
 {
 
-  return DAT_0095abe8;
-
+  return *(u32 *)0x0095abe8;
 }
 #define FUN_003af380(...) ((u32 (*)(...))FUN_003af380)(__VA_ARGS__)
 #undef FUN_003af390
-// FUN_003AF390 NONMATCHING
+// FUN_003AF390
 
 
 u32 FUN_003af390(void)
@@ -1289,10 +1283,31 @@ u32 FUN_003af390(void)
 
 {
 
-  return DAT_0095abec;
-
+  return *(u32 *)0x0095abec;
 }
 #define FUN_003af390(...) ((u32 (*)(...))FUN_003af390)(__VA_ARGS__)
+// FUN_003AF3A0 NONMATCHING
+u64 FUN_003af3a0(u64 unused, int context)
+{
+  u8 *data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  u32 high = data[1] == 0xff ? 0 : (u8)(data[1] - 1);
+  DAT_0095abe0 = high << 8 | (data[0] - 1) & 0xff;
+  high = (s8)data[3] == -1 ? 0 : (u8)(data[3] - 1);
+  DAT_0095abe4 = high << 8 | (data[2] - 1) & 0xff;
+  return 0;
+}
+
+// FUN_003AF454 NONMATCHING
+u64 FUN_003af454(u64 unused, int context)
+{
+  u8 *data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  u32 high = data[1] == 0xff ? 0 : (u8)(data[1] - 1);
+  DAT_0095abe8 = high << 8 | (data[0] - 1) & 0xff;
+  high = (s8)data[3] == -1 ? 0 : (u8)(data[3] - 1);
+  DAT_0095abec = high << 8 | (data[2] - 1) & 0xff;
+  return 0;
+}
+
 #undef FUN_003af520
 // FUN_003AF520 NONMATCHING
 

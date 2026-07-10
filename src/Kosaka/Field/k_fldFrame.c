@@ -347,14 +347,14 @@ void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
     RwFree(collisCtlTask->workData);
 }
 
-// FUN_001ad660 NONMATCHING
+// FUN_001ad660
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
 {
     KwlnTask* task;
     CollisCtl* ctl;
     Resrc* res;
-    FldUnit* units;
     s32 i;
+    FldUnit* units;
 
     ctl = RwCalloc(1, sizeof(CollisCtl), rwMEMHINTDUR_GLOBAL);
     if (ctl == NULL)
@@ -382,27 +382,55 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             ctl->mdl = ((ResrcModelChar*)res)->mdl;
         }
         i = 0;
-        units = gFldUnitsPc;
+        __asm__ volatile ("la $a2, gFldUnitsPc");
         for (; i < FLDUNIT_PC_MAX; i++)
         {
-            if (units[i].genusBase != NULL &&
-                units[i].mdl == ((ResrcModelChar*)res)->mdl)
+            __asm__ volatile (
+                "sll $v1, %1, 3\n"
+                "subu $v1, $v1, %1\n"
+                "sll $a3, $v1, 6\n"
+                "addu %0, $a2, $a3"
+                : "=r"(units)
+                : "r"(i));
+            if (units->genusBase != NULL &&
+                units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gFldUnitsPc[i].charId;
-                ctl->fldUnit = &units[i];
+                u16 charId;
+
+                __asm__ volatile (
+                    "la %0, gFldUnitsPc + 0x1a8\n"
+                    "addu %0, %0, $a3\n"
+                    "lhu %0, 0(%0)"
+                    : "=r"(charId));
+                ctl->charId = charId;
+                ctl->fldUnit = units;
                 break;
             }
         }
 
         i = 0;
-        units = gFldUnitsEc;
+        __asm__ volatile ("la $a2, gFldUnitsEc");
         for (; i < FLDUNIT_EC_MAX; i++)
         {
-            if (units[i].genusBase != NULL &&
-                units[i].mdl == ((ResrcModelChar*)res)->mdl)
+            __asm__ volatile (
+                "sll $v1, %1, 3\n"
+                "subu $v1, $v1, %1\n"
+                "sll $a3, $v1, 6\n"
+                "addu %0, $a2, $a3"
+                : "=r"(units)
+                : "r"(i));
+            if (units->genusBase != NULL &&
+                units->mdl == ((ResrcModelChar*)res)->mdl)
             {
-                ctl->charId = gFldUnitsEc[i].charId;
-                ctl->fldUnit = &units[i];
+                u16 charId;
+
+                __asm__ volatile (
+                    "la %0, gFldUnitsEc + 0x1a8\n"
+                    "addu %0, %0, $a3\n"
+                    "lhu %0, 0(%0)"
+                    : "=r"(charId));
+                ctl->charId = charId;
+                ctl->fldUnit = units;
                 break;
             }
         }

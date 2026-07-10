@@ -10,6 +10,9 @@ void FUN_002518b0(long param_1);
 u32 FUN_002519d0(void);
 void FUN_00251a20(void);
 extern int iGpffffb654;
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern const char DAT_0068e9c0[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
 
 static u32* sBpTut654; // puGpffffb654
 
@@ -34,7 +37,7 @@ void bpTut00251050(u32* param_1)
 }
 
 /* Recovered battle-misc harvest: 0x00251060-0x00251A20 */
-// FUN_00251060 NONMATCHING
+// FUN_00251060
 
 
 void FUN_00251060(void)
@@ -45,13 +48,13 @@ void FUN_00251060(void)
 
   if (sBpTut654 == (u32 *)0x0) {
 
-    FUN_0019d3f0(0x68e9c0,0x39);
+    FUN_0019d3f0(DAT_0068e9c0, 0x39);
 
   }
 
   if ((~*sBpTut654 & 1) == 0) {
 
-    FUN_0019d3f0(0x68e9c0,0x49);
+    FUN_0019d3f0(DAT_0068e9c0, 0x49);
 
   }
 
@@ -570,7 +573,7 @@ void FUN_002518b0(long param_1)
 
 }
 
-// FUN_002519D0 NONMATCHING
+// FUN_002519D0
 
 
 u32 FUN_002519d0(void)
@@ -580,8 +583,7 @@ u32 FUN_002519d0(void)
 {
 
   if (sBpTut654 == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68e9c0,0x39);
+    FUN_0019d3f0(DAT_0068e9c0,0x39);
 
   }
 
@@ -589,7 +591,7 @@ u32 FUN_002519d0(void)
 
 }
 
-// FUN_00251A20 NONMATCHING
+// FUN_00251A20
 
 
 void FUN_00251a20(void)
@@ -599,8 +601,7 @@ void FUN_00251a20(void)
 {
 
   if (iGpffffb654 == 0) {
-
-    FUN_0019d3f0(0x68e9c0,0x39);
+    FUN_0019d3f0(DAT_0068e9c0,0x39);
 
   }
 

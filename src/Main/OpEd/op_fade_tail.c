@@ -6,10 +6,12 @@
 /* GP-owned work records are shared with the adjacent opening/ending TU. */
 #define sOpTailA gOpWorkD0
 #define sOpTailB (*(u32 **)(uintptr_t)0x007ce3d4)
-#define sOpTailC (*(u32 **)(uintptr_t)0x007ce3d8)
+#define sOpTailC DAT_007ce3d8
 #define sOpTailD (*(u32 **)(uintptr_t)0x007ce3dc)
 #define sOpTailE (*(u32 **)(uintptr_t)0x007ce3e0)
-#define sOpTailF (*(u32 **)(uintptr_t)0x007ce3e4)
+extern u32 *DAT_007ce3d8;
+extern u32 *DAT_007ce3e4;
+#define sOpTailF DAT_007ce3e4
 #define sOpTailG (*(u32 **)(uintptr_t)0x007ce3e8)
 #define OP_F80BC (*(volatile float*)(uintptr_t)0x007cadac)
 #define OP_F80D8 (*(volatile float*)(uintptr_t)0x007cadc8)
@@ -310,10 +312,10 @@ void func_00279ac0(u32 value)
     ((void (*)(void*))DAT_0096017c)((void*)(uintptr_t)value);
 }
 
-// FUN_00279af0 NONMATCHING
+// FUN_00279AF0
 u32 func_00279af0(const u32* work, s32 index)
 {
-    return ((const u32*)(uintptr_t)work[2])[index];
+    return *(const u32 *)(index * sizeof(u32) + work[2]);
 }
 
 // FUN_00279b10
@@ -557,13 +559,13 @@ u32* func_0027a4a0(void)
     return record;
 }
 
-// FUN_0027a560 NONMATCHING
+// FUN_0027a560
 void func_0027a560(u32* record)
 {
     s32 i;
 
     for (i = 0; i < (s32)record[0x21]; i++) {
-        func_003b0170(record[i * 2 + 2]);
+        func_003b0170(*(u32*)((u8*)record + i * 8 + 8));
     }
     record[0] &= ~1u;
 }
@@ -720,7 +722,7 @@ void func_0027ab80(void)
         sOpTailB[0x120c / 4] = offset + 2;
     }
 }
-// FUN_0027ac60 NONMATCHING
+// FUN_0027AC60
 void func_0027ac60(u32* work)
 {
     work[0] = 0;
@@ -728,7 +730,7 @@ void func_0027ac60(u32* work)
     sOpTailC = work;
 }
 
-// FUN_0027ac80 NONMATCHING
+// FUN_0027ac80
 void func_0027ac80(void)
 {
     K_ASSERT(sOpTailC != NULL, 0x31);
@@ -789,7 +791,7 @@ void func_0027ae90(void)
     work[0] |= 1;
 }
 
-// FUN_0027af80 NONMATCHING
+// FUN_0027af80
 u32 func_0027af80(void)
 {
     K_ASSERT(sOpTailC != NULL, 0x31);
@@ -810,7 +812,7 @@ void func_0027afd0(void)
     work[1] &= ~2u;
 }
 
-// FUN_0027b070 NONMATCHING
+// FUN_0027b070
 u32 func_0027b070(void)
 {
     K_ASSERT(sOpTailC != NULL, 0x31);
@@ -949,16 +951,16 @@ u32 func_0027b460(void)
     return 0;
 }
 
-// FUN_0027b5b0 NONMATCHING
+// FUN_0027B5B0
 void func_0027b5b0(u32* work)
 {
     work[0] = 0;
-    work[0x45] = 0x42c80000;
-    work[0x46] = 0x42c80000;
+    work[0x114 / 4] = 0x42c80000;
+    work[0x118 / 4] = 0x42c80000;
     sOpTailF = work;
 }
 
-// FUN_0027b5d0 NONMATCHING
+// FUN_0027b5d0
 void func_0027b5d0(void)
 {
     K_ASSERT(sOpTailF != NULL, 0x27);

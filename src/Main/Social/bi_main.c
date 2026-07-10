@@ -288,10 +288,10 @@ void func_00242720(void* slot, s32 value)
     func_00242840((u8*)slot + 0x830, 5, BI_U32(slot, 0xd30));
 }
 
-// FUN_00242840 NONMATCHING
+// FUN_00242840
 void func_00242840(void* glyphs, s32 capacity, s32 value)
 {
-    char digits[16];
+    char digits[256];
     s32 i;
     s32 length;
 

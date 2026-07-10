@@ -85,37 +85,22 @@ void sflRes0020d500(u32* work, const f32* vertices)
     }
 }
 
-// FUN_0020d630 NONMATCHING
+// FUN_0020D630
 void sflRes0020d630(void* work, const f32* value)
 {
-    f32* dst;
-
-    dst = (f32*)((u8*)work + 0x2c);
-    dst[0] = value[0];
-    dst[1] = value[1];
-    dst[2] = value[2];
+    *(RwV3d*)((u8*)work + 0x2c) = *(const RwV3d*)value;
 }
 
-// FUN_0020d650 NONMATCHING
+// FUN_0020D650
 void sflRes0020d650(void* work, const f32* value)
 {
-    f32* dst;
-
-    dst = (f32*)((u8*)work + 0x20);
-    dst[0] = value[0];
-    dst[1] = value[1];
-    dst[2] = value[2];
+    *(RwV3d*)((u8*)work + 0x20) = *(const RwV3d*)value;
 }
 
-// FUN_0020d670 NONMATCHING
+// FUN_0020D670
 void sflRes0020d670(const void* work, f32* value)
 {
-    const f32* src;
-
-    src = (const f32*)((const u8*)work + 0x20);
-    value[0] = src[0];
-    value[1] = src[1];
-    value[2] = src[2];
+    *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
 }
 
 // FUN_0020d690 NONMATCHING

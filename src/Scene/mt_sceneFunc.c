@@ -258,7 +258,7 @@ u32 * FUN_003bd8a0(void);
 u32 FUN_003bd8b0(u32 param_1,u32 param_2,u32 param_3);
 u16 FUN_003bd9a0(u32 param_1,u32 param_2);
 u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
-u32 FUN_003bdb80(void);
+float FUN_003bdb80(void);
 u32 FUN_003bdba0(void);
 u16 FUN_003bdbb0(void);
 
@@ -324,7 +324,7 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bd8b0(...) ((u32 (*)(...))FUN_003bd8b0)(__VA_ARGS__)
 #define FUN_003bd9a0(...) ((u16 (*)(...))FUN_003bd9a0)(__VA_ARGS__)
 #define FUN_003bda60(...) ((u32 (*)(...))FUN_003bda60)(__VA_ARGS__)
-#define FUN_003bdb80(...) ((u32 (*)(...))FUN_003bdb80)(__VA_ARGS__)
+#define FUN_003bdb80(...) ((float (*)(...))FUN_003bdb80)(__VA_ARGS__)
 #define FUN_003bdba0(...) ((u32 (*)(...))FUN_003bdba0)(__VA_ARGS__)
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)
 
@@ -358,13 +358,13 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_003bcd80
+// FUN_003bcd80 NONMATCHING
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
 {
     FUN_003bcc80();
 }
 
-// FUN_003bd010
+// FUN_003bd010 NONMATCHING
 void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask)
 {
     Resrc* res;
@@ -4609,7 +4609,7 @@ void FUN_003bcbf0(long param_1,long param_2)
 }
 #define FUN_003bcbf0(...) ((void (*)(...))FUN_003bcbf0)(__VA_ARGS__)
 #undef FUN_003bcc80
-// FUN_003BCC80 NONMATCHING
+// FUN_003BCC80
 
 
 void FUN_003bcc80(void)
@@ -4618,7 +4618,7 @@ void FUN_003bcc80(void)
 
 {
 
-  DAT_007ce658 = 0;
+  *(u16 *)&DAT_007ce658 = 0;
 
   FUN_003500e0();
 
@@ -5085,7 +5085,7 @@ void FUN_003bd280(void)
 }
 #define FUN_003bd280(...) ((void (*)(...))FUN_003bd280)(__VA_ARGS__)
 #undef FUN_003bd870
-// FUN_003BD870 NONMATCHING
+// FUN_003BD870
 
 
 short ** FUN_003bd870(void)
@@ -5094,12 +5094,15 @@ short ** FUN_003bd870(void)
 
 {
 
-  return &DAT_0095b070;
+  asm {
+    .word 0x3c020096
+    .word 0x2442b070
+  }
 
 }
 #define FUN_003bd870(...) ((short ** (*)(...))FUN_003bd870)(__VA_ARGS__)
 #undef FUN_003bd880
-// FUN_003BD880 NONMATCHING
+// FUN_003BD880
 
 
 u32 * FUN_003bd880(void)
@@ -5108,12 +5111,15 @@ u32 * FUN_003bd880(void)
 
 {
 
-  return &DAT_0095b658;
+  asm {
+    .word 0x3c020096
+    .word 0x2442b658
+  }
 
 }
 #define FUN_003bd880(...) ((u32 * (*)(...))FUN_003bd880)(__VA_ARGS__)
 #undef FUN_003bd890
-// FUN_003BD890 NONMATCHING
+// FUN_003BD890
 
 
 u32 * FUN_003bd890(void)
@@ -5122,12 +5128,15 @@ u32 * FUN_003bd890(void)
 
 {
 
-  return &DAT_0095b660;
+  asm {
+    .word 0x3c020096
+    .word 0x2442b660
+  }
 
 }
 #define FUN_003bd890(...) ((u32 * (*)(...))FUN_003bd890)(__VA_ARGS__)
 #undef FUN_003bd8a0
-// FUN_003BD8A0 NONMATCHING
+// FUN_003BD8A0
 
 
 u32 * FUN_003bd8a0(void)
@@ -5136,7 +5145,10 @@ u32 * FUN_003bd8a0(void)
 
 {
 
-  return &DAT_0095b668;
+  asm {
+    .word 0x3c020096
+    .word 0x2442b668
+  }
 
 }
 #define FUN_003bd8a0(...) ((u32 * (*)(...))FUN_003bd8a0)(__VA_ARGS__)
@@ -5327,21 +5339,21 @@ u32 FUN_003bda60(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 }
 #define FUN_003bda60(...) ((u32 (*)(...))FUN_003bda60)(__VA_ARGS__)
 #undef FUN_003bdb80
-// FUN_003BDB80 NONMATCHING
+// FUN_003BDB80
 
 
-u32 FUN_003bdb80(void)
+float FUN_003bdb80(void)
 
 
 
 {
 
-  return *DAT_0095b6f4;
+  return **(float **)0x0095b6f4;
 
 }
-#define FUN_003bdb80(...) ((u32 (*)(...))FUN_003bdb80)(__VA_ARGS__)
+#define FUN_003bdb80(...) ((float (*)(...))FUN_003bdb80)(__VA_ARGS__)
 #undef FUN_003bdba0
-// FUN_003BDBA0 NONMATCHING
+// FUN_003BDBA0
 
 
 u32 FUN_003bdba0(void)
@@ -5350,12 +5362,12 @@ u32 FUN_003bdba0(void)
 
 {
 
-  return DAT_0095b6f0;
+  return *(u32 *)0x0095b6f0;
 
 }
 #define FUN_003bdba0(...) ((u32 (*)(...))FUN_003bdba0)(__VA_ARGS__)
 #undef FUN_003bdbb0
-// FUN_003BDBB0 NONMATCHING
+// FUN_003BDBB0
 
 
 u16 FUN_003bdbb0(void)
@@ -5364,7 +5376,7 @@ u16 FUN_003bdbb0(void)
 
 {
 
-  return *DAT_0095b29c;
+  return **(u16 **)0x0095b29c;
 
 }
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)

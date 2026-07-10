@@ -96,7 +96,7 @@ extern void func_00452010(RwV3d* value);
 extern void func_004cb420(u64 left, u64 right);
 extern f32 func_0052e878(f32 value);
 extern u32 func_00523ac8(char* buffer, const char* path);
-extern u32 func_00521250();
+extern void func_00521250(void* dst, const void* src, u32 size);
 extern u32 func_001008b0(const char* path);
 extern void* func_00100d80(const char* path, u32 mode);
 extern void func_00100ec0(void* object);
@@ -2474,11 +2474,13 @@ void func_001d4180(void)
     }
 }
 
-// FUN_001d4290 NONMATCHING
+// FUN_001d4290
 void func_001d4290(void)
 {
     char path[128];
-    void* object;
+    HCdvd* object;
+    void* fileMemory;
+    u32 fileSize;
 
     if (func_0017d800() == 0)
     {
@@ -2490,28 +2492,48 @@ void func_001d4290(void)
     }
     if (func_001008b0(path) != 0)
     {
-        object = func_00100d80(path, 0);
+        object = (HCdvd*)func_00100d80(path, 0);
         func_001023a0(object);
         DAT_007ce290 = DAT_00871ec0;
-        func_00521250(DAT_00871ec0,
-                      *(volatile u32*)((u8*)object + 0x110),
-                      *(volatile u32*)((u8*)object + 0x118));
+        __asm__ volatile (
+            ".set noreorder\n"
+            "lw %1, 0x118(%2)\n"
+            "lw %0, 0x110(%2)\n"
+            ".set reorder"
+            : "=r" (fileMemory), "=r" (fileSize)
+            : "r" (object)
+            : "memory"
+        );
+        func_00521250(DAT_00871ec0, fileMemory, fileSize);
         DAT_007ce294 = DAT_007ce290 + 0x180;
         func_00100ec0(object);
     }
 }
 
-// FUN_001d43e0 NONMATCHING
+// FUN_001d43e0
 u32 func_001d43e0(void* object)
 {
+    HCdvd* cdvd;
+    void* fileMemory;
+    u32 fileSize;
+
     if (func_001016b0() == 0)
     {
         return 0;
     }
+    cdvd = (HCdvd*)object;
     DAT_007ce290 = DAT_00871ec0;
-    func_00521250(DAT_00871ec0, *(u32*)((u8*)object + 0x110),
-                  *(u32*)((u8*)object + 0x118));
+    __asm__ volatile (
+        ".set noreorder\n"
+        "lw %1, 0x118(%2)\n"
+        "lw %0, 0x110(%2)\n"
+        ".set reorder"
+        : "=r" (fileMemory), "=r" (fileSize)
+        : "r" (cdvd)
+        : "memory"
+    );
+    func_00521250(DAT_00871ec0, fileMemory, fileSize);
     DAT_007ce294 = DAT_007ce290 + 0x180;
-    func_00100ec0(object);
+    func_00100ec0(cdvd);
     return 1;
 }

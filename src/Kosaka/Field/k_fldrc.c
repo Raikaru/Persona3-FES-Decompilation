@@ -1491,7 +1491,7 @@ void* FUN_001b5380(u32* resource, void* position, u32 direction)
     return copy;
 }
 
-// FUN_001b5610 NONMATCHING
+// FUN_001b5610
 void FUN_001b5610(u32* resource, const f32* color)
 {
     u32 i;
@@ -1506,7 +1506,7 @@ void FUN_001b5610(u32* resource, const f32* color)
     }
     for (i = 0; i < resource[5]; i++)
     {
-        FUN_001b60a0(resource[i + 6], color);
+        FUN_001b60a0(*(u32*)((u8*)resource + i * 4 + 0x18), color);
     }
     (void)count;
     while (node != 0)
@@ -1662,23 +1662,23 @@ void* FUN_001b5b50(void* color, const f32* scale)
     return color;
 }
 
-// FUN_001b5df0 NONMATCHING
+// FUN_001b5df0
 void* FUN_001b5df0(void* color, const void* scale)
 {
-    FUN_004932c0(*(u32*)((u8*)color + 0x18), 0x1b5b50, (u32)scale);
+    FUN_004932c0(*(u32*)((u8*)color + 0x18), (void (*)())FUN_001b5b50, (u32)scale);
     return color;
 }
 
-// FUN_001b5e30 NONMATCHING
+// FUN_001b5e30
 void FUN_001b5e30(u32 color, const void* scale)
 {
-    FUN_004916d0(color, 0x1b5df0, (u32)scale);
+    FUN_004916d0(color, (void (*)())FUN_001b5df0, (u32)scale);
 }
 
-// FUN_001b5e60 NONMATCHING
+// FUN_001b5e60
 void FUN_001b5e60(u32 color, const void* scale)
 {
-    FUN_0049a7c0(color, 0x1b5b50, (u32)scale);
+    FUN_0049a7c0(color, (void (*)())FUN_001b5b50, (u32)scale);
 }
 
 // FUN_001b5e90 NONMATCHING
@@ -1713,23 +1713,23 @@ void* FUN_001b5e90(void* value, const f32* scale)
     return value;
 }
 
-// FUN_001b6060 NONMATCHING
+// FUN_001b6060
 void* FUN_001b6060(void* value, const void* scale)
 {
-    FUN_004932c0(*(u32*)((u8*)value + 0x18), 0x1b5e90, (u32)scale);
+    FUN_004932c0(*(u32*)((u8*)value + 0x18), (void (*)())FUN_001b5e90, (u32)scale);
     return value;
 }
 
-// FUN_001b60a0 NONMATCHING
+// FUN_001b60a0
 void FUN_001b60a0(u32 value, const void* scale)
 {
-    FUN_004916d0(value, 0x1b6060, (u32)scale);
+    FUN_004916d0(value, (void (*)())FUN_001b6060, (u32)scale);
 }
 
-// FUN_001b60d0 NONMATCHING
+// FUN_001b60d0
 void FUN_001b60d0(u32 value, const void* scale)
 {
-    FUN_0049a7c0(value, 0x1b5e90, (u32)scale);
+    FUN_0049a7c0(value, (void (*)())FUN_001b5e90, (u32)scale);
 }
 // FUN_001b6100 NONMATCHING
 u32 FUN_001b6100(u32 id)

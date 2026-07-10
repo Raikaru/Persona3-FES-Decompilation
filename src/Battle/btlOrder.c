@@ -105,7 +105,7 @@ u32 FUN_0029a380(BtlAction* action)
     return 1;
 }
 
-// FUN_0029a3e0 NONMATCHING
+// FUN_0029a3e0
 u32 FUN_0029a3e0(BtlAction* action)
 {
     if (action->unk_28 != 0 || *(u8*)((u8*)action + 0x29) != 0)
@@ -125,7 +125,7 @@ u32 FUN_0029a3e0(BtlAction* action)
         return 1;
     }
 
-    return gBtl->order.prevActionPlaying == action;
+    return gBtl->order.actions[1] == action;
 }
 
 // FUN_0029a470 NONMATCHING
@@ -604,8 +604,8 @@ void btlOrderInit()
 {
     memset(&gBtl->order, 0, sizeof(BtlOrder));
 }
-// FUN_0029b0c0 NONMATCHING
+// FUN_0029b0c0
 u32 FUN_0029b0c0(BtlAction* action)
 {
-    return (action->unk_18 & 4) == 0;
+    return !((action->unk_18 & 4) != 0);
 }

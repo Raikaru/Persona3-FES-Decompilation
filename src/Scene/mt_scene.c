@@ -66,7 +66,7 @@ u16 MT_Scene_CreateResModelChar(u16 resId, s32 param_2, Model* mdl);
 u16 MT_Scene_CreateResModelNpc(u16 resId, s32 param_2, Model* mdl);
 u16 MT_Scene_CreateResLightChar(u16 resId);
 u16 MT_Scene_CreateResLightNpc(u16 resId);
-u16 MT_Scene_CreateResModelFld(u16 resId, Model* mdl);
+u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl);
 u8 * FUN_003b55b0(int param_1);
 void FUN_003b55d0(u32 param_1,u32 *param_2);
 u32 FUN_003b5620(long param_1,long param_2);
@@ -213,12 +213,12 @@ u32 MT_Scene_TryLoadFinish()
     return true;
 }
 
-// FUN_003b5ab0 NONMATCHING
+// FUN_003b5ab0
 void MT_Scene_Destroy()
 {
+    s32 resType;
     Resrc* res;
     Resrc* nextRes;
-    s32 resType;
     s32 i;
     ResrcManager* resManager;
 
@@ -478,14 +478,14 @@ u16 MT_Scene_CreateResLightNpc(u16 resId)
 }
 
 // FUN_003b65d0
-u16 MT_Scene_CreateResModelFld(u16 resId, Model* mdl)
+u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl)
 {
     ResrcManager* resManager;
     u16 resTypeId;
     ResrcModelFld* res;
     RwV3d unused = {0};
 
-    resTypeId = RESRC_MAKE_TYPEID(resId, RESRC_TYPE_MODELFLD);
+    resTypeId = RESRC_MAKE_TYPEID((u16)resId, RESRC_TYPE_MODELFLD);
 
     resManager = gMtScene->resManager;
     if (resManager == NULL)

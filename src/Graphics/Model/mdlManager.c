@@ -100,15 +100,16 @@ void mdl003164c0(void* param_1)
     FUN_004916d0(param_1, (void(*)())FUN_00316410, 0);
 }
 
-// FUN_00316690 NONMATCHING
+// FUN_00316690
 Model* mdlInit(u16 type, u16 id)
 {
     Model* mdl;
     u32 i;
-    u8 alpha;
+    volatile RwRGBA* color;
     u8 red;
     u8 green;
     u8 blue;
+    u8 alpha;
     Model* tail;
 
     mdl = ((void* (*)(u32, u32))jtbl_00960178[0])(sizeof(Model), rwMEMHINTDUR_GLOBAL);
@@ -119,10 +120,11 @@ Model* mdlInit(u16 type, u16 id)
     mdl->color.g = 0xff;
     mdl->color.b = 0xff;
     mdl->color.a = 0xff;
-    alpha = mdl->color.a;
-    red = mdl->color.r;
-    green = mdl->color.g;
-    blue = mdl->color.b;
+    color = &mdl->color;
+    red = color->r;
+    green = color->g;
+    blue = color->b;
+    alpha = color->a;
     mdl->runtimeData.animationData[0x22] = red;
     mdl->runtimeData.animationData[0x23] = green;
     mdl->runtimeData.animationData[0x24] = blue;
@@ -1066,7 +1068,7 @@ extern code DAT_009571b0;
 extern s32 DAT_009571b4;
 extern float fGpffff80e4;
 extern u8 LAB_003131f8;
-extern u32 uGpffff80b4;
+extern f32 DAT_007cada4;
 extern void (*DAT_0096017c[])(...);
 extern u8 LAB_0031379c;
 extern u8 LAB_00313790;
@@ -3027,7 +3029,7 @@ LAB_003131f8:
 
 
 
-// FUN_00313230 NONMATCHING
+// FUN_00313230
 
 
 void func_00313230(MdlAnimSlot* param_1)
@@ -3043,17 +3045,17 @@ void func_00313230(MdlAnimSlot* param_1)
 
   *(u8 *)(iVar1 + 2) = 1;
 
-  *(u16 *)(iVar1 + 4) = 0xffff;
+  param_1->anim.id = -1;
 
   *(u32 *)(iVar1 + 8) = 0x3f800000;
 
   *(u32 *)(iVar1 + 0xc) = 0;
 
-  *(u16 *)(iVar1 + 0x10) = 0xffff;
+  param_1->anim.oldId = -1;
 
   *(u32 *)(iVar1 + 0x1c) = 0x3f800000;
 
-  *(u32 *)(iVar1 + 0x50) = uGpffff80b4;
+  param_1->lookAt.blendRotFactor = DAT_007cada4;
 
   *(u32 *)(iVar1 + 0x5c) = 0;
 
@@ -7313,52 +7315,33 @@ void func_00319230(int param_1,u16 param_2)
 
 
 
-// FUN_003192A0 NONMATCHING
+// FUN_003192A0
 
 
-void func_003192a0(int param_1,u32 param_2,u16 param_3,u16 param_4,const char* param_5,
-                 u32 param_6)
-
-
-
+void func_003192a0(int parent, u32 slotIdx, u16 type, u16 id, const char* path,
+                   u32 readMode)
 {
+    Model* mdl;
+    Model* slotBase;
+    u8* offset;
 
-  Model* uVar1;
+    mdl = mdlInit(type, id);
 
-  int iVar2;
+    if (readMode & MDL_READSYNC)
+    {
+        mdl->flags |= MDL_FLAG_STREAMSYNC;
+    }
 
-  
+    mdlStreamInit(mdl);
+    mdlStreamRequestCdvd(mdl, path);
+    mdlStreamRead(mdl);
 
-  uVar1 = mdlInit(param_3,param_4);
-
-  iVar2 = (int)uVar1;
-
-  if ((param_6 & 1) != 0) {
-
-    *(u16 *)(iVar2 + 0xd8) = *(u16 *)(iVar2 + 0xd8) | 0x4000;
-
-  }
-
-  mdlStreamInit(uVar1);
-
-  mdlStreamRequestCdvd(uVar1,param_5);
-
-  mdlStreamRead(uVar1);
-
-  param_1 = (param_2 & 0xffff) * 0xc + param_1;
-
-  *(int *)(param_1 + 0x3b8) = iVar2;
-
-  *(u16 *)(iVar2 + 0xd8) = *(u16 *)(iVar2 + 0xd8) | 4;
-
-  *(u16 *)(*(int *)(param_1 + 0x3b8) + 0xd8) =
-
-       *(u16 *)(*(int *)(param_1 + 0x3b8) + 0xd8) | 0x8000;
-
-  *(u8 *)(param_1 + 0x3b4) = *(u8 *)(param_1 + 0x3b4) | 1;
-
-  return;
-
+    offset = (u8*)((u16)slotIdx * sizeof(MdlAttachedWpn));
+    slotBase = (Model*)(offset + parent);
+    slotBase->attachedWpns[0].wpnMdl = mdl;
+    mdl->flags |= 4;
+    slotBase->attachedWpns[0].wpnMdl->flags |= 0x8000;
+    slotBase->attachedWpns[0].flags |= 1;
 }
 
 
@@ -8992,7 +8975,7 @@ switchD_0031b278_caseD_4:
 
 
 
-// FUN_0031B470 NONMATCHING
+// FUN_0031B470
 
 
 void func_0031b470(void)
@@ -9001,7 +8984,7 @@ void func_0031b470(void)
 
 {
 
-  memset((void*)0x9571f0,0,0x30);
+  memset(sMdlListTails, 0, sizeof(sMdlListTails));
 
   return;
 

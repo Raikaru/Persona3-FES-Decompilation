@@ -392,13 +392,12 @@ void *func_001f0a60(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0ab0 NONMATCHING
-void *func_001f0ab0(KwlnTask *task)
+// FUN_001F0AB0
+void func_001f0ab0(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    BR_U32(work, 0x28) = 0;
-    BR_SET_STATE(work, 7);
-    return KWLNTASK_CONTINUE;
+    task = (KwlnTask *)task->workData;
+    BR_U32(task, 0x28) = 0;
+    BR_U32(task, 0xc) = 7;
 }
 
 // FUN_001f0ad0 NONMATCHING
@@ -1454,10 +1453,10 @@ u32 func_001f5810(KwlnTask *task)
     return sflRes0020ec00() == 0 && (BR_U32(work, 4) & 0x400) != 0;
 }
 
-// FUN_001f58f0 NONMATCHING
+// FUN_001f58f0
 void func_001f58f0(u8 *work)
 {
-    K_ASSERT(sBrReward == NULL, 0x8c);
+    K_ASSERT(sBrReward == NULL, 0x92);
     BR_U32(work, 0) = 0;
     BR_U32(work, 0x3418) = 0;
     BR_U32(work, 0x341c) = 0;

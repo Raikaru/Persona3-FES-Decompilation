@@ -28,7 +28,7 @@ static const AdminiSeqEntry gAdminiSeqTable[ADMINI_SEQ_MAX] =
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_NULL
     {adminiSeqCallTest, adminiSeqExitTest, adminiSeqCheckTest}, // ADMINI_SEQ_TEST
     {NULL, K_Seq_ExitField, K_Seq_CheckField},                  // ADMINI_SEQ_FIELD. TODO
-    {NULL, NULL, NULL},                                         // ADMINI_SEQ_FIELD2. TODO
+    {K_Seq_CallField2, K_Seq_ExitField2, K_Seq_CheckField2},    // ADMINI_SEQ_FIELD2
     {NULL, NULL, NULL},                                         // ADMINI_SEQ_MAP. TODO
     {K_Seq_CallDungeon, K_Seq_ExitDungeon, K_Seq_CheckDungeon}, // ADMINI_SEQ_DUNGEON
     {adminiSeqCallBtl, adminiSeqExitBtl, adminiSeqCheckBtl},    // ADMINI_SEQ_BATTLE
@@ -385,10 +385,15 @@ u8 adminiSeqCheckBtl()
 {
     return btlGetTask() == NULL;
 }
-// FUN_0027CB10 NONMATCHING
+// FUN_0027CB10
 void func_0027cb10(void* unused, u32* param_2)
 {
     FUN_003e0780(*param_2);
+}
+// FUN_0027CB40
+u32 func_0027cb40(void)
+{
+    return 0;
 }
 
 // FUN_0027CB50

@@ -1,5 +1,5 @@
  #include "Kosaka/k_assert.h"
-typedef int (*code)(...);
+typedef int code(...);
 
 extern float DAT_007cae00;
 extern float DAT_007caf14;
@@ -26,7 +26,7 @@ int FUN_003e0260(u64 param_1,u64 param_2);
 int FUN_003e0330(u64 param_1,u64 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(u64 param_1,u64 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
-void FUN_003e0680(u64 param_1,code param_2,u64 param_3);
+void FUN_003e0680(u64 param_1,code* param_2,u64 param_3);
 void FUN_003e0700(long param_1);
 void FUN_003e0780(void);
 u32 FUN_003e0830(void);
@@ -40,6 +40,7 @@ void FUN_003e0b70(void);
 u8 FUN_003e0bb0(void);
 u8 FUN_003e0bc0(void);
 void FUN_003e0c20(u64 param_1,u32 param_2);
+void FUN_003e6400(u64 param_1,u64 param_2);
 /* code typedef moved above prototypes */
 #include "h_pad.h"
 #include "libm.h"
@@ -411,7 +412,7 @@ struct FclDrawCallbackData {
 };
 
 typedef void (*FclCallback)(void);
-typedef void (*FclProxyCallback)(FclCallbackProxy*);
+typedef void FclProxyCallback(FclCallbackProxy*);
 
 struct FclCallbackProxy {
     FclList* work;                      /* 0x000 */
@@ -473,11 +474,11 @@ typedef char FclDrawCallbackRecordSizeMustBe1C[
 FclOwner* FUN_003c58f0(s32, s32, s32, s32);
 s32 FUN_003c6270(s32);
 s32 FUN_003c6380(s32);
-FclCreatedTask* FUN_003c44d0(s32, s32, s32, FclProxyCallback);
+FclCreatedTask* FUN_003c44d0(s32, s32, s32, FclProxyCallback*);
 s32 FUN_003c45f0(s32);
 FclNodeLink* FUN_003c4910(FclNodeList*, s32, FclNodeValueStorage*);
 s32 FUN_003c4df0(s32, s32);
-s32 FUN_003c4e50(s32, s32);
+u32 FUN_003c4e50(s32, s32);
 s32 FUN_003c4e70(s32);
 s32 FUN_003c5460(...);
 s32 FUN_003c6c50(s32);
@@ -635,12 +636,12 @@ void fclCombineList003da3a0(FclList* param_1)
     list = param_1->list;
     FUN_003c5a20((s32)list);
 }
-// FUN_003da3e0 NONMATCHING
+// FUN_003da3e0
 s32 fclCombineList003da3e0(FclList* param_1, s32 param_2)
 {
     s32 p;
     K_ASSERT(param_1 != 0, 0x411);
-    if (param_2 >= param_1->capacity) return 0;
+    if (param_1->capacity <= param_2) return 0;
     p = (s32)param_1->values[param_2];
     if (p != 0) return p;
     return 0;
@@ -1566,7 +1567,7 @@ void fclCombineList003dd800(s32 x, s32 y, s32 alpha, FclOwner* owner,
     record.owner = owner;
     record.candidate = candidate;
     FUN_003e0680((u64)(u32)(void *)candidate_data->callback_target,
-                  (code)fclCombineList003dd260, (u64)(u32)(void *)&record);
+                  (code*)fclCombineList003dd260, (u64)(u32)(void *)&record);
 }
 
 // FUN_003dd9e0
@@ -2058,10 +2059,10 @@ FclAnimationNode* fclCombineList003dee80(FclNodeListContext* context, s32 value,
     return payload;
 }
 
-// FUN_003def10 NONMATCHING
-s32 fclCombineList003def10(s32 value)
+// FUN_003def10
+s32 fclCombineList003def10(u32 value)
 {
-    if ((u32)value < 2) goto zero;
+    if (value <= 1) goto zero;
     return (value + 1) * 9;
 zero:
     return 0;
@@ -2561,9 +2562,7 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
 }
 
-// FUN_003DFEB0 NONMATCHING
-
-
+// FUN_003DFEB0
 int * FUN_003dfeb0(int param_1)
 
 
@@ -2576,7 +2575,7 @@ int * FUN_003dfeb0(int param_1)
 
   
 
-  iVar2 = (s32)FUN_003c44d0(8,0,0,(void (*)(FclCallbackProxy *))0x3df4a0);
+  iVar2 = (s32)FUN_003c44d0(8,0,0,(FclProxyCallback*)FUN_003df4a0);
 
   piVar1 = *(int **)(iVar2 + 0x24);
 
@@ -3564,7 +3563,7 @@ u64 FUN_003e0650(u32 *param_1)
 // FUN_003E0680 NONMATCHING
 
 
-void FUN_003e0680(u64 param_1,code param_2,u64 param_3)
+void FUN_003e0680(u64 param_1,code* param_2,u64 param_3)
 
 
 
@@ -3679,9 +3678,7 @@ u32 FUN_003e0830(void)
 
 }
 
-// FUN_003E0870 NONMATCHING
-
-
+// FUN_003E0870
 u64 FUN_003e0870(void)
 
 
@@ -3698,7 +3695,7 @@ u64 FUN_003e0870(void)
 
   *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) | 0x20;
 
-  FUN_003e0680(*(u32 *)(iVar1 + 0x98),(code)0x3e6400,0);
+  FUN_003e0680(*(s32 *)(iVar1 + 0x98),(code*)FUN_003e6400,0);
 
   *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) & 0xffffffdf;
 
@@ -3706,9 +3703,7 @@ u64 FUN_003e0870(void)
 
 }
 
-// FUN_003E08E0 NONMATCHING
-
-
+// FUN_003E08E0
 u64 FUN_003e08e0(void)
 
 
@@ -3721,7 +3716,7 @@ u64 FUN_003e08e0(void)
 
   iVar1 = FUN_003c5460(uGpffffb998);
 
-  FUN_003e0680(*(u32 *)(iVar1 + 0x98),(code)0x3e6400,0);
+  FUN_003e0680(*(s32 *)(iVar1 + 0x98),(code*)FUN_003e6400,0);
 
   return 0;
 

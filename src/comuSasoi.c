@@ -181,15 +181,9 @@ u32 FUN_003c2630(u32 param_1,u64 param_2,u64 param_3)
 #undef FUN_003c2770
 // FUN_003C2770 NONMATCHING
 
-
-u32 * FUN_003c2770(void)
-
-
-
+u32 *FUN_003c2770(void)
 {
-
-  return &DAT_0095b7e0;
-
+  return (u32 *)0x0095b7e0;
 }
 #define FUN_003c2770(...) ((u32 * (*)(...))FUN_003c2770)(__VA_ARGS__)
 #undef FUN_003c2780

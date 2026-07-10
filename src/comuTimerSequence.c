@@ -2913,7 +2913,7 @@ u32 FUN_003c18c0(void)
 }
 #define FUN_003c18c0(...) ((u32 (*)(...))FUN_003c18c0)(__VA_ARGS__)
 #undef FUN_003c1a70
-// FUN_003C1A70 NONMATCHING
+// FUN_003C1A70
 
 
 void FUN_003c1a70(void)
@@ -2922,13 +2922,11 @@ void FUN_003c1a70(void)
 
 {
 
-  u64 uVar1;
-
+  int iVar1;
   
+  iVar1 = FUN_00195540();
 
-  uVar1 = FUN_00195540();
-
-  (*DAT_0096017c)(uVar1);
+  (*(code *)0x96017c)(iVar1);
 
   return;
 

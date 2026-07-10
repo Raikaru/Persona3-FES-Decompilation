@@ -48,10 +48,10 @@ extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine
 extern void RwV3dTransformPoint(void* out, const void* in, const void* matrix);
 extern void* memcpy(void* destination, const void* source, u32 size);
 
-// FUN_00249650 NONMATCHING
+// FUN_00249650
 u32 func_00249650(u32 flag)
 {
-    return datGetFlag((s32)(flag & 0xffffu) + 0x12c0) == 0;
+    return !datGetFlag((s32)(flag & 0xffffu) + 0x12c0);
 }
 
 // FUN_00249680 NONMATCHING

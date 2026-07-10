@@ -797,7 +797,7 @@ u32 func_001c0740(void)
     return true;
 }
 
-// FUN_001c07f0 NONMATCHING
+// FUN_001c07f0
 void func_001c07f0(void)
 {
     s32 i;
@@ -810,6 +810,41 @@ void func_001c07f0(void)
                 *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4));
             *(KwlnTask**)((u8*)K_Field_Get() + 0x11f4 + i * 4) = NULL;
         }
+    }
+}
+// FUN_001C0880 NONMATCHING
+void* func_001c0880(KwlnTask* task)
+{
+    u8* work;
+    s32 state;
+    s32 frames;
+    f32 alpha;
+
+    work = (u8*)task->workData;
+    state = *(s32*)work;
+    if (state == 1)
+    {
+        return KWLNTASK_STOP;
+    }
+    else
+    {
+        if (state == 0)
+        {
+            frames = *(s32*)(work + 8);
+            if (frames <= 0)
+            {
+                alpha = *(f32*)(work + 0x0c);
+                *(s32*)work = state + 1;
+            }
+            else
+            {
+                alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
+                        (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) / (f32)frames;
+                *(s32*)(work + 8) = frames - 1;
+            }
+            *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
+        }
+        return KWLNTASK_CONTINUE;
     }
 }
 

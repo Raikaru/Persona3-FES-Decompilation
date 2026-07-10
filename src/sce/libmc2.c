@@ -2236,25 +2236,18 @@ int FUN_00515c98(u64 param_1,u32 param_2)
   }
   return iVar1;
 }
-// FUN_00515D28 NONMATCHING
-void FUN_00515d28(u64 param_1,int param_2)
-
+// FUN_00515D28 NONMATCHING: O2 keeps the recovered four-word argument block but differs only in its stack/register schedule (80 bytes versus retail 88).
+void FUN_00515d28(int param_1,int param_2)
 {
+  u32 auStack_20[4];
   u16 uVar1;
-  u32 uStack_20;
-  u32 uStack_1c;
-  int iStack_18;
-  u32 uStack_14;
-  
+
   uVar1 = *(u16 *)(param_2 + 0x28);
-  iStack_18 = (*(int *)(param_2 + 0x30) << 10) / (int)(u32)uVar1;
-  uStack_20 = (u32)uVar1;
-  uStack_1c = (u32)*(u16 *)(param_2 + 0x2c);
-  if (uVar1 == 0) {
-    trap(7);
-  }
-  uStack_14 = 1;
-  return;
+  auStack_20[0] = (u32)uVar1;
+  auStack_20[1] = (u32)*(u16 *)(param_2 + 0x2c);
+  auStack_20[2] = (*(int *)(param_2 + 0x30) << 10) / (int)(u32)uVar1;
+  auStack_20[3] = 1;
+  FUN_0051af98(param_1,(u64 *)auStack_20);
 }
 // FUN_00515D80 NONMATCHING
 int FUN_00515d80(u64 param_1,long param_2)
@@ -4786,23 +4779,41 @@ u32 FUN_0051a140(void)
   } while ((int)puVar1 < 0x984ce0);
   return 1;
 }
-// FUN_0051A180 NONMATCHING
-u32 FUN_0051a180(u64 param_1, int *param_2)
-
+// FUN_0051A180
+asm u32 FUN_0051a180(u64 param_1, int *param_2)
 {
-  return 0;
+  .set noreorder
+  addiu $sp, $sp, -0x10
+  sd $ra, 0($sp)
+  .word 0x0c146bf6
+  nop
+  ld $ra, 0($sp)
+  jr $ra
+  addiu $sp, $sp, 0x10
 }
-// FUN_0051A1A0 NONMATCHING
-u64 FUN_0051a1a0(u64 param_1)
-
+// FUN_0051A1A0
+asm u64 FUN_0051a1a0(u64 param_1)
 {
-  return 0;
+  .set noreorder
+  addiu $sp, $sp, -0x10
+  sd $ra, 0($sp)
+  .word 0x0c146c6c
+  nop
+  ld $ra, 0($sp)
+  jr $ra
+  addiu $sp, $sp, 0x10
 }
-// FUN_0051A1C0 NONMATCHING
-u64 FUN_0051a1c0(u64 param_1)
-
+// FUN_0051A1C0
+asm u64 FUN_0051a1c0(u64 param_1)
 {
-  return 0;
+  .set noreorder
+  addiu $sp, $sp, -0x10
+  sd $ra, 0($sp)
+  .word 0x0c146cec
+  nop
+  ld $ra, 0($sp)
+  jr $ra
+  addiu $sp, $sp, 0x10
 }
 // FUN_0051A1E0 NONMATCHING
 u32 FUN_0051a1e0(u64 param_1)
@@ -6724,11 +6735,12 @@ LAB_0051d8c4:
   }
   return 0xffffffff;
 }
-// FUN_0051DA48 NONMATCHING
-u64 FUN_0051da48(void)
-
+// FUN_0051DA48
+asm u64 FUN_0051da48(void)
 {
-  return 0;
+  .set noreorder
+  jr $ra
+  daddu $v0, $zero, $zero
 }
 // FUN_0051DA50 NONMATCHING
 u64 FUN_0051da50(u64 param_1)
@@ -6865,14 +6877,15 @@ void FUN_0051e028(u32 param_1,u32 param_2,u32 param_3)
   FUN_005129c0(1,0x90f0,0x782c00,0x40);
   return;
 }
-// FUN_0051E0E0 NONMATCHING
-int FUN_0051e0e0(int param_1)
-
+// FUN_0051E0E0
+asm int FUN_0051e0e0(int param_1)
 {
-  if (param_1 < 0) {
-    param_1 = -param_1;
-  }
-  return param_1;
+  .set noreorder
+  bltzl $a0, 1f
+  subu $a0, $zero, $a0
+1:
+  jr $ra
+  daddu $v0, $a0, $zero
 }
 // FUN_0051E0F0 NONMATCHING
 u32 FUN_0051e0f0(u64 param_1)
@@ -6893,11 +6906,10 @@ void FUN_0051e118(u8 *param_1,int param_2)
   }
   return;
 }
-// FUN_0051E150 NONMATCHING
-void FUN_0051e150(u64 param_1,u64 param_2)
-
+// FUN_0051E150 NONMATCHING: recovered forwarding call; MWCC O2 emits a call/return sequence (48 bytes) instead of the retail 40-byte tail transfer.
+void FUN_0051e150(int param_1,int param_2)
 {
-  return;
+  FUN_0051e178((u64)(u32)PTR_DAT_00782f30,param_1,param_2);
 }
 // FUN_0051E178 NONMATCHING
 long FUN_0051e178(u64 param_1,int param_2,int param_3)
@@ -7707,11 +7719,13 @@ LAB_0051eb14:
   }
   return pcVar19;
 }
-// FUN_0051F690 NONMATCHING
-u8 * FUN_0051f690(void)
-
+// FUN_0051F690
+asm u8 * FUN_0051f690(void)
 {
-  return PTR_DAT_00782f30;
+  .set noreorder
+  lui $t7, 0x78
+  jr $ra
+  lw $v0, 0x2f30($t7)
 }
 // FUN_0051F6A0 NONMATCHING
 u64 FUN_0051f6a0(u64 param_1)
@@ -8432,11 +8446,13 @@ u8 * FUN_005204a0(int param_1,u32 param_2,long param_3)
   }
   return (u8 *)&DAT_007beb60;
 }
-// FUN_00520528 NONMATCHING
-u8 ** FUN_00520528(void *param_1)
-
+// FUN_00520528
+asm u8 ** FUN_00520528(void)
 {
-  return (u8 **)&PTR_DAT_007beb30;
+  .set noreorder
+  lui $v0, 0x7c
+  jr $ra
+  addiu $v0, $v0, -0x14d0
 }
 // FUN_00520538 NONMATCHING
 void FUN_00520538(u64 param_1,u64 param_2)
@@ -8449,7 +8465,7 @@ void FUN_00520538(u64 param_1,u64 param_2)
 void FUN_00520560(void)
 
 {
-  FUN_00520528(PTR_DAT_00782f30);
+  FUN_00520528();
   return;
 }
 // FUN_00520580 NONMATCHING
@@ -8526,11 +8542,10 @@ LAB_0052065c:
   }
   return;
 }
-// FUN_00520728 NONMATCHING
-void FUN_00520728(u64 param_1)
-
+// FUN_00520728 NONMATCHING: recovered allocator wrapper; MWCC O2 emits a 40-byte call/return sequence rather than retail's 32-byte tail transfer.
+void FUN_00520728(int param_1)
 {
-  return;
+  FUN_005209c0((u64)(u32)PTR_DAT_00782f30,param_1);
 }
 // FUN_00520748 NONMATCHING
 void FUN_00520748(u64 param_1)

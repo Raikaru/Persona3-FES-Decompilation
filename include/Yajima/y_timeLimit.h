@@ -3,6 +3,6 @@
 
 #include "Utils.h"
 
-void Y_TimeLimit_0045a400();
+void Y_TimeLimit_Stop(void);
 
 #endif

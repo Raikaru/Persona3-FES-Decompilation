@@ -314,6 +314,7 @@ typedef struct
     u32 state;
     u8 data[0x4c];
     void* resource;
+    u8 padding[0xc];
 } FldEffectResourceWork;
 
 extern void* func_001a9080(KwlnTask* parent, const char* name, u32 priority, u32 flags);
@@ -766,7 +767,7 @@ void func_001e04e0(KwlnTask* task)
     }
 }
 
-// FUN_001e0510 NONMATCHING
+// FUN_001e0510
 KwlnTask* func_001e0510(KwlnTask* parent, void* resource)
 {
     FldEffectResourceWork* work;

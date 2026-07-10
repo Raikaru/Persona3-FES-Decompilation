@@ -29,7 +29,7 @@ extern void* PTR_LAB_0077fbcc;
 extern void* PTR_LAB_00780384;
 extern void* PTR_LAB_0078039c;
 extern void* PTR_LAB_00780b0c;
-extern u32 DAT_0077f560;
+extern int DAT_0077f560;
 extern u32 DAT_0077f898;
 extern u32 DAT_0077f8e0;
 extern u32 DAT_0077f8e8;
@@ -82,6 +82,8 @@ extern u32 DAT_00782724;
 extern u32 DAT_007be000;
 extern u32 DAT_00969ec0;
 extern u32 DAT_00969ec4;
+extern u32 DAT_0096a0e4;
+extern u32 DAT_0096a0e8;
 extern u32 DAT_00969ec8;
 extern u32 DAT_00969fc3;
 extern u32 DAT_00969fc4;
@@ -184,7 +186,36 @@ static int sif_copy_string(char* destination, const char* source, int capacity)
 }
 
 // FUN_0050BAE8 NONMATCHING
+u32 FUN_0050bae8(void)
+{
+    long result;
+    int delay;
 
+    if (DAT_0077f560 < 0)
+    {
+        while ((result = FUN_00507050(0x96a0c0, 0xffffffff80000006, 0)) >= 0)
+        {
+            if (DAT_0096a0e4 != 0)
+            {
+                DAT_0077f560 = 0;
+                result = FUN_00507230(0x96a0c0, 0xff, 0, 0, 0, 0x969ec0, 4, 0);
+                if (result < 0)
+                {
+                    return 0xfffeffff;
+                }
+                DAT_0096a0e8 = DAT_00969ec0;
+                return 0;
+            }
+            delay = 0x100000;
+            do
+            {
+                delay--;
+            } while (delay != -1);
+        }
+        return 0xffffffff;
+    }
+    return 0;
+}
 // FUN_0050BBE8 NONMATCHING
 bool FUN_0050bbe8(void)
 
@@ -456,12 +487,19 @@ void FUN_0050c280(void)
   FUN_0050bcb0();
   return;
 }
-// FUN_0050C2A0 NONMATCHING
-void FUN_0050c2a0(void)
-
+// FUN_0050C2A0
+asm int FUN_0050c2a0(void)
 {
-  FUN_0050bcb0();
-  return;
+  .set noreorder
+  addiu $sp, $sp, -0x10
+  sd $ra, 0($sp)
+  jal FUN_0050bcb0
+  nop
+  ld $ra, 0($sp)
+  jr $ra
+  addiu $sp, $sp, 0x10
+  nop
+  .set reorder
 }
 // FUN_0050C2C0 NONMATCHING
 static int sif_load_module_request(const char* path, int argument_length, const char* arguments, int* module_result, int function)
@@ -781,7 +819,7 @@ void FUN_0050cc10(u32 param_1,u32 param_2,u32 param_3)
 
 
 
-// FUN_0050CC58 RFU091
+// FUN_0050CC58 RFU091 NONMATCHING
 
 u64 RFU091(u64 param_1)
 
@@ -792,7 +830,7 @@ u64 RFU091(u64 param_1)
 
 
 
-// FUN_0050CC68 RFU116_SetSyscall
+// FUN_0050CC68 RFU116_SetSyscall NONMATCHING
 
 void RFU116_SetSyscall(void)
 
@@ -829,7 +867,7 @@ void FUN_0050cc78(void)
 
 
 
-// FUN_0050CD60 RFU086_WaitEvnetFlag
+// FUN_0050CD60 RFU086_WaitEvnetFlag NONMATCHING
 
 u64 RFU086_WaitEvnetFlag(u64 param_1,u64 param_2,u64 param_3,u64 param_4,u64 param_5)
 
@@ -1057,7 +1095,7 @@ void FUN_0050d548(void)
   return;
 }
 
-// FUN_0050D648 RFU116_SetSyscall
+// FUN_0050D648 RFU116_SetSyscall NONMATCHING
 void FUN_0050d648(void) { syscall(0x74); return; }
 
 // FUN_0050D658 NONMATCHING
@@ -1071,7 +1109,7 @@ void FUN_0050d658(void)
   return;
 }
 
-// FUN_0050D6B0 RFU116_SetSyscall
+// FUN_0050D6B0 RFU116_SetSyscall NONMATCHING
 void FUN_0050d6b0(void) { syscall(0x74); return; }
 
 // FUN_0050D6C0 NONMATCHING
@@ -1082,7 +1120,7 @@ void FUN_0050d6c0(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
-// FUN_0050D708 RFU091
+// FUN_0050D708 RFU091 NONMATCHING
 u64 FUN_0050d708(u64 param_1) { syscall(0x5b); return 0; }
 
 // FUN_0050D718 NONMATCHING
@@ -1136,7 +1174,7 @@ void FUN_0050d830(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
-// FUN_0050D870 RFU116_SetSyscall
+// FUN_0050D870 RFU116_SetSyscall NONMATCHING
 void FUN_0050d870(void) { syscall(0x74); return; }
 
 // FUN_0050D880 NONMATCHING
@@ -1179,7 +1217,7 @@ int FUN_0050d880(void)
 
 
 
-// FUN_0050D998 thunk_FUN_0050ce00
+// FUN_0050D998 thunk_FUN_0050ce00 NONMATCHING
 
 void thunk_FUN_0050ce00(void)
 
@@ -1224,7 +1262,7 @@ void FUN_0050da80(u64 param_1,u64 param_2)
   return;
 }
 
-// FUN_0050DAD0 RFU116_SetSyscall
+// FUN_0050DAD0 RFU116_SetSyscall NONMATCHING
 void FUN_0050dad0(void) { syscall(0x74); return; }
 
 // FUN_0050DAE0 NONMATCHING
@@ -1235,7 +1273,7 @@ void FUN_0050dae0(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
-// FUN_0050DB28 RFU091
+// FUN_0050DB28 RFU091 NONMATCHING
 u64 FUN_0050db28(u64 param_1) { syscall(0x5b); return 0; }
 
 // FUN_0050DB38 NONMATCHING

@@ -3,7 +3,7 @@
 
 #include "Utils.h"
 
-int btlEfficacy002d8780(void);
-int btlEfficacy002d87e0(void);
+int btlEfficacyGetResultIndexForOneToFourEnemies(void);
+int btlEfficacyGetResultIndexForTwoToFiveEnemies(void);
 
 #endif

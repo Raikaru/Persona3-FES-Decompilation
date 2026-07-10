@@ -62,6 +62,9 @@ u16 FUN_003c4110(int param_1);
 u8 * FUN_003c4270(void);
 u8 * FUN_003c4390(int param_1);
 u8 * FUN_003c43f0(void);
+u64 FUN_003c4400(void);
+u64 FUN_003c4410(void);
+u64 FUN_003c4420(void);
 
 /* Region call-cast macros */
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
@@ -300,7 +303,7 @@ u8 * FUN_003c4390(int param_1)
 }
 #define FUN_003c4390(...) ((u8 * (*)(...))FUN_003c4390)(__VA_ARGS__)
 #undef FUN_003c43f0
-// FUN_003C43F0 NONMATCHING
+// FUN_003C43F0
 
 
 u8 * FUN_003c43f0(void)
@@ -311,5 +314,23 @@ u8 * FUN_003c43f0(void)
 
   return PTR_DAT_007cd6ec;
 
+}
+
+// FUN_003C4400
+u64 FUN_003c4400(void)
+{
+    return 0;
+}
+
+// FUN_003C4410
+u64 FUN_003c4410(void)
+{
+    return 0;
+}
+
+// FUN_003C4420
+u64 FUN_003c4420(void)
+{
+    return 0;
 }
 #define FUN_003c43f0(...) ((u8 * (*)(...))FUN_003c43f0)(__VA_ARGS__)

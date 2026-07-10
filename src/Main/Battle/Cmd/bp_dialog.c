@@ -22,6 +22,9 @@ extern code DAT_00960090;
 extern code DAT_0096009c;
 extern int iGpffffb6fc;
 
+extern void FUN_0019d3f0(const char* file, s32 line);
+extern const char DAT_0068ebd8[];
+#define FUN_0019d3f0(file, line) FUN_0019d3f0((const char*)(file), line)
 
 // FUN_0025c190
 u32 bpDialog0025c190(void)
@@ -605,7 +608,7 @@ void FUN_0025c9c0(void)
 
 }
 
-// FUN_0025CD30 NONMATCHING
+// FUN_0025CD30
 
 
 void FUN_0025cd30(void)
@@ -619,8 +622,7 @@ void FUN_0025cd30(void)
   
 
   if (sBpDialog368 == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68ebd8,0x3c);
+    FUN_0019d3f0(DAT_0068ebd8,0x3c);
 
   }
 

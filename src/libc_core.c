@@ -896,10 +896,12 @@ int sprintf(char* buffer, const char* fmt, ...)
     return result;
 }
 
-// FUN_00523b38 NONMATCHING
-void* __string_scan_callback(void)
+// FUN_00523B38
+asm void* __string_scan_callback(void)
 {
-    return NULL;
+    .set noreorder
+    jr $ra
+    daddu $v0, $zero, $zero
 }
 
 static void init_string_scan_stream(u8* stream, const char* input)

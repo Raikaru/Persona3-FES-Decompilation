@@ -7,6 +7,8 @@ int iGpffffb5c0;
 int *piGpffffa850;
 u32 uGpffffb9ec;
 u32 uGpffffb9f4;
+extern u8 cGpffffb9c0;
+extern u8* iGpffffb9b8;
 /* FUSION_EXACT_PROTOS */
 u16 func_00170a40(s16 pcId, s16 index);
 s16 func_00170ab0(s16 pcId, s16 index);
@@ -18,6 +20,8 @@ u8 FUN_004242b0(void);
 u32 FUN_00424310(void);
 u32 FUN_00424370(void);
 u32 FUN_004243d0(void);
+void FUN_00424470(void);
+u32 FUN_00424480(void);
 void FUN_004244a0(void);
 u32 FUN_004244e0(void);
 u32 FUN_004245c0(void);
@@ -101,6 +105,7 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_5);
 void FUN_0042fd80(u32 *param_1,int param_2);
+void FUN_004563b0(f32 value, int object);
 /* FUSION_GLOBALS */
 u32 DAT_0087190c;
 u32 DAT_0095c0e0;
@@ -115,7 +120,7 @@ float DAT_007cb138;
 u32 DAT_007ce0cc;
 u8 *DAT_007ce6a8;
 u32 DAT_007ce6ac;
-u32 DAT_007ce6b0;
+u8 DAT_007ce6b0;
 u32 DAT_007ce6b4;
 u32 DAT_007ce6b8;
 u32 DAT_007ce6c4;
@@ -349,7 +354,7 @@ u32 FUN_00424370(void)
 
 }
 
-// FUN_004243D0 NONMATCHING
+// FUN_004243D0
 
 
 u32 FUN_004243d0(void)
@@ -392,27 +397,43 @@ u32 FUN_004243d0(void)
 
 }
 
-// FUN_004244A0 NONMATCHING
-
-
-void FUN_004244a0(void)
-
-
-
+// FUN_00424470
+void FUN_00424470(void)
 {
+  __asm__ volatile (
+      ".set noreorder                   \n"
+      "addiu $v0, $zero, 1              \n"
+      "sb $v0, -0x4640($gp)             \n"
+      ".set reorder"
+      :
+      :
+      : "v0", "memory"
+  );
+}
 
+// FUN_00424480
+u32 FUN_00424480(void)
+{
+  return *(char *)(iGpffffb9b8 + 8) == 1;
+}
+
+// FUN_004244A0
+void FUN_004244a0(void)
+{
   u8 uVar1;
-
   
-
   uVar1 = scrGetIntPara(0);
-
   *(u8 *)(DAT_007ce6a8 + 10) = uVar1;
-
-  *(u8 *)(DAT_007ce6a8 + 9) = 1;
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder                   \n"
+      "addiu $v0, $zero, 1              \n"
+      "lw $v1, -0x4648($gp)             \n"
+      "sb $v0, 9($v1)                   \n"
+      ".set reorder"
+      :
+      :
+      : "v0", "v1", "memory"
+  );
 }
 
 // FUN_004244E0 NONMATCHING
@@ -1441,7 +1462,7 @@ u32 FUN_00425580(void)
 
   }
 
-  Y_TimeLimit_0045a400();
+  Y_TimeLimit_Stop();
 
   scrSetIntReturnVal(0);
 
@@ -1855,29 +1876,16 @@ void FUN_00425d10(int param_1,u8 param_2)
 
 }
 
-// FUN_00425D30 NONMATCHING
-
+// FUN_00425D30
 
 void FUN_00425d30(int param_1,u8 param_2,u8 param_3)
-
-
-
 {
+  u8 *work;
 
-  int iVar1;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
-  *(u8 *)(iVar1 + 1) = param_2;
-
-  *(u8 *)(iVar1 + 2) = param_3;
-
-  DAT_007ce6b4 = param_2;
-
-  return;
-
+  work = *(u8 **)(param_1 + 0x3c);
+  work[1] = param_2;
+  work[2] = param_3;
+  *(u8 *)&DAT_007ce6b4 = param_2;
 }
 
 // FUN_00425D50 NONMATCHING
@@ -6781,7 +6789,7 @@ void FUN_0042bc10(u64 param_1)
 
     FUN_004563d0(*(u32 *)(iVar1 + 0x898),*(u64 *)(iVar1 + 0x85c));
 
-    FUN_004563b0(*(u32 *)
+    FUN_004563b0(*(f32 *)
 
                   (*(short *)(iVar1 + 0xb90) * 0x28 + *piGpffffa850 * 0x3c4 + iGpffffb5c0 + -0x74a0)
 

@@ -64,6 +64,7 @@ extern void func_00319230(Model* mdl, u32 value);
 extern u8 D_008717E8[];
 extern u8 D_008717F4[];
 extern RwV3d D_00683670;
+extern const char DAT_0067F040[][0x40];
 
 void* func_001c0960(KwlnTask* fadeTask);
 void func_001c0d30(KwlnTask* fadeTask);
@@ -1508,11 +1509,11 @@ u32 FUN_001C4700()
     return true;
 }
 
-// FUN_001C48F0 NONMATCHING
+// FUN_001C48F0
 u32 FUN_001C48F0()
 {
     Model* model;
-    u16 resourceId;
+    u32 resourceId;
     u32 created;
 
     model = (Model*)scrGetIntPara(0);
@@ -1520,8 +1521,8 @@ u32 FUN_001C48F0()
     created = 0;
     if (mdlStreamRead(model) == true)
     {
-        resourceId = MT_Scene_CreateResModelFld(
-            (u16)K_Misc_FindNextFreeResId(RESRC_TYPE_MODELFLD), model);
+        resourceId = (u16)MT_Scene_CreateResModelFld(
+            K_Misc_FindNextFreeResId(RESRC_TYPE_MODELFLD), model);
         created = 1;
     }
     scrSetIntReturnVal(resourceId);
@@ -1538,7 +1539,7 @@ extern KwlnTask* func_001dc910(s32 mode, s32 value);
 extern void func_003bb010(u16 resourceId, u8 value);
 extern u8 func_0010a370(s16 channelIndex, const char* name);
 extern void func_00455b50(void);
-extern void Y_TimeLimit_0045a400(void);
+extern void Y_TimeLimit_Stop(void);
 
 /* These are the retail GP-backed command state words.  They are shared with the
  * field script task and must not be duplicated as TU-local state. */
@@ -1827,14 +1828,14 @@ u32 func_001c5550()
     return true;
 }
 
-// FUN_001c55b0 NONMATCHING
+// FUN_001c55b0
 u32 func_001c55b0()
 {
     s32 index;
     const char* name;
 
     index = scrGetIntPara(0);
-    name = (const char*)(0x0067F040 + index * 0x40);
+    name = DAT_0067F040[index];
     func_0010a370(4, name);
     return true;
 }
@@ -2075,7 +2076,7 @@ u32 func_001c5d80()
     {
         if (K_CMD_GLOBAL_FRAME < 0x5A)
         {
-            Y_TimeLimit_0045a400();
+            Y_TimeLimit_Stop();
             datSetFlag(0x141D, true);
             K_CMD_GLOBAL_FRAME++;
             scrSetIntReturnVal(0);

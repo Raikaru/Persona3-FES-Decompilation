@@ -49,6 +49,6 @@ void K_Draw_CopyPositionCenter(RwV3d* dst, KwlnTask* positionTask);
 RwMatrix* K_Draw_GetPositionMatrix(KwlnTask* positionTask);
 void K_Draw_SetPositionPos(KwlnTask* positionTask, const RwV3d* pos);
 void K_Draw_MovePositionInDir(f32 dist, KwlnTask* positionTask, const RwV3d* dir);
-void K_Draw_RotatePosition(f32 angle, KwlnTask* positionTask, const RwV3d* axis);
+void K_Draw_RotatePosition(KwlnTask* positionTask, const RwV3d* axis, f32 angle);
 
 #endif

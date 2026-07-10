@@ -4,7 +4,7 @@
 #include "temporary.h"
 
 // FUN_001d4360
-HCdvd* K_FldEnemy_RequestTable()
+HCdvd* K_FldEnemy_RequestTable(void)
 {
     char buffer[128];
 
@@ -21,4 +21,5 @@ HCdvd* K_FldEnemy_RequestTable()
     {
         return H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
     }
+    // Retail falls through with H_Cdvd_FileExists' false (zero) result in the return register.
 }

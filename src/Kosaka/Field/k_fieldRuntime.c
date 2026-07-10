@@ -53,6 +53,27 @@ struct RuntimeListNode
     RuntimeListNode* previous;
     RuntimeListNode* next;
 };
+typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
+typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
+
+struct FieldRuntimeResourceNode
+{
+    u8 reserved0[8];
+    u16 resourceId;
+    u8 reserved1[0x5e];
+    FieldRuntimeResourceNode* previous;
+    FieldRuntimeResourceNode* next;
+};
+
+struct FieldRuntimeTaskNode
+{
+    void* task;
+    u8 reserved0[0x4c];
+    u16 resourceId;
+    u8 reserved1[2];
+    FieldRuntimeTaskNode* previous;
+    FieldRuntimeTaskNode* next;
+};
 
 extern void* RwCalloc(u32 count, u32 size, u32 hint);
 extern void RwFree(void* memory);
@@ -67,6 +88,8 @@ extern char D_006844B0[];
 extern char D_00684060[];
 extern char D_00684040[];
 extern void* (*DAT_00960184)(u32, ...);
+extern FieldRuntimeResourceNode* D_006845C8;
+extern FieldRuntimeTaskNode* D_006845CC;
 extern void* func_001b83f0(void);
 extern void* func_001b85a0(void* record);
 extern void* func_001b8d60(void);
@@ -346,10 +369,33 @@ void func_001e28a0(RuntimeWork* work)
     }
 }
 
-// FUN_001E2930 NONMATCHING
+// FUN_001E2930
 void func_001e2930(s32 enabled)
 {
-    (void)enabled;
+    FieldRuntimeResourceNode* node;
+
+    node = D_006845C8;
+    while (node != NULL)
+    {
+        if (enabled == 1)
+        {
+            func_003b7090(node->resourceId);
+        }
+        if (node->previous != NULL)
+        {
+            node->previous->next = node->next;
+        }
+        else
+        {
+            D_006845C8 = node->next;
+        }
+        if (node->next != NULL)
+        {
+            node->next->previous = node->previous;
+        }
+        (*(void (**)(void*))0x0096017C)(node);
+        node = node->next;
+    }
 }
 
 // FUN_001E29E0 NONMATCHING
@@ -384,10 +430,34 @@ void func_001e2a70(RuntimeWork* work)
     }
 }
 
-// FUN_001E2B10 NONMATCHING
+// FUN_001E2B10
 void func_001e2b10(s32 enabled)
 {
-    (void)enabled;
+    FieldRuntimeTaskNode* node;
+
+    node = D_006845CC;
+    while (node != NULL)
+    {
+        if (enabled == 1)
+        {
+            func_003b7090(node->resourceId);
+        }
+        kwlnTaskDestroyWithHierarchy(node->task);
+        if (node->previous != NULL)
+        {
+            node->previous->next = node->next;
+        }
+        else
+        {
+            D_006845CC = node->next;
+        }
+        if (node->next != NULL)
+        {
+            node->next->previous = node->previous;
+        }
+        (*(void (**)(void*))0x0096017C)(node);
+        node = node->next;
+    }
 }
 
 // FUN_001E2BD0 NONMATCHING

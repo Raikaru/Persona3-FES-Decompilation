@@ -202,29 +202,17 @@ void FUN_003bdbd0(int param_1)
 #undef FUN_003bdd40
 // FUN_003BDD40 NONMATCHING
 
-
-u32 * FUN_003bdd40(void)
-
-
-
+u32 *FUN_003bdd40(void)
 {
-
-  return &DAT_0095b678;
-
+  return (u32 *)0x0095b678;
 }
 #define FUN_003bdd40(...) ((u32 * (*)(...))FUN_003bdd40)(__VA_ARGS__)
 #undef FUN_003bdd50
 // FUN_003BDD50 NONMATCHING
 
-
-u32 * FUN_003bdd50(void)
-
-
-
+u32 *FUN_003bdd50(void)
 {
-
-  return &DAT_0095b6a8;
-
+  return (u32 *)0x0095b6a8;
 }
 #define FUN_003bdd50(...) ((u32 * (*)(...))FUN_003bdd50)(__VA_ARGS__)
 #undef FUN_003bdd60
@@ -274,17 +262,11 @@ u32 FUN_003bdd90(long param_1)
 }
 #define FUN_003bdd90(...) ((u32 (*)(...))FUN_003bdd90)(__VA_ARGS__)
 #undef FUN_003bddd0
-// FUN_003BDDD0 NONMATCHING
-
+// FUN_003BDDD0
 
 u32 FUN_003bddd0(void)
-
-
-
 {
-
-  return DAT_0095b280;
-
+  return *(u32 *)0x0095b280;
 }
 #define FUN_003bddd0(...) ((u32 (*)(...))FUN_003bddd0)(__VA_ARGS__)
 #undef FUN_003bdde0

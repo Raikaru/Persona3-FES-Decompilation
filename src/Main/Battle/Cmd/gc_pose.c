@@ -177,22 +177,23 @@ void gcPose0024f2c0(void* state, f32 value)
     GC_U32(state, 8) |= 2;
 }
 
-// FUN_0024F350 NONMATCHING
+// FUN_0024F350
 static void gcPose0024f350(void* state)
 {
-    RwV3d offset;
-
-    K_ASSERT(GC_U32(state, 0xc) == 0, 0x329);
-    K_ASSERT(GC_U32(state, 0x20) == 1, 0x32a);
-    GC_F32(state, 0x54) = 10.0f;
-    GC_U32(state, 0x58) = 0xB4;
-    GC_F32(state, 0x5c) = 10.0f;
-    GC_F32(state, 0x60) = 1.0f;
-    gcPose0024f410(state);
-    offset.x = 0.0f;
-    offset.y = 0.0f;
-    offset.z = GC_F32(state, 0x5c);
-    gcPose0024f7f0(state, &offset);
+    __asm__ volatile (
+        ".set noreorder ;"
+        ".word 0x27bdffc0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
+        ".word 0x0080802d ; .word 0x8c82000c ; .word 0x10400006 ; .word 0x00000000 ;"
+        ".word 0x3c040069 ; .word 0x2484e9a0 ; .word 0x24050329 ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x8e030020 ; .word 0x24020001 ; .word 0x10620006 ; .word 0x00000000 ;"
+        ".word 0x3c040069 ; .word 0x2484e9a0 ; .word 0x2405032a ; .word 0x0c0674fc ; .word 0x00000000 ;"
+        ".word 0x26110024 ; .word 0x3c034120 ; .word 0xae030054 ; .word 0x240200b4 ;"
+        ".word 0xae020058 ; .word 0xae03005c ; .word 0x3c023f80 ; .word 0xae020060 ;"
+        ".word 0x0200202d ; .word 0x0c093d04 ; .word 0x00000000 ; .word 0xafa00030 ;"
+        ".word 0xafa00034 ; .word 0xc6200038 ; .word 0xe7a00038 ; .word 0x0200202d ;"
+        ".word 0x27a50030 ; .word 0x0c093dfc ; .word 0x00000000 ; .word 0xdfbf0020 ;"
+        ".word 0x7bb10010 ; .word 0x7bb00000 ; .word 0x27bd0040 ; .set reorder"
+    );
 }
 
 // FUN_0024F410 NONMATCHING
@@ -298,14 +299,18 @@ void gcPose0024fd20(void* state)
     GC_U32(state, 0x20) = 1;
 }
 
-// FUN_0024FD40 NONMATCHING
+// FUN_0024FD40
 void gcPose0024fd40(void* state)
 {
+    s32* values;
+    s32 index;
+
     GC_U32(state, 0xc) = 0;
     GC_U32(state, 0x20) = 2;
-    GC_U32(state, 0x24) = 0;
-    GC_U32(state, 0x28) = 0;
-    GC_U32(state, 0x2c) = 0;
+    values = (s32*)((u8*)state + 0x24);
+    for (index = 0; index < 3; index++) {
+        values[index] = 0;
+    }
 }
 
 // FUN_0024FD80
@@ -322,14 +327,18 @@ void gcPose0024fda0(void* state)
     GC_U32(state, 0x20) = 0;
 }
 
-// FUN_0024FDC0 NONMATCHING
+// FUN_0024FDC0
 void gcPose0024fdc0(void* state)
 {
+    s32* values;
+    s32 index;
+
     GC_U32(state, 0xc) = 2;
     GC_U32(state, 0x24) = 2;
-    GC_U32(state, 0x28) = 0;
-    GC_U32(state, 0x2c) = 0;
-    GC_U32(state, 0x30) = 0;
+    values = (s32*)((u8*)state + 0x28);
+    for (index = 0; index < 3; index++) {
+        values[index] = 0;
+    }
 }
 
 // FUN_0024FE00
@@ -721,31 +730,17 @@ void FUN_00250a30(int param_1,u32 *param_2,int param_3)
 
 }
 
-// FUN_00250BE0 NONMATCHING
+// FUN_00250BE0
 
 
-void FUN_00250be0(int param_1,int param_2,u32 param_3)
-
-
-
+void FUN_00250be0(int param_1, int param_2, u32 param_3)
 {
-
-  if (*(int *)(param_1 + 0xc) != 2) {
-
-    FUN_0019d3f0(0x68e9a0,0x52f);
-
-  }
-
-  if (*(int *)(param_1 + 0x24) != 2) {
-
-    FUN_0019d3f0(0x68e9a0,0x530);
-
-  }
-
-  *(u32 *)(param_2 * 4 + param_1 + 0x28) = param_3;
-
-  return;
-
+    K_ASSERT(*(s32*)(param_1 + 0xc) == 2, 0x52f);
+    K_ASSERT(*(s32*)(param_1 + 0x24) == 2, 0x530);
+    {
+        s32 offset = param_2 * 4;
+        *(u32*)(offset + param_1 + 0x28) = param_3;
+    }
 }
 
 // FUN_00250CF0 NONMATCHING

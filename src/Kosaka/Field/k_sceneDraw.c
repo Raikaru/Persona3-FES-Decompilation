@@ -1660,21 +1660,23 @@ void* func_001a13b0(void* object, void** listHead)
     return object;
 }
 
-// FUN_001a14c0 NONMATCHING
+// FUN_001a14c0
 void func_001a14c0(void* list)
 {
+    void* next;
     void* manager;
     void* resource;
-    void* next;
+    void* current;
 
-    while (list != NULL)
+    current = list;
+    while (current != NULL)
     {
-        next = *(void**)((u8*)list + 0x40);
+        next = *(void**)((u8*)current + 0x40);
         manager = func_004d11f0();
-        resource = func_004d1170(manager, list);
+        resource = func_004d1170(manager, current);
         func_004d0f00(resource);
-        (*(void (**)(void*))D_0096017c)(list);
-        list = next;
+        (*(void (**)(void*))D_0096017c)(current);
+        current = next;
     }
 }
 

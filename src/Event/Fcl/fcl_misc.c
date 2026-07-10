@@ -16,6 +16,7 @@ extern u32 gp0xffffaa14;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+extern char DAT_006a3e18[];
 extern u32 DAT_006a3f70;
 extern u32 DAT_006a3f88;
 extern u32 DAT_006a3f8c;
@@ -122,7 +123,7 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3);
 #define FUN_003c9e00(...) ((void (*)(...))FUN_003c9e00)(__VA_ARGS__)
 #define FUN_003c9e30(...) ((void (*)(...))FUN_003c9e30)(__VA_ARGS__)
 #define FUN_003c9e70(...) ((void (*)(...))FUN_003c9e70)(__VA_ARGS__)
-#define FUN_003c9ee0(...) ((u8 (*)(...))FUN_003c9ee0)(__VA_ARGS__)
+#define FUN_003c9ee0(...) ((s8 (*)(...))FUN_003c9ee0)(__VA_ARGS__)
 #define FUN_003c9f10(...) ((void (*)(...))FUN_003c9f10)(__VA_ARGS__)
 #define FUN_003c9f60(...) ((void (*)(...))FUN_003c9f60)(__VA_ARGS__)
 #define FUN_003c9fb0(...) ((void (*)(...))FUN_003c9fb0)(__VA_ARGS__)
@@ -854,7 +855,7 @@ void FUN_003c8dd0(u32 param_1)
 }
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #undef FUN_003c8de0
-// FUN_003C8DE0 NONMATCHING
+// FUN_003C8DE0
 
 
 u64 FUN_003c8de0(int param_1,int param_2,int param_3,u16 param_4)
@@ -875,7 +876,7 @@ u64 FUN_003c8de0(int param_1,int param_2,int param_3,u16 param_4)
 
   if (piGpffffb98c[3] == 0) {
 
-    FUN_0019d3f0(0x6a3e18,0x4ae);
+    FUN_0019d3f0(DAT_006a3e18,0x4ae);
 
   }
 
@@ -970,7 +971,8 @@ void FUN_003c8f20(void)
 }
 #define FUN_003c8f20(...) ((void (*)(...))FUN_003c8f20)(__VA_ARGS__)
 #undef FUN_003c8f40
-// FUN_003C8F40 NONMATCHING
+#undef FUN_003c8810
+// FUN_003C8F40
 
 
 void FUN_003c8f40(void)
@@ -978,11 +980,13 @@ void FUN_003c8f40(void)
 
 
 {
+  FUN_003c8810((int *)uGpffffb98c);
 
 
   return;
 
 }
+#define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
 #define FUN_003c8f40(...) ((void (*)(...))FUN_003c8f40)(__VA_ARGS__)
 #undef FUN_003c8f70
 // FUN_003C8F70 NONMATCHING
@@ -1842,10 +1846,10 @@ void FUN_003c9e70(u64 param_1,char param_2)
 }
 #define FUN_003c9e70(...) ((void (*)(...))FUN_003c9e70)(__VA_ARGS__)
 #undef FUN_003c9ee0
-// FUN_003C9EE0 NONMATCHING
+// FUN_003C9EE0
 
 
-u8 FUN_003c9ee0(void)
+s8 FUN_003c9ee0(void)
 
 
 
@@ -1857,10 +1861,10 @@ u8 FUN_003c9ee0(void)
 
   iVar1 = FUN_00195540();
 
-  return *(u8 *)(iVar1 + 0xe8);
+  return *(char *)(iVar1 + 0xe8);
 
 }
-#define FUN_003c9ee0(...) ((u8 (*)(...))FUN_003c9ee0)(__VA_ARGS__)
+#define FUN_003c9ee0(...) ((s8 (*)(...))FUN_003c9ee0)(__VA_ARGS__)
 #undef FUN_003c9f10
 // FUN_003C9F10 NONMATCHING
 

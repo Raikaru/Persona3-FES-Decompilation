@@ -23,7 +23,7 @@ extern u32* DAT_007827b4;
 extern u32 DAT_007827b8;
 extern u32 DAT_007827bc;
 extern u32 DAT_007827c0;
-extern u32 DAT_007827c4;
+extern s32 DAT_007827c4;
 extern u32 DAT_0096dce4;
 extern u32 DAT_0096dd0c;
 extern u32 DAT_0096dd10;

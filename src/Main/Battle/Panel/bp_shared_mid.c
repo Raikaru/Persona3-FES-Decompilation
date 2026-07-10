@@ -118,11 +118,16 @@ void func_002094f0(void)
     *(u32*)BP_WORK() &= ~2u;
 }
 
-// FUN_00209540 NONMATCHING
+// FUN_00209540
 void func_00209540(void)
 {
+    u32* work;
+
     K_ASSERT(gBattlePanelWork != NULL, 0x47);
-    if ((*(u32*)BP_WORK() & 1) == 0) {
+    work = (u32*)gBattlePanelWork;
+    if ((~*work & 1) != 0) {
+        return;
+    } else {
         func_00208f60();
     }
 }

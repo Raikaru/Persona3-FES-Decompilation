@@ -973,7 +973,7 @@ int FUN_002d8390(void)
   return iVar10;
 }
 
-// FUN_002d8610 NONMATCHING
+// FUN_002D8610
 
 undefined4 FUN_002d8610(void)
 
@@ -994,6 +994,43 @@ undefined4 FUN_002d8610(void)
     }
   }
   return uVar2;
+}
+
+// FUN_002D8680 NONMATCHING
+int func_002D8680(u64 param_1, int param_2)
+{
+    (void)param_1;
+
+    if (param_2 == 0)
+    {
+        return 0x5f;
+    }
+
+    return -1;
+}
+
+// FUN_002D86C0
+int func_002D86C0(int param_1)
+{
+    int action = *(int*)(param_1 + 0x30);
+
+    if (*(u8*)(action + 0xa2) != 0)
+    {
+        return -1;
+    }
+
+    switch (*(u16*)(action + 0xa4))
+    {
+        case 2: return 0x60;
+        case 3: return 0x61;
+        case 4: return 0x62;
+        case 5: return 0x63;
+        case 7: return 0x64;
+        case 8: return 0x65;
+        case 9: return 0x66;
+        case 10: return 0x67;
+        default: return -1;
+    }
 }
 
 
@@ -1896,16 +1933,19 @@ short FUN_002d9d70(int param_1)
   return sVar11;
 }
 
-// FUN_002d2990 NONMATCHING
+// FUN_002d2990
 int FUN_002d2990(const float *param_1, const float *param_2, const float *param_3)
 {
     float cross = (param_2[0] - param_1[0]) * (param_3[1] - param_1[1]) -
                   (param_2[1] - param_1[1]) * (param_3[0] - param_1[0]);
 
-    if (0.0f < cross)
+    if (cross <= 0.0f)
     {
-        return 1;
+        goto nonpositive;
     }
+    return 1;
+
+nonpositive:
     return -(cross < 0.0f);
 }
 

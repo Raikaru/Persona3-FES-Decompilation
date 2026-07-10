@@ -42,6 +42,8 @@ extern u32 DAT_007cb0cc;
 extern u32 DAT_007cb110;
 extern u32 DAT_007cb120;
 extern u32 DAT_007cb124;
+extern u16 DAT_007cca60;
+extern u16 DAT_007cca64;
 extern u32 DAT_007cca68;
 extern u32 DAT_007cca6c;
 extern u32 DAT_007ccd20;
@@ -882,21 +884,12 @@ u32 FUN_00386e10(int param_1)
 }
 
 
-// FUN_00386E20 NONMATCHING
-
+// FUN_00386E20
 
 void FUN_00386e20(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x968) = param_2;
-
-  DAT_007cca68 = (short)param_2;
-
-  return;
-
+  DAT_007cca60 = (u16)param_2;
 }
 
 
@@ -914,21 +907,12 @@ u32 FUN_00386e30(int param_1)
 }
 
 
-// FUN_00386E40 NONMATCHING
-
+// FUN_00386E40
 
 void FUN_00386e40(int param_1,u32 param_2)
-
-
-
 {
-
   *(u32 *)(param_1 + 0x96c) = param_2;
-
-  DAT_007cca6c = (short)param_2;
-
-  return;
-
+  DAT_007cca64 = (u16)param_2;
 }
 
 
@@ -4102,7 +4086,7 @@ void FUN_0038a620(int param_1,long param_2)
 }
 
 
-// FUN_0038A6C0 NONMATCHING
+// FUN_0038A6C0
 
 
 void FUN_0038a6c0(int param_1)
@@ -4117,9 +4101,9 @@ void FUN_0038a6c0(int param_1)
 
   u32 *puVar3;
 
-  int iVar4;
-
   u32 *puVar5;
+
+  int iVar4;
 
   
 
@@ -4128,7 +4112,6 @@ void FUN_0038a6c0(int param_1)
   if (puVar3 != (u32 *)0x0) {
 
     puVar5 = (u32 *)(param_1 + 0x328);
-
     iVar4 = 0x22;
 
     do {

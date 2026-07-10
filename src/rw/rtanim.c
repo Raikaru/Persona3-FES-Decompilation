@@ -261,6 +261,7 @@ extern u32 iGpffffb9fc;
 extern u32 iGpffffba08;
 extern u32 iGpffffba20;
 extern u32 iGpffffba24;
+extern u32 iGpffffba40;
 extern u32 uGpffff82b8;
 extern u32 uGpffff82d0;
 extern u32 uGpffff82d4;
@@ -1174,7 +1175,7 @@ void FUN_00455cf0(void);
 void FUN_00456050(int param_1);
 void FUN_004561d0(u32 param_1,u32 param_2,int param_3);
 void FUN_004561f0(float param_1,int param_2);
-void FUN_004563b0(u32 param_1,int param_2);
+void FUN_004563b0(f32 param_1, int param_2);
 void FUN_004563c0(int param_1,u8 param_2);
 void FUN_004563d0(int param_1,u64 param_2);
 void FUN_00456400(int param_1,u8 param_2);
@@ -2696,7 +2697,7 @@ void FUN_00455cf0(void);
 void FUN_00456050(int param_1);
 void FUN_004561d0(u32 param_1,u32 param_2,int param_3);
 void FUN_004561f0(float param_1,int param_2);
-void FUN_004563b0(u32 param_1,int param_2);
+void FUN_004563b0(f32 param_1, int param_2);
 void FUN_004563c0(int param_1,u8 param_2);
 void FUN_004563d0(int param_1,u64 param_2);
 void FUN_00456400(int param_1,u8 param_2);
@@ -3764,21 +3765,23 @@ u64 FUN_00466640(u64 param_1)
   return param_1;
 }
 
-// FUN_00466710 NONMATCHING
+// FUN_00466710
 
+#pragma optimization_level 3
 u32 FUN_00466710(int param_1)
-
 {
-  return *(u32 *)(param_1 + DAT_007ce730 + 4);
+  return *(u32 *)(param_1 + iGpffffba40 + 4);
 }
+#pragma optimization_level 2
 
-// FUN_00466720 NONMATCHING
+// FUN_00466720
 
+#pragma optimization_level 3
 u32 FUN_00466720(int param_1)
-
 {
-  return *(u32 *)(param_1 + DAT_007ce730);
+  return *(u32 *)(param_1 + iGpffffba40);
 }
+#pragma optimization_level 2
 
 // FUN_00466730 NONMATCHING
 
@@ -5779,13 +5782,13 @@ LAB_00469a5c:
   return param_1;
 }
 
-// FUN_00469A90 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00469A90
 u32 FUN_00469a90(void)
-
 {
   return 1;
 }
+#pragma optimization_level 2
 
 // FUN_00469AA0 NONMATCHING
 
@@ -5902,21 +5905,21 @@ void FUN_00469bc0(int param_1)
   return;
 }
 
-// FUN_00469CE0 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00469CE0
 u32 FUN_00469ce0(void)
-
 {
   return 1;
 }
+#pragma optimization_level 2
 
-// FUN_00469CF0 NONMATCHING
-
+#pragma optimization_level 3
+// FUN_00469CF0
 u32 FUN_00469cf0(void)
-
 {
   return 1;
 }
+#pragma optimization_level 2
 
 // FUN_00469D00 NONMATCHING
 
@@ -5960,7 +5963,7 @@ u64 FUN_00469d60(u64 param_1)
 
 
 
-// FUN_00469dc0 thunk_FUN_004687e0
+// FUN_00469dc0 thunk_FUN_004687e0 NONMATCHING
 
 u64 thunk_FUN_004687e0(int *param_1,int *param_2)
 
@@ -6904,7 +6907,7 @@ void FUN_0046b1b0(u32 *param_1,int param_2,u32 *param_3)
   return;
 }
 
-// FUN_0046b510
+// FUN_0046b510 NONMATCHING
 void* FUN_0046b510(int param_1,u64 param_2)
 
 
@@ -15112,7 +15115,7 @@ LAB_004745f4:
 
 
 
-// FUN_00474630 thunk_FUN_00491a80
+// FUN_00474630 thunk_FUN_00491a80 NONMATCHING
 
 u32 thunk_FUN_00491a80(u64 param_1)
 

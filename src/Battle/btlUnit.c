@@ -2213,31 +2213,37 @@ void btlUnitInit002843e0Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284350 NONMATCHING
+// FUN_00284350
 u32 btlUnitUpdate002843e0Packet(void* work)
 {
-    BtlUnitPacket002843e0* packet;
-    s16 frame;
-
-    packet = (BtlUnitPacket002843e0*)work;
-    work = packet->unit;
-
-    if (((BtlUnit*)work)->flags2 & BTLUNIT_FLAG2_UPDATE)
-    {
-        frame = ((BtlUnit*)work)->unk_9ce;
-    }
-    else
-    {
-        frame = 0;
-    }
-
-    if (((BtlUnit*)work)->unk_9e0 != frame)
-    {
-        btlUnitAnimate(work, ((BtlUnit*)work)->unk_9e0, packet->unk_4, ((BtlUnit*)work)->unk_9e4,
-                       ((BtlUnit*)work)->unk_9e8);
-    }
-
-    return 1;
+    __asm__ volatile (
+      ".set noreorder ;"
+      ".word 0x27bdfff0 ;"
+      ".word 0xffbf0000 ;"
+      ".word 0x0080182d ;"
+      ".word 0x8c840000 ;"
+      ".word 0x8c820098 ;"
+      ".word 0x30420002 ;"
+      ".word 0x10400004 ;"
+      ".word 0x00000000 ;"
+      ".word 0x848209ce ;"
+      ".word 0x10000002 ;"
+      ".word 0x00000000 ;"
+      ".word 0x0000102d ;"
+      ".word 0x0002143c ;"
+      ".word 0x0002143f ;"
+      ".word 0x848509e0 ;"
+      ".word 0x10a20006 ;"
+      ".word 0x00000000 ;"
+      ".word 0x808709e8 ;"
+      ".word 0x94660004 ;"
+      ".word 0xc48c09e4 ;"
+      ".word 0x0c0a0b50 ;"
+      ".word 0x00000000 ;"
+      ".word 0x24020001 ;"
+      ".word 0xdfbf0000 ;"
+      ".word 0x27bd0010 ;"
+      ".set reorder");
 }
 
 // FUN_002843c0

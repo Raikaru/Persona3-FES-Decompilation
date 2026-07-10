@@ -30,7 +30,7 @@ extern u32 uGpffffaa78;
 extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
 /* FUSION_PROTOS */
-void FUN_003d06d0(u64 param_1,u32 param_2,...);
+void FUN_003d06d0(s32 param_1,s32 param_2,s32 param_3);
 void FUN_003d1df0(u64 param_1,int param_2);
 u32 FUN_003d2200(void);
 void FUN_003d25c0(long param_1);
@@ -89,7 +89,7 @@ extern char DAT_006a4648[];
 extern s32 DAT_007cd728;
 
 s32 FUN_00195540(void);
-s32 FUN_00316f70(void);
+s32 FUN_00316f70(s32 param_1);
 s32 FUN_00194b20();
 void FUN_003174e0(s32 param_1);
 void FUN_005225a8();
@@ -112,8 +112,8 @@ void FUN_003c5480(s32 param_1);
 s32 FUN_003c6c50(s32 param_1);
 s32 FUN_003c6c80(s32 param_1);
 void FUN_003def80(s32 param_1);
-void FUN_003c4e60(s32 param_1, s32 param_2);
-void FUN_003c4de0(s32 param_1, s32 param_2, s32 param_3);
+u32 FUN_003c4e60(s32* param_1, s32* param_2);
+void FUN_003c4de0(s32* param_1, s32* param_2, s32 param_3);
 void FUN_003def10();
 s32 FUN_003def40();
 s32 FUN_003dee80();
@@ -136,19 +136,19 @@ s32 fclCombine003d3170(s32 param_1);
 void fclCombine003d3280(s32 param_1);
 void fclCombine003d3760(s32 param_1, s32 param_2, s32 param_3);
 
-// FUN_003cf080 NONMATCHING
+// FUN_003cf080
 void fclCombine003cf080(void)
 {
     s32 temp;
 
     temp = FUN_00195540();
-    if (*(s32*)(temp + 0x18) != 0) {
-        if (FUN_00316f70() != 0) {
-            FUN_003174e0(*(s32*)(temp + 0x18));
-        } else {
-            FUN_00194b20(0, DAT_006a4208, 0x147c, fclCombine003cf080, 0, *(s32*)(temp + 0x18));
-        }
+    if (0 == *(s32*)(temp + 0x18)) goto done;
+    if (FUN_00316f70(*(s32*)(temp + 0x18)) != 0) {
+        FUN_003174e0(*(s32*)(temp + 0x18));
+    } else {
+        FUN_00194b20(0, DAT_006a4208, 0x147c, fclCombine003cf080, 0, *(s32*)(temp + 0x18));
     }
+done:
     ((void (*)(s32))DAT_0096017c[0])(temp);
 }
 
@@ -235,8 +235,8 @@ void fclCombine003cf440(void)
     s32 i;
     s16* entry;
     s16 flags;
-    s32 next;
-    s32 node;
+    register struct FclCombineNode* node;
+    register struct FclCombineNext* next;
 
     entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
     for (i = 0; i < 3; i++) {
@@ -251,11 +251,12 @@ void fclCombine003cf440(void)
         }
         entry += 10;
     }
-    node = *(s32*)(DAT_007ce680 + 4);
-    while (node != 0) {
-        next = *(s32*)(node + 0x10);
-        FUN_003c49e0(DAT_007ce680, DAT_007ce680 + 4);
-        node = next;
+    node = (struct FclCombineNode*)*(s32*)(DAT_007ce680 + 4);
+    if (node != 0) {
+        do {
+            next = *(struct FclCombineNext**)((u8*)node + 0x10);
+            FUN_003c49e0(DAT_007ce680, DAT_007ce680 + 4);
+        } while ((node = (struct FclCombineNode*)(s32)next) != 0);
     }
 }
 
@@ -627,28 +628,28 @@ s32 fclCombine003d3050(s32 param_1)
     return -1;
 }
 
-// FUN_003d3170 NONMATCHING
+// FUN_003d3170
 s32 fclCombine003d3170(s32 param_1)
 {
-    s32 temp;
+    s32* temp;
     s32 value;
     s32 item;
 
     if (param_1 == 0 || (item = *(s32*)param_1) == 0) {
         return 0;
     }
-    temp = *(s32*)(item + 8);
-    if (FUN_003c6c80(temp) != 0) {
+    temp = (s32*)*(s32*)(item + 8);
+    if (FUN_003c6c80((s32)temp) != 0) {
         if (FUN_003df010(*(s32*)(item + 0x10)) == 0) {
             return 0;
         }
-        value = *(s32*)(temp + 0xc);
-        FUN_003c4e60(temp, temp + 4);
+        value = temp[3];
+        FUN_003c4e60(temp, temp + 1);
         FUN_003def80(*(s32*)(item + 0x10));
-        FUN_003c4de0(temp, temp + 4, value);
+        FUN_003c4de0(temp, temp + 1, value);
         fclCombine003d3760(item, 0, 1);
         FUN_0010a4e0(0, 0, 0, 2);
-        FUN_003c6f50(temp);
+        FUN_003c6f50((s32)temp);
         return 1;
     }
     return 0;
@@ -705,13 +706,14 @@ s32 fclCombine003d3ca0(s32 param_1, s32 param_2)
     return 0;
 }
 
-// FUN_003d3cd0 NONMATCHING
+// FUN_003d3cd0
 s32 fclCombine003d3cd0(s32 param_1, s32 param_2)
 {
     s32 temp;
 
     FUN_003c5470(param_2);
     temp = FUN_003c5460(DAT_007ce684);
+    FUN_003d06d0(temp, 0, 1);
     return 0;
 }
 
@@ -845,7 +847,7 @@ s32 fclCombine003d4e90(s32 param_1)
     return -1;
 }
 
-// FUN_003d4f90 NONMATCHING
+// FUN_003d4f90
 s32 fclCombine003d4f90(s32 param_1, s32 param_2)
 {
     s32 temp;
@@ -853,6 +855,7 @@ s32 fclCombine003d4f90(s32 param_1, s32 param_2)
     temp = FUN_003c5470(param_2);
     FUN_0040c9a0(*(s32*)(temp + 8));
     temp = FUN_003c5460(DAT_007ce684);
+    FUN_003d06d0(temp, 0, 1);
     return 0;
 }
 
@@ -910,7 +913,7 @@ s32 fclCombine003d54a0(int unused)
 // FUN_003D06D0 NONMATCHING
 
 
-void FUN_003d06d0(u64 param_1,u32 param_2,...)
+void FUN_003d06d0(s32 param_1,s32 param_2,s32 param_3)
 
 
 

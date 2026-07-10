@@ -295,7 +295,6 @@ static void btlMainSetPacketAction(BtlPacket* packet, const BtlAction* action)
 void btlSound002dced0(u16 param_1);
 void btlSound002dcf80(s32 param_1, u16 param_2);
 void btlBoss002f6e00();
-void btlFade002ff2d0(u16 param_1);
 u32 btl002facc0();
 void datAddBattleCount(s32 amount);
 void scrClearTextBox(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
@@ -843,7 +842,7 @@ void btlMainInitStateStart(BtlStateWork* work)
 {
     if (gBtl->unk_10 & 1)
     {
-        btlFade002ff2d0(3);
+        btlFadeStart(3);
         btl002facc0();
     }
 }
@@ -1218,7 +1217,7 @@ void btlMainInitStateEnemyDead(BtlStateWork* work)
     FUN_002fb690();
     gBtl->flags |= 0x80000;
 }
-// FUN_0029ce20 NONMATCHING
+// FUN_0029ce20
 u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
 {
     u32 state;
@@ -1226,14 +1225,7 @@ u32 btlMainUpdateStateEnemyDead(BtlStateWork* work)
     if (btlPacketCount() == 0)
     {
         gBtl->flags &= ~0x80000;
-        if ((gBtl->flags & 0x80) != 0)
-        {
-            state = BTL_STATE_FADEOUT;
-        }
-        else
-        {
-            state = BTL_STATE_ACTION;
-        }
+        state = (gBtl->flags & 0x80) != 0 ? BTL_STATE_FADEOUT : BTL_STATE_ACTION;
     }
     else
     {

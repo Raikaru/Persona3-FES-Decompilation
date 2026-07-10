@@ -21,8 +21,8 @@ u64 FUN_002fd660(void);
 u32 FUN_002fd7c0(void);
 void FUN_002fd820(void);
 void FUN_002fd8a0(int param_1);
-u8 FUN_002fdb70(void);
-u8 FUN_002fdb90(void);
+u32 FUN_002fdb70(void);
+u32 FUN_002fdb90(void);
 u8 FUN_002fdbb0(int param_1,u64 param_2);
 u8 FUN_002fdcb0(int param_1);
 u32 FUN_002fdcf0(int param_1,int param_2);
@@ -56,7 +56,7 @@ extern const BtlCameraStateEntry gBtlBossCameraStateEntries[][BTLCAMERA_STATE_MA
 
 extern void* func_002b8f90(s32 param_1);
 extern void func_002b96e0(void* object, void* archiveEntry);
-extern void* func_002f87e0(s32 index);
+extern void* func_002f87e0(u16 index);
 extern void func_00100ec0(void* resource);
 extern void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize);
 extern void func_002b9030(void* resource);
@@ -508,8 +508,8 @@ void func_002f8790()
     }
 }
 
-// FUN_002f87e0 NONMATCHING
-void* func_002f87e0(s32 index)
+// FUN_002f87e0
+void* func_002f87e0(u16 index)
 {
     u32 fileSize;
 
@@ -2639,29 +2639,29 @@ void FUN_002fd8a0(int param_1)
 
 }
 
-// FUN_002FDB70 NONMATCHING
+// FUN_002FDB70
 
 
-u8 FUN_002fdb70(void)
+u32 FUN_002fdb70(void)
 
 
 
 {
 
-  return (*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0;
+  return ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) != 0) ^ 1;
 
 }
 
-// FUN_002FDB90 NONMATCHING
+// FUN_002FDB90
 
 
-u8 FUN_002fdb90(void)
+u32 FUN_002fdb90(void)
 
 
 
 {
 
-  return (*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0;
+  return ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) != 0) ^ 1;
 
 }
 
@@ -2714,7 +2714,7 @@ u8 FUN_002fdbb0(int param_1,u64 param_2)
 
 }
 
-// FUN_002FDCB0 NONMATCHING
+// FUN_002FDCB0
 
 
 u8 FUN_002fdcb0(int param_1)
@@ -2735,7 +2735,7 @@ u8 FUN_002fdcb0(int param_1)
 
   else {
 
-    bVar1 = *(char *)(param_1 + 0xa2) == '\x01';
+    bVar1 = *(u8 *)(param_1 + 0xa2) == '\x01';
 
   }
 

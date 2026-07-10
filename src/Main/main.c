@@ -9,12 +9,13 @@ int main(int argc, char* argv[])
 
     initAndLoop(0);
 
-    // no return
+    /* kwlnMain owns the runtime loop and does not return. */
 }
 
 // FUN_001939b0
-void initAndLoop(s32 unused)
+void initAndLoop(s32 unusedStartupArgument)
 {
+    /* The retail entry ABI supplies this argument; kwlnMain does not use it. */
     kwlnMain();
 }
 

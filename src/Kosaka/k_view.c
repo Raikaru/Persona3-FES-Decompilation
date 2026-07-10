@@ -21,6 +21,7 @@ f32 K_View_GetFov(RwCamera* camera)
 
     viewWindow = &camera->viewWindow;
 
+    // Retained unused retail call; removing it changes the matched instruction sequence.
     atanf(viewWindow->x);
     x = atanf(viewWindow->y) * 2.0f;
 

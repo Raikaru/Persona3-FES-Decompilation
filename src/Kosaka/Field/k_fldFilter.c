@@ -29,9 +29,9 @@ typedef struct
 extern void* sFilterFile;
 extern s32 sFilterColorOffset;
 extern s32 sFilterCurrent;
-extern s32 sFilterPrevious;
+extern f32 sFilterPrevious;
 extern f32 sFilterBlend;
-extern f32 sFilterBlendDuration;
+extern s32 sFilterBlendDuration;
 extern FilterQuad sFilterGrid[FLDFILTER_GRID_HEIGHT][FLDFILTER_GRID_WIDTH];
 
 /* This word belongs to the neighbouring field-resource work block. */
@@ -344,20 +344,20 @@ void K_FldFilter_Main()
     func_004d7f60(3, 0x717fb);
 }
 
-// FUN_001d50c0 NONMATCHING
+// FUN_001d50c0
 void FUN_001d50c0(s32 index, u32 type, s32 duration)
 {
     if (duration == 0)
     {
         sFilterBlend = 1.0f;
-        sFilterBlendDuration = 1.0f;
-        sFilterPrevious = index;
+        sFilterBlendDuration = index;
+        sFilterPrevious = 1.0f;
     }
     else
     {
         sFilterBlend = 0.0f;
-        sFilterPrevious = sFilterCurrent;
-        sFilterBlendDuration = (f32)duration;
+        sFilterBlendDuration = sFilterCurrent;
+        sFilterPrevious = (f32)duration;
     }
     sFilterCurrent = index;
     *(u32*)((u8*)sFilterFile + index * 0x124) = type;

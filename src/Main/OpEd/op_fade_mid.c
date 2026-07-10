@@ -15,6 +15,8 @@ extern f32 DAT_007caf38;
 extern f32 DAT_007caf8c;
 extern f32 DAT_007cafec;
 extern f32 DAT_007cb04c;
+extern const char DAT_0068EEB8[];
+extern const char DAT_0068EED0[];
 
 extern void *FUN_00173220(u16 id);
 extern u16 *datPersonaGetSkills(void *persona);
@@ -61,8 +63,8 @@ extern u32 func_002727c0(void);
 extern void func_00272810(void);
 extern void func_002791b0(u16 id);
 extern void func_00279330(u16 id);
-extern void brpParam00279450(u32 value);
-extern void brpParam002794c0(u32 value);
+extern void brpParamSetUnlockedSkillLevel(u32 level);
+extern void brpParamSetUnlockedSkillIndex(u32 index);
 extern void func_00279510(s32 index, u32 value);
 extern void func_00279580(s32 index, u32 value);
 extern void func_002795f0(s32 index, u32 value);
@@ -84,9 +86,27 @@ extern void func_003c9d80(u32 resource, s32 value);
 extern void func_004d7f60(s32 state, u32 value);
 extern void func_00521250(void *destination, const void *source, u32 size);
 extern void func_005225a8(const void *message, ...);
-extern void brLvpnl002767e0(void);
-extern void brLvpnl00276870(void);
-extern void brLvpnl002768c0(void);
+extern void brLvpnlStartEntranceAnimation(void);
+extern void brLvpnlDisableDrawing(void);
+extern void brLvpnlEnableDrawing(void);
+extern u32 *DAT_007ce3c0;
+extern u32 *DAT_007ce3c4;
+extern u32 *DAT_007ce3c8;
+extern u32 *DAT_007ce3cc;
+extern u32 *DAT_007ce3d0;
+
+/* The opening-result state pointers live in the small-data GP area. */
+#undef gOpWorkC0
+#undef gOpWorkC4
+#undef gOpWorkC8
+#undef gOpWorkCC
+#undef gOpWorkD0
+#define gOpWorkC0 DAT_007ce3c0
+#define gOpWorkC4 DAT_007ce3c4
+#define gOpWorkC8 DAT_007ce3c8
+#define gOpWorkCC DAT_007ce3cc
+#define gOpWorkD0 DAT_007ce3d0
+
 static u32 opTexW(u32 resource, s32 frame)
 {
     return (u32)sflPsel00260900((u32 *)(uintptr_t)resource, frame);
@@ -228,14 +248,14 @@ void func_002753c0(void)
     u8 *work;
     K_ASSERT(gOpWorkC0 != NULL, 0xb0);
     work = OP_WORK0;
-    brLvpnl002767e0();
+    brLvpnlStartEntranceAnimation();
     func_003c7bc0(0, (u32)(uintptr_t)FUN_00173220(OP_U16(work, 4)));
     func_003c7430(0);
     OP_U32(work, 0x14) = 0;
     OP_U32(work, 0x10) = 1;
 }
 
-// FUN_00275440 NONMATCHING
+// FUN_00275440
 void func_00275440(void)
 {
     u8 *work = (u8 *)OP_ALLOC(0x4510, 0x40000);
@@ -245,9 +265,9 @@ void func_00275440(void)
     func_00275a70((u32 *)(work + 0x260));
     func_00276910((u32 *)(work + 0x880));
     func_00276d10((u32 *)(work + 0x890));
-    OP_U32(work, 0x4504) = func_00194b80(NULL, 10, (const void *)0x68eeb8,
+    OP_U32(work, 0x4504) = func_00194b80(NULL, 10, DAT_0068EEB8,
                                            (void *)func_002756c0, NULL, NULL);
-    OP_U32(work, 0x4508) = func_00194e10((const void *)0x68eed0, 0x18ab,
+    OP_U32(work, 0x4508) = func_00194e10(DAT_0068EED0, 0x18ab,
                                            1, 2, (void *)func_002757a0, NULL, 0);
     gOpWorkC4 = (u32 *)work;
 }
@@ -314,10 +334,11 @@ u64 func_002756c0(void)
     return 0;
 }
 
-// FUN_002757a0 NONMATCHING
+// FUN_002757A0
 u64 func_002757a0(void)
 {
-    func_005225a8((const void *)0x7cc4d8, D_00960070);
+    func_005225a8((const void *)((const u8 *)&D_00960070 - 0x6888),
+                  *(void **)(uintptr_t)0x00960070);
     func_00275cb0();
     func_00278550();
     return 0;
@@ -358,9 +379,9 @@ void func_002758e0(u64 arg0, u64 arg1)
     if (func_001fc230(persona) != 0)
     {
         func_00279330(skills[0]);
-        brpParam00279450(func_001fc3c0(persona));
+        brpParamSetUnlockedSkillLevel(func_001fc3c0(persona));
     }
-    brpParam002794c0(count < 2 ? 0 : (u32)(count - 1));
+    brpParamSetUnlockedSkillIndex(count < 2 ? 0 : (u32)(count - 1));
     for (i = 0; i < 5; i++)
     {
         u8 stat = datPersonaGetTotalStat(persona, (u16)i);
@@ -371,14 +392,14 @@ void func_002758e0(u64 arg0, u64 arg1)
     func_00276d90();
 }
 
-// FUN_00275a70 NONMATCHING
+// FUN_00275A70
 void func_00275a70(u32 *work)
 {
     *work = 0;
     gOpWorkC8 = work;
 }
 
-// FUN_00275a80 NONMATCHING
+// FUN_00275A80
 void func_00275a80(void)
 {
     gOpWorkC8 = NULL;
@@ -574,14 +595,14 @@ void func_002760f0(void)
     func_0021d950(work + 0x144, color);
 }
 
-// FUN_00276910 NONMATCHING
+// FUN_00276910
 void func_00276910(u32 *work)
 {
     *work = 0;
     gOpWorkCC = work;
 }
 
-// FUN_00276920 NONMATCHING
+// FUN_00276920
 void func_00276920(void)
 {
     gOpWorkCC = NULL;
@@ -651,13 +672,13 @@ u32 func_00276cc0(void)
     return *gOpWorkCC & 8;
 }
 
-// FUN_00276d10 NONMATCHING
+// FUN_00276D10
 void func_00276d10(u32 *work)
 {
-    *work = 0;
-    work[0xdcc] = 0;
-    work[0xdcd] = 0;
-    work[0xdce] = 0;
+    work[0] = 0;
+    work[0x3730 / 4] = 0;
+    work[0x3734 / 4] = 0;
+    work[0x3738 / 4] = 0;
     gOpWorkD0 = work;
 }
 

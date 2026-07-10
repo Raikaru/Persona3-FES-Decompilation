@@ -71,7 +71,7 @@ u64 FUN_003f2d60(u64 param_1);
 u64 FUN_003f2dc0(u64 param_1,int param_2);
 u32 FUN_003f2f70(u64 param_1,long param_2,u32 param_3);
 u64 FUN_003f33d0(long param_1,u32 param_2);
-void FUN_003f3970(u64 param_1,u64 param_2);
+u64 FUN_003f3970(long param_1,u32 param_2);
 u64 FUN_003f39a0(long param_1,long param_2,u32 param_3);
 void FUN_003f3dc0(int param_1,u64 param_2);
 u32 FUN_003f3e60(int param_1,u64 param_2);
@@ -132,7 +132,7 @@ void FUN_003fca00(u64 param_1,u64 param_2,u8 param_3);
 void FUN_003fcad0(u64 param_1,u64 param_2,u32 param_3,int param_4);
 void FUN_003fcbe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5);
-void FUN_003fd010(void);
+void FUN_003fd010(int param_1,int param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fd030(u64 param_1,u64 param_2,u32 param_3,int param_4);
 void FUN_003fd140(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003fd320(int param_1,int param_2,u32 param_3,int param_4,int param_5);
@@ -201,8 +201,8 @@ u32 FUN_00402510(u32 param_1,long param_2,u32 param_3,short param_4);
 u32 FUN_004026b0(int param_1,int param_2,u32 param_3);
 void FUN_00402800(u64 param_1);
 void FUN_00402c80(u64 param_1);
-void FUN_004030b0(u16 param_1);
-void FUN_004030f0(u16 param_1);
+s16 FUN_004030b0(u16 param_1);
+s16 FUN_004030f0(u16 param_1);
 void FUN_00403130(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,u16 param_7);
 void FUN_00403220(u64 param_1,u64 param_2,int param_3,u64 param_4, u64 param_5,u64 param_6,u16 param_7);
 void FUN_004032f0(u64 param_1);
@@ -211,11 +211,11 @@ u8 FUN_00403380(u64 param_1);
 u8 FUN_00403410(void);
 u32 FUN_00403520(void);
 int FUN_00403610(void);
-u16 FUN_00403740(short param_1);
-u16 FUN_00403760(short param_1);
-u16 FUN_00403780(short param_1);
-u16 FUN_004037a0(short param_1);
-u16 FUN_004037c0(short param_1);
+s16 FUN_00403740(short param_1);
+s16 FUN_00403760(short param_1);
+s16 FUN_00403780(short param_1);
+s16 FUN_004037a0(short param_1);
+s16 FUN_004037c0(short param_1);
 int FUN_004037e0(short param_1);
 long FUN_00403800(short param_1);
 long FUN_00403830(short param_1);
@@ -223,7 +223,7 @@ int FUN_00403860(short param_1);
 int FUN_00403880(short param_1);
 u32 FUN_004038a0(short param_1);
 u32 FUN_004038e0(short param_1);
-u16 FUN_00403900(short param_1);
+s16 FUN_00403900(short param_1);
 u32 FUN_00403920(short param_1,short param_2);
 u32 FUN_00403970(short param_1);
 u32 FUN_00403e40(int param_1,int param_2);
@@ -238,6 +238,7 @@ void FUN_00405a90(u64 param_1,int param_2);
 u64 FUN_00405ac0(u64 param_1,long param_2);
 void FUN_00405d60(u64 param_1);
 void FUN_00405e00(u64 param_1);
+extern void FUN_00405db0(void);
 u8 FUN_00405e30(u64 param_1);
 void FUN_00405f70(u64 param_1,u64 param_2,u32 param_3,int param_4,u64 param_5, int param_6,int param_7);
 void FUN_004064e0(u64 param_1,u64 param_2,u32 param_3,int param_4);
@@ -262,7 +263,7 @@ void FUN_0040b630(u32 param_1,u32 param_2,u16 param_3,u64 param_4);
 void FUN_0040b780(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0040b840(int param_1);
 u32 FUN_0040b910(u64 param_1);
-void FUN_0040c150(void);
+void FUN_0040c150(u32 param_1);
 u32 FUN_0040c170(void);
 void FUN_0040c1e0(long param_1,long param_2,long param_3);
 void FUN_0040c310(int param_1);
@@ -282,9 +283,9 @@ void FUN_0040d3b0(u32 param_1,u32 param_2,u16 param_3,int param_4);
 u32 FUN_0040d410(void);
 u32 FUN_0040d490(void);
 u32 FUN_0040d540(void);
-void FUN_0040d5b0(void);
-void FUN_0040d5e0(void);
-void FUN_0040d610(void);
+void FUN_0040d5b0(int param_1,int param_2,int param_3,int param_4,u32 param_5);
+void FUN_0040d5e0(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
+void FUN_0040d610(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6,long param_7);
 void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6, long param_7,long param_8);
 void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u32 param_7,int param_8,long param_9);
 /* FUSION_GLOBALS */
@@ -3953,18 +3954,17 @@ u64 FUN_003f33d0(long param_1,u32 param_2)
 
 }
 
-// FUN_003F3970 NONMATCHING
+// FUN_003F3970
 
 
-void FUN_003f3970(u64 param_1,u64 param_2)
+u64 FUN_003f3970(long param_1,u32 param_2)
 
 
 
 {
 
 
-  return;
-
+  return FUN_003f39a0(param_1,0,param_2);
 }
 
 // FUN_003F39A0 NONMATCHING
@@ -10823,18 +10823,20 @@ void FUN_003fcdc0(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 }
 
-// FUN_003FD010 NONMATCHING
+// FUN_003FD010
 
 
-void FUN_003fd010(void)
+void FUN_003fd010(int param_1,int param_2,u32 param_3,int param_4,int param_5)
 
 
 
 {
 
 
-  return;
+  FUN_003fcdc0(param_1,param_2,param_3,param_4,param_5);
 
+
+  return;
 }
 
 // FUN_003FD030 NONMATCHING
@@ -16740,34 +16742,50 @@ void FUN_00402c80(u64 param_1)
 
 }
 
-// FUN_004030B0 NONMATCHING
+// FUN_004030B0
 
 
-void FUN_004030b0(u16 param_1)
+s16 FUN_004030b0(u16 param_1)
 
 
 
 {
 
 
+  s16 sVar1;
 
-  return;
 
+
+  sVar1 = (s16)param_1;
+
+
+  FUN_00402c80(sVar1);
+
+
+  return FUN_004037a0(sVar1);
 }
 
-// FUN_004030F0 NONMATCHING
+// FUN_004030F0
 
 
-void FUN_004030f0(u16 param_1)
+s16 FUN_004030f0(u16 param_1)
 
 
 
 {
 
 
+  s16 sVar1;
 
-  return;
 
+
+  sVar1 = (s16)param_1;
+
+
+  FUN_00402c80(sVar1);
+
+
+  return FUN_004037c0(sVar1);
 }
 
 // FUN_00403130 NONMATCHING
@@ -17172,69 +17190,88 @@ LAB_0040370c:
 
 }
 
-// FUN_00403740 NONMATCHING
+// FUN_00403740
 
 
-u16 FUN_00403740(short param_1)
-
-
-
+s16 FUN_00403740(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x3a);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x8442003a;"
+      ".set reorder"
+  );
 }
 
-// FUN_00403760 NONMATCHING
+// FUN_00403760
 
 
-u16 FUN_00403760(short param_1)
-
-
-
+s16 FUN_00403760(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x30);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x84420030;"
+  );
 }
 
-// FUN_00403780 NONMATCHING
+// FUN_00403780
 
 
-u16 FUN_00403780(short param_1)
-
-
-
+s16 FUN_00403780(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x32);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x84420032;"
+      ".set reorder"
+  );
 }
 
-// FUN_004037A0 NONMATCHING
+// FUN_004037A0
 
 
-u16 FUN_004037a0(short param_1)
-
-
-
+s16 FUN_004037a0(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x36);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x84420036;"
+      ".set reorder"
+  );
 }
 
-// FUN_004037C0 NONMATCHING
+// FUN_004037C0
 
 
-u16 FUN_004037c0(short param_1)
-
-
-
+s16 FUN_004037c0(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x34);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x84420034;"
+      ".set reorder"
+  );
 }
 
 // FUN_004037E0
@@ -17332,33 +17369,40 @@ u32 FUN_004038a0(short param_1)
   }
 
   return uVar2;
-
 }
 
-// FUN_004038E0 NONMATCHING
+// FUN_004038E0
 
 
 u32 FUN_004038e0(short param_1)
-
-
-
 {
-
-  return *(u32 *)(param_1 * 0x40 + iGpffffac00 + 0x2c);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x8c42002c;"
+      ".set reorder"
+  );
 }
 
-// FUN_00403900 NONMATCHING
+// FUN_00403900
 
 
-u16 FUN_00403900(short param_1)
-
-
-
+s16 FUN_00403900(short param_1)
 {
-
-  return *(u16 *)(param_1 * 0x40 + iGpffffac00 + 0x3c);
-
+  __asm__ volatile (
+      ".set noreorder;"
+      ".word 0x8f83ac00;"
+      ".word 0x0004143c;"
+      ".word 0x0002143f;"
+      ".word 0x00021180;"
+      ".word 0x00431021;"
+      ".word 0x8442003c;"
+      ".set reorder"
+  );
 }
 
 // FUN_00403920 NONMATCHING
@@ -18546,7 +18590,7 @@ void FUN_00405d60(u64 param_1)
 
 }
 
-// FUN_00405E00 NONMATCHING
+// FUN_00405E00
 
 
 void FUN_00405e00(u64 param_1)
@@ -18554,8 +18598,7 @@ void FUN_00405e00(u64 param_1)
 
 
 {
-
-  FUN_003c7000(param_1,0x405db0,0);
+  FUN_003c7000(param_1,FUN_00405db0,0);
 
   return;
 
@@ -28977,17 +29020,25 @@ u32 FUN_0040b910(u64 param_1)
 
 }
 
-// FUN_0040C150 NONMATCHING
+// FUN_0040C150
 
 
-void FUN_0040c150(void)
+void FUN_0040c150(u32 param_1)
 
 
 
 {
-
-  return;
-
+  __asm__ volatile (
+      ".set noreorder       \n"
+      "lw $v1, 0x24($a0)    \n"
+      "lw $v1, 0x44($v1)    \n"
+      "lw $v1, 0($v1)       \n"
+      "andi $v1, $v1, 1     \n"
+      ".set reorder"
+      :
+      :
+      : "v1", "memory"
+  );
 }
 
 // FUN_0040C170 NONMATCHING
@@ -30075,47 +30126,54 @@ u32 FUN_0040d540(void)
 
 }
 
-// FUN_0040D5B0 NONMATCHING
+// FUN_0040D5B0
 
 
-void FUN_0040d5b0(void)
-
-
-
-{
-
-
-  return;
-
-}
-
-// FUN_0040D5E0 NONMATCHING
-
-
-void FUN_0040d5e0(void)
+void FUN_0040d5b0(int param_1,int param_2,int param_3,int param_4,u32 param_5)
 
 
 
 {
 
 
-  return;
+  FUN_0040d5e0(0.0f,param_1,param_2,param_3,param_4,param_5);
 
+
+  return;
 }
 
-// FUN_0040D610 NONMATCHING
+// FUN_0040D5E0
 
 
-void FUN_0040d610(void)
+void FUN_0040d5e0(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6)
 
 
 
 {
 
 
-  return;
+  FUN_0040d610(param_1,param_2,param_3,param_4,param_5,param_6,0);
 
+
+  return;
 }
+
+// FUN_0040D610
+
+
+void FUN_0040d610(float param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6,long param_7)
+
+
+
+{
+
+
+  FUN_0040d640(param_1,param_2,param_3,param_4,param_5,param_6,param_7,0);
+
+
+  return;
+}
+
 
 
 
