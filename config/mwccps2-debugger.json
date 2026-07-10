@@ -1,0 +1,34 @@
+{
+  "schema": {
+    "name": "persona3-fes-mwccps2-debugger",
+    "version": 1
+  },
+  "integration": {
+    "mode": "external-optional",
+    "p3_root": "..",
+    "debugger": {
+      "repository": "../../mwccps2-debugger",
+      "compiler": "D:/mwcps2-3.0.1b210-060308/mwccps2.exe",
+      "profile": "profiles/mwcps2-3.0.1-b210.json"
+    }
+  },
+  "reports": {
+    "default_paths": [
+      "build/verify_report.json"
+    ],
+    "accepted_statuses": [
+      "COMPILE_ERROR",
+      "MISMATCH",
+      "NONMATCHING",
+      "STALE_NONMATCHING"
+    ],
+    "analysis_evidence_paths": [
+      "../../mwccps2-debugger/analysis/p3-mismatch-classification-v1.json",
+      "../../mwccps2-debugger/analysis/p3-retail-reachability-v1.json",
+      "../../mwccps2-debugger/reports/p3-allocation-explanation-v1.json"
+    ]
+  },
+  "reduction": {
+    "output_root": "../../mwccps2-debugger/build"
+  }
+}
