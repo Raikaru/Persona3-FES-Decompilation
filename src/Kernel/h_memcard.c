@@ -89,6 +89,14 @@ extern u8 D_005E4B20[];
 extern u8 D_005E4B40[];
 extern u8 D_005E4B50[];
 extern u8 D_005E4B80[];
+extern u8 D_00846780[];
+extern u8 D_00846790[];
+extern u8 D_00846800[];
+extern u8 D_00846830[];
+extern u8 D_00846840[];
+extern u8 D_00846884[];
+extern u8 D_008468C4[];
+extern u8 D_00846904[];
 extern u16 D_00846786;
 extern s32 D_0084678C;
 
@@ -730,31 +738,31 @@ state4_done:
                 {
                     FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
                 }
-                FUN_00521408(0x846780, 0, 0x3c4);
-                FUN_00524270(0x846780, 0x7cc0c8);
+                FUN_00521408(D_00846780, 0, 0x3c4);
+                FUN_00524270(D_00846780, 0x7cc0c8);
                 if (FUN_0017d800() == 0)
                 {
                     if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
                     {
-                        FUN_00524270(0x846840, D_005E4B50);
-                        FUN_00523e68(0x846840, sMemcardFile * 8 + D_005E4790);
+                        FUN_00524270(D_00846840, D_005E4B50);
+                        FUN_00523e68(D_00846840, sMemcardFile * 8 + D_005E4790);
                     }
                 }
                 else if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
                 {
-                    FUN_00524270(0x846840, D_005E4B80);
-                    FUN_00523e68(0x846840, sMemcardFile * 8 + D_005E4790);
+                    FUN_00524270(D_00846840, D_005E4B80);
+                    FUN_00523e68(D_00846840, sMemcardFile * 8 + D_005E4790);
                 }
-                *(volatile u16*)0x846786 = 0x12;
-                *(volatile s32*)0x84678c = 0x60;
-                FUN_00521250(0x846790, D_005E46C0, 0x40);
-                FUN_00521250(0x8467d0, D_005E4700, 0x30);
-                FUN_00521250(0x846800, D_005E4730, 0x30);
-                FUN_00521250(0x846830, D_005E4760, 0x10);
-                FUN_00524270(0x846884, D_005E4780);
-                FUN_00524270(0x8468c4, D_005E4784);
-                FUN_00524270(0x846904, D_005E4788);
-                FUN_00513cc8(sSocketNo, D_00846DA0, 0x846780, 0, 0x3c4);
+                D_00846786 = 0x12;
+                D_0084678C = 0x60;
+                FUN_00521250(D_00846790, D_005E46C0, 0x40);
+                FUN_00521250(D_00846780 + 0x50, D_005E4700, 0x30);
+                FUN_00521250(D_00846800, D_005E4730, 0x30);
+                FUN_00521250(D_00846830, D_005E4760, 0x10);
+                FUN_00524270(D_00846884, D_005E4780);
+                FUN_00524270(D_008468C4, D_005E4784);
+                FUN_00524270(D_00846904, D_005E4788);
+                FUN_00513cc8(sSocketNo, D_00846DA0, D_00846780, 0, 0x3c4);
             }
             else if (sMemcardMode == 1)
             {
