@@ -242,9 +242,17 @@ Keep the best source and reducer evidence when the remaining mismatch is proven 
 - `bppPanelDrawParameterLayout`: 2328-byte object body versus 2288 retail bytes, 492 differing words.
   Literal, pointer-local, and per-case dispatch forms are identical; an extern-object form changes
   codegen but gives the wrong GP-relative semantics.
+- `scrStartScript2`: 520-byte body versus a 528-byte window, 59 differing bytes. Enum-local,
+  no-temporary, and typed-enum-field switch forms either remain semantic-PCode-identical or diverge
+  at `codegen_entry`, but all produce the same final object hash. Retail's case-constant register
+  preloads remain source-unreachable.
+- `FUN_00172e50` (`datSocial.c`): after correcting the free-slot money store and unsigned cap assert,
+  four words remain in the range guard. Retail uses `slti $v1` plus `bnez`; clean C lowers the same
+  predicate through the `$at` pseudo with opposite branch polarity.
 
-The focused reducers live in the sibling `mwccps2-debugger/experiments/p3_*` directories. Revisit
-these functions only when a reducer identifies a new source-level lever or a compiler-stage fix.
+Focused reducer evidence lives in the sibling `mwccps2-debugger/experiments/p3_*` directories and
+its `build/m2_*` summaries. Revisit these functions only when a reducer identifies a new
+source-level lever or a compiler-stage fix.
 
 ## Known walls (mark NONMATCHING, do not fight)
 

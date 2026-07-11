@@ -1592,11 +1592,11 @@ void func_0018e7a0(KwlnTask* task)
     GS_FREE(work);
 }
 
-// FUN_0018E820 NONMATCHING
+// FUN_0018E820
 KwlnTask* func_0018e820(KwlnTask* parent)
 {
-    void* work;
     KwlnTask* task;
+    void* work;
 
     work = GS_ALLOC(1, 0x218, 0x40000);
     if (work == NULL)

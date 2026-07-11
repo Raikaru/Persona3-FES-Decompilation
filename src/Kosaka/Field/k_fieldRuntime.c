@@ -53,6 +53,36 @@ struct RuntimeListNode
     RuntimeListNode* previous;
     RuntimeListNode* next;
 };
+typedef struct RuntimeMatrix
+{
+    f32 values[16];
+} RuntimeMatrix;
+
+typedef struct RuntimeResetWork
+{
+    u32 flags;
+    u32 value;
+    u32 completedFlags;
+    u32 reserved;
+    void* work;
+} RuntimeResetWork;
+
+typedef struct RuntimePathWork
+{
+    u32 flags;
+    u8 reserved[0x0c];
+    RuntimeMatrix* matrix;
+} RuntimePathWork;
+
+
+extern void* DAT_0096017c[];
+extern void func_004c3880(void* matrix);
+extern s32 datGetFlag(u32 flag);
+extern u32 func_001ee2e0();
+extern void func_001eeb90(RuntimeWork* work);
+extern void func_001eee40(RuntimeWork* work);
+extern void func_001eefc0();
+extern void func_001ed0b0();
 typedef struct FieldRuntimeResourceNode FieldRuntimeResourceNode;
 typedef struct FieldRuntimeTaskNode FieldRuntimeTaskNode;
 
@@ -118,7 +148,7 @@ extern void func_001e9a90(void* work);
 extern s32 func_001ed9e0(void* work);
 extern void func_001edbe0(void* work);
 extern void func_001edf10(void* work);
-extern void func_001eba50(RuntimeWork* work);
+extern void func_001eba50(RuntimeResetWork* work);
 extern void func_001eba80(RuntimeWork* work, u32* result);
 extern s32 func_00236340(void);
 extern void func_002362e0(void);
@@ -1068,14 +1098,11 @@ RuntimeWork* func_001e7ce0(s32 columns, s32 rows)
     return work;
 }
 
-// FUN_001E7DE0 NONMATCHING
-void func_001e7de0(RuntimeWork* work)
+// FUN_001E7DE0
+void func_001e7de0(RuntimePathWork* work)
 {
-    if (work != NULL)
-    {
-        RwFree(work->positions);
-        RwFree(work);
-    }
+    func_004c3880(work->matrix);
+    ((void (*)(void*))DAT_0096017c[0])(work);
 }
 
 // FUN_001E7E30 NONMATCHING
@@ -1212,14 +1239,12 @@ void func_001eb920(RuntimeWork* work, u32 value)
     }
 }
 
-// FUN_001EBA50 NONMATCHING
-void func_001eba50(RuntimeWork* work)
+// FUN_001EBA50
+void func_001eba50(RuntimeResetWork* work)
 {
-    if (work != NULL)
-    {
-        work->completedFlags = 0;
-        work->state = 0;
-    }
+    work->value = work->completedFlags;
+    work->flags = 0;
+    func_001ed0b0(work->work);
 }
 
 // FUN_001EBA80 NONMATCHING
@@ -1308,12 +1333,22 @@ s32 func_001ed9e0(void* workData)
 }
 
 // FUN_001EDA00 NONMATCHING
-void func_001eda00(RuntimeWork* work)
+void* func_001eda00(void* work, u32 value)
 {
-    if (work != NULL)
+    u8* object;
+    u32 input;
+
+    input = value;
+    if (datGetFlag(0x1400) != 0)
     {
-        work->completedFlags = 0;
+        return NULL;
     }
+    object = (u8*)func_001ee2e0(work);
+    *(u32*)(object + 0x20) = input;
+    func_001eeb90((RuntimeWork*)object);
+    func_001eefc0(object);
+    func_001eee40((RuntimeWork*)object);
+    return object;
 }
 
 // FUN_001EDA90 NONMATCHING
@@ -1425,7 +1460,7 @@ void func_001eee40(RuntimeWork* work)
     for (i = 0; i < work->count; i++)
     {
         work->slots[i] = i;
-        func_001eba50((RuntimeWork*)((void**)work->resource)[i]);
+        func_001eba50((RuntimeResetWork*)((void**)work->resource)[i]);
     }
     work->flags |= 1;
 }

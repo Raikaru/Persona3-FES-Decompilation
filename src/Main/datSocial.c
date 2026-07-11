@@ -331,16 +331,14 @@ u8 FUN_00172750(const u8* data)
     return true;
 }
 
-// FUN_001727E0 NONMATCHING
+// FUN_001727E0
 void FUN_001727e0(void)
 {
-    u32 flags = *(u32*)D_0083A34C;
-    flags &= ~0x80;
-    flags &= ~0x100;
-    flags &= ~0x200;
-    flags &= ~0x400;
-    flags &= ~0x800;
-    *(u32*)D_0083A34C = flags;
+    ((u32*)D_0083A34C)[0] &= ~0x80;
+    ((u32*)D_0083A34C)[0] &= ~0x100;
+    ((u32*)D_0083A34C)[0] &= ~0x200;
+    ((u32*)D_0083A34C)[0] &= ~0x400;
+    ((u32*)D_0083A34C)[0] &= ~0x800;
 }
 
 // FUN_00172820
@@ -524,7 +522,6 @@ u8* FUN_00172e40(void)
     extern u8 D_00836498[];
     return D_00836498;
 }
-
 // FUN_00172E50 NONMATCHING
 void FUN_00172e50(s32 slot, u8 owner, s32 amount)
 {
@@ -533,7 +530,7 @@ void FUN_00172e50(s32 slot, u8 owner, s32 amount)
     K_ASSERT(remaining >= 0, 0xD87);
     if (slot >= 0x40 || slot < 0)
     {
-        K_ASSERT(0, 0xD8A);
+        K_Assert(__FILE__, 0xD8A);
     }
     if (D_008364F4[slot] != 1)
     {
@@ -544,11 +541,10 @@ void FUN_00172e50(s32 slot, u8 owner, s32 amount)
         {
             remaining = 9999999;
         }
-        K_ASSERT(remaining < 10000000, 0x68A);
+        K_ASSERT((u32)remaining <= 9999999u, 0x68A);
+        gGlobalWork.heroMoney = remaining;
     }
-    gGlobalWork.heroMoney = remaining;
 }
-
 // FUN_00172F70 NONMATCHING
 u8 FUN_00172f70(s32* outSlot)
 {

@@ -293,13 +293,13 @@ void hmallocPrepareTilePacket(u64 source, u64 owner, s32 tileIndex, s32 tileCoun
     func_004d5000((void*)0x846f00, 0x102);
 }
 
-// FUN_00191E60 NONMATCHING
+// FUN_00191E60
 static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
                                    s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                    s32 a9, s32 a10)
 {
-    hmallocEmitCommands(texture, packet, source, a3, a4, a5, a6, a7, a8,
-                         a9, a10);
+    hmallocEmitCommands(texture, packet, source, 0x400, a3, a4, a5, a6,
+                         a7, a8, a9);
 }
 
 // FUN_00191EC0 NONMATCHING
@@ -369,14 +369,14 @@ static void hmallocPackHeader(u64* out, u64 a1, u64 a2, u64 a3, u64 a4,
            ((a2 & 0xfffffffffffffff0ULL) << 0x20);
 }
 
-// FUN_001921D0 NONMATCHING
+// FUN_001921D0
 static void hmallocPackDescriptor(u32* out, u64 address, s32 a2, s32 a3,
                                    s32 a4, s32 a5, s32 a6, u32 a7)
 {
     out[0] = ((u32)a6 << 0xf) | a7;
-    out[1] = ((u32)a2 << 0x1c) | ((u32)a3 << 0x1a) |
-             ((u32)a5 << 0xe) | ((u32)a4 << 0xf);
-    out[2] = (u32)address;
+    out[1] = ((u32)a5 << 0xe) | ((u32)a4 << 0xf) |
+             ((u32)a3 << 0x1a) | ((u32)a2 << 0x1c);
+    out[2] = (u32)(address & 0xffffffffULL);
     out[3] = (u32)(address >> 0x20);
 }
 
@@ -400,19 +400,23 @@ static void hmallocWriteTile(u32* out, s64 a1, u32 image, s64 a3)
     out[3] = 0;
 }
 
-// FUN_00192310 NONMATCHING
+// FUN_00192310
 static void hmallocWriteScale(u32* out, u32 x, u32 y)
 {
-    out[0] = x;
-    out[1] = y;
+    u64 value;
+    value = ((u64)y << 0x20) | x;
+    out[0] = (u32)(value & 0xffffffffULL);
+    out[1] = (u32)(value >> 0x20);
     out[2] = 0x52;
     out[3] = 0;
 }
 
-// FUN_00192370 NONMATCHING
+// FUN_00192370
 static void hmallocWriteSolid(u32* out, u32 value)
 {
-    out[0] = value;
+    u64 packet;
+    packet = value;
+    out[0] = (u32)(packet & 0xffffffffULL);
     out[1] = 0;
     out[2] = 0x53;
     out[3] = 0;
