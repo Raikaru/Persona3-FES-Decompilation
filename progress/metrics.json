@@ -500,12 +500,16 @@
       "001922a0",
       "00192310",
       "00192370",
+      "001923b0",
       "00192480",
       "001924d0",
+      "00192570",
       "001926a0",
       "00192710",
+      "001927b0",
       "001928a0",
       "001928d0",
+      "00192980",
       "00192a70",
       "00192aa0",
       "00192db0",
@@ -582,6 +586,7 @@
       "00199080",
       "001990c0",
       "00199100",
+      "00199140",
       "00199360",
       "001993a0",
       "001993d0",
@@ -3103,11 +3108,11 @@
       "005a10e8",
       "005a10f8"
     ],
-    "count": 3035,
+    "count": 3040,
     "duplicate_rows": 0,
     "known_rows": 13591,
-    "matched_body_bytes": 265080,
-    "percent": 22.331,
+    "matched_body_bytes": 266584,
+    "percent": 22.368,
     "unique_known_addresses": 13591
   },
   "schema_version": 1,
@@ -3115,11 +3120,11 @@
     "ignored_unknown_rows": 0,
     "linked_report": "build\\linked_report.json",
     "raw_rows": 13591,
-    "verifier_report": "build\\verify_report.json"
+    "verifier_report": "build\\verify_kernel_batch.json"
   },
   "status_counts": {
-    "MATCH": 3035,
-    "NONMATCHING": 10556
+    "MATCH": 3040,
+    "NONMATCHING": 10551
   },
   "total": 13591
 }
