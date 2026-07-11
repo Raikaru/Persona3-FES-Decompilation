@@ -2270,13 +2270,15 @@ s32 func_001d3830(KwlnTask* task)
     return -1;
 }
 
-// FUN_001d38a0 NONMATCHING
+// FUN_001d38a0
 s32 func_001d38a0(KwlnTask* task)
 {
+    s32* work;
     s32 remaining;
 
-    remaining = *(s32*)((u8*)task->workData + 0x0c) -
-                (s32)(*(u32*)((u8*)task->workData + 0x10) / 0x1e);
+    work = (s32*)task->workData;
+    remaining = work[3];
+    remaining -= (s32)((u32)work[4] / 0x1e);
     return remaining < 0 ? 0 : remaining;
 }
 

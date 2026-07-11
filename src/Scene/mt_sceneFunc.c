@@ -3491,7 +3491,7 @@ void FUN_003bb9b0(float *param_1)
 }
 #define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
 #undef FUN_003bba70
-// FUN_003BBA70 NONMATCHING
+// FUN_003BBA70
 
 
 void FUN_003bba70(int param_1)
@@ -3500,7 +3500,7 @@ void FUN_003bba70(int param_1)
 
 {
 
-  FUN_003bb9b0(param_1 + 0x10);
+  (FUN_003bb9b0)((float *)(param_1 + 0x10));
 
   return;
 
