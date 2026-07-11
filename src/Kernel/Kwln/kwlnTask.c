@@ -771,32 +771,54 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
                                          KwlnTaskDestroyFunc destroy, 
                                          void* workData)
 {
-    KwlnTask* task;
-    KwlnTask* currParent;
     u32 maxPriority;
+    KwlnTask* currParent;
+    u32 priorityLimit;
+    u32 currPriority;
+    KwlnTask* task;
 
     currParent = parentTask;
-    if (parentTask != NULL)
+    if (currParent != NULL)
     {
-        maxPriority = 0;
-        while (currParent != NULL)
-        {
-            if (priority <= currParent->priority &&
-               (currParent->priority < priority + 1024) &&
-               (maxPriority < currParent->priority))
-            {
-                maxPriority = currParent->priority;
-            }
+        goto parentSetup;
+    }
+    goto createTask;
 
-            currParent = currParent->parent;
+parentSetup:
+    maxPriority = 0;
+    priorityLimit = priority + 1024;
+    while (currParent != NULL)
+    {
+        currPriority = currParent->priority;
+        if (currPriority < priority)
+        {
+            goto nextParent;
+        }
+        if (priorityLimit <= currPriority)
+        {
+            goto nextParent;
+        }
+        if (maxPriority >= currPriority)
+        {
+            goto nextParent;
         }
 
-        if (maxPriority != 0)
-        {
-            priority = maxPriority + 1;
-        }
+        maxPriority = currPriority;
+
+    nextParent:
+        currParent = currParent->parent;
     }
 
+    if (maxPriority != 0)
+    {
+        goto adjustPriority;
+    }
+    goto createTask;
+
+adjustPriority:
+    priority = maxPriority + 1;
+
+createTask:
     task = kwlnTaskInit(name, priority, update, destroy, workData);
     kwlnTaskAddChild(parentTask, task);
 
