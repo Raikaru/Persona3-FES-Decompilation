@@ -1271,7 +1271,7 @@ void func_00191240(void)
     sMemcardFile = 0;
 }
 
-// FUN_00191260 NONMATCHING. Scan slot records until a valid card is found.
+// FUN_00191260. Scan slot records until a valid card is found.
 s32 func_00191260(void)
 {
     s32 cardMode;
@@ -1328,15 +1328,19 @@ state1:
             {
                 goto state1_error5a;
             }
-            if (cardCode == 0x6f)
+            switch (cardCode)
             {
-                goto state1_error5b;
+                case 0x6f:
+                    goto state1_error5b;
+                default:
+                    break;
             }
             goto state1_error9;
         }
         goto state1_card_error;
     }
     goto done;
+ 
 
 state1_error5b:
     return -5;
@@ -1353,27 +1357,31 @@ state1_error9:
     return -9;
 
 state1_card_error:
-    if (*D_00846EA0 != 2)
+    if (*D_00846EA0 == 2)
     {
-        return -1;
-    }
-    if (*D_00846EA8 < 0x4e)
-    {
+        if (*D_00846EA8 >= 0x4e)
+        {
+            if (sSlotScanDone != 0)
+            {
+                return 100;
+            }
+            sSlotScanResult = 100;
+            sMemcardSeqMode = 2;
+            goto done;
+        }
         sMemcardSeqMode = 2;
         goto done;
     }
-    if (sSlotScanDone != 0)
-    {
-        return 100;
-    }
-    sSlotScanResult = 100;
-    sMemcardSeqMode = 2;
-    goto done;
+    return -1;
 
 state2:
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        if (sMemcardAsync == 0)
+        if (sMemcardAsync != 0)
+        {
+            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+        }
+        else
         {
             if (sSlotScanMode == 0)
             {
@@ -1383,10 +1391,6 @@ state2:
             {
                 FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
             }
-        }
-        else
-        {
-            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
         }
         FUN_005137b8(sSocketNo, D_00846DA0, D_00846C80);
         sMemcardSeqMode = 3;
@@ -1416,9 +1420,12 @@ state3:
         {
             goto state3_error5c;
         }
-        if (cardCode == 0x9003)
+        switch (cardCode)
         {
-            goto state3_error5d;
+            case 0x9003:
+                goto state3_error5d;
+            default:
+                break;
         }
     }
     goto done;
@@ -1440,11 +1447,11 @@ state3_card2:
     }
     if (sSlotScanMode == 1)
     {
-        if (sSlotScanResult == 100)
+        if (sSlotScanResult != 100)
         {
-            return 100;
+            return -6;
         }
-        return -6;
+        return 100;
     }
     sMemcardFile = 0;
     sSlotScanMode = 1;
