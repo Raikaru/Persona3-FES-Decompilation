@@ -27,7 +27,7 @@ Persona 4 synchronization lane.
 | Artifact | State |
 | --- | --- |
 | Full retail ELF, rebuilt from split sources (`make` → `build/SLUS_216.21`) | **byte-identical** to retail (SHA-1 `3929cd7c…`) |
-| Functions in the executable | 13,586 |
+| Functions in the executable | 13,591 |
 | Function map (`config/symbol_addrs.txt`) | complete |
 | Decompiled to matching C | ongoing (see `make verify`) |
 
