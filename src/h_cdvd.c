@@ -446,8 +446,8 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     }
 
     i = 0;
-    cache = sCdvdCache;
     requestData = &cdvd->hasExternalMemory;
+    cache = sCdvdCache;
     for (; i < HCDVD_CACHE_MAX; i++)
     {
         if (cache[i].isValid && cache[i].requestData == requestData)
