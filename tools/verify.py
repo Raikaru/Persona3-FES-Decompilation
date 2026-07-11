@@ -129,12 +129,12 @@ class ObjectFile:
                         struct.unpack_from(self.endian + "IIIBBH", self.data, off)
                     syms.append(dict(
                         name=_cstr(blob, st_name) if st_name < len(blob) else "",
-                        value=st_value, size=st_size, shndx=st_shndx))
+                        value=st_value, size=st_size, shndx=st_shndx,
+                        info=st_info, bind=st_info >> 4, sym_type=st_info & 0xF))
                 self.symtabs[s["idx"]] = syms
                 self.symbols += syms
 
-    def function(self, name):
-        """-> (bytes, relocations) with reloc offsets relative to the symbol."""
+    def _function_record(self, name):
         cands = [s for s in self.symbols
                  if s["name"] == name and s["size"] and s["shndx"] not in (0, 0xFFF1)]
         if not cands:
@@ -154,12 +154,44 @@ class ObjectFile:
                     if sym["value"] <= r_offset < sym["value"] + sym["size"]:
                         rtype = r_info & 0xFF
                         symidx = r_info >> 8
+                        target = syms[symidx] if symidx < len(syms) else {}
                         rels.append(dict(
                             offset=r_offset - sym["value"],  # symbol-relative
                             r_type=rtype,
                             type=R_MIPS_NAMES.get(rtype, str(rtype)),
-                            symbol=syms[symidx]["name"] if symidx < len(syms) else None))
-        return body, rels
+                            symbol=target.get("name"),
+                            symbol_record=target,
+                            symbol_index=symidx))
+        return dict(symbol=sym, section=sec, body=body, rels=rels)
+
+    def function(self, name):
+        """-> (bytes, relocations) with reloc offsets relative to the symbol."""
+        record = self._function_record(name)
+        return record["body"], record["rels"]
+
+    def function_record(self, name):
+        """-> function metadata used when checking compiler-owned data."""
+        return self._function_record(name)
+
+    def section_reloc_records(self, target_idx):
+        """Return all SHT_REL records targeting an object section."""
+        out = []
+        for relsec in self.sh:
+            if relsec["type"] != 9 or relsec["info"] != target_idx:
+                continue
+            syms = self.symtabs.get(relsec["link"], ())
+            ents = relsec["entsize"] or 8
+            for j in range(relsec["size"] // ents):
+                offset, info = struct.unpack_from(
+                    self.endian + "II", self.data, relsec["offset"] + j * ents)
+                symidx = info >> 8
+                target = syms[symidx] if symidx < len(syms) else {}
+                out.append(dict(
+                    offset=offset, r_type=info & 0xFF,
+                    type=R_MIPS_NAMES.get(info & 0xFF, str(info & 0xFF)),
+                    symbol=target.get("name"), symbol_record=target,
+                    symbol_index=symidx))
+        return out
 
 
 class RetailElf:
@@ -250,6 +282,221 @@ def sanitize_c_lines(lines):
             state = "code"
         escaped = False
     return out_lines
+
+
+def _is_owned_data_section(section):
+    """Compiler-owned bytes: allocatable, non-executable object data."""
+    return (
+        section.get("type") in (1, 8) and section.get("size", 0)
+        and section.get("flags", 0) & 0x2
+        and not section.get("flags", 0) & 0x4
+    )
+
+
+def _s16(value):
+    value &= 0xFFFF
+    return value - 0x10000 if value & 0x8000 else value
+
+
+def _section_bytes(obj, section):
+    if section.get("type") == 8:  # SHT_NOBITS has no file image.
+        return bytes(section.get("size", 0))
+    start = section.get("offset", 0)
+    return obj.data[start:start + section["size"]]
+
+
+def _u32(data, offset, endian="<"):
+    if offset < 0 or offset + 4 > len(data):
+        return None
+    return struct.unpack_from(endian + "I", data, offset)[0]
+
+
+def _function_metadata(obj, name):
+    if hasattr(obj, "function_record"):
+        return obj.function_record(name)
+    body, rels = obj.function(name)
+    symbols = [s for s in obj.symbols
+               if s.get("name") == name and s.get("size")
+               and s.get("shndx") not in (0, 0xFFF1)]
+    if not symbols:
+        raise KeyError(name)
+    symbol = symbols[0]
+    sections = {s["idx"]: s for s in obj.sh}
+    return dict(symbol=symbol, section=sections[symbol["shndx"]],
+                body=body, rels=rels)
+
+
+def _section_reloc_records(obj, target_idx):
+    if hasattr(obj, "section_reloc_records"):
+        return obj.section_reloc_records(target_idx)
+    records = []
+    for relsec in obj.sh:
+        if relsec.get("type") != 9 or relsec.get("info") != target_idx:
+            continue
+        syms = obj.symtabs.get(relsec.get("link"), ())
+        ents = relsec.get("entsize") or 8
+        for index in range(relsec.get("size", 0) // ents):
+            offset, info = struct.unpack_from(
+                getattr(obj, "endian", "<") + "II", obj.data,
+                relsec["offset"] + index * ents)
+            symidx = info >> 8
+            target = syms[symidx] if symidx < len(syms) else {}
+            records.append(dict(
+                offset=offset, r_type=info & 0xFF,
+                type=R_MIPS_NAMES.get(info & 0xFF, str(info & 0xFF)),
+                symbol=target.get("name"), symbol_record=target,
+                symbol_index=symidx))
+    return records
+
+
+def _record_symbol(obj, record):
+    """Recover a relocation's full symbol record for lightweight test objects."""
+    target = record.get("symbol_record")
+    if target:
+        return target
+    name = record.get("symbol")
+    if not name:
+        return {}
+    return next((s for s in obj.symbols if s.get("name") == name), {})
+
+
+def _candidate_text_bases(obj, fn, candidate_addr, marker_addrs):
+    """Recover candidate addresses for text symbols in this object."""
+    section = fn["section"]
+    bases = {section["idx"]: candidate_addr - fn["symbol"]["value"]}
+    if not marker_addrs:
+        return bases
+    text_indices = {s["idx"] for s in obj.sh if s.get("flags", 0) & 0x4}
+    votes = {}
+    for symbol in obj.symbols:
+        name = symbol.get("name")
+        if not name or name not in marker_addrs or not symbol.get("size"):
+            continue
+        shndx = symbol.get("shndx")
+        if shndx in text_indices:
+            votes.setdefault(shndx, set()).add(marker_addrs[name] - symbol["value"])
+    for shndx, values in votes.items():
+        if len(values) == 1:
+            bases[shndx] = next(iter(values))
+    return bases
+
+
+def _recover_data_bases(obj, fn, body, rels, retail_win):
+    """Recover directly referenced data-section bases from code relocations."""
+    data_indices = {s["idx"] for s in obj.sh if _is_owned_data_section(s)}
+    votes = {}
+    pending = {}
+    endian = getattr(obj, "endian", "<")
+    for record in rels:
+        target = _record_symbol(obj, record)
+        shndx = target.get("shndx")
+        if shndx not in data_indices:
+            continue
+        offset = record.get("offset", -1)
+        rtype = record.get("r_type")
+        if offset < 0 or offset + 4 > len(body) or offset + 4 > len(retail_win):
+            continue
+        key = (shndx, target.get("name"), target.get("value", 0))
+        candidate_word = _u32(body, offset, endian)
+        retail_word = _u32(retail_win, offset, endian)
+        if candidate_word is None or retail_word is None:
+            continue
+        if rtype == 2:
+            base = retail_word - candidate_word - target.get("value", 0)
+            votes.setdefault(shndx, set()).add(base)
+        elif rtype == 5:
+            pending.setdefault(key, []).append((candidate_word, retail_word))
+        elif rtype == 6 and pending.get(key):
+            candidate_hi, retail_hi = pending[key].pop(0)
+            candidate_value = ((candidate_hi & 0xFFFF) << 16) + _s16(candidate_word)
+            retail_value = ((retail_hi & 0xFFFF) << 16) + _s16(retail_word)
+            base = retail_value - candidate_value - target.get("value", 0)
+            votes.setdefault(shndx, set()).add(base)
+    return {
+        shndx: next(iter(values))
+        for shndx, values in votes.items() if len(values) == 1
+    }
+
+
+def _owned_data_ranges(obj, section, referenced):
+    """Return byte ranges reached by the function's data symbols."""
+    section_size = section.get("size", 0)
+    all_starts = sorted({
+        symbol.get("value", 0)
+        for symbol in obj.symbols
+        if symbol.get("shndx") == section.get("idx")
+    })
+    ranges = []
+    for symbol in referenced:
+        start = symbol.get("value", 0)
+        if symbol.get("size", 0):
+            end = start + symbol["size"]
+        else:
+            following = [value for value in all_starts if value > start]
+            end = min(following) if following else section_size
+        ranges.append((start, end))
+    return ranges
+
+
+def compare_owned_data_relocations(obj, name, candidate_addr, retail,
+                                   marker_addrs=None):
+    """Compare function-owned R_MIPS_32 table entries after local relocation.
+
+    Only data sections directly referenced by the target function are
+    considered. Undefined/external targets remain handled by the ordinary
+    function relocation mask.
+    """
+    fn = _function_metadata(obj, name)
+    body, rels = fn["body"], fn["rels"]
+    sections = {s["idx"]: s for s in obj.sh}
+    data_indices = {s["idx"] for s in obj.sh if _is_owned_data_section(s)}
+    referenced = {}
+    for record in rels:
+        target = _record_symbol(obj, record)
+        shndx = target.get("shndx")
+        if shndx in data_indices:
+            referenced.setdefault(shndx, []).append(target)
+    if not referenced:
+        return 0, []
+    retail_win = retail.bytes_at(candidate_addr, len(body))
+    text_bases = _candidate_text_bases(
+        obj, fn, candidate_addr, marker_addrs or {})
+    data_bases = _recover_data_bases(obj, fn, body, rels, retail_win)
+    diffs = []
+    for shndx, symbols in referenced.items():
+        if shndx not in data_bases:
+            continue
+        section = sections[shndx]
+        ranges = _owned_data_ranges(obj, section, symbols)
+        raw = _section_bytes(obj, section)
+        for record in _section_reloc_records(obj, shndx):
+            if record.get("r_type") != 2:
+                continue
+            offset = record.get("offset", -1)
+            if offset < 0 or offset + 4 > len(raw):
+                continue
+            if not any(start <= offset and (end is None or offset + 4 <= end)
+                       for start, end in ranges):
+                continue
+            target = _record_symbol(obj, record)
+            target_section = target.get("shndx")
+            if target_section not in text_bases:
+                continue  # legitimate external relocation
+            candidate_target = text_bases[target_section] + target.get("value", 0)
+            candidate_word = _u32(raw, offset, getattr(obj, "endian", "<"))
+            if candidate_word is None:
+                continue
+            linked_word = (candidate_target + candidate_word) & 0xFFFFFFFF
+            try:
+                retail_data = retail.bytes_at(data_bases[shndx] + offset, 4)
+            except (KeyError, ValueError, IndexError):
+                continue
+            retail_word = _u32(retail_data, 0, getattr(obj, "endian", "<"))
+            if retail_word is None or linked_word != retail_word:
+                diffs.append(dict(section=section.get("name", str(shndx)),
+                                  section_index=shndx, offset=offset,
+                                  candidate=linked_word, retail=retail_word))
+    return len(diffs), diffs
 
 
 def scan_markers(cpath):
@@ -391,6 +638,7 @@ def verify_file(cpath, cfg, retail, boundaries, objdir):
                                 detail=proc.stdout.strip()[:400]))
         return results
     obj = ObjectFile(opath)
+    marker_addrs = {m["name"]: m["addr"] for m in markers if m["name"]}
     for mk in markers:
         entry = dict(file=str(rel), addr=f"{mk['addr']:08x}", name=mk["name"], line=mk["line"])
         if mk["stub"]:
@@ -416,10 +664,20 @@ def verify_file(cpath, cfg, retail, boundaries, objdir):
             continue
         win_bytes = retail.bytes_at(mk["addr"], window)
         ndiff, first = compare(body, rels, win_bytes)
+        try:
+            owned_diff, owned_details = compare_owned_data_relocations(
+                obj, mk["name"], mk["addr"], retail, marker_addrs)
+        except (KeyError, IndexError, ValueError, struct.error):
+            # A section without a deterministic retail placement is not a
+            # reason to reject an otherwise ordinary function relocation.
+            owned_diff, owned_details = 0, []
+        ndiff += owned_diff
         tail = win_bytes[len(body):]
         entry["object_size"] = len(body)
         entry["window"] = window
         entry["normalized_diff"] = ndiff
+        if owned_details:
+            entry["owned_relocation_diffs"] = owned_details
         if ndiff or len(body) > window or any(tail):
             wrong_size = not ndiff
             if mk["nonmatching"]:

@@ -5,24 +5,26 @@
 // FUN_00100230 NONMATCHING
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 {
-    // TODO: fix stack frame (should be 0x30 instead of 0x20)
-
+    RwRenderStateSetFunc* setRenderState;
     HCursorWork* work;
     RwIm2DVertex* vertex;
+    RwRGBA* color;
     f32 recipZ;
     f32 zBufferNear;
     s16 i;
 
     work = (HCursorWork*)hcursorTask->workData;
 
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDDESTCOLOR);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERLINEAR);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+    setRenderState = &rwGlobals.device.setRenderState;
+
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESRCBLEND, (void*)rwBLENDSRCALPHA);
+    (*setRenderState)(rwRENDERSTATEDESTBLEND, (void*)rwBLENDDESTCOLOR);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERLINEAR);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
 
     if (!work->shouldDraw)
     {
@@ -35,17 +37,18 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            zBufferNear = RwIm2DGetNearScreenZ(); // TODO: only 'lui v0, %hi(...)' instead of loading zBufferNear
+            zBufferNear = RwIm2DGetNearScreenZ();
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
+                color = &work->colors[i];
 
                 vertex->u.els.scrVertex.z = zBufferNear - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
-                vertex->u.els.color.r = (f32)work->colors[i].r;
-                vertex->u.els.color.g = (f32)work->colors[i].g;
-                vertex->u.els.color.b = (f32)work->colors[i].b;
-                vertex->u.els.color.a = (f32)work->colors[i].a;
+                vertex->u.els.color.r = (f32)color->r;
+                vertex->u.els.color.g = (f32)color->g;
+                vertex->u.els.color.b = (f32)color->b;
+                vertex->u.els.color.a = (f32)color->a;
             }
 
             work->vertices[0].u.els.scrVertex.x = work->pos.x;

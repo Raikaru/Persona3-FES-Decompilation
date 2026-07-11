@@ -75,7 +75,7 @@ u32 kwlnTaskExists();
 void FUN_00395350();
 void FUN_003952d0();
 int FUN_003951d0();
-int FUN_0038d6f0(short);
+u32 FUN_0038d6f0(short);
 int FUN_0036f500();
 u16 FUN_001752b0();
 void FUN_00172e50();
@@ -957,7 +957,7 @@ u32 scrComu00360ed0(int param_1)
 {
     char cVar1;
     u8 bVar2;
-    int sVar4;
+    u32 value;
     int lVar5;
     int flag;
     u32 result;
@@ -969,21 +969,26 @@ u32 scrComu00360ed0(int param_1)
         goto ReturnResult;
     }
     cVar1 = *(char*)(param_1 + 0xc);
-    if (cVar1 == 2) {
-        goto CheckFlagCondition;
+    if (cVar1 != 2) {
+        result = 1;
+        if (cVar1 == 1) {
+            goto CheckValueCondition;
+        }
+        if (cVar1 == 0) {
+            switch (cVar1) {
+            case 0:
+                goto ReturnResult;
+            default:
+                goto InvalidCondition;
+            }
+        }
+        goto InvalidCondition;
     }
-    result = 1;
-    if (cVar1 == 1) {
-        goto CheckValueCondition;
-    }
-    if (cVar1 == 0) {
-        goto ReturnResult;
-    }
-    goto InvalidCondition;
+    goto CheckFlagCondition;
 
 CheckValueCondition:
-    sVar4 = FUN_0038d6f0(*(short*)(param_1 + 8));
-    result = *(short*)(param_1 + 10) == sVar4;
+    value = FUN_0038d6f0(*(short*)(param_1 + 8));
+    result = *(short*)(param_1 + 10) == value;
     goto ReturnResult;
 
 CheckFlagCondition:
@@ -993,10 +998,30 @@ CheckFlagCondition:
         goto ReturnResult;
     }
     if (bVar2 == 2) {
-        flag = 0x1000;
-    } else if (bVar2 == 1) {
-        flag = 0x400;
+        goto SelectFlag2;
     }
+    if (bVar2 == 1) {
+        goto SelectFlag1;
+    }
+    if (bVar2 == 0) {
+        goto SelectFlag0;
+    }
+    goto SelectFlagDefault;
+
+SelectFlagDefault:
+    goto CheckFlagValue;
+
+SelectFlag0:
+    goto CheckFlagValue;
+
+SelectFlag1:
+    flag = 0x400;
+    goto CheckFlagValue;
+
+SelectFlag2:
+    flag = 0x1000;
+
+CheckFlagValue:
     if (*(short*)(param_1 + 10) == 0) {
         result = FUN_003951d0(*(short*)(param_1 + 8) + flag) == 0;
     } else {

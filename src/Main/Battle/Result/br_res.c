@@ -180,60 +180,113 @@ void brRes00233e70(void)
     sBrRes = NULL;
 }
 
-// FUN_00234070 NONMATCHING
+// FUN_00234070
 void brRes00234070(void)
 {
-    s32 i;
-    u32 size;
+    u32* work;
     void* data;
+    s32 i;
+    u32 flags;
+    u32 size;
 
     K_ASSERT(sBrRes != NULL, 0x52);
-    if (sBrRes[0] & 1) {
-        K_ASSERT((sBrRes[1] & 3) == 2, 0xea);
-        if (H_Cdvd_IsFileLoaded(sBrRes[3])) {
-            for (i = 0; i < 2; i++) {
-                data = H_Cdvd_ArchiveGetFile(sBrRes[3], i, &size);
-                sBrRes[i + 7] = bpTex0021c9f0(data);
+    work = sBrRes;
+    if (work[0] & 1) {
+        flags = work[1];
+        if (~flags & 1) {
+            K_ASSERT((~flags & 2) != 0, 0xea);
+            if (H_Cdvd_IsFileLoaded(work[3])) {
+                for (i = 0; i < 2; i++) {
+                    switch (i) {
+                    case 0:
+                        work[7] = bpTex0021c9f0(H_Cdvd_ArchiveGetFile(work[3], i, &size));
+                        work[1] |= 1;
+                        break;
+                    case 1:
+                        work[8] = bpTex0021c9f0(H_Cdvd_ArchiveGetFile(work[3], i, &size));
+                        work[1] |= 2;
+                        break;
+                    default:
+                        K_ASSERT(0, 0xfe);
+                    }
+                }
+                H_Cdvd_Destroy(work[3]);
             }
-            sBrRes[1] |= 3;
-            H_Cdvd_Destroy(sBrRes[3]);
-            sBrRes[0] &= ~1;
+        } else {
+            K_ASSERT((flags & 1) && (flags & 2), 0x109);
+        }
+        if ((work[1] & 1) && (work[1] & 2)) {
+            work[0] &= ~1;
         }
     }
-    if (sBrRes[0] & 2) {
-        if (H_Cdvd_IsFileLoaded(sBrRes[4])) {
-            for (i = 0; i < 5; i++) {
-                data = H_Cdvd_ArchiveGetFile(sBrRes[4], i, &size);
-                if (i < 2) {
-                    sBrRes[i + 9] = (u32)RwMalloc(size, 0x40000);
-                    memcpy((void*)sBrRes[i + 9], data, size);
-                } else if (i == 2) {
-                    brRes00234710(data, size);
-                } else {
-                    brRes00234690(i - 3, data);
-                }
+    if ((work[0] & 2) && H_Cdvd_IsFileLoaded(work[4])) {
+        for (i = 0; i < 5; i++) {
+            switch (i) {
+            case 0:
+            {
+                void* copy;
+                data = H_Cdvd_ArchiveGetFile(work[4], i, &size);
+                copy = (*(void* (**)(u32, u32))0x00960178)(size, 0x40000);
+                work[9] = (u32)copy;
+                memcpy(copy, data, *(volatile u32*)&size);
+                break;
             }
-            sBrRes[1] |= 4;
-            H_Cdvd_Destroy(sBrRes[4]);
-            sBrRes[0] &= ~2;
+            case 1:
+            {
+                void* copy;
+                data = H_Cdvd_ArchiveGetFile(work[4], i, &size);
+                copy = (*(void* (**)(u32, u32))0x00960178)(size, 0x40000);
+                work[10] = (u32)copy;
+                memcpy(copy, data, *(volatile u32*)&size);
+                break;
+            }
+            case 2:
+                brRes00234710(H_Cdvd_ArchiveGetFile(work[4], i, &size), *(volatile u32*)&size);
+                break;
+            case 3:
+                brRes00234690(0, H_Cdvd_ArchiveGetFile(work[4], i, &size));
+                break;
+            case 4:
+                brRes00234690(1, H_Cdvd_ArchiveGetFile(work[4], i, &size));
+                break;
+            default:
+                K_ASSERT(0, 0x132);
+            }
         }
+        work[1] |= 4;
+        H_Cdvd_Destroy(work[4]);
+        work[0] &= ~2;
     }
-    if (sBrRes[0] & 4) {
-        if (H_Cdvd_IsFileLoaded(sBrRes[5])) {
-            for (i = 0; i < 6; i++) {
-                data = H_Cdvd_ArchiveGetFile(sBrRes[5], i, &size);
-                if (i == 1 || i == 2) {
-                    sBrRes[i + 0x11] = bpTexCreateTmxRaster(data);
-                } else if (i == 0) {
-                    sBrRes[0xe] = bpTex0021c9f0(data);
-                } else {
-                    sBrRes[i + 0xc] = bpTex0021c9f0(data);
-                }
+    if ((work[0] & 4) && H_Cdvd_IsFileLoaded(work[5])) {
+        for (i = 0; i < 6; i++) {
+            void* archiveData;
+            archiveData = H_Cdvd_ArchiveGetFile(work[5], i, &size);
+            switch (i) {
+            case 0:
+                work[0xe] = bpTex0021c9f0(archiveData);
+                break;
+            case 1:
+                work[0x12] = bpTexCreateTmxRaster(archiveData);
+                break;
+            case 2:
+                work[0x13] = bpTexCreateTmxRaster(archiveData);
+                break;
+            case 4:
+                work[0xf] = bpTex0021c9f0(archiveData);
+                break;
+            case 5:
+                work[0x10] = bpTex0021c9f0(archiveData);
+                break;
+            case 3:
+                work[0x11] = bpTex0021c9f0(archiveData);
+                break;
+            default:
+                K_ASSERT(0, 0x159);
             }
-            sBrRes[1] |= 0x10;
-            H_Cdvd_Destroy(sBrRes[5]);
-            sBrRes[0] &= ~4;
         }
+        H_Cdvd_Destroy(work[5]);
+        work[1] |= 0x10;
+        work[0] &= ~4;
     }
 }
 

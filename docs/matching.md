@@ -92,6 +92,12 @@ executable-percent metric.
   tests a higher case first, no switch or if-chain reproduces it (op_root 265f80: mwcc 8/9/0x11,
   retail 0x11/9/8). When retail *does* check the lowest case first, `switch (e) { case a: case b: ... }`
   reproduces its `beq→body` dispatch with a deferred default.
+- **A matching function body does not prove a matching switch table.** mwcc emits local-label
+  `R_MIPS_32` relocations for jump-table entries in `.rodata`; relocation masking can therefore hide
+  a permutation of otherwise byte-identical case bodies. `tools/verify.py` compares resolvable
+  function-owned table targets, and `tools/build.py` additionally requires compiler-owned data
+  sections to materialize byte-identically before linking a translation unit. `br_res` 234070 exposed
+  this: reordering the source cases changed only the table addends and restored retail identity.
 
 ## Loops
 
@@ -126,6 +132,11 @@ executable-percent metric.
 - **Use a fresh temp for a final one-shot result.** If a handle lives in a callee-saved reg across
   several calls, reassigning that same variable for the last call forces a `move s,v0`; assign the
   last result to a *different* short-lived local so it stays in `$v0` (sfl_psel 260a50).
+- **A volatile lvalue can delay an address calculation across a call.** When retail calls a size
+  helper before materializing the destination address, but mwcc hoists the destination arithmetic,
+  cast the final lvalue—not the stored value—to `volatile`. This keeps the observable store while
+  preventing the compiler from scheduling its address calculation before the call (`br_res`
+  234070).
 - **Declaration order sets callee-saved allocation.** Natural declaration order (not reverse) tends to
   reproduce retail's `s0/s1` assignment (sfl_result 1f9800). A **param vs surviving-local** fight over
   `s0` is generally a wall (bpRootCreateTasks, several camp creates — permuter-confirmed).
@@ -215,6 +226,25 @@ source changes it; the operand registers are fixed by allocation. Drop when only
   update,destroy,workData)` + field inits + `if (x==NULL) return NULL;`. `destroy` = conditional frees
   + `RwFree(workData)`. Destroys almost always match; a `create` with a call *after* the create hits
   the param-vs-local `s0` wall.
+
+## Deterministically classified compiler walls
+
+Keep the best source and reducer evidence when the remaining mismatch is proven compiler behavior:
+
+- `scrComu00360ed0`: 356-byte object body, 47 differing words. Empty/default-zero CFG blocks collapse
+  at `codegen_entry`; explicit zero stores change semantics and move farther from retail.
+- `FUN_00199140` (`kwlnRoot.c`): 540-byte body, 9 differing words. A forced lifetime split diverges at
+  `codegen_entry` in the wrong direction; the direct float assignment is the best form.
+- `H_Cursor_UpdateTask`: 828-byte object body versus an 832-byte retail window, 54 differing words.
+  Scope/reload variants trigger LICM, grow the body, and worsen the diff.
+- `FUN_00251a80` (`bp_tuta.c`): exact 912-byte body size, 11 differing words. Global and local selector
+  forms produce identical semantic PCode and final object bytes.
+- `bppPanelDrawParameterLayout`: 2328-byte object body versus 2288 retail bytes, 492 differing words.
+  Literal, pointer-local, and per-case dispatch forms are identical; an extern-object form changes
+  codegen but gives the wrong GP-relative semantics.
+
+The focused reducers live in the sibling `mwccps2-debugger/experiments/p3_*` directories. Revisit
+these functions only when a reducer identifies a new source-level lever or a compiler-stage fix.
 
 ## Known walls (mark NONMATCHING, do not fight)
 

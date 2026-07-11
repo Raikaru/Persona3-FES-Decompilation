@@ -394,13 +394,15 @@ static u32 CodeFunc_Goto(ScrData* scr)
     return CODEFUNC_NEXTINSTR;
 }
 
-// FUN_0035d350 NONMATCHING
+// FUN_0035d350
 static void scrOperation(ScrData* scr, u32 type)
 {
+    s32 sp;
     K_ASSERT(scr->sp >= 2, 441);
+    sp = scr->sp;
 
-    sOpLeftType = scr->stackTypes[scr->sp - 1];
-    sOpRightType = scr->stackTypes[scr->sp - 2];
+    sOpLeftType = scr->stackTypes[sp - 1];
+    sOpRightType = scr->stackTypes[sp - 2];
 
     // int
     if ((sOpLeftType == SCR_STACK_TYPE_INTEGER || sOpLeftType == 2) &&

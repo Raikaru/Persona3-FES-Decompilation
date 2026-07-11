@@ -10,7 +10,6 @@ extern u32 FUN_00195750(void);
 extern void FUN_001a8910(u32 param);
 extern u32 gUnk_008668f0[];
 
-static KwlnTask* sDraw3DTask; // 007ce134. Task name = "3D Draw"
 
 // FUN_00199520
 void* K_SPipe_Update3DDrwBeginTask(KwlnTask* draw3DBeginTask)

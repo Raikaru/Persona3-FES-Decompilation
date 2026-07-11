@@ -396,7 +396,6 @@ void* FUN_00199140(KwlnTask* showRasterTask)
     u32 allocationSize;
     u32 currentCount;
     s32 delta;
-
     sShowRasterResult = (u32)func_004c4d20();
 
     if (sShowRasterUpdatePending == 1)
@@ -404,7 +403,7 @@ void* FUN_00199140(KwlnTask* showRasterTask)
         camera = kwlnGetMainCamera();
         raster = camera->frameBuffer;
         oldPixels = raster->cpPixels;
-        allocationSize = (raster->depth >> 3) * raster->width * raster->height;
+        allocationSize = raster->width * raster->height * (raster->depth >> 3);
         newPixels = (RwUInt8*)KWLN_ALLOC2(allocationSize, 0x40000);
         if (newPixels != NULL)
         {
@@ -430,25 +429,22 @@ void* FUN_00199140(KwlnTask* showRasterTask)
     currentCount = Y_Misc_GetT0Count();
     sShowRasterCurrentCount = currentCount;
     delta = (s32)(currentCount - gT0CountVal);
-    if (delta >= 0)
     {
-        sShowRasterDelta = (f32)delta;
-    }
-    else
-    {
-        u32 halfDelta = ((u32)delta >> 1) | ((u32)delta & 1);
-        sShowRasterDelta = (f32)(s32)halfDelta * 2.0f;
+        f32 deltaFloat;
+
+        if (delta >= 0)
+        {
+            deltaFloat = (f32)delta;
+        }
+        else
+        {
+            deltaFloat = (f32)(s32)(((u32)delta >> 1) | ((u32)delta & 1));
+            deltaFloat += deltaFloat;
+        }
+        sShowRasterDelta = deltaFloat;
     }
 
-    if ((s32)currentCount >= 0)
-    {
-        sShowRasterCurrent = (f32)(s32)currentCount;
-    }
-    else
-    {
-        u32 halfCount = (currentCount >> 1) | (currentCount & 1);
-        sShowRasterCurrent = (f32)(s32)halfCount * 2.0f;
-    }
+    sShowRasterCurrent = (f32)currentCount;
 
     sShowRasterPercent = (sShowRasterDelta / 520.0f) * 100.0f;
     DPUT_T0_COUNT(0);
