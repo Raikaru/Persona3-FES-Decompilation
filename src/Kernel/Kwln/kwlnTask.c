@@ -378,7 +378,7 @@ void kwlnTaskDestroyHierarchy(KwlnTask* task)
     }
 }
 
-// FUN_00194280 NONMATCHING. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately
+// FUN_00194280. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately
 void kwlnTaskDestroy(KwlnTask* task)
 {
     u32 state;
@@ -387,36 +387,39 @@ void kwlnTaskDestroy(KwlnTask* task)
 
     switch (state)
     {
+        case KWLNTASK_STATE_STAGED:
+        case KWLNTASK_STATE_RUNNING:
+            goto destroyTask;
+
         case KWLNTASK_STATE_DESTROY: return;
         case KWLNTASK_STATE_NULL:
+        default:
             printf("Process stat Invalid!!\n");
             K_ASSERT(false, 574);
             break;
+    }
+    return;
 
-        case KWLNTASK_STATE_STAGED:
-        case KWLNTASK_STATE_RUNNING:
-            kwlnTaskRemoveFromList(task);
-            KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
-            kwlnTaskAddToList(task);
+destroyTask:
+    kwlnTaskRemoveFromList(task);
+    KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
+    kwlnTaskAddToList(task);
 
-            if (task->destroyDelay == 0)
-            {
-                kwlnTaskRemoveFromList(task);
-                if (task->destroy != NULL)
-                {
-                    task->destroy(task);
-                }
+    if (task->destroyDelay == 0)
+    {
+        kwlnTaskRemoveFromList(task);
+        if (task->destroy != NULL)
+        {
+            task->destroy(task);
+        }
 
-                KWLNTASK_RESET_STATE(task);
+        KWLNTASK_RESET_STATE(task);
 
-                kwlnTaskDetachParent(task);
-                kwlnTaskDetachAllChildren(task);
-                H_Free(task);
-            }
-            break;
+        kwlnTaskDetachParent(task);
+        kwlnTaskDetachAllChildren(task);
+        H_Free(task);
     }
 }
-
 // FUN_001943B0 NONMATCHING. Set task flags recursively through the child hierarchy.
 void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 {
@@ -631,10 +634,9 @@ void kwlnTaskPrintTrees()
     KwlnTask* currTask;
 
     printf("<<< process tree >>>\n");
-
     i = 0;
-    space = ' ';
     indent = sPrintIndent;
+    space = ' ';
     for (; i < 64; i++)
     {
         indent[i] = (char)space;
@@ -763,8 +765,8 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
                                          KwlnTaskDestroyFunc destroy, 
                                          void* workData)
 {
-    KwlnTask* currParent;
     KwlnTask* task;
+    KwlnTask* currParent;
     u32 maxPriority;
 
     currParent = parentTask;
@@ -1049,13 +1051,13 @@ u32 kwlnTaskGetState(KwlnTask* task)
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
     KwlnTask* list;
+    s32 i;
+    s32 nameHash;
     KwlnTask* stagedList;
     KwlnTask* runningList;
     KwlnTask* destroyList;
-    s32 i;
     s32 j;
     s32 k;
-    s32 nameHash;
     
     list = NULL;
     nameHash = 0;
@@ -1110,11 +1112,11 @@ KwlnTask* kwlnTaskGetUpdating()
 // FUN_00195460 NONMATCHING. Return true if 'task' is in a list
 u32 kwlnTaskExists(KwlnTask* task)
 {
-    KwlnTask* currTask;
-    s32 i;
     KwlnTask* stagedList;
     KwlnTask* runningList;
     KwlnTask* destroyList;
+    s32 i;
+    KwlnTask* currTask;
 
     currTask = NULL;
     if (task == NULL)
@@ -1148,6 +1150,7 @@ u32 kwlnTaskExists(KwlnTask* task)
 
     return false;
 }
+
 
 // FUN_00195520
 u32 kwlnTaskGetTimer(KwlnTask* task)
@@ -1409,14 +1412,14 @@ typedef struct KwlnTaskCameraView
     u32 height;
 } KwlnTaskCameraView;
 
-static u32 sCameraViewWidth;          // 00847e98
-static u32 sCameraViewHeight;         // 00847e9c
-static u32 sCameraViewCacheOffsetX;   // 00847e90
-static u32 sCameraViewCacheOffsetY;   // 00847e94
-static u32 sCameraViewFallbackWidth;  // 00847ea8
-static u32 sCameraViewFallbackHeight; // 00847eac
-static u32 sCameraViewFallbackOffsetX;// 00847ea0
-static u32 sCameraViewFallbackOffsetY;// 00847ea4
+#define TASK_CAMERA_VIEW_WIDTH (*(u32*)(uintptr_t)0x00847e98)
+#define TASK_CAMERA_VIEW_HEIGHT (*(u32*)(uintptr_t)0x00847e9c)
+#define TASK_CAMERA_VIEW_CACHE_OFFSET_X (*(u32*)(uintptr_t)0x00847e90)
+#define TASK_CAMERA_VIEW_CACHE_OFFSET_Y (*(u32*)(uintptr_t)0x00847e94)
+#define TASK_CAMERA_VIEW_FALLBACK_WIDTH (*(u32*)(uintptr_t)0x00847ea8)
+#define TASK_CAMERA_VIEW_FALLBACK_HEIGHT (*(u32*)(uintptr_t)0x00847eac)
+#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_X (*(u32*)(uintptr_t)0x00847ea0)
+#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_Y (*(u32*)(uintptr_t)0x00847ea4)
 
 extern const void* func_004ca5b0(void);
 extern void func_004ca560(u32* output, const void* descriptor);
@@ -1433,8 +1436,11 @@ void func_00195980(f32 scale,
                    RwCamera* camera,
                    KwlnTaskCameraView* requestedView)
 {
-    u32 displayInfo[4];
-    KwlnTaskCameraView fallbackView;
+    union
+    {
+        u32 displayInfo[4];
+        KwlnTaskCameraView fallbackView;
+    } viewData;
     KwlnTaskCameraView* view;
     RwRaster* frameBuffer;
     RwRaster* zBuffer;
@@ -1447,39 +1453,39 @@ void func_00195980(f32 scale,
         return;
     }
 
-    if (sCameraViewWidth == 0 || sCameraViewHeight == 0)
+    if (TASK_CAMERA_VIEW_WIDTH == 0 || TASK_CAMERA_VIEW_HEIGHT == 0)
     {
-        sCameraViewCacheOffsetX = 0;
-        sCameraViewCacheOffsetY = 0;
-        sCameraViewWidth = camera->frameBuffer->width;
-        sCameraViewHeight = camera->frameBuffer->height;
+        TASK_CAMERA_VIEW_CACHE_OFFSET_X = 0;
+        TASK_CAMERA_VIEW_CACHE_OFFSET_Y = 0;
+        TASK_CAMERA_VIEW_WIDTH = camera->frameBuffer->width;
+        TASK_CAMERA_VIEW_HEIGHT = camera->frameBuffer->height;
     }
 
-    func_004ca560(displayInfo, func_004ca5b0());
+    func_004ca560(viewData.displayInfo, func_004ca5b0());
 
     if (requestedView == NULL)
     {
-        fallbackView.offset.x = 0;
-        fallbackView.offset.y = 0;
-        fallbackView.width = sCameraViewWidth;
-        fallbackView.height = sCameraViewHeight;
-        sCameraViewFallbackOffsetX = 0;
-        sCameraViewFallbackOffsetY = 0;
-        sCameraViewFallbackWidth = fallbackView.width;
-        sCameraViewFallbackHeight = fallbackView.height;
-        view = &fallbackView;
+        viewData.fallbackView.offset.x = 0;
+        viewData.fallbackView.offset.y = 0;
+        viewData.fallbackView.width = TASK_CAMERA_VIEW_WIDTH;
+        viewData.fallbackView.height = TASK_CAMERA_VIEW_HEIGHT;
+        TASK_CAMERA_VIEW_FALLBACK_OFFSET_X = 0;
+        TASK_CAMERA_VIEW_FALLBACK_OFFSET_Y = 0;
+        TASK_CAMERA_VIEW_FALLBACK_WIDTH = viewData.fallbackView.width;
+        TASK_CAMERA_VIEW_FALLBACK_HEIGHT = viewData.fallbackView.height;
+        view = &viewData.fallbackView;
     }
     else
     {
         view = (KwlnTaskCameraView*)requestedView;
     }
 
-    if ((displayInfo[3] & 1) != 0)
+    if ((viewData.displayInfo[3] & 1) != 0)
     {
         view->offset.x = 0;
         view->offset.y = 0;
-        view->width = displayInfo[0];
-        view->height = displayInfo[1];
+        view->width = viewData.displayInfo[0];
+        view->height = viewData.displayInfo[1];
     }
 
     if (view->width <= 0 || view->height <= 0)
@@ -1512,8 +1518,8 @@ void func_00195980(f32 scale,
             func_004cde90(newZBuffer);
         }
 
-        view->width = sCameraViewWidth;
-        view->height = sCameraViewHeight;
+        view->width = TASK_CAMERA_VIEW_WIDTH;
+        view->height = TASK_CAMERA_VIEW_HEIGHT;
         camera->frameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
         camera->zBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
         return;
@@ -1522,7 +1528,7 @@ void func_00195980(f32 scale,
     camera->frameBuffer = newFrameBuffer;
     camera->zBuffer = newZBuffer;
 
-    if ((displayInfo[3] & 1) == 0)
+    if ((viewData.displayInfo[3] & 1) == 0)
     {
         view->width = camera->frameBuffer->width;
         view->height = camera->frameBuffer->height;
@@ -1547,26 +1553,21 @@ void func_00195980(f32 scale,
     RwCameraSetViewWindow(camera, (RwV2d*)viewWindow);
 }
 
-// FUN_00195C80 NONMATCHING. Create a camera with frame and optional z-buffer rasters.
+// FUN_00195C80. Create a camera with frame and optional z-buffer rasters.
 RwCamera* func_00195c80(u32 width, u32 height, u32 createZBuffer)
 {
     RwCamera* camera;
     RwFrame* frame;
-    RwRaster* frameBuffer;
-    RwRaster* zBuffer;
 
     camera = func_004ca090();
     if (camera != NULL)
     {
-        frame = func_004caf10();
-        func_004d1840(camera, frame);
+        func_004d1840(camera, func_004caf10());
 
-        frameBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPECAMERA);
-        camera->frameBuffer = frameBuffer;
+        camera->frameBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPECAMERA);
         if (createZBuffer != 0)
         {
-            zBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPEZBUFFER);
-            camera->zBuffer = zBuffer;
+            camera->zBuffer = RwRasterCreate(width, height, 0, rwRASTERTYPEZBUFFER);
         }
 
         if (camera->object.object.parent != NULL &&
