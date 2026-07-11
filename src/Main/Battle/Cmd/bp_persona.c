@@ -10,7 +10,7 @@ u32 FUN_003c9850(u32 param_1, u32 param_2, u32 param_3, u32 param_4);
 void FUN_003c9b00(u32 param_1, u32 param_2, u32 param_3);
 void FUN_003c9cd0(u32 param_1, s64 param_2);
 void FUN_003c9d00(u32 param_1, u32 param_2);
-u16 FUN_001756f0(void);
+s32 FUN_001756f0(void);
 void FUN_003c9e00(u32 param_1, u32 param_2);
 
 
@@ -31,12 +31,11 @@ void bpPersona00266f00(void)
     }
     sBpPersona = NULL;
 }
-// FUN_00266F60 NONMATCHING
+// FUN_00266F60
 void bpPersona00266f60(u32 param_1)
 {
     u32* work;
     u32 persona;
-    u16 region;
 
     K_ASSERT(sBpPersona != NULL, 0x24);
     work = sBpPersona;
@@ -46,14 +45,13 @@ void bpPersona00266f60(u32 param_1)
     FUN_003c9b00(work[1], persona, 0);
     FUN_003c9cd0(work[1], (s64)-1);
     FUN_003c9d00(work[1], 8);
-    region = FUN_001756f0();
-    if (region < 2)
+    if ((u16)FUN_001756f0() > 1)
     {
-        FUN_003c9e00(work[1], 0);
+        FUN_003c9e00(work[1], 1);
     }
     else
     {
-        FUN_003c9e00(work[1], 1);
+        FUN_003c9e00(work[1], 0);
     }
     *work |= 2;
     *work |= 1;

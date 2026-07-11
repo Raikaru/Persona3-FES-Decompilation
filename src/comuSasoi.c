@@ -7,7 +7,7 @@ typedef u32 int3;
 extern u32 DAT_0095b790;
 extern u32 DAT_0095b794;
 extern u32 DAT_0095b798;
-extern u32 DAT_0095b7e0;
+extern u32 DAT_0095b7e0[];
 extern u32 DAT_0095be74;
 extern u32 LAB_003c29b0;
 extern u32 LAB_003c2c00;
@@ -156,7 +156,7 @@ u32 FUN_003c2630(u32 param_1,u64 param_2,u64 param_3)
 
   else {
 
-    DAT_0095b7e0 = iStack_4;
+    DAT_0095b7e0[0] = iStack_4;
 
     for (iVar5 = 0; iVar5 < iStack_4; iVar5 = iVar5 + 1) {
 
@@ -179,11 +179,11 @@ u32 FUN_003c2630(u32 param_1,u64 param_2,u64 param_3)
 }
 #define FUN_003c2630(...) ((u32 (*)(...))FUN_003c2630)(__VA_ARGS__)
 #undef FUN_003c2770
-// FUN_003C2770 NONMATCHING
+// FUN_003C2770
 
 u32 *FUN_003c2770(void)
 {
-  return (u32 *)0x0095b7e0;
+  return DAT_0095b7e0;
 }
 #define FUN_003c2770(...) ((u32 * (*)(...))FUN_003c2770)(__VA_ARGS__)
 #undef FUN_003c2780

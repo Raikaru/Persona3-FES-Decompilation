@@ -16,8 +16,8 @@ extern u32 DAT_0095b2a8;
 extern u32 DAT_0095b4f0;
 extern u32 DAT_0095b568;
 extern u32 DAT_0095b5e0;
-extern u32 DAT_0095b678;
-extern u32 DAT_0095b6a8;
+extern u32 DAT_0095b678[];
+extern u32 DAT_0095b6a8[];
 extern u32 DAT_0095b6ac;
 extern u32 DAT_0095b6c8;
 extern u32 DAT_0095b6cc;
@@ -200,19 +200,19 @@ void FUN_003bdbd0(int param_1)
 }
 #define FUN_003bdbd0(...) ((void (*)(...))FUN_003bdbd0)(__VA_ARGS__)
 #undef FUN_003bdd40
-// FUN_003BDD40 NONMATCHING
+// FUN_003BDD40
 
 u32 *FUN_003bdd40(void)
 {
-  return (u32 *)0x0095b678;
+  return DAT_0095b678;
 }
 #define FUN_003bdd40(...) ((u32 * (*)(...))FUN_003bdd40)(__VA_ARGS__)
 #undef FUN_003bdd50
-// FUN_003BDD50 NONMATCHING
+// FUN_003BDD50
 
 u32 *FUN_003bdd50(void)
 {
-  return (u32 *)0x0095b6a8;
+  return DAT_0095b6a8;
 }
 #define FUN_003bdd50(...) ((u32 * (*)(...))FUN_003bdd50)(__VA_ARGS__)
 #undef FUN_003bdd60
@@ -659,7 +659,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u64 param_5)
 
   cVar4 = FUN_0016dba0(uVar8);
 
-  iVar12 = DAT_0095b6a8;
+  iVar12 = DAT_0095b6a8[0];
 
   if (cVar4 < '\x01') {
 
@@ -925,7 +925,7 @@ LAB_003be5a0:
 
         for (iVar10 = 0; iVar10 < DAT_0095b6ac; iVar10 = iVar10 + 1) {
 
-          if (param_3 == *(u8 *)(DAT_0095b6a8 + iVar10 * 0x18)) {
+          if (param_3 == *(u8 *)(DAT_0095b6a8[0] + iVar10 * 0x18)) {
 
             if (0x1f < iVar9) break;
 

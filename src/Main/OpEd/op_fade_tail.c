@@ -798,7 +798,7 @@ u32 func_0027af80(void)
     return sOpTailC[0] & 1;
 }
 
-// FUN_0027afd0 NONMATCHING
+// FUN_0027afd0
 void func_0027afd0(void)
 {
     u32* work;
@@ -809,7 +809,7 @@ void func_0027afd0(void)
     func_00279ac0(work[3]);
     func_003afc30(6);
     func_003afc30(7);
-    work[1] &= ~2u;
+    work[1] &= ~1u;
 }
 
 // FUN_0027b070

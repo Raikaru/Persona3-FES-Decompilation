@@ -49,7 +49,7 @@ void dds3SetProcessWorkData(KwlnTask* task, void* workData)
 #include "Script/scrTraceCode.h"
 #include "Kosaka/k_assert.h"
 extern void scrSetIntReturnVal(s32 value);
-extern u64 FUN_003951d0(u64 value);
+extern s32 FUN_003951d0(s32 value);
 extern void FUN_00395170(u32 value);
 extern void FUN_003951a0(u32 value);
 
@@ -131,7 +131,7 @@ u64 FUN_0035aea0(void)
 
 }
 
-// FUN_0035AEB0 NONMATCHING
+// FUN_0035AEB0
 
 
 u32 FUN_0035aeb0(void)
@@ -140,7 +140,7 @@ u32 FUN_0035aeb0(void)
 
 {
 
-  u64 uVar1;
+  s32 uVar1;
 
   
 

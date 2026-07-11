@@ -77,7 +77,7 @@ void brPersona00264ef0(int param_1)
     uVar2 = FUN_001749a0(param_1);
     FUN_003c9b00(work[1], uVar2, 0);
 }
-// FUN_00264ca0 NONMATCHING
+// FUN_00264ca0
 u32 brPersona00264ca0(u32 personaId)
 {
     u32 table;
@@ -94,7 +94,6 @@ u32 brPersona00264ca0(u32 personaId)
         case 5: resource = 0x0f; break;
         default:
             K_ASSERT(false, 0x4a4);
-            return 0;
     }
     return FUN_0021cca0(table, resource);
 }

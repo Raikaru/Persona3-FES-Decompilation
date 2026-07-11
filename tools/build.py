@@ -198,23 +198,230 @@ def load_windows():
 DATA_SECTIONS = (".rodata", ".data", ".sdata", ".sbss", ".bss")
 
 
+def _is_owned_data_section(section):
+    """True for compiler-owned allocatable bytes (not executable text)."""
+    return (
+        section.get("type") in (1, 8)  # SHT_PROGBITS / SHT_NOBITS
+        and section.get("size", 0)
+        and section.get("flags", 0) & 0x2  # SHF_ALLOC
+        and not section.get("flags", 0) & 0x4  # SHF_EXECINSTR
+    )
+
+
 def _s16(x):
     x &= 0xFFFF
     return x - 0x10000 if x & 0x8000 else x
 
 
-def section_relocs(obj, target_idx):
-    """(offset, r_type, symbol_name) for relocations targeting a section."""
+def _s32(x):
+    x &= 0xFFFFFFFF
+    return x - 0x100000000 if x & 0x80000000 else x
+
+
+def section_reloc_records(obj, target_idx):
+    """Relocations targeting a section, including their symbol records."""
     out = []
     for s in obj.sh:
-        if s["type"] == 9 and s["info"] == target_idx:  # SHT_REL for this section
-            syms = obj.symtabs[s["link"]]
-            ent = s["entsize"] or 8
-            for j in range(s["size"] // ent):
-                ro, ri = struct.unpack_from("<II", obj.data, s["offset"] + j * ent)
-                nm = syms[ri >> 8]["name"] if (ri >> 8) < len(syms) else None
-                out.append((ro, ri & 0xFF, nm))
+        if s["type"] != 9 or s["info"] != target_idx:  # SHT_REL
+            continue
+        syms = obj.symtabs[s["link"]]
+        ent = s["entsize"] or 8
+        for j in range(s["size"] // ent):
+            ro, ri = struct.unpack_from("<II", obj.data, s["offset"] + j * ent)
+            symidx = ri >> 8
+            sym = syms[symidx] if symidx < len(syms) else {}
+            out.append(dict(offset=ro, r_type=ri & 0xFF, symbol=sym.get("name"),
+                            symbol_record=sym))
     return out
+
+
+def section_relocs(obj, target_idx):
+    """(offset, r_type, symbol_name) for relocations targeting a section."""
+    return [(r["offset"], r["r_type"], r["symbol"])
+            for r in section_reloc_records(obj, target_idx)]
+
+
+def recover_text_section_bases(obj, real):
+    """Recover linked addresses for executable sections from matched functions."""
+    import collections
+    votes = collections.defaultdict(set)
+    sections = {
+        s["idx"]: s for s in obj.sh
+        if s.get("type") == 1 and s.get("flags", 0) & 0x4
+    }
+    for marker in real:
+        candidates = [
+            sym for sym in obj.symbols
+            if sym["name"] == marker["name"]
+            and sym.get("size")
+            and sym.get("shndx") in sections
+        ]
+        for sym in candidates:
+            votes[sym["shndx"]].add(marker["addr"] - sym["value"])
+    bases = {
+        idx: next(iter(values))
+        for idx, values in votes.items() if len(values) == 1
+    }
+    # Linkers concatenate same-name sections with alignment.  Fill in
+    # unreferenced text sections from a section whose base was recovered.
+    by_name = collections.defaultdict(list)
+    for section in sections.values():
+        by_name[section.get("name", "")].append(section)
+    for secs in by_name.values():
+        secs.sort(key=lambda s: s["idx"])
+        offsets = []
+        off = 0
+        for section in secs:
+            align = section.get("addralign", 1) or 1
+            off = (off + align - 1) & ~(align - 1)
+            offsets.append(off)
+            off += section["size"]
+        group_bases = {
+            bases[section["idx"]] - offset
+            for section, offset in zip(secs, offsets)
+            if section["idx"] in bases
+        }
+        if len(group_bases) == 1:
+            base = next(iter(group_bases))
+            for section, offset in zip(secs, offsets):
+                bases.setdefault(section["idx"], base + offset)
+    return bases
+
+
+def _resolvable_info(resolvable):
+    """Return (known names, known absolute addresses) for reloc validation."""
+    names = set(resolvable)
+    addresses = {
+        name: value for name, value in resolvable.items()
+        if isinstance(value, int)
+    } if hasattr(resolvable, "items") else {}
+    if not addresses:
+        addresses.update(load_symbol_addr_map())
+    for path in (REPO / "config" / "symbols_recovered.txt",
+                 REPO / "undefined_syms_auto.txt",
+                 REPO / "undefined_funcs_auto.txt"):
+        if not path.is_file():
+            continue
+        for line in path.read_text().splitlines():
+            match = re.match(
+                r"\s*([A-Za-z_.$][\w.$]*)\s*=\s*(0x[0-9A-Fa-f]+|\d+)", line
+            )
+            if match and match.group(1) in names:
+                addresses.setdefault(match.group(1), int(match.group(2), 0))
+    return names, addresses
+
+
+def _placed_symbol_addresses(obj, placements, external):
+    """Map object symbols to their addresses after section placement."""
+    addresses = {}
+    for symbol in obj.symbols:
+        name = symbol.get("name")
+        if not name:
+            continue
+        shndx = symbol.get("shndx", 0)
+        if shndx in placements:
+            addresses.setdefault(name, placements[shndx] + symbol["value"])
+        elif shndx == 0xFFF1:  # SHN_ABS
+            addresses.setdefault(name, symbol["value"])
+        elif shndx == 0 and name in external:
+            addresses.setdefault(name, external[name])
+    return addresses
+
+
+def _relocated_section_bytes(obj, section, linked_addr, retail, placements, gp,
+                             external):
+    """Apply a section's SHT_REL records as mwldps2 will, then return its bytes."""
+    if section["type"] == 8:  # SHT_NOBITS
+        return bytes(section["size"])
+    start = section["offset"]
+    linked = bytearray(obj.data[start:start + section["size"]])
+    records = section_reloc_records(obj, section["idx"])
+    if not records:
+        return bytes(linked)
+    symbols = _placed_symbol_addresses(obj, placements, external)
+    for record in records:
+        if record["symbol"] not in symbols:
+            return None
+    endian = getattr(obj, "endian", "<")
+
+    def u16(offset):
+        return struct.unpack_from(endian + "H", linked, offset)[0]
+
+    def u32(offset):
+        return struct.unpack_from(endian + "I", linked, offset)[0]
+
+    def put16(offset, value):
+        struct.pack_into(endian + "H", linked, offset, value & 0xFFFF)
+
+    def put32(offset, value):
+        struct.pack_into(endian + "I", linked, offset, value & 0xFFFFFFFF)
+
+    for record in records:
+        offset, rtype = record["offset"], record["r_type"]
+        target = symbols[record["symbol"]]
+        if rtype == 2:  # R_MIPS_32: table entries and pointers
+            put32(offset, target + u32(offset))
+        elif rtype == 4:  # R_MIPS_26
+            word = u32(offset)
+            addend = (word & 0x03FFFFFF) << 2
+            put32(offset, (word & 0xFC000000) | ((target + addend) >> 2))
+        elif rtype == 5:  # R_MIPS_HI16 (pair with its following LO16)
+            word = u32(offset)
+            lo = next((
+                other for other in records
+                if other["offset"] > offset and other["r_type"] == 6
+                and other["symbol"] == record["symbol"]
+            ), None)
+            addend = (word & 0xFFFF) << 16
+            if lo is not None:
+                addend += _s16(u16(lo["offset"]))
+            put32(offset, (word & 0xFFFF0000)
+                   | ((target + addend + 0x8000) >> 16))
+        elif rtype == 6:  # R_MIPS_LO16
+            put32(offset, (u32(offset) & 0xFFFF0000)
+                   | (target + _s16(u16(offset))) & 0xFFFF)
+        elif rtype in (7, 8):  # GPREL16 / LITERAL
+            put16(offset, target + _s16(u16(offset)) - gp)
+        elif rtype == 12:  # R_MIPS_GPREL32
+            put32(offset, target + _s32(u32(offset)) - gp)
+        elif rtype == 1:  # R_MIPS_16
+            put16(offset, target + _s16(u16(offset)))
+        elif rtype == 3:  # R_MIPS_REL32
+            put32(offset, target + _s32(u32(offset)) - (linked_addr + offset))
+        else:
+            # Unknown data relocations are not safe to mask: reject the TU.
+            return None
+    return bytes(linked)
+def _find_retail_data_bases(obj, section, retail, placements, gp, external):
+    """Find unique retail placement for a section whose address is unreferenced."""
+    if section["type"] == 8 or not hasattr(retail, "segs"):
+        return []
+    if any(r["r_type"] == 3 for r in section_reloc_records(obj, section["idx"])):
+        return []  # R_MIPS_REL32 depends on the candidate address itself.
+    expected = _relocated_section_bytes(
+        obj, section, 0, retail, placements, gp, external
+    )
+    if expected is None:
+        return []
+    align = section.get("addralign", 1) or 1
+    candidates = []
+    for vaddr, offset, filesz in retail.segs:
+        blob = retail.data[offset:offset + filesz]
+        pos = blob.find(expected)
+        while pos >= 0:
+            address = vaddr + pos
+            if address % align == 0:
+                candidates.append(address)
+            pos = blob.find(expected, pos + 1)
+    return candidates
+
+
+def _section_relocates_at(obj, section, address, retail, placements, gp, external):
+    """Apply and compare one data section after all targets are placed."""
+    linked = _relocated_section_bytes(
+        obj, section, address, retail, placements, gp, external
+    )
+    return linked is not None and linked == retail.bytes_at(address, section["size"])
 
 
 def recover_section_bases(obj, real, retail, gp):
@@ -222,10 +429,12 @@ def recover_section_bases(obj, real, retail, gp):
     object's own data symbols). Only sections with a single consistent vote."""
     import collections
     sym = {}
-    for s in obj.symbols:
-        if s["name"]:
-            sym.setdefault(s["name"], (s.get("shndx", 0), s["value"]))
-    secname = {s["idx"]: s.get("name", "") for s in obj.sh}
+    for symbol in obj.symbols:
+        if symbol["name"]:
+            sym.setdefault(symbol["name"], (symbol.get("shndx", 0), symbol["value"]))
+    alloc_data = {
+        s["idx"] for s in obj.sh if _is_owned_data_section(s)
+    }
     votes = collections.defaultdict(collections.Counter)
     for m in real:
         try:
@@ -239,7 +448,7 @@ def recover_section_bases(obj, real, retail, gp):
             if not nm or nm not in sym or off + 4 > len(win):
                 continue
             shndx, stval = sym[nm]
-            if shndx == 0 or secname.get(shndx) not in DATA_SECTIONS:
+            if shndx == 0 or shndx not in alloc_data:
                 continue
             wc, wr = struct.unpack_from("<I", body, off)[0], struct.unpack_from("<I", win, off)[0]
             if t == 4:
@@ -257,61 +466,65 @@ def recover_section_bases(obj, real, retail, gp):
     return {idx: c.most_common(1)[0][0] for idx, c in votes.items() if len(c) == 1}
 
 
-def plan_data_sections(obj, real, retail, gp, resolvable):
-    """Decide whether all of a TU's owned data sections can be placed byte-exact.
-    Returns (ok, {section_name: (base, size)}).
+def plan_data_sections(obj, real, retail, gp, resolvable, resolvable_addrs=None):
+    """Place every compiler-owned allocatable data section byte-exactly.
 
-    mwldps2 concatenates same-name sections in object order, aligning each to its
-    addralign, so the region size is that simulated layout length -- not just the
-    span of recovered symbol addresses (which can disagree when the source indexes
-    an array out of bounds). The region base comes from the first section whose
-    address is reliably recovered; each section is then checked at base+offset:
-    reloc-free PROGBITS must byte-match retail, reloc-bearing sections need every
-    target resolvable, and NOBITS regions must be zero in retail."""
+    Relocations are applied using the recovered section placements before
+    comparing with retail.  This deliberately checks relocation addends (for
+    example, a switch-table entry targeting an internal text label) instead of
+    inheriting the function-level relocation mask.
+    """
     import collections
-    local_syms = {s["name"] for s in obj.symbols if s["name"] and s.get("shndx", 0) != 0}
+    _names, external = _resolvable_info(resolvable)
+    if resolvable_addrs:
+        external.update(resolvable_addrs)
     bases = recover_section_bases(obj, real, retail, gp)
     by_name = collections.defaultdict(list)
-    for s in obj.sh:
-        if s.get("name") in DATA_SECTIONS and s["size"]:
-            by_name[s["name"]].append(s)
+    for section in obj.sh:
+        if _is_owned_data_section(section):
+            by_name[section.get("name", "")].append(section)
     per_name = {}
+    placements = recover_text_section_bases(obj, real)
     for name, secs in by_name.items():
         secs.sort(key=lambda s: s["idx"])  # mwld concatenates same-name sections in shndx order
         offsets = []
         off = 0
-        for s in secs:
-            align = s["addralign"] or 1
+        for section in secs:
+            align = section.get("addralign", 1) or 1
             off = (off + align - 1) & ~(align - 1)
             offsets.append(off)
-            off += s["size"]
+            off += section["size"]
         total = off
         base = None
-        for s, o in zip(secs, offsets):
-            if s["idx"] in bases:
-                base = bases[s["idx"]] - o
+        for section, offset in zip(secs, offsets):
+            if section["idx"] in bases:
+                base = bases[section["idx"]] - offset
                 break
         if base is None:
-            return False, {}
-        for s, o in zip(secs, offsets):
-            addr = base + o
-            # a recovered address that disagrees with the concat layout means the
-            # source's data model does not reproduce retail (e.g. aliased arrays);
-            # refuse rather than emit a wrong image.
-            if s["idx"] in bases and bases[s["idx"]] != addr:
+            candidates = []
+            for section, offset in zip(secs, offsets):
+                found = _find_retail_data_bases(
+                    obj, section, retail, placements, gp, external
+                )
+                if len(found) == 1:
+                    candidates.append(found[0] - offset)
+            if len(set(candidates)) != 1:
                 return False, {}
-            if s["type"] == 8:  # NOBITS -> zero-filled PROGBITS; retail must be zero
-                if any(retail.bytes_at(addr, s["size"])):
-                    return False, {}
-            else:
-                relocs = section_relocs(obj, s["idx"])
-                if relocs:
-                    if any(nm and nm not in local_syms and nm not in resolvable
-                           for _o, _t, nm in relocs):
-                        return False, {}
-                elif obj.data[s["offset"]:s["offset"] + s["size"]] != retail.bytes_at(addr, s["size"]):
-                    return False, {}
+            base = candidates[0]
+        for section, offset in zip(secs, offsets):
+            addr = base + offset
+            if section["idx"] in bases and bases[section["idx"]] != addr:
+                return False, {}
+            placements[section["idx"]] = addr
         per_name[name] = (base, total)
+
+    for name, secs in by_name.items():
+        for section in secs:
+            addr = placements[section["idx"]]
+            if not _section_relocates_at(
+                obj, section, addr, retail, placements, gp, external
+            ):
+                return False, {}
     return True, per_name
 
 

@@ -29,18 +29,20 @@ u32 datScript00311250(void)
 }
 
 /* ---- Straggler recovery: 0x311190-0x3112E0 ---- */
-extern u32 DAT_009571a4;
+extern u16 DAT_009571a4;
 extern u32 DAT_00957198;
 extern void FUN_0035f060(u32 value);
 extern void FUN_0030c440(void);
-// FUN_00311190 NONMATCHING
+#pragma optimization_level 1
+// FUN_00311190
 void FUN_00311190(u32 param_1)
 
 {
-  DAT_009571a4 = DAT_009571a4 | 1;
-  DAT_00957198 = param_1;
+  *(u16*)0x009571a4 = *(u16*)0x009571a4 | 1;
+  *(u32*)0x00957198 = param_1;
   return;
 }
+#pragma optimization_level 2
 
 // FUN_003111C0
 u32 FUN_003111c0(void)
