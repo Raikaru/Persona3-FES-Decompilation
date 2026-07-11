@@ -1465,20 +1465,18 @@ s32 func_00102d10(void* unused, const char* path)
     return 0;
 }
 
-// FUN_00102d90 NONMATCHING
+// FUN_00102d90
 void* func_00102d90(void* contextData, u32 index)
 {
+    s32 i = index;
     HCdvdFileContext* context = (HCdvdFileContext*)contextData;
 
     func_00505e48("### hdd fs get file object\t\n");
-    if (index < context->count)
+    if (i < context->count)
     {
-        goto get_slot;
+        return context->slots + i * 0x90;
     }
     return NULL;
-
-get_slot:
-    return context->slots + index * 0x90;
 }
 
 // FUN_00102e00
