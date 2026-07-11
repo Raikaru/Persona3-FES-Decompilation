@@ -16,6 +16,9 @@ mapped function windows; **C-linked** is the stricter subset successfully linked
 as byte-identical C. The generated source data is
 [`progress/metrics.json`](progress/metrics.json).
 
+See [`ROADMAP.md`](ROADMAP.md) for the P3 completion sequence and the parallel
+Persona 4 synchronization lane.
+
 > This project needs a copy of the game you legally own. No copyrighted data
 > (the ELF or any extracted bytes) is included in this repository.
 
