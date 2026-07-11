@@ -54,6 +54,41 @@ extern u8 D_005E4840[];
 extern u8 D_005E4BE0[];
 extern u8 D_005E4BF8[];
 extern u8 D_005E4BC8[];
+extern u8 D_005E46C0[];
+extern u8 D_005E4700[];
+extern u8 D_005E4730[];
+extern u8 D_005E4760[];
+extern u8 D_005E4780[];
+extern u8 D_005E4784[];
+extern u8 D_005E4788[];
+extern u8 D_005E4790[];
+extern u8 D_005E4810[];
+extern u8 D_005E4830[];
+extern u8 D_005E4840[];
+extern u8 D_005E4870[];
+extern u8 D_005E48A0[];
+extern u8 D_005E48C8[];
+extern u8 D_005E48E0[];
+extern u8 D_005E4900[];
+extern u8 D_005E4920[];
+extern u8 D_005E4940[];
+extern u8 D_005E4960[];
+extern u8 D_005E4980[];
+extern u8 D_005E49A0[];
+extern u8 D_005E49D0[];
+extern u8 D_005E4A00[];
+extern u8 D_005E4A20[];
+extern u8 D_005E4A40[];
+extern u8 D_005E4A60[];
+extern u8 D_005E4A80[];
+extern u8 D_005E4AA0[];
+extern u8 D_005E4AC0[];
+extern u8 D_005E4AE0[];
+extern u8 D_005E4B00[];
+extern u8 D_005E4B20[];
+extern u8 D_005E4B40[];
+extern u8 D_005E4B50[];
+extern u8 D_005E4B80[];
 extern u8 D_00846786;
 extern u8 D_0084678C;
 
@@ -164,22 +199,20 @@ void func_0018f2b0(void)
 // FUN_0018f2c0 NONMATCHING. Advance the save/load card-dialog state machine.
 s32 func_0018f2c0(void)
 {
-    s32 status;
-    s32 value;
-    s32 cardError;
-    s32 cardCode;
     s32 cardMode;
+    s32 cardCode;
+    s32 cardError;
     s32 size;
+    s32 value;
 
-    FUN_005225a8(0x5e4810, sMemcardSeqMode);
+    FUN_005225a8(D_005E4810, sMemcardSeqMode);
 
     switch (sMemcardSeqMode)
     {
         case 0:
             cardMode = 0;
             cardCode = 0;
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
             {
                 FUN_005136f8(sSocketNo, D_00846EA0);
                 sMemcardSeqMode = 1;
@@ -187,72 +220,75 @@ s32 func_0018f2c0(void)
             break;
 
         case 1:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == 1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
                 if (cardError == 0)
                 {
-                    if (cardCode == 0x2f)
+                    switch (cardCode)
                     {
-                        sMemcardSeqMode = 3;
-                        return 2;
+                        case 0x9003:
+                            goto state1_error3;
+                        case 0x6f:
+                            goto state1_error5b;
+                        case 0x13:
+                            goto state1_error5a;
+                        case 0x9001:
+                            goto state1_error7;
+                        case 0x2f:
+                            goto state1_success;
+                        default:
+                            break;
                     }
-                    if (cardCode == 0x9001)
-                    {
-                        return -7;
-                    }
-                    if (cardCode == 0x13)
-                    {
-                        return -5;
-                    }
-                    if (cardCode == 0x6f)
-                    {
-                        return -5;
-                    }
-                    if (cardCode == 0x9003)
-                    {
-                        return -3;
-                    }
-                    FUN_005225a8(0x5e4830);
                 }
+                goto state1_continue;
+            }
+            goto done;
 
-                if (*D_00846EA0 != 2)
+state1_error3:
+            return -3;
+state1_error5b:
+            return -5;
+state1_error5a:
+            return -5;
+state1_error7:
+            return -7;
+state1_success:
+            sMemcardSeqMode = 3;
+            return 3;
+state1_continue:
+            if (*D_00846EA0 != 2)
+            {
+                return -1;
+            }
+            if (*D_00846EA4 == 0)
+            {
+                sMemcardSeqMode = 3;
+                return 3;
+            }
+            if (sMemcardAsync != 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+            }
+            else
+            {
+                if (FUN_0017d800() != 0)
                 {
-                    return -1;
-                }
-                if (*D_00846EA4 == 0)
-                {
-                    sMemcardSeqMode = 3;
-                    return 2;
-                }
-                if (sMemcardAsync == 0)
-                {
-                    value = FUN_0017d800();
-                    if (value == 0)
-                    {
-                        FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
-                    }
-                    else
-                    {
-                        FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
-                    }
+                    FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
                 }
-                value = FUN_005137b8(sSocketNo, 0x846da0, 0x846c80);
-                if (value != 0)
-                {
-                    FUN_005225a8(0x5e4830, value);
-                }
-                sMemcardSeqMode = 2;
             }
-            break;
+            if ((value = FUN_005137b8(sSocketNo, D_00846DA0, D_00846C80)) != 0)
+            {
+                FUN_005225a8(D_005E4830, value);
+            }
+            sMemcardSeqMode = 2;
+            goto done;
 
         case 2:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == 1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
                 if (cardError != 0)
                 {
@@ -275,7 +311,7 @@ s32 func_0018f2c0(void)
                     }
                     if (cardCode != 0x9003)
                     {
-                        FUN_005225a8(0x5e48c8);
+                        FUN_005225a8(D_005E48C8);
                         sMemcardSeqMode = 6;
                         return -7;
                     }
@@ -286,6 +322,8 @@ s32 func_0018f2c0(void)
             break;
 
         case 3:
+        {
+            s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
             if (status == -1)
             {
@@ -312,9 +350,9 @@ s32 func_0018f2c0(void)
             }
             return 2;
 
+        }
         case 4:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
             {
                 FUN_00513598(sSocketNo);
                 sMemcardSeqMode = 5;
@@ -322,6 +360,8 @@ s32 func_0018f2c0(void)
             break;
 
         case 5:
+        {
+            s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
             if (status == -1)
             {
@@ -341,44 +381,39 @@ s32 func_0018f2c0(void)
         case 6:
             if (sMemcardAsync == 0)
             {
-                value = FUN_0017d800();
-                if (value == 0)
+                if (FUN_0017d800() == 0)
                 {
-                    value = FUN_0016f190(0x1422);
-                    if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                     {
-                        FUN_00523ac8(0x846da0, 0x5e4940, sMemcardFile);
+                        FUN_00523ac8(D_00846DA0, D_005E4940, sMemcardFile);
                     }
                     else
                     {
-                        FUN_00523ac8(0x846da0, 0x5e4960, sMemcardFile);
+                        FUN_00523ac8(D_00846DA0, D_005E4960, sMemcardFile);
                     }
                 }
                 else
                 {
-                    value = FUN_0016f190(0x1422);
-                    if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                     {
-                        FUN_00523ac8(0x846da0, 0x5e4900, sMemcardFile);
+                        FUN_00523ac8(D_00846DA0, D_005E4900, sMemcardFile);
                     }
                     else
                     {
-                        FUN_00523ac8(0x846da0, 0x5e4920, sMemcardFile);
+                        FUN_00523ac8(D_00846DA0, D_005E4920, sMemcardFile);
                     }
                 }
             }
             else
             {
-                FUN_00523ac8(0x846da0, 0x5e48e0, sMemcardFile);
+                FUN_00523ac8(D_00846DA0, D_005E48E0, sMemcardFile);
             }
-            value = FUN_005140f8(sSocketNo, 0x846da0);
-            FUN_005225a8(0x5e4980, value);
+            FUN_005225a8(D_005E4980, FUN_005140f8(sSocketNo, D_00846DA0));
             sMemcardSeqMode = 7;
             return 5;
 
         case 7:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == 1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
                 if (cardError == 0)
                 {
@@ -399,7 +434,10 @@ s32 func_0018f2c0(void)
             }
             break;
 
+        }
         case 8:
+        {
+            s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
             if (status == -1)
             {
@@ -430,7 +468,10 @@ s32 func_0018f2c0(void)
             }
             return 1;
 
+        }
         case 9:
+        {
+            s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
             if (status == -1)
             {
@@ -468,119 +509,110 @@ s32 func_0018f2c0(void)
             }
             break;
 
+        }
         case 10:
             if (sMemcardMode == 2)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                    if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4b00, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4b20, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4ac0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4ae0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4aa0, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
                 }
             }
             else if (sMemcardMode == 1)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                    if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a60, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A60, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a80, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A80, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a20, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A20, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a40, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A40, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4a00, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4A00, sMemcardFile);
                 }
             }
             else if (sMemcardMode == 0)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                    if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e49d0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e49a0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
                 }
             }
-            FUN_00513de8(sSocketNo, 0x846da0);
+            FUN_00513de8(sSocketNo, D_00846DA0);
             sMemcardSeqMode = 0xb;
             break;
 
         case 0xb:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == 1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
                 if (cardError == 0)
                 {
@@ -606,143 +638,131 @@ s32 func_0018f2c0(void)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                    if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4b00, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4b20, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                        if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4ac0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4ae0, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4aa0, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
                 }
                 FUN_00521408(0x846780, 0, 0x3c4);
                 FUN_00524270(0x846780, 0x7cc0c8);
-                value = FUN_0017d800();
-                if (value == 0)
+                if (FUN_0017d800() == 0)
                 {
                     if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
                     {
-                        FUN_00524270(0x846840, 0x5e4b50);
-                        FUN_00523e68(0x846840, sMemcardFile * 8 + 0x5e4790);
+                        FUN_00524270(0x846840, D_005E4B50);
+                        FUN_00523e68(0x846840, sMemcardFile * 8 + D_005E4790);
                     }
                 }
                 else if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
                 {
-                    FUN_00524270(0x846840, 0x5e4b80);
-                    FUN_00523e68(0x846840, sMemcardFile * 8 + 0x5e4790);
+                    FUN_00524270(0x846840, D_005E4B80);
+                    FUN_00523e68(0x846840, sMemcardFile * 8 + D_005E4790);
                 }
                 D_00846786 = 0x12;
                 D_0084678C = 0x60;
-                FUN_00521250(0x846790, 0x5e46c0, 0x40);
-                FUN_00521250(0x8467d0, 0x5e4700, 0x30);
-                FUN_00521250(0x846800, 0x5e4730, 0x30);
-                FUN_00521250(0x846830, 0x5e4760, 0x10);
-                FUN_00524270(0x846884, 0x5e4780);
-                FUN_00524270(0x8468c4, 0x5e4784);
-                FUN_00524270(0x846904, 0x5e4788);
-                FUN_00513cc8(sSocketNo, 0x846da0, 0x846780, 0, 0x3c4);
+                FUN_00521250(0x846790, D_005E46C0, 0x40);
+                FUN_00521250(0x8467d0, D_005E4700, 0x30);
+                FUN_00521250(0x846800, D_005E4730, 0x30);
+                FUN_00521250(0x846830, D_005E4760, 0x10);
+                FUN_00524270(0x846884, D_005E4780);
+                FUN_00524270(0x8468c4, D_005E4784);
+                FUN_00524270(0x846904, D_005E4788);
+                FUN_00513cc8(sSocketNo, D_00846DA0, 0x846780, 0, 0x3c4);
             }
             else if (sMemcardMode == 1)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a60, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A60, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a80, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A80, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a20, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A20, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4a40, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4A40, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4a00, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4A00, sMemcardFile);
                 }
                 size = 0;
-                value = FUN_001021c0(0x5e4b40, &size);
-                FUN_00513cc8(sSocketNo, 0x846da0, value, 0, size);
+                FUN_00513cc8(sSocketNo, D_00846DA0, FUN_001021c0(D_005E4B40, &size), 0, size);
             }
             else if (sMemcardMode == 0)
             {
                 if (sMemcardAsync == 0)
                 {
-                    value = FUN_0017d800();
-                    if (value == 0)
+                if (FUN_0017d800() == 0)
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e49d0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
                         }
                     }
                     else
                     {
-                        value = FUN_0016f190(0x1422);
-                        if (value == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                         {
-                            FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
                         }
                         else
                         {
-                            FUN_00523ac8(0x846da0, 0x5e49a0, sMemcardFile, sMemcardFile);
+                            FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
                         }
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
+                    FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
                 }
-                FUN_00513cc8(sSocketNo, 0x846da0, sMemcardBuffer, 0, sMemcardBufferSize);
+                FUN_00513cc8(sSocketNo, D_00846DA0, sMemcardBuffer, 0, sMemcardBufferSize);
             }
             sMemcardSeqMode = 0xd;
             break;
 
         case 0xd:
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == 1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
                 if (cardError == 0)
                 {
@@ -769,6 +789,7 @@ s32 func_0018f2c0(void)
             break;
     }
 
+done:
     return 0;
 }
 
