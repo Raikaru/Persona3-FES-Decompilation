@@ -356,7 +356,6 @@ static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
     s32 stride;
     u32 imageOffset;
     s32 blockCount;
-
     command = (u8*)(uintptr_t)packet;
     a7 >>= 4;
     hmallocPackHeader((u64*)command, 0, 0, 0, 1, 0, 3);
@@ -369,9 +368,8 @@ static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
     }
     rowCount = (rowCount >> 6) * 0x40;
     hmallocWriteImage((u32*)(command + 0x20), (u32)texture,
-                      (s64)((a6 + 0x3f) >> 6), 0);
+                      (u32)(rowCount >> 6), 0);
     hmallocWriteScale((u32*)(command + 0x30), 0x10, (u32)(a7 << 4));
-
     command += 0x40;
     imageOffset = (u32)source + (u32)(a8 >> 4) * (u32)a3 *
                   (u32)(a7 + (u32)(a10 >> 4)) + (u32)a3 * (u32)(a9 >> 4);
