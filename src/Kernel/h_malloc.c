@@ -886,23 +886,26 @@ static void hmallocApplyInputTable(void)
     u32* dst;
     u32* bitWord;
 
-    dst = copied;
     config = HMALLOC_CONFIG_WORDS;
-    for (i = 0x14; i > 0; i--)
+    dst = copied;
+    i = 0;
+    do
     {
         dst[0] = config[0];
         dst[1] = config[1];
         config += 2;
         dst += 2;
-    }
-
+    } while (++i < 0x14);
     resourceA = sHmallocResourceA;
-    if (resourceA != NULL)
-    {
-        func_0016cfe0(1, *(s16*)((u8*)resourceA + 0x3c));
-        func_0016d090(1, *(s16*)((u8*)resourceA + 0x3e));
-        func_0016d160(1, *(s16*)((u8*)resourceA + 0x40));
-    }
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x3c);
+    func_0016cfe0(i, word);
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x3e);
+    func_0016d090(i, word);
+    i = 1;
+    word = *(s16*)((u8*)resourceA + 0x40);
+    func_0016d160(i, word);
 
     for (i = 0; i < 0x100; i++)
     {
@@ -917,12 +920,10 @@ static void hmallocApplyInputTable(void)
         if ((s32)value < 0 && bit != 0)
             bit -= 0x20;
         func_0016f1f0(value,
-                      ((1u << (bit & 0x1f)) & *bitWord) != 0);
+                      ((1u << bit) & *bitWord) != 0);
     }
 
     records = (u16*)sHmallocResourceB;
-    if (records == NULL)
-        return;
     for (j = 0; j < 0x100; j++)
     {
         u16* record = (u16*)((u8*)records + j * 0x34);
