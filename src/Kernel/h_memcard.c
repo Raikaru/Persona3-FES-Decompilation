@@ -481,7 +481,11 @@ state4_done:
             }
             else if (status == 1)
             {
-                if (cardError == 0)
+                if (cardError != 0)
+                {
+                    sMemcardSeqMode = 6;
+                }
+                else
                 {
                     if (cardCode == 0x2f)
                     {
@@ -503,10 +507,6 @@ state4_done:
                     {
                         return -3;
                     }
-                }
-                else
-                {
-                    sMemcardSeqMode = 6;
                 }
             }
             break;
