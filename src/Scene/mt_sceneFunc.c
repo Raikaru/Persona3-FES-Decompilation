@@ -220,7 +220,7 @@ u32 FUN_003bac40(Resrc *param_1,u32 param_2);
 u32 FUN_003bb010(u64 param_1,u32 param_2);
 void FUN_003bb060(u16 param_1,u8 param_2);
 u32 FUN_003bb0c0(u16* param_1,int param_2);
-u64 FUN_003bb180(u64 param_1,u64 param_2);
+u32 FUN_003bb180(u16 param_1,int param_2);
 u32  FUN_003bb1d0(u64 param_1,u8 param_2,u8 param_3,u16 param_4,  u16 param_5);
 u32 FUN_003bb280(void);
 void FUN_003bb340(void);
@@ -286,7 +286,7 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bb010(...) ((u32 (*)(...))FUN_003bb010)(__VA_ARGS__)
 #define FUN_003bb060(...) ((void (*)(...))FUN_003bb060)(__VA_ARGS__)
 #define FUN_003bb0c0(...) ((u32 (*)(...))FUN_003bb0c0)(__VA_ARGS__)
-#define FUN_003bb180(...) ((u64 (*)(...))FUN_003bb180)(__VA_ARGS__)
+#define FUN_003bb180(...) ((u32 (*)(...))FUN_003bb180)(__VA_ARGS__)
 #define FUN_003bb1d0(...) ((u32 (*)(...))FUN_003bb1d0)(__VA_ARGS__)
 #define FUN_003bb280(...) ((u32 (*)(...))FUN_003bb280)(__VA_ARGS__)
 #define FUN_003bb340(...) ((void (*)(...))FUN_003bb340)(__VA_ARGS__)
@@ -2764,39 +2764,21 @@ switch_end:
 }
 #define FUN_003bb0c0(...) ((u32 (*)(...))FUN_003bb0c0)(__VA_ARGS__)
 #undef FUN_003bb180
-// FUN_003BB180 NONMATCHING
+// FUN_003BB180
 
 
-u64 FUN_003bb180(u64 param_1,u64 param_2)
-
-
-
+u32 FUN_003bb180(u16 param_1,int param_2)
 {
+  Resrc *lVar1;
 
-  long lVar1;
-
-  u64 uVar2;
-
-  
-
-  lVar1 = FUN_003b5d10();
-
-  if (lVar1 == 0) {
-
-    uVar2 = 0;
-
+  lVar1 = MT_Scene_GetRes(param_1);
+  if (lVar1 != 0) {
+    return (FUN_003bb0c0)((u16 *)lVar1,param_2);
   }
 
-  else {
-
-    uVar2 = FUN_003bb0c0(lVar1,param_2);
-
-  }
-
-  return uVar2;
-
+  return 0;
 }
-#define FUN_003bb180(...) ((u64 (*)(...))FUN_003bb180)(__VA_ARGS__)
+#define FUN_003bb180(...) ((u32 (*)(...))FUN_003bb180)(__VA_ARGS__)
 #undef FUN_003bb1d0
 // FUN_003BB1D0 NONMATCHING
 
