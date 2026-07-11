@@ -21,6 +21,8 @@ typedef struct CalendarWork
 #include "temporary.h"
 extern u32 clndIsHolidayOrSunday(void);
 extern u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
+extern f32 gPI;
+extern f32 jtbl_007BC0F0;
 typedef struct RmdFadeWork
 {
     u32 unk_00;             // 0x00
@@ -92,15 +94,15 @@ void func_001a5cd0(void)
     }
 }
 
-// FUN_001A5F30 NONMATCHING
+// FUN_001A5F30
 void* func_001a5f30(KwlnTask* rmdFadeTask)
 {
     RmdFadeWork* work;
     RwRGBA color;
 
     work = (RmdFadeWork*)rmdFadeTask->workData;
-    (void)sinf((3.14159274f * (f32)work->framesRemaining) / 30.0f);
-    *(u32*)&color = 0xffffffff;
+    (void)sinf((gPI * (f32)work->framesRemaining) / 30.0f);
+    *(f32*)&color = (&jtbl_007BC0F0)[3];
     if (work->framesRemaining < 1)
     {
         color.a = (u8)work->targetAlpha;
