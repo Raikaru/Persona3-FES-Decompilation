@@ -69,15 +69,16 @@ void H_Free(void* memory)
 // FUN_00191af0 NONMATCHING
 void* H_Malloc(size_t size)
 {
-    s32 intr;
-    u32 alignedSize;
+    u32 memory;
+    HHeapAlloc* alloc;
+    u32 i;
+    HHeapAlloc* allocs;
+    register u32 count;
     u32 heapCursor;
     u32 allocEnd;
+    s32 intr;
+    u32 alignedSize;
     u32 newAllocEnd;
-    u32 i;
-    u32 count;
-    HHeapAlloc* allocs;
-    HHeapAlloc* alloc;
 
     intr = func_0050d3a0();
     alignedSize = (size + 0xf) & ~0xf;
@@ -86,41 +87,54 @@ void* H_Malloc(size_t size)
 retry:
     allocs = gHeapAllocs;
     newAllocEnd = heapCursor + alignedSize;
+    i = 0;
     count = gHeapAllocCount;
+    goto scan_check;
 
-    for (i = 0; i < count; i++)
+scan_loop:
+    alloc = &allocs[i];
+    allocEnd = alloc->size;
+    if (allocEnd != 0)
     {
-        alloc = &allocs[i];
-        if (alloc->size != 0)
+        memory = (u32)alloc->memory;
+        allocEnd = memory + allocEnd;
+        if (heapCursor != memory)
         {
-            allocEnd = (u32)alloc->memory + alloc->size;
-            if (heapCursor == (u32)alloc->memory)
+            goto inspect;
+        }
+        goto overlap;
+
+    inspect:
+        if (memory < heapCursor)
+        {
+            if (heapCursor < allocEnd)
             {
                 goto overlap;
             }
-
-            if ((u32)alloc->memory < heapCursor)
-            {
-                if (heapCursor < allocEnd)
-                {
-                    goto overlap;
-                }
-            }
-            else
-            {
-                if (allocEnd < newAllocEnd)
-                {
-                    goto overlap;
-                }
-
-                if ((u32)alloc->memory < newAllocEnd)
-                {
-                    goto overlap;
-                }
-            }
+            goto scan_increment;
         }
+        if (allocEnd >= newAllocEnd)
+        {
+            goto scan_check_memory;
+        }
+        goto overlap;
+
+    scan_check_memory:
+        if (memory >= newAllocEnd)
+        {
+            goto scan_increment;
+        }
+        goto overlap;
     }
 
+scan_increment:
+    i++;
+
+scan_check:
+    if (i < count)
+    {
+        goto scan_loop;
+    }
     allocEnd = heapCursor;
 
 overlap:
@@ -148,13 +162,11 @@ allocated:
     {
         func_0050d3f0();
     }
-
-    if (allocEnd + alignedSize >= gHeapEnd)
+    if (gHeapEnd <= allocEnd + alignedSize)
     {
         printf("malloc error\n");
         K_Assert("h_malloc.c", 213);
     }
-
     return (void*)allocEnd;
 
 advanceHeap:
@@ -163,13 +175,11 @@ advanceHeap:
     {
         goto retry;
     }
-
     kwlnTaskPrintTrees();
     printf("malloc error\n");
     K_Assert("h_malloc.c", 227);
     goto retry;
 }
-
 // FUN_00191d10
 void* H_Calloc(u32 count, size_t size)
 {
