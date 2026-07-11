@@ -453,11 +453,11 @@ HCdvd* K_FldDungeon_RequestScript()
     return cdvd;
 }
 
-// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory' NONMATCHING
+// FUN_001c0210. Allocate a new memory block to store tartarus main script by copying H_Cdvd's 'fileMemory'
 u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
 {
     FldDungeon* dungeon;
-    u32 fileSize;
+    s32 fileSize;
 
     if (gDungeonTask == NULL)
     {
@@ -475,7 +475,7 @@ u32 K_FldDungeon_CreateScrMemory(HCdvd* scrCdvd)
         fileSize = scrCdvd->fileSize;
         dungeon->scrMemory = (*(void* (**)(u32, u32, u32))((u8*)&rwGlobals + 0x184))(1, fileSize, rwMEMHINTDUR_GLOBAL);
         dungeon->scrSize = scrCdvd->fileSize;
-        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, scrCdvd->fileSize);
+        memcpy(dungeon->scrMemory, scrCdvd->fileMemory, (s32)scrCdvd->fileSize);
 
         H_Cdvd_Destroy(scrCdvd);
 

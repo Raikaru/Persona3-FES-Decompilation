@@ -250,8 +250,8 @@ KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
     return scrTask;
 }
 
-// FUN_0035bc00 NONMATCHING. Create a script task by an already loaded '.BF' file in memory and copy it
-KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, u32 scriptSize, u32 prcdIdx)
+// FUN_0035bc00. Create a script task by an already loaded '.BF' file in memory and copy it
+KwlnTask* scrCreateTaskFromScriptMemory(u32 priority, void* scrMemory, const u32 scriptSize, u32 prcdIdx)
 {
     ScrData* scr;
     void* script = H_Malloc(scriptSize);

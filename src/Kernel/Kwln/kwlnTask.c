@@ -1282,11 +1282,11 @@ u32 kwlnTaskIsPriorityGateBOpen()
     return sTaskPriorityGateB != 1;
 }
 
-// FUN_001957B0 NONMATCHING. Move a task immediately after another running task.
+// FUN_001957B0. Move a task immediately after another running task.
 void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
 {
-    KwlnTask* current2;
     KwlnTask* current;
+    KwlnTask* current2;
 
     task->priority = sourceTask->priority;
 
@@ -1295,21 +1295,21 @@ void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
     {
         if (current == task)
         {
-            if (task->prev != NULL)
+            if (current->prev != NULL)
             {
-                if (task->next != NULL)
+                if (current->next != NULL)
                 {
-                    task->prev->next = task->next;
-                    task->next->prev = task->prev;
+                    current->prev->next = current->next;
+                    current->next->prev = current->prev;
                 }
                 else
                 {
-                    task->prev->next = NULL;
+                    current->prev->next = NULL;
                 }
             }
-            else if (task->next != NULL)
+            else if (current->next != NULL)
             {
-                task->next->prev = NULL;
+                current->next->prev = NULL;
             }
             break;
         }
@@ -1341,11 +1341,11 @@ void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
         current2 = current2->next;
     }
 }
-// FUN_001958A0 NONMATCHING. Move a task immediately before another running task.
+// FUN_001958A0. Move a task immediately before another running task.
 void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
 {
-    KwlnTask* current2;
     KwlnTask* current;
+    KwlnTask* current2;
 
     task->priority = sourceTask->priority;
 
@@ -1354,21 +1354,21 @@ void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
     {
         if (current == task)
         {
-            if (task->prev != NULL)
+            if (current->prev != NULL)
             {
-                if (task->next != NULL)
+                if (current->next != NULL)
                 {
-                    task->prev->next = task->next;
-                    task->next->prev = task->prev;
+                    current->prev->next = current->next;
+                    current->next->prev = current->prev;
                 }
                 else
                 {
-                    task->prev->next = NULL;
+                    current->prev->next = NULL;
                 }
             }
-            else if (task->next != NULL)
+            else if (current->next != NULL)
             {
-                task->next->prev = NULL;
+                current->next->prev = NULL;
             }
             break;
         }

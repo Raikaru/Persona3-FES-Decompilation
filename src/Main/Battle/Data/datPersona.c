@@ -1383,17 +1383,21 @@ u64 FUN_00176ac0(DatPersonaWork* persona, DatPersonaWork* const* personas, s32 p
     return 0;
 }
 
-// FUN_00176c80 NONMATCHING
+// FUN_00176c80
 u64 FUN_00176c80(DatPersonaWork* persona, DatPersonaWork* source)
 {
+    u8* personaBytes;
+    u8* sourceBytes;
     s32 statIdx;
 
     K_ASSERT(persona != NULL && source != NULL, 1691);
 
     for (statIdx = 0; statIdx < PERSONA_STAT_MAX; statIdx++)
     {
-        persona->bonusStats[statIdx] = source->bonusStats[statIdx];
-        persona->stats3[statIdx] = source->stats3[statIdx];
+        sourceBytes = (u8*)source + statIdx;
+        personaBytes = (u8*)persona + statIdx;
+        personaBytes[0x21] = sourceBytes[0x21];
+        personaBytes[0x26] = sourceBytes[0x26];
     }
     return 0;
 }

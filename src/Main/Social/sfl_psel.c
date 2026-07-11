@@ -201,30 +201,30 @@ void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
     }
 }
 
-// FUN_00260900 NONMATCHING
+// FUN_00260900
 s32 sflPsel00260900(u32* base, s32 index)
 {
     u8* entry;
-    index <<= 7;
-    entry = (u8*)(uintptr_t)base[0x61] + index;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
     return *(s32*)(entry + 0x5c) - *(s32*)(entry + 0x54);
 }
 
-// FUN_00260920 NONMATCHING
+// FUN_00260920
 s32 sflPsel00260920(u32* base, s32 index)
 {
     u8* entry;
-    index <<= 7;
-    entry = (u8*)(uintptr_t)base[0x61] + index;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
     return *(s32*)(entry + 0x60) - *(s32*)(entry + 0x58);
 }
 
-// FUN_00260940 NONMATCHING
+// FUN_00260940
 u32 sflPsel00260940(u32* base, s32 index)
 {
     u8* entry;
-    index <<= 7;
-    entry = (u8*)(uintptr_t)base[0x61] + index;
+
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
     return base[0x41 + *(u32*)(entry + 0x14)];
 }
 
