@@ -313,10 +313,11 @@ void func_001b8000(KwlnTask* task)
     ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(task->workData);
 }
 
-// FUN_001b8030 NONMATCHING
+// FUN_001b8030
 KwlnTask* func_001b8030(KwlnTask* parent)
 {
     FieldLoadWork* work;
+    KwlnTask* task;
 
     work = (FieldLoadWork*)RwCalloc(1, sizeof(FieldLoadWork),
                                     rwMEMHINTDUR_GLOBAL);
@@ -324,15 +325,17 @@ KwlnTask* func_001b8030(KwlnTask* parent)
     {
         return NULL;
     }
-    work->scenarioMode = 0;
-    return kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
                                           func_001b7e60, func_001b8000, work);
+    work->scenarioMode = 0;
+    return task;
 }
 
-// FUN_001b80c0 NONMATCHING
+// FUN_001b80c0
 KwlnTask* func_001b80c0(KwlnTask* parent)
 {
     FieldLoadWork* work;
+    KwlnTask* task;
 
     work = (FieldLoadWork*)RwCalloc(1, sizeof(FieldLoadWork),
                                     rwMEMHINTDUR_GLOBAL);
@@ -340,27 +343,36 @@ KwlnTask* func_001b80c0(KwlnTask* parent)
     {
         return NULL;
     }
-    work->scenarioMode = 1;
-    return kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, "read startup data",
                                           func_001b7e60, func_001b8000, work);
+    work->scenarioMode = 1;
+    return task;
 }
 
-// FUN_001b8160 NONMATCHING
+// FUN_001b8160
 void* func_001b8160(void)
 {
     char path[128];
+    void* result;
 
-    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        return (void*)1;
+        sprintf(path, "field/table/n%03d_%03d.bin", gMtScene->fldMajorId,
+                gMtScene->fldMinorId);
+        if (H_Cdvd_FileExists(path) == 0)
+        {
+            result = NULL;
+        }
+        else
+        {
+            result = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+        }
     }
-    sprintf(path, "field/table/n%03d_%03d.bin", fieldCurrentMajor(),
-            fieldCurrentMinor());
-    if (H_Cdvd_FileExists(path) == 0)
+    else
     {
-        return NULL;
+        result = (void*)1;
     }
-    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+    return result;
 }
 
 // FUN_001b81f0 NONMATCHING
@@ -495,38 +507,43 @@ void func_001b85a0(u32 index)
     }
 }
 
-// FUN_001b8600 NONMATCHING
+// FUN_001b8600
 void func_001b8600(void)
 {
-    Field* field;
-
-    field = K_Field_Get();
-    if (FIELD_DATA_AT(field, 0x1158, void*) != NULL)
+    if (FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) != NULL)
     {
-        RwFree(FIELD_DATA_AT(field, 0x1158, void*));
-        FIELD_DATA_AT(field, 0x1158, void*) = NULL;
-        FIELD_DATA_AT(field, 0x115c, u32) = 0;
-        FIELD_DATA_AT(field, 0x1160, void*) = NULL;
-        FIELD_DATA_AT(field, 0x1164, void*) = NULL;
+        RwFree(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*));
+        FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = NULL;
+        FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) = 0;
+        FIELD_DATA_AT(K_Field_Get(), 0x1160, void*) = NULL;
+        FIELD_DATA_AT(K_Field_Get(), 0x1164, void*) = NULL;
     }
 }
 
-// FUN_001b8680 NONMATCHING
+// FUN_001b8680
 void* func_001b8680(void)
 {
     char path[128];
+    void* result;
 
-    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        return (void*)1;
+        sprintf(path, "field/script/nm%03d_%03d.bmd", gMtScene->fldMajorId,
+                gMtScene->fldMinorId);
+        if (H_Cdvd_FileExists(path) == 0)
+        {
+            result = NULL;
+        }
+        else
+        {
+            result = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+        }
     }
-    sprintf(path, "field/script/nm%03d_%03d.bmd", fieldCurrentMajor(),
-            fieldCurrentMinor());
-    if (H_Cdvd_FileExists(path) == 0)
+    else
     {
-        return NULL;
+        result = (void*)1;
     }
-    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+    return result;
 }
 
 // FUN_001b8710 NONMATCHING
@@ -573,35 +590,40 @@ u32 func_001b8710(HCdvd* request)
     return true;
 }
 
-// FUN_001b8870 NONMATCHING
+// FUN_001b8870
 void func_001b8870(void)
 {
-    Field* field;
-
-    field = K_Field_Get();
-    if (FIELD_DATA_AT(field, 0x1154, void*) != NULL)
+    if (FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) != NULL)
     {
-        RwFree(FIELD_DATA_AT(field, 0x1154, void*));
-        FIELD_DATA_AT(field, 0x1154, void*) = NULL;
+        RwFree(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*));
+        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = NULL;
     }
 }
 
-// FUN_001b88d0 NONMATCHING
+// FUN_001b88d0
 void* func_001b88d0(void)
 {
     char path[128];
+    void* result;
 
-    if (K_Fldrc_GetFldPacCdvd() != NULL)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        return (void*)1;
+        sprintf(path, "field/script/ns%03d_%03d.bf", gMtScene->fldMajorId,
+                gMtScene->fldMinorId);
+        if (H_Cdvd_FileExists(path) == 0)
+        {
+            result = NULL;
+        }
+        else
+        {
+            result = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+        }
     }
-    sprintf(path, "field/script/ns%03d_%03d.bf", fieldCurrentMajor(),
-            fieldCurrentMinor());
-    if (H_Cdvd_FileExists(path) == 0)
+    else
     {
-        return NULL;
+        result = (void*)1;
     }
-    return H_Cdvd_Request(path, HCDVD_FILENORMAL);
+    return result;
 }
 
 // FUN_001b8960 NONMATCHING
@@ -649,17 +671,13 @@ u32 func_001b8960(HCdvd* request)
     return true;
 }
 
-// FUN_001b8ae0 NONMATCHING
+// FUN_001b8ae0
 void func_001b8ae0(void)
 {
-    Field* field;
-
-    field = K_Field_Get();
-    if (FIELD_DATA_AT(field, 0x114c, void*) != NULL)
+    if (FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) != NULL)
     {
-        RwFree(FIELD_DATA_AT(field, 0x114c, void*));
-        FIELD_DATA_AT(field, 0x114c, void*) = NULL;
-        FIELD_DATA_AT(field, 0x1150, u32) = 0;
+        RwFree(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*));
+        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = NULL;
     }
 }
 
