@@ -868,12 +868,14 @@ static void hmallocApplyInputTable(void)
     u32* dst;
     u32* bitWord;
 
-    config = HMALLOC_CONFIG_WORDS;
     dst = copied;
+    config = HMALLOC_CONFIG_WORDS;
     for (i = 0x14; i > 0; i--)
     {
-        *dst++ = *config++;
-        *dst++ = *config++;
+        dst[0] = config[0];
+        dst[1] = config[1];
+        config += 2;
+        dst += 2;
     }
 
     resourceA = sHmallocResourceA;
@@ -892,7 +894,7 @@ static void hmallocApplyInputTable(void)
         word = (s32)value >> 5;
         if ((s32)value < 0)
             word = ((s32)value + 0x1f) >> 5;
-        bitWord = &sHmallocInputBits[word];
+        bitWord = (u32*)sHmallocResourceC + word;
         bit = value & 0x1f;
         if ((s32)value < 0 && bit != 0)
             bit -= 0x20;
