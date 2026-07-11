@@ -407,6 +407,7 @@
       "0017c6e0",
       "0017c8c0",
       "0017d030",
+      "0017d040",
       "0017d6d0",
       "0017d790",
       "0017d7b0",
@@ -938,6 +939,7 @@
       "001f08c0",
       "001f0940",
       "001f0ab0",
+      "001f1210",
       "001f1ae0",
       "001f1b00",
       "001f1b20",
@@ -2023,6 +2025,7 @@
       "003088b0",
       "00308a50",
       "00308ba0",
+      "00308bb0",
       "00308f80",
       "0030b5a0",
       "0030b5e0",
@@ -2458,6 +2461,7 @@
       "003b8270",
       "003b83a0",
       "003b8690",
+      "003bb060",
       "003bb340",
       "003bba70",
       "003bc8f0",
@@ -3048,11 +3052,11 @@
       "005a10e8",
       "005a10f8"
     ],
-    "count": 2980,
+    "count": 2984,
     "duplicate_rows": 0,
     "known_rows": 13590,
-    "matched_body_bytes": 257496,
-    "percent": 21.928,
+    "matched_body_bytes": 257824,
+    "percent": 21.957,
     "unique_known_addresses": 13590
   },
   "schema_version": 1,
@@ -3063,8 +3067,8 @@
     "verifier_report": "build\\verify_report.json"
   },
   "status_counts": {
-    "MATCH": 2980,
-    "NONMATCHING": 10610
+    "MATCH": 2984,
+    "NONMATCHING": 10606
   },
   "total": 13590
 }

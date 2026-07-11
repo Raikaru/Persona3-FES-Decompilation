@@ -125,7 +125,7 @@ extern void func_00258300(void);
 extern u32 func_003c7610(void);
 extern void func_003c7990(s32);
 extern u32 func_003c7850(void);
-extern void func_003c7650(s32);
+extern u32 func_003c7650(s32);
 extern void func_003c78d0(void);
 extern void func_002594c0(void);
 extern u32 sflCard002595c0(void);
@@ -588,12 +588,11 @@ void *func_001f1140(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f1210 NONMATCHING
+// FUN_001f1210
 void *func_001f1210(void)
 {
     brPersona00264f90();
-    func_003c7650(1);
-    return KWLNTASK_CONTINUE;
+    return (void *)func_003c7650(1);
 }
 
 // FUN_001f1240 NONMATCHING

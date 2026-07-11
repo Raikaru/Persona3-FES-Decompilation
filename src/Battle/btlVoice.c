@@ -6354,10 +6354,10 @@ void func_002e7810(int param_1)
   
   iVar1 = *(int *)(param_1 + 0xe0);
   if ((((iVar1 != 0) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) &&
-      (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) != '\0')) &&
+      (*(u8 *)(*(int *)(iVar1 + 0x30) + 0xa2) != '\0')) &&
      (((iVar1 != 0 && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) &&
-      (*(short *)(DAT_007ce3ec + 0xb78) == 1)))) {
-    FUN_002b0210();
+      (*(u16 *)(DAT_007ce3ec + 0xb78) == 1)))) {
+    FUN_002b0210(param_1);
   }
   return;
 }
