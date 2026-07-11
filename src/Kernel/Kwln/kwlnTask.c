@@ -264,8 +264,7 @@ u8 kwlnTaskUpdate(KwlnTask* task)
         {
             memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
 
-            pad = gPads;
-            for (i = 0; i < HPAD_PORT_MAX; i++)
+            for (i = 0, pad = gPads; i < HPAD_PORT_MAX; i++)
             {
                 pad[i].btn[1].justPressed = 0x80;
                 pad[i].btn[1].released = 0x80;
