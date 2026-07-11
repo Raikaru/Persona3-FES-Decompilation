@@ -489,30 +489,33 @@ state4_done:
         {
             s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            if (status != -1)
             {
-                sMemcardSeqMode = 6;
-            }
-            else if (status == 1)
-            {
-                if (cardError != 0)
+                if (status == 1)
                 {
-                    sMemcardSeqMode = 6;
-                }
-                else
-                {
-                    switch (cardCode)
+                    if (cardError != 0)
                     {
-                        case 0x2f:
-                        case 0x9001:
-                        case 0x13:
-                        case 0x6f:
-                        case 0x9003:
-                            return -3;
-                        default:
-                            break;
+                        sMemcardSeqMode = 6;
+                    }
+                    else
+                    {
+                        switch (cardCode)
+                        {
+                            case 0x2f:
+                            case 0x9001:
+                            case 0x13:
+                            case 0x6f:
+                            case 0x9003:
+                                return -3;
+                            default:
+                                break;
+                        }
                     }
                 }
+            }
+            else
+            {
+                sMemcardSeqMode = 6;
             }
             break;
 
