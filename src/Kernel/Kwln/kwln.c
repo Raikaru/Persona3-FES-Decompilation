@@ -145,7 +145,11 @@ typedef struct KwlnRendererLocals
 } KwlnRendererLocals;
 
 extern f32 DAT_007cad20;
+extern f32 DAT_007cad24;
 typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
+extern KwlnAllocateFunc DAT_00960178[];
+extern u32 DAT_0095f57c;
+extern u32 DAT_0095f580;
 
 #define KWLN_U32_AT(address) (*(volatile u32*)(address))
 #define KWLN_F32_AT(address) (*(volatile f32*)(address))
@@ -345,7 +349,7 @@ void func_0010e500(void);
 void func_0010e5f0(void);
 void func_00197f80(void* param_1, void* param_2);
 void func_00177d40(void);
-void func_00195980(f32 scale, f32 aspectRatio, RwCamera* camera, KwlnCameraView* view);
+void func_00195980(RwCamera* camera, KwlnCameraView* view, f32 scale, f32 aspectRatio);
 void func_0019d360(void);
 void func_0035aba0(void);
 void func_004944b0(void* object, const void* data);
@@ -877,7 +881,6 @@ void kwlnInitRenderer()
     KwlnRendererLocals locals;
     u32 cameraDescriptorInit[2];
     register KwlnAllocateFunc* allocate;
-    s32 callbacksRegistered;
     s32 callbackSuccess;
     register RpLight* light;
     register RpLight* directionalLight;
@@ -1014,21 +1017,21 @@ second_light_done:
         locals.cameraView.offset.y = 0.0f;
         locals.cameraView.width = locals.cameraDescriptor[0];
         locals.cameraView.height = locals.cameraDescriptor[1];
-        func_00195980(0.5f, gAspectRatio, camera, &locals.cameraView);
+        func_00195980(camera, &locals.cameraView, 0.5f, gAspectRatio);
         camera->fogPlane = DAT_007cad20;
     }
     sMainCamera = camera;
 
     printf((const char*)D_00678740, func_004f1e10(), camera->frameBuffer->depth, camera->zBuffer->depth);
-    func_004aa550(camera);
+    func_004aa550(sMainCamera);
     func_004aa390(0.5f);
-    func_004aa3d0(KWLN_F32_AT(0x007cad24) * camera->nearPlane);
+    func_004aa3d0(DAT_007cad24 * sMainCamera->nearPlane);
     func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
     func_004b6350();
 
-    allocate = (KwlnAllocateFunc*)0x00960178;
+    allocate = (KwlnAllocateFunc*)&DAT_00960178;
     KWLN_U32_AT(0x0095f57c) = (u32)(*allocate)(0xc000, 0x40000);
-    KWLN_U32_AT(0x0095f580) = 0x3000;
+    DAT_0095f580 = 0x3000;
     H_Malloc_Init((*allocate)(0xa0000, 0x40000), 0xa0000);
 
     if (func_004ccd50(&DAT_007cc90c, func_004ba2a0, func_004bad50) == 0)
