@@ -1166,7 +1166,24 @@ void func_00101e30(void* requestData)
 void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
                    const char* path)
 {
-    H_Cdvd_CacheAdd(requestData, fileMemory, fileSize, path);
+    s32 i;
+    HCdvdCache* cache;
+
+    i = 0;
+    cache = sCdvdCache;
+    for (; i < HCDVD_CACHE_MAX; i++)
+    {
+        if (!cache[i].isValid)
+        {
+            cache[i].isValid = true;
+            sCdvdCache[i].requestData = requestData;
+            sCdvdCache[i].fileMemory = fileMemory;
+            sCdvdCache[i].fileSize = fileSize;
+            sCdvdCache[i].unk_110 = 0;
+            memcpy(&cache[i].path, path, 128);
+            return;
+        }
+    }
 }
 
 // FUN_001022e0 NONMATCHING
