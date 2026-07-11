@@ -205,6 +205,8 @@ typedef s32 (*HmallocStepCallback)(void);
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 extern const char D_005E4C80[];
+extern const char D_005E4C60[];
+extern u8 D_0083BB30[];
 extern const char D_005E4CE0[];
 extern const char D_005E4D10[];
 extern const char D_005E4D30[];
@@ -357,14 +359,14 @@ static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
     hmallocPackHeader((u64*)command, 0, 0, 0, 0, 7, 0);
 }
 
-// FUN_00192160 NONMATCHING
+// FUN_00192160
 static void hmallocPackHeader(u64* out, u32 a1, s32 a2, u32 a3, u32 a4,
                               u32 a5, u32 a6)
 {
     u64 packet;
 
-    packet = ((u64)(u32)(a2 & ~0xf) << 0x20) |
-             ((u64)a1 << 0x3f) |
+    packet = ((u64)a1 << 0x3f) |
+             ((u64)(u32)(a2 & ~0xf) << 0x20) |
              ((u64)a3 << 0x1f) |
              ((u64)a4 << 0x1c) |
              ((u64)a5 << 0x1a) |
@@ -435,22 +437,24 @@ static void hmallocWriteSolid(u32* out, u32 value)
 static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
-    u32* resource;
+    void* destination;
+    HCdvd* resource;
 
     work = *(u32**)((u8*)task + 0x3c);
     switch (work[0])
     {
         case 0:
-            work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4c60, 0);
+            work[1] = (u32)(uintptr_t)func_00100d80((void*)D_005E4C60, 0);
             work[0] += 1;
             break;
         case 1:
             if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
             {
-                resource = (u32*)(uintptr_t)work[1];
-                func_00521250((void*)0x83bb30,
-                              *(u32*)((u8*)resource + 0x110),
-                              *(u32*)((u8*)resource + 0x118));
+                destination = (void*)D_0083BB30;
+                resource = (HCdvd*)(uintptr_t)work[1];
+                func_00521250(destination,
+                              (u32)(uintptr_t)resource->fileMemory,
+                              resource->fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
                 func_0016c2f0();
