@@ -487,30 +487,39 @@ def plan_data_sections(obj, real, retail, gp, resolvable, resolvable_addrs=None)
     placements = recover_text_section_bases(obj, real)
     for name, secs in by_name.items():
         secs.sort(key=lambda s: s["idx"])  # mwld concatenates same-name sections in shndx order
+        base = bases.get(secs[0]["idx"])
         offsets = []
-        off = 0
-        for section in secs:
-            align = section.get("addralign", 1) or 1
-            off = (off + align - 1) & ~(align - 1)
-            offsets.append(off)
-            off += section["size"]
-        total = off
-        base = None
-        for section, offset in zip(secs, offsets):
-            if section["idx"] in bases:
-                base = bases[section["idx"]] - offset
-                break
-        if base is None:
-            candidates = []
+        if base is not None:
+            cursor = base
+            for section in secs:
+                align = section.get("addralign", 1) or 1
+                cursor = (cursor + align - 1) & ~(align - 1)
+                offsets.append(cursor - base)
+                cursor += section["size"]
+            total = cursor - base
+        else:
+            off = 0
+            for section in secs:
+                align = section.get("addralign", 1) or 1
+                off = (off + align - 1) & ~(align - 1)
+                offsets.append(off)
+                off += section["size"]
+            total = off
             for section, offset in zip(secs, offsets):
-                found = _find_retail_data_bases(
-                    obj, section, retail, placements, gp, external
-                )
-                if len(found) == 1:
-                    candidates.append(found[0] - offset)
-            if len(set(candidates)) != 1:
-                return False, {}
-            base = candidates[0]
+                if section["idx"] in bases:
+                    base = bases[section["idx"]] - offset
+                    break
+            if base is None:
+                candidates = []
+                for section, offset in zip(secs, offsets):
+                    found = _find_retail_data_bases(
+                        obj, section, retail, placements, gp, external
+                    )
+                    if len(found) == 1:
+                        candidates.append(found[0] - offset)
+                if len(set(candidates)) != 1:
+                    return False, {}
+                base = candidates[0]
         for section, offset in zip(secs, offsets):
             addr = base + offset
             if section["idx"] in bases and bases[section["idx"]] != addr:
@@ -745,8 +754,11 @@ def link(c, entries):
         if str(obj) not in seen:
             seen.add(str(obj))
             objs.append(str(obj))
-    sh([c["ld_exe"], "-nostdlib", "-nodeadstrip", "-m", "func_00100008",
-        "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf")] + objs)
+    args = [c["ld_exe"], "-nostdlib", "-nodeadstrip", "-m", "func_00100008",
+            "-o", str(BUILD / "slus21621.elf"), str(BUILD / "slus21621.lcf"), *objs]
+    response = BUILD / "slus21621.rsp"
+    response.write_text(subprocess.list2cmdline(args[1:]), encoding="utf-8")
+    sh([args[0], f"@{response}"])
 
 
 

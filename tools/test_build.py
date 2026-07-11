@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import struct
+import subprocess
+import tempfile
 import sys
 import unittest
 from pathlib import Path
@@ -8,6 +10,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import build
+import recover_symbols
 
 
 class _Retail:
@@ -54,6 +57,22 @@ class _Object:
             raise KeyError(name)
         return self.data[:4], []
 
+class _AbsoluteAlignmentObject:
+    endian = "<"
+
+    def __init__(self):
+        self.data = b"A" * 9 + b"B" * 8
+        self.sh = [
+            {"idx": 0, "type": 0, "flags": 0, "size": 0, "offset": 0},
+            {"idx": 2, "name": ".data", "type": 1, "flags": 3,
+             "size": 9, "offset": 0, "addralign": 8},
+            {"idx": 3, "name": ".data", "type": 1, "flags": 3,
+             "size": 8, "offset": 9, "addralign": 16},
+        ]
+        self.symtabs = {}
+        self.symbols = []
+
+
 
 class DataRelocationEligibilityTests(unittest.TestCase):
     real = [{"name": "f", "addr": 0x1000}]
@@ -82,6 +101,58 @@ class DataRelocationEligibilityTests(unittest.TestCase):
         ok, sections = self.plan(0)
         self.assertTrue(ok)
         self.assertEqual(sections, {".rodata": (0x2000, 4)})
+
+    def test_same_name_sections_align_the_absolute_location(self):
+        obj = _AbsoluteAlignmentObject()
+        retail = _Retail({
+            0x2008: b"A" * 9,
+            0x2020: b"B" * 8,
+        })
+        with mock.patch.object(
+            build, "recover_section_bases", return_value={2: 0x2008, 3: 0x2020}
+        ):
+            ok, sections = build.plan_data_sections(obj, [], retail, 0, set())
+        self.assertTrue(ok)
+        self.assertEqual(sections, {".data": (0x2008, 0x20)})
+
+class LinkResponseFileTests(unittest.TestCase):
+    def test_link_uses_response_file_for_object_list(self):
+        entries = [
+            (0x2000, Path("second object.o"), ".text"),
+            (0x1000, Path("first.o"), ".text"),
+            (0x3000, Path("first.o"), ".text"),
+        ]
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            with mock.patch.object(build, "BUILD", output), mock.patch.object(build, "sh") as sh:
+                build.link({"ld_exe": "mwldps2.exe"}, entries)
+            args = [
+                "-nostdlib", "-nodeadstrip", "-m", "func_00100008",
+                "-o", str(output / "slus21621.elf"), str(output / "slus21621.lcf"),
+                "first.o", "second object.o",
+            ]
+            self.assertEqual(
+                (output / "slus21621.rsp").read_text(encoding="utf-8"),
+                subprocess.list2cmdline(args),
+            )
+            sh.assert_called_once_with(["mwldps2.exe", f"@{output / 'slus21621.rsp'}"])
+
+
+class RecoveredSymbolNameTests(unittest.TestCase):
+    def test_address_encoded_names_must_match_recovered_values(self):
+        symbols = {
+            "D_00960070": 0x007D2D60,
+            "jtbl_007BC0F0": 0x007CC1D0,
+            "DAT_007CE100": 0x007CE100,
+            "semanticName": 0x12345678,
+        }
+        self.assertEqual(
+            recover_symbols.address_name_mismatches(symbols),
+            {
+                "D_00960070": (0x00960070, 0x007D2D60),
+                "jtbl_007BC0F0": (0x007BC0F0, 0x007CC1D0),
+            },
+        )
 
 
 if __name__ == "__main__":
