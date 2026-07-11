@@ -224,8 +224,8 @@ u64 FUN_003bb180(u64 param_1,u64 param_2);
 u32  FUN_003bb1d0(u64 param_1,u8 param_2,u8 param_3,u16 param_4,  u16 param_5);
 u32 FUN_003bb280(void);
 void FUN_003bb340(void);
-void FUN_003bb390(u32 param_1,u32 param_2,u16 param_3);
-void FUN_003bb400(u32 param_1);
+void FUN_003bb390(u16 param_2,u16 param_3,float param_1);
+void FUN_003bb400(u16 param_1);
 void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,  float *param_5,float *param_6);
 void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
 void FUN_003bb7a0(Resrc* param_1);
@@ -346,8 +346,7 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
     }
 
     type7Res = (ResrcType7*)MT_Scene_GetResListHead(7);
-    type7Status = 0;
-    type7Status += 1;
+    type7Status = 1;
     for (; type7Res != NULL; type7Res = (ResrcType7*)type7Res->base.next)
     {
         if (type7Res->unk_108 == type7Status)
@@ -2958,21 +2957,20 @@ void FUN_003bb340(void)
 // FUN_003BB390 NONMATCHING
 
 
-void FUN_003bb390(u32 param_1,u32 param_2,u16 param_3)
+void FUN_003bb390(u16 param_2,u16 param_3,float param_1)
 
 
 
 {
 
-  long lVar1;
+  u16 localParam3;
+  Resrc *lVar1;
+  localParam3 = param_3;
+  if ((RESRC_GET_TYPE(param_2) == RESRC_TYPE_07) && (lVar1 = (Resrc*)FUN_003b5d10(), lVar1 != 0)) {
 
-  
+    *(u16 *)((u8*)lVar1 + 0x10c) = localParam3;
 
-  if (((int)(param_2 & 0xfc00) >> 10 == 7) && (lVar1 = FUN_003b5d10(), lVar1 != 0)) {
-
-    *(u16 *)((int)lVar1 + 0x10c) = param_3;
-
-    *(u32 *)((int)lVar1 + 0x104) = param_1;
+    *(float *)((u8*)lVar1 + 0x104) = param_1;
 
   }
 
@@ -2984,17 +2982,14 @@ void FUN_003bb390(u32 param_1,u32 param_2,u16 param_3)
 // FUN_003BB400 NONMATCHING
 
 
-void FUN_003bb400(u32 param_1)
+void FUN_003bb400(u16 param_1)
 
 
 
 {
 
-  long lVar1;
-
-  
-
-  if (((int)(param_1 & 0xfc00) >> 10 == 7) && (lVar1 = FUN_003b5d10(), lVar1 != 0)) {
+  Resrc *lVar1;
+  if (((int)(param_1 & 0xffc00) >> 10 == 7) && (lVar1 = (Resrc*)FUN_003b5d10(), lVar1 != 0)) {
 
     *(u16 *)((int)lVar1 + 0x10c) = 0;
 
