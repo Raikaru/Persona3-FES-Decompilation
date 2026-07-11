@@ -202,6 +202,7 @@ typedef void* (*HmallocAllocator)(u32, u32, u32);
 typedef void (*HmallocReleaser)(void*);
 typedef s32 (*HmallocStepCallback)(void);
 
+extern u8 D_00846F00[];
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 extern const char D_005E4C80[];
@@ -312,7 +313,7 @@ void hmallocPrepareTilePacket(u32 source, u32 owner, s32 tileIndex, s32 tileCoun
                                 tileIndex << 4, 0x1c0, 0, 0,
                                 tileBytes - 0x1c0);
     }
-    func_004d5000((void*)0x846f00, 0x102);
+    func_004d5000((void*)&D_00846F00, 0x102);
 }
 
 // FUN_00191E60
