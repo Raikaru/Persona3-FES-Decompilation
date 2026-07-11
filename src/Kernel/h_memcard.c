@@ -357,7 +357,7 @@ state3_done:
             goto state4_done;
 
 state4_body:
-            if (cardError != 0)
+            if (cardCode != 0)
             {
                 goto state4_done;
             }
