@@ -4535,7 +4535,7 @@ void FUN_003bc940(void)
 }
 #define FUN_003bc940(...) ((void (*)(...))FUN_003bc940)(__VA_ARGS__)
 #undef FUN_003bcbf0
-// FUN_003BCBF0 NONMATCHING
+// FUN_003BCBF0
 
 
 void FUN_003bcbf0(int param_1,int param_2)
@@ -4549,7 +4549,7 @@ void FUN_003bcbf0(int param_1,int param_2)
   else {
     *(u16 *)&DAT_007ce658 = 1;
     if (param_1 == 0) {
-      *(u16 *)&DAT_007ce65c = (short)-1;
+      *(short *)&DAT_007ce65c = -1;
     }
     else {
       *(u16 *)&DAT_007ce65c = (short)param_1;
