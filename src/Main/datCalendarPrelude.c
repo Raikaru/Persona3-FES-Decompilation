@@ -915,10 +915,10 @@ u32 FUN_0017d030(void)
     return U32(0x0083a730);
 }
 
-// FUN_0017d040 NONMATCHING
+// FUN_0017d040
 void FUN_0017d040(void)
 {
-    U32(0x0083a730)++;
+    U32(0x0083a730) = *(u32*)(D_0083A6FC + 0x34) + 1;
 }
 
 // FUN_0017d060 NONMATCHING

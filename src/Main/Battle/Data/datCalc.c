@@ -4812,21 +4812,21 @@ u16 FUN_00308a80(u32 param_1)
 
 
 
-// FUN_00308bb0 NONMATCHING
+// FUN_00308bb0
 int FUN_00308bb0(u16 *param_1)
 
 {
   int iVar1;
   
   if ((*param_1 & 4) == 0) {
-    if (10 < param_1[1]) {
-      FUN_0019d3f0(0x69aa80,0x1051);
+    if (param_1[1] >= 0xb) {
+      FUN_0019d3f0((u32)D_0069aa80,0x1051);
     }
-    iVar1 = FUN_00173380(param_1[1]);
+    iVar1 = (int)FUN_00173380(param_1[1]);
   }
   else {
-    if (0x14f < param_1[1]) {
-      FUN_0019d3f0(0x69aa80,0x1054);
+    if (param_1[1] >= 0x150) {
+      FUN_0019d3f0((u32)D_0069aa80,0x1054);
     }
     iVar1 = iGpffffb720 + (u32)param_1[1] * 0x3e + 0xe;
   }
