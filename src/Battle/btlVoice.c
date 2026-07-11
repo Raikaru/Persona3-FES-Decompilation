@@ -4801,17 +4801,18 @@ void func_002e4240(u32 param_1)
   return;
 }
 
-// FUN_002e4250 NONMATCHING
+// FUN_002e4250
 u32 func_002e4250(void)
 
 {
   u32 uVar1;
   
-  if ((*(int *)(DAT_007ce3ec + 0xb08) == 0) && (*(int *)(DAT_007ce3ec + 0xb0c) == 0)) {
-    uVar1 = 0;
+  if ((*(int *)(DAT_007ce3ec + 0xb08) != 0) ||
+      (*(int *)(DAT_007ce3ec + 0xb0c) != 0)) {
+    uVar1 = 1;
   }
   else {
-    uVar1 = 1;
+    uVar1 = 0;
   }
   return uVar1;
 }
