@@ -76,6 +76,8 @@ extern void func_0054b2e8(void* handle, const char* name);
 extern void func_0054d0a0(void* handle, const char* name);
 extern void* func_0053b868(void* source, const char* name, const char* table, void* callback);
 extern s32 func_00508670(const char* path, u32 mode, u32 flags);
+#pragma alias func_00508670_2 func_00508670
+extern s32 func_00508670_2(const char* path, u32 mode);
 extern s32 func_00508a78(s32 fd, s32 value, s32 origin);
 extern void func_00508900(s32 fd);
 extern s32 func_00508cb8(s32 fd, const void* dst, u32 size);
@@ -688,7 +690,7 @@ void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const ch
             sCdvdCache[i].fileMemory = fileMemory;
             sCdvdCache[i].fileSize = fileSize;
             sCdvdCache[i].unk_110 = 0;
-            memcpy(&sCdvdCache[i].path, path, 128);
+            memcpy(curr->path, path, 128);
             return;
         }
     }
@@ -1465,15 +1467,16 @@ void func_00102bf0(void* resultData, void* slot,
     result->unused1 = 0;
 }
 
-// FUN_00102d10 NONMATCHING
+// FUN_00102d10
 s32 func_00102d10(void* unused, const char* path)
 {
     char uppercasePath[256];
     s32 fd;
 
     (void)unused;
-    H_Cdvd_BuildPathUppercase(path, uppercasePath);
-    fd = func_00508670(uppercasePath, 1, 0);
+    strcpy(uppercasePath, "VOL:\\");
+    strcat(uppercasePath, path + 4);
+    fd = func_00508670_2(uppercasePath, 1);
     if (fd >= 0)
     {
         func_00508900(fd);
