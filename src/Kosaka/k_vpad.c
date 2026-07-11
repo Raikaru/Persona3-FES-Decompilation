@@ -28,6 +28,9 @@ extern void func_001e1360(KwlnTask* task, s32 arg);
 extern f32 func_001e13c0(void);
 extern s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix, f32 playerHeading, f32 inputHeading);
 extern f32 D_007CE230;
+extern volatile f32 DAT_007cb144;
+extern volatile f32 DAT_007caf24;
+
 
 static f32 sVPadMoveSpeed;
 
@@ -495,73 +498,109 @@ f32 func_001e13c0(void)
     return speed;
 }
 
-// FUN_001e1590 NONMATCHING
+// FUN_001e1590
 s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix,
                   f32 playerHeading, f32 inputHeading)
 {
     PcRotateWork* work;
     f32 direct;
     f32 wrapped;
-    f32 angle;
-    f32 absAngle;
+    s32 maxSteps;
     s32 reverse;
-
-    if (rotateTask == NULL || rotateTask->workData == NULL || matrix == NULL)
-    {
-        return 0;
-    }
     work = (PcRotateWork*)rotateTask->workData;
     if (work->state == PCROTATE_STATE_ROTATING)
     {
         return 0;
     }
     work->mat = *matrix;
-    while (playerHeading > 360.0f)
+
+    if (playerHeading > 360.0f)
     {
         playerHeading -= 360.0f;
     }
-    while (inputHeading > 360.0f)
+    *(f32*)((u8*)work + 0x4c) = playerHeading;
+    if (inputHeading > 360.0f)
     {
         inputHeading -= 360.0f;
     }
-    while (playerHeading < 0.0f)
+    *(f32*)((u8*)work + 0x50) = inputHeading;
+    if (playerHeading < inputHeading)
     {
-        playerHeading += 360.0f;
-    }
-    while (inputHeading < 0.0f)
-    {
-        inputHeading += 360.0f;
-    }
-    direct = inputHeading - playerHeading;
-    wrapped = (direct >= 0.0f) ? (direct - 360.0f) : (direct + 360.0f);
-    reverse = 0;
-    if (fabsf(direct) < fabsf(wrapped))
-    {
-        angle = direct;
+        if (playerHeading > DAT_007cb144)
+        {
+            playerHeading = 0.0f;
+        }
+        if (inputHeading > DAT_007cb144)
+        {
+            inputHeading = 360.0f;
+        }
+        if (playerHeading < DAT_007caf24)
+        {
+            playerHeading = 0.0f;
+        }
+        if (inputHeading < DAT_007caf24)
+        {
+            inputHeading = 360.0f;
+        }
+        direct = inputHeading - playerHeading;
+        wrapped = playerHeading + (360.0f - inputHeading);
+        reverse = 0;
     }
     else
     {
-        angle = wrapped;
+        if (playerHeading > DAT_007cb144)
+        {
+            playerHeading = 360.0f;
+        }
+        if (inputHeading > DAT_007cb144)
+        {
+            inputHeading = 0.0f;
+        }
+        if (playerHeading < DAT_007caf24)
+        {
+            playerHeading = 360.0f;
+        }
+        if (inputHeading < DAT_007caf24)
+        {
+            inputHeading = 0.0f;
+        }
+        direct = playerHeading - inputHeading;
+        wrapped = inputHeading + (360.0f - playerHeading);
         reverse = 1;
     }
-    if (fabsf(angle) <= 45.0f)
+
+    if (fabsf(direct) < fabsf(wrapped))
     {
-        return 0;
+        work->angle = direct;
+        if (reverse == 1)
+        {
+            work->angle *= -1.0f;
+        }
     }
-    work->maxSteps = (s32)(fabsf(angle) / 30.0f);
-    if (work->maxSteps < 1)
+    else
     {
-        work->maxSteps = 1;
+        work->angle = wrapped;
+        if (reverse == 0)
+        {
+            work->angle *= -1.0f;
+        }
     }
-    work->steps = 0;
-    work->angle = angle / (f32)work->maxSteps;
-    if (reverse && direct >= 0.0f)
+
+    if (fabsf(work->angle) > 45.0f)
     {
-        work->angle = -work->angle;
+        maxSteps = (s32)fabsf(work->angle) / 30;
+        if (maxSteps <= 0)
+        {
+            maxSteps = 1;
+        }
+        work->maxSteps = maxSteps;
+        work->steps = 0;
+        work->angle /= (f32)work->maxSteps;
+        work->state = PCROTATE_STATE_ROTATING;
+        K_FldEvent_001cd650(K_Field_Get()->eventTask, true);
+        return 1;
     }
-    work->state = PCROTATE_STATE_ROTATING;
-    K_FldEvent_001cd650(K_Field_Get()->eventTask, true);
-    return 1;
+    return 0;
 }
 
 // FUN_001E1840
