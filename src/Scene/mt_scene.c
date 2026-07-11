@@ -3262,8 +3262,9 @@ void FUN_003b83d0(u32 param_1)
         }
     }
 }
+#undef FUN_003b7460
 #undef FUN_003b8470
-// FUN_003B8470 NONMATCHING
+// FUN_003B8470
 u32 FUN_003b8470(u16 param_1,u16 param_2)
 {
     Resrc* res1;
@@ -3297,7 +3298,10 @@ u32 FUN_003b8470(u16 param_1,u16 param_2)
             dst = (RwV3d*)((u8*)res1 + 4);
             src = (RwV3d*)((u8*)res2 + 4);
             *dst = *src;
-            FUN_003b7460(res1, dst, 0, 0);
+            {
+                extern void FUN_003b7460(Resrc*, RwV3d*, long, long);
+                FUN_003b7460(res1, dst, 0, 0);
+            }
             result = 1;
         }
     }
