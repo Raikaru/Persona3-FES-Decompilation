@@ -1465,7 +1465,7 @@ void func_00191640(s32 slot)
     sMemcardFile = slot;
 }
 
-// FUN_00191660 NONMATCHING. Scan one slot and report card status.
+// FUN_00191660. Scan one slot and report card status.
 s32 func_00191660(void)
 {
     s32 cardMode;
@@ -1519,9 +1519,12 @@ state1:
             {
                 goto state1_error5a;
             }
-            if (cardCode == 0x6f)
+            switch (cardCode)
             {
-                goto state1_error5b;
+                case 0x6f:
+                    goto state1_error5b;
+                default:
+                    break;
             }
             goto state1_error9;
         }
@@ -1546,21 +1549,27 @@ state1_error9:
 state1_card_error:
     if (*D_00846EA0 != 2)
     {
-        return -1;
+        goto state1_card_error_bad;
     }
-    if (*D_00846EA8 > 0x4d)
+    if (*D_00846EA8 >= 0x4e)
     {
         return 100;
     }
     sMemcardSeqMode = 2;
     goto done;
+state1_card_error_bad:
+    return -1;
 
 state2:
     if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        if (sMemcardAsync == 0)
+        if (sMemcardAsync != 0)
         {
-            if (FUN_0017d800() == 0)
+            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+        }
+        else
+        {
+            if (FUN_0017d800() != 0)
             {
                 FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
             }
@@ -1568,10 +1577,6 @@ state2:
             {
                 FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
             }
-        }
-        else
-        {
-            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
         }
         FUN_005137b8(sSocketNo, D_00846DA0, D_00846C80);
         sMemcardSeqMode = 3;
@@ -1601,9 +1606,12 @@ state3:
         {
             goto state3_error5c;
         }
-        if (cardCode == 0x9003)
+        switch (cardCode)
         {
-            goto state3_error5d;
+            case 0x9003:
+                goto state3_error5d;
+            default:
+                break;
         }
     }
     goto done;
