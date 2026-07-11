@@ -74,7 +74,7 @@ void FUN_003b58c0(short param_1);
 void FUN_003b5980(short param_1);
 u32 FUN_003b5d00(void);
 Resrc* FUN_003b5da0(u32 param_1);
-u32 FUN_003b5e90(u32 param_1);
+u32 FUN_003b5e90(u16 param_1);
 u16 FUN_003b5f70(u16 param_1);
 u32 FUN_003b6180(u32 param_1,long param_2);
 u32 FUN_003b64c0(u32 param_1,long param_2,u8 param_3);
@@ -721,48 +721,41 @@ Resrc* FUN_003b5da0(u32 param_1)
 
 
 
-u32 FUN_003b5e90(u32 param_1)
+extern const char D_006A2BB0[];
+extern const char D_006A2BD0[];
+extern const char D_006A2BE8[];
 
-
-
+u32 FUN_003b5e90(u16 param_1)
 {
+    u16 uVar1;
+    u32 lVar2;
+    u32 typeId;
 
-  u32 uVar1;
-
-  long lVar2;
-
-  
-
-  uVar1 = param_1 & 0x3ff | 0x2000;
-
-  if (*(int *)(PTR_DAT_007cd540 + 8) == 0) {
-
-    FUN_005225a8(0x6a2bb0);
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    lVar2 = FUN_003b50d0(*(int *)(PTR_DAT_007cd540 + 8),uVar1);
-
-    if (lVar2 == 0) {
-
-      uVar1 = 0;
-
+    uVar1 = ((param_1 & 0xffff) & 0x3ff) | 0x2000;
+    if (*(int *)(PTR_DAT_007cd540 + 8) == 0)
+    {
+        FUN_005225a8(D_006A2BB0);
+        return 0;
     }
 
-    else if (lVar2 == 0) {
-
-      FUN_0019d3f0(0x6a2be8,0x1d7);
-
+    typeId = uVar1 & 0xffff;
+    if (((s32)(typeId & RESRC_TYPE_MASK) >> 10) != 8)
+    {
+        FUN_005225a8(D_006A2BD0);
+        return 0;
     }
 
-  }
+    lVar2 = FUN_003b50d0(*(int *)(PTR_DAT_007cd540 + 8), uVar1);
+    if (lVar2 == 0)
+    {
+        return 0;
+    }
+    else if (lVar2 == 0)
+    {
+        FUN_0019d3f0(D_006A2BE8, 0x1d7);
+    }
 
-  return uVar1;
-
+    return uVar1;
 }
 #define FUN_003b5e90(...) ((u32 (*)(...))FUN_003b5e90)(__VA_ARGS__)
 #undef FUN_003b5f70
