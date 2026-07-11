@@ -479,37 +479,45 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
 // FUN_00101010 NONMATCHING
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
+    char currChar;
+    char* pathBase;
+    size_t basePathLen;
     u32 i;
-    u32 prefixLength;
-    const char* prefix;
-    char* dstBase;
-    char c;
+    char* dstPtr;
+    s32 slash;
+    s32 backslash;
 
-    prefix = "VOL:\\";
-    strcpy(dst, prefix);
-    prefixLength = strlen(prefix);
-    dstBase = dst + prefixLength;
-    for (i = 0; i < 0xff; i++)
+    pathBase = "VOL:\\";
+    strcpy(dst, pathBase);
+    basePathLen = strlen(pathBase);
+    i = 0;
+    dstPtr = dst + basePathLen;
+    asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
+    asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
+
+    while (i < 0xff)
     {
-        c = src[i];
-        if (c == '\0')
+        currChar = src[i];
+        if (currChar == '\0')
         {
-            dstBase[i] = '\0';
+            dst[i + basePathLen] = '\0';
             return;
         }
 
-        if (c == '/')
+        if (currChar == slash)
         {
-            dstBase[i] = '\\';
+            dstPtr[i] = backslash;
         }
-        else if (c >= 'a' && c <= 'z')
+        else if (currChar >= 'a' && currChar <= 'z')
         {
-            dstBase[i] = c - ('a' - 'A');
+            dstPtr[i] = currChar - 0x20;
         }
         else
         {
-            dstBase[i] = c;
+            dstPtr[i] = currChar;
         }
+
+        i++;
     }
 }
 
