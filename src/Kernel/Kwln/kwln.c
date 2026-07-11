@@ -467,17 +467,34 @@ void kwlnInitGameData()
 // FUN_001967d0 NONMATCHING
 void func_001967d0(void)
 {
-    u32 preservedFlags[7];
-    u32 preservedFlagIds[200] = { 0 };
-    u32 preservedFlagValues[200] = { 0 };
-    u32 initialAuxValue;
-    u32 initialPersona;
-    s32 i;
-
-    for (i = 0; i < 0x3d * 2; i++)
+    struct
     {
-        preservedFlagIds[i] = D_005E4F60[i];
-    }
+        u32 preservedFlagIds[0x3d * 2];
+        u32 padding[2];
+        u32 preservedFlagValues[200];
+        u32 preservedFlags[7];
+    } resetStorage;
+#define preservedFlagIds resetStorage.preservedFlagIds
+#define preservedFlagValues resetStorage.preservedFlagValues
+#define preservedFlags resetStorage.preservedFlags
+    u32 initialAuxValue;
+    u16 initialPersona;
+    s32 i;
+    s32 copyCount;
+    u32* source;
+    u32* destination;
+
+    source = D_005E4F60;
+    destination = preservedFlagIds;
+    copyCount = 0x3d;
+    do
+    {
+        destination[0] = source[0];
+        destination[1] = source[1];
+        source += 2;
+        destination += 2;
+        copyCount--;
+    } while (copyCount != 0);
 
     initialAuxValue = FUN_0016f380(0x2f);
     func_0017d7c0(func_0017d7b0() + 1);
@@ -487,8 +504,12 @@ void func_001967d0(void)
         preservedFlags[i] = datGetFlag(0x183 + i);
     }
 
-    for (i = 0; i < 200 && preservedFlagIds[i] != 0; i++)
+    for (i = 0; i < 200; i++)
     {
+        if (preservedFlagIds[i] == 0)
+        {
+            break;
+        }
         preservedFlagValues[i] = datGetFlag(preservedFlagIds[i]);
     }
 
@@ -520,7 +541,7 @@ void func_001967d0(void)
         datSetEquipmentIdx(i, 2, (u16)-1);
         datSetEquipmentIdx(i, 3, (u16)-1);
         datInitPersona(i);
-        func_00175820(i, ((const u16*)0x005e4f20)[i]);
+        func_00175820(i, ((const u16*)0x005e4f20)[i - 1]);
         datSetHp(i, datGetMaxHp(i));
         datSetSp(i, func_0016c670(i));
         datSetFatigueCounter(i, 0x20);
@@ -595,8 +616,12 @@ void func_001967d0(void)
         datSetFlag(0x183 + i, preservedFlags[i]);
     }
 
-    for (i = 0; i < 200 && preservedFlagIds[i] != 0; i++)
+    for (i = 0; i < 200; i++)
     {
+        if (preservedFlagIds[i] == 0)
+        {
+            break;
+        }
         datSetFlag(preservedFlagIds[i], preservedFlagValues[i]);
     }
 
@@ -605,6 +630,9 @@ void func_001967d0(void)
     datSetFlag(0x141d, 1);
     FUN_0016f3e0(0x2f, initialAuxValue);
 }
+#undef preservedFlagIds
+#undef preservedFlagValues
+#undef preservedFlags
 
 // FUN_00196770
 void kwlnPushCommonRenderStates()
@@ -951,10 +979,9 @@ void kwln00198010()
     bsRootInit();
 }
 
-// FUN_001983a0 NONMATCHING
+// FUN_001983a0
 u8 kwlnUpdate()
 {
-
     if (DAT_007cdffc != 0)
     {
         DAT_007ce0c4 = DAT_00960070;
@@ -971,17 +998,18 @@ u8 kwlnUpdate()
         H_Pad_Update();
         sFlags &= ~KWLN_FLAG_ERR;
 
-        if ((((*(u16*)0x007e09f2 & 4) == 0) || ((*(u16*)0x007e09f2 & 0x100) == 0)) ||
-            ((*(u16*)0x007e09f4 & 0x800) == 0))
+        if ((HPAD_CHKBTN_PRESSED(HPAD_PORT_2, HPAD_BTN_L1) &&
+             HPAD_CHKBTN_PRESSED(HPAD_PORT_2, HPAD_BTN_SELECT)) &&
+            HPAD_CHKBTN_JUSTPRESSED(HPAD_PORT_2, HPAD_BTN_START))
+        {
+            func_001e7720();
+        }
+        else
         {
             if (kwlnTaskMain() == 0)
             {
                 return false;
             }
-        }
-        else
-        {
-            func_001e7720();
         }
 
 frame_end:
@@ -989,8 +1017,8 @@ frame_end:
         func_004c7cf0(1);
     }
 
-    sFrameCount2++;
     sFrameCount++;
+    sFrameCount2++;
 
     return true;
 }
