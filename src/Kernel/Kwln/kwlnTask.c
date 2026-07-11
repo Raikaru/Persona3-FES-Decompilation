@@ -304,12 +304,13 @@ u8 kwlnTaskUpdate(KwlnTask* task)
 // FUN_00194100 NONMATCHING
 void kwlnTaskUpdateAll()
 {
-    KwlnTask* currTask = sRunningTaskHead;
-    KwlnTask* cursor;
+    KwlnTask* currTask;
     KwlnTask* prevTask;
+    KwlnTask* cursor;
 
     if (sRunningTaskHead != NULL)
     {
+        currTask = sRunningTaskHead;
         while (currTask != NULL)
         {
             prevTask = currTask->prev;
@@ -325,23 +326,28 @@ void kwlnTaskUpdateAll()
                 if (prevTask != NULL)
                 {
                     cursor = prevTask;
-
-                    while (cursor != NULL && 
+                    while ((u32)(cursor != NULL) != 0 &&
                            (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
                     {
                         prevTask = cursor->prev;
-                        if (prevTask == NULL)
+                        if (prevTask != NULL)
+                        {
+                            cursor = prevTask;
+                        }
+                        else
                         {
                             cursor = cursor->unk_48;
                             break;
                         }
-
-                        cursor = cursor->prev;
                     }
 
                     if (cursor != NULL)
                     {
                         currTask = cursor->next;
+                    }
+                    else
+                    {
+                        currTask = sRunningTaskHead;
                     }
                 }
             }
