@@ -983,7 +983,7 @@ u8 kwlnTaskDestroyWithHierarchyByName(const char* name)
     return kwlnTaskDestroyWithHierarchy(task);
 }
 
-// FUN_00195020 NONMATCHING. Destroy a task and its hierarchy
+// FUN_00195020. Destroy a task and its hierarchy
 u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 {
     u32 state;
@@ -1006,33 +1006,38 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
             {
                 case KWLNTASK_STATE_STAGED:  // fallthrough
                 case KWLNTASK_STATE_RUNNING:
-                    kwlnTaskRemoveFromList(task);
-                    KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
-                    kwlnTaskAddToList(task);
+                    goto destroyCurrent;
+                case KWLNTASK_STATE_DESTROY:
+                    goto processChildren;
 
-                    if (task->destroyDelay == 0)
-                    {
-                        kwlnTaskRemoveFromList(task);
-                        if (task->destroy != NULL)
-                        {
-                            task->destroy(task);
-                        }
-
-                        KWLNTASK_RESET_STATE(task);
-
-                        kwlnTaskDetachParent(task);
-                        kwlnTaskDetachAllChildren(task);
-                        H_Free(task);
-                    }
-                    break;
-
-                case KWLNTASK_STATE_DESTROY: break;
                 case KWLNTASK_STATE_NULL:    // fallthrough
-                default: 
+                default:
                     printf("Process stat Invalid!!\n");
                     K_ASSERT(false, 574);
-                    break;
+                    goto processChildren;
             }
+
+destroyCurrent:
+            kwlnTaskRemoveFromList(task);
+            KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
+            kwlnTaskAddToList(task);
+
+            if (task->destroyDelay == 0)
+            {
+                kwlnTaskRemoveFromList(task);
+                if (task->destroy != NULL)
+                {
+                    task->destroy(task);
+                }
+
+                KWLNTASK_RESET_STATE(task);
+
+                kwlnTaskDetachParent(task);
+                kwlnTaskDetachAllChildren(task);
+                H_Free(task);
+            }
+
+processChildren:
 
             task = task->child;
             if (task != NULL)
@@ -1047,8 +1052,22 @@ u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
             }
             break;
 
-        case KWLNTASK_STATE_DESTROY: 
+        case KWLNTASK_STATE_DESTROY:
             task->destroyDelay = 2;
+            if (task->destroyDelay == 0)
+            {
+                kwlnTaskRemoveFromList(task);
+                if (task->destroy != NULL)
+                {
+                    task->destroy(task);
+                }
+
+                KWLNTASK_RESET_STATE(task);
+
+                kwlnTaskDetachParent(task);
+                kwlnTaskDetachAllChildren(task);
+                H_Free(task);
+            }
             break;
 
         case KWLNTASK_STATE_NULL: // fallthrough
