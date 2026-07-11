@@ -232,17 +232,31 @@ u8 kwlnTaskUpdate(KwlnTask* task)
     KwlnTaskUpdateFunc updateFunc;
     void* updateResult;
 
-    if (((kwlnGetFlags() & 0xC0000000) == 0 ||
-         task->priority < 0x816 ||
-         0x1CE5 < task->priority) &&
-        (sTaskPriorityGateA == 0 ||
-         task->priority < 0x833 ||
-         0x103D < task->priority) &&
-        (sTaskPriorityGateB == 0 ||
-         task->priority < 0x1064 ||
-         0x1CD9 < task->priority) &&
-        (task->stateAndFlags & KWLNTASK_FLAG_SUSPENDED) == 0)
+    if ((kwlnGetFlags() & 0xC0000000) != 0 &&
+        task->priority >= 0x816 &&
+        task->priority < 0x1CE6)
     {
+        return true;
+    }
+
+    if (sTaskPriorityGateA != 0 &&
+        task->priority >= 0x833 &&
+        task->priority < 0x103E)
+    {
+        return true;
+    }
+
+    if (sTaskPriorityGateB != 0 &&
+        task->priority >= 0x1064 &&
+        task->priority < 0x1CDA)
+    {
+        return true;
+    }
+
+    if ((task->stateAndFlags & KWLNTASK_FLAG_SUSPENDED) != 0)
+    {
+        return true;
+    }
 
         sTaskUpdating = task;
 
@@ -253,13 +267,13 @@ u8 kwlnTaskUpdate(KwlnTask* task)
             pad = gPads;
             for (i = 0; i < HPAD_PORT_MAX; i++)
             {
-                pad[i].btn[1].justPressed = HPAD_BTN_SQUARE;
-                pad[i].btn[1].released = HPAD_BTN_SQUARE;
-                pad[i].virtualPreviousPressed = HPAD_BTN_SQUARE;
-                pad[i].lstickX = 128;
-                pad[i].lstickY = 128;
-                pad[i].rstickX = 128;
-                pad[i].rstickY = 128;
+                pad[i].btn[1].justPressed = 0x80;
+                pad[i].btn[1].released = 0x80;
+                pad[i].virtualPreviousPressed = 0x80;
+                pad[i].lstickX = 0x80;
+                pad[i].lstickY = 0x80;
+                pad[i].rstickX = 0x80;
+                pad[i].rstickY = 0x80;
             }
         }
         else
@@ -296,7 +310,6 @@ u8 kwlnTaskUpdate(KwlnTask* task)
 
         task->timer++;
         sTaskUpdating = NULL;
-    }
 
     return true;
 }
