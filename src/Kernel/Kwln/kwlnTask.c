@@ -227,8 +227,8 @@ void kwlnTaskAddToList(KwlnTask* task)
 // FUN_00193ec0 NONMATCHING
 u8 kwlnTaskUpdate(KwlnTask* task)
 {
-    s32 i;
     HPad* pad;
+    s32 i;
     KwlnTaskUpdateFunc updateFunc;
     void* updateResult;
 
@@ -266,13 +266,8 @@ u8 kwlnTaskUpdate(KwlnTask* task)
 
             for (i = 0, pad = gPads; i < HPAD_PORT_MAX; i++)
             {
-                pad[i].btn[1].justPressed = 0x80;
-                pad[i].btn[1].released = 0x80;
-                pad[i].virtualPreviousPressed = 0x80;
-                pad[i].lstickX = 0x80;
-                pad[i].lstickY = 0x80;
-                pad[i].rstickX = 0x80;
-                pad[i].rstickY = 0x80;
+                pad[i].virtualPreviousPressed = pad[i].btn[1].released = pad[i].btn[1].justPressed = 0x80;
+                *((u8*)&pad[i].rstickY) = *((u8*)&pad[i].rstickX) = *((u8*)&pad[i].lstickY) = *((u8*)&pad[i].lstickX) = 0x80;
             }
         }
         else
