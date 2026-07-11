@@ -501,25 +501,16 @@ state4_done:
                 }
                 else
                 {
-                    if (cardCode == 0x2f)
+                    switch (cardCode)
                     {
-                        return -3;
-                    }
-                    if (cardCode == 0x9001)
-                    {
-                        return -3;
-                    }
-                    if (cardCode == 0x13)
-                    {
-                        return -3;
-                    }
-                    if (cardCode == 0x6f)
-                    {
-                        return -3;
-                    }
-                    if (cardCode == 0x9003)
-                    {
-                        return -3;
+                        case 0x2f:
+                        case 0x9001:
+                        case 0x13:
+                        case 0x6f:
+                        case 0x9003:
+                            return -3;
+                        default:
+                            break;
                     }
                 }
             }
