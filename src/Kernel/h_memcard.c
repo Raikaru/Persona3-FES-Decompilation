@@ -89,40 +89,49 @@ s32 func_0018f190(s32* mode, u32* result, s32* error)
     s32 status;
 
     status = FUN_00514900();
-    if (status == 1)
-        goto card_status_ready;
-    if (status == 0)
+    if (status != 1)
+    {
+        if (status != 0)
+        {
+            if (status != -1)
+            {
+                return status;
+            }
+            return -1;
+        }
         return 0;
-    if (status == -1)
-        return -1;
-    return status;
+    }
 
-card_status_ready:
-    if (*mode == 6)
-        goto card_mode_65;
-    if (*mode == 5)
-        goto card_mode_65;
-    goto card_mode_other;
+    switch (*mode)
+    {
+        case 5:
+        case 6:
+            if ((s32)*result < 0)
+            {
+                *error = 0;
+                if ((s32)*result < 0)
+                {
+                    *result &= 0xffff;
+                }
+            }
+            else
+            {
+                *error = 1;
+            }
+            break;
 
-card_mode_65:
-    if ((s32)*result >= 0)
-        goto card_error_set;
-    *error = 0;
-    if ((s32)*result < 0)
-        *result &= 0xffff;
-    goto card_status_done;
+        default:
+            if (*result == 0)
+            {
+                *error = 1;
+            }
+            if ((s32)*result < 0)
+            {
+                *result &= 0xffff;
+            }
+            break;
+    }
 
-card_error_set:
-    *error = 1;
-    goto card_status_done;
-
-card_mode_other:
-    if (*result == 0)
-        *error = 1;
-    if ((s32)*result < 0)
-        *result &= 0xffff;
-
-card_status_done:
     return 1;
 }
 
@@ -755,7 +764,7 @@ void func_00190580(void)
     sMemcardAbort = 1;
 }
 
-// FUN_00190590 NONMATCHING. Poll cancellation/error status for a transaction.
+// FUN_00190590 Poll cancellation/error status for a transaction.
 s32 func_00190590(void)
 {
     s32 status;
@@ -780,31 +789,25 @@ s32 func_00190590(void)
             FUN_005136f8(sSocketNo, D_00846EA0);
             if (cardError == 0)
             {
-                if (cardCode == 0x2f)
-                    goto card_error_2f;
-                if (cardCode == 0x9001)
-                    goto card_error_9001;
-                if (cardCode == 0x13)
-                    goto card_error_13;
-                if (cardCode == 0x6f)
-                    goto card_error_6f;
-                if (cardCode == 0x9003)
-                    goto card_error_9003;
-            }
-            goto card_state;
+                switch (cardCode)
+                {
+                    case 0x9003:
+                        goto card_error_9003;
+                    case 0x6f:
+                        goto card_error_6f;
+                    case 0x13:
+                        goto card_error_13;
+                    case 0x9001:
+                        goto card_error_9001;
+                    case 0x2f:
+                        goto card_error_2f;
+                    default:
+                        goto card_state;
+                }
         }
+            goto card_state;
     }
-    goto card_done;
-
-card_state:
-    if (*D_00846EA0 != 2)
-    {
-        return -1;
-    }
-    if (*D_00846EA4 == 0)
-    {
-        return -2;
-    }
+        }
     goto card_done;
 
 card_error_9003:
@@ -817,6 +820,17 @@ card_error_9001:
     return -4;
 card_error_2f:
     return -2;
+
+card_state:
+    if (*D_00846EA0 != 2)
+    {
+        return -1;
+    }
+    if (*D_00846EA4 == 0)
+    {
+        return -2;
+    }
+    goto card_done;
 
 card_done:
     return 0;
