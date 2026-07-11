@@ -327,7 +327,7 @@ void kwlnTaskUpdateAll()
                     cursor = prevTask;
 
                     while (cursor != NULL && 
-                          (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
+                           (KWLNTASK_GET_STATE(cursor) == KWLNTASK_STATE_DESTROY))
                     {
                         prevTask = cursor->prev;
                         if (prevTask == NULL)
@@ -426,28 +426,29 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
     KwlnTask* child;
     KwlnTask* grandchild;
     u32 maskedFlags;
+    u32 clearFlags;
 
-    maskedFlags = flags & ~KWLNTASK_STATE_MASK;
     if (enabled != 0)
     {
-        task->stateAndFlags |= maskedFlags;
+        task->stateAndFlags |= flags & 0x0ffffff0;
     }
     else
     {
-        task->stateAndFlags &= ~maskedFlags;
+        task->stateAndFlags &= ~(flags & 0x0ffffff0);
     }
 
     child = task->child;
+    maskedFlags = flags & 0x0ffffff0;
+    clearFlags = ~maskedFlags;
     while (child != NULL)
     {
-        maskedFlags = flags & ~KWLNTASK_STATE_MASK;
         if (enabled != 0)
         {
             child->stateAndFlags |= maskedFlags;
         }
         else
         {
-            child->stateAndFlags &= ~maskedFlags;
+            child->stateAndFlags &= clearFlags;
         }
 
         grandchild = child->child;
@@ -641,7 +642,6 @@ void kwlnTaskPrintTrees()
     {
         indent[i] = (char)space;
     }
-
     currTask = sStagedTaskHead;
     while (currTask != NULL)
     {
@@ -773,7 +773,6 @@ KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask,
     if (parentTask != NULL)
     {
         maxPriority = 0;
-
         while (currParent != NULL)
         {
             if (priority <= currParent->priority &&
