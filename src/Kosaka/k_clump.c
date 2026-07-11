@@ -65,7 +65,7 @@ extern u32 FUN_0017e480(u32 a, u32 b, u32 c, u32 d);
 extern void K_Assert(const char* message, s32 line);
 extern void (*D_00960090)(u32 state, ...);
 extern void (*jtbl_0096017C)(void* memory);
-extern void* D_00960070;
+extern void* D_007D2D60;
 extern u32 D_00960184[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
@@ -130,7 +130,7 @@ static u32 kclump_render_item(KClumpMaterialNode* item, u32 callbackFlag)
     RwSphere* sphere;
 
     sphere = func_004912b0(item->object);
-    if (sphere == NULL || RwCameraFrustumTestSphere((RwCamera*)D_00960070, sphere) == rwSPHEREOUTSIDE)
+    if (sphere == NULL || RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) == rwSPHEREOUTSIDE)
     {
         return 0;
     }
@@ -948,7 +948,7 @@ void* func_001a8820(void* item)
     if ((*(u8*)((u8*)item + 2) & 4) != 0 && kclump_word(item, 0x18) != 0)
     {
         RwSphere* sphere = func_004912b0(item);
-        if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_00960070, sphere) != rwSPHEREOUTSIDE)
+        if (sphere != NULL && RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, sphere) != rwSPHEREOUTSIDE)
         {
             kclump_call_resource(item);
             if (*(u32*)0x007ce154 == 1)
@@ -1036,7 +1036,7 @@ void func_001a8b10(u32* entries)
     {
         item = (KClumpMaterialNode*)(entries + i * 11 + 1);
         if (func_004912b0(item->object) != NULL &&
-            RwCameraFrustumTestSphere((RwCamera*)D_00960070, func_004912b0(item->object)) != rwSPHEREOUTSIDE)
+            RwCameraFrustumTestSphere((RwCamera*)D_007D2D60, func_004912b0(item->object)) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
             {
