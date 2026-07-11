@@ -639,18 +639,20 @@ void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
     }
 }
 
-// FUN_001948b0 NONMATCHING
+// FUN_001948b0
+#pragma optimization_level 1
 void kwlnTaskPrintTrees()
 {
     s32 i;
     u32 space;
-    char* indent;
     KwlnTask* currTask;
+    KwlnTask* currTask_c;
+    char* indent;
 
     printf("<<< process tree >>>\n");
     i = 0;
-    indent = sPrintIndent;
     space = ' ';
+    indent = sPrintIndent;
     for (; i < 64; i++)
     {
         indent[i] = (char)space;
@@ -669,7 +671,7 @@ void kwlnTaskPrintTrees()
     }
 
     currTask = sRunningTaskHead;
-    while (currTask != NULL)
+    while (NULL != currTask)
     {
         if (currTask->parent == NULL)
         {
@@ -691,11 +693,12 @@ void kwlnTaskPrintTrees()
             kwlnTaskPrintRecursive(currTask, 0);
         }
 
-        currTask = currTask->next;
+        currTask = (currTask_c = currTask)->next;
     }
 
     printf("\n\n");
 }
+#pragma optimization_level 2
 
 // FUN_001949e0. Called every frame in the game main loop
 u32 kwlnTaskMain()
