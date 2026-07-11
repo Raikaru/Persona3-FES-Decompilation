@@ -142,6 +142,13 @@ typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
 #define KWLN_F32_AT(address) (*(volatile f32*)(address))
 #define KWLN_LIGHT_AT(address) (*(RpLight* volatile*)(address))
 extern u32 DAT_007cdffc;
+extern u8 D_006784C0[];
+extern u8 D_006784D0[];
+extern u8 D_006784E0[];
+extern u8 D_006784F0[];
+extern u8 D_00678500[];
+extern u8 D_00678740[];
+extern u8 D_00678770[];
 extern u32 uGpffffb288;
 extern void* DAT_007ce0c4;
 extern u8 DAT_00960070[];
@@ -855,13 +862,14 @@ void kwlnInitRenderer()
     KwlnPluginRegistration registration30;
     KwlnPluginRegistration registration31;
     KwlnPluginRegistration registration32;
-    u32 cameraDescriptor[2];
     KwlnWorldBounds bounds;
+    u32 cameraDescriptor[2];
     KwlnCameraView cameraView;
     void* frame;
-    KwlnAllocateFunc allocate;
+    register KwlnAllocateFunc* allocate;
     s32 callbacksRegistered;
-    register RpWorld* world;
+    s32 callbackSuccess;
+    RpWorld* world;
     register RpLight* light;
     register RpLight* directionalLight;
     register RwCamera* camera;
@@ -926,24 +934,23 @@ void kwlnInitRenderer()
     func_004d6ab0(0x280000, 0x400, 0);
     func_004ca640();
     func_0019d360();
-    bounds.maximum.x = 150.0f;
-    bounds.maximum.y = 150.0f;
-    bounds.maximum.z = 150.0f;
     bounds.minimum.x = -150.0f;
     bounds.minimum.y = -150.0f;
     bounds.minimum.z = -150.0f;
+    bounds.maximum.x = 150.0f;
+    bounds.maximum.y = 150.0f;
+    bounds.maximum.z = 150.0f;
     world = func_0049a400(&bounds);
     sWorlds[gCurrWorldIdx] = world;
     light = func_004947c0(2);
-    sAmbientLight = light;
     if (light != NULL)
     {
-        func_004944b0(light, (const void*)0x006784c0);
+        func_004944b0(light, D_006784C0);
         func_0049c3d0(world, light);
     }
+    sAmbientLight = light;
 
     directionalLight = func_004947c0(1);
-    sDirectionalLight = directionalLight;
     if (directionalLight != NULL)
     {
         frame = func_004caf10();
@@ -952,42 +959,40 @@ void kwlnInitRenderer()
             ((u8*)directionalLight)[2] = 1;
             func_004cb930(frame);
             func_004d1840(directionalLight, frame);
-            func_004944b0(directionalLight, (const void*)0x006784f0);
+            func_004944b0(directionalLight, D_006784F0);
             func_0049c3d0(world, directionalLight);
         }
         else
         {
             func_00494760(directionalLight);
-            sDirectionalLight = NULL;
             directionalLight = NULL;
         }
     }
+    sDirectionalLight = directionalLight;
 
     directionalLight = func_004947c0(1);
-    sSecondaryLight = directionalLight;
     if (directionalLight != NULL)
     {
         frame = func_004caf10();
         if (frame != NULL)
         {
             ((u8*)directionalLight)[2] = 1;
-            func_004cb890(frame, 25.0f, (const void*)0x006784d0, 0);
-            func_004cb890(frame, 170.0f, (const void*)0x006784e0, 2);
+            func_004cb890(frame, 25.0f, D_006784D0, 0);
+            func_004cb890(frame, 170.0f, D_006784E0, 2);
             func_004d1840(directionalLight, frame);
-            func_004944b0(directionalLight, (const void*)0x00678500);
+            func_004944b0(directionalLight, D_00678500);
             func_0049c3d0(world, directionalLight);
         }
         else
         {
             func_00494760(directionalLight);
-            sSecondaryLight = NULL;
             directionalLight = NULL;
         }
     }
+    sSecondaryLight = directionalLight;
 
     func_004ca560(cameraDescriptor, func_004ca5b0());
     camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1);
-    sMainCamera = camera;
     if (camera != NULL)
     {
         func_004c9db0(camera, 25600.0f);
@@ -1000,27 +1005,40 @@ void kwlnInitRenderer()
         func_00195980(0.5f, KWLN_F32_AT(0x007cad1c), camera, &cameraView);
         camera->fogPlane = KWLN_F32_AT(0x007cad20);
     }
+    sMainCamera = camera;
 
-    printf((const char*)0x00678740, func_004f1e10(), camera->frameBuffer->depth, camera->zBuffer->depth);
+    printf((const char*)D_00678740, func_004f1e10(), camera->frameBuffer->depth, camera->zBuffer->depth);
     func_004aa550(camera);
     func_004aa390(0.5f);
     func_004aa3d0(KWLN_F32_AT(0x007cad24) * camera->nearPlane);
     func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
     func_004b6350();
 
-    allocate = *(KwlnAllocateFunc*)0x00960178;
-    KWLN_U32_AT(0x0095f57c) = (u32)allocate(0xc000, 0x40000);
+    allocate = (KwlnAllocateFunc*)0x00960178;
+    KWLN_U32_AT(0x0095f57c) = (u32)(*allocate)(0xc000, 0x40000);
     KWLN_U32_AT(0x0095f580) = 0x3000;
-    H_Malloc_Init(allocate(0xa0000, 0x40000), 0xa0000);
+    H_Malloc_Init((*allocate)(0xa0000, 0x40000), 0xa0000);
 
     callbacksRegistered = func_004ccd50((void**)0x007cc90c, func_004ba2a0, func_004bad50);
     if (callbacksRegistered != 0)
     {
         callbacksRegistered = func_004ccd50((void**)0x007cc910, func_0010e500, func_0010e5f0);
+        if (callbacksRegistered != 0)
+        {
+            callbackSuccess = 1;
+        }
+        else
+        {
+            callbackSuccess = 0;
+        }
     }
-    if (callbacksRegistered == 0)
+    else
     {
-        K_Abort((const char*)0x00678770, (const char*)0x007cc918, 0x4c8);
+        callbackSuccess = 0;
+    }
+    if (callbackSuccess == 0)
+    {
+        K_Abort((const char*)D_00678770, (const char*)0x007cc918, 0x4c8);
     }
 }
 
