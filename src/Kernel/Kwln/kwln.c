@@ -505,7 +505,7 @@ void kwlnInitGameData()
     datInitSocialLink();
 }
 
-// FUN_001967d0 NONMATCHING
+// FUN_001967d0
 void func_001967d0(void)
 {
     struct
@@ -518,24 +518,29 @@ void func_001967d0(void)
 #define preservedFlagIds resetStorage.preservedFlagIds
 #define preservedFlagValues resetStorage.preservedFlagValues
 #define preservedFlags resetStorage.preservedFlags
+    u32 initialPersona;
     u32 initialAuxValue;
-    u16 initialPersona;
     s32 i;
-    s32 copyCount;
+
     u32* source;
     u32* destination;
+    s32 copyCount;
+    u32 temp0;
+    u32 temp1;
 
     source = D_005E4F60;
     destination = preservedFlagIds;
     copyCount = 0x3d;
     do
     {
-        destination[0] = source[0];
-        destination[1] = source[1];
+        temp0 = source[0];
+        temp1 = source[1];
         source += 2;
-        destination += 2;
         copyCount--;
-    } while (copyCount != 0);
+        destination[0] = temp0;
+        destination[1] = temp1;
+        destination += 2;
+    } while (copyCount > 0);
 
     initialAuxValue = FUN_0016f380(0x2f);
     func_0017d7c0(func_0017d7b0() + 1);
@@ -557,7 +562,7 @@ void func_001967d0(void)
     func_0017c280();
     func_0017adf0();
 
-    initialPersona = func_001755c0();
+    initialPersona = func_001755c0() & 0xffff;
     datInitPersona(1);
     func_00175820(1, ((const u16*)0x005e4f20)[0]);
     datSetPhysicalCondition(1, 0);
@@ -570,6 +575,14 @@ void func_001967d0(void)
     for (i = 2; i < 11; i++)
     {
         datInitUnit(i);
+        if (i == 1)
+        {
+            datSetLevel(i, 1);
+        }
+        if (i == 1)
+        {
+            datSetNextExp(i, 0);
+        }
         datSetHp(i, 0);
         datSetSp(i, 0);
         datSetAcademicPoint(i, 0);
@@ -582,12 +595,15 @@ void func_001967d0(void)
         datSetEquipmentIdx(i, 2, (u16)-1);
         datSetEquipmentIdx(i, 3, (u16)-1);
         datInitPersona(i);
-        func_00175820(i, ((const u16*)0x005e4f20)[i - 1]);
+        func_00175820(i, ((const u16*)D_005E4F20 + i)[-1]);
         datSetHp(i, datGetMaxHp(i));
         datSetSp(i, func_0016c670(i));
         datSetFatigueCounter(i, 0x20);
         datSetOldFatigueCounter(i, 0x20);
-        dat00177ce0((s16)i, datGetLevel(i));
+        if (i != 1)
+        {
+            dat00177ce0(i, datGetLevel(i) & 0xff);
+        }
     }
 
     datClearFlagAll();
