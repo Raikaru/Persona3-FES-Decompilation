@@ -1665,11 +1665,11 @@ u32 func_001c4e50()
     return true;
 }
 
-// FUN_001c4f70 NONMATCHING
+// FUN_001c4f70
 u32 func_001c4f70()
 {
-    s32 slot;
     s32 count;
+    s32 slot;
     s32 equipmentIndex;
 
     count = 0;
