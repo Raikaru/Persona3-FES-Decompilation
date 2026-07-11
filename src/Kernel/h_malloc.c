@@ -211,6 +211,14 @@ extern const char D_005E4CC0[];
 extern u8 D_0083BB30[];
 extern u8 D_0083AB30[];
 extern const char D_005E4CE0[];
+extern const f32 D_005E4D00;
+extern const f32 D_005E4D04;
+extern const f32 D_005E4D08;
+extern const f32 D_005E4D0C;
+extern const f32 D_005E4D20;
+extern const f32 D_005E4D24;
+extern const f32 D_005E4D28;
+extern const f32 D_005E4D2C;
 extern const char D_005E4D10[];
 extern const char D_005E4D30[];
 extern const char D_005E4D60[];
@@ -582,33 +590,43 @@ static void* hmallocCreateTaskB(void* parent)
     return task;
 }
 
-// FUN_001927B0 NONMATCHING
+// FUN_001927B0
 static s32 hmallocTaskUpdateC(void* task)
 {
     u32* work;
     HmallocStepCallback callbacks[4];
+    f32 callback0;
+    f32 callback1;
+    f32 callback2;
+    f32 callback3;
 
     work = *(u32**)((u8*)task + 0x3c);
-    ((f32*)callbacks)[0] = ((const f32*)0x005e4d00)[0];
-    ((f32*)callbacks)[1] = ((const f32*)0x005e4d00)[1];
-    ((f32*)callbacks)[2] = ((const f32*)0x005e4d00)[2];
-    ((f32*)callbacks)[3] = ((const f32*)0x005e4d00)[3];
-    if (work[0] == 0)
+    callback0 = D_005E4D00;
+    callback1 = D_005E4D04;
+    callback2 = D_005E4D08;
+    callback3 = D_005E4D0C;
+    __asm__ volatile ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
+    ((f32*)callbacks)[0] = callback0;
+    ((f32*)callbacks)[1] = callback1;
+    ((f32*)callbacks)[2] = callback2;
+    ((f32*)callbacks)[3] = callback3;
+    switch (work[0])
     {
-        if (callbacks[work[1]] == NULL)
-        {
-            return -1;
-        }
-        work[2] = (u32)callbacks[work[1]]();
-        work[0] += 1;
-    }
-    else if (work[0] == 1)
-    {
-        if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
-        {
-            work[1] += 1;
-            work[0] = 0;
-        }
+        case 0:
+            if (callbacks[work[1]] == NULL)
+            {
+                return -1;
+            }
+            work[2] = (u32)callbacks[work[1]]();
+            work[0] += 1;
+            break;
+        case 1:
+            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+            {
+                work[1] += 1;
+                work[0] = 0;
+            }
+            break;
     }
     return 0;
 }
@@ -639,32 +657,43 @@ static void* hmallocCreateTaskC(void)
     return task;
 }
 
-// FUN_00192980 NONMATCHING
+// FUN_00192980
 static s32 hmallocTaskUpdateD(void* task)
 {
     u32* work;
     HmallocStepCallback callbacks[4];
+    f32 callback0;
+    f32 callback1;
+    f32 callback2;
+    f32 callback3;
+
     work = *(u32**)((u8*)task + 0x3c);
-    ((f32*)callbacks)[0] = ((const f32*)0x005e4d20)[0];
-    ((f32*)callbacks)[1] = ((const f32*)0x005e4d20)[1];
-    ((f32*)callbacks)[2] = ((const f32*)0x005e4d20)[2];
-    ((f32*)callbacks)[3] = ((const f32*)0x005e4d20)[3];
-    if (work[0] == 0)
+    callback0 = D_005E4D20;
+    callback1 = D_005E4D24;
+    callback2 = D_005E4D28;
+    callback3 = D_005E4D2C;
+    __asm__ volatile ("" : : "f"(callback0), "f"(callback1), "f"(callback2), "f"(callback3) : "memory");
+    ((f32*)callbacks)[0] = callback0;
+    ((f32*)callbacks)[1] = callback1;
+    ((f32*)callbacks)[2] = callback2;
+    ((f32*)callbacks)[3] = callback3;
+    switch (work[0])
     {
-        if (callbacks[work[1]] == NULL)
-        {
-            return -1;
-        }
-        work[2] = (u32)callbacks[work[1]]();
-        work[0] += 1;
-    }
-    else if (work[0] == 1)
-    {
-        if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
-        {
-            work[1] += 1;
-            work[0] = 0;
-        }
+        case 0:
+            if (callbacks[work[1]] == NULL)
+            {
+                return -1;
+            }
+            work[2] = (u32)callbacks[work[1]]();
+            work[0] += 1;
+            break;
+        case 1:
+            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+            {
+                work[1] += 1;
+                work[0] = 0;
+            }
+            break;
     }
     return 0;
 }
