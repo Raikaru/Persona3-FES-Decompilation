@@ -51,6 +51,9 @@ extern u8 D_005E49D0[];
 extern u8 D_005E4870[];
 extern u8 D_005E49A0[];
 extern u8 D_005E4840[];
+extern u8 D_005E4BE0[];
+extern u8 D_005E4BF8[];
+extern u8 D_005E4BC8[];
 extern u8 D_00846786;
 extern u8 D_0084678C;
 
@@ -1082,171 +1085,193 @@ void func_00190cb0(u32* table)
     sMemcardFile = 0;
 }
 
-// FUN_00190cd0 NONMATCHING. Scan and validate save-slot records.
+// FUN_00190cd0
 s32 func_00190cd0(void)
 {
-    s32 status;
-    s32 value;
-    s32 cardError;
-    s32 cardCode;
     s32 cardMode;
-    s32 i;
-    u16 checksum;
-    u8* record;
+    s32 cardCode;
+    s32 cardError;
+    u32 checksum;
+    u32 i;
     u8* recordData;
 
-    if (sMemcardSeqMode == 3)
+    switch (sMemcardSeqMode)
     {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
-        {
-            FUN_005225a8(0x5e4bf8, cardCode);
-            if (cardError == 0)
-            {
-                if (cardCode == 0x13)
-                {
-                    MEMCARD_FREE(sMemcardBuffer);
-                    return -3;
-                }
-                if (cardCode == 2)
-                {
-                    MEMCARD_FREE(sMemcardBuffer);
-                    sSlotScanTable[sMemcardFile] = 0;
-                }
-                else if (cardCode == 0xd)
-                {
-                    MEMCARD_FREE(sMemcardBuffer);
-                    return -3;
-                }
-                else if (cardCode == 0x16)
-                {
-                    MEMCARD_FREE(sMemcardBuffer);
-                    return -3;
-                }
-                else if (cardCode == 0x6f)
-                {
-                    MEMCARD_FREE(sMemcardBuffer);
-                    return -3;
-                }
-            }
-            else
-            {
-                record = (u8*)sSlotScanTable + sMemcardFile * 0x34;
-                FUN_00521250(record + 0x40, (u8*)sMemcardBuffer + 4, 0x34);
-                MEMCARD_FREE(sMemcardBuffer);
-                if (cardCode < 0)
-                {
-                    sSlotScanTable[sMemcardFile] = 0;
-                }
-                else
-                {
-                    recordData = record + 0x40;
-                    checksum = 0;
-                    for (i = 0; i < 0x32; i++)
-                    {
-                        checksum = (u16)((checksum + recordData[i]) & 0xff);
-                    }
-                    if (*(u16*)(record + 0x72) != checksum)
-                    {
-                        FUN_00521408(recordData, 0, 0x34);
-                    }
-                    sSlotScanTable[sMemcardFile] = 1;
-                }
-            }
-
-            sMemcardFile++;
-            if (sMemcardFile == 0x10)
-            {
-                return 100;
-            }
-            sMemcardSeqMode = 2;
-        }
+        case 0:
+            goto state0;
+        case 1:
+            goto state1;
+        case 2:
+            goto state2;
+        case 3:
+            goto state3;
+        default:
+            goto done;
     }
-    else if (sMemcardSeqMode == 2)
+
+state0:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
     {
-        sMemcardBuffer = (u8*)MEMCARD_ALLOC(0x38, 0x40000);
-        if (sMemcardAsync == 0)
+        FUN_005225a8(D_005E4BC8, FUN_005136f8(sSocketNo, D_00846EA0));
+        sMemcardSeqMode = 1;
+    }
+    goto done;
+
+state1:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) != 1)
+    {
+        goto done;
+    }
+    if (cardError != 0)
+    {
+        goto state1_card_error;
+    }
+    switch (cardCode)
+    {
+        case 0x9003:
+            goto state1_card_error;
+        case 0x6f:
+            goto state1_error6f;
+        case 0x13:
+            goto state1_error13;
+        case 0x9001:
+            goto state1_error9001;
+        case 0x2f:
+            goto state1_error2f;
+        default:
+            goto state1_card_error;
+    }
+
+state1_error6f:
+    return -5;
+state1_error13:
+    return -5;
+state1_error9001:
+    return -4;
+state1_error2f:
+    return -2;
+
+state1_card_error:
+    if (*D_00846EA0 != 2)
+    {
+        return -1;
+    }
+    if (*D_00846EA4 == 0)
+    {
+        return -2;
+    }
+    sMemcardSeqMode = 2;
+    goto done;
+
+state2:
+    sMemcardBuffer = MEMCARD_ALLOC(0x38, 0x40000);
+    if (sMemcardAsync != 0)
+    {
+        FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+    }
+    else
+    {
+        if (FUN_0017d800() != 0)
         {
-            value = FUN_0017d800();
-            if (value == 0)
+            if (FUN_0016f190(0x1422) == 0)
             {
-                value = FUN_0016f190(0x1422);
-                if (value == 0)
-                {
-                    FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
-                }
-                else
-                {
-                    FUN_00523ac8(0x846da0, 0x5e49d0, sMemcardFile, sMemcardFile);
-                }
+                FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
             }
             else
             {
-                value = FUN_0016f190(0x1422);
-                if (value == 0)
-                {
-                    FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
-                }
-                else
-                {
-                    FUN_00523ac8(0x846da0, 0x5e49a0, sMemcardFile, sMemcardFile);
-                }
+                FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
             }
         }
         else
         {
-            FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
-        }
-        FUN_00513968(sSocketNo, 0x846da0, sMemcardBuffer, 0, 0x38);
-        FUN_005225a8(0x5e4be0, 0x846da0, 0x38);
-        sMemcardSeqMode = 3;
-    }
-    else if (sMemcardSeqMode == 1)
-    {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
-        {
-            if (cardError == 0)
+            if (FUN_0016f190(0x1422) == 0)
             {
-                if (cardCode == 0x2f)
-                {
-                    return -2;
-                }
-                if (cardCode == 0x9001)
-                {
-                    return -4;
-                }
-                if (cardCode == 0x13)
-                {
-                    return -5;
-                }
-                if (cardCode == 0x6f)
-                {
-                    return -5;
-                }
+                FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
             }
-            if (*D_00846EA0 != 2)
+            else
             {
-                return -1;
+                FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
             }
-            if (*D_00846EA4 == 0)
-            {
-                return -2;
-            }
-            sMemcardSeqMode = 2;
         }
     }
-    else if (sMemcardSeqMode == 0)
+    FUN_00513968(sSocketNo, D_00846DA0, sMemcardBuffer, 0, 0x38);
+    FUN_005225a8(D_005E4BE0, D_00846DA0, 0x38);
+    sMemcardSeqMode = 3;
+    goto done;
+
+state3:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) != 1)
     {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == -1)
+        goto done;
+    }
+    FUN_005225a8(D_005E4BF8, cardCode);
+    if (cardError == 0)
+    {
+        switch (cardCode)
         {
-            value = FUN_005136f8(sSocketNo, D_00846EA0);
-            FUN_005225a8(0x5e4bc8, value);
-            sMemcardSeqMode = 1;
+            case 0x6f:
+                goto state3_error6f;
+            case 0x16:
+                goto state3_error16;
+            case 0xd:
+                goto state3_errord;
+            case 2:
+                goto state3_error2;
+            case 0x13:
+                goto state3_error13;
+            default:
+                goto state3_after;
         }
+
+state3_error6f:
+        MEMCARD_FREE(sMemcardBuffer);
+        return -3;
+state3_error16:
+        MEMCARD_FREE(sMemcardBuffer);
+        return -3;
+state3_errord:
+        MEMCARD_FREE(sMemcardBuffer);
+        return -3;
+state3_error2:
+        MEMCARD_FREE(sMemcardBuffer);
+        sSlotScanTable[sMemcardFile] = 0;
+        goto state3_after;
+state3_error13:
+        MEMCARD_FREE(sMemcardBuffer);
+        return -3;
+    }
+    FUN_00521250((u8*)sSlotScanTable + sMemcardFile * 0x34 + 0x40,
+                 (u8*)sMemcardBuffer + 4, 0x34);
+    MEMCARD_FREE(sMemcardBuffer);
+    if (cardCode >= 0)
+    {
+        recordData = (u8*)sSlotScanTable + sMemcardFile * 0x34 + 0x40;
+        checksum = 0;
+        for (i = 0; i < 0x32; i++)
+        {
+            checksum = (u16)((checksum + recordData[i]) & 0xff);
+        }
+        if (*(u16*)(recordData + 0x32) != (checksum & 0xff))
+        {
+            FUN_00521408(recordData, 0, 0x34);
+        }
+        sSlotScanTable[sMemcardFile] = 1;
+    }
+    else
+    {
+        sSlotScanTable[sMemcardFile] = 0;
     }
 
+state3_after:
+    sMemcardFile++;
+    if (sMemcardFile == 0x10)
+    {
+        return 100;
+    }
+    sMemcardSeqMode = 2;
+    goto done;
+
+done:
     return 0;
 }
 
