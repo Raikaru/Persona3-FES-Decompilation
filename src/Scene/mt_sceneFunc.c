@@ -216,8 +216,8 @@ u32 FUN_003b9550(u64 param_1,int param_2);
 u32 FUN_003b95a0(void);
 void FUN_003b9610(Resrc* param_1);
 u32 FUN_003baa70(u64 param_1);
-u32 FUN_003bac40(Resrc *param_1,u8 param_2);
-u64 FUN_003bb010(u64 param_1,u64 param_2);
+u32 FUN_003bac40(Resrc *param_1,u32 param_2);
+u32 FUN_003bb010(u64 param_1,u32 param_2);
 void FUN_003bb060(u16 param_1,u8 param_2);
 u32 FUN_003bb0c0(u16* param_1,int param_2);
 u64 FUN_003bb180(u64 param_1,u64 param_2);
@@ -283,7 +283,7 @@ u16 FUN_003bdbb0(void);
 #define FUN_003b9610(...) ((void (*)(...))FUN_003b9610)(__VA_ARGS__)
 #define FUN_003baa70(...) ((u32 (*)(...))FUN_003baa70)(__VA_ARGS__)
 #define FUN_003bac40(...) ((u32 (*)(...))FUN_003bac40)(__VA_ARGS__)
-#define FUN_003bb010(...) ((u64 (*)(...))FUN_003bb010)(__VA_ARGS__)
+#define FUN_003bb010(...) ((u32 (*)(...))FUN_003bb010)(__VA_ARGS__)
 #define FUN_003bb060(...) ((void (*)(...))FUN_003bb060)(__VA_ARGS__)
 #define FUN_003bb0c0(...) ((u32 (*)(...))FUN_003bb0c0)(__VA_ARGS__)
 #define FUN_003bb180(...) ((u64 (*)(...))FUN_003bb180)(__VA_ARGS__)
@@ -2409,7 +2409,7 @@ u32 FUN_003baa70(u64 param_1)
 // FUN_003BAC40 NONMATCHING
 
 
-u32 FUN_003bac40(Resrc *param_1,u8 param_2)
+u32 FUN_003bac40(Resrc *param_1,u32 param_2)
 
 
 
@@ -2631,40 +2631,34 @@ u32 FUN_003bac40(Resrc *param_1,u8 param_2)
 
 }
 #define FUN_003bac40(...) ((u32 (*)(...))FUN_003bac40)(__VA_ARGS__)
+#undef FUN_003bac40
 #undef FUN_003bb010
-// FUN_003BB010 NONMATCHING
+// FUN_003BB010
 
 
-u64 FUN_003bb010(u64 param_1,u64 param_2)
+u32 FUN_003bb010(u64 param_1,u32 param_2)
 
 
 
 {
 
-  long lVar1;
+  Resrc *lVar1;
 
-  u64 uVar2;
 
   
 
-  lVar1 = FUN_003b5d10();
+  lVar1 = (Resrc *)FUN_003b5d10();
 
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
 
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    uVar2 = FUN_003bac40(lVar1,param_2);
+    return FUN_003bac40(lVar1,param_2);
 
   }
 
-  return uVar2;
+  return 0;
 
 }
-#define FUN_003bb010(...) ((u64 (*)(...))FUN_003bb010)(__VA_ARGS__)
+#define FUN_003bb010(...) ((u32 (*)(...))FUN_003bb010)(__VA_ARGS__)
 #undef FUN_003bb060
 #undef FUN_003bac40
 // FUN_003BB060
