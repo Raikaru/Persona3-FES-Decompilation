@@ -386,7 +386,7 @@ KwlnTask* FUN_00199100()
     return kwlnTaskInit("etc Draw End", 7379, FUN_00198fd0, NULL, NULL);
 }
 
-// FUN_00199140 NONMATCHING
+// FUN_00199140
 void* FUN_00199140(KwlnTask* showRasterTask)
 {
     RwCamera* camera;
@@ -395,7 +395,6 @@ void* FUN_00199140(KwlnTask* showRasterTask)
     RwUInt8* newPixels;
     u32 allocationSize;
     u32 currentCount;
-    s32 delta;
     sShowRasterResult = (u32)func_004c4d20();
 
     if (sShowRasterUpdatePending == 1)
@@ -428,21 +427,7 @@ void* FUN_00199140(KwlnTask* showRasterTask)
 
     currentCount = Y_Misc_GetT0Count();
     sShowRasterCurrentCount = currentCount;
-    delta = (s32)(currentCount - gT0CountVal);
-    {
-        f32 deltaFloat;
-
-        if (delta >= 0)
-        {
-            deltaFloat = (f32)delta;
-        }
-        else
-        {
-            deltaFloat = (f32)(s32)(((u32)delta >> 1) | ((u32)delta & 1));
-            deltaFloat += deltaFloat;
-        }
-        sShowRasterDelta = deltaFloat;
-    }
+    sShowRasterDelta = (f32)(currentCount - gT0CountVal);
 
     sShowRasterCurrent = (f32)currentCount;
 
