@@ -476,6 +476,7 @@ void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
 {
     KwlnTask* currentTask;
     u32 maskedFlags;
+    s32 listIndex;
 
     switch (scope)
     {
@@ -503,6 +504,9 @@ void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
             }
             return;
 
+        case 3:
+            break;
+
         case 1:
             if (task == NULL)
             {
@@ -527,66 +531,44 @@ void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
             }
             return;
 
-        case 3:
-            break;
-
         default:
             K_ASSERT(false, 708);
             return;
     }
 
-    currentTask = sStagedTaskHead;
-    while (currentTask != NULL)
+    listIndex = 0;
+    while (listIndex < 3)
     {
-        if (scope == 3 || currentTask != task)
+        if (listIndex == 2)
         {
-            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
-            if (enabled != 0)
-            {
-                currentTask->stateAndFlags |= maskedFlags;
-            }
-            else
-            {
-                currentTask->stateAndFlags &= ~maskedFlags;
-            }
+            currentTask = sDestroyTaskHead;
         }
-        currentTask = currentTask->next;
-    }
+        else if (listIndex == 1)
+        {
+            currentTask = sRunningTaskHead;
+        }
+        else
+        {
+            currentTask = sStagedTaskHead;
+        }
 
-    currentTask = sRunningTaskHead;
-    while (currentTask != NULL)
-    {
-        if (scope == 3 || currentTask != task)
+        while (currentTask != NULL)
         {
-            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
-            if (enabled != 0)
+            if (scope == 3 || currentTask != task)
             {
-                currentTask->stateAndFlags |= maskedFlags;
+                maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+                if (enabled != 0)
+                {
+                    currentTask->stateAndFlags |= maskedFlags;
+                }
+                else
+                {
+                    currentTask->stateAndFlags &= ~maskedFlags;
+                }
             }
-            else
-            {
-                currentTask->stateAndFlags &= ~maskedFlags;
-            }
+            currentTask = currentTask->next;
         }
-        currentTask = currentTask->next;
-    }
-
-    currentTask = sDestroyTaskHead;
-    while (currentTask != NULL)
-    {
-        if (scope == 3 || currentTask != task)
-        {
-            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
-            if (enabled != 0)
-            {
-                currentTask->stateAndFlags |= maskedFlags;
-            }
-            else
-            {
-                currentTask->stateAndFlags &= ~maskedFlags;
-            }
-        }
-        currentTask = currentTask->next;
+        listIndex++;
     }
 }
 
