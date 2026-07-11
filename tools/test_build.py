@@ -154,6 +154,22 @@ class RecoveredSymbolNameTests(unittest.TestCase):
             },
         )
 
+    def test_compiler_builtins_and_null_targets_are_not_linkable(self):
+        symbols = {
+            "__builtin_unreachable": 0,
+            "__builtin_alloca": 0x123456,
+            "external_at_zero": 0,
+            "validExternal": 0x00123456,
+        }
+        self.assertEqual(
+            recover_symbols.non_linkable_symbols(symbols),
+            {
+                "__builtin_unreachable": 0,
+                "__builtin_alloca": 0x123456,
+                "external_at_zero": 0,
+            },
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
