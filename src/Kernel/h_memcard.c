@@ -707,130 +707,142 @@ state4_done:
             break;
 
         case 0xc:
-            if (sMemcardMode == 2)
+            switch (sMemcardMode)
             {
-                if (sMemcardAsync == 0)
+                case 0:
+                    goto state12_mode0;
+                case 1:
+                    goto state12_mode1;
+                case 2:
+                    goto state12_mode2;
+                default:
+                    goto state12_done;
+            }
+
+state12_mode0:
+            if (sMemcardAsync != 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+            }
+            else
+            {
+                if (FUN_0017d800() != 0)
                 {
-                    if (FUN_0017d800() == 0)
+                    if (FUN_0016f190(0x1422) == 0)
                     {
-                        if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
-                        }
+                        FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
                     }
                     else
                     {
-                        if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
-                        }
+                        FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
                     }
                 }
                 else
                 {
-                    FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
-                }
-                FUN_00521408(D_00846780, 0, 0x3c4);
-                FUN_00524270(D_00846780, 0x7cc0c8);
-                if (FUN_0017d800() == 0)
-                {
-                    if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
+                    if (FUN_0016f190(0x1422) == 0)
                     {
-                        FUN_00524270(D_00846840, D_005E4B50);
-                        FUN_00523e68(D_00846840, sMemcardFile * 8 + D_005E4790);
+                        FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
+                    }
+                    else
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
                     }
                 }
-                else if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
+            }
+            FUN_00513cc8(sSocketNo, D_00846DA0, sMemcardBuffer, 0, sMemcardBufferSize);
+            goto state12_done;
+
+state12_mode1:
+            if (sMemcardAsync != 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4A00, sMemcardFile);
+            }
+            else
+            {
+                if (FUN_0017d800() != 0)
                 {
-                    FUN_00524270(D_00846840, D_005E4B80);
+                    if (FUN_0016f190(0x1422) == 0)
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4A20, sMemcardFile);
+                    }
+                    else
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4A40, sMemcardFile);
+                    }
+                }
+                else
+                {
+                    if (FUN_0016f190(0x1422) == 0)
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4A60, sMemcardFile);
+                    }
+                    else
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4A80, sMemcardFile);
+                    }
+                }
+            }
+            size = 0;
+            FUN_00513cc8(sSocketNo, D_00846DA0, FUN_001021c0(D_005E4B40, &size), 0, size);
+            goto state12_done;
+
+state12_mode2:
+            if (sMemcardAsync != 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4AA0, sMemcardFile);
+            }
+            else
+            {
+                if (FUN_0017d800() != 0)
+                {
+                    if (FUN_0016f190(0x1422) == 0)
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4AC0, sMemcardFile);
+                    }
+                    else
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4AE0, sMemcardFile);
+                    }
+                }
+                else
+                {
+                    if (FUN_0016f190(0x1422) == 0)
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4B00, sMemcardFile);
+                    }
+                    else
+                    {
+                        FUN_00523ac8(D_00846DA0, D_005E4B20, sMemcardFile);
+                    }
+                }
+            }
+            FUN_00521408(D_00846780, 0, 0x3c4);
+            FUN_00524270(D_00846780, 0x7cc0c8);
+            if (FUN_0017d800() == 0)
+            {
+                if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
+                {
+                    FUN_00524270(D_00846840, D_005E4B50);
                     FUN_00523e68(D_00846840, sMemcardFile * 8 + D_005E4790);
                 }
-                D_00846786 = 0x12;
-                D_0084678C = 0x60;
-                FUN_00521250(D_00846790, D_005E46C0, 0x40);
-                FUN_00521250(D_00846780 + 0x50, D_005E4700, 0x30);
-                FUN_00521250(D_00846800, D_005E4730, 0x30);
-                FUN_00521250(D_00846830, D_005E4760, 0x10);
-                FUN_00524270(D_00846884, D_005E4780);
-                FUN_00524270(D_008468C4, D_005E4784);
-                FUN_00524270(D_00846904, D_005E4788);
-                FUN_00513cc8(sSocketNo, D_00846DA0, D_00846780, 0, 0x3c4);
             }
-            else if (sMemcardMode == 1)
+            else if ((sMemcardFile >= 0) && (sMemcardFile < 0x10))
             {
-                if (sMemcardAsync == 0)
-                {
-                if (FUN_0017d800() == 0)
-                    {
-                    if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4A60, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4A80, sMemcardFile);
-                        }
-                    }
-                    else
-                    {
-                    if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4A20, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4A40, sMemcardFile);
-                        }
-                    }
-                }
-                else
-                {
-                    FUN_00523ac8(D_00846DA0, D_005E4A00, sMemcardFile);
-                }
-                size = 0;
-                FUN_00513cc8(sSocketNo, D_00846DA0, FUN_001021c0(D_005E4B40, &size), 0, size);
+                FUN_00524270(D_00846840, D_005E4B80);
+                FUN_00523e68(D_00846840, sMemcardFile * 8 + D_005E4790);
             }
-            else if (sMemcardMode == 0)
-            {
-                if (sMemcardAsync == 0)
-                {
-                if (FUN_0017d800() == 0)
-                    {
-                    if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E49D0, sMemcardFile, sMemcardFile);
-                        }
-                    }
-                    else
-                    {
-                    if (FUN_0016f190(0x1422) == 0)
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
-                        }
-                        else
-                        {
-                            FUN_00523ac8(D_00846DA0, D_005E49A0, sMemcardFile, sMemcardFile);
-                        }
-                    }
-                }
-                else
-                {
-                    FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
-                }
-                FUN_00513cc8(sSocketNo, D_00846DA0, sMemcardBuffer, 0, sMemcardBufferSize);
-            }
+            D_00846786 = 0x12;
+            D_0084678C = 0x60;
+            FUN_00521250(D_00846790, D_005E46C0, 0x40);
+            FUN_00521250(D_00846780 + 0x50, D_005E4700, 0x30);
+            FUN_00521250(D_00846800, D_005E4730, 0x30);
+            FUN_00521250(D_00846830, D_005E4760, 0x10);
+            FUN_00524270(D_00846884, D_005E4780);
+            FUN_00524270(D_008468C4, D_005E4784);
+            FUN_00524270(D_00846904, D_005E4788);
+            FUN_00513cc8(sSocketNo, D_00846DA0, D_00846780, 0, 0x3c4);
+
+state12_done:
             sMemcardSeqMode = 0xd;
             break;
 
