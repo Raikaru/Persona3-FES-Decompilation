@@ -2694,7 +2694,7 @@ void FUN_003bb060(u16 param_1,u8 param_2)
 #define FUN_003bac40(...) ((u32 (*)(...))FUN_003bac40)(__VA_ARGS__)
 #define FUN_003bb060(...) ((void (*)(...))FUN_003bb060)(__VA_ARGS__)
 #undef FUN_003bb0c0
-// FUN_003BB0C0 NONMATCHING
+// FUN_003BB0C0
 
 
 u32 FUN_003bb0c0(u16* param_1,int param_2)
@@ -2727,18 +2727,19 @@ u32 FUN_003bb0c0(u16* param_1,int param_2)
 
     iVar2 = (int)(*puVar3 & 0xffc00) >> 10;
 
-    switch (iVar2)
-    {
-    case 3:
-      iVar4 = *(int *)(puVar3 + 0xf8);
-      break;
+    if (iVar2 == 3) goto case1;
+    switch (iVar2) {
     case 1:
-      iVar4 = *(int *)(puVar3 + 0xf2);
-      break;
+      goto case3;
     default:
-      break;
+      goto switch_end;
     }
-
+case3:
+    iVar4 = *(int *)(puVar3 + 0xf2);
+    goto switch_end;
+case1:
+    iVar4 = *(int *)(puVar3 + 0xf8);
+switch_end:
     if (iVar4 == 0) {
 
       uVar1 = 0;
