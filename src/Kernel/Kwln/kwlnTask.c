@@ -1122,24 +1122,18 @@ u32 kwlnTaskExists(KwlnTask* task)
     {
         return false;
     }
-
     i = 0;
+
     stagedList = sStagedTaskHead;
     runningList = sRunningTaskHead;
     destroyList = sDestroyTaskHead;
     for (; i < 3; i++)
     {
-        if (i == 2)
+        switch (i)
         {
-            currTask = destroyList;
-        }
-        else if (i == 1)
-        {
-            currTask = runningList;
-        }
-        else
-        {
-            currTask = stagedList;
+            case 0: currTask = stagedList;  break;
+            case 1: currTask = runningList; break;
+            case 2: currTask = destroyList; break;
         }
 
         while (currTask != NULL)
