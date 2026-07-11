@@ -115,41 +115,33 @@ static void opMenuSetIcon(u32 offset, void* frame, f32 x, f32 y)
 }
 
 
-// FUN_0026DA90 NONMATCHING
+// FUN_0026DA90
 void opMenu0026da90(s32 param_1)
 {
     u32* base;
-    u32* work;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     base = sOpMenu;
-    work = base + param_1 * 0xc4;
-    work[0x2c0] = 8;
+    base[param_1 * 0xc4 + 0x2c0] = 8;
     base[base[0x2be] * 0xc4 + 0x2c1] = 0;
     base[0x2be] = param_1;
-    work[0x2c0] = 0;
-    work[0x2c1] = 0;
+    base[param_1 * 0xc4 + 0x2c0] = 0;
+    base[param_1 * 0xc4 + 0x2c1] = 0;
 }
 
-// FUN_0026DB30 NONMATCHING
+// FUN_0026DB30
 void opMenu0026db30(s32 param_1)
 {
-    u8* base;
-    u8* work;
+    u32* base;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
-    base = (u8*)sOpMenu;
-    work = base + param_1 * 0x310;
-    *(u32*)(work + 0x1a60) = 8;
-    *(u32*)(base + *(u32*)(base + 0x1a50) * 0x310 + 0x1a64) = 0;
-    *(u32*)(base + 0x1a50) = param_1;
-    *(u32*)(work + 0x1a60) = 0;
-    *(u32*)(work + 0x1a64) = 0;
+    base = sOpMenu;
+    base[param_1 * 0xc4 + 0x698] = 8;
+    base[base[0x694] * 0xc4 + 0x699] = 0;
+    base[0x694] = param_1;
+    base[param_1 * 0xc4 + 0x698] = 0;
+    base[param_1 * 0xc4 + 0x699] = 0;
 }
- 
-
-
-
 // FUN_0026DC20
 void opMenu0026dc20(void)
 {

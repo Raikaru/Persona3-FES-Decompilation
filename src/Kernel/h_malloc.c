@@ -262,12 +262,12 @@ static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
 static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
                                  s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                  s32 a9, s32 a10);
-static void hmallocPackHeader(u64* out, u64 a1, u64 a2, u64 a3, u64 a4,
-                              u64 a5, u64 a6);
+static void hmallocPackHeader(u64* out, u32 a1, u64 a2, u32 a3, u32 a4,
+                              u32 a5, u32 a6);
 static void hmallocPackDescriptor(u32* out, u64 address, s32 a2, s32 a3,
                                   s32 a4, s32 a5, s32 a6, u32 a7);
-static void hmallocWriteImage(u32* out, u32 image, s64 a2, s64 a3);
-static void hmallocWriteTile(u32* out, s64 a1, u32 image, s64 a3);
+static void hmallocWriteImage(u32* out, u32 image, u32 a2, u32 a3);
+static void hmallocWriteTile(u32* out, u32 a1, u32 image, u32 a3);
 static void hmallocWriteScale(u32* out, u32 x, u32 y);
 static void hmallocWriteSolid(u32* out, u32 value);
 
@@ -358,15 +358,19 @@ static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
 }
 
 // FUN_00192160 NONMATCHING
-static void hmallocPackHeader(u64* out, u64 a1, u64 a2, u64 a3, u64 a4,
-                              u64 a5, u64 a6)
+static void hmallocPackHeader(u64* out, u32 a1, u64 a2, u32 a3, u32 a4,
+                              u32 a5, u32 a6)
 {
-    *out = (a6 & 0xffffffffULL) |
-           ((a5 & 0xffffffffULL) << 0x1a) |
-           ((a4 & 0xffffffffULL) << 0x1c) |
-           ((a3 & 0xffffffffULL) << 0x1f) |
-           (a1 << 0x3f) |
-           ((a2 & 0xfffffffffffffff0ULL) << 0x20);
+    u64 packet;
+
+    packet = (((((u64)a2 & (u64)(u32)-0x10) << 0x20) >> 0x20)
+              << 0x20) +
+             ((u64)a1 << 0x3f) |
+             ((u64)a3 << 0x1f) |
+             ((u64)a4 << 0x1c) |
+             ((u64)a5 << 0x1a) |
+             (u64)a6;
+    *out = packet;
 }
 
 // FUN_001921D0
@@ -380,22 +384,28 @@ static void hmallocPackDescriptor(u32* out, u64 address, s32 a2, s32 a3,
     out[3] = (u32)(address >> 0x20);
 }
 
-// FUN_00192230 NONMATCHING
-static void hmallocWriteImage(u32* out, u32 image, s64 a2, s64 a3)
+// FUN_00192230
+static void hmallocWriteImage(u32* out, u32 image, u32 a2, u32 a3)
 {
-    *out = 0;
-    out[1] = image | (u32)(((u64)a3 << 0x38) >> 0x20) |
-             (u32)(((u64)a2 << 0x30) >> 0x20);
+    u64 value;
+
+    value = ((u64)a3 << 0x38) | ((u64)a2 << 0x30) |
+            ((u64)image << 0x20);
+    out[0] = (u32)(value & 0xffffffffULL);
+    out[1] = (u32)(value >> 0x20);
     out[2] = 0x50;
     out[3] = 0;
 }
 
-// FUN_001922A0 NONMATCHING
-static void hmallocWriteTile(u32* out, s64 a1, u32 image, s64 a3)
+// FUN_001922A0
+static void hmallocWriteTile(u32* out, u32 a1, u32 image, u32 a3)
 {
-    *out = 0;
-    out[1] = image | (u32)(((u64)a1 << 0x3b) >> 0x20) |
-             (u32)(((u64)a3 << 0x30) >> 0x20);
+    u64 value;
+
+    value = ((u64)a1 << 0x3b) | ((u64)a3 << 0x30) |
+            ((u64)image << 0x20);
+    out[0] = (u32)(value & 0xffffffffULL);
+    out[1] = (u32)(value >> 0x20);
     out[2] = 0x51;
     out[3] = 0;
 }

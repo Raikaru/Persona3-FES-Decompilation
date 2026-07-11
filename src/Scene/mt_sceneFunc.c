@@ -218,7 +218,7 @@ void FUN_003b9610(long param_1);
 u32 FUN_003baa70(u64 param_1);
 u32 FUN_003bac40(long param_1,char param_2);
 u64 FUN_003bb010(u64 param_1,u64 param_2);
-void FUN_003bb060(u32 param_1,u8 param_2);
+void FUN_003bb060(u16 param_1,u8 param_2);
 u32 FUN_003bb0c0(long param_1,int param_2);
 u64 FUN_003bb180(u64 param_1,u64 param_2);
 u32  FUN_003bb1d0(u64 param_1,u8 param_2,u8 param_3,u16 param_4,  u16 param_5);
@@ -241,7 +241,7 @@ float FUN_003bc0e0(char *param_1);
 float FUN_003bc220(float param_1,float param_2,char *param_3,float *param_4,u64 param_5);
 float FUN_003bc730(char *param_1,int param_2);
 int FUN_003bc8f0(char *param_1);
-u8 FUN_003bc900(u32 *param_1);
+u8 FUN_003bc900(float *param_1);
 void FUN_003bc940(void);
 void FUN_003bcbf0(long param_1,long param_2);
 void FUN_003bcc80(void);
@@ -358,10 +358,10 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_003bcd80 NONMATCHING
+// FUN_003bcd80
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
 {
-    FUN_003bcc80();
+    (FUN_003bcc80)();
 }
 
 // FUN_003bd010 NONMATCHING
@@ -2698,21 +2698,21 @@ u64 FUN_003bb010(u64 param_1,u64 param_2)
 // FUN_003BB060 NONMATCHING
 
 
-void FUN_003bb060(u32 param_1,u8 param_2)
+void FUN_003bb060(u16 param_1,u8 param_2)
 
 
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   
 
-  lVar1 = FUN_003b5d10(param_1 & 0x3ff | 0xc00);
+  lVar1 = FUN_003b5d10((u16)(param_1 & 0x3ff | 0xc00));
 
   if (lVar1 != 0) {
 
-    FUN_003bac40(lVar1,param_2);
+    ((u32 (*)(u32,u8))FUN_003bac40)(lVar1,param_2);
 
   }
 
@@ -4412,27 +4412,26 @@ int FUN_003bc8f0(char *param_1)
 // FUN_003BC900 NONMATCHING
 
 
-u8 FUN_003bc900(u32 *param_1)
+u8 FUN_003bc900(float *param_1)
 
 
 
 {
 
-  u8 bVar1;
 
   
 
-  bVar1 = DAT_007ce658 != 0;
+  if (*(u16 *)&DAT_007ce658 == 0) {
 
-  if (bVar1) {
-
-    *param_1 = DAT_0095aff0;
-
-    param_1[1] = DAT_0095aff4;
+    return 0;
 
   }
 
-  return bVar1;
+  param_1[0] = *(float *)0x0095aff0;
+
+  param_1[1] = *(float *)0x0095aff4;
+
+  return 1;
 
 }
 #define FUN_003bc900(...) ((u8 (*)(...))FUN_003bc900)(__VA_ARGS__)
@@ -4855,7 +4854,7 @@ u64 FUN_003bd1c0(u32 param_1)
 }
 #define FUN_003bd1c0(...) ((u64 (*)(...))FUN_003bd1c0)(__VA_ARGS__)
 #undef FUN_003bd230
-// FUN_003BD230 NONMATCHING
+// FUN_003BD230
 
 
 u32 FUN_003bd230(void)
@@ -4872,7 +4871,7 @@ u32 FUN_003bd230(void)
 
   uVar1 = FUN_0035ed20(1);
 
-  FUN_003bb010(0x400,uVar1);
+  (FUN_003bb010)(0x400,uVar1);
 
   return 1;
 

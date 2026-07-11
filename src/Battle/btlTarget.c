@@ -4216,12 +4216,14 @@ u32 FUN_002db7d0(void* param_1)
     return 1;
 }
 
-// FUN_002db800 NONMATCHING
+// FUN_002db800
 BtlPacket* FUN_002db800(u16 command, u32 param)
 {
     BtlPacket* packet = btlPacketCreate(0x801, 8);
-    BtlTargetSimpleWork* work = (BtlTargetSimpleWork*)packet->workData;
+    BtlTargetSimpleWork* work;
+
     packet->updateFunc = FUN_002db7d0;
+    work = (BtlTargetSimpleWork*)packet->workData;
     work->command = command;
     work->param = param;
     return packet;

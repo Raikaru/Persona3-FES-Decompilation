@@ -644,14 +644,10 @@ void func_001e3f10(RuntimeWork* work)
     }
 }
 
-// FUN_001E4B10 NONMATCHING
-void func_001e4b10(RuntimeWork* work, u32 request)
+// FUN_001E4B10
+void func_001e4b10(RuntimeTask* task, u32 request)
 {
-    if (work != NULL)
-    {
-        work->requestFlags = request;
-        work->state = 0;
-    }
+    ((void (*)(void*, u32))DAT_0096017c[0])(task->workData, request);
 }
 
 // FUN_001E4B40 NONMATCHING
@@ -684,14 +680,10 @@ s32 func_001e4bc0(RuntimeWork* work)
     return work->state == 2;
 }
 
-// FUN_001E5820 NONMATCHING
-void func_001e5820(RuntimeWork* work, u32 request)
+// FUN_001E5820
+void func_001e5820(RuntimeTask* task, u32 request)
 {
-    if (work != NULL)
-    {
-        work->requestFlags = request;
-        work->state = 0;
-    }
+    ((void (*)(void*, u32))DAT_0096017c[0])(task->workData, request);
 }
 
 // FUN_001E5850 NONMATCHING
@@ -723,14 +715,10 @@ s32 func_001e58d0(RuntimeWork* work)
     return work->state == 2;
 }
 
-// FUN_001E6000 NONMATCHING
-void func_001e6000(RuntimeWork* work, u32 request)
+// FUN_001E6000
+void func_001e6000(RuntimeTask* task, u32 request)
 {
-    if (work != NULL)
-    {
-        work->requestFlags = request;
-        work->state = 0;
-    }
+    ((void (*)(void*, u32))DAT_0096017c[0])(task->workData, request);
 }
 
 // FUN_001E6030 NONMATCHING
@@ -761,14 +749,10 @@ s32 func_001e60b0(RuntimeWork* work)
     return work->completedFlags != 0;
 }
 
-// FUN_001E6A40 NONMATCHING
-void func_001e6a40(RuntimeWork* work, u32 request)
+// FUN_001E6A40
+void func_001e6a40(RuntimeTask* task, u32 request)
 {
-    if (work != NULL)
-    {
-        work->requestFlags = request;
-        work->state = 0;
-    }
+    ((void (*)(void*, u32))DAT_0096017c[0])(task->workData, request);
 }
 
 // FUN_001E6A70 NONMATCHING
