@@ -149,7 +149,7 @@ extern f32 DAT_007cad24;
 typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
 extern KwlnAllocateFunc DAT_00960178[];
 extern u32 DAT_0095f57c;
-extern u32 DAT_0095f580;
+extern u32 DAT_0095f580[];
 
 #define KWLN_U32_AT(address) (*(volatile u32*)(address))
 #define KWLN_F32_AT(address) (*(volatile f32*)(address))
@@ -157,7 +157,7 @@ extern u32 DAT_0095f580;
 extern u32 DAT_007cdffc;
 extern void* DAT_007cc90c;
 extern void* DAT_007cc910;
-extern char DAT_007cc918[];
+extern char DAT_007cc918;
 extern u8 D_006784C0[];
 extern u8 D_006784D0[];
 extern u8 D_006784E0[];
@@ -842,7 +842,7 @@ void kwlnInitPS2Systems()
     sMainThreadId = GetThreadId();
 }
 
-// FUN_00197350. RenderWare engine, plugin, world, light, camera, and callback initialization NONMATCHING
+// FUN_00197350. RenderWare engine, plugin, world, light, camera, and callback initialization
 void kwlnInitRenderer()
 {
     KwlnPluginRegistration registration0;
@@ -1031,7 +1031,7 @@ second_light_done:
 
     allocate = (KwlnAllocateFunc*)&DAT_00960178;
     KWLN_U32_AT(0x0095f57c) = (u32)(*allocate)(0xc000, 0x40000);
-    DAT_0095f580 = 0x3000;
+    DAT_0095f580[0] = 0x3000;
     H_Malloc_Init((*allocate)(0xa0000, 0x40000), 0xa0000);
 
     if (func_004ccd50(&DAT_007cc90c, func_004ba2a0, func_004bad50) == 0)
@@ -1048,7 +1048,7 @@ second_light_done:
     }
     if (callbackSuccess == 0)
     {
-        K_Abort((const char*)D_00678770, DAT_007cc918, 0x4c8);
+        K_Abort((const char*)D_00678770, &DAT_007cc918, 0x4c8);
     }
 }
 
