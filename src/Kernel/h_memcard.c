@@ -859,15 +859,21 @@ state12_done:
                     sMemcardSeqMode = 10;
                     break;
                 }
-                if (cardCode == 0x1c)
+                if (cardCode != 0x1c)
+                {
+                    if (cardCode == 0x11)
+                    {
+                        sMemcardSeqMode = 0xc;
+                    }
+                    else
+                    {
+                        return -3;
+                    }
+                }
+                else
                 {
                     return -6;
                 }
-                if (cardCode != 0x11)
-                {
-                    return -3;
-                }
-                sMemcardSeqMode = 0xc;
             }
             break;
     }
