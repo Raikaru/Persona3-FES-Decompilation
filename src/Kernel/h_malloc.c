@@ -238,6 +238,8 @@ extern const char D_005E4E38[];
 extern const char D_005E4E48[];
 extern const char D_005E4E58[];
 extern const char D_005E4E70[];
+extern const u16 D_007E094E;
+extern const u16 D_007E0952;
 #define HMALLOC_ENGINE_ALLOC(count, size, flags) \
     (*(HmallocAllocator*)D_00960184)((count), (size), (flags))
 #define HMALLOC_ENGINE_FREE(memory) \
@@ -757,7 +759,10 @@ static s32 hmallocTaskUpdateE(void* task)
 {
     u32* work;
     u32 state;
-    u32 flags;
+    f32 value0;
+    f32 value1;
+    const f32* image;
+    u32 indexValue;
     union
     {
         f32 f;
@@ -768,96 +773,98 @@ static s32 hmallocTaskUpdateE(void* task)
 
     work = *(u32**)((u8*)task + 0x3c);
     state = work[0];
-    if (state == 2)
-        goto state2;
-    if (state == 1)
-        goto state1;
-    if (state == 0)
-        goto state0;
-    goto done;
-
-state0:
-    work[0] = 1;
-    goto done;
-
-state1:
-    values[0].f = *(f32*)0x7e93e8;
-    values[1].f = *(f32*)0x7e93ec;
-    if ((*(u16*)0x7e094e & 0x40) != 0)
+    switch (state)
     {
-        if (work[1] == 0)
-        {
-            workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
-            if (workMemory == NULL)
+        case 0:
+            work[0] = 1;
+            break;
+        case 1:
+            __asm__ volatile ("lwc1 %0, -0x6c18($gp)" : "=f"(value0) : : "memory");
+            __asm__ volatile ("lwc1 %0, -0x6c14($gp)" : "=f"(value1) : : "memory");
+            values[0].f = value0;
+            values[1].f = value1;
+            if ((D_007E094E & 0x40) != 0)
             {
-                created = NULL;
+                switch (work[1])
+                {
+                    case 0:
+                        workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
+                        if (workMemory == NULL)
+                        {
+                            created = NULL;
+                        }
+                        else
+                        {
+                            created = kwlnTaskCreateWithAutoPriority(
+                                NULL, 0x106f, D_005E4D10,
+                                (KwlnTaskUpdateFunc)hmallocTaskUpdateC,
+                                (KwlnTaskDestroyFunc)hmallocTaskDestroyC, workMemory);
+                            if (created == NULL)
+                            {
+                                created = NULL;
+                            }
+                            else
+                            {
+                                func_0017d7f0(0);
+                            }
+                        }
+                        work[2] = (u32)(uintptr_t)created;
+                        break;
+                    default:
+                        workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
+                        if (workMemory == NULL)
+                        {
+                            created = NULL;
+                        }
+                        else
+                        {
+                            created = kwlnTaskCreateWithAutoPriority(
+                                NULL, 0x106f, D_005E4D30,
+                                (KwlnTaskUpdateFunc)hmallocTaskUpdateD,
+                                (KwlnTaskDestroyFunc)hmallocTaskDestroyD, workMemory);
+                            if (created == NULL)
+                            {
+                                created = NULL;
+                            }
+                            else
+                            {
+                                func_0017d7f0(1);
+                            }
+                        }
+                        work[2] = (u32)(uintptr_t)created;
+                        break;
+                }
+                work[0] = 2;
             }
             else
             {
-                created = kwlnTaskCreateWithAutoPriority(
-                    NULL, 0x106f, D_005E4D10,
-                    (KwlnTaskUpdateFunc)hmallocTaskUpdateC,
-                    (KwlnTaskDestroyFunc)hmallocTaskDestroyC, workMemory);
-                if (created == NULL)
+                u32 flags = D_007E0952;
+                if ((flags & 0x1000) != 0)
                 {
-                    created = NULL;
+                    work[1] = work[1] + 1;
+                    work[1] &= 1;
                 }
-                else
+                else if ((flags & 0x4000) != 0)
                 {
-                    func_0017d7f0(0);
+                    work[1] = work[1] + 1;
+                    work[1] &= 1;
                 }
             }
-            work[2] = (u32)(uintptr_t)created;
-        }
-        else
-        {
-            workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
-            if (workMemory == NULL)
+            values[2].u = 0x40800000;
+            values[3].u = 0x40800000;
+            indexValue = values[work[1]].u;
+            __asm__ volatile ("" : "+r"(indexValue) : : "memory");
+            __asm__ volatile ("addiu %0, $gp, -0x6c10"
+                              : "=r"(image) : "r"(indexValue) : "memory");
+            func_00104d10(*(u64*)&values[2], image, indexValue);
+            break;
+        case 2:
+            if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
             {
-                created = NULL;
+                return -1;
             }
-            else
-            {
-                created = kwlnTaskCreateWithAutoPriority(
-                    NULL, 0x106f, D_005E4D30,
-                    (KwlnTaskUpdateFunc)hmallocTaskUpdateD,
-                    (KwlnTaskDestroyFunc)hmallocTaskDestroyD, workMemory);
-                if (created == NULL)
-                {
-                    created = NULL;
-                }
-                else
-                {
-                    func_0017d7f0(1);
-                }
-            }
-            work[2] = (u32)(uintptr_t)created;
-        }
-        work[0] = 2;
+            break;
     }
-    else
-    {
-        flags = *(u16*)0x7e0952;
-        if ((flags & 0x1000) != 0)
-        {
-            work[1] = (work[1] + 1) & 1;
-        }
-        else if ((flags & 0x4000) != 0)
-        {
-            work[1] = (work[1] + 1) & 1;
-        }
-    }
-    values[2].u = 0x40800000;
-    values[3].u = 0x40800000;
-    func_00104d10((u64)0x4080000040800000ULL,
-                  (const f32*)0x7e93f0, values[work[1]].u);
-    goto done;
-
-state2:
-    if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
-        return -1;
-
-done:
     return 0;
 }
 #define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
