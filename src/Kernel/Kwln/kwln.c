@@ -13,7 +13,10 @@
 #include "h_pad.h"
 #include "h_chrdsp.h"
 #include "temporary.h"
+#define datSetFlag kwlnDatSetFlagNarrow
 #include "Main/g_data.h"
+#undef datSetFlag
+extern void datSetFlag(s32 bit, u32 value);
 #include "Main/admini.h"
 #include "Main/Battle/Panel/bs_root.h"
 #include "Kosaka/Field/k_field.h"
@@ -128,6 +131,7 @@ typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
 #define KWLN_F32_AT(address) (*(volatile f32*)(address))
 #define KWLN_LIGHT_AT(address) (*(RpLight* volatile*)(address))
 extern u32 DAT_007cdffc;
+extern u32 uGpffffb288;
 extern void* DAT_007ce0c4;
 extern u8 DAT_00960070[];
 extern char gp0xffff9430;
@@ -149,6 +153,8 @@ extern const void D_005E5150[];
 extern const void D_006418E0[];
 extern const void D_00644330[];
 extern u32 D_005E4F60[];
+extern const u16 D_005E4F40[];
+extern const u16 D_005E4F20[];
 extern void H_Dbprt_Init();
 
 u16 datGetMaxHp(s16 pcId);
@@ -167,7 +173,7 @@ void func_00170b90(s16 pcId, s16 index, u16 value);
 void func_00175820(u16 pcId, u16 personaId);
 void func_001773d0(void);
 void func_001779a0(void);
-void dat00177ce0(s16 pcId, u8 level);
+void dat00177ce0(s32 pcId, u8 level);
 void func_0017adf0(void);
 void func_0017b1a0(void);
 void func_0017b2a0(void);
@@ -283,16 +289,18 @@ void func_004944b0(void* object, const void* data);
 void func_004fa4b8(void* callback);
 s32 func_00197fe0(void);
 
-// FUN_00195de0 NONMATCHING
+// FUN_00195de0
 void kwlnInitGameData()
 {
     u32 preservedFlags[7];
     u8 standardRecord[0x20];
     u8 alternateRecord[0x20];
     s32 i;
+    u16 unitId;
+    const u16* personaTable;
 
-    KWLN_U32_AT(0x007cdffc) = 0;
-    if (KWLN_U32_AT(0x007cdf78) != 0)
+    DAT_007cdffc = 0;
+    if (uGpffffb288 != 0)
     {
         for (i = 0; i < 7; i++)
         {
@@ -325,9 +333,15 @@ void kwlnInitGameData()
 
         if (i == 1)
         {
-            datSetNextExp(i, datGetScenarioMode() != 0 ? 0x2bca : 0);
+            if (datGetScenarioMode() != 0)
+            {
+                datSetNextExp(i, 0x2bca);
+            }
+            else
+            {
+                datSetNextExp(i, 0);
+            }
         }
-
         datSetHp(i, 0);
         datSetSp(i, 0);
         datSetAcademicPoint(i, 0);
@@ -340,14 +354,19 @@ void kwlnInitGameData()
         datSetEquipmentIdx(i, 2, -1);
         datSetEquipmentIdx(i, 3, -1);
         datInitPersona(i);
-
         if (datGetScenarioMode() != 0)
         {
-            func_00175820(i, ((const u16*)0x005e4f40)[i - 1]);
+            unitId = (u16)i;
+            __asm__ volatile("" : : "r"(unitId) : "memory");
+            personaTable = D_005E4F40 + i;
+            func_00175820(unitId, personaTable[-1]);
         }
         else
         {
-            func_00175820(i, ((const u16*)0x005e4f20)[i - 1]);
+            unitId = (u16)i;
+            __asm__ volatile("" : : "r"(unitId) : "memory");
+            personaTable = D_005E4F20 + i;
+            func_00175820(unitId, personaTable[-1]);
         }
         datSetHp(i, datGetMaxHp(i));
         datSetSp(i, func_0016c670(i));
@@ -356,7 +375,7 @@ void kwlnInitGameData()
 
         if (i != 1)
         {
-            dat00177ce0(i, datGetLevel(i));
+            dat00177ce0(i, datGetLevel(i) & 0xff);
         }
     }
 
@@ -438,6 +457,10 @@ void kwlnInitGameData()
         func_001830c0(standardRecord);
         func_00182c50(0xc38, standardRecord);
         func_001830c0(standardRecord);
+        datSetEquipmentIdx(1, 0, 0);
+        datSetEquipmentIdx(1, 1, 1);
+        datSetEquipmentIdx(1, 2, 2);
+        datSetEquipmentIdx(1, 3, 3);
     }
     else
     {
@@ -449,12 +472,12 @@ void kwlnInitGameData()
         func_001830c0(alternateRecord);
         func_00182c50(0xc3c, alternateRecord);
         func_001830c0(alternateRecord);
+        datSetEquipmentIdx(1, 0, 0);
+        datSetEquipmentIdx(1, 1, 1);
+        datSetEquipmentIdx(1, 2, 2);
+        datSetEquipmentIdx(1, 3, 3);
     }
 
-    datSetEquipmentIdx(1, 0, 0);
-    datSetEquipmentIdx(1, 1, 1);
-    datSetEquipmentIdx(1, 2, 2);
-    datSetEquipmentIdx(1, 3, 3);
     func_001fa0d0();
     func_001fc1f0();
     datSetPartyId(0, 0);
@@ -470,13 +493,13 @@ void kwlnInitGameData()
     func_0017c190();
     func_0017b2a0();
 
-    if (KWLN_U32_AT(0x007cdf78) != 0)
+    if (uGpffffb288 != 0)
     {
         for (i = 0; i < 7; i++)
         {
             datSetFlag(0x183 + i, preservedFlags[i]);
         }
-        KWLN_U32_AT(0x007cdf78) = 0;
+        uGpffffb288 = 0;
     }
 
     datInitSocialLink();
@@ -564,7 +587,7 @@ void func_001967d0(void)
         datSetSp(i, func_0016c670(i));
         datSetFatigueCounter(i, 0x20);
         datSetOldFatigueCounter(i, 0x20);
-        dat00177ce0(i, datGetLevel(i));
+        dat00177ce0((s16)i, datGetLevel(i));
     }
 
     datClearFlagAll();
@@ -907,7 +930,7 @@ s32 func_00197fe0(void)
     return 0;
 }
 
-// FUN_00198010. Runtime, asynchronous I/O, task, field, and battle bootstrap NONMATCHING
+// FUN_00198010. Runtime, asynchronous I/O, task, field, and battle bootstrap
 void kwln00198010()
 {
     H_Cdvd_Init();
@@ -918,8 +941,8 @@ void kwln00198010()
     func_00108740();
 
     memset((void*)D_00847F10, 0, 0x14);
-    KWLN_U32_AT(0x00847f10) = (u32)(&gp0xffff9430 + 4);
-    KWLN_U32_AT(0x00847f14) = 0;
+    (*(volatile u32*)D_00847F10) = (u32)(&gp0xffff9430 + 4);
+    (*(volatile u32*)D_00847F14) = 0;
     func_00547668((void*)D_00847F10);
     func_00540588(0);
     func_005417e0(5, 5);
@@ -928,10 +951,10 @@ void kwln00198010()
     func_00540570(kwln00197fb0, NULL);
     func_004fa4b8(func_00197fe0);
 
-    KWLN_U32_AT(0x00847f00) = 6;
-    KWLN_U32_AT(0x00847f04) = 3;
-    KWLN_U32_AT(0x00847f08) = 0x344;
-    KWLN_U32_AT(0x00847f0c) = 0x00847f50;
+    (*(volatile u32*)D_00847F00) = 6;
+    (*(volatile u32*)D_00847F04) = 3;
+    (*(volatile u32*)D_00847F08) = 0x344;
+    (*(volatile u32*)D_00847F0C) = (u32)D_00847F50;
     func_00567820((void*)D_00847F00);
     func_00569f60(0, 0, 1);
     func_0053b220(0);
@@ -952,9 +975,9 @@ void kwln00198010()
 
     memset((void*)D_00847F30, 0, 0x20);
     KWLN_F32_AT(0x00847f30) = *((f32*)&gAspectRatio + 4);
-    KWLN_U32_AT(0x00847f34) = 1;
-    KWLN_U32_AT(0x00847f38) = 1;
-    KWLN_U32_AT(0x00847f3c) = 0;
+    (*(volatile u32*)D_00847F34) = 1;
+    (*(volatile u32*)D_00847F38) = 1;
+    (*(volatile u32*)D_00847F3C) = 0;
     func_0057f768((void*)D_00847F30);
     func_00540570(func_00197f80, NULL);
 

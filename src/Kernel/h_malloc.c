@@ -223,6 +223,9 @@ extern const char D_005E4D10[];
 extern const char D_005E4D30[];
 extern const char D_005E4D60[];
 extern const char D_005E4E20[];
+extern const char D_005E4E38[];
+extern const char D_005E4E48[];
+extern const char D_005E4E58[];
 extern const char D_005E4E70[];
 #define HMALLOC_ENGINE_ALLOC(count, size, flags) \
     (*(HmallocAllocator*)D_00960184)((count), (size), (flags))
@@ -257,7 +260,7 @@ static u32 sHmallocResourceMode;
 static u32 sHmallocResourceFlag;
 static void* sHmallocControllerTask;
 
-extern void func_00104d10(u64 matrix, const f32* values, f32 value);
+extern void func_00104d10(u64 matrix, const f32* values, u32 value);
 extern u32 func_004214e0(void* task, s32 mode);
 extern void func_004215b0(u32 handle, u32 command);
 extern void func_00421650(u32 handle);
@@ -287,19 +290,23 @@ static void hmallocWriteSolid(u32* out, u32 value);
 // FUN_00191D70 NONMATCHING
 void hmallocPrepareTilePacket(u64 source, u64 owner, s32 tileIndex, s32 tileCount)
 {
-    u16 header[2];
     u8 headerBytes[4];
+    u16 header[2];
+    u32 texture;
+    u32 tileBytes;
 
     func_004f1e20(source, headerBytes, header);
-    if ((u32)(tileCount * 0x10) < 0x1c1)
+    texture = header[0] & 0x3fff;
+    tileBytes = tileCount * 0x10;
+    if (tileBytes < 0x1c1)
     {
-        hmallocInitTilePacket(header[0] & 0x3fff, (u64)0x846f00, owner,
-                              0, 0, tileIndex << 4, tileCount * 0x10,
+        hmallocInitTilePacket(texture, (u64)0x846f00, owner,
+                              0, 0, tileIndex << 4, tileBytes,
                               0, 0, 0, 0);
     }
     else
     {
-        hmallocInitTilePacket(header[0] & 0x3fff, (u64)0x846f00, owner,
+        hmallocInitTilePacket(texture, (u64)0x846f00, owner,
                               0, 0, tileIndex << 4, 0x1c0,
                               0, 0, 0, 0);
     }
@@ -730,56 +737,172 @@ static s32 hmallocTaskUpdateE(void* task)
     u32* work;
     u32 state;
     u32 flags;
-    f32 values[4];
+    union
+    {
+        f32 f;
+        u32 u;
+    } values[4];
+    void* workMemory;
     void* created;
-    void* parent;
 
     work = *(u32**)((u8*)task + 0x3c);
     state = work[0];
     if (state == 2)
+        goto state2;
+    if (state == 1)
+        goto state1;
+    if (state == 0)
+        goto state0;
+    goto done;
+
+state0:
+    work[0] = 1;
+    goto done;
+
+state1:
+    values[0].f = *(f32*)0x7e93e8;
+    values[1].f = *(f32*)0x7e93ec;
+    if ((*(u16*)0x7e094e & 0x40) != 0)
     {
-        if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+        if (work[1] == 0)
         {
-            return -1;
-        }
-    }
-    else if (state == 1)
-    {
-        values[0] = *(f32*)0x7e93e8;
-        values[1] = *(f32*)0x7e93ec;
-        if ((*(u16*)0x7e094e & 0x40) != 0)
-        {
-            if (work[1] == 0)
+            workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
+            if (workMemory == NULL)
             {
-                created = hmallocCreateTaskC();
+                created = NULL;
             }
             else
             {
-                created = hmallocCreateTaskD();
+                created = kwlnTaskCreateWithAutoPriority(
+                    NULL, 0x106f, D_005E4D10,
+                    (KwlnTaskUpdateFunc)hmallocTaskUpdateC,
+                    (KwlnTaskDestroyFunc)hmallocTaskDestroyC, workMemory);
+                if (created == NULL)
+                {
+                    created = NULL;
+                }
+                else
+                {
+                    func_0017d7f0(0);
+                }
             }
             work[2] = (u32)(uintptr_t)created;
-            work[0] = 2;
         }
         else
         {
-            flags = *(u16*)0x7e0952;
-            if ((flags & 0x1000) != 0 || (flags & 0x4000) != 0)
+            workMemory = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
+            if (workMemory == NULL)
             {
-                work[1] = (work[1] + 1) & 1;
+                created = NULL;
             }
+            else
+            {
+                created = kwlnTaskCreateWithAutoPriority(
+                    NULL, 0x106f, D_005E4D30,
+                    (KwlnTaskUpdateFunc)hmallocTaskUpdateD,
+                    (KwlnTaskDestroyFunc)hmallocTaskDestroyD, workMemory);
+                if (created == NULL)
+                {
+                    created = NULL;
+                }
+                else
+                {
+                    func_0017d7f0(1);
+                }
+            }
+            work[2] = (u32)(uintptr_t)created;
         }
-        values[2] = 0x40800000;
-        values[3] = 0x40800000;
-        parent = (void*)0x4080000040800000ULL;
-        (void)parent;
-        func_00104d10((u64)0x4080000040800000ULL,
-                      (const f32*)0x7e93f0, values[work[1]]);
+        work[0] = 2;
     }
-    else if (state == 0)
+    else
     {
-        work[0] = 1;
+        flags = *(u16*)0x7e0952;
+        if ((flags & 0x1000) != 0)
+        {
+            work[1] = (work[1] + 1) & 1;
+        }
+        else if ((flags & 0x4000) != 0)
+        {
+            work[1] = (work[1] + 1) & 1;
+        }
     }
+    values[2].u = 0x40800000;
+    values[3].u = 0x40800000;
+    func_00104d10((u64)0x4080000040800000ULL,
+                  (const f32*)0x7e93f0, values[work[1]].u);
+    goto done;
+
+state2:
+    if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+        return -1;
+
+done:
     return 0;
+}
+#define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
+
+// FUN_00192E70 NONMATCHING
+static void hmallocApplyInputTable(void)
+{
+    u32 copied[0x28];
+    u8 entry[0x34];
+    u32 value;
+    s32 word;
+    s32 bit;
+    s32 i;
+    s32 j;
+    u16* records;
+    void* resourceA;
+    const u32* config;
+    u32* dst;
+    u32* bitWord;
+
+    config = HMALLOC_CONFIG_WORDS;
+    dst = copied;
+    for (i = 0x14; i > 0; i--)
+    {
+        *dst++ = *config++;
+        *dst++ = *config++;
+    }
+
+    resourceA = sHmallocResourceA;
+    if (resourceA != NULL)
+    {
+        func_0016cfe0(1, *(s16*)((u8*)resourceA + 0x3c));
+        func_0016d090(1, *(s16*)((u8*)resourceA + 0x3e));
+        func_0016d160(1, *(s16*)((u8*)resourceA + 0x40));
+    }
+
+    for (i = 0; i < 0x100; i++)
+    {
+        value = copied[i];
+        if (value == 0)
+            break;
+        word = (s32)value >> 5;
+        if ((s32)value < 0)
+            word = ((s32)value + 0x1f) >> 5;
+        bitWord = &sHmallocInputBits[word];
+        bit = value & 0x1f;
+        if ((s32)value < 0 && bit != 0)
+            bit -= 0x20;
+        func_0016f1f0(value,
+                      ((1u << (bit & 0x1f)) & *bitWord) != 0);
+    }
+
+    records = (u16*)sHmallocResourceB;
+    if (records == NULL)
+        return;
+    for (j = 0; j < 0x100; j++)
+    {
+        u16* record = (u16*)((u8*)records + j * 0x34);
+        if ((*record & 1) != 0)
+        {
+            func_00521408(entry, 0, 0x34);
+            func_00176680(entry, record[1]);
+            *(u16*)entry |= 1;
+            func_0017cd30(entry);
+        }
+    }
 }
 
 // FUN_00192DB0
@@ -789,7 +912,7 @@ static void hmallocTaskDestroyE(void* task)
 }
 
 // FUN_00192DE0
-static void* hmallocCreateTaskE(void)
+void* hmallocCreateTaskE(void)
 {
     void* work;
     void* task;
@@ -807,72 +930,6 @@ static void* hmallocCreateTaskE(void)
     return task;
 }
 
-#define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
-
-// FUN_00192E70 NONMATCHING
-static void hmallocApplyInputTable(void)
-{
-    u32 copied[0x28];
-    u8 entry[0x34];
-    u32 value;
-    u32 word;
-    u32 bit;
-    s32 i;
-    s32 j;
-    u16* records;
-
-    for (i = 0; i < 0x14; i++)
-    {
-        copied[i * 2] = HMALLOC_CONFIG_WORDS[i * 2];
-        copied[i * 2 + 1] = HMALLOC_CONFIG_WORDS[i * 2 + 1];
-    }
-
-    if (sHmallocResourceA != NULL)
-    {
-        func_0016cfe0(1, *(s16*)((u8*)sHmallocResourceA + 0x3c));
-        func_0016d090(1, *(s16*)((u8*)sHmallocResourceA + 0x3e));
-        func_0016d160(1, *(s16*)((u8*)sHmallocResourceA + 0x40));
-    }
-
-    for (i = 0; i < 0x100; i++)
-    {
-        value = copied[i];
-        if (value == 0)
-        {
-            break;
-        }
-        word = value;
-        if ((s32)value < 0)
-        {
-            word = value + 0x1f;
-        }
-        bit = value & 0x1f;
-        if ((s32)value < 0 && bit != 0)
-        {
-            bit -= 0x20;
-        }
-        func_0016f1f0(value,
-                      (1u << (bit & 0x1f) &
-                       sHmallocInputBits[((s32)word) >> 5]) != 0);
-    }
-
-    records = (u16*)sHmallocResourceB;
-    if (records == NULL)
-    {
-        return;
-    }
-    for (j = 0; j < 0x100; j++)
-    {
-        u16* record = (u16*)((u8*)records + j * 0x34);
-        if ((*record & 1) != 0)
-        {
-            func_00521408(entry, 0, 0x34);
-            func_00176680(entry, record[1]);
-            *(u16*)entry |= 1;
-            func_0017cd30(entry);
-        }
-    }
-}
 
 // FUN_00193020 NONMATCHING
 static s32 hmallocTaskUpdateF(void* task)
@@ -1051,16 +1108,13 @@ static s32 hmallocPollController(void)
     return 0;
 }
 
-// FUN_001934F0 NONMATCHING
+// FUN_001934F0
 static s32 hmallocTaskUpdateG(void* task)
 {
     u32* work;
-    s32 result;
     s32 status;
     s32 file;
     s32 i;
-    u8 entryA[64];
-    u8 entryB[272];
 
     work = *(u32**)((u8*)task + 0x3c);
     switch (work[0])
@@ -1079,7 +1133,13 @@ static s32 hmallocTaskUpdateG(void* task)
             work[6] = 0;
             break;
 
+        case 2:
+            break;
+
         case 3:
+        {
+            u8 entryB[272];
+            u8 entryA[64];
             if (work[4] == 0)
             {
                 status = func_00510e30();
@@ -1092,7 +1152,7 @@ static s32 hmallocTaskUpdateG(void* task)
                     if (status == 0x14)
                     {
                         work[6] = 0;
-                        file = func_00509ed0((const char*)0x5e4e38);
+                        file = func_00509ed0(D_005E4E38);
                         if (file >= 0)
                         {
                             work[1] = 0;
@@ -1101,7 +1161,7 @@ static s32 hmallocTaskUpdateG(void* task)
                                 if (func_0050a100(file, entryA) > 0)
                                 {
                                     work[1] += 1;
-                                    if (func_00524128((const char*)0x5e4e48,
+                                    if (func_00524128(D_005E4E48,
                                                       (const char*)entryB) == 0)
                                     {
                                         work[5] = 1;
@@ -1110,19 +1170,19 @@ static s32 hmallocTaskUpdateG(void* task)
                             }
                             func_00509f98(file);
                         }
-                        if (work[5] == 0)
-                        {
-                            func_004215b0(work[0x507], 0x1a);
-                        }
-                        else
+                        if (work[5] != 0)
                         {
                             func_004215b0(work[0x507], 0x18);
                             work[0] = 4;
                         }
+                        else
+                        {
+                            func_004215b0(work[0x507], 0x1a);
+                        }
                     }
                     else if (status == 5 || status == 0x10 ||
                              status == 0x11 || status == 0x12 ||
-                             status == 0x13 || (status - 0xfd) < 3)
+                             status == 0x13 || (u32)(status - 0xfd) < 3)
                     {
                         func_004215b0(work[0x507], 0x1a);
                         work[6] = 0;
@@ -1130,6 +1190,7 @@ static s32 hmallocTaskUpdateG(void* task)
                 }
             }
             break;
+        }
 
         case 4:
             work[0] = 5;
@@ -1138,6 +1199,9 @@ static s32 hmallocTaskUpdateG(void* task)
             break;
 
         case 5:
+        {
+            u8 entryB[272];
+            u8 entryA[64];
             status = func_00510e30();
             if (status == 0)
             {
@@ -1148,7 +1212,7 @@ static s32 hmallocTaskUpdateG(void* task)
                 if (status == 0x14)
                 {
                     work[6] = 0;
-                    file = func_00509ed0((const char*)0x5e4e38);
+                    file = func_00509ed0(D_005E4E38);
                     if (file >= 0)
                     {
                         work[1] = 0;
@@ -1157,7 +1221,7 @@ static s32 hmallocTaskUpdateG(void* task)
                             if (func_0050a100(file, entryA) > 0)
                             {
                                 work[1] += 1;
-                                if (func_00524128((const char*)0x5e4e58,
+                                if (func_00524128(D_005E4E58,
                                                   (const char*)entryB) == 0)
                                 {
                                     work[5] = 1;
@@ -1176,16 +1240,16 @@ static s32 hmallocTaskUpdateG(void* task)
                 }
                 else if (status == 5 || status == 0x10 ||
                          status == 0x11 || status == 0x12 ||
-                         status == 0x13 || (status - 0xfd) < 3)
+                         status == 0x13 || (u32)(status - 0xfd) < 3)
                 {
                     func_004215b0(work[0x507], 0x1b);
                     work[6] = 0;
                 }
             }
             break;
+        }
     }
-    result = 0;
-    return result;
+    return 0;
 }
 
 // FUN_001938B0
