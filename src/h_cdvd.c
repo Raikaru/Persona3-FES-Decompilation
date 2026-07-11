@@ -593,7 +593,8 @@ void H_Cdvd_NormalizePath(const char* src, char* dst)
                 }
             }
         }
-        else if (src[readIndex] == '.' && (src[readIndex + 1] == '\\' || src[readIndex + 1] == '/'))
+        else if (src[readIndex] == '.' &&
+                 (src[readIndex + 1] == '\\' || src[readIndex + 1] == '/'))
         {
             readIndex++;
         }
@@ -1470,44 +1471,63 @@ s32 func_00102b60(void* slot, void* dst, u32 size)
     return amount;
 }
 
-// FUN_00102bf0 NONMATCHING
+// FUN_00102bf0
 void func_00102bf0(void* resultData, void* slot,
                    s32 amount, s32 mode)
 {
+    typedef struct
+    {
+        u8 reserved00[0x10];
+        HCdvdStreamPosition position;
+    } HCdvdSeekSlot;
     HCdvdStreamPosition* result = (HCdvdStreamPosition*)resultData;
-    s64 position;
+    HCdvdSeekSlot* seekSlot = (HCdvdSeekSlot*)slot;
 
     func_00505e48("CDVD seek");
-    position = *H_Cdvd_FilePosition(slot);
-    if (mode == 1)
+    if (mode == 3)
     {
-        position = amount;
+        goto mode3;
     }
-    else if (mode == 2)
+    if (mode == 2)
     {
-        position += amount;
+        goto mode2;
     }
-    else if (mode == 3)
+    switch (mode)
     {
-        position -= amount;
+    case 1:
+        goto mode1;
+    default:
+        goto invalid;
     }
-    else
+
+mode1:
+    seekSlot->position.position = amount;
+    goto common;
+mode2:
+    seekSlot->position.position += amount;
+    goto common;
+mode3:
+    seekSlot->position.position -= amount;
+    goto common;
+invalid:
+    seekSlot->position.position = -1;
+    *(long128*)resultData = *(long128*)&seekSlot->position;
+    return;
+
+common:
+    if (seekSlot->position.position < 0)
     {
-        position = -1;
-        result->position = position;
-        result->unused0 = 0;
-        result->unused1 = 0;
-        return;
+        seekSlot->position.position = 0;
     }
-    if (position < 0)
     {
-        position = 0;
+        s32 offset;
+        s32 fd;
+        func_00508a78(
+            (offset = *(s32*)((u8*)slot + 0x10),
+             fd = *(s32*)((u8*)slot + 0x74), fd),
+            offset, 0);
     }
-    *H_Cdvd_FilePosition(slot) = position;
-    func_00508a78(*(s32*)((u8*)slot + 0x74), (s32)position, 0);
-    result->position = position;
-    result->unused0 = 0;
-    result->unused1 = 0;
+    *(long128*)resultData = *(long128*)&seekSlot->position;
 }
 
 // FUN_00102d10
