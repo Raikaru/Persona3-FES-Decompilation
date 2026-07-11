@@ -40,6 +40,7 @@ extern void* func_00316bd0(u32 type, u32 priority, void* data, u32 size, u32 mod
 extern u32 func_00316f70(Model* model);
 extern u32* PTR_DAT_007cd540;
 extern u16* puGpffffa850;
+extern void (*D_0096017c)(void* memory);
 
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
@@ -306,14 +307,10 @@ void* func_001b7e60(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001b8000 NONMATCHING
+// FUN_001b8000
 void func_001b8000(KwlnTask* task)
 {
-    if (task != NULL && task->workData != NULL)
-    {
-        RwFree(task->workData);
-        task->workData = NULL;
-    }
+    ((void (*)(void*))(*(void**)((u8*)&rwGlobals + 0x17c)))(task->workData);
 }
 
 // FUN_001b8030 NONMATCHING

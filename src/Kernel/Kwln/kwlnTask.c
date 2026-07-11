@@ -97,7 +97,7 @@ void kwlnTaskRemoveFromList(KwlnTask* task)
     }
 }
 
-// FUN_00193ba0. Add a task to the priority-sorted list for its current state NONMATCHING
+// FUN_00193ba0 NONMATCHING. Add a task to the priority-sorted list for its current state
 void kwlnTaskAddToList(KwlnTask* task)
 {
     KwlnTask* list;
@@ -378,7 +378,7 @@ void kwlnTaskDestroyHierarchy(KwlnTask* task)
     }
 }
 
-// FUN_00194280. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately NONMATCHING
+// FUN_00194280 NONMATCHING. Change a task state to 'KWLNTASK_STATE_DESTROY'. If 'destroyTask' is 0, destroy the task immediately
 void kwlnTaskDestroy(KwlnTask* task)
 {
     u32 state;
@@ -388,12 +388,12 @@ void kwlnTaskDestroy(KwlnTask* task)
     switch (state)
     {
         case KWLNTASK_STATE_DESTROY: return;
-        case KWLNTASK_STATE_NULL: 
+        case KWLNTASK_STATE_NULL:
             printf("Process stat Invalid!!\n");
             K_ASSERT(false, 574);
             break;
 
-        case KWLNTASK_STATE_STAGED:  // fallthrough
+        case KWLNTASK_STATE_STAGED:
         case KWLNTASK_STATE_RUNNING:
             kwlnTaskRemoveFromList(task);
             KWLNTASK_SET_STATE(task, KWLNTASK_STATE_DESTROY);
@@ -755,7 +755,7 @@ KwlnTask* kwlnTaskCreate(KwlnTask* parentTask,
     return task;
 }
 
-// FUN_00194b80. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL NONMATCHING
+// FUN_00194b80 NONMATCHING. Create a new task and adjust priority by the parent hierarchy. 'parentTask' can be NULL
 KwlnTask* kwlnTaskCreateWithAutoPriority(KwlnTask* parentTask, 
                                          u32 priority, 
                                          const char* name, 
@@ -944,7 +944,7 @@ u8 kwlnTaskDestroyWithHierarchyByName(const char* name)
     return kwlnTaskDestroyWithHierarchy(task);
 }
 
-// FUN_00195020. Destroy a task and its hierarchy NONMATCHING
+// FUN_00195020 NONMATCHING. Destroy a task and its hierarchy
 u8 kwlnTaskDestroyWithHierarchy(KwlnTask* task)
 {
     u32 state;
@@ -1052,22 +1052,23 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
     KwlnTask* stagedList;
     KwlnTask* runningList;
     KwlnTask* destroyList;
-    u32 i;
-    u32 j;
-    u32 k;
-    u32 nameHash;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 nameHash;
     
+    list = NULL;
     nameHash = 0;
     for (i = 0; name[i] != '\0'; i++)
     {
         nameHash += name[i];
     }
+    j = 0;
     stagedList = sStagedTaskHead;
     runningList = sRunningTaskHead;
     destroyList = sDestroyTaskHead;
 
-
-    for (j = 0; j < 3; j++)
+    for (; j < 3; j++)
     {
         switch (j)
         {
@@ -1106,7 +1107,7 @@ KwlnTask* kwlnTaskGetUpdating()
     return sTaskUpdating;
 }
 
-// FUN_00195460. Return true if 'task' is in a list NONMATCHING
+// FUN_00195460 NONMATCHING. Return true if 'task' is in a list
 u32 kwlnTaskExists(KwlnTask* task)
 {
     KwlnTask* currTask;
@@ -1198,12 +1199,11 @@ void kwlnTaskAddChild(KwlnTask* parentTask, KwlnTask* childTask)
     }
 }
 
-// FUN_001955f0 NONMATCHING
+// FUN_001955f0
 void kwlnTaskDetachParent(KwlnTask* childTask)
 {
     KwlnTask* parentTask;
     KwlnTask* currSibling;
-    KwlnTask* prevSibling;
     KwlnTask** childPtr;
 
     parentTask = childTask->parent;
@@ -1214,19 +1214,19 @@ void kwlnTaskDetachParent(KwlnTask* childTask)
     }
 
     childPtr = &parentTask->child;
-    prevSibling = *childPtr;
-    if (prevSibling == childTask)
+    if (*childPtr == childTask)
     {
         *childPtr = childTask->sibling;
     }
     else
     {
-        while ((currSibling = prevSibling->sibling) != childTask)
+        currSibling = *childPtr;
+        while (currSibling->sibling != childTask)
         {
-            prevSibling = currSibling;
+            currSibling = currSibling->sibling;
         }
 
-        prevSibling->sibling = childTask->sibling;
+        currSibling->sibling = childTask->sibling;
     }
 
     childTask->parent = NULL;
@@ -1285,9 +1285,8 @@ u32 kwlnTaskIsPriorityGateBOpen()
 // FUN_001957B0 NONMATCHING. Move a task immediately after another running task.
 void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
 {
+    KwlnTask* current2;
     KwlnTask* current;
-    KwlnTask* next;
-    KwlnTask* previous;
 
     task->priority = sourceTask->priority;
 
@@ -1296,48 +1295,57 @@ void kwlnTaskMoveAfter(KwlnTask* sourceTask, KwlnTask* task)
     {
         if (current == task)
         {
-            previous = task->prev;
-            next = task->next;
-            if (previous != NULL)
+            if (task->prev != NULL)
             {
-                previous->next = next;
+                if (task->next != NULL)
+                {
+                    task->prev->next = task->next;
+                    task->next->prev = task->prev;
+                }
+                else
+                {
+                    task->prev->next = NULL;
+                }
             }
-            if (next != NULL)
+            else if (task->next != NULL)
             {
-                next->prev = previous;
+                task->next->prev = NULL;
             }
             break;
         }
+
         current = current->next;
     }
 
-    current = sRunningTaskHead;
-    while (current != NULL && current != sourceTask)
+    current2 = sRunningTaskHead;
+    while (current2 != NULL)
     {
-        current = current->next;
-    }
+        if (current2 == sourceTask)
+        {
+            if (current2->next != NULL)
+            {
+                task->prev = current2;
+                task->next = current2->next;
+                current2->next->prev = task;
+                current2->next = task;
+            }
+            else
+            {
+                task->prev = current2;
+                task->next = NULL;
+                current2->next = task;
+            }
+            break;
+        }
 
-    if (current == NULL)
-    {
-        return;
+        current2 = current2->next;
     }
-
-    next = current->next;
-    task->prev = current;
-    task->next = next;
-    if (next != NULL)
-    {
-        next->prev = task;
-    }
-    current->next = task;
 }
-
 // FUN_001958A0 NONMATCHING. Move a task immediately before another running task.
 void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
 {
+    KwlnTask* current2;
     KwlnTask* current;
-    KwlnTask* next;
-    KwlnTask* previous;
 
     task->priority = sourceTask->priority;
 
@@ -1346,41 +1354,53 @@ void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
     {
         if (current == task)
         {
-            previous = task->prev;
-            next = task->next;
-            if (previous != NULL)
+            if (task->prev != NULL)
             {
-                previous->next = next;
+                if (task->next != NULL)
+                {
+                    task->prev->next = task->next;
+                    task->next->prev = task->prev;
+                }
+                else
+                {
+                    task->prev->next = NULL;
+                }
             }
-            if (next != NULL)
+            else if (task->next != NULL)
             {
-                next->prev = previous;
+                task->next->prev = NULL;
             }
             break;
         }
+
         current = current->next;
     }
 
-    current = sRunningTaskHead;
-    while (current != NULL && current != sourceTask)
+    current2 = sRunningTaskHead;
+    while (current2 != NULL)
     {
-        current = current->next;
-    }
+        if (current2 == sourceTask)
+        {
+            if (current2->prev != NULL)
+            {
+                task->prev = current2->prev;
+                task->next = current2;
+                current2->prev->next = task;
+                current2->prev = task;
+            }
+            else
+            {
+                task->prev = NULL;
+                task->next = current2;
+                current2->prev = task;
+            }
+            break;
+        }
 
-    if (current == NULL)
-    {
-        return;
+        current2 = current2->next;
     }
-
-    previous = current->prev;
-    task->prev = previous;
-    task->next = current;
-    if (previous != NULL)
-    {
-        previous->next = task;
-    }
-    current->prev = task;
 }
+
 
 typedef struct KwlnTaskCameraView
 {

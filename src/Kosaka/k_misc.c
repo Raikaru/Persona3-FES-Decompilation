@@ -45,18 +45,23 @@ u32 K_Misc_FindNextFreeResId(u16 resType)
 // FUN_001A5CD0 NONMATCHING
 void func_001a5cd0(void)
 {
-    u8 usePrimaryFlag;
-    u8 inFirstDateRange;
-    u8 inSecondDateRange;
-    u8 inThirdDateRange;
+    s32 usePrimaryFlag;
 
-    usePrimaryFlag = true;
-    if (clndIsHolidayOrSunday() == true)
+    usePrimaryFlag = 0;
+    if (clndIsHolidayOrSunday())
     {
-        inFirstDateRange = clndIsDateInRange(7, 0x1b, 8, 2) == true;
-        inSecondDateRange = clndIsDateInRange(8, 10, 8, 0xf) == true;
-        inThirdDateRange = clndIsDateInRange(0xb, 0x11, 0xb, 0x14) == true;
-        usePrimaryFlag = inFirstDateRange || inSecondDateRange || inThirdDateRange;
+        if (clndIsDateInRange(7, 0x1b, 8, 2) == true)
+        {
+            usePrimaryFlag = 1;
+        }
+        else if (clndIsDateInRange(8, 10, 8, 0xf) == true)
+        {
+            usePrimaryFlag = 1;
+        }
+        else if (clndIsDateInRange(0xb, 0x11, 0xb, 0x14) == true)
+        {
+            usePrimaryFlag = 1;
+        }
     }
 
     if (usePrimaryFlag == true)
@@ -244,13 +249,12 @@ KwlnTask* K_Misc_CreateScrShutdownTask(KwlnTask* scrTask)
     return task;
 }
 
-// FUN_001a6350 NONMATCHING
+// FUN_001a6350
 RpUserDataArray* func_001a6350(const RpMaterial* material, const char* name)
 {
-    RpUserDataArray* userData;
     s32 i;
+    RpUserDataArray* userData;
 
-    userData = NULL;
     i = 0;
     while (i < RpMaterialGetUserDataArrayCount(material))
     {
