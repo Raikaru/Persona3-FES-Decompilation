@@ -2833,11 +2833,9 @@ u32 FUN_003bb280(void)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u16 *puVar4;
-
-  
 
   lVar3 = FUN_003b5d10();
 
@@ -2857,7 +2855,13 @@ u32 FUN_003bb280(void)
 
     puVar4 = (u16 *)lVar3;
 
-    if ((int)(*puVar4 & 0xffc00) >> 10 == 7) {
+    if (((*puVar4 & 0xffc00) >> 10) != 7) {
+
+      uVar2 = 0;
+
+    }
+
+    else {
 
       for (iVar1 = FUN_003b5d50(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
@@ -2867,18 +2871,9 @@ u32 FUN_003bb280(void)
 
       uVar2 = 1;
 
-      puVar4[0x84] = 1;
-
-      puVar4[0x85] = 0;
+      *(u32 *)(lVar3 + 0x108) = uVar2;
 
     }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
   }
 
   return uVar2;
