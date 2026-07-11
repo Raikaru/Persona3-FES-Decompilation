@@ -1263,19 +1263,18 @@ void func_00102530(void* handle, const char* path)
     (void)handle;
 }
 
-// FUN_001025c0 NONMATCHING
+// FUN_001025c0
 void func_001025c0(void* handle, const char* path)
 {
     static char uppercasePath[256];
     static char fileName[256];
     static char directory[256];
-    void* stream;
 
-    stream = func_0054d390();
+    func_0054d390();
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
     func_00101100(uppercasePath, fileName, directory);
     func_00101520(directory);
-    func_0054d0a0(handle != NULL ? handle : stream, fileName);
+    func_0054d0a0(handle, fileName);
 }
 
 // FUN_00102720 NONMATCHING
