@@ -370,11 +370,11 @@ complete:
     }
 }
 
-// FUN_00100d80 NONMATCHING
+// FUN_00100d80
 HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 {
-    HCdvd* curr;
     HCdvd* previous;
+    HCdvd* next;
     HCdvd* cdvd;
     char uppercasePath[256];
 
@@ -382,20 +382,28 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
     previous = &sCdvdListHead;
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
 
-    curr = sCdvdListHead.next;
-    while (curr != NULL)
+    if (*(HCdvd**)(uintptr_t)0x007e0384 != NULL)
     {
-        if (strcmp(uppercasePath, curr->path) == 0)
+        while (true)
         {
-            curr->refCount++;
-            return curr;
-        }
+            if (strcmp(uppercasePath, previous->path) == 0)
+            {
+                previous->refCount++;
+                return previous;
+            }
 
-        previous = curr;
-        curr = curr->next;
+            next = previous->next;
+            if (next == NULL)
+            {
+                break;
+            }
+
+            previous = next;
+        }
     }
 
-    cdvd = ((void* (*)(u32, u32, u32))((void**)&rwGlobals)[0x61])(1, sizeof(HCdvd), rwMEMHINTDUR_GLOBAL);
+    cdvd = (*(void* (**)(u32, u32, u32))(uintptr_t)0x00960184)(
+        1, sizeof(HCdvd), rwMEMHINTDUR_GLOBAL);
     H_Cdvd_BuildPathUppercase(path, cdvd->path);
     H_Cdvd_BuildVolumePaths(cdvd->path, cdvd->fileName, cdvd->dir);
 
