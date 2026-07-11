@@ -142,6 +142,9 @@ typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
 #define KWLN_F32_AT(address) (*(volatile f32*)(address))
 #define KWLN_LIGHT_AT(address) (*(RpLight* volatile*)(address))
 extern u32 DAT_007cdffc;
+extern void* DAT_007cc90c;
+extern void* DAT_007cc910;
+extern char DAT_007cc918[];
 extern u8 D_006784C0[];
 extern u8 D_006784D0[];
 extern u8 D_006784E0[];
@@ -990,8 +993,7 @@ void kwlnInitRenderer()
 
     world = sWorlds[gCurrWorldIdx];
     func_004ca560(cameraDescriptor, func_004ca5b0());
-    camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1);
-    if (camera != NULL)
+    if ((camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1)) != NULL)
     {
         func_004c9db0(camera, 25600.0f);
         func_004c9d70(camera, 20.0f);
@@ -1017,26 +1019,21 @@ void kwlnInitRenderer()
     KWLN_U32_AT(0x0095f580) = 0x3000;
     H_Malloc_Init((*allocate)(0xa0000, 0x40000), 0xa0000);
 
-    callbacksRegistered = func_004ccd50((void**)0x007cc90c, func_004ba2a0, func_004bad50);
-    if (callbacksRegistered != 0)
-    {
-        callbacksRegistered = func_004ccd50((void**)0x007cc910, func_0010e500, func_0010e5f0);
-        if (callbacksRegistered != 0)
-        {
-            callbackSuccess = 1;
-        }
-        else
-        {
-            callbackSuccess = 0;
-        }
-    }
-    else
+    if (func_004ccd50(&DAT_007cc90c, func_004ba2a0, func_004bad50) == 0)
     {
         callbackSuccess = 0;
     }
+    else if (func_004ccd50(&DAT_007cc910, func_0010e500, func_0010e5f0) == 0)
+    {
+        callbackSuccess = 0;
+    }
+    else
+    {
+        callbackSuccess = 1;
+    }
     if (callbackSuccess == 0)
     {
-        K_Abort((const char*)D_00678770, (const char*)0x007cc918, 0x4c8);
+        K_Abort((const char*)D_00678770, DAT_007cc918, 0x4c8);
     }
 }
 
