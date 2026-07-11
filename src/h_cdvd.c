@@ -564,13 +564,14 @@ void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
 // FUN_001013f0 NONMATCHING
 void H_Cdvd_NormalizePath(const char* src, char* dst)
 {
-    s32 writeIndex;
-    s32 readIndex;
     s32 scanIndex;
+    s32 readIndex;
+    s32 writeIndex;
+    const char* sourcePtr;
+    s32 currChar;
+    s32 dot;
     s32 backslash;
     s32 slash;
-    s32 dot;
-    s32 currChar;
 
     writeIndex = 0;
     readIndex = 0;
@@ -579,20 +580,21 @@ void H_Cdvd_NormalizePath(const char* src, char* dst)
     asm volatile("addiu %0, $0, 0x2e" : "=r" (dot));
     while (readIndex < 0xfd)
     {
-        currChar = src[readIndex];
+        sourcePtr = src + readIndex;
+        currChar = sourcePtr[0];
         if (currChar == '\0')
         {
             dst[writeIndex] = '\0';
             return;
         }
 
-        if (currChar == dot && src[readIndex + 1] == dot &&
-            src[readIndex + 2] == backslash)
+        if (currChar == dot && sourcePtr[1] == dot &&
+            sourcePtr[2] == backslash)
         {
             goto removeParent;
         }
-        if (currChar != dot || src[readIndex + 1] != dot ||
-            src[readIndex + 2] != slash)
+        if (currChar != dot || sourcePtr[1] != dot ||
+            sourcePtr[2] != slash)
         {
             goto checkSingle;
         }
@@ -613,14 +615,16 @@ removeParent:
         goto advance;
 
 checkSingle:
-        if (currChar == dot && src[readIndex + 1] == backslash)
+        if (currChar == dot && sourcePtr[1] == backslash)
         {
-            goto advance;
+            goto incrementRead;
         }
-        if (currChar != dot || src[readIndex + 1] != slash)
+        if (currChar != dot || sourcePtr[1] != slash)
         {
             goto writeCharacter;
         }
+incrementRead:
+        readIndex++;
         goto advance;
 
 writeCharacter:
