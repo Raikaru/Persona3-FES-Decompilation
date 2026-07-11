@@ -1188,20 +1188,25 @@ void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
     }
 }
 
-// FUN_001022e0 NONMATCHING
+// FUN_001022e0
 const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
 {
-    u8* entry;
     s32 i;
+    u8* entry;
+    ArchiveEntryHeader header;
 
     entry = (u8*)cdvd->fileMemory;
     for (i = 0; i < entryIndex; i++)
     {
-        ArchiveEntryHeader header;
         memcpy(&header, entry, sizeof(header));
-        entry += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+        if (header.fileName[0] == '\0')
+        {
+            return NULL;
+        }
+        entry += sizeof(header);
+        entry += ((((s32)header.fileSize + 0x3f) / 0x40) * 0x40);
     }
-    if (entry == NULL || *(char*)entry == '\0')
+    if (*(char*)entry == '\0')
     {
         return NULL;
     }
