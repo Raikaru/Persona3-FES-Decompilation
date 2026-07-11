@@ -1442,18 +1442,27 @@ void kwlnTaskMoveBefore(KwlnTask* sourceTask, KwlnTask* task)
 typedef struct KwlnTaskCameraView
 {
     RwV2d offset;
-    u32 width;
-    u32 height;
+    s32 width;
+    s32 height;
 } KwlnTaskCameraView;
+extern KwlnTaskCameraView sTaskCameraFallbackView; // 00847ea0
 
-#define TASK_CAMERA_VIEW_WIDTH (*(u32*)(uintptr_t)0x00847e98)
-#define TASK_CAMERA_VIEW_HEIGHT (*(u32*)(uintptr_t)0x00847e9c)
-#define TASK_CAMERA_VIEW_CACHE_OFFSET_X (*(u32*)(uintptr_t)0x00847e90)
-#define TASK_CAMERA_VIEW_CACHE_OFFSET_Y (*(u32*)(uintptr_t)0x00847e94)
-#define TASK_CAMERA_VIEW_FALLBACK_WIDTH (*(u32*)(uintptr_t)0x00847ea8)
-#define TASK_CAMERA_VIEW_FALLBACK_HEIGHT (*(u32*)(uintptr_t)0x00847eac)
-#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_X (*(u32*)(uintptr_t)0x00847ea0)
-#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_Y (*(u32*)(uintptr_t)0x00847ea4)
+extern u32 D_00847E98[];
+extern u32 D_00847E9C[];
+extern u32 D_00847E90[];
+extern u32 D_00847E94[];
+extern u32 D_00847EA8[];
+extern u32 D_00847EAC[];
+extern u32 D_00847EA0[];
+extern u32 D_00847EA4[];
+#define TASK_CAMERA_VIEW_WIDTH D_00847E98[0]
+#define TASK_CAMERA_VIEW_HEIGHT D_00847E9C[0]
+#define TASK_CAMERA_VIEW_CACHE_OFFSET_X D_00847E94[0]
+#define TASK_CAMERA_VIEW_CACHE_OFFSET_Y D_00847E90[0]
+#define TASK_CAMERA_VIEW_FALLBACK_WIDTH D_00847EA8[0]
+#define TASK_CAMERA_VIEW_FALLBACK_HEIGHT D_00847EAC[0]
+#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_X D_00847EA0[0]
+#define TASK_CAMERA_VIEW_FALLBACK_OFFSET_Y D_00847EA4[0]
 
 extern const void* func_004ca5b0(void);
 extern void func_004ca560(u32* output, const void* descriptor);
@@ -1464,20 +1473,14 @@ extern RwFrame* func_004caf80(RwFrame* frame);
 extern RwCamera* func_004d1840(RwCamera* camera, RwFrame* frame);
 extern RwRaster* func_004cde90(RwRaster* raster);
 
-// FUN_00195980 NONMATCHING. Replace a camera's rasters and update its view window.
-void func_00195980(f32 scale,
-                   f32 aspectRatio,
-                   RwCamera* camera,
-                   KwlnTaskCameraView* requestedView)
+// FUN_00195980. Replace a camera's rasters and update its view window.
+void func_00195980(RwCamera* camera,
+                   KwlnTaskCameraView* requestedView,
+                   f32 scale,
+                   f32 aspectRatio)
 {
-    union
-    {
-        u32 displayInfo[4];
-        KwlnTaskCameraView fallbackView;
-    } viewData;
+    u32 displayInfo[4];
     KwlnTaskCameraView* view;
-    RwRaster* frameBuffer;
-    RwRaster* zBuffer;
     RwRaster* newFrameBuffer;
     RwRaster* newZBuffer;
     f32 viewWindow[2];
@@ -1495,74 +1498,89 @@ void func_00195980(f32 scale,
         TASK_CAMERA_VIEW_HEIGHT = camera->frameBuffer->height;
     }
 
-    func_004ca560(viewData.displayInfo, func_004ca5b0());
+    func_004ca560(displayInfo, func_004ca5b0());
 
     if (requestedView == NULL)
     {
-        viewData.fallbackView.offset.x = 0;
-        viewData.fallbackView.offset.y = 0;
-        viewData.fallbackView.width = TASK_CAMERA_VIEW_WIDTH;
-        viewData.fallbackView.height = TASK_CAMERA_VIEW_HEIGHT;
-        TASK_CAMERA_VIEW_FALLBACK_OFFSET_X = 0;
+        view = &sTaskCameraFallbackView;
+        TASK_CAMERA_VIEW_FALLBACK_WIDTH = camera->frameBuffer->width;
+        TASK_CAMERA_VIEW_FALLBACK_HEIGHT = camera->frameBuffer->height;
         TASK_CAMERA_VIEW_FALLBACK_OFFSET_Y = 0;
-        TASK_CAMERA_VIEW_FALLBACK_WIDTH = viewData.fallbackView.width;
-        TASK_CAMERA_VIEW_FALLBACK_HEIGHT = viewData.fallbackView.height;
-        view = &viewData.fallbackView;
+        TASK_CAMERA_VIEW_FALLBACK_OFFSET_X = 0;
     }
     else
     {
-        view = (KwlnTaskCameraView*)requestedView;
+        view = requestedView;
     }
 
-    if ((viewData.displayInfo[3] & 1) != 0)
+    if ((displayInfo[3] & 1) != 0)
     {
-        view->offset.x = 0;
         view->offset.y = 0;
-        view->width = viewData.displayInfo[0];
-        view->height = viewData.displayInfo[1];
+        view->offset.x = 0;
+        view->width = displayInfo[0];
+        view->height = displayInfo[1];
     }
 
-    if (view->width <= 0 || view->height <= 0)
+    if (view->width <= 0)
+    {
+        return;
+    }
+    if (view->height <= 0)
     {
         return;
     }
 
-    frameBuffer = camera->frameBuffer;
-    if (frameBuffer != NULL)
+    if (camera->frameBuffer != NULL)
     {
-        func_004cde90(frameBuffer);
+        func_004cde90(camera->frameBuffer);
     }
 
-    zBuffer = camera->zBuffer;
-    if (zBuffer != NULL)
+    if (camera->zBuffer != NULL)
     {
-        func_004cde90(zBuffer);
+        func_004cde90(camera->zBuffer);
     }
 
     newFrameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
     newZBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
-    if (newFrameBuffer == NULL || newZBuffer == NULL)
+    if (newFrameBuffer == NULL)
     {
-        if (newFrameBuffer != NULL)
-        {
-            func_004cde90(newFrameBuffer);
-        }
-        if (newZBuffer != NULL)
-        {
-            func_004cde90(newZBuffer);
-        }
-
-        view->width = TASK_CAMERA_VIEW_WIDTH;
-        view->height = TASK_CAMERA_VIEW_HEIGHT;
-        camera->frameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
-        camera->zBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
-        return;
+        goto allocation_failed;
+    }
+    if (newZBuffer == NULL)
+    {
+        goto allocation_failed;
     }
 
     camera->frameBuffer = newFrameBuffer;
     camera->zBuffer = newZBuffer;
+    goto update_view_window;
 
-    if ((viewData.displayInfo[3] & 1) == 0)
+allocation_failed:
+    if (newFrameBuffer != NULL)
+    {
+        func_004cde90(newFrameBuffer);
+    }
+    if (newZBuffer != NULL)
+    {
+        func_004cde90(newZBuffer);
+    }
+
+    view->width = TASK_CAMERA_VIEW_WIDTH;
+    view->height = TASK_CAMERA_VIEW_HEIGHT;
+    newFrameBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPECAMERA);
+    newZBuffer = RwRasterCreate(view->width, view->height, 0, rwRASTERTYPEZBUFFER);
+    camera->frameBuffer = newFrameBuffer;
+    camera->zBuffer = newZBuffer;
+    return;
+
+update_view_window:
+
+    if ((displayInfo[3] & 1) != 0)
+    {
+        viewWindow[0] = scale * aspectRatio;
+        viewWindow[1] = scale;
+    }
+    else
     {
         view->width = camera->frameBuffer->width;
         view->height = camera->frameBuffer->height;
@@ -1577,11 +1595,6 @@ void func_00195980(f32 scale,
             viewWindow[0] = ((f32)view->width * scale) / (f32)view->height;
             viewWindow[1] = scale;
         }
-    }
-    else
-    {
-        viewWindow[0] = scale * aspectRatio;
-        viewWindow[1] = scale;
     }
 
     RwCameraSetViewWindow(camera, (RwV2d*)viewWindow);
