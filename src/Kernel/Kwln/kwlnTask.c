@@ -15,17 +15,17 @@ static u32 sTaskPriorityGateA; // 007ce08c
 static KwlnTask* sTaskUpdating; // 007ce088. Current task updating
 
 // for 'KWLNTASK_STATE_RUNNING' state
-static u32 sNumTaskRunning;          // 007ce084
+static s32 sNumTaskRunning;          // 007ce084
 static KwlnTask* sRunningTaskTail;   // 007ce080
 static KwlnTask* sRunningTaskHead;   // 007ce07c
 
 // for 'KWLNTASK_STATE_DESTROY' state
-static u32 sNumTaskDestroy;          // 007ce078
+static s32 sNumTaskDestroy;          // 007ce078
 static KwlnTask* sDestroyTaskTail;   // 007ce074
 static KwlnTask* sDestroyTaskHead;   // 007ce070
 
 // for 'KWLNTASK_STATE_STAGED' state
-static u32 sNumTaskStaged;           // 007ce06c
+static s32 sNumTaskStaged;           // 007ce06c
 static KwlnTask* sStagedTaskTail;    // 007ce068
 static KwlnTask* sStagedTaskHead;    // 007ce064
 
@@ -97,7 +97,7 @@ void kwlnTaskRemoveFromList(KwlnTask* task)
     }
 }
 
-// FUN_00193ba0 NONMATCHING. Add a task to the priority-sorted list for its current state
+// FUN_00193ba0. Add a task to the priority-sorted list for its current state
 void kwlnTaskAddToList(KwlnTask* task)
 {
     KwlnTask* list;
@@ -141,9 +141,17 @@ void kwlnTaskAddToList(KwlnTask* task)
     {
         while (list != NULL)
         {
-            if (task->priority < list->priority)
+            if (list->priority > task->priority)
             {
-                if (list->prev == NULL)
+                if (list->prev != NULL)
+                {
+                    list->prev->next = task;
+                    task->prev = task->unk_48 = list->prev;
+                    task->next = list;
+                    list->unk_48 = task;
+                    list->prev = task;
+                }
+                else
                 {
                     switch (taskState)
                     {
@@ -153,15 +161,6 @@ void kwlnTaskAddToList(KwlnTask* task)
                     }
 
                     task->prev = NULL;
-                    task->next = list;
-                    list->unk_48 = task;
-                    list->prev = task;
-                }
-                else
-                {
-                    list->prev->next = task;
-                    task->unk_48 = list->prev;
-                    task->prev = list->prev;
                     task->next = list;
                     list->unk_48 = task;
                     list->prev = task;
@@ -180,22 +179,19 @@ void kwlnTaskAddToList(KwlnTask* task)
             {
                 case KWLNTASK_STATE_STAGED: 
                     sStagedTaskTail->next = task;
-                    task->unk_48 = sStagedTaskTail;
-                    task->prev = sStagedTaskTail;
+                    task->prev = task->unk_48 = sStagedTaskTail;
                     sStagedTaskTail = task;
                     break;
 
                 case KWLNTASK_STATE_RUNNING: 
                     sRunningTaskTail->next = task;
-                    task->unk_48 = sRunningTaskTail;
-                    task->prev = sRunningTaskTail;
+                    task->prev = task->unk_48 = sRunningTaskTail;
                     sRunningTaskTail = task;
                     break;
 
                 case KWLNTASK_STATE_DESTROY: 
                     sDestroyTaskTail->next = task;
-                    task->unk_48 = sDestroyTaskTail;
-                    task->prev = sDestroyTaskTail;
+                    task->prev = task->unk_48 = sDestroyTaskTail;
                     sDestroyTaskTail = task;
                     break;
             }
@@ -209,17 +205,17 @@ void kwlnTaskAddToList(KwlnTask* task)
     {
         case KWLNTASK_STATE_STAGED:
             sNumTaskStaged++;
-            K_ASSERT(sNumTaskStaged < KWLNTASK_MAXINLIST, 226);
+            K_ASSERT(sNumTaskStaged <= KWLNTASK_MAXINLIST, 226);
             break;
 
         case KWLNTASK_STATE_RUNNING:
             sNumTaskRunning++;
-            K_ASSERT(sNumTaskRunning < KWLNTASK_MAXINLIST, 230);
+            K_ASSERT(sNumTaskRunning <= KWLNTASK_MAXINLIST, 230);
             break;
 
         case KWLNTASK_STATE_DESTROY:
             sNumTaskDestroy++;
-            K_ASSERT(sNumTaskDestroy < KWLNTASK_MAXINLIST, 234);
+            K_ASSERT(sNumTaskDestroy <= KWLNTASK_MAXINLIST, 234);
             break;
     }
 }
