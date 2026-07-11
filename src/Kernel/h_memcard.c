@@ -91,7 +91,7 @@ void func_0018f170(s32 file, void* buffer, s32 size)
     sMemcardSeqMode = 0;
 }
 
-// FUN_0018f190 NONMATCHING. Poll the memory-card socket and normalize errors.
+// FUN_0018f190 Poll the memory-card socket and normalize errors.
 s32 func_0018f190(s32* mode, u32* result, s32* error)
 {
     s32 status;
@@ -101,10 +101,13 @@ s32 func_0018f190(s32* mode, u32* result, s32* error)
     {
         if (status != 0)
         {
-            if (status != -1)
+            if (status == -1)
             {
-                return status;
+                goto minus_return;
             }
+            return status;
+
+minus_return:
             return -1;
         }
         return 0;
