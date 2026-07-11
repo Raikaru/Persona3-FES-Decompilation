@@ -948,15 +948,17 @@ u32 K_Cmd_SET_PHYSICAL_CONDITION()
     return true;
 }
 
-// FUN_001C3590 NONMATCHING
+// FUN_001C3590
 u32 K_Cmd_GET_FIELD_VALUE()
 {
     s32 pcId;
-    s16 index;
+    s32 index;
+    u16 value;
 
     pcId = scrGetIntPara(0);
-    index = (s16)scrGetIntPara(1);
-    scrSetIntReturnVal(func_00170760((s16)pcId, index));
+    index = scrGetIntPara(1);
+    value = func_00170760((s16)pcId, (s16)index);
+    scrSetIntReturnVal(value);
     return true;
 }
 
@@ -978,17 +980,19 @@ u32 K_Cmd_SET_FIELD_VALUE()
     return true;
 }
 
-// FUN_001C3690 NONMATCHING
+// FUN_001C3690
 u32 K_Cmd_GET_EQUIPMENT_VALUE()
 {
     s32 pcId;
-    s16 equipmentType;
-    s16 equipmentIndex;
+    s32 equipmentType;
+    s32 equipmentIndex;
+    u16 value;
 
     pcId = scrGetIntPara(0);
-    equipmentType = (s16)scrGetIntPara(1);
-    equipmentIndex = datGetEquipmentIdx((s16)pcId, equipmentType);
-    scrSetIntReturnVal(datGetEquipmentId((s16)pcId, equipmentIndex));
+    equipmentType = scrGetIntPara(1);
+    equipmentIndex = datGetEquipmentIdx((s16)pcId, (s16)equipmentType);
+    value = datGetEquipmentId((s16)pcId, (s16)equipmentIndex);
+    scrSetIntReturnVal(value);
     return true;
 }
 
@@ -1074,16 +1078,18 @@ u32 K_Cmd_GET_FIELD_OBJECT_ACTIVE()
     return true;
 }
 
-// FUN_001C3990 NONMATCHING
+// FUN_001C3990
 u32 K_Cmd_GET_FIELD_OBJECT_PARAM()
 {
     u8* object;
     u8* work;
+    u8* base;
     u32 value;
 
     object = *(u8**)&D_007CE284;
+    base = object;
     value = 0;
-    work = *(u8**)(object + 0x11c);
+    work = *(u8**)(base + 0x11c);
     if (*(u16*)(work + 2) == 0xfb5)
     {
         value = *(u32*)(work + 8);
@@ -1275,7 +1281,7 @@ u32 FUN_001C3F10()
     return true;
 }
 
-// FUN_001C3FE0 NONMATCHING
+// FUN_001C3FE0
 u32 FUN_001C3FE0()
 {
     s32 value;
@@ -1283,14 +1289,17 @@ u32 FUN_001C3FE0()
     s32 count;
     s32 i;
     u32 found;
+    u32* entry;
 
     value = scrGetIntPara(0);
     found = 0;
     values = FUN_0035f160();
+    i = 0;
     count = values[0];
-    for (i = 0; i < count; i++)
+    for (; i < count; i++)
     {
-        if (values[i + 1] == value)
+        entry = values + i;
+        if (entry[1] == value)
         {
             found = 1;
             break;
@@ -1541,10 +1550,13 @@ extern void func_00455b50(void);
 extern void Y_TimeLimit_Stop(void);
 
 /* These are the retail GP-backed command state words.  They are shared with the
- * field script task and must not be duplicated as TU-local state. */
-#define K_CMD_GLOBAL_STATE      (*(u32*)0x007CE278)
-#define K_CMD_GLOBAL_STAGE      (*(u32*)0x007CE274)
-#define K_CMD_GLOBAL_FRAME      (*(u32*)0x007CE270)
+ * field script task; preserve their GP relocation form. */
+extern u32 D_007CE278;
+extern u32 D_007CE274;
+extern u32 D_007CE270;
+#define K_CMD_GLOBAL_STATE      D_007CE278
+#define K_CMD_GLOBAL_STAGE      D_007CE274
+#define K_CMD_GLOBAL_FRAME      D_007CE270
 
 
 // FUN_001c4990
@@ -1807,7 +1819,7 @@ u32 func_001c5340()
     return true;
 }
 
-// FUN_001c5400 NONMATCHING
+// FUN_001c5400
 u32 func_001c5400()
 {
     s32 command;
@@ -1815,7 +1827,7 @@ u32 func_001c5400()
 
     mode = scrGetIntPara(1);
     command = scrGetIntPara(0);
-    func_0010a4e0(1, 8, command, mode);
+    func_0010a4e0(1, 8, (s16)command, (s16)mode);
     return true;
 }
 
@@ -2055,7 +2067,7 @@ u32 func_001c5980()
     return true;
 }
 
-// FUN_001c5d30 NONMATCHING
+// FUN_001c5d30
 u32 func_001c5d30()
 {
     K_CMD_GLOBAL_STAGE = 0;
