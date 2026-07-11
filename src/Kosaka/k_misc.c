@@ -1,5 +1,15 @@
+#include "Utils.h"
+#define DATCALENDAR_H
+typedef struct CalendarWork
+{
+    s16 daysSinceApr5;
+    s8 time;
+    u32 skipToTarget;
+    s16 daysSkipTarget;
+    s8 timeSkipTarget;
+} CalendarWork;
 #include "Main/g_data.h"
-#include "datCalendar.h"
+#undef DATCALENDAR_H
 #include "libm.h"
 #include "Kosaka/k_misc.h"
 #include "Kernel/Kwln/kwlnTask.h"
@@ -9,6 +19,8 @@
 #include "rw/rwplcore.h"
 #include "rw/rpusrdat.h"
 #include "temporary.h"
+extern u32 clndIsHolidayOrSunday(void);
+extern u32 clndIsDateInRange(u32 startMonth, u32 startDay, u32 endMonth, u32 endDay);
 typedef struct RmdFadeWork
 {
     u32 unk_00;             // 0x00
@@ -42,26 +54,30 @@ u32 K_Misc_FindNextFreeResId(u16 resType)
 
     return (u16)currId;
 }
-// FUN_001A5CD0 NONMATCHING
+// FUN_001A5CD0
 void func_001a5cd0(void)
 {
     s32 usePrimaryFlag;
 
     usePrimaryFlag = 0;
-    if (clndIsHolidayOrSunday())
+    if (clndIsHolidayOrSunday() == true)
     {
         if (clndIsDateInRange(7, 0x1b, 8, 2) == true)
         {
             usePrimaryFlag = 1;
         }
-        else if (clndIsDateInRange(8, 10, 8, 0xf) == true)
+        if (clndIsDateInRange(8, 10, 8, 0xf) == true)
         {
             usePrimaryFlag = 1;
         }
-        else if (clndIsDateInRange(0xb, 0x11, 0xb, 0x14) == true)
+        if (clndIsDateInRange(0xb, 0x11, 0xb, 0x14) == true)
         {
             usePrimaryFlag = 1;
         }
+    }
+    else
+    {
+        usePrimaryFlag = 1;
     }
 
     if (usePrimaryFlag == true)
@@ -84,20 +100,17 @@ void* func_001a5f30(KwlnTask* rmdFadeTask)
 
     work = (RmdFadeWork*)rmdFadeTask->workData;
     (void)sinf((3.14159274f * (f32)work->framesRemaining) / 30.0f);
-
-    color.r = 255;
-    color.g = 255;
-    color.b = 255;
+    *(u32*)&color = 0xffffffff;
     if (work->framesRemaining < 1)
     {
-        color.a = (u8)(s32)work->targetAlpha;
+        color.a = (u8)work->targetAlpha;
         mdlSetColor(work->mdl, &color);
         return KWLNTASK_STOP;
     }
 
     work->currentAlpha +=
         (work->targetAlpha - work->currentAlpha) / (f32)work->framesRemaining;
-    color.a = (u8)(s32)work->currentAlpha;
+    color.a = (u8)work->currentAlpha;
     mdlSetColor(work->mdl, &color);
     work->framesRemaining--;
 
