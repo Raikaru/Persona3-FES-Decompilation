@@ -1119,8 +1119,12 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
             {
                 k = i;
 
-                while (k > 0 && name[k-1] == list->name[k-1])
+                while (name[k] == list->name[k])
                 {
+                    if (k == 0)
+                    {
+                        break;
+                    }
                     k--;
                 }
 
