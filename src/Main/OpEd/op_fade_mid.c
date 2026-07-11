@@ -7,7 +7,7 @@ extern void (*D_0096017C)(void *memory);
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
                           u32 first, u32 second);
-extern void *D_00960070;
+extern void *D_007D2D60;
 extern u8 *DAT_007ce420;
 extern s32 DAT_007cc4dc;
 extern f32 DAT_007cad74;
@@ -337,7 +337,7 @@ u64 func_002756c0(void)
 // FUN_002757A0
 u64 func_002757a0(void)
 {
-    func_005225a8((const void *)((const u8 *)&D_00960070 - 0x6888),
+    func_005225a8((const void *)((const u8 *)&D_007D2D60 - 0x6888),
                   *(void **)(uintptr_t)0x00960070);
     func_00275cb0();
     func_00278550();

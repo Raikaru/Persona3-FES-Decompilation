@@ -118,8 +118,8 @@ extern char D_006844B0[];
 extern char D_00684060[];
 extern char D_00684040[];
 extern void* (*DAT_00960184)(u32, ...);
-extern FieldRuntimeResourceNode* D_006845C8;
-extern FieldRuntimeTaskNode* D_006845CC;
+extern FieldRuntimeResourceNode* D_007CE2B8;
+extern FieldRuntimeTaskNode* D_007CE2BC;
 extern void* func_001b83f0(void);
 extern void* func_001b85a0(void* record);
 extern void* func_001b8d60(void);
@@ -404,7 +404,7 @@ void func_001e2930(s32 enabled)
 {
     FieldRuntimeResourceNode* node;
 
-    node = D_006845C8;
+    node = D_007CE2B8;
     while (node != NULL)
     {
         if (enabled == 1)
@@ -417,7 +417,7 @@ void func_001e2930(s32 enabled)
         }
         else
         {
-            D_006845C8 = node->next;
+            D_007CE2B8 = node->next;
         }
         if (node->next != NULL)
         {
@@ -465,7 +465,7 @@ void func_001e2b10(s32 enabled)
 {
     FieldRuntimeTaskNode* node;
 
-    node = D_006845CC;
+    node = D_007CE2BC;
     while (node != NULL)
     {
         if (enabled == 1)
@@ -479,7 +479,7 @@ void func_001e2b10(s32 enabled)
         }
         else
         {
-            D_006845CC = node->next;
+            D_007CE2BC = node->next;
         }
         if (node->next != NULL)
         {

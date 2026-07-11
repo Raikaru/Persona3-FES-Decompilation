@@ -21,19 +21,20 @@ KwlnTask* kwlnRootCreate3DOn2DZClearTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask();
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask();
 KwlnTask* kwlnRootCreateEtcDrawTask();
-void FUN_00103580();
+void H_Pad_Update();
 u32 H_Snd_FUN_00109df0(s32 param);
 KwlnTask* FUN_00199440(KwlnTask* rootTask);
 KwlnTask* FUN_001993d0();
 KwlnTask* FUN_00199080();
 KwlnTask* FUN_00199100();
 KwlnTask* FUN_00199360();
-KwlnTask* FUN_00192de0();
+KwlnTask* func_00192de0();
 void kwlnInitGameData();
 extern u32 DAT_007ce12c;
 extern u32 DAT_007ce114;
-void FUN_001120c0();
-void FUN_001125d0();
+void func_001120c0();
+void func_001125d0();
+extern RwGlobals DAT_00960070;
 
 extern u32 jtbl_00960178[];
 extern u32 jtbl_0096017C[];
@@ -52,22 +53,42 @@ void func_0010bff0(void);
 void func_0010c5f0(void);
 void func_005810f0(void);
 
-/*
- * These globals belong to the RenderWare show-raster/spipe state block.
- * The retail image stores them in the Kwln small-data area; they remain
- * separate here so the update paths retain the original state transitions.
- */
-static u32 sShowRasterUpdatePending;
-static u32 sShowRasterCurrentCount;
-static void* sShowRasterImage;
-static u32 sShowRasterResult;
-static u32 sShowRasterRasterA;
-static u32 sShowRasterRasterB;
-static u32 sShowRasterEnabled;
-static KwlnTask* sDraw3DTask;
-static f32 sShowRasterDelta;
-static f32 sShowRasterCurrent;
-static f32 sShowRasterPercent;
+extern f32 D_007CE150;
+extern f32 D_007CE14C;
+extern f32 D_007CE148;
+extern KwlnTask* D_007CE134;
+extern u32 D_007CE130;
+extern u32 D_007CE11C;
+extern u32 D_007CE118;
+extern u32 D_007CE110;
+extern void* D_007CE104;
+extern u32 D_007CE100;
+extern u32 D_007CE0F8;
+extern const char D_006787C8[]; // "rootProc"
+extern const char D_006787D8[]; // "kwlnRoot.c"
+extern const char D_006787E8[]; // "2D Draw Begin"
+extern const char D_00678800[]; // "2D Draw Begin Pre End"
+extern const char D_00678810[]; // "2D Draw End"
+extern const char D_00678820[]; // "3D on 2D Zclear"
+extern const char D_00678830[]; // "3D on 2D Draw Begin"
+extern const char D_00678850[]; // "3D on 2D Draw End"
+extern const char D_00678868[]; // "etc Draw Begin"
+extern const char D_00678878[]; // "etc Draw"
+extern const char D_00678888[]; // "etc Draw End"
+extern const char D_006788A0[]; // "<<< show raster >>>"
+extern const char D_006788B8[]; // "drawBustupProc"
+extern const char D_006788C8[]; // "k_spipe.c"
+#define sShowRasterPercent D_007CE150
+#define sShowRasterDelta D_007CE14C
+#define sShowRasterCurrent D_007CE148
+#define sDraw3DTask D_007CE134
+#define sShowRasterEnabled D_007CE130
+#define sShowRasterRasterB D_007CE11C
+#define sShowRasterRasterA D_007CE118
+#define sShowRasterResult D_007CE110
+#define sShowRasterImage D_007CE104
+#define sShowRasterCurrentCount D_007CE100
+#define sShowRasterUpdatePending D_007CE0F8
 
 // FUN_00198650
 void* kwlnRootUpdateTask(KwlnTask* rootTask)
@@ -79,7 +100,7 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
     switch (work->state)
     {
         case 0:
-            FUN_00103580();
+            H_Pad_Update();
             if (H_Snd_FUN_00109df0(0) != 0)
             {
                 K_SceneDraw_CreateTasks(rootTask);
@@ -110,7 +131,7 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
             }
             break;
         case 1:
-            FUN_00103580();
+            H_Pad_Update();
             DAT_007ce12c = 0;
             work->state++;
             break;
@@ -134,7 +155,7 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
             return KWLNTASK_STOP;
         case 5:
             kwlnSetFlags(0x80000000, 0);
-            work->unk_04 = (u32)FUN_00192de0();
+            work->unk_04 = (u32)func_00192de0();
             work->state = 6;
             break;
         case 6:
@@ -151,15 +172,15 @@ void* kwlnRootUpdateTask(KwlnTask* rootTask)
 }
 
 void H_Snd_StopBgm();
-void FUN_003b5ab0();
+void func_003b5ab0();
 
 // FUN_001988f0
 void kwlnRootDestroyTask(KwlnTask* rootTask)
 {
     H_Snd_StopBgm();
-    FUN_003b5ab0();
+    func_003b5ab0();
 
-    RwFree(rootTask->workData);
+    (DAT_00960070.memFuncs.RwFree)(rootTask->workData);
 }
 
 // FUN_00198940
@@ -168,13 +189,13 @@ KwlnTask* kwlnRootCreateTask()
     KwlnTask* rootTask;
     KwlnRootWork* work;
 
-    work = RwCalloc(1, sizeof(KwlnRootWork), rwMEMHINTDUR_GLOBAL);
+    work = (DAT_00960070.memFuncs.RwCalloc)(1, sizeof(KwlnRootWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
     }
 
-    rootTask = kwlnTaskInit("rootProc", 0, kwlnRootUpdateTask, kwlnRootDestroyTask, work);
+    rootTask = kwlnTaskInit(D_006787C8, 0, kwlnRootUpdateTask, kwlnRootDestroyTask, work);
     H_Snd_FUN_00109ca0(0, 1);
     H_Snd_FUN_00109ca0(1, 2);
 
@@ -191,18 +212,18 @@ void* kwlnRootUpdate2DDrawBeginTask(KwlnTask* drawBegin2dTask)
     {
         kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
         kwlnSetFlags(KWLN_FLAG_2DDRAW, true);
-        setRenderState = &rwGlobals.device.setRenderState;
+        setRenderState = &DAT_00960070.device.setRenderState;
         (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
         RpSkyRenderStateSet(2, (void*)0x44);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)false);
-        FUN_001120c0();
-        FUN_001125d0();
+        func_001120c0();
+        func_001125d0();
     }
     else
     {
-        K_ASSERT(false, 393);
+        K_Assert(D_006787D8, 393);
         kwlnSetFlags(KWLN_FLAG_ERR, true);
     }
 
@@ -226,19 +247,19 @@ void* kwlnRootUpdate2DDrawEndTask(KwlnTask* drawEnd2dTask)
 // FUN_00198b50
 KwlnTask* kwlnRootCreate2DDrawBeginTask()
 {
-    return kwlnTaskInit("2D Draw Begin", 4196, kwlnRootUpdate2DDrawBeginTask, NULL, NULL);
+    return kwlnTaskInit(D_006787E8, 4196, kwlnRootUpdate2DDrawBeginTask, NULL, NULL);
 }
 
 // FUN_00198b90
 KwlnTask* kwlnRootCreate2DDrawBeginPreEndTask()
 {
-    return kwlnTaskInit("2D Draw Begin Pre End", 5231, kwlnRootUpdate2DDrawPreEndTask, NULL, NULL);
+    return kwlnTaskInit(D_00678800, 5231, kwlnRootUpdate2DDrawPreEndTask, NULL, NULL);
 }
 
 // FUN_00198bd0
 KwlnTask* kwlnRootCreate2DDrawEndTask()
 {
-    return kwlnTaskInit("2D Draw End", 5241, kwlnRootUpdate2DDrawEndTask, NULL, NULL);
+    return kwlnTaskInit(D_00678810, 5241, kwlnRootUpdate2DDrawEndTask, NULL, NULL);
 }
 
 // FUN_00198c10
@@ -259,14 +280,14 @@ void* kwlnRootUpdate3DOn2DDrawBeginTask()
         kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
         kwlnSetFlags(KWLN_FLAG_3DDRAW, true);
 
-        setRenderState = &rwGlobals.device.setRenderState;
+        setRenderState = &DAT_00960070.device.setRenderState;
 
         (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
     }
     else
     {
-        K_ASSERT(false, 719);
+        K_Assert(D_006787D8, 719);
         kwlnSetFlags(KWLN_FLAG_ERR, true);
     }
 
@@ -280,7 +301,7 @@ void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 
     if (gFogEnabled == true)
     {
-        setRenderState = &rwGlobals.device.setRenderState;
+        setRenderState = &DAT_00960070.device.setRenderState;
 
         (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEFOGCOLOR, (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
@@ -295,19 +316,19 @@ void* kwlnRootUpdate3DOn2DDrawEndTask(KwlnTask* drawEnd3d2dTask)
 // FUN_00198dd0
 KwlnTask* kwlnRootCreate3DOn2DZClearTask()
 {
-    return kwlnTaskInit("3D on 2D Zclear", 5243, kwlnRootUpdate3DOn2DZClearTask, NULL, NULL);
+    return kwlnTaskInit(D_00678820, 5243, kwlnRootUpdate3DOn2DZClearTask, NULL, NULL);
 }
 
 // FUN_00198e10
 KwlnTask* kwlnRootCreate3DOn2DDrawBeginTask()
 {
-    return kwlnTaskInit("3D on 2D Draw Begin", 5245, kwlnRootUpdate3DOn2DDrawBeginTask, NULL, NULL);
+    return kwlnTaskInit(D_00678830, 5245, kwlnRootUpdate3DOn2DDrawBeginTask, NULL, NULL);
 }
 
 // FUN_00198e50
 KwlnTask* kwlnRootCreate3DOn2DDrawEndTask()
 {
-    return kwlnTaskInit("3D on 2D Draw End", 6320, kwlnRootUpdate3DOn2DDrawEndTask, NULL, NULL);
+    return kwlnTaskInit(D_00678850, 6320, kwlnRootUpdate3DOn2DDrawEndTask, NULL, NULL);
 }
 
 // FUN_00198e90
@@ -324,14 +345,14 @@ void* FUN_00198e90(KwlnTask* etcDrawBeginTask)
         kwlnSetFlags(KWLN_FLAG_ERR | KWLN_FLAG_3DDRAW, false);
         kwlnSetFlags(KWLN_FLAG_2DDRAW, true);
 
-        setRenderState = &rwGlobals.device.setRenderState;
+        setRenderState = &DAT_00960070.device.setRenderState;
         (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)false);
     }
     else
     {
-        K_ASSERT(false, 0x347);
+        K_Assert(D_006787D8, 0x347);
         kwlnSetFlags(KWLN_FLAG_ERR, true);
     }
 
@@ -356,7 +377,7 @@ void* FUN_00198fd0(KwlnTask* etcDrawEndTask)
 
     if (gFogEnabled == true)
     {
-        setRenderState = &rwGlobals.device.setRenderState;
+        setRenderState = &DAT_00960070.device.setRenderState;
 
         (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
         (*setRenderState)(rwRENDERSTATEFOGCOLOR, (void*)PACK_RWRGBA(gFogRed, gFogGreen, gFogBlue, gFogAlpha));
@@ -368,22 +389,22 @@ void* FUN_00198fd0(KwlnTask* etcDrawEndTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001990c0
-KwlnTask* kwlnRootCreateEtcDrawTask()
-{
-    return kwlnTaskInit("etc Draw", 6335, kwlnRootUpdateEtcDrawTask, NULL, NULL);
-}
-
 // FUN_00199080
 KwlnTask* FUN_00199080()
 {
-    return kwlnTaskInit("etc Draw Begin", 6323, FUN_00198e90, NULL, NULL);
+    return kwlnTaskInit(D_00678868, 6323, FUN_00198e90, NULL, NULL);
+}
+
+// FUN_001990c0
+KwlnTask* kwlnRootCreateEtcDrawTask()
+{
+    return kwlnTaskInit(D_00678878, 6335, kwlnRootUpdateEtcDrawTask, NULL, NULL);
 }
 
 // FUN_00199100
 KwlnTask* FUN_00199100()
 {
-    return kwlnTaskInit("etc Draw End", 7379, FUN_00198fd0, NULL, NULL);
+    return kwlnTaskInit(D_00678888, 7379, FUN_00198fd0, NULL, NULL);
 }
 
 // FUN_00199140
@@ -446,7 +467,7 @@ void* kwlnRootUpdateShowRasterTask(KwlnTask* showRasterTask)
 // FUN_00199360
 KwlnTask* FUN_00199360()
 {
-    return kwlnTaskInit("<<< show raster >>>", 7396, kwlnRootUpdateShowRasterTask, NULL, NULL);
+    return kwlnTaskInit(D_006788A0, 7396, kwlnRootUpdateShowRasterTask, NULL, NULL);
 }
 
 // FUN_001993a0
@@ -460,7 +481,7 @@ void* FUN_001993a0(KwlnTask* drawBustupTask)
 // FUN_001993d0
 KwlnTask* FUN_001993d0()
 {
-    return kwlnTaskInit("drawBustupProc", 5276, FUN_001993a0, NULL, NULL);
+    return kwlnTaskInit(D_006788B8, 5276, FUN_001993a0, NULL, NULL);
 }
 
 // FUN_00199410
@@ -483,7 +504,7 @@ KwlnTask* FUN_00199440(KwlnTask* rootTask)
 
     if (sDraw3DTask != NULL)
     {
-        K_Assert("k_spipe.c", 0x76);
+        K_Assert(D_006788C8, 0x76);
     }
 
     work = (KwlnDraw3DWork*)KWLN_ALLOC3(1, sizeof(KwlnDraw3DWork), 0x40000);
