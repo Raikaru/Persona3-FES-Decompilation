@@ -246,7 +246,7 @@ extern const u16 D_007E0952;
     (*(HmallocReleaser*)jtbl_0096017C)((memory))
 #define HMALLOC_STEP_TABLE ((HmallocStepCallback*)0x005e4d00)
 
-extern void func_004f1e20(u32 source, void* bytes, u16* header);
+extern void func_004f1e20(u64 source, void* bytes, u16* header);
 extern void func_004d5000(void* packet, u32 size);
 extern void func_0016cfe0(s32 group, s32 value);
 extern void func_0016d090(s32 group, s32 value);
@@ -288,7 +288,7 @@ extern void func_0035f060();
 static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
                                    s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                    s32 a9, s32 a10);
-static void hmallocInitTilePacket32(u32 texture, u32 packet, u32 source,
+static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
                                     s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
                                     s32 a8, s32 a9);
 static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
@@ -303,8 +303,8 @@ static void hmallocWriteTile(u32* out, u32 a1, u32 image, u32 a3);
 static void hmallocWriteScale(u32* out, u32 x, u32 y);
 static void hmallocWriteSolid(u32* out, u32 value);
 
-// FUN_00191D70 NONMATCHING
-void hmallocPrepareTilePacket(u32 source, u32 owner, s32 tileIndex, s32 tileCount)
+// FUN_00191D70
+void hmallocPrepareTilePacket(u64 source, u32 owner, s32 tileIndex, s32 tileCount)
 {
     u8 headerBytes[4];
     u16 header[2];
@@ -316,16 +316,19 @@ void hmallocPrepareTilePacket(u32 source, u32 owner, s32 tileIndex, s32 tileCoun
     tileBytes = tileCount * 0x10;
     if (tileBytes < 0x1c1)
     {
-        hmallocInitTilePacket32(texture, 0x846f00, owner, 0, 0,
+        hmallocInitTilePacket32(texture, (void*)&D_00846F00, owner, 0, 0,
                                 tileIndex << 4, tileBytes, 0, 0, 0);
     }
     else
     {
-        hmallocInitTilePacket32(texture, 0x846f00, owner, 0, 0,
+        hmallocInitTilePacket32(texture, (void*)&D_00846F00, owner, 0, 0,
                                 tileIndex << 4, 0x1c0, 0, 0,
                                 tileBytes - 0x1c0);
     }
-    func_004d5000((void*)&D_00846F00, 0x102);
+    if (&D_00846F00 != NULL)
+    {
+        func_004d5000((void*)&D_00846F00, 0x102);
+    }
 }
 
 // FUN_00191E60
@@ -337,12 +340,12 @@ static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
                          a7, a8, a9);
 }
 
-static void hmallocInitTilePacket32(u32 texture, u32 packet, u32 source,
+static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
                                     s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
                                     s32 a8, s32 a9)
 {
-    hmallocInitTilePacket((u64)texture, (u64)packet, (u64)source, a3, a4,
-                          a5, a6, a7, a8, a9, 0);
+    hmallocInitTilePacket((u64)texture, (u64)(uintptr_t)packet, (u64)source,
+                          a3, a4, a5, a6, a7, a8, a9, 0);
 }
 
 // FUN_00191EC0 NONMATCHING
