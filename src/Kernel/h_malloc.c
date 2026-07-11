@@ -254,7 +254,7 @@ extern s32 func_0050a100(s32 file, void* entry);
 extern void func_00509f98(s32 file);
 extern s32 func_00524128(const char* path, const char* name);
 extern s32 func_00420340(void* task, s32 flags);
-extern void func_0035f060(s32 value);
+extern void func_0035f060();
 
 static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
                                    s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
@@ -262,7 +262,7 @@ static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
 static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
                                  s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                  s32 a9, s32 a10);
-static void hmallocPackHeader(u64* out, u32 a1, u64 a2, u32 a3, u32 a4,
+static void hmallocPackHeader(u64* out, u32 a1, s32 a2, u32 a3, u32 a4,
                               u32 a5, u32 a6);
 static void hmallocPackDescriptor(u32* out, u64 address, s32 a2, s32 a3,
                                   s32 a4, s32 a5, s32 a6, u32 a7);
@@ -358,13 +358,12 @@ static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
 }
 
 // FUN_00192160 NONMATCHING
-static void hmallocPackHeader(u64* out, u32 a1, u64 a2, u32 a3, u32 a4,
+static void hmallocPackHeader(u64* out, u32 a1, s32 a2, u32 a3, u32 a4,
                               u32 a5, u32 a6)
 {
     u64 packet;
 
-    packet = (((((u64)a2 & (u64)(u32)-0x10) << 0x20) >> 0x20)
-              << 0x20) +
+    packet = ((u64)(u32)(a2 & ~0xf) << 0x20) |
              ((u64)a1 << 0x3f) |
              ((u64)a3 << 0x1f) |
              ((u64)a4 << 0x1c) |
@@ -437,28 +436,27 @@ static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
     u32* resource;
-    s32 state;
 
     work = *(u32**)((u8*)task + 0x3c);
-    state = (s32)work[0];
-    if (state == 1)
+    switch (work[0])
     {
-        if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
-        {
-            resource = (u32*)(uintptr_t)work[1];
-            func_00521250((void*)0x83bb30,
-                          *(u32*)((u8*)resource + 0x110),
-                          *(u32*)((u8*)resource + 0x118));
-            H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
-            work[1] = 0;
-            func_0016c2f0();
-            return -1;
-        }
-    }
-    else if (state == 0)
-    {
-        work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4c60, 0);
-        work[0] = state + 1;
+        case 0:
+            work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4c60, 0);
+            work[0] += 1;
+            break;
+        case 1:
+            if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
+            {
+                resource = (u32*)(uintptr_t)work[1];
+                func_00521250((void*)0x83bb30,
+                              *(u32*)((u8*)resource + 0x110),
+                              *(u32*)((u8*)resource + 0x118));
+                H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
+                work[1] = 0;
+                func_0016c2f0();
+                return -1;
+            }
+            break;
     }
     return 0;
 }
@@ -502,11 +500,15 @@ static s32 hmallocTaskUpdateB(void* task)
     u32* work;
     u32* resourceA;
     u32* resourceB;
-    s32 state;
 
     work = *(u32**)((u8*)task + 0x3c);
-    state = (s32)work[0];
-    if (state == 1)
+    if (work[0] == 0)
+    {
+        work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4ca0, 0);
+        work[2] = (u32)(uintptr_t)func_00100d80((void*)0x5e4cc0, 0);
+        work[0] += 1;
+    }
+    else if (work[0] == 1)
     {
         if (func_001016b0((void*)(uintptr_t)work[1]) == 1 &&
             func_001016b0((void*)(uintptr_t)work[2]) == 1)
@@ -526,12 +528,6 @@ static s32 hmallocTaskUpdateB(void* task)
             func_0016c2f0();
             return -1;
         }
-    }
-    else if (state == 0)
-    {
-        work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4ca0, 0);
-        work[2] = (u32)(uintptr_t)func_00100d80((void*)0x5e4cc0, 0);
-        work[0] = state + 1;
     }
     return 0;
 }
@@ -578,28 +574,29 @@ static void* hmallocCreateTaskB(void* parent)
 static s32 hmallocTaskUpdateC(void* task)
 {
     u32* work;
-    HmallocStepCallback callback;
-    s32 result;
+    HmallocStepCallback callbacks[4];
 
     work = *(u32**)((u8*)task + 0x3c);
-    if (work[0] == 1)
+    ((f32*)callbacks)[0] = ((const f32*)0x005e4d00)[0];
+    ((f32*)callbacks)[1] = ((const f32*)0x005e4d00)[1];
+    ((f32*)callbacks)[2] = ((const f32*)0x005e4d00)[2];
+    ((f32*)callbacks)[3] = ((const f32*)0x005e4d00)[3];
+    if (work[0] == 0)
+    {
+        if (callbacks[work[1]] == NULL)
+        {
+            return -1;
+        }
+        work[2] = (u32)callbacks[work[1]]();
+        work[0] += 1;
+    }
+    else if (work[0] == 1)
     {
         if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
         {
             work[1] += 1;
             work[0] = 0;
         }
-    }
-    else if (work[0] == 0)
-    {
-        callback = HMALLOC_STEP_TABLE[work[1]];
-        if (callback == NULL)
-        {
-            return -1;
-        }
-        result = callback();
-        work[2] = (u32)result;
-        work[0] += 1;
     }
     return 0;
 }
@@ -634,28 +631,28 @@ static void* hmallocCreateTaskC(void)
 static s32 hmallocTaskUpdateD(void* task)
 {
     u32* work;
-    HmallocStepCallback callback;
-    s32 result;
-
+    HmallocStepCallback callbacks[4];
     work = *(u32**)((u8*)task + 0x3c);
-    if (work[0] == 1)
+    ((f32*)callbacks)[0] = ((const f32*)0x005e4d20)[0];
+    ((f32*)callbacks)[1] = ((const f32*)0x005e4d20)[1];
+    ((f32*)callbacks)[2] = ((const f32*)0x005e4d20)[2];
+    ((f32*)callbacks)[3] = ((const f32*)0x005e4d20)[3];
+    if (work[0] == 0)
+    {
+        if (callbacks[work[1]] == NULL)
+        {
+            return -1;
+        }
+        work[2] = (u32)callbacks[work[1]]();
+        work[0] += 1;
+    }
+    else if (work[0] == 1)
     {
         if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
         {
             work[1] += 1;
             work[0] = 0;
         }
-    }
-    else if (work[0] == 0)
-    {
-        callback = ((HmallocStepCallback*)0x5e4d20)[work[1]];
-        if (callback == NULL)
-        {
-            return -1;
-        }
-        result = callback();
-        work[2] = (u32)result;
-        work[0] += 1;
     }
     return 0;
 }
@@ -769,8 +766,6 @@ static void* hmallocCreateTaskE(void)
     return task;
 }
 
-#define HMALLOC_CONTROLLER_RESET ((void (*)(void))0x0035f060)
-#define HMALLOC_CONTROLLER_RESET_ARG ((void (*)(s32))0x0035f060)
 #define HMALLOC_CONFIG_WORDS ((const u32*)0x005e4d80)
 
 // FUN_00192E70 NONMATCHING
@@ -965,42 +960,38 @@ static void hmallocTaskDestroyF(void* task)
     HMALLOC_ENGINE_FREE(work);
 }
 
-// FUN_001933D0 NONMATCHING
+// FUN_001933D0
 static s32 hmallocStartController(void)
 {
     void* work;
     void* task;
 
     work = HMALLOC_ENGINE_ALLOC(1, 0xc, 0x40000);
-    if (work != NULL)
+    if (work == NULL)
     {
-        task = kwlnTaskCreateWithAutoPriority(NULL, 0x106f, D_005E4E20, (KwlnTaskUpdateFunc)hmallocTaskUpdateF, (KwlnTaskDestroyFunc)hmallocTaskDestroyF, work);
-        if (task != NULL)
-        {
-            sHmallocControllerTask = task;
-        }
-        else
-        {
-            sHmallocControllerTask = NULL;
-        }
+        task = NULL;
     }
     else
     {
-        sHmallocControllerTask = NULL;
+        task = kwlnTaskCreateWithAutoPriority(
+            NULL, 0x106f, D_005E4E20,
+            (KwlnTaskUpdateFunc)hmallocTaskUpdateF,
+            (KwlnTaskDestroyFunc)hmallocTaskDestroyF, work);
+        if (task == NULL)
+        {
+            task = NULL;
+        }
     }
+    sHmallocControllerTask = task;
     return 1;
 }
 
-// FUN_00193460 NONMATCHING
+// FUN_00193460
 static s32 hmallocPollController(void)
 {
     u32* work;
     s32 state;
 
-    if (sHmallocControllerTask == NULL)
-    {
-        return 1;
-    }
     if (kwlnTaskGetState(sHmallocControllerTask) == 3)
     {
         sHmallocControllerTask = NULL;
@@ -1010,11 +1001,11 @@ static s32 hmallocPollController(void)
     state = (s32)work[1];
     if (state == 1)
     {
-        HMALLOC_CONTROLLER_RESET();
+        func_0035f060(1);
     }
     else if (state == -1)
     {
-        HMALLOC_CONTROLLER_RESET_ARG(0);
+        func_0035f060(0);
     }
     return 0;
 }
