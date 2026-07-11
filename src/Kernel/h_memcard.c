@@ -293,28 +293,46 @@ state1_continue:
         {
             s32 status;
             status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            if (status != -1)
+            {
+                if (status == 1)
+                {
+                    if (cardError == 0)
+                    {
+                        if (cardCode != 0x2f)
+                        {
+                            if (cardCode != 0x9001)
+                            {
+                                if (cardCode != 0x13)
+                                {
+                                    if (cardCode != 0x6f)
+                                    {
+                                        if (cardCode == 0x9003)
+                                        {
+                                            return -3;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return -3;
+                                    }
+                                }
+                                else
+                                {
+                                    return -3;
+                                }
+                            }
+                            else
+                            {
+                                return -3;
+                            }
+                        }
+                    }
+                }
+            }
+            else
             {
                 FUN_005136f8(sSocketNo, D_00846EA0);
-            }
-            else if ((status == 1) && (cardError == 0) && (cardCode != 0x2f))
-            {
-                if (cardCode == 0x9001)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x13)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x6f)
-                {
-                    return -3;
-                }
-                if (cardCode == 0x9003)
-                {
-                    return -3;
-                }
             }
             return 2;
 
