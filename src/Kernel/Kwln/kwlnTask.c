@@ -1080,10 +1080,10 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
 
         while (list != NULL)
         {
-            k = i;
-
             if (list->nameHash == nameHash)
             {
+                k = i;
+
                 while (k > 0 && name[k-1] == list->name[k-1])
                 {
                     k--;
@@ -1129,11 +1129,17 @@ u32 kwlnTaskExists(KwlnTask* task)
     destroyList = sDestroyTaskHead;
     for (; i < 3; i++)
     {
-        switch (i)
+        if (i == 2)
         {
-            case 0: currTask = stagedList;  break;
-            case 1: currTask = runningList; break;
-            case 2: currTask = destroyList; break;
+            currTask = destroyList;
+        }
+        else if (i == 1)
+        {
+            currTask = runningList;
+        }
+        else
+        {
+            currTask = stagedList;
         }
 
         while (currTask != NULL)
