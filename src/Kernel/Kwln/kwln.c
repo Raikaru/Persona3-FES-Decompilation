@@ -862,18 +862,17 @@ void kwlnInitRenderer()
     KwlnPluginRegistration registration30;
     KwlnPluginRegistration registration31;
     KwlnPluginRegistration registration32;
-    KwlnWorldBounds bounds;
     u32 cameraDescriptor[2];
+    KwlnWorldBounds bounds;
     KwlnCameraView cameraView;
-    void* frame;
     register KwlnAllocateFunc* allocate;
     s32 callbacksRegistered;
     s32 callbackSuccess;
-    RpWorld* world;
+    register RpWorld* world;
     register RpLight* light;
     register RpLight* directionalLight;
     register RwCamera* camera;
-
+    register RwFrame* frame;
     func_004ac860(0x20, 0x20);
     RwEngineInit(H_Pad_GetRwMemoryFunctions(), 0, 0x800000);
     func_0046a750(7);
@@ -925,8 +924,8 @@ void kwlnInitRenderer()
 
     func_00488fe0();
     func_0048f030();
-    cameraDescriptor[0] = 0;
-    func_004ca700(cameraDescriptor);
+    cameraDescriptor[1] = 0;
+    func_004ca700(&cameraDescriptor[1]);
     func_004d82a0(0);
     func_004ca600(0x52);
     func_004c4c00(0x380000);
@@ -940,18 +939,16 @@ void kwlnInitRenderer()
     bounds.maximum.x = 150.0f;
     bounds.maximum.y = 150.0f;
     bounds.maximum.z = 150.0f;
-    world = func_0049a400(&bounds);
-    sWorlds[gCurrWorldIdx] = world;
-    light = func_004947c0(2);
-    if (light != NULL)
+    world = sWorlds[gCurrWorldIdx] = func_0049a400(&bounds);
+    if ((light = func_004947c0(2)) != NULL)
     {
         func_004944b0(light, D_006784C0);
         func_0049c3d0(world, light);
     }
     sAmbientLight = light;
 
-    directionalLight = func_004947c0(1);
-    if (directionalLight != NULL)
+    world = sWorlds[gCurrWorldIdx];
+    if ((directionalLight = func_004947c0(1)) != NULL)
     {
         frame = func_004caf10();
         if (frame != NULL)
@@ -970,8 +967,8 @@ void kwlnInitRenderer()
     }
     sDirectionalLight = directionalLight;
 
-    directionalLight = func_004947c0(1);
-    if (directionalLight != NULL)
+    world = sWorlds[gCurrWorldIdx];
+    if ((directionalLight = func_004947c0(1)) != NULL)
     {
         frame = func_004caf10();
         if (frame != NULL)
@@ -991,6 +988,7 @@ void kwlnInitRenderer()
     }
     sSecondaryLight = directionalLight;
 
+    world = sWorlds[gCurrWorldIdx];
     func_004ca560(cameraDescriptor, func_004ca5b0());
     camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1);
     if (camera != NULL)
