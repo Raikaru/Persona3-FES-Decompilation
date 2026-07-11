@@ -206,7 +206,10 @@ extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 extern const char D_005E4C80[];
 extern const char D_005E4C60[];
+extern const char D_005E4CA0[];
+extern const char D_005E4CC0[];
 extern u8 D_0083BB30[];
+extern u8 D_0083AB30[];
 extern const char D_005E4CE0[];
 extern const char D_005E4D10[];
 extern const char D_005E4D30[];
@@ -433,12 +436,13 @@ static void hmallocWriteSolid(u32* out, u32 value)
     out[3] = 0;
 }
 
-// FUN_001923B0 NONMATCHING
+// FUN_001923B0
 static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
     void* destination;
     HCdvd* resource;
+    u32 fileSize;
 
     work = *(u32**)((u8*)task + 0x3c);
     switch (work[0])
@@ -450,11 +454,11 @@ static s32 hmallocTaskUpdateA(void* task)
         case 1:
             if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
             {
-                destination = (void*)D_0083BB30;
                 resource = (HCdvd*)(uintptr_t)work[1];
-                func_00521250(destination,
-                              (u32)(uintptr_t)resource->fileMemory,
-                              resource->fileSize);
+                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                destination = D_0083BB30;
+                __asm__ volatile ("" : : "r"(destination) : "memory");
+                func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
                 func_0016c2f0();
@@ -498,40 +502,44 @@ static void* hmallocCreateTaskA(void* parent)
     return task;
 }
 
-// FUN_00192570 NONMATCHING
+// FUN_00192570
 static s32 hmallocTaskUpdateB(void* task)
 {
     u32* work;
-    u32* resourceA;
-    u32* resourceB;
+    HCdvd* resource;
+    u32 fileSize;
+    void* destination;
 
     work = *(u32**)((u8*)task + 0x3c);
-    if (work[0] == 0)
+    switch (work[0])
     {
-        work[1] = (u32)(uintptr_t)func_00100d80((void*)0x5e4ca0, 0);
-        work[2] = (u32)(uintptr_t)func_00100d80((void*)0x5e4cc0, 0);
-        work[0] += 1;
-    }
-    else if (work[0] == 1)
-    {
-        if (func_001016b0((void*)(uintptr_t)work[1]) == 1 &&
-            func_001016b0((void*)(uintptr_t)work[2]) == 1)
-        {
-            resourceA = (u32*)(uintptr_t)work[1];
-            resourceB = (u32*)(uintptr_t)work[2];
-            func_00521250((void*)0x83bb30,
-                          *(u32*)((u8*)resourceA + 0x110),
-                          *(u32*)((u8*)resourceA + 0x118));
-            func_00521250((void*)0x83ab30,
-                          *(u32*)((u8*)resourceB + 0x110),
-                          *(u32*)((u8*)resourceB + 0x118));
-            H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
-            work[1] = 0;
-            H_Cdvd_Destroy((void*)(uintptr_t)work[2]);
-            work[2] = 0;
-            func_0016c2f0();
-            return -1;
-        }
+        case 0:
+            work[1] = (u32)(uintptr_t)func_00100d80((void*)D_005E4CA0, 0);
+            work[2] = (u32)(uintptr_t)func_00100d80((void*)D_005E4CC0, 0);
+            work[0] += 1;
+            break;
+        case 1:
+            if (func_001016b0((void*)(uintptr_t)work[1]) == 1 &&
+                func_001016b0((void*)(uintptr_t)work[2]) == 1)
+            {
+                resource = (HCdvd*)(uintptr_t)work[1];
+                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                destination = D_0083BB30;
+                __asm__ volatile ("" : : "r"(destination) : "memory");
+                func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
+                resource = (HCdvd*)(uintptr_t)work[2];
+                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                destination = D_0083AB30;
+                __asm__ volatile ("" : : "r"(destination) : "memory");
+                func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
+                H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
+                work[1] = 0;
+                H_Cdvd_Destroy((void*)(uintptr_t)work[2]);
+                work[2] = 0;
+                func_0016c2f0();
+                return -1;
+            }
+            break;
     }
     return 0;
 }
