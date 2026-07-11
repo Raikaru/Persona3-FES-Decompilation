@@ -1288,26 +1288,47 @@ void func_001025c0(void* handle, const char* path)
 // FUN_00102720 NONMATCHING
 void func_00102720(const char* path, const void* archive)
 {
+    s32 i;
     char uppercasePath[256];
+    char fileName[256];
     char entryPath[256];
-    const u8* source = (const u8*)archive;
-    u32 offset = 0;
-
+    u32 fileSize;
+    s32 offset;
+    char c;
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
+    offset = 0;
     while (true)
     {
-        ArchiveEntryHeader header;
-        memcpy(&header, source + offset, sizeof(header));
-        if (header.fileName[0] == '\0')
+        memcpy(entryPath, uppercasePath, 0xfc);
+        memcpy((void*)fileName, (void*)((u8*)archive + offset), 0xfc);
+        if (fileName[0] == '\0')
         {
             return;
         }
-        strcpy(entryPath, uppercasePath);
-        strcat(entryPath, header.fileName);
-        H_Cdvd_BuildPathUppercase(entryPath, entryPath);
-        H_Cdvd_CacheAdd((void*)archive, (void*)(source + offset + sizeof(header)),
-                        header.fileSize, entryPath);
-        offset += sizeof(header) + H_Cdvd_Align64(header.fileSize);
+        memcpy(&fileSize, (const u8*)archive + (offset + 0xfc), 4);
+        offset += 0x100;
+        strcat(entryPath, fileName);
+        for (i = 0; i < 0xff; i++)
+        {
+            c = entryPath[i];
+            if (c >= 'a' && c <= 'z')
+            {
+                entryPath[i] = c - 0x20;
+            }
+            c = entryPath[i];
+            if (c == '\0')
+            {
+                break;
+            }
+            if (c == '/')
+            {
+                entryPath[i] = '\\';
+            }
+        }
+        H_Cdvd_CacheAdd((void*)archive, (u8*)archive + offset, fileSize,
+                        entryPath);
+        fileSize = ((s32)(fileSize + 0x3f) / 0x40) * 0x40;
+        offset += fileSize;
     }
 }
 
