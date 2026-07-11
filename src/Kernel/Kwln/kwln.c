@@ -135,7 +135,16 @@ typedef struct KwlnCameraView
     u32 width;
     u32 height;
 } KwlnCameraView;
+typedef struct KwlnRendererLocals
+{
+    KwlnCameraView cameraView;
+    u32 cameraDescriptor[2];
+    u32 gap[6];
+    RwV3d maximum;
+    RwV3d minimum;
+} KwlnRendererLocals;
 
+extern f32 DAT_007cad20;
 typedef void* (*KwlnAllocateFunc)(u32 size, u32 alignment);
 
 #define KWLN_U32_AT(address) (*(volatile u32*)(address))
@@ -865,15 +874,14 @@ void kwlnInitRenderer()
     KwlnPluginRegistration registration30;
     KwlnPluginRegistration registration31;
     KwlnPluginRegistration registration32;
-    u32 cameraDescriptor[2];
-    KwlnWorldBounds bounds;
-    KwlnCameraView cameraView;
+    KwlnRendererLocals locals;
+    u32 cameraDescriptorInit[2];
     register KwlnAllocateFunc* allocate;
     s32 callbacksRegistered;
     s32 callbackSuccess;
-    register RpWorld* world;
     register RpLight* light;
     register RpLight* directionalLight;
+    register RpWorld* world;
     register RwCamera* camera;
     register RwFrame* frame;
     func_004ac860(0x20, 0x20);
@@ -927,8 +935,8 @@ void kwlnInitRenderer()
 
     func_00488fe0();
     func_0048f030();
-    cameraDescriptor[1] = 0;
-    func_004ca700(&cameraDescriptor[1]);
+    cameraDescriptorInit[1] = 0;
+    func_004ca700(&cameraDescriptorInit[1]);
     func_004d82a0(0);
     func_004ca600(0x52);
     func_004c4c00(0x380000);
@@ -936,13 +944,13 @@ void kwlnInitRenderer()
     func_004d6ab0(0x280000, 0x400, 0);
     func_004ca640();
     func_0019d360();
-    bounds.minimum.x = -150.0f;
-    bounds.minimum.y = -150.0f;
-    bounds.minimum.z = -150.0f;
-    bounds.maximum.x = 150.0f;
-    bounds.maximum.y = 150.0f;
-    bounds.maximum.z = 150.0f;
-    world = sWorlds[gCurrWorldIdx] = func_0049a400(&bounds);
+    locals.minimum.z = -150.0f;
+    locals.minimum.y = -150.0f;
+    locals.minimum.x = -150.0f;
+    locals.maximum.z = 150.0f;
+    locals.maximum.y = 150.0f;
+    locals.maximum.x = 150.0f;
+    world = sWorlds[gCurrWorldIdx] = func_0049a400((const KwlnWorldBounds*)&locals.maximum);
     if ((light = func_004947c0(2)) != NULL)
     {
         func_004944b0(light, D_006784C0);
@@ -951,59 +959,63 @@ void kwlnInitRenderer()
     sAmbientLight = light;
 
     world = sWorlds[gCurrWorldIdx];
-    if ((directionalLight = func_004947c0(1)) != NULL)
+    if ((directionalLight = func_004947c0(1)) == NULL)
     {
-        frame = func_004caf10();
-        if (frame != NULL)
-        {
-            ((u8*)directionalLight)[2] = 1;
-            func_004cb930(frame);
-            func_004d1840(directionalLight, frame);
-            func_004944b0(directionalLight, D_006784F0);
-            func_0049c3d0(world, directionalLight);
-        }
-        else
-        {
-            func_00494760(directionalLight);
-            directionalLight = NULL;
-        }
+        goto first_light_null;
     }
+    if ((frame = func_004caf10()) == NULL)
+    {
+        goto first_frame_null;
+    }
+    ((u8*)directionalLight)[2] = 1;
+    func_004cb930(frame);
+    func_004d1840(directionalLight, frame);
+    func_004944b0(directionalLight, D_006784F0);
+    func_0049c3d0(world, directionalLight);
+    goto first_light_done;
+first_frame_null:
+    func_00494760(directionalLight);
+first_light_null:
+    directionalLight = NULL;
+first_light_done:
     sDirectionalLight = directionalLight;
 
     world = sWorlds[gCurrWorldIdx];
-    if ((directionalLight = func_004947c0(1)) != NULL)
+    if ((directionalLight = func_004947c0(1)) == NULL)
     {
-        frame = func_004caf10();
-        if (frame != NULL)
-        {
-            ((u8*)directionalLight)[2] = 1;
-            func_004cb890(frame, 25.0f, D_006784D0, 0);
-            func_004cb890(frame, 170.0f, D_006784E0, 2);
-            func_004d1840(directionalLight, frame);
-            func_004944b0(directionalLight, D_00678500);
-            func_0049c3d0(world, directionalLight);
-        }
-        else
-        {
-            func_00494760(directionalLight);
-            directionalLight = NULL;
-        }
+        goto second_light_null;
     }
+    if ((frame = func_004caf10()) == NULL)
+    {
+        goto second_frame_null;
+    }
+    ((u8*)directionalLight)[2] = 1;
+    func_004cb890(frame, 25.0f, D_006784D0, 0);
+    func_004cb890(frame, 170.0f, D_006784E0, 2);
+    func_004d1840(directionalLight, frame);
+    func_004944b0(directionalLight, D_00678500);
+    func_0049c3d0(world, directionalLight);
+    goto second_light_done;
+second_frame_null:
+    func_00494760(directionalLight);
+second_light_null:
+    directionalLight = NULL;
+second_light_done:
     sSecondaryLight = directionalLight;
 
     world = sWorlds[gCurrWorldIdx];
-    func_004ca560(cameraDescriptor, func_004ca5b0());
-    if ((camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1)) != NULL)
+    func_004ca560(locals.cameraDescriptor, func_004ca5b0());
+    if ((camera = func_00195c80(locals.cameraDescriptor[0], locals.cameraDescriptor[1], 1)) != NULL)
     {
         func_004c9db0(camera, 25600.0f);
         func_004c9d70(camera, 20.0f);
         func_0049c160(world, camera);
-        cameraView.offset.x = 0.0f;
-        cameraView.offset.y = 0.0f;
-        cameraView.width = cameraDescriptor[0];
-        cameraView.height = cameraDescriptor[1];
-        func_00195980(0.5f, KWLN_F32_AT(0x007cad1c), camera, &cameraView);
-        camera->fogPlane = KWLN_F32_AT(0x007cad20);
+        locals.cameraView.offset.x = 0.0f;
+        locals.cameraView.offset.y = 0.0f;
+        locals.cameraView.width = locals.cameraDescriptor[0];
+        locals.cameraView.height = locals.cameraDescriptor[1];
+        func_00195980(0.5f, gAspectRatio, camera, &locals.cameraView);
+        camera->fogPlane = DAT_007cad20;
     }
     sMainCamera = camera;
 
