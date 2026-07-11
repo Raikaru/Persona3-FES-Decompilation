@@ -564,44 +564,71 @@ void H_Cdvd_BuildVolumePaths(const char* path, char* fileNameDst, char* dirDst)
 // FUN_001013f0 NONMATCHING
 void H_Cdvd_NormalizePath(const char* src, char* dst)
 {
-    s32 readIndex;
     s32 writeIndex;
+    s32 readIndex;
     s32 scanIndex;
+    s32 backslash;
+    s32 slash;
+    s32 dot;
+    s32 currChar;
 
     writeIndex = 0;
-    for (readIndex = 0; readIndex <= 0xfc; readIndex++)
+    readIndex = 0;
+    asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
+    asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
+    asm volatile("addiu %0, $0, 0x2e" : "=r" (dot));
+    while (readIndex < 0xfd)
     {
-        if (src[readIndex] == '\0')
+        currChar = src[readIndex];
+        if (currChar == '\0')
         {
             dst[writeIndex] = '\0';
             return;
         }
 
-        if (src[readIndex] == '.' && src[readIndex + 1] == '.' &&
-            (src[readIndex + 2] == '\\' || src[readIndex + 2] == '/'))
+        if (currChar == dot && src[readIndex + 1] == dot &&
+            src[readIndex + 2] == backslash)
         {
-            readIndex += 2;
-            if (writeIndex > 2)
+            goto removeParent;
+        }
+        if (currChar != dot || src[readIndex + 1] != dot ||
+            src[readIndex + 2] != slash)
+        {
+            goto checkSingle;
+        }
+
+removeParent:
+        readIndex += 2;
+        if (writeIndex >= 3)
+        {
+            for (scanIndex = writeIndex - 2; scanIndex >= 0; scanIndex--)
             {
-                for (scanIndex = writeIndex - 2; scanIndex >= 0; scanIndex--)
+                if (dst[scanIndex] == backslash || dst[scanIndex] == slash)
                 {
-                    if (dst[scanIndex] == '\\' || dst[scanIndex] == '/')
-                    {
-                        writeIndex = scanIndex + 1;
-                        break;
-                    }
+                    writeIndex = scanIndex + 1;
+                    break;
                 }
             }
         }
-        else if (src[readIndex] == '.' &&
-                 (src[readIndex + 1] == '\\' || src[readIndex + 1] == '/'))
+        goto advance;
+
+checkSingle:
+        if (currChar == dot && src[readIndex + 1] == backslash)
         {
-            readIndex++;
+            goto advance;
         }
-        else
+        if (currChar != dot || src[readIndex + 1] != slash)
         {
-            dst[writeIndex++] = src[readIndex];
+            goto writeCharacter;
         }
+        goto advance;
+
+writeCharacter:
+        dst[writeIndex] = currChar;
+        writeIndex++;
+
+advance:
+        readIndex++;
     }
 }
 
