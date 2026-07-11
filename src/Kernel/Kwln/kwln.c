@@ -75,6 +75,16 @@ typedef struct KwlnPluginRegistration
     u32 basePluginId;
     void* callback;
 } KwlnPluginRegistration;
+#define KWLN_REGISTER(reg, data, parent, size, base) \
+    do \
+    { \
+        (reg).pluginData = (void*)(data); \
+        (reg).pluginSize = (size); \
+        (reg).basePluginId = (base); \
+        (reg).parentPluginId = (parent); \
+        (reg).callback = NULL; \
+        func_0046a830(&(reg)); \
+    } while (0)
 
 static const KwlnPluginRegistration sPluginRegistrations[] =
 {
@@ -117,6 +127,7 @@ typedef struct KwlnWorldBounds
 {
     RwV3d maximum;
     RwV3d minimum;
+    u32 padding[8];
 } KwlnWorldBounds;
 typedef struct KwlnCameraView
 {
@@ -135,6 +146,39 @@ extern u32 uGpffffb288;
 extern void* DAT_007ce0c4;
 extern u8 DAT_00960070[];
 extern char gp0xffff9430;
+extern u8 D_006B4F20[];
+extern u8 D_006B4FB0[];
+extern u8 D_006B4FD0[];
+extern u8 D_006B4FF0[];
+extern u8 D_006B5080[];
+extern u8 D_006B5110[];
+extern u8 D_006B5130[];
+extern u8 D_006B51E0[];
+extern u8 D_006B5270[];
+extern u8 D_006B5300[];
+extern u8 D_006B5320[];
+extern u8 D_006B5340[];
+extern u8 D_006B5360[];
+extern u8 D_006B53A0[];
+extern u8 D_006B5430[];
+extern u8 D_006B5500[];
+extern u8 D_006B5590[];
+extern u8 D_006B5620[];
+extern u8 D_006B5640[];
+extern u8 D_006B5AE0[];
+extern u8 D_006B5A50[];
+extern u8 D_006B5B00[];
+extern u8 D_006B5B90[];
+extern u8 D_006B5C20[];
+extern u8 D_006B5CB0[];
+extern u8 D_006B5D70[];
+extern u8 D_006B5E00[];
+extern u8 D_006B5940[];
+extern u8 D_006B59D0[];
+extern u8 D_006B57F0[];
+extern u8 D_006B5880[];
+extern u8 D_006B56A0[];
+extern u8 D_006B5730[];
 extern void D_00847F00(void);
 extern void D_00847F04(void);
 extern void D_00847F08(void);
@@ -778,52 +822,98 @@ void kwlnInitPS2Systems()
 // FUN_00197350. RenderWare engine, plugin, world, light, camera, and callback initialization NONMATCHING
 void kwlnInitRenderer()
 {
-    KwlnPluginRegistration registration;
-    KwlnWorldBounds bounds =
-    {
-        { 150.0f, 150.0f, 150.0f },
-        { -150.0f, -150.0f, -150.0f },
-    };
+    KwlnPluginRegistration registration0;
+    KwlnPluginRegistration registration1;
+    KwlnPluginRegistration registration2;
+    KwlnPluginRegistration registration3;
+    KwlnPluginRegistration registration4;
+    KwlnPluginRegistration registration5;
+    KwlnPluginRegistration registration6;
+    KwlnPluginRegistration registration7;
+    KwlnPluginRegistration registration8;
+    KwlnPluginRegistration registration9;
+    KwlnPluginRegistration registration10;
+    KwlnPluginRegistration registration11;
+    KwlnPluginRegistration registration12;
+    KwlnPluginRegistration registration13;
+    KwlnPluginRegistration registration14;
+    KwlnPluginRegistration registration15;
+    KwlnPluginRegistration registration16;
+    KwlnPluginRegistration registration17;
+    KwlnPluginRegistration registration18;
+    KwlnPluginRegistration registration19;
+    KwlnPluginRegistration registration20;
+    KwlnPluginRegistration registration21;
+    KwlnPluginRegistration registration22;
+    KwlnPluginRegistration registration23;
+    KwlnPluginRegistration registration24;
+    KwlnPluginRegistration registration25;
+    KwlnPluginRegistration registration26;
+    KwlnPluginRegistration registration27;
+    KwlnPluginRegistration registration28;
+    KwlnPluginRegistration registration29;
+    KwlnPluginRegistration registration30;
+    KwlnPluginRegistration registration31;
+    KwlnPluginRegistration registration32;
     u32 cameraDescriptor[2];
+    KwlnWorldBounds bounds;
     KwlnCameraView cameraView;
     void* frame;
     KwlnAllocateFunc allocate;
     s32 callbacksRegistered;
-    s32 i;
+    register RpWorld* world;
+    register RpLight* light;
+    register RpLight* directionalLight;
+    register RwCamera* camera;
 
     func_004ac860(0x20, 0x20);
-    RwEngineInit(func_001040f0(), 0, 0x800000);
+    RwEngineInit(H_Pad_GetRwMemoryFunctions(), 0, 0x800000);
     func_0046a750(7);
 
-    for (i = 0; i < ARRAY_SIZE(sPluginRegistrations); i++)
-    {
-        registration = sPluginRegistrations[i];
-        func_0046a830(&registration);
-
-        if (i == 6)
-        {
-            func_0049a980();
-            func_0045f7d0();
-            func_0048dcf0();
-            func_00468c50();
-        }
-        else if (i == 12)
-        {
-            func_004b6640();
-            func_004661b0();
-            func_0048a1a0();
-        }
-        else if (i == 18)
-        {
-            func_0046a530();
-            func_004b8830();
-            func_004f8e10();
-        }
-        else if (i == 26)
-        {
-            func_00473590();
-        }
-    }
+    KWLN_REGISTER(registration0, D_006B4F20, 0,       0x1001, 1);
+    KWLN_REGISTER(registration1, D_006B4FB0, 0x1001,  0x1002, 2);
+    KWLN_REGISTER(registration2, D_006B4FD0, 0x1001,  0x1003, 2);
+    KWLN_REGISTER(registration3, D_006B4FF0, 0,       4,      1);
+    KWLN_REGISTER(registration4, D_006B5080, 0,       5,      1);
+    KWLN_REGISTER(registration5, D_006B5110, 4,       6,      2);
+    KWLN_REGISTER(registration6, D_006B5130, 5,       7,      2);
+    func_0049a980();
+    func_0045f7d0();
+    func_0048dcf0();
+    func_00468c50();
+    KWLN_REGISTER(registration7, D_006B51E0, 0,       0x1100b, 1);
+    KWLN_REGISTER(registration8, D_006B5270, 0,       0x1100c, 1);
+    KWLN_REGISTER(registration9, D_006B5300, 0x1100b, 0x1100d, 2);
+    KWLN_REGISTER(registration10, D_006B5320, 0x1100c, 0x1100e, 2);
+    KWLN_REGISTER(registration11, D_006B5340, 0x1100b, 0x1100f, 2);
+    KWLN_REGISTER(registration12, D_006B5360, 0x1100c, 0x11010, 2);
+    func_004b6640();
+    func_004661b0();
+    func_0048a1a0();
+    KWLN_REGISTER(registration13, D_006B53A0, 0,       0x11001, 1);
+    KWLN_REGISTER(registration14, D_006B5430, 0x11001, 0x11002, 2);
+    KWLN_REGISTER(registration15, D_006B5500, 0,       0x11011, 1);
+    KWLN_REGISTER(registration16, D_006B5590, 0,       0x11012, 1);
+    KWLN_REGISTER(registration17, D_006B5620, 0x11011, 0x11013, 2);
+    KWLN_REGISTER(registration18, D_006B5640, 0x11012, 0x11014, 2);
+    func_0046a530();
+    func_004b8830();
+    func_004f8e10();
+    KWLN_REGISTER(registration19, D_006B5AE0, 0,       0x1001f, 2);
+    KWLN_REGISTER(registration20, D_006B5A50, 0,       0x10020, 1);
+    KWLN_REGISTER(registration21, D_006B5B00, 0,       0x10021, 1);
+    KWLN_REGISTER(registration22, D_006B5B90, 0,       0x10022, 1);
+    KWLN_REGISTER(registration23, D_006B5C20, 0,       0x10023, 1);
+    KWLN_REGISTER(registration24, D_006B5CB0, 0,       0x10024, 1);
+    KWLN_REGISTER(registration25, D_006B5D70, 0,       0x1002a, 1);
+    KWLN_REGISTER(registration26, D_006B5E00, 0,       0x1002b, 1);
+    func_00473590();
+    KWLN_REGISTER(registration27, D_006B5940, 0,       0x1001d, 1);
+    KWLN_REGISTER(registration28, D_006B59D0, 0x1001d, 0x1001e, 2);
+    KWLN_REGISTER(registration29, D_006B57F0, 0,       0x1001b, 1);
+    KWLN_REGISTER(registration30, D_006B5880, 0x1001b, 0x1001c, 2);
+    KWLN_REGISTER(registration31, D_006B56A0, 0,       0x10019, 1);
+    KWLN_REGISTER(registration32, D_006B5730, 0x10019, 0x1001a, 2);
 
     func_00488fe0();
     func_0048f030();
@@ -836,73 +926,85 @@ void kwlnInitRenderer()
     func_004d6ab0(0x280000, 0x400, 0);
     func_004ca640();
     func_0019d360();
-
-    sWorlds[gCurrWorldIdx] = func_0049a400(&bounds);
-    sAmbientLight = func_004947c0(2);
-    if (sAmbientLight != NULL)
+    bounds.maximum.x = 150.0f;
+    bounds.maximum.y = 150.0f;
+    bounds.maximum.z = 150.0f;
+    bounds.minimum.x = -150.0f;
+    bounds.minimum.y = -150.0f;
+    bounds.minimum.z = -150.0f;
+    world = func_0049a400(&bounds);
+    sWorlds[gCurrWorldIdx] = world;
+    light = func_004947c0(2);
+    sAmbientLight = light;
+    if (light != NULL)
     {
-        func_004944b0(sAmbientLight, (const void*)0x006784c0);
-        func_0049c3d0(sWorlds[gCurrWorldIdx], sAmbientLight);
+        func_004944b0(light, (const void*)0x006784c0);
+        func_0049c3d0(world, light);
     }
 
-    sDirectionalLight = func_004947c0(1);
-    if (sDirectionalLight != NULL)
+    directionalLight = func_004947c0(1);
+    sDirectionalLight = directionalLight;
+    if (directionalLight != NULL)
     {
         frame = func_004caf10();
         if (frame != NULL)
         {
-            ((u8*)sDirectionalLight)[2] = 1;
+            ((u8*)directionalLight)[2] = 1;
             func_004cb930(frame);
-            func_004d1840(sDirectionalLight, frame);
-            func_004944b0(sDirectionalLight, (const void*)0x006784f0);
-            func_0049c3d0(sWorlds[gCurrWorldIdx], sDirectionalLight);
+            func_004d1840(directionalLight, frame);
+            func_004944b0(directionalLight, (const void*)0x006784f0);
+            func_0049c3d0(world, directionalLight);
         }
         else
         {
-            func_00494760(sDirectionalLight);
+            func_00494760(directionalLight);
             sDirectionalLight = NULL;
+            directionalLight = NULL;
         }
     }
 
-    KWLN_LIGHT_AT(0x007ce0b0) = func_004947c0(1);
-    if (KWLN_LIGHT_AT(0x007ce0b0) != NULL)
+    directionalLight = func_004947c0(1);
+    sSecondaryLight = directionalLight;
+    if (directionalLight != NULL)
     {
         frame = func_004caf10();
         if (frame != NULL)
         {
-            ((u8*)KWLN_LIGHT_AT(0x007ce0b0))[2] = 1;
+            ((u8*)directionalLight)[2] = 1;
             func_004cb890(frame, 25.0f, (const void*)0x006784d0, 0);
             func_004cb890(frame, 170.0f, (const void*)0x006784e0, 2);
-            func_004d1840(KWLN_LIGHT_AT(0x007ce0b0), frame);
-            func_004944b0(KWLN_LIGHT_AT(0x007ce0b0), (const void*)0x00678500);
-            func_0049c3d0(sWorlds[gCurrWorldIdx], KWLN_LIGHT_AT(0x007ce0b0));
+            func_004d1840(directionalLight, frame);
+            func_004944b0(directionalLight, (const void*)0x00678500);
+            func_0049c3d0(world, directionalLight);
         }
         else
         {
-            func_00494760(KWLN_LIGHT_AT(0x007ce0b0));
-            KWLN_LIGHT_AT(0x007ce0b0) = NULL;
+            func_00494760(directionalLight);
+            sSecondaryLight = NULL;
+            directionalLight = NULL;
         }
     }
 
     func_004ca560(cameraDescriptor, func_004ca5b0());
-    sMainCamera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1);
-    if (sMainCamera != NULL)
+    camera = func_00195c80(cameraDescriptor[0], cameraDescriptor[1], 1);
+    sMainCamera = camera;
+    if (camera != NULL)
     {
-        func_004c9db0(sMainCamera, 25600.0f);
-        func_004c9d70(sMainCamera, 20.0f);
-        func_0049c160(sWorlds[gCurrWorldIdx], sMainCamera);
+        func_004c9db0(camera, 25600.0f);
+        func_004c9d70(camera, 20.0f);
+        func_0049c160(world, camera);
         cameraView.offset.x = 0.0f;
         cameraView.offset.y = 0.0f;
         cameraView.width = cameraDescriptor[0];
         cameraView.height = cameraDescriptor[1];
-        func_00195980(0.5f, KWLN_F32_AT(0x007cad1c), sMainCamera, &cameraView);
-        sMainCamera->fogPlane = KWLN_F32_AT(0x007cad20);
+        func_00195980(0.5f, KWLN_F32_AT(0x007cad1c), camera, &cameraView);
+        camera->fogPlane = KWLN_F32_AT(0x007cad20);
     }
 
-    printf((const char*)0x00678740, func_004f1e10(), sMainCamera->frameBuffer->depth, sMainCamera->zBuffer->depth);
-    func_004aa550(sMainCamera);
+    printf((const char*)0x00678740, func_004f1e10(), camera->frameBuffer->depth, camera->zBuffer->depth);
+    func_004aa550(camera);
     func_004aa390(0.5f);
-    func_004aa3d0(KWLN_F32_AT(0x007cad24) * sMainCamera->nearPlane);
+    func_004aa3d0(KWLN_F32_AT(0x007cad24) * camera->nearPlane);
     func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
     func_004b6350();
 
