@@ -80,7 +80,7 @@ extern s32 func_00508a78(s32 fd, s32 value, s32 origin);
 extern void func_00508900(s32 fd);
 extern s32 func_00508cb8(s32 fd, const void* dst, u32 size);
 extern s32 func_00508f28(s32 fd, void* dst, u32 size);
-extern void func_0050a888(const char* path);
+extern void func_0050a888(const char* path, void* unused);
 extern void func_00505e48(const char* message, ...);
 extern s32 func_00566b08(void* output, const void* source);
 extern s32 func_0053c268(void* source);
@@ -815,9 +815,11 @@ static void H_Cdvd_StreamNoop(void)
 {
 }
 
+// FUN_001018a0
 static u32 H_Cdvd_StreamComplete(HCdvdStreamSlot* slot)
 {
-    return slot->fileOffset >= slot->fileSize ? (u32)-1 : 0;
+    u8* data = (u8*)slot + 0x70;
+    return -(*(s32*)(data + 0x8c) <= *(s32*)(data + 0x90));
 }
 
 // FUN_001016d0
@@ -860,21 +862,35 @@ s32 func_001016d0(void* unused, void* slotData, uintptr_t pathOrMode)
     return 2;
 }
 
-// FUN_00101810 NONMATCHING
+// FUN_00101810
 u32 func_00101810(void* slotData, void* dst, u32 size)
 {
+    struct HCdvdStreamData
+    {
+        u8 reserved[0x88];
+        u8* fileMemory;
+        s32 fileSize;
+        s32 fileOffset;
+    } *data;
     u32 available;
     u32 amount;
-    HCdvdStreamSlot* slot = (HCdvdStreamSlot*)slotData;
 
-    if (slot->fileOffset >= slot->fileSize)
+    data = (struct HCdvdStreamData*)((u8*)slotData + 0x70);
+    if (data->fileSize > data->fileOffset)
     {
-        return 0;
+        goto read_file;
     }
-    available = slot->fileSize - slot->fileOffset;
-    amount = size < available ? size : available;
-    memcpy(dst, slot->fileMemory + slot->fileOffset, amount);
-    slot->fileOffset += amount;
+    return 0;
+
+read_file:
+    available = data->fileSize - data->fileOffset;
+    amount = size;
+    if (available < amount)
+    {
+        amount = available;
+    }
+    memcpy(dst, data->fileMemory + data->fileOffset, amount);
+    data->fileOffset += amount;
     return amount;
 }
 
@@ -1350,16 +1366,18 @@ s32 func_00102900(void* unused, void* slot, const char* path, u32 flags)
     return 1;
 }
 
-// FUN_00102a70 NONMATCHING
+// FUN_00102a70
 void func_00102a70(void* slot)
 {
+    void* unused;
+
     func_00505e48("CDVD close");
     *(u32*)((u8*)slot + 0x38) = 1;
     func_00508900(*(s32*)((u8*)slot + 0x74));
-    func_0050a888("VOL:\\");
+    func_0050a888("VOL:\\", unused);
 }
 
-// FUN_00102ad0 NONMATCHING
+// FUN_00102ad0
 s32 func_00102ad0(void* slot, void* dst, u32 size)
 {
     s32 amount;
@@ -1371,22 +1389,23 @@ s32 func_00102ad0(void* slot, void* dst, u32 size)
         return 0;
     }
     *(u32*)((u8*)slot + 0x38) = 3;
-    *H_Cdvd_FilePosition(slot) += amount;
+    *(s64*)((u8*)slot + 0x10) += amount;
     return amount;
 }
 
-// FUN_00102b60 NONMATCHING
+// FUN_00102b60
 s32 func_00102b60(void* slot, void* dst, u32 size)
 {
     s32 amount;
 
     func_00505e48("CDVD read direct");
     amount = func_00508f28(*(s32*)((u8*)slot + 0x74), dst, size);
-    if (amount >= 0)
+    if (amount < 0)
     {
-        *H_Cdvd_FilePosition(slot) += amount;
+        return 0;
     }
-    return amount < 0 ? 0 : amount;
+    *(s64*)((u8*)slot + 0x10) += amount;
+    return amount;
 }
 
 // FUN_00102bf0 NONMATCHING
@@ -1450,10 +1469,15 @@ s32 func_00102d10(void* unused, const char* path)
 void* func_00102d90(void* contextData, u32 index)
 {
     HCdvdFileContext* context = (HCdvdFileContext*)contextData;
-    if (index >= context->count)
+
+    func_00505e48("### hdd fs get file object\t\n");
+    if (index < context->count)
     {
-        return NULL;
+        goto get_slot;
     }
+    return NULL;
+
+get_slot:
     return context->slots + index * 0x90;
 }
 
