@@ -1371,26 +1371,39 @@ struct HCdvdFileContext
     u8 reserved50[8];
     u8* slots;
 };
+typedef struct
+{
+    u8 reserved00[0x10];
+    s64 position;
+    u8 reserved18[0x18];
+    u32 state30;
+    u8 reserved34[8];
+    u32 state3c;
+    u8 reserved40[0x34];
+    s32 fd;
+} HCdvdOpenSlot;
+
 
 static s64* H_Cdvd_FilePosition(void* slot)
 {
     return (s64*)((u8*)slot + 0x10);
 }
 
-// FUN_00102900 NONMATCHING
+// FUN_00102900
 s32 func_00102900(void* unused, void* slot, const char* path, u32 flags)
 {
     char uppercasePath[256];
     u32 openFlags = 0;
-    s32 fd;
+    HCdvdOpenSlot* openSlot = (HCdvdOpenSlot*)slot;
 
     (void)unused;
+    func_00505e48("CDVD open %s", path);
+    strcpy(uppercasePath, "VOL:\\");
+    strcat(uppercasePath, path + 4);
     if (path == NULL)
     {
         return 2;
     }
-    func_00505e48("CDVD open %s", path);
-    H_Cdvd_BuildPathUppercase(path, uppercasePath);
     if ((flags & 1) != 0 && (flags & 2) != 0)
     {
         openFlags |= 3;
@@ -1415,17 +1428,19 @@ s32 func_00102900(void* unused, void* slot, const char* path, u32 flags)
         openFlags |= 0x400;
     }
 
-    *(u32*)((u8*)slot + 0x30) = 0;
-    *H_Cdvd_FilePosition(slot) = 0;
-    fd = func_00508670(uppercasePath, openFlags, 0x1ff);
-    *(s32*)((u8*)slot + 0x74) = fd;
-    if (fd < 0)
+    openSlot->state30 = 0;
+    openSlot->position = 0;
     {
-        return 3;
+        s32 fd = func_00508670(uppercasePath, openFlags, 0x1ff);
+        openSlot->fd = fd;
+        if (fd < 0)
+        {
+            return 3;
+        }
+        *(s64*)openSlot = func_00508a78(fd, 0, 2);
     }
-    *H_Cdvd_FilePosition(slot) = func_00508a78(fd, 0, 2);
-    func_00508a78(fd, 0, 0);
-    *(u32*)((u8*)slot + 0x3c) = 1;
+    func_00508a78(openSlot->fd, 0, 0);
+    openSlot->state3c = 1;
     return 1;
 }
 
