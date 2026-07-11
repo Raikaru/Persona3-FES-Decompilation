@@ -882,58 +882,56 @@ u32 K_Cmd_GET_MAX_SP()
 // FUN_001C31A0 NONMATCHING
 u32 K_Cmd_GET_SOCIAL_STAT()
 {
-    s16 pcId;
+    s32 pcId;
     s32 stat;
-    s16 value;
 
-    pcId = (s16)scrGetIntPara(0);
+    pcId = scrGetIntPara(0);
     stat = scrGetIntPara(1);
-    value = 0;
-    if (stat == 0)
+    if (stat == 2)
     {
-        value = datGetAcademicPoint(pcId);
+        scrSetIntReturnVal(datGetCouragePoint((s16)pcId));
     }
     else if (stat == 1)
     {
-        value = datGetCharmPoint(pcId);
+        scrSetIntReturnVal(datGetCharmPoint((s16)pcId));
     }
-    else if (stat == 2)
+    else if (stat == 0)
     {
-        value = datGetCouragePoint(pcId);
+        scrSetIntReturnVal(datGetAcademicPoint((s16)pcId));
+    }
+    else
+    {
+        scrSetIntReturnVal(0);
     }
 
-    scrSetIntReturnVal(value);
     return true;
 }
 
 // FUN_001C3270 NONMATCHING
 u32 K_Cmd_GET_SOCIAL_LEVEL()
 {
-    s16 pcId;
+    s32 pcId;
     s32 stat;
-    s16 points;
-    s16 value;
 
-    pcId = (s16)scrGetIntPara(0);
+    pcId = scrGetIntPara(0);
     stat = scrGetIntPara(1);
-    value = 0;
-    if (stat == 0)
+    if (stat == 2)
     {
-        points = datGetAcademicPoint(pcId);
-        value = datGetAcademicLevel(points);
+        scrSetIntReturnVal(datGetCourageLevel(datGetCouragePoint((s16)pcId)));
     }
     else if (stat == 1)
     {
-        points = datGetCharmPoint(pcId);
-        value = datGetCharmLevel(points);
+        scrSetIntReturnVal(datGetCharmLevel(datGetCharmPoint((s16)pcId)));
     }
-    else if (stat == 2)
+    else if (stat == 0)
     {
-        points = datGetCouragePoint(pcId);
-        value = datGetCourageLevel(points);
+        scrSetIntReturnVal(datGetAcademicLevel(datGetAcademicPoint((s16)pcId)));
+    }
+    else
+    {
+        scrSetIntReturnVal(0);
     }
 
-    scrSetIntReturnVal(value);
     return true;
 }
 
@@ -941,20 +939,24 @@ u32 K_Cmd_GET_SOCIAL_LEVEL()
 u32 K_Cmd_SET_PHYSICAL_CONDITION()
 {
     s16 pcId;
-    u16 condition;
+    s32 condition;
 
     pcId = (s16)scrGetIntPara(0);
-    condition = (u16)scrGetIntPara(1);
+    condition = scrGetIntPara(1);
     scrSetIntReturnVal(datGetPhysicalCondition(pcId));
-    datSetPhysicalCondition(pcId, condition);
+    datSetPhysicalCondition(pcId, (s16)condition);
     return true;
 }
 
 // FUN_001C3590 NONMATCHING
 u32 K_Cmd_GET_FIELD_VALUE()
 {
-    scrSetIntReturnVal(func_00170760((s16)scrGetIntPara(0),
-                                     (s16)scrGetIntPara(1)));
+    s32 pcId;
+    s16 index;
+
+    pcId = scrGetIntPara(0);
+    index = (s16)scrGetIntPara(1);
+    scrSetIntReturnVal(func_00170760((s16)pcId, index));
     return true;
 }
 
@@ -979,14 +981,14 @@ u32 K_Cmd_SET_FIELD_VALUE()
 // FUN_001C3690 NONMATCHING
 u32 K_Cmd_GET_EQUIPMENT_VALUE()
 {
-    s16 pcId;
+    s32 pcId;
     s16 equipmentType;
     s16 equipmentIndex;
 
-    pcId = (s16)scrGetIntPara(0);
+    pcId = scrGetIntPara(0);
     equipmentType = (s16)scrGetIntPara(1);
-    equipmentIndex = datGetEquipmentIdx(pcId, equipmentType);
-    scrSetIntReturnVal(datGetEquipmentId(pcId, equipmentIndex));
+    equipmentIndex = datGetEquipmentIdx((s16)pcId, equipmentType);
+    scrSetIntReturnVal(datGetEquipmentId((s16)pcId, equipmentIndex));
     return true;
 }
 
@@ -1024,18 +1026,16 @@ u32 K_Cmd_SET_CAMERA_HEADING()
     return true;
 }
 
+extern u32 D_007CE284;
 static inline u8* K_Cmd_GetCurrentFieldObject()
 {
-    return (u8*)(*(u32*)0x007ce284);
+    return *(u8**)&D_007CE284;
 }
 
-// FUN_001C3880 NONMATCHING
+// FUN_001C3880
 u32 K_Cmd_GET_FIELD_OBJECT_ID()
 {
-    u8* object;
-
-    object = K_Cmd_GetCurrentFieldObject();
-    scrSetIntReturnVal(object != NULL ? *(u16*)(object + 8) : 0);
+    scrSetIntReturnVal(*(u16*)(*(u8**)&D_007CE284 + 8));
     return true;
 }
 
@@ -1043,36 +1043,34 @@ u32 K_Cmd_GET_FIELD_OBJECT_ID()
 u32 K_Cmd_GET_FIELD_OBJECT_KIND()
 {
     u8* object;
-    u8* work;
-    u16 kind;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    kind = work != NULL ? *(u16*)(work + 2) : 0;
-    if (kind == 0xfb5)
+    object = *(u8**)&D_007CE284;
+    if (*(u16*)(*(u8**)(object + 0x11c) + 2) == 0xfb5)
     {
         scrSetIntReturnVal(3);
     }
-    else if (kind < 5000)
+    else if (*(u16*)(*(u8**)(object + 0x11c) + 2) >= 5000)
     {
-        scrSetIntReturnVal(kind < 4000 ? 2 : 1);
+        scrSetIntReturnVal(0);
+    }
+    else if (*(u16*)(*(u8**)(object + 0x11c) + 2) >= 4000)
+    {
+        scrSetIntReturnVal(1);
     }
     else
     {
-        scrSetIntReturnVal(0);
+        scrSetIntReturnVal(2);
     }
     return true;
 }
 
-// FUN_001C3950 NONMATCHING
+// FUN_001C3950
 u32 K_Cmd_GET_FIELD_OBJECT_ACTIVE()
 {
     u8* object;
-    u8* work;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    scrSetIntReturnVal(work != NULL && (*(u8*)(work + 7) & 1) != 0);
+    object = *(u8**)&D_007CE284;
+    scrSetIntReturnVal((*(u8*)(*(u8**)(object + 0x11c) + 7) & 1) != 0);
     return true;
 }
 
@@ -1083,67 +1081,72 @@ u32 K_Cmd_GET_FIELD_OBJECT_PARAM()
     u8* work;
     u32 value;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    value = (work != NULL && *(u16*)(work + 2) == 0xfb5) ? *(u32*)(work + 8) : 0;
+    object = *(u8**)&D_007CE284;
+    value = 0;
+    work = *(u8**)(object + 0x11c);
+    if (*(u16*)(work + 2) == 0xfb5)
+    {
+        value = *(u32*)(work + 8);
+    }
     scrSetIntReturnVal(value);
     return true;
 }
 
-// FUN_001C39E0 NONMATCHING
+// FUN_001C39E0
 u32 K_Cmd_GET_FIELD_OBJECT_TYPE()
 {
     u8* object;
-    u8* work;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    scrSetIntReturnVal(work != NULL ? *(u16*)(work + 2) : 0);
+    object = *(u8**)&D_007CE284;
+    scrSetIntReturnVal(*(u16*)(*(u8**)(object + 0x11c) + 2));
     return true;
 }
 
-// FUN_001C3A10 NONMATCHING
+// FUN_001C3A10
 u32 K_Cmd_GET_FIELD_OBJECT_VARIANT()
 {
     u8* object;
     u8* work;
     u16 type;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    type = work != NULL ? *(u16*)(work + 2) : 0;
-    scrSetIntReturnVal(type < 4000 && work != NULL ? *(u8*)(object + 0x128) : 0);
+    object = *(u8**)&D_007CE284;
+    work = *(u8**)(object + 0x11c);
+    type = *(u16*)(work + 2);
+    if (type < 4000)
+    {
+        scrSetIntReturnVal(*(u8*)(object + 0x128));
+    }
+    else
+    {
+        scrSetIntReturnVal(0);
+    }
     return true;
 }
 
-// FUN_001C3A70 NONMATCHING
+// FUN_001C3A70
 u32 K_Cmd_GET_FIELD_OBJECT_TYPE_COPY()
 {
     u8* object;
-    u8* work;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    scrSetIntReturnVal(work != NULL ? *(u16*)(work + 2) : 0);
+    object = *(u8**)&D_007CE284;
+    scrSetIntReturnVal(*(u16*)(*(u8**)(object + 0x11c) + 2));
     return true;
 }
 
-// FUN_001C3AA0 NONMATCHING
+// FUN_001C3AA0
 u32 K_Cmd_GET_FIELD_OBJECT_FLAG()
 {
     u8* object;
-    u8* work;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    work = object != NULL ? *(u8**)(object + 0x11c) : NULL;
-    scrSetIntReturnVal(work != NULL ? *(u8*)(work + 6) : 0);
+    object = *(u8**)&D_007CE284;
+    scrSetIntReturnVal(*(u8*)(*(u8**)(object + 0x11c) + 6));
     return true;
 }
 
-// FUN_001C3AD0 NONMATCHING
+// FUN_001C3AD0
 u32 K_Cmd_RESET_FIELD_OBJECT()
 {
-    func_001d22a0((void*)K_Cmd_GetCurrentFieldObject());
+    func_001d22a0((void*)*(u8**)&D_007CE284);
     return true;
 }
 
@@ -1156,10 +1159,8 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
     s16 slot;
     s16 value;
 
-    object = K_Cmd_GetCurrentFieldObject();
-    type = object != NULL && *(u8**)(object + 0x11c) != NULL
-               ? *(u16*)(*(u8**)(object + 0x11c) + 2)
-               : 0;
+    object = *(u8**)&D_007CE284;
+    type = *(u16*)(*(u8**)(object + 0x11c) + 2);
     if (type == 0xfb5)
     {
         scrSetIntReturnVal(1);
@@ -1180,11 +1181,8 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
         scrSetIntReturnVal(1);
         return true;
     }
-
     value = func_00170760(-1, (s16)type);
-    i = object != NULL && *(u8**)(object + 0x11c) != NULL
-            ? *(u8*)(*(u8**)(object + 0x11c) + 6)
-            : 0;
+    i = *(u8*)(*(u8**)(object + 0x11c) + 6);
     value = (s16)(value + i);
     if (value > 99)
     {
@@ -1194,7 +1192,7 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
     scrSetIntReturnVal(1);
     return true;
 }
- 
+
 // FUN_001C3CD0
 u32 FUN_001C3CD0()
 {
@@ -1224,33 +1222,25 @@ u32 FUN_001C3D60()
     return func_003c8ec0(resourceId, value) == 0;
 }
 
-// FUN_001C3DF0 NONMATCHING
+// FUN_001C3DF0
 u32 FUN_001C3DF0()
 {
-    Field* field;
-    s32 enable;
-    KwlnTask* eventTask;
-
-    enable = scrGetIntPara(0);
-    field = K_Field_Get();
-    eventTask = *(KwlnTask**)((u8*)field + 0x18);
-    if (enable == 0)
+    if (scrGetIntPara(0) == 0)
     {
-        if (eventTask != NULL)
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x18) != NULL)
         {
-            func_00429e80(eventTask, 0);
+            func_00429e80(*(KwlnTask**)((u8*)K_Field_Get() + 0x18), 0);
         }
-        *(u32*)((u8*)field + 0x14) = 1;
+        *(u32*)((u8*)K_Field_Get() + 0x14) = 1;
     }
     else
     {
-        if (eventTask != NULL)
+        if (*(KwlnTask**)((u8*)K_Field_Get() + 0x18) != NULL)
         {
-            func_00429e80(eventTask, 1);
+            func_00429e80(*(KwlnTask**)((u8*)K_Field_Get() + 0x18), 1);
         }
-        *(u32*)((u8*)field + 0x14) = 0;
+        *(u32*)((u8*)K_Field_Get() + 0x14) = 0;
     }
-
     return true;
 }
 
@@ -1290,22 +1280,23 @@ u32 FUN_001C3FE0()
 {
     s32 value;
     u32* values;
+    s32 count;
     s32 i;
     u32 found;
 
     value = scrGetIntPara(0);
-    values = FUN_0035f160();
     found = 0;
-    for (i = 0; i < (s32)values[0]; i++)
+    values = FUN_0035f160();
+    count = values[0];
+    for (i = 0; i < count; i++)
     {
-        if (values[i + 1] == (u32)value)
+        if (values[i + 1] == value)
         {
             found = 1;
             break;
         }
     }
     scrSetIntReturnVal((s32)found);
-
     return true;
 }
 
@@ -1313,20 +1304,21 @@ u32 FUN_001C3FE0()
 u32 FUN_001C4080()
 {
     s32 index;
-    u8* entry;
+    u32 offset;
+    u32* entry;
+    u32* second;
     u32 result;
-    u32 second;
 
     index = scrGetIntPara(0);
-    entry = D_008717E8 + (index * 0x1c0);
+    offset = ((index << 3) - index) << 6;
+    entry = (u32*)(D_008717E8 + offset);
+    second = (u32*)(D_008717F4 + offset);
     result = 0;
-    second = *(u32*)(D_008717F4 + (index * 0x1c0));
-    if (*(u32*)entry != 0 && second != 0)
+    if (*entry != 0 && *second != 0)
     {
-        result = *(u16*)second;
+        result = *(u16*)*second;
     }
     scrSetIntReturnVal((s32)result);
-
     return true;
 }
 
