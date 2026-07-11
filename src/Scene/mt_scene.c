@@ -19,7 +19,7 @@ typedef u32 int3;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
-extern u32 DAT_006a2af0;
+extern u32 DAT_006a2af0[24];
 extern u32 DAT_006a2af4;
 extern u32 DAT_006a2af8;
 extern u32 DAT_006a2afc;
@@ -99,7 +99,7 @@ u32 FUN_003b8210(int param_1);
 void FUN_003b8270(int param_1);
 u32 FUN_003b82c0(long param_1,int param_2);
 u32 FUN_003b8310(u64 param_1,long param_2);
-u8 FUN_003b83a0(long param_1);
+u8 FUN_003b83a0(Resrc* param_1);
 void FUN_003b83d0(u32 param_1);
 u32 FUN_003b8470(u64 param_1,u64 param_2);
 u32 FUN_003b8540(float *param_1,float *param_2,float *param_3,float *param_4);
@@ -512,7 +512,7 @@ u16 MT_Scene_CreateResModelFld(u32 resId, Model* mdl)
 }
 
 #undef FUN_003b55b0
-// FUN_003B55B0 NONMATCHING
+// FUN_003B55B0
 
 
 u8 * FUN_003b55b0(int param_1)
@@ -534,39 +534,26 @@ void FUN_003b55d0(u32 param_1,u32 *param_2)
 
 
 {
+    float* dst;
+    float* src;
+    float v0;
+    float v1;
+    float v2;
+    float v3;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  
-
-  if (param_1 < 6) {
-
-    iVar1 = (int)param_1 * 0x10;
-
-    uVar4 = param_2[1];
-
-    uVar2 = param_2[2];
-
-    uVar3 = param_2[3];
-
-    *(u32 *)(&DAT_006a2af0 + iVar1) = *param_2;
-
-    *(u32 *)(&DAT_006a2af4 + iVar1) = uVar4;
-
-    *(u32 *)(&DAT_006a2af8 + iVar1) = uVar2;
-
-    *(u32 *)(&DAT_006a2afc + iVar1) = uVar3;
-
-  }
-
-  return;
-
+    if (param_1 < 6)
+    {
+        dst = (float*)DAT_006a2af0 + param_1 * 4;
+        src = (float*)param_2;
+        v1 = src[0];
+        v2 = src[1];
+        v3 = src[2];
+        v0 = src[3];
+        dst[3] = v0;
+        dst[2] = v3;
+        dst[1] = v2;
+        dst[0] = v1;
+    }
 }
 #define FUN_003b55d0(...) ((void (*)(...))FUN_003b55d0)(__VA_ARGS__)
 #undef FUN_003b5620
@@ -741,23 +728,12 @@ u64 FUN_003b5da0(u8 param_1)
 
 {
 
-  u64 uVar1;
+    if (*(int *)(PTR_DAT_007cd540 + 8) == 0)
+    {
+        return 0;
+    }
 
-  
-
-  if (*(int *)(PTR_DAT_007cd540 + 8) == 0) {
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    uVar1 = FUN_003b5460(*(int *)(PTR_DAT_007cd540 + 8),param_1);
-
-  }
-
-  return uVar1;
+    return FUN_003b5460(*(int *)(PTR_DAT_007cd540 + 8), param_1);
 
 }
 #define FUN_003b5da0(...) ((u64 (*)(...))FUN_003b5da0)(__VA_ARGS__)
@@ -3342,33 +3318,20 @@ u32 FUN_003b8310(u64 param_1,long param_2)
 }
 #define FUN_003b8310(...) ((u32 (*)(...))FUN_003b8310)(__VA_ARGS__)
 #undef FUN_003b83a0
-// FUN_003B83A0 NONMATCHING
+// FUN_003B83A0
 
 
-u8 FUN_003b83a0(long param_1)
+u8 FUN_003b83a0(Resrc* param_1)
 
 
 
 {
+    if (param_1 == NULL)
+    {
+        return 0;
+    }
 
-  u8 bVar1;
-
-  
-
-  if (param_1 == 0) {
-
-    bVar1 = 0;
-
-  }
-
-  else {
-
-    bVar1 = (*(u32 *)((int)param_1 + 0x28) & 8) != 0;
-
-  }
-
-  return bVar1;
-
+    return (param_1->flags & 8) != 0;
 }
 #define FUN_003b83a0(...) ((u8 (*)(...))FUN_003b83a0)(__VA_ARGS__)
 #undef FUN_003b83d0

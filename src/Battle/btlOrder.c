@@ -85,15 +85,22 @@ u32 FUN_0029a320(BtlAction* action)
     return removed;
 }
 
-// FUN_0029a380 NONMATCHING
+// FUN_0029a380
 u32 FUN_0029a380(BtlAction* action)
 {
     BtlAction** actions;
     u32 i;
 
     actions = gBtl->order.actions2;
-    for (i = 0; i < BTL_MAXACTIONS && actions[i] != NULL; i++)
+    i = 0;
+    while (i < BTL_MAXACTIONS)
     {
+        if (*actions == NULL)
+        {
+            break;
+        }
+        actions++;
+        i++;
     }
 
     if (i == BTL_MAXACTIONS)
@@ -101,10 +108,9 @@ u32 FUN_0029a380(BtlAction* action)
         return 0;
     }
 
-    actions[i] = action;
+    *actions = action;
     return 1;
 }
-
 // FUN_0029a3e0
 u32 FUN_0029a3e0(BtlAction* action)
 {
@@ -128,15 +134,22 @@ u32 FUN_0029a3e0(BtlAction* action)
     return gBtl->order.actions[1] == action;
 }
 
-// FUN_0029a470 NONMATCHING
+// FUN_0029a470
 u32 FUN_0029a470(BtlAction* action)
 {
     BtlAction** actions;
     u32 i;
 
     actions = gBtl->order.actions;
-    for (i = 0; i < BTL_MAXACTIONS && actions[i] != action; i++)
+    i = 0;
+    while (i < BTL_MAXACTIONS)
     {
+        if (*actions == action)
+        {
+            break;
+        }
+        actions++;
+        i++;
     }
 
     if (i == BTL_MAXACTIONS)
@@ -144,25 +157,33 @@ u32 FUN_0029a470(BtlAction* action)
         return 0;
     }
 
-    while (i > 0)
+    while ((s32)i > 0)
     {
-        actions[i] = actions[i - 1];
+        *actions = *(actions - 1);
+        actions--;
         i--;
     }
-    actions[0] = action;
+    *actions = action;
 
     return 1;
 }
 
-// FUN_0029a4f0 NONMATCHING
+// FUN_0029a4f0
 u32 FUN_0029a4f0(BtlAction* action)
 {
     BtlAction** actions;
     u32 i;
 
     actions = gBtl->order.actions;
-    for (i = 0; i < BTL_MAXACTIONS && actions[i] != action; i++)
+    i = 0;
+    while (i < BTL_MAXACTIONS)
     {
+        if (*actions == action)
+        {
+            break;
+        }
+        actions++;
+        i++;
     }
 
     if (i == BTL_MAXACTIONS)
@@ -170,12 +191,17 @@ u32 FUN_0029a4f0(BtlAction* action)
         return 0;
     }
 
-    while (i < BTL_MAXACTIONS - 1 && actions[i + 1] != NULL)
+    while (i < BTL_MAXACTIONS - 1)
     {
-        actions[i] = actions[i + 1];
+        if (actions[1] == NULL)
+        {
+            break;
+        }
+        *actions = *(actions + 1);
+        actions++;
         i++;
     }
-    actions[i] = action;
+    *actions = action;
 
     return 1;
 }
@@ -447,18 +473,20 @@ void FUN_0029ac70(BtlAction* action)
         gBtl->order.flags |= 8;
     }
 }
-
-// FUN_0029adf0 NONMATCHING
+// FUN_0029adf0
 u32 FUN_0029adf0(BtlAction* action)
 {
+    BtlAction** actions;
     u32 i;
 
+    actions = gBtl->order.actions2;
     for (i = 0; i < BTL_MAXACTIONS; i++)
     {
-        if (gBtl->order.actions2[i] == action)
+        if (*actions == action)
         {
             return 1;
         }
+        actions++;
     }
 
     return 0;

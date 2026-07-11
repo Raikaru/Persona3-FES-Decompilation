@@ -27,6 +27,7 @@ extern void func_001e1300(KwlnTask* task, s32 arg);
 extern void func_001e1360(KwlnTask* task, s32 arg);
 extern f32 func_001e13c0(void);
 extern s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix, f32 playerHeading, f32 inputHeading);
+extern f32 D_007CE230;
 
 static f32 sVPadMoveSpeed;
 
@@ -451,12 +452,12 @@ u32 K_VPad_IsRotating(KwlnTask* rotatePcTask)
 {
     return ((PcRotateWork*)rotatePcTask->workData)->state == PCROTATE_STATE_ROTATING;
 }
-// FUN_001e1300 NONMATCHING
+// FUN_001e1300
 void func_001e1300(KwlnTask* task, s32 controlMode)
 {
     VPadWork* work;
     s16 animation;
-    if (task == NULL || task->workData == NULL)
+    if (task == NULL)
     {
         return;
     }
@@ -467,12 +468,12 @@ void func_001e1300(KwlnTask* task, s32 controlMode)
     mdlAnimSet(work->mdl, 0, animation, 8, 1);
 }
 
-// FUN_001e1360 NONMATCHING
+// FUN_001e1360
 void func_001e1360(KwlnTask* task, s32 controlFlags)
 {
     VPadWork* work;
     s16 animation;
-    if (task == NULL || task->workData == NULL)
+    if (task == NULL)
     {
         return;
     }
@@ -483,13 +484,13 @@ void func_001e1360(KwlnTask* task, s32 controlFlags)
     mdlAnimSet(work->mdl, 0, animation, 8, 1);
 }
 
-// FUN_001e13c0 NONMATCHING
+// FUN_001e13c0
 f32 func_001e13c0(void)
 {
     f32 speed = sVPadMoveSpeed;
     if (speed <= 0.0f)
     {
-        speed = *(f32*)0x007CE230;
+        speed = D_007CE230;
     }
     return speed;
 }
