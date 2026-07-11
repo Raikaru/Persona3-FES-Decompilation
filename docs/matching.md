@@ -233,8 +233,6 @@ Keep the best source and reducer evidence when the remaining mismatch is proven 
 
 - `scrComu00360ed0`: 356-byte object body, 47 differing words. Empty/default-zero CFG blocks collapse
   at `codegen_entry`; explicit zero stores change semantics and move farther from retail.
-- `FUN_00199140` (`kwlnRoot.c`): 540-byte body, 9 differing words. A forced lifetime split diverges at
-  `codegen_entry` in the wrong direction; the direct float assignment is the best form.
 - `H_Cursor_UpdateTask`: 828-byte object body versus an 832-byte retail window, 54 differing words.
   Scope/reload variants trigger LICM, grow the body, and worsen the diff.
 - `FUN_00251a80` (`bp_tuta.c`): exact 912-byte body size, 11 differing words. Global and local selector

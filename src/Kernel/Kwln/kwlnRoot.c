@@ -387,7 +387,7 @@ KwlnTask* FUN_00199100()
 }
 
 // FUN_00199140
-void* FUN_00199140(KwlnTask* showRasterTask)
+void* kwlnRootUpdateShowRasterTask(KwlnTask* showRasterTask)
 {
     RwCamera* camera;
     RwRaster* raster;
@@ -446,7 +446,7 @@ void* FUN_00199140(KwlnTask* showRasterTask)
 // FUN_00199360
 KwlnTask* FUN_00199360()
 {
-    return kwlnTaskInit("<<< show raster >>>", 7396, FUN_00199140, NULL, NULL);
+    return kwlnTaskInit("<<< show raster >>>", 7396, kwlnRootUpdateShowRasterTask, NULL, NULL);
 }
 
 // FUN_001993a0
