@@ -420,34 +420,40 @@ state4_done:
         case 2:
             if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
-                if (cardError != 0)
+                if (cardError == 0)
                 {
-                    sMemcardSeqMode = 8;
-                    return 1;
-                }
-                if (cardCode != 2)
-                {
-                    if (cardCode == 0x13)
+                    if (cardCode == 2)
+                    {
+                        sMemcardSeqMode = 6;
+                    }
+                    else if (cardCode == 0x13)
                     {
                         return -5;
                     }
-                    if (cardCode == 0x16)
+                    else if (cardCode == 0x16)
                     {
                         return -5;
                     }
-                    if (cardCode == 0x6f)
+                    else if (cardCode == 0x6f)
                     {
                         return -5;
                     }
-                    if (cardCode != 0x9003)
+                    else if (cardCode == 0x9003)
+                    {
+                        return -5;
+                    }
+                    else
                     {
                         FUN_005225a8(D_005E48C8);
                         sMemcardSeqMode = 6;
                         return -7;
                     }
-                    return -5;
                 }
-                sMemcardSeqMode = 6;
+                else
+                {
+                    sMemcardSeqMode = 8;
+                    return 1;
+                }
             }
             break;
 
