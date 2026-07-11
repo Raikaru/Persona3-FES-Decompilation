@@ -44,6 +44,7 @@ extern u8 D_00846C80[];
 extern u32 D_00846C90;
 extern u8 D_00846DA0[];
 extern u8 D_005E4810[];
+extern u8 D_005E4C10[];
 extern u8 D_005E4BB0[];
 extern u8 D_005E48A0[];
 extern u8 D_005E49D0[];
@@ -1270,153 +1271,189 @@ void func_00191240(void)
 // FUN_00191260 NONMATCHING. Scan slot records until a valid card is found.
 s32 func_00191260(void)
 {
-    s32 status;
-    s32 value;
-    s32 cardError;
-    s32 cardCode;
     s32 cardMode;
+    s32 cardCode;
+    s32 cardError;
 
-    FUN_005225a8(0x5e4c10, sMemcardSeqMode);
+    FUN_005225a8(D_005E4C10, sMemcardSeqMode);
 
-    if (sMemcardSeqMode == 3)
+    switch (sMemcardSeqMode)
     {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
+        case 0:
+            goto state0;
+        case 1:
+            goto state1;
+        case 2:
+            goto state2;
+        case 3:
+            goto state3;
+        default:
+            goto done;
+    }
+
+state0:
+    sSlotScanResult = -1;
+    sSlotScanDone = 1;
+    cardMode = 0;
+    cardCode = 0;
+    sSlotScanMode = 0;
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
+    {
+        FUN_005136f8(sSocketNo, D_00846EA0);
+        sMemcardSeqMode = 1;
+    }
+    goto done;
+
+state1:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
+    {
+        if (cardError == 0)
         {
-            if (cardError != 0)
+            if (cardCode == 0x2f)
             {
-                sSlotScanDone = 1;
-                return 100;
+                goto state1_error64;
             }
-            if (cardCode == 2)
+            if (cardCode == 0x9001)
             {
-                sMemcardFile++;
-                if (sMemcardFile == 0x10)
-                {
-                    if (sSlotScanMode == 1)
-                    {
-                        if (sSlotScanResult == 100)
-                        {
-                            return 100;
-                        }
-                        return -6;
-                    }
-                    sMemcardFile = 0;
-                    sSlotScanMode = 1;
-                }
-                sMemcardSeqMode = 2;
+                goto state1_error4;
+            }
+            if (cardCode == 0x9003)
+            {
+                goto state1_error3;
+            }
+            if (cardCode == 0x13)
+            {
+                goto state1_error5a;
+            }
+            if (cardCode == 0x6f)
+            {
+                goto state1_error5b;
+            }
+            goto state1_error9;
+        }
+        goto state1_card_error;
+    }
+    goto done;
+
+state1_error5b:
+    return -5;
+state1_error5a:
+    return -5;
+state1_error3:
+    FUN_005136f8(sSocketNo, D_00846EA0);
+    goto done;
+state1_error4:
+    return -4;
+state1_error64:
+    return 100;
+state1_error9:
+    return -9;
+
+state1_card_error:
+    if (*D_00846EA0 != 2)
+    {
+        return -1;
+    }
+    if (*D_00846EA8 < 0x4e)
+    {
+        sMemcardSeqMode = 2;
+        goto done;
+    }
+    if (sSlotScanDone != 0)
+    {
+        return 100;
+    }
+    sSlotScanResult = 100;
+    sMemcardSeqMode = 2;
+    goto done;
+
+state2:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
+    {
+        if (sMemcardAsync == 0)
+        {
+            if (sSlotScanMode == 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
             }
             else
             {
-                if (cardCode == 0x13)
-                {
-                    return -5;
-                }
-                if (cardCode == 0x16)
-                {
-                    return -5;
-                }
-                if (cardCode == 0x6f)
-                {
-                    return -5;
-                }
-                if (cardCode == 0x9003)
-                {
-                    return -5;
-                }
+                FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
             }
         }
-    }
-    else if (sMemcardSeqMode == 2)
-    {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == -1)
+        else
         {
-            if (sMemcardAsync == 0)
-            {
-                if (sSlotScanMode == 0)
-                {
-                    FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
-                }
-                else
-                {
-                    FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
-                }
-            }
-            else
-            {
-                FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
-            }
-            FUN_005137b8(sSocketNo, 0x846da0, 0x846c80);
-            sMemcardSeqMode = 3;
+            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
         }
+        FUN_005137b8(sSocketNo, D_00846DA0, D_00846C80);
+        sMemcardSeqMode = 3;
     }
-    else if (sMemcardSeqMode == 1)
-    {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
-        {
-            if (cardError == 0)
-            {
-                if (cardCode == 0x2f)
-                {
-                    return 100;
-                }
-                if (cardCode == 0x9001)
-                {
-                    return -4;
-                }
-                if (cardCode != 0x9003)
-                {
-                    if (cardCode == 0x13)
-                    {
-                        return -5;
-                    }
-                    if (cardCode != 0x6f)
-                    {
-                        return -9;
-                    }
-                    return -5;
-                }
-                FUN_005136f8(sSocketNo, D_00846EA0);
-            }
-            else
-            {
-                if (*D_00846EA0 != 2)
-                {
-                    return -1;
-                }
-                if (*D_00846EA8 < 0x4e)
-                {
-                    sMemcardSeqMode = 2;
-                }
-                else
-                {
-                    if (sSlotScanDone != 0)
-                    {
-                        return 100;
-                    }
-                    sSlotScanResult = 100;
-                    sMemcardSeqMode = 2;
-                }
-            }
-        }
-    }
-    else if (sMemcardSeqMode == 0)
-    {
-        sSlotScanResult = -1;
-        sSlotScanDone = 1;
-        cardMode = 0;
-        cardCode = 0;
-        sSlotScanMode = 0;
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == -1)
-        {
-            FUN_005136f8(sSocketNo, D_00846EA0);
-            sMemcardSeqMode = 1;
-        }
-    }
+    goto done;
 
+state3:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
+    {
+        if (cardError != 0)
+        {
+            goto state3_error64;
+        }
+        if (cardCode == 2)
+        {
+            goto state3_card2;
+        }
+        if (cardCode == 0x13)
+        {
+            goto state3_error5a;
+        }
+        if (cardCode == 0x16)
+        {
+            goto state3_error5b;
+        }
+        if (cardCode == 0x6f)
+        {
+            goto state3_error5c;
+        }
+        if (cardCode == 0x9003)
+        {
+            goto state3_error5d;
+        }
+    }
+    goto done;
+
+state3_error5d:
+    return -5;
+state3_error5c:
+    return -5;
+state3_error5b:
+    return -5;
+state3_error5a:
+    return -5;
+
+state3_card2:
+    sMemcardFile++;
+    if (sMemcardFile != 0x10)
+    {
+        goto state3_card2_continue;
+    }
+    if (sSlotScanMode == 1)
+    {
+        if (sSlotScanResult == 100)
+        {
+            return 100;
+        }
+        return -6;
+    }
+    sMemcardFile = 0;
+    sSlotScanMode = 1;
+state3_card2_continue:
+    sMemcardSeqMode = 2;
+    goto done;
+
+state3_error64:
+    sSlotScanDone = 1;
+    return 100;
+
+done:
     return 0;
 }
 
@@ -1431,125 +1468,160 @@ void func_00191640(s32 slot)
 // FUN_00191660 NONMATCHING. Scan one slot and report card status.
 s32 func_00191660(void)
 {
-    s32 status;
-    s32 value;
-    s32 cardError;
-    s32 cardCode;
     s32 cardMode;
+    s32 cardCode;
+    s32 cardError;
 
-    FUN_005225a8(0x5e4c10, sMemcardSeqMode);
+    FUN_005225a8(D_005E4C10, sMemcardSeqMode);
 
-    if (sMemcardSeqMode == 3)
+    switch (sMemcardSeqMode)
     {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
+        case 0:
+            goto state0;
+        case 1:
+            goto state1;
+        case 2:
+            goto state2;
+        case 3:
+            goto state3;
+        default:
+            goto done;
+    }
+
+state0:
+    cardMode = 0;
+    cardCode = 0;
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
+    {
+        FUN_005136f8(sSocketNo, D_00846EA0);
+        sMemcardSeqMode = 1;
+    }
+    goto done;
+
+state1:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
+    {
+        if (cardError == 0)
         {
-            if (cardError != 0)
+            if (cardCode == 0x2f)
             {
-                return 100;
+                goto state1_error64;
             }
-            if (cardCode == 2)
+            if (cardCode == 0x9001)
             {
-                return -6;
-            }
-            if (cardCode == 0x13)
-            {
-                return -5;
-            }
-            if (cardCode == 0x16)
-            {
-                return -5;
-            }
-            if (cardCode == 0x6f)
-            {
-                return -5;
+                goto state1_error4;
             }
             if (cardCode == 0x9003)
             {
-                return -5;
+                goto state1_error3;
             }
-        }
-    }
-    else if (sMemcardSeqMode == 2)
-    {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == -1)
-        {
-            if (sMemcardAsync == 0)
+            if (cardCode == 0x13)
             {
-                value = FUN_0017d800();
-                if (value == 0)
-                {
-                    FUN_00523ac8(0x846da0, 0x5e48a0, sMemcardFile, sMemcardFile);
-                }
-                else
-                {
-                    FUN_00523ac8(0x846da0, 0x5e4870, sMemcardFile, sMemcardFile);
-                }
+                goto state1_error5a;
             }
-            else
+            if (cardCode == 0x6f)
             {
-                FUN_00523ac8(0x846da0, 0x5e4840, sMemcardFile, sMemcardFile);
+                goto state1_error5b;
             }
-            FUN_005137b8(sSocketNo, 0x846da0, 0x846c80);
-            sMemcardSeqMode = 3;
+            goto state1_error9;
         }
+        goto state1_card_error;
     }
-    else if (sMemcardSeqMode == 1)
-    {
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == 1)
-        {
-            if (cardError == 0)
-            {
-                if (cardCode == 0x2f)
-                {
-                    return 100;
-                }
-                if (cardCode == 0x9001)
-                {
-                    return -4;
-                }
-                if (cardCode != 0x9003)
-                {
-                    if (cardCode == 0x13)
-                    {
-                        return -5;
-                    }
-                    if (cardCode != 0x6f)
-                    {
-                        return -9;
-                    }
-                    return -5;
-                }
-                FUN_005136f8(sSocketNo, D_00846EA0);
-            }
-            else
-            {
-                if (*D_00846EA0 != 2)
-                {
-                    return -1;
-                }
-                if (*D_00846EA8 > 0x4d)
-                {
-                    return 100;
-                }
-                sMemcardSeqMode = 2;
-            }
-        }
-    }
-    else if (sMemcardSeqMode == 0)
-    {
-        cardMode = 0;
-        cardCode = 0;
-        status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-        if (status == -1)
-        {
-            FUN_005136f8(sSocketNo, D_00846EA0);
-            sMemcardSeqMode = 1;
-        }
-    }
+    goto done;
 
+state1_error5b:
+    return -5;
+state1_error5a:
+    return -5;
+state1_error3:
+    FUN_005136f8(sSocketNo, D_00846EA0);
+    goto done;
+state1_error4:
+    return -4;
+state1_error64:
+    return 100;
+state1_error9:
+    return -9;
+
+state1_card_error:
+    if (*D_00846EA0 != 2)
+    {
+        return -1;
+    }
+    if (*D_00846EA8 > 0x4d)
+    {
+        return 100;
+    }
+    sMemcardSeqMode = 2;
+    goto done;
+
+state2:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
+    {
+        if (sMemcardAsync == 0)
+        {
+            if (FUN_0017d800() == 0)
+            {
+                FUN_00523ac8(D_00846DA0, D_005E48A0, sMemcardFile, sMemcardFile);
+            }
+            else
+            {
+                FUN_00523ac8(D_00846DA0, D_005E4870, sMemcardFile, sMemcardFile);
+            }
+        }
+        else
+        {
+            FUN_00523ac8(D_00846DA0, D_005E4840, sMemcardFile, sMemcardFile);
+        }
+        FUN_005137b8(sSocketNo, D_00846DA0, D_00846C80);
+        sMemcardSeqMode = 3;
+    }
+    goto done;
+
+state3:
+    if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
+    {
+        if (cardError != 0)
+        {
+            goto state3_error64;
+        }
+        if (cardCode == 2)
+        {
+            goto state3_error6;
+        }
+        if (cardCode == 0x13)
+        {
+            goto state3_error5a;
+        }
+        if (cardCode == 0x16)
+        {
+            goto state3_error5b;
+        }
+        if (cardCode == 0x6f)
+        {
+            goto state3_error5c;
+        }
+        if (cardCode == 0x9003)
+        {
+            goto state3_error5d;
+        }
+    }
+    goto done;
+
+state3_error5d:
+    return -5;
+state3_error5c:
+    return -5;
+state3_error5b:
+    return -5;
+state3_error5a:
+    return -5;
+state3_error6:
+    return -6;
+state3_error64:
+    return 100;
+
+done:
     return 0;
 }
 
