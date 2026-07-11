@@ -179,8 +179,8 @@ void FUN_003bcc80();
 void FUN_003bceb0(int param);
 void FUN_0034fd70(Model* mdl, s32 type);
 void FUN_003bc940();
-void FUN_003b9610(long param);
-void FUN_003bb7a0(long param);
+void FUN_003b9610(Resrc* param);
+void FUN_003bb7a0(Resrc* param);
 
 typedef struct ResrcType7 ResrcType7;
 struct ResrcType7
@@ -211,15 +211,15 @@ u64  FUN_003b91c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,
 u32  FUN_003b9260(u32 param_1,long param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7);
 u64  FUN_003b9320(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7);
 void FUN_003b93c0(u32 param_1,u16 param_2,u16 param_3,short param_4,  u16 param_5);
-u32 FUN_003b9500(long param_1,int param_2);
-u64 FUN_003b9550(u64 param_1,u64 param_2);
+u32 FUN_003b9500(Resrc* param_1,int param_2);
+u32 FUN_003b9550(u64 param_1,int param_2);
 u32 FUN_003b95a0(void);
-void FUN_003b9610(long param_1);
+void FUN_003b9610(Resrc* param_1);
 u32 FUN_003baa70(u64 param_1);
 u32 FUN_003bac40(Resrc *param_1,u8 param_2);
 u64 FUN_003bb010(u64 param_1,u64 param_2);
 void FUN_003bb060(u16 param_1,u8 param_2);
-u32 FUN_003bb0c0(long param_1,int param_2);
+u32 FUN_003bb0c0(u16* param_1,int param_2);
 u64 FUN_003bb180(u64 param_1,u64 param_2);
 u32  FUN_003bb1d0(u64 param_1,u8 param_2,u8 param_3,u16 param_4,  u16 param_5);
 u32 FUN_003bb280(void);
@@ -228,7 +228,7 @@ void FUN_003bb390(u32 param_1,u32 param_2,u16 param_3);
 void FUN_003bb400(u32 param_1);
 void FUN_003bb450(float param_1,u32 param_2,u32 param_3,u32 param_4,  float *param_5,float *param_6);
 void FUN_003bb620(u32 param_1,u32 *param_2,int param_3);
-void FUN_003bb7a0(long param_1);
+void FUN_003bb7a0(Resrc* param_1);
 void FUN_003bb9b0(float *param_1);
 void FUN_003bba70(int param_1);
 void FUN_003bbaa0(float *param_1,float *param_2,float *param_3);
@@ -248,7 +248,7 @@ void FUN_003bcc80(void);
 int FUN_003bcda0(int *param_1,int *param_2);
 void FUN_003bceb0(int param_1);
 void FUN_003bd130(void);
-u64 FUN_003bd1c0(u32 param_1);
+u32 FUN_003bd1c0(u32 param_1);
 u32 FUN_003bd230(void);
 void FUN_003bd280(void);
 short ** FUN_003bd870(void);
@@ -334,25 +334,27 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
     s32 i;
     Resrc* res;
     ResrcType7* type7Res;
+    s32 type7Status;
 
-    FUN_003bc940();
+    (FUN_003bc940)();
     for (i = 1; i < RESRC_TYPE_MAX; i++)
     {
         for (res = MT_Scene_GetResListHead(i); res != NULL; res = res->next)
         {
-            FUN_003b9610(res);
+            (FUN_003b9610)(res);
         }
     }
 
     type7Res = (ResrcType7*)MT_Scene_GetResListHead(7);
-    while (type7Res != NULL)
+    type7Status = 0;
+    type7Status += 1;
+    for (; type7Res != NULL; type7Res = (ResrcType7*)type7Res->base.next)
     {
-        if (type7Res->unk_108 == 1)
+        if (type7Res->unk_108 == type7Status)
         {
-            FUN_003bb7a0((Resrc*)type7Res);
+            (FUN_003bb7a0)((Resrc*)type7Res);
             break;
         }
-        type7Res = (ResrcType7*)type7Res->base.next;
     }
 
     return KWLNTASK_CONTINUE;
@@ -364,13 +366,13 @@ void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
     (FUN_003bcc80)();
 }
 
-// FUN_003bd010 NONMATCHING
+// FUN_003bd010
 void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask)
 {
     Resrc* res;
 
     res = MT_Scene_GetResListHead(6);
-    FUN_003bceb0(res);
+    (FUN_003bceb0)((int)res);
     for (; res != NULL; res = res->next)
     {
         if ((res->flags & 2) != 0 && *(Model**)((u8*)res + 0x104) != NULL)
@@ -1335,10 +1337,10 @@ void FUN_003b93c0(u32 param_1,u16 param_2,u16 param_3,short param_4,
 }
 #define FUN_003b93c0(...) ((void (*)(...))FUN_003b93c0)(__VA_ARGS__)
 #undef FUN_003b9500
-// FUN_003B9500 NONMATCHING
+// FUN_003B9500
 
 
-u32 FUN_003b9500(long param_1,int param_2)
+u32 FUN_003b9500(Resrc* param_1,int param_2)
 
 
 
@@ -1381,41 +1383,27 @@ u32 FUN_003b9500(long param_1,int param_2)
 }
 #define FUN_003b9500(...) ((u32 (*)(...))FUN_003b9500)(__VA_ARGS__)
 #undef FUN_003b9550
-// FUN_003B9550 NONMATCHING
+// FUN_003B9550
 
 
-u64 FUN_003b9550(u64 param_1,u64 param_2)
+u32 FUN_003b9550(u64 param_1,int param_2)
 
 
 
 {
+  Resrc* lVar1;
 
-  long lVar1;
+  lVar1 = (Resrc*)FUN_003b5d10();
 
-  u64 uVar2;
-
-  
-
-  lVar1 = FUN_003b5d10();
-
-  if (lVar1 == 0) {
-
-    uVar2 = 0;
-
+  if (lVar1 != 0) {
+    return (FUN_003b9500)(lVar1,param_2);
   }
 
-  else {
-
-    uVar2 = FUN_003b9500(lVar1,param_2);
-
-  }
-
-  return uVar2;
-
+  return 0;
 }
 #define FUN_003b9550(...) ((u64 (*)(...))FUN_003b9550)(__VA_ARGS__)
 #undef FUN_003b95a0
-// FUN_003B95A0 NONMATCHING
+// FUN_003B95A0
 
 
 u32 FUN_003b95a0(void)
@@ -1423,41 +1411,25 @@ u32 FUN_003b95a0(void)
 
 
 {
-
   u32 uVar1;
+  Resrc* lVar2;
 
-  long lVar2;
-
-  
-
-  lVar2 = FUN_003b5d10();
+  lVar2 = (Resrc*)FUN_003b5d10();
 
   if (lVar2 == 0) {
-
     uVar1 = 0;
-
   }
-
   else if (lVar2 == 0) {
-
     uVar1 = 0;
-
   }
-
-  else if ((*(u32 *)((int)lVar2 + 0x28) & 1) == 0) {
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
+  else if ((*(u32 *)((int)lVar2 + 0x28) & 1) != 0) {
     uVar1 = 1;
-
+  }
+  else {
+    uVar1 = 0;
   }
 
   return uVar1;
-
 }
 #define FUN_003b95a0(...) ((u32 (*)(...))FUN_003b95a0)(__VA_ARGS__)
 #undef FUN_003b9610
@@ -1470,7 +1442,7 @@ u32 FUN_003b95a0(void)
 
 
 
-void FUN_003b9610(long param_1)
+void FUN_003b9610(Resrc* param_1)
 
 
 
@@ -2725,7 +2697,7 @@ void FUN_003bb060(u16 param_1,u8 param_2)
 // FUN_003BB0C0 NONMATCHING
 
 
-u32 FUN_003bb0c0(long param_1,int param_2)
+u32 FUN_003bb0c0(u16* param_1,int param_2)
 
 
 
@@ -2755,16 +2727,16 @@ u32 FUN_003bb0c0(long param_1,int param_2)
 
     iVar2 = (int)(*puVar3 & 0xffc00) >> 10;
 
-    if (iVar2 == 3) {
-
+    switch (iVar2)
+    {
+    case 3:
       iVar4 = *(int *)(puVar3 + 0xf8);
-
-    }
-
-    else if (iVar2 == 1) {
-
+      break;
+    case 1:
       iVar4 = *(int *)(puVar3 + 0xf2);
-
+      break;
+    default:
+      break;
     }
 
     if (iVar4 == 0) {
@@ -3297,7 +3269,7 @@ void FUN_003bb620(u32 param_1,u32 *param_2,int param_3)
 // FUN_003BB7A0 NONMATCHING
 
 
-void FUN_003bb7a0(long param_1)
+void FUN_003bb7a0(Resrc* param_1)
 
 
 
@@ -4427,8 +4399,8 @@ u8 FUN_003bc900(float *param_1)
   if (bVar1 == 0) {
     return 0;
   }
-  param_1[0] = *(float *)0x0095aff0;
-  param_1[1] = *(float *)0x0095aff4;
+  param_1[0] = *(float *)&DAT_0095aff0;
+  param_1[1] = *(float *)&DAT_0095aff4;
   return 1;
 
 }
@@ -4813,42 +4785,19 @@ void FUN_003bd130(void)
 // FUN_003BD1C0 NONMATCHING
 
 
-u64 FUN_003bd1c0(u32 param_1)
-
-
-
+u32 FUN_003bd1c0(u32 param_1)
 {
+  u8 auStack_4[4];
 
-  u64 uVar1;
-
-  u8 auStack_4 [4];
-
-  
-
-  if (param_1 < 0x1a) {
-
-    if ((&PTR_s_icon_ICON1_EPL_006a3130)[(int)param_1] == (u8 *)0x0) {
-
-      uVar1 = 0;
-
-    }
-
-    else {
-
-      uVar1 = FUN_001021c0((&PTR_s_icon_ICON1_EPL_006a3130)[(int)param_1],auStack_4);
-
-    }
-
+  if (param_1 >= 0x1a) {
+    return 0;
   }
 
-  else {
-
-    uVar1 = 0;
-
+  if (((u8 **)0x006a3130)[param_1] == (u8 *)0x0) {
+    return 0;
   }
 
-  return uVar1;
-
+  return FUN_001021c0(((u8 **)0x006a3130)[param_1], auStack_4);
 }
 #define FUN_003bd1c0(...) ((u64 (*)(...))FUN_003bd1c0)(__VA_ARGS__)
 #undef FUN_003bd230
