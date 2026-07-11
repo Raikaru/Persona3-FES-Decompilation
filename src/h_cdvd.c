@@ -1295,6 +1295,7 @@ void func_00102720(const char* path, const void* archive)
     u32 fileSize;
     s32 offset;
     char c;
+    u32 alignedSize;
     H_Cdvd_BuildPathUppercase(path, uppercasePath);
     offset = 0;
     while (true)
@@ -1327,8 +1328,9 @@ void func_00102720(const char* path, const void* archive)
         }
         H_Cdvd_CacheAdd((void*)archive, (u8*)archive + offset, fileSize,
                         entryPath);
-        fileSize = ((s32)(fileSize + 0x3f) / 0x40) * 0x40;
-        offset += fileSize;
+        alignedSize = ((s32)(fileSize + 0x3f) / 0x40) * 0x40;
+        fileSize = alignedSize;
+        offset += alignedSize;
     }
 }
 
