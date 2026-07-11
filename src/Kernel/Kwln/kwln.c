@@ -131,7 +131,25 @@ extern u32 DAT_007cdffc;
 extern void* DAT_007ce0c4;
 extern u8 DAT_00960070[];
 extern char gp0xffff9430;
+extern void D_00847F00(void);
+extern void D_00847F04(void);
+extern void D_00847F08(void);
+extern void D_00847F0C(void);
+extern void D_00847F10(void);
+extern void D_00847F14(void);
+extern void D_00847F30(void);
+extern void D_00847F34(void);
+extern void D_00847F38(void);
+extern void D_00847F3C(void);
+extern void D_00847F50(void);
+extern const void D_00678798[];
+extern const void D_006787A8[];
+extern const void D_006787B8[];
+extern const void D_005E5150[];
+extern const void D_006418E0[];
+extern const void D_00644330[];
 extern u32 D_005E4F60[];
+extern void H_Dbprt_Init();
 
 u16 datGetMaxHp(s16 pcId);
 u32 func_0017d7b0(void);
@@ -899,10 +917,10 @@ void kwln00198010()
     func_0010cac0();
     func_00108740();
 
-    memset((void*)0x00847f10, 0, 0x14);
-    KWLN_U32_AT(0x00847f10) = 0x007cc124;
+    memset((void*)D_00847F10, 0, 0x14);
+    KWLN_U32_AT(0x00847f10) = (u32)(&gp0xffff9430 + 4);
     KWLN_U32_AT(0x00847f14) = 0;
-    func_00547668((void*)0x00847f10);
+    func_00547668((void*)D_00847F10);
     func_00540588(0);
     func_005417e0(5, 5);
     func_0053ea90();
@@ -914,36 +932,36 @@ void kwln00198010()
     KWLN_U32_AT(0x00847f04) = 3;
     KWLN_U32_AT(0x00847f08) = 0x344;
     KWLN_U32_AT(0x00847f0c) = 0x00847f50;
-    func_00567820((void*)0x00847f00);
+    func_00567820((void*)D_00847F00);
     func_00569f60(0, 0, 1);
     func_0053b220(0);
 
-    while (func_0053b2c0((void*)0x007cc128, (const void*)0x00678798, 0) != 0)
+    while (func_0053b2c0(&gp0xffff9430 + 8, D_00678798, 0) != 0)
     {
     }
-    while (func_0053b2c0((void*)0x007cc12c, (const void*)0x006787a8, 0) != 0)
+    while (func_0053b2c0(&gp0xffff9430 + 12, D_006787A8, 0) != 0)
     {
     }
-    while (func_0053b2c0((void*)0x007cc130, (const void*)0x006787b8, 0) != 0)
+    while (func_0053b2c0(&gp0xffff9430 + 16, D_006787B8, 0) != 0)
     {
     }
-    func_00566b08((void*)0x007cc128, (const void*)0x005e5150);
-    func_00566b08((void*)0x007cc12c, (const void*)0x006418e0);
-    func_00566b08((void*)0x007cc130, (const void*)0x00644330);
-    func_0053b4f8((void*)0x007cc128);
+    func_00566b08(&gp0xffff9430 + 8, D_005E5150);
+    func_00566b08(&gp0xffff9430 + 12, D_006418E0);
+    func_00566b08(&gp0xffff9430 + 16, D_00644330);
+    func_0053b4f8(&gp0xffff9430 + 8);
 
-    memset((void*)0x00847f30, 0, 0x20);
-    KWLN_F32_AT(0x00847f30) = KWLN_F32_AT(0x007cad2c);
+    memset((void*)D_00847F30, 0, 0x20);
+    KWLN_F32_AT(0x00847f30) = *((f32*)&gAspectRatio + 4);
     KWLN_U32_AT(0x00847f34) = 1;
     KWLN_U32_AT(0x00847f38) = 1;
     KWLN_U32_AT(0x00847f3c) = 0;
-    func_0057f768((void*)0x00847f30);
+    func_0057f768((void*)D_00847F30);
     func_00540570(func_00197f80, NULL);
 
     kwlnSetFlags(0x80000000, true);
     adminiCreateTask();
     func_0031b470();
-    ((void (*)(RwCamera*))H_Dbprt_Init)(sMainCamera);
+    H_Dbprt_Init(sMainCamera);
     H_Chrdsp_Init();
     kwlnPushCommonRenderStates();
     func_004d8300(1);
