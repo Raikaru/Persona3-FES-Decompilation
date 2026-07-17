@@ -622,7 +622,7 @@ void FUN_002a5430(BtlCamera* camera)
     FUN_002a4c70(45.0f, 200.0f, camera);
 }
 
-// FUN_002a5460 NONMATCHING
+// FUN_002a5460
 void FUN_002a5460(BtlCamera* camera)
 {
     BtlAction* action;
@@ -636,7 +636,7 @@ void FUN_002a5460(BtlCamera* camera)
         unit = *(BtlUnit**)((u8*)action + 0x30);
         btlUnitGetSphereWorldCenter(unit, &center);
         FUN_002a3e80(unit->sphereRadius * unit->scale * 0.5f,
-                     (u8*)action,
+                     (u8*)camera->action,
                      (u8*)((u8*)camera + 0x9c),
                      (u8*)&center,
                      0x31);
@@ -6370,30 +6370,40 @@ u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4
   return param_2;
 }
 
-// FUN_002AE150 NONMATCHING
+// FUN_002AE150
 
 void func_002ae150(BtlCamera* camera)
 {
-  short sVar1;
-  long lVar2;
-  undefined8 uVar3;
-  undefined1 auStack_40 [28];
-  undefined1 auStack_24 [36];
-  
-  sVar1 = *(short *)(gBtl + 0x104);
-  if ((((sVar1 == 0x23) || (sVar1 == 2)) || (sVar1 == 0x22)) || (sVar1 == 0x1d)) {
-    uVar3 = 0;
+  u16 st;
+  int flag;
+  f32 buf[16];
+
+  st = *(u16 *)(iGpffffb6fc + 0x104);
+  switch (st) {
+  case 0x1d:
+  case 0x22:
+  case 2:
+  case 0x23:
+    flag = 0;
+    break;
+  default:
+    flag = 1;
+    break;
   }
-  else {
-    uVar3 = 1;
-  }
-  lVar2 = func_002add10(camera,uVar3,(float*)auStack_40,(float*)auStack_24);
-  if (lVar2 == 0) {
-  }
-  else {
+  if (func_002add10(camera, flag, buf, buf + 7) != 0) {
     FUN_00351bb0(8);
+    FUN_002a3e80(0.0f, *(u8 **)((u8 *)camera + 0xe0), 0, 0, 0x40);
+    FUN_002a2170(camera, buf + 7);
   }
-  return;
+  else {
+    FUN_002a2290((u16 *)camera, (RwV3d *)buf, (RwV3d *)(buf + 7), 1);
+    FUN_002a3110(1.25f, (u16 *)camera);
+  }
+}
+
+// FUN_002ae250
+void func_002ae250(void)
+{
 }
 
 // FUN_002AE260 NONMATCHING
@@ -6933,19 +6943,24 @@ void func_002aef80(BtlCamera* camera, long param_2)
   return;
 }
 
-// FUN_002AF7F0 NONMATCHING
+extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
+extern u16 FUN_002c09f0(int target);
+
+// FUN_002AF7F0
 
 void func_002af7f0(BtlCamera* camera)
 {
   int iVar1;
+  u16 id;
   undefined2 uVar2;
-  
-  iVar1 = *(int *)(camera + 0xe0);
-  uVar2 = FUN_002bff60(iVar1,0,*(undefined2 *)(iVar1 + 0x6e),0);
-  *(undefined2 *)(camera + 0x106) = uVar2;
+
+  iVar1 = *(int *)((u8 *)camera + 0xe0);
+  id = *(u16 *)(iVar1 + 0x6e);
+  uVar2 = FUN_002bff60(iVar1,0,id,0);
+  *(undefined2 *)((u8 *)camera + 0x106) = uVar2;
   uVar2 = FUN_002c09f0(iVar1 + 0x88);
-  *(undefined2 *)(camera + 0x104) = uVar2;
-  *(undefined4 *)(camera + 0x100) = 0;
+  *(undefined2 *)((u8 *)camera + 0x104) = uVar2;
+  *(undefined4 *)((u8 *)camera + 0x100) = 0;
   return;
 }
 

@@ -1168,7 +1168,7 @@ int func_002D86C0(int param_1)
 }
 
 
-// FUN_002d8850 NONMATCHING
+// FUN_002d8850 MATCHING
 s32 FUN_002d8850(s32 param_1)
 {
     bool noRandom;
@@ -1204,6 +1204,91 @@ s32 FUN_002d8850(s32 param_1)
     default:
         return -1;
     }
+}
+
+// FUN_002d89e0 MATCHING
+s32 func_002d89e0(u64 param_1, s32 param_2)
+{
+    (void)param_1;
+    switch (param_2)
+    {
+    case 2:
+        return 0xbf;
+    case 3:
+        return 0xc0;
+    case 4:
+        return 0xc1;
+    case 5:
+        return 0xc2;
+    case 7:
+        return 0xc3;
+    case 8:
+        return 0xc4;
+    case 9:
+        return 0xc5;
+    case 10:
+        return 0xc6;
+    default:
+        return -1;
+    }
+}
+
+// FUN_002d8a80 MATCHING
+s32 func_002d8a80(void)
+{
+    s32 result;
+
+    switch (*(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8))
+    {
+    case 0x1a1:
+        result = 0x88;
+        break;
+    default:
+        result = 0x87;
+        break;
+    }
+    return result;
+}
+
+// FUN_002d8ac0 MATCHING
+s32 func_002d8ac0(void)
+{
+    s32 result;
+
+    switch (*(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8))
+    {
+    case 0x1a1:
+        result = 0x84;
+        break;
+    default:
+        result = 0x83;
+        break;
+    }
+    return result;
+}
+
+// FUN_002d8b00 MATCHING
+s32 func_002d8b00(void)
+{
+    return 0x8f;
+}
+
+// FUN_002d8b10 MATCHING
+s32 func_002d8b10(void)
+{
+    return 0xb6;
+}
+
+// FUN_002d8b20 MATCHING
+s32 func_002d8b20(void)
+{
+    return 0xb1;
+}
+
+// FUN_002d8b30 MATCHING
+s32 func_002d8b30(void)
+{
+    return 0xb2;
 }
 
 // FUN_002d8b40 NONMATCHING
