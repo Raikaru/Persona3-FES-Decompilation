@@ -655,8 +655,8 @@ extern void func_002c17b0(int param_1,u32 param_2);
 extern bool func_002c1850(int param_1,u64 param_2);
 extern u32 func_002c1960(int param_1,u32 param_2);
 extern u32 func_002c1a30(int param_1,u32 param_2);
-extern u32 func_002c1b10(int param_1,u64 param_2);
-extern u32 func_002c1bf0(int param_1,u64 param_2);
+extern u32 func_002c1b10(int param_1,u32 param_2);
+extern u32 func_002c1bf0(int param_1,u32 param_2);
 extern bool func_002c1ce0(int param_1,int param_2);
 extern u64 func_002c1d80(void);
 extern bool func_002c1d90(int param_1);
@@ -5830,29 +5830,37 @@ bool func_002c1850(int param_1,u64 param_2)
   return iVar4 == 0;
 }
 
-// FUN_002c1960 NONMATCHING
+// FUN_002c1960
 
 u32 func_002c1960(int param_1,u32 param_2)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  int iVar3 = 0;
-  
-  iVar3 = *(int *)(iGpffffb6fc + 0x14c);
-  while( true ) {
-    if (iVar3 == 0) {
-      return 0;
+  int entry;
+  int unit;
+
+  for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
+    if (param_1 == entry) {
+      continue;
     }
-    if ((((param_1 != iVar3) && ((*(u16 *)(iVar3 + 0x1a) & 1) != 0)) &&
-        ((*(u16 *)(iVar3 + 0x1a) & 8) != 0)) &&
-       (((iVar1 = *(int *)(iVar3 + 0x30),
-         *(char *)(*(int *)(param_1 + 0x30) + 0xa2) == *(char *)(iVar1 + 0xa2) &&
-         (lVar2 = func_00300580(*(u32 *)(iVar1 + 0xa2c),0x80000), lVar2 == 0)) &&
-        (*(u16 *)(iVar1 + 0xa4) == param_2)))) break;
-    iVar3 = *(int *)(iVar3 + 0x4a8);
+    if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
+      continue;
+    }
+    if ((*(u16 *)(entry + 0x1a) & 8) == 0) {
+      continue;
+    }
+    unit = *(int *)(entry + 0x30);
+    if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != *(u8 *)(unit + 0xa2)) {
+      continue;
+    }
+    if (func_00300580(*(u32 *)(unit + 0xa2c),0x80000) != 0) {
+      continue;
+    }
+    if (*(u16 *)(unit + 0xa4) != param_2) {
+      continue;
+    }
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 // FUN_002c1a30 NONMATCHING
@@ -5860,74 +5868,114 @@ u32 func_002c1960(int param_1,u32 param_2)
 u32 func_002c1a30(int param_1,u32 param_2)
 
 {
-  char cVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  int iVar4 = 0;
-  
-  cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-  iVar4 = *(int *)(iGpffffb6fc + 0x14c);
-  while( true ) {
-    if (iVar4 == 0) {
-      return 0;
-    }
-    if (((((*(u16 *)(iVar4 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar4 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar4 + 0x30), (bool)*(char *)(iVar2 + 0xa2) == (cVar1 == '\0'))) &&
-       ((lVar3 = func_00300580(*(u32 *)(iVar2 + 0xa2c),0x80000), lVar3 == 0 &&
-        (*(u16 *)(iVar2 + 0xa4) == param_2)))) break;
-    iVar4 = *(int *)(iVar4 + 0x4a8);
+  u32 selectedSide;
+  u32 side;
+  int entry;
+  int unit;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    selectedSide = 0;
+    break;
+  case 0:
+    selectedSide = 1;
+    break;
   }
-  return 1;
+  side = selectedSide & 0xffff;
+  for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
+    if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
+      continue;
+    }
+    if ((*(u16 *)(entry + 0x1a) & 8) == 0) {
+      continue;
+    }
+    unit = *(int *)(entry + 0x30);
+    if (*(u8 *)(unit + 0xa2) != side) {
+      continue;
+    }
+    if (func_00300580(*(u32 *)(unit + 0xa2c),0x80000) != 0) {
+      continue;
+    }
+    if (*(u16 *)(unit + 0xa4) != param_2) {
+      continue;
+    }
+    return 1;
+  }
+  return 0;
 }
 
-// FUN_002c1b10 NONMATCHING
+// FUN_002c1b10
 
-u32 func_002c1b10(int param_1,u64 param_2)
+u32 func_002c1b10(int param_1,u32 param_2)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  int iVar3 = 0;
-  
-  iVar3 = *(int *)(iGpffffb6fc + 0x14c);
-  while( true ) {
-    if (iVar3 == 0) {
-      return 0;
+  int entry;
+  int unit;
+
+  for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
+    if (param_1 == entry) {
+      continue;
     }
-    if ((((param_1 != iVar3) && ((*(u16 *)(iVar3 + 0x1a) & 1) != 0)) &&
-        ((*(u16 *)(iVar3 + 0x1a) & 8) != 0)) &&
-       (((iVar1 = *(int *)(iVar3 + 0x30),
-         *(char *)(*(int *)(param_1 + 0x30) + 0xa2) == *(char *)(iVar1 + 0xa2) &&
-         (lVar2 = func_00300580(*(u32 *)(iVar1 + 0xa2c),0x80000), lVar2 == 0)) &&
-        (lVar2 = func_00301ca0(*(u32 *)(iVar1 + 0xa2c),param_2), lVar2 != 0)))) break;
-    iVar3 = *(int *)(iVar3 + 0x4a8);
+    if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
+      continue;
+    }
+    if ((*(u16 *)(entry + 0x1a) & 8) == 0) {
+      continue;
+    }
+    unit = *(int *)(entry + 0x30);
+    if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != *(u8 *)(unit + 0xa2)) {
+      continue;
+    }
+    if (func_00300580(*(u32 *)(unit + 0xa2c),0x80000) != 0) {
+      continue;
+    }
+    if (func_00301ca0(*(u32 *)(unit + 0xa2c),param_2) == 0) {
+      continue;
+    }
+    return 1;
   }
-  return 1;
+  return 0;
 }
 
 // FUN_002c1bf0 NONMATCHING
 
-u32 func_002c1bf0(int param_1,u64 param_2)
+u32 func_002c1bf0(int param_1,u32 param_2)
 
 {
-  char cVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  int iVar4 = 0;
-  
-  cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-  iVar4 = *(int *)(iGpffffb6fc + 0x14c);
-  while( true ) {
-    if (iVar4 == 0) {
-      return 0;
-    }
-    if (((((*(u16 *)(iVar4 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar4 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar4 + 0x30), (bool)*(char *)(iVar2 + 0xa2) == (cVar1 == '\0'))) &&
-       ((lVar3 = func_00300580(*(u32 *)(iVar2 + 0xa2c),0x80000), lVar3 == 0 &&
-        (lVar3 = func_00301ca0(*(u32 *)(iVar2 + 0xa2c),param_2), lVar3 != 0)))) break;
-    iVar4 = *(int *)(iVar4 + 0x4a8);
+  u32 selectedSide;
+  u32 side;
+  int entry;
+  int unit;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    selectedSide = 0;
+    break;
+  case 0:
+    selectedSide = 1;
+    break;
   }
-  return 1;
+  side = selectedSide & 0xffff;
+  for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
+    if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
+      continue;
+    }
+    if ((*(u16 *)(entry + 0x1a) & 8) == 0) {
+      continue;
+    }
+    unit = *(int *)(entry + 0x30);
+    if (*(u8 *)(unit + 0xa2) != side) {
+      continue;
+    }
+    if (func_00300580(*(u32 *)(unit + 0xa2c),0x80000) != 0) {
+      continue;
+    }
+    if (func_00301ca0(*(u32 *)(unit + 0xa2c),param_2) == 0) {
+      continue;
+    }
+    return 1;
+  }
+  return 0;
 }
 
 // FUN_002c1ce0
