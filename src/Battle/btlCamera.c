@@ -6552,17 +6552,17 @@ void func_002acf90(BtlCamera* camera, long unused)
   return;
 }
 
-// FUN_002AD680 NONMATCHING
+// FUN_002AD680
 
 void func_002ad680(BtlCamera* camera)
 {
   undefined2 uVar1;
   
-  uVar1 = FUN_002a7830();
+  uVar1 = btlCameraSelectMode(camera);
   *(undefined2 *)((int)camera + 0x110) = uVar1;
   switch(*(undefined2 *)((int)camera + 0x110)) {
   case 1:
-    FUN_002a4c70(0x42340000,0x43480000,camera);
+    FUN_002a4c70(45.0f,200.0f,camera);
     break;
   case 2:
     func_002ac920(camera,1);
@@ -6582,7 +6582,7 @@ void func_002ad680(BtlCamera* camera)
   return;
 }
 
-// FUN_002AD770 NONMATCHING
+// FUN_002AD770
 
 void func_002ad770(BtlCamera* camera)
 {
@@ -6593,12 +6593,17 @@ void func_002ad770(BtlCamera* camera)
   
   iVar3 = (int)camera;
   switch(*(undefined2 *)(iVar3 + 0x110)) {
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+    break;
   case 1:
     iVar1 = *(int *)(iVar3 + 0xe0);
     if ((iVar1 != 0) && ((*(ushort *)(iVar1 + 0x1a) & 1) != 0)) {
       iVar1 = *(int *)(iVar1 + 0x30);
       btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)auStack_10);
-      FUN_002a3e80(*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5,
+      FUN_002a3e80(*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5f,
                    (u8*)(uintptr_t)*(undefined4 *)(iVar3 + 0xe0),(u8*)(uintptr_t)(iVar3 + 0x9c),
                    (u8*)auStack_10,0x31);
     }
