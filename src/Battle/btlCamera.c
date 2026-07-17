@@ -1233,7 +1233,7 @@ void func_002a7380(void)
 {
 }
 
-// FUN_002a7390
+// FUN_002a7390 NONMATCHING
 void btlCameraFrameActionTarget(BtlCamera* camera)
 {
     f32 horiz[2];
@@ -7777,79 +7777,31 @@ void FUN_002a42a0(void)
   }
 }
 
-// FUN_002A4530 NONMATCHING
+// FUN_002A4530
 
 
 void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4)
-
-
-
 {
+  RwV3d diff;
+  RwV3d cross1;
+  RwV3d cross2;
 
-  float fVar1;
-
-  float fVar2;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  fVar1 = param_3[1];
-
-  fVar2 = param_3[2];
-
-  param_1[0xc] = *param_3;
-
-  param_1[0xd] = fVar1;
-
-  param_1[0xe] = fVar2;
-
-  fStack_10 = *param_2 - *param_3;
-
-  fStack_c = param_2[1] - param_3[1];
-
-  fStack_8 = param_2[2] - param_3[2];
-
-  FUN_004c69f0(&fStack_10,&fStack_10);
-
-  param_1[8] = fStack_10;
-
-  param_1[9] = fStack_c;
-
-  param_1[10] = fStack_8;
-
-  fStack_20 = param_4[1] * fStack_8 - param_4[2] * fStack_c;
-
-  fStack_1c = param_4[2] * fStack_10 - *param_4 * fStack_8;
-
-  fStack_18 = *param_4 * fStack_c - param_4[1] * fStack_10;
-
-  FUN_004c69f0(&fStack_20,&fStack_20);
-
-  *param_1 = fStack_20;
-
-  param_1[1] = fStack_1c;
-
-  param_1[2] = fStack_18;
-
-  param_1[4] = fStack_c * fStack_18 - fStack_8 * fStack_1c;
-
-  param_1[5] = fStack_8 * fStack_20 - fStack_10 * fStack_18;
-
-  param_1[6] = fStack_10 * fStack_1c - fStack_c * fStack_20;
-
+  *(RwV3d*)(param_1 + 0xc) = *(RwV3d*)param_3;
+  diff.x = *param_2 - *param_3;
+  diff.y = param_2[1] - param_3[1];
+  diff.z = param_2[2] - param_3[2];
+  FUN_004c69f0(&diff,&diff);
+  *(RwV3d*)(param_1 + 8) = diff;
+  cross1.x = param_4[1] * diff.z - param_4[2] * diff.y;
+  cross1.y = param_4[2] * diff.x - *param_4 * diff.z;
+  cross1.z = *param_4 * diff.y - param_4[1] * diff.x;
+  FUN_004c69f0(&cross1,&cross1);
+  *(RwV3d*)param_1 = cross1;
+  cross2.x = diff.y * cross1.z - diff.z * cross1.y;
+  cross2.y = diff.z * cross1.x - diff.x * cross1.z;
+  cross2.z = diff.x * cross1.y - diff.y * cross1.x;
+  *(RwV3d*)(param_1 + 4) = cross2;
   return;
-
 }
 
 // FUN_002A4A70 NONMATCHING
