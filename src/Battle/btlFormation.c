@@ -1217,15 +1217,15 @@ u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
 
 void func_002b94f0(BtlFormationWork *work)
 {
-  int uVar1 = 0;
+  int uVar1;
   u32 *piVar2;
-  u16 uVar3 = 0;
+  u16 uVar3;
   
   uVar1 = work->count;
   piVar2 = (u32 *)(uintptr_t)work->items;
   for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1) {
     if (*piVar2 != 0) {
-      func_003257e0();
+      func_003257e0(*piVar2);
     }
     piVar2 = piVar2 + 1;
   }
