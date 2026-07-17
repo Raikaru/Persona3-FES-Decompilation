@@ -1605,34 +1605,38 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
   }
 }
 #pragma optimization_level 2
-// FUN_001FB4B0 NONMATCHING
+// FUN_001FB4B0
+#pragma opt_loop_invariants on
 
 
 void func_001fb4b0(void* entries, s32 capacity, s32 lowerBound, s32 range,
                    s32* firstIndex, s32* indexCount)
 {
   s32 upperBound;
+  int i;
   int first;
-  u8 foundStart;
-  u8 foundRange;
+  int last;
+  s32 foundStart;
+  s32 foundRange;
   u32 value;
   u8* entry;
-  int last;
-  int i;
 
   upperBound = lowerBound + range;
   first = 0;
   foundStart = 0;
   foundRange = 0;
   i = 0;
-  while ((i < capacity &&
-          (entry = (u8*)entries + i * 4, entry[1] != 0))) {
+  while (i < capacity) {
+    entry = (u8*)entries + i * 4;
+    if (((s8*)entry)[1] == 0) {
+      break;
+    }
     value = (u32)*entry;
     if (lowerBound < (int)value) {
       if (!foundStart) {
         foundStart = 1;
-        last = i;
         first = i;
+        last = i;
       }
       if ((int)value <= upperBound) {
         foundRange = 1;
@@ -1649,6 +1653,7 @@ void func_001fb4b0(void* entries, s32 capacity, s32 lowerBound, s32 range,
     *indexCount = 0;
   }
 }
+#pragma opt_loop_invariants off
 // FUN_001FB560 NONMATCHING
 
 
