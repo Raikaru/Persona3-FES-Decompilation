@@ -6738,6 +6738,11 @@ void func_002ae4c0(void)
 {
 }
 
+// FUN_002AE730
+void func_002ae730(void)
+{
+}
+
 // FUN_002AE740 NONMATCHING
 
 void func_002ae740(BtlCamera* camera, long param_2)
