@@ -7,6 +7,7 @@
 #include "Main/Battle/Data/datUnit.h"
 #include "Graphics/primitive.h"
 #include "Battle/btlAction.h"
+#include "libm.h"
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
@@ -69,6 +70,18 @@ extern void func_002af960(BtlCamera* camera);
 extern f32 fGpffff8060;
 extern f32 fGpffff8030;
 extern f32 fGpffff8134;
+extern u8* iGpffffb73c;
+extern f32 D_00697898;
+extern f32 fGpffff80c0;
+extern u32 effMiscRand(void* state);
+extern f32 fGpffff8064;
+extern f32 fGpffff8078;
+extern f32 fGpffff8080;
+extern f32 fGpffff8084;
+extern f32 fGpffff8088;
+extern f32 fGpffff80c4;
+extern f32 fGpffff811c;
+extern void btlUnit002880e0(BtlUnit* unit, u16 param_2);
 extern RwV3d D_00697890;
 extern float gp0xffff8070;
 extern f32 fGpffff82c8;
@@ -1086,7 +1099,208 @@ void btlCameraFrameActionQuarter(BtlCamera* camera)
 // FUN_002a65f0 NONMATCHING
 void btlCameraFrameActionDuel(BtlCamera* camera)
 {
-    btlCameraRangeActionFrame(camera, 2.5f, 450.0f, 1);
+    f32 horiz[2];
+    RwV3d candidate;
+    RwV3d eyeAdj;
+    RwV3d direction;
+    RwV3d sideDirection;
+    RwV3d center;
+    RwV3d selectedCenter;
+    RwV3d unitPoint;
+    RwV3d targetCenter;
+    RtQuat blended;
+    RtQuat rots[2];
+    BtlCameraQuatBlend blend;
+    BtlCameraKeyFrame frames[2];
+    BtlUnit* unit;
+    BtlUnit* target;
+    f32 radius;
+    f32 sideOffset;
+    f32 height;
+    f32 angle;
+    f32 ratio;
+    f32 w1;
+    f32 x;
+    f32 x2;
+    f32 r;
+    f32 r2;
+    f32 dist;
+    f32 selectedRadius;
+    f32 dot;
+    f32 sideLength;
+    unit = camera->action->unit;
+    target = camera->action->target.targetedActions[0]->unit;
+    FUN_002a4470((f32*)&frames[0], (f32*)((u8*)camera + 0x9c));
+    unitPoint.x = unit->unk_dc.x;
+    unitPoint.y = unit->sphereCenter.y * unit->scale;
+    unitPoint.z = unit->unk_dc.z;
+    FUN_0027ffb0(target, &targetCenter);
+    {
+        f32 targetHeight;
+    height = unit->unk_8c * unit->scale;
+    height = unitPoint.y + fGpffff8094 * height;
+    ratio = target->unk_8c * target->scale;
+    targetHeight = targetCenter.y + fGpffff8094 * ratio;
+    height = height + targetHeight;
+    radius = *(f32*)((u8*)unit + 0xe8);
+    radius += unit->sphereRadius * unit->scale;
+    radius += target->sphereRadius * target->scale;
+    targetCenter.y = 0.0f;
+    unitPoint.y = 0.0f;
+    direction.x = unit->unk_dc.x - targetCenter.x;
+    direction.y = *(f32*)((u8*)unit + 0xe0) - unitPoint.y;
+    direction.z = unit->unk_dc.z - targetCenter.z;
+    RwV3dNormalize(&direction, &direction);
+    targetHeight = 0.25f * radius;
+    center.x = direction.x * targetHeight;
+    center.y = direction.y * targetHeight;
+    center.z = direction.z * targetHeight;
+    center.x = targetCenter.x + center.x;
+    center.y = targetCenter.y + center.y;
+    center.z = targetCenter.z + center.z;
+    {
+        f32 halfHeight;
+    halfHeight = 0.5f * height;
+    center.y = halfHeight;
+    eyeAdj = frames[0].pos;
+    eyeAdj.y = height;
+    *(f32*)((int)(uintptr_t)camera + 0x10c) =
+        0.5f * *(f32*)((int)(uintptr_t)unit + 0xe8);
+    *(RwV3d*)((u8*)camera + 0x100) = center;
+    FUN_002a4690(&frames[1].rot, &eyeAdj, &center, &D_00697880);
+    height = radius;
+    height += unit->sphereRadius * unit->scale;
+    height += target->sphereRadius * target->scale;
+    angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&frames[1].rot);
+    if (angle > fGpffff80f0)
+    {
+        ratio = fGpffff80f0 / angle;
+        FUN_004be310((f32*)&frames[0].rot, (f32*)&frames[1].rot, (f32*)&blend);
+        if (ratio <= 0.0f)
+        {
+            blended = frames[0].rot;
+        }
+        else if (1.0f <= ratio)
+        {
+            blended = frames[1].rot;
+        }
+        else
+        {
+            w1 = 1.0f - ratio;
+            if (blend.flag == 0)
+            {
+                x = w1 * blend.scalar;
+                x2 = x * x;
+                r = fGpffff8048 + fGpffff8130 * x2;
+                r = fGpffff8118 + x2 * r;
+                r = fGpffff8050 + x2 * r;
+                r = fGpffff8054 + x2 * r;
+                r2 = fGpffff8058 + x2 * r;
+                w1 = x + x2 * x * r2;
+                x = ratio * blend.scalar;
+                x2 = x * x;
+                r = fGpffff8048 + fGpffff8130 * x2;
+                r = fGpffff8118 + x2 * r;
+                r = fGpffff8050 + x2 * r;
+                r = fGpffff8054 + x2 * r;
+                r2 = fGpffff8058 + x2 * r;
+                ratio = x + x2 * x * r2;
+            }
+            blended.imag.x = blend.first.imag.x * w1;
+            blended.imag.y = blend.first.imag.y * w1;
+            blended.imag.z = blend.first.imag.z * w1;
+            blended.imag.x = 0.0f + blended.imag.x + blend.second.imag.x * ratio;
+            blended.imag.y = 0.0f + blended.imag.y + blend.second.imag.y * ratio;
+            blended.imag.z = 0.0f + blended.imag.z + blend.second.imag.z * ratio;
+            blended.real = blend.first.real * w1 + blend.second.real * ratio;
+        }
+        RtQuatTransformVectors(&eyeAdj, &D_006978A0, 1, &blended);
+        eyeAdj.x = eyeAdj.x + center.x;
+        eyeAdj.y = eyeAdj.y + center.y;
+        eyeAdj.z = eyeAdj.z + center.z;
+        FUN_002a4690(&frames[1].rot, &eyeAdj, &center, &D_00697880);
+    }
+    else if (angle < fGpffff80f4)
+    {
+        FUN_004bdde0((f32*)&frames[1].rot, (const f32*)&D_00697880, fGpffff80f8, 2);
+    }
+    if (height < 675.0f)
+    {
+        height = 675.0f;
+    }
+    dist = (1.5f * (0.5f * height)) /
+           FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+    RtQuatTransformVectors(&eyeAdj, &D_006978A0, 1, &frames[1].rot);
+    direction.y = eyeAdj.y;
+    RwV3dNormalize(&direction, &direction);
+    angle = eyeAdj.x * direction.x +
+            eyeAdj.y * direction.y +
+            eyeAdj.z * direction.z;
+    if (angle >= 0.0f)
+    {
+        selectedRadius = unit->sphereRadius * unit->scale;
+        selectedCenter = unitPoint;
+    }
+    else
+    {
+        selectedRadius = target->sphereRadius * target->scale;
+        selectedCenter = targetCenter;
+    }
+    candidate.x = targetCenter.x + direction.z * selectedRadius;
+    candidate.y = center.y;
+    candidate.z = targetCenter.z - direction.x * selectedRadius;
+    sideDirection.x = candidate.x - center.x;
+    sideDirection.y = candidate.y - center.y;
+    sideDirection.z = candidate.z - center.z;
+    RwV3dNormalize(&sideDirection, &sideDirection);
+    dot = 0.0f +
+          sideDirection.x * direction.x +
+          sideDirection.y * direction.y +
+          sideDirection.z * direction.z;
+    if (fabsf(angle) > fabsf(dot) &&
+        dot != 0.0f && angle != 0.0f)
+    {
+        horiz[0] = center.x - selectedCenter.x;
+        horiz[1] = center.z - selectedCenter.z;
+        sideLength = RwV2dLength((RwV2d*)horiz);
+        candidate.y = center.y + halfHeight * sideLength / dist;
+        candidate.x = selectedCenter.x + direction.z * selectedRadius;
+        candidate.z = selectedCenter.z - direction.x * selectedRadius;
+        FUN_002a4690(&rots[0], &candidate, &center, &D_00697880);
+        angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&rots[0]);
+        candidate.x = selectedCenter.x - direction.z * selectedRadius;
+        candidate.z = selectedCenter.z + direction.x * selectedRadius;
+        FUN_002a4690(&rots[1], &candidate, &center, &D_00697880);
+        ratio = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&rots[1]);
+        if (angle < ratio)
+        {
+            frames[1].rot = rots[0];
+        }
+        else
+        {
+            frames[1].rot = rots[1];
+        }
+        RtQuatTransformVectors(&eyeAdj, &D_006978A0, 1, &frames[1].rot);
+    }
+    eyeAdj.x = eyeAdj.x * dist;
+    eyeAdj.y = eyeAdj.y * dist;
+    eyeAdj.z = eyeAdj.z * dist;
+    sideOffset = dist * FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+    sideOffset = sideOffset * 0.21875f;
+    horiz[0] = eyeAdj.x;
+    horiz[1] = eyeAdj.z;
+    FUN_004c6b20(horiz, horiz);
+    center.x = 0.0f + center.x + horiz[1] * sideOffset;
+    center.z = 0.0f + center.z - horiz[0] * sideOffset;
+    frames[1].pos.x = center.x + eyeAdj.x;
+    frames[1].pos.y = center.y + eyeAdj.y;
+    frames[1].pos.z = center.z + eyeAdj.z;
+    FUN_002a3590((f32*)&frames[0].pos, (f32*)&frames[0].pos);
+    FUN_002a3590((f32*)&frames[1].pos, (f32*)&frames[1].pos);
+    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    FUN_002a3110((u16*)camera, 2.0f);
+    }
+    }
 }
 
 // FUN_002a6ee0 NONMATCHING
@@ -1151,7 +1365,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
         eyeBase = center1;
         radius = unit->sphereRadius * unit->scale;
         f6 = 2.5f * radius;
-        two = 2.0f;
+        two = 2.25f;
         if (eyeBase.y < 125.0f)
         {
             eyeBase.y = 125.0f;
@@ -1163,7 +1377,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
         eyeBase = center2;
         radius = unit2->sphereRadius * unit2->scale;
         f6 = 2.5f * radius;
-        two = 2.0f;
+        two = 2.25f;
     }
     hs[0] = dir.z;
     hs[1] = -dir.x;
@@ -1210,11 +1424,11 @@ void btlCameraFrameActionSide(BtlCamera* camera)
     {
         out2.pos.y = 25.0f;
     }
-    FUN_002a44b0((f32*)((u8*)camera + 0x9c), (f32*)&out2.pos);
+    FUN_002a44b0((f32*)&camera->pos, (f32*)&out2.pos);
     func_002af960(camera);
     FUN_002a3e80(0.5f * (radius2 + (len + radius1)),
-                 *(u8**)((u8*)camera + 0xe0),
-                 (u8*)camera + 0x9c,
+                 (u8*)camera->action,
+                 (u8*)&camera->pos,
                  (u8*)camera + 0x100,
                  3);
     if (radius1 <= radius2)
@@ -1222,7 +1436,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
         radius1 = radius2;
     }
     FUN_002a3e80(radius1,
-                 *(u8**)((u8*)camera + 0xe0),
+                 *(u8**)((int)camera + 0xe0),
                  (u8*)&center1,
                  (u8*)&center2,
                  3);
@@ -1419,14 +1633,177 @@ void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
     }
 }
 
-// FUN_002a8d20 NONMATCHING
+// FUN_002a8d20
 void btlCameraFrameActionAll(BtlCamera* camera, u32 suppressEffects)
 {
-    btlCameraRangeActionFrame(camera, 2.0f, 450.0f, 1);
-    if (suppressEffects == 0 && camera != NULL)
+    RwV3d midpoint;
+    RwV3d center1;
+    RwV3d center2;
+    RwV3d candidate;
+    RwV3d direction;
+    RwV3d transformed;
+    RwV3d base;
+    RwV3d aux;
+    f32 work[14];
+    BtlUnit* unit;
+    BtlUnit* persona;
+    f32 radius1;
+    f32 radius2;
+    f32 height1;
+    f32 height2;
+    f32 distance1;
+    f32 distance2;
+    f32 halfHeight;
+    f32 scale;
+    f32 f;
+
+    unit = camera->action->unit;
+    persona = unit->personaUnit;
+    btlUnitGetSphereWorldCenter(unit, &center1);
+    btlUnitGetSphereWorldCenter(persona, &center2);
+    height1 = unit->unk_8c * unit->scale;
+    height1 = center1.y + 0.5f * height1;
+    height2 = persona->unk_8c * persona->scale;
+    height2 = center2.y + 0.5f * height2;
+    radius1 = unit->sphereRadius * unit->scale;
+    radius2 = persona->sphereRadius * persona->scale;
+    if ((*(u16*)(iGpffffb73c + (persona->charId * 0x58)) & 1) == 0)
     {
-        camera->framesUntilUpdate = 0;
+        btlUnit002880e0(persona, 0);
+        midpoint.x = center1.x + center2.x;
+        midpoint.y = center1.y + center2.y;
+        midpoint.z = center1.z + center2.z;
+        midpoint.x = midpoint.x * 0.5f;
+        midpoint.y = midpoint.y * 0.5f;
+        midpoint.z = midpoint.z * 0.5f;
+        direction.x = center1.x - midpoint.x;
+        direction.y = center1.y - midpoint.y;
+        direction.z = center1.z - midpoint.z;
+        f = RwV3dLength(&direction);
+        distance1 = f + radius1;
+        candidate = center1;
+        candidate.y = height1;
+        direction.x = candidate.x - midpoint.x;
+        direction.y = candidate.y - midpoint.y;
+        direction.z = candidate.z - midpoint.z;
+        f = RwV3dLength(&direction);
+        distance1 = (distance1 > f) ? distance1 : f;
+        direction.x = center2.x - midpoint.x;
+        direction.y = center2.y - midpoint.y;
+        direction.z = center2.z - midpoint.z;
+        f = RwV3dLength(&direction);
+        distance2 = f + radius2;
+        candidate = center2;
+        candidate.y = height2;
+        direction.x = candidate.x - midpoint.x;
+        direction.y = candidate.y - midpoint.y;
+        direction.z = candidate.z - midpoint.z;
+        f = RwV3dLength(&direction);
+        distance2 = (distance2 > f) ? distance2 : f;
+        base = midpoint;
+        if (height1 < height2) halfHeight = fGpffff8084 * height2;
+        else halfHeight = fGpffff8084 * height1;
+        base.y = halfHeight;
+        distance1 = (distance1 > distance2) ? distance1 : distance2;
+        scale = distance1 * fGpffff811c;
+        RtQuatTransformVectors(&transformed, &D_00697890, 1, &unit->rot);
+        direction.x = transformed.x * scale;
+        direction.y = transformed.y * scale;
+        direction.z = transformed.z * scale;
+        candidate.x = direction.x + midpoint.x;
+        candidate.y = direction.y + midpoint.y;
+        candidate.z = direction.z + midpoint.z;
+        if (height1 < height2) halfHeight = 0.5f * height2;
+        else halfHeight = 0.5f * height1;
+        candidate.y = halfHeight;
+        direction.x = candidate.x - base.x;
+        direction.y = candidate.y - base.y;
+        direction.z = candidate.z - base.z;
+        RwV3dNormalize(&direction, &direction);
+        FUN_002a4690((RtQuat*)(work + 10), &candidate, &base, &D_00697880);
+        radius1 = scale / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        candidate.x = direction.x * radius1;
+        candidate.y = direction.y * radius1;
+        candidate.z = direction.z * radius1;
+        work[7] = base.x + candidate.x;
+        work[8] = base.y + candidate.y;
+        work[9] = base.z + candidate.z;
+        base = center1;
+        f = 0.75f * height1;
+        base.y = f;
+        direction.x = transformed.x * radius2;
+        direction.y = transformed.y * radius2;
+        direction.z = transformed.z * radius2;
+        candidate.x = direction.x + base.x;
+        candidate.y = direction.y + base.y;
+        candidate.z = direction.z + base.z;
+        FUN_002a4690((RtQuat*)(work + 3), &candidate, &base, &D_00697880);
+        f = 0.75f * radius1;
+        candidate.x = transformed.x * f;
+        candidate.y = transformed.y * f;
+        candidate.z = transformed.z * f;
+        work[0] = base.x + candidate.x;
+        work[1] = base.y + candidate.y;
+        work[2] = base.z + candidate.z;
     }
+    else
+    {
+        btlUnit002880e0(persona, 1);
+        aux = center2;
+        midpoint = center2;
+        midpoint.y = fGpffff8088 * height2;
+        base = center2;
+        base.y = fGpffff8064 * height2;
+        RtQuatTransformVectors(&transformed, &D_00697890, 1, &unit->rot);
+        direction.x = transformed.x * radius2;
+        direction.y = transformed.y * radius2;
+        direction.z = transformed.z * radius2;
+        candidate.x = direction.x + midpoint.x;
+        candidate.y = direction.y + midpoint.y;
+        candidate.z = direction.z + midpoint.z;
+        candidate.y = fGpffff8084 * midpoint.y;
+        direction.x = candidate.x - base.x;
+        direction.y = candidate.y - base.y;
+        direction.z = candidate.z - base.z;
+        RwV3dNormalize(&direction, &direction);
+        FUN_002a4690((RtQuat*)(work + 10), &candidate, &base, &D_00697880);
+        halfHeight = 0.5f * height2;
+        if (radius2 > halfHeight)
+            radius1 = (1.25f * radius2) /
+                      FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        else
+            radius1 = (1.25f * halfHeight) /
+                      FUN_0052e930(0.5f * camera->fovRad);
+        if (radius1 - radius2 < 350.0f) radius1 = 350.0f + radius2;
+        candidate.x = direction.x * radius1;
+        candidate.y = direction.y * radius1;
+        candidate.z = direction.z * radius1;
+        work[7] = base.x + candidate.x;
+        work[8] = base.y + candidate.y;
+        work[9] = base.z + candidate.z;
+        base = center1;
+        base.y = height1;
+        direction.x = transformed.x * radius2;
+        direction.y = transformed.y * radius2;
+        direction.z = transformed.z * radius2;
+        candidate.x = direction.x + base.x;
+        candidate.y = direction.y + base.y;
+        candidate.z = direction.z + base.z;
+        FUN_002a4690((RtQuat*)(work + 3), &candidate, &base, &D_00697880);
+        f = fGpffff80c4 * radius1;
+        candidate.x = transformed.x * f;
+        candidate.y = transformed.y * f;
+        candidate.z = transformed.z * f;
+        work[0] = base.x + candidate.x;
+        work[1] = base.y + candidate.y;
+        work[2] = base.z + candidate.z;
+    }
+    if (work[1] < 25.0f) work[1] = 25.0f;
+    if (work[8] < 25.0f) work[8] = 25.0f;
+    FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
+    FUN_002a2290((u16*)camera, (RwV3d*)work, (RwV3d*)(work + 7), 1);
+    FUN_002a3110((u16*)camera, 2.0f);
+    if (suppressEffects != 0) FUN_00351bb0(0xc);
 }
 
 // FUN_002a95d0 NONMATCHING
@@ -8049,93 +8426,54 @@ u64 FUN_002a3550(u8* param_1)
 
 }
 
-// FUN_002A3590 NONMATCHING
+// FUN_002A3590
 
 
 u32 FUN_002a3590(float *param_1,float *param_2)
-
-
-
 {
+  f32 tmp[3];
+  f32 t;
+  f32 a;
+  u32 ret;
 
-  u32 uVar1;
-
-  float *pfVar2;
-
-  float fVar3;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  uVar1 = 0;
-
-  fVar3 = *param_1;
-
-  pfVar2 = param_2;
-
-  if (1500.0 < ABS(fVar3)) {
-
+  ret = 0;
+  a = fabsf(param_1[0]);
+  if (a > 1500) {
     if (param_2 != 0) {
-
-      FUN_004be1e0(&fStack_10,0x697890,1,param_1 + 3);
-
-      if (fStack_10 != 0.0) {
-
-        fVar3 = (ABS(fVar3) - 1500.0) / ABS(fStack_10);
-
-        fStack_10 = fStack_10 * fVar3;
-
-        fStack_c = fStack_c * fVar3;
-
-        fStack_8 = fStack_8 * fVar3;
-
-        *pfVar2 = *param_1 + fStack_10;
-
-        pfVar2[1] = param_1[1] + fStack_c;
-
-        pfVar2[2] = param_1[2] + fStack_8;
-
+      t = a - 1500;
+      RtQuatTransformVectors((RwV3d*)tmp,&D_00697890,1,(RtQuat*)(param_1 + 3));
+      if (tmp[0] != 0.0f) {
+        a = fabsf(tmp[0]);
+        t = t / a;
+        tmp[0] = tmp[0] * t;
+        tmp[1] = tmp[1] * t;
+        tmp[2] = tmp[2] * t;
+        param_2[0] = param_1[0] + tmp[0];
+        param_2[1] = param_1[1] + tmp[1];
+        param_2[2] = param_1[2] + tmp[2];
       }
-
     }
-
-    uVar1 = 1;
-
+    ret = 1;
   }
-
-  fVar3 = param_1[2];
-
-  if (1500.0 < ABS(fVar3)) {
-
+  a = fabsf(param_1[2]);
+  if (a > 1500) {
     if (param_2 != 0) {
-
-      FUN_004be1e0(&fStack_10,0x697890,1,param_1 + 3);
-
-      if (fStack_8 != 0.0) {
-
-        fVar3 = (ABS(fVar3) - 1500.0) / ABS(fStack_8);
-
-        *pfVar2 = *param_1 + fStack_10 * fVar3;
-
-        pfVar2[1] = param_1[1] + fStack_c * fVar3;
-
-        pfVar2[2] = param_1[2] + fStack_8 * fVar3;
-
+      t = a - 1500;
+      RtQuatTransformVectors((RwV3d*)tmp,&D_00697890,1,(RtQuat*)(param_1 + 3));
+      if (tmp[2] != 0.0f) {
+        a = fabsf(tmp[2]);
+        t = t / a;
+        tmp[0] = tmp[0] * t;
+        tmp[1] = tmp[1] * t;
+        tmp[2] = tmp[2] * t;
+        param_2[0] = param_1[0] + tmp[0];
+        param_2[1] = param_1[1] + tmp[1];
+        param_2[2] = param_1[2] + tmp[2];
       }
-
     }
-
-    uVar1 = 1;
-
+    ret = 1;
   }
-
-  return uVar1;
-
+  return ret;
 }
 
 // FUN_002A3750
