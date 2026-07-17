@@ -1854,7 +1854,7 @@ extern u64 FUN_002812b0();
 extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
 extern s16 FUN_00284040();
 extern u64 FUN_00288110();
-extern u64 FUN_00288da0();
+extern int FUN_00288da0(int param_1, short param_2);
 extern u64 FUN_0029a1d0();
 extern u64 FUN_002a2170();
 extern u64 FUN_002a2660();
@@ -5097,55 +5097,52 @@ void FUN_002b77c0(undefined8 param_1)
   return;
 }
 
-// FUN_002b79e0 NONMATCHING
+// FUN_002b79e0
 
 undefined4 FUN_002b79e0(int *param_1)
-
 {
   int iVar1;
   int iVar2;
   int iVar3;
   float fVar4;
-  float afStack_30 [2];
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
+  RwV3d diff;
+  RwV3d pos;
+  f32 out[3];
+
   iVar1 = *param_1;
   iVar2 = param_1[1];
-  FUN_00280390(iVar2,iVar1,afStack_30);
-  fStack_10 = *(float *)(iVar1 + 4) - afStack_30[0];
-  fStack_c = 0.0;
-  fStack_8 = *(float *)(iVar1 + 0xc) - fStack_28;
-  FUN_004c69f0(&fStack_10,&fStack_10);
-  if ((fStack_10 != 0.0) || (fStack_8 != 0.0)) {
-    fVar4 = ((float)param_1[2] + 0.0) - (float)(int)*(short *)(iVar3 + 4) * *(float *)(iVar2 + 0x2c)
-    ;
-    fStack_10 = fStack_10 * fVar4;
-    fStack_c = fStack_c * fVar4;
-    fStack_8 = fStack_8 * fVar4;
+  FUN_00280390(iVar2,iVar1,out);
+  diff.x = *(float *)(iVar1 + 4) - out[0];
+  diff.y = 0.0f;
+  diff.z = *(float *)(iVar1 + 0xc) - out[2];
+  FUN_004c69f0(&diff,&diff);
+  if ((diff.x == 0.0f) && (diff.z == 0.0f)) {
+    return 1;
+  }
+  {
+    iVar3 = FUN_00288da0(iVar2,9);
+    fVar4 = (*(float *)(param_1 + 2) + 0.0f) - (float)(int)*(short *)(iVar3 + 4) * *(float *)(iVar2 + 0x2c);
+    diff.x = diff.x * fVar4;
+    diff.y = diff.y * fVar4;
+    diff.z = diff.z * fVar4;
     if ((*(u16 *)(param_1 + 3) & 1) != 0) {
-      fStack_20 = *(float *)(iVar1 + 4) + fStack_10;
-      fStack_1c = *(float *)(iVar1 + 8) + fStack_c;
-      fStack_18 = *(float *)(iVar1 + 0xc) + fStack_8;
-      FUN_0027f650(iVar1,&fStack_20);
+      pos.x = *(float *)(iVar1 + 4) + diff.x;
+      pos.y = *(float *)(iVar1 + 8) + diff.y;
+      pos.z = *(float *)(iVar1 + 0xc) + diff.z;
+      FUN_0027f650(iVar1,&pos);
       iVar1 = *(int *)(iVar1 + 0xa00);
       if (iVar1 != 0) {
-        fStack_20 = *(float *)(iVar1 + 4) + fStack_10;
-        fStack_1c = *(float *)(iVar1 + 8) + fStack_c;
-        fStack_18 = *(float *)(iVar1 + 0xc) + fStack_8;
-        FUN_0027f650(iVar1,&fStack_20);
+        pos.x = *(float *)(iVar1 + 4) + diff.x;
+        pos.y = *(float *)(iVar1 + 8) + diff.y;
+        pos.z = *(float *)(iVar1 + 0xc) + diff.z;
+        FUN_0027f650(iVar1,&pos);
       }
     }
     if ((*(u16 *)(param_1 + 3) & 2) != 0) {
-      fStack_20 = *(float *)(iVar2 + 4) + fStack_10;
-      fStack_1c = *(float *)(iVar2 + 8) + fStack_c;
-      fStack_18 = *(float *)(iVar2 + 0xc) + fStack_8;
-      FUN_0027f650(iVar2,&fStack_20);
+      pos.x = *(float *)(iVar2 + 4) + diff.x;
+      pos.y = *(float *)(iVar2 + 8) + diff.y;
+      pos.z = *(float *)(iVar2 + 0xc) + diff.z;
+      FUN_0027f650(iVar2,&pos);
     }
   }
   return 1;
