@@ -387,8 +387,8 @@ void FUN_002d2340(f32 distance, u8* work, s16 start, s16 end)
     *(f32*)(work + 0x898) = bottom;
 }
 
-// FUN_002d2470 NONMATCHING
-s32 FUN_002d2470(f32 tolerance, const f32* a, const f32* b, const f32* point)
+// FUN_002d2470
+s32 FUN_002d2470(const f32* a, const f32* b, const f32* point, f32 tolerance)
 {
     RwV2d axis;
     f32 projected[2];
@@ -415,6 +415,9 @@ s32 FUN_002d2470(f32 tolerance, const f32* a, const f32* b, const f32* point)
     }
     return fabsf(dx) < tolerance;
 }
+#pragma alias FUN_002d2470_call FUN_002d2470
+extern s32 FUN_002d2470_call(f32 tolerance, const f32* a, const f32* b,
+                             const f32* point);
 // FUN_002d1660 NONMATCHING
 void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
 {
@@ -2098,7 +2101,7 @@ int FUN_002d2a00(float param_1, float *param_2, float *param_3)
                         return 1;
                     }
                 }
-                if (FUN_002d2470(param_1, param_2, param_3, edge) != 0)
+                if (FUN_002d2470_call(param_1, param_2, param_3, edge) != 0)
                 {
                     return 1;
                 }
