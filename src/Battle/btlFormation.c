@@ -239,6 +239,8 @@ extern void func_0035f060_u32(u32 param_1);
 extern u32 func_0035ed20_u32(u32 param_1);
 #pragma alias func_002a3d70_f32 func_002a3d70
 extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
+#pragma alias func_0035ee60_f32 func_0035ee60
+extern float func_0035ee60_f32(u32 param_1);
 extern u64 func_0030b4b0();
 extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
@@ -14112,31 +14114,29 @@ u32 func_002d0de0(void)
   return 1;
 }
 
-// FUN_002d0ef0 NONMATCHING
+// FUN_002d0ef0
 
 u32 func_002d0ef0(void)
-
 {
-  DAT_00957170 = func_0035ee60(0);
-  DAT_00957174 = func_0035ee60(1);
-  DAT_00957178 = func_0035ee60(2);
-  DAT_00957150 = func_0035ee60(3);
-  DAT_00957154 = func_0035ee60(4);
-  DAT_00957158 = func_0035ee60(5);
+  *(float *)(DAT_00957170_abs + 0) = func_0035ee60_f32(0);
+  *(float *)(DAT_00957170_abs + 4) = func_0035ee60_f32(1);
+  *(float *)(DAT_00957170_abs + 8) = func_0035ee60_f32(2);
+  *(float *)(DAT_00957150_abs + 0) = func_0035ee60_f32(3);
+  *(float *)(DAT_00957150_abs + 4) = func_0035ee60_f32(4);
+  *(float *)(DAT_00957150_abs + 8) = func_0035ee60_f32(5);
   return 1;
 }
 
-// FUN_002d0f90 NONMATCHING
+// FUN_002d0f90
 
 u32 func_002d0f90(void)
-
 {
-  DAT_00957160 = func_0035ee60(0);
-  DAT_00957164 = func_0035ee60(1);
-  DAT_00957168 = func_0035ee60(2);
-  DAT_00957140 = func_0035ee60(3);
-  DAT_00957144 = func_0035ee60(4);
-  DAT_00957148 = func_0035ee60(5);
+  *(float *)(DAT_00957160_abs + 0) = func_0035ee60_f32(0);
+  *(float *)(DAT_00957160_abs + 4) = func_0035ee60_f32(1);
+  *(float *)(DAT_00957160_abs + 8) = func_0035ee60_f32(2);
+  *(float *)(DAT_00957140_abs + 0) = func_0035ee60_f32(3);
+  *(float *)(DAT_00957140_abs + 4) = func_0035ee60_f32(4);
+  *(float *)(DAT_00957140_abs + 8) = func_0035ee60_f32(5);
   return 1;
 }
 
