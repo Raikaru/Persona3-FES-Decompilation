@@ -4000,11 +4000,14 @@ void FUN_002b4f40(int param_1)
   FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(int *)(param_1 + 0xe0), 0, 0, 0x40);
 }
 
-// FUN_002b4fd0 NONMATCHING
+#pragma alias FUN_002b4db0_float FUN_002b4db0
+extern void FUN_002b4db0_float(float);
+
+// FUN_002b4fd0
 void FUN_002b4fd0(void)
 
 {
-  ((void (*)(float))FUN_002b4db0)(DAT_007cad94);
+  FUN_002b4db0_float(DAT_007cad94);
   return;
 }
 
