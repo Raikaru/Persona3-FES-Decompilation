@@ -273,10 +273,14 @@ extern u64 func_00321120();
 extern u64 func_00321130();
 extern u64 func_00321320();
 extern u64 func_00324bd0();
+#pragma alias func_00324bd0_u32 func_00324bd0
+extern u32 func_00324bd0_u32(u32 param_1);
 extern u64 func_003252a0();
 extern u64 func_00325500();
 extern u64 func_003257e0();
 extern u64 func_00325920();
+#pragma alias func_00325920_u32 func_00325920
+extern u32 func_00325920_u32(u32 param_1);
 extern u64 func_00325c10();
 extern u64 func_00325d60();
 extern u64 func_00325e40();
@@ -503,7 +507,7 @@ extern u8* iGpffffb7b8;
 extern u32 func_002b8dc0(u16 *param_1);
 extern u32 func_002b8f90(u16 param_1);
 extern void func_002b9030(u32 param_1);
-extern void func_002b90d0(u64 param_1,u64 param_2);
+extern void func_002b90d0(int param_1,u32 param_2);
 extern void func_002b9220(int param_1);
 extern void func_002b9300(int param_1);
 extern bool func_002b9350(int param_1);
@@ -1116,40 +1120,39 @@ void func_002b9030(u32 param_1)
 
 // FUN_002b90d0 NONMATCHING
 
-void func_002b90d0(u64 param_1,u64 param_2)
-
+void func_002b90d0(int destination, u32 source)
 {
-  u16 uVar1 = 0;
-  u32 uVar2 = 0;
-  int iVar3 = 0;
-  char *pcVar4;
-  u16 uVar5 = 0;
-  u32 uVar6 = 0;
-  int iVar7 = 0;
-  
-  func_00521250(param_1,param_2,0x630);
-  for (uVar6 = 0; iVar7 = (int)param_1, uVar6 < 2; uVar6 = uVar6 + 1 & 0xffff) {
-    iVar3 = iVar7 + uVar6 * 0x314;
-    uVar1 = *(u16 *)(iVar3 + 0x10);
-    pcVar4 = (char *)(iVar3 + 0x1c);
-    for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
-      if (*pcVar4 != -2) {
-        if (*pcVar4 == -1) {
-          iVar3 = iVar7 + (*(u32 *)(pcVar4 + 4) >> 5) * 0x314 +
-                  (*(u32 *)(pcVar4 + 4) & 0x1f) * 0x18;
-          uVar2 = func_00325920(*(u32 *)(iVar3 + 0x20));
-          *pcVar4 = *(char *)(iVar3 + 0x1c);
+  u16 outer;
+  u16 index;
+  s32 count;
+  u8* entry;
+  int block;
+  u8* referencedEntry;
+  u32 packed;
+  u32 resource;
+
+  func_00521250(destination, source, 0x630);
+  for (outer = 0; outer < 2; outer++) {
+    block = destination + (outer & 0xffff) * 0x314;
+    count = *(u16 *)(block + 0x10);
+    entry = (u8 *)(block + 0x1c);
+    for (index = 0; index < count; index++) {
+      if (entry[0] != 0xfe) {
+        if (entry[0] == 0xff) {
+          packed = *(u32 *)(entry + 4);
+          referencedEntry = (u8 *)(destination + (packed >> 5) * 0x314 +
+                                      (packed & 0x1f) * 0x18 + 0x1c);
+          resource = func_00325920_u32(*(u32 *)(referencedEntry + 4));
+          entry[0] = referencedEntry[0];
+        } else {
+          resource = func_00324bd0_u32(source + *(u32 *)(entry + 4));
         }
-        else {
-          uVar2 = func_00324bd0((int)param_2 + *(int *)(pcVar4 + 4));
-        }
-        *(u32 *)(pcVar4 + 4) = uVar2;
+        *(u32 *)(entry + 4) = resource;
       }
-      pcVar4 = pcVar4 + 0x18;
+      entry += 0x18;
     }
   }
-  *(u16 *)(iVar7 + 0x630) = *(u16 *)(iVar7 + 0x630) | 2;
-  return;
+  *(u16 *)(destination + 0x630) |= 2;
 }
 
 // FUN_002b9220 NONMATCHING
