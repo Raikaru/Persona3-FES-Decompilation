@@ -342,6 +342,8 @@ extern float DAT_00960088;
 extern u64 (*DAT_00960090)();
 extern u64 (*DAT_009600a4)();
 extern u64 (*DAT_00960178)();
+#pragma alias DAT_00960178_u32_abs DAT_00960178
+extern u32 (*DAT_00960178_u32_abs[])(...);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern void (*DAT_0096017c[])(...);
@@ -408,6 +410,8 @@ extern void LAB_002bd060(void);
 extern void LAB_002bd210(void);
 extern char* PTR_s_N_00646555_0x12_00696dcc[];
 extern char* PTR_s_battle_effect_ATC_D_BED_00696c80;
+#pragma alias PTR_s_battle_effect_ATC_D_BED_abs PTR_s_battle_effect_ATC_D_BED_00696c80
+extern char *PTR_s_battle_effect_ATC_D_BED_abs[];
 extern char* PTR_s_battle_effect_SHADOW_S_BED_007cc6f0;
 extern u32 _DAT_007ce4f4;
 extern u8 gp0xffff99f8;
@@ -3067,27 +3071,34 @@ void func_002bc420(void)
 u32 func_002bc480(void)
 
 {
+  extern u32 func_00100d80(void *,u32);
+  extern u32 func_001016b0(u32);
+  extern u32 func_00102100(u32,u32,u8 *);
+  extern void func_00521250(u32,u32,u32);
   u32 uVar1 = 0;
-  long lVar2 = 0;
-  u64 uVar3 = 0;
-  u64 uVar4 = 0;
-  u32 uVar5 = 0;
-  int iVar6 = 0;
-  u8 auStack_4 [4] = {0};
+  u32 lVar2 = 0;
+  u32 firstIndex = 0;
+  u32 resource = 0;
+  u32 secondIndex = 0;
+  u32 allocated = 0;
+  u32 firstValue = 0;
+  u32 firstOffset = 0;
+  u8 auStack_4[4];
   
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x4000000) == 0) {
     if (*(int *)(DAT_007ce3ec + 0xd14) == 0) {
-      uVar1 = func_00100d80(0x696d70,1);
+      uVar1 = func_00100d80((void *)0x696d70,1);
       *(u32 *)(DAT_007ce3ec + 0xd14) = uVar1;
     }
     else {
-      lVar2 = func_001016b0();
+      lVar2 = func_001016b0(*(u32 *)(DAT_007ce3ec + 0xd14));
       if (lVar2 != 0) {
-        for (uVar5 = 0; uVar5 < 0x3c; uVar5 = uVar5 + 1) {
-          uVar3 = func_00102100(*(u32 *)(DAT_007ce3ec + 0xd14),uVar5,auStack_4);
+        for (firstIndex = 0; firstIndex < 0x3c; firstIndex = firstIndex + 1) {
+          firstValue = func_00102100(*(u32 *)(DAT_007ce3ec + 0xd14),firstIndex,auStack_4);
+          firstOffset = firstIndex * 4;
           uVar1 = func_002b8f90(2);
-          *(u32 *)(DAT_007ce3ec + uVar5 * 4 + 0xc24) = uVar1;
-          func_002b96e0(*(u32 *)(DAT_007ce3ec + uVar5 * 4 + 0xc24),uVar3);
+          *(u32 *)(DAT_007ce3ec + firstOffset + 0xc24) = uVar1;
+          func_002b96e0(*(u32 *)(DAT_007ce3ec + firstOffset + 0xc24),firstValue);
         }
         *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x40000;
         return 1;
@@ -3096,16 +3107,15 @@ u32 func_002bc480(void)
     uVar1 = 0;
   }
   else {
-    for (uVar5 = 0; uVar5 < 0x3c; uVar5 = uVar5 + 1) {
-      uVar3 = func_00100d80((&PTR_s_battle_effect_ATC_D_BED_00696c80)[uVar5],0);
-      func_001023a0(uVar3);
+    for (secondIndex = 0; secondIndex < 0x3c; secondIndex = secondIndex + 1) {
+      resource = func_00100d80(PTR_s_battle_effect_ATC_D_BED_abs[secondIndex],0);
+      func_001023a0(resource);
       uVar1 = func_002b8f90(2);
-      *(u32 *)(DAT_007ce3ec + uVar5 * 4 + 0xc24) = uVar1;
-      iVar6 = (int)uVar3;
-      uVar4 = (*DAT_00960178)(*(u32 *)(iVar6 + 0x118),0x40000);
-      func_00521250(uVar4,*(u32 *)(iVar6 + 0x110),*(u32 *)(iVar6 + 0x118));
-      func_002b96e0(*(u32 *)(DAT_007ce3ec + uVar5 * 4 + 0xc24),uVar4);
-      func_00100ec0(uVar3);
+      *(u32 *)(DAT_007ce3ec + secondIndex * 4 + 0xc24) = uVar1;
+      allocated = (*DAT_00960178_u32_abs)(*(u32 *)(resource + 0x118),0x40000);
+      func_00521250(allocated,*(u32 *)(resource + 0x110),*(u32 *)(resource + 0x118));
+      func_002b96e0(*(u32 *)(DAT_007ce3ec + secondIndex * 4 + 0xc24),allocated);
+      func_00100ec0(resource);
     }
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x40000;
     uVar1 = 1;
