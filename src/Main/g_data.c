@@ -151,7 +151,9 @@ void func_0016dfb0(s16 socialLink);
 s16 func_0016e190(s16 socialLink);
 void func_0016e2b0(s16 socialLink, s32 amount);
 void func_0016e410(s16 socialLink, s8 level);
-void func_0016e5f0(s16 socialLink, s8 progress);
+void func_0016e5f0(s32 socialLink, s8 progress);
+#pragma alias func_0016e5f0_call func_0016e5f0
+extern void func_0016e5f0_call(s16 socialLink, s8 progress);
 void func_0016e670(s16 socialLink);
 void func_0016e7a0(s16 socialLink, s16 day);
 s16 func_0016e850(s16 socialLink);
@@ -1932,17 +1934,19 @@ void func_0016e410(s16 socialLink, s8 level)
         FUN_001723A0(socialLink, rank, rank <= level);
         FUN_001724A0(socialLink, rank, rank <= level);
     }
-    func_0016e5f0(socialLink, 0);
+    func_0016e5f0_call(socialLink, 0);
 }
 
-// FUN_0016e5f0 NONMATCHING
-void func_0016e5f0(s16 socialLink, s8 progress)
+// FUN_0016e5f0
+void func_0016e5f0(s32 socialLink, s8 progress)
 {
     u32 isValidSocialLink;
+    s16 index;
     s8* base;
     s8* value;
 
-    if (socialLink < 0 || socialLink >= 30)
+    index = socialLink;
+    if (index < 0 || index >= 30)
     {
         isValidSocialLink = false;
     }
@@ -1957,13 +1961,13 @@ void func_0016e5f0(s16 socialLink, s8 progress)
     }
 
     base = (s8*)&gGlobalWork + 0x630c;
-    value = base + socialLink;
+    value = base + (s16)socialLink;
     *value = progress;
     if (progress < 0)
     {
         *value = 0;
     }
-    else if (*value >= 10)
+    if (*value >= 10)
     {
         *value = 9;
     }
