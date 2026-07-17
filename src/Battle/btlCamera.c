@@ -5188,36 +5188,44 @@ void FUN_002b8b70(undefined4 param_1,undefined4 param_2,undefined4 param_3,undef
   return;
 }
 
-// FUN_002b8c00 NONMATCHING
+// FUN_002b8c00
 
 undefined4 FUN_002b8c00(u16 *param_1)
 
 {
-  u16 uVar1;
-  u16 uVar2;
+  u32 uVar1;
+  u32 uVar2;
   int iVar3;
-  long lVar4;
+  u32 m1;
+  u32 b1;
+  u32 b2;
   u32 uVar5;
-  undefined1 auStack_20 [16];
   undefined1 auStack_10 [16];
-  
+  undefined1 auStack_20 [16];
+
   uVar1 = *param_1;
   uVar2 = param_1[1];
-  for (uVar5 = 0; uVar5 < 4; uVar5 = uVar5 + 1) {
-    if (((u32)uVar1 & 1 << (uVar5 & 0x1f)) != 0) {
+  uVar5 = 0;
+  m1 = uVar2 & 0x8000;
+  b1 = uVar2 & 1;
+  b2 = uVar2 & 2;
+
+  for (; uVar5 < 4; uVar5 = uVar5 + 1) {
+    if ((uVar1 & (1 << uVar5)) != 0) {
       for (iVar3 = *(int *)(iGpffffb6fc + uVar5 * 8 + 0x150); iVar3 != 0;
           iVar3 = *(int *)(iVar3 + 0xa34)) {
         if (((*(u32 *)(iVar3 + 0x9c) & 4) != 0) &&
-           (((uVar2 & 0x8000) == 0 || (lVar4 = FUN_00281270(iVar3), lVar4 == 0)))) {
+           ((m1 == 0) || (FUN_00281270(iVar3) == 0))) {
           FUN_0027f7c0((BtlUnit*)(uintptr_t)iVar3,(RwV3d*)auStack_10,(void*)auStack_20,0);
-          if ((uVar2 & 1) != 0) {
+          if (b1 != 0) {
             FUN_0027f650(iVar3,auStack_10);
             FUN_00281290(iVar3);
             FUN_002d4040(iVar3);
           }
-          if ((uVar2 & 2) != 0) {
+          if (b2 != 0) {
             FUN_0027f680(iVar3,auStack_20);
             FUN_002812b0(iVar3);
+            FUN_00288110(iVar3);
           }
         }
       }
