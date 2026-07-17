@@ -1,4 +1,5 @@
 #include "Battle/btlFormation.h"
+#include "Battle/btlAction.h"
 #include "Battle/btlFade.h"
 #include "Battle/btlUnit.h"
 #include "Battle/battle.h"
@@ -174,6 +175,8 @@ extern u64 func_0028a780();
 extern u64 func_0029a1d0();
 extern u64 func_0029a210();
 extern u64 func_0029ad20();
+#pragma alias func_0029ad20_u32 func_0029ad20
+extern u32 func_0029ad20_u32(void);
 extern u64 func_0029ad60();
 extern u64 func_002a3b40();
 extern u64 func_002a3d70();
@@ -219,6 +222,8 @@ extern u16 func_00300100(u32 unit);
 extern u64 func_00300530();
 extern u64 func_00300550();
 extern u64 func_00300580();
+#pragma alias func_00300580_u32 func_00300580
+extern u32 func_00300580_u32(u32 param_1,u32 param_2);
 extern u64 func_003005e0();
 extern u64 func_00301540();
 extern u64 func_00301750();
@@ -1025,50 +1030,41 @@ extern u32 func_002d1490(void);
 extern u32 func_002d14d0(void);
 extern u32 func_002d1510(void);
 
-// FUN_002b8dc0 NONMATCHING
+// FUN_002b8dc0 MATCHING
 
-u32 func_002b8dc0(u16 *param_1)
-
+u32 func_002b8dc0(u16* flags)
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  float fVar4 = 0;
-  float fStack_30 = 0;
-  float fStack_2c = 0;
-  float fStack_28 = 0;
-  float fStack_20 = 0;
-  float fStack_1c = 0;
-  float fStack_18 = 0;
-  float fStack_10 = 0;
-  float fStack_c = 0;
-  float fStack_8 = 0;
-  
-  iVar2 = func_0029ad20();
+  BtlAction* currentAction;
+  BtlUnit* unit;
+  float distance;
+  RwV3d position;
+  RwV3d reference;
+  RwV3d direction;
+
+  currentAction = (BtlAction*)func_0029ad20_u32();
   func_002b71e0();
-  if ((*param_1 & 1) != 0) {
-    for (iVar1 = *(int *)(iGpffffb6fc + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-      lVar3 = func_00300580(*(u32 *)(iVar1 + 0xa2c),0x180271);
-      if ((lVar3 == 0) && (lVar3 = func_0030b5a0(*(u32 *)(iVar1 + 0xa2c),0), lVar3 == 0)) {
-        if (*(int *)(iVar2 + 0x30) == iVar1) {
-          fVar4 = 250.0;
+  if ((*flags & 1) != 0) {
+    for (unit = *(BtlUnit **)(iGpffffb6fc + 0x150); unit != NULL; unit = unit->next) {
+      if (func_00300580_u32((u32)unit->datUnit, 0x180271) == 0 &&
+          func_0030b5a0_u32((u32)unit->datUnit, 0) == 0) {
+        if (currentAction->unit == unit) {
+          distance = 250.0f;
+        } else {
+          distance = 350.0f;
         }
-        else {
-          fVar4 = 350.0;
-        }
-        func_0027f7c0(iVar1,&fStack_10,0,&fStack_20);
-        fStack_1c = fStack_c;
-        fStack_30 = fStack_10 - fStack_20;
-        fStack_2c = fStack_c - fStack_c;
-        fStack_28 = fStack_8 - fStack_18;
-        func_004c69f0(&fStack_30,&fStack_30);
-        fStack_30 = fStack_30 * fVar4;
-        fStack_2c = fStack_2c * fVar4;
-        fStack_28 = fStack_28 * fVar4;
-        fStack_10 = fStack_10 + fStack_30;
-        fStack_c = fStack_c + fStack_2c;
-        fStack_8 = fStack_8 + fStack_28;
-        func_0027f650(iVar1,&fStack_10);
+        btlUnit0027f7c0(unit, &position, NULL, &reference);
+        reference.y = position.y;
+        direction.x = position.x - reference.x;
+        direction.y = position.y - reference.y;
+        direction.z = position.z - reference.z;
+        RwV3dNormalize(&direction, &direction);
+        direction.x *= distance;
+        direction.y *= distance;
+        direction.z *= distance;
+        position.x += direction.x;
+        position.y += direction.y;
+        position.z += direction.z;
+        btlUnitSetPos(unit, &position);
       }
     }
   }
