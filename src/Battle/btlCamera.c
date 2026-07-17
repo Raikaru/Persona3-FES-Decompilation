@@ -5494,13 +5494,13 @@ void LAB_002b8970(u32 *work)
 
 undefined4 FUN_002b8990(undefined4 *param_1)
 {
-  s16 uVar1;
   undefined4 uVar2;
   undefined4 uVar3;
+  s16 uVar1;
   int bVar4;
   s16 uVar5;
   short sVar6;
-  long lVar7;
+  u32 lVar7;
   undefined1 auStack_20 [16];
   undefined1 auStack_10 [16];
   
