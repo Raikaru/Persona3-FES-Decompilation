@@ -1136,7 +1136,7 @@ void func_002b90d0(int destination, u32 source)
   u32 resource;
 
   func_00521250(destination, source, 0x630);
-  for (outer = 0; outer < 2; outer++) {
+  for (outer = 0; outer <= 1; outer++) {
     block = destination + (outer & 0xffff) * 0x314;
     count = *(u16 *)(block + 0x10);
     entry = (u8 *)(block + 0x1c);
@@ -1164,12 +1164,12 @@ void func_002b90d0(int destination, u32 source)
 void func_002b9220(int state)
 {
   u16 outer;
-  int count;
   u16 index;
+  int count;
   u8 *entry;
   int block;
 
-  for (outer = 0; outer < 2; outer++) {
+  for (outer = 0; outer <= 1; outer++) {
     block = state + (outer & 0xffff) * 0x314;
     count = *(u16 *)(block + 0x10);
     entry = (u8 *)(block + 0x1c);
