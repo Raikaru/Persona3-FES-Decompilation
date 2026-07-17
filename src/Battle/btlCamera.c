@@ -3057,27 +3057,26 @@ void FUN_002b4c00(int param_1)
     RwV3d second;
     u8 secondTransform[16];
   } scratch;
+  u16* cameraData;
 
   if (*(int *)(param_1 + 0xd8) == 0) {
     FUN_002a4690(scratch.firstTransform, &D_00694E90, D_00694EB0, &D_00697880);
     scratch.first = D_00694E90;
     FUN_002a4690(scratch.secondTransform, &D_00694ED0, D_00694EF0, &D_00697880);
-    scratch.second.x = D_00694ED0.x;
-    scratch.second.y = D_00694ED4.x;
-    scratch.second.z = D_00694ED8.x;
+    scratch.second = D_00694ED0;
     FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
-    FUN_002a3110(fGpffff813c, (u16 *)(iGpffffb6fc + 0x20));
+    cameraData = (u16 *)(iGpffffb6fc + 0x20);
+    FUN_002a3110(fGpffff813c, cameraData);
   } else if (*(int *)(param_1 + 0xd8) == 0x25) {
     FUN_002a4690(scratch.firstTransform, &D_00694E9C, D_00694EBC, &D_00697880);
     scratch.first.x = D_00694E9C.x;
-    scratch.first.y = D_00694EA0.x;
-    scratch.first.z = D_00694EA4.x;
+    scratch.first.y = D_00694E9C.y;
+    scratch.first.z = D_00694E9C.z;
     FUN_002a4690(scratch.secondTransform, &D_00694EDC, D_00694EFC, &D_00697880);
-    scratch.second.x = D_00694EDC.x;
-    scratch.second.y = D_00694EE0.x;
-    scratch.second.z = D_00694EE4.x;
+    scratch.second = D_00694EDC;
     FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
-    FUN_002a3110(fGpffff80e0, (u16 *)(iGpffffb6fc + 0x20));
+    cameraData = (u16 *)(iGpffffb6fc + 0x20);
+    FUN_002a3110(fGpffff80e0, cameraData);
   }
 }
 
