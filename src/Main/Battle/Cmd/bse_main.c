@@ -20,17 +20,16 @@ void bseMain0021b660(void)
     sBseWork = NULL;
 }
 
-// FUN_0021b670 NONMATCHING
+// FUN_0021b670
 void bseMain0021b670(u32 request)
 {
-    u32 flags;
-
+    u32* work;
     K_ASSERT(sBseWork != NULL, 0x1e);
-    sBseWork[1] = request;
+    work = sBseWork;
+    work[1] = request;
     bpRoot001fe510(request);
-    flags = *sBseWork;
-    *sBseWork = flags | 1;
-    *sBseWork = (flags & ~2u) | 1;
+    *work |= 1;
+    *work &= ~2u;
 }
 
 // FUN_0021b6f0
@@ -40,45 +39,47 @@ u32 bseMain0021b6f0(void)
     return *sBseWork & 1;
 }
 
-// FUN_0021b740 NONMATCHING
+// FUN_0021b740
 u32 bseMain0021b740(void)
 {
-    u32 flags;
+    u32* work;
 
     K_ASSERT(sBseWork != NULL, 0x1e);
-    flags = *sBseWork;
-    K_ASSERT((flags & 1) == 0, 0x47);
-    return flags & 2;
+    work = sBseWork;
+    K_ASSERT(~*work & 1, 0x47);
+    return *work & 2;
 }
 
-// FUN_0021b7c0 NONMATCHING
+// FUN_0021b7c0
 u32 bseMain0021b7c0(void)
 {
-    u32 flags;
+    u32* work;
 
     K_ASSERT(sBseWork != NULL, 0x1e);
-    flags = *sBseWork;
-    K_ASSERT((flags & 1) == 0, 0x4f);
-    return sBseWork[2];
+    work = sBseWork;
+    K_ASSERT(~*work & 1, 0x4f);
+    return work[2];
 }
 
-// FUN_0021b830 NONMATCHING
+// FUN_0021b830
 void bseMain0021b830(void)
 {
-    u32 flags;
+    u32* work;
 
     K_ASSERT(sBseWork != NULL, 0x1e);
+    work = sBseWork;
     FUN_0010a4e0(0, 0, 0, 2);
-    flags = *sBseWork;
-    *sBseWork = flags | 2;
-    *sBseWork = (flags & ~1u) | 2;
+    *work |= 2;
+    *work &= ~1u;
 }
 
-// FUN_0021b8b0 NONMATCHING
+// FUN_0021b8b0
 void bseMain0021b8b0(void* result)
 {
+    u32* work;
     K_ASSERT(sBseWork != NULL, 0x1e);
-    printf((const char*)0x7cc444);
-    sBseWork[2] = (u32)result;
-    sBseWork[0] &= ~1u;
+    work = sBseWork;
+    printf("");
+    work[2] = (u32)result;
+    *work &= ~1u;
 }

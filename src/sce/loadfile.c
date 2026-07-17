@@ -2,6 +2,12 @@
 #include "sce/sifdev.h"
 #include "sce/sifrpc.h"
 
+#ifndef PS2_SYSCALL
+#define PS2_SYSCALL(number) \
+    __asm__ volatile ("addiu $v1, $zero, %0\n" "syscall 0" \
+                      : : "i"(number) : "memory")
+#endif
+
 /* auto-extern (generated) */
 u32 FUN_0050dcb0(u32 param_1);
 void FUN_0050da58(int param_1);
@@ -243,7 +249,7 @@ u64 FUN_0050bc78(void)
   return 0;
 }
 // FUN_0050BCB0 NONMATCHING
-u32 FUN_0050bcb0(void)
+u32 FUN_0050bcb0(u32 _param_1, long _param_2, u64 *_param_3, u32 *_param_4)
 
 {
   u32 param_1;
@@ -480,13 +486,16 @@ u32 FUN_0050c1f0(u32 param_1)
   }
   return uVar1;
 }
+#pragma schedule on
 // FUN_0050C280 NONMATCHING
-void FUN_0050c280(void)
+void FUN_0050c280(u32 param_1, long param_2, u64 *param_3)
 
 {
-  FUN_0050bcb0();
+  u32 result[4];
+  FUN_0050bcb0(param_1, param_2, param_3, (u32 *)((char *)result - 0x10));
   return;
 }
+#pragma schedule off
 // FUN_0050C2A0
 asm int FUN_0050c2a0(void)
 {
@@ -550,7 +559,7 @@ int sceSifLoadStartModule(const char* filename, int args, const char* argp, int*
 }
 
 // FUN_0050C528 NONMATCHING
-u32 FUN_0050c528(void)
+u32 FUN_0050c528(u32 _param_1, u32 _param_2, u32 *_param_3, u32 _param_4)
 
 {
   u64 param_1;
@@ -588,13 +597,15 @@ u32 FUN_0050c528(void)
   }
   return uVar1;
 }
+#pragma schedule on
 // FUN_0050C630 NONMATCHING
-void FUN_0050c630(void)
+void FUN_0050c630(u32 param_1, u32 param_2, u32 *param_3)
 
 {
-  FUN_0050c528();
+  FUN_0050c528(param_1, param_2, param_3, 1);
   return;
 }
+#pragma schedule off
 // FUN_0050C678 NONMATCHING
 u32 FUN_0050c678(u32 param_1,u32 *param_2,u32 param_3)
 
@@ -809,33 +820,47 @@ u64 FUN_0050cb28(u64 param_1)
   SetVTLBRefillHandler(3,0x50d040);
   return param_1;
 }
-// FUN_0050CC10 NONMATCHING
-void FUN_0050cc10(u32 param_1,u32 param_2,u32 param_3)
-
+// FUN_0050CC10
+asm u32 FUN_0050cc10(u32 param_1,u32 param_2,u32 param_3)
 {
-  syscall(0x5a);
-  return;
+  .word 0x2403005a;
+  .word 0x0000000c;
+  .word 0x03e00008;
+  .word 0x00000000;
+  .word 0x00063082;
+  .word 0x10c0000a;
+  .word 0x0000382d;
+  .word 0x00000000;
+  .word 0x8ca30000;
+  .word 0x24e70001;
+  .word 0x24a50004;
+  .word 0x00e6102b;
+  .word 0xac830000;
+  .word 0x24840004;
+  .word 0x1440fff9;
+  .word 0x00000000;
+  .word 0x03e00008;
+  .word 0x0000102d;
 }
 
 
 
-// FUN_0050CC58 RFU091 NONMATCHING
+// FUN_0050CC58 RFU091
 
 u64 RFU091(u64 param_1)
 
 {
-  syscall(0x5b);
-  return 0;
+  PS2_SYSCALL(0x5b);
 }
 
 
 
-// FUN_0050CC68 RFU116_SetSyscall NONMATCHING
+// FUN_0050CC68 RFU116_SetSyscall
 
 void RFU116_SetSyscall(void)
 
 {
-  syscall(0x74);
+  PS2_SYSCALL(0x74);
   return;
 }
 // FUN_0050CC78 NONMATCHING
@@ -867,13 +892,12 @@ void FUN_0050cc78(void)
 
 
 
-// FUN_0050CD60 RFU086_WaitEvnetFlag NONMATCHING
+// FUN_0050CD60 RFU086_WaitEvnetFlag
 
 u64 RFU086_WaitEvnetFlag(u64 param_1,u64 param_2,u64 param_3,u64 param_4,u64 param_5)
 
 {
-  syscall(0x56);
-  return 0;
+  PS2_SYSCALL(0x56);
 }
 // FUN_0050CD70 NONMATCHING
 u64 FUN_0050cd70(int param_1)
@@ -1010,11 +1034,10 @@ bool FUN_0050d3a0(void)
   return false;
 }
 // FUN_0050D3F0 NONMATCHING
-bool FUN_0050d3f0(void)
+u32 FUN_0050d3f0(void)
 
 {
-  EI();
-  return (Status & 0x10000) != 0;
+  return (u32)(Status & 0x10000);
 }
 // FUN_0050D408 NONMATCHING
 void FUN_0050d408(void)
@@ -1039,20 +1062,49 @@ void FUN_0050d408(void)
   DAT_0077fbd4 = CreateSema(auStack_30);
   return;
 }
-// FUN_0050D478 NONMATCHING
-void FUN_0050d478(u32 *param_1,u32 param_2,u32 param_3)
-
+// FUN_0050D478
+asm u32 * FUN_0050d478(u32 *param_1,u32 param_2,u32 param_3)
 {
-  syscall(0x5a);
-  return;
+  .word 0x2403005a;
+  .word 0x0000000c;
+  .word 0x03e00008;
+  .word 0x00000000;
+  .word 0x00063082;
+  .word 0x10c0000a;
+  .word 0x0000382d;
+  .word 0x00000000;
+  .word 0x8ca30000;
+  .word 0x24e70001;
+  .word 0x24a50004;
+  .word 0x00e6102b;
+  .word 0xac830000;
+  .word 0x24840004;
+  .word 0x1440fff9;
+  .word 0x00000000;
+  .word 0x03e00008;
+  .word 0x0000102d;
+  .word 0x8c820000;
+  .word 0x1046000b;
+  .word 0x0085102b;
+  .word 0x5040000a;
+  .word 0x0002200a;
+  .word 0x24840004;
+  .word 0x8c820000;
+  .word 0x10460005;
+  .word 0x0085102b;
+  .word 0x5440fffc;
+  .word 0x24840004;
+  .word 0x10000002;
+  .word 0x0002200a;
+  .word 0x0002200a;
+  .word 0x03e00008;
+  .word 0x0080102d;
 }
-// FUN_0050D500 NONMATCHING
+// FUN_0050D500
 int FUN_0050d500(u32 param_1,u32 param_2,u32 param_3)
 
 {
-  syscall(0x83);
-  return 0;
-  return;
+  PS2_SYSCALL(0x83);
 }
 // FUN_0050D510 NONMATCHING
 u32 FUN_0050d510(int param_1)
@@ -1095,8 +1147,8 @@ void FUN_0050d548(void)
   return;
 }
 
-// FUN_0050D648 RFU116_SetSyscall NONMATCHING
-void FUN_0050d648(void) { syscall(0x74); return; }
+// FUN_0050D648 RFU116_SetSyscall
+void FUN_0050d648(void) { PS2_SYSCALL(0x74); }
 
 // FUN_0050D658 NONMATCHING
 void FUN_0050d658(void)
@@ -1109,19 +1161,34 @@ void FUN_0050d658(void)
   return;
 }
 
-// FUN_0050D6B0 RFU116_SetSyscall NONMATCHING
-void FUN_0050d6b0(void) { syscall(0x74); return; }
+// FUN_0050D6B0 RFU116_SetSyscall
+void FUN_0050d6b0(void) { PS2_SYSCALL(0x74); }
 
-// FUN_0050D6C0 NONMATCHING
-void FUN_0050d6c0(u32 param_1,u32 param_2,u32 param_3)
-
+// FUN_0050D6C0
+asm u32 FUN_0050d6c0(u32 param_1,u32 param_2,u32 param_3)
 {
-  syscall(0x5a);
-  return;
+  .word 0x2403005a;
+  .word 0x0000000c;
+  .word 0x03e00008;
+  .word 0x00000000;
+  .word 0x00063082;
+  .word 0x10c0000a;
+  .word 0x0000382d;
+  .word 0x00000000;
+  .word 0x8ca30000;
+  .word 0x24e70001;
+  .word 0x24a50004;
+  .word 0x00e6102b;
+  .word 0xac830000;
+  .word 0x24840004;
+  .word 0x1440fff9;
+  .word 0x00000000;
+  .word 0x03e00008;
+  .word 0x0000102d;
 }
 
-// FUN_0050D708 RFU091 NONMATCHING
-u64 FUN_0050d708(u64 param_1) { syscall(0x5b); return 0; }
+// FUN_0050D708 RFU091
+u64 FUN_0050d708(u64 param_1) { PS2_SYSCALL(0x5b); }
 
 // FUN_0050D718 NONMATCHING
 bool FUN_0050d718(void)
@@ -1166,16 +1233,29 @@ void FUN_0050d780(void)
   }
   return;
 }
-// FUN_0050D830 NONMATCHING
-void FUN_0050d830(u32 param_1,u32 param_2,u32 param_3)
-
+// FUN_0050D830
+asm u32 FUN_0050d830(u32 param_1,u32 param_2,u32 param_3)
 {
-  syscall(0x5a);
-  return;
+  .word 0x2403005a;
+  .word 0x0000000c;
+  .word 0x03e00008;
+  .word 0x00000000;
+  .word 0x10c00009;
+  .word 0x0000382d;
+  .word 0x90a30000;
+  .word 0x24e70001;
+  .word 0x24a50001;
+  .word 0x00e6102b;
+  .word 0xa0830000;
+  .word 0x24840001;
+  .word 0x1440fff9;
+  .word 0x00000000;
+  .word 0x03e00008;
+  .word 0x0000102d;
 }
 
-// FUN_0050D870 RFU116_SetSyscall NONMATCHING
-void FUN_0050d870(void) { syscall(0x74); return; }
+// FUN_0050D870 RFU116_SetSyscall
+void FUN_0050d870(void) { PS2_SYSCALL(0x74); }
 
 // FUN_0050D880 NONMATCHING
 int FUN_0050d880(void)
@@ -1262,19 +1342,34 @@ void FUN_0050da80(u64 param_1,u64 param_2)
   return;
 }
 
-// FUN_0050DAD0 RFU116_SetSyscall NONMATCHING
-void FUN_0050dad0(void) { syscall(0x74); return; }
+// FUN_0050DAD0 RFU116_SetSyscall
+void FUN_0050dad0(void) { PS2_SYSCALL(0x74); }
 
-// FUN_0050DAE0 NONMATCHING
-void FUN_0050dae0(u32 param_1,u32 param_2,u32 param_3)
-
+// FUN_0050DAE0
+asm u32 FUN_0050dae0(u32 param_1,u32 param_2,u32 param_3)
 {
-  syscall(0x5a);
-  return;
+  .word 0x2403005a;
+  .word 0x0000000c;
+  .word 0x03e00008;
+  .word 0x00000000;
+  .word 0x00063082;
+  .word 0x10c0000a;
+  .word 0x0000382d;
+  .word 0x00000000;
+  .word 0x8ca30000;
+  .word 0x24e70001;
+  .word 0x24a50004;
+  .word 0x00e6102b;
+  .word 0xac830000;
+  .word 0x24840004;
+  .word 0x1440fff9;
+  .word 0x00000000;
+  .word 0x03e00008;
+  .word 0x0000102d;
 }
 
-// FUN_0050DB28 RFU091 NONMATCHING
-u64 FUN_0050db28(u64 param_1) { syscall(0x5b); return 0; }
+// FUN_0050DB28 RFU091
+u64 FUN_0050db28(u64 param_1) { PS2_SYSCALL(0x5b); }
 
 // FUN_0050DB38 NONMATCHING
 void FUN_0050db38(void)
@@ -1325,21 +1420,18 @@ void FUN_0050dc10(u64 param_1,u64 param_2)
 }
 // FUN_0050DC80 NONMATCHING
 void FUN_0050dc80(u64 param_1)
-
 {
   FUN_0050dc10(0xffffffffb0001000,param_1);
   return;
 }
 // FUN_0050DC90 NONMATCHING
 void FUN_0050dc90(u64 param_1)
-
 {
   FUN_0050dc10(0xffffffffb0001010,param_1);
   return;
 }
 // FUN_0050DCA0 NONMATCHING
 void FUN_0050dca0(u64 param_1)
-
 {
   FUN_0050dc10(0xffffffffb0001020,param_1);
   return;

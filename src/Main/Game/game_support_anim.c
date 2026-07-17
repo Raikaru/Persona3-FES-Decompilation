@@ -3,7 +3,6 @@
 
 extern void func_001140d0(u32 rgba, s32 width, s32 height, const void* texture,
                           f32 depthOffset, f32 x, f32 y);
-extern void (*jtbl_0096017C)(void* memory);
 
 // FUN_00188C30 NONMATCHING
 void* func_00188c30(KwlnTask* task)
@@ -661,8 +660,8 @@ void* func_0018a3f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018A9C0 NONMATCHING
+// FUN_0018A9C0
 void func_0018a9c0(KwlnTask* task)
 {
-    jtbl_0096017C(task->workData);
+    (*(void (**)(void*))0x0096017c)(task->workData);
 }

@@ -289,139 +289,151 @@ void brHero00263170(void)
 // FUN_00263db0 NONMATCHING
 void brHero00263db0(void)
 {
+    u32 text1;
+    u32 text0;
+    u32 text3;
+    s32 i;
     u32* w;
     u32 texture;
-    s32 i;
-
+    void (*setRenderState)(u32, u32);
+    void (*renderQuad)(u32*, u32, u32, u32, u32);
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((*w & 1) == 0)
         return;
-    D_00960090(9, 2);
-    D_00960090(6, 0);
-    D_00960090(8, 0);
+    text0 = FUN_00233d70(0);
+    text1 = FUN_00233d70(1);
+    text3 = FUN_00233d70(3);
+    setRenderState = D_00960090;
+    renderQuad = D_0096009C;
+    setRenderState(9, 2);
+    setRenderState(6, 0);
+    setRenderState(8, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(1, 0);
+    setRenderState(1, 0);
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x184, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x184, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x184, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x184, 4, 0, 2, 3);
     }
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x16));
-    D_00960090(1, texture);
-    D_0096009C(w + 4, 4, 0, 1, 2);
-    D_0096009C(w + 4, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x17));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x44, 4, 0, 1, 2);
-    D_0096009C(w + 0x44, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x18));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x84, 4, 0, 1, 2);
-    D_0096009C(w + 0x84, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x19));
-    D_00960090(1, texture);
-    D_0096009C(w + 0xc4, 4, 0, 1, 2);
-    D_0096009C(w + 0xc4, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x1a));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x104, 4, 0, 1, 2);
-    D_0096009C(w + 0x104, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x1b));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x144, 4, 0, 1, 2);
-    D_0096009C(w + 0x144, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x1c));
-    D_00960090(1, texture);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x16));
+    setRenderState(1, texture);
+    renderQuad(w + 4, 4, 0, 1, 2);
+    renderQuad(w + 4, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x17));
+    setRenderState(1, texture);
+    renderQuad(w + 0x44, 4, 0, 1, 2);
+    renderQuad(w + 0x44, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x18));
+    setRenderState(1, texture);
+    renderQuad(w + 0x84, 4, 0, 1, 2);
+    renderQuad(w + 0x84, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x19));
+    setRenderState(1, texture);
+    renderQuad(w + 0xc4, 4, 0, 1, 2);
+    renderQuad(w + 0xc4, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1a));
+    setRenderState(1, texture);
+    renderQuad(w + 0x104, 4, 0, 1, 2);
+    renderQuad(w + 0x104, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1b));
+    setRenderState(1, texture);
+    renderQuad(w + 0x144, 4, 0, 1, 2);
+    renderQuad(w + 0x144, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1c));
+    setRenderState(1, texture);
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x244, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x244, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x244, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x244, 4, 0, 2, 3);
     }
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), 0x1d));
-    D_00960090(1, texture);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, 0x1d));
+    setRenderState(1, texture);
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x304, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x304, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x304, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x304, 4, 0, 2, 3);
     }
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), w[0x484]));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x3c4, 4, 0, 1, 2);
-    D_0096009C(w + 0x3c4, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), w[0x485] + 7));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x404, 4, 0, 1, 2);
-    D_0096009C(w + 0x404, 4, 0, 2, 3);
-    texture = FUN_0021cce0(FUN_0021cca0(FUN_00233d70(0), w[0x486] + 0xe));
-    D_00960090(1, texture);
-    D_0096009C(w + 0x444, 4, 0, 1, 2);
-    D_0096009C(w + 0x444, 4, 0, 2, 3);
-    D_00960090(1, FUN_0021cce0(FUN_00233df0(0)));
-    D_0096009C(w + 0xa54, 4, 0, 1, 2);
-    D_0096009C(w + 0xa54, 4, 0, 2, 3);
-    D_00960090(1, FUN_0021cce0(FUN_00233df0(1)));
+    texture = FUN_0021cce0(FUN_0021cca0(text0, w[0x484]));
+    setRenderState(1, texture);
+    renderQuad(w + 0x3c4, 4, 0, 1, 2);
+    renderQuad(w + 0x3c4, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, w[0x485] + 7));
+    setRenderState(1, texture);
+    renderQuad(w + 0x404, 4, 0, 1, 2);
+    renderQuad(w + 0x404, 4, 0, 2, 3);
+    texture = FUN_0021cce0(FUN_0021cca0(text0, w[0x486] + 0xe));
+    setRenderState(1, texture);
+    renderQuad(w + 0x444, 4, 0, 1, 2);
+    renderQuad(w + 0x444, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(FUN_00233df0(0)));
+    renderQuad(w + 0xa54, 4, 0, 1, 2);
+    renderQuad(w + 0xa54, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(FUN_00233df0(1)));
     for (i = 0; i < 2; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x4c8, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x4c8, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x4c8, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x4c8, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_0021cce0(FUN_0021cca0(FUN_00233d70(1), 0)));
-    D_0096009C(w + 0x548, 4, 0, 1, 2);
-    D_0096009C(w + 0x548, 4, 0, 2, 3);
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text3, 0)));
+    renderQuad(w + 0x488, 4, 0, 1, 2);
+    renderQuad(w + 0x488, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 0)));
+    renderQuad(w + 0x548, 4, 0, 1, 2);
+    renderQuad(w + 0x548, 4, 0, 2, 3);
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 2; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x594, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x594, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x594, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x594, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x614, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x614, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x614, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x614, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x6d4, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x6d4, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x6d4, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x6d4, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_0021cce0(FUN_0021cca0(FUN_00233d70(1), 4)));
-    D_0096009C(w + 0x794, 4, 0, 1, 2);
-    D_0096009C(w + 0x794, 4, 0, 2, 3);
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 4)));
+    renderQuad(w + 0x794, 4, 0, 1, 2);
+    renderQuad(w + 0x794, 4, 0, 2, 3);
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x7d4, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x7d4, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x7d4, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x7d4, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 3; i++)
     {
-        D_0096009C(w + i * 0x40 + 0x894, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0x894, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0x894, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0x894, 4, 0, 2, 3);
     }
-    D_00960090(1, FUN_0021cce0(FUN_0021cca0(FUN_00233d70(1), 5)));
-    D_0096009C(w + 0x954, 4, 0, 1, 2);
-    D_0096009C(w + 0x954, 4, 0, 2, 3);
-    D_00960090(1, FUN_0021cce0(brPersona00264ca0(w[0x58d])));
-    D_0096009C(w + 0xa94, 4, 0, 1, 2);
-    D_0096009C(w + 0xa94, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 5)));
+    renderQuad(w + 0x954, 4, 0, 1, 2);
+    renderQuad(w + 0x954, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(brPersona00264ca0(w[0x58d])));
+    renderQuad(w + 0xa94, 4, 0, 1, 2);
+    renderQuad(w + 0xa94, 4, 0, 2, 3);
     FUN_003b1360(w[0xad4], 1, 0);
-    D_00960090(1, FUN_0021cce0(FUN_0021cca0(FUN_00233d70(1), 0x11)));
-    D_0096009C(w + 0xc58, 4, 0, 1, 2);
-    D_0096009C(w + 0xc58, 4, 0, 2, 3);
-    D_0096009C(w + 0xc98, 4, 0, 1, 2);
-    D_0096009C(w + 0xc98, 4, 0, 2, 3);
-    D_00960090(1, FUN_0021cce0(FUN_0021cca0(FUN_00233d70(1), 0x22)));
-    D_0096009C(w + 0xcd8, 4, 0, 1, 2);
-    D_0096009C(w + 0xcd8, 4, 0, 2, 3);
-    D_00960090(1, FUN_00239140(2));
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 0x11)));
+    renderQuad(w + 0xc58, 4, 0, 1, 2);
+    renderQuad(w + 0xc58, 4, 0, 2, 3);
+    renderQuad(w + 0xc98, 4, 0, 1, 2);
+    renderQuad(w + 0xc98, 4, 0, 2, 3);
+    setRenderState(1, FUN_0021cce0(FUN_0021cca0(text1, 0x22)));
+    renderQuad(w + 0xcd8, 4, 0, 1, 2);
+    renderQuad(w + 0xcd8, 4, 0, 2, 3);
+    setRenderState(1, FUN_00239140(2));
     for (i = 0; i < 5; i++)
     {
-        D_0096009C(w + i * 0x40 + 0xd18, 4, 0, 1, 2);
-        D_0096009C(w + i * 0x40 + 0xd18, 4, 0, 2, 3);
+        renderQuad(w + i * 0x40 + 0xd18, 4, 0, 1, 2);
+        renderQuad(w + i * 0x40 + 0xd18, 4, 0, 2, 3);
     }
 }

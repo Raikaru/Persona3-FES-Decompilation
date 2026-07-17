@@ -33,6 +33,7 @@ extern u32 jtbl_00960178[];
 extern u32 jtbl_0096017C[];
 
 /* Result-resource and data helpers not yet described by public headers. */
+ 
 extern void func_002350f0(void);
 extern void func_00278550(void);
 extern void func_00275cb0(void);
@@ -51,10 +52,10 @@ extern void func_002362e0(void);
 extern void func_00262790(void);
 extern void func_00275a90(void);
 extern void func_0010a370(s32, const char *);
-extern void func_00171390(u16);
+extern void func_00171390(u32);
 extern void func_00174e20(u16);
 extern u32 dat00171360(u16);
-extern u32 func_0016d280(u32);
+extern u8 func_0016d280(s32);
 extern u32 func_0016f380(u32);
 extern void func_0016f3e0(u32, u32);
 extern u32 func_00173220(u16);
@@ -211,7 +212,7 @@ extern void func_0020c590(void *, u16);
 extern void func_0020a800(void *);
 extern void func_0020c5f0(void *, u32, u32);
 extern void func_0024fd80(void *);
-extern void func_0020c500(void *, float);
+extern f32 func_0020c500(void *, f32);
 extern void func_0020c400(void *, const float *, float, float *);
 extern void func_0020cc80(void *, const u8 *);
 extern void gcPose0024f960(void *, const float *);
@@ -223,9 +224,10 @@ extern void K_Fldrc_DestroyArchives(void);
 extern void func_00217590(u16);
 extern void func_00215b00(void);
 extern void scrReleaseScript(void *);
-extern void *scrStartScriptFirstPrcd(const char *, u32, u32);
-extern void func_0021ab80(void *);
-extern void func_0021a920(void *);
+extern void *scrStartScriptFirstPrcd(void *header);
+extern void func_0021ab80(u16 id);
+extern void func_0021a920(u32 majorId, u32 minorId);
+extern char D_00684850[];
 extern void func_0021a120(void);
 extern void func_00258300(void);
 extern void func_002550b0(void);
@@ -253,13 +255,14 @@ extern void sflCard00259310(void);
 extern u32 sflCard002561c0(void *);
 extern u32 sflCard002561d0(void *);
 extern u32 sflCard00259380(void);
+extern u32 D_00684610[];
 extern u32 func_001775a0(u32, ...);
 
-void *func_001f0990(KwlnTask *);
-void *func_001f0f40(KwlnTask *);
-void *func_001f0ff0(void);
+void func_001f0990(KwlnTask *);
+void func_001f0f40(KwlnTask *);
+void func_001f0ff0(void);
 u8 *brRoot001f1c50(void);
-void *func_001f1140(KwlnTask *);
+void func_001f1140(KwlnTask *);
 void *func_001f13b0(KwlnTask *);
 void brRoot001f1e90(KwlnTask *);
 void func_001f30d0(KwlnTask *);
@@ -331,11 +334,12 @@ void *func_001f08c0(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0900 NONMATCHING
+// FUN_001f0900
 void *func_001f0900(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    if ((BR_U32(work, 0) & 0x400000) == 0) {
+    u32 flags = ~BR_U32(work, 0);
+    if ((flags & 0x400000) != 0) {
         func_002350f0();
     }
     return KWLNTASK_CONTINUE;
@@ -350,21 +354,25 @@ void *func_001f0940(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0970 NONMATCHING
-void *func_001f0970(KwlnTask *task)
+// FUN_001f0970
+void func_001f0970(KwlnTask *task)
 {
     func_001f0990(task);
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0990 NONMATCHING
-void *func_001f0990(KwlnTask *task)
+// FUN_001f0990
+void func_001f0990(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    u32 flags = BR_U32(work, 0);
-    if ((flags & (4 | 8 | 0x20)) != 0) {
-        func_003c77a0();
+    if ((BR_U32(work, 0) & 4) == 0) {
+        if ((BR_U32(work, 0) & 8) == 0) {
+            if ((BR_U32(work, 0) & 0x20) == 0) {
+                goto br_cleanup_done;
+            }
+        }
     }
+    func_003c77a0();
+br_cleanup_done:
     brPersona00264dd0();
     brHero00262730();
     func_00234960();
@@ -373,23 +381,19 @@ void *func_001f0990(KwlnTask *task)
     func_00275a80();
     func_00276920();
     func_00276d30();
-    if ((flags & 0x8000) != 0 && BR_U32(work, 0x94) != 0) {
+    if ((BR_U32(work, 0) & 0x8000) != 0) {
         func_001f30d0((KwlnTask *)BR_U32(work, 0x94));
     }
     BR_FREE(task->workData);
-    return KWLNTASK_STOP;
 }
 
-// FUN_001f0a60 NONMATCHING
-void *func_001f0a60(KwlnTask *task)
+// FUN_001f0a60
+void func_001f0a60(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    if (BR_U32(work, 0x94) != 0) {
-        func_001f30d0((KwlnTask *)BR_U32(work, 0x94));
-    }
-    BR_U32(work, 0) &= ~0x8000u;
-    BR_U32(work, 0x94) = 0;
-    return KWLNTASK_CONTINUE;
+    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    func_001f30d0((KwlnTask *)work[0x25]);
+    work[0] &= ~0x8000u;
+    work[0x25] = 0;
 }
 
 // FUN_001F0AB0
@@ -459,133 +463,133 @@ void *func_001f0c40(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0d70 NONMATCHING
-void *func_001f0d70(KwlnTask *task)
+// FUN_001f0d70
+void func_001f0d70(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
+    u8 *work;
+    u32 state;
+
+    work = BR_TASK_WORK(task);
+    state = BR_U32(work, 0x0c);
     for (;;) {
-        switch (BR_U32(work, 0x0c)) {
+        switch (state) {
         case 7:
             if ((BR_U32(work, 0) & 4) != 0) {
                 brRoot001f1e90(task);
-                return KWLNTASK_CONTINUE;
+                return;
             }
-            BR_SET_STATE(work, 9);
+            state = 9;
             break;
         case 9:
             if ((BR_U32(work, 0) & 8) != 0) {
                 func_001f0f40(task);
-                return KWLNTASK_CONTINUE;
+                return;
             }
-            BR_SET_STATE(work, 8);
+            state = 8;
             break;
         case 8:
             if ((BR_U32(work, 0) & 0x20) != 0) {
                 func_001f1140(task);
-                return KWLNTASK_CONTINUE;
+                return;
             }
-            BR_SET_STATE(work, 9);
+            state = 12;
             break;
         case 12:
             func_001f0c40(task);
-            return KWLNTASK_CONTINUE;
+            return;
         default:
             K_ASSERT(0, 0x582);
-            return KWLNTASK_CONTINUE;
+            break;
         }
     }
 }
 
-// FUN_001f0eb0 NONMATCHING
-void *func_001f0eb0(KwlnTask *task)
+// FUN_001f0eb0
+void func_001f0eb0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
+    s32 i;
     DatPersonaWork *persona = datPersonaGetByPcId(6);
-    u32 i;
-    for (i = 0; i < BR_U32(work, 0x150); i++) {
-        datPersonaSetSkill(persona, BR_U16(work, 0x140 + i * 2));
+    for (i = 0; i < BR_S32(work, 0x150); i++) {
+        datPersonaSetSkill(persona, BR_U16(work + i * 2, 0x140));
     }
     BR_U32(work, 0) &= ~0x400000u;
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0f40 NONMATCHING
-void *func_001f0f40(KwlnTask *task)
+// FUN_001f0f40
+void func_001f0f40(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    if ((BR_U32(work, 8) & 4) == 0) {
-        K_ASSERT((BR_U32(work, 4) & 4) != 0, 0x59f);
+    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    if ((~work[2] & 4) != 0) {
+        K_ASSERT((~work[1] & 4) != 0, 0x59f);
         brRes00233b20();
-        BR_U32(work, 4) |= 4;
-        BR_U32(work, 0x10) = 0;
+        work[1] |= 4;
+        work[4] = 0;
     } else {
         func_001f0ff0();
     }
-    BR_SET_STATE(work, 8);
-    return KWLNTASK_CONTINUE;
+    work[3] = 8;
 }
 
-// FUN_001f0fd0 NONMATCHING
-void *func_001f0fd0(KwlnTask *task)
+// FUN_001f0fd0
+void func_001f0fd0(KwlnTask *task)
 {
     (void)task;
     brHero002630e0();
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f0ff0 NONMATCHING
-void *func_001f0ff0(void)
+// FUN_001f0ff0
+void func_001f0ff0(void)
 {
     u8 *work = brRoot001f1c50();
     u32 level = datGetLevel(1);
     func_003c7c20(0, level, 0);
     func_003c7430(2);
     func_002362e0();
-    BR_U32(work, 0) &= ~0x280000u;
+    BR_U32(work, 0) &= ~0x200000u;
+    BR_U32(work, 0) &= ~0x80000u;
     func_00262790();
     func_00275a90();
     BR_U32(work, 0) |= 0x100000;
     func_0010a370(3, "battle result");
     BR_U32(work, 0x10) = 1;
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f10b0 NONMATCHING
-void *func_001f10b0(void)
+// FUN_001f10b0
+void func_001f10b0(void)
 {
     u8 *work = brRoot001f1c50();
     func_003c7430(3);
     BR_U32(work, 0x10) = 2;
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f10f0 NONMATCHING
-void *func_001f10f0(void)
+// FUN_001f10f0
+void func_001f10f0(void)
 {
     u8 *work = brRoot001f1c50();
     H_Fade_FadeOut();
     H_Fade_SetType(2);
     BR_U32(work, 0x10) = 4;
-    return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f1140 NONMATCHING
-void *func_001f1140(KwlnTask *task)
+// FUN_001f1140
+void func_001f1140(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    if ((BR_U32(work, 8) & 4) == 0) {
-        K_ASSERT((BR_U32(work, 4) & 4) != 0, 0x5e5);
+    volatile u32 *work = (volatile u32 *)BR_TASK_WORK(task);
+    if ((~work[2] & 4) != 0) {
+        K_ASSERT((~work[1] & 4) != 0, 0x5e5);
         brRes00233b20();
-        BR_U32(work, 4) |= 4;
-        BR_U32(work, 0x14) = 0;
+        work[1] |= 4;
+        work[5] = 0;
     } else {
-        BR_U32(work, 0xc4) = 0;
-        func_003c7bc0(0, func_00173220(BR_U16(work, 0xd4)));
+        u32 index = (work[0xc4 / 4] = 0);
+        u32 addr = index * 2;
+        addr = addr + (u32)work + 0xd4;
+        func_003c7bc0(0, func_00173220(*(u16 *)addr));
         func_003c7430(1);
-        BR_U32(work, 0x14) = 1;
+        work[5] = 1;
     }
-    BR_SET_STATE(work, 12);
-    return KWLNTASK_CONTINUE;
+    work[3] = 12;
 }
 
 // FUN_001f1210
@@ -727,13 +731,12 @@ void *func_001f13b0(KwlnTask *task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001f1aa0 NONMATCHING
+// FUN_001f1aa0
 void *func_001f1aa0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
     sflResult001f9800((u16 *)(work + 0xf0), (s32 *)(work + 0x108));
     BR_U32(work, 0x2a5c) = sflResult001f9890();
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001f1ae0
@@ -760,21 +763,27 @@ u32 func_001f1b40(KwlnTask *task)
     return BR_U32(BR_TASK_WORK(task), 0) & 0x2000;
 }
 
-// FUN_001f1b60 NONMATCHING
-void brRoot001f1b60(KwlnTask *task)
+// FUN_001f1b60
+void brRoot001f1b60(KwlnTask* task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    K_ASSERT(BR_U32(work, 0x0c) == 2, 0x51e);
-    if ((BR_U32(work, 0) & 2) != 0) {
-        func_001f30f0((KwlnTask *)BR_U32(work, 0x94));
+    u8* root;
+    u8* work;
+
+    root = BR_TASK_WORK(task);
+    K_ASSERT(BR_U32(root, 0x0c) == 2, 0x51e);
+    if ((BR_U32(root, 0) & 2) != 0) {
+        work = BR_TASK_WORK(task);
+        func_001f30f0((KwlnTask*)BR_U32(work, 0x94));
         brRes002339d0();
         BR_U32(work, 0) |= 0x8000;
-        BR_SET_STATE(work, 3);
+        BR_U32(work, 0x0c) = 3;
     } else {
+        work = BR_TASK_WORK(task);
         BR_U32(work, 0x28) = 0;
-        BR_SET_STATE(work, 7);
+        BR_U32(work, 0x0c) = 7;
     }
-    BR_U32(work, 0) |= 0x41;
+    BR_U32(root, 0) |= 0x40;
+    BR_U32(root, 0) |= 1;
 }
 
 // FUN_001f1c20
@@ -822,42 +831,73 @@ void func_001f1c90(KwlnTask *task)
     BR_U32(work, 0) |= 0x200000;
 }
 
-// FUN_001f1df0 NONMATCHING
+// FUN_001f1df0
 void brRoot001f1df0(u16 *outIds, s32 *count)
 {
-    u32 i;
+    s32 i;
+    u8 *root;
+    u16 *dst;
     K_ASSERT(sBrRoot != NULL, 0x755);
+    root = sBrRoot;
     outIds[0] = 1;
-    for (i = 0; i < BR_U32(sBrRoot, 0x114); i++) {
-        outIds[i + 1] = BR_U16(sBrRoot, 0x10c + i * 2);
+    for (i = 0; i < BR_S32(root, 0x114); i++) {
+        dst = outIds + i;
+        dst[1] = BR_U16(root + i * 2, 0x10c);
     }
-    *count = BR_U32(sBrRoot, 0x114) + 1;
+    *count = BR_S32(root, 0x114) + 1;
 }
 
-// FUN_001f1e90 NONMATCHING
+// FUN_001f1e90
 void brRoot001f1e90(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    K_ASSERT((BR_U32(work, 4) & 4) == 0, 0x79c);
-    K_ASSERT((BR_U32(work, 8) & 4) == 0, 0x79d);
+    u32 *work = (u32 *)BR_TASK_WORK(task);
+    K_ASSERT((~work[1] & 4) != 0, 0x79c);
+    K_ASSERT((~work[2] & 4) != 0, 0x79d);
     brRes00233b20();
-    BR_U32(work, 0) |= 0x400000;
-    BR_U32(work, 4) |= 4;
-    BR_U32(work, 0x38) = 0;
-    BR_SET_STATE(work, 9);
+    work[0] |= 0x400000;
+    work[1] |= 4;
+    work[14] = 0;
+    work[3] = 9;
 }
 
-// FUN_001f1f40 NONMATCHING
+// FUN_001f1f40
 u32 func_001f1f40(void)
 {
+    u8 *work;
     u32 value;
+    u32 condition;
+
     K_ASSERT(sBrRoot != NULL, 0x755);
-    if ((BR_U32(sBrRoot, 0) & 0x8000) != 0 && BR_U32(sBrRoot, 0x94) != 0) {
-        value = func_001f5810((KwlnTask *)BR_U32(sBrRoot, 0x94));
+    work = sBrRoot;
+    K_ASSERT(work != NULL, 0x755);
+    {
+        u32 *root;
+        root = (u32 *)sBrRoot;
+        if ((root[0] & 0x8000) == 0) {
+            condition = 0;
+        } else if (root[0x25] == 0) {
+            condition = 0;
+        } else {
+            condition = 1;
+        }
+    }
+    if (condition == 1) {
+        K_ASSERT(sBrRoot != NULL, 0x755);
+        {
+            u32 *root = (u32 *)sBrRoot;
+            if ((root[0] & 0x8000) == 0) {
+                value = 1;
+            } else if (root[0x25] == 0) {
+                value = 1;
+            } else {
+                value = func_001f5810((KwlnTask *)root[0x25]);
+            }
+        }
         return value == 1;
     }
-    if ((BR_U32(sBrRoot, 0) & 0x20000) != 0) {
-        return (BR_U32(sBrRoot, 0) & 0x2c) == 0;
+    if ((BR_U32(work, 0) & 0x20000) != 0) {
+        u32 bits = BR_U32(work, 0) & 0x2c;
+        return (bits != 0) ^ 1;
     }
     return 0;
 }
@@ -1160,12 +1200,10 @@ u32 func_001f30b0(KwlnTask *task)
     return BR_U32(BR_TASK_WORK(task), 4) & 1;
 }
 
-// FUN_001f30d0 NONMATCHING
+// FUN_001f30d0
 void func_001f30d0(KwlnTask *task)
 {
-    if (task != NULL) {
-        kwlnTaskDestroyWithHierarchy(task);
-    }
+    kwlnTaskDestroyWithHierarchy(task);
 }
 
 // FUN_001f30f0 NONMATCHING
@@ -1236,56 +1274,89 @@ void func_001f3270(KwlnTask *task)
     BR_U32(work, 8) = 1;
 }
 
-// FUN_001f4650 NONMATCHING
+// FUN_001f4650
 void func_001f4650(KwlnTask *task, const u8 *params)
 {
-    u8 *work = BR_TASK_WORK(task);
-    u32 i;
+    u8 *work;
+    DatPersonaWork *persona;
+    s32 count;
+    s32 i;
+    u32 code;
+
+    work = BR_TASK_WORK(task);
     BR_U32(work, 0x58) = BR_U32(params, 0x0c);
     BR_U32(work, 0x54) = BR_U32(params, 0x10);
-    BR_U32(work, 0x10000 - 0x3f04) = BR_U32(params, 4);
-    if (BR_U32(params, 4) == 0x1d4) {
-        BR_U32(work, 0) = 0;
-    } else if (BR_U32(params, 4) == 0x1d5) {
-        u32 found = 0;
-        for (i = 0; i < func_001756f0(); i++) {
-            DatPersonaWork *p = datPersonaGetHeroPersona((s16)i);
-            if (p != NULL && p->id == 0x2e) {
-                found = 1;
-                break;
-            }
-        }
-        BR_U32(work, 0) = found ? 2 : 1;
-    } else {
-        BR_U32(work, 0) = 2;
+    BR_U32(work, 0xc0fc) = BR_U32(params, 4);
+    code = BR_U32(params, 4);
+    if (code == 0x1d5) goto code_1d5;
+    switch (code) {
+    case 0x1d4: goto code_1d4;
+    default: goto code_other;
     }
+
+code_1d4:
+    BR_U32(work, 0) = 0;
+    goto done;
+
+code_1d5:
+    count = func_001756f0() & 0xffff;
+    for (i = 0; i < count; i++) {
+        persona = datPersonaGetHeroPersona((s16)i);
+        if (persona->id == 0x2e) break;
+    }
+    if (i == count) {
+        BR_U32(work, 0) = 1;
+        goto done;
+    }
+    BR_U32(work, 0) = 2;
+    goto done;
+
+code_other:
+    BR_U32(work, 0) = 2;
+
+done:
+    return;
 }
 
-// FUN_001f4750 NONMATCHING
+// FUN_001f4750
 void func_001f4750(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    u8 *card = func_00256030();
-    u32 kind = card != NULL ? BR_U32(card, 4) : 0;
-    u16 id = card != NULL ? BR_U16(card, 8) : 0;
-    if (kind == 0) {
+    struct BrCard {
+        u32 flags;
+        u32 kind;
+        u16 id;
+        u16 pad;
+        u32 value;
+    };
+    u32 *work = (u32 *)task->workData;
+    struct BrCard *card = (struct BrCard *)func_00256030();
+
+    switch (card->kind) {
+    case 0:
         if (sflCard002561c0(card) != 0) {
             func_003c7430(2);
             func_0010a4e0(1, 15, 6, 11);
         } else {
-            func_003c7bc0(0, func_00173220(id));
-            func_003c7430(func_001f5760(id) ? 3 : 1);
+            func_003c7bc0(0, func_00173220(card->id));
+            if (func_001f5760(card->id) != 0) {
+                func_003c7430(3);
+            } else {
+                func_003c7430(1);
+            }
         }
-    } else if (kind == 1) {
-        func_003c7c20(0, BR_U32(card, 0x0c), 0);
-        func_003c7bc0(1, func_00173220(id));
+        break;
+    case 1:
+        func_003c7c20(0, card->value, 0);
+        func_003c7bc0(1, D_00684610[BR_U32(card, 8)]);
         func_003c7430(0);
-    } else if (kind == 2) {
+        break;
+    case 2:
         func_003c7430(4);
         func_0010a4e0(1, 15, 6, 11);
+        break;
     }
-    BR_U32(work, 4) |= 0x40;
-    BR_U32(work, 8) = 0x11;
+    work[1] |= 0x40;
+    work[2] = 0x11;
 }
 
 // FUN_001f48d0
@@ -1316,11 +1387,14 @@ u32 func_001f4970(KwlnTask *task)
     return BR_U32(BR_TASK_WORK(task), 4) & 0x100;
 }
 
-// FUN_001f4990 NONMATCHING
+// FUN_001f4990
 u32 func_001f4990(void)
 {
     K_ASSERT(sBrCard != NULL, 0xfe);
-    return BR_U32(sBrCard, 0x10000 - 0x3f04) == 0x1d4 && BR_U32(sBrCard, 0xe4) == 0;
+    if (BR_U32(sBrCard, 0x10000 - 0x3f04) != 0x1d4) {
+        return 0;
+    }
+    return BR_U32(sBrCard, 0xe4) == 0;
 }
 
 // FUN_001f4a00 NONMATCHING
@@ -1343,113 +1417,166 @@ void func_001f4a00(void)
     BR_U32(work, 8) = 8;
 }
 
-// FUN_001f53a0 NONMATCHING
+// FUN_001f53a0
 void func_001f53a0(void)
 {
-    u8 *work = sBrCard;
-    u32 state = BR_U32(work, 8);
-    K_ASSERT(sBrCard != NULL, 0x100);
-    if (state == 17 || state == 21) {
-        if ((BR_U32(work, 4) & 0x1000) != 0) {
-            func_001f54a0();
-        } else {
-            BR_U32(work, 8) = 24;
-        }
-    } else if (state == 24) {
-        func_001f59b0();
-        BR_U32(work, 8) = 22;
-    } else {
-        K_ASSERT(state == 17 || state == 21 || state == 24, 0x10a);
+    u8 *work;
+    u32 state;
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = sBrCard;
+    state = BR_U32(work, 8);
+check_state:
+    switch (state) {
+    case 21:
+    case 17:
+        goto state_17_or_21;
+    case 24:
+        goto state_24;
+    default:
+        goto invalid_state;
     }
+
+state_17_or_21:
+    if ((BR_U32(work, 4) & 0x1000) == 0) goto repeat_as_24;
+    func_001f54a0();
+    goto done;
+
+repeat_as_24:
+    state = 24;
+    goto check_state;
+
+state_24:
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = sBrCard;
+    func_001f59b0();
+    BR_U32(work, 8) = 22;
+    goto done;
+
+invalid_state:
+    K_ASSERT(false, 0x943);
+    goto check_state;
+
+done:
+    return;
 }
 
-// FUN_001f54a0 NONMATCHING
+// FUN_001f54a0
 void func_001f54a0(void)
 {
-    K_ASSERT(sBrCard != NULL, 0x10f);
+    u32 *work;
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = (u32 *)sBrCard;
     func_003c7430(0x32);
     func_0010a4e0(1, 15, 6, 12);
-    BR_U32(sBrCard, 8) = 24;
+    work[2] = 24;
 }
 
-// FUN_001f5510 NONMATCHING
+// FUN_001f5510
 void func_001f5510(void)
 {
-    u8 *work = sBrCard;
-    u16 ids[16];
-    s32 count = 0;
-    u32 i;
-    K_ASSERT(sBrCard != NULL, 0x11f);
+    u8* work;
+    u16 ids[14];
+    s32 count;
+    s32 i;
+
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = sBrCard;
     if ((BR_U32(work, 4) & 0x1000) != 0) {
         datSetFlag(0x1411, 1);
     }
     sflResult001f9770(ids, &count);
-    for (i = 0; i < (u32)count; i++) {
+    for (i = 0; i < count; i++) {
         func_00174b40(ids[i]);
     }
     BR_U32(work, 8) = 0;
-    BR_U32(work, 4) &= ~2u;
+    BR_U32(work, 4) &= ~1u;
 }
 
-// FUN_001f55e0 NONMATCHING
+// FUN_001f55e0
 void func_001f55e0(void)
 {
-    K_ASSERT(sBrCard != NULL, 0x12d);
+    u32 *work;
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = (u32 *)sBrCard;
     func_00255f80();
     func_0025a7d0();
     sflPanel0023f3e0();
     func_0025b4f0();
-    BR_U32(sBrCard, 8) = 11;
+    work[2] = 11;
 }
 
-// FUN_001f5650 NONMATCHING
+// FUN_001f5650
 void func_001f5650(void)
 {
+    u32 *work;
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    work = (u32 *)sBrCard;
     sflCard00259310();
-    BR_U32(sBrCard, 8) = 25;
+    work[2] = 25;
 }
 
-// FUN_001f56b0 NONMATCHING
+// FUN_001f56b0
 void func_001f56b0(void)
 {
     u32 current = func_0016f380(0x39);
     u32 limit = func_0016f380(0x38);
-    if (current >= limit) {
-        func_0016f3e0(0x38, 24 + (RpRandom() % 5));
+    if (current == limit) {
+        current = 24;
+        current += RpRandom() % 5;
         func_0016f3e0(0x39, 0);
+        func_0016f3e0(0x38, current);
     } else {
-        func_0016f3e0(0x39, current + 1);
+        func_0016f3e0(0x39, func_0016f380(0x39) + 1);
     }
 }
 
-// FUN_001f5760 NONMATCHING
+// FUN_001f5760
 u32 func_001f5760(u16 personaId)
 {
-    u32 i;
-    u32 count = func_001756f0();
-    for (i = 0; i < count; i++) {
+    s32 i;
+    s32 count = func_001756f0() & 0xffff;
+    u32 target;
+    i = 0;
+    target = personaId & 0xffff;
+    for (; i < count; i++) {
         DatPersonaWork *p = datPersonaGetHeroPersona((s16)i);
-        if (p != NULL && p->id == personaId) {
-            return 1;
+        K_ASSERT(p != NULL, 0x99c);
+        if (target == p->id) {
+            break;
         }
     }
-    return 0;
+    return i < count;
 }
 
-// FUN_001f5810 NONMATCHING
-u32 func_001f5810(KwlnTask *task)
+// FUN_001f5810
+u32 func_001f5810(KwlnTask* task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    if (sflRes0020dfe0() != 0) {
-        return 0;
+    u8* card;
+    u32 result;
+
+    K_ASSERT(sBrCard != NULL, 0xfe);
+    card = sBrCard;
+    if ((BR_U32(BR_TASK_WORK(task), 4) & 0x80) != 0) {
+        result = 0;
+    } else if (BR_U32(card, 8) == 1) {
+        result = 0;
+    } else {
+        if (sflRes0020dfe0() != 0) goto resources_busy;
+        if (func_00254f20() != 0) goto resources_busy;
+        if (sflRes0020e4c0() != 0) goto resources_busy;
+        if (sflRes0020ec00() == 0) goto resources_ready;
+
+resources_busy:
+        result = 0;
+        goto resources_done;
+
+resources_ready:
+        result = 1;
+
+resources_done:
+        ;
     }
-    if (func_00254f20() != 0) {
-        return 0;
-    }
-    if (sflRes0020e4c0() != 0) {
-        return 0;
-    }
-    return sflRes0020ec00() == 0 && (BR_U32(work, 4) & 0x400) != 0;
+    return result;
 }
 
 // FUN_001f58f0
@@ -1463,35 +1590,92 @@ void func_001f58f0(u8 *work)
     sBrReward = work;
 }
 
-// FUN_001f5950 NONMATCHING
+// FUN_001f5950
 void func_001f5950(void)
 {
+    u8 *work;
+
     K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     func_001f98d0();
-    if (BR_U32(sBrReward, 0x34c4) != 0) {
-        scrReleaseScript((void *)BR_U32(sBrReward, 0x34c4));
-    }
+    scrReleaseScript((void *)BR_U32(work, 0x34c4));
     sBrReward = NULL;
 }
 
-// FUN_001f59b0 NONMATCHING
+// FUN_001f59b0
 void func_001f59b0(void)
 {
-    u8 *work = sBrReward;
-    K_ASSERT(work != NULL, 0x8c);
-    BR_U32(work, 0) |= 3;
-    BR_U32(work, 4) = 0;
-    BR_U32(work, 0x10) = 100;
+    u8 *work;
+    u32 *words;
+    s32 i;
+    u8 *entry;
+    u32 type;
+
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
+    words = (u32 *)work;
+    BR_U32(work, 0) |= 1;
+    BR_U32(work, 0) |= 2;
+    BR_U32(work, 0x10) = 0;
     BR_U32(work, 0x18) = 100;
     BR_U32(work, 0x34c0) = 0;
-    BR_U32(work, 8) = (BR_U32(work, 0x341c) + BR_U32(work, 0x3418) < 2) ? 0 : 1;
-    if (BR_U32(work, 8) != 0) {
-        sflCard00259310();
-        BR_U32(work, 0) |= 0x80;
-        BR_U32(work, 4) = 0;
+    BR_U32(work, 0x34c4) = (u32)scrStartScriptFirstPrcd(D_00684850);
+    if ((s32)BR_S32(work, 0x341c) + (s32)BR_S32(work, 0x3418) < 2) {
+        words[2] = 0;
     } else {
-        func_001f6630();
+        words[2] = 1;
     }
+    if (words[2] == 0) {
+        goto reward_state_zero;
+    }
+    switch (words[2]) {
+    case 1:
+        goto reward_loop_init;
+    default:
+        goto reward_done;
+    }
+
+reward_loop_init:
+    i = 0;
+    goto reward_loop_test;
+
+reward_loop:
+    entry = work + i * 0x670 + 0x5c;
+    type = BR_U32(entry, 0);
+    if (type == 1) {
+        goto reward_type_one;
+    }
+    switch (type) {
+    case 0:
+        goto reward_type_zero;
+    default:
+        goto reward_loop_increment;
+    }
+
+reward_type_zero:
+    func_0021ab80(BR_U16(entry, 4));
+    goto reward_loop_increment;
+
+reward_type_one:
+    func_0021a920(BR_U32(entry, 4), BR_U32(entry, 8));
+
+reward_loop_increment:
+    i++;
+
+reward_loop_test:
+    if (i < BR_S32(work, 0x33dc)) {
+        goto reward_loop;
+    }
+    sflCard00259310();
+    BR_U32(work, 0) |= 0x80;
+    BR_U32(work, 4) = 0;
+    goto reward_done;
+
+reward_state_zero:
+    func_001f6630();
+
+reward_done:
+    ;
 }
 
 // FUN_001f5b20 NONMATCHING
@@ -1574,22 +1758,30 @@ void *func_001f5b20(void)
 // FUN_001f64c0 NONMATCHING
 void func_001f64c0(void)
 {
-    u8 *work = sBrReward;
-    u32 i;
+    u8 *work;
+    s32 flags;
+    s32 i;
+
     K_ASSERT(sBrReward != NULL, 0x8c);
-    if ((BR_U32(work, 0) & 1) == 0 || BR_U32(work, 8) != 1 || (BR_U32(work, 0) & 0x400) != 0) {
-        return;
-    }
-    for (i = 0; i < BR_U32(work, 0x341c); i++) {
-        u32 idx = BR_U32(work, 0x3c + i * 4);
-        func_0020b250(work + idx * 0x670 + 0x68);
-    }
-    for (i = 0; i < BR_U32(work, 0x3418); i++) {
-        u32 idx = BR_U32(work, 0x1c + i * 4);
-        func_0020b250(work + idx * 0x670 + 0x68);
+    work = sBrReward;
+    flags = ~BR_U32(work, 0);
+    if ((flags & 1) == 0) {
+        if (BR_U32(work, 8) == 1) {
+            if ((flags & 0x400) == 0) {
+                for (i = 0; i < BR_U32(work, 0x341c); i++) {
+                    u32 idx = BR_U32(work, 0x3c + i * 4);
+                    u8 *entry = work + idx * 0x670 + 0x5c;
+                    func_0020b250(entry + 0xc);
+                }
+                for (i = 0; i < BR_U32(work, 0x3418); i++) {
+                    u32 idx = BR_U32(work, 0x1c + i * 4);
+                    u8 *entry = work + idx * 0x670 + 0x5c;
+                    func_0020b250(entry + 0xc);
+                }
+            }
+        }
     }
 }
-
 // FUN_001f65e0
 u32 func_001f65e0(void)
 {
@@ -1729,40 +1921,47 @@ void func_001f6e80(void)
     func_0010a4e0(1, 0, 6, 10);
 }
 
-// FUN_001f7030 NONMATCHING
+// FUN_001f7030
 void func_001f7030(void)
 {
-    u8 *work = sBrReward;
-    u32 index;
-    K_ASSERT(work != NULL, 0x8c);
-    index = BR_U32(work, 0x3410);
+    u8* work;
+    u32 offset;
+
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     func_003c7bc0(0, func_001775a0(1));
-    func_003c7bc0(1, func_00173220(BR_U16(work, 0x33e0 + index * 2)));
+    offset = BR_U32(work, 0x3410) * 2;
+    func_003c7bc0(1, func_00173220(
+        BR_U16((u8*)(offset + (u32)work), 0x33e0)));
     func_003c7430(14);
     BR_U32(work, 4) = 5;
 }
 
-// FUN_001f70d0 NONMATCHING
+// FUN_001f70d0
 void func_001f70d0(void)
 {
-    u8 *work = sBrReward;
-    u32 index;
-    K_ASSERT(work != NULL, 0x8c);
-    index = BR_U32(work, 0x3414);
+    u8* work;
+    u32 offset;
+
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
     func_003c7bc0(0, func_001775a0(1));
-    func_003c7bc0(1, func_00173220(BR_U16(work, 0x33f0 + index * 2)));
+    offset = BR_U32(work, 0x3414) * 2;
+    func_003c7bc0(1, func_00173220(
+        BR_U16((u8*)(offset + (u32)work), 0x33f0)));
     func_003c7430(16);
     BR_U32(work, 4) = 6;
 }
 
-// FUN_001f7170 NONMATCHING
+// FUN_001f7170
 void func_001f7170(void)
 {
-    u8 *work = sBrReward;
-    u32 i;
-    K_ASSERT(work != NULL, 0x8c);
-    for (i = 0; i < BR_U32(work, 0x341c); i++) {
-        u32 idx = BR_U32(work, 0x3c + i * 4);
+    u8 *work;
+    s32 i;
+    K_ASSERT(sBrReward != NULL, 0x8c);
+    work = sBrReward;
+    for (i = 0; i < BR_S32(work, 0x341c); i++) {
+        u32 idx = BR_U32(work + i * 4, 0x3c);
         func_00217590(BR_U16(work + idx * 0x670, 0x60));
     }
     func_00215b00();

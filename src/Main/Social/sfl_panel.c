@@ -49,13 +49,15 @@ void func_0023d7b0(void)
     sSflPanel = NULL;
 }
 
-// FUN_0023D7F0 NONMATCHING
+// FUN_0023D7F0
 void func_0023d7f0(void)
 {
+    u32* work;
     K_ASSERT(sSflPanel != NULL, 0x7f);
-    sSflPanel[1] = 3;
-    K_ASSERT(*sSflPanel & 1, 0x9c);
-    *sSflPanel |= 1;
+    work = sSflPanel;
+    work[1] = 3;
+    K_ASSERT(~*work & 1, 0x9c);
+    *work |= 1;
 }
 
 // FUN_0023D870
@@ -73,35 +75,49 @@ void sflPanel0023d870(void)
 void func_0023d8f0(void)
 {
     u32* work;
-    RwV3d cameraOffset;
     float t;
-
+    RwV3d cameraOffset;
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
     K_ASSERT(*work & 1, 0xb2);
 
-    if (work[1] == 0) {
-        if (work[2] < 0x32) {
+    switch (work[1]) {
+    case 0:
+        if ((s32)work[2] < 0x32) {
             work[2]++;
         } else {
             *work &= 0xfffffffd;
         }
-    } else if (work[1] == 1 || work[1] == 2) {
-        if (work[2] < 0x1e) {
+        break;
+    case 1:
+        if ((s32)work[2] < 0x1e) {
             work[2]++;
         } else {
             *work &= 0xfffffffd;
         }
+        break;
+    case 2:
+        if ((s32)work[2] < 0x1e) {
+            work[2]++;
+        } else {
+            *work &= 0xfffffffd;
+        }
+        break;
     }
-
     func_0023dac0();
 
-    if (work[1] == 0 && work[2] < 0x32) {
-        t = (float)(work[2] + 1) / 50.0f;
-        cameraOffset.x = 0.0f;
-        cameraOffset.y = 0.0f;
-        cameraOffset.z = t * 200.0f - t * t * 100.0f - 100.0f;
-        func_004cb750(kwlnGetMainCamera()->object.object.parent, &cameraOffset, 0);
+    switch (work[1]) {
+    case 0:
+        if ((s32)work[2] < 0x32) {
+            t = (float)((s32)work[2] + 1) / 50.0f;
+            cameraOffset.z = t * 200.0f - t * (t * 100.0f) - 100.0f;
+            cameraOffset.y = 0.0f;
+            cameraOffset.x = 0.0f;
+            func_004cb750(kwlnGetMainCamera()->object.object.parent, &cameraOffset, 0);
+        }
+        break;
+    default:
+        break;
     }
 }
 
@@ -367,15 +383,17 @@ void func_0023e970(void)
     }
 }
 
-// FUN_0023ee50 NONMATCHING
+// FUN_0023ee50
 void func_0023ee50(void)
 {
     u32* work;
-    u32 selection;
+    s32 selection;
     int* image;
     float uv[4];
     RwV3d origin;
 
+    float width;
+    float height;
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
     selection = func_00255130();
@@ -387,17 +405,21 @@ void func_0023ee50(void)
     K_ASSERT(selection <= 6, 0x2fe);
 
     image = sflRes0020e610(selection - 1);
-    uv[0] = 0.0f / (float)image[3];
-    uv[1] = 0.0f / (float)image[4];
-    uv[2] = (float)image[3] / (float)image[3];
-    uv[3] = (float)image[4] / (float)image[4];
+    width = (float)image[3];
+    height = (float)image[4];
+    uv[0] = 0.0f / width;
+    uv[1] = 0.0f / height;
+    uv[2] = width / width;
+    uv[3] = height / height;
     func_0021eb80(work + 4, uv);
 
     image = sflRes0020e510(0);
-    uv[0] = 1.0f / (float)image[3];
-    uv[1] = 0.0f / (float)image[4];
-    uv[2] = 174.0f / (float)image[3];
-    uv[3] = 32.0f / (float)image[4];
+    width = (float)image[3];
+    height = (float)image[4];
+    uv[0] = 1.0f / width;
+    uv[1] = 0.0f / height;
+    uv[2] = 174.0f / width;
+    uv[3] = 32.0f / height;
     func_0021eb80(work + 0x44, uv);
 
     work[2] = 0;
@@ -408,33 +430,65 @@ void func_0023ee50(void)
     scrClearTextBox(1, 0, 6, 0);
 }
 
-// FUN_0023f010 NONMATCHING
+// FUN_0023f010
 void func_0023f010(void)
 {
     u32* work;
     int* image;
     float uv[4];
     int i;
+    float width;
+    float height;
 
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
 
-    image = sflRes0020e690(0);
-    uv[0] = 0.0f / (float)image[3];
-    uv[1] = 0.0f / (float)image[4];
-    uv[2] = (float)image[3] / (float)image[3];
-    uv[3] = (float)image[4] / (float)image[4];
-    for (i = 0; i < 2; i++) {
-        func_0021eb80(work + 0x84 + i * 0x40, uv);
+    {
+        float u0;
+        float v0;
+        float u1;
+        float v1;
+
+        image = sflRes0020e690(0);
+        width = (float)image[3];
+        height = (float)image[4];
+        i = 0;
+        u0 = 0.0f / width;
+        v0 = 0.0f / height;
+        u1 = width / width;
+        v1 = height / height;
+        while (i < 2) {
+            uv[0] = u0;
+            uv[1] = v0;
+            uv[2] = u1;
+            uv[3] = v1;
+            func_0021eb80(work + 0x84 + i * 0x40, uv);
+            i++;
+        }
     }
 
-    image = sflRes0020e690(1);
-    uv[0] = 1.0f / (float)image[3];
-    uv[1] = 1.0f / (float)image[4];
-    uv[2] = 463.0f / (float)image[3];
-    uv[3] = 89.0f / (float)image[4];
-    for (i = 0; i < 3; i++) {
-        func_0021eb80(work + 0x104 + i * 0x40, uv);
+    {
+        float u0;
+        float v0;
+        float u1;
+        float v1;
+
+        image = sflRes0020e690(1);
+        width = (float)image[3];
+        height = (float)image[4];
+        i = 0;
+        u0 = 1.0f / width;
+        v0 = 1.0f / height;
+        u1 = 463.0f / width;
+        v1 = 89.0f / height;
+        while (i < 3) {
+            uv[0] = u0;
+            uv[1] = v0;
+            uv[2] = u1;
+            uv[3] = v1;
+            func_0021eb80(work + 0x104 + i * 0x40, uv);
+            i++;
+        }
     }
 
     work[2] = 0;
@@ -443,33 +497,55 @@ void func_0023f010(void)
     func_0023dac0();
 }
 
-// FUN_0023f1d0 NONMATCHING
+// FUN_0023f1d0
 void func_0023f1d0(void)
 {
     u32* work;
     int* image;
     float uv[4];
     int i;
+    float width;
+    float height;
+    float u0;
+    float v0;
+    float u1;
+    float v1;
 
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
 
     image = sflRes0020e690(0);
-    uv[0] = 0.0f / (float)image[3];
-    uv[1] = 0.0f / (float)image[4];
-    uv[2] = (float)image[3] / (float)image[3];
-    uv[3] = (float)image[4] / (float)image[4];
-    for (i = 0; i < 2; i++) {
+    width = (float)image[3];
+    height = (float)image[4];
+    i = 0;
+    u0 = 0.0f / width;
+    v0 = 0.0f / height;
+    u1 = width / width;
+    v1 = height / height;
+    while (i < 2) {
+        uv[0] = u0;
+        uv[1] = v0;
+        uv[2] = u1;
+        uv[3] = v1;
         func_0021eb80(work + 0x84 + i * 0x40, uv);
+        i++;
     }
 
     image = sflRes0020e690(2);
-    uv[0] = 1.0f / (float)image[3];
-    uv[1] = 1.0f / (float)image[4];
-    uv[2] = 510.0f / (float)image[3];
-    uv[3] = 89.0f / (float)image[4];
-    for (i = 0; i < 3; i++) {
+    width = (float)image[3];
+    height = (float)image[4];
+    i = 0;
+    u0 = 1.0f / width;
+    v0 = 1.0f / height;
+    u1 = 510.0f / width;
+    v1 = 89.0f / height;
+    while (i < 3) {
+        uv[0] = u0;
+        uv[1] = v0;
+        uv[2] = u1;
+        uv[3] = v1;
         func_0021eb80(work + 0x104 + i * 0x40, uv);
+        i++;
     }
 
     work[2] = 0;

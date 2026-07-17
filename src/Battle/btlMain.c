@@ -16,35 +16,36 @@
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 void FUN_0029ee20(u64 param_1);
+typedef struct BtlMainColorWork BtlMainColorWork;
 #define CONCAT13(a, b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 u32 FUN_0029f150(float *param_1);
-void FUN_0029f4b0(u32 param_1,u32 param_2,float param_3);
+void FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3);
 u32 FUN_0029f760(float *param_1);
-void FUN_0029fa50(u32 param_1);
-u32 FUN_0029faa0(u64 param_1);
+BtlPacket* FUN_0029fa50(u32 param_1);
+u32 FUN_0029faa0(BtlMainColorWork *param_1);
 void FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,float param_4,u16 param_5);
 u32 FUN_002a0440(float *param_1);
-void FUN_002a1080(u32 param_1,u16 param_2);
+BtlPacket* FUN_002a1080(s32 param_1, s16 param_2);
 u8 FUN_002a10e0(float *param_1);
-void FUN_002a1280(u32 param_1,float param_2);
+void FUN_002a1280(u32 param_1,u32 param_2);
 u8 FUN_002a1400(float *param_1);
-void FUN_002a16c0(u32 param_1);
+BtlPacket* FUN_002a16c0(s32 param_1);
 u32 FUN_002a1710(int *param_1);
-void FUN_002a1b00(u32 param_1,u16 param_2,u32 param_3);
+void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3);
 u32 FUN_002a1b70(u32 *param_1);
-void FUN_002a1db0(u32 param_1);
+void FUN_002a1db0(s32 param_1);
 void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4);
-u32 FUN_002a2050(u16 *param_1,long param_2,long param_3);
-void FUN_002a2170(u16 *param_1,long param_2);
+u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
+void FUN_002a2170(u16 *param_1,f32 *param_2);
 void FUN_002a2290(u16 *param_1,long param_2,long param_3,u16 param_4);
 void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param_5,u16 param_6  );
-void FUN_002a2a20(float param_1,int param_2,float *param_3);
-void FUN_002a2b50(float param_1,int param_2,float *param_3);
-void FUN_002a2c40(float param_1,int param_2,float *param_3);
-u32 FUN_002a2ed0(u64 param_1,u64 param_2,u64 param_3);
-u32 FUN_002a3010(float param_1,int param_2);
-void FUN_002a3110(float param_1,u16 *param_2);
-void FUN_002a3160(float param_1,u16 *param_2);
+void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1);
+void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1);
+void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1);
+u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3);
+u32 FUN_002a3010(u8* param_2,f32 param_1);
+void FUN_002a3110(u8* param_2,float param_1);
+void FUN_002a3160(u8* param_2,float param_1);
 extern u32 DAT_00693850;
 extern u32 DAT_00693854;
 extern u32 DAT_00693858;
@@ -112,6 +113,37 @@ typedef struct BtlMainRecovery
     u32 flags;
 } BtlMainRecovery;
 
+struct BtlMainColorWork
+{
+    f32 r;
+    f32 g;
+    f32 b;
+    f32 a;
+    f32 unk_10;
+    f32 unk_14;
+    f32 unk_18;
+    f32 unk_1c;
+    f32 unk_20;
+    f32 unk_24;
+    f32 unk_28;
+    f32 unk_2c;
+    f32 unk_30;
+    f32 unk_34;
+    f32 unk_38;
+    f32 unk_3c;
+    f32 unk_40;
+    f32 unk_44;
+    f32 unk_48;
+    f32 unk_4c;
+    f32 unk_50;
+    f32 unk_54;
+    f32 unk_58;
+    f32 unk_5c;
+    u32 unk_60;
+    u32 unk_64;
+    u16 unk_68;
+    u16 unk_6a;
+};
 extern u8 DAT_007ce4f8[4];
 extern u8* iGpffffb710;
 extern f32 fGpffff8218;
@@ -141,19 +173,23 @@ extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0956;
 extern u16 DAT_007e0958;
+extern const u16 D_007E094C;
+extern const u16 D_007E094E;
+extern const u16 D_007E0956;
+extern const u16 D_007E0958;
 extern void* DAT_007ce4f4;
 extern void* DAT_007cad78;
 extern char DAT_006935c0[];
 
 void FUN_001a0410();
-u32 FUN_0016f190();
+u32 FUN_0016f190(s32 bit);
 u16 FUN_0016c920();
 u16 FUN_0016c9f0();
 void FUN_0016d6b0();
 u32 FUN_0017d800();
 u16 FUN_0017b170();
 void FUN_0016f1f0();
-void* FUN_0016cd60();
+DatUnit* FUN_0016cd60(s16 pcId);
 void FUN_001a0590();
 void* FUN_001f1ae0();
 void FUN_001fec50();
@@ -209,10 +245,10 @@ void FUN_003004f0();
 void FUN_00300410();
 void FUN_00300480();
 void FUN_00302380();
-void FUN_00301690();
+void FUN_00301690(u32 param_1);
 void* FUN_00198590(void);
 
-void FUN_0029dfc0();
+void FUN_0029dfc0(void);
 void FUN_00287b20();
 void FUN_002831c0();
 void FUN_00282d40(f32 param_1, BtlUnit* unit, s16 param_3, u32 param_4, s8 param_5);
@@ -257,14 +293,14 @@ void FUN_003c7430();
 void FUN_003c7560();
 void FUN_003c74e0();
 void FUN_002bb6f0();
-void FUN_0029ea60();
-u32 FUN_0029ec00();
-void FUN_0029ec80();
-u32 FUN_0029ec50();
+void FUN_0029ea60(u32 index, u32* colorA, u32* colorB);
+s32 FUN_0029ec00(s32 index);
+void FUN_0029ec80(u32 index, u32* colorA, u32* colorB);
+s32 FUN_0029ec50(s32 index);
 BtlAction* FUN_0029a1d0();
 void FUN_002d5dc0();
-u16 FUN_002ffdf0();
-u16 FUN_00300100();
+u32 FUN_002ffdf0();
+u32 FUN_00300100();
 u16 FUN_002ffd70();
 u16 FUN_002ffd80();
 void FUN_002b9030();
@@ -274,6 +310,7 @@ void FUN_002a4c50();
 void FUN_002bf650();
 void FUN_002ffdc0();
 void FUN_00299d60();
+void FUN_0048d480(void* curve,s32 mode,f32 time,RwV3d* dst,void* aux);
 
 static u16 btlMainGetDatUnitId(const DatUnit* datUnit)
 {
@@ -307,7 +344,7 @@ u32 FUN_001f1f40();
 u32 FUN_002dba60();
 void FUN_002dcf10();
 void FUN_002fb690();
-void FUN_0029e3c0();
+void FUN_0029e3c0(void);
 void FUN_002bfc50(s32 param_1);
 
 u32 FUN_001fecc0();
@@ -332,6 +369,7 @@ u32 btlMainUpdateStateUnitLoad(BtlStateWork* work);
 void btlMainInitStateStart(BtlStateWork* work);
 u32 btlMainUpdateStateStart(BtlStateWork* work);
 void btlMainInitStateAction(BtlStateWork* work);
+BtlPacket* func_002e2ec0(u16 voiceId);
 u32 btlMainUpdateStateAction(BtlStateWork* work);
 void btlMainInitStateRevivalMes(BtlStateWork* work);
 u32 btlMainUpdateStateRevivalMes(BtlStateWork* work);
@@ -421,41 +459,35 @@ void btlMainInitStateSceneSet(BtlStateWork* work)
 {
     btlMainLoadScene();
 }
-// FUN_0029b190 NONMATCHING
+// FUN_0029b190
 u32 btlMainUpdateStateSceneSet(BtlStateWork* work)
 {
     BtlPacket* scenePacket;
     BtlPacket* soundPacket;
-    u16 loadSound;
-    u32 state;
-
-    if (btlMainTryLoadFinishScene() == 0 || btlPacketCount() != 0)
-    {
-        state = BTL_STATE_NULL;
-    }
-    else
+    s32 loadSound;
+    if (btlMainTryLoadFinishScene() != 0 && btlPacketCount() == 0)
     {
         FUN_001a0410(1);
         FUN_0029dfc0();
-        if (FUN_0016f190(0x141) == 0)
+        switch (datGetFlag(0x141))
         {
-            loadSound = 1;
-        }
-        else
-        {
+        default:
             loadSound = 0;
+            break;
+        case 0:
+            loadSound = 1;
+            break;
         }
-        scenePacket = FUN_002e2ec0(loadSound);
+        scenePacket = func_002e2ec0(loadSound);
         btlPacketRegister(scenePacket, BTLPACKET_TYPE_1);
-
+        soundPacket = FUN_002e2a10();
         soundPacket->unk_00 = 4;
         soundPacket->parentUID = scenePacket->uid;
         btlPacketRegister(soundPacket, BTLPACKET_TYPE_1);
         btlPacketRegister(FUN_002f9bc0(), BTLPACKET_TYPE_1);
-        state = BTL_STATE_UNITCREATE;
+        return BTL_STATE_UNITCREATE;
     }
-
-    return state;
+    return BTL_STATE_NULL;
 }
 
 // FUN_0029b280 NONMATCHING
@@ -475,17 +507,15 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     u32 i;
     u32 j;
     u8 useSpecialFormation;
-
     modelPacketUID = 0;
     i = 0;
-    while (i < 4 && gBtl->startInfo.partyUnits[i] != NULL)
+    while (i < 4 && gBtl->startInfo.partyUnits[i] != ((void*)0))
     {
         u16 charId = *(u16*)((u8*)gBtl->startInfo.partyUnits[i] + 6);
-
         unit = action->unit;
         model = FUN_00316910(unit->genus + 1, charId, 0);
         unit->mdl = model;
-        if (model == NULL)
+        if (model == ((void*)0))
         {
             packet = FUN_00285690(unit, charId, 0x36);
             btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, modelPacketUID);
@@ -509,7 +539,6 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
         i++;
     }
     gBtl->unk_ba4 = i;
-
     enemy = gBtl->startInfo.enmUnits;
     for (i = 0; i < 6; i++, enemy = (DatUnitEc*)((u8*)enemy + 0x3c))
     {
@@ -517,20 +546,18 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
         {
         }
     }
-
     FUN_002b71e0();
     if ((gBtl->flags & 0x100) == 0)
     {
         return;
     }
-
     encount = &gEncountTbl[*(u16*)((u8*)gBtl->startInfo.enmUnits + 8)];
     encountFlags = *(u32*)encount;
     useSpecialFormation = 0;
     if ((encountFlags & 0x20) == 0)
     {
         battleMode = FUN_002d50c0();
-        BTL_U16(0x1a) = battleMode;
+        (*(u16*)((u8*)gBtl + (0x1a))) = battleMode;
         if (battleMode == 2)
         {
             FUN_0029a690(1);
@@ -568,13 +595,12 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     else if ((encountFlags & 0x10) == 0)
     {
         FUN_002fac80();
-        BTL_U16(0x1a) = 0;
+        (*(u16*)((u8*)gBtl + (0x1a))) = 0;
     }
     else
     {
         FUN_0029a690(1);
     }
-
     if ((gBtl->startInfo.unk_00 & 8) != 0)
     {
         useSpecialFormation = 1;
@@ -582,10 +608,10 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     if (useSpecialFormation != 0 && (encountFlags & 0x100) == 0)
     {
         threshold = FUN_002d4cf0(1, 0);
-        targetMask = FUN_00308120(BTL_UIDMAX, 2);
-        for (unit = gBtl->unitLists[1].head; unit != NULL; unit = unit->next)
+        targetMask = FUN_00308120(0x3FFFFFFFFFFFFFFF, 2);
+        for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
         {
-            if (unit->datUnit != NULL && (FUN_00306e80(unit->datUnit, targetMask) & 0x27000000) == 0 &&
+            if (unit->datUnit != ((void*)0) && (FUN_00306e80(unit->datUnit, targetMask) & 0x27000000) == 0 &&
                 (u16)(FUN_002ffcc0(unit->datUnit) + 2) <= threshold && FUN_002ffbc0(100) < 0x21)
             {
                 FUN_003004f0(unit->datUnit, 2);
@@ -610,12 +636,10 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
     u8 hasSkill24f;
     u32 genus;
     u32 encountIndex;
-
     if (btlPacketCount() != 0 || FUN_001fec30() != 0)
     {
         return BTL_STATE_NULL;
     }
-
     FUN_002dcd30();
     if (FUN_001feec0() == 0 && FUN_002d1a70() == 1)
     {
@@ -627,24 +651,22 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
         gBtl->flags &= ~0x4000;
         FUN_002d1a10();
     }
-
     for (genus = 0; genus < 2; genus++)
     {
-        for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+        for (unit = gBtl->unitLists[genus].head; unit != ((void*)0); unit = unit->next)
         {
             FUN_002d3e00(unit, 0);
-            btlUnit0027f7c0(unit, NULL, (RwV3d*)&baseRot, NULL);
+            btlUnit0027f7c0(unit, ((void*)0), (RwV3d*)&baseRot, ((void*)0));
             FUN_0027f680(unit, &baseRot);
         }
     }
-
     FUN_00280870(2, 0, &homePos, 0, 0, 1);
-    for (unit = gBtl->unitLists[0].head; unit != NULL; unit = unit->next)
+    for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
         FUN_00287490(unit);
         if (FUN_0030b5a0(unit->datUnit, 0) == 0 && gBtl->unk_ba4 > 1 && (gBtl->unk_10 & 1) == 0)
         {
-            btlUnit0027f7c0(unit, &unitPos, NULL, (RwV3d*)&unitRot);
+            btlUnit0027f7c0(unit, &unitPos, ((void*)0), (RwV3d*)&unitRot);
             direction.x = unitPos.x - homePos.x;
             direction.y = unitPos.y - homePos.y;
             direction.z = unitPos.z - homePos.z;
@@ -653,7 +675,6 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
             targetPos.y = direction.y * 150.0f + homePos.y;
             targetPos.z = direction.z * 150.0f + homePos.z;
             btlUnitSetPos(unit, &targetPos);
-
             movePacket = FUN_002819d0(DAT_007cad78, unit, &unitPos, 8);
             btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
             packet = FUN_002822b0(unit, &unitRot, 0);
@@ -662,37 +683,36 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
             {
                 packet = FUN_00284200(1.0f, unit, 0x10, 4, 0);
                 btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, movePacket->uid);
-                BTL_PACKET_U16(packet, 0x48) = 4;
+                (*(u16*)((u8*)(packet) + (0x48))) = 4;
             }
         }
         else if (FUN_0030b5a0(unit->datUnit, 0) != 0)
         {
             FUN_003004f0(unit->datUnit, 0x80000);
             FUN_002ffd90(unit->datUnit, 0);
-            unit->flags3 |= BTLUNIT_FLAG3_DEAD;
+            unit->flags3 |= (1 << 0);
             FUN_002831c0(unit, 0);
             btlPacketRegister(FUN_00284200(1.0f, unit, 0x12, 0, 2), BTLPACKET_TYPE_1);
             btlPacketRegister(FUN_00284d80(unit, FUN_002838d0(1.0f, unit, 0x12)), BTLPACKET_TYPE_1);
         }
     }
-
     for (genus = 0; genus < 2; genus++)
     {
         hasSkill24d = 0;
         hasSkill24e = 0;
         hasSkill24f = 0;
-        for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+        for (unit = gBtl->unitLists[genus].head; unit != ((void*)0); unit = unit->next)
         {
-            if (unit->datUnit != NULL)
+            if (unit->datUnit != ((void*)0))
             {
                 hasSkill24d |= FUN_003005e0(unit->datUnit, 0x24d) != 0;
                 hasSkill24e |= FUN_003005e0(unit->datUnit, 0x24e) != 0;
                 hasSkill24f |= FUN_003005e0(unit->datUnit, 0x24f) != 0;
             }
         }
-        for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+        for (unit = gBtl->unitLists[genus].head; unit != ((void*)0); unit = unit->next)
         {
-            if (unit->datUnit == NULL)
+            if (unit->datUnit == ((void*)0))
             {
                 continue;
             }
@@ -711,15 +731,14 @@ u32 btlMainUpdateStateUnitCreate(BtlStateWork* work)
             *(u16*)unit->datUnit &= 0xfbf7;
         }
     }
-
     encountIndex = *(u16*)((u8*)gBtl->startInfo.enmUnits + 8);
     if (gEncountTbl[encountIndex].enmIds[0] != 0 && gEncountTbl[encountIndex].enmIds[1] != 0)
     {
-        BTL_U16(0xbe0) = gEncountTbl[encountIndex].enmIds[0];
-        BTL_U32(0xbe4) = gEncountTbl[encountIndex].enmIds[1];
-        BTL_U32(0xbf8) = 1;
+        (*(u16*)((u8*)gBtl + (0xbe0))) = gEncountTbl[encountIndex].enmIds[0];
+        (*(u32*)((u8*)gBtl + (0xbe4))) = gEncountTbl[encountIndex].enmIds[1];
+        (*(u32*)((u8*)gBtl + (0xbf8))) = 1;
     }
-    btlPacketRegister(FUN_002a3b40(NULL, 2), BTLPACKET_TYPE_0);
+    btlPacketRegister(FUN_002a3b40(((void*)0), 2), BTLPACKET_TYPE_0);
     if ((gBtl->unk_10 & 1) == 0)
     {
         FUN_002ff2f0();
@@ -741,54 +760,49 @@ void btlMainInitStateUnitLoad(BtlStateWork* work)
     u64 lastPacketUID;
     u16 enemyCount;
     u8 firstUnit;
-
     enemyCount = 0;
-    for (unit = gBtl->unitLists[1].head; unit != NULL; unit = unit->next)
+    for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
     {
         enemyCount++;
     }
-
     firstUnit = 1;
     modelPacketUID = 0;
     formationPacketUID = 0;
-    for (unit = gBtl->unitLists[1].head; unit != NULL; unit = unit->next)
+    for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
     {
         modelPacket = FUN_00285690(unit, unit->charId, 0x3e);
         btlMainRegisterDependentPacket(modelPacket, BTLPACKET_TYPE_1, modelPacketUID);
         modelPacketUID = modelPacket->uid;
-
         if ((gBtl->unk_10 & 1) == 0)
         {
             formationPacket = FUN_002bb2f0(DAT_007ce4f4, unit, 0, 0, 0);
             btlMainRegisterDependentPacket(formationPacket, BTLPACKET_TYPE_2D, modelPacket->uid);
             if (firstUnit != 0)
             {
-                BTL_PACKET_U16(formationPacket, 0x48) = 1;
+                (*(u16*)((u8*)(formationPacket) + (0x48))) = 1;
             }
             else
             {
-                BTL_PACKET_U8(formationPacket, 0x10) = 5;
-                BTL_PACKET_U64(formationPacket, 0x18) = formationPacketUID;
-                BTL_PACKET_U16(formationPacket, 0x48) = enemyCount < 4 ? 8 : 4;
+                (*(u8*)((u8*)(formationPacket) + (0x10))) = 5;
+                (*(u64*)((u8*)(formationPacket) + (0x18))) = formationPacketUID;
+                (*(u16*)((u8*)(formationPacket) + (0x48))) = enemyCount < 4 ? 8 : 4;
             }
             formationPacketUID = formationPacket->uid;
-
-            packet = FUN_00285d30(unit, BTL_UIDMAX, 8, 0, 3, 1);
+            packet = FUN_00285d30(unit, 0x3FFFFFFFFFFFFFFF, 8, 0, 3, 1);
             btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, modelPacket->uid);
-            BTL_PACKET_U8(packet, 0x10) = 5;
-            BTL_PACKET_U64(packet, 0x18) = formationPacketUID;
-            BTL_PACKET_U16(packet, 0x48) = 0x1d;
+            (*(u8*)((u8*)(packet) + (0x10))) = 5;
+            (*(u64*)((u8*)(packet) + (0x18))) = formationPacketUID;
+            (*(u16*)((u8*)(packet) + (0x48))) = 0x1d;
         }
         else
         {
-            packet = FUN_00285d30(unit, BTL_UIDMAX, 0, 0, 3, 1);
+            packet = FUN_00285d30(unit, 0x3FFFFFFFFFFFFFFF, 0, 0, 3, 1);
             btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, modelPacket->uid);
-            BTL_PACKET_U16(packet, 0x48) = 2;
+            (*(u16*)((u8*)(packet) + (0x48))) = 2;
             formationPacketUID = packet->uid;
         }
         firstUnit = 0;
     }
-
     packet = FUN_002bc680();
     btlMainRegisterDependentPacket(packet, BTLPACKET_TYPE_1, modelPacketUID);
     lastPacketUID = packet->uid;
@@ -803,7 +817,6 @@ u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
 {
     BtlUnit* unit;
     u32 state;
-
     if ((gBtl->flags & 0x100000) != 0 && FUN_002ff320() != 1)
     {
         FUN_001fec50();
@@ -815,9 +828,9 @@ u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
         {
             btlPacketRegister(FUN_002db740(gBtl->actionList.head, 0, 0, 0, 0), BTLPACKET_TYPE_1);
         }
-        for (unit = gBtl->unitLists[1].head; unit != NULL; unit = unit->next)
+        for (unit = gBtl->unitLists[1].head; unit != ((void*)0); unit = unit->next)
         {
-            if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) != 0)
+            if ((unit->flags3 & (1 << 3)) != 0)
             {
                 FUN_00287490(unit);
             }
@@ -833,7 +846,6 @@ u32 btlMainUpdateStateUnitLoad(BtlStateWork* work)
     {
         state = BTL_STATE_NULL;
     }
-
     return state;
 }
 
@@ -881,80 +893,85 @@ void btlMainInitStateAction(BtlStateWork* work)
 u32 btlMainUpdateStateAction(BtlStateWork* work)
 {
     BtlUnit* unit;
-    u32 aliveCount;
-    u32 unitCount;
+    u16 aliveCount;
+    u16 unitCount;
+    BtlUnit* unit2;
     u16 battleMode;
-
-    if ((gBtl->flags & 0x80) == 0)
+    if ((gBtl->flags & 0x80) != 0)
     {
-        return BTL_STATE_NULL;
-    }
-
-    FUN_0029b070();
-    FUN_001ff390();
-    FUN_001ff350();
-    battleMode = BTL_U16(0x1c);
-    if (battleMode != 2)
-    {
-        if (battleMode != 3 && battleMode != 1)
+        FUN_0029b070();
+        FUN_001ff390();
+        FUN_001ff350();
         {
-            return BTL_STATE_NULL;
-        }
-        if (battleMode == 3)
-        {
-            FUN_00521408((u8*)gBtl + 0xbdc, 0, 0x44);
-        }
-        else if (FUN_002d4ed0(FUN_0029ad20()) == 1)
-        {
-            BTL_U32(0xbdc) |= 1;
-        }
-
-        aliveCount = 0;
-        unitCount = 0;
-        for (unit = gBtl->unitLists[0].tail; unit != NULL; unit = unit->prev)
-        {
-            if (FUN_0030b5a0(unit->datUnit, 0) == 0)
+            battleMode = BTL_U16(0x1c);
+            if (battleMode != 2)
             {
-                *(u16*)((u8*)gBtl + 0xc00 + aliveCount * sizeof(u16)) = btlMainGetDatUnitId(unit->datUnit);
-                aliveCount++;
+                if (battleMode != 3 && battleMode != 1)
+                {
+                    return BTL_STATE_NON;
+                }
+                if (battleMode != 3)
+                {
+                    if (FUN_002d4ed0(FUN_0029ad20()) == 1)
+                    {
+                        BTL_U32(0xbdc) |= 1;
+                    }
+                }
+                else
+                {
+                    FUN_00521408((u8*)gBtl + 0xbdc, 0, 0x44);
+                }
+                unitCount = 0;
+                aliveCount = 0;
+                for (unit = gBtl->unitLists[0].tail; unit != NULL; unit = unit->prev)
+                {
+                    if (FUN_0030b5a0(unit->datUnit, 0) != 0)
+                    {
+                        unitCount++;
+                    }
+                    else
+                    {
+                        *(u16*)((u8*)gBtl + 0xc00 + aliveCount * sizeof(u16)) = *(u16*)((u8*)unit->datUnit + 2);
+                        aliveCount++;
+                        unitCount++;
+                    }
+                }
+                BTL_U32(0xc08) = aliveCount;
+                BTL_U32(0xc0c) = unitCount;
+                BTL_U32(0xc1c) = *(u16*)((u8*)gBtl + 0xb9a);
+                if ((s32)*(u16*)((u8*)gBtl + 0xb9a) > 0)
+                {
+                    BTL_U32(0xc14) = (u32)((s32)BTL_U32(0xc14) / (s32)*(u16*)((u8*)gBtl + 0xb9a));
+                }
+                BTL_U32(0xc18) = FUN_002d5550();
+                for (unit2 = gBtl->unitLists[0].tail; unit2 != NULL; unit2 = unit2->prev)
+                {
+                    if (unit2->datUnit != NULL)
+                    {
+                        FUN_00300560(unit2->datUnit, 0xfff7ff7f);
+                    }
+                }
+                BTL_U32(0xd28) = (u32)FUN_001f1ae0((u8*)gBtl + 0xbdc);
+                battleMode = BTL_U16(0x1c);
+                if (battleMode == 1)
+                {
+                    return (gBtl->unk_10 & 2) != 0 ? BTL_STATE_ENEMYDEAD : BTL_STATE_WIN;
+                }
             }
-            unitCount++;
         }
-        BTL_U32(0xc08) = aliveCount;
-        BTL_U32(0xc0c) = unitCount;
-        BTL_U32(0xc1c) = *(u16*)((u8*)gBtl + 0xb9a);
-        if (*(u16*)((u8*)gBtl + 0xb9a) != 0)
+        if (battleMode == 2)
         {
-            BTL_U32(0xc14) /= *(u16*)((u8*)gBtl + 0xb9a);
+            return FUN_0027d560() != 0 ? BTL_STATE_REVIVALMES : BTL_STATE_LOSE;
         }
-        BTL_U32(0xc18) = FUN_002d5550();
-        for (unit = gBtl->unitLists[0].tail; unit != NULL; unit = unit->prev)
-        {
-            if (unit->datUnit != NULL)
-            {
-                FUN_00300560(unit->datUnit, 0xfff7ff7f);
-            }
-        }
-        BTL_U32(0xd28) = (u32)FUN_001f1ae0((u8*)gBtl + 0xbdc);
-        if (battleMode == 1)
-        {
-            return (gBtl->unk_10 & 2) != 0 ? BTL_STATE_ENEMYDEAD : BTL_STATE_WIN;
-        }
+        return BTL_STATE_FADEOUT;
     }
-
-    if (battleMode == 2)
-    {
-        return FUN_0027d560() == 0 ? BTL_STATE_LOSE : BTL_STATE_REVIVALMES;
-    }
-    return BTL_STATE_FADEOUT;
+    return BTL_STATE_NULL;
 }
-
 // FUN_0029c5d0
 void btlMainInitStateRevivalMes(BtlStateWork* work)
 {
     BtlPacket* packet;
     BtlAction* action;
-
     action = gBtl->actionList.head;
     FUN_003c72d0(DAT_006935c0);
     FUN_003c7430(1);
@@ -963,7 +980,7 @@ void btlMainInitStateRevivalMes(BtlStateWork* work)
     packet = btlFormation002b8d60(3, 0xfff);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    btlPacketRegister(FUN_002a3b40(NULL, 0x24), BTLPACKET_TYPE_0);
+    btlPacketRegister(FUN_002a3b40(((void*)0), 0x24), BTLPACKET_TYPE_0);
 }
 // FUN_0029c680
 u32 btlMainUpdateStateRevivalMes(BtlStateWork* work)
@@ -1110,33 +1127,29 @@ void btlMainInitStateRevival(BtlStateWork* work)
     btlMainSetPacketAction(packet, action);
     FUN_002b9030(spellContext);
 }
-// FUN_0029ccd0 NONMATCHING
+// FUN_0029ccd0
 u32 btlMainUpdateStateRevival(BtlStateWork* work)
 {
     BtlAction* action;
-    BtlUnit* unit;
     u16 revivalCount;
-
     action = gBtl->actionList.head;
-    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) != NULL)
+    if (btlPacketFindFirstByActionUID(action->uid, 0x3FFFFFFFFFFFFFFF) == ((void*)0))
     {
-        return BTL_STATE_NULL;
+        revivalCount = func_00170760((s16)action->unit->datUnit->id, 0xfc8);
+        func_00170860((s16)action->unit->datUnit->id, 0xfc8, revivalCount - 1);
+        FUN_002bfc50(0);
+        FUN_0029b040();
+        if (FUN_002fd7c0() == 1)
+        {
+            FUN_001ff370();
+        }
+        gBtl->flags &= ~0x80;
+        btlPacketRegister(FUN_002a3b40(action, 0x1f), BTLPACKET_TYPE_0);
+        return BTL_STATE_ACTION;
     }
-
-    unit = action->unit;
-    revivalCount = func_00170760(btlMainGetDatUnitId(unit->datUnit), 0xfc8);
-    func_00170860(btlMainGetDatUnitId(unit->datUnit), 0xfc8, revivalCount - 1);
-    FUN_002bfc50(0);
-    FUN_0029b040();
-    if (FUN_002fd7c0() == 1)
-    {
-        FUN_001ff370();
-    }
-    gBtl->flags &= ~0x80;
-    btlPacketRegister(FUN_002a3b40(action, 0x1f), BTLPACKET_TYPE_0);
-    return BTL_STATE_ACTION;
+    return BTL_STATE_NULL;
 }
-// FUN_0029ce90 NONMATCHING
+// FUN_0029ce90
 void btlMainInitStateWin(BtlStateWork* work)
 {
     BtlAction* winner;
@@ -1144,7 +1157,7 @@ void btlMainInitStateWin(BtlStateWork* work)
     BtlPacket* packet;
 
     winner = FUN_0029ad20();
-    if (winner != NULL && (winner->unk_18 & 4) != 0)
+    if ((winner->unk_18 & 4) != 0)
     {
         winner = FUN_0029ad50();
     }
@@ -1164,7 +1177,7 @@ void btlMainInitStateWin(BtlStateWork* work)
             FUN_0030b5a0(action->unit->datUnit, 0) != 0)
         {
             packet = btlUnit00286320(action->unit);
-            btlMainSetPacketAction(packet, winner);
+            packet->actionUID = winner->uid;
             BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
             btlPacketRegister(packet, BTLPACKET_TYPE_0);
         }
@@ -1172,45 +1185,68 @@ void btlMainInitStateWin(BtlStateWork* work)
 
     packet = FUN_002db740(winner, 0xf, 0, 0, 3);
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
-    btlMainSetPacketAction(packet, winner);
+    packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_002e2be0(winner, 7, 0, 0, 0);
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
-    btlMainSetPacketAction(packet, winner);
+    packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_00284200(1.0f, winner->unit, 0x14, 0, 2);
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
-    btlMainSetPacketAction(packet, winner);
+    packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
     packet = FUN_002a3b40(winner, 0x20);
     BTL_PACKET_U16(packet, 0x48) = work->winPacketFrame;
-    btlMainSetPacketAction(packet, winner);
+    packet->actionUID = winner->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
 }
-// FUN_0029d0d0 NONMATCHING
+// FUN_0029d0d0
 u32 btlMainUpdateStateWin(BtlStateWork* work)
 {
     BtlPacket* packet;
 
-    if (work->winPacketFrame + work->winWaitFrames < work->stateTimer && work->winInputSeen == 0 &&
-        ((DAT_007e094c & 0x10) != 0 || (DAT_007e0956 & 0x10) != 0 ||
-         (DAT_007e094e & 0x40) != 0 || (DAT_007e0958 & 0x40) != 0))
+    if (work->stateTimer > work->winPacketFrame + work->winWaitFrames &&
+        work->winInputSeen == 0)
     {
-        packet = FUN_002db890();
-        BTL_PACKET_U16(packet, 0x4a) = 0xc;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        FUN_002ddbe0();
-        work->winInputSeen = 1;
+        if ((D_007E094C & 0x10) != 0)
+        {
+            goto win_input;
+        }
+        else if ((D_007E0956 & 0x10) != 0)
+        {
+            goto win_input;
+        }
+        else if ((D_007E094E & 0x40) != 0)
+        {
+            goto win_input;
+        }
+        else if ((D_007E0958 & 0x40) != 0)
+        {
+            goto win_input;
+        }
+        else
+        {
+            goto win_done;
+        }
     }
+    goto win_done;
 
-    if (btlPacketCount() == 0 && (work->winInputSeen != 0 ||
-                                  work->winPacketFrame + work->winAnimFrame <= work->stateTimer))
+win_input:
+    packet = FUN_002db890();
+    BTL_PACKET_U16(packet, 0x4a) = 0xc;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    FUN_002ddbe0();
+    work->winInputSeen = 1;
+
+win_done:
+    if (btlPacketCount() == 0 &&
+        (work->winInputSeen != 0 ||
+         work->stateTimer >= work->winPacketFrame + work->winAnimFrame))
     {
         return BTL_STATE_CONDITION;
     }
     return BTL_STATE_NULL;
 }
-
 // FUN_0029cde0
 void btlMainInitStateEnemyDead(BtlStateWork* work)
 {
@@ -1252,21 +1288,19 @@ void btlMainInitStateCondition(BtlStateWork* work)
     u32 threshold;
     u8 forceConditionChange;
     u64 lastPacketUID;
-
     forceConditionChange = 0;
     if (FUN_0016f190(0x172) != 0)
     {
         return;
     }
-
     sickUnitCount = 0;
-    for (unit = gBtl->unitLists[0].head; unit != NULL; unit = unit->next)
+    for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
         unitId = btlMainGetDatUnitId(unit->datUnit);
         oldCondition = FUN_0016c920(unitId);
         if (FUN_0017d800() == 0 && oldCondition != 5 && oldCondition != 4 && oldCondition != 3)
         {
-            FUN_0016ca90(unitId, BTL_UIDMAX);
+            FUN_0016ca90(unitId, 0x3FFFFFFFFFFFFFFF);
         }
         if (FUN_0030b5a0(unit->datUnit, 0) == 0 && oldCondition == 5)
         {
@@ -1278,10 +1312,9 @@ void btlMainInitStateCondition(BtlStateWork* work)
         FUN_002ffbc0(sickUnitCount);
         forceConditionChange = 1;
     }
-
-    changedUnit = NULL;
+    changedUnit = ((void*)0);
     newCondition = 0;
-    for (unit = gBtl->unitLists[0].head; unit != NULL; unit = unit->next)
+    for (unit = gBtl->unitLists[0].head; unit != ((void*)0); unit = unit->next)
     {
         unitId = btlMainGetDatUnitId(unit->datUnit);
         oldCondition = FUN_0016c920(unitId);
@@ -1297,7 +1330,6 @@ void btlMainInitStateCondition(BtlStateWork* work)
                     {
                         newCondition = 3;
                     }
-                    /* fallthrough */
                 case 3:
                     if (forceConditionChange != 0)
                     {
@@ -1338,31 +1370,27 @@ void btlMainInitStateCondition(BtlStateWork* work)
             break;
         }
     }
-
-    if (changedUnit == NULL)
+    if (changedUnit == ((void*)0))
     {
         return;
     }
-
     action = FUN_0029a1d0(changedUnit);
     cameraPacket = FUN_002a3b40(action, 0x21);
     btlMainSetPacketAction(cameraPacket, action);
-    BTL_PACKET_U16(cameraPacket, 0x48) = 8;
+    (*(u16*)((u8*)(cameraPacket) + (0x48))) = 8;
     btlPacketRegister(cameraPacket, BTLPACKET_TYPE_0);
-
     packet = FUN_002bc7e0(8);
-    BTL_PACKET_U8(packet, 0x00) = 5;
+    (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_00284200(1.0f, changedUnit, 3, 0, 1);
-    BTL_PACKET_U8(packet, 0x00) = 5;
+    (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
     packet = FUN_002dd100(0xe, 2, 9);
-    BTL_PACKET_U8(packet, 0x00) = 5;
+    (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-
     if (newCondition == 3)
     {
         conditionPacket = 0x12;
@@ -1374,7 +1402,7 @@ void btlMainInitStateCondition(BtlStateWork* work)
         messagePacket = 0x12;
     }
     packet = FUN_002e2be0(action, messagePacket, 0, 0, 0);
-    BTL_PACKET_U8(packet, 0x00) = 5;
+    (*(u8*)((u8*)(packet) + (0x00))) = 5;
     packet->parentUID = cameraPacket->uid;
     lastPacketUID = packet->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
@@ -1453,7 +1481,9 @@ void btlMainInitStateEnd(BtlStateWork* work)
 {
     BtlUnit* unit;
     BtlAction* action;
+    DatUnit* data;
     u16 value;
+    s32 index;
 
     if (BTL_U16(0x1c) == 1)
     {
@@ -1463,22 +1493,17 @@ void btlMainInitStateEnd(BtlStateWork* work)
             {
                 continue;
             }
-            if (FUN_003005e0(unit->datUnit, 0x25e) == 0)
+            if (FUN_003005e0(unit->datUnit, 0x25e) != 0)
             {
-                if (FUN_003005e0(unit->datUnit, 0x25d) != 0)
-                {
-                    value = FUN_002ffdf0(unit->datUnit);
-                    FUN_00300410(unit->datUnit, value * 100 / 0x4e2);
-                    value = FUN_00300100(unit->datUnit);
-                    FUN_00300480(unit->datUnit, value * 100 / 0x4e2);
-                }
+                FUN_002ffd90(unit->datUnit, FUN_002ffdf0(unit->datUnit));
+                FUN_002ffdc0(unit->datUnit, FUN_00300100(unit->datUnit));
             }
-            else
+            else if (FUN_003005e0(unit->datUnit, 0x25d) != 0)
             {
                 value = FUN_002ffdf0(unit->datUnit);
-                FUN_002ffd90(unit->datUnit, value);
+                FUN_00300410(unit->datUnit, value * 100 / 0x4e2);
                 value = FUN_00300100(unit->datUnit);
-                FUN_002ffdc0(unit->datUnit, value);
+                FUN_00300480(unit->datUnit, value * 100 / 0x4e2);
             }
         }
     }
@@ -1509,9 +1534,23 @@ void btlMainInitStateEnd(BtlStateWork* work)
     {
         if (unit->datUnit != NULL)
         {
-            FUN_00301690();
+            FUN_00301690((u32)unit->datUnit);
         }
     }
+
+    for (index = 1; index < 11; index++)
+    {
+        data = (DatUnit*)FUN_0016cd60(index);
+        if (data->aiTactic == 10 || data->aiTactic == 7)
+        {
+            data->aiTactic = 1;
+        }
+        else if (FUN_0016f190(0x187) == 0)
+        {
+            data->aiTactic = 1;
+        }
+    }
+
     for (action = gBtl->actionList.tail; action != NULL; action = action->prev)
     {
         if (action->currState != BTLACTION_STATE_PACKET)
@@ -1524,20 +1563,17 @@ void btlMainInitStateEnd(BtlStateWork* work)
 // FUN_0029db60
 u32 btlMainUpdateStateEnd(BtlStateWork* work)
 {
-    if (gBtl->actionList.tail != NULL)
+    if (gBtl->actionList.tail != ((void*)0))
     {
         return BTL_STATE_NULL;
     }
-
     FUN_0029e3c0();
     kwlnTaskDestroyWithHierarchy(gBtl->btlPanelTask);
     FUN_002bfc50(1);
-
     if ((gBtl->flags & 0x400) && *(u16*)((u8*)gBtl + 0x1c) != 2)
     {
         return BTL_STATE_RESULT;
     }
-
     return BTL_STATE_EXIT;
 }
 
@@ -1549,25 +1585,21 @@ void btlMainInitStateResult(BtlStateWork* work)
 // FUN_0029dc20
 u32 btlMainUpdateStateResult(BtlStateWork* work)
 {
-    if (!(gBtl->flags & BTL_FLAG_EXIT) && FUN_001f1f40() == 1)
+    if (!(gBtl->flags & (1 << 27)) && FUN_001f1f40() == 1)
     {
         K_Fldrc_RequestArchives();
-        gBtl->flags |= BTL_FLAG_EXIT;
+        gBtl->flags |= (1 << 27);
     }
-
     if (FUN_001f1b00(*(void**)((u8*)gBtl + 0xd28)) != 0)
     {
         return BTL_STATE_NULL;
     }
-
     FUN_001f1c20(*(void**)((u8*)gBtl + 0xd28));
-    *(void**)((u8*)gBtl + 0xd28) = NULL;
-
+    *(void**)((u8*)gBtl + 0xd28) = ((void*)0);
     if (gBtl->hasNoStartInfo == 1 && (gBtl->flags & 0x400))
     {
         H_Fade_FadeIn();
     }
-
     return BTL_STATE_EXIT;
 }
 
@@ -1575,12 +1607,10 @@ u32 btlMainUpdateStateResult(BtlStateWork* work)
 void btlMainInitStateExit(BtlStateWork* work)
 {
     btlPacket0027e4d0();
-
-    if (!(gBtl->flags & BTL_FLAG_EXIT))
+    if (!(gBtl->flags & (1 << 27)))
     {
         K_Fldrc_RequestArchives();
-
-        gBtl->flags |= BTL_FLAG_EXIT;
+        gBtl->flags |= (1 << 27);
     }
 }
 // FUN_0029dd50
@@ -1589,9 +1619,8 @@ u32 btlMainUpdateStateExit(BtlStateWork* work)
     if (btlPacketCount() == 0 && FUN_002dba60() == 0)
     {
         FUN_002dcf10();
-        gBtl->flags &= ~BTL_FLAG_ACTIVE;
+        gBtl->flags &= ~(1 << 0);
     }
-
     return BTL_STATE_NULL;
 }
 
@@ -1724,20 +1753,20 @@ u32 btlMainTryLoadFinishScene()
 {
     return MT_Scene_TryLoadFinish();
 }
-// FUN_0029e420 NONMATCHING
+// FUN_0029e420
 void btlMain0029e420(void)
 {
+    Battle* battle;
     RwRGBAReal* color;
-
-    if ((gBtl->flags & 2) == 0)
+    battle = gBtl;
+    if ((battle->flags & 2) != 0)
     {
-        return;
+        color = func_001a09d0();
+        *color = *(RwRGBAReal*)((u8*)battle + 0x1c4);
+        battle = gBtl;
+        color = K_Scene_GetCharAmbLightColor();
+        *color = *(RwRGBAReal*)((u8*)battle + 0x1d4);
     }
-
-    color = func_001a09d0();
-    *color = *(RwRGBAReal*)((u8*)gBtl + 0x1c4);
-    color = K_Scene_GetCharAmbLightColor();
-    *color = *(RwRGBAReal*)((u8*)gBtl + 0x1d4);
 }
 
 // FUN_0029e4b0 NONMATCHING
@@ -1854,24 +1883,33 @@ void FUN_0029ea60(u32 index, u32* colorA, u32* colorB)
     }
 }
 
-// FUN_0029ec00 NONMATCHING
-u32 FUN_0029ec00(u32 index)
+// FUN_0029ec00
+s32 FUN_0029ec00(s32 index)
 {
-    u32 value;
-
-    value = *(u32*)(iGpffffb710 + (index & 0xffff) * 0x1c + 4);
-    if ((value & 0xff000000) == 0)
+    u32 offset;
+    u8* entry;
+    s32 value;
+    offset = (index & 0xffff) * 0x1c;
+    entry = (u8*)((uintptr_t)(iGpffffb710 + 4) + (uintptr_t)offset);
+    value = *(s32*)entry;
+    if ((value & 0xff000000) != 0)
     {
-        return 0xffffffff;
+        value = (value & 0xffffff) | 0xff000000;
     }
-
-    return (value & 0xffffff) | 0xff000000;
+    else
+    {
+        value = 0xffffffff;
+    }
+    return value;
 }
 
-// FUN_0029ec50 NONMATCHING
-u32 FUN_0029ec50(u32 index)
+// FUN_0029ec50
+s32 FUN_0029ec50(s32 index)
 {
-    return *(u32*)(iGpffffb710 + (index & 0xffff) * 0x1c + 0x18);
+    u8* entry;
+    entry = (u8 *)(uintptr_t)iGpffffb710;
+    entry = (u8 *)(uintptr_t)((index & 0xffff) * 0x1c) + (uintptr_t)entry;
+    return *(s32 *)(entry + 0x18);
 }
 
 // FUN_0029ec80 NONMATCHING
@@ -2580,7 +2618,7 @@ u32 FUN_0029f760(float *param_1)
 // FUN_0029FAA0 NONMATCHING
 
 
-u32 FUN_0029faa0(u64 param_1)
+u32 FUN_0029faa0(BtlMainColorWork *param_1)
 
 
 
@@ -2600,7 +2638,7 @@ u32 FUN_0029faa0(u64 param_1)
 
   float *pfVar7;
 
-  float *pfVar8;
+  BtlMainColorWork *colorWork;
 
   float fVar9;
 
@@ -2668,11 +2706,11 @@ u32 FUN_0029faa0(u64 param_1)
 
   else {
 
-    pfVar8 = (float *)param_1;
+    colorWork = param_1;
 
-    if (pfVar8[0x19] == 0.0) {
+    if (colorWork->unk_64 == 0) {
 
-      pfVar8[3] = 1.0;
+      colorWork->a = 1.0f;
 
       iVar5 = (int)(uintptr_t)DAT_007ce3ec;
 
@@ -2682,13 +2720,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       fVar9 = *(float *)(DAT_007ce3ec + 0x230);
 
-      pfVar8[4] = *(float *)(DAT_007ce3ec + 0x224);
+      colorWork->unk_10 = *(float *)(DAT_007ce3ec + 0x224);
 
-      pfVar8[5] = fVar10;
+      colorWork->unk_14 = fVar10;
 
-      pfVar8[6] = fVar11;
+      colorWork->unk_18 = fVar11;
 
-      pfVar8[7] = fVar9;
+      colorWork->unk_1c = fVar9;
 
       fVar10 = *(float *)(iVar5 + 0x1c8);
 
@@ -2696,13 +2734,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       fVar9 = *(float *)(iVar5 + 0x1d0);
 
-      pfVar8[0xc] = *(float *)(iVar5 + 0x1c4);
+      colorWork->unk_30 = *(float *)(iVar5 + 0x1c4);
 
-      pfVar8[0xd] = fVar10;
+      colorWork->unk_34 = fVar10;
 
-      pfVar8[0xe] = fVar11;
+      colorWork->unk_38 = fVar11;
 
-      pfVar8[0xf] = fVar9;
+      colorWork->unk_3c = fVar9;
 
       fVar10 = *(float *)(iVar5 + 0x1d8);
 
@@ -2710,13 +2748,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       fVar9 = *(float *)(iVar5 + 0x1e0);
 
-      pfVar8[0x14] = *(float *)(iVar5 + 0x1d4);
+      colorWork->unk_50 = *(float *)(iVar5 + 0x1d4);
 
-      pfVar8[0x15] = fVar10;
+      colorWork->unk_54 = fVar10;
 
-      pfVar8[0x16] = fVar11;
+      colorWork->unk_58 = fVar11;
 
-      pfVar8[0x17] = fVar9;
+      colorWork->unk_5c = fVar9;
 
       DAT_009572b0 = *(u32 *)(iVar5 + 0x194);
 
@@ -2742,7 +2780,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       fVar12 = *(float *)(iVar5 + 0x1c0);
 
-      fVar9 = 2.0 / (fVar12 * fVar12 + fVar13 * fVar13 + fVar15 * fVar15 + fVar14 * fVar14);
+      fVar9 = 2.0f / (fVar12 * fVar12 + fVar13 * fVar13 + fVar15 * fVar15 + fVar14 * fVar14);
 
       fVar10 = fVar15 * fVar9;
 
@@ -2750,7 +2788,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       fVar9 = fVar13 * fVar9;
 
-      fStack_40 = 1.0 - (fVar14 * fVar11 + fVar13 * fVar9);
+      fStack_40 = 1.0f - (fVar14 * fVar11 + fVar13 * fVar9);
 
       fStack_3c = fVar15 * fVar11 + fVar9 * fVar12;
 
@@ -2758,7 +2796,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       fStack_30 = fVar15 * fVar11 - fVar9 * fVar12;
 
-      fStack_2c = 1.0 - (fVar13 * fVar9 + fVar15 * fVar10);
+      fStack_2c = 1.0f - (fVar13 * fVar9 + fVar15 * fVar10);
 
       fStack_28 = fVar14 * fVar9 + fVar10 * fVar12;
 
@@ -2766,7 +2804,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       fStack_1c = fVar14 * fVar9 - fVar10 * fVar12;
 
-      fStack_18 = 1.0 - (fVar15 * fVar10 + fVar14 * fVar11);
+      fStack_18 = 1.0f - (fVar15 * fVar10 + fVar14 * fVar11);
       puVar6 = (u32*)&DAT_00957270;
       uStack_10 = 0;
 
@@ -2812,7 +2850,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       DAT_009572d0 = 1;
 
-      if (((u32)pfVar8[0x1a] & 4) == 0) {
+      if ((colorWork->unk_68 & 4) == 0) {
 
         for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
 
@@ -2830,7 +2868,7 @@ u32 FUN_0029faa0(u64 param_1)
 
                    *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x388) | 0x10;
 
-              if (((u32)pfVar8[0x1a] & 1) == 0) {
+              if ((colorWork->unk_68 & 1) == 0) {
 
                 *(u8 *)(*(int *)(iVar5 + 0x9f4) + 0x3a9) = 0x50;
 
@@ -2862,17 +2900,17 @@ u32 FUN_0029faa0(u64 param_1)
 
     iVar5 = (int)(uintptr_t)DAT_007ce3ec;
 
-    if ((u32)pfVar8[0x19] < (u32)pfVar8[0x18]) {
+    if (colorWork->unk_64 < colorWork->unk_60) {
 
-      fVar15 = (float)(u32)pfVar8[0x19] / (float)(u32)pfVar8[0x18];
+      fVar15 = (float)colorWork->unk_64 / (float)colorWork->unk_60;
 
-      fVar16 = 1.0 - fVar15;
+      fVar16 = 1.0f - fVar15;
 
-      fStack_50 = pfVar8[4] * fVar16 + *pfVar8 * fVar15;
+      fStack_50 = colorWork->unk_10 * fVar16 + colorWork->r * fVar15;
 
-      fStack_4c = pfVar8[5] * fVar16 + pfVar8[1] * fVar15;
+      fStack_4c = colorWork->unk_14 * fVar16 + colorWork->g * fVar15;
 
-      fStack_48 = pfVar8[2] * fVar15 + pfVar8[6] * fVar16;
+      fStack_48 = colorWork->b * fVar15 + colorWork->unk_18 * fVar16;
 
       uStack_44 = 0x3f800000;
 
@@ -2886,19 +2924,19 @@ u32 FUN_0029faa0(u64 param_1)
 
       FUN_0019f8f0(&fStack_50);
 
-      fVar10 = pfVar8[0xd];
+      fVar10 = colorWork->unk_34;
 
-      fVar11 = pfVar8[0xe];
+      fVar11 = colorWork->unk_38;
 
-      fVar12 = pfVar8[0xf];
+      fVar12 = colorWork->unk_3c;
 
-      fVar13 = pfVar8[9];
+      fVar13 = colorWork->unk_24;
 
-      fVar14 = pfVar8[10];
+      fVar14 = colorWork->unk_28;
 
-      fVar9 = pfVar8[0xb];
+      fVar9 = colorWork->unk_2c;
 
-      *(float *)(DAT_007ce3ec + 0x1c4) = pfVar8[0xc] * fVar16 + pfVar8[8] * fVar15;
+      *(float *)(DAT_007ce3ec + 0x1c4) = colorWork->unk_30 * fVar16 + colorWork->unk_20 * fVar15;
 
       *(float *)(DAT_007ce3ec + 0x1c8) = fVar10 * fVar16 + fVar13 * fVar15;
 
@@ -2906,19 +2944,19 @@ u32 FUN_0029faa0(u64 param_1)
 
       *(float *)(DAT_007ce3ec + 0x1d0) = fVar9 * fVar15 + fVar12 * fVar16;
 
-      fVar9 = pfVar8[0x15];
+      fVar9 = colorWork->unk_54;
 
-      fVar10 = pfVar8[0x16];
+      fVar10 = colorWork->unk_58;
 
-      fVar11 = pfVar8[0x17];
+      fVar11 = colorWork->unk_5c;
 
-      fVar12 = pfVar8[0x11];
+      fVar12 = colorWork->unk_44;
 
-      fVar13 = pfVar8[0x12];
+      fVar13 = colorWork->unk_48;
 
-      fVar14 = pfVar8[0x13];
+      fVar14 = colorWork->unk_4c;
 
-      *(float *)(DAT_007ce3ec + 0x1d4) = pfVar8[0x14] * fVar16 + pfVar8[0x10] * fVar15;
+      *(float *)(DAT_007ce3ec + 0x1d4) = colorWork->unk_50 * fVar16 + colorWork->unk_40 * fVar15;
 
       *(float *)(DAT_007ce3ec + 0x1d8) = fVar9 * fVar16 + fVar12 * fVar15;
 
@@ -2926,7 +2964,7 @@ u32 FUN_0029faa0(u64 param_1)
 
       *(float *)(DAT_007ce3ec + 0x1e0) = fVar11 * fVar16 + fVar14 * fVar15;
         iVar5 = (int)(uintptr_t)DAT_007ce3ec;
-      pfVar8[0x19] = (float)((int)pfVar8[0x19] + 1);
+      colorWork->unk_64 = colorWork->unk_64 + 1;
 
       uVar3 = 0;
 
@@ -2938,13 +2976,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       iVar5 = (int)(uintptr_t)DAT_007ce3ec;
 
-      fVar11 = pfVar8[1];
+      fVar11 = colorWork->g;
 
-      fVar9 = pfVar8[2];
+      fVar9 = colorWork->b;
 
-      fVar10 = pfVar8[3];
+      fVar10 = colorWork->a;
 
-      *(float *)(DAT_007ce3ec + 0x224) = *pfVar8;
+      *(float *)(DAT_007ce3ec + 0x224) = colorWork->r;
 
       *(float *)(iVar5 + 0x228) = fVar11;
 
@@ -2952,13 +2990,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       *(float *)(iVar5 + 0x230) = fVar10;
 
-      fVar11 = pfVar8[9];
+      fVar11 = colorWork->unk_24;
 
-      fVar9 = pfVar8[10];
+      fVar9 = colorWork->unk_28;
 
-      fVar10 = pfVar8[0xb];
+      fVar10 = colorWork->unk_2c;
 
-      *(float *)(iVar5 + 0x1c4) = pfVar8[8];
+      *(float *)(iVar5 + 0x1c4) = colorWork->unk_20;
 
       *(float *)(iVar5 + 0x1c8) = fVar11;
 
@@ -2966,13 +3004,13 @@ u32 FUN_0029faa0(u64 param_1)
 
       *(float *)(iVar5 + 0x1d0) = fVar10;
 
-      fVar11 = pfVar8[0x11];
+      fVar11 = colorWork->unk_44;
 
-      fVar9 = pfVar8[0x12];
+      fVar9 = colorWork->unk_48;
 
-      fVar10 = pfVar8[0x13];
+      fVar10 = colorWork->unk_4c;
 
-      *(float *)(iVar5 + 0x1d4) = pfVar8[0x10];
+      *(float *)(iVar5 + 0x1d4) = colorWork->unk_40;
 
       *(float *)(iVar5 + 0x1d8) = fVar11;
 
@@ -2989,35 +3027,6 @@ u32 FUN_0029faa0(u64 param_1)
   return uVar3;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // FUN_002A0440 NONMATCHING
 u32 FUN_002a0440(float *param_1)
 
@@ -3025,35 +3034,9 @@ u32 FUN_002a0440(float *param_1)
 
 {
 
-  u8 bVar1;
-
-  u8 bVar2;
-
-  u8 bVar3;
-
-  float *pfVar4;
-
-  u32 uVar5;
-
-  u32 *puVar6;
-
   int iVar7;
 
-  float fVar8;
-
   u32 uVar9;
-
-  float fVar10;
-
-  float fVar11;
-
-  float fVar12;
-
-  u32 uVar13;
-
-  float fVar14;
-
-  u32 uVar15;
 
   float fVar16;
 
@@ -3093,6 +3076,11 @@ u32 FUN_002a0440(float *param_1)
   else {
 
     if (param_1[0x15] == 0.0) {
+      float fVar8;
+      float fVar10;
+      float fVar14;
+      float *pfVar4;
+      u32 uVar5;
 
       fVar14 = *(float *)(DAT_007ce3ec + 0x228);
 
@@ -3213,7 +3201,6 @@ u32 FUN_002a0440(float *param_1)
                    (char)((int)(u32)*(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x3aa) / (int)param_1[0x14]
 
                          );
-      iVar7 = (int)(uintptr_t)DAT_007ce3ec;
             }
 
           }
@@ -3224,7 +3211,6 @@ u32 FUN_002a0440(float *param_1)
 
     }
 
-    iVar7 = (int)(uintptr_t)DAT_007ce3ec;
 
     fStack_20 = DAT_007caf08 * (float)DAT_007cc970;
 
@@ -3235,6 +3221,17 @@ u32 FUN_002a0440(float *param_1)
     fStack_14 = DAT_007caf08 * (float)DAT_007cc973;
 
     if ((u32)param_1[0x15] < (u32)param_1[0x14]) {
+      u32 uVar5;
+      int iVar7;
+      iVar7 = (int)(uintptr_t)DAT_007ce3ec;
+      {
+        float fVar8;
+        float fVar10;
+        float fVar11;
+        float fVar12;
+        float fVar14;
+        float *pfVar4;
+
 
       fVar16 = (float)(u32)param_1[0x15] / (float)(u32)param_1[0x14];
 
@@ -3338,6 +3335,10 @@ u32 FUN_002a0440(float *param_1)
 
       *(float *)(DAT_007ce3ec + 0x1e0) = fVar8 * fVar16 + fVar11 * fVar17;
 
+      }
+      {
+        float fVar8;
+
       fVar8 = DAT_007caf08;
 
       if (((u32)param_1[0x16] & 2) == 0) {
@@ -3385,14 +3386,27 @@ u32 FUN_002a0440(float *param_1)
         }
 
       }
-        iVar7 = (int)(uintptr_t)DAT_007ce3ec;
       param_1[0x15] = (float)((int)param_1[0x15] + 1);
 
       uVar9 = 0;
 
+      }
     }
 
     else {
+      u32 *puVar6;
+      int iVar7;
+      u32 uVar15;
+      u32 uVar13;
+
+      float fVar8;
+      float fVar10;
+      float fVar11;
+      float fVar12;
+      float fVar14;
+      float fVar18;
+      float fVar19;
+
 
       FUN_0019f8f0(&fStack_20);
 
@@ -3411,7 +3425,6 @@ u32 FUN_002a0440(float *param_1)
       uVar15 = *(u32 *)(iVar7 + 0x198);
 
       uVar9 = *(u32 *)(iVar7 + 0x19c);
-        iVar7 = (int)(uintptr_t)DAT_007ce3ec;
       uVar13 = *(u32 *)(iVar7 + 0x1a0);
 
       *puVar6 = *(u32 *)(iVar7 + 0x194);
@@ -3429,7 +3442,6 @@ u32 FUN_002a0440(float *param_1)
       uVar15 = *(u32 *)(iVar7 + 0x1a8);
 
       uVar9 = *(u32 *)(iVar7 + 0x1ac);
-        iVar7 = (int)(uintptr_t)DAT_007ce3ec;
       uVar13 = *(u32 *)(iVar7 + 0x1b0);
 
       *puVar6 = *(u32 *)(iVar7 + 0x1a4);
@@ -3465,6 +3477,10 @@ u32 FUN_002a0440(float *param_1)
       *(u32 *)(iVar7 + 0x1e0) = *(u32 *)(iVar7 + 0x210);
 
       if (((u32)param_1[0x16] & 2) == 0) {
+        u32 uVar5;
+        u8 bVar1;
+        u8 bVar2;
+        u8 bVar3;
 
         fVar8 = DAT_007caf08 * (float)DAT_007ce4f8[0];
 
@@ -3504,11 +3520,14 @@ u32 FUN_002a0440(float *param_1)
 
       }
 
-      uVar13 = DAT_007caf88;
-
-      uVar9 = DAT_007caee8;
+      fVar18 = DAT_007caf88;
+      fVar19 = DAT_007caee8;
 
       if (((u32)param_1[0x16] & 4) == 0) {
+        u32 uVar5;
+        u8 bVar1;
+        u8 bVar2;
+        u8 bVar3;
 
         for (uVar5 = 0; uVar5 < 4; uVar5 = uVar5 + 1) {
 
@@ -3532,7 +3551,7 @@ u32 FUN_002a0440(float *param_1)
 
                      *(float *)(*(int *)(iVar7 + 0x9f4) + 0x3a0) * 1.25;
 
-                *(u32 *)(*(int *)(iVar7 + 0x9f4) + 0x3a4) = uVar13;
+                *(float *)(*(int *)(iVar7 + 0x9f4) + 0x3a4) = fVar18;
 
                 *(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x3a8) = 0;
 
@@ -3542,7 +3561,7 @@ u32 FUN_002a0440(float *param_1)
 
                 *(u32 *)(*(int *)(iVar7 + 0x9f4) + 0x3ac) = 0x3f800000;
 
-                *(u32 *)(*(int *)(iVar7 + 0x9f4) + 0x3b0) = uVar9;
+                *(float *)(*(int *)(iVar7 + 0x9f4) + 0x3b0) = fVar19;
 
                 if (1.0 < *(float *)(*(int *)(iVar7 + 0x9f4) + 0x39c)) {
 
@@ -3569,7 +3588,6 @@ u32 FUN_002a0440(float *param_1)
   return uVar9;
 
 }
-
 // FUN_002A10E0 NONMATCHING
 
 
@@ -3776,304 +3794,153 @@ u8 FUN_002a1400(float *param_1)
 
 
 u32 FUN_002a1710(int *param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   u8 bVar3;
-
   u32 uVar4;
-
   long lVar5;
-
   u32 uVar6;
-
   u32 uVar7;
-
   u8 uVar8;
-
   float fVar9;
-
   u32 uStack_8;
-
   u32 uStack_4;
-
-  
-
   uVar7 = 1;
-
   iVar1 = *param_1;
-
   if ((*(u32 *)(iGpffffb6fc + 0x10) & 8) == 0) {
-
     if (*(char *)(((u32)*(u16 *)(param_1 + 3) * 10 + (u32)*(u16 *)(param_1 + 3)) * 4 +
-
                   iGpffffb708 + 0x11) == '\x10') {
-
       uVar7 = 1;
-
     }
-
     else if ((*(u16 *)(iVar1 + 0x6a) < 2) && (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) != '\0'))
-
     {
-
       uVar7 = 1;
-
     }
-
     else {
-
       lVar5 = FUN_002d6290(iVar1);
-
       if (lVar5 == 0) {
-
         uVar4 = 3;
-
       }
-
       else {
-
         uVar4 = 1 << (*(u8 *)(*(int *)(iVar1 + 0x30) + 0xa2) & 0x1f) & 0xffff;
-
       }
-
       if (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) == '\0') {
-
         bVar3 = 1;
-
         for (uVar6 = 0; uVar6 < *(u16 *)(iVar1 + 0x6a); uVar6 = uVar6 + 1 & 0xffff) {
-
           if (*(char *)(*(int *)(*(int *)(iVar1 + uVar6 * 4 + 0x38) + 0x30) + 0xa2) != '\0') {
-
             bVar3 = 0;
-
             break;
-
           }
-
         }
-
         if (bVar3) {
-
           return 1;
-
         }
-
       }
-
       if ((u32)param_1[2] < (u32)param_1[1]) {
-
         fVar9 = (1.0 - (float)(u32)param_1[2] / (float)(u32)param_1[1]) * 255.0;
-
         if (2.1474836e+09 <= fVar9) {
-
           fVar9 = fVar9 - 2.1474836e+09;
-
         }
-
         uVar8 = (u8)(int)fVar9;
-
         uVar7 = 0;
-
       }
-
       else {
-
         uVar8 = 0;
-
       }
-
       for (uVar6 = 0; uVar6 < 2; uVar6 = uVar6 + 1 & 0xffff) {
-
         for (iVar2 = *(int *)(iGpffffb6fc + uVar6 * 8 + 0x150); iVar2 != 0;
-
             iVar2 = *(int *)(iVar2 + 0xa34)) {
-
           if (((((uVar4 & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0) &&
-
                (*(short *)(iVar2 + 0x9f2) != 0)) && ((*(u32 *)(iVar2 + 0x9c) & 1) == 0)) &&
-
              (iVar2 != *(int *)(iVar1 + 0x30))) {
-
-            uStack_4 = CONCAT13(uVar8,*(u32 *)(iVar2 + 0x30) & 0x00ffffffu);
-
+            uStack_4 = ((((u32)(uVar8) & 0xffu) << 24) | ((u32)(*(u32 *)(iVar2 + 0x30) & 0x00ffffffu) & 0x00ffffffu));
             FUN_0027f730(iVar2,uStack_4);
-
           }
-
         }
-
       }
-
       for (uVar4 = 0; uVar4 < *(u16 *)(iVar1 + 0x6a); uVar4 = uVar4 + 1 & 0xffff) {
-
         iVar2 = *(int *)(*(int *)(iVar1 + uVar4 * 4 + 0x38) + 0x30);
-
-        uStack_8 = CONCAT13(0xff,*(u32 *)(iVar2 + 0x30) & 0x00ffffffu);
-
+        uStack_8 = ((((u32)(0xff) & 0xffu) << 24) | ((u32)(*(u32 *)(iVar2 + 0x30) & 0x00ffffffu) & 0x00ffffffu));
         FUN_0027f730(iVar2,uStack_8);
-
       }
-
       param_1[2] = param_1[2] + 1;
-
     }
-
   }
-
   else {
-
     uVar7 = 1;
-
   }
-
   return uVar7;
-
 }
 
-// FUN_002A1B00 NONMATCHING
+// FUN_002A1B00
 
 
-void FUN_002a1b00(u32 param_1,u16 param_2,u32 param_3)
-
-
-
+void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3)
 {
-
-  u32 *puVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = FUN_0027ec10(0x606,0x10);
-
-
-  puVar1 = *(u32 **)(iVar2 + 0x78);
-
-  *puVar1 = param_1;
-
-  puVar1[1] = param_3;
-
-  *(u16 *)(puVar1 + 3) = param_2;
-
-  puVar1[2] = 0;
-
-  return;
-
+    BtlPacket* packet;
+    u8* work;
+    packet = btlPacketCreate(0x606, 0x10);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a1710;
+    work = (u8*)packet->workData;
+    *(s32*)(work + 0) = param_1;
+    *(s32*)(work + 4) = param_3;
+    *(s16*)(work + 0xc) = param_2;
+    *(s32*)(work + 8) = 0;
 }
 
 // FUN_002A1B70 NONMATCHING
 
 
 u32 FUN_002a1b70(u32 *param_1)
-
-
-
 {
-
   int iVar1;
-
   u32 uVar2;
-
   u32 uVar3;
-
   u32 uVar4;
-
   float fVar5;
-
   u32 uStack_4;
-
-  
-
   if (((*(u32 *)(iGpffffb6fc + 0xc) & 0x400000) == 0) ||
-
      ((*(u16 *)(iGpffffb6fc + 0x18) & 0x10) == 0)) {
-
     uVar2 = 1;
-
     if (param_1[1] < *param_1) {
-
       fVar5 = ((float)param_1[1] / (float)*param_1) * 255.0;
-
       if (2.1474836e+09 <= fVar5) {
-
         fVar5 = fVar5 - 2.1474836e+09;
-
       }
-
       uVar3 = (int)fVar5 & 0xff;
-
       uVar2 = 0;
-
     }
-
     else {
-
       uVar3 = 0xff;
-
     }
-
     for (uVar4 = 0; uVar4 < 2; uVar4 = uVar4 + 1 & 0xffff) {
-
       for (iVar1 = *(int *)(iGpffffb6fc + uVar4 * 8 + 0x150); iVar1 != 0;
-
           iVar1 = *(int *)(iVar1 + 0xa34)) {
-
         if (((*(short *)(iVar1 + 0x9f2) != 0) && ((*(u32 *)(iVar1 + 0x9c) & 1) == 0)) &&
-
            (*(u8 *)(iVar1 + 0x33) < uVar3)) {
-
-          uStack_4 = CONCAT13((char)uVar3,*(u32 *)(iVar1 + 0x30) & 0x00ffffffu);
-
+          uStack_4 = ((((u32)((char)uVar3) & 0xffu) << 24) | ((u32)(*(u32 *)(iVar1 + 0x30) & 0x00ffffffu) & 0x00ffffffu));
           FUN_0027f730(iVar1,uStack_4);
-
         }
-
       }
-
     }
-
     param_1[1] = param_1[1] + 1;
-
   }
-
   else {
-
     uVar2 = 1;
-
   }
-
   return uVar2;
-
 }
 
-// FUN_002A1DB0 NONMATCHING
+// FUN_002A1DB0
 
 
-void FUN_002a1db0(u32 param_1)
-
-
-
+void FUN_002a1db0(s32 param_1)
 {
-
-  int iVar1;
-
-  
-
-  iVar1 = FUN_0027ec10(0x607,8);
-
-
-  **(u32 **)(iVar1 + 0x78) = param_1;
-
-  return;
-
+    BtlPacket* packet;
+    packet = btlPacketCreate(0x607, 8);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a1b70;
+    *(s32*)packet->workData = param_1;
 }
 
 // FUN_002A1E00 NONMATCHING
@@ -4221,196 +4088,124 @@ void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4)
 
 }
 
-// FUN_002A2050 NONMATCHING
+// FUN_002A2050
 
 
-u32 FUN_002a2050(u16 *param_1,long param_2,long param_3)
-
-
-
+u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3)
 {
-
-  u16 uVar1;
-
-  u32 *puVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    if (param_2 != 0) {
-
-      puVar2 = (u32 *)param_2;
-
-      uVar3 = puVar2[1];
-
-      uVar4 = puVar2[2];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = *puVar2;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uVar4;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c),uVar1,param_2);
-
-      }
-
+    u16 index;
+    u32 address;
+    f32 *entry;
+    f32 value1;
+    f32 value2;
+    f32 value3;
+    f32 value4;
+    if (param_1[0x3b] >= 4)
+    {
+        return 0;
     }
-
-    if (param_3 != 0) {
-
-      puVar2 = (u32 *)param_3;
-
-      uVar5 = puVar2[1];
-
-      uVar3 = puVar2[2];
-
-      uVar4 = puVar2[3];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = *puVar2;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uVar5;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
-
+    index = param_1[0x3c];
+    if (param_2 != ((void*)0))
+    {
+        address = (u32)index * 0x1c;
+        address = address + (u32)param_1;
+        entry = (f32*)(address + 4);
+        value2 = param_2[0];
+        value3 = param_2[1];
+        value1 = param_2[2];
+        entry[0] = value2;
+        entry[1] = value3;
+        entry[2] = value1;
+        if ((*param_1 & 1) == 0)
+        {
+            FUN_0048d370(*(u32*)(param_1 + 0x4c), index, param_2);
+        }
     }
-
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
+    if (param_3 != ((void*)0))
+    {
+        address = (u32)index * 0x1c;
+        address = address + (u32)param_1;
+        entry = (f32*)(address + 0x10);
+        value2 = param_3[0];
+        value3 = param_3[1];
+        value4 = param_3[2];
+        value1 = param_3[3];
+        entry[0] = value2;
+        entry[1] = value3;
+        entry[2] = value4;
+        entry[3] = value1;
     }
-
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-    uVar3 = 1;
-
-  }
-
-  else {
-
-    uVar3 = 0;
-
-  }
-
-  return uVar3;
-
+    index++;
+    if (index >= 4)
+    {
+        index = 0;
+    }
+    param_1[0x3c] = index;
+    param_1[0x3b]++;
+    return 1;
 }
 
-// FUN_002A2170 NONMATCHING
+// FUN_002A2170
 
 
-void FUN_002a2170(u16 *param_1,long param_2)
-
-
-
+void FUN_002a2170(u16 *param_1,f32 *param_2)
 {
-
-  u16 uVar1;
-
-  u32 *puVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  
-
-  *param_1 = 0;
-
-  param_1[0x3a] = 0;
-
-  param_1[0x3b] = 0;
-
-  param_1[0x3c] = 0;
-
-  param_1[0x40] = 0;
-
-  param_1[0x41] = 0;
-
-  param_1[0x3e] = 0;
-
-  param_1[0x3f] = 0;
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    puVar2 = (u32 *)param_2;
-
-    if (param_2 != 0) {
-
-      uVar3 = puVar2[1];
-
-      uVar4 = puVar2[2];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = *puVar2;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uVar4;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c),uVar1,param_2);
-
-      }
-
+    u16 index;
+    u32 address;
+    f32 *entry;
+    f32 *source;
+    f32 value1;
+    f32 value2;
+    f32 value3;
+    f32 value4;
+    *param_1 = 0;
+    param_1[0x3a] = 0;
+    param_1[0x3b] = 0;
+    param_1[0x3c] = 0;
+    *(u32*)((u8*)param_1 + 0x80) = 0;
+    *(u32*)((u8*)param_1 + 0x7c) = 0;
+    if (param_1[0x3b] < 4)
+    {
+        index = param_1[0x3c];
+        if (param_2 != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address = address + (u32)param_1;
+            entry = (f32*)(address + 4);
+            value2 = param_2[0];
+            value3 = param_2[1];
+            value1 = param_2[2];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value1;
+            if ((*param_1 & 1) == 0)
+            {
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, param_2);
+            }
+        }
+        source = param_2 + 3;
+        if (source != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address = address + (u32)param_1;
+            entry = (f32*)(address + 0x10);
+            value2 = source[0];
+            value3 = source[1];
+            value4 = source[2];
+            value1 = source[3];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value4;
+            entry[3] = value1;
+        }
+        index++;
+        if (index >= 4)
+        {
+            index = 0;
+        }
+        param_1[0x3c] = index;
+        param_1[0x3b]++;
     }
-
-    if (puVar2 + 3 != (u32 *)0x0) {
-
-      uVar5 = puVar2[4];
-
-      uVar3 = puVar2[5];
-
-      uVar4 = puVar2[6];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = puVar2[3];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uVar5;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
-
-    }
-
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
-    }
-
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-  }
-
-  return;
-
 }
 
 // FUN_002A2290 NONMATCHING
@@ -4956,537 +4751,293 @@ void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param
 // FUN_002A2A20 NONMATCHING
 
 
-void FUN_002a2a20(float param_1,int param_2,float *param_3)
-
-
-
+void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
-
-  int iVar1;
-
+  u8* iVar1;
   u32 uVar2;
-
   u32 uVar3;
-
   float fVar4;
-
   float fVar5;
-
   float fVar6;
-
   float afStack_10 [4];
-
-  
-
   fVar5 = DAT_00957188;
-
   fVar4 = DAT_00957184;
-
   fVar6 = 1.0 - param_1;
-
   afStack_10[0] = fVar6 * fVar6 * fVar6;
-
   afStack_10[1] = param_1 * fVar6 * fVar6 * 3.0;
-
   afStack_10[2] = fVar6 * param_1 * param_1 * 3.0;
-
   afStack_10[3] = param_1 * param_1 * param_1;
-
   uVar2 = (u32)*(u16 *)(param_2 + 0x74);
-
   *param_3 = DAT_00957180;
-
   param_3[1] = fVar4;
-
   param_3[2] = fVar5;
-
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
-
     fVar6 = afStack_10[uVar3];
-
     iVar1 = param_2 + uVar2 * 0x1c;
-
     fVar4 = *(float *)(iVar1 + 8);
-
     fVar5 = *(float *)(iVar1 + 0xc);
-
     *param_3 = *(float *)(iVar1 + 4) * fVar6 + *param_3 + 0.0;
-
     param_3[1] = param_3[1] + fVar4 * fVar6;
-
     param_3[2] = param_3[2] + fVar5 * fVar6;
-
     uVar2 = uVar2 + 1 & 0xffff;
-
     if (3 < uVar2) {
-
       uVar2 = 0;
-
     }
-
   }
-
   return;
-
 }
 
-// FUN_002A2B50 NONMATCHING
+// FUN_002A2B50
 
 
-void FUN_002a2b50(float param_1,int param_2,float *param_3)
-
-
-
+void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1)
 {
-
-  u32 uVar1;
-
-  int iVar2;
-
-  u32 uVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  
-
-  uVar1 = (u32)*(u16 *)(param_2 + 0x74);
-
-  for (; fGpffff82c8 <= param_1; param_1 = param_1 - fGpffff82c8) {
-
-    uVar1 = uVar1 + 1 & 0xffff;
-
-  }
-
-  param_1 = param_1 / fGpffff82c8;
-
-  if (3 < uVar1) {
-
-    uVar1 = uVar1 & 3;
-
-  }
-
-  uVar3 = uVar1 + 1 & 0xffff;
-
-  if (3 < uVar3) {
-
-    uVar3 = uVar1 + 1 & 3;
-
-  }
-
-  fVar8 = 1.0 - param_1;
-
-  iVar2 = uVar1 * 0x1c + param_2;
-
-  fVar4 = *(float *)(iVar2 + 8);
-
-  fVar5 = *(float *)(iVar2 + 0xc);
-
-  param_2 = uVar3 * 0x1c + param_2;
-
-  fVar6 = *(float *)(param_2 + 8);
-
-  fVar7 = *(float *)(param_2 + 0xc);
-
-  *param_3 = *(float *)(iVar2 + 4) * fVar8 + *(float *)(param_2 + 4) * param_1;
-
-  param_3[1] = fVar4 * fVar8 + fVar6 * param_1;
-
-  param_3[2] = fVar5 * fVar8 + fVar7 * param_1;
-
-  return;
-
+    u16 currentIndex;
+    u16 nextIndex;
+    u32 currentAddress;
+    u32 nextAddress;
+    f32 currentX;
+    f32 currentY;
+    f32 currentZ;
+    f32 nextX;
+    f32 nextY;
+    f32 nextZ;
+    f32 blend;
+    f32 period;
+    currentIndex = *(u16*)(param_2 + 0x74);
+    period = fGpffff82c8;
+    while (param_1 >= period)
+    {
+        currentIndex++;
+        param_1 -= period;
+    }
+    param_1 /= period;
+    if (currentIndex >= 4)
+    {
+        currentIndex &= 3;
+    }
+    nextIndex = currentIndex + 1;
+    if (nextIndex >= 4)
+    {
+        nextIndex &= 3;
+    }
+    blend = 1.0f - param_1;
+    currentAddress = (u32)currentIndex * 0x1c;
+    currentAddress = currentAddress + (u32)param_2;
+    currentY = *(f32*)(currentAddress + 8);
+    currentY = currentY * blend;
+    currentZ = *(f32*)(currentAddress + 0xc);
+    currentZ = currentZ * blend;
+    nextAddress = (u32)nextIndex * 0x1c;
+    nextAddress = nextAddress + (u32)param_2;
+    nextY = *(f32*)(nextAddress + 8);
+    nextY = nextY * param_1;
+    nextZ = *(f32*)(nextAddress + 0xc);
+    nextZ = nextZ * param_1;
+    currentX = *(f32*)(currentAddress + 4);
+    nextX = *(f32*)(nextAddress + 4);
+    param_3[0] = currentX * blend + nextX * param_1;
+    param_3[1] = currentY + nextY;
+    param_3[2] = currentZ + nextZ;
 }
 
 // FUN_002A2C40 NONMATCHING
 
 
-void FUN_002a2c40(float param_1,int param_2,float *param_3)
-
-
-
+void FUN_002a2c40(u8* param_2,f32* param_3,f32 param_1)
 {
-
-  int iVar1;
-
+  u8* iVar1;
   u32 uVar2;
-
   u32 uVar3;
-
   float fVar4;
-
   float fVar5;
-
   float fVar6;
-
   float fStack_30;
-
   float fStack_2c;
-
   float fStack_28;
-
   float fStack_24;
-
   float fStack_20;
-
   float fStack_1c;
-
   float fStack_18;
-
   float fStack_14;
-
   float fStack_10;
-
   int iStack_c;
-
-  
-
   uVar3 = (u32)*(u16 *)(param_2 + 0x74);
-
   for (; fGpffff82c8 <= param_1; param_1 = param_1 - fGpffff82c8) {
-
     uVar3 = uVar3 + 1 & 0xffff;
-
   }
-
   param_1 = param_1 / fGpffff82c8;
-
   if (3 < uVar3) {
-
     uVar3 = uVar3 & 3;
-
   }
-
   uVar2 = uVar3 + 1 & 0xffff;
-
   if (3 < uVar2) {
-
     uVar2 = uVar3 + 1 & 3;
-
   }
-
   iVar1 = param_2 + uVar2 * 0x1c;
-
   param_2 = param_2 + uVar3 * 0x1c;
-
   FUN_004be310((float *)(param_2 + 0x10),(float *)(iVar1 + 0x10),&fStack_30);
-
   if (param_1 <= 0.0) {
-
     fVar6 = *(float *)(param_2 + 0x14);
-
     fVar4 = *(float *)(param_2 + 0x18);
-
     fVar5 = *(float *)(param_2 + 0x1c);
-
     *param_3 = *(float *)(param_2 + 0x10);
-
     param_3[1] = fVar6;
-
     param_3[2] = fVar4;
-
     param_3[3] = fVar5;
-
   }
-
   else if (1.0 <= param_1) {
-
     fVar6 = *(float *)(iVar1 + 0x14);
-
     fVar4 = *(float *)(iVar1 + 0x18);
-
     fVar5 = *(float *)(iVar1 + 0x1c);
-
     *param_3 = *(float *)(iVar1 + 0x10);
-
     param_3[1] = fVar6;
-
     param_3[2] = fVar4;
-
     param_3[3] = fVar5;
-
   }
-
   else {
-
     fVar4 = 1.0 - param_1;
-
     if (iStack_c == 0) {
-
       fVar4 = fVar4 * fStack_10;
-
       fVar5 = fVar4 * fVar4;
-
       fVar4 = fVar5 * fVar4 *
-
               (fVar5 * (fVar5 * (fVar5 * (fVar5 * (fGpffff83d4 * fVar5 + fGpffff8048 + 0.0) +
-
                                          fGpffff8118 + 0.0) + fGpffff8050 + 0.0) + fGpffff8054 + 0.0
-
                        ) + fGpffff83d8 + 0.0) + fVar4 + 0.0;
-
       param_1 = param_1 * fStack_10;
-
       fVar5 = param_1 * param_1;
-
       param_1 = fVar5 * param_1 *
-
                 (fVar5 * (fVar5 * (fVar5 * (fVar5 * (fGpffff83d4 * fVar5 + fGpffff8048 + 0.0) +
-
                                            fGpffff8118 + 0.0) + fGpffff8050 + 0.0) +
-
                          fGpffff8054 + 0.0) + fGpffff83d8 + 0.0) + param_1 + 0.0;
-
     }
-
     *param_3 = fStack_30 * fVar4;
-
     param_3[1] = fStack_2c * fVar4;
-
     param_3[2] = fStack_28 * fVar4;
-
     *param_3 = fStack_20 * param_1 + *param_3 + 0.0;
-
     param_3[1] = fStack_1c * param_1 + param_3[1] + 0.0;
-
     param_3[2] = fStack_18 * param_1 + param_3[2] + 0.0;
-
     param_3[3] = fStack_24 * fVar4 + fStack_14 * param_1;
-
   }
-
   return;
-
 }
 
-// FUN_002A2ED0 NONMATCHING
+// FUN_002A2ED0
 
 
-u32 FUN_002a2ed0(u64 param_1,u64 param_2,u64 param_3)
-
-
-
+u32 FUN_002a2ed0(u8* param_1,f32* param_2,f32* param_3)
 {
-
-  u16 uVar1;
-
-  u16 *puVar2;
-
-  u32 *puVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uVar6;
-
-  
-
-  puVar2 = (u16 *)param_1;
-
-  uVar1 = puVar2[0x3b];
-
-  if (uVar1 == 0) {
-
-    uVar4 = 0;
-
-  }
-
-  else if (uVar1 < 2) {
-
-    uVar1 = puVar2[0x3a];
-
-    uVar4 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 4);
-
-    uVar5 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 6);
-
-    puVar3 = (u32 *)param_2;
-
-    *puVar3 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 2);
-
-    puVar3[1] = uVar4;
-
-    puVar3[2] = uVar5;
-
-    uVar1 = puVar2[0x3a];
-
-    uVar6 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 10);
-
-    uVar4 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 0xc);
-
-    uVar5 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 0xe);
-
-    puVar3 = (u32 *)param_3;
-
-    *puVar3 = *(u32 *)(puVar2 + (u32)uVar1 * 0xe + 8);
-
-    puVar3[1] = uVar6;
-
-    puVar3[2] = uVar4;
-
-    puVar3[3] = uVar5;
-
-    uVar4 = 0;
-
-  }
-
-  else {
-
-    if (uVar1 < 4) {
-
-
+    void* curve;
+    u16 frame;
+    u16 index;
+    u8* entry;
+    frame = *(u16*)(param_1 + 0x76);
+    if (0 < frame)
+    {
+        goto has_frame;
     }
-
-    else if ((*puVar2 & 1) == 0) {
-
-      FUN_0048d480(*(u32 *)(puVar2 + 0x3e),*(u32 *)(puVar2 + 0x4c),10,param_2,0);
-
+    return 0;
+has_frame:
+    if (frame < 2)
+    {
+        index = *(u16*)(param_1 + 0x74);
+        entry = (u8 *)((u32)index * 0x1c);
+        entry += (u32)param_1;
+        *(RwV3d *)param_2 = *(RwV3d *)(entry + 4);
+        index = *(u16*)(param_1 + 0x74);
+        entry = (u8 *)((u32)index * 0x1c);
+        entry += (u32)param_1;
+        *(RwV4d *)param_3 = *(RwV4d *)(entry + 0x10);
+        return 0;
     }
-
-    else {
-
-
+    if (frame < 4)
+    {
+        FUN_002a2b50(param_1, param_2, *(f32*)(param_1 + 0x7c));
     }
-
-
-    uVar4 = 1;
-
-  }
-
-  return uVar4;
-
+    else if ((*(u16*)param_1 & 1) != 0)
+    {
+        FUN_002a2a20(param_1, param_2, *(f32*)(param_1 + 0x7c));
+    }
+    else
+    {
+        curve = *(void* volatile *)(param_1 + 0x98);
+        FUN_0048d480((void*)curve, 0xa,
+                     *(f32*)(param_1 + 0x7c),
+                     (RwV3d *)param_2, ((void*)0));
+    }
+    FUN_002a2c40(param_1, param_3, *(f32*)(param_1 + 0x7c));
+    return 1;
 }
 
-// FUN_002A3010 NONMATCHING
+// FUN_002A3010
 
 
-u32 FUN_002a3010(float param_1,int param_2)
-
-
-
+u32 FUN_002a3010(u8* param_2,f32 param_1)
 {
-
-  u16 uVar1;
-
-  u32 uVar2;
-
-  
-
-  uVar1 = *(u16 *)(param_2 + 0x76);
-
-  if (uVar1 < 2) {
-
-    *(u32 *)(param_2 + 0x7c) = 0;
-
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    param_1 = *(float *)(param_2 + 0x7c) + param_1;
-
-    if (uVar1 < 3) {
-
-      if (fGpffff82c8 <= param_1) {
-
-        param_1 = 0.0;
-
-        *(u16 *)(param_2 + 0x76) = uVar1 - 1;
-
-        *(short *)(param_2 + 0x74) = *(short *)(param_2 + 0x74) + 1;
-
-      }
-
+    u16 frame;
+    u16 counter;
+    u32 result;
+    f32 value;
+    frame = *(u16*)(param_2 + 0x76);
+    if (frame < 2)
+    {
+        *(u32*)(param_2 + 0x7c) = 0;
+        return 0;
     }
-
-    else if (uVar1 < 4) {
-
-      if (fGpffff805c <= param_1) {
-
-        param_1 = 0.0;
-
-        *(u16 *)(param_2 + 0x76) = uVar1 - 2;
-
-        *(short *)(param_2 + 0x74) = *(short *)(param_2 + 0x74) + 2;
-
-      }
-
+    value = *(f32*)(param_2 + 0x7c) + param_1;
+    if (frame < 3)
+    {
+        if (!(value < fGpffff82c8))
+        {
+            value = 0.0f;
+            *(u16*)(param_2 + 0x76) = frame - 1;
+            *(u16*)(param_2 + 0x74) = *(u16*)(param_2 + 0x74) + 1;
+        }
     }
-
-    else if (fGpffff83d0 <= param_1) {
-
-      param_1 = param_1 - 1.0;
-
-      *(u16 *)(param_2 + 0x76) = uVar1 - 3;
-
-      *(short *)(param_2 + 0x74) = *(short *)(param_2 + 0x74) + 3;
-
+    else if (frame < 4)
+    {
+        if (!(value < fGpffff805c))
+        {
+            value = 0.0f;
+            *(u16*)(param_2 + 0x76) = frame - 2;
+            *(u16*)(param_2 + 0x74) = *(u16*)(param_2 + 0x74) + 2;
+        }
     }
-
-    if (3 < *(u16 *)(param_2 + 0x74)) {
-
-      *(u16 *)(param_2 + 0x74) = *(u16 *)(param_2 + 0x74) & 3;
-
+    else if (!(value < fGpffff83d0))
+    {
+        value = value - 1.0f;
+        *(u16*)(param_2 + 0x76) = frame - 3;
+        *(u16*)(param_2 + 0x74) = *(u16*)(param_2 + 0x74) + 3;
     }
-
-    *(float *)(param_2 + 0x7c) = param_1;
-
-    uVar2 = 1;
-
-  }
-
-  return uVar2;
-
+    counter = *(u16*)(param_2 + 0x74);
+    if (counter >= 4)
+    {
+        *(u16*)(param_2 + 0x74) = counter & 3;
+    }
+    *(f32*)(param_2 + 0x7c) = value;
+    result = 1;
+    return result;
 }
 
-// FUN_002A3110 NONMATCHING
+// FUN_002A3110
 
 
-void FUN_002a3110(float param_1,u16 *param_2)
-
-
-
+void FUN_002a3110(u8* param_2,float param_1)
 {
-
-  *(float *)(param_2 + 0x42) = (param_1 * 2.0 * 60.0) / 2.0;
-
-  param_2[0x4a] = 0;
-
-  param_2[0x4b] = 0x3f00;
-
-  *param_2 = *param_2 & 0xfffd;
-
-  *param_2 = *param_2 | 4;
-
-  return;
-
+    *(f32*)(param_2 + 0x84) = (param_1 * 2.0f * 60.0f) / 2.0f;
+    *(u32*)(param_2 + 0x94) = 0x3f000000;
+    *(u16*)param_2 = *(u16*)param_2 & 0xfffd;
+    *(u16*)param_2 = *(u16*)param_2 | 4;
 }
 
-// FUN_002A3160 NONMATCHING
+// FUN_002A3160
 
 
-void FUN_002a3160(float param_1,u16 *param_2)
-
-
-
+void FUN_002a3160(u8* param_2,float param_1)
 {
-
-  *(float *)(param_2 + 0x42) = (param_1 * 60.0) / 2.0;
-
-  *param_2 = *param_2 & 0xfffd;
-
-  *param_2 = *param_2 & 0xfffb;
-
-  return;
-
+    *(f32*)(param_2 + 0x84) = (param_1 * 60.0f) / 2.0f;
+    *(u16*)param_2 = *(u16*)param_2 & 0xfffd;
+    *(u16*)param_2 = *(u16*)param_2 & 0xfffb;
 }
 
 /* Recovered battle-misc harvest: 0x0029F4B0-0x002A16C0 */
@@ -5510,66 +5061,39 @@ void FUN_002a3160(float param_1,u16 *param_2)
 
 
 
-// FUN_0029F4B0 NONMATCHING
-void FUN_0029f4b0(u32 param_1,u32 param_2,float param_3)
-
-
-
+// FUN_0029F4B0
+void FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3)
 {
+    float *color;
+    int packet;
+    union { u32 value; u8 bytes[4]; } packed;
 
-  float *pfVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = FUN_0027ec10(0x600,0x68);
-
-
-  pfVar1 = *(float **)(iVar2 + 0x78);
-
-  *pfVar1 = DAT_007caf08 * (float)(param_1 & 0xff);
-
-  pfVar1[1] = DAT_007caf08 * (float)(param_1 >> 8 & 0xff);
-
-  pfVar1[2] = DAT_007caf08 * (float)(param_1 >> 0x10 & 0xff);
-
-  pfVar1[3] = DAT_007caf08 * (float)(param_1 >> 0x18);
-
-  pfVar1[4] = DAT_007caf08 * (float)(param_2 & 0xff);
-
-  pfVar1[5] = DAT_007caf08 * (float)(param_2 >> 8 & 0xff);
-
-  pfVar1[6] = DAT_007caf08 * (float)(param_2 >> 0x10 & 0xff);
-
-  pfVar1[7] = DAT_007caf08 * (float)(param_2 >> 0x18);
-
-  pfVar1[0x18] = param_3;
-
-  return;
-
+    packet = FUN_0027ec10(0x600, 0x68);
+    *(code **)(packet + 0x6c) = (code *)FUN_0029f150;
+    color = *(float **)(packet + 0x78);
+    packed.value = param_1;
+    color[0] = DAT_007caf08 * (float)packed.bytes[0];
+    color[1] = DAT_007caf08 * (float)packed.bytes[1];
+    color[2] = DAT_007caf08 * (float)packed.bytes[2];
+    color[3] = DAT_007caf08 * (float)packed.bytes[3];
+    packed.value = param_2;
+    color[4] = DAT_007caf08 * (float)packed.bytes[0];
+    color[5] = DAT_007caf08 * (float)packed.bytes[1];
+    color[6] = DAT_007caf08 * (float)packed.bytes[2];
+    color[7] = DAT_007caf08 * (float)packed.bytes[3];
+    *(u32*)((u8*)color + 0x60) = param_3;
 }
 
-// FUN_0029FA50 NONMATCHING
+// FUN_0029FA50
 
 
-void FUN_0029fa50(u32 param_1)
-
-
-
+BtlPacket* FUN_0029fa50(u32 param_1)
 {
-
-  int iVar1;
-
-  
-
-  iVar1 = FUN_0027ec10(0x601,0x28);
-
-
-  *(u32 *)(*(int *)(iVar1 + 0x78) + 0x20) = param_1;
-
-  return;
-
+    BtlPacket* packet;
+    packet = btlPacketCreate(0x601, 0x28);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_0029f760;
+    *(u32*)((u8*)packet->workData + 0x20) = param_1;
+    return packet;
 }
 
 
@@ -5613,7 +5137,7 @@ void FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,float param_4,u16 param_5)
 
   
 
-  iVar2 = FUN_0027ec10(0x602,0x6c);
+  iVar2 = (int)FUN_0027ec10(0x602,0x6c);
 
 
   pfVar1 = *(float **)(iVar2 + 0x78);
@@ -5650,30 +5174,19 @@ void FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,float param_4,u16 param_5)
 
 }
 
-// FUN_002A1080 NONMATCHING
+// FUN_002A1080
 
 
-void FUN_002a1080(u32 param_1,u16 param_2)
-
-
-
+BtlPacket* FUN_002a1080(s32 param_1, s16 param_2)
 {
-
-  int iVar1;
-
-  
-
-  iVar1 = FUN_0027ec10(0x603,0x5c);
-
-
-  iVar1 = *(int *)(iVar1 + 0x78);
-
-  *(u32 *)(iVar1 + 0x50) = param_1;
-
-  *(u16 *)(iVar1 + 0x58) = param_2;
-
-  return;
-
+    BtlPacket* packet;
+    u8* work;
+    packet = btlPacketCreate(0x603, 0x5c);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a0440;
+    work = (u8*)packet->workData;
+    *(s32*)(work + 0x50) = param_1;
+    *(s16*)(work + 0x58) = param_2;
+    return packet;
 }
 
 
@@ -5688,56 +5201,31 @@ void FUN_002a1080(u32 param_1,u16 param_2)
 
 
 
-// FUN_002A1280 NONMATCHING
-void FUN_002a1280(u32 param_1,float param_2)
-
-
-
+// FUN_002A1280
+void FUN_002a1280(u32 param_1,u32 param_2)
 {
-
-  float *pfVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = FUN_0027ec10(0x604,0x28);
-
-
-  pfVar1 = *(float **)(iVar2 + 0x78);
-
-  *pfVar1 = fGpffff8218 * (float)(param_1 & 0xff);
-
-  pfVar1[1] = fGpffff8218 * (float)(param_1 >> 8 & 0xff);
-
-  pfVar1[2] = fGpffff8218 * (float)(param_1 >> 0x10 & 0xff);
-
-  pfVar1[3] = fGpffff8218 * (float)(param_1 >> 0x18);
-
-  pfVar1[8] = param_2;
-
-  return;
-
+    float *color;
+    u32 packed;
+    int packet;
+    packet = (int)FUN_0027ec10(0x604, 0x28);
+    *(code **)(packet + 0x6c) = (code *)FUN_002a10e0;
+    color = *(float **)(packet + 0x78);
+    packed = param_1;
+    color[0] = fGpffff8218 * (float)((u8*)&packed)[0];
+    color[1] = fGpffff8218 * (float)((u8*)&packed)[1];
+    color[2] = fGpffff8218 * (float)((u8*)&packed)[2];
+    color[3] = fGpffff8218 * (float)((u8*)&packed)[3];
+    *(u32*)((u8*)color + 0x20) = param_2;
 }
 
-// FUN_002A16C0 NONMATCHING
+// FUN_002A16C0
 
 
-void FUN_002a16c0(u32 param_1)
-
-
-
+BtlPacket* FUN_002a16c0(s32 param_1)
 {
-
-  int iVar1;
-
-  
-
-  iVar1 = FUN_0027ec10(0x605,0x18);
-
-
-  *(u32 *)(*(int *)(iVar1 + 0x78) + 0x10) = param_1;
-
-  return;
-
+    BtlPacket* packet;
+    packet = btlPacketCreate(0x605, 0x18);
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002a1400;
+    *(s32*)((u8*)packet->workData + 0x10) = param_1;
+    return packet;
 }

@@ -771,26 +771,30 @@ u32 K_Cmd_CHK_SCENARIO_ANSWER()
 
     return true;
 }
-// FUN_001C2DD0 NONMATCHING
+// FUN_001C2DD0
 u32 K_Cmd_SET_NPC_SHADOW()
 {
     s32 resTypeId;
     ResrcModelNpc* npc;
 
     resTypeId = scrGetIntPara(0);
-    if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELNPC)
+    switch (RESRC_GET_TYPE(resTypeId))
     {
-        npc = (ResrcModelNpc*)MT_Scene_GetRes(resTypeId);
+    case RESRC_TYPE_MODELCHAR:
+        break;
+    case RESRC_TYPE_MODELNPC:
+        npc = (ResrcModelNpc*)MT_Scene_GetRes((u16)resTypeId);
         if (npc != NULL && npc->renderTexShadowTask != NULL)
         {
             func_0019c320(npc->renderTexShadowTask,
                           scrGetFloatPara(1));
         }
-    }
-    else if (RESRC_GET_TYPE(resTypeId) != RESRC_TYPE_MODELCHAR &&
-             RESRC_GET_TYPE(resTypeId) != RESRC_TYPE_MODELFLD)
-    {
+        break;
+    case RESRC_TYPE_MODELFLD:
+        break;
+    default:
         K_ASSERT(false, 655);
+        break;
     }
 
     return true;
@@ -879,30 +883,31 @@ u32 K_Cmd_GET_MAX_SP()
     return true;
 }
 
-// FUN_001C31A0 NONMATCHING
+// FUN_001C31A0
 u32 K_Cmd_GET_SOCIAL_STAT()
 {
     s32 pcId;
     s32 stat;
+    s32 result;
 
     pcId = scrGetIntPara(0);
     stat = scrGetIntPara(1);
-    if (stat == 2)
+    result = 0;
+    switch (stat)
     {
-        scrSetIntReturnVal(datGetCouragePoint((s16)pcId));
+    case 0:
+        result = datGetAcademicPoint((s16)pcId);
+        break;
+    case 1:
+        result = datGetCharmPoint((s16)pcId);
+        break;
+    case 2:
+        result = datGetCouragePoint((s16)pcId);
+        break;
+    default:
+        break;
     }
-    else if (stat == 1)
-    {
-        scrSetIntReturnVal(datGetCharmPoint((s16)pcId));
-    }
-    else if (stat == 0)
-    {
-        scrSetIntReturnVal(datGetAcademicPoint((s16)pcId));
-    }
-    else
-    {
-        scrSetIntReturnVal(0);
-    }
+    scrSetIntReturnVal(result);
 
     return true;
 }
@@ -912,39 +917,40 @@ u32 K_Cmd_GET_SOCIAL_LEVEL()
 {
     s32 pcId;
     s32 stat;
+    s32 result;
 
     pcId = scrGetIntPara(0);
     stat = scrGetIntPara(1);
-    if (stat == 2)
+    result = 0;
+    switch (stat)
     {
-        scrSetIntReturnVal(datGetCourageLevel(datGetCouragePoint((s16)pcId)));
+    case 0:
+        result = datGetAcademicLevel((s16)datGetAcademicPoint((s16)pcId));
+        break;
+    case 1:
+        result = datGetCharmLevel((s16)datGetCharmPoint((s16)pcId));
+        break;
+    case 2:
+        result = datGetCourageLevel((s16)datGetCouragePoint((s16)pcId));
+        break;
+    default:
+        break;
     }
-    else if (stat == 1)
-    {
-        scrSetIntReturnVal(datGetCharmLevel(datGetCharmPoint((s16)pcId)));
-    }
-    else if (stat == 0)
-    {
-        scrSetIntReturnVal(datGetAcademicLevel(datGetAcademicPoint((s16)pcId)));
-    }
-    else
-    {
-        scrSetIntReturnVal(0);
-    }
+    scrSetIntReturnVal(result);
 
     return true;
 }
 
-// FUN_001C34B0 NONMATCHING
+// FUN_001C34B0
 u32 K_Cmd_SET_PHYSICAL_CONDITION()
 {
-    s16 pcId;
+    s32 pcId;
     s32 condition;
 
-    pcId = (s16)scrGetIntPara(0);
+    pcId = scrGetIntPara(0);
     condition = scrGetIntPara(1);
-    scrSetIntReturnVal(datGetPhysicalCondition(pcId));
-    datSetPhysicalCondition(pcId, (s16)condition);
+    scrSetIntReturnVal(datGetPhysicalCondition((s16)pcId));
+    datSetPhysicalCondition((s16)pcId, (s16)condition);
     return true;
 }
 
@@ -962,21 +968,25 @@ u32 K_Cmd_GET_FIELD_VALUE()
     return true;
 }
 
-// FUN_001C3600 NONMATCHING
+// FUN_001C3600
 u32 K_Cmd_SET_FIELD_VALUE()
 {
-    s16 pcId;
-    s16 index;
+    s32 pcId;
+    s32 index;
     s32 value;
+    s16 callPcId;
+    s16 callIndex;
 
-    pcId = (s16)scrGetIntPara(0);
-    index = (s16)scrGetIntPara(1);
+    pcId = scrGetIntPara(0);
+    index = scrGetIntPara(1);
     value = scrGetIntPara(2);
+    callPcId = (s16)pcId;
+    callIndex = (s16)index;
     if (value > 99)
     {
         value = 99;
     }
-    func_00170860(pcId, index, (u16)value);
+    func_00170860(callPcId, callIndex, (u16)value);
     return true;
 }
 
@@ -1043,7 +1053,7 @@ u32 K_Cmd_GET_FIELD_OBJECT_ID()
     return true;
 }
 
-// FUN_001C38B0 NONMATCHING
+// FUN_001C38B0
 u32 K_Cmd_GET_FIELD_OBJECT_KIND()
 {
     u8* object;
@@ -1053,7 +1063,7 @@ u32 K_Cmd_GET_FIELD_OBJECT_KIND()
     {
         scrSetIntReturnVal(3);
     }
-    else if (*(u16*)(*(u8**)(object + 0x11c) + 2) >= 5000)
+    if (*(u16*)(*(u8**)(object + 0x11c) + 2) >= 5000)
     {
         scrSetIntReturnVal(0);
     }
@@ -1160,42 +1170,52 @@ u32 K_Cmd_RESET_FIELD_OBJECT()
 u32 K_Cmd_ADD_FIELD_OBJECT()
 {
     u8* object;
+    u8* work;
     u16 type;
-    s16 i;
-    s16 slot;
-    s16 value;
 
     object = *(u8**)&D_007CE284;
-    type = *(u16*)(*(u8**)(object + 0x11c) + 2);
+    work = *(u8**)(object + 0x11c);
+    type = *(u16*)(work + 2);
     if (type == 0xfb5)
     {
         scrSetIntReturnVal(1);
-        return true;
     }
-    if (type < 4000)
+    else if (type < 4000)
     {
+        s32 slot;
+
         slot = 0;
-        while (slot < 20 && datGetEquipmentId(-1, slot) != 0)
+        while (slot < 20)
         {
+            if (datGetEquipmentId(-1, slot) == 0)
+            {
+                break;
+            }
             slot++;
         }
         if (slot >= 20)
         {
             K_ASSERT(false, 1061);
         }
-        func_001831e0(-1, slot, object + 0x120);
+        func_001831e0(-1, (s16)slot, object + 0x120);
         scrSetIntReturnVal(1);
-        return true;
     }
-    value = func_00170760(-1, (s16)type);
-    i = *(u8*)(*(u8**)(object + 0x11c) + 6);
-    value = (s16)(value + i);
-    if (value > 99)
+    else
     {
-        value = 99;
+        s32 value;
+        s16 fieldType;
+
+        value = func_00170760(-1, (s16)type);
+        work = *(u8**)(object + 0x11c);
+        value = (u16)(value + work[6]);
+        if (value > 99)
+        {
+            value = 99;
+        }
+        fieldType = *(s16*)(work + 2);
+        func_00170860(-1, fieldType, (u16)value);
+        scrSetIntReturnVal(1);
     }
-    func_00170860(-1, (s16)type, (u16)value);
-    scrSetIntReturnVal(1);
     return true;
 }
 
@@ -1553,7 +1573,7 @@ extern void Y_TimeLimit_Stop(void);
  * field script task; preserve their GP relocation form. */
 extern u32 D_007CE278;
 extern u32 D_007CE274;
-extern u32 D_007CE270;
+extern s32 D_007CE270;
 #define K_CMD_GLOBAL_STATE      D_007CE278
 #define K_CMD_GLOBAL_STAGE      D_007CE274
 #define K_CMD_GLOBAL_FRAME      D_007CE270
@@ -1577,7 +1597,7 @@ u32 func_001c4990()
     return true;
 }
 
-// FUN_001c4c50 NONMATCHING
+// FUN_001c4c50
 u32 func_001c4c50()
 {
     ScrData* current;
@@ -1590,8 +1610,7 @@ u32 func_001c4c50()
 
     if (task == NULL)
     {
-        task = func_001dc910(0, value);
-        func_0035c1a0(current->task, (s32)(u32)task);
+        func_0035c1a0(current->task, (s32)(u32)func_001dc910(0, value));
         return false;
     }
 
@@ -1604,12 +1623,20 @@ u32 func_001c4c50()
     return true;
 }
 
-// FUN_001c4d10 NONMATCHING
+// FUN_001c4d10
 u32 func_001c4d10()
 {
     u32 result;
+    u16 id;
+    s32 index;
 
-    result = func_00177a40((u16)scrGetIntPara(0), scrGetIntPara(1)) != NULL;
+    result = false;
+    id = (u16)scrGetIntPara(0);
+    index = scrGetIntPara(1);
+    if (func_00177a40(id, index) != NULL)
+    {
+        result = true;
+    }
     scrSetIntReturnVal((s32)result);
     return true;
 }
@@ -1634,11 +1661,10 @@ u32 func_001c4df0()
     return true;
 }
 
-// FUN_001c4e50 NONMATCHING
+// FUN_001c4e50
 u32 func_001c4e50()
 {
     s32 itemIndex;
-    s32 slot;
     s32 freeSlot;
     void* item;
     s32 value;
@@ -1652,14 +1678,17 @@ u32 func_001c4e50()
 
         item = func_00177a90((u16)scrGetIntPara(0), itemIndex);
         freeSlot = 0;
-        while (freeSlot < 20 && datGetEquipmentId(-1, freeSlot) != 0)
+        while (freeSlot < 20)
         {
+            if (datGetEquipmentId(-1, freeSlot) == 0)
+            {
+                break;
+            }
             freeSlot++;
         }
         if (freeSlot >= 20)
         {
             K_ASSERT(false, 1682);
-            freeSlot = 19;
         }
         func_001831e0(-1, (s16)freeSlot, item);
         value = scrGetIntPara(0);
@@ -1701,13 +1730,15 @@ u32 func_001c5040()
 {
     s32 requested;
     s32 slot;
-    s32 found;
     s32 count;
     s32 equipmentIndex;
+    u32 result;
+    void* foundItem;
     void* item;
 
+    result = 0;
     requested = scrGetIntPara(0);
-    found = 0;
+    foundItem = NULL;
     count = 0;
     for (slot = 0; slot < 4; slot++)
     {
@@ -1716,10 +1747,14 @@ u32 func_001c5040()
         {
             if (count == requested)
             {
-                found = *(u16*)func_00177a90(9, slot);
+                foundItem = func_00177a90(9, slot);
             }
             count++;
         }
+    }
+    if (foundItem != NULL)
+    {
+        result = *(u16*)foundItem;
     }
 
     for (slot = 0; slot < 4; slot++)
@@ -1729,13 +1764,13 @@ u32 func_001c5040()
         {
             if (count == requested)
             {
-                found = datGetEquipmentId(9, equipmentIndex);
+                result = datGetEquipmentId(9, equipmentIndex);
             }
             count++;
         }
     }
 
-    scrSetIntReturnVal(found);
+    scrSetIntReturnVal(result);
     return true;
 }
 
@@ -1756,14 +1791,17 @@ u32 func_001c5180()
 
         item = func_00177a90(9, slot);
         freeSlot = 0;
-        while (freeSlot < 20 && datGetEquipmentId(-1, freeSlot) != 0)
+        while (freeSlot < 20)
         {
+            if (datGetEquipmentId(-1, freeSlot) == 0)
+            {
+                break;
+            }
             freeSlot++;
         }
         if (freeSlot >= 20)
         {
             K_ASSERT(false, 1779);
-            freeSlot = 19;
         }
         func_001831e0(-1, (s16)freeSlot, item);
     }
@@ -1778,14 +1816,17 @@ u32 func_001c5180()
         item = func_0016fdb0(9, equipmentIndex);
 
         freeSlot = 0;
-        while (freeSlot < 20 && datGetEquipmentId(-1, freeSlot) != 0)
+        while (freeSlot < 20)
         {
+            if (datGetEquipmentId(-1, freeSlot) == 0)
+            {
+                break;
+            }
             freeSlot++;
         }
         if (freeSlot >= 20)
         {
             K_ASSERT(false, 1799);
-            freeSlot = 19;
         }
         func_001831e0(-1, (s16)freeSlot, item);
     }
@@ -1793,7 +1834,7 @@ u32 func_001c5180()
     return true;
 }
 
-// FUN_001c5340 NONMATCHING
+// FUN_001c5340
 u32 func_001c5340()
 {
     s32 command;
@@ -1803,19 +1844,24 @@ u32 func_001c5340()
     mode = scrGetIntPara(1);
     command = scrGetIntPara(0);
     mappedMode = 0;
-    if (command == 1)
+    switch (command)
     {
+    case 0:
+        mappedMode = 0;
+        break;
+    case 1:
         mappedMode = 1;
-    }
-    else if (command == 2)
-    {
+        break;
+    case 2:
         mappedMode = 6;
-    }
-    else if (command == 3)
-    {
+        break;
+    case 3:
         mappedMode = 7;
+        break;
+    default:
+        break;
     }
-    func_0010a4e0(0, mappedMode, command, mode);
+    func_0010a4e0(0, (s16)mappedMode, (s16)command, (s16)mode);
     return true;
 }
 
@@ -1831,11 +1877,15 @@ u32 func_001c5400()
     return true;
 }
 
-// FUN_001c5550 NONMATCHING
+// FUN_001c5550
 u32 func_001c5550()
 {
-    func_00109040((s16)scrGetIntPara(0));
-    (void)scrGetIntPara(1);
+    s16 id;
+    s16 unused;
+
+    id = (s16)scrGetIntPara(0);
+    unused = (s16)scrGetIntPara(1);
+    func_00109040(id, unused);
     return true;
 }
 
@@ -1851,17 +1901,24 @@ u32 func_001c55b0()
     return true;
 }
 
-// FUN_001c5600 NONMATCHING
+// FUN_001c5600
 u32 func_001c5600()
 {
-    s32 index;
+    s8 index;
 
-    index = scrGetIntPara(0) + 1;
-    scrSetIntReturnVal(func_0043a230(index) != false);
+    index = (s8)(scrGetIntPara(0) + 1);
+    if (func_0043a230(index) == false)
+    {
+        scrSetIntReturnVal(false);
+    }
+    else
+    {
+        scrSetIntReturnVal(true);
+    }
     return true;
 }
 
-// FUN_001c5700 NONMATCHING
+// FUN_001c5700
 u32 func_001c5700()
 {
     s32 index;
@@ -1872,29 +1929,32 @@ u32 func_001c5700()
 
     index = scrGetIntPara(0);
     resource = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
-    for (i = 0; i < index && resource != NULL; i++)
+    floor = 0;
+    i = 0;
+    while (resource != NULL)
     {
+        if (index == i)
+        {
+            break;
+        }
+        i++;
         resource = *(u8**)(resource + 0xF8);
     }
 
-    floor = 0;
     if (resource != NULL)
     {
         model = *(Model**)(resource + 0x128);
-        if (model != NULL)
+        floor = model->id / 50 + 1;
+        if (model->id > 500)
         {
-            floor = model->id / 50 + 1;
-            if (model->id >= 501)
-            {
-                floor = 0;
-            }
+            floor = 0;
         }
     }
     scrSetIntReturnVal(floor);
     return true;
 }
 
-// FUN_001c57b0 NONMATCHING
+// FUN_001c57b0
 u32 func_001c57b0()
 {
     u16* skills;
@@ -1902,12 +1962,12 @@ u32 func_001c57b0()
     u32 found;
     u16 skillId;
 
-    skills = datPersonaGetSkillsByPcId((u16)scrGetIntPara(0));
     found = false;
+    skills = datPersonaGetSkillsByPcId((u16)scrGetIntPara(0));
     for (skillIndex = 0; skillIndex < 8; skillIndex++)
     {
-        skillId = skills != NULL ? skills[skillIndex] : 0;
-        if (skillId != 0 && skillId == (u16)scrGetIntPara(1))
+        skillId = skills[skillIndex];
+        if (skillId != 0 && skillId == scrGetIntPara(1))
         {
             found = true;
             break;
@@ -1917,35 +1977,32 @@ u32 func_001c57b0()
     return true;
 }
 
-// FUN_001c5870 NONMATCHING
+// FUN_001c5870
 u32 func_001c5870()
 {
+    s32 rawResourceId;
     u16 resourceId;
     s32 value;
 
-    resourceId = (u16)(scrGetIntPara(0) & 0x3FF) | 0x400;
+    rawResourceId = scrGetIntPara(0);
     value = scrGetIntPara(1);
+    resourceId = (u16)(rawResourceId & 0x3FF) | 0x400;
     func_003bb010(resourceId, (u8)value);
     return true;
 }
 
-// FUN_001c5900 NONMATCHING
+// FUN_001c5900
 u32 func_001c5900()
 {
-    u8* field;
-    KwlnTask* task;
-
     (void)scrGetIntPara(0);
     func_001d1860(1);
     func_001d1910();
     func_001d1b60();
     func_001d4180();
 
-    field = (u8*)K_Field_Get();
-    task = *(KwlnTask**)(field + 0x1200);
-    if (task != NULL)
+    if (*(KwlnTask**)((u8*)K_Field_Get() + 0x1200) != NULL)
     {
-        func_001a9470(task);
+        func_001a9470(*(KwlnTask**)((u8*)K_Field_Get() + 0x1200));
     }
     K_CMD_GLOBAL_STATE = 0;
     return true;
@@ -2080,9 +2137,11 @@ u32 func_001c5d30()
     return true;
 }
 
-// FUN_001c5d80 NONMATCHING
+// FUN_001c5d80
 u32 func_001c5d80()
 {
+    u32 scriptSize;
+
     if (K_CMD_GLOBAL_STAGE == 1)
     {
         if (K_CMD_GLOBAL_FRAME < 0x5A)
@@ -2100,7 +2159,8 @@ u32 func_001c5d80()
             return false;
         }
 
-        scrCreateTaskFromScriptMemory(10, gFldScrMemory, gFldScrSize, 1);
+        scriptSize = *(volatile u32*)&gFldScrSize;
+        scrCreateTaskFromScriptMemory(10, gFldScrMemory, scriptSize, 1);
         scrSetIntReturnVal(2);
         return true;
     }

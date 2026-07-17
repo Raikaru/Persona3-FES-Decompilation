@@ -10,7 +10,7 @@ void sflRes0020d670(const void* work, f32* value);
 void sflRes0020d690(void* work, const f32* value);
 void sflRes0020d6c0(void* work);
 void sflRes0020d710(u32* work);
-void sflRes0020d770(u32 value, void* work);
+void sflRes0020d770(void* work, f32 value);
 void sflRes0020d7d0(void* work);
 void sflRes0020d820(void);
 u32 sflRes0020dfe0(void);

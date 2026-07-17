@@ -176,15 +176,14 @@ u32 opWait0026ee30(void)
     return *sOpWait & 4;
 }
 
-// FUN_0026DDC0 NONMATCHING
+// FUN_0026DDC0
 void opWait0026ddc0(void)
 {
     s32* work;
-    s32 normalized;
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (s32*)sOpWait;
-    if ((*work & 1) != 0)
+    if ((~*work & 1) == 0)
     {
         work[3]++;
         work[3] %= 0x5a;
@@ -197,22 +196,13 @@ void opWait0026ddc0(void)
         work[7]++;
         work[7] %= 0x46;
         work[8]++;
-        normalized = work[8] & 0x3ff;
-        if (work[8] < 0 && normalized != 0)
-            normalized -= 0x400;
-        work[8] = normalized;
+        work[8] %= 0x2b2;
         work[9]++;
-        normalized = work[9] & 0x3ff;
-        if (work[9] < 0 && normalized != 0)
-            normalized -= 0x400;
-        work[9] = normalized;
+        work[9] %= 0x400;
         work[11]++;
         work[11] %= 0x168;
         work[12]++;
-        normalized = work[12] & 0x3ff;
-        if (work[12] < 0 && normalized != 0)
-            normalized -= 0x400;
-        work[12] = normalized;
+        work[12] %= 0x400;
 
         if ((*work & 8) != 0)
         {
@@ -224,19 +214,20 @@ void opWait0026ddc0(void)
 
         if ((*work & 4) != 0)
         {
-            if (work[1] == 1)
+            switch (work[1])
             {
-                if (work[2] < 0xdc)
-                    work[2]++;
-                else
-                    *work &= ~4;
-            }
-            else if (work[1] == 0)
-            {
-                if (work[2] < 0xdc)
-                    work[2]++;
-                else
-                    *work &= ~4;
+                case 0:
+                    if (work[2] < 0xdc)
+                        work[2]++;
+                    else
+                        *work &= ~4;
+                    break;
+                case 1:
+                    if (work[2] < 0xdc)
+                        work[2]++;
+                    else
+                        *work &= ~4;
+                    break;
             }
         }
         opWait0026eed0();

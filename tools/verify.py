@@ -112,8 +112,19 @@ def elf_sections(data):
 class ObjectFile:
     """Parsed relocatable object: symbol bytes + symbol-relative relocations."""
 
-    def __init__(self, path):
-        self.data = Path(path).read_bytes()
+    def __init__(self, path=None, *, data=None):
+        if (path is None) == (data is None):
+            raise ValueError("provide exactly one of path or data")
+        self.data = bytes(data) if data is not None else Path(path).read_bytes()
+        self._parse()
+
+    @classmethod
+    def from_bytes(cls, data):
+        """Parse an in-memory relocatable object, such as an archive member."""
+        return cls(data=data)
+
+    def _parse(self):
+        """Populate sections and symbols from ``self.data``."""
         self.endian, self.sh = elf_sections(self.data)
         self.symtabs = {}
         self.symbols = []

@@ -227,7 +227,7 @@ static void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
     work->vertexCount = vertexCount + 3;
 }
 
-// FUN_00199c60 NONMATCHING
+// FUN_00199c60
 void func_00199c60(RwCamera* camera)
 {
     RwFrame* frame;
@@ -252,7 +252,10 @@ void func_00199c60(RwCamera* camera)
         func_004cde90(zBuffer);
     }
 
-    camera->frameBuffer = NULL;
+    if (camera->frameBuffer != NULL)
+    {
+        camera->frameBuffer = NULL;
+    }
     func_004ca030(camera);
 }
 
@@ -1178,12 +1181,17 @@ void func_0019c320(KwlnTask* renderTexTask, f32 radius)
     }
 }
 
-// FUN_0019c490 NONMATCHING
+// FUN_0019c490
 f32 func_0019c490(KwlnTask* renderTexTask)
 {
     FldShadowRenderTex* shadow = (FldShadowRenderTex*)renderTexTask->workData;
+    f32 radius = 0.0f;
 
-    return shadow->radius != NULL ? *shadow->radius : 0.0f;
+    if (shadow->radius != NULL)
+    {
+        radius = *shadow->radius;
+    }
+    return radius;
 }
 
 #define K_FldShadow_SetAttachedShadowEnabled(model_, enabled_)                                            \

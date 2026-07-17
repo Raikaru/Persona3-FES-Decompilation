@@ -6,7 +6,7 @@ typedef u32 int3;
 
 extern u32 fGpffff808c;
 extern u32 fGpffff80a4;
-extern u32 gp0xffffa808;
+extern s8 gp0xffffa808;
 extern u32 uGpffffa810;
 extern u32 uGpffffb948;
 
@@ -19,14 +19,14 @@ void FUN_003b2c60(u32 param_1,long param_2);
 int FUN_003b2cb0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,  u64 param_6,u64 param_7,u32 param_8);
 int FUN_003b2f90(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,  u64 param_6,u64 param_7,u32 param_8,u8 param_9);
 int FUN_003b32d0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,  u64 param_6,u64 param_7,u32 param_8,u32 param_9);
-u8 FUN_003b35c0(char param_1);
+s8 FUN_003b35c0(char param_1);
 
 /* Region call-cast macros */
 #define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
 #define FUN_003b2cb0(...) ((int (*)(...))FUN_003b2cb0)(__VA_ARGS__)
 #define FUN_003b2f90(...) ((int (*)(...))FUN_003b2f90)(__VA_ARGS__)
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
-#define FUN_003b35c0(...) ((u8 (*)(...))FUN_003b35c0)(__VA_ARGS__)
+#define FUN_003b35c0(...) ((s8 (*)(...))FUN_003b35c0)(__VA_ARGS__)
 
 #undef FUN_003b2c60
 // FUN_003B2C60 NONMATCHING
@@ -475,10 +475,10 @@ int FUN_003b32d0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 }
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
 #undef FUN_003b35c0
-// FUN_003B35C0 NONMATCHING
+// FUN_003B35C0
 
 
-u8 FUN_003b35c0(char param_1)
+s8 FUN_003b35c0(char param_1)
 
 
 
@@ -487,4 +487,4 @@ u8 FUN_003b35c0(char param_1)
   return (&gp0xffffa808)[param_1];
 
 }
-#define FUN_003b35c0(...) ((u8 (*)(...))FUN_003b35c0)(__VA_ARGS__)
+#define FUN_003b35c0(...) ((s8 (*)(...))FUN_003b35c0)(__VA_ARGS__)

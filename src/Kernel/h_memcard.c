@@ -245,6 +245,7 @@ s32 func_0018f2c0(void)
                         case 0x2f:
                             goto state1_success;
                         default:
+                            FUN_005225a8(D_005E4830);
                             break;
                     }
                 }
@@ -264,7 +265,6 @@ state1_success:
             sMemcardSeqMode = 3;
             return 2;
 state1_continue:
-            FUN_005225a8(D_005E4830);
             if (*D_00846EA0 != 2)
             {
                 return -1;
@@ -272,7 +272,7 @@ state1_continue:
             if (*D_00846EA4 == 0)
             {
                 sMemcardSeqMode = 3;
-                return 3;
+                return 2;
             }
             if (sMemcardAsync != 0)
             {
@@ -351,54 +351,12 @@ state3_done:
             return 2;
         }
         case 4:
-        {
-            s32 status;
-            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
-            if (status == -1)
+            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
             {
-                goto state4_error;
+                FUN_00513598(sSocketNo);
+                sMemcardSeqMode = 5;
             }
-            if (status == 1)
-            {
-                goto state4_body;
-            }
-            goto state4_done;
-
-state4_body:
-            if (cardCode != 0)
-            {
-                goto state4_done;
-            }
-            if (cardCode == 0x2f)
-            {
-                goto state4_done;
-            }
-            if (cardCode == 0x9001)
-            {
-                goto state4_return3;
-            }
-            if (cardCode == 0x13)
-            {
-                goto state4_return3;
-            }
-            if (cardCode == 0x6f)
-            {
-                goto state4_return3;
-            }
-            if (cardCode == 0x9003)
-            {
-                goto state4_return3;
-            }
-            goto state4_done;
-
-state4_return3:
-            return -3;
-state4_error:
-            FUN_00513598(sSocketNo);
-            sMemcardSeqMode = 5;
-state4_done:
             break;
-        }
         case 5:
         {
             s32 status;

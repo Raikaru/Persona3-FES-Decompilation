@@ -8,11 +8,15 @@
 #include "Battle/btlAction.h"
 #include "Battle/battle.h"
 #include "Battle/btlUnit.h"
+#include "Battle/btlVoice.h"
+#include "Battle/btlBoss.h"
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/Battle/Data/datPersona.h"
 #include "Main/g_data.h"
 #include "h_cdvd.h"
 #include "Kosaka/k_assert.h"
+#include "libm.h"
+extern u32 func_002e4910();
 #include "temporary.h"
 #define BTLT_A8(ptr, offset) (*(u8*)((u8*)(ptr) + (offset)))
 #define BTLT_A16(ptr, offset) (*(u16*)((u8*)(ptr) + (offset)))
@@ -35,15 +39,45 @@ typedef struct BtlTargetPacketWork
 typedef struct BtlTargetScriptWork
 {
     BtlAction* action;
-    ScrHeader* script;
     s32 procedureIndex;
     u32 started;
+    ScrHeader* script;
 } BtlTargetScriptWork;
 
+typedef struct BtlTargetStatePacketWork
+{
+    BtlAction* action;
+    u8 flags;
+} BtlTargetStatePacketWork;
+
+typedef struct BtlTargetActionPacketWork
+{
+    BtlAction* action;
+} BtlTargetActionPacketWork;
+
+// FUN_002d7970
+void FUN_002D7970(void* arg)
+{
+    BtlTargetPacketWork* work = (BtlTargetPacketWork*)arg;
+    work->source->unit->packetCount++;
+    work->action->unit->packetCount++;
+}
+
+// FUN_002d7df0
+void FUN_002D7DF0(void* arg)
+{
+    BtlTargetPacketWork* work = (BtlTargetPacketWork*)arg;
+    work->source->unit->packetCount--;
+    work->action->unit->packetCount--;
+}
+
 void FUN_002dc550(BtlAction* action, u32 flags);
+extern u16 FUN_002bff60(BtlAction* action, BtlTarget* target,
+                         u16 commandId, u32 flags);
 
 extern u8* iGpffffb6fc;
 extern f32 fGpffff827c;
+extern u8 DAT_00697880[];
 extern f32 DAT_006978c0[];
 extern u8* DAT_007ce42c;
 extern u8* DAT_007ce400;
@@ -51,8 +85,6 @@ extern u32 DAT_007e094e;
 extern u32 DAT_007e0958;
 extern u8* gp0xffff9c60;
 extern u8* gp0xffff9c68;
-extern void FUN_002D7970(void *);
-extern void FUN_002D7DF0(void *);
 extern u8* gp0xffff9c70;
 extern u8* gp0xffff9c78;
 extern u32 uGpffffb7dc;
@@ -70,13 +102,13 @@ extern f32 FUN_004C6B20(RwV2d* dst, const RwV2d* src);
 extern void FUN_004C6BE0(f32*, u64, s32);
 extern f32 FUN_0052E9E8(f32);
 extern f32 FUN_0052EA18(void);
-extern void FUN_004BDDE0(f32, u64, u32, s32);
+extern void FUN_004BDDE0(f32, u64, const void*, s32);
 extern void* FUN_0027EC10(s32, s32);
 extern u32 FUN_0035C090(u32, u64);
 extern s32 FUN_00195460();
 extern s32 FUN_00198590(void);
-extern u16 FUN_002d4cf0(u32 mask, u32 badStatus);
-extern u16 FUN_002d4e10(u32 mask, u32 badStatus);
+extern u16 FUN_002d4cf0(u16 mask, u32 badStatus);
+extern u16 FUN_002d4e10(u16 mask, u32 badStatus);
 extern u32 FUN_002db480(void);
 extern u32 FUN_002db690(void);
 extern void FUN_002db650(u32 value);
@@ -85,7 +117,7 @@ extern void FUN_002dba80(void);
 extern u8* iGpffffb720;
 extern const char D_00697B18[];
 extern const char* D_00697B90[];
-extern u64 FUN_002daa20(u64, u64, u64, u64, u64);
+extern s32 FUN_002daa20(BtlAction*, u16, s32, s32, s32);
 typedef s64 (*BtlTargetEffectFn)(u64, u64, u64, u64);
 extern u8* iGpffffb7b8;
 extern BtlTargetEffectFn D_006978F0[];
@@ -138,19 +170,21 @@ void FUN_002d15e0(BtlTarget* target)
     target->oldSpecificId = target->specificId;
 }
 
-// FUN_002d1600 NONMATCHING
-u32 FUN_002d1600(BtlTarget* target)
+#pragma opt_loop_invariants on
+// FUN_002d1600
+u16 FUN_002d1600(BtlTarget* target)
 {
-    u32 mask = 0;
-    u16 i;
+    u16 mask = 0;
+    u16 i = 0;
+    u16 bit = 1;
+    s32 count = target->targetedCount;
 
-    for (i = 0; i < target->targetedCount; i++) {
-        u8* action = (u8*)target->targetedActions[i];
-        u8* unitWork = *(u8**)(action + 0x30);
-        mask |= (1u << (unitWork[0xA2] & 0x1F)) & 0xFFFFu;
+    for (; i < count; i++) {
+        mask |= bit << target->targetedActions[i]->unit->genus;
     }
     return mask;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002d19b0
 void FUN_002d19b0(void)
@@ -172,12 +206,13 @@ void FUN_002d1a10(void)
     }
 }
 
-// FUN_002d1a70 NONMATCHING
+// FUN_002d1a70
 s32 FUN_002d1a70(void)
 {
     if ((*(u32*)(iGpffffb6fc + 0x0C) & 0x80) != 0) {
         return 0;
     }
+    return FUN_002FD7C0() != 0;
 }
 
 // FUN_002d1ac0 NONMATCHING
@@ -204,15 +239,18 @@ void FUN_002d1ac0(void)
 }
 
 // FUN_002d1de0 NONMATCHING
-void FUN_002d1de0(u64 task, f32* from, f32* to)
+void FUN_002d1de0(u64 task, const RwV3d* from, const RwV3d* to)
 {
+    f32 deltaZ;
     f32 speed = 0.0f;
-    if (to[0] != from[0] || to[2] != from[2]) {
+
+    speed = to->x - from->x;
+    deltaZ = to->z - from->z;
+    if (speed != 0.0f || deltaZ != 0.0f) {
         speed = fGpffff80d0 * FUN_0052EA18();
     }
-    FUN_004BDDE0(speed, task, 0x697880, 0);
+    FUN_004BDDE0(speed, task, DAT_00697880, 0);
 }
-
 // FUN_002d1e70
 void FUN_002d1e70(f32* from, f32* to)
 {
@@ -234,52 +272,78 @@ void FUN_002d1ed0(f32* from, f32* to)
     FUN_004C6AC0(delta);
 }
 
-// FUN_002d1f30 NONMATCHING
+// FUN_002d1f30
 f32 FUN_002d1f30(f32* left, f32* right)
 {
-    f32 dot = left[3] * right[3] + left[2] * right[2] +
-              left[0] * right[0] + left[1] * right[1];
-    if (dot < 0.0f) {
-        dot = -(left[3] * right[3] + left[2] * right[2] +
-                left[0] * right[0] + left[1] * right[1]);
+    f32 dot = left[0] * right[0] + left[1] * right[1] +
+              left[2] * right[2];
+    dot += left[3] * right[3];
+
+    if (dot < 0.0f)
+    {
+        dot = left[0] * -right[0] + left[1] * -right[1] +
+              left[2] * -right[2];
+        dot += left[3] * -right[3];
     }
     return FUN_0052E9E8(dot) * 2.0f;
 }
 
-// FUN_002d1fd0 NONMATCHING
+// FUN_002d1fd0
 f32 FUN_002d1fd0(f32* a, f32* b, f32* point, f32* projected)
 {
-    f32 axis[2];
+    f32 result;
+    RwV2d axis;
     f32 distance;
+    f32* pointAlias;
+    f32 axisY;
+    f32 dx;
+    f32 dy;
 
-    axis[0] = a[0] - b[0];
-    axis[1] = a[1] - b[1];
-    FUN_004C6B20((RwV2d*)axis, (const RwV2d*)axis);
-    distance = (point[0] - a[0]) * axis[1] +
-               (point[1] - a[1]) * -axis[0];
+    axis.x = a[0] - b[0];
+    axis.y = a[1] - b[1];
+    FUN_004C6B20(&axis, &axis);
+    dx = point[0] - a[0];
+    axisY = axis.y;
+    distance = a[1];
+    pointAlias = point;
+    dy = point[1] - distance;
+    result = dx * axisY + dy * -axis.x;
+    distance = result;
     if (projected != NULL) {
-        projected[0] = point[0] - distance * axis[1];
-        projected[1] = point[1] - distance * -axis[0];
+        projected[0] = pointAlias[0] - distance * axisY;
+        projected[1] = point[1] - distance * -axis.x;
     }
-    return distance < 0.0f ? -distance : distance;
+    return fabsf(distance);
 }
 
-// FUN_002d21e0 NONMATCHING
-f32 FUN_002d21e0(f32 value, f32* state)
+// FUN_002d21e0
+f32 FUN_002d21e0(f32 value, volatile f32* state)
 {
-    f32 remaining = state[1] - value;
+    f32 current;
+    f32 slopeBase;
+    f32 remaining;
+    f32 resultBase;
     f32 slope;
     f32 result;
 
-    if (remaining <= 0.0f) {
+    current = state[1];
+    slopeBase = state[3];
+    resultBase = state[4];
+    remaining = current - value;
+
+    if (remaining <= 0.0f)
+    {
         return 1.0f;
     }
-    if (remaining < state[0] * 0.5f) {
-        slope = state[3] - state[2] * value;
-    } else {
-        slope = state[2] * value + state[3];
+    if (remaining < state[0] * 0.5f)
+    {
+        slope = slopeBase - state[2] * value;
     }
-    result = slope * value + state[4];
+    else
+    {
+        slope = state[2] * value + slopeBase;
+    }
+    result = slope * value + resultBase;
     state[1] = remaining;
     state[3] = slope;
     state[4] = result;
@@ -324,26 +388,32 @@ void FUN_002d2340(f32 distance, u8* work, s16 start, s16 end)
 }
 
 // FUN_002d2470 NONMATCHING
-s32 FUN_002d2470(f32 tolerance, f32* a, f32* b, f32* point)
+s32 FUN_002d2470(f32 tolerance, const f32* a, const f32* b, const f32* point)
 {
-    f32 axis[2];
-    f32 signedDistance;
+    RwV2d axis;
     f32 projected[2];
-
-    axis[0] = a[0] - b[0];
-    axis[1] = a[1] - b[1];
-    FUN_004C6B20((RwV2d*)axis, (const RwV2d*)axis);
-    signedDistance = (point[0] - a[0]) * axis[1] +
-                     (point[1] - a[1]) * -axis[0];
-    projected[0] = point[0] - signedDistance * axis[1];
-    projected[1] = point[1] - signedDistance * -axis[0];
-    if (((a[0] < projected[0] || projected[0] < b[0]) &&
-         (projected[0] < a[0] || b[0] < projected[0])) ||
-        ((a[1] < projected[1] || projected[1] < b[1]) &&
-         (projected[1] < a[1] || b[1] < projected[1]))) {
+    f32 dy;
+    f32 dx;
+    f32 axisX;
+    f32 axisY;
+    axis.x = a[0] - b[0];
+    axis.y = a[1] - b[1];
+    FUN_004C6B20(&axis, &axis);
+    dx = point[0] - a[0];
+    dy = point[1] - a[1];
+    axisX = -axis.x;
+    axisY = axis.y;
+    dy = dy * axisX;
+    dx = dx * axisY + dy;
+    projected[0] = point[0] - dx * axisY;
+    projected[1] = point[1] - dx * axisX;
+    if (((a[0] < projected[0] || b[0] > projected[0]) &&
+         (a[0] > projected[0] || b[0] < projected[0])) ||
+        ((a[1] < projected[1] || b[1] > projected[1]) &&
+         (a[1] > projected[1] || b[1] < projected[1]))) {
         return 0;
     }
-    return tolerance > (signedDistance < 0.0f ? -signedDistance : signedDistance);
+    return fabsf(dx) < tolerance;
 }
 // FUN_002d1660 NONMATCHING
 void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
@@ -719,9 +789,9 @@ extern u64 FUN_00175360();
 extern u64 FUN_00175ca0();
 extern u64 FUN_0017b170();
 extern u64 FUN_0027ec10();
-extern u64 FUN_00288fe0();
 extern u64 FUN_0029a1d0();
 extern u64 FUN_002ddc10();
+extern u32 func_002ddc10(u32 unitId);
 extern u64 FUN_002ffbc0();
 extern u64 FUN_002ffcc0();
 extern u64 FUN_002ffd70();
@@ -731,74 +801,114 @@ extern u64 FUN_00300480();
 extern u64 FUN_00300580();
 extern u64 FUN_003005e0();
 extern u64 FUN_00301ca0();
-extern u64 FUN_00302c50();
+extern void FUN_00302c50(u32 datUnit);
 extern u64 FUN_003083f0();
 extern u64 FUN_0030b5a0();
 extern u64 FUN_0030b5e0();
-extern void LAB_002d7ef0();
-extern void LAB_002d7f10();
-extern void LAB_002d7f90();
-extern void LAB_002d8020();
-extern void LAB_002d8070();
-extern void LAB_002d80f0();
-extern void LAB_002d8310();
 extern u8* DAT_007ce3ec;
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce410;
 extern u8* iGpffffb6fc;
 extern u8* iGpffffb720;
 
-// FUN_002d7fb0 NONMATCHING
-
-void FUN_002d7fb0(undefined4 param_1,undefined1 param_2)
-
+// FUN_002d7ef0
+void func_002d7ef0(void* arg)
 {
-  undefined4 *puVar1;
-  int iVar2;
-  
-  iVar2 = FUN_0027ec10(0x701,8);
-  *(undefined1 **)(iVar2 + 0x68) = (undefined1*)LAB_002d7ef0;
-  *(undefined1 **)(iVar2 + 0x6c) = (undefined1*)LAB_002d7f10;
-  *(undefined1 **)(iVar2 + 0x70) = (undefined1*)LAB_002d7f90;
-  puVar1 = *(undefined4 **)(iVar2 + 0x78);
-  *puVar1 = param_1;
-  *(undefined1 *)(puVar1 + 1) = param_2;
-  return;
+    BtlTargetStatePacketWork* work = (BtlTargetStatePacketWork*)arg;
+    work->action->unit->packetCount++;
 }
 
+// FUN_002d7f10
+u32 func_002d7f10(void* arg)
+{
+    BtlTargetStatePacketWork* work = (BtlTargetStatePacketWork*)arg;
+    u8 value;
+
+    if ((work->flags & 2) != 0)
+    {
+        work->action->unk_28 = 0;
+    }
+    else if ((work->flags & 1) != 0)
+    {
+        work->action->unk_28++;
+    }
+    else
+    {
+        value = work->action->unk_28;
+        if (value > 0)
+        {
+            if (value > 1)
+            {
+                value = 1;
+            }
+            work->action->unk_28 = value - 1;
+        }
+    }
+    return 1;
+}
+
+// FUN_002d7f90
+void func_002d7f90(void* arg)
+{
+    BtlTargetStatePacketWork* work = (BtlTargetStatePacketWork*)arg;
+    work->action->unit->packetCount--;
+}
+
+// FUN_002d7fb0
+void FUN_002d7fb0(BtlAction* action, u8 flags)
+{
+    BtlPacket* packet = btlPacketCreate(0x701, sizeof(BtlTargetStatePacketWork));
+    BtlTargetStatePacketWork* work;
+
+    packet->initFunc = func_002d7ef0;
+    packet->updateFunc = func_002d7f10;
+    packet->destroyFunc = func_002d7f90;
+    work = (BtlTargetStatePacketWork*)packet->workData;
+    work->action = action;
+    work->flags = flags;
+}
+
+
+// FUN_002d8020
+void func_002d8020(void* arg)
+{
+    BtlTargetActionPacketWork* work = (BtlTargetActionPacketWork*)arg;
+    work->action->unit->packetCount++;
+}
 
 // FUN_002d8040
-undefined4 FUN_002d8040(int *param_1)
-
+u32 FUN_002d8040(void* arg)
 {
-  FUN_00302c50(*(undefined4 *)(*(int *)(*param_1 + 0x30) + 0xa2c));
-  return 1;
+    BtlTargetActionPacketWork* work = (BtlTargetActionPacketWork*)arg;
+    FUN_00302c50((u32)(uintptr_t)work->action->unit->datUnit);
+    return 1;
 }
 // FUN_002d8070
-void FUN_002d8070(int *param_1)
+void FUN_002d8070(void* arg)
 {
-  int iVar1;
-  int iVar2;
-
-  iVar1 = *param_1;
-  iVar2 = *(int *)(iVar1 + 0x30);
-  *(u16 *)(iVar2 + 0xa0) = *(u16 *)(iVar2 + 0xa0) - 1;
+    BtlTargetActionPacketWork* work = (BtlTargetActionPacketWork*)arg;
+    work->action->unit->packetCount--;
 }
 
 
-// FUN_002d8090 NONMATCHING
-
-void FUN_002d8090(undefined4 param_1)
-
+// FUN_002d8090
+void FUN_002d8090(BtlAction* action)
 {
-  int iVar1;
-  
-  iVar1 = FUN_0027ec10(0x703,4);
-  *(undefined1 **)(iVar1 + 0x68) = (undefined1*)LAB_002d8020;
-  *(code **)(iVar1 + 0x6c) = (code*)FUN_002d8040;
-  *(undefined1 **)(iVar1 + 0x70) = (undefined1*)LAB_002d8070;
-  **(undefined4 **)(iVar1 + 0x78) = param_1;
-  return;
+    BtlPacket* packet = btlPacketCreate(0x703, sizeof(BtlTargetActionPacketWork));
+    BtlTargetActionPacketWork* work;
+
+    packet->initFunc = func_002d8020;
+    packet->updateFunc = FUN_002d8040;
+    packet->destroyFunc = FUN_002d8070;
+    work = (BtlTargetActionPacketWork*)packet->workData;
+    work->action = action;
+}
+
+// FUN_002d80f0
+void func_002d80f0(void* arg)
+{
+    BtlTargetActionPacketWork* work = (BtlTargetActionPacketWork*)arg;
+    work->action->unit->packetCount++;
 }
 
 // FUN_002d8110 NONMATCHING
@@ -854,19 +964,25 @@ undefined4 FUN_002d8110(int *param_1)
   return 1;
 }
 
-// FUN_002d8330 NONMATCHING
-
-void FUN_002d8330(undefined4 param_1)
-
+// FUN_002d8310
+void func_002d8310(void* arg)
 {
-  int iVar1;
-  
-  iVar1 = FUN_0027ec10(0x702,4);
-  *(undefined1 **)(iVar1 + 0x68) = (undefined1*)LAB_002d80f0;
-  *(code **)(iVar1 + 0x6c) = (code*)FUN_002d8110;
-  *(undefined1 **)(iVar1 + 0x70) = (undefined1*)LAB_002d8310;
-  **(undefined4 **)(iVar1 + 0x78) = param_1;
-  return;
+    BtlTargetActionPacketWork* work = (BtlTargetActionPacketWork*)arg;
+    work->action->unit->packetCount--;
+}
+
+// FUN_002d8330
+
+void FUN_002d8330(BtlAction* action)
+{
+    BtlPacket* packet = btlPacketCreate(0x702, sizeof(BtlTargetActionPacketWork));
+    BtlTargetActionPacketWork* work;
+
+    packet->initFunc = func_002d80f0;
+    packet->updateFunc = (BtlPacketUpdateFunc)FUN_002d8110;
+    packet->destroyFunc = func_002d8310;
+    work = (BtlTargetActionPacketWork*)packet->workData;
+    work->action = action;
 }
 
 // FUN_002d8390 NONMATCHING
@@ -996,19 +1112,32 @@ undefined4 FUN_002d8610(void)
   return uVar2;
 }
 
-// FUN_002D8680 NONMATCHING
+// FUN_002D8680
 int func_002D8680(u64 param_1, int param_2)
 {
+    int result = 1;
+
     (void)param_1;
-
-    if (param_2 == 0)
+    if (param_2 == 1)
     {
-        return 0x5f;
+        goto one;
     }
-
-    return -1;
+    switch (param_2)
+    {
+    case 0:
+        result = 0x5f;
+        goto done;
+    default:
+        goto default_case;
+    }
+one:
+    result = -1;
+    goto done;
+default_case:
+    result = -1;
+done:
+    return result;
 }
-
 // FUN_002D86C0
 int func_002D86C0(int param_1)
 {
@@ -1035,90 +1164,41 @@ int func_002D86C0(int param_1)
 
 
 // FUN_002d8850 NONMATCHING
-
-undefined4 FUN_002d8850(int param_1)
-
+s32 FUN_002d8850(s32 param_1)
 {
-  bool bVar1;
-  short sVar2;
-  undefined4 uVar3;
-  
-  if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') {
-    sVar2 = FUN_002db480();
-    bVar1 = sVar2 != 0;
-    switch(*(undefined2 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
-    default:
-      uVar3 = 0xffffffff;
-      break;
-    case 2:
-      if (bVar1) {
-        uVar3 = 0x71;
-      }
-      else {
-        uVar3 = 0x72;
-      }
-      break;
-    case 3:
-      if (bVar1) {
-        uVar3 = 0x73;
-      }
-      else {
-        uVar3 = 0x74;
-      }
-      break;
-    case 4:
-      if (bVar1) {
-        uVar3 = 0x75;
-      }
-      else {
-        uVar3 = 0x76;
-      }
-      break;
-    case 5:
-      if (bVar1) {
-        uVar3 = 0x77;
-      }
-      else {
-        uVar3 = 0x78;
-      }
-      break;
-    case 7:
-      if (bVar1) {
-        uVar3 = 0x79;
-      }
-      else {
-        uVar3 = 0x7a;
-      }
-      break;
-    case 8:
-      if (bVar1) {
-        uVar3 = 0x7b;
-      }
-      else {
-        uVar3 = 0x7c;
-      }
-      break;
-    case 9:
-      if (bVar1) {
-        uVar3 = 0x7d;
-      }
-      else {
-        uVar3 = 0x7e;
-      }
-      break;
-    case 10:
-      if (bVar1) {
-        uVar3 = 0x7f;
-      }
-      else {
-        uVar3 = 0x80;
-      }
+    bool noRandom;
+    if (*(u8*)(*(u8**)(param_1 + 0x30) + 0xa2) != 0) {
+        return -1;
     }
-  }
-  else {
-    uVar3 = 0xffffffff;
-  }
-  return uVar3;
+    noRandom = (u16)FUN_002db480() == 0;
+    switch (*(u16*)(*(u8**)(param_1 + 0x30) + 0xa4)) {
+    case 2:
+        if (noRandom) return 0x72;
+        return 0x71;
+    case 3:
+        if (noRandom) return 0x74;
+        return 0x73;
+    case 4:
+        if (noRandom) return 0x76;
+        return 0x75;
+    case 5:
+        if (noRandom) return 0x78;
+        return 0x77;
+    case 7:
+        if (noRandom) return 0x7a;
+        return 0x79;
+    case 8:
+        if (noRandom) return 0x7c;
+        return 0x7b;
+    case 9:
+        if (noRandom) return 0x7e;
+        return 0x7d;
+    case 10:
+        if (noRandom) return 0x80;
+        return 0x7f;
+    default:
+        return -1;
+    }
 }
 
 // FUN_002d8b40 NONMATCHING
@@ -1186,32 +1266,68 @@ undefined4 FUN_002d8b40(int param_1)
   return uVar3;
 }
 
-// FUN_002d8e80 NONMATCHING
+// FUN_002d8e80
 
-undefined4 FUN_002d8e80(int param_1,long param_2)
-
+s32 FUN_002d8e80(BtlAction* action, s32 mode)
 {
-  undefined4 uVar1;
-  long lVar2;
-  
-  if (param_2 == 0) {
-    if ((*(ushort *)(param_1 + 0x18) & 0x1800) == 0) {
-      lVar2 = FUN_002ddc10(6);
-      if (lVar2 == 0) {
-        uVar1 = 0xe6;
-      }
-      else {
-        uVar1 = 0xe7;
-      }
+    s32 result;
+
+    if (mode != 0)
+    {
+        result = 0xe8;
     }
-    else {
-      uVar1 = 0xe9;
+    else if ((action->unk_18 & 0x1800) != 0)
+    {
+        result = 0xe9;
     }
-  }
-  else {
-    uVar1 = 0xe8;
-  }
-  return uVar1;
+    else
+    {
+        if (func_002ddc10(6) == 0)
+        {
+            result = 0xe6;
+        }
+        else
+        {
+            result = 0xe7;
+        }
+    }
+    return result;
+}
+
+// FUN_002d8ef0
+s32 FUN_002d8ef0(BtlAction* action)
+{
+    s32 result;
+
+    if (gBtl->actionList.head == action)
+    {
+        result = 0xea;
+    }
+    else if (action->unit->genus == UNIT_GENUS_EC)
+    {
+        result = 0xeb;
+    }
+    else
+    {
+        result = -1;
+    }
+    return result;
+}
+
+// FUN_002d8f40
+s32 FUN_002d8f40(BtlAction* action)
+{
+    s32 result;
+
+    if (gBtl->actionList.head == action)
+    {
+        result = 0x18e;
+    }
+    else
+    {
+        result = -1;
+    }
+    return result;
 }
 
 // FUN_002d8f70 NONMATCHING
@@ -1224,7 +1340,7 @@ int FUN_002d8f70(int param_1)
   uint uVar3;
   int iVar4;
   
-  if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') {
+  if (*(u8 *)(*(u32 *)(param_1 + 0x30) + 0xa2) == 0) {
     uVar3 = FUN_002d4e10(2,0x80000);
     uVar3 = uVar3 & 0xffff;
     uVar2 = *(ushort *)(param_1 + 0x1a);
@@ -1638,7 +1754,7 @@ int FUN_002d8f70(int param_1)
       else {
         iVar4 = -1;
       }
-    }
+  }
   }
   else {
     iVar4 = -1;
@@ -1770,7 +1886,7 @@ short FUN_002d9d70(int param_1)
     }
     for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
       uVar3 = FUN_0016dd60(uVar4);
-      if (((uVar3 != 0) && (uVar3 < 0xb)) && (lVar8 = FUN_00288fe0(0,uVar3), lVar8 == 0)) {
+      if (((uVar3 != 0) && (uVar3 < 0xb)) && (FUN_00288fe0(0, uVar3) == NULL)) {
         uVar5 = 0;
         while ((uVar5 < 4 &&
                (((iVar2 = *(int *)(iGpffffb6fc + uVar5 * 4 + 0xbac), iVar2 == 0 ||
@@ -2059,17 +2175,23 @@ int FUN_002d2c10(float *param_1, float *param_2)
     return 0;
 }
 
-// FUN_002d2ee0 NONMATCHING
+// FUN_002d2ee0
 int FUN_002d2ee0(const float *param_1, const float *param_2, const float *param_3)
 {
-    float cross = (param_2[0] - param_1[0]) * (param_3[1] - param_1[1]) -
-                  (param_2[1] - param_1[1]) * (param_3[0] - param_1[0]);
+    int side;
+    float cross;
 
-    if (cross < 0.0f)
+    cross = (param_2[0] - param_1[0]) * (param_3[1] - param_1[1]) -
+            (param_2[1] - param_1[1]) * (param_3[0] - param_1[0]);
+    if (cross >= 0.0f)
     {
-        return -1;
+        side = 1;
     }
-    return 1;
+    else
+    {
+        side = -(cross < 0.0f);
+    }
+    return side;
 }
 
 // FUN_002d2f50 NONMATCHING
@@ -2172,12 +2294,30 @@ void FUN_002d32b0(float param_1)
 
     for (node = *(u8 **)(iGpffffb6fc + 0x2cc); node != NULL; node = *(u8 **)(node + 0x4cc))
     {
-        s16 tileX = *(s16 *)(node + 0x00);
-        s16 tileY = *(s16 *)(node + 0x02);
-        float z = *(float *)(node + 0x04);
-
-        if (haveBounds != 0)
+        if (haveBounds == 0)
         {
+            s16 tileX = *(s16 *)(node + 0x00);
+            s16 tileY = *(s16 *)(node + 0x02);
+            float z = *(float *)(node + 0x04);
+            corner3X = tileX;
+            corner2X = tileX;
+            corner1X = tileX;
+            corner0X = tileX;
+            corner3Y = tileY;
+            corner2Y = tileY;
+            corner1Y = tileY;
+            corner0Y = tileY;
+            extent[3] = z;
+            extent[2] = z;
+            extent[1] = z;
+            extent[0] = z;
+            haveBounds = 1;
+        }
+        else
+        {
+            s16 tileX = *(s16 *)(node + 0x00);
+            s16 tileY = *(s16 *)(node + 0x02);
+            float z = *(float *)(node + 0x04);
             if ((tileX <= corner0X) && (tileY <= corner0Y))
             {
                 corner0X = tileX;
@@ -2202,22 +2342,6 @@ void FUN_002d32b0(float param_1)
                 corner3Y = tileY;
                 extent[3] = z;
             }
-        }
-        else
-        {
-            corner3X = tileX;
-            corner2X = tileX;
-            corner1X = tileX;
-            corner0X = tileX;
-            corner3Y = tileY;
-            corner2Y = tileY;
-            corner1Y = tileY;
-            corner0Y = tileY;
-            extent[3] = z;
-            extent[2] = z;
-            extent[1] = z;
-            extent[0] = z;
-            haveBounds = 1;
         }
     }
 
@@ -2447,23 +2571,21 @@ void FUN_002d32b0(float param_1)
 /* Caveats:
  * - iGpffffb6fc, fGpffff827c, and DAT_006978c0 are raw retail globals; no stable named API was established.
  * - FUN_002d2470, FUN_002d25c0, and FUN_004C6B20 are raw helper declarations; FUN_004C6B20 is the retail 2-D normalize helper.
- * - The six bodies intentionally retain NONMATCHING markers; all six requested starts are present and no neighboring entry is included.
  */
-// FUN_002d3d70 NONMATCHING
+// FUN_002d3d70
 void FUN_002d3d70(void)
 {
-    u8* btl = iGpffffb6fc;
-    *(u32*)(btl + 0x2cc) = 0;
-    *(f32*)(btl + 0x7a4) = -1.0f;
-    *(f32*)(btl + 0x8d4) = -1.0f;
-    *(f32*)(btl + 0x2d0) = -1750.0f;
-    *(f32*)(btl + 0x2d4) = -1750.0f;
-    *(f32*)(btl + 0x400) = -1750.0f;
-    *(f32*)(btl + 0x404) = 1750.0f;
-    *(f32*)(btl + 0x530) = 1750.0f;
-    *(f32*)(btl + 0x534) = -1750.0f;
-    *(f32*)(btl + 0x660) = 1750.0f;
-    *(f32*)(btl + 0x664) = 1750.0f;
+    *(u32*)(iGpffffb6fc + 0x2cc) = 0;
+    *(f32*)(iGpffffb6fc + 0x7a4) = -1.0f;
+    *(f32*)(iGpffffb6fc + 0x8d4) = -1.0f;
+    *(f32*)(iGpffffb6fc + 0x2d0) = -1750.0f;
+    *(f32*)(iGpffffb6fc + 0x2d4) = -1750.0f;
+    *(f32*)(iGpffffb6fc + 0x400) = -1750.0f;
+    *(f32*)(iGpffffb6fc + 0x404) = 1750.0f;
+    *(f32*)(iGpffffb6fc + 0x530) = 1750.0f;
+    *(f32*)(iGpffffb6fc + 0x534) = -1750.0f;
+    *(f32*)(iGpffffb6fc + 0x660) = 1750.0f;
+    *(f32*)(iGpffffb6fc + 0x664) = 1750.0f;
 }
 
 // FUN_002d3e00 NONMATCHING
@@ -2509,7 +2631,7 @@ void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos)
     unit->flags3 |= 4;
 }
 
-// FUN_002d3fe0 NONMATCHING
+// FUN_002d3fe0
 void FUN_002d3fe0(BtlUnit* unit)
 {
     u8* raw = (u8*)unit;
@@ -2522,18 +2644,18 @@ void FUN_002d3fe0(BtlUnit* unit)
     }
     unit->flags3 &= ~4u;
     next = *(u8**)(raw + 0x9c8);
-    prev = *(u8**)(raw + 0x9c4);
     if (next != NULL)
     {
-        *(u8**)(next + 0x4c8) = prev;
+        *(u8**)(next + 0x4c8) = *(u8**)(raw + 0x9c4);
     }
+    prev = *(u8**)(raw + 0x9c4);
     if (prev != NULL)
     {
-        *(u8**)(prev + 0x4cc) = next;
+        *(u8**)(prev + 0x4cc) = *(u8**)(raw + 0x9c8);
     }
     else
     {
-        *(u8**)(iGpffffb6fc + 0x2cc) = next;
+        *(u8**)(iGpffffb6fc + 0x2cc) = *(u8**)(raw + 0x9c8);
     }
 }
 
@@ -2622,37 +2744,47 @@ void FUN_002d4800(void* work)
 // FUN_002d4810 NONMATCHING
 void* FUN_002d4810(void)
 {
-    u8* btl = iGpffffb6fc;
-    u8* node = *(u8**)(btl + 0x9f0);
+    f32 bestDistance = 350000.0f;
+    u8* node;
+    u8* current;
     u8* best = NULL;
-    u8* prev = NULL;
-    f32 bestDistance = 5000.0f;
+    u8* prev;
+    u8** head = (u8**)(iGpffffb6fc + 0x9f0);
 
+    current = *head;
+    node = current;
     while (node != NULL)
     {
-        if (*(f32*)(node + 0x20) < bestDistance)
+        f32 distance = *(f32*)(node + 0x20);
+        if (bestDistance <= distance)
         {
-            bestDistance = *(f32*)(node + 0x20);
-            best = node;
+            goto next_node;
         }
+        best = node;
+        bestDistance = distance;
+next_node:
         node = *(u8**)(node + 0x24);
     }
-    if (best == NULL)
+    while (1)
     {
-        return NULL;
+        current = *(u8**)(current + 0x24);
+        if (current == NULL || current == best)
+        {
+            break;
+        }
+        prev = current;
     }
-    node = *(u8**)(best + 0x24);
-    while (prev != NULL && *(u8**)(prev + 0x24) != best)
+    if (current == NULL)
     {
-        prev = *(u8**)(prev + 0x24);
+        return best;
     }
     if (prev != NULL)
     {
-        *(u8**)(prev + 0x24) = node;
+        *(u8**)(prev + 0x24) = *(u8**)(best + 0x24);
     }
     else
     {
-        *(u8**)(btl + 0x9f0) = node;
+        *head = *(u8**)(best + 0x24);
     }
     return best;
 }
@@ -2685,89 +2817,134 @@ u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
     return result;
 }
 
-// FUN_002d4cc0 NONMATCHING
-u32 FUN_002d4cc0(u32 index)
+// FUN_002d4cc0
+u32 FUN_002d4cc0(u16 index)
 {
-    u8* table = (u8*)(uintptr_t)0;
-    u8 value;
+    u32 value = *((u8*)iGpffffb6fc + index * 0x1c);
 
-    table = (u8*)(((u8*)iGpffffb6fc) - 0);
-    value = *(u8*)((u8*)table + index * 0x1c);
-    return value != 0 ? value : 1;
+    if (value == 0)
+    {
+        return 1;
+    }
+    return value;
 }
 
-// FUN_002d4cf0 NONMATCHING
-u16 FUN_002d4cf0(u32 mask, u32 badStatus)
+// FUN_002d4cf0
+u16 FUN_002d4cf0(u16 mask, u32 badStatus)
 {
     u8* node;
-    u16 count = 0;
-    u32 total = 0;
+    u32 total;
+    u16 count;
+    u32 targetMask;
+    u16 average;
 
-    for (node = *(u8**)(iGpffffb6fc + 0x14c);
-         node != NULL;
+    total = 0;
+    count = 0;
+    node = *(u8**)(iGpffffb6fc + 0x14c);
+    targetMask = mask;
+    for (; node != NULL;
          node = *(u8**)(node + 0x4a8))
     {
         BtlUnit* unit;
+
         if ((*(u16*)(node + 0x1a) & 1) == 0)
         {
             continue;
         }
         unit = *(BtlUnit**)(node + 0x30);
-        if (unit == NULL || (mask & (1u << unit->genus)) == 0)
+        if ((targetMask & (1u << unit->genus)) == 0)
         {
             continue;
         }
-        if (badStatus != 0 && datCalcChkBadStatus(unit->datUnit, badStatus) != 0)
+        if (badStatus != 0 &&
+            datCalcChkBadStatus(unit->datUnit, badStatus) != 0)
         {
             continue;
         }
-        total += datCalcGetLevel(unit->datUnit);
+        total = (u16)(total + datCalcGetLevel(unit->datUnit));
         count++;
     }
-    return count == 0 ? 1 : (u16)(total / count);
+    if (count == 0)
+    {
+        return 1;
+    }
+    average = (u16)((s32)(u16)total / (s32)(u16)count);
+    if (average == 0)
+    {
+        return 1;
+    }
+    return average;
 }
 
-// FUN_002d4e10 NONMATCHING
-u16 FUN_002d4e10(u32 mask, u32 badStatus)
+// FUN_002d4e10
+u16 FUN_002d4e10(u16 mask, u32 badStatus)
 {
+    u32 status;
     u8* node;
-    u16 count = 0;
+    u16 count;
+    u32 targetMask;
 
-    for (node = *(u8**)(iGpffffb6fc + 0x14c);
-         node != NULL;
+    status = badStatus;
+    count = 0;
+    node = *(u8**)(iGpffffb6fc + 0x14c);
+    targetMask = mask;
+    for (; node != NULL;
          node = *(u8**)(node + 0x4a8))
     {
         BtlUnit* unit;
-        if ((*(u16*)(node + 0x1a) & 9) != 9)
+        u16 flags = *(u16*)(node + 0x1a);
+
+        if ((flags & 1) == 0)
+        {
+            continue;
+        }
+        if ((flags & 8) == 0)
         {
             continue;
         }
         unit = *(BtlUnit**)(node + 0x30);
-        if (unit == NULL || (mask & (1u << unit->genus)) == 0)
+        if ((targetMask & (1u << unit->genus)) == 0)
         {
             continue;
         }
-        if (badStatus == 0 || datCalcChkBadStatus(unit->datUnit, badStatus) == 0)
+        if (datCalcChkBadStatus(unit->datUnit, status) != 0)
         {
-            count++;
+            continue;
         }
+        count++;
     }
     return count;
 }
 
-// FUN_002d5b50 NONMATCHING
+// FUN_002d5b50
 s32 FUN_002d5b50(s32 param_1)
 {
-    if (param_1 == 0x14b)
+    s32 result;
+
+    if (param_1 == 0x14b) goto return_13;
+    if (param_1 == 0x14a) goto return_12;
+    if (param_1 == 0x149) goto return_12;
+    if (param_1 == 0x148) goto return_12;
+
+    switch (param_1)
     {
-        return 0xd;
+    case 0x147:
+        goto return_12;
+    default:
+        goto return_default;
     }
-    if (param_1 == 0x14a || param_1 == 0x149 ||
-        param_1 == 0x148 || param_1 == 0x147)
-    {
-        return 0xc;
-    }
-    return -1;
+
+return_12:
+    result = 0xc;
+    goto end;
+return_13:
+    result = 0xd;
+    goto end;
+return_default:
+    result = -1;
+    goto end;
+end:
+    return result;
 }
 
 // FUN_002d5bc0
@@ -2812,29 +2989,43 @@ u32 FUN_002d5c70(BtlUnit* unit)
     return unit->genus == 0;
 }
 
-// FUN_002d5cf0 NONMATCHING
+// FUN_002d5cf0
 u32 FUN_002d5cf0(BtlUnit* unit)
 {
     s16 equipmentIdx;
-    s16 pcId;
-    s16 equipmentType;
-    u16 equipmentId;
+    u16 equipmentType;
+    s16 equipmentId;
 
-    if (unit->genus != 0 || unit->datUnit == NULL)
+    if (unit->genus != 0)
+    {
+        return 0;
+    }
+    if (unit->datUnit == NULL)
     {
         return 0;
     }
 
-    equipmentType = (s16)unit->datUnit->id;
-    if (equipmentType != 4 && equipmentType != 2)
+    equipmentType = unit->datUnit->id;
+    switch (equipmentType)
     {
-        return 0;
+        case 2:
+        case 4:
+            break;
+        default:
+            goto return_zero;
     }
 
-    pcId = (s16)equipmentType;
-    equipmentIdx = datGetEquipmentIdx(pcId, 1);
-    equipmentId = datGetEquipmentId(pcId, equipmentIdx);
-    return equipmentId == 0x41e;
+    equipmentIdx = datGetEquipmentIdx((s16)equipmentType, 1);
+    equipmentId =
+        datGetEquipmentId((s16)unit->datUnit->id, equipmentIdx);
+    if (equipmentId != 0x41e)
+    {
+        goto return_zero;
+    }
+    return 1;
+
+return_zero:
+    return 0;
 }
 
 // FUN_002d5dc0
@@ -2850,22 +3041,28 @@ void FUN_002d5e00(void* param_1)
     *(u16*)((u8*)param_1 + 0x14) = 0;
 }
 
-// FUN_002d5e10 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d5e10
 u32 FUN_002d5e10(BtlAction* action)
 {
-    u16 targetIndex;
+    BtlAction* target;
+    s32 targetCount;
+    s32 resultCount;
+    s32 targetIndex;
+    s32 resultIndex;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    targetIndex = 0;
+    targetCount = action->target.targetedCount;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
-        u8 resultCount = *(u8*)((u8*)target + 0xc8);
-        u16 resultIndex;
-
-        for (resultIndex = 0; resultIndex < resultCount;
+        target = action->target.targetedActions[(u16)targetIndex];
+        resultIndex = 0;
+        resultCount = *(u8*)((u8*)target + 0xc8);
+        for (; (u16)resultIndex < resultCount;
              resultIndex = (u16)(resultIndex + 1))
         {
-            u8* result = (u8*)target + resultIndex * 0x1c;
+            u8* result = (u8*)target + ((u32)resultIndex & 0xffff) * 0x1c;
             if ((*(u16*)(result + 0xfa) & 4) != 0)
             {
                 return 1;
@@ -2874,24 +3071,33 @@ u32 FUN_002d5e10(BtlAction* action)
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d5eb0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d5eb0
 u32 FUN_002d5eb0(BtlAction* action)
 {
-    u16 targetIndex;
+    BtlAction* target;
+    s32 targetCount;
+    s32 resultCount;
+    u32 statusMask;
+    s32 targetIndex;
+    s32 resultIndex;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    targetIndex = 0;
+    targetCount = action->target.targetedCount;
+    statusMask = 0x100000;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
-        u8 resultCount = *(u8*)((u8*)target + 0xc8);
-        u16 resultIndex;
-
-        for (resultIndex = 0; resultIndex < resultCount;
+        target = action->target.targetedActions[(u16)targetIndex];
+        resultIndex = 0;
+        resultCount = *(u8*)((u8*)target + 0xc8);
+        for (; (u16)resultIndex < resultCount;
              resultIndex = (u16)(resultIndex + 1))
         {
-            u8* result = (u8*)target + resultIndex * 0x1c;
-            if ((*(u32*)(result + 0xe8) & 0x100000) != 0)
+            u8* result = (u8*)target + ((u32)resultIndex & 0xffff) * 0x1c;
+            if ((*(u32*)(result + 0xe8) & statusMask) != 0)
             {
                 return 1;
             }
@@ -2899,56 +3105,65 @@ u32 FUN_002d5eb0(BtlAction* action)
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d5f50 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d5f50
 u32 FUN_002d5f50(BtlAction* action)
 {
-    u16 targetIndex;
+    s32 targetIndex = 0;
+    s32 targetCount = action->target.targetedCount;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
-         targetIndex = (u16)(targetIndex + 1))
+    while ((u16)targetIndex < targetCount)
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
+        BtlAction* target = action->target.targetedActions[(u16)targetIndex];
         if (*(s32*)((u8*)target + 0xd4) != 0)
         {
             return 1;
         }
+        targetIndex = (u16)(targetIndex + 1);
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d5fb0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d5fb0
 s32 FUN_002d5fb0(BtlAction* action)
 {
+    BtlAction* target;
+    s32 resultCount;
+    s32 resultIndex;
     s32 result = 0;
-    u16 targetIndex;
-
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    s32 targetIndex = 0;
+    s32 targetCount = action->target.targetedCount;
+    s32 one = 1;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
+        target = action->target.targetedActions[(u16)targetIndex];
         if (target != action)
         {
-            if (target->unit->genus != action->unit->genus)
+            if (action->unit->genus != target->unit->genus)
             {
                 return 0;
             }
             if (result == 0)
             {
-                u8 resultCount = *(u8*)((u8*)target + 0xc8);
-                u16 resultIndex;
-
-                for (resultIndex = 0; resultIndex < resultCount;
+                resultIndex = 0;
+                resultCount = *(u8*)((u8*)target + 0xc8);
+                for (; (u16)resultIndex < resultCount;
                      resultIndex = (u16)(resultIndex + 1))
                 {
-                    u8* resultData = (u8*)target + resultIndex * 0x1c;
+                    u8* resultData =
+                        (u8*)target + ((u32)resultIndex & 0xffff) * 0x1c;
                     if (*(s32*)(resultData + 0xe0) > 0)
                     {
-                        result = 1;
+                        result = one;
                     }
                     if (*(s32*)(resultData + 0xec) != 0)
                     {
-                        result = 1;
+                        result = one;
                     }
                 }
             }
@@ -2956,24 +3171,33 @@ s32 FUN_002d5fb0(BtlAction* action)
     }
     return result;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d6090 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d6090
 u32 FUN_002d6090(BtlAction* action)
 {
-    u16 targetIndex;
+    BtlAction* target;
+    s32 targetCount;
+    s32 resultCount;
+    u32 statusMask;
+    s32 targetIndex;
+    s32 resultIndex;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    targetIndex = 0;
+    targetCount = action->target.targetedCount;
+    statusMask = 0x80000;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
-        u8 resultCount = *(u8*)((u8*)target + 0xc8);
-        u16 resultIndex;
-
-        for (resultIndex = 0; resultIndex < resultCount;
+        target = action->target.targetedActions[(u16)targetIndex];
+        resultIndex = 0;
+        resultCount = *(u8*)((u8*)target + 0xc8);
+        for (; (u16)resultIndex < resultCount;
              resultIndex = (u16)(resultIndex + 1))
         {
-            u8* result = (u8*)target + resultIndex * 0x1c;
-            if ((*(u32*)(result + 0xec) & 0x80000) != 0)
+            u8* result = (u8*)target + ((u32)resultIndex & 0xffff) * 0x1c;
+            if ((*(u32*)(result + 0xec) & statusMask) != 0)
             {
                 return 1;
             }
@@ -2981,17 +3205,24 @@ u32 FUN_002d6090(BtlAction* action)
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d6130 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002d6130
 s32 FUN_002d6130(BtlAction* action)
 {
+    BtlAction* target;
+    s32 resultCount;
+    s32 resultIndex;
     s32 result = 0;
-    u16 targetIndex;
+    s32 targetIndex = 0;
+    s32 targetCount = action->target.targetedCount;
+    s32 one = 1;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
+        target = action->target.targetedActions[(u16)targetIndex];
         if (*(s32*)((u8*)target + 0xd4) != 0)
         {
             return 0;
@@ -3002,16 +3233,16 @@ s32 FUN_002d6130(BtlAction* action)
         }
         if (result == 0)
         {
-            u8 resultCount = *(u8*)((u8*)target + 0xc8);
-            u16 resultIndex;
-
-            for (resultIndex = 0; resultIndex < resultCount;
+            resultCount = *(u8*)((u8*)target + 0xc8);
+            resultIndex = 0;
+            for (; (u16)resultIndex < resultCount;
                  resultIndex = (u16)(resultIndex + 1))
             {
-                u8* resultData = (u8*)target + resultIndex * 0x1c;
+                u8* resultData =
+                    (u8*)target + ((u32)resultIndex & 0xffff) * 0x1c;
                 if (*(s32*)(resultData + 0xe0) < 0)
                 {
-                    result = 1;
+                    result = one;
                     break;
                 }
             }
@@ -3019,16 +3250,21 @@ s32 FUN_002d6130(BtlAction* action)
     }
     return result;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002d6210 NONMATCHING
+// FUN_002d6210
 u32 FUN_002d6210(BtlAction* action)
 {
-    u16 targetIndex;
+    BtlAction* target;
+    s32 targetCount;
+    s32 targetIndex;
 
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    targetIndex = 0;
+    targetCount = action->target.targetedCount;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
+        target = *(BtlAction **)((u8 *)action + 0x38 + (u32)(u16)targetIndex * 4);
         if (*(s32*)((u8*)target + 0xd4) != 0)
         {
             return 1;
@@ -3041,28 +3277,31 @@ u32 FUN_002d6210(BtlAction* action)
     return 0;
 }
 
-// FUN_002d6290 NONMATCHING
+// FUN_002d6290
 u32 FUN_002d6290(BtlAction* action)
 {
-    return FUN_002bff60(action, NULL, action->target.specificId, 0) == 0;
+    s16 specificId = action->target.specificId;
+    return FUN_002bff60(action, NULL, specificId, 0) == 0;
 }
 
-// FUN_002d62d0 NONMATCHING
+// FUN_002d62d0
 u32 FUN_002d62d0(BtlAction* action)
 {
-    u16 targetIndex;
-    u8 genus;
+    s32 genus = action->unit->genus;
+    s32 targetCount = action->target.targetedCount;
+    s32 targetIndex;
 
-    if (action->target.targetedCount < 2)
+    if (targetCount < 2)
     {
         return 0;
     }
 
-    genus = action->unit->genus;
-    for (targetIndex = 0; targetIndex < action->target.targetedCount;
+    targetIndex = 0;
+    genus = (u8)genus;
+    for (; (u16)targetIndex < targetCount;
          targetIndex = (u16)(targetIndex + 1))
     {
-        BtlAction* target = action->target.targetedActions[targetIndex];
+        BtlAction* target = *(BtlAction **)((u8 *)action + 0x38 + (u32)(u16)targetIndex * 4);
         if ((target->unk_1a & 1) != 0 && target->unit->genus != genus)
         {
             return 0;
@@ -3071,37 +3310,41 @@ u32 FUN_002d62d0(BtlAction* action)
     return 1;
 }
 
-// FUN_002d6370 NONMATCHING
+// FUN_002d6370
 u32 FUN_002d6370(u16 commandId)
 {
+    u8* units = (u8*)DAT_007ce3f8;
     s32 id = (s32)(s16)commandId;
-    return *(u8*)(DAT_007ce3f8 + id * 0x2c + 2) == 1;
+    return units[id * 0x2c + 2] == 1;
 }
 
 // FUN_002d63b0 NONMATCHING
 u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
 {
+    u8* commandTable = (u8*)DAT_007ce3f8;
     s32 id = (s32)commandId;
+    s32 result = 0;
 
-    if (*(u8*)(DAT_007ce3f8 + id * 0x2c + 2) != 1)
+    if (commandTable[id * 0x2c + 2] != 1)
     {
-        return 0;
+        result = 0;
     }
-    if (param_3 == 0)
+    else
     {
-        return 0;
+        if (param_3 != 0)
+        {
+            if ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x10) == 0)
+            {
+                u8* effectTable = (u8*)DAT_007ce400;
+                if ((*(u16*)(effectTable + id * 0x1c + 2) & 1) != 0)
+                {
+                    result = 1;
+                }
+            }
+        }
     }
-    if ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x10) != 0)
-    {
-        return 0;
-    }
-    if ((*(u16*)(DAT_007ce400 + id * 0x1c + 2) & 1) == 0)
-    {
-        return 0;
-    }
-    return 1;
+    return result;
 }
-
 // FUN_002d6460 NONMATCHING
 s32 FUN_002d6460(BtlAction* action, s32* param_2, s16 param_3,
                  u64 param_4, s32 param_5)
@@ -3321,7 +3564,7 @@ void FUN_002d6620(BtlAction *action)
                 resultA = (s32)FUN_0030b130(selfDat, candidateDat, id, efficacy, targetSpecial, specialFlags);
                 resultB = (s32)FUN_0030b210(selfDat, targetDat, id, efficacy, targetSpecial, specialFlags);
                 if ((resultA != 1) && (resultB != 1))
-                    resultA = (s32)FUN_002fd220(action, target, id, efficacy, targetSpecial, specialFlags);
+                    resultA = (s32)FUN_002fd220(action, target);
             }
             else
             {
@@ -3342,7 +3585,7 @@ void FUN_002d6620(BtlAction *action)
                 BTLT_A32(target, 0xd0) = 1;
 
             if ((efficacy == 1) && (BTLT_A32(target, 0xd4) == 0) &&
-                ((s16)FUN_002e4910(target, id, specialFlags) == 0))
+                ((s16)func_002e4910(target, id, specialFlags) == 0))
                 baseValue = BTLT_T32(tableOffset, 0x20);
             else
                 baseValue = 0;
@@ -3350,7 +3593,7 @@ void FUN_002d6620(BtlAction *action)
             BTLT_A16(target, 0xcc) = efficacy;
             BTLT_A16(target, 0xce) = (u16)targetSpecial;
             if ((BTLT_A32(target, 0xd4) == 1) || ((efficacy & 0x500) != 0))
-                FUN_002e32a0(action, target, id);
+                func_002e32a0(action, target, id);
 
             for (slotIndex = 0; slotIndex < slotCount; slotIndex++)
             {
@@ -3560,29 +3803,30 @@ void FUN_002d7560(BtlAction *action)
     }
 }
 
-// FUN_002d7890 NONMATCHING
-void FUN_002d7890(BtlAction *action, u64 mode)
+// FUN_002d7890
+void FUN_002d7890(BtlAction* action, u64 mode)
 {
-    BtlUnit *unit = action->unit;
-    DatUnit *dat = unit->datUnit;
-    FUN_002fa510();
+    BtlUnit* unit = action->unit;
+    u32 flags;
+
+    FUN_002fa510(action, mode);
     if (mode == 1)
     {
-        if (BTLT_AS16(action, 0x460) != 0x1b6)
-            FUN_002ffd90(dat);
-        FUN_00300560(dat, 0x80000);
+        if (BTLT_A16(action, 0x460) != 0x1b6)
+        {
+            datCalcSetHp(unit->datUnit, 1);
+        }
+        FUN_00300560(unit->datUnit, 0x80000);
         unit->flags3 |= 0x10;
     }
     else
     {
-        FUN_002ffd90(dat, 0);
-        FUN_00300560(dat, 0xffffff);
-        FUN_003004f0(dat, 0x80000);
-        {
-            u32 oldFlags = unit->flags3;
-            unit->flags3 = oldFlags | 1;
-            unit->flags3 = (oldFlags & 0xffffffef) | 1;
-        }
+        FUN_002ffd90(unit->datUnit, 0);
+        FUN_00300560(unit->datUnit, 0xffffff);
+        FUN_003004f0(unit->datUnit, 0x80000);
+        flags = unit->flags3 | 1;
+        unit->flags3 = flags;
+        unit->flags3 = flags & 0xffffffef;
     }
 }
 
@@ -3592,7 +3836,6 @@ u32 FUN_002d79a0(void *arg)
     BtlTargetPacketWork *work = (BtlTargetPacketWork *)arg;
     BtlAction *action = work->action;
     BtlUnit *unit;
-    DatUnit *dat;
     u64 oldDead;
     u64 oldLowHp;
     u64 oldDown;
@@ -3600,10 +3843,9 @@ u32 FUN_002d79a0(void *arg)
     if ((action->unk_1a & 1) == 0)
         return 1;
     unit = action->unit;
-    dat = unit->datUnit;
-    oldDead = datCalcIsDead(dat, 0);
-    oldLowHp = datCalcIsLowHp(dat);
-    oldDown = datCalcChkBadStatus(dat, 0x200);
+    oldDead = datCalcIsDead(unit->datUnit, 0);
+    oldLowHp = datCalcIsLowHp(unit->datUnit);
+    oldDown = datCalcChkBadStatus(unit->datUnit, 0x200);
 
     if ((work->targetFlags & 2) != 0)
         action->unk_18 |= 0x1000;
@@ -3614,33 +3856,33 @@ u32 FUN_002d79a0(void *arg)
 
     if ((BTLT_B32(0xc) & 0x10) != 0)
     {
-        FUN_00300410(dat, *(s32 *)(work->data + 0));
-        FUN_00300480(dat, *(s32 *)(work->data + 4));
+        FUN_00300410(unit->datUnit, *(s32 *)(work->data + 0));
+        FUN_00300480(unit->datUnit, *(s32 *)(work->data + 4));
         if (((*(s32 *)(work->data + 0) < 0) || (*(s32 *)(work->data + 4) < 0)) && (unit->genus == 0))
             FUN_001feea0(unit->charId);
     }
     if ((BTLT_B32(0xc) & 0x20) != 0)
     {
         FUN_002dc550(action, *(u32 *)(work->data + 8));
-        FUN_003004f0(dat, *(u32 *)(work->data + 8));
-        FUN_00300560(dat, *(u32 *)(work->data + 12));
+        FUN_003004f0(unit->datUnit, *(u32 *)(work->data + 8));
+        FUN_00300560(unit->datUnit, *(u32 *)(work->data + 12));
     }
     if (*(u32 *)(work->data + 16) != 0)
-        FUN_00302380(dat, *(u32 *)(work->data + 16), 1);
+        FUN_00302380(unit->datUnit, *(u32 *)(work->data + 16), 1);
 
     {
-        u64 currentDead = datCalcIsDead(dat, 0);
+        u64 currentDead = datCalcIsDead(unit->datUnit, 0);
         if ((currentDead == 0) || (oldDead != 0))
         {
-            u64 currentLowHp = datCalcIsLowHp(dat);
+            u64 currentLowHp = datCalcIsLowHp(unit->datUnit);
             if ((currentLowHp == 0) || (oldLowHp != 0))
             {
-                u64 currentDown = datCalcChkBadStatus(dat, 0x200);
+                u64 currentDown = datCalcChkBadStatus(unit->datUnit, 0x200);
                 if ((currentDown != 0) && (oldDown == 0))
-                    FUN_002daa20((u64)(uintptr_t)action, 0x1c, 0, 0, 0);
+                    FUN_002daa20(action, 0x1c, 0, 0, 0);
             }
             else
-                FUN_002daa20((u64)(uintptr_t)action, 0x1a, 0, 0, 0);
+                FUN_002daa20(action, 0x1a, 0, 0, 0);
         }
         else
         {
@@ -3650,7 +3892,7 @@ u32 FUN_002d79a0(void *arg)
                 if ((*(u16 *)(work->data + 0x1a) & 8) != 0)
                     BTLT_BS16(0xb9c)++;
                 {
-                    u32 level = (u32)datCalcGetLevel(dat) & 0xff;
+                    u32 level = (u32)datCalcGetLevel(unit->datUnit) & 0xff;
                     BTLT_B32(0xc14) += level;
                     if ((s32)BTLT_B32(0xc10) < (s32)level)
                         BTLT_B32(0xc10) = level;
@@ -3661,47 +3903,48 @@ u32 FUN_002d79a0(void *arg)
                 FUN_002fa510(action, rumble);
                 if (rumble != 0)
                 {
-                    if (BTLT_AS16(action, 0x460) != 0x1b6)
-                        FUN_002ffd90(dat);
-                    FUN_00300560(dat, 0x80000);
+                    if (BTLT_A16(action, 0x460) != 0x1b6)
+                        datCalcSetHp(unit->datUnit, 1);
+                    FUN_00300560(unit->datUnit, 0x80000);
                     unit->flags3 |= 0x10;
                 }
                 else
                 {
                     u32 oldFlags;
-                    FUN_002ffd90(dat, 0);
-                    FUN_00300560(dat, 0xffffff);
-                    FUN_003004f0(dat, 0x80000);
-                    oldFlags = unit->flags3;
-                    unit->flags3 = oldFlags | 1;
-                    unit->flags3 = (oldFlags & 0xffffffef) | 1;
+                    FUN_002ffd90(unit->datUnit, 0);
+                    FUN_00300560(unit->datUnit, 0xffffff);
+                    FUN_003004f0(unit->datUnit, 0x80000);
+                    oldFlags = unit->flags3 | 1;
+                    unit->flags3 = oldFlags;
+                    unit->flags3 = oldFlags & 0xffffffef;
                 }
             }
-            if ((u64)datCalcIsDead(dat, 0) != 0)
+            if ((u64)datCalcIsDead(unit->datUnit, 0) != 0)
             {
                 if (BTLT_B32(0x148) == (u32)(uintptr_t)action)
                 {
                     FUN_00103c30(0x19, 0x96, 0x19, 0);
-                    FUN_002daa20((u64)(uintptr_t)action, 0x13, ((*(u32 *)(work->data + 8) & 0x80000) != 0), 0, 2);
+                    FUN_002daa20(action, 0x13, ((*(u32 *)(work->data + 8) & 0x80000) != 0), 0, 2);
                 }
                 else
-                    FUN_002daa20((u64)(uintptr_t)action, 0x1b, 0, 0, 0);
+                    FUN_002daa20(action, 0x1b, 0, 0, 0);
             }
         }
     }
-    FUN_002faa50(work->source, action, work->data);
+    func_002faa50(work->source, action, (BtlTargetResult*)work->data);
     FUN_002831c0(unit, 6);
     return 1;
 }
 
-// FUN_002d7e20 NONMATCHING
+// FUN_002d7e20
 BtlPacket *FUN_002d7e20(BtlAction *source, BtlAction *action, const void *data, u16 effect, u16 targetFlags)
 {
     BtlPacket *packet = btlPacketCreate(0x700, 0x28);
-    BtlTargetPacketWork *work = (BtlTargetPacketWork *)packet->workData;
+    BtlTargetPacketWork *work;
     packet->initFunc = FUN_002D7970;
     packet->updateFunc = FUN_002d79a0;
     packet->destroyFunc = FUN_002D7DF0;
+    work = (BtlTargetPacketWork *)packet->workData;
     work->source = source;
     work->action = action;
     memcpy(work->data, data, 0x1c);
@@ -3714,50 +3957,90 @@ BtlPacket *FUN_002d7e20(BtlAction *source, BtlAction *action, const void *data, 
  * - DAT_007ce3ec is the battle-global base; DAT_007ce3f8 is the 0x2c-byte
  *   attack/effect table, DAT_007ce410 is the 0x3e-byte character table, and
  *   DAT_007ce484 is the weapon-type x three-column scale table.
- * - FUN_002D7970 and FUN_002D7DF0 are adjacent retail packet callbacks at
- *   0x002D7970/0x002D7DF0; they are referenced by FUN_002d7e20 but are not
- *   bodies in this exact five-start artifact.
  * - FUN_002d6460 is the preceding target-slot helper.  All other raw FUN_/DAT_
  *   names above remain unnamed because no canonical public API was established.
  */
 
-// FUN_002da810 NONMATCHING
+// FUN_002da810
 s32 FUN_002da810(BtlAction* action)
 {
-    if (*(BtlAction**)(iGpffffb6fc + 0x148) == action &&
-        datCalcChkBadStatus(action->unit->datUnit, 1) != 0)
+    if (*(BtlAction**)(iGpffffb6fc + 0x148) != action)
     {
-        switch (action->target.commandId)
-        {
-            case 0xb:
-                if (datGetScenarioMode() == 0)
-                {
-                    return 0x191;
-                }
-                break;
-            case 2:
-                if (FUN_002d1600(&action->target) == 2 &&
-                    FUN_00308860(action->target.specificId) != 0)
-                {
-                    return 0x190;
-                }
-                break;
-            case 1:
-                if (FUN_002d1600(&action->target) == 1)
-                {
-                    return 0x18f;
-                }
-                break;
-            default:
-                break;
-        }
+        return -1;
+    }
+    if (datCalcChkBadStatus(action->unit->datUnit, 1) == 0)
+    {
+        return -1;
+    }
+
+    switch (action->target.commandId)
+    {
+        case 1:
+            if (FUN_002d1600(&action->target) == 1)
+            {
+                return 0x18f;
+            }
+            break;
+        case 2:
+            if (FUN_002d1600(&action->target) == 2 &&
+                FUN_00308860(action->target.specificId) != 0)
+            {
+                return 0x190;
+            }
+            break;
+        case 0xb:
+            if (datGetScenarioMode() == 0)
+            {
+                return 0x191;
+            }
+            break;
+        default:
+            break;
     }
 
     return -1;
 }
 
+// FUN_002da930
+u64 FUN_002da930(u64 param_1, u64 command, u64 param_3, u64 param_4)
+{
+    switch (command)
+    {
+        case 0x1cf:
+            *(u16*)(iGpffffb6fc + 0xa14) = 2;
+            break;
+        case 0x1d0:
+            *(u16*)(iGpffffb6fc + 0xa14) = 3;
+            break;
+        case 0x1d1:
+            *(u16*)(iGpffffb6fc + 0xa14) = 4;
+            break;
+        case 0x1d2:
+            *(u16*)(iGpffffb6fc + 0xa14) = 5;
+            break;
+        case 0x1d3:
+            *(u16*)(iGpffffb6fc + 0xa14) = 7;
+            break;
+        case 0x1d4:
+            *(u16*)(iGpffffb6fc + 0xa14) = 8;
+            break;
+        case 0x1d5:
+            *(u16*)(iGpffffb6fc + 0xa14) = 9;
+            break;
+        case 0x1d6:
+            *(u16*)(iGpffffb6fc + 0xa14) = 10;
+            break;
+        case 0x1d7:
+            *(u16*)(iGpffffb6fc + 0xa14) = 6;
+            break;
+        default:
+            break;
+    }
+    return command;
+}
+
 // FUN_002daa20 NONMATCHING
-u64 FUN_002daa20(u64 param_1, u64 param_2, u64 param_3, u64 param_4, u64 param_5)
+s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 param_5)
 {
     u8* btl;
     u32 effectId;
@@ -3769,7 +4052,7 @@ u64 FUN_002daa20(u64 param_1, u64 param_2, u64 param_3, u64 param_4, u64 param_5
     u64 result;
 
     btl = iGpffffb6fc;
-    effectId = (u32)param_2 & 0xffff;
+    effectId = param_2;
 
     if ((*(u32*)(btl + 0xc) & 0x01000000) == 0)
     {
@@ -3808,7 +4091,7 @@ u64 FUN_002daa20(u64 param_1, u64 param_2, u64 param_3, u64 param_4, u64 param_5
     {
         return 1;
     }
-    result = effect(param_1, param_3, param_4, 0);
+    result = effect((u64)(uintptr_t)param_1, param_3, param_4, 0);
     if (result < 0)
     {
         return 1;
@@ -4068,10 +4351,10 @@ typedef struct BtlTargetActionWork
     BtlAction* action;
     u16 command;
     u16 pad_06;
-    u32 param_3;
-    u32 param_4;
-    u32 param_5;
-    u32 result;
+    s32 param_3;
+    s32 param_4;
+    s32 param_5;
+    s32 result;
 } BtlTargetActionWork;
 
 typedef struct BtlTargetSimpleWork
@@ -4171,34 +4454,35 @@ u32 FUN_002db690(void)
     return *(u32*)(iGpffffb6fc + 0xa08);
 }
 
-// FUN_002db6a0 NONMATCHING
+// FUN_002db6a0
 u32 FUN_002db6a0(void* param_1)
 {
     BtlTargetActionWork* work = (BtlTargetActionWork*)param_1;
-    u32 result = work->result;
-    if (result == 0)
+    s32 result;
+    if (work->result == 0)
     {
-        result = (u32)FUN_002daa20((u64)(uintptr_t)work->action, work->command,
-                                   work->param_3, work->param_4,
-                                   work->param_5);
-        work->result = result;
+        work->result = FUN_002daa20(work->action, work->command,
+                                    work->param_3, work->param_4,
+                                    work->param_5);
     }
+    result = work->result;
     if (result == 1 && (work->param_5 & 1) != 0 &&
         ((*(u16*)(iGpffffb6fc + 0xa16) & 1) != 0 ||
-         *(s16*)(iGpffffb6fc + 0xa18) != 0))
+         *(u16*)(iGpffffb6fc + 0xa18) != 0))
     {
         result = 0;
     }
     return result;
 }
 
-// FUN_002db740 NONMATCHING
+// FUN_002db740
 BtlPacket* FUN_002db740(BtlAction* action, u16 command, u32 param_3,
                         u32 param_4, u32 param_5)
 {
     BtlPacket* packet = btlPacketCreate(0x800, 0x18);
-    BtlTargetActionWork* work = (BtlTargetActionWork*)packet->workData;
+    BtlTargetActionWork* work;
     packet->updateFunc = FUN_002db6a0;
+    work = (BtlTargetActionWork*)packet->workData;
     work->action = action;
     work->command = command;
     work->param_3 = param_3;
@@ -4245,17 +4529,20 @@ BtlPacket* FUN_002db890(void)
     return packet;
 }
 
-// FUN_002db8d0 NONMATCHING
+// FUN_002db8d0
 void FUN_002db8d0(void)
 {
+    s32 empty;
+
     FUN_00521408(iGpffffb6fc + 0x9f8, 0, 0x40);
     *(u32*)(iGpffffb6fc + 0xa1c) = 0;
-    *(u32*)(iGpffffb6fc + 0xa20) = 0xffffffff;
-    *(u16*)(iGpffffb6fc + 0xa24) = 0xffff;
-    *(u32*)(iGpffffb6fc + 0xa28) = 0xffffffff;
-    *(u16*)(iGpffffb6fc + 0xa2c) = 0xffff;
-    *(u32*)(iGpffffb6fc + 0xa30) = 0xffffffff;
-    *(u16*)(iGpffffb6fc + 0xa34) = 0xffff;
+    empty = -1;
+    *(u32*)(iGpffffb6fc + 0xa20) = empty;
+    *(s16*)(iGpffffb6fc + 0xa24) = empty;
+    *(u32*)(iGpffffb6fc + 0xa28) = empty;
+    *(s16*)(iGpffffb6fc + 0xa2c) = empty;
+    *(u32*)(iGpffffb6fc + 0xa30) = empty;
+    *(s16*)(iGpffffb6fc + 0xa34) = empty;
     *(u16*)(iGpffffb6fc + 0xa18) = 0;
     *(u16*)(iGpffffb6fc + 0xa16) = 0;
     *(u16*)(iGpffffb6fc + 0xa14) = 6;
@@ -4282,18 +4569,31 @@ void FUN_002db980(void)
     func_003c8f20();
 }
 
-// FUN_002db9f0 NONMATCHING
+// FUN_002db9f0
 u32 FUN_002db9f0(u16 param_1, u32 param_2)
 {
-    if ((*(u16*)(iGpffffb6fc + 0xa16) & 1) == 0 ||
-        (*(u32*)(iGpffffb6fc + 0xa20) != param_2 &&
-         *(u32*)(iGpffffb6fc + 0xa28) != param_2))
+    u32 result;
+    u8* base = iGpffffb6fc;
+    if ((*(u16*)(base + 0xa16) & 1) != 0)
     {
-        *(u16*)(iGpffffb6fc + 0xa2c) = param_1;
-        *(u32*)(iGpffffb6fc + 0xa28) = param_2;
-        *(u16*)(iGpffffb6fc + 0xa18) = 1;
+        if (*(u32*)(base + 0xa20) == param_2)
+        {
+            result = 1;
+            goto done;
+        }
+        if (*(u32*)(base + 0xa28) == param_2)
+        {
+            result = 1;
+            goto done;
+        }
     }
-    return 1;
+    *(u16*)(base + 0xa2c) = param_1;
+    base = iGpffffb6fc;
+    *(u32*)(base + 0xa28) = param_2;
+    result = 1;
+    *(u16*)(iGpffffb6fc + 0xa18) = (u16)result;
+done:
+    return result;
 }
 
 // FUN_002dba60
@@ -4438,21 +4738,24 @@ loaded:
     return 1;
 }
 
-// FUN_002dbfe0 NONMATCHING
+// FUN_002dbfe0
 BtlPacket* FUN_002dbfe0(u16 param_1)
 {
     BtlPacket* packet = btlPacketCreate(0x803, 8);
-    BtlTargetCdWork* work = (BtlTargetCdWork*)packet->workData;
+    BtlTargetCdWork* work;
     packet->unk_47 &= (u8)~BTLPACKET_FLAG_AUTO_DESTROY;
     packet->updateFunc = FUN_002dbeb0;
+    work = (BtlTargetCdWork*)packet->workData;
     work->resource = (datGetScenarioMode() != 0) ? 2 : param_1;
     work->state = 0;
     return packet;
 }
-// FUN_002dc070 NONMATCHING
+// FUN_002dc070
 u32 FUN_002dc070(BtlAction* action)
 {
     DatUnit* datUnit = action->unit->datUnit;
+    u16 chance;
+
     if (datCalcChkBadStatus(datUnit, 0x100000) != 0)
     {
         return 1;
@@ -4461,18 +4764,27 @@ u32 FUN_002dc070(BtlAction* action)
     {
         return 0;
     }
-    return datCalcRand(100) <
-           ((datCalcGetBadStatusNoDown(datUnit) == 8) ? 50 : 100);
+    chance = 100;
+    switch (datCalcGetBadStatusNoDown(datUnit))
+    {
+    case 8:
+        chance = 50;
+        break;
+    default:
+        break;
+    }
+    return datCalcRand(100) < chance;
 }
 
-// FUN_002dc130 NONMATCHING
+// FUN_002dc130
 u32 FUN_002dc130(BtlAction* action)
 {
+    DatUnit* datUnit = action->unit->datUnit;
     if ((action->unk_18 & 4) != 0)
     {
         return 0;
     }
-    return datCalcChkBadStatus(action->unit->datUnit, 0x80) != 0;
+    return datCalcChkBadStatus(datUnit, 0x80) != 0;
 }
 
 // FUN_002dc180 NONMATCHING
@@ -4596,17 +4908,21 @@ u32 FUN_002dc180(BtlAction* action)
  *   normal retail call paths select one of those flags.
  */
 
-// FUN_002dc550 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002dc550
 void FUN_002dc550(BtlAction* action, u32 flags)
 {
     if (flags != 0)
     {
         u32 badStatus = datCalcGetBadStatus(action->unit->datUnit);
         u32 i;
+        u32 bit;
 
-        for (i = 0; i < 0x18; i++)
+        i = 0;
+        bit = 1;
+        for (; i < 0x18; i++)
         {
-            u32 mask = 1u << (i & 0x1f);
+            u32 mask = bit << i;
             if ((flags & mask) != 0 && (badStatus & mask) == 0)
             {
                 *((u8*)action + 0x462 + i) = 0;
@@ -4614,26 +4930,31 @@ void FUN_002dc550(BtlAction* action, u32 flags)
         }
     }
 }
+#pragma opt_loop_invariants off
 
-// FUN_002dc5e0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002dc5e0
 void FUN_002dc5e0(BtlAction* action)
 {
     u32 badStatus = datCalcGetBadStatus(action->unit->datUnit);
     u32 i;
+    u32 bit;
 
-    for (i = 0; i < 0x18; i++)
+    i = 0;
+    bit = 1;
+    for (; i < 0x18; i++)
     {
-        u32 mask = 1u << (i & 0x1f);
-        if ((badStatus & mask) != 0)
+        if ((badStatus & (bit << i)) != 0)
         {
             u8* counter = (u8*)action + 0x462 + i;
-            if (*counter != 0xff)
+            if (*counter < 0xff)
             {
-                *counter = (u8)(*counter + 1);
+                (*counter)++;
             }
         }
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_002dc670 NONMATCHING
 s16 FUN_002dc670(BtlAction* action)
@@ -4808,117 +5129,151 @@ s32 FUN_002dca60(BtlAction* action)
     return result;
 }
 
-// FUN_002dcbc0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002dcbc0
 void FUN_002dcbc0(void)
 {
-    u32 i;
-    u8* battle = (u8*)gBtl;
+    u16 i;
+    s32 empty;
+    u8 state;
 
-    *(u16*)(battle + 0xa90) = 5;
-    *(u8*)(battle + 0xa92) = 0xff;
-    for (i = 0; i < 0x10; i = (i + 1) & 0xffff)
+    *(u16*)((u8*)gBtl + 0xa90) = 5;
+    empty = -1;
+    *(s8*)((u8*)gBtl + 0xa92) = empty;
+    i = 0;
+    state = 3;
+    for (; i < 0x10; i++)
     {
-        u32 offset = i * 6;
-        *(u16*)(battle + 0xa94 + offset) = 0xffff;
-        *(u16*)(battle + 0xa96 + offset) = 0xffff;
-        *(u8*)(battle + 0xa98 + offset) = 3;
+        u32 offset = ((u32)i & 0xffff) * 6;
+        *(s16*)((u8*)gBtl + 0xa94 + offset) = empty;
+        *(s16*)((u8*)gBtl + 0xa96 + offset) = empty;
+        *(u8*)((u8*)gBtl + 0xa98 + offset) = state;
     }
 }
+#pragma opt_loop_invariants off
 
-// FUN_002dcc40 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002dcc40
 void FUN_002dcc40(void)
 {
-    u8* battle = (u8*)gBtl;
-    s8 current = *(s8*)(battle + 0xa92);
-    u32 i;
+    s8* counter;
+    u16 i;
 
-    if (current >= 0)
+    counter = (s8*)((u8*)gBtl + 0xa92);
+    if (*counter >= 0)
     {
-        current = (s8)(current + 1);
-        *(s8*)(battle + 0xa92) = current;
-        if (current >= 3)
+        (*counter)++;
+        if (*counter >= 3)
         {
-            *(u8*)(battle + 0xa92) = 0xff;
+            *(s8*)((u8*)gBtl + 0xa92) = -1;
         }
     }
 
-    for (i = 0; i < 0x10; i = (i + 1) & 0xffff)
+    for (i = 0; i < 0x10; i++)
     {
-        u32 offset = i * 6;
-        s8* counter = (s8*)(battle + 0xa98 + offset);
-
-        current = *counter;
-        if (current >= 0)
+        counter = (s8*)gBtl;
         {
-            current = (s8)(current + 1);
-            *counter = current;
-            if (current >= 3)
+            u32 offset = ((u32)i & 0xffff) * 6;
+            u8* slot = (u8*)counter + offset;
+            counter = (s8*)(slot + 0xa98);
+
+            if (*counter >= 0)
             {
-                *(u16*)(battle + 0xa94 + offset) = 0xffff;
-                *(u16*)(battle + 0xa96 + offset) = 0xffff;
-                *counter = (s8)-1;
+                (*counter)++;
+                if (*counter >= 3)
+                {
+                    *(s16*)((u8*)gBtl + 0xa94 + offset) = -1;
+                    *(s16*)((u8*)gBtl + 0xa96 + offset) = -1;
+                    *(s8*)((u8*)gBtl + 0xa98 + offset) = -1;
+                }
             }
         }
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_002dcd20
 void FUN_002dcd20(void)
 {
 }
 
-// FUN_002d1c20 NONMATCHING
-u32 FUN_002d1c20(void *data)
+// FUN_002d1c20
+u32 FUN_002d1c20(void* data)
 {
-    BtlTargetScriptWork *work = (BtlTargetScriptWork *)data;
-    BtlAction *action = work->action;
-    BtlTarget *target = &action->target;
-    u8 *targetBytes = (u8 *)target;
-    KwlnTask *task;
+    u8* state = (u8*)data;
+    u32 result;
 
-    if (work->started == 0)
+    if (((BtlTargetScriptWork*)state)->started == 0)
     {
-        FUN_002C6F50(action, target, work->script, work->procedureIndex);
-        targetBytes[0x30] = 1;
+        BtlTargetScriptWork* work = (BtlTargetScriptWork*)state;
+
+        FUN_002C6F50(work->action, &work->action->target,
+                     work->script, work->procedureIndex);
+        *((u8*)work->action + 0x68) = 1;
         work->started = 1;
+        goto return_zero;
     }
     else
     {
-        if (targetBytes[0x30] == 0)
+        state = (u8*)&((BtlTargetScriptWork*)state)->action->target;
+        if (state[0x30] == 0)
         {
-            return 1;
+            result = 1;
         }
-        task = *(KwlnTask **)(targetBytes + 0x4c);
-        if (task == NULL)
+        else
         {
-            return 1;
-        }
-        if (FUN_00195460(task) == 0)
-        {
-            targetBytes[0x30] = 0;
-            *(u32 *)(targetBytes + 0x4c) = 0;
-            return 1;
+            KwlnTask* task = *(KwlnTask**)(state + 0x4c);
+
+            if (task == NULL)
+            {
+                result = 1;
+            }
+            else
+            {
+                result = FUN_00195460(task);
+                if (result == 0)
+                {
+                    state[0x30] = 0;
+                    *(u32*)(state + 0x4c) = 0;
+                    result = 1;
+                }
+                else
+                {
+                    result = 0;
+                }
+            }
         }
     }
+
+    if (result == 0)
+    {
+        goto return_zero;
+    }
+    return 1;
+
+return_zero:
     return 0;
 }
 
 
-// FUN_002d1d00 NONMATCHING
-BtlPacket *FUN_002d1d00(BtlAction *action, s16 mode, const char *procedureName)
+// FUN_002d1d00
+BtlPacket* FUN_002d1d00(BtlAction* action, u16 mode,
+                         const char* procedureName)
 {
-    BtlPacket *packet = FUN_0027EC10(0xd00, 0x10);
-    BtlTargetScriptWork *work = (BtlTargetScriptWork *)packet->workData;
+    BtlPacket* packet = FUN_0027EC10(0xd00, 0x10);
+    BtlTargetScriptWork* work;
 
     packet->unk_47 &= 0xee;
     packet->updateFunc = FUN_002d1c20;
-    if (mode == 2)
+    work = (BtlTargetScriptWork*)packet->workData;
+    switch (mode)
     {
-        work->script = (ScrHeader *)(uintptr_t)uGpffffb7e0;
-    }
-    else if (mode == 1)
-    {
-        work->script = (ScrHeader *)(uintptr_t)uGpffffb7dc;
+        case 1:
+            work->script = (ScrHeader*)(uintptr_t)uGpffffb7dc;
+            break;
+        case 2:
+            work->script = (ScrHeader*)(uintptr_t)uGpffffb7e0;
+            break;
     }
     work->action = action;
     work->procedureIndex = scrFindPrcdIdxByName(work->script, procedureName);
@@ -4927,18 +5282,19 @@ BtlPacket *FUN_002d1d00(BtlAction *action, s16 mode, const char *procedureName)
 }
 
 
-// FUN_002d20a0 NONMATCHING
+// FUN_002d20a0
 u32 FUN_002d20a0(const RwV3d* projected, f32* screen)
 {
-    RwV3d cameraPoint;
     RwCamera* camera;
+    RwV3d cameraPoint;
     f32 nearPlane;
     f32 farPlane;
     f32 x;
     f32 y;
 
     camera = kwlnGetMainCamera();
-    RwV3dTransformPoint(&cameraPoint, projected, &camera->viewMatrix);
+    RwV3dTransformPoint(&cameraPoint, projected,
+                        (RwMatrix*)((uintptr_t)camera + 0x20));
 
     camera = kwlnGetMainCamera();
     nearPlane = camera->nearPlane;
@@ -4952,8 +5308,8 @@ u32 FUN_002d20a0(const RwV3d* projected, f32* screen)
 
     x = (cameraPoint.x / cameraPoint.z) * 640.0f;
     y = (cameraPoint.y / cameraPoint.z) * 448.0f;
-    if ((x < -640.0f) || (1280.0f < x) ||
-        (y < -448.0f) || (896.0f < y))
+    if ((x < -640.0f) || !(x <= 1280.0f) ||
+        (y < -448.0f) || !(y <= 896.0f))
     {
         return 0;
     }

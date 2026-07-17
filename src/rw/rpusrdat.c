@@ -51,15 +51,17 @@ RwInt32 RpMaterialGetUserDataArrayCount(const RpMaterial* material)
 // FUN_0048eed0 NONMATCHING
 RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 data)
 {
-    RpUserDataList* userDataList;
+    const RpUserDataList* userDataList;
 
-    userDataList = (RpUserDataList*)((RwUInt8*)material + rpMaterialUserDataOffset);
+    userDataList = (const RpUserDataList*)((const RwUInt8*)material + rpMaterialUserDataOffset);
     if (data < userDataList->numElements)
     {
-        return (RpUserDataArray*)((RwUInt8*)userDataList->userData + data * sizeof(RpUserDataArray));
+        return &userDataList->userData[data];
     }
-
-    return NULL;
+    else
+    {
+        return (RpUserDataArray*)NULL;
+    }
 }
 
 // FUN_0048ef10
@@ -743,9 +745,9 @@ u32 FUN_0048abf0(void);
 u32 FUN_0048ac00(void);
 u32 FUN_0048da30(u64 param_1);
 int FUN_0048ef30(u32 *param_1);
-u32 FUN_0048ef60(int param_1,int param_2);
+f32 FUN_0048ef60(int param_1,int param_2);
 u32 FUN_0048ef80(int param_1,int param_2);
-u32 FUN_0048efe0(int param_1);
+RwInt32 FUN_0048efe0(RpUserDataFormat format);
 u32 FUN_00491a80(u64 param_1);
 u32 FUN_00491ea0(u64 param_1);
 u32 FUN_00492d50(u64 param_1);
@@ -945,6 +947,8 @@ u64 FUN_0048d960(u64 param_1);
 u64 FUN_0048e020(int *param_1,u64 param_2);
 u64 FUN_0048e2d0(int *param_1,u64 param_2);
 u64 FUN_0048e750(long param_1,u64 param_2);
+#pragma alias FUN_0048e750_offset FUN_0048e750
+extern u64 FUN_0048e750_offset(int param_1,u64 param_2);
 u64 FUN_0048eab0(u64 param_1,int param_2);
 u64 FUN_0048eb50(u64 param_1,int param_2,int param_3);
 u64 FUN_0048ec20(u64 param_1,u64 param_2,int param_3,int param_4);
@@ -1078,7 +1082,7 @@ u64 FUN_004ae070(u32 param_1,u32 param_2,u64 param_3);
 u64 FUN_004ae0c0(u32 param_1,u32 param_2,u64 param_3);
 u64 FUN_004ae110(u64 param_1,u64 param_2);
 u64 FUN_004ae150(u64 param_1,u64 param_2);
-u64 FUN_004ae1d0(u64 param_1,u32 param_2);
+u32 FUN_004ae1d0(u32 param_1,u32 param_2);
 u64 FUN_004ae1f0(int param_1,u32 *param_2);
 u64 FUN_004ae270(u64 param_1,u64 param_2);
 u64 FUN_004ae2f0(u64 param_1);
@@ -1088,7 +1092,7 @@ u64 FUN_004ae790(u64 param_1);
 u64 FUN_004ae960(u64 param_1,float *param_2,float *param_3);
 u64 FUN_004aeb60(u64 param_1,code *param_2,u64 param_3);
 u64 FUN_004aebf0(u64 param_1,u64 param_2,long param_3);
-u64 FUN_004aef50(u64 param_1);
+u32 FUN_004aef50(u32 param_1);
 u64 FUN_004aef60(u64 param_1);
 u64 FUN_004af340(u32 *param_1);
 u64 FUN_004af760(u64 param_1);
@@ -1357,7 +1361,7 @@ void FUN_0048dd70(int *param_1);
 void FUN_0048de50(int *param_1,int *param_2);
 void FUN_0048e610(int *param_1);
 void FUN_0048efa0(int param_1,int param_2,u32 param_3);
-void FUN_0048efc0(u32 param_1,int param_2,int param_3);
+void FUN_0048efc0(int param_1, int param_2, f32 param_3);
 void FUN_00491100(int param_1);
 void FUN_00492c30(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00492c60(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
@@ -2004,9 +2008,9 @@ u32 FUN_0048abf0(void);
 u32 FUN_0048ac00(void);
 u32 FUN_0048da30(u64 param_1);
 int FUN_0048ef30(u32 *param_1);
-u32 FUN_0048ef60(int param_1,int param_2);
+f32 FUN_0048ef60(int param_1,int param_2);
 u32 FUN_0048ef80(int param_1,int param_2);
-u32 FUN_0048efe0(int param_1);
+RwInt32 FUN_0048efe0(RpUserDataFormat format);
 u32 FUN_00491a80(u64 param_1);
 u32 FUN_00491ea0(u64 param_1);
 u32 FUN_00492d50(u64 param_1);
@@ -2339,7 +2343,7 @@ u64 FUN_004ae070(u32 param_1,u32 param_2,u64 param_3);
 u64 FUN_004ae0c0(u32 param_1,u32 param_2,u64 param_3);
 u64 FUN_004ae110(u64 param_1,u64 param_2);
 u64 FUN_004ae150(u64 param_1,u64 param_2);
-u64 FUN_004ae1d0(u64 param_1,u32 param_2);
+u32 FUN_004ae1d0(u32 param_1,u32 param_2);
 u64 FUN_004ae1f0(int param_1,u32 *param_2);
 u64 FUN_004ae270(u64 param_1,u64 param_2);
 u64 FUN_004ae2f0(u64 param_1);
@@ -2349,7 +2353,7 @@ u64 FUN_004ae790(u64 param_1);
 u64 FUN_004ae960(u64 param_1,float *param_2,float *param_3);
 u64 FUN_004aeb60(u64 param_1,code *param_2,u64 param_3);
 u64 FUN_004aebf0(u64 param_1,u64 param_2,long param_3);
-u64 FUN_004aef50(u64 param_1);
+u32 FUN_004aef50(u32 param_1);
 u64 FUN_004aef60(u64 param_1);
 u64 FUN_004af340(u32 *param_1);
 u64 FUN_004af760(u64 param_1);
@@ -2618,7 +2622,7 @@ void FUN_0048dd70(int *param_1);
 void FUN_0048de50(int *param_1,int *param_2);
 void FUN_0048e610(int *param_1);
 void FUN_0048efa0(int param_1,int param_2,u32 param_3);
-void FUN_0048efc0(u32 param_1,int param_2,int param_3);
+void FUN_0048efc0(int param_1, int param_2, f32 param_3);
 void FUN_00491100(int param_1);
 void FUN_00492c30(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00492c60(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
@@ -3184,14 +3188,16 @@ u64 FUN_0048ec20(u64 param_1,u64 param_2,int param_3,int param_4)
   return param_1;
 }
 
-// FUN_0048ECF0 NONMATCHING
+#pragma optimization_level 3
+// FUN_0048ECF0
 
 u64 FUN_0048ecf0(u64 param_1,u64 param_2,int param_3,int param_4)
 
 {
-  ((code)FUN_0048e750)(param_3 + param_4,param_1);
+  FUN_0048e750_offset(param_3 + param_4,param_1);
   return param_1;
 }
+#pragma optimization_level 2
 
 // FUN_0048ED20 NONMATCHING
 
@@ -3229,43 +3235,47 @@ int FUN_0048ed20(int param_1,int param_2)
 // FUN_0048EDE0 NONMATCHING
 
 int FUN_0048ede0(int param_1)
-
 {
-  int iVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  
-  iVar2 = 0;
-  iVar1 = *(int *)(param_1 + DAT_007ce7c8);
-  iVar4 = 0;
-  if (0 < iVar1) {
-    iVar3 = ((int *)(param_1 + DAT_007ce7c8))[1];
+  RwInt32 offset;
+  RwInt32 count;
+  const RpUserDataList *userDataList;
+  RwInt32 numElements;
+  RwInt32 i;
+  const RpUserDataArray *current;
+  RwBool hasElements;
+
+  offset = DAT_007ce7c8;
+  count = 0;
+  userDataList = (const RpUserDataList *)(param_1 + offset);
+  numElements = userDataList->numElements;
+  hasElements = 0 < numElements;
+  if (hasElements) {
+    i = 0;
+    current = userDataList->userData;
     do {
-      if (*(int *)(iVar3 + 0xc) != 0) {
-        iVar2 = iVar2 + 1;
+      if (current->data != NULL) {
+        ++count;
       }
-      iVar4 = iVar4 + 1;
-      iVar3 = iVar3 + 0x10;
-    } while (iVar4 < iVar1);
+      ++current;
+      ++i;
+    } while (i < numElements);
   }
-  return iVar2;
+  return count;
 }
 
 // FUN_0048EE30 NONMATCHING
 
 int FUN_0048ee30(int param_1,int param_2)
-
 {
-  int iVar1;
-  
-  if (param_2 < *(int *)(param_1 + DAT_007ce7c8)) {
-    iVar1 = ((int *)(param_1 + DAT_007ce7c8))[1] + param_2 * 0x10;
+  const RpUserDataList *userDataList;
+
+  userDataList = (const RpUserDataList *)(param_1 + DAT_007ce7c8);
+  if (param_2 < userDataList->numElements) {
+    return (int)&userDataList->userData[param_2];
   }
   else {
-    iVar1 = 0;
+    return 0;
   }
-  return iVar1;
 }
 
 // FUN_0048EF30
@@ -3277,15 +3287,16 @@ int FUN_0048ef30(u32 *param_1)
 }
 #pragma optimization_level 2
 
-// FUN_0048EF60 NONMATCHING
+#pragma optimization_level 3
+// FUN_0048EF60
 
-u32 FUN_0048ef60(int param_1,int param_2)
+f32 FUN_0048ef60(int param_1,int param_2)
 
 {
-  return *(u32 *)(*(int *)(param_1 + 0xc) + param_2 * 4);
+  return *(f32 *)(*(int *)(param_1 + 0xc) + param_2 * 4);
 }
 
-// FUN_0048EF80 NONMATCHING
+// FUN_0048EF80
 
 u32 FUN_0048ef80(int param_1,int param_2)
 
@@ -3293,7 +3304,7 @@ u32 FUN_0048ef80(int param_1,int param_2)
   return *(u32 *)(*(int *)(param_1 + 0xc) + param_2 * 4);
 }
 
-// FUN_0048EFA0 NONMATCHING
+// FUN_0048EFA0
 
 void FUN_0048efa0(int param_1,int param_2,u32 param_3)
 
@@ -3302,33 +3313,32 @@ void FUN_0048efa0(int param_1,int param_2,u32 param_3)
   return;
 }
 
-// FUN_0048EFC0 NONMATCHING
+// FUN_0048EFC0
 
-void FUN_0048efc0(u32 param_1,int param_2,int param_3)
+void FUN_0048efc0(int param_1,int param_2,f32 param_3)
 
 {
-  *(u32 *)(*(int *)(param_2 + 0xc) + param_3 * 4) = param_1;
+  *(f32 *)(*(int *)(param_1 + 0xc) + param_2 * 4) = param_3;
   return;
 }
+#pragma optimization_level 2
 
 // FUN_0048EFE0 NONMATCHING
 
-u32 FUN_0048efe0(int param_1)
-
+RwInt32 FUN_0048efe0(RpUserDataFormat format)
 {
-  u32 uVar1;
-  
-  if (param_1 == 3) {
-    uVar1 = 4;
+  switch (format) {
+  case rpINTUSERDATA:
+    return sizeof(RwInt32);
+    break;
+  case rpREALUSERDATA:
+    return sizeof(RwReal);
+    break;
+  case rpSTRINGUSERDATA:
+    return sizeof(RwChar *);
+    break;
+  default:
+    return 0;
+    break;
   }
-  else if (param_1 == 2) {
-    uVar1 = 4;
-  }
-  else if (param_1 == 1) {
-    uVar1 = 4;
-  }
-  else {
-    uVar1 = 0;
-  }
-  return uVar1;
 }

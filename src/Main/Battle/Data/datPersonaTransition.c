@@ -111,36 +111,48 @@ static s8 personaEquipmentEffects(u16 owner, u16 statId)
     return (s8)total;
 }
 
-// FUN_00173220 NONMATCHING
-u8* FUN_00173220(u16 personaId)
+// FUN_00173220
+u8* FUN_00173220(s32 personaId)
 {
-    K_ASSERT(personaId < 0x100, 0x18);
-    return iGpffffb7f4 + personaId * 0x11;
+    u16 id;
+
+    K_ASSERT((personaId & 0xffff) < 0x100, 0x18);
+    id = personaId;
+    return iGpffffb7f4 + id * 0x11;
 }
 
-// FUN_00173280 NONMATCHING
-u8 FUN_00173280(u16 personaId)
+// FUN_00173280
+u8 FUN_00173280(s32 personaId)
 {
-    K_ASSERT(personaId < 0x100, 0x26);
-    return *(u8*)(iGpffffb730 + personaId * 0xE + 2);
+    u8* table;
+    u16 id;
+
+    K_ASSERT((personaId & 0xffff) < 0x100, 0x26);
+    table = iGpffffb730;
+    id = personaId;
+    return table[id * 0xE + 2];
 }
 
-// FUN_001733B0 NONMATCHING
-void FUN_001733b0(DatPersonaWork* persona, u16 skillIdx)
+#pragma optimization_level 1
+// FUN_001733B0
+void FUN_001733b0(DatPersonaWork* persona, s32 skillIdx)
 {
     K_ASSERT(persona->id < 0x100, 0x115);
-    K_ASSERT(skillIdx < 0x10, 0x116);
-    func_00306d90(0, *(u16*)(iGpffffb734 + persona->id * 0x20 + skillIdx * 2));
+    K_ASSERT((u16)skillIdx < 0x10, 0x116);
+    {
+        u8* skillTable = iGpffffb734 + persona->id * 0x20;
+        func_00306d90(0, *(u16*)(skillTable + (u16)skillIdx * 2));
+    }
 }
-
-// FUN_00173460 NONMATCHING
-void FUN_00173460(u16 pcId, u16 skillIdx)
+#pragma optimization_level 2
+// FUN_00173460
+void FUN_00173460(u16 pcId, s32 skillIdx)
 {
     DatPersonaWork* persona = datPersonaGetByPcId(pcId);
 
     K_ASSERT(persona->id < 0x100, 0x115);
-    K_ASSERT(skillIdx < 0x10, 0x116);
-    func_00306d90(0, *(u16*)(iGpffffb734 + persona->id * 0x20 + skillIdx * 2));
+    K_ASSERT((u16)skillIdx < 0x10, 0x116);
+    func_00306d90(0, ((struct { u16 skills[0x10]; }*)iGpffffb734)[persona->id].skills[(u16)skillIdx]);
 }
 
 // FUN_00173510
@@ -152,15 +164,22 @@ u8 FUN_00173510(u16 pcId, u16 statId)
     return persona->naturalStats[statId];
 }
 
-// FUN_00173660 NONMATCHING
+// FUN_00173660
 u8 FUN_00173660(DatPersonaWork* persona, u16 statId)
 {
-    s32 total;
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
 
-    assertStat(statId, 0x13C);
-    total = persona->naturalStats[statId] + datPersonaGetBonusStat(persona, statId) +
-            datPersonaGetStat3(persona, statId) + FUN_00173c60(persona, statId);
-    if (total >= 100)
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
     {
         total = 99;
     }
@@ -171,17 +190,25 @@ u8 FUN_00173660(DatPersonaWork* persona, u16 statId)
     return (u8)total;
 }
 
-// FUN_00173780 NONMATCHING
+// FUN_00173780
 u8 FUN_00173780(u16 heroPersonaIdx, u16 statId)
 {
-    DatPersonaWork* persona = datPersonaGetHeroPersona(heroPersonaIdx);
-    s32 total;
+    DatPersonaWork* persona;
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
 
+    persona = datPersonaGetHeroPersona(heroPersonaIdx);
     K_ASSERT(persona != NULL, 0x192);
-    assertStat(statId, 0x13C);
-    total = persona->naturalStats[statId] + datPersonaGetBonusStat(persona, statId) +
-            datPersonaGetStat3(persona, statId) + FUN_00173c60(persona, statId);
-    if (total >= 100)
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
     {
         total = 99;
     }
@@ -192,16 +219,24 @@ u8 FUN_00173780(u16 heroPersonaIdx, u16 statId)
     return (u8)total;
 }
 
-// FUN_001738D0 NONMATCHING
+// FUN_001738D0
 u8 FUN_001738d0(u16 pcId, u16 statId)
 {
-    DatPersonaWork* persona = datPersonaGetByPcId(pcId);
-    s32 total;
+    DatPersonaWork* persona;
+    s16 natural;
+    s16 bonus;
+    s16 third;
+    s16 total;
+    s8 equipment;
 
-    assertStat(statId, 0x13C);
-    total = persona->naturalStats[statId] + datPersonaGetBonusStat(persona, statId) +
-            datPersonaGetStat3(persona, statId) + FUN_00173c60(persona, statId);
-    if (total >= 100)
+    persona = datPersonaGetByPcId(pcId);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    equipment = FUN_00173c60(persona, statId);
+    total = natural + bonus + third + equipment;
+    if (total > 99)
     {
         total = 99;
     }
@@ -212,14 +247,20 @@ u8 FUN_001738d0(u16 pcId, u16 statId)
     return (u8)total;
 }
 
-// FUN_00173A00 NONMATCHING
+// FUN_00173A00
 s16 FUN_00173a00(DatPersonaWork* persona, u16 statId)
 {
-    s32 total;
+    s16 natural;
+    s16 bonus;
+    s8 third;
+    s16 total;
 
-    assertStat(statId, 0x1A7);
-    total = persona->naturalStats[statId] + datPersonaGetBonusStat(persona, statId) +
-            datPersonaGetStat3(persona, statId);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x1A7);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x13C);
+    natural = persona->naturalStats[statId];
+    bonus = datPersonaGetBonusStat(persona, statId);
+    third = datPersonaGetStat3(persona, statId);
+    total = natural + bonus + third;
     if (total >= 99)
     {
         total = 99;
@@ -230,9 +271,9 @@ s16 FUN_00173a00(DatPersonaWork* persona, u16 statId)
 // FUN_00173C60 NONMATCHING
 s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
 {
-    u16 owner;
-    s16 equipmentIdx;
     s8 total = 0;
+    s16 equipmentIdx;
+    u16 owner;
 
     assertStat(statId, 0x22D);
     owner = personaEquipmentOwner(persona);
@@ -245,3 +286,4 @@ s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
     total += personaEquipmentEffects(owner, statId);
     return total;
 }
+

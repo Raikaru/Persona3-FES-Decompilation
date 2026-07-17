@@ -493,18 +493,19 @@ void* func_001a50f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001A5280 NONMATCHING
+// FUN_001A5280
 void func_001a5280(KwlnTask* task)
 {
     KDrawArcTaskWork* work;
-    KDrawArcData* render;
+    void (**freeMemory)(void*);
 
     work = (KDrawArcTaskWork*)task->workData;
-    render = work->render;
-    func_00494cc0(render->colorData);
-    func_004caf80(render->manager->frame);
-    func_00491a80(render->manager);
-    RwFree(work);
+    func_00494cc0(work->render->colorData);
+    func_004caf80(work->render->manager->frame);
+    func_00491a80(work->render->manager);
+    freeMemory = (void (**)(void*))((u8*)&rwGlobals + 0x17c);
+    (*freeMemory)(work->render);
+    (*freeMemory)(task->workData);
 }
 
 // FUN_001A5320 NONMATCHING

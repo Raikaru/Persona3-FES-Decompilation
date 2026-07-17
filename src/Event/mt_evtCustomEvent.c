@@ -5802,7 +5802,8 @@ void FUN_0039e700(int param_1)
 }
 #define FUN_0039e700(...) ((void (*)(...))FUN_0039e700)(__VA_ARGS__)
 #undef FUN_0039e7c0
-// FUN_0039E7C0 NONMATCHING
+#undef FUN_0039e820
+// FUN_0039E7C0
 
 
 void FUN_0039e7c0(void)
@@ -5817,7 +5818,7 @@ void FUN_0039e7c0(void)
 
   for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
-    FUN_0039e820(*(u32 *)(iVar1 + 0x128));
+    FUN_0039e820(*(int *)(iVar1 + 0x128));
 
   }
 

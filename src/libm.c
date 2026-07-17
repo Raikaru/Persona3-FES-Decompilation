@@ -5,6 +5,15 @@ extern s32 func_0052c000(float x, float y[2]);
 extern float func_0052d2d8(float x, float y);
 extern float func_0052dc48(float x, float y, s32 iy);
 extern float func_0052dd40(float x, float y, s32 iy);
+extern u64 FUN_00528ae0(long);
+extern u64 FUN_00529578(u32);
+extern u32 FUN_005296f0(u32 param_1, u32 param_2);
+extern float FUN_0052abd8(float);
+extern float FUN_0052afe8(float);
+extern float FUN_0052b380(float param_1, float param_2);
+extern float FUN_0052b548(float);
+extern float FUN_0052b800(float param_1, float param_2);
+extern float FUN_0052c398(float);
 // Local wrappers for EE intrinsics (declared void in compat header, but return values in FPU regs)
 #define FUN_00531230(a,b) _U64_FN2(FUN_00531230,a,b)
 #define FUN_00531170(a,b) _U64_FN2(FUN_00531170,a,b)
@@ -271,68 +280,68 @@ float tanf(float x)
 }
 
 // FUN_0052E9A0 NONMATCHING
-void FUN_0052e9a0(void)
-
+#pragma tailcall on
+u64 FUN_0052e9a0(long param_1)
 {
-  FUN_00528ae0();
-  return;
+  return FUN_00528ae0(param_1);
 }
+#pragma tailcall off
 // FUN_0052E9B8 NONMATCHING
-void FUN_0052e9b8(void)
-
+#pragma tailcall on
+u64 FUN_0052e9b8(u32 param_1)
 {
-  FUN_00529578();
-  return;
+  return FUN_00529578(param_1);
 }
+#pragma tailcall off
 // FUN_0052E9D0 NONMATCHING
-void FUN_0052e9d0(void)
-
+#pragma tailcall on
+u32 FUN_0052e9d0(u32 param_1, u32 param_2)
 {
-  FUN_005296f0();
-  return;
+  return FUN_005296f0(param_1, param_2);
 }
+#pragma tailcall off
 // FUN_0052E9E8 NONMATCHING
-void FUN_0052e9e8(void)
-
+#pragma tailcall on
+float FUN_0052e9e8(float param_1)
 {
-  FUN_0052abd8();
-  return;
+  return FUN_0052abd8(param_1);
 }
+#pragma tailcall off
 // FUN_0052EA00 NONMATCHING
-void FUN_0052ea00(void)
-
+#pragma tailcall on
+float FUN_0052ea00(float param_1)
 {
-  FUN_0052afe8();
-  return;
+  return FUN_0052afe8(param_1);
 }
+#pragma tailcall off
 // FUN_0052EA18 NONMATCHING
-void FUN_0052ea18(void)
-
+#pragma tailcall on
+float FUN_0052ea18(float param_1, float param_2)
 {
-  FUN_0052b380();
-  return;
+  return FUN_0052b380(param_1, param_2);
 }
+#pragma tailcall off
 // FUN_0052EA30 NONMATCHING
-void FUN_0052ea30(void)
-
+#pragma tailcall on
+float FUN_0052ea30(float param_1)
 {
-  FUN_0052b548();
-  return;
+  return FUN_0052b548(param_1);
 }
+#pragma tailcall off
 // FUN_0052EA48 NONMATCHING
-void FUN_0052ea48(void)
-
+#pragma tailcall on
+float FUN_0052ea48(float param_1, float param_2)
 {
-  FUN_0052b800();
-  return;
+  return FUN_0052b800(param_1, param_2);
 }
+#pragma tailcall off
 // FUN_0052EA60 NONMATCHING
-void FUN_0052ea60(void)
-
+#pragma tailcall on
+float FUN_0052ea60(float param_1)
 {
-  FUN_0052c398();
-  return;
+  return FUN_0052c398(param_1);
 }
+#pragma tailcall off
 // FUN_0052EA78 NONMATCHING
 u32 FUN_0052ea78(u64 param_1,u64 param_2)
 

@@ -220,6 +220,7 @@ static u32 campEquipmentFirstCategory(s16 equipmentId)
     return campFirstSetBit(categoryMask);
 }
 
+
 static void campEquipmentSetStats(CampEquipmentEntry* entry, s16 pcId, s32 equipmentIndex)
 {
     switch (entry->equipmentClass) {

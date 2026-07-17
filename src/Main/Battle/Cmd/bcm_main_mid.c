@@ -1,4 +1,4 @@
-#include "Utils.h"
+#include "Battle/battle.h"
 #include "Kosaka/k_assert.h"
 
 /* Shared command work is owned by bcm_main.c. */
@@ -13,7 +13,7 @@ extern u32 func_00249650(u16 id);
 extern u32 datGetFlag(u16 id);
 extern u32 datGetScenarioMode(void);
 extern u32 bpMisc001ff7f0(u32 id);
-extern u32 datGetBadStatusNoDown(u16 unitId);
+extern u32 datGetBadStatusNoDown(s16 unitId);
 extern void bcmPanel00222ed0(void);
 extern void FUN_0010a4e0(u32, u32, u32, u32);
 extern void func_003b0170(u32 value);
@@ -26,6 +26,13 @@ static void func_002083d0(void);
 static void func_00208860(u32 unitId);
 
 #define BCM_WORD(off) (*(u32*)((u8*)gBcmWork + (off)))
+typedef struct BcmCommandEntry
+{
+    u32 flags;
+    u32 type;
+    u32 icon;
+    u16 id;
+} BcmCommandEntry;
 
 // FUN_00207c40
 void func_00207c40(void)
@@ -69,13 +76,15 @@ void func_00207dd0(void)
     BCM_WORD(0x77a0) &= ~0x40u;
 }
 
-// FUN_00207e20 NONMATCHING
+// FUN_00207e20
 void func_00207e20(void)
 {
-    u32 mode;
+    u8* work;
+    s32 mode;
     u32 state;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
     state = func_002d5550();
     switch (state) {
     case 0x1d2:
@@ -92,21 +101,23 @@ void func_00207e20(void)
         break;
     default:
         K_ASSERT(0, 0x1365);
-        mode = 0;
         break;
     }
     func_002518b0(mode);
     bppMain0020fc40();
-    BCM_WORD(0x10) = 0xa;
+    *(u32*)(work + 0x10) = 0xa;
 }
 
-// FUN_00207f10 NONMATCHING
+// FUN_00207f10
 void func_00207f10(void)
 {
+    u8* work;
+
     K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
     func_00251e10();
     bppMain0020fc40();
-    BCM_WORD(0x10) = 0xb;
+    *(u32*)(work + 0x10) = 0xb;
 }
 
 // FUN_00207f70
@@ -135,74 +146,97 @@ u32 func_00208010(void)
     return 0;
 }
 
-// FUN_00208050 NONMATCHING
+// FUN_00208050
 u32 func_00208050(void)
 {
     u32 mode;
-    u16 flag;
 
     mode = func_002d5550();
+    if (mode == 0x1d5) {
+        goto mode_1d5;
+    }
+    if (mode == 0x1d4) {
+        goto mode_1d4;
+    }
+    if (mode == 0x1d3) {
+        goto mode_1d3;
+    }
     switch (mode) {
     case 0x1d2:
-        flag = 0x1307;
-        break;
-    case 0x1d3:
-        flag = 0x1308;
-        break;
-    case 0x1d4:
-        flag = 0x1309;
-        break;
-    case 0x1d5:
-        flag = 0x130a;
-        break;
+        goto mode_1d2;
     default:
-        return 0;
+        goto done;
     }
-    return datGetFlag(flag) == 0;
+mode_1d2:
+    if (datGetFlag(0x1307) == 0) {
+        return 1;
+    }
+    goto done;
+mode_1d3:
+    if (datGetFlag(0x1308) == 0) {
+        return 1;
+    }
+    goto done;
+mode_1d4:
+    if (datGetFlag(0x1309) == 0) {
+        return 1;
+    }
+    goto done;
+mode_1d5:
+    if (datGetFlag(0x130a) == 0) {
+        return 1;
+    }
+done:
+    return 0;
 }
 
-// FUN_00208130 NONMATCHING
+// FUN_00208130
 u32 func_00208130(void)
 {
-    u32 scenario;
-    u32 status;
+    u64 status;
 
-    scenario = datGetScenarioMode();
-    if (bpMisc001ff7f0(scenario != 0 ? 9 : 3) == 0) {
-        return 0;
+    if (datGetScenarioMode() == 0) {
+        if (bpMisc001ff7f0(3) == 0) {
+            return 0;
+        }
+    } else {
+        if (bpMisc001ff7f0(9) == 0) {
+            return 0;
+        }
     }
-    scenario = datGetScenarioMode();
-    if (scenario == 0 && datGetFlag(0xdf) != 0) {
+    if (datGetScenarioMode() == 0 && datGetFlag(0xdf) != 0) {
         return 0;
     }
     if (datGetFlag(0x1306) != 0) {
         return 0;
     }
-    status = datGetBadStatusNoDown(scenario != 0 ? 9 : 3);
-    switch (status) {
-    case 1:
-    case 2:
-    case 4:
-    case 8:
-    case 0x10:
-    case 0x20:
-    case 0x40:
-    case 0x80000:
-    case 0x100000:
+    if ((gBtl->flags & 0x200000) != 0) {
         return 0;
-    default:
-        return 1;
     }
+    if (datGetScenarioMode() != 0) {
+        status = (u64)(datGetBadStatusNoDown(9) & 0xfffff);
+    } else {
+        status = (u64)(datGetBadStatusNoDown(3) & 0xfffff);
+    }
+    if (status == 1 || status == 2 || status == 4 || status == 8 ||
+        status == 0x10 || status == 0x20 || status == 0x40 ||
+        status == 0x80000 || status == 0x100000) {
+        return 0;
+    }
+    return 1;
 }
 
-// FUN_002082c0 NONMATCHING
+// FUN_002082c0
 void func_002082c0(u32 value)
 {
+    u8* work;
+
     K_ASSERT(gBcmWork != NULL, 0x164);
-    K_ASSERT((BCM_WORD(0) & 0x00800000) == 0, 0x13e6);
-    BCM_WORD(0x779c) = value;
-    BCM_WORD(0x6d20) = value;
-    BCM_WORD(0) |= 0x00800000;
+    work = gBcmWork;
+    K_ASSERT((~*(u32*)work & 0x00800000) != 0, 0x13e6);
+    *(u32*)(work + 0x779c) = value;
+    *(u32*)(work + 0x6d20) = value;
+    *(u32*)work |= 0x00800000;
 }
 
 // FUN_00208360
@@ -213,34 +247,39 @@ void func_00208360(void)
     func_002083d0();
 }
 
-// FUN_002083d0 NONMATCHING
+// FUN_002083d0
 void func_002083d0(void)
 {
+    u8* work;
+
     K_ASSERT(gBcmWork != NULL, 0x164);
-    K_ASSERT((BCM_WORD(0) & 0x00800000) != 0, 0x13f9);
-    func_003b0170(BCM_WORD(0x779c));
-    BCM_WORD(0) &= ~0x00800000u;
+    work = gBcmWork;
+    K_ASSERT((*(u32*)work & 0x00800000) != 0, 0x13f9);
+    func_003b0170(*(u32*)(work + 0x779c));
+    *(u32*)work &= ~0x00800000u;
 }
 
-// FUN_00208460 NONMATCHING
+// FUN_00208460
 void func_00208460(void)
 {
-    u32* work;
-    u32 state;
+    u8* work;
+    s32 state;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
-    work = (u32*)gBcmWork;
-    state = work[4];
+    work = gBcmWork;
+    state = *(u32*)(work + 0x10);
     switch (state) {
     case 1:
-        work[1] |= 1;
+        *(u32*)(work + 4) |= 1;
         bcmPanel00222ed0();
         break;
     case 2:
-        work[1] |= 2;
+        *(u32*)(work + 4) |= 2;
         bcmPanel00222ed0();
         break;
     case 3:
+        bcmPanel00222ed0();
+        break;
     case 4:
         bcmPanel00222ed0();
         break;
@@ -249,7 +288,7 @@ void func_00208460(void)
         break;
     }
     FUN_0010a4e0(0, 0, 0, 4);
-    work[4] = 0;
+    *(u32*)(work + 0x10) = 0;
 }
 
 // FUN_00208570
@@ -303,82 +342,148 @@ void func_002086d0(void)
     BCM_WORD(0) &= ~0x10000000u;
 }
 
-// FUN_00208720 NONMATCHING
+// FUN_00208720
 u32 func_00208720(void)
 {
-    K_ASSERT(gBcmWork != NULL, 0x164);
-    return BCM_WORD(0x10) == 0 && (BCM_WORD(0) & 0x20) == 0;
-}
-
-// FUN_00208790 NONMATCHING
-void func_00208790(void)
-{
-    u16 ids[32];
-    u32 count;
-    u32 i;
     u8* work;
 
     K_ASSERT(gBcmWork != NULL, 0x164);
     work = gBcmWork;
-    count = 0;
-    for (i = 0; i < *(u32*)(work + 0x3a8); i++) {
-        u8* entry = work + i * 0x18;
-        if (*(u32*)(entry + 0x2e4) == 1 && count < ARRAY_SIZE(ids)) {
-            ids[count++] = *(u16*)(entry + 0x2ec);
-        }
+    if (*(u32*)(work + 0x10) != 0) {
+        goto done;
     }
-    if (count != 0) {
-        func_00208860(ids[RpRandom() % count]);
+    if ((~*(u32*)work & 0x20) == 0) {
+        goto done;
     }
+    return 1;
+done:
+    return 0;
 }
 
-// FUN_00208860 NONMATCHING
+// FUN_00208790
+#pragma optimization_level 3
+#pragma schedule off
+void func_00208790(void)
+{
+    u32 ids[4];
+    s32 count;
+    s32 i;
+    s32 total;
+    u8* work;
+    BcmCommandEntry* entry;
+
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    count = 0;
+    i = 0;
+    total = *(s32*)(work + 0x3a8);
+    while (i < total) {
+        entry = (BcmCommandEntry*)(work + i * 0x18 + 0x2e0);
+        switch (entry->type) {
+        case 1:
+            ids[count++] = entry->id;
+            break;
+        }
+        i++;
+    }
+    func_00208860((u16)ids[RpRandom() % count]);
+}
+#pragma optimization_level 2
+#pragma schedule off
+
+// FUN_00208860
 void func_00208860(u32 unitId)
 {
     u32 status;
     u32 id;
 
-    status = datGetBadStatusNoDown((u16)unitId);
-    if ((status & 0x80371) != 0 || (unitId & 0xffff) >= 0xb) {
-        return;
+    status = datGetBadStatusNoDown((s16)unitId);
+    if ((status & 0x80371) != 0) {
+        goto done;
     }
     id = unitId & 0xffff;
     switch (id) {
     case 0:
-        func_002ddba0(func_002ddc10(unitId) ? 0xa3 : 0xa2);
-        break;
     case 1:
-        func_002ddba0(func_002ddc10(unitId) ? 0xf4 : 0xf3);
-        break;
+        goto done;
     case 2:
-        func_002ddba0(func_002ddc10(unitId) ? 0x159 : 0x158);
-        break;
+        if (func_002ddc10(unitId) != 0) {
+            goto case2_true;
+        }
+        func_002ddba0(0xa2);
+        goto done;
+case2_true:
+        func_002ddba0(0xa3);
+        goto done;
     case 3:
-        func_002ddba0(func_002ddc10(unitId) ? 0x1a2 : 0x1a1);
-        break;
+        if (func_002ddc10(unitId) != 0) {
+            goto case3_true;
+        }
+        func_002ddba0(0xf3);
+        goto done;
+case3_true:
+        func_002ddba0(0xf4);
+        goto done;
     case 4:
-        func_002ddba0(datGetScenarioMode() ? 0x46b : 0x279);
-        break;
+        if (func_002ddc10(unitId) != 0) {
+            goto case4_true;
+        }
+        func_002ddba0(0x158);
+        goto done;
+case4_true:
+        func_002ddba0(0x159);
+        goto done;
     case 5:
-        func_002ddba0(func_002ddc10(unitId) ? 0x2be : 0x2bd);
-        break;
+        if (func_002ddc10(unitId) != 0) {
+            goto case5_true;
+        }
+        func_002ddba0(0x1a1);
+        goto done;
+case5_true:
+        func_002ddba0(0x1a2);
+        goto done;
     case 6:
-        func_002ddba0(0x1ea);
-        break;
-    case 7:
-        func_002ddba0(0x233);
-        break;
-    case 8:
-        func_002ddba0(0x234);
-        break;
-    case 9:
-        func_002ddba0(0x1ea);
-        break;
-    case 10:
-        func_002ddba0(0x1ea);
-        break;
-    default:
         K_ASSERT(0, 0x149a);
-        break;
+        goto done;
+    case 7:
+        if (func_002ddc10(unitId) != 0) {
+            goto case7_true;
+        }
+        func_002ddba0(0x1ea);
+        goto done;
+case7_true:
+        func_002ddba0(0x1eb);
+        goto done;
+    case 8:
+        if (func_002ddc10(unitId) != 0) {
+            goto case8_true;
+        }
+        func_002ddba0(0x233);
+        goto done;
+case8_true:
+        func_002ddba0(0x234);
+        goto done;
+    case 9:
+        if (datGetScenarioMode() != 0) {
+            goto case9_true;
+        }
+        func_002ddba0(0x279);
+        goto done;
+case9_true:
+        func_002ddba0(0x46b);
+        goto done;
+    case 10:
+        if (func_002ddc10(unitId) != 0) {
+            goto case10_true;
+        }
+        func_002ddba0(0x2bd);
+        goto done;
+case10_true:
+        func_002ddba0(0x2be);
+        goto done;
+    default:
+        goto done;
     }
+done:
+    return;
 }

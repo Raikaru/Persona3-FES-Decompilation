@@ -6,24 +6,29 @@
 
 typedef void (*BppPanelSetRenderState)(s32 property, u32 value);
 typedef void (*BppPanelRenderQuad)(void* quad, s32 layer, s32 group, s32 pass, s32 blend);
-#define BPP_PANEL_SET_RENDER_STATE (*(BppPanelSetRenderState*)0x00960090)
-#define BPP_PANEL_RENDER_QUAD (*(BppPanelRenderQuad*)0x0096009c)
+extern u32 D_00960090[];
+extern u32 D_0096009c[];
+#define BPP_PANEL_SET_RENDER_STATE (*setRenderState)
+#define BPP_PANEL_RENDER_QUAD (*renderQuad)
 
 extern u32 func_0021c3f0(s32 texture);
 extern u32 func_0021cca0(u32 texture, s32 frame);
 extern u32 func_0021cce0(u32 frame);
-extern void func_004d7f60(s32 state, u32 value);
+extern void RpSkyRenderStateSet(s32 state, u32 value);
 
 
 // FUN_00232EA0 NONMATCHING
 void bppPanelDrawParameterLayout(BppPanelWork* work)
 {
-    s32 i;
     u8* quad;
+    BppPanelRenderQuad* renderQuad;
+    s32 i;
     u32 frame;
     u32 texture;
+    BppPanelSetRenderState* setRenderState;
 
     texture = func_0021c3f0(4);
+    setRenderState = (BppPanelSetRenderState*)D_00960090;
     BPP_PANEL_SET_RENDER_STATE(9, 2);
     switch (work->layout) {
     case 0:
@@ -31,11 +36,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -46,11 +52,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 1);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * (BPP_PANEL_QUAD_SIZE * 2);
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -61,11 +68,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 3);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -76,8 +84,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 8);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
+        renderQuad = (BppPanelRenderQuad*)D_0096009c;
         
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 1, 2);
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 2, 3);
@@ -91,11 +100,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 9);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 2; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -106,8 +116,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0xb);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
+        renderQuad = (BppPanelRenderQuad*)D_0096009c;
         
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 1, 2);
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 2, 3);
@@ -125,11 +136,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0xd);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 3; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -140,11 +152,12 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0xf);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
         
         for (i = 0; i < 4; i++) {
             quad = (u8*)work + i * BPP_PANEL_QUAD_SIZE;
+            renderQuad = (BppPanelRenderQuad*)D_0096009c;
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 1, 2);
             BPP_PANEL_RENDER_QUAD(quad, 4, 0, 2, 3);
         }
@@ -155,8 +168,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0x11);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x717fb);
-        func_004d7f60(2, 0x44);
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        renderQuad = (BppPanelRenderQuad*)D_0096009c;
         
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 1, 2);
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 2, 3);
@@ -167,8 +181,9 @@ void bppPanelDrawParameterLayout(BppPanelWork* work)
         frame = func_0021cca0(texture, 0);
         frame = func_0021cce0(frame);
         BPP_PANEL_SET_RENDER_STATE(1, frame);
-        func_004d7f60(3, 0x71801);
-        func_004d7f60(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+        RpSkyRenderStateSet(2, 0x48);
+        renderQuad = (BppPanelRenderQuad*)D_0096009c;
         
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 1, 2);
         BPP_PANEL_RENDER_QUAD(work, 4, 0, 2, 3);

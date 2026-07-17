@@ -18,7 +18,7 @@ u64 FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5
 void FUN_0040eb50(u64 param_1,u64 param_2,u32 param_3);
 void FUN_0040ebc0(void);
 void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
-u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4, u32 param_5,u64 param_6,u32 param_7,int param_8,code *param_9, u32 param_10);
+u32 FUN_0040ec50();
 void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5, int param_6);
 u32 FUN_0040f030(int param_1,int param_2,long param_3);
 u32 FUN_0040f430(int param_1,int param_2);
@@ -38,7 +38,7 @@ u32 DAT_006afa70;
 int DAT_006afaf0[];
 u32 DAT_006afb10;
 u32 DAT_007ce69c;
-u32 DAT_007ce6a0;
+s32 DAT_007ce6a0;
 code DAT_00960178;
 code DAT_0096017c;
 #include "Kosaka/k_assert.h"
@@ -56,7 +56,7 @@ void FUN_0040e300(u64 param_1,u32 param_2)
   DAT_007ce69c = param_2;
 }
 
-// FUN_0040E360 NONMATCHING
+// FUN_0040E360
 
 
 void FUN_0040e360(void)
@@ -66,6 +66,7 @@ void FUN_0040e360(void)
 {
 
 
+  FUN_0040e580(DAT_007ce6a0);
   DAT_007ce6a0 = 0;
 
   DAT_007ce69c = 0;
@@ -534,13 +535,13 @@ void FUN_0040ebc0(void)
 
 }
 
-// FUN_0040EC20 NONMATCHING
+// FUN_0040EC20
 
 
 void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,
                    u32 param_7,int param_8)
 {
-  FUN_0040ec50(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0,0);
+  FUN_0040ec50(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0);
 }
 
 // FUN_0040EC50 NONMATCHING

@@ -1,6 +1,10 @@
 #include "rw/rwcore.h"
 #include "mw_harvest_compat.h"
 
+#define PS2_SYSCALL(number) \
+    __asm__ volatile ("addiu $v1, $zero, %0\n" "syscall 0" \
+                      : : "i"(number) : "memory")
+
 /* auto-extern (generated) */
 extern u32 DAT_007cea80;
 extern u32 *DAT_007ce9c8;
@@ -1044,17 +1048,19 @@ static RwCamera* CameraEndUpdate(RwCamera* camera)
     return camera;
 }
 
-// FUN_004c9d00 NONMATCHING
+#pragma optimization_level 3
+// FUN_004c9d00
 RwCamera* RwCameraEndUpdate(RwCamera* camera)
 {
     return camera->endUpdate(camera);
 }
 
-// FUN_004c9d10 NONMATCHING
+// FUN_004c9d10
 RwCamera* RwCameraBeginUpdate(RwCamera* camera)
 {
     return camera->beginUpdate(camera);
 }
+#pragma optimization_level 2
 
 // FUN_004c9e90 NONMATCHING
 RwCamera* RwCameraClear(RwCamera* camera, RwRGBA* colors, RwCameraClearMode clearMode)
@@ -2238,12 +2244,14 @@ undefined8 FUN_004cc5c0(undefined8 param_1)
   return param_1;
 }
 
+#pragma schedule on
 // FUN_004CC6B0 NONMATCHING
 undefined4 FUN_004cc6b0(void)
 
 {
-  return *(undefined4 *)((int)&DAT_00960074 + DAT_007ce938);
+  return ((undefined4 *)((int)DAT_007ce938 + 0x00960070))[1];
 }
+#pragma schedule off
 
 // FUN_004CC6D0 NONMATCHING
 undefined8 FUN_004cc6d0(undefined8 param_1,int param_2,code *param_3,void *param_4)
@@ -4536,12 +4544,14 @@ undefined4 FUN_004d0b60(undefined4 param_1)
   return 1;
 }
 
+#pragma schedule on
 // FUN_004D0B80 NONMATCHING
 undefined4 FUN_004d0b80(void)
 
 {
-  return *(undefined4 *)((int)&DAT_0096008c + iGpffffbc60);
+  return ((undefined4 *)(iGpffffbc60 + 0x00960070))[7];
 }
+#pragma schedule off
 
 // FUN_004D0BA0 NONMATCHING
 undefined4 FUN_004d0ba0(undefined4 param_1)
@@ -4551,12 +4561,14 @@ undefined4 FUN_004d0ba0(undefined4 param_1)
   return 1;
 }
 
+#pragma schedule on
 // FUN_004D0BC0 NONMATCHING
 undefined4 FUN_004d0bc0(void)
 
 {
-  return *(undefined4 *)((int)&DAT_00960090 + iGpffffbc60);
+  return ((undefined4 *)(0x00960070 + iGpffffbc60))[8];
 }
+#pragma schedule off
 
 // FUN_004D0BE0 NONMATCHING
 undefined8 FUN_004d0be0(undefined8 param_1,long param_2)
@@ -4783,12 +4795,14 @@ undefined8 FUN_004d11d0(undefined8 param_1)
   return param_1;
 }
 
+#pragma schedule on
 // FUN_004D11F0 NONMATCHING
 undefined4 FUN_004d11f0(void)
 
 {
-  return *(undefined4 *)((int)&DAT_00960080 + iGpffffbc60);
+  return ((undefined4 *)(0x00960070 + iGpffffbc60))[4];
 }
+#pragma schedule off
 
 // FUN_004D1210 NONMATCHING
 undefined8 FUN_004d1210(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)
@@ -24956,7 +24970,7 @@ undefined8 FUN_004f2430(long param_1,ulong param_2)
 #pragma optimization_level 3
 undefined *FUN_004f2710(void)
 {
-  int base = (int)&DAT_00960070;
+  int base = 0x00960070;
   base += iGpffffbe30;
   return (undefined *)(base + 0x40);
 }
@@ -28953,11 +28967,11 @@ uint FUN_004f90b8(void)
   return uVar2;
 }
 
-// FUN_004F9158 NONMATCHING
+// FUN_004F9158
 void FUN_004f9158(u64 param_1, u64 param_2, u64 param_3, u64 param_4, u64 param_5, u64 param_6)
 
 {
-  syscall(0x80);
+  PS2_SYSCALL(0x80);
   return;
 }
 
@@ -32378,13 +32392,15 @@ undefined4 FUN_004ff9d8(undefined8 param_1)
   return *(undefined4 *)(iVar4 + 0x160);
 }
 
-// FUN_004FFB30 NONMATCHING
+#pragma optimization_level 3
+// FUN_004FFB30
 void FUN_004ffb30(undefined8 param_1)
 
 {
   thunk_FUN_004fd7d0(param_1,0x20);
   return;
 }
+#pragma optimization_level 2
 
 // FUN_004FFB38 NONMATCHING
 void FUN_004ffb38(undefined8 param_1)
@@ -33376,6 +33392,7 @@ int FUN_005010a0(undefined8 param_1,int *param_2,int param_3,long param_4)
   return iVar1;
 }
 
+#pragma schedule on
 // FUN_00501128 NONMATCHING
 undefined4 FUN_00501128(int param_1)
 
@@ -33383,7 +33400,9 @@ undefined4 FUN_00501128(int param_1)
   FUN_005027f0((u32 *)(int)(*(int *)(param_1 + 0x40) + 0x68));
   return 1;
 }
+#pragma schedule off
 
+#pragma schedule on
 // FUN_00501150 NONMATCHING
 undefined4 FUN_00501150(int param_1)
 
@@ -33391,6 +33410,7 @@ undefined4 FUN_00501150(int param_1)
   FUN_005028d8((int *)(int)(*(int *)(param_1 + 0x40) + 0x68));
   return 1;
 }
+#pragma schedule off
 
 // FUN_00501178 NONMATCHING
 void FUN_00501178(int param_1,uint *param_2)
@@ -34406,177 +34426,251 @@ void FUN_00502b08(void)
 
 
 
-// FUN_00502d60 SetGsCrt NONMATCHING
+// FUN_00502d60 SetGsCrt
 
 void FUN_00502d60_SetGsCrt(void)
 
 {
-  syscall(2);
+  PS2_SYSCALL(2);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030003\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00502d80 _Exit NONMATCHING
+// FUN_00502d80 _Exit
 
 void FUN_00502d80_Exit(int __status)
 
 {
-  syscall(4);
+  PS2_SYSCALL(4);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030005\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00502da0 _LoadExecPS2 NONMATCHING
+// FUN_00502da0 _LoadExecPS2
 
 void FUN_00502da0_LoadExecPS2(void)
 
 {
-  syscall(6);
+  PS2_SYSCALL(6);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030007\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030008\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030009\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403000a\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403000b\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403000c\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00502e10 SetVTLBRefillHandler NONMATCHING
+// FUN_00502e10 SetVTLBRefillHandler
 
 void FUN_00502e10_SetVTLBRefillHandler(void)
 
 {
-  syscall(0xd);
+  PS2_SYSCALL(0xd);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403000e\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403000f\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00502e40 AddIntcHandler NONMATCHING
+// FUN_00502e40 AddIntcHandler
 
 void FUN_00502e40_AddIntcHandler(void)
 
 {
-  syscall(0x10);
-  return;
+  __asm__ volatile (
+      "addiu $v1, $zero, 0x10\n"
+      "syscall 0"
+      :
+      :
+      : "memory");
 }
 
 
 
-// FUN_00502e50 AddIntcHandler NONMATCHING
+// FUN_00502e50 AddIntcHandler
 
 void FUN_00502e50_AddIntcHandler(void)
 
 {
-  syscall(0x10);
-  return;
+  __asm__ volatile (
+      "addiu $v1, $zero, 0x10\n"
+      "syscall 0"
+      :
+      :
+      : "memory");
 }
 
 
 
-// FUN_00502e60 RemoveIntcHandler NONMATCHING
+// FUN_00502e60 RemoveIntcHandler
 
 void FUN_00502e60_RemoveIntcHandler(void)
 
 {
-  syscall(0x11);
-  return;
+  __asm__ volatile (
+      "addiu $v1, $zero, 0x11\n"
+      "syscall 0"
+      :
+      :
+      : "memory");
 }
 
 
 
-// FUN_00502e70 AddDmacHandler NONMATCHING
+// FUN_00502e70 AddDmacHandler
 
 void FUN_00502e70_AddDmacHandler(void)
 
 {
-  syscall(0x12);
-  return;
+  __asm__ volatile (
+      "addiu $v1, $zero, 0x12\n"
+      "syscall 0"
+      :
+      :
+      : "memory");
 }
 
 
 
-// FUN_00502e80 AddDmacHandler NONMATCHING
+// FUN_00502e80 AddDmacHandler
 
 void FUN_00502e80_AddDmacHandler(void)
 
 {
-  syscall(0x12);
+  PS2_SYSCALL(0x12);
   return;
 }
 
 
 
-// FUN_00502e90 RemoveDmacHandler NONMATCHING
+// FUN_00502e90 RemoveDmacHandler
 
 void FUN_00502e90_RemoveDmacHandler(void)
 
 {
-  syscall(0x13);
+  PS2_SYSCALL(0x13);
   return;
 }
 
 
 
-// FUN_00502ea0 _EnableIntc NONMATCHING
+// FUN_00502ea0 _EnableIntc
 
 void FUN_00502ea0_EnableIntc(void)
 
 {
-  syscall(0x14);
+  PS2_SYSCALL(0x14);
   return;
 }
 
 
 
-// FUN_00502eb0 _DisableIntc NONMATCHING
+// FUN_00502eb0 _DisableIntc
 
 void FUN_00502eb0_DisableIntc(void)
 
 {
-  syscall(0x15);
+  PS2_SYSCALL(0x15);
   return;
 }
 
 
 
-// FUN_00502ec0 _EnableDmac NONMATCHING
+// FUN_00502ec0 _EnableDmac
 
 void FUN_00502ec0_EnableDmac(void)
 
 {
-  syscall(0x16);
+  PS2_SYSCALL(0x16);
   return;
 }
 
 
 
-// FUN_00502ed0 _DisableDmac NONMATCHING
+// FUN_00502ed0 _DisableDmac
 
 void FUN_00502ed0_DisableDmac(void)
 
 {
-  syscall(0x17);
+  PS2_SYSCALL(0x17);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x240300fc\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x240300fd\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00502f00 _iEnableIntc NONMATCHING
+// FUN_00502f00 _iEnableIntc
 
 void FUN_00502f00_iEnableIntc(void)
 
 {
-  syscall(0xffffffffffffffe6);
+  PS2_SYSCALL(-0x1a);
   return;
 }
 
 
 
-// FUN_00502f10 _iDisableIntc NONMATCHING
+// FUN_00502f10 _iDisableIntc
 
 void FUN_00502f10_iDisableIntc(void)
 
 {
-  syscall(0xffffffffffffffe5);
+  PS2_SYSCALL(-0x1b);
   return;
 }
 
@@ -34890,177 +34984,255 @@ void FUN_00503210_GetOsdConfigParam(void)
 
 
 
-// FUN_005033E0 NONMATCHING
+// FUN_005033E0
 
 void FUN_005033e0_FlushCache(void)
 
 {
-  syscall(100);
+  PS2_SYSCALL(100);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030066\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff99\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff98\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff96\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00503430 NONMATCHING
+// FUN_00503430
 
 void FUN_00503430_sceSifStopDma(void)
 
 {
-  syscall(0x6b);
+  PS2_SYSCALL(0x6b);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403006c\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403006d\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403006e\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403006f\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00503480 NONMATCHING
+// FUN_00503480
 
 void FUN_00503480_GsGetIMR(void)
 
 {
-  syscall(0x70);
+  PS2_SYSCALL(0x70);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff90\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_005034A0 NONMATCHING
+// FUN_005034A0
 
 void FUN_005034a0_GsPutIMR(void)
 
 {
-  syscall(0x71);
+  PS2_SYSCALL(0x71);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff8f\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030072\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_005034D0 NONMATCHING
+// FUN_005034D0
 
 void FUN_005034d0_SetVSyncFlag(void)
 
 {
-  syscall(0x73);
+  PS2_SYSCALL(0x73);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030074\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030075\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00503500 NONMATCHING
+// FUN_00503500
 
 void FUN_00503500_sceSifDmaStat(void)
 
 {
-  syscall(0x76);
+  PS2_SYSCALL(0x76);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff8a\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_00503520 NONMATCHING
+// FUN_00503520
 
 void FUN_00503520_sceSifSetDma(void)
 
 {
-  syscall(0x77);
+  PS2_SYSCALL(0x77);
   return;
 }
 
 
 
-// FUN_00503530 NONMATCHING
+// FUN_00503530
 
 void FUN_00503530_isceSifSetDma(void)
 
 {
-  syscall(0xffffffffffffff89);
+  PS2_SYSCALL(-0x77);
   return;
 }
 
 
 
-// FUN_00503540 NONMATCHING
+// FUN_00503540
 
 void FUN_00503540_sceSifSetDChain(void)
 
 {
-  syscall(0x78);
+  PS2_SYSCALL(0x78);
   return;
 }
 
 
 
-// FUN_00503550 NONMATCHING
+// FUN_00503550
 
 void FUN_00503550_isceSifSetDChain(void)
 
 {
-  syscall(0xffffffffffffff88);
+  PS2_SYSCALL(-0x78);
   return;
 }
 
 
 
-// FUN_00503560 NONMATCHING
+// FUN_00503560
 
 void FUN_00503560_sceSifSetReg(void)
 
 {
-  syscall(0x79);
+  PS2_SYSCALL(0x79);
   return;
 }
 
 
 
-// FUN_00503570 NONMATCHING
+// FUN_00503570
 
 void FUN_00503570_sceSifGetReg(void)
 
 {
-  syscall(0x7a);
+  PS2_SYSCALL(0x7a);
   return;
 }
 
 
 
-// FUN_00503580 NONMATCHING
+// FUN_00503580
 
 void FUN_00503580_ExecOSD(void)
 
 {
-  syscall(0x7b);
+  PS2_SYSCALL(0x7b);
   return;
 }
 
 
 
-// FUN_00503590 NONMATCHING
+// FUN_00503590
 
 void FUN_00503590_Deci2Call(void)
 
 {
-  syscall(0x7c);
+  PS2_SYSCALL(0x7c);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403007d\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403007e\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
 
 
-// FUN_005035C0 NONMATCHING
+// FUN_005035C0
 
 void FUN_005035c0_GetMemorySize(void)
 
 {
-  syscall(0x7f);
+  PS2_SYSCALL(0x7f);
   return;
 }
 
 
 
-// FUN_005035D0 NONMATCHING
+// FUN_005035D0
 
 void FUN_005035d0_InitTLB(void)
 
 {
-  syscall(0x82);
+  PS2_SYSCALL(0x82);
   return;
 }
 
@@ -35160,199 +35332,409 @@ void FUN_00502f10_iDisableIntc_alias(void)
   return;
 }
 
-// FUN_00502F20 NONMATCHING
+// FUN_00502F20
 void FUN_00502f20_iEnableDmac_alias(void)
 {
-  syscall(0xffffffffffffffe4);
+  PS2_SYSCALL(-0x1c);
   return;
 }
 
-// FUN_00502F30 NONMATCHING
+// FUN_00502F30
 void FUN_00502f30_iDisableDmac_alias(void)
 {
-  syscall(0xffffffffffffffe3);
+  PS2_SYSCALL(-0x1d);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff02\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ff01\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00502F60 NONMATCHING
+// FUN_00502F60
 void FUN_00502f60_CreateThread_alias(void)
 {
-  syscall(0x20);
+  PS2_SYSCALL(0x20);
   return;
 }
 
-// FUN_00502F70 NONMATCHING
+// FUN_00502F70
 void FUN_00502f70_DeleteThread_alias(void)
 {
-  syscall(0x21);
+  PS2_SYSCALL(0x21);
   return;
 }
 
-// FUN_00502F80 NONMATCHING
+// FUN_00502F80
 void FUN_00502f80_StartThread_alias(void)
 {
-  syscall(0x22);
+  PS2_SYSCALL(0x22);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030023\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00502FA0 NONMATCHING
+// FUN_00502FA0
 void FUN_00502fa0_ExitDeleteThread_alias(void)
 {
-  syscall(0x24);
+  PS2_SYSCALL(0x24);
   return;
 }
 
-// FUN_00502FB0 NONMATCHING
+// FUN_00502FB0
 void FUN_00502fb0_TerminateThread_alias(void)
 {
-  syscall(0x25);
+  PS2_SYSCALL(0x25);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffda\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030027\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030028\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00502FF0 NONMATCHING
+// FUN_00502FF0
 void FUN_00502ff0_ChangeThreadPriority_alias(void)
 {
-  syscall(0x29);
+  PS2_SYSCALL(0x29);
   return;
 }
 
-// FUN_00503000 NONMATCHING
+// FUN_00503000
 void FUN_00503000_iChangeThreadPriority_alias(void)
 {
-  syscall(0xffffffffffffffd6);
+  PS2_SYSCALL(-0x2a);
   return;
 }
 
-// FUN_00503010 NONMATCHING
+// FUN_00503010
 void FUN_00503010_RotateThreadReadyQueue_alias(void)
 {
-  syscall(0x2b);
+  PS2_SYSCALL(0x2b);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffd4\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403002d\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffd2\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00503050 NONMATCHING
+// FUN_00503050
 void FUN_00503050_GetThreadId_alias(void)
 {
-  syscall(0x2f);
+  PS2_SYSCALL(0x2f);
   return;
 }
 
-// FUN_00503060 NONMATCHING
+// FUN_00503060
 void FUN_00503060_ReferThreadStatus_alias(void)
 {
-  syscall(0x30);
+  PS2_SYSCALL(0x30);
   return;
 }
 
-// FUN_00503070 NONMATCHING
+// FUN_00503070
 void FUN_00503070_iReferThreadStatus_alias(void)
 {
-  syscall(0xffffffffffffffcf);
+  PS2_SYSCALL(-0x31);
   return;
 }
 
-// FUN_00503080 NONMATCHING
+// FUN_00503080
 void FUN_00503080_SleepThread_alias(void)
 {
-  syscall(0x32);
+  PS2_SYSCALL(0x32);
   return;
 }
 
-// FUN_00503090 NONMATCHING
+// FUN_00503090
 void FUN_00503090_WakeupThread_alias(void)
 {
-  syscall(0x33);
+  PS2_SYSCALL(0x33);
   return;
 }
 
-// FUN_005030A0 NONMATCHING
+// FUN_005030A0
 void FUN_005030a0_iWakeupThread_alias(void)
 {
-  syscall(0xffffffffffffffcc);
+  PS2_SYSCALL(-0x34);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030035\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffca\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_005030D0 NONMATCHING
+// FUN_005030D0
 void FUN_005030d0_SuspendThread_alias(void)
 {
-  syscall(0x37);
+  PS2_SYSCALL(0x37);
   return;
 }
 
-// FUN_005030E0 NONMATCHING
+// FUN_005030E0
 void FUN_005030e0_iSuspendThread_alias(void)
 {
-  syscall(0xffffffffffffffc8);
+  PS2_SYSCALL(-0x38);
   return;
 }
 
-// FUN_005030F0 NONMATCHING
+// FUN_005030F0
 void FUN_005030f0_ResumeThread_alias(void)
 {
-  syscall(0x39);
+  PS2_SYSCALL(0x39);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffc6\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403003b\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403003c\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403003d\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00503140 NONMATCHING
+// FUN_00503140
 void FUN_00503140_EndOfHeap_alias(void)
 {
-  syscall(0x3e);
+  PS2_SYSCALL(0x3e);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403003f\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00503160 NONMATCHING
+// FUN_00503160
 void FUN_00503160_CreateSema_alias(void)
 {
-  syscall(0x40);
+  PS2_SYSCALL(0x40);
   return;
 }
 
-// FUN_00503170 NONMATCHING
+// FUN_00503170
 void FUN_00503170_DeleteSema_alias(void)
 {
-  syscall(0x41);
+  PS2_SYSCALL(0x41);
   return;
 }
 
-// FUN_00503180 NONMATCHING
+// FUN_00503180
 void FUN_00503180_SignalSema_alias(void)
 {
-  syscall(0x42);
+  PS2_SYSCALL(0x42);
   return;
 }
 
-// FUN_00503190 NONMATCHING
+// FUN_00503190
 void FUN_00503190_iSignalSema_alias(void)
 {
-  syscall(0xffffffffffffffbd);
+  PS2_SYSCALL(-0x43);
   return;
 }
 
-// FUN_005031A0 NONMATCHING
+// FUN_005031A0
 void FUN_005031a0_WaitSema_alias(void)
 {
-  syscall(0x44);
+  PS2_SYSCALL(0x44);
   return;
 }
 
-// FUN_005031B0 NONMATCHING
+// FUN_005031B0
 void FUN_005031b0_PollSema_alias(void)
 {
-  syscall(0x45);
+  PS2_SYSCALL(0x45);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffba\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030047\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffb8\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030049\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
-// FUN_00503200 NONMATCHING
+// FUN_00503200
 void FUN_00503200_SetOsdConfigParam_alias(void)
 {
-  syscall(0x4a);
+  PS2_SYSCALL(0x4a);
   return;
 }
 
-// FUN_00503210 NONMATCHING
+// FUN_00503210
 void FUN_00503210_GetOsdConfigParam_alias(void)
 {
-  syscall(0x4b);
+  PS2_SYSCALL(0x4b);
+  __asm__ volatile (
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403004c\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403004d\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403004e\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403004f\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030050\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030051\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030052\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffad\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030054\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffab\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030056\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030057\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa8\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030059\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa6\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403005b\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403005c\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa4\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403005d\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa3\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403005e\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa2\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403005f\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x2403ffa1\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030060\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030061\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030062\n"
+      ".word 0x0000000c\n"
+      ".word 0x03e00008\n"
+      ".word 0x00000000\n"
+      ".word 0x24030063\n"
+      ".word 0x0000000c\n"
+      : : : "memory");
   return;
 }
 
@@ -35545,12 +35927,10 @@ asm undefined4 FUN_00503910(void)
 }
 
 // FUN_00503918 NONMATCHING
-undefined8 FUN_00503918(undefined8 param_1,int param_2)
+undefined4 FUN_00503918(void)
 
 {
-  *(undefined8 *)(param_2 + 0x48) = 0;
-  *(undefined4 *)(param_2 + 4) = 0x2000;
-  return 0;
+  return 0x2000;
 }
 
 // FUN_00503938 NONMATCHING
@@ -36356,6 +36736,7 @@ void FUN_00504650(undefined4 param_1)
   return;
 }
 
+#pragma optimization_level 3
 // FUN_00504678 NONMATCHING
 undefined4 * FUN_00504678(undefined4 param_1)
 
@@ -36366,6 +36747,7 @@ undefined4 * FUN_00504678(undefined4 param_1)
   DAT_0096654c = (u32)(&DAT_00966550);
   return &DAT_00966540;
 }
+#pragma optimization_level 2
 
 // FUN_005046A0 NONMATCHING
 void FUN_005046a0(int *param_1)

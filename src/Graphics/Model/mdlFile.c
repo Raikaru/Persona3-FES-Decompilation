@@ -4,6 +4,7 @@
 #include "Main/g_data.h"
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/Battle/Data/datUnit.h"
+#include "Battle/btlVoice.h"
 #include "temporary.h"
 
 #define MODEL_PATH "model/"
@@ -77,6 +78,7 @@ u32 mdlFileResolvePackPath(u16 type, u16 id, char* dst)
 
 /* ---- Recovered range 0x31D600-0x357DC0 (Ghidra reference) ---- */
 typedef int (*code)(...);
+typedef u8 MdlDispatchSlot[0x10];
 typedef u8 bool;
 typedef struct MdlTypeDispatch {
     code destroy;
@@ -332,9 +334,9 @@ u64 FUN_00324870(int param_1);
 void FUN_00324930(int param_1);
 void FUN_00324990(int param_1);
 void FUN_003249e0(int param_1);
-void FUN_00324a30(int param_1);
+void FUN_00324a30(int param_1, u32 param_2);
 void FUN_00324a90(int param_1);
-void FUN_00324af0(int param_1);
+void FUN_00324af0(int param_1, u32 param_2);
 void FUN_00324b50(u64 param_1);
 u64 FUN_00324bd0(u64 param_1);
 void FUN_003252a0(u64 param_1);
@@ -347,8 +349,8 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
 void FUN_00326030(int param_1,int param_2);
-void FUN_00326160(int param_1,u32 *param_2);
-void FUN_00326170(int param_1,u32 *param_2);
+u_long128 FUN_00326160(int param_1,u32 *param_2);
+u_long128 FUN_00326170(int param_1,u32 *param_2);
 u32 FUN_00326180(int param_1);
 void FUN_00326190(u64 param_1,u64 param_2);
 int FUN_003261c0(int param_1,int param_2);
@@ -858,7 +860,6 @@ extern u64 FUN_002a38f0();
 extern u64 FUN_002a3a80();
 extern u64 FUN_002a3e80();
 extern u64 FUN_002a4690();
-extern u64 FUN_002f6c50();
 extern u64 FUN_002f8810();
 extern u64 FUN_002ffbc0();
 extern u64 FUN_00308c60();
@@ -987,7 +988,7 @@ extern u32 DAT_0069c4e0;
 extern u32 DAT_0069c4e4;
 extern u32 DAT_0069c4e8;
 extern u32 DAT_0069c510;
-extern u32 DAT_0069c514;
+extern MdlDispatchSlot DAT_0069c514[];
 extern u32 DAT_0069c518;
 extern u32 DAT_0069c51c;
 extern MdlTypeDispatch DAT_0069c5d0[];
@@ -1215,16 +1216,16 @@ extern void* PTR_FUN_0069bb18;
 extern void* PTR_FUN_0069bb1c;
 extern void* PTR_LAB_0069bb10;
 extern void* PTR_LAB_0069be20;
-extern void* PTR_LAB_0069be28;
-extern void* PTR_LAB_0069be2c;
+extern code PTR_LAB_0069be28[];
+extern code PTR_LAB_0069be2c[];
 extern void* PTR_LAB_0069be30;
 extern void* PTR_LAB_0069be34;
-extern void* PTR_LAB_0069be3c;
-extern void* PTR_LAB_0069be40;
+extern code PTR_LAB_0069be3c[];
+extern code PTR_LAB_0069be40[];
 extern void* PTR_LAB_0069be44;
 extern void* PTR_LAB_0069be48;
 extern void* PTR_LAB_0069be4c;
-extern void* PTR_LAB_0069be50;
+extern code PTR_LAB_0069be50[];
 extern u32 uGpffff8010;
 extern u32 uGpffff8018;
 extern u32 uGpffff8020;
@@ -2988,7 +2989,7 @@ void FUN_0031ef80(int *param_1,short param_2,short param_3)
 
       if ((*(short *)(iVar4 + 8) == 2) &&
 
-         (sVar2 = FUN_002f6c50(*(u16 *)(iVar4 + 10)), sVar2 != -1)) {
+         (sVar2 = func_002f6c50(*(u16*)(iVar4 + 10)), sVar2 != -1)) {
 
         iVar4 = param_2 * 0xc + (sVar2 * 0x38 + (int)sVar2) * 4 + 0x691020;
 
@@ -4837,7 +4838,7 @@ u32 FUN_00320fb0(u16 param_1)
 
 
 
-// FUN_00321010 NONMATCHING
+// FUN_00321010
 
 
 void FUN_00321010(int param_1)
@@ -4846,11 +4847,11 @@ void FUN_00321010(int param_1)
 
 {
 
-  *(short *)(param_1 + 8) = *(short *)(param_1 + 8) + -1;
+  *(u16 *)(param_1 + 8) = *(u16 *)(param_1 + 8) - 1;
 
-  if (*(short *)(param_1 + 8) == 0) {
+  if (*(u16 *)(param_1 + 8) == 0) {
 
-    (*DAT_0096017c)();
+    ((void (*)(...))(*(u32 *)0x0096017c))();
 
   }
 
@@ -4899,7 +4900,9 @@ void FUN_00321070(int *param_1,u32 param_2)
 
 
 
-// FUN_003210A0 NONMATCHING
+#pragma alias DAT_00957a20_abs DAT_00957a20
+extern u32 DAT_00957a20_abs[];
+// FUN_003210A0
 
 
 u32 FUN_003210a0(u32 param_1)
@@ -4908,7 +4911,7 @@ u32 FUN_003210a0(u32 param_1)
 
 {
 
-  return *(u32 *)(&DAT_00957a20 + (param_1 & 0xffff) * 4);
+  return DAT_00957a20_abs[param_1 & 0xffff];
 
 }
 
@@ -8723,105 +8726,62 @@ u64 FUN_00324870(int param_1)
 
 
 
-// FUN_00324930 NONMATCHING
+// FUN_00324930
 
 
 void FUN_00324930(int param_1)
-
-
-
 {
-
-  if ((code *)(&PTR_LAB_0069be3c)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)] != (code *)0x0
-
-     ) {
-
-    (*(code *)(&PTR_LAB_0069be3c)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
-              (*(u32 *)(param_1 + 8));
-
+  u32 index;
+  code callback;
+  index = (u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4);
+  callback = PTR_LAB_0069be3c[index];
+  if (callback != NULL) {
+    callback(*(u32 *)(param_1 + 8));
   }
-
-  return;
-
 }
 
 
 
 
-// FUN_00324990 NONMATCHING
+// FUN_00324990
 
 
 void FUN_00324990(int param_1)
-
-
-
 {
-
-  (*(code *)((void **)0x0069be28)
-
-            [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
-            (*(u32 *)(param_1 + 8));
-
-  return;
-
+  u32 index;
+  index = (u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4);
+  PTR_LAB_0069be28[index](*(u32 *)(param_1 + 8));
 }
 
 
 
 
-// FUN_003249E0 NONMATCHING
+// FUN_003249E0
 
 
 void FUN_003249e0(int param_1)
-
-
-
 {
-
-  (*(code *)((void **)0x0069be2c)
-
-            [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
-            (*(u32 *)(param_1 + 8));
-
-  return;
-
+  u32 index;
+  index = (u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4);
+  PTR_LAB_0069be2c[index](*(u32 *)(param_1 + 8));
 }
 
 
 
 
-// FUN_00324A30 NONMATCHING
+// FUN_00324A30
 
 
-void FUN_00324a30(int param_1)
-
-
-
+void FUN_00324a30(int param_1, u32 param_2)
 {
+  u32 index;
+  code callback;
 
-  if ((code *)(&PTR_LAB_0069be40)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)] != (code *)0x0
-
-     ) {
-
-    (*(code *)(&PTR_LAB_0069be40)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
-              (*(u32 *)(param_1 + 8));
-
+  index = (u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4);
+  callback = PTR_LAB_0069be40[index];
+  if (callback != NULL) {
+    callback(*(u32 *)(param_1 + 8), param_2);
   }
-
-  return;
-
 }
 
 
@@ -8831,57 +8791,33 @@ void FUN_00324a30(int param_1)
 
 
 void FUN_00324a90(int param_1)
-
-
-
 {
-
   if ((code *)(&PTR_LAB_0069be48)
-
               [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)] != (code *)0x0
-
      ) {
-
     (*(code *)(&PTR_LAB_0069be48)
-
               [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
               (*(u32 *)(param_1 + 8));
-
   }
-
   return;
-
 }
 
 
 
 
-// FUN_00324AF0 NONMATCHING
+// FUN_00324AF0
 
 
-void FUN_00324af0(int param_1)
-
-
-
+void FUN_00324af0(int param_1, u32 param_2)
 {
+  u32 index;
+  code callback;
 
-  if ((code *)(&PTR_LAB_0069be50)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)] != (code *)0x0
-
-     ) {
-
-    (*(code *)(&PTR_LAB_0069be50)
-
-              [(u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4)])
-
-              (*(u32 *)(param_1 + 8));
-
+  index = (u32)*(u16 *)(param_1 + 4) * 0xc + (u32)*(u16 *)(param_1 + 4);
+  callback = PTR_LAB_0069be50[index];
+  if (callback != NULL) {
+    callback(*(u32 *)(param_1 + 8), param_2);
   }
-
-  return;
-
 }
 
 
@@ -9504,10 +9440,8 @@ void FUN_003252a0(u64 param_1)
 
         uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
-        if ((code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-          (*(code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+        if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
+          PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
                     (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
 
         }
@@ -9532,8 +9466,7 @@ void FUN_003252a0(u64 param_1)
 
       uVar1 = *(u16 *)(*(int *)(iVar3 + 0x90) + 4);
 
-      (*(code *)(&PTR_LAB_0069be28)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+      PTR_LAB_0069be28[(u32)uVar1 * 0xc + (u32)uVar1]
                 (*(u32 *)(*(int *)(iVar3 + 0x90) + 8));
 
     }
@@ -9670,10 +9603,8 @@ void FUN_00325500(u64 param_1)
 
             uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-            if ((code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-              (*(code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+            if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
+              PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
                         (*(u32 *)(*(int *)(iVar4 + 0x90) + 8));
 
             }
@@ -9700,8 +9631,7 @@ void FUN_00325500(u64 param_1)
 
         uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-        (*(code *)(&PTR_LAB_0069be2c)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+        PTR_LAB_0069be2c[(u32)uVar1 * 0xc + (u32)uVar1]
                   (*(u32 *)(*(int *)(iVar4 + 0x90) + 8));
 
       }
@@ -9989,7 +9919,7 @@ u64 FUN_00325920(u64 *param_1)
 
 
 
-// FUN_00325B80 NONMATCHING
+// FUN_00325B80
 
 
 void FUN_00325b80(int param_1)
@@ -10008,10 +9938,8 @@ void FUN_00325b80(int param_1)
 
     uVar1 = *(u16 *)(*(int *)(iVar2 + 0x90) + 4);
 
-    if ((code *)(&PTR_LAB_0069be3c)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-      (*(code *)(&PTR_LAB_0069be3c)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+    if (((code *)PTR_LAB_0069be3c)[(u32)uVar1 * 0xc + (u32)uVar1 + 7] != NULL) {
+      ((code *)PTR_LAB_0069be3c)[(u32)uVar1 * 0xc + (u32)uVar1 + 7]
                 (*(u32 *)(*(int *)(iVar2 + 0x90) + 8));
 
     }
@@ -10142,10 +10070,8 @@ void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16])
 
     uVar1 = *(u16 *)(*(int *)(iVar5 + 0x90) + 4);
 
-    if ((code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-      (*(code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+    if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
+      PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
                 (*(u32 *)(*(int *)(iVar5 + 0x90) + 8));
 
     }
@@ -10287,9 +10213,7 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
       uVar1 = *(u16 *)(*(int *)(iVar2 + 0x90) + 4);
 
       if ((code *)(&PTR_LAB_0069be48)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
         (*(code *)(&PTR_LAB_0069be48)[(u32)uVar1 * 0xc + (u32)uVar1])
-
                   (fVar3,*(u32 *)(*(int *)(iVar2 + 0x90) + 8));
 
       }
@@ -10354,10 +10278,8 @@ void FUN_00325e40(float param_1,u8 (*param_2) [16])
 
       uVar1 = *(u16 *)(*(int *)(iVar2 + 0x90) + 4);
 
-      if ((code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-        (*(code *)(&PTR_LAB_0069be40)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+      if (PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
+        PTR_LAB_0069be40[(u32)uVar1 * 0xc + (u32)uVar1]
                   (*(u32 *)(*(int *)(iVar2 + 0x90) + 8));
 
       }
@@ -10452,10 +10374,8 @@ void FUN_00326030(int param_1,int param_2)
 
       uVar1 = *(u16 *)(*(int *)(iVar4 + 0x90) + 4);
 
-      if ((code *)(&PTR_LAB_0069be50)[(u32)uVar1 * 0xc + (u32)uVar1] != (code *)0x0) {
-
-        (*(code *)(&PTR_LAB_0069be50)[(u32)uVar1 * 0xc + (u32)uVar1])
-
+      if (PTR_LAB_0069be50[(u32)uVar1 * 0xc + (u32)uVar1] != NULL) {
+        PTR_LAB_0069be50[(u32)uVar1 * 0xc + (u32)uVar1]
                   (*(u32 *)(*(int *)(iVar4 + 0x90) + 8),auVar5._0_4_);
 
       }
@@ -10471,77 +10391,27 @@ void FUN_00326030(int param_1,int param_2)
 
 
 
-// FUN_00326160 NONMATCHING
+// FUN_00326160
 
 
-void FUN_00326160(int param_1,u32 *param_2)
-
-
-
+u_long128 FUN_00326160(int param_1,u32 *param_2)
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  
-
-  uVar1 = *(u32 *)(param_1 + 0x44);
-
-  uVar2 = *(u32 *)(param_1 + 0x48);
-
-  uVar3 = *(u32 *)(param_1 + 0x4c);
-
-  *param_2 = *(u32 *)(param_1 + 0x40);
-
-  param_2[1] = uVar1;
-
-  param_2[2] = uVar2;
-
-  param_2[3] = uVar3;
-
-  return;
-
+  u_long128 value = *(u_long128 *)(param_1 + 0x40);
+  *(u_long128 *)param_2 = value;
+  return value;
 }
 
 
 
 
-// FUN_00326170 NONMATCHING
+// FUN_00326170
 
 
-void FUN_00326170(int param_1,u32 *param_2)
-
-
-
+u_long128 FUN_00326170(int param_1,u32 *param_2)
 {
-
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  
-
-  uVar1 = *(u32 *)(param_1 + 0x54);
-
-  uVar2 = *(u32 *)(param_1 + 0x58);
-
-  uVar3 = *(u32 *)(param_1 + 0x5c);
-
-  *param_2 = *(u32 *)(param_1 + 0x50);
-
-  param_2[1] = uVar1;
-
-  param_2[2] = uVar2;
-
-  param_2[3] = uVar3;
-
-  return;
-
+  u_long128 value = *(u_long128 *)(param_1 + 0x50);
+  *(u_long128 *)param_2 = value;
+  return value;
 }
 
 
@@ -12002,7 +11872,7 @@ void FUN_00327250(float param_1,int param_2)
 
           ((code)FUN_00324a90)(*(float *)(pauVar5[1] + 8) * param_1,*puVar7);
 
-          ((code)FUN_00324a30)(*puVar7,pauVar5);
+          FUN_00324a30(*puVar7, (u32)pauVar5);
 
           FUN_00324990(*puVar7);
 
@@ -12062,7 +11932,7 @@ void FUN_00327250(float param_1,int param_2)
 
           ((code)FUN_00324a90)(*(float *)(pauVar5[1] + 8) * param_1,*puVar7);
 
-          ((code)FUN_00324a30)(*puVar7,auStack_10);
+          FUN_00324a30(*puVar7, auStack_10._0_4_);
 
           FUN_00324990(*puVar7);
 
@@ -12878,7 +12748,7 @@ void FUN_003275d0(float param_1,u64 param_2)
 
           uStack_20 = auVar9._0_4_;
 
-          ((code)FUN_00324af0)(*puVar13,uStack_20);
+          FUN_00324af0(*puVar13, uStack_20);
 
           FUN_003249e0(*puVar13);
 
@@ -23495,7 +23365,7 @@ void FUN_00332310(int param_1,u32 *param_2)
 
 
 
-// FUN_00332330 NONMATCHING
+// FUN_00332330
 
 
 void FUN_00332330(u16 *param_1)
@@ -23504,7 +23374,7 @@ void FUN_00332330(u16 *param_1)
 
 {
 
-  (**(code **)(&DAT_0069c514 + (u32)*param_1 * 0x10))();
+  (*(code *)&DAT_0069c514[(u32)*param_1])();
 
   return;
 
@@ -25003,34 +24873,38 @@ void FUN_003338b0(u64 param_1)
 
 
 
-// FUN_00333900 NONMATCHING
+// FUN_00333900
 
 
 void FUN_00333900(int param_1,u32 param_2)
-
-
-
 {
+  u32 index;
+  u8 *base;
 
-  *(u16 *)(*(int *)(param_1 + 0x18) + (param_2 & 0xffff) * 2) = 0;
+  index = (param_2 & 0xffff) * 2;
+  base = *(u8 **)(param_1 + 0x18);
+  *(u16 *)(base + index) = 0;
 
   return;
-
 }
 
 
 
 
-// FUN_00333920 NONMATCHING
+
+// FUN_00333920
 
 
 void FUN_00333920(int param_1,u32 param_2)
-
-
-
 {
+  s16 value;
+  u32 index;
+  u8 *base;
 
-  *(u16 *)(*(int *)(param_1 + 0x18) + (param_2 & 0xffff) * 2) = 0xffff;
+  value = -1;
+  index = (param_2 & 0xffff) * 2;
+  base = *(u8 **)(param_1 + 0x18);
+  *(s16 *)(base + index) = value;
 
   return;
 
@@ -25039,16 +24913,20 @@ void FUN_00333920(int param_1,u32 param_2)
 
 
 
-// FUN_00333940 NONMATCHING
+// FUN_00333940
 
 
 bool FUN_00333940(int param_1,u32 param_2)
-
-
-
 {
+  u32 index;
+  u8 *base;
+  s16 value;
 
-  return *(short *)(*(int *)(param_1 + 0x18) + (param_2 & 0xffff) * 2) == -1;
+  index = (param_2 & 0xffff) * 2;
+  base = *(u8 **)(param_1 + 0x18);
+  value = *(s16 *)(base + index);
+
+  return value == -1;
 
 }
 
@@ -56827,43 +56705,31 @@ void FUN_00352b80(u64 param_1)
 
 
 
-// FUN_00352C30 NONMATCHING
+#pragma alias DAT_00957bd0_abs DAT_00957bd0
+#pragma alias DAT_00957bd4_abs DAT_00957bd4
+#pragma alias DAT_00957bd8_abs DAT_00957bd8
+#pragma alias DAT_00957bdc_abs DAT_00957bdc
+#pragma alias DAT_00957be0_abs DAT_00957be0
+extern u32 DAT_00957bd0_abs[];
+extern u32 DAT_00957bd4_abs[];
+extern u32 DAT_00957bd8_abs[];
+extern u32 DAT_00957bdc_abs[];
+extern u32 DAT_00957be0_abs[];
 
-
+#pragma schedule off
+// FUN_00352C30
 void FUN_00352c30(u32 param_1,u32 param_2)
-
-
-
 {
-
-  DAT_00957bd0 = param_1;
-
-  DAT_00957bd4 = param_2;
-
-  return;
-
+  DAT_00957bd0_abs[0] = param_1;
+  DAT_00957bd4_abs[0] = param_2;
 }
 
-
-
-
-// FUN_00352C50 NONMATCHING
-
-
+// FUN_00352C50
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
-
-
-
 {
-
-  DAT_00957bd8 = param_1;
-
-  DAT_00957bdc = param_2;
-
-  DAT_00957be0 = param_3;
-
-  return;
-
+  DAT_00957bd8_abs[0] = param_1;
+  DAT_00957bdc_abs[0] = param_2;
+  DAT_00957be0_abs[0] = param_3;
 }
 
 

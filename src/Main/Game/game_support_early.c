@@ -58,7 +58,7 @@ u32 func_001885a0(void)
     return 1;
 }
 
-// FUN_001885F0 NONMATCHING
+// FUN_001885F0
 u32 func_001885f0(void)
 {
     u32 state;
@@ -67,9 +67,10 @@ u32 func_001885f0(void)
     if (state == 3)
     {
         DAT_007ce000 = NULL;
+        return 1;
     }
 
-    return state == 3;
+    return 0;
 }
 
 // FUN_00188640
@@ -181,10 +182,11 @@ void func_00188830(KwlnTask* task)
     (*(void (**)(void*))jtbl_0096017C)(task->workData);
 }
 
-// FUN_00188860 NONMATCHING
+// FUN_00188860
 KwlnTask* func_00188860(KwlnTask* parentTask)
 {
     void* work;
+    KwlnTask* task;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0x10, 0x40000);
     if (work == NULL)
@@ -192,15 +194,20 @@ KwlnTask* func_00188860(KwlnTask* parentTask)
         return NULL;
     }
 
-    return kwlnTaskCreateWithAutoPriority(parentTask,
+    task = kwlnTaskCreateWithAutoPriority(parentTask,
                                           0x106f,
                                           D_005E42F0,
                                           func_00188690,
                                           func_00188830,
                                           work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+    return task;
 }
 
-// FUN_00188900 NONMATCHING
+// FUN_00188900
 void* func_00188900(KwlnTask* task)
 {
     GameSupportLoadWork* work;
@@ -264,15 +271,17 @@ void* func_00188900(KwlnTask* task)
             if (status == 3)
             {
                 status = func_004204f0(work->transitionTask);
-                if (status != 0)
+                if (status == 0)
+                {
+                    work->task = func_004214e0(task, 1);
+                    func_004215b0(work->task, 0x13);
+                    work->state = 3;
+                }
+                else
                 {
                     func_00421650(work->task);
                     return KWLNTASK_STOP;
                 }
-
-                work->task = func_004214e0(task, 1);
-                func_004215b0(work->task, 0x13);
-                work->state = 3;
             }
             break;
     }
@@ -286,30 +295,36 @@ void func_00188b20(KwlnTask* task)
     (*(void (**)(void*))jtbl_0096017C)(task->workData);
 }
 
-// FUN_00188B50 NONMATCHING
+// FUN_00188B50
 u32 func_00188b50(void)
 {
     void* work;
+    KwlnTask* created;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xc, 0x40000);
-    if (work != NULL)
+    if (work == NULL)
     {
-        uGpffffb314 = kwlnTaskCreateWithAutoPriority(NULL,
-                                                      0x106f,
-                                                      D_005E4308,
-                                                      func_00188900,
-                                                      func_00188b20,
-                                                      work);
+        created = NULL;
     }
     else
     {
-        uGpffffb314 = NULL;
+        created = kwlnTaskCreateWithAutoPriority(NULL,
+                                                 0x106f,
+                                                 D_005E4308,
+                                                 func_00188900,
+                                                 func_00188b20,
+                                                 work);
+        if (created == NULL)
+        {
+            created = NULL;
+        }
     }
+    uGpffffb314 = created;
 
     return 1;
 }
 
-// FUN_00188BE0 NONMATCHING
+// FUN_00188BE0
 u32 func_00188be0(void)
 {
     u32 state;
@@ -318,7 +333,8 @@ u32 func_00188be0(void)
     if (state == 3)
     {
         uGpffffb314 = NULL;
+        return 1;
     }
 
-    return state == 3;
+    return 0;
 }

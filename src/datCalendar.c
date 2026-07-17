@@ -2018,7 +2018,7 @@ extern void (*D_00960094)(u32 state, void* value);
 
 #define CLND_SCENARIO_TABLE ((CalendarScenarioEntry*)0x0083ab30)
 
-// FUN_00181B70 NONMATCHING
+// FUN_00181B70
 void func_00181b70(void)
 {
     CalendarFieldSequenceData fieldData;
@@ -2028,13 +2028,7 @@ void func_00181b70(void)
         u32 reserved04;
     } dungeonData;
 
-    if (gGlobalWork.savedDungeonFloor != 0)
-    {
-        dungeonData.floor = FUN_0016f380(0x35);
-        dungeonData.reserved04 = 0xff;
-        adminiChangeSeq(ADMINI_SEQ_DUNGEON, &dungeonData, 8, false);
-    }
-    else
+    if (gGlobalWork.savedDungeonFloor == 0)
     {
         func_0017f8d0();
         fieldData.unk_00 = (u16)gGlobalWork.savedFldMajorId;
@@ -2043,24 +2037,34 @@ void func_00181b70(void)
         fieldData.unk_08 = 0;
         adminiChangeSeq(ADMINI_SEQ_FIELD, &fieldData, 0x1c, false);
     }
+    else
+    {
+        dungeonData.floor = FUN_0016f380(0x35);
+        dungeonData.reserved04 = 0xff;
+        adminiChangeSeq(ADMINI_SEQ_DUNGEON, &dungeonData, 8, false);
+    }
 }
 
 // FUN_00181C20 NONMATCHING
 u32 func_00181c20(void)
 {
     s32 timeSkip;
-    s16 days;
-
+    s32 days;
     timeSkip = scrGetIntPara(0);
     days = datGetDaysSinceApr5();
-    timeSkip += datGetTime() & 0xff;
-    while (timeSkip >= 9)
+    timeSkip = (datGetTime() & 0xff) + timeSkip;
+    while (true)
     {
+        if (timeSkip < 9)
+        {
+            break;
+        }
+
         timeSkip -= 9;
         days++;
     }
     datSetDaysSkipTarget(days);
-    datSetTimeSkipTarget((s8)timeSkip);
+    datSetTimeSkipTarget(timeSkip);
     datSetSkipToTarget(1);
     return 1;
 }

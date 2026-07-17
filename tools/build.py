@@ -37,6 +37,7 @@ IMAGE = REPO / "image.bin"
 sys.path.insert(0, str(REPO / "tools"))
 import verify as V  # noqa: E402
 import asm as A  # noqa: E402
+import build_cache as BC  # noqa: E402
 
 IMAGE_SHA1 = "9203646d9aa48ff24eb4ba4b328b02df468a9483"
 IMAGE_SIZE = 0x8ACC80
@@ -64,6 +65,10 @@ def cfg():
     if not c.get("mwcc"):
         sys.exit("build: set mwcc in tools/verify_config.local.json or P3_MWCC")
     c["ld_exe"] = str(Path(c["mwcc"]).with_name("mwldps2.exe"))
+    c["cflags"] = c.get("cflags", ["-O2"])
+    if not isinstance(c["cflags"], list) or not all(isinstance(flag, str) for flag in c["cflags"]):
+        sys.exit("build: cflags in tools/verify_config*.json must be a JSON string list")
+    c["compile_flags"] = [*c["cflags"], "-Iinclude"]
     return c
 
 
@@ -537,7 +542,7 @@ def plan_data_sections(obj, real, retail, gp, resolvable, resolvable_addrs=None)
     return True, per_name
 
 
-def eligible_c_objects(c, resolvable, boundaries, gp):
+def eligible_c_objects(c, resolvable, boundaries, gp, cache):
     """Select decompiled TUs to link as real C objects: all markers match,
     contiguous function range, every external ref resolvable, and every owned
     data section placeable byte-exact. Returns dicts with .text range + data
@@ -550,7 +555,7 @@ def eligible_c_objects(c, resolvable, boundaries, gp):
         real = [m for m in markers if m["name"]]
         if not real or any(m["stub"] or m["nonmatching"] for m in real):
             continue
-        obj, _ = V.compile_object(cpath, c)
+        obj = compile_eligibility(c, cpath, cache)
         if obj is None:
             continue
         symtab = {s["name"]: s.get("shndx", 0) for s in obj.symbols}
@@ -713,14 +718,98 @@ def build_data_carved(name, lo, hi, data_carves, entries):
         entries.append((VRAM + a, obj, f".{name}"))
 
 
-def compile_c(c, src, obj):
-    obj.parent.mkdir(parents=True, exist_ok=True)
+def _include_dirs(flags):
+    directories = []
+    index = 0
+    while index < len(flags):
+        flag = flags[index]
+        if flag == "-I" and index + 1 < len(flags):
+            index += 1
+            value = flags[index]
+        elif flag.startswith("-I") and len(flag) > 2:
+            value = flag[2:]
+        else:
+            index += 1
+            continue
+        path = Path(value)
+        directories.append(path if path.is_absolute() else REPO / path)
+        index += 1
+    return directories
+
+
+def _cache_inputs(mode):
+    inputs = [Path(__file__), Path(BC.__file__)]
+    if mode == "eligibility":
+        inputs.append(Path(V.__file__))
+    else:
+        inputs.extend(sorted((REPO / "tools" / "mwccgap").rglob("*.py")))
+        inputs.append(ASM / "macro.inc")
+    return inputs
+
+
+def _cache_tools(c, mode):
+    tools = {"mwcc": c["mwcc"]}
+    if mode == "link":
+        tools.update({
+            "assembler": AS_TOOL.argv,
+            "objcopy": OBJCOPY_TOOL.argv,
+        })
+    return tools
+
+
+def compile_eligibility(c, src, cache):
+    relative = src.relative_to(REPO)
+    obj = OBJ / "eligibility" / (relative.as_posix().replace("/", "_") + ".o")
+
+    def produce(temporary):
+        command = [c["mwcc"], *c["compile_flags"], "-c", str(src), "-o", str(temporary)]
+        process = subprocess.run(command, cwd=REPO, stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, text=True)
+        return process.returncode == 0 and temporary.is_file(), process.stdout
+
+    compiled, _log = cache.build(
+        mode="eligibility",
+        output=obj,
+        source=src,
+        include_dirs=_include_dirs(c["compile_flags"]),
+        flags=c["compile_flags"],
+        tools=_cache_tools(c, "eligibility"),
+        inputs=_cache_inputs("eligibility"),
+        producer=produce,
+    )
+    return V.ObjectFile(obj) if compiled else None
+
+
+def compile_c(c, src, obj, cache):
     mwccgap = REPO / "tools" / "mwccgap" / "mwccgap.py"
-    sh([sys.executable, str(mwccgap), str(src), str(obj),
+    command_flags = [
         "--mwcc-path", c["mwcc"], "--macro-inc-path", str(ASM / "macro.inc"),
-        "--as-march", "r5900", "--as-mabi", "eabi", "-O2", "-Iinclude"],
-       cwd=str(REPO))
-    progbitsify(obj)
+        "--as-march", "r5900", "--as-mabi", "eabi", *c["cflags"], "-Iinclude",
+    ]
+    if not AS_TOOL.wsl and len(AS_TOOL.argv) == 1:
+        command_flags[0:0] = ["--as-path", AS_TOOL.argv[0]]
+
+    def produce(temporary):
+        sh([sys.executable, str(mwccgap), str(src), str(temporary), *command_flags],
+           cwd=str(REPO))
+        progbitsify(temporary)
+        return True, ""
+
+    compiled, log = cache.build(
+        mode="link",
+        output=obj,
+        source=src,
+        include_dirs=_include_dirs(c["compile_flags"]),
+        flags=command_flags,
+        tools=_cache_tools(c, "link"),
+        inputs=_cache_inputs("link"),
+        values=CACHE_TOOL_VERSIONS,
+        producer=produce,
+    )
+    if not compiled:
+        if log:
+            sys.stderr.write(log)
+        sys.exit(f"build: failed to compile {src.relative_to(REPO)}")
 
 
 # ---------------------------------------------------------------- link
@@ -875,10 +964,11 @@ def build_matching_elf(c, n_cobj):
 
 AS_TOOL = None
 OBJCOPY_TOOL = None
+CACHE_TOOL_VERSIONS = {}
 
 
 def main():
-    global AS_TOOL, OBJCOPY_TOOL
+    global AS_TOOL, OBJCOPY_TOOL, CACHE_TOOL_VERSIONS
     parser = argparse.ArgumentParser()
     parser.add_argument("--progress-report", type=Path, metavar="PATH")
     parser.add_argument("--setup-only", action="store_true")
@@ -903,11 +993,21 @@ def main():
 
     AS_TOOL = A.find_gnu_tool("mipsel-linux-gnu-as", "P3_AS")
     OBJCOPY_TOOL = A.find_gnu_tool("mipsel-linux-gnu-objcopy", "P3_OBJCOPY")
+    CACHE_TOOL_VERSIONS = {
+        "assembler": BC.tool_version_identity(AS_TOOL.argv),
+        "objcopy": BC.tool_version_identity(OBJCOPY_TOOL.argv),
+        "python": {
+            "implementation": sys.implementation.name,
+            "cache_tag": sys.implementation.cache_tag,
+            "version": list(sys.version_info[:3]),
+        },
+    }
+    cache = BC.ObjectCache(BUILD / "cache" / "c", REPO)
 
     gp, defs = load_lcf_symbols()
     resolvable = set(defs) | load_symbol_names()
     boundaries = load_windows()
-    cobjs = eligible_c_objects(c, resolvable, boundaries, gp) if c.get("retail_elf") else []
+    cobjs = eligible_c_objects(c, resolvable, boundaries, gp, cache) if c.get("retail_elf") else []
     print(f"eligible C objects: {len(cobjs)}  "
           f"({', '.join(o['src'].name for o in cobjs) if cobjs else 'none'})")
     linked_functions = linked_function_records(cobjs, boundaries)
@@ -919,13 +1019,14 @@ def main():
     data_carves = []
     for o in cobjs:
         cobj = OBJ / (o["src"].relative_to(REPO / "src").as_posix().replace("/", "_") + ".o")
-        compile_c(c, o["src"], cobj)
+        compile_c(c, o["src"], cobj, cache)
         o["obj"] = cobj
         entries.append((o["start"], cobj, ".text"))
         c_text_ranges.append((o["start"], o["end"], o))
         for sname, (base, size) in o["sections"].items():
             entries.append((base, cobj, sname))
             data_carves.append((base, base + size))
+    print(cache.summary(("eligibility", "link")))
 
     # Splat asm references carved functions by their symbol_addrs names; when a
     # C object exports a canonical name instead, define the splat name as an

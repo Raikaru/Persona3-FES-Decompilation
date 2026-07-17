@@ -37,8 +37,8 @@ u32 uGpffffb9a8;
 f32 func_00171510(s16 row, s16 column);
 void FUN_003eff00(u64 param_1,u8 *param_2);
 u8 * FUN_003efff0(long param_1);
-u16 FUN_003f0090(int param_1);
-u16 FUN_003f00b0(int param_1);
+s16 FUN_003f0090(int param_1);
+s16 FUN_003f00b0(int param_1);
 int FUN_003f00d0(int *param_1,u64 param_2,int *param_3);
 void FUN_003f01d0(int param_1,int param_2,u64 param_3);
 u32 FUN_003f0240(int param_1);
@@ -296,8 +296,8 @@ u32 DAT_007ce420;
 u32 DAT_007ce4e8;
 u32 DAT_006ac9d0;
 u32 DAT_006acc60;
-u32 DAT_006acc70;
-u32 DAT_006acc72;
+extern u8 DAT_006acc70[];
+extern u8 DAT_006acc72[];
 u32 DAT_006acca0;
 u32 DAT_006aedc0;
 u32 DAT_006aedc4;
@@ -546,29 +546,29 @@ u8 * FUN_003efff0(long param_1)
 
 }
 
-// FUN_003F0090 NONMATCHING
+// FUN_003F0090
 
 
-u16 FUN_003f0090(int param_1)
+s16 FUN_003f0090(int param_1)
 
 
 
 {
 
-  return *(u16 *)(&DAT_006acc70 + param_1 * 4);
+  return *(s16 *)(DAT_006acc70 + param_1 * 4);
 
 }
 
-// FUN_003F00B0 NONMATCHING
+// FUN_003F00B0
 
 
-u16 FUN_003f00b0(int param_1)
+s16 FUN_003f00b0(int param_1)
 
 
 
 {
 
-  return *(u16 *)(&DAT_006acc72 + param_1 * 4);
+  return *(s16 *)(DAT_006acc72 + param_1 * 4);
 
 }
 

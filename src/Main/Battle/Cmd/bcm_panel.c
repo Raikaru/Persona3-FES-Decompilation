@@ -6,9 +6,10 @@ u32 FUN_0021c3f0();
 u32 FUN_0021cca0();
 void FUN_0021d3b0();
 u32 FUN_0021cce0();
-extern void (*D_00960090)(u32, u32);
-extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+extern u32 D_00960090[];
+extern u32 D_0096009C[];
 extern void RpSkyRenderStateSet(u32, void*);
+extern void* FUN_00198590(void);
 void FUN_00226320();
 void FUN_00222d60();
 void FUN_0021e380();
@@ -28,13 +29,13 @@ void FUN_00238980();
 void FUN_00238bf0();
 void FUN_00238dc0();
 void FUN_0022e780(u32*, u32);
-void FUN_0022e900(u32*, u32);
-void FUN_0022e9a0(u32*, u32);
+void FUN_0022e900(u32*, s32);
+void FUN_0022e9a0(u32*, s32);
 void FUN_0022ea40(u32*, u32);
-void FUN_0022eb30(u32*, u32, u32);
 void FUN_0022ecb0(u8*, u8*, f32);
+extern void FUN_003b1360();
 u32 FUN_0022e850(u32);
-void FUN_0022f1c0(u32*, u32);
+void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
 void FUN_0022fa80(u32*);
 void FUN_0022C210();
@@ -246,34 +247,41 @@ void bcmPanel00222fa0(void)
 // FUN_00222b90 NONMATCHING
 void FUN_00222b90(void)
 {
-    u32* work;
     u32 table0;
+    u32 resource;
+    s32 i;
     u32 table6;
-    u8* record;
-    u32 i;
     u32 state;
+    u8* record;
+    u8* records;
+    u8* work;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    work = sBcmPanel;
+    work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
+    records = work + 0x4660;
     table6 = FUN_0021c3f0(6);
-    K_ASSERT((work[1] & 2) != 0, 0x60d);
-    for (i = 0; i < work[0x181c]; i++)
-    {
-        record = bcm_panel_record(i);
+    K_ASSERT((*(u32*)(work + 4) & 2) != 0, 0x60d);
+    resource = 0;
+    i = 0;
+    while (i < *(s32*)(work + 0x6070)) {
+        record = records + i * 0x510;
         state = *(u32*)(record + 8);
-        if (state == 0)
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table0, 0x30));
-        else if (state == 1)
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table0, 0x31));
-        else
-            continue;
-        FUN_00238980(record + 0x110, 3, *(u32*)(record + 0x0c), 1);
-        FUN_0021d3b0(record + 0x410, FUN_0021cca0(table6, 0x2b));
+        if (state == 1) {
+            resource = FUN_0021cca0(table0, 0x31);
+        } else if (state == 0) {
+            resource = FUN_0021cca0(table0, 0x30);
+        }
+        FUN_0021d3b0(record + 0x10, resource);
+        FUN_00238980(record + 0x110, 3, *(u32*)(record + 0xc), 1);
+        resource = FUN_0021cca0(table6, 0x2b);
+        FUN_0021d3b0(record + 0x410, resource);
+        i++;
     }
-    if (*(u32*)((u8*)work + 0x68f8) != 0)
-        FUN_0021d3b0((u8*)work + 0x6900,
-                     FUN_0021cca0(table6, *(u32*)((u8*)work + 0x68f4) + 0x20));
+    if (*(u32*)(work + 0x68f8) != 0) {
+        resource = FUN_0021cca0(table6, *(u32*)(work + 0x68f4) + 0x20);
+        FUN_0021d3b0(work + 0x6900, resource);
+    }
 }
 // FUN_00222d60 NONMATCHING
 void FUN_00222d60(void)
@@ -471,46 +479,61 @@ void FUN_00224150(void)
     }
 }
 
-// FUN_00224660 NONMATCHING
+// FUN_00224660
 void FUN_00224660(void)
 {
-    u32 i;
-    u32 table;
-    u32 count;
+    u8* work;
+    u8* records;
+    u32 table0;
+    u32 table1;
+    u32 table3;
+    s32 i;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    table = FUN_0021c3f0(0);
-    bcm_panel_write(0, bcm_panel_read(0) | 2);
-    bcm_panel_write(4, 8);
-    bcm_panel_write(0x4630, 3);
-    bcm_panel_write(0x4640, bcm_panel_read(0x463c));
-    bcm_panel_write(0x463c, 4);
-    bcm_panel_write(0x4650, 0);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table1 = FUN_0021c3f0(1);
+    table3 = FUN_0021c3f0(3);
+    records = work + 0x4660;
+    *(u32*)work |= 2;
+    *(u32*)(work + 4) = 0;
+    *(u32*)(work + 4) |= 8;
+    *(u32*)(work + 0x4630) = 3;
+    *(u32*)(work + 0x4640) = *(u32*)(work + 0x463c);
+    *(u32*)(work + 0x463c) = 4;
+    *(u32*)(work + 0x4650) = 0;
     FUN_00226320();
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x1230, 0, bcm_panel_read(0x4634));
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x1330, 0, bcm_panel_read(0x4634) + 7);
-    FUN_0021d3b0(bcm_panel_bytes() + 0x4230, FUN_0021cca0(table, 0x24));
-    FUN_0021e380(bcm_panel_bytes() + 0x4330,
-                 FUN_0021cca0(table, 0x24), 1);
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x4f50, 0, 0x13);
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x5050, 0, 0x4b);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        bcm_panel_set_resource(bcm_panel_record(i) + 0x10, 0, 0x44);
+    FUN_0021d3b0(work + 0x1230,
+                 FUN_0021cca0(table0, *(u32*)(work + 0x4634)));
+    FUN_0021d3b0(work + 0x1330,
+                 FUN_0021cca0(table0, *(u32*)(work + 0x4634) + 7));
+    FUN_0021d3b0(work + 0x4230, FUN_0021cca0(table0, 0x24));
+    FUN_0021e380(work + 0x4330, FUN_0021cca0(table0, 0x24), 1);
+    FUN_0021d3b0(records + 0xf50, FUN_0021cca0(table3, 0x13));
+    FUN_0021d3b0(records + 0x1050, FUN_0021cca0(table1, 0x4b));
+    i = 0;
+    while (i < *(s32*)(work + 0x6070)) {
+        FUN_0021d3b0(records + i * 0x310,
+                     FUN_0021cca0(table0, 0x44));
+        i++;
     }
     FUN_00224860();
 }
 
-// FUN_00224860 NONMATCHING
+// FUN_00224860
 void FUN_00224860(void)
 {
-    u32 i;
-    u32 count;
+    u8* base;
+    u8* records;
+    s32 i;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
+    base = (u8*)sBcmPanel;
+    FUN_0021c3f0(0);
+    records = base + 0x4660;
+    K_ASSERT((*(u32*)(base + 4) & 8) != 0, 0x88e);
+    for (i = 0; i < *(s32*)(base + 0x6070); ++i) {
+        u8* record = records + i * 0x310;
         FUN_00238980(record + 0x100, 2, *(u32*)(record + 0x304), 1);
     }
 }
@@ -585,15 +608,20 @@ void FUN_002254A0(void)
     FUN_00225670();
 }
 
-// FUN_002255F0 NONMATCHING
+// FUN_002255F0
 void FUN_002255F0(void)
 {
+    u32* puVar1;
+    u32 uVar2;
+
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    bcm_panel_write(0x4630, 5);
-    bcm_panel_write(0x4658, 0);
-    bcm_panel_write(0, bcm_panel_read(0) | 8);
-    bcm_panel_write(0x4644, 0);
-    bcm_panel_write(0x4648, 1);
+    puVar1 = sBcmPanel;
+    uVar2 = FUN_0021c3f0(0);
+    puVar1[0x118c] = 5;
+    puVar1[0x1196] = 0;
+    puVar1[0] |= 8;
+    puVar1[0x1191] = 0;
+    puVar1[0x1192] = 1;
 }
 
 // FUN_00225670 NONMATCHING
@@ -678,22 +706,52 @@ void FUN_00226040(void)
     }
 }
 
-// FUN_00226320 NONMATCHING
+// FUN_00226320
 void FUN_00226320(void)
 {
-    u32 i;
     u32 table;
     u8* base;
+    u32 state;
+    s32 i;
+    u32 resource;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
+    base = (u8*)sBcmPanel;
     table = FUN_0021c3f0(0);
-    for (i = 0; i < 6; ++i) {
-        u8* slot = base + 0x6050 + i * 0x10;
-        FUN_0021d3b0(slot, FUN_0021cca0(table, 0x24));
-        *(u32*)(slot + 0xc) = i;
+    state = *(u32*)(base + 0x7210);
+    if (state == 2) {
+        goto panel_setup;
     }
-    bcm_panel_write(0x7210, 0);
+    if (state == 1) {
+        goto panel_setup;
+    }
+    switch (state) {
+    case 0:
+        goto panel_setup;
+    default:
+        goto panel_tail;
+    }
+panel_setup:
+    FUN_0021d3b0(base + 0x1530, FUN_0021cca0(table, 0x1e));
+    FUN_0021d3b0(base + 0x1630, FUN_0021cca0(table, 0x1f));
+    FUN_0021d3b0(base + 0x1730, FUN_0021cca0(table, 0x20));
+    FUN_0021d3b0(base + 0x1830, FUN_0021cca0(table, 0x21));
+    FUN_0021e380(base + 0x1930, FUN_0021cca0(table, 0x1e), 1);
+    FUN_0021e380(base + 0x1a30, FUN_0021cca0(table, 0x1f), 1);
+    FUN_0021e380(base + 0x1b30, FUN_0021cca0(table, 0x1f), 0);
+    FUN_0021e380(base + 0x1c30, FUN_0021cca0(table, 0x21), 0);
+    FUN_0021e380(base + 0x1d30, FUN_0021cca0(table, 0x1f), 4);
+panel_tail:
+    FUN_0021d3b0(base + 0x2130, FUN_0021cca0(table, 0x1d));
+    FUN_0021d3b0(base + 0x1e30, FUN_0021cca0(table, 0x26));
+    FUN_0021d3b0(base + 0x1f30, FUN_0021cca0(table, 0x27));
+    FUN_0021e380(base + 0x2030, FUN_0021cca0(table, 0x26), 2);
+    resource = FUN_0021cca0(table, 0x2c);
+    for (i = 0; i < 6; ++i) {
+        u8* slot = base + i * 0x200;
+        FUN_0021d3b0(slot + 0x2230, resource);
+        FUN_0021e380(slot + 0x2330, resource, 1);
+    }
 }
 
 // FUN_002265D0 NONMATCHING
@@ -742,21 +800,32 @@ void FUN_00227800(void)
     *(u32*)(base + 0x7210) = count;
 }
 
-// FUN_00227D10 NONMATCHING
+// FUN_00227D10
 void FUN_00227D10(void)
 {
-    u32 i;
-    u32 count;
+    s32 i;
+    u8* base;
     u32 table;
+    u32 resource;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
+    base = (u8*)sBcmPanel;
     table = FUN_0021c3f0(0);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        FUN_0021d3b0(record + 0x10, FUN_0021cca0(table, 0x2f));
-        FUN_0021e380(record + 0x110,
-                     FUN_0021cca0(table, 0x29), 1);
+    FUN_0021d3b0(base + 0x2e30, FUN_0021cca0(table, 0x1e));
+    FUN_0021d3b0(base + 0x2f30, FUN_0021cca0(table, 0x1f));
+    FUN_0021d3b0(base + 0x3030, FUN_0021cca0(table, 0x20));
+    FUN_0021d3b0(base + 0x3130, FUN_0021cca0(table, 0x21));
+    FUN_0021e380(base + 0x3230, FUN_0021cca0(table, 0x1e), 1);
+    FUN_0021e380(base + 0x3330, FUN_0021cca0(table, 0x1f), 1);
+    FUN_0021d3b0(base + 0x3730, FUN_0021cca0(table, 0x1d));
+    FUN_0021d3b0(base + 0x3430, FUN_0021cca0(table, 0x26));
+    FUN_0021d3b0(base + 0x3530, FUN_0021cca0(table, 0x27));
+    FUN_0021e380(base + 0x3630, FUN_0021cca0(table, 0x26), 2);
+    resource = FUN_0021cca0(table, 0x2c);
+    for (i = 0; i < 5; ++i) {
+        u8* record = base + (i << 9);
+        FUN_0021d3b0(record + 0x3830, resource);
+        FUN_0021e380(record + 0x3930, resource, 1);
     }
 }
 
@@ -901,9 +970,7 @@ void FUN_0022B630(void)
         *(u32*)(record + 0x9c) = 0;
     }
     bcm_panel_write(0x463c, 3);
-    *(u32*)(base + 0x68f0) = count;
 }
-
 // FUN_0022BCF0 NONMATCHING
 void FUN_0022BCF0(void)
 {
@@ -921,19 +988,43 @@ void FUN_0022BCF0(void)
     }
     *(u32*)(base + 0x463c) = 3;
 }
-
-// FUN_0022BF60 NONMATCHING
+// FUN_0022BF60
 void FUN_0022BF60(void)
 {
-    u32 table;
     u8* base;
+    u8* slot;
+    u32 table0;
+    u32 table6;
+    u32 resource;
+    u32 state;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    table = FUN_0021c3f0(0);
+    base = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
     FUN_0022C210();
-    FUN_0021d3b0(base + 0x6d00, FUN_0021cca0(table, 0x42));
-    bcm_panel_write(0x4644, 3);
+    slot = base + 0x6d00;
+    state = *(u32*)(slot + 8);
+    if (state == 1) {
+        goto panel_resource_31;
+    }
+    switch (state) {
+    case 0:
+        goto panel_resource_30;
+    default:
+        goto panel_resource_done;
+    }
+panel_resource_30:
+    resource = FUN_0021cca0(table0, 0x30);
+    goto panel_resource_done;
+panel_resource_31:
+    resource = FUN_0021cca0(table0, 0x31);
+panel_resource_done:
+    FUN_0021d3b0(slot + 0x10, resource);
+    FUN_00238980(slot + 0x110, 3, *(u32*)(slot + 0xc), 1);
+    resource = FUN_0021cca0(table6, 0x2b);
+    FUN_0021d3b0(slot + 0x410, resource);
+    *(u32*)(base + 0x4644) = 3;
 }
 
 // FUN_0022C0A0
@@ -943,25 +1034,27 @@ void FUN_0022C0A0(void)
     *(u32*)((int)sBcmPanel + 0x4644) = 0;
 }
 
-// FUN_0022C0E0 NONMATCHING
+// FUN_0022C0E0
 void FUN_0022C0E0(void)
 {
-    u32* base;
+    u8* base;
+    u8* slot;
     u32 table0;
     u32 table6;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = sBcmPanel;
+    base = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
     table6 = FUN_0021c3f0(6);
     FUN_0022C210();
-    FUN_0021d3b0((u8*)base + 0x6d10,
+    slot = base + 0x6d00;
+    FUN_0021d3b0(slot + 0x10,
                  FUN_0021cca0(table0, 0x28));
-    FUN_00238980((u8*)base + 0x6e10, 2,
-                 *(u32*)((u8*)base + 0x6d04), 1);
-    FUN_0021d3b0((u8*)base + 0x6f10,
+    FUN_00238980(slot + 0x110, 2,
+                 *(u32*)(slot + 4), 1);
+    FUN_0021d3b0(slot + 0x310,
                  FUN_0021cca0(table6, 0x1a));
-    *(u32*)((u8*)base + 0x4644) = 4;
+    *(u32*)(base + 0x4644) = 4;
 }
 
 // FUN_0022C1D0
@@ -971,19 +1064,21 @@ void FUN_0022C1D0(void)
     *(u32*)((int)sBcmPanel + 0x4644) = 0;
 }
 
-// FUN_0022C210 NONMATCHING
+// FUN_0022C210
 void FUN_0022C210(void)
 {
     u8* base;
     u32 table;
+    u32 resource;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
+    base = (u8*)sBcmPanel;
     table = FUN_0021c3f0(0);
-    bcm_panel_set_resource(base + 0x6a00, 0, 0x42);
-    FUN_0021e380(base + 0x6b00,
-                 FUN_0021cca0(table, 0x42), 1);
-    bcm_panel_set_resource(base + 0x6c00, 0, 0x43);
+    resource = FUN_0021cca0(table, 0x42);
+    FUN_0021d3b0(base + 0x6a00, resource);
+    FUN_0021e380(base + 0x6b00, resource, 1);
+    FUN_0021d3b0(base + 0x6c00,
+                 FUN_0021cca0(table, 0x43));
 }
 
 // FUN_0022C2D0 NONMATCHING
@@ -1015,28 +1110,34 @@ void FUN_0022C5A0(void)
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     base = (u8*)sBcmPanel;
     resource = FUN_0021cca0(FUN_0021c3f0(0), 0x42);
-    (*D_00960090)(1, FUN_0021cce0(resource));
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    (*D_0096009C)((u32*)(base + 0x6a00), 4, 0, 1, 2);
-    (*D_0096009C)((u32*)(base + 0x6a00), 4, 0, 2, 3);
-    (*D_0096009C)((u32*)(base + 0x6b00), 4, 0, 1, 2);
-    (*D_0096009C)((u32*)(base + 0x6b00), 4, 0, 2, 3);
-    (*D_0096009C)((u32*)(base + 0x6c00), 4, 0, 1, 2);
-    (*D_0096009C)((u32*)(base + 0x6c00), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6a00), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6a00), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6b00), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6b00), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6c00), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)(base + 0x6c00), 4, 0, 2, 3);
 }
 
-// FUN_0022C720 NONMATCHING
+// FUN_0022C720
 void FUN_0022c720(u32* object, u32 style)
 {
-    u32 resource;
     u32 table;
+    u32 resource;
 
     object[0] = 0;
+    table = FUN_0021c3f0(3);
     *(f32*)((u8*)object + 0x510) = 100.0f;
     *(f32*)((u8*)object + 0x514) = 100.0f;
     *(u16*)((u8*)object + 4) = (u16)style;
-    table = FUN_0021c3f0(3);
     resource = FUN_0021c450(style);
     FUN_0021d3b0((u8*)object + 0x10,
                  FUN_0021cca0(resource, 0));
@@ -1044,6 +1145,7 @@ void FUN_0022c720(u32* object, u32 style)
     FUN_0021d3b0((u8*)object + 0x110, resource);
     FUN_0021d3b0((u8*)object + 0x210, resource);
     FUN_0021d3b0((u8*)object + 0x310, resource);
+    FUN_0021d3b0((u8*)object + 0x410, resource);
     resource = FUN_0021cca0(table, 0xa);
     FUN_0021d3b0((u8*)object + 0x630, resource);
     FUN_0021d3b0((u8*)object + 0x730, resource);
@@ -1111,7 +1213,7 @@ void FUN_0022df10(u32* object)
     }
 }
 
-// FUN_0022E780 NONMATCHING
+// FUN_0022E780
 void FUN_0022e780(u32* object, u32 command)
 {
     u32* panel;
@@ -1123,22 +1225,20 @@ void FUN_0022e780(u32* object, u32 command)
     style = command;
     panel[0x14a] = style;
     table = FUN_0021c3f0(3);
-    if (style < 6) {
-        switch (style) {
-        case 0:
-            panel[0] &= ~3u;
-            break;
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            mapped = FUN_0022e850(panel[0x14a]);
-            FUN_0021d3b0(panel + 0x14c,
-                         FUN_0021cca0(table, mapped));
-            panel[0] |= 2;
-            break;
-        }
+    switch (style) {
+    case 0:
+        panel[0] &= ~2u;
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        mapped = FUN_0022e850(panel[0x14a]);
+        FUN_0021d3b0(panel + 0x14c,
+                     FUN_0021cca0(table, mapped));
+        panel[0] |= 2;
+        break;
     }
 }
 
@@ -1162,8 +1262,8 @@ u32 FUN_0022e850(u32 command)
     }
 }
 
-// FUN_0022E900 NONMATCHING
-void FUN_0022e900(u32* object, u32 value)
+// FUN_0022E900
+void FUN_0022e900(u32* object, s32 value)
 {
     u8* resource;
     f32 denominator;
@@ -1172,13 +1272,13 @@ void FUN_0022e900(u32* object, u32 value)
     resource = (u8*)FUN_0021cca0(FUN_0021c3f0(5), 2);
     *(u32*)((u8*)object + 0x834) = value;
     FUN_0022ea40((u32*)((u8*)object + 0x860), value);
-    denominator = (f32)*(u32*)((u8*)object + 0x838);
+    denominator = (f32)*(s32*)((u8*)object + 0x838);
     scale = (f32)value / denominator;
     FUN_0022ecb0((u8*)object + 0xe60, resource, scale);
 }
 
-// FUN_0022E9A0 NONMATCHING
-void FUN_0022e9a0(u32* object, u32 value)
+// FUN_0022E9A0
+void FUN_0022e9a0(u32* object, s32 value)
 {
     u8* resource;
     f32 denominator;
@@ -1186,8 +1286,8 @@ void FUN_0022e9a0(u32* object, u32 value)
 
     resource = (u8*)FUN_0021cca0(FUN_0021c3f0(5), 3);
     *(u32*)((u8*)object + 0x83c) = value;
-    FUN_0022ea40((u32*)((u8*)object + 0xf60), value);
-    denominator = (f32)*(u32*)((u8*)object + 0x840);
+    FUN_0022ea40((u32*)((u8*)object + 0xb60), value);
+    denominator = (f32)*(s32*)((u8*)object + 0x840);
     scale = (f32)value / denominator;
     FUN_0022ecb0((u8*)object + 0xf60, resource, scale);
 }
@@ -1231,69 +1331,242 @@ void FUN_0022eb30(u32* object, u32 value, u32 colour)
     }
 }
 
-// FUN_0022ECB0 NONMATCHING
+// FUN_0022ECB0
 void FUN_0022ecb0(u8* destination, u8* source, f32 scale)
 {
-    u32 i;
-    if (destination == NULL || source == NULL) {
-        return;
+    f32 values[4];
+    f32 factor;
+    f32 converted;
+    u32 value;
+    volatile u8* depth;
+
+    factor = 1.0f / *(f32*)((u8*)FUN_00198590() + 0x80);
+    FUN_0021cd00(source, values);
+    values[2] = values[0] + scale * (values[2] - values[0]);
+
+    *(f32*)(destination + 0x10) = values[0];
+    *(f32*)(destination + 0x14) = values[1];
+    *(f32*)(destination + 0x18) = factor;
+    depth = (u8*)D_00960090 - 8;
+    *(f32*)(destination + 0x08) = *(f32*)depth;
+
+    value = source[0x1c];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
     }
-    for (i = 0; i < 4; ++i) {
-        f32 value = *(f32*)(source + i * 4);
-        *(f32*)(destination + i * 4) = value * scale;
+    *(f32*)(destination + 0x20) = converted;
+    value = source[0x1d];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
     }
+    *(f32*)(destination + 0x24) = converted;
+    value = source[0x1e];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x28) = converted;
+    value = source[0x1f];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x2c) = converted;
+
+    *(f32*)(destination + 0x50) = values[2];
+    *(f32*)(destination + 0x54) = values[1];
+    *(f32*)(destination + 0x58) = factor;
+    *(f32*)(destination + 0x48) = *(f32*)depth;
+
+    value = source[0x20];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x60) = converted;
+    value = source[0x21];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x64) = converted;
+    value = source[0x22];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x68) = converted;
+    value = source[0x23];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0x6c) = converted;
+
+    *(f32*)(destination + 0x90) = values[2];
+    *(f32*)(destination + 0x94) = values[3];
+    *(f32*)(destination + 0x98) = factor;
+    *(f32*)(destination + 0x88) = *(f32*)depth;
+
+    value = source[0x24];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xa0) = converted;
+    value = source[0x25];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xa4) = converted;
+    value = source[0x26];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xa8) = converted;
+    value = source[0x27];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xac) = converted;
+
+    *(f32*)(destination + 0xd0) = values[0];
+    *(f32*)(destination + 0xd4) = values[3];
+    *(f32*)(destination + 0xd8) = factor;
+    *(f32*)(destination + 0xc8) = *(f32*)depth;
+
+    value = source[0x28];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xe0) = converted;
+    value = source[0x29];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xe4) = converted;
+    value = source[0x2a];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xe8) = converted;
+    value = source[0x2b];
+    if (value >= 0) {
+        converted = (f32)value;
+    } else {
+        value = (value >> 1) | (value & 1);
+        converted = (f32)value;
+        converted += converted;
+    }
+    *(f32*)(destination + 0xec) = converted;
 }
 
-// FUN_0022F1C0 NONMATCHING
-void FUN_0022f1c0(u32* object, u32 event)
+// FUN_0022F1C0
+void FUN_0022f1c0(u32* object, u64 event)
 {
-    u32 code;
-    if (object == NULL) {
-        return;
+    u32 status;
+    u64 code;
+
+    status = object[0];
+    if ((status & 4) != 0) {
+        object[0] = status & ~4u;
     }
-    if ((object[0] & 4) != 0) {
-        object[0] &= ~4u;
-    }
-    if ((event & 0x80000u) != 0) {
+    if ((event & 0x80000) != 0) {
         object[0x20c] = 8;
         object[0] |= 4;
     } else {
-        code = event & 0xfffu;
+        code = (event << 0x2c) >> 0x2c;
         switch (code) {
-        case 0:
-            object[0x20c] = 0;
-            break;
         case 1:
             object[0x20c] = 0;
+            object[0] |= 4;
             break;
         case 2:
             object[0x20c] = 1;
+            object[0] |= 4;
             break;
         case 4:
             object[0x20c] = 2;
+            object[0] |= 4;
             break;
         case 8:
             object[0x20c] = 3;
+            object[0] |= 4;
             break;
         case 0x10:
             object[0x20c] = 4;
+            object[0] |= 4;
             break;
         case 0x20:
             object[0x20c] = 5;
+            object[0] |= 4;
             break;
         case 0x40:
             object[0x20c] = 6;
+            object[0] |= 4;
             break;
         case 0x80:
             object[0x20c] = 7;
+            object[0] |= 4;
             break;
         case 0x200:
             object[0x20c] = 10;
+            object[0] |= 4;
             break;
-        default:
-            return;
         }
-        object[0] |= 4;
     }
     if ((object[0] & 4) != 0) {
         FUN_0022f3b0(object);

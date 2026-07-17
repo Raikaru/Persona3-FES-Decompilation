@@ -2227,14 +2227,21 @@ KwlnTask* func_001d36f0(KwlnTask* parent)
     return task;
 }
 
-// FUN_001d3790 NONMATCHING
+// FUN_001d3790
 u32 func_001d3790(KwlnTask* task)
 {
+    s32* work;
+
+    work = (s32*)task->workData;
     if (piGpffffa850[0] == 0xe && piGpffffa850[1] == 5)
     {
         return 1;
     }
-    return *(s32*)task->workData == 2;
+    if (work[0] == 2)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // FUN_001d37f0
@@ -2259,15 +2266,22 @@ void func_001d3810(KwlnTask* task, u32 value)
 s32 func_001d3830(KwlnTask* task)
 {
     s32 remaining;
+    s32 result;
 
-    if (((s32*)task->workData)[3] == 0)
+    result = -1;
+    if (((s32*)task->workData)[3] != 0)
     {
-        return -1;
+        remaining = func_001d38a0(task);
+        if (remaining == 0)
+        {
+            result = 2;
+        }
+        else if (remaining < 0x3c)
+        {
+            result = 1;
+        }
     }
-    remaining = func_001d38a0(task);
-    if (remaining == 0) return 2;
-    if (remaining < 0x3c) return 1;
-    return -1;
+    return result;
 }
 
 // FUN_001d38a0
@@ -2313,9 +2327,13 @@ void func_001d39c0(KwlnTask* task)
 {
     s32* work;
     RwV3d spawnPos;
+    RwV3d position;
 
     work = (s32*)task->workData;
-    func_00452010(&spawnPos);
+    func_00452010(&position);
+    spawnPos.x = position.x;
+    spawnPos.y = position.y;
+    spawnPos.z = position.z;
     K_FldUnit_CreateReaper(1, &spawnPos);
     work[5]++;
     work[0] = 1;

@@ -90,23 +90,23 @@ void sflResult001f9770(int param_1, int* param_2)
 
 extern u8* func_00209d00(void);
 extern void func_0021a670(u32, u32);
-extern void func_0021a760(s16);
+extern void func_0021a760(u16);
 extern u32 func_0020c500(float, void*);
 extern void func_0020c400(u32, void*, const float*, float*);
 extern void func_004bdde0(float, float*, const float*, u32);
 extern void func_001f6630(void);
 extern void func_001f7210(void);
 extern void func_0034ff90(u32, const u8*);
-extern void func_0034ff70(u32, u32);
+extern void func_0034ff70(u32, float);
 extern void func_0034fdf0(u32, const float*);
-extern void func_0034fe30(u32, u32, u32, u32);
+extern void func_0034fe30(float, u32, float, float);
 extern void func_0034fd30(u32);
 extern void func_0034fd70(u32, u32);
 extern void datSetFlag(s32, u8);
 extern u32 func_001761b0(DatPersonaWork*);
 extern void func_00175ce0(DatPersonaWork*, u8*);
 extern void func_00176100(DatPersonaWork*, u8*);
-extern void func_001fb4b0(void*, s32, u8, u8, s32*, s32*);
+extern void func_001fb4b0(void*, s32, s32, s32, s32*, s32*);
 extern u32 func_001fba70(short);
 extern void func_00176840(DatPersonaWork*, u16);
 extern void func_001768e0(DatPersonaWork*, u16);
@@ -281,59 +281,70 @@ u32 sflResult001f9170(s32 player)
 u32 sflResult001f9680(const s32* request)
 {
     u8* base;
+    s32* entry;
     s32 i;
     s32 count;
+    s32 stride;
+    u32 result;
 
     K_ASSERT(sSflResult != NULL, 0x8c);
     base = (u8*)sSflResult;
+    i = 0;
     count = *(s32*)(base + 0x33dc);
-    for (i = 0; i < count; i++) {
-        u8* entry = base + i * 0x670;
-        if (*(s32*)(entry + 0x5c) != request[0]) {
-            continue;
-        }
-        if (request[0] == 1) {
-            if (*(s32*)(entry + 0x60) == request[1] ||
-                *(s32*)(entry + 0x64) == request[2]) {
-                return 1;
+    result = 1;
+    stride = 0x670;
+    while (i < count)
+    {
+        entry = (s32*)(base + i * stride + 0x5c);
+        if (entry[0] == request[0])
+        {
+            switch (request[0])
+            {
+            case 0:
+                if (*(u16*)&entry[1] == *(u16*)&request[1])
+                    return result;
+                break;
+            case 1:
+                if (entry[1] == request[1] || entry[2] == request[2])
+                    return result;
+                break;
             }
-        } else if (request[0] == 0 &&
-                   *(s16*)(entry + 0x60) == (s16)request[1]) {
-            return 1;
         }
+        i++;
     }
     return 0;
 }
 
-// FUN_001f98d0 NONMATCHING
+// FUN_001f98d0
 void sflResult001f98d0(void)
 {
     u8* base;
     s32 i;
-    s32 count;
-
     K_ASSERT(sSflResult != NULL, 0x8c);
     base = (u8*)sSflResult;
-    if ((*(u32*)base & 0x80) == 0) {
-        return;
-    }
-    if (*(u32*)(base + 8) == 0) {
-        func_001f6630();
-    } else if (*(u32*)(base + 8) == 1) {
-        count = *(s32*)(base + 0x33dc);
-        for (i = 0; i < count; i++) {
-            u8* entry = base + i * 0x670;
-            if (entry[0x5c] == 1) {
-                func_0021a670(*(u32*)(entry + 0x60),
-                              *(u32*)(entry + 0x64));
-            } else if (entry[0x5c] == 0) {
-                func_0021a760(*(s16*)(entry + 0x60));
+    if ((*(u32*)base & 0x80) != 0) {
+        switch (*(u32*)(base + 8)) {
+        case 1:
+            for (i = 0; i < *(s32*)(base + 0x33dc); i++) {
+                s32* entry = (s32*)(base + i * 0x670 + 0x5c);
+                switch (entry[0]) {
+                case 0:
+                    func_0021a760(*(u16*)(entry + 1));
+                    break;
+                case 1:
+                    func_0021a670(entry[1], entry[2]);
+                    break;
+                }
             }
+            *(u32*)base |= 0x80;
+            *(u32*)(base + 4) = 0;
+            break;
+        case 0:
+            func_001f6630();
+            break;
         }
-        *(u32*)base |= 0x80;
-        *(u32*)(base + 4) = 0;
+        *(u32*)base &= ~0x80;
     }
-    *(u32*)base &= ~0x80;
 }
 
 // FUN_001f9a80 NONMATCHING
@@ -379,29 +390,38 @@ void sflResult001f9a80(void)
     *(u32*)(base + 4) = 7;
 }
 
-// FUN_001f9c60 NONMATCHING
+// FUN_001f9c60
 void sflResult001f9c60(void)
 {
+    struct Vector3 {
+        float x;
+        float y;
+        float z;
+    };
     u8* base;
-    u8 color[4] = {0xff, 0xff, 0xff, 0xff};
-    float position[3];
-    u32 resource;
-    s32 index;
-
+    u8 color[4];
+    struct Vector3 position;
+    u32 index;
     K_ASSERT(sSflResult != NULL, 0x8c);
     base = (u8*)sSflResult;
-    index = *(s32*)(base + 0x3408);
-    position[0] = *(float*)(base + index * 0x670 + 0x88);
-    position[1] = *(float*)(base + index * 0x670 + 0x8c);
-    position[2] = *(float*)(base + index * 0x670 + 0x90);
-    resource = *(u32*)(base + 0x34e0);
-    (void)position;
-    func_0034ff90(resource, color);
-    func_0034ff70(0, resource);
-    func_0034fdf0(resource, position);
-    func_0034fe30(0, 0, 0, resource);
-    func_0034fd30(resource);
-    func_0034fd70(resource, 7);
+    index = *(u32*)(base + 0x3408);
+    index *= 4;
+    index += (u32)base;
+    index = *(u32*)(index + 0x1c);
+    position = *(volatile struct Vector3*)(base + index * 0x670 + 0x88);
+    position.x = 0.0f;
+    position.y = 120.0f;
+    position.z = 200.0f;
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0034ff90(*(u32*)(base + 0x34e0), color);
+    func_0034ff70(*(u32*)(base + 0x34e0), fGpffff8070);
+    func_0034fdf0(*(u32*)(base + 0x34e0), (float*)&position);
+    func_0034fe30(0.0f, *(u32*)(base + 0x34e0), 0.0f, 0.0f);
+    func_0034fd30(*(u32*)(base + 0x34e0));
+    func_0034fd70(*(u32*)(base + 0x34e0), 7);
 }
 
 // FUN_001f9d70
@@ -637,16 +657,16 @@ void func_001fa0d0(void)
   return;
 
 }
-// FUN_001FA450 NONMATCHING
 
 
+// FUN_001fa450
 void func_001fa450(void)
 
 
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -654,7 +674,7 @@ void func_001fa450(void)
 
   if (lVar1 == 0) {
 
-    FUN_005225a8(0x684c10);
+    FUN_005225a8("brfUpdateFriendEquip\n");
 
     func_001fa4f0(2);
 
@@ -1387,18 +1407,18 @@ u32 func_001faea0(void)
   return 1;
 
 }
-// FUN_001FB130 NONMATCHING
 
 
+// FUN_001fb130
 void func_001fb130(u64 param_1,u64 param_2)
 
 
 
 {
 
-  u8 uVar1;
+  u16 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 
@@ -1542,152 +1562,90 @@ void func_001fb1f0(u64 param_1,int param_2,int *param_3)
 
 }
 // FUN_001FB3F0 NONMATCHING
-
-
+#pragma optimization_level 1
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5)
-
-
-
 {
+    int param_3_p = param_3;
+  s32 last;
+  u8 foundStart;
+  s32 i;
+  s32 upperBound;
+  s32 first;
+  u8 *entry;
 
-  u8 bVar1;
-
-  u8 *pbVar2;
-
-  int iVar3;
-
-  int in_t5_lo;
-
-  int in_t6_lo;
-
-  
-
-  bVar1 = false;
-
-  iVar3 = 0;
-
-  while ((((pbVar2 = (u8 *)(param_1 + iVar3 * 10), *(short *)(pbVar2 + 2) != 0 ||
-
-           (*(short *)(pbVar2 + 4) != 0)) || (*(short *)(pbVar2 + 6) != 0)) ||
-
-         (*(short *)(pbVar2 + 8) != 0))) {
-
-    if (((param_2 < (int)(u32)*pbVar2) && ((int)(u32)*pbVar2 <= param_2 + param_3)) &&
-
-       (in_t5_lo = iVar3, !bVar1)) {
-
-      bVar1 = true;
-
-      in_t6_lo = iVar3;
-
+  upperBound = param_2 + param_3_p;
+  foundStart = 0;
+  i = 0;
+  while (1) {
+    entry = (u8 *)(param_1 + i * 10);
+    if ((*(u16 *)(entry + 2) == 0) &&
+        (*(u16 *)(entry + 4) == 0) &&
+        (*(u16 *)(entry + 6) == 0) &&
+        (*(u16 *)(entry + 8) == 0)) {
+      break;
     }
-
-    iVar3 = iVar3 + 1;
-
+    if ((param_2 < (int)(u32)*entry) &&
+        ((int)(u32)*entry <= upperBound)) {
+      if (!foundStart) {
+        first = i;
+        foundStart = 1;
+      }
+      last = i;
+    }
+    i = i + 1;
   }
-
-  if (bVar1) {
-
-    *param_4 = in_t6_lo;
-
-    *param_5 = (in_t5_lo + 1) - in_t6_lo;
-
-  }
-
-  else {
-
+  if (foundStart) {
+    *param_4 = first;
+    *param_5 = (last + 1) - first;
+  } else {
     *param_4 = 0;
-
     *param_5 = 0;
-
   }
-
-  return;
-
 }
+#pragma optimization_level 2
 // FUN_001FB4B0 NONMATCHING
 
 
-void func_001fb4b0(void* param_1,s32 param_2,u8 param_3,u8 param_4,s32 *param_5,s32 *param_6)
-
-
-
+void func_001fb4b0(void* entries, s32 capacity, s32 lowerBound, s32 range,
+                   s32* firstIndex, s32* indexCount)
 {
+  s32 upperBound;
+  int first;
+  u8 foundStart;
+  u8 foundRange;
+  u32 value;
+  u8* entry;
+  int last;
+  int i;
 
-  int param_1_i = (int)param_1;
-
-  u8 bVar1;
-
-  u8 bVar2;
-
-  u32 uVar3;
-
-  u8 *pbVar4;
-
-  int in_t6_lo;
-
-  int iVar5;
-
-  int iVar6;
-
-  
-
-  iVar5 = 0;
-
-  bVar1 = false;
-
-  bVar2 = false;
-
-  iVar6 = 0;
-
-  while ((iVar6 < param_2 && (pbVar4 = (u8 *)(param_1_i + iVar6 * 4), pbVar4[1] != 0))) {
-
-    uVar3 = (u32)*pbVar4;
-
-    if (param_3 < (int)uVar3) {
-
-      if (!bVar1) {
-
-        bVar1 = true;
-
-        in_t6_lo = iVar6;
-
-        iVar5 = iVar6;
-
+  upperBound = lowerBound + range;
+  first = 0;
+  foundStart = 0;
+  foundRange = 0;
+  i = 0;
+  while ((i < capacity &&
+          (entry = (u8*)entries + i * 4, entry[1] != 0))) {
+    value = (u32)*entry;
+    if (lowerBound < (int)value) {
+      if (!foundStart) {
+        foundStart = 1;
+        last = i;
+        first = i;
       }
-
-      if ((int)uVar3 <= param_3 + param_4) {
-
-        bVar2 = true;
-
-        in_t6_lo = iVar6;
-
+      if ((int)value <= upperBound) {
+        foundRange = 1;
+        last = i;
       }
-
     }
-
-    iVar6 = iVar6 + 1;
-
+    i = i + 1;
   }
-
-  if (bVar2) {
-
-    *param_5 = iVar5;
-
-    *param_6 = (in_t6_lo + 1) - iVar5;
-
+  if (foundRange) {
+    *firstIndex = first;
+    *indexCount = (last + 1) - first;
+  } else {
+    *firstIndex = first;
+    *indexCount = 0;
   }
-
-  else {
-
-    *param_5 = iVar5;
-
-    *param_6 = 0;
-
-  }
-
-  return;
-
 }
 // FUN_001FB560 NONMATCHING
 
@@ -2073,83 +2031,70 @@ LAB_001fbbd0:
   } while( true );
 
 }
-// FUN_001FBCA0 NONMATCHING
 
 
+// FUN_001fbca0
 int func_001fbca0(u16 param_1)
-
-
-
 {
+  u8* entry;
+  int count;
+  int target;
+  u8 lower;
 
-  u16 uVar1;
+  count = 0;
+  entry = pbGpffffb758;
+  target = param_1;
 
-  int iVar2;
+check_entry:
+  lower = *entry;
+  if (lower != 0) goto inspect_entry;
+  if (entry[1] != 0) goto inspect_entry;
+  if (*(u16*)(entry + 2) == 0) goto done;
 
-  u8 *pbVar3;
+inspect_entry:
+  if (target < lower) goto next_entry;
+  if (target >= entry[1]) goto next_entry;
+  FUN_005225a8("%d <= %d < %d\n", lower, target, entry[1]);
+  count++;
 
-  
+next_entry:
+  entry += 4;
+  goto check_entry;
 
-  iVar2 = 0;
-
-  for (pbVar3 = pbGpffffb758;
-
-      ((uVar1 = (u16)*pbVar3, uVar1 != 0 || (pbVar3[1] != 0)) || (*(short *)(pbVar3 + 2) != 0));
-
-      pbVar3 = pbVar3 + 4) {
-
-    if ((uVar1 <= param_1) && (param_1 < pbVar3[1])) {
-
-      FUN_005225a8(0x684d50,uVar1,param_1);
-
-      iVar2 = iVar2 + 1;
-
-    }
-
-  }
-
-  return iVar2;
-
+done:
+  return count;
 }
-// FUN_001FBD50 NONMATCHING
 
 
-u8 * func_001fbd50(u16 param_1,int param_2)
-
-
-
+// FUN_001fbd50
+u8* func_001fbd50(u16 param_1, int param_2)
 {
+  u8* entry;
+  int matchIndex;
+  int target;
 
-  u8 *pbVar1;
+  entry = pbGpffffb758;
+  matchIndex = 0;
+  target = param_1;
 
-  int iVar2;
+check_entry:
+  if (*entry != 0) goto inspect_entry;
+  if (entry[1] != 0) goto inspect_entry;
+  if (*(u16*)(entry + 2) == 0) goto no_match;
 
-  
-
-  iVar2 = 0;
-
-  for (pbVar1 = pbGpffffb758; ((*pbVar1 != 0 || (pbVar1[1] != 0)) || (*(short *)(pbVar1 + 2) != 0));
-
-      pbVar1 = pbVar1 + 4) {
-
-    if ((*pbVar1 <= param_1) && (param_1 < pbVar1[1])) {
-
-      if (iVar2 == param_2) {
-
-        return pbVar1;
-
-      }
-
-      iVar2 = iVar2 + 1;
-
+inspect_entry:
+  if (target >= *entry) {
+    if (target < entry[1]) {
+      if (matchIndex == param_2) return entry;
+      matchIndex++;
     }
-
   }
+  entry += 4;
+  goto check_entry;
 
-  FUN_0019d3f0(0x684c28,499);
-
-  return (u8 *)0x0;
-
+no_match:
+  K_ASSERT(false, 0x1f3);
+  return NULL;
 }
 // FUN_001FBDF0 NONMATCHING
 
@@ -2385,25 +2330,15 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   return iVar2;
 
 }
-// FUN_001FC1F0 NONMATCHING
+// FUN_001FC1F0
 
 
 void func_001fc1f0(void)
-
-
-
 {
+    DatPersonaWork* persona;
 
-  u64 uVar1;
-
-  
-
-  uVar1 = FUN_00174800(1);
-
-  FUN_001764b0(uVar1,0x18);
-
-  return;
-
+    persona = datPersonaGetByPcId(1);
+    datPersonaAddExp(persona, 0x18);
 }
 // FUN_001FC230 NONMATCHING
 

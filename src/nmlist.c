@@ -876,51 +876,29 @@ u64 FUN_003c4de0(u64 param_1,int param_2,u32 param_3)
 }
 #define FUN_003c4de0(...) ((u64 (*)(...))FUN_003c4de0)(__VA_ARGS__)
 #undef FUN_003c4df0
-// FUN_003C4DF0 NONMATCHING
+// FUN_003C4DF0
 
 
 int FUN_003c4df0(u64 param_1,int *param_2,int param_3)
-
-
-
 {
+  int node;
+  int index;
 
-  int iVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = 0;
-
+  index = 0;
   if (param_3 == -1) {
-
-    iVar2 = param_2[1];
-
+    return param_2[1];
   }
 
-  else {
-
-    for (iVar1 = *param_2; iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x10)) {
-
-      if (iVar2 == param_3) {
-
-        param_2[2] = iVar1;
-
-        return iVar1;
-
-      }
-
-      iVar2 = iVar2 + 1;
-
+  node = *param_2;
+  while (node != 0) {
+    if (index == param_3) {
+      param_2[2] = node;
+      return node;
     }
-
-    iVar2 = 0;
-
+    node = *(int *)(node + 0x10);
+    index++;
   }
-
-  return iVar2;
-
+  return 0;
 }
 #define FUN_003c4df0(...) ((int (*)(...))FUN_003c4df0)(__VA_ARGS__)
 #undef FUN_003c4e50

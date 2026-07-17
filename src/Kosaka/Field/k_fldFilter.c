@@ -42,6 +42,8 @@ extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern u32 D_00960184[];
 extern void (*D_0096017c)(void* memory);
+#pragma alias D_0096017c_abs D_0096017c
+extern u32 D_0096017c_abs[];
 extern void func_004d7f60(s32 state, u32 value);
 extern void func_004c69f0(RwV3d* output, const RwV3d* input);
 extern void func_004cb420(RwFrame* parent, RwFrame* child);
@@ -582,17 +584,15 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001d59e0 NONMATCHING
+// FUN_001d59e0
 void FUN_001d59e0(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
-    RwFrame* mainFrame;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
-    mainFrame = kwlnGetMainCamera()->object.object.parent;
-    if (mainFrame->object.parent != NULL)
+    if (((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent != NULL)
     {
-        func_004cb590(mainFrame);
+        func_004cb590((RwFrame*)kwlnGetMainCamera()->object.object.parent);
     }
     if (work->frame->object.parent != NULL)
     {
@@ -600,7 +600,7 @@ void FUN_001d59e0(KwlnTask* cameraTask)
     }
     func_004caf80(work->frame);
     func_004cb420(work->parentFrame, kwlnGetMainCamera()->object.object.parent);
-    D_0096017c(cameraTask->workData);
+    (*(void (**)(void*))D_0096017c_abs)(cameraTask->workData);
 }
 
 // FUN_001d5a90 NONMATCHING

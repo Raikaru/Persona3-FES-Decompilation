@@ -1,9 +1,17 @@
 #include "Main/OpEd/op_fade_mid.h"
 #include "Main/Battle/Result/br_res.h"
+extern void K_Assert(const char* file, s32 line);
+
+#define OP_MATCH_ASSERT(condition, line) \
+    do {                                 \
+        if (!(condition)) {              \
+            K_Assert(__FILE__, (line));  \
+        }                                \
+    } while (0)
 
 /* Retail helpers used by the opening/ending result state. */
 extern u32 D_00960178[];
-extern void (*D_0096017C)(void *memory);
+extern u32 D_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
                           u32 first, u32 second);
@@ -21,7 +29,7 @@ extern const char DAT_0068EED0[];
 extern void *FUN_00173220(u16 id);
 extern u16 *datPersonaGetSkills(void *persona);
 extern u8 datPersonaGetTotalStat(void *persona, u16 stat);
-extern u16 datPersonaCountValidSkills(void *persona);
+extern u32 datPersonaCountValidSkills(void *persona);
 extern void *FUN_001749a0(u16 id);
 extern u32 func_00194b80(void *parent, u32 priority, const void *name,
                           void *update, void *destroy, void *work);
@@ -79,7 +87,7 @@ extern void func_003c7bc0(s32 channel, u32 value);
 extern void func_003c7e20(s32 mode, s32 x, s32 y, u64 value, s32 a,
                            s32 b, s32 c);
 extern u32 func_003c9ab0(u32 resource);
-extern void func_003c9ba0(u64 stream, u32 resource);
+extern void func_003c9ba0(u32 stream, u32 resource);
 extern void func_003c9cd0(u32 resource, s32 value);
 extern void func_003c9d00(u32 resource, s32 value);
 extern void func_003c9d80(u32 resource, s32 value);
@@ -137,6 +145,7 @@ static u32 opTexFrame(u32 resource, s32 frame)
 #define OP_WORKC ((u8 *)gOpWorkCC)
 #define OP_WORKD ((u8 *)gOpWorkD0)
 
+
 static u8 opClampByte(f32 value)
 {
     if (value <= 0.0f)
@@ -166,8 +175,9 @@ void func_00275050(s32 index)
     slot = 0;
     for (i = 0; ; )
     {
-        s32 entry = OP_S32(work, 0x34) + (OP_S32(work, 0x78) + i) * 4;
-        kind = OP_S8((void *)(uintptr_t)entry, 7);
+        void *entry = (void *)(uintptr_t)(OP_S32(work, 0x34) +
+            (OP_S32(work, 0x78) + i) * 4);
+        kind = OP_S8(entry, 7);
         if (kind == 4)
         {
             i++;
@@ -175,10 +185,10 @@ void func_00275050(s32 index)
             continue;
         }
         if (kind != 1)
-            K_ABORT((const char *)0x68ed88, 0x644);
+            K_Assert((const char *)0x68ed88, 0x644);
         for (found = 0; found < skillCount; found++)
         {
-            if (OP_S16((void *)(uintptr_t)entry, 8) == (s16)skills[found])
+            if (OP_U16(entry, 8) == skills[found])
                 break;
         }
         if (found == skillCount)
@@ -195,58 +205,68 @@ void func_00275050(s32 index)
 // FUN_002751e0 NONMATCHING
 s32 func_002751e0(void)
 {
-    u8 *work;
-    u16 *skills;
-    s32 skillCount;
-    s32 i;
+    s32 threshold;
     s32 result;
-    u8 baseLevel;
-    u8 currentLevel;
-    u8 adjustment;
+    s32 i;
+    s32 found;
+    s8 kind;
+    u16 *skills;
+    u32 skillCount;
+    void *work;
 
     K_ASSERT(gOpWorkC0 != NULL, 0xb0);
     work = OP_WORK0;
     skills = datPersonaGetSkills(OP_PTR(work, 0x30));
-    skillCount = (s32)datPersonaCountValidSkills(OP_PTR(work, 0x30));
-    baseLevel = *((u8 *)DAT_007ce420 + OP_U16(OP_PTR(work, 0x30), 2) * 0xe + 3);
-    currentLevel = OP_U8(OP_PTR(work, 0x30), 4);
-    adjustment = OP_U8(work, 0x38);
+    skillCount = datPersonaCountValidSkills(OP_PTR(work, 0x30));
     result = 0;
-    for (i = 0; OP_S32(work, 0x78) + i != 0x10; i++)
+    i = 0;
+    threshold = OP_U8(OP_PTR(work, 0x30), 4) -
+        OP_U8((u8 *)DAT_007ce420 +
+            OP_U16(OP_PTR(work, 0x30), 2) * 0xe + 3, 0) -
+        OP_U8(work, 0x38);
+    for (;;)
     {
-        s32 entry = OP_S32(work, 0x34) + (OP_S32(work, 0x78) + i) * 4;
-        s8 kind = OP_S8((void *)(uintptr_t)entry, 7);
+        void *entry = (void *)(uintptr_t)(OP_S32(work, 0x34) +
+            (OP_S32(work, 0x78) + i) * 4);
+        kind = OP_S8(entry, 7);
         if (kind == 0)
-            return result;
-        if (kind == 1 && (s32)((u32)currentLevel - baseLevel - adjustment) < OP_U8((void *)(uintptr_t)entry, 6))
+            break;
+        if (kind == 1)
         {
-            s32 found;
-            for (found = 0; found < skillCount; found++)
+            if (threshold < (s32)OP_U8(entry, 6))
             {
-                if (OP_S16((void *)(uintptr_t)entry, 8) == (s16)skills[found])
-                    break;
+                for (found = 0; found < (s32)skillCount; found++)
+                {
+                    if (OP_U16(entry, 8) == skills[found])
+                        break;
+                }
+                if (found == (s32)skillCount)
+                    result++;
             }
-            if (found == skillCount)
-                result++;
         }
         else if (kind != 4)
-            K_ABORT((const char *)0x68ed88, 0x686);
+        {
+            K_ASSERT(kind == 4, 0x686);
+        }
+        i++;
+        if (OP_S32(work, 0x78) + i == 0x10)
+            break;
     }
     return result;
 }
 
-// FUN_00275370 NONMATCHING
+// FUN_00275370
 u32 func_00275370(void)
 {
-    K_ASSERT(gOpWorkC0 != NULL, 0xb0);
+    OP_MATCH_ASSERT(gOpWorkC0 != NULL, 0xb0);
     return *gOpWorkC0 & 0x100;
 }
 
-// FUN_002753c0 NONMATCHING
+// FUN_002753c0
 void func_002753c0(void)
 {
     u8 *work;
-    K_ASSERT(gOpWorkC0 != NULL, 0xb0);
+    OP_MATCH_ASSERT(gOpWorkC0 != NULL, 0xb0);
     work = OP_WORK0;
     brLvpnlStartEntranceAnimation();
     func_003c7bc0(0, (u32)(uintptr_t)FUN_00173220(OP_U16(work, 4)));
@@ -272,11 +292,11 @@ void func_00275440(void)
     gOpWorkC4 = (u32 *)work;
 }
 
-// FUN_00275520 NONMATCHING
+// FUN_00275520
 void func_00275520(void)
 {
     u8 *work;
-    K_ASSERT(gOpWorkC4 != NULL, 0x46);
+    OP_MATCH_ASSERT(gOpWorkC4 != NULL, 0x46);
     work = OP_WORK4;
     func_00276c30();
     func_00272380();
@@ -286,51 +306,50 @@ void func_00275520(void)
     func_00276d30();
     func_00195020(OP_U32(work, 0x4504));
     func_00195020(OP_U32(work, 0x4508));
-    if (D_0096017C != NULL)
-        D_0096017C(work);
+    (*(void (**)(void *))D_0096017C)(work);
     gOpWorkC4 = NULL;
 }
 
-// FUN_002755d0 NONMATCHING
+// FUN_002755d0
 void func_002755d0(u64 value)
 {
     u8 *work;
-    K_ASSERT(gOpWorkC4 != NULL, 0x46);
+    OP_MATCH_ASSERT(gOpWorkC4 != NULL, 0x46);
     work = OP_WORK4;
     func_00275a90();
     func_00277070();
     func_00272400(value);
     func_00276d90();
-    func_0010a370(3, (const char *)0x68eef0);
+    func_0010a370(3, "SOUND2\\EVENT\\EVE_530.ADX");
     OP_U32(work, 0x4500) |= 2;
     OP_U32(work, 0x4500) |= 1;
 }
 
-// FUN_00275670 NONMATCHING
+// FUN_00275670
 u32 func_00275670(void)
 {
-    K_ASSERT(gOpWorkC4 != NULL, 0x46);
+    OP_MATCH_ASSERT(gOpWorkC4 != NULL, 0x46);
     return OP_U32(OP_WORK4, 0x4500) & 1;
 }
 
-// FUN_002756c0 NONMATCHING
+// FUN_002756c0
 u64 func_002756c0(void)
 {
-    u8 *work;
-    K_ASSERT(gOpWorkC4 != NULL, 0x46);
-    work = OP_WORK4;
+    u32 *work;
+    OP_MATCH_ASSERT(gOpWorkC4 != NULL, 0x46);
+    work = (u32 *)OP_WORK4;
     brRes00234070();
     func_00275bc0();
     func_00272810();
     func_00276930();
     func_002770f0();
-    if ((OP_U32(work, 0x4500) & 2) != 0 && func_00275370() == 0)
+    if ((work[0x4500 / 4] & 2) != 0 && func_00275370() == 0)
     {
         func_002753c0();
-        OP_U32(work, 0x4500) &= ~2u;
+        work[0x4500 / 4] &= ~2u;
     }
-    if ((OP_U32(work, 0x4500) & 1) != 0 && func_002727c0() == 0)
-        OP_U32(work, 0x4500) &= ~1u;
+    if ((work[0x4500 / 4] & 1) != 0 && func_002727c0() == 0)
+        work[0x4500 / 4] &= ~1u;
     return 0;
 }
 
@@ -344,50 +363,74 @@ u64 func_002757a0(void)
     return 0;
 }
 
-// FUN_002757e0 NONMATCHING
+// FUN_002757e0
 void func_002757e0(void *resource)
 {
     u8 *data = (u8 *)resource;
     s32 i;
-    K_ASSERT(OP_S16(data, 4) == 3, 0xc9);
+    OP_MATCH_ASSERT(OP_U16(data, 4) == 3, 0xc9);
     for (i = 0; i < 3; i++)
     {
-        if (i == 2)
-            brRes00234690(1, data + OP_S32(data, 0x18));
-        else if (i == 1)
-            brRes00234690(0, data + OP_S32(data, 0x10));
-        else
-            brRes00234710(data + OP_S32(data, 8), OP_U32(data, 0xc));
+        switch (i)
+        {
+        case 0:
+        {
+            u8 *entry = data + 8;
+            entry += i * 8;
+            brRes00234710(data + OP_U32(entry, 0), OP_U32(entry, 4));
+            break;
+        }
+        case 1:
+        {
+            u8 *entry = (u8 *)(uintptr_t)(i * 8) + (uintptr_t)data;
+            brRes00234690(0, OP_U32(entry, 8) + data);
+            break;
+        }
+        case 2:
+        {
+            u8 *entry = (u8 *)(uintptr_t)(i * 8) + (uintptr_t)data;
+            brRes00234690(1, OP_U32(entry, 8) + data);
+            break;
+        }
+        }
     }
 }
 
-// FUN_002758e0 NONMATCHING
-void func_002758e0(u64 arg0, u64 arg1)
+// FUN_002758e0
+void func_002758e0(u32 arg0, u16 arg1)
 {
     u16 skills[14];
     s32 count;
-    void *persona;
     s32 i;
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
+    void *persona;
+    u16 *personaSkills;
     func_002769c0(arg0, arg1);
     func_00276ba0();
-    persona = FUN_001749a0((u16)arg1);
+    persona = FUN_001749a0(arg1);
     count = (s32)datPersonaCountValidSkills(persona);
+    personaSkills = datPersonaGetSkills(persona);
     for (i = 0; i < count; i++)
-        func_002791b0(*(u16 *)((u8 *)datPersonaGetSkills(persona) + i * 2));
+        func_002791b0(personaSkills[i]);
     func_001fb1f0(persona, skills, &count);
     if (func_001fc230(persona) != 0)
     {
         func_00279330(skills[0]);
         brpParamSetUnlockedSkillLevel(func_001fc3c0(persona));
     }
-    brpParamSetUnlockedSkillIndex(count < 2 ? 0 : (u32)(count - 1));
-    for (i = 0; i < 5; i++)
+    if (count > 1)
+        brpParamSetUnlockedSkillIndex((u32)(count - 1));
+    else
+        brpParamSetUnlockedSkillIndex(0);
     {
-        u8 stat = datPersonaGetTotalStat(persona, (u16)i);
-        func_00279510(i, stat);
-        func_00279580(i, stat);
-        func_002795f0(i, 0);
+        u32 stat;
+        s32 statIndex;
+        for (statIndex = 0; statIndex < 5; statIndex++)
+        {
+            stat = datPersonaGetTotalStat(persona, (u16)statIndex);
+            func_00279510(statIndex, stat);
+            func_00279580(statIndex, stat);
+            func_002795f0(statIndex, 0);
+        }
     }
     func_00276d90();
 }
@@ -405,13 +448,13 @@ void func_00275a80(void)
     gOpWorkC8 = NULL;
 }
 
-// FUN_00275a90 NONMATCHING
+// FUN_00275a90
 void func_00275a90(void)
 {
-    u8 *work;
+    u32 *work;
     u32 resource;
-    K_ASSERT(gOpWorkC8 != NULL, 0x3b);
-    work = OP_WORK8;
+    OP_MATCH_ASSERT(gOpWorkC8 != NULL, 0x3b);
+    work = (u32*)OP_WORK8;
     resource = brRes00234630(0);
     func_0021d3b0(work + 4, func_0021cca0(resource, 0));
     func_0021d3b0(work + 0x44, func_0021cca0(resource, 2));
@@ -421,32 +464,35 @@ void func_00275a90(void)
     func_0021d3b0(work + 0x104, resource);
     func_0021e380(work + 0x144, resource, 1);
     func_002760f0();
-    *gOpWorkC8 |= 1;
+    *work |= 1;
 }
 
-// FUN_00275bc0 NONMATCHING
+// FUN_00275bc0
 void func_00275bc0(void)
 {
+    u32 *work;
     u32 flags;
-    K_ASSERT(gOpWorkC8 != NULL, 0x3b);
-    flags = *gOpWorkC8;
-    if ((flags & 1) == 0)
+    OP_MATCH_ASSERT(gOpWorkC8 != NULL, 0x3b);
+    work = (u32 *)OP_WORK8;
+    flags = work[0];
+    if ((~flags & 1) != 0)
         return;
     if ((flags & 2) != 0)
     {
-        if (gOpWorkC8[0x185] == 1)
+        switch (work[0x614 / 4])
         {
-            if ((s32)gOpWorkC8[0x184] < 0x21)
-                gOpWorkC8[0x184]++;
+        case 0:
+            if (((s32 *)work)[0x610 / 4] < 0x24)
+                work[0x610 / 4]++;
             else
-                *gOpWorkC8 &= ~2u;
-        }
-        else if (gOpWorkC8[0x185] == 0)
-        {
-            if ((s32)gOpWorkC8[0x184] < 0x24)
-                gOpWorkC8[0x184]++;
+                work[0] &= ~2u;
+            break;
+        case 1:
+            if (((s32 *)work)[0x610 / 4] < 0x21)
+                work[0x610 / 4]++;
             else
-                *gOpWorkC8 &= ~2u;
+                work[0] &= ~2u;
+            break;
         }
     }
     func_002760f0();
@@ -457,7 +503,7 @@ void func_00275cb0(void)
 {
     u8 *work;
     u32 resource;
-    K_ASSERT(gOpWorkC8 != NULL, 0x3b);
+    OP_MATCH_ASSERT(gOpWorkC8 != NULL, 0x3b);
     work = OP_WORK8;
     resource = brRes00234630(0);
     if ((*gOpWorkC8 & 1) == 0 || (*gOpWorkC8 & 8) != 0)
@@ -608,67 +654,79 @@ void func_00276920(void)
     gOpWorkCC = NULL;
 }
 
-// FUN_00276930 NONMATCHING
+// FUN_00276930
 void func_00276930(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    if ((*gOpWorkCC & 1) != 0 && (*gOpWorkCC & 8) != 0 && func_003c9ab0(gOpWorkCC[1]) != 0)
-        *gOpWorkCC &= ~8u;
+    u8 *work;
+    s32 flags;
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    flags = OP_U32(work, 0);
+    if ((~flags & 1) == 0 && (flags & 8) != 0 && func_003c9ab0(OP_U32(work, 4)) != 0)
+        OP_U32(work, 0) &= ~8u;
 }
 
-// FUN_002769c0 NONMATCHING
-void func_002769c0(u64 arg0, u64 arg1)
+// FUN_002769c0
+void func_002769c0(u32 arg0, u16 arg1)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    func_003c9ba0(arg0, (u32)(uintptr_t)FUN_001749a0((u16)arg1));
-    func_003c9d00((u32)arg0, 8);
-    func_003c9cd0((u32)arg0, -1);
-    OP_S16(OP_WORKC, 8) = (s16)arg1;
-    OP_U32(OP_WORKC, 4) = (u32)arg0;
-    *gOpWorkCC |= 8;
-    *gOpWorkCC |= 1;
-}
+    u8 *work;
 
-// FUN_00276a80 NONMATCHING
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    func_003c9ba0(arg0, (u32)(uintptr_t)FUN_001749a0(arg1));
+    func_003c9d00(arg0, 8);
+    func_003c9cd0(arg0, -1);
+    OP_S16(work, 8) = arg1;
+    OP_U32(work, 4) = arg0;
+    OP_U32(work, 0) |= 8;
+    OP_U32(work, 0) |= 1;
+}
+// FUN_00276a80
 void func_00276a80(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    K_ASSERT((*gOpWorkCC & 1) != 0, 0x59);
-    func_003c9d00(gOpWorkCC[1], 0x10);
-    *gOpWorkCC |= 4;
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x59);
+    func_003c9d00(OP_U32(work, 4), 0x10);
+    OP_U32(work, 0) |= 4;
 }
-
-// FUN_00276b10 NONMATCHING
+// FUN_00276b10
 void func_00276b10(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    K_ASSERT((*gOpWorkCC & 1) != 0, 0x62);
-    func_003c9d00(gOpWorkCC[1], 8);
-    *gOpWorkCC &= ~4u;
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x62);
+    func_003c9d00(OP_U32(work, 4), 8);
+    OP_U32(work, 0) &= ~4u;
 }
-
-// FUN_00276ba0 NONMATCHING
+// FUN_00276ba0
 void func_00276ba0(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    K_ASSERT((*gOpWorkCC & 1) != 0, 0x6b);
-    func_003c9d00(gOpWorkCC[1], 2);
-    *gOpWorkCC |= 2;
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x6b);
+    func_003c9d00(OP_U32(work, 4), 2);
+    OP_U32(work, 0) |= 2;
 }
-
-// FUN_00276c30 NONMATCHING
+// FUN_00276c30
 void func_00276c30(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
-    K_ASSERT((*gOpWorkCC & 1) != 0, 0x74);
-    func_003c9d80(gOpWorkCC[1], 2);
-    *gOpWorkCC &= ~2u;
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
+    work = OP_WORKC;
+    OP_MATCH_ASSERT(OP_U32(work, 0) & 1, 0x74);
+    func_003c9d80(OP_U32(work, 4), 2);
+    OP_U32(work, 0) &= ~2u;
 }
 
-// FUN_00276cc0 NONMATCHING
+
+// FUN_00276cc0
 u32 func_00276cc0(void)
 {
-    K_ASSERT(gOpWorkCC != NULL, 0x25);
+    OP_MATCH_ASSERT(gOpWorkCC != NULL, 0x25);
     return *gOpWorkCC & 8;
 }
 
@@ -682,10 +740,10 @@ void func_00276d10(u32 *work)
     gOpWorkD0 = work;
 }
 
-// FUN_00276d30 NONMATCHING
+// FUN_00276d30
 void func_00276d30(void)
 {
-    K_ASSERT(gOpWorkD0 != NULL, 0x61);
+    OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
     if ((*gOpWorkD0 & 1) != 0)
         func_00277070();
     gOpWorkD0 = NULL;
@@ -738,42 +796,47 @@ void func_00276d90(void)
     *gOpWorkD0 |= 1;
 }
 
-// FUN_00277070 NONMATCHING
+// FUN_00277070
 void func_00277070(void)
 {
-    K_ASSERT(gOpWorkD0 != NULL, 0x61);
-    if (gOpWorkD0[0xdce] != 0)
+    u8 *work;
+    OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
+    work = OP_WORKD;
+    if (OP_U32(work, 0x3738) != 0)
         func_00279120();
-    if ((*gOpWorkD0 & 2) != 0)
+    if ((OP_U32(work, 0) & 2) != 0)
         func_002792c0();
-    *gOpWorkD0 &= ~1u;
+    OP_U32(work, 0) &= ~1u;
 }
 
-// FUN_002770f0 NONMATCHING
+// FUN_002770f0
 void func_002770f0(void)
 {
+    u32 *work;
     u32 flags;
-    K_ASSERT(gOpWorkD0 != NULL, 0x61);
-    flags = *gOpWorkD0;
-    if ((flags & 1) == 0)
+    OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
+    work = (u32 *)OP_WORKD;
+    flags = work[0];
+    if ((~flags & 1) != 0)
         return;
     if ((flags & 4) != 0)
     {
-        if ((s32)gOpWorkD0[0xdcf] < 0x14)
-            gOpWorkD0[0xdcf]++;
+        if (((s32 *)work)[0x373c / 4] < 0x14)
+            work[0x373c / 4]++;
         else
         {
-            *gOpWorkD0 &= ~8u;
-            *gOpWorkD0 &= ~4u;
+            work[0] &= ~8u;
+            work[0] &= ~4u;
         }
     }
-    gOpWorkD0[0xdd0] = (u32)((s32)(gOpWorkD0[0xdd0] + 1) % 10);
-    if ((*gOpWorkD0 & 0x10) != 0)
+    ((s32 *)work)[0x3740 / 4]++;
+    ((s32 *)work)[0x3740 / 4] %= 10;
+    if ((work[0] & 0x10) != 0)
     {
-        if ((s32)gOpWorkD0[0xdd1] < 0x1e)
-            gOpWorkD0[0xdd1]++;
+        if (((s32 *)work)[0x3744 / 4] < 0x1e)
+            work[0x3744 / 4]++;
         else
-            *gOpWorkD0 &= ~0x10u;
+            work[0] &= ~0x10u;
     }
     func_002771f0();
 }
@@ -922,7 +985,7 @@ void func_00278550(void)
     s32 j;
     u8 vertices[0x100];
     f32 rect[4];
-    K_ASSERT(gOpWorkD0 != NULL, 0x61);
+    OP_MATCH_ASSERT(gOpWorkD0 != NULL, 0x61);
     work = OP_WORKD;
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);

@@ -1,5 +1,4 @@
 #include "Main/Game/gm_root.h"
-#include "Main/Game/game_support.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rwplcore.h"
@@ -16,118 +15,110 @@ u32 datGetFlag(s32 bit);
 u32 datGetScenarioMode(void);
 void func_0017d820(u32 arg);
 u32 func_00182750(u32 arg);
-void func_00188670(void);
+void func_00188670(u32 arg);
 u32 func_0017fad0(void);
 u32 clndCreateTask(void);
+u64 func_00188660(void);
+void func_00188680(void);
+KwlnTask* func_00188860(KwlnTask* parent);
 void FUN_00265dc0(void);
 void FUN_00265e30(void);
 void FUN_00265ef0(int param_1);
 
 void* gmRootUpdateTask(KwlnTask* gmRootTask);
 void gmRootDestroyTask(KwlnTask* gmRootTask);
-// FUN_00266140 NONMATCHING
+// FUN_00266140
 void gmRootUpdate()
 {
     GmRootWork* work;
-    u32 result;
+    s32 result;
+    u32 value;
+    u32 flags;
 
     K_ASSERT(sWork != NULL, 90);
     work = sWork;
-
-    if ((work->flags & GMROOT_FLAG_ACTIVE) == 0)
+    flags = work->flags;
+    if (!(~flags & GMROOT_FLAG_ACTIVE))
     {
-        return;
-    }
-
-    if (work->flags & GMROOT_FLAG_UNK2)
-    {
-        if (kwlnTaskExists((KwlnTask*)work->unk_0c) == 0)
+        if ((flags & GMROOT_FLAG_UNK2) &&
+            kwlnTaskExists((KwlnTask*)work->unk_0c) == 0)
         {
             work->unk_14 = sResult;
             work->flags &= ~GMROOT_FLAG_UNK2;
         }
-    }
-
-    if (work->flags & GMROOT_FLAG_UNK4)
-    {
-        if (kwlnTaskExists((KwlnTask*)work->unk_10) == 0)
+        if ((work->flags & GMROOT_FLAG_UNK4) &&
+            kwlnTaskExists((KwlnTask*)work->unk_10) == 0)
         {
             work->flags &= ~GMROOT_FLAG_UNK4;
         }
-    }
 
-    switch (work->unk_04)
-    {
-        case 0:
-            if (kwlnTaskExists(work->chkMemcardTask) == 0)
-            {
-                gmRoot002663c0();
-            }
-            break;
-
-        case 1:
-            if (work->flags & GMROOT_FLAG_UNK2)
-            {
-                return;
-            }
-
-            result = work->unk_14;
-            if (result == 0)
-            {
-                if (datGetScenarioMode() != 0)
-                {
-                    func_0017d820(0);
-                }
-                else
-                {
-                    func_00188670();
-                    work->unk_10 = func_0017fad0();
-                }
-            }
-            else if (result == 1)
-            {
-                if (datGetScenarioMode() != 0)
-                {
-                    work->unk_10 = func_00182750(0);
-                }
-                else
-                {
-                    work->unk_10 = clndCreateTask();
-                }
-            }
-
-            else
-            {
-                K_ASSERT(false, 188);
-            }
-
-            work->flags |= GMROOT_FLAG_UNK4;
-            work->unk_04 = 2;
-            break;
-
-        case 2:
-            if (datGetFlag(0x1418) == 0)
-            {
-                result = FUN_0016f380(0x2f);
-                if (result != 0x7fffffff)
-                {
-                    result++;
-                }
-                FUN_0016f3e0(0x2f, result);
-            }
-
-            if ((work->flags & GMROOT_FLAG_UNK4) == 0)
-            {
-                if (datGetFlag(0x1413))
-                {
-                    gmRoot00266430();
-                }
-                else
+        switch (work->unk_04)
+        {
+            case 0:
+                if (kwlnTaskExists(work->chkMemcardTask) == 0)
                 {
                     gmRoot002663c0();
+                    return;
                 }
-            }
-            break;
+                break;
+            case 1:
+                if (!(work->flags & GMROOT_FLAG_UNK2))
+                {
+                    result = work->unk_14;
+                    switch (result)
+                    {
+                        case 0:
+                            if (datGetScenarioMode() != 0)
+                            {
+                                func_0017d820(0);
+                                work->unk_10 = func_00182750(0);
+                            }
+                            else
+                            {
+                                func_00188670(0);
+                                work->unk_10 = func_0017fad0();
+                            }
+                            break;
+                        case 1:
+                            if (datGetScenarioMode() != 0)
+                            {
+                                work->unk_10 = func_00182750(0);
+                            }
+                            else
+                            {
+                                work->unk_10 = clndCreateTask();
+                            }
+                            break;
+                        default:
+                            K_ASSERT(false, 188);
+                            break;
+                    }
+                    work->flags |= GMROOT_FLAG_UNK4;
+                    work->unk_04 = 2;
+                    return;
+                }
+                break;
+            case 2:
+                if (datGetFlag(0x1418) == 0)
+                {
+                    value = FUN_0016f380(0x2f);
+                    if (value != 0x7fffffff)
+                    {
+                        value++;
+                    }
+                    FUN_0016f3e0(0x2f, value);
+                }
+                if (!(work->flags & GMROOT_FLAG_UNK4))
+                {
+                    if (datGetFlag(0x1413) != 0)
+                    {
+                        gmRoot00266430();
+                        return;
+                    }
+                    gmRoot002663c0();
+                }
+                break;
+        }
     }
 }
 
@@ -242,18 +233,19 @@ extern void FUN_00108670();
 extern void FUN_001086a0();
 extern void FUN_00266cb0();
 
-// FUN_00265c20 NONMATCHING
+// FUN_00265c20
 u32 gmRoot00265c20(KwlnTask* parent)
 {
-    u32* work;
     u32 task;
+    u32* work;
+    u32* root;
     u32 child;
     u8 color[4];
 
     work = (u32*)FUN_00191af0(0x4530);
-    task = FUN_00194b80(parent, 10, (void*)0x7cc498,
+    task = FUN_00194b80(parent, 10, "op",
                         FUN_00265dc0, FUN_00265ef0, work);
-    child = FUN_00194e10((void*)0x7cc4a0, 0x106f, 1, 2,
+    child = FUN_00194e10("op draw", 0x106f, 1, 2,
                          FUN_00265e30, 0, 0);
     work[3] = child;
     FUN_00195550(task, child);
@@ -268,7 +260,8 @@ u32 gmRoot00265c20(KwlnTask* parent)
     FUN_001985b0(0, 0, 0, 0xff);
     sWork = (GmRootWork*)work;
     K_ASSERT(work != NULL, 0x9a);
-    work[0x1148] = 0;
+    root = (u32*)sWork;
+    root[0x1148] = 0;
     color[0] = 0;
     color[1] = 0;
     color[2] = 0;
@@ -279,8 +272,8 @@ u32 gmRoot00265c20(KwlnTask* parent)
     FUN_00108670(5);
     FUN_001086a0(10);
     FUN_00266cb0();
-    work[1] = 0;
-    *work |= 1;
+    root[1] = 0;
+    *root |= 1;
     return task;
 }
 

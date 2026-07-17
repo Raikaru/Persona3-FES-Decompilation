@@ -239,7 +239,7 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
     {
         for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
         {
-            RwRenderStateSet((0, sRenderStates[j]).renderState, savedRenderStates[j]);
+            RwRenderStateSet(sRenderStates[j].renderState, savedRenderStates[j]);
         }
     }
 }
@@ -350,9 +350,12 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
     }
 }
 
+#pragma optimization_level 1
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
+    const RwRGBA* color_p = color;
+    f32 radius_p = radius;
     u32 i;
     const PrimRenderState* currRenderState;
     RwMatrix mat;
@@ -367,7 +370,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
     f32 angle;
 
     rotAxis = sSphereRotAxis;
-    rwSphere.radius = radius;
+    rwSphere.radius = radius_p;
     rwSphere.center.x = center->x;
     rwSphere.center.y = center->y;
     rwSphere.center.z = center->z;
@@ -378,8 +381,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
             for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
             {
                 currRenderState = &sRenderStates[i];
-                currSavedRenderState = &savedRenderStates[i];
-                RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
+                RwRenderStateGet((currSavedRenderState = &savedRenderStates[i], currRenderState->renderState), currSavedRenderState);
                 RwRenderStateSet(currRenderState->renderState, currRenderState->val);
             }
 
@@ -399,14 +401,14 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         for (j = 0; j < 9; j++)
         {
             angle += g18deg;
-            yOffset = radius * cosf(angle);
-            circleRadius = radius * sinf(angle);
+            yOffset = radius_p * cosf(angle);
+            circleRadius = radius_p * sinf(angle);
 
             finalCenter.x = center->x;
             finalCenter.y = center->y + yOffset;
             finalCenter.z = center->z;
 
-            primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
+            primCircleLine3D(&finalCenter, circleRadius, color_p, &mat, false);
         }
 
         RwMatrixRotate(&mat, &rotAxis, 90.0f, rwCOMBINEPOSTCONCAT);
@@ -415,12 +417,12 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         for (j = 0; j < 9; j++)
         {
             angle += g18deg;
-            yOffset = radius * cosf(angle);
+            yOffset = radius_p * cosf(angle);
             circleRadius = radius * sinf(angle);
 
             finalCenter.x = center->x;
-            finalCenter.y = center->y + yOffset;
             finalCenter.z = center->z;
+            finalCenter.y = center->y + yOffset;
 
             primCircleLine3D(&finalCenter, circleRadius, color, &mat, false);
         }
@@ -429,11 +431,12 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         {
             for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
             {
-                RwRenderStateSet(sRenderStates[j].renderState, savedRenderStates[j]);
+                RwRenderStateSet((0, sRenderStates[j]).renderState, savedRenderStates[j]);
             }
         }
     }
 }
+#pragma optimization_level 2
 
 // FUN_00359e50 NONMATCHING
 void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGBA* color, u32 saveAndRestoreRenderState)

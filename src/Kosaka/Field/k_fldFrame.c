@@ -36,6 +36,8 @@ extern void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast);
 extern void func_00464020(void* collision, void* intersection, void* callback, void* param);
 extern void func_00464120(void* collision, void* state, void* callback, void* param);
 extern void FUN_004916d0(void* collisionWorld, void* callback, void* param);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
@@ -1010,18 +1012,16 @@ void* func_001ae580(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001af8e0 NONMATCHING
+// FUN_001af8e0
 void func_001af8e0(KwlnTask* task)
 {
-    FldFrameMoveWork* work;
+    FldFrameMoveWork* work = (FldFrameMoveWork*)task->workData;
 
-    work = fldFrameMoveWork(task);
     if (work->drawMatrix != NULL)
     {
         func_004c3880(work->drawMatrix);
-        work->drawMatrix = NULL;
     }
-    func_0045edc0(work);
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
 // FUN_001af930 NONMATCHING
@@ -1231,7 +1231,7 @@ void func_001b0250(KwlnTask* task, s32 turnMode)
     ((FldFrameMoveWork*)task->workData)->turnMode = turnMode;
 }
 
-// FUN_001b0260 NONMATCHING
+// FUN_001b0260
 void func_001b0260(KwlnTask* task, s32 mode)
 {
     FldFrameMoveWork* work;
@@ -1239,13 +1239,14 @@ void func_001b0260(KwlnTask* task, s32 mode)
 
     work = (FldFrameMoveWork*)task->workData;
     work->mode = mode;
-    ctl = (CollisCtl*)((KwlnTask*)*(void**)((u8*)work->resource + 0x1e0))->workData;
     if (mode == 1)
     {
+        ctl = (CollisCtl*)((KwlnTask*)*(void**)((u8*)work->resource + 0x1e0))->workData;
         ctl->flags |= COLLISCTL_FLAG_NOUPDATE;
     }
     else
     {
+        ctl = (CollisCtl*)((KwlnTask*)*(void**)((u8*)work->resource + 0x1e0))->workData;
         ctl->flags &= ~COLLISCTL_FLAG_NOUPDATE;
     }
 }
@@ -1530,18 +1531,12 @@ void* func_001ab640(const RwV3d* point, const void* triangle,
     return (void*)triangle;
 }
 
-// FUN_001abcd0 NONMATCHING
+// FUN_001abcd0
 void* func_001abcd0(void* collisionWorld, void* state)
 {
-    if (state != NULL)
-    {
-        *(void**)((u8*)state + 0xb34) = collisionWorld;
-        if (collisionWorld != NULL)
-        {
-            func_00464120(collisionWorld, (u8*)state + 0xb18,
-                          func_001ab640, state);
-        }
-    }
+    *(void**)((u8*)state + 0xb34) = collisionWorld;
+    func_00464120(collisionWorld, (u8*)state + 0xb18,
+                  func_001ab640, state);
     return collisionWorld;
 }
 
@@ -1641,20 +1636,12 @@ void* func_001aca40(f32 fraction, const RwV3d* line,
     return unused;
 }
 
-// FUN_001acb20 NONMATCHING
+// FUN_001acb20
 void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast)
 {
-    if (raycast == NULL)
-    {
-        return collisionWorld;
-    }
-
     raycast->hitObject = collisionWorld;
-    if (collisionWorld != NULL)
-    {
-        func_00464120(collisionWorld, &raycast->line[0],
-                      func_001aca40, raycast);
-    }
+    func_00464120(collisionWorld, &raycast->line[0],
+                  func_001aca40, raycast);
     return collisionWorld;
 }
 

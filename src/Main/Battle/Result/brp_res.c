@@ -22,111 +22,142 @@ void brpRes0024ba30(u32* param_1)
     sBrpResWork = param_1;
 }
 
-// FUN_0024BA50 NONMATCHING
+// FUN_0024BA50
 void func_0024ba50(void)
 {
-    u32 i;
+    s32 i;
+    u32* work;
 
     K_ASSERT(sBrpResWork != NULL, 0x39);
-    if ((sBrpResWork[1] & 1) != 0)
+    work = sBrpResWork;
+    if ((work[1] & 1) != 0)
     {
         for (i = 0; i < 4; i++)
         {
-            RwFree((void*)(uintptr_t)sBrpResWork[4 + i]);
+            RwFree((void*)(uintptr_t)*(u32*)((u8*)work + i * 4 + 0x10));
         }
     }
-    if ((sBrpResWork[1] & 2) != 0)
+    if ((work[1] & 2) != 0)
     {
-        RwFree((void*)(uintptr_t)sBrpResWork[8]);
+        RwFree((void*)(uintptr_t)work[8]);
     }
-    if ((sBrpResWork[1] & 4) != 0)
+    if ((work[1] & 4) != 0)
     {
-        RwFree((void*)(uintptr_t)sBrpResWork[9]);
+        RwFree((void*)(uintptr_t)work[9]);
     }
     sBrpResWork = NULL;
 }
 
-// FUN_0024BB30 NONMATCHING
+// FUN_0024BB30
 void func_0024bb30(void)
 {
-    u32 i;
-    u32 fileSize;
     void* file;
-    void* allocation;
-    HCdvd* archive;
-    HCdvd* stream;
+    s32 i;
+    u32 fileSize;
+    u32* work;
 
     K_ASSERT(sBrpResWork != NULL, 0x39);
-    if ((sBrpResWork[0] & 1) != 0)
+    work = sBrpResWork;
+    if ((work[0] & 1) != 0)
     {
-        archive = (HCdvd*)(uintptr_t)sBrpResWork[2];
-        if (H_Cdvd_IsFileLoaded(archive))
+        if (H_Cdvd_IsFileLoaded((HCdvd*)(uintptr_t)work[2]))
         {
             for (i = 0; i < 6; i++)
             {
-                file = H_Cdvd_ArchiveGetFile(archive, (s32)i, &fileSize);
                 switch (i)
                 {
                     case 0:
-                        sflRes0020e800(file);
+                        sflRes0020e800(H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize));
                         break;
                     case 1:
-                        func_0021b4a0(file);
+                        func_0021b4a0(H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize));
                         break;
                     case 2:
+                        file = H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize);
+                        work[4] = (u32)(uintptr_t)BRP_RES_ALLOC(
+                            fileSize, 0x40000);
+                        memcpy((void*)(uintptr_t)work[4], file,
+                               *(volatile u32*)&fileSize);
+                        break;
                     case 3:
+                        file = H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize);
+                        work[5] = (u32)(uintptr_t)BRP_RES_ALLOC(
+                            fileSize, 0x40000);
+                        memcpy((void*)(uintptr_t)work[5], file,
+                               *(volatile u32*)&fileSize);
+                        break;
                     case 4:
+                        file = H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize);
+                        work[6] = (u32)(uintptr_t)BRP_RES_ALLOC(
+                            fileSize, 0x40000);
+                        memcpy((void*)(uintptr_t)work[6], file,
+                               *(volatile u32*)&fileSize);
+                        break;
                     case 5:
-                        allocation = BRP_RES_ALLOC(fileSize, 0x40000);
-                        sBrpResWork[4 + i - 2] = (u32)(uintptr_t)allocation;
-                        memcpy(allocation, file, fileSize);
+                        file = H_Cdvd_ArchiveGetFile(
+                            (HCdvd*)(uintptr_t)work[2], i, &fileSize);
+                        work[7] = (u32)(uintptr_t)BRP_RES_ALLOC(
+                            fileSize, 0x40000);
+                        memcpy((void*)(uintptr_t)work[7], file,
+                               *(volatile u32*)&fileSize);
                         break;
                     default:
                         K_ASSERT(false, 0x8e);
                         break;
                 }
             }
-            sBrpResWork[1] |= 1;
-            H_Cdvd_Destroy(archive);
-            sBrpResWork[0] &= ~1;
+            work[1] |= 1;
+            H_Cdvd_Destroy((HCdvd*)(uintptr_t)work[2]);
+            work[0] &= ~1;
         }
     }
 
-    if ((sBrpResWork[0] & 2) != 0)
+    if ((work[0] & 2) != 0)
     {
-        stream = (HCdvd*)(uintptr_t)sBrpResWork[3];
-        if (H_Cdvd_IsFileLoaded(stream))
+        if (H_Cdvd_IsFileLoaded((HCdvd*)(uintptr_t)work[3]))
         {
-            fileSize = stream->fileSize;
-            allocation = BRP_RES_ALLOC(fileSize, 0x40000);
-            sBrpResWork[8] = (u32)(uintptr_t)allocation;
-            memcpy(allocation, stream->fileMemory, fileSize);
-            sBrpResWork[1] |= 2;
-            H_Cdvd_Destroy(stream);
-            sBrpResWork[0] &= ~2;
+            work[8] = (u32)(uintptr_t)BRP_RES_ALLOC(
+                ((HCdvd*)(uintptr_t)work[3])->fileSize, 0x40000);
+            memcpy((void*)(uintptr_t)work[8],
+                   ((HCdvd*)(uintptr_t)work[3])->fileMemory,
+                   *(volatile u32*)&((HCdvd*)(uintptr_t)work[3])->fileSize);
+            work[1] |= 2;
+            H_Cdvd_Destroy((HCdvd*)(uintptr_t)work[3]);
+            work[0] &= ~2;
         }
     }
 }
 
-// FUN_0024BE40 NONMATCHING
+// FUN_0024BE40
 void func_0024be40(void)
 {
+    u32* work;
+
     K_ASSERT(sBrpResWork != NULL, 0x39);
-    K_ASSERT((sBrpResWork[1] & 1) == 0, 0xab);
-    sBrpResWork[2] = (u32)(uintptr_t)H_Cdvd_Request(sBrpBirthArchivePath,
-                                                     HCDVD_FILEARCHIVE);
-    sBrpResWork[0] |= 1;
+    work = sBrpResWork;
+    K_ASSERT((~work[1] & 1) != 0, 0xab);
+    work[2] = (u32)(uintptr_t)H_Cdvd_Request(sBrpBirthArchivePath,
+                                             HCDVD_FILEARCHIVE);
+    work[0] |= 1;
 }
 
-// FUN_0024BF80 NONMATCHING
+// FUN_0024BF80
 void func_0024bf80(void)
 {
+    u32* work;
+
     K_ASSERT(sBrpResWork != NULL, 0x39);
-    K_ASSERT((sBrpResWork[0] & 2) == 0, 0xbf);
-    K_ASSERT((sBrpResWork[1] & 2) == 0, 0xc0);
-    sBrpResWork[3] = (u32)(uintptr_t)H_Cdvd_Request(sBrpCombineMessagePath,
-                                                     HCDVD_FILENORMAL);
-    sBrpResWork[0] |= 2;
+    work = sBrpResWork;
+    K_ASSERT((~work[0] & 2) != 0, 0xbf);
+    K_ASSERT((~work[1] & 2) != 0, 0xc0);
+    work[3] = (u32)(uintptr_t)H_Cdvd_Request(sBrpCombineMessagePath,
+                                             HCDVD_FILENORMAL);
+    work[0] |= 2;
 }
 
 static u32* sBrpRes334; // 007ce334

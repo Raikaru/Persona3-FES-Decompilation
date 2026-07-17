@@ -1,5 +1,9 @@
 #include "Battle/btlFormation.h"
 #include "Battle/btlFade.h"
+#include "Battle/btlUnit.h"
+#include "Battle/battle.h"
+#include "Battle/btlVoice.h"
+#include "Battle/btlBoss.h"
 
 extern u32 btlFormation002b8c00(void* work);
 extern u32 btlFormation002b8dc0(void* work);
@@ -53,6 +57,29 @@ typedef u32 undefined4;
 typedef u64 undefined8;
 typedef void undefined;
 typedef int (*code)(...);
+typedef struct BtlFormationState {
+  u8 padding[0x630];
+  u16 flags;
+  u16 counter;
+  u32 value;
+} BtlFormationState;
+typedef struct BtlFormationWork {
+  u32 state;
+  u32 list;
+  u32 argument5;
+  u8 padding0c[4];
+  s32 sentinel;
+  u8 random;
+  u8 padding15[3];
+  u32 argument3;
+  u32 argument4;
+  u8 padding20[0x34];
+  u16 count;
+  u16 padding56;
+  u32 items;
+} BtlFormationWork;
+
+
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
@@ -69,7 +96,7 @@ extern u64 func_001086a0();
 extern u64 func_0016f1f0();
 extern u64 func_00170670();
 extern u64 func_001706c0();
-extern u64 func_00171110();
+extern const char* func_00171110(s16 id, s16 field);
 extern u64 func_00173220();
 extern u64 func_001778b0();
 extern u64 func_0017b220();
@@ -78,8 +105,14 @@ extern u64 func_00194b20();
 extern u64 func_00195020();
 extern u64 func_00195340();
 extern char D_00696f50[];
+extern char D_006964D0[];
+extern char D_006964E8[];
 extern u64 func_00195460();
 extern u64 func_00195540();
+#pragma alias func_00195340_u32 func_00195340
+#pragma alias func_00195540_u32 func_00195540
+extern u32 func_00195340_u32();
+extern u32 func_00195540_u32();
 extern u64 func_00195550();
 extern u64 func_00198590();
 extern u64 func_0019d3f0();
@@ -120,7 +153,7 @@ extern u64 func_0021c3f0();
 extern u64 func_0021cca0();
 extern u64 func_0021cce0();
 extern u64 func_0027e310();
-extern u64 func_0027ec10();
+extern u32 func_0027ec10();
 extern u64 func_0027ed20();
 extern u64 func_0027f650();
 extern u64 func_0027f7c0();
@@ -142,8 +175,8 @@ extern u64 func_002d1a10();
 extern u64 func_002d1a70();
 extern u64 func_002d1de0();
 extern u64 func_002d1fd0();
-extern u64 func_002d4cf0();
-extern u64 func_002d4e10();
+extern u32 func_002d4cf0();
+extern u32 func_002d4e10();
 extern u64 func_002d5550();
 extern u64 func_002db650();
 extern u64 func_002db800();
@@ -154,26 +187,24 @@ extern u64 func_002eabb0();
 extern u64 func_002ec560();
 extern u64 func_002ec590();
 extern u64 func_002ecb30();
-extern u64 func_002efc90();
-extern u64 func_002efcd0();
+extern void func_002efc90(u32 param_1);
+extern void func_002efcd0(u32 param_1);
 extern u64 func_002efd10();
-extern u64 func_002f2450();
-extern u64 func_002f2490();
+extern void func_002f2450(u32 param_1);
+extern void func_002f2490(u32 param_1);
 extern u64 func_002f24d0();
 extern u64 func_002f2510();
-extern u64 func_002f39b0();
 extern u64 func_002f5030();
 extern u64 func_002f5320();
 extern u64 func_002f6bf0();
 extern u64 func_002f6c20();
-extern u64 func_002fc520();
 extern u64 func_002fd820();
 extern u64 func_002ffbc0();
 extern u64 func_002ffcc0();
-extern u64 func_002ffd70();
-extern u64 func_002ffd80();
-extern u64 func_002ffdf0();
-extern u64 func_00300100();
+extern u16 func_002ffd70(u32 unit);
+extern u16 func_002ffd80(u32 unit);
+extern u16 func_002ffdf0(u32 unit);
+extern u16 func_00300100(u32 unit);
 extern u64 func_00300530();
 extern u64 func_00300550();
 extern u64 func_00300580();
@@ -183,7 +214,7 @@ extern u64 func_00301750();
 extern u64 func_00301870();
 extern u64 func_00301ca0();
 extern u64 func_00303130();
-extern u64 func_00306e80();
+extern u32 func_00306e80();
 extern u64 func_003080c0();
 extern u64 func_003082f0();
 extern u64 func_003086f0();
@@ -192,6 +223,22 @@ extern u64 func_00308930();
 extern u64 func_00308a80();
 extern u64 func_00308ba0();
 extern u64 func_00308bb0();
+#pragma alias func_00308ba0_u32 func_00308ba0
+#pragma alias func_00308bb0_u32 func_00308bb0
+#pragma alias func_00308860_u32 func_00308860
+extern u32 func_00308ba0_u32(u32 param_1);
+extern u32 func_00308bb0_u32(u32 param_1);
+extern u32 func_00308860_u32(void);
+#pragma alias func_0035f160_u32 func_0035f160
+#pragma alias func_0029ad60_u32 func_0029ad60
+#pragma alias func_0035f060_u32 func_0035f060
+extern u32 func_0035f160_u32(void);
+extern u32 func_0029ad60_u32(u16 param_1);
+extern void func_0035f060_u32(u32 param_1);
+#pragma alias func_0035ed20_u32 func_0035ed20
+extern u32 func_0035ed20_u32(u32 param_1);
+#pragma alias func_002a3d70_f32 func_002a3d70
+extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
 extern u64 func_0030b4b0();
 extern u64 func_0030b5a0();
 extern u64 func_0030bc20();
@@ -252,6 +299,8 @@ extern u32 DAT_00696e30;
 extern u32 DAT_00696e34;
 extern u8 DAT_00696fb0;
 extern u32 DAT_006971b0;
+extern code gFormationDispatchTable[];
+extern code gFormationActionTable[];
 extern u8 DAT_007cc740;
 extern u32 DAT_007cc970;
 extern u32 DAT_007cc971;
@@ -272,6 +321,14 @@ extern u32 DAT_00957100;
 extern u32 DAT_00957140;
 extern u32 DAT_00957144;
 extern u32 DAT_00957148;
+#pragma alias DAT_00957140_abs DAT_00957140
+#pragma alias DAT_00957150_abs DAT_00957150
+#pragma alias DAT_00957160_abs DAT_00957160
+#pragma alias DAT_00957170_abs DAT_00957170
+extern u8 DAT_00957140_abs[];
+extern u8 DAT_00957150_abs[];
+extern u8 DAT_00957160_abs[];
+extern u8 DAT_00957170_abs[];
 extern u32 DAT_00957150;
 extern u32 DAT_00957154;
 extern u32 DAT_00957158;
@@ -285,6 +342,8 @@ extern float DAT_00960088;
 extern u64 (*DAT_00960090)();
 extern u64 (*DAT_009600a4)();
 extern u64 (*DAT_00960178)();
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 extern void (*DAT_0096017c[])(...);
 extern u32* PTR_DAT_00696f30;
 extern code pcRam006971bc;
@@ -345,13 +404,9 @@ extern code pcRam006974bc;
 extern code pcRam006974c8;
 extern code pcRam006974f8;
 extern code pcRam00697504;
-extern u8 LAB_002bd060;
-extern u8 LAB_002bd210;
-extern u8 LAB_002bd2c0;
-extern u8 LAB_002bd460;
-extern u8 LAB_002bd8b0;
-extern u8 LAB_002bdba0;
-extern char* PTR_s_N_00646555_0x12_00696dcc;
+extern void LAB_002bd060(void);
+extern void LAB_002bd210(void);
+extern char* PTR_s_N_00646555_0x12_00696dcc[];
 extern char* PTR_s_battle_effect_ATC_D_BED_00696c80;
 extern char* PTR_s_battle_effect_SHADOW_S_BED_007cc6f0;
 extern u32 _DAT_007ce4f4;
@@ -410,16 +465,16 @@ extern u8* iGpffffb7b8;
 
 /* Target forward declarations. */
 extern u32 func_002b8dc0(u16 *param_1);
-extern int func_002b8f90(short param_1);
-extern void func_002b9030(u64 param_1);
+extern u32 func_002b8f90(u16 param_1);
+extern void func_002b9030(u32 param_1);
 extern void func_002b90d0(u64 param_1,u64 param_2);
 extern void func_002b9220(int param_1);
 extern void func_002b9300(int param_1);
 extern bool func_002b9350(int param_1);
-extern u32 func_002b9370(int param_1,short param_2);
-extern u32 func_002b93c0(int param_1,u32 param_2);
-extern u64 func_002b93e0(int param_1,u16 param_2,int param_3,int param_4,int param_5);
-extern void func_002b94f0(u64 param_1);
+extern u32 func_002b9370(int param_1,u16 param_2);
+extern u32 func_002b93c0(int param_1,u16 param_2);
+extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
+extern void func_002b94f0(BtlFormationWork *param_1);
 extern float func_002b9590(int param_1);
 extern void func_002b9600(u32 *param_1);
 extern u32 func_002b9640(int param_1);
@@ -478,7 +533,7 @@ extern void func_002bc890(u8 *param_1,u16 param_2);
 extern u32 func_002bc910(u32 *param_1);
 extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
-extern void func_002bccd0(long param_1,u32 param_2);
+extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
 extern void func_002bce10(float param_1,float param_2,int param_3,char param_4,float *param_5);
 extern u32 func_002bd080(int *param_1);
@@ -489,7 +544,7 @@ extern u32 func_002bd4f0(int param_1);
 extern void func_002bd590(u32 param_1,u16 param_2);
 extern u32 func_002bd5f0(int param_1);
 extern void func_002bd690(u32 param_1,u16 param_2);
-extern bool func_002bd6f0(int param_1);
+extern u32 func_002bd6f0(int param_1);
 extern void func_002bd780(u32 param_1,u16 param_2);
 extern bool func_002bd7e0(u32 *param_1);
 extern void func_002bd850(u32 param_1,u32 param_2);
@@ -547,19 +602,19 @@ extern void func_002c08b0(int param_1,int param_2);
 extern long * func_002c08c0(int param_1);
 extern u32 func_002c0970(int param_1);
 extern u32 func_002c09f0(int param_1);
-extern void func_002c0a50(u64 param_1,u16 param_2);
+extern void func_002c0a50(u32 param_1,u16 param_2);
 extern void func_002c0ac0(int param_1,int param_2);
 extern int func_002c0e30(short param_1,u32 param_2,u32 param_3);
 extern u32 func_002c0f40(u64 param_1,u64 param_2,u64 param_3,u64 param_4, long param_5,code *param_6,long param_7);
-extern u32 func_002c1080(u64 param_1,u64 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
+extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
 extern bool func_002c12f0(int param_1,int param_2);
 extern bool func_002c22d0(int param_1,int param_2);
 extern bool func_002c28a0(int param_1,int param_2);
-extern bool func_002c1360(int param_1,int param_2);
+extern u32 func_002c1360(int param_1,int param_2);
 extern bool func_002c13d0(int param_1,int param_2);
-extern void func_002c1440(int param_1,u64 param_2);
-extern void func_002c1490(int param_1,u64 param_2);
-extern void func_002c14f0(int param_1,u64 param_2);
+extern void func_002c1440(int param_1,u32 param_2);
+extern void func_002c1490(int param_1,u32 param_2);
+extern void func_002c14f0(int param_1,u32 param_2);
 extern bool func_002c1550(int param_1,u32 param_2);
 extern bool func_002c1590(int param_1,u32 param_2);
 extern bool func_002c15e0(int param_1,u32 param_2);
@@ -576,49 +631,49 @@ extern u32 func_002c1bf0(int param_1,u64 param_2);
 extern bool func_002c1ce0(int param_1,int param_2);
 extern u64 func_002c1d80(void);
 extern bool func_002c1d90(int param_1);
-extern bool func_002c1e10(int param_1,u16 param_2);
-extern bool func_002c1e50(int param_1,u16 param_2);
-extern bool func_002c1e90(int param_1,u16 param_2);
-extern bool func_002c1ed0(int param_1,u16 param_2);
-extern void func_002c1f10(int param_1,u64 param_2);
-extern void func_002c1f60(int param_1,u64 param_2);
-extern void func_002c1fc0(int param_1,u64 param_2);
-extern void func_002c2010(int param_1,u64 param_2);
-extern void func_002c2070(int param_1,u64 param_2);
-extern void func_002c20c0(int param_1,u64 param_2);
-extern void func_002c2120(int param_1,u64 param_2);
-extern void func_002c2170(int param_1,u64 param_2);
-extern bool func_002c21d0(int param_1,short param_2);
-extern void func_002c2220(int param_1,u64 param_2);
-extern void func_002c2270(int param_1,u64 param_2);
-extern void func_002c2310(int param_1,u64 param_2);
-extern void func_002c2360(int param_1,u64 param_2);
+extern bool func_002c1e10(int param_1,short param_2);
+extern bool func_002c1e50(int param_1,short param_2);
+extern bool func_002c1e90(int param_1,short param_2);
+extern bool func_002c1ed0(int param_1,short param_2);
+extern void func_002c1f10(int param_1,u32 param_2);
+extern void func_002c1f60(int param_1,u32 param_2);
+extern void func_002c1fc0(int param_1,u32 param_2);
+extern void func_002c2010(int param_1,u32 param_2);
+extern void func_002c2070(int param_1,u32 param_2);
+extern void func_002c20c0(int param_1,u32 param_2);
+extern void func_002c2120(int param_1,u32 param_2);
+extern void func_002c2170(int param_1,u32 param_2);
+extern bool func_002c21d0(int param_1,int param_2);
+extern void func_002c2220(int param_1,u32 param_2);
+extern void func_002c2270(int param_1,u32 param_2);
+extern void func_002c2310(int param_1,u32 param_2);
+extern void func_002c2360(int param_1,u32 param_2);
 extern u32 func_002c23c0(int param_1);
-extern void func_002c2420(int param_1,u64 param_2);
-extern void func_002c2470(int param_1,u64 param_2);
+extern void func_002c2420(int param_1,u32 param_2);
+extern void func_002c2470(int param_1,u32 param_2);
 extern u32 func_002c2510(int param_1);
 extern bool func_002c25d0(int param_1);
-extern void func_002c25e0(int param_1,u64 param_2);
-extern void func_002c2630(int param_1,u64 param_2);
-extern void func_002c2690(int param_1,u64 param_2);
-extern void func_002c26e0(int param_1,u64 param_2);
-extern void func_002c2740(int param_1,u64 param_2);
-extern void func_002c2790(int param_1,u64 param_2);
-extern void func_002c27f0(int param_1,u64 param_2);
-extern void func_002c2840(int param_1,u64 param_2);
+extern void func_002c25e0(int param_1,u32 param_2);
+extern void func_002c2630(int param_1,u32 param_2);
+extern void func_002c2690(int param_1,u32 param_2);
+extern void func_002c26e0(int param_1,u32 param_2);
+extern void func_002c2740(int param_1,u32 param_2);
+extern void func_002c2790(int param_1,u32 param_2);
+extern void func_002c27f0(int param_1,u32 param_2);
+extern void func_002c2840(int param_1,u32 param_2);
 extern bool func_002c28c0(int param_1,int param_2);
 extern bool func_002c29e0(int param_1,int param_2);
 extern bool func_002c2b20(int param_1,u16 param_2);
-extern void func_002c2be0(int param_1,u64 param_2);
-extern void func_002c2c40(int param_1,u64 param_2);
-extern void func_002c2ca0(int param_1,u64 param_2);
+extern void func_002c2be0(int param_1,u32 param_2);
+extern void func_002c2c40(int param_1,u32 param_2);
+extern void func_002c2ca0(int param_1,u32 param_2);
 extern u32 func_002c2d00(int param_1,short param_2);
 extern bool func_002c2ed0(u64 param_1,u16 param_2,long param_3);
 extern void func_002c30f0(u64 param_1,u16 param_2);
 extern void func_002c3120(u64 param_1,u16 param_2);
-extern void func_002c3150(int param_1,u64 param_2);
-extern void func_002c31b0(int param_1,u64 param_2);
-extern void func_002c3210(int param_1,u64 param_2);
+extern void func_002c3150(int param_1,u32 param_2);
+extern void func_002c31b0(int param_1,u32 param_2);
+extern void func_002c3210(int param_1,u32 param_2);
 extern bool func_002c3270(int param_1);
 extern u32 func_002c32c0(int param_1);
 extern u32 func_002c32e0(int param_1);
@@ -667,10 +722,12 @@ extern u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short 
 extern u32 func_002c4c80(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5);
 extern u32 func_002c4e50(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5);
 extern long func_002c5030(u64 param_1,u64 param_2,long param_3,int param_4);
-extern u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4);
+extern u32 func_002c5380(int param_1,int param_2,u16 *param_3,long param_4);
 extern u32 func_002c59d0(u64 param_1,u64 param_2,u64 param_3,long param_4);
 extern long func_002c5fc0(u64 param_1,u64 param_2,short param_3,int param_4);
 extern long func_002c6300(u64 param_1,u64 param_2,u16 param_3,long param_4);
+#pragma alias func_002c6300_s32 func_002c6300
+extern long func_002c6300_s32(u32 context, u32 actor, s16 value, s32 mode);
 extern u32 func_002c65d0(int param_1);
 extern void func_002c6a00(int param_1,int param_2,u16 param_3);
 extern char func_002c6ba0(u64 param_1);
@@ -966,45 +1023,45 @@ u32 func_002b8dc0(u16 *param_1)
   return 1;
 }
 
-// FUN_002b8f90 NONMATCHING
+// FUN_002b8f90
 
-int func_002b8f90(short param_1)
-
+u32 func_002b8f90(u16 param_1)
 {
-  int iVar1 = 0;
-  
-  iVar1 = (*DAT_00960178)(0x638,0x40000);
-  if (param_1 == 2) {
-    *(u16 *)(iVar1 + 0x630) = 8;
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)(*DAT_00960178_abs)(0x638,0x40000);
+  switch (param_1) {
+  case 0:
+    state->flags = 0;
+    break;
+  case 1:
+    state->flags = 0;
+    break;
+  case 2:
+    state->flags = 8;
+    break;
   }
-  else if (param_1 == 1) {
-    *(u16 *)(iVar1 + 0x630) = 0;
-  }
-  else if (param_1 == 0) {
-    *(u16 *)(iVar1 + 0x630) = 0;
-  }
-  *(u16 *)(iVar1 + 0x632) = 1;
-  *(u32 *)(iVar1 + 0x634) = 0;
-  return iVar1;
+  state->counter = 1;
+  state->value = 0;
+  return (u32)state;
 }
 
-// FUN_002b9030 NONMATCHING
+// FUN_002b9030
 
-void func_002b9030(u64 param_1)
-
+void func_002b9030(u32 param_1)
 {
-  int iVar1 = 0;
-  
-  iVar1 = (int)param_1;
-  *(short *)(iVar1 + 0x632) = *(short *)(iVar1 + 0x632) + -1;
-  if (((*(u16 *)(iVar1 + 0x630) & 8) != 0) && (*(short *)(iVar1 + 0x632) == 1)) {
-    func_002b9220(0);
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)param_1;
+  state->counter--;
+  if (((state->flags & 8) != 0) && (state->counter == 1)) {
+    func_002b9220((int)state);
   }
-  if (*(short *)(iVar1 + 0x632) == 0) {
-    if ((*(u16 *)(iVar1 + 0x630) & 2) != 0) {
-      func_002b9220(param_1);
+  if (state->counter == 0) {
+    if ((state->flags & 2) != 0) {
+      func_002b9220((int)state);
     }
-    (*DAT_0096017c)(param_1);
+    (*DAT_0096017c)(state);
   }
   return;
 }
@@ -1073,14 +1130,17 @@ void func_002b9220(int param_1)
   return;
 }
 
-// FUN_002b9300 NONMATCHING
+// FUN_002b9300
 
 void func_002b9300(int param_1)
-
 {
-  *(short *)(param_1 + 0x632) = *(short *)(param_1 + 0x632) + 1;
-  if (((*(u16 *)(param_1 + 0x630) & 8) != 0) && (*(short *)(param_1 + 0x632) == 2)) {
-    func_002b90d0(param_1,*(u32 *)(param_1 + 0x634));
+  extern void func_002b90d0(int,u32);
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)param_1;
+  state->counter++;
+  if (((state->flags & 8) != 0) && (state->counter == 2)) {
+    func_002b90d0(param_1,state->value);
   }
   return;
 }
@@ -1093,84 +1153,86 @@ bool func_002b9350(int param_1)
   return (*(u16 *)(param_1 + 0x630) & 2) != 0;
 }
 
-// FUN_002b9370 NONMATCHING
+// FUN_002b9370
 
-u32 func_002b9370(int param_1,short param_2)
-
+u32 func_002b9370(int param_1,u16 param_2)
 {
-  u32 uVar1 = 0;
-  
-  if (param_2 == 1) {
-    uVar1 = *(u32 *)(param_1 + 0x328);
+  u32 result;
+
+  switch (param_2) {
+  case 0:
+    result = *(u32 *)(param_1 + 8);
+    break;
+  case 1:
+    result = *(u32 *)(param_1 + 0x328);
+    break;
+  default:
+    result = 0;
+    break;
   }
-  else if (param_2 == 0) {
-    uVar1 = *(u32 *)(param_1 + 8);
-  }
-  else {
-    uVar1 = 0;
-  }
-  return uVar1;
+  return result;
 }
 
 // FUN_002b93c0
 
-u32 func_002b93c0(int param_1,u32 param_2)
+u32 func_002b93c0(int param_1,u16 param_2)
 
 {
   int iVar1 = (param_2 & 0xffff) * 0x314;
   return *(u32 *)(iVar1 + param_1 + 0xc);
 }
 
-// FUN_002b93e0 NONMATCHING
+// FUN_002b93e0
 
-u64 func_002b93e0(int param_1,u16 param_2,int param_3,int param_4,int param_5)
-
+u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
 {
-  u8 uVar1 = 0;
-  u64 uVar2 = 0;
-  int iVar3 = 0;
-  int *piVar4;
-  
-  iVar3 = (u32)*(u16 *)((u32)param_2 * 0x314 + param_1 + 0x10) * 4 + 0x5c;
-  uVar2 = (*DAT_00960178)(iVar3,0x40000);
-  func_00521408(uVar2,0,iVar3);
-  piVar4 = (int *)uVar2;
-  *piVar4 = param_1;
-  param_1 = param_1 + (u32)param_2 * 0x314;
-  piVar4[1] = param_1 + 8;
-  *(u16 *)(piVar4 + 0x15) = *(u16 *)(param_1 + 0x10);
-  piVar4[0x16] = (int)(piVar4 + 0x17);
-  piVar4[4] = -1;
-  piVar4[6] = param_3;
-  piVar4[7] = param_4;
-  piVar4[2] = param_5;
+  extern void func_00521408(void *,u32,u32);
+  u8 random;
+  u32 result;
+  u32 size;
+  BtlFormationWork *work;
+
+  size = *(u16 *)((u8 *)(uintptr_t)((u32)param_2 * 0x314) +
+                  (uintptr_t)param_1 + 0x10) * 4 + 0x5c;
+  result = (*DAT_00960178_abs)(size,0x40000);
+  func_00521408((void *)result,0,size);
+  work = (BtlFormationWork *)result;
+  work->state = param_1;
+  work->list = (u32)(uintptr_t)((u8 *)(uintptr_t)param_1 +
+                                (u32)param_2 * 0x314 + 8);
+  work->count = *(u16 *)((u8 *)(uintptr_t)work->list + 8);
+  work->items = (u32)((u8 *)work + 0x5c);
+  work->sentinel = -1;
+  work->argument3 = param_3;
+  work->argument4 = param_4;
+  work->argument5 = param_5;
   if (param_2 == 1) {
-    uVar1 = func_002ffbc0(100);
-    *(u8 *)(piVar4 + 5) = uVar1;
+    random = func_002ffbc0(100);
+    work->random = random;
   }
-  return uVar2;
+  return result;
 }
 
 // FUN_002b94f0 NONMATCHING
 
-void func_002b94f0(u64 param_1)
-
+void func_002b94f0(BtlFormationWork *work)
 {
-  u16 uVar1 = 0;
-  int *piVar2;
+  int uVar1 = 0;
+  u32 *piVar2;
   u16 uVar3 = 0;
   
-  uVar1 = *(u16 *)((int)param_1 + 0x54);
-  piVar2 = *(int **)((int)param_1 + 0x58);
+  uVar1 = work->count;
+  piVar2 = (u32 *)(uintptr_t)work->items;
   for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1) {
     if (*piVar2 != 0) {
       func_003257e0();
     }
     piVar2 = piVar2 + 1;
   }
-  (*DAT_0096017c)(param_1);
+  (*DAT_0096017c)(work);
   return;
 }
+
 
 // FUN_002b9590 NONMATCHING
 
@@ -1195,17 +1257,23 @@ float func_002b9590(int param_1)
   return fVar2;
 }
 
-// FUN_002b9600 NONMATCHING
+// FUN_002b9600
 
 void func_002b9600(u32 *param_1)
 
 {
   u32 uVar1 = 0;
   u32 uVar2 = 0;
-  int iVar3 = 0;
   u32 *puVar4;
+  int iVar3 = 0;
   
-  puVar4 = &DAT_00957100;
+  __asm__ volatile (
+      ".set noreorder          \n"
+      "lui %0, 0x95             \n"
+      "addiu %0, %0, 0x7100     \n"
+      ".set reorder"
+      : "=r" (puVar4)
+  );
   iVar3 = 8;
   do {
     uVar1 = *param_1;
@@ -1873,7 +1941,8 @@ void func_002ba3a0(u64 param_1)
     if ((uVar6 == 0) ||
        ((((uVar5 & 0x1000) != 0 && (uVar6 == *(u32 *)(*piVar10 + 800))) || ((uVar5 & 0x100) != 0)))
        ) {
-      lVar9 = func_002fc520(iVar3);
+      lVar9 = (long)(uintptr_t)func_002fc520(
+          (BtlUnit*)(uintptr_t)iVar3);
       if (lVar9 == 0) {
         iVar14 = *(int *)(iVar3 + 0x84);
         iVar15 = *(int *)(iVar3 + 0x88);
@@ -2026,27 +2095,25 @@ void func_002ba900(int param_1)
   return;
 }
 
-// FUN_002baa20 NONMATCHING
+// FUN_002baa20
 
 void func_002baa20(int *param_1)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  
-  iVar1 = *param_1;
-  *(short *)(iVar1 + 0x632) = *(short *)(iVar1 + 0x632) + 1;
-  if (((*(u16 *)(iVar1 + 0x630) & 8) != 0) && (*(short *)(iVar1 + 0x632) == 2)) {
-    func_002b90d0(iVar1,*(u32 *)(iVar1 + 0x634));
+  extern void func_002b90d0(int,u32);
+  extern u32 func_00100d80(u32,u32);
+  BtlFormationState *state;
+
+  state = (BtlFormationState *)*param_1;
+  state->counter++;
+  if (((state->flags & 8) != 0) && (state->counter == 2)) {
+    func_002b90d0((int)state,state->value);
   }
   if ((*(u16 *)(param_1 + 3) & 1) == 0) {
-    iVar2 = func_00100d80(param_1[2],0);
-    param_1[1] = iVar2;
-  }
-  else {
+    param_1[1] = func_00100d80(param_1[2],0);
+  } else {
     param_1[1] = 0;
   }
-  *(u16 *)(iVar1 + 0x630) = *(u16 *)(iVar1 + 0x630) | 1;
+  state->flags |= 1;
   return;
 }
 
@@ -2095,27 +2162,30 @@ u32 func_002baad0(int *param_1)
 // FUN_002bac00 NONMATCHING
 
 u64 func_002bac00(u32 param_1,u64 param_2,u16 param_3)
-
 {
-  u32 *puVar1;
-  int iVar2 = 0;
-  u64 uVar3 = 0;
-  
-  iVar2 = func_00524388(param_2);
-  uVar3 = func_0027ec10(0x400,iVar2 + 0x10);
-  iVar2 = (int)uVar3;
-  *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xfe;
-  *(code *)(iVar2 + 0x68) = (code)func_002baa20;
-  *(code *)(iVar2 + 0x6c) = (code)func_002baad0;
-  puVar1 = *(u32 **)(iVar2 + 0x78);
-  *puVar1 = param_1;
-  puVar1[2] = (u32)(puVar1 + 4);
-  *(u16 *)(puVar1 + 3) = param_3;
-  func_00524270(puVar1[2],param_2);
-  return uVar3;
+  typedef struct FormationStringWork {
+    u32 value;
+    u32 unused;
+    char *text;
+    u16 field;
+    u16 padding;
+  } FormationStringWork;
+  BtlPacket *packet;
+  FormationStringWork *work;
+
+  packet = btlPacketCreate(0x400, func_00524388(param_2) + sizeof(FormationStringWork));
+  packet->unk_47 &= 0xfe;
+  packet->initFunc = (BtlPacketInitFunc)func_002baa20;
+  packet->updateFunc = (BtlPacketUpdateFunc)func_002baad0;
+  work = packet->workData;
+  work->value = param_1;
+  work->text = (char *)(work + 1);
+  work->field = param_3;
+  func_00524270(work->text, param_2);
+  return (u64)packet;
 }
 
-// FUN_002bacb0 NONMATCHING
+// FUN_002bacb0
 
 void func_002bacb0(u32 *param_1)
 
@@ -2124,13 +2194,15 @@ void func_002bacb0(u32 *param_1)
   
   param_1[6] = 0;
   func_002b9300(*param_1);
-  *(short *)(param_1[1] + 0xa0) = *(short *)(param_1[1] + 0xa0) + 1;
-  *(short *)(param_1[2] + 0xa0) = *(short *)(param_1[2] + 0xa0) + 1;
-  if (*(short *)(param_1 + 3) == 1) {
-    param_1[5] = *(u32 *)(param_1[2] + 0x9fc);
-  }
-  else if (*(short *)(param_1 + 3) == 0) {
+  *(u16 *)(param_1[1] + 0xa0) = *(u16 *)(param_1[1] + 0xa0) + 1;
+  *(u16 *)(param_1[2] + 0xa0) = *(u16 *)(param_1[2] + 0xa0) + 1;
+  switch (*(short *)(param_1 + 3)) {
+  case 0:
     param_1[5] = *(u32 *)(param_1[1] + 0x9fc);
+    break;
+  case 1:
+    param_1[5] = *(u32 *)(param_1[2] + 0x9fc);
+    break;
   }
   uVar1 = (u32)func_002bb9c0(param_1[5]);
   param_1[4] = uVar1;
@@ -2188,28 +2260,29 @@ u32 func_002bad60(u32 *param_1)
   return uVar4;
 }
 
-// FUN_002baec0 NONMATCHING
+// FUN_002baec0
 
 bool func_002baec0(u32 *param_1)
-
 {
-  bool bVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
+  int iVar2;
+  u16 index;
+  u32 value;
+  volatile u16 *index_ptr;
+  volatile u32 *value_ptr;
   
-  lVar3 = func_002b9350(*param_1);
-  if (lVar3 == 0) {
-    bVar1 = false;
+  if (!func_002b9350(*param_1)) {
+    return false;
   }
-  else {
-    iVar2 = func_002b93c0(*param_1,*(u16 *)(param_1 + 3));
-    iVar2 = iVar2 << 1;
-    if (iVar2 < 1) {
-      iVar2 = 2;
-    }
-    bVar1 = iVar2 <= (int)param_1[6];
+  index_ptr = (volatile u16 *)(param_1 + 3);
+  value_ptr = (volatile u32 *)param_1;
+  iVar2 = (index = *index_ptr,
+           value = *value_ptr,
+           func_002b93c0(value,index));
+  iVar2 <<= 1;
+  if (iVar2 < 1) {
+    iVar2 = 2;
   }
-  return bVar1;
+  return iVar2 <= (int)param_1[6];
 }
 
 // FUN_002baf30
@@ -2224,7 +2297,7 @@ void func_002baf30(u32 *param_1)
   return;
 }
 
-// FUN_002baf90 NONMATCHING
+// FUN_002baf90
 
 void func_002baf90(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
                  u32 param_5)
@@ -2328,7 +2401,7 @@ void func_002bb290(u32 *param_1)
   return;
 }
 
-// FUN_002bb2f0 NONMATCHING
+// FUN_002bb2f0
 
 void func_002bb2f0(u32 param_1,u32 param_2,u32 param_3,u64 param_4,
                  u16 param_5)
@@ -2480,16 +2553,16 @@ void func_002bb610(u32 param_1)
   return;
 }
 
-// FUN_002bb6f0 NONMATCHING
+// FUN_002bb6f0
 
 void func_002bb6f0(u16 param_1,u64 param_2)
 
 {
-  if ((*(u32 *)(iGpffffb6fc + 0x14) & 1) == 0) {
-    func_00523ac8(param_2,0x6964e8,&gp0xffff99f8,param_1);
+  if ((*(u32 *)(iGpffffb6fc + 0x14) & 1) != 0) {
+    func_00523ac8(param_2,D_006964D0);
   }
   else {
-    func_00523ac8(param_2,0x6964d0);
+    func_00523ac8(param_2,D_006964E8,&gp0xffff99f8,param_1);
   }
   return;
 }
@@ -3058,7 +3131,7 @@ u32 func_002bc480(void)
   return uVar1;
 }
 
-// FUN_002bc680 NONMATCHING
+// FUN_002bc680
 
 void func_002bc680(void)
 
@@ -3106,7 +3179,7 @@ u32 func_002bc7b0(u16 *param_1)
   return 1;
 }
 
-// FUN_002bc7e0 NONMATCHING
+// FUN_002bc7e0
 
 void func_002bc7e0(u16 param_1)
 
@@ -3131,28 +3204,22 @@ u32 func_002bc830(u8 *param_1)
   return 1;
 }
 
-// FUN_002bc890 NONMATCHING
+// FUN_002bc890
 
 void func_002bc890(u8 *param_1,u16 param_2)
 
 {
-  u8 uVar1 = 0;
-  u8 uVar2 = 0;
-  u8 uVar3 = 0;
-  u8 *puVar4;
-  int iVar5 = 0;
+  typedef struct BtlMessageArgs {
+    u8 values[4];
+  } BtlMessageArgs;
+  u8 *work;
+  int packet = 0;
   
-  iVar5 = func_0027ec10(0x30a,6);
-  *(code *)(iVar5 + 0x6c) = (code)func_002bc830;
-  puVar4 = *(u8 **)(iVar5 + 0x78);
-  uVar1 = param_1[1];
-  uVar2 = param_1[2];
-  uVar3 = param_1[3];
-  *puVar4 = *param_1;
-  puVar4[1] = uVar1;
-  puVar4[2] = uVar2;
-  puVar4[3] = uVar3;
-  *(u16 *)(puVar4 + 4) = param_2;
+  packet = func_0027ec10(0x30a,6);
+  *(code *)(packet + 0x6c) = (code)func_002bc830;
+  work = *(u8 **)(packet + 0x78);
+  *(BtlMessageArgs *)work = *(BtlMessageArgs *)param_1;
+  *(u16 *)(work + 4) = param_2;
   return;
 }
 
@@ -3165,7 +3232,7 @@ u32 func_002bc910(u32 *param_1)
   return 1;
 }
 
-// FUN_002bc950 NONMATCHING
+// FUN_002bc950
 
 void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
 
@@ -3239,7 +3306,7 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
 
 // FUN_002bccd0 NONMATCHING
 
-void func_002bccd0(long param_1,u32 param_2)
+void func_002bccd0(u32 param_1,u32 param_2)
 
 {
   char cVar1 = 0;
@@ -3337,48 +3404,58 @@ void func_002bce10(float param_1,float param_2,int param_3,char param_4,float *p
   return;
 }
 
+
 // FUN_002bd080 NONMATCHING
 
-u32 func_002bd080(int *param_1)
+u32 func_002bd080(int *work)
 
 {
-  int iVar1 = 0;
-  short sVar2 = 0;
-  short sVar3 = 0;
-  long lVar4 = 0;
-  long lVar5 = 0;
-  
-  iVar1 = *param_1;
-  if ((char)param_1[1] == '\x01') {
-    sVar2 = func_002ffd80(*(u32 *)(iVar1 + 0xa2c));
-    sVar3 = func_00300100(*(u32 *)(iVar1 + 0xa2c));
-    lVar4 = (long)sVar2;
-    if (*(short *)((int)param_1 + 6) != 0) {
-      lVar5 = (long)(short)(sVar2 + *(short *)((int)param_1 + 6));
-      lVar4 = (long)sVar3;
-      if ((lVar5 <= lVar4) && (lVar4 = lVar5, lVar5 < 0)) {
-        lVar4 = 0;
+  int unit;
+  s16 current;
+  s16 maximum;
+  long value;
+  long adjusted;
+
+  unit = *work;
+  switch (*(u8 *)((int)work + 4)) {
+  case 0:
+    current = func_002ffd70(*(u32 *)(unit + 0xa2c));
+    maximum = func_002ffdf0(*(u32 *)(unit + 0xa2c));
+    value = (long)current;
+    if (*(s16 *)((int)work + 6) != 0) {
+      adjusted = (long)(s16)(current + *(s16 *)((int)work + 6));
+      value = (long)maximum;
+      if (adjusted <= value) {
+        value = adjusted;
+        if (adjusted < 0) {
+          value = 0;
+        }
       }
     }
-    *(float *)(iVar1 + 0xa18) = (float)(int)lVar4 / (float)(int)sVar3;
-  }
-  else if ((char)param_1[1] == '\0') {
-    sVar2 = func_002ffd70(*(u32 *)(iVar1 + 0xa2c));
-    sVar3 = func_002ffdf0(*(u32 *)(iVar1 + 0xa2c));
-    lVar4 = (long)sVar2;
-    if (*(short *)((int)param_1 + 6) != 0) {
-      lVar5 = (long)(short)(sVar2 + *(short *)((int)param_1 + 6));
-      lVar4 = (long)sVar3;
-      if ((lVar5 <= lVar4) && (lVar4 = lVar5, lVar5 < 0)) {
-        lVar4 = 0;
+    *(float *)(unit + 0xa04) = (float)(int)value / (float)(int)maximum;
+    break;
+  case 1:
+    current = func_002ffd80(*(u32 *)(unit + 0xa2c));
+    maximum = func_00300100(*(u32 *)(unit + 0xa2c));
+    value = (long)current;
+    if (*(s16 *)((int)work + 6) != 0) {
+      adjusted = (long)(s16)(current + *(s16 *)((int)work + 6));
+      value = (long)maximum;
+      if (adjusted <= value) {
+        value = adjusted;
+        if (adjusted < 0) {
+          value = 0;
+        }
       }
     }
-    *(float *)(iVar1 + 0xa04) = (float)(int)lVar4 / (float)(int)sVar3;
+    *(float *)(unit + 0xa18) = (float)(int)value / (float)(int)maximum;
+    break;
   }
   return 1;
 }
 
-// FUN_002bd230 NONMATCHING
+
+// FUN_002bd230
 
 void func_002bd230(u32 param_1,u8 param_2,u16 param_3)
 
@@ -3388,9 +3465,9 @@ void func_002bd230(u32 param_1,u8 param_2,u16 param_3)
   
   iVar2 = func_0027ec10(0x500,8);
   *(u8 *)(iVar2 + 0x47) = *(u8 *)(iVar2 + 0x47) & 0xef;
-  *(u8 **)(iVar2 + 0x68) = &LAB_002bd060;
+  *(code *)(iVar2 + 0x68) = (code)LAB_002bd060;
   *(code *)(iVar2 + 0x6c) = (code)func_002bd080;
-  *(u8 **)(iVar2 + 0x70) = &LAB_002bd210;
+  *(code *)(iVar2 + 0x70) = (code)LAB_002bd210;
   puVar1 = *(u32 **)(iVar2 + 0x78);
   *puVar1 = param_1;
   *(u8 *)(puVar1 + 1) = param_2;
@@ -3398,55 +3475,47 @@ void func_002bd230(u32 param_1,u8 param_2,u16 param_3)
   return;
 }
 
-// FUN_002bd2e0 NONMATCHING
+// FUN_002bd2c0
+void btlFormationInit0501Packet(void* work)
+{
+    BtlUnit* unit;
+
+    unit = *(BtlUnit**)work;
+    unit->packetCount++;
+}
+
+// FUN_002bd2e0
 
 u32 func_002bd2e0(int *param_1)
 
 {
-  int iVar1 = 0;
-  u32 uVar2 = 0;
-  float fVar3 = 0;
-  float fVar4 = 0;
-  
-  iVar1 = *param_1;
-  uVar2 = func_002ffd70(*(u32 *)(iVar1 + 0xa2c));
-  if ((long)uVar2 < 0) {
-    fVar4 = (float)(uVar2 & 0xffffffff);
-  }
-  else {
-    fVar4 = (float)(int)uVar2;
-  }
-  uVar2 = func_002ffdf0(*(u32 *)(iVar1 + 0xa2c));
-  if ((long)uVar2 < 0) {
-    fVar3 = (float)(uVar2 & 0xffffffff);
-  }
-  else {
-    fVar3 = (float)(int)uVar2;
-  }
-  *(float *)(iVar1 + 0xa08) = fVar4 / fVar3;
-  *(u32 *)(iVar1 + 0xa04) = 0xbf800000;
-  *(u16 *)(iVar1 + 0xa14) = 0xffff;
-  uVar2 = func_002ffd80(*(u32 *)(iVar1 + 0xa2c));
-  if ((long)uVar2 < 0) {
-    fVar4 = (float)(uVar2 & 0xffffffff);
-  }
-  else {
-    fVar4 = (float)(int)uVar2;
-  }
-  uVar2 = func_00300100(*(u32 *)(iVar1 + 0xa2c));
-  if ((long)uVar2 < 0) {
-    fVar3 = (float)(uVar2 & 0xffffffff);
-  }
-  else {
-    fVar3 = (float)(int)uVar2;
-  }
-  *(float *)(iVar1 + 0xa1c) = fVar4 / fVar3;
-  *(u32 *)(iVar1 + 0xa04) = 0xbf800000;
-  *(u16 *)(iVar1 + 0xa28) = 0xffff;
+  int unit;
+
+  unit = *param_1;
+  *(float *)(unit + 0xa08) =
+      (float)func_002ffd70(*(u32 *)(unit + 0xa2c)) /
+      (float)func_002ffdf0(*(u32 *)(unit + 0xa2c));
+  *(float *)(unit + 0xa04) = -1.0f;
+  *(s16 *)(unit + 0xa14) = -1;
+  *(float *)(unit + 0xa1c) =
+      (float)func_002ffd80(*(u32 *)(unit + 0xa2c)) /
+      (float)func_00300100(*(u32 *)(unit + 0xa2c));
+  *(float *)(unit + 0xa04) = -1.0f;
+  *(s16 *)(unit + 0xa28) = -1;
   return 1;
 }
 
-// FUN_002bd480 NONMATCHING
+// FUN_002bd460
+void btlFormationDestroy0501Packet(void* work)
+{
+    BtlUnit* unit;
+
+    unit = *(BtlUnit**)work;
+    unit->packetCount--;
+}
+
+
+// FUN_002bd480
 
 void func_002bd480(u32 param_1)
 
@@ -3455,28 +3524,26 @@ void func_002bd480(u32 param_1)
   
   iVar1 = func_0027ec10(0x501,4);
   *(u8 *)(iVar1 + 0x47) = *(u8 *)(iVar1 + 0x47) & 0xef;
-  *(u8 **)(iVar1 + 0x68) = &LAB_002bd2c0;
+  *(code *)(iVar1 + 0x68) = (code)btlFormationInit0501Packet;
   *(code *)(iVar1 + 0x6c) = (code)func_002bd2e0;
-  *(u8 **)(iVar1 + 0x70) = &LAB_002bd460;
+  *(code *)(iVar1 + 0x70) = (code)btlFormationDestroy0501Packet;
   **(u32 **)(iVar1 + 0x78) = param_1;
   return;
 }
 
 
+// FUN_002bd4f0
 u32 func_002bd4f0(int param_1)
-
 {
-  u16 uVar3 = 0;
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  
+  u32 uVar1;
+  u32 uVar2;
+
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200) == 0) {
     uVar1 = 1;
   }
   else {
     if (*(int *)(param_1 + 8) == 0) {
-      uVar3 = *(u16 *)(param_1 + 4);
-      func_001fe9b0(DAT_007ce4ec + (u32)uVar3 * 0x13);
+      func_001fe9b0(DAT_007ce4ec + (u32)*(u16 *)(param_1 + 4) * 0x13);
     }
     uVar2 = *(int *)(param_1 + 8) + 1;
     *(u32 *)(param_1 + 8) = uVar2;
@@ -3490,7 +3557,7 @@ u32 func_002bd4f0(int param_1)
   return uVar1;
 }
 
-// FUN_002bd590 NONMATCHING
+// FUN_002bd590
 
 void func_002bd590(u32 param_1,u16 param_2)
 
@@ -3508,20 +3575,20 @@ void func_002bd590(u32 param_1,u16 param_2)
 }
 
 
+// FUN_002bd5f0
 u32 func_002bd5f0(int param_1)
-
 {
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  u64 uVar3 = 0;
-  
+  u32 uVar1;
+  u32 uVar2;
+  const char* text;
+
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200) == 0) {
     uVar1 = 1;
   }
   else {
     if (*(int *)(param_1 + 8) == 0) {
-      uVar3 = func_00171110(*(short *)(param_1 + 4),0);
-      func_001fe9b0(uVar3);
+      text = func_00171110(*(s16 *)(param_1 + 4), 0);
+      func_001fe9b0(text);
     }
     uVar2 = *(int *)(param_1 + 8) + 1;
     *(u32 *)(param_1 + 8) = uVar2;
@@ -3535,7 +3602,7 @@ u32 func_002bd5f0(int param_1)
   return uVar1;
 }
 
-// FUN_002bd690 NONMATCHING
+// FUN_002bd690
 
 void func_002bd690(u32 param_1,u16 param_2)
 
@@ -3552,25 +3619,34 @@ void func_002bd690(u32 param_1,u16 param_2)
   return;
 }
 
-// FUN_002bd6f0 NONMATCHING
+// FUN_002bd6f0
 
-bool func_002bd6f0(int param_1)
-
+u32 func_002bd6f0(int param_1)
 {
-  u32 uVar1 = 0;
-  
+  u32 result;
+  u32 frame;
+
   if (*(int *)(param_1 + 8) == 0) {
     if (*(u16 *)(param_1 + 4) == 0) {
-      return true;
+      result = 1;
+      goto done;
     }
-    func_001fe9b0((&PTR_s_N_00646555_0x12_00696dcc)[*(u16 *)(param_1 + 4)]);
+    func_001fe9b0(PTR_s_N_00646555_0x12_00696dcc[*(u16 *)(param_1 + 4)]);
   }
-  uVar1 = *(int *)(param_1 + 8) + 1;
-  *(u32 *)(param_1 + 8) = uVar1;
-  return 0x2c < uVar1;
+  frame = *(int *)(param_1 + 8) + 1;
+  *(u32 *)(param_1 + 8) = frame;
+  if (frame >= 0x2d) {
+    result = 1;
+  }
+  else {
+    result = 0;
+  }
+
+done:
+  return result;
 }
 
-// FUN_002bd780 NONMATCHING
+// FUN_002bd780
 
 void func_002bd780(u32 param_1,u16 param_2)
 
@@ -3587,22 +3663,25 @@ void func_002bd780(u32 param_1,u16 param_2)
   return;
 }
 
-// FUN_002bd7e0 NONMATCHING
+// FUN_002bd7e0
 
 bool func_002bd7e0(u32 *param_1)
 
 {
-  int iVar1 = 0;
-  
+  u32 frame;
+
   if (param_1[2] == 0) {
     func_002bccd0(*param_1,param_1[1]);
   }
-  iVar1 = param_1[2];
-  param_1[2] = iVar1 + 1U;
-  return 0x2d < iVar1 + 1U;
+  frame = param_1[2] + 1;
+  param_1[2] = frame;
+  if (0x2d < frame) {
+    return true;
+  }
+  return false;
 }
 
-// FUN_002bd850 NONMATCHING
+// FUN_002bd850
 
 void func_002bd850(u32 param_1,u32 param_2)
 
@@ -3617,6 +3696,16 @@ void func_002bd850(u32 param_1,u32 param_2)
   puVar1[1] = param_2;
   puVar1[2] = 0;
   return;
+}
+
+// FUN_002bd8b0
+void btlFormationInit050aPacket(void* work)
+{
+    BtlUnit** units;
+
+    units = (BtlUnit**)work;
+    units[0]->packetCount++;
+    units[1]->packetCount++;
 }
 
 // FUN_002bd8e0 NONMATCHING
@@ -3725,7 +3814,17 @@ u32 func_002bd8e0(int *param_1)
   return 0;
 }
 
-// FUN_002bdbd0 NONMATCHING
+// FUN_002bdba0
+void btlFormationDestroy050aPacket(void* work)
+{
+    BtlUnit** units;
+
+    units = (BtlUnit**)work;
+    units[0]->packetCount--;
+    units[1]->packetCount--;
+}
+
+// FUN_002bdbd0
 
 int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
                 u16 param_5,u16 param_6,u16 param_7,u64 param_8)
@@ -3735,9 +3834,9 @@ int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
   int iVar2 = 0;
   
   iVar2 = func_0027ec10(0x50a,0x34);
-  *(u8 **)(iVar2 + 0x68) = &LAB_002bd8b0;
+  *(code *)(iVar2 + 0x68) = (code)btlFormationInit050aPacket;
   *(code *)(iVar2 + 0x6c) = (code)func_002bd8e0;
-  *(u8 **)(iVar2 + 0x70) = &LAB_002bdba0;
+  *(code *)(iVar2 + 0x70) = (code)btlFormationDestroy050aPacket;
   puVar1 = *(u32 **)(iVar2 + 0x78);
   func_00521250(puVar1 + 2,param_8,0x1c);
   *puVar1 = param_1;
@@ -3786,7 +3885,7 @@ u32 func_002bdcd0(short *param_1)
   return 0;
 }
 
-// FUN_002bddd0 NONMATCHING
+// FUN_002bddd0
 
 void func_002bddd0(void)
 
@@ -4182,7 +4281,7 @@ void func_002bea80(short *param_1,short param_2,short param_3)
 {
   short sVar1 = 0;
   short sVar2 = 0;
-  u64 uVar3 = 0;
+  const char* uVar3 = NULL;
   int iVar4 = 0;
   short sVar5 = 0;
   u32 uVar6 = 0;
@@ -4216,24 +4315,21 @@ void func_002bea80(short *param_1,short param_2,short param_3)
   return;
 }
 
-// FUN_002becc0 NONMATCHING
+// FUN_002becc0
 
 u16 func_002becc0(void)
-
 {
-  u16 uVar1 = 0;
-  u16 *puVar2;
-  long lVar3 = 0;
-  
-  lVar3 = func_00195340(0x696f50);
-  if (lVar3 == 0) {
-    uVar1 = 5;
-  }
-  else {
-    puVar2 = (u16 *)func_00195540(lVar3);
-    uVar1 = *puVar2;
-  }
-  return uVar1;
+    u32 handle;
+    u16* data;
+
+    handle = func_00195340_u32(D_00696f50);
+    if (handle == 0)
+    {
+        return 5;
+    }
+
+    data = (u16*)func_00195540_u32(handle);
+    return *data;
 }
 
 // FUN_002bed10 NONMATCHING
@@ -4535,16 +4631,16 @@ u32 func_002bf3f0(u64 param_1)
   return uVar1;
 }
 
-// FUN_002bf650 NONMATCHING
+// FUN_002bf650
 
 void func_002bf650(void)
 {
-  u64 uVar1 = 0;
+  long handle;
   
-  uVar1 = ((u64 (*)(char *))func_00195340)(D_00696f50);
-  if (uVar1 != 0) {
-    func_00195020(uVar1);
+  if ((handle = func_00195340(D_00696f50)) == 0) {
+    return;
   }
+  func_00195020(handle);
   return;
 }
 
@@ -4744,7 +4840,7 @@ u32 func_002bfab0(void)
   return 1;
 }
 
-// FUN_002bfae0 NONMATCHING
+// FUN_002bfae0
 
 void func_002bfae0(void)
 
@@ -4764,7 +4860,7 @@ u32 func_002bfb20(void)
   return 1;
 }
 
-// FUN_002bfb50 NONMATCHING
+// FUN_002bfb50
 
 void func_002bfb50(void)
 
@@ -4795,7 +4891,7 @@ u32 func_002bfb90(int *param_1)
   return 0;
 }
 
-// FUN_002bfc00 NONMATCHING
+// FUN_002bfc00
 
 void func_002bfc00(void)
 
@@ -5256,20 +5352,25 @@ u32 func_002c09f0(int param_1)
   return uVar1;
 }
 
-// FUN_002c0a50 NONMATCHING
+// FUN_002c0a50
 
-void func_002c0a50(u64 param_1,u16 param_2)
-
+void func_002c0a50(u32 param_1,u16 param_2)
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  
-  iVar1 = func_0029a1d0();
-  lVar2 = func_00289030(param_2);
-  if ((lVar2 != 0) && (lVar2 = func_0029a1d0(), lVar2 != 0)) {
-    *(u64 *)(iVar1 + 0xb8) = *(u64 *)lVar2;
+  extern void *func_0029a1d0(u32);
+  extern void *func_00289030(u32);
+  char *destination;
+  char *source;
+
+  destination = (char *)func_0029a1d0(param_1);
+  param_1 = (u32)func_00289030(param_2);
+  if (param_1 == 0) {
+    return;
   }
-  return;
+  source = (char *)func_0029a1d0(param_1);
+  if (source == 0) {
+    return;
+  }
+  *(u64 *)(destination + 0xb8) = *(u64 *)source;
 }
 
 // FUN_002c0ac0 NONMATCHING
@@ -5410,7 +5511,7 @@ u32 func_002c0f40(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 // FUN_002c1080 NONMATCHING
 
 u32
-func_002c1080(u64 param_1,u64 param_2,u32 param_3,u32 param_4,u16 param_5,
+func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5,
             code *param_6)
 
 {
@@ -5464,96 +5565,109 @@ LAB_002c12a0:
   } while( true );
 }
 
-// FUN_002c12f0 NONMATCHING
+// FUN_002c12f0
 
 bool func_002c12f0(int param_1,int param_2)
 
 {
-  u16 uVar1 = 0;
   u32 uVar2 = 0;
+  u32 uVar1 = 0;
   
   uVar1 = *(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa2c) + 8);
-  uVar2 = func_002ffdf0();
+  uVar2 = func_002ffdf0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   return (u32)uVar1 * 100 <= (uVar2 & 0xffff) * param_2;
 }
 
-// FUN_002c1360 NONMATCHING
+// FUN_002c1360
 
-bool func_002c1360(int param_1,int param_2)
+u32 func_002c1360(int param_1,int param_2)
 
 {
-  u16 uVar1 = 0;
   u32 uVar2 = 0;
+  u32 uVar1 = 0;
   
   uVar1 = *(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa2c) + 8);
-  uVar2 = func_002ffdf0();
-  return (uVar2 & 0xffff) * param_2 <= (u32)uVar1 * 100;
+  uVar2 = func_002ffdf0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
+  return !((u32)uVar1 * 100 < (uVar2 & 0xffff) * param_2);
 }
 
-// FUN_002c13d0 NONMATCHING
+// FUN_002c13d0
 
 bool func_002c13d0(int param_1,int param_2)
 
 {
-  u16 uVar1 = 0;
   u32 uVar2 = 0;
+  u32 uVar1 = 0;
   
   uVar1 = *(u16 *)(*(int *)(*(int *)(param_1 + 0x30) + 0xa2c) + 10);
-  uVar2 = func_00300100();
+  uVar2 = func_00300100(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
   return (u32)uVar1 * 100 <= (uVar2 & 0xffff) * param_2;
 }
 
-// FUN_002c1440 NONMATCHING
+// FUN_002c1440
 
-void func_002c1440(int param_1,u64 param_2)
+void func_002c1440(int param_1,u32 param_2)
 
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c12f0);
   return;
 }
 
 // FUN_002c1490 NONMATCHING
-
-void func_002c1490(int param_1,u64 param_2)
-
+void func_002c1490(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c12f0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c12f0);
+    return;
 }
 
 // FUN_002c14f0 NONMATCHING
 
-void func_002c14f0(int param_1,u64 param_2)
-
+void func_002c14f0(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c1360);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1360);
+    return;
 }
 
-// FUN_002c1550 NONMATCHING
+// FUN_002c1550
 
 bool func_002c1550(int param_1,u32 param_2)
-
 {
-  u32 uVar1 = 0;
-  
-  uVar1 = func_002ffcc0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
-  return param_2 <= (uVar1 & 0xff);
+  extern u8 func_002ffcc0(u32);
+  u8 level;
+
+  level = func_002ffcc0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
+  return param_2 <= level;
 }
 
-// FUN_002c1590 NONMATCHING
+// FUN_002c1590
 
 bool func_002c1590(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
   
-  uVar1 = func_002d4cf0(1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000);
+  uVar1 = func_002d4cf0(1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,0x80000);
   return param_2 <= (uVar1 & 0xffff);
 }
 
@@ -5563,20 +5677,28 @@ bool func_002c15e0(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
-  
-  uVar1 = func_002d4cf0(1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,
-                       0x80000);
+  u16 genus;
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
+  }
+  uVar1 = func_002d4cf0(1 << genus & 0xffff,0x80000);
   return param_2 <= (uVar1 & 0xffff);
 }
 
-// FUN_002c1650 NONMATCHING
+
+// FUN_002c1650
 
 bool func_002c1650(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
   
-  uVar1 = func_002d4e10(1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000);
+  uVar1 = func_002d4e10(1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,0x80000);
   return (uVar1 & 0xffff) <= param_2;
 }
 
@@ -5586,11 +5708,19 @@ bool func_002c16a0(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
-  
-  uVar1 = func_002d4e10(1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,
-                       0x80000);
+  u16 genus;
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
+  }
+  uVar1 = func_002d4e10(1 << genus & 0xffff,0x80000);
   return (uVar1 & 0xffff) <= param_2;
 }
+
 
 // FUN_002c1710
 
@@ -5601,19 +5731,19 @@ void func_002c1710(int param_1)
   return;
 }
 
-// FUN_002c1740 NONMATCHING
+// FUN_002c1740
 
 void func_002c1740(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
   
-  uVar1 = 1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff;
-  if ((param_2 & 0x80000) == 0) {
-    func_002c1080(param_1,param_2,uVar1,0x80000,0,(code *)&func_002c1710);
+  uVar1 = 1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff;
+  if ((param_2 & 0x80000) != 0) {
+    func_002c1080(param_1,param_2,uVar1,0,0,(code *)&func_002c1710);
   }
   else {
-    func_002c1080(param_1,param_2,uVar1,0,0,(code *)&func_002c1710);
+    func_002c1080(param_1,param_2,uVar1,0x80000,0,(code *)&func_002c1710);
   }
   return;
 }
@@ -5758,28 +5888,19 @@ u32 func_002c1bf0(int param_1,u64 param_2)
   return 1;
 }
 
-// FUN_002c1ce0 NONMATCHING
+// FUN_002c1ce0
 
 bool func_002c1ce0(int param_1,int param_2)
 
 {
-  bool bVar1 = 0;
-  long lVar2 = 0;
-  
-  lVar2 = func_00300580(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),0x80271);
-  if (lVar2 == 0) {
-    if ((*(u16 *)(param_1 + 0x18) & 0x80) == 0) {
-      bVar1 = (*(u32 *)(iGpffffb7b8 + (u32)*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) * 0x1c)
-              & 1) != 0;
-    }
-    else {
-      bVar1 = false;
-    }
+  if (func_00300580(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),0x80271) != 0) {
+    return false;
   }
-  else {
-    bVar1 = false;
+  if ((*(u16 *)(param_1 + 0x18) & 0x80) != 0) {
+    return false;
   }
-  return bVar1;
+  return (*(u32 *)(iGpffffb7b8 +
+                   (u32)*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) * 0x1c) & 1) != 0;
 }
 
 // FUN_002c1d80
@@ -5816,9 +5937,9 @@ bool func_002c1d90(int param_1)
   return bVar2;
 }
 
-// FUN_002c1e10 NONMATCHING
+// FUN_002c1e10
 
-bool func_002c1e10(int param_1,u16 param_2)
+bool func_002c1e10(int param_1,short param_2)
 
 {
   u32 uVar1 = 0;
@@ -5827,9 +5948,9 @@ bool func_002c1e10(int param_1,u16 param_2)
   return (uVar1 & 0x2000000) != 0;
 }
 
-// FUN_002c1e50 NONMATCHING
+// FUN_002c1e50
 
-bool func_002c1e50(int param_1,u16 param_2)
+bool func_002c1e50(int param_1,short param_2)
 
 {
   u32 uVar1 = 0;
@@ -5838,9 +5959,9 @@ bool func_002c1e50(int param_1,u16 param_2)
   return (uVar1 & 0x4000000) != 0;
 }
 
-// FUN_002c1e90 NONMATCHING
+// FUN_002c1e90
 
-bool func_002c1e90(int param_1,u16 param_2)
+bool func_002c1e90(int param_1,short param_2)
 
 {
   u32 uVar1 = 0;
@@ -5849,9 +5970,9 @@ bool func_002c1e90(int param_1,u16 param_2)
   return (uVar1 & 0x1000000) != 0;
 }
 
-// FUN_002c1ed0 NONMATCHING
+// FUN_002c1ed0
 
-bool func_002c1ed0(int param_1,u16 param_2)
+bool func_002c1ed0(int param_1,short param_2)
 
 {
   u32 uVar1 = 0;
@@ -5860,142 +5981,180 @@ bool func_002c1ed0(int param_1,u16 param_2)
   return (uVar1 & 0x8000000) != 0;
 }
 
-// FUN_002c1f10 NONMATCHING
+// FUN_002c1f10
 
-void func_002c1f10(int param_1,u64 param_2)
-
+void func_002c1f10(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c1e10);
   return;
 }
 
 // FUN_002c1f60 NONMATCHING
 
-void func_002c1f60(int param_1,u64 param_2)
-
+void func_002c1f60(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c1e10);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e10);
+    return;
 }
 
-// FUN_002c1fc0 NONMATCHING
+// FUN_002c1fc0
 
-void func_002c1fc0(int param_1,u64 param_2)
-
+void func_002c1fc0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c1e50);
   return;
 }
 
 // FUN_002c2010 NONMATCHING
 
-void func_002c2010(int param_1,u64 param_2)
-
+void func_002c2010(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c1e50);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e50);
+    return;
 }
 
-// FUN_002c2070 NONMATCHING
+// FUN_002c2070
 
-void func_002c2070(int param_1,u64 param_2)
-
+void func_002c2070(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c1e90);
   return;
 }
 
 // FUN_002c20c0 NONMATCHING
 
-void func_002c20c0(int param_1,u64 param_2)
-
+void func_002c20c0(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c1e90);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e90);
+    return;
 }
 
-// FUN_002c2120 NONMATCHING
+// FUN_002c2120
 
-void func_002c2120(int param_1,u64 param_2)
-
+void func_002c2120(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c1ed0);
   return;
 }
 
 // FUN_002c2170 NONMATCHING
 
-void func_002c2170(int param_1,u64 param_2)
-
+void func_002c2170(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c1ed0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1ed0);
+    return;
 }
 
-// FUN_002c21d0 NONMATCHING
+// FUN_002c21d0
 
-bool func_002c21d0(int param_1,short param_2)
+bool func_002c21d0(int param_1,int param_2)
 
 {
-  short sVar1 = 0;
+  extern s16 func_003082f0(u32,u16);
+  s16 sVar1 = 0;
+  u32 id = 0;
   
-  sVar1 = func_003082f0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-                       *(u16 *)(param_1 + 0x7e));
+  id = *(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c);
+  sVar1 = func_003082f0(id,*(u16 *)(param_1 + 0x7e));
   return sVar1 == param_2;
 }
 
-// FUN_002c2220 NONMATCHING
+// FUN_002c2220
 
-void func_002c2220(int param_1,u64 param_2)
-
+void func_002c2220(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c21d0);
   return;
 }
 
 // FUN_002c2270 NONMATCHING
 
-void func_002c2270(int param_1,u64 param_2)
-
+void func_002c2270(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c21d0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c21d0);
+    return;
 }
 
-// FUN_002c2310 NONMATCHING
+// FUN_002c2310
 
-void func_002c2310(int param_1,u64 param_2)
-
+void func_002c2310(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c22d0);
   return;
 }
 
 // FUN_002c2360 NONMATCHING
 
-void func_002c2360(int param_1,u64 param_2)
-
+void func_002c2360(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c22d0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c22d0);
+    return;
 }
 
 // FUN_002c23c0 NONMATCHING
@@ -6016,25 +6175,31 @@ u32 func_002c23c0(int param_1)
   return uVar2;
 }
 
-// FUN_002c2420 NONMATCHING
+// FUN_002c2420
 
-void func_002c2420(int param_1,u64 param_2)
-
+void func_002c2420(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x80000,0,(code *)&func_002c23c0);
   return;
 }
 
 // FUN_002c2470 NONMATCHING
 
-void func_002c2470(int param_1,u64 param_2)
-
+void func_002c2470(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0,
-               (code *)&func_002c23c0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c23c0);
+    return;
 }
 
 // FUN_002c2510 NONMATCHING
@@ -6071,88 +6236,112 @@ bool func_002c25d0(int param_1)
   return *(u8 *)(param_1 + 0x28) > 0;
 }
 
-// FUN_002c25e0 NONMATCHING
+// FUN_002c25e0
 
-void func_002c25e0(int param_1,u64 param_2)
-
+void func_002c25e0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x180000,0,(code *)&func_002c1e10);
   return;
 }
 
 // FUN_002c2630 NONMATCHING
 
-void func_002c2630(int param_1,u64 param_2)
-
+void func_002c2630(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,0,
-               (code *)&func_002c1e10);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e10);
+    return;
 }
 
-// FUN_002c2690 NONMATCHING
+// FUN_002c2690
 
-void func_002c2690(int param_1,u64 param_2)
-
+void func_002c2690(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x180000,0,(code *)&func_002c1e50);
   return;
 }
 
 // FUN_002c26e0 NONMATCHING
 
-void func_002c26e0(int param_1,u64 param_2)
-
+void func_002c26e0(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,0,
-               (code *)&func_002c1e50);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e50);
+    return;
 }
 
-// FUN_002c2740 NONMATCHING
+// FUN_002c2740
 
-void func_002c2740(int param_1,u64 param_2)
-
+void func_002c2740(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x180000,0,(code *)&func_002c1e90);
   return;
 }
 
 // FUN_002c2790 NONMATCHING
 
-void func_002c2790(int param_1,u64 param_2)
-
+void func_002c2790(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,0,
-               (code *)&func_002c1e90);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e90);
+    return;
 }
 
-// FUN_002c27f0 NONMATCHING
+// FUN_002c27f0
 
-void func_002c27f0(int param_1,u64 param_2)
-
+void func_002c27f0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,1 << (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0x1f) & 0xffff,
+  func_002c1080(param_1,param_2,1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff,
                0x180000,0,(code *)&func_002c1ed0);
   return;
 }
 
 // FUN_002c2840 NONMATCHING
 
-void func_002c2840(int param_1,u64 param_2)
-
+void func_002c2840(int param_1, u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,0,
-               (code *)&func_002c1ed0);
-  return;
+    u32 shift;
+    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
+    {
+    default:
+        shift = 1;
+        break;
+    case 0:
+        shift = 0;
+        break;
+    }
+    func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1ed0);
+    return;
 }
 
 // FUN_002c28c0 NONMATCHING
@@ -6215,66 +6404,77 @@ bool func_002c29e0(int param_1,int param_2)
   return (u32)(iVar6 * 100) <= (u32)(iVar5 * param_2);
 }
 
-// FUN_002c2b20 NONMATCHING
+// FUN_002c2b20
 
 bool func_002c2b20(int param_1,u16 param_2)
-
 {
-  int iVar1 = 0;
-  bool bVar2 = 0;
-  long lVar3 = 0;
+  int iVar1;
   
   if (param_2 >= 0x270) {
-    func_0019d3f0((char *)0x696f88,0x468);
+    func_0019d3f0(D_00696f50 + 0x38,0x468);
   }
   iVar1 = *(int *)(param_1 + 0x30);
-  lVar3 = func_00300580(*(u32 *)(iVar1 + 0xa2c),0x80274);
-  if (lVar3 == 0) {
-    lVar3 = func_003005e0(*(u32 *)(iVar1 + 0xa2c),param_2);
-    if (lVar3 == 0) {
-      bVar2 = false;
-    }
-    else {
-      lVar3 = func_003086f0(*(u32 *)(iVar1 + 0xa2c),param_2);
-      bVar2 = lVar3 == 0;
-    }
+  if (func_00300580(*(u32 *)(iVar1 + 0xa2c),0x80274) != 0) {
+    return false;
   }
-  else {
-    bVar2 = false;
+  if (func_003005e0(*(u32 *)(iVar1 + 0xa2c),param_2) == 0) {
+    return false;
   }
-  return bVar2;
+  return func_003086f0(*(u32 *)(iVar1 + 0xa2c),param_2) == 0;
 }
-
 // FUN_002c2be0 NONMATCHING
-
-void func_002c2be0(int param_1,u64 param_2)
-
+void func_002c2be0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,6,
-               (code *)&func_002c1ed0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,6,
+                 (code *)&func_002c1ed0);
   return;
 }
 
 // FUN_002c2c40 NONMATCHING
 
-void func_002c2c40(int param_1,u64 param_2)
-
+void func_002c2c40(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,6,
-               (code *)&func_002c1ed0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x180000,6,
+                 (code *)&func_002c1ed0);
   return;
 }
 
 // FUN_002c2ca0 NONMATCHING
 
-void func_002c2ca0(int param_1,u64 param_2)
-
+void func_002c2ca0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,7,
-               (code *)&func_002c1ed0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,7,
+                 (code *)&func_002c1ed0);
   return;
 }
 
@@ -6417,34 +6617,58 @@ void func_002c3120(u64 param_1,u16 param_2)
 
 // FUN_002c3150 NONMATCHING
 
-void func_002c3150(int param_1,u64 param_2)
-
+void func_002c3150(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,10,
-               (code *)&func_002c30f0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,10,
+                 (code *)&func_002c30f0);
   return;
 }
 
 // FUN_002c31b0 NONMATCHING
 
-void func_002c31b0(int param_1,u64 param_2)
-
+void func_002c31b0(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x180000,10,
-               (code *)&func_002c30f0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x180000,10,
+                 (code *)&func_002c30f0);
   return;
 }
 
 // FUN_002c3210 NONMATCHING
 
-void func_002c3210(int param_1,u64 param_2)
-
+void func_002c3210(int param_1,u32 param_2)
 {
-  func_002c1080(param_1,param_2,
-               1 << (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0') & 0xffff,0x80000,0xb,
-               (code *)&func_002c30f0);
+  u32 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    shift = 1;
+    break;
+  case 0:
+    shift = 0;
+    break;
+  }
+  func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,0xb,
+                 (code *)&func_002c30f0);
   return;
 }
 
@@ -7225,7 +7449,7 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
 {
   char cVar1 = 0;
   u32 uVar2 = 0;
-  u32 uVar3 = 0;
+  u16 uVar3 = 0;
   int iVar4 = 0;
   u16 *puVar5;
   u32 uVar6 = 0;
@@ -7236,9 +7460,8 @@ u32 func_002c4a90(int param_1,int param_2,u16 *param_3,u32 param_4,short param_5
   uVar7 = 0xffffffff;
   iVar8 = 0xffffff;
   for (uVar6 = 0; uVar6 < (param_4 & 0xffff); uVar6 = uVar6 + 1 & 0xffff) {
-    puVar5 = (u16 *)(param_3 + uVar6 * 2);
+    puVar5 = param_3 + uVar6;
     uVar3 = func_0030bc20(*puVar5);
-    uVar3 = uVar3 & 0xffff;
     if ((((uVar3 != 0) && (uVar3 < 0x1d0)) &&
         ((cVar1 = *(char *)(DAT_007ce3f8 + uVar3 * 0x2c + 8), param_5 != 0 || (cVar1 == '\x01'))))
        && ((param_5 != 1 || (cVar1 == '\0')))) {
@@ -7439,8 +7662,7 @@ LAB_002c5168:
 
 // FUN_002c5380 NONMATCHING
 
-u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
-
+u32 func_002c5380(int param_1,int param_2,u16 *param_3,long param_4)
 {
   bool bVar1 = 0;
   u16 uVar2 = 0;
@@ -7450,7 +7672,6 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
   u32 uVar6 = 0;
   long lVar7 = 0;
   u32 uVar8 = 0;
-  int iVar9 = 0;
   short sVar10 = 0;
   u32 uVar11 = 0;
   u32 uVar12 = 0;
@@ -7460,8 +7681,7 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
   
   sVar10 = -1;
   uVar12 = 0;
-  iVar9 = (int)param_1;
-  iVar5 = *(int *)(iVar9 + 0x30);
+  iVar5 = *(int *)(param_1 + 0x30);
   uVar4 = func_00308ba0(*(u32 *)(iVar5 + 0xa2c));
   uVar4 = uVar4 & 0xffff;
   iVar5 = func_00308bb0(*(u32 *)(iVar5 + 0xa2c));
@@ -7469,7 +7689,7 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
   lVar7 = func_0030b5a0(*(u32 *)(*(int *)(iVar13 + 0x30) + 0xa2c),0);
   if (lVar7 == 0) {
     uVar2 = *(u16 *)(*(int *)(*(int *)(iVar13 + 0x30) + 0xa2c) + 8);
-    uVar6 = func_002ffdf0();
+    uVar6 = func_002ffdf0(*(u32 *)(*(int *)(iVar13 + 0x30) + 0xa2c));
     if ((uVar6 & 0xffff) * 0x3c < (u32)uVar2 * 100) {
       lVar7 = func_00300580(*(u32 *)(*(int *)(iVar13 + 0x30) + 0xa2c),0xe);
       if (lVar7 == 0) {
@@ -7498,7 +7718,7 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
         if (0x26f < uVar2) {
           func_0019d3f0(0x696f88,0x468);
         }
-        iVar13 = *(int *)(iVar9 + 0x30);
+        iVar13 = *(int *)(param_1 + 0x30);
         lVar7 = func_00300580(*(u32 *)(iVar13 + 0xa2c),0x80274);
         if (lVar7 == 0) {
           lVar7 = func_003005e0(*(u32 *)(iVar13 + 0xa2c),uVar2);
@@ -7542,7 +7762,7 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
           if (0x26f < uVar2) {
             func_0019d3f0(0x696f88,0x468);
           }
-          iVar13 = *(int *)(iVar9 + 0x30);
+          iVar13 = *(int *)(param_1 + 0x30);
           lVar7 = func_00300580(*(u32 *)(iVar13 + 0xa2c),0x80274);
           if (lVar7 == 0) {
             lVar7 = func_003005e0(*(u32 *)(iVar13 + 0xa2c),uVar2);
@@ -7599,7 +7819,7 @@ u32 func_002c5380(u64 param_1,u64 param_2,u64 param_3,long param_4)
         if (0x26f < uVar2) {
           func_0019d3f0(0x696f88,0x468);
         }
-        iVar13 = *(int *)(iVar9 + 0x30);
+        iVar13 = *(int *)(param_1 + 0x30);
         lVar7 = func_00300580(*(u32 *)(iVar13 + 0xa2c),0x80274);
         if (lVar7 == 0) {
           lVar7 = func_003005e0(*(u32 *)(iVar13 + 0xa2c),uVar2);
@@ -7665,7 +7885,7 @@ u32 func_002c59d0(u64 param_1,u64 param_2,u64 param_3,long param_4)
       lVar6 = func_0030b5a0(*(u32 *)(*(int *)(iVar5 + 0x30) + 0xa2c),0);
       if (lVar6 == 0) {
         uVar2 = *(u16 *)(*(int *)(*(int *)(iVar5 + 0x30) + 0xa2c) + 8);
-        uVar4 = func_002ffdf0();
+        uVar4 = func_002ffdf0(*(u32 *)(*(int *)(iVar5 + 0x30) + 0xa2c));
         if ((uVar4 & 0xffff) * 0x3c < (u32)uVar2 * 100) {
           lVar6 = func_00300580(*(u32 *)(*(int *)(iVar5 + 0x30) + 0xa2c),0xfffff);
           if (lVar6 == 0) {
@@ -8264,15 +8484,15 @@ void func_002c70d0(u64 param_1,u64 param_2)
   return;
 }
 
-// FUN_002c7250 NONMATCHING
+// FUN_002c7250
 
 bool func_002c7250(int param_1)
 
 {
-  if (*(u8 *)(param_1 + 0x30) == 0) {
-    return *(int *)(param_1 + 0x4c) != 0;
+  if (*(u8 *)(param_1 + 0x30) != 0) {
+    return true;
   }
-  return true;
+  return *(int *)(param_1 + 0x4c) != 0;
 }
 
 // FUN_002c7280
@@ -8303,15 +8523,16 @@ u32 func_002c7280(int param_1)
   return uVar1;
 }
 
-// FUN_002c7300 NONMATCHING
+// FUN_002c7300
 
 u32 func_002c7300(void)
 
 {
-  u64 uVar1 = 0;
-  
-  uVar1 = func_0035f160();
-  func_002c6a00(uVar1,(int)uVar1 + 0x38,0x8000);
+  extern u32 func_0035f160(void);
+  extern void func_002c6a00(void *,void *,u16);
+  char *pVar1 = (char *)func_0035f160();
+
+  func_002c6a00(pVar1,pVar1 + 0x38,0x8000);
   return 1;
 }
 
@@ -8364,42 +8585,46 @@ u32 func_002c73e0(void)
   return 1;
 }
 
-// FUN_002c7460 NONMATCHING
+// FUN_002c7460
 
 u32 func_002c7460(void)
 
 {
-  u64 uVar1 = 0;
+  extern u32 func_0035f160(void);
+  extern void func_002c6a00(void *,void *,u16);
+  char *pVar1 = 0;
   
-  uVar1 = func_0035f160();
-  func_002c6a00(uVar1,(int)uVar1 + 0x38,0x8001);
+  pVar1 = (char *)func_0035f160();
+  func_002c6a00(pVar1,pVar1 + 0x38,0x8001);
   return 1;
 }
 
-// FUN_002c74a0 NONMATCHING
+// FUN_002c74a0
 
 u32 func_002c74a0(void)
 
 {
-  u64 uVar1 = 0;
+  extern u32 func_0035f160(void);
+  extern void func_002c6a00(void *,void *,u16);
+  char *pVar1 = 0;
   
-  uVar1 = func_0035f160();
-  func_002c6a00(uVar1,(int)uVar1 + 0x38,0x8002);
+  pVar1 = (char *)func_0035f160();
+  func_002c6a00(pVar1,pVar1 + 0x38,0x8002);
   return 1;
 }
 
-// FUN_002c74e0 NONMATCHING
+// FUN_002c74e0
 
 u32 func_002c74e0(void)
 
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  *(u16 *)((int)uVar2 + 0xdc) = uVar1;
-  func_002c6a00(uVar2,(int)uVar2 + 0x38,0x8002);
+  extern u32 func_0035f160(void);
+  extern void func_002c6a00(void *,void *,u16);
+  char *pVar1 = (char *)func_0035f160();
+  u16 uVar1 = func_0035ed20(0);
+
+  *(u16 *)(pVar1 + 0xdc) = uVar1;
+  func_002c6a00(pVar1,pVar1 + 0x38,0x8002);
   return 1;
 }
 
@@ -8451,303 +8676,468 @@ u32 func_002c75d0(void)
   return 1;
 }
 
-// FUN_002c7670 NONMATCHING
+// FUN_002c7670
 
 u32 func_002c7670(void)
 
 {
-  u64 uVar1 = 0;
+  extern u32 func_0035f160(void);
+  extern void func_002c6a00(void *,void *,u16);
+  char *pVar1 = 0;
   
-  uVar1 = func_0035f160();
-  func_002c6a00(uVar1,(int)uVar1 + 0x38,0x8007);
+  pVar1 = (char *)func_0035f160();
+  func_002c6a00(pVar1,pVar1 + 0x38,0x8007);
   return 1;
 }
 
-// FUN_002c76b0 NONMATCHING
+// FUN_002c76b0
 
 u32 func_002c76b0(void)
-
 {
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971bc)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
+
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7760 NONMATCHING
+// FUN_002c7760
 
-u32 func_002c7760(void)
+u32 func_002c7760(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971c8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x2000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7810 NONMATCHING
+// FUN_002c7810
 
-u32 func_002c7810(void)
+u32 func_002c7810(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971d4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x03000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c78c0 NONMATCHING
+// FUN_002c78c0
 
-u32 func_002c78c0(void)
+u32 func_002c78c0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971e0)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x04000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7970 NONMATCHING
+// FUN_002c7970
 
-u32 func_002c7970(void)
+u32 func_002c7970(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971ec)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x05000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7a20 NONMATCHING
+// FUN_002c7a20
 
-u32 func_002c7a20(void)
+u32 func_002c7a20(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006971f8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x06000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7ad0 NONMATCHING
+// FUN_002c7ad0
 
-u32 func_002c7ad0(void)
+u32 func_002c7ad0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697204)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x07000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7b80 NONMATCHING
+// FUN_002c7b80
 
-u32 func_002c7b80(void)
+u32 func_002c7b80(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697210)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x08000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7c30 NONMATCHING
+// FUN_002c7c30
 
-u32 func_002c7c30(void)
+u32 func_002c7c30(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_0069721c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x09000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7ce0 NONMATCHING
+// FUN_002c7ce0
 
-u32 func_002c7ce0(void)
+u32 func_002c7ce0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697228)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0a000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7d90 NONMATCHING
+// FUN_002c7d90
 
-u32 func_002c7d90(void)
+u32 func_002c7d90(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697234)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0b000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7e40 NONMATCHING
+// FUN_002c7e40
 
-u32 func_002c7e40(void)
+u32 func_002c7e40(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697240)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0c000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7ef0 NONMATCHING
+// FUN_002c7ef0
 
-u32 func_002c7ef0(void)
+u32 func_002c7ef0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069724c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0d000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c7fa0 NONMATCHING
+// FUN_002c7fa0
 
-u32 func_002c7fa0(void)
+u32 func_002c7fa0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697258)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0e000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8050 NONMATCHING
+// FUN_002c8050
 
-u32 func_002c8050(void)
+u32 func_002c8050(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697264)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0f000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8100 NONMATCHING
+// FUN_002c8100
 
-u32 func_002c8100(void)
+u32 func_002c8100(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697270)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x10000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c81b0 NONMATCHING
+// FUN_002c81b0
 
-u32 func_002c81b0(void)
+u32 func_002c81b0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069727c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x11000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8260 NONMATCHING
+// FUN_002c8260
 
-u32 func_002c8260(void)
+u32 func_002c8260(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697288)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x12000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -8793,291 +9183,453 @@ u32 func_002c83b0(void)
   return 1;
 }
 
-// FUN_002c8400 NONMATCHING
+// FUN_002c8400
 
-u32 func_002c8400(void)
+u32 func_002c8400(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972b8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x16000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c84b0 NONMATCHING
+// FUN_002c84b0
 
-u32 func_002c84b0(void)
+u32 func_002c84b0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972c4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x17000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8560 NONMATCHING
+// FUN_002c8560
 
-u32 func_002c8560(void)
+u32 func_002c8560(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972d0)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x18000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8610 NONMATCHING
+// FUN_002c8610
 
-u32 func_002c8610(void)
+u32 func_002c8610(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972dc)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x19000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c86c0 NONMATCHING
+// FUN_002c86c0
 
-u32 func_002c86c0(void)
+u32 func_002c86c0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972e8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1a000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8770 NONMATCHING
+// FUN_002c8770
 
-u32 func_002c8770(void)
+u32 func_002c8770(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006972f4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1b000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8820 NONMATCHING
+// FUN_002c8820
 
-u32 func_002c8820(void)
+u32 func_002c8820(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697300)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1c000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c88d0 NONMATCHING
+// FUN_002c88d0
 
-u32 func_002c88d0(void)
+u32 func_002c88d0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069730c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1d000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8980 NONMATCHING
+// FUN_002c8980
 
-u32 func_002c8980(void)
+u32 func_002c8980(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697318)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1e000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8a30 NONMATCHING
+// FUN_002c8a30
 
-u32 func_002c8a30(void)
+u32 func_002c8a30(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697324)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1f000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8ae0 NONMATCHING
+// FUN_002c8ae0
 
-u32 func_002c8ae0(void)
+u32 func_002c8ae0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697330)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x20000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8b90 NONMATCHING
+// FUN_002c8b90
 
-u32 func_002c8b90(void)
+u32 func_002c8b90(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069733c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x21000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8c40 NONMATCHING
+// FUN_002c8c40
 
-u32 func_002c8c40(void)
+u32 func_002c8c40(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697348)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x22000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8cf0 NONMATCHING
+// FUN_002c8cf0
 
-u32 func_002c8cf0(void)
+u32 func_002c8cf0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697354)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x23000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8da0 NONMATCHING
+// FUN_002c8da0
 
-u32 func_002c8da0(void)
+u32 func_002c8da0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697360)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x24000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8e50 NONMATCHING
+// FUN_002c8e50
 
-u32 func_002c8e50(void)
+u32 func_002c8e50(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069736c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x25000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8f00 NONMATCHING
+// FUN_002c8f00
 
-u32 func_002c8f00(void)
+u32 func_002c8f00(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697378)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x26000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c8fb0 NONMATCHING
+// FUN_002c8fb0
 
-u32 func_002c8fb0(void)
+u32 func_002c8fb0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697384)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x27000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -9123,35 +9675,53 @@ u32 func_002c9100(void)
   return 1;
 }
 
-// FUN_002c9150 NONMATCHING
+// FUN_002c9150
 
-u32 func_002c9150(void)
+u32 func_002c9150(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006973b4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x2b000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9200 NONMATCHING
+// FUN_002c9200
 
-u32 func_002c9200(void)
+u32 func_002c9200(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006973c0)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x2c000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -9183,206 +9753,321 @@ u32 func_002c9300(void)
   return 1;
 }
 
-// FUN_002c9350 NONMATCHING
+// FUN_002c9350
 
-u32 func_002c9350(void)
+u32 func_002c9350(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006973e4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x2f000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9400 NONMATCHING
+// FUN_002c9400
 
-u32 func_002c9400(void)
+u32 func_002c9400(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006973f0)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x30000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c94b0 NONMATCHING
+// FUN_002c94b0
 
-u32 func_002c94b0(void)
+u32 func_002c94b0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006973fc)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x31000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9560 NONMATCHING
+// FUN_002c9560
 
-u32 func_002c9560(void)
+u32 func_002c9560(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697408)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x32000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9610 NONMATCHING
+// FUN_002c9610
 
-u32 func_002c9610(void)
+u32 func_002c9610(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697414)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x33000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c96c0 NONMATCHING
+// FUN_002c96c0
 
-u32 func_002c96c0(void)
+u32 func_002c96c0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697420)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x34000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9770 NONMATCHING
+// FUN_002c9770
 
-u32 func_002c9770(void)
+u32 func_002c9770(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069742c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x35000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9820 NONMATCHING
+// FUN_002c9820
 
-u32 func_002c9820(void)
+u32 func_002c9820(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697438)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x36000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c98d0 NONMATCHING
+// FUN_002c98d0
 
 u32 func_002c98d0(void)
-
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x01000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006971bc)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c99c0 NONMATCHING
+// FUN_002c99c0
 
-u32 func_002c99c0(void)
+u32 func_002c99c0(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x02000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006971c8)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9ab0 NONMATCHING
+// FUN_002c9ab0
 
-u32 func_002c9ab0(void)
+u32 func_002c9ab0(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x06000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006971f8)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -9450,153 +10135,237 @@ u32 func_002c9ce0(void)
   return 1;
 }
 
-// FUN_002c9da0 NONMATCHING
+// FUN_002c9da0
 
-u32 func_002c9da0(void)
+u32 func_002c9da0(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x16000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006972b8)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9e90 NONMATCHING
+// FUN_002c9e90
 
-u32 func_002c9e90(void)
+u32 func_002c9e90(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x17000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006972c4)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002c9f80 NONMATCHING
+// FUN_002c9f80
 
-u32 func_002c9f80(void)
+u32 func_002c9f80(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x18000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006972d0)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002ca070 NONMATCHING
+// FUN_002ca070
 
-u32 func_002ca070(void)
+u32 func_002ca070(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x19000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam006972dc)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002ca160 NONMATCHING
+// FUN_002ca160
 
-u32 func_002ca160(void)
+u32 func_002ca160(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x22000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam00697348)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002ca250 NONMATCHING
+// FUN_002ca250
 
-u32 func_002ca250(void)
+u32 func_002ca250(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x25000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam0069736c)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -9993,208 +10762,314 @@ u32 func_002cb0e0(void)
   return 1;
 }
 
-// FUN_002cb190 NONMATCHING
+// FUN_002cb190
 
 u32 func_002cb190(void)
-
 {
-  short sVar1 = 0;
-  short sVar2 = 0;
-  int iVar3 = 0;
-  bool bVar4 = 0;
-  
-  iVar3 = func_0035f160();
-  sVar1 = func_0035ed20(0);
-  sVar2 = func_0035ed20(1);
-  bVar4 = true;
-  if (sVar1 == 1) {
-    if (*(char *)(*(int *)(iVar3 + 0x30) + 0xa2) != '\x01') {
-      bVar4 = false;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  u32 unit;
+  u16 side;
+  u16 id;
+  int result;
+
+  unit = func_0035f160();
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  result = 1;
+  switch (side) {
+  case 0:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0) {
+      result = 0;
+    }
+    break;
+  case 1:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 1) {
+      result = 0;
+    }
+    break;
+  }
+  if (result == 1) {
+    if (*(u16 *)(*(int *)(unit + 0x30) + 0xa4) != id) {
+      result = 0;
     }
   }
-  else if ((sVar1 == 0) && (*(char *)(*(int *)(iVar3 + 0x30) + 0xa2) != '\0')) {
-    bVar4 = false;
+  func_0035f060(result != 0);
+  return 1;
+}
+
+// FUN_002cb270
+
+u32 func_002cb270(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
+
+  selector = (func_0035ed20(0) & 0xffffff) | 0x38000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
   }
-  if ((bVar4) && (*(short *)(*(int *)(iVar3 + 0x30) + 0xa4) != sVar2)) {
-    bVar4 = false;
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
   }
-  func_0035f060(bVar4);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb270 NONMATCHING
+// FUN_002cb320
 
-u32 func_002cb270(void)
+u32 func_002cb320(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697450)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x39000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb320 NONMATCHING
+// FUN_002cb3d0
 
-u32 func_002cb320(void)
+u32 func_002cb3d0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069745c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3a000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb3d0 NONMATCHING
+// FUN_002cb480
 
-u32 func_002cb3d0(void)
+u32 func_002cb480(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697468)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3b000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb480 NONMATCHING
+// FUN_002cb530
 
-u32 func_002cb480(void)
+u32 func_002cb530(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697474)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3c000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb530 NONMATCHING
+// FUN_002cb5e0
 
-u32 func_002cb530(void)
+u32 func_002cb5e0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697480)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3d000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb5e0 NONMATCHING
+// FUN_002cb690
 
-u32 func_002cb5e0(void)
+u32 func_002cb690(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam0069748c)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3e000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb690 NONMATCHING
+// FUN_002cb740
 
-u32 func_002cb690(void)
+u32 func_002cb740(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697498)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x3f000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb740 NONMATCHING
+// FUN_002cb7f0
 
-u32 func_002cb740(void)
+u32 func_002cb7f0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006974a4)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x40000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb7f0 NONMATCHING
+// FUN_002cb8a0
 
-u32 func_002cb7f0(void)
+u32 func_002cb8a0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006974b0)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x41000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cb8a0 NONMATCHING
+// FUN_002cb950
 
-u32 func_002cb8a0(void)
+u32 func_002cb950(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006974bc)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
-  return 1;
-}
-
-// FUN_002cb950 NONMATCHING
-
-u32 func_002cb950(void)
-
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006974c8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x42000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -10240,259 +11115,336 @@ u32 func_002cbaa0(void)
   return 1;
 }
 
-// FUN_002cbaf0 NONMATCHING
+// FUN_002cbaf0
 
-u32 func_002cbaf0(void)
+u32 func_002cbaf0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam006974f8)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x46000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbba0 NONMATCHING
+// FUN_002cbba0
 
 u32 func_002cbba0(void)
-
 {
-  short sVar1 = 0;
-  u16 uVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  
-  sVar1 = func_0035ed20(0);
-  uVar2 = func_0035ed20(1);
-  lVar4 = 0;
-  if (sVar1 == 1) {
-    lVar4 = func_002c0e30(uVar2,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  int context;
+  u16 side;
+  u16 id;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar1 == 0) {
-    lVar4 = func_002c0e30(uVar2,1,0x80000);
-  }
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  if (context != 0) {
+    selector = (func_0035ed20(2) & 0xffffff) | 0x19000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar3 = func_0035ed20(2);
-    lVar4 = (*pcRam006972dc)(lVar4,uVar3 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbcd0 NONMATCHING
+// FUN_002cbcd0
 
 u32 func_002cbcd0(void)
-
 {
-  bool bVar1 = 0;
-  short sVar2 = 0;
-  u16 uVar3 = 0;
-  long lVar4 = 0;
-  
-  sVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  lVar4 = 0;
-  if (sVar2 == 1) {
-    lVar4 = func_002c0e30(uVar3,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side;
+  u16 id;
+  int context;
+  int result;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar2 == 0) {
-    lVar4 = func_002c0e30(uVar3,1,0x80000);
-  }
-  if (lVar4 == 0) {
-    bVar1 = false;
+  if (context != 0) {
+    result = (*(u16 *)(context + 0x18) & 0x1800) != 0;
   }
   else {
-    bVar1 = (*(u16 *)((int)lVar4 + 0x18) & 0x1800) != 0;
+    result = 0;
   }
-  func_0035f060(bVar1);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbd90 NONMATCHING
+// FUN_002cbd90
 
 u32 func_002cbd90(void)
-
 {
-  bool bVar1 = 0;
-  short sVar2 = 0;
-  u16 uVar3 = 0;
-  long lVar4 = 0;
-  
-  sVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  lVar4 = 0;
-  if (sVar2 == 1) {
-    lVar4 = func_002c0e30(uVar3,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side;
+  u16 id;
+  int context;
+  int result;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar2 == 0) {
-    lVar4 = func_002c0e30(uVar3,1,0x80000);
-  }
-  if (lVar4 == 0) {
-    bVar1 = false;
+  if (context != 0) {
+    result = (*(u16 *)(context + 0x18) & 0x1000) != 0;
   }
   else {
-    bVar1 = (*(u16 *)((int)lVar4 + 0x18) & 0x1000) != 0;
+    result = 0;
   }
-  func_0035f060(bVar1);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbe50 NONMATCHING
+// FUN_002cbe50
 
 u32 func_002cbe50(void)
-
 {
-  bool bVar1 = 0;
-  short sVar2 = 0;
-  u16 uVar3 = 0;
-  long lVar4 = 0;
-  
-  sVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  lVar4 = 0;
-  if (sVar2 == 1) {
-    lVar4 = func_002c0e30(uVar3,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side;
+  u16 id;
+  int context;
+  int result;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar2 == 0) {
-    lVar4 = func_002c0e30(uVar3,1,0x80000);
-  }
-  if (lVar4 == 0) {
-    bVar1 = false;
+  if (context != 0) {
+    result = (*(u16 *)(context + 0x18) & 0x800) != 0;
   }
   else {
-    bVar1 = (*(u16 *)((int)lVar4 + 0x18) & 0x800) != 0;
+    result = 0;
   }
-  func_0035f060(bVar1);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbf10 NONMATCHING
+// FUN_002cbf10
 
 u32 func_002cbf10(void)
-
 {
-  bool bVar1 = 0;
-  short sVar2 = 0;
-  u16 uVar3 = 0;
-  long lVar4 = 0;
-  
-  sVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  lVar4 = 0;
-  if (sVar2 == 1) {
-    lVar4 = func_002c0e30(uVar3,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side;
+  u16 id;
+  int context;
+  int result;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar2 == 0) {
-    lVar4 = func_002c0e30(uVar3,1,0x80000);
-  }
-  if (lVar4 == 0) {
-    bVar1 = false;
+  if (context != 0) {
+    result = (*(u16 *)(context + 0x18) & 0x2000) != 0;
   }
   else {
-    bVar1 = (*(u16 *)((int)lVar4 + 0x18) & 0x2000) != 0;
+    result = 0;
   }
-  func_0035f060(bVar1);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cbfd0 NONMATCHING
+// FUN_002cbfd0
 
 u32 func_002cbfd0(void)
-
 {
-  short sVar1 = 0;
-  u16 uVar2 = 0;
-  long lVar3 = 0;
-  
-  sVar1 = func_0035ed20(0);
-  uVar2 = func_0035ed20(1);
-  lVar3 = 0;
-  if (sVar1 == 1) {
-    lVar3 = func_002c0e30(uVar2,2,0x80000);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side;
+  u16 id;
+  int context;
+  int result;
+
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar1 == 0) {
-    lVar3 = func_002c0e30(uVar2,1,0x80000);
-  }
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  if (context != 0) {
+    result = gFormationDispatchTable[67 * 3](context,0);
   }
   else {
-    lVar3 = (*(code *)PTR_FUN_006974d4)(lVar3,0);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cc0a0 NONMATCHING
+// FUN_002cc0a0
 
-u32 func_002cc0a0(void)
+u32 func_002cc0a0(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x3a000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam00697468)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cc190 NONMATCHING
+// FUN_002cc190
 
-u32 func_002cc190(void)
+u32 func_002cc190(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*pcRam00697504)(uVar2,uVar1 & 0xffffff);
-  func_0035f060(lVar3 != 0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x47000000;
+  actor = func_0035f160();
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = selector & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002cc240 NONMATCHING
+// FUN_002cc240
 
-u32 func_002cc240(void)
+u32 func_002cc240(void) {
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
 
-{
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  u32 uVar4 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    lVar3 = 0;
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,
+      1 << *(u8 *)(*(int *)(unit + 0x30) + 0xa2) & 0xffff,
+      0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x3e000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    }
+    else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
   }
   else {
-    uVar4 = func_0035ed20(1);
-    lVar3 = (*pcRam00697498)(lVar3,uVar4 & 0xffffff);
+    result = 0;
   }
-  func_0035f060(lVar3 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -10501,33 +11453,34 @@ u32 func_002cc240(void)
 u32 func_002cc330(void)
 
 {
-  u8 uVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  int iVar4 = 0;
+  u32 current = func_0035f160_u32();
+  u16 id = 1;
+  u8 found = 0;
+  int value = 0;
   
-  iVar3 = func_0035f160();
-  uVar1 = 0;
-  uVar2 = 1;
-  while( true ) {
-    if (((0xb < uVar2) || (iVar4 = func_0029ad60(uVar2), iVar4 == 0)) ||
-       (iVar4 == *(int *)(DAT_007ce3ec + 0x148))) goto LAB_002cc3b0;
-    if (iVar4 == iVar3) break;
-    uVar2 = uVar2 + 1;
+  for (id = 1; id < 0xc; id = id + 1) {
+    value = func_0029ad60_u32(id);
+    if ((value == 0) || (value == *(int *)(DAT_007ce3ec + 0x148))) {
+      goto LAB_002cc3b0;
+    }
+    if (value == current) {
+      found = 1;
+      break;
+    }
   }
-  uVar1 = 1;
 LAB_002cc3b0:
-  func_0035f060(uVar1);
+  func_0035f060_u32(found != 0);
   return 1;
 }
 
-// FUN_002cc3e0 NONMATCHING
+// FUN_002cc3e0
 
 u32 func_002cc3e0(void)
 
 {
-  u64 uVar1 = 0;
-  long lVar2 = 0;
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_006975e0)(uVar1,0);
@@ -10537,13 +11490,13 @@ u32 func_002cc3e0(void)
   return 1;
 }
 
-// FUN_002cc450 NONMATCHING
+// FUN_002cc450
 
 u32 func_002cc450(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_006975e8)(uVar1,0);
@@ -10553,13 +11506,13 @@ u32 func_002cc450(void)
   return 1;
 }
 
-// FUN_002cc4c0 NONMATCHING
+// FUN_002cc4c0
 
 u32 func_002cc4c0(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_006975f0)(uVar1,0);
@@ -10569,13 +11522,13 @@ u32 func_002cc4c0(void)
   return 1;
 }
 
-// FUN_002cc530 NONMATCHING
+// FUN_002cc530
 
 u32 func_002cc530(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_006975f8)(uVar1,0);
@@ -10585,67 +11538,80 @@ u32 func_002cc530(void)
   return 1;
 }
 
-// FUN_002cc5a0 NONMATCHING
+// FUN_002cc5a0
 
 u32 func_002cc5a0(void)
-
 {
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697600)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
+
+  selector = (func_0035ed20(0) & 0xffffff) | 0x04000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cc650 NONMATCHING
+// FUN_002cc650
 
-u32 func_002cc650(void)
+u32 func_002cc650(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697608)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x05000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cc700 NONMATCHING
+// FUN_002cc700
 
-u32 func_002cc700(void)
+u32 func_002cc700(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697610)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x06000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cc7b0 NONMATCHING
+// FUN_002cc7b0
 
 u32 func_002cc7b0(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_00697618)(uVar1,0);
@@ -10655,13 +11621,13 @@ u32 func_002cc7b0(void)
   return 1;
 }
 
-// FUN_002cc820 NONMATCHING
+// FUN_002cc820
 
 u32 func_002cc820(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_00697620)(uVar1,0);
@@ -10671,157 +11637,189 @@ u32 func_002cc820(void)
   return 1;
 }
 
-// FUN_002cc890 NONMATCHING
+// FUN_002cc890
 
-u32 func_002cc890(void)
+u32 func_002cc890(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697628)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x09000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cc940 NONMATCHING
+// FUN_002cc940
 
-u32 func_002cc940(void)
+u32 func_002cc940(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697630)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0a000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cc9f0 NONMATCHING
+// FUN_002cc9f0
 
-u32 func_002cc9f0(void)
+u32 func_002cc9f0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697638)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0b000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002ccaa0 NONMATCHING
+// FUN_002ccaa0
 
-u32 func_002ccaa0(void)
+u32 func_002ccaa0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697640)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0c000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002ccb50 NONMATCHING
+// FUN_002ccb50
 
-u32 func_002ccb50(void)
+u32 func_002ccb50(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697648)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0d000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002ccc00 NONMATCHING
+// FUN_002ccc00
 
-u32 func_002ccc00(void)
+u32 func_002ccc00(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697650)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0e000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cccb0 NONMATCHING
+// FUN_002cccb0
 
-u32 func_002cccb0(void)
+u32 func_002cccb0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697658)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x0f000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002ccd60 NONMATCHING
+// FUN_002ccd60
 
-u32 func_002ccd60(void)
+u32 func_002ccd60(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697660)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x10000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cce10 NONMATCHING
+// FUN_002cce10
 
 u32 func_002cce10(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_00697670)(uVar1,0);
@@ -10831,13 +11829,13 @@ u32 func_002cce10(void)
   return 1;
 }
 
-// FUN_002cce80 NONMATCHING
+// FUN_002cce80
 
 u32 func_002cce80(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_00697678)(uVar1,0);
@@ -10847,13 +11845,13 @@ u32 func_002cce80(void)
   return 1;
 }
 
-// FUN_002ccef0 NONMATCHING
+// FUN_002ccef0
 
 u32 func_002ccef0(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_00697680)(uVar1,0);
@@ -10863,194 +11861,230 @@ u32 func_002ccef0(void)
   return 1;
 }
 
-// FUN_002ccf60 NONMATCHING
+// FUN_002ccf60
 
-u32 func_002ccf60(void)
+u32 func_002ccf60(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697688)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x15000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd010 NONMATCHING
+// FUN_002cd010
 
-u32 func_002cd010(void)
+u32 func_002cd010(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697690)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x16000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd0c0 NONMATCHING
+// FUN_002cd0c0
 
-u32 func_002cd0c0(void)
+u32 func_002cd0c0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697698)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x17000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd170 NONMATCHING
+// FUN_002cd170
 
-u32 func_002cd170(void)
+u32 func_002cd170(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976a0)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x18000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd220 NONMATCHING
+// FUN_002cd220
 
-u32 func_002cd220(void)
+u32 func_002cd220(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976a8)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x19000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd2d0 NONMATCHING
+// FUN_002cd2d0
 
-u32 func_002cd2d0(void)
+u32 func_002cd2d0(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976b0)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1a000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd380 NONMATCHING
+// FUN_002cd380
 
-u32 func_002cd380(void)
+u32 func_002cd380(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976b8)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1b000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd430 NONMATCHING
+// FUN_002cd430
 
-u32 func_002cd430(void)
+u32 func_002cd430(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976c0)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x1c000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd4e0 NONMATCHING
+// FUN_002cd4e0
 
 u32 func_002cd4e0(void)
-
 {
-  u64 uVar1 = 0;
-  long lVar2 = 0;
-  
-  uVar1 = func_0035f160();
+  extern u32 func_0035f160(void);
+  u32 actor;
+  int result;
+
+  actor = func_0035f160();
   if (*(int *)(DAT_007ce3ec + 0x148) != 0) {
-    func_002c08b0((int)uVar1 + 0x88,*(int *)(DAT_007ce3ec + 0x148) + 0x88);
-    lVar2 = (*(code *)PTR_FUN_00697670)(uVar1,0);
-    if (lVar2 == 0) {
-      (*(code *)PTR_FUN_006975e0)(uVar1,0);
+    func_002c08b0(actor + 0x88,*(int *)(DAT_007ce3ec + 0x148) + 0x88);
+    result = gFormationActionTable[18 * 2](actor,0);
+    if (result == 0) {
+      gFormationActionTable[0](actor,0);
     }
   }
   return 1;
 }
 
-// FUN_002cd570 NONMATCHING
+// FUN_002cd570
 
-u32 func_002cd570(void)
+u32 func_002cd570(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976e8)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x21000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd620 NONMATCHING
+// FUN_002cd620
 
 u32 func_002cd620(void)
 
 {
   u64 uVar1 = 0;
-  long lVar2 = 0;
+  s32 lVar2 = 0;
   
   uVar1 = func_0035f160();
   lVar2 = (*(code *)PTR_FUN_006976f0)(uVar1,0);
@@ -11060,53 +12094,62 @@ u32 func_002cd620(void)
   return 1;
 }
 
-// FUN_002cd690 NONMATCHING
+// FUN_002cd690
 
-u32 func_002cd690(void)
+u32 func_002cd690(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_006976f8)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x23000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd740 NONMATCHING
+// FUN_002cd740
 
-u32 func_002cd740(void)
+u32 func_002cd740(void) {
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0035f160(void);
+  u32 selector;
+  u32 payload;
+  u32 dispatchType;
+  u32 actor;
+  int result;
 
-{
-  u32 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035f160();
-  lVar3 = (*(code *)PTR_FUN_00697700)(uVar2,uVar1 & 0xffffff);
-  if (lVar3 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  selector = (func_0035ed20(0) & 0xffffff) | 0x24000000;
+  actor = func_0035f160();
+  payload = selector & 0xffffff;
+  dispatchType = (selector & 0xff000000) >> 24;
+  result = gFormationActionTable[dispatchType * 2](actor,payload);
+  if (result == 0) {
+    gFormationActionTable[0](actor,0);
   }
   return 1;
 }
 
-// FUN_002cd7f0 NONMATCHING
+// FUN_002cd7f0
 
 u32 func_002cd7f0(void)
 
 {
+  extern u32 func_0035f160(void);
   u16 uVar1 = 0;
   int iVar2 = 0;
   
   iVar2 = func_0035f160();
   uVar1 = func_0035ed20(0);
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
+  if (*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4) {
     func_0017b220(*(u16 *)(*(int *)(iVar2 + 0x30) + 0xa4));
   }
   func_00301540(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),0xd);
@@ -11117,18 +12160,19 @@ u32 func_002cd7f0(void)
   return 1;
 }
 
-// FUN_002cd8c0 NONMATCHING
+// FUN_002cd8c0
 
 u32 func_002cd8c0(void)
 
 {
+  extern u32 func_0035f160(void);
   u16 *puVar1;
-  short sVar2 = 0;
+  u16 uVar2 = 0;
   int iVar3 = 0;
   
   iVar3 = func_0035f160();
-  sVar2 = func_0035ed20(0);
-  if (sVar2 == 0) {
+  uVar2 = func_0035ed20(0);
+  if (uVar2 == 0) {
     puVar1 = *(u16 **)(*(int *)(iVar3 + 0x30) + 0xa2c);
     *puVar1 = *puVar1 | 0x10;
   }
@@ -11139,18 +12183,19 @@ u32 func_002cd8c0(void)
   return 1;
 }
 
-// FUN_002cd940 NONMATCHING
+// FUN_002cd940
 
 u32 func_002cd940(void)
 
 {
+  extern u32 func_0035f160(void);
   u16 *puVar1;
-  short sVar2 = 0;
+  u16 uVar2 = 0;
   int iVar3 = 0;
   
   iVar3 = func_0035f160();
-  sVar2 = func_0035ed20(0);
-  if (sVar2 == 0) {
+  uVar2 = func_0035ed20(0);
+  if (uVar2 == 0) {
     puVar1 = *(u16 **)(*(int *)(iVar3 + 0x30) + 0xa2c);
     *puVar1 = *puVar1 | 0x20;
   }
@@ -11161,11 +12206,12 @@ u32 func_002cd940(void)
   return 1;
 }
 
-// FUN_002cd9c0 NONMATCHING
+// FUN_002cd9c0
 
 u32 func_002cd9c0(void)
 
 {
+  extern u32 func_0035f160(void);
   u8 uVar1 = 0;
   u16 uVar2 = 0;
   int iVar3 = 0;
@@ -11178,11 +12224,12 @@ u32 func_002cd9c0(void)
   return 1;
 }
 
-// FUN_002cda10 NONMATCHING
+// FUN_002cda10
 
 u32 func_002cda10(void)
 
 {
+  extern u32 func_0035f160(void);
   int iVar1 = 0;
   
   iVar1 = func_0035f160();
@@ -11190,25 +12237,27 @@ u32 func_002cda10(void)
   return 1;
 }
 
-// FUN_002cda50 NONMATCHING
+// FUN_002cda50
 
 u32 func_002cda50(void)
 
 {
+  extern u32 func_0035f160(void);
+  extern int func_002c0e30(u16,u32,u32);
   u16 uVar1 = 0;
   int iVar2 = 0;
-  long lVar3 = 0;
+  int lVar3 = 0;
   u32 uVar4 = 0;
   
   iVar2 = func_0035f160();
   uVar1 = func_0035ed20(0);
-  lVar3 = func_002c0e30(uVar1,1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000
-                      );
-  if (lVar3 == 0) {
-    uVar4 = 0;
+  lVar3 = func_002c0e30(uVar1,1 << *(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0xffff,
+                        0x80000);
+  if (lVar3 != 0) {
+    uVar4 = *(u32 *)(lVar3 + 0x20);
   }
   else {
-    uVar4 = *(u32 *)((int)lVar3 + 0x20);
+    uVar4 = 0;
   }
   func_0035f060(uVar4);
   return 1;
@@ -11217,25 +12266,33 @@ u32 func_002cda50(void)
 // FUN_002cdad0 NONMATCHING
 
 u32 func_002cdad0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    uVar5 = 0;
+  extern u32 func_0035f160(void);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 actor;
+  u32 side;
+  u16 id;
+  int context;
+  u32 result;
+
+  actor = func_0035f160();
+  switch (*(u8 *)(*(int *)(actor + 0x30) + 0xa2)) {
+  default:
+    side = 1;
+    break;
+  case 0:
+    side = 0;
+    break;
+  }
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << side & 0xffff,0x80000);
+  if (context != 0) {
+    result = *(u32 *)(context + 0x20);
   }
   else {
-    uVar5 = *(u32 *)((int)lVar4 + 0x20);
+    result = 0;
   }
-  func_0035f060(uVar5);
+  func_0035f060(result);
   return 1;
 }
 
@@ -11335,16 +12392,17 @@ u32 func_002cdda0(void)
   return 1;
 }
 
-// FUN_002cde10 NONMATCHING
+// FUN_002cde10
 
 u32 func_002cde10(void)
 
 {
+  extern u32 func_0035f160(void);
   u16 uVar1 = 0;
   int iVar2 = 0;
   
   iVar2 = func_0035f160();
-  uVar1 = func_002d4cf0(1 << (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0x1f) & 0xffff,0x80000);
+  uVar1 = func_002d4cf0(1 << *(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) & 0xffff,0x80000);
   func_0035f060(uVar1);
   return 0xffffffff;
 }
@@ -11354,145 +12412,195 @@ u32 func_002cde10(void)
 u32 func_002cde60(void)
 
 {
+  extern u32 func_0035f160(void);
   u16 uVar1 = 0;
   int iVar2 = 0;
+  u16 genus;
   
   iVar2 = func_0035f160();
-  uVar1 = func_002d4cf0(1 << (u32)(*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\0') & 0xffff,
-                       0x80000);
+  switch (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
+  }
+  uVar1 = func_002d4cf0(1 << genus & 0xffff,0x80000);
   func_0035f060(uVar1);
   return 0xffffffff;
 }
 
-// FUN_002cded0 NONMATCHING
+// FUN_002cded0
 
 u32 func_002cded0(void)
 
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
+  extern u32 func_0035f160(void);
+  extern s16 func_003082f0(u32,u16);
+  s16 id = 0;
+  s16 result = 0;
+  u32 unit = 0;
   
-  iVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  uVar1 = func_003082f0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),uVar1);
-  func_0035f060(uVar1);
+  unit = func_0035f160();
+  id = func_0035ed20(0);
+  result = func_003082f0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),id);
+  func_0035f060(result);
   return 0xffffffff;
 }
 
-// FUN_002cdf40 NONMATCHING
+// FUN_002cdf40
 
 u32 func_002cdf40(void)
-
 {
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035ed20(1);
-  uVar3 = func_0029a210(uVar1 & 0xfffffff);
-  lVar4 = (*pcRam006971bc)(uVar3,uVar2 & 0xffffff);
-  func_0035f060(lVar4 != 0);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  u32 actorId;
+  u32 rawPayload;
+  u32 actor;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+
+  actorId = func_0035ed20(0);
+  rawPayload = func_0035ed20(1);
+  actor = func_0029a210(actorId & 0xfffffff);
+  selector = rawPayload & 0xffffff;
+  selector |= 0x01000000;
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = (rawPayload | 0x01000000) & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
-// FUN_002ce010 NONMATCHING
+// FUN_002ce010
 
 u32 func_002ce010(void)
 
 {
-  int iVar1 = 0;
-  u32 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  u32 actor = 0;
+  u32 actorId = 0;
+  u32 statusId = 0;
+  u32 active = 0;
   
-  uVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  iVar1 = func_0029a210(uVar2 & 0xfffffff);
-  lVar4 = func_00301ca0(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),uVar3);
-  func_0035f060(lVar4 != 0);
+  actorId = func_0035ed20(0);
+  statusId = func_0035ed20(1);
+  actor = func_0029a210(actorId & 0xfffffff);
+  active = func_00301ca0(*(u32 *)(*(int *)(actor + 0x30) + 0xa2c),statusId) != 0;
+  func_0035f060(active != 0);
   return 1;
 }
 
-// FUN_002ce090 NONMATCHING
+// FUN_002ce090
 
 u32 func_002ce090(void)
 
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  int iVar3 = 0;
-  u32 uVar4 = 0;
-  u32 uVar5 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  extern s32 func_00303130(s32,u32,u32,s32,s32,s32,s32,s32);
+  u32 unit = 0;
+  u32 actor = 0;
+  s32 relation = 0;
+  u32 status = 0;
+  u32 actorId = 0;
   
-  iVar1 = func_0035f160();
-  uVar5 = func_0035ed20(0);
-  iVar2 = func_0029a210(uVar5 & 0xfffffff);
-  iVar3 = func_00303130(0,*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),
-                       *(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),1,1,1,0,1);
-  func_00301870(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-  func_00301870(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
-  uVar4 = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
-  func_0035f060((int)((uVar4 & 0xffff) + iVar3) < 1);
+  unit = func_0035f160();
+  actorId = func_0035ed20(0);
+  actor = func_0029a210(actorId & 0xfffffff);
+  relation = func_00303130(0,*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),
+                          *(u32 *)(*(int *)(actor + 0x30) + 0xa2c),1,1,1,0,1);
+  func_00301870(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+  func_00301870(*(u32 *)(*(int *)(actor + 0x30) + 0xa2c));
+  status = func_002ffd70(*(u32 *)(*(int *)(actor + 0x30) + 0xa2c));
+  func_0035f060((s32)((status & 0xffff) + relation) <= 0);
   return 1;
 }
 
-// FUN_002ce170 NONMATCHING
+// FUN_002ce170
 
 u32 func_002ce170(void)
 
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u32 uVar3 = 0;
-  u64 uVar4 = 0;
-  long lVar5 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  extern s32 func_002c5fc0(u32,u32,s16,s32);
+  u32 unit = 0;
+  u32 actorId = 0;
+  u32 actionId = 0;
+  u32 target = 0;
+  s32 result = 0;
   
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  uVar4 = func_0029a210(uVar3 & 0xfffffff);
-  lVar5 = func_002c5fc0(uVar2,uVar4,uVar1,0);
-  func_0035f060(lVar5 != -1);
+  unit = func_0035f160();
+  actorId = func_0035ed20(0);
+  actionId = func_0035ed20(1);
+  target = func_0029a210(actorId & 0xfffffff);
+  result = func_002c5fc0(unit,target,(s16)actionId,0);
+  func_0035f060(result != -1);
   return 1;
 }
 
-// FUN_002ce210 NONMATCHING
+// FUN_002ce210
 
 u32 func_002ce210(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u32 uVar3 = 0;
-  u64 uVar4 = 0;
-  long lVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  uVar4 = func_0029a210(uVar3 & 0xfffffff);
-  lVar5 = func_002c6300(uVar2,uVar4,uVar1,0);
-  func_0035f060(lVar5 != -1);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  u32 context;
+  u32 actorId;
+  u32 value;
+  u32 actor;
+  long result;
+
+  context = func_0035f160();
+  actorId = func_0035ed20(0);
+  value = func_0035ed20(1);
+  actor = func_0029a210(actorId & 0xfffffff);
+  result = func_002c6300_s32(context, actor, value, 0);
+  func_0035f060(result != -1);
   return 1;
 }
 
-// FUN_002ce2b0 NONMATCHING
+// FUN_002ce2b0
 
 u32 func_002ce2b0(void)
-
 {
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_0035ed20(1);
-  uVar3 = func_0029a210(uVar1 & 0xfffffff);
-  lVar4 = (*pcRam006974a4)(uVar3,uVar2 & 0xffffff);
-  func_0035f060(lVar4 != 0);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  u32 actorId;
+  u32 rawPayload;
+  u32 actor;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+
+  actorId = func_0035ed20(0);
+  rawPayload = func_0035ed20(1);
+  actor = func_0029a210(actorId & 0xfffffff);
+  selector = rawPayload & 0xffffff;
+  selector |= 0x3f000000;
+  dispatchType = (selector & 0xff000000) >> 24;
+  payload = (rawPayload | 0x3f000000) & 0xffffff;
+  if (dispatchType == 0) {
+    result = 0;
+  }
+  else {
+    result = gFormationDispatchTable[dispatchType * 3](actor,payload);
+  }
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -11526,53 +12634,57 @@ u32 func_002ce380(void)
   return 1;
 }
 
-// FUN_002ce440 NONMATCHING
+// FUN_002ce440
 
 u32 func_002ce440(void)
 
 {
-  short sVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u16 side = 0;
+  u16 id = 0;
+  int context = 0;
   
-  sVar1 = func_0035ed20(0);
-  uVar2 = func_0035ed20(1);
-  iVar3 = 0;
-  if (sVar1 == 1) {
-    iVar3 = func_002c0e30(uVar2,2,0x80000);
+  side = func_0035ed20(0);
+  id = func_0035ed20(1);
+  context = 0;
+  switch (side) {
+  case 0:
+    context = func_002c0e30(id,1,0x80000);
+    break;
+  case 1:
+    context = func_002c0e30(id,2,0x80000);
+    break;
   }
-  else if (sVar1 == 0) {
-    iVar3 = func_002c0e30(uVar2,1,0x80000);
-  }
-  func_0035f060(*(u32 *)(iVar3 + 8) | 0x80000000);
+  func_0035f060(*(u32 *)(context + 8) | 0x80000000);
   return 1;
 }
 
-// FUN_002ce4e0 NONMATCHING
+// FUN_002ce4e0
 
 u32 func_002ce4e0(void)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  u32 uVar3 = 0;
-  u32 uVar4 = 0;
-  int iVar5 = 0;
-  
-  iVar5 = 0;
-  uVar4 = 0xfffffff;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x14c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4a8)) {
-    if (((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-        (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) == '\x01')) &&
-       (lVar2 = func_0030b5a0(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0), lVar2 == 0)) {
-      uVar3 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-      if ((uVar3 & 0xffff) < uVar4) {
-        uVar4 = uVar3 & 0xffff;
-        iVar5 = iVar1;
+  int unit = 0;
+  long excluded = 0;
+  u16 stat = 0;
+  int selectedUnit = 0;
+  u32 lowestStat = 0;
+
+  selectedUnit = 0;
+  lowestStat = 0xfffffff;
+  for (unit = *(int *)(DAT_007ce3ec + 0x14c); unit != 0; unit = *(int *)(unit + 0x4a8)) {
+    if (((((*(u16 *)(unit + 0x1a) & 1) != 0) && ((*(u16 *)(unit + 0x1a) & 8) != 0)) &&
+        (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) == 1)) &&
+       (excluded = func_0030b5a0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),0), excluded == 0)) {
+      stat = func_002ffd70(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+      if (stat < lowestStat) {
+        selectedUnit = unit;
+        lowestStat = stat;
       }
     }
   }
-  func_0035f060(*(u32 *)(iVar5 + 8) | 0x80000000);
+  func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   return 1;
 }
 
@@ -11612,152 +12724,147 @@ u32 func_002ce5c0(void)
   return 1;
 }
 
-// FUN_002ce6c0 NONMATCHING
+// FUN_002ce6c0
 
 u32 func_002ce6c0(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0x100000,0x2e,0,(code *)&func_002c1ed0);
-  if (lVar4 == 1) {
-    iVar5 = (int)uVar2;
-    if (*(short *)(iVar5 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar5 + 0x38) + 8) | 0x80000000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  u32 unit;
+  u32 selector;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0x100000,0x2e,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
     else {
-      iVar1 = func_002ffbc0();
-      func_0035f060(*(u32 *)(*(int *)(iVar1 * 4 + iVar5 + 0x38) + 8) | 0x80000000);
+      offset = func_002ffbc0(*(u16 *)(unit + 0x6a)) * 4;
+      func_0035f060(*(u32 *)(*(int *)(offset + unit + 0x38) + 8) | 0x80000000);
     }
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002ce7a0 NONMATCHING
+// FUN_002ce7a0
 
 u32 func_002ce7a0(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2f,0,(code *)&func_002c1ed0);
-  if (lVar4 == 1) {
-    iVar5 = (int)uVar2;
-    if (*(short *)(iVar5 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar5 + 0x38) + 8) | 0x80000000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  u32 unit;
+  u32 selector;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2f,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
     else {
-      iVar1 = func_002ffbc0();
-      func_0035f060(*(u32 *)(*(int *)(iVar1 * 4 + iVar5 + 0x38) + 8) | 0x80000000);
+      offset = func_002ffbc0(*(u16 *)(unit + 0x6a)) * 4;
+      func_0035f060(*(u32 *)(*(int *)(offset + unit + 0x38) + 8) | 0x80000000);
     }
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002ce880 NONMATCHING
+// FUN_002ce880
 
 u32 func_002ce880(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2c,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar5 = (int)uVar2;
-    if (*(short *)(iVar5 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar5 + 0x38) + 8) | 0x80000000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  u32 unit;
+  u32 selector;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2c,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
     else {
-      iVar1 = func_002ffbc0();
-      func_0035f060(*(u32 *)(*(int *)(iVar1 * 4 + iVar5 + 0x38) + 8) | 0x80000000);
+      offset = func_002ffbc0(*(u16 *)(unit + 0x6a)) * 4;
+      func_0035f060(*(u32 *)(*(int *)(offset + unit + 0x38) + 8) | 0x80000000);
     }
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002ce960 NONMATCHING
+// FUN_002ce960
 
 u32 func_002ce960(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0x100000,0x2c,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar5 = (int)uVar2;
-    if (*(short *)(iVar5 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar5 + 0x38) + 8) | 0x80000000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  u32 unit;
+  u32 selector;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0x100000,0x2c,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
     else {
-      iVar1 = func_002ffbc0();
-      func_0035f060(*(u32 *)(*(int *)(iVar1 * 4 + iVar5 + 0x38) + 8) | 0x80000000);
+      offset = func_002ffbc0(*(u16 *)(unit + 0x6a)) * 4;
+      func_0035f060(*(u32 *)(*(int *)(offset + unit + 0x38) + 8) | 0x80000000);
     }
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cea40 NONMATCHING
+// FUN_002cea40
 
 u32 func_002cea40(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2d,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar5 = (int)uVar2;
-    if (*(short *)(iVar5 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar5 + 0x38) + 8) | 0x80000000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  u32 unit;
+  u32 selector;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2d,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
     }
     else {
-      iVar1 = func_002ffbc0();
-      func_0035f060(*(u32 *)(*(int *)(iVar1 * 4 + iVar5 + 0x38) + 8) | 0x80000000);
+      offset = func_002ffbc0(*(u16 *)(unit + 0x6a)) * 4;
+      func_0035f060(*(u32 *)(*(int *)(offset + unit + 0x38) + 8) | 0x80000000);
     }
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
@@ -12059,365 +13166,366 @@ u32 func_002cf340(void)
   return 0xffffffff;
 }
 
-// FUN_002cf450 NONMATCHING
+// FUN_002cf450
 
 u32 func_002cf450(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2e,0,(code *)&func_002c1ed0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2e,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cf580 NONMATCHING
+// FUN_002cf580
 
 u32 func_002cf580(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0x100000,0x2e,0,(code *)&func_002c1ed0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0x100000,0x2e,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cf6b0 NONMATCHING
+// FUN_002cf6b0
 
 u32 func_002cf6b0(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2f,0,(code *)&func_002c1ed0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2f,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cf7e0 NONMATCHING
+// FUN_002cf7e0
 
 u32 func_002cf7e0(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u32 uVar3 = 0;
-  u64 uVar4 = 0;
-  u64 uVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  uVar4 = func_0035ed20(2);
-  uVar5 = func_0029a210(uVar3 & 0xfffffff);
-  uVar2 = func_002c5fc0(uVar2,uVar5,uVar1,uVar4);
-  func_0035f060(uVar2);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  extern s32 func_002c5fc0(u32,u32,s16,s32);
+  u32 unit;
+  u32 selector;
+  u32 actionId;
+  u32 mode;
+  u32 target;
+  s32 result;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  actionId = func_0035ed20(1);
+  mode = func_0035ed20(2);
+  target = func_0029a210(selector & 0xfffffff);
+  result = func_002c5fc0(unit,target,(s16)actionId,mode);
+  func_0035f060(result);
   return 1;
 }
 
-// FUN_002cf890 NONMATCHING
+// FUN_002cf890
 
 u32 func_002cf890(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u32 uVar3 = 0;
-  u64 uVar4 = 0;
-  u64 uVar5 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  uVar4 = func_0035ed20(2);
-  uVar5 = func_0029a210(uVar3 & 0xfffffff);
-  uVar2 = func_002c6300(uVar2,uVar5,uVar1,uVar4);
-  func_0035f060(uVar2);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  extern s32 func_002c6300(u32,u32,s16,s32);
+  u32 unit;
+  u32 selector;
+  u32 actionId;
+  u32 mode;
+  u32 target;
+  s32 result;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  actionId = func_0035ed20(1);
+  mode = func_0035ed20(2);
+  target = func_0029a210(selector & 0xfffffff);
+  result = func_002c6300(unit,target,(s16)actionId,mode);
+  func_0035f060(result);
   return 1;
 }
 
-// FUN_002cf940 NONMATCHING
+// FUN_002cf940
 
 u32 func_002cf940(void)
-
 {
-  u64 uVar1 = 0;
-  u32 uVar2 = 0;
-  u64 uVar3 = 0;
-  u64 uVar4 = 0;
-  u64 uVar5 = 0;
-  
-  uVar1 = func_0035f160();
-  uVar2 = func_0035ed20(0);
-  uVar3 = func_0035ed20(1);
-  uVar4 = func_0035ed20(2);
-  uVar5 = func_0029a210(uVar2 & 0xfffffff);
-  uVar1 = func_002c5030(uVar1,uVar5,uVar3,uVar4);
-  func_0035f060(uVar1);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  extern s32 func_002c5030(u32,u32,u32,u32);
+  u32 unit;
+  u32 selector;
+  u32 actionId;
+  u32 mode;
+  u32 target;
+  s32 result;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  actionId = func_0035ed20(1);
+  mode = func_0035ed20(2);
+  target = func_0029a210(selector & 0xfffffff);
+  result = func_002c5030(unit,target,actionId,mode);
+  func_0035f060(result);
   return 1;
 }
 
-// FUN_002cf9f0 NONMATCHING
+// FUN_002cf9f0
 
 u32 func_002cf9f0(void)
-
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  
-  iVar2 = func_0035f160();
-  uVar1 = func_003082f0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),0);
-  func_0035f060(uVar1);
+  extern u32 func_0035f160(void);
+  extern s16 func_003082f0(u32,u16);
+  u32 unit;
+  s16 result;
+
+  unit = func_0035f160();
+  result = func_003082f0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),0);
+  func_0035f060(result);
   return 1;
 }
 
-// FUN_002cfa40 NONMATCHING
+// FUN_002cfa40
 
 u32 func_002cfa40(void)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  u32 uVar3 = 0;
-  u32 uVar4 = 0;
-  int iVar5 = 0;
-  
-  iVar5 = 0;
-  uVar4 = 0xfffffff;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x14c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4a8)) {
-    if (((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-        (*(char *)(*(int *)(iVar1 + 0x30) + 0xa2) == '\0')) &&
-       (lVar2 = func_0030b5a0(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0), lVar2 == 0)) {
-      uVar3 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-      if ((uVar3 & 0xffff) < uVar4) {
-        uVar4 = uVar3 & 0xffff;
-        iVar5 = iVar1;
+  int unit = 0;
+  long excluded = 0;
+  u16 stat = 0;
+  int selectedUnit = 0;
+  u32 lowestStat = 0;
+
+  selectedUnit = 0;
+  lowestStat = 0xfffffff;
+  for (unit = *(int *)(DAT_007ce3ec + 0x14c); unit != 0; unit = *(int *)(unit + 0x4a8)) {
+    if (((((*(u16 *)(unit + 0x1a) & 1) != 0) && ((*(u16 *)(unit + 0x1a) & 8) != 0)) &&
+        (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) == 0)) &&
+       (excluded = func_0030b5a0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),0), excluded == 0)) {
+      stat = func_002ffd70(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+      if (stat < lowestStat) {
+        selectedUnit = unit;
+        lowestStat = stat;
       }
     }
   }
-  func_0035f060(*(u32 *)(iVar5 + 8) | 0x80000000);
+  func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   return 1;
 }
 
-// FUN_002cfb20 NONMATCHING
+// FUN_002cfb20
 
 u32 func_002cfb20(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2c,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2c,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cfc50 NONMATCHING
+// FUN_002cfc50
 
 u32 func_002cfc50(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0x100000,0x2c,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0x100000,0x2c,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
 
-// FUN_002cfd80 NONMATCHING
+// FUN_002cfd80
 
 u32 func_002cfd80(void)
-
 {
-  int iVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2d,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    iVar9 = (int)uVar2;
-    if (*(short *)(iVar9 + 0x6a) == 1) {
-      iVar8 = *(int *)(iVar9 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  u32 unit;
+  u32 selector;
+  int selectedUnit;
+  int candidate;
+  u32 index;
+  u32 lowestStat;
+  u16 stat;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2d,0,(code *)&func_002c30f0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      selectedUnit = *(int *)(unit + 0x38);
     }
     else {
-      iVar8 = 0;
-      uVar6 = 0xfffffff;
-      for (uVar7 = 0; uVar7 < *(u16 *)(iVar9 + 0x6a); uVar7 = uVar7 + 1) {
-        iVar1 = *(int *)(iVar9 + uVar7 * 4 + 0x38);
-        uVar5 = func_002ffd70(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c));
-        if ((uVar5 & 0xffff) < uVar6) {
-          uVar6 = uVar5 & 0xffff;
-          iVar8 = iVar1;
+      selectedUnit = 0;
+      lowestStat = 0xfffffff;
+      for (index = 0; index < *(u16 *)(unit + 0x6a); index++) {
+        candidate = *(int *)(unit + index * 4 + 0x38);
+        stat = func_002ffd70(*(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+        if (stat < lowestStat) {
+          selectedUnit = candidate;
+          lowestStat = stat;
         }
       }
     }
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
+    func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
   }
   else {
-    func_0035f060(0xffffffffffffffff);
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
@@ -12600,8 +13708,9 @@ u32 func_002d03e0(void)
       uVar8 = func_002ffd70(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c));
       uVar8 = uVar8 & 0xffff;
       if (((uVar5 <= uVar8) &&
-          (uVar1 = *(u16 *)(*(int *)(*(int *)(iVar2 + 0x30) + 0xa2c) + 8), uVar4 = func_002ffdf0()
-          , (u32)uVar1 * 100 <= (uVar4 & 0xffff) * iVar3)) &&
+          (uVar1 = *(u16 *)(*(int *)(*(int *)(iVar2 + 0x30) + 0xa2c) + 8),
+           uVar4 = func_002ffdf0(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c)),
+           (u32)uVar1 * 100 <= (uVar4 & 0xffff) * iVar3)) &&
          (((uVar6 == 0 ||
            (lVar7 = func_00300580(*(u32 *)(*(int *)(iVar2 + 0x30) + 0xa2c),uVar6), lVar7 != 0)
            ) && (uVar8 < uVar9)))) {
@@ -12619,134 +13728,141 @@ u32 func_002d03e0(void)
   return 1;
 }
 
-// FUN_002d05c0 NONMATCHING
+// FUN_002d05c0
 
 u32 func_002d05c0(void)
-
 {
-  short sVar1 = 0;
-  u16 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  
-  uVar3 = func_0035f160();
-  uVar2 = func_0035ed20(0);
-  iVar5 = (int)uVar3;
-  *(u16 *)(iVar5 + 0x6e) = uVar2;
-  sVar1 = *(short *)(iVar5 + 0x6e);
-  if (sVar1 == 0x133) {
-    *(u16 *)(iVar5 + 0x6c) = 8;
-    func_002efcd0(uVar3);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern void func_002efc90(void *);
+  extern void func_002efcd0(void *);
+  char *unit;
+  u16 encounterId;
+  s32 result;
+
+  unit = (char *)func_0035f160();
+  *(u16 *)(unit + 0x6e) = func_0035ed20(0);
+  encounterId = *(u16 *)(unit + 0x6e);
+  switch (encounterId) {
+  case 0x132:
+  case 0x68:
+    *(u16 *)(unit + 0x6c) = 8;
+    func_002efc90(unit);
+    break;
+  case 0x133:
+    *(u16 *)(unit + 0x6c) = 8;
+    func_002efcd0(unit);
+    break;
+  default:
+    *(u16 *)(unit + 0x6c) = 9;
+    break;
   }
-  else if ((sVar1 == 0x68) || (sVar1 == 0x132)) {
-    *(u16 *)(iVar5 + 0x6c) = 8;
-    func_002efc90(uVar3);
-  }
-  else {
-    *(u16 *)(iVar5 + 0x6c) = 9;
-  }
-  uVar2 = func_0035ed20(1);
-  *(u16 *)(iVar5 + 0x76) = uVar2;
-  uVar2 = func_0035ed20(2);
-  *(u16 *)(iVar5 + 0x78) = uVar2;
-  uVar2 = func_0035ed20(3);
-  *(u16 *)(iVar5 + 0x7a) = uVar2;
-  lVar4 = (*(code *)PTR_FUN_00697620)(uVar3,0);
-  if (lVar4 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar3,0);
+  *(u16 *)(unit + 0x76) = func_0035ed20(1);
+  *(u16 *)(unit + 0x78) = func_0035ed20(2);
+  *(u16 *)(unit + 0x7a) = func_0035ed20(3);
+  result = (*(s32 (**)(void *,u32))PTR_FUN_00697620)(unit,0);
+  if (result == 0) {
+    (*(s32 (**)(void *,u32))PTR_FUN_006975e0)(unit,0);
   }
   return 1;
 }
 
-// FUN_002d06e0 NONMATCHING
+// FUN_002d06e0
 
 u32 func_002d06e0(void)
 
 {
-  int iVar1 = 0;
-  
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+
   func_002eab70();
-  iVar1 = (u32)func_0035f160();
-  *(u16 *)(iVar1 + 0x6c) = 8;
+  uVar1 = func_0035f160();
+  *(u16 *)(uVar1 + 0x6c) = 8;
   return 1;
 }
 
-// FUN_002d0720 NONMATCHING
+// FUN_002d0720
 
 u32 func_002d0720(void)
 
 {
-  int iVar1 = 0;
-  
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+
   func_002eabb0();
-  iVar1 = (u32)func_0035f160();
-  *(u16 *)(iVar1 + 0x6c) = 8;
+  uVar1 = func_0035f160();
+  *(u16 *)(uVar1 + 0x6c) = 8;
   return 1;
 }
 
-// FUN_002d0760 NONMATCHING
+// FUN_002d0760
 
 u32 func_002d0760(void)
-
 {
-  short sVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-  if (sVar1 == 0x1b4) {
-    func_002c6a00(uVar2,(int)uVar2 + 0x38,0x126);
-    func_002f6bf0(uVar3);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern void func_002c6a00(void *,void *,u16);
+  char *unit;
+  u32 selector;
+  u16 encounterId;
+  s32 result;
+
+  unit = (char *)func_0035f160();
+  selector = func_0035ed20(0);
+  encounterId = *(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
+  switch (encounterId) {
+  case 0x1a5:
+    func_002c6a00(unit,unit + 0x38,0x16b);
+    func_002ec560(selector);
+    break;
+  case 0x1b4:
+    func_002c6a00(unit,unit + 0x38,0x126);
+    func_002f6bf0(selector);
+    break;
   }
-  else if (sVar1 == 0x1a5) {
-    func_002c6a00(uVar2,(int)uVar2 + 0x38,0x16b);
-    func_002ec560(uVar3);
-  }
-  lVar4 = (*(code *)PTR_FUN_00697620)(uVar2,0);
-  if (lVar4 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  result = (*(s32 (**)(void *,u32))PTR_FUN_00697620)(unit,0);
+  if (result == 0) {
+    (*(s32 (**)(void *,u32))PTR_FUN_006975e0)(unit,0);
   }
   return 1;
 }
 
-// FUN_002d0860 NONMATCHING
+// FUN_002d0860
 
 u32 func_002d0860(void)
-
 {
-  short sVar1 = 0;
-  long lVar2 = 0;
-  
-  sVar1 = *(short *)(*(int *)(iGpffffb6fc + 0xbbc) + 8);
-  if (sVar1 == 0x1b4) {
-    lVar2 = func_002f6c20();
-    func_0035f060(lVar2 != 0);
-  }
-  else if (sVar1 == 0x1a5) {
-    lVar2 = func_002ec590();
-    func_0035f060(lVar2 != 0);
-  }
-  return 1;
+    u16 encounterId;
+
+    encounterId = *(u16*)(*(u8**)(iGpffffb6fc + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1a5:
+        func_0035f060(func_002ec590() != 0);
+        break;
+    case 0x1b4:
+        func_0035f060(func_002f6c20() != 0);
+        break;
+    }
+    return 1;
 }
 
-// FUN_002d08e0 NONMATCHING
+// FUN_002d08e0
 
 u32 func_002d08e0(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  func_00288f80(*(u32 *)((int)uVar2 + 0x30),uVar3);
-  func_002c6a00(uVar2,(int)uVar2 + 0x38,uVar1);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern void func_00288f80(u32,u32);
+  extern void func_002c6a00(void *,void *,u16);
+  char *unit;
+  u32 selector;
+  u32 actionId;
+
+  unit = (char *)func_0035f160();
+  selector = func_0035ed20(0);
+  actionId = func_0035ed20(1);
+  func_00288f80(*(u32 *)(unit + 0x30),selector);
+  func_002c6a00(unit,unit + 0x38,(u16)actionId);
   return 1;
 }
 
@@ -12766,13 +13882,14 @@ u32 func_002d0970(void)
   return 1;
 }
 
-// FUN_002d09d0 NONMATCHING
+// FUN_002d09d0
 
 u32 func_002d09d0(void)
 
 {
-  u64 uVar1 = 0;
-  
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
+
   uVar1 = func_0035f160();
   if (*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) == 0x1b0) {
     func_002f5030(uVar1);
@@ -12784,18 +13901,23 @@ u32 func_002d09d0(void)
 // FUN_002d0a30 NONMATCHING
 
 void func_002d0a30(void)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  
-  iVar1 = func_0035f160();
-  iVar2 = func_0035ed20(0);
-  if ((*(u8 *)(iGpffffb708 + iVar2 * 0x2c) & 2) == 0) {
-    func_0019d3f0(0x697720,0x118b);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern void func_0019d3f0(char *,u32);
+  extern char D_00697720[];
+  u8* unit;
+  u32 index = 0;
+  u8 flags;
+
+  unit = (u8*)func_0035f160();
+  index = func_0035ed20(0);
+  flags = iGpffffb708[index * 0x2c];
+  if ((flags & 2) == 0) {
+    func_0019d3f0(D_00697720,0x118b);
   }
-  *(u16 *)(iVar1 + 0x6c) = 1;
-  *(short *)(iVar1 + 0x6e) = (short)iVar2;
+  *(u16 *)(unit + 0x6c) = 1;
+  *(u16 *)(unit + 0x6e) = index;
   return;
 }
 
@@ -12811,50 +13933,54 @@ u32 func_002d0ac0(void)
   return 1;
 }
 
-// FUN_002d0af0 NONMATCHING
+// FUN_002d0af0
 
 u32 func_002d0af0(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  long lVar3 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar1 = func_0035ed20(0);
-  lVar3 = func_002ecb30(uVar2,uVar1);
-  if (lVar3 != 0) {
-    *(u16 *)((int)uVar2 + 0x6c) = 8;
-    lVar3 = (*(code *)PTR_FUN_00697620)(uVar2,0);
-    if (lVar3 == 0) {
-      (*(code *)PTR_FUN_006975e0)(uVar2,0);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern s32 func_002ecb30(u32,s16);
+  u32 unit;
+  s16 selector;
+  s32 result;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  result = func_002ecb30(unit,selector);
+  if (result != 0) {
+    *(u16 *)(unit + 0x6c) = 8;
+    result = (*(s32 (**)(u32,u32))PTR_FUN_00697620)(unit,0);
+    if (result == 0) {
+      (*(s32 (**)(u32,u32))PTR_FUN_006975e0)(unit,0);
     }
   }
   return 1;
 }
 
-// FUN_002d0b90 NONMATCHING
+// FUN_002d0b90
 
 u32 func_002d0b90(void)
 
 {
-  u64 uVar1 = 0;
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
   
   uVar1 = func_0035f160();
-  *(u16 *)((int)uVar1 + 0x6c) = 8;
+  *(u16 *)(uVar1 + 0x6c) = 8;
   func_002f2450(uVar1);
   return 1;
 }
 
-// FUN_002d0bd0 NONMATCHING
+// FUN_002d0bd0
 
 u32 func_002d0bd0(void)
 
 {
-  u64 uVar1 = 0;
+  extern u32 func_0035f160(void);
+  u32 uVar1 = 0;
   
   uVar1 = func_0035f160();
-  *(u16 *)((int)uVar1 + 0x6c) = 8;
+  *(u16 *)(uVar1 + 0x6c) = 8;
   func_002f2490(uVar1);
   return 1;
 }
@@ -12889,7 +14015,7 @@ u32 func_002d0c50(void)
 u32 func_002d0c80(void)
 
 {
-  func_002f39b0(*(u32 *)(iGpffffb6fc + 0x148));
+  func_002f39b0(gBtl->actionList.head);
   return 1;
 }
 
@@ -12997,7 +14123,7 @@ u32 func_002d0f90(void)
   return 1;
 }
 
-// FUN_002d1030 NONMATCHING
+// FUN_002d1030
 
 u32 func_002d1030(void)
 
@@ -13008,45 +14134,48 @@ u32 func_002d1030(void)
   func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
   uVar2 = func_002b8d60(3,0xfff);
   func_0027ed20(uVar2,0);
-  iVar1 = func_0035ed20(0);
-  uVar2 = func_002a3d70((float)iVar1 / 30.0,*(u32 *)(iGpffffb6fc + 0x148),0x957170,0x957150,
-                       0x957160,0x957140);
+  iVar1 = func_0035ed20_u32(0);
+  uVar2 = func_002a3d70_f32((float)iVar1 / 30.0f,*(u32 *)(iGpffffb6fc + 0x148),
+                           &DAT_00957170_abs,&DAT_00957150_abs,&DAT_00957160_abs,&DAT_00957140_abs);
   func_0027ed20(uVar2,0);
   return 1;
 }
 
-// FUN_002d10f0 NONMATCHING
+// FUN_002d10f0
 
 u32 func_002d10f0(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  
-  uVar2 = func_0035ed20(0);
-  uVar1 = func_0035ed20(1);
-  uVar3 = func_002db890();
-  *(u16 *)((int)uVar3 + 0x48) = uVar1;
-  func_0027ed20(uVar3,1);
-  uVar2 = func_002db800(0x20,uVar2);
-  *(u16 *)((int)uVar2 + 0x48) = uVar1;
-  func_0027ed20(uVar2,1);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002db890(void);
+  extern u32 func_002db800(u32,u32);
+  u32 selector;
+  u32 value;
+  u32 effect;
+
+  selector = func_0035ed20(0);
+  value = func_0035ed20(1);
+  effect = func_002db890();
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
+  effect = func_002db800(0x20,selector);
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
   return 1;
 }
 
-// FUN_002d1180 NONMATCHING
+// FUN_002d1180
 
 u32 func_002d1180(void)
-
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  
-  uVar1 = func_0035ed20(0);
-  uVar2 = func_002db890();
-  *(u16 *)((int)uVar2 + 0x48) = uVar1;
-  func_0027ed20(uVar2,1);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002db890(void);
+  u32 value;
+  u32 effect;
+
+  value = func_0035ed20(0);
+  effect = func_002db890();
+  *(u16 *)(effect + 0x48) = value;
+  func_0027ed20(effect,1);
   return 1;
 }
 
@@ -13109,53 +14238,63 @@ u32 func_002d12a0(void)
   return 1;
 }
 
-// FUN_002d12e0 NONMATCHING
+// FUN_002d12e0
 
 u32 func_002d12e0(void)
-
 {
-  short sVar1 = 0;
-  short sVar2 = 0;
-  int iVar3 = 0;
-  bool bVar4 = 0;
-  
-  iVar3 = func_0029ad20();
-  sVar1 = func_0035ed20(0);
-  sVar2 = func_0035ed20(1);
-  bVar4 = true;
-  if (sVar1 == 1) {
-    if (*(char *)(*(int *)(iVar3 + 0x30) + 0xa2) != '\x01') {
-      bVar4 = false;
+  extern u32 func_0029ad20(void);
+  extern u32 func_0035ed20(u32);
+  u32 unit;
+  u16 side;
+  u16 expectedId;
+  u32 valid;
+
+  unit = func_0029ad20();
+  side = func_0035ed20(0);
+  expectedId = func_0035ed20(1);
+  valid = 1;
+  switch (side) {
+  case 0:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0) {
+      valid = 0;
     }
+    break;
+  case 1:
+    if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 1) {
+      valid = 0;
+    }
+    break;
   }
-  else if ((sVar1 == 0) && (*(char *)(*(int *)(iVar3 + 0x30) + 0xa2) != '\0')) {
-    bVar4 = false;
+  if ((valid == 1) && (*(u16 *)(*(int *)(unit + 0x30) + 0xa4) != expectedId)) {
+    valid = 0;
   }
-  if ((bVar4) && (*(short *)(*(int *)(iVar3 + 0x30) + 0xa4) != sVar2)) {
-    bVar4 = false;
-  }
-  func_0035f060(bVar4);
+  func_0035f060(valid != 0);
   return 1;
 }
 
-// FUN_002d13c0 NONMATCHING
+// FUN_002d13c0
 
 u32 func_002d13c0(void)
-
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  
-  uVar3 = func_0035f160();
-  uVar1 = func_002c6ba0(uVar3);
-  iVar2 = (int)func_002c6e30(uVar3,uVar1);
-  func_002c6a00(uVar3,(int)uVar3 + 0x38,*(u16 *)(iVar2 + 2));
-  lVar4 = (*(PTR_FUN_006975e0)[(*(u32 *)(iVar2 + 4) >> 0x18) * 2])
-                    (uVar3,*(u32 *)(iVar2 + 4) & 0xffffff);
-  if (lVar4 == 0) {
-    (*(code *)PTR_FUN_006975e0)(uVar3,0);
+  extern u32 func_0035f160(void);
+  extern u16 func_002c6ba0(void *);
+  extern void *func_002c6e30(void *,u16);
+  extern void func_002c6a00(void *,void *,u16);
+  char *unit;
+  char *action;
+  u16 selector;
+  u32 actionWord;
+  s32 result;
+
+  unit = (char *)func_0035f160();
+  selector = func_002c6ba0(unit);
+  action = (char *)func_002c6e30(unit,selector);
+  func_002c6a00(unit,unit + 0x38,*(u16 *)(action + 2));
+  actionWord = *(u32 *)(action + 4);
+  result = (*(s32 (**)(void *,u32))
+      &PTR_FUN_006975e0[((actionWord & 0xff000000) >> 24) * 2])(unit,actionWord & 0xffffff);
+  if (result == 0) {
+    (*(s32 (**)(void *,u32))PTR_FUN_006975e0)(unit,0);
   }
   return 1;
 }
@@ -13173,87 +14312,47 @@ u32 func_002d1490(void)
   return 1;
 }
 
-// FUN_002d14d0 NONMATCHING
+// FUN_002d14d0
 
 u32 func_002d14d0(void)
-
 {
-  int iVar1 = 0;
-  
-  iVar1 = func_0035ed20(0);
-  func_0035f060(*(u32 *)(iVar1 * 4 + iGpffffb6fc + 0xd30));
+  extern u32 func_0035ed20(s32);
+  u32 index;
+  u32 base;
+
+  index = func_0035ed20(0);
+  base = (u32)*(u8* volatile *)&iGpffffb6fc;
+  index <<= 2;
+  func_0035f060(*(u32 *)(index + base + 0xd30));
   return 1;
 }
 
-// FUN_002d1510 NONMATCHING
+// FUN_002d1510
 
 u32 func_002d1510(void)
 
 {
-  int iVar1 = 0;
+  extern u32 func_0035ed20(s32);
+  u32 iVar1 = 0;
   u32 uVar2 = 0;
+  u32 base;
   
   iVar1 = func_0035ed20(0);
   uVar2 = func_0035ed20(1);
-  *(u32 *)(iVar1 * 4 + iGpffffb6fc + 0xd30) = uVar2;
+  base = (u32)*(u8* volatile *)&iGpffffb6fc;
+  iVar1 <<= 2;
+  *(u32 *)(iVar1 + base + 0xd30) = uVar2;
+  return 1;
+}
+
+// FUN_002d1560
+u32 func_002d1560(void)
+{
   return 1;
 }
 
 /* ---- Straggler recovery: 0x2BD4F0-0x2D0970 ---- */
-// FUN_002BD4F0 NONMATCHING
-u32 FUN_002bd4f0(int param_1)
 
-{
-  u32 uVar1;
-  u32 uVar2;
-  
-  if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200) == 0) {
-    uVar1 = 1;
-  }
-  else {
-    if (*(int *)(param_1 + 8) == 0) {
-      FUN_001fe9b0(DAT_007ce4ec +
-                   (u32)*(u16 *)(param_1 + 4) * 0x12 + (u32)*(u16 *)(param_1 + 4));
-    }
-    uVar2 = *(int *)(param_1 + 8) + 1;
-    *(u32 *)(param_1 + 8) = uVar2;
-    if (uVar2 < 0x2d) {
-      uVar1 = 0;
-    }
-    else {
-      uVar1 = 1;
-    }
-  }
-  return uVar1;
-}
-
-// FUN_002BD5F0 NONMATCHING
-u32 FUN_002bd5f0(int param_1)
-
-{
-  u32 uVar1;
-  u32 uVar2;
-  u64 uVar3;
-  
-  if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200) == 0) {
-    uVar1 = 1;
-  }
-  else {
-    if (*(int *)(param_1 + 8) == 0) {
-      uVar3 = FUN_00171110(*(u16 *)(param_1 + 4),0);
-      FUN_001fe9b0(uVar3);
-    }
-    uVar2 = *(int *)(param_1 + 8) + 1;
-    *(u32 *)(param_1 + 8) = uVar2;
-    if (uVar2 < 0x2d) {
-      uVar1 = 0;
-    }
-    else {
-      uVar1 = 1;
-    }
-  }
-  return uVar1;
-}
 
 // FUN_002BF370 NONMATCHING
 void FUN_002bf370(u64 param_1)
@@ -13274,13 +14373,15 @@ void FUN_002bf370(u64 param_1)
   return;
 }
 
-// FUN_002D0970 NONMATCHING
+// FUN_002D0970
 u32 FUN_002d0970(void)
 
 {
-  u64 uVar1;
+  extern u32 FUN_002f5320(void);
+  extern void FUN_0035f060(u32);
+  u32 uVar1;
   
-  if (*(short *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) == 0x1b0) {
+  if (*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8) == 0x1b0) {
     uVar1 = FUN_002f5320();
     FUN_0035f060(uVar1);
   }

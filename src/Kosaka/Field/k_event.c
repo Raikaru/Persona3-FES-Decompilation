@@ -38,6 +38,8 @@ extern u16 func_003b6030(u32 id, u32 mode, void* model);
 extern void* func_003b5d10(u16 resourceId);
 extern void* DAT_00960184[];
 extern void (*DAT_0096017c[])(void*);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern u32 DAT_0096017c_abs[];
 static void FldEvent_ClearBytes(void* dst, u32 size)
 {
     u8* bytes;
@@ -273,7 +275,6 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
 FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
 {
     s32 index;
-
     index = func_001c6dd0(unit, maxDist);
     if (index < 0)
     {
@@ -532,20 +533,15 @@ u32 func_001c7f20(void* resource)
     return true;
 }
 
-// FUN_001c80c0 NONMATCHING
+// FUN_001c80c0
 void func_001c80c0(void)
 {
-    u8* state;
-
-    state = (u8*)func_001b9120();
-    if (*(void**)(state + 0x1148) != NULL)
+    if (*(void**)((u8*)func_001b9120() + 0x1148) != NULL)
     {
-        *(s32*)(state + 0x1144) = 0;
-        if (DAT_0096017c[0] != NULL)
-        {
-            DAT_0096017c[0](*(void**)(state + 0x1148));
-        }
-        *(void**)(state + 0x1148) = NULL;
+        *(s32*)((u8*)func_001b9120() + 0x1144) = 0;
+        (*(void (**)(void*))DAT_0096017c_abs)(
+            *(void**)((u8*)func_001b9120() + 0x1148));
+        *(void**)((u8*)func_001b9120() + 0x1148) = NULL;
     }
 }
 
@@ -2318,11 +2314,8 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask)
 }
 
 
-// FUN_001cd790 NONMATCHING
+// FUN_001cd790
 void func_001cd790(KwlnTask* task, u32 value)
 {
-    if (task != NULL && task->workData != NULL)
-    {
-        *(u32*)((u8*)task->workData + 0x3c) = value;
-    }
+    *(u32*)task->workData = value;
 }

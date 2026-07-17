@@ -9,8 +9,8 @@ typedef u32 int3;
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
-extern u32 DAT_006a3d70;
-extern u32 DAT_006a3d72;
+extern s8 DAT_006a3d70[];
+extern u16 DAT_006a3d72[];
 extern u8 * PTR_DAT_006a38e8;
 extern u8 * PTR_DAT_007cd6ec;
 extern u8 * PTR_s_Susano_o_006a3ca0;
@@ -57,7 +57,7 @@ static const char* unkStrings1[5] =
 const char* Day_GetCurrentDayString(u32 month, u32 day);
 const char* ComuData_FUN_003c4210(s32 idx);
 u8 * FUN_003c4040(int param_1,int param_2);
-u8 FUN_003c40f0(int param_1);
+s8 FUN_003c40f0(int param_1);
 u16 FUN_003c4110(int param_1);
 u8 * FUN_003c4270(void);
 u8 * FUN_003c4390(int param_1);
@@ -68,7 +68,7 @@ u64 FUN_003c4420(void);
 
 /* Region call-cast macros */
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
-#define FUN_003c40f0(...) ((u8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
+#define FUN_003c40f0(...) ((s8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
 #define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
 #define FUN_003c4390(...) ((u8 * (*)(...))FUN_003c4390)(__VA_ARGS__)
@@ -165,21 +165,21 @@ u8 * FUN_003c4040(int param_1,int param_2)
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
 #undef FUN_003c40f0
-// FUN_003C40F0 NONMATCHING
+// FUN_003C40F0
 
 
-u8 FUN_003c40f0(int param_1)
+s8 FUN_003c40f0(int param_1)
 
 
 
 {
 
-  return (&DAT_006a3d70)[param_1 * 4];
+  return *(s8 *)(DAT_006a3d70 + param_1 * 4);
 
 }
-#define FUN_003c40f0(...) ((u8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
+#define FUN_003c40f0(...) ((s8 (*)(...))FUN_003c40f0)(__VA_ARGS__)
 #undef FUN_003c4110
-// FUN_003C4110 NONMATCHING
+// FUN_003C4110
 
 
 u16 FUN_003c4110(int param_1)
@@ -188,7 +188,7 @@ u16 FUN_003c4110(int param_1)
 
 {
 
-  return *(u16 *)(&DAT_006a3d72 + param_1 * 4);
+  return DAT_006a3d72[param_1 * 2];
 
 }
 #define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)

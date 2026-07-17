@@ -72,7 +72,7 @@ DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id);
 void datUnitEcRemoveEnemy(DatUnitEc* ec, DatUnit* unit);
 void datUnitDestroyGenus(DatUnitGenusBase* genusBase);
 u32 func_002ff790(DatUnitGenusBase* genusBase);
-void func_002ffb00(DatUnitGenusBase* genusBase);
+u16 func_002ffb00(DatUnitGenusBase* genusBase);
 
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id);
 

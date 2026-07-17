@@ -11,6 +11,23 @@
 #include "Kernel/Kwln/kwln.h"
 #include "Main/Battle/Data/datCalc.h"
 #include "temporary.h"
+extern u32 func_002e4430();
+
+typedef struct BtlEnemyRecord
+{
+    u8 pad_00[0x22];
+    s16 field_22;
+    u8 pad_24[2];
+    s16 field_26;
+    u8 pad_28[0xc0];
+} BtlEnemyRecord;
+
+typedef struct BtlCommandRecord
+{
+    u8 pad_00[2];
+    u16 flags;
+    u8 pad_04[0x18];
+} BtlCommandRecord;
 
 #define BTLACTION_IDMAX 0xFFFFFFF
 /* Retail action scratch remains intentionally opaque until packet-result layouts are named. */
@@ -44,6 +61,7 @@ BtlPacket* FUN_002bdbd0();
 BtlPacket* FUN_002dd100();
 BtlPacket* FUN_002dd5e0();
 BtlPacket* FUN_002e2be0();
+BtlPacket* func_002e3fe0(u16 voiceId);
 u32 FUN_002e4310();
 BtlPacket* FUN_0027dc00();
 BtlPacket* FUN_0029fa50();
@@ -62,15 +80,15 @@ extern u16 DAT_007e094e;
 extern u16 DAT_007e0956;
 extern u16 DAT_007e0958;
 extern u8* iGpffffb708;
-extern u8* iGpffffb710;
-extern u8* iGpffffb728;
+extern BtlCommandRecord* iGpffffb710;
+extern BtlEnemyRecord* iGpffffb728;
 extern f32 uGpffff8088;
 extern f32 uGpffff8390;
 extern f32 uGpffff83a4;
 extern RwV3d D_00697880;
 
 u32 FUN_002d5bf0(BtlUnit* unit);
-u32 FUN_002d6370(u16 commandId);
+u32 FUN_002d6370(s16 commandId);
 void FUN_002fd8a0(BtlAction* action);
 u8 FUN_003093a0(DatUnit* unit);
 u16 FUN_003082f0(DatUnit* unit, u64 id);
@@ -162,7 +180,7 @@ void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 void btlAction00299e50(BtlAction* action);
 void FUN_002dc5e0();
 void FUN_001fdd40();
-u8 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
+u16 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
 u32 FUN_002c0970(BtlTarget* target);
 u32 FUN_002e4330(BtlAction* action);
 u32 FUN_002e43a0();
@@ -277,7 +295,7 @@ u32 btlActionIdleWeaponAnim(BtlAction* action)
     return false;
 }
 
-// FUN_002899e0 NONMATCHING
+// FUN_002899e0
 void FUN_002899e0(BtlAction* action)
 {
     BtlAction* current;
@@ -303,13 +321,16 @@ void FUN_002899e0(BtlAction* action)
             continue;
         }
 
-        if (current->currState != BTLACTION_STATE_TARGET &&
-            current->currState != BTLACTION_STATE_COMMAND &&
-            current->currState != BTLACTION_STATE_STANDBY)
+        switch (current->currState)
         {
-            continue;
+            case BTLACTION_STATE_STANDBY:
+            case BTLACTION_STATE_COMMAND:
+            case BTLACTION_STATE_TARGET:
+                break;
+            default:
+                continue;
         }
-        if (current == action)
+        if (action == current)
         {
             continue;
         }
@@ -427,78 +448,103 @@ void FUN_00289b50(BtlAction* action)
     }
 }
 
-// FUN_00289f40 NONMATCHING
+// FUN_00289f40
 u32 FUN_00289f40(BtlAction* action)
 {
-    u16 commandId = action->target.commandId;
-    u16 unitId = action->unit->datUnit->id;
+    u16 specificId;
+    u16 unitId;
+    u16 validationResult;
     u8 allowed;
 
-    if (FUN_002bff60(action, NULL, commandId, 0) != 0)
+    specificId = action->target.specificId;
+    validationResult = FUN_002bff60(action, NULL, specificId, 0);
+    unitId = action->unit->datUnit->id;
+    if (validationResult == 0)
     {
-        return false;
-    }
+        allowed = iGpffffb708[(u32)specificId * 0x2c];
+        if ((allowed & 2) != 0)
+        {
+            switch (action->unit->genus)
+            {
+            case 1:
+                if (iGpffffb728[unitId].field_22 == 1)
+                {
+                    return false;
+                }
+                break;
+            default:
+                break;
+            }
+            return true;
+        }
 
-    allowed = iGpffffb708[(u32)commandId * 0x2c];
-    if ((allowed & 2) != 0)
-    {
-        if (action->unit->genus == 1 &&
-            *(s16*)(iGpffffb728 + (u32)unitId * 0xe0 + 0x22) == 1)
+        if (FUN_002d6370(specificId) != 0)
         {
-            return false;
+            if ((iGpffffb710[specificId].flags & 1) == 0)
+            {
+                return false;
+            }
+            switch (action->unit->genus)
+            {
+            case 0:
+            default:
+                break;
+            case 1:
+                if (iGpffffb728[unitId].field_26 == 1)
+                {
+                    return false;
+                }
+                break;
+            }
+            return true;
         }
-        return true;
-    }
-
-    if (FUN_002d6370(commandId) != 0)
-    {
-        if ((*(u16*)(iGpffffb710 + (u32)commandId * 0x1c + 2) & 1) == 0)
-        {
-            return false;
-        }
-        if (action->unit->genus == 1 &&
-            *(s16*)(iGpffffb728 + (u32)unitId * 0xe0 + 0x26) == 1)
-        {
-            return false;
-        }
-        return true;
     }
 
     return false;
 }
 
-// FUN_0028a0f0 NONMATCHING
+// FUN_0028a0f0
 u16 FUN_0028a0f0(BtlAction* action)
 {
-    BtlUnit* unit = action->unit;
-    u16 unitId = unit->datUnit->id;
+    u16 unitId = action->unit->datUnit->id;
+    u8 genus = action->unit->genus;
     u8 weaponType;
 
-    if (unit->genus == 1)
+    if (genus == 1)
     {
-        if (*(s16*)(iGpffffb728 + (u32)unitId * 0xe0 + 0x22) == 1)
-        {
-            return 1;
-        }
+        goto player_unit;
     }
-    else if (unit->genus == 0)
+    switch (genus)
     {
-        if (unitId == 2 || unitId == 3 || FUN_002d5bf0(unit) != 0)
-        {
-            return 1;
-        }
-
-        weaponType = (u8)datCalcGetHeldWeaponType(unit->datUnit);
-        if (unitId == 1 && (weaponType == 6 || weaponType == 7))
-        {
-            return 1;
-        }
+    case 0:
+        goto enemy_unit;
+    default:
+        goto no_restriction;
     }
 
+enemy_unit:
+    if (unitId == 2 || unitId == 3 || FUN_002d5bf0(action->unit) != 0)
+    {
+        return 1;
+    }
+    weaponType = (u8)datCalcGetHeldWeaponType(action->unit->datUnit);
+    if (unitId == 1 && (weaponType == 6 || weaponType == 7))
+    {
+        return 1;
+    }
+    goto no_restriction;
+
+player_unit:
+    if (iGpffffb728[unitId].field_22 == 1)
+    {
+        return 1;
+    }
+
+no_restriction:
     return 0;
 }
 
-// FUN_0028a200 NONMATCHING
+// FUN_0028a200
 u32 FUN_0028a200(BtlAction* action)
 {
     BtlAction* root = gBtl->actionList.head;
@@ -541,9 +587,9 @@ u32 FUN_0028a200(BtlAction* action)
             }
             enemyCount++;
         }
-        else if (datCalcChkBadStatus(unit->datUnit, 0x100261) == 0 && current != root)
+        else if (datCalcChkBadStatus(unit->datUnit, 0x100261) == 0 && root != current)
         {
-            ACTION_U32(gBtl, 0xb88 + ACTION_U16(gBtl, 0xb98) * 4) = (u32)current;
+            *(u32*)((u8*)gBtl + ACTION_U16(gBtl, 0xb98) * 4 + 0xb88) = (u32)current;
             ACTION_U16(gBtl, 0xb98)++;
         }
     }
@@ -552,7 +598,7 @@ u32 FUN_0028a200(BtlAction* action)
     {
         return false;
     }
-    return ACTION_U16(gBtl, 0xb98) != 0;
+    return ACTION_U16(gBtl, 0xb98) >= 1;
 }
 
 // FUN_0028a3e0 NONMATCHING
@@ -571,7 +617,7 @@ u32 FUN_0028a3e0(BtlAction* action)
             count = ACTION_U8(target, 0xc8);
             for (j = 0; j < count; j++)
             {
-                if ((ACTION_U32(target, 0xe8 + j * 0x1c) & 0x100000) != 0)
+                if ((ACTION_U16(target, 0xfa + j * 0x1c) & 4) != 0)
                 {
                     return true;
                 }
@@ -586,7 +632,7 @@ u32 FUN_0028a3e0(BtlAction* action)
             count = ACTION_U8(target, 0xc8);
             for (j = 0; j < count; j++)
             {
-                if ((ACTION_U16(target, 0xfa + j * 0x1c) & 4) != 0)
+                if ((ACTION_U32(target, 0xe8 + j * 0x1c) & 0x100000) != 0)
                 {
                     return true;
                 }
@@ -834,35 +880,67 @@ void btlActionUpdateStateStart(BtlAction* action)
         FUN_00300100(action->unit->datUnit);
         if (action->passiveSkillsFlags & 1)
         {
-            messageId = 0x223; voice = 0xb; tableIndex = 0x2f; work[0] = stat * 100 / 5000; action->passiveSkillsFlags &= ~1;
+            messageId = 0x223;
+            voice = 0xb;
+            tableIndex = 0x2f;
+            work[0] = stat * 100 / 5000;
+            action->passiveSkillsFlags &= ~1;
         }
         else if (action->passiveSkillsFlags & 2)
         {
-            messageId = 0x224; voice = 0xb; tableIndex = 0x2f; work[0] = stat * 100 / 0x9c4; action->passiveSkillsFlags &= ~2;
+            messageId = 0x224;
+            voice = 0xb;
+            tableIndex = 0x2f;
+            work[0] = stat * 100 / 0x9c4;
+            action->passiveSkillsFlags &= ~2;
         }
         else if (action->passiveSkillsFlags & 4)
         {
-            messageId = 0x225; voice = 0xb; tableIndex = 0x2f; work[0] = stat * 100 / 0x682; action->passiveSkillsFlags &= ~4;
+            messageId = 0x225;
+            voice = 0xb;
+            tableIndex = 0x30;
+            work[0] = stat * 100 / 0x682;
+            action->passiveSkillsFlags &= ~4;
         }
         else if (action->passiveSkillsFlags & 8)
         {
-            messageId = 0x226; voice = 0xb; tableIndex = 0x30; work[1] = 3; action->passiveSkillsFlags &= ~8;
+            messageId = 0x226;
+            voice = 0xb;
+            tableIndex = 0x30;
+            work[1] = 3;
+            action->passiveSkillsFlags &= ~8;
         }
         else if (action->passiveSkillsFlags & 0x10)
         {
-            messageId = 0x227; voice = 0xb; tableIndex = 0x30; work[1] = 5; action->passiveSkillsFlags &= ~0x10;
+            messageId = 0x227;
+            voice = 0xb;
+            tableIndex = 0x30;
+            work[1] = 5;
+            action->passiveSkillsFlags &= ~0x10;
         }
         else if (action->passiveSkillsFlags & 0x20)
         {
-            messageId = 0x228; voice = 0xb; tableIndex = 0x30; work[1] = 7; action->passiveSkillsFlags &= ~0x20;
+            messageId = 0x228;
+            voice = 0xb;
+            tableIndex = 0x30;
+            work[1] = 7;
+            action->passiveSkillsFlags &= ~0x20;
         }
         else if (action->passiveSkillsFlags & 0x40)
         {
-            messageId = 0x25f; voice = 10; tableIndex = 0x39; work[0] = stat * 100 / 0x4e2; action->passiveSkillsFlags &= ~0x40;
+            messageId = 0x25f;
+            voice = 10;
+            tableIndex = 0x39;
+            work[0] = stat * 100 / 0x4e2;
+            action->passiveSkillsFlags &= ~0x40;
         }
         else if (action->passiveSkillsFlags & 0x80)
         {
-            messageId = 0x260; voice = 10; tableIndex = 0x39; work[0] = stat * 100 / 0x4e2; action->passiveSkillsFlags &= ~0x80;
+            messageId = 0x260;
+            voice = 10;
+            tableIndex = 0x39;
+            work[0] = stat * 100 / 0x4e2;
+            action->passiveSkillsFlags &= ~0x80;
         }
         if (work[0] != 0 || work[1] != 0)
         {
@@ -872,7 +950,8 @@ void btlActionUpdateStateStart(BtlAction* action)
             packet = FUN_002bd480(action->unit);
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            chain = FUN_002baf90(ACTION_U32(gBtl, 0xc24 + tableIndex * 4), action->unit, action->unit, 1, 0);
+            chain = FUN_002baf90(ACTION_U32(gBtl, 0xc24 + tableIndex * 4),
+                                 action->unit, action->unit, 1, 0);
             ACTION_U16(chain, 0x48) = 3;
             chain->actionUID = action->uid;
             btlPacketRegister(chain, BTLPACKET_TYPE_3D);
@@ -1038,7 +1117,7 @@ void btlActionUpdateStateChangeFormation(BtlAction* action)
     }
 }
 
-// FUN_0028bd10 NONMATCHING
+// FUN_0028bd10
 void btlActionInitStateCommand(BtlAction* action)
 {
     BtlPacket* packet;
@@ -1076,13 +1155,15 @@ void btlActionInitStateCommand(BtlAction* action)
     if (action->unit->genus == UNIT_GENUS_PC)
     {
         packet = btlUnitCreateLookAtUnitPacket(NULL, action->unit, BTLUNIT_LOOKAT_FLAG_ALLENEMY);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
     else
     {
         packet = btlUnitCreateLookAtDeactivatePacket(NULL, BTLUNIT_LOOKAT_FLAG_ALLENEMY);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
     btlPacketRegister(btlUnitCreateLookAtDeactivatePacket(action->unit, 0), BTLPACKET_TYPE_1);
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_COMMAND);
     packet->actionUID = action->uid;
@@ -1166,11 +1247,11 @@ void btlActionUpdateStateCommand(BtlAction* action)
         effect = 0;
         if (action->target.commandId == 3)
         {
-            effect = FUN_002e4430(action, action->target.specificId, 1);
+            effect = func_002e4430(action, action->target.specificId, 1);
         }
         else if (action->target.commandId == 1 || action->target.commandId == 2)
         {
-            effect = FUN_002e4430(action, action->target.specificId, 0);
+            effect = func_002e4430(action, action->target.specificId, 0);
         }
         effect = FUN_002e4720(effect);
         if (effect == 0)
@@ -1746,7 +1827,7 @@ void btlActionInitStateMoveTarget(BtlAction* action)
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
     action->unk_18 &= ~0x10;
 }
-// FUN_0028e740 NONMATCHING
+// FUN_0028e740
 void btlActionUpdateStateMoveTarget(BtlAction* action)
 {
     u16 nextState;
@@ -1755,22 +1836,29 @@ void btlActionUpdateStateMoveTarget(BtlAction* action)
     if (btlUnitIsMoving(action->unit) == 0)
     {
         commandId = action->target.commandId;
-        if (commandId == 9)
+        if (commandId == 9) goto summon;
+        if (commandId == 3) goto skill;
+        if (commandId == 2) goto skill;
+        switch (commandId)
         {
-            nextState = BTLACTION_STATE_SUMMON;
+        case 1:
+            goto attack;
+        default:
+            goto no_action;
         }
-        else if (commandId == 3 || commandId == 2)
-        {
-            nextState = BTLACTION_STATE_SKILL;
-        }
-        else if (commandId == 1)
-        {
-            nextState = BTLACTION_STATE_ATTACK;
-        }
-        else
-        {
-            nextState = BTLACTION_STATE_NON;
-        }
+
+attack:
+        nextState = BTLACTION_STATE_ATTACK;
+        goto set_action;
+skill:
+        nextState = BTLACTION_STATE_SKILL;
+        goto set_action;
+summon:
+        nextState = BTLACTION_STATE_SUMMON;
+        goto set_action;
+no_action:
+        nextState = BTLACTION_STATE_NON;
+set_action:
         btlActionSetState(action, nextState);
     }
 }
@@ -1800,7 +1888,7 @@ void btlActionInitStateMoveHome(BtlAction* action)
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
 }
-// FUN_0028ea90 NONMATCHING
+// FUN_0028ea90
 void btlActionUpdateStateMoveHome(BtlAction* action)
 {
     u16 nextState;
@@ -1809,22 +1897,29 @@ void btlActionUpdateStateMoveHome(BtlAction* action)
     if (btlUnitIsMoving(action->unit) == 0)
     {
         commandId = action->target.commandId;
-        if (commandId == 9)
+        if (commandId == 9) goto summon;
+        if (commandId == 3) goto skill;
+        if (commandId == 2) goto skill;
+        switch (commandId)
         {
-            nextState = BTLACTION_STATE_SUMMON;
+        case 1:
+            goto attack;
+        default:
+            goto no_action;
         }
-        else if (commandId == 3 || commandId == 2)
-        {
-            nextState = BTLACTION_STATE_SKILL;
-        }
-        else if (commandId == 1)
-        {
-            nextState = BTLACTION_STATE_ATTACK;
-        }
-        else
-        {
-            nextState = BTLACTION_STATE_NON;
-        }
+
+attack:
+        nextState = BTLACTION_STATE_ATTACK;
+        goto set_action;
+skill:
+        nextState = BTLACTION_STATE_SKILL;
+        goto set_action;
+summon:
+        nextState = BTLACTION_STATE_SUMMON;
+        goto set_action;
+no_action:
+        nextState = BTLACTION_STATE_NON;
+set_action:
         btlActionSetState(action, nextState);
     }
 }
@@ -2352,24 +2447,33 @@ void btlActionUpdateStateBadDamage(BtlAction* action)
     btlActionSetState(action, BTLACTION_STATE_PACKET);
 }
 
-// FUN_002964f0 NONMATCHING
+// FUN_002964f0
 void btlActionInitStateEscapeMes(BtlAction* action)
 {
-    BtlAction* lead = gBtl->actionList.tail;
     BtlPacket* packet;
 
     btlAction0028a780(action);
-    if (lead != NULL)
-    {
-        packet = btlUnitCreateRotateTowardUnitPacket(action->unit, lead->unit, 2);
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    }
+    packet = btlUnitCreateRotateTowardUnitPacket(action->unit, gBtl->actionList.head->unit, 2);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    packet = btlUnitCreateLookAtUnitPacket(gBtl->actionList.head->unit, action->unit, 0);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = btlUnitCreateLookAtUnitPacket(action->unit, gBtl->actionList.head->unit, 0);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
     action->unk_18 |= 0x200;
     packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_ESCAPEMES);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
-    btlPacketRegister(btlVoice002e2be0(action, 0x1f, 0, 0, 0), BTLPACKET_TYPE_1);
+    packet = func_002e3fe0(action->unit->charId);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    if (FUN_002d1a70() == 1)
+    {
+        gBtl->flags &= ~0x4000;
+        FUN_001ff350();
+    }
     action->movedAwayFromHome = 0;
     action->unk_488 = 0;
     ACTION_U16(action, 0x48c) = 0xc;

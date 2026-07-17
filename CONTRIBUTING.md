@@ -258,6 +258,31 @@ How C reaches the image: a source file links as a real C object once it is fully
 
    Leave `NONMATCHING` only for real work-in-progress C that intentionally does not match yet.
 
+## m2c first-pass workflow
+
+Use `m2c` to turn a retail assembly function into a typed control-flow draft
+before hand decompilation. The project pins a known m2c revision and supplies
+the PS2/MWCC target, an isolated function assembly file, and declarations from
+the function's translation unit:
+
+```sh
+make m2c-setup
+make m2c FILE=src/Battle/btlVoice.c FUNC=func_002e3d50
+```
+
+The generated draft, assembly slice, and context are written under
+`build/m2c/`. Add `STACK=1` to emit m2c's inferred stack-structure template:
+
+```sh
+make m2c FILE=src/Battle/btlVoice.c FUNC=func_002e3d50 STACK=1
+```
+
+`M2C=/path/to/m2c.py` can override the pinned local installation. Treat m2c
+output as evidence, not finished source: recover semantic names and project
+types, compare every call and condition with retail assembly, and remove
+decompiler casts/gotos when clean C expresses the same behavior. Only
+`tools/verify.py` establishes a match.
+
 ## Optional compiler-debugger workflow
 
 For a semantically correct function whose residual appears to be instruction
@@ -414,6 +439,8 @@ tools/permute.py            per-function source-mutation permuter
 tools/permute_sweep.py      batch permuter driver
 tools/permute_ast.py        AST-level permuter (decomp-permuter randomizer)
 tools/m2ctx.py              decomp.me context generator
+tools/setup_m2c.py          pinned m2c installer
+tools/m2c_decompile.py      one-function m2c/context driver
 tools/progress.py           progress report
 tools/gen_objdiff.py        objdiff target/base object generator
 asm/macro.inc               committed assembler macro include

@@ -43,12 +43,15 @@ static u32 sScenarioMode;     // 007cdfa4. See enum 'ScenarioMode'
 DatGlobal gGlobalWork; // 00836200
 DatPc gPcs[PC_MAX];    // 00833948
 
-void func_00177410(int, int);
+void func_00177410(u8*, u8*);
 void func_001774e0(void);
+extern const char D_005E3098[];
+extern const char D_005E3260[];
+extern u32 gSpecialStatusMessage;
 extern u8 DAT_00833bb0[];
 extern u8 DAT_00833bd0[];
 extern u8 DAT_00833bf0[];
-extern u8 DAT_00836200[];
+extern u32 DAT_00836200;
 extern u8 DAT_00836212[];
 extern u8* PTR_s_Aigis_005e35ec;
 extern u8* PTR_s_Aigis_005e379c;
@@ -73,7 +76,14 @@ extern u8 D_008339B0[];
 extern u8 D_008339B2[];
 extern u8 D_008339B4[];
 extern u8 D_008339F4[];
+extern u8 D_00834010[];
+extern u8 D_00834120[];
+extern u8 DAT_00830000_a[];
+extern u8 DAT_00830000_b[];
+extern u8 DAT_00830000_c[];
+extern u8 D_007CBFA0;
 extern u8 D_008339F6[];
+extern u8 D_00833A78[];
 extern u8 D_00833C58[];
 extern u8 D_00833C5A[];
 extern u8 D_00833E80[];
@@ -131,7 +141,7 @@ extern s16 func_00171060(s16 id);
 
 u16 func_0016cc00(s16 pcId);
 u16 func_0016ccb0(s16 pcId);
-s8 func_0016d280(s32 exp);
+u8 func_0016d280(s32 exp);
 u32 func_0016dce0(s16 socialLink);
 s8 func_0016dd20(s16 socialLink);
 void func_0016ddd0(s32 index);
@@ -163,7 +173,7 @@ void* func_00170df0(s16 id);
 void* func_00170e40(s16 id);
 u32 func_00171250(s16 id);
 u16 func_001712d0(s16 id);
-void func_00171390(u16 flag);
+void func_00171390(u32 flag);
 s32 func_001714b0(s32 index);
 s32 func_001714d0(s32 index);
 s32 func_001714f0(s32 index);
@@ -470,7 +480,7 @@ s16 datGetPartyId(s32 idx)
 }
 
 // FUN_0016dd80
-s8 datGetAiTactic(s16 pcId)
+s32 datGetAiTactic(s16 pcId)
 {
     if (IS_HERO(pcId))
     {
@@ -480,7 +490,7 @@ s8 datGetAiTactic(s16 pcId)
     return gPcs[pcId].unit.aiTactic;
 }
 
-// FUN_0016d6b0 NONMATCHING
+// FUN_0016d6b0
 void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
 {
     u16 currentPhysicalCondition;
@@ -517,6 +527,7 @@ void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
 
     if (currentPhysicalCondition == PHYSICAL_CONDITION_TIRED && physicalCondition != PHYSICAL_CONDITION_TIRED)
     {
+        extern void datSetFatigueCounter(s16, s16);
         if (IS_HERO(pcId))
         {
             oldFatigueCounter = gGlobalWork.heroStatus.physicalState.oldFatigueCounter;
@@ -525,7 +536,6 @@ void datSetPhysicalCondition(s16 pcId, u16 physicalCondition)
         {
             oldFatigueCounter = gPcs[pcId].physicalState.oldFatigueCounter;
         }
-
         datSetFatigueCounter(pcId, oldFatigueCounter);
     }
 
@@ -667,39 +677,52 @@ u32 datAddMoney(s32 amount)
     return finalMoney;
 }
 
-// FUN_0016eb80 NONMATCHING
-u32 datScrCmd_SAVE_PARTY(void)
+// FUN_0016eb80
+#pragma optimization_level 1
+u32 datScrCmd_SAVE_PARTY()
 {
     s16 i;
-    s16* savedPartyIds;
-    DatGlobal* work;
+    u32 offset;
+    DatGlobal* globalWork;
+    s16 value;
+    s16* savedIds;
 
-    savedPartyIds = sSavedPartyIds;
-    work = &gGlobalWork;
-    for (i = 0; i < 4; i++)
+    i = 0;
+    globalWork = &gGlobalWork;
+    savedIds = sSavedPartyIds;
+    for (; i < 4; i++)
     {
-        savedPartyIds[i] = work->partyIds[i];
+        offset = (u32)(s16)i * 2;
+        value = *(s16*)((u8*)globalWork + 0x44e0 + offset);
+        *(s16*)((u8*)savedIds + offset) = value;
     }
 
     return true;
 }
+#pragma optimization_level 2
 
-// FUN_0016ebe0 NONMATCHING
-u32 datScrCmd_RESTORE_PARTY(void)
+// FUN_0016ebe0
+#pragma optimization_level 1
+u32 datScrCmd_RESTORE_PARTY()
 {
     s16 i;
-    s16* savedPartyIds;
-    DatGlobal* work;
+    u32 offset;
+    s16* savedIds;
+    s16 value;
+    DatGlobal* globalWork;
 
-    savedPartyIds = sSavedPartyIds;
-    work = &gGlobalWork;
-    for (i = 0; i < 4; i++)
+    i = 0;
+    savedIds = sSavedPartyIds;
+    globalWork = &gGlobalWork;
+    for (; i < 4; i++)
     {
-        work->partyIds[i] = savedPartyIds[i];
+        offset = (u32)(s16)i * 2;
+        value = *(s16*)((u8*)savedIds + offset);
+        *(s16*)((u8*)globalWork + 0x44e0 + offset) = value;
     }
-
     return true;
 }
+#pragma optimization_level 2
 
 // FUN_0016ec40
 u32 datScrCmd_CLEAR_PARTY_ID()
@@ -812,7 +835,7 @@ void datSetAcademicPoint(s16 pcId, s16 academicPoint)
     gPcs[pcId].socialStats.academicPoint = academicPoint;
 }
 
-// FUN_0016d090 NONMATCHING
+// FUN_0016d090
 void datSetCharmPoint(s16 pcId, s16 charmPoint)
 {
     K_ASSERT(charmPoint >= SOCIAL_STAT_MIN_POINT && charmPoint <= SOCIAL_STAT_MAX_POINT, 808);
@@ -821,14 +844,14 @@ void datSetCharmPoint(s16 pcId, s16 charmPoint)
     {
         datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
         gGlobalWork.heroStatus.socialStats.charmPoint = charmPoint;
-        datGetCharmLevel(charmPoint);
+        datGetCharmLevel(gGlobalWork.heroStatus.socialStats.charmPoint);
         return;
     }
 
     gPcs[pcId].socialStats.charmPoint = charmPoint;
 }
 
-// FUN_0016d160 NONMATCHING
+// FUN_0016d160
 void datSetCouragePoint(s16 pcId, s16 couragePoint)
 {
     K_ASSERT(couragePoint >= SOCIAL_STAT_MIN_POINT && couragePoint <= SOCIAL_STAT_MAX_POINT, 828);
@@ -837,7 +860,7 @@ void datSetCouragePoint(s16 pcId, s16 couragePoint)
     {
         datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
         gGlobalWork.heroStatus.socialStats.couragePoint = couragePoint;
-        datGetCourageLevel(couragePoint);
+        datGetCourageLevel(gGlobalWork.heroStatus.socialStats.couragePoint);
         return;
     }
 
@@ -1398,10 +1421,9 @@ u16 func_0016fcc0(s16 pcId, s32 equipmentIdx)
     return *(u16*)(D_008339B4 + pcId * 0x364 + equipmentIdx * 0x14);
 }
 
-// FUN_0016fdb0 NONMATCHING
+// FUN_0016fdb0
 DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx)
 {
-    DatPc* pc;
     s32 pcIndex;
 
     if (pcId == -1)
@@ -1415,13 +1437,13 @@ DatEquipment* func_0016fdb0(s16 pcId, s32 equipmentIdx)
     else if (pcId >= 0x100)
     {
         pcIndex = pcId - 0x102;
-        pc = &gPcs[2];
-        return (DatEquipment*)((u8*)&pc[pcIndex] + equipmentIdx * 0x14 + 0x180);
+        return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
+                               equipmentIdx * 0x14 + 0x180);
     }
 
     pcIndex = pcId - 2;
-    pc = &gPcs[2];
-    return &pc[pcIndex].equipments[equipmentIdx];
+    return (DatEquipment*)((u8*)D_00834010 + pcIndex * 0x364 +
+                           equipmentIdx * 0x14 + 0x5c);
 }
 
 // FUN_0016fea0
@@ -1616,44 +1638,74 @@ void func_00170530(s16 pcId, s32 equipmentIdx, u16 value)
     }
 }
 
-// FUN_0016c670 NONMATCHING
+// FUN_0016c670
 u16 func_0016c670(s16 pcId)
 {
-    return func_00300100(datGetUnit(pcId));
-}
-
-// FUN_0016cc00 NONMATCHING
-u16 func_0016cc00(s16 pcId)
-{
-    u8 level = datGetLevel(pcId);
-
-    return *(u16*)(D_005DC1B4 + pcId * 4 + level * 0x2c);
-}
-
-// FUN_0016ccb0 NONMATCHING
-u16 func_0016ccb0(s16 pcId)
-{
-    u8 level = datGetLevel(pcId);
-
-    return *(u16*)(D_005DC1B4 + pcId * 4 + level * 0x2c + 2);
-}
-
-// FUN_0016d280 NONMATCHING
-s8 func_0016d280(s32 exp)
-{
-    s8 level = 0;
-
-    while (level < MAX_CHARACTER_LEVEL)
+    if (IS_HERO(pcId))
     {
-        if (exp < (s32)sPlayerExpThreshold[(u8)level])
-        {
-            break;
-        }
-        level++;
+        return func_00300100(&gGlobalWork.heroUnit);
     }
 
-    return level;
+    return func_00300100(&gPcs[pcId - 2].unit);
 }
+
+// FUN_0016cc00
+u16 func_0016cc00(s16 pcId)
+{
+    u8 level;
+
+    if (IS_HERO(pcId))
+    {
+        level = datCalcGetLevel(&gGlobalWork.heroUnit);
+    }
+    else
+    {
+        DatPc* pc = &gPcs[2];
+        level = datCalcGetLevel(&pc[pcId - 2].unit);
+    }
+
+    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
+}
+
+// FUN_0016ccb0
+u16 func_0016ccb0(s16 pcId)
+{
+    u8 level;
+
+    if (IS_HERO(pcId))
+    {
+        level = datCalcGetLevel(&gGlobalWork.heroUnit);
+    }
+    else
+    {
+        DatPc* pc = &gPcs[2];
+        level = datCalcGetLevel(&pc[pcId - 2].unit);
+    }
+
+    return *(u16*)(D_005DC1B4 + level * 0x2c + pcId * 4);
+}
+
+
+// FUN_0016d280
+#pragma opt_loop_invariants on
+u8 func_0016d280(s32 exp)
+{
+    u8 level = 0;
+    u8 index = 0;
+
+    while (index < MAX_CHARACTER_LEVEL)
+    {
+        if (exp < (s32)sPlayerExpThreshold[index])
+        {
+            return level;
+        }
+        level++;
+        index++;
+    }
+
+    return MAX_CHARACTER_LEVEL;
+}
+#pragma opt_loop_invariants off
 
 // FUN_0016dbc0 NONMATCHING
 u8 func_0016dbc0(s16 socialLink, u32* personaId)
@@ -1694,10 +1746,14 @@ u8 func_0016dbc0(s16 socialLink, u32* personaId)
     return found;
 }
 
-// FUN_0016dce0 NONMATCHING
+// FUN_0016dce0
 u32 func_0016dce0(s16 socialLink)
 {
-    return socialLink >= 0 && socialLink < 30;
+    if (socialLink < 0 || socialLink >= 30)
+    {
+        return false;
+    }
+    return true;
 }
 
 // FUN_0016dd20
@@ -1706,13 +1762,13 @@ s8 func_0016dd20(s16 socialLink)
     return gGlobalWork.heroStatus.socialLinkData[0x78 + socialLink];
 }
 
-// FUN_0016ddd0 NONMATCHING
+// FUN_0016ddd0
 void func_0016ddd0(s32 index)
 {
     u8* value;
 
-    K_ASSERT(index >= 0 && index < 8, 1257);
-    value = gGlobalWork.heroStatus.socialLinkData + 0x4df + index;
+    K_ASSERT(index < 8 && index >= 0, 1257);
+    value = D_00836773 + index;
     if (*value < 200)
     {
         *value += 1;
@@ -1731,13 +1787,16 @@ u8 func_0016de50(s32 index)
     return gGlobalWork.heroStatus.socialLinkData[0x4df + index];
 }
 
-// FUN_0016deb0 NONMATCHING
+// FUN_0016deb0
+#pragma opt_loop_invariants on
 s16 func_0016deb0(s16 arcana)
 {
-    s16 bestLink = -1;
-    s8 bestLevel = -1;
-    s16 socialLink;
+    s32 socialLink;
+    s32 bestLevel;
+    s16 bestLink;
 
+    bestLevel = -1;
+    bestLink = bestLevel;
     for (socialLink = 0; socialLink < 30; socialLink++)
     {
         if (D_005E3220[socialLink] == arcana &&
@@ -1750,13 +1809,27 @@ s16 func_0016deb0(s16 arcana)
 
     return bestLink;
 }
+#pragma opt_loop_invariants off
 
-// FUN_0016df30 NONMATCHING
-u8 func_0016df30(s16 socialLink)
+// FUN_0016df30
+s8 func_0016df30(s16 socialLink)
 {
-    K_ASSERT(func_0016dce0(socialLink), 1355);
+    u32 valid;
 
-    return D_005E3220[socialLink];
+    if (socialLink < 0 || socialLink >= 30)
+    {
+        valid = false;
+    }
+    else
+    {
+        valid = true;
+    }
+    if (!valid)
+    {
+        FUN_0019d3f0((u32)D_005E3098, 0x54b);
+    }
+
+    return ((s8*)D_005E3220)[socialLink];
 }
 
 // FUN_0016dfb0 NONMATCHING
@@ -1865,77 +1938,162 @@ void func_0016e410(s16 socialLink, s8 level)
 // FUN_0016e5f0 NONMATCHING
 void func_0016e5f0(s16 socialLink, s8 progress)
 {
-    if (func_0016dce0(socialLink))
+    u32 isValidSocialLink;
+    s8* base;
+    s8* value;
+
+    if (socialLink < 0 || socialLink >= 30)
     {
-        u8* value = gGlobalWork.heroStatus.socialLinkData + 0x78 + socialLink;
-        *value = progress < 0 ? 0 : (progress > 9 ? 9 : progress);
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    if (!isValidSocialLink)
+    {
+        return;
+    }
+
+    base = (s8*)&gGlobalWork + 0x630c;
+    value = base + socialLink;
+    *value = progress;
+    if (progress < 0)
+    {
+        *value = 0;
+    }
+    else if (*value >= 10)
+    {
+        *value = 9;
     }
 }
 
-// FUN_0016e670 NONMATCHING
+// FUN_0016e670
 void func_0016e670(s16 socialLink)
 {
-    if (!func_0016dce0(socialLink))
+    u32 isValidSocialLink;
+    s16 index;
+    s8* base;
+    s8* progress;
+
+    index = socialLink;
+    if (index < 0 || index >= 30)
+    {
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    if (!isValidSocialLink)
     {
         return;
     }
 
-    if (!datSocialLinkLevelIsNotZero(socialLink))
+    if (index < SOCIAL_LINK_SEES || index >= 30)
     {
-        FUN_005225A8();
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+    K_ASSERT(isValidSocialLink, 1429);
+
+    if (gGlobalWork.heroStatus.socialLinkStat[index] <= 0)
+    {
+        K_ABORT(D_005E3260, 0x620);
         return;
     }
-
-    func_0016e5f0(socialLink, func_0016dd20(socialLink) + 1);
+    base = (s8*)&gGlobalWork + 0x10c;
+    progress = base + (s64)socialLink;
+    *progress += 1;
+    if (*progress < 0)
+    {
+        *progress = 0;
+    }
+    if (*progress >= 10)
+    {
+        *progress = 9;
+    }
 }
 
-// FUN_0016e7a0 NONMATCHING
+// FUN_0016e7a0
 void func_0016e7a0(s16 socialLink, s16 day)
 {
-    if (!func_0016dce0(socialLink))
+    u32 isValidSocialLink;
+
+    if (socialLink < 0 || socialLink >= 30)
+    {
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    if (!isValidSocialLink)
     {
         return;
     }
 
     if (day < 0)
     {
-        day = 0;
+        ((s16*)((u8*)&gGlobalWork + 0x632a))[socialLink] = 0;
+        return;
     }
-    else if (day >= 361)
+    if (day <= 360)
     {
-        day = 360;
+        goto dayInRange;
     }
-    *(s16*)(gGlobalWork.heroStatus.socialLinkData + 0x96 + socialLink * 2) = day;
+    day = 360;
+    ((s16*)((u8*)&gGlobalWork + 0x632a))[socialLink] = day;
+    return;
+
+dayInRange:
+    ((s16*)((u8*)&gGlobalWork + 0x632a))[socialLink] = day;
 }
 
-// FUN_0016e850 NONMATCHING
+// FUN_0016e850
 s16 func_0016e850(s16 socialLink)
 {
+    u32 isValidSocialLink;
+    s16* dayPtr;
     s16 day;
 
-    K_ASSERT(func_0016dce0(socialLink), 1612);
-    day = *(s16*)(gGlobalWork.heroStatus.socialLinkData + 0x96 + socialLink * 2);
-    if (day == 0)
+    if (socialLink < 0 || socialLink >= 30)
+    {
+        isValidSocialLink = false;
+    }
+    else
+    {
+        isValidSocialLink = true;
+    }
+
+    K_ASSERT(isValidSocialLink, 1612);
+    dayPtr = ((s16*)((u8*)&gGlobalWork + 0x632a)) + socialLink;
+    if (*dayPtr == 0)
     {
         return 0;
     }
 
-    day = datGetDaysSinceApr5() - day;
+    day = datGetDaysSinceApr5() - *dayPtr;
     K_ASSERT(day >= 0, 1620);
     return day;
 }
 
-// FUN_0016ea40 NONMATCHING
+// FUN_0016ea40
 s32 func_0016ea40(s32 amount)
 {
     s32 total = amount + gGlobalWork.heroMoney;
 
-    if (total < 10000000)
+    if (total > 9999999)
     {
-        return total < 0 ? -1 : 0;
+        return 1;
     }
-
-    return 1;
+    return -(total < 0);
 }
 
 // FUN_0016ea80 NONMATCHING
@@ -2004,10 +2162,10 @@ u32 func_0016ecd0(void)
     return true;
 }
 
-// FUN_00170620 NONMATCHING
+// FUN_00170620
 u8* func_00170620(s16 pcId, s16 index)
 {
-    return gPcs[pcId].unkData2 + index * 4;
+    return gPcs[pcId - 2].unkData2 + index * 4;
 }
 
 // FUN_00170670
@@ -2165,54 +2323,54 @@ u32 func_00170c00(s16 pcId, s16 index, s16 delta)
     return value;
 }
 
-// FUN_00170d60 NONMATCHING
+// FUN_00170d60
 void* func_00170d60(s16 id)
 {
-    if (id >= 1000)
+    if (id < 1000)
     {
-        return NULL;
+        return D_007CDFE4 + id * 0x28;
     }
-    return D_007CDFE4 + id * 0x28;
+    return NULL;
 }
 
-// FUN_00170da0 NONMATCHING
+// FUN_00170da0
 void* func_00170da0(s16 id)
 {
-    if (id < 1000 || id >= 2000)
+    if (id >= 1000 && id < 2000)
     {
-        return NULL;
+        return D_007CDFDC + (id - 1000) * 0x20;
     }
-    return D_007CDFDC + (id - 1000) * 0x20;
+    return NULL;
 }
 
-// FUN_00170df0 NONMATCHING
+// FUN_00170df0
 void* func_00170df0(s16 id)
 {
-    if (id < 2000 || id >= 3000)
+    if (id >= 2000 && id < 3000)
     {
-        return NULL;
+        return D_007CDFD8 + (id - 2000) * 0x20;
     }
-    return D_007CDFD8 + (id - 2000) * 0x20;
+    return NULL;
 }
 
-// FUN_00170e40 NONMATCHING
+// FUN_00170e40
 void* func_00170e40(s16 id)
 {
-    if (id < 3000 || id >= 4000)
+    if (id >= 3000 && id < 4000)
     {
-        return NULL;
+        return D_007CDFD4 + (id - 3000) * 0x24;
     }
-    return D_007CDFD4 + (id - 3000) * 0x24;
+    return NULL;
 }
 
-// FUN_00170e90 NONMATCHING
+// FUN_00170e90
 void* func_00170e90(s16 id)
 {
-    if (id < 3000)
+    if (id >= 3000)
     {
-        return NULL;
+        return D_007CDFCC + (id - 4000) * 0x1c;
     }
-    return D_007CDFCC + (id - 4000) * 0x1c;
+    return NULL;
 }
 
 // FUN_00170ed0 NONMATCHING
@@ -2320,36 +2478,80 @@ u32 func_00171250(s16 id)
     return 4;
 }
 
-// FUN_001712d0 NONMATCHING
+// FUN_001712d0
 u16 func_001712d0(s16 id)
 {
     s32 category;
     u8* resource = func_00170ed0(id, &category);
 
-    if (resource == NULL)
-    {
-        return 0;
-    }
     if (category == 3)
     {
-        return *(u16*)(resource + 0x16);
+        goto category3;
     }
-    if (category == 2 || category == 1)
+    if (category == 2)
     {
-        return *(u16*)(resource + 0x18);
+        goto category2;
     }
-    if (category == 0)
+    if (category == 1)
     {
-        return *(u16*)(resource + 0x22);
+        goto category1;
     }
+    switch (category)
+    {
+    default:
+        goto invalid;
+    case 0:
+        goto category0;
+    }
+
+category0:
+    return *(u16*)(resource + 0x22);
+category1:
+    return *(u16*)(resource + 0x18);
+category2:
+    return *(u16*)(resource + 0x18);
+category3:
+    return *(u16*)(resource + 0x16);
+invalid:
     return 0;
 }
 
-// FUN_00171390 NONMATCHING
-void func_00171390(u16 flag)
+// FUN_00171390
+void func_00171390(u32 flag)
 {
-    K_ASSERT(dat00171360(flag), 2558);
-    datSetFlag(flag - 0x1188, true);
+    s32 index;
+    u16 eventFlag;
+    u32 valid;
+
+    eventFlag = flag;
+    if (eventFlag < 5000)
+    {
+        valid = false;
+    }
+    else if (eventFlag >= 0x1408)
+    {
+        valid = false;
+    }
+    else
+    {
+        valid = true;
+    }
+    if (!valid)
+    {
+        FUN_0019d3f0((u32)D_005E3098, 0x9fe);
+    }
+
+    index = eventFlag - 0x1188;
+    if (index < 0 || index >= 0x1600)
+    {
+        FUN_0019d3f0((u32)D_005E3098, 0x78d);
+    }
+    if (index == 0x1376)
+    {
+        FUN_005225A8(&gSpecialStatusMessage);
+    }
+    gGlobalWork.flags[((u16)flag - 0x1188) / 32] |=
+        1u << (((u16)flag - 0x1188) % 32);
 }
 
 // FUN_001714b0
@@ -2474,103 +2676,94 @@ void datInitSocialLink()
     memset(&gGlobalWork.heroStatus.activeSocialLink, 0, 0x508);
 }
 
-// FUN_00177280 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_00177280
 s16 datGetAcademicLevel(s16 academicPoint)
 {
     s16 idx;
 
     for (idx = 5; ; idx--)
     {
-        if (academicPoint >= academicLevelThreshold[idx])
+        if (academicLevelThreshold[idx] <= academicPoint)
         {
             return idx + 1;
         }
     }
 }
 
-// FUN_001772f0 NONMATCHING
+// FUN_001772f0
 s16 datGetCharmLevel(s16 charmPoint)
 {
     s16 idx;
 
     for (idx = 5; ; idx--)
     {
-        if (charmPoint >= charmLevelThreshold[idx])
+        if (charmLevelThreshold[idx] <= charmPoint)
         {
             return idx + 1;
         }
     }
 }
 
-// FUN_00177360 NONMATCHING
+// FUN_00177360
 s16 datGetCourageLevel(s16 couragePoint)
 {
     s16 idx;
 
     for (idx = 5; ; idx--)
     {
-        if (couragePoint >= courageLevelThreshold[idx])
+        if (courageLevelThreshold[idx] <= couragePoint)
         {
             return idx + 1;
         }
     }
 }
+#pragma opt_loop_invariants off
 
-// FUN_001773D0 NONMATCHING
-
-
+// FUN_001773D0
 void func_001773d0(void)
-
-
-
 {
-
-  *(u8**)DAT_00833bb0 = 0;
-
-  *(u8**)DAT_00833bd0 = 0;
-
-  *(u8**)DAT_00833bf0 = 0;
-
-  func_00177410(0x7cbfa0,0x7cbfa0);
-
-  return;
-
+    DAT_00830000_a[0x3bb0] = 0;
+    DAT_00830000_b[0x3bd0] = 0;
+    DAT_00830000_c[0x3bf0] = 0;
+    func_00177410(&D_007CBFA0, &D_007CBFA0);
 }
 // FUN_00177410 NONMATCHING
-
-
-void func_00177410(int param_1,int param_2)
-
-
-
+void func_00177410(u8* param_1,u8* param_2)
 {
+    extern void FUN_00521408(void*, s32, u32);
+    s32 iVar1;
+    s8 value1;
+    s8 value2;
+    u8* work;
 
-  int iVar1;
+    FUN_00521408(&gGlobalWork, 0, 0x24);
+    iVar1 = 0;
+    work = (u8*)&gGlobalWork;
 
-  
+    for (; iVar1 < 0x12; iVar1 = iVar1 + 1)
+    {
+        value1 = *(s8*)(param_1 + iVar1);
+        if (value1 == '\0')
+        {
+            break;
+        }
+        *(work + iVar1) = value1;
+    }
 
-  FUN_00521408(0x836200,0,0x24);
+    for (iVar1 = 0; iVar1 < 0x12; iVar1 = iVar1 + 1)
+    {
+        value2 = *(s8*)(param_2 + iVar1);
+        if (value2 == '\0')
+        {
+            break;
+        }
+        DAT_00836212[iVar1] = value2;
+    }
 
-  for (iVar1 = 0; (iVar1 < 0x12 && (*(char *)(param_1 + iVar1) != '\0')); iVar1 = iVar1 + 1) {
-
-    DAT_00836200[iVar1] = *(char *)(param_1 + iVar1);
-
-  }
-
-  for (iVar1 = 0; iVar1 < 0x12; iVar1 = iVar1 + 1) {
-
-    if (*(char *)(param_2 + iVar1) == '\0') break;
-
-    DAT_00836212[iVar1] = *(char *)(param_2 + iVar1);
-
-  }
-
-  func_001774e0();
-
-  return;
-
+    func_001774e0();
 }
-// FUN_001774E0 NONMATCHING
+// FUN_001774E0
 
 
 void func_001774e0(void)
@@ -2579,17 +2772,17 @@ void func_001774e0(void)
 
 {
 
-  FUN_00521408(0x833bb0,0,0x12);
+  FUN_00521408(DAT_00833bb0, 0, 0x12);
 
-  FUN_00521408(0x833bd0,0,0x12);
+  FUN_00521408(DAT_00833bd0, 0, 0x12);
 
-  FUN_00521408(0x833bf0,0,0x24);
+  FUN_00521408(DAT_00833bf0, 0, 0x24);
 
-  FUN_00521250(0x833bb0,0x836200,0x12);
+  FUN_00521250(DAT_00833bb0, &gGlobalWork, 0x12);
 
-  FUN_00521250(0x833bd0,0x836212,0x12);
+  FUN_00521250(DAT_00833bd0, DAT_00836212, 0x12);
 
-  FUN_00523ac8(0x833bf0,0x7cc078,0x833bd0,0x833bb0);
+  FUN_00523ac8(DAT_00833bf0, &DAT_00836200, DAT_00833bd0, DAT_00833bb0);
 
   return;
 
@@ -2865,168 +3058,90 @@ void func_001778b0(u16 param_1)
 // FUN_001779A0 NONMATCHING
 
 
+#pragma opt_loop_invariants on
 void func_001779a0(void)
-
-
-
 {
+    s32 valueSlot;
+    s32 slot;
+    s32 pcIndex;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  for (iVar3 = 0; iVar3 < 10; iVar3 = iVar3 + 1) {
-
-    iVar2 = iVar3 * 0x364 + 0x834010;
-
-    for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-
-      *(u16 *)(iVar2 + iVar1 * 0x14 + 0x130) = 0;
-
+    for (pcIndex = 0; pcIndex < 10; pcIndex++)
+    {
+        for (slot = 0; slot < 4; slot++)
+        {
+            *(u16*)(D_00834010 + pcIndex * sizeof(DatPc) + slot * 0x14 + 0x130) = 0;
+        }
+        for (valueSlot = 0; valueSlot < 4; valueSlot++)
+        {
+            *(u32*)(D_00834010 + pcIndex * sizeof(DatPc) + valueSlot * 4 + 0x110) = 0;
+        }
     }
-
-    for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-
-      *(u32 *)(iVar2 + iVar1 * 4 + 0x110) = 0;
-
-    }
-
-  }
-
-  return;
-
 }
-// FUN_00177A40 NONMATCHING
-
-
+#pragma opt_loop_invariants off
+// FUN_00177A40
 u8 func_00177a40(u32 param_1,int param_2)
 
 
 
 {
 
-  return *(short *)(param_2 * 0x14 + (param_1 & 0xffff) * 0x364 + 0x833a78) != 0;
+  return *(u16 *)(D_00833A78 + (param_1 & 0xffff) * sizeof(DatPc) + param_2 * 0x14) != 0;
 
 }
-// FUN_00177A90 NONMATCHING
+// FUN_00177A90
 
 
-int func_00177a90(u32 param_1,long param_2)
-
-
-
+void* func_00177a90(u16 pcId, s32 index)
 {
+    s32 adjustedPcId;
 
-  int iVar1;
+    adjustedPcId = pcId - 2;
+    if (adjustedPcId < 0 || adjustedPcId >= 10)
+    {
+        FUN_0019d3f0((u32)D_005E3098, 0xf22);
+    }
+    if (index < 0 || index >= 4)
+    {
+        FUN_0019d3f0((u32)D_005E3098, 0xf23);
+    }
 
-  
-
-  iVar1 = (param_1 & 0xffff) - 2;
-
-  if ((iVar1 < 0) || (9 < iVar1)) {
-
-    FUN_0019d3f0(0x5e3098,0xf22);
-
-  }
-
-  if ((param_2 < 0) || (3 < param_2)) {
-
-    FUN_0019d3f0(0x5e3098,0xf23);
-
-  }
-
-  return (int)param_2 * 0x14 + iVar1 * 0x364 + 0x834140;
-
+    return D_00834010 + adjustedPcId * sizeof(DatPc) + index * 0x14 + 0x130;
 }
-// FUN_00177B50 NONMATCHING
-
-
-void func_00177b50(int param_1,int param_2)
-
-
-
+// FUN_00177B50
+void func_00177b50(int param_1, int param_2)
 {
-
-  *(u16 *)(param_2 * 0x14 + param_1 * 0x364 + 0x833a78) = 0;
-
-  return;
-
+    u8* base = DAT_00830000_a + 0x3a78;
+    *(u16*)(base + param_1 * 0x364 + param_2 * 0x14) = 0;
 }
-// FUN_00177B90 NONMATCHING
-
-
-void func_00177b90(u32 param_1,int param_2,int param_3)
-
-
-
+// FUN_00177B90
+void func_00177b90(u32 param_1, int param_2, int param_3)
 {
+    u8* iVar1;
 
-  int iVar1;
-
-  
-
-  iVar1 = ((param_1 & 0xffff) - 2) * 0x364 + 0x834010;
-
-  FUN_00521250(iVar1 + param_2 * 0x14 + 0x130,iVar1 + param_3 * 0x14 + 0x5c,0x14);
-
-  return;
-
+    iVar1 = (u8*)D_00834010 + ((param_1 & 0xffff) - 2) * 0x364;
+    FUN_00521250(iVar1 + param_2 * 0x14 + 0x130,
+                 iVar1 + param_3 * 0x14 + 0x5c, 0x14);
 }
-// FUN_00177C10 NONMATCHING
-
-
-void func_00177c10(int param_1,int param_2)
-
-
-
+// FUN_00177C10
+void func_00177c10(int param_1, int param_2)
 {
-
-  u32 *puVar1;
-
-  
-
-  puVar1 = (u32 *)(param_2 * 4 + (param_1 + -2) * 0x364 + 0x834120);
-
-  *puVar1 = *puVar1 | 1;
-
-  return;
-
+    u8* base = (u8*)D_00834120 + (param_1 - 2) * 0x364;
+    u32* puVar1 = (u32*)(base + param_2 * 4);
+    *puVar1 |= 1;
 }
-// FUN_00177C50 NONMATCHING
-
-
-void func_00177c50(int param_1,int param_2)
-
-
-
+// FUN_00177C50
+void func_00177c50(int param_1, int param_2)
 {
-
-  u32 *puVar1;
-
-  
-
-  puVar1 = (u32 *)(param_2 * 4 + (param_1 + -2) * 0x364 + 0x834120);
-
-  *puVar1 = *puVar1 & 0xfffffffe;
-
-  return;
-
+    u8* base = (u8*)D_00834120 + (param_1 - 2) * 0x364;
+    u32* puVar1 = (u32*)(base + param_2 * 4);
+    *puVar1 &= ~1;
 }
-// FUN_00177CA0 NONMATCHING
-
-
-u32 func_00177ca0(int param_1,int param_2)
-
-
-
+// FUN_00177CA0
+u32 func_00177ca0(int param_1, int param_2)
 {
-
-  return *(u32 *)(param_2 * 4 + (param_1 + -2) * 0x364 + 0x834120) & 1;
-
+    u8* base = (u8*)D_00834120 + (param_1 - 2) * 0x364;
+    u32* puVar1 = (u32*)(base + param_2 * 4);
+    return *puVar1 & 1;
 }
 // FUN_00177ce0
 void dat00177ce0(s32 param_1, u32 param_2)

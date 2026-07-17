@@ -163,22 +163,35 @@ static u32* sflCameraFindNode(u16 id)
 // FUN_0024D4C0 NONMATCHING
 void func_0024d4c0(s32 id)
 {
+    u32* work;
     u32* node;
-    u16 key;
+    u32 key;
 
     K_ASSERT(sSflCamera != NULL, 0x3b);
-    key = (u16)id;
-    node = sflCameraFindNode(key);
-    if (node == NULL) {
-        K_ASSERT(0, 0xaf);
-        return;
+    work = sSflCamera;
+    K_ASSERT(work != NULL, 0x3b);
+    node = (u32*)sSflCamera[1];
+    key = id & 0xffff;
+    while (node != NULL) {
+        switch (*(u16*)((u8*)node + 4) != key) {
+        case 0:
+            goto found;
+        default:
+            node = (u32*)node[3];
+            break;
+        }
     }
-    *(u16*)((u8*)sSflCamera + 0xc) = key;
-    *sSflCamera |= 2;
-    if (node[0xb] == 1) {
+    K_ASSERT(0, 0xaf);
+    node = NULL;
+found:
+    *(u16*)((u8*)work + 0xc) = (u16)id;
+    *work |= 2;
+    switch (node[0xb]) {
+    case 1:
         gcPose0024f090((u8*)node + 0xa8);
-        gcPose002503f0((u8*)node + 0x44, 0, node[0xd]);
+        gcPose002503f0(node + 0x11, 0, node[0xd]);
         gcPose0024f090((u8*)node + 0x44);
+        break;
     }
 }
 
@@ -191,7 +204,6 @@ void func_0024d5e0(void* node)
     RwV3d right;
     void* matrix;
 
-    K_ASSERT(node != NULL, 0xd0);
     K_ASSERT(*(u32*)((u8*)node + 0x2c) != 0, 0xd0);
     matrix = func_004c38c0();
     if (matrix == NULL) {
@@ -255,12 +267,11 @@ void func_0024d7d0(void* camera, const RwV3d* position)
     func_004cb750(matrix, (u8*)position + 0x20, 2);
 }
 
-// FUN_0024D8D0 NONMATCHING
+// FUN_0024D8D0
 void func_0024d8d0(void* camera)
 {
     u8* work;
 
-    K_ASSERT(camera != NULL, 0x5d);
     work = (u8*)camera;
     *(u32*)(work + 0x2c) = 1;
     *(u32*)(work + 0x30) = 1;
@@ -271,10 +282,9 @@ void func_0024d8d0(void* camera)
     func_0024da60(work + 0x44);
 }
 
-// FUN_0024DA00 NONMATCHING
+// FUN_0024DA00
 void func_0024da00(u32* work)
 {
-    K_ASSERT(work != NULL, 0x5d);
     work[0] = 0;
     work[1] = 0;
     sSflCameraNodes = work;
@@ -287,21 +297,19 @@ void func_0024da20(void)
     sSflCameraNodes = NULL;
 }
 
-// FUN_0024DA60 NONMATCHING
+// FUN_0024DA60
 void func_0024da60(void* camera)
 {
     u32* list;
-    u32* tail;
 
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     list = sSflCameraNodes;
     *(u32*)((u8*)camera + 8) = 0;
     *(u32*)((u8*)camera + 0x10) = 0;
     if (list[0] != 0) {
-        tail = (u32*)list[1];
         *(u32*)((u8*)camera + 0) = list[1];
         *(u32*)((u8*)camera + 4) = 0;
-        tail[1] = (u32)camera;
+        ((u32*)list[1])[1] = (u32)camera;
         list[1] = (u32)camera;
     } else {
         *(u32*)((u8*)camera + 4) = 0;
@@ -311,32 +319,31 @@ void func_0024da60(void* camera)
     }
 }
 
-// FUN_0024DAF0 NONMATCHING
-void func_0024daf0(void* camera)
+// FUN_0024DAF0
+void func_0024daf0(u32* camera)
 {
     u32* list;
-    u32* next;
-    u32* prev;
+    u32* link;
 
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     list = sSflCameraNodes;
-    next = (u32*)*(u32*)((u8*)camera + 0);
-    prev = (u32*)*(u32*)((u8*)camera + 4);
-    if (prev != NULL) {
-        prev[0] = (u32)next;
+    link = (u32*)camera[1];
+    if (link != NULL) {
+        link[0] = camera[0];
     }
-    if (next != NULL) {
-        next[1] = (u32)prev;
+    link = (u32*)camera[0];
+    if (link != NULL) {
+        link[1] = camera[1];
     }
-    if ((u32*)list[0] == camera) {
-        list[0] = (u32)next;
+    if (camera == (u32*)list[0]) {
+        list[0] = camera[1];
     }
-    if ((u32*)list[1] == camera) {
-        list[1] = (u32)prev;
+    if (camera == (u32*)list[1]) {
+        list[1] = camera[0];
     }
 }
 
-// FUN_0024DB90 NONMATCHING
+// FUN_0024DB90
 void func_0024db90(void)
 {
     u32* camera;
@@ -344,21 +351,23 @@ void func_0024db90(void)
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     camera = (u32*)sSflCameraNodes[0];
     while (camera != NULL) {
-        if ((camera[2] & 1u) == 0) {
+        if ((~camera[2] & 1u) == 0) {
             bpTut00251010(camera, 0x10000);
         }
         camera = (u32*)camera[1];
     }
 }
 
-// FUN_0024DC10 NONMATCHING
+// FUN_0024DC10
 void func_0024dc10(void)
 {
     u32* camera;
+    u32* list;
 
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
-    sSflCameraNodes[0x82] = 0;
-    camera = (u32*)sSflCameraNodes[0];
+    list = sSflCameraNodes;
+    list[0x82] = 0;
+    camera = (u32*)list[0];
     while (camera != NULL) {
         func_0024dc90(camera);
         camera = (u32*)camera[1];

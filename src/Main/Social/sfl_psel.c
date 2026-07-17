@@ -17,7 +17,8 @@ extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
 extern void RpSkyRenderStateSet(u32, void*);
 extern float fGpffff8300;
-extern f32 D_00960088;
+extern char D_00960088[];
+extern u32 uGpffffb948;
 extern u16 DAT_007e0952;
 extern u32 func_00173220(u16 id);
 extern u32 func_00173280(u16 id);
@@ -40,9 +41,9 @@ extern void func_00238980(void* destination, s32 count, u32 value, s32 mode);
 extern void* func_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* origin);
 extern u32 func_00239140(s32 font);
 extern void func_0024a260(u32* state);
-extern u32 func_003b0970(u32 resource, s32 mode, s32 group, s32 a, s32 b);
+extern u32 func_003b0970(u32 resource, s32 mode, s8 group, s32 a, s32 b);
 extern void func_003b0d70(u32 resource, s32 x, s32 y);
-extern void func_003b0e54(u32 resource, u32 value);
+extern void func_003b0e20(u32 resource, u32 color);
 extern void func_003b0e70(s32 mode);
 extern void func_003b0e90(s32 mode);
 extern void func_003b1360(u32 resource, s32 mode, s32 value);
@@ -64,6 +65,7 @@ extern u32 func_0027c020(void);
 extern void func_00523ac8(char* destination, const char* format, ...);
 extern s32 func_00524388(const char* text);
 extern void func_0019d3f0(const char* file, s32 line);
+extern char D_0068e228[];
 extern void func_003c74e0(u32 value);
 
 typedef void (*SflPselStateCallback)(u32 state, u32 value);
@@ -249,7 +251,7 @@ void sflPsel00260970(u8* work)
     sSflPsel = (u32*)work;
 }
 
-// FUN_00260d20 NONMATCHING
+// FUN_00260D20
 void sflPsel00260d20(void)
 {
     u32* work;
@@ -259,19 +261,20 @@ void sflPsel00260d20(void)
     if (((~*work) & 1) != 0)
         return;
 
-    if (work[1] == 1)
+    switch (work[1])
     {
+    case 0:
         if ((s32)work[2] < 10)
             work[2] += 1;
         else
             *work &= ~2u;
-    }
-    if (work[1] == 0)
-    {
+        break;
+    case 1:
         if ((s32)work[2] < 10)
             work[2] += 1;
         else
             *work &= ~2u;
+        break;
     }
     FUN_00261480();
 }
@@ -1139,18 +1142,21 @@ void func_00215fc0(void)
     }
     func_00217780();
 }
-// FUN_00216800 NONMATCHING
+// FUN_00216800
 void func_00216800(void)
 {
+    u32* work;
+
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    K_ASSERT((*sSflPsel & 1) != 0, 0x2af);
+    work = sSflPsel;
+    K_ASSERT((*work & 1) != 0, 0x2af);
     sflPsel00260bd0();
     func_002172c0();
-    if ((*sSflPsel & 8) != 0)
+    if ((*work & 8) != 0)
     {
         func_00219b00();
     }
-    *sSflPsel &= ~1u;
+    *work &= ~1u;
 }
 
 // FUN_002168A0
@@ -1241,40 +1247,47 @@ void func_002168f0(void)
     }
 }
 
-// FUN_002170C0 NONMATCHING
+// FUN_002170C0
 void func_002170c0(void)
 {
     u8* work;
-    u32 i;
+    s32 i;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
     func_003b0e70(1);
     func_003b0e90(2);
-    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
         u32 listIndex = i + *(u32*)(work + 0x5c60);
         u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
         u8* entry = work + 0x10 + entryIndex * 0x10;
+        u8* panel = work + 0x150 + i * 0x910;
+        s32 group;
         u32 handle;
-        u32 color;
 
+        if (*(u32*)(work + 0x5c68) == listIndex)
+            group = 6;
+        else
+            group = 0;
+        uGpffffb948 = 0x78;
         handle = func_003b0970(func_00173220(*(u16*)(entry + 4)), 1,
-                               *(u32*)(work + 0x5c68) == listIndex ? 6 : 0,
-                               0, 0);
-        func_003b2c60(handle, D_00960088 - func_0021ea00(0x28));
-        *(u32*)(work + 0xa50 + i * 0x910) = handle;
-        (void)color;
+                               group, 0, 0);
+        uGpffffb948 = 0;
+        func_003b2c60(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
+        *(u32*)(panel + 0x900) = handle;
     }
     func_003b0e90(1);
     func_003b0e70(2);
-    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
-        u32 handle = *(u32*)(work + 0xa50 + i * 0x910);
-        func_003b0d70(handle, 0x1220, (s32)(i * 0x21 + 0x5d) * 8);
-        func_003b0e54(handle,
-                      *(u32*)(work + 0x5c68) == i + *(u32*)(work + 0x5c60) ?
-                          0xffffffffu : 0x64648cffu);
+        u8* panel = work + 0x150 + i * 0x910;
+        func_003b0d70(*(u32*)(panel + 0x900), 0x1220,
+                      (s32)(i * 0x21 + 0x5d) * 8);
+        func_003b0e20(
+            *(u32*)(panel + 0x900),
+            *(u32*)(work + 0x5c68) == i + *(u32*)(work + 0x5c60) ?
+                0xffffffffu : 0x64648cffu);
     }
 }
 
@@ -1292,15 +1305,23 @@ void func_002172c0(void)
     }
 }
 
-// FUN_00217350 NONMATCHING
+// FUN_00217350
 void func_00217350(void)
 {
+    u8* work;
+    s32 i;
+
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    func_002172c0();
+    K_ASSERT(sSflPsel != NULL, 0xcb);
+    work = (u8*)sSflPsel;
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
+    {
+        func_003b0170(*(u32*)(work + 0xa50 + i * 0x910));
+    }
     func_002170c0();
 }
 
-// FUN_00217410 NONMATCHING
+// FUN_00217410
 void func_00217410(u16* ids, s32* count)
 {
     u8* work;
@@ -1314,7 +1335,7 @@ void func_00217410(u16* ids, s32* count)
     {
         u8* entry = work + 0x10 + i * 0x10;
         u32 flags = *(u32*)entry;
-        if ((flags & 2) != 0 && (flags & 1) == 0)
+        if (!(~flags & 2) && !(flags & 1))
         {
             ids[output++] = *(u16*)(entry + 4);
         }
@@ -1322,7 +1343,7 @@ void func_00217410(u16* ids, s32* count)
     *count = output;
 }
 
-// FUN_002174D0 NONMATCHING
+// FUN_002174D0
 void func_002174d0(u16* ids, s32* count)
 {
     u8* work;
@@ -1336,7 +1357,7 @@ void func_002174d0(u16* ids, s32* count)
     {
         u8* entry = work + 0x10 + i * 0x10;
         u32 flags = *(u32*)entry;
-        if ((flags & 2) == 0 && (flags & 1) != 0)
+        if (!(flags & 2) && !(~flags & 1))
         {
             ids[output++] = *(u16*)(entry + 4);
         }
@@ -1359,16 +1380,16 @@ void func_00217590(u16 id)
     (*(u32*)(work + 4))++;
 }
 
-// FUN_00217610 NONMATCHING
+// FUN_00217610
 void func_00217610(void)
 {
     u8* work;
-    u32 i;
+    s32 i;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
     (void)sflRes0020ec50();
-    for (i = 0; i < *(u32*)(work + 0xc); i++)
+    for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
         u32 listIndex = i + *(u32*)(work + 0x5c60);
         u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
@@ -1376,12 +1397,12 @@ void func_00217610(void)
                       (u32*)(work + 0x10 + entryIndex * 0x10),
                       *(u32*)(work + 0x5c68) == listIndex);
     }
-    func_00218250(work + 0x5840, 2);
+    func_00218250(work + 0x5840, 2, *(u32*)(work + 0x5330) + 1);
     for (i = 0; i < 2; i++)
     {
         func_0021eac0(work + 0x5840 + i * 0x100, func_0021ea00(0x28));
     }
-    func_00218250(work + 0x5a40, 2);
+    func_00218250(work + 0x5a40, 2, *(u32*)(work + 8));
     for (i = 0; i < 2; i++)
     {
         func_0021eac0(work + 0x5a40 + i * 0x100, func_0021ea00(0x28));
@@ -1528,14 +1549,13 @@ void func_00217780(void)
     func_0021d950(work + 0x5e90, color);
 }
 
-// FUN_002180B0 NONMATCHING
+// FUN_002180B0
 u32 func_002180b0(u32 value)
 {
     u32 texture;
     u32 frame;
 
     texture = sflRes0020ec50();
-    frame = 0;
     switch (value)
     {
     case 1: frame = 10; break;
@@ -1561,20 +1581,20 @@ u32 func_002180b0(u32 value)
     case 0x15: frame = 8; break;
     case 0x16: frame = 9; break;
     default:
-        K_ASSERT(0, 0x604);
+        func_0019d3f0(D_0068e228, 0x604);
         break;
     }
     return func_0021cca0(texture, frame);
 }
 
-// FUN_00218250 NONMATCHING
-void func_00218250(void* glyphs, s32 capacity)
+// FUN_00218250
+void func_00218250(void* glyphs, s32 capacity, u32 value)
 {
-    char text[257];
+    char text[256];
     s32 length;
     s32 i;
 
-    func_00523ac8(text, (const char*)0x7cc424);
+    func_00523ac8(text, (const char*)((u8*)&DAT_007ce420 - 0x1ffc));
     length = func_00524388(text);
     if (capacity < length)
     {
@@ -1582,7 +1602,7 @@ void func_00218250(void* glyphs, s32 capacity)
     }
     for (i = 0; i < length; i++)
     {
-        func_00218310((u8*)glyphs + i * 0x100, (u8)text[length - 1 - i] - 0x30);
+        func_00218310((u8*)glyphs + i * 0x100, (s8)text[length - 1 - i] - 0x30);
     }
 }
 
@@ -1592,127 +1612,147 @@ void func_00218310(void* glyph, s32 digit)
     func_0021d3b0(glyph, func_0021cca0(sflRes0020ec50(), digit + 0x27));
 }
 
-// FUN_00218370 NONMATCHING
+// FUN_00218370
 void func_00218370(void* glyphs, s32 capacity, u32 value, const f32* origin)
 {
-    char text[256];
-    s32 length;
     s32 i;
-    s32 totalSpacing;
-    s32 maxSpacing;
-    s32 center;
+    s32 length;
+    s32 halfCapacity;
+    s32 halfLength;
     f32 rect[4];
+    char text[256];
     u32 texture;
 
     texture = sflRes0020ec50();
-    func_00523ac8(text, (const char*)0x7cc424, value);
+    func_00523ac8(text, (const char*)((u8*)&DAT_007ce420 - 0x1ffc), value);
     length = func_00524388(text);
     if (capacity < length)
     {
         K_ASSERT(0, 0x62c);
     }
-    totalSpacing = capacity * 0x1b;
-    maxSpacing = length * 0x1b;
-    center = (totalSpacing / 2) - (maxSpacing / 2);
-    for (i = 0; i < length; i++)
+    i = 0;
+    halfCapacity = (capacity * 0x1b) / 2;
+    halfLength = (length * 0x1b) / 2;
+    for (; i < length; i++)
     {
         u8* frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x27);
-        rect[0] = (f32)center + origin[0] + (f32)((length - 1 - i) * 0x1b);
+        rect[0] = origin[0] + (f32)((length - 1 - i) * 0x1b) +
+                  (f32)halfCapacity - (f32)halfLength;
         rect[1] = origin[1];
         rect[2] = (f32)*(s32*)(frame + 0xc);
         rect[3] = (f32)*(s32*)(frame + 0x10);
         func_0021d8e0((u8*)glyphs + i * 0x100, rect);
     }
-    for (; i < capacity; i++)
+    for (; length < capacity; length++)
     {
         rect[0] = origin[0];
         rect[1] = origin[1];
         rect[2] = 0.0f;
         rect[3] = 0.0f;
-        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+        func_0021d8e0((u8*)glyphs + length * 0x100, rect);
     }
 }
 
-// FUN_00218570 NONMATCHING
+// FUN_00218570
 void func_00218570(void* glyphs, s32 capacity, u32 value, const f32* origin)
 {
-    char text[256];
-    s32 length;
     s32 i;
-    s32 totalSpacing;
-    s32 maxSpacing;
-    s32 center;
+    s32 length;
+    s32 halfCapacity;
+    s32 halfLength;
     f32 rect[4];
+    char text[256];
     u8* frame;
     u32 texture;
 
     texture = sflRes0020ec50();
-    func_00523ac8(text, (const char*)0x7cc424, value);
+    func_00523ac8(text, (const char*)((u8*)&DAT_007ce420 - 0x1ffc), value);
     length = func_00524388(text);
     if (capacity < length)
     {
         K_ASSERT(0, 0x64d);
     }
-    totalSpacing = capacity * 0x13;
-    maxSpacing = length * 0x13;
-    center = (totalSpacing / 2) - (maxSpacing / 2);
-    for (i = 0; i < length; i++)
+    i = 0;
+    halfCapacity = (capacity * 0x13) / 2;
+    halfLength = (length * 0x13) / 2;
+    for (; i < length; i++)
     {
         frame = (u8*)(uintptr_t)func_0021cca0(texture, 0x27);
-        rect[0] = (f32)center + origin[0] + (f32)((length - 1 - i) * 0x13);
+        rect[0] = origin[0] + (f32)((length - 1 - i) * 0x13) +
+                  (f32)halfCapacity - (f32)halfLength;
         rect[1] = origin[1];
         rect[2] = (f32)((*(s32*)(frame + 0xc) * 0x49) / 100);
         rect[3] = (f32)((*(s32*)(frame + 0x10) * 0x49) / 100);
         func_0021d8e0((u8*)glyphs + i * 0x100, rect);
     }
-    for (; i < capacity; i++)
+    for (; length < capacity; length++)
     {
         rect[0] = origin[0];
         rect[1] = origin[1];
         rect[2] = 0.0f;
         rect[3] = 0.0f;
-        func_0021d8e0((u8*)glyphs + i * 0x100, rect);
+        func_0021d8e0((u8*)glyphs + length * 0x100, rect);
     }
 }
 
-// FUN_002187B0 NONMATCHING
+// FUN_002187B0
 void func_002187b0(void)
 {
+    u32* work;
+
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    *(u32*)((u8*)sSflPsel + 0x5c44) = 0;
-    *(u32*)((u8*)sSflPsel + 0x5c48) = 1;
-    *sSflPsel |= 4;
+    work = sSflPsel;
+    *(u32*)((u8*)work + 0x5c44) = 0;
+    *(u32*)((u8*)work + 0x5c48) = 1;
+    *work |= 4;
 }
 
-// FUN_00218810 NONMATCHING
+// FUN_00218810
 void func_00218810(void* panel, const u32* entry, s32 selected)
 {
     u8* destination;
     u32 texture;
+    u32 frameIndex;
     u32 frame;
     u32 value;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     destination = (u8*)panel;
     texture = sflRes0020ec50();
-    if (selected == 0)
+    if (selected != 0)
     {
-        frame = (*entry & 2) == 0 ? 0x21 : 0x23;
-        value = (*entry & 2) == 0 ? 0x22 : 0x24;
+        frameIndex = 0x1b;
+        value = 0x1c;
+    }
+    else if ((*entry & 2) != 0)
+    {
+        frameIndex = 0x23;
+        value = 0x24;
     }
     else
     {
-        frame = 0x1b;
-        value = 0x1c;
+        frameIndex = 0x21;
+        value = 0x22;
     }
-    func_0021d3b0(destination, func_0021cca0(texture, frame));
+    frame = func_0021cca0(texture, frameIndex);
+    func_0021d3b0(destination, frame);
     func_0021eac0(destination, func_0021ea00(0x28));
-    func_0021e380(destination + 0x100, func_0021cca0(texture, frame), 1);
+    func_0021e380(destination + 0x100, frame, 1);
     func_0021eac0(destination + 0x100, func_0021ea00(0x28));
     func_0021d3b0(destination + 0x200, func_0021cca0(texture, value));
     func_0021eac0(destination + 0x200, func_0021ea00(0x28));
-    frame = selected != 0 ? 0x1a : ((*entry & 2) == 0 ? 0x18 : 0x3b);
-    func_0021d3b0(destination + 0x300, func_0021cca0(texture, frame));
+    if (selected != 0)
+    {
+        if ((*entry & 2) != 0)
+            frameIndex = 0x3b;
+        else
+            frameIndex = 0x18;
+    }
+    else
+    {
+        frameIndex = 0x17;
+    }
+    func_0021d3b0(destination + 0x300, func_0021cca0(texture, frameIndex));
     func_0021eac0(destination + 0x300, func_0021ea00(0x28));
     func_0021d3b0(destination + 0x400, func_002180b0(entry[2]));
     func_0021eac0(destination + 0x400, func_0021ea00(0x28));
@@ -1721,8 +1761,8 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
         func_0021d3b0(destination + 0x500, func_0021cca0(texture, 0x25));
         func_0021eac0(destination + 0x500, func_0021ea00(0x28));
     }
-    frame = selected != 0 ? 0x1a : 0x19;
-    func_0021d3b0(destination + 0x600, func_0021cca0(texture, frame));
+    frameIndex = selected != 0 ? 0x1a : 0x19;
+    func_0021d3b0(destination + 0x600, func_0021cca0(texture, frameIndex));
     func_0021eac0(destination + 0x600, func_0021ea00(0x28));
     func_00238980(destination + 0x700, 2, entry[3], selected != 0 ? 1 : 2);
     func_0021eac0(destination + 0x700, func_0021ea00(0x28));
@@ -1911,61 +1951,80 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     func_003b1360(*(u32*)(destination + 0x900), 1, 0);
 }
 
-// FUN_00219970 NONMATCHING
+// FUN_00219970
 void func_00219970(void)
 {
     u8* work;
     u32 listIndex;
+    u32 listOffset;
     u8* entry;
     u32 handle;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
     listIndex = *(u32*)(work + 0x5c68);
-    *(u32*)(work + 0x5c58) = *(u32*)(work + 0x52e0 + listIndex * 4);
+    listOffset = listIndex * 4;
+    entry = (u8*)(listOffset + (u32)work);
+    *(u32*)(work + 0x5c58) = *(u32*)(entry + 0x52e0);
     entry = work + 0x10 + *(u32*)(work + 0x5c58) * 0x10;
     func_003b0e70(1);
     func_003b0e90(2);
-    handle = func_003b0970(func_00173220(*(u16*)(entry + 4)), 1, 0, 0, 0);
+    uGpffffb948 = 0x78;
+    handle = func_003b0970(
+        func_00173220(*(u16*)(entry + 4)),
+        1, 0, 0, 0);
+    uGpffffb948 = 0;
     func_003b0e90(1);
     func_003b0e70(2);
-    func_003b2c60(handle, D_00960088 - func_0021ea00(0x28));
+    func_003b2c60(handle, *(f32*)D_00960088 - func_0021ea00(0x28));
     *(u32*)(work + 0x52d0) = handle;
-    func_00218810(work + 0x49d0, (u32*)entry, 0);
+    func_00218810(work + 0x49d0,
+                  (u32*)(work + 0x10 + *(u32*)(work + 0x5c58) * 0x10), 0);
     *(u32*)(work + 0x5c50) = 0;
     *(u32*)(work + 0x5c54) = 1;
-    *sSflPsel |= 0x10;
-    *sSflPsel |= 8;
+    *(u32*)work |= 0x10;
+    *(u32*)work |= 8;
 }
 
-// FUN_00219AB0 NONMATCHING
+// FUN_00219AB0
 void func_00219ab0(void)
 {
+    u32* work;
+
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    *(u32*)((u8*)sSflPsel + 0x5c50) = 0;
-    *(u32*)((u8*)sSflPsel + 0x5c54) = 0;
-    *sSflPsel |= 0x10;
+    work = sSflPsel;
+    *(u32*)((u8*)work + 0x5c50) = 0;
+    *(u32*)((u8*)work + 0x5c54) = 0;
+    *work |= 0x10;
 }
 
-// FUN_00219B00 NONMATCHING
+// FUN_00219B00
 void func_00219b00(void)
 {
+    u32* work;
+
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    K_ASSERT((*sSflPsel & 8) != 0, 0x81b);
-    func_003b0170(*(u32*)((u8*)sSflPsel + 0x52d0));
-    *sSflPsel &= ~8u;
+    work = sSflPsel;
+    K_ASSERT((*work & 8) != 0, 0x81b);
+    func_003b0170(*(u32*)((u8*)work + 0x52d0));
+    *work &= ~8u;
 }
 
-// FUN_00219B90 NONMATCHING
+// FUN_00219B90
 void func_00219b90(void)
 {
     u8* work;
+    u32 listIndex;
+    u32 entryOffset;
     u8* entry;
+    u8* resetWork;
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
-    entry = work + 0x10 + *(u32*)(work + 0x52e0 +
-                                   *(u32*)(work + 0x5c68) * 4) * 0x10;
+    listIndex = *(u32*)(work + 0x5c68);
+    entryOffset = listIndex * 4;
+    entry = (u8*)(entryOffset + (u32)work);
+    entry = work + 0x10 + *(u32*)(entry + 0x52e0) * 0x10;
     if ((*(u32*)entry & 4) != 0)
     {
         func_003c7430(0x31);
@@ -1975,9 +2034,11 @@ void func_00219b90(void)
     {
         func_003c7430(0x2e);
         func_003c74e0(0x30);
-        *(u32*)(work + 0x5c44) = 0;
-        *(u32*)(work + 0x5c48) = 0;
-        *sSflPsel |= 4;
+        K_ASSERT(sSflPsel != NULL, 0xcb);
+        resetWork = (u8*)sSflPsel;
+        *(u32*)(resetWork + 0x5c44) = 0;
+        *(u32*)(resetWork + 0x5c48) = 0;
+        *(u32*)resetWork |= 4;
         func_00219970();
         *(u32*)(work + 0x5334) = 1;
     }

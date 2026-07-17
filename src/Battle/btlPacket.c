@@ -117,131 +117,200 @@ void btlPacket0027e4d0()
         }
     }
 }
-// FUN_0027e530 NONMATCHING
-u32 btlPacketCheckWaitCondition(BtlPacketWaitCondition* condition, s32 frameCount)
+#pragma opt_loop_invariants on
+static inline BtlPacket* btlPacketFindWaitTarget(u64 value, u32 useActionUid)
 {
     BtlPacket* packet;
     u32 i;
-    u32 found;
+    u64 uid;
 
+    for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+    {
+        for (packet = gBtl->packetLists[i].head; packet != NULL; packet = packet->next)
+        {
+            uid = useActionUid ? packet->actionUID : packet->uid;
+            if (value == (uid & 0x3fffffffffffffffULL) &&
+                (packet->unk_47 & BTLPACKET_FLAG_WAIT_TARGET))
+            {
+                return packet;
+            }
+        }
+    }
+    return NULL;
+}
+
+static inline BtlPacket* btlPacketFindWaitTargetById(u16 id)
+{
+    BtlPacket* packet;
+    u32 i;
+
+    for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+    {
+        for (packet = gBtl->packetLists[i].head; packet != NULL; packet = packet->next)
+        {
+            if (*(u16*)&packet->id == id &&
+                (packet->unk_47 & BTLPACKET_FLAG_WAIT_TARGET))
+            {
+                return packet;
+            }
+        }
+    }
+    return NULL;
+}
+
+// FUN_0027e530
+u32 btlPacketCheckWaitCondition(BtlPacketWaitCondition* condition, s32 frameCount)
+{
+    BtlPacket* packet;
+    u32 result;
+
+    result = 0;
     switch (condition->type)
     {
     case BTLPACKET_WAIT_ALWAYS:
-        return true;
+        result = 1;
+        break;
 
     case BTLPACKET_WAIT_FRAME_REACHED:
-        return (s32)condition->value <= frameCount;
+    {
+        s32 value;
+
+        value = (s32)condition->value;
+        if (value > frameCount)
+        {
+            break;
+        }
+        result = 1;
+        break;
+    }
 
     case BTLPACKET_WAIT_PACKET_UID_EXISTS:
+        packet = btlPacketFindWaitTarget(condition->value, 0);
+        if (packet == NULL)
+        {
+            break;
+        }
+        result = 1;
+        break;
+
     case BTLPACKET_WAIT_PACKET_UID_ABSENT:
+        packet = btlPacketFindWaitTarget(condition->value, 0);
+        if (packet != NULL)
+        {
+            break;
+        }
+        result = 1;
+        break;
+
     case BTLPACKET_WAIT_PACKET_UID_UPDATING:
+        result = 1;
+        packet = btlPacketFindWaitTarget(condition->value, 0);
+        if (packet == NULL)
+        {
+            break;
+        }
+        if (packet->unk_45 == BTLPACKET_STATE_UPDATE)
+        {
+            break;
+        }
+        result = 0;
+        break;
+
     case BTLPACKET_WAIT_ACTION_UID_EXISTS:
+        packet = btlPacketFindWaitTarget(condition->value, 1);
+        if (packet == NULL)
+        {
+            break;
+        }
+        result = 1;
+        break;
+
     case BTLPACKET_WAIT_ACTION_UID_ABSENT:
+        packet = btlPacketFindWaitTarget(condition->value, 1);
+        if (packet != NULL)
+        {
+            break;
+        }
+        result = 1;
+        break;
+
     case BTLPACKET_WAIT_ACTION_UID_UPDATING:
-    {
-        u32 useActionUid;
-
-        useActionUid = condition->type >= BTLPACKET_WAIT_ACTION_UID_EXISTS;
-        found = false;
-        for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+        result = 1;
+        packet = btlPacketFindWaitTarget(condition->value, 1);
+        if (packet == NULL)
         {
-            packet = gBtl->packetLists[i].head;
-            while (packet != NULL)
-            {
-                u64 value;
-
-                value = useActionUid ? packet->actionUID : packet->parentUID;
-                if (condition->value == (value & 0x3fffffffffffffffULL) &&
-                    (packet->unk_47 & BTLPACKET_FLAG_WAIT_TARGET))
-                {
-                    found = true;
-                    if (condition->type == BTLPACKET_WAIT_PACKET_UID_UPDATING ||
-                        condition->type == BTLPACKET_WAIT_ACTION_UID_UPDATING)
-                    {
-                        return packet->unk_45 == BTLPACKET_STATE_UPDATE;
-                    }
-                    break;
-                }
-                packet = packet->next;
-            }
-            if (found)
-            {
-                break;
-            }
+            break;
         }
-
-        if (condition->type == BTLPACKET_WAIT_PACKET_UID_ABSENT ||
-            condition->type == BTLPACKET_WAIT_ACTION_UID_ABSENT)
+        if (packet->unk_45 == BTLPACKET_STATE_UPDATE)
         {
-            return !found;
+            break;
         }
-        if (condition->type == BTLPACKET_WAIT_PACKET_UID_UPDATING ||
-            condition->type == BTLPACKET_WAIT_ACTION_UID_UPDATING)
-        {
-            return !found;
-        }
-        return found;
-    }
+        result = 0;
+        break;
 
     case BTLPACKET_WAIT_ID_EXISTS:
-    case BTLPACKET_WAIT_ID_ABSENT:
-        found = false;
-        for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+        packet = btlPacketFindWaitTargetById((u16)condition->value);
+        if (packet == NULL)
         {
-            packet = gBtl->packetLists[i].head;
-            while (packet != NULL)
-            {
-                if (packet->id == ((u16)condition->value) &&
-                    (packet->unk_47 & BTLPACKET_FLAG_WAIT_TARGET))
-                {
-                    found = true;
-                    break;
-                }
-                packet = packet->next;
-            }
-            if (found)
-            {
-                break;
-            }
+            break;
         }
-        return condition->type == BTLPACKET_WAIT_ID_ABSENT ? !found : found;
+        result = 1;
+        break;
+
+    case BTLPACKET_WAIT_ID_ABSENT:
+        packet = btlPacketFindWaitTargetById((u16)condition->value);
+        if (packet != NULL)
+        {
+            break;
+        }
+        result = 1;
+        break;
 
     case BTLPACKET_WAIT_PACKET_UID_CALLBACK:
+    {
+        BtlPacketConditionFunc callback;
+
+        result = 1;
+        packet = btlPacketFindWaitTarget(condition->value, 0);
+        if (packet == NULL)
+        {
+            break;
+        }
+        callback = packet->unk_74;
+        if (callback != NULL)
+        {
+            result = callback(packet->workData);
+            break;
+        }
+        result = 0;
+        break;
+    }
+
     case BTLPACKET_WAIT_ACTION_UID_CALLBACK:
     {
-        u32 useActionUid;
+        BtlPacketConditionFunc callback;
 
-        useActionUid = condition->type == BTLPACKET_WAIT_ACTION_UID_CALLBACK;
-        for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+        result = 1;
+        packet = btlPacketFindWaitTarget(condition->value, 1);
+        if (packet == NULL)
         {
-            packet = gBtl->packetLists[i].head;
-            while (packet != NULL)
-            {
-                u64 value;
-
-                value = useActionUid ? packet->actionUID : packet->parentUID;
-                if (condition->value == (value & 0x3fffffffffffffffULL) &&
-                    (packet->unk_47 & BTLPACKET_FLAG_WAIT_TARGET))
-                {
-                    if (packet->unk_74 == NULL)
-                    {
-                        return false;
-                    }
-                    return packet->unk_74(packet->workData);
-                }
-                packet = packet->next;
-            }
+            break;
         }
-        return true;
+        callback = packet->unk_74;
+        if (callback != NULL)
+        {
+            result = callback(packet->workData);
+            break;
+        }
+        result = 0;
+        break;
     }
-
-    default:
-        return false;
     }
+    return result;
 }
-
-
-// FUN_0027ec10 NONMATCHING
+#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
+// FUN_0027ec10
 BtlPacket* btlPacketCreate(u32 id, s32 workDataSize)
 {
     BtlPacket* packet;
@@ -261,7 +330,6 @@ BtlPacket* btlPacketCreate(u32 id, s32 workDataSize)
     {
         ((BtlPacket*)((BtlPacketWaitCondition*)packet + i))->postUpdateWaits[0].type = BTLPACKET_WAIT_ALWAYS;
     }
-
     if (workDataSize > 0)
     {
         packet->workData = (u8*)packet + sizeof(BtlPacket);
@@ -273,6 +341,7 @@ BtlPacket* btlPacketCreate(u32 id, s32 workDataSize)
 
     return packet;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0027ed20
 u64 btlPacketRegister(BtlPacket* packet, u8 type)
@@ -310,11 +379,12 @@ void btlPacket0027edf0()
 }
 
 
-// FUN_0027ee00 NONMATCHING
+// FUN_0027ee00
 void btlPacketUpdate(BtlPacket* packet)
 {
     s32 frameCount;
     u16 i;
+    u32 result;
 
     if (packet->unk_46 == 0 && (packet->unk_47 & BTLPACKET_FLAG_REGISTERED))
     {
@@ -368,27 +438,39 @@ void btlPacketUpdate(BtlPacket* packet)
             {
                 goto preUpdateDelay;
             }
-            if (packet->unk_45 != BTLPACKET_STATE_PRE_UPDATE_CONDITIONS)
+            switch (packet->unk_45)
             {
-                goto done;
-            }
-
-            for (i = 0; i < 2; i++)
-            {
-                if (!btlPacketCheckWaitCondition(&((BtlPacketWaitCondition*)packet)[i], frameCount))
+            case BTLPACKET_STATE_PRE_UPDATE_CONDITIONS:
+                i = 0;
+                for (; i < 2; i++)
+                {
+                    if (!btlPacketCheckWaitCondition(&((BtlPacketWaitCondition*)packet)[i], frameCount))
+                    {
+                        result = 0;
+                        goto preUpdateConditionsDone;
+                    }
+                }
+                result = 1;
+preUpdateConditionsDone:
+                if (result == 0)
                 {
                     goto done;
                 }
+                packet->unk_45 = BTLPACKET_STATE_PRE_UPDATE_DELAY;
+                break;
+            default:
+                goto done;
             }
-            packet->unk_45 = BTLPACKET_STATE_PRE_UPDATE_DELAY;
-
 preUpdateDelay:
-            if (packet->preUpdateDelay > 0)
+            if (packet->preUpdateDelay <= 0)
+            {
+                packet->unk_45 = BTLPACKET_STATE_UPDATE;
+            }
+            else
             {
                 packet->preUpdateDelay--;
                 goto done;
             }
-            packet->unk_45 = BTLPACKET_STATE_UPDATE;
 
 update:
             if (packet->updateFunc(packet->workData))
@@ -400,12 +482,20 @@ update:
             goto done;
 
 postUpdateConditions:
-            for (i = 0; i < 2; i++)
+            i = 0;
+            for (; i < 2; i++)
             {
-                if (!btlPacketCheckWaitCondition(&packet->postUpdateWaits[i], frameCount))
+                if (!btlPacketCheckWaitCondition(&((BtlPacketWaitCondition*)((u8*)packet + 0x20))[i], frameCount))
                 {
-                    goto done;
+                    result = 0;
+                    goto postUpdateConditionsDone;
                 }
+            }
+            result = 1;
+postUpdateConditionsDone:
+            if (result == 0)
+            {
+                goto done;
             }
             packet->unk_45 = BTLPACKET_STATE_POST_UPDATE_DELAY;
 
@@ -525,15 +615,37 @@ u32 btlPacket0027f2e0()
 {
     return 1;
 }
-// FUN_0027f2f0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0027f2f0
 BtlPacket* btlPacketCreatePostUpdatePacket()
 {
     BtlPacket* packet;
+    u16 i;
+    u16 j;
 
-    packet = btlPacketCreate(0xff00, 0);
+    packet = RwMalloc(sizeof(BtlPacket), rwMEMHINTDUR_GLOBAL);
+    memset(packet, 0, sizeof(BtlPacket));
+    packet->id = 0xff00;
+    for (i = 0; i < 2; i++)
+    {
+        ((BtlPacketWaitCondition*)packet)[i].type = BTLPACKET_WAIT_ALWAYS;
+    }
+    {
+        BtlPacketWaitCondition* wait;
+
+        wait = packet->postUpdateWaits;
+        for (j = 0; j < 2; j++)
+        {
+            wait[j].type = BTLPACKET_WAIT_ALWAYS;
+        }
+    }
+    packet->unk_47 |= BTLPACKET_FLAG_AUTO_DESTROY |
+                      BTLPACKET_FLAG_10 |
+                      BTLPACKET_FLAG_WAIT_TARGET;
     packet->updateFunc = btlPacket0027f2e0;
     return packet;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0027f3e0
 static void btlPacketInvokeCallback(void* work)
@@ -549,7 +661,8 @@ static void btlPacketInvokeCallback(void* work)
     callbackWork->callback(callbackWork->data);
 }
 
-// FUN_0027f410 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0027f410
 BtlPacket* btlPacketCreateCallbackPacket(void (*callback)(void*), void* data)
 {
     typedef struct BtlPacketCallbackWork
@@ -559,11 +672,37 @@ BtlPacket* btlPacketCreateCallbackPacket(void (*callback)(void*), void* data)
     } BtlPacketCallbackWork;
     BtlPacket* packet;
     BtlPacketCallbackWork* callbackWork;
+    u16 i;
+    u16 j;
+    u8 waitType;
+    s32 size;
 
-    packet = btlPacketCreate(0xff01, sizeof(BtlPacketCallbackWork));
+    size = sizeof(BtlPacket) + sizeof(BtlPacketCallbackWork);
+    packet = RwMalloc(size, rwMEMHINTDUR_GLOBAL);
+    memset(packet, 0, size);
+    packet->id = 0xff01;
+    waitType = BTLPACKET_WAIT_ALWAYS;
+    for (i = 0; i < 2; i++)
+    {
+        ((BtlPacketWaitCondition*)packet)[i].type = waitType;
+    }
+    {
+        BtlPacketWaitCondition* wait;
+
+        wait = packet->postUpdateWaits;
+        for (j = 0; j < 2; j++)
+        {
+            wait[j].type = waitType;
+        }
+    }
+    packet->workData = (u8*)packet + sizeof(BtlPacket);
+    packet->unk_47 |= BTLPACKET_FLAG_AUTO_DESTROY |
+                      BTLPACKET_FLAG_10 |
+                      BTLPACKET_FLAG_WAIT_TARGET;
     packet->updateFunc = (u32 (*)(void*))btlPacketInvokeCallback;
     callbackWork = (BtlPacketCallbackWork*)packet->workData;
     callbackWork->callback = callback;
     callbackWork->data = data;
     return packet;
 }
+#pragma opt_loop_invariants off

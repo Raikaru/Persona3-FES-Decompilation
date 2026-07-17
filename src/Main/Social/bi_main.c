@@ -26,8 +26,8 @@ enum
     BI_SLOT_NUMERIC_1 = 0x200
 };
 
-extern void (*D_00960090)();
 extern void (*D_0096009C)();
+
 
 void* func_0021c3f0();
 void* func_0021cca0();
@@ -36,13 +36,18 @@ void func_0021d3b0();
 void func_0021d8e0();
 void func_0021d950();
 void func_0021eae0();
-void func_0021eac0();
+void func_0021eac0(void* glyph, f32 value);
 void* btlUnitFindFromId();
 void func_002806d0();
 u32 func_002d20a0();
 int sprintf(char*, const char*, ...);
 u32 strlen(const char*);
 void func_00242840(void* glyphs, s32 capacity, s32 value);
+void* kwlnGetMainCamera();
+
+
+
+
 
 static void biMainSetState(u32 state, u32 value)
 {
@@ -81,6 +86,8 @@ static void biMainPrepareDigit(void* glyph, s32 digit)
     func_0021d3b0(glyph, glyphResource);
 }
 
+
+
 static void biMainDrawSlot(u8* slot)
 {
     u32 flags;
@@ -91,7 +98,6 @@ static void biMainDrawSlot(u8* slot)
         (BI_SLOT_ACTIVE | BI_SLOT_READY)) {
         return;
     }
-
     mode = BI_U32(slot, 4);
     if (mode == 0 || mode == 1 || mode == 2 || mode == 3) {
         if ((flags & BI_SLOT_ALT_STYLE) != 0) {
@@ -110,17 +116,22 @@ static void biMainDrawSlot(u8* slot)
     }
 }
 
-// FUN_0023F480 NONMATCHING
+#pragma optimization_level 1
+// FUN_0023F480
 void func_0023f480(void* work)
 {
     s32 i;
+    s32 stride;
 
     K_ASSERT(sBiMain == NULL, 0x92);
-    for (i = 0; i < BI_SLOT_COUNT; i++) {
-        BI_U32(BI_SLOT(work, i), 0) = 0;
+    i = 0;
+    stride = BI_SLOT_SIZE;
+    for (; i < BI_SLOT_COUNT; i++) {
+        BI_U32((u8*)work + i * stride, 0) = 0;
     }
     sBiMain = work;
 }
+#pragma optimization_level 2
 
 // FUN_0023F500
 void func_0023f500(void)
@@ -162,80 +173,100 @@ void func_00241910(void)
     }
 }
 
-// FUN_00242260 NONMATCHING
+#pragma optimization_level 1
+// FUN_00242260
 void* func_00242260(void)
 {
     s32 i;
     u8* slot;
+    u8* work;
+    s32 stride;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
-    for (i = 0; i < BI_SLOT_COUNT; i++) {
-        slot = BI_SLOT(sBiMain, i);
-        if ((BI_U32(slot, 0) & BI_SLOT_ACTIVE) == 0) {
-            BI_U32(slot, 0) = BI_SLOT_ACTIVE;
-            return slot;
+    work = sBiMain;
+    i = 0;
+    stride = BI_SLOT_SIZE;
+    for (; i < BI_SLOT_COUNT; i++) {
+        slot = work + i * stride;
+        if (~BI_U32(slot, 0) & BI_SLOT_ACTIVE) {
+            break;
         }
     }
-    K_ASSERT(0, 0x583);
-    return NULL;
+    K_ASSERT(i < BI_SLOT_COUNT, 0x583);
+    BI_U32(slot, 0) = 0;
+    BI_U32(slot, 0) |= BI_SLOT_ACTIVE;
+    return slot;
 }
+#pragma optimization_level 2
 
-// FUN_00242320 NONMATCHING
+// FUN_00242320
 void func_00242320(void* slot, s32 mode)
 {
     void* renderContext;
-    void* resource;
-    s32 i;
 
     renderContext = func_0021c3f0(1);
+    kwlnGetMainCamera();
     switch (mode) {
-    case 0:
-        resource = func_0021cca0(renderContext, 0xb);
-        func_0021d3b0((u8*)slot + 0x10, resource);
+    case 0: {
+        u8* glyphs;
+        s32 i;
+        void* resource;
+
+        glyphs = (u8*)slot + 0x10;
+        func_0021d3b0(glyphs, func_0021cca0(renderContext, 0xb));
         resource = func_0021cca0(renderContext, 0xa);
         for (i = 0; i < 2; i++) {
-            func_0021d3b0((u8*)slot + 0x110 + i * 0x100, resource);
+            func_0021d3b0(glyphs + i * 0x100 + 0x100, resource);
         }
         break;
-    case 1:
-        resource = func_0021cca0(renderContext, 0x13);
-        func_0021d3b0((u8*)slot + 0x10, resource);
+    }
+    case 1: {
+        u8* glyphs;
+        void* resource;
+        s32 i;
+
+        glyphs = (u8*)slot + 0x10;
+        func_0021d3b0(glyphs, func_0021cca0(renderContext, 0x13));
         resource = func_0021cca0(renderContext, 0x12);
         for (i = 0; i < 2; i++) {
-            func_0021d3b0((u8*)slot + 0x110 + i * 0x100, resource);
+            func_0021d3b0(glyphs + i * 0x100 + 0x100, resource);
         }
         break;
-    case 2:
-        resource = func_0021cca0(renderContext, 0x1e);
-        func_0021d3b0((u8*)slot + 0x10, resource);
-        resource = func_0021cca0(renderContext, 0x1d);
-        func_0021d3b0((u8*)slot + 0x110, resource);
-        resource = func_0021cca0(renderContext, 0x1c);
-        func_0021d3b0((u8*)slot + 0x210, resource);
-        break;
+    }
     case 3:
-        resource = func_0021cca0(renderContext, 0x22);
-        func_0021d3b0((u8*)slot + 0x10, resource);
+        func_0021d3b0((u8*)slot + 0x10, func_0021cca0(renderContext, 0x22));
         break;
-    default:
+    case 2: {
+        u8* glyphs;
+
+        glyphs = (u8*)slot + 0x10;
+        func_0021d3b0(glyphs, func_0021cca0(renderContext, 0x1e));
+        func_0021d3b0(glyphs + 0x100, func_0021cca0(renderContext, 0x1d));
+        func_0021d3b0(glyphs + 0x200, func_0021cca0(renderContext, 0x1c));
         break;
+    }
     }
     BI_U32(slot, 4) = mode;
     BI_U32(slot, 0) |= BI_SLOT_READY;
 }
 
-// FUN_00242540 NONMATCHING
+#pragma optimization_level 1
+// FUN_00242540
 void func_00242540(void* slot)
 {
     RwRGBA color;
-    RwV2d origin;
+    f32 origin[4];
+    s32 opaque;
 
-    color.r = 0xff;
+    opaque = 0xff;
+    color.r = opaque;
     color.g = 0;
     color.b = 0;
-    color.a = 0xff;
-    origin.x = 0.0f;
-    origin.y = 0.0f;
+    color.a = opaque;
+    origin[0] = 0.0f;
+    origin[1] = 0.0f;
+    origin[2] = 0.0f;
+    origin[3] = 0.0f;
     func_0021eae0((u8*)slot + 0xd40, &origin);
     func_0021d950((u8*)slot + 0xd40, &color);
     func_0021eac0((u8*)slot + 0xd40, 0.0f);
@@ -245,48 +276,77 @@ void func_00242540(void* slot)
     BI_U32(slot, 0x310) = 0;
     BI_U32(slot, 0) |= BI_SLOT_INITIALIZED;
 }
+#pragma optimization_level 2
 
-// FUN_00242600 NONMATCHING
+#pragma optimization_level 1
+// FUN_00242600
 void func_00242600(void* slot, s32 value)
 {
-    char digits[6];
+    char digits[256];
+    s32 length;
     s32 magnitude;
+    void* glyphs;
+    s32 capacity;
+    s32 displayValue;
 
-    if (value < 0) {
+    if (value >= 0) {
+        magnitude = value;
+    } else {
         BI_U32(slot, 0) |= BI_SLOT_TEXT_0;
         magnitude = -value;
-    } else {
-        magnitude = value;
     }
-    BI_U32(slot, 0x820) = magnitude < 100000 ? magnitude : 99999;
+    K_ASSERT(magnitude >= 0, 0x603);
+    if (magnitude < 100000) {
+        BI_U32(slot, 0x820) = magnitude;
+    } else {
+        BI_U32(slot, 0x820) = 99999;
+    }
     sprintf(digits, "%d", BI_U32(slot, 0x820));
-    K_ASSERT(strlen(digits) > 0, 0x610);
-    K_ASSERT(strlen(digits) <= 5, 0x611);
-    BI_U32(slot, 0x824) = strlen(digits);
+    length = strlen(digits);
+    K_ASSERT(length > 0, 0x610);
+    K_ASSERT(length <= 5, 0x611);
+    BI_U32(slot, 0x824) = length;
     BI_U32(slot, 0) |= BI_SLOT_NUMERIC_0;
-    func_00242840((u8*)slot + 0x320, 5, BI_U32(slot, 0x820));
+    glyphs = (u8*)slot + 0x320;
+    capacity = 5;
+    displayValue = BI_U32(slot, 0x820);
+    func_00242840(glyphs, capacity, displayValue);
 }
 
-// FUN_00242720 NONMATCHING
+// FUN_00242720
 void func_00242720(void* slot, s32 value)
 {
-    char digits[6];
+    char digits[256];
+    s32 length;
     s32 magnitude;
+    void* glyphs;
+    s32 capacity;
+    s32 displayValue;
 
-    if (value < 0) {
-        BI_U32(slot, 0) |= BI_SLOT_TEXT_1;
-        magnitude = -value;
-    } else {
+    if (value >= 0) {
         magnitude = value;
+    } else {
+        magnitude = -value;
+        BI_U32(slot, 0) |= BI_SLOT_TEXT_1;
     }
-    BI_U32(slot, 0xd30) = magnitude < 100000 ? magnitude : 99999;
+    K_ASSERT(magnitude >= 0, 0x628);
+    if (magnitude < 100000) {
+        BI_U32(slot, 0xd30) = magnitude;
+    } else {
+        BI_U32(slot, 0xd30) = 99999;
+    }
     sprintf(digits, "%d", BI_U32(slot, 0xd30));
-    K_ASSERT(strlen(digits) > 0, 0x635);
-    K_ASSERT(strlen(digits) <= 5, 0x636);
-    BI_U32(slot, 0xd34) = strlen(digits);
+    length = strlen(digits);
+    K_ASSERT(length > 0, 0x635);
+    K_ASSERT(length <= 5, 0x636);
+    BI_U32(slot, 0xd34) = length;
     BI_U32(slot, 0) |= BI_SLOT_NUMERIC_1;
-    func_00242840((u8*)slot + 0x830, 5, BI_U32(slot, 0xd30));
+    glyphs = (u8*)slot + 0x830;
+    capacity = 5;
+    displayValue = BI_U32(slot, 0xd30);
+    func_00242840(glyphs, capacity, displayValue);
 }
+#pragma optimization_level 2
 
 // FUN_00242840
 void func_00242840(void* glyphs, s32 capacity, s32 value)
@@ -303,23 +363,27 @@ void func_00242840(void* glyphs, s32 capacity, s32 value)
     }
 }
 
-// FUN_002428F0 NONMATCHING
+// FUN_002428F0
 void func_002428f0(void* glyph, s32 digit)
 {
-    biMainPrepareDigit(glyph, digit);
+    func_0021d3b0(glyph, func_0021cca0(func_0021c3f0(1), digit + 0x2e));
 }
 
-// FUN_00242950 NONMATCHING
+// FUN_00242950
 f32 func_00242950(s32 value)
 {
-    char digits[6];
+    char digits[256];
     s32 length;
+    void* renderContext;
+    void* glyphResource;
 
+    renderContext = func_0021c3f0(1);
     sprintf(digits, "%d", value);
     length = strlen(digits);
+    glyphResource = func_0021cca0(renderContext, 0x2e);
     K_ASSERT(length > 0, 0x666);
     K_ASSERT(length <= 5, 0x667);
-    return 30.0f * (f32)(length - 1);
+    return (f32)*(s32*)((u8*)glyphResource + 0xc) + 28.0f * (f32)(length - 1);
 }
 
 // FUN_00242A30
@@ -334,51 +398,68 @@ void func_00242a50(void* slot, u32 unitId)
     BI_U32(slot, 0x314) = unitId;
 }
 
-// FUN_00242A60 NONMATCHING
+#pragma optimization_level 1
+// FUN_00242A60
 s32 func_00242a60(void)
 {
     s32 i;
+    u8* work;
+    s32 stride;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
-    for (i = 0; i < BI_SLOT_COUNT; i++) {
-        if ((BI_U32(BI_SLOT(sBiMain, i), 0) & BI_SLOT_ACTIVE) == 0) {
-            return i;
+    work = sBiMain;
+    i = 0;
+    stride = BI_SLOT_SIZE;
+    for (; i < BI_SLOT_COUNT; i++) {
+        if (~BI_U32(work + i * stride, 0) & BI_SLOT_ACTIVE) {
+            break;
         }
     }
-    return BI_SLOT_COUNT;
+    return i < BI_SLOT_COUNT;
 }
+#pragma optimization_level 2
 
-// FUN_00242AE0 NONMATCHING
+#pragma optimization_level 1
+// FUN_00242AE0
 s32 func_00242ae0(u32 unitId)
 {
     s32 i;
+    u8* work;
+    s32 stride;
     u8* slot;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
-    for (i = 0; i < BI_SLOT_COUNT; i++) {
-        slot = BI_SLOT(sBiMain, i);
-        if ((BI_U32(slot, 0) & BI_SLOT_ACTIVE) != 0 && BI_U32(slot, 0x314) == unitId) {
-            return i;
+    work = sBiMain;
+    i = 0;
+    stride = BI_SLOT_SIZE;
+    for (; i < BI_SLOT_COUNT; i++) {
+        slot = work + i * stride;
+        if ((~BI_U32(slot, 0) & BI_SLOT_ACTIVE) || BI_U32(slot, 0x314) != unitId) {
+            continue;
         }
+        break;
     }
-    return BI_SLOT_COUNT;
+    return i < BI_SLOT_COUNT;
 }
+#pragma optimization_level 2
 
-// FUN_00242B80 NONMATCHING
+// FUN_00242B80
 u32 func_00242b80(u16 unitId, RwV2d* screenPosition)
 {
     void* unit;
-    RwV2d projected;
+    RwV3d projected;
+    RwV2d transformed;
 
     unit = btlUnitFindFromId(unitId);
     if (unit == NULL) {
         return 0;
     }
     func_002806d0(unit, &projected);
-    if (func_002d20a0(&projected, screenPosition) == 0) {
+    if (func_002d20a0(&projected, &transformed) == 0) {
         return 0;
     }
-    screenPosition->y += 14.0f;
+    screenPosition->x = transformed.x;
+    screenPosition->y = transformed.y + 14.0f;
     return 1;
 }
 

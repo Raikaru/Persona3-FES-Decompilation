@@ -16,12 +16,17 @@ u32 FUN_002a3420(int param_1);
 u8 FUN_002a3520(int param_1);
 u64 FUN_002a3550(u8* camera);
 u32 FUN_002a3590(float *param_1,long param_2);
-u8 FUN_002a3750(u8* camera,u64 param_2);
+s32 FUN_002a3750(BtlCamera* camera,u32 unit);
+extern s16 btlUnit00282c30(BtlUnit* unit);
+extern s16 func_002835e0(BtlUnit* unit,u16 id,f32 scale);
+extern s16 btlUnitGetAnimFrame(BtlUnit* unit);
 u8 FUN_002a3820(int param_1);
 u32 FUN_002a3850(int param_1);
 u16 FUN_002a3a80(void);
 void FUN_002a3a90(int param_1);
 void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
+u64 FUN_0027ffb0();
+extern u8* DAT_007ce3ec;
 void FUN_002a42a0(void);
 void FUN_002a4470(f32 *param_1, f32 *param_2);
 void FUN_002a44b0(f32 *param_1, f32 *param_2);
@@ -41,6 +46,9 @@ extern f32 DAT_007caf54;
 extern code DAT_00960178;
 extern code DAT_0096017c;
 extern int iGpffffb710;
+extern u8* iGpffffb6fc;
+extern u8 DAT_006941d4[];
+extern u8 DAT_00694c90[];
 
 extern f32 FUN_002d21e0();
 extern void FUN_002a3010();
@@ -802,16 +810,41 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     (void)farScale;
 }
 
-// FUN_002a5ee0 NONMATCHING
+// FUN_002a5ee0
 void btlCameraFrameActionDefault(BtlCamera* camera)
 {
-    btlCameraFrameAction(camera, 0, 40, 70);
+    u32 closeView;
+
+    switch (*(u16 *)(DAT_007ce3ec + 0x104))
+    {
+    case 0x1d:
+        closeView = 1;
+        break;
+    default:
+        closeView = 0;
+        break;
+    }
+    btlCameraFrameAction(camera, closeView, 40, 70);
 }
 
-// FUN_002a5f40 NONMATCHING
+// FUN_002a5f40
 void btlCameraFrameActionClose(BtlCamera* camera)
 {
-    btlCameraFrameActionUnit(camera);
+    int cameraAddress;
+    int actionAddress;
+    BtlUnit* unit;
+    RwV3d center;
+
+    cameraAddress = (int)camera;
+    actionAddress = *(int *)(cameraAddress + 0xe0);
+    if (actionAddress != 0 && (*(u16 *)(actionAddress + 0x1a) & 1) != 0)
+    {
+        unit = *(BtlUnit **)(actionAddress + 0x30);
+        FUN_0027ffb0(unit, &center);
+        FUN_002a3e80(unit->sphereRadius * unit->scale * 0.25f,
+                     (u8 *)(uintptr_t)*(u32 *)(cameraAddress + 0xe0),
+                     (u8 *)(uintptr_t)(cameraAddress + 0x9c), (u8 *)&center, 0x31);
+    }
 }
 
 // FUN_002a5fd0 NONMATCHING
@@ -820,10 +853,24 @@ void btlCameraFrameActionPair(BtlCamera* camera)
     btlCameraRangeActionFrame(camera, 2.0f, 300.0f, 1);
 }
 
-// FUN_002a6560 NONMATCHING
+// FUN_002a6560
 void btlCameraFrameActionQuarter(BtlCamera* camera)
 {
-    btlCameraFrameActionUnit(camera);
+    int cameraAddress;
+    int actionAddress;
+    BtlUnit* unit;
+    RwV3d center;
+
+    cameraAddress = (int)camera;
+    actionAddress = *(int *)(cameraAddress + 0xe0);
+    if (actionAddress != 0 && (*(u16 *)(actionAddress + 0x1a) & 1) != 0)
+    {
+        unit = *(BtlUnit **)(actionAddress + 0x30);
+        FUN_0027ffb0(unit, &center);
+        FUN_002a3e80(unit->sphereRadius * unit->scale * 0.25f,
+                     (u8 *)(uintptr_t)*(u32 *)(cameraAddress + 0xe0),
+                     (u8 *)(uintptr_t)(cameraAddress + 0x9c), (u8 *)&center, 0x33);
+    }
 }
 
 // FUN_002a65f0 NONMATCHING
@@ -922,12 +969,11 @@ typedef void undefined;
 #define ABS(x) ((x) < 0 ? -(x) : (x))
 #endif
 extern u64 FUN_0019d400();
-extern u64 FUN_0027ec10();
+extern u32 FUN_0027ec10();
 extern u64 FUN_0027f650();
 extern u64 FUN_0027f680();
 extern u64 FUN_0027f7c0();
 extern u64 FUN_0027f940();
-extern u64 FUN_0027ffb0();
 extern u64 FUN_00280050();
 extern u64 FUN_00280130();
 extern u64 FUN_00280200();
@@ -938,7 +984,7 @@ extern u64 FUN_00281270();
 extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
 extern u64 FUN_002835e0();
-extern u64 FUN_00284040();
+extern s16 FUN_00284040();
 extern u64 FUN_00288110();
 extern u64 FUN_00288da0();
 extern u64 FUN_0029a1d0();
@@ -956,14 +1002,13 @@ extern u64 FUN_002d5bf0();
 extern u64 FUN_002d6290();
 extern u64 FUN_002d6370();
 extern u64 FUN_002d63b0();
-extern u64 FUN_002f8eb0();
+extern s16 FUN_002f8eb0(BtlUnit* unit, s16 index);
 extern u64 FUN_002fa240();
-extern u64 FUN_002fc520();
 extern u64 FUN_002fdcf0();
-extern u64 FUN_002fdd40();
 extern u64 FUN_002ffbc0();
 extern u64 FUN_00300580();
 extern u64 FUN_00308c60();
+extern u64 FUN_00308a50(u16 param_1);
 extern u64 FUN_003093a0();
 extern u64 FUN_0030b5a0();
 extern u64 FUN_0030c3a0();
@@ -981,11 +1026,10 @@ extern u64 FUN_00521250();
 extern u64 FUN_00521408();
 extern u64 FUN_00523ac8();
 extern float FUN_0052e930();
-extern u8* DAT_007ce3ec;
 extern u32 DAT_007ce404;
 extern u8* iGpffffb6fc;
-extern undefined1 LAB_002b8970[];
-extern undefined1 LAB_002b8b50[];
+extern void LAB_002b8970(u32 *work);
+extern void LAB_002b8b50(u32 *work);
 extern u8 DAT_006944b0[];
 extern u8 DAT_006945b0[];
 extern u8 DAT_006946a4[];
@@ -1394,13 +1438,18 @@ void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
   return;
 }
 
-// FUN_002b1020 NONMATCHING
+// FUN_002b1020
 
 void FUN_002b1020(undefined8 param_1)
 
 {
-  FUN_002b0280(0x42480000,param_1,0,0);
+  FUN_002b0280(50.0f,param_1,0,0);
   return;
+}
+
+// FUN_002b1050
+void btlCameraNoOp(void)
+{
 }
 
 // FUN_002b1060 NONMATCHING
@@ -2046,30 +2095,25 @@ void FUN_002b21f0(undefined4 param_1,undefined8 param_2,long param_3)
 
 // FUN_002b2800 NONMATCHING
 
-void FUN_002b2800(int param_1)
-
+void FUN_002b2800(BtlCamera *camera)
 {
-  short sVar1;
+  s64 lVar1;
   undefined2 uVar2;
-  u32 uVar3;
-  
-  sVar1 = FUN_002f8eb0(*(undefined4 *)(*(int *)(param_1 + 0xe0) + 0x30),
-                       *(undefined2 *)(*(int *)(param_1 + 0xe0) + 0x6e));
-  uVar3 = (u32)sVar1;
-  if (uVar3 == 0xffffffffffffffff) {
-    uVar3 = 4;
+
+  lVar1 = FUN_002f8eb0(camera->action->unit,
+                       *(s16 *)&camera->action->target.specificId);
+  if (lVar1 == -1) {
+    lVar1 = 4;
   }
-  uVar2 = FUN_002835e0(0x3f800000,*(undefined4 *)(*(int *)(param_1 + 0xe0) + 0x30),uVar3 & 0xffff);
-  *(undefined2 *)(param_1 + 0x10e) = uVar2;
-  *(undefined4 *)(param_1 + 0x100) = *(undefined4 *)(*(int *)(param_1 + 0xe0) + 0x38);
-  *(undefined2 *)(param_1 + 0x10c) = 0;
+  uVar2 = FUN_002835e0(camera->action->unit, lVar1 & 0xffff, 1.0f);
+  *(undefined2 *)((u8 *)camera + 0x10e) = uVar2;
+  *(undefined4 *)((u8 *)camera + 0x100) =
+      *(undefined4 *)((u8 *)camera->action + 0x38);
+  *(undefined2 *)((u8 *)camera + 0x10c) = 0;
   return;
 }
-
 // FUN_002b2880 NONMATCHING
-
 void FUN_002b2880(undefined8 param_1)
-
 {
   int iVar1;
   int iVar2;
@@ -2335,16 +2379,26 @@ void FUN_002b2eb0(int param_1,float *param_2)
   return;
 }
 
-// FUN_002b32c0 NONMATCHING
+// FUN_002b32c0
 
-void FUN_002b32c0(undefined8 param_1)
+void FUN_002b32c0(u16* camera)
 
 {
-  undefined1 auStack_40 [28];
-  undefined1 auStack_24 [36];
-  
-  FUN_002b2eb0(param_1,(float*)auStack_24);
+  struct {
+    undefined1 first[28];
+    undefined1 second[36];
+  } scratch;
+
+  FUN_002a4470((f32*)scratch.first, (f32*)((u8*)camera + 0x9c));
+  FUN_002b2eb0((int)camera, (float*)scratch.second);
+  FUN_002a2290(camera, (RwV3d*)scratch.first, (RwV3d*)scratch.second, 1);
+  FUN_002a3110(10.0f, camera);
   return;
+}
+
+// FUN_002b3330
+void func_002b3330(void)
+{
 }
 
 // FUN_002b3340 NONMATCHING
@@ -2833,7 +2887,7 @@ void FUN_002b41e0(undefined8 param_1)
   return;
 }
 
-// FUN_002b4720 NONMATCHING
+// FUN_002b4720
 
 void FUN_002b4720(int param_1)
 
@@ -2845,7 +2899,7 @@ void FUN_002b4720(int param_1)
   if ((iVar1 != 0) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)) {
     iVar1 = *(int *)(iVar1 + 0x30);
     FUN_0027ffb0(iVar1,auStack_10);
-    FUN_002a3e80(*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5,
+    FUN_002a3e80(*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 0.5f,
                  (u8*)(uintptr_t)*(undefined4 *)(param_1 + 0xe0),
                  (u8*)(uintptr_t)(param_1 + 0x9c),(u8*)auStack_10,0x31);
   }
@@ -3021,7 +3075,7 @@ void FUN_002b4c00(int param_1)
     scratch.second.z = D_00694EE4.x;
     FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
     FUN_002a3110(fGpffff80e0, (u16 *)(iGpffffb6fc + 0x20));
-}
+  }
 }
 
 // FUN_002b4db0 NONMATCHING
@@ -3236,14 +3290,15 @@ void FUN_002b55d0(void)
   return;
 }
 
-// FUN_002b5600 NONMATCHING
 
-void FUN_002b5600(undefined8 param_1)
+// FUN_002b5600
+void FUN_002b5600(void* param_1)
 
 {
-  undefined1 auStack_20 [32];
-  
+  u8 auStack_20[32];
+
   FUN_002add10(param_1,0,0,auStack_20);
+  FUN_002a2170((u16*)param_1,auStack_20);
   return;
 }
 
@@ -3604,12 +3659,12 @@ void FUN_002b6460(void)
   return;
 }
 
-// FUN_002b6490 NONMATCHING
+// FUN_002b6490
 
 void FUN_002b6490(void)
 
 {
-  FUN_00521250(0x694c90,0x6941d4,0xf4);
+  FUN_00521250(DAT_00694c90,DAT_006941d4,0xf4);
   return;
 }
 
@@ -3728,7 +3783,8 @@ u32 FUN_002b64d0(int param_1, int param_2)
           }
           if (puVar2[sVar6 * 0x1e + 0x10] == 2) {
             iVar3 = *(int *)(piVar7[1] + 0x30);
-            lVar5 = FUN_002fc520(iVar3);
+            lVar5 = (long)(uintptr_t)func_002fc520(
+                (BtlUnit*)(uintptr_t)iVar3);
             if (lVar5 == 0) {
               FUN_00280130(iVar3,&fStack_20);
               FUN_004be1e0(&fStack_10,0x6978a0,1,auStack_100);
@@ -3964,18 +4020,23 @@ u32 FUN_002b6f70(u16 *param_1)
   return uVar1;
 }
 
-// FUN_002b7000 NONMATCHING
-
+// FUN_002b7000
 void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
-
 {
-  if (*(char *)(param_1 + 0xa2) == '\x01') {
-    *(undefined4 *)((param_2 & 0xffff) * 4 + DAT_007ce3ec + 0xa4c) = param_3;
+  u8 mode = *(u8 *)(param_1 + 0xa2);
+  volatile u8 *table;
+  switch (mode) {
+  case 0:
+    table = DAT_007ce3ec;
+    *(undefined4 *)((volatile u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
+                    (uintptr_t)table + 0xa3c) = param_3;
+    break;
+  case 1:
+    table = DAT_007ce3ec;
+    *(undefined4 *)((volatile u8 *)(uintptr_t)((param_2 & 0xffff) * 4) +
+                    (uintptr_t)table + 0xa4c) = param_3;
+    break;
   }
-  else if (*(char *)(param_1 + 0xa2) == '\0') {
-    *(undefined4 *)((param_2 & 0xffff) * 4 + DAT_007ce3ec + 0xa3c) = param_3;
-  }
-  return;
 }
 
 // FUN_002b7060 NONMATCHING
@@ -4248,27 +4309,25 @@ undefined4 FUN_002b79e0(int *param_1)
   return 1;
 }
 
-// FUN_002b7bd0 NONMATCHING
+// FUN_002b7bd0
 
-void FUN_002b7bd0(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined2 param_4)
-
+void FUN_002b7bd0(u32 param_1,u32 param_2,float param_3,u16 param_4)
 {
-  undefined4 *puVar1;
-  int iVar2;
-  
-  iVar2 = FUN_0027ec10(0xb00,0x10);
-  *(code **)(iVar2 + 0x6c) = (code *)FUN_002b79e0;
-  puVar1 = *(undefined4 **)(iVar2 + 0x78);
-  *puVar1 = param_2;
-  puVar1[1] = param_3;
-  puVar1[2] = param_1;
-  *(undefined2 *)(puVar1 + 3) = param_4;
-  return;
+  u32 *work;
+  u32 packet;
+
+  packet = FUN_0027ec10(0xb00,0x10);
+  *(code **)(packet + 0x6c) = (code *)FUN_002b79e0;
+  work = *(u32 **)(packet + 0x78);
+  work[0] = param_1;
+  work[1] = param_2;
+  *(float *)(work + 2) = param_3;
+  *(u16 *)(work + 3) = param_4;
 }
 
 // FUN_002b7c50 NONMATCHING
 
-undefined8 FUN_002b7c50(int *param_1)
+u32 FUN_002b7c50(int *param_1)
 
 {
   char cVar1;
@@ -4567,7 +4626,7 @@ undefined8 FUN_002b7c50(int *param_1)
   return 1;
 }
 
-// FUN_002b8900 NONMATCHING
+// FUN_002b8900
 
 void FUN_002b8900(undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
@@ -4584,16 +4643,24 @@ void FUN_002b8900(undefined4 param_1,undefined4 param_2,undefined4 param_3)
   return;
 }
 
+// FUN_002b8970
+void LAB_002b8970(u32 *work)
+{
+  u8 *unit;
+
+  unit = (u8 *)*work;
+  (*(u16 *)(unit + 0xa0))++;
+}
+
 // FUN_002b8990 NONMATCHING
 
 undefined4 FUN_002b8990(undefined4 *param_1)
-
 {
-  undefined2 uVar1;
+  s16 uVar1;
   undefined4 uVar2;
   undefined4 uVar3;
   int bVar4;
-  undefined2 uVar5;
+  s16 uVar5;
   short sVar6;
   long lVar7;
   undefined1 auStack_20 [16];
@@ -4601,30 +4668,39 @@ undefined4 FUN_002b8990(undefined4 *param_1)
   
   uVar2 = *param_1;
   uVar3 = *(undefined4 *)(param_1[1] + 0x30);
-  uVar1 = *(undefined2 *)(param_1 + 3);
+  uVar1 = *(s16 *)(param_1 + 3);
   bVar4 = param_1[2] != 0;
   uVar5 = FUN_00284040(uVar2,uVar3,uVar1,bVar4);
   lVar7 = FUN_002d63b0(uVar2,uVar1,bVar4);
   if (lVar7 == 0) {
     sVar6 = FUN_00284040(uVar2,uVar3,uVar1,bVar4);
     if ((sVar6 == 3) || (sVar6 == 1)) {
-      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_10,auStack_20,1);
+      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,1);
     }
     else if ((sVar6 == 2) || (sVar6 == 0)) {
-      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_10,auStack_20,0);
+      FUN_0027f940(uVar2,uVar3,0,uVar5,auStack_20,auStack_10,0);
     }
-    FUN_0027f680(uVar2,auStack_20);
-    FUN_0027f650(uVar2,auStack_10);
+    FUN_0027f680(uVar2,auStack_10);
+    FUN_0027f650(uVar2,auStack_20);
   }
   else {
-    FUN_0027f940(uVar2,uVar3,*(undefined4 *)(param_1[2] + 0x30),uVar5,auStack_10,auStack_20,2);
-    FUN_0027f680(uVar2,auStack_20);
-    FUN_0027f650(uVar2,auStack_10);
+    FUN_0027f940(uVar2,uVar3,*(undefined4 *)(param_1[2] + 0x30),uVar5,auStack_20,auStack_10,2);
+    FUN_0027f680(uVar2,auStack_10);
+    FUN_0027f650(uVar2,auStack_20);
   }
   return 1;
 }
 
-// FUN_002b8b70 NONMATCHING
+// FUN_002b8b50
+void LAB_002b8b50(u32 *work)
+{
+  u8 *unit;
+
+  unit = (u8 *)*work;
+  (*(u16 *)(unit + 0xa0))--;
+}
+
+// FUN_002b8b70
 
 void FUN_002b8b70(undefined4 param_1,undefined4 param_2,undefined4 param_3,undefined2 param_4)
 
@@ -5070,7 +5146,7 @@ void func_002aa2b0(BtlCamera* camera, long param_2, long param_3)
   return;
 }
 
-// FUN_002AB2A0 NONMATCHING
+// FUN_002AB2A0
 
 void func_002ab2a0(BtlCamera* camera)
 {
@@ -5082,8 +5158,9 @@ void func_002ab2a0(BtlCamera* camera)
   iVar1 = *(int *)(iVar3 + 0xe0);
   if ((iVar1 != 0) && ((*(ushort *)(iVar1 + 0x1a) & 1) != 0)) {
     if (*(int *)(iVar3 + 0xdc) == 0) {
+      FUN_002a3e80(0.0f,(u8 *)(uintptr_t)iVar1,0,0,3);
     }
-    if (lVar2 != 0) {
+    if (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0) {
       btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
     }
   }
@@ -5559,7 +5636,7 @@ void func_002ac6e0(BtlCamera* camera)
   switch(*(undefined2 *)(iVar3 + 0x110)) {
   case 2:
     if (((*(int *)(iVar3 + 0xe0) != 0) && ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0))
-       && (lVar2 = FUN_002a3750((u8*)camera,*(undefined4 *)(iVar3 + 0x120)), lVar2 != 0)) {
+       && (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
       btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
     }
     break;
@@ -5586,7 +5663,7 @@ void func_002ac6e0(BtlCamera* camera)
     }
     else if (((*(int *)(iVar3 + 0xe0) != 0) &&
              ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0)) &&
-            (lVar2 = FUN_002a3750((u8*)camera,*(undefined4 *)(iVar3 + 0x120)), lVar2 != 0)) {
+            (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
       btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
     }
     break;
@@ -5595,7 +5672,7 @@ void func_002ac6e0(BtlCamera* camera)
     break;
   case 6:
     if (((*(int *)(iVar3 + 0xe0) != 0) && ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0))
-       && (lVar2 = FUN_002a3750((u8*)camera,*(undefined4 *)(iVar3 + 0x120)), lVar2 != 0)) {
+       && (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
       btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
     }
   }
@@ -6023,115 +6100,128 @@ void func_002ad770(BtlCamera* camera)
     break;
   case 6:
     if (((*(int *)(iVar3 + 0xe0) != 0) && ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0))
-       && (lVar2 = FUN_002a3750((u8*)camera,*(undefined4 *)(iVar3 + 0x120)), lVar2 != 0)) {
+       && (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
       btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
     }
   }
   return;
 }
 
-// FUN_002AD880 NONMATCHING
 
-void func_002ad880(BtlCamera* camera,float angle,float param_2,float param_3,float param_4)
+// FUN_002ad880
+void func_002ad880(BtlCamera *camera, float angle, float distanceScale, float heightScale, float minimumDistance)
 {
-  int iVar1;
-  int iVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  undefined1 auStack_e0 [64];
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  undefined1 auStack_94 [16];
-  float fStack_84;
-  float fStack_80;
-  float fStack_7c;
-  undefined1 auStack_78 [24];
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  undefined1 auStack_10 [8];
-  float fStack_8;
-  
-  iVar2 = (int)camera;
-  iVar1 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)auStack_10);
-  fVar5 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
-  fVar4 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5;
-  fStack_18 = fStack_8;
-  fStack_1c = ((f32*)auStack_10)[1];
-  fStack_20 = ((f32*)auStack_10)[0];
-  if (fVar4 < fVar5) {
-    fVar3 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar2 + 0xb8) * 0.5);
-    fVar3 = (fVar5 * param_2) / fVar3;
+  extern f32 FUN_0052e930(f32 angle);
+  extern void FUN_004c31b0(RwMatrix *matrix, const RwV3d *axis, f32 angle, s32 mode);
+  extern void FUN_004be1e0(RwV3d *out, const RwV3d *basis, s32 mode, void *source);
+  extern RwV3d D_00697890;
+  typedef struct CameraVectorSlot {
+    RwV3d value;
+    u32 padding;
+  } CameraVectorSlot;
+  struct CameraOrbitScratch {
+    RwMatrix rotation;
+    RwV3d firstPosition;
+    u8 firstView[16];
+    RwV3d secondPosition;
+    u8 secondView[24];
+    CameraVectorSlot scaledOffset;
+    CameraVectorSlot candidate;
+    CameraVectorSlot direction;
+    CameraVectorSlot forward;
+    CameraVectorSlot center;
+    CameraVectorSlot sphereCenter;
+  } scratch;
+  u8 *unitBytes;
+  int cameraAddress;
+  float radius;
+  float halfHeight;
+  float requiredDistance;
+  u64 centerXY;
+  float centerZ;
+
+  cameraAddress = (int)camera;
+  unitBytes = (u8 *)(uintptr_t)*(int *)(*(int *)(cameraAddress + 0xe0) + 0x30);
+  btlUnitGetSphereWorldCenter((BtlUnit *)unitBytes, &scratch.sphereCenter.value);
+  radius = *(float *)(unitBytes + 0x90) * *(float *)(unitBytes + 0x2c);
+  halfHeight = *(float *)(unitBytes + 0x8c) * *(float *)(unitBytes + 0x2c) * 0.5f;
+  centerXY = *(volatile u64 *)&scratch.sphereCenter.value;
+  centerZ = *(volatile f32 *)&scratch.sphereCenter.value.z;
+  *(u64 *)&scratch.center.value = centerXY;
+  scratch.center.value.z = centerZ;
+  scratch.center.value.y = halfHeight * heightScale + scratch.center.value.y + 0.0f;
+  if (radius > halfHeight) {
+    requiredDistance = (radius * distanceScale) /
+      FUN_0052e930(DAT_007cad60 * (*(float *)(cameraAddress + 0xb8) * 0.5f));
+  } else {
+    requiredDistance = (halfHeight * distanceScale) /
+      FUN_0052e930(*(float *)(cameraAddress + 0xb8) * 0.5f);
   }
-  else {
-    fVar3 = (float)FUN_0052e930(*(float *)(iVar2 + 0xb8) * 0.5);
-    fVar3 = (fVar4 * param_2) / fVar3;
+  if (requiredDistance < minimumDistance) {
+    requiredDistance = minimumDistance;
   }
-  if (param_4 <= fVar3) {
-    param_4 = fVar3;
-  }
-  FUN_004be1e0(&fStack_30,0x697890,1,iVar1 + 0x1c);
-  fStack_60 = fStack_30 * fVar5;
-  fStack_5c = fStack_2c * fVar5;
-  fStack_58 = fStack_28 * fVar5;
-  fStack_50 = fStack_20 + fStack_60;
-  fStack_48 = fStack_18 + fStack_58;
-  fStack_4c = DAT_007cada4 * fVar4 + fStack_1c + fStack_5c + 0.0;
-  fStack_40 = fStack_50 - fStack_20;
-  fStack_3c = fStack_4c - fStack_1c;
-  fStack_38 = fStack_48 - fStack_18;
-  FUN_004c69f0(&fStack_40,&fStack_40);
-  fStack_60 = fStack_40 * param_4;
-  fStack_5c = fStack_3c * param_4;
-  fStack_58 = fStack_38 * param_4;
-  FUN_004c31b0(angle,auStack_e0,0x697880,0);
-  FUN_004c6c60(&fStack_40,&fStack_60,auStack_e0);
-  fStack_50 = fStack_20 + fStack_40;
-  fStack_4c = fStack_1c + fStack_3c;
-  fStack_48 = fStack_18 + fStack_38;
-  fStack_a0 = fStack_20 + fStack_40;
-  fStack_9c = fStack_1c + fStack_3c;
-  fStack_98 = fStack_18 + fStack_38;
-  FUN_004c31b0(-angle,auStack_e0,0x697880,0);
-  FUN_004c6c60(&fStack_40,&fStack_60,auStack_e0);
-  fStack_50 = fStack_20 + fStack_40;
-  fStack_4c = fStack_1c + fStack_3c;
-  fStack_48 = fStack_18 + fStack_38;
-  fStack_84 = fStack_20 + fStack_40;
-  fStack_80 = fStack_1c + fStack_3c;
-  fStack_7c = fStack_18 + fStack_38;
-  return;
+  FUN_004be1e0(&scratch.forward.value, &D_00697890, 1, (void *)(unitBytes + 0x1c));
+  scratch.scaledOffset.value.x = scratch.forward.value.x * radius;
+  scratch.scaledOffset.value.y = scratch.forward.value.y * radius;
+  scratch.scaledOffset.value.z = scratch.forward.value.z * radius;
+  scratch.candidate.value.x = scratch.center.value.x + scratch.scaledOffset.value.x;
+  scratch.candidate.value.y = scratch.center.value.y + scratch.scaledOffset.value.y;
+  scratch.candidate.value.z = scratch.center.value.z + scratch.scaledOffset.value.z;
+  scratch.candidate.value.y = DAT_007cada4 * halfHeight + scratch.candidate.value.y + 0.0f;
+  scratch.direction.value.x = scratch.candidate.value.x - scratch.center.value.x;
+  scratch.direction.value.y = scratch.candidate.value.y - scratch.center.value.y;
+  scratch.direction.value.z = scratch.candidate.value.z - scratch.center.value.z;
+  FUN_004c69f0(&scratch.direction.value, &scratch.direction.value);
+  scratch.scaledOffset.value.x = scratch.direction.value.x * requiredDistance;
+  scratch.scaledOffset.value.y = scratch.direction.value.y * requiredDistance;
+  scratch.scaledOffset.value.z = scratch.direction.value.z * requiredDistance;
+  FUN_004c31b0(&scratch.rotation, &D_00697880, angle, 0);
+  FUN_004c6c60(&scratch.direction.value, &scratch.scaledOffset.value, &scratch.rotation);
+  scratch.candidate.value.x = scratch.center.value.x + scratch.direction.value.x;
+  scratch.candidate.value.y = scratch.center.value.y + scratch.direction.value.y;
+  scratch.candidate.value.z = scratch.center.value.z + scratch.direction.value.z;
+  FUN_002a4690(scratch.firstView, &scratch.candidate.value, &scratch.center.value, &D_00697880);
+  scratch.firstPosition.x = scratch.center.value.x + scratch.direction.value.x;
+  scratch.firstPosition.y = scratch.center.value.y + scratch.direction.value.y;
+  scratch.firstPosition.z = scratch.center.value.z + scratch.direction.value.z;
+  FUN_004c31b0(&scratch.rotation, &D_00697880, -angle, 0);
+  FUN_004c6c60(&scratch.direction.value, &scratch.scaledOffset.value, &scratch.rotation);
+  scratch.candidate.value.x = scratch.center.value.x + scratch.direction.value.x;
+  scratch.candidate.value.y = scratch.center.value.y + scratch.direction.value.y;
+  scratch.candidate.value.z = scratch.center.value.z + scratch.direction.value.z;
+  FUN_002a4690(scratch.secondView, &scratch.candidate.value, &scratch.center.value, &D_00697880);
+  scratch.secondPosition.x = scratch.center.value.x + scratch.direction.value.x;
+  scratch.secondPosition.y = scratch.center.value.y + scratch.direction.value.y;
+  scratch.secondPosition.z = scratch.center.value.z + scratch.direction.value.z;
+  FUN_002a3e80(0.0f, *(u8 **)(cameraAddress + 0xe0), NULL, NULL, 1);
+  FUN_002a2290((u16 *)camera, &scratch.firstPosition, &scratch.secondPosition, 1);
+  FUN_002a3110(3.5f, (u16 *)camera);
 }
 
-// FUN_002ADC30 NONMATCHING
+// FUN_002ADC30
 
 void func_002adc30(BtlCamera* camera)
 {
-  func_002ad880(camera,0x41200000,0x40000000,0,0x437a0000);
+  func_002ad880(camera,10.0f,2.0f,0.0f,250.0f);
   return;
 }
 
-// FUN_002ADC80 NONMATCHING
-
-void func_002adc80(BtlCamera* camera)
+// FUN_002ADC70
+void btlCameraNoop002adc70(void)
 {
-  func_002ad880(camera,0x41700000,0x40000000,0x3e800000,0x43c80000);
+}
+
+// FUN_002ADC80
+void func_002adc80(BtlCamera* camera)
+
+{
+  func_002ad880(camera,15.0f,2.0f,0.25f,400.0f);
   return;
+}
+
+// FUN_002ADCC0
+void btlCameraNoop002adcc0(void)
+{
 }
 
 // FUN_002ADCD0
@@ -7115,7 +7205,7 @@ u16 FUN_002a3a80(void)
 
 }
 
-// FUN_002A3A90 NONMATCHING
+// FUN_002A3A90
 
 
 void FUN_002a3a90(int param_1)
@@ -7132,16 +7222,15 @@ void FUN_002a3a90(int param_1)
 
     }
 
-    if (*(short *)(iGpffffb6fc + 0xf0) == 0xc) {
-
-      if ((*(int *)(iGpffffb6fc + 0x120) != 0) &&
-
-         (*(int *)(*(int *)(iGpffffb6fc + 0x120) + 8) == *(int *)(param_1 + 8))) {
-
-        *(u32 *)(iGpffffb6fc + 0x120) = 0;
-
-      }
-
+    switch (*(u16 *)(iGpffffb6fc + 0xf0)) {
+      case 0xc:
+        if ((*(int *)(iGpffffb6fc + 0x120) != 0) &&
+            (*(int *)(*(int *)(iGpffffb6fc + 0x120) + 8) == *(int *)(param_1 + 8))) {
+          *(u32 *)(iGpffffb6fc + 0x120) = 0;
+        }
+        break;
+      default:
+        break;
     }
 
   }
@@ -7154,31 +7243,17 @@ void FUN_002a3a90(int param_1)
 
 
 void FUN_002a42a0(void)
-
-
-
 {
-
   int iVar1;
-
-  u32 uVar2;
-
+  u16 uVar2;
   
-
   for (uVar2 = 0; uVar2 < 2; uVar2 = uVar2 + 1 & 0xffff) {
-
     for (iVar1 = *(int *)(DAT_007ce3ec + uVar2 * 8 + 0x150); iVar1 != 0;
-
         iVar1 = *(int *)(iVar1 + 0xa34)) {
-
       FUN_0027f790(iVar1,7);
-
     }
-
   }
-
   return;
-
 }
 
 // FUN_002A4530 NONMATCHING
@@ -7363,65 +7438,21 @@ void FUN_002a4c20(void)
 }
 
 /* Recovered battle-misc harvest: 0x002A32F0-0x002A4690 */
-// FUN_002A32F0 NONMATCHING
+// FUN_002A32F0
 
 
 u8 FUN_002a32f0(int param_1)
-
-
-
 {
+    int unit;
 
-  int iVar1;
-
-  u8 bVar2;
-
-  long lVar3;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0xe0);
-
-  if (iVar1 == 0) {
-
-    bVar2 = 0;
-
-  }
-
-  else {
-
-    lVar3 = FUN_002fdfe0();
-
-    if (lVar3 == 0) {
-
-      lVar3 = FUN_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),0x80);
-
-      if (lVar3 == 0) {
-
-        lVar3 = FUN_002d5f50(iVar1);
-
-        bVar2 = lVar3 != 0;
-
-      }
-
-      else {
-
-        bVar2 = 1;
-
-      }
-
-    }
-
-    else {
-
-      bVar2 = 1;
-
-    }
-
-  }
-
-  return bVar2;
-
+    unit = *(int*)(param_1 + 0xe0);
+    if (unit == 0)
+        return 0;
+    if (FUN_002fdfe0(param_1) != 0)
+        return 1;
+    if (FUN_00300580(*(u32*)(*(int*)(unit + 0x30) + 0xa2c), 0x80) != 0)
+        return 1;
+    return FUN_002d5f50(unit) != 0;
 }
 
 // FUN_002A3380 NONMATCHING
@@ -7581,7 +7612,7 @@ u8 FUN_002a3520(int param_1)
 
 }
 
-// FUN_002A3550 NONMATCHING
+// FUN_002A3550
 
 
 u64 FUN_002a3550(u8* param_1)
@@ -7699,57 +7730,34 @@ u32 FUN_002a3590(float *param_1,long param_2)
 
 }
 
-// FUN_002A3750 NONMATCHING
+// FUN_002A3750
 
 
-u8 FUN_002a3750(u8* param_1,u64 param_2)
-
-
-
+s32 FUN_002a3750(BtlCamera* camera,u32 unit)
 {
-
-  u8 bVar1;
-
-  u16 uVar2;
-
-  short sVar3;
-
-  short sVar4;
-
+  BtlUnit *unitPtr;
+  s32 result;
+  s16 frameCount;
+  s16 animFrame;
   
-
-  if (param_2 == 0) {
-
-    bVar1 = 0;
-
+  unitPtr = (BtlUnit *)(uintptr_t)unit;
+  if (unitPtr == 0) {
+    result = 0;
   }
-
-  else if (*(char *)((int)param_2 + 0x33) == '\0') {
-
-    bVar1 = 0;
-
+  else if (((u8 *)unitPtr)[0x33] == '\0') {
+    result = 0;
   }
-
-  else if ((*(u32 *)((int)param_2 + 0x98) & 2) == 0) {
-
-    bVar1 = 0;
-
+  else if ((*(u32 *)((u8 *)unitPtr + 0x98) & 2) == 0) {
+    result = 0;
   }
-
   else {
-
-    uVar2 = FUN_00282c30(param_2);
-
-    sVar3 = FUN_002835e0(0x3f800000,param_2,uVar2);
-
-    sVar4 = FUN_00283ba0(param_2);
-
-    bVar1 = sVar3 <= sVar4;
-
+    frameCount = func_002835e0(
+      unitPtr, (u16)(s32)btlUnit00282c30(unitPtr), 1.0f);
+    animFrame = btlUnitGetAnimFrame(unitPtr);
+    result = animFrame < frameCount;
+    result = result ^ 1;
   }
-
-  return bVar1;
-
+  return result;
 }
 
 // FUN_002A3820
@@ -8063,12 +8071,14 @@ void FUN_002a44f0(f32* dst, f32* src)
   *(RtQuat*)(dst + 3) = *(RtQuat*)(src + 3);
 }
 
-// FUN_002A4690 NONMATCHING
+// FUN_002A4690
 
 
 void FUN_002a4690(void* out, const void* first, const void* second, const void* config)
 {
   u8 auStack_40[64];
 
+  FUN_002a4530((float*)auStack_40, (float*)second, (float*)first,
+               (float*)config);
   FUN_004bdcb0(out, auStack_40);
 }

@@ -429,7 +429,8 @@ destroyTask:
         H_Free(task);
     }
 }
-// FUN_001943B0 NONMATCHING. Set task flags recursively through the child hierarchy.
+#pragma optimization_level 1
+// FUN_001943B0. Set task flags recursively through the child hierarchy.
 void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 {
     KwlnTask* child;
@@ -470,6 +471,7 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
         child = child->sibling;
     }
 }
+#pragma optimization_level 2
 
 // FUN_001944C0 NONMATCHING. Set task flags for one task, its hierarchy, or the task lists.
 void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)

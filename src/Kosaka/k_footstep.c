@@ -21,6 +21,8 @@ extern void func_0010a4e0(s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern u8* D_0067EF00[];
 extern Model* D_008717F0;
 extern u32 D_00875A50[RESRC_ID_MASK + 1];
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 
 typedef s32 (*FootstepAnimSelector)(s32 charId);
 
@@ -306,7 +308,7 @@ typedef struct
     f32 screenX;
     f32 screenY;
     f32 depth;
-    u8 data[0x21c];
+    u8 data[0x218];
 } FldEffectDrawWork;
 
 typedef struct
@@ -325,7 +327,7 @@ extern void* func_001a9180(KwlnTask* task);
 extern void* func_001a91b0(KwlnTask* task, const RwV3d* position);
 extern void func_001a9390(KwlnTask* task, void* handle, u32 value);
 extern u32 func_002ff790(DatUnitGenusBase* genus);
-extern void func_0018bee0(void* owner, u16 charId, u32 variant);
+extern void func_0018bee0(void* owner, s32 charId, u32 variant);
 extern u8 D_006792E0[];
 extern u8 D_006799FC[];
 extern u8 D_00679A16[];
@@ -385,13 +387,10 @@ void* func_001dc6f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001dc8e0 NONMATCHING
+// FUN_001dc8e0
 void func_001dc8e0(KwlnTask* task)
 {
-    if (task != NULL)
-    {
-        RwFree(task->workData);
-    }
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 // FUN_001dc910 NONMATCHING
 KwlnTask* func_001dc910(KwlnTask* parent, void* resource)
@@ -477,16 +476,13 @@ void* func_001dcb60(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001dd430 NONMATCHING
+// FUN_001dd430
 void func_001dd430(KwlnTask* task)
 {
-    if (task != NULL)
-    {
-        RwFree(task->workData);
-    }
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
-// FUN_001dd460 NONMATCHING
+// FUN_001dd460
 KwlnTask* func_001dd460(KwlnTask* parent, void* data, u32 kind)
 {
     FldEffectDrawWork* work;
@@ -496,51 +492,44 @@ KwlnTask* func_001dd460(KwlnTask* parent, void* data, u32 kind)
     {
         return NULL;
     }
-    task = kwlnTaskCreate(parent, "field draw effect", 0x230,
+    task = kwlnTaskCreate(parent, "field draw effect", kind,
                           func_001dcb60, func_001dd430, work);
-    work->kind = kind;
-    work->mode = data != NULL ? 1 : 0;
+    work->kind = (u32)data;
+    if (kind == 0x1058)
+    {
+        work->mode = 1;
+    }
+    else
+    {
+        work->mode = 0;
+    }
     return task;
 }
 
-// FUN_001dd530 NONMATCHING
+// FUN_001dd530
 void func_001dd530(KwlnTask* task, const RwV3d* position)
 {
     FldEffectDrawWork* work;
-    RwCamera* camera;
     RwV3d view;
-    if (task == NULL || task->workData == NULL || position == NULL)
-    {
-        return;
-    }
+    RwMatrix* viewMatrix;
     work = (FldEffectDrawWork*)task->workData;
-    camera = kwlnGetMainCamera();
-    if (camera == NULL)
-    {
-        return;
-    }
-    RwV3dTransformPoint(&view, position, &camera->viewMatrix);
-    work->screenX = view.x;
-    work->screenY = view.y;
+    viewMatrix = &kwlnGetMainCamera()->viewMatrix;
+    RwV3dTransformPoint(&view, position, viewMatrix);
+    work->screenX = 640.0f * (view.x / view.z) - 16.0f;
+    work->screenY = 448.0f * (view.y / view.z) - 16.0f;
     work->depth = view.z;
 }
 
-// FUN_001dd5e0 NONMATCHING
+// FUN_001dd5e0
 void func_001dd5e0(KwlnTask* task, u32 value)
 {
-    if (task != NULL && task->workData != NULL)
-    {
-        *(u32*)task->workData = value;
-    }
+    *(u32*)task->workData = value;
 }
 
-// FUN_001dd5f0 NONMATCHING
+// FUN_001dd5f0
 void func_001dd5f0(KwlnTask* task, u32 value)
 {
-    if (task != NULL && task->workData != NULL)
-    {
-        *(u32*)((u8*)task->workData + 0x224) = value;
-    }
+    *(u32*)((u8*)task->workData + 0x224) = value;
 }
 
 // FUN_001dd600 NONMATCHING
@@ -758,13 +747,10 @@ void* func_001dfa70(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001e04e0 NONMATCHING
+// FUN_001e04e0
 void func_001e04e0(KwlnTask* task)
 {
-    if (task != NULL)
-    {
-        RwFree(task->workData);
-    }
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
 // FUN_001e0510

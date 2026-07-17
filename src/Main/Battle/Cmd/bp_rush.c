@@ -4,12 +4,16 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_0025d130(void);
-void FUN_0025d470(void);
 extern f32 DAT_007caee8;
 extern u32* DAT_007ce36c;
-extern code DAT_00960090;
-extern code DAT_0096009c;
+extern code DAT_00960090[];
+extern code DAT_0096009c[];
+extern const char DAT_0068ebe8[];
+extern void FUN_0025d130(void);
+extern f32 FUN_0052e6d8(f32 angle);
+extern f32 FUN_0052e878(f32 angle);
+extern void* FUN_0021cca0_ptr(void* texture, s32 frame);
+#pragma alias FUN_0021cca0_ptr FUN_0021cca0
 
 static u32* sBpRush; // DAT_007ce36c
 
@@ -56,7 +60,7 @@ void bpRush0025d850(void)
     *sBpRush &= 0xffffffbf;
 }
 
-// FUN_0025d020 NONMATCHING
+// FUN_0025d020
 void bpRush0025d020(void)
 {
     u32* work;
@@ -82,237 +86,130 @@ void bpRush0025d020(void)
         } else if (0 < (int)work[0x205]) {
             work[0x205] = work[0x205] - 1;
         }
+        FUN_0025d130();
     }
 }
 
 /* Recovered battle-misc harvest: 0x0025D470-0x0025D470 */
-// FUN_0025D470 NONMATCHING
-
-
+// FUN_0025D470
 void FUN_0025d470(void)
-
-
-
 {
+    extern void* FUN_00267390(void);
+    extern void* FUN_0021cca0(void* texture, s32 frame);
+    extern void* FUN_0021cce0(void* frame);
+    extern void FUN_0021d8e0(void* destination, const f32* layout);
+    extern void FUN_0021d950(void* destination, const u8* color);
+    extern void FUN_004d7f60(s32 state, u32 value);
+    volatile code *state;
+    volatile code *quad;
+    u32* puVar1;
+    void* uVar2;
+    void* uVar3;
+    int iVar4;
+    u32* pQuad;
 
-  u32 *puVar1;
-
-  u64 uVar2;
-
-  u64 uVar3;
-
-  int iVar4;
-
-  
-
-  if (DAT_007ce36c == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68ebe8,0x32);
-
-  }
-
-  puVar1 = DAT_007ce36c;
-
-  uVar2 = FUN_00267390();
-
-  if ((~*puVar1 & 1) == 0) {
-
-    (*DAT_00960090)(9,2);
-
-    (*DAT_00960090)(0x14,2);
-
-    (*DAT_00960090)(8,0);
-
-    (*DAT_00960090)(6,0);
-
-    uVar3 = FUN_0021cca0(uVar2,1);
-
-    uVar3 = FUN_0021cce0(uVar3);
-
-    (*DAT_00960090)(1,uVar3);
-
-    FUN_004d7f60(3,0x71801);
-
-    FUN_004d7f60(2,0x48);
-
-    for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
-
-      (*DAT_0096009c)(puVar1 + iVar4 * 0x40 + 0x44,4,0,1,2);
-
-      (*DAT_0096009c)(puVar1 + iVar4 * 0x40 + 0x44,4,0,2,3);
-
+    if (DAT_007ce36c == (u32*)0x0) {
+        K_Assert(DAT_0068ebe8, 0x32);
     }
-
-    uVar2 = FUN_0021cca0(uVar2,0);
-
-    uVar2 = FUN_0021cce0(uVar2);
-
-    (*DAT_00960090)(1,uVar2);
-
-    FUN_004d7f60(3,0x717fb);
-
-    FUN_004d7f60(2,0x44);
-
-    (*DAT_0096009c)(puVar1 + 4,4,0,1,2);
-
-    (*DAT_0096009c)(puVar1 + 4,4,0,2,3);
-
-  }
-
-  return;
-
+    puVar1 = DAT_007ce36c;
+    uVar2 = FUN_00267390();
+    if ((~*puVar1 & 1) == 0) {
+        state = DAT_00960090;
+        (*state)(9, 2);
+        (*state)(0x14, 2);
+        (*state)(8, 0);
+        (*state)(6, 0);
+        uVar3 = FUN_0021cca0(uVar2, 1);
+        uVar3 = FUN_0021cce0(uVar3);
+        (*state)(1, uVar3);
+        FUN_004d7f60(3, 0x71801);
+        FUN_004d7f60(2, 0x48);
+        for (iVar4 = 0; iVar4 < 7; iVar4 = iVar4 + 1) {
+            pQuad = puVar1 + iVar4 * 0x40 + 0x44;
+            quad = DAT_0096009c;
+            (*quad)(pQuad, 4, 0, 1, 2);
+            (*quad)(pQuad, 4, 0, 2, 3);
+        }
+        uVar3 = FUN_0021cca0(uVar2, 0);
+        uVar3 = FUN_0021cce0(uVar3);
+        (*state)(1, uVar3);
+        FUN_004d7f60(3, 0x717fb);
+        FUN_004d7f60(2, 0x44);
+        quad = DAT_0096009c;
+        (*quad)(puVar1 + 4, 4, 0, 1, 2);
+        (*quad)(puVar1 + 4, 4, 0, 2, 3);
+    }
 }
 
 /* Recovered battle-misc harvest: 0x0025D130-0x0025D130 */
-// FUN_0025D130 NONMATCHING
-
-
+// FUN_0025D130
 void FUN_0025d130(void)
-
-
-
 {
-
-  int iVar1;
-
-  int iVar2;
-
-  u64 uVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fVar9;
-
-  float fVar10;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_24;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 uStack_1;
-
-  
-
-  if (DAT_007ce36c == 0) {
-
-    FUN_0019d3f0(0x68ebe8,0x32);
-
-  }
-
-  iVar1 = (int)DAT_007ce36c;
-
-  uVar3 = FUN_00267390();
-
-  fVar6 = (float)*(int *)(iVar1 + 0x810) / 16.0;
-
-  fVar8 = (float)*(int *)(iVar1 + 0x814) / 10.0;
-
-  iVar2 = FUN_0021cca0(uVar3,0);
-
-  fStack_30 = 41.0;
-
-  fStack_2c = 379.0;
-
-  fStack_28 = (float)*(int *)(iVar2 + 0xc);
-
-  fStack_24 = (float)*(int *)(iVar2 + 0x10);
-
-  FUN_0021d8e0(iVar1 + 0x10,&fStack_30);
-
-  uStack_4 = 0xff;
-
-  uStack_3 = 0xff;
-
-  uStack_2 = 0xff;
-
-  fVar7 = fVar6 * 255.0;
-
-  if (fVar7 < 2.1474836e+09) {
-
-    uStack_1 = (u8)(int)fVar7;
-
-  }
-
-  else {
-
-    uStack_1 = (u8)(int)(fVar7 - 2.1474836e+09);
-
-  }
-
-  FUN_0021d950(iVar1 + 0x10,&uStack_4);
-
-  iVar5 = *(int *)(iVar1 + 0x818);
-
-  iVar2 = FUN_0021cca0(uVar3,1);
-
-  fVar10 = DAT_007caee8 * ((float)iVar5 / 10.0);
-
-  fVar6 = fVar6 * fVar8 * 20.0;
-
-  fVar7 = fVar7 * fVar8;
-
-  for (iVar5 = 0; iVar5 < 7; iVar5 = iVar5 + 1) {
-
-    iVar4 = iVar1 + iVar5 * 0x100 + 0x110;
-
-    fVar9 = fVar10 + (DAT_007caee8 * (float)iVar5) / 7.0;
-
-    fVar8 = (float)FUN_0052e6d8(fVar9);
-
-    fVar8 = fVar6 * fVar8;
-
-    fVar9 = (float)FUN_0052e878(fVar9);
-
-    fStack_30 = fVar8 + 35.0 + 6.0 + 4.0;
-
-    fStack_2c = fVar6 * fVar9 + 366.0 + 13.0 + 4.0;
-
-    fStack_28 = (float)*(int *)(iVar2 + 0xc);
-
-    fStack_24 = (float)*(int *)(iVar2 + 0x10);
-
-    FUN_0021d8e0(iVar4,&fStack_30);
-
-    uStack_4 = 0xff;
-
-    uStack_3 = 0xff;
-
-    uStack_2 = 0xff;
-
-    if (fVar7 < 2.1474836e+09) {
-
-      uStack_1 = (u8)(int)fVar7;
-
+    u8* work;
+    void* texture;
+    void* frame;
+    s32 i;
+    u8* quad;
+    f32 scaleX;
+    f32 scaleY;
+    f32 angleBase;
+    f32 spin;
+    f32 alpha;
+    f32 width;
+    f32 cosine;
+    f32 angle;
+    f32 sine;
+    f32 colorValue;
+    f32 rect[8];
+    struct {
+        u8 r;
+        u8 g;
+        u8 b;
+        u8 a;
+    } color;
+    if (DAT_007ce36c == (u32*)0x0) {
+        K_Assert(DAT_0068ebe8, 0x32);
     }
+    work = (u8*)DAT_007ce36c;
+    texture = (void*)(uintptr_t)FUN_00267390();
+    scaleX = (f32)*(s32*)(work + 0x810) / 16.0f;
+    scaleY = (f32)*(s32*)(work + 0x814) / 10.0f;
 
-    else {
+    frame = FUN_0021cca0_ptr(texture, 0);
+    rect[0] = 41.0f;
+    rect[1] = 379.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x10, rect);
 
-      uStack_1 = (u8)(int)(fVar7 - 2.1474836e+09);
+    color.r = 0xff;
+    color.g = 0xff;
+    color.b = 0xff;
+    colorValue = scaleX * 255.0f;
+    color.a = (u8)colorValue;
+    FUN_0021d950(work + 0x10, &color);
+    spin = (f32)*(s32*)(work + 0x818) / 10.0f;
+    frame = FUN_0021cca0_ptr(texture, 1);
+    i = 0;
+    angleBase = DAT_007caee8 * spin;
+    width = scaleX * scaleY * 20.0f;
+    alpha = colorValue * scaleY;
+    while (i < 7) {
+        quad = work + i * 0x100 + 0x110;
+        angle = angleBase + (DAT_007caee8 * (f32)i) / 7.0f;
+        cosine = width * FUN_0052e6d8(angle);
+        sine = width * FUN_0052e878(angle);
+        rect[0] = ((35.0f + cosine) + 6.0f) + 4.0f;
+        rect[1] = ((366.0f + sine) + 13.0f) + 4.0f;
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(quad, rect);
 
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
+        color.a = (u8)alpha;
+        FUN_0021d950(quad, &color);
+        i = i + 1;
     }
-
-    FUN_0021d950(iVar4,&uStack_4);
-
-  }
-
-  return;
-
 }

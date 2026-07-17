@@ -730,7 +730,6 @@ void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const ch
     for (; i < HCDVD_CACHE_MAX; i++)
     {
         curr = &cache[i];
-
         if (!curr->isValid)
         {
             curr->isValid = true;

@@ -27,10 +27,11 @@ void FUN_004cb6e0(void* object, void (*callback)(void), void* data);
 void FUN_001a7170(RpClump* clump, RpHAnimHierarchy* hierarchy);
 RpHAnimHierarchy* FUN_00466480(RpHAnimHierarchy* hierarchy, u32 flags, u32 value, s32 index);
 void* func_0031d700(void* resource);
+void func_00320290(void* resource);
 void* func_0031e0b0(void* resource);
 void func_00313230(MdlAnimSlot* slot);
 void func_003132c0(u8* slot);
-void func_00313be0(void* data);
+void func_00313be0(MdlAnimEntryTable* table);
 void func_00313e60(void* data);
 void func_003143c0(u8* state, RpClump* clump);
 void func_00314d30(void* state);
@@ -1039,6 +1040,13 @@ void mdlStreamDestroy(Model* mdl)
 
 
 /* ---- Recovered range 0x311480-0x31D4F0 (Ghidra reference, pending match) ---- */
+typedef struct MdlAnimResourceEntry
+{
+    void* resource;
+    u8 flags;
+    u8 unk_05[3];
+} MdlAnimResourceEntry;
+
 typedef int (*code)(...);
 typedef u8 bool;
 #ifndef CONCAT44
@@ -1121,7 +1129,7 @@ u64 func_00314170(u64 param_1,long param_2);
 u64 func_003142b0(void* param_1);
 u64 func_00314510(u64 param_1);
 u64 func_00314650(u64 param_1);
-u64 func_00315010(u64 param_1,u64 param_2);
+void* func_00315010(void* object, void* data);
 u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
@@ -1154,6 +1162,7 @@ void func_0031c000(char* param_1,u16 param_2);
 u32 func_0031c1d0(u64 param_1);
 u32 func_0031c7e0(int param_1);
 u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
+void FUN_0031e4d0(int *param_1,u16 param_2,u16 param_3);
 
 // FUN_00311480 NONMATCHING
 
@@ -3556,45 +3565,28 @@ LAB_00313b48:
 
 
 
+// FUN_00313BE0
 
-// FUN_00313BE0 NONMATCHING
 
-
-void func_00313be0(void* param_1)
+void func_00313be0(MdlAnimEntryTable* table)
 {
+    u16 i;
 
-  int *piVar1;
+    table->unk_06--;
+    if (table->unk_06 == 0) {
+        for (i = 0; i < table->count; i++) {
+            MdlAnimResourceEntry* entry;
 
-  int *piVar2;
+            entry = (MdlAnimResourceEntry*)table->entries;
+            entry += i;
 
-  u32 uVar3;
+            if ((entry->resource != NULL) && ((entry->flags & 1) == 0)) {
+                func_00320290(entry->resource);
+            }
+        }
 
-  
-
-  piVar2 = (int *)param_1;
-
-  *(short *)((int)piVar2 + 6) = *(short *)((int)piVar2 + 6) + -1;
-
-  if (*(short *)((int)piVar2 + 6) == 0) {
-
-    for (uVar3 = 0; uVar3 < *(u16 *)(piVar2 + 1); uVar3 = uVar3 + 1 & 0xffff) {
-
-      piVar1 = (int *)(*piVar2 + uVar3 * 8);
-
-      if ((*piVar1 != 0) && ((*(u8 *)(piVar1 + 1) & 1) == 0)) {
-
-        func_00320290();
-
-      }
-
+        (*DAT_0096017c)(table);
     }
-
-    (*DAT_0096017c)(param_1);
-
-  }
-
-  return;
-
 }
 
 
@@ -4715,41 +4707,18 @@ void func_00314d30(void* param_1)
 
 
 
-// FUN_00315010 NONMATCHING
+// FUN_00315010
 
 
-u64 func_00315010(u64 param_1,u64 param_2)
-
-
-
+void* func_00315010(void* object, void* data)
 {
+    if (*(void**)((u8*)data + 4) == (void*)func_00466720()) {
+        *(void**)data = object;
+        return NULL;
+    }
 
-  int iVar1;
-
-  int iVar2;
-
-  
-
-  iVar1 = ((u32 *)param_2)[1];
-
-  iVar2 = func_00466720();
-
-  if (iVar1 == iVar2) {
-
-    *(u32 *)param_2 = (int)param_1;
-
-    param_1 = 0;
-
-  }
-
-  else {
-
-    func_004cb6e0(param_1,0x315010,param_2);
-
-  }
-
-  return param_1;
-
+    func_004cb6e0(object, (void (*)(void))func_00315010, data);
+    return object;
 }
 
 
@@ -7578,57 +7547,31 @@ void func_003196f0(Model* param_1,u16 param_2)
 
 void func_003197c0(Model* param_1,RwMatrix* param_2)
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
   int iVar3;
-
   u32 *puVar4;
-
   u32 *puVar5;
-
   u32 uVar6;
 
-  
-
   for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-
     iVar3 = *(int *)(param_1 + uVar6 * 0xc + 0x3b8);
-
     if (iVar3 != 0) {
-
       puVar4 = (u32 *)(iVar3 + 0x90);
-
       iVar3 = 8;
-
       puVar5 = (u32*)param_2;
-
       do {
-
         uVar1 = *puVar5;
-
         uVar2 = puVar5[1];
-
         puVar5 = puVar5 + 2;
-
         iVar3 = iVar3 + -1;
-
         *puVar4 = uVar1;
-
         puVar4[1] = uVar2;
-
         puVar4 = puVar4 + 2;
-
       } while (0 < iVar3);
-
     }
-
   }
-
   return;
-
 }
 
 
@@ -10023,7 +9966,7 @@ u32 func_0031c1d0(u64 param_1)
 
 
 
-// FUN_0031C7E0 NONMATCHING
+// FUN_0031C7E0
 
 
 u32 func_0031c7e0(int param_1)
@@ -10031,8 +9974,9 @@ u32 func_0031c7e0(int param_1)
 
 
 {
-
-  func_0031e4d0(param_1 + 0x3f8,*(u16 *)(param_1 + 0xd4),*(u16 *)(param_1 + 0xd6));
+  int iVar1;
+  iVar1 = param_1;
+  FUN_0031e4d0((int *)(iVar1 + 0x3f8),*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6));
 
   return 1;
 

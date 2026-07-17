@@ -234,7 +234,7 @@ u32 datGetScenarioMode(void);
 
 u16 func_0016c670(s16 pcId);
 u8 func_0016dbc0(s16 socialLink, u32* personaId);
-u8 func_0016df30(s16 socialLink);
+s8 func_0016df30(s16 socialLink);
 u16 func_00170760(s16 pcId, s16 index);
 void func_00170860(s16 pcId, s16 index, u16 value);
 void* func_00170e90(s16 id);
@@ -265,7 +265,7 @@ void datSetMoney(u32 money);
 u32 datAddMoney(s32 amount);
 s16 datGetPartyId(s32 idx);
 void datSetPartyId(s32 idx, s16 pcId);
-s8 datGetAiTactic(s16 pcId);
+s32 datGetAiTactic(s16 pcId);
 void datSetPhysicalCondition(s16 pcId, u16 physicalCondition);
 void datSetFatigueCounter(s16 pcId, u16 fatigueCounter);
 void FUN_0016ca90(s16 pcId, s16 fatigueChange);

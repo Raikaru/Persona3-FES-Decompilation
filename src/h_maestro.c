@@ -3930,8 +3930,8 @@ KwlnTask* func_00117490(KwlnTask* parent, void* blob)
 void func_001191c0(KwlnTask* task)
 {
     s32 i;
-    void** entry;
     MaestroPerEffectWork* work;
+    void** entry;
 
     work = (MaestroPerEffectWork*)task->workData;
     if (work->archiveCacheRequest != NULL)
@@ -3941,19 +3941,19 @@ void func_001191c0(KwlnTask* task)
     func_001124b0(work->blob);
     for (i = 0; i < 9; i++)
     {
-        entry = (void**)((int)work + i * 4 + 0x58);
-        if (*(void**)((int)work + i * 4 + 0x58) != NULL)
+        entry = (void**)&work->cdvd[i];
+        if (work->cdvd[i] != NULL)
         {
-            H_Cdvd_Destroy(*(HCdvd**)((int)work + i * 4 + 0x58));
+            H_Cdvd_Destroy(work->cdvd[i]);
             *entry = NULL;
         }
     }
     for (i = 0; i < 6; i++)
     {
-        entry = (void**)((int)work + i * 4 + 0x40);
-        if (*(void**)((int)work + i * 4 + 0x40) != NULL)
+        entry = &work->loadedResources[i];
+        if (work->loadedResources[i] != NULL)
         {
-            func_004d0f00(*(void**)((int)work + i * 4 + 0x40));
+            func_004d0f00(work->loadedResources[i]);
             *entry = NULL;
         }
     }
