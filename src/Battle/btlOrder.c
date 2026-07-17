@@ -71,15 +71,14 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
-#pragma optimization_level 3
+#pragma optimization_level 4
 // FUN_0029a320 NONMATCHING
 u32 FUN_0029a320(BtlAction* action)
 {
-    BtlAction* action_p = action;
     u32 removed;
 
     removed = 0;
-    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action_p) != 0)
+    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action) == 1)
     {
         removed = 1;
     }
@@ -317,8 +316,18 @@ void FUN_0029a690(u16 genus)
 // FUN_0029a750 NONMATCHING
 void FUN_0029a750(void)
 {
-    BtlAction* action;
+    u16 playerCount;
+    u16 enemyCount;
     BtlAction** actions;
+    BtlUnit* unit;
+    u16 enemyWeightTotal;
+    u16 i;
+    u16 playerOrdered;
+    u16 enemyOrdered;
+    u16 j;
+    u16 actionCount;
+    u16 count;
+    u16 playerWeightTotal;
     struct
     {
         BtlAction* action;
@@ -331,25 +340,15 @@ void FUN_0029a750(void)
     } enemyActions[BTL_MAXACTIONS];
     BtlAction* orderedPlayers[BTL_MAXACTIONS];
     BtlAction* orderedEnemies[BTL_MAXACTIONS];
-    u16 enemyCount;
-    u16 playerCount;
-    u16 playerWeightTotal;
-    u16 enemyWeightTotal;
-    u16 actionCount;
-    u16 count;
-    u16 playerOrdered;
-    u16 enemyOrdered;
-    u16 i;
-    u16 j;
+    BtlAction* action;
     u16 outputCount;
-    BtlUnit* unit;
 
     FUN_0029a570();
     actions = gBtl->order.actions;
-    enemyCount = 0;
     playerCount = 0;
-    playerWeightTotal = 0;
     enemyWeightTotal = 0;
+    enemyCount = 0;
+    playerWeightTotal = 0;
     actionCount = 0;
     count = 0;
     while (count < BTL_MAXACTIONS)
@@ -436,9 +435,9 @@ void FUN_0029a750(void)
     {
         if (playerOrdered < playerCount && enemyOrdered < enemyCount)
         {
-            s16 tmp;
-            u16 threshold;
             u32 randomValue;
+            u16 threshold;
+            s16 tmp;
 
             tmp = (i == 0) ? 0x32 : (((i & 1) != 0) ? 0x50 : 0x14);
             threshold = tmp;
