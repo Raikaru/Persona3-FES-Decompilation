@@ -63,6 +63,15 @@ typedef struct BtlFormationState {
   u16 counter;
   u32 value;
 } BtlFormationState;
+typedef struct FormationMenuState {
+  s16 x;
+  s16 y;
+  s16 firstEntry;
+  s16 selectedEntry;
+  s16 unk8;
+  s16 visibleEntries;
+  s16 entryCount;
+} FormationMenuState;
 typedef struct BtlFormationWork {
   u32 state;
   u32 list;
@@ -330,6 +339,14 @@ extern u32 DAT_007e094e;
 extern u32 DAT_007e0952;
 extern u32 DAT_007e0958;
 extern u32 DAT_007e095a;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0958_abs DAT_007e0958
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u16 DAT_007e094e_abs[];
+extern u16 DAT_007e0952_abs[];
+extern u16 DAT_007e0958_abs[];
+extern u16 DAT_007e095a_abs[];
 extern u32 DAT_00957100;
 extern u32 DAT_00957140;
 extern u32 DAT_00957144;
@@ -3954,103 +3971,87 @@ u32 func_002bde10(int unit, u16* output)
 
 // FUN_002bdfb0 NONMATCHING
 
-u32 func_002bdfb0(int param_1)
-
+u32 func_002bdfb0(int state)
 {
-  short sVar1 = 0;
-  short sVar2 = 0;
-  short sVar3 = 0;
-  u32 uVar4 = 0;
-  long lVar5 = 0;
-  short sVar6 = 0;
-  
-  if (*(short *)(param_1 + 0xc) <= *(short *)(param_1 + 6)) {
-    *(short *)(param_1 + 6) = *(short *)(param_1 + 0xc) + -1;
-    sVar2 = *(short *)(param_1 + 0xc) - *(short *)(param_1 + 10);
-    *(short *)(param_1 + 4) = sVar2;
-    if (sVar2 < 0) {
-      *(u16 *)(param_1 + 4) = 0;
+  FormationMenuState* menu;
+  s16 steps;
+  s16 index;
+  s16 firstEntry;
+  s16 selectedEntry;
+  long selected;
+  u32 result;
+
+  menu = (FormationMenuState*)state;
+  if (menu->selectedEntry >= menu->entryCount) {
+    menu->selectedEntry = menu->entryCount - 1;
+    menu->firstEntry = menu->entryCount - menu->visibleEntries;
+    if (menu->firstEntry < 0) {
+      menu->firstEntry = 0;
     }
   }
-  if (((DAT_007e094e & 0x40) == 0) && ((DAT_007e0958 & 0x40) == 0)) {
-    if (((DAT_007e094e & 0x20) == 0) && ((DAT_007e0958 & 0x20) == 0)) {
-      if (((((DAT_007e0952 & 0x1000) == 0) && ((DAT_007e095a & 0x1000) == 0)) &&
-          ((DAT_007e0952 & 0x8000) == 0)) && ((DAT_007e095a & 0x8000) == 0)) {
-        if (((((DAT_007e0952 & 0x4000) == 0) && ((DAT_007e095a & 0x4000) == 0)) &&
-            ((DAT_007e0952 & 0x2000) == 0)) && ((DAT_007e095a & 0x2000) == 0)) {
-          uVar4 = 0;
-        }
-        else {
-          if (((DAT_007e0952 & 0x4000) == 0) && ((DAT_007e095a & 0x4000) == 0)) {
-            sVar2 = *(short *)(param_1 + 10);
+
+  if ((DAT_007e094e_abs[0] & 0x40) != 0 || (DAT_007e0958_abs[0] & 0x40) != 0) {
+    result = 2;
+  } else if ((DAT_007e094e_abs[0] & 0x20) != 0 || (DAT_007e0958_abs[0] & 0x20) != 0) {
+    result = 1;
+  } else {
+    if ((DAT_007e0952_abs[0] & 0x1000) != 0 || (DAT_007e095a_abs[0] & 0x1000) != 0 ||
+        (DAT_007e0952_abs[0] & 0x8000) != 0 || (DAT_007e095a_abs[0] & 0x8000) != 0) {
+      if ((DAT_007e0952_abs[0] & 0x1000) == 0 && (DAT_007e095a_abs[0] & 0x1000) == 0) {
+        steps = menu->visibleEntries;
+      } else {
+        steps = 1;
+      }
+      for (index = 0; index < steps; index++) {
+        firstEntry = menu->firstEntry;
+        selectedEntry = menu->selectedEntry;
+        if ((long)(firstEntry + 1) < (long)selectedEntry) {
+          menu->selectedEntry = selectedEntry - 1;
+        } else if (firstEntry < 1) {
+          if ((long)selectedEntry == 1) {
+            menu->selectedEntry = 0;
+          } else {
+            menu->firstEntry = menu->entryCount - menu->visibleEntries;
+            if (menu->firstEntry < 0) {
+              menu->firstEntry = 0;
+            }
+            menu->selectedEntry = menu->entryCount - 1;
           }
-          else {
-            sVar2 = 1;
-          }
-          for (sVar6 = 0; sVar6 < sVar2; sVar6 = sVar6 + 1) {
-            lVar5 = (long)*(short *)(param_1 + 6);
-            if ((lVar5 < (int)*(short *)(param_1 + 4) + (int)*(short *)(param_1 + 10) + -2) &&
-               (lVar5 < *(short *)(param_1 + 0xc) + -2)) {
-              *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + 1;
-            }
-            else if ((long)*(short *)(param_1 + 4) <
-                     (long)((int)*(short *)(param_1 + 0xc) - (int)*(short *)(param_1 + 10))) {
-              *(short *)(param_1 + 4) = *(short *)(param_1 + 4) + 1;
-              *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + 1;
-            }
-            else if (lVar5 < *(short *)(param_1 + 0xc) + -1) {
-              *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + 1;
-            }
-            else {
-              *(u16 *)(param_1 + 4) = 0;
-              *(u16 *)(param_1 + 6) = 0;
-            }
-          }
-          uVar4 = 4;
+        } else {
+          menu->firstEntry = firstEntry - 1;
+          menu->selectedEntry--;
         }
       }
-      else {
-        if (((DAT_007e0952 & 0x1000) == 0) && ((DAT_007e095a & 0x1000) == 0)) {
-          sVar2 = *(short *)(param_1 + 10);
-        }
-        else {
-          sVar2 = 1;
-        }
-        for (sVar6 = 0; sVar6 < sVar2; sVar6 = sVar6 + 1) {
-          sVar3 = *(short *)(param_1 + 4);
-          sVar1 = *(short *)(param_1 + 6);
-          if ((long)(sVar3 + 1) < (long)sVar1) {
-            *(short *)(param_1 + 6) = sVar1 + -1;
-          }
-          else if (sVar3 < 1) {
-            if ((long)sVar1 == 1) {
-              *(u16 *)(param_1 + 6) = 0;
-            }
-            else {
-              sVar3 = *(short *)(param_1 + 0xc) - *(short *)(param_1 + 10);
-              *(short *)(param_1 + 4) = sVar3;
-              if (sVar3 < 0) {
-                *(u16 *)(param_1 + 4) = 0;
-              }
-              *(short *)(param_1 + 6) = *(short *)(param_1 + 0xc) + -1;
-            }
-          }
-          else {
-            *(short *)(param_1 + 4) = sVar3 + -1;
-            *(short *)(param_1 + 6) = *(short *)(param_1 + 6) + -1;
-          }
-        }
-        uVar4 = 3;
+      result = 3;
+    } else if ((DAT_007e0952_abs[0] & 0x4000) != 0 || (DAT_007e095a_abs[0] & 0x4000) != 0 ||
+               (DAT_007e0952_abs[0] & 0x2000) != 0 || (DAT_007e095a_abs[0] & 0x2000) != 0) {
+      if ((DAT_007e0952_abs[0] & 0x4000) == 0 && (DAT_007e095a_abs[0] & 0x4000) == 0) {
+        steps = menu->visibleEntries;
+      } else {
+        steps = 1;
       }
-    }
-    else {
-      uVar4 = 1;
+      for (index = 0; index < steps; index++) {
+        selected = (long)menu->selectedEntry;
+        if (selected < (int)menu->firstEntry + (int)menu->visibleEntries - 2 &&
+            selected < menu->entryCount - 2) {
+          menu->selectedEntry++;
+        } else if ((long)menu->firstEntry < (long)(menu->entryCount - menu->visibleEntries)) {
+          menu->firstEntry++;
+          menu->selectedEntry++;
+        } else if (selected < menu->entryCount - 1) {
+          menu->selectedEntry++;
+        } else {
+          menu->firstEntry = 0;
+          menu->selectedEntry = 0;
+        }
+      }
+      result = 4;
+    } else {
+      result = 0;
     }
   }
-  else {
-    uVar4 = 2;
-  }
-  return uVar4;
+
+  return result;
 }
 
 // FUN_002be2f0 NONMATCHING
