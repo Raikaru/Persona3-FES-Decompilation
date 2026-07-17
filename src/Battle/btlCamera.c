@@ -5658,7 +5658,7 @@ extern u8* iGpffffb73c;
 
 // FUN_002AA2B0 NONMATCHING
 
-void func_002aa2b0(BtlCamera* camera, long param_2, long param_3)
+void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
 {
   short sVar1;
   int iVar2;
@@ -6019,7 +6019,7 @@ void func_002ab2a0(BtlCamera* camera)
 
 // FUN_002AB330 NONMATCHING
 
-void func_002ab330(BtlCamera* camera, long param_2, long param_3)
+void func_002ab330(BtlCamera* camera, int param_2, int param_3)
 {
   int iVar1;
   int iVar2;
@@ -6426,47 +6426,51 @@ void func_002ab330(BtlCamera* camera, long param_2, long param_3)
   return;
 }
 
-// FUN_002AC540 NONMATCHING
+// FUN_002AC540
 
 void func_002ac540(BtlCamera* camera)
 {
-  u8 bVar1;
   int iVar2;
-  undefined2 uVar3;
-  long lVar4;
+  u32 flag1;
+  u32 flag2;
+  u32 lVar4;
   int iVar5;
-  
+
   iVar5 = (int)camera;
   iVar2 = *(int *)(*(int *)(*(int *)(iVar5 + 0xe0) + 0x30) + 0xa00);
-  uVar3 = FUN_002a7830();
-  *(undefined2 *)(iVar5 + 0x110) = uVar3;
-  bVar1 = *(short *)(iVar5 + 0xe4) != 0x19;
-  if ((iVar2 == 0) || (lVar4 = FUN_002fdbb0(*(undefined4 *)(iVar5 + 0xe0),iVar2), lVar4 == 0)) {
-    *(undefined4 *)(iVar5 + 0x114) = 0;
+  flag1 = 1;
+  flag2 = flag1;
+  *(undefined2 *)(iVar5 + 0x110) = FUN_002a7830(camera);
+  if (*(u16 *)(iVar5 + 0xe4) == 0x19) {
+    flag1 = 0;
+    flag2 = 0;
+  }
+  if ((iVar2 != 0) && (lVar4 = FUN_002fdbb0(*(undefined4 *)(iVar5 + 0xe0),iVar2), lVar4 != 0)) {
+    *(undefined4 *)(iVar5 + 0x114) = 1;
   }
   else {
-    *(undefined4 *)(iVar5 + 0x114) = 1;
+    *(undefined4 *)(iVar5 + 0x114) = 0;
   }
   switch(*(undefined2 *)(iVar5 + 0x110)) {
   case 1:
-    FUN_002a8150(camera,bVar1,bVar1);
+    FUN_002a8150(camera,flag1,flag2);
     break;
   case 2:
-    FUN_002a95d0(camera,bVar1,bVar1);
+    FUN_002a95d0(camera,flag1,flag2);
     break;
   case 3:
-    func_002aa2b0(camera,bVar1,bVar1);
+    func_002aa2b0(camera,flag1,flag2);
     break;
   case 4:
     if (*(int *)(iVar5 + 0x114) == 0) {
-      func_002ab330(camera,bVar1,bVar1);
+      func_002ab330(camera,flag1,flag2);
     }
     else {
-      FUN_002a95d0(camera,bVar1,bVar1);
+      FUN_002a95d0(camera,flag1,flag2);
     }
     break;
   case 5:
-    func_002aa2b0(camera,bVar1,bVar1);
+    func_002aa2b0(camera,flag1,flag2);
     break;
   case 6:
     FUN_002a79f0(camera,1);
