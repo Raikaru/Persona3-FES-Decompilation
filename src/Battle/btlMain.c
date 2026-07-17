@@ -144,6 +144,7 @@ struct BtlMainColorWork
     u16 unk_68;
     u16 unk_6a;
 };
+
 extern u8 DAT_007ce4f8[4];
 extern u8* iGpffffb710;
 extern f32 fGpffff8218;
@@ -3075,7 +3076,7 @@ u32 FUN_002a0440(float *param_1)
 
   else {
 
-    if (param_1[0x15] == 0.0) {
+    if (*(u32 *)((u8 *)param_1 + 0x54) == 0) {
       float fVar8;
       float fVar10;
       float fVar14;
@@ -3178,7 +3179,7 @@ u32 FUN_002a0440(float *param_1)
 
           *(u32 *)(iVar7 + 0x6c) = *(u32 *)(iVar7 + 0x7c);
 
-          if ((((u32)param_1[0x16] & 4) == 0) && ((*(u32 *)(iVar7 + 0x98) & 2) != 0)) {
+          if (((*(u16 *)((u8 *)param_1 + 0x58) & 4) == 0) && ((*(u32 *)(iVar7 + 0x98) & 2) != 0)) {
 
             *(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x388) =
 
@@ -3194,13 +3195,14 @@ u32 FUN_002a0440(float *param_1)
 
                  *(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x3a8);
 
-            if (param_1[0x14] != 0.0) {
+            if (*(u32 *)((u8 *)param_1 + 0x50) != 0) {
 
               *(char *)(*(int *)(iVar7 + 0x9f4) + 0x3aa) =
 
-                   (char)((int)(u32)*(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x3aa) / (int)param_1[0x14]
-
+                   (char)((int)(u32)*(u8 *)(*(int *)(iVar7 + 0x9f4) + 0x3aa) /
+                         (int)*(u32 *)((u8 *)param_1 + 0x50)
                          );
+
             }
 
           }
@@ -3220,7 +3222,7 @@ u32 FUN_002a0440(float *param_1)
 
     fStack_14 = DAT_007caf08 * (float)DAT_007cc973;
 
-    if ((u32)param_1[0x15] < (u32)param_1[0x14]) {
+    if (*(u32 *)((u8 *)param_1 + 0x54) < *(u32 *)((u8 *)param_1 + 0x50)) {
       u32 uVar5;
       int iVar7;
       iVar7 = (int)(uintptr_t)DAT_007ce3ec;
@@ -3233,7 +3235,7 @@ u32 FUN_002a0440(float *param_1)
         float *pfVar4;
 
 
-      fVar16 = (float)(u32)param_1[0x15] / (float)(u32)param_1[0x14];
+      fVar16 = (float)*(u32 *)((u8 *)param_1 + 0x54) / (float)*(u32 *)((u8 *)param_1 + 0x50);
 
       fVar17 = 1.0 - fVar16;
 
@@ -3341,7 +3343,7 @@ u32 FUN_002a0440(float *param_1)
 
       fVar8 = DAT_007caf08;
 
-      if (((u32)param_1[0x16] & 2) == 0) {
+      if ((*(u16 *)((u8 *)param_1 + 0x58) & 2) == 0) {
 
         for (uVar5 = 0; uVar5 < 4; uVar5 = uVar5 + 1) {
 
@@ -3378,7 +3380,6 @@ u32 FUN_002a0440(float *param_1)
             *(float *)(iVar7 + 0x74) = *(float *)(iVar7 + 100) * fVar17;
 
             *(float *)(iVar7 + 0x78) = *(float *)(iVar7 + 0x68) * fVar17;
-
             *(float *)(iVar7 + 0x7c) = *(float *)(iVar7 + 0x6c) * fVar17;
 
           }
@@ -3386,7 +3387,7 @@ u32 FUN_002a0440(float *param_1)
         }
 
       }
-      param_1[0x15] = (float)((int)param_1[0x15] + 1);
+      *(u32 *)((u8 *)param_1 + 0x54) = *(u32 *)((u8 *)param_1 + 0x54) + 1;
 
       uVar9 = 0;
 
@@ -3476,7 +3477,7 @@ u32 FUN_002a0440(float *param_1)
 
       *(u32 *)(iVar7 + 0x1e0) = *(u32 *)(iVar7 + 0x210);
 
-      if (((u32)param_1[0x16] & 2) == 0) {
+      if ((*(u16 *)((u8 *)param_1 + 0x58) & 2) == 0) {
         u32 uVar5;
         u8 bVar1;
         u8 bVar2;
@@ -3516,14 +3517,13 @@ u32 FUN_002a0440(float *param_1)
 
           }
 
-        }
-
+      }
       }
 
       fVar18 = DAT_007caf88;
       fVar19 = DAT_007caee8;
 
-      if (((u32)param_1[0x16] & 4) == 0) {
+      if ((*(u16 *)((u8 *)param_1 + 0x58) & 4) == 0) {
         u32 uVar5;
         u8 bVar1;
         u8 bVar2;

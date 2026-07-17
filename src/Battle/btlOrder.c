@@ -2,7 +2,7 @@
 #include "Battle/btlAction.h"
 #include "Battle/btlUnit.h"
 #include "temporary.h"
-extern u8 gp0xffff9918[];
+extern u8 gp0xffff9918[12];
 extern u32 datCalcRand(u32 max);
 extern u32 FUN_00300c90(void* calc, u32 field);
 
@@ -530,8 +530,8 @@ u32 FUN_0029adf0(BtlAction* action)
 void btlOrder0029ae40(void)
 {
     u16 flags;
-    BtlAction** actions;
     BtlAction* action;
+    BtlAction** actions;
 
     flags = gBtl->order.flags;
     if ((flags & 1) == 0)
@@ -547,13 +547,14 @@ void btlOrder0029ae40(void)
         return;
     }
 
-    if (gBtl->order.actions2[BTLORDER_CURRENT] != NULL)
+    actions = gBtl->order.actions2;
+    if (actions[BTLORDER_CURRENT] != NULL)
     {
-        if (gBtl->order.actions2[BTLORDER_CURRENT]->currState == BTLACTION_STATE_STANDBY)
+        if (actions[BTLORDER_CURRENT]->currState == BTLACTION_STATE_STANDBY)
         {
-            gBtl->order.actions2[BTLORDER_CURRENT]->unk_18 |= 4;
-            btlActionSetState(gBtl->order.actions2[BTLORDER_CURRENT],
-                              gBtl->order.actions2[BTLORDER_CURRENT]->unk_16);
+            actions[BTLORDER_CURRENT]->unk_18 |= 4;
+            btlActionSetState(actions[BTLORDER_CURRENT],
+                              actions[BTLORDER_CURRENT]->unk_16);
             gBtl->order.turnNo++;
             gBtl->order.flags &= ~8;
         }
@@ -563,8 +564,8 @@ void btlOrder0029ae40(void)
         actions = gBtl->order.actions;
         if (gBtl->order.turnNo != 0)
         {
-            if ((gBtl->order.flags & 2) != 0 &&
-                actions[0] != NULL && actions[0]->unit->genus == UNIT_GENUS_EC)
+            if ((flags & 2) != 0 &&
+                actions[0]->unit->genus == UNIT_GENUS_EC)
             {
                 FUN_0029a750();
                 actions = gBtl->order.actions;
@@ -572,7 +573,7 @@ void btlOrder0029ae40(void)
             }
 
             if ((gBtl->order.flags & 4) != 0 &&
-                actions[0] != NULL && actions[0]->unit->genus == UNIT_GENUS_PC)
+                actions[0]->unit->genus == UNIT_GENUS_PC)
             {
                 FUN_0029a750();
                 actions = gBtl->order.actions;
@@ -581,7 +582,14 @@ void btlOrder0029ae40(void)
         }
 
         action = actions[0];
-        if (action != NULL && action->currState == BTLACTION_STATE_STANDBY)
+        if (action == NULL)
+        {
+            return;
+        }
+        if (action->currState != BTLACTION_STATE_STANDBY)
+        {
+            return;
+        }
         {
             if (action->unit->genus == UNIT_GENUS_PC)
             {

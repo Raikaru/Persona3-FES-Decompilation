@@ -4222,7 +4222,7 @@ extern const u8 iGpffffb71c[];
 extern const u8 iGpffffb728[];
 extern const u8 iGpffffb73c[];
 extern const u16 gp0xffff9828[];
-extern const u8 DAT_007ce400[];
+extern u8* iGpffffb710;
 
 extern u16 func_002fb860(void);
 extern void* func_00308c60(DatUnit* unit);
@@ -4668,7 +4668,7 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
     }
     if (func_002d6370(id) != 0)
     {
-        flags = *(const u16*)(DAT_007ce400 + 2 + (u32)skillId * 0x1c);
+        flags = *(const u16*)(iGpffffb710 + (skillId * 0x1c + 2));
         if (flags & 0x200)
         {
             return 0;
