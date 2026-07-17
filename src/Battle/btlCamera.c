@@ -1529,6 +1529,8 @@ extern RwV3d D_00694EE0;
 extern RwV3d D_00694EE4;
 extern u8 DAT_00694fe8;
 extern u8 D_00694F10[];
+extern u8 D_00696410[];
+extern u8 D_00696430[];
 extern u8 DAT_00694fea;
 extern u8 DAT_00694fec;
 extern u32 DAT_00697880;
@@ -4509,42 +4511,38 @@ void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
 
 // FUN_002b7060 NONMATCHING
 
-u32 FUN_002b7060(void)
-
+#pragma opt_loop_invariants on
+s16 FUN_002b7060(void)
 {
-  undefined2 uVar1;
-  int iVar2;
-  long lVar3;
-  u32 uVar4;
-  undefined1 auStack_110 [264];
-  u16 uStack_8;
-  u16 uStack_6;
-  u16 uStack_4;
-  
-  lVar3 = FUN_002fa240();
-  if (lVar3 == 1) {
-    uVar1 = 0xffff;
+  u16 vals[3];
+  char buf[264];
+  u32 t0;
+  long t1;
+  u8 *entry;
+
+  if (FUN_002fa240() == 1) {
+    return -1;
   }
-  else {
-    FUN_002b6de0(&uStack_8);
-    if (((3 < uStack_4) || ((uStack_4 == 3 && ((uStack_6 != 0 || (uStack_8 != 0)))))) ||
-       ((uStack_4 == 2 && ((1 < uStack_6 || (2 < uStack_8)))))) {
-      FUN_00523ac8(auStack_110,0x696410,*(undefined2 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8),uStack_4
-                   ,uStack_6,uStack_8);
-      FUN_0019d400(auStack_110,0x696430,0x16e);
-    }
-    for (uVar4 = 0; uVar4 < 0x18; uVar4 = uVar4 + 1 & 0xffff) {
-      iVar2 = uVar4 * 0xe0;
-      if (((uStack_8 <= *(u16 *)(&DAT_00694fe8 + iVar2)) &&
-          (uStack_6 <= *(u16 *)(&DAT_00694fea + iVar2))) &&
-         (uStack_4 <= *(u16 *)(&DAT_00694fec + iVar2))) goto LAB_002b71bc;
-    }
-    uVar4 = 0x17;
-LAB_002b71bc:
-    uVar1 = (undefined2)uVar4;
+  FUN_002b6de0(vals);
+  if (((3 < vals[2]) || ((vals[2] == 3 && ((0 < vals[1] || (0 < vals[0])))))) ||
+     ((vals[2] == 2 && ((1 < vals[1] || (2 < vals[0])))))) {
+    FUN_00523ac8(buf,D_00696410,*(u16 *)(*(int *)(iGpffffb6fc + 0xbbc) + 8),vals[2]
+                 ,vals[1],vals[0]);
+    FUN_0019d400(buf,D_00696430,0x16e);
   }
-  return uVar1;
+  for (t0 = 0; (u16)t0 < 0x18; t0 = (u16)(t0 + 1)) {
+    t1 = (u16)t0;
+    entry = D_00694F10 + (u16)t1 * 0xe0;
+    if (vals[0] > *(u16 *)(entry + 0xd8)) continue;
+    if (vals[1] > *(u16 *)(entry + 0xda)) continue;
+    if (vals[2] > *(u16 *)(entry + 0xdc)) continue;
+    return (s16)t1;
+  }
+  t1 = 0x17;
+  return (s16)t1;
 }
+#pragma opt_loop_invariants off
+
 
 // FUN_002b71e0 NONMATCHING
 

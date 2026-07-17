@@ -618,7 +618,7 @@ extern void func_002bfcb0_ptr(int param_1,void *param_2,u32 param_3,u32 param_4,
 extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
 // Typed alias for callers that consume the helper's full 16-bit result.
 #pragma alias func_002bff60_u16 func_002bff60
-extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
+extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
 extern void func_002c0070(int param_1,u64 param_2);
 extern u32 func_002c0880(int param_1);
 extern void func_002c08a0(int param_1,u64 *param_2);
@@ -6211,7 +6211,7 @@ void func_002c2360(int param_1, u32 param_2)
     return;
 }
 
-// FUN_002c23c0 NONMATCHING
+// FUN_002c23c0
 
 u32 func_002c23c0(int param_1)
 {
