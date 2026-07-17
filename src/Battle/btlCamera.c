@@ -51,8 +51,9 @@ extern u8* iGpffffb6fc;
 extern u8 DAT_006941d4[];
 extern u8 DAT_00694c90[];
 
-extern f32 FUN_002d21e0();
-extern void FUN_002a3010();
+extern f32 FUN_002d21e0(f32 target, f32* motion);
+extern f32 fGpffff83cc;
+extern void FUN_002a3010(BtlCamera* camera, f32 step);
 extern void FUN_002a2ed0();
 extern void FUN_002a2050();
 extern void FUN_002a1e00();
@@ -69,36 +70,39 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
 void btlCameraUpdate(BtlCamera* camera)
 {
     f32 step;
-    f32* motion;
-    u8* cameraBytes;
+    f32 t;
+    f32 poly;
+    u16 flags;
+    u8* g;
 
-    if (camera == NULL)
+    flags = *(u16*)camera;
+    if ((flags & 2) != 0)
     {
-        return;
+        step = FUN_002d21e0(1.0f, (f32*)((u8*)camera + 0x84)) - *(f32*)((u8*)camera + 0x80);
     }
-
-    cameraBytes = (u8*)camera;
-    motion = (f32*)(cameraBytes + 0x84);
-    step = 0.0f;
-    if ((camera->unk_00 & 2) != 0)
+    else if ((flags & 4) != 0)
     {
-        step = FUN_002d21e0(1.0f, motion);
-        if ((camera->unk_00 & 4) != 0)
+        t = *(f32*)((u8*)camera + 0x94);
+        if (t < fGpffff83cc)
         {
-            step -= *(f32*)(cameraBytes + 0x80);
-            *(f32*)(cameraBytes + 0x94) += step;
+            t = t + 1.0f / *(f32*)((u8*)camera + 0x84);
+            *(f32*)((int)camera + 0x94) = t;
+            step = 2.0f * ((0.0f + -1.0f + (-2.0f * t) * t + 4.0f * t) - 0.5f) -
+                   *(f32*)((u8*)camera + 0x80);
         }
         else
         {
             step = 0.0f;
         }
     }
-
-    if ((camera->unk_00 & 4) != 0)
+    else
     {
-        *(f32*)(cameraBytes + 0x80) += step;
+        step = 1.0f / *(f32*)((u8*)camera + 0x84);
     }
-
+    *(f32*)((u8*)camera + 0x80) += step;
+    FUN_002a3010(camera, step);
+    g = iGpffffb6fc;
+    FUN_002a2ed0(g + 0x20, g + 0xbc, g + 0xc8);
 }
 
 // FUN_002a38f0 NONMATCHING
@@ -1109,7 +1113,7 @@ extern u8 D_00694EF0[];
 extern u8 D_00694EFC[];
 extern u32 FUN_002b64d0(int param_1, int param_2);
 extern u32 FUN_002b6bd0(int param_1);
-extern void FUN_002b6bf0(undefined4 *param_1, undefined4 param_2, undefined4 param_3, u32 param_4, u32 param_5);
+extern void FUN_002b6bf0(undefined4 *param_1, undefined4 param_2, undefined4 param_3, u32 param_4, u16 param_5);
 extern u8* FUN_002b6cd0(int param_1);
 extern void FUN_002b6de0(unsigned short *param_1);
 // FUN_002B0210
@@ -3855,10 +3859,10 @@ u32 FUN_002b6bd0(int param_1)
   return (*(u16 *)(param_1 + 0xe) & 1) != 0;
 }
 
-// FUN_002b6bf0 NONMATCHING
+// FUN_002b6bf0
 
 void FUN_002b6bf0(undefined4 *param_1,undefined4 param_2,undefined4 param_3,u32 param_4,
-                 u32 param_5)
+                 u16 param_5)
 
 {
   u32 uVar1;
@@ -3867,11 +3871,11 @@ void FUN_002b6bf0(undefined4 *param_1,undefined4 param_2,undefined4 param_3,u32 
   param_1[1] = param_3;
   param_1[4] = param_4;
   *(undefined2 *)(param_1 + 2) = 0;
-  *(undefined2 *)((int)param_1 + 10) = 0xffff;
+  *(short *)((int)param_1 + 10) = -1;
   *(undefined2 *)(param_1 + 3) = 0;
   *(u16 *)((int)param_1 + 0xe) = *(u16 *)((int)param_1 + 0xe) | 1;
   *(u16 *)((int)param_1 + 0xe) = *(u16 *)((int)param_1 + 0xe) & 0xfffd;
-  if (((param_5 & 1) != 0) && (uVar1 = FUN_002ffbc0(100), 0x31 < uVar1)) {
+  if (((param_5 & 1) != 0) && !(FUN_002ffbc0(100) < 0x32)) {
     *(u16 *)((int)param_1 + 0xe) = *(u16 *)((int)param_1 + 0xe) | 2;
   }
   if ((param_5 & 2) != 0) {
