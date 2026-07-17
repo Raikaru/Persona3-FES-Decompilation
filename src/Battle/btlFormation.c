@@ -11458,27 +11458,29 @@ u32 func_002cc240(void) {
   return 1;
 }
 
-// FUN_002cc330 NONMATCHING
+// FUN_002cc330
 
 u32 func_002cc330(void)
-
 {
-  u32 current = func_0035f160_u32();
-  u16 id = 1;
-  u8 found = 0;
-  int value = 0;
-  
-  for (id = 1; id < 0xc; id = id + 1) {
+  u32 current;
+  u32 found;
+  u16 id;
+  s32 value;
+
+  current = func_0035f160_u32();
+  found = 0;
+  id = 1;
+  while (id < 12) {
     value = func_0029ad60_u32(id);
-    if ((value == 0) || (value == *(int *)(DAT_007ce3ec + 0x148))) {
-      goto LAB_002cc3b0;
+    if (value == 0 || value == *(s32 *)(DAT_007ce3ec + 0x148)) {
+      break;
     }
     if (value == current) {
       found = 1;
       break;
     }
+    id++;
   }
-LAB_002cc3b0:
   func_0035f060_u32(found != 0);
   return 1;
 }
