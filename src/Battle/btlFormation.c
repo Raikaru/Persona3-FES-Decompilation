@@ -295,8 +295,8 @@ extern u64 func_0051e0e0();
 extern u64 func_00521250();
 extern u64 func_00521408();
 extern u64 func_00523ac8();
-extern u64 func_00524270();
-extern u64 func_00524388();
+extern u32 func_00524270();
+extern u32 func_00524388();
 extern u64 func_0052ea18();
 extern u8 DAT_00696440;
 extern u8 DAT_00696460;
@@ -507,7 +507,7 @@ extern void func_002ba3a0(u64 param_1);
 extern void func_002ba900(int param_1);
 extern void func_002baa20(int *param_1);
 extern u32 func_002baad0(int *param_1);
-extern u64 func_002bac00(u32 param_1,u64 param_2,u16 param_3);
+extern u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3);
 extern void func_002bacb0(u32 *param_1);
 extern u32 func_002bad60(u32 *param_1);
 extern bool func_002baec0(u32 *param_1);
@@ -550,7 +550,7 @@ extern void func_002bc950(u32 param_1,u32 param_2,u32 param_3);
 extern void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5, float param_6,u32 param_7,long param_8);
 extern void func_002bccd0(u32 param_1, u32 param_2);
 extern void func_002bcde0(u64 param_1,u32 *param_2);
-extern void func_002bce10(float param_1,float param_2,int param_3,char param_4,float *param_5);
+extern void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *param_5);
 extern u32 func_002bd080(int *param_1);
 extern void func_002bd230(u32 param_1,u8 param_2,u16 param_3);
 extern u32 func_002bd2e0(int *param_1);
@@ -2180,9 +2180,9 @@ u32 func_002baad0(int *param_1)
   return uVar3;
 }
 
-// FUN_002bac00 NONMATCHING
+// FUN_002bac00 MATCHING
 
-u64 func_002bac00(u32 param_1,u64 param_2,u16 param_3)
+u32 func_002bac00(u32 param_1,u32 param_2,u16 param_3)
 {
   typedef struct FormationStringWork {
     u32 value;
@@ -2203,7 +2203,7 @@ u64 func_002bac00(u32 param_1,u64 param_2,u16 param_3)
   work->text = (char *)(work + 1);
   work->field = param_3;
   func_00524270(work->text, param_2);
-  return (u64)packet;
+  return (u32)packet;
 }
 
 // FUN_002bacb0
@@ -3352,7 +3352,7 @@ void func_002bcde0(u64 param_1,u32 *param_2)
 
 // FUN_002bce10 NONMATCHING
 
-void func_002bce10(float param_1,float param_2,int param_3,char param_4,float *param_5)
+void func_002bce10(float param_1,float param_2,int param_3,int param_4,float *param_5)
 
 {
   short sVar1 = 0;
@@ -4822,13 +4822,13 @@ void func_002bf9b0(void)
       for (iVar1 = *(int *)(DAT_007ce3ec + uVar4 * 8 + 0x150); iVar1 != 0;
           iVar1 = *(int *)(iVar1 + 0xa34)) {
         if (*(int *)(iVar1 + 0xa2c) != 0) {
-          if (*(char *)(iVar1 + 0x37) == '\0') {
-            uVar3 = 0;
-          }
-          else {
+          if (*(u8 *)(iVar1 + 0x37) != 0) {
             uVar3 = 0xff;
           }
-          func_002bce10(0.0f,(float)iVar1,(int)(uVar3 | 0xb4736400),(char)0,(float *)(iVar1 + 0xa04));
+          else {
+            uVar3 = 0;
+          }
+          func_002bce10(0.0f, 0.0f, iVar1, uVar3 | 0xb4736400, (float *)(iVar1 + 0xa04));
         }
       }
     }
@@ -14409,23 +14409,21 @@ u32 func_002d1560(void)
 /* ---- Straggler recovery: 0x2BD4F0-0x2D0970 ---- */
 
 
-// FUN_002BF370 NONMATCHING
-void FUN_002bf370(u64 param_1)
+// FUN_002BF370 MATCHING
+void FUN_002bf370(u32 param_1)
 
 {
-  long lVar1;
-  u64 uVar2;
+  int result;
   
   FUN_001fdda0();
-  lVar1 = FUN_002d1a70();
-  if (lVar1 == 1) {
+  result = FUN_002d1a70();
+  if (result == 1) {
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x4000;
     FUN_001ff370();
   }
-  uVar2 = FUN_00195540(param_1);
-  (*DAT_0096017c)(uVar2);
+  result = FUN_00195540(param_1);
+  (*DAT_0096017c)(result);
   *(u32 *)(DAT_007ce3ec + 0xd1c) = 0;
-  return;
 }
 
 // FUN_002D0970
