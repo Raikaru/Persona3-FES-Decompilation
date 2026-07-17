@@ -7820,49 +7820,30 @@ u8 FUN_002a3820(int param_1)
 
 }
 
-// FUN_002A3850 NONMATCHING
+// FUN_002A3850
 
 
 u32 FUN_002a3850(int param_1)
-
-
-
 {
+  s32 index;
+  s32 owner;
+  s32 object;
+  s32 work;
 
-  int iVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  u32 uVar4;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0xe0);
-
-  uVar4 = 0;
-
-  while( 1 ) {
-
-    if (*(u16 *)(iVar1 + 0x6a) <= uVar4) {
-
-      return 0;
-
+  work = *(s32 *)(param_1 + 0xe0);
+  index = 0;
+  for (; (index & 0xffff) < *(u16 *)(work + 0x6a);
+       index = (u16)(index + 1)) {
+    owner = *(s32 *)(work + (u16)index * 4 + 0x38);
+    if (owner != 0) {
+      object = *(s32 *)(owner + 0x30);
+      if (object != 0 &&
+          FUN_0030b5a0(*(u32 *)(object + 0xa2c), 0) != 0) {
+        return 1;
+      }
     }
-
-    iVar2 = *(int *)(iVar1 + uVar4 * 4 + 0x38);
-
-    if (((iVar2 != 0) && (iVar2 = *(int *)(iVar2 + 0x30), iVar2 != 0)) &&
-
-       (lVar3 = FUN_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar3 != 0)) break;
-
-    uVar4 = uVar4 + 1 & 0xffff;
-
   }
-
-  return 1;
-
+  return 0;
 }
 
 // FUN_002A3E80 NONMATCHING
