@@ -2631,19 +2631,38 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
 // FUN_002984e0 NONMATCHING
 void btlActionInitStateRoundUp(BtlAction* action)
 {
-    BtlTarget* work = (BtlTarget*)action->unkData3;
     u16 i;
+    u32 allInactive;
 
     FUN_002d15a0(&action->target);
     action->target.commandId = 2;
     action->target.specificId = ACTION_U16(gBtl, 0xb98 + 0x13f);
-    FUN_002bff60(action, work, action->target.specificId, 0);
-    for (i = 0; i < work->targetedCount; i++)
+    FUN_002bff60(action, (BtlTarget*)action->unkData3, action->target.specificId, 0);
+    i = 0;
+    while (i < ACTION_U16(action, 0xc0))
     {
-        action->target.targetedActions[i] = work->targetedActions[i];
+        action->target.targetedActions[i] = *(BtlAction**)&action->unkData3[i * 4];
+        i++;
     }
-    action->target.targetedCount = work->targetedCount;
+    action->target.targetedCount = ACTION_U16(action, 0xc0);
     FUN_002d6620(action);
+    allInactive = 1;
+    i = 0;
+    while (i < action->target.targetedCount)
+    {
+        if (ACTION_U32(action->target.targetedActions[i], 0xd0) != 0)
+        {
+            allInactive = 0;
+            break;
+        }
+        i++;
+    }
+    if (allInactive != 0)
+    {
+        action->target.specificId = ACTION_U16(gBtl, 0xb98 + 0x14b);
+        action->unk_4ac = 1;
+        return;
+    }
     action->unk_4ac = 0;
 }
 // FUN_00298610 NONMATCHING

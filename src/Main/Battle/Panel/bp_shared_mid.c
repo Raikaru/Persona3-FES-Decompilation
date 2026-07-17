@@ -102,7 +102,7 @@ void func_00208f60(void)
     work = BP_WORK();
     count = *(u32*)(work + 0x2950);
     for (i = 0; i < count; i++) {
-        u8* slot = work + 0x2960 + i * 0x240;
+        u8* slot = work + i * 0x420 + 0x10;
         u32 unitId = *(u32*)(slot + 4);
         void* unit = func_001ff430(unitId);
         if (unit != NULL) {
