@@ -6203,27 +6203,22 @@ void func_002c2470(int param_1, u32 param_2)
 // FUN_002c2510 NONMATCHING
 
 u32 func_002c2510(int param_1)
-
 {
-  u16 uVar1 = 0;
-  u32 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = *(int *)(param_1 + 0x30);
-  uVar2 = func_00308ba0(*(u32 *)(iVar3 + 0xa2c));
-  iVar3 = func_00308bb0(*(u32 *)(iVar3 + 0xa2c));
-  uVar5 = 0;
-  while( true ) {
-    if ((uVar2 & 0xffff) <= uVar5) {
-      return 0;
+    u16 count;
+    int data;
+    u16 *skills;
+    u16 index;
+
+    data = *(int *)(param_1 + 0x30);
+    count = (u16)func_00308ba0_u32(*(u32 *)(data + 0xa2c));
+    skills = (u16 *)func_00308bb0_u32(*(u32 *)(data + 0xa2c));
+    for (index = 0; index < count; index++) {
+        u16 skillId = skills[index];
+
+        if (skillId != 0 && skillId < 0x1d0 && func_00308860(skillId) != 0)
+            return 1;
     }
-    uVar1 = *(u16 *)(iVar3 + uVar5 * 2);
-    if (((uVar1 != 0) && (uVar1 < 0x1d0)) && (lVar4 = func_00308860(), lVar4 != 0)) break;
-    uVar5 = uVar5 + 1 & 0xffff;
-  }
-  return 1;
+    return 0;
 }
 
 // FUN_002c25d0
