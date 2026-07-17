@@ -71,12 +71,13 @@ void sflPanel0023d870(void)
     *work &= 0xfffffffe;
 }
 
-// FUN_0023d8f0 NONMATCHING
+// FUN_0023d8f0
 void func_0023d8f0(void)
 {
     u32* work;
     float t;
     RwV3d cameraOffset;
+    float scale;
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
     K_ASSERT(*work & 1, 0xb2);
@@ -105,12 +106,13 @@ void func_0023d8f0(void)
         break;
     }
     func_0023dac0();
+    scale = 200.0f;
 
     switch (work[1]) {
     case 0:
         if ((s32)work[2] < 0x32) {
             t = (float)((s32)work[2] + 1) / 50.0f;
-            t = t * 200.0f - t * (t * 100.0f) - 100.0f;
+            t = t * scale - t * (t * 100.0f) - 100.0f;
             cameraOffset.x = 0.0f;
             cameraOffset.y = 0.0f;
             cameraOffset.z = t;
