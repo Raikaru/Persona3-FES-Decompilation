@@ -1509,6 +1509,7 @@ void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 }
 #pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants on
 // FUN_001770D0 NONMATCHING
 s32 FUN_001770D0(u16 personaId, u16 skillId)
 {
@@ -1534,7 +1535,7 @@ s32 FUN_001770D0(u16 personaId, u16 skillId)
         }
 
         K_ASSERT(skillIdx < 0x10 &&
-                 ((s8*)(skillIdx * 4 + skillData))[1] == 1, 1829);
+                 ((s8*)skillData)[skillIdx * 4 + 1] == 1, 1829);
     }
     else
     {
@@ -1553,11 +1554,12 @@ s32 FUN_001770D0(u16 personaId, u16 skillId)
         }
 
         K_ASSERT(skillIdx < 0x10 &&
-                 ((s8*)(skillIdx * 4 + skillData))[1] == 1, 1848);
+                 ((s8*)skillData)[skillIdx * 4 + 1] == 1, 1848);
     }
 
     return skillOrder;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00177270
 void FUN_00177270(void)
