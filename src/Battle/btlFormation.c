@@ -3142,22 +3142,23 @@ void func_002bc680(void)
 void func_002bc6d0(void)
 
 {
-  bool bVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  int iVar4 = 0;
-  
-  bVar1 = false;
-  while (!bVar1) {
-    uVar2 = func_00100d80(PTR_s_battle_effect_SHADOW_S_BED_007cc6f0,0);
-    func_001023a0(uVar2);
-    _DAT_007ce4f4 = func_002b8f90(2);
-    iVar4 = (int)uVar2;
-    uVar3 = (*DAT_00960178)(*(u32 *)(iVar4 + 0x118),0x40000);
-    func_00521250(uVar3,*(u32 *)(iVar4 + 0x110),*(u32 *)(iVar4 + 0x118));
-    func_002b96e0(_DAT_007ce4f4,uVar3);
-    func_00100ec0(uVar2);
-    bVar1 = true;
+  extern u32 func_00100d80(void *,u32);
+  extern void func_00521250(u32,u32,u32);
+  u32 index = 0;
+  u32 offset = 0;
+  u32 resource = 0;
+  u32 allocated = 0;
+
+  while (index == 0) {
+    offset = index * 4;
+    resource = func_00100d80(*(char **)((u8 *)&PTR_s_battle_effect_SHADOW_S_BED_007cc6f0 + offset),0);
+    func_001023a0(resource);
+    *(u32 *)((u8 *)&_DAT_007ce4f4 + offset) = func_002b8f90(2);
+    allocated = (*DAT_00960178_u32_abs)(*(u32 *)(resource + 0x118),0x40000);
+    func_00521250(allocated,*(u32 *)(resource + 0x110),*(u32 *)(resource + 0x118));
+    func_002b96e0(*(u32 *)((u8 *)&_DAT_007ce4f4 + offset),allocated);
+    func_00100ec0(resource);
+    index++;
   }
   return;
 }
