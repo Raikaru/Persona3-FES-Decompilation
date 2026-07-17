@@ -8582,22 +8582,21 @@ u32 func_002c7340(void)
 u32 func_002c73e0(void)
 
 {
-  u16 uVar1 = 0;
-  u64 uVar2 = 0;
-  u32 uVar3 = 0;
-  int iVar4 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  iVar4 = (int)uVar2;
-  if ((long)uVar3 < 0) {
-    func_002c6a00(uVar2,iVar4 + 0x38,0x8002);
+  extern void *func_0035f160(void);
+  extern s32 func_0035ed20(u32);
+  extern void func_002c6a00(void *,void *,u16);
+  char *state;
+  s32 selection;
+
+  state = (char *)func_0035f160();
+  selection = func_0035ed20(0);
+  if (selection >= 0) {
+    *(u16 *)(state + 0x6c) = 3;
+    *(s16 *)(state + 0x70) = selection;
+    *(u16 *)(state + 0x6e) = func_0030bc20((u16)selection);
   }
   else {
-    *(u16 *)(iVar4 + 0x6c) = 3;
-    *(short *)(iVar4 + 0x70) = (short)uVar3;
-    uVar1 = func_0030bc20(uVar3 & 0xffff);
-    *(u16 *)(iVar4 + 0x6e) = uVar1;
+    func_002c6a00(state,state + 0x38,0x8002);
   }
   return 1;
 }
