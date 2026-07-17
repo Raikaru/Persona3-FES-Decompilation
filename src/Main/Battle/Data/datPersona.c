@@ -669,8 +669,9 @@ u16 FUN_001756f0(void)
     u32 modeFlags;
     u16 maxPersonaCount;
     DatGlobal* global;
-    u16 personaCount;
+    s32 personaCount;
     u16 personaIdx;
+    u8 valid;
 
     validCount = 0;
     modeFlags = gGlobalWork.flags[0x90];
@@ -703,7 +704,8 @@ u16 FUN_001756f0(void)
     global = &gGlobalWork;
     for (; personaIdx < personaCount; personaIdx++)
     {
-        if ((global->heroPersona.personas[(s16)personaIdx].flags & PERSONA_FLAG_VALID) != 0)
+        valid = (global->heroPersona.personas[(s16)personaIdx].flags & PERSONA_FLAG_VALID) != 0;
+        if (valid)
         {
             validCount++;
         }
