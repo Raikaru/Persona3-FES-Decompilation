@@ -5343,12 +5343,13 @@ long * func_002c08c0(int param_1)
 }
 
 // FUN_002c0970 NONMATCHING
+#pragma opt_loop_invariants on
 
 u32 func_002c0970(int param_1)
 
 {
-  u16 count;
-  u16 index;
+  s32 count;
+  s32 index;
   u64 target;
 
   *(u16 *)(param_1 + 0x3a) = 0;
@@ -5358,16 +5359,14 @@ u32 func_002c0970(int param_1)
   }
   index = 0;
   count = *(u16 *)(param_1 + 0x38);
-  while (index < count) {
-    if (target == **(u64 **)(param_1 + index * 4)) {
+  for (; (index & 0xffff) < count; index = (u16)(index + 1)) {
+    if (target == **(u64 **)(param_1 + (u16)index * 4)) {
       *(u16 *)(param_1 + 0x3a) = index;
       return 1;
     }
-    index++;
   }
   return 0;
 }
-#pragma opt_loop_invariants on
 
 // FUN_002c09f0 NONMATCHING
 
