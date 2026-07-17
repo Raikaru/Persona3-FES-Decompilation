@@ -300,6 +300,9 @@ extern u64 func_00524388();
 extern u64 func_0052ea18();
 extern u8 DAT_00696440;
 extern u8 DAT_00696460;
+extern u8 DAT_00696d70;
+#pragma alias DAT_00696d70_abs DAT_00696d70
+extern u8 DAT_00696d70_abs[];
 extern u8 DAT_00696e10;
 extern u32 DAT_00696e30;
 extern u32 DAT_00696e34;
@@ -3104,7 +3107,7 @@ u32 func_002bc480(void)
   
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x4000000) == 0) {
     if (*(int *)(DAT_007ce3ec + 0xd14) == 0) {
-      uVar1 = func_00100d80((void *)0x696d70,1);
+      uVar1 = func_00100d80(DAT_00696d70_abs,1);
       *(u32 *)(DAT_007ce3ec + 0xd14) = uVar1;
     }
     else {
