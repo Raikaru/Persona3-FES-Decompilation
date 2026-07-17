@@ -6239,7 +6239,7 @@ void func_002e71c0(int param_1)
   return;
 }
 
-// FUN_002e7210
+// FUN_002e7210 NONMATCHING
 void func_002e7210(BtlCamera* camera)
 {
     BtlUnit* unit;
@@ -6267,10 +6267,6 @@ void func_002e7210(BtlCamera* camera)
     return;
 }
 
-// FUN_002e7320
-void func_002e7320(void)
-{
-}
 
 // FUN_002e7330 NONMATCHING
 void func_002e7330(u64 param_1)

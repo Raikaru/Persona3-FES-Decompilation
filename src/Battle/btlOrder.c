@@ -71,7 +71,7 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
-#pragma optimization_level 4
+#pragma optimization_level 3
 // FUN_0029a320 NONMATCHING
 u32 FUN_0029a320(BtlAction* action)
 {
@@ -534,13 +534,31 @@ void btlOrder0029ae40(void)
     BtlAction* action;
 
     flags = gBtl->order.flags;
-    if ((flags & 1) == 0 || (gBtl->flags & 0x80000) != 0 || (flags & 8) == 0)
+    if ((flags & 1) == 0)
+    {
+        return;
+    }
+    if ((gBtl->flags & 0x80000) != 0)
+    {
+        return;
+    }
+    if ((flags & 8) == 0)
     {
         return;
     }
 
-    action = gBtl->order.actions2[BTLORDER_CURRENT];
-    if (action == NULL)
+    if (gBtl->order.actions2[BTLORDER_CURRENT] != NULL)
+    {
+        if (gBtl->order.actions2[BTLORDER_CURRENT]->currState == BTLACTION_STATE_STANDBY)
+        {
+            gBtl->order.actions2[BTLORDER_CURRENT]->unk_18 |= 4;
+            btlActionSetState(gBtl->order.actions2[BTLORDER_CURRENT],
+                              gBtl->order.actions2[BTLORDER_CURRENT]->unk_16);
+            gBtl->order.turnNo++;
+            gBtl->order.flags &= ~8;
+        }
+    }
+    else
     {
         actions = gBtl->order.actions;
         if (gBtl->order.turnNo != 0)
@@ -585,13 +603,6 @@ void btlOrder0029ae40(void)
             gBtl->order.flags &= ~8;
             gBtl->order.turnNo++;
         }
-    }
-    else if (action->currState == BTLACTION_STATE_STANDBY)
-    {
-        action->unk_18 |= 4;
-        btlActionSetState(action, action->unk_16);
-        gBtl->order.turnNo++;
-        gBtl->order.flags &= ~8;
     }
 }
 
