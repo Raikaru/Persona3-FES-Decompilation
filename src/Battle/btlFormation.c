@@ -6215,8 +6215,8 @@ u32 func_002c23c0(int param_1)
 
   result = func_002bff60_u16(param_1,0,*(u16 *)(param_1 + 0x7e),0);
   switch (result) {
-  case 2:
   case 1:
+  case 2:
     return 1;
   default:
     return 0;
