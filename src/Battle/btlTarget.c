@@ -1293,67 +1293,144 @@ s32 func_002d8b30(void)
 
 // FUN_002d8b40 NONMATCHING
 
-undefined4 FUN_002d8b40(int param_1)
-
+s32 FUN_002d8b40(s32 param_1)
 {
-  uint uVar1;
-  uint uVar2;
-  undefined4 uVar3;
-  long lVar4;
-  
-  if (*(int *)(iGpffffb6fc + 0x148) != param_1) {
-    return 0xffffffff;
-  }
-  lVar4 = FUN_0016f190(0x1362);
-  if (lVar4 != 0) {
-    lVar4 = FUN_0016f190(0x1361);
-    if (lVar4 != 0) {
-      return 0x1ba;
+    u32 personaId;
+    u16 hp;
+    u16 maxHp;
+    s32 hpPercent;
+
+    if (*(s32*)(iGpffffb6fc + 0x148) != param_1)
+    {
+        return -1;
     }
-    lVar4 = FUN_0016f190(0x1360);
-    if (lVar4 != 0) {
-      return 0x1bc;
+    if (FUN_0016f190(0x1362) != 0)
+    {
+        if (FUN_0016f190(0x1361) != 0)
+        {
+            return 0x1ba;
+        }
+        if (FUN_0016f190(0x1360) != 0)
+        {
+            return 0x1bc;
+        }
     }
-  }
-  if (*(short *)(iGpffffb6fc + 0xb9a) == 0) {
-    uVar3 = 0x6c;
-  }
-  else {
-    uVar3 = *(undefined4 *)(*(int *)(param_1 + 0x30) + 0xa2c);
-    uVar1 = FUN_002ffd70(uVar3);
-    uVar2 = FUN_002ffdf0(uVar3);
-    uVar1 = ((uVar1 & 0xffff) * 100) / (uVar2 & 0xffff);
-    if ((uVar1 < 0x47) || (2 < *(int *)(*(int *)(iGpffffb6fc + 0x148) + 0x20))) {
-      if (uVar1 < 0x1f) {
-        lVar4 = FUN_002ddc10(6);
-        if (lVar4 == 0) {
-          uVar3 = 0xd0;
-        }
-        else {
-          uVar3 = 0xd3;
-        }
-      }
-      else {
-        lVar4 = FUN_002ddc10(6);
-        if (lVar4 == 0) {
-          uVar3 = 0xcf;
-        }
-        else {
-          uVar3 = 0xd2;
-        }
-      }
+    if (*(u16*)(iGpffffb6fc + 0xb9a) == 0)
+    {
+        return 0x6c;
     }
-    else {
-      lVar4 = FUN_002ddc10(6);
-      if (lVar4 == 0) {
-        uVar3 = 0xce;
-      }
-      else {
-        uVar3 = 0xd1;
-      }
+
+    personaId = *(u32*)(*(s32*)(param_1 + 0x30) + 0xa2c);
+    hp = (u16)FUN_002ffd70(personaId);
+    maxHp = (u16)FUN_002ffdf0(personaId);
+    hpPercent = hp * 100 / maxHp;
+    if (hpPercent < 0x47)
+    {
+        goto lowHp;
     }
-  }
-  return uVar3;
+    if (*(s32*)(*(s32*)(iGpffffb6fc + 0x148) + 0x20) >= 3)
+    {
+        goto lowHp;
+    }
+    if (FUN_002ddc10(6) == 0)
+    {
+        return 0xce;
+    }
+    return 0xd1;
+lowHp:
+    if (hpPercent < 0x1f)
+    {
+        goto criticalHp;
+    }
+    if (FUN_002ddc10(6) == 0)
+    {
+        return 0xcf;
+    }
+    return 0xd2;
+criticalHp:
+    if (FUN_002ddc10(6) == 0)
+    {
+        return 0xd0;
+    }
+    return 0xd3;
+}
+
+// FUN_002d8cf0 MATCHING
+s32 func_002d8cf0(s32 param_1)
+{
+    s32 action;
+
+    action = *(s32*)(param_1 + 0x30);
+    if (*(u8*)(action + 0xa2) != 0)
+    {
+        return -1;
+    }
+
+    switch (*(u16*)(action + 0xa4))
+    {
+    case 1:
+        return 0xd4;
+    case 2:
+        return 0xd5;
+    case 3:
+        return 0xd6;
+    case 4:
+        return 0xd7;
+    case 5:
+        return 0xd8;
+    case 7:
+        return 0xd9;
+    case 8:
+        return 0xda;
+    case 9:
+        return 0xdb;
+    case 10:
+        return 0xdc;
+    default:
+        return -1;
+    }
+}
+
+// FUN_002d8db0 MATCHING
+s32 func_002d8db0(void)
+{
+    return -1;
+}
+
+// FUN_002d8dc0 MATCHING
+s32 func_002d8dc0(s32 param_1)
+{
+    s32 action;
+
+    action = *(s32*)(param_1 + 0x30);
+    if (*(u8*)(action + 0xa2) != 0)
+    {
+        return -1;
+    }
+
+    switch (*(u16*)(action + 0xa4))
+    {
+    case 1:
+        return 0xdd;
+    case 2:
+        return 0xde;
+    case 3:
+        return 0xdf;
+    case 4:
+        return 0xe0;
+    case 5:
+        return 0xe1;
+    case 7:
+        return 0xe2;
+    case 8:
+        return 0xe3;
+    case 9:
+        return 0xe4;
+    case 10:
+        return 0xe5;
+    default:
+        return -1;
+    }
 }
 
 // FUN_002d8e80
