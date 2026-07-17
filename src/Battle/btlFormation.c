@@ -302,10 +302,10 @@ extern u32 DAT_006971b0;
 extern code gFormationDispatchTable[];
 extern code gFormationActionTable[];
 extern u8 DAT_007cc740;
-extern u32 DAT_007cc970;
-extern u32 DAT_007cc971;
-extern u32 DAT_007cc972;
-extern u32 DAT_007cc973;
+extern u8 DAT_007cc970;
+extern u8 DAT_007cc971;
+extern u8 DAT_007cc972;
+extern u8 DAT_007cc973;
 extern u8* DAT_007ce3ec;
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce41c;
@@ -2926,91 +2926,86 @@ u32 func_002bbfa0(int param_1)
 
 // FUN_002bc0e0 NONMATCHING
 
-void func_002bc0e0(int param_1,u8 *param_2)
-
+void func_002bc0e0(int param_1, u8 *param_2)
 {
-  u8 uVar1 = 0;
-  u8 uVar2 = 0;
-  u8 uVar3 = 0;
-  
   param_2[3] = 0xff;
-  uVar3 = DAT_007cc973;
-  uVar2 = DAT_007cc972;
-  uVar1 = DAT_007cc971;
-  if ((param_1 != 0x80000) && (param_1 != 0x100000)) {
-    if (param_1 == 0x400) {
-      *param_2 = 0xff;
-      param_2[1] = 0x40;
-      param_2[2] = 0x12;
-      return;
-    }
-    if (param_1 == 0x100) {
-      *param_2 = DAT_007cc970;
-      param_2[1] = uVar1;
-      param_2[2] = uVar2;
-      param_2[3] = uVar3;
-      return;
-    }
-    if (param_1 == 0x200) {
-      *param_2 = 0xff;
-      param_2[1] = 0x3a;
-      param_2[2] = 0x44;
-      return;
-    }
-    if (param_1 == 0x80) {
-      *param_2 = 0xff;
-      param_2[1] = 0x6c;
-      param_2[2] = 0xe4;
-      return;
-    }
-    if (param_1 == 0x40) {
-      *param_2 = 0xf5;
-      param_2[1] = 0xda;
-      param_2[2] = 0x80;
-      return;
-    }
-    if (param_1 == 0x20) {
-      *param_2 = 0x8a;
-      param_2[1] = 0xc6;
-      param_2[2] = 0xff;
-      return;
-    }
-    if (param_1 == 0x10) {
-      *param_2 = 0xff;
-      param_2[1] = 0xb2;
-      param_2[2] = 0x9e;
-      return;
-    }
-    if (param_1 == 8) {
-      *param_2 = 0xa8;
-      param_2[1] = 0xa8;
-      param_2[2] = 0xff;
-      return;
-    }
-    if (param_1 == 4) {
-      *param_2 = 0xcd;
-      param_2[1] = 0xb2;
-      param_2[2] = 0xcd;
-      return;
-    }
-    if (param_1 == 2) {
-      *param_2 = 0xb2;
-      param_2[1] = 0x9e;
-      param_2[2] = 0xff;
-      return;
-    }
-    if (param_1 == 1) {
-      *param_2 = 0xff;
-      param_2[1] = 0x94;
-      param_2[2] = 0xbc;
-      return;
-    }
+
+  switch (param_1) {
+  case 1:
+    param_2[0] = 0xff;
+    param_2[1] = 0x94;
+    param_2[2] = 0xbc;
+    return;
+  case 2:
+    param_2[0] = 0xb2;
+    param_2[1] = 0x9e;
+    param_2[2] = 0xff;
+    return;
+  case 4:
+    param_2[0] = 0xcd;
+    param_2[1] = 0xb2;
+    param_2[2] = 0xcd;
+    return;
+  case 8:
+    param_2[0] = 0xa8;
+    param_2[1] = 0xa8;
+    param_2[2] = 0xff;
+    return;
+  case 0x10:
+    param_2[0] = 0xff;
+    param_2[1] = 0xb2;
+    param_2[2] = 0x9e;
+    return;
+  case 0x20:
+    param_2[0] = 0x8a;
+    param_2[1] = 0xc6;
+    param_2[2] = 0xff;
+    return;
+  case 0x40:
+    param_2[0] = 0xf5;
+    param_2[1] = 0xda;
+    param_2[2] = 0x80;
+    return;
+  case 0x80:
+    param_2[0] = 0xff;
+    param_2[1] = 0x6c;
+    param_2[2] = 0xe4;
+    return;
+  case 0x200:
+    param_2[0] = 0xff;
+    param_2[1] = 0x3a;
+    param_2[2] = 0x44;
+    return;
+  case 0x100: {
+    u8 color3 = DAT_007cc973;
+    u8 color0 = DAT_007cc970;
+    u8 color1 = DAT_007cc971;
+    u8 color2 = DAT_007cc972;
+    param_2[0] = color0;
+    param_2[1] = color1;
+    param_2[2] = color2;
+    param_2[3] = color3;
+    return;
   }
-  *param_2 = DAT_007cc970;
-  param_2[1] = uVar1;
-  param_2[2] = uVar2;
-  param_2[3] = uVar3;
-  return;
+  case 0x400:
+    param_2[0] = 0xff;
+    param_2[1] = 0x40;
+    param_2[2] = 0x12;
+    return;
+  case 0x100000:
+  case 0x80000:
+  default: {
+    u8 color3 = DAT_007cc973;
+    u8 color0 = DAT_007cc970;
+    u8 color1 = DAT_007cc971;
+    u8 color2 = DAT_007cc972;
+    param_2[0] = color0;
+    param_2[1] = color1;
+    param_2[2] = color2;
+    param_2[3] = color3;
+    return;
+  }
+  }
 }
 
 // FUN_002bc2f0 NONMATCHING
