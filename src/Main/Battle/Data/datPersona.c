@@ -663,14 +663,14 @@ u32 func_001755c0(void)
 }
 
 // FUN_001756f0 NONMATCHING
-s16 FUN_001756f0(void)
+u16 FUN_001756f0(void)
 {
+    u16 validCount;
     u32 modeFlags;
     u16 maxPersonaCount;
+    DatGlobal* global;
     u16 personaCount;
     u16 personaIdx;
-    DatGlobal* global;
-    s16 validCount;
 
     validCount = 0;
     modeFlags = gGlobalWork.flags[0x90];
@@ -698,12 +698,12 @@ s16 FUN_001756f0(void)
     {
         maxPersonaCount = 4;
     }
-    personaCount = (u16)maxPersonaCount;
     personaIdx = 0;
+    personaCount = (u16)maxPersonaCount;
     global = &gGlobalWork;
     for (; personaIdx < personaCount; personaIdx++)
     {
-        if ((global->heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) != 0)
+        if ((global->heroPersona.personas[(s16)personaIdx].flags & PERSONA_FLAG_VALID) != 0)
         {
             validCount++;
         }
