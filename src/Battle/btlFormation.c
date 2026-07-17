@@ -569,9 +569,9 @@ extern bool func_002bd7e0(u32 *param_1);
 extern void func_002bd850(u32 param_1,u32 param_2);
 extern u32 func_002bd8e0(int *param_1);
 extern int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u16 param_5,u16 param_6,u16 param_7,u64 param_8);
-extern u32 func_002bdcd0(short *param_1);
+extern u32 func_002bdcd0(u16 *param_1);
 extern void func_002bddd0(void);
-extern u32 func_002bde10(int param_1,long param_2);
+extern u32 func_002bde10(int param_1,u16 *param_2);
 extern u32 func_002bdfb0(int param_1);
 extern u32 func_002be2f0(int param_1);
 extern void func_002be390(short *param_1,short param_2,short param_3);
@@ -3853,38 +3853,42 @@ int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4,
   return iVar2;
 }
 
-// FUN_002bdcd0 NONMATCHING
+// FUN_002bdcd0 MATCHING
 
-u32 func_002bdcd0(short *param_1)
-
+u32 func_002bdcd0(u16* state)
 {
-  long lVar1 = 0;
-  
-  if (*param_1 == 1) {
-    lVar1 = func_001feb30();
-    if (lVar1 == 0) {
-      lVar1 = func_002d1a70();
-      if (lVar1 == 1) {
-        *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x4000;
-        func_001ff370();
-      }
+  u64 result;
+
+  switch (*state) {
+  case 0:
+    result = func_001fea90();
+    if (result == 0) {
       return 1;
     }
-  }
-  else if (*param_1 == 0) {
-    lVar1 = func_001fea90();
-    if (lVar1 == 0) {
-      return 1;
-    }
-    lVar1 = func_002d1a70();
-    if (lVar1 == 1) {
-      *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xffffbfff;
+    result = func_002d1a70();
+    if (result == 1) {
+      *(u32 *)(DAT_007ce3ec + 0xc) &= ~0x4000;
       func_002d1a10();
       func_001ff350();
     }
     func_001feab0();
-    *param_1 = 1;
+    *state = 1;
+    goto return_zero;
+  case 1:
+    result = func_001feb30();
+    if (result != 0) {
+      goto return_zero;
+    }
+    result = func_002d1a70();
+    if (result == 1) {
+      *(u32 *)(DAT_007ce3ec + 0xc) |= 0x4000;
+      func_001ff370();
+    }
+    return 1;
+  default:
+    goto return_zero;
   }
+return_zero:
   return 0;
 }
 
@@ -3903,53 +3907,49 @@ void func_002bddd0(void)
 
 // FUN_002bde10 NONMATCHING
 
-u32 func_002bde10(int param_1,long param_2)
-
+u32 func_002bde10(int unit, u16* output)
 {
-  u16 uVar1 = 0;
-  u16 uVar2 = 0;
-  bool bVar3 = 0;
-  int iVar4 = 0;
-  u32 uVar5 = 0;
-  u16 *puVar6;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  
-  uVar7 = 0;
-  iVar4 = func_00308bb0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
-  for (uVar5 = 0; iVar8 = (int)param_2, uVar5 < 8; uVar5 = uVar5 + 1 & 0xffff) {
-    uVar1 = *(u16 *)(iVar4 + uVar5 * 2);
-    if (((uVar1 != 0) && (uVar1 < 0x1d0)) &&
-       ((*(u8 *)(DAT_007ce3f8 + ((u32)uVar1 * 10 + (u32)uVar1) * 4 + 1) & 2) != 0)) {
-      if (param_2 != 0) {
-        *(u16 *)(iVar8 + uVar7 * 2) = uVar1;
+  u16 skill;
+  u16 nextSkill;
+  u16 count;
+  u16 index;
+  u16* unitSkills;
+  u16 lastIndex;
+  bool swapped;
+
+  count = 0;
+  unitSkills = (u16*)func_00308bb0_u32(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+  for (index = 0; index < 8; index++) {
+    skill = unitSkills[index];
+    if (skill != 0 && skill < 0x1d0 &&
+        (*(u8 *)(DAT_007ce3f8 + (u32)skill * 0x2c + 1) & 2) != 0) {
+      if (output != 0) {
+        output[count] = skill;
       }
-      uVar7 = uVar7 + 1 & 0xffff;
+      count++;
     }
   }
-  uVar5 = uVar7;
-  if (param_2 != 0) {
-    for (; (uVar5 & 0xffff) < 8; uVar5 = (uVar5 & 0xffff) + 1) {
-      *(u16 *)(iVar8 + (uVar5 & 0xffff) * 2) = 0;
+  if (output != 0) {
+    for (index = count; index < 8; index++) {
+      output[index] = 0;
     }
-    if (1 < uVar7) {
+    if (count > 1) {
+      lastIndex = count - 1;
       do {
-        bVar3 = false;
-        for (uVar5 = 0; (int)uVar5 < (int)(uVar7 - 1); uVar5 = uVar5 + 1 & 0xffff) {
-          puVar6 = (u16 *)(iVar8 + uVar5 * 2);
-          uVar1 = *puVar6;
-          iVar4 = iVar8 + uVar5 * 2;
-          uVar2 = *(u16 *)(iVar4 + 2);
-          if (uVar2 < uVar1) {
-            *puVar6 = uVar2;
-            *(u16 *)(iVar4 + 2) = uVar1;
-            bVar3 = true;
+        swapped = false;
+        for (index = 0; index < lastIndex; index++) {
+          skill = output[index];
+          nextSkill = output[index + 1];
+          if (nextSkill < skill) {
+            output[index] = nextSkill;
+            output[index + 1] = skill;
+            swapped = true;
           }
         }
-      } while (bVar3);
+      } while (swapped);
     }
   }
-  return uVar7;
+  return count;
 }
 
 // FUN_002bdfb0 NONMATCHING
@@ -4164,7 +4164,7 @@ u64 func_002be620(u64 param_1,u64 param_2)
   
   iVar5 = (int)param_1;
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-    uVar1 = func_002bde10(param_2,(long)(int)auStack_20);
+    uVar1 = func_002bde10(param_2,(u16*)auStack_20);
     *(u16 *)(iVar5 + 0xc) = uVar1;
   }
   else {
@@ -4211,7 +4211,7 @@ void func_002be720(short *param_1,short param_2,short param_3,u64 param_4)
                (float)(param_1[4] * 0x12 + (int)param_1[4] + 4),(float)(param_1[5] * 0x12 + 4),0,0,
                0xffffffffc0c0c0c0,0);
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-    sVar2 = func_002bde10(param_4,(long)(int)auStack_20);
+    sVar2 = func_002bde10(param_4,(u16*)auStack_20);
     param_1[6] = sVar2;
   }
   else {
