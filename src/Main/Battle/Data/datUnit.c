@@ -46,6 +46,7 @@ DatUnitEc* datUnitCreateEc(u16 encountId)
     DatUnitEc* ec;
     u16 j;
     u16 k;
+
     count = 0;
     i = 0;
     for (; (u32)(i & 0xFFFF) < 5U; i++)
