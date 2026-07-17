@@ -239,6 +239,10 @@ extern void func_0035f060_u32(u32 param_1);
 extern u32 func_0035ed20_u32(u32 param_1);
 #pragma alias func_002a3d70_f32 func_002a3d70
 extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
+#pragma alias func_002a3d70_f32_u32 func_002a3d70
+extern u32 func_002a3d70_f32_u32(float param_1,u32 param_2,RwV3d *param_3,RwV3d *param_4,RwV3d *param_5,RwV3d *param_6);
+#pragma alias func_002b8d60_u32 func_002b8d60
+extern u32 func_002b8d60_u32(s32 param_1,u32 param_2);
 #pragma alias func_0035ee60_f32 func_0035ee60
 extern float func_0035ee60_f32(u32 param_1);
 extern u64 func_0030b4b0();
@@ -14081,36 +14085,28 @@ u32 func_002d0d70(void)
 // FUN_002d0de0 NONMATCHING
 
 u32 func_002d0de0(void)
-
 {
-  u64 uVar1 = 0;
-  u64 uStack_40 = 0;
-  u32 uStack_38 = 0;
-  u32 uStack_30 = 0;
-  u32 uStack_2c = 0;
-  u32 uStack_28 = 0;
-  u64 uStack_20 = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_10 = 0;
-  u32 uStack_c = 0;
-  u32 uStack_8 = 0;
-  
+  RwV3d start;
+  RwV3d startCopy;
+  RwV3d end;
+  RwV3d endCopy;
+  u32 packet;
+
   func_0028a780(*(u32 *)(iGpffffb6fc + 0x148));
-  uVar1 = func_002b8d60(3,0xfff);
-  func_0027ed20(uVar1,0);
-  uStack_10 = func_0035ee60(0);
-  uStack_c = func_0035ee60(1);
-  uStack_8 = func_0035ee60(2);
-  uStack_30 = func_0035ee60(3);
-  uStack_2c = func_0035ee60(4);
-  uStack_38 = func_0035ee60(5);
-  uStack_20 = CONCAT44(uStack_c,uStack_10);
-  uStack_18 = uStack_8;
-  uStack_40 = CONCAT44(uStack_2c,uStack_30);
-  uStack_28 = uStack_38;
-  uVar1 = func_002a3d70(0x3f800000,*(u32 *)(iGpffffb6fc + 0x148),&uStack_10,&uStack_30,
-                       &uStack_20,&uStack_40);
-  func_0027ed20(uVar1,0);
+  packet = func_002b8d60_u32(3,0xfff);
+  func_0027ed20(packet,0);
+
+  start.x = func_0035ee60_f32(0);
+  start.y = func_0035ee60_f32(1);
+  start.z = func_0035ee60_f32(2);
+  end.x = func_0035ee60_f32(3);
+  end.y = func_0035ee60_f32(4);
+  end.z = func_0035ee60_f32(5);
+  startCopy = start;
+  endCopy = end;
+  packet = func_002a3d70_f32_u32(1.0f,*(u32 *)(iGpffffb6fc + 0x148),
+                                 &start,&end,&startCopy,&endCopy);
+  func_0027ed20(packet,0);
   return 1;
 }
 
