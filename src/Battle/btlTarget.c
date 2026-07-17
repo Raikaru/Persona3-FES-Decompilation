@@ -101,8 +101,8 @@ extern void FUN_004C6AC0(f32*);
 extern f32 FUN_004C6B20(RwV2d* dst, const RwV2d* src);
 extern void FUN_004C6BE0(f32*, u64, s32);
 extern f32 FUN_0052E9E8(f32);
-extern f32 FUN_0052EA18(void);
-extern void FUN_004BDDE0(f32, u64, const void*, s32);
+extern f32 FUN_0052EA18(f32, f32);
+extern void FUN_004BDDE0(u64, const void*, f32, s32);
 extern void* FUN_0027EC10(s32, s32);
 extern u32 FUN_0035C090(u32, u64);
 extern s32 FUN_00195460();
@@ -238,18 +238,20 @@ void FUN_002d1ac0(void)
     }
 }
 
-// FUN_002d1de0 NONMATCHING
+// FUN_002d1de0
 void FUN_002d1de0(u64 task, const RwV3d* from, const RwV3d* to)
 {
+    f32 deltaX;
     f32 deltaZ;
-    f32 speed = 0.0f;
+    f32 angle;
 
-    speed = to->x - from->x;
+    deltaX = to->x - from->x;
     deltaZ = to->z - from->z;
-    if (speed != 0.0f || deltaZ != 0.0f) {
-        speed = fGpffff80d0 * FUN_0052EA18();
+    angle = 0.0f;
+    if (deltaX != 0.0f || deltaZ != 0.0f) {
+        angle = fGpffff80d0 * FUN_0052EA18(deltaX, deltaZ);
     }
-    FUN_004BDDE0(speed, task, DAT_00697880, 0);
+    FUN_004BDDE0(task, DAT_00697880, angle, 0);
 }
 // FUN_002d1e70
 void FUN_002d1e70(f32* from, f32* to)
