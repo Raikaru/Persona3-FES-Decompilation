@@ -1324,20 +1324,17 @@ s32 FUN_002d8b40(s32 param_1)
     hp = (u16)FUN_002ffd70(personaId);
     maxHp = (u16)FUN_002ffdf0(personaId);
     hpPercent = hp * 100 / maxHp;
-    if (hpPercent < 0x47)
+    if (hpPercent >= 0x47)
     {
-        goto lowHp;
+        if (*(s32*)(*(s32*)(iGpffffb6fc + 0x148) + 0x20) < 3)
+        {
+            if (FUN_002ddc10(6) == 0)
+            {
+                return 0xce;
+            }
+            return 0xd1;
+        }
     }
-    if (*(s32*)(*(s32*)(iGpffffb6fc + 0x148) + 0x20) >= 3)
-    {
-        goto lowHp;
-    }
-    if (FUN_002ddc10(6) == 0)
-    {
-        return 0xce;
-    }
-    return 0xd1;
-lowHp:
     if (hpPercent < 0x1f)
     {
         goto criticalHp;
