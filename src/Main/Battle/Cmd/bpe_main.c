@@ -92,11 +92,12 @@ void func_002496e0(void* work)
         s32 stride;
     };
     u8* base;
-    u8* resource;
     u8* node;
     u8* camera;
     void** texture;
     void* matrix;
+    u8* color;
+    f32* position;
     struct Buffer colors;
     struct Buffer positions;
     f32 uv[4];
@@ -107,9 +108,8 @@ void func_002496e0(void* work)
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
-    resource = (u8*)func_00474210(0x80, 0x20080003, NULL);
-    *(u8**)(base + 0x600) = resource;
-    func_00492d10(resource, func_004caf10());
+    *(void**)(base + 0x600) = func_00474210(0x80, 0x20080003, NULL);
+    func_00492d10(*(void**)(base + 0x600), func_004caf10());
 
     texture = func_003210a0(1);
     uv[0] = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
@@ -119,44 +119,57 @@ void func_002496e0(void* work)
     uv[3] = ((f32)*(s32*)((u8*)*texture + 0x10) - 1.0f) /
             (f32)*(s32*)((u8*)*texture + 0x10);
 
-    node = *(u8**)(resource + DAT_007ce770);
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     memcpy(node + 0xe0, uv, sizeof(uv));
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x80000;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(f32*)(node + 0xc0) = 20.0f;
     *(f32*)(node + 0xc4) = 20.0f;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x4000;
     func_00494d50(
-        **(void***)((u8*)*(void**)(resource + 0x18) + 0x20), texture);
+        **(void***)((u8*)*(void**)(*(u8**)(base + 0x600) + 0x18) + 0x20), texture);
 
     white[0] = 0xff;
     white[1] = 0xff;
     white[2] = 0xff;
     white[3] = 0xff;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     memcpy(node + 0xd0, white, 0x10);
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x40000;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     func_005225a8((const void*)0x0068e8b0, *(void**)node);
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x800000;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 4) = 0x80;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0xb4) = 1;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0xac) = 3;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0xb0) = 9;
+    node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x10000000;
 
-    func_00474640(resource, (void**)&colors.data, 2, 0x40000000);
-    func_00474640(resource, (void**)&positions.data, 1, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&colors.data, 2, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&positions.data, 1, 0x40000000);
+    color = colors.data;
     for (i = 0; i < 0x80; i++) {
-        colors.data[0] = 0xff;
-        colors.data[1] = 0xff;
-        colors.data[2] = 0xff;
-        colors.data[3] = 0x80;
-        colors.data += colors.stride;
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = 0x80;
+        color += colors.stride;
     }
 
+    position = (f32*)positions.data;
     for (i = 0; i < 0x80; i++) {
         u32 random;
         f32 value;
         f32* saved = (f32*)(base + i * 0xc);
-        f32* position = (f32*)positions.data;
 
         random = func_00488f30() & 0xfff;
         value = ((f32)random / (f32)0xfff) * 300.0f - 150.0f;
@@ -170,10 +183,10 @@ void func_002496e0(void* work)
         value = ((f32)random / (f32)0xfff) * 300.0f - 150.0f;
         saved[2] = value;
         position[2] = value;
-        positions.data += positions.stride;
+        position = (f32*)((u8*)position + positions.stride);
     }
 
-    func_004747f0(resource);
+    func_004747f0(*(void**)(base + 0x600));
     matrix = func_004cb2f0(*(void**)(camera + 4));
     origin[0] = 0.0f;
     origin[1] = 0.0f;
