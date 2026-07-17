@@ -6212,23 +6212,26 @@ void func_002c2470(int param_1, u32 param_2)
     return;
 }
 
-// FUN_002c2510 NONMATCHING
+// FUN_002c2510
 
 u32 func_002c2510(int param_1)
 {
-    u16 count;
     int data;
+    s32 count;
     u16 *skills;
     u16 index;
 
     data = *(int *)(param_1 + 0x30);
     count = (u16)func_00308ba0_u32(*(u32 *)(data + 0xa2c));
     skills = (u16 *)func_00308bb0_u32(*(u32 *)(data + 0xa2c));
-    for (index = 0; index < count; index++) {
+    index = 0;
+    count = (u16)count;
+    while (index < count) {
         u16 skillId = skills[index];
 
         if (skillId != 0 && skillId < 0x1d0 && func_00308860(skillId) != 0)
             return 1;
+        index++;
     }
     return 0;
 }
