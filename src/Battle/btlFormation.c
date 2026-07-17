@@ -6179,6 +6179,24 @@ void func_002c2270(int param_1, u32 param_2)
     return;
 }
 
+// FUN_002c22d0 MATCHING
+bool func_002c22d0(int param_1, int param_2)
+{
+    bool result;
+
+    switch (*(u16*)(param_1 + 0x7c))
+    {
+    default:
+        result = false;
+        break;
+    case 1:
+    case 2:
+        result = *(u16*)(param_1 + 0x7e) == param_2;
+        break;
+    }
+    return result;
+}
+
 // FUN_002c2310
 
 void func_002c2310(int param_1,u32 param_2)
@@ -6247,6 +6265,18 @@ void func_002c2470(int param_1, u32 param_2)
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c23c0);
     return;
+}
+
+// FUN_002c24d0 MATCHING
+bool func_002c24d0(int param_1, u32 param_2)
+{
+    return param_2 >= *(u32*)(param_1 + 0x20);
+}
+
+// FUN_002c24f0 MATCHING
+bool func_002c24f0(int param_1, u32 param_2)
+{
+    return param_2 <= *(u32*)(param_1 + 0x20);
 }
 
 // FUN_002c2510
