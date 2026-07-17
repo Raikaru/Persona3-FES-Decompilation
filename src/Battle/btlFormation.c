@@ -4332,31 +4332,33 @@ u16 func_002becc0(void)
     return *data;
 }
 
-// FUN_002bed10 NONMATCHING
+// FUN_002bed10
 
 void func_002bed10(void)
-
 {
-  short *psVar1;
-  long lVar2 = 0;
-  
-  lVar2 = func_00195340(0x696f50);
-  if (lVar2 != 0) {
-    psVar1 = (short *)func_00195540(lVar2);
-    if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) == 0) {
-      if (*(short *)(*(int *)(psVar1 + 2) + 0x6c) == 4) {
-        func_001fe430();
-      }
-      else {
-        func_001fdec0();
-      }
-      *psVar1 = 2;
-    }
-    else if (*psVar1 == 3) {
-      *psVar1 = 6;
+  u32 handle;
+  u16 *state;
+
+  if ((handle = func_00195340_u32(D_00696f50)) == 0) {
+    return;
+  }
+  state = (u16 *)func_00195540_u32(handle);
+  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) != 0) {
+    if (*state == 3) {
+      *state = 6;
     }
   }
-  return;
+  else {
+    switch (*(u16 *)(*(u32 *)(state + 2) + 0x6c)) {
+    case 4:
+      func_001fe430();
+      break;
+    default:
+      func_001fdec0();
+      break;
+    }
+    *state = 2;
+  }
 }
 
 // FUN_002bedd0 NONMATCHING
