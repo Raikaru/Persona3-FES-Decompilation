@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Report decompilation progress and generate validated progress endpoints.
 
-The published progress scope is Atlus game code (vendor/runtime/startup
-translation units are excluded).  Whole-executable verifier totals remain under
-the ``whole_executable`` metrics field.
+The published progress scope is the explicit essential-function policy in
+``config/function_scope.json``. Replaceable vendor/runtime/generic machinery is
+excluded; whole-executable verifier totals remain under ``whole_executable``.
 
 Usage:
   python tools/progress.py                 # run verify.py and report
@@ -125,12 +125,20 @@ def report_results(report: dict[str, Any], windows: dict[int, int | None]) -> li
 
 
 def scope_diagnostics(
-    results: list[dict[str, Any]], windows: dict[int, int | None], category: str | None = None,
+    results: list[dict[str, Any]],
+    windows: dict[int, int | None],
+    completion_scope: str | None = None,
+    policy: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Summarize rows in the whole image or one provenance category."""
+    """Summarize rows in the whole image or one completion-gate scope."""
+    if completion_scope is not None and policy is None:
+        raise ProgressError("completion-scope diagnostics require a function scope policy")
     scoped_rows = [
         row for row in results
-        if category is None or provenance.classify_source(row["file"])[0] == category
+        if completion_scope is None
+        or provenance.classify_function_scope(
+            row["file"], row.get("name"), row["addr"], policy,
+        )[0] == completion_scope
     ]
     known_addresses: set[int] = set()
     matched_addresses: set[int] = set()
@@ -267,7 +275,20 @@ def make_metrics(
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     results = report_results(report, windows)
     whole = scope_diagnostics(results, windows)
-    essential = scope_diagnostics(results, windows, "atlus_game")
+    try:
+        policy = provenance.load_scope_policy()
+        essential = scope_diagnostics(results, windows, "essential", policy)
+        unclassified = scope_diagnostics(results, windows, "unclassified", policy)
+    except provenance.ProvenanceError as exc:
+        raise ProgressError(f"invalid function scope policy: {exc}") from exc
+    if unclassified["rows"]:
+        raise ProgressError(
+            f"function scope policy leaves {unclassified['rows']} verifier rows unclassified"
+        )
+    if essential["ignored_unknown_rows"]:
+        raise ProgressError(
+            "essential verifier rows are missing from canonical function metadata"
+        )
     whole_total = len(windows)
     essential_total = essential["unique_known_addresses"]
 
@@ -313,16 +334,28 @@ def make_metrics(
         f"{address:08x}"
         for address in sorted(linked_numeric_addresses & essential_addresses)
     ]
+    essential_remaining = essential_total - len(essential_matching["addresses"])
+    essential_gate = {
+        "name": "essential_functions",
+        "label": "Essential Persona-specific functions",
+        "complete": essential_total > 0 and essential_remaining == 0,
+        "remaining": essential_remaining,
+        "requires_every_function_to_match": True,
+        "whole_executable_identity_is_separate": True,
+    }
+
     metrics = {
         "schema_version": SCHEMA_VERSION,
         "scope": {
-            "name": "atlus_game",
-            "label": "Atlus game code",
+            "name": "essential",
+            "label": "Essential Persona-specific functions",
+            "policy": policy["source"],
             "addresses": [f"{address:08x}" for address in sorted(essential_addresses)],
         },
         "source": {
             "verifier_report": verifier_source,
             "linked_report": linked_source,
+            "function_scope_policy": policy["source"],
             "raw_rows": len(results),
             "scope_rows": essential["rows"],
             "ignored_unknown_rows": whole["ignored_unknown_rows"],
@@ -336,6 +369,7 @@ def make_metrics(
             "addresses": essential_linked_addresses,
         },
         "status_counts": essential["status_counts"],
+        "gate": essential_gate,
         "whole_executable": {
             "total": whole_total,
             "matching": whole_matching,
@@ -507,7 +541,7 @@ def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
         raise ProgressError("malformed metrics endpoint: top level must be an object")
     required = {
         "schema_version", "scope", "source", "total", "matching", "linked",
-        "status_counts", "whole_executable", "hashes", "build_succeeded",
+        "status_counts", "gate", "whole_executable", "hashes", "build_succeeded",
     }
     missing = sorted(required - metrics.keys())
     if missing:
@@ -518,8 +552,10 @@ def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
     scope = metrics["scope"]
     if (
         not isinstance(scope, dict)
-        or scope.get("name") != "atlus_game"
-        or scope.get("label") != "Atlus game code"
+        or scope.get("name") != "essential"
+        or scope.get("label") != "Essential Persona-specific functions"
+        or not isinstance(scope.get("policy"), str)
+        or not scope["policy"]
     ):
         raise ProgressError("invalid metrics endpoint: essential scope")
     scope_addresses = validate_address_list(scope.get("addresses"), "scope", windows)
@@ -539,6 +575,7 @@ def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
         or not source["verifier_report"]
         or not isinstance(source.get("linked_report"), str)
         or not source["linked_report"]
+        or source.get("function_scope_policy") != scope["policy"]
     ):
         raise ProgressError("malformed metrics endpoint: invalid source report provenance")
     raw_rows = source.get("raw_rows")
@@ -576,6 +613,18 @@ def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
         metrics["matching"], "matching", essential_total, scope_addresses,
         scope_rows, scope_ignored_unknown_rows, windows,
     )
+    gate = metrics["gate"]
+    expected_remaining = essential_total - len(matching_addresses)
+    if (
+        not isinstance(gate, dict)
+        or gate.get("name") != "essential_functions"
+        or gate.get("label") != "Essential Persona-specific functions"
+        or gate.get("remaining") != expected_remaining
+        or gate.get("complete") != (essential_total > 0 and expected_remaining == 0)
+        or gate.get("requires_every_function_to_match") is not True
+        or gate.get("whole_executable_identity_is_separate") is not True
+    ):
+        raise ProgressError("invalid metrics endpoint: essential completion gate")
     whole_matching_addresses = _validate_matching_summary(
         whole.get("matching"), "whole_executable.matching", whole_total, set(
             f"{address:08x}" for address in windows
@@ -599,8 +648,9 @@ def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
 def print_human(report: dict[str, Any], windows: dict[int, int | None], metrics: dict[str, Any]) -> None:
     results = report_results(report, windows)
     per_dir: dict[str, list[int]] = collections.defaultdict(lambda: [0, 0])
+    essential_addresses = set(metrics["scope"]["addresses"])
     for row in results:
-        if provenance.classify_source(row["file"])[0] != "atlus_game":
+        if f"{canonical_address(row['addr']):08x}" not in essential_addresses:
             continue
         pieces = Path(row["file"].replace("\\", "/")).parts
         top = pieces[1] if len(pieces) > 1 else "."
@@ -617,6 +667,12 @@ def print_human(report: dict[str, Any], windows: dict[int, int | None], metrics:
     print(f"essential functions with C: {metrics['source']['scope_rows']} scanned")
     print(f"all functions with C      : {metrics['source']['raw_rows']} scanned")
     print(f"  essential MATCH         : {matching['count']}  ({matching['percent']}% of essential)")
+    gate = metrics["gate"]
+    print(
+        f"  essential gate          : "
+        f"{'PASS' if gate['complete'] else 'INCOMPLETE'} "
+        f"({gate['remaining']} remaining)"
+    )
     print(
         f"  whole-image MATCH       : {whole['matching']['count']}  "
         f"({whole['matching']['percent']}% of all)"
@@ -675,6 +731,8 @@ def main() -> None:
                 "functions_scanned": source["scope_rows"],
                 "functions_scanned_whole_executable": source["raw_rows"],
                 "functions_matched": metrics["matching"]["count"],
+                "essential_gate_complete": metrics["gate"]["complete"],
+                "essential_functions_remaining": metrics["gate"]["remaining"],
                 "functions_matched_whole_executable": whole["matching"]["count"],
                 "functions_nonmatching": metrics["status_counts"].get("NONMATCHING", 0),
                 "functions_nonmatching_whole_executable": whole["status_counts"].get("NONMATCHING", 0),

@@ -27,6 +27,38 @@ class ClassificationRuleTests(unittest.TestCase):
     def test_outside_source_tree_is_not_silently_game_code(self):
         self.assertEqual(provenance.classify_source("asm/code1.s")[0], "unclassified")
 
+    def test_completion_scope_uses_policy_not_ownership_label(self):
+        policy = provenance.load_scope_policy()
+        self.assertEqual(
+            provenance.classify_function_scope(
+                "src/Main/main.c", "game_entry", "00100000", policy,
+            )[0],
+            "essential",
+        )
+        self.assertEqual(
+            provenance.classify_function_scope(
+                "src/rw/rwcore.c", "rw_entry", "00100010", policy,
+            )[0],
+            "replaceable",
+        )
+
+    def test_explicit_override_can_promote_middleware_glue(self):
+        policy = provenance.load_scope_policy()
+        policy["overrides"] = {
+            ("src/rw/rwcore.c", 0x00100010): {
+                "file": "src/rw/rwcore.c",
+                "addr": "00100010",
+                "name": "atlus_rw_bridge",
+                "scope": "essential",
+                "reason": "Persona-specific RenderWare bridge",
+            },
+        }
+        scope, rule = provenance.classify_function_scope(
+            "src/rw/rwcore.c", "atlus_rw_bridge", "00100010", policy,
+        )
+        self.assertEqual(scope, "essential")
+        self.assertIn("Persona-specific", rule)
+
 
 class ReportTests(unittest.TestCase):
     def test_report_aggregates_categories_and_bytes(self):
@@ -69,6 +101,10 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(report["categories"]["c_runtime"]["matched_object_bytes"], 8)
         self.assertTrue(report["validation"]["category_sum_matches_total"])
         self.assertEqual(report["validation"]["unclassified_function_count"], 0)
+        self.assertEqual(report["scopes"]["essential"]["function_count"], 1)
+        self.assertEqual(report["scopes"]["replaceable"]["function_count"], 2)
+        self.assertTrue(report["coverage_gate"]["complete"])
+        self.assertEqual(report["coverage_gate"]["remaining_function_count"], 0)
 
     def test_duplicate_addresses_are_rejected(self):
         source_report = {

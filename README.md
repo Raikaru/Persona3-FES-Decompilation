@@ -12,12 +12,15 @@ with the game's original CodeWarrior PS2 linker. Functions are decompiled to C
 one at a time; each is verified against the exact retail bytes.
 
 Progress metrics: the published **matching** and **C-linked** endpoints use the
-essential Atlus game-code scope (third-party CRI, RenderWare, SCE, runtime, and
-startup/platform bodies excluded). The full executable remains available under
-`whole_executable` in [`progress/metrics.json`](progress/metrics.json).
+explicit essential-function policy in
+[`config/function_scope.json`](config/function_scope.json). Essential functions
+cover Persona-specific gameplay, state, scripts, asset handling, UI, and
+game-facing middleware glue. Replaceable vendor/runtime internals remain part of
+the exact retail build and the separate `whole_executable` metrics in
+[`progress/metrics.json`](progress/metrics.json).
 
-For provenance-filtered game-code coverage, run
-`python tools/provenance.py --json build/provenance_report.json`; the path rules
+For the ownership and completion-scope census, run
+`python tools/provenance.py --json build/provenance_report.json`; the distinction
 and current classification table are documented in [`ROADMAP.md`](ROADMAP.md).
 
 See [`ROADMAP.md`](ROADMAP.md) for the P3 completion sequence and the parallel
@@ -31,8 +34,8 @@ Persona 4 synchronization lane.
 | Artifact | State |
 | --- | --- |
 | Full retail ELF, rebuilt from split sources (`make` → `build/SLUS_216.21`) | **byte-identical** to retail (SHA-1 `3929cd7c…`) |
-| Functions in the executable | 13,752 |
-| Essential Atlus game functions | 7,973 (3,299 `MATCH`) |
+| Functions in the executable | 13,801 |
+| Essential Persona-specific functions | 8,022 (4,336 `MATCH`, 54.051%) |
 | Function map (`config/symbol_addrs.txt`) | complete |
 | Decompiled to matching C | ongoing (see `make verify`) |
 

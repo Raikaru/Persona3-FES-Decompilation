@@ -279,41 +279,62 @@ call relationships, not guesses based only on constants.
 **Exit gate:** all game-owned gameplay, event, UI, model, and presentation
 functions are maintainable and exact; every completed file has a linkage decision.
 
-## Current provenance classification
+## Current ownership and completion-scope census
 
-The current full verifier report contains 13,752 unique function windows.  The
-reproducible provenance pass is:
+The current full verifier report contains 13,801 unique function windows. The
+reproducible census is:
 
 ```sh
 python tools/provenance.py --json build/provenance_report.json
 ```
 
-The classifier is source-path based.  `src/cri/**` is CRI, `src/rw/**` is
+Ownership and completion scope are separate classifications. Ownership remains
+conservative and source-path based: `src/cri/**` is CRI, `src/rw/**` is
 RenderWare, `src/sce/**` plus `src/libcdvd.c` is SCE, `libc_core.c` plus
 `libm.c` is C runtime/math, and `crt0.c` plus `code2.c` is startup/platform.
-All remaining `src/**` translation units are treated as Atlus game code;
-game-facing wrappers such as `h_cdvd.c` are intentionally not folded into the
-vendor categories.  `verify.py` remains authoritative for `MATCH`.
-The primary `progress/metrics.json`, `matching.json`, and `linked.json`
-endpoints use the Atlus-game scope.  The full 13,752-function verifier totals
-remain under `whole_executable`; RenderWare is treated as third-party
-middleware and is not included in the essential denominator.
+All remaining `src/**` translation units are Atlus game code. Symbol names and
+SDK similarity are never used as proof of ownership.
 
-| Provenance | Match status | Matched object bytes / object bytes |
+The completion gate is controlled by
+[`config/function_scope.json`](config/function_scope.json). Its conservative
+defaults make every Atlus-owned function essential and vendor/runtime functions
+replaceable. Exact file/address/name overrides can promote game-specific
+middleware glue or demote proven generic machinery; stale overrides fail the
+census rather than silently changing the denominator. `verify.py` remains
+authoritative for `MATCH`, and any unclassified function invalidates the census.
+
+Essential means Persona-specific gameplay, battle, AI, skills, personas,
+calendar/social systems, field interactions, game state and save formats,
+event/script interpreters, retail-asset parsers, Atlus UI/scene flow, and
+game-specific middleware glue. Replaceable means vendor middleware internals,
+PS2 SDK services, C/compiler runtimes, and generic machinery whose behavior is
+not externally observable. Replaceable functions still use matching libraries
+or retained objects for the byte-identical retail build; a portable build may
+provide modern backends.
+
+| Completion scope | Match status | Matched object bytes / object bytes |
 | --- | ---: | ---: |
-| Atlus game code | 3,299/7,973 (41.377%) | 380,596/3,043,716 |
-| CRI middleware | 806/3,471 (23.221%) | 41,020/535,212 |
-| RenderWare | 187/1,682 (11.118%) | 4,584/825,404 |
-| SCE libraries | 41/491 (8.350%) | 1,372/146,892 |
-| C runtime/math | 1/124 (0.806%) | 8/78,772 |
-| Startup/platform | 0/11 (0.000%) | 0/2,920 |
-| **Total** | **4,334/13,752 (31.515%)** | **427,580/4,632,916** |
+| Essential | 4,336/8,022 (54.051%) | 596,352/3,066,160 |
+| Replaceable | 1,046/5,779 (18.100%) | 47,496/1,588,904 |
+| Unclassified | 0/0 | 0/0 |
+| **Whole executable** | **5,382/13,801 (38.997%)** | **643,848/4,655,064** |
 
-Therefore the exact game-code-only function coverage is **3,299/7,973 =
-41.377%**.  The generated JSON also records retail-window byte totals; the
-object-byte column above uses the same matched-body convention as
-`progress/metrics.json`.  The partition currently has zero unclassified
-functions and zero duplicate addresses.
+The published `progress/metrics.json`, `matching.json`, and `linked.json`
+endpoints therefore use the essential denominator. The essential completion
+gate passes only when all 8,022 essential functions match; 3,686 currently
+remain. Whole-executable identity is a separate invariant and remains required
+for the exact retail build.
+
+| Ownership | Match status | Matched object bytes / object bytes |
+| --- | ---: | ---: |
+| Atlus game code | 4,336/8,022 (54.051%) | 596,352/3,066,160 |
+| CRI middleware | 806/3,471 (23.221%) | 41,020/535,220 |
+| RenderWare | 196/1,682 (11.653%) | 5,024/825,340 |
+| SCE libraries | 43/491 (8.758%) | 1,444/146,872 |
+| C runtime/math | 1/124 (0.806%) | 8/78,552 |
+| Startup/platform | 0/11 (0.000%) | 0/2,920 |
+
+The partition has zero unclassified functions and zero duplicate addresses.
 
 ## Milestone 4 — Close middleware, SDK, and standard-library regions
 
@@ -323,8 +344,8 @@ work rather than manual random selection.
 | Region | Match status |
 | --- | ---: |
 | CRI middleware | 806/3,471 (23.221%) |
-| RenderWare | 187/1,682 (11.118%) |
-| SCE libraries | 41/491 (8.350%) |
+| RenderWare | 196/1,682 (11.653%) |
+| SCE libraries | 43/491 (8.758%) |
 | C runtime/math | 1/124 (0.806%) |
 | Startup/platform | 0/11 (0.000%) |
 
