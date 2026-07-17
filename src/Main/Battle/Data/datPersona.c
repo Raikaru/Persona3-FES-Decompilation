@@ -1466,6 +1466,7 @@ void FUN_00176da0(DatPersonaWork* persona)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_00176FB0 NONMATCHING
 void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 {
@@ -1506,6 +1507,7 @@ void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 
     *skillCount = validSkills;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001770D0 NONMATCHING
 s32 FUN_001770D0(u16 personaId, u16 skillId)
