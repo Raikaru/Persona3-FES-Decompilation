@@ -957,7 +957,7 @@ void btlCameraFrameActionSide(BtlCamera* camera)
     btlCameraRangeActionFrame(camera, 2.5f, 500.0f, 1);
 }
 
-// FUN_002a7390
+// FUN_002a7390 NONMATCHING
 void btlCameraFrameActionTarget(BtlCamera* camera)
 {
     f32 horiz[2];
