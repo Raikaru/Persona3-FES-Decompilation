@@ -1121,28 +1121,28 @@ void func_002b90d0(u64 param_1,u64 param_2)
 
 // FUN_002b9220 NONMATCHING
 
-void func_002b9220(int param_1)
-
+void func_002b9220(int state)
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  char *pcVar3;
-  u16 uVar4 = 0;
-  u32 uVar5 = 0;
-  
-  for (uVar5 = 0; uVar5 < 2; uVar5 = uVar5 + 1 & 0xffff) {
-    iVar2 = param_1 + uVar5 * 0x314;
-    uVar1 = *(u16 *)(iVar2 + 0x10);
-    pcVar3 = (char *)(iVar2 + 0x1c);
-    for (uVar4 = 0; uVar4 < uVar1; uVar4 = uVar4 + 1) {
-      if ((*pcVar3 != -2) && (*pcVar3 != -3)) {
-        func_003257e0(*(u32 *)(pcVar3 + 4));
+  u16 outer;
+  int count;
+  u16 index;
+  u8 *entry;
+  int block;
+
+  for (outer = 0; outer < 2; outer++) {
+    block = state + (outer & 0xffff) * 0x314;
+    count = *(u16 *)(block + 0x10);
+    entry = (u8 *)(block + 0x1c);
+    index = 0;
+    while (index < count) {
+      if (*entry != 0xfe && *entry != 0xfd) {
+        func_003257e0(*(u32 *)(entry + 4));
       }
-      pcVar3 = pcVar3 + 0x18;
+      entry += 0x18;
+      index++;
     }
   }
-  *(u16 *)(param_1 + 0x630) = *(u16 *)(param_1 + 0x630) & 0xfffd;
-  return;
+  *(u16 *)(state + 0x630) &= 0xfffd;
 }
 
 // FUN_002b9300
