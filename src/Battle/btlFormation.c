@@ -3014,18 +3014,19 @@ void func_002bc2f0(void)
 
 {
   int iVar1 = 0;
+  u32 firstIndex = 0;
   u32 uVar2 = 0;
   int iVar3 = 0;
   
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x4000000) == 0) {
-    for (uVar2 = 0; uVar2 < 0x3c; uVar2 = uVar2 + 1) {
-      if (*(int *)(DAT_007ce3ec + uVar2 * 4 + 0xc24) != 0) {
-        func_002b9030(0);
-        *(u32 *)(DAT_007ce3ec + uVar2 * 4 + 0xc24) = 0;
+    for (firstIndex = 0; firstIndex < 0x3c; firstIndex = firstIndex + 1) {
+      if (*(int *)(DAT_007ce3ec + firstIndex * 4 + 0xc24) != 0) {
+        func_002b9030(*(u32 *)(DAT_007ce3ec + firstIndex * 4 + 0xc24));
+        *(u32 *)(DAT_007ce3ec + firstIndex * 4 + 0xc24) = 0;
       }
     }
     if (*(int *)(DAT_007ce3ec + 0xd14) != 0) {
-      func_00100ec0();
+      func_00100ec0(*(u32 *)(DAT_007ce3ec + 0xd14));
       *(u32 *)(DAT_007ce3ec + 0xd14) = 0;
     }
   }
