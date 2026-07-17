@@ -5319,21 +5319,28 @@ long * func_002c08c0(int param_1)
 u32 func_002c0970(int param_1)
 
 {
-  u32 uVar1 = 0;
-  
+  u16 count;
+  u16 index;
+  u64 target;
+
   *(u16 *)(param_1 + 0x3a) = 0;
-  if (*(long *)(param_1 + 0x30) != 0) {
-    for (uVar1 = 0; uVar1 < *(u16 *)(param_1 + 0x38); uVar1 = uVar1 + 1 & 0xffff) {
-      if (*(long *)(param_1 + 0x30) == **(long **)(param_1 + uVar1 * 4)) {
-        *(short *)(param_1 + 0x3a) = (short)uVar1;
-        return 1;
-      }
+  target = *(u64 *)(param_1 + 0x30);
+  if (target == 0) {
+    return 0;
+  }
+  index = 0;
+  count = *(u16 *)(param_1 + 0x38);
+  while (index < count) {
+    if (target == **(u64 **)(param_1 + index * 4)) {
+      *(u16 *)(param_1 + 0x3a) = index;
+      return 1;
     }
+    index++;
   }
   return 0;
 }
-
 #pragma opt_loop_invariants on
+
 // FUN_002c09f0 NONMATCHING
 
 u32 func_002c09f0(int param_1)
