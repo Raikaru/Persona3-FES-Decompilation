@@ -4132,7 +4132,7 @@ void func_002e2d40(void)
   return;
 }
 
-// FUN_002e2d70 NONMATCHING
+// FUN_002e2d70
 u32 func_002e2d70(BtlVoicePacketA03Work* work)
 {
   u32 result;
@@ -4167,7 +4167,7 @@ u32 func_002e2d70(BtlVoicePacketA03Work* work)
   if (work->result != 0) {
     if ((*(u16 *)(iGpffffb6fc + 0xb00) & 1) != 0) {
       result = 1;
-    } else if (FUN_0010a720() != 0) {
+    } else if (FUN_0010a720(work->result) != 0) {
       *(u16 *)(iGpffffb6fc + 0xb00) =
           *(u16 *)(iGpffffb6fc + 0xb00) | 1;
       result = 1;
