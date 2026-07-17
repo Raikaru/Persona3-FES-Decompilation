@@ -4017,6 +4017,7 @@ void func_002e6a20(BtlCamera* camera, float weight);
 void func_002e70b0(BtlCamera* camera);
 void func_002e71c0(int param_1);
 void func_002e7210(BtlCamera* camera);
+void func_002e7320(void);
 void func_002e7330(u64 param_1);
 void func_002e7680(void);
 void func_002e76a0(BtlCamera* camera);
@@ -6239,7 +6240,7 @@ void func_002e71c0(int param_1)
   return;
 }
 
-// FUN_002e7210 NONMATCHING
+// FUN_002e7210 MATCHING
 void func_002e7210(BtlCamera* camera)
 {
     BtlUnit* unit;
@@ -6264,6 +6265,12 @@ void func_002e7210(BtlCamera* camera)
             FUN_002b0280(0.0f, camera, 1, 0);
         }
     }
+    return;
+}
+
+// FUN_002e7320 MATCHING
+void func_002e7320(void)
+{
     return;
 }
 
