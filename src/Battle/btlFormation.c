@@ -5810,24 +5810,33 @@ void func_002c17b0(int param_1,u32 param_2)
 // FUN_002c1850 NONMATCHING
 
 bool func_002c1850(int param_1,u64 param_2)
-
 {
-  char cVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  int iVar4 = 0;
-  
-  cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-  iVar4 = *(int *)(iGpffffb6fc + 0x14c);
-  while ((iVar4 != 0 &&
-         (((((*(u16 *)(iVar4 + 0x1a) & 1) == 0 || ((*(u16 *)(iVar4 + 0x1a) & 8) == 0)) ||
-           (iVar2 = *(int *)(iVar4 + 0x30),
-           (1 << (u32)(cVar1 == '\0') & 0xffffU & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) == 0)) ||
-          ((lVar3 = func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar3 != 0 ||
-           (lVar3 = func_00300580(*(u32 *)(iVar2 + 0xa2c),param_2), lVar3 != 0))))))) {
-    iVar4 = *(int *)(iVar4 + 0x4a8);
+  u32 genus;
+  u16 shift;
+  u32 sideMask;
+  int entry;
+  int unit;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
   }
-  return iVar4 == 0;
+  shift = genus;
+  sideMask = 1 << shift & 0xffff;
+  for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
+    if ((*(u16 *)(entry + 0x1a) & 1) == 0) continue;
+    if ((*(u16 *)(entry + 0x1a) & 8) == 0) continue;
+    unit = *(int *)(entry + 0x30);
+    if ((sideMask & 1 << *(u8 *)(unit + 0xa2)) == 0) continue;
+    if (func_0030b5a0(*(u32 *)(unit + 0xa2c),0) != 0) continue;
+    if (func_00300580(*(u32 *)(unit + 0xa2c),param_2) == 0) break;
+  }
+  if (entry == 0) return true;
+  return false;
 }
 
 // FUN_002c1960
