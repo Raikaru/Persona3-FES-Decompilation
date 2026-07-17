@@ -7020,7 +7020,7 @@ void func_002ae730(void)
 
 // FUN_002AE740 NONMATCHING
 
-void func_002ae740(BtlCamera* camera, long param_2)
+void func_002ae740(BtlCamera* camera, int param_2)
 {
   int iVar1;
   undefined4 uVar2;
@@ -7209,7 +7209,7 @@ void func_002ae740(BtlCamera* camera, long param_2)
 
 // FUN_002AEF80 NONMATCHING
 
-void func_002aef80(BtlCamera* camera, long param_2)
+void func_002aef80(BtlCamera* camera, int param_2)
 {
   int iVar1;
   int iVar2;
@@ -7442,38 +7442,46 @@ void func_002af7f0(BtlCamera* camera)
 
 void func_002af850(BtlCamera* camera)
 {
-  short sVar1;
   int iVar2;
   int iVar3;
-  int iVar4;
-  undefined8 uVar5;
-  
-  iVar4 = (int)camera;
-  iVar3 = FUN_002c0880(*(int *)(iVar4 + 0xe0) + 0x88);
-  if (((iVar3 != 0) && (iVar2 = *(int *)(iVar4 + 0x100), iVar2 != iVar3)) &&
-     ((iVar2 == 0 || (*(short *)(iVar4 + 0x106) == 0)))) {
-    if (iVar2 == 0) {
-      sVar1 = *(short *)(gBtl + 0x104);
-      if ((((sVar1 == 0x23) || (sVar1 == 2)) || (sVar1 == 0x22)) || (sVar1 == 0x1c)) {
-        uVar5 = 0;
-      }
-      else {
-        uVar5 = 1;
-      }
-    }
-    else {
-      uVar5 = 0;
-    }
-    *(int *)(iVar4 + 0x100) = iVar3;
-    if ((*(short *)(iVar4 + 0x104) == 1) || (*(short *)(iVar4 + 0x104) != 2)) {
-      func_002ae740(camera,0);
-    }
-    else {
-      func_002aef80(camera,uVar5);
+  int a1;
+
+  iVar3 = FUN_002c0880(*(int *)((u8 *)camera + 0xe0) + 0x88);
+  iVar2 = *(int *)((int)camera + 0x100);
+  if ((iVar3 == 0) || (iVar2 == iVar3)) {
+    return;
+  }
+  else if ((iVar2 != 0) && (*(u16 *)((u8 *)camera + 0x106) != 0)) {
+    return;
+  }
+  if (iVar2 == 0) {
+    switch (*(u16 *)(iGpffffb6fc + 0x104)) {
+    case 0x1c:
+    case 0x22:
+    case 2:
+    case 0x23:
+      a1 = 0;
+      break;
+    default:
+      a1 = 1;
+      break;
     }
   }
-  return;
+  else {
+    a1 = 0;
+  }
+  *(int *)((u8 *)camera + 0x100) = iVar3;
+  switch (*(u16 *)((u8 *)camera + 0x104)) {
+  case 2:
+    func_002aef80(camera, a1);
+    break;
+  case 1:
+  default:
+    func_002ae740(camera, a1);
+    break;
+  }
 }
+
 
 // FUN_002AF960 NONMATCHING
 
