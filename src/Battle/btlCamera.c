@@ -46,6 +46,7 @@ extern f32 DAT_007caf54;
 extern code DAT_00960178;
 extern code DAT_0096017c;
 extern int iGpffffb710;
+extern u16 (*gp0xffffb710)[14];
 extern u8* iGpffffb6fc;
 extern u8 DAT_006941d4[];
 extern u8 DAT_00694c90[];
@@ -1005,7 +1006,7 @@ extern u64 FUN_002d63b0();
 extern s16 FUN_002f8eb0(BtlUnit* unit, s16 index);
 extern u64 FUN_002fa240();
 extern u64 FUN_002fdcf0();
-extern u64 FUN_002ffbc0();
+extern u32 FUN_002ffbc0();
 extern u64 FUN_00300580();
 extern u64 FUN_00308c60();
 extern u64 FUN_00308a50(u16 param_1);
@@ -1041,7 +1042,7 @@ extern u8 DAT_00694b90[];
 extern u8 DAT_00694c90[];
 extern u8 DAT_00694d90[];
 extern RwV3d D_00694E90;
-extern RwV3d D_00694E9C;
+extern f32 D_00694E9C[3];
 extern RwV3d D_00694EA0;
 extern RwV3d D_00694EA4;
 extern RwV3d D_00694ED0;
@@ -1051,6 +1052,7 @@ extern RwV3d D_00694EDC;
 extern RwV3d D_00694EE0;
 extern RwV3d D_00694EE4;
 extern u8 DAT_00694fe8;
+extern u8 D_00694F10[];
 extern u8 DAT_00694fea;
 extern u8 DAT_00694fec;
 extern u32 DAT_00697880;
@@ -3048,7 +3050,7 @@ void FUN_002b4bc0(int param_1)
 }
 
 
-// FUN_002B4C00 NONMATCHING
+// FUN_002B4C00
 void FUN_002b4c00(int param_1)
 {
   struct {
@@ -3068,10 +3070,8 @@ void FUN_002b4c00(int param_1)
     cameraData = (u16 *)(iGpffffb6fc + 0x20);
     FUN_002a3110(fGpffff813c, cameraData);
   } else if (*(int *)(param_1 + 0xd8) == 0x25) {
-    FUN_002a4690(scratch.firstTransform, &D_00694E9C, D_00694EBC, &D_00697880);
-    scratch.first.x = D_00694E9C.x;
-    scratch.first.y = D_00694E9C.y;
-    scratch.first.z = D_00694E9C.z;
+    FUN_002a4690(scratch.firstTransform, D_00694E9C, D_00694EBC, &D_00697880);
+    scratch.first = *(RwV3d*)D_00694E9C;
     FUN_002a4690(scratch.secondTransform, &D_00694EDC, D_00694EFC, &D_00697880);
     scratch.second = D_00694EDC;
     FUN_002a2290((u16 *)(iGpffffb6fc + 0x20), &scratch.first, &scratch.second, 1);
@@ -3118,23 +3118,13 @@ void FUN_002b4db0(float param_1)
   return;
 }
 
-// FUN_002b4f40 NONMATCHING
+// FUN_002b4f40
 
 void FUN_002b4f40(int param_1)
 
 {
-  u32 uVar1;
-  float fVar2;
-  
-  uVar1 = FUN_002ffbc0(0x168);
-  if ((long)uVar1 < 0) {
-    fVar2 = (float)(uVar1 & 0xffffffff);
-  }
-  else {
-    fVar2 = (float)(int)uVar1;
-  }
-  *(float *)(param_1 + 0x100) = fVar2;
-  return;
+  *(float *)(param_1 + 0x100) = (float)FUN_002ffbc0(0x168);
+  FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(int *)(param_1 + 0xe0), 0, 0, 0x40);
 }
 
 // FUN_002b4fd0
@@ -3304,23 +3294,13 @@ void FUN_002b5600(void* param_1)
   return;
 }
 
-// FUN_002b5650 NONMATCHING
+// FUN_002b5650
 
 void FUN_002b5650(int param_1)
 
 {
-  u32 uVar1;
-  float fVar2;
-  
-  uVar1 = FUN_002ffbc0(0x168);
-  if ((long)uVar1 < 0) {
-    fVar2 = (float)(uVar1 & 0xffffffff);
-  }
-  else {
-    fVar2 = (float)(int)uVar1;
-  }
-  *(float *)(param_1 + 0x100) = fVar2;
-  return;
+  *(float *)(param_1 + 0x100) = (float)FUN_002ffbc0(0x168);
+  FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(int *)(param_1 + 0xe0), 0, 0, 0x40);
 }
 
 // FUN_002b56e0 NONMATCHING
@@ -4000,27 +3980,26 @@ void FUN_002b6de0(unsigned short *param_1)
   return;
 }
 
-// FUN_002b6f70 NONMATCHING
+// FUN_002b6f70
 
 u32 FUN_002b6f70(u16 *param_1)
-
 {
-  u32 uVar1;
-  int iVar2;
-  
-  uVar1 = 0;
-  while( 1 ) {
-    if (0x17 < uVar1) {
-      return 0x17;
-    }
-    iVar2 = uVar1 * 0xe0;
-    if (((*param_1 <= *(u16 *)(&DAT_00694fe8 + iVar2)) &&
-        (param_1[1] <= *(u16 *)(&DAT_00694fea + iVar2))) &&
-       (param_1[2] <= *(u16 *)(&DAT_00694fec + iVar2))) break;
-    uVar1 = uVar1 + 1 & 0xffff;
+  u8 *base;
+  u8 *entry;
+  u32 i;
+
+  i = 0;
+  base = D_00694F10;
+  for (; (i & 0xffff) < 0x18U; i = (u16)(i + 1)) {
+    entry = base + (u16)i * 0xe0;
+    if (param_1[0] > *(u16 *)(entry + 0xd8)) continue;
+    if (param_1[1] > *(u16 *)(entry + 0xda)) continue;
+    if (param_1[2] > *(u16 *)(entry + 0xdc)) continue;
+    return i;
   }
-  return uVar1;
+  return 0x17;
 }
+
 
 // FUN_002b7000
 void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
@@ -7495,56 +7474,32 @@ u8 FUN_002a32f0(int param_1)
     return FUN_002d5f50(unit) != 0;
 }
 
-// FUN_002A3380 NONMATCHING
+// FUN_002A3380
+
 
 
 u32 FUN_002a3380(u8* param_1)
-
-
-
 {
+  int action;
+  int x;
+  u16 id;
+  u16 n;
 
-  u16 uVar1;
-
-  int iVar2;
-
-  u32 uVar3;
-
-  
-
-  iVar2 = *(int *)(*(int *)(*(int *)(param_1 + 0xe0) + 0x30) + 0xa00);
-
-  if ((iVar2 == 0) ||
-
-     (uVar1 = *(u16 *)(iVar2 + 0xa4),
-
-     (*(u16 *)(iGpffffb73c + ((u32)uVar1 * 10 + (u32)uVar1) * 8) & 1) == 0)) {
-
-    if ((*(u16 *)((u32)*(u16 *)(*(int *)(param_1 + 0xe0) + 0x6e) * 0x1c + iGpffffb710 + 2) &
-
-        0x10) == 0) {
-
-      uVar3 = 1;
-
+  action = *(int *)(param_1 + 0xe0);
+  x = *(int *)(*(int *)(action + 0x30) + 0xa00);
+  id = *(u16 *)(action + 0x6e);
+  if (x != 0) {
+    n = *(u16 *)(x + 0xa4);
+    if ((*(u16 *)(iGpffffb73c + ((u32)n * 10 + (u32)n) * 8) & 1) != 0) {
+      return 0;
     }
-
-    else {
-
-      uVar3 = 0;
-
-    }
-
   }
-
-  else {
-
-    uVar3 = 0;
-
+  if ((gp0xffffb710[id][1] & 0x10) != 0) {
+    return 0;
   }
-
-  return uVar3;
-
+  return 1;
 }
+
 
 // FUN_002A3420 NONMATCHING
 
