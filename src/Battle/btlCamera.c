@@ -68,6 +68,7 @@ extern f32 FUN_002d1fd0(f32* from, f32* to, f32* eye, f32* out);
 extern void func_002af960(BtlCamera* camera);
 extern f32 fGpffff8060;
 extern f32 fGpffff8030;
+extern f32 fGpffff8134;
 extern RwV3d D_00697890;
 extern float gp0xffff8070;
 extern f32 fGpffff82c8;
@@ -926,7 +927,140 @@ void btlCameraFrameActionClose(BtlCamera* camera)
 // FUN_002a5fd0 NONMATCHING
 void btlCameraFrameActionPair(BtlCamera* camera)
 {
-    btlCameraRangeActionFrame(camera, 2.0f, 300.0f, 1);
+    RwV3d secondPos;
+    RwV3d dir;
+    RwV3d firstPos;
+    RwV3d center1;
+    RwV3d center2;
+    RtQuat blended;
+    BtlCameraQuatBlend blend;
+    BtlCameraKeyFrame frames[2];
+    f32 hs[4];
+    BtlAction* action;
+    BtlUnit* unit;
+    BtlUnit* unit2;
+    f32 len2;
+    f32 ratio;
+    f32 w1;
+    f32 x;
+    f32 x2;
+    f32 r;
+    f32 r2;
+    f32 dot;
+    f32 angle;
+
+    action = camera->action;
+    unit = action->unit;
+    unit2 = *(BtlUnit**)(*(int*)((u8*)action + 0x38) + 0x30);
+    FUN_002a4470((f32*)&frames[0], (f32*)((u8*)camera + 0x9c));
+    btlUnitGetSphereWorldCenter(unit, &center1);
+    btlUnitGetSphereWorldCenter(unit2, &center2);
+    center1.y = 0.0f + center1.y + fGpffff8094 * (unit->unk_8c * unit->scale);
+    if (center1.y < 100.0f)
+    {
+        center1.y = 100.0f;
+    }
+    dir.x = frames[0].pos.x - center1.x;
+    dir.y = frames[0].pos.y - center1.y;
+    dir.z = frames[0].pos.z - center1.z;
+    len2 = RwV3dLength(&dir);
+    len2 = len2 * fGpffff8060;
+    hs[2] = dir.x;
+    hs[3] = dir.z;
+    FUN_004c6b20(hs + 2, hs + 2);
+    center2.y = center1.y;
+    dir.x = center2.x - center1.x;
+    dir.y = center2.y - center1.y;
+    dir.z = center2.z - center1.z;
+    RwV3dNormalize(&dir, &dir);
+    hs[0] = dir.x;
+    hs[1] = dir.z;
+    dot = dir.x * hs[2] + dir.z * hs[3];
+    if (dot < 0.0f)
+    {
+        dir.x = -dir.x;
+        dir.y = -dir.y;
+        dir.z = -dir.z;
+    }
+    secondPos.x = dir.x * (unit2->sphereRadius * unit2->scale);
+    secondPos.y = dir.y * (unit2->sphereRadius * unit2->scale);
+    secondPos.z = dir.z * (unit2->sphereRadius * unit2->scale);
+    firstPos.x = center1.x + secondPos.x;
+    firstPos.y = center1.y + secondPos.y;
+    firstPos.z = center1.z + secondPos.z;
+    dir.x = dir.x * (5.0f * (unit->sphereRadius * unit->scale));
+    dir.y = dir.y * (5.0f * (unit->sphereRadius * unit->scale));
+    dir.z = dir.z * (5.0f * (unit->sphereRadius * unit->scale));
+    secondPos.x = center1.x + dir.x;
+    secondPos.y = center1.y + dir.y;
+    secondPos.z = center1.z + dir.z;
+    secondPos.y = 0.0f + center2.y + 0.5f * (unit2->unk_8c * unit2->scale);
+    dir.x = secondPos.x - center1.x;
+    dir.y = secondPos.y - center1.y;
+    dir.z = secondPos.z - center1.z;
+    RwV3dNormalize(&dir, &dir);
+    FUN_002a4690(&frames[1].rot, &secondPos, &firstPos, &D_00697880);
+    angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&frames[1].rot);
+    if (angle > fGpffff8134)
+    {
+        ratio = fGpffff8134 / angle;
+        FUN_004be310((f32*)&frames[0].rot, (f32*)&frames[1].rot, (f32*)&blend);
+        if (ratio <= 0.0f)
+        {
+            blended = frames[0].rot;
+        }
+        else if (1.0f <= ratio)
+        {
+            blended = frames[1].rot;
+        }
+        else
+        {
+            w1 = 1.0f - ratio;
+            if (blend.flag == 0)
+            {
+                x = w1 * blend.scalar;
+                x2 = x * x;
+                r = fGpffff8048 + fGpffff8130 * x2;
+                r = fGpffff8118 + x2 * r;
+                r = fGpffff8050 + x2 * r;
+                r = fGpffff8054 + x2 * r;
+                r2 = fGpffff8058 + x2 * r;
+                w1 = x + x2 * x * r2;
+                x = ratio * blend.scalar;
+                x2 = x * x;
+                r = fGpffff8048 + fGpffff8130 * x2;
+                r = fGpffff8118 + x2 * r;
+                r = fGpffff8050 + x2 * r;
+                r = fGpffff8054 + x2 * r;
+                r2 = fGpffff8058 + x2 * r;
+                ratio = x + x2 * x * r2;
+            }
+            blended.imag.x = blend.first.imag.x * w1;
+            blended.imag.y = blend.first.imag.y * w1;
+            blended.imag.z = blend.first.imag.z * w1;
+            blended.imag.x = 0.0f + blended.imag.x + blend.second.imag.x * ratio;
+            blended.imag.y = 0.0f + blended.imag.y + blend.second.imag.y * ratio;
+            blended.imag.z = 0.0f + blended.imag.z + blend.second.imag.z * ratio;
+            blended.real = blend.first.real * w1 + blend.second.real * ratio;
+        }
+        RtQuatTransformVectors(&dir, &D_006978A0, 1, &blended);
+        secondPos.x = firstPos.x + dir.x;
+        secondPos.y = firstPos.y + dir.y;
+        secondPos.z = firstPos.z + dir.z;
+        FUN_002a4690(&frames[1].rot, &secondPos, &firstPos, &D_00697880);
+    }
+    if (len2 < 600.0f)
+    {
+        len2 = 600.0f;
+    }
+    dir.x = dir.x * len2;
+    dir.y = dir.y * len2;
+    dir.z = dir.z * len2;
+    frames[1].pos.x = firstPos.x + dir.x;
+    frames[1].pos.y = firstPos.y + dir.y;
+    frames[1].pos.z = firstPos.z + dir.z;
+    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    FUN_002a3110((u16*)camera, 1.0f);
 }
 
 // FUN_002a6560
@@ -1099,7 +1233,7 @@ void func_002a7380(void)
 {
 }
 
-// FUN_002a7390 NONMATCHING
+// FUN_002a7390
 void btlCameraFrameActionTarget(BtlCamera* camera)
 {
     f32 horiz[2];
