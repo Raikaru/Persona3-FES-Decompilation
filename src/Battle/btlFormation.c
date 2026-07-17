@@ -1260,27 +1260,21 @@ void func_002b94f0(BtlFormationWork *work)
 }
 
 
-// FUN_002b9590 NONMATCHING
+// FUN_002b9590 MATCHING
 
 float func_002b9590(int param_1)
-
 {
   float fVar1 = 0;
-  float fVar2 = 0;
-  
-  fVar1 = fGpffff8398 *
-          (*(float *)(param_1 + 0x90) * *(float *)(param_1 + 0x2c) +
-          *(float *)(param_1 + 0x8c) * *(float *)(param_1 + 0x2c) * 0.5) * 0.5;
-  if (2.5 < fVar1) {
-    fVar2 = 2.5;
+
+  fVar1 = fGpffff8398 * ((*(float *)(param_1 + 0x90) * *(float *)(param_1 + 0x2c) +
+          *(float *)(param_1 + 0x8c) * *(float *)(param_1 + 0x2c) * 0.5f) * 0.5f);
+  if (fVar1 > 2.5f) {
+    fVar1 = 2.5f;
   }
-  else {
-    fVar2 = fGpffff839c;
-    if (fGpffff839c <= fVar1) {
-      fVar2 = fVar1;
-    }
+  else if (fVar1 < fGpffff839c) {
+    fVar1 = fGpffff839c;
   }
-  return fVar2;
+  return fVar1;
 }
 
 // FUN_002b9600
