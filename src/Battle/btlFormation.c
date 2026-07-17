@@ -8607,7 +8607,7 @@ u32 func_002c7340(void)
   return 1;
 }
 
-// FUN_002c73e0 NONMATCHING
+// FUN_002c73e0
 
 u32 func_002c73e0(void)
 
@@ -8617,13 +8617,14 @@ u32 func_002c73e0(void)
   extern void func_002c6a00(void *,void *,u16);
   char *state;
   s32 selection;
+  u16 selectedIndex;
 
   state = (char *)func_0035f160();
   selection = func_0035ed20(0);
   if (selection >= 0) {
     *(u16 *)(state + 0x6c) = 3;
-    *(s16 *)(state + 0x70) = selection;
-    *(u16 *)(state + 0x6e) = func_0030bc20((u16)selection);
+    *(s16 *)(state + 0x70) = (selectedIndex = (u16)selection, selection);
+    *(u16 *)(state + 0x6e) = func_0030bc20(selectedIndex);
   }
   else {
     func_002c6a00(state,state + 0x38,0x8002);
