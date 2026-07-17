@@ -8437,7 +8437,8 @@ void func_002eba50(u64 *param_1)
   return;
 }
 
-// FUN_002ebec0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ebec0
 u32 func_002ebec0(BtlAction* action)
 {
     BtlPacket* packet;
@@ -8478,6 +8479,7 @@ u32 func_002ebec0(BtlAction* action)
 
     return 1;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ec000 NONMATCHING
 void func_002ec000(void)
