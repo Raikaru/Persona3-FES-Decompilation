@@ -277,7 +277,8 @@ u32 sflResult001f9170(s32 player)
     return 0;
 }
 
-// FUN_001f9680 NONMATCHING
+// FUN_001f9680
+#pragma opt_loop_invariants on
 u32 sflResult001f9680(const s32* request)
 {
     u8* base;
@@ -314,6 +315,7 @@ u32 sflResult001f9680(const s32* request)
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001f98d0
 void sflResult001f98d0(void)
