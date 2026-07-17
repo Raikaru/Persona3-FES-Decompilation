@@ -2061,20 +2061,19 @@ LAB_002ba8a0:
 // FUN_002ba900 NONMATCHING
 
 void func_002ba900(int param_1)
-
 {
   u16 uVar1 = 0;
   u16 uVar2 = 0;
   int *piVar3;
   u16 uVar4 = 0;
-  
+
   if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
     piVar3 = *(int **)(param_1 + 0x58);
     uVar1 = *(u16 *)(param_1 + 0x54);
     if ((*(u32 *)(param_1 + 8) & 0x8000) == 0) {
       for (uVar4 = 0; uVar4 < uVar1; uVar4 = uVar4 + 1) {
         if (*piVar3 != 0) {
-          func_00325500();
+          func_00325500(*piVar3);
         }
         piVar3 = piVar3 + 1;
       }
@@ -2085,7 +2084,7 @@ void func_002ba900(int param_1)
       func_00321120(4);
       for (uVar4 = 0; uVar4 < uVar1; uVar4 = uVar4 + 1) {
         if (*piVar3 != 0) {
-          func_00325500();
+          func_00325500(*piVar3);
         }
         piVar3 = piVar3 + 1;
       }
@@ -2492,21 +2491,21 @@ void func_002bb3a0(void)
   return;
 }
 
-// FUN_002bb580 NONMATCHING
+// FUN_002bb580
 
 void func_002bb580(u16 *param_1)
 
 {
   if (*(int *)(param_1 + 8) != 0) {
-    func_002b94f0(0);
+    func_002b94f0((BtlFormationWork *)*(int *)(param_1 + 8));
     *(u32 *)(param_1 + 8) = 0;
   }
   if (*(int *)(param_1 + 10) != 0) {
-    func_003257e0();
+    func_003257e0(*(int *)(param_1 + 10));
     *(u32 *)(param_1 + 10) = 0;
   }
   if (*(int *)(param_1 + 0xc) != 0) {
-    func_003174e0();
+    func_003174e0(*(int *)(param_1 + 0xc));
     *(u32 *)(param_1 + 0xc) = 0;
   }
   *(u32 *)(param_1 + 2) = 0xffffffff;
