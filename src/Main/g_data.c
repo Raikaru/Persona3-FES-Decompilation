@@ -2736,6 +2736,7 @@ void func_00177410(u8* param_1,u8* param_2)
     s8 value1;
     s8 value2;
     u8* work;
+    u8* work2;
 
     FUN_00521408(&gGlobalWork, 0, 0x24);
     iVar1 = 0;
@@ -2751,14 +2752,16 @@ void func_00177410(u8* param_1,u8* param_2)
         *(work + iVar1) = value1;
     }
 
-    for (iVar1 = 0; iVar1 < 0x12; iVar1 = iVar1 + 1)
+    iVar1 = 0;
+    work2 = (u8*)&gGlobalWork;
+    for (; iVar1 < 0x12; iVar1 = iVar1 + 1)
     {
         value2 = *(s8*)(param_2 + iVar1);
         if (value2 == '\0')
         {
             break;
         }
-        DAT_00836212[iVar1] = value2;
+        work2[iVar1 + 0x12] = value2;
     }
 
     func_001774e0();
