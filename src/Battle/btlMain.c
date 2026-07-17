@@ -1483,7 +1483,8 @@ void btlMainInitStateEnd(BtlStateWork* work)
     BtlAction* action;
     DatUnit* data;
     u16 value;
-    s32 index;
+    u16 index;
+    u32 flags;
 
     if (BTL_U16(0x1c) == 1)
     {
@@ -1510,23 +1511,28 @@ void btlMainInitStateEnd(BtlStateWork* work)
 
     FUN_002a4c50();
     FUN_002bf650();
-    if (BTL_U32(0xc20) != 0 && BTL_U16(0x1c) == 1)
+    flags = BTL_U32(0xc20);
+    if (flags != 0)
     {
-        if ((BTL_U32(0xc20) & 1) != 0)
+        value = BTL_U16(0x1c);
+        if (value == 1)
         {
-            FUN_0016f1f0(0x1001);
-        }
-        if ((BTL_U32(0xc20) & 2) != 0)
-        {
-            FUN_0016f1f0(0x1002, 1);
-        }
-        if ((BTL_U32(0xc20) & 4) != 0)
-        {
-            FUN_0016f1f0(0x1003, 1);
-        }
-        if ((BTL_U32(0xc20) & 8) != 0)
-        {
-            FUN_0016f1f0(0x1004, 1);
+            if ((flags & 1) != 0)
+            {
+                FUN_0016f1f0(0x1001);
+            }
+            if ((BTL_U32(0xc20) & 2) != 0)
+            {
+                FUN_0016f1f0(0x1002, 1);
+            }
+            if ((BTL_U32(0xc20) & 4) != 0)
+            {
+                FUN_0016f1f0(0x1003, 1);
+            }
+            if ((BTL_U32(0xc20) & 8) != 0)
+            {
+                FUN_0016f1f0(0x1004, 1);
+            }
         }
     }
 
@@ -1538,22 +1544,30 @@ void btlMainInitStateEnd(BtlStateWork* work)
         }
     }
 
-    for (index = 1; index < 11; index++)
+    index = 1;
+    while (index < 11)
     {
         data = (DatUnit*)FUN_0016cd60(index);
-        if (data->aiTactic == 10 || data->aiTactic == 7)
+        switch (data->aiTactic)
         {
+        case 7:
+        case 10:
             data->aiTactic = 1;
+            break;
+        default:
+            if (FUN_0016f190(0x187) == 0)
+            {
+                data->aiTactic = 1;
+            }
+            break;
         }
-        else if (FUN_0016f190(0x187) == 0)
-        {
-            data->aiTactic = 1;
-        }
+        index++;
     }
 
     for (action = gBtl->actionList.tail; action != NULL; action = action->prev)
     {
-        if (action->currState != BTLACTION_STATE_PACKET)
+        u16 state = action->currState;
+        if (state != BTLACTION_STATE_EXIT)
         {
             FUN_00299d60(action);
         }
