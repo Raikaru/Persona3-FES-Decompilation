@@ -151,7 +151,7 @@ void btlSoundInitSkillSEPacket(void* work)
     packet->timer = 0;
 }
 
-// FUN_002dd2f0 NONMATCHING
+// FUN_002dd2f0
 u32 btlSoundUpdateSkillSEPacket(void* work)
 {
     BtlSoundPacketSkillSE* packet = (BtlSoundPacketSkillSE*)work;
@@ -170,26 +170,16 @@ u32 btlSoundUpdateSkillSEPacket(void* work)
         packet->cdvd = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
     }
 
-    if (packet->state == 2)
+    switch (packet->state)
     {
-        if (!H_Snd_FUN_00109df0(2))
-        {
-            return 0;
-        }
-
-        H_Cdvd_Destroy(packet->cdvd);
-        return 1;
-    }
-
-    if (packet->state == 1)
-    {
+    case 1:
         if (!H_Cdvd_IsFileLoaded(packet->cdvd))
         {
             return 0;
         }
 
         H_Snd_FUN_0010a0e0(2, 4);
-        for (i = 5; i < 10; i++)
+        for (i = 5; i <= 9; i++)
         {
             H_Snd_FUN_0010a0e0(2, (s16)i);
         }
@@ -199,8 +189,15 @@ u32 btlSoundUpdateSkillSEPacket(void* work)
         file3 = H_Cdvd_ArchiveGetFile(packet->cdvd, 2, &file3Size);
         H_Snd_FUN_00109ae0(2, file1, file1Size, file2, file2Size, file3, file3Size);
         packet->state = 2;
-        packet->timer++;
-        return 0;
+        break;
+    case 2:
+        if (!H_Snd_FUN_00109df0(2))
+        {
+            return 0;
+        }
+
+        H_Cdvd_Destroy(packet->cdvd);
+        return 1;
     }
 
     packet->timer++;
@@ -4017,7 +4014,7 @@ u32 FUN_002e0f70(int param_1, int param_2, int param_3)
 
 }
 
-// FUN_002E12D0 NONMATCHING
+// FUN_002E12D0
 u32 FUN_002e12d0(int param_1)
 {
   u32 uVar1;
@@ -4035,68 +4032,36 @@ u32 FUN_002e12d0(int param_1)
   switch (*(u16 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
   case 2:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0xd5;
-    } else {
-      uVar1 = 0xd6;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0xd5 : 0xd6;
     break;
   case 3:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0x133;
-    } else {
-      uVar1 = 0x134;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0x133 : 0x134;
     break;
   case 4:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0x18b;
-    } else {
-      uVar1 = 0x18c;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0x18b : 0x18c;
     break;
   case 5:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0x1d4;
-    } else {
-      uVar1 = 0x1d5;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0x1d4 : 0x1d5;
     break;
   case 7:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0x21d;
-    } else {
-      uVar1 = 0x21e;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0x21d : 0x21e;
     break;
   case 8:
     uVar3 = FUN_002ffbc0(100);
-    if (uVar3 >= 0x32) {
-      uVar1 = 0x266;
-    } else {
-      uVar1 = 0x267;
-    }
+    uVar1 = uVar3 >= 0x32 ? 0x266 : 0x267;
     break;
   case 9:
     lVar2 = FUN_0017d800();
     if (lVar2 == 0) {
       uVar3 = FUN_002ffbc0(100);
-      if (uVar3 >= 0x32) {
-        uVar1 = 0x2a7;
-      } else {
-        uVar1 = 0x2a8;
-      }
+      uVar1 = uVar3 >= 0x32 ? 0x2a7 : 0x2a8;
     } else {
       uVar3 = FUN_002ffbc0(100);
-      if (uVar3 >= 0x32) {
-        uVar1 = 0x4a0;
-      } else {
-        uVar1 = 0x4a1;
-      }
+      uVar1 = uVar3 >= 0x32 ? 0x4a0 : 0x4a1;
     }
     break;
   case 10:

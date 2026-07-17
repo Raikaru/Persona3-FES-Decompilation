@@ -71,14 +71,15 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
-#pragma optimization_level 4
+#pragma optimization_level 3
 // FUN_0029a320 NONMATCHING
 u32 FUN_0029a320(BtlAction* action)
 {
+    BtlAction* action_p = action;
     u32 removed;
 
     removed = 0;
-    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action) == 1)
+    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action_p) != 0)
     {
         removed = 1;
     }
