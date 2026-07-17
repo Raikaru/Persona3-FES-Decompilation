@@ -1238,13 +1238,13 @@ u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5)
   return result;
 }
 
-// FUN_002b94f0 NONMATCHING
+// FUN_002b94f0
 
 void func_002b94f0(BtlFormationWork *work)
 {
   s32 count;
-  u32 *items;
   u16 index;
+  u32 *items;
 
   count = work->count;
   items = (u32 *)(uintptr_t)work->items;
