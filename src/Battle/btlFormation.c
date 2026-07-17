@@ -5766,14 +5766,23 @@ void func_002c1740(int param_1,u32 param_2)
 void func_002c17b0(int param_1,u32 param_2)
 
 {
-  u32 uVar1 = 0;
-  
-  uVar1 = (u32)(*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\0');
-  if ((param_2 & 0x80000) == 0) {
-    func_002c1080(param_1,param_2,1 << uVar1 & 0xffff,0x80000,0,(code *)&func_002c1710);
+  u32 genus;
+  u16 shift;
+
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
+  }
+  shift = genus;
+  if ((param_2 & 0x80000) != 0) {
+    func_002c1080(param_1,param_2,1 << shift & 0xffff,0,0,(code *)&func_002c1710);
   }
   else {
-    func_002c1080(param_1,param_2,1 << uVar1 & 0xffff,0,0,(code *)&func_002c1710);
+    func_002c1080(param_1,param_2,1 << shift & 0xffff,0x80000,0,(code *)&func_002c1710);
   }
   return;
 }
