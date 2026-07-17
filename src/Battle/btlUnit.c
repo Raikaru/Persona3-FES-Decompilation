@@ -2497,7 +2497,7 @@ void btlUnitInitEnmDodgeAnimPacket(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_002849a0 NONMATCHING
+// FUN_002849a0
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
 {
     static volatile f32 phaseLimit = 1.0f;
@@ -2541,14 +2541,16 @@ u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
     }
     else
     {
+        f32 negativeStepDelta;
         negativeDelta = -packet->step;
         phase = packet->phase;
-        negativeDelta = phase * negativeDelta;
-        packet->step -= stepDelta;
+        negativeDelta = phase * (f32)negativeDelta;
+        negativeStepDelta = stepDelta;
+        packet->step -= negativeStepDelta;
         magnitude = baseMagnitude * packet->phase;
-        phase -= negativeDelta;
+        phase = packet->phase - negativeDelta;
         packet->phase = phase;
-        if (phase <= 0.0f)
+        if (phase <= negativeStepDelta)
         {
             if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
             {
