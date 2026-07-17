@@ -5917,30 +5917,29 @@ u64 func_002c1d80(void)
   return 0;
 }
 
-// FUN_002c1d90 NONMATCHING
+// FUN_002c1d90
 
 bool func_002c1d90(int param_1)
-
 {
-  char cVar1 = 0;
-  bool bVar2 = 0;
-  
-  if (*(int *)(param_1 + 0x20) < 1) {
-    cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-    if (cVar1 == '\x01') {
-      bVar2 = *(short *)(iGpffffb6fc + 0x1a) == 2;
+    bool result;
+    u8 genus;
+
+    if (*(int *)(param_1 + 0x20) > 0)
+        return false;
+
+    genus = *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2);
+    switch (genus) {
+    case 0:
+        result = *(u16 *)(iGpffffb6fc + 0x1a) == 1;
+        break;
+    case 1:
+        result = *(u16 *)(iGpffffb6fc + 0x1a) == 2;
+        break;
+    default:
+        result = false;
+        break;
     }
-    else if (cVar1 == '\0') {
-      bVar2 = *(short *)(iGpffffb6fc + 0x1a) == 1;
-    }
-    else {
-      bVar2 = false;
-    }
-  }
-  else {
-    bVar2 = false;
-  }
-  return bVar2;
+    return result;
 }
 
 // FUN_002c1e10
