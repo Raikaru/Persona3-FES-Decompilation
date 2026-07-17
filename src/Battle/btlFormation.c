@@ -5336,21 +5336,27 @@ u32 func_002c0970(int param_1)
   return 0;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002c09f0 NONMATCHING
 
 u32 func_002c09f0(int param_1)
-
 {
-  u32 uVar1 = 0;
-  u32 uVar2 = 0;
-  
-  uVar1 = 0;
-  for (uVar2 = 0; uVar2 < *(u16 *)(param_1 + 0x38); uVar2 = uVar2 + 1 & 0xffff) {
-    uVar1 = uVar1 | 1 << (*(u8 *)(*(int *)(*(int *)(param_1 + uVar2 * 4) + 0x30) + 0xa2) & 0x1f) &
-                    0xffffU;
+  u32 result;
+  u16 index;
+  s32 count;
+  u32 bit;
+
+  result = 0;
+  index = 0;
+  count = *(u16 *)(param_1 + 0x38);
+  bit = 1;
+  for (; index < count; index = (u16)(index + 1)) {
+    u8 genus = *(u8 *)(*(int *)(*(int *)(param_1 + index * 4) + 0x30) + 0xa2);
+    result = (result | ((bit << genus) & 0xffff)) & 0xffff;
   }
-  return uVar1;
+  return result;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002c0a50
 
