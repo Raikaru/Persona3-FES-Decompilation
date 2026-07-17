@@ -2952,7 +2952,7 @@ u32 func_002bbfa0(int param_1)
   }
 }
 
-// FUN_002bc0e0 NONMATCHING
+// FUN_002bc0e0 MATCHING
 
 void func_002bc0e0(int param_1, u8 *param_2)
 {
@@ -3005,14 +3005,7 @@ void func_002bc0e0(int param_1, u8 *param_2)
     param_2[2] = 0x44;
     return;
   case 0x100: {
-    u8 color3 = DAT_007cc973;
-    u8 color0 = DAT_007cc970;
-    u8 color1 = DAT_007cc971;
-    u8 color2 = DAT_007cc972;
-    param_2[0] = color0;
-    param_2[1] = color1;
-    param_2[2] = color2;
-    param_2[3] = color3;
+    *(RwRGBA*)param_2 = *(const RwRGBA*)&DAT_007cc970;
     return;
   }
   case 0x400:
@@ -3023,14 +3016,7 @@ void func_002bc0e0(int param_1, u8 *param_2)
   case 0x100000:
   case 0x80000:
   default: {
-    u8 color3 = DAT_007cc973;
-    u8 color0 = DAT_007cc970;
-    u8 color1 = DAT_007cc971;
-    u8 color2 = DAT_007cc972;
-    param_2[0] = color0;
-    param_2[1] = color1;
-    param_2[2] = color2;
-    param_2[3] = color3;
+    *(RwRGBA*)param_2 = *(const RwRGBA*)&DAT_007cc970;
     return;
   }
   }
@@ -6417,6 +6403,12 @@ void func_002c2840(int param_1, u32 param_2)
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1ed0);
     return;
+}
+
+// FUN_002c28a0 MATCHING
+bool func_002c28a0(int param_1, int param_2)
+{
+    return *(u16*)(*(s32*)(param_1 + 0x30) + 0xa4) == param_2;
 }
 
 // FUN_002c28c0 NONMATCHING
