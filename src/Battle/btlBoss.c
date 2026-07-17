@@ -685,45 +685,44 @@ s16 func_002f8eb0(BtlUnit* unit, s16 index)
     switch (btlBossGetEncounterId())
     {
         case 0x1ae:
-            if (unit->genus != 1)
+            if (unit->genus == 1)
             {
-                goto return_minus_one;
+                goto check_character;
             }
-            else
+            result = -1;
+            goto return_result;
+
+check_character:
+            if (unit->charId == 0x126)
             {
-                if (unit->charId != 0x126)
-                {
-                    goto return_minus_one;
-                }
-                else
-                {
-                    K_ASSERT(index < 0x1d0, 417);
-                    value = DAT_007ce3f4[index * 2];
+                goto read_value;
+            }
+            result = -1;
+            goto return_result;
+
+read_value:
+            K_ASSERT(index < 0x1d0, 417);
+            value = DAT_007ce3f4[index * 2];
+            switch (value)
+            {
+                case 2:
+                    result = 6;
+                    break;
+                case 1:
+                    result = 5;
+                    break;
+                case 0:
+                    result = 4;
+                    break;
+                default:
                     result = -1;
-                    if (value == 2)
-                    {
-                        result = 6;
-                    }
-                    else if (value == 1)
-                    {
-                        result = 5;
-                    }
-                    else if (value == 0)
-                    {
-                        result = 4;
-                    }
-                    goto return_result;
-                }
+                    break;
             }
-        default:
-            goto return_minus_one;
-    }
-
 return_result:
-    return result;
-
-return_minus_one:
-    return -1;
+            return result;
+        default:
+            return -1;
+    }
 }
 
 // FUN_002f8fd0 NONMATCHING
