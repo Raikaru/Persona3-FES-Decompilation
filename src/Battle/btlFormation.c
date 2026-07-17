@@ -609,6 +609,8 @@ extern void func_002bfc50(void);
 extern void func_002bfc70(void);
 extern void func_002bfc90(void);
 extern void func_002bfcb0(int param_1,u64 param_2,u32 param_3,u32 param_4,long param_5);
+#pragma alias func_002bfcb0_ptr func_002bfcb0
+extern void func_002bfcb0_ptr(int param_1,void *param_2,u32 param_3,u32 param_4,long param_5);
 extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
 // Typed alias for callers that consume the helper's full 16-bit result.
 #pragma alias func_002bff60_u16 func_002bff60
@@ -623,7 +625,12 @@ extern u32 func_002c09f0(int param_1);
 extern void func_002c0a50(u32 param_1,u16 param_2);
 extern void func_002c0ac0(int param_1,int param_2);
 extern int func_002c0e30(short param_1,u32 param_2,u32 param_3);
-extern u32 func_002c0f40(u64 param_1,u64 param_2,u64 param_3,u64 param_4, long param_5,code *param_6,long param_7);
+typedef u32 (*FormationPredicate)(int unit,u32 selector);
+extern u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
+                         u32 param_5,FormationPredicate param_6,int *param_7);
+#pragma alias func_002c0f40_call func_002c0f40
+extern u32 func_002c0f40_call(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
+                              long param_5,code *param_6,long param_7);
 extern u32 func_002c1080(int param_1,u32 param_2,u32 param_3,u32 param_4,u16 param_5, code *param_6);
 extern bool func_002c12f0(int param_1,int param_2);
 extern bool func_002c22d0(int param_1,int param_2);
@@ -5510,33 +5517,37 @@ int func_002c0e30(short param_1,u32 param_2,u32 param_3)
   return iVar1;
 }
 
-// FUN_002c0f40 NONMATCHING
+// FUN_002c0f40
 
-u32 func_002c0f40(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
-                 long param_5,code *param_6,long param_7)
-
+u16 func_002c0f40(int param_1,u32 param_2,u32 param_3,u32 param_4,
+                 u32 param_5,FormationPredicate param_6,int *param_7)
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  u32 uVar3 = 0;
-  u32 uVar4 = 0;
-  int aiStack_40 [14] = {0};
-  u16 uStack_8 = 0;
-  
-  func_002bfcb0(param_1,(u64)(u32)aiStack_40,param_4,0,0);
-  uVar3 = 0;
-  for (uVar4 = 0; uVar4 < uStack_8; uVar4 = uVar4 + 1 & 0xffff) {
-    iVar1 = aiStack_40[uVar4];
-    if (((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-        (lVar2 = func_00300580(*(u32 *)(*(int *)(iVar1 + 0x30) + 0xa2c),param_3), lVar2 == 0))
-       && (lVar2 = (*param_6)(iVar1,param_2), param_5 != lVar2)) {
+  struct {
+    int entries[14];
+    u16 count;
+    u16 selected;
+  } candidates;
+  int unit;
+  u16 index;
+  u16 result;
+
+  func_002bfcb0_ptr(param_1,&candidates,param_4,0,0);
+  result = 0;
+  index = 0;
+  while (index < candidates.count) {
+    unit = candidates.entries[index];
+    if (((*(u16 *)(unit + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(unit + 0x1a) & 8) != 0) &&
+        (func_00300580(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c),param_3) == 0) &&
+        ((*param_6)(unit,param_2) != param_5)) {
       if (param_7 != 0) {
-        *(int *)((int)param_7 + uVar3 * 4) = iVar1;
+        param_7[result] = unit;
       }
-      uVar3 = uVar3 + 1 & 0xffff;
+      result++;
     }
+    index++;
   }
-  return uVar3;
+  return result;
 }
 
 // FUN_002c1080 NONMATCHING
@@ -12345,7 +12356,7 @@ u32 func_002cdb70(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,1,0,(code *)&func_002c3400,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,1,0,(code *)&func_002c3400,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12361,7 +12372,7 @@ u32 func_002cdbe0(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,1,1,(code *)&func_002c3400,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,1,1,(code *)&func_002c3400,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12377,7 +12388,7 @@ u32 func_002cdc50(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,1,0,(code *)&func_002c1710,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,1,0,(code *)&func_002c1710,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12393,7 +12404,7 @@ u32 func_002cdcc0(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,2,0,(code *)&func_002c3400,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,2,0,(code *)&func_002c3400,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12409,7 +12420,7 @@ u32 func_002cdd30(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,2,1,(code *)&func_002c3400,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,2,1,(code *)&func_002c3400,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12425,7 +12436,7 @@ u32 func_002cdda0(void)
   
   uVar2 = func_0035f160();
   uVar3 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar2,uVar3,0x80000,1,0,(code *)&func_002c12f0,0);
+  uVar1 = func_002c0f40_call(uVar2,uVar3,0x80000,1,0,(code *)&func_002c12f0,0);
   func_0035f060(uVar1);
   return 1;
 }
@@ -12921,7 +12932,7 @@ u32 func_002ceb20(void)
   
   uVar3 = func_0035f160();
   uVar4 = func_0035ed20(0);
-  uVar1 = func_002c0f40(uVar3,uVar4,0x80000,1,1,(code *)&func_002c3400,(long)(int)aiStack_30);
+  uVar1 = func_002c0f40_call(uVar3,uVar4,0x80000,1,1,(code *)&func_002c3400,(long)(int)aiStack_30);
   uVar1 = uVar1 & 0xffff;
   if (uVar1 == 0) {
     func_0035f060(0xffffffffffffffff);
@@ -12957,7 +12968,7 @@ u32 func_002cec30(void)
   
   uVar4 = func_0035f160();
   uVar5 = func_0035ed20(0);
-  uVar2 = func_002c0f40(uVar4,uVar5,0x80000,2,1,(code *)&func_002c3400,(long)(int)aiStack_30);
+  uVar2 = func_002c0f40_call(uVar4,uVar5,0x80000,2,1,(code *)&func_002c3400,(long)(int)aiStack_30);
   uVar2 = uVar2 & 0xffff;
   if (uVar2 == 0) {
     func_0035f060(0xffffffffffffffff);
