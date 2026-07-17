@@ -3034,11 +3034,13 @@ void func_002bc2f0(void)
   u32 firstIndex = 0;
   u32 uVar2 = 0;
   int iVar3 = 0;
+  u8 *state;
   
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x4000000) == 0) {
     for (firstIndex = 0; firstIndex < 0x3c; firstIndex = firstIndex + 1) {
-      if (*(int *)(DAT_007ce3ec + firstIndex * 4 + 0xc24) != 0) {
-        func_002b9030(*(u32 *)(DAT_007ce3ec + firstIndex * 4 + 0xc24));
+      state = DAT_007ce3ec;
+      if (*(int *)(state + firstIndex * 4 + 0xc24) != 0) {
+        func_002b9030(*(u32 *)(state + firstIndex * 4 + 0xc24));
         *(u32 *)(DAT_007ce3ec + firstIndex * 4 + 0xc24) = 0;
       }
     }
@@ -3049,8 +3051,9 @@ void func_002bc2f0(void)
   }
   else {
     for (uVar2 = 0; uVar2 < 0x3c; uVar2 = uVar2 + 1) {
+      state = DAT_007ce3ec;
       iVar3 = uVar2 * 4;
-      iVar1 = *(int *)(DAT_007ce3ec + iVar3 + 0xc24);
+      iVar1 = *(int *)(state + iVar3 + 0xc24);
       if (iVar1 != 0) {
         (*DAT_0096017c)(*(u32 *)(iVar1 + 0x634));
         func_002b9030(*(u32 *)(DAT_007ce3ec + iVar3 + 0xc24));
