@@ -94,10 +94,16 @@ typedef struct BtlFormationWork {
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 extern u64 func_00100d80();
+#pragma alias func_00100d80_u32 func_00100d80
+extern u32 func_00100d80_u32(u32 param_1,u32 param_2);
 extern u64 func_00100ec0();
 extern u64 func_001016b0();
+#pragma alias func_001016b0_u32 func_001016b0
+extern u32 func_001016b0_u32(u32 param_1);
 extern u64 func_00102100();
 extern u64 func_001021c0();
+#pragma alias func_001021c0_u32 func_001021c0
+extern u32 func_001021c0_u32(u32 param_1,u8* output);
 extern u64 func_001023a0();
 extern u64 func_00108570();
 extern u64 func_00108670();
@@ -388,6 +394,8 @@ extern u32 (*DAT_00960178_u32_abs[])(...);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 extern u32* PTR_DAT_00696f30;
 extern code pcRam006971bc;
 extern code pcRam006971c8;
@@ -2159,46 +2167,50 @@ void func_002baa20(int *param_1)
   return;
 }
 
-// FUN_002baad0 NONMATCHING
+typedef struct FormationLoadWork {
+  BtlFormationState* state;
+  u32 request;
+  u32 source;
+  u16 flags;
+  u16 padding;
+} FormationLoadWork;
 
-u32 func_002baad0(int *param_1)
+// FUN_002baad0 MATCHING
 
+u32 func_002baad0(int* data)
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  u64 uVar5 = 0;
-  u8 auStack_4 [4] = {0};
-  
-  iVar1 = *param_1;
-  if (param_1[1] == 0) {
-    iVar2 = func_00100d80(param_1[2],0);
-    param_1[1] = iVar2;
+  FormationLoadWork* work;
+  BtlFormationState* state;
+  u32 result;
+  u32 resource;
+  u8 output[4];
+
+  work = (FormationLoadWork*)data;
+  state = work->state;
+  if (work->request == 0) {
+    work->request = func_00100d80_u32(work->source, 0);
   }
-  lVar4 = func_001016b0(param_1[1]);
-  if (lVar4 == 0) {
-    uVar3 = 0;
-  }
-  else {
-    uVar5 = func_001021c0(param_1[2],auStack_4);
-    func_002b90d0(iVar1,uVar5);
-    func_00100ec0(param_1[1]);
-    *(u16 *)(iVar1 + 0x630) = *(u16 *)(iVar1 + 0x630) & 0xfffe;
-    *(u16 *)(iVar1 + 0x630) = *(u16 *)(iVar1 + 0x630) | 2;
-    *(short *)(iVar1 + 0x632) = *(short *)(iVar1 + 0x632) + -1;
-    if (((*(u16 *)(iVar1 + 0x630) & 8) != 0) && (*(short *)(iVar1 + 0x632) == 1)) {
-      func_002b9220(iVar1);
+  if (func_001016b0_u32(work->request) != 0) {
+    resource = func_001021c0_u32(work->source, output);
+    func_002b90d0((int)state, resource);
+    func_00100ec0(work->request);
+    state->flags &= 0xfffe;
+    state->flags |= 2;
+    state->counter--;
+    if ((state->flags & 8) != 0 && state->counter == 1) {
+      func_002b9220((int)state);
     }
-    if (*(short *)(iVar1 + 0x632) == 0) {
-      if ((*(u16 *)(iVar1 + 0x630) & 2) != 0) {
-        func_002b9220(iVar1);
+    if (state->counter == 0) {
+      if ((state->flags & 2) != 0) {
+        func_002b9220((int)state);
       }
-      (*DAT_0096017c)(iVar1);
+      (*DAT_0096017c_abs)(state);
     }
-    uVar3 = 1;
+    result = 1;
+  } else {
+    result = 0;
   }
-  return uVar3;
+  return result;
 }
 
 // FUN_002bac00 MATCHING
