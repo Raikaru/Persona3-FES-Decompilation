@@ -1510,11 +1510,12 @@ void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 #pragma opt_loop_invariants off
 
 #pragma opt_loop_invariants on
-// FUN_001770D0 NONMATCHING
+// FUN_001770D0 MATCHING
 s32 FUN_001770D0(u16 personaId, u16 skillId)
 {
     u8* skillData;
     s32 skillIdx;
+    s32 skillOffset;
     s32 skillOrder;
 
     skillOrder = 0;
@@ -1534,8 +1535,19 @@ s32 FUN_001770D0(u16 personaId, u16 skillId)
             }
         }
 
-        K_ASSERT(skillIdx < 0x10 &&
-                 ((s8*)skillData)[skillIdx * 4 + 1] == 1, 1829);
+        if (skillIdx >= 0x10)
+        {
+            goto firstAssert;
+        }
+        skillOffset = skillIdx * 4;
+        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
+        {
+            goto firstAssertDone;
+        }
+firstAssert:
+        K_Assert(__FILE__, 1829);
+firstAssertDone:
+        ;
     }
     else
     {
@@ -1553,8 +1565,19 @@ s32 FUN_001770D0(u16 personaId, u16 skillId)
             }
         }
 
-        K_ASSERT(skillIdx < 0x10 &&
-                 ((s8*)skillData)[skillIdx * 4 + 1] == 1, 1848);
+        if (skillIdx >= 0x10)
+        {
+            goto secondAssert;
+        }
+        skillOffset = skillIdx * 4;
+        if (*(s8*)(skillOffset + (u32)skillData + 1) == 1)
+        {
+            goto secondAssertDone;
+        }
+secondAssert:
+        K_Assert(__FILE__, 1848);
+secondAssertDone:
+        ;
     }
 
     return skillOrder;
