@@ -2887,47 +2887,41 @@ void func_002bbf80(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002bbfa0 NONMATCHING
+// FUN_002bbfa0
 
 u32 func_002bbfa0(int param_1)
-
 {
   if (param_1 == 0) {
     return 0xffffffff;
   }
-  if (((param_1 != 0x100000) && (param_1 != 0x80000)) && (param_1 != 0x400)) {
-    if (param_1 == 0x200) {
-      return 0x2c;
-    }
-    if (param_1 == 0x100) {
-      return 0x2d;
-    }
-    if (param_1 == 0x80) {
-      return 0x26;
-    }
-    if (param_1 == 0x40) {
-      return 0x25;
-    }
-    if (param_1 == 0x20) {
-      return 0x24;
-    }
-    if (param_1 == 0x10) {
-      return 0x2b;
-    }
-    if (param_1 == 8) {
-      return 0x2a;
-    }
-    if (param_1 == 4) {
-      return 0x29;
-    }
-    if (param_1 == 2) {
-      return 0x28;
-    }
-    if (param_1 == 1) {
-      return 0x27;
-    }
+
+  switch (param_1) {
+  case 1:
+    return 0x27;
+  case 2:
+    return 0x28;
+  case 4:
+    return 0x29;
+  case 8:
+    return 0x2a;
+  case 0x10:
+    return 0x2b;
+  case 0x20:
+    return 0x24;
+  case 0x40:
+    return 0x25;
+  case 0x80:
+    return 0x26;
+  case 0x100:
+    return 0x2d;
+  case 0x200:
+    return 0x2c;
+  case 0x400:
+  case 0x80000:
+  case 0x100000:
+  default:
+    return 0xffffffff;
   }
-  return 0xffffffff;
 }
 
 // FUN_002bc0e0 NONMATCHING
