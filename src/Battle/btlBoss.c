@@ -683,35 +683,35 @@ s16 func_002f8eb0(BtlUnit* unit, s16 index)
     switch (btlBossGetEncounterId())
     {
         case 0x1ae:
-            switch (unit->genus)
+            if (unit->genus != 1)
             {
-                case 1:
-                    switch (unit->charId)
+                goto return_minus_one;
+            }
+            else
+            {
+                if (unit->charId != 0x126)
+                {
+                    goto return_minus_one;
+                }
+                else
+                {
+                    K_ASSERT(index < 0x1d0, 417);
+                    value = DAT_007ce3f4[index * 2];
+                    result = -1;
+                    if (value == 2)
                     {
-                        case 0x126:
-                            K_ASSERT(index < 0x1d0, 417);
-                            value = DAT_007ce3f4[index * 2];
-                            result = -1;
-                            if (value == 2)
-                            {
-                                result = 6;
-                            }
-                            else if (value == 1)
-                            {
-                                result = 5;
-                            }
-                            else if (value == 0)
-                            {
-                                result = 4;
-                            }
-                            goto return_result;
-                        default:
-                            result = (u16)-1;
-                            goto return_result;
+                        result = 6;
                     }
-                default:
-                    result = (u16)-1;
+                    else if (value == 1)
+                    {
+                        result = 5;
+                    }
+                    else if (value == 0)
+                    {
+                        result = 4;
+                    }
                     goto return_result;
+                }
             }
         default:
             goto return_minus_one;

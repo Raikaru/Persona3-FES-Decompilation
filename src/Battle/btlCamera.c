@@ -983,7 +983,7 @@ extern float FUN_00280870();
 extern u64 FUN_00281270();
 extern u64 FUN_00281290();
 extern u64 FUN_002812b0();
-extern u64 FUN_002835e0();
+extern s16 FUN_002835e0(BtlUnit* unit, u16 id, f32 scale);
 extern s16 FUN_00284040();
 extern u64 FUN_00288110();
 extern u64 FUN_00288da0();
@@ -2093,15 +2093,18 @@ void FUN_002b21f0(undefined4 param_1,undefined8 param_2,long param_3)
   return;
 }
 
-// FUN_002b2800 NONMATCHING
+// FUN_002b2800
 
 void FUN_002b2800(BtlCamera *camera)
 {
   s64 lVar1;
   undefined2 uVar2;
+  BtlAction *action;
+  s16 targetId;
 
-  lVar1 = FUN_002f8eb0(camera->action->unit,
-                       *(s16 *)&camera->action->target.specificId);
+  action = camera->action;
+  targetId = *(volatile s16 *)&action->target.specificId;
+  lVar1 = FUN_002f8eb0(action->unit, targetId);
   if (lVar1 == -1) {
     lVar1 = 4;
   }
