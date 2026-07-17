@@ -5627,7 +5627,7 @@ void func_002ac540(BtlCamera* camera)
   return;
 }
 
-// FUN_002AC6E0 NONMATCHING
+// FUN_002AC6E0
 
 void func_002ac6e0(BtlCamera* camera)
 {
@@ -5685,9 +5685,9 @@ void func_002ac6e0(BtlCamera* camera)
                     btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
                                     *(u16*)(cameraBytes + 0x124));
                 }
+                FUN_002a3e80(10.0f, *(u8**)(cameraBytes + 0xe0),
+                             cameraBytes + 0x9c, cameraBytes + 0x104, 0x33);
             }
-            FUN_002a3e80(10.0f, *(u8**)(cameraBytes + 0xe0),
-                         cameraBytes + 0x9c, cameraBytes + 0x104, 0x33);
         }
         else
         {
