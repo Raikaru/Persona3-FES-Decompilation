@@ -2,7 +2,7 @@
 #include "Battle/btlAction.h"
 #include "Battle/btlUnit.h"
 #include "temporary.h"
-extern u8 gp0xffff9918[12];
+extern u8 gp0xffff9918[8];
 extern u32 datCalcRand(u32 max);
 extern u32 FUN_00300c90(void* calc, u32 field);
 
@@ -71,15 +71,14 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
-#pragma optimization_level 3
+#pragma optimization_level 4
 // FUN_0029a320 NONMATCHING
 u32 FUN_0029a320(BtlAction* action)
 {
-    BtlAction* action_p = action;
     u32 removed;
 
     removed = 0;
-    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action_p) != 0)
+    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action) == 1)
     {
         removed = 1;
     }
@@ -317,6 +316,7 @@ void FUN_0029a690(u16 genus)
 // FUN_0029a750 NONMATCHING
 void FUN_0029a750(void)
 {
+    BtlAction* action;
     BtlAction** actions;
     struct
     {
@@ -341,6 +341,7 @@ void FUN_0029a750(void)
     u16 i;
     u16 j;
     u16 outputCount;
+    BtlUnit* unit;
 
     FUN_0029a570();
     actions = gBtl->order.actions;
@@ -350,13 +351,14 @@ void FUN_0029a750(void)
     enemyWeightTotal = 0;
     actionCount = 0;
     count = 0;
-    while (count < BTL_MAXACTIONS && actions[count] != NULL)
+    while (count < BTL_MAXACTIONS)
     {
-        BtlAction* action;
-        BtlUnit* unit;
-
         action = actions[count];
-        if (action != gBtl->actionList.head)
+        if (action == NULL)
+        {
+            break;
+        }
+        if (gBtl->actionList.head != action)
         {
             unit = action->unit;
             switch (unit->genus)
@@ -387,15 +389,18 @@ void FUN_0029a750(void)
         randomValue = (u16)datCalcRand(playerWeightTotal);
         for (j = 0; j < playerCount; j++)
         {
-            if (playerActions[j].weight != 0 &&
-                randomValue < playerActions[j].weight)
+            u8 weight;
+
+            weight = playerActions[j].weight;
+            if (weight > 0 && randomValue < weight)
             {
-                playerWeightTotal -= playerActions[j].weight;
-                orderedPlayers[playerOrdered++] = playerActions[j].action;
+                playerWeightTotal -= weight;
+                orderedPlayers[playerOrdered] = playerActions[j].action;
                 playerActions[j].weight = 0;
+                playerOrdered++;
                 break;
             }
-            randomValue = (u16)(randomValue - playerActions[j].weight);
+            randomValue = (u16)(randomValue - weight);
         }
     }
 
@@ -407,43 +412,35 @@ void FUN_0029a750(void)
         randomValue = (u16)datCalcRand(enemyWeightTotal);
         for (j = 0; j < enemyCount; j++)
         {
-            if (enemyActions[j].weight != 0 &&
-                randomValue < enemyActions[j].weight)
+            u8 weight;
+
+            weight = enemyActions[j].weight;
+            if (weight > 0 && randomValue < weight)
             {
-                enemyWeightTotal -= enemyActions[j].weight;
-                orderedEnemies[enemyOrdered++] = enemyActions[j].action;
+                enemyWeightTotal -= weight;
+                orderedEnemies[enemyOrdered] = enemyActions[j].action;
                 enemyActions[j].weight = 0;
+                enemyOrdered++;
                 break;
             }
-            randomValue = (u16)(randomValue - enemyActions[j].weight);
+            randomValue = (u16)(randomValue - weight);
         }
     }
 
-    actions[0] = gBtl->actionList.head;
-    outputCount = 1;
     playerOrdered = 0;
     enemyOrdered = 0;
+    actions[0] = gBtl->actionList.head;
+    outputCount = 1;
     for (i = 0; i < actionCount; i++)
     {
-        BtlAction* action;
-
         if (playerOrdered < playerCount && enemyOrdered < enemyCount)
         {
+            s16 tmp;
             u16 threshold;
             u32 randomValue;
 
-            if (i == 0)
-            {
-                threshold = 0x32;
-            }
-            else if ((i & 1) != 0)
-            {
-                threshold = 0x50;
-            }
-            else
-            {
-                threshold = 0x14;
-            }
+            tmp = (i == 0) ? 0x32 : (((i & 1) != 0) ? 0x50 : 0x14);
+            threshold = tmp;
 
             randomValue = datCalcRand(100);
             if (randomValue < threshold)
@@ -459,7 +456,7 @@ void FUN_0029a750(void)
         {
             action = orderedPlayers[playerOrdered++];
         }
-        else
+        else if (enemyOrdered < enemyCount)
         {
             action = orderedEnemies[enemyOrdered++];
         }
@@ -526,11 +523,10 @@ u32 FUN_0029adf0(BtlAction* action)
     return 0;
 }
 
-// FUN_0029ae40 NONMATCHING
+// FUN_0029ae40
 void btlOrder0029ae40(void)
 {
     u16 flags;
-    BtlAction* action;
     BtlAction** actions;
 
     flags = gBtl->order.flags;
@@ -581,33 +577,36 @@ void btlOrder0029ae40(void)
             }
         }
 
-        action = actions[0];
-        if (action == NULL)
+        if (actions[0] == NULL)
         {
             return;
         }
-        if (action->currState != BTLACTION_STATE_STANDBY)
+        if (actions[0]->currState != BTLACTION_STATE_STANDBY)
         {
             return;
         }
         {
-            if (action->unit->genus == UNIT_GENUS_PC)
+            if (actions[0]->unit->genus == UNIT_GENUS_PC)
             {
-                if ((gBtl->flags & 0x2000) == 0)
+                if ((gBtl->flags & 0x2000) != 0)
                 {
-                    action->unk_14 = (gBtl->actionList.head == action) ? 5 : 8;
+                    actions[0]->unk_14 = 9;
+                }
+                else if (gBtl->actionList.head == actions[0])
+                {
+                    actions[0]->unk_14 = 5;
                 }
                 else
                 {
-                    action->unk_14 = 9;
+                    actions[0]->unk_14 = 8;
                 }
             }
             else
             {
-                action->unk_14 = 8;
+                actions[0]->unk_14 = 8;
             }
 
-            btlActionSetState(action, 2);
+            btlActionSetState(actions[0], 2);
             gBtl->order.flags &= ~8;
             gBtl->order.turnNo++;
         }
