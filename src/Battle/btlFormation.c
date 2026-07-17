@@ -524,12 +524,12 @@ extern void func_002bb6f0(u16 param_1,u64 param_2);
 extern void func_002bb760(void);
 extern void func_002bb770(void);
 extern u64 func_002bb7d0(void);
-extern void func_002bb8f0(u64 param_1);
+extern void func_002bb8f0(u32 param_1);
 extern u16 * func_002bb9c0(int param_1);
 extern u32 func_002bbac0(int param_1,u16 *param_2);
 extern void func_002bbbc0(int param_1);
 extern u64 func_002bbc00(u32 param_1);
-extern void func_002bbd00(u64 param_1);
+extern void func_002bbd00(u32 param_1);
 extern void func_002bbdc0(u8 *param_1,short param_2);
 extern short func_002bbdf0(int param_1);
 extern void func_002bbe00(u8 *param_1);
@@ -2647,30 +2647,29 @@ u64 func_002bb7d0(void)
   return uVar1;
 }
 
-// FUN_002bb8f0 NONMATCHING
+// FUN_002bb8f0 MATCHING
 
-void func_002bb8f0(u64 param_1)
+void func_002bb8f0(u32 param_1)
 
 {
-  int iVar1 = 0;
-  u32 uVar2 = 0;
+  u32 index;
+  int node;
   
-  for (uVar2 = 0; uVar2 < 0x30; uVar2 = uVar2 + 1) {
-    iVar1 = *(int *)((int)param_1 + uVar2 * 4);
-    func_002bb580((u16 *)(iVar1));
-    if (*(int *)(iVar1 + 0x20) != 0) {
-      *(u32 *)(*(int *)(iVar1 + 0x20) + 0x1c) = *(u32 *)(iVar1 + 0x1c);
+  for (index = 0; index < 0x30; index = index + 1) {
+    node = *(int *)(param_1 + index * 4);
+    func_002bb580((u16 *)node);
+    if (*(int *)(node + 0x20) != 0) {
+      *(u32 *)(*(int *)(node + 0x20) + 0x1c) = *(u32 *)(node + 0x1c);
     }
-    if (*(int *)(iVar1 + 0x1c) == 0) {
-      *(u32 *)(iGpffffb6fc + 400) = *(u32 *)(iVar1 + 0x20);
+    if (*(int *)(node + 0x1c) != 0) {
+      *(u32 *)(*(int *)(node + 0x1c) + 0x20) = *(u32 *)(node + 0x20);
     }
     else {
-      *(u32 *)(*(int *)(iVar1 + 0x1c) + 0x20) = *(u32 *)(iVar1 + 0x20);
+      *(u32 *)(iGpffffb6fc + 400) = *(u32 *)(node + 0x20);
     }
-    (*DAT_0096017c)(iVar1);
+    (*DAT_0096017c)(node);
   }
   (*DAT_0096017c)(param_1);
-  return;
 }
 
 // FUN_002bb9c0
@@ -2799,33 +2798,32 @@ u64 func_002bbc00(u32 param_1)
   return uVar2;
 }
 
-// FUN_002bbd00 NONMATCHING
+// FUN_002bbd00 MATCHING
 
-void func_002bbd00(u64 param_1)
+void func_002bbd00(u32 param_1)
 
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
+  int node;
+  void (**release)(u32);
   
-  iVar2 = (int)param_1;
-  iVar1 = *(int *)(iVar2 + 8);
-  func_002bb580((u16 *)(iVar1));
-  if (*(int *)(iVar1 + 0x20) != 0) {
-    *(u32 *)(*(int *)(iVar1 + 0x20) + 0x1c) = *(u32 *)(iVar1 + 0x1c);
+  node = *(int *)(param_1 + 8);
+  func_002bb580((u16 *)node);
+  if (*(int *)(node + 0x20) != 0) {
+    *(u32 *)(*(int *)(node + 0x20) + 0x1c) = *(u32 *)(node + 0x1c);
   }
-  if (*(int *)(iVar1 + 0x1c) == 0) {
-    *(u32 *)(iGpffffb6fc + 400) = *(u32 *)(iVar1 + 0x20);
+  if (*(int *)(node + 0x1c) != 0) {
+    *(u32 *)(*(int *)(node + 0x1c) + 0x20) = *(u32 *)(node + 0x20);
   }
   else {
-    *(u32 *)(*(int *)(iVar1 + 0x1c) + 0x20) = *(u32 *)(iVar1 + 0x20);
+    *(u32 *)(iGpffffb6fc + 400) = *(u32 *)(node + 0x20);
   }
-  (*DAT_0096017c)(iVar1);
-  if (*(int *)(iVar2 + 0xc) != 0) {
-    func_002b9030(0);
-    *(u32 *)(iVar2 + 0xc) = 0;
+  release = (void (**)(u32))DAT_0096017c;
+  (*release)(node);
+  if (*(int *)(param_1 + 0xc) != 0) {
+    func_002b9030(*(u32 *)(param_1 + 0xc));
+    *(u32 *)(param_1 + 0xc) = 0;
   }
-  (*DAT_0096017c)(param_1);
-  return;
+  (*release)(param_1);
 }
 
 // FUN_002bbdc0
