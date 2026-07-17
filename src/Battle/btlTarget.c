@@ -3328,24 +3328,22 @@ u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
 {
     u8* commandTable = (u8*)DAT_007ce3f8;
     s32 id = (s32)commandId;
-    s32 result = 0;
+    u8 commandType;
+    s32 result;
 
-    if (commandTable[id * 0x2c + 2] != 1)
+    commandType = commandTable[id * 0x2c + 2];
+    if (commandType != 1)
     {
         result = 0;
     }
     else
     {
-        if (param_3 != 0)
+        result = 1;
+        if (param_3 == 0 ||
+            ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x10) != 0) ||
+            ((*(u16*)((u8*)DAT_007ce400 + id * 0x1c + 2) & 1) == 0))
         {
-            if ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x10) == 0)
-            {
-                u8* effectTable = (u8*)DAT_007ce400;
-                if ((*(u16*)(effectTable + id * 0x1c + 2) & 1) != 0)
-                {
-                    result = 1;
-                }
-            }
+            result = 0;
         }
     }
     return result;
