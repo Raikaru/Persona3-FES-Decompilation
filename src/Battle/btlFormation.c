@@ -6166,19 +6166,13 @@ void func_002c2360(int param_1, u32 param_2)
 // FUN_002c23c0 NONMATCHING
 
 u32 func_002c23c0(int param_1)
-
 {
-  short sVar1 = 0;
-  u32 uVar2 = 0;
-  
-  sVar1 = func_002bff60(param_1,0,*(u16 *)(param_1 + 0x7e),0);
-  if ((sVar1 == 2) || (sVar1 == 1)) {
-    uVar2 = 1;
-  }
-  else {
-    uVar2 = 0;
-  }
-  return uVar2;
+    u16 result;
+
+    result = func_002bff60(param_1, 0, *(u16 *)(param_1 + 0x7e), 0);
+    if (result == 2 || result == 1)
+        return 1;
+    return 0;
 }
 
 // FUN_002c2420
