@@ -279,6 +279,42 @@ call relationships, not guesses based only on constants.
 **Exit gate:** all game-owned gameplay, event, UI, model, and presentation
 functions are maintainable and exact; every completed file has a linkage decision.
 
+## Current provenance classification
+
+The current full verifier report contains 13,752 unique function windows.  The
+reproducible provenance pass is:
+
+```sh
+python tools/provenance.py --json build/provenance_report.json
+```
+
+The classifier is source-path based.  `src/cri/**` is CRI, `src/rw/**` is
+RenderWare, `src/sce/**` plus `src/libcdvd.c` is SCE, `libc_core.c` plus
+`libm.c` is C runtime/math, and `crt0.c` plus `code2.c` is startup/platform.
+All remaining `src/**` translation units are treated as Atlus game code;
+game-facing wrappers such as `h_cdvd.c` are intentionally not folded into the
+vendor categories.  `verify.py` remains authoritative for `MATCH`.
+The primary `progress/metrics.json`, `matching.json`, and `linked.json`
+endpoints use the Atlus-game scope.  The full 13,752-function verifier totals
+remain under `whole_executable`; RenderWare is treated as third-party
+middleware and is not included in the essential denominator.
+
+| Provenance | Match status | Matched object bytes / object bytes |
+| --- | ---: | ---: |
+| Atlus game code | 3,299/7,973 (41.377%) | 380,596/3,043,716 |
+| CRI middleware | 806/3,471 (23.221%) | 41,020/535,212 |
+| RenderWare | 187/1,682 (11.118%) | 4,584/825,404 |
+| SCE libraries | 41/491 (8.350%) | 1,372/146,892 |
+| C runtime/math | 1/124 (0.806%) | 8/78,772 |
+| Startup/platform | 0/11 (0.000%) | 0/2,920 |
+| **Total** | **4,334/13,752 (31.515%)** | **427,580/4,632,916** |
+
+Therefore the exact game-code-only function coverage is **3,299/7,973 =
+41.377%**.  The generated JSON also records retail-window byte totals; the
+object-byte column above uses the same matched-body convention as
+`progress/metrics.json`.  The partition currently has zero unclassified
+functions and zero duplicate addresses.
+
 ## Milestone 4 — Close middleware, SDK, and standard-library regions
 
 These regions dominate the remaining function count and require family-based
@@ -286,13 +322,11 @@ work rather than manual random selection.
 
 | Region | Match status |
 | --- | ---: |
-| CRI | 182/3,312 (5.5%) |
-| RenderWare | 92/1,682 (5.5%) |
-| SCE libraries | 26/451 (5.8%) |
-| `libc_core.c` | 1/98 (1.0%) |
-| `libcdvd.c` | 0/40 |
-| `libm.c` | 0/26 |
-| `code2.c` | 0/9 |
+| CRI middleware | 806/3,471 (23.221%) |
+| RenderWare | 187/1,682 (11.118%) |
+| SCE libraries | 41/491 (8.350%) |
+| C runtime/math | 1/124 (0.806%) |
+| Startup/platform | 0/11 (0.000%) |
 
 Actions:
 

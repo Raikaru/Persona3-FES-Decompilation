@@ -32,6 +32,8 @@
 /LMGR8C.DLL
 *.exe
 /tools/decomp-permuter
+/tools/vendor/m2c/
+*.m2c
 /**/*.ast.c
 
 # --- local machine config / editor / caches ---

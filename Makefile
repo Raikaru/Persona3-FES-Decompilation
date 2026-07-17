@@ -14,7 +14,7 @@ PYTHON ?= python
 SPLAT_CONFIG = config/slus21621.yaml
 C_SRCS := $(shell find src -name '*.c' 2>/dev/null)
 
-.PHONY: all build setup split verify check symbols objdiff ctx progress format clean distclean
+.PHONY: all build setup split verify check test symbols objdiff ctx m2c-setup m2c progress format clean distclean
 
 all: build verify
 
@@ -35,6 +35,9 @@ split:
 verify check:
 	$(PYTHON) tools/verify.py
 
+test:
+	$(PYTHON) -m unittest discover -s tests -v
+
 # Regenerate the recovered symbol table (data-symbol addresses + _gp).
 symbols:
 	$(PYTHON) tools/recover_symbols.py
@@ -46,6 +49,16 @@ objdiff:
 # Decomp.me context for a file:  make ctx FILE=src/Battle/btlFade.c
 ctx:
 	$(PYTHON) tools/m2ctx.py $(FILE)
+
+# Install the pinned m2c revision, then decompile one function with project context:
+#   make m2c-setup
+#   make m2c FILE=src/Battle/btlVoice.c FUNC=func_002e3d50
+m2c-setup:
+	$(PYTHON) tools/setup_m2c.py
+
+m2c:
+	@test -n "$(FILE)" -a -n "$(FUNC)" || (echo "usage: make m2c FILE=src/path.c FUNC=function_name" && exit 2)
+	$(PYTHON) tools/m2c_decompile.py "$(FILE)" "$(FUNC)" $(if $(STACK),--stack-structs,)
 
 # Decompilation progress report.
 progress:

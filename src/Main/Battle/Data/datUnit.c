@@ -8,6 +8,18 @@
 extern u8* DAT_007CE410;
 extern void func_00301540(DatUnit* unit, u8 index);
 
+typedef struct DatEnemyUnitInit
+{
+    u16 flags;
+    u8 unknown02;
+    u8 level;
+    u16 hp;
+    u16 sp;
+    u8 unknown08[6];
+    u16 skills[8];
+    u8 unknown1E[32];
+} DatEnemyUnitInit;
+
 // FUN_002ff340
 DatUnitPc* datUnitCreatePc(u16 pcId)
 {
@@ -25,22 +37,20 @@ DatUnitPc* datUnitCreatePc(u16 pcId)
     return pc;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002ff3e0 NONMATCHING
 DatUnitEc* datUnitCreateEc(u16 encountId)
 {
     u16 i;
     u16 count;
-    BtlEncountTable* encount;
     DatUnitEc* ec;
     u16 j;
     u16 k;
-
-    count = 0; // regswap (s1 but should be s0)
+    count = 0;
     i = 0;
-    encount = &gEncountTbl[encountId];
-    for (; i < 5; i++)
+    for (; (u32)(i & 0xFFFF) < 5U; i++)
     {
-        if (encount->enmIds[i] != 0) // TODO: addu v0, v1, v0 instead of addu v0, v0, v1
+        if (gEncountTbl[encountId].enmIds[i] != 0)
         {
             count++;
         }
@@ -55,13 +65,11 @@ DatUnitEc* datUnitCreateEc(u16 encountId)
     ec->base.unit = ec->units;
 
     j = 0;
-    for (k = 0; k < 5; k++)
+    for (k = 0; (u32)(k & 0xFFFF) < 5U; k++)
     {
-        encount = &gEncountTbl[encountId]; // TODO: addu v1, s1, v0 instead of addu v1, v0, s0
-
-        if (encount->enmIds[k] != 0) // TODO: addu v0, v1, v0 instead of addu v0, v0, v1
+        if (gEncountTbl[encountId].enmIds[k] != 0)
         {
-            datUnitInit(&ec->base.unit[j], UNIT_GENUS_EC, encount->enmIds[k]);
+            datUnitInit(&ec->base.unit[j], UNIT_GENUS_EC, gEncountTbl[encountId].enmIds[k]);
 
             j++;
         }
@@ -69,6 +77,7 @@ DatUnitEc* datUnitCreateEc(u16 encountId)
 
     return ec;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ff540
 DatUnit* datUnitEcAddEnemy(DatUnitEc* ec, u16 id)
@@ -128,7 +137,7 @@ void datUnitDestroyGenus(DatUnitGenusBase* genusBase)
     RwFree(genusBase);
 }
 
-// FUN_002ff790 NONMATCHING
+// FUN_002ff790
 u32 func_002ff790(DatUnitGenusBase* genusBase)
 {
     u16 i;
@@ -137,7 +146,8 @@ u32 func_002ff790(DatUnitGenusBase* genusBase)
     {
         for (i = 0; i < 6; i++)
         {
-            DatUnit* unit = &genusBase->unit[i];
+            DatUnit* unit = genusBase->unit;
+            unit += i;
 
             if (unit->id != 0 && datCalcIsDead(unit, 0) == 0)
             {
@@ -159,76 +169,61 @@ u32 func_002ff790(DatUnitGenusBase* genusBase)
 }
 
 
-// FUN_002ff890 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ff890
 u32 datUnitInit(DatUnit* unit, u8 genus, u16 id)
 {
-    u8* enemy;
-    u16 enemyFlags;
-    u16 i;
+    u32 i;
+    u32 j;
 
-    if (genus == UNIT_GENUS_EC)
+    switch (genus)
     {
-        K_ASSERT(id <= 0x14f, 0xd9);
-
-        enemy = DAT_007CE410 + id * 0x3e;
-        enemyFlags = *(u16*)enemy;
+    case UNIT_GENUS_PC:
+        if ((id & 0xFFFF) >= 0xB) K_Assert(__FILE__, 0xd3);
+        unit->flags &= ~UNIT_FLAG_ENEMY;
+        unit->flags &= ~0x10;
+        unit->flags &= ~0x20;
+        break;
+    case UNIT_GENUS_EC:
+        if ((id & 0xFFFF) >= 0x150) K_Assert(__FILE__, 0xd9);
         unit->flags = UNIT_FLAG_ENEMY;
-        unit->level = enemy[3];
-        unit->hp = *(u16*)(enemy + 4);
-        unit->sp = *(u16*)(enemy + 6);
+        unit->level = DAT_007CE410[id * 0x3e + 3];
+        unit->hp = *(u16*)((u8*)(uintptr_t)((u32)id * 0x3e) +
+                          (uintptr_t)DAT_007CE410 + 4);
+        unit->sp = *(u16*)((u8*)(uintptr_t)((u32)id * 0x3e) +
+                          (uintptr_t)DAT_007CE410 + 6);
         unit->bad = 0;
-
-        if (enemyFlags & 8)
-        {
-            unit->flags |= 0x10;
-        }
-        if (enemyFlags & 0x10)
-        {
-            unit->flags |= 0x20;
-        }
-        if (enemyFlags & 0x100)
-        {
-            unit->flags |= 0x80;
-        }
-        if (enemyFlags & 0x200)
-        {
-            unit->flags |= 0x100;
-        }
-
+        if (*(u16*)(DAT_007CE410 + id * 0x3e) & 8) unit->flags |= 0x10;
+        if (*(u16*)(DAT_007CE410 + id * 0x3e) & 0x10) unit->flags |= 0x20;
+        if (*(u16*)(DAT_007CE410 + id * 0x3e) & 0x100) unit->flags |= 0x80;
+        if (*(u16*)(DAT_007CE410 + id * 0x3e) & 0x200) unit->flags |= 0x100;
         for (i = 0; i < 8; i++)
         {
-            u16 skill = *(u16*)(enemy + i * 2 + 0xe);
-
-            if (skill == 0x220 || skill == 0x221 || skill == 0x222)
+            u16 skill = ((DatEnemyUnitInit*)DAT_007CE410)[id].skills[i];
+            switch (skill)
             {
+            case 0x220:
+            case 0x221:
+            case 0x222:
                 unit->flags |= 0x200;
+                break;
             }
         }
+        break;
+    default:
+        K_Assert(__FILE__, 0xfd);
+        break;
     }
-    else if (genus == UNIT_GENUS_PC)
-    {
-        K_ASSERT(id <= 10, 0xd3);
-        unit->flags &= ~(UNIT_FLAG_ENEMY | 0x10 | 0x20);
-    }
-    else
-    {
-        K_ASSERT(0, 0xfd);
-    }
-
-    for (i = 0; i < 0x15; i++)
-    {
-        func_00301540(unit, (u8)i);
-    }
-
+    for (j = 0; j < 0x15; j++) func_00301540(unit, (u8)j);
     unit->id = id;
     unit->id2 = id;
     unit->flags |= UNIT_FLAG_ACTIVE;
-
     return true;
 }
+#pragma opt_loop_invariants off
 
-// FUN_002ffb00 NONMATCHING
-void func_002ffb00(DatUnitGenusBase* genusBase)
+// FUN_002ffb00
+u16 func_002ffb00(DatUnitGenusBase* genusBase)
 {
     u16 pcId;
     u16 condition;
@@ -241,11 +236,21 @@ void func_002ffb00(DatUnitGenusBase* genusBase)
         if (datGetFatigueCounter(pcId) == 0)
         {
             condition = datGetPhysicalCondition(pcId);
-
-            if (condition == 0 || condition == 1 || condition == 2)
+            if (condition == 2) goto improve_condition;
+            if (condition == 1) goto improve_condition;
+            switch (condition)
             {
-                datSetPhysicalCondition(pcId, 3);
+            case 0:
+                goto improve_condition;
+            default:
+                goto condition_done;
             }
+
+improve_condition:
+            datSetPhysicalCondition(pcId, 3);
         }
+condition_done:
+        return datGetPhysicalCondition(pcId);
     }
+    return 0;
 }

@@ -105,7 +105,7 @@ static void fieldSetTableBounds(void* table)
     sFieldMainTableEnd = (u8*)sFieldMainTableCursor + count * 0x20;
 }
 
-// FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize' NONMATCHING
+// FUN_001b7b10. Read 'field.bf' and copy its content in 'gFldScrMemory' and its size in 'gFldScrSize'
 void K_Data_LoadFldMainScript()
 {
     char buffer[128];
@@ -113,17 +113,18 @@ void K_Data_LoadFldMainScript()
     u32 scrSize;
     void* scrMemory;
 
+
     sprintf(buffer, "field/script/field.bf");
 
     cdvd = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
     H_Cdvd_ReadSync(cdvd);
 
-    // TODO: 'cdvd->fileSize' is being loaded first and i don't know why
     scrSize = cdvd->fileSize;
     scrMemory = gFldScrMemory = RwCalloc(1, scrSize, rwMEMHINTDUR_GLOBAL);
-    scrSize = gFldScrSize = cdvd->fileSize;
+    gFldScrSize = cdvd->fileSize;
+    scrSize = cdvd->fileSize;
 
-    memcpy(scrMemory, cdvd->fileMemory, scrSize);
+    memcpy(scrMemory, cdvd->fileMemory, (s32)scrSize);
 
     H_Cdvd_Destroy(cdvd);
 }
@@ -223,14 +224,11 @@ void func_001b7bb0(void)
     H_Cdvd_Destroy(request);
 }
 
-// FUN_001b7d00 NONMATCHING
+// FUN_001b7d00
 void func_001b7d00(void)
 {
     D_007CE218 = RwCalloc(1, 0x34c, rwMEMHINTDUR_GLOBAL);
-    if (D_007CE218 != NULL)
-    {
-        D_007CE214 = (s32)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
-    }
+    D_007CE214 = (s32)func_0010a770(0, 6, D_007CE218, 2, 0x1ea, 1);
 }
 
 // FUN_001b7d60
@@ -484,27 +482,27 @@ u16* func_001b83f0(void)
 }
 
 // FUN_001b85a0 NONMATCHING
-void func_001b85a0(u32 index)
+u16* func_001b85a0(u32 index)
 {
-    Field* field;
-    s16* record;
+    u16* record;
     u32 emptyCount;
-
-    field = K_Field_Get();
-    record = (s16*)FIELD_DATA_AT(field, 0x1164, void*);
-    if (record == NULL)
-    {
-        return;
-    }
+    u16 emptyId;
+    record = (u16*)FIELD_DATA_AT(K_Field_Get(), 0x1164, void*);
     emptyCount = 0;
-    while (emptyCount != index)
+    emptyId = 0xffff;
+    for (;;)
     {
-        if (*record == -1)
+        if (emptyCount == index)
+        {
+            break;
+        }
+        if (*record == emptyId)
         {
             emptyCount++;
         }
         record += 0x10;
     }
+    return record;
 }
 
 // FUN_001b8600
@@ -746,25 +744,33 @@ void func_001b8cf0(u8* work)
 }
 
 // FUN_001b8d60 NONMATCHING
-void func_001b8d60(u32 index)
+u16* func_001b8d60(u32 index)
 {
-    s16* record;
+    u16* record;
     u32 i;
     u32 emptyCount;
+    u32 recordCount;
+    u16 emptyId;
 
-    record = sComuTable;
-    i = 0;
+    record = (u16*)sComuTable;
     emptyCount = 0;
-    while (record != NULL && i < sComuTableRecords &&
-           emptyCount != index)
+    i = 0;
+    recordCount = sComuTableRecords;
+    emptyId = 0xffff;
+    while (i < recordCount)
     {
-        if (record[0] == -1)
+        if (emptyCount == index)
+        {
+            break;
+        }
+        if (record[0] == emptyId)
         {
             emptyCount++;
         }
         i++;
         record += 0x40;
     }
+    return record;
 }
 
 // FUN_001b8db0 NONMATCHING

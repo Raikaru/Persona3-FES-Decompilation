@@ -459,7 +459,7 @@ void opRoot00265030(void)
     FUN_00271ec0();
 }
 
-// FUN_00265f80 NONMATCHING
+// FUN_00265f80
 void opRoot00265f80(void)
 {
     u32* root;
@@ -470,20 +470,21 @@ void opRoot00265f80(void)
     FUN_00108f70();
     opResDestroyTitle();
     state = (s32)root[0x4528 / 4];
-    if (state == 0x11 || state == 9)
+    switch (state)
     {
-        opWait0026ebf0();
-        opTitle002694b0();
-        opMenu0026da10();
-    }
-    else if (state == 8)
-    {
-        opWait0026ebf0();
-        opTitle002694b0();
-    }
-    else
-    {
-        K_ASSERT(false, 0x327);
+        case 8:
+            opWait0026ebf0();
+            opTitle002694b0();
+            break;
+        case 9:
+        case 0x11:
+            opWait0026ebf0();
+            opTitle002694b0();
+            opMenu0026da10();
+            break;
+        default:
+            K_ASSERT(false, 0x327);
+            break;
     }
     opResRequestLogo();
     root[1] = 0;

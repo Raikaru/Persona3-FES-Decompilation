@@ -17,11 +17,15 @@
 
 extern void* memset(void* dst, int value, u32 count);
 int func_001c0040(void);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 
 extern u8* DAT_007ce4ac;
 extern u8* DAT_007ce4b0;
 extern u8* DAT_007ce4b4;
 extern u8* DAT_007ce4b8;
+extern u32 iGpffffb418;
+extern s32* PTR_DAT_007cd540;
 
 // FUN_001d75f0
 u8 K_Encount_001d75f0(u32 param_1, u16 flag, u32 areaId)
@@ -300,7 +304,7 @@ extern void func_00434f70(void);
 extern u32 func_001fc720(DatUnit* unit);
 extern void func_001fc590(DatUnit* src, DatUnit* dst);
 extern u32 func_002ff790(DatUnitGenusBase* genus);
-extern void func_002ffb00(DatUnitGenusBase* genus);
+extern u16 func_002ffb00(DatUnitGenusBase* genus);
 extern u32 datGetMaxHp(s16 pcId);
 extern void func_0035c1a0(KwlnTask* task, int record);
 extern ScrHeader* D_007CE220;
@@ -677,15 +681,17 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     return task;
 }
 
-// FUN_001d8c60 NONMATCHING
+// FUN_001d8c60
 void func_001d8c60(u32 paused)
 {
-    u32 i;
-    for (i = 0; i < 3; ++i)
+    s32 i = 0;
+    KwlnTask** tasks = D_00875A40;
+
+    for (; i < 3; ++i)
     {
-        if (D_00875A40[i] != NULL && D_00875A40[i]->workData != NULL)
+        if (tasks[i] != NULL)
         {
-            ((EncounterWork*)D_00875A40[i]->workData)->paused = paused;
+            ((EncounterWork*)tasks[i]->workData)->paused = paused;
         }
     }
 }
@@ -710,54 +716,66 @@ void func_001d8cf0(void)
     }
 }
 
-// FUN_001d8d50 NONMATCHING
+// FUN_001d8d50
 u32 func_001d8d50(KwlnTask* task)
 {
-    return task != NULL && task->workData != NULL ? ((EncounterWork*)task->workData)->pcCount : 0;
+    return ((EncounterWork*)task->workData)->pcCount;
 }
 
-// FUN_001d8d60 NONMATCHING
+// FUN_001d8d60
 FldUnit* func_001d8d60(KwlnTask* task, s32 index)
 {
-    EncounterWork* work = task != NULL ? (EncounterWork*)task->workData : NULL;
-    if (work == NULL || index < 0 || (u32)index >= work->pcCount)
-    {
-        return NULL;
-    }
+    EncounterWork* work;
+
+    work = (EncounterWork*)task->workData;
     return work->pc[index];
 }
 
-// FUN_001d8d80 NONMATCHING
+// FUN_001d8d80
 KwlnTask* func_001d8d80(FldUnit* unit)
 {
-    u32 i;
-    u32 j;
+    KwlnTask** tasks;
+    s32 i;
+    s32 j;
+
     if (unit == NULL)
     {
         return NULL;
     }
-    for (i = 0; i < 3; ++i)
+    i = 0;
+    tasks = D_00875A40;
+    while (i < 3)
     {
+        KwlnTask* task;
         EncounterWork* work;
-        if (D_00875A40[i] == NULL || D_00875A40[i]->workData == NULL)
+        s32 count;
+
+        task = tasks[i];
+        if (task != NULL)
         {
-            continue;
-        }
-        work = (EncounterWork*)D_00875A40[i]->workData;
-        for (j = 0; j < work->pcCount; ++j)
-        {
-            if (work->pc[j] == unit)
+            work = (EncounterWork*)task->workData;
+            j = 0;
+            count = work->pcCount;
+            while (j < count)
             {
-                return D_00875A40[i];
+                if (*(FldUnit**)((u8*)work + j * sizeof(FldUnit*) + 0x18) == unit)
+                {
+                    return task;
+                }
+                ++j;
+            }
+            j = 0;
+            count = work->ecCount;
+            while (j < count)
+            {
+                if (*(FldUnit**)((u8*)work + j * sizeof(FldUnit*) + 0x28) == unit)
+                {
+                    return task;
+                }
+                ++j;
             }
         }
-        for (j = 0; j < work->ecCount; ++j)
-        {
-            if (work->ec[j] == unit)
-            {
-                return D_00875A40[i];
-            }
-        }
+        ++i;
     }
     return NULL;
 }
@@ -986,20 +1004,21 @@ void* func_001d9860(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001d9ee0 NONMATCHING
+// FUN_001d9ee0
 void func_001d9ee0(KwlnTask* task)
 {
-    if (task != NULL)
-    {
-        RwFree(task->workData);
-    }
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
-// FUN_001d9f10 NONMATCHING
+// FUN_001d9f10
 KwlnTask* func_001d9f10(KwlnTask* parent)
 {
     PeriodicWork* work;
     if (func_001a01c0() == 0)
+    {
+        return NULL;
+    }
+    if (PTR_DAT_007cd540[0] == 0x21)
     {
         return NULL;
     }
@@ -1012,22 +1031,26 @@ KwlnTask* func_001d9f10(KwlnTask* parent)
                                           func_001d9860, func_001d9ee0, work);
 }
 
-// FUN_001d9fd0 NONMATCHING
+// FUN_001d9fd0
 u32 func_001d9fd0(KwlnTask* task)
 {
-    return task == NULL || task->workData == NULL ||
-                   ((PeriodicWork*)task->workData)->state > 0
-               ? 1
-               : 0;
+    if (task == NULL)
+    {
+        return true;
+    }
+    return (s32)((PeriodicWork*)task->workData)->state > 0;
 }
 
-// FUN_001da000 NONMATCHING
+// FUN_001da000
 void func_001da000(KwlnTask* task, u32 disabled)
 {
-    if (task != NULL && task->workData != NULL)
+    PeriodicWork* work;
+
+    if (task == NULL)
     {
-        PeriodicWork* work = (PeriodicWork*)task->workData;
-        work->disabled = disabled;
-        work->timestamp = K_Encount_Now(task);
+        return;
     }
+    work = (PeriodicWork*)task->workData;
+    work->disabled = disabled;
+    work->timestamp = iGpffffb418;
 }

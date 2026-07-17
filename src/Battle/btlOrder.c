@@ -71,19 +71,21 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
+#pragma optimization_level 4
 // FUN_0029a320 NONMATCHING
 u32 FUN_0029a320(BtlAction* action)
 {
+    BtlAction* action_p = action;
     u32 removed;
 
     removed = 0;
-    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action) != 0)
+    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action_p) != 0)
     {
         removed = 1;
     }
-
     return removed;
 }
+#pragma optimization_level 2
 
 // FUN_0029a380
 u32 FUN_0029a380(BtlAction* action)
@@ -206,144 +208,175 @@ u32 FUN_0029a4f0(BtlAction* action)
     return 1;
 }
 
-// FUN_0029a570 NONMATCHING
+// FUN_0029a570
 void FUN_0029a570(void)
 {
-    BtlAction** actions;
     u32 count;
+    BtlAction** scan;
+    BtlAction** actions;
     u32 i;
     u32 swapped;
 
-    actions = gBtl->order.actions;
-    for (count = 0; count < BTL_MAXACTIONS && actions[count] != NULL; count++)
+    scan = gBtl->order.actions;
+    count = 0;
+    while (count < BTL_MAXACTIONS)
     {
+        if (*scan == NULL)
+        {
+            break;
+        }
+        scan++;
+        count++;
     }
 
     do
     {
         swapped = 0;
-        for (i = 0; i + 1 < count; i++)
+        actions = gBtl->order.actions;
+        i = 0;
+        while (i < count - 1)
         {
             BtlAction* first;
             BtlAction* second;
-            u32 firstValue;
-            u32 secondValue;
+            u16 firstValue;
+            u16 secondValue;
 
-            first = actions[i];
-            second = actions[i + 1];
-            if (first == NULL || second == NULL)
+            first = *actions;
+            second = actions[1];
+            if (first != NULL && second != NULL)
             {
-                continue;
+                firstValue = (u8)FUN_00300c90(first->unit->datUnit, 3);
+                secondValue = (u8)FUN_00300c90(second->unit->datUnit, 3);
+                if (firstValue < secondValue)
+                {
+                    *actions = second;
+                    actions[1] = first;
+                    swapped = 1;
+                }
             }
-
-            firstValue = FUN_00300c90(first->unit->datUnit, 3);
-            secondValue = FUN_00300c90(second->unit->datUnit, 3);
-            if ((u8)firstValue < (u8)secondValue)
-            {
-                actions[i] = second;
-                actions[i + 1] = first;
-                swapped = 1;
-            }
+            i++;
+            actions++;
         }
     } while (swapped != 0);
 }
 
+#pragma opt_loop_invariants on
 // FUN_0029a690 NONMATCHING
 void FUN_0029a690(u16 genus)
 {
-    BtlAction** actions;
     u32 count;
-    u32 i;
+    BtlAction** scan;
     u32 swapped;
+    u32 i;
+    BtlAction** actions;
 
-    actions = gBtl->order.actions;
-    for (count = 0; count < BTL_MAXACTIONS && actions[count] != NULL; count++)
+    scan = gBtl->order.actions;
+    count = 0;
+    while (count < BTL_MAXACTIONS)
     {
+        if (*scan == NULL)
+        {
+            break;
+        }
+        scan++;
+        count++;
     }
 
     do
     {
         swapped = 0;
-        for (i = 0; i + 1 < count; i++)
+        actions = gBtl->order.actions;
+        i = 0;
+        while (i < count - 1)
         {
             BtlAction* first;
             BtlAction* second;
             u8 firstGenus;
             u8 secondGenus;
 
-            first = actions[i];
-            second = actions[i + 1];
-            if (first == NULL || second == NULL)
+            first = *actions;
+            second = actions[1];
+            if (first != NULL && second != NULL)
             {
-                continue;
+                firstGenus = first->unit->genus;
+                secondGenus = second->unit->genus;
+                if (firstGenus != secondGenus && firstGenus != genus)
+                {
+                    *actions = second;
+                    actions[1] = first;
+                    swapped = 1;
+                }
             }
-
-            firstGenus = first->unit->genus;
-            secondGenus = second->unit->genus;
-            if (firstGenus != secondGenus && firstGenus != (u8)genus)
-            {
-                actions[i] = second;
-                actions[i + 1] = first;
-                swapped = 1;
-            }
+            i++;
+            actions++;
         }
     } while (swapped != 0);
 }
-
+#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
 // FUN_0029a750 NONMATCHING
 void FUN_0029a750(void)
 {
     BtlAction** actions;
-    BtlAction* playerActions[BTL_MAXACTIONS];
-    BtlAction* enemyActions[BTL_MAXACTIONS];
+    struct
+    {
+        BtlAction* action;
+        u8 weight;
+    } playerActions[BTL_MAXACTIONS];
+    struct
+    {
+        BtlAction* action;
+        u8 weight;
+    } enemyActions[BTL_MAXACTIONS];
     BtlAction* orderedPlayers[BTL_MAXACTIONS];
     BtlAction* orderedEnemies[BTL_MAXACTIONS];
-    u8 playerWeights[BTL_MAXACTIONS];
-    u8 enemyWeights[BTL_MAXACTIONS];
-    u32 count;
-    u32 playerCount;
-    u32 enemyCount;
-    u32 playerOrdered;
-    u32 enemyOrdered;
-    u32 playerWeightTotal;
-    u32 enemyWeightTotal;
-    u32 i;
-    u32 j;
-    u32 outputCount;
+    u16 enemyCount;
+    u16 playerCount;
+    u16 playerWeightTotal;
+    u16 enemyWeightTotal;
+    u16 actionCount;
+    u16 count;
+    u16 playerOrdered;
+    u16 enemyOrdered;
+    u16 i;
+    u16 j;
+    u16 outputCount;
 
     FUN_0029a570();
     actions = gBtl->order.actions;
-    playerCount = 0;
     enemyCount = 0;
+    playerCount = 0;
     playerWeightTotal = 0;
     enemyWeightTotal = 0;
-
-    for (count = 0; count < BTL_MAXACTIONS && actions[count] != NULL; count++)
+    actionCount = 0;
+    count = 0;
+    while (count < BTL_MAXACTIONS && actions[count] != NULL)
     {
         BtlAction* action;
         BtlUnit* unit;
 
         action = actions[count];
-        if (action == gBtl->actionList.head)
+        if (action != gBtl->actionList.head)
         {
-            continue;
+            unit = action->unit;
+            switch (unit->genus)
+            {
+            case UNIT_GENUS_PC:
+                playerActions[playerCount].action = action;
+                playerActions[playerCount].weight = gp0xffff9918[playerCount];
+                playerWeightTotal += playerActions[playerCount].weight;
+                playerCount++;
+                break;
+            case UNIT_GENUS_EC:
+                enemyActions[enemyCount].action = action;
+                enemyActions[enemyCount].weight = 10;
+                enemyWeightTotal += enemyActions[enemyCount].weight;
+                enemyCount++;
+                break;
+            }
+            actionCount++;
         }
-
-        unit = action->unit;
-        if (unit->genus == UNIT_GENUS_EC)
-        {
-            enemyActions[enemyCount] = action;
-            enemyWeights[enemyCount] = 10;
-            enemyWeightTotal += enemyWeights[enemyCount];
-            enemyCount++;
-        }
-        else if (unit->genus == UNIT_GENUS_PC)
-        {
-            playerActions[playerCount] = action;
-            playerWeights[playerCount] = gp0xffff9918[playerCount];
-            playerWeightTotal += playerWeights[playerCount];
-            playerCount++;
-        }
+        count++;
     }
 
     playerOrdered = 0;
@@ -351,17 +384,18 @@ void FUN_0029a750(void)
     {
         u16 randomValue;
 
-        randomValue = (u16)datCalcRand((u16)playerWeightTotal);
+        randomValue = (u16)datCalcRand(playerWeightTotal);
         for (j = 0; j < playerCount; j++)
         {
-            if (playerWeights[j] != 0 && randomValue < playerWeights[j])
+            if (playerActions[j].weight != 0 &&
+                randomValue < playerActions[j].weight)
             {
-                playerWeightTotal -= playerWeights[j];
-                orderedPlayers[playerOrdered++] = playerActions[j];
-                playerWeights[j] = 0;
+                playerWeightTotal -= playerActions[j].weight;
+                orderedPlayers[playerOrdered++] = playerActions[j].action;
+                playerActions[j].weight = 0;
                 break;
             }
-            randomValue = (u16)(randomValue - playerWeights[j]);
+            randomValue = (u16)(randomValue - playerActions[j].weight);
         }
     }
 
@@ -370,44 +404,45 @@ void FUN_0029a750(void)
     {
         u16 randomValue;
 
-        randomValue = (u16)datCalcRand((u16)enemyWeightTotal);
+        randomValue = (u16)datCalcRand(enemyWeightTotal);
         for (j = 0; j < enemyCount; j++)
         {
-            if (enemyWeights[j] != 0 && randomValue < enemyWeights[j])
+            if (enemyActions[j].weight != 0 &&
+                randomValue < enemyActions[j].weight)
             {
-                enemyWeightTotal -= enemyWeights[j];
-                orderedEnemies[enemyOrdered++] = enemyActions[j];
-                enemyWeights[j] = 0;
+                enemyWeightTotal -= enemyActions[j].weight;
+                orderedEnemies[enemyOrdered++] = enemyActions[j].action;
+                enemyActions[j].weight = 0;
                 break;
             }
-            randomValue = (u16)(randomValue - enemyWeights[j]);
+            randomValue = (u16)(randomValue - enemyActions[j].weight);
         }
     }
 
-    outputCount = 1;
     actions[0] = gBtl->actionList.head;
+    outputCount = 1;
     playerOrdered = 0;
     enemyOrdered = 0;
-    for (i = 1; i < count; i++)
+    for (i = 0; i < actionCount; i++)
     {
         BtlAction* action;
 
         if (playerOrdered < playerCount && enemyOrdered < enemyCount)
         {
-            u32 threshold;
+            u16 threshold;
             u32 randomValue;
 
-            if (i == 1)
+            if (i == 0)
             {
                 threshold = 0x32;
             }
             else if ((i & 1) != 0)
             {
-                threshold = 0x14;
+                threshold = 0x50;
             }
             else
             {
-                threshold = 0x50;
+                threshold = 0x14;
             }
 
             randomValue = datCalcRand(100);
@@ -429,8 +464,7 @@ void FUN_0029a750(void)
             action = orderedEnemies[enemyOrdered++];
         }
 
-        actions[i] = action;
-        outputCount = i + 1;
+        actions[outputCount++] = action;
     }
 
     for (i = outputCount; i < BTL_MAXACTIONS; i++)
@@ -438,41 +472,41 @@ void FUN_0029a750(void)
         actions[i] = NULL;
     }
 }
-
+#pragma opt_loop_invariants off
+#pragma optimization_level 4
 // FUN_0029abe0 NONMATCHING
 void FUN_0029abe0(BtlAction* action)
 {
-    if ((action->unk_18 & 4) == 0)
-    {
-        if ((gBtl->flags & BTL_FLAG2_UNK08) != 0)
-        {
-            gBtl->order.prevActionPlaying = action;
-            FUN_0029a4f0(action);
-        }
-    }
-    else
+    if ((action->unk_18 & 4) != 0)
     {
         btlOrderRemoveAction(gBtl->order.actions2, BTL_MAXACTIONS, action);
         action->unk_18 &= ~4;
+    }
+    else if ((gBtl->flags & BTL_FLAG2_UNK08) != 0)
+    {
+        FUN_0029a4f0(action);
+        gBtl->order.prevActionPlaying = action;
     }
 
     gBtl->order.flags |= 8;
 }
+#pragma optimization_level 2
 
+#pragma optimization_level 4
 // FUN_0029ac70 NONMATCHING
 void FUN_0029ac70(BtlAction* action)
 {
-    if ((action->unk_18 & 4) == 0)
+    if ((action->unk_18 & 4) != 0)
     {
-        gBtl->order.flags |= 8;
+        FUN_0029abe0(action);
     }
     else
     {
-        btlOrderRemoveAction(gBtl->order.actions2, BTL_MAXACTIONS, action);
-        action->unk_18 &= ~4;
         gBtl->order.flags |= 8;
     }
 }
+#pragma schedule off
+#pragma optimization_level 2
 // FUN_0029adf0
 u32 FUN_0029adf0(BtlAction* action)
 {

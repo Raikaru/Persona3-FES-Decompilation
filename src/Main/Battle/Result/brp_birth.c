@@ -34,7 +34,7 @@ extern void func_0023d240(void);
 extern void func_0020a800(void* frame);
 extern void func_0020c5f0(void* frame, s32 value, s32 count);
 extern void func_00209f00(void* frame);
-extern void func_0020c590(void* frame, s16 value);
+extern void func_0020c590(void* frame, u16 value);
 extern void func_0020cd50(void* frame, void* resource);
 extern void func_00219d90(void);
 extern void func_0020ac80(void* frame);
@@ -58,7 +58,7 @@ extern void func_0034fd30(void* resource);
 extern void func_0034fd70(void* resource, s32 layer);
 extern void func_0034ff70(void* resource, f32 scalar);
 extern u32 func_003cda60(s32 mode, s32 value);
-extern void func_003cdba0(u32 object, s16 value);
+extern void func_003cdba0(u32 object, u16 value);
 extern u32 func_003cdc80(u32 object);
 extern void func_003cdcd0(u32 object, s32 a, s32 b, s32 c);
 extern void func_003cde00(u32 object, s32 value);
@@ -108,7 +108,7 @@ void func_0024a7f0(void)
     sBrpBirthWork = work;
 }
 
-// FUN_0024A870 NONMATCHING
+// FUN_0024A870
 void func_0024a870(void)
 {
     u32* work;
@@ -116,33 +116,38 @@ void func_0024a870(void)
     void* frame;
     void* resource;
     BrpBirthColor color;
+    BrpBirthVec translation;
+    BrpBirthVec axis;
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
+    translation = sBrpBirthTranslation;
+    axis = sBrpBirthAxis;
     camera = kwlnGetMainCamera();
-    frame = *(void**)((u8*)camera + 4);
     func_004c9d70(camera, 100.0f);
     func_004c9db0(camera, 1000.0f);
-    func_004cb890(frame, 180.0f, &sBrpBirthAxis, 0);
-    func_004cb750(frame, &sBrpBirthTranslation, 2);
+    camera = *(void**)((u8*)camera + 4);
+    func_004cb890(camera, 180.0f, &axis, 0);
+    func_004cb750(camera, &translation, 2);
 
-    if (work[0] == 1)
+    switch (work[0])
     {
-        func_0020a800((u8*)work + 0x1C);
-        func_0020c5f0((u8*)work + 0x1C, 0, 0xE);
-    
+    case 0:
+        func_00209f00(work + 7);
+        frame = (u8*)work + 0x1C;
+        func_0020c590(frame, *(u16*)((u8*)work + 0x0C));
+        break;
+    case 1:
+        func_0020a800(work + 7);
+        frame = (u8*)work + 0x1C;
+        func_0020c5f0(frame, 0, 0xE);
+        break;
     }
-    else if (work[0] == 0)
-    {
-        func_00209f00((u8*)work + 0x1C);
-        func_0020c590((u8*)work + 0x1C, (s16)work[3]);
-    }
-    func_0020cd50((u8*)work + 0x1C, (u8*)work + 0x61C);
+    func_0020cd50(frame, (u8*)work + 0x61C);
 
     ((f32*)work)[0x3EC] = 500.0f;
     ((f32*)work)[0x3ED] = 100.0f;
     ((f32*)work)[0x3EE] = 500.0f;
-    frame = (u8*)work + 0x1C;
     ((f32*)frame)[8] = 0.0f;
     ((f32*)frame)[9] = 100.0f;
     ((f32*)frame)[10] = 0.0f;
@@ -210,7 +215,7 @@ u32 brpBirth0024b9e0(void)
     return sBrpBirthWork[1] & 1;
 }
 
-// FUN_0024AB10 NONMATCHING
+// FUN_0024AB10
 void func_0024ab10(s32 date)
 {
     u32* work;
@@ -220,21 +225,21 @@ void func_0024ab10(s32 date)
     *(s16*)((u8*)work + 0x0C) = (s16)date;
     work[0x3158] = (u32)func_003cda60(0, 1);
     work[1] |= 0x80;
-    func_003cdba0(work[0x3158], (s16)work[3]);
+    func_003cdba0(work[0x3158], *(u16*)((u8*)work + 0x0C));
     func_0024be40();
     func_0021ab80(date);
     work[0] = 0;
     work[1] |= 2;
 }
 
-// FUN_0024AC90 NONMATCHING
+// FUN_0024AC90
 void func_0024ac90(void)
 {
     u32* work;
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
-    K_ASSERT((work[1] & 2) != 0, 0x103);
+    K_ASSERT((~work[1] & 2) != 0, 0x103);
     func_00239280();
     sflRes0020e030();
     func_0024ba50();
@@ -298,7 +303,6 @@ void func_0024adf0(void)
     f32 angle;
     f32 wave;
     BrpBirthColor color;
-
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
     func_0024bb30();
@@ -562,12 +566,12 @@ void func_0024adf0(void)
         func_004bdde0(angle, (u8*)work + 0x2C, &sBrpBirthRotation, 0);
         if ((work[1] & 0x80) != 0)
         {
-            func_003cdba0(work[0x3158], (s16)work[3]);
+            func_003cdba0(work[0x3158], *(u16*)((u8*)work + 0x0C));
         }
     }
 }
 
-// FUN_0024B8A0 NONMATCHING
+// FUN_0024B8A0
 void func_0024b8a0(void)
 {
     u32* work;
@@ -579,8 +583,8 @@ void func_0024b8a0(void)
         func_0023b990();
         if ((work[1] & 8) != 0)
         {
-            func_0020ac90((u8*)work + 0x1C);
-            func_0020b250((u8*)work + 0x1C);
+            func_0020ac90(work + 7);
+            func_0020b250(work + 7);
         }
         if ((work[1] & 0x10) != 0)
         {

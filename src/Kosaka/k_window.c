@@ -442,6 +442,8 @@ extern s32 strlen(const char* text);
 extern void func_00524270(void* destination, const void* source);
 extern void func_0019d3f0(const char* fileName, s32 line);
 extern void (*D_0096017c)(void* object);
+#pragma alias D_0096017c_abs D_0096017c
+extern u32 D_0096017c_abs[];
 extern const char D_00678AF8[];
 extern const char D_00678B08[];
 extern const char D_00678B18[];
@@ -978,17 +980,12 @@ void* func_001a2a80(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
  
-// FUN_001A3A60 NONMATCHING
+// FUN_001A3A60
 void func_001a3a60(KwlnTask* task)
 {
     KWindowManagerWork* manager;
 
-    manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return;
-    }
-
+    manager = (KWindowManagerWork*)task->workData;
     func_001a44a0(task);
     if (manager->colorData != NULL)
     {
@@ -998,10 +995,7 @@ void func_001a3a60(KwlnTask* task)
     {
         func_001e7a60(manager->renderData);
     }
-    if (D_0096017c != NULL)
-    {
-        D_0096017c(manager);
-    }
+    (*(void (**)(void*))D_0096017c_abs)(task->workData);
 }
 
 // FUN_001A3AE0
@@ -1392,60 +1386,49 @@ void func_001a4380(KwlnTask* task, s32 id)
     func_001a3c30(task);
 }
 
-// FUN_001A44A0 NONMATCHING
+// FUN_001A44A0
 void func_001a44a0(KwlnTask* task)
 {
     KWindowManagerWork* manager;
     KWindowEntry* entry;
     KWindowEntry* next;
 
-    manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return;
-    }
-
+    manager = (KWindowManagerWork*)task->workData;
     entry = manager->entries;
     while (entry != NULL)
     {
         next = entry->next;
-        if (D_0096017c != NULL)
-        {
-            D_0096017c(entry);
-        }
+        (*(void (**)(void*))D_0096017c_abs)(entry);
         entry = next;
     }
-    manager->entries = NULL;
     manager->entryCount = 0;
     manager->firstVisible = 0;
     manager->cursor = 0;
 }
 
-// FUN_001A4510 NONMATCHING
+// FUN_001A4510
 s32 func_001a4510(KwlnTask* task)
 {
     KWindowManagerWork* manager;
     KWindowEntry* entry;
     s32 index;
+    s32 i;
+    s32 cursor;
+    s32 firstVisible;
 
-    manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return -1;
-    }
-
-    index = manager->firstVisible + manager->cursor;
-    if (index < 0 || index >= manager->entryCount)
-    {
-        return -1;
-    }
-
+    manager = (KWindowManagerWork*)task->workData;
     entry = manager->entries;
-    while (index > 0 && entry != NULL)
+    cursor = *(volatile s32*)&manager->cursor;
+    firstVisible = *(volatile s32*)&manager->firstVisible;
+    index = firstVisible + cursor;
+    if (index >= manager->entryCount)
+    {
+        return -1;
+    }
+    for (i = 0; i < index; i++)
     {
         entry = entry->next;
-        index--;
     }
-    return entry != NULL ? entry->id : -1;
+    return entry->id;
 }
 

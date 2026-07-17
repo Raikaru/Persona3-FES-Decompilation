@@ -1285,7 +1285,7 @@ extern void* (*DAT_00960184)(u32 count, u32 size, u32 heap);
 extern void (*jtbl_0096017C)(void* work);
 extern void* DAT_00833B40[0x0b];
 extern void* DAT_00833B48;
-extern void* DAT_00833A50;
+extern void* DAT_00833A50[];
 extern void* DAT_00833A80[];
 extern s16 DAT_00833A60[];
 extern s32 DAT_007cdf9c;
@@ -1648,23 +1648,27 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
 
 extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
                          s32 count, s32 offset, s32 selected, s64 frame,
-                         s64 transition);
+                         s32 transition);
 extern void FUN_0013AFD0(f32 alpha, u64 position, const s32* entries, u64 unused,
-                         s32 count, s32 offset, u64 transition);
+                         s32 count, s32 offset, s32 transition, s32 transitionHi);
 
-// FUN_00138E80 NONMATCHING
-void FUN_00138E80(f32 alpha, u64 position, const s32* entries, u64 unused,
-                  s32 count, s32 offset, s32 selected, s32 mode,
-                  s64 frame, s64 transition, s64 extra)
+// FUN_00138E80
+void FUN_00138E80(f32 alpha, u64 position, const s32* entries,
+                  u64 count, s32 offset, s32 selected, s32 menuFlags,
+                  s32 mode, s64 frame, s32 extra0, s32 extra1)
 {
-    if (mode == 1) {
-        FUN_0013AFD0(alpha, position, entries, unused, count, offset,
-                     transition);
-    } else if (mode == 0) {
-        FUN_00139FC0(alpha, position, entries, unused, count, offset,
-                     selected, frame, transition);
+    volatile u64 savedPosition;
+    savedPosition = position;
+    switch (mode) {
+    case 0:
+        FUN_00139FC0(alpha, position, entries, count, offset, selected,
+                     menuFlags, frame, extra0);
+        break;
+    case 1:
+        FUN_0013AFD0(alpha, position, entries, count, offset, selected,
+                     menuFlags, extra1);
+        break;
     }
-    (void)extra;
 }
 
 // FUN_00138EE0 NONMATCHING
@@ -1856,7 +1860,7 @@ extern char gp0xffff897c[];
 extern s32 iGpffffb280;
 extern s32 iGpffffb27c;
 extern s32 iGpffffb2a0;
-extern void* DAT_00833A50;
+extern void* DAT_00833A50[];
 
 extern void* FUN_001158B0();
 extern void FUN_001127D0();
@@ -1916,7 +1920,7 @@ void FUN_00139DC0(f32 param_1)
 
 // FUN_00139FC0 NONMATCHING
 void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
-                  s32 param_5, s32 param_6, s32 param_7, s64 param_8, s64 param_9)
+                  s32 param_5, s32 param_6, s32 param_7, s64 param_8, s32 param_9)
 {
     CampPackedPosition position;
     const s32* item;
@@ -2190,7 +2194,7 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
 
 // FUN_0013AFD0 NONMATCHING
 void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
-                  s32 param_5, s32 param_6, u64 param_7)
+                  s32 param_5, s32 param_6, s32 param_7, s32 param_8)
 {
     CampPackedPosition position;
     const s32* item;
@@ -2354,44 +2358,48 @@ void FUN_0013AFD0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                    position.y + (f32)iGpffffb27c - 448.0f, param_1 - 3.0f);
 }
 
-// FUN_0013BCB0 NONMATCHING
+// FUN_0013BCB0
 const char* FUN_0013BCB0(s32 param_1, s32 param_2)
 {
-    return D_005D80E4[param_1 * 10 + param_2];
+    return (D_005D80E4 + param_1 * 10)[param_2];
 }
 
-// FUN_0013BCE0 NONMATCHING
+// FUN_0013BCE0
 void FUN_0013BCE0(u8 param_1)
 {
-    CampSpriteRecord* sprite;
-    f32 position;
+    CampSpriteRecord* firstSprite;
+    CampSpriteRecord* secondSprite;
     s32 shifted;
-
+    f32 shiftedPosition;
+    f32 position;
     if (iGpffffb2a0 < -100)
     {
         shifted = iGpffffb2a0 + 0x2D0;
-        sprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50, 0x3A);
-        sprite->spriteScale = 104.0f;
-        sprite->x = (f32)shifted;
-        *(u32*)&sprite->y = 0x439A8000;
-        sprite->alpha = param_1;
-        FUN_001127D0(sprite, 1);
-        FUN_00115980(sprite);
+        shiftedPosition = (f32)shifted;
+        firstSprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50[0], 0x3A);
+        firstSprite->spriteScale = 104.0f;
+        firstSprite->x = shiftedPosition;
+        firstSprite->y = 309.0f;
+        firstSprite->alpha = param_1;
+        FUN_001127D0(firstSprite, 1);
+        FUN_00115980(firstSprite);
     }
 
     position = (f32)iGpffffb2a0;
-    sprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50, 0x3A);
-    sprite->spriteScale = 104.0f;
-    sprite->x = position;
-    *(u32*)&sprite->y = 0x439A8000;
-    sprite->alpha = param_1;
-    FUN_001127D0(sprite, 1);
-    FUN_00115980(sprite);
+    secondSprite = (CampSpriteRecord*)FUN_001158B0(0, DAT_00833A50[0], 0x3A);
+    secondSprite->spriteScale = 104.0f;
+    secondSprite->x = position;
+    secondSprite->y = 309.0f;
+    secondSprite->alpha = param_1;
+    FUN_001127D0(secondSprite, 1);
+    FUN_00115980(secondSprite);
 
     iGpffffb2a0--;
     if ((f32)iGpffffb2a0 < -720.0f)
     {
-        iGpffffb2a0 = (s32)((f32)iGpffffb2a0 + 720.0f);
+        position = (f32)iGpffffb2a0;
+        position += 720.0f;
+        iGpffffb2a0 = (s32)position;
     }
 }
 

@@ -17,6 +17,7 @@
 #define BTLUNIT_FLAG3_ENDURE (1 << 4) // 0x10
 #define BTLUNIT_FLAG3_UNK40  (1 << 6) // 0x40
 #define BTLUNIT_FLAG3_UNK1000 (1 << 12) // 0x1000
+#define BTLUNIT_FLAG3_UNK800 (1 << 11) // 0x800
 #define BTLUNIT_FLAG3_NOROT  (1 << 13) // 0x2000
 #define BTLUNIT_FLAG3_UNK400 (1 << 10) // 0x400
 
@@ -50,6 +51,15 @@ typedef enum
 } BtlUnitLookAtMode;
 
 typedef struct BtlUnit BtlUnit;
+typedef struct BtlUnitAnimBounds
+{
+    s16 centerX;
+    s16 centerY;
+    s16 centerZ;
+    u16 unk_6;
+    u16 radius;
+} BtlUnitAnimBounds;
+
 
 // 2616 bytes
 struct BtlUnit
@@ -60,7 +70,12 @@ struct BtlUnit
     RtQuat rot;                   // 0x1c
     f32 scale;                    // 0x2c
     RwRGBA cols[BTLUNIT_COL_MAX]; // 0x30
-    u8 unkData1[0x3c];
+    u8 unk_44[0x08];
+    u16 unk_4c;
+    u8 unk_4e[0x06];
+    RwV3d unk_54;
+    u8 unk_60[0x10];
+    RtQuat unk_70;
     RwV3d sphereCenter;           // 0x80
     f32 unk_8c;                   // 0x8c
     f32 sphereRadius;             // 0x90
@@ -252,6 +267,7 @@ void btlUnitAnimate(BtlUnit* unit, s32 id, u16 blendFrameCount, f32 speed, u16 m
 s16 btlUnitGetAnimFrame(BtlUnit* unit);
 void btlUnitInitFromCharId(BtlUnit* unit, u16 id);
 void btlUnitInitPersona(BtlUnit* unit, u16 personaId);
+BtlUnit* FUN_00288fe0(u16 genus, u16 charId);
 BtlUnit* btlUnitFindFromId(u16 id);
 
 BtlPacket* btlUnitCreateAnimPacket(BtlUnit* unit, u16 id, u16 blendFrameCount, f32 speed, u16 mode);

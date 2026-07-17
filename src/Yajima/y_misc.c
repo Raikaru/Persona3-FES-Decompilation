@@ -1,4 +1,8 @@
 #include "Yajima/y_misc.h"
+typedef struct YajimaVec2 {
+    f32 x;
+    f32 y;
+} YajimaVec2;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -68,7 +72,7 @@ u64 FUN_00427670(u32 param_1,u32 param_2,u64 param_3,u32 param_4, char param_5,u
 u64 FUN_00427830(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427a10(u32 param_1,u64 param_2,u32 param_3,u64 param_4, u32 param_5,int param_6,u32 *param_7,u8 param_8);
 u64 FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4, u32 param_5,u64 param_6,u32 param_7,u64 param_8, u32 param_9,u32 *param_10);
-void FUN_00427db0(int param_1,u64 param_2);
+void FUN_00427db0(int object, YajimaVec2 value);
 void FUN_00427de0(int param_1,u8 param_2,u8 param_3,u8 param_4, u8 param_5);
 void FUN_00427e20(float param_1,float param_2,int param_3);
 void FUN_00427e50(int param_1,u8 param_2);
@@ -1470,7 +1474,7 @@ u32 FUN_00425580(void)
 
 }
 
-// FUN_004255D0 NONMATCHING
+// FUN_004255D0
 
 
 u32 FUN_004255d0(void)
@@ -1479,19 +1483,19 @@ u32 FUN_004255d0(void)
 
 {
 
-  u8 uVar1;
+  int iVar1;
 
   
 
-  uVar1 = scrGetIntPara(0);
+  iVar1 = scrGetIntPara(0);
 
   if (DAT_007ce6f8 == 0) {
 
-    scrSetIntReturnVal(0xffffffffffffffff);
+    scrSetIntReturnVal(-1);
 
   }
 
-  FUN_0045a430(uVar1);
+  FUN_0045a430((s8)iVar1);
 
   scrSetIntReturnVal(0);
 
@@ -3708,35 +3712,14 @@ FUN_00427bf0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
 
 }
 
-// FUN_00427DB0 NONMATCHING
+// FUN_00427DB0
 
 
-void FUN_00427db0(int param_1,u64 param_2)
-
-
-
+void FUN_00427db0(int object, YajimaVec2 value)
 {
+    YajimaVec2* destination = (YajimaVec2*)(*(int*)(object + 0x3c) + 0x134);
 
-  int iVar1;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
-  uStack_8 = (u32)param_2;
-
-  uStack_4 = (u32)((u32)param_2 >> 0x20);
-
-  *(u32 *)(iVar1 + 0x134) = uStack_8;
-
-  *(u32 *)(iVar1 + 0x138) = uStack_4;
-
-  return;
-
+    *destination = value;
 }
 
 // FUN_00427DE0

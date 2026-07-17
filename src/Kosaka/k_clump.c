@@ -69,6 +69,9 @@ extern void* D_007D2D60;
 extern u32 D_00960184[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
+extern const char D_00678C88[];
+extern const char D_00678CA0[];
+extern const char D_00678CB8[];
 
 extern void* func_001a65c0(void* geometry, const char** name);
 extern void* func_001a6860(void* object, u32* context);
@@ -673,11 +676,16 @@ void* func_001a7570(void* clump)
     return state;
 }
 
-// FUN_001a7660 NONMATCHING
+// FUN_001a7660
 u32 func_001a7660(const u32* state)
 {
-    if (state == NULL || state[0] == 0 || state[3] == 0 || state[4] == 0 || state[5] == 0 ||
-        state[9] == 0 || state[10] == 0)
+    if (state == NULL)
+    {
+        return 0;
+    }
+    if (state[0] == 0 ||
+        (state[4] == 0 && state[3] == 0 && state[5] == 0 &&
+         state[9] == 0 && state[10] == 0))
     {
         return 0;
     }
@@ -1186,12 +1194,12 @@ KwlnTask* func_001a9080(KwlnTask* parent, const char* path, u32 state, HCdvd* cd
     u32* work;
     KwlnTask* task;
 
-    work = (u32*)kclump_alloc(1, 0xb4, 0x40000);
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0xb4, 0x40000);
     if (work == NULL)
     {
         return NULL;
     }
-    task = kwlnTaskCreate(parent, (const char*)0x00678c88, 0x14,
+    task = kwlnTaskCreate(parent, D_00678C88, 0x14,
                           (KwlnTaskUpdateFunc)func_001a8db0,
                           (KwlnTaskDestroyFunc)func_001a8fe0, work);
     if (cdvd == NULL)
@@ -1251,17 +1259,13 @@ s32 func_001a91b0(KwlnTask* task, void* data)
     return index;
 }
 
-// FUN_001a92d0 NONMATCHING
+// FUN_001a92d0
 void func_001a92d0(KwlnTask* task, s32 index, void* data)
 {
     u32* work = (u32*)task->workData;
     void* stream;
 
-    if (index < 0)
-    {
-        func_0034fdf0((void*)work[5], data);
-    }
-    else
+    if (index >= 0)
     {
         stream = (void*)work[9 + index];
         if (stream != NULL)
@@ -1269,25 +1273,29 @@ void func_001a92d0(KwlnTask* task, s32 index, void* data)
             func_0034fdf0(stream, data);
         }
     }
+    else
+    {
+        func_0034fdf0((void*)work[5], data);
+    }
 }
 
-// FUN_001a9330 NONMATCHING
+// FUN_001a9330
 void func_001a9330(KwlnTask* task, s32 index, void* data)
 {
     u32* work = (u32*)task->workData;
     void* stream;
 
-    if (index < 0)
-    {
-        func_0034fe80((void*)work[5], data);
-    }
-    else
+    if (index >= 0)
     {
         stream = (void*)work[9 + index];
         if (stream != NULL)
         {
             func_0034fe80(stream, data);
         }
+    }
+    else
+    {
+        func_0034fe80((void*)work[5], data);
     }
 }
 
@@ -1320,19 +1328,22 @@ u32 func_001a93d0(const KwlnTask* task, s32 index)
     return work[6];
 }
 
-// FUN_001a9400 NONMATCHING
+// FUN_001a9400
 void func_001a9400(KwlnTask* task, s32 index)
 {
     u32* work = (u32*)task->workData;
-    if (index < 0)
+    if (index >= 0)
+    {
+        if (work[9 + index] != 0)
+        {
+            func_0034fcf0((void*)work[9 + index]);
+            work[9 + index] = 0;
+            work[8]--;
+        }
+    }
+    else
     {
         work[4] = 0;
-    }
-    else if (work[9 + index] != 0)
-    {
-        func_0034fcf0((void*)work[9 + index]);
-        work[9 + index] = 0;
-        work[8]--;
     }
 }
 
@@ -1428,18 +1439,18 @@ void func_001a9690(KwlnTask* task)
     (*(void (**)(void*))((u8*)0x00960000 + 0x17c))(task->workData);
 }
 
-// FUN_001a96c0 NONMATCHING
+// FUN_001a96c0
 KwlnTask* func_001a96c0(KwlnTask* parent)
 {
     u32* work;
     KwlnTask* task;
 
-    work = (u32*)kclump_alloc(1, 0xd0, 0x40000);
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, 0x40000);
     if (work == NULL)
     {
         return NULL;
     }
-    task = kwlnTaskCreateWithAutoPriority(parent, 10, (const char*)0x00678ca0,
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, D_00678CA0,
                                           (KwlnTaskUpdateFunc)func_001a9500,
                                           (KwlnTaskDestroyFunc)func_001a9690, work);
     work[1] = 0x14;
@@ -1687,18 +1698,18 @@ void func_001aa9f0(KwlnTask* task)
     (*(void (**)(void*))((u8*)0x00960000 + 0x17c))(task->workData);
 }
 
-// FUN_001aaa20 NONMATCHING
+// FUN_001aaa20
 KwlnTask* func_001aaa20(KwlnTask* parent, u32 value)
 {
     u32* work;
     KwlnTask* task;
 
-    work = (u32*)kclump_alloc(1, 0x0c, 0x40000);
+    work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0x0c, 0x40000);
     if (work == NULL)
     {
         return NULL;
     }
-    task = kwlnTaskCreateWithAutoPriority(parent, 10, (const char*)0x00678cb8,
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, D_00678CB8,
                                           (KwlnTaskUpdateFunc)func_001aa8f0,
                                           (KwlnTaskDestroyFunc)func_001aa9f0, work);
     work[0] = value;

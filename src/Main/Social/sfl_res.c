@@ -12,13 +12,14 @@ extern char DAT_0068e130[];
 extern char DAT_0068e150[];
 extern char DAT_0068e170[];
 extern char DAT_0068e1a0[];
-extern f32 DAT_0068e108[];
-extern void* (*DAT_00960178)(u32 size, u32 heap);
-extern void (*DAT_0096017c)(void* memory);
-extern void (*DAT_00960090)(u32 state, u32 value);
+
+extern const RwV3d DAT_0068e108;
+extern void* (*DAT_00960178[])(u32 size, u32 heap);
+extern void (*DAT_0096017c[])(void* memory);
+extern void (*DAT_00960090[])(u32 state, u32 value);
 extern u16 D_00875A90[];
 extern void* func_004c38c0(void);
-extern void func_004c31b0(f32 angle, void* matrix, const void* axis, u32 combine);
+extern RwMatrix* func_004c31b0(RwMatrix* matrix, const RwV3d* axis, f32 angle, u32 combine);
 extern void func_004c3880(void* matrix);
 extern void func_004f1ed0(void* vertices, u32 count, void* matrix, u32 stride);
 extern void func_004f1fd0(u32 primitive, void* indices, u32 count);
@@ -26,10 +27,12 @@ extern void func_004f1f80(void);
 extern void func_004cde90(void* resource);
 extern void func_0021b4a0(void* resource);
 extern void* bpTexCreateTmxRaster(void* tmxMemory);
+extern void* func_0021c9f0(void* tmxMemory);
 extern void* memcpy(void* destination, const void* source, u32 size);
 void sflRes0020e800(void* resource);
 void sflRes0020ea80(void);
 void sflRes0020ecc0(void);
+
 
 
 static void sflResRequire(void)
@@ -60,27 +63,41 @@ static void sflResCopyFile(u32* work, s32 requestIndex, s32 fileIndex, s32 desti
     work[destinationIndex] = (u32)copy;
 }
 
-// FUN_0020d500 NONMATCHING
+// FUN_0020d500
 void sflRes0020d500(u32* work, const f32* vertices)
 {
-    f32 rotated[3];
-    void* matrix;
+    RwV3d axis;
+    RwMatrix* matrix;
+    u32* destination;
+    s32 count;
+    const u32* source;
+    u32 x;
+    u32 y;
 
-    matrix = NULL;
-    rotated[0] = DAT_0068e108[0];
-    rotated[1] = DAT_0068e108[1];
-    rotated[2] = DAT_0068e108[2];
+    axis = DAT_0068e108;
     if ((*work & 1) != 0) {
-        matrix = func_004c38c0();
-        memcpy(matrix, vertices, 0x40);
-        func_004c31b0(180.0f, matrix, rotated, 1);
-        vertices = (const f32*)matrix;
+        matrix = (RwMatrix*)func_004c38c0();
+        count = 8;
+        source = (const u32*)vertices;
+        destination = (u32*)matrix;
+        do {
+            x = source[0];
+            y = source[1];
+            source += 2;
+            count -= 1;
+            destination[0] = x;
+            destination[1] = y;
+            destination += 2;
+        } while (count > 0);
+        func_004c31b0(matrix, &axis, 180.0f, 1);
+    } else {
+        matrix = (RwMatrix*)vertices;
     }
-    func_004f1ed0(work + 1, 0x44, (void*)vertices, 3);
-    DAT_00960090(1, 0);
+    func_004f1ed0(work + 1, 0x44, matrix, 3);
+    (*DAT_00960090)(1, 0);
     func_004f1fd0(3, D_00875A90, 0x138);
     func_004f1f80();
-    if (matrix != NULL) {
+    if ((*work & 1) != 0) {
         func_004c3880(matrix);
     }
 }
@@ -103,16 +120,10 @@ void sflRes0020d670(const void* work, f32* value)
     *(RwV3d*)value = *(const RwV3d*)((const u8*)work + 0x20);
 }
 
-// FUN_0020d690 NONMATCHING
+// FUN_0020d690
 void sflRes0020d690(void* work, const f32* value)
 {
-    f32* dst;
-
-    dst = (f32*)((u8*)work + 0x10);
-    dst[0] = value[0];
-    dst[1] = value[1];
-    dst[2] = value[2];
-    dst[3] = value[3];
+    *(RwV4d*)((u8*)work + 0x10) = *(const RwV4d*)value;
 }
 
 // FUN_0020d6c0
@@ -130,11 +141,11 @@ void sflRes0020d710(u32* work)
     work[0] |= 2;
 }
 
-// FUN_0020d770 NONMATCHING
-void sflRes0020d770(u32 value, void* work)
+// FUN_0020d770
+void sflRes0020d770(void* work, f32 value)
 {
     K_ASSERT(*(u32*)((u8*)work + 4) == 1, 0x686);
-    *(u32*)((u8*)work + 0x328) = value;
+    *(f32*)((u8*)work + 0x328) = value;
 }
 
 // FUN_0020d7d0
@@ -235,7 +246,7 @@ void sflRes0020d820(void)
         *work &= ~8u;
     }
     if ((*work & 0x10) != 0 && H_Cdvd_IsFileLoaded((void*)work[0x1d]) != 0) {
-        work[0x20] = (u32)bpTexCreateTmxRaster(
+        work[0x20] = (u32)func_0021c9f0(
             *(void**)((u8*)work[0x1d] + 0x110));
         H_Cdvd_Destroy((void*)work[0x1d]);
         work[1] |= 0x10;
@@ -243,178 +254,220 @@ void sflRes0020d820(void)
     }
 }
 
-// FUN_0020dfe0 NONMATCHING
+// FUN_0020dfe0
 u32 sflRes0020dfe0(void)
 {
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 1;
 }
 
-// FUN_0020e030 NONMATCHING
+// FUN_0020e030
 void sflRes0020e030(void)
 {
     u32* work;
-    s32 i;
+    s32 i18_1;
+    s32 i18_2;
+    s32 i18_3;
+    s32 i16_1;
+    s32 i16_2;
 
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    if ((work[1] & 8) != 0) {
-        sflRes0020ea80();
+    if ((work[1] & 8) == 0) {
+        goto skip_8;
     }
-    if ((work[1] & 2) != 0) {
-        if (work[0x16] != 0) {
-            DAT_0096017c((void*)work[0x16]);
-        }
-        for (i = 0; i < 5; i++) {
-            func_004cde90((void*)work[i + 5]);
-        }
-        for (i = 0; i < 6; i++) {
-            func_004cde90((void*)work[i + 10]);
-        }
-        for (i = 0; i < 2; i++) {
-            DAT_0096017c((void*)work[i + 0x1e]);
-        }
+    sflRes0020ea80();
+skip_8:
+    if ((work[1] & 2) == 0) {
+        goto skip_2;
     }
-    if ((work[1] & 1) != 0) {
-        for (i = 0; i < 3; i++) {
-            func_004cde90((void*)work[i + 2]);
+    {
+        u32* callbacks;
+        callbacks = (u32*)DAT_0096017c;
+        ((void (*)(void*))callbacks[0])((void*)work[0x16]);
+        for (i18_1 = 0; i18_1 < 5; i18_1++) {
+            func_004cde90((void*)*((void**)((u8*)work + i18_1 * 4 + 0x14)));
         }
-    }
-    if ((work[1] & 4) != 0) {
-        for (i = 0; i < 6; i++) {
-            func_004cde90((void*)work[i + 0x10]);
+        for (i18_2 = 0; i18_2 < 6; i18_2++) {
+            func_004cde90((void*)*((void**)((u8*)work + i18_2 * 4 + 0x28)));
+        }
+        for (i18_3 = 0; i18_3 < 2; i18_3++) {
+            ((void (*)(void*))callbacks[0])(*((void**)((u8*)work + i18_3 * 4 + 0x78)));
         }
     }
+skip_2:
+    if ((work[1] & 1) == 0) {
+        goto skip_1;
+    }
+    for (i16_1 = 0; i16_1 < 3; i16_1++) {
+        func_004cde90((void*)*((void**)((u8*)work + i16_1 * 4 + 8)));
+    }
+skip_1:
+    if ((work[1] & 4) == 0) {
+        goto skip_4;
+    }
+    for (i16_2 = 0; i16_2 < 6; i16_2++) {
+        func_004cde90((void*)*((void**)((u8*)work + i16_2 * 4 + 0x40)));
+    }
+skip_4:
     if ((work[1] & 0x10) != 0) {
         sflRes0020ecc0();
     }
     sSflRes = NULL;
 }
 
-// FUN_0020e200 NONMATCHING
+// FUN_0020e200
 void sflRes0020e200(void)
 {
     u32* work;
 
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((work[1] & 2) != 0, 0x180);
-    K_ASSERT((*work & 1) == 0, 0x181);
+    K_ASSERT((~work[1] & 2) != 0, 0x180);
+    K_ASSERT((~*work & 1) != 0, 0x181);
     work[0x1a] = (u32)H_Cdvd_Request(DAT_0068e130, 1);
     *work |= 1;
 }
 
-// FUN_0020e2c0 NONMATCHING
+// FUN_0020e2c0
 void sflRes0020e2c0(void)
 {
     u32* work;
 
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((work[1] & 1) != 0, 0x18a);
-    K_ASSERT((*work & 2) == 0, 0x18b);
+    K_ASSERT((~work[1] & 1) != 0, 0x18a);
+    K_ASSERT((~*work & 2) != 0, 0x18b);
     work[0x19] = (u32)H_Cdvd_Request(DAT_0068e150, 0);
     *work |= 2;
 }
 
-// FUN_0020e380 NONMATCHING
+// FUN_0020e380
 u32 sflRes0020e380(void)
 {
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 2;
 }
 
-// FUN_0020e3d0 NONMATCHING
+// FUN_0020e3d0
 void sflRes0020e3d0(void)
 {
     u32* work;
-    const char* path;
 
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     work = sSflRes;
-    K_ASSERT((work[1] & 4) != 0, 0x19b);
-    K_ASSERT((*work & 4) == 0, 0x19c);
-    path = datGetScenarioMode() == 0 ? DAT_0068e1a0 : DAT_0068e170;
-    work[0x1b] = (u32)H_Cdvd_Request(path, 1);
+    K_ASSERT((~work[1] & 4) != 0, 0x19b);
+    K_ASSERT((~*work & 4) != 0, 0x19c);
+    if (datGetScenarioMode() != 0) {
+        work[0x1b] = (u32)H_Cdvd_Request(DAT_0068e170, 1);
+    } else {
+        work[0x1b] = (u32)H_Cdvd_Request(DAT_0068e1a0, 1);
+    }
     *work |= 4;
 }
 
-// FUN_0020e4c0 NONMATCHING
+// FUN_0020e4c0
 u32 sflRes0020e4c0(void)
 {
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);;
     return *sSflRes & 4;
 }
 
-// FUN_0020e510 NONMATCHING
+// FUN_0020e510
 void* sflRes0020e510(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 2) != 0, 0x1b7);
-    return (void*)sSflRes[index + 5];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 2) != 0, 0x1b7);
+    return (void*)work[index + 5];
 }
 
-// FUN_0020e590 NONMATCHING
+// FUN_0020e590
 void* sflRes0020e590(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 1) != 0, 0x1be);
-    return (void*)sSflRes[index + 2];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 1) != 0, 0x1be);
+    return (void*)work[index + 2];
 }
 
-// FUN_0020e610 NONMATCHING
+// FUN_0020e610
 void* sflRes0020e610(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 2) != 0, 0x1c5);
-    return (void*)sSflRes[index + 10];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 2) != 0, 0x1c5);
+    return (void*)work[index + 10];
 }
 
-// FUN_0020e690 NONMATCHING
+// FUN_0020e690
 void* sflRes0020e690(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 4) != 0, 0x1cc);
-    return (void*)sSflRes[index + 16];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 4) != 0, 0x1cc);
+    return (void*)work[index + 16];
 }
 
-// FUN_0020e710 NONMATCHING
+// FUN_0020e710
 void* sflRes0020e710(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 2) != 0, 0x1d3);
-    return (void*)sSflRes[index + 30];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 2) != 0, 0x1d3);
+    return (void*)work[index + 30];
 }
 
-// FUN_0020e790 NONMATCHING
+// FUN_0020e790
 void* sflRes0020e790(void)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 2) != 0, 0x1da);
-    return (void*)sSflRes[0x16];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 2) != 0, 0x1da);
+    return (void*)work[0x16];
 }
 
-// FUN_0020e800 NONMATCHING
+// FUN_0020e800
 void sflRes0020e800(void* resource)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 1) != 0, 0x1e3);
-    K_ASSERT(*(s16*)((u8*)resource + 4) == 3, 0x1e7);
-    sSflRes[2] = (u32)bpTexCreateTmxRaster(
-        (u8*)resource + *(s32*)((u8*)resource + 8));
-    sSflRes[3] = (u32)bpTexCreateTmxRaster(
-        (u8*)resource + *(s32*)((u8*)resource + 0x10));
-    sSflRes[4] = (u32)bpTexCreateTmxRaster(
-        (u8*)resource + *(s32*)((u8*)resource + 0x18));
-    sSflRes[1] |= 1;
+    u32* work;
+    u8* data;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((~work[1] & 1) != 0, 0x1e3);
+    K_ASSERT(*(u16*)((u8*)resource + 4) == 3, 0x1e7);
+    data = (u8*)resource + 8;
+    work[2] = (u32)bpTexCreateTmxRaster(
+        (u8*)resource + *(s32*)data);
+    work[3] = (u32)bpTexCreateTmxRaster(
+        (u8*)resource + *(s32*)(data + 8));
+    work[4] = (u32)bpTexCreateTmxRaster(
+        (u8*)resource + *(s32*)(data + 0x10));
+    work[1] |= 1;
 }
 
-// FUN_0020ea00 NONMATCHING
+// FUN_0020ea00
 void* sflRes0020ea00(s32 index)
 {
-    sflResRequire();
-    K_ASSERT((sSflRes[1] & 8) != 0, 0x203);
-    return (void*)sSflRes[index + 0x17];
+    u32* work;
+
+    K_ASSERT(sSflRes != NULL, 0x65);
+    work = sSflRes;
+    K_ASSERT((work[1] & 8) != 0, 0x203);
+    return (void*)work[index + 0x17];
 }
 
 // FUN_0020e9b0

@@ -5,8 +5,8 @@
 
 typedef struct RtQuat RtQuat;
 
-extern u32* DAT_007ce664;
-#define BP_TEX_GLOBAL DAT_007ce664
+extern u32* DAT_007ce354;
+#define BP_TEX_GLOBAL DAT_007ce354
 #define BP_TEX_U32(base, offset) (*(u32*)((u8*)(base) + (offset)))
 #define BP_TEX_S32(base, offset) (*(s32*)((u8*)(base) + (offset)))
 #define BP_TEX_F32(base, offset) (*(f32*)((u8*)(base) + (offset)))
@@ -20,7 +20,7 @@ extern void* func_00198590(void);
 extern RwMatrix* func_004cb2f0(void* frame);
 extern f32 func_004c6ac0(const RwV3d* value);
 extern void func_0021a920(u32 value, u32 arg);
-extern void func_0021ab80(s16 value);
+extern void func_0021ab80(u16 value);
 extern void func_0020b250(void* value);
 extern void func_0020cc80(void* value, const void* color);
 extern void func_0020ac90(void* value);
@@ -69,17 +69,22 @@ extern void func_004c69f0(void* output, const void* input);
 extern void func_0034ff90(void* resource, const void* color);
 extern void func_0034ff70(void* resource, f32 scalar);
 extern void func_0034fdf0(void* resource, const void* position);
-extern void func_0034fe30(u32 a, u32 b, u32 c, void* resource);
+extern void func_0034fe30(void* resource, u32 a, u32 b, u32 c);
 extern void func_0034fd30(void* resource);
 extern void func_0034fd70(void* resource, u32 layer);
 extern f32 DAT_007cad60;
+extern f32 DAT_007caf38;
 
 extern void* (*jtbl_00960178)(u32 size, u32 hint);
 extern void (*jtbl_0096017C)(void* memory);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 extern void func_004cde90(void* resource);
 extern RwCamera* kwlnGetMainCamera(void);
 extern f32 func_0052ea18(f32 x, f32 y);
 extern f32 D_00960088;
+#pragma alias D_00960088_abs D_00960088
+extern volatile f32 D_00960088_abs[];
 extern f32 sqrtf(f32 value);
 extern RwRaster* func_004ce0f0(u32 width, u32 height, u32 depth, u32 flags);
 extern void* func_004cdf30(RwRaster* raster, u32 palette);
@@ -98,6 +103,7 @@ typedef struct BpTexFrameData
     s32 y;
     u8 color[16];
 } BpTexFrameData;
+
 
 static u32 bpTexByteToFloatBits(u8 value)
 {
@@ -128,6 +134,24 @@ static void bpTexWriteVertex(void* destination,
     BP_TEX_F32(destination, 0x08) = depth;
     bpTexWriteColor(destination, color);
 }
+#define BP_TEX_WRITE_COLOR_INLINE(destination, baseOffset, color) do { \
+    f32 converted; \
+    converted = (f32)(color)[0]; \
+    BP_TEX_F32(destination, (baseOffset) + 0x20) = converted; \
+    converted = (f32)(color)[1]; \
+    BP_TEX_F32(destination, (baseOffset) + 0x24) = converted; \
+    converted = (f32)(color)[2]; \
+    BP_TEX_F32(destination, (baseOffset) + 0x28) = converted; \
+    converted = (f32)(color)[3]; \
+    BP_TEX_F32(destination, (baseOffset) + 0x2c) = converted; \
+} while (0)
+#define BP_TEX_WRITE_VERTEX_INLINE(destination, baseOffset, u, v, color, depth, reciprocalDepth) do { \
+    BP_TEX_F32(destination, (baseOffset) + 0x10) = (u); \
+    BP_TEX_F32(destination, (baseOffset) + 0x14) = (v); \
+    BP_TEX_F32(destination, (baseOffset) + 0x18) = (reciprocalDepth); \
+    BP_TEX_F32(destination, (baseOffset) + 0x08) = (depth); \
+    BP_TEX_WRITE_COLOR_INLINE(destination, baseOffset, color); \
+} while (0)
 // FUN_0021c9f0 NONMATCHING
 void* bpTex0021c9f0(void* sprMemory)
 {
@@ -294,20 +318,16 @@ RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
     return func_004cde00(raster);
 }
 
-// FUN_0021cc20 NONMATCHING
+// FUN_0021cc20
 void func_0021cc20(void* texture)
 {
-    u32* rasterList;
-    u32 count;
-    u32 i;
+    s32 i;
 
-    rasterList = BP_TEX_PTR(texture, 8);
-    count = BP_TEX_U32(texture, 0x0c);
-    for (i = 0; i < count; i++)
+    for (i = 0; i < BP_TEX_S32(texture, 0x0c); i++)
     {
-        func_004cde90((void*)rasterList[i]);
+        func_004cde90((void*)BP_TEX_PTR(texture, 8)[i]);
     }
-    (*jtbl_0096017C)(texture);
+    (*(void (**)(void*))jtbl_0096017C_abs)(texture);
 }
 
 // FUN_0021cca0
@@ -382,6 +402,7 @@ static void bpTexSetUvAxis(f32 start,
     }
 }
 
+#pragma optimization_level 3
 // FUN_0021cd00 NONMATCHING
 void func_0021cd00(void* frameData, f32* uv)
 {
@@ -413,6 +434,7 @@ void func_0021cd00(void* frameData, f32* uv)
                    &uv[1], &uv[3]);
 }
 
+#pragma optimization_level 3
 // FUN_0021cec0 NONMATCHING
 void func_0021cec0(void* frameData, f32* uv, u32 mode)
 {
@@ -454,27 +476,33 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
     bpTexSetUvAxis(y, yEnd, rasterHeight, frame->id >> 1, yMode,
                    &uv[1], &uv[3]);
 }
+#pragma optimization_level 2
 
-// FUN_0021d3b0 NONMATCHING
+// FUN_0021d3b0
 void func_0021d3b0(void* destination, void* frameData)
 {
     BpTexFrameData* frame;
     RwCamera* camera;
     f32 uv[4];
     f32 reciprocalDepth;
+    u32 depthAddress;
 
     frame = (BpTexFrameData*)frameData;
     camera = kwlnGetMainCamera();
     reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
     func_0021cd00(frame, uv);
-    bpTexWriteVertex(destination, uv[0], uv[1], frame->color,
-                     D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0x40, uv[2], uv[1],
-                     frame->color + 4, D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0x80, uv[2], uv[3],
-                     frame->color + 8, D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0xc0, uv[0], uv[3],
-                     frame->color + 12, D_00960088, reciprocalDepth);
+    BP_TEX_F32(destination, 0x10) = uv[0];
+    BP_TEX_F32(destination, 0x14) = uv[1];
+    BP_TEX_F32(destination, 0x18) = reciprocalDepth;
+    depthAddress = (u32)D_00960088_abs;
+    BP_TEX_F32(destination, 0x08) = *(volatile f32*)depthAddress;
+    BP_TEX_WRITE_COLOR_INLINE(destination, 0, frame->color);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0x40, uv[2], uv[1], frame->color + 4,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0x80, uv[2], uv[3], frame->color + 8,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0xc0, uv[0], uv[3], frame->color + 12,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
 }
 
 // FUN_0021d890
@@ -503,24 +531,91 @@ void func_0021d8e0(void* destination, const f32* rect)
     BP_TEX_F32(destination, 0xc4) = rect[1] + rect[3];
 }
 
-// FUN_0021d950 NONMATCHING
+// FUN_0021d950
 void func_0021d950(void* destination, const u8* color)
 {
-    bpTexWriteColor(destination, color);
-    bpTexWriteColor((u8*)destination + 0x40, color);
-    bpTexWriteColor((u8*)destination + 0x80, color);
-    bpTexWriteColor((u8*)destination + 0xc0, color);
+    f32 converted;
+
+    converted = (f32)color[0];
+    BP_TEX_F32(destination, 0x20) = converted;
+    converted = (f32)color[1];
+    BP_TEX_F32(destination, 0x24) = converted;
+    converted = (f32)color[2];
+    BP_TEX_F32(destination, 0x28) = converted;
+    converted = (f32)color[3];
+    BP_TEX_F32(destination, 0x2c) = converted;
+
+    converted = (f32)color[0];
+    BP_TEX_F32(destination, 0x60) = converted;
+    converted = (f32)color[1];
+    BP_TEX_F32(destination, 0x64) = converted;
+    converted = (f32)color[2];
+    BP_TEX_F32(destination, 0x68) = converted;
+    converted = (f32)color[3];
+    BP_TEX_F32(destination, 0x6c) = converted;
+
+    converted = (f32)color[0];
+    BP_TEX_F32(destination, 0xa0) = converted;
+    converted = (f32)color[1];
+    BP_TEX_F32(destination, 0xa4) = converted;
+    converted = (f32)color[2];
+    BP_TEX_F32(destination, 0xa8) = converted;
+    converted = (f32)color[3];
+    BP_TEX_F32(destination, 0xac) = converted;
+
+    converted = (f32)color[0];
+    BP_TEX_F32(destination, 0xe0) = converted;
+    converted = (f32)color[1];
+    BP_TEX_F32(destination, 0xe4) = converted;
+    converted = (f32)color[2];
+    BP_TEX_F32(destination, 0xe8) = converted;
+    converted = (f32)color[3];
+    BP_TEX_F32(destination, 0xec) = converted;
 }
 
-// FUN_0021dd60 NONMATCHING
+// FUN_0021dd60
 void func_0021dd60(void* destination, const u8* colors)
 {
-    bpTexWriteColor(destination, colors);
-    bpTexWriteColor((u8*)destination + 0x40, colors + 4);
-    bpTexWriteColor((u8*)destination + 0x80, colors + 8);
-    bpTexWriteColor((u8*)destination + 0xc0, colors + 12);
+    f32 converted;
+
+    converted = (f32)colors[0];
+    BP_TEX_F32(destination, 0x20) = converted;
+    converted = (f32)colors[1];
+    BP_TEX_F32(destination, 0x24) = converted;
+    converted = (f32)colors[2];
+    BP_TEX_F32(destination, 0x28) = converted;
+    converted = (f32)colors[3];
+    BP_TEX_F32(destination, 0x2c) = converted;
+
+    converted = (f32)colors[4];
+    BP_TEX_F32(destination, 0x60) = converted;
+    converted = (f32)colors[5];
+    BP_TEX_F32(destination, 0x64) = converted;
+    converted = (f32)colors[6];
+    BP_TEX_F32(destination, 0x68) = converted;
+    converted = (f32)colors[7];
+    BP_TEX_F32(destination, 0x6c) = converted;
+
+    converted = (f32)colors[8];
+    BP_TEX_F32(destination, 0xa0) = converted;
+    converted = (f32)colors[9];
+    BP_TEX_F32(destination, 0xa4) = converted;
+    converted = (f32)colors[10];
+    BP_TEX_F32(destination, 0xa8) = converted;
+    converted = (f32)colors[11];
+    BP_TEX_F32(destination, 0xac) = converted;
+
+    converted = (f32)colors[12];
+    BP_TEX_F32(destination, 0xe0) = converted;
+    converted = (f32)colors[13];
+    BP_TEX_F32(destination, 0xe4) = converted;
+    converted = (f32)colors[14];
+    BP_TEX_F32(destination, 0xe8) = converted;
+    converted = (f32)colors[15];
+    BP_TEX_F32(destination, 0xec) = converted;
 }
 
+#pragma optimization_level 3
 // FUN_0021e170 NONMATCHING
 void func_0021e170(void* destination,
                    const f32* center,
@@ -563,6 +658,7 @@ void func_0021e170(void* destination,
     }
     func_0021d890(destination, points);
 }
+#pragma optimization_level 2
 
 // FUN_0021e380 NONMATCHING
 void func_0021e380(void* destination, void* frameData, u32 mode)
@@ -655,22 +751,26 @@ void func_0021e380(void* destination, void* frameData, u32 mode)
                      D_00960088, reciprocalDepth);
 }
 
-// FUN_0021ea00 NONMATCHING
+// FUN_0021ea00
 f32 func_0021ea00(s32 duration)
 {
     RwCamera* camera;
     f32 nearPlane;
+    f32 maxDepth;
     f32 farPlane;
     f32 value;
+    u32 unsignedDuration;
 
     camera = kwlnGetMainCamera();
     nearPlane = *(f32*)((u8*)camera + 0x80);
     camera = kwlnGetMainCamera();
     farPlane = *(f32*)((u8*)camera + 0x84);
-    value = (f32)duration;
-    return (farPlane * nearPlane * -65535.0f) /
-           (farPlane * -65535.0f -
-            (value - 65535.0f) * (farPlane - nearPlane));
+    unsignedDuration = (u32)duration;
+    maxDepth = 65535.0f;
+    value = (f32)unsignedDuration;
+    return ((-maxDepth * nearPlane) * farPlane) /
+           ((-maxDepth * farPlane) -
+            (value - maxDepth) * (farPlane - nearPlane));
 }
 
 // FUN_0021eac0
@@ -881,37 +981,52 @@ void bpTexSortVisibleNodes(void)
     }
 }
 
-// FUN_00254E10 NONMATCHING
+// FUN_00254E10
 void bpTexFinishNodeStreams(void)
 {
     u32* work;
     s32 i;
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     for (i = 0; i < 0x10; i++)
     {
         u32* record;
-        record = work + i * 0x499;
-        if ((record[1] & 4) != 0)
+        u32 flags;
+
+        record = (u32*)((u8*)work + i * 0x1264 + 4);
+        flags = ~record[0];
+        if (!(flags & 4))
         {
-            K_ASSERT((record[1] & 8) != 0, 0x38d);
-            if (record[2] == 1)
+            if (!(flags & 8))
             {
-                func_0021a920(record[3], record[4]);
+                K_ASSERT(false, 0x38d);
             }
-            else if (record[2] == 0)
+            switch (record[1])
             {
-                func_0021ab80((s16)record[3]);
+            case 0:
+                func_0021ab80(*(u16*)((u8*)record + 8));
+                break;
+            case 1:
+                func_0021a920(record[2], record[3]);
+                break;
             }
         }
     }
-    *work |= 0x600;
+    *work |= 0x400;
+    *work |= 0x200;
 }
 
-// FUN_00254F20 NONMATCHING
+// FUN_00254F20
 u32 bpTexIsReady(void)
 {
-    return bpTexWork()[0] & 0x200;
+    u32* work = BP_TEX_GLOBAL;
+
+    K_ASSERT(work != NULL, 0xbc);
+    return BP_TEX_GLOBAL[0] & 0x200;
 }
 
 // FUN_00254F70 NONMATCHING
@@ -942,12 +1057,16 @@ void bpTexBeginRender(void)
     *work |= 1;
 }
 
-// FUN_002550B0 NONMATCHING
+// FUN_002550B0
 void bpTexEndRender(void)
 {
     u32* work;
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     func_0024daf0((u8*)work + 0x127d4);
     func_0024daf0((u8*)work + 0x12800);
     *work &= ~1;
@@ -966,53 +1085,72 @@ void bpTexSetTransitionPending(u32* work)
     *work |= 0x400;
 }
 
-// FUN_002551D0 NONMATCHING
+// FUN_002551D0
 void bpTexQueueNodePair(u32 first, u32 second)
 {
+    typedef struct BpTexQueueAction
+    {
+        u32 type;
+        u32 duration;
+        u32 first;
+        u32 second;
+        u8 reserved[0x14];
+    } BpTexQueueAction;
+    typedef struct BpTexQueueData
+    {
+        u8 reserved[0x2688];
+        BpTexQueueAction actions[8];
+        u32 actionCount;
+        u32 reserved2;
+        u32 duration;
+    } BpTexQueueData;
+    typedef struct BpTexWorkQueue
+    {
+        u8 reserved[0x10000];
+        BpTexQueueData queue;
+    } BpTexWorkQueue;
     u32* work;
     u32* left;
     u32* right;
-    u32* action;
-
-    work = bpTexWork();
+    BpTexWorkQueue* typedWork;
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    work = BP_TEX_GLOBAL;
+    typedWork = (BpTexWorkQueue*)work;
     func_00257e20();
     left = bpTexFindNode(first);
     right = bpTexFindNode(second);
-    K_ASSERT((*left & 0x20) == 0, 0x421);
-    K_ASSERT((*right & 0x20) == 0, 0x422);
+    K_ASSERT((~*left & 0x20) != 0, 0x421);
+    K_ASSERT((~*right & 0x20) != 0, 0x422);
     *left |= 0x20;
     *right |= 0x20;
-    action = bpTexActionRecord();
-    action[0] = 0;
-    action[1] = BP_TEX_U32(work, 0x127b0);
-    action[2] = (u32)left;
-    action[3] = (u32)right;
-    BP_TEX_U32(work, 0x127a8)++;
+    typedWork->queue.actions[typedWork->queue.actionCount].type = 0;
+    typedWork->queue.actions[typedWork->queue.actionCount].first = (u32)left;
+    typedWork->queue.actions[typedWork->queue.actionCount].second = (u32)right;
+    typedWork->queue.actions[typedWork->queue.actionCount].duration = typedWork->queue.duration;
+    typedWork->queue.actionCount++;
 }
-static u32* bpTexAllocNode(void)
+
+#pragma optimization_level 3
+#pragma schedule off
+// FUN_00255390
+u32* bpTexFindFreeNode(void)
 {
     u32* work;
     u32* node;
     s32 i;
 
-    work = bpTexWork();
-    for (i = 0; i < 0x10; i++)
-    {
-        node = (u32*)((u8*)work + i * 0x1264 + 4);
-        if ((node[0] & 4) == 0)
-        {
-            return node;
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
+    work = BP_TEX_GLOBAL;
+    for (i = 0; i < 0x10; i++) {
+        node = work + i * 0x499 + 1;
+        if ((~node[0] & 4) != 0) {
+            break;
         }
     }
-    K_ASSERT(false, 0x45f);
-    return NULL;
+    K_ASSERT(i < 0x10, 0x45f);
+    return node;
 }
-
-// FUN_00255390 NONMATCHING
-u32* bpTexFindFreeNode(void)
-{
-    return bpTexAllocNode();
-}
+#pragma optimization_level 2
 
 // FUN_00255440 bpTexFindNodeByIndex
 u32* bpTexFindNodeByIndex(u32 index)
@@ -1185,33 +1323,71 @@ void bpTexShuffleNodes(void)
     *work |= 0x10;
 }
 
-// FUN_00255F30 NONMATCHING
+// FUN_00255F30
 u32 bpTexIsShuffleActive(void)
 {
-    return bpTexWork()[0] & 0x10;
+    u32* work = BP_TEX_GLOBAL;
+
+    K_ASSERT(work != NULL, 0xbc);
+    return BP_TEX_GLOBAL[0] & 0x10;
 }
 
-// FUN_00255F80 NONMATCHING
+// FUN_00255F80
 void bpTexStartShuffle(void)
 {
     u32* work;
 
-    work = bpTexWork();
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    work = BP_TEX_GLOBAL;
     BP_TEX_U32(work, 0x49eb * 4) = 0;
     *work |= 4;
     *work &= ~8;
 }
 
-// FUN_00255FE0 NONMATCHING
+// FUN_00255FE0
 void bpTexStopShuffle(void)
 {
-    *bpTexWork() &= ~4;
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    *BP_TEX_GLOBAL &= ~4;
 }
 
-// FUN_00256030 NONMATCHING
+// FUN_00256030
 u32* bpTexGetCurrentNode(void)
 {
-    return bpTexFindNode(BP_TEX_U32(bpTexWork(), 0x127ac));
+    u32* node;
+    u32* result;
+    u32 ordinal;
+
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    ordinal = BP_TEX_U32(BP_TEX_GLOBAL, 0x127ac);
+    if (BP_TEX_GLOBAL == NULL)
+    {
+        K_ASSERT(false, 0xbc);
+    }
+    for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        result = node;
+        if ((node[0] & 2) == 0 && node[4] == ordinal)
+        {
+            break;
+        }
+    }
+    if (node == NULL)
+    {
+        K_ASSERT(false, 0x47a);
+    }
+    return result;
 }
 
 // FUN_00256110 bpTexFindNodeById
@@ -1253,23 +1429,33 @@ void bpTexApplyGlobalAlpha(f32 amount, void* node)
     }
 }
 
-// FUN_00256430 NONMATCHING
+// FUN_00256430
 u32 bpTexHasPendingNode(void)
 {
     u32* node;
 
-    for (node = BP_TEX_PTR(bpTexWork(), 0x1265c);
-         node != NULL;
-         node = bpTexNodeNext(node))
+    if (BP_TEX_GLOBAL == NULL)
     {
-        if ((*node & 0x20) == 0)
+        K_ASSERT(false, 0xbc);
+    }
+    for (node = BP_TEX_PTR(BP_TEX_GLOBAL, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
+    {
+        if ((*node & 0x20) != 0)
         {
-            return true;
+            break;
         }
+    }
+    if (node != NULL)
+    {
+        return true;
     }
     return false;
 }
 
+#pragma schedule off
+#pragma optimization_level 3
 // FUN_002564C0 NONMATCHING
 void bpTexUpdateNode(void* nodeData)
 {
@@ -1277,18 +1463,21 @@ void bpTexUpdateNode(void* nodeData)
     u32* node;
     u32* leaves[8];
     u32* parents[8];
+    u32* finalLeaves[8];
     s32 count;
     s32 parentCount;
+    s32 finalCount;
     s32 i;
     f32 phase;
-    f32 offsetX;
-    f32 offsetY;
-    f32 offsetZ;
+    f32 offsets[3];
     f32 rotation[4];
     f32 position[3];
     f32 direction[3];
+    f32 alpha;
+    f32 leafAlpha;
     u8 color[4];
     u32 mode;
+    u32 flags;
     void* camera;
     RwMatrix* cameraMatrix;
     void* resource;
@@ -1296,23 +1485,23 @@ void bpTexUpdateNode(void* nodeData)
     work = bpTexWork();
     node = (u32*)nodeData;
     phase = (f32)BP_TEX_S32(work, 0x12680) / 300.0f;
-    offsetX = func_0052e878(*(f32*)0x007caf38 * phase * -2.0f) * -1000.0f;
-    offsetY = func_0052e6d8(*(f32*)0x007caf38 *
-                            ((f32)BP_TEX_S32(work, 0x12680) / 80.0f) * 2.0f) *
-              100.0f + 120.0f;
-    offsetZ = func_0052e6d8(*(f32*)0x007caf38 * phase * -2.0f) *
-              -200.0f + 360.0f;
+    offsets[0] = func_0052e878(DAT_007caf38 * phase * -2.0f) * -1000.0f;
+    offsets[1] = func_0052e6d8(DAT_007caf38 *
+                               ((f32)BP_TEX_S32(work, 0x12680) / 80.0f) * 2.0f) *
+                 100.0f + 120.0f;
+    offsets[2] = func_0052e6d8(DAT_007caf38 * phase * -2.0f) *
+                 -200.0f + 360.0f;
 
     if ((*node & 0x80) != 0)
     {
         node[0x496] = (node[0x496] + 1) % 0x5a;
     }
-    bpTexCollect(node, leaves, &count);
+    func_00256fa0(node, leaves, &count);
     for (i = 0; i < count; i++)
     {
-        BP_TEX_F32(leaves[i], 0xfac) = offsetX;
-        BP_TEX_F32(leaves[i], 0xfb0) = offsetY;
-        BP_TEX_F32(leaves[i], 0xfb4) = offsetZ;
+        BP_TEX_F32(leaves[i], 0xfac) = offsets[0];
+        BP_TEX_F32(leaves[i], 0xfb0) = offsets[1];
+        BP_TEX_F32(leaves[i], 0xfb4) = offsets[2];
     }
 
     if ((*node & 0x200) != 0)
@@ -1342,15 +1531,15 @@ void bpTexUpdateNode(void* nodeData)
         else if (mode == 0)
         {
             phase = 1.0f - (f32)node[0x494] / (f32)node[0x495];
-            func_00259190(node, parents, &parentCount);
+            func_00259190(node, leaves, &parentCount);
             for (i = 0; i < parentCount; i++)
             {
-                func_0024f2c0((u8*)parents[i] + 0x1030, phase);
-                func_00250ef0(phase, (u8*)parents[i] + 0x11d8);
-                func_00251030((u8*)parents[i] + 0xfcc);
-                func_0024dc90((u8*)parents[i] + 0xfcc);
-                func_00251030((u8*)parents[i] + 0x10f8);
-                func_0024dc90((u8*)parents[i] + 0x10f8);
+                func_0024f2c0((u8*)leaves[i] + 0x1030, phase);
+                func_00250ef0(phase, (u8*)leaves[i] + 0x11d8);
+                func_00251030((u8*)leaves[i] + 0xfcc);
+                func_0024dc90((u8*)leaves[i] + 0xfcc);
+                func_00251030((u8*)leaves[i] + 0x10f8);
+                func_0024dc90((u8*)leaves[i] + 0x10f8);
             }
         }
         if (node[0x494] == node[0x495])
@@ -1359,31 +1548,39 @@ void bpTexUpdateNode(void* nodeData)
         }
     }
 
-    if ((*node & 8) != 0)
+    flags = *node;
+    if ((flags & 8) == 0)
     {
-        if ((*node & 0x10) == 0)
+        if ((flags & 0x20) != 0 &&
+            func_00250b90((u8*)node + 0x1094) == 0)
         {
-            if ((*node & 0x20) != 0 &&
-                func_00250b90((u8*)node + 0x1094) == 0)
-            {
-                *node &= ~0x20;
-            }
+            *node &= ~0x20;
         }
-        else
+        func_0024f960((u8*)node + 0xfcc, (u8*)node + 0x38);
+        func_0024fba0((u8*)node + 0x10f8, rotation);
+        BP_TEX_F32(node, 0x28) = rotation[0];
+        BP_TEX_F32(node, 0x2c) = rotation[1];
+        BP_TEX_F32(node, 0x30) = rotation[2];
+        BP_TEX_F32(node, 0x34) = rotation[3];
+        func_0020ac90((u8*)node + 0x18);
+    }
+    else
+    {
+        if ((flags & 0x10) != 0)
         {
-            K_ASSERT((*node & 0x20) != 0, 0x643);
-            func_00259190(node, parents, &parentCount);
+            K_ASSERT((flags & 0x20) != 0, 0x643);
+            func_00259190(node, leaves, &parentCount);
             for (i = 0; i < parentCount; i++)
             {
-                if ((parents[i][0] & 0x20) != 0 &&
-                    func_00250b90((u8*)parents[i] + 0x1094) == 0)
+                if ((leaves[i][0] & 0x20) != 0 &&
+                    func_00250b90((u8*)leaves[i] + 0x1094) == 0)
                 {
-                    parents[i][0] &= ~0x20;
+                    leaves[i][0] &= ~0x20;
                 }
             }
             for (i = 0; i < parentCount; i++)
             {
-                if ((parents[i][0] & 0x20) != 0)
+                if ((leaves[i][0] & 0x20) != 0)
                 {
                     break;
                 }
@@ -1393,58 +1590,48 @@ void bpTexUpdateNode(void* nodeData)
                 *node &= ~0x30;
             }
         }
-        func_00259190(node, parents, &parentCount);
-        bpTexCollect(node, leaves, &count);
-        if ((*node & 0x10) == 0)
+        else if ((flags & 0x20) != 0 &&
+                 func_00250b90((u8*)node + 0x1094) == 0)
         {
-            for (i = 0; i < count; i++)
+            *node &= ~0x20;
+        }
+        func_00259190(node, parents, &parentCount);
+        func_00256fa0(node, finalLeaves, &finalCount);
+        if ((*node & 0x10) != 0)
+        {
+            for (i = 0; i < finalCount; i++)
             {
-                func_0024f960((u8*)node + 0x3f3,
-                              (u8*)leaves[i] + 0x38);
-                func_0024fba0((u8*)node + 0x43e, rotation);
-                BP_TEX_F32(leaves[i], 0x28) = rotation[0];
-                BP_TEX_F32(leaves[i], 0x2c) = rotation[1];
-                BP_TEX_F32(leaves[i], 0x30) = rotation[2];
-                BP_TEX_F32(leaves[i], 0x34) = rotation[3];
-                func_0020ac90((u8*)leaves[i] + 0x18);
+                func_0024f960((u8*)parents[i] + 0xfcc,
+                              (u8*)finalLeaves[i] + 0x38);
+                func_0024fba0((u8*)parents[i] + 0x10f8, rotation);
+                BP_TEX_F32(finalLeaves[i], 0x28) = rotation[0];
+                BP_TEX_F32(finalLeaves[i], 0x2c) = rotation[1];
+                BP_TEX_F32(finalLeaves[i], 0x30) = rotation[2];
+                BP_TEX_F32(finalLeaves[i], 0x34) = rotation[3];
+                func_0020ac90((u8*)finalLeaves[i] + 0x18);
             }
         }
         else
         {
-            for (i = 0; i < count; i++)
+            for (i = 0; i < finalCount; i++)
             {
-                func_0024f960((u8*)parents[i] + 0xfcc,
-                              (u8*)leaves[i] + 0x38);
-                func_0024fba0((u8*)parents[i] + 0x10f8, rotation);
-                BP_TEX_F32(leaves[i], 0x28) = rotation[0];
-                BP_TEX_F32(leaves[i], 0x2c) = rotation[1];
-                BP_TEX_F32(leaves[i], 0x30) = rotation[2];
-                BP_TEX_F32(leaves[i], 0x34) = rotation[3];
-                func_0020ac90((u8*)leaves[i] + 0x18);
+                func_0024f960((u8*)node + 0xfcc,
+                              (u8*)finalLeaves[i] + 0x38);
+                func_0024fba0((u8*)node + 0x10f8, rotation);
+                BP_TEX_F32(finalLeaves[i], 0x28) = rotation[0];
+                BP_TEX_F32(finalLeaves[i], 0x2c) = rotation[1];
+                BP_TEX_F32(finalLeaves[i], 0x30) = rotation[2];
+                BP_TEX_F32(finalLeaves[i], 0x34) = rotation[3];
+                func_0020ac90((u8*)finalLeaves[i] + 0x18);
             }
         }
-    }
-    else
-    {
-        if ((*node & 0x20) != 0 &&
-            func_00250b90((u8*)node + 0x1094) == 0)
-        {
-            *node &= ~0x20;
-        }
-        func_0024f960((u8*)node + 0x3f3, (u8*)node + 0x38);
-        func_0024fba0((u8*)node + 0x43e, rotation);
-        BP_TEX_F32(node, 0x28) = rotation[0];
-        BP_TEX_F32(node, 0x2c) = rotation[1];
-        BP_TEX_F32(node, 0x30) = rotation[2];
-        BP_TEX_F32(node, 0x34) = rotation[3];
-        func_0020ac90((u8*)node + 0x18);
     }
 
     if ((*node & 0x80) != 0 && node[0x497] != 0)
     {
         camera = func_00198590();
         cameraMatrix = func_004cb2f0(*(void**)((u8*)camera + 4));
-        bpTexCollect(node, leaves, &count);
+        func_00256fa0(node, leaves, &count);
         for (i = 0; i < count; i++)
         {
             resource = (void*)(uintptr_t)leaves[i][0x1248];
@@ -1453,7 +1640,7 @@ void bpTexUpdateNode(void* nodeData)
             direction[0] = position[0] - cameraMatrix->pos.x;
             direction[1] = position[1] - cameraMatrix->pos.y;
             direction[2] = position[2] - cameraMatrix->pos.z;
-            func_004c69f0(direction, direction);
+            RwV3dNormalize((RwV3d*)direction, (const RwV3d*)direction);
             position[0] += direction[0];
             position[1] += direction[1];
             position[2] += direction[2];
@@ -1464,27 +1651,26 @@ void bpTexUpdateNode(void* nodeData)
             func_0034ff90(resource, color);
             func_0034ff70(resource, DAT_007cad60);
             func_0034fdf0(resource, position);
-            func_0034fe30(0x80000000, 0, 0, resource);
+            func_0034fe30(resource, 0x80000000, 0, 0);
             func_0034fd30(resource);
             func_0034fd70(resource, 5);
         }
     }
 
-    bpTexCollect(node, leaves, &count);
+    func_00256fa0(node, leaves, &count);
     for (i = 0; i < count; i++)
     {
-        f32 alpha;
         alpha = (f32)BP_TEX_U32(work, 0x12880) / 256.0f;
+        leafAlpha = (f32)leaves[i][0x1260] / 256.0f;
         if ((*node & 0x80) != 0)
         {
-            func_0052e878(*(f32*)0x007caf38 *
+            func_0052e878(DAT_007caf38 *
                           ((f32)node[0x496] / 90.0f) * 2.0f);
         }
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
-        color[3] = (u8)(alpha * 255.0f *
-                        ((f32)leaves[i][0x1260] / 256.0f));
+        color[3] = (u8)(255.0f * alpha * leafAlpha);
         func_0020cc80((u8*)leaves[i] + 0x18, color);
         if ((*node & 0x80) != 0)
         {
@@ -1492,7 +1678,9 @@ void bpTexUpdateNode(void* nodeData)
         }
     }
 }
+#pragma optimization_level 2
 
+#pragma schedule off
 // FUN_00256F20
 void bpTexCollectLeafPos(void* node, void* values, s32* count)
 {
@@ -1555,15 +1743,17 @@ void bpTexCollectLeaves(void* nodeData, void* values, s32* count)
     }
     *count = ((*node & 0x10) == 0) ? 1 : leafCount;
 }
+#pragma optimization_level 3
+
 // FUN_00257130 NONMATCHING
 void bpTexApplyActions(void)
 {
     u32* work;
     u32* action;
-    u32* node;
-    u32* child;
     u32* leaves[8];
     u32* direct[8];
+    u32* node;
+    u32* child;
     s32 actionCount;
     s32 nodeCount;
     s32 leafCount;
@@ -1642,7 +1832,7 @@ void bpTexApplyActions(void)
         {
             first = (u32*)action[2];
             K_ASSERT(first != NULL, 0x780);
-            node = bpTexAllocNode();
+            node = bpTexFindFreeNode();
             K_ASSERT(node != NULL, 0x780);
             node[0x3f1] = 0;
             node[0x3f0] = 0;
@@ -1765,6 +1955,8 @@ void bpTexApplyActions(void)
     BP_TEX_U32(work, 0x127a8) = 0;
     func_005225a8(0x68ea80, BP_TEX_U32(work, 0x127b0));
 }
+#pragma optimization_level 2
+
 
 // FUN_00257D00 bpTexBuildPosition
 void bpTexBuildPosition(void* output, u32 index, void* source, s32 count)
@@ -1792,16 +1984,14 @@ void bpTexBuildFixedPosition(void* output, void* source)
     BP_TEX_F32(output, 4) += 100.0f;
 }
 
+#pragma optimization_level 3
 // FUN_00257E20 NONMATCHING
 void bpTexDumpNodes(void)
 {
     u32* work;
     u32* node;
 
-    if (BP_TEX_GLOBAL == NULL)
-    {
-        func_0019d3f0((const char*)0x0068ea00, 0xbc);
-    }
+    K_ASSERT(BP_TEX_GLOBAL != NULL, 0xbc);
     work = BP_TEX_GLOBAL;
     func_005225a8(0x7cc478);
     for (node = BP_TEX_PTR(work, 0x1265c);
@@ -1825,6 +2015,7 @@ void bpTexDumpNodes(void)
     }
     func_005225a8(0x7cc494);
 }
+#pragma optimization_level 2
 
 // FUN_00257F10 NONMATCHING
 void bpTexPrepareNodes(void)
@@ -1857,11 +2048,9 @@ void bpTexPrepareNodes(void)
 }
 /*
  * The command-panel work area lives in the same GP slot used by bcm_panel.c.
- * Keep the absolute slot here so the resource setup and animation/render
- * passes share state even though the helpers are split across translation
- * units.
  */
-#define BP_PANEL_GLOBAL (*(u8**)0x007ce308)
+extern u8* DAT_007ce308;
+#define BP_PANEL_GLOBAL DAT_007ce308
 
 extern void* func_0021c3f0(s32 texture);
 extern void* func_0021cca0(void* texture, s32 frame);
@@ -1915,7 +2104,7 @@ static void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue, f32 al
     func_0021d950(destination, color);
 }
 
-// FUN_0021f0c0 NONMATCHING
+// FUN_0021f0c0
 void func_0021f0c0(void* work)
 {
     u32* words;
@@ -1999,14 +2188,14 @@ void func_0021f150(u32 selection)
     words[0] |= 1;
 }
 
-// FUN_0021f3c0 NONMATCHING
+// FUN_0021f3c0
 void func_0021f3c0(void)
 {
     u32* words;
 
     K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
     words = (u32*)BP_PANEL_GLOBAL;
-    words[0] &= ~2;
+    words[0] &= ~1;
 }
 extern void func_0022b630(void);
 extern void func_002265d0(void);
@@ -2161,6 +2350,8 @@ static void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
     D_0096009C((u32*)(work + offset), 4, 0, 1, 2);
     D_0096009C((u32*)(work + offset), 4, 0, 2, 3);
 }
+
+#pragma optimization_level 3
 
 // FUN_0021f410 NONMATCHING
 void func_0021f410(void)
@@ -2598,6 +2789,8 @@ void func_0021f410(void)
         func_002257f0();
     }
 }
+#pragma optimization_level 2
+
 
 static void bpPanelDrawBridgeQuad(u8* work, u32 offset, void* texture, s32 frameId)
 {

@@ -369,7 +369,7 @@ void H_Snd_StopBgmFade(s16 fadeDuration)
 }
 
 // FUN_00109040
-u8 func_00109040(s16 id)
+u8 func_00109040(s16 id, s16 unused)
 {
     H_Snd_PlayBgm(id, true);
     return true;
@@ -727,7 +727,7 @@ u8 func_0010a240(s16 channelIndex, void* streamData, s16 parameter)
 }
 
 // FUN_0010A2E0
-u8 func_0010a2e0(void* streamData, s32 channelIndex, s16 id)
+u8 func_0010a2e0(void* streamData, s32 channelIndex, u16 id)
 {
     sChannels[channelIndex].active = true;
     sChannels[channelIndex].id = id;

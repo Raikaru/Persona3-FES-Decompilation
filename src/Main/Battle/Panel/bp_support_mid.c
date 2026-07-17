@@ -1,6 +1,48 @@
 #include "Utils.h"
 #include "Kosaka/k_assert.h"
 
+typedef struct PanelVec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+} PanelVec3;
+
+typedef struct PanelQuaternion {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+} PanelQuaternion;
+
+typedef struct PanelVideoMode {
+    s32 width;
+    s32 height;
+    s32 depth;
+    u32 flags;
+    s32 refreshRate;
+    s32 format;
+} PanelVideoMode;
+
+typedef struct PanelMatrix {
+    PanelVec3 right;
+    u32 flags;
+    PanelVec3 up;
+    u32 pad1;
+    PanelVec3 at;
+    u32 pad2;
+    PanelVec3 pos;
+    u32 pad3;
+} PanelMatrix;
+
+typedef struct PanelTransform {
+    u8 unknown00[0x10];
+    PanelQuaternion rotation;
+    PanelVec3 translation;
+    PanelVec3 scale;
+    void* model;
+} PanelTransform;
+extern void func_0020ca90(PanelMatrix* output, const PanelTransform* transform);
+
 extern u32 datGetScenarioMode(void);
 extern u32 func_0021c3f0(s32 texture);
 extern void* func_0021cca0(u32 texture, s32 frame);
@@ -10,12 +52,12 @@ extern void func_0021d8e0(void* destination, const void* layout);
 extern void func_0021d950(void* destination, const void* color);
 extern void func_004cde90(void* resource);
 extern void* kwlnGetMainCamera(void);
-extern void* func_004ca5b0(void* camera);
+extern void* func_004ca5b0(void);
 extern void func_004ca560(void* viewport, void* cameraData);
 extern void func_004c3760(void* matrix, void* source, s32 mode);
 extern void* func_004c38c0(void);
 extern void func_004c3880(void* matrix);
-extern void func_004cb2f0(void* model);
+extern void* func_004cb2f0(void* model);
 extern void RwMatrixScale(void* matrix, const void* scale, s32 combine);
 extern void RwMatrixTranslate(void* matrix, const void* translation, s32 combine);
 extern void RwMatrixRotate(void* matrix, const void* axis, f32 angle, s32 combine);
@@ -46,6 +88,7 @@ extern char D_0068DF60[];
 extern char D_0068E020[];
 extern char D_0068DD20[];
 extern volatile u16 D_00875A90[];
+extern char D_0068E0B0[];
 extern void func_00209ba0(void* destination, s32 digit);
 extern void func_0020c7b0(u8* work);
 extern void func_0020cda0(u8* work);
@@ -54,50 +97,59 @@ extern void func_004f1ed0(void* vertices, u32 count, void* matrix, u32 stride);
 extern void func_004f1fd0(u32 primitive, void* indices, u32 count);
 extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
+
 extern void* D_0068E108;
 extern f32 D_0068E110;
+extern f32 fGpffff8318;
+extern f32 fGpffff8320;
+extern f32 fGpffff8324;
+extern f32 fGpffff831c;
+extern f32 fGpffff8338;
+extern f32 fGpffff8334;
 
-// FUN_00209940 NONMATCHING
+// FUN_00209940
 void func_00209940(void* destination, s32 capacity, s32 value)
 {
-    char digits[32];
+    char digits[256];
     s32 length;
     s32 i;
 
-    length = sprintf(digits, "%d", value);
+    sprintf(digits, "%d", value);
+    length = strlen(digits);
     K_ASSERT(capacity >= length, 0x1c8);
     for (i = 0; i < length; i++) {
-        s32 digit = digits[length - 1 - i] - '0';
-        u8* slot = (u8*)destination + i * 0x100;
-        func_00209ba0(slot, digit);
+        func_00209ba0((u8*)destination + (i << 8), digits[length - 1 - i] - 0x30);
     }
 }
 
-// FUN_00209a00 NONMATCHING
-void func_00209a00(void* destination, s32 capacity, s32 value, s32 align, f32 scale, const f32* origin)
+// FUN_00209a00
+void func_00209a00(void* destination, s32 capacity, s32 value, const f32* origin, f32 scale)
 {
-    char digits[32];
-    s32 length;
+    f32 layout[4];
+    char digits[256];
+    void* texture;
+    void* frame;
     s32 i;
-    s32 count;
+    s32 length;
 
-    length = sprintf(digits, "%d", value);
+    texture = (void*)func_0021c3f0(1);
+    sprintf(digits, "%d", value);
+    length = strlen(digits);
     K_ASSERT(capacity >= length, 0x1de);
-    count = length < capacity ? length : capacity;
-    for (i = 0; i < count; i++) {
-        u8* slot = (u8*)destination + i * 0x100;
-        func_00209ba0(slot, digits[length - 1 - i] - '0');
-        if (origin != NULL) {
-            ((f32*)slot)[0] = origin[0] + (f32)(capacity - i - 1) * 0.9375f;
-            ((f32*)slot)[1] = origin[1];
-        }
+    for (i = 0; i < length; i++) {
+        frame = func_0021cca0((u32)texture, value + 0x2e);
+        layout[0] = origin[0] + (f32)((length - 1 - i) * 15);
+        layout[1] = origin[1];
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc) * scale;
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10) * scale;
+        func_0021d8e0((u8*)destination + (i << 8), layout);
     }
-    for (; i < capacity; i++) {
-        u8* slot = (u8*)destination + i * 0x100;
-        if (origin != NULL) {
-            ((f32*)slot)[0] = origin[0];
-            ((f32*)slot)[1] = origin[1];
-        }
+    for (; length < capacity; length++) {
+        layout[0] = origin[0];
+        layout[1] = origin[1];
+        layout[2] = 0.0f;
+        layout[3] = 0.0f;
+        func_0021d8e0((u8*)destination + (length << 8), layout);
     }
 }
 
@@ -206,27 +258,26 @@ char* func_00209e90(void)
     return D_0068E020;
 }
 
-// FUN_00209ea0 NONMATCHING
+// FUN_00209ea0
 void func_00209ea0(u8* work)
 {
-    s32 i;
-
-    *(u32*)(work + 0) = 0;
-    *(u32*)(work + 0x10) = 0;
-    *(u32*)(work + 0x14) = 0;
-    *(u32*)(work + 0x18) = 0;
-    *(u32*)(work + 0x1c) = 0x3f800000;
+    *(u32*)(work + 0x00) = 0;
+    *(u32*)(work + 0x38) = 0;
     *(u32*)(work + 0x20) = 0;
     *(u32*)(work + 0x24) = 0;
     *(u32*)(work + 0x28) = 0;
-    *(u32*)(work + 0x2c) = 0x3f800000;
-    *(u32*)(work + 0x30) = 0x3f800000;
-    *(u32*)(work + 0x34) = 0x3f800000;
-    *(u32*)(work + 0x38) = 0;
+    *(f32*)(work + 0x1c) = 1.0f;
+    *(u32*)(work + 0x10) = 0;
+    *(u32*)(work + 0x14) = 0;
+    *(u32*)(work + 0x18) = 0;
+    *(f32*)(work + 0x2c) = 1.0f;
+    *(f32*)(work + 0x30) = 1.0f;
+    *(f32*)(work + 0x34) = 1.0f;
     *(u32*)(work + 0x3c) = 0;
-    for (i = 0; i < 4; i++) {
-        work[0x40 + i] = 0xff;
-    }
+    *(u8*)(work + 0x40) = 0xff;
+    *(u8*)(work + 0x41) = 0xff;
+    *(u8*)(work + 0x42) = 0xff;
+    *(u8*)(work + 0x43) = 0xff;
     *(u32*)(work + 0xdc) = 0;
 }
 
@@ -248,24 +299,231 @@ static void panel_init_common(u8* work, u32 state)
 // FUN_00209f00 NONMATCHING
 void func_00209f00(void* work)
 {
-    panel_init_common((u8*)work, 0);
-    ((u8*)work)[0x2a4] = 0;
-    ((u8*)work)[0x2a5] = 0;
-    ((u8*)work)[0x2a6] = 0;
-    ((u8*)work)[0x2a7] = 0xff;
+    u8* panel = (u8*)work;
+
+    func_00209ea0(panel);
+    *(u32*)(panel + 4) = 0;
+    func_0020c7b0(panel + 0xe0);
+    *(u32*)(panel + 0x170) = 0;
+    panel[0x2a4] = 0;
+    panel[0x2a5] = 0;
+    panel[0x2a6] = 0;
+    panel[0x2a7] = 0xff;
 }
 
-// FUN_0020a800 NONMATCHING
+// FUN_0020a800
 void func_0020a800(void* work)
 {
-    panel_init_common((u8*)work, 1);
-    *(u32*)((u8*)work + 0x328) = 0;
+    u8* panel;
+    PanelVec3 outerUpperRight;
+    PanelVec3 outerLowerRight;
+    PanelVec3 outerLowerLeft;
+    PanelVec3 outerUpperLeft;
+    PanelVec3 innerUpperRight;
+    PanelVec3 innerLowerRight;
+    PanelVec3 innerLowerLeft;
+    PanelVec3 innerUpperLeft;
+    PanelVec3 centerUpperRight;
+    PanelVec3 centerLowerRight;
+    PanelVec3 centerLowerLeft;
+    PanelVec3 centerUpperLeft;
+    f32 upperY;
+    f32 lowerY;
+
+    panel = (u8*)work;
+    func_00209ea0(panel);
+    *(u32*)(panel + 4) = 1;
+    func_0020c7b0(panel + 0xe0);
+    *(u32*)(panel + 0x328) = 0;
+
+    outerUpperRight.x = 3.0f;
+    upperY = fGpffff8318;
+    outerUpperRight.y = upperY;
+    outerUpperRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x178) = outerUpperRight;
+    outerLowerRight.x = -3.0f;
+    outerLowerRight.y = upperY;
+    outerLowerRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x19c) = outerLowerRight;
+    outerLowerLeft.x = -3.0f;
+    lowerY = fGpffff8334;
+    outerLowerLeft.y = lowerY;
+    outerLowerLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x1c0) = outerLowerLeft;
+    outerUpperLeft.x = 3.0f;
+    outerUpperLeft.y = lowerY;
+    outerUpperLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x1e4) = outerUpperLeft;
+
+    panel[0x184] = 0xff;
+    panel[0x185] = 0xff;
+    panel[0x186] = 0xff;
+    panel[0x187] = 0xff;
+    panel[0x1a8] = 0xff;
+    panel[0x1a9] = 0xff;
+    panel[0x1aa] = 0xff;
+    panel[0x1ab] = 0xff;
+    panel[0x1cc] = 0xff;
+    panel[0x1cd] = 0xff;
+    panel[0x1ce] = 0xff;
+    panel[0x1cf] = 0xff;
+    panel[0x1f0] = 0xff;
+    panel[0x1f1] = 0xff;
+    panel[0x1f2] = 0xff;
+    panel[0x1f3] = 0xff;
+    *(f32*)(panel + 0x194) = 1.0f;
+    *(f32*)(panel + 0x1b8) = 0.0f;
+    *(f32*)(panel + 0x1dc) = 0.0f;
+    *(f32*)(panel + 0x200) = 1.0f;
+    *(f32*)(panel + 0x198) = 0.0f;
+    *(f32*)(panel + 0x1bc) = 0.0f;
+    *(f32*)(panel + 0x1e0) = 0.63671875f;
+    *(f32*)(panel + 0x204) = 0.63671875f;
+
+    innerUpperRight.x = 3.0f;
+    innerUpperRight.y = upperY;
+    innerUpperRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x208) = innerUpperRight;
+    innerLowerRight.x = -3.0f;
+    innerLowerRight.y = upperY;
+    innerLowerRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x22c) = innerLowerRight;
+    innerLowerLeft.x = -3.0f;
+    innerLowerLeft.y = lowerY;
+    innerLowerLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x250) = innerLowerLeft;
+    innerUpperLeft.x = 3.0f;
+    innerUpperLeft.y = lowerY;
+    innerUpperLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x274) = innerUpperLeft;
+
+    panel[0x214] = 0xff;
+    panel[0x215] = 0xff;
+    panel[0x216] = 0xff;
+    panel[0x217] = 0xff;
+    panel[0x238] = 0xff;
+    panel[0x239] = 0xff;
+    panel[0x23a] = 0xff;
+    panel[0x23b] = 0xff;
+    panel[0x25c] = 0xff;
+    panel[0x25d] = 0xff;
+    panel[0x25e] = 0xff;
+    panel[0x25f] = 0xff;
+    panel[0x280] = 0xff;
+    panel[0x281] = 0xff;
+    panel[0x282] = 0xff;
+    panel[0x283] = 0xff;
+    *(f32*)(panel + 0x224) = 1.0f;
+    *(f32*)(panel + 0x248) = 0.0f;
+    *(f32*)(panel + 0x26c) = 0.0f;
+    *(f32*)(panel + 0x290) = 1.0f;
+    *(f32*)(panel + 0x228) = 0.0f;
+    *(f32*)(panel + 0x24c) = 0.0f;
+    *(f32*)(panel + 0x270) = 0.63671875f;
+    *(f32*)(panel + 0x294) = 0.63671875f;
+
+    centerUpperRight.x = 3.0f;
+    centerUpperRight.y = 3.0f;
+    centerUpperRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x298) = centerUpperRight;
+    centerLowerRight.x = -3.0f;
+    centerLowerRight.y = 3.0f;
+    centerLowerRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x2bc) = centerLowerRight;
+    centerLowerLeft.x = -3.0f;
+    centerLowerLeft.y = -3.0f;
+    centerLowerLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x2e0) = centerLowerLeft;
+    centerUpperLeft.x = 3.0f;
+    centerUpperLeft.y = -3.0f;
+    centerUpperLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x304) = centerUpperLeft;
+
+    panel[0x2a4] = 0;
+    panel[0x2a5] = 0;
+    panel[0x2a6] = 0;
+    panel[0x2a7] = 0xff;
+    panel[0x2c8] = 0;
+    panel[0x2c9] = 0;
+    panel[0x2ca] = 0;
+    panel[0x2cb] = 0xff;
+    panel[0x2ec] = 0;
+    panel[0x2ed] = 0;
+    panel[0x2ee] = 0;
+    panel[0x2ef] = 0xff;
+    panel[0x310] = 0;
+    panel[0x311] = 0;
+    panel[0x312] = 0;
+    panel[0x313] = 0xff;
+    *(f32*)(panel + 0x2b4) = 1.0f;
+    *(f32*)(panel + 0x2d8) = 0.0f;
+    *(f32*)(panel + 0x2fc) = 0.0f;
+    *(f32*)(panel + 0x320) = 1.0f;
+    *(f32*)(panel + 0x2b8) = 0.0f;
+    *(f32*)(panel + 0x2dc) = 0.0f;
+    *(f32*)(panel + 0x300) = 1.0f;
+    *(f32*)(panel + 0x324) = 1.0f;
 }
 
-// FUN_0020ab30 NONMATCHING
+// FUN_0020ab30
 void func_0020ab30(void* work)
 {
-    panel_init_common((u8*)work, 2);
+    u8* panel;
+    PanelVec3 upperRight;
+    PanelVec3 lowerRight;
+    PanelVec3 lowerLeft;
+    PanelVec3 upperLeft;
+
+    panel = (u8*)work;
+    func_00209ea0(panel);
+    *(u32*)(panel + 4) = 2;
+    func_0020c7b0(panel + 0xe0);
+
+    upperRight.x = 3.0f;
+    upperRight.y = fGpffff8318;
+    upperRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x170) = upperRight;
+
+    lowerRight.x = -3.0f;
+    lowerRight.y = fGpffff8318;
+    lowerRight.z = 0.0f;
+    *(PanelVec3*)(panel + 0x194) = lowerRight;
+
+    lowerLeft.x = -3.0f;
+    lowerLeft.y = fGpffff8334;
+    lowerLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x1b8) = lowerLeft;
+
+    upperLeft.x = 3.0f;
+    upperLeft.y = fGpffff8334;
+    upperLeft.z = 0.0f;
+    *(PanelVec3*)(panel + 0x1dc) = upperLeft;
+
+    panel[0x17c] = 0xff;
+    panel[0x17d] = 0xff;
+    panel[0x17e] = 0xff;
+    panel[0x17f] = 0xff;
+    panel[0x1a0] = 0xff;
+    panel[0x1a1] = 0xff;
+    panel[0x1a2] = 0xff;
+    panel[0x1a3] = 0xff;
+    panel[0x1c4] = 0xff;
+    panel[0x1c5] = 0xff;
+    panel[0x1c6] = 0xff;
+    panel[0x1c7] = 0xff;
+    panel[0x1e8] = 0xff;
+    panel[0x1e9] = 0xff;
+    panel[0x1ea] = 0xff;
+    panel[0x1eb] = 0xff;
+
+    *(f32*)(panel + 0x18c) = 0.9921875f;
+    *(f32*)(panel + 0x1b0) = 0.0f;
+    *(f32*)(panel + 0x1d4) = 0.0f;
+    *(f32*)(panel + 0x1f8) = 0.9921875f;
+    *(f32*)(panel + 0x190) = 0.0078125f;
+    *(f32*)(panel + 0x1b4) = 0.0078125f;
+    *(f32*)(panel + 0x1d8) = 0.63671875f;
+    *(f32*)(panel + 0x1fc) = 0.63671875f;
 }
 
 // FUN_0020ac80
@@ -297,39 +555,46 @@ void func_0020b250(void* work)
     func_0020ac90(work);
 }
 
-// FUN_0020c320 NONMATCHING
-void func_0020c320(s32 unused, const f32* source, const void* viewport, f32 scale)
+// FUN_0020c320
+void func_0020c320(s32 unused, const f32* source, f32 scale, void* viewport)
 {
-    f32* out = (f32*)viewport;
-    f32 width = 640.0f;
-    f32 height = 448.0f;
-    (void)unused;
-    if (source != NULL && out != NULL) {
-        out[0] = -source[0] / (width * 0.5f) * scale;
-        out[1] = -source[1] / (height * 0.5f) * scale;
-        out[2] = scale;
-    }
+    s32 size[8];
+    f32* camera;
+    f32 panelScale = scale;
+    f32* out = viewport;
+
+    camera = (f32*)((u8*)kwlnGetMainCamera() + 0x68);
+    func_004ca560(size, func_004ca5b0());
+    out[0] = panelScale * (camera[0] * (1.0f + (-source[0] / (f32)(size[0] >> 1))));
+    out[1] = panelScale * (camera[1] * (1.0f + (-source[1] / (f32)(size[1] >> 1))));
+    out[2] = panelScale;
 }
 
-// FUN_0020c400 NONMATCHING
-void func_0020c400(s32 unused, const f32* source, const void* viewport, f32 scale)
+// FUN_0020c400
+void func_0020c400(s32 unused, const f32* source, f32 scale, void* viewport)
 {
-    f32* out = (f32*)viewport;
-    (void)unused;
-    if (source != NULL && out != NULL) {
-        out[0] = (0.5f - source[0]) * scale;
-        out[1] = (0.5f - source[1]) * scale;
-        out[2] = scale;
-    }
+    s32 size[8];
+    f32* camera;
+    f32 panelScale = scale;
+    f32* out = viewport;
+
+    camera = (f32*)((u8*)kwlnGetMainCamera() + 0x68);
+    func_004ca560(size, func_004ca5b0());
+    out[0] = panelScale * (camera[0] * (1.0f + (-(source[0] - 0.5f) / (f32)(size[0] >> 1))));
+    out[1] = panelScale * (camera[1] * (1.0f + (-(source[1] - 0.5f) / (f32)(size[1] >> 1))));
+    out[2] = panelScale;
 }
 
-// FUN_0020c500 NONMATCHING
+// FUN_0020c500
 f32 func_0020c500(const f32* value, f32 scale)
 {
-    if (value == NULL) {
-        return 0.0f;
-    }
-    return value[0] * 6.0f * scale / 640.0f;
+    s32 size[8];
+    f32* camera;
+    f32 panelScale = scale;
+
+    camera = (f32*)((u8*)kwlnGetMainCamera() + 0x68);
+    func_004ca560(size, func_004ca5b0());
+    return (6.0f * value[11] * (f32)(size[0] >> 1)) / (panelScale * camera[0]);
 }
 
 // FUN_0020c590
@@ -347,18 +612,18 @@ void func_0020c5f0(void* work, u32 a, u32 b)
     *(u32*)((u8*)work + 0x174) = b;
 }
 
-// FUN_0020c660 NONMATCHING
+// FUN_0020c660
 f32 func_0020c660(s32 value, s32 mode)
 {
     switch (mode) {
     case 2:
-        return 200.0f + (f32)value * 200.0f / (f32)(mode - 1);
+        return 220.0f + 200.0f * (f32)value / (f32)(mode - 1);
+    case 6:
+        return 70.0f + 500.0f * (f32)value / (f32)(mode - 1);
     case 3:
     case 4:
     case 5:
-        return ((f32)value + 1.0f) * 640.0f / (f32)(mode + 1);
-    case 6:
-        return 500.0f + (f32)value * 500.0f / (f32)(mode - 1);
+        return (f32)(value + 1) * (640.0f / (f32)(mode + 1));
     default:
         K_ASSERT(0, 0x4ae);
         return 0.0f;
@@ -371,77 +636,253 @@ void func_0020c7a0(void* work, u32 value)
     *(u32*)((u8*)work + 0x38) = value;
 }
 
-// FUN_0020c7b0 NONMATCHING
+// FUN_0020c7b0
 void func_0020c7b0(u8* work)
 {
-    s32 i;
-    *(u32*)(work + 0) = 0;
+    struct Vec3
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+    };
+    struct Vec3 topRight;
+    struct Vec3 bottomRight;
+    struct Vec3 bottomLeft;
+    struct Vec3 topLeft;
+
+    topRight.x = 3.0f;
+    topRight.y = fGpffff8318;
+    topRight.z = 0.0f;
+    *(struct Vec3*)(work + 0x00) = topRight;
+    bottomRight.x = 3.0f;
+    bottomRight.y = fGpffff831c;
+    bottomRight.z = 0.0f;
+    *(struct Vec3*)(work + 0x24) = bottomRight;
+    bottomLeft.x = -3.0f;
+    bottomLeft.y = fGpffff831c;
+    bottomLeft.z = 0.0f;
+    *(struct Vec3*)(work + 0x48) = bottomLeft;
+    topLeft.x = -3.0f;
+    topLeft.y = fGpffff8318;
+    topLeft.z = 0.0f;
+    *(struct Vec3*)(work + 0x6c) = topLeft;
+
+    work[0x0c] = 0xff;
+    work[0x0d] = 0xff;
+    work[0x0e] = 0xff;
+    work[0x0f] = 0xff;
+    work[0x30] = 0xff;
+    work[0x31] = 0xff;
+    work[0x32] = 0xff;
+    work[0x33] = 0xff;
+    work[0x54] = 0xff;
+    work[0x55] = 0xff;
+    work[0x56] = 0xff;
+    work[0x57] = 0xff;
+    work[0x78] = 0xff;
+    work[0x79] = 0xff;
+    work[0x7a] = 0xff;
+    work[0x7b] = 0xff;
+
     *(u32*)(work + 0x1c) = 0x3f7e0000;
     *(u32*)(work + 0x40) = 0x3f7e0000;
     *(u32*)(work + 0x64) = 0;
     *(u32*)(work + 0x88) = 0;
-    for (i = 0; i < 4; i++) {
-        work[0xc + i] = 0xff;
-        work[0x30 + i] = 0xff;
-        work[0x54 + i] = 0xff;
-        work[0x78 + i] = 0xff;
-    }
+    *(u32*)(work + 0x20) = 0x3c000000;
+    *(u32*)(work + 0x44) = 0x3f230000;
+    *(u32*)(work + 0x68) = 0x3f230000;
+    *(u32*)(work + 0x8c) = 0x3c000000;
 }
 
-// FUN_0020c8d0 NONMATCHING
+// FUN_0020c8d0
 void func_0020c8d0(void)
 {
-    /* Build the fixed six-vertex panel index table used by the renderer. */
-    volatile u16* indices = D_00875A90;
-    u16 cursor = 0;
-    s32 row;
+    u16* indices;
+    s32 cursor;
     s32 col;
-    for (row = 0; row < 8; row++) {
-        for (col = 0; col < 6; col++) {
-            *indices++ = cursor;
-            *indices++ = cursor + 1;
-            *indices++ = cursor + 8;
-            *indices++ = cursor + 1;
-            *indices++ = cursor + 9;
-            *indices++ = cursor + 8;
+    s32 row;
+    s32 i;
+    s32 alternating;
+    s32 cursorPlusEight;
+
+    printf(D_0068E0B0);
+    cursor = 0;
+    indices = (u16*)D_00875A90;
+    for (row = 0; row < 8; row++)
+    {
+        col = 0;
+        alternating = ~row & 1;
+        while (col < 6)
+        {
+            if (alternating != 0)
+            {
+                indices[0] = cursor;
+                indices[1] = cursor + 1;
+                indices[2] = cursor + 8;
+                indices[3] = cursor + 1;
+                indices[4] = cursor + 9;
+                indices[5] = cursor + 8;
+                indices += 6;
+                cursor++;
+            }
+            else
+            {
+                indices[0] = cursor;
+                cursorPlusEight = cursor + 8;
+                indices[1] = cursorPlusEight;
+                indices[2] = cursor + 7;
+                indices[3] = cursor;
+                cursor++;
+                indices[4] = cursor;
+                indices[5] = cursorPlusEight;
+                indices += 6;
+            }
+            col++;
+        }
+        if (alternating != 0)
+        {
+            indices[0] = cursor;
+            indices[1] = cursor + 1;
+            indices[2] = cursor + 8;
+            indices += 3;
+            cursor += 2;
+        }
+        else
+        {
+            indices[0] = cursor;
+            indices[1] = cursor + 8;
+            indices[2] = cursor + 7;
+            indices += 3;
             cursor++;
         }
-        cursor += 2;
     }
+    for (i = 0; i < 0x138; i++)
+    {
+        K_ASSERT(D_00875A90[i] < 0x44, 0x515);
+    }
+    K_ASSERT(indices - (u16*)D_00875A90 == 0x138, 0x517);
 }
 
-// FUN_0020ca90 NONMATCHING
-void func_0020ca90(void* matrix, const u8* quad)
+// FUN_0020ca90
+void func_0020ca90(PanelMatrix* output, const PanelTransform* transform)
 {
-    u8* out = (u8*)matrix;
-    if (quad == NULL) {
-        return;
+    const PanelVec3* cameraScale;
+    PanelMatrix* rotation;
+    PanelVec3 scale;
+    PanelVideoMode viewport;
+    f32 aspectRatio;
+    f32 factor;
+    f32 scaledX;
+    f32 scaledY;
+    f32 scaledZ;
+    f32 xx;
+    f32 yy;
+    f32 zz;
+    f32 xy;
+    f32 xz;
+    f32 yz;
+    f32 xw;
+    f32 yw;
+    f32 zw;
+    void* camera;
+    void* viewportData;
+
+    camera = kwlnGetMainCamera();
+    cameraScale = (const PanelVec3*)((u8*)camera + 0x68);
+    viewportData = func_004ca5b0();
+    func_004ca560(&viewport, viewportData);
+
+    aspectRatio = (f32)viewport.width * cameraScale->y /
+                  ((f32)viewport.height * cameraScale->x);
+    scale.x = transform->scale.x;
+    scale.y = aspectRatio * transform->scale.y;
+    scale.z = transform->scale.z;
+    RwMatrixScale(output, &scale, 0);
+
+    rotation = (PanelMatrix*)func_004c38c0();
+    factor = 2.0f /
+             (transform->rotation.x * transform->rotation.x +
+              transform->rotation.y * transform->rotation.y +
+              transform->rotation.z * transform->rotation.z +
+              transform->rotation.w * transform->rotation.w);
+    scaledX = transform->rotation.x * factor;
+    scaledY = transform->rotation.y * factor;
+    scaledZ = transform->rotation.z * factor;
+    xw = scaledX * transform->rotation.w;
+    yw = scaledY * transform->rotation.w;
+    zw = scaledZ * transform->rotation.w;
+    xx = transform->rotation.x * scaledX;
+    yy = transform->rotation.y * scaledY;
+    zz = transform->rotation.z * scaledZ;
+    yz = transform->rotation.y * scaledZ;
+    xz = transform->rotation.z * scaledX;
+    xy = transform->rotation.x * scaledY;
+
+    rotation->right.x = 1.0f - (yy + zz);
+    rotation->right.y = xy + zw;
+    rotation->right.z = xz - yw;
+    rotation->up.x = xy - zw;
+    rotation->up.y = 1.0f - (zz + xx);
+    rotation->up.z = yz + xw;
+    rotation->at.x = xz + yw;
+    rotation->at.y = yz - xw;
+    rotation->at.z = 1.0f - (xx + yy);
+    rotation->pos.x = 0.0f;
+    rotation->pos.y = 0.0f;
+    rotation->pos.z = 0.0f;
+    rotation->flags = 3;
+
+    func_004c3760(output, rotation, 2);
+    func_004c3880(rotation);
+    RwMatrixTranslate(output, &transform->translation, 2);
+    if (transform->model != NULL)
+    {
+        func_004c3760(output, func_004cb2f0(transform->model), 2);
     }
-    *(f32*)(out + 0x30) = *(const f32*)(quad + 0x2c);
-    *(f32*)(out + 0x34) = *(const f32*)(quad + 0x30);
-    *(f32*)(out + 0x38) = *(const f32*)(quad + 0x34);
 }
 
-// FUN_0020cc80 NONMATCHING
+// FUN_0020cc80
 void func_0020cc80(void* work, const u8* color)
 {
-    s32 i;
-    for (i = 0; i < 4; i++) {
-        ((u8*)work)[0x40 + i] = color[i];
-    }
-    *(u32*)work |= 4;
+    struct Color {
+        u8 red;
+        u8 green;
+        u8 blue;
+        u8 alpha;
+    };
+    struct Panel {
+        u32 flags;
+        u8 pad[0x3c];
+        struct Color color;
+    };
+    struct Panel* panel = (struct Panel*)work;
+    const struct Color* rgba = (const struct Color*)color;
+
+    panel->color = *rgba;
+    panel->flags |= 4;
 }
 
-// FUN_0020ccc0 NONMATCHING
+// FUN_0020ccc0
 void func_0020ccc0(void* work, const u8* color)
 {
-    s32 i;
-    for (i = 0; i < 4; i++) {
-        ((u8*)work)[0xc + i] = color[i];
-        ((u8*)work)[0x30 + i] = color[i];
-        ((u8*)work)[0x54 + i] = color[i];
-        ((u8*)work)[0x78 + i] = color[i];
-    }
+    u8* panel = (u8*)work;
+
+    panel[0x0c] = color[0];
+    panel[0x0d] = color[1];
+    panel[0x0e] = color[2];
+    panel[0x0f] = color[3];
+    panel[0x30] = color[0];
+    panel[0x31] = color[1];
+    panel[0x32] = color[2];
+    panel[0x33] = color[3];
+    panel[0x54] = color[0];
+    panel[0x55] = color[1];
+    panel[0x56] = color[2];
+    panel[0x57] = color[3];
+    panel[0x78] = color[0];
+    panel[0x79] = color[1];
+    panel[0x7a] = color[2];
+    panel[0x7b] = color[3];
 }
 
 // FUN_0020cd50
@@ -455,23 +896,75 @@ void func_0020cd50(void* work, void* resource)
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {
+    struct Vec3
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+    };
+    struct Vec3 position;
+    u8* vertex;
+    f32 x;
+    f32 rowY;
+    f32 rowStep;
+    f32 yOffset;
+    f32 half;
+    f32 six;
+    f32 zero;
+    f32 three;
     s32 row;
     s32 col;
-    s32 idx = 0;
+    s32 width;
+    s32 alternating;
     *(u32*)work = 0;
-    *(f32*)(work + 0x9a0) = 0.5f;
+    half = 0.5f;
+    *(f32*)(work + 0x9a0) = half;
     *(f32*)(work + 0x9a4) = 0.375f;
-    for (row = 0; row < 9; row++) {
-        s32 width = (row & 1) ? 7 : 8;
-        for (col = 0; col < width; col++) {
-            f32* vertex = (f32*)(work + 4 + idx * 0x24);
-            vertex[0] = (f32)col - 3.0f;
-            vertex[1] = (f32)row * 0.25f - 0.75f;
-            vertex[2] = 0.0f;
-            idx++;
+    vertex = work + 4;
+    row = 0;
+    alternating = ~row & 1;
+    six = 6.0f;
+    yOffset = fGpffff8318;
+    rowStep = fGpffff8338;
+    three = 3.0f;
+    zero = 0.0f;
+    while (row < 9)
+    {
+        rowY = rowStep * (f32)row - yOffset;
+        col = 0;
+        width = alternating != 0 ? 8 : 7;
+        while (col < width)
+        {
+            if (alternating != 0)
+            {
+                if (col == 0)
+                {
+                    x = zero;
+                }
+                else if (col == width - 1)
+                {
+                    x = six;
+                }
+                else
+                {
+                    x = half + (f32)(col - 1);
+                }
+            }
+            else
+            {
+                x = (f32)col;
+            }
+            position.x = x - three;
+            col++;
+            position.y = rowY;
+            position.z = zero;
+            *(struct Vec3*)vertex = position;
+            vertex = vertex + (0x24);
         }
+        row++;
+        alternating = ~row & 1;
     }
-    K_ASSERT(idx == 0x44, 0x591);
+    K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
 
 // FUN_0020cf20 NONMATCHING

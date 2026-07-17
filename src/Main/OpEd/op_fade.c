@@ -2,12 +2,15 @@
 #include "Kernel/Kwln/kwln.h"
 #include "Kosaka/k_assert.h"
 
+typedef void (*OpFadeSetRenderState)(u32 state, u32 value);
+typedef void (*OpFadeRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+
 extern void func_0021eb80(void* destination, const f32* layout);
-extern void func_0021d8e0(void* destination, const f32* layout);
+extern void func_0021d8e0(void* destination, f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
 extern void func_004d7f60(s32 state, u32 value);
-extern void (*D_00960090)(u32 state, u32 value);
-extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern u32 D_00960090[];
+extern u32 D_0096009C[];
 extern f32 D_00960088;
 extern f32 fGpffff8248;
 extern f32 fGpffff82fc;
@@ -66,17 +69,20 @@ void opFadeOut()
     work->state = OPFADE_STATE_OUT;
     work->timer = work->duration;
 }
-// FUN_00271CD0 NONMATCHING
+// FUN_00271CD0
 void func_00271cd0(OpFadeWork* work)
 {
-    f32 layout[4];
+    f32 layout[8];
+
+    work->flags = 0;
 
     layout[0] = 0.0f;
     layout[1] = 0.0f;
     layout[2] = 0.0f;
     layout[3] = 0.0f;
-    work->flags = 0;
     func_0021eb80(&work->vertices[0], layout);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
     layout[2] = 640.0f;
     layout[3] = 448.0f;
     func_0021d8e0(&work->vertices[0], layout);
@@ -97,22 +103,30 @@ void func_00271d70(void)
     sWork = NULL;
 }
 
-// FUN_00271DB0 NONMATCHING
+// FUN_00271DB0
 void func_00271db0(void)
 {
+    OpFadeWork* work;
+
     K_ASSERT(sWork != NULL, 31);
-    sWork->timer = 0;
-    sWork->state = OPFADE_STATE_IN;
-    sWork->flags |= 1;
+    work = sWork;
+
+    work->timer = 0;
+    work->state = OPFADE_STATE_IN;
+    work->flags |= 1;
 }
 
-// FUN_00271E10 NONMATCHING
+// FUN_00271E10
 void func_00271e10(void)
 {
+    OpFadeWork* work;
+
     K_ASSERT(sWork != NULL, 31);
-    sWork->timer = 0;
-    sWork->state = OPFADE_STATE_OUT;
-    sWork->flags |= 1;
+    work = sWork;
+
+    work->timer = 0;
+    work->state = OPFADE_STATE_OUT;
+    work->flags |= 1;
 }
 
 // FUN_00271E70
@@ -122,44 +136,72 @@ u32 func_00271e70(void)
     return sWork->flags & 1;
 }
 
-// FUN_00271EC0 NONMATCHING
+// FUN_00271EC0
 void func_00271ec0(void)
 {
+    OpFadeWork* work;
     f32 alphaScale;
+    f32 ratio;
     u8 color[4];
 
     K_ASSERT(sWork != NULL, 31);
-    if (sWork->timer < sWork->duration)
-        sWork->timer++;
+    work = sWork;
+    if ((s32)work->timer < (s32)work->duration)
+    {
+        work->timer++;
+    }
     else
-        sWork->flags &= ~1u;
+    {
+        work->flags &= ~1u;
+    }
 
-    if (sWork->state == OPFADE_STATE_OUT)
-        alphaScale = sWork->duration == 0 ? 1.0f :
-                     1.0f - (f32)sWork->timer / (f32)sWork->duration;
-    else if (sWork->state == OPFADE_STATE_IN)
-        alphaScale = sWork->duration == 0 ? 1.0f :
-                     (f32)sWork->timer / (f32)sWork->duration;
-    else
-        alphaScale = 0.0f;
+    switch (work->state)
+    {
+        case OPFADE_STATE_START:
+            alphaScale = 0.0f;
+            break;
+        case OPFADE_STATE_IN:
+            alphaScale = work->duration
+                ? (f32)(s32)work->timer / (f32)(s32)work->duration
+                : 1.0f;
+            break;
+        case OPFADE_STATE_OUT:
+            if (work->duration != 0)
+            {
+                ratio = (f32)(s32)work->timer / (f32)(s32)work->duration;
+            }
+            else
+            {
+                ratio = 1.0f;
+            }
+            alphaScale = 1.0f - ratio;
+            break;
+    }
 
-    color[0] = sWork->color.r;
-    color[1] = sWork->color.g;
-    color[2] = sWork->color.b;
-    color[3] = (u8)((f32)sWork->color.a * alphaScale);
-    func_0021d950(&sWork->vertices[0], color);
+    color[0] = work->color.r;
+    color[1] = work->color.g;
+    color[2] = work->color.b;
+    color[3] = (u8)((f32)work->color.a * alphaScale);
+    func_0021d950(&work->vertices[0], color);
 }
 
-// FUN_002720C0 NONMATCHING
+// FUN_002720C0
 void func_002720c0(void)
 {
+    OpFadeWork* work;
+    OpFadeSetRenderState* setRenderState;
+    OpFadeRenderQuad* renderQuad;
+
     K_ASSERT(sWork != NULL, 31);
-    (*D_00960090)(8, 0);
-    (*D_00960090)(6, 0);
-    (*D_00960090)(9, 2);
+    work = sWork;
+    setRenderState = (OpFadeSetRenderState*)D_00960090;
+    (*setRenderState)(8, 0);
+    (*setRenderState)(6, 0);
+    (*setRenderState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    (*D_00960090)(1, 0);
-    (*D_0096009C)(&sWork->vertices[0], 4, 0, 1, 2);
-    (*D_0096009C)(&sWork->vertices[0], 4, 0, 2, 3);
+    (*setRenderState)(1, 0);
+    renderQuad = (OpFadeRenderQuad*)D_0096009C;
+    (*renderQuad)(&work->vertices[0], 4, 0, 1, 2);
+    (*renderQuad)(&work->vertices[0], 4, 0, 2, 3);
 }

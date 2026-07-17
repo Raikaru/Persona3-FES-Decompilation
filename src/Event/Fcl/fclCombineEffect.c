@@ -57,7 +57,7 @@ u64 FUN_0041b950(int param_1);
 u64 FUN_0041ba60(int param_1);
 u64 FUN_0041baf0(int param_1);
 u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5);
-u32 FUN_0041be50(long param_1);
+u32 FUN_0041be50(int param_1);
 void FUN_0041beb0(int param_1);
 void FUN_0041bee0(int param_1);
 void FUN_0041bf10(int param_1,u32 param_2);
@@ -134,6 +134,8 @@ u8 DAT_007e0961[];
 code DAT_00960090;
 code DAT_00960178;
 code DAT_0096017c;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 u32 LAB_00417fb0[];
 u32 LAB_0041b798[];
 #include "Kosaka/k_assert.h"
@@ -4424,10 +4426,10 @@ u64 FUN_0041bc90(long param_1,int param_2,int param_3,int param_4,long param_5)
 
 }
 
-// FUN_0041BE50 NONMATCHING
+// FUN_0041BE50
 
 
-u32 FUN_0041be50(long param_1)
+u32 FUN_0041be50(int param_1)
 
 
 
@@ -4445,7 +4447,7 @@ u32 FUN_0041be50(long param_1)
 
     FUN_004c3880(*(u32 *)((int)param_1 + 0x10));
 
-    (*DAT_0096017c)(param_1);
+    (*DAT_0096017c_abs)(param_1);
 
   }
 
@@ -4453,7 +4455,7 @@ u32 FUN_0041be50(long param_1)
 
 }
 
-// FUN_0041BEB0 NONMATCHING
+// FUN_0041BEB0
 
 
 void FUN_0041beb0(int param_1)
@@ -4462,7 +4464,7 @@ void FUN_0041beb0(int param_1)
 
 {
 
-  RwMatrixTranslate((void*)*(u32 *)(param_1 + 0x10),0,0);
+  FUN_004c35d0(*(u32 *)(param_1 + 0x10));
 
   return;
 
@@ -4483,7 +4485,7 @@ void FUN_0041bee0(int param_1)
 
 }
 
-// FUN_0041BF10 NONMATCHING
+// FUN_0041BF10
 
 
 void FUN_0041bf10(int param_1,u32 param_2)
@@ -4495,20 +4497,27 @@ void FUN_0041bf10(int param_1,u32 param_2)
   int iVar1;
 
   int iVar2;
+  u8 bVar1;
+  u8 bVar2;
+  u8 bVar3;
+  u8 bVar4;
 
   
 
-  for (iVar2 = 0; iVar2 < *(int *)(param_1 + 8); iVar2 = iVar2 + 1) {
+  for (iVar2 = 0,
+       bVar1 = (u8)((u32)param_2 >> 0x18),
+       bVar2 = (u8)((u32)param_2 >> 0x10),
+       bVar3 = (u8)((u32)param_2 >> 8),
+       bVar4 = (u8)param_2;
+       iVar2 < *(int *)(param_1 + 8);
+       iVar2 = iVar2 + 1) {
 
     iVar1 = *(int *)(param_1 + 4) + iVar2 * 0x24;
 
-    *(char *)(iVar1 + 0xc) = (char)((u32)param_2 >> 0x18);
-
-    *(char *)(iVar1 + 0xd) = (char)((u32)param_2 >> 0x10);
-
-    *(char *)(iVar1 + 0xe) = (char)((u32)param_2 >> 8);
-
-    *(char *)(iVar1 + 0xf) = (char)param_2;
+    *(char *)(iVar1 + 0xc) = bVar1;
+    *(char *)(iVar1 + 0xd) = bVar2;
+    *(char *)(iVar1 + 0xe) = bVar3;
+    *(char *)(iVar1 + 0xf) = bVar4;
 
   }
 

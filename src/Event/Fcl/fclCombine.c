@@ -96,7 +96,7 @@ void FUN_005225a8();
 void FUN_001052b0();
 s32 FUN_003cf960(s32 param_1, s32 param_2);
 s32 FUN_0016f190(s32 param_1);
-void FUN_003c49e0(s32 param_1, s32 param_2);
+void FUN_003c49e0(s32 param_1, s32 param_2, s32 param_3);
 s32 FUN_003c44d0(s32 param_1, s32 param_2, s32 param_3, s32 param_4);
 s32 FUN_003c5760(s32 param_1);
 s32 FUN_003c5180(s32 param_1, s32 param_2);
@@ -229,14 +229,14 @@ s32 fclCombine003cf3a0(s32 param_1)
     return 0;
 }
 
-// FUN_003cf440 NONMATCHING
+// FUN_003cf440
 void fclCombine003cf440(void)
 {
     s32 i;
     s16* entry;
     s16 flags;
-    register struct FclCombineNode* node;
-    register struct FclCombineNext* next;
+    struct FclCombineNode* node;
+    struct FclCombineNext* next;
 
     entry = (s16*)(*(s32*)(DAT_007ce680 + 0x24) + 4);
     for (i = 0; i < 3; i++) {
@@ -252,11 +252,10 @@ void fclCombine003cf440(void)
         entry += 10;
     }
     node = (struct FclCombineNode*)*(s32*)(DAT_007ce680 + 4);
-    if (node != 0) {
-        do {
-            next = *(struct FclCombineNext**)((u8*)node + 0x10);
-            FUN_003c49e0(DAT_007ce680, DAT_007ce680 + 4);
-        } while ((node = (struct FclCombineNode*)(s32)next) != 0);
+    while (node != 0) {
+        next = *(struct FclCombineNext**)((u8*)node + 0x10);
+        FUN_003c49e0(DAT_007ce680, DAT_007ce680 + 4, (s32)node);
+        node = (struct FclCombineNode*)(s32)next;
     }
 }
 

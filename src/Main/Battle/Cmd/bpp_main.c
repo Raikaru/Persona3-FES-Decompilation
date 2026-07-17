@@ -4,6 +4,7 @@
 #include "Main/Battle/Cmd/bpp_main.h"
 static u32* sBppMain; // DAT_007ce2f4
 void bppMain0020f680(void);
+u8* bppMain0020f720(s16 pcId);
 
 extern void* btlOrderGetActionPlaying(void);
 extern u32 func_0029b0c0(void* action);
@@ -12,11 +13,11 @@ extern s16 func_001ff630(s32 index);
 extern void* func_001ff430(u32 id);
 extern u16 datGetHp(s16 pcId);
 extern u16 datGetMaxHp(s16 pcId);
-extern u16 datGetBadStatusNoDown(s16 pcId);
+extern u32 datGetBadStatusNoDown(s16 pcId);
 extern u16 datGetSp(s16 pcId);
 extern u16 func_0016c670(s16 pcId);
 extern u16 datGetPhysicalCondition(s16 pcId);
-extern void func_0022c720(void* panel, s16 pcId);
+extern void func_0022c720(void* panel, u16 pcId);
 extern void func_0022c850(void* panel);
 extern void func_0022c8a0(void* panel);
 extern void func_0022df10(void* panel);
@@ -106,11 +107,8 @@ void bppMain0020edc0(void)
 void bppMain0020edf0(void)
 {
     u32* work;
-    void* action;
-    void* unit;
     u8* entry;
     u32 value;
-    s16 pcId;
     s32 i;
 
     K_ASSERT(sBppMain != NULL, 0x43);
@@ -119,7 +117,8 @@ void bppMain0020edf0(void)
         return;
     }
 
-    if ((*work & 0x30) == 0 && (*work & 0x40) == 0) {
+    if ((*work & 0x10) == 0 && (*work & 0x20) == 0 &&
+        (*work & 0x40) == 0) {
         if ((s32)work[0x1697] < (s32)work[0x1698]) {
             work[0x1697]++;
         }
@@ -128,73 +127,89 @@ void bppMain0020edf0(void)
     }
 
     if ((*work & 2) != 0) {
-        action = btlOrderGetActionPlaying();
-        unit = action != NULL ? *(void**)((u8*)action + 0x30) : NULL;
-        if (action == NULL || (*work & 1) == 0 ||
-            (unit != NULL && *(u32*)((u8*)unit + 0xa8) != work[0x1695]) ||
-            func_0029b0c0(action) != 0) {
-            if (action == NULL || (*work & 1) == 0 ||
-                (unit != NULL && *(u32*)((u8*)unit + 0xa8) == work[0x1695])) {
-                if (action != NULL && (*work & 1) == 0 &&
-                    func_0029b0c0(action) != 0) {
-                    bppMainSetDetailForUnit(work, unit);
-                }
-                if (unit != NULL) {
-                    work[0x1695] = *(u32*)((u8*)unit + 0xa8);
-                    *work |= 1;
-                }
-            } else {
-                if ((*work & 4) != 0) {
-                    bppMainClearDetailForUnit(work,
-                                              func_001ff430(work[0x1695]));
-                }
-                *work &= ~1u;
-                if (func_0029b0c0(action) != 0) {
-                    bppMainSetDetailForUnit(work, unit);
-                    if (unit != NULL) {
-                        work[0x1695] = *(u32*)((u8*)unit + 0xa8);
-                        *work |= 1;
-                    }
-                }
+        void* action = btlOrderGetActionPlaying();
+        if (action != NULL && (*work & 1) != 0 &&
+            *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8) ==
+                work[0x1695] &&
+            func_0029b0c0(action) == 0) {
+            void* unit = func_001ff430(work[0x1695]);
+            if (*(u8*)((u8*)unit + 0xa2) != 0) {
+                goto same_clear;
             }
+            K_ASSERT((*work & 4) != 0, 0x93);
+            bppPanelDeactivateDetail((BppPanelWork*)(
+                bppMain0020f720(
+                    *(s16*)((u8*)unit + 0xa2c + 2)) + 0x20));
+        same_clear:
+            *work &= ~5u;
+            *work &= ~2u;
         } else {
-            unit = func_001ff430(work[0x1695]);
-            if (unit != NULL && *(u8*)((u8*)unit + 0xa2) == 0) {
-                K_ASSERT((*work & 4) != 0, 0x93);
-                bppMainClearDetailForUnit(work, unit);
+            if (action == NULL || (*work & 1) == 0 ||
+                *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8) ==
+                    work[0x1695]) {
+                goto changed_done;
+            }
+            if ((*work & 4) != 0) {
+                void* unit = func_001ff430(work[0x1695]);
+                if (*(u8*)((u8*)unit + 0xa2) != 0) {
+                    goto old_detail_done;
+                }
+                K_ASSERT((*work & 4) != 0, 0xad);
+                bppPanelDeactivateDetail((BppPanelWork*)(
+                    bppMain0020f720(
+                        *(s16*)((u8*)unit + 0xa2c + 2)) + 0x20));
+            old_detail_done:
+                ;
             }
             *work &= ~4u;
-            *work &= ~1u;
+            *work &= ~2u;
+            if (func_0029b0c0(action) == 0) {
+                goto changed_done;
+            }
+            {
+                void* unit = *(void**)((u8*)action + 0x30);
+                if (*(u8*)((u8*)unit + 0xa2) == 0) {
+                    bppPanelActivateDetail((BppPanelWork*)(
+                        bppMain0020f720(
+                            *(s16*)((u8*)unit + 0xa2c + 2)) + 0x20));
+                    *(u16*)((u8*)work + 0x5a58) =
+                        *(u16*)((u8*)unit + 0xa2c + 2);
+                    *work |= 4;
+                }
+                work[0x1695] = *(u32*)((u8*)unit + 0xa8);
+                *work |= 1;
+            }
+        changed_done:
+            ;
         }
     }
 
     for (i = 0; i < (s32)work[0x1694]; i++) {
-        entry = bppMainEntry(i);
-        pcId = *(s16*)(entry + 0x14);
-        value = datGetHp(pcId);
-        if (*(u32*)(entry + 0x20) != (value & 0xffff)) {
-            *(u32*)(entry + 0x20) = value & 0xffff;
-            func_0022e900(entry + 0x30, value);
+        entry = (u8*)work + i * BPP_MAIN_ENTRY_STRIDE + BPP_MAIN_ENTRY_BASE;
+        value = datGetHp(*(s16*)(entry + 4));
+        if (*(u32*)(entry + 0x10) != (value & 0xffff)) {
+            *(u32*)(entry + 0x10) = value & 0xffff;
+            func_0022e900(entry + 0x20, value);
         }
-        value = datGetSp(pcId);
-        if (*(u32*)(entry + 0x24) != (value & 0xffff)) {
-            *(u32*)(entry + 0x24) = value & 0xffff;
-            func_0022e9a0(entry + 0x30, value);
+        value = datGetSp(*(s16*)(entry + 4));
+        if (*(u32*)(entry + 0x14) != (value & 0xffff)) {
+            *(u32*)(entry + 0x14) = value & 0xffff;
+            func_0022e9a0(entry + 0x20, value);
         }
-        value = datGetBadStatusNoDown(pcId);
-        if (*(u32*)(entry + 0x28) != (value & 0xfffff)) {
-            *(u32*)(entry + 0x28) = value & 0xfffff;
-            func_0022f1c0(entry + 0x30, value);
+        value = datGetBadStatusNoDown(*(s16*)(entry + 4));
+        if (*(u32*)(entry + 0x18) != (value & 0xfffff)) {
+            *(u32*)(entry + 0x18) = value & 0xfffff;
+            func_0022f1c0(entry + 0x20, value);
         }
-        value = datGetPhysicalCondition(pcId);
-        if (*(u32*)(entry + 0x2c) != (value & 0xffff)) {
-            *(u32*)(entry + 0x2c) = value & 0xffff;
-            func_0022e780(entry + 0x30);
+        value = datGetPhysicalCondition(*(s16*)(entry + 4));
+        if (*(u32*)(entry + 0x1c) != (value & 0xffff)) {
+            *(u32*)(entry + 0x1c) = value & 0xffff;
+            func_0022e780(entry + 0x20);
         }
     }
 }
 
-// FUN_0020f260 NONMATCHING
+// FUN_0020f260
 void bppMain0020f260(void)
 {
     u32* work;
@@ -206,79 +221,79 @@ void bppMain0020f260(void)
 
     K_ASSERT(sBppMain != NULL, 0x43);
     work = sBppMain;
-    if ((*work & 0x80) == 0) {
+    if ((~*work & 0x80) != 0) {
         return;
     }
     for (i = 0; i < (s32)work[0x1694]; i++) {
-        reverse = (s32)work[0x1694] - 1 - i;
+        entry = (u8*)work + i * BPP_MAIN_ENTRY_STRIDE + BPP_MAIN_ENTRY_BASE;
+        reverse = ((s32)work[0x1694] - 1 - i) * 2;
         transition = work[0x1697];
-        if ((s32)transition < reverse * 2) {
+        if ((s32)transition < reverse) {
             alpha = 0.0f;
-        } else if ((s32)transition < reverse * 2 + 6) {
-            alpha = (f32)((s32)transition - reverse * 2) / 6.0f;
+        } else if ((s32)transition < reverse + 6) {
+            alpha = (f32)((s32)transition - reverse) / 6.0f;
         } else {
             alpha = 1.0f;
         }
-        entry = bppMainEntry(i);
-        bppPanelSetPrimaryAnimation(alpha, (BppPanelWork*)(entry + 0x30));
-        bppPanelSetSecondaryAnimation(1.0f, (BppPanelWork*)(entry + 0x30));
-        func_0022c8a0(entry + 0x30);
-        func_0022df10(entry + 0x30);
+        bppPanelSetPrimaryAnimation(alpha, (BppPanelWork*)(entry + 0x20));
+        bppPanelSetSecondaryAnimation(1.0f, (BppPanelWork*)(entry + 0x20));
+        func_0022c8a0(entry + 0x20);
+        func_0022df10(entry + 0x20);
     }
 }
 
-// FUN_0020f3b0 NONMATCHING
+// FUN_0020f3b0
 void bppMain0020f3b0(void)
 {
     u32* work;
-    u32 count;
-    u32 oldDuration;
-    u32 newDuration;
     u8* entry;
-    s16 pcId;
+    s32 count;
+    s32 oldDuration;
+    s32 transition;
     s32 i;
 
     K_ASSERT(sBppMain != NULL, 0x43);
     work = sBppMain;
-    count = (u32)bpMisc001ff5b0();
-    for (i = 0; i < (s32)count; i++) {
-        entry = bppMainEntry(i);
-        *(u32*)(entry + 0x10) = 0;
-        pcId = func_001ff630(i);
-        *(s16*)(entry + 0x14) = pcId;
-        *(u32*)(entry + 0x20) = 0xffffffff;
-        *(u32*)(entry + 0x24) = 0xffffffff;
-        *(u32*)(entry + 0x28) = 0xffffffff;
-        *(u32*)(entry + 0x2c) = 0xffffffff;
+    count = bpMisc001ff5b0();
+    for (i = 0; i < count; i++) {
+        entry = (u8*)work + i * BPP_MAIN_ENTRY_STRIDE + BPP_MAIN_ENTRY_BASE;
+        *(u32*)entry = 0;
+        *(s16*)(entry + 4) = func_001ff630(i);
+        *(u32*)(entry + 0x10) = 0xffffffff;
+        *(u32*)(entry + 0x14) = 0xffffffff;
+        *(u32*)(entry + 0x18) = 0xffffffff;
+        *(u32*)(entry + 0x1c) = 0xffffffff;
     }
     oldDuration = work[0x1698];
-    newDuration = (count - 1) * 2 + 6;
-    work[0x1698] = newDuration;
-    if (oldDuration == 0) {
-        work[0x1697] = 0;
+    transition = work[0x1697];
+    work[0x1698] = (count - 1) * 2 + 6;
+    if (oldDuration != 0) {
+        work[0x1697] =
+            (transition * (s32)work[0x1698]) / oldDuration;
     } else {
-        work[0x1697] = (work[0x1697] * newDuration) / oldDuration;
+        work[0x1697] = 0;
     }
     work[0x1694] = count;
-    for (i = 0; i < (s32)count; i++) {
-        entry = bppMainEntry(i);
-        pcId = *(s16*)(entry + 0x14);
-        func_0022c720(entry + 0x30, pcId);
-        *(u32*)(entry + 0x540) = 0x43ee0000;
-        *(u32*)(entry + 0x544) = (u32)i * 100 + 4;
-        *(u32*)(entry + 0x868) = datGetMaxHp(pcId) & 0xffff;
-        *(u32*)(entry + 0x870) = func_0016c670(pcId) & 0xffff;
+    for (i = 0; i < (s32)work[0x1694]; i++) {
+        entry = (u8*)work + i * BPP_MAIN_ENTRY_STRIDE + BPP_MAIN_ENTRY_BASE;
+        func_0022c720(entry + 0x20, *(u16*)(entry + 4));
+        *(u32*)(entry + 0x530) = 0x43ee0000;
+        *(f32*)(entry + 0x534) = (f32)i * 100.0f + 4.0f;
+        *(u32*)(entry + 0x858) =
+            datGetMaxHp(*(s16*)(entry + 4)) & 0xffff;
+        *(u32*)(entry + 0x860) =
+            func_0016c670(*(s16*)(entry + 4)) & 0xffff;
     }
     *work |= 2;
 }
 
-// FUN_0020f570 NONMATCHING
+// FUN_0020f570
 void bppMain0020f570(void)
 {
     u32* work;
-    s16 selected;
     s32 count;
     s32 i;
+    u8* bppMain0020f720();
 
     K_ASSERT(sBppMain != NULL, 0x43);
     work = sBppMain;
@@ -287,16 +302,16 @@ void bppMain0020f570(void)
     if ((*work & 4) != 0) {
         count = bpMisc001ff5b0();
         for (i = 0; i < count; i++) {
-            if ((s16)work[0x1696] == func_001ff630(i)) {
+            if ((u16)work[0x1696] == (u16)func_001ff630(i)) {
                 break;
             }
         }
         if (i == count) {
             *work &= ~4u;
-            *work &= ~2u;
+            *work &= ~1u;
         } else {
-            selected = (s16)work[0x1696];
-            bppPanelShow((BppPanelWork*)(bppMainFindEntry(selected) + 0x20));
+            bppPanelShow((BppPanelWork*)(
+                bppMain0020f720((u16)work[0x1696]) + 0x20));
         }
     }
 }
@@ -316,49 +331,85 @@ void bppMain0020f680(void)
     *work &= ~2u;
 }
 
-// FUN_0020f720 NONMATCHING
-u8* bppMain0020f720(s16 pcId)
+static inline u8* bppMainLookupEntry(s16 pcId)
 {
-    return bppMainFindEntry(pcId);
+    s32 i;
+    u8* entry;
+    u32* work;
+    u32 id;
+    u8* result;
+    s32 count;
+    s32 stride;
+
+    K_ASSERT(sBppMain != NULL, 0x43);
+    work = sBppMain;
+    i = 0;
+    id = (u16)pcId;
+    count = (s32)work[0x1694];
+    stride = BPP_MAIN_ENTRY_STRIDE;
+    for (; i < count; i++) {
+        entry = (u8*)work + i * stride;
+        result = entry + BPP_MAIN_ENTRY_BASE;
+        if (*(u16*)(entry + 0x14) == id) {
+            return result;
+        }
+    }
+    K_ASSERT(0, 0x19c);
+    return NULL;
 }
 
-// FUN_0020f7d0 NONMATCHING
+// FUN_0020f720
+#pragma schedule on
+#pragma optimization_level 1
+u8* bppMain0020f720(s16 pcId)
+{
+    return bppMainLookupEntry(pcId);
+}
+
+// FUN_0020f7d0
 void bppMain0020f7d0(s16 pcId)
 {
     u8* entry;
 
-    entry = bppMainFindEntry(pcId);
+    K_ASSERT(sBppMain != NULL, 0x43);
+    entry = bppMainLookupEntry(pcId);
     *(u32*)entry |= 1;
     bppPanelRequestStatusRefresh((BppPanelWork*)(entry + 0x20));
 }
 
-// FUN_0020f8b0 NONMATCHING
+// FUN_0020f8b0
 void bppMain0020f8b0(s16 pcId)
 {
     u8* entry;
 
-    entry = bppMainFindEntry(pcId);
+    K_ASSERT(sBppMain != NULL, 0x43);
+    entry = bppMainLookupEntry(pcId);
     *(u32*)entry &= ~1u;
     bppPanelCancelStatusRefresh((BppPanelWork*)(entry + 0x20));
 }
 
-// FUN_0020f9a0 NONMATCHING
+// FUN_0020f9a0
 void bppMain0020f9a0(s16 pcId)
 {
-    bppPanelRequestHide((BppPanelWork*)(bppMain0020f720(pcId) + 0x20));
+    K_ASSERT(sBppMain != NULL, 0x43);
+    bppPanelRequestHide((BppPanelWork*)(bppMainLookupEntry(pcId) + 0x20));
 }
 
-// FUN_0020fa80 NONMATCHING
+// FUN_0020fa80
 void bppMain0020fa80(s16 pcId)
 {
-    bppPanelEnableActionOverlay((BppPanelWork*)(bppMain0020f720(pcId) + 0x20));
+    K_ASSERT(sBppMain != NULL, 0x43);
+    bppPanelEnableActionOverlay((BppPanelWork*)(bppMainLookupEntry(pcId) + 0x20));
 }
 
-// FUN_0020fb60 NONMATCHING
+// FUN_0020fb60
 void bppMain0020fb60(s16 pcId)
 {
-    bppPanelDisableActionOverlay((BppPanelWork*)(bppMain0020f720(pcId) + 0x20));
+    K_ASSERT(sBppMain != NULL, 0x43);
+    bppPanelDisableActionOverlay((BppPanelWork*)(bppMainLookupEntry(pcId) + 0x20));
 }
+#pragma optimization_level 2
+#pragma schedule off
 
 
 // FUN_0020fc40

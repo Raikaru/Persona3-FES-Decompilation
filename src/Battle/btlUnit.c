@@ -2,28 +2,28 @@
 #include "Battle/btlPacket.h"
 #include "Battle/battle.h"
 #include "Battle/btlAction.h"
+#include "Battle/btlBoss.h"
 #include "Graphics/Model/mdlManager.h"
 #include "Main/Battle/Data/datUnit.h"
 #include "Main/Battle/Data/datCalc.h"
 #include "Scene/mt_scene.h"
 #include "Graphics/Model/mdlFile.h"
 #include "h_cdvd.h"
+#include "Kernel/Kwln/kwln.h"
 
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 void FUN_00287b20(int param_1,short param_2);
-void FUN_00287cf0(int param_1,short param_2);
-void FUN_00287ea0(long param_1);
-void FUN_00288110(int param_1);
+void FUN_00287cf0(BtlUnit* unit, u16 mode);
+void FUN_00287ea0(BtlUnit* unit);
+void FUN_00288110(BtlUnit* unit);
 int FUN_00288da0(int param_1,short param_2);
-int FUN_00288fe0(u32 param_1,short param_2);
-int FUN_002890a0(int *param_1,int *param_2);
 void FUN_002891e0(void);
 u64 FUN_00289650(short param_1,u32 param_2,long param_3);
 extern f32 DAT_007cad78;
-extern u8* DAT_007cada4;
-extern u32 DAT_007cb0cc;
+extern f32 DAT_007cada4;
+extern f32 DAT_007cb0cc;
 extern code DAT_00960090;
 extern int iGpffffa850;
 extern int iGpffffb6fc;
@@ -37,8 +37,8 @@ extern RwV3d D_00697870;
 extern RwV3d D_00697880;
 extern RwV3d D_00697890;
 extern RwV3d D_006978A0;
-extern f32 D_00957180[];
-#define BTL_UNIT_PTR(addr) (*(u8**)(uintptr_t)(addr))
+extern RwV3d D_00957180;
+extern u8* DAT_007ce42c;
 
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
 BtlPacket* btlUnit00284900(BtlUnit* unit, s32 param_2);
@@ -57,14 +57,6 @@ typedef struct BtlUnitAnimInfo
     s16 unk_8;
 } BtlUnitAnimInfo;
 
-typedef struct BtlUnitAnimBounds
-{
-    s16 centerX;
-    s16 centerY;
-    s16 centerZ;
-    u16 unk_6;
-    u16 radius;
-} BtlUnitAnimBounds;
 typedef struct BtlUnitPacketBackstep
 {
     RwV3d origin;          // 0x00
@@ -84,7 +76,7 @@ void func_002d4800(RwV3d* param_1);
 void func_002d48c0(RwV3d* param_1, const RwV3d* param_2, const RwV3d* param_3, f32 param_4);
 void func_00288110(BtlUnit* unit);
 void func_002831c0(BtlUnit* unit, s32 param_2);
-s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id);
+s16 func_002838d0(BtlUnit* unit, u16 id, f32 scale);
 s16 func_00283510(BtlUnit* unit, s32 id);
 const BtlUnitAnimBounds* func_00288da0(BtlUnit* unit, s32 id);
 void* func_002bbc00(BtlUnit* unit);
@@ -114,8 +106,8 @@ f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id);
 void func_002826d0(BtlUnit* unit);
 void func_00282bc0(BtlUnit* unit);
 s16 func_002f9560(BtlUnit* unit, u16* flags);
-s16 func_002835e0(f32 scale, BtlUnit* unit, s16 id);
-s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id);
+s16 func_002835e0(BtlUnit* unit, s16 id, f32 scale);
+s16 func_002838d0(BtlUnit* unit, u16 id, f32 scale);
 u16 func_002ffbc0(u32 max);
 f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 id);
 s32 func_00318ed0(Model* mdl, s32 param_2, RwV3d* pos);
@@ -146,8 +138,8 @@ typedef struct BtlUnitPacket00284900
 {
     RwV3d pos;     // 0x00
     BtlUnit* unit; // 0x0c
-    s16 unk_10;    // 0x10
-    s16 unk_12;    // 0x12
+    u16 unk_10;    // 0x10
+    u16 unk_12;    // 0x12
     f32 phase;     // 0x14
 } BtlUnitPacket00284900;
 
@@ -286,32 +278,44 @@ void func_00280050(void* param_1, RwV3d* param_2)
     param_2->z = transformed.z + (unit->unk_96 * 25 - 0x6d6);
 }
 
-// FUN_00280130 NONMATCHING
+// FUN_00280130
 void func_00280130(BtlUnit* unit, RwV3d* param_2)
 {
     const BtlUnitAnimBounds* bounds;
     RwV3d scaled;
     RwV3d transformed;
+    f32 centerY;
+    f32 centerZ;
+    f32 centerX;
 
     bounds = func_00288da0(unit, 0);
-    scaled.y = bounds->centerY * unit->scale;
-    scaled.z = bounds->centerZ * unit->scale;
-    scaled.x = bounds->centerX * unit->scale;
+    centerY = bounds->centerY;
+    centerZ = bounds->centerZ;
+    centerX = bounds->centerX;
+    scaled.x = centerX * unit->scale;
+    scaled.y = centerY * unit->scale;
+    scaled.z = centerZ * unit->scale;
     RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
     param_2->x = transformed.x + unit->pos.x;
     param_2->y = transformed.y + unit->pos.y;
     param_2->z = transformed.z + unit->pos.z;
 }
 
-// FUN_00280200 NONMATCHING
+// FUN_00280200
 void func_00280200(BtlUnit* unit, const s16* param_2, RwV3d* param_3)
 {
     RwV3d scaled;
     RwV3d transformed;
+    f32 y;
+    f32 z;
+    f32 x;
 
-    scaled.y = param_2[1] * unit->scale;
-    scaled.z = param_2[2] * unit->scale;
-    scaled.x = param_2[0] * unit->scale;
+    y = param_2[1];
+    z = param_2[2];
+    x = param_2[0];
+    scaled.x = x * unit->scale;
+    scaled.y = y * unit->scale;
+    scaled.z = z * unit->scale;
     RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
     param_3->x = transformed.x + unit->pos.x;
     param_3->y = transformed.y + unit->pos.y;
@@ -335,19 +339,25 @@ void func_002802d0(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
     param_3->z = transformed.z + unit->pos.z;
 }
 
-// FUN_00280390 NONMATCHING
+// FUN_00280390
 void func_00280390(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
 {
     const BtlUnitAnimBounds* bounds;
     RtQuat rotation;
     RwV3d scaled;
     RwV3d transformed;
+    f32 centerY;
+    f32 centerZ;
+    f32 centerX;
 
     func_002d1de0((RwV3d*)&rotation, &unit->pos, &target->pos);
     bounds = func_00288da0(unit, 9);
-    scaled.x = bounds->centerX * unit->scale;
-    scaled.y = bounds->centerY * unit->scale;
-    scaled.z = bounds->centerZ * unit->scale;
+    centerY = bounds->centerY;
+    centerZ = bounds->centerZ;
+    centerX = bounds->centerX;
+    scaled.x = centerX * unit->scale;
+    scaled.y = centerY * unit->scale;
+    scaled.z = centerZ * unit->scale;
     RtQuatTransformVectors(&transformed, &scaled, 1, &rotation);
     param_3->x = transformed.x + unit->pos.x;
     param_3->y = transformed.y + unit->pos.y;
@@ -371,14 +381,27 @@ void func_00280480(BtlUnit* unit, BtlUnit* target, RwV3d* param_3)
     param_3->z = transformed.z + (unit->unk_96 * 25 - 0x6d6);
 }
 
-// FUN_00280580 NONMATCHING
+// FUN_00280580
 void func_00280580(BtlUnit* unit, RwV3d* param_2)
 {
+    RwV3d inactiveScaled;
+    RwV3d inactiveTransformed;
     RwV3d scaled;
     RwV3d transformed;
 
-    if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0 &&
-        func_00318ed0(unit->mdl, 0, param_2) != 0)
+    if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) == 0)
+    {
+        inactiveScaled.x = unit->sphereCenter.x * unit->scale;
+        inactiveScaled.y = unit->sphereCenter.y * unit->scale;
+        inactiveScaled.z = unit->sphereCenter.z * unit->scale;
+        RtQuatTransformVectors(&inactiveTransformed, &inactiveScaled, 1, &unit->rot);
+        param_2->x = inactiveTransformed.x + unit->pos.x;
+        param_2->y = inactiveTransformed.y + unit->pos.y;
+        param_2->z = inactiveTransformed.z + unit->pos.z;
+        return;
+    }
+
+    if (func_00318ed0(unit->mdl, 0, param_2) != 0)
     {
         return;
     }
@@ -392,7 +415,7 @@ void func_00280580(BtlUnit* unit, RwV3d* param_2)
     param_2->z = transformed.z + unit->pos.z;
 }
 
-// FUN_002806D0 NONMATCHING
+// FUN_002806D0
 void func_002806d0(BtlUnit* unit, RwV3d* param_2)
 {
     RwV3d scaled;
@@ -403,12 +426,12 @@ void func_002806d0(BtlUnit* unit, RwV3d* param_2)
     scaled.z = unit->sphereCenter.z * unit->scale;
     RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
     param_2->x = transformed.x + unit->pos.x;
-    param_2->y = transformed.y + unit->pos.y +
-                 unit->unk_8c * unit->scale * 0.1f;
+    param_2->y = transformed.y + unit->pos.y;
     param_2->z = transformed.z + unit->pos.z;
+    param_2->y += unit->unk_8c * unit->scale * DAT_007cb0cc;
 }
 
-// FUN_002807A0 NONMATCHING
+// FUN_002807A0
 void func_002807a0(BtlUnit* unit, RwV3d* param_2)
 {
     RwV3d scaled;
@@ -419,9 +442,9 @@ void func_002807a0(BtlUnit* unit, RwV3d* param_2)
     scaled.z = unit->sphereCenter.z * unit->scale;
     RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
     param_2->x = transformed.x + unit->pos.x;
-    param_2->y = transformed.y + unit->pos.y +
-                 unit->unk_8c * unit->scale * 0.25f;
+    param_2->y = transformed.y + unit->pos.y;
     param_2->z = transformed.z + unit->pos.z;
+    param_2->y += unit->unk_8c * unit->scale * 0.25f;
 }
 
 // FUN_00280870 NONMATCHING
@@ -726,7 +749,7 @@ void func_00280da0(BtlUnit* unit)
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
 
-// FUN_002812D0 NONMATCHING
+// FUN_002812D0
 f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
 {
     const BtlUnitAnimInfo* animInfo;
@@ -735,23 +758,27 @@ f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
     f32 targetOffset;
 
     animId = func_00283510(unit, id);
-    if (animId < 0 || animId >= unit->unk_9d8)
+    if (animId < unit->unk_9d8)
     {
-        return 0.0f;
-    }
-
-    animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
-    offset = unit->scale * animInfo[animId].unk_6;
-    targetOffset = func_002fc5d0(unit, target, id);
-    if (targetOffset >= 0.0f)
-    {
-        offset += targetOffset;
+        animInfo = (const BtlUnitAnimInfo*)unit->unk_9ec;
+        offset = unit->scale * animInfo[animId].unk_6;
+        targetOffset = func_002fc5d0(unit, target, id);
+        if (targetOffset >= 0.0f)
+        {
+            offset += targetOffset;
+        }
+        else
+        {
+            offset += target->sphereRadius * target->scale;
+        }
+        offset += unit->sphereCenter.z * unit->scale;
     }
     else
     {
-        offset += target->sphereRadius * target->scale;
+        offset = 0.0f;
     }
-    return unit->sphereCenter.z * unit->scale + offset;
+
+    return offset;
 }
 
 // FUN_002826D0 NONMATCHING
@@ -880,14 +907,14 @@ void func_002826d0(BtlUnit* unit)
     unit->unk_9cc &= (u16)~8;
 }
 
-// FUN_00282BC0 NONMATCHING
+// FUN_00282BC0
 void func_00282bc0(BtlUnit* unit)
 {
     s16 animation;
 
-    animation = btlUnit00282c30(unit);
-    animation = (s16)func_002838d0(1.0f, unit, animation);
-    animation = (s16)func_002ffbc0((u16)animation);
+    animation = (s16)func_002838d0(
+        unit, (u16)(s32)btlUnit00282c30(unit), 1.0f);
+    animation = (s16)func_002ffbc0(animation);
     btlUnit00283c00(unit, animation);
 }
 // FUN_00281F20 NONMATCHING
@@ -1040,47 +1067,32 @@ void func_002831c0(BtlUnit* unit, s32 blendFrameCount)
 
     (void)blendFrameCount;
 }
-// FUN_0027F530 NONMATCHING
+// FUN_0027F530
 void func_0027f530(BtlUnit* unit)
 {
-    u8* bytes;
+    unit->scale = 1.0f;
+    unit->pos = D_00957180;
+    unit->posOffset = D_00957180;
 
-    bytes = (u8*)unit;
-    *(f32*)(bytes + 0x2c) = 1.0f;
-    *(f32*)(bytes + 0x04) = D_00957180[0];
-    *(f32*)(bytes + 0x08) = D_00957180[1];
-    *(f32*)(bytes + 0x0c) = D_00957180[2];
-    *(f32*)(bytes + 0x10) = D_00957180[0];
-    *(f32*)(bytes + 0x14) = D_00957180[1];
-    *(f32*)(bytes + 0x18) = D_00957180[2];
-    *(f32*)(bytes + 0x28) = 1.0f;
-    *(f32*)(bytes + 0x1c) = 0.0f;
-    *(f32*)(bytes + 0x20) = 0.0f;
-    *(f32*)(bytes + 0x24) = 0.0f;
-    bytes[0x30] = 0xff;
-    bytes[0x31] = 0xff;
-    bytes[0x32] = 0xff;
-    bytes[0x33] = 0xff;
-    bytes[0x34] = bytes[0x30];
-    bytes[0x35] = bytes[0x31];
-    bytes[0x36] = bytes[0x32];
-    bytes[0x37] = bytes[0x33];
-    bytes[0x3c] = bytes[0x30];
-    bytes[0x3d] = bytes[0x31];
-    bytes[0x3e] = bytes[0x32];
-    bytes[0x3f] = bytes[0x33];
-    bytes[0x40] = bytes[0x30];
-    bytes[0x41] = bytes[0x31];
-    bytes[0x42] = bytes[0x32];
-    bytes[0x43] = bytes[0x33];
-    *(u16*)(bytes + 0x4c) = 0;
-    *(f32*)(bytes + 0x54) = D_00957180[0];
-    *(f32*)(bytes + 0x58) = D_00957180[1];
-    *(f32*)(bytes + 0x5c) = D_00957180[2];
-    *(f32*)(bytes + 0x70) = 0.0f;
-    *(f32*)(bytes + 0x74) = 0.0f;
-    *(f32*)(bytes + 0x78) = 0.0f;
-    *(f32*)(bytes + 0x7c) = 0.5f;
+    unit->rot.real = 1.0f;
+    unit->rot.imag.x = 0.0f;
+    unit->rot.imag.y = 0.0f;
+    unit->rot.imag.z = 0.0f;
+
+    unit->cols[0].r = 0xff;
+    unit->cols[0].g = 0xff;
+    unit->cols[0].b = 0xff;
+    unit->cols[0].a = 0xff;
+    unit->cols[1] = unit->cols[0];
+    unit->cols[3] = unit->cols[0];
+    unit->cols[4] = unit->cols[0];
+
+    unit->unk_4c = 0;
+    unit->unk_54 = D_00957180;
+    unit->unk_70.imag.x = 0.0f;
+    unit->unk_70.imag.y = 0.0f;
+    unit->unk_70.imag.z = 0.0f;
+    unit->unk_70.real = 0.5f;
 }
 
 // FUN_0027f650
@@ -1200,7 +1212,7 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     RwV3d center;
     RtQuat rotation;
 
-    table = BTL_UNIT_PTR(0x007ce42c);
+    table = DAT_007ce42c;
     charId = unit->charId;
 
     if (mode == 2)
@@ -1249,25 +1261,36 @@ void func_0027f940(BtlUnit* unit, BtlUnit* source, BtlUnit* target,
     }
 }
 
-// FUN_0027FC80 NONMATCHING
+// FUN_0027FC80
+#pragma optimization_level 1
+#pragma tailcall on
 u32 func_0027fc80(BtlUnit* unit)
 {
+    BtlUnit* source;
+    u32 charId;
     u8* table;
     u8* entry;
+    uintptr_t address;
 
+    source = unit;
     if (unit->genus != UNIT_GENUS_PS)
     {
         return 0xffffffff;
     }
-    if (unit->charId == 0xcf)
+    charId = source->charId;
+    if (charId == 0xcf)
     {
         return 0xffffffff;
     }
 
-    table = BTL_UNIT_PTR(0x007ce42c);
-    entry = table + unit->charId * 0x58;
+    table = DAT_007ce42c;
+    address = charId * 0x58;
+    address += (uintptr_t)table;
+    entry = (u8*)address;
     return ((u32)entry[0x56] << 24) | 0xffffff;
 }
+#pragma tailcall off
+#pragma optimization_level 2
 
 // FUN_0027FCF0
 void func_0027fcf0(BtlUnit* unit, const RwV3d* target)
@@ -2370,16 +2393,18 @@ void btlUnitInit00284900Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284690 NONMATCHING
+// FUN_00284690
 u32 btlUnitUpdate00284900Packet(void* work)
 {
+    static volatile f32 one = 1.0f;
     BtlUnitPacket00284900* packet;
     BtlUnit* unit;
+    RwV3d position;
     RwV3d direction;
-    RwV3d offset;
     f32 phase;
     f32 magnitude;
     f32 arcScale;
+    u32 result;
 
     packet = (BtlUnitPacket00284900*)work;
     unit = packet->unit;
@@ -2387,13 +2412,13 @@ u32 btlUnitUpdate00284900Packet(void* work)
 
     if (packet->unk_12 == 0)
     {
-        packet->phase = 1.0f;
+        packet->phase = 0.5f;
         packet->pos = unit->pos;
     }
 
     phase = packet->phase + 1.0f / (2.0f * (f32)packet->unk_10);
     packet->phase = phase;
-    arcScale = 2.0f * ((-2.0f * phase * phase) + (4.0f * phase) - 1.5f);
+    arcScale = 2.0f * (((-1.0f + (-2.0f * phase * phase)) + (4.0f * phase)) - 0.5f);
 
     RtQuatTransformVectors(&direction, &D_00697870, 1, &unit->rot);
     magnitude = unit->sphereRadius * unit->scale * 1.25f;
@@ -2402,21 +2427,33 @@ u32 btlUnitUpdate00284900Packet(void* work)
         magnitude = 75.0f;
     }
 
-    magnitude *= arcScale;
-    offset.x = direction.x * magnitude;
-    offset.y = direction.y * magnitude;
-    offset.z = direction.z * magnitude;
+    if (arcScale < one)
+    {
+        magnitude *= arcScale;
+        direction.x *= magnitude;
+        direction.y *= magnitude;
+        direction.z *= magnitude;
+        result = 0;
+        goto update;
+    }
 
+    direction.x *= magnitude;
+    direction.y *= magnitude;
+    direction.z *= magnitude;
+
+    result = 1;
+update:
     if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
     {
-        unit->pos.x = packet->pos.x + offset.x;
-        unit->pos.y = packet->pos.y + offset.y;
-        unit->pos.z = packet->pos.z + offset.z;
+        position.x = packet->pos.x + direction.x;
+        position.y = packet->pos.y + direction.y;
+        position.z = packet->pos.z + direction.z;
+        unit->pos = position;
         unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     }
 
     packet->unk_12++;
-    return 0;
+    return result;
 }
 
 // FUN_002848e0
@@ -2463,42 +2500,55 @@ void btlUnitInitEnmDodgeAnimPacket(void* work)
 // FUN_002849a0 NONMATCHING
 u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
 {
+    static volatile f32 phaseLimit = 1.0f;
+    static volatile f32 baseScale = 0.3f;
+    static volatile f32 stepDelta = 0.05f;
+    static volatile f32 reverseStep = -0.3f;
     BtlUnitPacketEnmDodgeAnim* packet;
     BtlUnit* unit;
     RwV3d direction;
+    f32 phase;
+    f32 baseMagnitude;
     f32 magnitude;
-
+    f32 positiveDelta;
+    f32 negativeDelta;
     packet = (BtlUnitPacketEnmDodgeAnim*)work;
     unit = packet->unit;
 
-    magnitude = unit->sphereRadius * unit->scale * 0.3f;
-    if (magnitude > 100.0f)
+    baseMagnitude = unit->sphereRadius * unit->scale * baseScale;
+    if (baseMagnitude > 100.0f)
     {
-        magnitude = 100.0f;
+        baseMagnitude = 100.0f;
     }
 
     if (packet->unk_4 == 0)
     {
         packet->phase = 0.0f;
-        packet->step = 0.3f;
+        packet->step = baseScale;
     }
 
     if (packet->step >= 0.0f)
     {
-        magnitude *= packet->phase;
-        packet->phase += (1.0f - packet->phase) * packet->step;
-        packet->step += 0.05f;
-        if (packet->phase >= 1.0f)
+        phase = packet->phase;
+        positiveDelta = (1.0f - phase) * packet->step;
+        packet->step += stepDelta;
+        magnitude = baseMagnitude * packet->phase;
+        packet->phase += positiveDelta;
+        if (packet->phase >= phaseLimit)
         {
-            packet->step = -0.3f;
+            packet->step = reverseStep;
         }
     }
     else
     {
-        magnitude *= packet->phase;
-        packet->phase -= packet->phase * -packet->step;
-        packet->step -= 0.05f;
-        if (packet->phase <= 0.0f)
+        negativeDelta = -packet->step;
+        phase = packet->phase;
+        negativeDelta = phase * negativeDelta;
+        packet->step -= stepDelta;
+        magnitude = baseMagnitude * packet->phase;
+        phase -= negativeDelta;
+        packet->phase = phase;
+        if (phase <= 0.0f)
         {
             if (!(unit->flags3 & BTLUNIT_FLAG3_UNK400))
             {
@@ -2521,6 +2571,7 @@ u32 btlUnitUpdateEnmDodgeAnimPacket(void* work)
     packet->unk_4++;
     return 0;
 }
+
 
 // FUN_00284b50
 void btlUnitDestroyEnmDodgeAnimPacket(void* work)
@@ -2691,7 +2742,7 @@ void btlUnitInit00284f50Packet(void* work)
     packet->unit->packetCount++;
 }
 
-// FUN_00284e10 NONMATCHING
+// FUN_00284e10
 u32 btlUnitUpdate00284f50Packet(void* work)
 {
     BtlUnitPacket00284f50* packet;
@@ -2710,6 +2761,7 @@ u32 btlUnitUpdate00284f50Packet(void* work)
 
     if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
     {
+        FUN_00287cf0(unit, 4);
 
         if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
         {
@@ -2726,6 +2778,7 @@ u32 btlUnitUpdate00284f50Packet(void* work)
         {
             mdlAnim00318770(unit->mdl, 0, frame);
         }
+        FUN_00287b20((int)unit, 4);
 
     }
 
@@ -3629,7 +3682,7 @@ void btlUnitInitLookAtPacket(void* work)
     }
 }
 
-// FUN_00288190 NONMATCHING
+// FUN_00288190
 u32 btlUnitUpdateLookAtPacket(void* work)
 {
     BtlUnitPacketLookAt* packet;
@@ -3680,6 +3733,7 @@ u32 btlUnitUpdateLookAtPacket(void* work)
 
                 curr->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
                 curr->lookAtTargetPos = packet->targetPos;
+                FUN_00287b20((int)curr, 3);
             }
 
             curr = curr->prev;
@@ -3714,6 +3768,7 @@ u32 btlUnitUpdateLookAtPacket(void* work)
 
         unit->lookAtMode = BTLUNIT_LOOKAT_MODE_TARGETPOS;
         unit->lookAtTargetPos = packet->targetPos;
+        FUN_00287b20((int)unit, 3);
     }
 
     return 1;
@@ -4170,14 +4225,13 @@ extern const u16 gp0xffff9828[];
 extern const u8 DAT_007ce400[];
 
 extern u16 func_002fb860(void);
-extern void* func_002fc410(void);
 extern void* func_00308c60(DatUnit* unit);
 extern s16 func_003082f0(DatUnit* unit, u16 id);
 extern long func_002d6370(u64 id);
-extern f32 func_00318910(Model* mdl, u32 slot, u16 id);
+extern f32 func_00318910(Model* mdl, u32 slot, s16 id);
 extern void func_002d4040(BtlUnit* unit);
 extern void func_001a0dc0(u16 resTypeId, u32 enable);
-extern void func_0031c7e0(void);
+extern u32 func_0031c7e0(Model* model);
 extern u32 func_0031ebe0(void* data);
 extern void func_002bbd00(void* data);
 extern void func_002bb8f0(void* data);
@@ -4187,113 +4241,290 @@ extern void* func_00174800(u64 id);
 extern u32 func_0030b5a0(DatUnit* unit, u32 flag);
 extern void func_002f9c10(BtlAction* action);
 
-static u16 btlUnitResolveAnimId(const BtlUnit* unit, u32 id)
-{
-    u16 special;
 
-    if (unit->genus == UNIT_GENUS_EC)
-    {
-        special = func_002fb860();
-        if (special != 0xffff)
-        {
-            return special;
-        }
-    }
-    else if (unit->genus != UNIT_GENUS_PC && unit->genus != UNIT_GENUS_PS)
-    {
-        return 0;
-    }
-
-    return DAT_00693290[(u32)unit->genus * 26 + (id & 0xffff)];
-}
-
-// FUN_00283510 NONMATCHING
+// FUN_00283510
 s16 func_00283510(BtlUnit* unit, s32 id)
 {
-    return (s16)btlUnitResolveAnimId(unit, (u32)id);
-}
+    s16 result;
+    const u8* row;
 
-// FUN_002835E0 NONMATCHING
-s16 func_002835e0(f32 scale, BtlUnit* unit, s16 id)
-{
-    u16 animId;
-    const BtlUnitAnimInfo* info;
-
-    animId = btlUnitResolveAnimId(unit, (u32)id);
-    if ((s16)animId >= (s16)unit->unk_9d8)
+    switch (unit->genus)
     {
-        return 0;
+    case UNIT_GENUS_PC:
+    case UNIT_GENUS_PS:
+        goto resolve;
+    default:
+        break;
+    }
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_EC:
+        break;
+    default:
+        goto zero;
+    }
+    result = (s16)func_002fb860();
+    if (result != -1)
+    {
+        return result;
     }
 
-    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
-    return (s16)((f32)info->unk_0 / (scale * ((f32)info->speedPercent / 100.0f)));
+resolve:
+    row = DAT_00693290 + (u32)unit->genus * 26;
+    result = row[(u32)id & 0xffff];
+    return result;
+
+zero:
+    return 0;
+}
+// FUN_002835E0
+s16 func_002835e0(BtlUnit* unit, s16 id, f32 scale)
+{
+    s16 animId;
+    s16 tableId;
+    const u8* row;
+    const BtlUnitAnimInfo* info;
+    u32 offset;
+
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_PC:
+    case UNIT_GENUS_PS:
+        goto resolve;
+    default:
+        break;
+    }
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_EC:
+        break;
+    default:
+        goto zero;
+    }
+    animId = (s16)func_002fb860();
+    switch (animId)
+    {
+    case -1:
+        goto resolve;
+    default:
+        break;
+    }
+    goto resolved;
+
+resolve:
+    row = DAT_00693290 + (u32)unit->genus * 26;
+    tableId = row[(u16)id];
+    goto tableResolved;
+
+zero:
+    animId = 0;
+    goto resolved;
+
+tableResolved:
+    animId = tableId;
+
+resolved:
+    if (animId < unit->unk_9d8)
+    {
+        offset = animId * sizeof(*info);
+        info = (const BtlUnitAnimInfo*)(offset + (u32)unit->unk_9ec);
+        return (s16)((f32)info->unk_0 /
+                     (scale * ((f32)info->speedPercent / 100.0f)));
+    }
+    return 0;
 }
 
-// FUN_00283750 NONMATCHING
-s16 func_00283750(f32 scale, BtlUnit* unit, s16 id)
+// FUN_00283750
+s16 func_00283750(BtlUnit* unit, s16 id, f32 scale)
 {
-    u16 animId;
+    s16 animId;
+    s16 tableId;
+    const u8* row;
     const BtlUnitAnimInfo* info;
     s16 frames;
+    u32 offset;
 
-    animId = btlUnitResolveAnimId(unit, (u32)id);
-    if ((s16)animId >= (s16)unit->unk_9d8)
+    switch (unit->genus)
     {
-        return 0;
+    case UNIT_GENUS_PC:
+    case UNIT_GENUS_PS:
+        goto resolve;
+    default:
+        break;
     }
-
-    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
-    frames = info->unk_4;
-    if (frames < 0)
+    switch (unit->genus)
     {
-        return 0;
+    case UNIT_GENUS_EC:
+        break;
+    default:
+        goto zero;
     }
+    animId = (s16)func_002fb860();
+    switch (animId)
+    {
+    case -1:
+        goto resolve;
+    default:
+        break;
+    }
+    goto resolved;
 
-    return (s16)((f32)frames / (scale * ((f32)info->speedPercent / 100.0f)));
+resolve:
+    row = DAT_00693290 + (u32)unit->genus * 26;
+    tableId = row[(u16)id];
+    goto tableResolved;
+
+zero:
+    animId = 0;
+    goto resolved;
+
+tableResolved:
+    animId = tableId;
+
+resolved:
+    if (animId < unit->unk_9d8)
+    {
+        offset = animId * sizeof(*info);
+        info = (const BtlUnitAnimInfo*)(offset + (u32)unit->unk_9ec);
+        frames = info->unk_4;
+        if (frames < 0)
+        {
+            return 0;
+        }
+        return (s16)((f32)frames /
+                     (scale * ((f32)info->speedPercent / 100.0f)));
+    }
+    return 0;
 }
 
-// FUN_002838D0 NONMATCHING
-s16 func_002838d0(f32 scale, BtlUnit* unit, s16 id)
+// FUN_002838D0
+s16 func_002838d0(BtlUnit* unit, u16 id, f32 scale)
 {
-    u16 animId;
+    s16 animId;
+    s16 tableId;
+    const u8* row;
     f32 duration;
     const BtlUnitAnimInfo* info;
+    u32 infoOffset;
 
-    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE) || unit->mdl == NULL)
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
     {
         return 0;
     }
 
-    animId = btlUnitResolveAnimId(unit, (u32)id);
-    duration = func_00318910(unit->mdl, 0, animId);
-    if ((s16)animId < (s16)unit->unk_9d8)
+    switch (unit->genus)
     {
-        info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
+    case UNIT_GENUS_PC:
+    case UNIT_GENUS_PS:
+        goto resolve;
+    default:
+        break;
+    }
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_EC:
+        break;
+    default:
+        goto zero;
+    }
+    animId = (s16)func_002fb860();
+    switch (animId)
+    {
+    case -1:
+        goto resolve;
+    default:
+        break;
+    }
+    goto resolved;
+
+resolve:
+    row = DAT_00693290 + (u32)unit->genus * 26;
+    tableId = row[id];
+    goto tableResolved;
+
+zero:
+    animId = 0;
+    goto resolved;
+
+tableResolved:
+    animId = tableId;
+
+resolved:
+    duration = func_00318910(unit->mdl, 0, animId);
+    if (animId < unit->unk_9d8)
+    {
+        info = (const BtlUnitAnimInfo*)unit->unk_9ec;
+        infoOffset = (u32)(animId * sizeof(*info));
+        infoOffset += (u32)info;
+        info = (const BtlUnitAnimInfo*)infoOffset;
         duration /= scale * ((f32)info->speedPercent / 100.0f);
+        return (s16)duration;
     }
 
     return (s16)duration;
 }
 
-// FUN_00283A70 NONMATCHING
+// FUN_00283A70
 s16 func_00283a70(BtlUnit* unit, s32 id)
 {
-    u16 animId;
+    s16 animId;
+    s16 tableId;
+    const u8* row;
     const BtlUnitAnimInfo* info;
+    u32 infoOffset;
 
     if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
     {
         return 6;
     }
 
-    animId = btlUnitResolveAnimId(unit, (u32)id);
-    if ((s16)animId >= (s16)unit->unk_9d8)
+    switch (unit->genus)
     {
-        return 6;
+    case UNIT_GENUS_PC:
+    case UNIT_GENUS_PS:
+        goto resolve;
+    default:
+        break;
     }
+    switch (unit->genus)
+    {
+    case UNIT_GENUS_EC:
+        break;
+    default:
+        goto zero;
+    }
+    animId = (s16)func_002fb860();
+    switch (animId)
+    {
+    case -1:
+        goto resolve;
+    default:
+        break;
+    }
+    goto resolved;
 
-    info = (const BtlUnitAnimInfo*)unit->unk_9ec + animId;
-    return info->unk_8;
+resolve:
+    row = DAT_00693290 + (u32)unit->genus * 26;
+    tableId = row[(u32)id & 0xffff];
+    goto tableResolved;
+
+zero:
+    animId = 0;
+    goto resolved;
+
+tableResolved:
+    animId = tableId;
+
+resolved:
+    if (animId < unit->unk_9d8)
+    {
+        info = (const BtlUnitAnimInfo*)unit->unk_9ec;
+        infoOffset = (u32)(animId * sizeof(*info));
+        infoOffset += (u32)info;
+        info = (const BtlUnitAnimInfo*)infoOffset;
+        return info->unk_8;
+    }
+    return 6;
 }
 
 // FUN_00283C50
@@ -4404,14 +4635,22 @@ u16 func_00283e40(BtlUnit* unit, s16 id)
     return *(const u16*)(table + category * 4);
 }
 
-// FUN_00283FE0 NONMATCHING
+// FUN_00283FE0
 const void* func_00283fe0(BtlUnit* unit, u32 id)
 {
-    if (unit->genus != UNIT_GENUS_EC && unit->charId == 4)
+    if (unit->genus == UNIT_GENUS_EC)
     {
-        return DAT_006932e0 + ((id & 0xffff) - 4) * 8;
+        return NULL;
     }
-    return NULL;
+
+    switch (unit->charId)
+    {
+        case 4:
+            return DAT_006932e0 + ((id & 0xffff) - 4) * 8;
+
+        default:
+            return NULL;
+    }
 }
 
 // FUN_00284040 NONMATCHING
@@ -4423,27 +4662,29 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
 
     (void)unused;
     skillId = (s16)id;
-    if (skillId < 0 || skillId > 0x1cf)
+    if (skillId == -1 || skillId >= 0x1d0)
     {
         return 1;
     }
-
-    if (func_002d6370(id) == 0)
+    if (func_002d6370(id) != 0)
     {
-        type = func_003082f0(unit->datUnit, (u16)id);
-        return (type == 0x10 || type == 0x11) ? 1 : 3;
-    }
-
-    flags = *(const u16*)(DAT_007ce400 + 2 + (u32)skillId * 0x1c);
-    if (flags & 0x200)
-    {
-        return 0;
-    }
-    if (param_4 != 0 && (flags & 1))
-    {
+        flags = *(const u16*)(DAT_007ce400 + 2 + (u32)skillId * 0x1c);
+        if (flags & 0x200)
+        {
+            return 0;
+        }
+        if (param_4 == 0 || !(flags & 1))
+        {
+            return 1;
+        }
         return 2;
     }
-    return 1;
+    type = func_003082f0(unit->datUnit, (u16)id);
+    if (type == 0x11 || type == 0x10)
+    {
+        return 1;
+    }
+    return 3;
 }
 
 typedef struct BtlUnitPacketResource
@@ -4456,48 +4697,55 @@ typedef struct BtlUnitPacketResource
     u32 state;
 } BtlUnitPacketResource;
 
-// FUN_00286380 NONMATCHING
+// FUN_00286380
 void func_00286380(void* work)
 {
     BtlUnitPacketResource* packet;
+    BtlUnit* unit;
 
     packet = (BtlUnitPacketResource*)work;
-    packet->unit->packetCount++;
+    unit = packet->unit;
+    unit->packetCount++;
     if (!(packet->flags & 0x10))
     {
-        if (packet->unit->mdl != NULL &&
-            packet->unit->mdl->runtimeData.animationData == NULL)
+        if (*(void**)unit->mdl->runtimeData.animationData == NULL)
         {
-            func_0031c7e0();
+            func_0031c7e0(unit->mdl);
         }
         packet->state = 1;
     }
 }
 
-// FUN_002863F0 NONMATCHING
+// FUN_002863F0
 u32 func_002863f0(void* work)
 {
     BtlUnitPacketResource* packet;
+    BtlUnit* unit;
 
     packet = (BtlUnitPacketResource*)work;
+    unit = packet->unit;
     if (packet->state == 0)
     {
-        if (packet->unit->mdl != NULL &&
-            packet->unit->mdl->runtimeData.animationData == NULL)
+        if (*(void**)unit->mdl->runtimeData.animationData == NULL)
         {
-            func_0031c7e0();
+            func_0031c7e0(unit->mdl);
         }
         packet->state = 1;
-        return 0;
     }
-
-    if (packet->unit->mdl != NULL &&
-        packet->unit->mdl->runtimeData.animationData != NULL &&
-        func_0031ebe0(packet->unit->mdl->runtimeData.animationData))
+    else if (func_0031ebe0(unit->mdl->runtimeData.animationData))
     {
         return 1;
     }
     return 0;
+}
+
+// FUN_00286480
+void btlUnitDestroyResourcePacket(void* work)
+{
+    BtlUnitPacketResource* packet;
+
+    packet = (BtlUnitPacketResource*)work;
+    packet->unit->packetCount--;
 }
 
 // FUN_002864A0
@@ -4510,7 +4758,7 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
     packet->unk_47 &= ~(1 << 0);
     packet->initFunc = func_00286380;
     packet->updateFunc = func_002863f0;
-    packet->destroyFunc = btlUnitDestroyModelPacket;
+    packet->destroyFunc = btlUnitDestroyResourcePacket;
 
     work = (BtlUnitPacketResource*)packet->workData;
     work->unit = unit;
@@ -4539,15 +4787,14 @@ void func_00286540(void)
         {
             func_00280da0(unit);
             func_002826d0(unit);
-
-            if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) && unit->mdl != NULL)
+            if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) &&
+                unit->mdl != NULL)
             {
                 mdlSetColor(unit->mdl, &unit->cols[BTLUNIT_COL_MAIN]);
                 mdl00317730(unit->mdl);
                 func_002d4040(unit);
                 unit->flags2 &= ~BTLUNIT_FLAG2_DIRTY;
             }
-
             unit = unit->next;
         }
     }
@@ -4560,8 +4807,6 @@ extern void mdl00319050(Model* mdl);
 extern void mdl00319070(Model* mdl);
 extern void mdl003191b0(Model* mdl);
 extern u32 func_0017d800(void);
-extern void* kwlnGetAmbientLight(void);
-extern void* kwlnGetDirectionalLight(void);
 extern void* func_00198580(void);
 extern void* func_003b54c0(void* value);
 extern void* func_003b5d50(u32 value);
@@ -4623,10 +4868,11 @@ void func_00287400(void)
     }
 }
 
-// FUN_00287490 NONMATCHING
+// FUN_00287490
 void FUN_00287490(BtlUnit* unit)
 {
     unit->flags3 &= ~BTLUNIT_FLAG3_UNK1000;
+    FUN_00287cf0(unit, 5);
     if (unit->resTypeId != 0)
     {
         func_001a0dc0(unit->resTypeId, 1);
@@ -4638,10 +4884,11 @@ void FUN_00287490(BtlUnit* unit)
     }
 }
 
-// FUN_00287510 NONMATCHING
+// FUN_00287510
 void FUN_00287510(BtlUnit* unit)
 {
     unit->flags3 |= BTLUNIT_FLAG3_UNK1000;
+    FUN_00287cf0(unit, 5);
     if (unit->resTypeId != 0)
     {
         func_001a0dc0(unit->resTypeId, 0);
@@ -4650,7 +4897,7 @@ void FUN_00287510(BtlUnit* unit)
 }
 
 
-// FUN_00287740 NONMATCHING
+// FUN_00287740
 void func_00287740(BtlUnit* unit)
 {
     s32 category;
@@ -4661,6 +4908,10 @@ void func_00287740(BtlUnit* unit)
         func_003b7090(unit->resTypeId);
         if (unit->mdl != NULL)
         {
+            FUN_00287cf0(unit, 4);
+            FUN_00287cf0(unit, 1);
+            FUN_00287cf0(unit, 2);
+            FUN_00287cf0(unit, 3);
             mdlSetColor(unit->mdl, (const RwRGBA*)&DAT_007cc970);
             mdlAnimSetSpeed(unit->mdl, 0, 1.0f);
             if (category == 1 && !(unit->flags2 & (1 << 3)))
@@ -4788,184 +5039,116 @@ void func_002879f0(void)
         }
     }
 }
-
 /* Recovered battle-misc harvest: 0x00287EA0-0x00289650 */
-// FUN_00287EA0 NONMATCHING
+// FUN_00287EA0
 
 
-void FUN_00287ea0(long param_1)
-
-
-
+void FUN_00287ea0(BtlUnit* unit)
 {
+    BtlUnit* target;
+    RwV3d targetPos;
+    RwV3d scaledCenter;
+    RwV3d transformedCenter;
+    u32 updateFlag;
+    s16 state;
 
-  long lVar1;
-
-  u32 uVar2;
-
-  short sVar3;
-
-  u32 uVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  iVar5 = (int)param_1;
-
-  uVar4 = *(u32 *)(iVar5 + 0x98) & 2;
-
-  if (uVar4 != 0) {
-
-    if (uVar4 == 0) {
-
-      sVar3 = 0;
-
+    updateFlag = unit->flags2 & BTLUNIT_FLAG2_UPDATE;
+    if (updateFlag == 0)
+    {
+        return;
     }
 
-    else {
-
-      sVar3 = *(short *)(iVar5 + 0x9ce);
-
+    if (updateFlag != 0)
+    {
+        state = unit->unk_9ce;
+    }
+    else
+    {
+        state = 0;
     }
 
-    if (sVar3 == 0x10) {
+    switch (state)
+    {
+        case 0:
+            goto state_zero;
 
-      lVar1 = FUN_003191d0(*(u32 *)(iVar5 + 0x9f4));
-
-      if (lVar1 != 0) {
-
-        FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
-
-      }
-
-    }
-
-    else if (sVar3 == 0) {
-
-      if (((*(short *)(iVar5 + 0xb0) != 0) && (1.0 <= *(float *)(*(int *)(iVar5 + 0x9f4) + 0x108)))
-
-         && (uVar2 = FUN_00319200(), (uVar2 & 0x200) == 0)) {
-
-        if (*(short *)(iVar5 + 0xb0) == 2) {
-
-          if (*(u32 *)(iVar5 + 0xb4) != 0) {
-
-            lVar1 = FUN_00289030(*(u32 *)(iVar5 + 0xb4) & 0xffff);
-
-            if ((lVar1 == 0) || (lVar1 == param_1)) {
-
-              FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
-
-              *(u32 *)(iVar5 + 0xb4) = 0;
-
+        case 16:
+            if (mdlLookAtIsActive(unit->mdl)) {
+                mdlLookAtDisableTarget(unit->mdl);
             }
-
-            else {
-
-              iVar6 = (int)lVar1;
-
-              fStack_18 = *(float *)(iVar6 + 0x2c);
-
-              fStack_20 = *(float *)(iVar6 + 0x80) * fStack_18;
-
-              fStack_1c = *(float *)(iVar6 + 0x84) * fStack_18;
-
-              fStack_18 = *(float *)(iVar6 + 0x88) * fStack_18;
-
-              FUN_004be1e0(&fStack_30,&fStack_20,1,iVar6 + 0x1c);
-
-              fStack_10 = fStack_30 + *(float *)(iVar6 + 4);
-
-              fStack_8 = fStack_28 + *(float *)(iVar6 + 0xc);
-
-              fStack_c = DAT_007cb0cc * *(float *)(iVar6 + 0x8c) * *(float *)(iVar6 + 0x2c) +
-
-                         fStack_2c + *(float *)(iVar6 + 8) + 0.0;
-
-              FUN_003190b0(*(u32 *)(iVar5 + 0x9f4),&fStack_10);
-
+            return;
+        default:
+            if (mdlLookAtIsActive(unit->mdl)) {
+                mdl003191b0(unit->mdl);
+                mdlLookAtDisableTarget(unit->mdl);
             }
-
-          }
-
-        }
-
-        else if (*(short *)(iVar5 + 0xb0) == 1) {
-
-          FUN_003190b0(*(u32 *)(iVar5 + 0x9f4),iVar5 + 0xb8);
-
-        }
-
-      }
-
+            return;
     }
 
-    else {
-
-      lVar1 = FUN_003191d0(*(u32 *)(iVar5 + 0x9f4));
-
-      if (lVar1 != 0) {
-
-        FUN_003191b0(*(u32 *)(iVar5 + 0x9f4));
-
-        FUN_00319190(*(u32 *)(iVar5 + 0x9f4));
-
-      }
-
+state_zero:
+    if (unit->lookAtMode == 0 ||
+        unit->mdl->animSlots[0].anim.blendFactor < 1.0f ||
+        (mdlLookAtGetFlags(unit->mdl) & MDLLOOKAT_FLAG_UNK200))
+    {
+        goto done;
     }
 
-  }
+    switch (unit->lookAtMode)
+    {
+        case 1:
+            goto target_position;
+        case 2:
+            goto target_unit;
+        default:
+            goto done;
+    }
 
-  return;
+target_position:
+    mdlLookAtSetTargetPosXYZ(unit->mdl, &unit->lookAtTargetPos);
+    goto done;
 
+target_unit:
+    if (unit->lookAtTargetId == 0)
+    {
+        goto done;
+    }
+
+    target = btlUnitFindFromId((u16)unit->lookAtTargetId);
+    if (target != NULL && target != unit)
+    {
+        scaledCenter.x = target->sphereCenter.x * target->scale;
+        scaledCenter.y = target->sphereCenter.y * target->scale;
+        scaledCenter.z = target->sphereCenter.z * target->scale;
+        RtQuatTransformVectors(&transformedCenter, &scaledCenter, 1, &target->rot);
+        targetPos.x = transformedCenter.x + target->pos.x;
+        targetPos.y = transformedCenter.y + target->pos.y;
+        targetPos.z = transformedCenter.z + target->pos.z;
+        targetPos.y = DAT_007cb0cc * (target->unk_8c * target->scale) +
+                      targetPos.y + 0.0f;
+        mdlLookAtSetTargetPosXYZ(unit->mdl, &targetPos);
+        goto done;
+    }
+
+    mdlLookAtDisableTarget(unit->mdl);
+    unit->lookAtTargetId = 0;
+
+done:
+    return;
 }
 
-// FUN_00288110 NONMATCHING
+// FUN_00288110
 
 
-void FUN_00288110(int param_1)
-
-
-
+void FUN_00288110(BtlUnit* unit)
 {
+    s32 result;
 
-  long lVar1;
-
-  
-
-  if (((*(u32 *)(param_1 + 0x98) & 2) != 0) &&
-
-     (lVar1 = FUN_003191d0(*(u32 *)(param_1 + 0x9f4)), lVar1 != 0)) {
-
-    FUN_003191b0(*(u32 *)(param_1 + 0x9f4));
-
-    FUN_00319190(*(u32 *)(param_1 + 0x9f4));
-
-  }
-
-  return;
-
+    if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) != 0 &&
+        (result = FUN_003191d0(unit->mdl)) != 0)
+    {
+        FUN_003191b0(unit->mdl);
+        FUN_00319190(unit->mdl);
+    }
 }
 
 // FUN_00288DA0 NONMATCHING
@@ -5001,7 +5184,8 @@ int FUN_00288da0(int param_1,short param_2)
 
   else if (cVar2 == '\x01') {
 
-    iVar3 = FUN_002fc410();
+    iVar3 = (int)(uintptr_t)func_002fc410(
+        (BtlUnit*)(uintptr_t)param_1);
 
     if (iVar3 == 0) {
 
@@ -5065,118 +5249,63 @@ int FUN_00288da0(int param_1,short param_2)
 
 }
 
-// FUN_00288FE0 NONMATCHING
+// FUN_00288FE0
 
 
-int FUN_00288fe0(u32 param_1,short param_2)
-
-
-
+BtlUnit* FUN_00288fe0(u16 genus, u16 charId)
 {
+    BtlUnit* unit;
+    u32 targetCharId;
 
-  int iVar1;
-
-  
-
-  iVar1 = *(int *)((param_1 & 0xffff) * 8 + iGpffffb6fc + 0x154);
-
-  while( 1 ) {
-
-    if (iVar1 == 0) {
-
-      return 0;
-
+    unit = gBtl->unitLists[genus].tail;
+    targetCharId = charId;
+    while (unit != NULL)
+    {
+        if (unit->charId == targetCharId)
+        {
+            return unit;
+        }
+        unit = unit->prev;
     }
 
-    if (*(short *)(iVar1 + 0xa4) == param_2) break;
-
-    iVar1 = *(int *)(iVar1 + 0xa30);
-
-  }
-
-  return iVar1;
-
+    return NULL;
 }
 
-// FUN_002890A0 NONMATCHING
-
-
-int FUN_002890a0(int *param_1,int *param_2)
-
-
-
+typedef struct BtlUnitSortEntry
 {
+    u8 unk_0[0x128];
+    Model* mdl;
+} BtlUnitSortEntry;
 
-  int iVar1;
+// FUN_002890A0
 
-  int iVar2;
 
-  int iVar3;
+int FUN_002890a0(BtlUnitSortEntry** param_1, BtlUnitSortEntry** param_2)
+{
+    RwV3d firstDelta;
+    RwV3d secondDelta;
+    RwV3d cameraPos;
+    RwMatrix* matrix;
+    BtlUnitSortEntry* first;
+    BtlUnitSortEntry* second;
+    f32 firstDistance;
 
-  float fVar4;
+    matrix = RwFrameGetLTM((RwFrame*)kwlnGetMainCamera()->object.object.parent);
+    cameraPos = matrix->pos;
 
-  float fVar5;
+    first = *param_1;
+    second = *param_2;
 
-  float fVar6;
+    firstDelta.x = mdlGetMatrix(first->mdl)->pos.x - cameraPos.x;
+    firstDelta.y = mdlGetMatrix(first->mdl)->pos.y - cameraPos.y;
+    firstDelta.z = mdlGetMatrix(first->mdl)->pos.z - cameraPos.z;
 
-  float fStack_20;
+    secondDelta.x = mdlGetMatrix(second->mdl)->pos.x - cameraPos.x;
+    secondDelta.y = mdlGetMatrix(second->mdl)->pos.y - cameraPos.y;
+    secondDelta.z = mdlGetMatrix(second->mdl)->pos.z - cameraPos.z;
 
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  iVar2 = FUN_00198590();
-
-  iVar2 = FUN_004cb2f0(*(u32 *)(iVar2 + 4));
-
-  fVar6 = *(float *)(iVar2 + 0x30);
-
-  fVar4 = *(float *)(iVar2 + 0x34);
-
-  fVar5 = *(float *)(iVar2 + 0x38);
-
-  iVar2 = *param_1;
-
-  iVar1 = *param_2;
-
-  iVar3 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
-
-  fStack_10 = *(float *)(iVar3 + 0x30) - fVar6;
-
-  iVar3 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
-
-  fStack_c = *(float *)(iVar3 + 0x34) - fVar4;
-
-  iVar2 = FUN_00318b60(*(u32 *)(iVar2 + 0x128));
-
-  fStack_8 = *(float *)(iVar2 + 0x38) - fVar5;
-
-  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
-
-  fStack_20 = *(float *)(iVar2 + 0x30) - fVar6;
-
-  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
-
-  fStack_1c = *(float *)(iVar2 + 0x34) - fVar4;
-
-  iVar2 = FUN_00318b60(*(u32 *)(iVar1 + 0x128));
-
-  fStack_18 = *(float *)(iVar2 + 0x38) - fVar5;
-
-  fVar4 = (float)FUN_004c6ac0(&fStack_10);
-
-  fVar5 = (float)FUN_004c6ac0(&fStack_20);
-
-  return (int)(fVar4 - fVar5);
-
+    firstDistance = RwV3dLength(&firstDelta);
+    return (int)(firstDistance - RwV3dLength(&secondDelta));
 }
 
 // FUN_002891E0 NONMATCHING
@@ -5693,79 +5822,51 @@ void FUN_00287b20(int param_1,short param_2)
 
 }
 
-// FUN_00287CF0 NONMATCHING
+// FUN_00287CF0
 
 
-void FUN_00287cf0(int param_1,short param_2)
-
-
-
+void FUN_00287cf0(BtlUnit* unit, u16 mode)
 {
+    u16 flags;
 
-  u32 uVar1;
-
-  
-
-  if ((*(u32 *)(param_1 + 0x98) & 2) != 0) {
-
-    if (param_2 == 4) {
-
-      *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) =
-
-           *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) & 0xffef;
-
+    if (!(unit->flags2 & BTLUNIT_FLAG2_UPDATE))
+    {
+        return;
     }
 
-    else if (param_2 == 3) {
+    switch (mode)
+    {
+        case 5:
+            if ((unit->flags3 & BTLUNIT_FLAG3_UNK800) && unit->resTypeId != 0)
+            {
+                func_001a0dc0(unit->resTypeId, !(unit->flags3 & BTLUNIT_FLAG3_UNK1000));
+                unit->flags3 &= ~BTLUNIT_FLAG3_UNK800;
+            }
+            break;
 
-      FUN_00319090(DAT_007cada4,*(u32 *)(param_1 + 0x9f4));
+        case 1:
+            mdlDisableFullShadow(unit->mdl);
+            unit->mdl->unk_388 &= 0xe2;
+            break;
 
-      FUN_003190a0(0x428c0000,0x42a00000,*(u32 *)(param_1 + 0x9f4));
+        case 2:
+            mdl00319070(unit->mdl);
+            break;
 
-      FUN_003191b0(*(u32 *)(param_1 + 0x9f4));
+        case 3:
+            mdlLookAtSetBlendRotFactor(unit->mdl, DAT_007cada4);
+            mdlLookAtSetMaxAngles(unit->mdl, 70.0f, 80.0f);
+            mdl003191b0(unit->mdl);
+            mdlLookAtDisableTarget(unit->mdl);
+            flags = mdlLookAtGetFlags(unit->mdl);
+            mdlLookAtSetFlags(unit->mdl, flags & ~0x2000);
+            flags = mdlLookAtGetFlags(unit->mdl);
+            mdlLookAtSetFlags(unit->mdl, flags & ~0x1000);
+            unit->lookAtMode = 0;
+            break;
 
-      FUN_00319190(*(u32 *)(param_1 + 0x9f4));
-
-      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
-
-      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 & 0xdfff);
-
-      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
-
-      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 & 0xefff);
-
-      *(u16 *)(param_1 + 0xb0) = 0;
-
+        case 4:
+            unit->mdl->runtimeData.animationFields.unk_0e &= ~0x10;
+            break;
     }
-
-    else if (param_2 == 2) {
-
-      FUN_00319070(*(u32 *)(param_1 + 0x9f4));
-
-    }
-
-    else if (param_2 == 1) {
-
-      FUN_00319030(*(u32 *)(param_1 + 0x9f4));
-
-      *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x388) =
-
-           *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x388) & 0xe2;
-
-    }
-
-    else if (((param_2 == 5) && ((*(u32 *)(param_1 + 0x9c) & 0x800) != 0)) &&
-
-            (*(short *)(param_1 + 0x9f2) != 0)) {
-
-      FUN_001a0dc0(*(short *)(param_1 + 0x9f2),(*(u32 *)(param_1 + 0x9c) & 0x1000) == 0);
-
-      *(u32 *)(param_1 + 0x9c) = *(u32 *)(param_1 + 0x9c) & 0xfffff7ff;
-
-    }
-
-  }
-
-  return;
-
 }

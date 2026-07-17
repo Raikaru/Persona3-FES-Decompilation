@@ -161,7 +161,16 @@ typedef struct MdlRuntimeData
 {
     void* refCountedData; // 0x00. Reference count stored at +0x02
     void* motionData;     // 0x04
-    u8 animationData[0x28];
+    union
+    {
+        u8 animationData[0x28];
+        struct
+        {
+            u8 unk_08[6];
+            u16 unk_0e;
+            u8 unk_10[0x20];
+        } animationFields;
+    };
 } MdlRuntimeData;
 
 
@@ -182,7 +191,9 @@ struct Model
     u32 gsTest1Reg;                 // 0xe8. TEST_1 GS register value to set
     MdlAnimSlot animSlots[4];       // 0xec
     void* unk_35c;                  // 0x35c
-    u8 unkData2[0x54];
+    u8 unkData2[0x28];              // 0x360
+    u8 unk_388;                     // 0x388
+    u8 unkData3[0x2b];              // 0x389
     MdlAttachedWpn attachedWpns[5]; // 0x3b4. Only for 'MODEL_TYPE_BTLCHAR'
     MdlRuntimeData runtimeData;      // 0x3f0
     Model* next;                    // 0x420
@@ -224,6 +235,7 @@ RwFrame* mdlGetClumpFrame(Model* mdl);
 RpClump* mdlGetClump(Model* mdl);
 void mdlEnableFullShadow(Model* mdl);
 void mdlDisableFullShadow(Model* mdl);
+void mdl00319070(Model* mdl);
 
 void mdlLookAtSetBlendRotFactor(Model* mdl, f32 blendRotFactor);
 void mdlLookAtSetMaxAngles(Model* mdl, f32 maxPitchAngle, f32 maxYawAngle);
@@ -234,6 +246,7 @@ void mdlLookAtDisableTarget(Model* mdl);
 u8 mdlLookAtIsActive(Model* mdl);
 void mdlLookAtSetFlags(Model* mdl, u16 flags);
 u16 mdlLookAtGetFlags(Model* mdl);
+void mdl003191b0(Model* mdl);
 void mdlLookAtSetTargetScale(Model* mdl, const RwV3d* scale);
 
 #endif

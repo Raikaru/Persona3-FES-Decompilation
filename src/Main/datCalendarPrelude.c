@@ -15,17 +15,17 @@ extern void qsort(void* base, u32 count, u32 width, int (*compare)(const void*, 
 extern int printf(const char* fmt, ...);
 extern void FUN_0019d3f0(u32 file, u32 line);
 extern void FUN_00521408(void* dst, s32 value, u32 size);
-extern void func_001828d0(u16 id, void* record);
+extern void func_001828d0(s16 id, void* record);
 extern void func_001830c0(void* record);
-extern s16 FUN_003082f0(s32 category, u64 id);
-extern u64 FUN_003086f0(void* record, u64 id);
+extern s32 FUN_003082f0(s32 category, u32 id);
+extern s32 FUN_003086f0(void* record, u64 id);
 extern void FUN_003086c0(void* record, u64 value);
 extern void FUN_003083f0(void* record, u64 value);
-extern u64 FUN_00306610(u64 value, void* left, void* right, u64 extra);
-extern u64 FUN_003068d0(u64 value, void* left, void* right, u64 extra);
+extern s32 FUN_00306610(u64 value, void* left, void* right, u64 extra);
+extern s32 FUN_003068d0(u64 value, void* left, void* right, u64 extra);
 extern void FUN_00306bc0(u64 value, void* left, void* right, u64 a, u64 b, u64 c, u64 d);
-extern s16 FUN_00403740(u16 id);
-extern u64 FUN_00403920(u16 id, u64 value);
+extern s16 FUN_00403740(s16 id);
+extern u64 FUN_00403920(s16 id, u64 value);
 extern u64 FUN_003f33d0(s32 category, s32 value);
 extern void FUN_003eff00(s32 index, void* out);
 extern void* FUN_00300af0(void);
@@ -41,10 +41,22 @@ u32 FUN_0017d450(s32 index, const void* date);
 extern u32 D_00960178[];
 extern u32 D_0096017C[];
 extern u32 D_00960184[];
+extern u8 D_00834010[];
+extern u8 D_00833994[];
+extern s32 D_005e3840[][2];
+extern s32 D_005e3844[][2];
+extern u32 D_0083a21c[];
 extern u8 DAT_0083a718[];
 extern u8 DAT_00836200[];
+extern s8* puGpffffb704;
 extern u8 D_0083A6FC[];
 extern const char D_005e3098[];
+extern u8 DAT_00836e1c[];
+extern u32 gSpecialStatusMessage;
+extern u8* DAT_007ce3f8;
+extern u8* DAT_007ce420;
+extern u8* DAT_007ce42c;
+extern u8* DAT_007ce4a0;
 
 #define PTR8(addr) ((u8*)(addr))
 #define PTR16(addr) ((u16*)(addr))
@@ -140,11 +152,14 @@ static void save_chunk(u8** cursor, u32 id, u32 size, const void* source)
     *cursor += size + 8;
 }
 
-// FUN_00177d40 NONMATCHING
+// FUN_00177d40
 void FUN_00177d40(void)
 {
-    PTRP(0x00836794) = (u8*)ALLOCATE(300, 0x14, 0x40000);
-    PTRP(0x00836798) = (u8*)ALLOCATE(300, 2, 0x40000);
+    void* (**allocator)(u32, u32, u32);
+
+    allocator = (void* (**)(u32, u32, u32))D_00960184;
+    PTRP(0x00836794) = (u8*)(*allocator)(300, 0x14, 0x40000);
+    PTRP(0x00836798) = (u8*)(*allocator)(300, 2, 0x40000);
 }
 
 // FUN_00177db0 NONMATCHING
@@ -389,302 +404,480 @@ void FUN_0017ac60(u32 code)
     if (i < 0x100) memcpy(list + i * 4, bytes, 4);
 }
 
-// FUN_0017ad90 NONMATCHING
+#pragma optimization_level 1
+// FUN_0017ad90
 void FUN_0017ad90(void)
 {
     s32 i;
-    u8* list = code_list();
-    for (i = 0; i < 0x100 && list[i * 4] != 0; i++) { }
-    if (i > 0) list[i * 4 - 1] = 0;
-}
+    s32 offset;
+    u8* base;
+    u8* previous;
 
-// FUN_0017adf0 NONMATCHING
+    i = 0;
+    base = DAT_00836200;
+    while (i < 0x100)
+    {
+        offset = i * 4;
+        if (*(u8*)((u32)base + (u32)offset + 0x5a7) == 0)
+        {
+            if (i == 0) return;
+            previous = DAT_00836200 + 0x5a3;
+            *(u8*)((u32)previous + (u32)offset) = 0;
+            return;
+        }
+        i++;
+    }
+}
+#pragma optimization_level 2
+
+// FUN_0017adf0
 void FUN_0017adf0(void)
 {
     s32 i;
-    u8* list = code_list();
-    for (i = 0; i < 0x100; i++) list[i * 4] = 0;
+    u8* base;
+
+    i = 0;
+    base = DAT_00836200;
+    while (i < 0x100)
+    {
+        *(u8*)((u32)base + (u32)(i * 4) + 0x5a7) = 0;
+        i++;
+    }
 }
 
-// FUN_0017ae30 NONMATCHING
+// FUN_0017ae30
 u8* FUN_0017ae30(s32 index)
 {
-    return code_list() + index * 4;
+    u8* base = DAT_00836200;
+    return base + index * 4 + 0x5a7;
 }
 
-// FUN_0017ae50 NONMATCHING
-u32 FUN_0017ae50(u16 id)
+// FUN_0017ae50
+u32 FUN_0017ae50(s32 id)
 {
     s32 i;
-    if (id & 0x8000) id = resource_entries()[id & 0x7fff].id;
-    if (id < 4000)
+    ResourceEntry* entries;
+    u16 target;
+    u16* levels;
+
+    if (((u16)id & 0x8000) != 0) id = ((ResourceEntry*)PTRP(0x00836794))[(u16)id].id;
+    target = (u16)id;
+    if (target >= 4000)
     {
-        for (i = 0; i < 300; i++) if (resource_entries()[i].id == id) return 1;
+        levels = (u16*)PTRP(0x00836798);
+        if (levels[(s16)id - 4000] != 0) return 1;
     }
-    else if (id >= 8000 && id < 8300 && resource_levels()[id - 8000] != 0)
+    else
     {
-        return 1;
+        i = 0;
+        entries = (ResourceEntry*)PTRP(0x00836794);
+        while (i < 300)
+        {
+            if (entries[i].id == target) return 1;
+            i++;
+        }
     }
     return 0;
 }
 
-// FUN_0017af20 NONMATCHING
+// FUN_0017af20
 void FUN_0017af20(u16 id)
 {
     u8 record[0x20];
-    if (id & 0x8000) id = resource_entries()[id & 0x7fff].id;
-    if (id < 4000)
+    u16* levels;
+
+    if (id & 0x8000) id = ((ResourceEntry*)PTRP(0x00836794))[id].id;
+    if (id >= 4000)
     {
-        func_001828d0(id, record);
-        func_001830c0(record);
+        levels = (u16*)PTRP(0x00836798);
+        func_00170860(1, (s16)id, levels[(s16)id - 4000] + 1);
     }
-    else if (id >= 8000 && id < 8300)
+    else
     {
-        func_00170860(1, id, resource_levels()[id - 8000] + 1);
+        func_001828d0((s16)id, record);
+        func_001830c0(record);
     }
 }
 
-// FUN_0017afd0 NONMATCHING
+// FUN_0017afd0
 u32 FUN_0017afd0(u16 id)
 {
     s32 i;
-    if (id & 0x8000) id = resource_entries()[id & 0x7fff].id;
-    if (id < 4000)
+    ResourceEntry* entries;
+    if (id & 0x8000) id = ((ResourceEntry*)PTRP(0x00836794))[id].id;
+    if (id >= 4000) return 1;
+    i = 0;
+    entries = (ResourceEntry*)PTRP(0x00836794);
+    while (i < 300)
     {
-        for (i = 0; i < 300; i++) if (resource_entries()[i].id == 0) return 1;
-        return 0;
+        if (entries[i].id == 0) return 1;
+        i++;
     }
-    return 1;
+    return 0;
 }
 
-// FUN_0017b070 NONMATCHING
+// FUN_0017b070
 void FUN_0017b070(u32 id)
 {
-    if ((id & 0x8000) == 0)
+    u16 value = (u16)id;
+
+    if ((value & 0x8000) != 0)
     {
-        if (id >= 8000 && id < 8300 && resource_levels()[id - 8000] != 0)
-            func_00170860(1, id, resource_levels()[id - 8000] - 1);
+        ((ResourceEntry*)PTRP(0x00836794))[value & 0x7fff].id = 0;
     }
     else
     {
-        resource_entries()[id & 0x7fff].id = 0;
+        s16 signedId = (s16)id;
+        s32 levelAddress;
+        u16* level;
+        levelAddress = signedId * 2;
+        levelAddress = ((u32)PTRP(0x00836798) - 0x1f40) + levelAddress;
+        level = (u16*)levelAddress;
+        if (*level != 0)
+        {
+            func_00170860(1, signedId, *level - 1);
+        }
     }
 }
 
-// FUN_0017b100 NONMATCHING
+// FUN_0017b100
 void FUN_0017b100(u16 id)
 {
-    if (id & 0x8000) id = resource_entries()[id & 0x7fff].id;
+    if (id & 0x8000) id = ((ResourceEntry*)PTRP(0x00836794))[id].id;
     func_00171110(id, 2);
 }
 
-// FUN_0017b180 NONMATCHING
-void FUN_0017b180(s32 amount)
+// FUN_0017b180
+u32 FUN_0017b180(s32 amount)
 {
-    U32(0x0083a6e8) += amount;
+    u32 totalBtl;
+
+    totalBtl = gGlobalWork.totalBtl + amount;
+    gGlobalWork.totalBtl = totalBtl;
+    return totalBtl;
 }
 
-// FUN_0017b1a0 NONMATCHING
+// FUN_0017b1a0
 void FUN_0017b1a0(void)
 {
-    memset(PTR8(0x0083a8c4), 0, 0x2c);
+    s32 i = 0;
+    u8* base = DAT_00836200;
+    for (; i < 11; i++) *(u32*)(base + i * 4 + 0x46c4) = 0;
 }
 
-// FUN_0017b1e0 NONMATCHING
+// FUN_0017b1e0
 void FUN_0017b1e0(u32 id)
 {
-    bit_list()[((id & 0xffff) >> 5)] |= bit_mask(id);
+    s32 key = id & 0xffff;
+    u32 mask = 1u << (key & 31);
+    s32 index = key >> 5;
+    u32* bits = (u32*)(DAT_00836200 + 0x46c4);
+    bits[index] |= mask;
 }
-
-// FUN_0017b220 NONMATCHING
+// FUN_0017b220
 void FUN_0017b220(u32 id)
 {
-    bit_list()[((id & 0xffff) >> 5)] &= ~bit_mask(id);
+    s32 key = id & 0xffff;
+    u32 mask = 1u << (key & 31);
+    s32 index = key >> 5;
+    u32* bits = (u32*)(DAT_00836200 + 0x46c4);
+    bits[index] &= ~mask;
 }
 
-// FUN_0017b260 NONMATCHING
+// FUN_0017b260
 u32 FUN_0017b260(u32 id)
 {
-    return bit_list()[((id & 0xffff) >> 5)] & bit_mask(id);
+    s32 key = id & 0xffff;
+    s32 index = key >> 5;
+    u32* bits = (u32*)(DAT_00836200 + 0x46c4);
+    u32 mask = 1u << (key & 31);
+    u32 result = bits[index];
+    return result & mask;
 }
 
-// FUN_0017b2a0 NONMATCHING
+// FUN_0017b2a0
 void FUN_0017b2a0(void)
 {
-    memset(PTR8(0x0083a8f0), 0, 0x1a8);
+    s32 i = 0;
+    u8* base = DAT_00836200;
+    for (; i < 0x6a; i++) *(u32*)(base + i * 4 + 0x46f0) = 0;
 }
 
-// FUN_0017b2e0 NONMATCHING
+// FUN_0017b2e0
 void FUN_0017b2e0(u32 personaId, u32 slot, s32 enabled)
 {
+    u32 persona = personaId & 0xffff;
+    u32 slotValue;
     u32 index;
-    if ((personaId & 0xffff) > 0x14f) FUN_0019d3f0(0x5e3098, 0x1631);
-    if ((slot & 0xffff) > 9) FUN_0019d3f0(0x5e3098, 0x1632);
-    index = (slot & 0xffff) + (personaId & 0xffff) * 10;
-    if (enabled == 0) pair_bits()[index >> 5] &= ~bit_mask(index);
-    else pair_bits()[index >> 5] |= bit_mask(index);
+    u32 wordIndex;
+    u32 mask;
+
+    if ((s32)persona >= 0x150) FUN_0019d3f0((u32)D_005e3098, 0x1631);
+    slotValue = slot & 0xffff;
+    if ((s32)slotValue >= 10) FUN_0019d3f0((u32)D_005e3098, 0x1632);
+    index = slotValue + persona * 10;
+    wordIndex = index >> 5;
+    mask = 1u << (index & 31);
+    if (enabled != 0)
+        ((u32*)(DAT_00836200 + 0x46f0))[wordIndex] |= mask;
+    else
+        ((u32*)(DAT_00836200 + 0x46f0))[wordIndex] &= ~mask;
 }
 
-// FUN_0017b3d0 NONMATCHING
+// FUN_0017b3d0
 bool FUN_0017b3d0(u32 personaId, u32 slot)
 {
     u32 index;
-    if ((personaId & 0xffff) > 0x14f) FUN_0019d3f0(0x5e3098, 0x1644);
-    if ((slot & 0xffff) > 9) FUN_0019d3f0(0x5e3098, 0x1645);
+    s32 wordIndex;
+    u32* bits;
+    u32 mask;
+    u32 result;
+    if ((s32)(personaId & 0xffff) >= 0x150) FUN_0019d3f0((u32)D_005e3098, 0x1644);
+    if ((s32)(slot & 0xffff) >= 10) FUN_0019d3f0((u32)D_005e3098, 0x1645);
     index = (slot & 0xffff) + (personaId & 0xffff) * 10;
-    return (pair_bits()[index >> 5] & bit_mask(index)) != 0;
+    wordIndex = index >> 5;
+    bits = (u32*)(DAT_00836200 + 0x46f0);
+    mask = 1u << (index & 31);
+    result = bits[wordIndex];
+    return (result & mask) != 0;
 }
 
-// FUN_0017b480 NONMATCHING
-u8 FUN_0017b480(u16 id)
+// FUN_0017b480
+s8 FUN_0017b480(s32 id)
 {
-    if (id > 0x26f) FUN_0019d3f0(0x5e3098, 0x166b);
-    return PTRP(0x007ce3f4)[id * 2 + 1];
+    u16 check;
+    check = id;
+    if ((s32)check >= 0x270) FUN_0019d3f0((u32)D_005e3098, 0x166b);
+    return puGpffffb704[(id & 0xffff) * 2 + 1];
 }
 
-// FUN_0017b500 NONMATCHING
+// FUN_0017b500
 void FUN_0017b500(s16 player, u64 value)
 {
     u8* record;
-    if (player == 1) record = PTR8(0x00836224);
+    if (player == 1) record = DAT_00836200 + 0x24;
     else
     {
-        if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1);
-        record = PTR8(0x00834014 + (player - 2) * 0x364);
+        if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        record = D_00834010 + (player - 2) * 0x364 + 4;
     }
     FUN_003086c0(record, value);
 }
 
-// FUN_0017b5b0 NONMATCHING
+// FUN_0017b5b0
 void FUN_0017b5b0(s16 player, u64 value)
 {
     u8* record;
-    if (player == 1) record = PTR8(0x00836224);
+    if (player == 1) record = DAT_00836200 + 0x24;
     else
     {
-        if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1);
-        record = PTR8(0x00834014 + (player - 2) * 0x364);
+        if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        record = D_00834010 + (player - 2) * 0x364 + 4;
     }
     FUN_003083f0(record, value);
 }
 
-// FUN_0017b660 NONMATCHING
-u64 FUN_0017b660(s16 player, u64 id)
+// FUN_0017b660
+s32 FUN_0017b660(s16 player, u64 id)
 {
     u8* record;
-    u32 index;
-    if (player == 1) record = PTR8(0x00836224);
+    s32 index;
+    u32* word;
+    u32 mask;
+
+    if (player == 1) record = DAT_00836200 + 0x24;
     else
     {
-        if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1);
-        record = PTR8(0x00834014 + (player - 2) * 0x364);
+        if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        record = D_00834010 + (player - 2) * 0x364 + 4;
     }
-    if (U16(record + 2) == 0 || U16(record + 2) > 10) FUN_0019d3f0(0x5e3098, 0x16aa);
-    index = U16(record + 2);
-    if ((id & 0xffff) == 0x1a9)
+
+    if (U16(record + 2) == 0 || (s32)U16(record + 2) >= 0xb)
+        FUN_0019d3f0((u32)D_005e3098, 0x16aa);
+
+    switch (id & 0xffff)
     {
-        index = PTR32(0x005e3844)[index];
-        return (PTR32(0x0083a21c)[bit_index(index)] & bit_mask(index)) != 0 ? 4 : 0;
+    case 0x19f:
+        index = D_005e3840[U16(record + 2)][0];
+        word = D_0083a21c + index / 32;
+        mask = 1u << (index % 32);
+        return (*word & mask) != 0 ? 4 : 0;
+    case 0x1a9:
+        index = D_005e3844[U16(record + 2)][0];
+        word = D_0083a21c + index / 32;
+        mask = 1u << (index % 32);
+        return (*word & mask) != 0 ? 4 : 0;
+    default:
+        return FUN_003086f0(record, id);
     }
-    if ((id & 0xffff) == 0x19f)
-    {
-        index = PTR32(0x005e3840)[index];
-        return (PTR32(0x0083a21c)[bit_index(index)] & bit_mask(index)) != 0 ? 4 : 0;
-    }
-    return FUN_003086f0(record, id);
 }
 
-// FUN_0017b860 NONMATCHING
-u64 FUN_0017b860(s16 player, s16 sourcePlayer, u64 id, u64 value)
+// FUN_0017b860
+s32 FUN_0017b860(s16 player, s16 sourcePlayer, u64 id, u64 value)
 {
-    u32 index;
+    s32 index;
     u8* left;
     u8* right;
-    if (sourcePlayer == 0 || sourcePlayer > 10) FUN_0019d3f0(0x5e3098, 0x16c0);
-    index = PTR32((id & 0xffff) == 0x1a9 ? 0x005e3844 : 0x005e3840)[sourcePlayer];
-    if (index > 0x15ff) FUN_0019d3f0(0x5e3098, 0x78d);
-    if (index == 0x1376) printf("special status\n");
-    PTR32(0x0083a21c)[bit_index(index)] |= bit_mask(index);
-    if ((id & 0xffff) == 0x1a9 || (id & 0xffff) == 0x19f) return 1;
-    if (player == 1) left = PTR8(0x00836224);
-    else { if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1); left = PTR8(0x00834014 + (player - 2) * 0x364); }
-    if (sourcePlayer == 1) right = PTR8(0x00836224);
-    else { right = PTR8(0x00834014 + (sourcePlayer - 2) * 0x364); }
+
+    if (sourcePlayer == 0 || (s32)sourcePlayer >= 0xb)
+        FUN_0019d3f0((u32)D_005e3098, 0x16c0);
+
+    switch (id & 0xffff)
+    {
+    case 0x19f:
+        index = D_005e3840[sourcePlayer][0];
+        if (index < 0 || index >= 0x1600)
+            FUN_0019d3f0((u32)D_005e3098, 0x78d);
+        if (index == 0x1376) printf((char*)&gSpecialStatusMessage);
+        D_0083a21c[index / 32] |= 1u << (index % 32);
+        return 1;
+    case 0x1a9:
+        index = D_005e3844[sourcePlayer][0];
+        if (index < 0 || index >= 0x1600)
+            FUN_0019d3f0((u32)D_005e3098, 0x78d);
+        if (index == 0x1376) printf((char*)&gSpecialStatusMessage);
+        D_0083a21c[index / 32] |= 1u << (index % 32);
+        return 1;
+    }
+
+    if (player == 1) left = DAT_00836200 + 0x24;
+    else
+    {
+        if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        left = D_00834010 + (player - 2) * 0x364 + 4;
+    }
+    if (sourcePlayer == 1) right = DAT_00836200 + 0x24;
+    else
+    {
+        if ((s32)sourcePlayer >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        right = D_00834010 + (sourcePlayer - 2) * 0x364 + 4;
+    }
+
     return FUN_00306610(id, left, right, value);
 }
 
-// FUN_0017bb40 NONMATCHING
-u8 FUN_0017bb40(u16 id)
+// FUN_0017bb40
+u8 FUN_0017bb40(s32 id)
 {
-    if (id > 0x1cf) FUN_0019d3f0(0x5e3098, 0x16dd);
-    return PTRP(0x007ce3f8)[id * 0x2c + 8];
+    u16 checkedId = id;
+
+    if ((s32)checkedId >= 0x1d0)
+        FUN_0019d3f0((u32)D_005e3098, 0x16dd);
+    return DAT_007ce3f8[(id & 0xffff) * 0x2c + 8];
 }
 
-// FUN_0017bbb0 NONMATCHING
-u8 FUN_0017bbb0(u16 id)
+// FUN_0017bbb0
+u8 FUN_0017bbb0(s32 id)
 {
-    if (id > 0x1cf) FUN_0019d3f0(0x5e3098, 0x16ec);
-    return PTRP(0x007ce3f8)[id * 0x2c + 9];
+    u16 checkedId = id;
+
+    if ((s32)checkedId >= 0x1d0)
+        FUN_0019d3f0((u32)D_005e3098, 0x16ec);
+    return DAT_007ce3f8[(id & 0xffff) * 0x2c + 9];
 }
 
-// FUN_0017bc20 NONMATCHING
-u64 FUN_0017bc20(s16 player, s16 sourcePlayer, u64 id, u64 value)
+// FUN_0017bc20
+s32 FUN_0017bc20(s16 player, s16 sourcePlayer, u64 id, u64 value)
 {
     u8* left;
     u8* right;
-    s16 condition;
-    if (sourcePlayer == 0 || sourcePlayer > 10) FUN_0019d3f0(0x5e3098, 0x1702);
-    if ((id & 0xffff) == 0x1a9 || (id & 0xffff) == 0x19f)
+    u16 condition;
+
+    if (sourcePlayer == 0 || (s32)sourcePlayer >= 0xb)
+        FUN_0019d3f0((u32)D_005e3098, 0x1702);
+
+    switch (id & 0xffff)
     {
-        condition = sourcePlayer == 1 ? (s16)U16(0x0083626c) : *(s16*)(0x00833994 + sourcePlayer * 0x364);
+    case 0x19f:
+    case 0x1a9:
+        condition = sourcePlayer == 1
+            ? *(u16*)(DAT_00836200 + 0x6c)
+            : *(u16*)(D_00833994 + sourcePlayer * 0x364);
         return condition == 5 ? 0 : 8;
     }
-    if (player == 1) left = PTR8(0x00836224);
-    else { if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1); left = PTR8(0x00834014 + (player - 2) * 0x364); }
-    if (sourcePlayer == 1) right = PTR8(0x00836224);
-    else right = PTR8(0x00834014 + (sourcePlayer - 2) * 0x364);
+
+    if (player == 1) left = DAT_00836200 + 0x24;
+    else
+    {
+        if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        left = D_00834010 + (player - 2) * 0x364 + 4;
+    }
+    if (sourcePlayer == 1) right = DAT_00836200 + 0x24;
+    else
+    {
+        if ((s32)sourcePlayer >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1);
+        right = D_00834010 + (sourcePlayer - 2) * 0x364 + 4;
+    }
+
     return FUN_003068d0(id, left, right, value);
 }
 
-// FUN_0017be10 NONMATCHING
+// FUN_0017be10
 void FUN_0017be10(s16 player, s16 sourcePlayer, u64 id, u64 a, u64 b, u64 c, u64 d)
 {
     u8* left;
     u8* right;
-    if (player == 1) left = PTR8(0x00836224);
-    else { if (player > 10) FUN_0019d3f0(0x5e3098, 0x2e1); left = PTR8(0x00834014 + (player - 2) * 0x364); }
-    if (sourcePlayer == 1) right = PTR8(0x00836224);
-    else { if (sourcePlayer > 10) FUN_0019d3f0(0x5e3098, 0x2e1); right = PTR8(0x00834014 + (sourcePlayer - 2) * 0x364); }
+    if (player == 1) left = DAT_00836200 + 0x24;
+    else { if ((s32)player >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1); left = D_00834010 + (player - 2) * 0x364 + 4; }
+    if (sourcePlayer == 1) right = DAT_00836200 + 0x24;
+    else { if ((s32)sourcePlayer >= 0xb) FUN_0019d3f0((u32)D_005e3098, 0x2e1); right = D_00834010 + (sourcePlayer - 2) * 0x364 + 4; }
     FUN_00306bc0(id, left, right, a, b, c, d);
 }
 
-// FUN_0017bfa0 NONMATCHING
-u8 FUN_0017bfa0(u32 id, u8 field)
+// FUN_0017bfa0
+u8 FUN_0017bfa0(s32 id, s32 field)
 {
-    u8* table;
-    if (field > 4) FUN_0019d3f0(0x5e3098, 0x173b);
-    id &= 0xffff;
-    if (id < 0x1bf || id >= 0x1d0) return 0;
-    table = PTRP(0x007ce4a0);
-    if (table == NULL) return 0;
-    return table[id * 5 + field - 0x8bb];
+    u8 checkedField = field;
+    u32 inRange;
+    s32 maskedId;
+
+    if ((s32)checkedField < 0 || (s32)checkedField >= 5)
+        FUN_0019d3f0((u32)D_005e3098, 0x173b);
+    maskedId = id & 0xffff;
+    if (maskedId < 0x1bf)
+    {
+        inRange = 0;
+    }
+    else
+    {
+        if (maskedId > 0x1cf)
+        {
+            inRange = 0;
+        }
+        else
+        {
+            inRange = 1;
+        }
+    }
+    if (inRange == 0) return 0;
+    return (DAT_007ce4a0 + maskedId * 5)[(field & 0xff) - 0x8bb];
 }
 
-// FUN_0017c070 NONMATCHING
+// FUN_0017c070
 u32 FUN_0017c070(u32 id)
 {
     u8* record;
-    if ((id & 0xffff) >= 0x1d0) return 0;
-    record = PTRP(0x007ce3f8) + (id & 0xffff) * 0x2c;
-    return record[0x11] == 0xb && *(u16*)(record + 0x12) == 100;
+    u32 offset;
+    u32 result;
+
+    if ((s32)(id & 0xffff) >= 0x1d0) return 0;
+    offset = (id & 0xffff) * 0x2c;
+    record = (u8*)((u32)offset + (u32)DAT_007ce3f8);
+    if (record[0x11] == 0xb && *(s16*)(record + 0x12) == 100)
+        result = 1;
+    else
+        result = 0;
+    return result;
 }
 
-// FUN_0017c0e0 NONMATCHING
+// FUN_0017c0e0
 u32 FUN_0017c0e0(u32 id)
 {
     u16 flags;
-    if (id > 0xff) FUN_0019d3f0(0x5e3098, 0x1755);
-    flags = U16(PTRP(0x007ce42c) + id * 0x58);
+    u32 valid = id < 0x100;
+
+    if (valid == 0) FUN_0019d3f0((u32)D_005e3098, 0x1755);
+    flags = *(u16*)(DAT_007ce42c + id * 0x58);
     if (flags & 2) return 2;
     if (flags & 4) return 4;
     if (flags & 8) return 8;
@@ -739,10 +932,12 @@ void func_0017c280(void)
     }
 
 }
-// FUN_0017c2f0 NONMATCHING
+// FUN_0017c2f0
 s32 FUN_0017c2f0(const u32* left, const u32* right)
 {
-    return FUN_00403740(*(const u16*)*left) - FUN_00403740(*(const u16*)*right);
+    const s16* leftValue = (const s16*)*left;
+    const s16* rightValue = (const s16*)*right;
+    return FUN_00403740(*leftValue) - FUN_00403740(*rightValue);
 }
 
 // FUN_0017c350 NONMATCHING
@@ -767,88 +962,165 @@ void FUN_0017c350(void)
     RELEASE(source);
 }
 
-// FUN_0017c4e0 NONMATCHING
+#pragma optimization_level 1
+// FUN_0017c4e0
 bool FUN_0017c4e0(s16 value)
 {
-    s32 i;
-    for (i = 0; i < 3; i++)
+    struct CalendarSlot
     {
-        if (*(s16*)(0x0083a718 + i * 4) == -1)
-        {
-            memset(PTR8(0x0083a718 + i * 4), 0, 4);
-            *(s16*)(0x0083a718 + i * 4) = value;
-            FUN_0017c350();
-            return true;
-        }
-    }
-    return false;
-}
+        s16 value;
+        s16 unused;
+    };
+    struct CalendarWork
+    {
+        u8 unused[0x4518];
+        struct CalendarSlot slots[3];
+    };
+    s32 i = 0;
+    struct CalendarSlot* slot;
+    struct CalendarWork* work = (struct CalendarWork*)DAT_00836200;
+    u8* candidateBase;
+    s32 empty = -1;
 
-// FUN_0017c590 NONMATCHING
+    while (i < 3)
+    {
+        candidateBase = (u8*)((u32)work + (u32)(i * 4));
+        if (*(s16*)(candidateBase + 0x4518) == empty)
+        {
+            slot = (struct CalendarSlot*)(candidateBase + 0x4518);
+            FUN_00521408(slot, 0, 4);
+            goto found;
+        }
+        i++;
+    }
+    slot = NULL;
+found:
+    if (slot == NULL) return false;
+    slot->value = value;
+    FUN_0017c350();
+    return true;
+}
+#pragma optimization_level 2
+
+// FUN_0017c590
 void FUN_0017c590(s16 value)
 {
-    s32 i;
-    for (i = 0; i < 3; i++) if (*(s16*)(0x0083a718 + i * 4) == value) *(s16*)(0x0083a718 + i * 4) = -1;
+    struct CalendarSlot
+    {
+        s16 value;
+        s16 unused;
+    };
+    struct CalendarWork
+    {
+        u8 unused[0x4518];
+        struct CalendarSlot slots[3];
+    };
+    s32 i = 0;
+    s32 target = value;
+    struct CalendarWork* work = (struct CalendarWork*)DAT_00836200;
+
+    while (i < 3)
+    {
+        struct CalendarSlot* slot = &work->slots[i];
+        if (slot->value == target)
+        {
+            slot->value = -1;
+            break;
+        }
+        i++;
+    }
     FUN_0017c350();
 }
 
-// FUN_0017c610 NONMATCHING
+// FUN_0017c610
 s16* FUN_0017c610(s16 value)
 {
-    s32 i;
-    for (i = 0; i < 3; i++) if (*(s16*)(0x0083a718 + i * 4) == value) return (s16*)(0x0083a718 + i * 4);
+    struct CalendarEntry
+    {
+        u8 unused[0x4518];
+        s16 value;
+    };
+    s32 i = 0;
+    s32 target = value;
+    struct CalendarEntry* data = (struct CalendarEntry*)DAT_00836200;
+
+    for (; i < 3; i++)
+    {
+        struct CalendarEntry* entry = (struct CalendarEntry*)((u8*)data + i * 4);
+        if (entry->value == target)
+            return &entry->value;
+    }
     return NULL;
 }
 
-// FUN_0017c670 NONMATCHING
+// FUN_0017c670
 s16* FUN_0017c670(s32 index)
 {
-    if (*(s16*)(0x0083a718 + index * 4) == -1) return NULL;
-    return (s16*)(0x0083a718 + index * 4);
+    s32 offset = index * 4;
+
+    if (*(s16*)(DAT_0083a718 + offset) != -1)
+        return (s16*)(DAT_00836200 + offset + 0x4518);
+    return NULL;
 }
 
-// FUN_0017c700 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0017c700
 s32 FUN_0017c700(void)
 {
-    s32 i;
     s32 count = 0;
-    for (i = 0; i < 3; i++) if (*(s16*)(0x0083a718 + i * 4) != -1) count++;
+    s32 sentinel = -1;
+    s32 i = 0;
+    u8* base = DAT_00836200;
+    for (; i < 3; i++)
+    {
+        s32 value = *(s16*)(base + i * 4 + 0x4518);
+        if (value != sentinel) count++;
+    }
     return count;
 }
+#pragma opt_loop_invariants off
 
-// FUN_0017c750 NONMATCHING
+// FUN_0017c750
 void FUN_0017c750(u64 value)
 {
     s32 i;
     for (i = 0; i < 3; i++)
     {
-        s16* entry = (s16*)(0x0083a718 + i * 4);
-        if (*entry != -1 && FUN_00403920(*entry, value) != 0 && entry[1] < 0x7d01) entry[1]++;
+        u8* entry = DAT_00836200 + i * 4;
+        if (*(s16*)(entry + 0x4518) != -1 &&
+            FUN_00403920(*(s16*)(entry + 0x4518), value) != 0)
+        {
+            s16* counter = (s16*)(entry + 0x451a);
+            s16 current = *counter;
+            if (current < 0x7d01) *counter = current + 1;
+        }
     }
 }
 
-// FUN_0017c7f0 NONMATCHING
+// FUN_0017c7f0
 void FUN_0017c7f0(s32 index, u8 value)
 {
-    if (index < 0 || index > 7) FUN_0019d3f0(0x5e3098, 0x180f);
-    PTR8(0x0083a728)[index] = value;
+    if (index < 0 || index >= 8) FUN_0019d3f0((u32)D_005e3098, 0x180f);
+    DAT_00836200[0x4528 + index] = value;
 }
 
-// FUN_0017c860 NONMATCHING
+// FUN_0017c860
 u8 FUN_0017c860(s32 index)
 {
-    if (index < 0 || index > 7) FUN_0019d3f0(0x5e3098, 0x1814);
-    return PTR8(0x0083a728)[index];
+    if (index < 0 || index >= 8) FUN_0019d3f0((u32)D_005e3098, 0x1814);
+    return DAT_00836200[0x4528 + index];
 }
 
-// FUN_0017c960 NONMATCHING
+// FUN_0017c960
 void FUN_0017c960(const void* record)
 {
-    u16 id;
-    if (record == NULL) FUN_0019d3f0(0x5e3098, 0x182b);
-    id = *(const u16*)((const u8*)record + 2);
-    if (id > 0xff) FUN_0019d3f0(0x5e3098, 0x182c);
-    memcpy(compendium_record(id), record, 0x34);
+    const u8* source = (const u8*)record;
+    s32 id;
+
+    if (source == NULL) FUN_0019d3f0((u32)D_005e3098, 0x182b);
+    id = *(const u16*)(source + 2);
+    if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x182c);
+    memcpy(DAT_00836200 + *(const u16*)(source + 2) * 0x34 + 0xc1c, source, 0x34);
 }
 
 // FUN_0017ca10 NONMATCHING
@@ -872,41 +1144,74 @@ s32 FUN_0017ca10(const void* record)
     return 0;
 }
 
-// FUN_0017cd30 NONMATCHING
+// FUN_0017cd30
 void* FUN_0017cd30(void* record)
 {
     u8* source = (u8*)record;
-    u16 id;
     u8* definition;
-    if (record == NULL) FUN_0019d3f0(0x5e3098, 0x1861);
+    u8* stored;
+    s32 id;
+    s32 storedId;
+    u16 flags;
+
+    if (source == NULL) FUN_0019d3f0((u32)D_005e3098, 0x1861);
     id = *(u16*)(source + 2);
-    if (id > 0xff) FUN_0019d3f0(0x5e3098, 0x1862);
-    definition = PTRP(0x007ce420) + id * 0xe;
-    if ((*(u16*)definition & 8) == 0 && (*(u16*)definition & 0x20) == 0)
-    {
-        if ((U16(0x00836e1c + id * 0x34) & 1) == 0)
-        {
-            FUN_0017c960(record);
-            return NULL;
-        }
-        return compendium_record(id);
-    }
-    return record;
+    if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x1862);
+    id = *(u16*)(source + 2);
+    definition = DAT_007ce420 + id * 0xe;
+    flags = *(u16*)definition;
+    if (flags & 8) return source;
+    if (flags & 0x20) return source;
+
+    if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x1821);
+    if ((*(u16*)(DAT_00836e1c + id * 0x34) & 1) != 0)
+        stored = DAT_00836200 + id * 0x34 + 0xc1c;
+    else
+        stored = NULL;
+    if (stored != NULL) return stored;
+
+    if (source == NULL) FUN_0019d3f0((u32)D_005e3098, 0x182b);
+    storedId = *(u16*)(source + 2);
+    if (storedId < 0 || storedId >= 0x100)
+        FUN_0019d3f0((u32)D_005e3098, 0x182c);
+    memcpy(DAT_00836200 + *(u16*)(source + 2) * 0x34 + 0xc1c, source, 0x34);
+    return NULL;
 }
 
-// FUN_0017cf00 NONMATCHING
+// FUN_0017cf00
 s32 FUN_0017cf00(void)
 {
-    s32 valid = 0;
-    s32 eligible = 0;
-    s32 i;
-    for (i = 0; i < 0x100; i++) if (U16(0x00836e1c + i * 0x34) & 1) valid++;
-    for (i = 0; i < 0x100; i++)
+    s32 id;
+    s32 valid;
+    s32 definitionId;
+    s32 eligible;
+    u8* stored;
+    u8* definitions;
+
+    valid = 0;
+    id = 0;
+    while (id < 0x100)
     {
-        u16 flags = *(u16*)(PTRP(0x007ce420) + i * 0xe);
-        if ((flags & 8) == 0 && (flags & 0x20) == 0) eligible++;
+        if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x1821);
+        stored = DAT_00836200 + id * 0x34;
+        if ((*(u16*)(stored + 0xc1c) & 1) != 0)
+            stored = stored + 0xc1c;
+        else
+            stored = NULL;
+        if (stored != NULL) valid++;
+        id++;
     }
-    return eligible == 0 ? 0 : valid * 100 / eligible;
+
+    eligible = 0;
+    definitionId = 0;
+    definitions = DAT_007ce420;
+    while (definitionId < 0x100)
+    {
+        u16 flags = *(u16*)(definitions + definitionId * 0xe);
+        if ((flags & 8) == 0 && (flags & 0x20) == 0) eligible++;
+        definitionId++;
+    }
+    return valid * 100 / eligible;
 }
 
 // FUN_0017d030
@@ -921,83 +1226,223 @@ void FUN_0017d040(void)
     U32(0x0083a730) = *(u32*)(D_0083A6FC + 0x34) + 1;
 }
 
-// FUN_0017d060 NONMATCHING
-PairCounter* FUN_0017d060(u32 key, s16 id, s16 value)
+typedef union PairKey
 {
-    PairCounter* entries = pair_counters();
-    s32 i;
-    PairCounter* freeEntry = NULL;
-    for (i = 0; i < 0x20; i++)
+    f32 value;
+    struct
     {
-        if (entries[i].key == (s16)key && entries[i].id == id)
+        u16 low;
+        u16 high;
+    } parts;
+} PairKey;
+
+// FUN_0017d060
+PairCounter* FUN_0017d060(PairKey key, u16 id, s16 value)
+{
+    struct PairCounterU
+    {
+        PairKey key;
+        u16 id;
+        u16 remaining;
+    };
+    struct PairCounterWork
+    {
+        u8 unused[0x4534];
+        struct PairCounterU entries[0x20];
+    };
+    s32 i = 0;
+    s32 j;
+    u32 keyValue = key.parts.low;
+    u32 idValue = id;
+    struct PairCounterU* found;
+    struct PairCounterU* freeEntry;
+    struct PairCounterWork* work = (struct PairCounterWork*)DAT_00836200;
+
+    while (i < 0x20)
+    {
+        u8* entryBase = (u8*)((u32)work + (u32)(i * 8));
+        if (*(u16*)(entryBase + 0x4534) == keyValue &&
+            *(u16*)(entryBase + 0x4538) == idValue)
         {
-            if (entries[i].keyHigh != (s16)(key >> 16))
-            {
-                entries[i].key = (s16)key;
-                entries[i].keyHigh = (s16)(key >> 16);
-                entries[i].remaining = value;
-            }
-            return &entries[i];
+            found = (struct PairCounterU*)(entryBase + 0x4534);
+            goto found_entry;
         }
-        if (freeEntry == NULL && entries[i].id == 0) freeEntry = &entries[i];
+        i++;
     }
+    found = NULL;
+found_entry:
+    if (found != NULL)
+    {
+        if (found->key.parts.high != key.parts.high)
+        {
+            found->key = key;
+            found->remaining = value;
+        }
+        return (PairCounter*)found;
+    }
+
+    j = 0;
+    work = (struct PairCounterWork*)DAT_00836200;
+    while (j < 0x20)
+    {
+        u8* entryBase = (u8*)((u32)work + (u32)(j * 8));
+        if (*(u16*)(entryBase + 0x4538) == 0)
+        {
+            freeEntry = (struct PairCounterU*)(entryBase + 0x4534);
+            goto found_free_entry;
+        }
+        j++;
+    }
+    freeEntry = NULL;
+found_free_entry:
     if (freeEntry == NULL)
     {
-        FUN_0019d3f0(0x5e3098, 0x18c5);
-        return NULL;
+        FUN_0019d3f0((u32)D_005e3098, 0x18c5);
     }
-    freeEntry->key = (s16)key;
-    freeEntry->keyHigh = (s16)(key >> 16);
+    freeEntry->key = key;
     freeEntry->id = id;
     freeEntry->remaining = value;
-    return freeEntry;
+    return (PairCounter*)freeEntry;
 }
 
-// FUN_0017d1a0 NONMATCHING
-u32 FUN_0017d1a0(s16 key, s16 id, s16 amount)
+// FUN_0017d1a0
+u32 FUN_0017d1a0(u32 key, u16 id, s16 amount)
 {
-    s32 i;
-    PairCounter* entries = pair_counters();
-    for (i = 0; i < 0x20; i++)
+    struct PairCounterU
     {
-        if (entries[i].key == key && entries[i].id == id)
+        u16 key;
+        u16 keyHigh;
+        u16 id;
+        u16 remaining;
+    };
+    struct PairCounterWork
+    {
+        u8 unused[0x4534];
+        struct PairCounterU entries[0x20];
+    };
+    s32 i = 0;
+    u32 keyValue = *(u16*)&key;
+    u32 idValue = id;
+    struct PairCounterU* found;
+    struct PairCounterWork* work = (struct PairCounterWork*)DAT_00836200;
+
+    while (i < 0x20)
+    {
+        u8* entryBase = (u8*)((u32)work + (u32)(i * 8));
+        if (*(u16*)(entryBase + 0x4534) == keyValue &&
+            *(u16*)(entryBase + 0x4538) == idValue)
         {
-            s16 remaining = entries[i].remaining - amount;
-            if (remaining < 0) remaining = 0;
-            entries[i].remaining = remaining;
-            return (u16)remaining;
+            found = (struct PairCounterU*)(entryBase + 0x4534);
+            goto found_entry;
         }
+        i++;
     }
-    return 0xffffffff;
-}
-
-// FUN_0017d250 NONMATCHING
-u32 FUN_0017d250(s16 key, s16 id)
-{
-    s32 i;
-    PairCounter* entries = pair_counters();
-    for (i = 0; i < 0x20; i++) if (entries[i].key == key && entries[i].id == id) return (u16)entries[i].remaining;
-    return 0xffffffff;
-}
-
-// FUN_0017d2e0 NONMATCHING
-u8 FUN_0017d2e0(u64 id)
-{
-    u8* values = PTR8(0x005e38a0);
-    s16 index = FUN_003082f0(0, id);
-    if (index < 0)
+    found = NULL;
+found_entry:
+    if (found != NULL)
     {
-        if (*(u8*)(PTRP(0x007ce3f4) + ((u16)id & 0xffff) * 2 + 1) == 2) return 0xc;
-        return values[0];
+        s16 remaining = (s16)(found->remaining - amount);
+        if (remaining < 0) remaining = 0;
+        found->remaining = remaining;
+        return found->remaining;
     }
-    return values[index < 0x13 ? index : 0];
+    return 0xffffffff;
 }
 
-// FUN_0017d3c0 NONMATCHING
+// FUN_0017d250
+u32 FUN_0017d250(u32 key, u16 id)
+{
+    struct PairCounterU
+    {
+        u16 key;
+        u16 keyHigh;
+        u16 id;
+        u16 remaining;
+    };
+    struct PairCounterWork
+    {
+        u8 unused[0x4534];
+        struct PairCounterU entries[0x20];
+    };
+    s32 i = 0;
+    u32 keyValue = *(u16*)&key;
+    u32 idValue = id;
+    struct PairCounterU* found;
+    struct PairCounterWork* work = (struct PairCounterWork*)DAT_00836200;
+
+    while (i < 0x20)
+    {
+        u8* entryBase = (u8*)((u32)work + (u32)(i * 8));
+        if (*(u16*)(entryBase + 0x4534) == keyValue &&
+            *(u16*)(entryBase + 0x4538) == idValue)
+        {
+            found = (struct PairCounterU*)(entryBase + 0x4534);
+            goto found_entry;
+        }
+        i++;
+    }
+    found = NULL;
+found_entry:
+    if (found != NULL) return found->remaining;
+    return 0xffffffff;
+}
+
+// FUN_0017d2e0
+s8 FUN_0017d2e0(u32 id)
+{
+    s32 index;
+    u16 check;
+
+    index = (s16)FUN_003082f0(0, id);
+    {
+        s8 values[0x13] = {
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 10, 10, 10, 10, 10, 10, 10, 10
+        };
+        if (index == -1)
+        {
+            check = id;
+            if ((s32)check >= 0x270)
+                FUN_0019d3f0((u32)D_005e3098, 0x166b);
+            if (puGpffffb704[(id & 0xffff) * 2 + 1] == 2)
+                return 0xc;
+        }
+        return values[index];
+    }
+}
+
+// FUN_0017d3c0
 void FUN_0017d3c0(void)
 {
+    struct DateTemplate
+    {
+        f32 a;
+        f32 b;
+        f32 c;
+        f32 d;
+    };
+    extern const volatile struct DateTemplate D_005e38c0;
+    volatile struct DateTemplate template;
+    f32 a;
+    f32 b;
+    f32 c;
+    f32 d;
     s32 i;
-    for (i = 0; i < 9; i++) memcpy(PTR8(0x0083a834 + i * 0x10), PTR8(0x005e38c0), 0x10);
+
+    a = D_005e38c0.a;
+    b = D_005e38c0.b;
+    c = D_005e38c0.c;
+    d = D_005e38c0.d;
+    template.a = a;
+    template.b = b;
+    template.c = c;
+    template.d = d;
+    i = 0;
+    while (i < 9)
+    {
+        memcpy(DAT_00836200 + i * 0x10 + 0x4634, (const void*)&template, 0x10);
+        i++;
+    }
 }
 
 // FUN_0017d450 NONMATCHING
@@ -1029,23 +1474,39 @@ u32 FUN_0017d450(s32 index, const void* date)
     return 0;
 }
 
-// FUN_0017d610 NONMATCHING
-u32 FUN_0017d610(s32 index)
+// FUN_0017d610
+u32 FUN_0017d610(u32 index)
 {
     u8 date[8];
-    if (index >= 5) return 0;
+    u32 doubled;
+    u32 result;
+
+    if ((s32)index <= 4) goto valid_index;
+    result = 0;
+    goto done;
+valid_index:
     FUN_003eff00(index, date);
-    if (FUN_0017d450(index, date) == 0) return 0;
-    memcpy(PTR8(0x0083a834 + (index * 2 + 1) * 8), PTR8(0x0083a834 + index * 0x10), 8);
-    memcpy(PTR8(0x0083a834 + index * 0x10), date, 8);
-    return 1;
+    if (FUN_0017d450(index, date) != 0)
+    {
+        doubled = index * 2;
+        index = (u32)(DAT_00836200 + index * 0x10 + 0x4634);
+        memcpy(DAT_00836200 + (doubled + 1) * 8 + 0x4634, (void*)index, 8);
+        memcpy((void*)index, date, 8);
+        result = 1;
+    }
+    else
+    {
+        result = 0;
+    }
+done:
+    return result;
 }
 
-// FUN_0017d700 NONMATCHING
-void FUN_0017d700(s32 index, s32 slot, const void* date)
+// FUN_0017d700
+void FUN_0017d700(s32 index, s32 slot, void* date)
 {
-    if (date == NULL) FUN_0019d3f0(0x5e3098, 0x197f);
-    memcpy(PTR8(0x0083a834 + (index * 2 + slot) * 8), date, 8);
+    if (date == NULL) FUN_0019d3f0((u32)D_005e3098, 0x197f);
+    memcpy(date, DAT_00836200 + ((index << 1) + slot) * 8 + 0x4634, 8);
 }
 
 // FUN_0017d7b0
@@ -1054,11 +1515,15 @@ u32 FUN_0017d7b0(void)
     return U32(0x0083aa98);
 }
 
-// FUN_0017d7c0 NONMATCHING
+#pragma optimization_level 1
+// FUN_0017d7c0
 void FUN_0017d7c0(u32 value)
 {
-    U32(0x0083aa98) = value > 99 ? 99 : value;
+    U32(0x0083aa98) = value;
+    if (U32(0x0083aa98) > 99)
+        U32(0x0083aa98) = 99;
 }
+#pragma optimization_level 2
 
 // FUN_0017d810
 u32 FUN_0017d810(void)

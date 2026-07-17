@@ -19,12 +19,32 @@ typedef struct SflGroundColor
     u8 b;
     u8 a;
 } SflGroundColor;
+typedef struct SflGroundViewport
+{
+    s32 unk0;
+    s32 unk4;
+    s32 unk8;
+    s32 width;
+    s32 height;
+} SflGroundViewport;
+typedef struct SflGroundTile
+{
+    u8 pad0[8];
+    f32 color;
+    u8 pad0c[12];
+    f32 scale;
+    u32 white0;
+    u32 white1;
+    u32 white2;
+    u32 white3;
+} SflGroundTile;
 
-typedef void (*SflGroundTickCallback)(void);
+typedef void (*SflGroundTickCallback)(void* owner);
 typedef void (*SflGroundRenderStateCallback)(u32 selector, u32 value);
 typedef void (*SflGroundRenderQuadCallback)(void* vertices, u32 count,
                                              u32 group, u32 pass, u32 blend);
 
+#define GROUND_TILE(work, offset) ((SflGroundTile*)GROUND_PTR((work), (offset)))
 #define GROUND_PTR(work, offset) ((void*)((u8*)(work) + (offset)))
 #define GROUND_U32(work, offset) (*(u32*)GROUND_PTR((work), (offset)))
 #define GROUND_F32(work, offset) (*(f32*)GROUND_PTR((work), (offset)))
@@ -40,9 +60,13 @@ enum
     SFL_GROUND_TILE_STRIDE = 0x40
 };
 
-extern u32 D_00960088;
-extern u32 D_00960090[];
-extern u32 D_0096009C[];
+extern const f32 D_00960088;
+extern const u32 D_00960090[];
+extern const u32 D_0096009C[];
+extern const SflGroundVec2 D_0068E7C0[];
+extern f32 gPI;
+extern void (*D_009600A4)(u32, void*, u32, void*, u32);
+extern f32 sqrtf(f32 value);
 
 void FUN_00249690();
 void* H_Maestro_001120a0(s32 font);
@@ -96,12 +120,14 @@ void func_00249c10();
 void func_0024a180();
 void func_0024a230();
 void* kwlnGetMainCamera();
-void func_0021d890();
-void func_0021d8e0();
-void func_0021d950();
-void func_0021e170();
-void func_0021eb80();
+void func_0021d890(void* destination, const void* layout);
+void func_0021d8e0(void* destination, const void* rect);
+void func_0021d950(void* destination, const void* color);
+void func_0021e170(void* destination, const void* center,
+                   const void* direction, const void* size);
+void func_0021eb80(void* destination, const f32* layout);
 f32 func_0052ea18();
+f32 sqrtf(f32 value);
 u32 RpRandom();
 void RpSkyRenderStateSet();
 f32 sinf(f32 angle);
@@ -114,37 +140,43 @@ void func_0023c520();
 void func_0023c850();
 
 static void sflGroundCallState(u32 selector, u32 value);
-// FUN_0024A180 NONMATCHING
-void func_0024a180(void* work)
+static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value);
+// FUN_0024A180
+void func_0024a180(u32* work)
 {
     u32* owner;
-    SflGroundTickCallback callback;
 
-    if ((GROUND_U32(work, 0x604) & 1) != 0)
-    {
+    if ((~GROUND_U32(work, 0x604) & 1) != 0) {
         return;
     }
 
-    sflGroundCallState(9, 2);
-    sflGroundCallState(0x14, 2);
-    sflGroundCallState(6, 0);
-    sflGroundCallState(8, 0);
+    {
+        register const u32* const state = &D_00960090[0];
 
-    owner = *(u32**)GROUND_PTR(work, 0x600);
-    callback = *(SflGroundTickCallback*)((u8*)owner + 0x48);
-    callback();
+        ((SflGroundRenderStateCallback)(void*)state[0])(9, 2);
+        ((SflGroundRenderStateCallback)(void*)state[0])(0x14, 2);
+        ((SflGroundRenderStateCallback)(void*)state[0])(6, 0);
+        ((SflGroundRenderStateCallback)(void*)state[0])(8, 0);
+        owner = *(u32**)GROUND_PTR(work, 0x600);
+        ((SflGroundTickCallback)(void*)GROUND_U32(owner, 0x48))(owner);
+    }
 }
-
-// FUN_0024A230 NONMATCHING
-void func_0024a230(void* work, const SflGroundColor* color)
+// FUN_0024A230
+void func_0024a230(void* work, const volatile SflGroundColor* color)
 {
-    u8* destination;
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
 
-    destination = (u8*)work + 0x614;
-    destination[0] = color->r;
-    destination[1] = color->g;
-    destination[2] = color->b;
-    destination[3] = color->a;
+    r = color->r;
+    g = color->g;
+    b = color->b;
+    a = color->a;
+    ((u8*)work)[0x614] = r;
+    ((u8*)work)[0x615] = g;
+    ((u8*)work)[0x616] = b;
+    ((u8*)work)[0x617] = a;
 }
 void func_0023c8c0();
 void func_0023ca10();
@@ -183,7 +215,11 @@ static f32 sflGroundRandomUnit(void)
 
 static void sflGroundCallState(u32 selector, u32 value)
 {
-    ((SflGroundRenderStateCallback)(void*)D_00960090)(selector, value);
+    ((SflGroundRenderStateCallback)(void*)D_00960090[0])(selector, value);
+}
+static void sflGroundCallStateTable(const u32* table, u32 selector, u32 value)
+{
+    ((SflGroundRenderStateCallback)(void*)table[0])(selector, value);
 }
 
 static void sflGroundDraw(void* vertices, u32 pass, u32 blend)
@@ -216,7 +252,7 @@ static void sflGroundInitParticle(u32* particle)
 static void sflGroundInitFxLayout(u32 flag, s32 state)
 {
     u32* work;
-    u32* viewport;
+    SflGroundViewport* viewport;
     f32 cameraScale;
     f32 rect[4];
     s32 i;
@@ -234,10 +270,10 @@ static void sflGroundInitFxLayout(u32 flag, s32 state)
     func_0021eb80(GROUND_PTR(work, 0x4710), rect);
 
     viewport = sflRes0020e690(4);
-    rect[0] = 1.0f / (f32)viewport[3];
+    rect[0] = 1.0f / (f32)viewport->width;
     rect[1] = 0.0f;
-    rect[2] = 51.0f / (f32)viewport[3];
-    rect[3] = 128.0f / (f32)viewport[4];
+    rect[2] = 51.0f / (f32)viewport->width;
+    rect[3] = 128.0f / (f32)viewport->height;
     for (i = 0; i < 7; i++) {
         for (j = 0; j < 4; j++) {
             func_0021eb80(GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100), rect);
@@ -248,13 +284,13 @@ static void sflGroundInitFxLayout(u32 flag, s32 state)
     }
 
     viewport = sflRes0020e690(3);
-    rect[0] = 1.0f / (f32)viewport[3];
+    rect[0] = 1.0f / (f32)viewport->width;
     rect[1] = 0.0f;
-    rect[2] = (flag == 0x20 ? 511.0f : 503.0f) / (f32)viewport[3];
-    rect[3] = 44.0f / (f32)viewport[4];
+    rect[2] = (flag == 0x20 ? 511.0f : 503.0f) / (f32)viewport->width;
+    rect[3] = 44.0f / (f32)viewport->height;
     for (i = 0; i < 6; i++) {
         func_0021eb80(GROUND_PTR(work, 0x64f0 + i * 0x100), rect);
-        GROUND_F32(work, 0x64f8 + i * 0x100) = *(f32*)&D_00960088;
+        GROUND_F32(work, 0x64f8 + i * 0x100) = D_00960088;
         GROUND_F32(work, 0x6508 + i * 0x100) = cameraScale;
     }
 
@@ -421,24 +457,24 @@ void func_0023b990(void)
     func_0024a180(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 }
 
-// FUN_0023C280 NONMATCHING
+// FUN_0023C280
 void func_0023c280(void)
 {
-    u32* work;
+    void* work;
     s32 i;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
-    K_ASSERT(work[0] & 1, 0x4f2);
+    K_ASSERT((~GROUND_U32(work, 0) & 1) != 0, 0x4f2);
     for (i = 0; i < 6; i++) {
-        func_0023c3a0(GROUND_PTR(work, SFL_GROUND_PANEL_OFFSET + i * SFL_GROUND_PANEL_STRIDE));
+        func_0023c3a0((u8*)work + i * SFL_GROUND_PANEL_STRIDE + SFL_GROUND_PANEL_OFFSET);
     }
     func_0023d2a0();
     func_0023d650();
-    work[3] = 1;
-    work[1] = 0;
-    work[2] = 0;
-    work[0] |= 1;
+    GROUND_U32(work, 0xc) = 1;
+    GROUND_U32(work, 4) = 0;
+    GROUND_U32(work, 8) = 0;
+    GROUND_U32(work, 0) |= 1;
 }
 
 // FUN_0023C350
@@ -448,33 +484,47 @@ u32 sflGround0023c350(void)
     return *sSflGround & 1;
 }
 
-// FUN_0023C3A0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0023C3A0
 void func_0023c3a0(void* destination)
 {
-    u32* viewport;
+    SflGroundViewport* viewport;
     f32 cameraScale;
+    f32 width;
+    f32 height;
+    register f32 invWidth;
     f32 rect[4];
-    s32 i;
-    s32 j;
+    u8* base;
+    register s32 i;
+    register s32 j;
 
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
     viewport = sflRes0020e590(1);
-    rect[0] = 1.0f / (f32)viewport[3];
-    rect[1] = 1.0f / (f32)viewport[4];
-    rect[2] = 253.0f / (f32)viewport[3];
-    rect[3] = 51.0f / (f32)viewport[4];
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    invWidth = 1.0f / width;
+    rect[0] = invWidth;
+    rect[1] = 1.0f / height;
+    rect[2] = 253.0f / width;
+    rect[3] = 51.0f / height;
     func_0021eb80(destination, rect);
-    rect[1] = 52.0f / (f32)viewport[4];
-    rect[2] = 182.0f / (f32)viewport[3];
-    rect[3] = 75.0f / (f32)viewport[4];
+    rect[0] = invWidth;
+    rect[1] = 52.0f / height;
+    rect[2] = 182.0f / width;
+    rect[3] = 75.0f / height;
     func_0021eb80((u8*)destination + 0x100, rect);
     for (i = 0; i < 2; i++) {
-        for (j = 0; j < 4; j++) {
-            GROUND_F32(destination, i * 0x100 + j * 0x40 + 8) = *(f32*)&D_00960088;
-            GROUND_F32(destination, i * 0x100 + j * 0x40 + 0x18) = cameraScale;
+        j = 0;
+        base = (u8*)destination + i * 0x100;
+        while (j < 4) {
+            GROUND_F32(base + j * 0x40, 8) =
+                *(const volatile f32*)&D_00960088;
+            GROUND_F32(base + j * 0x40, 0x18) = cameraScale;
+            j++;
         }
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_0023C520 NONMATCHING
 void func_0023c520(void* destination, const SflGroundVec2* center,
@@ -516,24 +566,100 @@ void func_0023c850(void* vertices, const SflGroundColor* color)
     }
 }
 
-// FUN_0023C8C0 NONMATCHING
+#pragma optimization_level 1
+// FUN_0023C8C0
 void func_0023c8c0(void* vertices)
 {
-    sflGroundCallState(9, 2);
-    sflGroundCallState(0x14, 2);
-    sflGroundCallState(8, 0);
-    sflGroundSetSkyState(0x71801);
-    sflGroundCallState(1, (u32)sflRes0020e590(1));
-    sflGroundDraw(vertices, 1, 2);
-    sflGroundDraw(vertices, 2, 3);
-    sflGroundDraw((u8*)vertices + 0x100, 1, 2);
-    sflGroundDraw((u8*)vertices + 0x100, 2, 3);
-}
+    void* vertices_p;
+    register const volatile u32* stateTable;
+    register const volatile u32* drawTable;
 
-// FUN_0023CA10 NONMATCHING
+    vertices_p = vertices;
+    stateTable = D_00960090;
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
+    RpSkyRenderStateSet(3, 0x71801);
+    RpSkyRenderStateSet(2, 0x48);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+        1, (u32)sflRes0020e590(1));
+
+    drawTable = D_0096009C;
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices_p, 4, 0, 1, 2);
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices_p, 4, 0, 2, 3);
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+        (u8*)vertices_p + 0x100, 4, 0, 1, 2);
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+        (u8*)vertices_p + 0x100, 4, 0, 2, 3);
+}
+#pragma optimization_level 2
+
+// FUN_0023CA10
 void func_0023ca10(void)
 {
-    sflGroundInitFxLayout(2, 3);
+    u32* work;
+    SflGroundViewport* viewport;
+    f32 cameraScale;
+    f32 width;
+    f32 height;
+    f32 rect[4];
+    s32 i;
+    s32 j;
+    u8* tile;
+    K_ASSERT(sSflGround != NULL, 0x87);
+    work = sSflGround;
+    cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
+
+    viewport = sflRes0020e690(5);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 0.0f / width;
+    rect[1] = 0.0f / height;
+    rect[2] = width / width;
+    rect[3] = height / height;
+    func_0021eb80(GROUND_PTR(work, 0x4710), rect);
+
+    viewport = sflRes0020e690(4);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 1.0f / width;
+    rect[1] = 0.0f / height;
+    rect[2] = 51.0f / width;
+    rect[3] = 128.0f / height;
+    for (i = 0; i < 7; i++) {
+        tile = (u8*)work + i * 0x420 + 0x4810;
+        for (j = 0; j < 4; j++) {
+            func_0021eb80(tile + j * 0x100 + 0x10, rect);
+        }
+    }
+    for (j = 0; j < 7; j++) {
+        tile = (u8*)work + j * 0x420 + 0x4810;
+        GROUND_F32(tile, 0x410) = (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_U32(tile, 0x418) = RpRandom();
+        GROUND_U32(tile, 0x414) = 0;
+    }
+
+    viewport = sflRes0020e690(3);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 1.0f / width;
+    rect[1] = 2.0f / height;
+    rect[2] = 503.0f / width;
+    rect[3] = 44.0f / height;
+    for (j = 0; j < 6; j++) {
+        tile = (u8*)work + j * 0x100;
+        func_0021eb80(tile + 0x64f0, rect);
+        GROUND_F32(tile, 0x64f8) = D_00960088;
+        GROUND_F32(tile, 0x6508) = cameraScale;
+    }
+
+    work[1] = 0;
+    work[0x1abc] = 0x78;
+    work[0] |= 8;
+    work[0] |= 0x10;
+    work[0] |= 2;
+    work[3] = 3;
 }
 
 // FUN_0023CD50
@@ -543,10 +669,72 @@ u32 sflGround0023cd50(void)
     return *sSflGround & 2;
 }
 
-// FUN_0023CDA0 NONMATCHING
+// FUN_0023CDA0
 void func_0023cda0(void)
 {
-    sflGroundInitFxLayout(0x20, 4);
+    u32* work;
+    SflGroundViewport* viewport;
+    f32 cameraScale;
+    f32 width;
+    f32 height;
+    f32 rect[4];
+    s32 i;
+    s32 j;
+    u8* tile;
+
+    K_ASSERT(sSflGround != NULL, 0x87);
+    work = sSflGround;
+    cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
+
+    viewport = sflRes0020e690(5);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 0.0f / width;
+    rect[1] = 0.0f / height;
+    rect[2] = width / width;
+    rect[3] = height / height;
+    func_0021eb80(GROUND_PTR(work, 0x4710), rect);
+
+    viewport = sflRes0020e690(4);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 1.0f / width;
+    rect[1] = 0.0f / height;
+    rect[2] = 51.0f / width;
+    rect[3] = 128.0f / height;
+    for (i = 0; i < 7; i++) {
+        tile = (u8*)work + i * 0x420 + 0x4810;
+        for (j = 0; j < 4; j++) {
+            func_0021eb80(tile + j * 0x100 + 0x10, rect);
+        }
+    }
+    for (j = 0; j < 7; j++) {
+        tile = (u8*)work + j * 0x420 + 0x4810;
+        GROUND_F32(tile, 0x410) = (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_U32(tile, 0x418) = RpRandom();
+        GROUND_U32(tile, 0x414) = 0;
+    }
+
+    viewport = sflRes0020e690(3);
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 1.0f / width;
+    rect[1] = 47.0f / height;
+    rect[2] = 511.0f / width;
+    rect[3] = 44.0f / height;
+    for (j = 0; j < 6; j++) {
+        tile = (u8*)work + j * 0x100;
+        func_0021eb80(tile + 0x64f0, rect);
+        GROUND_F32(tile, 0x64f8) = D_00960088;
+        GROUND_F32(tile, 0x6508) = cameraScale;
+    }
+
+    work[1] = 0;
+    work[0x1abc] = 0x78;
+    work[0] |= 8;
+    work[0] |= 0x10;
+    work[0] |= 0x20;
+    work[3] = 4;
 }
 
 // FUN_0023D0E0
@@ -556,20 +744,24 @@ u32 sflGround0023d0e0(void)
     return *sSflGround & 0x20;
 }
 
-// FUN_0023D130 NONMATCHING
+// FUN_0023D130
 void func_0023d130(void)
 {
     u32* work;
-    u32* viewport;
+    SflGroundViewport* viewport;
+    f32 width;
+    f32 height;
     f32 rect[4];
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     viewport = sflRes0020e510(3);
-    rect[0] = 0.0f / (f32)viewport[3];
-    rect[1] = 0.0f / (f32)viewport[4];
-    rect[2] = 1.0f;
-    rect[3] = 1.0f;
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 0.0f / width;
+    rect[1] = 0.0f / height;
+    rect[2] = width / width;
+    rect[3] = height / height;
     func_0021eb80(GROUND_PTR(work, 0x4610), rect);
     func_002496e0(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
     work[1] = 0;
@@ -624,35 +816,48 @@ void func_0023d2a0(void)
     }
 }
 
-// FUN_0023D650 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0023D650
 void func_0023d650(void)
 {
     u32* work;
-    u32* viewport;
+    SflGroundViewport* viewport;
     f32 cameraScale;
+    f32 width;
+    f32 height;
     f32 rect[4];
-    s32 row;
     s32 column;
-    void* tile;
+    u32 white;
+    s32 row;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     cameraScale = 1.0f / GROUND_F32(kwlnGetMainCamera(), 0x80);
     viewport = sflRes0020e590(0);
-    rect[0] = 1.0f / (f32)viewport[3];
-    rect[1] = 1.0f / (f32)viewport[4];
-    rect[2] = ((f32)viewport[3] - 2.0f) / (f32)viewport[3];
-    rect[3] = ((f32)viewport[4] - 2.0f) / (f32)viewport[4];
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    rect[0] = 1.0f / width;
+    rect[1] = 1.0f / height;
+    rect[2] = (width - 2.0f) / width;
+    rect[3] = (height - 2.0f) / height;
     func_0021eb80(GROUND_PTR(work, 0x10), rect);
-    for (row = 0; row < 9; row++) {
-        for (column = 0; column < 11; column++) {
-            tile = GROUND_PTR(work, SFL_GROUND_TILE_OFFSET + (row * 11 + column) * SFL_GROUND_TILE_STRIDE);
-            GROUND_F32(tile, 8) = *(f32*)&D_00960088;
+    white = 0x437f0000;
+    row = 0;
+    while (row < 9) {
+        column = 0;
+        while (column < 11) {
+            u8* tile;
+            tile = (u8*)work + SFL_GROUND_TILE_OFFSET +
+                   (row * 11 + column) * SFL_GROUND_TILE_STRIDE;
+            GROUND_F32(tile, 8) = *(const volatile f32*)&D_00960088;
             GROUND_F32(tile, 0x18) = cameraScale;
-            GROUND_F32(tile, 0x20) = 255.0f;
-            GROUND_F32(tile, 0x24) = 255.0f;
-            GROUND_F32(tile, 0x28) = 255.0f;
-            GROUND_F32(tile, 0x2c) = 255.0f;
+            GROUND_U32(tile, 0x20) = white;
+            GROUND_U32(tile, 0x24) = white;
+            GROUND_U32(tile, 0x28) = white;
+            GROUND_U32(tile, 0x2c) = white;
+            column++;
         }
+        row++;
     }
 }
+#pragma opt_loop_invariants off

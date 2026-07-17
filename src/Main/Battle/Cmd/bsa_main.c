@@ -85,7 +85,6 @@ static void bsaSetColor(void* destination, u8 alpha)
     func_0021d950(destination, color);
 }
 
-
 /* Set a quad from a frame.  Width/height below zero use the frame dimensions. */
 static void bsaPlaceQuad(u32* work, u32 destination, u32 frame, f32 x, f32 y,
                          f32 width, f32 height, u8 alpha)
@@ -368,7 +367,7 @@ void bsaMain00210d60(BsaWork* work)
     p[0x29ad] = 1;
     p[1] |= BSA_FLAG_TRANSITION;
 }
-
+ 
 static void bsaTransition(u32* p, f32* alpha, f32* slide, f32* iconAlpha)
 {
     s32 timer;
@@ -421,6 +420,8 @@ void bsaMain00210d90(BsaWork* work)
     f32 base;
     f32 value;
     s32 i;
+    f32 rect[4];
+    u8 drawColor[4];
     u8 color;
 
     p = work->words;
@@ -433,12 +434,20 @@ void bsaMain00210d90(BsaWork* work)
     alpha = 1.0f;
     slide = 0.0f;
     iconAlpha = 1.0f;
-    bsaTransition(p, &alpha, &slide, &iconAlpha);
     base = (p[0] == 0) ? 180.0f : 0.0f;
     color = bsaAlpha(alpha * 255.0f);
 
     image = func_0021cca0(table2, 0x1f);
-    bsaPlaceQuad(p, 0x10, image, 59.0f, base + 60.0f, -1.0f, -1.0f, color);
+    rect[0] = 59.0f;
+    rect[1] = base + 60.0f;
+    rect[2] = BSA_FRAME_W(image);
+    rect[3] = BSA_FRAME_H(image);
+    func_0021d8e0(p + 0x10, rect);
+    drawColor[0] = 0xff;
+    drawColor[1] = 0xff;
+    drawColor[2] = 0xff;
+    drawColor[3] = color;
+    func_0021d950(p + 0x10, drawColor);
     image = func_0021cca0(table2, 0x28);
     bsaPlaceQuad(p, 0x510, image, 18.0f, base + 54.0f + slide,
                  -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
@@ -727,6 +736,10 @@ void bsaMain00213e80(BsaWork* work)
             }
         }
     }
+    {
+        BsaRenderQuad* renderQuad;
+        renderQuad = (BsaRenderQuad*)D_0096009C;
+#define D_0096009C (*renderQuad)
     image = func_0021cce0(func_0021cca0(table2, 0x1f));
     D_00960090(1, image);
     D_0096009C(p + 0x10, 4, 0, 1, 2);
@@ -774,6 +787,8 @@ void bsaMain00213e80(BsaWork* work)
     for (i = 0; i < 9; i++) {
         D_0096009C(p + i * 0x40 + 0x2d0, 4, 0, 1, 2);
         D_0096009C(p + i * 0x40 + 0x2d0, 4, 0, 2, 3);
+    }
+#undef D_0096009C
     }
     if ((p[1] & BSA_FLAG_AILMENT) != 0) {
         image = func_0021cce0(func_0021cca0(table2, 0x32));
@@ -944,43 +959,117 @@ void bsaMain00213e80(BsaWork* work)
     }
 }
 
-// FUN_00215770 NONMATCHING
+// FUN_00215770
 void bsaMain00215770(BsaWork* work)
 {
     u32* p;
     s32 i;
     p = work->words;
-    if ((p[1] & BSA_FLAG_ACTIVE) != 0 && p[0] == 1 &&
-        (p[1] & BSA_FLAG_RESOURCE) == 0) {
-        func_003b0170(p[4]);
-        for (i = 0; i < (s32)p[0xd]; i++)
-            func_003b0170(p[i + 5]);
+    if ((~p[1] & BSA_FLAG_ACTIVE) != 0)
+        return;
+
+    func_003b0170(p[4]);
+    switch (p[0]) {
+    case 0:
+        break;
+    case 1:
+        if ((~p[1] & BSA_FLAG_RESOURCE) != 0) {
+            for (i = 0; i < (s32)p[0xd]; i++)
+                func_003b0170(*(u32*)((u8*)p + i * 4 + 0x14));
+        }
+        break;
     }
 }
 
-// FUN_00215830 NONMATCHING
+// FUN_00215830
 u32 bsaMain00215830(u32 type)
 {
     u32 table;
     u32 frame;
+
     table = func_0021c3f0(2);
     switch (type) {
-    default:
-        K_ASSERT(0, 0x778);
-        return 0;
-    case 0x17:
-        return func_0021cca0(table, 0x3b);
     case 1: case 2: case 3: case 4: case 5: case 6: case 7:
     case 8: case 9: case 10: case 0xb: case 0xc: case 0xd: case 0xe:
     case 0xf: case 0x10: case 0x11: case 0x12: case 0x13: case 0x14:
     case 0x15: case 0x16:
-        if (type <= 0xc)
-            frame = type + 9;
-        else if (type == 0xd)
+        switch (type) {
+        case 1:
+            frame = 0xa;
+            break;
+        case 2:
+            frame = 0xb;
+            break;
+        case 3:
+            frame = 0xc;
+            break;
+        case 4:
+            frame = 0xd;
+            break;
+        case 5:
+            frame = 0xe;
+            break;
+        case 6:
+            frame = 0xf;
+            break;
+        case 7:
+            frame = 0x10;
+            break;
+        case 8:
+            frame = 0x11;
+            break;
+        case 9:
+            frame = 0x12;
+            break;
+        case 10:
+            frame = 0x13;
+            break;
+        case 0xb:
+            frame = 0x14;
+            break;
+        case 0xc:
+            frame = 0x15;
+            break;
+        case 0xd:
             frame = 0;
-        else
-            frame = type - 0xe;
+            break;
+        case 0xe:
+            frame = 1;
+            break;
+        case 0xf:
+            frame = 2;
+            break;
+        case 0x10:
+            frame = 3;
+            break;
+        case 0x11:
+            frame = 4;
+            break;
+        case 0x12:
+            frame = 5;
+            break;
+        case 0x13:
+            frame = 6;
+            break;
+        case 0x14:
+            frame = 7;
+            break;
+        case 0x15:
+            frame = 8;
+            break;
+        case 0x16:
+            frame = 9;
+            break;
+        default:
+            K_ASSERT(0, 0x76d);
+            break;
+        }
         return func_0021cca0(table, frame);
+    case 0x17:
+        return func_0021cca0(table, 0x3b);
+    default:
+        K_ASSERT(0, 0x778);
+        return 0;
     }
 }
 

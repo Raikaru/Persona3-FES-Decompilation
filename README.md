@@ -1,6 +1,6 @@
 # Persona 3 FES
-[![Matching progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Fmatching.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/matching.json)
-[![C-linked progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Flinked.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/linked.json)
+[![Essential game-code matching progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Fmatching.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/matching.json)
+[![Essential game-code linked progress](https://img.shields.io/endpoint?url=https%3A%2F%2Fsnaku.github.io%2FPersona3-FES-Decompilation%2Fprogress%2Flinked.json)](https://snaku.github.io/Persona3-FES-Decompilation/progress/linked.json)
 
 A work-in-progress matching decompilation of **Shin Megami Tensei: Persona 3 FES**
 (USA, `SLUS_216.21`) for the Sony PlayStation 2.
@@ -11,10 +11,14 @@ with GNU `mipsel-linux-gnu-as`, and links a **byte-identical** program image
 with the game's original CodeWarrior PS2 linker. Functions are decompiled to C
 one at a time; each is verified against the exact retail bytes.
 
-Progress metrics: **matching** counts exact verifier `MATCH` results across all
-mapped function windows; **C-linked** is the stricter subset successfully linked
-as byte-identical C. The generated source data is
-[`progress/metrics.json`](progress/metrics.json).
+Progress metrics: the published **matching** and **C-linked** endpoints use the
+essential Atlus game-code scope (third-party CRI, RenderWare, SCE, runtime, and
+startup/platform bodies excluded). The full executable remains available under
+`whole_executable` in [`progress/metrics.json`](progress/metrics.json).
+
+For provenance-filtered game-code coverage, run
+`python tools/provenance.py --json build/provenance_report.json`; the path rules
+and current classification table are documented in [`ROADMAP.md`](ROADMAP.md).
 
 See [`ROADMAP.md`](ROADMAP.md) for the P3 completion sequence and the parallel
 Persona 4 synchronization lane.
@@ -27,7 +31,8 @@ Persona 4 synchronization lane.
 | Artifact | State |
 | --- | --- |
 | Full retail ELF, rebuilt from split sources (`make` → `build/SLUS_216.21`) | **byte-identical** to retail (SHA-1 `3929cd7c…`) |
-| Functions in the executable | 13,591 |
+| Functions in the executable | 13,752 |
+| Essential Atlus game functions | 7,973 (3,299 `MATCH`) |
 | Function map (`config/symbol_addrs.txt`) | complete |
 | Decompiled to matching C | ongoing (see `make verify`) |
 
@@ -164,15 +169,60 @@ make objdiff                  # regenerate objdiff.json + target/base objects
 make format                   # clang-format the C sources
 ./diff.py -o <func>           # asm-differ (see diff_settings.py)
 ```
+
+To compare a user-supplied SCE Runtime 3.0.2 archive corpus with retail without
+copying SDK files into the repository:
+
+```sh
+python tools/sdk_match.py --sdk-root "<SDK>/Runtime" --json sdk-report.json
+```
+
+The same tool targets the sibling Persona 4 repository and auto-detects its
+boundary database and symbol maps:
+
+```sh
+python tools/sdk_match.py --target p4 --sdk-root "<SDK>/Runtime" \
+  --retail "../Persona4-Decompilation/build/SLUS_217.82" \
+  --json p4-sdk-report.json
+```
+
+Use `--target-root PATH` for a repository outside the sibling layout and
+`--windows PATH` to override boundary-file auto-detection.
+
+`P3_PS2SDK_ROOT` may supply the root instead. The default pass scans
+`libcdvd.a`, `libkernl.a`, `libmc.a`, `libmc2.a`, `libpad.a`, and `libpad2.a`;
+repeat `--archive NAME` to choose archives explicitly. Results are
+relocation-normalized identification evidence, not matching-C proof:
+`tools/verify.py` remains the only per-function `MATCH` gate. Keep the
+proprietary SDK and generated reports outside version control.
+
+To promote only unambiguous archive matches into a symbol map, first generate
+the JSON evidence report, then run the promotion tool against the target
+repository:
+
+```sh
+python tools/promote_sdk_symbols.py --target p4 \
+  --report p4-sdk-report.json --update-sources --apply
+```
+
+The tool promotes only `UNIQUE_NORMALIZED` rows whose address has one SDK
+candidate and is still an anonymous `func_XXXXXXXX`/`FUN_XXXXXXXX` symbol.
+It writes the names to `config/symbol_addrs.txt`, updates matching source
+references when `--update-sources` is supplied, and records archive/member
+metadata in `config/sdk_symbol_provenance.txt`. Ambiguous candidates remain
+anonymous. The provenance file contains names and hashes only; SDK object
+bytes are never copied into the repository.
+After a promotion, regenerate ignored splat assembly with `make split` before
+building so assembly references use the promoted labels.
 `objdiff.json`, `diff_settings.py`, `permuter_settings.toml`, the `Dockerfile`,
 and CI (`.github/workflows/ci.yml`) follow the standard mwcc/PS2 decomp layout.
 
 ## Layout
 
-```
 config/     splat config, symbol_addrs.txt, generated symbols_recovered.txt
-tools/      build.py, asm.py, verify.py, fndiff.py, recover_symbols.py,
-            m2ctx.py, progress.py, gen_objdiff.py, vendored mwccgap/
+tools/      build.py, asm.py, verify.py, fndiff.py, sdk_match.py,
+            promote_sdk_symbols.py, recover_symbols.py, m2ctx.py, progress.py,
+            gen_objdiff.py, vendored mwccgap/
 asm/        macro.inc (committed); *.s / *.o / chunks are generated (gitignored)
 src/        decompiled C
 include/    headers (include_asm.h defines INCLUDE_ASM/INCLUDE_RODATA)

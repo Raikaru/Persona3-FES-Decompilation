@@ -19,7 +19,7 @@ void func_00217590(u16 id);
 void func_00217610(void);
 void func_00217780(void);
 u32 func_002180b0(u32 value);
-void func_00218250(void* glyphs, s32 count);
+void func_00218250(void* glyphs, s32 capacity, u32 value);
 void func_00218310(void* glyph, s32 digit);
 void func_00218370(void* glyphs, s32 capacity, u32 value, const f32* origin);
 void func_00218570(void* glyphs, s32 capacity, u32 value, const f32* origin);

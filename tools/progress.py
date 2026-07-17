@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Report decompilation progress and generate validated progress endpoints.
 
+The published progress scope is Atlus game code (vendor/runtime/startup
+translation units are excluded).  Whole-executable verifier totals remain under
+the ``whole_executable`` metrics field.
+
 Usage:
   python tools/progress.py                 # run verify.py and report
   python tools/progress.py --report build/verify_report.json
@@ -14,6 +18,7 @@ import argparse
 import collections
 import json
 import os
+import provenance
 import subprocess
 import sys
 import tempfile
@@ -105,7 +110,7 @@ def canonical_linked_address(address: Any) -> int:
 
 
 def report_results(report: dict[str, Any], windows: dict[int, int | None]) -> list[dict[str, Any]]:
-    """Validate verifier rows without requiring every verifier label to be a window."""
+    """Validate verifier rows and their source provenance."""
     if not isinstance(report, dict) or not isinstance(report.get("results"), list):
         raise ProgressError("malformed verifier report: 'results' must be a list")
 
@@ -114,19 +119,26 @@ def report_results(report: dict[str, Any], windows: dict[int, int | None]) -> li
         if not isinstance(row, dict) or not isinstance(row.get("status"), str):
             raise ProgressError("malformed verifier report: every result needs a string status")
         canonical_address(row.get("addr"))
+        if not isinstance(row.get("file"), str) or not row["file"]:
+            raise ProgressError("malformed verifier report: every result needs a source file")
     return results
 
 
-def matching_diagnostics(
-    results: list[dict[str, Any]], windows: dict[int, int | None],
-) -> tuple[set[int], int, int, int, int]:
-    """Summarize known verifier rows while treating aliases as one mapped function."""
+def scope_diagnostics(
+    results: list[dict[str, Any]], windows: dict[int, int | None], category: str | None = None,
+) -> dict[str, Any]:
+    """Summarize rows in the whole image or one provenance category."""
+    scoped_rows = [
+        row for row in results
+        if category is None or provenance.classify_source(row["file"])[0] == category
+    ]
     known_addresses: set[int] = set()
     matched_addresses: set[int] = set()
+    matched_bytes_by_address: dict[int, int] = {}
     known_rows = 0
     duplicate_rows = 0
     ignored_unknown_rows = 0
-    for row in results:
+    for row in scoped_rows:
         address = canonical_address(row["addr"])
         if address not in windows:
             ignored_unknown_rows += 1
@@ -137,7 +149,40 @@ def matching_diagnostics(
         known_addresses.add(address)
         if row["status"] == "MATCH":
             matched_addresses.add(address)
-    return matched_addresses, known_rows, len(known_addresses), duplicate_rows, ignored_unknown_rows
+            object_size = row.get("object_size")
+            if (isinstance(object_size, int)
+                    and not isinstance(object_size, bool)
+                    and object_size >= 0):
+                matched_bytes_by_address[address] = max(
+                    matched_bytes_by_address.get(address, 0), object_size,
+                )
+    return {
+        "rows": len(scoped_rows),
+        "status_counts": dict(sorted(collections.Counter(
+            row["status"] for row in scoped_rows
+        ).items())),
+        "known_addresses": known_addresses,
+        "matched_addresses": matched_addresses,
+        "matched_body_bytes": sum(matched_bytes_by_address.values()),
+        "known_rows": known_rows,
+        "unique_known_addresses": len(known_addresses),
+        "duplicate_rows": duplicate_rows,
+        "ignored_unknown_rows": ignored_unknown_rows,
+    }
+
+
+def matching_diagnostics(
+    results: list[dict[str, Any]], windows: dict[int, int | None],
+) -> tuple[set[int], int, int, int, int]:
+    """Preserve the whole-image diagnostics API for callers and tests."""
+    diagnostics = scope_diagnostics(results, windows)
+    return (
+        diagnostics["matched_addresses"],
+        diagnostics["known_rows"],
+        diagnostics["unique_known_addresses"],
+        diagnostics["duplicate_rows"],
+        diagnostics["ignored_unknown_rows"],
+    )
 
 
 def percentage(count: int, total: int) -> float:
@@ -221,25 +266,31 @@ def make_metrics(
     verifier_source: str, linked_source: str | None,
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     results = report_results(report, windows)
-    status_counts = dict(sorted(collections.Counter(row["status"] for row in results).items()))
-    matched_addresses, known_rows, unique_known_addresses, duplicate_rows, ignored_unknown_rows = (
-        matching_diagnostics(results, windows)
-    )
-    matched_bytes_by_address: dict[int, int] = {}
-    for row in results:
-        address = canonical_address(row["addr"])
-        object_size = row.get("object_size")
-        if (address in matched_addresses
-                and row["status"] == "MATCH"
-                and isinstance(object_size, int)
-                and not isinstance(object_size, bool)
-                and object_size >= 0):
-            matched_bytes_by_address[address] = max(matched_bytes_by_address.get(address, 0), object_size)
-    matching = len(matched_addresses)
-    matched_bytes = sum(matched_bytes_by_address.values())
-    total = len(windows)
-    matching_addresses = [f"{address:08x}" for address in sorted(matched_addresses)]
-    linked_addresses: list[str] = []
+    whole = scope_diagnostics(results, windows)
+    essential = scope_diagnostics(results, windows, "atlus_game")
+    whole_total = len(windows)
+    essential_total = essential["unique_known_addresses"]
+
+    def matching_summary(diagnostics: dict[str, Any], total: int) -> dict[str, Any]:
+        addresses = [
+            f"{address:08x}" for address in sorted(diagnostics["matched_addresses"])
+        ]
+        return {
+            "count": len(addresses),
+            "percent": percentage(len(addresses), total),
+            "addresses": addresses,
+            "matched_body_bytes": diagnostics["matched_body_bytes"],
+            "known_rows": diagnostics["known_rows"],
+            "unique_known_addresses": diagnostics["unique_known_addresses"],
+            "duplicate_rows": diagnostics["duplicate_rows"],
+        }
+
+    whole_matching = matching_summary(whole, whole_total)
+    essential_matching = matching_summary(essential, essential_total)
+    essential_addresses = {
+        address for address in essential["known_addresses"]
+    }
+    linked_numeric_addresses: set[int] = set()
     hashes: dict[str, str | None] = {"retail_sha1": None, "image_sha1": None}
     build_succeeded = False
     if linked_report is not None:
@@ -248,41 +299,61 @@ def make_metrics(
             for row in linked_report["linked_functions"]
         }
         for address in sorted(linked_numeric_addresses):
-            if address not in matched_addresses:
+            if address not in whole["matched_addresses"]:
                 raise ProgressError(
                     f"linked address {address:08x} is not in the matching address set"
                 )
-        linked_addresses = [f"{address:08x}" for address in sorted(linked_numeric_addresses)]
         hashes = {"retail_sha1": linked_report["retail_sha1"], "image_sha1": linked_report["image_sha1"]}
         build_succeeded = linked_report["build_succeeded"]
+
+    whole_linked_addresses = [
+        f"{address:08x}" for address in sorted(linked_numeric_addresses)
+    ]
+    essential_linked_addresses = [
+        f"{address:08x}"
+        for address in sorted(linked_numeric_addresses & essential_addresses)
+    ]
     metrics = {
         "schema_version": SCHEMA_VERSION,
+        "scope": {
+            "name": "atlus_game",
+            "label": "Atlus game code",
+            "addresses": [f"{address:08x}" for address in sorted(essential_addresses)],
+        },
         "source": {
             "verifier_report": verifier_source,
             "linked_report": linked_source,
             "raw_rows": len(results),
-            "ignored_unknown_rows": ignored_unknown_rows,
+            "scope_rows": essential["rows"],
+            "ignored_unknown_rows": whole["ignored_unknown_rows"],
+            "scope_ignored_unknown_rows": essential["ignored_unknown_rows"],
         },
-        "total": total,
-        "matching": {
-            "count": len(matching_addresses),
-            "percent": percentage(len(matching_addresses), total),
-            "addresses": matching_addresses,
-            "matched_body_bytes": matched_bytes,
-            "known_rows": known_rows,
-            "unique_known_addresses": unique_known_addresses,
-            "duplicate_rows": duplicate_rows,
-        },
+        "total": essential_total,
+        "matching": essential_matching,
         "linked": {
-            "count": len(linked_addresses),
-            "percent": percentage(len(linked_addresses), total),
-            "addresses": linked_addresses,
+            "count": len(essential_linked_addresses),
+            "percent": percentage(len(essential_linked_addresses), essential_total),
+            "addresses": essential_linked_addresses,
         },
-        "status_counts": status_counts,
+        "status_counts": essential["status_counts"],
+        "whole_executable": {
+            "total": whole_total,
+            "matching": whole_matching,
+            "linked": {
+                "count": len(whole_linked_addresses),
+                "percent": percentage(len(whole_linked_addresses), whole_total),
+                "addresses": whole_linked_addresses,
+            },
+            "status_counts": whole["status_counts"],
+        },
         "hashes": hashes,
         "build_succeeded": build_succeeded,
     }
-    return metrics, badge("matching", matching, total), badge("linked", len(linked_addresses), total)
+    return (
+        metrics,
+        badge("matching", len(essential_matching["addresses"]), essential_total),
+        badge("linked", len(essential_linked_addresses), essential_total),
+    )
 
 
 def atomic_write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -334,129 +405,229 @@ def validate_address_list(value: Any, name: str, windows: dict[int, int | None])
     return addresses
 
 
+def _validate_status_counts(value: Any, name: str) -> dict[str, int]:
+    if not isinstance(value, dict):
+        raise ProgressError(f"malformed metrics endpoint: {name} must be an object")
+    if any(
+        not isinstance(status, str)
+        or not isinstance(count, int)
+        or isinstance(count, bool)
+        or count < 0
+        for status, count in value.items()
+    ):
+        raise ProgressError(f"malformed metrics endpoint: invalid {name}")
+    return value
+
+
+def _validate_matching_summary(
+    summary: Any,
+    name: str,
+    total: int,
+    allowed_addresses: set[str],
+    raw_rows: int,
+    ignored_unknown_rows: int,
+    windows: dict[int, int | None],
+) -> set[str]:
+    if not isinstance(summary, dict):
+        raise ProgressError(f"malformed metrics endpoint: {name} must be an object")
+    matched_body_bytes = summary.get("matched_body_bytes")
+    if (
+        not isinstance(matched_body_bytes, int)
+        or isinstance(matched_body_bytes, bool)
+        or matched_body_bytes < 0
+    ):
+        raise ProgressError(f"invalid metrics endpoint: {name}.matched_body_bytes")
+    matching_count = summary.get("count")
+    if (
+        not isinstance(matching_count, int)
+        or isinstance(matching_count, bool)
+        or matching_count < 0
+        or matching_count > total
+    ):
+        raise ProgressError(f"invalid metrics endpoint: {name}.count")
+    if summary.get("percent") != percentage(matching_count, total):
+        raise ProgressError(f"invalid metrics endpoint: {name}.percent")
+    addresses = validate_address_list(summary.get("addresses"), f"{name}.matching", windows)
+    if not addresses.issubset(allowed_addresses):
+        raise ProgressError(f"invalid metrics endpoint: {name} addresses outside its scope")
+    if matching_count != len(addresses):
+        raise ProgressError(f"invalid metrics endpoint: {name} count does not agree with addresses")
+
+    known_rows = summary.get("known_rows")
+    unique_known_addresses = summary.get("unique_known_addresses")
+    duplicate_rows = summary.get("duplicate_rows")
+    diagnostic_counts = (known_rows, unique_known_addresses, duplicate_rows)
+    if any(
+        not isinstance(count, int) or isinstance(count, bool) or count < 0
+        for count in diagnostic_counts
+    ):
+        raise ProgressError(f"invalid metrics endpoint: {name} row diagnostics")
+    if known_rows + ignored_unknown_rows != raw_rows:
+        raise ProgressError(f"invalid metrics endpoint: {name} row totals")
+    if (
+        unique_known_addresses > known_rows
+        or duplicate_rows != known_rows - unique_known_addresses
+        or unique_known_addresses > total
+        or matching_count > unique_known_addresses
+    ):
+        raise ProgressError(f"invalid metrics endpoint: inconsistent {name} row diagnostics")
+    return addresses
+
+
+def _validate_linked_summary(
+    summary: Any,
+    name: str,
+    total: int,
+    allowed_addresses: set[str],
+    matching_addresses: set[str],
+    windows: dict[int, int | None],
+) -> set[str]:
+    if not isinstance(summary, dict):
+        raise ProgressError(f"malformed metrics endpoint: {name} must be an object")
+    count = summary.get("count")
+    if not isinstance(count, int) or isinstance(count, bool) or count < 0 or count > total:
+        raise ProgressError(f"invalid metrics endpoint: {name}.count")
+    if summary.get("percent") != percentage(count, total):
+        raise ProgressError(f"invalid metrics endpoint: {name}.percent")
+    addresses = validate_address_list(summary.get("addresses"), name, windows)
+    if not addresses.issubset(allowed_addresses):
+        raise ProgressError(f"invalid metrics endpoint: {name} addresses outside its scope")
+    if count != len(addresses):
+        raise ProgressError(f"invalid metrics endpoint: {name} count does not agree with addresses")
+    if not addresses.issubset(matching_addresses):
+        raise ProgressError(f"invalid metrics endpoint: {name} addresses must be a subset of matching addresses")
+    return addresses
+
+
 def validate_endpoints(directory: Path, windows: dict[int, int | None]) -> None:
     metrics = load_json(directory / "metrics.json", "metrics endpoint")
     matching_badge = load_json(directory / "matching.json", "matching endpoint")
     linked_badge = load_json(directory / "linked.json", "linked endpoint")
     if not isinstance(metrics, dict):
         raise ProgressError("malformed metrics endpoint: top level must be an object")
-    required = {"schema_version", "source", "total", "matching", "linked", "status_counts", "hashes", "build_succeeded"}
+    required = {
+        "schema_version", "scope", "source", "total", "matching", "linked",
+        "status_counts", "whole_executable", "hashes", "build_succeeded",
+    }
     missing = sorted(required - metrics.keys())
     if missing:
         raise ProgressError(f"malformed metrics endpoint: missing {', '.join(missing)}")
     if metrics["schema_version"] != SCHEMA_VERSION:
         raise ProgressError("invalid metrics endpoint schema_version")
-    if metrics["total"] != len(windows):
+
+    scope = metrics["scope"]
+    if (
+        not isinstance(scope, dict)
+        or scope.get("name") != "atlus_game"
+        or scope.get("label") != "Atlus game code"
+    ):
+        raise ProgressError("invalid metrics endpoint: essential scope")
+    scope_addresses = validate_address_list(scope.get("addresses"), "scope", windows)
+    if metrics["total"] != len(scope_addresses):
         raise ProgressError("invalid metrics endpoint total")
-    if not isinstance(metrics["matching"], dict) or not isinstance(metrics["linked"], dict):
-        raise ProgressError("malformed metrics endpoint: matching and linked must be objects")
-    if not isinstance(metrics["status_counts"], dict):
-        raise ProgressError("malformed metrics endpoint: status_counts must be an object")
-    status_counts = metrics["status_counts"]
-    if any(not isinstance(status, str) or not isinstance(count, int) or isinstance(count, bool) or count < 0
-           for status, count in status_counts.items()):
-        raise ProgressError("malformed metrics endpoint: invalid status count")
+    essential_total = metrics["total"]
+    whole = metrics["whole_executable"]
+    if not isinstance(whole, dict) or whole.get("total") != len(windows):
+        raise ProgressError("invalid metrics endpoint whole-executable total")
+    whole_total = whole["total"]
+
     source = metrics["source"]
-    hashes = metrics["hashes"]
-    if (not isinstance(source, dict)
-            or not isinstance(source.get("verifier_report"), str)
-            or not source["verifier_report"]
-            or not isinstance(source.get("linked_report"), str)
-            or not source["linked_report"]):
+    if not isinstance(source, dict):
+        raise ProgressError("malformed metrics endpoint: source must be an object")
+    if (
+        not isinstance(source.get("verifier_report"), str)
+        or not source["verifier_report"]
+        or not isinstance(source.get("linked_report"), str)
+        or not source["linked_report"]
+    ):
         raise ProgressError("malformed metrics endpoint: invalid source report provenance")
     raw_rows = source.get("raw_rows")
+    scope_rows = source.get("scope_rows")
     ignored_unknown_rows = source.get("ignored_unknown_rows")
-    if (not isinstance(raw_rows, int)
-            or isinstance(raw_rows, bool)
-            or raw_rows < 0
-            or not isinstance(ignored_unknown_rows, int)
-            or isinstance(ignored_unknown_rows, bool)
-            or ignored_unknown_rows < 0
-            or ignored_unknown_rows > raw_rows):
+    scope_ignored_unknown_rows = source.get("scope_ignored_unknown_rows")
+    source_counts = (raw_rows, scope_rows, ignored_unknown_rows, scope_ignored_unknown_rows)
+    if any(
+        not isinstance(count, int) or isinstance(count, bool) or count < 0
+        for count in source_counts
+    ):
         raise ProgressError("invalid metrics endpoint: source row diagnostics")
-    if sum(status_counts.values()) != raw_rows:
-        raise ProgressError("invalid metrics endpoint: raw rows must equal status count total")
-    if (not isinstance(hashes, dict)
-            or not isinstance(hashes.get("retail_sha1"), str)
-            or not hashes["retail_sha1"]
-            or not isinstance(hashes.get("image_sha1"), str)
-            or not hashes["image_sha1"]):
+    if scope_rows > raw_rows or ignored_unknown_rows > raw_rows or scope_ignored_unknown_rows > scope_rows:
+        raise ProgressError("invalid metrics endpoint: inconsistent source row diagnostics")
+
+    essential_status_counts = _validate_status_counts(metrics["status_counts"], "status_counts")
+    whole_status_counts = _validate_status_counts(whole.get("status_counts"), "whole_executable.status_counts")
+    if sum(essential_status_counts.values()) != scope_rows:
+        raise ProgressError("invalid metrics endpoint: scope rows must equal status count total")
+    if sum(whole_status_counts.values()) != raw_rows:
+        raise ProgressError("invalid metrics endpoint: raw rows must equal whole status count total")
+    hashes = metrics["hashes"]
+    if (
+        not isinstance(hashes, dict)
+        or not isinstance(hashes.get("retail_sha1"), str)
+        or not hashes["retail_sha1"]
+        or not isinstance(hashes.get("image_sha1"), str)
+        or not hashes["image_sha1"]
+    ):
         raise ProgressError("malformed metrics endpoint: invalid build hashes")
     if metrics["build_succeeded"] is not True:
         raise ProgressError("invalid metrics endpoint: build_succeeded must be true")
-    matched_body_bytes = metrics["matching"].get("matched_body_bytes")
-    if (not isinstance(matched_body_bytes, int)
-            or isinstance(matched_body_bytes, bool)
-            or matched_body_bytes < 0):
-        raise ProgressError("invalid metrics endpoint: matched_body_bytes")
-    matching_count = metrics["matching"].get("count")
-    linked_count = metrics["linked"].get("count")
-    known_rows = metrics["matching"].get("known_rows")
-    unique_known_addresses = metrics["matching"].get("unique_known_addresses")
-    duplicate_rows = metrics["matching"].get("duplicate_rows")
-    diagnostic_counts = (
-        ("known_rows", known_rows),
-        ("unique_known_addresses", unique_known_addresses),
-        ("duplicate_rows", duplicate_rows),
+
+    matching_addresses = _validate_matching_summary(
+        metrics["matching"], "matching", essential_total, scope_addresses,
+        scope_rows, scope_ignored_unknown_rows, windows,
     )
-    if any(not isinstance(count, int) or isinstance(count, bool) or count < 0
-           for _, count in diagnostic_counts):
-        raise ProgressError("invalid metrics endpoint: matching row diagnostics")
-    if known_rows + ignored_unknown_rows != raw_rows:
-        raise ProgressError("invalid metrics endpoint: known and ignored rows must equal raw rows")
-    if unique_known_addresses > known_rows or duplicate_rows != known_rows - unique_known_addresses:
-        raise ProgressError("invalid metrics endpoint: inconsistent matching row diagnostics")
-    if unique_known_addresses > len(windows):
-        raise ProgressError("invalid metrics endpoint: too many unique known addresses")
-    for name, count in (("matching", matching_count), ("linked", linked_count)):
-        value = metrics[name]
-        if not isinstance(count, int) or isinstance(count, bool) or count < 0 or count > len(windows):
-            raise ProgressError(f"invalid metrics endpoint: {name} count")
-        if value.get("percent") != percentage(count, len(windows)):
-            raise ProgressError(f"invalid metrics endpoint: {name} percent")
-    matching_addresses = validate_address_list(
-        metrics["matching"].get("addresses"), "matching", windows,
+    whole_matching_addresses = _validate_matching_summary(
+        whole.get("matching"), "whole_executable.matching", whole_total, set(
+            f"{address:08x}" for address in windows
+        ), raw_rows, ignored_unknown_rows, windows,
     )
-    linked_addresses = validate_address_list(
-        metrics["linked"].get("addresses"), "linked", windows,
+    linked_addresses = _validate_linked_summary(
+        metrics["linked"], "linked", essential_total, scope_addresses,
+        matching_addresses, windows,
     )
-    if matching_count != len(matching_addresses):
-        raise ProgressError("invalid metrics endpoint: matching count does not agree with addresses")
-    if linked_count != len(linked_addresses):
-        raise ProgressError("invalid metrics endpoint: linked count does not agree with addresses")
-    if matching_count > unique_known_addresses:
-        raise ProgressError("invalid metrics endpoint: matching count exceeds unique known addresses")
-    if linked_count > matching_count:
-        raise ProgressError("invalid metrics endpoint: linked count cannot exceed matching count")
-    if not linked_addresses.issubset(matching_addresses):
-        raise ProgressError("invalid metrics endpoint: linked addresses must be a subset of matching addresses")
-    validate_badge(matching_badge, "matching", matching_count, len(windows))
-    validate_badge(linked_badge, "linked", linked_count, len(windows))
+    whole_linked_addresses = _validate_linked_summary(
+        whole.get("linked"), "whole_executable.linked", whole_total, set(
+            f"{address:08x}" for address in windows
+        ), whole_matching_addresses, windows,
+    )
+    if not linked_addresses.issubset(whole_linked_addresses):
+        raise ProgressError("invalid metrics endpoint: essential linked addresses exceed whole linked addresses")
+    validate_badge(matching_badge, "matching", len(matching_addresses), essential_total)
+    validate_badge(linked_badge, "linked", len(linked_addresses), essential_total)
 
 
 def print_human(report: dict[str, Any], windows: dict[int, int | None], metrics: dict[str, Any]) -> None:
     results = report_results(report, windows)
     per_dir: dict[str, list[int]] = collections.defaultdict(lambda: [0, 0])
     for row in results:
-        file = str(row.get("file", ""))
-        pieces = Path(file.replace("\\", "/")).parts
+        if provenance.classify_source(row["file"])[0] != "atlus_game":
+            continue
+        pieces = Path(row["file"].replace("\\", "/")).parts
         top = pieces[1] if len(pieces) > 1 else "."
         per_dir[top][1] += 1
         if row["status"] == "MATCH":
             per_dir[top][0] += 1
 
     matching = metrics["matching"]
+    whole = metrics["whole_executable"]
     print("Persona 3 FES decompilation progress")
     print("=" * 40)
-    print(f"functions in executable : {len(windows)}")
-    print(f"functions with C        : {len(results)} scanned")
-    print(f"  MATCH                 : {matching['count']}  ({matching['percent']}% of all)")
+    print(f"essential functions       : {metrics['total']}")
+    print(f"functions in executable   : {whole['total']}")
+    print(f"essential functions with C: {metrics['source']['scope_rows']} scanned")
+    print(f"all functions with C      : {metrics['source']['raw_rows']} scanned")
+    print(f"  essential MATCH         : {matching['count']}  ({matching['percent']}% of essential)")
+    print(
+        f"  whole-image MATCH       : {whole['matching']['count']}  "
+        f"({whole['matching']['percent']}% of all)"
+    )
     for status, count in metrics["status_counts"].items():
         if status != "MATCH":
-            print(f"  {status:21}: {count}")
-    print(f"matched code bytes      : {matching['matched_body_bytes']:,}")
+            print(f"  essential {status:13}: {count}")
+    print(f"matched essential bytes   : {matching['matched_body_bytes']:,}")
+    print(f"matched all-image bytes   : {whole['matching']['matched_body_bytes']:,}")
     print()
-    print("by directory (matched / written):")
+    print("essential by directory (matched / written):")
     for directory in sorted(per_dir):
         matched, written = per_dir[directory]
         print(f"  {directory:20} {matched:4d} / {written:4d}")
@@ -483,7 +654,9 @@ def main() -> None:
         linked_report = None
         linked_source = None
         if args.linked_report is not None:
-            linked_report = validate_linked_report(load_json(args.linked_report, "linked report"), windows)
+            linked_report = validate_linked_report(
+                load_json(args.linked_report, "linked report"), windows,
+            )
             linked_source = str(args.linked_report)
         if args.write_dir is not None and linked_report is None:
             raise ProgressError("--write-dir requires a successful --linked-report")
@@ -494,17 +667,24 @@ def main() -> None:
         if args.write_dir is not None:
             write_endpoints(args.write_dir, metrics, matching_badge, linked_badge)
         if args.json:
-            raw_rows = metrics["source"]["raw_rows"]
+            source = metrics["source"]
+            whole = metrics["whole_executable"]
             json.dump({
                 "functions_total": metrics["total"],
-                "functions_scanned": raw_rows,
+                "functions_total_whole_executable": whole["total"],
+                "functions_scanned": source["scope_rows"],
+                "functions_scanned_whole_executable": source["raw_rows"],
                 "functions_matched": metrics["matching"]["count"],
+                "functions_matched_whole_executable": whole["matching"]["count"],
                 "functions_nonmatching": metrics["status_counts"].get("NONMATCHING", 0),
+                "functions_nonmatching_whole_executable": whole["status_counts"].get("NONMATCHING", 0),
                 "matched_code_bytes": metrics["matching"]["matched_body_bytes"],
+                "matched_code_bytes_whole_executable": whole["matching"]["matched_body_bytes"],
                 "matched_pct_of_known": metrics["matching"]["percent"],
+                "matched_pct_of_whole_executable": whole["matching"]["percent"],
                 "matched_pct_of_scanned": round(
-                    100 * metrics["matching"]["count"] / raw_rows, 2,
-                ) if raw_rows else 0,
+                    100 * metrics["matching"]["count"] / source["scope_rows"], 2,
+                ) if source["scope_rows"] else 0,
             }, sys.stdout, indent=2)
             sys.stdout.write("\n")
         else:

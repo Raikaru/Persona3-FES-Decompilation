@@ -8,6 +8,62 @@ extern char* strcpy(char* destination, const char* source);
 extern void func_004cde90(void* raster);
 
 /* The GC resource task owns this private work area (DAT_007ce2fc). */
+typedef struct GcResPair
+{
+    u32 flags;
+    s32 majorId;
+    s32 minorId;
+    void* raster;
+    u32 refs;
+} GcResPair;
+typedef struct GcResPairAtWork
+{
+    u8 reserved00[0x4c];
+    u32 flags;
+    s32 majorId;
+    s32 minorId;
+    void* raster;
+    u32 refs;
+} GcResPairAtWork;
+
+typedef struct GcResPersona
+{
+    u32 flags;
+    s16 id;
+    u16 pad06;
+    void* raster;
+    u32 refs;
+} GcResPersona;
+
+typedef struct GcResRequest
+{
+    u32 flags;
+    u32 state;
+    void* cdvd;
+    u8 reserved0c[0x104];
+    u32 type;
+    u32 slot;
+} GcResRequest;
+
+typedef struct GcResWork
+{
+    u32 flags;
+    void* cardRaster;
+    void* miscRaster;
+    u32 loadedFlags;
+    u32 unk10;
+    u32 unk14;
+    u32 unk18;
+    u8 reserved1c[4];
+    void* cardResources[7];
+    void* miscResources[2];
+    u32 unk44;
+    u32 pendingCount;
+    GcResPair pairs[0x10];
+    GcResPersona personas[0x10];
+    GcResRequest requests[0x20];
+} GcResWork;
+
 static u8* sGcRes;
 
 #define GC_U32(base, offset) (*(u32*)((u8*)(base) + (offset)))
@@ -16,6 +72,7 @@ static u8* sGcRes;
 #define GC_PAIR(base, index) ((u8*)(base) + 0x4c + (index) * 0x14)
 #define GC_PERSONA(base, index) ((u8*)(base) + 0x18c + (index) * 0x10)
 #define GC_REQUEST(base, index) ((u8*)(base) + 0x28c + (index) * 0x124)
+
 
 static u8* gcResRequire(void)
 {
@@ -32,31 +89,33 @@ s32 func_0021b150(void);
 void func_0021b1f0(s16 id);
 void* func_0021b2d0(void);
 
-// FUN_00219C90 NONMATCHING
+// FUN_00219C90
 void func_00219c90(void* work)
 {
+    GcResWork* typedWork;
     s32 i;
 
     K_ASSERT(sGcRes == NULL, 0x95);
-    GC_U32(work, 0x00) = 0;
-    GC_U32(work, 0x14) = 0;
-    GC_U32(work, 0x18) = 0;
-    GC_U32(work, 0x0c) = 0;
-    GC_U32(work, 0x10) = 0;
-    GC_U32(work, 0x04) = 0;
-    GC_U32(work, 0x08) = 0;
-    GC_U32(work, 0x44) = 0;
-    GC_U32(work, 0x48) = 0;
+    typedWork = (GcResWork*)work;
+    typedWork->flags = 0;
+    typedWork->unk14 = 0;
+    typedWork->unk18 = 0;
+    typedWork->loadedFlags = 0;
+    typedWork->unk10 = 0;
+    typedWork->cardRaster = NULL;
+    typedWork->miscRaster = NULL;
+    typedWork->unk44 = 0;
+    typedWork->pendingCount = 0;
     for (i = 0; i < 0x20; i++) {
-        GC_U32(work, 0x28c + i * 0x124) = 0;
+        ((GcResRequest*)GC_REQUEST(typedWork, i))->flags = 0;
     }
     for (i = 0; i < 0x10; i++) {
-        GC_U32(work, 0x4c + i * 0x14) = 0;
+        ((GcResPair*)GC_PAIR(typedWork, i))->flags = 0;
     }
     for (i = 0; i < 0x10; i++) {
-        GC_U32(work, 0x18c + i * 0x10) = 0;
+        ((GcResPersona*)GC_PERSONA(typedWork, i))->flags = 0;
     }
-    sGcRes = (u8*)work;
+    sGcRes = (u8*)typedWork;
 }
 
 // FUN_00219D90 NONMATCHING
@@ -136,59 +195,61 @@ void func_00219d90(void)
     }
 }
 
-// FUN_0021A120 NONMATCHING
+// FUN_0021A120
 u32 func_0021a120(void)
 {
     u8* work;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x20; i++) {
         if ((GC_U32(GC_REQUEST(work, i), 0x00) & 1) != 0) {
-            return true;
+            break;
         }
     }
-    return false;
+    return i < 0x20;
 }
 
-// FUN_0021A1B0 NONMATCHING
+// FUN_0021A1B0
 void func_0021a1b0(void)
 {
-    u8* work;
+    GcResWork* work;
     u8* record;
     u32 flags;
     s32 i;
+    s32 j;
 
-    work = gcResRequire();
-    flags = GC_U32(work, 0x0c);
-    if ((flags & 1) != 0) {
-        func_004cde90(GC_PTR(work, 0x04));
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = (GcResWork*)sGcRes;
+    if ((work->loadedFlags & 1) != 0) {
+        func_004cde90(work->cardRaster);
     }
-    if ((flags & 2) != 0) {
-        func_004cde90(GC_PTR(work, 0x08));
+    if ((work->loadedFlags & 2) != 0) {
+        func_004cde90(work->miscRaster);
     }
-    if ((flags & 4) != 0) {
+    if ((work->loadedFlags & 4) != 0) {
         for (i = 0; i < 7; i++) {
-            func_004cde90(GC_PTR(work, 0x20 + i * 4));
+            func_004cde90(GC_PTR((u8*)work + i * 4, 0x20));
         }
     }
-    if ((flags & 8) != 0) {
+    if ((work->loadedFlags & 8) != 0) {
         for (i = 0; i < 2; i++) {
-            func_004cde90(GC_PTR(work, 0x3c + i * 4));
+            func_004cde90(GC_PTR((u8*)work + i * 4, 0x3c));
         }
     }
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PAIR(work, i);
+    for (j = 0; j < 0x10; j++) {
+        record = GC_PAIR(work, j);
         flags = GC_U32(record, 0x00);
-        if ((flags & 1) != 0) {
+        if (((~flags) & 1) == 0) {
             K_ASSERT((flags & 2) != 0, 0x12f);
             func_004cde90(GC_PTR(record, 0x0c));
         }
     }
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PERSONA(work, i);
+    for (j = 0; j < 0x10; j++) {
+        record = GC_PERSONA(work, j);
         flags = GC_U32(record, 0x00);
-        if ((flags & 1) != 0) {
+        if (((~flags) & 1) == 0) {
             K_ASSERT((flags & 2) != 0, 0x138);
             func_004cde90(GC_PTR(record, 0x08));
         }
@@ -196,129 +257,128 @@ void func_0021a1b0(void)
     sGcRes = NULL;
 }
 
-// FUN_0021A3A0 NONMATCHING
+// FUN_0021a3a0
 void* func_0021a3a0(void)
 {
     u8* work;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     K_ASSERT((GC_U32(work, 0x0c) & 1) != 0, 0x143);
     return GC_PTR(work, 0x04);
 }
 
-// FUN_0021A410 NONMATCHING
+// FUN_0021a410
 void* func_0021a410(void)
 {
     u8* work;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     K_ASSERT((GC_U32(work, 0x0c) & 2) != 0, 0x14b);
     return GC_PTR(work, 0x08);
 }
 
-// FUN_0021A480 NONMATCHING
+// FUN_0021A480
 void* func_0021a480(s32 majorId, s32 minorId)
 {
-    u8* work;
-    u8* record;
+    GcResWork* work;
+    GcResPairAtWork* record;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = (GcResWork*)sGcRes;
     for (i = 0; i < 0x10; i++) {
-        record = GC_PAIR(work, i);
-        if (GC_U32(record, 0x04) == (u32)majorId &&
-            GC_U32(record, 0x08) == (u32)minorId) {
+        record = (GcResPairAtWork*)((u8*)work + i * 0x14);
+        if (record->majorId == majorId && record->minorId == minorId) {
             break;
         }
     }
     K_ASSERT(i < 0x10, 0x15a);
-    record = GC_PAIR(work, i);
-    K_ASSERT((GC_U32(record, 0x00) & 2) != 0, 0x15b);
-    return GC_PTR(record, 0x0c);
+    K_ASSERT((work->pairs[i].flags & 2) != 0, 0x15b);
+    return work->pairs[i].raster;
 }
 
 // FUN_0021A590 NONMATCHING
 void* func_0021a590(s16 id)
 {
-    u8* work;
-    u8* record;
+    const u8* work;
+    const u8* record;
+    u8* scaledIndex;
+    u32 target;
     s32 i;
 
-    work = gcResRequire();
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PERSONA(work, i);
-        if (GC_S16(record, 0x04) == id) {
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
+    i = 0;
+    target = (u16)id;
+    while (i < 0x10) {
+        record = work + i * 0x10;
+        if ((u16)GC_S16(record, 0x190) == target) {
             break;
         }
+        i++;
     }
     K_ASSERT(i < 0x10, 0x16a);
-    record = GC_PERSONA(work, i);
-    K_ASSERT((GC_U32(record, 0x00) & 2) != 0, 0x16c);
-    return GC_PTR(record, 0x08);
+    record = work + i * 0x10;
+    K_ASSERT((GC_U32(record, 0x18c) & 2) != 0, 0x16c);
+    scaledIndex = (u8*)(i * 0x10);
+    return GC_PTR((u32)scaledIndex + (u32)work, 0x194);
 }
 
-// FUN_0021A670 NONMATCHING
+// FUN_0021A670
 void func_0021a670(s32 majorId, s32 minorId)
 {
-    u8* work;
     u8* record;
-    u32 refs;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
     record = (u8*)func_0021ad40(majorId, minorId);
-    refs = GC_U32(record, 0x10);
-    K_ASSERT(refs != 0, 0x177);
-    refs--;
-    GC_U32(record, 0x10) = refs;
-    if (refs == 0) {
+    K_ASSERT(GC_U32(record, 0x10) != 0, 0x177);
+    GC_U32(record, 0x10)--;
+    if (GC_U32(record, 0x10) == 0) {
         K_ASSERT((GC_U32(record, 0x00) & 2) != 0, 0x180);
         func_004cde90(GC_PTR(record, 0x0c));
-        GC_U32(record, 0x00) &= ~3u;
+        GC_U32(record, 0x00) &= ~2u;
+        GC_U32(record, 0x00) &= ~1u;
     }
-    (void)work;
 }
 
-// FUN_0021A760 NONMATCHING
+// FUN_0021A760
 void func_0021a760(s16 id)
 {
-    u8* work;
     u8* record;
-    u32 refs;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
     record = (u8*)func_0021b080(id);
-    refs = GC_U32(record, 0x0c);
-    K_ASSERT(refs != 0, 0x18e);
-    refs--;
-    GC_U32(record, 0x0c) = refs;
-    if (refs == 0) {
+    K_ASSERT(GC_U32(record, 0x0c) != 0, 0x18e);
+    GC_U32(record, 0x0c)--;
+    if (GC_U32(record, 0x0c) == 0) {
         K_ASSERT((GC_U32(record, 0x00) & 2) != 0, 0x197);
         func_004cde90(GC_PTR(record, 0x08));
-        GC_U32(record, 0x00) &= ~3u;
+        GC_U32(record, 0x00) &= ~2u;
+        GC_U32(record, 0x00) &= ~1u;
     }
-    (void)work;
 }
 
-// FUN_0021A840 NONMATCHING
+// FUN_0021A840
 void func_0021a840(void)
 {
-    u8* work;
-    u8* request;
-    u32 flags;
+    GcResWork* work;
+    GcResRequest* request;
 
-    work = gcResRequire();
-    flags = GC_U32(work, 0x00);
-    if ((flags & 4) == 0) {
-        GC_U32(work, 0x00) = flags | 4;
-        request = (u8*)func_0021b2d0();
-        GC_U32(request, 0x110) = 2;
-        GC_U32(request, 0x114) = 1;
-        GC_PTR(request, 0x08) = H_Cdvd_Request("card/misc/w_c00.tmx", HCDVD_FILENORMAL);
-        GC_U32(request, 0x04) = 1;
-        GC_U32(request, 0x00) |= 1;
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = (GcResWork*)sGcRes;
+    if ((work->flags & 4) != 0) {
+        K_ASSERT(work->pendingCount != 0, 0x1ca);
+        work->pendingCount++;
     } else {
-        K_ASSERT(GC_U32(work, 0x48) != 0, 0x1ca);
-        GC_U32(work, 0x48)++;
+        work->flags |= 4;
+        request = (GcResRequest*)func_0021b2d0();
+        request->type = 2;
+        request->slot = 1;
+        request->cdvd = H_Cdvd_Request("card/misc/w_c00.tmx", HCDVD_FILENORMAL);
+        request->state = 1;
+        request->flags |= 1;
     }
 }
 
@@ -333,7 +393,8 @@ void func_0021a920(s32 majorId, s32 minorId)
     char suffix;
     s32 index;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     if (func_0021ac90(majorId, minorId) != false) {
         func_0021ae30(majorId, minorId);
         return;
@@ -367,11 +428,11 @@ void func_0021a920(s32 majorId, s32 minorId)
         prefix[0] = '\0';
         break;
     }
-    if (minorId < 0xb) {
-        sprintf(path, "card/sarcana/%s_c%02d.tmx", prefix, minorId);
+    if (GC_U32(record, 0x08) < 0xb) {
+        sprintf(path, "card/sarcana/%s_c%02d.tmx", prefix, GC_U32(record, 0x08));
     } else {
         suffix = '\0';
-        switch (minorId) {
+        switch (GC_U32(record, 0x08)) {
         case 0xb:
             suffix = 'p';
             break;
@@ -394,7 +455,7 @@ void func_0021a920(s32 majorId, s32 minorId)
     GC_U32(request, 0x00) |= 1;
 }
 
-// FUN_0021AB80 NONMATCHING
+// FUN_0021ab80
 void func_0021ab80(s16 id)
 {
     u8* work;
@@ -403,7 +464,8 @@ void func_0021ab80(s16 id)
     char path[256];
     s32 index;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     if (func_0021afe0(id) != false) {
         func_0021b1f0(id);
         return;
@@ -425,184 +487,216 @@ void func_0021ab80(s16 id)
     GC_U32(request, 0x00) |= 1;
 }
 
-// FUN_0021AC90 NONMATCHING
+// FUN_0021AC90
 s32 func_0021ac90(s32 majorId, s32 minorId)
 {
     u8* work;
     u8* record;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x10; i++) {
-        record = GC_PAIR(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 &&
-            GC_U32(record, 0x08) == (u32)minorId &&
-            GC_U32(record, 0x04) == (u32)majorId) {
-            return true;
+        record = work + i * 0x14;
+        if (((~GC_U32(record, 0x4c)) & 1) == 0 &&
+            GC_U32(record, 0x54) == (u32)minorId &&
+            GC_U32(record, 0x50) == (u32)majorId) {
+            break;
         }
     }
-    return false;
+    return i < 0x10;
 }
 
-// FUN_0021AD40 NONMATCHING
+// FUN_0021AD40
 void* func_0021ad40(s32 majorId, s32 minorId)
 {
     u8* work;
     u8* record;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x10; i++) {
-        record = GC_PAIR(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 &&
-            GC_U32(record, 0x08) == (u32)minorId &&
-            GC_U32(record, 0x04) == (u32)majorId) {
-            return record;
+        record = work + i * 0x14;
+        if (((~GC_U32(record, 0x4c)) & 1) == 0 &&
+            GC_U32(record, 0x54) == (u32)minorId &&
+            GC_U32(record, 0x50) == (u32)majorId) {
+            break;
         }
     }
-    K_ASSERT(false, 0x262);
+    K_ASSERT(i < 0x10, 0x262);
     return GC_PAIR(work, i);
 }
 
-// FUN_0021AE30 NONMATCHING
+// FUN_0021AE30
 void func_0021ae30(s32 majorId, s32 minorId)
 {
     u8* work;
     u8* record;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x10; i++) {
-        record = GC_PAIR(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 &&
-            GC_U32(record, 0x08) == (u32)minorId &&
-            GC_U32(record, 0x04) == (u32)majorId) {
-            GC_U32(record, 0x10)++;
-            return;
+        record = work + i * 0x14;
+        if (((~GC_U32(record, 0x4c)) & 1) == 0 &&
+            GC_U32(record, 0x54) == (u32)minorId &&
+            GC_U32(record, 0x50) == (u32)majorId) {
+            break;
         }
     }
-    K_ASSERT(false, 0x262);
+    K_ASSERT(i < 0x10, 0x262);
+    record = work + i * 0x14;
+    GC_U32(record, 0x5c)++;
 }
 
-// FUN_0021AF30 NONMATCHING
+// FUN_0021AF30
 s32 func_0021af30(void)
 {
     u8* work;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x10; i++) {
-        if ((GC_U32(GC_PAIR(work, i), 0x00) & 1) == 0) {
-            return i;
+        if (((~GC_U32(GC_PAIR(work, i), 0x00)) & 1) != 0) {
+            break;
         }
     }
-    K_ASSERT(false, 0x27a);
+    K_ASSERT(i < 0x10, 0x27a);
     return i;
 }
 
-// FUN_0021AFE0 NONMATCHING
+// FUN_0021AFE0
 u32 func_0021afe0(s16 id)
 {
     u8* work;
     u8* record;
+    u32 target;
     s32 i;
 
-    work = gcResRequire();
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PERSONA(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 && GC_S16(record, 0x04) == id) {
-            return true;
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
+    i = 0;
+    target = (u16)id;
+    while (i < 0x10) {
+        record = work + i * 0x10;
+        if (((~GC_U32(record, 0x18c)) & 1) == 0 &&
+            (u16)GC_S16(record, 0x190) == target) {
+            break;
         }
+        i++;
     }
-    return false;
+    return i < 0x10;
 }
 
-// FUN_0021B080 NONMATCHING
+// FUN_0021B080
 void* func_0021b080(s16 id)
 {
     u8* work;
     u8* record;
+    u32 target;
     s32 i;
 
-    work = gcResRequire();
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PERSONA(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 && GC_S16(record, 0x04) == id) {
-            return record;
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
+    i = 0;
+    target = (u16)id;
+    while (i < 0x10) {
+        record = work + i * 0x10;
+        if (((~GC_U32(record, 0x18c)) & 1) == 0 &&
+            (u16)GC_S16(record, 0x190) == target) {
+            break;
         }
+        i++;
     }
-    K_ASSERT(false, 0x29f);
+    K_ASSERT(i < 0x10, 0x29f);
     return GC_PERSONA(work, i);
 }
 
-// FUN_0021B150 NONMATCHING
+// FUN_0021B150
 s32 func_0021b150(void)
 {
     u8* work;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x10; i++) {
-        if ((GC_U32(GC_PERSONA(work, i), 0x00) & 1) == 0) {
-            return i;
+        if (((~GC_U32(GC_PERSONA(work, i), 0x00)) & 1) != 0) {
+            break;
         }
     }
-    K_ASSERT(false, 0x2af);
+    K_ASSERT(i < 0x10, 0x2af);
     return i;
 }
 
-// FUN_0021B1F0 NONMATCHING
+// FUN_0021B1F0
 void func_0021b1f0(s16 id)
 {
     u8* work;
     u8* record;
+    u32 target;
     s32 i;
 
-    work = gcResRequire();
-    for (i = 0; i < 0x10; i++) {
-        record = GC_PERSONA(work, i);
-        if ((GC_U32(record, 0x00) & 1) != 0 && GC_S16(record, 0x04) == id) {
-            GC_U32(record, 0x0c)++;
-            return;
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
+    i = 0;
+    target = (u16)id;
+    while (i < 0x10) {
+        record = work + i * 0x10;
+        if (((~GC_U32(record, 0x18c)) & 1) == 0 &&
+            (u16)GC_S16(record, 0x190) == target) {
+            break;
         }
+        i++;
     }
-    K_ASSERT(false, 0x29f);
+    K_ASSERT(i < 0x10, 0x29f);
+    record = work + i * 0x10;
+    GC_U32(record, 0x198)++;
 }
 
-// FUN_0021B2D0 NONMATCHING
+// FUN_0021B2D0
 void* func_0021b2d0(void)
 {
     u8* work;
     s32 i;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     for (i = 0; i < 0x20; i++) {
-        if ((GC_U32(GC_REQUEST(work, i), 0x00) & 1) == 0) {
-            return GC_REQUEST(work, i);
+        if (((~GC_U32(GC_REQUEST(work, i), 0x00)) & 1) != 0) {
+            break;
         }
     }
-    K_ASSERT(false, 0x2d0);
+    K_ASSERT(i < 0x20, 0x2d0);
     return GC_REQUEST(work, i);
 }
 
-// FUN_0021B3A0 NONMATCHING
+// FUN_0021B3A0
 void* func_0021b3a0(s32 index)
 {
     u8* work;
+    u8* scaledIndex;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     K_ASSERT((GC_U32(work, 0x0c) & 4) != 0, 0x2eb);
-    return GC_PTR(work, 0x20 + index * 4);
+    scaledIndex = (u8*)(index * 4);
+    return GC_PTR((u32)scaledIndex + (u32)work, 0x20);
 }
 
-// FUN_0021B420 NONMATCHING
+// FUN_0021B420
 void* func_0021b420(s32 index)
 {
     u8* work;
+    u8* scaledIndex;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     K_ASSERT((GC_U32(work, 0x0c) & 8) != 0, 0x2f3);
-    return GC_PTR(work, 0x3c + index * 4);
+    scaledIndex = (u8*)(index * 4);
+    return GC_PTR((u32)scaledIndex + (u32)work, 0x3c);
 }
 
 // FUN_0021B4A0 NONMATCHING
@@ -613,7 +707,8 @@ void func_0021b4a0(void* resource)
     s32 i;
     s32 offset;
 
-    work = gcResRequire();
+    K_ASSERT(sGcRes != NULL, 0x7c);
+    work = sGcRes;
     K_ASSERT((GC_U32(work, 0x0c) & 4) != 0, 0x317);
     K_ASSERT((GC_U32(work, 0x0c) & 8) != 0, 0x318);
     K_ASSERT((GC_U32(work, 0x0c) & 1) != 0, 0x319);

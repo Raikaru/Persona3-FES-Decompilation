@@ -3438,12 +3438,18 @@ u64 FUN_005279b8(u8 *param_1, int param_2, s64 param_3)
   }
   return (int)pcVar2 - (int)param_1;
 }
+int FUN_00527b48(u32 param_1,u64 param_2,char *param_3,u32 *param_4);
+#pragma optimization_level 3
+#pragma tailcall off
+#pragma schedule on
 // FUN_00527B30 NONMATCHING
-void FUN_00527b30(void)
+int FUN_00527b30(u32 param_1,u64 param_2,char *param_3,u32 *param_4)
 {
-  FUN_00527b48();
-  return;
+  return FUN_00527b48(param_1,param_2,param_3,param_4);
 }
+#pragma tailcall on
+#pragma schedule off
+#pragma optimization_level 2
 // FUN_00527B48 NONMATCHING
 int FUN_00527b48(u32 param_1,u64 param_2,char *param_3,u32 *param_4)
 
@@ -3744,7 +3750,6 @@ LAB_00528834:
 }
 // FUN_005288C8 NONMATCHING
 void FUN_005288c8(u8 *param_1)
-
 {
   u8 *apuStack_70 [2];
   u32 uStack_68;

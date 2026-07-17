@@ -28,9 +28,9 @@ extern void func_002792c0(void);
 extern void func_00279330(u32 value);
 extern void brpParamSetUnlockedSkillLevel(u32 level);
 extern void brpParamSetUnlockedSkillIndex(u32 index);
-extern void func_00279510(u32 slot, u8 value);
-extern void func_00279580(u32 slot, u8 value);
-extern void func_002795f0(u32 slot, u8 value);
+extern void func_00279510(u32 slot, u32 value);
+extern void func_00279580(u32 slot, u32 value);
+extern void func_002795f0(u32 slot, u32 value);
 extern u32 func_00276cc0(void);
 extern void brLvpnlDisableDrawing(void);
 extern void brLvpnlEnableDrawing(void);
@@ -40,28 +40,27 @@ extern void FUN_003c7990(s32);
 extern u32 FUN_003c7850(void);
 extern void FUN_003c7650(s32);
 extern u32 FUN_003c7610(void);
-extern void FUN_003c7bc0(s32, u32);
+extern void FUN_003c7bc0();
 extern void FUN_003c7430(s32);
 extern void FUN_003c74e0(s32);
 extern void FUN_003c7560(s32);
 extern void FUN_0010a4e0(s32, s32, s32, s32);
 extern u32 FUN_00173220(u16);
-extern DatPersonaWork* FUN_001749a0(s16);
+extern DatPersonaWork* FUN_001749a0(u16);
 extern u32 FUN_00175410(void);
 extern u32 FUN_001756f0(void);
-extern void FUN_00174e20(u16);
 extern DatPersonaWork* FUN_001761b0(DatPersonaWork*);
 extern void FUN_00176100(DatPersonaWork*, u8*);
 extern void FUN_00175ce0(DatPersonaWork*, u8*);
-extern u16 FUN_00176a30(DatPersonaWork*);
+extern u32 FUN_00176a30(DatPersonaWork*);
 extern u16* FUN_00173370(DatPersonaWork*);
 extern void FUN_00176d10(DatPersonaWork*, DatPersonaWork*);
 extern u32 FUN_00173580(DatPersonaWork*, u16);
 extern u32 FUN_00171250(s16);
-extern u32 FUN_00170760(s32, s16);
-extern void FUN_00170860(s32, s16, u16);
+extern u16 FUN_00170760();
+extern void FUN_00170860();
 extern void FUN_001830c0(void*);
-extern void FUN_001768e0(DatPersonaWork*, s16);
+extern void FUN_001768e0(DatPersonaWork*, u16);
 extern void FUN_00176840(DatPersonaWork*, u16);
 extern u32 FUN_0016f490(s32);
 extern u16 FUN_001fba70(s16);
@@ -148,8 +147,8 @@ void func_002743a0(void);
 void func_002743e0(void*, s32*);
 void func_00274590(void);
 void func_00274c00(void);
-u8 func_00274d40(void);
-u16 func_00274d90(void);
+u32 func_00274d40(void);
+u32 func_00274d90(void);
 u32 func_00274e10(void);
 s32 func_00274e90(void);
 
@@ -656,182 +655,221 @@ void func_00272810(void)
             func_0024adf0();
     }
 }
-// FUN_00273800 NONMATCHING
+// FUN_00273800
 void func_00273800(void)
 {
-    u32 state;
+    u8* work;
+    s32 value;
+    s32 state;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    state = brpSeqU32(0x10);
-    for (;;)
+    work = (u8*)sBrpSeq;
+    state = *(s32*)(work + 0x10);
+loop:
+    switch (state)
     {
-        if (state == 5)
+    case 2:
+        value = *(s32*)(work + 0x1b4);
+        if (value == 0)
         {
-            func_00273a10();
-            brpSeqPutU32(0x10, 6);
-            func_00273980();
-            return;
-        }
-        if (state == 4)
-            break;
-        if (state == 3)
-        {
-            func_002743a0();
-            func_00274590();
-            if ((brpSeqU32(0) & 0x20) != 0)
-            {
-                func_00273d50();
-                return;
-            }
-            state = 4;
-        }
-        else if (state == 2)
-        {
-            if (brpSeqU32(0x1b4) != 0)
-            {
-                func_00273c00();
-                return;
-            }
             state = 3;
+            goto loop;
         }
-        else
+        if (value != 0)
         {
-            K_ASSERT(0, 0x39b);
-            K_ASSERT(0, 0x39f);
+            brpSeq00273c00();
             return;
         }
-    }
-    if ((brpSeqU32(0) & 0x10) == 0)
+        state = 3;
+        goto loop;
+    case 3:
+        func_002743a0();
+        func_00274590();
+        if ((*(u32*)work & 0x20) != 0)
+        {
+            func_00273d50();
+            return;
+        }
+        state = 4;
+        goto loop;
+    case 4:
+        if ((*(u32*)work & 0x10) != 0)
+        {
+            brpSeq00273c70();
+            return;
+        }
         state = 5;
-    else
-    {
-        func_00273c70();
+        goto loop;
+    case 5:
+        func_00273a10();
+        brpSeq00273980();
         return;
+    default:
+        K_ASSERT(0, 0x39b);
+        K_ASSERT(0, 0x39f);
+        goto loop;
     }
-    brpSeqPutU32(0x10, state);
 }
 
-// FUN_00273A10 NONMATCHING
+// FUN_00273A10
 void func_00273a10(void)
 {
-    DatPersonaWork* persona;
+    u8* work;
+    s32 exp;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    if ((brpSeqU32(0) & 8) != 0)
+    work = (u8*)sBrpSeq;
+    if ((*(u32*)work & 8) != 0)
     {
-        if (FUN_00171250(brpSeqS16(0x84)) == 4)
+        switch (FUN_00171250(*(s16*)(work + 0x84)))
         {
-            u32 exp = FUN_00170760(1, brpSeqS16(0x84)) + 1;
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            FUN_001830c0(work + 0x88);
+            break;
+        case 4:
+            exp = FUN_00170760(1, *(s16*)(work + 0x84)) + 1;
             if (exp > 99)
                 exp = 99;
-            FUN_00170860(1, brpSeqS16(0x84), (u16)exp);
+            FUN_00170860(1, *(s16*)(work + 0x84), (u16)exp);
+            break;
         }
-        else
-            FUN_001830c0(brpSeqBytes() + 0x88);
-        brpSeqPutU32(0, brpSeqU32(0) & ~8u);
+        *(u32*)work &= ~8u;
     }
-    if ((brpSeqU32(0) & 4) != 0)
+    if ((*(u32*)work & 4) != 0)
         func_00274030();
-    (void)persona;
 }
 
-// FUN_00273B30 NONMATCHING
+// FUN_00273B30
 void func_00273b30(void)
 {
     u8 text[256];
-    u32 slot;
+    u8* work;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    slot = brpSeqU32(0x28);
-    FUN_00523ac8(text, &gp0xffff97d0, brpSeqU8(0x5a + slot));
-    FUN_003c7bc0(0, (u32)(uintptr_t)PTR_s_Strength_0068ed70[slot]);
-    FUN_003c7bc0(1, (u32)(uintptr_t)text);
+    work = (u8*)sBrpSeq;
+    FUN_00523ac8(text, &gp0xffff97d0,
+                 (*(u32*)(work + 0x28) + work)[0x5a]);
+    FUN_003c7bc0(0, *(PTR_s_Strength_0068ed70 +
+                      *(u32*)(work + 0x28)));
+    FUN_003c7bc0(1, text);
     FUN_003c7430(1);
     FUN_0010a4e0(1, 0, 8, 1);
-    brpSeqPutU32(0x24, 0);
-    brpSeqPutU32(0x10, 2);
+    *(u32*)(work + 0x24) = 0;
+    *(u32*)(work + 0x10) = 2;
 }
 
-// FUN_00273D50 NONMATCHING
+// FUN_00273D50
 void func_00273d50(void)
 {
+    u8* work;
+
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    FUN_003c7bc0(0, FUN_00173220(brpSeqU16(4)));
-    FUN_003c7bc0(1, DAT_007ce4ec + brpSeqU16(0xa0) * 0x13);
+    work = (u8*)sBrpSeq;
+    FUN_003c7bc0(0, FUN_00173220(*(u16*)(work + 4)));
+    FUN_003c7bc0(1, DAT_007ce4ec + *(u16*)(work + 0xa0) * 0x13);
     FUN_003c7430(0xd);
     FUN_003c74e0(9);
-    brpSeqPutU32(0, brpSeqU32(0) & ~0x20u);
-    brpSeqPutU32(0x20, 0);
-    brpSeqPutU32(0x10, 4);
+    *(u32*)work &= ~0x20u;
+    *(u32*)(work + 0x20) = 0;
+    *(u32*)(work + 0x10) = 4;
 }
 
 // FUN_00273E90 NONMATCHING
 void func_00273e90(void)
 {
-    DatPersonaWork* persona;
-    u16 current[8];
+    s32 existingCount;
+    s32 removeIndex;
+    s32 addIndex;
+    s32 copyIndex;
+    s32 currentIndex;
+    s32 existingIndex;
     u16* skills;
-    u32 count;
-    u32 i;
-    u32 j;
+    s32 count;
+    u8* work;
+    u16* oldSkill;
+    u8* newSkill;
+    u16 current[8];
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    count = FUN_00176a30(persona);
-    skills = FUN_00173370(persona);
-    for (i = 0; i < count && i < ARRAY_SIZE(current); i++)
-        current[i] = skills[i];
-    for (i = 0; i < count; i++)
+
+    work = (u8*)sBrpSeq;
+    count = FUN_00176a30((DatPersonaWork*)(uintptr_t)
+                         *(u32*)(work + 0x30));
+    skills = FUN_00173370((DatPersonaWork*)(uintptr_t)
+                          *(u32*)(work + 0x30));
+    for (copyIndex = 0; copyIndex < (s32)count; copyIndex++)
+        current[copyIndex] = skills[copyIndex];
+    for (removeIndex = 0; removeIndex < (s32)count; removeIndex++)
     {
-        for (j = 0; j < brpSeqU32(0x74) &&
-             brpSeqU16(0x60 + j * 2) != current[i]; j++)
-            ;
-        if (j >= brpSeqU32(0x74))
-            FUN_001768e0(persona, current[i]);
+        existingIndex = 0;
+        oldSkill = &current[removeIndex];
+        existingCount = *(s32*)(work + 0x74);
+        while (existingIndex < existingCount)
+        {
+            if (*(u16*)(work + 0x60 + existingIndex * 2) == *oldSkill)
+                break;
+            existingIndex++;
+        }
+        if (existingIndex >= existingCount)
+            FUN_001768e0((DatPersonaWork*)(uintptr_t)
+                         *(u32*)(work + 0x30), *oldSkill);
     }
-    for (i = 0; i < brpSeqU32(0x74); i++)
+    for (addIndex = 0; addIndex < *(s32*)(work + 0x74); addIndex++)
     {
-        for (j = 0; j < count && brpSeqU16(0x60 + i * 2) != current[j]; j++)
-            ;
-        if (j >= count)
-            FUN_00176840(persona, brpSeqU16(0x60 + i * 2));
+        currentIndex = 0;
+        newSkill = work + addIndex * 2;
+        while (currentIndex < (s32)count)
+        {
+            if (*(u16*)(newSkill + 0x60) == current[currentIndex])
+                break;
+            currentIndex++;
+        }
+        if (currentIndex >= (s32)count)
+            FUN_00176840((DatPersonaWork*)(uintptr_t)
+                         *(u32*)(work + 0x30),
+                         *(u16*)(newSkill + 0x60));
     }
 }
-// FUN_00274030 NONMATCHING
+// FUN_00274030
 void func_00274030(void)
 {
+    u8* work;
     u16 current;
-    u16 maximum;
     DatPersonaWork* currentPersona;
-    DatPersonaWork* targetPersona;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
+    work = (u8*)sBrpSeq;
     current = (u16)FUN_001756f0();
-    maximum = (u16)FUN_00175410();
-    K_ASSERT(maximum > current, 0x447);
-    FUN_00174e20(brpSeqU16(0x80));
-    currentPersona = FUN_001749a0(brpSeqS16(4));
-    targetPersona = FUN_001749a0(brpSeqS16(0x80));
-    FUN_00176d10(targetPersona, currentPersona);
-    brpSeqPutU32(0, brpSeqU32(0) & ~4u);
+    K_ASSERT(current < (u16)FUN_00175410(), 0x447);
+    FUN_00174e20(*(u16*)(work + 0x80));
+    currentPersona = FUN_001749a0(*(u16*)(work + 4));
+    FUN_00176d10(FUN_001749a0(*(u16*)(work + 0x80)), currentPersona);
+    *(u32*)work &= ~4u;
 }
 
-// FUN_00274100 NONMATCHING
+// FUN_00274100
 void func_00274100(void)
 {
+    u8* work;
+
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    brpSeqPutU32(0x1b0, brpSeqU32(0x1b0) + 1);
+    work = (u8*)sBrpSeq;
+    *(s32*)(work + 0x1b0) += 1;
     func_00279120();
     func_002792c0();
     func_00274c00();
     func_00279840();
-    if (brpSeqU32(0x1b0) < brpSeqU32(0x1b4))
+    if (*(s32*)(work + 0x1b0) < *(s32*)(work + 0x1b4))
     {
-        func_00279750();
+        K_ASSERT(sBrpSeq != NULL, 0xb0);
+        work = (u8*)sBrpSeq;
+        FUN_00279750();
         FUN_0010a4e0(1, 0, 8, 2);
-        brpSeqPutU32(0x18, 0);
-        brpSeqPutU32(0x10, 3);
+        *(u32*)(work + 0x18) = 0;
+        *(u32*)(work + 0x10) = 3;
     }
     else
         func_00273800();
@@ -840,45 +878,55 @@ void func_00274100(void)
 // FUN_002741F0 NONMATCHING
 u32 func_002741f0(void)
 {
-    DatPersonaWork* persona;
-    u16* skills;
-    u32 skillCount;
+    u32 pad;
+    u16 currentLevel;
+    u8* work;
+    s32 newVar2;
+    u32 flags;
+    u8* persona;
+    s32 levelDiff;
+    u8* newVar;
+    s8 kind;
     u32 i;
-    u32 j;
-    u8* growth;
+    u8* entry;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    skills = FUN_00173370(persona);
-    skillCount = FUN_00176a30(persona);
-    if ((brpSeqU32(8) & 1) != 0 ||
-        (*(u16*)(brpSeqBytes() + 0x30) & 4) != 0)
+    work = (u8*)sBrpSeq;
+    if ((*(u32*)(work + 8) & 1) != 0)
         return 0;
-    if ((*(u16*)(brpSeqBytes() + 0x30) & 8) == 0)
+    flags = ~*(u16*)(*(u32*)(work + 0x30));
+    if ((flags & 4) != 0)
+        return 0;
+    if ((flags & 8) != 0)
     {
-        if (FUN_0016f490(1) == 300)
+        currentLevel = (u16)FUN_001756f0();
+        K_ASSERT(currentLevel <= (u16)FUN_00175410(), 0x474);
+        currentLevel = (u16)FUN_001756f0();
+        if (currentLevel == (u16)FUN_00175410())
             return 0;
     }
-    else
-    {
-        K_ASSERT(FUN_001756f0() <= FUN_00175410(), 0x474);
-        if (FUN_001756f0() == FUN_00175410())
-            return 0;
-    }
-    growth = brpSeqBytes() + 0x34;
+    else if (FUN_0016f490(1) == 300)
+        return 0;
+    newVar = work + 0x30;
+    persona = (u8*)(*(u32*)newVar);
+    levelDiff = persona[4] -
+                DAT_007ce420[*(u16*)(persona + 2) * 0x0e + 3];
     for (i = 0; i < 0x10; i++)
     {
-        u8 kind = growth[i * 4 + 7];
+        entry = *(u8**)(work + 0x34) + i * 4;
+        kind = *(s8*)(entry + 7);
+        newVar2 = kind != 4;
         if (kind == 0)
-            return 0;
-        if (growth[i * 4 + 6] <=
-            DAT_007ce420[brpSeqU16(4) * 0x0e + 4] -
-            DAT_007ce420[brpSeqU16(4) * 0x0e + 3] &&
-            kind == 4)
-            return 1;
-        for (j = 0; j < skillCount && skills[j] != *(u16*)(growth + i * 4 + 8); j++)
-            ;
+            goto done;
+        if (levelDiff < entry[6])
+            goto next;
+        if (newVar2)
+            goto next;
+        return 1;
+next:
+        ;
     }
+done:
     return 0;
 }
 
@@ -889,40 +937,49 @@ void func_002743a0(void)
     func_00273e90();
 }
 
-// FUN_002743E0 NONMATCHING
+// FUN_002743E0
 void func_002743e0(void* destination, s32* count)
 {
-    DatPersonaWork* persona;
+    s32 outCount;
+    u32* work;
     u16* skills;
-    u32 skillCount;
-    u32 i;
-    u32 outCount;
+    s32 skillCount;
+    s32 copyIndex;
+    s32 i;
     u8* growth;
-    u8 kind;
+    s8 kind;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    skills = FUN_00173370(persona);
-    skillCount = FUN_00176a30(persona);
+    work = sBrpSeq;
+    skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
+    skillCount = (s32)FUN_00176a30((DatPersonaWork*)(uintptr_t)work[0xc]);
     outCount = 0;
-    for (i = 0; i < skillCount; i++)
-        ((u16*)destination)[outCount++] = skills[i];
-    growth = brpSeqBytes() + 0x34;
-    for (i = brpSeqU32(0x78); i < 0x10; i++)
+    for (copyIndex = 0; copyIndex < skillCount; copyIndex++)
+        ((u16*)destination)[outCount++] = skills[copyIndex];
+    for (i = (s32)work[0x1e]; i < 0x10; i++)
     {
-        growth = brpSeqBytes() + 0x34 + i * 4;
-        kind = growth[7];
-        if (kind == 3)
-            K_ASSERT(0, 0x4cc);
-        else if (kind == 1)
+        growth = (u8*)(uintptr_t)(i * 4 + work[0xd]) + 6;
+        kind = *(s8*)(growth + 1);
+        switch (kind)
         {
+        case 2:
+            K_ASSERT(0, 0x4bc);
+            break;
+        case 0:
+        case 4:
+            break;
+        case 1:
             K_ASSERT(outCount < 16, 0x4c4);
-            ((u16*)destination)[outCount++] = *(u16*)(growth + 8);
+            ((u16*)destination)[outCount++] = *(u16*)(growth + 2);
+            break;
+        case 3:
+            K_ASSERT(0, 0x4cc);
+            break;
+        default:
+            break;
         }
-        else if (kind != 4 && kind != 0)
-            K_ASSERT(kind != 2, 0x4bc);
     }
-    *count = (s32)outCount;
+    *count = outCount;
 }
 // FUN_00274590 NONMATCHING
 void func_00274590(void)
@@ -1018,18 +1075,20 @@ void func_00274590(void)
     brpSeqPutU32(0, brpSeqU32(0) | 0x20);
 }
 
-// FUN_00274C00 NONMATCHING
+// FUN_00274C00
+#pragma optimization_level 1
 void func_00274c00(void)
 {
+    s32 i;
+    u32* work;
     DatPersonaWork* persona;
-    u32 i;
-    u16 skill;
-    u8 value;
+    u16 stat;
+    u32 value;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    for (i = 0; i < brpSeqU32(0x74); i++)
-        func_002791b0(brpSeqU16(0x60 + i * 2));
+    work = sBrpSeq;
+    for (i = 0; i < (s32)work[0x1d]; i++)
+        func_002791b0(*(u16*)((u8*)work + 0x60 + i * 2));
     if (func_00274d40() != 0)
     {
         func_00279330(func_00274d90());
@@ -1038,35 +1097,49 @@ void func_00274c00(void)
     brpParamSetUnlockedSkillIndex((u32)func_00274e90());
     for (i = 0; i < 5; i++)
     {
-        skill = (u16)FUN_00173580(persona, (u16)i);
-        value = (u8)skill;
+        stat = (u16)i;
+        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        value = (u8)FUN_00173580(persona, stat);
         func_00279510(i, value);
         func_00279580(i, value);
-        func_002795f0(i, brpSeqU8(0x5a + i));
+        func_002795f0(i, *(u8*)((u8*)work + 0x5a + i));
     }
 }
+#pragma optimization_level 2
 
 // FUN_00274D40
-u8 func_00274d40(void)
+u32 func_00274d40(void)
 {
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     return brpSeqS32(0x1b0) < brpSeqS32(0x1c0);
 }
 
-// FUN_00274D90 NONMATCHING
-u16 func_00274d90(void)
+// FUN_00274D90
+u32 func_00274d90(void)
 {
+    u8* work;
+    u32 offset;
+
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    K_ASSERT(brpSeqU32(0x1c0) > brpSeqU32(0x1b0), 0x5de);
-    return brpSeqU16(0x1c4 + brpSeqU32(0x1b0) * 8);
+    work = (u8*)sBrpSeq;
+    K_ASSERT(*(s32*)(work + 0x1b0) < *(s32*)(work + 0x1c0), 0x5de);
+    offset = *(s32*)(work + 0x1b0) * 8;
+    offset += (uintptr_t)work;
+    return *(u16*)(offset + 0x1c4);
 }
 
-// FUN_00274E10 NONMATCHING
+// FUN_00274E10
 u32 func_00274e10(void)
 {
+    u8* work;
+    u32 offset;
+
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    K_ASSERT(brpSeqU32(0x1c0) > brpSeqU32(0x1b0), 0x5e6);
-    return brpSeqU32(0x1c8 + brpSeqU32(0x1b0) * 8);
+    work = (u8*)sBrpSeq;
+    K_ASSERT(*(s32*)(work + 0x1b0) < *(s32*)(work + 0x1c0), 0x5e6);
+    offset = *(s32*)(work + 0x1b0) * 8;
+    offset += (uintptr_t)work;
+    return *(u32*)(offset + 0x1c8);
 }
 
 // FUN_00274E90
@@ -1079,39 +1152,49 @@ s32 func_00274e90(void)
     return remaining < 2 ? 0 : remaining - 1;
 }
 
-// FUN_00274F00 NONMATCHING
+// FUN_00274F00
 s32 func_00274f00(void)
 {
-    DatPersonaWork* persona;
+    u32* work;
     u16* skills;
-    u32 skillCount;
-    u32 i;
-    u32 j;
-    u32 count;
-    u8 kind;
-    u8* growth;
+    s32 skillCount;
+    s32 i;
+    s32 j;
+    s32 count;
+    s8 kind;
+    u8* entry;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    skills = FUN_00173370(persona);
-    skillCount = FUN_00176a30(persona);
+    work = sBrpSeq;
+    skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
+    skillCount = (s32)FUN_00176a30((DatPersonaWork*)(uintptr_t)work[0xc]);
+    if (work[0x1f] == 0)
+        return 0;
+    i = 0;
     count = 0;
-    growth = brpSeqBytes() + 0x34;
-    for (i = 0; i < brpSeqU32(0x7c); i++)
+    do
     {
-        kind = growth[(brpSeqU32(0x78) + i) * 4 + 7];
+        entry = (u8*)(uintptr_t)work[0xd] +
+                (work[0x1e] + (u32)i) * 4 + 6;
+        kind = *(s8*)(entry + 1);
         if (kind == 0)
             break;
-        if (kind == 1)
+        if (kind == 4)
+            continue;
+        if (kind != 1)
         {
-            u16 skill = *(u16*)(growth + (brpSeqU32(0x78) + i) * 4 + 8);
-            for (j = 0; j < skillCount && skills[j] != skill; j++)
-                ;
-            if (j == skillCount)
-                count++;
-        }
-        else if (kind != 4)
             K_ASSERT(0, 0x612);
-    }
-    return (s32)count;
+            continue;
+        }
+        j = 0;
+        while (j < skillCount)
+        {
+            if (skills[j] == *(u16*)(entry + 2))
+                break;
+            j++;
+        }
+        if (j == skillCount)
+            count++;
+    } while (++i != (s32)work[0x1f]);
+    return count;
 }

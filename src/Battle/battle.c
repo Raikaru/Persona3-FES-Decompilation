@@ -3,6 +3,7 @@
 #include "Battle/btlUnit.h"
 #include "Battle/btlAction.h"
 #include "Battle/btlFade.h"
+#include "Battle/btlVoice.h"
 #include "Kosaka/k_data.h"
 #include "Kosaka/k_misc.h"
 #include "Kernel/Kwln/kwln.h"
@@ -15,7 +16,16 @@
 #include "Main/Battle/Data/datCalc.h"
 #include "Main/Battle/Panel/bp_root.h"
 #include "Main/admini.h"
+#define datGetLevel datGetLevel_u8
+#define datSetFatigueCounter datSetFatigueCounter_u16
+#define datSetOldFatigueCounter datSetOldFatigueCounter_u16
 #include "Main/g_data.h"
+#undef datGetLevel
+#undef datSetFatigueCounter
+#undef datSetOldFatigueCounter
+extern s32 datGetLevel(s16 pcId);
+extern void datSetFatigueCounter(s16 pcId, s64 fatigueCounter);
+extern void datSetOldFatigueCounter(s16 pcId, s64 fatigueCounter);
 #include "g_flags.h"
 #include "temporary.h"
 
@@ -38,7 +48,6 @@ void func_002bb770(void);
 void func_002bf980(void);
 void func_002db980(void);
 void func_002dcd20(void);
-void func_002e2f80(void);
 void func_002f8790(void);
 void func_001f1c20(void* param);
 void itfMesMngDestroyHandle(s32 mesHandleIdx);
@@ -49,11 +58,16 @@ extern u8 D_0068F0F0[];
 extern u8 D_0068FA68[];
 extern u8 D_0068FA80[];
 extern u8 D_0068FAB0[];
+extern u32 DAT_007ce4d4;
+extern HCdvd* DAT_007ce4d8;
+extern u32 DAT_007ce4dc;
+extern f32 DAT_007cad60;
+extern u16* DAT_007ce490;
+extern u8* DAT_007ce408;
+extern u8* DAT_007ce40c;
+extern u8* DAT_007ce4c4;
+extern u8* DAT_007ce4c8;
 
-#define BTL_PTR(addr) (*(u8**)(uintptr_t)(addr))
-#define BTL_U32(addr) (*(u32*)(uintptr_t)(addr))
-#define BTL_F32(addr) (*(f32*)(uintptr_t)(addr))
-#define BTL_U16PTR(addr) (*(u16**)(uintptr_t)(addr))
 
 extern u32 func_0027dcd0(u32* descriptor, u32 synchronous);
 extern void func_0027df20(void);
@@ -201,11 +215,12 @@ void btlCreate()
     gBtl->flags |= 0x481077c;
 }
 
-// FUN_0027d020 NONMATCHING
+// FUN_0027d020
 u32 btlDestroy()
 {
+    u8* battleBase;
     u16 i;
-    Battle* btl;
+    DatUnitGenusBase* genus;
     void* unkTask;
 
     btlActionDestroyAll();
@@ -233,22 +248,25 @@ u32 btlDestroy()
     {
         for (i = 0; i < UNIT_GENUS_MAX; i++)
         {
-            btl = gBtl;
-            if (*(void**)((u8*)btl + (i & 0xffff) * 4 + 0xbac) != NULL)
+            battleBase = (u8*)gBtl;
+            genus = *(DatUnitGenusBase**)(battleBase + (u32)(u16)i * 4 +
+                                          0xbac);
+            if (genus != NULL)
             {
-                datUnitDestroyGenus(*(DatUnitGenusBase**)((u8*)btl + (i & 0xffff) * 4 + 0xbac));
+                datUnitDestroyGenus(genus);
             }
         }
 
         for (i = 0; i < 3U; i++)
         {
-            btl = gBtl;
-            if (*(void**)((u8*)btl + (i & 0xffff) * 8 + 0xbc4) != NULL)
+            battleBase = (u8*)gBtl;
+            genus = *(DatUnitGenusBase**)(battleBase + (u32)(u16)i * 8 +
+                                          0xbc4);
+            if (genus != NULL)
             {
-                datUnitDestroyGenus(*(DatUnitGenusBase**)((u8*)btl + (i & 0xffff) * 8 + 0xbc4));
+                datUnitDestroyGenus(genus);
             }
         }
-
         datUnitDestroyGenus(&gBtl->startInfo.enmUnits->base);
     }
 
@@ -516,20 +534,22 @@ void func_0027ce50(void)
     }
 }
 
-// FUN_0027D380 NONMATCHING
+// FUN_0027D380
 u32 func_0027d380(void)
 {
     BtlAction* action;
-    u32 aliveEc;
-    u32 alivePc;
-    u32 deadCount;
-    u32 heroAlive;
+    BtlUnit* unit;
+    u8 genus;
+    s32 alivePc;
+    s32 aliveEc;
+    s32 deadCount;
+    s32 heroAlive;
 
     *(u16*)((u8*)gBtl + 0x1c) = 0;
-    aliveEc = 0;
     alivePc = 0;
+    aliveEc = 0;
     deadCount = 0;
-    heroAlive = true;
+    heroAlive = 1;
 
     if (func_002bfc90() == 0)
     {
@@ -541,242 +561,271 @@ u32 func_0027d380(void)
     {
         if ((action->unk_1a & 1) != 0 && (action->unk_18 & 0x20) == 0)
         {
-            if (datCalcIsDead(action->unit->datUnit, 0) == 0)
+            unit = action->unit;
+            if (datCalcIsDead(unit->datUnit, 0) != 0)
             {
-                if (action->unit->genus == UNIT_GENUS_EC)
+                if (unit->genus == UNIT_GENUS_PC && unit->datUnit->id == PC_HERO)
                 {
-                    aliveEc++;
-                }
-                else if (action->unit->genus == UNIT_GENUS_PC)
-                {
-                    alivePc++;
-                }
-            }
-            else
-            {
-                if (action->unit->genus == UNIT_GENUS_PC &&
-                    action->unit->datUnit->id == PC_HERO)
-                {
-                    heroAlive = false;
+                    heroAlive = 0;
                 }
                 deadCount++;
             }
+            else
+            {
+                genus = unit->genus;
+                switch (genus)
+                {
+                case UNIT_GENUS_PC:
+                    alivePc++;
+                    break;
+                case UNIT_GENUS_EC:
+                    aliveEc++;
+                    break;
+                }
+            }
         }
     }
-
-    if (heroAlive && (alivePc != 0 || deadCount == 0))
+    if (heroAlive == 0 || (alivePc == 0 && deadCount != 0))
     {
-        if (alivePc == 0)
-        {
-            *(u16*)((u8*)gBtl + 0x1c) = 3;
-            return true;
-        }
+        *(u16*)((u8*)gBtl + 0x1c) = 2;
+        return true;
+    }
 
-        if (func_002fd660() == 0)
-        {
-            if (aliveEc == 0)
-            {
-                *(u16*)((u8*)gBtl + 0x1c) = 1;
-                return true;
-            }
-            return false;
-        }
+    if (alivePc == 0)
+    {
+        *(u16*)((u8*)gBtl + 0x1c) = 3;
+        return true;
+    }
 
+    if (func_002fd660() != 0)
+    {
         *(u16*)((u8*)gBtl + 0x1c) = 1;
         return true;
     }
 
-    *(u16*)((u8*)gBtl + 0x1c) = 2;
-    return true;
-}
-
-// FUN_0027D560 NONMATCHING
-u32 func_0027d560(void)
-{
-    if ((gBtl->flags & 0x800000) == 0 || func_002bfc90() == 0)
+    if (aliveEc == 0)
     {
-        return false;
+        *(u16*)((u8*)gBtl + 0x1c) = 1;
+        return true;
     }
 
+    return false;
+}
+
+// FUN_0027D560
+u32 func_0027d560(void)
+{
+    if ((gBtl->flags & 0x800000) != 0)
+    {
+        goto flag_set;
+    }
+    return false;
+
+flag_set:
+    if (func_002bfc90() != 0)
+    {
+        goto can_check;
+    }
+    return false;
+
+can_check:
     return func_00300700(gBtl->actionList.head->unit->datUnit, 0xfc8);
 }
 
-// FUN_0027D840 NONMATCHING
+// FUN_0027D840
 u32 func_0027d840(void)
 {
-    if ((s32)scrGetCmdTimer() < 1)
+    if ((s32)scrGetCmdTimer() > 0)
     {
-        return false;
+        return btlFadeAllowsBattleTransition() != 0;
     }
-
-    return btlFadeAllowsBattleTransition() != 0;
+    return false;
 }
 
-// FUN_0027D8D0 NONMATCHING
+// FUN_0027D8D0
 void func_0027d8d0(void)
 {
-    u32 i;
-    s32 level;
-    f32 fatigue;
-    u16 value;
-    u16* range;
     DatUnit* unit;
-    s16 bonus;
-    s16 result;
+    s32 i;
+    s32 bonus;
+    s32 value;
+    s64 result;
+    u16 temp;
+    u16 lower;
+    u16 upper;
+    u32 random;
+    u8* rangeBase;
+    s32 index;
 
     for (i = 1; i < 0xb; i++)
     {
-        level = datGetLevel((s16)i);
-        fatigue = (f32)level * 0.5f + BTL_F32(0x007cad60) * (f32)level;
-        value = (u16)(s32)fatigue;
-        value = (u16)(value + ((datCalcRand(8) & 0xffff) + 1));
-        range = BTL_U16PTR(0x007ce490) + i * 2;
-        if (range[0] <= value)
         {
-            if (range[1] < value)
-            {
-                value = range[1];
-            }
+            f32 levelFloat;
+            f32 fatigue;
+
+            levelFloat = (f32)(u32)datGetLevel((s16)i);
+            fatigue = DAT_007cad60 * levelFloat + 0.5f * levelFloat;
+            temp = (u16)fatigue;
+            value = temp;
         }
-        else
+        random = datCalcRand(8) & 0xffff;
+        random = (random + 1) & 0xffff;
+        value = (value + random) & 0xffff;
+        rangeBase = (u8*)DAT_007ce490;
+        lower = *(u16*)(rangeBase + (u32)i * 4);
+        upper = *(u16*)(rangeBase + (u32)i * 4 + 2);
+        if (value < lower)
         {
-            value = range[0];
+            value = lower;
+        }
+        else if (upper < value)
+        {
+            value = upper;
         }
 
         if (datGetFlag(0xbd2) != 0)
         {
-            value = (u16)((s32)value * 2);
+            f32 fatigue;
+
+            fatigue = 2.0f;
+            fatigue *= (f32)(u32)value;
+            temp = (u16)fatigue;
+            value = temp;
         }
 
         unit = datGetUnit((s16)i);
         bonus = 0;
         if (datCalcHasSkill(unit, 0x20a) != 0)
         {
-            bonus += (s16)((value * 0x14) / 100);
+            bonus += ((value & 0xffff) * 0x14) / 100;
         }
         if (datCalcHasSkill(unit, 0x20b) != 0)
         {
-            bonus += (s16)((value * 0x32) / 100);
+            bonus += ((value & 0xffff) * 0x32) / 100;
         }
         if (datCalcHasSkill(unit, 0x20c) != 0)
         {
-            bonus += (s16)value;
+            bonus += ((value & 0xffff) * 0x64) / 100;
         }
-        result = (s16)value + bonus;
-        datSetFatigueCounter((s16)i, (u16)result);
-        datSetOldFatigueCounter((s16)i, (u16)result);
+
+        result = (s64)(s16)((value + (bonus & 0xffff)) & 0xffff);
+        datSetFatigueCounter((s16)i, result);
+        datSetOldFatigueCounter((s16)i, result);
     }
 }
-
-// FUN_0027DCD0 NONMATCHING
+// FUN_0027DCD0
 u32 func_0027dcd0(u32* descriptor, u32 synchronous)
 {
-    HCdvd* cdvd;
-    const char* path;
     u8* source;
     u32 i;
     u32 size;
     void** output;
 
-    cdvd = (HCdvd*)BTL_PTR(0x007ce4d8);
-    if (cdvd == NULL)
+    if (DAT_007ce4d8 == NULL)
     {
-        path = (const char*)(uintptr_t)(datGetScenarioMode() != 0 ? descriptor[1] : descriptor[0]);
-        cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
-        BTL_PTR(0x007ce4d8) = (u8*)cdvd;
+        if (datGetScenarioMode() != 0)
+        {
+            DAT_007ce4d8 = H_Cdvd_Request((const char*)(uintptr_t)descriptor[1], HCDVD_FILENORMAL);
+        }
+        else
+        {
+            DAT_007ce4d8 = H_Cdvd_Request((const char*)(uintptr_t)descriptor[0], HCDVD_FILENORMAL);
+        }
     }
 
     if (synchronous != 0)
     {
-        H_Cdvd_ReadSync(cdvd);
+        H_Cdvd_ReadSync(DAT_007ce4d8);
     }
-    else if (H_Cdvd_IsFileLoaded(cdvd) == 0)
+    else if (H_Cdvd_IsFileLoaded(DAT_007ce4d8) == 0)
     {
         return false;
     }
 
-    source = (u8*)cdvd->fileMemory;
-    for (i = 0; ; i++)
-    {
-        size = *(u32*)source;
-        output = (void**)(uintptr_t)descriptor[i * 2 + 2];
-        if (*output == NULL)
-        {
-            break;
-        }
+    source = (u8*)DAT_007ce4d8->fileMemory;
+    i = 0;
+    goto check_output;
 
-        *output = D_00875D00 + BTL_U32(0x007ce4d4);
-        BTL_U32(0x007ce4d4) += ((size >> 4) + ((size & 0xf) != 0)) * 0x10;
-        memcpy(*output, source + 4, size);
-        source += (((size + 4) >> 4) + (((size + 4) & 0xf) != 0)) * 0x10;
+process_output:
+    size = *(u32*)source;
+    *output = D_00875D00 + DAT_007ce4d4;
+    DAT_007ce4d4 += ((size >> 4) + ((size & 0xf) != 0)) * 0x10;
+    memcpy(*output, source + 4, size);
+    source += (((size + 4) >> 4) + (((size + 4) & 0xf) != 0)) * 0x10;
+    i++;
+
+check_output:
+    output = *(void***)((u8*)descriptor + i * 8 + 8);
+    if (output != NULL)
+    {
+        goto process_output;
     }
 
-    H_Cdvd_Destroy(cdvd);
-    BTL_PTR(0x007ce4d8) = NULL;
+    H_Cdvd_Destroy(DAT_007ce4d8);
+    DAT_007ce4d8 = NULL;
     return true;
 }
 
-// FUN_0027DE40 NONMATCHING
+// FUN_0027DE40
 u32 func_0027de40(u32 all)
 {
+    s32 temp_3;
     u32 i;
-    u32 result;
-    u32* descriptor;
 
     if (all != 0)
     {
-        for (i = 0; i < 8; i++)
+        i = 0;
+        while (i < 8)
         {
-            descriptor = (u32*)((u8*)D_00692D40 + i * 0xa8);
-            func_0027dcd0(descriptor, 1);
+            func_0027dcd0((u32*)((u8*)D_00692D40 + i * 0xa8), 1);
+            i++;
         }
         return true;
     }
 
-    descriptor = (u32*)((u8*)D_00692D40 + BTL_U32(0x007ce4dc) * 0xa8);
-    result = func_0027dcd0(descriptor, 0);
-    if (result == 0)
+    if (func_0027dcd0((u32*)((u8*)D_00692D40 + DAT_007ce4dc * 0xa8), 0) != 0)
     {
-        return false;
+        temp_3 = DAT_007ce4dc + 1;
+        DAT_007ce4dc = temp_3;
+        if (temp_3 == 8)
+        {
+            return true;
+        }
     }
-    BTL_U32(0x007ce4dc)++;
-    return BTL_U32(0x007ce4dc) == 8;
+
+    return false;
 }
 
-// FUN_0027DF20 NONMATCHING
+// FUN_0027DF20
 void func_0027df20(void)
 {
-    u8* data;
-    u8* source;
     u32 i;
 
     if (datGetScenarioMode() != 0)
     {
-        data = BTL_PTR(0x007ce408);
-        source = BTL_PTR(0x007ce40c);
-        memcpy(data + 0x818, source + 0x31e, 10);
-        memcpy(data + 0x822, source + 0x328, 10);
-        *(u16*)(data + 0x82c) = *(u16*)(source + 0x332);
-        *(u16*)(data + 0x82e) = *(u16*)(source + 0x334);
-        memcpy(data + 0x830, source + 0x336, 4);
-        memcpy(data + 0x834, source + 0x33a, 4);
-        memcpy(data + 0x838, source + 0x33e, 4);
+        memcpy(DAT_007ce408 + 0x818, DAT_007ce40c + 0x31e, 10);
+        memcpy(DAT_007ce408 + 0x822, DAT_007ce40c + 0x328, 10);
+        *(u16*)(DAT_007ce408 + 0x82c) = *(u16*)(DAT_007ce40c + 0x332);
+        *(u16*)(DAT_007ce408 + 0x82e) = *(s16*)(DAT_007ce40c + 0x334);
+        memcpy(DAT_007ce408 + 0x830, DAT_007ce40c + 0x336, 4);
+        memcpy(DAT_007ce408 + 0x834, DAT_007ce40c + 0x33a, 4);
+        memcpy(DAT_007ce408 + 0x838, DAT_007ce40c + 0x33e, 4);
 
         for (i = 0; i < 0x17; i++)
         {
-            memcpy(data + i * 10 + 0x83c, source + i * 10 + 0x342, 10);
+            memcpy(DAT_007ce408 + i * 10 + 0x83c, DAT_007ce40c + i * 10 + 0x342, 10);
             memcpy(D_0068F0F0 + i * 0xc + 0x888,
                    D_0068FAB0 + i * 0xc + 0xac8, 0xc);
         }
 
-        memcpy(source + 0x95a, source, 0x10a);
-        memcpy(BTL_PTR(0x007ce4c8) + 0x38, BTL_PTR(0x007ce4c4) + 0x28, 8);
+        memcpy(DAT_007ce40c + 0x95a, DAT_007ce40c, 0x10a);
+        memcpy(DAT_007ce4c8 + 0x38, DAT_007ce4c4 + 0x28, 8);
         func_002b6490();
 
         for (i = 0; i < 0x17; i++)
         {
-            memcpy(D_0068F0F0 + i * 0xc + 0x618,
-                   D_0068FAB0 + i * 0xc + 0x78c, 0xc);
+            memcpy(D_0068FAB0 + i * 0xc + 0x78c,
+                   D_0068F0F0 + i * 0xc + 0x618, 0xc);
         }
         memcpy(D_0068FA68, D_0068FA80, 0xc);
         for (i = 0; i < 0x12; i++)
@@ -789,66 +838,73 @@ void func_0027df20(void)
     func_00177270();
 }
 
-// FUN_0027E180 NONMATCHING
+// FUN_0027E180
 void func_0027e180(void)
 {
-    BTL_U32(0x007ce4d4) = 0;
-    BTL_PTR(0x007ce4d8) = NULL;
-    BTL_U32(0x007ce4dc) = 0;
+    DAT_007ce4d4 = 0;
+    DAT_007ce4d8 = NULL;
+    DAT_007ce4dc = 0;
     func_0027de40(1);
     func_0027df20();
     func_002bc6d0();
     func_002dd9b0();
 }
 
-// FUN_0027E1D0 NONMATCHING
+// FUN_0027E1D0
 void* func_0027e1d0(KwlnTask* task)
 {
-    u32 result;
+    s32 temp_3;
+    s32 var_2;
 
-    result = func_0027dcd0((u32*)((u8*)D_00692D40 + BTL_U32(0x007ce4dc) * 0xa8), 0);
-    if (result == 0)
+    if ((func_0027dcd0((u32*)((u8*)D_00692D40 + DAT_007ce4dc * 0xa8), 0) != 0) &&
+        (temp_3 = DAT_007ce4dc + 1, DAT_007ce4dc = temp_3, temp_3 == 8))
     {
-        return KWLNTASK_CONTINUE;
+        var_2 = 1;
+    }
+    else
+    {
+        var_2 = 0;
     }
 
-    BTL_U32(0x007ce4dc)++;
-    if (BTL_U32(0x007ce4dc) != 8)
+    if (var_2 != 0)
     {
-        return KWLNTASK_CONTINUE;
+        func_0027df20();
+        return KWLNTASK_STOP;
     }
 
-    func_0027df20();
-    return KWLNTASK_STOP;
+    return KWLNTASK_CONTINUE;
 }
 
-// FUN_0027E270 NONMATCHING
+// FUN_0027E270
 KwlnTask* func_0027e270(KwlnTask* parent)
 {
-    BTL_U32(0x007ce4d4) = 0;
-    BTL_PTR(0x007ce4d8) = NULL;
-    BTL_U32(0x007ce4dc) = 0;
+    DAT_007ce4d4 = 0;
+    DAT_007ce4d8 = NULL;
+    DAT_007ce4dc = 0;
     return kwlnTaskCreate(parent, D_00693280, 10, func_0027e1d0, NULL, NULL);
 }
 
-// FUN_0027E2C0 NONMATCHING
+// FUN_0027E2C0
 KwlnTask* func_0027e2c0(KwlnTask* parent)
 {
-    BTL_U32(0x007ce4d4) = 0;
-    BTL_PTR(0x007ce4d8) = NULL;
-    BTL_U32(0x007ce4dc) = 0;
+    DAT_007ce4d4 = 0;
+    DAT_007ce4d8 = NULL;
+    DAT_007ce4dc = 0;
     return kwlnTaskCreate(parent, D_00693280, 10, func_0027e1d0, NULL, NULL);
 }
 
-// FUN_0027E310 NONMATCHING
+// FUN_0027E310
 BtlPacket* func_0027e310(u64 uid, u64 mask)
 {
     BtlPacket* packet;
+    Battle* btl;
     u32 i;
 
-    for (i = 0; i < BTLPACKET_TYPE_MAX; i++)
+    i = 0;
+    btl = gBtl;
+    while (i < BTLPACKET_TYPE_MAX)
     {
-        packet = gBtl->packetLists[i].head;
+        packet = *(BtlPacket**)((u8*)btl + i * sizeof(BtlPacketList) + 0x174);
         while (packet != NULL)
         {
             if (uid == (packet->uid & mask) &&
@@ -858,6 +914,7 @@ BtlPacket* func_0027e310(u64 uid, u64 mask)
             }
             packet = packet->next;
         }
+        i++;
     }
 
     return NULL;

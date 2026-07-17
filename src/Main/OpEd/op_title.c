@@ -14,8 +14,8 @@ extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 extern void func_004d7f60(s32 state, u32 value);
 extern void* (*DAT_00960178)(u32 size, u32 heap);
-extern void (*DAT_0096017c)(void* memory);
-extern void (*D_009600A4)(u32, u32, u32, u32, u32);
+extern void (*DAT_0096017c[])(void* memory);
+extern void (*D_009600A4[])(u32, u32, u32, u32, u32);
 extern u32 FUN_00488f30(void);
 extern f32 DAT_007cb164;
 extern f32 DAT_007cad78;
@@ -750,15 +750,15 @@ void opTitle00268e20(void)
     }
 }
 
-// FUN_002692D0 NONMATCHING
+// FUN_002692D0
 void opTitle002692d0(void)
 {
     u32* work;
     void* resource;
     void* frame;
+    u32* slot;
     u32 random;
     s32 i;
-
     K_ASSERT(sOpTitle != NULL, 0x8e);
     work = sOpTitle;
     resource = opRes00266c50(0);
@@ -776,16 +776,18 @@ void opTitle002692d0(void)
     func_0021d3b0(work + 0x84, frame);
     for (i = 0; i < 9; i++)
     {
-        work[i * 0x48 + 0x184] = 0;
-        work[i * 0x48 + 0x1c8] = 0;
+        slot = work + i * 0x48 + 0x184;
+        slot[0] = 0;
+        slot[0x44] = 0;
         frame = func_0021cca0(resource, 0xf);
-        func_0021d3b0(work + i * 0x48 + 0x188, frame);
+        func_0021d3b0(slot + 4, frame);
     }
     for (i = 0; i < 3; i++)
     {
-        work[i * 2 + 0x40e] = 0;
+        slot = work + i * 2 + 0x40d;
+        slot[1] = 0;
         random = FUN_00488f30();
-        work[i * 2 + 0x40d] = random & 7;
+        slot[0] = random & 7;
     }
     opTitle00269500();
     *work |= 1;
@@ -842,13 +844,26 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
     s32 vertexCount;
     s32 row;
     s32 column;
-    s16 value;
+    s32 value;
     s16* indices;
     u32* mesh;
     void* memory;
     s32 rowWidth;
 
-    if (mode == 1)
+    if (mode != 1)
+    {
+        if (mode != 0)
+        {
+            indexCount = 0;
+            vertexCount = 0;
+        }
+        else
+        {
+            indexCount = (rows + 1) * (columns + 1);
+            vertexCount = columns * rows * 6;
+        }
+    }
+    else
     {
         halfRows = rows >> 1;
         if ((rows & 1) == 0)
@@ -874,26 +889,39 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
         }
         vertexCount = rows * (columns * 6 + 3);
     }
-    else if (mode == 0)
-    {
-        indexCount = (rows + 1) * (columns + 1);
-        vertexCount = columns * rows * 6;
-    }
-    else
-    {
-        indexCount = 0;
-        vertexCount = 0;
-    }
 
     memory = (*DAT_00960178)((u32)(indexCount * 0x40 + 0x20 + vertexCount * 2), 0x40000);
     mesh = (u32*)memory;
     mesh[0] = (u32)(uintptr_t)(mesh + 8);
     mesh[1] = (u32)(uintptr_t)(mesh + 8 + indexCount * 0x10);
 
-    if (mode == 1)
+    if (mode != 1)
+    {
+        if (mode == 0)
+        {
+            value = 0;
+            indices = (s16*)(uintptr_t)mesh[1];
+            for (row = 0; row < rows; row++)
+            {
+                for (column = 0; column < columns; column++)
+                {
+                    indices[0] = value;
+                    indices[1] = value + 1;
+                    indices[2] = value + columns + 1;
+                    indices[3] = value + 1;
+                    indices[4] = value + columns + 2;
+                    indices[5] = value + columns + 1;
+                    indices += 6;
+                    value++;
+                }
+                value++;
+            }
+        }
+    }
+    else
     {
         value = 0;
-        indices = (s16*)(uintptr_t)mesh[1];
+        indices = (s16*)mesh[1];
         for (row = 0; row < rows; row++)
         {
             for (column = 0; column < columns; column++)
@@ -936,26 +964,6 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
             indices += 3;
         }
     }
-    else if (mode == 0)
-    {
-        value = 0;
-        indices = (s16*)(uintptr_t)mesh[1];
-        for (row = 0; row < rows; row++)
-        {
-            for (column = 0; column < columns; column++)
-            {
-                indices[0] = value;
-                indices[1] = value + 1;
-                indices[2] = value + columns + 1;
-                indices[3] = value + 1;
-                indices[4] = value + columns + 2;
-                indices[5] = value + columns + 1;
-                indices += 6;
-                value++;
-            }
-            value++;
-        }
-    }
 
     mesh[6] = (u32)mode;
     mesh[2] = (u32)columns;
@@ -965,28 +973,39 @@ u32* opTitle00269690(s32 mode, s32 columns, s32 rows)
     return mesh;
 }
 
-// FUN_002699A0 NONMATCHING
+// FUN_002699A0
 void opTitle002699a0(void* memory)
 {
     (*DAT_0096017c)(memory);
 }
 
-// FUN_002699D0 NONMATCHING
+// FUN_002699D0
 void opTitle002699d0(u32* vertex)
 {
     (*D_009600A4)(3, vertex[0], vertex[4], vertex[1], vertex[5]);
 }
 
+typedef struct OpTitleMesh
+{
+    s32 unk0;
+    s32 unk4;
+    s32 width;
+    s32 height;
+    s32 unk10;
+    s32 unk14;
+    s32 mode;
+} OpTitleMesh;
+
 // FUN_00269A10 NONMATCHING
-void opTitle00269a10(u32* mesh, u32* callback)
+void opTitle00269a10(OpTitleMesh* mesh, u32* callback)
 {
     s32 i;
     s32 j;
+    s32 row;
     s32 rowWidth;
-    u32 k;
-
-    f32 u;
-    f32 v;
+    s32 parity;
+    s32 index;
+    s32 k;
     struct
     {
         u32 mesh;
@@ -998,52 +1017,62 @@ void opTitle00269a10(u32* mesh, u32* callback)
 
     args.mesh = (u32)(uintptr_t)mesh;
     args.user = callback[1];
-    if (mesh[6] == 1)
+    switch (mesh->mode)
     {
-        i = 0;
-        for (j = 0; j < (s32)mesh[3] + 1; j++)
+    case 0:
+        for (i = 0; i < mesh->height + 1; i++)
         {
-            rowWidth = ((j & 1) == 0) ? (s32)mesh[2] + 1 : (s32)mesh[2] + 2;
-            for (k = 0; k < (u32)rowWidth; k++)
+            for (j = 0; j < mesh->width + 1; j++)
             {
-                if ((j & 1) == 0)
+                args.u = (f32)j / (f32)mesh->width;
+                args.v = (f32)i / (f32)mesh->height;
+                args.index = (u32)(j + (mesh->width + 1) * i);
+                ((void (*)(void*))callback[0])(&args);
+            }
+        }
+        break;
+    case 1:
+        index = 0;
+        for (row = 0; row < mesh->height + 1; row++)
+        {
+            parity = ~row & 1;
+            if (parity)
+            {
+                rowWidth = mesh->width + 2;
+            }
+            else
+            {
+                rowWidth = mesh->width + 1;
+            }
+            for (k = 0; k < rowWidth; k++)
+            {
+                if (parity)
                 {
-                    u = (f32)k / (f32)mesh[2];
-                }
-                else if (k == 0)
-                {
-                    u = 0.0f;
-                }
-                else if ((s32)k == rowWidth - 1)
-                {
-                    u = 1.0f;
+                    if (k == 0)
+                    {
+                        args.u = 0.0f;
+                    }
+                    else if (k == rowWidth - 1)
+                    {
+                        args.u = 1.0f;
+                    }
+                    else
+                    {
+                        args.u = 1.0f / (f32)mesh->width * (f32)(k - 1) +
+                            1.0f / (f32)mesh->width / 2.0f;
+                    }
                 }
                 else
                 {
-                    u = 1.0f / (f32)mesh[2] * (f32)((s32)k - 1) +
-                        1.0f / (f32)mesh[2] / 2.0f;
+                    args.u = (f32)k / (f32)mesh->width;
                 }
-                v = (f32)j / (f32)mesh[3];
-                args.index = (u32)i;
-                args.u = u;
-                args.v = v;
+                args.v = (f32)row / (f32)mesh->height;
+                args.index = (u32)index;
                 ((void (*)(void*))callback[0])(&args);
-                i++;
+                index++;
             }
         }
-    }
-    else if (mesh[6] == 0)
-    {
-        for (j = 0; j < (s32)mesh[3] + 1; j++)
-        {
-            for (i = 0; i < (s32)mesh[2] + 1; i++)
-            {
-                args.index = (u32)(i + ((s32)mesh[2] + 1) * j);
-                args.u = (f32)i / (f32)mesh[2];
-                args.v = (f32)j / (f32)mesh[3];
-                ((void (*)(void*))callback[0])(&args);
-            }
-        }
+        break;
     }
 }
 

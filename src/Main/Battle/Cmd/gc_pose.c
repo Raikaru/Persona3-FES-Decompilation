@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include "Kernel/Kwln/kwlnTask.h"
+#include "Kernel/Kwln/kwln.h"
 #include "Kosaka/k_assert.h"
 #include "rw/rprandom.h"
 #include "rw/rwplcore.h"
@@ -7,14 +8,17 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_002505b0(int param_1,u32 *param_2,int param_3,u32 *param_4);
+void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction);
 void FUN_002508c0(int param_1,u32 *param_2,int param_3);
 void FUN_00250a30(int param_1,u32 *param_2,int param_3);
 void FUN_00250be0(int param_1,int param_2,u32 param_3);
-void FUN_00250cf0(u32 param_1,u32 param_2,int param_3,u64 param_4,int param_5);
-void FUN_00250f80(float *param_1,u64 param_2);
+void FUN_00250cf0(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames);
+void FUN_00250f80(float* output, const RwV3d* input);
 
 extern f32 fGpffff81f8;
+extern void FUN_004bdde0(f32 angle, void *output, void *target, s32 mode);
+extern f32 FUN_004c69f0(RwV3d *out, const RwV3d *in);
+extern f32 FUN_004c6ac0(const RwV3d *in);
 
 // FUN_00250480
 void gcPose00250480(int param_1)
@@ -111,49 +115,69 @@ static void gcPose0024fe40(void* state);
 static void gcPose0024ff10(void* state);
 static void gcPose00250280(void* state, const RwV3d* offset);
 
-static f32 gcPoseRandomExtent(f32 extent)
+static inline f32 gcPoseRandomExtent(f32 extent)
 {
-    return extent * 0.5f - extent * (f32)(RpRandom() & 0xfff) / 4096.0f;
+    return extent / 2.0f -
+        extent * (f32)(RpRandom() & 0xfff) / 4096.0f;
 }
 
-static void gcPoseCross(RwV3d* out, const RwV3d* left, const RwV3d* right)
-{
-    out->x = left->y * right->z - left->z * right->y;
-    out->y = left->z * right->x - left->x * right->z;
-    out->z = left->x * right->y - left->y * right->x;
-}
 
-// FUN_0024F090 NONMATCHING
+// FUN_0024F090
 void gcPose0024f090(void* state)
 {
-    u32 phase;
     u32 mode;
 
     GC_U32(state, 8) |= 1;
-    phase = GC_U32(state, 0xc);
-    if (phase == 2) {
-        mode = GC_U32(state, 0x24);
-        if (mode == 4) {
-            gcPose0024fe40(state);
-        } else if (mode == 3) {
-            GC_U32(state, 0x2c) = 0;
-        } else {
-            K_ASSERT(mode == 0 || mode == 1 || mode == 2, 0x2fb);
-        }
-    } else if (phase == 1) {
-        mode = GC_U32(state, 0x20);
-        K_ASSERT(mode == 0 || mode == 1, 0x2e4);
-    } else if (phase == 0) {
-        mode = GC_U32(state, 0x20);
-        if (mode == 3) {
-            gcPose0024f780(state);
-        } else if (mode == 1) {
-            gcPose0024f350(state);
-        } else {
-            K_ASSERT(mode == 0 || mode == 2, 0x2d4);
-        }
-    } else {
-        K_ASSERT(0, 0x302);
+    switch (GC_U32(state, 0xc)) {
+        case 0:
+            mode = GC_U32(state, 0x20);
+            switch (mode) {
+                case 1:
+                    gcPose0024f350(state);
+                    break;
+                case 0:
+                case 2:
+                    break;
+                case 3:
+                    gcPose0024f780(state);
+                    break;
+                default:
+                    K_ASSERT(0, 0x2d4);
+                    break;
+            }
+            break;
+        case 1:
+            mode = GC_U32(state, 0x20);
+            switch (mode) {
+                case 0:
+                case 1:
+                    break;
+                default:
+                    K_ASSERT(0, 0x2e4);
+                    break;
+            }
+            break;
+        case 2:
+            mode = GC_U32(state, 0x24);
+            switch (mode) {
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                case 3:
+                    GC_U32(state, 0x2c) = 0;
+                    break;
+                case 4:
+                    gcPose0024fe40(state);
+                    break;
+                default:
+                    K_ASSERT(0, 0x2fb);
+                    break;
+            }
+            break;
+        default:
+            K_ASSERT(0, 0x302);
+            break;
     }
 }
 
@@ -180,33 +204,44 @@ void gcPose0024f2c0(void* state, f32 value)
 // FUN_0024F350
 static void gcPose0024f350(void* state)
 {
-    __asm__ volatile (
-        ".set noreorder ;"
-        ".word 0x27bdffc0 ; .word 0xffbf0020 ; .word 0x7fb10010 ; .word 0x7fb00000 ;"
-        ".word 0x0080802d ; .word 0x8c82000c ; .word 0x10400006 ; .word 0x00000000 ;"
-        ".word 0x3c040069 ; .word 0x2484e9a0 ; .word 0x24050329 ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x8e030020 ; .word 0x24020001 ; .word 0x10620006 ; .word 0x00000000 ;"
-        ".word 0x3c040069 ; .word 0x2484e9a0 ; .word 0x2405032a ; .word 0x0c0674fc ; .word 0x00000000 ;"
-        ".word 0x26110024 ; .word 0x3c034120 ; .word 0xae030054 ; .word 0x240200b4 ;"
-        ".word 0xae020058 ; .word 0xae03005c ; .word 0x3c023f80 ; .word 0xae020060 ;"
-        ".word 0x0200202d ; .word 0x0c093d04 ; .word 0x00000000 ; .word 0xafa00030 ;"
-        ".word 0xafa00034 ; .word 0xc6200038 ; .word 0xe7a00038 ; .word 0x0200202d ;"
-        ".word 0x27a50030 ; .word 0x0c093dfc ; .word 0x00000000 ; .word 0xdfbf0020 ;"
-        ".word 0x7bb10010 ; .word 0x7bb00000 ; .word 0x27bd0040 ; .set reorder"
-    );
+    RwV3d offset;
+    f32 *poseData;
+
+    K_ASSERT(GC_U32(state, 0xc) == 0, 0x329);
+    K_ASSERT(GC_U32(state, 0x20) == 1, 0x32a);
+
+    poseData = (f32 *)((u8 *)state + 0x24);
+    poseData[12] = 10.0f;
+    *(u32 *)&poseData[13] = 0xb4;
+    poseData[14] = 10.0f;
+    poseData[15] = 1.0f;
+    gcPose0024f410(state);
+
+    offset.x = 0.0f;
+    offset.y = 0.0f;
+    offset.z = poseData[14];
+    gcPose0024f7f0(state, &offset);
 }
 
-// FUN_0024F410 NONMATCHING
+// FUN_0024F410
 static void gcPose0024f410(void* state)
 {
+    RwV3d pose;
+    f32* poseData;
+
     K_ASSERT(GC_U32(state, 0xc) == 0, 0x341);
     K_ASSERT(GC_U32(state, 0x20) == 1, 0x342);
-    GC_F32(state, 0x24) = gcPoseRandomExtent(GC_F32(state, 0x54));
-    GC_F32(state, 0x28) = gcPoseRandomExtent(GC_F32(state, 0x54));
-    GC_F32(state, 0x2c) = gcPoseRandomExtent(GC_F32(state, 0x54));
-    GC_F32(state, 0x48) = gcPoseRandomExtent(GC_F32(state, 0x54));
-    GC_F32(state, 0x4c) = gcPoseRandomExtent(GC_F32(state, 0x54));
-    GC_F32(state, 0x50) = gcPoseRandomExtent(GC_F32(state, 0x54));
+    poseData = (f32*)((u8*)state + 0x24);
+
+    pose.x = gcPoseRandomExtent(poseData[12]);
+    pose.y = gcPoseRandomExtent(poseData[12]);
+    pose.z = gcPoseRandomExtent(poseData[12]);
+    *(RwV3d*)poseData = pose;
+
+    pose.x = gcPoseRandomExtent(poseData[12]);
+    pose.y = gcPoseRandomExtent(poseData[12]);
+    pose.z = gcPoseRandomExtent(poseData[12]);
+    *(RwV3d*)(poseData + 9) = pose;
 }
 
 // FUN_0024F780
@@ -217,72 +252,95 @@ static void gcPose0024f780(void* state)
     GC_F32(state, 0x28) = 0.0f;
 }
 
-// FUN_0024F7F0 NONMATCHING
+// FUN_0024F7F0
 static void gcPose0024f7f0(void* state, const RwV3d* offset)
 {
-    RwV3d anchor;
+    f32 *pose;
     RwV3d fromOrigin;
     RwV3d toOrigin;
-    RwV3d cross;
-    RwV3d tangent;
+    RwV3d anchor = { 0.0f, 0.0f, 0.0f };
+    f32 crossX;
+    f32 crossY;
+    f32 crossZ;
+    f32 tangentX;
+    f32 tangentY;
+    f32 tangentZ;
+    f32 scale;
 
-    anchor.x = 0.0f;
-    anchor.y = 0.0f;
-    anchor.z = 0.0f;
-    GC_V3D(state, 0x30)->x = GC_F32(state, 0x24) + offset->x;
-    GC_V3D(state, 0x30)->y = GC_F32(state, 0x28) + offset->y;
-    GC_V3D(state, 0x30)->z = GC_F32(state, 0x2c) + offset->z;
+    pose = (f32 *)((u8 *)state + 0x24);
+    pose[3] = pose[0] + offset->x;
+    pose[4] = pose[1] + offset->y;
+    pose[5] = pose[2] + offset->z;
 
-    fromOrigin.x = anchor.x - GC_F32(state, 0x48);
-    fromOrigin.y = anchor.y - GC_F32(state, 0x4c);
-    fromOrigin.z = anchor.z - GC_F32(state, 0x50);
-    toOrigin.x = GC_F32(state, 0x48) - GC_F32(state, 0x24);
-    toOrigin.y = GC_F32(state, 0x4c) - GC_F32(state, 0x28);
-    toOrigin.z = GC_F32(state, 0x50) - GC_F32(state, 0x2c);
-    RwV3dNormalize(&fromOrigin, &fromOrigin);
-    RwV3dNormalize(&toOrigin, &toOrigin);
-    gcPoseCross(&cross, &toOrigin, &fromOrigin);
-    gcPoseCross(&tangent, &cross, &fromOrigin);
+    fromOrigin.x = anchor.x - pose[9];
+    fromOrigin.y = anchor.y - pose[10];
+    fromOrigin.z = anchor.z - pose[11];
+    toOrigin.x = pose[9] - pose[0];
+    toOrigin.y = pose[10] - pose[1];
+    toOrigin.z = pose[11] - pose[2];
+    FUN_004c69f0(&fromOrigin, &fromOrigin);
+    FUN_004c69f0(&toOrigin, &toOrigin);
+    crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
+    crossY = toOrigin.z * fromOrigin.x - toOrigin.x * fromOrigin.z;
+    crossZ = toOrigin.x * fromOrigin.y - toOrigin.y * fromOrigin.x;
+    tangentX = crossY * fromOrigin.z - crossZ * fromOrigin.y;
+    tangentY = crossZ * fromOrigin.x - crossX * fromOrigin.z;
+    tangentZ = crossX * fromOrigin.y - crossY * fromOrigin.x;
 
-    GC_F32(state, 0x3c) = GC_F32(state, 0x48) +
-        tangent.x * GC_F32(state, 0x5c);
-    GC_F32(state, 0x40) = GC_F32(state, 0x4c) +
-        tangent.y * GC_F32(state, 0x5c);
-    GC_F32(state, 0x44) = GC_F32(state, 0x50) +
-        tangent.z * GC_F32(state, 0x5c);
+    scale = pose[14];
+    tangentX *= scale;
+    tangentY *= scale;
+    tangentZ *= scale;
+    pose[6] = pose[9] + tangentX;
+    pose[7] = pose[10] + tangentY;
+    pose[8] = pose[11] + tangentZ;
 }
 
-// FUN_0024F9F0 NONMATCHING
+// FUN_0024F9F0
 void gcPose0024f9f0(int param_1, RwV3d* param_2)
 {
     K_ASSERT(*(int*)(param_1 + 0x20) < 4, 0x37d);
-    if ((*(int*)(param_1 + 0x20) == 3) || (*(int*)(param_1 + 0x20) == 0)) {
-        *(RwV3d*)(param_1 + 0x14) = *param_2;
-    } else {
-        K_ASSERT(0, 0x386);
+    switch (*(int*)(param_1 + 0x20)) {
+        case 0:
+        case 3:
+            *(RwV3d*)(param_1 + 0x14) = *param_2;
+            break;
+        default:
+            K_ASSERT(0, 0x386);
+            break;
     }
 }
 
-// FUN_0024FAF0 NONMATCHING
+// FUN_0024FAF0
 void gcPose0024faf0(int param_1, RwV3d* param_2)
 {
     K_ASSERT(*(int*)(param_1 + 0x20) < 2, 0x395);
-    if ((*(int*)(param_1 + 0x20) == 1) || (*(int*)(param_1 + 0x20) == 0)) {
-        *(RwV3d*)(param_1 + 0x14) = *param_2;
-    } else {
-        K_ASSERT(0, 0x39e);
+    switch (*(int*)(param_1 + 0x20)) {
+        case 0:
+        case 1:
+            *(RwV3d*)(param_1 + 0x14) = *param_2;
+            break;
+        default:
+            K_ASSERT(0, 0x39e);
+            break;
     }
 }
 
-// FUN_0024FC40 NONMATCHING
+// FUN_0024FC40
 void gcPose0024fc40(int param_1, RtQuat* param_2)
 {
     K_ASSERT(*(int*)(param_1 + 0xc) == 2, 0x3ae);
-    K_ASSERT((*(int*)(param_1 + 0x24) == 0) ||
-             (*(int*)(param_1 + 0x24) == 1) ||
-             (*(int*)(param_1 + 0x24) == 2) ||
-             (*(int*)(param_1 + 0x24) == 3), 0x3b9);
-    *param_2 = *(RtQuat*)(param_1 + 0x14);
+    switch (*(int*)(param_1 + 0x24)) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+            *(RtQuat*)(param_1 + 0x14) = *param_2;
+            break;
+        default:
+            K_ASSERT(0, 0x3b9);
+            break;
+    }
 }
 
 // FUN_0024FD10
@@ -355,379 +413,276 @@ void gcPose0024fe20(void* state)
     GC_U32(state, 0x24) = 4;
 }
 
-// FUN_0024FE40 NONMATCHING
+// FUN_0024FE40
 static void gcPose0024fe40(void* state)
 {
     RwV3d offset;
+    f32* poseData;
 
     K_ASSERT(GC_U32(state, 0xc) == 2, 0x41b);
     K_ASSERT(GC_U32(state, 0x24) == 4, 0x41c);
+    poseData = (f32*)((u8*)state + 0x28);
     GC_F32(state, 0x58) = 5.0f;
     GC_F32(state, 0x5c) = 15.0f;
     GC_F32(state, 0x60) = 15.0f;
     GC_U32(state, 0x64) = 0xB4;
-    GC_F32(state, 0x68) = 1.0f;
+    poseData[0x10] = 1.0f;
     GC_F32(state, 0x6c) = 1.0f;
     gcPose0024ff10(state);
     offset.x = 0.0f;
     offset.y = 0.0f;
-    offset.z = GC_F32(state, 0x68);
+    offset.z = poseData[0x10];
     gcPose00250280(state, &offset);
 }
 
-// FUN_0024FF10 NONMATCHING
+// FUN_0024FF10
 static void gcPose0024ff10(void* state)
 {
+    RwV3d pose;
+    f32* poseData;
+
     K_ASSERT(GC_U32(state, 0xc) == 2, 0x434);
     K_ASSERT(GC_U32(state, 0x24) == 4, 0x435);
-    GC_F32(state, 0x28) = gcPoseRandomExtent(GC_F32(state, 0x58));
-    GC_F32(state, 0x2c) = gcPoseRandomExtent(GC_F32(state, 0x5c));
-    GC_F32(state, 0x30) = gcPoseRandomExtent(GC_F32(state, 0x60));
-    GC_F32(state, 0x4c) = gcPoseRandomExtent(GC_F32(state, 0x58));
-    GC_F32(state, 0x50) = gcPoseRandomExtent(GC_F32(state, 0x5c));
-    GC_F32(state, 0x54) = gcPoseRandomExtent(GC_F32(state, 0x60));
+    poseData = (f32*)((u8*)state + 0x28);
+
+    pose.x = gcPoseRandomExtent(poseData[12]);
+    pose.y = gcPoseRandomExtent(poseData[13]);
+    pose.z = gcPoseRandomExtent(poseData[14]);
+    *(RwV3d*)poseData = pose;
+
+    pose.x = gcPoseRandomExtent(poseData[12]);
+    pose.y = gcPoseRandomExtent(poseData[13]);
+    pose.z = gcPoseRandomExtent(poseData[14]);
+    *(RwV3d*)(poseData + 9) = pose;
 }
 
-// FUN_00250280 NONMATCHING
+// FUN_00250280
 static void gcPose00250280(void* state, const RwV3d* offset)
 {
-    RwV3d anchor;
+    f32 *pose;
     RwV3d fromOrigin;
     RwV3d toOrigin;
-    RwV3d cross;
-    RwV3d tangent;
-    anchor.x = 0.0f;
-    anchor.y = 0.0f;
-    anchor.z = 0.0f;
-    GC_V3D(state, 0x34)->x = GC_F32(state, 0x28) + offset->x;
-    GC_V3D(state, 0x34)->y = GC_F32(state, 0x2c) + offset->y;
-    GC_V3D(state, 0x34)->z = GC_F32(state, 0x30) + offset->z;
+    RwV3d anchor = { 0.0f, 0.0f, 0.0f };
+    f32 crossX;
+    f32 crossY;
+    f32 crossZ;
+    f32 tangentX;
+    f32 tangentY;
+    f32 tangentZ;
+    f32 scale;
 
-    fromOrigin.x = anchor.x - GC_F32(state, 0x4c);
-    fromOrigin.y = anchor.y - GC_F32(state, 0x50);
-    fromOrigin.z = anchor.z - GC_F32(state, 0x54);
-    toOrigin.x = GC_F32(state, 0x4c) - GC_F32(state, 0x28);
-    toOrigin.y = GC_F32(state, 0x50) - GC_F32(state, 0x2c);
-    toOrigin.z = GC_F32(state, 0x54) - GC_F32(state, 0x30);
-    RwV3dNormalize(&fromOrigin, &fromOrigin);
-    RwV3dNormalize(&toOrigin, &toOrigin);
-    gcPoseCross(&cross, &toOrigin, &fromOrigin);
-    gcPoseCross(&tangent, &cross, &fromOrigin);
+    pose = (f32 *)((u8 *)state + 0x28);
+    pose[3] = pose[0] + offset->x;
+    pose[4] = pose[1] + offset->y;
+    pose[5] = pose[2] + offset->z;
 
-    GC_F32(state, 0x40) = GC_F32(state, 0x4c) +
-        tangent.x * GC_F32(state, 0x68);
-    GC_F32(state, 0x44) = GC_F32(state, 0x50) +
-        tangent.y * GC_F32(state, 0x68);
-    GC_F32(state, 0x48) = GC_F32(state, 0x54) +
-        tangent.z * GC_F32(state, 0x68);
+    fromOrigin.x = anchor.x - pose[9];
+    fromOrigin.y = anchor.y - pose[10];
+    fromOrigin.z = anchor.z - pose[11];
+    toOrigin.x = pose[9] - pose[0];
+    toOrigin.y = pose[10] - pose[1];
+    toOrigin.z = pose[11] - pose[2];
+    FUN_004c69f0(&fromOrigin, &fromOrigin);
+    FUN_004c69f0(&toOrigin, &toOrigin);
+    crossX = toOrigin.y * fromOrigin.z - toOrigin.z * fromOrigin.y;
+    crossY = toOrigin.z * fromOrigin.x - toOrigin.x * fromOrigin.z;
+    crossZ = toOrigin.x * fromOrigin.y - toOrigin.y * fromOrigin.x;
+    tangentX = crossY * fromOrigin.z - crossZ * fromOrigin.y;
+    tangentY = crossZ * fromOrigin.x - crossX * fromOrigin.z;
+    tangentZ = crossX * fromOrigin.y - crossY * fromOrigin.x;
+
+    scale = pose[16];
+    tangentX *= scale;
+    tangentY *= scale;
+    tangentZ *= scale;
+    pose[6] = pose[9] + tangentX;
+    pose[7] = pose[10] + tangentY;
+    pose[8] = pose[11] + tangentZ;
 }
 
-// FUN_002503F0 NONMATCHING
+// FUN_002503F0
 void gcPose002503f0(void* state, s32 index, u32 value)
 {
+    u32 address;
     K_ASSERT(GC_U32(state, 0x20) == 2, 0x45c);
     K_ASSERT(index < 3, 0x45d);
-    GC_U32(state, 0x24 + index * 4) = value;
+    address = index * 4;
+    address += (u32)state;
+    *(u32*)(address + 0x24) = value;
 }
 
 /* Recovered battle-misc harvest: 0x002505B0-0x00250F80 */
-// FUN_002505B0 NONMATCHING
+// FUN_002505B0
 
 
-void FUN_002505b0(int param_1,u32 *param_2,int param_3,u32 *param_4)
-
-
-
+void FUN_002505b0(u8 *work, const RwV3d *target, s32 frames, const RwV3d *direction)
 {
-
-  float *pfVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  if (*(int *)(param_1 + 0xc) != 0) {
-
-    FUN_0019d3f0(0x68e9a0,0x4a9);
-
-  }
-
-  if (*(int *)(param_1 + 0x20) != 3) {
-
-    FUN_0019d3f0(0x68e9a0,0x4aa);
-
-  }
-
-  fVar8 = (float)(param_3 << 0x10) / 1.96608e+06;
-
-  *(u32 *)(param_1 + 0x24) = 1;
-
-  pfVar1 = (float *)(param_1 + 0x30);
-
-  uVar2 = param_4[1];
-
-  uVar3 = param_4[2];
-
-  *(u32 *)(param_1 + 0x3c) = *param_4;
-
-  *(u32 *)(param_1 + 0x40) = uVar2;
-
-  *(u32 *)(param_1 + 0x44) = uVar3;
-
-  uVar2 = param_2[1];
-
-  uVar3 = param_2[2];
-
-  *(u32 *)(param_1 + 0x54) = *param_2;
-
-  *(u32 *)(param_1 + 0x58) = uVar2;
-
-  *(u32 *)(param_1 + 0x5c) = uVar3;
-
-  *(u32 *)(param_1 + 0x48) = *(u32 *)(param_1 + 0x14);
-
-  *(u32 *)(param_1 + 0x4c) = *(u32 *)(param_1 + 0x18);
-
-  *(u32 *)(param_1 + 0x50) = *(u32 *)(param_1 + 0x1c);
-
-  fStack_10 = *(float *)(param_1 + 0x54) - *(float *)(param_1 + 0x48);
-
-  fStack_c = *(float *)(param_1 + 0x58) - *(float *)(param_1 + 0x4c);
-
-  fStack_8 = *(float *)(param_1 + 0x5c) - *(float *)(param_1 + 0x50);
-
-  FUN_004c69f0(&fStack_20,&fStack_10);
-
-  FUN_004c69f0(&fStack_30,param_1 + 0x3c);
-
-  fVar7 = fStack_18 * fStack_28 + fStack_20 * fStack_30 + fStack_1c * fStack_2c;
-
-  fVar4 = (float)FUN_004c6ac0(param_1 + 0x3c);
-
-  fVar5 = fStack_20 * fVar7 * fVar4;
-
-  fVar4 = (float)FUN_004c6ac0(param_1 + 0x3c);
-
-  fVar6 = fStack_1c * fVar7 * fVar4;
-
-  fVar4 = (float)FUN_004c6ac0(param_1 + 0x3c);
-
-  fStack_18 = fStack_18 * fVar7 * fVar4;
-
-  fVar4 = -1.0 / (fVar8 * fVar8);
-
-  *pfVar1 = (fVar5 * fVar8 - fStack_10) * 2.0 * fVar4;
-
-  *(float *)(param_1 + 0x34) = (fVar6 * fVar8 - fStack_c) * 2.0 * fVar4;
-
-  *(float *)(param_1 + 0x38) = (fStack_18 * fVar8 - fStack_8) * 2.0 * fVar4;
-
-  *pfVar1 = *pfVar1 + (*(float *)(param_1 + 0x3c) - fVar5) * fVar8 * 2.0 * fVar4;
-
-  *(float *)(param_1 + 0x34) =
-
-       *(float *)(param_1 + 0x34) + (*(float *)(param_1 + 0x40) - fVar6) * fVar8 * 2.0 * fVar4;
-
-  *(float *)(param_1 + 0x38) =
-
-       *(float *)(param_1 + 0x38) + (*(float *)(param_1 + 0x44) - fStack_18) * fVar8 * 2.0 * fVar4;
-
-  *(u32 *)(param_1 + 0x10) = 0;
-
-  *(int *)(param_1 + 0x2c) = param_3 << 0x10;
-
-  *(u32 *)(param_1 + 0x28) = *(u32 *)(param_1 + 0x28) | 1;
-
-  return;
-
+    u32 *state;
+    RwV3d *acceleration;
+    s32 fixedFrames;
+    f32 duration;
+    RwV3d delta;
+    RwV3d normalizedDelta;
+    RwV3d normalizedDirection;
+    f32 dot;
+    f32 directionLength;
+    f32 projectedX;
+    f32 projectedY;
+    RwV3d accelerationValue;
+    f32 correctionX;
+    f32 correctionY;
+    f32 correctionZ;
+    f32 factor;
+
+    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4a9);
+    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4aa);
+
+    fixedFrames = frames << 16;
+    duration = (f32)fixedFrames / 1966080.0f;
+    state = (u32 *)(work + 0x24);
+    state[0] = 1;
+    acceleration = (RwV3d *)((u8 *)state + 0xc);
+    *(acceleration + 1) = *direction;
+    *(RwV3d *)(work + 0x54) = *target;
+    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
+
+    delta.x = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
+    delta.y = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
+    delta.z = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    FUN_004c69f0(&normalizedDelta, &delta);
+    FUN_004c69f0(&normalizedDirection, acceleration + 1);
+
+    dot = normalizedDelta.x * normalizedDirection.x +
+          normalizedDelta.y * normalizedDirection.y +
+          normalizedDelta.z * normalizedDirection.z;
+    directionLength = FUN_004c6ac0(acceleration + 1);
+    projectedX = normalizedDelta.x * (dot * directionLength);
+    directionLength = FUN_004c6ac0(acceleration + 1);
+    projectedY = normalizedDelta.y * (dot * directionLength);
+    directionLength = FUN_004c6ac0(acceleration + 1);
+    {
+        f32 projectedZ;
+
+        projectedZ = normalizedDelta.z * (dot * directionLength);
+
+        accelerationValue.x = projectedX * duration;
+        accelerationValue.y = projectedY * duration;
+        accelerationValue.z = projectedZ * duration;
+        accelerationValue.x -= delta.x;
+        accelerationValue.y -= delta.y;
+        accelerationValue.z -= delta.z;
+        accelerationValue.x *= 2.0f;
+        accelerationValue.y *= 2.0f;
+        accelerationValue.z *= 2.0f;
+        factor = -1.0f / (duration * duration);
+        accelerationValue.x *= factor;
+        accelerationValue.y *= factor;
+        accelerationValue.z *= factor;
+
+        correctionX = (acceleration + 1)->x - projectedX;
+        correctionY = (acceleration + 1)->y - projectedY;
+        correctionZ = (acceleration + 1)->z - projectedZ;
+        correctionX *= duration;
+        correctionY *= duration;
+        correctionZ *= duration;
+        correctionX *= 2.0f;
+        correctionY *= 2.0f;
+        correctionZ *= 2.0f;
+        correctionX *= factor;
+        correctionY *= factor;
+        correctionZ *= factor;
+        *acceleration = accelerationValue;
+        acceleration->x += correctionX;
+        acceleration->y += correctionY;
+        acceleration->z += correctionZ;
+    }
+
+    *(u32 *)(work + 0x10) = 0;
+    state[2] = (u32)fixedFrames;
+    state[1] |= 1;
 }
 
-// FUN_002508C0 NONMATCHING
+// FUN_002508C0
 
 
-void FUN_002508c0(int param_1,u32 *param_2,int param_3)
-
-
-
+void FUN_002508c0(int param_1, u32 *param_2, int param_3)
 {
+    u8 *work;
+    f32 *target;
+    f32 duration;
+    f32 factor;
+    f32 delta;
+    f32 x;
+    f32 y;
+    f32 z;
 
-  u32 uVar1;
+    work = (u8 *)param_1;
+    target = (f32 *)param_2;
+    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4d6);
+    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4d7);
 
-  u32 uVar2;
+    duration = (f32)(param_3 << 16) / 1966080.0f;
+    *(u32 *)(work + 0x24) = 1;
+    *(RwV3d *)(work + 0x54) = *(RwV3d *)target;
+    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
 
-  float fVar3;
+    factor = 2.0f / (duration * duration);
+    delta = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
+    x = delta * factor;
+    delta = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
+    y = delta * factor;
+    delta = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    z = delta * factor;
 
-  float fVar4;
+    *(f32 *)(work + 0x30) = -1.0f * x;
+    *(f32 *)(work + 0x34) = -1.0f * y;
+    *(f32 *)(work + 0x38) = -1.0f * z;
+    *(f32 *)(work + 0x3c) = x * duration;
+    *(f32 *)(work + 0x40) = y * duration;
+    *(f32 *)(work + 0x44) = z * duration;
 
-  float fVar5;
-
-  float fVar6;
-
-  
-
-  if (*(int *)(param_1 + 0xc) != 0) {
-
-    FUN_0019d3f0(0x68e9a0,0x4d6);
-
-  }
-
-  if (*(int *)(param_1 + 0x20) != 3) {
-
-    FUN_0019d3f0(0x68e9a0,0x4d7);
-
-  }
-
-  fVar5 = (float)(param_3 << 0x10) / 1.96608e+06;
-
-  *(u32 *)(param_1 + 0x24) = 1;
-
-  uVar1 = param_2[1];
-
-  uVar2 = param_2[2];
-
-  *(u32 *)(param_1 + 0x54) = *param_2;
-
-  *(u32 *)(param_1 + 0x58) = uVar1;
-
-  *(u32 *)(param_1 + 0x5c) = uVar2;
-
-  *(u32 *)(param_1 + 0x48) = *(u32 *)(param_1 + 0x14);
-
-  *(u32 *)(param_1 + 0x4c) = *(u32 *)(param_1 + 0x18);
-
-  *(u32 *)(param_1 + 0x50) = *(u32 *)(param_1 + 0x1c);
-
-  fVar4 = 2.0 / (fVar5 * fVar5);
-
-  fVar6 = (*(float *)(param_1 + 0x54) - *(float *)(param_1 + 0x48)) * fVar4;
-
-  fVar3 = (*(float *)(param_1 + 0x58) - *(float *)(param_1 + 0x4c)) * fVar4;
-
-  fVar4 = (*(float *)(param_1 + 0x5c) - *(float *)(param_1 + 0x50)) * fVar4;
-
-  *(float *)(param_1 + 0x30) = fVar6 * -1.0;
-
-  *(float *)(param_1 + 0x34) = fVar3 * -1.0;
-
-  *(float *)(param_1 + 0x38) = fVar4 * -1.0;
-
-  *(float *)(param_1 + 0x3c) = fVar6 * fVar5;
-
-  *(float *)(param_1 + 0x40) = fVar3 * fVar5;
-
-  *(float *)(param_1 + 0x44) = fVar4 * fVar5;
-
-  *(u32 *)(param_1 + 0x10) = 0;
-
-  *(int *)(param_1 + 0x2c) = param_3 << 0x10;
-
-  *(u32 *)(param_1 + 0x28) = *(u32 *)(param_1 + 0x28) | 1;
-
-  return;
-
+    *(u32 *)(work + 0x10) = 0;
+    *(s32 *)(work + 0x2c) = param_3 << 16;
+    *(u32 *)(work + 0x28) |= 1;
 }
 
-// FUN_00250A30 NONMATCHING
+// FUN_00250A30
 
 
-void FUN_00250a30(int param_1,u32 *param_2,int param_3)
-
-
-
+void FUN_00250a30(int param_1, u32 *param_2, int param_3)
 {
+    u8 *work;
+    f32 *target;
+    f32 duration;
+    f32 factor;
+    f32 delta;
+    RwV3d acceleration;
 
-  u32 uVar1;
+    work = (u8 *)param_1;
+    target = (f32 *)param_2;
+    K_ASSERT(*(s32 *)(work + 0xc) == 0, 0x4f5);
+    K_ASSERT(*(s32 *)(work + 0x20) == 3, 0x4f6);
 
-  u32 uVar2;
+    duration = (f32)(param_3 << 16) / 1966080.0f;
+    *(u32 *)(work + 0x24) = 1;
+    *(RwV3d *)(work + 0x54) = *(RwV3d *)target;
+    *(RwV3d *)(work + 0x48) = *(RwV3d *)(work + 0x14);
 
-  float fVar3;
+    factor = 2.0f / (duration * duration);
+    delta = *(f32 *)(work + 0x54) - *(f32 *)(work + 0x48);
+    acceleration.x = delta * factor;
+    delta = *(f32 *)(work + 0x58) - *(f32 *)(work + 0x4c);
+    acceleration.y = delta * factor;
+    delta = *(f32 *)(work + 0x5c) - *(f32 *)(work + 0x50);
+    acceleration.z = delta * factor;
+    *(RwV3d *)(work + 0x30) = acceleration;
 
-  
-
-  if (*(int *)(param_1 + 0xc) != 0) {
-
-    FUN_0019d3f0(0x68e9a0,0x4f5);
-
-  }
-
-  if (*(int *)(param_1 + 0x20) != 3) {
-
-    FUN_0019d3f0(0x68e9a0,0x4f6);
-
-  }
-
-  fVar3 = (float)(param_3 << 0x10) / 1.96608e+06;
-
-  *(u32 *)(param_1 + 0x24) = 1;
-
-  uVar1 = param_2[1];
-
-  uVar2 = param_2[2];
-
-  *(u32 *)(param_1 + 0x54) = *param_2;
-
-  *(u32 *)(param_1 + 0x58) = uVar1;
-
-  *(u32 *)(param_1 + 0x5c) = uVar2;
-
-  *(u32 *)(param_1 + 0x48) = *(u32 *)(param_1 + 0x14);
-
-  *(u32 *)(param_1 + 0x4c) = *(u32 *)(param_1 + 0x18);
-
-  *(u32 *)(param_1 + 0x50) = *(u32 *)(param_1 + 0x1c);
-
-  fVar3 = 2.0 / (fVar3 * fVar3);
-
-  *(float *)(param_1 + 0x30) = (*(float *)(param_1 + 0x54) - *(float *)(param_1 + 0x48)) * fVar3;
-
-  *(float *)(param_1 + 0x34) = (*(float *)(param_1 + 0x58) - *(float *)(param_1 + 0x4c)) * fVar3;
-
-  *(float *)(param_1 + 0x38) = (*(float *)(param_1 + 0x5c) - *(float *)(param_1 + 0x50)) * fVar3;
-
-  *(u32 *)(param_1 + 0x3c) = 0;
-
-  *(u32 *)(param_1 + 0x40) = 0;
-
-  *(u32 *)(param_1 + 0x44) = 0;
-
-  *(u32 *)(param_1 + 0x10) = 0;
-
-  *(int *)(param_1 + 0x2c) = param_3 << 0x10;
-
-  *(u32 *)(param_1 + 0x28) = *(u32 *)(param_1 + 0x28) | 1;
-
-  return;
-
+    *(u32 *)(work + 0x3c) = 0;
+    *(u32 *)(work + 0x40) = 0;
+    *(u32 *)(work + 0x44) = 0;
+    *(u32 *)(work + 0x10) = 0;
+    *(s32 *)(work + 0x2c) = param_3 << 16;
+    *(u32 *)(work + 0x28) |= 1;
 }
 
 // FUN_00250BE0
@@ -743,104 +698,47 @@ void FUN_00250be0(int param_1, int param_2, u32 param_3)
     }
 }
 
-// FUN_00250CF0 NONMATCHING
+// FUN_00250CF0
 
 
-void FUN_00250cf0(u32 param_1,u32 param_2,int param_3,u64 param_4,int param_5)
-
-
-
+void FUN_00250cf0(u32 *work, void *target, f32 startAngle, f32 endAngle, s32 frames)
 {
+    u32 *state;
+    u8 *motion;
+    f32 duration;
+    f32 acceleration;
 
-  u32 *puVar1;
+    K_ASSERT(*(s32 *)((u8 *)work + 0xc) == 2, 0x55d);
+    K_ASSERT(*(s32 *)((u8 *)work + 0x24) == 3, 0x55e);
 
-  u32 uVar2;
+    state = (u32 *)((u8 *)work + 0x28);
+    motion = (u8 *)state + 0xc;
+    state[0] = 1;
+    *(RwV3d *)motion = *(RwV3d *)target;
+    *(f32 *)(motion + 0xc) = startAngle;
+    *(f32 *)(motion + 0x10) = endAngle;
+    FUN_004bdde0((*(f32 *)(motion + 0xc) / fGpffff81f8) * 360.0f,
+                 (u8 *)work + 0x14, target, 0);
 
-  float fVar3;
-
-  u32 uVar4;
-
-  float fVar5;
-
-  
-
-  if (*(int *)(param_3 + 0xc) != 2) {
-
-    FUN_0019d3f0(0x68e9a0,0x55d);
-
-  }
-
-  if (*(int *)(param_3 + 0x24) != 3) {
-
-    FUN_0019d3f0(0x68e9a0,0x55e);
-
-  }
-
-  *(u32 *)(param_3 + 0x28) = 1;
-
-  puVar1 = (u32 *)param_4;
-
-  uVar2 = puVar1[1];
-
-  uVar4 = puVar1[2];
-
-  *(u32 *)(param_3 + 0x34) = *puVar1;
-
-  *(u32 *)(param_3 + 0x38) = uVar2;
-
-  *(u32 *)(param_3 + 0x3c) = uVar4;
-
-  *(u32 *)(param_3 + 0x40) = param_1;
-
-  *(u32 *)(param_3 + 0x44) = param_2;
-
-  FUN_004bdde0((*(float *)(param_3 + 0x40) / fGpffff81f8) * 360.0,param_3 + 0x14,param_4,0);
-
-  fVar5 = (float)(param_5 << 0x10) / 1.96608e+06;
-
-  fVar3 = ((*(float *)(param_3 + 0x44) - *(float *)(param_3 + 0x40)) * 2.0) / (fVar5 * fVar5);
-
-  *(float *)(param_3 + 0x4c) = -fVar3;
-
-  *(float *)(param_3 + 0x48) = fVar3 * fVar5;
-
-  *(u32 *)(param_3 + 0x10) = 0;
-
-  *(int *)(param_3 + 0x30) = param_5 << 0x10;
-
-  *(u32 *)(param_3 + 0x2c) = *(u32 *)(param_3 + 0x2c) | 1;
-
-  return;
-
+    duration = (f32)(frames << 16) / 1966080.0f;
+    acceleration = ((*(f32 *)(motion + 0x10) -
+                     *(f32 *)(motion + 0xc)) * 2.0f) /
+                   (duration * duration);
+    *(f32 *)(motion + 0x18) = -acceleration;
+    *(f32 *)(motion + 0x14) = acceleration * duration;
+    work[4] = 0;
+    state[2] = (u32)(frames << 16);
+    state[1] |= 1;
 }
 
-// FUN_00250F80 NONMATCHING
+// FUN_00250F80
 
 
-void FUN_00250f80(float *param_1,u64 param_2)
-
-
-
+void FUN_00250f80(float* output, const RwV3d* input)
 {
+    RwV3d projected;
 
-  int iVar1;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  
-
-  iVar1 = FUN_00198590();
-
-  FUN_004c6be0(&fStack_10,param_2,iVar1 + 0x20);
-
-  *param_1 = (fStack_10 / fStack_8) * 640.0;
-
-  param_1[1] = (fStack_c / fStack_8) * 448.0;
-
-  return;
-
+    RwV3dTransformPoint(&projected, input, &kwlnGetMainCamera()->viewMatrix);
+    output[0] = (projected.x / projected.z) * SCREEN_WIDTH;
+    output[1] = (projected.y / projected.z) * SCREEN_HEIGHT;
 }

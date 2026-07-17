@@ -6598,12 +6598,16 @@ int FUN_0051d460(u32 param_1,u32 param_2,int *param_3,int param_4)
   }
   return iVar2;
 }
-// FUN_0051D588 NONMATCHING
+#pragma schedule on
+// FUN_0051D588
 void FUN_0051d588(int param_1,...)
 
 {
-  return;
+  volatile char scratch[0x30];
+
+  (void)scratch;
 }
+#pragma schedule off
 // FUN_0051D5B0 NONMATCHING
 u32 FUN_0051d5b0(long param_1,int param_2,int param_3)
 
@@ -6756,13 +6760,15 @@ u64 FUN_0051da50(u64 param_1)
   FUN_005129c0(1,0x8010,0xa81,0);
   return uVar1;
 }
-// FUN_0051DAE0 NONMATCHING
+#pragma schedule on
+// FUN_0051DAE0
 u64 FUN_0051dae0(void)
 
 {
   FUN_00512e48();
   return 0;
 }
+#pragma schedule off
 // FUN_0051DB00 NONMATCHING
 void FUN_0051db00(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
                  u32 param_5)

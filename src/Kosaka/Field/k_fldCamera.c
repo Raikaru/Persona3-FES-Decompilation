@@ -40,10 +40,11 @@ extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode)
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
 extern void* DAT_00960184[];
+extern void* D_007CE2B0;
 extern void* func_00100d80(const char* path, u32 mode);
 extern void func_001023a0(void* object);
 extern void func_00100ec0(void* object);
-extern void func_00521250();
+extern void func_00521250(void* destination, const void* source, u32 size);
 
 // FUN_001d5c00
 u32 K_FldCamera_GetType(KwlnTask* fldCameraTask)
@@ -590,19 +591,23 @@ void func_001d70a0(void)
     }
 }
 
-// FUN_001d7260 NONMATCHING
+// FUN_001d7260
 void func_001d7260(void)
 {
     char path[128];
     HCdvd* object;
+    volatile HCdvd* volatileObject;
     void* opmap;
+    u32 count;
 
     sprintf(path, DAT_00683b10);
     object = (HCdvd*)func_00100d80(path, 0);
+    volatileObject = object;
     func_001023a0(object);
-    opmap = ((void* (*)(u32, u32, u32))DAT_00960184[0])(
-        1, object->fileSize, 0x40000);
-    *(void**)(uintptr_t)0x007ce2b0 = opmap;
-    func_00521250(opmap, (u32)object->fileMemory, object->fileSize);
+    count = 1;
+    opmap = D_007CE2B0 =
+        ((void* (*)(u32, u32, u32))DAT_00960184[0])(
+            count, volatileObject->fileSize, 0x40000);
+    func_00521250(opmap, object->fileMemory, volatileObject->fileSize);
     func_00100ec0(object);
 }

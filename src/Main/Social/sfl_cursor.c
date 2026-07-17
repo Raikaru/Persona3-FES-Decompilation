@@ -24,7 +24,9 @@ typedef struct { f32 a; f32 b; f32 c; } SflVec3;
 
 static u32* sSflCursor; // puGpffffb670
 
-void FUN_00258540();
+void FUN_00258540(u32 param_1, void* param_2);
+extern u32 FUN_0020e510(s32 index);
+extern void FUN_0021eb80(void* work, const f32* values);
 
 // FUN_0025a110
 void sflCursor0025a110(u32* param_1)
@@ -33,33 +35,38 @@ void sflCursor0025a110(u32* param_1)
     sSflCursor = param_1;
 }
 
-// FUN_0025b300 NONMATCHING
+// FUN_0025b300
 void sflCursor0025b300(u32 param_1)
 {
     u32* work;
 
     K_ASSERT(sSflCursor != NULL, 0x47);
     work = sSflCursor;
+    FUN_00258540(work[0xc], work + 1);
+    FUN_00258540(param_1, work + 4);
     *(SflVec3*)(work + 7) = *(SflVec3*)(work + 1);
     work[0xb] = work[0xc];
     work[0xc] = param_1;
     work[10] = 0;
     work[0x328] = 0;
     *work |= 2;
+    FUN_0025aad0();
 }
 
-// FUN_0025b3b0 NONMATCHING
+// FUN_0025b3b0
 void sflCursor0025b3b0(u32 param_1)
 {
     u32* work;
 
     K_ASSERT(sSflCursor != NULL, 0x47);
     work = sSflCursor;
+    FUN_00258540(param_1, work + 7);
     work[0xb] = work[0xc];
     work[0xc] = param_1;
     work[10] = 0;
     work[0x328] = 1;
     *work |= 2;
+    FUN_0025aad0();
 }
 
 // FUN_0025aa70
@@ -401,168 +408,96 @@ void FUN_0025a440(void)
 
 }
 
-// FUN_0025A7D0 NONMATCHING
-
-
+// FUN_0025A7D0
 void FUN_0025a7d0(void)
-
-
-
 {
-
-  u32 uVar1;
-
-  u32 *puVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fStack_10;
-
-  float fStack_c;
-
-  float fStack_8;
-
-  float fStack_4;
-
-  
-
-  if (sSflCursor == (u32 *)0x0) {
-
-    FUN_0019d3f0(0x68ebb8,0x47);
-
-  }
-
-  puVar2 = sSflCursor;
-
-  *sSflCursor = 0;
-
-  iVar3 = FUN_0020e510(4);
-
-  fVar7 = 1.0 / (float)*(int *)(iVar3 + 0xc);
-
-  fStack_c = 0.0 / (float)*(int *)(iVar3 + 0x10);
-
-  fVar6 = 117.0 / (float)*(int *)(iVar3 + 0xc);
-
-  fVar5 = 32.0 / (float)*(int *)(iVar3 + 0x10);
-
-  fStack_10 = fVar7;
-
-  fStack_8 = fVar6;
-
-  fStack_4 = fVar5;
-
-  FUN_0021eb80(puVar2 + 0x32c,&fStack_10);
-
-  fStack_10 = fVar7;
-
-  fStack_c = fVar5;
-
-  fStack_8 = fVar6;
-
-  fStack_4 = fVar5;
-
-  FUN_0021eb80(puVar2 + 0x36c,&fStack_10);
-
-  iVar3 = FUN_0020e590(2);
-
-  fStack_10 = 0.0 / (float)*(int *)(iVar3 + 0xc);
-
-  fStack_c = 84.0 / (float)*(int *)(iVar3 + 0x10);
-
-  fStack_8 = 63.0 / (float)*(int *)(iVar3 + 0xc);
-
-  fStack_4 = 20.0 / (float)*(int *)(iVar3 + 0x10);
-
-  FUN_0021eb80(puVar2 + 0x3ac,&fStack_10);
-
-
-  for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
-
-    puVar2[iVar3 * 0x84 + 0x10] = 0;
-
-    puVar2[iVar3 * 0x84 + 0x11] = 0;
-
-    iVar4 = FUN_0020e510(2);
-
-    fStack_8 = (float)*(int *)(iVar4 + 0xc);
-
-    fStack_4 = (float)*(int *)(iVar4 + 0x10);
-
-    fStack_10 = 0.0 / fStack_8;
-
-    fStack_c = 0.0 / fStack_4;
-
-    fStack_8 = fStack_8 / fStack_8;
-
-    fStack_4 = fStack_4 / fStack_4;
-
-    FUN_0021eb80(puVar2 + iVar3 * 0x84 + 0x14,&fStack_10);
-
-    iVar4 = FUN_0020e510(1);
-
-    fStack_8 = (float)*(int *)(iVar4 + 0xc);
-
-    fStack_4 = (float)*(int *)(iVar4 + 0x10);
-
-    fStack_10 = 0.0 / fStack_8;
-
-    fStack_c = 0.0 / fStack_4;
-
-    fStack_8 = fStack_8 / fStack_8;
-
-    fStack_4 = fStack_4 / fStack_4;
-
-    FUN_0021eb80(puVar2 + iVar3 * 0x84 + 0x54,&fStack_10);
-
-  }
-
-
-  puVar2[0xc] = 0;
-
-  puVar2[10] = 0;
-
-  puVar2[0x328] = 2;
-
-  uVar1 = *puVar2;
-
-  *puVar2 = uVar1 | 2;
-
-  *puVar2 = uVar1 | 3;
-
-  return;
-
+    u32* puVar2;
+    s32 iVar3;
+    s32 iVar4;
+    f32 fVar7;
+    f32 fVar5;
+    f32 fVar6;
+    f32 width;
+    f32 height;
+    f32 rect[4];
+
+    K_ASSERT(sSflCursor != NULL, 0x47);
+    puVar2 = sSflCursor;
+    *sSflCursor = 0;
+
+    iVar3 = FUN_0020e510(4);
+    width = (f32)*(s32*)(iVar3 + 0xc);
+    height = (f32)*(s32*)(iVar3 + 0x10);
+    fVar7 = 1.0f / width;
+    rect[0] = fVar7;
+    rect[1] = 0.0f / height;
+    fVar6 = 117.0f / width;
+    rect[2] = fVar6;
+    fVar5 = 32.0f / height;
+    rect[3] = fVar5;
+    FUN_0021eb80(puVar2 + 0x32c, rect);
+
+    rect[0] = fVar7;
+    rect[1] = fVar5;
+    rect[2] = fVar6;
+    rect[3] = fVar5;
+    FUN_0021eb80(puVar2 + 0x36c, rect);
+
+    iVar3 = FUN_0020e590(2);
+    width = (f32)*(s32*)(iVar3 + 0xc);
+    height = (f32)*(s32*)(iVar3 + 0x10);
+    rect[0] = 0.0f / width;
+    rect[1] = 84.0f / height;
+    rect[2] = 63.0f / width;
+    rect[3] = 20.0f / height;
+    FUN_0021eb80(puVar2 + 0x3ac, rect);
+
+    FUN_00258540(0, puVar2 + 7);
+    for (iVar3 = 0; iVar3 < 6; iVar3 = iVar3 + 1) {
+        u8* entry;
+
+        entry = (u8*)puVar2 + iVar3 * 0x210 + 0x40;
+        *(u32*)entry = 0;
+        *(u32*)(entry + 4) = 0;
+
+        iVar4 = FUN_0020e510(2);
+        width = (f32)*(s32*)(iVar4 + 0xc);
+        height = (f32)*(s32*)(iVar4 + 0x10);
+        rect[0] = 0.0f / width;
+        rect[1] = 0.0f / height;
+        rect[2] = width / width;
+        rect[3] = height / height;
+        FUN_0021eb80(entry + 0x10, rect);
+
+        iVar4 = FUN_0020e510(1);
+        width = (f32)*(s32*)(iVar4 + 0xc);
+        height = (f32)*(s32*)(iVar4 + 0x10);
+        rect[0] = 0.0f / width;
+        rect[1] = 0.0f / height;
+        rect[2] = width / width;
+        rect[3] = height / height;
+        FUN_0021eb80(entry + 0x110, rect);
+    }
+    FUN_0025aad0();
+
+    puVar2[0xc] = 0;
+    puVar2[10] = 0;
+    puVar2[0x328] = 2;
+    *puVar2 |= 2;
+    *puVar2 |= 1;
 }
 
-// FUN_0025B440 NONMATCHING
+// FUN_0025B440
 
 
 void FUN_0025b440(void)
-
-
-
 {
+  u32 uVar1;
 
-  int iVar1;
-
-  
-
-  iVar1 = FUN_00488f30();
-
+  uVar1 = 0x18;
+  uVar1 += (u32)FUN_00488f30() % 5;
   FUN_0016f3e0(0x39,0);
-
-  FUN_0016f3e0(0x38,iVar1 % 5 + 0x18);
-
-  return;
-
+  FUN_0016f3e0(0x38,uVar1);
 }
 
 /* Recovered battle-misc harvest: 0x0025AAD0-0x0025AAD0 */

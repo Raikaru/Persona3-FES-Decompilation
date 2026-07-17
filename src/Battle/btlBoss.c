@@ -1,6 +1,8 @@
 #include "Battle/btlBoss.h"
 #include "Battle/btlAction.h"
 #include "Battle/btlUnit.h"
+#include "Battle/btlVoice.h"
+#include "Battle/btlCamera.h"
 #include "Kosaka/k_assert.h"
 #include "Battle/battle.h"
 #include "h_cdvd.h"
@@ -10,14 +12,13 @@
 typedef int (*code)(...);
 u32 FUN_002fcaa0(int param_1,u32 *param_2);
 u32 FUN_002fcf50(int param_1);
-u32 FUN_002fd060(int param_1);
-u32 FUN_002fd160(int param_1);
-u8 FUN_002fd220(int param_1,int param_2);
+u32 FUN_002fd060(BtlAction* action);
+u32 FUN_002fd160(BtlAction* action);
 u32 FUN_002fd2e0(int param_1,u16 param_2);
 u32 FUN_002fd4a0(void);
 u8 FUN_002fd500(void);
 void FUN_002fd520(int param_1);
-u64 FUN_002fd660(void);
+u32 FUN_002fd660(void);
 u32 FUN_002fd7c0(void);
 void FUN_002fd820(void);
 void FUN_002fd8a0(int param_1);
@@ -26,22 +27,24 @@ u32 FUN_002fdb90(void);
 u8 FUN_002fdbb0(int param_1,u64 param_2);
 u8 FUN_002fdcb0(int param_1);
 u32 FUN_002fdcf0(int param_1,int param_2);
-u8 FUN_002fdd40(long param_1,long param_2);
-void FUN_002fddb0(int param_1,float *param_2);
-u64 FUN_002fde40(void);
-u32 FUN_002fded0(short param_1);
+code FUN_002fded0(s16 param_1);
 u8 FUN_002fdfa0(void);
 u32 FUN_002fdfe0(int param_1);
 void FUN_002fe0b0(float param_1,u8 *param_2,u64 param_3,u64 param_4,  u64 param_5);
 void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5);
 u32 FUN_002fed10(int param_1);
+u8 FUN_00301750(int datUnit, u32 flag);
+u32 FUN_002d6370(s16 commandId);
+u32 FUN_003088b0(u16 commandId);
 extern f32 DAT_007caee4;
 extern f32 DAT_007caf58;
 extern f32 DAT_007caf5c;
 extern f32 DAT_007caf60;
 extern f32 DAT_007caf64;
 extern u8* DAT_007ce3ec;
+extern u8* DAT_007ce3f4;
 extern u8* DAT_007ce42c;
+extern u8* DAT_007ce4b4;
 extern u32 DAT_007ce508;
 extern u32 DAT_007ce50a;
 extern u32 DAT_007ce50c;
@@ -60,9 +63,10 @@ extern void* func_002f87e0(u16 index);
 extern void func_00100ec0(void* resource);
 extern void* H_Cdvd_ArchiveGetFile(HCdvd* cdvd, s32 fileIdx, u32* fileSize);
 extern void func_002b9030(void* resource);
-extern s32 func_002ecac0(void);
+extern u32 func_002ecac0(void);
 extern s32 func_002d6370(s32 id);
 extern void func_0029a2c0(void);
+extern s32 FUN_00195460(s32 task);
 
 // FUN_002f7dc0
 void btlBossInitEncounterResources()
@@ -438,7 +442,11 @@ BtlPacket* btlBossCreateLoadPakPacket()
     return packet;
 }
 
-static u16 btlBossGetEncounterId()
+static inline u16 btlBossGetEncounterId()
+{
+    return *(u16*)(*(u8**)((u8*)gBtl + 0xbbc) + 8);
+}
+static u16 btlBossGetEncounterIdCall()
 {
     return *(u16*)(*(u8**)((u8*)gBtl + 0xbbc) + 8);
 }
@@ -448,49 +456,96 @@ static BtlUnit* btlBossGetEnemyHead()
     return *(BtlUnit**)((u8*)gBtl + 0x158);
 }
 
-static void btlBossReleaseResource(u32 offset)
-{
-    void* resource;
 
-    resource = *(void**)((u8*)gBtl + offset);
-    func_002b9030(resource);
-    *(void**)((u8*)gBtl + offset) = NULL;
-}
-
-// FUN_002f8460 NONMATCHING
+// FUN_002f8460
 void func_002f8460()
 {
-    switch (btlBossGetEncounterId())
+    u16 encounterId;
+
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
     {
         case 0x1a7:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            break;
         case 0x1a9:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            break;
         case 0x1aa:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            break;
         case 0x1ab:
-            btlBossReleaseResource(0xb44);
-            btlBossReleaseResource(0xb48);
-            btlBossReleaseResource(0xb4c);
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
             break;
         case 0x1ac:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            break;
         case 0x1ad:
-            btlBossReleaseResource(0xb44);
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
             break;
         case 0x1ae:
-        case 0x1b0:
-            btlBossReleaseResource(0xb44);
-            btlBossReleaseResource(0xb48);
-            btlBossReleaseResource(0xb4c);
-            btlBossReleaseResource(0xb50);
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb50));
+            *(void**)(DAT_007ce3ec + 0xb50) = NULL;
             break;
         case 0x1af:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            break;
+        case 0x1b0:
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb50));
+            *(void**)(DAT_007ce3ec + 0xb50) = NULL;
+            break;
         case 0x1b1:
         case 0x1b2:
         case 0x1b3:
-            btlBossReleaseResource(0xb44);
-            btlBossReleaseResource(0xb48);
-            btlBossReleaseResource(0xb4c);
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb48));
+            *(void**)(DAT_007ce3ec + 0xb48) = NULL;
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb4c));
+            *(void**)(DAT_007ce3ec + 0xb4c) = NULL;
             break;
         case 0x1b4:
-            btlBossReleaseResource(0xb44);
+            func_002b9030(*(void**)(DAT_007ce3ec + 0xb44));
+            *(void**)(DAT_007ce3ec + 0xb44) = NULL;
             break;
         default:
             break;
@@ -531,43 +586,47 @@ u32 func_002f88c0()
     u16 encounterId;
 
     encounterId = btlBossGetEncounterId();
-    if (encounterId == 0x1a8)
+    switch (encounterId)
     {
-        return *(u32*)((u8*)gBtl + 0xb54) == 1;
-    }
-    if (encounterId == 0x1a6)
-    {
-        return func_002ecac0() != 1;
-    }
-    if (encounterId == 0x1a4)
-    {
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
-        {
-            if (unit->charId == 0x106 || unit->charId == 0x105)
+        case 0x1a0:
+            unit = *(BtlUnit**)((u8*)gBtl + 0x158);
+            while (unit != NULL)
             {
-                if ((unit->flags3 & 8) != 0)
+                if (unit->charId == 0x114 || unit->charId == 0x113)
                 {
                     return 1;
                 }
+                unit = unit->next;
             }
-            else if (unit->charId == 0x115 && (unit->flags3 & 8) != 0)
+            return 0;
+        case 0x1a4:
+            unit = *(BtlUnit**)((u8*)gBtl + 0x158);
+            while (unit != NULL)
             {
-                return 0;
+                if (unit->charId == 0x106 || unit->charId == 0x105)
+                {
+                    if ((unit->flags3 & 8) != 0)
+                    {
+                        return 1;
+                    }
+                }
+                else if (unit->charId == 0x115)
+                {
+                    if ((unit->flags3 & 8) != 0)
+                    {
+                        return 0;
+                    }
+                }
+                unit = unit->next;
             }
-        }
-        return 0;
+            return 0;
+        case 0x1a6:
+            return func_002ecac0() != 1;
+        case 0x1a8:
+            return *(u32*)((u8*)gBtl + 0xb54) == 1;
+        default:
+            return 0;
     }
-    if (encounterId == 0x1a0)
-    {
-        for (unit = btlBossGetEnemyHead(); unit != NULL; unit = unit->next)
-        {
-            if (unit->charId == 0x114 || unit->charId == 0x113)
-            {
-                return 1;
-            }
-        }
-    }
-    return 0;
 }
 
 // FUN_002f8a40 NONMATCHING
@@ -619,27 +678,49 @@ u32 func_002f8ea0(BtlUnit* unit, RwV3d* target)
 s16 func_002f8eb0(BtlUnit* unit, s16 index)
 {
     s8 value;
+    u16 result;
 
-    if (btlBossGetEncounterId() != 0x1ae ||
-        unit->genus != 1 || unit->charId != 0x126)
+    switch (btlBossGetEncounterId())
     {
-        return -1;
+        case 0x1ae:
+            switch (unit->genus)
+            {
+                case 1:
+                    switch (unit->charId)
+                    {
+                        case 0x126:
+                            K_ASSERT(index < 0x1d0, 417);
+                            value = DAT_007ce3f4[index * 2];
+                            result = -1;
+                            if (value == 2)
+                            {
+                                result = 6;
+                            }
+                            else if (value == 1)
+                            {
+                                result = 5;
+                            }
+                            else if (value == 0)
+                            {
+                                result = 4;
+                            }
+                            goto return_result;
+                        default:
+                            result = (u16)-1;
+                            goto return_result;
+                    }
+                default:
+                    result = (u16)-1;
+                    goto return_result;
+            }
+        default:
+            goto return_minus_one;
     }
 
-    K_ASSERT((u16)index < 0x1d0, 417);
-    value = *(s8*)((u8*)0x007CE3F4 + (u16)index * 2);
-    if (value == 2)
-    {
-        return 6;
-    }
-    if (value == 1)
-    {
-        return 5;
-    }
-    if (value == 0)
-    {
-        return 4;
-    }
+return_result:
+    return result;
+
+return_minus_one:
     return -1;
 }
 
@@ -702,7 +783,7 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     {
         for (i = 0; i < 4; i++)
         {
-            value = *(u16*)((u8*)0x007CE4B4 + (charId - 0x95) * 8 + i * 2);
+            value = *(u16*)(DAT_007ce4b4 + (charId - 0x95) * 8 + i * 2);
             if (id == value)
             {
                 return i == 3 ? 0x18 : i == 2 ? 0x17 : i == 1 ? 7 : 4;
@@ -713,56 +794,143 @@ s16 func_002f8fd0(BtlUnit* unit, s16 id)
     return -1;
 }
 
-// FUN_002f9560 NONMATCHING
+// FUN_002f9560
 s16 func_002f9560(BtlUnit* unit, u16* flags)
 {
+    s16 result;
     u16 encounterId;
+    void* resource;
 
     encounterId = btlBossGetEncounterId();
-    if (encounterId == 0x1a8 && unit->genus == 1 && unit->charId == 0x10d)
+    switch (encounterId)
     {
-        return flags[1] == 0x19 ? 0 : -1;
+        case 0x1a5:
+            goto encounter_1a5;
+        case 0x1a8:
+            goto encounter_1a8;
+        default:
+            goto return_default;
     }
-    if (encounterId == 0x1a5 && unit->genus == 1 && unit->charId == 0x107)
+
+encounter_1a5:
+    if (unit->genus == 1)
     {
-        if (flags[1] == 0x17)
-        {
-            return 0;
-        }
-        return *(void**)((u8*)gBtl + 0xb44) == NULL ? -1 : 0xc;
+        goto encounter_1a5_char;
     }
+    result = -1;
+    goto return_1a5;
+
+encounter_1a5_char:
+    if (unit->charId == 0x107)
+    {
+        goto encounter_1a5_flags;
+    }
+    result = -1;
+    goto return_1a5;
+
+encounter_1a5_flags:
+    if (flags[1] != 0x17)
+    {
+        goto encounter_1a5_resource;
+    }
+    result = 0;
+    goto return_1a5;
+
+encounter_1a5_resource:
+    resource = encounterId == 0x1a5
+        ? *(void**)((u8*)gBtl + 0xb44)
+        : NULL;
+    if (resource != NULL)
+    {
+        result = 0xc;
+    }
+    else
+    {
+        result = -1;
+    }
+    goto return_1a5;
+
+return_1a5:
+    goto return_1a5_common;
+
+return_1a5_common:
+    return result;
+
+encounter_1a8:
+    if (unit->genus == 1)
+    {
+        goto encounter_1a8_char;
+    }
+    result = -1;
+    goto return_1a8;
+
+encounter_1a8_char:
+    if (unit->charId == 0x10d)
+    {
+        goto encounter_1a8_flags;
+    }
+    result = -1;
+    goto return_1a8;
+
+encounter_1a8_flags:
+    if (flags[1] == 0x19)
+    {
+        result = 0;
+    }
+    else
+    {
+        result = -1;
+    }
+    goto return_1a8;
+
+return_1a8:
+    goto return_1a8_common;
+
+return_1a8_common:
+    return result;
+
+return_default:
     return -1;
 }
 
-// FUN_002f9690 NONMATCHING
+// FUN_002f9690
 s16 func_002f9690(BtlUnit* unit)
 {
     u16 encounterId;
 
     encounterId = btlBossGetEncounterId();
-    return (encounterId >= 0x1af && encounterId <= 0x1b3 &&
-            unit->genus == 1) ? 0 : -1;
+    switch (encounterId)
+    {
+        case 0x1af:
+        case 0x1b0:
+        case 0x1b1:
+        case 0x1b2:
+        case 0x1b3:
+            break;
+        default:
+            goto return_minus_one;
+    }
+    if (unit->genus != 1)
+    {
+        goto return_minus_one;
+    }
+    return 0;
+
+return_minus_one:
+    return -1;
 }
 
-extern void func_002ea780(void);
-extern void func_002eeb70(void);
 extern void func_00288f80(BtlUnit* unit, s32 value);
-extern void func_002f3670(void);
 extern void func_002f4490(void);
-extern void func_002f4890(void);
-extern void func_002f4c00(void);
 extern void func_002f5330(void);
 extern void func_002f5980(void);
 extern void func_002e4220(u32 begin, u32 end, void* action);
 extern s32 func_002e4250(void);
-extern void func_002f5bf0(void);
-extern void func_002ec190(void);
 extern void func_002d3fe0(BtlUnit* unit);
 extern void func_002831c0(BtlUnit* unit, s32 value);
 extern void func_00282d40(f32 value, BtlUnit* unit, s16 value2, s32 value3, s8 value4);
 extern void func_00287510(BtlUnit* unit);
 extern void func_0027f650(BtlUnit* unit, u32 value);
-extern void func_002ef5a0(void);
 extern void func_002eaa40(void);
 
 // FUN_002f9c10 NONMATCHING
@@ -805,7 +973,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 1;
         case 0x1a4:
-            func_002ea780();
+            func_002ea780(action);
             return 1;
         case 0x1a5:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1 && charId == 0x107)
@@ -822,7 +990,7 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 1;
         case 0x1a7:
-            func_002eeb70();
+            func_002eeb70(action);
             return 1;
         case 0x1a8:
             if ((action->unk_1a & 1) != 0 && unit->genus == 1)
@@ -873,16 +1041,16 @@ u32 func_002f9c10(BtlAction* action)
             }
             return 1;
         case 0x1ad:
-            func_002f3670();
+            func_002f3670(action);
             return 1;
         case 0x1ae:
             func_002f4490();
             return 1;
         case 0x1af:
-            func_002f4890();
+            func_002f4890(action);
             return 0;
         case 0x1b0:
-            func_002f4c00();
+            func_002f4c00(action);
             return 0;
         case 0x1b1:
         case 0x1b2:
@@ -897,33 +1065,33 @@ u32 func_002f9c10(BtlAction* action)
     }
 }
 
-// FUN_002fa240 NONMATCHING
-u32 func_002fa240()
+// FUN_002fa240
+u32 func_002fa240(void)
 {
     switch (btlBossGetEncounterId())
     {
-        case 0x1b4: func_002f5a70(); return 1;
+        case 0x1c8: func_002e9170(); return 1;
+        case 0x1a0: func_002e92c0(); return 1;
+        case 0x1a1: func_002e9950(); return 1;
+        case 0x1a2: func_002ea060(); return 1;
+        case 0x1a3: func_002ea400(); return 1;
+        case 0x1a4: func_002ea860(); return 1;
+        case 0x1a5: func_002ec000(); return 1;
+        case 0x1a6: func_002ec5c0(); return 1;
+        case 0x1a7: func_002eec60(); return 1;
+        case 0x1a8: func_002ef360(); return 1;
+        case 0x1a9: func_002f1680(); return 1;
+        case 0x1aa: func_002f19d0(); return 1;
+        case 0x1ab: func_002f1f00(); return 1;
+        case 0x1ac: func_002f2250(); return 1;
+        case 0x1ad: func_002f3760(); return 1;
+        case 0x1ae: func_002f4540(); return 1;
+        case 0x1af: func_002f4950(); return 1;
+        case 0x1b0: func_002f4ce0(); return 1;
         case 0x1b1:
         case 0x1b2:
         case 0x1b3: func_002f5490(); return 1;
-        case 0x1b0: func_002f4ce0(); return 1;
-        case 0x1af: func_002f4950(); return 1;
-        case 0x1ae: func_002f4540(); return 1;
-        case 0x1ad: func_002f3760(); return 1;
-        case 0x1ac: func_002f2250(); return 1;
-        case 0x1ab: func_002f1f00(); return 1;
-        case 0x1aa: func_002f19d0(); return 1;
-        case 0x1a9: func_002f1680(); return 1;
-        case 0x1a8: func_002ef360(); return 1;
-        case 0x1a7: func_002eec60(); return 1;
-        case 0x1a6: func_002ec5c0(); return 1;
-        case 0x1a5: func_002ec000(); return 1;
-        case 0x1a4: func_002ea860(); return 1;
-        case 0x1a3: func_002ea400(); return 1;
-        case 0x1a2: func_002ea060(); return 1;
-        case 0x1a1: func_002e9950(); return 1;
-        case 0x1a0: func_002e92c0(); return 1;
-        case 0x1c8: func_002e9170(); return 1;
+        case 0x1b4: func_002f5a70(); return 1;
         default: return 0;
     }
 }
@@ -1026,19 +1194,21 @@ void func_002fa510(BtlAction* action, s32 mode)
     }
 }
 
-// FUN_002faa50 NONMATCHING
-void func_002faa50()
+
+// FUN_002faa50
+void func_002faa50(BtlAction* source, BtlAction* target, BtlTargetResult* result)
 {
-    if (btlBossGetEncounterId() == 0x1b4)
+    switch (btlBossGetEncounterId())
     {
-        func_002f5bf0();
-    }
-    else if (btlBossGetEncounterId() == 0x1a5)
-    {
-        func_002ec190();
+        case 0x1a5:
+            func_002ec190(source, target, result);
+            break;
+
+        case 0x1b4:
+            func_002f5bf0(source, target, result);
+            break;
     }
 }
-
 // FUN_002faab0 NONMATCHING
 void func_002faab0()
 {
@@ -1106,10 +1276,19 @@ extern void func_002ef670(void);
 extern void func_002ec790(void);
 extern void func_002e9ac0(void);
 extern void func_002e9450(void);
-extern s16 func_002f6c50(u16 charId);
 extern s32 func_00300580(u32 persona, s32 value);
 extern s32 func_00301750(u32 persona, s32 value);
 extern s32 func_0030b5e0(u32 persona);
+
+typedef struct BtlBossAnimRecord
+{
+    u16 unk_0;
+    BtlUnitAnimBounds bounds;
+} BtlBossAnimRecord;
+
+extern BtlUnitAnimBounds DAT_0069A0E8;
+extern BtlUnitAnimBounds DAT_0069A5A8;
+extern BtlBossAnimRecord* D_007CE4C0;
 
 static u32 btlBossCreateModePacket(u16 archiveIndex)
 {
@@ -1141,7 +1320,7 @@ void func_002fac80()
 // FUN_002facc0 NONMATCHING
 u32 func_002facc0()
 {
-    switch (btlBossGetEncounterId())
+    switch (btlBossGetEncounterIdCall())
     {
         case 0x1b4: return btlBossCreateModePacket(1);
         case 0x1b1:
@@ -1169,26 +1348,72 @@ u32 func_002facc0()
     }
 }
 
-// FUN_002fb690 NONMATCHING
+// FUN_002fb690
 u32 func_002fb690()
 {
-    switch (btlBossGetEncounterId())
+    u16 encounterId = btlBossGetEncounterId();
+
+    if (encounterId == 0x1b4) goto encounter_1b4;
+    if (encounterId == 0x1b0) goto encounter_1b0;
+    if (encounterId == 0x1af) goto encounter_1af;
+    if (encounterId == 0x1ae) goto encounter_1ae;
+    if (encounterId == 0x1ad) goto encounter_1ad;
+    if (encounterId == 0x1ab) goto encounter_1ab;
+    if (encounterId == 0x1aa) goto encounter_1aa;
+    if (encounterId == 0x1a9) goto encounter_1a9;
+    if (encounterId == 0x1a8) goto encounter_1a8;
+    if (encounterId == 0x1a5) goto encounter_1a5;
+    if (encounterId == 0x1a3) goto encounter_1a3;
+    if (encounterId == 0x1a2) goto encounter_1a2;
+    switch (encounterId)
     {
-        case 0x1b4: func_002f6120(); return 1;
-        case 0x1b0: func_002f4e70(); return 1;
-        case 0x1af: func_002f4a40(); return 1;
-        case 0x1ae: func_002f46d0(); return 1;
-        case 0x1ad: func_002f3840(); return 1;
-        case 0x1ab: func_002f2090(); return 1;
-        case 0x1aa: func_002f1d40(); return 1;
-        case 0x1a9: func_002f1810(); return 1;
-        case 0x1a8: func_002ef7e0(); return 1;
-        case 0x1a5: func_002ec2c0(); return 1;
-        case 0x1a3: func_002ea590(); return 1;
-        case 0x1a2: func_002ea210(); return 1;
-        case 0x1a0: func_002e95f0(); return 1;
-        default: return 0;
+        case 0x1a0:
+            goto encounter_1a0;
+        default:
+            goto encounter_default;
     }
+
+encounter_1a0:
+    func_002e95f0();
+    return 1;
+encounter_1a2:
+    func_002ea210();
+    return 1;
+encounter_1a3:
+    func_002ea590();
+    return 1;
+encounter_1a5:
+    func_002ec2c0();
+    return 1;
+encounter_1a8:
+    func_002ef7e0();
+    return 1;
+encounter_1a9:
+    func_002f1810();
+    return 1;
+encounter_1aa:
+    func_002f1d40();
+    return 1;
+encounter_1ab:
+    func_002f2090();
+    return 1;
+encounter_1ad:
+    func_002f3840();
+    return 1;
+encounter_1ae:
+    func_002f46d0();
+    return 1;
+encounter_1af:
+    func_002f4a40();
+    return 1;
+encounter_1b0:
+    func_002f4e70();
+    return 1;
+encounter_1b4:
+    func_002f6120();
+    return 1;
+encounter_default:
+    return 0;
 }
 
 // FUN_002fb860 NONMATCHING
@@ -1330,24 +1555,61 @@ u16 func_002fb860(BtlUnit* unit, u16 index)
     return value;
 }
 
-// FUN_002fc410 NONMATCHING
-void* func_002fc410(BtlUnit* unit)
+static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1A8(BtlUnit* unit)
 {
-    if (btlBossGetEncounterId() == 0x1b4 && unit->genus == 1 && unit->charId == 0xf1 &&
-        *(u32*)((u8*)gBtl + 0xb48) == 1)
+    if (unit->genus != 1)
     {
-        return (void*)0x0069a5a8;
+        return NULL;
     }
-    if (btlBossGetEncounterId() == 0x1a8 && unit->genus == 1 && unit->charId == 0x10d &&
-        *(u32*)((u8*)gBtl + 0xb54) == 1)
+    if (unit->charId != 0x10d)
     {
-        return (void*)0x0069a0e8;
+        return NULL;
+    }
+    if (*(u32*)((u8*)gBtl + 0xb54) == 1)
+    {
+        return &DAT_0069A0E8;
     }
     return NULL;
 }
 
-// FUN_002fc520 NONMATCHING
-void* func_002fc520(BtlUnit* unit)
+static inline BtlUnitAnimBounds* btlBossGetSpecialAnim1B4(BtlUnit* unit)
+{
+    u32 resource;
+
+    if (unit->genus != 1)
+    {
+        return NULL;
+    }
+    if (unit->charId != 0xf1)
+    {
+        return NULL;
+    }
+    resource = btlBossGetEncounterId() == 0x1b4
+        ? *(u32*)((u8*)gBtl + 0xb48)
+        : 0;
+    if (resource == 1)
+    {
+        return &DAT_0069A5A8;
+    }
+    return NULL;
+}
+
+// FUN_002fc410
+BtlUnitAnimBounds* func_002fc410(BtlUnit* unit)
+{
+    switch (btlBossGetEncounterId())
+    {
+    case 0x1a8:
+        return btlBossGetSpecialAnim1A8(unit);
+    case 0x1b4:
+        return btlBossGetSpecialAnim1B4(unit);
+    default:
+        return NULL;
+    }
+}
+
+// FUN_002fc520
+BtlUnitAnimBounds* func_002fc520(BtlUnit* unit)
 {
     s16 animation;
 
@@ -1356,11 +1618,18 @@ void* func_002fc520(BtlUnit* unit)
         return NULL;
     }
     animation = func_002f6c50(unit->charId);
-    if (animation == -1 || animation == 0x15 || animation == 0x14)
+    if (animation == -1)
     {
         return NULL;
     }
-    return (u8*)(*(u32*)0x007CE4C0) + animation * 0xc + 2;
+    switch (animation)
+    {
+    case 0x14:
+    case 0x15:
+        return NULL;
+    default:
+        return &D_007CE4C0[animation].bounds;
+    }
 }
 
 // FUN_002fc5d0 NONMATCHING
@@ -1783,446 +2052,271 @@ u32 FUN_002fcaa0(int param_1,u32 *param_2)
 
 }
 
-// FUN_002FCF50 NONMATCHING
+// FUN_002FCF50
 
 
 u32 FUN_002fcf50(int param_1)
-
-
-
 {
+    u16 encounterId;
+    u32 result;
+    u32 caseResult;
 
-  short sVar1;
-
-  u32 uVar2;
-
-  
-
-  sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-  if (sVar1 == 0x1b0) {
-
-    if ((*(u16 *)(param_1 + 0x1a) & 1) == 0) {
-
-      uVar2 = 0;
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1ae:
+        if ((*(u16*)((u8*)param_1 + 0x1a) & 1) == 0)
+            caseResult = 0;
+        else
+        {
+            if (*(u8*)(*(u8**)((u8*)param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(u8**)((u8*)param_1 + 0x30) + 0xa4))
+                {
+                case 0x126:
+                    caseResult = *(u32*)(DAT_007ce3ec + 0xb50);
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
+        }
+        result = caseResult;
+        break;
+    case 0x1b0:
+        if ((*(u16*)((u8*)param_1 + 0x1a) & 1) == 0)
+            caseResult = 0;
+        else
+        {
+            if (*(u8*)(*(u8**)((u8*)param_1 + 0x30) + 0xa2) != 1)
+                caseResult = 0;
+            else
+            {
+                switch (*(u16*)(*(u8**)((u8*)param_1 + 0x30) + 0xa4))
+                {
+                case 0xea:
+                    caseResult = *(u32*)(DAT_007ce3ec + 0xb50);
+                    break;
+                default:
+                    caseResult = 0;
+                    break;
+                }
+            }
+        }
+        result = caseResult;
+        break;
+    default:
+        result = 0;
+        break;
     }
+    return result;
+}
+// FUN_002FD060
 
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
 
-      if (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0xea) {
+u32 FUN_002fd060(BtlAction* action)
+{
+    u16 encounterId;
+    u32 result;
+    u32 caseResult;
 
-        uVar2 = *(u32 *)(DAT_007ce3ec + 0xb50);
-
-      }
-
-      else {
-
-        uVar2 = 0;
-
-      }
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1ad:
+        if ((action->unk_1a & 1) == 0)
+            caseResult = 0;
+        else
+        {
+            if (action->unit->genus != UNIT_GENUS_EC)
+                caseResult = 0;
+            else
+            {
+                if (action->unit->charId == 0x112)
+                    caseResult = *(u32*)(DAT_007ce3ec + 0xb44);
+                else
+                    caseResult = 0;
+            }
+        }
+        result = caseResult;
+        break;
+    case 0x1b4:
+        if ((action->unk_1a & 1) == 0)
+            caseResult = 0;
+        else
+        {
+            if (action->unit->genus != UNIT_GENUS_EC)
+                caseResult = 0;
+            else
+            {
+                if (action->unit->charId == 0xf1)
+                    caseResult = *(u32*)(DAT_007ce3ec + 0xb44);
+                else
+                    caseResult = 0;
+            }
+        }
+        result = caseResult;
+        break;
+    default:
+        result = 0;
+        break;
     }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  else if (sVar1 == 0x1ae) {
-
-    if ((*(u16 *)(param_1 + 0x1a) & 1) == 0) {
-
-      uVar2 = 0;
-
-    }
-
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
-
-      if (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x126) {
-
-        uVar2 = *(u32 *)(DAT_007ce3ec + 0xb50);
-
-      }
-
-      else {
-
-        uVar2 = 0;
-
-      }
-
-    }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    return result;
 }
 
-// FUN_002FD060 NONMATCHING
+// FUN_002FD160
 
 
-u32 FUN_002fd060(int param_1)
-
-
-
+u32 FUN_002fd160(BtlAction* action)
 {
+    s8 helperResult;
+    u32 result;
+    u32 caseResult;
+    u16 encounterId;
 
-  short sVar1;
-
-  u32 uVar2;
-
-  
-
-  sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-  if (sVar1 == 0x1b4) {
-
-    if ((*(u16 *)(param_1 + 0x1a) & 1) == 0) {
-
-      uVar2 = 0;
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1ac:
+        if ((action->unk_1a & 1) == 0)
+            caseResult = 0;
+        else
+        {
+            if (action->unit->genus != UNIT_GENUS_EC)
+                caseResult = 0;
+            else
+            {
+                helperResult = (s8)FUN_00301750((int)action->unit->datUnit, 0xb);
+                if (helperResult > 0)
+                    caseResult = *(u32*)(DAT_007ce3ec + 0xb44);
+                else
+                    caseResult = 0;
+            }
+        }
+        result = caseResult;
+        break;
+    default:
+        result = 0;
+        break;
     }
-
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
-
-      if (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0xf1) {
-
-        uVar2 = *(u32 *)(DAT_007ce3ec + 0xb44);
-
-      }
-
-      else {
-
-        uVar2 = 0;
-
-      }
-
-    }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  else if (sVar1 == 0x1ad) {
-
-    if ((*(u16 *)(param_1 + 0x1a) & 1) == 0) {
-
-      uVar2 = 0;
-
-    }
-
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
-
-      if (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x112) {
-
-        uVar2 = *(u32 *)(DAT_007ce3ec + 0xb44);
-
-      }
-
-      else {
-
-        uVar2 = 0;
-
-      }
-
-    }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    return result;
 }
 
-// FUN_002FD160 NONMATCHING
+// FUN_002FD220
 
 
-u32 FUN_002fd160(int param_1)
-
-
-
+u32 FUN_002fd220(BtlAction* action, BtlAction* target)
 {
+    u32 encounterResult;
+    u32 result;
+    int bossState;
+    int helperResult;
 
-  char cVar1;
-
-  u32 uVar2;
-
-  
-
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1ac) {
-
-    if ((*(u16 *)(param_1 + 0x1a) & 1) == 0) {
-
-      uVar2 = 0;
-
+    switch (*(u16*)(*(int*)(DAT_007ce3ec + 0xbbc) + 8))
+    {
+    case 0x1a5:
+        helperResult = FUN_0030af00(
+            *(u32*)(*(int*)((int)action + 0x30) + 0xa2c),
+            *(u32*)(*(int*)((int)target + 0x30) + 0xa2c));
+        if (helperResult == 0)
+        {
+            encounterResult = 0;
+        }
+        else
+        {
+            if (*(u16*)(*(int*)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5)
+            {
+                bossState = *(int*)(DAT_007ce3ec + 0xb44);
+            }
+            else
+            {
+                bossState = 0;
+            }
+            if (bossState == 0)
+            {
+                encounterResult = 0;
+            }
+            else
+            {
+                encounterResult = *(int*)(DAT_007ce3ec + 0xb48) == 0;
+            }
+        }
+        result = encounterResult;
+        break;
+    default:
+        result = 0;
+        break;
     }
-
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
-
-      cVar1 = FUN_00301750(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),0xb);
-
-      if (cVar1 < '\x01') {
-
-        uVar2 = 0;
-
-      }
-
-      else {
-
-        uVar2 = *(u32 *)(DAT_007ce3ec + 0xb44);
-
-      }
-
-    }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
-}
-
-// FUN_002FD220 NONMATCHING
-
-
-u8 FUN_002fd220(int param_1,int param_2)
-
-
-
-{
-
-  u8 bVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  
-
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
-
-    lVar3 = FUN_0030af00(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c),
-
-                         *(u32 *)(*(int *)(param_2 + 0x30) + 0xa2c));
-
-    if (lVar3 == 0) {
-
-      bVar1 = 0;
-
-    }
-
-    else {
-
-      if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1a5) {
-
-        iVar2 = *(int *)(DAT_007ce3ec + 0xb44);
-
-      }
-
-      else {
-
-        iVar2 = 0;
-
-      }
-
-      if (iVar2 == 0) {
-
-        bVar1 = 0;
-
-      }
-
-      else {
-
-        bVar1 = *(int *)(DAT_007ce3ec + 0xb48) == 0;
-
-      }
-
-    }
-
-  }
-
-  else {
-
-    bVar1 = 0;
-
-  }
-
-  return bVar1;
-
+    return result;
 }
 
 // FUN_002FD2E0 NONMATCHING
 
 
 u32 FUN_002fd2e0(int param_1,u16 param_2)
-
-
-
 {
-
   u32 uVar1;
-
   u64 uVar2;
-
   u64 uVar3;
-
   int iVar4;
 
-  
-
   iVar4 = (int)(uintptr_t)(DAT_007ce3ec + (u32)param_2 * 4);
-
   if ((*(int *)(iVar4 + 0xb2c) == *(int *)(param_1 + 8)) &&
-
-     (*(int *)(iVar4 + 0xb38) == *(int *)(param_1 + 0x20))) {
-
+      (*(int *)(iVar4 + 0xb38) == *(int *)(param_1 + 0x20))) {
     uVar1 = 0;
-
   }
-
   else {
-
     if (param_2 == 2) {
-
       if (*(int *)(DAT_007ce3ec + 0xb24) == -1) {
-
         return 0;
-
       }
-
     }
-
     else if (param_2 == 1) {
-
       if (*(int *)(DAT_007ce3ec + 0xb20) == -1) {
-
         return 0;
-
       }
-
     }
-
     else if ((param_2 == 0) && (*(int *)(DAT_007ce3ec + 0xb1c) == -1)) {
-
       return 0;
-
     }
-
-    uVar2 = FUN_0035bb40(*(int *)(*(int *)(DAT_007ce3ec + 0xd18) + 0x20) + -1,DAT_007ce4d0);
-
+    uVar2 = FUN_0035bb40(*(int *)(*(int *)(DAT_007ce3ec + 0xd18) + 0x20) + -1,
+                         DAT_007ce4d0);
     FUN_0035c1a0(uVar2,*(u32 *)(DAT_007ce3ec + 0x148));
-
     iVar4 = FUN_0035ae10(uVar2);
-
     if (-1 < *(int *)(iVar4 + 0xcc)) {
-
       uVar3 = FUN_001778b0(1);
-
       FUN_003a4220(*(u32 *)(iVar4 + 0xcc),0,uVar3);
-
     }
-
     FUN_00195550(*(u32 *)(DAT_007ce3ec + 0xd18),uVar2);
-
     *(int *)(DAT_007ce3ec + 0xb28) = (int)uVar2;
-
     *(u32 *)((u32)param_2 * 4 + DAT_007ce3ec + 0xb2c) = *(u32 *)(param_1 + 8);
-
     *(u32 *)((u32)param_2 * 4 + DAT_007ce3ec + 0xb38) = *(u32 *)(param_1 + 0x20);
-
     uVar1 = 1;
-
   }
-
   return uVar1;
-
 }
 
-// FUN_002FD4A0 NONMATCHING
+// FUN_002FD4A0
 
 
 u32 FUN_002fd4a0(void)
-
-
-
 {
+    s32 task;
 
-  u32 uVar1;
-
-  long lVar2;
-
-  
-
-  if (*(int *)(DAT_007ce3ec + 0xb28) == 0) {
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    lVar2 = FUN_00195460();
-
-    if (lVar2 == 0) {
-
-      *(u32 *)(DAT_007ce3ec + 0xb28) = 0;
-
-      uVar1 = 0;
-
+    task = *(s32*)(DAT_007ce3ec + 0xb28);
+    if (task == 0)
+    {
+        return 0;
     }
-
-    else {
-
-      uVar1 = 1;
-
+    if (FUN_00195460(task) == 0)
+    {
+        *(u32*)(DAT_007ce3ec + 0xb28) = 0;
+        return 0;
     }
-
-  }
-
-  return uVar1;
-
+    return 1;
 }
 
 // FUN_002FD500
@@ -2238,259 +2332,181 @@ u8 FUN_002fd500(void)
 
 }
 
-// FUN_002FD520 NONMATCHING
+// FUN_002FD520
 
 
 void FUN_002fd520(int param_1)
-
-
-
 {
+    BtlUnit* unit;
+    u16 encounterId;
+    u8* text;
+    u8 value;
 
-  u8 bVar1;
-
-  short sVar2;
-
-  char *pcVar3;
-
-  
-
-  sVar2 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-  if (sVar2 == 0x1b4) {
-
-    FUN_002f5d80();
-
-  }
-
-  else if (sVar2 == 0x1ac) {
-
-    if ((*(char *)(param_1 + 0xa2) == '\x01') && ((*(u32 *)(param_1 + 0x98) & 2) != 0)) {
-
-      if (*(int *)(DAT_007ce3ec + 0xb50) == 0) {
-
-        pcVar3 = (char *)(*(int *)(param_1 + 0x9f4) + 0x41d);
-
-        bVar1 = *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x41d);
-
-        if (bVar1 < 0x21) {
-
-          *pcVar3 = '\0';
-
+    unit = (BtlUnit*)param_1;
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1a5:
+        FUN_002ec4b0();
+        break;
+    case 0x1a6:
+        FUN_002ec990();
+        break;
+    case 0x1a8:
+        func_002efb40(unit);
+        break;
+    case 0x1ac:
+        if (unit->genus == 1 && (unit->flags2 & 2) != 0)
+        {
+            if (*(u32*)(DAT_007ce3ec + 0xb50) != 0)
+            {
+                text = (u8*)unit->mdl + 0x41d;
+                value = *text;
+                if (value < 0xdf)
+                {
+                    *text = value + 0x20;
+                }
+                else
+                {
+                    *text = 0xff;
+                }
+            }
+            else
+            {
+                text = (u8*)unit->mdl + 0x41d;
+                if (*text > 0x20)
+                {
+                    *text -= 0x20;
+                }
+                else
+                {
+                    *text = 0;
+                }
+            }
         }
-
-        else {
-
-          *pcVar3 = bVar1 - 0x20;
-
-        }
-
-      }
-
-      else {
-
-        pcVar3 = (char *)(*(int *)(param_1 + 0x9f4) + 0x41d);
-
-        bVar1 = *(u8 *)(*(int *)(param_1 + 0x9f4) + 0x41d);
-
-        if (bVar1 < 0xdf) {
-
-          *pcVar3 = bVar1 + 0x20;
-
-        }
-
-        else {
-
-          *pcVar3 = -1;
-
-        }
-
-      }
-
+        break;
+    case 0x1b4:
+        FUN_002f5d80();
+        break;
+    default:
+        break;
     }
-
-  }
-
-  else if (sVar2 == 0x1a8) {
-
-    FUN_002efb40();
-
-  }
-
-  else if (sVar2 == 0x1a6) {
-
-    FUN_002ec990();
-
-  }
-
-  else if (sVar2 == 0x1a5) {
-
-    FUN_002ec4b0();
-
-  }
-
-  return;
-
 }
 
-// FUN_002FD660 NONMATCHING
+// FUN_002FD660
 
 
-u64 FUN_002fd660(void)
-
-
-
+u32 FUN_002fd660(void)
 {
+    BtlUnit* unit;
+    u16 encounterId;
+    u32 result;
 
-  short sVar1;
-
-  long lVar2;
-
-  u64 uVar3;
-
-  int iVar4;
-
-  
-
-  sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-  if (sVar1 == 0x1b4) {
-
-    for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-
-      if ((*(short *)(iVar4 + 0xa4) == 0xf1) &&
-
-         (lVar2 = FUN_0030b5a0(*(u32 *)(iVar4 + 0xa2c),0), lVar2 == 0)) {
-
-        return 0;
-
-      }
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1a0:
+        result = FUN_002e97e0();
+        break;
+    case 0x1a4:
+        for (unit = *(BtlUnit**)(DAT_007ce3ec + 0x158);
+             unit != NULL; unit = unit->next)
+        {
+            switch (unit->charId)
+            {
+            case 0x105:
+            case 0x106:
+                if (FUN_0030b5a0(unit->datUnit, 0) == 0)
+                {
+                    result = 0;
+                    goto fd660_1a4_done;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        result = 1;
+fd660_1a4_done:
+        return result;
+    case 0x1a8:
+        result = FUN_002ef9d0();
+        break;
+    case 0x1b4:
+        for (unit = *(BtlUnit**)(DAT_007ce3ec + 0x158);
+             unit != NULL; unit = unit->next)
+        {
+            switch (unit->charId)
+            {
+            case 0xf1:
+                if (FUN_0030b5a0(unit->datUnit, 0) == 0)
+                {
+                    result = 0;
+                    goto fd660_1b4_done;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        result = 1;
+fd660_1b4_done:
+        return result;
+    default:
+        result = 0;
+        break;
     }
-
-    uVar3 = 1;
-
-  }
-
-  else if (sVar1 == 0x1a8) {
-
-    uVar3 = FUN_002ef9d0();
-
-  }
-
-  else if (sVar1 == 0x1a4) {
-
-    for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-
-      if (((*(short *)(iVar4 + 0xa4) == 0x106) || (*(short *)(iVar4 + 0xa4) == 0x105)) &&
-
-         (lVar2 = FUN_0030b5a0(*(u32 *)(iVar4 + 0xa2c),0), lVar2 == 0)) {
-
-        return 0;
-
-      }
-
-    }
-
-    uVar3 = 1;
-
-  }
-
-  else if (sVar1 == 0x1a0) {
-
-    uVar3 = FUN_002e97e0();
-
-  }
-
-  else {
-
-    uVar3 = 0;
-
-  }
-
-  return uVar3;
-
+    return result;
 }
 
-// FUN_002FD7C0 NONMATCHING
+// FUN_002FD7C0
 
 
 u32 FUN_002fd7c0(void)
-
-
-
 {
+    void* encounter;
+    u16 encounterId;
 
-  short sVar1;
-
-  u32 uVar2;
-
-  
-
-  if (*(int *)(DAT_007ce3ec + 0xbbc) == 0) {
-
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-    if ((sVar1 == 0x1ad) || (sVar1 == 0x1c8)) {
-
-      uVar2 = 0;
-
+    encounter = *(void**)(DAT_007ce3ec + 0xbbc);
+    if (encounter == NULL) {
+        return 0;
     }
-
-    else {
-
-      uVar2 = 1;
-
+    encounterId = *(u16*)((u8*)encounter + 8);
+    switch (encounterId) {
+    case 0x1c8:
+    case 0x1ad:
+        return 0;
+    default:
+        break;
     }
-
-  }
-
-  return uVar2;
-
+    return 1;
 }
 
-// FUN_002FD820 NONMATCHING
-
-
+// FUN_002FD820
 void FUN_002fd820(void)
-
-
-
 {
+    u8* work;
+    u16 encounterId;
 
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1ad) {
-
-    if (3 < *(u16 *)(DAT_007ce3ec + 0xb48)) {
-
-      FUN_001fece0();
-
-      FUN_001fee20();
-
+    work = DAT_007ce3ec;
+    encounterId = *(u16*)(*(u8**)(work + 0xbbc) + 8);
+    switch (encounterId) {
+    case 0x1ad:
+        if (3 < *(u16*)(work + 0xb48)) {
+            FUN_001fece0();
+            FUN_001fee20();
+        }
+        FUN_001fed60();
+        FUN_001feda0();
+        FUN_001fee60();
+        FUN_001fede0();
+        break;
+    default:
+        break;
     }
-
-    FUN_001fed60();
-
-    FUN_001feda0();
-
-    FUN_001fee60();
-
-    FUN_001fede0();
-
-  }
-
-  return;
-
 }
 
 // FUN_002FD8A0 NONMATCHING
-
-
 void FUN_002fd8a0(int param_1)
 
 
@@ -2743,261 +2759,168 @@ u8 FUN_002fdcb0(int param_1)
 
 }
 
-// FUN_002FDCF0 NONMATCHING
+// FUN_002FDCF0
 
 
-u32 FUN_002fdcf0(int param_1,int param_2)
-
-
-
+u32 FUN_002fdcf0(int param_1, int param_2)
 {
+    u8 value;
 
-  u32 uVar1;
-
-  
-
-  if ((((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) || (*(char *)(param_1 + 0xa2) != '\x01'))
-
-     || (*(char *)(param_2 + 0xa2) != '\x01')) {
-
-    uVar1 = 1;
-
-  }
-
-  else {
-
-    uVar1 = 0;
-
-  }
-
-  return uVar1;
-
+    if ((*(u32*)(DAT_007ce3ec + 0xc) & 0x200000) != 0)
+    {
+        value = *(u8*)(param_1 + 0xa2);
+        if (value == 1 && value == *(u8*)(param_2 + 0xa2))
+        {
+            return 0;
+        }
+    }
+    return 1;
 }
 
-// FUN_002FDD40 NONMATCHING
+// FUN_002FDD40
 
 
-u8 FUN_002fdd40(long param_1,long param_2)
-
-
-
+u8 FUN_002fdd40(BtlUnit* first, BtlUnit* second)
 {
-
-  char cVar1;
-
-  u8 bVar2;
-
-  
-
-  if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
-
-    bVar2 = 0;
-
-  }
-
-  else {
-
-    cVar1 = *(char *)((int)param_1 + 0xa2);
-
-    if (cVar1 == '\x01') {
-
-      bVar2 = 0;
-
+    if ((*(u32*)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
+    {
+        return 0;
     }
-
-    else if (param_1 == param_2) {
-
-      bVar2 = 0;
-
+    if (first->genus == UNIT_GENUS_EC)
+    {
+        return 0;
     }
-
-    else {
-
-      bVar2 = cVar1 == *(char *)((int)param_2 + 0xa2);
-
+    if (first == second)
+    {
+        return 0;
     }
-
-  }
-
-  return bVar2;
-
+    return first->genus == second->genus;
 }
 
-// FUN_002FDDB0 NONMATCHING
+// FUN_002FDDB0
 
 
-void FUN_002fddb0(int param_1,float *param_2)
-
-
-
+void FUN_002fddb0(BtlUnit* unit, RwV3d* position)
 {
-
-  *param_2 = (float)(*(short *)(param_1 + 0x94) * 0x19 + -0x6d6);
-
-  param_2[1] = *(float *)(param_1 + 8);
-
-  param_2[2] = (float)(*(short *)(param_1 + 0x96) * 0x19 + -0x6d6);
-
-  param_2[2] = param_2[2] + *(float *)(param_1 + 0x90) * *(float *)(param_1 + 0x2c) + 200.0;
-
-  return;
-
+    position->x = (f32)(unit->unk_94 * 25 - 0x6d6);
+    position->y = unit->pos.y;
+    position->z = (f32)(unit->unk_96 * 25 - 0x6d6);
+    position->z = unit->sphereRadius * unit->scale + 200.0f + position->z;
 }
 
-// FUN_002FDE40 NONMATCHING
-
-
-u64 FUN_002fde40(void)
-
-
-
+// FUN_002FDE40
+u32 FUN_002fde40(BtlAction* action, f32* position)
 {
+    u16 encounterId;
 
-  short sVar1;
-
-  u64 uVar2;
-
-  
-
-  if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
-
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    sVar1 = *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-
-    if (sVar1 == 0x1aa) {
-
-      uVar2 = FUN_002f1b60();
-
+    if ((*(u32*)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
+    {
+        return 0;
     }
-
-    else if (sVar1 == 0x1a7) {
-
-      uVar2 = FUN_002eee20();
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1a7:
+        return func_002eee20(action, position);
+    case 0x1aa:
+        return func_002f1b60(action, position);
+    default:
+        return 0;
     }
-
-    else {
-
-      uVar2 = 0;
-
-    }
-
-  }
-
-  return uVar2;
-
 }
 
-// FUN_002FDED0 NONMATCHING
+// FUN_002FDED0
 
 
-u32 FUN_002fded0(short param_1)
-
-
-
+code FUN_002fded0(s16 param_1)
 {
+    code result;
+    code caseResult;
+    u16 encounterId;
 
-  u32 uVar1;
-
-  
-
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
-
-    if ((((param_1 == 0x126) || (param_1 == 0x128)) || (param_1 == 0x127)) || (param_1 == 0x125)) {
-
-      *(int *)(DAT_007ce3ec + 0xb5c) = (int)param_1;
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1b4:
+        /* Source case order is intentional: MWCC emits the retail reverse order. */
+        switch (param_1)
+        {
+        case 0x125:
+        case 0x127:
+        case 0x128:
+        case 0x126:
+            *(s32*)(DAT_007ce3ec + 0xb5c) = param_1;
+            break;
+        default:
+            *(s32*)(DAT_007ce3ec + 0xb5c) = -1;
+            break;
+        }
+        switch (param_1)
+        {
+        case 0x125:
+        case 0x127:
+        case 0x128:
+            caseResult = (code)func_002f6bc0;
+            break;
+        default:
+            caseResult = 0;
+            break;
+        }
+        result = caseResult;
+        break;
+    default:
+        result = 0;
+        break;
     }
-
-    else {
-
-      *(u32 *)(DAT_007ce3ec + 0xb5c) = 0xffffffff;
-
-    }
-
-    if (((param_1 == 0x128) || (param_1 == 0x127)) || (param_1 == 0x125)) {
-
-      uVar1 = 0x2f6bc0;
-
-    }
-
-    else {
-
-      uVar1 = 0;
-
-    }
-
-  }
-
-  else {
-
-    uVar1 = 0;
-
-  }
-
-  return uVar1;
-
+    return result;
 }
 
-// FUN_002FDFA0 NONMATCHING
+// FUN_002FDFA0
 
 
 u8 FUN_002fdfa0(void)
-
-
-
 {
+    u16 encounterId;
 
-  return *(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) != 0x1b4;
-
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+        case 0x1b4:
+            return 0;
+        default:
+            return 1;
+    }
 }
 
-// FUN_002FDFE0 NONMATCHING
+// FUN_002FDFE0
 
 
 u32 FUN_002fdfe0(int param_1)
-
-
-
 {
+    BtlCamera* camera;
+    BtlAction* action;
+    BtlAction* targetAction;
+    u16 encounterId;
 
-  int iVar1;
-
-  int iVar2;
-
-  long lVar3;
-
-  
-
-  if (*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) {
-
-    iVar1 = *(int *)(param_1 + 0xe0);
-
-    iVar2 = *(int *)(iVar1 + 0x38);
-
-    if ((((iVar2 != 0) && (*(short *)(iVar1 + 0x6a) == 1)) &&
-
-        (lVar3 = FUN_002d6370(*(u16 *)(iVar1 + 0x6e)), lVar3 == 1)) &&
-
-       (((lVar3 = FUN_003088b0(*(u16 *)(*(int *)(param_1 + 0xe0) + 0x6e)), lVar3 == 0 &&
-
-         (iVar1 = *(int *)(iVar2 + 0x30), *(char *)(iVar1 + 0xa2) == '\x01')) &&
-
-        (*(short *)(iVar1 + 0xa4) == 0xf1)))) {
-
-      return 1;
-
+    camera = (BtlCamera*)(uintptr_t)param_1;
+    encounterId = *(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8);
+    switch (encounterId)
+    {
+    case 0x1b4:
+        action = camera->action;
+        targetAction = action->target.targetedActions[0];
+        if (targetAction != NULL &&
+            action->target.targetedCount == 1 &&
+            FUN_002d6370((s16)action->target.specificId) == 1 &&
+            FUN_003088b0(camera->action->target.specificId) == 0 &&
+            targetAction->unit->genus == UNIT_GENUS_EC &&
+            targetAction->unit->charId == 0xf1)
+            return 1;
+        break;
+    default:
+        break;
     }
-
-  }
-
-  return 0;
-
+    return 0;
 }
 
 

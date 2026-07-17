@@ -1190,15 +1190,22 @@ void func_001a0150(u16 resTypeId, u32 visible)
     }
 }
 
-// FUN_001a01c0 NONMATCHING
+// FUN_001a01c0
 u32 func_001a01c0()
 {
-    if (K_Scene_001a0250() == 1 || func_001a02c0() == 1)
+    if (K_Scene_001a0250() == 1)
     {
         return true;
     }
-
-    return (gMtScene->fldMajorId >= 30 && gMtScene->fldMajorId <= 38);
+    if (func_001a02c0() == 1)
+    {
+        return true;
+    }
+    if (gMtScene->fldMajorId >= 30 && gMtScene->fldMajorId <= 38)
+    {
+        return true;
+    }
+    return false;
 }
 
 // FUN_001a02c0
@@ -1215,159 +1222,188 @@ u32 func_001a02c0()
     return false;
 }
 
-// FUN_001a0310 NONMATCHING
+// FUN_001a0310
 u32 func_001a0310()
 {
-    s32 major;
-    s32 minor;
-
-    major = gMtScene->fldMajorId;
-    minor = gMtScene->fldMinorId;
-    if ((major == 8 && minor == 3) ||
-        (major == 32 && minor == 2) ||
-        (major == 26 && (minor == 51 || minor == 52 || minor == 53)) ||
-        (major == 37 && minor == 1) ||
-        (major == 35 && minor == 1) ||
-        major == 4 ||
-        major == 5)
+    if ((gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 3) ||
+        (gMtScene->fldMajorId == 32 && gMtScene->fldMinorId == 2) ||
+        (gMtScene->fldMajorId == 26 && gMtScene->fldMinorId == 51) ||
+        (gMtScene->fldMajorId == 26 && gMtScene->fldMinorId == 52) ||
+        (gMtScene->fldMajorId == 26 && gMtScene->fldMinorId == 53) ||
+        (gMtScene->fldMajorId == 37 && gMtScene->fldMinorId == 1) ||
+        (gMtScene->fldMajorId == 35 && gMtScene->fldMinorId == 1) ||
+        gMtScene->fldMajorId == 4 ||
+        gMtScene->fldMajorId == 5)
     {
         return true;
     }
 
     return false;
 }
-// FUN_001a0430 NONMATCHING
+// FUN_001a0430
 void func_001a0430(u16 resTypeId, u32 customLight)
 {
     Resrc* res;
     u32 type;
 
     type = RESRC_GET_TYPE(resTypeId);
-    if (type != RESRC_TYPE_MODELCHAR &&
-        type != RESRC_TYPE_MODELNPC &&
-        type != RESRC_TYPE_MODELUNK)
+    if (type == RESRC_TYPE_MODELCHAR)
     {
-        return;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (customLight == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+            return;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+            return;
+        }
     }
-
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (type == RESRC_TYPE_MODELNPC)
     {
-        return;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (customLight == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+            return;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+            return;
+        }
     }
-
-    if (customLight == 1)
+    if (type == RESRC_TYPE_MODELUNK)
     {
-        res->flags |= SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
-    }
-    else
-    {
-        res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (customLight == 1) res->flags |= SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
+        else res->flags &= ~SCENEDRAW_RESRC_FLAG_CUSTOM_LIGHT;
     }
 }
 
-// FUN_001a0590 NONMATCHING
+// FUN_001a0590
 void func_001a0590(u16 resTypeId, u32 directionalOnly)
 {
     Resrc* res;
     u32 type;
 
     type = RESRC_GET_TYPE(resTypeId);
-    if (type != RESRC_TYPE_MODELCHAR &&
-        type != RESRC_TYPE_MODELNPC &&
-        type != RESRC_TYPE_MODELUNK)
+    if (type == RESRC_TYPE_MODELCHAR)
     {
-        return;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (directionalOnly == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+            return;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+            return;
+        }
     }
-
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (type == RESRC_TYPE_MODELNPC)
     {
-        return;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (directionalOnly == 1)
+        {
+            res->flags |= SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+            return;
+        }
+        else
+        {
+            res->flags &= ~SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+            return;
+        }
     }
-
-    if (directionalOnly == 1)
+    if (type == RESRC_TYPE_MODELUNK)
     {
-        res->flags |= SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
-    }
-    else
-    {
-        res->flags &= ~SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        if (res == NULL) return;
+        if (directionalOnly == 1) res->flags |= SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
+        else res->flags &= ~SCENEDRAW_RESRC_FLAG_DIRECTIONAL_ONLY;
     }
 }
 
-// FUN_001a0700 NONMATCHING
+// FUN_001a0700
 void* func_001a0700(u16 resTypeId)
 {
     Resrc* res;
     u32 type;
 
     type = RESRC_GET_TYPE(resTypeId);
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (type == RESRC_TYPE_MODELCHAR)
     {
-        return NULL;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x12c;
     }
-
-    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    if (type == RESRC_TYPE_MODELNPC)
     {
-        return (u8*)res + 0x12c;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x12c;
     }
     if (type == RESRC_TYPE_MODELUNK)
     {
-        return (u8*)res + 0x11c;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x11c;
     }
-
     return NULL;
 }
 
-// FUN_001a07f0 NONMATCHING
+// FUN_001a07f0
 void* func_001a07f0(u16 resTypeId)
 {
     Resrc* res;
     u32 type;
 
     type = RESRC_GET_TYPE(resTypeId);
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (type == RESRC_TYPE_MODELCHAR)
     {
-        return NULL;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x190;
     }
-
-    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    if (type == RESRC_TYPE_MODELNPC)
     {
-        return (u8*)res + 0x190;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x190;
     }
     if (type == RESRC_TYPE_MODELUNK)
     {
-        return (u8*)res + 0x180;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x180;
     }
-
     return NULL;
 }
 
-// FUN_001a08e0 NONMATCHING
+// FUN_001a08e0
 void* func_001a08e0(u16 resTypeId)
 {
     Resrc* res;
     u32 type;
 
     type = RESRC_GET_TYPE(resTypeId);
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (type == RESRC_TYPE_MODELCHAR)
     {
-        return NULL;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x1a0;
     }
-
-    if (type == RESRC_TYPE_MODELCHAR || type == RESRC_TYPE_MODELNPC)
+    if (type == RESRC_TYPE_MODELNPC)
     {
-        return (u8*)res + 0x1a0;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x1a0;
     }
     if (type == RESRC_TYPE_MODELUNK)
     {
-        return (u8*)res + 0x190;
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
+        return res == NULL ? NULL : (u8*)res + 0x190;
     }
-
     return NULL;
 }
 
@@ -1473,10 +1509,13 @@ void func_001a0dc0(u16 resTypeId, u32 visible)
 {
     Resrc* res;
 
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (gMtScene->resManager == NULL)
     {
         return;
+    }
+    else
+    {
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
     }
     if (visible == 1)
     {
@@ -1493,10 +1532,13 @@ void func_001a0e50(u16 resTypeId, u32 persona)
 {
     Resrc* res;
 
-    res = MT_Scene_GetRes(resTypeId);
-    if (res == NULL)
+    if (gMtScene->resManager == NULL)
     {
         return;
+    }
+    else
+    {
+        res = resrcMngGetRes(gMtScene->resManager, resTypeId);
     }
     if (persona == 1)
     {

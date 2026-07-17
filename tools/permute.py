@@ -222,6 +222,33 @@ def mut_opt(region, marker_idx_local, rng):
     return out
 
 
+def mut_schedule(region, marker_idx_local, rng):
+    """Cycle b210's independent scheduler and tail-call controls.
+
+    ``optimization_level 3`` bundles both passes, but retail functions
+    sometimes use scheduling without tail-call collapse (or need O3 with the
+    tail pass disabled).  Keep the reset pragmas in the candidate region so a
+    successful mutation cannot leak into the following function.
+    """
+    r = [line for line in region
+         if "#pragma schedule " not in line and "#pragma tailcall " not in line]
+    mode = rng.choice(("schedule", "schedule", "tailcall", "no_tailcall", "default"))
+    if mode == "default":
+        return r
+    prefix = []
+    suffix = []
+    if mode == "schedule":
+        prefix.append("#pragma schedule on")
+        suffix.append("#pragma schedule off")
+    elif mode == "tailcall":
+        prefix.append("#pragma tailcall on")
+        suffix.append("#pragma tailcall off")
+    else:
+        prefix.append("#pragma tailcall off")
+        suffix.append("#pragma tailcall on")
+    return r[:marker_idx_local + 1] + prefix + r[marker_idx_local + 1:] + suffix
+
+
 def leading_decls(region, b0, b1):
     idxs = []
     for i in range(b0, b1):
@@ -528,8 +555,9 @@ def mut_comma_copy(region, open_line_local, rng):
     return out
 
 
-MUTATORS = [mut_opt, mut_decls, mut_stmts, mut_operands, mut_reassoc, mut_compare,
-            mut_compound, mut_reverse_run, mut_chain_assign, mut_ptr_copy, mut_comma_copy]
+MUTATORS = [mut_opt, mut_schedule, mut_decls, mut_stmts, mut_operands,
+            mut_reassoc, mut_compare, mut_compound, mut_reverse_run,
+            mut_chain_assign, mut_ptr_copy, mut_comma_copy]
 
 
 def _open_line(region, marker_idx_local):
@@ -546,7 +574,7 @@ def mutate(region, marker_idx_local, open_line_local, rng, params):
     if params and rng.random() < 0.25:
         return mut_param_temp(region, oll, rng, params)
     m = rng.choice(MUTATORS)
-    if m is mut_opt:
+    if m in (mut_opt, mut_schedule):
         return m(region, marker_idx_local, rng)
     return m(region, oll, rng)
 

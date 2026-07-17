@@ -99,6 +99,62 @@ extern const char D_005E46A0[];
 #define GS_PTR(p, o) (*(void**)((u8*)(p) + (o)))
 #define GS_TASK(p, o) (*(KwlnTask**)((u8*)(p) + (o)))
 
+typedef struct GsCdvdWork
+{
+    u32 reserved00;
+    HCdvd* cdvd;
+} GsCdvdWork;
+typedef struct GsLargeCdvdWork
+{
+    u8 reserved00[0x20];
+    HCdvd* cdvd;
+} GsLargeCdvdWork;
+typedef struct GsResourceWork
+{
+    u8 reserved00[0x28];
+    void* resources[0x12];
+    void* allocation;
+} GsResourceWork;
+typedef struct GsAnimationWork
+{
+    u32 reserved00;
+    HCdvd* cdvd;
+    u8 reserved08[0x208];
+    void* transitions;
+} GsAnimationWork;
+typedef struct GsB270Entry
+{
+    u8 reserved00[0x154];
+    void* cache;
+    u8 reserved158[0x20c];
+} GsB270Entry;
+
+typedef struct GsB270Header
+{
+    u8 reserved00[0x30];
+    void* resources[4];
+    HCdvd* cdvd;
+} GsB270Header;
+
+typedef union GsB270Work
+{
+    GsB270Header header;
+    GsB270Entry entries[3];
+} GsB270Work;
+typedef struct GsArchiveTaskWork
+{
+    u32 state;
+    u32 reserved04;
+    s32 argument;
+    KwlnTask* tasks[4];
+    void* resources[0x12];
+} GsArchiveTaskWork;
+
+
+
+
+
+
 typedef union GsPackedPosition
 {
     u64 value;
@@ -109,6 +165,28 @@ typedef struct GsPosition
 {
     f32 valueF[2];
 } GsPosition;
+
+typedef struct GsTransition
+{
+    void* sprite;
+    u32 enabled;
+    s32 positionMode;
+    s32 activePositionMode;
+    s32 alphaMode;
+    s32 tile;
+    s32 elapsed;
+    s32 start;
+    s32 end;
+    f32 depth;
+    f32 startX;
+    f32 startY;
+    f32 endX;
+    f32 endY;
+    GsPosition position;
+    u32 alpha;
+} GsTransition;
+
+
 
 typedef union GsPackedDimensions
 {
@@ -187,8 +265,7 @@ static void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
     alpha = GS_U8(transition, 0x40);
     gsDrawSprite(atlas, tile0, alpha, x + 20.0f, y + 18.0f, depth);
     gsDrawSprite(atlas, tile1, alpha, x + 20.0f, y + 18.0f, depth);
-    gsDrawSprite(GS_PTR(object, 0x2c), tile2, alpha,
-                 x + 44.0f, y + 39.0f, depth);
+    gsDrawSprite(GS_PTR(object, 0x2c), tile2, alpha, x + 44.0f, y + 39.0f, depth);
 }
 
 static void gsDrawStatusBars(void* object)
@@ -218,8 +295,7 @@ static void gsDrawStatusBars(void* object)
         func_00113a30(depth - 1.0f, x + (f32)width + 50.0f,
                       y + 46.0f, 0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 1, alpha,
-                 x + 50.0f, y + 46.0f, depth);
+    gsDrawSprite(GS_PTR(object, 0x2c), 1, alpha, x + 50.0f, y + 46.0f, depth);
 
     value = datGetSp(pcId);
     maxValue = func_0016c670(pcId);
@@ -229,8 +305,7 @@ static void gsDrawStatusBars(void* object)
         func_00113a30(depth - 3.0f, x + (f32)width + 50.0f,
                       y + 51.0f, 0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 2, alpha,
-                 x + 50.0f, y + 51.0f, depth - 2.0f);
+    gsDrawSprite(GS_PTR(object, 0x2c), 2, alpha, x + 50.0f, y + 51.0f, depth - 2.0f);
 }
 
 static void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
@@ -476,35 +551,35 @@ void* func_0018a9f0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018B270 NONMATCHING
+// FUN_0018B270
 void func_0018b270(KwlnTask* task)
 {
-    u8* work;
-    s32 i;
-    u8* entry;
+    s32 cacheIndex;
+    s32 resourceIndex;
+    GsB270Work* work = (GsB270Work*)task->workData;
 
-    work = (u8*)task->workData;
-    for (i = 0; i < 3; i++)
+    for (cacheIndex = 0; cacheIndex < 3; cacheIndex++)
     {
-        entry = work + i * 0x364;
-        if (GS_PTR(entry, 0x154) != NULL)
+        if (GS_PTR((u8*)work + cacheIndex * sizeof(GsB270Entry), 0x154) != NULL)
         {
-            H_Cdvd_CacheRemove(GS_PTR(entry, 0x154));
+            H_Cdvd_CacheRemove(
+                GS_PTR((u8*)work + cacheIndex * sizeof(GsB270Entry), 0x154));
         }
-        GS_PTR(entry, 0x154) = NULL;
+        GS_PTR((u8*)work + cacheIndex * sizeof(GsB270Entry), 0x154) = NULL;
     }
-    for (i = 0; i < 4; i++)
+    for (resourceIndex = 0; resourceIndex < 4; resourceIndex++)
     {
-        if (GS_PTR(work, 0x30 + i * 4) != NULL)
+        if (GS_PTR((u8*)work + resourceIndex * sizeof(void*), 0x30) != NULL)
         {
-            func_004d0f00(GS_PTR(work, 0x30 + i * 4));
-            GS_PTR(work, 0x30 + i * 4) = NULL;
+            func_004d0f00(
+                GS_PTR((u8*)work + resourceIndex * sizeof(void*), 0x30));
+            GS_PTR((u8*)work + resourceIndex * sizeof(void*), 0x30) = NULL;
         }
     }
-    if (GS_PTR(work, 0x40) != NULL)
+    if (work->header.cdvd != NULL)
     {
-        H_Cdvd_Destroy((HCdvd*)GS_PTR(work, 0x40));
-        GS_PTR(work, 0x40) = NULL;
+        H_Cdvd_Destroy(work->header.cdvd);
+        work->header.cdvd = NULL;
     }
     GS_FREE(work);
 }
@@ -631,28 +706,30 @@ void* func_0018b6d0(s32 count)
     return GS_ALLOC((u32)count, 0x44, 0x40000);
 }
 
-// FUN_0018B700 NONMATCHING
+// FUN_0018B700
 u32 func_0018b700(void* transition)
 {
-    if (GS_U32(transition, 4) == 0)
+    GsTransition* work = (GsTransition*)transition;
+
+    if (work->enabled == 0)
     {
         return 0;
     }
-    if (GS_S32(transition, 0x18) < GS_S32(transition, 0x20))
+    if (work->elapsed < work->end)
     {
-        GS_S32(transition, 0x18)++;
+        work->elapsed = work->elapsed + 1;
     }
-    if (GS_S32(transition, 0x18) < GS_S32(transition, 0x1c))
+    if (work->start > work->elapsed)
     {
         return 0;
     }
-    if (GS_S32(transition, 8) == 1)
+
+    switch (work->positionMode)
     {
-        return func_0018bb80(transition);
-    }
-    if (GS_S32(transition, 8) == 0)
-    {
+    case 0:
         return func_0018bb20(transition);
+    case 1:
+        return func_0018bb80(transition);
     }
     return 0;
 }
@@ -726,7 +803,7 @@ void func_0018b7b0(void* transition, f32* position)
     }
 }
 
-// FUN_0018BA60 NONMATCHING
+// FUN_0018BA60
 void func_0018ba60(void* transition, u8* alpha)
 {
     s32 total = GS_S32(transition, 0x20) - GS_S32(transition, 0x1c);
@@ -734,19 +811,19 @@ void func_0018ba60(void* transition, u8* alpha)
     s32 mode = GS_S32(transition, 0x10);
     s32 value;
 
-    if (mode == 2)
+    switch (mode)
     {
-        value = total == 0 ? 0xff : (elapsed * 0xff) / total;
-        *alpha = (u8)value;
-    }
-    else if (mode == 1)
-    {
+    case 0:
+        *alpha = 0;
+        break;
+    case 1:
         value = total == 0 ? 0xff : (elapsed * 0xff) / total;
         *alpha = (u8)(0xff - value);
-    }
-    else if (mode == 0)
-    {
-        *alpha = 0;
+        break;
+    case 2:
+        value = total == 0 ? 0xff : (elapsed * 0xff) / total;
+        *alpha = (u8)value;
+        break;
     }
 }
 
@@ -766,28 +843,27 @@ u32 func_0018bb20(void* transition)
 // FUN_0018BB80 NONMATCHING
 u32 func_0018bb80(void* transition)
 {
-    f32 position[2];
+    GsPosition position;
     u8 alpha;
 
-    func_0018b7b0(transition, position);
+    func_0018b7b0(transition, position.valueF);
     func_0018ba60(transition, &alpha);
-    GS_F32(transition, 0x38) = position[0];
-    GS_F32(transition, 0x3c) = position[1];
+    *(GsPosition*)((u8*)transition + 0x38) = position;
     GS_U32(transition, 0x40) = alpha;
-    gsDrawSpriteAlt(GS_PTR(transition, 0), GS_S32(transition, 0x14),
-                    0xff, alpha, position[0], position[1],
-                    GS_F32(transition, 0x24));
+    gsDrawSpriteAlt(GS_PTR(transition, 0), GS_S32(transition, 0x14), 0xff, alpha,
+                    position.valueF[0], position.valueF[1], GS_F32(transition, 0x24));
     return GS_U32(transition, 0x40) != 0xff;
 }
 
-// FUN_0018BC10 NONMATCHING
+
+// FUN_0018BC10
 void func_0018bc10(f32 depth, void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
                           u64 start, u64 end, s32 param0, s32 tile,
                           s32 startFrame, s32 endFrame)
 {
-    GsPackedPosition startPos;
     GsPackedPosition endPos;
+    GsPackedPosition startPos;
 
     startPos.value = start;
     endPos.value = end;
@@ -795,10 +871,8 @@ void func_0018bc10(f32 depth, void* transition, s32 drawMode,
     GS_S32(transition, 8) = drawMode;
     GS_S32(transition, 0xc) = positionMode;
     GS_S32(transition, 0x10) = alphaMode;
-    GS_F32(transition, 0x28) = startPos.valueF[0];
-    GS_F32(transition, 0x2c) = startPos.valueF[1];
-    GS_F32(transition, 0x30) = endPos.valueF[0];
-    GS_F32(transition, 0x34) = endPos.valueF[1];
+    *(GsPosition*)((u8*)transition + 0x28) = *(GsPosition*)&startPos;
+    *(GsPosition*)((u8*)transition + 0x30) = *(GsPosition*)&endPos;
     GS_S32(transition, 0) = param0;
     GS_S32(transition, 0x14) = tile;
     GS_F32(transition, 0x24) = depth;
@@ -807,15 +881,15 @@ void func_0018bc10(f32 depth, void* transition, s32 drawMode,
     GS_S32(transition, 0x18) = 0;
 }
 
-// FUN_0018BC80 NONMATCHING
+// FUN_0018BC80
 void func_0018bc80(void)
 {
     HCdvd* cdvd;
     void* archiveEntry;
     u32 size;
     u32 ready;
-    s32 i;
     u32 allReady;
+    s32 i;
 
     cdvd = H_Cdvd_Request(D_005E44D0, HCDVD_FILEARCHIVE);
     H_Cdvd_ReadSync(cdvd);
@@ -836,56 +910,60 @@ void func_0018bc80(void)
                 allReady = 0;
             }
         }
-    } while (allReady == 0);
+        ready = !(allReady != 0);
+    } while (ready != 0);
     H_Cdvd_Destroy(cdvd);
 }
 
-// FUN_0018BD90 NONMATCHING
+// FUN_0018BD90
+#pragma opt_loop_invariants on
 void* func_0018bd90(KwlnTask* task)
 {
-    u8* work;
-    s32 i;
+    GsArchiveTaskWork* work = (GsArchiveTaskWork*)task->workData;
+    s32 copyIndex;
+    s32 taskIndex;
 
-    work = (u8*)task->workData;
-    if (GS_U32(work, 0) != 2)
+    switch (work->state)
     {
-        if (GS_U32(work, 0) == 1)
+    case 0:
+        work->state = 1;
+        break;
+    case 1:
+        for (copyIndex = 0; copyIndex < 0x12; copyIndex++)
         {
-            for (i = 0; i < 0x12; i++)
-            {
-                GS_PTR(work, 0x1c + i * 4) = D_00846730[i];
-            }
-            GS_TASK(work, 0xc) = func_0018e390(task, 0, work + 0x1c);
-            GS_TASK(work, 0x10) = func_0018e390(task, 1, work + 0x1c);
-            GS_TASK(work, 0x14) = func_0018e390(task, 2, work + 0x1c);
-            GS_TASK(work, 0x18) = func_0018e390(task, 3, work + 0x1c);
-            GS_U32(work, 0) = 2;
+            work->resources[copyIndex] = D_00846730[copyIndex];
         }
-        else if (GS_U32(work, 0) == 0)
-        {
-            GS_U32(work, 0) = 1;
-        }
+        work->tasks[0] = func_0018e390(task, 0, work->resources);
+        work->tasks[1] = func_0018e390(task, 1, work->resources);
+        work->tasks[2] = func_0018e390(task, 2, work->resources);
+        work->tasks[3] = func_0018e390(task, 3, work->resources);
+        work->state = 2;
+        break;
+    case 2:
+        break;
     }
-    for (i = 0; i < 4; i++)
+
+    for (taskIndex = 0; taskIndex < 4; taskIndex++)
     {
-        if (GS_TASK(work, 0xc + i * 4) != NULL)
+        if (work->tasks[taskIndex] != NULL)
         {
-            func_0018e490(GS_TASK(work, 0xc + i * 4), GS_U32(work, 8));
+            func_0018e490(work->tasks[taskIndex], work->argument);
         }
     }
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018BEE0 NONMATCHING
-void func_0018bee0(KwlnTask* task, s16 pcId, s32 mode)
+#pragma opt_loop_invariants off
+// FUN_0018BEE0
+void func_0018bee0(KwlnTask* task, s32 pcId, s32 mode)
 {
-    u8* work = (u8*)task->workData;
+    GsArchiveTaskWork* work = (GsArchiveTaskWork*)task->workData;
     s16 partyId;
     s32 i;
 
     if (pcId == 1)
     {
-        func_0018dde0(GS_TASK(work, 0xc), mode);
+        func_0018dde0(work->tasks[0], mode);
     }
     else
     {
@@ -894,21 +972,22 @@ void func_0018bee0(KwlnTask* task, s16 pcId, s32 mode)
             partyId = datGetPartyId(i);
             if (pcId == partyId)
             {
-                func_0018dde0(GS_TASK(work, 0x10 + i * 4), mode);
+                func_0018dde0(work->tasks[i + 1], mode);
                 return;
             }
         }
     }
 }
 
-// FUN_0018BFA0 NONMATCHING
+// FUN_0018BFA0
 void func_0018bfa0(KwlnTask* task)
 {
-    u8* work = (u8*)task->workData;
-    if (GS_PTR(work, 4) != NULL)
+    GsCdvdWork* work = (GsCdvdWork*)task->workData;
+
+    if (work->cdvd != NULL)
     {
-        H_Cdvd_Destroy((HCdvd*)GS_PTR(work, 4));
-        GS_PTR(work, 4) = NULL;
+        H_Cdvd_Destroy(work->cdvd);
+        work->cdvd = NULL;
     }
     GS_FREE(work);
 }
@@ -940,12 +1019,12 @@ u32 func_0018c0a0(KwlnTask* task)
     return GS_U32(task->workData, 0) == 2;
 }
 
-// FUN_0018C0C0 NONMATCHING
+// FUN_0018C0C0
 void func_0018c0c0(KwlnTask* task, s32 visible)
 {
     u8* work = (u8*)task->workData;
     GS_S32(work, 8) = visible;
-    if (GS_U32(work, 0) == 2)
+    if (GS_U32(task->workData, 0) == 2)
     {
         func_0018e490(GS_TASK(work, 0xc), visible);
         func_0018e490(GS_TASK(work, 0x10), visible);
@@ -980,28 +1059,16 @@ void func_0018c150(KwlnTask* task)
     transition = GS_PTR(object, 0x70);
     pcId = GS_S16(object, 0x14);
     atlas = gsPcAtlas(object, pcId);
-    gsDrawSprite(atlas, 1, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 20.0f,
-                 GS_F32(transition, 0x3c) + 18.0f,
-                 GS_F32(transition, 0x24));
+    gsDrawSprite(atlas, 1, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
     if ((datGetBadStatusNoDown(pcId) & 0x80) == 0)
     {
-        gsDrawSprite(atlas, 0, GS_U8(transition, 0x40),
-                     GS_F32(transition, 0x38) + 20.0f,
-                     GS_F32(transition, 0x3c) + 18.0f,
-                     GS_F32(transition, 0x24));
+        gsDrawSprite(atlas, 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
     }
     else
     {
-        gsDrawSprite(atlas, 2, GS_U8(transition, 0x40),
-                     GS_F32(transition, 0x38) + 20.0f,
-                     GS_F32(transition, 0x3c) + 18.0f,
-                     GS_F32(transition, 0x24));
+        gsDrawSprite(atlas, 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 20.0f, GS_F32(transition, 0x3c) + 18.0f, GS_F32(transition, 0x24));
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 0, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 44.0f,
-                 GS_F32(transition, 0x3c) + 39.0f,
-                 GS_F32(transition, 0x24));
+    gsDrawSprite(GS_PTR(object, 0x2c), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 44.0f, GS_F32(transition, 0x3c) + 39.0f, GS_F32(transition, 0x24));
 
     if ((datGetBadStatusNoDown(pcId) & 0x80) != 0)
     {
@@ -1056,10 +1123,7 @@ void func_0018c150(KwlnTask* task)
                       GS_F32(transition, 0x3c) + 46.0f,
                       0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 50.0f,
-                 GS_F32(transition, 0x3c) + 46.0f,
-                 GS_F32(transition, 0x24));
+    gsDrawSprite(GS_PTR(object, 0x2c), 1, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 46.0f, GS_F32(transition, 0x24));
     sp = datGetSp(pcId);
     maxSp = func_0016c670(pcId);
     width = ((sp & 0xffff) << 5) / (maxSp & 0xffff);
@@ -1070,10 +1134,7 @@ void func_0018c150(KwlnTask* task)
                       GS_F32(transition, 0x3c) + 51.0f,
                       0xffffff00, 0x20 - width, 0x14);
     }
-    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40),
-                 GS_F32(transition, 0x38) + 50.0f,
-                 GS_F32(transition, 0x3c) + 51.0f,
-                 GS_F32(transition, 0x24) - 2.0f);
+    gsDrawSprite(GS_PTR(object, 0x2c), 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 51.0f, GS_F32(transition, 0x24) - 2.0f);
 }
 
 // FUN_0018C780 NONMATCHING
@@ -1223,20 +1284,11 @@ void func_0018d320(KwlnTask* task)
             randomFrame = RpRandom() % 0x99;
         }
         burstAlpha = randomFrame & 0xff;
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 1, 0xff,
-                        burstAlpha, GS_F32(transition, 0x38) + 28.0f,
-                        GS_F32(transition, 0x3c) + 22.0f,
-                        GS_F32(transition, 0x24) - 4.0f);
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 2, 0xff,
-                        burstAlpha, GS_F32(transition, 0x38) + 59.0f,
-                        GS_F32(transition, 0x3c) + 23.0f,
-                        GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 1, 0xff, burstAlpha, GS_F32(transition, 0x38) + 28.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 2, 0xff, burstAlpha, GS_F32(transition, 0x38) + 59.0f, GS_F32(transition, 0x3c) + 23.0f, GS_F32(transition, 0x24) - 4.0f);
         if (burstFrame < 5)
         {
-            gsDrawSpriteAlt(GS_PTR(object, 0x38), 3, 0xff,
-                            burstAlpha, GS_F32(transition, 0x38) + 21.0f,
-                            GS_F32(transition, 0x3c) + 47.0f,
-                            GS_F32(transition, 0x24) - 4.0f);
+            gsDrawSpriteAlt(GS_PTR(object, 0x38), 3, 0xff, burstAlpha, GS_F32(transition, 0x38) + 21.0f, GS_F32(transition, 0x3c) + 47.0f, GS_F32(transition, 0x24) - 4.0f);
         }
         if (burstFrame < 5)
         {
@@ -1246,10 +1298,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 4, 0xff,
-                        randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f,
-                        GS_F32(transition, 0x3c) + 43.0f,
-                        GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 4, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 49.0f, GS_F32(transition, 0x3c) + 43.0f, GS_F32(transition, 0x24) - 4.0f);
         if (burstFrame < 5)
         {
             randomFrame = (u32)(burstFrame / 5);
@@ -1258,10 +1307,7 @@ void func_0018d320(KwlnTask* task)
         {
             randomFrame = RpRandom() % 0x99;
         }
-        gsDrawSpriteAlt(GS_PTR(object, 0x38), 5, 0xff,
-                        randomFrame & 0xff, GS_F32(transition, 0x38) + 67.0f,
-                        GS_F32(transition, 0x3c) + 62.0f,
-                        GS_F32(transition, 0x24) - 4.0f);
+        gsDrawSpriteAlt(GS_PTR(object, 0x38), 5, 0xff, randomFrame & 0xff, GS_F32(transition, 0x38) + 67.0f, GS_F32(transition, 0x3c) + 62.0f, GS_F32(transition, 0x24) - 4.0f);
     }
     GS_S32(object, 0x18)++;
     if (GS_S32(object, 0x18) > 0x1e)
@@ -1291,16 +1337,8 @@ void* func_0018db20(KwlnTask* task)
             break;
         case 1:
             gsDrawHeader(object, 3, 1, 0);
-            gsDrawSprite(GS_PTR(object, 0x2c), 3,
-                         GS_U8(transition, 0x40),
-                         GS_F32(transition, 0x38) + 50.0f,
-                         GS_F32(transition, 0x3c) + 51.0f,
-                         GS_F32(transition, 0x24));
-            gsDrawSprite(GS_PTR(object, 0x34), 0,
-                         GS_U8(transition, 0x40),
-                         GS_F32(transition, 0x38) + 27.0f,
-                         GS_F32(transition, 0x3c) + 22.0f,
-                         GS_F32(transition, 0x24));
+            gsDrawSprite(GS_PTR(object, 0x2c), 3, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 50.0f, GS_F32(transition, 0x3c) + 51.0f, GS_F32(transition, 0x24));
+            gsDrawSprite(GS_PTR(object, 0x34), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38) + 27.0f, GS_F32(transition, 0x3c) + 22.0f, GS_F32(transition, 0x24));
             break;
         case 0:
             func_0018c150(task);
@@ -1312,26 +1350,26 @@ void* func_0018db20(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018DDE0 NONMATCHING
-void func_0018dde0(void* transitionTask, s32 mode)
+// FUN_0018DDE0
+void func_0018dde0(KwlnTask* transitionTask, s32 mode)
 {
-    void* transition = ((KwlnTask*)transitionTask)->workData;
-    if (mode == 3)
+    void* transition = transitionTask->workData;
+
+    switch (mode)
     {
+    case 0:
+        GS_S32(transition, 0xc) = 0;
+        break;
+    case 1:
+        GS_S32(transition, 0xc) = 3;
+        break;
+    case 2:
+        GS_S32(transition, 0xc) = 1;
+        break;
+    case 3:
         GS_S32(transition, 0x10) = GS_S32(transition, 0xc);
         GS_S32(transition, 0xc) = 2;
-    }
-    else if (mode == 2)
-    {
-        GS_S32(transition, 0xc) = 1;
-    }
-    else if (mode == 1)
-    {
-        GS_S32(transition, 0xc) = 3;
-    }
-    else if (mode == 0)
-    {
-        GS_S32(transition, 0xc) = 0;
+        break;
     }
     GS_S32(transition, 0x18) = 0;
 }
@@ -1467,22 +1505,23 @@ void* func_0018de60(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018E330 NONMATCHING
+// FUN_0018E330
 void func_0018e330(KwlnTask* task)
 {
-    u8* work = (u8*)task->workData;
-    if (GS_PTR(work, 0x70) != NULL)
+    GsResourceWork* work = (GsResourceWork*)task->workData;
+
+    if (work->allocation != NULL)
     {
-        GS_FREE(GS_PTR(work, 0x70));
+        GS_FREE(work->allocation);
     }
-    GS_PTR(work, 0x70) = NULL;
+    work->allocation = NULL;
     GS_FREE(work);
 }
 
-// FUN_0018E390 NONMATCHING
+// FUN_0018E390
 KwlnTask* func_0018e390(KwlnTask* parent, s32 index, void* resources)
 {
-    void* work;
+    GsResourceWork* work;
     KwlnTask* task;
     s32 i;
 
@@ -1499,7 +1538,7 @@ KwlnTask* func_0018e390(KwlnTask* parent, s32 index, void* resources)
     }
     for (i = 0; i < 0x12; i++)
     {
-        GS_PTR(work, 0x28 + i * 4) = GS_PTR(resources, i * 4);
+        GS_PTR((u8*)work + i * 4, 0x28) = ((void**)resources)[i];
     }
     GS_U32(work, 0x24) = 1;
     GS_S32(work, 8) = index;
@@ -1530,22 +1569,23 @@ void func_0018e4a0(void)
     H_Cdvd_Destroy(cdvd);
 }
 
-// FUN_0018E540 NONMATCHING
+// FUN_0018E540
 void* func_0018e540(KwlnTask* task)
 {
     u8* work = (u8*)task->workData;
-    if (GS_U32(work, 0) == 2)
+
+    switch (GS_U32(work, 0))
     {
-        func_0018e8e0(task);
-    }
-    else if (GS_U32(work, 0) == 1)
-    {
+    case 0:
+        GS_U32(work, 0) = 1;
+        break;
+    case 1:
         GS_PTR(work, 0x214) = DAT_007ce008;
         GS_U32(work, 0) = 2;
-    }
-    else if (GS_U32(work, 0) == 0)
-    {
-        GS_U32(work, 0) = 1;
+        break;
+    case 2:
+        func_0018e8e0(work);
+        break;
     }
     return KWLNTASK_CONTINUE;
 }
@@ -1575,20 +1615,21 @@ void func_0018e5c0(KwlnTask* task, void* record)
                   (u64)0x43cb800000000000ULL, 0, 0, 0, 0);
 }
 
-// FUN_0018E7A0 NONMATCHING
+// FUN_0018E7A0
 void func_0018e7a0(KwlnTask* task)
 {
-    u8* work = (u8*)task->workData;
-    if (GS_PTR(work, 4) != NULL)
+    GsAnimationWork* work = (GsAnimationWork*)task->workData;
+
+    if (work->cdvd != NULL)
     {
-        GS_PTR(work, 4) = NULL;
+        work->cdvd = NULL;
         H_Cdvd_Destroy(NULL);
     }
-    if (GS_PTR(work, 0x210) != NULL)
+    if (work->transitions != NULL)
     {
-        GS_FREE(GS_PTR(work, 0x210));
+        GS_FREE(work->transitions);
     }
-    GS_PTR(work, 0x210) = NULL;
+    work->transitions = NULL;
     GS_FREE(work);
 }
 
@@ -1615,9 +1656,9 @@ KwlnTask* func_0018e820(KwlnTask* parent)
 }
 
 // FUN_0018E8E0 NONMATCHING
-void func_0018e8e0(KwlnTask* task)
+void func_0018e8e0(void* workData)
 {
-    u8* work = (u8*)task->workData;
+    u8* work = (u8*)workData;
     s32 i;
     void* transition;
     u32 active;
@@ -1649,16 +1690,8 @@ void func_0018e8e0(KwlnTask* task)
             }
             else
             {
-                gsDrawSprite(GS_PTR(transition, 0), 0,
-                             GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38),
-                             GS_F32(transition, 0x3c),
-                             GS_F32(transition, 0x24));
-                gsDrawSprite(GS_PTR(transition, 0), 2,
-                             GS_U8(transition, 0x40),
-                             GS_F32(transition, 0x38) - 180.0f,
-                             GS_F32(transition, 0x3c) + 16.0f,
-                             GS_F32(transition, 0x24));
+                gsDrawSprite(GS_PTR(transition, 0), 0, GS_U8(transition, 0x40), GS_F32(transition, 0x38), GS_F32(transition, 0x3c), GS_F32(transition, 0x24));
+                gsDrawSprite(GS_PTR(transition, 0), 2, GS_U8(transition, 0x40), GS_F32(transition, 0x38) - 180.0f, GS_F32(transition, 0x3c) + 16.0f, GS_F32(transition, 0x24));
             }
         }
     }
@@ -1763,14 +1796,15 @@ void* func_0018eb40(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0018EF60 NONMATCHING
+// FUN_0018EF60
 void func_0018ef60(KwlnTask* task)
 {
-    u8* work = (u8*)task->workData;
-    if (GS_PTR(work, 0x20) != NULL)
+    GsLargeCdvdWork* work = (GsLargeCdvdWork*)task->workData;
+
+    if (work->cdvd != NULL)
     {
-        H_Cdvd_Destroy((HCdvd*)GS_PTR(work, 0x20));
-        GS_PTR(work, 0x20) = NULL;
+        H_Cdvd_Destroy(work->cdvd);
+        work->cdvd = NULL;
     }
     GS_FREE(work);
 }

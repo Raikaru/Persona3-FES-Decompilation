@@ -2709,7 +2709,7 @@ code * FUN_003c15d0(void)
 }
 #define FUN_003c15d0(...) ((code * (*)(...))FUN_003c15d0)(__VA_ARGS__)
 #undef FUN_003c1810
-// FUN_003C1810 NONMATCHING
+// FUN_003C1810
 
 
 code * FUN_003c1810(void)
@@ -2722,58 +2722,37 @@ code * FUN_003c1810(void)
 
   code *pcVar2;
 
-  long lVar3;
+  int lVar3;
 
   
 
   piVar1 = (int *)FUN_00195540();
 
-  if (*piVar1 == 0) {
-
+  switch (*piVar1) {
+  case 0:
     lVar3 = FUN_001729a0();
-
     if (lVar3 == 1) {
-
       *piVar1 = 0;
-
       piVar1[1] = 0;
-
       piVar1[2] = 0;
-
       piVar1[3] = 0;
-
       piVar1[4] = 0;
-
       piVar1[5] = 0;
-
       pcVar2 = (code *)&FUN_003c15d0;
-
     }
-
     else {
-
       *piVar1 = 0;
-
       piVar1[1] = 0;
-
       piVar1[2] = 0;
-
       piVar1[3] = 0;
-
       piVar1[4] = 0;
-
       piVar1[5] = 0;
-
       pcVar2 = (code *)&FUN_003c1440;
-
     }
-
-  }
-
-  else {
-
+    break;
+  default:
     pcVar2 = (code *)0x0;
-
+    break;
   }
 
   return pcVar2;

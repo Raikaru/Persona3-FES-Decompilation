@@ -9,11 +9,13 @@ extern void func_0021d950(void* destination, const u8* color);
 extern void func_00271e10(void);
 
 extern void func_004d7f60(s32 state, u32 value);
-extern void (*D_00960090)(u32 state, u32 value);
-extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern u32 D_00960090[];
+extern u32 D_0096009C[];
+typedef void (*OpLogoSetRenderState)(u32 state, u32 value);
+typedef void (*OpLogoRenderQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 extern long func_00271e70(void);
 extern void func_00271db0(void);
-extern u16 DAT_007e094e;
+extern volatile u16 DAT_007e094e[8];
 
 typedef struct OpLogoWork
 {
@@ -26,13 +28,13 @@ typedef struct OpLogoWork
     u32 phase;                 /* 0x0114 */
 } OpLogoWork;
 
-static u32* sOpLogo; // puGpffffb6c0
+static OpLogoWork* sOpLogo; // puGpffffb6c0
 
 // FUN_00269cc0
-void opLogo00269cc0(u32* param_1)
+void opLogo00269cc0(OpLogoWork* param_1)
 {
     K_ASSERT(sOpLogo == NULL, 0x33);
-    *param_1 = 0;
+    param_1->flags = 0;
     sOpLogo = param_1;
 }
 
@@ -43,100 +45,131 @@ void opLogo00269d10(void)
     sOpLogo = NULL;
 }
 
-// FUN_00269D50 NONMATCHING
+// FUN_00269D50
 void opLogo00269d50(void)
 {
     OpLogoWork* work;
-    u32 phase;
+    s32 phase;
+    u32 input;
 
     K_ASSERT(sOpLogo != NULL, 0x2c);
-    work = (OpLogoWork*)sOpLogo;
-    if ((work->flags & 1) == 0)
+    work = sOpLogo;
+    if ((~work->flags & 1) != 0)
     {
         return;
     }
 
-    if (work->state == 1)
+    switch (work->state)
     {
-        phase = work->phase;
-        if (phase == 2)
-        {
-            if (func_00271e70() == 0)
+        case 0:
+            phase = work->phase;
+            switch (phase)
             {
-                work->flags &= ~1;
+                case 0:
+                    if (func_00271e70() == 0)
+                    {
+                        work->unk_110 = 0;
+                        work->phase = 1;
+                        return;
+                    }
+                    break;
+                case 1:
+                    work->unk_110++;
+                    input = !DAT_007e094e[0];
+                    if (input != 0 && (s32)work->unk_110 < 0x4b)
+                    {
+                        break;
+                    }
+                    func_00271db0();
+                    work->phase = 2;
+                    return;
+                case 2:
+                    if (func_00271e70() == 0)
+                    {
+                        func_00271e10();
+                        work->phase = 0;
+                        work->state = 1;
+                        return;
+                    }
+                    break;
             }
-        }
-        else if (phase == 1)
-        {
-            work->unk_110++;
-            if (DAT_007e094e != 0 || (s32)work->unk_110 > 0x4a)
+            break;
+        case 1:
+            phase = work->phase;
+            switch (phase)
             {
-                func_00271db0();
-                work->phase = 2;
+                case 0:
+                    if (func_00271e70() == 0)
+                    {
+                        work->unk_110 = 0;
+                        work->phase = 1;
+                        return;
+                    }
+                    break;
+                case 1:
+                    work->unk_110++;
+                    input = !DAT_007e094e[0];
+                    if (input != 0 && (s32)work->unk_110 < 0x4b)
+                    {
+                        break;
+                    }
+                    func_00271db0();
+                    work->phase = 2;
+                    return;
+                case 2:
+                    if (func_00271e70() == 0)
+                    {
+                        work->flags &= ~1;
+                    }
+                    break;
             }
-        }
-        else if (phase == 0 && func_00271e70() == 0)
-        {
-            work->unk_110 = 0;
-            work->phase = 1;
-        }
-    }
-    else if (work->state == 0)
-    {
-        phase = work->phase;
-        if (phase == 2)
-        {
-            if (func_00271e70() == 0)
-            {
-                func_00271e10();
-                work->phase = 0;
-                work->state = 1;
-            }
-        }
-        else if (phase == 1)
-        {
-            work->unk_110++;
-            if (DAT_007e094e != 0 || (s32)work->unk_110 > 0x4a)
-            {
-                func_00271db0();
-                work->phase = 2;
-            }
-        }
-        else if (phase == 0 && func_00271e70() == 0)
-        {
-            work->unk_110 = 0;
-            work->phase = 1;
-        }
+            break;
     }
 }
 
-// FUN_00269F50 NONMATCHING
+// FUN_00269F50
 void opLogo00269f50(void)
 {
     OpLogoWork* work;
+    OpLogoSetRenderState* setRenderState;
+    OpLogoRenderQuad* renderQuad;
     RwRaster* raster;
 
     K_ASSERT(sOpLogo != NULL, 0x2c);
-    work = (OpLogoWork*)sOpLogo;
-    if ((work->flags & 1) == 0)
+    work = sOpLogo;
+    if ((~work->flags & 1) != 0)
     {
         return;
     }
+    setRenderState = (OpLogoSetRenderState*)D_00960090;
 
-    (*D_00960090)(8, 0);
-    (*D_00960090)(6, 0);
-    (*D_00960090)(9, 2);
-    raster = opResGetLogoRaster(0);
-    (*D_00960090)(1, (u32)(uintptr_t)raster);
-    (*D_0096009C)(work->render, 4, 0, 1, 2);
-    (*D_0096009C)(work->render, 4, 0, 2, 3);
+    (*setRenderState)(8, 0);
+    (*setRenderState)(6, 0);
+    (*setRenderState)(9, 2);
+    switch (work->state)
+    {
+        case 0:
+            raster = opResGetLogoRaster(0);
+            (*setRenderState)(1, (u32)(uintptr_t)raster);
+            renderQuad = (OpLogoRenderQuad*)D_0096009C;
+            (*renderQuad)(work->render, 4, 0, 1, 2);
+            (*renderQuad)(work->render, 4, 0, 2, 3);
+            break;
+        case 1:
+            raster = opResGetLogoRaster(1);
+            (*setRenderState)(1, (u32)(uintptr_t)raster);
+            renderQuad = (OpLogoRenderQuad*)D_0096009C;
+            (*renderQuad)(work->render, 4, 0, 1, 2);
+            (*renderQuad)(work->render, 4, 0, 2, 3);
+            break;
+    }
 }
 
 // FUN_0026a1e0
 u32 opLogo0026a1e0(void)
 {
     K_ASSERT(sOpLogo != NULL, 0x2c);
-    return *sOpLogo & 1;
+    return sOpLogo->flags & 1;
 }
 
 // FUN_0026A0F0
@@ -147,7 +180,7 @@ void opLogo0026a0f0(void)
     u8 color[4];
 
     K_ASSERT(sOpLogo != NULL, 0x2c);
-    puVar1 = sOpLogo;
+    puVar1 = (u32*)sOpLogo;
     (void)opResGetLogoRaster(0);
     layout[0] = 0.0f;
     layout[1] = 0.0f;

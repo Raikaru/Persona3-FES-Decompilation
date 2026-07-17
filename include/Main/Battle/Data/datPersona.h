@@ -99,6 +99,8 @@ DatPersonaWork* datPersonaGetByPcId(u16 pcId);
 u8 datPersonaHeroPersonaValid(s16 heroPersonaIdx);
 DatPersonaWork* datPersonaGetHeroPersona(s16 heroPersonaIdx);
 void datPersonaClearHeroPersonas();
+DatPersonaWork* FUN_00174e20(u16 personaId);
+void FUN_00175130(s16 personaId);
 
 void datPersonaAddExp(DatPersonaWork* persona, s32 exp);
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona);

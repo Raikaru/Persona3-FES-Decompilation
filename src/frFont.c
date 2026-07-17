@@ -103,13 +103,13 @@ void FUN_003b0ce0(int param_1,u8 param_2);
 void FUN_003b0d70(long param_1,u32 param_2,u32 param_3);
 void FUN_003b0e04(int param_1,u8 param_2);
 void FUN_003b0e54(int param_1,u32 param_2);
-u16 FUN_003b0e70(u16 param_1);
+u16 FUN_003b0e70(s16 param_1);
 u16 FUN_003b0e90(u16 param_1);
 u32 FUN_003b0ec0(int param_1);
 int FUN_003b0f50(int param_1,u16 *param_2,u8 param_3,u32 param_4);
 void FUN_003b1300(u64 param_1);
 void FUN_003b1330(u64 param_1,u64 param_2);
-int FUN_003b1360(long param_1,char param_2);
+int FUN_003b1360(long param_1,u64 param_2,u32 param_3);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 long FUN_003b1920(long param_1,long param_2,int param_3);
@@ -1459,17 +1459,18 @@ void FUN_003b0c20(long param_1,u16 param_2)
 }
 #define FUN_003b0c20(...) ((void (*)(...))FUN_003b0c20)(__VA_ARGS__)
 #undef FUN_003b0c70
-// FUN_003B0C70 NONMATCHING
+// FUN_003B0C70
 
 void FUN_003b0c70(FrFontNode *node)
 {
   FrFontNode *iter;
 
   node->enabled = 1;
+  iter = node;
   if (node == NULL) {
-    FUN_0019d3f0(0x6a2730, 0x818);
+    FUN_0019d3f0(DAT_006a2730, 0x818);
   }
-  for (iter = node; iter != NULL; iter = iter->next) {
+  for (; iter != NULL; iter = iter->next) {
     iter->unknown_00[2] = 0xff;
   }
 }
@@ -1614,10 +1615,10 @@ asm void FUN_003b0e54(int param_1, u32 param_2)
 }
 #define FUN_003b0e54(...) ((void (*)(...))FUN_003b0e54)(__VA_ARGS__)
 #undef FUN_003b0e70
-// FUN_003B0E70 NONMATCHING
+// FUN_003B0E70
 
 
-u16 FUN_003b0e70(u16 param_1)
+u16 FUN_003b0e70(s16 param_1)
 
 
 
@@ -1958,7 +1959,9 @@ int FUN_003b0f50(int param_1,u16 *param_2,u8 param_3,u32 param_4)
 }
 #define FUN_003b0f50(...) ((int (*)(...))FUN_003b0f50)(__VA_ARGS__)
 #undef FUN_003b1300
-// FUN_003B1300 NONMATCHING
+#undef FUN_003b1330
+#undef FUN_003b1360
+// FUN_003B1300
 
 
 void FUN_003b1300(u64 param_1)
@@ -1972,9 +1975,7 @@ void FUN_003b1300(u64 param_1)
   return;
 
 }
-#define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
-#undef FUN_003b1330
-// FUN_003B1330 NONMATCHING
+// FUN_003B1330
 
 
 void FUN_003b1330(u64 param_1,u64 param_2)
@@ -1988,12 +1989,13 @@ void FUN_003b1330(u64 param_1,u64 param_2)
   return;
 
 }
+#define FUN_003b1300(...) ((void (*)(...))FUN_003b1300)(__VA_ARGS__)
 #define FUN_003b1330(...) ((void (*)(...))FUN_003b1330)(__VA_ARGS__)
 #undef FUN_003b1360
 // FUN_003B1360 NONMATCHING
 
 
-int FUN_003b1360(long param_1,char param_2)
+int FUN_003b1360(long param_1,u64 param_2,u32 param_3)
 
 
 
@@ -2449,8 +2451,9 @@ u16 FUN_003b1a10(u32 param_1)
 
 
 {
-
-  return *(u16 *)((&DAT_0095acf4)[(param_1 & 0xff) * 8] + 0x10);
+  u32 *base = (u32 *)0x0095acf4;
+  u32 *entry = base + ((param_1 & 0xff) * 8);
+  return *(u16 *)((u8 *)entry + 0x10);
 
 }
 #define FUN_003b1a10(...) ((u16 (*)(...))FUN_003b1a10)(__VA_ARGS__)
@@ -2463,8 +2466,9 @@ u16 FUN_003b1a40(u32 param_1)
 
 
 {
-
-  return *(u16 *)((&DAT_0095acf4)[(param_1 & 0xff) * 8] + 0x12);
+  u32 *base = (u32 *)0x0095acf4;
+  u32 *entry = base + ((param_1 & 0xff) * 8);
+  return *(u16 *)((u8 *)entry + 0x12);
 
 }
 #define FUN_003b1a40(...) ((u16 (*)(...))FUN_003b1a40)(__VA_ARGS__)
@@ -3711,8 +3715,9 @@ void FUN_003b2a10(int param_1,u32 param_2)
 
 
 {
-
-  *(u32 *)(&DAT_0095ac70 + param_1 * 4) = param_2;
+  u32 *base = (u32 *)0x0095ac70;
+  u32 *entry = base + param_1;
+  *entry = param_2;
 
   return;
 

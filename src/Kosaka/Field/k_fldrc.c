@@ -18,6 +18,8 @@ typedef u32 undefined4;
 typedef u64 undefined8;
 extern void* (*DAT_00960184)(u32, ...);
 extern void (*DAT_0096017c)(void*);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern u32 DAT_0096017c_abs[];
 extern void (*DAT_00960090)(u32, ...);
 extern u8 PTR_DAT_007be9c8[];
 extern u32* PTR_DAT_007cd540;
@@ -110,9 +112,9 @@ extern u32 FUN_0048d0e0();
 extern u32 FUN_0048da30();
 extern u32 FUN_0048ee70();
 extern u32 FUN_0048eed0();
-extern u32 FUN_0048ef60();
-extern u32 FUN_0048efa0();
-extern u32 FUN_0048efc0();
+extern f32 FUN_0048ef60();
+extern void FUN_0048efa0();
+extern void FUN_0048efc0();
 extern u32 FUN_004916d0();
 extern u32 FUN_00491cc0();
 extern u32 FUN_00491ea0();
@@ -154,7 +156,10 @@ extern u32 FUN_00523ac8();
 extern u32 FUN_00523e68();
 extern u32 FUN_00524270();
 extern u32 FUN_001b9120();
-extern u32 FUN_001ba5f0();
+extern u32 FUN_001ba5f0(u32 parentTask, u16 majorId, u16 minorId,
+                        u16 param4, s16 param5, s16 param6, u32 flags,
+                        u8 param8, u8 param9, s16 param10,
+                        s32 param11, s32 param12, s32 param13, s32 param14);
 extern s32 iGpffffb470;
 extern s32 iGpffffb3e4;
 extern u8 bGpffffb3f0;
@@ -189,10 +194,12 @@ extern void* uGpffffb590;
 extern s32* piGpffffa850;
 extern u16* puGpffffa850;
 extern char D_00678D80[];
+extern char D_00679060[];
 extern char D_00678DA0[];
 extern char D_00678DC0[];
 extern char D_00678DE0[];
 extern char D_00678DF8[];
+extern u8 D_00678F90[];
 extern HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant);
 extern HCdvd* func_001e7470(u16 majorId, u16 minorId);
 extern u32 func_001e2e50(void* request, void** outFile, u16 majorId,
@@ -224,7 +231,7 @@ extern u32 func_001b8960(HCdvd* request);
 extern u32 FUN_001b6100(u32 id);
 extern u32 FUN_001b61f0(void* resource, u32 archiveEntry);
 extern void* func_001b83f0(void);
-extern void func_001b85a0(u32 index);
+extern u16* func_001b85a0(u32 index);
 extern void func_001b8870(void);
 extern void func_001b8ae0(void);
 extern void func_001b8b40(void);
@@ -259,7 +266,7 @@ void K_Fldrc_RequestArchives()
     }
 }
 
-// FUN_001b07d0 NONMATCHING
+// FUN_001b07d0
 u32 func_001b07d0(void)
 {
     u32 loaded;
@@ -267,10 +274,13 @@ u32 func_001b07d0(void)
     loaded = true;
     if (K_Field_Get()->rootTask != NULL)
     {
-        loaded = K_Fldrc_IsFldPacLoaded();
-        if (loaded)
+        if (!K_Fldrc_IsFldPacLoaded())
         {
-            loaded = func_001b09b0();
+            loaded = false;
+        }
+        if (!func_001b09b0())
+        {
+            loaded = false;
         }
     }
     return loaded;
@@ -1593,10 +1603,10 @@ void FUN_001b5a30(u32 color)
     u32 value;
     u8* rgba;
 
-    if (FUN_001a64f0(color, 0x678f90) == 0)
+    if (FUN_001a64f0(color, D_00678F90) == 0)
     {
         rgba = (u8*)(color + 4);
-        value = FUN_0048ee70(color, 0x678f90, 1, 1);
+        value = FUN_0048ee70(color, D_00678F90, 1, 1);
         value = FUN_0048eed0(color, value);
         FUN_0048efa0(value, 0,
                      (u32)rgba[2] |
@@ -1606,17 +1616,18 @@ void FUN_001b5a30(u32 color)
     }
 }
 
-// FUN_001b5ae0 NONMATCHING
+// FUN_001b5ae0
 void FUN_001b5ae0(u32 value, const u8* rgba)
 {
     u32 target;
+    u32 color;
+    u32 packed;
 
-    target = FUN_001a6350(value, 0x678f90);
-    FUN_0048efa0(target, 0,
-                 (u32)rgba[2] |
-                 ((u32)rgba[1] << 8) |
-                 ((u32)rgba[3] << 24) |
-                 ((u32)rgba[0] << 16));
+    target = FUN_001a6350(value, D_00678F90);
+    color = (u32)rgba[3] << 24;
+    color |= (u32)rgba[0] << 16;
+    packed = ((u32)rgba[1] << 8) | color;
+    FUN_0048efa0(target, 0, (u32)rgba[2] | packed);
 }
 
 // FUN_001b5b50 NONMATCHING
@@ -1630,10 +1641,10 @@ void* FUN_001b5b50(void* color, const f32* scale)
     u32 b;
     u32 a;
 
-    if (FUN_001a64f0((u32)color, 0x678f90) == 0)
+    if (FUN_001a64f0((u32)color, D_00678F90) == 0)
     {
         rgba = (u8*)color + 4;
-        value = FUN_0048ee70((u32)color, 0x678f90, 1, 1);
+        value = FUN_0048ee70((u32)color, D_00678F90, 1, 1);
         value = FUN_0048eed0((u32)color, value);
         FUN_0048efa0(value, 0,
                      (u32)rgba[2] |
@@ -1641,10 +1652,10 @@ void* FUN_001b5b50(void* color, const f32* scale)
                      ((u32)rgba[3] << 24) |
                      ((u32)rgba[0] << 16));
     }
-    mode = FUN_001a64f0((u32)color, 0x678f90);
+    mode = FUN_001a64f0((u32)color, D_00678F90);
     if (mode == 1)
     {
-        value = FUN_001a6400((u32)color, 0x678f90);
+        value = FUN_001a6400((u32)color, D_00678F90);
         r = (u32)((f32)((value >> 16) & 0xff) * scale[0]);
         g = (u32)((f32)((value >> 8) & 0xff) * scale[1]);
         b = (u32)((f32)(value & 0xff) * scale[2]);
@@ -1692,16 +1703,16 @@ void* FUN_001b5e90(void* value, const f32* scale)
     {
         target = FUN_0048ee70((u32)value, 0x678fb0, 2, 3);
         target = FUN_0048eed0((u32)value, target);
-        FUN_0048efc0(*(u32*)((u8*)value + 0x0c), target, 0);
-        FUN_0048efc0(*(u32*)((u8*)value + 0x10), target, 1);
-        FUN_0048efc0(*(u32*)((u8*)value + 0x14), target, 2);
+        FUN_0048efc0(target, 0, *(f32*)((u8*)value + 0x0c));
+        FUN_0048efc0(target, 1, *(f32*)((u8*)value + 0x10));
+        FUN_0048efc0(target, 2, *(f32*)((u8*)value + 0x14));
     }
     target = FUN_001a6350((u32)value, 0x678fb0);
     if (target != 0)
     {
-        out[0] = (f32)FUN_0048ef60(target, 0) * scale[0];
-        out[1] = (f32)FUN_0048ef60(target, 1) * scale[1];
-        out[2] = (f32)FUN_0048ef60(target, 2) * scale[2];
+        out[0] = FUN_0048ef60(target, 0) * scale[0];
+        out[1] = FUN_0048ef60(target, 1) * scale[1];
+        out[2] = FUN_0048ef60(target, 2) * scale[2];
         if (out[0] > 1.0f) out[0] = 1.0f;
         if (out[1] > 1.0f) out[1] = 1.0f;
         if (out[2] > 1.0f) out[2] = 1.0f;
@@ -2097,14 +2108,11 @@ u32 FUN_001b75e0(u32 task)
     return 0;
 }
 
-// FUN_001b76b0 NONMATCHING
+// FUN_001b76b0
 void FUN_001b76b0(u32 task)
 {
-    u32 work;
-
-    work = *(u32*)(task + 0x3c);
-    FUN_00100ec0(*(u32*)(work + 4));
-    (*DAT_0096017c)((void*)work);
+    FUN_00100ec0(*(u32*)(*(u32*)(task + 0x3c) + 4));
+    (*(void (**)(void*))DAT_0096017c_abs)(*(void**)(task + 0x3c));
 }
 
 // FUN_001b7700 NONMATCHING
@@ -2124,18 +2132,20 @@ void* FUN_001b7700(void* parent)
     return task;
 }
 
-// FUN_001b77b0 NONMATCHING
+// FUN_001b77b0
 void FUN_001b77b0(void* parent, const s16* params)
 {
     u32* field;
     u32 task;
 
-    if (params[0] == 0)
+    if (((const u16*)params)[0] == 0)
     {
-        FUN_0019d3f0(0x679060, 0x58);
+        FUN_0019d3f0(D_00679060, 0x58);
     }
-    task = FUN_001ba5f0(0, params[0], params[1], params[2],
-                        params[3], params[4], 0, 6);
+    task = FUN_001ba5f0(0, ((const u16*)params)[0],
+                        ((const u16*)params)[1], ((const u16*)params)[2],
+                        params[3], params[4], 0, 6, 0x80, 0,
+                        -1, -1, -1, -1);
     field = (u32*)FUN_001b9120();
     *field = task;
     (void)parent;
@@ -2233,7 +2243,7 @@ void* FUN_001b2860(char* path)
     return (void*)resource;
 }
 
-// FUN_001b2b30 NONMATCHING
+// FUN_001b2b30
 u32 FUN_001b2b30(u32 resource)
 {
     u32 payload;
@@ -2245,7 +2255,7 @@ u32 FUN_001b2b30(u32 resource)
     }
     if (iGpffffb470 == 0)
     {
-        return FUN_001016b0();
+        return FUN_001016b0(*(u32*)(payload + 0x80)) != 0;
     }
     return true;
 }
