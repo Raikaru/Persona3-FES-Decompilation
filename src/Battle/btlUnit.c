@@ -3148,12 +3148,11 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     s16 alphaDuration;
     s16 end;
     f32 factor;
-    RwRGBA start;
-    RwRGBA target;
-    RwRGBA color;
+    s32 counter;
 
     packet = (BtlUnitPacket00285d30*)work;
     unit = packet->unit;
+    counter = packet->counter;
 
     switch (packet->mode)
     {
@@ -3173,7 +3172,8 @@ u32 btlUnitUpdate00285d30Packet(void* work)
         end = packet->unk_c + packet->unk_e;
         break;
 
-    default:
+    case 3:
+    case 4:
         rgbStart = 0;
         rgbDuration = packet->unk_c;
         alphaStart = 0;
@@ -3182,7 +3182,7 @@ u32 btlUnitUpdate00285d30Packet(void* work)
         break;
     }
 
-    if (packet->counter == 0)
+    if (counter == 0)
     {
         packet->startCol = *(u32*)&unit->cols[BTLUNIT_COL_MAIN];
         if (packet->flags & 1)
@@ -3204,49 +3204,56 @@ u32 btlUnitUpdate00285d30Packet(void* work)
         FUN_00287490(unit);
     }
 
-    start = *(RwRGBA*)&packet->startCol;
-    target = *(RwRGBA*)&packet->targetCol;
-    color = start;
-
-    if (packet->counter >= rgbStart)
     {
-        if (rgbDuration > 0 && packet->counter < rgbStart + rgbDuration)
+        u32 color;
+
+        color = packet->startCol;
+        if (counter >= rgbStart)
         {
-            factor = (f32)(packet->counter - rgbStart) / (f32)rgbDuration;
-        }
-        else
-        {
-            factor = 1.0f;
+            if (rgbDuration > 0 && counter < rgbStart + rgbDuration)
+            {
+                factor = (f32)(counter - rgbStart) / (f32)rgbDuration;
+            }
+            else
+            {
+                factor = 1.0f;
+            }
+
+            color = (color & 0xff000000) |
+                    ((u32)(u8)((1.0f - factor) * (u8)color +
+                               factor * (u8)packet->targetCol)) |
+                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 8) +
+                               factor * (u8)(packet->targetCol >> 8)) << 8) |
+                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 16) +
+                               factor * (u8)(packet->targetCol >> 16)) << 16);
         }
 
-        color.r = (u8)((1.0f - factor) * start.r + factor * target.r);
-        color.g = (u8)((1.0f - factor) * start.g + factor * target.g);
-        color.b = (u8)((1.0f - factor) * start.b + factor * target.b);
+        if (counter >= alphaStart)
+        {
+            if (alphaDuration > 0 && counter < alphaStart + alphaDuration)
+            {
+                factor = (f32)(counter - alphaStart) / (f32)alphaDuration;
+            }
+            else
+            {
+                factor = 1.0f;
+            }
+
+            color = (color & 0x00ffffff) |
+                    ((u32)(u8)((1.0f - factor) * (u8)(color >> 24) +
+                               factor * (u8)(packet->targetCol >> 24)) << 24);
+        }
+
+        unit->cols[BTLUNIT_COL_MAIN] = *(RwRGBA*)&color;
     }
-
-    if (packet->counter >= alphaStart)
-    {
-        if (alphaDuration > 0 && packet->counter < alphaStart + alphaDuration)
-        {
-            factor = (f32)(packet->counter - alphaStart) / (f32)alphaDuration;
-        }
-        else
-        {
-            factor = 1.0f;
-        }
-
-        color.a = (u8)((1.0f - factor) * start.a + factor * target.a);
-    }
-
-    unit->cols[BTLUNIT_COL_MAIN] = color;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 
-    if (packet->counter > end)
+    if (counter > end)
     {
         return 1;
     }
 
-    packet->counter++;
+    packet->counter = counter + 1;
     return 0;
 }
 
