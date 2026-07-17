@@ -2,7 +2,7 @@
  "program": "SLUS_216.21",
  "sha1": "3929cd7c02be944f25ec6b924e5f1eab9bc5e9cb",
  "generated_from": "Ghidra function list plus verified source marker boundaries (tools/reconcile_function_boundaries.py)",
- "function_count": 13800,
+ "function_count": 13801,
  "windows": {
   "00100008": 528,
   "00100218": 24,
@@ -3693,7 +3693,8 @@
   "002a5fd0": 1424,
   "002a6560": 144,
   "002a65f0": 2288,
-  "002a6ee0": 1200,
+  "002a6ee0": 1184,
+  "002a7380": 16,
   "002a7390": 1168,
   "002a7820": 16,
   "002a7830": 448,
