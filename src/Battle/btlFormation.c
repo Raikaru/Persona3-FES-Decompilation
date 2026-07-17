@@ -8553,26 +8553,27 @@ u32 func_002c7300(void)
   return 1;
 }
 
-// FUN_002c7340 NONMATCHING
+// FUN_002c7340
 
 u32 func_002c7340(void)
 
 {
-  u64 uVar1 = 0;
-  u32 uVar2 = 0;
-  int iVar3 = 0;
-  
-  uVar1 = func_0035f160();
-  uVar2 = func_0035ed20(0);
-  iVar3 = (int)uVar1;
-  if (uVar2 == 0) {
-    func_002c6a00(uVar1,iVar3 + 0x38,0x8000);
+  extern void *func_0035f160(void);
+  extern s32 func_0035ed20(u32);
+  extern void func_002c6a00(void *,void *,u16);
+  char *state;
+  s32 selection;
+
+  state = (char *)func_0035f160();
+  selection = func_0035ed20(0);
+  if (selection == 0) {
+    func_002c6a00(state,state + 0x38,0x8000);
   }
-  else if ((long)uVar2 < 1) {
-    func_002c6a00(uVar1,iVar3 + 0x38,0x8002);
+  else if (selection > 0) {
+    func_002c6a00(state,state + 0x38,(u16)selection);
   }
   else {
-    func_002c6a00(uVar1,iVar3 + 0x38,uVar2 & 0xffff);
+    func_002c6a00(state,state + 0x38,0x8002);
   }
   return 1;
 }
