@@ -157,6 +157,7 @@ extern void func_00276a80(void);
 extern void func_00276b10(void);
 extern void func_002798f0(void);
 // FUN_002737a0
+
 void brpSeq002737a0(void)
 {
     K_ASSERT(sBrpSeq != NULL, 0xb0);
@@ -320,9 +321,20 @@ u32 func_002727c0(void)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     return brpSeqU32(0) & 1;
 }
+#define brpSeqBytes() work
+#define brpSeqU32(offset) (*(u32*)(work + (offset)))
+#define brpSeqS32(offset) (*(s32*)(work + (offset)))
+#define brpSeqU16(offset) (*(u16*)(work + (offset)))
+#define brpSeqS16(offset) (*(s16*)(work + (offset)))
+#define brpSeqU8(offset) (*(u8*)(work + (offset)))
+#define brpSeqPutU32(offset, value) (*(u32*)(work + (offset)) = (value))
+#define brpSeqPutU16(offset, value) (*(u16*)(work + (offset)) = (value))
+#define brpSeqPutU8(offset, value) (*(u8*)(work + (offset)) = (value))
+
 // FUN_00272810 NONMATCHING
 void func_00272810(void)
 {
+    u8* work;
     DatPersonaWork* persona;
     u32 state;
     u32 slot;
@@ -337,6 +349,7 @@ void func_00272810(void)
     u8 text[256];
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
+    work = (u8*)sBrpSeq;
     if ((brpSeqU32(0) & 1) != 0)
     {
         state = brpSeqU32(0x10);
@@ -655,6 +668,16 @@ void func_00272810(void)
             func_0024adf0();
     }
 }
+
+#undef brpSeqBytes
+#undef brpSeqU32
+#undef brpSeqS32
+#undef brpSeqU16
+#undef brpSeqS16
+#undef brpSeqU8
+#undef brpSeqPutU32
+#undef brpSeqPutU16
+#undef brpSeqPutU8
 // FUN_00273800
 void func_00273800(void)
 {
