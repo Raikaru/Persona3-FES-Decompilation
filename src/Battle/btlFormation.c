@@ -10555,78 +10555,135 @@ u32 func_002ca3e0(void)
 // FUN_002ca480 NONMATCHING
 
 u32 func_002ca480(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006971bc)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x01000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002ca590 NONMATCHING
 
 u32 func_002ca590(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006971c8)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x02000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002ca6a0 NONMATCHING
 
 u32 func_002ca6a0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006971f8)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x06000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
@@ -10698,204 +10755,332 @@ u32 func_002ca900(void)
 // FUN_002ca9d0 NONMATCHING
 
 u32 func_002ca9d0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006972b8)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x16000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002caae0 NONMATCHING
 
 u32 func_002caae0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006972c4)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x17000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002cabf0 NONMATCHING
 
 u32 func_002cabf0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006972d0)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x18000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002cad00 NONMATCHING
 
 u32 func_002cad00(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam006972dc)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x19000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002cae10 NONMATCHING
 
 u32 func_002cae10(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam00697348)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x22000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002caf20 NONMATCHING
 
 u32 func_002caf20(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u16 id;
+  u32 shift;
+  int context;
+  u32 selector;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  unit = func_0035f160();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    uVar5 = func_0035ed20(1);
-    lVar4 = (*pcRam0069736c)(lVar4,uVar5 & 0xffffff);
+  id = func_0035ed20(0);
+  context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = (func_0035ed20(1) & 0xffffff) | 0x25000000;
+    dispatchType = (selector & 0xff000000) >> 24;
+    payload = selector & 0xffffff;
+    if (dispatchType == 0) {
+      dispatchResult = 0;
+    } else {
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    }
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
 
 // FUN_002cb030 NONMATCHING
 
 u32 func_002cb030(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u32 selector;
+  u32 shift;
+  s32 context;
+  s32 result;
+
+  unit = func_0035f160_u32();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    lVar4 = (*(code *)PTR_FUN_00697390)(lVar4,0);
+  selector = func_0035ed20_u32(0);
+  context = func_002c0e30((u16)selector,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    result = (*(code *)PTR_FUN_00697390)(context,0);
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060_u32(result != 0);
   return 1;
 }
 
 // FUN_002cb0e0 NONMATCHING
 
 u32 func_002cb0e0(void)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int iVar3 = 0;
-  long lVar4 = 0;
-  
-  iVar3 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  uVar2 = func_0035ed20(0);
-  lVar4 = func_002c0e30(uVar2,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar4 == 0) {
-    lVar4 = 0;
+  extern int func_002c0e30(u16,u32,u32);
+  u32 unit;
+  u32 selector;
+  u32 shift;
+  s32 context;
+  s32 result;
+
+  unit = func_0035f160_u32();
+  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
+  default:
+    shift = 0;
+    break;
+  case 0:
+    shift = 1;
+    break;
   }
-  else {
-    lVar4 = (*(code *)PTR_FUN_006973cc)(lVar4,0);
+  selector = func_0035ed20_u32(0);
+  context = func_002c0e30((u16)selector,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    result = (*(code *)PTR_FUN_006973cc)(context,0);
+  } else {
+    result = 0;
   }
-  func_0035f060(lVar4 != 0);
+  func_0035f060_u32(result != 0);
   return 1;
 }
 
