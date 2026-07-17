@@ -898,19 +898,19 @@ void func_00274100(void)
         func_00273800();
 }
 
-// FUN_002741F0 NONMATCHING
+// FUN_002741F0
+#pragma opt_loop_invariants on
 u32 func_002741f0(void)
 {
     u32 pad;
     u16 currentLevel;
     u8* work;
-    s32 newVar2;
     u32 flags;
     u8* persona;
     s32 levelDiff;
     u8* newVar;
     s8 kind;
-    u32 i;
+    s32 i;
     u8* entry;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
@@ -936,14 +936,13 @@ u32 func_002741f0(void)
                 DAT_007ce420[*(u16*)(persona + 2) * 0x0e + 3];
     for (i = 0; i < 0x10; i++)
     {
-        entry = *(u8**)(work + 0x34) + i * 4;
-        kind = *(s8*)(entry + 7);
-        newVar2 = kind != 4;
+        entry = *(u8**)(work + 0x34) + i * 4 + 6;
+        kind = *(s8*)(entry + 1);
         if (kind == 0)
             goto done;
-        if (levelDiff < entry[6])
+        if (entry[0] > levelDiff)
             goto next;
-        if (newVar2)
+        if (kind != 4)
             goto next;
         return 1;
 next:
@@ -952,6 +951,7 @@ next:
 done:
     return 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002743A0
 void func_002743a0(void)
