@@ -239,8 +239,8 @@ extern void func_0035f060_u32(u32 param_1);
 extern u32 func_0035ed20_u32(u32 param_1);
 #pragma alias func_002a3d70_f32 func_002a3d70
 extern u64 func_002a3d70_f32(float param_1,u32 param_2,void *param_3,void *param_4,void *param_5,void *param_6);
-#pragma alias func_002a3d70_f32_u32 func_002a3d70
-extern u32 func_002a3d70_f32_u32(float param_1,u32 param_2,RwV3d *param_3,RwV3d *param_4,RwV3d *param_5,RwV3d *param_6);
+#pragma alias func_002a3d70_move func_002a3d70
+extern u32 func_002a3d70_move(u32 action,RwV3d *startPos,RwV3d *startTarget,RwV3d *endPos,RwV3d *endTarget,float duration);
 #pragma alias func_002b8d60_u32 func_002b8d60
 extern u32 func_002b8d60_u32(s32 param_1,u32 param_2);
 #pragma alias func_0035ee60_f32 func_0035ee60
@@ -14109,7 +14109,7 @@ u32 func_002d0d70(void)
   return 1;
 }
 
-// FUN_002d0de0 NONMATCHING
+// FUN_002d0de0
 
 u32 func_002d0de0(void)
 {
@@ -14131,8 +14131,8 @@ u32 func_002d0de0(void)
   end.z = func_0035ee60_f32(5);
   startCopy = start;
   endCopy = end;
-  packet = func_002a3d70_f32_u32(1.0f,*(u32 *)(iGpffffb6fc + 0x148),
-                                 &start,&end,&startCopy,&endCopy);
+  packet = func_002a3d70_move(*(u32 *)(iGpffffb6fc + 0x148),
+                              &start,&end,&startCopy,&endCopy,1.0f);
   func_0027ed20(packet,0);
   return 1;
 }
