@@ -4060,7 +4060,7 @@ u32 func_002eb250(BtlAction* action);
 void func_002eb2c0(void);
 u32 func_002eb9e0(BtlAction* action);
 void func_002eba50(u64 *param_1);
-u32 func_002ebec0(u64 *param_1);
+u32 func_002ebec0(BtlAction* action);
 void func_002ec000(void);
 void func_002ec2c0(void);
 void func_002ec4b0(BtlUnit* unit);
@@ -8438,30 +8438,45 @@ void func_002eba50(u64 *param_1)
 }
 
 // FUN_002ebec0 NONMATCHING
-u32 func_002ebec0(u64 *param_1)
-
+u32 func_002ebec0(BtlAction* action)
 {
-  s32 lVar1;
-  u64 uVar2;
-  
-  if (param_1 == (u64 *)0x0) {
-    param_1 = *(u64 **)(iGpffffb6fc + 0x14c);
-    while ((param_1 != (u64 *)0x0 &&
-           ((((*(u16 *)((int)param_1 + 0x1a) & 1) == 0 ||
-             (*(char *)(*(int *)(param_1 + 6) + 0xa2) != '\x01')) ||
-            (*(short *)(*(int *)(param_1 + 6) + 0xa4) != 0x115))))) {
-      param_1 = *(u64 **)(param_1 + 0x95);
+    BtlPacket* packet;
+    u8 genus = UNIT_GENUS_EC;
+    u16 charId = 0x115;
+
+    if (action == NULL)
+    {
+        action = gBtl->actionList.tail;
+        while (action != NULL)
+        {
+            if ((action->unk_1a & 1) == 0 ||
+                action->unit->genus != genus ||
+                action->unit->charId != charId)
+            {
+                action = action->prev;
+            }
+            else
+            {
+                break;
+            }
+        }
     }
-  }
-  lVar1 = FUN_0027e390(*param_1,0x3fffffffffffffff);
-  if (lVar1 == 0) {
-    *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfff7ffff;
-    *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x2000000;
-    FUN_0027ed20(uVar2,1);
-    FUN_0027ed20(uVar2,1);
-    FUN_0027ed20(uVar2,1);
-  }
-  return lVar1 != 0;
+
+    if (btlPacketFindFirstByActionUID(action->uid, BTL_UIDMAX) == NULL)
+    {
+        gBtl->flags &= ~0x80000;
+        gBtl->flags |= 0x2000000;
+
+        packet = FUN_0029fa50(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a1080(0x10, 4);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = FUN_002a16c0(0x10);
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        return 0;
+    }
+
+    return 1;
 }
 
 // FUN_002ec000 NONMATCHING

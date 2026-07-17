@@ -24,7 +24,7 @@ void FUN_002fd820(void);
 void FUN_002fd8a0(int param_1);
 u32 FUN_002fdb70(void);
 u32 FUN_002fdb90(void);
-u8 FUN_002fdbb0(int param_1,u64 param_2);
+s32 FUN_002fdbb0(BtlAction* param_1,BtlUnit* param_2);
 u8 FUN_002fdcb0(int param_1);
 u32 FUN_002fdcf0(int param_1,int param_2);
 code FUN_002fded0(s16 param_1);
@@ -36,6 +36,8 @@ u32 FUN_002fed10(int param_1);
 u8 FUN_00301750(int datUnit, u32 flag);
 u32 FUN_002d6370(s16 commandId);
 u32 FUN_003088b0(u16 commandId);
+s32 FUN_002d6290(void);
+s32 FUN_002d63b0(BtlUnit* unit, s32 commandId, s32 param_3);
 extern f32 DAT_007caee4;
 extern f32 DAT_007caf58;
 extern f32 DAT_007caf5c;
@@ -2681,53 +2683,23 @@ u32 FUN_002fdb90(void)
 
 }
 
-// FUN_002FDBB0 NONMATCHING
-
-
-u8 FUN_002fdbb0(int param_1,u64 param_2)
-
-
-
+// FUN_002FDBB0
+s32 FUN_002fdbb0(BtlAction* action, BtlUnit* unit)
 {
-
-  u16 uVar1;
-
-  u64 uVar2;
-
-  long lVar3;
-
-  
-
-  if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) != 0) {
-
-    uVar1 = *(u16 *)((int)param_2 + 0xa4);
-
-    if ((*(u16 *)(DAT_007ce42c + ((u32)uVar1 * 10 + (u32)uVar1) * 8) & 1) != 0) {
-
-      uVar2 = FUN_002d6290();
-
-      lVar3 = FUN_002d63b0(param_2,*(u16 *)(param_1 + 0x6e),uVar2);
-
-      return lVar3 == 0;
-
+    if ((*(u32*)(DAT_007ce3ec + 0xc) & 0x200000) != 0)
+    {
+        if ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 1) != 0)
+        {
+            return !FUN_002d63b0(unit, ((s16*)&action->target)[27],
+                                 FUN_002d6290());
+        }
+        if (FUN_002d6290() == 0 &&
+            (*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x20) != 0)
+        {
+            return 1;
+        }
     }
-
-    lVar3 = FUN_002d6290();
-
-    if ((lVar3 == 0) &&
-
-       (uVar1 = *(u16 *)((int)param_2 + 0xa4),
-
-       (*(u16 *)(DAT_007ce42c + ((u32)uVar1 * 10 + (u32)uVar1) * 8) & 0x20) != 0)) {
-
-      return 1;
-
-    }
-
-  }
-
-  return 0;
-
+    return 0;
 }
 
 // FUN_002FDCB0

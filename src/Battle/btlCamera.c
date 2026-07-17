@@ -5631,55 +5631,92 @@ void func_002ac540(BtlCamera* camera)
 
 void func_002ac6e0(BtlCamera* camera)
 {
-  int iVar1;
-  long lVar2;
-  int iVar3;
-  
-  iVar3 = (int)camera;
-  switch(*(undefined2 *)(iVar3 + 0x110)) {
-  case 2:
-    if (((*(int *)(iVar3 + 0xe0) != 0) && ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0))
-       && (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
-      btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
-    }
-    break;
-  case 3:
-    iVar1 = *(int *)(iVar3 + 0xe0);
-    if ((iVar1 != 0) && ((*(ushort *)(iVar1 + 0x1a) & 1) != 0)) {
-      if (*(int *)(iVar3 + 0xdc) == 0) {
-      }
-      if (lVar2 != 0) {
-        btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
-      }
-    }
-    break;
-  case 4:
-    if (*(int *)(iVar3 + 0x114) == 0) {
-      iVar1 = *(int *)(iVar3 + 0xe0);
-      if (((iVar1 != 0) && (*(short *)(iVar1 + 0x6a) == 1)) &&
-         ((*(int *)(iVar3 + 0x100) == *(int *)(iVar1 + 0x38) &&
-          ((*(ushort *)(iVar1 + 0x1a) & 1) != 0)))) {
-        if (lVar2 != 0) {
-          btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
+    u8* cameraBytes;
+    BtlAction* action;
+    u16 state;
+
+    cameraBytes = (u8*)camera;
+    state = *(u16*)(cameraBytes + 0x110);
+
+    switch (state)
+    {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        action = *(BtlAction**)(cameraBytes + 0xe0);
+        if (action != NULL && (action->unk_1a & 1) != 0)
+        {
+            if (FUN_002a3750(camera, *(u32*)(cameraBytes + 0x120)) != 0)
+            {
+                btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
+                                *(u16*)(cameraBytes + 0x124));
+            }
         }
-      }
+        break;
+    case 3:
+        action = *(BtlAction**)(cameraBytes + 0xe0);
+        if (action != NULL && (action->unk_1a & 1) != 0)
+        {
+            if (*(s32*)(cameraBytes + 0xdc) == 0)
+            {
+                FUN_002a3e80(0.0f, (u8*)action, (u8*)0, (u8*)0, 3);
+            }
+            if (FUN_002a3750(camera, *(u32*)(cameraBytes + 0x120)) != 0)
+            {
+                btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
+                                *(u16*)(cameraBytes + 0x124));
+            }
+        }
+        break;
+    case 4:
+        if (*(s32*)(cameraBytes + 0x114) == 0)
+        {
+            int actionAddress;
+
+            actionAddress = *(int*)(cameraBytes + 0xe0);
+            if (((actionAddress != 0) &&
+                 (*(u16*)((u8*)actionAddress + 0x6a) == 1)) &&
+                (*(s32*)(cameraBytes + 0x100) == *(s32*)((u8*)actionAddress + 0x38) &&
+                 ((*(u16*)((u8*)actionAddress + 0x1a) & 1) != 0)))
+            {
+                if (FUN_002a3750(camera, *(u32*)(cameraBytes + 0x120)) != 0)
+                {
+                    btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
+                                    *(u16*)(cameraBytes + 0x124));
+                }
+            }
+            FUN_002a3e80(10.0f, *(u8**)(cameraBytes + 0xe0),
+                         cameraBytes + 0x9c, cameraBytes + 0x104, 0x33);
+        }
+        else
+        {
+            action = *(BtlAction**)(cameraBytes + 0xe0);
+            if (action != NULL && (action->unk_1a & 1) != 0)
+            {
+                if (FUN_002a3750(camera, *(u32*)(cameraBytes + 0x120)) != 0)
+                {
+                    btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
+                                    *(u16*)(cameraBytes + 0x124));
+                }
+            }
+        }
+        break;
+    case 5:
+        func_002ab2a0(camera);
+        break;
+    case 6:
+        action = *(BtlAction**)(cameraBytes + 0xe0);
+        if (action != NULL && (action->unk_1a & 1) != 0)
+        {
+            if (FUN_002a3750(camera, *(u32*)(cameraBytes + 0x120)) != 0)
+            {
+                btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(cameraBytes + 0x120),
+                                *(u16*)(cameraBytes + 0x124));
+            }
+        }
+        break;
     }
-    else if (((*(int *)(iVar3 + 0xe0) != 0) &&
-             ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0)) &&
-            (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
-      btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
-    }
-    break;
-  case 5:
-    func_002ab2a0(camera);
-    break;
-  case 6:
-    if (((*(int *)(iVar3 + 0xe0) != 0) && ((*(ushort *)(*(int *)(iVar3 + 0xe0) + 0x1a) & 1) != 0))
-       && (FUN_002a3750(camera,*(undefined4 *)(iVar3 + 0x120)) != 0)) {
-      btlUnit002880e0((BtlUnit*)(uintptr_t)(*(undefined4 *)(iVar3 + 0x120)),*(undefined2 *)(iVar3 + 0x124));
-    }
-  }
-  return;
 }
 
 // FUN_002AC920 NONMATCHING
