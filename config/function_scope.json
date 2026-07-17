@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "default_scope_by_provenance": {
+    "atlus_game": "essential",
+    "cri": "replaceable",
+    "renderware": "replaceable",
+    "sce": "replaceable",
+    "c_runtime": "replaceable",
+    "startup_platform": "replaceable",
+    "unclassified": "unclassified"
+  },
+  "function_overrides": []
+}

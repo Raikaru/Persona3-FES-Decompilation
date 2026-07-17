@@ -62,6 +62,10 @@ class EssentialScopeTests(unittest.TestCase):
 
         self.assertEqual(metrics["total"], 2)
         self.assertEqual(metrics["matching"]["count"], 1)
+        self.assertEqual(metrics["scope"]["name"], "essential")
+        self.assertEqual(metrics["scope"]["label"], "Essential Persona-specific functions")
+        self.assertFalse(metrics["gate"]["complete"])
+        self.assertEqual(metrics["gate"]["remaining"], 1)
         self.assertEqual(metrics["matching"]["percent"], 50.0)
         self.assertEqual(metrics["matching"]["matched_body_bytes"], 8)
         self.assertEqual(metrics["whole_executable"]["total"], 4)
@@ -74,6 +78,24 @@ class EssentialScopeTests(unittest.TestCase):
         })
         self.assertEqual(matching_badge["message"], "1/2 (50.000%)")
         self.assertEqual(linked_badge["message"], "0/2 (0.000%)")
+
+    def test_function_override_controls_gate_scope(self):
+        policy = progress.provenance.load_scope_policy()
+        policy["overrides"] = {
+            ("src/rw/rwcore.c", 0x00100010): {
+                "file": "src/rw/rwcore.c",
+                "addr": "00100010",
+                "name": "rw_entry",
+                "scope": "essential",
+                "reason": "Persona-specific middleware glue",
+            },
+        }
+        results = progress.report_results(self.report, self.windows)
+        diagnostics = progress.scope_diagnostics(
+            results, self.windows, "essential", policy,
+        )
+        self.assertEqual(diagnostics["unique_known_addresses"], 3)
+        self.assertEqual(diagnostics["matched_addresses"], {0x00100000, 0x00100010})
 
     def test_generated_endpoints_validate_with_whole_image_backup(self):
         linked_report = {
