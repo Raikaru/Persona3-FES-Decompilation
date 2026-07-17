@@ -1099,7 +1099,7 @@ void func_002a7380(void)
 {
 }
 
-// FUN_002a7390
+// FUN_002a7390 NONMATCHING
 void btlCameraFrameActionTarget(BtlCamera* camera)
 {
     f32 horiz[2];
