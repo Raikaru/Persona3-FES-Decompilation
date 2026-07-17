@@ -110,9 +110,10 @@ void func_0023d8f0(void)
     case 0:
         if ((s32)work[2] < 0x32) {
             t = (float)((s32)work[2] + 1) / 50.0f;
-            cameraOffset.z = t * 200.0f - t * (t * 100.0f) - 100.0f;
-            cameraOffset.y = 0.0f;
+            t = t * 200.0f - t * (t * 100.0f) - 100.0f;
             cameraOffset.x = 0.0f;
+            cameraOffset.y = 0.0f;
+            cameraOffset.z = t;
             func_004cb750(kwlnGetMainCamera()->object.object.parent, &cameraOffset, 0);
         }
         break;
