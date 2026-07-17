@@ -4423,50 +4423,45 @@ void FUN_002b6db0(undefined8 param_1)
   return;
 }
 
-// FUN_002b6de0 NONMATCHING
+// FUN_002b6de0
 
 void FUN_002b6de0(unsigned short *param_1)
-
 {
-  long lVar1;
-  int iVar2;
-  short *psVar3;
-  float fVar4;
-  float fVar5;
-  
+  int iVar1;
+  float fVar2;
+  float fVar3;
+
   FUN_00521408(param_1,0,8);
-  for (iVar2 = *(int *)(DAT_007ce3ec + 0x15c); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa30)) {
-    lVar1 = FUN_0030b5a0(*(undefined4 *)(iVar2 + 0xa2c),0);
-    if (lVar1 == 0) {
-      fVar4 = *(float *)(iVar2 + 0x90) * *(float *)(iVar2 + 0x2c);
-      fVar5 = *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c);
-      psVar3 = (short *)param_1;
-      if (fVar5 <= 200.0) {
-        if (fVar4 <= 75.0) {
-          *psVar3 = *psVar3 + 1;
-        }
-        else if (fVar4 <= 125.0) {
-          psVar3[1] = psVar3[1] + 1;
-        }
-        else if (fVar4 <= 200.0) {
-          psVar3[2] = psVar3[2] + 1;
-        }
-      }
-      else if (fVar5 <= 300.0) {
-        if (fVar4 <= 125.0) {
-          psVar3[1] = psVar3[1] + 1;
-        }
-        else if (fVar4 <= 200.0) {
-          psVar3[2] = psVar3[2] + 1;
-        }
-      }
-      else {
-        psVar3[2] = psVar3[2] + 1;
-      }
-      psVar3[3] = psVar3[3] + 1;
+  for (iVar1 = *(int *)(iGpffffb6fc + 0x15c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa30)) {
+    if (FUN_0030b5a0(*(undefined4 *)(iVar1 + 0xa2c),0) != 0) {
+      continue;
     }
+    fVar3 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
+    fVar2 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c);
+    if (fVar2 <= 200.0f) {
+      if (fVar3 <= 75.0f) {
+        param_1[0] = param_1[0] + 1;
+      }
+      else if (fVar3 <= 125.0f) {
+        param_1[1] = param_1[1] + 1;
+      }
+      else if (fVar3 <= 200.0f) {
+        param_1[2] = param_1[2] + 1;
+      }
+    }
+    else if (fVar2 <= 300.0f) {
+      if (fVar3 <= 125.0f) {
+        param_1[1] = param_1[1] + 1;
+      }
+      else if (fVar3 <= 200.0f) {
+        param_1[2] = param_1[2] + 1;
+      }
+    }
+    else {
+      param_1[2] = param_1[2] + 1;
+    }
+    param_1[3] = param_1[3] + 1;
   }
-  return;
 }
 
 // FUN_002b6f70
