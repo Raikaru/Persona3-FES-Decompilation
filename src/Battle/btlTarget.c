@@ -2746,13 +2746,13 @@ void FUN_002d4800(void* work)
     *(u16*)((u8*)work + 0x402) = 0;
 }
 
-// FUN_002d4810 NONMATCHING
+// FUN_002d4810
 void* FUN_002d4810(void)
 {
     f32 bestDistance = 350000.0f;
     u8* node;
     u8* current;
-    u8* best = NULL;
+    u8* best;
     u8* prev;
     u8** head = (u8**)(iGpffffb6fc + 0x9f0);
 
@@ -2761,35 +2761,34 @@ void* FUN_002d4810(void)
     while (node != NULL)
     {
         f32 distance = *(f32*)(node + 0x20);
-        if (bestDistance <= distance)
+        if (bestDistance > distance)
         {
-            goto next_node;
+            best = node;
+            bestDistance = distance;
         }
-        best = node;
-        bestDistance = distance;
-next_node:
         node = *(u8**)(node + 0x24);
     }
-    while (1)
+
+    prev = NULL;
+    while (current != NULL)
     {
-        current = *(u8**)(current + 0x24);
-        if (current == NULL || current == best)
+        if (current == best)
         {
             break;
         }
         prev = current;
+        current = *(u8**)(current + 0x24);
     }
-    if (current == NULL)
+    if (current != NULL)
     {
-        return best;
-    }
-    if (prev != NULL)
-    {
-        *(u8**)(prev + 0x24) = *(u8**)(best + 0x24);
-    }
-    else
-    {
-        *head = *(u8**)(best + 0x24);
+        if (prev != NULL)
+        {
+            *(u8**)(prev + 0x24) = *(u8**)(current + 0x24);
+        }
+        else
+        {
+            *head = *(u8**)(current + 0x24);
+        }
     }
     return best;
 }
