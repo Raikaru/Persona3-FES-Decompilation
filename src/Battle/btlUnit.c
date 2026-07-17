@@ -4668,6 +4668,7 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
     s16 skillId;
     u16 flags;
     s16 type;
+    s32 offset;
 
     (void)unused;
     skillId = (s16)id;
@@ -4677,23 +4678,36 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
     }
     if (func_002d6370(id) != 0)
     {
-        flags = *(const u16*)(iGpffffb710 + (skillId * 0x1c + 2));
+        offset = skillId * 7;
+        flags = *(const u16*)((offset << 2) + ((uintptr_t)iGpffffb710 + 2));
         if (flags & 0x200)
         {
-            return 0;
+            goto return_zero;
         }
-        if (param_4 == 0 || !(flags & 1))
+        if (param_4 == 0)
         {
-            return 1;
+            goto return_one;
         }
+        if (flags & 1)
+        {
+            goto return_two;
+        }
+return_one:
+        return 1;
+return_two:
         return 2;
+return_zero:
+        return 0;
     }
     type = func_003082f0(unit->datUnit, (u16)id);
-    if (type == 0x11 || type == 0x10)
+    switch (type)
     {
-        return 1;
+        case 0x10:
+        case 0x11:
+            return 1;
+        default:
+            return 3;
     }
-    return 3;
 }
 
 typedef struct BtlUnitPacketResource
