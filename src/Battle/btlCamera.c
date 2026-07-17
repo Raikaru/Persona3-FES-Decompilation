@@ -7279,21 +7279,22 @@ void FUN_002a3a90(int param_1)
 
 }
 
-// FUN_002A42A0 NONMATCHING
+// FUN_002A42A0
 
 
 void FUN_002a42a0(void)
 {
-  int iVar1;
-  u16 uVar2;
-  
-  for (uVar2 = 0; uVar2 < 2; uVar2 = uVar2 + 1 & 0xffff) {
-    for (iVar1 = *(int *)(DAT_007ce3ec + uVar2 * 8 + 0x150); iVar1 != 0;
-        iVar1 = *(int *)(iVar1 + 0xa34)) {
-      FUN_0027f790(iVar1,7);
+  s32 node;
+  s32 index;
+
+  index = 0;
+  for (; (index & 0xffff) < 2; index = (u16)(index + 1)) {
+    node = *(s32 *)(DAT_007ce3ec + (u16)index * 8 + 0x150);
+    while (node != 0) {
+      FUN_0027f790(node, 7);
+      node = *(s32 *)(node + 0xa34);
     }
   }
-  return;
 }
 
 // FUN_002A4530 NONMATCHING
