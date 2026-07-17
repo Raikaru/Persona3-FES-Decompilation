@@ -890,7 +890,7 @@ u32 btlMainUpdateStateStart(BtlStateWork* work)
 void btlMainInitStateAction(BtlStateWork* work)
 {
 }
-// FUN_0029c340 NONMATCHING
+// FUN_0029c340
 u32 btlMainUpdateStateAction(BtlStateWork* work)
 {
     BtlUnit* unit;
@@ -905,12 +905,10 @@ u32 btlMainUpdateStateAction(BtlStateWork* work)
         FUN_001ff350();
         {
             battleMode = BTL_U16(0x1c);
-            if (battleMode != 2)
+            switch (battleMode)
             {
-                if (battleMode != 3 && battleMode != 1)
-                {
-                    return BTL_STATE_NON;
-                }
+            case 1:
+            case 3:
                 if (battleMode != 3)
                 {
                     if (FUN_002d4ed0(FUN_0029ad20()) == 1)
@@ -958,13 +956,14 @@ u32 btlMainUpdateStateAction(BtlStateWork* work)
                 {
                     return (gBtl->unk_10 & 2) != 0 ? BTL_STATE_ENEMYDEAD : BTL_STATE_WIN;
                 }
+            case 2:
+                if (battleMode == 2)
+                {
+                    return FUN_0027d560() != 0 ? BTL_STATE_REVIVALMES : BTL_STATE_LOSE;
+                }
+                return BTL_STATE_FADEOUT;
             }
         }
-        if (battleMode == 2)
-        {
-            return FUN_0027d560() != 0 ? BTL_STATE_REVIVALMES : BTL_STATE_LOSE;
-        }
-        return BTL_STATE_FADEOUT;
     }
     return BTL_STATE_NULL;
 }
