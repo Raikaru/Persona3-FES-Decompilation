@@ -587,7 +587,7 @@ extern u16 func_002becc0(void);
 extern void func_002bed10(void);
 extern void func_002bedd0(int param_1);
 extern u64 func_002bef20(u64 param_1);
-extern u64 func_002bf2b0(u64 param_1);
+extern u32 func_002bf2b0(u32 param_1);
 extern void func_002bf370(u64 param_1);
 extern u32 func_002bf3f0(u64 param_1);
 extern void func_002bf650(void);
@@ -4520,26 +4520,31 @@ u64 func_002bef20(u64 param_1)
   return 0;
 }
 
-// FUN_002bf2b0 NONMATCHING
+// FUN_002bf2b0
 
-u64 func_002bf2b0(u64 param_1)
+u32 func_002bf2b0(u32 param_1)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  int iVar3 = 0;
-  
-  lVar2 = btlFadeSuppressesFormationUpdates();
-  if (((lVar2 == 0) && ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) &&
-     ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) != 0)) {
-    iVar1 = func_00195540(param_1);
-    iVar3 = *(int *)(iVar1 + 8);
+  u32 state;
+  u32 entry;
+  void (*callback)(u32,u32,u32,u32);
+
+  if (btlFadeSuppressesFormationUpdates() != 0) {
+    return 0;
+  }
+  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) != 0) {
+    return 0;
+  }
+  if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x2000000) != 0) {
+    state = func_00195540_u32(param_1);
+    entry = *(u32 *)(state + 8);
     do {
-      if (*(code **)(iVar3 + 0x18) != (code *)0x0) {
-        (**(code **)(iVar3 + 0x18))(iVar3,0x10,300,*(u32 *)(iVar1 + 4));
+      callback = *(void (**)(u32,u32,u32,u32))(entry + 0x18);
+      if (callback != 0) {
+        callback(entry,0x10,300,*(u32 *)(state + 4));
       }
-      iVar3 = *(int *)(iVar3 + 0x24);
-    } while (iVar3 != 0);
+      entry = *(u32 *)(entry + 0x24);
+    } while (entry != 0);
   }
   return 0;
 }
