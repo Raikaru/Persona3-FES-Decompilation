@@ -2090,36 +2090,35 @@ void func_002ba900(int param_1)
 {
   extern u16 func_00321130(void);
   u16 index;
-  u32 savedState;
   u16 count;
   int *entries;
+  u32 savedState;
+  u32 limit;
 
   if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
     entries = *(int **)(param_1 + 0x58);
     count = *(u16 *)(param_1 + 0x54);
     if ((*(u32 *)(param_1 + 8) & 0x8000) == 0) {
-      for (index = 0; index < count; index++) {
-        if (*entries != 0) {
-          func_00325500(*entries);
-        }
+      index = 0;
+      limit = count;
+      while (index < limit) {
+        if (*entries != 0) func_00325500(*entries);
+        index++;
         entries++;
       }
-    }
-    else {
-
+    } else {
       savedState = func_00321130();
       func_00321320(DAT_00957100_abs);
       func_00321120(4);
-      for (index = 0; index < count; index++) {
-        if (*entries != 0) {
-          func_00325500(*entries);
-        }
+      index = 0;
+      while (index < count) {
+        if (*entries != 0) func_00325500(*entries);
+        index++;
         entries++;
       }
       func_00321120(savedState);
     }
   }
-  return;
 }
 
 // FUN_002baa20
