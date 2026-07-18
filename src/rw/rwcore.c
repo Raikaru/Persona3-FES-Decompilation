@@ -4553,7 +4553,7 @@ long FUN_004d0ac0(undefined8 param_1)
 }
 
 #pragma schedule on
-// FUN_004D0B60 NONMATCHING
+// FUN_004D0B60
 undefined4 FUN_004d0b60(undefined4 param_1)
 
 {
@@ -4572,7 +4572,7 @@ undefined4 FUN_004d0b80(void)
 #pragma schedule off
 
 #pragma schedule on
-// FUN_004D0BA0 NONMATCHING
+// FUN_004D0BA0
 undefined4 FUN_004d0ba0(undefined4 param_1)
 
 {
@@ -25045,7 +25045,7 @@ undefined8 FUN_004f2870(undefined8 param_1,undefined4 param_2)
 }
 
 #pragma schedule on
-// FUN_004F28A0 NONMATCHING
+// FUN_004F28A0
 undefined8 FUN_004f28a0(undefined8 param_1)
 
 {
@@ -37924,6 +37924,7 @@ void FUN_00505ec8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
   return;
 }
 
+#pragma schedule on
 // FUN_00505F78 NONMATCHING
 undefined4 FUN_00505f78(int param_1)
 
@@ -37931,6 +37932,7 @@ undefined4 FUN_00505f78(int param_1)
   param_1 = param_1 << 2;
   return *(undefined4 *)((u8 *)DAT_00966c00_abs + param_1);
 }
+#pragma schedule off
 
 // FUN_00505FC0 NONMATCHING
 undefined8 FUN_00505fc0(undefined8 param_1,long param_2,long param_3)

@@ -4861,7 +4861,7 @@ int FUN_00468350(int param_1)
 }
 
 #pragma schedule on
-// FUN_00468530 NONMATCHING
+// FUN_00468530
 
 void FUN_00468530(u64 param_1,u64 param_2,int param_3)
 
@@ -4893,7 +4893,7 @@ u64 FUN_00468560(u64 param_1,u64 param_2,u64 param_3)
 }
 
 #pragma schedule on
-// FUN_00468660 NONMATCHING
+// FUN_00468660
 
 void FUN_00468660(u64 param_1,u64 param_2,int param_3)
 
@@ -6701,17 +6701,17 @@ int FUN_0046ad20(int *param_1,int param_2)
   int iVar1;
   u32 uVar2;
   
-  if (0 < (u32)param_1[1]) {
-    uVar2 = 0;
-    iVar1 = *param_1;
-    do {
-      if (param_2 == *(int *)(iVar1 + 8)) {
-        return *param_1 + uVar2 * 0x14;
-      }
-      uVar2 = uVar2 + 1;
-      iVar1 = iVar1 + 0x14;
-    } while (uVar2 < (u32)param_1[1]);
-  }
+  if (!((u32)param_1[1] > 0)) goto done;
+  uVar2 = 0;
+  iVar1 = *param_1;
+  do {
+    if (param_2 == *(int *)(iVar1 + 8)) {
+      return *param_1 + uVar2 * 0x14;
+    }
+    uVar2 = uVar2 + 1;
+    iVar1 = iVar1 + 0x14;
+  } while (uVar2 < (u32)param_1[1]);
+done:
   return 0;
 }
 
