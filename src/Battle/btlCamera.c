@@ -5432,7 +5432,7 @@ void FUN_002b5000(int param_1)
   return;
 }
 
-// FUN_002b5240 NONMATCHING
+// FUN_002b5240
 
 void FUN_002b5240(BtlCamera* camera)
 {
@@ -5474,6 +5474,11 @@ void FUN_002b5240(BtlCamera* camera)
     f32 length;
     f32 horizFactor;
     f32 pzTemp;
+    u64 xyTemp;
+    f32 dxTemp;
+    f32 sumX;
+    f32 sumY;
+    f32 sumZ;
 
     cam = camera;
     unit = cam->action->unit;
@@ -5493,8 +5498,9 @@ void FUN_002b5240(BtlCamera* camera)
     w.vy = w.vy + w.center2.y;
     w.vz = w.vz + w.center2.z;
 
-    *(u64*)&w.px = *(u64*)&w.center1;
-    pzTemp = w.center1.z;
+    xyTemp = *(volatile u64*)&w.center1;
+    pzTemp = *(volatile f32*)&w.center1.z;
+    *(u64*)&w.px = xyTemp;
     w.pz = pzTemp;
     w.py = w.center2.y;
     w.d2x = w.px - w.center2.x;
@@ -5509,12 +5515,16 @@ void FUN_002b5240(BtlCamera* camera)
 
     scale = 0.5f * cam->fovRad;
     radiusFactor = 5.0f * radius / tanf(gp0xffff8070 * scale);
-    w.dx = *(volatile f32*)&w.dx * radiusFactor;
+    dxTemp = w.dx;
+    w.dx = dxTemp * radiusFactor;
     w.dy = w.dy * radiusFactor;
     w.dz = w.dz * radiusFactor;
-    w.dz = w.pz + w.dz - w.vz;
-    w.dy = w.py + w.dy - w.vy;
-    w.dx = w.px + w.dx - w.vx;
+    sumY = w.py + w.dy;
+    sumZ = w.pz + w.dz;
+    sumX = w.px + w.dx;
+    w.dx = sumX - w.vx;
+    w.dy = sumY - w.vy;
+    w.dz = sumZ - w.vz;
     length = FUN_004c69f0(&w.dx, &w.dx);
     w.dx = w.dx * length;
     w.dy = w.dy * length;
@@ -5522,7 +5532,8 @@ void FUN_002b5240(BtlCamera* camera)
 
     scale = 0.5f * cam->fovRad;
     factor = length * tanf(gp0xffff8070 * scale);
-    horizFactor = factor * 0.1328125f;
+    horizFactor = factor;
+    horizFactor = horizFactor * 0.1328125f;
     w.sx = w.dx;
     w.sz = w.dz;
     FUN_004c6b20(&w.sx, &w.sx);
