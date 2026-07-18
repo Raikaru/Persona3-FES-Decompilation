@@ -39,15 +39,31 @@ extern s16 btlUnit00282c30(BtlUnit* unit);
 extern s16 func_002835e0(BtlUnit* unit,u16 id,f32 scale);
 extern s16 btlUnitGetAnimFrame(BtlUnit* unit);
 u8 FUN_002a3820(int param_1);
+#pragma alias FUN_002a3820_u32 FUN_002a3820
+extern u32 FUN_002a3820_u32(int param_1);
+extern void FUN_004c31b0_typed(RwMatrix *matrix, const RwV3d *axis, f32 angle, s32 mode);
+#pragma alias FUN_004c31b0_typed FUN_004c31b0
 u32 FUN_002a3850(int param_1);
 u16 FUN_002a3a80(void);
 void FUN_002a3a90(int param_1);
 void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
+ #pragma alias FUN_002a3e80_ab330 FUN_002a3e80
+ extern void FUN_002a3e80_ab330(BtlAction* action, RwV3d* unitPos,
+                                 f32* targetPos, s32 mode, f32 distance);
 extern u64 FUN_00280050();
 #pragma alias FUN_00280050_typed FUN_00280050
 extern void FUN_00280050_typed(BtlUnit* unit, RwV3d* out);
 extern f32 gp0xffff80e0;
 u64 FUN_0027ffb0();
+#pragma alias FUN_002a3520_result FUN_002a3520
+u32 FUN_002a3520_result(int param_1);
+#pragma alias FUN_002fdbb0_result FUN_002fdbb0
+extern u32 FUN_002fdbb0_result(BtlAction* action, BtlUnit* persona);
+extern f32 fGpffff8090;
+#pragma alias FUN_002a3520_s32 FUN_002a3520
+extern s32 FUN_002a3520_s32(void);
+#pragma alias FUN_002a3550_s32 FUN_002a3550
+extern s32 FUN_002a3550_s32(u8* camera);
 /* Target-local ABI aliases for FUN_002b3980. */
 #pragma alias FUN_002a3e80_action FUN_002a3e80
 extern void FUN_002a3e80_action(void* action, u32 arg_1, u32 arg_2, u32 arg_3, u32 arg_4);
@@ -2247,29 +2263,31 @@ void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
 {
     BtlUnit* unit;
     BtlUnit* persona;
-    union
+    struct
     {
-        f32 buf[76];
-        struct
-        {
-            f32 pre[56];
-            RwV3d direction;
-            f32 directionPad;
-            RwV3d candidate;
-            f32 candidatePad;
-            RwV3d center2;
-            f32 center2Pad;
-            RwV3d center1;
-            f32 center1Pad;
-            RwV3d midpoint;
-        } vectors;
+        f32 buf[48];
+        RwV3d base;
+        f32 basePad;
+        RwV3d transformed;
+        f32 transformedPad;
+        RwV3d direction;
+        f32 directionPad;
+        RwV3d candidate;
+        f32 candidatePad;
+        RwV3d center2;
+        f32 center2Pad;
+        RwV3d center1;
+        f32 center1Pad;
+        RwV3d midpoint;
     } work;
 #define buf work.buf
-#define PERSONA_DIRECTION work.vectors.direction
-#define PERSONA_CANDIDATE work.vectors.candidate
-#define PERSONA_CENTER2 work.vectors.center2
-#define PERSONA_CENTER1 work.vectors.center1
-#define PERSONA_MIDPOINT work.vectors.midpoint
+#define PERSONA_BASE work.base
+#define PERSONA_TRANSFORMED work.transformed
+#define PERSONA_DIRECTION work.direction
+#define PERSONA_CANDIDATE work.candidate
+#define PERSONA_CENTER2 work.center2
+#define PERSONA_CENTER1 work.center1
+#define PERSONA_MIDPOINT work.midpoint
     f32 f25;
     f32 f24;
     f32 f22;
@@ -2284,9 +2302,9 @@ void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
     f32 f1;
     f32 f0;
     s32 mode;
-    if (FUN_002a3520((int)camera) != 0)
+    if (FUN_002a3520_s32() != 0)
         goto mode_true;
-    if ((int)FUN_002a3550((u8*)camera) == 0)
+    if ((int)FUN_002a3550_s32((u8*)camera) == 0)
         goto mode_false;
 mode_true:
     mode = 1;
@@ -2338,115 +2356,115 @@ mode_done:
             f0 = RwV3dLength(&PERSONA_DIRECTION);
             if (f20 > f0) f20 = f0;
             *(u64*)(buf + 48) = *(u64*)(buf + 72);
-            buf[50] = buf[74];
+            PERSONA_BASE.z = PERSONA_MIDPOINT.z;
             if (f23 <= f20) f23 = f20;
             f27 = f23 * 1.75f;
         }
         else
         {
             *(u64*)(buf + 44) = *(u64*)(buf + 68);
-            buf[46] = buf[70];
+            buf[46] = PERSONA_CENTER1.z;
             *(u64*)(buf + 72) = *(u64*)(buf + 68);
-            buf[74] = buf[70];
+            PERSONA_MIDPOINT.z = PERSONA_CENTER1.z;
             *(u64*)(buf + 48) = *(u64*)(buf + 68);
-            buf[50] = buf[70];
+            PERSONA_BASE.z = PERSONA_CENTER1.z;
             f24 = 1.0f + f25;
             f27 = 5.5f * f22;
         }
-        buf[34] = camera->pos.x - buf[48];
-        buf[35] = camera->pos.z - buf[50];
+        buf[34] = camera->pos.x - PERSONA_BASE.x;
+        buf[35] = camera->pos.z - PERSONA_BASE.z;
         FUN_004c6b20(&buf[34], &buf[34]);
         RtQuatTransformVectors((RwV3d*)(buf + 52), &D_00697890, 1, &unit->rot);
-        buf[32] = buf[54];
-        buf[33] = -buf[52];
+        buf[32] = PERSONA_TRANSFORMED.z;
+        buf[33] = -PERSONA_TRANSFORMED.x;
         FUN_004c6b20(&buf[32], &buf[32]);
         f22b = buf[32] * buf[34] + buf[33] * buf[35];
         RwMatrixRotate((RwMatrix*)(buf + 16), &D_00697880,
                        f22b < 0.0f ? -37.5f : 37.5f, rwCOMBINEREPLACE);
         FUN_004c6c60((RwV3d*)(buf + 56), (RwV3d*)(buf + 52),
                      (RwMatrix*)(buf + 16));
-        buf[56] *= f27;
-        buf[57] *= f27;
-        buf[58] *= f27;
-        buf[60] = buf[72] + buf[56];
-        buf[61] = buf[73] + buf[57];
-        buf[62] = buf[74] + buf[58];
-        if (f25 < f24) buf[61] = fGpffff807c * f24;
-        buf[56] = buf[60] - buf[48];
-        buf[57] = buf[61] - buf[49];
-        buf[58] = buf[62] - buf[50];
+        PERSONA_DIRECTION.x *= f27;
+        PERSONA_DIRECTION.y *= f27;
+        PERSONA_DIRECTION.z *= f27;
+        PERSONA_CANDIDATE.x = PERSONA_MIDPOINT.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_MIDPOINT.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_MIDPOINT.z + PERSONA_DIRECTION.z;
+        if (f25 < f24) PERSONA_CANDIDATE.y = fGpffff807c * f24;
+        PERSONA_DIRECTION.x = PERSONA_CANDIDATE.x - PERSONA_BASE.x;
+        PERSONA_DIRECTION.y = PERSONA_CANDIDATE.y - PERSONA_BASE.y;
+        PERSONA_DIRECTION.z = PERSONA_CANDIDATE.z - PERSONA_BASE.z;
         RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
-        FUN_002a4690((void*)(buf + 11), (void*)(buf + 60),
+        FUN_002a4690((void*)(buf + 10), (void*)(buf + 60),
                      (void*)(buf + 48), &D_00697880);
         f26b = f27 / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
         FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
-        buf[46] = buf[56];
-        buf[47] = buf[58];
+        buf[46] = PERSONA_DIRECTION.x;
+        buf[47] = PERSONA_DIRECTION.z;
         FUN_004c6b20(&buf[46], &buf[46]);
         f23b = f26b * FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
         f23b = f23b * 0.21875f;
-        buf[48] = buf[50] + buf[47] * f23b;
-        buf[50] = buf[50] - buf[46] * f23b;
-        buf[56] *= f26b;
-        buf[60] = buf[48] + buf[56];
-        buf[61] = buf[49] + buf[57];
-        buf[62] = buf[50] + buf[58];
+        PERSONA_BASE.x = PERSONA_BASE.z + buf[47] * f23b;
+        PERSONA_BASE.z = PERSONA_BASE.z - buf[46] * f23b;
+        PERSONA_DIRECTION.x *= f26b;
+        PERSONA_CANDIDATE.x = PERSONA_BASE.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_BASE.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_BASE.z + PERSONA_DIRECTION.z;
         RwMatrixRotate((RwMatrix*)(buf + 16), &D_00697880,
                        f22b < 0.0f ? -70.0f : 70.0f, rwCOMBINEREPLACE);
         FUN_004c6c60((RwV3d*)(buf + 56), (RwV3d*)(buf + 52),
                      (RwMatrix*)(buf + 16));
-        buf[56] *= f27;
-        buf[57] *= f27;
-        buf[58] *= f27;
-        buf[60] = buf[72] + buf[56];
-        buf[61] = buf[73] + buf[57];
-        buf[62] = buf[74] + buf[58];
-        if (f25 < f24) buf[61] = fGpffff807c * f24;
-        buf[56] = buf[60] - buf[48];
-        buf[57] = buf[61] - buf[49];
-        buf[58] = buf[62] - buf[50];
+        PERSONA_DIRECTION.x *= f27;
+        PERSONA_DIRECTION.y *= f27;
+        PERSONA_DIRECTION.z *= f27;
+        PERSONA_CANDIDATE.x = PERSONA_MIDPOINT.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_MIDPOINT.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_MIDPOINT.z + PERSONA_DIRECTION.z;
+        if (f25 < f24) PERSONA_CANDIDATE.y = fGpffff807c * f24;
+        PERSONA_DIRECTION.x = PERSONA_CANDIDATE.x - PERSONA_BASE.x;
+        PERSONA_DIRECTION.y = PERSONA_CANDIDATE.y - PERSONA_BASE.y;
+        PERSONA_DIRECTION.z = PERSONA_CANDIDATE.z - PERSONA_BASE.z;
         RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
         *(u64*)(buf + 48) = *(u64*)(buf + 72);
-        buf[50] = buf[74];
-        FUN_002a4690((void*)(buf + 9), (void*)(buf + 60),
+        PERSONA_BASE.z = PERSONA_MIDPOINT.z;
+        FUN_002a4690((void*)(buf + 3), (void*)(buf + 60),
                      (void*)(buf + 48), &D_00697880);
         FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
-        buf[46] = buf[56];
-        buf[47] = buf[58];
+        buf[46] = PERSONA_DIRECTION.x;
+        buf[47] = PERSONA_DIRECTION.z;
         FUN_004c6b20(&buf[46], &buf[46]);
         f23b = f20 * FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
         f23b = f23b * 0.21875f;
-        buf[48] = buf[50] + buf[47] * f23b;
-        buf[50] = buf[50] - buf[46] * f23b;
-        buf[56] *= f26b;
-        buf[60] = buf[48] + buf[56];
-        buf[61] = buf[49] + buf[57];
-        buf[62] = buf[50] + buf[58];
+        PERSONA_BASE.x = PERSONA_BASE.z + buf[47] * f23b;
+        PERSONA_BASE.z = PERSONA_BASE.z - buf[46] * f23b;
+        PERSONA_DIRECTION.x *= f26b;
+        PERSONA_CANDIDATE.x = PERSONA_BASE.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_BASE.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_BASE.z + PERSONA_DIRECTION.z;
     }
     else
     {
         btlUnit002880e0(persona, 1);
         *(u64*)(buf + 40) = *(u64*)(buf + 64);
-        buf[42] = buf[66];
+        buf[42] = PERSONA_CENTER2.z;
         *(u64*)(buf + 48) = *(u64*)(buf + 64);
-        buf[50] = buf[66];
-        buf[49] = 0.25f * f24;
-        buf[48] = *(f32*)(buf + 64);
-        buf[50] = buf[66];
-        buf[49] = fGpffff8080 * f24;
+        PERSONA_BASE.z = PERSONA_CENTER2.z;
+        PERSONA_BASE.y = 0.25f * f24;
+        PERSONA_BASE.x = *(f32*)(buf + 64);
+        PERSONA_BASE.z = PERSONA_CENTER2.z;
+        PERSONA_BASE.y = fGpffff8080 * f24;
         RtQuatTransformVectors((RwV3d*)(buf + 52), &D_00697890, 1, &unit->rot);
-        buf[56] = buf[52] * f26;
-        buf[57] = buf[53] * f26;
-        buf[58] = buf[54] * f26;
-        buf[60] = buf[48] + buf[56];
-        buf[61] = buf[49] + buf[57];
-        buf[62] = buf[50] + buf[58];
-        buf[61] = fGpffff8084 * buf[49];
-        buf[56] = buf[60] - buf[48];
-        buf[57] = buf[61] - buf[49];
-        buf[58] = buf[62] - buf[50];
+        PERSONA_DIRECTION.x = PERSONA_TRANSFORMED.x * f26;
+        PERSONA_DIRECTION.y = PERSONA_TRANSFORMED.y * f26;
+        PERSONA_DIRECTION.z = PERSONA_TRANSFORMED.z * f26;
+        PERSONA_CANDIDATE.x = PERSONA_BASE.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_BASE.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_BASE.z + PERSONA_DIRECTION.z;
+        PERSONA_CANDIDATE.y = fGpffff8084 * PERSONA_BASE.y;
+        PERSONA_DIRECTION.x = PERSONA_CANDIDATE.x - PERSONA_BASE.x;
+        PERSONA_DIRECTION.y = PERSONA_CANDIDATE.y - PERSONA_BASE.y;
+        PERSONA_DIRECTION.z = PERSONA_CANDIDATE.z - PERSONA_BASE.z;
         RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
-        FUN_002a4690((void*)(buf + 11), (void*)(buf + 60),
+        FUN_002a4690((void*)(buf + 10), (void*)(buf + 60),
                      (void*)(buf + 48), &D_00697880);
         f20b = 0.5f * f24;
         if (f26 > f20b)
@@ -2456,30 +2474,30 @@ mode_done:
             f20 = (1.25f * f20b) /
                   FUN_0052e930(0.5f * camera->fovRad);
         if (f20 - f26 < 375.0f) f20 = 375.0f + f26;
-        buf[60] = buf[56] * f20;
-        buf[61] = buf[57] * f20;
-        buf[62] = buf[58] * f20;
-        buf[7] = buf[48] + buf[60];
-        buf[8] = buf[49] + buf[61];
-        buf[9] = buf[50] + buf[62];
+        PERSONA_CANDIDATE.x = PERSONA_DIRECTION.x * f20;
+        PERSONA_CANDIDATE.y = PERSONA_DIRECTION.y * f20;
+        PERSONA_CANDIDATE.z = PERSONA_DIRECTION.z * f20;
+        buf[7] = PERSONA_BASE.x + PERSONA_CANDIDATE.x;
+        buf[8] = PERSONA_BASE.y + PERSONA_CANDIDATE.y;
+        buf[9] = PERSONA_BASE.z + PERSONA_CANDIDATE.z;
         *(u64*)(buf + 48) = *(u64*)(buf + 68);
-        buf[50] = buf[70];
-        buf[49] = f25;
-        buf[56] = buf[52] * f26;
-        buf[57] = buf[53] * f26;
-        buf[58] = buf[54] * f26;
-        buf[60] = buf[48] + buf[56];
-        buf[61] = buf[49] + buf[57];
-        buf[62] = buf[50] + buf[58];
-        FUN_002a4690((void*)(buf + 9), (void*)(buf + 60),
+        PERSONA_BASE.z = PERSONA_CENTER1.z;
+        PERSONA_BASE.y = f25;
+        PERSONA_DIRECTION.x = PERSONA_TRANSFORMED.x * f26;
+        PERSONA_DIRECTION.y = PERSONA_TRANSFORMED.y * f26;
+        PERSONA_DIRECTION.z = PERSONA_TRANSFORMED.z * f26;
+        PERSONA_CANDIDATE.x = PERSONA_BASE.x + PERSONA_DIRECTION.x;
+        PERSONA_CANDIDATE.y = PERSONA_BASE.y + PERSONA_DIRECTION.y;
+        PERSONA_CANDIDATE.z = PERSONA_BASE.z + PERSONA_DIRECTION.z;
+        FUN_002a4690((void*)(buf + 3), (void*)(buf + 60),
                      (void*)(buf + 48), &D_00697880);
         f1 = fGpffff8088 * f20;
-        buf[56] = buf[52] * f1;
-        buf[57] = buf[53] * f1;
-        buf[58] = buf[54] * f1;
-        buf[4] = buf[48] + buf[56];
-        buf[5] = buf[49] + buf[57];
-        buf[6] = buf[50] + buf[58];
+        PERSONA_DIRECTION.x = PERSONA_TRANSFORMED.x * f1;
+        PERSONA_DIRECTION.y = PERSONA_TRANSFORMED.y * f1;
+        PERSONA_DIRECTION.z = PERSONA_TRANSFORMED.z * f1;
+        buf[4] = PERSONA_BASE.x + PERSONA_DIRECTION.x;
+        buf[5] = PERSONA_BASE.y + PERSONA_DIRECTION.y;
+        buf[6] = PERSONA_BASE.z + PERSONA_DIRECTION.z;
     }
     if (buf[5] < 25.0f) buf[5] = 25.0f;
     if (buf[8] < 25.0f) buf[8] = 25.0f;
@@ -2683,21 +2701,71 @@ void btlCameraFrameActionAll(BtlCamera* camera, u32 suppressEffects)
 void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
                                 u32 useCurrentTarget)
 {
-    RwV3d unitCenter;
-    RwV3d personaCenter;
-    RwV3d targetCenter;
-    RwV3d direction;
-    RwV3d scaledDirection;
-    RwV3d base;
-    RwV3d firstPos;
-    RwV3d secondPos;
-    RwV3d projectionA;
-    RwV3d projectionB;
-    BtlCameraKeyFrame frames[2];
-    volatile f32 pad[8];
-    BtlUnit* targetUnit;
-    BtlUnit* persona;
+    struct
+    {
+        f32 b0;
+        f32 b4;
+        f32 b8;
+        RtQuat quat;
+        f32 cc;
+        f32 d0;
+        f32 d4;
+        RtQuat quatCopy;
+        f32 f0;
+        f32 f4;
+        f32 f8;
+        f32 fc;
+        f32 f100;
+        f32 f104;
+        f32 f108;
+        f32 f10c;
+        f32 f110;
+        f32 f114;
+        f32 f118;
+        f32 f11c;
+        f32 f120;
+        f32 f124;
+        f32 f128;
+        f32 f12c;
+        union
+        {
+            s64 pair;
+            struct
+            {
+                f32 x;
+                f32 y;
+            } xy;
+        } pair130;
+        f32 f138;
+        f32 f140;
+        f32 f144;
+        f32 f148;
+        f32 f150;
+        f32 f154;
+        f32 f158;
+        f32 f160;
+        f32 f164;
+        f32 f168;
+        union
+        {
+            s64 pair;
+            struct
+            {
+                f32 x;
+                f32 y;
+            } xy;
+        } pair170;
+        f32 f178;
+        f32 centerPad2[3];
+        RwV3d personaCenter;
+        f32 centerPad0;
+        RwV3d targetCenter;
+        f32 centerPad1;
+        RwV3d unitCenter;
+    } l;
     BtlUnit* unit;
+    BtlUnit* persona;
+    BtlUnit* target;
     f32 unitHeight;
     f32 personaHeight;
     f32 targetHeight;
@@ -2706,40 +2774,38 @@ void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
     f32 targetRadius;
     f32 distance;
     f32 cameraDistance;
-    f32 halfDistance;
+    f32 projection;
+    f32 cross;
+    f32 side;
     f32 modeScale;
-    f32 projected;
     u32 personaResult;
     u32 special;
     u32 mode;
-    u32 randomMode;
 
     unit = camera->action->unit;
-    targetUnit = camera->action->target.targetedActions[0]->unit;
+    target = camera->action->target.targetedActions[0]->unit;
     persona = unit->personaUnit;
-    pad[0] = 0.0f;
-
-    personaResult = FUN_002fdbb0(camera->action, persona) != 0;
-    special = FUN_002a3520((int)camera) != 0;
+    personaResult = FUN_002fdbb0_result(camera->action, persona) != 0;
+    special = FUN_002a3520_result((int)camera) != 0;
     if (special == 0 && FUN_002a3550((u8*)camera) != 0)
     {
         special = 1;
     }
 
-    btlUnitGetSphereWorldCenter(unit, &unitCenter);
-    btlUnitGetSphereWorldCenter(persona, &personaCenter);
-    unitHeight = unitCenter.y + 0.5f *
-                 (unit->unk_8c * unit->scale);
-    personaHeight = personaCenter.y + 0.5f *
-                    (persona->unk_8c * persona->scale);
-    if (personaResult == 0 && special == 0 && unitHeight < personaHeight)
+    btlUnitGetSphereWorldCenter(unit, &l.unitCenter);
+    btlUnitGetSphereWorldCenter(persona, &l.personaCenter);
+    unitHeight = l.unitCenter.y + 0.5f * (unit->unk_8c * unit->scale);
+    personaHeight = l.personaCenter.y +
+                    0.5f * (persona->unk_8c * persona->scale);
+    if (personaResult == 0 && unitHeight < personaHeight && special == 0)
     {
-        unitHeight = 0.5f * (unitHeight + personaHeight);
+        l.unitCenter.y = 0.25f * (unitHeight + personaHeight);
+        unitHeight = personaHeight;
     }
 
     unitRadius = unit->sphereRadius * unit->scale;
     personaRadius = persona->sphereRadius * persona->scale;
-    if (personaResult == 0 && special == 0 && unitRadius < personaRadius)
+    if (personaResult == 0 && unitRadius < personaRadius && special == 0)
     {
         unitRadius = personaRadius;
     }
@@ -2747,21 +2813,17 @@ void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
     {
         unitRadius = 50.0f;
     }
-    if (personaRadius < 50.0f)
-    {
-        personaRadius = 50.0f;
-    }
 
-    btlUnitGetSphereWorldCenter(targetUnit, &targetCenter);
-    targetHeight = targetCenter.y + 0.5f *
-                   (targetUnit->unk_8c * targetUnit->scale);
+    btlUnitGetSphereWorldCenter(target, &l.targetCenter);
+    targetHeight = l.targetCenter.y +
+                   0.5f * (target->unk_8c * target->scale);
     if (targetHeight > 450.0f)
     {
-        targetCenter.y = targetCenter.y -
-                         0.5f * (targetUnit->unk_8c * targetUnit->scale);
+        l.targetCenter.y =
+            l.targetCenter.y - 0.5f * (target->unk_8c * target->scale);
         targetHeight = 450.0f;
     }
-    targetRadius = targetUnit->sphereRadius * targetUnit->scale;
+    targetRadius = target->sphereRadius * target->scale;
 
     mode = FUN_002a3420((int)camera);
     modeScale = 1.0f;
@@ -2777,121 +2839,247 @@ void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
         btlUnit002880e0(persona, 0);
         *(BtlUnit**)((u8*)camera + 0x120) = persona;
         *(u16*)((u8*)camera + 0x124) = 1;
-    }
-
-    direction.x = unitCenter.x - targetCenter.x;
-    direction.y = unitCenter.y - targetCenter.y;
-    direction.z = unitCenter.z - targetCenter.z;
-    distance = RwV3dNormalize(&direction, &direction);
-
-    base = unitCenter;
-    base.y = base.y + 0.25f * (unit->unk_8c * unit->scale);
-    scaledDirection.x = targetCenter.x + direction.x * distance;
-    scaledDirection.y = targetCenter.y + direction.y * distance;
-    scaledDirection.z = targetCenter.z + direction.z * distance;
-
-    projectionA.x = camera->pos.x - scaledDirection.x;
-    projectionA.y = camera->pos.y - scaledDirection.y;
-    projectionA.z = camera->pos.z - scaledDirection.z;
-    FUN_004c6b20(&projectionA, &projectionA);
-
-    randomMode = 0;
-    if (personaResult == 0)
-    {
-        randomMode = effMiscRand(0) & 1;
-        if (randomMode != 0 && FUN_002a3380((u8*)camera) == 0)
+        if ((*(u16*)(iGpffffb73c + (persona->charId * 0x58)) & 1) != 0)
         {
-            randomMode = 0;
+            if (personaHeight < 750.0f)
+            {
+                l.personaCenter.y = fGpffff8060 * personaHeight;
+            }
+            else
+            {
+                l.personaCenter.y = fGpffff8090 * personaHeight;
+            }
+            l.targetCenter.y = fGpffff8094 * targetHeight;
+            modeScale = 1.5f;
         }
     }
 
-    if (personaResult != 0 || randomMode != 0)
+    l.f150 = l.unitCenter.x - l.targetCenter.x;
+    l.f154 = l.unitCenter.y - l.targetCenter.y;
+    l.f158 = l.unitCenter.z - l.targetCenter.z;
+    distance = RwV3dNormalize((RwV3d*)&l.f150, (RwV3d*)&l.f150);
+    side = fGpffff8098 * distance;
+    l.f160 = l.f150 * side + l.targetCenter.x;
+    l.f164 = l.f154 * side + l.targetCenter.y;
+    l.f168 = l.f158 * side + l.targetCenter.z;
+    l.f8 = camera->pos.x - l.f160;
+    l.fc = camera->pos.z - l.f168;
+    FUN_004c6b20(&l.f8, &l.f8);
+
+    if (personaResult != 0 ||
+        ((effMiscRand(0) & 1) != 0 && FUN_002a3380((u8*)camera) != 0))
     {
         btlUnit002880e0(persona, 1);
         *(BtlUnit**)((u8*)camera + 0x120) = persona;
         *(u16*)((u8*)camera + 0x124) = 0;
 
-        cameraDistance = 4.0f * unitRadius;
-        projected = fGpffff8094 * personaRadius;
-        projectionB = base;
-        projectionB.x = projectionB.x + projectionA.z * cameraDistance;
-        projectionB.z = projectionB.z - projectionA.x * cameraDistance;
-        projected = FUN_002d1fd0((f32*)&projectionB,
-                                 (f32*)&base,
-                                 (f32*)&base,
-                                 (f32*)&projectionA);
-        projected = projected + 0.0f;
-        cameraDistance = unitRadius * modeScale + projected;
-        cameraDistance = cameraDistance /
-                         FUN_0052e930(fGpffff8070 *
-                                      (0.5f * camera->fovRad));
+        l.pair170.pair = *(s64*)&l.unitCenter;
+        l.f178 = l.unitCenter.z;
+        l.f0 = l.f158;
+        l.f4 = -l.f150;
+        cross = (l.f4 * l.fc) + (l.f0 * l.f8);
+        if (unitHeight < targetHeight)
+        {
+            l.f144 = l.pair170.xy.y + fGpffff8030 * unitHeight;
+        }
+        else
+        {
+            l.f144 = l.pair170.xy.y - fGpffff8030 * unitHeight;
+        }
+        side = 2.25f * unitRadius;
+        if (!(cross < 0.0f))
+        {
+            l.f140 = l.pair170.xy.x + l.f0 * side;
+            l.f148 = l.f178 - l.f4 * side;
+        }
+        else
+        {
+            l.f140 = l.pair170.xy.x - l.f0 * side;
+            l.f148 = l.f178 + l.f4 * side;
+            side = 0.5f * distance;
+            l.f160 = l.f150 * side + l.targetCenter.x;
+            l.f164 = l.f154 * side + l.targetCenter.y;
+            l.f168 = l.f158 * side + l.targetCenter.z;
+        }
+        l.f164 = l.f164 + 0.5f * (target->unk_8c * target->scale);
+
+        FUN_002a4690(&l.quat, &l.f140, &l.f160, &D_00697880);
+        RtQuatTransformVectors((RwV3d*)&l.f150, &D_006978A0, 1,
+                               &l.quat);
+        l.f100 = l.f160;
+        l.f104 = l.f168;
+        l.f108 = l.f140;
+        l.f10c = l.f148;
+        l.f128 = l.pair170.xy.x;
+        l.f12c = l.f178;
+        projection = FUN_002d1fd0(&l.f100, &l.f108, &l.f128,
+                                  &l.f120);
+        l.f140 = l.f120;
+        l.f144 = l.pair170.xy.y + 0.5f * unitHeight;
+        l.f148 = l.f124;
+        cameraDistance = (projection + 1.5f * unitRadius) /
+                         tanf(fGpffff8070 * (0.5f * camera->fovRad));
         if (cameraDistance < 226.0f)
         {
             cameraDistance = 226.0f;
         }
-        scaledDirection.x = direction.x * cameraDistance;
-        scaledDirection.y = direction.y * cameraDistance;
-        scaledDirection.z = direction.z * cameraDistance;
-        firstPos.x = base.x + scaledDirection.x;
-        firstPos.y = base.y + scaledDirection.y;
-        firstPos.z = base.z + scaledDirection.z;
-        secondPos = firstPos;
-        if (firstPos.y < 50.0f)
+        l.f150 *= cameraDistance;
+        l.f154 *= cameraDistance;
+        l.f158 *= cameraDistance;
+        if (cross < 0.0f)
         {
-            firstPos.y = 50.0f;
+            side = cameraDistance *
+                   tanf(fGpffff8070 * (0.5f * camera->fovRad));
+            side = side * 0.21875f;
+            l.f118 = l.f150;
+            l.f11c = l.f158;
+            FUN_004c6b20(&l.f118, &l.f118);
+            side = side * 1.25f;
+            l.f140 = l.f140 + l.f11c * side;
+            l.f148 = l.f148 - l.f118 * side;
         }
-        if (secondPos.y < 50.0f)
+
+        l.quatCopy.imag.x = l.quat.imag.x;
+        l.quatCopy.imag.y = l.quat.imag.y;
+        l.quatCopy.imag.z = l.quat.imag.z;
+        l.quatCopy.real = l.quat.real;
+        l.cc = l.f140 + l.f150;
+        l.d0 = l.f144 + l.f154;
+        l.d4 = l.f148 + l.f158;
+        if (l.d0 < 25.0f)
         {
-            secondPos.y = 50.0f;
+            l.d0 = 25.0f;
+        }
+        l.f144 = l.f144 - fGpffff8094 * unitHeight;
+        l.b0 = l.f140 + l.f150;
+        l.b4 = l.f144 + l.f154;
+        l.b8 = l.f148 + l.f158;
+        if (l.b4 < 25.0f)
+        {
+            l.b4 = 25.0f;
         }
         modeScale = 3.0f;
     }
     else
     {
-        modeScale = 2.25f;
-        halfDistance = 0.5f * distance;
-        if (halfDistance < targetRadius)
+        if ((*(u16*)(iGpffffb73c + (persona->charId * 0x58)) & 1) == 0)
         {
-            halfDistance = targetRadius;
+            btlUnit002880e0(persona, 0);
         }
-        cameraDistance = (1.5f * unitRadius + halfDistance) /
-                         FUN_0052e930(fGpffff8070 *
-                                      (0.5f * camera->fovRad));
+        else
+        {
+            btlUnit002880e0(persona, 1);
+        }
+        *(BtlUnit**)((u8*)camera + 0x120) = persona;
+        *(u16*)((u8*)camera + 0x124) = 1;
+
+        l.pair170.pair = *(s64*)&l.targetCenter;
+        l.f178 = l.targetCenter.z;
+        if (l.pair170.xy.y < 125.0f)
+        {
+            l.pair170.xy.y = 125.0f;
+        }
+        l.f0 = l.f158;
+        l.f4 = -l.f150;
+        cross = (l.f4 * l.fc) + (l.f0 * l.f8);
+        side = 1.25f * targetRadius;
+        l.f144 = l.pair170.xy.y;
+        if (!(cross < 0.0f))
+        {
+            l.f140 = l.pair170.xy.x + l.f0 * side;
+            l.f148 = l.f178 - l.f4 * side;
+            l.pair130.pair = *(s64*)&l.f150;
+            l.f138 = l.f158;
+        }
+        else
+        {
+            l.f140 = l.pair170.xy.x - l.f0 * side;
+            l.f148 = l.f178 + l.f4 * side;
+        }
+
+        FUN_002a4690(&l.quat, &l.f140, &l.f160, &D_00697880);
+        RtQuatTransformVectors((RwV3d*)&l.f150, &D_006978A0, 1,
+                               &l.quat);
+        l.f100 = l.f160;
+        l.f104 = l.f168;
+        l.f108 = l.f140;
+        l.f10c = l.f148;
+        l.f128 = l.pair170.xy.x;
+        l.f12c = l.f178;
+        FUN_002d1fd0(&l.f100, &l.f108, &l.f128, &l.f120);
+        l.f140 = l.f120;
+        l.f148 = l.f124;
+        cameraDistance = (1.5f * modeScale) /
+                         tanf(fGpffff8070 * (0.5f * camera->fovRad));
         if (cameraDistance < 226.0f)
         {
             cameraDistance = 226.0f;
         }
-        scaledDirection.x = direction.x * cameraDistance;
-        scaledDirection.y = direction.y * cameraDistance;
-        scaledDirection.z = direction.z * cameraDistance;
-        firstPos.x = targetCenter.x + scaledDirection.x;
-        firstPos.y = targetCenter.y + scaledDirection.y;
-        firstPos.z = targetCenter.z + scaledDirection.z;
-        secondPos = firstPos;
-        if (firstPos.y < 50.0f)
+        l.f150 *= cameraDistance;
+        l.f154 *= cameraDistance;
+        l.f158 *= cameraDistance;
+        if (!(cross < 0.0f))
         {
-            firstPos.y = 50.0f;
+            l.f140 = l.f140 - l.pair130.xy.y * side;
+            l.f148 = l.f148 + l.pair130.xy.x * side;
         }
-        if (secondPos.y < 50.0f)
+
+        l.b0 = l.f140 + l.f150;
+        l.b4 = l.f144 + l.f154;
+        l.b8 = l.f148 + l.f158;
+        if (l.b4 < 25.0f)
         {
-            secondPos.y = 50.0f;
+            l.b4 = 25.0f;
         }
+        l.quatCopy.imag.x = l.quat.imag.x;
+        l.quatCopy.imag.y = l.quat.imag.y;
+        l.quatCopy.imag.z = l.quat.imag.z;
+        l.quatCopy.real = l.quat.real;
+        l.cc = l.b0;
+        l.d0 = l.b4;
+        l.d4 = l.b8;
+
+        l.f150 = l.unitCenter.x - l.cc;
+        l.f154 = l.unitCenter.y - l.d0;
+        l.f158 = l.unitCenter.z - l.d4;
+        distance = RwV3dNormalize((RwV3d*)&l.f150,
+                                  (RwV3d*)&l.f150);
+        l.pair170.pair = *(s64*)&l.unitCenter;
+        l.f178 = l.unitCenter.z;
+        l.pair170.xy.y = l.pair170.xy.y +
+                         0.25f * (unit->unk_8c * unit->scale);
+        FUN_002a4690(&l.quat, &l.cc, &l.pair170.xy.x, &D_00697880);
+        side = fGpffff8088 * distance;
+        l.f150 *= side;
+        l.f154 *= side;
+        l.f158 *= side;
+        l.b0 = l.cc + l.f150;
+        l.b4 = l.d0 + l.f154;
+        l.b8 = l.d4 + l.f158;
+        if (l.b4 < 25.0f)
+        {
+            l.b4 = 25.0f;
+        }
+        if (l.d0 < 25.0f)
+        {
+            l.d0 = 25.0f;
+        }
+        modeScale = 1.0f;
     }
 
-    FUN_002a4690(&frames[0].rot, &firstPos, &base,
-                 &D_00697880);
-    FUN_002a4690(&frames[1].rot, &secondPos, &base,
-                 &D_00697880);
-    frames[0].pos = firstPos;
-    frames[1].pos = secondPos;
     if (useCurrentTarget == 0)
     {
-        frames[0].pos = base;
-        frames[1].pos = base;
+        l.b0 = l.cc;
+        l.b4 = l.d0;
+        l.b8 = l.d4;
+        l.quat.imag.x = l.quatCopy.imag.x;
+        l.quat.imag.y = l.quatCopy.imag.y;
+        l.quat.imag.z = l.quatCopy.imag.z;
+        l.quat.real = l.quatCopy.real;
     }
-    FUN_002a3e80(50.0f, (u8*)camera->action, (u8*)&unit->pos,
-                 (u8*)&frames[0].pos, 3);
-    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    FUN_002a3e80(50.0f, (u8*)camera->action, (u8*)&target->pos,
+                 (u8*)&l.b0, 3);
+    FUN_002a2290((u16*)camera, (RwV3d*)&l.b0, (RwV3d*)&l.cc, 1);
     FUN_002a3110((u16*)camera, modeScale);
     if (suppressEffects != 0)
     {
@@ -3033,6 +3221,7 @@ extern float fGpffff809c;
 extern float fGpffff80b4;
 extern float fGpffff80c4;
 extern float fGpffff80d4;
+extern f32 fGpffff80b4;
 extern float fGpffff8114;
 extern float fGpffff8118;
 extern f32 uGpffff808c;
@@ -4108,142 +4297,175 @@ void FUN_002b2880(int param_1)
 
 // FUN_002b2940 NONMATCHING
 
-void FUN_002b2940(undefined8 param_1)
-
+void FUN_002b2940(void *arg0)
 {
-  char cVar1;
-  int iVar2;
-  int iVar3;
-  int iVar4;
-  float fVar5;
-  float fVar6;
-  float fVar7;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
-  undefined1 auStack_94 [20];
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  float fStack_74;
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  float fStack_64;
-  float fStack_58;
-  float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar4 = (int)param_1;
-  iVar2 = *(int *)(*(int *)(iVar4 + 0xe0) + 0x30);
-  cVar1 = *(char *)(iVar2 + 0xa2);
-  iVar3 = *(int *)(*(int *)(*(int *)(iVar4 + 0xe0) + 0x38) + 0x30);
-  fVar6 = *(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c);
-  FUN_0027ffb0(iVar3,&fStack_10);
-  FUN_0027ffb0(iVar2,&fStack_20);
-  if (fStack_1c < fStack_c) {
-    fStack_c = (fStack_c + 0.0) - fGpffff8094 * *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c);
-    fStack_1c = fGpffff806c * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c) + fStack_1c + 0.0;
-  }
-  else {
-    fStack_c = fGpffff8094 * *(float *)(iVar3 + 0x8c) * *(float *)(iVar3 + 0x2c) + fStack_c + 0.0;
-    fStack_1c = (fStack_1c + 0.0) -
-                fGpffff8094 * *(float *)(iVar2 + 0x8c) * *(float *)(iVar2 + 0x2c);
-  }
-  if (fStack_c < 65.0) {
-    fStack_c = 65.0;
-  }
-  fStack_40 = fStack_10 + (fStack_20 - fStack_10) * fGpffff8088;
-  fStack_3c = fStack_c + (fStack_1c - fStack_c) * fGpffff8088;
-  fStack_38 = fStack_8 + (fStack_18 - fStack_8) * fGpffff8088;
-  fStack_68 = fStack_10 - *(float *)(iVar4 + 0x9c);
-  fStack_4c = fStack_c - *(float *)(iVar4 + 0xa0);
-  fStack_64 = fStack_8 - *(float *)(iVar4 + 0xa4);
-  fStack_50 = fStack_68;
-  fStack_48 = fStack_64;
-  FUN_004c6b20(&fStack_68,&fStack_68);
-  FUN_004be1e0(&fStack_50,0x697870,1,iVar3 + 0x1c);
-  fStack_70 = fStack_50;
-  fStack_6c = fStack_48;
-  FUN_004c6b20(&fStack_70,&fStack_70);
-  if (cVar1 == '\0') {
-    fVar5 = fVar6 * 0.5;
-    fStack_50 = fStack_50 * fVar5;
-    fStack_4c = fStack_4c * fVar5;
-    fStack_48 = fStack_48 * fVar5;
-    fStack_30 = fStack_10 - fStack_50;
-    fStack_2c = fStack_c - fStack_4c;
-    fStack_28 = fStack_8 - fStack_48;
-  }
-  else {
-    fVar5 = fVar6 * 1.5;
-    fStack_50 = fStack_50 * fVar5;
-    fStack_4c = fStack_4c * fVar5;
-    fStack_48 = fStack_48 * fVar5;
-    if (fStack_70 * fStack_68 + fStack_6c * fStack_64 < 0.0) {
-      fStack_30 = fStack_10 + fStack_50;
-      fStack_2c = fStack_c + fStack_4c;
-      fStack_28 = fStack_8 + fStack_48;
+    struct
+    {
+        RwV3d output;
+        RtQuat transform;
+        u8 pad_1c[4];
+        f32 fromX;
+        f32 fromZ;
+        f32 toX;
+        f32 toZ;
+        f32 eyeX;
+        f32 eyeZ;
+        f32 normX;
+        f32 normZ;
+        u8 pad_40[8];
+        f32 eye2X;
+        f32 eye2Z;
+        RwV3d direction;
+        u8 pad_bc[4];
+        RwV3d center;
+        u8 pad_cc[4];
+        RwV3d endpoint;
+        u8 pad_dc[4];
+        RwV3d sourceCenter;
+        u8 pad_ec[4];
+        RwV3d targetCenter;
+        u8 pad_fc[4];
+    } scratch;
+    u8 genus;
+    BtlUnit *target;
+    BtlUnit *unit;
+    void *action;
+    BtlCamera *camera;
+    f32 radius;
+    f32 distance;
+
+    camera = (BtlCamera*)arg0;
+    action = *(void **)((u8*)camera + 0xe0);
+    unit = *(BtlUnit**)((u8*)action + 0x30);
+    genus = *(u8*)((u8*)unit + 0xa2);
+    target = *(BtlUnit**)((u8*)*(void **)((u8*)action + 0x38) + 0x30);
+    radius = target->sphereRadius * target->scale;
+    btlUnitGetSphereWorldCenter(target, &scratch.targetCenter);
+    btlUnitGetSphereWorldCenter(unit, &scratch.sourceCenter);
+    if (!(scratch.targetCenter.y <= scratch.sourceCenter.y))
+    {
+        scratch.targetCenter.y =
+            (scratch.targetCenter.y + 0.0f) -
+            fGpffff8094 * (target->unk_8c * target->scale);
+        scratch.sourceCenter.y =
+            (scratch.sourceCenter.y + 0.0f) +
+            fGpffff806c * (unit->unk_8c * unit->scale);
     }
-    else {
-      fStack_30 = fStack_10 - fStack_50;
-      fStack_2c = fStack_c - fStack_4c;
-      fStack_28 = fStack_8 - fStack_48;
+    else
+    {
+        scratch.targetCenter.y =
+            (scratch.targetCenter.y + 0.0f) +
+            fGpffff8094 * (target->unk_8c * target->scale);
+        scratch.sourceCenter.y =
+            (scratch.sourceCenter.y + 0.0f) -
+            fGpffff8094 * (unit->unk_8c * unit->scale);
     }
-  }
-  fStack_80 = fStack_40;
-  fStack_7c = fStack_38;
-  fStack_78 = fStack_30;
-  fStack_74 = fStack_28;
-  fStack_58 = fStack_10;
-  fStack_54 = fStack_8;
-  fVar5 = (float)FUN_002d1fd0((f32*)&fStack_80,(f32*)&fStack_78,(f32*)&fStack_58,(f32*)(0));
-  if (cVar1 == '\0') {
-    if (fVar6 <= 100.0) {
-      fVar6 = 100.0;
+    if (scratch.targetCenter.y < 65.0f)
+    {
+        scratch.targetCenter.y = 65.0f;
     }
-  }
-  else if (fVar6 <= 125.0) {
-    fVar6 = 125.0;
-  }
-  fVar7 = 160.0;
-  if (160.0 <= fVar5 + fVar6) {
-    fVar7 = fVar5 + fVar6;
-  }
-  fStack_50 = fStack_40 - fStack_30;
-  fStack_4c = fStack_3c - fStack_2c;
-  fStack_48 = fStack_38 - fStack_28;
-  fVar6 = (float)FUN_004c6ac0(&fStack_50);
-  fVar5 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar4 + 0xb8) * 0.5);
-  fVar6 = fVar6 + fVar7 / fVar5;
-  if (fVar6 <= 0.0) {
-    fVar6 = 0.0;
-  }
-  FUN_004be1e0(&fStack_50,0x6978a0,1,auStack_94);
-  fStack_50 = fStack_50 * fVar6;
-  fStack_4c = fStack_4c * fVar6;
-  fStack_48 = fStack_48 * fVar6;
-  fStack_a0 = fStack_40 + fStack_50;
-  fStack_9c = fStack_3c + fStack_4c;
-  fStack_98 = fStack_38 + fStack_48;
-  if (fStack_9c < 25.0) {
-    fStack_9c = 25.0;
-  }
-  return;
+
+    scratch.direction.x = scratch.sourceCenter.x - scratch.targetCenter.x;
+    scratch.direction.y = scratch.sourceCenter.y - scratch.targetCenter.y;
+    scratch.direction.z = scratch.sourceCenter.z - scratch.targetCenter.z;
+    scratch.direction.x = scratch.direction.x * fGpffff8088;
+    scratch.direction.y = scratch.direction.y * fGpffff8088;
+    scratch.direction.z = scratch.direction.z * fGpffff8088;
+    scratch.center.x = scratch.targetCenter.x + scratch.direction.x;
+    scratch.center.y = scratch.targetCenter.y + scratch.direction.y;
+    scratch.center.z = scratch.targetCenter.z + scratch.direction.z;
+
+    scratch.normX = scratch.targetCenter.x - camera->pos.x;
+    scratch.normZ = scratch.targetCenter.z - camera->pos.z;
+    scratch.fromX = scratch.normX;
+    scratch.fromZ = scratch.normZ;
+    FUN_004c6b20(&scratch.fromX, &scratch.fromX);
+    FUN_004be1e0(&scratch.direction, 0x697870, 1,
+                 (u8*)target + 0x1c);
+    scratch.eyeX = scratch.direction.x;
+    scratch.eyeZ = scratch.direction.z;
+    FUN_004c6b20(&scratch.eyeX, &scratch.eyeX);
+
+    if (genus == 0)
+    {
+        scratch.direction.x = scratch.direction.x * (radius * 0.5f);
+        scratch.direction.y = scratch.direction.y * (radius * 0.5f);
+        scratch.direction.z = scratch.direction.z * (radius * 0.5f);
+        scratch.endpoint.x = scratch.targetCenter.x - scratch.direction.x;
+        scratch.endpoint.y = scratch.targetCenter.y - scratch.direction.y;
+        scratch.endpoint.z = scratch.targetCenter.z - scratch.direction.z;
+    }
+    else
+    {
+        scratch.direction.x = scratch.direction.x * (radius * 1.5f);
+        scratch.direction.y = scratch.direction.y * (radius * 1.5f);
+        scratch.direction.z = scratch.direction.z * (radius * 1.5f);
+        if (scratch.eyeX * scratch.fromX +
+            scratch.eyeZ * scratch.fromZ < 0.0f)
+        {
+            scratch.endpoint.x = scratch.targetCenter.x + scratch.direction.x;
+            scratch.endpoint.y = scratch.targetCenter.y + scratch.direction.y;
+            scratch.endpoint.z = scratch.targetCenter.z + scratch.direction.z;
+        }
+        else
+        {
+            scratch.endpoint.x = scratch.targetCenter.x - scratch.direction.x;
+            scratch.endpoint.y = scratch.targetCenter.y - scratch.direction.y;
+            scratch.endpoint.z = scratch.targetCenter.z - scratch.direction.z;
+        }
+    }
+
+    FUN_002a4690(&scratch.transform, &scratch.endpoint, &scratch.center,
+                 &D_00697880);
+    scratch.fromX = scratch.center.x;
+    scratch.fromZ = scratch.center.z;
+    scratch.toX = scratch.endpoint.x;
+    scratch.toZ = scratch.endpoint.z;
+    scratch.eye2X = scratch.targetCenter.x;
+    scratch.eye2Z = scratch.targetCenter.z;
+    distance = FUN_002d1fd0(&scratch.fromX, &scratch.toX,
+                            &scratch.eye2X, NULL);
+    if (genus == 0)
+    {
+        if (radius <= 100.0f)
+        {
+            radius = 100.0f;
+        }
+    }
+    else if (radius <= 125.0f)
+    {
+        radius = 125.0f;
+    }
+    distance = 160.0f;
+    if (160.0f <= distance + radius)
+    {
+        distance = distance + radius;
+    }
+    scratch.direction.x = scratch.center.x - scratch.endpoint.x;
+    scratch.direction.y = scratch.center.y - scratch.endpoint.y;
+    scratch.direction.z = scratch.center.z - scratch.endpoint.z;
+    radius = RwV3dLength(&scratch.direction);
+    distance = radius +
+               distance / FUN_0052e930(fGpffff8070 * camera->fovRad * 0.5f);
+    if (distance <= 0.0f)
+    {
+        distance = 0.0f;
+    }
+    FUN_004be1e0(&scratch.direction, 0x6978a0, 1,
+                 (u8*)&scratch.transform);
+    scratch.direction.x = scratch.direction.x * distance;
+    scratch.direction.y = scratch.direction.y * distance;
+    scratch.direction.z = scratch.direction.z * distance;
+    scratch.output.x = scratch.center.x + scratch.direction.x;
+    scratch.output.y = scratch.center.y + scratch.direction.y;
+    scratch.output.z = scratch.center.z + scratch.direction.z;
+    if (scratch.output.y < 25.0f)
+    {
+        scratch.output.y = 25.0f;
+    }
+    FUN_002a3e80(400.0f, (u8*)camera->action, (u8*)&scratch.output,
+                 (u8*)&scratch.center, 3);
+    FUN_002a2170(camera, (f32*)&scratch.output);
 }
 
 // FUN_002b2eb0 NONMATCHING
@@ -4584,67 +4806,79 @@ void FUN_002b3980(BtlCamera* camera)
 
 // FUN_002b3c60 NONMATCHING
 
-void FUN_002b3c60(undefined8 param_1)
-
+void FUN_002b3c60(BtlCamera* camera)
 {
-  int iVar1;
-  int iVar2;
-  u32 uVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  float afStack_e0 [3];
-  undefined1 auStack_d4 [16];
-  undefined1 auStack_c4 [28];
-  undefined1 auStack_a8 [28];
-  undefined1 auStack_8c [28];
-  undefined1 auStack_70 [64];
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar2 = (int)param_1;
-  iVar1 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  FUN_0027ffb0(iVar1,&fStack_10);
-  fVar5 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
-  fVar6 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5;
-  fStack_c = fGpffff80b4 * fVar6 + fStack_c + 0.0;
-  FUN_004be1e0(&fStack_20,0x697890,1,iVar1 + 0x1c);
-  fStack_30 = fStack_20 * 350.0;
-  fStack_2c = fStack_1c * 350.0;
-  fStack_28 = fStack_18 * 350.0;
-  fStack_20 = (fStack_10 + fStack_30) - fStack_10;
-  fStack_1c = ((fStack_c + fStack_2c) - 35.0) - fStack_c;
-  fStack_18 = (fStack_8 + fStack_28) - fStack_8;
-  FUN_004c69f0(&fStack_20,&fStack_20);
-  if (fVar6 <= fVar5) {
-    fVar4 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar2 + 0xb8) * 0.5);
-    fVar4 = (fVar5 * 1.75) / fVar4;
+  RwV3d center;
+  RwV3d transformed;
+  struct {
+    u8 frameBytes[0x70];
+    RwMatrix matrix;
+    f32 directionX;
+    f32 directionY;
+    f32 directionZ;
+  } scratch;
+  BtlUnit* unit;
+  f32 radius;
+  f32 halfHeight;
+  f32 distance;
+  f32 angle;
+  s32 i;
+
+  unit = camera->action->unit;
+  btlUnitGetSphereWorldCenter(unit, &center);
+  radius = unit->sphereRadius * unit->scale;
+  halfHeight = 0.5f * (unit->unk_8c * unit->scale);
+  center.y = 0.0f + center.y + fGpffff80b4 * halfHeight;
+  RtQuatTransformVectors(&transformed, &D_00697890, 1, &unit->rot);
+  scratch.directionX = transformed.x * 350.0f;
+  scratch.directionY = transformed.y * 350.0f;
+  scratch.directionZ = transformed.z * 350.0f;
+  transformed.x = (center.x + scratch.directionX) - center.x;
+  transformed.y = ((center.y + scratch.directionY) - 35.0f) - center.y;
+  transformed.z = (center.z + scratch.directionZ) - center.z;
+  RwV3dNormalize(&transformed, &transformed);
+  unit = 0;
+  if (radius < halfHeight)
+  {
+    distance = fGpffff8070 * halfHeight /
+               tanf(0.5f * camera->fovRad);
   }
-  else {
-    fVar4 = (float)FUN_0052e930(*(float *)(iVar2 + 0xb8) * 0.5);
-    fVar4 = (fGpffff8070 * fVar6) / fVar4;
+  else
+  {
+    distance = 0.5f * radius /
+               tanf(fGpffff8070 * (0.5f * camera->fovRad));
   }
-  fVar5 = 65.0;
-  for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
-    FUN_004c31b0(fVar5,auStack_70,0x697880,0);
-    FUN_004c6c60(&fStack_30,&fStack_20,auStack_70);
-    afStack_e0[uVar3 * 7] = fStack_30 * fVar4 + fStack_10 + 0.0;
-    afStack_e0[uVar3 * 7 + 1] = fStack_2c * fVar4 + fStack_c + 0.0;
-    afStack_e0[uVar3 * 7 + 2] = fStack_28 * fVar4 + fStack_8 + 0.0;
-    if (afStack_e0[uVar3 * 7 + 1] < 5.0) {
-      afStack_e0[uVar3 * 7 + 1] = 5.0;
+  angle = 65.0f;
+  i = 0;
+  while ((i & 0xffff) < 4)
+  {
+    RwMatrixRotate(&scratch.matrix, &D_00697880, angle,
+                   rwCOMBINEREPLACE);
+    FUN_004c6c60((RwV3d*)&scratch.directionX, &transformed,
+                 &scratch.matrix);
+    ((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos.x =
+        0.0f + center.x + scratch.directionX * distance;
+    ((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos.y =
+        0.0f + center.y + scratch.directionY * distance;
+    ((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos.z =
+        0.0f + center.z + scratch.directionZ * distance;
+    if (((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos.y < 5.0f)
+    {
+      ((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos.y = 5.0f;
     }
-    fVar5 = fVar5 + -25.0;
-    fVar4 = fVar4 + 25.0;
+    FUN_002a4690(&((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].rot,
+                 &((BtlCameraKeyFrame*)scratch.frameBytes)[(u16)i].pos,
+                 &center, &D_00697880);
+    angle = angle + -25.0f;
+    distance = distance + 25.0f;
+    i = (i + 1) & 0xffff;
   }
-  return;
+  FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
+  FUN_002a2660(camera, (BtlCameraKeyFrame*)&scratch.frameBytes[0],
+               (BtlCameraKeyFrame*)&scratch.frameBytes[0x1c],
+               (BtlCameraKeyFrame*)&scratch.frameBytes[0x38],
+               (BtlCameraKeyFrame*)&scratch.frameBytes[0x54], 1);
+  FUN_002a3110((u16*)camera, 10.0f);
 }
 
 // FUN_002b3f80
@@ -5791,191 +6025,273 @@ void FUN_002b6490(void)
   return;
 }
 
+typedef struct B64CameraWork {
+  BtlAction *firstAction;
+  BtlAction *secondAction;
+  u16 unk_08;
+  s16 index;
+  u16 frame;
+  u16 flags;
+  u16 *entries;
+} B64CameraWork;
+
+typedef struct B64CameraEntry {
+  s16 duration;
+  u16 mode;
+  f32 firstX;
+  f32 firstY;
+  f32 firstZ;
+  f32 firstX2;
+  f32 firstY2;
+  f32 firstZ2;
+  u16 targetMode;
+  u16 pad_1e;
+  f32 secondX;
+  f32 secondY;
+  f32 secondZ;
+  f32 secondX2;
+  f32 secondY2;
+  f32 secondZ2;
+  f32 angle;
+} B64CameraEntry;
+
+typedef struct B64CameraScratch {
+  RwV3d firstOut;
+  RwV3d secondOut;
+  u8 pad_18[8];
+  RwV3d rotatedFirst;
+  RwV3d rotatedSecond;
+  u8 pad_38[8];
+  RtQuat rotation;
+  RwMatrix matrix;
+  RwV3d firstPos;
+  u8 firstResult[16];
+  RwV3d secondPos;
+  u8 secondResult[24];
+  RwV3d relativeSecond;
+  u8 pad_dc[4];
+  RwV3d relativeFirst;
+  u8 pad_ec[4];
+  u64 matrixLow;
+  f32 matrixHigh;
+  u8 pad_fc[4];
+  RwV3d firstVector;
+  u8 pad_10c[4];
+  RwV3d secondVector;
+  u8 pad_11c[4];
+  RwV3d sphereBase;
+  u8 pad_12c[4];
+  RwV3d sphereVector;
+  u8 pad_13c[4];
+} B64CameraScratch;
+
+#pragma alias FUN_002d1de0_b64d0 FUN_002d1de0
+extern void FUN_002d1de0_b64d0(RtQuat *out, const RwV3d *from, const RwV3d *to);
+#pragma alias FUN_002802d0_b64d0 FUN_002802d0
+extern void FUN_002802d0_b64d0(BtlUnit *first, BtlUnit *second, RwV3d *out);
+#pragma alias FUN_004be1e0_b64d0 FUN_004be1e0
+extern void FUN_004be1e0_b64d0(RwV3d *out, const RwV3d *in, s32 count, const RtQuat *rotation);
+#pragma alias FUN_00280130_b64d0 FUN_00280130
+extern void FUN_00280130_b64d0(BtlUnit *unit, RwV3d *out);
+#pragma alias FUN_00280200_b64d0 FUN_00280200
+extern void FUN_00280200_b64d0(BtlUnit *unit, BtlUnitAnimBounds *bounds, RwV3d *out);
+#pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
+extern void FUN_004c6c60_b64d0(void *out, const RwV3d *in, const RwMatrix *matrix);
+extern BtlUnitAnimBounds *func_002fc520(BtlUnit *unit);
+
 // FUN_002b64d0 NONMATCHING
-
-
 u32 FUN_002b64d0(int param_1, int param_2)
-
 {
-  short sVar1;
-  u16 *puVar2;
-  int iVar3;
-  undefined4 uVar4;
-  long lVar5;
-  short sVar6;
-  int *piVar7;
-  float fVar8;
-  float fStack_140;
-  float fStack_13c;
-  float fStack_138;
-  float fStack_134;
-  float fStack_130;
-  float fStack_12c;
-  float fStack_120;
-  float fStack_11c;
-  float fStack_118;
-  float fStack_114;
-  float fStack_110;
-  float fStack_10c;
-  undefined1 auStack_100 [16];
-  undefined1 auStack_f0 [64];
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  undefined1 auStack_a4 [16];
-  float fStack_94;
-  float fStack_90;
-  float fStack_8c;
-  undefined1 auStack_88 [24];
-  undefined1 auStack_70 [16];
-  undefined1 auStack_60 [16];
-  undefined8 uStack_50;
-  undefined4 uStack_48;
-  float fStack_40;
-  undefined4 uStack_3c;
-  undefined4 uStack_38;
-  float fStack_30;
-  undefined4 uStack_2c;
-  undefined4 uStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  lVar5 = FUN_002b6bd0(param_2);
-  if (lVar5 == 0) {
-    uVar4 = 0;
+  B64CameraEntry *entry;
+  B64CameraScratch scratch;
+  BtlUnitAnimBounds *bounds;
+  BtlUnit *unit;
+  u16 *entries;
+  s16 index;
+  s16 nextIndex;
+  u16 radiusBits;
+  f32 radius;
+  u16 *camera;
+  B64CameraWork *work;
+
+  camera = (u16 *)(uintptr_t)param_1;
+  work = (B64CameraWork *)(uintptr_t)param_2;
+  if (FUN_002b6bd0(param_2) != 0) {
+    goto active;
+  }
+  goto return_zero;
+active:
+  entries = work->entries;
+  index = work->index;
+  if (entries != 0) {
+    goto entries_ok;
+  }
+  goto return_zero;
+entries_ok:
+  if (index < 4) {
+    goto index_ok;
+  }
+  goto return_zero;
+index_ok:
+  if (index != -1) {
+    if (work->frame < *(s16 *)((u8 *)entries + index * 0x3c + 4)) {
+      goto increment_frame;
+    }
+  }
+  nextIndex = index + 1;
+  if (nextIndex >= (s16)entries[0]) {
+    goto disable;
+  }
+  if (work->firstAction == 0) {
+    goto disable;
+  }
+  if (btlActionFindByUnit(work->firstAction->unit) == 0) {
+    goto disable;
+  }
+  if (work->secondAction == 0) {
+    goto disable;
+  }
+  if (btlActionFindByUnit(work->secondAction->unit) == 0) {
+    goto disable;
+  }
+
+  entry = (B64CameraEntry *)((u8 *)entries + nextIndex * 0x3c + 4);
+  if ((work->flags & 0x10) == 0) {
+    FUN_002d1de0_b64d0(&scratch.rotation, &work->firstAction->unit->pos,
+                       &work->secondAction->unit->pos);
   }
   else {
-    piVar7 = (int *)param_2;
-    puVar2 = (u16 *)piVar7[4];
-    sVar1 = *(short *)((int)piVar7 + 10);
-    if (puVar2 == (u16 *)0x0) {
-      uVar4 = 0;
-    }
-    else if (sVar1 < 4) {
-      if ((sVar1 == -1) ||
-         ((long)(short)puVar2[sVar1 * 0x1e + 2] <= (long)(u32)*(u16 *)(piVar7 + 3))) {
-        sVar6 = sVar1 + 1;
-        if ((((long)sVar6 < (long)(u32)*puVar2) &&
-            (((*piVar7 != 0 && (lVar5 = FUN_0029a1d0(*(undefined4 *)(*piVar7 + 0x30)), lVar5 != 0))
-             && (piVar7[1] != 0)))) &&
-           (lVar5 = FUN_0029a1d0(*(undefined4 *)(piVar7[1] + 0x30)), lVar5 != 0)) {
-          if ((*(u16 *)((int)piVar7 + 0xe) & 0x10) == 0) {
-            FUN_002d1de0(auStack_100,*(int *)(*piVar7 + 0x30) + 4,*(int *)(piVar7[1] + 0x30) + 4);
-          }
-          else {
-            FUN_002802d0(*(undefined4 *)(*piVar7 + 0x30),*(undefined4 *)(piVar7[1] + 0x30),
-                         auStack_60);
-            FUN_002802d0(*(undefined4 *)(piVar7[1] + 0x30),*(undefined4 *)(*piVar7 + 0x30),
-                         auStack_70);
-            FUN_002d1de0(auStack_100,auStack_60,auStack_70);
-          }
-          fStack_30 = *(float *)(puVar2 + sVar6 * 0x1e + 4);
-          uStack_2c = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 6);
-          uStack_28 = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 8);
-          fStack_40 = *(float *)(puVar2 + sVar6 * 0x1e + 10);
-          uStack_3c = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0xc);
-          uStack_38 = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0xe);
-          if ((*(u16 *)((int)piVar7 + 0xe) & 2) != 0) {
-            fStack_30 = fStack_30 * -1.0;
-            fStack_40 = fStack_40 * -1.0;
-          }
-          if (puVar2[sVar6 * 0x1e + 3] == 1) {
-            iVar3 = *(int *)(*piVar7 + 0x30);
-            FUN_004be1e0(&fStack_120,&fStack_30,1,auStack_100);
-            FUN_004be1e0(&fStack_114,&fStack_40,1,auStack_100);
-            fStack_b0 = *(float *)(iVar3 + 4) + fStack_120;
-            fStack_ac = *(float *)(iVar3 + 8) + fStack_11c;
-            fStack_a8 = *(float *)(iVar3 + 0xc) + fStack_118;
-            fStack_94 = *(float *)(iVar3 + 4) + fStack_114;
-            fStack_90 = *(float *)(iVar3 + 8) + fStack_110;
-            fStack_8c = *(float *)(iVar3 + 0xc) + fStack_10c;
-          }
-          fStack_30 = *(float *)(puVar2 + sVar6 * 0x1e + 0x12);
-          uStack_2c = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0x14);
-          uStack_28 = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0x16);
-          fStack_40 = *(float *)(puVar2 + sVar6 * 0x1e + 0x18);
-          uStack_3c = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0x1a);
-          uStack_38 = *(undefined4 *)(puVar2 + sVar6 * 0x1e + 0x1c);
-          if ((*(u16 *)((int)piVar7 + 0xe) & 2) != 0) {
-            fStack_30 = fStack_30 * -1.0;
-            fStack_40 = fStack_40 * -1.0;
-          }
-          if (puVar2[sVar6 * 0x1e + 0x10] == 2) {
-            iVar3 = *(int *)(piVar7[1] + 0x30);
-            lVar5 = (long)(uintptr_t)func_002fc520(
-                (BtlUnit*)(uintptr_t)iVar3);
-            if (lVar5 == 0) {
-              FUN_00280130(iVar3,&fStack_20);
-              FUN_004be1e0(&fStack_10,0x6978a0,1,auStack_100);
-              fVar8 = *(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c);
-              fStack_140 = fStack_20 + fStack_10 * fVar8;
-              fStack_13c = fStack_1c + fStack_c * fVar8;
-              fStack_138 = fStack_18 + fStack_8 * fVar8;
-            }
-            else {
-              FUN_00280200(iVar3,lVar5,&fStack_20);
-              FUN_004be1e0(&fStack_10,0x6978a0,1,auStack_100);
-              fVar8 = (float)*(u16 *)((int)lVar5 + 8) * *(float *)(iVar3 + 0x2c);
-              fStack_140 = fStack_20 + fStack_10 * fVar8;
-              fStack_13c = fStack_1c + fStack_c * fVar8;
-              fStack_138 = fStack_18 + fStack_8 * fVar8;
-            }
-            if (fStack_13c < 100.0) {
-              fStack_13c = 100.0;
-            }
-            else if ((*(u16 *)((int)piVar7 + 0xe) & 8) == 0) {
-              if (((*(u16 *)((int)piVar7 + 0xe) & 4) != 0) && (150.0 < fStack_13c)) {
-                fStack_13c = 150.0;
-              }
-            }
-            else if (250.0 < fStack_13c) {
-              fStack_13c = 250.0;
-            }
-            fStack_134 = fStack_140;
-            fStack_130 = fStack_13c;
-            fStack_12c = fStack_138;
-          }
-          else if (puVar2[sVar6 * 0x1e + 0x10] == 1) {
-            iVar3 = *(int *)(*piVar7 + 0x30);
-            FUN_004be1e0(&fStack_120,&fStack_30,1,auStack_100);
-            FUN_004be1e0(&fStack_114,&fStack_40,1,auStack_100);
-            fStack_140 = *(float *)(iVar3 + 4) + fStack_120;
-            fStack_13c = *(float *)(iVar3 + 8) + fStack_11c;
-            fStack_138 = *(float *)(iVar3 + 0xc) + fStack_118;
-            fStack_134 = *(float *)(iVar3 + 4) + fStack_114;
-            fStack_130 = *(float *)(iVar3 + 8) + fStack_110;
-            fStack_12c = *(float *)(iVar3 + 0xc) + fStack_10c;
-          }
-          if (*(float *)(puVar2 + sVar6 * 0x1e + 0x1e) == 0.0) {
-            uStack_50 = DAT_00697880;
-            uStack_48 = DAT_00697888;
-          }
-          else {
-            FUN_004c31b0(auStack_f0,0x697890,0);
-            FUN_004c6c60(&uStack_50,0x697880,auStack_f0);
-          }
-          *(short *)((int)piVar7 + 10) = sVar1 + 1;
-          *(undefined2 *)(piVar7 + 3) = 0;
-        }
-        else {
-          *(u16 *)((int)piVar7 + 0xe) = *(u16 *)((int)piVar7 + 0xe) & 0xfffe;
-        }
-      }
-      else {
-        *(u16 *)(piVar7 + 3) = *(u16 *)(piVar7 + 3) + 1;
-      }
-      *(short *)(piVar7 + 2) = (short)piVar7[2] + 1;
-      uVar4 = 1;
+    FUN_002802d0_b64d0(work->firstAction->unit, work->secondAction->unit,
+                       &scratch.relativeFirst);
+    FUN_002802d0_b64d0(work->secondAction->unit, work->firstAction->unit,
+                       &scratch.relativeSecond);
+    FUN_002d1de0_b64d0(&scratch.rotation, &scratch.relativeFirst,
+                       &scratch.relativeSecond);
+  }
+
+  scratch.firstVector.x = entry->firstX;
+  scratch.firstVector.y = entry->firstY;
+  scratch.firstVector.z = entry->firstZ;
+  scratch.secondVector.x = entry->firstX2;
+  scratch.secondVector.y = entry->firstY2;
+  scratch.secondVector.z = entry->firstZ2;
+  if ((work->flags & 2) != 0) {
+    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
+    scratch.secondVector.x = scratch.secondVector.x * -1.0f;
+  }
+  if (entry->mode == 1) {
+    unit = work->firstAction->unit;
+    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.firstVector, 1,
+                       &scratch.rotation);
+    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.secondVector, 1,
+                       &scratch.rotation);
+    scratch.firstPos.x = unit->pos.x + scratch.rotatedFirst.x;
+    scratch.firstPos.y = unit->pos.y + scratch.rotatedFirst.y;
+    scratch.firstPos.z = unit->pos.z + scratch.rotatedFirst.z;
+    scratch.secondPos.x = unit->pos.x + scratch.rotatedSecond.x;
+    scratch.secondPos.y = unit->pos.y + scratch.rotatedSecond.y;
+    scratch.secondPos.z = unit->pos.z + scratch.rotatedSecond.z;
+  }
+
+  scratch.firstVector.x = entry->secondX;
+  scratch.firstVector.y = entry->secondY;
+  scratch.firstVector.z = entry->secondZ;
+  scratch.secondVector.x = entry->secondX2;
+  scratch.secondVector.y = entry->secondY2;
+  scratch.secondVector.z = entry->secondZ2;
+  if ((work->flags & 2) != 0) {
+    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
+    scratch.secondVector.x = scratch.secondVector.x * -1.0f;
+  }
+  switch (entry->targetMode) {
+  case 1:
+    unit = work->firstAction->unit;
+    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.firstVector, 1,
+                       &scratch.rotation);
+    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.secondVector, 1,
+                       &scratch.rotation);
+    scratch.firstOut.x = unit->pos.x + scratch.rotatedFirst.x;
+    scratch.firstOut.y = unit->pos.y + scratch.rotatedFirst.y;
+    scratch.firstOut.z = unit->pos.z + scratch.rotatedFirst.z;
+    scratch.secondOut.x = unit->pos.x + scratch.rotatedSecond.x;
+    scratch.secondOut.y = unit->pos.y + scratch.rotatedSecond.y;
+    scratch.secondOut.z = unit->pos.z + scratch.rotatedSecond.z;
+    break;
+  case 2:
+    unit = work->secondAction->unit;
+    bounds = func_002fc520(unit);
+    if (bounds == 0) {
+      FUN_00280130_b64d0(unit, &scratch.sphereBase);
+      FUN_004be1e0_b64d0(&scratch.sphereVector, &D_006978A0, 1,
+                         &scratch.rotation);
+      radius = unit->sphereRadius * unit->scale;
     }
     else {
-      uVar4 = 0;
+      FUN_00280200_b64d0(unit, bounds, &scratch.sphereBase);
+      FUN_004be1e0_b64d0(&scratch.sphereVector, &D_006978A0, 1,
+                         &scratch.rotation);
+      radiusBits = bounds->radius;
+      if ((s16)radiusBits >= 0) {
+        radius = (f32)radiusBits;
+      }
+      else {
+        radius = (f32)((radiusBits >> 1) | (radiusBits & 1));
+        radius = radius + radius;
+      }
+      radius = radius * unit->scale;
     }
+    scratch.firstOut.x = scratch.sphereBase.x + scratch.sphereVector.x * radius;
+    scratch.firstOut.y = scratch.sphereBase.y + scratch.sphereVector.y * radius;
+    scratch.firstOut.z = scratch.sphereBase.z + scratch.sphereVector.z * radius;
+    if (scratch.firstOut.y < 100.0f) {
+      scratch.firstOut.y = 100.0f;
+    }
+    else {
+      if ((work->flags & 8) != 0) {
+        if (250.0f < scratch.firstOut.y) {
+          scratch.firstOut.y = 250.0f;
+        }
+      }
+      else if (((work->flags & 4) != 0) && (150.0f < scratch.firstOut.y)) {
+        scratch.firstOut.y = 150.0f;
+      }
+    }
+    scratch.secondOut.x = scratch.firstOut.x;
+    scratch.secondOut.y = scratch.firstOut.y;
+    scratch.secondOut.z = scratch.firstOut.z;
+    break;
   }
-  return uVar4;
+
+  FUN_002a4690(&scratch.firstResult, &scratch.firstPos, &scratch.firstOut,
+               &D_00697880);
+  if (entry->angle == 0.0f) {
+    goto no_rotate;
+  }
+  RwMatrixRotate(&scratch.matrix, &D_00697890, entry->angle, rwCOMBINEREPLACE);
+  FUN_004c6c60_b64d0(&scratch.matrixLow, &D_00697880, &scratch.matrix);
+  goto rotate_done;
+no_rotate:
+  scratch.matrixLow = *(u64 *)(uintptr_t)&D_00697880;
+  scratch.matrixHigh = DAT_00697888;
+rotate_done:
+  FUN_002a4690(&scratch.secondResult, &scratch.secondPos, &scratch.secondOut,
+               &scratch.matrixLow);
+  FUN_002a2290(camera, &scratch.firstPos, &scratch.secondPos, 1);
+  FUN_002a3110(camera, (f32)entry->duration / 30.0f);
+  work->index = nextIndex;
+  work->frame = 0;
+  goto increment;
+
+disable:
+  work->flags = work->flags & 0xfffe;
+  goto increment;
+increment_frame:
+  work->frame = work->frame + 1;
+increment:
+  work->unk_08 = work->unk_08 + 1;
+  return 1;
+return_zero:
+  return 0;
 }
 
 // FUN_002b6bd0
@@ -7828,6 +8144,11 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
     uStack_ec = uStack_d0;
     uStack_e8 = uStack_cc;
   }
+  FUN_002a3e80_ab330(
+      camera->action, &((BtlUnit*)(uintptr_t)iVar7)->pos,
+      (f32*)&fStack_100, 3, 50.0f);
+  FUN_002a2290((u16*)camera, (RwV3d*)&fStack_100, (RwV3d*)&fStack_e4, 1);
+  FUN_002a3110((u16*)camera, *(f32*)&uVar11);
   if (param_2 != 0) {
     FUN_00351bb0(0xc);
   }
@@ -8165,185 +8486,187 @@ void func_002ac920(BtlCamera* camera, long unused)
 
 void func_002acf90(BtlCamera* camera, long unused)
 {
-  short sVar1;
-  int iVar2;
-  undefined2 uVar3;
-  long lVar4;
-  u32 uVar5;
-  u32 uVar6;
-  int iVar7;
-  float fVar8;
-  float fVar9;
-  float fVar10;
-  undefined4 uVar11;
-  float fVar12;
-  float fVar13;
-  float fStack_100;
-  float fStack_fc;
-  float fStack_f8;
-  undefined1 auStack_f4 [16];
-  float fStack_e4;
-  float fStack_e0;
-  float fStack_dc;
-  undefined1 auStack_d8 [24];
-  undefined1 auStack_c0 [72];
-  float fStack_78;
-  float fStack_74;
-  GhidraPair uStack_70;
-  float fStack_68;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_4;
-  
-  iVar7 = (int)camera;
-  if (*(ushort *)(*(int *)(iVar7 + 0xe0) + 0x6a) < 2) {
-    uVar3 = 3;
-  }
-  else {
-    uVar3 = FUN_002d1600(*(int *)(iVar7 + 0xe0) + 0x38);
-  }
-  fVar8 = (float)func_00280870(uVar3,1,&fStack_10,&fStack_4,0,0);
-  fStack_c = fStack_4 * 0.75;
-  fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar7 + 0xb8) * 0.5);
-  fVar12 = 1000.0;
-  if (1000.0 <= fVar8 / fVar9) {
-    fVar12 = fVar8 / fVar9;
-  }
-  func_00280870(uVar3,1,&fStack_20,0,0,1);
-  fVar9 = 0.0;
-  uVar6 = 0;
-  while( 1 ) {
-    if (*(ushort *)(*(int *)(iVar7 + 0xe0) + 0x6a) <= uVar6) break;
-    iVar2 = *(int *)(*(int *)(iVar7 + 0xe0) + uVar6 * 4 + 0x38);
-    if ((*(ushort *)(iVar2 + 0x1a) & 1) != 0) {
-      func_00280050(*(undefined4 *)(iVar2 + 0x30),&fStack_60);
-      fStack_30 = fStack_20 - fStack_60;
-      fStack_2c = fStack_1c - fStack_5c;
-      fStack_28 = fStack_18 - fStack_58;
-      fVar10 = (float)FUN_004c6ac0(&fStack_30);
-      if (fVar9 < fVar10) {
-        uStack_70 = PAIR44(fStack_5c,fStack_60);
-        fStack_68 = fStack_58;
-        fVar9 = fVar10;
-      }
+    u32 temp;
+    u32 mode;
+    u32 i;
+    u32 rand;
+    u16 targetId;
+    f32 radius;
+    f32 distance;
+    f32 maxDistance;
+    f32 sideDistance;
+    f32 angle;
+    f32 scale;
+    f32 speed;
+    struct {
+        RwV3d v50;
+        u8 result2[0x10];
+        RwV3d v6c;
+        u8 result[0x18];
+        RwMatrix matrix;
+        u8 gap1[8];
+        f32 d8;
+        f32 dc;
+        GhidraPair pair;
+        f32 e8;
+        u8 gap2[4];
+        RwV3d vf0;
+        u8 gap3[4];
+        RwV3d v100;
+        u8 gap4[4];
+        RwV3d v110;
+        u8 gap5[4];
+        RwV3d v120;
+        u8 gap6[4];
+        RwV3d v130;
+        u8 gap7[4];
+        f32 f140;
+        f32 f144;
+        f32 f148;
+        f32 f14c;
+
+    } scratch;
+
+    temp = FUN_002a3820_u32((int)camera);
+    FUN_002a4470((f32*)&scratch.v50, (f32*)&camera->pos);
+    if (camera->action->target.targetedCount >= 2) {
+        mode = FUN_002d1600((int)&camera->action->target);
+    } else {
+        mode = 3;
     }
-    uVar6 = uVar6 + 1 & 0xffff;
-  }
-  if (fVar9 == 0.0) {
-    func_00280050(*(undefined4 *)(*(int *)(gBtl + 0x148) + 0x30),&uStack_70);
-  }
-  uStack_70 = PAIR44(fStack_c,uStack_70.f._0_4_);
-  fStack_30 = uStack_70.f._0_4_ - fStack_10;
-  fStack_2c = fStack_c - fStack_c;
-  fStack_28 = fStack_68 - fStack_8;
-  FUN_004c69f0(&fStack_30,&fStack_30);
-  fStack_30 = fStack_30 * fVar8;
-  fStack_2c = fStack_2c * fVar8;
-  fStack_28 = fStack_28 * fVar8;
-  fVar13 = fStack_10 + fStack_30;
-  fVar10 = fStack_8 + fStack_28;
-  fVar9 = fStack_4 * 1.5;
-  fStack_40 = fVar13 - fStack_10;
-  fStack_38 = fVar10 - fStack_8;
-  fStack_3c = 0.0;
-  fVar8 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
-  fVar8 = DAT_007cad84 * fVar8;
-  fStack_40 = fStack_40 * fVar8;
-  fStack_3c = fStack_3c * fVar8;
-  fStack_38 = fStack_38 * fVar8;
-  fStack_50 = fStack_10 + fStack_40;
-  fStack_48 = fStack_8 + fStack_38;
-  fStack_4c = fStack_c;
-  fStack_2c = 250.0;
-  if (250.0 <= fVar9) {
-    fStack_2c = fVar9;
-  }
-  fStack_30 = fVar13 - fStack_50;
-  fStack_2c = fStack_2c - fStack_c;
-  fStack_28 = fVar10 - fStack_48;
-  FUN_004c69f0(&fStack_30,&fStack_30);
-  fVar8 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar7 + 0xb8) * 0.5);
-  fVar8 = fVar12 * fVar8 * 0.21875;
-  fStack_78 = fStack_30;
-  fStack_74 = fStack_28;
-  FUN_004c6b20(&fStack_78,&fStack_78);
-  fStack_50 = fStack_74 * fVar8 + fStack_50 + 0.0;
-  fStack_48 = (fStack_48 + 0.0) - fStack_78 * fVar8;
-  uVar5 = FUN_00357fd0(0);
-  if ((uVar5 & 1) == 0) {
-    fVar8 = -7.5;
-  }
-  else {
-    fVar8 = 7.5;
-  }
-  FUN_004c31b0(fVar8,auStack_c0,0x697880,0);
-  FUN_004c6c60(&fStack_40,&fStack_30,auStack_c0);
-  fStack_40 = fStack_40 * fVar12;
-  fStack_3c = fStack_3c * fVar12;
-  fStack_38 = fStack_38 * fVar12;
-  fStack_e4 = fStack_50 + fStack_40;
-  fStack_e0 = fStack_4c + fStack_3c;
-  fStack_dc = fStack_48 + fStack_38;
-  if (lVar4 == 0) {
-    FUN_004c31b0(-fVar8,auStack_c0,0x697880,0);
-    FUN_004c6c60(&fStack_40,&fStack_30,auStack_c0);
-    fStack_40 = fStack_40 * fVar12;
-    fStack_3c = fStack_3c * fVar12;
-    fStack_38 = fStack_38 * fVar12;
-    fStack_100 = fStack_50 + fStack_40;
-    fStack_fc = fStack_4c + fStack_3c;
-    fStack_f8 = fStack_48 + fStack_38;
-    FUN_00351bb0(0xc);
-    uVar11 = 0x41000000;
-  }
-  else {
-    fStack_100 = fStack_e4;
-    fStack_f8 = fStack_dc;
-    sVar1 = *(short *)(*(int *)(iVar7 + 0xe0) + 0x6e);
-    if (sVar1 == 0x38) {
-      fStack_fc = 1000.0;
-      fStack_4c = 750.0;
-      uVar11 = 0x40200000;
+    mode &= 0xffff;
+    distance = FUN_00280870(mode, 1, (void*)&scratch.f140, (void*)&scratch.f14c, 0, 0);
+    scratch.f144 = scratch.f14c * 0.75f;
+    maxDistance = distance /
+                  FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
+    if (maxDistance < 1000.0f) {
+        maxDistance = 1000.0f;
     }
-    else if (sVar1 == 0x2c) {
-      fStack_fc = 800.0;
-      fStack_4c = 700.0;
-      uVar11 = 0x40700000;
+    FUN_00280870(mode, 1, (void*)&scratch.v130, 0, 0, 1);
+    sideDistance = 0.0f;
+    i = 0;
+    while (i < camera->action->target.targetedCount) {
+        BtlAction* action = camera->action->target.targetedActions[i & 0xffff];
+        if ((action->unk_1a & 1) != 0) {
+            FUN_00280050(action->unit, &scratch.vf0);
+            scratch.v120.x = scratch.v130.x - scratch.vf0.x;
+            scratch.v120.y = scratch.v130.y - scratch.vf0.y;
+            scratch.v120.z = scratch.v130.z - scratch.vf0.z;
+            scale = RwV3dLength((const RwV3d*)&scratch.v120);
+            if (scale > sideDistance) {
+                *(u64*)&scratch.pair = *(u64*)&scratch.vf0;
+                scratch.e8 = scratch.vf0.z;
+                sideDistance = scale;
+            }
+        }
+        i = (i + 1) & 0xffff;
     }
-    else if (sVar1 == 0x27) {
-      fStack_fc = 600.0;
-      fStack_4c = 550.0;
-      uVar11 = 0x40400000;
+    if (sideDistance == 0.0f) {
+        FUN_00280050(gBtl->actionList.head->unit, (f32*)&scratch.pair);
     }
-    else if (sVar1 == 0x26) {
-      fStack_fc = 500.0;
-      fStack_4c = 450.0;
-      uVar11 = 0x40300000;
+    scratch.pair.f._4_4_ = scratch.f144;
+    scratch.v120.x = scratch.pair.f._0_4_ - scratch.f140;
+    scratch.v120.y = scratch.pair.f._4_4_ - scratch.pair.f._4_4_;
+    scratch.v120.z = scratch.e8 - scratch.f148;
+    FUN_004c69f0((RwV3d*)&scratch.v120, (RwV3d*)&scratch.v120);
+    scratch.v120.x = scratch.v120.x * distance;
+    scratch.v120.y = scratch.v120.y * distance;
+    scratch.v120.z = scratch.v120.z * distance;
+    scratch.v100.x = scratch.f140 + scratch.v120.x;
+    scratch.v100.y = scratch.f144 + scratch.v120.y;
+    scratch.v100.z = scratch.f148 + scratch.v120.z;
+    speed = scratch.f14c * 1.5f;
+    scratch.v110.x = scratch.v100.x - scratch.f140;
+    scratch.v110.y = scratch.v100.y - scratch.f144;
+    scratch.v110.z = scratch.v100.z - scratch.f148;
+    scratch.v110.y = 0.0f;
+    scale = FUN_004c69f0((RwV3d*)&scratch.v110, (RwV3d*)&scratch.v110);
+    scale = DAT_007cad84 * scale;
+    scratch.v110.x = scratch.v110.x * scale;
+    scratch.v110.y = scratch.v110.y * scale;
+    scratch.v110.z = scratch.v110.z * scale;
+    scratch.v100.x = scratch.f140 + scratch.v110.x;
+    scratch.v100.y = scratch.f144 + scratch.v110.y;
+    scratch.v100.z = scratch.f148 + scratch.v110.z;
+    scratch.v100.y = scratch.f144;
+    if (speed < 250.0f) {
+        speed = 250.0f;
     }
-    else {
-      fStack_fc = 500.0;
-      fStack_4c = 450.0;
-      uVar11 = 0x40300000;
+    scratch.v120.x = scratch.v100.x - scratch.f140;
+    scratch.v120.y = speed - scratch.v100.y;
+    scratch.v120.z = scratch.v100.z - scratch.f148;
+    FUN_004c69f0((RwV3d*)&scratch.v120, (RwV3d*)&scratch.v120);
+    scale = FUN_0052e930(DAT_007cad60 * camera->fovRad * 0.5f);
+    scale = maxDistance * scale * 0.21875f;
+    scratch.d8 = scratch.v120.x;
+    scratch.dc = scratch.v120.z;
+    FUN_004c6b20((f32*)&scratch.d8, (f32*)&scratch.d8);
+    scratch.v100.x = scratch.dc * scale + scratch.v100.x + 0.0f;
+    scratch.v100.z = (scratch.v100.z + 0.0f) - scratch.d8 * scale;
+    rand = FUN_00357fd0(0);
+    if ((rand & 1) != 0) {
+        angle = 7.5f;
+    } else {
+        angle = -7.5f;
     }
-    FUN_00351bb0(0xc);
-  }
-  return;
+    FUN_004c31b0_typed((RwMatrix*)&scratch.matrix, &D_00697880, angle, 0);
+    FUN_004c6c60(&scratch.v110, &scratch.v120, &scratch.matrix);
+    scratch.v110.x = scratch.v110.x * maxDistance;
+    scratch.v110.y = scratch.v110.y * maxDistance;
+    scratch.v110.z = scratch.v110.z * maxDistance;
+    scratch.v6c.x = scratch.v100.x + scratch.v110.x;
+    scratch.v6c.y = scratch.v100.y + scratch.v110.y;
+    scratch.v6c.z = scratch.v100.z + scratch.v110.z;
+    FUN_002a4690((void*)scratch.result, (const void*)&scratch.v6c, (const void*)&scratch.v100, &D_00697880);
+    if (temp == 0) {
+        FUN_004c31b0_typed((RwMatrix*)&scratch.matrix, &D_00697880, -angle, 0);
+        FUN_004c6c60(&scratch.v110, &scratch.v120, &scratch.matrix);
+        scratch.v110.x = scratch.v110.x * maxDistance;
+        scratch.v110.y = scratch.v110.y * maxDistance;
+        scratch.v110.z = scratch.v110.z * maxDistance;
+        scratch.v50.x = scratch.v100.x + scratch.v110.x;
+        scratch.v50.y = scratch.v100.y + scratch.v110.y;
+        scratch.v50.z = scratch.v100.z + scratch.v110.z;
+        FUN_002a4690((void*)scratch.result2, (const void*)&scratch.v50, (const void*)&scratch.v100, &D_00697880);
+        FUN_00351bb0(0xc);
+        speed = 8.0f;
+    } else {
+        scratch.v50 = scratch.v6c;
+        targetId = camera->action->target.specificId;
+        switch (targetId) {
+        case 0x26:
+            scratch.v50.y = 500.0f;
+            scratch.v100.y = 450.0f;
+            speed = 2.75f;
+            break;
+        case 0x27:
+            scratch.v50.y = 600.0f;
+            scratch.v100.y = 550.0f;
+            speed = 3.0f;
+            break;
+        case 0x2c:
+            scratch.v50.y = 800.0f;
+            scratch.v100.y = 700.0f;
+            speed = 3.75f;
+            break;
+        case 0x38:
+            scratch.v50.y = 1000.0f;
+            scratch.v100.y = 750.0f;
+            speed = 2.5f;
+            break;
+        default:
+            scratch.v50.y = 500.0f;
+            scratch.v100.y = 450.0f;
+            speed = 2.75f;
+            break;
+        }
+        FUN_002a4690((void*)scratch.result2, (const void*)&scratch.v50, (const void*)&scratch.v100, &D_00697880);
+        FUN_00351bb0(0xc);
+    }
+    FUN_002a3590((f32*)&scratch.v50, (f32*)&scratch.v50);
+    FUN_002a3590((f32*)&scratch.v6c, (f32*)&scratch.v6c);
+    FUN_002a2290((u16*)camera, (RwV3d*)&scratch.v50, (RwV3d*)&scratch.v6c, 1);
+    FUN_002a3110((u16*)camera, speed);
 }
 
 // FUN_002AD680
