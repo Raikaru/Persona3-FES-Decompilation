@@ -5,6 +5,13 @@
 
 typedef struct BtlUnit BtlUnit;
 
+typedef struct BtlCommandRecord
+{
+    u8 pad_00[2];
+    u16 flags;
+    u8 pad_04[0x18];
+} BtlCommandRecord;
+
 typedef enum
 {
     BTLACTION_STATE_NON,
