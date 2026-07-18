@@ -53,6 +53,7 @@ extern u8 DAT_006941d4[];
 extern u8 DAT_00694c90[];
 
 extern f32 FUN_002d21e0(f32 target, f32* motion);
+extern f32 fGpffff807c;
 extern f32 fGpffff83cc;
 extern void FUN_002a3010(BtlCamera* camera, f32 step);
 extern void FUN_002a2ed0();
@@ -1648,7 +1649,7 @@ typedef struct BtlCameraTargetingWork
 } BtlCameraTargetingWork;
 
 
-extern u64 FUN_004c6c60(f32* out, f32* in, RwMatrix* matrix);
+extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
@@ -1814,7 +1815,7 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
     {
         RwMatrixRotate(&work.matrix, &D_00697880, 30.0f, rwCOMBINEREPLACE);
     }
-    FUN_004c6c60((f32*)&work.diff, (f32*)&work.direction, &work.matrix);
+    FUN_004c6c60((RwV3d*)&work.diff, (RwV3d*)&work.direction, &work.matrix);
     work.diff.x = work.diff.x * distance;
     work.diff.y = work.diff.y * distance;
     work.diff.z = work.diff.z * distance;
@@ -1841,11 +1842,265 @@ void btlCameraFrameActionTargeting(BtlCamera* camera)
 void btlCameraFrameActionPersona(BtlCamera* camera, u32 suppressEffects,
                                  u32 useCurrentTarget)
 {
-    btlCameraRangeActionFrame(camera, 2.0f, 450.0f, useCurrentTarget != 0);
-    if (suppressEffects == 0 && camera != NULL)
+    BtlUnit* unit;
+    BtlUnit* persona;
+    union
     {
-        camera->framesUntilUpdate = 0;
+        f32 buf[76];
+        struct
+        {
+            f32 pre[56];
+            RwV3d direction;
+            f32 directionPad;
+            RwV3d candidate;
+            f32 candidatePad;
+            RwV3d center2;
+            f32 center2Pad;
+            RwV3d center1;
+            f32 center1Pad;
+            RwV3d midpoint;
+        } vectors;
+    } work;
+#define buf work.buf
+#define PERSONA_DIRECTION work.vectors.direction
+#define PERSONA_CANDIDATE work.vectors.candidate
+#define PERSONA_CENTER2 work.vectors.center2
+#define PERSONA_CENTER1 work.vectors.center1
+#define PERSONA_MIDPOINT work.vectors.midpoint
+    f32 f25;
+    f32 f24;
+    f32 f22;
+    f32 f26;
+    f32 f23;
+    f32 f20;
+    f32 f27;
+    f32 f20b;
+    f32 f22b;
+    f32 f23b;
+    f32 f26b;
+    f32 f1;
+    f32 f0;
+    s32 mode;
+    if (FUN_002a3520((int)camera) != 0)
+        goto mode_true;
+    if ((int)FUN_002a3550((u8*)camera) == 0)
+        goto mode_false;
+mode_true:
+    mode = 1;
+    goto mode_done;
+mode_false:
+    mode = 0;
+mode_done:
+    unit = camera->action->unit;
+    persona = unit->personaUnit;
+    btlUnitGetSphereWorldCenter(unit, &PERSONA_CENTER1);
+    btlUnitGetSphereWorldCenter(persona, &PERSONA_CENTER2);
+    f25 = PERSONA_CENTER1.y + 0.5f * (unit->unk_8c * unit->scale);
+    f24 = PERSONA_CENTER2.y + 0.5f * (persona->unk_8c * persona->scale);
+    f22 = unit->sphereRadius * unit->scale;
+    f26 = persona->sphereRadius * persona->scale;
+    if (mode != 0 ||
+        ((*(u16*)(iGpffffb73c +
+                  ((*(u16*)((u8*)persona + 0xa4)) * 0x58)) & 1) == 0))
+    {
+        if (mode == 0)
+        {
+            btlUnit002880e0(persona, 0);
+            PERSONA_MIDPOINT.x = PERSONA_CENTER1.x + PERSONA_CENTER2.x;
+            PERSONA_MIDPOINT.y = PERSONA_CENTER1.y + PERSONA_CENTER2.y;
+            PERSONA_MIDPOINT.z = PERSONA_CENTER1.z + PERSONA_CENTER2.z;
+            PERSONA_MIDPOINT.x = PERSONA_MIDPOINT.x * 0.5f;
+            PERSONA_MIDPOINT.y = PERSONA_MIDPOINT.y * 0.5f;
+            PERSONA_MIDPOINT.z = PERSONA_MIDPOINT.z * 0.5f;
+            PERSONA_DIRECTION.x = PERSONA_CENTER1.x - PERSONA_MIDPOINT.x;
+            PERSONA_DIRECTION.y = PERSONA_CENTER1.y - PERSONA_MIDPOINT.y;
+            PERSONA_DIRECTION.z = PERSONA_CENTER1.z - PERSONA_MIDPOINT.z;
+            f23 = RwV3dLength(&PERSONA_DIRECTION) + f22;
+            PERSONA_CANDIDATE = PERSONA_CENTER1;
+            PERSONA_CANDIDATE.y = f25;
+            PERSONA_DIRECTION.x = PERSONA_CANDIDATE.x - PERSONA_MIDPOINT.x;
+            PERSONA_DIRECTION.y = PERSONA_CANDIDATE.y - PERSONA_MIDPOINT.y;
+            PERSONA_DIRECTION.z = PERSONA_CANDIDATE.z - PERSONA_MIDPOINT.z;
+            f0 = RwV3dLength(&PERSONA_DIRECTION);
+            if (f23 <= f0) f23 = f0;
+            PERSONA_DIRECTION.x = PERSONA_CENTER2.x - PERSONA_MIDPOINT.x;
+            PERSONA_DIRECTION.y = PERSONA_CENTER2.y - PERSONA_MIDPOINT.y;
+            PERSONA_DIRECTION.z = PERSONA_CENTER2.z - PERSONA_MIDPOINT.z;
+            f20 = RwV3dLength(&PERSONA_DIRECTION) + f26;
+            PERSONA_CANDIDATE = PERSONA_CENTER2;
+            PERSONA_CANDIDATE.y = f24;
+            PERSONA_DIRECTION.x = PERSONA_CANDIDATE.x - PERSONA_MIDPOINT.x;
+            PERSONA_DIRECTION.y = PERSONA_CANDIDATE.y - PERSONA_MIDPOINT.y;
+            PERSONA_DIRECTION.z = PERSONA_CANDIDATE.z - PERSONA_MIDPOINT.z;
+            f0 = RwV3dLength(&PERSONA_DIRECTION);
+            if (f20 > f0) f20 = f0;
+            *(u64*)(buf + 48) = *(u64*)(buf + 72);
+            buf[50] = buf[74];
+            if (f23 <= f20) f23 = f20;
+            f27 = f23 * 1.75f;
+        }
+        else
+        {
+            *(u64*)(buf + 44) = *(u64*)(buf + 68);
+            buf[46] = buf[70];
+            *(u64*)(buf + 72) = *(u64*)(buf + 68);
+            buf[74] = buf[70];
+            *(u64*)(buf + 48) = *(u64*)(buf + 68);
+            buf[50] = buf[70];
+            f24 = 1.0f + f25;
+            f27 = 5.5f * f22;
+        }
+        buf[34] = camera->pos.x - buf[48];
+        buf[35] = camera->pos.z - buf[50];
+        FUN_004c6b20(&buf[34], &buf[34]);
+        RtQuatTransformVectors((RwV3d*)(buf + 52), &D_00697890, 1, &unit->rot);
+        buf[32] = buf[54];
+        buf[33] = -buf[52];
+        FUN_004c6b20(&buf[32], &buf[32]);
+        f22b = buf[32] * buf[34] + buf[33] * buf[35];
+        RwMatrixRotate((RwMatrix*)(buf + 16), &D_00697880,
+                       f22b < 0.0f ? -37.5f : 37.5f, rwCOMBINEREPLACE);
+        FUN_004c6c60((RwV3d*)(buf + 56), (RwV3d*)(buf + 52),
+                     (RwMatrix*)(buf + 16));
+        buf[56] *= f27;
+        buf[57] *= f27;
+        buf[58] *= f27;
+        buf[60] = buf[72] + buf[56];
+        buf[61] = buf[73] + buf[57];
+        buf[62] = buf[74] + buf[58];
+        if (f25 < f24) buf[61] = fGpffff807c * f24;
+        buf[56] = buf[60] - buf[48];
+        buf[57] = buf[61] - buf[49];
+        buf[58] = buf[62] - buf[50];
+        RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
+        FUN_002a4690((void*)(buf + 11), (void*)(buf + 60),
+                     (void*)(buf + 48), &D_00697880);
+        f26b = f27 / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        buf[46] = buf[56];
+        buf[47] = buf[58];
+        FUN_004c6b20(&buf[46], &buf[46]);
+        f23b = f26b * FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        f23b = f23b * 0.21875f;
+        buf[48] = buf[50] + buf[47] * f23b;
+        buf[50] = buf[50] - buf[46] * f23b;
+        buf[56] *= f26b;
+        buf[60] = buf[48] + buf[56];
+        buf[61] = buf[49] + buf[57];
+        buf[62] = buf[50] + buf[58];
+        RwMatrixRotate((RwMatrix*)(buf + 16), &D_00697880,
+                       f22b < 0.0f ? -70.0f : 70.0f, rwCOMBINEREPLACE);
+        FUN_004c6c60((RwV3d*)(buf + 56), (RwV3d*)(buf + 52),
+                     (RwMatrix*)(buf + 16));
+        buf[56] *= f27;
+        buf[57] *= f27;
+        buf[58] *= f27;
+        buf[60] = buf[72] + buf[56];
+        buf[61] = buf[73] + buf[57];
+        buf[62] = buf[74] + buf[58];
+        if (f25 < f24) buf[61] = fGpffff807c * f24;
+        buf[56] = buf[60] - buf[48];
+        buf[57] = buf[61] - buf[49];
+        buf[58] = buf[62] - buf[50];
+        RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
+        *(u64*)(buf + 48) = *(u64*)(buf + 72);
+        buf[50] = buf[74];
+        FUN_002a4690((void*)(buf + 9), (void*)(buf + 60),
+                     (void*)(buf + 48), &D_00697880);
+        FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        buf[46] = buf[56];
+        buf[47] = buf[58];
+        FUN_004c6b20(&buf[46], &buf[46]);
+        f23b = f20 * FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        f23b = f23b * 0.21875f;
+        buf[48] = buf[50] + buf[47] * f23b;
+        buf[50] = buf[50] - buf[46] * f23b;
+        buf[56] *= f26b;
+        buf[60] = buf[48] + buf[56];
+        buf[61] = buf[49] + buf[57];
+        buf[62] = buf[50] + buf[58];
     }
+    else
+    {
+        btlUnit002880e0(persona, 1);
+        *(u64*)(buf + 40) = *(u64*)(buf + 64);
+        buf[42] = buf[66];
+        *(u64*)(buf + 48) = *(u64*)(buf + 64);
+        buf[50] = buf[66];
+        buf[49] = 0.25f * f24;
+        buf[48] = *(f32*)(buf + 64);
+        buf[50] = buf[66];
+        buf[49] = fGpffff8080 * f24;
+        RtQuatTransformVectors((RwV3d*)(buf + 52), &D_00697890, 1, &unit->rot);
+        buf[56] = buf[52] * f26;
+        buf[57] = buf[53] * f26;
+        buf[58] = buf[54] * f26;
+        buf[60] = buf[48] + buf[56];
+        buf[61] = buf[49] + buf[57];
+        buf[62] = buf[50] + buf[58];
+        buf[61] = fGpffff8084 * buf[49];
+        buf[56] = buf[60] - buf[48];
+        buf[57] = buf[61] - buf[49];
+        buf[58] = buf[62] - buf[50];
+        RwV3dNormalize((RwV3d*)(buf + 56), (RwV3d*)(buf + 56));
+        FUN_002a4690((void*)(buf + 11), (void*)(buf + 60),
+                     (void*)(buf + 48), &D_00697880);
+        f20b = 0.5f * f24;
+        if (f26 > f20b)
+            f20 = (1.25f * f26) /
+                  FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+        else
+            f20 = (1.25f * f20b) /
+                  FUN_0052e930(0.5f * camera->fovRad);
+        if (f20 - f26 < 375.0f) f20 = 375.0f + f26;
+        buf[60] = buf[56] * f20;
+        buf[61] = buf[57] * f20;
+        buf[62] = buf[58] * f20;
+        buf[7] = buf[48] + buf[60];
+        buf[8] = buf[49] + buf[61];
+        buf[9] = buf[50] + buf[62];
+        *(u64*)(buf + 48) = *(u64*)(buf + 68);
+        buf[50] = buf[70];
+        buf[49] = f25;
+        buf[56] = buf[52] * f26;
+        buf[57] = buf[53] * f26;
+        buf[58] = buf[54] * f26;
+        buf[60] = buf[48] + buf[56];
+        buf[61] = buf[49] + buf[57];
+        buf[62] = buf[50] + buf[58];
+        FUN_002a4690((void*)(buf + 9), (void*)(buf + 60),
+                     (void*)(buf + 48), &D_00697880);
+        f1 = fGpffff8088 * f20;
+        buf[56] = buf[52] * f1;
+        buf[57] = buf[53] * f1;
+        buf[58] = buf[54] * f1;
+        buf[4] = buf[48] + buf[56];
+        buf[5] = buf[49] + buf[57];
+        buf[6] = buf[50] + buf[58];
+    }
+    if (buf[5] < 25.0f) buf[5] = 25.0f;
+    if (buf[8] < 25.0f) buf[8] = 25.0f;
+    if (useCurrentTarget == 0)
+    {
+        buf[4] = buf[7];
+        buf[5] = buf[8];
+        buf[6] = buf[9];
+        buf[3] = buf[11];
+        buf[10] = buf[12];
+        buf[11] = buf[13];
+        buf[12] = buf[14];
+    }
+    FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
+    FUN_002a2290((u16*)camera, (RwV3d*)(buf + 4), (RwV3d*)(buf + 7), 1);
+    FUN_002a3110((u16*)camera, 2.5f);
+    if (suppressEffects != 0) FUN_00351bb0(0xc);
+#undef buf
+#undef PERSONA_DIRECTION
+#undef PERSONA_CANDIDATE
+#undef PERSONA_CENTER2
+#undef PERSONA_CENTER1
+#undef PERSONA_MIDPOINT
+
 }
 
 // FUN_002a8d20
