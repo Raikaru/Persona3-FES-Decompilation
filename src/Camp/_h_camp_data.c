@@ -18,7 +18,13 @@ typedef unsigned long ulong;
 #define CAMP_PTR64(value) ((undefined8)(uintptr_t)(value))
 
 /* Retail globals shared by the Camp bridge state machines. */
-extern void (*DAT_0096017c)();
+extern void (*DAT_0096017c[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
+#pragma alias scrGetIntPara_u64 scrGetIntPara
+extern u64 scrGetIntPara_u64(s32);
 extern void* (*DAT_00960184)();
 extern void* (*DAT_00960178)();
 extern f32 DAT_00960088;
@@ -348,10 +354,10 @@ typedef struct CampDataBridgeRoot
     CampDataBridgeGroup groups[2];
 } CampDataBridgeRoot;
 
-// FUN_001675b0 NONMATCHING
+// FUN_001675b0
 void FUN_001675b0(KwlnTask* task)
 {
-    (*DAT_0096017c)(task->workData);
+    (*DAT_0096017c_abs)(task->workData);
 }
 
 // FUN_001675e0 NONMATCHING
@@ -457,7 +463,7 @@ void* FUN_001675e0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_001678e0 NONMATCHING
+// FUN_001678e0
 void FUN_001678e0(KwlnTask* task)
 {
     void* work;
@@ -465,7 +471,7 @@ void FUN_001678e0(KwlnTask* task)
     work = task->workData;
     DAT_007cdf88 = 0;
     datSetFlag(0x1407, 0);
-    (*DAT_0096017c)(work);
+    (*DAT_0096017c_abs)(work);
 }
 
 // FUN_00167930 NONMATCHING
@@ -626,10 +632,10 @@ void* FUN_00167930(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00167ec0 NONMATCHING
+// FUN_00167ec0
 void FUN_00167ec0(KwlnTask* task)
 {
-    (*DAT_0096017c)(task->workData);
+    (*DAT_0096017c_abs)(task->workData);
 }
 
 // FUN_00167EF0
@@ -685,15 +691,15 @@ KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, u64 packedValue,
     return (KwlnTask*)taskValue;
 }
 
-// FUN_00168040 NONMATCHING
+// FUN_00168040
 u32 FUN_00168040(void)
 {
-    u16 value;
+    s16 value;
     void* allocated;
     KwlnTask* taskValue;
 
-    value = (u16)scrGetIntPara(0);
-    allocated = (*DAT_00960184)(1, 0x14, 0x40000);
+    value = scrGetIntPara_u64(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
     if (allocated == 0) {
         taskValue = 0;
     }
@@ -743,7 +749,7 @@ u32 FUN_00168100(void)
     return 1;
 }
 
-// FUN_001681d0 NONMATCHING
+// FUN_001681d0
 bool FUN_001681d0(void)
 {
     u32 state;
@@ -751,8 +757,9 @@ bool FUN_001681d0(void)
     state = kwlnTaskGetState((KwlnTask*)DAT_007cdf84);
     if (state == 3) {
         DAT_007cdf84 = 0;
+        return 1;
     }
-    return state == 3;
+    return 0;
 }
 
 // FUN_00168220 NONMATCHING
@@ -912,7 +919,7 @@ void FUN_001685e0(KwlnTask* task, s32 command)
     }
 }
 
-// FUN_00168720 NONMATCHING
+// FUN_00168720
 void FUN_00168720(KwlnTask* task)
 {
     u32* work;
@@ -922,16 +929,16 @@ void FUN_00168720(KwlnTask* task)
         H_Cdvd_Destroy((HCdvd*)work[4]);
     }
     work[4] = 0;
-    (*DAT_0096017c)(work);
+    (*DAT_0096017c_abs)(work);
 }
 
-// FUN_00168770 NONMATCHING
+// FUN_00168770
 KwlnTask* FUN_00168770(KwlnTask* parent, u32 priority)
 {
     void* work;
     KwlnTask* taskValue;
 
-    work = (*DAT_00960184)(1, 0x1c, 0x40000);
+    work = (*DAT_00960184_abs)(1, 0x1c, 0x40000);
     if (work == 0) {
         return 0;
     }
@@ -1236,7 +1243,7 @@ undefined4 FUN_00169330(void)
     return 1;
 }
 
-// FUN_00169420 NONMATCHING
+// FUN_00169420
 bool FUN_00169420(void)
 {
     s32 state;
@@ -1244,8 +1251,9 @@ bool FUN_00169420(void)
     state = FUN_00195290(uGpffffb290);
     if (state == 3) {
         uGpffffb290 = 0;
+        return 1;
     }
-    return state == 3;
+    return 0;
 }
 
 // FUN_00169470 NONMATCHING
@@ -1417,7 +1425,7 @@ undefined4 FUN_00169470(undefined8 param_1)
     return 0;
 }
 
-// FUN_00169AE0 NONMATCHING
+// FUN_00169AE0
 void FUN_00169AE0(int param_1)
 {
     CampTargetMenuWork* work;
@@ -1425,19 +1433,19 @@ void FUN_00169AE0(int param_1)
 
     work = (CampTargetMenuWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
     if (work->list != NULL) {
-        (*DAT_0096017c)(work->list);
+        (*DAT_0096017c_abs)(work->list);
         work->list = NULL;
     }
     for (i = 0; i < 2; i++) {
-        if (work->resources[i] != NULL) {
-            FUN_001124b0(work->resources[i]);
+        if (*(void**)((u8*)work + 0x10 + i * 4) != NULL) {
+            FUN_001124b0(*(void**)((u8*)work + 0x10 + i * 4));
         }
     }
-    if (work->archive != NULL) {
-        FUN_00100ec0();
+    if (*(void**)((u8*)work + 0x0c) != NULL) {
+        FUN_00100ec0(*(void**)((u8*)work + 0x0c));
     }
     work->archive = NULL;
-    (*DAT_0096017c)(work);
+    (*DAT_0096017c_abs)(work);
 }
 
 // FUN_00169B90 NONMATCHING
@@ -1938,14 +1946,14 @@ void FUN_0016af90(undefined4 param_1, undefined8 param_2, undefined8 param_3,
 }
 
 
-// FUN_0016BA00 NONMATCHING
+// FUN_0016BA00
 f32 FUN_0016ba00(u32 param_1, u32 param_2)
 {
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0x86);
+        FUN_0019d3f0(D_005E3098, 0x86);
     }
-    return *(f32*)(((param_2 & 0xffff) * 0x20) +
-                    *(u32*)((param_1 & 0xffff) * 0x10 + iGpffffb2c0 + 8) + 8);
+    return iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].value;
 }
 
 // FUN_0016BA80
