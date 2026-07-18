@@ -846,6 +846,22 @@ u64 FUN_004718a0(int param_1,u32 *param_2);
 u64 FUN_00472270(int param_1);
 u64 FUN_00472970(int param_1);
 u64 FUN_004733c0(int param_1,int param_2);
+#pragma alias FUN_0046b8e0_u64 FUN_0046b8e0
+extern u64 FUN_0046b8e0_u64(u64 param_1);
+#pragma alias FUN_004a0e00_u64 FUN_004a0e00
+extern u64 FUN_004a0e00_u64(u64 param_1);
+#pragma alias FUN_0046c5b0_u64 FUN_0046c5b0
+extern u64 FUN_0046c5b0_u64(u64 param_1);
+#pragma alias FUN_0046cd90_u64 FUN_0046cd90
+extern u64 FUN_0046cd90_u64(u64 param_1);
+#pragma alias FUN_0046d6f0_u64 FUN_0046d6f0
+extern u64 FUN_0046d6f0_u64(u64 param_1);
+#pragma alias FUN_0046e170_u64 FUN_0046e170
+extern u64 FUN_0046e170_u64(u64 param_1);
+#pragma alias FUN_00472270_u64 FUN_00472270
+extern u64 FUN_00472270_u64(u64 param_1);
+#pragma alias FUN_00472970_u64 FUN_00472970
+extern u64 FUN_00472970_u64(u64 param_1);
 u64 FUN_004734d0(u64 param_1);
 u64 FUN_00474160(u64 param_1);
 u32 FUN_004747f0(int *param_1);
@@ -1457,6 +1473,10 @@ extern u32 DAT_0095c3fc;
 extern u32 DAT_0095c400;
 extern u32 DAT_0095c440;
 extern u32 DAT_0095c448;
+#pragma alias DAT_0095c448_abs DAT_0095c448
+extern u32 DAT_0095c448_abs[];
+#pragma alias DAT_0095de38_abs DAT_0095de38
+extern u32* DAT_0095de38_abs[];
 extern u32 DAT_0095c44c;
 extern u32 DAT_0095c45c;
 extern u32 DAT_0095c460;
