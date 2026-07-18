@@ -12,6 +12,9 @@ typedef unsigned int undefined3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 #endif
 
+typedef char* va_list;
+#define va_start(ap, last) (ap = ((va_list)__builtin_next_arg(last) - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8)))
+#define va_end(ap) ((void)0)
 /* auto-extern (generated) */
 extern u8 DAT_00780000[];
 void FUN_004c38c0(void);
@@ -20,13 +23,13 @@ void FUN_004c3b70(int param_1);
 u32 FUN_004ca030(u64 param_1);
 u64 FUN_004c9db0(u32 param_1,u64 param_2);
 u32 * FUN_004bfd50(u64 param_1);
+long FUN_004ca090(void);
 u64 FUN_004c53f0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_004c3c30(int param_1);
-long FUN_004ca090(void);
+RwInt32 FUN_004c1d10(RwInt32 param_1,...);
 u32 FUN_004bfde0(u64 param_1);
 u64 FUN_004c1c50(u64 param_1);
-u32 FUN_004c1d10(u32 param_1);
 u32 FUN_004bfa70(int param_1,u64 param_2);
 void FUN_004c6e60(int param_1);
 u32 FUN_004c6e50(void);
@@ -108,7 +111,7 @@ extern u32* DAT_00960070;
 extern u32 DAT_00960074;
 extern u32 DAT_00960078;
 extern u32* DAT_0096007c;
-extern u32 DAT_00960080;
+extern u8 DAT_00960080[];
 extern u32 DAT_00960084;
 extern u32 DAT_00960088;
 extern u32 DAT_0096008c;
@@ -2081,9 +2084,13 @@ u64 FUN_004c1cd0(u64 param_1)
   return param_1;
 }
 // FUN_004C1D10 NONMATCHING
-u32 FUN_004c1d10(u32 param_1)
+RwInt32 FUN_004c1d10(RwInt32 param_1,...)
 
 {
+  va_list args;
+  
+  va_start(args,param_1);
+  va_end(args);
   return param_1;
 }
 // FUN_004C1D50 NONMATCHING
@@ -2221,15 +2228,7 @@ void FUN_004c2080(int param_1,int param_2)
 u32 FUN_004c2090(u32 *param_1)
 
 {
-  u32 uVar1;
-  
-  if (param_1[1] == 0) {
-    uVar1 = 0;
-  }
-  else {
-    uVar1 = *param_1;
-  }
-  return uVar1;
+  return param_1[1] == 0 ? 0 : *param_1;
 }
 // FUN_004C20B0 NONMATCHING
 u32 FUN_004c20b0(u64 param_1)
@@ -7074,14 +7073,16 @@ u32 FUN_004ca5b0(void)
   }
   return uStack_4;
 }
-// FUN_004CA600 NONMATCHING
+// FUN_004CA600
 bool FUN_004ca600(u64 param_1)
 
 {
-  long lVar1;
+  u8 *p;
+  u32 uVar1;
   
-  lVar1 = FUN_004ca3e0(0x960080,7,0,0,param_1);
-  return lVar1 != 0;
+  p = &DAT_00960080[0];
+  uVar1 = FUN_004ca3e0((int)p,7,0,0,param_1);
+  return uVar1 != 0;
 }
 // FUN_004CA640 NONMATCHING
 u32 FUN_004ca640(void)

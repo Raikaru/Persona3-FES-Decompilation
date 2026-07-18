@@ -24966,13 +24966,11 @@ undefined8 FUN_004f2430(long param_1,ulong param_2)
   return 0;
 }
 
-// FUN_004F2710 NONMATCHING
+// FUN_004F2710
 #pragma optimization_level 3
 undefined *FUN_004f2710(void)
 {
-  int base = 0x00960070;
-  base += iGpffffbe30;
-  return (undefined *)(base + 0x40);
+  return DAT_00960070 + iGpffffbe30 + 0x40;
 }
 #pragma optimization_level 2
 
@@ -35928,13 +35926,23 @@ asm undefined4 FUN_00503910(void)
   addiu $v0, $zero, 1
 }
 
+#pragma schedule on
 // FUN_00503918 NONMATCHING
-undefined4 FUN_00503918(void)
-
+undefined4 FUN_00503918(undefined4 param_1,undefined8 *param_2)
 {
-  return 0x2000;
+  ((u32 *)param_2)[1] = 0x2000;
+  param_2[9] = 0;
+  return 0;
 }
+#pragma schedule off
 
+#pragma schedule on
+// FUN_00503930
+undefined4 FUN_00503930(void)
+{
+  return 1;
+}
+#pragma schedule off
 // FUN_00503938 NONMATCHING
 undefined8 FUN_00503938(int param_1,undefined8 param_2)
 
