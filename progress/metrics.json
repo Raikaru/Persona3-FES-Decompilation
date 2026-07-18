@@ -4,7 +4,7 @@
     "complete": false,
     "label": "Essential Persona-specific functions",
     "name": "essential_functions",
-    "remaining": 3686,
+    "remaining": 3684,
     "requires_every_function_to_match": true,
     "whole_executable_identity_is_separate": true
   },
@@ -2744,6 +2744,7 @@
       "002b4c00",
       "002b4db0",
       "002b4f40",
+      "002b4fd0",
       "002b55d0",
       "002b5600",
       "002b5650",
@@ -3197,6 +3198,7 @@
       "002d6290",
       "002d62d0",
       "002d6370",
+      "002d63b0",
       "002d7890",
       "002d7970",
       "002d7df0",
@@ -4437,11 +4439,11 @@
       "0045b480",
       "0045b4b0"
     ],
-    "count": 4336,
+    "count": 4338,
     "duplicate_rows": 0,
     "known_rows": 8022,
-    "matched_body_bytes": 596352,
-    "percent": 54.051,
+    "matched_body_bytes": 596556,
+    "percent": 54.076,
     "unique_known_addresses": 8022
   },
   "schema_version": 1,
@@ -12481,11 +12483,11 @@
     "raw_rows": 13801,
     "scope_ignored_unknown_rows": 0,
     "scope_rows": 8022,
-    "verifier_report": "build\\essential_census_verify.json"
+    "verifier_report": "build\\FULL_PROGRESS_583.json"
   },
   "status_counts": {
-    "MATCH": 4336,
-    "NONMATCHING": 3686
+    "MATCH": 4338,
+    "NONMATCHING": 3684
   },
   "total": 8022,
   "whole_executable": {
@@ -15221,6 +15223,7 @@
         "002b4c00",
         "002b4db0",
         "002b4f40",
+        "002b4fd0",
         "002b55d0",
         "002b5600",
         "002b5650",
@@ -15674,6 +15677,7 @@
         "002d6290",
         "002d62d0",
         "002d6370",
+        "002d63b0",
         "002d7890",
         "002d7970",
         "002d7df0",
@@ -17960,16 +17964,16 @@
         "005a1858",
         "005a1b58"
       ],
-      "count": 5382,
+      "count": 5384,
       "duplicate_rows": 0,
       "known_rows": 13801,
-      "matched_body_bytes": 643848,
-      "percent": 38.997,
+      "matched_body_bytes": 644052,
+      "percent": 39.012,
       "unique_known_addresses": 13801
     },
     "status_counts": {
-      "MATCH": 5382,
-      "NONMATCHING": 8419
+      "MATCH": 5384,
+      "NONMATCHING": 8417
     },
     "total": 13801
   }
