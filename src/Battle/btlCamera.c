@@ -3795,16 +3795,18 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     f32 half;
     u32 index;
     f32 tempHalf;
+    f32 sourceProduct;
     unit = camera->action->unit;
     target = camera->action->target.targetedActions[0]->unit;
     FUN_002a4470((f32*)&work.frames[0], (f32*)((u8*)camera + 0x9c));
     distance = unit->sphereCenter.y * unit->scale;
     btlUnitGetSphereWorldCenter(target, &work.center);
 
-    halfDistance = distance +
-                   fGpffff8094 * (unit->unk_8c * unit->scale);
-    halfDistance = halfDistance + work.center.y +
-                   fGpffff8094 * (target->unk_8c * target->scale);
+    sourceProduct = unit->unk_8c * unit->scale;
+    halfDistance = distance + fGpffff8094 * sourceProduct;
+    halfDistance = halfDistance +
+                   (work.center.y +
+                    fGpffff8094 * (target->unk_8c * target->scale));
     work.center.y = 0.0f;
     work.normalized.x = unit->unk_dc.x - work.center.x;
     work.normalized.y = unit->unk_dc.y - work.center.y;
