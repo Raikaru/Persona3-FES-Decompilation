@@ -80,7 +80,7 @@ extern f32 fGpffff827c;
 extern u8 DAT_00697880[];
 extern f32 DAT_006978c0[];
 extern u8* DAT_007ce42c;
-extern u8* DAT_007ce400;
+extern BtlCommandRecord* iGpffffb710;
 extern u32 DAT_007e094e;
 extern u32 DAT_007e0958;
 extern u8* gp0xffff9c60;
@@ -3481,7 +3481,7 @@ u32 FUN_002d6370(u16 commandId)
     return units[id * 0x2c + 2] == 1;
 }
 
-// FUN_002d63b0 NONMATCHING
+// FUN_002d63b0
 u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
 {
     u8* commandTable = (u8*)DAT_007ce3f8;
@@ -3499,7 +3499,7 @@ u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
         result = 1;
         if (param_3 == 0 ||
             ((*(u16*)(DAT_007ce42c + (u32)unit->charId * 0x58) & 0x10) != 0) ||
-            ((*(u16*)((u8*)DAT_007ce400 + id * 0x1c + 2) & 1) == 0))
+            ((iGpffffb710[id].flags & 1) == 0))
         {
             result = 0;
         }

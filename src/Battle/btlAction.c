@@ -22,12 +22,6 @@ typedef struct BtlEnemyRecord
     u8 pad_28[0xc0];
 } BtlEnemyRecord;
 
-typedef struct BtlCommandRecord
-{
-    u8 pad_00[2];
-    u16 flags;
-    u8 pad_04[0x18];
-} BtlCommandRecord;
 
 #define BTLACTION_IDMAX 0xFFFFFFF
 /* Retail action scratch remains intentionally opaque until packet-result layouts are named. */
