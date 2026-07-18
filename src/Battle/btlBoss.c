@@ -676,7 +676,7 @@ u32 func_002f8ea0(BtlUnit* unit, RwV3d* target)
     return 0;
 }
 
-// FUN_002f8eb0 NONMATCHING
+// FUN_002f8eb0
 s16 func_002f8eb0(BtlUnit* unit, s16 index)
 {
     s8 value;
@@ -705,14 +705,14 @@ read_value:
             value = DAT_007ce3f4[index * 2];
             switch (value)
             {
-                case 2:
-                    result = 6;
+                case 0:
+                    result = 4;
                     break;
                 case 1:
                     result = 5;
                     break;
-                case 0:
-                    result = 4;
+                case 2:
+                    result = 6;
                     break;
                 default:
                     result = -1;
