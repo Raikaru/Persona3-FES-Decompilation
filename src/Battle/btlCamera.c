@@ -4622,7 +4622,7 @@ void func_002b3330(void)
 {
 }
 
-// FUN_002b3340 NONMATCHING
+// FUN_002b3340
 
 void FUN_002b3340(BtlCamera* camera)
 {
@@ -4695,7 +4695,14 @@ void FUN_002b3340(BtlCamera* camera)
                 (*(f32*)(iVar1 + 0x90) *
                  *(f32*)(iVar1 + 0x2c) * 2.0f) /
                 distance;
-    minDistance = (minDistance <= candidate) ? candidate : minDistance;
+    if (!(minDistance <= candidate))
+    {
+        minDistance = minDistance + 0.0f;
+    }
+    else
+    {
+        minDistance = candidate;
+    }
     scratch.diff.x = scratch.diff.x * minDistance;
     scratch.diff.y = scratch.diff.y * minDistance;
     scratch.diff.z = scratch.diff.z * minDistance;
@@ -4706,6 +4713,11 @@ void FUN_002b3340(BtlCamera* camera)
     FUN_002a3e80(0.0f, (u8*)0, (u8*)0, (u8*)0, 0x40);
     FUN_002a2170((BtlCamera*)(uintptr_t)iVar2, (f32*)&scratch.out);
     FUN_002a44b0((f32*)(iVar2 + 0x9c), (f32*)&scratch.out);
+}
+
+// FUN_002b3680
+void FUN_002b3680(void)
+{
 }
 
 // FUN_002b3690
