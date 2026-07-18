@@ -151,6 +151,7 @@ extern void FUN_003b2cb0(f32 first, ...);
 extern void FUN_003b32d0(f32 first, ...);
 extern void FUN_003c7e20(f32 first, ...);
 extern void FUN_00523ac8(void* first, ...);
+extern u32 FUN_0017d800(void);
 extern u32 FUN_00174800(u32 pcId);
 extern s32 FUN_0012df50(u32 typeMask);
 extern void FUN_0012e170(void* atlas, s32 baseTile, CampSkillVec2 position,
@@ -882,11 +883,11 @@ static void campSkillFinishChild(KwlnTask* child)
     }
 }
 
-// FUN_001617D0 NONMATCHING
+// FUN_001617D0
 KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
 {
-    CampSkillOuterWork* work;
     KwlnTask* task;
+    CampSkillOuterWork* work;
 
     work = (CampSkillOuterWork*)RwCalloc(1, 0x50, 0x40000);
     if (work == NULL) {
@@ -896,7 +897,6 @@ KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
                           FUN_00160800,
                           h_campSkillDestroySkillDrawTask, work);
     if (task == NULL) {
-        RwFree(work);
         return NULL;
     }
     *(HCdvd**)((u8*)work + 0x30) =
@@ -975,12 +975,10 @@ void* FUN_001618a0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00161D60 NONMATCHING
+// FUN_00161D60
 void FUN_00161d60(KwlnTask* task)
 {
-    if (task != NULL && task->workData != NULL) {
-        RwFree(task->workData);
-    }
+    RwFree(task->workData);
 }
 
 static void campSkillBuildAnimationPath(char* path, s16 pcId)
@@ -1315,12 +1313,13 @@ void FUN_001669b0(KwlnTask* task)
     RwFree(work);
 }
 
-// FUN_00166A50 NONMATCHING
+// FUN_00166A50
 KwlnTask* FUN_00166a50(KwlnTask* parent, u32 priority, s16 pcId,
                        u32 mode, u32 displayMode)
 {
-    CampSkillInnerWork* work;
     KwlnTask* task;
+    CampSkillInnerWork* work;
+    s32 signedPcId;
     char path[0x100];
 
     work = (CampSkillInnerWork*)RwCalloc(1, 0x38, 0x40000);
@@ -1330,46 +1329,54 @@ KwlnTask* FUN_00166a50(KwlnTask* parent, u32 priority, s16 pcId,
     task = kwlnTaskCreate(parent, "H_CampSkillDraw", priority,
                           FUN_00164920, FUN_001669b0, work);
     if (task == NULL) {
-        RwFree(work);
         return NULL;
     }
-    work->displayMode = displayMode;
-    work->pcId = pcId;
     work->commandFlags = mode;
-    campSkillBuildAnimationPath(path, pcId);
+    signedPcId = (s32)pcId;
+    *(u32*)((u8*)work + 8) = (u32)signedPcId;
+    if (FUN_0017d800() != 0) {
+        switch (signedPcId) {
+        case 1:
+        case 3:
+            FUN_00523ac8(path, "camp/AGS_camp_fr03.pak");
+            break;
+        case 9:
+            FUN_00523ac8(path, "camp/AGS_camp_fr%02d.pak", signedPcId);
+            break;
+        default:
+            FUN_00523ac8(path, "camp/camp_fr%02d.pak", signedPcId);
+            break;
+        }
+    } else {
+        FUN_00523ac8(path, "camp/camp_fr%02d.pak", signedPcId);
+    }
     work->archive = H_Cdvd_Request(path, HCDVD_FILEARCHIVE);
+    work->displayMode = displayMode;
     return task;
 }
 
-// FUN_00166C00 NONMATCHING
+// FUN_00166C00
 s32 FUN_00166c00(KwlnTask* task)
 {
     CampSkillInnerWork* work;
 
-    if (task == NULL || task->workData == NULL) {
-        return 0;
-    }
     work = (CampSkillInnerWork*)task->workData;
-    if (work->state != 8) {
-        return 0;
+    if (work->state == 8) {
+        return (s32)work->command;
     }
-    return (s32)work->command;
+    return 0;
 }
 
-// FUN_00166C30 NONMATCHING
+// FUN_00166C30
 void FUN_00166c30(KwlnTask* task)
 {
-    if (task != NULL && task->workData != NULL) {
-        ((CampSkillInnerWork*)task->workData)->state = 4;
-    }
+    ((CampSkillInnerWork*)task->workData)->state = 4;
 }
 
-// FUN_00166C50 NONMATCHING
+// FUN_00166C50
 void FUN_00166c50(KwlnTask* task)
 {
-    if (task != NULL && task->workData != NULL) {
-        ((CampSkillInnerWork*)task->workData)->state = 6;
-    }
+    ((CampSkillInnerWork*)task->workData)->state = 6;
 }
 
 static s16 campSkillSelectorCurrentId(CampSkillSelectorWork* work)
