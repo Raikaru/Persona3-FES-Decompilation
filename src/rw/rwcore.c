@@ -36784,7 +36784,8 @@ undefined4 * FUN_00504678(undefined4 param_1)
   u8 *puVar2;
   
   puVar2 = DAT_00960070;
-  puVar1->a = param_1;
+  *(u32 *)(puVar2 + 0x64d0) = param_1;
+  puVar1 = (Fun04678Buf *)(puVar2 + 0x64d0);
   puVar1->c = (u32)(puVar1 + 1);
   puVar1->b = 0;
   puVar1->d = (u32)(puVar1 + 1);

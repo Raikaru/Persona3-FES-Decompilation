@@ -2548,7 +2548,6 @@ u64 FUN_004c2860(u64 param_1,float *param_2)
   pfVar1[3] = 0.0;
   return param_1;
 }
-#pragma schedule on
 // FUN_004C2A30 NONMATCHING
 u32 FUN_004c2a30(u8 *param_1)
 {
@@ -2564,7 +2563,6 @@ fallback:
 done:
   return 1;
 }
-#pragma schedule off
 // FUN_004C2A70 NONMATCHING
 float FUN_004c2a70(float *param_1)
 
@@ -3395,7 +3393,7 @@ u32 * FUN_004c3760(u32 *param_1,u32 *param_2,long param_3)
   return param_1;
 }
 #pragma schedule on
-// FUN_004C3880 NONMATCHING
+// FUN_004C3880
 u32 FUN_004c3880(u64 param_1)
 
 {

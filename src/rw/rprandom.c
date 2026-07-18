@@ -956,7 +956,7 @@ u64 FUN_00489160(u64 param_1,long param_2);
 u64 FUN_00489730(u64 param_1);
 u64 FUN_00489840(u64 param_1);
 u64 FUN_004898e0(u64 param_1);
-int FUN_00489960(int param_1);
+u64 FUN_00489960(u64 param_1);
 u64 FUN_00489b70(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_00489cd0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_00489f20(u64 param_1,u64 param_2,int param_3,u64 param_4,u64 param_5);
@@ -2260,7 +2260,7 @@ u64 FUN_00489160(u64 param_1,long param_2);
 u64 FUN_00489730(u64 param_1);
 u64 FUN_00489840(u64 param_1);
 u64 FUN_004898e0(u64 param_1);
-int FUN_00489960(int param_1);
+u64 FUN_00489960(u64 param_1);
 u64 FUN_00489b70(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_00489cd0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_00489f20(u64 param_1,u64 param_2,int param_3,u64 param_4,u64 param_5);
@@ -3168,7 +3168,7 @@ u64 FUN_004898e0(u64 param_1)
 }
 
 // FUN_00489960 NONMATCHING
-int FUN_00489960(int param_1)
+u64 FUN_00489960(u64 param_1)
 {
   u32 uVar1;
 
@@ -3489,15 +3489,19 @@ u32 FUN_0048a1a0(void)
   return 1;
 }
 
+#pragma schedule on
 // FUN_0048A2A0 NONMATCHING
 int FUN_0048a2a0(int param_1,u32 param_2)
 {
+  int iVar1;
   u32 uVar1;
 
+  iVar1 = param_1;
   uVar1 = DAT_0095de14_abs[0];
-  *(u32 *)((u8 *)param_1 + uVar1) = param_2;
-  return param_1;
+  *(u32 *)((u8 *)iVar1 + uVar1) = param_2;
+  return iVar1;
 }
+#pragma schedule off
 
 #pragma alias DAT_0095de18_abs DAT_0095de18
 extern u32 DAT_0095de18_abs[];
@@ -3575,9 +3579,11 @@ u32 FUN_0048a480(int param_1)
 {
   u32 uVar1;
 
-  uVar1 = 0xc;
   if (*(int *)(*(int *)(param_1 + 0x6c) + 0x2c) == 0x116) {
     uVar1 = *(u32 *)(*(int *)(param_1 + 0x6c) + 0x30);
+  }
+  else {
+    uVar1 = 0;
   }
   return uVar1;
 }
