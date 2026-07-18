@@ -4258,27 +4258,28 @@ void func_002be720(short *param_1,short param_2,short param_3,u64 param_4)
 // FUN_002be9e0 NONMATCHING
 
 u64 func_002be9e0(int param_1,int param_2)
-
 {
-  short sVar1 = 0;
+  u16 sVar1 = 0;
   u16 uVar2 = 0;
   u64 uVar3 = 0;
   int extraout_a0_lo = 0;
   
   *(u16 *)(param_1 + 0xc) = 0xdf;
-  sVar1 = func_002bdfb0(0);
-  if (sVar1 == 2) {
+  sVar1 = func_002bdfb0(param_1);
+  switch (sVar1) {
+  case 1:
+    uVar3 = 1;
+    break;
+  case 2:
     *(u16 *)(param_2 + 0x6c) = 3;
     *(short *)(param_2 + 0x70) = *(short *)(extraout_a0_lo + 6) + 0xfa1;
     uVar2 = func_0030bc20(*(u16 *)(param_2 + 0x70));
     *(u16 *)(param_2 + 0x6e) = uVar2;
     uVar3 = 3;
-  }
-  else {
-    uVar3 = 1;
-    if (sVar1 != 1) {
-      uVar3 = 0;
-    }
+    break;
+  default:
+    uVar3 = 0;
+    break;
   }
   return uVar3;
 }
