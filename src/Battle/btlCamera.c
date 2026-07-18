@@ -5333,7 +5333,7 @@ void FUN_002b4fd0(void)
   return;
 }
 
-// FUN_002b5000 NONMATCHING
+// FUN_002b5000
 
 void FUN_002b5000(int param_1)
 
@@ -5352,7 +5352,7 @@ void FUN_002b5000(int param_1)
   } pkt;
 
   iVar1 = *(int *)(*(int *)(param_1 + 0xe0) + 0x30);
-  FUN_002a4470((f32 *)pkt.out,(f32 *)(param_1 + 0x9c));
+  FUN_002a4470((f32 *)pkt.out,(f32 *)((u8 *)param_1 + 0x9c));
   fVar3 = FUN_00280870(3,1,&mat,0,0,1);
   mat.y = 0.0f;
   FUN_00280050(iVar1,&pos);
