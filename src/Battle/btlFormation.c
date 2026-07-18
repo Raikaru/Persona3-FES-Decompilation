@@ -1136,7 +1136,8 @@ void func_002b90d0(int destination, u32 source)
   u32 resource;
 
   func_00521250(destination, source, 0x630);
-  for (outer = 0; outer <= 1; outer++) {
+  outer = 0;
+  while (outer <= 1) {
     block = destination + (outer & 0xffff) * 0x314;
     count = *(u16 *)(block + 0x10);
     entry = (u8 *)(block + 0x1c);
@@ -1155,6 +1156,7 @@ void func_002b90d0(int destination, u32 source)
       }
       entry += 0x18;
     }
+    outer++;
   }
   *(u16 *)(destination + 0x630) |= 2;
 }
