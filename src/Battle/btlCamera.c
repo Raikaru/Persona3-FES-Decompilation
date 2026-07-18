@@ -4939,54 +4939,52 @@ void FUN_002b4fd0(void)
 
 // FUN_002b5000 NONMATCHING
 
-void FUN_002b5000(undefined8 param_1)
+void FUN_002b5000(int param_1)
 
 {
   int iVar1;
-  int iVar2;
   float fVar3;
   float fVar4;
   float fVar5;
-  undefined1 auStack_70 [28];
-  float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  undefined1 auStack_48 [24];
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar2 = (int)param_1;
-  iVar1 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  fVar3 = (float)FUN_00280870(3,1,&fStack_10,0,0,1);
-  fStack_c = 0.0;
-  FUN_00280050(iVar1,&fStack_20);
-  fStack_1c = DAT_007cad74 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) + fStack_1c + 0.0;
-  fVar4 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar2 + 0xb8) * 0.5);
+  RwV3d mat;
+  RwV3d pos;
+  RwV3d diff;
+  struct {
+    u8 out [28];
+    f32 end [3];
+    RtQuat unk;
+  } pkt;
+
+  iVar1 = *(int *)(*(int *)(param_1 + 0xe0) + 0x30);
+  FUN_002a4470((f32 *)pkt.out,(f32 *)(param_1 + 0x9c));
+  fVar3 = FUN_00280870(3,1,&mat,0,0,1);
+  mat.y = 0.0f;
+  FUN_00280050(iVar1,&pos);
+  pos.y += 0.0f + DAT_007cad74 * (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c));
+  pos.y = 0.0f;
+  FUN_002a4690(&pkt.unk,&pos,&mat,&D_00697880);
+  fVar4 = FUN_0052e930(DAT_007cad60 * (0.5f * *(float *)(param_1 + 0xb8)));
   fVar3 = fVar3 / fVar4;
-  fStack_30 = fStack_20 - fStack_10;
-  fStack_2c = fStack_1c - fStack_c;
-  fStack_28 = fStack_18 - fStack_8;
-  fVar5 = (float)FUN_004c69f0(&fStack_30,&fStack_30);
-  fVar4 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar2 + 0xb8) * 0.5);
-  fVar5 = fVar5 + (*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 5.0) / fVar4;
+  diff.x = pos.x - mat.x;
+  diff.y = pos.y - mat.y;
+  diff.z = pos.z - mat.z;
+  fVar5 = FUN_004c69f0(&diff,&diff);
+  fVar4 = FUN_0052e930(DAT_007cad60 * (0.5f * *(float *)(param_1 + 0xb8)));
+  fVar5 = fVar5 + (5.0f * (*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c))) / fVar4;
   if (fVar3 <= fVar5) {
     fVar3 = fVar5;
   }
-  fStack_30 = fStack_30 * fVar3;
-  fStack_2c = fStack_2c * fVar3;
-  fStack_28 = fStack_28 * fVar3;
-  fStack_54 = fStack_30 + fStack_10;
-  fStack_50 = fStack_2c + fStack_c;
-  fStack_4c = fStack_28 + fStack_8;
+  diff.x = diff.x * fVar3;
+  diff.y = diff.y * fVar3;
+  diff.z = diff.z * fVar3;
+  pkt.end[0] = diff.x + mat.x;
+  pkt.end[1] = diff.y + mat.y;
+  pkt.end[2] = diff.z + mat.z;
   if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
+    FUN_002a3590(pkt.end,pkt.end);
   }
+  FUN_002a2290((u16 *)param_1,(RwV3d *)pkt.out,(RwV3d *)pkt.end,1);
+  FUN_002a3110((u16 *)param_1,1.0f);
   return;
 }
 
