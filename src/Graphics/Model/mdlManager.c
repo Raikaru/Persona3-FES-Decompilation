@@ -16,6 +16,7 @@ void mdlStreamDestroy(Model* mdl);
 void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
 void mdl00319900(Model* mdl, u32 value);
 extern RtAnimAnimation DAT_009571d0;
+extern u8 DAT_0069abb8[];
 extern void* jtbl_00960178[];
 
 void* FUN_00491cc0(RpClump* clump);
@@ -57,6 +58,9 @@ void func_00316970(Model* mdl);
 u64 func_003115a0(u64 param_1, u64 param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
 void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
+extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
+#pragma alias func_004916d0_typed func_004916d0
+extern void func_004916d0_typed(u64 object, void* callback, void* data);
 void func_0031f5c0(void* data);
 
 // FUN_00311310 NONMATCHING
@@ -197,7 +201,6 @@ Model* mdlSearch(u16 type, u16 id, u16 flags)
     modelId = id;
     modelFlags = flags;
     mdl = sMdlListTails[modelType];
-
     while (mdl != NULL)
     {
         if (mdl->id == modelId)
@@ -207,10 +210,8 @@ Model* mdlSearch(u16 type, u16 id, u16 flags)
                 break;
             }
         }
-
         mdl = mdl->prev;
     }
-
     return mdl;
 }
 
@@ -1123,7 +1124,7 @@ long func_00312f90(long param_1);
 u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
 int func_00313f40(int param_1,u64 param_2);
-u64 func_00313fe0(u64 param_1,u32 *param_2);
+void* func_00313fe0(void* param_1,u32 *param_2);
 u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
 u64 func_003142b0(void* param_1);
@@ -3830,17 +3831,12 @@ int func_00313f40(int param_1,u64 param_2)
 // FUN_00313FE0 NONMATCHING
 
 
-u64 func_00313fe0(u64 param_1,u32 *param_2)
-
-
-
+void* func_00313fe0(void* param_1,u32 *param_2)
 {
-
-  func_004932c0(*(u32 *)((int)param_1 + 0x18),*param_2,param_2[1]);
-
+  func_004932c0(*(u32 *)((u8 *)param_1 + 0x18), *param_2, param_2[1]);
   return param_1;
-
 }
+
 
 
 
@@ -5564,17 +5560,14 @@ Model* func_00315ed0(Model* param_1)
   u32 uVar2;
 
   u32 uVar3;
+  u32 offset;
 
   
-
   iVar1 = *(int *)((int)param_1 + 0x18);
-
   uVar2 = *(u32 *)(iVar1 + 0x24);
-
   for (uVar3 = 0; uVar3 < uVar2; uVar3 = uVar3 + 1) {
-
-    func_001b5a30(*(u32 *)(*(int *)(iVar1 + 0x20) + uVar3 * 4));
-
+    offset = uVar3 * 4;
+    func_001b5a30(*(u32 *)(offset + *(int *)(iVar1 + 0x20)));
   }
 
   return param_1;
@@ -5734,7 +5727,7 @@ u64 func_00315f50(u64 param_1,u32 *param_2)
 
 
 
-// FUN_00316320 NONMATCHING
+// FUN_00316320
 
 
 void func_00316320(u64 param_1,u32* param_2,u16 param_3)
@@ -5743,18 +5736,14 @@ void func_00316320(u64 param_1,u32* param_2,u16 param_3)
 
 {
 
-  u32 uStack_8;
+  struct {
+    u32* ptr;
+    u16 value;
+  } context;
 
-  u16 uStack_4;
-
-  
-
-  uStack_8 = (u32)param_2;
-
-  uStack_4 = param_3;
-
-  func_004916d0(param_1,0x315f50,&uStack_8);
-
+  context.ptr = param_2;
+  context.value = param_3;
+  func_004916d0_typed(param_1, (void *)func_00315f50, &context);
   return;
 
 }
@@ -6827,11 +6816,8 @@ u32 func_003186e0(int param_1,u32 param_2,short param_3)
   bVar2 = false;
 
   piVar1 = *(int **)((param_2 & 0xffff) * 0x9c + param_1 + 0x118);
-
   if ((piVar1 != (int *)0x0) && ((long)param_3 < (long)(u32)*(u16 *)(piVar1 + 1))) {
-
     bVar2 = true;
-
   }
 
   if ((bVar2) && (*(u8 **)(param_3 * 0x50 + *piVar1 + 0x40) == (u8 *)&DAT_009571d0)) {
@@ -7225,24 +7211,13 @@ u32 func_00318fc0(int param_1)
 
 {
 
-  u32 uVar1;
+  u16* ptr;
 
-  
-
-  if (*(u16 **)(param_1 + 0x3f0) == (u16 *)0x0) {
-
-    uVar1 = func_001a6c00(*(u32 *)(param_1 + 0xdc),0x69abb8);
-
+  ptr = *(u16 **)(param_1 + 0x3f0);
+  if (ptr != NULL) {
+    return (u32)*ptr;
   }
-
-  else {
-
-    uVar1 = (u32)**(u16 **)(param_1 + 0x3f0);
-
-  }
-
-  return uVar1;
-
+  return func_001a6c00(*(u32 *)(param_1 + 0xdc), (u8 *)&DAT_0069aee0 - 0x328);
 }
 
 
