@@ -7477,11 +7477,13 @@ u64 FUN_004bcae0(u64 param_1,int param_2)
   return param_1;
 }
 #pragma schedule off
+#pragma schedule on
 // FUN_004BCB20
 bool FUN_004bcb20(u32 *param_1,int param_2)
 {
   return *param_1 == (u32)param_2;
 }
+#pragma schedule off
 // FUN_004BCB30 NONMATCHING
 u64 FUN_004bcb30(u64 param_1,u64 param_2)
 

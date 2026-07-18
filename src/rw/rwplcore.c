@@ -2231,7 +2231,7 @@ void FUN_004c2080(int param_1,int param_2)
   *(int *)(param_1 + 4) -= param_2;
 }
 #pragma optimization_level 2
-// FUN_004C2090
+// FUN_004C2090 NONMATCHING
 u32 FUN_004c2090(u32 *param_1)
 {
   u32 result;
