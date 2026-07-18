@@ -17,7 +17,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2);
 u32 FUN_003dfac0(int *param_1);
 void FUN_003dfae0(int *param_1,int *param_2);
 int * FUN_003dfeb0(int param_1);
-void FUN_003dff00(long param_1);
+void FUN_003dff00(s32 param_1);
 u32 FUN_003dff30(int *param_1);
 int FUN_003dff80(int *param_1,int param_2);
 int FUN_003dffc0(int *param_1,int param_2,long param_3);
@@ -35,10 +35,10 @@ u64 FUN_003e08e0(void);
 void FUN_003e0920(void);
 u32 FUN_003e0940(void);
 void FUN_003e0950(u64);
-void FUN_003e0a10(u64);
+void FUN_003e0a10(s32);
 void FUN_003e0b70(void);
 u8 FUN_003e0bb0(void);
-u8 FUN_003e0bc0(void);
+u32 FUN_003e0bc0(void);
 void FUN_003e0c20(u64 param_1,u32 param_2);
 void FUN_003e6400(u64 param_1,u64 param_2);
 /* code typedef moved above prototypes */
@@ -79,6 +79,7 @@ typedef struct FclCreatedTask FclCreatedTask;
 typedef struct FclFusionDetail FclFusionDetail;
 typedef struct FclFusionOutput FclFusionOutput;
 typedef struct FclPersonaDefinition FclPersonaDefinition;
+typedef struct FclPersonaTableEntry FclPersonaTableEntry;
 typedef struct FclListUi FclListUi;
 
 struct FclFusionDetail {
@@ -98,6 +99,10 @@ struct FclFusionOutput {
     s16 changed_skills[8];                /* 0x03e */
     byte pad4e[2];                        /* 0x04e */
     s32 bonus_experience;                 /* 0x050 */
+};
+
+struct FclPersonaTableEntry {
+    byte data[0xe];
 };
 
 struct FclPersonaDefinition {
@@ -526,9 +531,9 @@ void FUN_00523ac8(FclTextLayout*, const FclTextLayoutTemplate*, byte);
 s32 FUN_0010a4e0(s32, s32, s32, s32);
 u32 FUN_00175410(void);
 FclGlyphSet* FUN_00177790(s32);
-void FUN_00176680(FclSoundLookup*, u16);
 byte datGetLevel(s16);
 extern FclPersonaDefinition* DAT_007ce420[];
+extern u8* gp0xffffb730;
 extern const FclGlyphSet* DAT_007ce4e4[];
 extern const FclTextRuntimeTable DAT_007cd798;
 extern u16 DAT_007cd79c;
@@ -629,11 +634,12 @@ void fclCombineList003da2a0(FclList* param_1)
     }
 }
 
-// FUN_003da3a0 NONMATCHING
+// FUN_003da3a0
 void fclCombineList003da3a0(FclList* param_1)
 {
     FclOwner* list;
     list = param_1->list;
+    FUN_003dff00((s32)param_1->result);
     FUN_003c5a20((s32)list);
 }
 // FUN_003da3e0
@@ -1641,7 +1647,8 @@ void fclCombineList003ddb90(FclList* list, FclSelection* selection)
     memcpy(&selection->fusion, &list->fusion, 0x54);
     memcpy(&selection->result_detail, &list->fusion.detail, 0x34);
     for (i = 0; i < 5; i++) {
-        selection->result_detail.base_stat_values[i] -= list->fusion.stat_deltas[i];
+        *(((byte *)((s32)selection + i)) + 0x88) -=
+            *(((byte *)((s32)list + i)) + 0x54);
     }
     selection->ui = list->ui;
     FUN_003c9d00(selection->ui, 4);
@@ -1650,7 +1657,9 @@ void fclCombineList003ddb90(FclList* list, FclSelection* selection)
     FUN_003c9e30(selection->ui, (s8)(selection->result_choice_index + 1),
                   (s8)selection->current_choice_index);
     FUN_003c9b00(selection->ui, &selection->result_detail, &selection->fusion);
-    social_link_index = FUN_0016deb0(DAT_007ce420[selection->result_detail.persona_id]->field_02.arcana);
+    social_link_index = FUN_0016deb0(
+        ((FclPersonaTableEntry*)gp0xffffb730)[
+            selection->result_detail.persona_id].data[2]);
     if (FUN_0016dba0(social_link_index) != 0) {
         bonus_experience = FUN_003d58c0(social_link_index, selection->result_detail.level);
         selection->bonus_experience = bonus_experience;
@@ -2073,12 +2082,11 @@ s32 fclCombineList003def40(s32 width, s32 count, s32 index)
 {
     s32 step;
 
-    if (count < 2) goto zero;
-    step = (index * width) / (count - 1);
-    goto done;
-zero:
-    step = 0;
-done:
+    if (!(count < 2)) {
+        step = (index * width) / (count - 1);
+    } else {
+        step = 0;
+    }
     return (width >> 1) - step + 0x5a;
 }
 
@@ -2587,23 +2595,12 @@ int * FUN_003dfeb0(int param_1)
 
 }
 
-// FUN_003DFF00 NONMATCHING
-
-
-void FUN_003dff00(long param_1)
-
-
-
+// FUN_003DFF00
+void FUN_003dff00(s32 param_1)
 {
-
-  if (param_1 != 0) {
-
-    FUN_003c45f0(*(u32 *)param_1);
-
-  }
-
-  return;
-
+    if (param_1 != 0) {
+        FUN_003c45f0(*(u32 *)param_1);
+    }
 }
 
 // FUN_003DFF30 NONMATCHING
@@ -3646,36 +3643,14 @@ void FUN_003e0780(void)
 }
 
 // FUN_003E0830 NONMATCHING
-
-
 u32 FUN_003e0830(void)
-
-
-
 {
-
-  u32 uVar1;
-
-  long lVar2;
-
-  
-
-  lVar2 = FUN_003e0bc0();
-
-  if (lVar2 == 0) {
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    uVar1 = 0xffffffff;
-
-  }
-
-  return uVar1;
-
+    if (FUN_003e0bc0() == 0) goto failed;
+    goto succeeded;
+failed:
+    return -1;
+succeeded:
+    return 0;
 }
 
 // FUN_003E0870
@@ -3800,7 +3775,7 @@ void FUN_003e0950(u64 param_1)
 // FUN_003E0A10 NONMATCHING
 
 
-void FUN_003e0a10(u64 param_1)
+void FUN_003e0a10(s32 param_1)
 
 
 
@@ -3876,27 +3851,16 @@ void FUN_003e0a10(u64 param_1)
 
 }
 
-// FUN_003E0B70 NONMATCHING
 
 
+// FUN_003E0B70
 void FUN_003e0b70(void)
-
-
-
 {
-
-  if (iGpffffb998 != 0) {
-
-    FUN_003e0a10(0);
-
-    FUN_003c5220(iGpffffb998);
-
-  }
-
-  iGpffffb998 = 0;
-
-  return;
-
+    if (iGpffffb998 != 0) {
+        FUN_003e0a10(iGpffffb998);
+        FUN_003c5220(iGpffffb998);
+    }
+    iGpffffb998 = 0;
 }
 
 // FUN_003E0BB0
@@ -3912,33 +3876,16 @@ u8 FUN_003e0bb0(void)
 
 }
 
-// FUN_003E0BC0 NONMATCHING
-
-
-u8 FUN_003e0bc0(void)
-
-
-
+// FUN_003E0BC0
+u32 FUN_003e0bc0(void)
 {
-
-  long lVar1;
-
-  
-
-  lVar1 = FUN_003c5490(uGpffffb998);
-
-  if (lVar1 != 0) {
-
-    FUN_003e0a10(uGpffffb998);
-
-    FUN_003c5220(uGpffffb998);
-
-    uGpffffb998 = 0;
-
-  }
-
-  return lVar1 != 0;
-
+    if (FUN_003c5490(uGpffffb998) != 0) {
+        FUN_003e0a10(uGpffffb998);
+        FUN_003c5220(uGpffffb998);
+        uGpffffb998 = 0;
+        return 1;
+    }
+    return 0;
 }
 
 // FUN_003E0C20 NONMATCHING
