@@ -4,7 +4,7 @@
     "complete": false,
     "label": "Essential Persona-specific functions",
     "name": "essential_functions",
-    "remaining": 3684,
+    "remaining": 3683,
     "requires_every_function_to_match": true,
     "whole_executable_identity_is_separate": true
   },
@@ -2730,6 +2730,7 @@
       "002ae4d0",
       "002ae730",
       "002af7f0",
+      "002af850",
       "002b0210",
       "002b1020",
       "002b1050",
@@ -4439,11 +4440,11 @@
       "0045b480",
       "0045b4b0"
     ],
-    "count": 4338,
+    "count": 4339,
     "duplicate_rows": 0,
     "known_rows": 8022,
-    "matched_body_bytes": 596556,
-    "percent": 54.076,
+    "matched_body_bytes": 596828,
+    "percent": 54.089,
     "unique_known_addresses": 8022
   },
   "schema_version": 1,
@@ -12483,11 +12484,11 @@
     "raw_rows": 13801,
     "scope_ignored_unknown_rows": 0,
     "scope_rows": 8022,
-    "verifier_report": "build\\FULL_PROGRESS_583.json"
+    "verifier_report": "build\\FULL_PROGRESS_584.json"
   },
   "status_counts": {
-    "MATCH": 4338,
-    "NONMATCHING": 3684
+    "MATCH": 4339,
+    "NONMATCHING": 3683
   },
   "total": 8022,
   "whole_executable": {
@@ -15209,6 +15210,7 @@
         "002ae4d0",
         "002ae730",
         "002af7f0",
+        "002af850",
         "002b0210",
         "002b1020",
         "002b1050",
@@ -17964,16 +17966,16 @@
         "005a1858",
         "005a1b58"
       ],
-      "count": 5384,
+      "count": 5385,
       "duplicate_rows": 0,
       "known_rows": 13801,
-      "matched_body_bytes": 644052,
-      "percent": 39.012,
+      "matched_body_bytes": 644324,
+      "percent": 39.019,
       "unique_known_addresses": 13801
     },
     "status_counts": {
-      "MATCH": 5384,
-      "NONMATCHING": 8417
+      "MATCH": 5385,
+      "NONMATCHING": 8416
     },
     "total": 13801
   }
