@@ -334,6 +334,8 @@ extern u32 DAT_007ceb0c;
 extern u32 DAT_007ceb10;
 extern u32 DAT_007ceb14;
 extern u32 DAT_007ceb28;
+#pragma alias DAT_00960070_abs DAT_00960070
+extern u8 DAT_00960070_abs[];
 extern u8 DAT_00960070[];
 extern u32* DAT_00960074;
 extern u32* DAT_00960078;
@@ -4805,13 +4807,14 @@ undefined8 FUN_004d1170(int param_1,undefined8 param_2)
   return 0;
 }
 
+#pragma schedule on
 // FUN_004D11D0 NONMATCHING
-undefined8 FUN_004d11d0(undefined8 param_1)
-
+int FUN_004d11d0(int param_1)
 {
-  *(int *)((int)&DAT_00960080 + iGpffffbc60) = (int)param_1;
+  *(int *)(DAT_00960070_abs + iGpffffbc60 + 0x10) = param_1;
   return param_1;
 }
+#pragma schedule off
 
 #pragma schedule on
 // FUN_004D11F0
