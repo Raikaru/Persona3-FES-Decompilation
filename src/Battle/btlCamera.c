@@ -54,6 +54,9 @@ extern u8 DAT_00694c90[];
 
 extern f32 FUN_002d21e0(f32 target, f32* motion);
 extern f32 fGpffff807c;
+extern f32 fGpffff80e8;
+extern u64 FUN_004c6c60(RwV3d* out, RwV3d* in, RwMatrix* matrix);
+extern u64 FUN_002d1de0();
 extern f32 fGpffff83cc;
 extern void FUN_002a3010(BtlCamera* camera, f32 step);
 extern void FUN_002a2ed0();
@@ -899,10 +902,258 @@ static void btlCameraRangeActionFrame(BtlCamera* camera, f32 margin,
 // FUN_002a54f0 NONMATCHING
 void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 farScale)
 {
-    btlCameraRangeActionFrame(camera, closeView != 0 ? 1.5f : 2.0f,
-                              (f32)nearScale * (closeView != 0 ? 2.0f : 4.0f),
-                              1);
-    (void)farScale;
+    f32 maxY;
+    RwV3d scaled;
+    RwV3d forward;
+    RwV3d sphereCenter;
+    RwV3d rotated;
+    RwV3d center;
+    RwV3d candidate;
+    RwV3d targetCenter;
+    RwMatrix rotation;
+    RtQuat blendedRot;
+    RtQuat quaternion;
+    BtlCameraQuatBlend blend;
+    BtlCameraKeyFrame frames[2];
+    f32 distance;
+    f32 radius;
+    f32 half;
+    f32 angle;
+    f32 nearAngle;
+    f32 ratio;
+    f32 firstWeight;
+    f32 x;
+    f32 xSquared;
+    f32 r;
+    f32 r2;
+    BtlUnit* unit;
+    BtlAction* targetAction;
+    unit = camera->action->unit;
+    if (closeView == 0)
+    {
+        FUN_002a4470((f32*)&frames[0], (f32*)((u8*)camera + 0x9c));
+        distance = unit->sphereRadius * unit->scale;
+        btlUnitGetSphereWorldCenter(unit, &sphereCenter);
+        RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
+        half = 0.5f * distance;
+        scaled.x = forward.x * half;
+        scaled.y = forward.y * half;
+        scaled.z = forward.z * half;
+        candidate.x = sphereCenter.x + scaled.x;
+        candidate.y = sphereCenter.y + scaled.y;
+        candidate.z = sphereCenter.z + scaled.z;
+        candidate.y += 0.25f * (unit->unk_8c * unit->scale);
+        FUN_00280870(3, 0, 0, &maxY, 0, 1);
+        scaled = frames[0].pos;
+        if (maxY < scaled.y)
+        {
+            scaled.y = maxY;
+        }
+        else
+        {
+            half = unit->scale;
+            half *= unit->unk_8c;
+            if (half > scaled.y)
+            {
+                scaled.y = half;
+            }
+        }
+        FUN_002a4690(&frames[1].rot, &scaled, &candidate, &D_00697880);
+        angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&frames[1].rot);
+        nearAngle = fGpffff80e8 * (f32)nearScale;
+        if (angle > nearAngle)
+        {
+            if (angle <= fGpffff80e8 * (f32)farScale)
+            {
+                ratio = nearAngle / angle;
+                FUN_004be310((f32*)&frames[0].rot, (f32*)&frames[1].rot,
+                             (f32*)&blend);
+                if (ratio <= 0.0f)
+                {
+                    blendedRot = frames[0].rot;
+                }
+                else if (1.0f <= ratio)
+                {
+                    blendedRot = frames[1].rot;
+                }
+                else
+                {
+                    firstWeight = 1.0f - ratio;
+                    if (blend.flag == 0)
+                    {
+                        x = firstWeight * blend.scalar;
+                        xSquared = x * x;
+                        r = fGpffff8048 + fGpffff8130 * xSquared;
+                        r = fGpffff8118 + xSquared * r;
+                        r = fGpffff8050 + xSquared * r;
+                        r = fGpffff8054 + xSquared * r;
+                        r2 = fGpffff8058 + xSquared * r;
+                        firstWeight = x + xSquared * x * r2;
+                        x = ratio * blend.scalar;
+                        xSquared = x * x;
+                        r = fGpffff8048 + fGpffff8130 * xSquared;
+                        r = fGpffff8118 + xSquared * r;
+                        r = fGpffff8050 + xSquared * r;
+                        r = fGpffff8054 + xSquared * r;
+                        r2 = fGpffff8058 + xSquared * r;
+                        ratio = x + xSquared * x * r2;
+                    }
+                    blendedRot.imag.x = blend.first.imag.x * firstWeight;
+                    blendedRot.imag.y = blend.first.imag.y * firstWeight;
+                    blendedRot.imag.z = blend.first.imag.z * firstWeight;
+                    blendedRot.imag.x = 0.0f + blendedRot.imag.x +
+                                        blend.second.imag.x * ratio;
+                    blendedRot.imag.y = 0.0f + blendedRot.imag.y +
+                                        blend.second.imag.y * ratio;
+                    blendedRot.imag.z = 0.0f + blendedRot.imag.z +
+                                        blend.second.imag.z * ratio;
+                    blendedRot.real = blend.first.real * firstWeight +
+                                      blend.second.real * ratio;
+                }
+                RtQuatTransformVectors(&forward, &D_006978A0, 1,
+                                        &blendedRot);
+                scaled.x = center.x + forward.x;
+                scaled.y = center.y + forward.y;
+                scaled.z = center.z + forward.z;
+                FUN_002a4690(&frames[1].rot, &scaled, &center,
+                             &D_00697880);
+            }
+            else
+            {
+                goto close_frame;
+            }
+        }
+        forward.x = frames[0].pos.x - candidate.x;
+        forward.y = frames[0].pos.y - candidate.y;
+        forward.z = frames[0].pos.z - candidate.z;
+        radius = RwV3dNormalize(&forward, &forward);
+        radius = radius * fGpffff80c4;
+        half = 0.5f * camera->fovRad;
+        distance = 1.5f * distance / tanf(half);
+        if (!(distance <= radius))
+        {
+            radius = distance;
+        }
+        maxY = (f32)0x226;
+        if (radius < maxY)
+        {
+            radius = maxY;
+        }
+        RtQuatTransformVectors(&forward, &D_006978A0, 1, &frames[1].rot);
+        scaled.x = forward.x * radius;
+        scaled.y = forward.y * radius;
+        scaled.z = forward.z * radius;
+        frames[1].pos.x = candidate.x + scaled.x;
+        frames[1].pos.y = candidate.y + scaled.y;
+        frames[1].pos.z = candidate.z + scaled.z;
+        if (frames[0].pos.y < 25.0f)
+        {
+            frames[0].pos.y = 25.0f;
+        }
+        if (frames[1].pos.y < 25.0f)
+        {
+            frames[1].pos.y = 25.0f;
+        }
+        angle = FUN_002d1f30((f32*)&frames[0].rot,
+                             (f32*)&frames[1].rot);
+        half = 2.0f;
+        if (angle > 0.0f)
+        {
+            ratio = fGpffff80e8 * (f32)nearScale / angle;
+            half = 1.0f;
+            if (ratio > 1.0f)
+            {
+                half = ratio * 1.0f;
+            }
+            if (2.0f < half)
+            {
+                half = 2.0f;
+            }
+        }
+        FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+        FUN_002a3110((u16*)camera, half);
+        return;
+    }
+
+close_frame:
+    targetAction = (BtlAction*)FUN_002d6290((int)camera->action);
+    btlUnitGetSphereWorldCenter(unit, &candidate);
+    candidate.y += 0.25f * (unit->unk_8c * unit->scale);
+    if (camera->action->target.targetedCount == 1 &&
+        camera->action->target.targetedActions[0] != NULL &&
+        camera->action->target.targetedActions[0]->unit == unit)
+    {
+        RtQuatTransformVectors(&rotated, &D_00697890, 1, &unit->rot);
+    }
+    else
+    {
+        if (targetAction != NULL)
+        {
+            btlUnitGetSphereWorldCenter(targetAction->unit, &targetCenter);
+        }
+        else
+        {
+            targetCenter.x = 0.0f;
+            targetCenter.y = 0.0f;
+            targetCenter.z = 0.0f;
+            FUN_00280870((s32)FUN_002d1600((int)&camera->action->target) & 0xffff,
+                         1, &targetCenter, 0, 0, 1);
+        }
+        FUN_002d1de0(&quaternion, &candidate, &targetCenter);
+        RtQuatTransformVectors(&rotated, &D_00697890, 1, &quaternion);
+    }
+    radius = 4.0f * (unit->sphereRadius * unit->scale);
+    half = 2.0f * (unit->sphereRadius * unit->scale);
+    switch (datCalcRand(3))
+    {
+    case 0:
+        nearAngle = -30.0f;
+        break;
+    case 1:
+        nearAngle = 30.0f;
+        break;
+    default:
+        nearAngle = 0.0f;
+        break;
+    }
+    switch (datCalcRand(3))
+    {
+    case 0:
+        nearAngle = -15.0f;
+        break;
+    case 1:
+        nearAngle = 15.0f;
+        break;
+    default:
+        nearAngle = 0.0f;
+        break;
+    }
+    RwMatrixRotate(&rotation, &D_00697870, nearAngle, 0);
+    RwMatrixRotate(&rotation, &D_00697880, nearAngle, 2);
+    FUN_004c6c60(&forward, &rotated, &rotation);
+    distance = radius / tanf(fGpffff8070 * (0.5f * camera->fovRad));
+    frames[0].pos.x = candidate.x + forward.x * distance;
+    frames[0].pos.y = candidate.y + forward.y * distance;
+    frames[0].pos.z = candidate.z + forward.z * distance;
+    distance = half / tanf(fGpffff8070 * (0.5f * camera->fovRad));
+    frames[1].pos.x = candidate.x + rotated.x * distance;
+    frames[1].pos.y = candidate.y + rotated.y * distance;
+    frames[1].pos.z = candidate.z + rotated.z * distance;
+    FUN_002a4690(&frames[0].rot, &frames[0].pos, &candidate,
+                 &D_00697880);
+    FUN_002a4690(&frames[1].rot, &frames[1].pos, &candidate,
+                 &D_00697880);
+    if (frames[0].pos.y < 100.0f)
+    {
+        frames[0].pos.y = 100.0f;
+    }
+    if (frames[1].pos.y < 100.0f)
+    {
+        frames[1].pos.y = 100.0f;
+    }
+    FUN_002a3e80(0.0f, (u8*)camera->action, NULL, NULL, 1);
+    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    FUN_002a3110((u16*)camera, 4.0f);
 }
 
 // FUN_002a5ee0
@@ -2280,10 +2531,219 @@ void btlCameraFrameActionAll(BtlCamera* camera, u32 suppressEffects)
 void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
                                 u32 useCurrentTarget)
 {
-    btlCameraRangeActionFrame(camera, 2.0f, 375.0f, useCurrentTarget != 0);
-    if (suppressEffects == 0 && camera != NULL)
+    RwV3d unitCenter;
+    RwV3d personaCenter;
+    RwV3d targetCenter;
+    RwV3d direction;
+    RwV3d scaledDirection;
+    RwV3d base;
+    RwV3d firstPos;
+    RwV3d secondPos;
+    RwV3d projectionA;
+    RwV3d projectionB;
+    BtlCameraKeyFrame frames[2];
+    volatile f32 pad[8];
+    BtlUnit* targetUnit;
+    BtlUnit* persona;
+    BtlUnit* unit;
+    f32 unitHeight;
+    f32 personaHeight;
+    f32 targetHeight;
+    f32 unitRadius;
+    f32 personaRadius;
+    f32 targetRadius;
+    f32 distance;
+    f32 cameraDistance;
+    f32 halfDistance;
+    f32 modeScale;
+    f32 projected;
+    u32 personaResult;
+    u32 special;
+    u32 mode;
+    u32 randomMode;
+
+    unit = camera->action->unit;
+    targetUnit = camera->action->target.targetedActions[0]->unit;
+    persona = unit->personaUnit;
+    pad[0] = 0.0f;
+
+    personaResult = FUN_002fdbb0(camera->action, persona) != 0;
+    special = FUN_002a3520((int)camera) != 0;
+    if (special == 0 && FUN_002a3550((u8*)camera) != 0)
     {
-        camera->framesUntilUpdate = 0;
+        special = 1;
+    }
+
+    btlUnitGetSphereWorldCenter(unit, &unitCenter);
+    btlUnitGetSphereWorldCenter(persona, &personaCenter);
+    unitHeight = unitCenter.y + 0.5f *
+                 (unit->unk_8c * unit->scale);
+    personaHeight = personaCenter.y + 0.5f *
+                    (persona->unk_8c * persona->scale);
+    if (personaResult == 0 && special == 0 && unitHeight < personaHeight)
+    {
+        unitHeight = 0.5f * (unitHeight + personaHeight);
+    }
+
+    unitRadius = unit->sphereRadius * unit->scale;
+    personaRadius = persona->sphereRadius * persona->scale;
+    if (personaResult == 0 && special == 0 && unitRadius < personaRadius)
+    {
+        unitRadius = personaRadius;
+    }
+    if (unitRadius < 50.0f)
+    {
+        unitRadius = 50.0f;
+    }
+    if (personaRadius < 50.0f)
+    {
+        personaRadius = 50.0f;
+    }
+
+    btlUnitGetSphereWorldCenter(targetUnit, &targetCenter);
+    targetHeight = targetCenter.y + 0.5f *
+                   (targetUnit->unk_8c * targetUnit->scale);
+    if (targetHeight > 450.0f)
+    {
+        targetCenter.y = targetCenter.y -
+                         0.5f * (targetUnit->unk_8c * targetUnit->scale);
+        targetHeight = 450.0f;
+    }
+    targetRadius = targetUnit->sphereRadius * targetUnit->scale;
+
+    mode = FUN_002a3420((int)camera);
+    modeScale = 1.0f;
+    if (special != 0 || mode != 0)
+    {
+        btlUnit002880e0(persona, 1);
+        *(BtlUnit**)((u8*)camera + 0x120) = persona;
+        *(u16*)((u8*)camera + 0x124) = 0;
+        modeScale = 3.0f;
+    }
+    else
+    {
+        btlUnit002880e0(persona, 0);
+        *(BtlUnit**)((u8*)camera + 0x120) = persona;
+        *(u16*)((u8*)camera + 0x124) = 1;
+    }
+
+    direction.x = unitCenter.x - targetCenter.x;
+    direction.y = unitCenter.y - targetCenter.y;
+    direction.z = unitCenter.z - targetCenter.z;
+    distance = RwV3dNormalize(&direction, &direction);
+
+    base = unitCenter;
+    base.y = base.y + 0.25f * (unit->unk_8c * unit->scale);
+    scaledDirection.x = targetCenter.x + direction.x * distance;
+    scaledDirection.y = targetCenter.y + direction.y * distance;
+    scaledDirection.z = targetCenter.z + direction.z * distance;
+
+    projectionA.x = camera->pos.x - scaledDirection.x;
+    projectionA.y = camera->pos.y - scaledDirection.y;
+    projectionA.z = camera->pos.z - scaledDirection.z;
+    FUN_004c6b20(&projectionA, &projectionA);
+
+    randomMode = 0;
+    if (personaResult == 0)
+    {
+        randomMode = effMiscRand(0) & 1;
+        if (randomMode != 0 && FUN_002a3380((u8*)camera) == 0)
+        {
+            randomMode = 0;
+        }
+    }
+
+    if (personaResult != 0 || randomMode != 0)
+    {
+        btlUnit002880e0(persona, 1);
+        *(BtlUnit**)((u8*)camera + 0x120) = persona;
+        *(u16*)((u8*)camera + 0x124) = 0;
+
+        cameraDistance = 4.0f * unitRadius;
+        projected = fGpffff8094 * personaRadius;
+        projectionB = base;
+        projectionB.x = projectionB.x + projectionA.z * cameraDistance;
+        projectionB.z = projectionB.z - projectionA.x * cameraDistance;
+        projected = FUN_002d1fd0((f32*)&projectionB,
+                                 (f32*)&base,
+                                 (f32*)&base,
+                                 (f32*)&projectionA);
+        projected = projected + 0.0f;
+        cameraDistance = unitRadius * modeScale + projected;
+        cameraDistance = cameraDistance /
+                         FUN_0052e930(fGpffff8070 *
+                                      (0.5f * camera->fovRad));
+        if (cameraDistance < 226.0f)
+        {
+            cameraDistance = 226.0f;
+        }
+        scaledDirection.x = direction.x * cameraDistance;
+        scaledDirection.y = direction.y * cameraDistance;
+        scaledDirection.z = direction.z * cameraDistance;
+        firstPos.x = base.x + scaledDirection.x;
+        firstPos.y = base.y + scaledDirection.y;
+        firstPos.z = base.z + scaledDirection.z;
+        secondPos = firstPos;
+        if (firstPos.y < 50.0f)
+        {
+            firstPos.y = 50.0f;
+        }
+        if (secondPos.y < 50.0f)
+        {
+            secondPos.y = 50.0f;
+        }
+        modeScale = 3.0f;
+    }
+    else
+    {
+        modeScale = 2.25f;
+        halfDistance = 0.5f * distance;
+        if (halfDistance < targetRadius)
+        {
+            halfDistance = targetRadius;
+        }
+        cameraDistance = (1.5f * unitRadius + halfDistance) /
+                         FUN_0052e930(fGpffff8070 *
+                                      (0.5f * camera->fovRad));
+        if (cameraDistance < 226.0f)
+        {
+            cameraDistance = 226.0f;
+        }
+        scaledDirection.x = direction.x * cameraDistance;
+        scaledDirection.y = direction.y * cameraDistance;
+        scaledDirection.z = direction.z * cameraDistance;
+        firstPos.x = targetCenter.x + scaledDirection.x;
+        firstPos.y = targetCenter.y + scaledDirection.y;
+        firstPos.z = targetCenter.z + scaledDirection.z;
+        secondPos = firstPos;
+        if (firstPos.y < 50.0f)
+        {
+            firstPos.y = 50.0f;
+        }
+        if (secondPos.y < 50.0f)
+        {
+            secondPos.y = 50.0f;
+        }
+    }
+
+    FUN_002a4690(&frames[0].rot, &firstPos, &base,
+                 &D_00697880);
+    FUN_002a4690(&frames[1].rot, &secondPos, &base,
+                 &D_00697880);
+    frames[0].pos = firstPos;
+    frames[1].pos = secondPos;
+    if (useCurrentTarget == 0)
+    {
+        frames[0].pos = base;
+        frames[1].pos = base;
+    }
+    FUN_002a3e80(50.0f, (u8*)camera->action, (u8*)&unit->pos,
+                 (u8*)&frames[0].pos, 3);
+    FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
+    FUN_002a3110((u16*)camera, modeScale);
+    if (suppressEffects != 0)
+    {
+        FUN_00351bb0(12);
     }
 }
 
