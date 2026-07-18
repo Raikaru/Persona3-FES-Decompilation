@@ -1357,15 +1357,15 @@ u64 FUN_004c0550(u64 param_1,int param_2,u64 param_3)
   }
   return param_1;
 }
-// FUN_004C06B0 NONMATCHING
+// FUN_004C06B0
+#pragma tailcall on
 void FUN_004c06b0(int param_1)
 
 {
-                    /* WARNING: Could not recover jumptable at 0x004c06b8. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-  (**(code **)(*(int *)(param_1 + 0x50) + 0x44))();
+  (*(code *)(*(int *)(param_1 + 0x50) + 0x44))();
   return;
 }
+#pragma tailcall off
 // FUN_004C06C0 NONMATCHING
 u64 FUN_004c06c0(u64 param_1)
 
