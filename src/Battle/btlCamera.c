@@ -1620,10 +1620,221 @@ u32 btlCameraSelectMode(BtlCamera* camera)
     return 5;
 }
 
+typedef struct BtlCameraTargetingWork
+{
+    BtlCameraKeyFrame first;
+    RwV3d secondPos;
+    RtQuat secondRot;
+    u8 pad_38[8];
+    RwMatrix matrix;
+    u8 pad_7c[4];
+    u8 pad_80[8];
+    RwV3d targetPos;
+    f32 horiz[2];
+    RwV3d candidate;
+    u8 pad_9c[4];
+    RwV3d sidePoint;
+    u8 pad_ac[4];
+    RwV3d diff;
+    u8 pad_bc[4];
+    RwV3d direction;
+    u8 pad_cc[4];
+    RwV3d desired;
+    u8 pad_dc[4];
+    RwV3d generated;
+    u8 pad_ec[4];
+    RwV3d sphereCenter;
+    f32 radius;
+} BtlCameraTargetingWork;
+
+
+extern u64 FUN_004c6c60(f32* out, f32* in, RwMatrix* matrix);
 // FUN_002a79f0 NONMATCHING
 void btlCameraFrameActionTargeting(BtlCamera* camera)
 {
-    btlCameraRangeActionFrame(camera, 1.75f, 500.0f, 1);
+    BtlCameraTargetingWork work;
+    BtlUnit* unit;
+    BtlUnit* persona;
+    f32 range;
+    f32 distance;
+    f32 half;
+    f32 fovScale;
+    f32 scale;
+    f32 sideOffset;
+    f32 tanHalf;
+
+    FUN_002a4470((f32*)&work.first.pos, (f32*)&camera->pos);
+    unit = camera->action->unit;
+    btlUnitGetSphereWorldCenter(unit, &work.sphereCenter);
+    range = FUN_00280870(3, 1, &work.generated.x, &work.radius, 0, 0);
+    if (FUN_002a3420((int)camera) != 0 || FUN_002a3380((u8*)camera) != 0)
+    {
+        persona = unit->personaUnit;
+        if (persona != NULL)
+        {
+            btlUnit002880e0(persona, 0);
+            *(BtlUnit**)((u8*)camera + 0x120) = unit->personaUnit;
+            *(u16*)((u8*)camera + 0x124) = 1;
+        }
+        work.generated.y = 0.75f * work.radius;
+        work.sphereCenter.y = work.generated.y;
+        half = 0.5f;
+        fovScale = fGpffff8070;
+
+        distance = range / tanf(fovScale * (half * camera->fovRad));
+        if (distance < 1000.0f)
+        {
+            distance = 1000.0f;
+        }
+
+        if (work.generated.x == work.sphereCenter.x &&
+            work.generated.z == work.sphereCenter.z)
+        {
+            *(s64*)&work.direction = *(volatile s64 *)(uintptr_t)0x00697890;
+            work.direction.z = *(volatile f32 *)(uintptr_t)0x00697898;
+        }
+        else
+        {
+            work.direction.x = work.generated.x - work.sphereCenter.x;
+            work.direction.y = work.generated.y - work.sphereCenter.y;
+            work.direction.z = work.generated.z - work.sphereCenter.z;
+            RwV3dNormalize(&work.direction, &work.direction);
+        }
+
+        work.direction.x = work.direction.x * range;
+        work.direction.y = work.direction.y * range;
+        work.direction.z = work.direction.z * range;
+        work.desired.x = work.generated.x + work.direction.x;
+        work.desired.y = work.generated.y + work.direction.y;
+        work.desired.z = work.generated.z + work.direction.z;
+        work.desired.y = 1.25f * work.radius;
+    }
+    else
+    {
+        persona = unit->personaUnit;
+        if (persona != NULL)
+        {
+            btlUnit002880e0(persona, 0);
+            *(BtlUnit**)((u8*)camera + 0x120) = unit->personaUnit;
+            *(u16*)((u8*)camera + 0x124) = 1;
+        }
+        work.generated.y = 0.75f * work.radius;
+        work.sphereCenter.y = work.generated.y;
+        half = 0.5f;
+        fovScale = fGpffff8070;
+
+        distance = range / tanf(fovScale * (half * camera->fovRad));
+        if (distance < 1200.0f)
+        {
+            distance = 1200.0f;
+        }
+
+        if (work.generated.x == work.sphereCenter.x &&
+            work.generated.z == work.sphereCenter.z)
+        {
+            *(s64*)&work.direction = *(volatile s64 *)(uintptr_t)0x00697890;
+            work.direction.z = *(volatile f32 *)(uintptr_t)0x00697898;
+        }
+        else
+        {
+            work.direction.x = work.generated.x - work.sphereCenter.x;
+            work.direction.y = work.generated.y - work.sphereCenter.y;
+            work.direction.z = work.generated.z - work.sphereCenter.z;
+            RwV3dNormalize(&work.direction, &work.direction);
+        }
+
+        work.direction.x = work.direction.x * range;
+        work.direction.y = work.direction.y * range;
+        work.direction.z = work.direction.z * range;
+        work.desired.x = work.generated.x + work.direction.x;
+        work.desired.y = work.generated.y + work.direction.y;
+        work.desired.z = work.generated.z + work.direction.z;
+        work.desired.y = fGpffff80c0 * work.radius;
+        if (work.desired.y > 200.0f)
+        {
+            work.desired.y = 200.0f;
+        }
+
+        work.candidate.x = work.desired.x;
+        work.candidate.y = work.generated.y;
+        work.candidate.z = work.desired.z;
+        work.diff.x = work.candidate.x - work.generated.x;
+        work.diff.y = work.generated.y - work.generated.y;
+        work.diff.z = work.candidate.z - work.generated.z;
+        scale = fGpffff8098 * RwV3dNormalize(&work.diff, &work.diff);
+        work.sidePoint.x = work.diff.x * scale;
+        work.sidePoint.y = work.diff.y * scale;
+        work.sidePoint.z = work.diff.z * scale;
+        work.sidePoint.x = work.sidePoint.x + work.generated.x;
+        work.sidePoint.y = work.sidePoint.y + work.generated.y;
+        work.sidePoint.z = work.sidePoint.z + work.generated.z;
+    }
+    *(s64*)&work.targetPos = *(s64*)&work.desired;
+    work.targetPos.z = work.desired.z;
+    work.targetPos.y = work.generated.y;
+    work.diff.x = work.targetPos.x - work.generated.x;
+    work.diff.y = work.targetPos.y - work.generated.y;
+    work.diff.z = work.targetPos.z - work.generated.z;
+    scale = fGpffff8098 * RwV3dNormalize(&work.diff, &work.diff);
+    work.sidePoint.x = work.diff.x * scale;
+    work.sidePoint.y = work.diff.y * scale;
+    work.sidePoint.z = work.diff.z * scale;
+    work.sidePoint.x = work.sidePoint.x + work.generated.x;
+    work.sidePoint.y = work.sidePoint.y + work.generated.y;
+    work.sidePoint.z = work.sidePoint.z + work.generated.z;
+
+    FUN_002a4690(&work.secondRot, &work.desired, &work.sidePoint, &D_00697880);
+    work.direction.x = work.desired.x - work.sidePoint.x;
+    work.direction.y = work.desired.y - work.sidePoint.y;
+    work.direction.z = work.desired.z - work.sidePoint.z;
+    RwV3dNormalize(&work.direction, &work.direction);
+    tanHalf = tanf(fovScale * (half * camera->fovRad));
+    sideOffset = distance * tanHalf;
+    sideOffset = sideOffset * 0.21875f;
+    work.horiz[0] = work.direction.x;
+    work.horiz[1] = work.direction.z;
+    FUN_004c6b20(work.horiz, work.horiz);
+    work.sidePoint.x = 0.0f + work.sidePoint.x +
+                       work.horiz[1] * sideOffset;
+    work.sidePoint.z = 0.0f + work.sidePoint.z -
+                       work.horiz[0] * sideOffset;
+
+    work.diff.x = work.direction.x * distance;
+    work.diff.y = work.direction.y * distance;
+    work.diff.z = work.direction.z * distance;
+    work.secondPos.x = work.sidePoint.x + work.diff.x;
+    work.secondPos.y = work.sidePoint.y + work.diff.y;
+    work.secondPos.z = work.sidePoint.z + work.diff.z;
+
+    if (effMiscRand(0) & 1)
+    {
+        RwMatrixRotate(&work.matrix, &D_00697880, -30.0f, rwCOMBINEREPLACE);
+    }
+    else
+    {
+        RwMatrixRotate(&work.matrix, &D_00697880, 30.0f, rwCOMBINEREPLACE);
+    }
+    FUN_004c6c60((f32*)&work.diff, (f32*)&work.direction, &work.matrix);
+    work.diff.x = work.diff.x * distance;
+    work.diff.y = work.diff.y * distance;
+    work.diff.z = work.diff.z * distance;
+    work.first.pos.x = work.sidePoint.x + work.diff.x;
+    work.first.pos.y = work.sidePoint.y + work.diff.y;
+    work.first.pos.z = work.sidePoint.z + work.diff.z;
+    FUN_002a4690(&work.first.rot, &work.first.pos, &work.sidePoint, &D_00697880);
+    FUN_00351bb0(0xC);
+    FUN_002a3590((f32*)&work.first.pos, (f32*)&work.first.pos);
+    FUN_002a3590((f32*)&work.secondPos, (f32*)&work.secondPos);
+    if (work.first.pos.y < 25.0f)
+    {
+        work.first.pos.y = 25.0f;
+    }
+    if (work.secondPos.y < 25.0f)
+    {
+        work.secondPos.y = 25.0f;
+    }
+    FUN_002a2290((u16*)camera, &work.first.pos, &work.secondPos, 1);
+    FUN_002a3110((u16*)camera, 10.0f);
 }
 
 // FUN_002a8150 NONMATCHING
