@@ -4607,139 +4607,171 @@ void FUN_002b3f80(BtlCamera* camera)
 }
 
 // FUN_002b41e0 NONMATCHING
-
-void FUN_002b41e0(undefined8 param_1)
-
+void FUN_002b41e0(BtlCamera* camera)
 {
-  int iVar1;
-  int iVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  float fStack_d0;
-  float fStack_cc;
-  float fStack_c8;
-  float fStack_c4;
-  float fStack_c0;
-  float fStack_bc;
-  float fStack_b8;
-  float fStack_b4;
-  float fStack_b0;
-  float fStack_ac;
-  float fStack_a8;
-  float fStack_a4;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_84;
-  float fStack_80;
-  float fStack_7c;
-  float fStack_78;
-  float fStack_74;
-  float fStack_70;
-  int iStack_6c;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_54;
-  float fStack_48;
-  float fStack_44;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar2 = (int)param_1;
-  iVar1 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  fVar6 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c);
-  FUN_00280050(iVar1,&fStack_40);
-  fStack_20 = fStack_d0 - fStack_40;
-  fStack_1c = fStack_cc - fStack_3c;
-  fStack_18 = fStack_c8 - fStack_38;
-  fVar3 = (float)FUN_004c6ac0(&fStack_20);
-  fVar4 = (float)FUN_0052e930(*(float *)(iVar2 + 0xb8) * 0.5);
-  fVar4 = (fVar6 * 1.5) / fVar4;
-  FUN_004be1e0(&fStack_20,0x697890,1,iVar1 + 0x1c);
-  fVar6 = fVar6 * 0.5;
-  fStack_30 = fStack_40 + fStack_20 * fVar6;
-  fStack_2c = fStack_3c + fStack_1c * fVar6;
-  fStack_28 = fStack_38 + fStack_18 * fVar6;
-  fStack_10 = fStack_20 * fVar4 + fStack_30;
-  fStack_8 = fStack_18 * fVar4 + fStack_28;
-  fStack_c = DAT_007cad74 * *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) +
-             fStack_1c * fVar4 + fStack_2c + 0.0;
-  fVar4 = (float)FUN_002d1f30(&fStack_c4,&fStack_a8);
-  if (DAT_007cadc4 < fVar4) {
-    fVar4 = DAT_007cadc4 / fVar4;
-    FUN_004be310(&fStack_c4,&fStack_a8,&fStack_90);
-    if (fVar4 <= 0.0) {
-      fStack_60 = fStack_c4;
-      fStack_5c = fStack_c0;
-      fStack_58 = fStack_bc;
-      fStack_54 = fStack_b8;
+    struct B41Work
+    {
+        BtlCameraKeyFrame current;
+        RwV3d target;
+        RtQuat targetRot;
+        u8 pad_38[8];
+        BtlCameraQuatBlend blend;
+        u8 pad_68[8];
+        RtQuat blendedRot;
+        u8 pad_80[8];
+        RwV2d horizontal;
+        RwV3d center;
+        u8 pad_9c[4];
+        RwV3d pointNear;
+        u8 pad_ac[4];
+        RwV3d delta;
+        u8 pad_bc[4];
+        RwV3d candidate;
+        u8 pad_cc[4];
+    } work;
+    BtlUnit* unit;
+    f32 halfDistance;
+    f32 desiredDistance;
+    f32 radius;
+    f32 angle;
+    f32 ratio;
+    f32 sideOffset;
+    f32 x;
+    f32 xSquared;
+
+    unit = *(BtlUnit**)((u8*)camera->action + 0x30);
+    radius = unit->sphereRadius * unit->scale;
+    FUN_002a4470((f32*)&work.current, (f32*)((u8*)camera + 0x9c));
+    FUN_00280050(unit, &work.center);
+
+    work.delta.x = work.current.pos.x - work.center.x;
+    work.delta.y = work.current.pos.y - work.center.y;
+    work.delta.z = work.current.pos.z - work.center.z;
+    halfDistance = RwV3dLength(&work.delta) * 0.5f;
+    desiredDistance = (1.5f * radius) /
+                      FUN_0052e930(0.5f * camera->fovRad);
+
+    RtQuatTransformVectors(&work.delta, &D_00697890, 1, &unit->rot);
+    x = 0.5f * radius;
+    work.candidate.x = work.delta.x * x;
+    work.candidate.y = work.delta.y * x;
+    work.candidate.z = work.delta.z * x;
+    work.pointNear.x = work.center.x + work.candidate.x;
+    work.pointNear.y = work.center.y + work.candidate.y;
+    work.pointNear.z = work.center.z + work.candidate.z;
+
+    work.candidate.x = work.delta.x * desiredDistance;
+    work.candidate.y = work.delta.y * desiredDistance;
+    work.candidate.z = work.delta.z * desiredDistance;
+    work.candidate.x = work.candidate.x + work.pointNear.x;
+    work.candidate.y = work.candidate.y + work.pointNear.y;
+    work.candidate.z = work.candidate.z + work.pointNear.z;
+    work.candidate.y = work.candidate.y +
+        fGpffff8084 * (unit->unk_8c * unit->scale) + 0.0f;
+
+    FUN_002a4690(&work.targetRot, &work.candidate,
+                 &work.pointNear, &D_00697880);
+    angle = FUN_002d1f30((f32*)&work.current.rot,
+                         (f32*)&work.targetRot);
+    if (angle > fGpffff80d4)
+    {
+        ratio = fGpffff80d4 / angle;
+        FUN_004be310((f32*)&work.current.rot,
+                     (f32*)&work.targetRot,
+                     (f32*)&work.blend);
+        if (ratio <= 0.0f)
+        {
+            work.blendedRot = work.current.rot;
+        }
+        else if (1.0f <= ratio)
+        {
+            work.blendedRot = work.targetRot;
+        }
+        else
+        {
+            f32 firstWeight;
+
+            firstWeight = 1.0f - ratio;
+            if (work.blend.flag == 0)
+            {
+                x = firstWeight * work.blend.scalar;
+                xSquared = x * x;
+                firstWeight = fGpffff8130 * xSquared + fGpffff8048;
+                firstWeight = xSquared * firstWeight + fGpffff8118;
+                firstWeight = xSquared * firstWeight + fGpffff8050;
+                firstWeight = xSquared * firstWeight + fGpffff8054;
+                firstWeight = xSquared * firstWeight + fGpffff8058;
+                firstWeight = xSquared * x * firstWeight + x;
+
+                x = ratio * work.blend.scalar;
+                xSquared = x * x;
+                ratio =
+                    xSquared * x *
+                    (xSquared *
+                     (xSquared *
+                      (xSquared *
+                       (xSquared *
+                        (fGpffff8130 * xSquared +
+                         fGpffff8048) +
+                        fGpffff8118) +
+                       fGpffff8050) +
+                      fGpffff8054) +
+                     fGpffff8058) +
+                    x;
+            }
+
+            work.blendedRot.imag.x =
+                work.blend.first.imag.x * firstWeight;
+            work.blendedRot.imag.y =
+                work.blend.first.imag.y * firstWeight;
+            work.blendedRot.imag.z =
+                work.blend.first.imag.z * firstWeight;
+            work.blendedRot.imag.x = work.blendedRot.imag.x +
+                work.blend.second.imag.x * ratio + 0.0f;
+            work.blendedRot.imag.y = work.blendedRot.imag.y +
+                work.blend.second.imag.y * ratio + 0.0f;
+            work.blendedRot.imag.z = work.blendedRot.imag.z +
+                work.blend.second.imag.z * ratio + 0.0f;
+            work.blendedRot.real =
+                work.blend.first.real * firstWeight +
+                work.blend.second.real * ratio;
+        }
+
+        RtQuatTransformVectors(&work.delta, &D_006978A0, 1,
+                               &work.blendedRot);
+        work.candidate.x = work.pointNear.x + work.delta.x;
+        work.candidate.y = work.pointNear.y + work.delta.y;
+        work.candidate.z = work.pointNear.z + work.delta.z;
+        FUN_002a4690(&work.targetRot, &work.candidate,
+                     &work.pointNear, &D_00697880);
     }
-    else if (1.0 <= fVar4) {
-      fStack_60 = fStack_a8;
-      fStack_5c = fStack_a4;
-      fStack_58 = fStack_a0;
-      fStack_54 = fStack_9c;
+
+    if (halfDistance < 600.0f)
+    {
+        halfDistance = 600.0f;
     }
-    else {
-      fVar6 = 1.0 - fVar4;
-      if (iStack_6c == 0) {
-        fVar6 = fVar6 * fStack_70;
-        fVar5 = fVar6 * fVar6;
-        fVar6 = fVar5 * fVar6 *
-                (fVar5 * (fVar5 * (fVar5 * (fVar5 * (DAT_007cae20 * fVar5 + DAT_007cad38 + 0.0) +
-                                           DAT_007cae08 + 0.0) + DAT_007cad40 + 0.0) +
-                         DAT_007cad44 + 0.0) + DAT_007cad48 + 0.0) + fVar6 + 0.0;
-        fVar4 = fVar4 * fStack_70;
-        fVar5 = fVar4 * fVar4;
-        fVar4 = fVar5 * fVar4 *
-                (fVar5 * (fVar5 * (fVar5 * (fVar5 * (DAT_007cae20 * fVar5 + DAT_007cad38 + 0.0) +
-                                           DAT_007cae08 + 0.0) + DAT_007cad40 + 0.0) +
-                         DAT_007cad44 + 0.0) + DAT_007cad48 + 0.0) + fVar4 + 0.0;
-      }
-      fStack_60 = fStack_80 * fVar4 + fStack_90 * fVar6 + 0.0;
-      fStack_5c = fStack_7c * fVar4 + fStack_8c * fVar6 + 0.0;
-      fStack_58 = fStack_78 * fVar4 + fStack_88 * fVar6 + 0.0;
-      fStack_54 = fStack_84 * fVar6 + fStack_74 * fVar4;
-    }
-    FUN_004be1e0(&fStack_20,0x6978a0,1,&fStack_60);
-    fStack_10 = fStack_30 + fStack_20;
-    fStack_c = fStack_2c + fStack_1c;
-    fStack_8 = fStack_28 + fStack_18;
-  }
-  fVar4 = 600.0;
-  if (600.0 <= fVar3 * 0.5) {
-    fVar4 = fVar3 * 0.5;
-  }
-  FUN_004be1e0(&fStack_20,0x6978a0,1,&fStack_a8);
-  fStack_20 = fStack_20 * fVar4;
-  fStack_1c = fStack_1c * fVar4;
-  fStack_18 = fStack_18 * fVar4;
-  fVar3 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar2 + 0xb8) * 0.5);
-  fVar3 = fVar4 * fVar3 * 0.21875;
-  fStack_48 = fStack_20;
-  fStack_44 = fStack_18;
-  FUN_004c6b20(&fStack_48,&fStack_48);
-  fStack_30 = fStack_44 * fVar3 + fStack_30 + 0.0;
-  fStack_28 = (fStack_28 + 0.0) - fStack_48 * fVar3;
-  fStack_b4 = fStack_30 + fStack_20;
-  fStack_b0 = fStack_2c + fStack_1c;
-  fStack_ac = fStack_28 + fStack_18;
-  return;
+    RtQuatTransformVectors(&work.delta, &D_006978A0, 1,
+                           &work.targetRot);
+    work.delta.x *= halfDistance;
+    work.delta.y *= halfDistance;
+    work.delta.z *= halfDistance;
+
+    sideOffset = halfDistance *
+                 FUN_0052e930(gp0xffff8070 *
+                              (0.5f * camera->fovRad));
+    sideOffset = sideOffset * 0.21875f;
+    work.horizontal.x = work.delta.x;
+    work.horizontal.y = work.delta.z;
+    FUN_004c6b20((f32*)&work.horizontal,
+                 (f32*)&work.horizontal);
+    work.pointNear.x += work.horizontal.y * sideOffset;
+    work.pointNear.z -= work.horizontal.x * sideOffset;
+
+    work.target.x = work.pointNear.x + work.delta.x;
+    work.target.y = work.pointNear.y + work.delta.y;
+    work.target.z = work.pointNear.z + work.delta.z;
+    FUN_002a2290((u16*)camera, &work.current.pos, &work.target, 1);
+    FUN_002a3110((u16*)camera, 1.25f);
 }
 
 // FUN_002b4720
