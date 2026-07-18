@@ -5286,11 +5286,11 @@ u32 FUN_00469030(int param_1)
 {
   u32 uVar1;
   
-  if (*(int *)(param_1 + iGpffffba48) != 0) goto has_value;
-  uVar1 = 0;
-  goto done;
-has_value:
+  if (*(int *)(param_1 + iGpffffba48) == 0) goto zero;
   uVar1 = *(u32 *)(*(int *)(param_1 + iGpffffba48) + 0x80);
+  goto done;
+zero:
+  uVar1 = 0;
 done:
   return uVar1;
 }
