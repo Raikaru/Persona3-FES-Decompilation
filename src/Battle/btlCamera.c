@@ -28,6 +28,8 @@ typedef struct LocalCameraPacket {
   f32 f11c;
   RwV3d center;
 } LocalCameraPacket;
+#pragma alias FUN_002b0280_legacy FUN_002b0280
+extern void FUN_002b0280_legacy(float param_1,u64 param_2,long param_3,long param_4);
 u32 FUN_002a32f0(int param_1);
 u32 FUN_002a3380(u8* camera);
 u32 FUN_002a3420(int param_1);
@@ -3275,7 +3277,7 @@ void FUN_002b0210(int param_1)
 
 // FUN_002b0280 NONMATCHING
 
-void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
+void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
 
 {
   int iVar1;
@@ -3340,6 +3342,7 @@ void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
   float fStack_c;
   float fStack_8;
   
+  FUN_002a4470(&fStack_e0,(f32*)((u8*)param_2 + 0x9c));
   iVar4 = (int)param_2;
   iVar6 = *(int *)(*(int *)(iVar4 + 0xe0) + 0x30);
   iVar1 = *(int *)(*(int *)(*(int *)(iVar4 + 0xe0) + 0x38) + 0x30);
@@ -3432,7 +3435,7 @@ void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
     if ((((*(char *)(iVar6 + 0xa2) == '\0') &&
          ((*(short *)(iVar6 + 0xa4) == 3 || (lVar3 = FUN_002d5bf0(iVar6), lVar3 != 0)))) &&
         (cVar2 = FUN_003093a0(*(undefined4 *)(iVar6 + 0xa2c)), cVar2 == '\x02')) &&
-       (lVar3 = FUN_002a32f0(param_2), lVar3 == 0)) {
+       (lVar3 = FUN_002a32f0((int)param_2), lVar3 == 0)) {
       fVar15 = 85.0;
     }
     else {
@@ -3495,6 +3498,7 @@ void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
   fVar16 = (float)FUN_002d1f30(&uStack_d4,&uStack_b8);
   if ((param_1 <= 0.0) || (param_1 = DAT_007cadf4 * param_1, param_1 < fVar16)) {
     if (fVar12 < 0.0) {
+      FUN_002a2170((u16*)param_2,&fStack_c4);
       FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_b8);
       fStack_50 = fStack_50 * 200.0;
       fStack_4c = fStack_4c * 200.0;
@@ -3589,7 +3593,7 @@ void FUN_002b0280(float param_1,undefined8 param_2,long param_3,long param_4)
 void FUN_002b1020(undefined8 param_1)
 
 {
-  FUN_002b0280(50.0f,param_1,0,0);
+  FUN_002b0280_legacy(50.0f,param_1,0,0);
   return;
 }
 
@@ -4370,19 +4374,20 @@ void FUN_002b2940(void *arg0)
         RwV3d targetCenter;
         u8 pad_fc[4];
     } scratch;
-    u8 genus;
-    BtlUnit *target;
     BtlUnit *unit;
-    void *action;
+    BtlUnit *target;
+    u16 genus;
+    BtlAction *action;
     BtlCamera *camera;
     f32 radius;
     f32 distance;
+    f32 facing;
 
     camera = (BtlCamera*)arg0;
-    action = *(void **)((u8*)camera + 0xe0);
-    unit = *(BtlUnit**)((u8*)action + 0x30);
+    action = camera->action;
+    unit = action->unit;
     genus = *(u8*)((u8*)unit + 0xa2);
-    target = *(BtlUnit**)((u8*)*(void **)((u8*)action + 0x38) + 0x30);
+    target = action->target.targetedActions[0]->unit;
     radius = target->sphereRadius * target->scale;
     btlUnitGetSphereWorldCenter(target, &scratch.targetCenter);
     btlUnitGetSphereWorldCenter(unit, &scratch.sourceCenter);
@@ -4419,16 +4424,19 @@ void FUN_002b2940(void *arg0)
     scratch.center.y = scratch.targetCenter.y + scratch.direction.y;
     scratch.center.z = scratch.targetCenter.z + scratch.direction.z;
 
-    scratch.normX = scratch.targetCenter.x - camera->pos.x;
-    scratch.normZ = scratch.targetCenter.z - camera->pos.z;
-    scratch.fromX = scratch.normX;
-    scratch.fromZ = scratch.normZ;
-    FUN_004c6b20(&scratch.fromX, &scratch.fromX);
+    scratch.direction.x = scratch.targetCenter.x - camera->pos.x;
+    scratch.direction.y = scratch.targetCenter.y - camera->pos.y;
+    scratch.direction.z = scratch.targetCenter.z - camera->pos.z;
+    scratch.normX = scratch.direction.x;
+    scratch.normZ = scratch.direction.z;
+    FUN_004c6b20(&scratch.normX, &scratch.normX);
     FUN_004be1e0(&scratch.direction, 0x697870, 1,
                  (u8*)target + 0x1c);
     scratch.eyeX = scratch.direction.x;
     scratch.eyeZ = scratch.direction.z;
     FUN_004c6b20(&scratch.eyeX, &scratch.eyeX);
+    facing = scratch.eyeX * scratch.normX +
+             scratch.eyeZ * scratch.normZ;
 
     if (genus == 0)
     {
@@ -4444,8 +4452,7 @@ void FUN_002b2940(void *arg0)
         scratch.direction.x = scratch.direction.x * (radius * 1.5f);
         scratch.direction.y = scratch.direction.y * (radius * 1.5f);
         scratch.direction.z = scratch.direction.z * (radius * 1.5f);
-        if (scratch.eyeX * scratch.fromX +
-            scratch.eyeZ * scratch.fromZ < 0.0f)
+        if (facing < 0.0f)
         {
             scratch.endpoint.x = scratch.targetCenter.x + scratch.direction.x;
             scratch.endpoint.y = scratch.targetCenter.y + scratch.direction.y;
@@ -4471,30 +4478,25 @@ void FUN_002b2940(void *arg0)
                             &scratch.eye2X, NULL);
     if (genus == 0)
     {
-        if (radius <= 100.0f)
-        {
-            radius = 100.0f;
-        }
-    }
-    else if (radius <= 125.0f)
-    {
-        radius = 125.0f;
-    }
-    distance = 160.0f;
-    if (160.0f <= distance + radius)
-    {
+        radius = (radius > 100.0f) ? radius : 100.0f;
         distance = distance + radius;
+    }
+    else
+    {
+        radius = (radius > 125.0f) ? radius : 125.0f;
+        distance = distance + radius;
+    }
+    if (distance < 160.0f)
+    {
+        distance = 160.0f;
     }
     scratch.direction.x = scratch.center.x - scratch.endpoint.x;
     scratch.direction.y = scratch.center.y - scratch.endpoint.y;
     scratch.direction.z = scratch.center.z - scratch.endpoint.z;
     radius = RwV3dLength(&scratch.direction);
     distance = radius +
-               distance / FUN_0052e930(fGpffff8070 * camera->fovRad * 0.5f);
-    if (distance <= 0.0f)
-    {
-        distance = 0.0f;
-    }
+               distance / FUN_0052e930(fGpffff8070 * (0.5f * camera->fovRad));
+    distance = (distance <= 0.0f) ? 0.0f : distance;
     FUN_004be1e0(&scratch.direction, 0x6978a0, 1,
                  (u8*)&scratch.transform);
     scratch.direction.x = scratch.direction.x * distance;
@@ -4510,6 +4512,11 @@ void FUN_002b2940(void *arg0)
     FUN_002a3e80(400.0f, (u8*)camera->action, (u8*)&scratch.output,
                  (u8*)&scratch.center, 3);
     FUN_002a2170(camera, (f32*)&scratch.output);
+}
+
+// FUN_002b2ea0
+void FUN_002b2ea0(void)
+{
 }
 
 // FUN_002b2eb0 NONMATCHING
