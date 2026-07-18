@@ -531,6 +531,27 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
 
 /* ---- Recovered range 0x35A290-0x35AD50 (Ghidra reference, pending match) ---- */
 typedef int (*prim_code)(...);
+typedef void (*PrimFuncA)(u64, int);
+typedef void (*PrimFuncB)(f32, int, int, int);
+typedef u32 (*PrimFuncC)(int, u64);
+typedef u64 (*PrimFuncD)(u64, u64);
+typedef void (*PrimFuncE)(int, int);
+typedef void (*PrimFuncStub)(void);
+typedef struct
+{
+    u32 hash;
+    u32 size0;
+    u32 size1;
+    PrimFuncA funcA;
+    PrimFuncB funcB;
+    PrimFuncB funcB2;
+    PrimFuncStub funcC;
+    PrimFuncE funcD;
+    PrimFuncD funcE;
+    PrimFuncC funcF;
+    PrimFuncStub funcG;
+    u32 zero;
+} PrimDesc;
 #ifndef CONCAT11
 #define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
 #endif
@@ -539,8 +560,8 @@ typedef int (*prim_code)(...);
 #endif
 extern float fGpffff8028;
 extern u8 gp0xffff9d68;
-extern u8 LAB_0035aa10;
-extern u8 LAB_0035a850;
+extern void LAB_0035aa10(void);
+extern void LAB_0035a850(void);
 extern void FUN_004c33d0(u8* out, int src, int mode);
 extern void FUN_004c2f30(u64 dst, u8* a, float* b);
 extern long FUN_004c1750(u64 stream, void* buf, int size);
@@ -797,53 +818,31 @@ void FUN_0035a620(float param_1,int param_2,int param_3,int param_4)
 
 }
 
-// FUN_0035A6A0 NONMATCHING
+// FUN_0035A6A0
 
 
-u32 FUN_0035a6a0(int param_1,u64 param_2)
-
-
-
+u32 FUN_0035a6a0(int param_1, u64 param_2)
 {
+    int iVar1;
+    long lVar2;
+    int* piVar3;
+    int iVar4;
+    int iStack_4;
 
-  int iVar1;
-
-  long lVar2;
-
-  int *piVar3;
-
-  int iVar4;
-
-  int iStack_4;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x10);
-
-  iVar4 = 0;
-
-  while( true ) {
-
-    if (*(int *)(param_1 + 4) <= iVar4) {
-
-      return 1;
-
+    iVar1 = *(int*)((u8*)param_1 + 0x10);
+    iVar4 = 0;
+    while (iVar4 < *(int*)((u8*)param_1 + 4))
+    {
+        piVar3 = (int*)((u8*)iVar1 + iVar4 * 0x34);
+        iStack_4 = *piVar3 - iVar1;
+        lVar2 = FUN_004c1750(param_2, piVar3 + 1, 0x30);
+        if ((lVar2 == 0) || ((lVar2 = FUN_004c17f0(param_2, &iStack_4, 4), lVar2 == 0)))
+        {
+            return 0;
+        }
+        iVar4++;
     }
-
-    piVar3 = (int *)(iVar1 + iVar4 * 0x34);
-
-    iStack_4 = *piVar3 - iVar1;
-
-    lVar2 = FUN_004c1750(param_2,piVar3 + 1,0x30);
-
-    if ((lVar2 == 0) || (lVar2 = FUN_004c17f0(param_2,&iStack_4,4), lVar2 == 0)) break;
-
-    iVar4 = iVar4 + 1;
-
-  }
-
-  return 0;
-
+    return 1;
 }
 
 // FUN_0035A770 NONMATCHING
@@ -1002,71 +1001,29 @@ void FUN_0035a870(int param_1,int param_2)
 
 }
 
-// FUN_0035ABA0 NONMATCHING
+// FUN_0035ABA0
 
 
 u32 FUN_0035aba0(void)
-
-
-
 {
+    PrimDesc desc;
+    long result;
 
-  long lVar1;
+    desc.hash = 0x44a07195;
+    desc.size1 = 0x34;
+    desc.size0 = 0x34;
+    desc.funcA = FUN_0035a290;
+    desc.funcB = FUN_0035a3f0;
+    desc.funcB2 = FUN_0035a620;
+    desc.funcC = &LAB_0035aa10;
+    desc.funcD = FUN_0035a870;
+    desc.funcE = FUN_0035a770;
+    desc.funcF = FUN_0035a6a0;
+    desc.funcG = &LAB_0035a850;
+    desc.zero = 0;
 
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  prim_code pcStack_24;
-
-  prim_code pcStack_20;
-
-  prim_code pcStack_1c;
-
-  u8 *puStack_18;
-
-  prim_code pcStack_14;
-
-  prim_code pcStack_10;
-
-  prim_code pcStack_c;
-
-  u8 *puStack_8;
-
-  u32 uStack_4;
-
-  
-
-  uStack_30 = 0x44a07195;
-
-  uStack_28 = 0x34;
-
-  uStack_2c = 0x34;
-
-  pcStack_24 = (prim_code)FUN_0035a290;
-
-  pcStack_20 = (prim_code)FUN_0035a3f0;
-
-  pcStack_1c = (prim_code)FUN_0035a620;
-
-  puStack_18 = &LAB_0035aa10;
-
-  pcStack_14 = (prim_code)FUN_0035a870;
-
-  pcStack_10 = (prim_code)FUN_0035a770;
-
-  pcStack_c = (prim_code)FUN_0035a6a0;
-
-  puStack_8 = &LAB_0035a850;
-
-  uStack_4 = 0;
-
-  lVar1 = FUN_004b6680(&uStack_30);
-
-  return lVar1 != 0;
-
+    result = FUN_004b6680(&desc);
+    return result != 0;
 }
 
 // FUN_0035AC50
