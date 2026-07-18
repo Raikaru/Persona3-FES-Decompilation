@@ -13256,65 +13256,75 @@ u64 FUN_004718a0(int param_1,u32 *param_2)
   return uVar19;
 }
 
-// FUN_00472130 NONMATCHING
+#pragma schedule on
+// FUN_00472130
 
 void FUN_00472130(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_004a0e00)(param_1);
+  FUN_004a0e00_u64(param_1);
   return;
 }
+#pragma schedule off
 
-// FUN_00472170 NONMATCHING
+#pragma schedule on
+// FUN_00472170
 
 void FUN_00472170(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_0046c5b0)(param_1);
+  FUN_0046c5b0_u64(param_1);
   return;
 }
+#pragma schedule off
 
-// FUN_004721B0 NONMATCHING
+#pragma schedule on
+// FUN_004721B0
 
 void FUN_004721b0(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_0046cd90)(param_1);
+  FUN_0046cd90_u64(param_1);
   return;
 }
+#pragma schedule off
 
-// FUN_004721F0 NONMATCHING
+#pragma schedule on
+// FUN_004721F0
 
 void FUN_004721f0(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_0046d6f0)(param_1);
+  FUN_0046d6f0_u64(param_1);
   return;
 }
+#pragma schedule off
 
-// FUN_00472230 NONMATCHING
+#pragma schedule on
+// FUN_00472230
 
 void FUN_00472230(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_0046e170)(param_1);
+  FUN_0046e170_u64(param_1);
   return;
 }
+#pragma schedule off
 
 // FUN_00472270 NONMATCHING
 
@@ -14495,29 +14505,33 @@ u64 FUN_00472970(int param_1)
   return 1;
 }
 
-// FUN_00473340 NONMATCHING
+#pragma schedule on
+// FUN_00473340
 
 void FUN_00473340(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_00472270)(param_1);
+  FUN_00472270_u64(param_1);
   return;
 }
+#pragma schedule off
 
-// FUN_00473380 NONMATCHING
+#pragma schedule on
+// FUN_00473380
 
 void FUN_00473380(u64 param_1)
 
 {
-  if (DAT_0095de38 != 0) {
-    ((code)FUN_0046b8e0)();
+  if (*(u32 **)DAT_0095de38_abs != 0) {
+    FUN_0046b8e0_u64(param_1);
   }
-  ((code)FUN_00472970)(param_1);
+  FUN_00472970_u64(param_1);
   return;
 }
+#pragma schedule off
 
 // FUN_004733C0 NONMATCHING
 

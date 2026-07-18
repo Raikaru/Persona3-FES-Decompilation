@@ -2925,15 +2925,16 @@ void FUN_004adca0(void);
 void FUN_004ae060(int param_1);
 void FUN_004ae940(u64 param_1);
 
-// FUN_0045EC00 NONMATCHING
+#pragma schedule on
+// FUN_0045EC00
 
 u8 FUN_0045ec00(void)
 
 {
-  long lVar1;
+  int iVar1;
   
-  lVar1 = ((code)FUN_005316d0)();
-  return lVar1 < 0;
+  iVar1 = FUN_005316d0_s32();
+  return iVar1 < 0;
 }
 
 #pragma schedule on
@@ -11547,14 +11548,16 @@ u64 FUN_00498720(int param_1,u64 param_2,u32 param_3)
   return uVar10;
 }
 
+#pragma tailcall on
 // FUN_00498E30 NONMATCHING
 
 void FUN_00498e30(u64 param_1)
 
 {
-  ((code)FUN_00498720)(param_1,0,1);
+  FUN_00498720((int)param_1,0,1);
   return;
 }
+#pragma tailcall off
 
 // FUN_00498E40 NONMATCHING
 
