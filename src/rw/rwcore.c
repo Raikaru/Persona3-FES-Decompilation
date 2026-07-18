@@ -220,6 +220,8 @@ extern u32 DAT_0077f494;
 extern u32 DAT_0077f498;
 extern u32 DAT_0077f4a0;
 extern u32 DAT_0077f4a8;
+#pragma alias DAT_0077f4a8_abs DAT_0077f4a8
+extern u32 DAT_0077f4a8_abs[];
 extern u32 DAT_0077f8e0;
 extern u32 DAT_00780398;
 extern u32 DAT_00780b08;
@@ -340,6 +342,8 @@ extern u32 DAT_00960080;
 extern u32 DAT_00960084;
 extern u32 DAT_00960088;
 extern u32 DAT_0096008c;
+#pragma alias DAT_00960070_abs DAT_00960070
+extern u8 DAT_00960070_abs[];
 extern u32 DAT_00960090;
 extern u32 DAT_00960094;
 extern u32 DAT_00960098;
@@ -730,6 +734,14 @@ extern u32 DAT_00966108;
 extern u32 DAT_0096610c;
 extern u32 DAT_00966110;
 extern u32 DAT_00966540;
+#pragma alias DAT_00966540_abs DAT_00966540
+extern u32 DAT_00966540_abs[];
+typedef struct {
+  u32 a;
+  u32 b;
+  u32 c;
+  u32 d;
+} Fun04678Buf;
 extern u32 DAT_00966544;
 extern u32 DAT_00966548;
 extern u32 DAT_0096654c;
@@ -745,6 +757,8 @@ extern u32 DAT_0096697f;
 extern u32 DAT_00966a4c;
 extern u32 DAT_00966a50;
 extern u32 DAT_00966a54;
+#pragma alias DAT_00966a54_abs DAT_00966a54
+extern u32 DAT_00966a54_abs[];
 extern u32* DAT_00966a58;
 extern u32 DAT_00966a5c;
 extern u32 DAT_00966a60;
@@ -758,6 +772,8 @@ extern u32 DAT_00966a84;
 extern u32 DAT_00966a8c;
 extern u32 DAT_00966a90;
 extern u32 DAT_00966c00;
+#pragma alias DAT_00966c00_abs DAT_00966c00
+extern u32 DAT_00966c00_abs[];
 extern u32 DAT_00966c7c;
 extern u32 DAT_10005004;
 extern u32 DAT_10005008;
@@ -4536,13 +4552,15 @@ long FUN_004d0ac0(undefined8 param_1)
   return lVar2;
 }
 
+#pragma schedule on
 // FUN_004D0B60 NONMATCHING
 undefined4 FUN_004d0b60(undefined4 param_1)
 
 {
-  *(undefined4 *)((int)&DAT_0096008c + iGpffffbc60) = param_1;
+  ((undefined4 *)&DAT_00960070[iGpffffbc60])[7] = param_1;
   return 1;
 }
+#pragma schedule off
 
 #pragma schedule on
 // FUN_004D0B80
@@ -4553,13 +4571,15 @@ undefined4 FUN_004d0b80(void)
 }
 #pragma schedule off
 
+#pragma schedule on
 // FUN_004D0BA0 NONMATCHING
 undefined4 FUN_004d0ba0(undefined4 param_1)
 
 {
-  *(undefined4 *)((int)&DAT_00960090 + iGpffffbc60) = param_1;
+  ((undefined4 *)&DAT_00960070[iGpffffbc60])[8] = param_1;
   return 1;
 }
+#pragma schedule off
 
 #pragma schedule on
 // FUN_004D0BC0
@@ -5022,19 +5042,18 @@ void FUN_004d1840(int param_1,long param_2)
     *(int *)(param_1 + 0xc) = iVar1 + 0x90;
     *(int *)(*(int *)(iVar1 + 0x90) + 4) = param_1 + 8;
     *(int *)(iVar1 + 0x90) = param_1 + 8;
-    FUN_004cb270(param_2);
   }
   return;
 }
-
 // FUN_004D18C0 NONMATCHING
 void FUN_004d18c0(int param_1)
 
 {
-  if (*(int *)(param_1 + 4) != 0) {
-    **(undefined4 **)(param_1 + 0xc) = *(undefined4 *)(param_1 + 8);
-    *(undefined4 *)(*(int *)(param_1 + 8) + 4) = *(undefined4 *)(param_1 + 0xc);
+  if (*(int *)(param_1 + 4) == 0) {
+    return;
   }
+  **(undefined4 **)(param_1 + 0xc) = *(undefined4 *)(param_1 + 8);
+  *(undefined4 *)(*(int *)(param_1 + 8) + 4) = *(undefined4 *)(param_1 + 0xc);
   return;
 }
 
@@ -8377,11 +8396,8 @@ void FUN_004d6b10(void)
   uVar2 = _ctc2((uint)uVar1 | 0x200);
   uVar1 = _cfc2(uVar2);
   _ctc2((uint)uVar1 | 2);
-  FUN_004f9050();
-  FUN_004fa918(1);
   return;
 }
-
 // FUN_004D6B60 NONMATCHING
 int FUN_004d6b60(uint param_1)
 
@@ -8389,9 +8405,14 @@ int FUN_004d6b60(uint param_1)
   int iVar1;
   
   iVar1 = -1;
-  for (; param_1 != 0; param_1 = param_1 >> 1) {
-    iVar1 = iVar1 + 1;
+  if (param_1 == 0) {
+    goto done;
   }
+  do {
+    param_1 = param_1 >> 1;
+    iVar1 = iVar1 + 1;
+  } while (param_1 != 0);
+done:
   return iVar1;
 }
 
@@ -25023,6 +25044,7 @@ undefined8 FUN_004f2870(undefined8 param_1,undefined4 param_2)
   return param_1;
 }
 
+#pragma schedule on
 // FUN_004F28A0 NONMATCHING
 undefined8 FUN_004f28a0(undefined8 param_1)
 
@@ -25030,6 +25052,7 @@ undefined8 FUN_004f28a0(undefined8 param_1)
   FUN_004f2990();
   return param_1;
 }
+#pragma schedule off
 
 #pragma optimization_level 3
 // FUN_004F28D0
@@ -35848,6 +35871,8 @@ LAB_00503800:
   return uVar2;
 }
 
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_00503820 NONMATCHING
 undefined4 FUN_00503820(void)
 
@@ -35858,6 +35883,8 @@ undefined4 FUN_00503820(void)
   *puVar1 = 5;
   return 0xffffffff;
 }
+#pragma schedule off
+#pragma optimization_level 2
 
 // FUN_00503848
 asm undefined4 FUN_00503848(void)
@@ -35952,7 +35979,8 @@ undefined8 FUN_00503938(int param_1,undefined8 param_2)
   }
   return 0;
 }
-
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_00503960 NONMATCHING
 undefined4 FUN_00503960(void)
 
@@ -35963,7 +35991,9 @@ undefined4 FUN_00503960(void)
   *puVar1 = 5;
   return 0xffffffff;
 }
-
+#pragma schedule off
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_00503988 NONMATCHING
 undefined4 FUN_00503988(void)
 
@@ -35974,6 +36004,7 @@ undefined4 FUN_00503988(void)
   *puVar1 = 5;
   return 0xffffffff;
 }
+#pragma schedule off
 
 // FUN_005039B0 NONMATCHING
 void FUN_005039b0(uint param_1,uint param_2)
@@ -36746,19 +36777,18 @@ void FUN_00504650(undefined4 param_1)
   return;
 }
 
-#pragma optimization_level 3
 // FUN_00504678 NONMATCHING
 undefined4 * FUN_00504678(undefined4 param_1)
-
 {
-  DAT_00966540 = param_1;
-  DAT_00966548 = (u32)(&DAT_00966550);
-  DAT_00966544 = 0;
-  DAT_0096654c = (u32)(&DAT_00966550);
-  return &DAT_00966540;
+  Fun04678Buf *puVar1;
+  
+  *(u32 *)DAT_00966540_abs = param_1;
+  puVar1 = (Fun04678Buf *)DAT_00966540_abs;
+  puVar1->c = (u32)(puVar1 + 1);
+  puVar1->b = 0;
+  puVar1->d = (u32)(puVar1 + 1);
+  return (undefined4 *)puVar1;
 }
-#pragma optimization_level 2
-
 // FUN_005046A0 NONMATCHING
 void FUN_005046a0(int *param_1)
 
@@ -37897,7 +37927,8 @@ void FUN_00505ec8(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 undefined4 FUN_00505f78(int param_1)
 
 {
-  return *(undefined4 *)(&DAT_00966c00 + param_1 * 4);
+  param_1 = param_1 << 2;
+  return *(undefined4 *)((u8 *)DAT_00966c00_abs + param_1);
 }
 
 // FUN_00505FC0 NONMATCHING
@@ -38038,15 +38069,20 @@ void FUN_00506148(void)
   return;
 }
 
+#pragma schedule on
 // FUN_005063C8 NONMATCHING
 void FUN_005063c8(void)
 
 {
+  u32 *puVar1;
+  
+  puVar1 = DAT_00966a54_abs;
   FUN_00503d10(5);
-  RemoveDmacHandler(5,DAT_00966a54);
-  DAT_0077f4a8 = 0;
+  RemoveDmacHandler(5,*puVar1);
+  DAT_0077f4a8_abs[0] = 0;
   return;
 }
+#pragma schedule off
 
 // FUN_00506430 NONMATCHING
 void FUN_00506430(uint param_1,undefined4 param_2,undefined4 param_3)
