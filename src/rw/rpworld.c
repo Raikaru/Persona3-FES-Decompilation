@@ -7,6 +7,9 @@ extern u8 LAB_004944a0;
 extern u8 LAB_004a9be0;
 
 typedef int (*code)(...);
+extern long thunk_FUN_004c3970(int param_1,u32 param_2,long param_3,int param_4,long param_5,u32 param_6);
+#pragma alias thunk_FUN_004c3970_u32 thunk_FUN_004c3970
+extern u32 thunk_FUN_004c3970_u32(int param_1,u32 param_2,int param_3,u32 param_4,u32 param_5,u32 param_6);
 typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -1469,6 +1472,8 @@ extern u32* DAT_0095ed88;
 extern u32 DAT_0095ed8c;
 #pragma alias DAT_0095ed8c_abs DAT_0095ed8c
 extern u32 DAT_0095ed8c_abs[];
+#pragma alias DAT_0096018c_abs DAT_0096018c
+extern u32 DAT_0096018c_abs[];
 extern u32 DAT_0095edb0;
 extern u32 DAT_0095edb4;
 extern u32 DAT_0095edb8;
@@ -1868,6 +1873,8 @@ extern code FUN_004c1cd0;
 extern code FUN_004c1d10;
 extern code FUN_004c1d50;
 extern code FUN_004c1e60;
+#pragma alias FUN_004c1e60_typed FUN_004c1e60
+extern void FUN_004c1e60_typed(u32 param_1);
 extern code FUN_004c1e70;
 extern code FUN_004c1f70;
 extern code FUN_004c2090;
@@ -13306,13 +13313,15 @@ u64 FUN_0049c160(u64 param_1,int param_2)
 u64 FUN_0049c1b0(u64 param_1,int param_2)
 
 {
-  param_2 = param_2 + DAT_007ce868;
-  if (*(int *)(param_2 + 0xc) == 0) {
+  u8 *puVar1;
+  
+  puVar1 = (u8 *)param_2 + DAT_007ce868;
+  if (*(int *)(puVar1 + 0xc) == 0) {
     param_1 = 0;
   }
   else {
-    *(u32 *)(param_2 + 0xc) = 0;
-    *(u32 *)(param_2 + 8) = 0;
+    *(u32 *)(puVar1 + 0xc) = 0;
+    *(u32 *)(puVar1 + 8) = 0;
   }
   return param_1;
 }
@@ -22060,12 +22069,12 @@ LAB_004ab138:
   return iVar1;
 }
 
-// FUN_004AB170 NONMATCHING
+// FUN_004AB170
 
 void FUN_004ab170(u32 *param_1)
 
 {
-  ((code)FUN_004c1e60)(*param_1);
+  FUN_004c1e60_typed(*param_1);
   param_1[2] = 0;
   param_1[3] = 1;
   return;
@@ -23766,7 +23775,11 @@ void FUN_004adb50(void)
 u32 FUN_004adb80(void)
 
 {
-  DAT_0095ed8c = thunk_FUN_004c3970(0x110,DAT_007cdcd0,0x10,DAT_007cdcd4,0x95f9c0,0x401a3);
+  u32 uVar1;
+  
+  uVar1 = thunk_FUN_004c3970_u32(0x110,DAT_007cdcd0,0x10,DAT_007cdcd4,
+                                 (u32)((u8 *)DAT_00960070_abs - 0x6b0),0x401a3);
+  DAT_0095ed8c_abs[0] = uVar1;
   return 1;
 }
 
@@ -23800,16 +23813,19 @@ u64 FUN_004adbd0(int *param_1)
   return uVar2;
 }
 
-// FUN_004ADC70 NONMATCHING
+#pragma tailcall on
+ 
+// FUN_004ADC70
 
 void FUN_004adc70(u64 param_1)
 
 {
                     /* WARNING: Could not recover jumptable at 0x004adc84. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*DAT_0096018c)(DAT_0095ed8c,param_1);
+  (*(code *)DAT_0096018c_abs)(DAT_0095ed8c_abs[0],param_1);
   return;
 }
+#pragma tailcall off
 
 #pragma optimization_level 3
 // FUN_004ADC90
