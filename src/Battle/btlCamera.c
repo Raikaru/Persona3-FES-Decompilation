@@ -1074,6 +1074,8 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
     BtlCameraQuatBlend blend;
     BtlCameraKeyFrame frames[2];
     f32 distance;
+    f32 fovDistance;
+    f32 nearDistance;
     f32 radius;
     f32 half;
     f32 angle;
@@ -1117,13 +1119,13 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         }
         FUN_002a4690(&frames[1].rot, &scaled, &candidate, &D_00697880);
         angle = FUN_002d1f30((f32*)&frames[0].rot, (f32*)&frames[1].rot);
-        half = (f32)nearScale;
-        half = fGpffff80e8 * half;
-        if (angle > half)
+        nearDistance = (f32)nearScale;
+        nearDistance = fGpffff80e8 * nearDistance;
+        if (angle > nearDistance)
         {
             if (angle <= fGpffff80e8 * (f32)farScale)
             {
-                radius = half / angle;
+                radius = nearDistance / angle;
                 FUN_004be310((f32*)&frames[0].rot, (f32*)&frames[1].rot,
                              (f32*)&blend);
                 if (radius <= 0.0f)
@@ -1187,10 +1189,10 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         radius = RwV3dNormalize(&forward, &forward);
         radius = radius * fGpffff80c4;
         half = 0.5f * camera->fovRad;
-        distance = 1.5f * distance / tanf(half);
-        if (!(distance <= radius))
+        fovDistance = 1.5f * distance / tanf(half);
+        if (!(fovDistance <= radius))
         {
-            radius = distance;
+            radius = fovDistance;
         }
         if (radius < (f32)0x226)
         {
@@ -1216,7 +1218,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         radius = 2.0f;
         if (angle > 0.0f)
         {
-            ratio = distance / angle;
+            ratio = nearDistance / angle;
             radius = 1.0f;
             if (ratio > radius)
             {
@@ -1297,6 +1299,8 @@ close_frame:
     frames[0].pos.x = center.x + forward.x;
     frames[0].pos.y = center.y + forward.y;
     frames[0].pos.z = center.z + forward.z;
+    FUN_002a4690(&frames[0].rot, &frames[0].pos, &center,
+                 &D_00697880);
     distance = half / tanf(fGpffff8070 * (0.5f * camera->fovRad));
     forward.x = rotated.x * distance;
     forward.y = rotated.y * distance;
@@ -1307,18 +1311,16 @@ close_frame:
     frames[1].pos.x = center.x + forward.x;
     frames[1].pos.y = center.y + forward.y;
     frames[1].pos.z = center.z + forward.z;
-    FUN_002a4690(&frames[0].rot, &frames[0].pos, &center,
-                 &D_00697880);
     FUN_002a4690(&frames[1].rot, &frames[1].pos, &center,
                  &D_00697880);
     FUN_002a3e80(0.0f, (u8*)camera->action, NULL, NULL, 1);
-    if (frames[0].pos.y < 100.0f)
+    if (frames[0].pos.y < 25.0f)
     {
-        frames[0].pos.y = 100.0f;
+        frames[0].pos.y = 25.0f;
     }
-    if (frames[1].pos.y < 100.0f)
+    if (frames[1].pos.y < 25.0f)
     {
-        frames[1].pos.y = 100.0f;
+        frames[1].pos.y = 25.0f;
     }
     FUN_002a2290((u16*)camera, &frames[0].pos, &frames[1].pos, 1);
     FUN_002a3110((u16*)camera, 3.0f);
@@ -3783,22 +3785,23 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     volatile f32 pad[4];
     BtlUnit* unit;
     BtlUnit* target;
+    RwV3d* framePos;
     f32 distance;
-    f32 sourceProduct;
     f32 dot;
     f32 halfDistance;
     f32 angle;
     f32 half;
     u32 index;
+    f32 tempHalf;
     unit = camera->action->unit;
     target = camera->action->target.targetedActions[0]->unit;
     FUN_002a4470((f32*)&work.frames[0], (f32*)((u8*)camera + 0x9c));
     distance = unit->sphereCenter.y * unit->scale;
-
     btlUnitGetSphereWorldCenter(target, &work.center);
-    sourceProduct = unit->unk_8c * unit->scale;
-    halfDistance = distance + fGpffff8094 * sourceProduct +
-                   work.center.y +
+
+    halfDistance = distance +
+                   fGpffff8094 * (unit->unk_8c * unit->scale);
+    halfDistance = halfDistance + work.center.y +
                    fGpffff8094 * (target->unk_8c * target->scale);
     work.center.y = 0.0f;
     work.normalized.x = unit->unk_dc.x - work.center.x;
@@ -3812,7 +3815,8 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     work.scaled.x = work.scaled.x + work.center.x;
     work.scaled.y = work.scaled.y + work.center.y;
     work.scaled.z = work.scaled.z + work.center.z;
-    halfDistance = half * halfDistance;
+    tempHalf = half * halfDistance;
+    halfDistance = tempHalf;
     work.scaled.y = halfDistance;
     work.pair[0] = work.normalized.z;
     work.pair[1] = -work.normalized.x;
@@ -3846,7 +3850,7 @@ distance_done:
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
     index = 1;
-    while ((s16)(index & 0xffff) < 4)
+    while ((s32)(index & 0xffff) < 4)
     {
         if (dot < 0.0f)
             goto rotate_negative;
@@ -3856,9 +3860,10 @@ rotate_negative:
         RwMatrixRotate(&work.matrix, &D_00697880, -halfDistance, rwCOMBINEREPLACE);
 rotate_done:
         FUN_004c6c60(&work.transformed, &work.difference, &work.matrix);
-        work.frames[(u16)index].pos.x = work.transformed.x + work.scaled.x;
-        work.frames[(u16)index].pos.y = work.transformed.y + work.scaled.y;
-        work.frames[(u16)index].pos.z = work.transformed.z + work.scaled.z;
+        framePos = &work.frames[(u16)index].pos;
+        framePos->x = work.transformed.x + work.scaled.x;
+        framePos->y = work.transformed.y + work.scaled.y;
+        framePos->z = work.transformed.z + work.scaled.z;
         FUN_002a4690(&work.frames[(u16)index].rot, &work.frames[(u16)index].pos,
                      &work.scaled, &D_00697880);
         halfDistance = halfDistance + angle;
@@ -4487,12 +4492,12 @@ void FUN_002b2eb0(int param_1, float *param_2)
     f32 unkB8;
     f32 result;
   } work;
-  f32 initial;
-  f32 angle;
   f32 ratio;
+  f32 angle;
+  f32 initial;
   f32 inverse;
   f32 curve;
-  f32 scale;
+  f32 poly;
 
   initial = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
   ratio = initial / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
@@ -4513,23 +4518,28 @@ void FUN_002b2eb0(int param_1, float *param_2)
       if (work.flag == 0) {
         inverse = inverse * work.values[8];
         curve = inverse * inverse;
-        inverse = curve * inverse *
-          (curve * (curve * (curve * (curve *
-          (fGpffff8114 * curve + fGpffff8048 + 0.0f) +
-          fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
-          fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + inverse + 0.0f;
+        poly = fGpffff8114 * curve + fGpffff8048 + 0.0f;
+        poly = curve * poly + fGpffff8118 + 0.0f;
+        poly = curve * poly + fGpffff8050 + 0.0f;
+        poly = curve * poly + fGpffff8054 + 0.0f;
+        poly = curve * poly + fGpffff8058 + 0.0f;
+        inverse = curve * inverse * poly + inverse + 0.0f;
         ratio = ratio * work.values[8];
         curve = ratio * ratio;
-        ratio = curve * ratio *
-          (curve * (curve * (curve * (curve *
-          (fGpffff8114 * curve + fGpffff8048 + 0.0f) +
-          fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
-          fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + ratio + 0.0f;
+        poly = fGpffff8114 * curve + fGpffff8048 + 0.0f;
+        poly = curve * poly + fGpffff8118 + 0.0f;
+        poly = curve * poly + fGpffff8050 + 0.0f;
+        poly = curve * poly + fGpffff8054 + 0.0f;
+        poly = curve * poly + fGpffff8058 + 0.0f;
+        ratio = curve * ratio * poly + ratio + 0.0f;
       }
-      ((f32 *)&work.blend)[0] = work.values[0] * ratio + work.values[4] * inverse + 0.0f;
-      ((f32 *)&work.blend)[1] = work.values[1] * ratio + work.values[5] * inverse + 0.0f;
-      ((f32 *)&work.blend)[2] = work.values[2] * ratio + work.values[6] * inverse + 0.0f;
-      ((f32 *)&work.blend)[3] = work.values[3] * inverse + work.values[7] * ratio;
+      work.blend.imag.x = work.values[0] * inverse;
+      work.blend.imag.y = work.values[1] * inverse;
+      work.blend.imag.z = work.values[2] * inverse;
+      work.blend.imag.x = work.blend.imag.x + work.values[4] * ratio + 0.0f;
+      work.blend.imag.y = work.blend.imag.y + work.values[5] * ratio + 0.0f;
+      work.blend.imag.z = work.blend.imag.z + work.values[6] * ratio + 0.0f;
+      work.blend.real = work.values[3] * inverse + work.values[7] * ratio;
     }
     FUN_004be1e0_typed(&work.transformed, (const RwV3d *)DAT_006978A0_arr, 1, &work.blend);
     work.output[0] = work.helper.x + work.transformed.x;
@@ -4537,23 +4547,24 @@ void FUN_002b2eb0(int param_1, float *param_2)
     work.output[2] = work.helper.z + work.transformed.z;
     FUN_002a4690(param_2 + 3, work.output, &work.helper, (const void *)DAT_00697880_arr);
   }
-  scale = 700.0f;
-  if (700.0f <= ratio) {
-    scale = ratio;
+  if (ratio < 700.0f) {
+    ratio = 700.0f;
   }
   FUN_004be1e0_typed(&work.transformed, (const RwV3d *)DAT_006978A0_arr, 1, param_2 + 3);
-  work.transformed.x = work.transformed.x * scale;
-  work.transformed.y = work.transformed.y * scale;
-  work.transformed.z = work.transformed.z * scale;
-  ratio = scale * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
+  work.transformed.x = work.transformed.x * ratio;
+  work.transformed.y = work.transformed.y * ratio;
+  work.transformed.z = work.transformed.z * ratio;
+  ratio = ratio * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
   ratio = ratio * 0.21875f;
   work.scale[0] = work.transformed.x;
   work.scale[1] = work.transformed.z;
   FUN_004c6b20_typed(work.scale, work.scale);
-  angle = ratio;
-  param_2[0] = work.scale[1] * angle + work.helper.x + work.transformed.x;
+  curve = ratio;
+  work.helper.x = work.helper.x + work.scale[1] * curve + 0.0f;
+  work.helper.z = work.helper.z - work.scale[0] * curve + 0.0f;
+  param_2[0] = work.helper.x + work.transformed.x;
   param_2[1] = work.helper.y + work.transformed.y;
-  param_2[2] = (work.helper.z - work.scale[0] * angle) + work.transformed.z;
+  param_2[2] = work.helper.z + work.transformed.z;
 }
 
 // FUN_002b32c0
@@ -4804,7 +4815,7 @@ void FUN_002b3980(BtlCamera* camera)
     FUN_002a3110((u16 *)camera, 6.0f);
 }
 
-// FUN_002b3c60 NONMATCHING
+// FUN_002b3c60
 
 void FUN_002b3c60(BtlCamera* camera)
 {
@@ -4830,23 +4841,23 @@ void FUN_002b3c60(BtlCamera* camera)
   halfHeight = 0.5f * (unit->unk_8c * unit->scale);
   center.y = 0.0f + center.y + fGpffff80b4 * halfHeight;
   RtQuatTransformVectors(&transformed, &D_00697890, 1, &unit->rot);
-  scratch.directionX = transformed.x * 350.0f;
-  scratch.directionY = transformed.y * 350.0f;
-  scratch.directionZ = transformed.z * 350.0f;
+  scratch.directionX = 350.0f * transformed.x;
+  scratch.directionY = 350.0f * transformed.y;
+  scratch.directionZ = 350.0f * transformed.z;
+  distance = (center.y + scratch.directionY) - 35.0f;
   transformed.x = (center.x + scratch.directionX) - center.x;
-  transformed.y = ((center.y + scratch.directionY) - 35.0f) - center.y;
+  transformed.y = distance - center.y;
   transformed.z = (center.z + scratch.directionZ) - center.z;
   RwV3dNormalize(&transformed, &transformed);
-  unit = 0;
-  if (radius < halfHeight)
+  if (!(radius < halfHeight))
   {
-    distance = fGpffff8070 * halfHeight /
-               tanf(0.5f * camera->fovRad);
+    distance = 1.75f * radius /
+               tanf(fGpffff8070 * (0.5f * camera->fovRad));
   }
   else
   {
-    distance = 0.5f * radius /
-               tanf(fGpffff8070 * (0.5f * camera->fovRad));
+    distance = fGpffff8070 * halfHeight /
+               tanf(0.5f * camera->fovRad);
   }
   angle = 65.0f;
   i = 0;
