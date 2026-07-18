@@ -342,8 +342,6 @@ extern u32 DAT_00960080;
 extern u32 DAT_00960084;
 extern u32 DAT_00960088;
 extern u32 DAT_0096008c;
-#pragma alias DAT_00960070_abs DAT_00960070
-extern u8 DAT_00960070_abs[];
 extern u32 DAT_00960090;
 extern u32 DAT_00960094;
 extern u32 DAT_00960098;
@@ -36791,6 +36789,7 @@ undefined4 * FUN_00504678(undefined4 param_1)
   puVar1->d = (u32)(puVar1 + 1);
   return (undefined4 *)puVar1;
 }
+// FUN_005046A0 NONMATCHING
 void FUN_005046a0(int *param_1)
 
 {
