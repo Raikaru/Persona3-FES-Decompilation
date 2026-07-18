@@ -918,6 +918,8 @@ u64 FUN_00495fb0(u32 *param_1,char *param_2,u64 param_3,u64 param_4);
 u64 FUN_004967a0(u64 param_1);
 u64 FUN_00496be0(u32 param_1,u32 *param_2,int param_3,u32 *param_4);
 u64 FUN_00498720(int param_1,u64 param_2,u32 param_3);
+#pragma alias FUN_00498720_wide FUN_00498720
+extern u64 FUN_00498720_wide(u64 param_1,u64 param_2,u32 param_3);
 u64 FUN_00499320(u64 param_1);
 u64 FUN_00499a80(u64 param_1);
 u64 FUN_00499af0(u64 param_1,int param_2);
@@ -951,6 +953,8 @@ u64 FUN_0049c1e0(u64 param_1,int param_2);
 extern u64 FUN_0049c1e0_wide(u64 param_1,u64 param_2);
 u64 FUN_0049c240(u64 param_1,u64 param_2);
 u64 FUN_0049c330(u64 param_1,code *param_2,u64 param_3);
+#pragma alias FUN_0049c330_typed FUN_0049c330
+extern u64 FUN_0049c330_typed(u32 param_1,u32 param_2,u64 param_3);
 u64 FUN_0049c3d0(u64 param_1,int param_2);
 #pragma alias FUN_0049c3d0_wide FUN_0049c3d0
 extern u64 FUN_0049c3d0_wide(u64 param_1,u64 param_2);
@@ -11549,12 +11553,12 @@ u64 FUN_00498720(int param_1,u64 param_2,u32 param_3)
 }
 
 #pragma tailcall on
-// FUN_00498E30 NONMATCHING
+// FUN_00498E30
 
 void FUN_00498e30(u64 param_1)
 
 {
-  FUN_00498720((int)param_1,0,1);
+  FUN_00498720_wide(param_1,0,1);
   return;
 }
 #pragma tailcall off
@@ -12345,12 +12349,12 @@ u32 FUN_0049a170(u32 param_1)
   } while( 1 );
 }
 
-// FUN_0049A250 NONMATCHING
+// FUN_0049A250
 
 u64 FUN_0049a250(u64 param_1)
 
 {
-  ((code)FUN_0049c330)(DAT_00960070,0x499320,param_1);
+  FUN_0049c330_typed(*(u32 *)DAT_00960070_abs,(u32)FUN_00499320,param_1);
   return param_1;
 }
 
