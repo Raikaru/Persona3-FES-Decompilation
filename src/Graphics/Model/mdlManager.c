@@ -3828,7 +3828,7 @@ int func_00313f40(int param_1,u64 param_2)
 
 
 
-// FUN_00313FE0 NONMATCHING
+// FUN_00313FE0
 
 
 void* func_00313fe0(void* param_1,u32 *param_2)
@@ -3837,9 +3837,37 @@ void* func_00313fe0(void* param_1,u32 *param_2)
   return param_1;
 }
 
+// FUN_00314020
+void FUN_00314020(f32* param_1, f32* param_2)
+{
+  param_1[2] = param_2[2];
+  param_1[3] = param_2[3];
+  param_1[4] = param_2[4];
+  param_1[5] = param_2[5];
+  param_1[6] = param_2[6];
+  param_1[7] = param_2[7];
+}
 
+// FUN_00314060
+void FUN_00314060(f32* param_1, f32* param_2)
+{
+  param_1[2] = param_2[2];
+  param_1[3] = param_2[3];
+  param_1[4] = param_2[4];
+  param_1[5] = param_2[5];
+  param_1[6] = param_2[6];
+  param_1[7] = param_2[7];
+}
 
+// FUN_003140A0
+void FUN_003140a0(void)
+{
+}
 
+// FUN_003140B0
+void FUN_003140b0(void)
+{
+}
 
 // FUN_003140C0 NONMATCHING
 
