@@ -36,7 +36,8 @@ u32 FUN_003d2200(void);
 void FUN_003d25c0(long param_1);
 u8 * FUN_003d2740(u64 param_1,u64 param_2);
 u64 FUN_003d2c10(long param_1);
-void FUN_003d2f00(void);
+#pragma alias FUN_003d2f00_result FUN_003d2f00
+extern s32 FUN_003d2f00_result(void);
 u64 FUN_003d32e0(u64 param_1,u64 param_2);
 void FUN_003d3760(int param_1,long param_2,int param_3);
 void FUN_003d38b0(u64 param_1,int param_2,int param_3);
@@ -86,6 +87,7 @@ extern char DAT_006a43b0[];
 extern char DAT_006a43c0[];
 extern char DAT_006a43d0[];
 extern char DAT_006a4648[];
+extern char gp0xffffaa38;
 extern s32 DAT_007cd728;
 
 s32 FUN_00195540(void);
@@ -167,7 +169,7 @@ s16 fclCombine003cf160(s32 param_1, s32 param_2)
     u32 hi;
     s16 result;
 
-    FUN_005225a8((char*)DAT_007cd728, DAT_006a4270, 0x66);
+    FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x66);
     lo = (u32)param_1 & 0xff;
     mid = ((u32)param_1 & 0xff00) >> 8;
     hi = ((u32)param_1 & 0xffff0000) >> 0x10;
@@ -181,11 +183,12 @@ s16 fclCombine003cf160(s32 param_1, s32 param_2)
 s32 fclCombine003cf240(s32 param_1, s16 param_2)
 {
     s16 index;
+    s32 base;
     u32 lo;
     u32 mid;
     u32 hi;
 
-    FUN_005225a8((char*)DAT_007cd728, DAT_006a4270, 0x7e);
+    FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x7e);
     lo = (u32)param_1 & 0xff;
     mid = ((u32)param_1 & 0xff00) >> 8;
     hi = ((u32)param_1 & 0xffff0000) >> 0x10;
@@ -193,10 +196,10 @@ s32 fclCombine003cf240(s32 param_1, s16 param_2)
     FUN_001052b0(DAT_006a4298, param_1, hi, mid, lo);
     index = fclCombine003cf8f0(param_1);
     if (index != -1) {
-        *(s16*)(*(s32*)(DAT_007ce680 + 0x24) + index * 0x14 + 4) =
-            *(s16*)(*(s32*)(DAT_007ce680 + 0x24) + index * 0x14 + 4) |
-            (param_2 & 0xff00);
-        FUN_005225a8((char*)DAT_007cd728, DAT_006a4270, 0x83);
+        base = *(s32*)(DAT_007ce680 + 0x24);
+        *(s16*)((u8*)base + index * 0x14 + 4) =
+            *(s16*)((u8*)base + index * 0x14 + 4) | (param_2 & 0xff00);
+        FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x83);
         FUN_005225a8(DAT_006a42b0, index);
         FUN_001052b0(DAT_006a42b0, index);
         return 1;
@@ -541,7 +544,7 @@ s32 fclCombine003d2710(s32 param_1, s32 param_2)
     return 0;
 }
 
-// FUN_003d2ce0 NONMATCHING
+// FUN_003d2ce0
 s32 fclCombine003d2ce0(s32 param_1)
 {
     s32 task;
@@ -553,6 +556,7 @@ s32 fclCombine003d2ce0(s32 param_1)
     }
     if ((*(u32*)(*(s32*)(task + 0x14) + 0x14) & 8) != 0) {
         temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 4, 1);
         temp = FUN_003c5470(task);
         *(s32*)(param_1 + 0x14) = 0;
         return *(s32*)temp;
@@ -560,13 +564,14 @@ s32 fclCombine003d2ce0(s32 param_1)
     return -1;
 }
 
-// FUN_003d2d80 NONMATCHING
+// FUN_003d2d80
 s32 fclCombine003d2d80(s32 param_1, s32 param_2)
 {
     s32 temp;
 
     FUN_003c5460();
     temp = FUN_003c5470(param_2);
+    *(s32*)(temp + 8) = FUN_003d2f00_result();
     return 0;
 }
 
@@ -577,7 +582,7 @@ s32 fclCombine003d2dd0(s32 param_1, s32 param_2)
     return 0;
 }
 
-// FUN_003d2e00 NONMATCHING
+// FUN_003d2e00
 s32 fclCombine003d2e00(s32 param_1, s32 param_2)
 {
     s32* work;
@@ -592,14 +597,22 @@ s32 fclCombine003d2e00(s32 param_1, s32 param_2)
         *work = temp - 1;
         fclCombine003d3280(work[2]);
         temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 10, 1);
     } else if (fclCombine003d3170(work[2]) != 0) {
         *work = 6;
         temp = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(temp, 10, 1);
     }
     return 0;
 }
+// FUN_003d2ef0
+s32 fclCombine003d2ef0(void)
+{
+    return 0;
+}
 
-// FUN_003d3050 NONMATCHING
+
+// FUN_003d3050
 s32 fclCombine003d3050(s32 param_1)
 {
     s32 item;
@@ -617,8 +630,10 @@ s32 fclCombine003d3050(s32 param_1)
         FUN_003def80(*(s32*)(item + 0x10));
         if ((*result - 1) != 6) {
             value = FUN_003c5460(DAT_007ce684);
+            FUN_003d06d0(value, 0, 0);
         }
         fclCombine003d3760(item, 0, 1);
+
         value = *(s32*)(result[5] + 0xc);
         *(s32*)(FUN_003c5460(DAT_007ce684) + 0x10) = value;
         FUN_0010a4e0(0, 0, 0, 1);
@@ -827,7 +842,7 @@ s32 fclCombine003d4f30(s32 param_1, s32 param_2)
     return 0;
 }
 
-// FUN_003d4e90 NONMATCHING
+// FUN_003d4e90
 s32 fclCombine003d4e90(s32 param_1)
 {
     s32 task;
@@ -841,6 +856,7 @@ s32 fclCombine003d4e90(s32 param_1)
         temp = FUN_003c5470(task);
         *(s32*)(param_1 + 0x20) = 0;
         task = FUN_003c5460(DAT_007ce684);
+        FUN_003d06d0(task, 7, 1);
         return *(s32*)temp;
     }
     return -1;
