@@ -6701,8 +6701,8 @@ int FUN_0046ad20(int *param_1,int param_2)
   int iVar1;
   u32 uVar2;
   
-  uVar2 = 0;
-  if (param_1[1] != 0) {
+  if (0 < (u32)param_1[1]) {
+    uVar2 = 0;
     iVar1 = *param_1;
     do {
       if (param_2 == *(int *)(iVar1 + 8)) {
