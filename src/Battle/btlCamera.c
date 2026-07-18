@@ -5356,8 +5356,7 @@ void FUN_002b5000(int param_1)
   fVar3 = FUN_00280870(3,1,&mat,0,0,1);
   mat.y = 0.0f;
   FUN_00280050(iVar1,&pos);
-  pos.y += 0.0f + DAT_007cad74 * (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c));
-  pos.y = 0.0f;
+  pos.y = pos.y + 0.0f + DAT_007cad74 * (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c));
   FUN_002a4690(&pkt.unk,&pos,&mat,&D_00697880);
   fVar4 = FUN_0052e930(DAT_007cad60 * (0.5f * *(float *)(param_1 + 0xb8)));
   fVar3 = fVar3 / fVar4;
@@ -5367,7 +5366,10 @@ void FUN_002b5000(int param_1)
   fVar5 = FUN_004c69f0(&diff,&diff);
   fVar4 = FUN_0052e930(DAT_007cad60 * (0.5f * *(float *)(param_1 + 0xb8)));
   fVar5 = fVar5 + (5.0f * (*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c))) / fVar4;
-  if (fVar3 <= fVar5) {
+  if (!(fVar3 <= fVar5)) {
+    fVar3 = fVar3 + 0.0f;
+  }
+  else {
     fVar3 = fVar5;
   }
   diff.x = diff.x * fVar3;
@@ -6711,8 +6713,8 @@ void FUN_002b77c0(int param_1)
     uVar5 = (u32)*(u16 *)((int)DAT_007ce3ec + 0xa38);
     switch (uVar6) {
     case 0:
-      iVar3 = uVar5 * 0xe0 + 0x694f10;
       uVar3 = 0;
+      iVar3 = uVar5 * 0xe0 + 0x694f10;
       goto cond;
 inc:
       uVar3 = uVar3 + 1;
@@ -6731,10 +6733,11 @@ cond:
       }
       if (uVar3 < 4) goto inc;
 found:
-      iVar1 = uVar5 * 0xe0;
-      afStack_10[0] = *(float *)((u32)uVar3 * 0x18 + iVar1 + 0x694f14);
-      afStack_10[2] = *(float *)((u32)uVar3 * 0x18 + iVar1 + 0x694f18);
-      FUN_002d2280(param_1 + 0x94,param_1 + 0x96,afStack_10);
+      iVar3 = (u32)uVar3 * 0x18;
+      iVar1 = (uVar5 & 0xffff) * 0xe0;
+      afStack_10[0] = *(float *)(iVar3 + iVar1 + 0x694f14);
+      afStack_10[2] = *(float *)(iVar3 + iVar1 + 0x694f18);
+      FUN_002d2280_b77c0(param_1 + 0x94,param_1 + 0x96,afStack_10);
       FUN_0027f650(param_1,afStack_10);
       switch (*(u8 *)(param_1 + 0xa2)) {
       case 0:
@@ -8373,48 +8376,48 @@ void func_002ac920(BtlCamera* camera, long unused)
   float fStack_30;
   float fStack_2c;
   float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  RwV3d targetCenter;
+  RwV3d sourceCenter;
+  RtQuat quaternion;
+  BtlCameraKeyFrame frame;
+  RwV3d firstPoint;
+  RwV3d secondPoint;
   
   iVar3 = (int)camera;
   iVar1 = *(int *)(*(int *)(iVar3 + 0xe0) + 0x30);
   iVar6 = *(int *)(*(int *)(*(int *)(iVar3 + 0xe0) + 0x38) + 0x30);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), (RwV3d*)&fStack_10);
-  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar6), (RwV3d*)&fStack_20);
-  fStack_50 = fStack_10 - fStack_20;
-  fStack_4c = fStack_c - fStack_1c;
-  fStack_48 = fStack_8 - fStack_18;
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar1), &sourceCenter);
+  btlUnitGetSphereWorldCenter((BtlUnit*)(uintptr_t)(iVar6), &targetCenter);
+  fStack_50 = sourceCenter.x - targetCenter.x;
+  fStack_4c = sourceCenter.y - targetCenter.y;
+  fStack_48 = sourceCenter.z - targetCenter.z;
   fVar7 = (float)FUN_004c69f0(&fStack_50,&fStack_50);
-  fStack_98 = *(float *)(iVar3 + 0x9c) - fStack_10;
-  fStack_94 = *(float *)(iVar3 + 0xa4) - fStack_8;
+  fStack_98 = *(float *)(iVar3 + 0x9c) - sourceCenter.x;
+  fStack_94 = *(float *)(iVar3 + 0xa4) - sourceCenter.z;
   FUN_004c6b20(&fStack_98,&fStack_98);
   fVar7 = DAT_007cad88 * fVar7;
-  fStack_40 = fStack_50 * fVar7 + fStack_20;
-  fStack_3c = fStack_4c * fVar7 + fStack_1c;
-  fStack_38 = fStack_48 * fVar7 + fStack_18;
+  fStack_40 = fStack_50 * fVar7 + targetCenter.x;
+  fStack_3c = fStack_4c * fVar7 + targetCenter.y;
+  fStack_38 = fStack_48 * fVar7 + targetCenter.z;
   fVar7 = 0.0;
   fVar13 = fStack_50 * fStack_98 + fStack_48 * fStack_94;
   if (0.0 <= fVar13) {
-    fStack_30 = fStack_10;
-    fStack_2c = fStack_c;
-    fStack_28 = fStack_8;
+    fStack_30 = sourceCenter.x;
+    fStack_2c = sourceCenter.y;
+    fStack_28 = sourceCenter.z;
     fVar8 = 1.5;
     fVar9 = *(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 1.5;
     fVar11 = DAT_007cad84;
     iVar4 = iVar1;
-    if (fStack_c < 125.0) {
+    if (sourceCenter.y < 125.0) {
       fStack_2c = 125.0;
       fVar8 = 1.5;
     }
   }
   else {
-    fStack_30 = fStack_20;
-    fStack_2c = fStack_1c;
-    fStack_28 = fStack_18;
+    fStack_30 = targetCenter.x;
+    fStack_2c = targetCenter.y;
+    fStack_28 = targetCenter.z;
     if (*(char *)(iVar6 + 0xa2) == '\0') {
       fVar9 = *(float *)(iVar6 + 0x90) * *(float *)(iVar6 + 0x2c) * 1.5;
       fVar8 = 3.5;
@@ -8444,7 +8447,14 @@ void func_002ac920(BtlCamera* camera, long unused)
   uStack_70 = PAIR44(fStack_4c,fStack_50);
   fStack_68 = fStack_48;
   fVar7 = fStack_28;
-  FUN_004be1e0(&fStack_50,0x6978a0,1,auStack_b8);
+  firstPoint.x = fStack_60;
+  firstPoint.y = fStack_5c;
+  firstPoint.z = fStack_58;
+  secondPoint.x = fStack_40;
+  secondPoint.y = fStack_3c;
+  secondPoint.z = fStack_38;
+  FUN_002a4690(&quaternion, &firstPoint, &secondPoint, &D_00697880);
+  RtQuatTransformVectors((RwV3d*)&fStack_50, &D_006978A0, 1, &quaternion);
   fStack_90 = fStack_40;
   fStack_8c = fStack_38;
   fStack_88 = fStack_60;
@@ -9674,6 +9684,18 @@ update:
 
 void func_002af960(BtlCamera* camera)
 {
+    f32 range;
+    f32 radius;
+    f32 distance;
+    f32 factor;
+    f32 blend;
+    f32 complement;
+    f32 radiusScale;
+    f32 dot;
+    f32 dot2;
+    f32 height;
+    int interpolationMode;
+    f32 clampRadius;
     BtlUnit* unit;
     BtlUnit* target;
     struct Af960Work
@@ -9706,18 +9728,6 @@ void func_002af960(BtlCamera* camera)
         u8 padEndpoint[4];
         RwV2d planar;
     } work;
-    #define range (*(f32*)&work.modeData[2])
-    #define radius (*(f32*)&work.modeData[3])
-    #define distance (*(f32*)&work.pad88[0])
-    #define factor (*(f32*)&work.pad88[4])
-    #define blend (*(f32*)&work.padF8[0])
-    #define complement (*(f32*)&work.padF8[4])
-    #define radiusScale (*(f32*)&work.modeData[0])
-    #define dot (*(f32*)&work.padGen[0])
-    #define dot2 (*(f32*)&work.padUnit[0])
-    #define height (*(f32*)&work.padAnchor[0])
-    #define interpolationMode (*(int*)&work.modeData[1])
-    #define clampRadius (*(f32*)&work.padDifference[0])
 
     #define frame work.frame
     #define finalPos work.finalPos
