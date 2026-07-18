@@ -2548,15 +2548,23 @@ u64 FUN_004c2860(u64 param_1,float *param_2)
   pfVar1[3] = 0.0;
   return param_1;
 }
+#pragma schedule on
 // FUN_004C2A30 NONMATCHING
 u32 FUN_004c2a30(u8 *param_1)
 {
   if (param_1 == (u8 *)0x0) {
-    param_1 = LAB_004c2200_abs;
+    goto fallback;
   }
-  *(u8 **)(DAT_00960070_abs + (int)iGpffffbbe8 + 8) = param_1;
+body:
+  *(u8 **)(DAT_00960070_abs + iGpffffbbe8 + 8) = param_1;
+  goto done;
+fallback:
+  param_1 = LAB_004c2200_abs;
+  goto body;
+done:
   return 1;
 }
+#pragma schedule off
 // FUN_004C2A70 NONMATCHING
 float FUN_004c2a70(float *param_1)
 

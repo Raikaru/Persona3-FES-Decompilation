@@ -4008,7 +4008,7 @@ u64 FUN_004b6600(u64 param_1)
   return uVar2;
 }
 #pragma schedule on
-// FUN_004B6640 NONMATCHING
+// FUN_004B6640
 bool FUN_004b6640(void)
 {
   int iVar1;
@@ -5873,7 +5873,6 @@ u32 FUN_004b97f0(int param_1)
 }
 #pragma push
 #pragma opt_rebuildconditionals off
-#pragma schedule on
 // FUN_004B9840 NONMATCHING
 int FUN_004b9840(u32 param_1)
 {

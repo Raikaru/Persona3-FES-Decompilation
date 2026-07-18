@@ -36781,15 +36781,15 @@ void FUN_00504650(undefined4 param_1)
 undefined4 * FUN_00504678(undefined4 param_1)
 {
   Fun04678Buf *puVar1;
+  u8 *puVar2;
   
-  *(u32 *)DAT_00966540_abs = param_1;
-  puVar1 = (Fun04678Buf *)DAT_00966540_abs;
+  puVar2 = DAT_00960070;
+  puVar1->a = param_1;
   puVar1->c = (u32)(puVar1 + 1);
   puVar1->b = 0;
   puVar1->d = (u32)(puVar1 + 1);
   return (undefined4 *)puVar1;
 }
-// FUN_005046A0 NONMATCHING
 void FUN_005046a0(int *param_1)
 
 {
