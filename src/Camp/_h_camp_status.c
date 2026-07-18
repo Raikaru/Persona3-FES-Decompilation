@@ -12,7 +12,13 @@ void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
 extern void (*jtbl_0096017C)(void* memory);
 extern s32 FUN_001159f0();
+#pragma alias campStatusDrawSpriteCall FUN_001159f0
+extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
+                                    u32 alpha, f32 x, f32 y, f32 scale);
+
 extern s32 FUN_001120a0();
+#pragma alias campStatusGetFont FUN_001120a0
+extern void* campStatusGetFont(s32 font);
 extern s32 FUN_00113a30();
 extern s32 FUN_00114450();
 extern s32 FUN_0011bba0();
@@ -137,7 +143,7 @@ void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
 void h_campStatusDrawStatLabels(CampVec2 position, f32 scale,
                                 void* persona, s32 alpha);
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale,
-                                void* bonus, void* persona, s32 alpha);
+                                void* bonus, void* persona, u8 alpha);
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale,
                                  void* bonus, void* persona, s32 alpha);
 void h_campStatusDrawRankValue(CampVec2 position, f32 scale, s32 row,
@@ -658,7 +664,7 @@ static void campStatusDrawDigits(CampVec2 position, f32 scale,
     for (i = 0; i < 5; i++) {
         value = campStatusGetDisplayedValue(persona, bonus, i,
                                              useSkillAccessors);
-        y = position.y + 106.0f + (f32)(i * 19);
+        y = position.y + 131.0f - 25.0f + (f32)(i * 19);
         if (value >= 10) {
             campStatusDrawSprite(DAT_00833B98, value / 10 + 0xb,
                                  position.x + 69.0f, y, scale, alpha);
@@ -1618,16 +1624,144 @@ void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
 
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
-                                void* persona, s32 alpha)
+                                void* persona, u8 alpha)
 {
-    campStatusDrawDigits(position, scale, bonus, persona, alpha, 0);
+    u32 parent;
+    void* resource;
+    u32 value;
+
+    parent = 0x42c80000;
+
+    value = FUN_00173660(persona, 0) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x38);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f - 25.0f, scale);
+
+    value = FUN_00173660(persona, 1) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x39);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 19.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 19.0f - 25.0f, scale);
+
+    value = FUN_00173660(persona, 2) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3a);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 38.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 38.0f - 25.0f, scale);
+
+    value = FUN_00173660(persona, 3) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3b);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 57.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 57.0f - 25.0f, scale);
+
+    value = FUN_00173660(persona, 4) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3c);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 76.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f, scale);
 }
 
 // FUN_00128C40 NONMATCHING
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
 {
-    campStatusDrawDigits(position, scale, bonus, persona, alpha, 1);
+    u32 parent;
+    void* resource;
+    u32 value;
+
+    parent = 0x42c80000;
+
+    value = FUN_00173580(persona, 0) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x38);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f - 25.0f, scale);
+
+    value = FUN_00173580(persona, 1) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x39);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 19.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 19.0f - 25.0f, scale);
+
+    value = FUN_00173580(persona, 2) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3a);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 38.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 38.0f - 25.0f, scale);
+
+    value = FUN_00173580(persona, 3) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3b);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 57.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 57.0f - 25.0f, scale);
+
+    value = FUN_00173580(persona, 4) & 0xff;
+    if (bonus != NULL) value += *((u8*)bonus + 0x3c);
+    if (value >= 10) {
+        resource = campStatusGetFont(2);
+        campStatusDrawSpriteCall(parent, resource, value / 10 + 0xb, (u8)alpha,
+        position.x + 69.0f, position.y + 131.0f + 76.0f - 25.0f,
+        scale);
+    }
+    resource = campStatusGetFont(2);
+    campStatusDrawSpriteCall(parent, resource, value % 10 + 0xb, (u8)alpha,
+    position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f, scale);
 }
 
 // FUN_00129160 NONMATCHING
