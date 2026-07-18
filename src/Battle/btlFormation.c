@@ -5750,10 +5750,13 @@ bool func_002c16a0(int param_1,u32 param_2)
 {
   u32 uVar1 = 0;
   u16 genus;
-  if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0) {
-    genus = uVar1;
-  } else {
-    genus = uVar1 + 1;
+  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
+  default:
+    genus = 0;
+    break;
+  case 0:
+    genus = 1;
+    break;
   }
   uVar1 = func_002d4e10(1 << genus & 0xffff,0x80000);
   return (uVar1 & 0xffff) <= param_2;
