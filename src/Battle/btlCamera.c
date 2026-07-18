@@ -6161,303 +6161,394 @@ void FUN_002b7bd0(u32 param_1,u32 param_2,float param_3,u16 param_4)
 
 // FUN_002b7c50 NONMATCHING
 
-u32 FUN_002b7c50(int *param_1)
-
+u32 FUN_002b7c50(u32 *work)
 {
-  char cVar1;
-  undefined2 uVar2;
-  int iVar3;
-  int iVar4;
-  int iVar5;
-  int bVar6;
-  undefined2 uVar7;
-  short sVar8;
-  long lVar9;
-  u32 uVar10;
-  long unaff_s5;
-  float fVar11;
-  float fVar12;
-  float fVar13;
-  float fVar14;
-  float fVar15;
-  float fVar16;
-  undefined1 auStack_b0 [16];
-  float fStack_a0;
-  float fStack_9c;
-  undefined4 uStack_98;
-  float fStack_94;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  float fStack_84;
-  undefined8 uStack_80;
-  float fStack_78;
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  undefined1 auStack_30 [8];
-  float fStack_28;
-  undefined8 uStack_20;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar3 = *param_1;
-  uVar2 = *(undefined2 *)(iVar3 + 0x6e);
-  cVar1 = *(char *)(*(int *)(iVar3 + 0x30) + 0xa2);
-  if (cVar1 == '\x01') {
-    if (((*(short *)(iVar3 + 0x6a) != 1) && ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0)) &&
-       (sVar8 = FUN_002d1600(iVar3 + 0x38), sVar8 == 1)) {
-      bVar6 = 0;
-      iVar4 = *(int *)(iVar3 + 0x30);
-      FUN_0027ffb0(iVar4,&fStack_10);
-      fVar14 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-      if (param_1[2] == 1) {
-        FUN_00280870(1,1,&uStack_20,0,0,1);
-        fVar11 = 0.0;
-        for (uVar10 = 0; uVar10 < *(u16 *)(iVar3 + 0x6a); uVar10 = uVar10 + 1 & 0xffff) {
-          iVar5 = *(int *)(iVar3 + uVar10 * 4 + 0x38);
-          if ((*(u16 *)(iVar5 + 0x1a) & 1) != 0) {
-            FUN_00280050(*(undefined4 *)(iVar5 + 0x30),&fStack_70);
-            fStack_40 = (float)uStack_20 - fStack_70;
-            fStack_3c = (float)(uStack_20 >> 32) - fStack_6c;
-            fStack_38 = fStack_18 - fStack_68;
-            fVar15 = (float)FUN_004c6ac0(&fStack_40);
-            if (fVar11 < fVar15) {
-              fStack_28 = fStack_68;
-              fVar11 = fVar15;
+    u32 *work_p = work;
+    volatile u8 pad[0x50];
+    BtlAction *action;
+    BtlAction *targetAction;
+    BtlUnit *source;
+    BtlUnit *unit;
+    BtlUnit *target;
+    BtlUnit *persona;
+    BtlUnit *iter;
+    BtlUnit *next;
+    u16 specificId;
+    u32 index;
+    s32 moved;
+    s32 relation;
+    s16 tableIndex;
+    s16 relation2;
+    s32 result;
+    f32 radius;
+    f32 radius2;
+    f32 distance;
+    f32 distance2;
+    f32 limit;
+    f32 scale;
+    f32 factor;
+    RwV3d center;
+    f32 centerZ2;
+    f32 centerY;
+    s64 centerPair;
+    f32 centerZ;
+    s64 targetPair;
+    RwV3d direction;
+    f32 directionZ;
+    f32 directionY;
+    f32 directionX;
+    f32 deltaZ;
+    f32 deltaY;
+    f32 deltaX;
+    RwV3d candidate;
+    f32 candidateZ;
+    s64 candidatePair;
+    f32 candidateY;
+    f32 candidateX;
+    f32 workZ;
+    f32 workY;
+    f32 workX;
+    f32 workZ2;
+    f32 workY2;
+    f32 workX2;
+    f32 workZ3;
+    f32 workY3;
+    f32 workX3;
+    RtQuat rotation;
+
+    pad[0] = 0;
+    action = *(BtlAction **)work_p;
+    specificId = action->target.specificId;
+    switch (action->unit->genus)
+    {
+    case 0:
+        unit = action->unit;
+        FUN_002d6370((s16)specificId);
+        if (FUN_002d6290((int)unit) == 1)
+        {
+            targetAction = action->target.targetedActions[0];
+            if (action == targetAction)
+            {
+                return 1;
             }
-          }
+            source = action->unit;
+            target = targetAction->unit;
+            persona = source->personaUnit;
+            if (FUN_002fdd40(source, target) != 0)
+            {
+                *(u32 *)(DAT_007ce3ec + 0xc) |= 0x400000;
+                *(u16 *)(DAT_007ce3ec + 0x18) |= 0xe;
+            }
+            btlUnitGetSphereWorldCenter(source, &center);
+            FUN_002802d0(target, source, &centerPair);
+            centerY = source->pos.y;
+            center.y = centerY;
+            if ((work_p[2] == 1) && (target != source) &&
+                (FUN_002fdcf0(source, target) != 0))
+            {
+                if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
+                {
+                    btlUnitGetSphereWorldCenter(target, &candidate);
+                    FUN_002d1de0(&rotation, &candidate, &center);
+                    scale = target->scale;
+                    workX = target->sphereCenter.x * scale;
+                    workY = target->sphereCenter.y * scale;
+                    workZ = target->sphereCenter.z * scale;
+                    FUN_004be1e0((RwV3d *)&directionX,
+                                 (RwV3d *)&workX, 1, &rotation);
+                    workX = candidate.x - directionX;
+                    workY = candidate.y - directionY;
+                    workZ = candidate.z - directionZ;
+                    candidateY = target->pos.y;
+                    workY = candidateY;
+                    candidate.y = candidateY;
+                    btlUnitSetPos(target, (RwV3d *)&workX);
+                    FUN_002d1de0(&rotation, (RwV3d *)&workX, &source->pos);
+                    btlUnitSetRot(target, &rotation);
+                    targetPair = *(s64 *)&candidate;
+                    centerZ2 = candidate.z;
+                }
+                else
+                {
+                    FUN_002d1de0(&rotation, (RwV3d *)&centerPair, &center);
+                    btlUnitSetRot(target, &rotation);
+                }
+                btlUnitStopRotating(target);
+                FUN_00288110(target);
+            }
+            if (work_p[1] == 1)
+            {
+                direction.x = center.x - *(f32 *)&centerPair;
+                direction.z = center.z - centerZ2;
+                direction.y = 0.0f;
+                radius = RwV3dNormalize(&direction, &direction);
+                radius2 = source->sphereRadius * source->scale;
+                factor = 0.0f;
+                moved = 0;
+                if (persona != NULL)
+                {
+                    tableIndex = (s16)specificId;
+                    moved = FUN_002d63b0((int)(uintptr_t)persona,
+                                         (s16)tableIndex, 1);
+                    relation = (s16)FUN_00284040(persona, source,
+                                                 (s64)tableIndex, 1);
+                    radius = radius - radius2;
+                    if (moved == 0)
+                    {
+                        relation2 = FUN_00284040(persona, source,
+                                                 (s64)(s16)specificId, 1);
+                        if ((relation2 == 3) || (relation2 == 1))
+                        {
+                            FUN_0027f940(persona, source, target,
+                                         (s64)(s16)relation,
+                                         (RwV3d *)&workX, 0, 1);
+                        }
+                        else if ((relation2 == 2) || (relation2 == 0))
+                        {
+                            FUN_0027f940(persona, source, target,
+                                         (s64)(s16)relation,
+                                         (RwV3d *)&workX, 0, 0);
+                        }
+                    }
+                    else
+                    {
+                        FUN_0027f940(persona, source, target,
+                                     (s64)(s16)relation,
+                                     (RwV3d *)&workX, 0, 2);
+                    }
+                    direction.x = workX - *(f32 *)&centerPair;
+                    direction.z = workZ - centerZ2;
+                    direction.y = 0.0f;
+                    radius2 = persona->sphereRadius * persona->scale;
+                    distance = RwV3dNormalize(&direction, &direction) - radius2;
+                    if (moved == 0)
+                    {
+                        if ((distance + radius2) <=
+                            source->sphereRadius * source->scale + radius + 0.0f)
+                        {
+                            deltaX = center.x - workX;
+                            deltaY = center.y - workY;
+                            deltaZ = center.z - workZ;
+                            factor = RwV3dNormalize((RwV3d *)&deltaX,
+                                                    (RwV3d *)&deltaX);
+                            radius2 = distance;
+                            radius = distance;
+                        }
+                    }
+                    else
+                    {
+                        radius2 = persona->sphereRadius * persona->scale;
+                        FUN_0027f940(persona, source, NULL, -1,
+                                     (RwV3d *)&workX, 0, 0);
+                        workX = center.x;
+                        workY = center.y;
+                        deltaX = center.x - center.x;
+                        deltaY = center.y - center.y;
+                        deltaZ = workZ - centerZ2;
+                        factor = RwV3dLength((RwV3d *)&deltaX);
+                        radius = distance;
+                        if ((factor + distance + radius2) <= radius)
+                        {
+                            factor = 0.0f;
+                            radius = radius;
+                        }
+                        else
+                        {
+                            radius = distance;
+                        }
+                    }
+                }
+                limit = target->sphereRadius * target->scale;
+                radius = radius - limit;
+                if (radius < 300.0f)
+                {
+                    radius = 300.0f;
+                    moved = 1;
+                }
+                if (moved != 0)
+                {
+                    factor = radius + radius2 + limit + factor;
+                    direction.x = direction.x * factor;
+                    direction.y = direction.y * factor;
+                    direction.z = direction.z * factor;
+                    workX = *(f32 *)&centerPair + direction.x;
+                    workY = centerY + direction.y;
+                    workZ = centerZ2 + direction.z;
+                    btlUnitSetPos(source, (RwV3d *)&workX);
+                }
+            }
         }
-        FUN_002d1de0(auStack_b0,&fStack_10,auStack_30);
-        FUN_0027f680(iVar4,auStack_b0);
-        FUN_002812b0(iVar4);
-      }
-      for (iVar3 = *(int *)(DAT_007ce3ec + 0x154); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xa30)) {
-        if ((*(u32 *)(iVar3 + 0x9c) & 8) != 0) {
-          FUN_002802d0(iVar3,iVar4,&uStack_20);
-          fStack_40 = (float)uStack_20 - fStack_10;
-          fStack_38 = fStack_18 - fStack_8;
-          fStack_3c = 0.0;
-          fVar15 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
-          fVar11 = DAT_007cadd0 * (fVar15 - fVar14) + fVar14 + 0.0;
-          if ((fVar11 < fVar15) && (300.0 < fVar11)) {
-            fStack_40 = fStack_40 * fVar11;
-            fStack_3c = fStack_3c * fVar11;
-            fStack_38 = fStack_38 * fVar11;
-            fStack_50 = fStack_10 + fStack_40;
-            fStack_48 = fStack_8 + fStack_38;
-            fStack_4c = 0.0;
-            FUN_0027f650(iVar3,&fStack_50);
-            bVar6 = 1;
-          }
+        else if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0)
+        {
+            source = action->unit;
+            if (work_p[2] == 1)
+            {
+                index = 0;
+                while ((index & 0xffff) < action->target.targetedCount)
+                {
+                    targetAction = action->target.targetedActions[index & 0xffff];
+                    target = targetAction->unit;
+                    if ((target->flags2 & 1) != 0 && targetAction != action)
+                    {
+                        FUN_002d1de0(&rotation, &target->pos,
+                                     &source->pos);
+                        btlUnitSetRot(target, &rotation);
+                        btlUnitStopRotating(target);
+                        FUN_00288110(target);
+                    }
+                    index = (index + 1) & 0xffff;
+                }
+            }
+            btlUnitGetSphereWorldCenter(source, &center);
+            FUN_00280870(2, 0, &centerPair, 0, 0, 1);
+            centerY = source->pos.y;
+            center.y = centerY;
+            targetPair = centerPair;
+            centerZ2 = centerZ;
+            factor = 0.0f;
+            moved = 1;
+            candidateX = *(f32 *)&center;
+            candidateZ = center.z;
+            workX = *(f32 *)&centerPair;
+            workY = centerY;
+            workZ = centerZ2;
+            iter = *(BtlUnit **)(DAT_007ce3ec + 0x15c);
+            while (iter != NULL)
+            {
+                if ((iter->flags3 & 8) != 0)
+                {
+                    FUN_002802d0(iter, source, &candidatePair);
+                    candidateX = *(f32 *)&candidatePair;
+                    candidateZ = candidateZ;
+                    FUN_002d1fd0(&candidateX, &workX, &candidateX,
+                                 &workZ2);
+                    candidateX = candidateX - workZ2;
+                    candidateZ = candidateZ - workZ3;
+                    distance = RwV2dLength((RwV2d *)&candidateX);
+                    if ((distance < factor) || (moved != 0))
+                    {
+                        targetPair = *(s64 *)&workZ2;
+                        centerZ2 = workZ3;
+                        factor = distance;
+                        moved = 0;
+                    }
+                }
+                iter = iter->prev;
+            }
+            if ((factor + 0.0f) - source->sphereRadius * source->scale <
+                300.0f)
+            {
+                direction.x = center.x - *(f32 *)&targetPair;
+                direction.y = center.y - centerZ2;
+                direction.z = center.z - centerZ2;
+                direction.y = direction.y + 0.0f;
+                RwV3dNormalize(&direction, &direction);
+                factor = factor + 0.0f;
+                limit = factor + source->sphereRadius * source->scale +
+                        300.0f;
+                direction.x = direction.x * limit;
+                direction.y = direction.y * limit;
+                direction.z = direction.z * limit;
+                workX = *(f32 *)&targetPair + direction.x;
+                workY = centerZ2 + direction.y;
+                workZ = centerZ2 + direction.z;
+                btlUnitSetPos(source, (RwV3d *)&workX);
+            }
         }
-      }
-      if (bVar6) {
-        *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x400000;
-        *(u16 *)(DAT_007ce3ec + 0x18) = *(u16 *)(DAT_007ce3ec + 0x18) | 0x1e;
-      }
+        else if ((*(u32 *)(DAT_007ce3ec + 0x10) & 0x80) != 0)
+        {
+            iter = *(BtlUnit **)(DAT_007ce3ec + 0x154);
+            while (iter != NULL)
+            {
+                if ((iter->flags3 & 8) != 0)
+                {
+                    FUN_0027f7c0(iter, (RwV3d *)&workX, 0, 0);
+                    workZ += 200.0f;
+                    btlUnitSetPos(iter, (RwV3d *)&workX);
+                }
+                iter = iter->prev;
+            }
+            *(u32 *)(DAT_007ce3ec + 0xc) |= 0x400000;
+            *(u16 *)(DAT_007ce3ec + 0x18) |= 6;
+        }
+        break;
+    case 1:
+        if ((action->target.targetedCount != 1) &&
+            ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) &&
+            ((result = FUN_002d1600((int)&action->target)) & 0xffff) == 1)
+        {
+            moved = 0;
+            source = action->unit;
+            btlUnitGetSphereWorldCenter(source, &center);
+            radius = source->sphereRadius * source->scale;
+            if (work_p[2] == 1)
+            {
+                FUN_00280870(result, 1, &centerPair, 0, 0, 1);
+                factor = 0.0f;
+                index = 0;
+                while ((index & 0xffff) < action->target.targetedCount)
+                {
+                    targetAction = action->target.targetedActions[index & 0xffff];
+                    target = targetAction->unit;
+                    if ((target->flags2 & 1) != 0)
+                    {
+                        FUN_00280050(target, &candidate);
+                        direction.x = *(f32 *)&centerPair - candidate.x;
+                        direction.y = center.y - candidate.y;
+                        direction.z = centerZ2 - candidate.z;
+                        distance = RwV3dLength(&direction);
+                        if (!(distance <= factor))
+                        {
+                            targetPair = *(s64 *)&candidate;
+                            centerZ2 = candidate.z;
+                            factor = distance;
+                        }
+                    }
+                    index = (index + 1) & 0xffff;
+                }
+                FUN_002d1de0(&rotation, &center,
+                             (RwV3d *)&targetPair);
+                btlUnitSetRot(source, &rotation);
+                btlUnitStopRotating(source);
+                FUN_00288110(source);
+            }
+            iter = *(BtlUnit **)(DAT_007ce3ec + 0x154);
+            while (iter != NULL)
+            {
+                if ((iter->flags3 & 8) != 0)
+                {
+                    FUN_002802d0(iter, source, &centerPair);
+                    direction.x = *(f32 *)&centerPair - center.x;
+                    direction.z = centerZ2 - center.z;
+                    direction.y = 0.0f;
+                    limit = radius + source->sphereRadius * source->scale;
+                    if ((limit < RwV3dNormalize(&direction, &direction)) &&
+                        !(limit <= 300.0f))
+                    {
+                        workX = direction.x * limit;
+                        workY = direction.y * limit;
+                        workZ = direction.z * limit;
+                        workX = center.x + workX;
+                        workY = center.y + workY;
+                        workZ = center.z + workZ;
+                        workY = workY + source->sphereRadius * source->scale;
+                        btlUnitSetPos(iter, (RwV3d *)&workX);
+                        moved = 1;
+                    }
+                }
+                iter = iter->prev;
+            }
+            if (moved != 0)
+            {
+                *(u32 *)(DAT_007ce3ec + 0xc) |= 0x400000;
+                *(u16 *)(DAT_007ce3ec + 0x18) |= 0x1e;
+            }
+        }
+        break;
+    default:
+        break;
     }
-  }
-  else if (cVar1 == '\0') {
-    FUN_002d6370(uVar2);
-    lVar9 = FUN_002d6290(iVar3);
-    if (lVar9 == 1) {
-      if (iVar3 != *(int *)(iVar3 + 0x38)) {
-        iVar4 = *(int *)(iVar3 + 0x30);
-        iVar3 = *(int *)(*(int *)(iVar3 + 0x38) + 0x30);
-        iVar5 = *(int *)(iVar4 + 0xa00);
-        if (lVar9 != 0) {
-          *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x400000;
-          *(u16 *)(DAT_007ce3ec + 0x18) = *(u16 *)(DAT_007ce3ec + 0x18) | 0xe;
-        }
-        FUN_0027ffb0(iVar4,&fStack_10);
-        FUN_002802d0(iVar3,iVar4,&uStack_20);
-        fStack_c = *(float *)(iVar4 + 8);
-        uStack_20 = CONCAT44(fStack_c,(float)uStack_20);
-        if (((param_1[2] == 1) && (iVar3 != iVar4)) &&
-           (lVar9 = FUN_002fdcf0(iVar4,iVar3), lVar9 != 0)) {
-          if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
-            FUN_0027ffb0(iVar3,&fStack_70);
-            FUN_002d1de0(auStack_b0,&fStack_70,&fStack_10);
-            fStack_48 = *(float *)(iVar3 + 0x2c);
-            fStack_50 = *(float *)(iVar3 + 0x80) * fStack_48;
-            fStack_4c = *(float *)(iVar3 + 0x84) * fStack_48;
-            fStack_48 = *(float *)(iVar3 + 0x88) * fStack_48;
-            FUN_004be1e0(&fStack_40,&fStack_50,1,auStack_b0);
-            fStack_50 = fStack_70 - fStack_40;
-            fStack_48 = fStack_68 - fStack_38;
-            fStack_6c = *(float *)(iVar3 + 8);
-            fStack_4c = fStack_6c;
-            FUN_0027f650(iVar3,&fStack_50);
-            FUN_002d1de0(auStack_b0,&fStack_50,iVar4 + 4);
-            FUN_0027f680(iVar3,auStack_b0);
-            uStack_20 = CONCAT44(fStack_6c,fStack_70);
-            fStack_18 = fStack_68;
-          }
-          else {
-            FUN_002d1de0(auStack_b0,&uStack_20,&fStack_10);
-            FUN_0027f680(iVar3,auStack_b0);
-          }
-          FUN_002812b0(iVar3);
-        }
-        if (param_1[1] == 1) {
-          fStack_40 = fStack_10 - (float)uStack_20;
-          fStack_38 = fStack_8 - fStack_18;
-          fStack_3c = 0.0;
-          fVar11 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
-          fVar14 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-          fVar15 = 0.0;
-          if (iVar5 != 0) {
-            unaff_s5 = FUN_002d63b0(iVar5,uVar2,1);
-            uVar7 = FUN_00284040(iVar5,iVar4,uVar2,1);
-            fVar16 = (fVar11 + 0.0) - *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c);
-            if (unaff_s5 == 0) {
-              sVar8 = FUN_00284040(iVar5,iVar4,uVar2,1);
-              if ((sVar8 == 3) || (sVar8 == 1)) {
-                FUN_0027f940(iVar5,iVar4,iVar3,uVar7,&fStack_50,0,1);
-              }
-              else if ((sVar8 == 2) || (sVar8 == 0)) {
-                FUN_0027f940(iVar5,iVar4,iVar3,uVar7,&fStack_50,0,0);
-              }
-            }
-            else {
-              FUN_0027f940(iVar5,iVar4,iVar3,uVar7,&fStack_50,0,2);
-            }
-            fStack_40 = fStack_50 - (float)uStack_20;
-            fStack_38 = fStack_48 - fStack_18;
-            fStack_3c = 0.0;
-            fVar12 = (float)FUN_004c69f0(&fStack_40,&fStack_40);
-            fVar13 = *(float *)(iVar5 + 0x90) * *(float *)(iVar5 + 0x2c);
-            fVar12 = fVar12 - fVar13;
-            if (unaff_s5 == 0) {
-              fVar11 = fVar16;
-              if (fVar12 + fVar13 <=
-                  *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c) + fVar16 + 0.0) {
-                fStack_60 = fStack_10 - fStack_50;
-                fStack_58 = fStack_8 - fStack_48;
-                fStack_5c = 0.0;
-                fVar15 = (float)FUN_004c69f0(&fStack_60,&fStack_60);
-                fVar14 = fVar13;
-                fVar11 = fVar12;
-              }
-            }
-            else {
-              fVar14 = fVar13;
-              FUN_0027f940(iVar5,iVar4,0,0xffffffffffffffff,&fStack_50,0,0);
-              fStack_50 = fStack_10;
-              fStack_4c = fStack_c;
-              fStack_60 = fStack_10 - fStack_10;
-              fStack_5c = fStack_c - fStack_c;
-              fStack_58 = fStack_48 - fStack_8;
-              fVar15 = (float)FUN_004c6ac0(&fStack_60);
-              fVar11 = fVar12;
-              if (fVar15 + fVar12 + fVar13 <= fVar16) {
-                fVar15 = 0.0;
-                fVar11 = fVar16;
-              }
-            }
-          }
-          fVar16 = *(float *)(iVar3 + 0x90) * *(float *)(iVar3 + 0x2c);
-          fVar11 = fVar11 - fVar16;
-          if (fVar11 < 300.0) {
-            unaff_s5 = 1;
-            fVar11 = 300.0;
-          }
-          if (unaff_s5 != 0) {
-            fVar15 = fVar11 + fVar14 + fVar16 + fVar15;
-            fStack_40 = fStack_40 * fVar15;
-            fStack_3c = fStack_3c * fVar15;
-            fStack_38 = fStack_38 * fVar15;
-            fStack_50 = (float)uStack_20 + fStack_40;
-            fStack_4c = (float)(uStack_20 >> 32) + fStack_3c;
-            fStack_48 = fStack_18 + fStack_38;
-            FUN_0027f650(iVar4,&fStack_50);
-          }
-        }
-      }
-    }
-    else if ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x200000) == 0) {
-      iVar4 = *(int *)(iVar3 + 0x30);
-      if (param_1[2] == 1) {
-        for (uVar10 = 0; uVar10 < *(u16 *)(iVar3 + 0x6a); uVar10 = uVar10 + 1 & 0xffff) {
-          iVar5 = *(int *)(iVar3 + uVar10 * 4 + 0x38);
-          if (((*(u16 *)(iVar5 + 0x1a) & 1) != 0) && (iVar5 != iVar3)) {
-            FUN_002d1de0(auStack_b0,*(int *)(iVar5 + 0x30) + 4,iVar4 + 4);
-            FUN_0027f680(*(undefined4 *)(iVar5 + 0x30),auStack_b0);
-            FUN_002812b0(*(undefined4 *)(iVar5 + 0x30));
-          }
-        }
-      }
-      FUN_0027ffb0(iVar4,&fStack_10);
-      FUN_00280870(2,0,&uStack_20,0,0,1);
-      fStack_c = *(float *)(iVar4 + 8);
-      uStack_20 = CONCAT44(fStack_c,(float)uStack_20);
-      uStack_80 = uStack_20;
-      fStack_78 = fStack_18;
-      fVar14 = 0.0;
-      bVar6 = 1;
-      fStack_88 = fStack_10;
-      fStack_84 = fStack_8;
-      uStack_98 = (float)uStack_20;
-      fStack_94 = fStack_18;
-      for (iVar3 = *(int *)(DAT_007ce3ec + 0x15c); fVar11 = fStack_78, iVar3 != 0;
-          iVar3 = *(int *)(iVar3 + 0xa30)) {
-        if ((*(u32 *)(iVar3 + 0x9c) & 8) != 0) {
-          FUN_002802d0(iVar3,iVar4,&fStack_70);
-          fStack_90 = fStack_70;
-          fStack_8c = fStack_68;
-          FUN_002d1fd0((f32*)&fStack_88,(f32*)&uStack_98,(f32*)&fStack_90,(f32*)&fStack_a0);
-          fStack_90 = fStack_88 - fStack_a0;
-          fStack_8c = fStack_84 - fStack_9c;
-          fVar11 = (float)FUN_004c6af0(&fStack_90);
-          if ((fVar11 < fVar14) || (bVar6)) {
-            uStack_80 = CONCAT44(fStack_c,fStack_a0);
-            fStack_78 = fStack_9c;
-            bVar6 = 0;
-            fVar14 = fVar11;
-          }
-        }
-      }
-      if ((fVar14 + 0.0) - *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c) < 300.0) {
-        fStack_40 = fStack_10 - (float)uStack_80;
-        fStack_38 = fStack_8 - fStack_78;
-        fStack_3c = 0.0;
-        fVar14 = (float)(uStack_80 >> 32);
-        FUN_004c69f0(&fStack_40,&fStack_40);
-        fVar15 = *(float *)(iVar4 + 0x90) * *(float *)(iVar4 + 0x2c) + 300.0;
-        fStack_40 = fStack_40 * fVar15;
-        fStack_3c = fStack_3c * fVar15;
-        fStack_38 = fStack_38 * fVar15;
-        fStack_50 = (float)uStack_80 + fStack_40;
-        fStack_4c = fVar14 + fStack_3c;
-        fStack_48 = fVar11 + fStack_38;
-        FUN_0027f650(iVar4,&fStack_50);
-      }
-    }
-    else if ((*(u32 *)(DAT_007ce3ec + 0x10) & 0x80) != 0) {
-      for (iVar3 = *(int *)(DAT_007ce3ec + 0x154); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0xa30)) {
-        if ((*(u32 *)(iVar3 + 0x9c) & 8) != 0) {
-          FUN_0027f7c0((BtlUnit*)(uintptr_t)iVar3,(RwV3d*)&fStack_50,0,0);
-          fStack_48 = fStack_48 + 200.0;
-          FUN_0027f650(iVar3,&fStack_50);
-        }
-      }
-      *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x400000;
-      *(u16 *)(DAT_007ce3ec + 0x18) = *(u16 *)(DAT_007ce3ec + 0x18) | 6;
-    }
-  }
-  return 1;
+    return 1;
 }
 
 // FUN_002b8900
