@@ -28,6 +28,8 @@ typedef struct CampTextureParserWork
 } CampTextureParserWork;
 
 extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
+ #pragma alias jtbl_0096017C_abs jtbl_0096017C
+ extern u32 jtbl_0096017C_abs[];
 extern void (*jtbl_0096017C)(void* memory);
 extern const char D_005DB190[];
 extern const char D_005DB1B0[];
@@ -39,8 +41,9 @@ extern void* func_0010c3a0(void* stream, u32* wasReady, s32* byteCount);
 extern void func_004d0f00(void* resource);
 extern void h_campPersonaDestroyDispCtlDrawTask(KwlnTask* task);
 extern void* func_00133780(KwlnTask* task);
-extern void FUN_00114450(f32 alpha, f32 slidePosition, f32 depth, u32 mode,
-                         u32 color, u32 width, u32 height, void* resource);
+extern void FUN_00114450(f32 alpha, u32 mode, u32 color,
+                         f32 slidePosition, f32 depth, u32 width,
+                         u32 height, void* resource);
 extern s32 printf(const char* format, ...);
 extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
 
@@ -67,7 +70,7 @@ KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
     return task;
 }
 
-// FUN_00133A80 NONMATCHING
+// FUN_00133A80
 void FUN_00133a80(KwlnTask* task)
 {
     CampPersonaDispCtlWork* work;
@@ -81,8 +84,9 @@ void FUN_00133a80(KwlnTask* task)
                 work->slidePosition = 60.0f;
             }
         }
-        FUN_00114450(work->alpha, work->slidePosition, work->depth, work->mode,
-                     0x4FA4FF19, 0x280, 0x280, work->resource);
+        FUN_00114450(work->alpha, work->mode, 0x4FA4FF19,
+                     work->slidePosition, work->depth, 0x280, 0x280,
+                     work->resource);
     }
 }
 
@@ -104,14 +108,19 @@ u32 FUN_00133b70(KwlnTask* task)
     return work->mode;
 }
 
-// FUN_00133B80 NONMATCHING
+// FUN_00133B80
 void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode)
 {
     CampPersonaDispCtlWork* work;
 
     work = (CampPersonaDispCtlWork*)task->workData;
     if (work->personaId != personaId || work->mode != mode) {
-        if (work->parseRequest == NULL) {
+        if (work->parseRequest != NULL) {
+            FUN_00133d30(work->parseRequest, work->cdvd);
+            work->parseRequest = NULL;
+            work->cdvd = NULL;
+            work->resource = NULL;
+        } else {
             if (work->cdvd != NULL) {
                 H_Cdvd_Destroy(work->cdvd);
                 work->cdvd = NULL;
@@ -120,11 +129,6 @@ void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode)
                 func_004d0f00(work->resource);
                 work->resource = NULL;
             }
-        } else {
-            FUN_00133d30(work->parseRequest, work->cdvd);
-            work->parseRequest = NULL;
-            work->cdvd = NULL;
-            work->resource = NULL;
         }
         work->mode = mode;
         work->personaId = personaId;
@@ -132,7 +136,7 @@ void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode)
     }
 }
 
-// FUN_00133C40 NONMATCHING
+// FUN_00133C40
 void* FUN_00133c40(KwlnTask* task)
 {
     CampTextureParserWork* work;
@@ -141,27 +145,27 @@ void* FUN_00133c40(KwlnTask* task)
 
     work = (CampTextureParserWork*)task->workData;
     resource = func_0010c3a0(work->stream, &wasReady, NULL);
-    if (wasReady == 0) {
-        return KWLNTASK_CONTINUE;
+    if (wasReady != 0) {
+        if (work->cdvd != NULL) {
+            printf(D_005DB1B0, work->cdvd->path);
+        } else {
+            printf(D_005DB1D0);
+        }
+        if (resource != NULL) {
+            func_004d0f00(resource);
+        }
+        if (work->cdvd != NULL) {
+            H_Cdvd_Destroy(work->cdvd);
+        }
+        return KWLNTASK_STOP;
     }
-    if (work->cdvd == NULL) {
-        printf(D_005DB1D0);
-    } else {
-        printf(D_005DB1B0, work->cdvd->path);
-    }
-    if (resource != NULL) {
-        func_004d0f00(resource);
-    }
-    if (work->cdvd != NULL) {
-        H_Cdvd_Destroy(work->cdvd);
-    }
-    return KWLNTASK_STOP;
+    return KWLNTASK_CONTINUE;
 }
 
-// FUN_00133D00 NONMATCHING
+// FUN_00133D00
 void FUN_00133d00(KwlnTask* task)
 {
-    jtbl_0096017C(task->workData);
+    (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
 
 // FUN_00133D30 NONMATCHING
@@ -406,13 +410,13 @@ void FUN_00133E10(CampMainDrawItem* item, const void* resources, s32 mode,
                            (s32)selected);
 }
 
-// FUN_001344B0 NONMATCHING
+// FUN_001344B0
 u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
                  const s16* personaIds, s16 selected)
 {
-    CampMainDrawItem* item;
-    u32 complete;
     s32 i;
+    u32 complete;
+    CampMainDrawItem* item;
 
     complete = 1;
     for (i = 0; i < 100; i++) {
@@ -421,7 +425,8 @@ u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
             if (func_0018b700(item) != 0) {
                 FUN_00133E10(item, resources, i, personaIds, selected);
             }
-            if (item->progress != item->endFrame) {
+            if (((CampMainDrawItem*)((u8*)items + i * 0x44))->progress !=
+                ((CampMainDrawItem*)((u8*)items + i * 0x44))->endFrame) {
                 complete = 0;
             }
         }
@@ -1467,17 +1472,23 @@ KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
     return task;
 }
 
-// FUN_00136820 NONMATCHING
+// FUN_00136820
 void FUN_00136820(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 mode, s32 frame, s32 extra)
 {
-    (void)extra;
-    if (mode == 0) {
+    volatile u64 savedPosition;
+
+    savedPosition = position;
+    switch (mode) {
+    case 0:
         FUN_00137580(alpha, position, entries, count, offset, selected, frame);
-    } else if (mode == 1) {
-        FUN_001380e0(alpha, position, entries, count, offset, selected, frame);
-    } else if (mode == 2) {
-        FUN_001387b0(alpha, position, entries, count, offset, selected, frame);
+        break;
+    case 1:
+        FUN_001380e0(alpha, position, entries, count, offset, selected, extra);
+        break;
+    case 2:
+        FUN_001387b0(alpha, position, entries, count, offset, selected, extra);
+        break;
     }
 }
 
