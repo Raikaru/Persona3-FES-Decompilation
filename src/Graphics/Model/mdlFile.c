@@ -265,8 +265,8 @@ void FUN_003210c0(void);
 void FUN_00321120(u16 param_1);
 u16 FUN_00321130(void);
 void FUN_00321140(int param_1,u32 param_2);
- #pragma alias FUN_00321140_passthru FUN_00321140
- extern void FUN_00321140_passthru(void);
+#pragma alias FUN_00321140_passthru FUN_00321140
+extern void FUN_00321140_passthru(void);
 void FUN_00321180(int param_1,u32 param_2);
 void FUN_003211d0(int param_1,u32 param_2);
 void FUN_00321220(int param_1,u32 param_2);
@@ -340,15 +340,15 @@ void FUN_00324a30(int param_1, u32 param_2);
 void FUN_00324a90(int param_1);
 void FUN_00324af0(int param_1, u32 param_2);
 void FUN_00324b50(u64 param_1);
- #pragma alias FUN_00324bd0_passthru FUN_00324bd0
- extern u64 FUN_00324bd0_passthru(void);
+#pragma alias FUN_00324bd0_passthru FUN_00324bd0
+extern u64 FUN_00324bd0_passthru(void);
 u64 FUN_00324bd0(u64 param_1);
 void FUN_003252a0(u64 param_1);
 void FUN_00325500(u64 param_1);
 void FUN_003257a0(u64 param_1);
 void FUN_003257e0(u64 param_1);
- #pragma alias FUN_003257e0_passthru FUN_003257e0
- extern void FUN_003257e0_passthru(void);
+#pragma alias FUN_003257e0_passthru FUN_003257e0
+extern void FUN_003257e0_passthru(void);
 u64 FUN_00325920(u64 *param_1);
 void FUN_00325b80(int param_1);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
