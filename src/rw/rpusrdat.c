@@ -63,7 +63,6 @@ RpUserDataArray* RpMaterialGetUserDataArray(const RpMaterial* material, RwInt32 
         return (RpUserDataArray*)NULL;
     }
 }
-
 // FUN_0048ef10
 #pragma optimization_level 3
 RwChar* RpUserDataArrayGetName(RpUserDataArray* userData)
@@ -3324,7 +3323,6 @@ void FUN_0048efc0(int param_1,int param_2,f32 param_3)
 #pragma optimization_level 2
 
 // FUN_0048EFE0 NONMATCHING
-
 RwInt32 FUN_0048efe0(RpUserDataFormat format)
 {
   switch (format) {

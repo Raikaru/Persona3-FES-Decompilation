@@ -10,7 +10,7 @@ u64 FUN_004b4810(u64 param_1);
 u64 FUN_004b1990(u64 param_1,code *param_2,u64 param_3,u64 param_4);
 void FUN_004b22b0(u64 param_1);
 u64 FUN_004b47d0(u64 param_1);
-u64 FUN_004b8290(u64 param_1,u32 *param_2);
+u32 FUN_004b8290(u32 param_1,u32 *param_2);
 u64 FUN_004b62a0(int param_1,u64 param_2,u64 param_3,u64 param_4,
             u32 *param_5);
 u32 FUN_004b97f0(int param_1);
@@ -25,7 +25,7 @@ u64 FUN_004b2810(float param_1,u64 param_2,u64 param_3);
 long FUN_004b43c0(void);
 u64 FUN_004b4cc0(u64 param_1,u64 param_2);
 long FUN_004b6040(void);
-u64 FUN_004b6270(u64 param_1);
+u32 FUN_004b6270(u32 param_1);
 void FUN_004b5380(u64 param_1,u64 param_2);
 u32 FUN_004b7240(float param_1,u64 param_2);
 u64 FUN_004b2300(u64 param_1,u64 param_2);
@@ -41,6 +41,10 @@ bool FUN_004b1c80(long param_1);
 u32 FUN_004b5270(u64 param_1,long param_2);
 u32 FUN_004b6190(u64 param_1);
 int FUN_004b4a60(int param_1,int param_2);
+#pragma alias FUN_004b65a0_abs FUN_004b65a0
+extern u8 FUN_004b65a0_abs[];
+#pragma alias FUN_004b6600_abs FUN_004b6600
+extern u8 FUN_004b6600_abs[];
 bool FUN_004b1b90(int param_1);
 
 /* externs for implicitly called functions */
@@ -152,6 +156,8 @@ extern u32 DAT_0095fc08;
 extern u32 DAT_0095fc0c;
 extern code DAT_00960158;
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 #pragma alias DAT_0096018c_abs DAT_0096018c
 extern void (*DAT_0096018c_abs[])(u32,u64);
 extern code DAT_0096017c;
@@ -1038,17 +1044,14 @@ f32 FUN_004b1ae0(int param_1)
   return 0.0f;
 }
 #pragma schedule off
+#pragma schedule on
 // FUN_004B1B00 NONMATCHING
 int FUN_004b1b00(u32 *param_1)
-
 {
   int iVar1;
   int iVar2;
   
-  if (param_1[5] == 0) {
-    iVar2 = FUN_004c2120(*param_1);
-  }
-  else {
+  if (param_1[5] != 0) {
     iVar1 = FUN_004c2090(*param_1);
     iVar1 = param_1[5] - iVar1;
     iVar2 = iVar1 >> 3;
@@ -1056,16 +1059,23 @@ int FUN_004b1b00(u32 *param_1)
       iVar2 = iVar1 + 7 >> 3;
     }
   }
+  else {
+    iVar2 = FUN_004c2120(*param_1);
+  }
   return iVar2;
 }
 #pragma schedule off
+#pragma schedule on
 // FUN_004B1B60 NONMATCHING
 f32 FUN_004b1b60(int param_1)
 {
-  if (*(f32 **)(param_1 + 0x14) != (f32 *)0x0) {
-    return **(f32 **)(param_1 + 0x14);
+  f32 *ptr;
+
+  ptr = *(f32 **)(param_1 + 0x14);
+  if (ptr == (f32 *)0x0) {
+    ptr = *(f32 **)(param_1 + 0x18);
   }
-  return **(f32 **)(param_1 + 0x18);
+  return *ptr;
 }
 #pragma schedule off
 // FUN_004B1B90
@@ -3891,15 +3901,17 @@ u32 FUN_004b6190(u64 param_1)
   return 1;
 }
 // FUN_004B6270 NONMATCHING
-u64 FUN_004b6270(u64 param_1)
-
+u32 FUN_004b6270(u32 param_1)
 {
-  u32 uVar1;
-  
-  uVar1 = *(u32 *)((int)param_1 + 4);
-  if ((uVar1 & 1) != 0) {
-    *(u32 *)((int)param_1 + 4) = uVar1 & 0xfffffffe;
+  u32 flags;
+  u32 *ptr;
+
+  ptr = (u32 *)param_1;
+  flags = ptr[1];
+  if ((flags & 1) == 0) {
+    return param_1;
   }
+  ptr[1] = flags & 0xfffffffe;
   return param_1;
 }
 // FUN_004B62A0 NONMATCHING
@@ -3995,16 +4007,16 @@ u64 FUN_004b6600(u64 param_1)
   }
   return uVar2;
 }
-#pragma schedule off
+#pragma schedule on
 // FUN_004B6640 NONMATCHING
 bool FUN_004b6640(void)
-
 {
-  long lVar1;
-  
-  lVar1 = FUN_004ca520(0,0x1b7,0x4b65a0,0x4b6600);
-  return 0 < lVar1;
+  int iVar1;
+
+  iVar1 = FUN_004ca520(0,0x1b7,(u8 *)FUN_004b65a0_abs,(u8 *)FUN_004b6600_abs);
+  return 0 < iVar1;
 }
+#pragma schedule off
 // FUN_004B6680 NONMATCHING
 u32 FUN_004b6680(int *param_1)
 
@@ -4324,30 +4336,38 @@ u32 FUN_004b6c80(u64 param_1,u64 param_2)
   }
   return uVar1;
 }
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_004B6D90 NONMATCHING
 int FUN_004b6d90(int *param_1)
-
 {
   int iVar1;
-  
-  iVar1 = (**(code **)(*param_1 + 0x28))();
-  return iVar1 + 0x14;
+
+  iVar1 = 0;
+  iVar1 = iVar1 + 0x14;
+  iVar1 = iVar1 + (**(code **)(*param_1 + 0x28))();
+  return iVar1;
 }
+#pragma optimization_level 2
 // FUN_004B6DD0 NONMATCHING
 int FUN_004b6dd0(int *param_1)
 
 {
+  u32 *vtable;
   u32 *puVar1;
   u32 *puVar2;
   int iVar3;
   u32 *puVar4;
-  
+  int stride;
+
+  vtable = (u32 *)*param_1;
   puVar1 = (u32 *)param_1[4];
+  stride = (int)vtable[2];
   iVar3 = 0;
   puVar2 = (u32 *)*puVar1;
   puVar4 = puVar1;
   while (puVar2 != puVar1) {
-    puVar4 = (u32 *)((int)puVar4 + *(int *)(*param_1 + 8));
+    puVar4 = (u32 *)((int)puVar4 + stride);
     iVar3 = iVar3 + 1;
     puVar2 = (u32 *)*puVar4;
   }
@@ -4358,13 +4378,12 @@ void FUN_004b6e10(int param_1,int param_2)
 
 {
   u32 *puVar1;
-  
-  puVar1 = (u32 *)(*DAT_00960178)(param_1 * param_2 + 0x4c,0x3001b);
+
+  puVar1 = (u32 *)(*DAT_00960178_abs)(param_1 * param_2 + 0x4c,0x3001b);
   puVar1[0xb] = param_1;
   *puVar1 = 0;
   puVar1[2] = 0;
   puVar1[1] = 0;
-  puVar1[3] = 0;
   puVar1[5] = 0xbf800000;
   puVar1[4] = 0;
   puVar1[6] = 0;
@@ -5033,28 +5052,31 @@ int FUN_004b7f30(int param_1)
   return iVar1 + 4 + *(int *)(param_1 + 4) * 0x20;
 }
 // FUN_004B8290 NONMATCHING
-u64 FUN_004b8290(u64 param_1,u32 *param_2)
-
+u32 FUN_004b8290(u32 param_1,u32 *param_2)
 {
-  u32 *puVar1;
-  u32 uVar2;
-  u32 uVar3;
-  u32 uVar4;
-  u32 uVar5;
-  u32 uVar6;
-  
-  puVar1 = (u32 *)param_1;
-  uVar6 = param_2[1];
-  uVar4 = param_2[4];
-  uVar5 = param_2[5];
-  uVar2 = param_2[0xc];
-  uVar3 = param_2[0xd];
-  *puVar1 = *param_2;
-  puVar1[1] = uVar6;
-  puVar1[2] = uVar4;
-  puVar1[3] = uVar5;
-  puVar1[4] = uVar2;
-  puVar1[5] = uVar3;
+  f32 *puVar1;
+  f32 *src;
+  f32 fVar1;
+  f32 fVar2;
+  f32 fVar3;
+  f32 fVar4;
+  f32 fVar5;
+  f32 fVar6;
+
+  puVar1 = (f32 *)param_1;
+  src = (f32 *)param_2;
+  fVar5 = src[0];
+  fVar4 = src[1];
+  fVar3 = src[4];
+  fVar2 = src[5];
+  fVar1 = src[0xc];
+  fVar6 = src[0xd];
+  puVar1[0] = fVar5;
+  puVar1[1] = fVar4;
+  puVar1[2] = fVar3;
+  puVar1[3] = fVar2;
+  puVar1[4] = fVar1;
+  puVar1[5] = fVar6;
   return param_1;
 }
 // FUN_004B82D0 NONMATCHING
@@ -5837,7 +5859,7 @@ u32 FUN_004b97f0(int param_1)
 {
   u32 count;
   u32 *ptr;
-  
+
   ptr = (u32 *)(param_1 + (int)iGpffffbbc4);
   count = 0;
   do {
@@ -5851,18 +5873,14 @@ u32 FUN_004b97f0(int param_1)
 }
 #pragma push
 #pragma opt_rebuildconditionals off
+#pragma schedule on
 // FUN_004B9840 NONMATCHING
 int FUN_004b9840(u32 param_1)
 {
-  int iVar1;
-  
   if (param_1 < 9) {
-    iVar1 = (1 << param_1) << 2;
-    goto done;
+    return (1 << param_1) << 2;
   }
-  iVar1 = 0;
-done:
-  return iVar1;
+  return 0;
 }
 #pragma pop
 // FUN_004B9870 NONMATCHING
