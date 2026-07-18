@@ -26,6 +26,10 @@ u32 FUN_002a3850(int param_1);
 u16 FUN_002a3a80(void);
 void FUN_002a3a90(int param_1);
 void FUN_002a3e80(float param_1,u8* param_2,u8* param_3,u8* param_4,u32 param_5);
+extern u64 FUN_00280050();
+#pragma alias FUN_00280050_typed FUN_00280050
+extern void FUN_00280050_typed(BtlUnit* unit, RwV3d* out);
+extern f32 gp0xffff80e0;
 u64 FUN_0027ffb0();
 extern u8* DAT_007ce3ec;
 void FUN_002a42a0(void);
@@ -4254,148 +4258,152 @@ void func_002b3330(void)
 
 // FUN_002b3340 NONMATCHING
 
-void FUN_002b3340(undefined8 param_1)
-
+void FUN_002b3340(BtlCamera* camera)
 {
-  int iVar1;
-  int iVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  undefined1 auStack_44 [20];
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_4;
-  
-  iVar2 = (int)param_1;
-  if (*(int *)(iVar2 + 0xe0) == 0) {
-    iVar1 = *(int *)(*(int *)(iGpffffb6fc + 0x148) + 0x30);
-  }
-  else {
-    iVar1 = *(int *)(*(int *)(iVar2 + 0xe0) + 0x30);
-  }
-  fVar3 = (float)FUN_00280870(3,1,&fStack_10,&fStack_4,0,1);
-  FUN_00280050(iVar1,&fStack_20);
-  fStack_c = 0.0;
-  fStack_1c = 0.0;
-  if ((fStack_20 == fStack_10) && (fStack_18 == fStack_8)) {
-    FUN_00280050(*(undefined4 *)(*(int *)(iGpffffb6fc + 0x148) + 0x30),&fStack_20);
-  }
-  fStack_1c = 0.0;
-  fStack_30 = fStack_20 - fStack_10;
-  fStack_2c = 0.0 - fStack_c;
-  fStack_28 = fStack_18 - fStack_8;
-  FUN_004c69f0(&fStack_30,&fStack_30);
-  fStack_30 = fStack_30 * fVar3;
-  fStack_2c = fStack_2c * fVar3;
-  fStack_28 = fStack_28 * fVar3;
-  fStack_20 = fStack_10 + fStack_30;
-  fStack_18 = fStack_8 + fStack_28;
-  fVar5 = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.75;
-  fStack_1c = fGpffff80c4 * fStack_4;
-  if (fStack_1c <= fVar5) {
-    fStack_1c = fVar5;
-  }
-  fVar5 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar2 + 0xb8) * 0.5);
-  fVar5 = (fVar3 * 0.75) / fVar5;
-  fStack_30 = fStack_20 - fStack_10;
-  fStack_2c = fStack_1c - fStack_c;
-  fStack_28 = fStack_18 - fStack_8;
-  fVar4 = (float)FUN_004c69f0(&fStack_30,&fStack_30);
-  fVar3 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar2 + 0xb8) * 0.5);
-  fVar4 = fVar4 + (*(float *)(iVar1 + 0x90) * *(float *)(iVar1 + 0x2c) * 2.0) / fVar3;
-  if (fVar5 <= fVar4) {
-    fVar5 = fVar4;
-  }
-  fStack_30 = fStack_30 * fVar5;
-  fStack_2c = fStack_2c * fVar5;
-  fStack_28 = fStack_28 * fVar5;
-  fStack_50 = fStack_30 + fStack_10;
-  fStack_4c = fStack_2c + fStack_c;
-  fStack_48 = fStack_28 + fStack_8;
-  return;
+    int iVar1;
+    int iVar2;
+    f32 distance;
+    f32 minDistance;
+    f32 norm;
+    f32 height;
+    f32 candidate;
+    struct {
+        RwV3d out;
+        RtQuat unk;
+        f32 pad0;
+        RwV3d diff;
+        f32 pad1;
+        RwV3d pos;
+        f32 posPad;
+        RwV3d target;
+    } scratch;
+
+    iVar2 = (int)camera;
+    iVar1 = *(int*)(iVar2 + 0xe0);
+    if (iVar1 != 0)
+    {
+        iVar1 = *(int*)(iVar1 + 0x30);
+    }
+    else
+    {
+        iVar1 = *(int*)(*(int*)(iGpffffb6fc + 0x148) + 0x30);
+    }
+    distance = FUN_00280870(3, 1, &scratch.target, &height, 0, 1);
+    FUN_00280050(iVar1, &scratch.pos);
+    scratch.target.y = 0.0f;
+    scratch.pos.y = 0.0f;
+    if ((scratch.pos.x == scratch.target.x) &&
+        (scratch.pos.z == scratch.target.z))
+    {
+        FUN_00280050(*(int*)(*(int*)(iGpffffb6fc + 0x148) + 0x30),
+                     &scratch.pos);
+        scratch.pos.y = 0.0f;
+    }
+    scratch.diff.x = scratch.pos.x - scratch.target.x;
+    scratch.diff.y = scratch.pos.y - scratch.target.y;
+    scratch.diff.z = scratch.pos.z - scratch.target.z;
+    FUN_004c69f0(&scratch.diff.x, &scratch.diff.x);
+    scratch.diff.x = scratch.diff.x * distance;
+    scratch.diff.y = scratch.diff.y * distance;
+    scratch.diff.z = scratch.diff.z * distance;
+    scratch.pos.x = scratch.target.x + scratch.diff.x;
+    scratch.pos.y = scratch.target.y + scratch.diff.y;
+    scratch.pos.z = scratch.target.z + scratch.diff.z;
+    minDistance = 0.75f *
+                  (*(f32*)(iVar1 + 0x8c) *
+                   *(f32*)(iVar1 + 0x2c));
+    norm = fGpffff80c4 * height;
+    norm = (norm <= minDistance) ? minDistance : norm;
+    scratch.pos.y = norm;
+    FUN_002a4690(&scratch.unk, &scratch.pos, &scratch.target, &D_00697880);
+    minDistance = (0.75f * distance) /
+                  FUN_0052e930(gp0xffff8070 *
+                               (0.5f * *(f32*)(iVar2 + 0xb8)));
+    scratch.diff.x = scratch.pos.x - scratch.target.x;
+    scratch.diff.y = scratch.pos.y - scratch.target.y;
+    scratch.diff.z = scratch.pos.z - scratch.target.z;
+    norm = FUN_004c69f0(&scratch.diff.x, &scratch.diff.x);
+    distance = FUN_0052e930(gp0xffff8070 *
+                            (0.5f * *(f32*)(iVar2 + 0xb8)));
+    candidate = norm +
+                (*(f32*)(iVar1 + 0x90) *
+                 *(f32*)(iVar1 + 0x2c) * 2.0f) /
+                distance;
+    minDistance = (minDistance <= candidate) ? candidate : minDistance;
+    scratch.diff.x = scratch.diff.x * minDistance;
+    scratch.diff.y = scratch.diff.y * minDistance;
+    scratch.diff.z = scratch.diff.z * minDistance;
+    scratch.out.x = scratch.diff.x + scratch.target.x;
+    scratch.out.y = scratch.diff.y + scratch.target.y;
+    scratch.out.z = scratch.diff.z + scratch.target.z;
+    FUN_002a3590((f32*)&scratch.out, (f32*)&scratch.out);
+    FUN_002a3e80(0.0f, (u8*)0, (u8*)0, (u8*)0x40, 0);
+    FUN_002a2170((BtlCamera*)(uintptr_t)iVar2, (f32*)&scratch.out);
+    FUN_002a44b0((f32*)(iVar2 + 0x9c), (f32*)&scratch.out);
 }
 
 // FUN_002b3690 NONMATCHING
 
-void FUN_002b3690(undefined8 param_1)
-
+void FUN_002b3690(BtlCamera* camera)
 {
-  int iVar1;
-  int iVar2;
-  float fVar3;
-  float fVar4;
-  float fStack_70;
-  float fStack_6c;
-  float fStack_68;
-  undefined4 uStack_64;
-  undefined4 uStack_60;
-  undefined4 uStack_5c;
-  undefined4 uStack_58;
-  float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  undefined4 uStack_48;
-  undefined4 uStack_44;
-  undefined4 uStack_40;
-  undefined4 uStack_3c;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  undefined1 auStack_10 [4];
-  float fStack_c;
-  float fStack_4;
-  
-  iVar1 = *(int *)(*(int *)(iGpffffb6fc + 0x148) + 0x30);
-  fVar3 = (float)FUN_00280870(3,0,0,&fStack_4,0,1);
-  FUN_00280870(2,0,&fStack_20,0,0,1);
-  fStack_1c = fStack_4 * 0.5;
-  FUN_00280050(iVar1,auStack_10);
-  fStack_c = *(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.75 + fStack_c + 0.0;
-  uStack_48 = uStack_64;
-  uStack_44 = uStack_60;
-  uStack_40 = uStack_5c;
-  uStack_3c = uStack_58;
-  iVar2 = (int)param_1;
-  fVar4 = (float)FUN_0052e930(*(float *)(iVar2 + 0xb8) * 0.5);
-  fVar4 = 250.0 / fVar4;
-  if (1 < *(u8 *)(iGpffffb6fc + 0xba4)) {
-    FUN_004bdde0((f32*)&uStack_64,(const f32*)0x697880,30.0f,2);
-  }
-  FUN_004be1e0(&fStack_30,0x6978a0,1,&uStack_64);
-  fStack_30 = fStack_30 * fVar4;
-  fStack_2c = fStack_2c * fVar4;
-  fStack_28 = fStack_28 * fVar4;
-  fStack_70 = fStack_20 + fStack_30;
-  fStack_6c = fStack_1c + fStack_2c;
-  fStack_68 = fStack_18 + fStack_28;
-  fVar4 = (float)FUN_0052e930(fGpffff8070 * *(float *)(iVar2 + 0xb8) * 0.5);
-  fVar4 = (fVar3 * 0.875) / fVar4;
-  if (*(char *)(iGpffffb6fc + 0xba4) == '\x01') {
-    fVar3 = (float)FUN_0052e930(*(float *)(iVar2 + 0xb8) * 0.5);
-    fVar4 = fVar4 + (*(float *)(iVar1 + 0x8c) * *(float *)(iVar1 + 0x2c) * 0.5) / fVar3;
-  }
-  FUN_004be1e0(&fStack_30,0x6978a0,1,&uStack_48);
-  fStack_30 = fStack_30 * fVar4;
-  fStack_2c = fStack_2c * fVar4;
-  fStack_28 = fStack_28 * fVar4;
-  fStack_54 = fStack_20 + fStack_30;
-  fStack_50 = fStack_1c + fStack_2c;
-  fStack_4c = fStack_18 + fStack_28;
-  return;
+    BtlUnit* unit;
+    f32 firstScale;
+    f32 secondScale;
+    struct
+    {
+        RwV3d firstPos;
+        RtQuat firstRot;
+        RwV3d secondPos;
+        RtQuat secondRot;
+        u8 pad_38[8];
+        RwV3d direction;
+        u8 pad_4c[4];
+        RwV3d base;
+        u8 pad_5c[4];
+        RwV3d center;
+        f32 scalar;
+    } work;
+
+    unit = *(BtlUnit**)(*(u8**)(iGpffffb6fc + 0x148) + 0x30);
+    firstScale = FUN_00280870(3, 0, 0, &work.scalar, 0, 1);
+    FUN_00280870(2, 0, &work.base, 0, 0, 1);
+    work.base.y = 0.5f * work.scalar;
+    FUN_00280050_typed(unit, &work.center);
+    work.center.y = work.center.y + 0.75f * (unit->unk_8c * unit->scale);
+    FUN_002a4690(&work.firstRot, &work.center, &work.base, &D_00697880);
+    work.secondRot = work.firstRot;
+    secondScale = 250.0f / tanf(0.5f * camera->fovRad);
+    if (*(u8*)(iGpffffb6fc + 0xba4) < 2)
+        goto rotation_done;
+    FUN_004bdde0((f32*)&work.firstRot, (const f32*)&D_00697880,
+                 30.0f, 2);
+rotation_done:
+    RtQuatTransformVectors(&work.direction, &D_006978A0, 1,
+                           &work.firstRot);
+    work.direction.x = work.direction.x * secondScale;
+    work.direction.y = work.direction.y * secondScale;
+    work.direction.z = work.direction.z * secondScale;
+    work.firstPos.x = work.base.x + work.direction.x;
+    work.firstPos.y = work.base.y + work.direction.y;
+    work.firstPos.z = work.base.z + work.direction.z;
+    firstScale = (0.875f * firstScale) /
+                 tanf(gp0xffff8070 * (0.5f * camera->fovRad));
+    if (*(u8*)(iGpffffb6fc + 0xba4) == 1)
+    {
+        firstScale +=
+            (0.5f * (unit->unk_8c * unit->scale)) /
+            tanf(0.5f * camera->fovRad);
+    }
+    RtQuatTransformVectors(&work.direction, &D_006978A0, 1,
+                           &work.secondRot);
+    work.direction.x = work.direction.x * firstScale;
+    work.direction.y = work.direction.y * firstScale;
+    work.direction.z = work.direction.z * firstScale;
+    work.secondPos.x = work.base.x + work.direction.x;
+    work.secondPos.y = work.base.y + work.direction.y;
+    work.secondPos.z = work.base.z + work.direction.z;
+    FUN_002a2290((u16*)camera, &work.firstPos, &work.secondPos, 1);
+    FUN_002a3110((u16*)camera, gp0xffff80e0);
 }
 
 // FUN_002b3980 NONMATCHING
@@ -4794,134 +4802,94 @@ void FUN_002b4720(int param_1)
 }
 
 // FUN_002b47b0 NONMATCHING
-
-void FUN_002b47b0(undefined8 param_1)
-
+void FUN_002b47b0(BtlCamera* camera)
 {
-  short sVar1;
-  int iVar2;
-  int iVar3;
-  long lVar4;
-  float fStack_90;
-  float fStack_8c;
-  float fStack_88;
-  undefined4 uStack_84;
-  undefined4 uStack_80;
-  undefined4 uStack_7c;
-  undefined4 uStack_78;
-  float fStack_74;
-  float fStack_70;
-  float fStack_6c;
-  undefined4 uStack_68;
-  undefined4 uStack_64;
-  undefined4 uStack_60;
-  undefined4 uStack_5c;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar2 = *(int *)((int)param_1 + 0xe0);
-  if ((*(u16 *)(iVar2 + 0x1a) & 1) == 0) {
+  typedef struct B47Scratch {
+    f32 finalPos[3];
+    f32 quatCopy[4];
+    f32 worldBase[3];
+    f32 quat[4];
+    u8 pad0[8];
+    f32 transformed[3];
+    u8 pad1[4];
+    f32 worldSecond[3];
+    u8 pad2[4];
+    f32 worldFirst[3];
+    u8 pad3[4];
+    f32 sourceSecond[3];
+    u8 pad4[4];
+    f32 sourceFirst[3];
+    u8 pad5[4];
+  } B47Scratch;
+  BtlAction* action;
+  BtlUnit* unit;
+  s16 state;
+  B47Scratch scratch;
+  extern u8 (*gp0xffffb714)[0x4c];
+  extern void FUN_004be1e0(RwV3d*, const RwV3d*, int, void*);
+
+  action = camera->action;
+  if ((action->unk_1a & 1) == 0) {
     return;
   }
-  iVar2 = *(int *)(iVar2 + 0x30);
-  if (*(char *)(iVar2 + 0xa2) != '\x01') {
+  unit = action->unit;
+  if (unit->genus != 1) {
     return;
   }
-  sVar1 = *(short *)(iVar2 + 0x9e0);
-  if (sVar1 == 0x11) {
-    lVar4 = FUN_0030c3a0(*(undefined4 *)(iVar2 + 0xa2c));
-    if (lVar4 != 0) {
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_10 = *(float *)(iVar3 + 0x1c);
-      fStack_c = *(float *)(iVar3 + 0x20);
-      fStack_8 = *(float *)(iVar3 + 0x24);
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_20 = *(float *)(iVar3 + 0x28);
-      fStack_1c = *(float *)(iVar3 + 0x2c);
-      fStack_18 = *(float *)(iVar3 + 0x30);
-      goto LAB_002b49f8;
+
+  state = unit->unk_9e0;
+  switch (state) {
+  case 3:
+    *(RwV3d*)scratch.sourceFirst = *(RwV3d*)&gp0xffffb714[unit->charId][0x1c];
+    *(RwV3d*)scratch.sourceSecond = *(RwV3d*)&gp0xffffb714[unit->charId][0x28];
+    break;
+  case 9:
+    *(RwV3d*)scratch.sourceFirst = *(RwV3d*)&gp0xffffb714[unit->charId][0x34];
+    *(RwV3d*)scratch.sourceSecond = *(RwV3d*)&gp0xffffb714[unit->charId][0x40];
+    break;
+  case 0x11:
+    if (FUN_0030c3a0(unit->datUnit) != 0) {
+      *(RwV3d*)scratch.sourceFirst = *(RwV3d*)&gp0xffffb714[unit->charId][0x1c];
+      *(RwV3d*)scratch.sourceSecond = *(RwV3d*)&gp0xffffb714[unit->charId][0x28];
+      break;
     }
+  default:
+    *(RwV3d*)scratch.sourceFirst = *(RwV3d*)&gp0xffffb714[unit->charId][4];
+    *(RwV3d*)scratch.sourceSecond = *(RwV3d*)&gp0xffffb714[unit->charId][0x10];
+    break;
   }
-  else {
-    if (sVar1 == 9) {
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_10 = *(float *)(iVar3 + 0x34);
-      fStack_c = *(float *)(iVar3 + 0x38);
-      fStack_8 = *(float *)(iVar3 + 0x3c);
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_20 = *(float *)(iVar3 + 0x40);
-      fStack_1c = *(float *)(iVar3 + 0x44);
-      fStack_18 = *(float *)(iVar3 + 0x48);
-      goto LAB_002b49f8;
-    }
-    if (sVar1 == 3) {
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_10 = *(float *)(iVar3 + 0x1c);
-      fStack_c = *(float *)(iVar3 + 0x20);
-      fStack_8 = *(float *)(iVar3 + 0x24);
-      iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-              DAT_007ce404;
-      fStack_20 = *(float *)(iVar3 + 0x28);
-      fStack_1c = *(float *)(iVar3 + 0x2c);
-      fStack_18 = *(float *)(iVar3 + 0x30);
-      goto LAB_002b49f8;
-    }
+
+  FUN_004be1e0((RwV3d*)scratch.sourceFirst,
+               (RwV3d*)scratch.sourceFirst, 1, (u8*)unit + 0x1c);
+  FUN_004be1e0((RwV3d*)scratch.sourceSecond,
+               (RwV3d*)scratch.sourceSecond, 1,
+               (void*)((int)unit + 0x1c));
+  scratch.worldFirst[0] = unit->pos.x + scratch.sourceFirst[0];
+  scratch.worldFirst[1] = unit->pos.y + scratch.sourceFirst[1];
+  scratch.worldFirst[2] = unit->pos.z + scratch.sourceFirst[2];
+  scratch.worldSecond[0] = unit->pos.x + scratch.sourceSecond[0];
+  scratch.worldSecond[1] = unit->pos.y + scratch.sourceSecond[1];
+  scratch.worldSecond[2] = unit->pos.z + scratch.sourceSecond[2];
+
+  FUN_002a4690(scratch.quat, scratch.worldFirst, scratch.worldSecond,
+               &D_00697880);
+  *(RwV3d*)scratch.worldBase = *(RwV3d*)scratch.worldFirst;
+  *(RtQuat*)scratch.quatCopy = *(RtQuat*)scratch.quat;
+  FUN_004be1e0((RwV3d*)scratch.transformed, &D_006978A0, 1,
+               scratch.quat);
+  scratch.transformed[0] = scratch.transformed[0] * 100.0f;
+  scratch.transformed[1] = scratch.transformed[1] * 100.0f;
+  scratch.transformed[2] = scratch.transformed[2] * 100.0f;
+  scratch.finalPos[0] = scratch.worldBase[0] + scratch.transformed[0];
+  scratch.finalPos[1] = scratch.worldBase[1] + scratch.transformed[1];
+  scratch.finalPos[2] = scratch.worldBase[2] + scratch.transformed[2];
+  if (scratch.finalPos[1] < 25.0f) {
+    scratch.finalPos[1] = 25.0f;
   }
-  iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-          DAT_007ce404;
-  fStack_10 = *(float *)(iVar3 + 4);
-  fStack_c = *(float *)(iVar3 + 8);
-  fStack_8 = *(float *)(iVar3 + 0xc);
-  iVar3 = ((u32)*(u16 *)(iVar2 + 0xa4) * 0x12 + (u32)*(u16 *)(iVar2 + 0xa4)) * 4 +
-          DAT_007ce404;
-  fStack_20 = *(float *)(iVar3 + 0x10);
-  fStack_1c = *(float *)(iVar3 + 0x14);
-  fStack_18 = *(float *)(iVar3 + 0x18);
-LAB_002b49f8:
-  FUN_004be1e0(&fStack_10,&fStack_10,1,iVar2 + 0x1c);
-  FUN_004be1e0(&fStack_20,&fStack_20,1,iVar2 + 0x1c);
-  fStack_30 = *(float *)(iVar2 + 4) + fStack_10;
-  fStack_2c = *(float *)(iVar2 + 8) + fStack_c;
-  fStack_28 = *(float *)(iVar2 + 0xc) + fStack_8;
-  fStack_40 = *(float *)(iVar2 + 4) + fStack_20;
-  fStack_3c = *(float *)(iVar2 + 8) + fStack_1c;
-  fStack_38 = *(float *)(iVar2 + 0xc) + fStack_18;
-  fStack_74 = fStack_30;
-  fStack_70 = fStack_2c;
-  fStack_6c = fStack_28;
-  uStack_84 = uStack_68;
-  uStack_80 = uStack_64;
-  uStack_7c = uStack_60;
-  uStack_78 = uStack_5c;
-  FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_68);
-  fStack_50 = fStack_50 * 100.0;
-  fStack_4c = fStack_4c * 100.0;
-  fStack_48 = fStack_48 * 100.0;
-  fStack_90 = fStack_74 + fStack_50;
-  fStack_8c = fStack_70 + fStack_4c;
-  fStack_88 = fStack_6c + fStack_48;
-  if (fStack_8c < 25.0) {
-    fStack_8c = 25.0;
-  }
-  return;
+  FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
+  FUN_002a2290((u16*)camera, (RwV3d*)scratch.finalPos,
+               (RwV3d*)scratch.worldBase, 1);
+  FUN_002a3110((u16*)camera, 2.0f);
 }
 
 // FUN_002b4bc0
@@ -5225,195 +5193,357 @@ void FUN_002b56e0(u8* param_1)
 
 // FUN_002b58f0 NONMATCHING
 
-void FUN_002b58f0(undefined8 param_1)
-
+void FUN_002b58f0(BtlCamera* param_1)
 {
-  int iVar1;
-  float fVar2;
-  float fVar3;
-  float fStack_e0;
-  float fStack_dc;
-  float fStack_d8;
-  undefined4 uStack_d4;
-  undefined4 uStack_d0;
-  undefined4 uStack_cc;
-  undefined4 uStack_c8;
-  float fStack_c4;
-  float fStack_c0;
-  float fStack_bc;
-  undefined4 uStack_b8;
-  undefined4 uStack_b4;
-  undefined4 uStack_b0;
-  undefined4 uStack_ac;
-  undefined1 auStack_a0 [72];
-  float fStack_58;
-  float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar1 = *(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30);
-  fVar3 = (float)FUN_00280870(3,1,&fStack_50,0,0,1);
-  fVar2 = 550.0;
-  if (550.0 <= fVar3) {
-    fVar2 = fVar3;
-  }
-  FUN_00280050(iVar1,&fStack_10);
-  fStack_20 = fStack_10 - fStack_50;
-  fStack_1c = fStack_c - fStack_4c;
-  fStack_18 = fStack_8 - fStack_48;
-  fStack_28 = (float)FUN_004c69f0(&fStack_20,&fStack_20);
-  fStack_28 = fStack_28 * 0.25;
-  fStack_30 = fStack_20 * fStack_28;
-  fStack_2c = fStack_1c * fStack_28;
-  fStack_28 = fStack_18 * fStack_28;
-  fStack_40 = fStack_50 + fStack_30;
-  fStack_3c = fStack_4c + fStack_2c;
-  fStack_38 = fStack_48 + fStack_28;
-  fVar2 = fVar2 * DAT_007cad6c;
-  fVar3 = (float)FUN_0052e930(DAT_007cad60 * *(float *)((int)param_1 + 0xb8) * 0.5);
-  fVar3 = fVar2 / fVar3;
-  FUN_004c31b0(0x42020000,auStack_a0,0x697870,0);
-  FUN_004c6c60(&fStack_30,0x6978a0,auStack_a0);
-  FUN_004be1e0(&fStack_20,&fStack_30,1,iVar1 + 0x1c);
-  fStack_10 = fStack_20 * fVar2 + fStack_50;
-  fStack_c = fStack_1c * fVar2 + fStack_4c;
-  fStack_8 = fStack_18 * fVar2 + fStack_48;
-  FUN_004be1e0(&fStack_30,0x6978a0,1,&uStack_b8);
-  fStack_20 = fStack_30 * fVar3;
-  fStack_1c = fStack_2c * fVar3;
-  fStack_18 = fStack_28 * fVar3;
-  fVar2 = (float)FUN_0052e930(DAT_007cad60 * *(float *)((int)param_1 + 0xb8) * 0.5);
-  fVar2 = fVar3 * fVar2 * 0.21875 * DAT_007cad6c;
-  fStack_58 = fStack_20;
-  fStack_54 = fStack_18;
-  FUN_004c6b20(&fStack_58,&fStack_58);
-  fStack_40 = fStack_54 * fVar2 + fStack_40 + 0.0;
-  fStack_38 = (fStack_38 + 0.0) - fStack_58 * fVar2;
-  fStack_c4 = fStack_40 + fStack_20;
-  fStack_c0 = fStack_3c + fStack_1c;
-  fStack_bc = fStack_38 + fStack_18;
-  uStack_d4 = uStack_b8;
-  uStack_d0 = uStack_b4;
-  uStack_cc = uStack_b0;
-  uStack_c8 = uStack_ac;
-  fVar3 = fVar3 - 100.0;
-  fStack_20 = fStack_30 * fVar3;
-  fStack_1c = fStack_2c * fVar3;
-  fStack_18 = fStack_28 * fVar3;
-  fStack_e0 = fStack_40 + fStack_20;
-  fStack_dc = fStack_3c + fStack_1c;
-  fStack_d8 = fStack_38 + fStack_18;
-  return;
+    int iVar1;
+    f32 fVar2;
+    f32 fVar3;
+    struct {
+        f32 fStack_40;
+        f32 fStack_44;
+        f32 fStack_48;
+        f32 fStack_4c;
+        f32 fStack_50;
+        f32 fStack_54;
+        f32 fStack_58;
+        f32 fStack_5c;
+        f32 fStack_60;
+        f32 fStack_64;
+        RtQuat quat;
+        u8 pad_38[8];
+        RwMatrix matrix;
+        u8 pad_80[8];
+        f32 fStack_c8;
+        f32 fStack_cc;
+        f32 fStack_d0;
+        f32 fStack_d4;
+        f32 fStack_d8;
+        u8 pad_9c[4];
+        f32 fStack_e0;
+        f32 fStack_e4;
+        f32 fStack_e8;
+        u8 pad_ac[4];
+        f32 fStack_f0;
+        f32 fStack_f4;
+        f32 fStack_f8;
+        u8 pad_bc[4];
+        f32 fStack_100;
+        f32 fStack_104;
+        f32 fStack_108;
+        u8 pad_cc[4];
+        f32 fStack_110;
+        f32 fStack_114;
+        f32 fStack_118;
+    } work;
+    #define fStack_40 work.fStack_40
+    #define fStack_44 work.fStack_44
+    #define fStack_48 work.fStack_48
+    #define fStack_4c work.fStack_4c
+    #define fStack_50 work.fStack_50
+    #define fStack_54 work.fStack_54
+    #define fStack_58 work.fStack_58
+    #define fStack_5c work.fStack_5c
+    #define fStack_60 work.fStack_60
+    #define fStack_64 work.fStack_64
+    #define fStack_c8 work.fStack_c8
+    #define fStack_cc work.fStack_cc
+    #define fStack_d0 work.fStack_d0
+    #define fStack_d4 work.fStack_d4
+    #define fStack_d8 work.fStack_d8
+    #define fStack_e0 work.fStack_e0
+    #define fStack_e4 work.fStack_e4
+    #define fStack_e8 work.fStack_e8
+    #define fStack_f0 work.fStack_f0
+    #define fStack_f4 work.fStack_f4
+    #define fStack_f8 work.fStack_f8
+    #define fStack_100 work.fStack_100
+    #define fStack_104 work.fStack_104
+    #define fStack_108 work.fStack_108
+    #define fStack_110 work.fStack_110
+    #define fStack_114 work.fStack_114
+    #define fStack_118 work.fStack_118
+    #define matrix work.matrix
+    #define quat work.quat
+    extern void FUN_004c31b0(RwMatrix* mat, const RwV3d* axis, f32 angle, s32 mode);
+    extern void FUN_004be1e0(RwV3d* out, const RwV3d* basis, s32 mode, void* source);
+
+    iVar1 = *(int *)(*(int *)(iGpffffb6fc + 0x148) + 0x30);
+    fVar2 = FUN_00280870(3, 1, &fStack_d0, 0, 0, 1);
+    fVar3 = 550.0f;
+    if (fVar2 < fVar3)
+    {
+        fVar2 = fVar3;
+    }
+    FUN_00280050(iVar1, &fStack_110);
+    fStack_100 = fStack_110 - fStack_d0;
+    fStack_104 = fStack_114 - fStack_d4;
+    fStack_108 = fStack_118 - fStack_d8;
+    fVar3 = FUN_004c69f0(&fStack_100, &fStack_100);
+    fVar3 = 0.25f * fVar3;
+    fStack_f0 = fStack_100 * fVar3;
+    fStack_f4 = fStack_104 * fVar3;
+    fStack_f8 = fStack_108 * fVar3;
+    fStack_e0 = fStack_d0 + fStack_f0;
+    fStack_e4 = fStack_d4 + fStack_f4;
+    fStack_e8 = fStack_d8 + fStack_f8;
+    fVar2 = fVar2 * fGpffff807c;
+    fVar3 = FUN_0052e930((0.5f * param_1->fovRad) * gp0xffff8070);
+    fVar3 = fVar2 / fVar3;
+    FUN_004c31b0(&matrix, &D_00697870, 32.5f, 0);
+    FUN_004c6c60((RwV3d*)&fStack_f0, &D_006978A0, &matrix);
+    FUN_004be1e0((RwV3d*)&fStack_100, (const RwV3d*)&fStack_f0, 1,
+                 (void*)(iVar1 + 0x1c));
+    fStack_110 = fStack_100 * fVar2;
+    fStack_114 = fStack_104 * fVar2;
+    fStack_118 = fStack_108 * fVar2;
+    fStack_110 = fStack_110 + fStack_d0;
+    fStack_114 = fStack_114 + fStack_d4;
+    fStack_118 = fStack_118 + fStack_d8;
+    FUN_002a4690(&quat, &fStack_110, &fStack_e0, &D_00697880);
+    FUN_004be1e0((RwV3d*)&fStack_f0, &D_006978A0, 1, &quat);
+    fStack_100 = fStack_f0 * fVar3;
+    fStack_104 = fStack_f4 * fVar3;
+    fStack_108 = fStack_f8 * fVar3;
+    fVar2 = fVar3 * FUN_0052e930((0.5f * param_1->fovRad) * gp0xffff8070);
+    fVar2 = fVar2 * 0.21875f;
+    fVar2 = fVar2 * fGpffff807c;
+    fStack_c8 = fStack_100;
+    fStack_cc = fStack_108;
+    FUN_004c6b20(&fStack_c8, &fStack_c8);
+    fStack_e0 = fStack_e0 + fStack_cc * fVar2;
+    fStack_e8 = fStack_e8 - fStack_c8 * fVar2;
+    fStack_5c = fStack_e0 + fStack_100;
+    fStack_60 = fStack_e4 + fStack_104;
+    fStack_64 = fStack_e8 + fStack_108;
+    fStack_4c = quat.imag.x;
+    fStack_50 = quat.imag.y;
+    fStack_54 = quat.imag.z;
+    fStack_58 = quat.real;
+    fVar3 = fVar3 - 100.0f;
+    fStack_100 = fStack_f0 * fVar3;
+    fStack_104 = fStack_f4 * fVar3;
+    fStack_108 = fStack_f8 * fVar3;
+    fStack_40 = fStack_e0 + fStack_100;
+    fStack_44 = fStack_e4 + fStack_104;
+    fStack_48 = fStack_e8 + fStack_108;
+    FUN_002a3e80(0.0f, 0, 0, 0, 0x40);
+    FUN_002a3590(&fStack_40, &fStack_40);
+    FUN_002a3590(&fStack_5c, &fStack_5c);
+    FUN_002a2290((u16*)param_1, (RwV3d*)&fStack_40, (RwV3d*)&fStack_5c, 1);
+    FUN_002a3110((u16*)param_1, 3.0f);
+    #undef fStack_40
+    #undef fStack_44
+    #undef fStack_48
+    #undef fStack_4c
+    #undef fStack_50
+    #undef fStack_54
+    #undef fStack_58
+    #undef fStack_5c
+    #undef fStack_60
+    #undef fStack_64
+    #undef fStack_c8
+    #undef fStack_cc
+    #undef fStack_d0
+    #undef fStack_d4
+    #undef fStack_d8
+    #undef fStack_e0
+    #undef fStack_e4
+    #undef fStack_e8
+    #undef fStack_f0
+    #undef fStack_f4
+    #undef fStack_f8
+    #undef fStack_100
+    #undef fStack_104
+    #undef fStack_108
+    #undef fStack_110
+    #undef fStack_114
+    #undef fStack_118
+    #undef matrix
+    #undef quat
 }
 
-// FUN_002b5cd0 NONMATCHING
-
-void FUN_002b5cd0(undefined8 param_1)
-
+// FUN_002b5cd0
+void FUN_002b5cd0(BtlCamera* camera)
 {
-  int iVar1;
-  float fVar2;
-  float fVar3;
-  float fStack_e0;
-  float fStack_dc;
-  float fStack_d8;
-  undefined4 uStack_d4;
-  undefined4 uStack_d0;
-  undefined4 uStack_cc;
-  undefined4 uStack_c8;
-  float fStack_c4;
-  float fStack_c0;
-  float fStack_bc;
-  undefined4 uStack_b8;
-  undefined4 uStack_b4;
-  undefined4 uStack_b0;
-  undefined4 uStack_ac;
-  undefined1 auStack_a0 [72];
-  float fStack_58;
-  float fStack_54;
-  float fStack_50;
-  float fStack_4c;
-  float fStack_48;
-  float fStack_40;
-  float fStack_3c;
-  float fStack_38;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  iVar1 = *(int *)(*(int *)(DAT_007ce3ec + 0x148) + 0x30);
-  fVar2 = (float)FUN_00280870(2,1,&fStack_50,0,0,1);
-  FUN_00280050(iVar1,&fStack_10);
-  fStack_20 = fStack_10 - fStack_50;
-  fStack_1c = fStack_c - fStack_4c;
-  fStack_18 = fStack_8 - fStack_48;
-  fStack_28 = (float)FUN_004c69f0(&fStack_20,&fStack_20);
-  fStack_28 = DAT_007cada4 * fStack_28;
-  fStack_30 = fStack_20 * fStack_28;
-  fStack_2c = fStack_1c * fStack_28;
-  fStack_28 = fStack_18 * fStack_28;
-  fStack_40 = fStack_50 + fStack_30;
-  fStack_3c = fStack_4c + fStack_2c;
-  fStack_38 = fStack_48 + fStack_28;
-  fStack_8 = 450.0;
-  if (450.0 <= fVar2) {
-    fStack_8 = fVar2;
-  }
-  fVar2 = (float)FUN_0052e930(DAT_007cad60 * *(float *)((int)param_1 + 0xb8) * 0.5);
-  fVar2 = fStack_8 / fVar2;
-  FUN_004c31b0(0x420c0000,auStack_a0,0x697870,0);
-  FUN_004c6c60(&fStack_30,0x6978a0,auStack_a0);
-  FUN_004be1e0(&fStack_20,&fStack_30,1,iVar1 + 0x1c);
-  fStack_10 = fStack_20 * fStack_8;
-  fStack_c = fStack_1c * fStack_8;
-  fStack_8 = fStack_18 * fStack_8;
-  FUN_004be1e0(&fStack_30,0x6978a0,1,&uStack_b8);
-  fStack_18 = fVar2 + 50.0;
-  fStack_20 = fStack_30 * fStack_18;
-  fStack_1c = fStack_2c * fStack_18;
-  fStack_18 = fStack_28 * fStack_18;
-  fVar3 = (float)FUN_0052e930(DAT_007cad60 * *(float *)((int)param_1 + 0xb8) * 0.5);
-  fVar3 = fVar2 * fVar3 * 0.21875 * DAT_007cad6c;
-  fStack_58 = fStack_20;
-  fStack_54 = fStack_18;
-  FUN_004c6b20(&fStack_58,&fStack_58);
-  fStack_40 = fStack_54 * fVar3 + fStack_40 + 0.0;
-  fStack_38 = (fStack_38 + 0.0) - fStack_58 * fVar3;
-  fStack_c4 = fStack_40 + fStack_20;
-  fStack_c0 = fStack_3c + fStack_1c;
-  fStack_bc = fStack_38 + fStack_18;
-  uStack_d4 = uStack_b8;
-  uStack_d0 = uStack_b4;
-  uStack_cc = uStack_b0;
-  uStack_c8 = uStack_ac;
-  fVar2 = fVar2 - 50.0;
-  fStack_20 = fStack_30 * fVar2;
-  fStack_1c = fStack_2c * fVar2;
-  fStack_18 = fStack_28 * fVar2;
-  fStack_e0 = fStack_40 + fStack_20;
-  fStack_dc = fStack_3c + fStack_1c;
-  fStack_d8 = fStack_38 + fStack_18;
-  return;
+    struct {
+        f32 sp40;
+        f32 sp44;
+        f32 sp48;
+        f32 sp4C;
+        f32 sp50;
+        f32 sp54;
+        f32 sp58;
+        f32 sp5C;
+        f32 sp60;
+        f32 sp64;
+        RtQuat sp68;
+        u8 pad_to_80[8];
+        RwMatrix sp80;
+        u8 pad_to_C8[8];
+        f32 spC8;
+        f32 spCC;
+        f32 spD0;
+        f32 spD4;
+        f32 spD8;
+        f32 pad_to_E0_2[1];
+        f32 spE0;
+        f32 spE4;
+        f32 spE8;
+        f32 pad_to_F0[1];
+        f32 spF0;
+        f32 spF4;
+        f32 spF8;
+        f32 pad_to_100[1];
+        f32 sp100;
+        f32 sp104;
+        f32 sp108;
+        f32 pad_to_110[1];
+        f32 sp110;
+        f32 sp114;
+        f32 sp118;
+        f32 pad_tail;
+    } stack;
+#define sp40 stack.sp40
+#define sp44 stack.sp44
+#define sp48 stack.sp48
+#define sp4C stack.sp4C
+#define sp50 stack.sp50
+#define sp54 stack.sp54
+#define sp58 stack.sp58
+#define sp5C stack.sp5C
+#define sp60 stack.sp60
+#define sp64 stack.sp64
+#define sp68 stack.sp68
+#define sp80 stack.sp80
+#define spC8 stack.spC8
+#define spCC stack.spCC
+#define spD0 stack.spD0
+#define spD4 stack.spD4
+#define spD8 stack.spD8
+#define spE0 stack.spE0
+#define spE4 stack.spE4
+#define spE8 stack.spE8
+#define spF0 stack.spF0
+#define spF4 stack.spF4
+#define spF8 stack.spF8
+#define sp100 stack.sp100
+#define sp104 stack.sp104
+#define sp108 stack.sp108
+#define sp110 stack.sp110
+#define sp114 stack.sp114
+#define sp118 stack.sp118
+    f32 var_f21;
+    f32 temp_f0;
+    f32 temp_f0_2;
+    f32 temp_f1;
+    f32 temp_f1_2;
+    f32 temp_f1_3;
+    f32 temp_f1_4;
+    f32 temp_f1_5;
+    f32 temp_f20;
+    f32 temp_f2;
+    f32 temp_f2_2;
+    f32 temp_f3;
+    f32 temp_f3_2;
+    f32 temp_f5;
+    f32 temp_f6;
+    BtlUnit* work;
+    f32 temp_e4;
+
+    work = *(BtlUnit**)(*(int *)(DAT_007ce3ec + 0x148) + 0x30);
+    var_f21 = FUN_00280870(2, 1, &spD0, 0, 0, 1);
+    FUN_00280050(work, &sp110);
+    sp100 = sp110 - spD0;
+    sp104 = sp114 - spD4;
+    sp108 = sp118 - spD8;
+    temp_f1 = DAT_007cada4 * RwV3dNormalize((RwV3d*)&sp100, (RwV3d*)&sp100);
+    temp_f3 = sp100 * temp_f1;
+    spF0 = temp_f3;
+    temp_f2 = sp104 * temp_f1;
+    spF4 = temp_f2;
+    temp_f1_2 = sp108 * temp_f1;
+    spF8 = temp_f1_2;
+    spE0 = spD0 + temp_f3;
+    spE4 = spD4 + temp_f2;
+    spE8 = spD8 + temp_f1_2;
+    if (var_f21 < 450.0f)
+    {
+        var_f21 = 450.0f;
+    }
+    temp_f20 = var_f21 / tanf(DAT_007cad60 * (0.5f * camera->fovRad));
+    RwMatrixRotate(&sp80, &D_00697870, 35.0f, rwCOMBINEREPLACE);
+    FUN_004c6c60((RwV3d*)&spF0, &D_006978A0, &sp80);
+    RtQuatTransformVectors((RwV3d*)&sp100, (RwV3d*)&spF0, 1,
+                           &work->rot);
+    sp110 = sp100 * var_f21;
+    sp114 = sp104 * var_f21;
+    sp118 = sp108 * var_f21;
+    FUN_002a4690(&sp68, &sp110, &spE0, &D_00697880);
+    RtQuatTransformVectors((RwV3d*)&spF0, &D_006978A0, 1, &sp68);
+    temp_f1_3 = 50.0f + temp_f20;
+    temp_f0 = spF0 * temp_f1_3;
+    sp100 = temp_f0;
+    sp104 = spF4 * temp_f1_3;
+    temp_f0_2 = spF8 * temp_f1_3;
+    sp108 = temp_f0_2;
+    temp_f1_4 = temp_f20 * tanf(DAT_007cad60 * (0.5f * camera->fovRad));
+    temp_f1_4 *= 0.21875f;
+    temp_f1_4 *= DAT_007cad6c;
+    spC8 = sp100;
+    spCC = sp108;
+    FUN_004c6b20(&spC8, &spC8);
+    temp_f6 = (spE0 + 0.0f) + spCC * temp_f1_4;
+    spE0 = temp_f6;
+    temp_f5 = (spE8 + 0.0f) - spC8 * temp_f1_4;
+    spE8 = temp_f5;
+    sp5C = temp_f6 + sp100;
+    temp_e4 = spE4;
+    sp60 = temp_e4 + sp104;
+    sp64 = temp_f5 + sp108;
+    *(RtQuat*)&sp4C = sp68;
+    temp_f1_5 = temp_f20 - 50.0f;
+    temp_f3_2 = spF0 * temp_f1_5;
+    sp100 = temp_f3_2;
+    temp_f2_2 = spF4 * temp_f1_5;
+    sp104 = temp_f2_2;
+    temp_f0_2 = spF8 * temp_f1_5;
+    sp108 = temp_f0_2;
+    sp40 = temp_f6 + temp_f3_2;
+    sp44 = temp_e4 + temp_f2_2;
+    sp48 = temp_f5 + temp_f0_2;
+    FUN_002a3e80(0.0f, 0, 0, 0, 0x40);
+    FUN_002a2290((u16*)camera, (RwV3d*)&sp40, (RwV3d*)&sp5C, 1);
+    FUN_002a3110((u16*)camera, 3.5f);
 }
+#undef sp40
+#undef sp44
+#undef sp48
+#undef sp4C
+#undef sp50
+#undef sp54
+#undef sp58
+#undef sp5C
+#undef sp60
+#undef sp64
+#undef sp68
+#undef sp80
+#undef spC8
+#undef spCC
+#undef spD0
+#undef spD4
+#undef spD8
+#undef spE0
+#undef spE4
+#undef spE8
+#undef spF0
+#undef spF4
+#undef spF8
+#undef sp100
+#undef sp104
+#undef sp108
+#undef sp110
+#undef sp114
+#undef sp118
 
 // FUN_002b6070 NONMATCHING
 
