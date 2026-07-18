@@ -3490,7 +3490,7 @@ u32 FUN_0048a1a0(void)
 }
 
 #pragma schedule on
-// FUN_0048A2A0 NONMATCHING
+// FUN_0048A2A0
 int FUN_0048a2a0(int param_1,u32 param_2)
 {
   int iVar1;
