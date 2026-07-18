@@ -4808,7 +4808,7 @@ undefined8 FUN_004d1170(int param_1,undefined8 param_2)
 }
 
 #pragma schedule on
-// FUN_004D11D0 NONMATCHING
+// FUN_004D11D0
 int FUN_004d11d0(int param_1)
 {
   *(int *)(DAT_00960070_abs + iGpffffbc60 + 0x10) = param_1;
@@ -36996,10 +36996,8 @@ bool FUN_00504b00(void)
 
 // FUN_00504BC0 NONMATCHING
 undefined8 FUN_00504bc0(undefined8 param_1)
-
 {
   uint uVar1;
-  
   do {
     uVar1 = REG_SIO_ISR;
   } while ((uVar1 & 0x8000) != 0);
