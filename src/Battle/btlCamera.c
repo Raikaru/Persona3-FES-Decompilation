@@ -7829,7 +7829,7 @@ void func_002af7f0(BtlCamera* camera)
   return;
 }
 
-// FUN_002AF850 NONMATCHING
+// FUN_002AF850
 
 void func_002af850(BtlCamera* camera)
 {
@@ -7838,13 +7838,24 @@ void func_002af850(BtlCamera* camera)
   int a1;
 
   iVar3 = FUN_002c0880(*(int *)((u8 *)camera + 0xe0) + 0x88);
+  if (iVar3 == 0) {
+    goto no_update;
+  }
   iVar2 = *(int *)((int)camera + 0x100);
-  if ((iVar3 == 0) || (iVar2 == iVar3)) {
-    return;
+  if (iVar2 == iVar3) {
+    goto no_update;
   }
-  else if ((iVar2 != 0) && (*(u16 *)((u8 *)camera + 0x106) != 0)) {
-    return;
+  if (iVar2 == 0) {
+    goto update;
   }
+  if (*(u16 *)((u8 *)camera + 0x106) == 0) {
+    goto update;
+  }
+
+no_update:
+  return;
+
+update:
   if (iVar2 == 0) {
     switch (*(u16 *)(iGpffffb6fc + 0x104)) {
     case 0x1c:
