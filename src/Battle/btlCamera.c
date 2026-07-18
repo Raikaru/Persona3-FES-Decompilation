@@ -1885,6 +1885,11 @@ void btlCameraFrameActionSide(BtlCamera* camera)
                  3);
 }
 
+// FUN_002a7378
+void FUN_002a7378(void)
+{
+}
+
 // FUN_002a7380
 void func_002a7380(void)
 {
@@ -6759,6 +6764,11 @@ void FUN_002b71e0(void)
     }
 }
 
+// FUN_002b77ac
+void FUN_002b77ac(void)
+{
+}
+
 // FUN_002b77c0 NONMATCHING
 
 
@@ -6825,6 +6835,11 @@ found:
     }
   }
   return;
+}
+
+// FUN_002b79d4
+void FUN_002b79d4(void)
+{
 }
 
 // FUN_002b79e0
