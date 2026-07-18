@@ -92,111 +92,9 @@ typedef struct CampUiRecord
     u8 trailing[0xc];
 } CampUiRecord;
 
-static void h_campDestroyChildren(CampMenuWork* work, s32 firstChild)
-{
-    s32 i;
 
-    for (i = firstChild; i < (s32)ARRAY_SIZE(work->childTasks); i++) {
-        if (work->childTasks[i] != NULL) {
-            kwlnTaskDestroyWithHierarchy(work->childTasks[i]);
-            work->childTasks[i] = NULL;
-        }
-    }
-}
 
-static void h_campSetChildAlpha(CampMenuWork* work, s32 firstChild, f32 alpha)
-{
-    s32 i;
 
-    for (i = firstChild; i < (s32)ARRAY_SIZE(work->childTasks); i++) {
-        if (work->childTasks[i] != NULL) {
-            H_Maestro_SetAlphaMult(work->childTasks[i], alpha);
-        }
-    }
-}
-
-/*
- * Most sub-screen animation callbacks use the same lifecycle: create a Maestro
- * child, wait until its archive/scene is ready, request drawing, then retire
- * the old child hierarchy after a short transition interval.
- */
-static void h_campUpdateAnimationLifecycle(KwlnTask* task, const char* path,
-                                           s32 firstChild, s32 keepFirstChild,
-                                           s32 transitionFrames)
-{
-    CampMenuWork* work;
-
-    work = task->workData;
-    switch (work->animationState) {
-    case 0:
-        work->activeAnimation = H_Maestro_CreateTask(task, 0x18BD, path);
-        work->animationState = 1;
-        break;
-    case 1:
-        if (work->activeAnimation == NULL || !H_Maestro_FinishedInit(work->activeAnimation)) {
-            break;
-        }
-        H_Maestro_RequestDraw(work->activeAnimation);
-        H_Maestro_00111f20(work->activeAnimation, 1);
-        H_Maestro_SetAlphaMult(work->activeAnimation, 1.0f);
-        work->transitionComplete = 1;
-        work->timer = transitionFrames;
-        work->animationState = 2;
-        break;
-    case 2:
-        if (work->timer != 0) {
-            work->timer--;
-            break;
-        }
-        if (keepFirstChild) {
-            h_campSetChildAlpha(work, firstChild, 0.0f);
-        }
-        h_campDestroyChildren(work, firstChild);
-        work->retainedAnimation = work->activeAnimation;
-        work->activeAnimation = NULL;
-        work->animationState = 999;
-        break;
-    }
-}
-
-static void h_campUpdateAnimationBlend(KwlnTask* task, s32 sourceIndex, s32 destinationIndex,
-                                       s32 frameCount)
-{
-    CampMenuWork* work;
-    f32 progress;
-
-    work = task->workData;
-    switch (work->animationState) {
-    case 0:
-        work->timer = 0;
-        work->animationState = 1;
-        break;
-    case 1:
-        work->timer++;
-        progress = (f32)work->timer / (f32)frameCount;
-        if (progress > 1.0f) {
-            progress = 1.0f;
-        }
-        if (sourceIndex >= 0 && sourceIndex < (s32)ARRAY_SIZE(work->childTasks) &&
-            work->childTasks[sourceIndex] != NULL) {
-            H_Maestro_SetAlphaMult(work->childTasks[sourceIndex], 1.0f - progress);
-        }
-        if (destinationIndex >= 0 && destinationIndex < (s32)ARRAY_SIZE(work->childTasks) &&
-            work->childTasks[destinationIndex] != NULL) {
-            H_Maestro_SetAlphaMult(work->childTasks[destinationIndex], progress);
-        }
-        if (work->timer >= (u32)frameCount) {
-            if (sourceIndex >= 0 && sourceIndex < (s32)ARRAY_SIZE(work->childTasks) &&
-                work->childTasks[sourceIndex] != NULL) {
-                kwlnTaskDestroyWithHierarchy(work->childTasks[sourceIndex]);
-                work->childTasks[sourceIndex] = NULL;
-            }
-            work->transitionComplete = 1;
-            work->animationState = 999;
-        }
-        break;
-    }
-}
 
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
@@ -897,28 +795,227 @@ KwlnTask* h_campCreateMenuTask(KwlnTask* parent)
     return task;
 }
 
-// FUN_0011f260 NONMATCHING
+// FUN_0011f260
 void h_campUpdateMainMenuAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sMainMenuAnimation, 0, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 count;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        child = work->childTasks[0];
+        if (child == NULL) {
+            work->activeAnimation = H_Maestro_CreateTask(
+                task, 0x18BD, "camp/main_all/if_c_mai01.anm");
+            work->animationState = 1;
+            return;
+        }
+        H_Maestro_SetAlphaMult(child, 1.0f);
+        work->transitionComplete = 1;
+        work->animationState = 999;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 2:
+        count = work->timer - 1;
+        work->timer = count;
+        if (count == 0) {
+            for (i = 0; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[0] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
-// FUN_0011f400 NONMATCHING
+
+// FUN_0011f400
 void h_campUpdateStatusMainAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sStatusMainAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 count;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->animationState = 1;
+        return;
+    case 1:
+        work->animationState = 2;
+        return;
+    case 2:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/status/anm/if_c_sta01.anm");
+        work->animationState = 3;
+        return;
+    case 3:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 4;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 4:
+        count = work->timer - 1;
+        work->timer = count;
+        if (count == 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->retainedAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
-// FUN_0011f5c0 NONMATCHING
+
+// FUN_0011f5c0
 void h_campUpdateStatusDetailAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sStatusDetailAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 count;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/status/anm/if_c_sta07.anm");
+        work->animationState = 1;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        H_Maestro_SetAlphaMult(work->activeAnimation, 1.0f);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 5);
+        return;
+    case 2:
+        count = work->timer - 1;
+        work->timer = count;
+        if (count == 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
-// FUN_0011f760 NONMATCHING
+
+// FUN_0011f760
 void h_campUpdateStatusPersonaAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sStatusPersonaAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 count;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/status/anm/if_c_sta09.anm");
+        work->animationState = 1;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_SetAlphaMult(work->activeAnimation, 1.0f);
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 5);
+        return;
+    case 2:
+        count = work->timer - 1;
+        work->timer = count;
+        if (count == 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
 // FUN_0011f900 NONMATCHING
@@ -1172,11 +1269,50 @@ void h_campUpdateItemAnimationBlend(KwlnTask* task)
     }
 }
 
-// FUN_00120150 NONMATCHING
+// FUN_00120150
 void h_campUpdateItemThirdAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sItemThirdAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/item/anm/i_c_ite03.anm");
+        work->animationState = 1;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        work->transitionComplete = 1;
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 5);
+        return;
+    case 2:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
+
 
 // FUN_001202b0
 void h_campUpdateItemEighthAnimation(KwlnTask* task)
@@ -1222,10 +1358,48 @@ void h_campUpdateItemEighthAnimation(KwlnTask* task)
     }
 }
 
-// FUN_00120410 NONMATCHING
+// FUN_00120410
 void h_campUpdateItemSixthAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sItemSixthAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/item/anm/i_c_ite06.anm");
+        work->animationState = 1;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        work->transitionComplete = 1;
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 5);
+        return;
+    case 2:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
 // FUN_00120570
@@ -1360,13 +1534,56 @@ void h_campUpdateItemSeventhAnimation(KwlnTask* task)
     }
 }
 
-// FUN_00120990 NONMATCHING
+// FUN_00120990
 void h_campUpdateSocialMainAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sSocialMainAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/commu/anm/i_c_com01.anm");
+        work->animationState = 1;
+        return;
+    case 1:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->animationState = 2;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 2:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
-// FUN_00120b10 NONMATCHING
+
+// FUN_00120b10
 void h_campUpdateSocialDetailAnimation(KwlnTask* task)
 {
     CampMenuWork* work;
@@ -1386,12 +1603,13 @@ void h_campUpdateSocialDetailAnimation(KwlnTask* task)
         }
         H_Maestro_RequestDraw(work->activeAnimation);
         H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
         work->animationState = 2;
-        func_0010a4e0(0, 0, 0, 5);
+        func_0010a4e0(0, 0, 0, 3);
         return;
     case 2:
         if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
-            child = work->childTasks[1];
+            child = work->childTasks[0];
             if (child != NULL) {
                 H_Maestro_SetAlphaMult(child, 0.0f);
             }
@@ -1402,10 +1620,10 @@ void h_campUpdateSocialDetailAnimation(KwlnTask* task)
                     *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
                 }
             }
+            H_Maestro_SetAlphaMult(work->childTasks[1], 0.0f);
             work->childTasks[2] = work->activeAnimation;
             work->activeAnimation = NULL;
             work->animationState = 999;
-            work->transitionComplete = 1;
         }
         break;
     case 999:
@@ -1456,11 +1674,61 @@ void h_campUpdateSocialTransition(KwlnTask* task)
     }
 }
 
-// FUN_00120e20 NONMATCHING
+// FUN_00120e20
 void h_campUpdateSkillMainAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sSkillMainAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->animationState = 1;
+        return;
+    case 1:
+        work->animationState = 2;
+        return;
+    case 2:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/skill/anm/if_c_skl01.anm");
+        work->animationState = 3;
+        return;
+    case 3:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 4;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 4:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
+
 
 // FUN_00120fd0
 void h_campUpdateEquipMainAnimation(KwlnTask* task)
@@ -1689,11 +1957,61 @@ void h_campUpdateSkillEquipExitBlend(KwlnTask* task)
     }
 }
 
-// FUN_00121780 NONMATCHING
+// FUN_00121780
 void h_campUpdatePersonaMainAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sPersonaMainAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->animationState = 1;
+        return;
+    case 1:
+        work->animationState = 2;
+        return;
+    case 2:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/persona/anm/if_c_per01.anm");
+        work->animationState = 3;
+        return;
+    case 3:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 4;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 4:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
+
 
 // FUN_00121930
 void h_campUpdatePersonaDetailAnimation(KwlnTask* task)
@@ -1781,10 +2099,59 @@ void h_campUpdatePersonaBlend(KwlnTask* task)
     }
 }
 
-// FUN_00121c30 NONMATCHING
+// FUN_00121c30
 void h_campUpdateSystemMainAnimation(KwlnTask* task)
 {
-    h_campUpdateAnimationLifecycle(task, sSystemMainAnimation, 1, 1, 0x18);
+    CampMenuWork* work;
+    KwlnTask* child;
+    s32 i;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        work->animationState = 1;
+        return;
+    case 1:
+        work->animationState = 2;
+        return;
+    case 2:
+        work->activeAnimation = H_Maestro_CreateTask(
+            task, 0x18BD, "camp/system/anm/if_c_sys01.anm");
+        work->animationState = 3;
+        return;
+    case 3:
+        if (H_Maestro_FinishedInit(work->activeAnimation) != 1) {
+            goto done;
+        }
+        H_Maestro_RequestDraw(work->activeAnimation);
+        H_Maestro_00111f20(work->activeAnimation, 1);
+        work->transitionComplete = 1;
+        work->timer = 0x18;
+        work->animationState = 4;
+        func_0010a4e0(0, 0, 0, 3);
+        return;
+    case 4:
+        if (H_Maestro_00111cb0(work->activeAnimation) != 0) {
+            child = work->childTasks[0];
+            if (child != NULL) {
+                H_Maestro_SetAlphaMult(child, 0.0f);
+            }
+            for (i = 1; i < 10; i++) {
+                child = *(KwlnTask**)((u8*)work + 0x14 + i * 4);
+                if (child != NULL) {
+                    kwlnTaskDestroyWithHierarchy(child);
+                    *(KwlnTask**)((u8*)work + 0x14 + i * 4) = NULL;
+                }
+            }
+            work->childTasks[1] = work->activeAnimation;
+            work->activeAnimation = NULL;
+            work->animationState = 999;
+        }
+        break;
+    case 999:
+    done:
+        return;
+    }
 }
 
 // FUN_00121de0 NONMATCHING
