@@ -8746,7 +8746,9 @@ void func_002aef80(BtlCamera* camera, int param_2)
   float fStack_10;
   undefined1 auStack_8 [4];
   float fStack_4;
+  volatile u8 stackPad[0xb0];
   
+  stackPad[0] = 0;
   iVar3 = (int)camera;
   iVar1 = *(int *)(iVar3 + 0xe0);
   iVar2 = FUN_002c0880(iVar1 + 0x88);
@@ -8786,7 +8788,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_38 = fStack_38 * fVar6;
   fStack_34 = fStack_34 * fVar6;
   fStack_30 = fStack_30 * fVar6;
-  fStack_48 = fStack_90 + fStack_38;
+  fStack_48 = fStack_58 + fStack_38;
   fStack_40 = fVar4 + fStack_30;
   fStack_44 = DAT_007cae0c * fStack_4;
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_18);
@@ -8823,7 +8825,7 @@ void func_002aef80(BtlCamera* camera, int param_2)
   fStack_38 = fStack_38 * fVar7;
   fStack_34 = fStack_34 * fVar7;
   fStack_30 = fStack_30 * fVar7;
-  fStack_48 = fStack_80 + fStack_38;
+  fStack_48 = fStack_58 + fStack_38;
   fStack_40 = fStack_50 + fStack_30;
   fStack_44 = DAT_007cae0c * fStack_4;
   fVar4 = (float)FUN_002d1e70(&fStack_48,&fStack_68);
@@ -8883,12 +8885,14 @@ void func_002aef80(BtlCamera* camera, int param_2)
     fStack_ac = fStack_108 + fStack_ec;
   }
   else {
+    FUN_002a44f0(&fStack_b4,&fStack_110);
   }
-  if (param_2 == 0) {
+  if (param_2 != 0) {
+    FUN_002a2170(camera,&fStack_b4);
+    return;
   }
-  else {
-  }
-  return;
+  FUN_002a2290((u16*)camera,(RwV3d*)&auStack_d0,(RwV3d*)&fStack_b4,1);
+  FUN_002a3110((u16*)camera,1.25f);
 }
 
 extern u16 FUN_002bff60(int action, int target, u16 commandId, u32 param_4);
