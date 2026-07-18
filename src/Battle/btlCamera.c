@@ -1739,6 +1739,11 @@ void btlCameraFrameActionDuel(BtlCamera* camera)
     }
 }
 
+// FUN_002a6ed0
+void FUN_002a6ed0(void)
+{
+}
+
 // FUN_002a6ee0 NONMATCHING
 void btlCameraFrameActionSide(BtlCamera* camera)
 {
@@ -8573,6 +8578,8 @@ void func_002acf90(BtlCamera* camera, long unused)
     f32 angle;
     f32 scale;
     f32 speed;
+    f32 centerX;
+    f32 centerZ;
     struct {
         RwV3d v50;
         u8 result2[0x10];
@@ -8647,14 +8654,12 @@ void func_002acf90(BtlCamera* camera, long unused)
     scratch.v120.x = scratch.v120.x * distance;
     scratch.v120.y = scratch.v120.y * distance;
     scratch.v120.z = scratch.v120.z * distance;
-    scratch.v100.x = scratch.f140 + scratch.v120.x;
-    scratch.v100.y = scratch.f144 + scratch.v120.y;
-    scratch.v100.z = scratch.f148 + scratch.v120.z;
+    centerX = scratch.f140 + scratch.v120.x;
+    centerZ = scratch.f148 + scratch.v120.z;
     speed = scratch.f14c * 1.5f;
-    scratch.v110.x = scratch.v100.x - scratch.f140;
-    scratch.v110.y = scratch.v100.y - scratch.f144;
-    scratch.v110.z = scratch.v100.z - scratch.f148;
+    scratch.v110.x = centerX - scratch.f140;
     scratch.v110.y = 0.0f;
+    scratch.v110.z = centerZ - scratch.f148;
     scale = FUN_004c69f0((RwV3d*)&scratch.v110, (RwV3d*)&scratch.v110);
     scale = DAT_007cad84 * scale;
     scratch.v110.x = scratch.v110.x * scale;
