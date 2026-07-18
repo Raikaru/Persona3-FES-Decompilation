@@ -3251,7 +3251,7 @@ extern u8 D_00694EB0[];
 extern u8 D_00694EBC[];
 extern u8 D_00694EF0[];
 extern u8 D_00694EFC[];
-extern u32 FUN_002b64d0(int param_1, int param_2);
+extern u32 FUN_002b64d0(BtlCamera* camera, struct B64CameraWork* work);
 extern u32 FUN_002b6bd0(int param_1);
 extern void FUN_002b6bf0(undefined4 *param_1, undefined4 param_2, undefined4 param_3, u32 param_4, u16 param_5);
 extern u8* FUN_002b6cd0(int param_1);
@@ -4079,7 +4079,8 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      FUN_002b64d0(param_1,iVar4 + 0xec);
+      FUN_002b64d0((BtlCamera*)param_1,
+                   (struct B64CameraWork*)(uintptr_t)(iVar4 + 0xec));
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {
@@ -4532,10 +4533,11 @@ void FUN_002b2eb0(int param_1, float *param_2)
   } work;
   f32 ratio;
   f32 angle;
-  f32 initial;
+  register f32 initial;
   f32 inverse;
   f32 curve;
   f32 poly;
+  register f32 product;
 
   initial = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
   ratio = initial / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
@@ -4561,7 +4563,8 @@ void FUN_002b2eb0(int param_1, float *param_2)
         poly = curve * poly + fGpffff8050 + 0.0f;
         poly = curve * poly + fGpffff8054 + 0.0f;
         poly = curve * poly + fGpffff8058 + 0.0f;
-        inverse = curve * inverse * poly + inverse + 0.0f;
+        product = curve * inverse;
+        inverse = product * poly + inverse + 0.0f;
         ratio = ratio * work.values[8];
         curve = ratio * ratio;
         poly = fGpffff8114 * curve + fGpffff8048 + 0.0f;
@@ -4569,7 +4572,8 @@ void FUN_002b2eb0(int param_1, float *param_2)
         poly = curve * poly + fGpffff8050 + 0.0f;
         poly = curve * poly + fGpffff8054 + 0.0f;
         poly = curve * poly + fGpffff8058 + 0.0f;
-        ratio = curve * ratio * poly + ratio + 0.0f;
+        product = curve * ratio;
+        ratio = product * poly + ratio + 0.0f;
       }
       work.blend.imag.x = work.values[0] * inverse;
       work.blend.imag.y = work.values[1] * inverse;
@@ -6181,40 +6185,44 @@ extern void FUN_00280200_b64d0(BtlUnit *unit, BtlUnitAnimBounds *bounds, RwV3d *
 #pragma alias FUN_004c6c60_b64d0 FUN_004c6c60
 extern void FUN_004c6c60_b64d0(void *out, const RwV3d *in, const RwMatrix *matrix);
 extern BtlUnitAnimBounds *func_002fc520(BtlUnit *unit);
+#pragma alias FUN_002b6bd0_b64d0 FUN_002b6bd0
+extern u32 FUN_002b6bd0_b64d0(struct B64CameraWork* work);
+#pragma alias FUN_002a2290_b64d0 FUN_002a2290
+extern void FUN_002a2290_b64d0(BtlCamera* camera, RwV3d* first,
+                                RwV3d* second, s32 mode);
+#pragma alias FUN_002a3110_b64d0 FUN_002a3110
+extern void FUN_002a3110_b64d0(BtlCamera* camera, f32 step);
 
 // FUN_002b64d0 NONMATCHING
-u32 FUN_002b64d0(int param_1, int param_2)
+u32 FUN_002b64d0(BtlCamera* camera, B64CameraWork* work)
 {
+  u16 *entries;
   B64CameraEntry *entry;
   B64CameraScratch scratch;
   BtlUnitAnimBounds *bounds;
-  BtlUnit *unit;
-  u16 *entries;
+  BtlUnit *unitFirst;
+  BtlUnit *unitTarget;
+  BtlUnit *unitSphere;
   s16 index;
   s16 nextIndex;
   u16 radiusBits;
   f32 radius;
-  u16 *camera;
-  B64CameraWork *work;
-
-  camera = (u16 *)(uintptr_t)param_1;
-  work = (B64CameraWork *)(uintptr_t)param_2;
-  if (FUN_002b6bd0(param_2) != 0) {
+  if (FUN_002b6bd0_b64d0(work) != 0) {
     goto active;
   }
-  goto return_zero;
+  return 0;
 active:
   entries = work->entries;
   index = work->index;
   if (entries != 0) {
     goto entries_ok;
   }
-  goto return_zero;
+  return 0;
 entries_ok:
   if (index < 4) {
     goto index_ok;
   }
-  goto return_zero;
+  return 0;
 index_ok:
   if (index != -1) {
     if (work->frame < *(s16 *)((u8 *)entries + index * 0x3c + 4)) {
@@ -6252,65 +6260,59 @@ index_ok:
                        &scratch.relativeSecond);
   }
 
-  scratch.firstVector.x = entry->firstX;
-  scratch.firstVector.y = entry->firstY;
-  scratch.firstVector.z = entry->firstZ;
-  scratch.secondVector.x = entry->firstX2;
-  scratch.secondVector.y = entry->firstY2;
-  scratch.secondVector.z = entry->firstZ2;
+  scratch.secondVector = *(RwV3d *)&entry->firstX;
+  scratch.firstVector = *(RwV3d *)&entry->firstX2;
   if ((work->flags & 2) != 0) {
-    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
     scratch.secondVector.x = scratch.secondVector.x * -1.0f;
+    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
   }
-  if (entry->mode == 1) {
-    unit = work->firstAction->unit;
-    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.firstVector, 1,
+  switch (entry->mode) {
+  case 1:
+    unitFirst = work->firstAction->unit;
+    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.secondVector, 1,
                        &scratch.rotation);
-    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.secondVector, 1,
+    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.firstVector, 1,
                        &scratch.rotation);
-    scratch.firstPos.x = unit->pos.x + scratch.rotatedFirst.x;
-    scratch.firstPos.y = unit->pos.y + scratch.rotatedFirst.y;
-    scratch.firstPos.z = unit->pos.z + scratch.rotatedFirst.z;
-    scratch.secondPos.x = unit->pos.x + scratch.rotatedSecond.x;
-    scratch.secondPos.y = unit->pos.y + scratch.rotatedSecond.y;
-    scratch.secondPos.z = unit->pos.z + scratch.rotatedSecond.z;
+    scratch.firstPos.x = unitFirst->pos.x + scratch.rotatedFirst.x;
+    scratch.firstPos.y = unitFirst->pos.y + scratch.rotatedFirst.y;
+    scratch.firstPos.z = unitFirst->pos.z + scratch.rotatedFirst.z;
+    scratch.secondPos.x = unitFirst->pos.x + scratch.rotatedSecond.x;
+    scratch.secondPos.y = unitFirst->pos.y + scratch.rotatedSecond.y;
+    scratch.secondPos.z = unitFirst->pos.z + scratch.rotatedSecond.z;
+    break;
   }
 
-  scratch.firstVector.x = entry->secondX;
-  scratch.firstVector.y = entry->secondY;
-  scratch.firstVector.z = entry->secondZ;
-  scratch.secondVector.x = entry->secondX2;
-  scratch.secondVector.y = entry->secondY2;
-  scratch.secondVector.z = entry->secondZ2;
+  scratch.secondVector = *(RwV3d *)&entry->secondX;
+  scratch.firstVector = *(RwV3d *)&entry->secondX2;
   if ((work->flags & 2) != 0) {
-    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
     scratch.secondVector.x = scratch.secondVector.x * -1.0f;
+    scratch.firstVector.x = scratch.firstVector.x * -1.0f;
   }
   switch (entry->targetMode) {
   case 1:
-    unit = work->firstAction->unit;
-    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.firstVector, 1,
+    unitTarget = work->firstAction->unit;
+    FUN_004be1e0_b64d0(&scratch.rotatedFirst, &scratch.secondVector, 1,
                        &scratch.rotation);
-    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.secondVector, 1,
+    FUN_004be1e0_b64d0(&scratch.rotatedSecond, &scratch.firstVector, 1,
                        &scratch.rotation);
-    scratch.firstOut.x = unit->pos.x + scratch.rotatedFirst.x;
-    scratch.firstOut.y = unit->pos.y + scratch.rotatedFirst.y;
-    scratch.firstOut.z = unit->pos.z + scratch.rotatedFirst.z;
-    scratch.secondOut.x = unit->pos.x + scratch.rotatedSecond.x;
-    scratch.secondOut.y = unit->pos.y + scratch.rotatedSecond.y;
-    scratch.secondOut.z = unit->pos.z + scratch.rotatedSecond.z;
+    scratch.firstOut.x = unitTarget->pos.x + scratch.rotatedFirst.x;
+    scratch.firstOut.y = unitTarget->pos.y + scratch.rotatedFirst.y;
+    scratch.firstOut.z = unitTarget->pos.z + scratch.rotatedFirst.z;
+    scratch.secondOut.x = unitTarget->pos.x + scratch.rotatedSecond.x;
+    scratch.secondOut.y = unitTarget->pos.y + scratch.rotatedSecond.y;
+    scratch.secondOut.z = unitTarget->pos.z + scratch.rotatedSecond.z;
     break;
   case 2:
-    unit = work->secondAction->unit;
-    bounds = func_002fc520(unit);
+    unitSphere = work->secondAction->unit;
+    bounds = func_002fc520(unitSphere);
     if (bounds == 0) {
-      FUN_00280130_b64d0(unit, &scratch.sphereBase);
+      FUN_00280130_b64d0(unitSphere, &scratch.sphereBase);
       FUN_004be1e0_b64d0(&scratch.sphereVector, &D_006978A0, 1,
                          &scratch.rotation);
-      radius = unit->sphereRadius * unit->scale;
+      radius = unitSphere->scale * unitSphere->sphereRadius;
     }
     else {
-      FUN_00280200_b64d0(unit, bounds, &scratch.sphereBase);
+      FUN_00280200_b64d0(unitSphere, bounds, &scratch.sphereBase);
       FUN_004be1e0_b64d0(&scratch.sphereVector, &D_006978A0, 1,
                          &scratch.rotation);
       radiusBits = bounds->radius;
@@ -6321,7 +6323,7 @@ index_ok:
         radius = (f32)((radiusBits >> 1) | (radiusBits & 1));
         radius = radius + radius;
       }
-      radius = radius * unit->scale;
+      radius = radius * unitSphere->scale;
     }
     scratch.firstOut.x = scratch.sphereBase.x + scratch.sphereVector.x * radius;
     scratch.firstOut.y = scratch.sphereBase.y + scratch.sphereVector.y * radius;
@@ -6359,8 +6361,8 @@ no_rotate:
 rotate_done:
   FUN_002a4690(&scratch.secondResult, &scratch.secondPos, &scratch.secondOut,
                &scratch.matrixLow);
-  FUN_002a2290(camera, &scratch.firstPos, &scratch.secondPos, 1);
-  FUN_002a3110(camera, (f32)entry->duration / 30.0f);
+  FUN_002a2290_b64d0(camera, &scratch.firstPos, &scratch.secondPos, 1);
+  FUN_002a3110_b64d0(camera, (f32)entry->duration / 30.0f);
   work->index = nextIndex;
   work->frame = 0;
   goto increment;
@@ -6610,6 +6612,7 @@ void FUN_002b71e0(void)
     u16 selected;
     u16 nextSlot;
     BtlUnit* iter;
+    BtlUnit* iter2;
     u16 slot;
     s64 result;
     u8* table;
@@ -6642,12 +6645,12 @@ void FUN_002b71e0(void)
         }
         result = (s16)FUN_002b6f70(work.vals);
     }
-    if ((s16)result != -1)
+    if ((s64)(s16)result != -1)
     {
         FUN_00521408_b71e0(DAT_007ce3ec + 0xa3c, 0, 0x24);
         slot = 1;
         iter = *(BtlUnit**)(DAT_007ce3ec + 0x150);
-        table = D_00694F10 + (u16)result * 0xe0;
+        table = D_00694F10 + (s16)result * 0xe0;
         for (; iter != NULL; iter = iter->next)
         {
                 unit = *(BtlUnit**)(*(u8**)(DAT_007ce3ec + 0x148) + 0x30);
@@ -6682,25 +6685,25 @@ void FUN_002b71e0(void)
                 iter->unk_9f0 = (s8)slot;
                 slot = nextSlot;
             }
+        iter2 = *(BtlUnit**)(DAT_007ce3ec + 0x158);
         FUN_00521408_b71e0(work.used, 0, 0x14);
-        iter = *(BtlUnit**)(DAT_007ce3ec + 0x158);
-            for (; iter != NULL; iter = iter->next)
+            for (; iter2 != NULL; iter2 = iter2->next)
             {
-                if (FUN_0030b5a0_b71e0(iter->datUnit, 0) == 0)
+                if (FUN_0030b5a0_b71e0(iter2->datUnit, 0) == 0)
                 {
                     selected = 5;
                     minX = 100000000.0f;
                     minZ = minX;
-                    scale = iter->scale;
+                    scale = iter2->scale;
                     for (i = 0; i < 5; i = (i + 1) & 0xffff)
                     {
                         if (work.used[i] != 1 &&
                             *(u8*)(table + i * 0x18 + 0x60) != 0)
                         {
                             dx = *(f32*)(table + i * 0x18 + 0x70) -
-                                 iter->sphereRadius * scale;
+                                 iter2->sphereRadius * scale;
                             dz = *(f32*)(table + i * 0x18 + 0x74) -
-                                 iter->unk_8c * scale;
+                                 iter2->unk_8c * scale;
                             if (dx < minX || dz < minZ)
                             {
                                 minX = dx;
@@ -6712,19 +6715,19 @@ void FUN_002b71e0(void)
                     work.used[selected] = 1;
                     work.tmp[0] = *(f32*)(table + (u32)selected * 0x18 + 0x64);
                     work.tmp[2] = *(f32*)(table + (u32)selected * 0x18 + 0x68);
-                    FUN_002d2280_b71e0(&iter->unk_94, &iter->unk_96, (RwV3d*)work.tmp);
-                    work.tmp[0] = (f32)(iter->unk_94 * 0x19 - 0x6d6);
-                    work.tmp[2] = (f32)(iter->unk_96 * 0x19 - 0x6d6);
-                    FUN_0027f650_b71e0(iter, (RwV3d*)work.tmp);
-                    if (iter->genus == 1)
+                    FUN_002d2280_b71e0(&iter2->unk_94, &iter2->unk_96, (RwV3d*)work.tmp);
+                    work.tmp[0] = (f32)(iter2->unk_94 * 0x19 - 0x6d6);
+                    work.tmp[2] = (f32)(iter2->unk_96 * 0x19 - 0x6d6);
+                    FUN_0027f650_b71e0(iter2, (RwV3d*)work.tmp);
+                    if (iter2->genus == 1)
                     {
                         *(u32*)(DAT_007ce3ec + (u32)selected * 4 + 0xa4c) = 1;
                     }
-                    else if (iter->genus == 0)
+                    else if (iter2->genus == 0)
                     {
                         *(u32*)(DAT_007ce3ec + (u32)selected * 4 + 0xa3c) = 1;
                     }
-                    iter->unk_9f0 = (s8)selected;
+                    iter2->unk_9f0 = (s8)selected;
                 }
             }
         FUN_00280870(2, 1, &work.worldA, 0, 0, 1);
@@ -9050,13 +9053,15 @@ u32 func_002add10(BtlCamera* camera, u32 param_2, float* param_3, float* param_4
     }
     FUN_004be1e0(&work.transformed, &D_006978A0, 1, &work.second.rot);
     temp_f0 = tanf(DAT_007cad60 * (0.5f * cam->fovRad));
-    temp_f5 = work.transformed.z *
-                  (var_f20 * temp_f0 * 0.109375f * 1.25f) +
+    temp_f1 = var_f20 * temp_f0;
+    temp_f1 = temp_f1 * 0.109375f;
+    temp_f3 = temp_f1;
+    temp_f3 = temp_f3 * 1.25f;
+    temp_f5 = work.transformed.z * temp_f3 +
               work.generated.x + 0.0f;
     work.generated.x = temp_f5;
     temp_f4 = (work.generated.z + 0.0f) -
-              work.transformed.x *
-                  (var_f20 * temp_f0 * 0.109375f * 1.25f);
+              work.transformed.x * temp_f3;
     work.generated.z = temp_f4;
     work.transformed.x = work.transformed.x * var_f20;
     work.transformed.y = work.transformed.y * var_f20;
