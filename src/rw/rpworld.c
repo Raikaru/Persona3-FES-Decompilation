@@ -13316,14 +13316,12 @@ u64 FUN_0049c1b0(u64 param_1,int param_2)
   u8 *puVar1;
   
   puVar1 = (u8 *)param_2 + DAT_007ce868;
-  if (*(int *)(puVar1 + 0xc) == 0) {
-    param_1 = 0;
-  }
-  else {
+  if (*(int *)(puVar1 + 0xc) != 0) {
     *(u32 *)(puVar1 + 0xc) = 0;
     *(u32 *)(puVar1 + 8) = 0;
+    return param_1;
   }
-  return param_1;
+  return 0;
 }
 
 // FUN_0049C1E0 NONMATCHING
