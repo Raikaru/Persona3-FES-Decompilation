@@ -28,8 +28,8 @@ typedef struct CampTextureParserWork
 } CampTextureParserWork;
 
 extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
- #pragma alias jtbl_0096017C_abs jtbl_0096017C
- extern u32 jtbl_0096017C_abs[];
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u32 jtbl_0096017C_abs[];
 extern void (*jtbl_0096017C)(void* memory);
 extern const char D_005DB190[];
 extern const char D_005DB1B0[];
