@@ -8677,7 +8677,10 @@ void FUN_00535ff0(int param_1,int param_2)
 #pragma schedule on
 void FUN_00536058(void)
 {
-  ((void (*)(void))DAT_007836c4_abs[0])();
+  u32 *base = (u32 *)0x00780000;
+  void (*callback)(void);
+  callback = (void (*)(void))base[0xdb1];
+  callback();
 }
 #pragma schedule off
 
@@ -60154,7 +60157,8 @@ u32 FUN_0055a7b0(u32 param_1)
 #pragma schedule on
 u32 FUN_0055a7c0(void)
 {
-  return *(u32 *)0x007a2a78;
+  u32 *base = (u32 *)0x007a0000;
+  return *(u32 *)((u8 *)base + 0x2a78);
 }
 #pragma schedule off
 
@@ -60176,9 +60180,8 @@ u32 FUN_0055a7d0(u32 value)
 #pragma schedule on
 u32 FUN_0055a7f0(void)
 {
-  volatile u32 *segment = (volatile u32 *)DAT_007a1d7c_abs;
-
-  return *segment;
+  u32 *base = (u32 *)0x007a0000;
+  return *(u32 *)((u8 *)base + 0x1d7c);
 }
 #pragma schedule off
 
@@ -61263,14 +61266,10 @@ int FUN_0055b480(long param_1,long param_2,long param_3,long param_4,u64 param_5
 #pragma optimization_level 3
 u8 FUN_0055b5c8(u64 param_1)
 {
-  struct {
-    int value;
-    int status;
-    int reserved[10];
-  } result;
+  u8 result[0x30];
 
-  FUN_0055b220(param_1,&result);
-  return result.value != 0;
+  FUN_0055b220(param_1,result);
+  return *(u32 *)result != 0;
 }
 #pragma optimization_level 2
 
@@ -63762,8 +63761,8 @@ u32 FUN_0055d220(u32 param_1)
 #pragma schedule on
 u32 FUN_0055d230(void)
 {
-  u32 segment = 0x007a0000;
-  return *(u32 *)(segment + 0x3034);
+  u32 *base = (u32 *)0x007a0000;
+  return *(u32 *)((u8 *)base + 0x3034);
 }
 #pragma schedule off
 
@@ -111910,14 +111909,11 @@ void FUN_00580d40(void)
 // FUN_00580DF0 NONMATCHING
 
 
+#pragma schedule on
 u32 FUN_00580df0(void)
-
-
-
 {
-
-  return DAT_007b4528;
-
+  volatile u32 *base = (volatile u32 *)0x007b0000;
+  return base[0x114a];
 }
 
 // FUN_00580E00
@@ -118118,13 +118114,9 @@ asm u32 *FUN_005851a0(void)
 
 
 u32 FUN_005851b0(void)
-
-
-
 {
-
-  return DAT_007b4538;
-
+  u32 *base = (u32 *)0x007b0000;
+  return base[0x114e];
 }
 
 // FUN_005851C0
@@ -119204,13 +119196,7 @@ u32 FUN_00585c50(void)
 
 {
 
-  int iVar1;
-
-
-
-  iVar1 = (int)FUN_0057f740();
-
-  return *(u32 *)(iVar1 + 0x10);
+  return *(u32 *)((int)FUN_0057f740() + 0x10);
 
 }
 #pragma schedule off
@@ -122174,9 +122160,11 @@ u64 FUN_00587d90(u64 param_1)
 // FUN_00587DB0 NONMATCHING
 
 
+#pragma schedule on
 u64 FUN_00587db0(u32 param_1)
 {
-  DAT_007b4770 = param_1;
+  u32 *base = (u32 *)0x007b0000;
+  base[0x11dc] = param_1;
   return 0;
 }
 
@@ -159631,13 +159619,9 @@ void FUN_005a1b68(void)
 
 
 u64 FUN_005a1b80(void)
-
-
-
 {
-
-  return _DAT_007b5060;
-
+  u32 *base = (u32 *)0x007b0000;
+  return *(u64 *)((u8 *)base + 0x5060);
 }
 
 

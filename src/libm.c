@@ -279,13 +279,15 @@ float tanf(float x)
     return func_0052dd40(y[0], y[1], 1 - ((n & 1) << 1));
 }
 
-// FUN_0052E9A0 NONMATCHING
+#pragma optimization_level 2
 #pragma tailcall on
+// FUN_0052E9A0 NONMATCHING
 u64 FUN_0052e9a0(long param_1)
 {
   return FUN_00528ae0(param_1);
 }
 #pragma tailcall off
+#pragma optimization_level 2
 // FUN_0052E9B8 NONMATCHING
 #pragma tailcall on
 u64 FUN_0052e9b8(u32 param_1)
