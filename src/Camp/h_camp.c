@@ -12,6 +12,15 @@ extern void func_004d0f00();
 extern void func_001958a0();
 extern void func_001957b0();
 extern void func_00123640();
+extern f32 fGpffff839c;
+extern f32 fGpffff80c4;
+extern f32 fGpffff8088;
+extern f32 fGpffff82fc;
+extern u8* iGpffffb25c;
+extern void func_0018bc10(void* transition, s32 drawMode,
+                          s32 positionMode, s32 alphaMode,
+                          u64 start, u64 end, s32 param0, s32 tile,
+                          f32 depth, s32 startFrame, s32 endFrame);
 
 static const char* sCourageLevels[] = {
     "Timid", "Ordinary", "Determined", "Though", "Fearless", "Badass"
@@ -638,7 +647,68 @@ static void h_campDrawMenuEntryPass(CampRootDrawWork* work, f32 alpha, s32 mode)
 // FUN_0011c550 NONMATCHING
 void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
 {
-    h_campDrawMenuEntryPass(work, alpha, 2);
+    struct {
+        f32 endX;
+        f32 endY;
+        f32 startX;
+        f32 startY;
+    } pos;
+    f32 temp;
+    s32 i;
+
+    pos.endX = 46.0f;
+    pos.endY = 59.0f;
+    pos.startX = pos.endX - 200.0f;
+    for (i = 0; i < 7; i++) {
+        pos.startY = pos.endY;
+        func_0018bc10(iGpffffb25c + i * 0x44, 0, 2, 1,
+                      *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                      alpha, i + 4, i + 0xa);
+        pos.endY += 19.0f;
+    }
+
+    pos.startX = -19.0f;
+    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    pos.startY = temp;
+    pos.endX = 213.0f;
+    pos.endY = temp;
+    func_0018bc10(iGpffffb25c + 0x2a8, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0xa, 0x10);
+
+    pos.endX = 46.0f;
+    pos.endY = 59.0f;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = 59.0f;
+    func_0018bc10(iGpffffb25c + 0x2ec, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0xa, 0x10);
+
+    pos.endX = 41.0f;
+    pos.endY = 11.0f;
+    pos.startX = pos.endX - 40.0f;
+    pos.startY = 11.0f;
+    func_0018bc10(iGpffffb25c + 0x330, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0xb, 0x10);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x19f;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x374, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0xf, 0x15);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x18b;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x3b8, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0xf, 0x15);
 }
 
 // FUN_0011c880 NONMATCHING
@@ -871,10 +941,42 @@ void h_campUpdateItemDetailAnimation(KwlnTask* task)
     h_campUpdateAnimationLifecycle(task, sItemDetailAnimation, 2, 1, 0x18);
 }
 
-// FUN_0011ffd0 NONMATCHING
+// FUN_0011ffd0
 void h_campUpdateItemAnimationBlend(KwlnTask* task)
 {
-    h_campUpdateAnimationBlend(task, 1, 2, 4);
+    CampMenuWork* work;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff839c);
+        work->animationState = 1;
+        return;
+    case 1:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff80c4);
+        work->animationState = 2;
+        return;
+    case 2:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff8088);
+        work->animationState = 3;
+    case 3:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff82fc);
+        work->animationState = 4;
+    case 4:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], 0.0f);
+        kwlnTaskDestroyWithHierarchy(work->childTasks[2]);
+        work->childTasks[2] = NULL;
+        work->transitionComplete = 1;
+        work->animationState = 999;
+        return;
+    case 999:
+        return;
+    }
 }
 
 // FUN_00120150 NONMATCHING
@@ -955,16 +1057,80 @@ void h_campUpdateEquipDetailAnimation(KwlnTask* task)
     h_campUpdateAnimationLifecycle(task, sEquipDetailAnimation, 2, 1, 0x18);
 }
 
-// FUN_00121480 NONMATCHING
+// FUN_00121480
 void h_campUpdateSkillEquipBlend(KwlnTask* task)
 {
-    h_campUpdateAnimationBlend(task, 1, 2, 4);
+    CampMenuWork* work;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff839c);
+        work->animationState = 1;
+        return;
+    case 1:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff80c4);
+        work->animationState = 2;
+        return;
+    case 2:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff8088);
+        work->animationState = 3;
+    case 3:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff82fc);
+        work->animationState = 4;
+    case 4:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], 0.0f);
+        kwlnTaskDestroyWithHierarchy(work->childTasks[2]);
+        work->childTasks[2] = NULL;
+        work->transitionComplete = 1;
+        work->animationState = 999;
+        return;
+    case 999:
+        return;
+    }
 }
 
-// FUN_00121600 NONMATCHING
+// FUN_00121600
 void h_campUpdateSkillEquipExitBlend(KwlnTask* task)
 {
-    h_campUpdateAnimationBlend(task, 2, 1, 4);
+    CampMenuWork* work;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff839c);
+        work->animationState = 1;
+        return;
+    case 1:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff80c4);
+        work->animationState = 2;
+        return;
+    case 2:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff8088);
+        work->animationState = 3;
+    case 3:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff82fc);
+        work->animationState = 4;
+    case 4:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], 0.0f);
+        kwlnTaskDestroyWithHierarchy(work->childTasks[2]);
+        work->childTasks[2] = NULL;
+        work->transitionComplete = 1;
+        work->animationState = 999;
+        return;
+    case 999:
+        return;
+    }
 }
 
 // FUN_00121780 NONMATCHING
@@ -979,10 +1145,42 @@ void h_campUpdatePersonaDetailAnimation(KwlnTask* task)
     h_campUpdateAnimationLifecycle(task, sPersonaDetailAnimation, 2, 1, 0x18);
 }
 
-// FUN_00121ab0 NONMATCHING
+// FUN_00121ab0
 void h_campUpdatePersonaBlend(KwlnTask* task)
 {
-    h_campUpdateAnimationBlend(task, 1, 2, 4);
+    CampMenuWork* work;
+
+    work = task->workData;
+    switch (work->animationState) {
+    case 0:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff839c);
+        work->animationState = 1;
+        return;
+    case 1:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff80c4);
+        work->animationState = 2;
+        return;
+    case 2:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff8088);
+        work->animationState = 3;
+    case 3:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], fGpffff82fc);
+        work->animationState = 4;
+    case 4:
+        H_Maestro_SetAlphaMult(work->childTasks[1], 1.0f);
+        H_Maestro_SetAlphaMult(work->childTasks[2], 0.0f);
+        kwlnTaskDestroyWithHierarchy(work->childTasks[2]);
+        work->childTasks[2] = NULL;
+        work->transitionComplete = 1;
+        work->animationState = 999;
+        return;
+    case 999:
+        return;
+    }
 }
 
 // FUN_00121c30 NONMATCHING
