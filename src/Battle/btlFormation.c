@@ -2117,7 +2117,7 @@ void func_002ba900(int param_1)
   u16 count;
   int *entries;
   u32 savedState;
-  u32 limit;
+  s32 limit;
 
   if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
     entries = *(int **)(param_1 + 0x58);
