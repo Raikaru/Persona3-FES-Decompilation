@@ -166,7 +166,7 @@ void FUN_00154970(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     }
 }
 
-// FUN_00154F70 NONMATCHING
+// FUN_00154F70
 u32 FUN_00154F70(CampMenuDrawItem* items, const char** labels, s32 count,
                  s32 first, s32 selected)
 {
@@ -177,9 +177,10 @@ u32 FUN_00154F70(CampMenuDrawItem* items, const char** labels, s32 count,
         CampMenuDrawItem* item = (CampMenuDrawItem*)((u8*)items + i * 0x44);
         if (*(u32*)((u8*)item + 4) != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_00154970(item, labels, i, first, count);
+                FUN_00154970(item, labels, i, count, first);
             }
-            if (*(u32*)((u8*)item + 0x18) != *(u32*)((u8*)item + 0x20)) {
+            if (*(u32*)((int)items + i * 0x44 + 0x18) !=
+                *(u32*)((int)items + i * 0x44 + 0x20)) {
                 complete = 0;
             }
         }
@@ -254,7 +255,7 @@ void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     (void)first;
 }
 
-// FUN_00155710 NONMATCHING
+// FUN_00155710
 u32 FUN_00155710(CampMenuDrawItem* items, const char** labels, s32 count, s32 first,
                  s32 page, s32 selected)
 {
@@ -265,9 +266,10 @@ u32 FUN_00155710(CampMenuDrawItem* items, const char** labels, s32 count, s32 fi
         CampMenuDrawItem* item = (CampMenuDrawItem*)((u8*)items + i * 0x44);
         if (*(u32*)((u8*)item + 4) != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_00155070(item, labels, i, first, count, page, selected);
+                FUN_00155070(item, labels, i, count, first, page, selected);
             }
-            if (*(u32*)((u8*)item + 0x18) != *(u32*)((u8*)item + 0x20)) {
+            if (*(u32*)((int)items + i * 0x44 + 0x18) !=
+                *(u32*)((int)items + i * 0x44 + 0x20)) {
                 complete = 0;
             }
         }
@@ -335,8 +337,8 @@ void FUN_00155830(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
     }
 }
 
-// FUN_00156140 NONMATCHING
-u32 FUN_00156140(CampMenuDrawItem* items, const char** labels, s32 count, s32 selected,
+// FUN_00156140
+u32 FUN_00156140(CampMenuDrawItem* items, const char** labels, s32 count,
                  const s32* enabled)
 {
     s32 i;
@@ -346,14 +348,14 @@ u32 FUN_00156140(CampMenuDrawItem* items, const char** labels, s32 count, s32 se
         CampMenuDrawItem* item = (CampMenuDrawItem*)((u8*)items + i * 0x44);
         if (*(u32*)((u8*)item + 4) != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_00155830(item, labels, i, selected, enabled);
+                FUN_00155830(item, labels, i, count, enabled);
             }
-            if (*(u32*)((u8*)item + 0x18) != *(u32*)((u8*)item + 0x20)) {
+            if (*(u32*)((int)items + i * 0x44 + 0x18) !=
+                *(u32*)((int)items + i * 0x44 + 0x20)) {
                 complete = 0;
             }
         }
     }
-    (void)count;
     return complete;
 }
 
@@ -442,9 +444,9 @@ void FUN_00156240(CampMenuDrawItem* item, const char** labels, s32 mode, s32 per
     }
 }
 
-// FUN_00156E80 NONMATCHING
-u32 FUN_00156E80(CampMenuDrawItem* items, const char** labels, s32 count, s32 personaBase,
-                 s32 selected)
+// FUN_00156E80
+u32 FUN_00156E80(CampMenuDrawItem* items, const char** labels, s32 count,
+                 s32 personaBase)
 {
     s32 i;
     u32 complete = 1;
@@ -453,14 +455,14 @@ u32 FUN_00156E80(CampMenuDrawItem* items, const char** labels, s32 count, s32 pe
         CampMenuDrawItem* item = (CampMenuDrawItem*)((u8*)items + i * 0x44);
         if (*(u32*)((u8*)item + 4) != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_00156240(item, labels, i, personaBase, selected);
+                FUN_00156240(item, labels, i, count, personaBase);
             }
-            if (*(u32*)((u8*)item + 0x18) != *(u32*)((u8*)item + 0x20)) {
+            if (*(u32*)((int)items + i * 0x44 + 0x18) !=
+                *(u32*)((int)items + i * 0x44 + 0x20)) {
                 complete = 0;
             }
         }
     }
-    (void)count;
     return complete;
 }
 
@@ -653,9 +655,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         break;
     }
 }
-
-// FUN_00159900 NONMATCHING
-u32 FUN_00159900(CampMenuDrawItem* items, const char** labels, s32 count, s32 selected)
+// FUN_00159900
+u32 FUN_00159900(CampMenuDrawItem* items, const char** labels, s32 count)
 {
     s32 i;
     u32 complete = 1;
@@ -664,14 +665,14 @@ u32 FUN_00159900(CampMenuDrawItem* items, const char** labels, s32 count, s32 se
         CampMenuDrawItem* item = (CampMenuDrawItem*)((u8*)items + i * 0x44);
         if (*(u32*)((u8*)item + 4) != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_00156F80(item, labels, i, selected);
+                FUN_00156F80(item, labels, i, count);
             }
-            if (*(u32*)((u8*)item + 0x18) != *(u32*)((u8*)item + 0x20)) {
+            if (*(u32*)((int)items + i * 0x44 + 0x18) !=
+                *(u32*)((int)items + i * 0x44 + 0x20)) {
                 complete = 0;
             }
         }
     }
-    (void)count;
     return complete;
 }
 
