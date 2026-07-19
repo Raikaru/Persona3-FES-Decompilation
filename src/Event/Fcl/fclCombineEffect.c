@@ -4189,7 +4189,7 @@ u64 FUN_0041ba60(int param_1)
 
 {
 
-  u16 *puVar1;
+  s16 *puVar1;
 
   int iVar2;
 
@@ -4199,10 +4199,11 @@ u64 FUN_0041ba60(int param_1)
 
       iVar2 = *(int *)(iVar2 + 0x10)) {
 
-    puVar1 = *(u16 **)(iVar2 + 0x14);
+    puVar1 = *(s16 **)(iVar2 + 0x14);
 
     if ((((*puVar1 & 8) != 0) && ((*puVar1 & 1) != 0)) && ((char)puVar1[1] == '\x02')) {
 
+      FUN_0041bf80(*(u32 **)(puVar1 + 4));
 
     }
 
