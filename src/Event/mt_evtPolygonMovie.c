@@ -4,22 +4,35 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
-extern u32 DAT_006a0cd0;
-extern u32 DAT_006a0cd4;
-extern u32 DAT_006a0cdc;
-extern u32 DAT_006a0ce0;
-extern u32 DAT_006a0ce4;
-extern u32 DAT_006a0ce8;
-extern u32 DAT_006a0cec;
-extern u32 DAT_006a0cf0;
-extern u32 DAT_006a0d50;
-extern u32 DAT_006a0d54;
-extern u32 DAT_006a0d58;
-extern u32 DAT_006a0d5c;
-extern u32 DAT_006a0d60;
-extern u32 DAT_006a0d64;
-extern u32 DAT_006a0d68;
-extern u32 DAT_006a0d6c;
+typedef struct {
+
+  u32 a;
+
+  u32 b;
+
+  u8 *p;
+
+  u32 c;
+
+  u32 d;
+
+  u32 e;
+
+  u32 f;
+
+  u32 g;
+
+} PolyMovieData;
+typedef struct {
+
+  u32 words[21];
+
+} PolyMovieBlock;
+
+extern PolyMovieData DAT_006a0cd0;
+extern PolyMovieBlock DAT_006a0cf0;
+extern PolyMovieData DAT_006a0d50;
+
 extern u8 * PTR_DAT_006a0cd8;
 
 #ifndef CONCAT44
@@ -31,12 +44,12 @@ void FUN_00393e30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,  u32 param_5,
 void FUN_00393f30(u64 param_1,u32 param_2);
 float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
 void FUN_00394070(float param_1,long param_2,u32 *param_3,long param_4,u32 *param_5);
-long FUN_00394270(void);
+int FUN_00394270(void);
 u64  FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5);
-void FUN_00394c30(long param_1,u64 param_2);
-u64 FUN_00394ce0(u32 *param_1);
-u64 FUN_00394d60(u32 *param_1);
-u64 FUN_00394df0(u32 *param_1);
+void FUN_00394c30(u32 param_1,u32 param_2);
+u32 FUN_00394ce0(u32 *param_1);
+u32 FUN_00394d60(u32 *param_1);
+u32 FUN_00394df0(u32 *param_1);
 void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5);
 void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5,  long param_6);
 
@@ -46,12 +59,12 @@ void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
 #define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
-#define FUN_00394270(...) ((long (*)(...))FUN_00394270)(__VA_ARGS__)
+#define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
 #define FUN_003942f0(...) ((u64 (*)(...))FUN_003942f0)(__VA_ARGS__)
 #define FUN_00394c30(...) ((void (*)(...))FUN_00394c30)(__VA_ARGS__)
-#define FUN_00394ce0(...) ((u64 (*)(...))FUN_00394ce0)(__VA_ARGS__)
-#define FUN_00394d60(...) ((u64 (*)(...))FUN_00394d60)(__VA_ARGS__)
-#define FUN_00394df0(...) ((u64 (*)(...))FUN_00394df0)(__VA_ARGS__)
+#define FUN_00394ce0(...) ((u32 (*)(...))FUN_00394ce0)(__VA_ARGS__)
+#define FUN_00394d60(...) ((u32 (*)(...))FUN_00394d60)(__VA_ARGS__)
+#define FUN_00394df0(...) ((u32 (*)(...))FUN_00394df0)(__VA_ARGS__)
 #define FUN_00394e70(...) ((void (*)(...))FUN_00394e70)(__VA_ARGS__)
 #define FUN_00395000(...) ((void (*)(...))FUN_00395000)(__VA_ARGS__)
 
@@ -342,16 +355,16 @@ void FUN_00394070(float param_1,long param_2,u32 *param_3,long param_4,u32 *para
 }
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
 #undef FUN_00394270
-// FUN_00394270 NONMATCHING
+// FUN_00394270
 
 
-long FUN_00394270(void)
+int FUN_00394270(void)
 
 
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -361,20 +374,16 @@ long FUN_00394270(void)
 
     FUN_0019d3f0("mt_evtPolygonMovie.c",0x421);
 
-    lVar1 = 0;
+    return 0;
 
   }
 
-  else {
-
-    FUN_00521408(lVar1,0,0x130);
-
-  }
+  FUN_00521408(lVar1,0,0x130);
 
   return lVar1;
 
 }
-#define FUN_00394270(...) ((long (*)(...))FUN_00394270)(__VA_ARGS__)
+#define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
 #undef FUN_003942f0
 // FUN_003942F0 NONMATCHING
 
@@ -914,10 +923,10 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 }
 #define FUN_003942f0(...) ((u64 (*)(...))FUN_003942f0)(__VA_ARGS__)
 #undef FUN_00394c30
-// FUN_00394C30 NONMATCHING
+// FUN_00394C30
 
 
-void FUN_00394c30(long param_1,u64 param_2)
+void FUN_00394c30(u32 param_1,u32 param_2)
 
 
 
@@ -925,7 +934,7 @@ void FUN_00394c30(long param_1,u64 param_2)
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   
 
@@ -943,7 +952,7 @@ void FUN_00394c30(long param_1,u64 param_2)
 
     if ((lVar2 == 1) &&
 
-       (FUN_0039ee80(param_2), (*(u8 *)(*(int *)((int)param_1 + 0x94) + 0x20) & 8) != 0)) {
+       (FUN_0039ee80(param_2), (*(s8 *)(*(int *)((int)param_1 + 0x94) + 0x20) & 8) != 0)) {
 
       FUN_003c77a0();
 
@@ -958,185 +967,89 @@ void FUN_00394c30(long param_1,u64 param_2)
 }
 #define FUN_00394c30(...) ((void (*)(...))FUN_00394c30)(__VA_ARGS__)
 #undef FUN_00394ce0
-// FUN_00394CE0 NONMATCHING
+// FUN_00394CE0
 
 
-u64 FUN_00394ce0(u32 *param_1)
+u32 FUN_00394ce0(u32 *param_1)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u8 *puStack_18;
-
-  u32 uStack_14;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
+  PolyMovieData local;
 
   
 
-  uStack_20 = DAT_006a0cd0;
-
-  uStack_1c = DAT_006a0cd4;
-
-  puStack_18 = PTR_DAT_006a0cd8;
-
-  uStack_14 = DAT_006a0cdc;
-
-  uStack_10 = DAT_006a0ce0;
-
-  uStack_c = DAT_006a0ce4;
-
-  uStack_8 = DAT_006a0ce8;
-
-  uStack_4 = DAT_006a0cec;
+  local = DAT_006a0cd0;
 
   uVar1 = FUN_00386ae0(0x20,4);
 
-  FUN_00521250(uVar1,&uStack_20,0x20);
+  FUN_00521250(uVar1,&local,0x20);
 
   *param_1 = (int)uVar1;
 
   return uVar1;
 
 }
-#define FUN_00394ce0(...) ((u64 (*)(...))FUN_00394ce0)(__VA_ARGS__)
+#define FUN_00394ce0(...) ((u32 (*)(...))FUN_00394ce0)(__VA_ARGS__)
 #undef FUN_00394d60
-// FUN_00394D60 NONMATCHING
+// FUN_00394D60
 
 
-u64 FUN_00394d60(u32 *param_1)
+u32 FUN_00394d60(u32 *param_1)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
-  u32 uVar2;
-
-  u32 uVar3;
-
-  int iVar4;
-
-  u32 *puVar5;
-
-  u64 *puVar6;
-
-  u32 auStack_60 [24];
+  PolyMovieBlock local;
 
   
 
-  puVar6 = (u64 *)&DAT_006a0cf0;
-
-  puVar5 = auStack_60;
-
-  iVar4 = 5;
-
-  do {
-
-    uVar1 = *puVar6;
-
-    uVar2 = *(u32 *)(puVar6 + 1);
-
-    uVar3 = *(u32 *)((int)puVar6 + 0xc);
-
-    puVar6 = puVar6 + 2;
-
-    iVar4 = iVar4 + -1;
-
-    *puVar5 = (int)uVar1;
-
-    puVar5[1] = (int)((u32)uVar1 >> 0x20);
-
-    puVar5[2] = uVar2;
-
-    puVar5[3] = uVar3;
-
-    puVar5 = puVar5 + 4;
-
-  } while (0 < iVar4);
-
-  *puVar5 = *(u32 *)puVar6;
+  local = DAT_006a0cf0;
 
   uVar1 = FUN_00386ae0(0x54,5);
 
-  FUN_00521250(uVar1,auStack_60,0x54);
+  FUN_00521250(uVar1,&local,0x54);
 
   *param_1 = (int)uVar1;
 
   return uVar1;
 
 }
-#define FUN_00394d60(...) ((u64 (*)(...))FUN_00394d60)(__VA_ARGS__)
+#define FUN_00394d60(...) ((u32 (*)(...))FUN_00394d60)(__VA_ARGS__)
 #undef FUN_00394df0
-// FUN_00394DF0 NONMATCHING
+// FUN_00394DF0
 
 
-u64 FUN_00394df0(u32 *param_1)
+u32 FUN_00394df0(u32 *param_1)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
+  PolyMovieData local;
 
   
 
-  uStack_20 = DAT_006a0d50;
-
-  uStack_1c = DAT_006a0d54;
-
-  uStack_18 = DAT_006a0d58;
-
-  uStack_14 = DAT_006a0d5c;
-
-  uStack_10 = DAT_006a0d60;
-
-  uStack_c = DAT_006a0d64;
-
-  uStack_8 = DAT_006a0d68;
-
-  uStack_4 = DAT_006a0d6c;
+  local = DAT_006a0d50;
 
   uVar1 = FUN_00386ae0(0x20,6);
 
-  FUN_00521250(uVar1,&uStack_20,0x20);
+  FUN_00521250(uVar1,&local,0x20);
 
   *param_1 = (int)uVar1;
 
   return uVar1;
 
 }
-#define FUN_00394df0(...) ((u64 (*)(...))FUN_00394df0)(__VA_ARGS__)
+#define FUN_00394df0(...) ((u32 (*)(...))FUN_00394df0)(__VA_ARGS__)
 #undef FUN_00394e70
 // FUN_00394E70 NONMATCHING
 
