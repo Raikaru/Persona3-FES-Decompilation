@@ -3552,7 +3552,7 @@ u32 FUN_003b2430(u64 param_1)
 
     }
 
-    lVar9 = (**(code **)(&DAT_006a2370 + (u32)bVar1 * 4))(CONCAT11(bVar2,bVar1),param_1);
+    lVar9 = (*(code *)(&DAT_006a2370 + (u32)bVar1 * 4))(CONCAT11(bVar2,bVar1),param_1);
 
     puVar12[6] = puVar12[6] + (((int)((uVar13 & 0xf) << 8) >> 8) + -1) * 2;
 
@@ -3777,7 +3777,7 @@ u64 FUN_003b2a30(u64 param_1,u32 param_2)
 
     if ((param_2 != 0) && (uVar8 == param_2)) {
 
-      lVar5 = (**(code **)(&DAT_006a2370 + (u32)bVar1 * 4))(uVar8,param_1);
+      lVar5 = (*(code *)(&DAT_006a2370 + (u32)bVar1 * 4))(uVar8,param_1);
 
     }
 

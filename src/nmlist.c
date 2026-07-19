@@ -517,7 +517,7 @@ long FUN_003c4910(long param_1,long param_2,u64 param_3)
 
   FUN_003c4710(iVar3 + 4,*(u32 *)(iVar3 + 8),lVar1);
 
-  (**(code **)(iVar3 + 0x14))(param_1,lVar1);
+  (*(code *)(iVar3 + 0x14))(param_1,lVar1);
 
   return lVar1;
 
@@ -545,7 +545,7 @@ u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
 
   }
 
-  (**(code **)((int)param_1 + 0x18))(param_1,param_3);
+  (*(code *)((int)param_1 + 0x18))(param_1,param_3);
 
   if (param_3 != 0) {
 
@@ -587,7 +587,7 @@ void FUN_003c4a90(long param_1,long param_2)
 
       iVar1 = *(int *)(iVar2 + 0x10);
 
-      (**(code **)((int)param_1 + 0x18))(param_1,iVar2);
+      (*(code *)((int)param_1 + 0x18))(param_1,iVar2);
 
       if (iVar2 != 0) {
 
@@ -945,7 +945,7 @@ u64 FUN_003c4e70(u64 param_1)
 
   while (iVar4 != 0) {
 
-    lVar2 = (**(code **)(iVar3 + 0x1c))(param_1,iVar4);
+    lVar2 = (*(code *)(iVar3 + 0x1c))(param_1,iVar4);
 
     if (lVar2 == 0) {
 
@@ -963,7 +963,7 @@ u64 FUN_003c4e70(u64 param_1)
 
       }
 
-      (**(code **)(iVar3 + 0x18))(param_1,iVar4);
+      (*(code *)(iVar3 + 0x18))(param_1,iVar4);
 
       FUN_003c4f30(iVar4);
 

@@ -1978,7 +1978,7 @@ u64 FUN_003ca230(void)
 
     }
 
-    (**(code **)(iVar3 + 0xdc))(uVar6);
+    (*(code *)(iVar3 + 0xdc))(uVar6);
 
     if ((*(u32 *)(iVar3 + 8) & 1) == 0) {
 

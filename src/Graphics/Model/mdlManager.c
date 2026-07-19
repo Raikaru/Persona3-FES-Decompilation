@@ -1268,7 +1268,7 @@ u32 func_00311640(float param_1,int param_2,int param_3,int param_4)
 
     iVar4 = *(int *)(param_4 + 0x24) * (iVar5 - iVar3) + param_4;
 
-    (**(code **)(param_2 + 0x40))
+    (*(code *)(param_2 + 0x40))
 
               (param_1 * *(float *)(iVar4 + 0x7c),
 
@@ -2994,7 +2994,7 @@ LAB_003131f8:
 
   if (*(code **)(puVar4 + 0x4a) != (code *)0x0) {
 
-    (**(code **)(puVar4 + 0x4a))(*(u32 *)(puVar4 + 0x4c));
+    (*(code *)(puVar4 + 0x4a))(*(u32 *)(puVar4 + 0x4c));
 
   }
 
@@ -5485,7 +5485,7 @@ void func_00315c20(int param_1)
 
       if (lVar3 != 0) {
 
-        (**(code **)(*piVar4 + 0x48))();
+        (*(code *)(*piVar4 + 0x48))();
 
       }
 
