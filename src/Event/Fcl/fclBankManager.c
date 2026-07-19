@@ -48,7 +48,7 @@ u64 FUN_003cfe50(void)
 
   if (DAT_007ce680 == 0) {
 
-    FUN_0019d3f0(0x6a4270,0x270);
+    FUN_0019d3f0("fclBankManager.c",0x270);
 
   }
 

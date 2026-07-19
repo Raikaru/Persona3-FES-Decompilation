@@ -247,7 +247,7 @@ void FUN_00394070(float param_1,long param_2,u32 *param_3,long param_4,u32 *para
 
   if (param_5 == (u32 *)0x0) {
 
-    FUN_0019d3f0(0x6a0c40,0xb5);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0xb5);
 
   }
 
@@ -359,7 +359,7 @@ long FUN_00394270(void)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x421);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x421);
 
     lVar1 = 0;
 
@@ -405,7 +405,7 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 
   if (param_3 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x449);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x449);
 
     param_2 = 0;
 
@@ -423,7 +423,7 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 
     if (lVar1 == 0) {
 
-      FUN_0019d3f0(0x6a0c40,0x45c);
+      FUN_0019d3f0("mt_evtPolygonMovie.c",0x45c);
 
     }
 
@@ -587,7 +587,7 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 
       else {
 
-        FUN_0019d3f0(0x6a0c40,0x4c5);
+        FUN_0019d3f0("mt_evtPolygonMovie.c",0x4c5);
 
       }
 
@@ -827,7 +827,7 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 
         else {
 
-          FUN_0019d3f0(0x6a0c40,0x54f);
+          FUN_0019d3f0("mt_evtPolygonMovie.c",0x54f);
 
         }
 
@@ -1155,19 +1155,19 @@ void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 
   if (param_3 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x665);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x665);
 
   }
 
   if (param_4 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x666);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x666);
 
   }
 
   if (param_5 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x667);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x667);
 
   }
 
@@ -1213,25 +1213,25 @@ void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 
   if (param_3 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x6ae);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x6ae);
 
   }
 
   if (param_4 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x6af);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x6af);
 
   }
 
   if (param_5 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x6b0);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x6b0);
 
   }
 
   if (param_6 == 0) {
 
-    FUN_0019d3f0(0x6a0c40,0x6b1);
+    FUN_0019d3f0("mt_evtPolygonMovie.c",0x6b1);
 
   }
 

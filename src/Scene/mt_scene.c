@@ -2778,7 +2778,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar5 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x5f5);
+    FUN_0019d3f0("mt_scene.c",0x5f5);
 
   }
 
@@ -2796,7 +2796,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar5 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x5f9);
+    FUN_0019d3f0("mt_scene.c",0x5f9);
 
   }
 
@@ -2814,7 +2814,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar5 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x5fd);
+    FUN_0019d3f0("mt_scene.c",0x5fd);
 
   }
 
@@ -2902,7 +2902,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar7 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x633);
+    FUN_0019d3f0("mt_scene.c",0x633);
 
   }
 
@@ -2918,7 +2918,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar7 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x637);
+    FUN_0019d3f0("mt_scene.c",0x637);
 
   }
 
@@ -3030,7 +3030,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar6 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x669);
+    FUN_0019d3f0("mt_scene.c",0x669);
 
   }
 
@@ -3046,7 +3046,7 @@ void FUN_003b7ac0(u32 *param_1,float *param_2,u32 *param_3)
 
   if (fVar6 == 0.0) {
 
-    FUN_0019d3f0(0x6a2be8,0x66d);
+    FUN_0019d3f0("mt_scene.c",0x66d);
 
   }
 

@@ -148,7 +148,7 @@ u8 * FUN_003c4040(int param_1,int param_2)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a3d58,0x30);
+    FUN_0019d3f0("comuData.c",0x30);
 
   }
 
@@ -156,7 +156,7 @@ u8 * FUN_003c4040(int param_1,int param_2)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a3d58,0x32);
+    FUN_0019d3f0("comuData.c",0x32);
 
   }
 
@@ -268,7 +268,7 @@ u8 * FUN_003c4270(void)
 
     default:
 
-      FUN_0019d3f0(0x6a3d58,0xba);
+      FUN_0019d3f0("comuData.c",0xba);
 
       puVar3 = PTR_s_next_Sunday_006a3be0;
 
@@ -294,7 +294,7 @@ u8 * FUN_003c4390(int param_1)
 
   if ((0x15 < param_1) || (param_1 < 0)) {
 
-    FUN_0019d3f0(0x6a3d58,0xc6);
+    FUN_0019d3f0("comuData.c",0xc6);
 
   }
 

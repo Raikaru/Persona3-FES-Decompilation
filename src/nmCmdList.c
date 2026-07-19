@@ -165,7 +165,7 @@ void FUN_003c5e20(int param_1,long param_2)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a3e08,0x144);
+    FUN_0019d3f0("nmCmdList.c",0x144);
 
   }
 
@@ -187,7 +187,7 @@ void FUN_003c5e80(int param_1,long param_2)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a3e08,0x153);
+    FUN_0019d3f0("nmCmdList.c",0x153);
 
   }
 
@@ -209,7 +209,7 @@ void FUN_003c5ee0(int param_1,long param_2)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a3e08,0x172);
+    FUN_0019d3f0("nmCmdList.c",0x172);
 
   }
 
@@ -231,7 +231,7 @@ void FUN_003c5f40(int param_1,long param_2)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a3e08,0x181);
+    FUN_0019d3f0("nmCmdList.c",0x181);
 
   }
 

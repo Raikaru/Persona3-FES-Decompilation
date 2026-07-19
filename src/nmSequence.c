@@ -86,13 +86,13 @@ FUN_003c5240(long param_1,long param_2,long param_3,u16 param_4,u16 param_5)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0(0x6a3df8,0x86);
+    FUN_0019d3f0("nmSequence.c",0x86);
 
   }
 
   if (param_3 == 0) {
 
-    FUN_0019d3f0(0x6a3df8,0x87);
+    FUN_0019d3f0("nmSequence.c",0x87);
 
   }
 
@@ -100,7 +100,7 @@ FUN_003c5240(long param_1,long param_2,long param_3,u16 param_4,u16 param_5)
 
   if (puVar5 == (u32 *)0xffffffec) {
 
-    FUN_0019d3f0(0x6a3df8,0x88);
+    FUN_0019d3f0("nmSequence.c",0x88);
 
   }
 
@@ -108,7 +108,7 @@ FUN_003c5240(long param_1,long param_2,long param_3,u16 param_4,u16 param_5)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a3df8,0x8c);
+    FUN_0019d3f0("nmSequence.c",0x8c);
 
   }
 
@@ -483,7 +483,7 @@ u64 FUN_003c5760(long param_1)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0(0x6a3df8,0x1ce);
+    FUN_0019d3f0("nmSequence.c",0x1ce);
 
   }
 

@@ -136,7 +136,7 @@ u32 FUN_003bf720(void)
 
       if (lVar5 == 0) {
 
-        FUN_0019d3f0(0x6a3290,0x1a9);
+        FUN_0019d3f0("comuTimerSequence.c",0x1a9);
 
       }
 
@@ -740,7 +740,7 @@ code * FUN_003bfdb0(void)
 
         if (lVar4 == 0) {
 
-          FUN_0019d3f0(0x6a3290,0x249);
+          FUN_0019d3f0("comuTimerSequence.c",0x249);
 
         }
 
@@ -748,7 +748,7 @@ code * FUN_003bfdb0(void)
 
         if (lVar4 == 0) {
 
-          FUN_0019d3f0(0x6a3290,0x24b);
+          FUN_0019d3f0("comuTimerSequence.c",0x24b);
 
         }
 
@@ -3043,7 +3043,7 @@ u64 FUN_003c1ab0(u64 param_1,u64 param_2)
 
     if (lVar3 == 0) {
 
-      FUN_0019d3f0(0x6a3290,0x836);
+      FUN_0019d3f0("comuTimerSequence.c",0x836);
 
     }
 

@@ -148,13 +148,13 @@ u64 FUN_003ae420(u64 param_1,int param_2)
 
   if (7 < uVar3) {
 
-    FUN_0019d3f0(0x6a2698,0x2d1);
+    FUN_0019d3f0("frTagTable.c",0x2d1);
 
   }
 
   if (((short)uVar6 < 0) || (3 < (short)uVar6)) {
 
-    FUN_0019d3f0(0x6a2698,0x2d2);
+    FUN_0019d3f0("frTagTable.c",0x2d2);
 
   }
 
@@ -202,7 +202,7 @@ u64 FUN_003ae560(u64 param_1,u64 param_2)
 
   if (((long)uVar2 < 0) || (6 < uVar2)) {
 
-    FUN_0019d3f0(0x6a2698,0x2eb);
+    FUN_0019d3f0("frTagTable.c",0x2eb);
 
   }
 
@@ -745,7 +745,7 @@ u64 FUN_003aed10(u64 param_1,u64 param_2)
 
     if (sVar2 == 0) {
 
-      FUN_0019d3f0(0x6a2698,0x38c);
+      FUN_0019d3f0("frTagTable.c",0x38c);
 
     }
 
