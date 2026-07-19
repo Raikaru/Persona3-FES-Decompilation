@@ -6767,7 +6767,7 @@ u32 func_00318620(Model* param_1,u16 param_2,s16 param_3)
 
 
 
-// FUN_003186E0 NONMATCHING
+// FUN_003186E0
 
 
 u32 func_003186e0(int param_1, u32 param_2, s16 param_3)
@@ -6790,7 +6790,9 @@ u32 func_003186e0(int param_1, u32 param_2, s16 param_3)
     if (valid)
     {
         base = (u8 *)*piVar1;
-        base = (u8 *)(param_3 * 0x50 + (u32)base);
+        offset = param_3 * 0x50;
+        offset += (u32)base;
+        base = (u8 *)offset;
         if (*(u8 **)(base + 0x40) == (u8 *)&DAT_009571d0)
         {
             result = 1;
@@ -7192,16 +7194,16 @@ u32 func_00318fc0(int param_1)
 
 
 
-// FUN_00319230 NONMATCHING
+// FUN_00319230
 
 
 void func_00319230(int param_1, u16 param_2)
 {
     int iVar1;
-    u32 uVar2;
+    s32 uVar2;
 
     *(u16 *)(param_1 + 0x418) = param_2;
-    for (uVar2 = 0; uVar2 < 5; uVar2 = uVar2 + 1 & 0xffff)
+    for (uVar2 = 0; (uVar2 & 0xffff) < 5; uVar2 = uVar2 + 1 & 0xffff)
     {
         iVar1 = param_1 + (u16)uVar2 * 0xc;
         if ((*(u8 *)(iVar1 + 0x3b4) & 1) != 0 &&
