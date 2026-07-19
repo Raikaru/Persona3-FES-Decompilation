@@ -246,6 +246,12 @@ extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_0096017c;
 #pragma alias DAT_0087190c_abs DAT_0087190c
+#pragma alias DAT_0086e80c_abs DAT_0086e80c
+extern u8 DAT_0086e80c_abs[];
+#pragma alias DAT_0086eda0_abs DAT_0086eda0
+extern u8 DAT_0086eda0_abs[];
+#pragma alias FUN_00195020_call FUN_00195020
+extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
 #pragma alias DAT_0086ef0c_abs DAT_0086ef0c
 extern u8 DAT_0086ef0c_abs[];
@@ -16017,28 +16023,27 @@ void FUN_00454110(int param_1)
   return;
 }
 
-// FUN_004541F0 NONMATCHING
+// FUN_004541F0
 
 u32 FUN_004541f0(int param_1)
 {
   char *pcVar1;
   int iVar2;
-  u32 uVar3;
-  
+
   pcVar1 = *(char **)(param_1 + 0x3c);
-  if (*pcVar1 == '\x01') {
-    uVar3 = 0xffffffff;
+  switch (*pcVar1) {
+  case '\0':
+    *(float *)(pcVar1 + 8) = *(float *)(pcVar1 + 8) + 100.0f;
+    iVar2 = FUN_001b9120_u32();
+    FUN_001a91b0_call(*(u32 *)(iVar2 + 0x1204),pcVar1 + 4);
+    *pcVar1 = '\x01';
+    break;
+  case '\x01':
+    return 0xffffffff;
+  default:
+    break;
   }
-  else {
-    if (*pcVar1 == '\0') {
-      *(float *)(pcVar1 + 8) = *(float *)(pcVar1 + 8) + 100.0;
-      iVar2 = ((code)FUN_001b9120)();
-      ((code)FUN_001a91b0)(*(u32 *)(iVar2 + 0x1204),pcVar1 + 4);
-      *pcVar1 = '\x01';
-    }
-    uVar3 = 0;
-  }
-  return uVar3;
+  return 0;
 }
 
 // FUN_00454290
@@ -18671,22 +18676,25 @@ u32 FUN_00459790(u64 param_1,char param_2)
   return 0;
 }
 
-// FUN_00459D60 NONMATCHING
+// FUN_00459D60
 
 void FUN_00459d60(void)
-
 {
-  int iVar1;
   int iVar2;
-  
+  int iVar1;
+  int iVar3;
+
   for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-    iVar1 = *(int *)(((u8 *)DAT_0086e80c)[iVar2 * 0x70] + 0x3c);
-    if (*(int *)(iVar1 + 0x4ac) != 0) {
-      ((code)FUN_00195020)();
+    iVar1 = *(int *)(DAT_0086e80c_abs + iVar2 * 0x1c0 + 0x16c);
+    iVar1 = *(int *)(iVar1 + 0x3c);
+    iVar3 = *(int *)(iVar1 + 0x4ac);
+    if (iVar3 != 0) {
+      FUN_00195020_call(iVar3);
       *(u32 *)(iVar1 + 0x4ac) = 0;
     }
-    if (*(int *)(iVar1 + 0x4b0) != 0) {
-      ((code)FUN_00195020)();
+    iVar3 = *(int *)(iVar1 + 0x4b0);
+    if (iVar3 != 0) {
+      FUN_00195020_call(iVar3);
       *(u32 *)(iVar1 + 0x4b0) = 0;
     }
   }
@@ -18696,10 +18704,9 @@ void FUN_00459d60(void)
 // FUN_00459E00 NONMATCHING
 
 u32 FUN_00459e00(char param_1)
-
 {
   long lVar1;
-  
+
   lVar1 = 0;
   while( 1 ) {
     if (3 < lVar1) {
