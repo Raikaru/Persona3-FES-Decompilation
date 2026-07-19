@@ -21,13 +21,13 @@ int iGpffffac00;
 int *iGpffffb730;
 int *iGpffffb7f4;
 int iGpffffb7f8;
-u8 *pbGpffffabe8;
+extern u8 *pbGpffffabe8;
 short *psGpffffabd0;
 short *psGpffffabf0;
 u32 *puGpffffabe0;
 u32 uGpffffabd4;
 u32 uGpffffabe4;
-u32 uGpffffabec;
+extern u32 uGpffffabec;
 u32 uGpffffabf4;
 u32 uGpffffacf0;
 u32 uGpffffacf4;
@@ -397,7 +397,9 @@ u32 DAT_006af2b0;
 u32 DAT_006af2d0;
 u32 DAT_006af300;
 u32 DAT_006af320;
-u32 DAT_006af3a0;
+extern u32 DAT_006af3a0;
+extern u8 DAT_006af3a0_abs[];
+#pragma alias DAT_006af3a0_abs DAT_006af3a0
 u32 DAT_006af5e0;
 u32 DAT_006af600;
 u32 DAT_006af620;
@@ -10491,8 +10493,6 @@ u32 FUN_003fc980(int param_1)
 }
 
 // FUN_003FCA00 NONMATCHING
-
-
 void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3)
 {
   u32 uVar1;
@@ -14613,13 +14613,11 @@ u32 FUN_00401210(int param_1)
 {
 
   u32 *puVar1;
-
   u32 *puVar2;
   u32 uVar2;
   u32 uVar4;
   u32 uVar3;
   u32 *puVar4;
-
   code pcVar3;
 
   int iVar4;
@@ -15016,7 +15014,7 @@ u32 FUN_004016d0(u64 param_1)
 
 }
 
-// FUN_00401800 NONMATCHING
+// FUN_00401800
 
 
 int FUN_00401800(short param_1)
@@ -15029,24 +15027,18 @@ int FUN_00401800(short param_1)
 
   s16 uVar2;
 
-  int iVar3;
-
-  u32 uVar4;
-
-  short *psVar5;
-
   s16 *puVar6;
+  short *psVar5;
+  int iVar3;
+  u32 uVar3;
+  u32 uVar4;
 
   short asStack_30 [24];
 
   
-
+  puVar6 = (s16 *)(DAT_006af3a0_abs);
   psVar5 = asStack_30;
-
-  puVar6 = (s16 *)(&DAT_006af3a0);
-
   iVar3 = 0xc;
-
   do {
 
     uVar1 = *puVar6;
@@ -15066,22 +15058,18 @@ int FUN_00401800(short param_1)
   } while (0 < iVar3);
 
   uVar4 = 0;
-
-  while( 1 ) {
-
-    if (0x17 < uVar4) {
-
-      return 0;
-
-    }
-
-    if (param_1 == asStack_30[uVar4]) break;
-
-    uVar4 = uVar4 + 1;
-
+  uVar3 = (u16)param_1;
+  goto check;
+body:
+  if (uVar3 == (u16)asStack_30[uVar4]) {
+    return uVar4 + 0x1280;
   }
-
-  return uVar4 + 0x1280;
+  uVar4 = uVar4 + 1;
+check:
+  if (uVar4 < 0x18) {
+    goto body;
+  }
+  return 0;
 
 }
 
@@ -15555,7 +15543,7 @@ u8 * FUN_00401cf0(long param_1)
 
   if (param_1 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x1ada);
+    K_Assert((const char *)(u32)DAT_006aede8,0x1ada);
 
   }
 
