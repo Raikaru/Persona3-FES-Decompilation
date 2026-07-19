@@ -51,11 +51,11 @@ extern code DAT_0096017c_abs[];
 #include "Kosaka/k_assert.h"
 
 
-// FUN_0040E300 NONMATCHING
+// FUN_0040E300
 void FUN_0040e300(u32 param_1,u32 param_2)
 {
   if (DAT_007ce6a0 != 0) {
-    FUN_0040e580(param_1);
+    FUN_0040e580(DAT_007ce6a0);
   }
   DAT_007ce6a0 = FUN_0040e450(param_1);
   DAT_007ce69c = param_2;
