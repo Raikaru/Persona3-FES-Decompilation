@@ -653,10 +653,353 @@ static u32 K_Footstep_StatusResult(u32 mode)
     return datGetFlag(0xC35) == 0;
 }
 
-// FUN_001dde00 NONMATCHING
+// FUN_001dde00
 u32 func_001dde00(s32 mode)
 {
-    return K_Footstep_StatusResult((u32)mode);
+    switch (mode)
+    {
+    case 1:
+        if (datGetScenarioMode() == 1)
+        {
+            if (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5)
+            {
+                if (datGetFlag(0xC35) != 0)
+                {
+                    return 0;
+                }
+                return 1;
+            }
+        }
+        if (func_001a0310() == 1)
+        {
+            if (datGetFlag(0xC35) == 0)
+            {
+                goto footstep_case1_func_true;
+            }
+            return 0;
+footstep_case1_func_true:
+            return 1;
+        }
+        if (gMtScene->fldMajorId == 7)
+        {
+            if (gMtScene->fldMinorId == 6)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_case1_time;
+                }
+            }
+        }
+        if (gMtScene->fldMajorId == 8)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_case1_time;
+                }
+            }
+        }
+        if (gMtScene->fldMajorId != 9)
+        {
+            goto footstep_case1_after_time;
+        }
+        if (gMtScene->fldMinorId != 1)
+        {
+            goto footstep_case1_after_time;
+        }
+        if (datGetTime() != 8)
+        {
+            goto footstep_case1_after_time;
+        }
+
+footstep_case1_time:
+        if (datGetFlag(0xC35) == 0)
+        {
+            goto footstep_case1_time_true;
+        }
+        return 0;
+footstep_case1_time_true:
+        return 1;
+
+footstep_case1_after_time:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (gMtScene->fldMajorId == 0x21)
+        {
+            if (datGetFlag(0xC35) == 0)
+            {
+                goto footstep_case1_scene_true;
+            }
+            return 0;
+footstep_case1_scene_true:
+            return 1;
+        }
+        if (gMtScene->fldMajorId == 7 && datGetFlag(0xE00) == 1)
+        {
+            return 0;
+        }
+        if (gMtScene->fldMajorId == 6 && datGetFlag(0xE60) == 1)
+        {
+            if (datGetFlag(0xC35) == 0)
+            {
+                goto footstep_case1_six_true;
+            }
+            return 0;
+footstep_case1_six_true:
+            return 1;
+        }
+        if (func_001a01c0() == 1)
+        {
+            goto footstep_case1_status;
+        }
+        if (gMtScene->fldMajorId == 0x15)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x19)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x29)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2C)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2D)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2E)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2F)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 2)
+            {
+                goto footstep_case1_status;
+            }
+        }
+        if (gMtScene->fldMajorId != 0x27)
+        {
+            goto footstep_case1_default;
+        }
+        if (gMtScene->fldMinorId != 3)
+        {
+            goto footstep_case1_default;
+        }
+footstep_case1_status:
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case1_status_zero;
+        }
+        return 1;
+footstep_case1_status_zero:
+        return 0;
+footstep_case1_default:
+        if (datGetFlag(0xC35) != 0)
+        {
+            return 0;
+        }
+        return 1;
+    case 2:
+        if (gMtScene->fldMajorId == 6 || gMtScene->fldMajorId == 7)
+        {
+            return 0;
+        }
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case2_status_zero;
+        }
+        return 1;
+footstep_case2_status_zero:
+        return 0;
+
+    case 5:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (datGetFlag(0xC2F) == 1)
+        {
+            return 0;
+        }
+        if (gMtScene->fldMajorId == 0x21)
+        {
+            return 0;
+        }
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case5_status_zero;
+        }
+        return 1;
+footstep_case5_status_zero:
+        return 0;
+
+    case 7:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (gMtScene->fldMajorId == 0x21)
+        {
+            return 0;
+        }
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case7_status_zero;
+        }
+        return 1;
+footstep_case7_status_zero:
+        return 0;
+
+    case 10:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case10_status_zero;
+        }
+        return 1;
+footstep_case10_status_zero:
+        return 0;
+
+    case 13:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            return 0;
+        }
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_case13_status_zero;
+        }
+        return 1;
+footstep_case13_status_zero:
+        return 0;
+
+    default:
+        if (datGetBadStatusNoDown((s16)mode) != 0x80)
+        {
+            goto footstep_default_status_zero;
+        }
+        return 1;
+footstep_default_status_zero:
+        return 0;
+    }
 }
 
 // FUN_001de630 NONMATCHING
