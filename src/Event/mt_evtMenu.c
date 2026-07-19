@@ -812,9 +812,6 @@ extern void FUN_0038a260_evt5(u32 param_1,int param_2,int param_3,u32 param_4,f3
 extern void FUN_0038a260_evt6(u32 param_1,int param_2,int param_3,u32 param_4,u32 param_5,
 
                               f32 param_6);
-#pragma alias FUN_0038a260_evt6_rev FUN_0038a260
-extern void FUN_0038a260_evt6_rev(f32 param_1,u32 param_2,int param_3,int param_4,
-                                  u32 param_5,u32 param_6);
 #pragma alias FUN_0038a260_evt7 FUN_0038a260
 extern void FUN_0038a260_evt7(int param_1,int param_2,int param_3,u8 *param_4,
                               f32 param_5);
@@ -3362,8 +3359,8 @@ void FUN_003722d0(u32 param_1,u32 param_2,u32 param_3,u8 *param_4)
     uVar4 = param_1 * 0xc;
     uVar5 = param_2 * 0xc;
     uVar6 = ((u32 *)local0)[*(s8 *)(param_4 + 0x788)];
-    FUN_0038a260_evt6_rev(fVar1,uVar4,uVar5,iVar3,
-                          (u32)&gp0xffffa118,uVar6);
+    FUN_0038a260_evt6(uVar4,uVar5,iVar3,
+                      (u32)&gp0xffffa118,uVar6,fVar1);
     break;
   case 1:
     if (*(s8 *)(param_4 + 0x788) != 0) {
