@@ -19,13 +19,17 @@ extern s32 FUN_00176600(void* persona);
 extern s32 FUN_00177790();
 extern s32 FUN_001120a0();
 extern s32 FUN_001159f0(f32 x, f32 y, f32 alpha, ...);
+#pragma alias campPersonaDrawSprite FUN_001159f0
+extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
+                                  u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campPersonaSetRenderState DAT_00960090
+extern f32 FUN_001126b0(void* particle);
+extern f32 FUN_00112740(void* particle);
 extern s32 FUN_00114450();
 extern s32 FUN_0011bba0();
 extern s32 FUN_001158b0();
 extern s32 FUN_001127d0();
 extern s32 FUN_00115980();
-extern s32 FUN_001126b0();
-extern s32 FUN_00112740();
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern KwlnTask* DAT_007cdf60;
@@ -399,24 +403,23 @@ done:;
 void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
 {
     u8 level;
-
-    if (persona == NULL) {
-        return;
-    }
+    register void* parent;
     level = *((u8*)persona + 4);
-    if (level < 10) {
-        campPersonaDrawDigit(alpha, position.x + 75.0f,
-                             position.y + 127.0f, level);
+
+    if (level >= 10) {
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                              level / 10 + 0xb, fade,
+                              position.x + 67.0f,
+                              position.y + 127.0f, alpha);
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                              *((u8*)((int)persona + 4)) % 10 + 0xb,
+                              fade, position.x + 82.0f,
+                              position.y + 127.0f, alpha);
     } else {
-        campPersonaDrawDigit(alpha, position.x + 67.0f,
-                             position.y + 127.0f, level / 10);
-        level = *((u8*)persona + 4);
-        campPersonaDrawDigit(alpha, position.x + 82.0f,
-                             position.y + 127.0f, level % 10);
-    }
-    if (fade != 0) {
-        FUN_001159f0(position.x + 67.0f, position.y + 127.0f,
-                     alpha, fade);
+        campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                              level % 10 + 0xb, fade,
+                              position.x + 75.0f, position.y + 127.0f,
+                              alpha);
     }
 }
 
@@ -483,17 +486,19 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
 void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
                   void* persona, s32 fade)
 {
+    register void* parent;
+    f32 drawAlpha;
+    void* resource;
     s32 personaId;
-
-    if (persona == NULL) {
-        return;
-    }
-    personaId = *(u16*)((u8*)persona + 2);
-    FUN_001159f0(position.x + 22.0f, position.y + 117.0f,
-                 alpha, DAT_00833B90, 1, campPersonaClampFade(fade));
-    personaId = FUN_00173280(personaId) - 1;
-    FUN_001159f0(position.x + 105.0f, position.y + 142.0f,
-                 alpha, DAT_00833B88, personaId, fade);
+    drawAlpha = alpha;
+    campPersonaDrawSprite(parent, DAT_00833B90, 1, fade,
+                          position.x + 22.0f, position.y + 117.0f,
+                          drawAlpha);
+    resource = DAT_00833B88;
+    personaId = FUN_00173280(*(u16*)((u8*)persona + 2)) - 1;
+    campPersonaDrawSprite(parent, resource, personaId, fade,
+                          position.x + 105.0f, position.y + 142.0f,
+                          alpha);
     FUN_00124e60(position, alpha, persona, fade);
     FUN_00124fd0(position, alpha, persona, fade);
 }
