@@ -3123,32 +3123,31 @@ void func_001167a0(int param_1)
   return;
 
 }
-// FUN_001167C0 NONMATCHING
+// FUN_001167C0
 
 
-u32 func_001167c0(int param_1,long param_2)
+u32 func_001167c0(int param_1,u32 param_2)
 
 
 
 {
 
-  u32 uVar1;
+  u32 base;
+  u32 idx;
 
-  
+  base = *(u32 *)(param_1 + 0x3c);
 
   if (param_2 == 0) {
 
-    uVar1 = 0x33;
+    return 0x33;
 
   }
 
-  else {
+  idx = param_2 * 4;
 
-    uVar1 = *(u32 *)((int)param_2 * 4 + *(int *)(param_1 + 0x3c) + 0x68);
+  idx += base;
 
-  }
-
-  return uVar1;
+  return *(u32 *)(idx + 0x68);
 
 }
 // FUN_001167F0 NONMATCHING
