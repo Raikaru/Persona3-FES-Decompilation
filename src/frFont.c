@@ -2451,8 +2451,8 @@ u16 FUN_003b1a10(u32 param_1)
 
 
 {
-  u32 *base = (u32 *)0x0095acf4;
-  u32 *entry = base + ((param_1 & 0xff) * 8);
+  u32 **base = (u32 **)0x0095acf4;
+  u32 *entry = *(u32 **)((u8*)base + (param_1 & 0xff) * 0x20);
   return *(u16 *)((u8 *)entry + 0x10);
 
 }
@@ -2466,8 +2466,8 @@ u16 FUN_003b1a40(u32 param_1)
 
 
 {
-  u32 *base = (u32 *)0x0095acf4;
-  u32 *entry = base + ((param_1 & 0xff) * 8);
+  u32 **base = (u32 **)0x0095acf4;
+  u32 *entry = *(u32 **)((u8*)base + (param_1 & 0xff) * 0x20);
   return *(u16 *)((u8 *)entry + 0x12);
 
 }
