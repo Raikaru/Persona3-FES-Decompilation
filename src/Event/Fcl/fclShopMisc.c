@@ -3,7 +3,7 @@
 /* auto-extern (generated) */
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
-extern char DAT_006aede8[];
+extern u8 DAT_006aede8[];
 extern u32 gp0xffffac10;
 extern u32 gp0xfffface0;
 typedef int (*code)();
@@ -286,7 +286,7 @@ void FUN_0040c5b0(u64 param_1);
 void FUN_0040c650(u64 param_1);
 void FUN_0040c6a0(u64 param_1);
 int FUN_0040c6f0(int param_1);
-void FUN_0040c9a0(long param_1);
+void FUN_0040c9a0(int param_1);
 long FUN_0040ca00(u64 param_1);
 void FUN_0040cad0(int param_1);
 void FUN_0040cc30(u64 param_1,int param_2,int *param_3);
@@ -306,7 +306,7 @@ u32 DAT_006ad4b4;
 float DAT_007cada4;
 u32 DAT_007ce420;
 u32 DAT_007ce4e8;
-u32 DAT_006ac9d0;
+extern u8 DAT_006ac9d0[];
 u32 DAT_006acc60;
 extern u8 DAT_006acc70[];
 extern u8 DAT_006acc72[];
@@ -523,7 +523,7 @@ LAB_003eff84:
 
 }
 
-// FUN_003EFFF0 NONMATCHING
+// FUN_003EFFF0
 
 
 u8 * FUN_003efff0(int param_1)
@@ -532,15 +532,15 @@ u8 * FUN_003efff0(int param_1)
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   int iVar2;
 
   
 
-  if ((param_1 < 0) || (8 < param_1)) {
+  if ((param_1 < 0) || !(param_1 < 9)) {
 
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
+    K_Assert((const char *)(DAT_006aede8 + 1) - 1,0xb9);
 
   }
 
@@ -548,19 +548,16 @@ u8 * FUN_003efff0(int param_1)
 
   iVar2 = (int)param_1;
 
-  if (lVar1 != 0) {
-
-    iVar2 = iVar2 + 9;
-
+  if (lVar1 == 0) {
+    return (u8 *)&DAT_006ac9d0 + iVar2 * 0x24;
   }
 
-  return (u8 *)&DAT_006ac9d0 + iVar2 * 0x24;
+  return (u8 *)&DAT_006ac9d0 + (iVar2 + 9) * 0x24;
+
 
 }
 
 // FUN_003F0090
-
-
 s16 FUN_003f0090(int param_1)
 
 
@@ -724,7 +721,7 @@ int FUN_003f0350(int param_1,int *param_2)
   int iVar1;
 
   if (param_2 == 0) {
-    K_Assert(DAT_006aede8,0x13b);
+    K_Assert((const char *)DAT_006aede8,0x13b);
   }
 
   iVar1 = *param_2;
@@ -4024,7 +4021,7 @@ u64 FUN_003f39a0(long param_1,long param_2,u32 param_3)
 
   uVar4 = FUN_003c58f0(0,0x58,5,0x1a);
 
-  if (uStack_c < *(u32 *)(&DAT_006ac9d0 + iVar5 * 0x24)) {
+  if (uStack_c < *(u32 *)(DAT_006ac9d0 + iVar5 * 0x24)) {
 
     puVar6 = (u8 *)((u32 **)&PTR_PTR_006ac9d4)[iVar5 * 9] + uStack_c * 0x14;
 
@@ -29380,10 +29377,9 @@ int FUN_0040c6f0(int param_1)
 
 }
 
-// FUN_0040C9A0 NONMATCHING
+// FUN_0040C9A0
+void FUN_0040c9a0(int param_1)
 
-
-void FUN_0040c9a0(long param_1)
 
 
 
@@ -29391,7 +29387,7 @@ void FUN_0040c9a0(long param_1)
 
   if (param_1 == 0) {
 
-    K_Assert((const char *)(u32)0x6aede8,0x27d2);
+    K_Assert((const char *)(DAT_006aede8 + 1) - 1,0x27d2);
 
   }
 
