@@ -254,6 +254,8 @@ extern u8 DAT_0086e80c_abs[];
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
 #pragma alias DAT_0086ef0c_abs DAT_0086ef0c
+#pragma alias DAT_0086ef08_abs DAT_0086ef08
+extern u8 DAT_0086ef08_abs[];
 extern u8 DAT_0086ef0c_abs[];
 #pragma alias DAT_00871948_abs DAT_00871948
 extern u8 DAT_00871948_abs[];
@@ -5060,8 +5062,9 @@ void FUN_00435370(u8 param_1)
   int iVar2;
   int bVar1;
 
+  iVar2 = 1;
   puVar2 = DAT_008717a0_bytes;
-  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+  while (iVar2 < 4) {
     bVar1 = 0;
     puVar1 = puVar2 + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
@@ -5070,6 +5073,7 @@ void FUN_00435370(u8 param_1)
     if (bVar1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x1216) = param_1;
     }
+    iVar2 = iVar2 + 1;
   }
   *(u8 *)&DAT_007cdb10 = param_1;
   return;
@@ -13961,15 +13965,15 @@ u64 FUN_0044e560(u64 param_1)
 
 u32 FUN_0044f060(float param_1,int param_2,float *param_3)
 {
-  int bVar1;
   int iVar1;
+  int bVar1;
   float fVar2;
   RwV3d input;
   RwV3d delta;
   
   input = *(RwV3d *)param_3;
+  iVar1 = *(int *)(DAT_0086ef08_abs + *(char *)(*(int *)(param_2 + 0x3c) + 1) * 0x1c0);
   bVar1 = 0;
-  iVar1 = *(int *)((u8 *)DAT_0086ef08 + *(char *)(*(int *)(param_2 + 0x3c) + 1) * 0x1c0);
   delta.x = *(float *)(iVar1 + 0x100) - input.x;
   delta.y = *(float *)(iVar1 + 0x104) - input.y;
   delta.z = *(float *)(iVar1 + 0x108) - input.z;
@@ -18753,7 +18757,7 @@ loop_increment:
   return 1;
 }
 
-// FUN_00459E80 NONMATCHING
+// FUN_00459E80
 
 u32 FUN_00459e80(int param_1)
 {
@@ -18773,9 +18777,15 @@ u32 FUN_00459e80(int param_1)
     }
     iVar2 = FUN_001b9120_u32();
     iVar3 = FUN_001b9120_u32();
-    sVar1 = psVar1[2];
-    *(u32 *)(psVar1 + 4) =
-      FUN_0035bc00_u32(10,*(u32 *)(iVar2 + 0x1048),*(u32 *)(iVar3 + 0x104c),sVar1);
+    {
+      u32 uVar1;
+      u32 uVar2;
+      uVar1 = *(volatile u32 *)(iVar3 + 0x104c);
+      sVar1 = *(volatile short *)(psVar1 + 2);
+      uVar2 = *(u32 *)(iVar2 + 0x1048);
+      *(u32 *)(psVar1 + 4) =
+        FUN_0035bc00_u32(10,uVar2,uVar1,sVar1);
+    }
   }
   return 0xffffffff;
 done_zero:
