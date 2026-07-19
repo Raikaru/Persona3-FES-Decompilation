@@ -13918,7 +13918,7 @@ code * FUN_0036d5f0(void)
 
           else if ((*(code **)(&DAT_0069de40 + *psVar9 * 4) != (code *)0x0) &&
 
-                  (lVar13 = (**(code **)(&DAT_0069de40 + *psVar9 * 4))(lVar13,sVar11,uVar6),
+                  (lVar13 = (*(code *)(&DAT_0069de40 + *psVar9 * 4))(lVar13,sVar11,uVar6),
 
                   lVar13 != 0)) {
 

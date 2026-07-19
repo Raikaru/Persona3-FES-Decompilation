@@ -4036,7 +4036,7 @@ LAB_0041b798:
 
       }
 
-      lVar5 = (**(code **)(iVar3 + 8))(param_1,iVar3);
+      lVar5 = (*(code *)(iVar3 + 8))(param_1,iVar3);
 
     } while (lVar5 == 0);
 

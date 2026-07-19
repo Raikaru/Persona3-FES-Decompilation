@@ -14461,7 +14461,7 @@ void FUN_00400e90(u64 param_1)
 
           }
 
-          (**(code **)puVar1[2])(param_1,puVar1,puVar9);
+          (*(code *)puVar1[2])(param_1,puVar1,puVar9);
 
         }
 
@@ -14491,7 +14491,7 @@ void FUN_00400e90(u64 param_1)
 
       if ((*puVar9 & 1) != 0) {
 
-        lVar6 = (**(code **)puVar9[2])(param_1,puVar9,0);
+        lVar6 = (*(code *)puVar9[2])(param_1,puVar9,0);
 
         if (lVar6 == 2) {
 
@@ -14817,7 +14817,7 @@ u32 FUN_004014e0(u64 param_1)
 
     if ((*(code **)(puVar1[2] + 0x10) != (code *)0x0) && ((*puVar1 & 4) == 0)) {
 
-      lVar3 = (**(code **)(puVar1[2] + 0x10))(param_1,puVar1);
+      lVar3 = (*(code *)(puVar1[2] + 0x10))(param_1,puVar1);
 
       if (lVar3 == 0) {
 

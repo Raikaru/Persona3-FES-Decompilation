@@ -326,7 +326,7 @@ void FUN_003c5fa0(u64 param_1,int param_2)
 }
 #define FUN_003c5fa0(...) ((void (*)(...))FUN_003c5fa0)(__VA_ARGS__)
 #undef FUN_003c60f0
-// FUN_003C60F0 NONMATCHING
+// FUN_003C60F0
 
 
 u64 FUN_003c60f0(int param_1)
@@ -335,7 +335,7 @@ u64 FUN_003c60f0(int param_1)
 
 {
 
-  (**(code **)(*(int *)(param_1 + 0x24) + 0x40))();
+  (*(code *)(*(int *)(param_1 + 0x24) + 0x40))();
 
   return 0;
 
