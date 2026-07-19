@@ -1000,7 +1000,7 @@ void FUN_003c4f30(long param_1)
 }
 #define FUN_003c4f30(...) ((void (*)(...))FUN_003c4f30)(__VA_ARGS__)
 #undef FUN_003c4f80
-// FUN_003C4F80 NONMATCHING
+// FUN_003C4F80
 
 
 int FUN_003c4f80(int param_1)
@@ -1013,13 +1013,17 @@ int FUN_003c4f80(int param_1)
 
   int iVar2;
 
+  s8 cVar3;
+
   
 
   iVar1 = 0;
 
   for (iVar2 = 0; *(char *)(param_1 + iVar2) != '\0'; iVar2 = iVar2 + 1) {
 
-    iVar1 = iVar1 + *(char *)(param_1 + iVar2);
+    cVar3 = *(char *)(param_1 + iVar2);
+
+    iVar1 = iVar1 + cVar3;
 
   }
 
