@@ -3619,7 +3619,10 @@ void FUN_003b2940(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 }
 #define FUN_003b2940(...) ((void (*)(...))FUN_003b2940)(__VA_ARGS__)
 #undef FUN_003b2990
-// FUN_003B2990 NONMATCHING
+#undef FUN_003b2430
+#pragma alias FUN_003b2430_typed FUN_003b2430
+void FUN_003b2430_typed(void *param_1);
+// FUN_003B2990
 
 
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,
@@ -3631,66 +3634,39 @@ void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,
 
 
 {
+  struct {
+    u32 f00;
+    u32 f04;
+    int f08;
+    u8 f0c;
+    u8 f0d;
+    u8 f0e;
+    u8 f0f;
+    u32 f10;
+    u32 f14;
+    u32 f18;
+    u8 f1c;
+    u8 f1d;
+    u16 f1e;
+  } data;
 
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  int iStack_18;
-
-  u8 uStack_14;
-
-  u8 uStack_13;
-
-  u8 uStack_12;
-
-  u8 uStack_11;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u16 uStack_2;
-
-  
-
-  iStack_18 = param_3 << 4;
-
-  uStack_c = param_9;
-
-  uStack_8 = 0;
-
-  uStack_4 = 1;
-
-  uStack_3 = 1;
-
-  uStack_2 = 0x20;
-
-  uStack_20 = param_1;
-
-  uStack_1c = param_2;
-
-  uStack_14 = param_4;
-
-  uStack_13 = param_5;
-
-  uStack_12 = param_6;
-
-  uStack_11 = param_7;
-
-  uStack_10 = param_8;
-
-  FUN_003b2430(&uStack_20);
-
+  data.f00 = param_1;
+  data.f04 = param_2;
+  data.f08 = param_3 << 4;
+  data.f0c = param_4;
+  data.f0d = param_5;
+  data.f0e = param_6;
+  data.f0f = param_7;
+  data.f10 = param_8;
+  data.f14 = param_9;
+  data.f18 = 0;
+  data.f1c = 1;
+  data.f1d = 1;
+  data.f1e = 0x20;
+  FUN_003b2430_typed(&data);
   return;
-
 }
+#define FUN_003b2430(...) ((u32 (*)(...))FUN_003b2430)(__VA_ARGS__)
 #define FUN_003b2990(...) ((void (*)(...))FUN_003b2990)(__VA_ARGS__)
 #undef FUN_003b2a00
 // FUN_003B2A00
