@@ -56,6 +56,29 @@ extern void FUN_0012e170(void* atlas, s32 baseTile, CampVec2 position,
 extern s32 FUN_003b2cb0();
 extern s32 FUN_003c7e20();
 extern void FUN_00523ac8();
+#pragma alias campEquipDrawSpriteCall FUN_001159f0
+extern void campEquipDrawSpriteCall(void* parent, void* resource, s32 frame,
+                                    u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campEquipDrawSpriteAltCall FUN_00115bc0
+extern void campEquipDrawSpriteAltCall(void* parent, void* resource,
+                                       s32 frame, u32 alpha, s32 red,
+                                       s32 green, s32 blue, f32 x, f32 y,
+                                       f32 scale);
+#pragma alias campEquipMakeSpriteCall FUN_001158b0
+extern void* campEquipMakeSpriteCall(void* parent, void* resource, s32 frame);
+#pragma alias campEquipSetSpriteCall FUN_001127d0
+extern void campEquipSetSpriteCall(void* sprite, s32 mode);
+#pragma alias campEquipSubmitSpriteCall FUN_00115980
+extern void campEquipSubmitSpriteCall(void* sprite);
+#pragma alias campEquipDrawTextCall FUN_003b32d0
+extern void campEquipDrawTextCall(f32 scale, s32 x, s32 y, s32 color,
+                                  s32 style, s32 shadow, const char* text,
+                                  s32 width, s32 maxWidth);
+#pragma alias campEquipDrawValueCall FUN_003c7e20
+extern void campEquipDrawValueCall(f32 scale, s32 x, s32 y, u32 color,
+                                   s32 mode, s32 width, s32 style, u32 value);
+#pragma alias campEquipFormatTextCall FUN_00523ac8
+extern void campEquipFormatTextCall(char* buffer, const char* format, ...);
 extern int sprintf(char* buffer, const char* format, ...);
 extern void* DAT_007cdf50;
 extern s32 DAT_007e0952;
@@ -684,61 +707,377 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
 }
 
 // FUN_0012E3B0 NONMATCHING
-void FUN_0012e3b0(void* work, s32 index, void* recordData)
+void FUN_0012e3b0(void* work, s32 index, u8* record)
 {
-    u8* record;
+    s32 styles[4];
     char labels[4][0x100];
     CampVec2 position;
-    s16 category;
-    s16 pcId;
+    s32 i;
+    register void* parent;
 
-    record = (u8*)recordData;
-    category = *(s16*)((u8*)work + 0x1c);
-    pcId = *(s16*)((u8*)work + 0x12);
-    position = campEquipRecordPosition(record);
-    campEquipBuildLabels(work, labels);
+    for (i = 0; i < 4; i++) {
+        s16 equipment;
+        u16 id;
+        u8 effect;
+
+        equipment = datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+                                       (s16)i);
+        styles[i] = FUN_0012df50(func_0016f720(1, equipment));
+        id = (u16)datGetEquipmentId(*(s16*)((u8*)(int)work + 0x12),
+                                    equipment);
+        effect = (u8)func_0016f810(*(s16*)((u8*)(int)work + 0x12),
+                                   equipment);
+        campEquipFormatTextCall(labels[i], DAT_007cb66c,
+                                func_00171110((s16)id, (s16)effect));
+    }
 
     switch (index) {
     case 0:
-    case 1:
-    case 2:
-    case 3:
-        if (category == index) {
-            campEquipDrawCategory(work, record, (s16)index, labels);
-        } else {
-            campEquipDrawCategory(work, record, (s16)index, labels);
+        {
+            s32 valueA;
+            s32 valueB;
+
+            valueA = func_0016f9f0(
+                *(s16*)((u8*)(int)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 0)) & 0xffff;
+            valueB = func_0016fae0(
+                *(s16*)((u8*)(int)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 0)) & 0xffff;
+            if (*(s16*)((u8*)work + 0x1c) == 0) {
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0x18, *(u8*)(record + 0x40),
+                                        *(f32*)(record + 0x38),
+                                        *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0, *(u8*)(record + 0x40),
+                                        28.0f + *(f32*)(record + 0x38),
+                                        6.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                                        styles[0] * 2 + 1,
+                                        *(u8*)(record + 0x40),
+                                        139.0f + *(f32*)(record + 0x38),
+                                        1.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawTextCall(
+                    *(f32*)(record + 0x24),
+                    (s32)(179.0f + *(f32*)(record + 0x38)),
+                    (s32)(10.0f + *(f32*)(record + 0x3c)),
+                    (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                    6, 1, labels[0], 0x10, 0x78);
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        9, *(u8*)(record + 0x40),
+                                        406.0f + *(f32*)(record + 0x38),
+                                        8.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0xf, *(u8*)(record + 0x40),
+                                        (f32)0x1fb + *(f32*)(record + 0x38),
+                                        8.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+                position.y = 15.0f + *(f32*)(record + 0x3c);
+                FUN_0012e170(H_Maestro_001120a0(1), 0xb, position,
+                             (s32)*(f32*)(record + 0x24),
+                             0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                             valueA, 3);
+                position.x = 544.0f + *(f32*)(record + 0x38);
+                FUN_0012e170(H_Maestro_001120a0(1), 0xb, position,
+                             (s32)*(f32*)(record + 0x24),
+                             0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                             valueB, 3);
+                return;
+            }
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    1, *(u8*)(record + 0x40),
+                                    28.0f + *(f32*)(record + 0x38),
+                                    6.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteAltCall(
+                parent, DAT_00833B70, styles[0] * 2,
+                *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
+                139.0f + *(f32*)(record + 0x38),
+                1.0f + *(f32*)(record + 0x3c),
+                *(f32*)(record + 0x24));
+            campEquipDrawTextCall(
+                *(f32*)(record + 0x24),
+                (s32)(179.0f + *(f32*)(record + 0x38)),
+                (s32)(10.0f + *(f32*)(record + 0x3c)),
+                (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                0xa, 1, labels[0], 0x10, 0x78);
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    0xa, *(u8*)(record + 0x40),
+                                    406.0f + *(f32*)(record + 0x38),
+                                    8.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    0x10, *(u8*)(record + 0x40),
+                                    (f32)0x1fb + *(f32*)(record + 0x38),
+                                    8.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+            position.y = 15.0f + *(f32*)(record + 0x3c);
+            FUN_0012e170(H_Maestro_001120a0(2), 0xb, position,
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                         valueA, 3);
+            position.x = 544.0f + *(f32*)(record + 0x38);
+            FUN_0012e170(H_Maestro_001120a0(2), 0xb, position,
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                         valueB, 3);
         }
-        break;
+        return;
+    case 1:
+        {
+            s32 value;
+
+            value = func_0016fbd0(
+                *(s16*)((u8*)(int)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 1)) & 0xffff;
+            if (*(s16*)((u8*)work + 0x1c) == 1) {
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0x18, *(u8*)(record + 0x40),
+                                        *(f32*)(record + 0x38),
+                                        *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        2, *(u8*)(record + 0x40),
+                                        28.0f + *(f32*)(record + 0x38),
+                                        6.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                                        styles[1] * 2 + 1,
+                                        *(u8*)(record + 0x40),
+                                        139.0f + *(f32*)(record + 0x38),
+                                        1.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawTextCall(
+                    *(f32*)(record + 0x24),
+                    (s32)(179.0f + *(f32*)(record + 0x38)),
+                    (s32)(10.0f + *(f32*)(record + 0x3c)),
+                    (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                    6, 1, labels[1], 0x10, 0x78);
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0xb, *(u8*)(record + 0x40),
+                                        406.0f + *(f32*)(record + 0x38),
+                                        8.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+                position.y = 15.0f + *(f32*)(record + 0x3c);
+                FUN_0012e170(H_Maestro_001120a0(1), 0xb, position,
+                             (s32)*(f32*)(record + 0x24),
+                             0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                             value, 3);
+                return;
+            }
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    3, *(u8*)(record + 0x40),
+                                    28.0f + *(f32*)(record + 0x38),
+                                    6.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteAltCall(
+                parent, DAT_00833B70, styles[1] * 2,
+                *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
+                139.0f + *(f32*)(record + 0x38),
+                1.0f + *(f32*)(record + 0x3c),
+                *(f32*)(record + 0x24));
+            campEquipDrawTextCall(
+                *(f32*)(record + 0x24),
+                (s32)(179.0f + *(f32*)(record + 0x38)),
+                (s32)(10.0f + *(f32*)(record + 0x3c)),
+                (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                0xa, 1, labels[1], 0x10, 0x78);
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    0xc, *(u8*)(record + 0x40),
+                                    406.0f + *(f32*)(record + 0x38),
+                                    8.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+            position.y = 15.0f + *(f32*)(record + 0x3c);
+            FUN_0012e170(H_Maestro_001120a0(2), 0xb, position,
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                         value, 3);
+        }
+        return;
+    case 2:
+        {
+            s32 value;
+
+            value = func_0016fcc0(
+                *(s16*)((u8*)(int)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 2)) & 0xffff;
+            if (*(s16*)((u8*)work + 0x1c) == 2) {
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0x18, *(u8*)(record + 0x40),
+                                        *(f32*)(record + 0x38),
+                                        *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        4, *(u8*)(record + 0x40),
+                                        28.0f + *(f32*)(record + 0x38),
+                                        6.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                                        styles[2] * 2 + 1,
+                                        *(u8*)(record + 0x40),
+                                        139.0f + *(f32*)(record + 0x38),
+                                        1.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                campEquipDrawTextCall(
+                    *(f32*)(record + 0x24),
+                    (s32)(179.0f + *(f32*)(record + 0x38)),
+                    (s32)(10.0f + *(f32*)(record + 0x3c)),
+                    (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                    6, 1, labels[2], 0x10, 0x78);
+                campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                        0xd, *(u8*)(record + 0x40),
+                                        406.0f + *(f32*)(record + 0x38),
+                                        8.0f + *(f32*)(record + 0x3c),
+                                        *(f32*)(record + 0x24));
+                position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+                position.y = 15.0f + *(f32*)(record + 0x3c);
+                FUN_0012e170(H_Maestro_001120a0(1), 0xb, position,
+                             (s32)*(f32*)(record + 0x24),
+                             0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                             value, 3);
+                return;
+            }
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    5, *(u8*)(record + 0x40),
+                                    28.0f + *(f32*)(record + 0x38),
+                                    6.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteAltCall(
+                parent, DAT_00833B70, styles[2] * 2,
+                *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
+                139.0f + *(f32*)(record + 0x38),
+                1.0f + *(f32*)(record + 0x3c),
+                *(f32*)(record + 0x24));
+            campEquipDrawTextCall(
+                *(f32*)(record + 0x24),
+                (s32)(179.0f + *(f32*)(record + 0x38)),
+                (s32)(10.0f + *(f32*)(record + 0x3c)),
+                (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                0xa, 1, labels[2], 0x10, 0x78);
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    0xe, *(u8*)(record + 0x40),
+                                    406.0f + *(f32*)(record + 0x38),
+                                    8.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            position.x = (f32)0x1bb + *(f32*)(record + 0x38);
+            position.y = 15.0f + *(f32*)(record + 0x3c);
+            FUN_0012e170(H_Maestro_001120a0(2), 0xb, position,
+                         (s32)*(f32*)(record + 0x24),
+                         0xff, 0xff, 0xff, *(u8*)(record + 0x40),
+                         value, 3);
+        }
+        return;
+    case 3:
+        if (*(s16*)((u8*)work + 0x1c) == 3) {
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    0x18, *(u8*)(record + 0x40),
+                                    *(f32*)(record + 0x38),
+                                    *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                    6, *(u8*)(record + 0x40),
+                                    28.0f + *(f32*)(record + 0x38),
+                                    6.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawSpriteCall(parent, DAT_00833B70,
+                                    styles[3] * 2 + 1,
+                                    *(u8*)(record + 0x40),
+                                    139.0f + *(f32*)(record + 0x38),
+                                    1.0f + *(f32*)(record + 0x3c),
+                                    *(f32*)(record + 0x24));
+            campEquipDrawTextCall(
+                *(f32*)(record + 0x24),
+                (s32)(179.0f + *(f32*)(record + 0x38)),
+                (s32)(10.0f + *(f32*)(record + 0x3c)),
+                (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                6, 1, labels[3], 0x10, 0x78);
+            return;
+        }
+        campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
+                                7, *(u8*)(record + 0x40),
+                                28.0f + *(f32*)(record + 0x38),
+                                6.0f + *(f32*)(record + 0x3c),
+                                *(f32*)(record + 0x24));
+        campEquipDrawSpriteAltCall(
+            parent, DAT_00833B70, styles[3] * 2,
+            *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
+            139.0f + *(f32*)(record + 0x38),
+            1.0f + *(f32*)(record + 0x3c),
+            *(f32*)(record + 0x24));
+        campEquipDrawTextCall(
+            *(f32*)(record + 0x24),
+            (s32)(179.0f + *(f32*)(record + 0x38)),
+            (s32)(10.0f + *(f32*)(record + 0x3c)),
+            (0xff - *(u32*)(record + 0x40)) | ~0xff,
+            0xa, 1, labels[3], 0x10, 0x78);
+        return;
     case 4:
         {
-            s16 equipment;
-            u32 icon;
-            u32 color;
+            s32 id;
+            s32 color;
 
-            equipment = datGetEquipmentIdx(pcId, category);
-            icon = (u32)FUN_0016f630(pcId, equipment);
-            color = (u32)FUN_0016f900(pcId, equipment);
-            FUN_003c7e20(*(void**)(record + 0x24), (s32)position.x,
-                         (s32)position.y, 0xff - *(u32*)(record + 0x40),
-                         1, 10, 1, (icon & 0xffff) | ((color & 0xff) << 16));
+            id = datGetEquipmentId(
+                     *(s16*)((u8*)(int)work + 0x12),
+                     datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+                                        *(s16*)((u8*)work + 0x1c))) & 0xffff;
+            color = func_0016f900(
+                        *(s16*)((u8*)(int)work + 0x12),
+                        datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+                                           *(s16*)((u8*)work + 0x1c))) & 0xff;
+            campEquipDrawValueCall(
+                *(f32*)(record + 0x24), (s32)*(f32*)(record + 0x38),
+                (s32)*(f32*)(record + 0x3c),
+                (0xff - *(u32*)(record + 0x40)) | ~0xff,
+                1, 0xa, 1, (u32)id | ((u32)color << 16));
         }
-        break;
+        return;
     case 5:
-        campEquipDrawSprite(*(void**)((u8*)work + 0x2b0), 0x1a,
-                            *(f32*)(record + 0x24), position.x, position.y,
-                            (u8)*(u32*)(record + 0x40));
-        break;
+        {
+            CampEquipSprite* sprite;
+
+            sprite = (CampEquipSprite*)campEquipMakeSpriteCall(
+                0, *(void**)((u8*)work + 0x2b0), 0x1a);
+            sprite->spriteScale = *(f32*)(record + 0x24);
+            sprite->x = *(f32*)(record + 0x38);
+            sprite->y = *(f32*)(record + 0x3c);
+            sprite->alpha = *(u8*)(record + 0x40);
+            *(f32*)((u8*)sprite + 0x20) = -45.0f;
+            campEquipSetSpriteCall(sprite, 1);
+            campEquipSubmitSpriteCall(sprite);
+        }
+        return;
     case 6:
-        FUN_001159f0(position.x, position.y, *(void**)(record + 0x24));
-        FUN_001159f0(position.x + 16.0f, position.y,
-                     *(void**)(record + 0x24));
-        FUN_001159f0(position.x + 458.0f, position.y,
-                     *(void**)(record + 0x24));
-        FUN_001159f0(position.x + 533.0f, position.y,
-                     *(void**)(record + 0x24));
-        break;
+        campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b4),
+                                0, *(u8*)(record + 0x40),
+                                *(f32*)(record + 0x38),
+                                *(f32*)(record + 0x3c),
+                                *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b4),
+                                5, *(u8*)(record + 0x40),
+                                (44.0f + *(f32*)(record + 0x38)) - 28.0f,
+                                *(f32*)(record + 0x3c),
+                                *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(parent, DAT_00833BA0, 0,
+                                *(u8*)(record + 0x40),
+                                (486.0f + *(f32*)(record + 0x38)) - 28.0f,
+                                *(f32*)(record + 0x3c),
+                                *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(parent, DAT_00833BA0, 1,
+                                *(u8*)(record + 0x40),
+                                ((f32)0x231 + *(f32*)(record + 0x38)) - 28.0f,
+                                *(f32*)(record + 0x3c),
+                                *(f32*)(record + 0x24));
+        return;
     default:
-        break;
+        return;
     }
 }
 
