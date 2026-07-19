@@ -9883,7 +9883,7 @@ void FUN_004959c0(u64 param_1)
 }
 #pragma optimization_level 2
 #pragma schedule on
-// FUN_004959E0
+// FUN_004959E0 NONMATCHING
 u64 FUN_004959e0(u64 param_1)
 {
   u32 callback;
@@ -13243,7 +13243,7 @@ u32 FUN_0049bc50(u32 param_1,u32 param_2,u32 param_3)
 #pragma tailcall off
 #pragma schedule off
 
-// FUN_0049BC70
+// FUN_0049BC70 NONMATCHING
 #pragma schedule on
 u32 FUN_0049bc70(u32 param_1,u32 param_2,u32 param_3)
 {
@@ -13281,7 +13281,7 @@ u64 FUN_0049bcd0(u64 param_1,u64 param_2,u64 param_3)
 #pragma tailcall off
 #pragma schedule off
 
-// FUN_0049BCE0
+// FUN_0049BCE0 NONMATCHING
 #pragma schedule on
 u64 FUN_0049bce0(u64 param_1,u64 param_2,u64 param_3)
 {
@@ -13313,7 +13313,7 @@ u64 FUN_0049bd20(u64 param_1,u64 param_2,u64 param_3)
 #pragma tailcall off
 #pragma schedule off
 
-// FUN_0049BD30
+// FUN_0049BD30 NONMATCHING
 #pragma schedule on
 u64 FUN_0049bd30(u64 param_1,u64 param_2,u64 param_3)
 {
@@ -13335,7 +13335,7 @@ int FUN_0049bd60(int param_1)
 }
 #pragma tailcall off
 
-// FUN_0049BD70
+// FUN_0049BD70 NONMATCHING
 #pragma schedule on
 void FUN_0049bd70(u32 param_1,u32 param_2,u32 param_3)
 {
