@@ -29,7 +29,7 @@ int * FUN_003c4b50(long param_1,long param_2,int param_3);
 int FUN_003c4bf0(long param_1,long param_2,int param_3);
 u32 FUN_003c4c80(long param_1,long param_2);
 u32 FUN_003c4d20(long param_1,long param_2);
-void FUN_003c4dc0(u64 param_1,long param_2);
+void FUN_003c4dc0(u64 param_1,u32 param_2);
 u64 FUN_003c4de0(u64 param_1,int param_2,u32 param_3);
 int FUN_003c4df0(u64 param_1,int *param_2,int param_3);
 u32 FUN_003c4e50(u64 param_1, u32* param_2);
@@ -840,10 +840,10 @@ u32 FUN_003c4d20(long param_1,long param_2)
 }
 #define FUN_003c4d20(...) ((u32 (*)(...))FUN_003c4d20)(__VA_ARGS__)
 #undef FUN_003c4dc0
-// FUN_003C4DC0 NONMATCHING
+// FUN_003C4DC0
 
 
-void FUN_003c4dc0(u64 param_1,long param_2)
+void FUN_003c4dc0(u64 param_1,u32 param_2)
 
 
 
@@ -851,7 +851,7 @@ void FUN_003c4dc0(u64 param_1,long param_2)
 
   if (param_2 != 0) {
 
-    *(u16 *)((int)param_2 + 0xe) = *(u16 *)((int)param_2 + 0xe) & 0xfffd;
+    *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) & -3;
 
   }
 
