@@ -26,7 +26,11 @@ typedef struct FldFrameResourceCollision
 
 extern RwV3d D_00683780[];
 extern const char D_00678CE0[];
+#pragma alias D_00678CE0_typed D_00678CE0
+extern const char D_00678CE0_typed[];
 extern u32 K_Clump_MatUsrDataHasData(const void* material, const char* name);
+#pragma alias K_Clump_MatUsrDataHasData_typed K_Clump_MatUsrDataHasData
+extern u32 K_Clump_MatUsrDataHasData_typed(const void* material, const char* name);
 extern RwSphere* func_004912b0(void* atomic);
 extern RwCamera* DAT_00960070;
 #pragma alias DAT_00960070_abs DAT_00960070
@@ -1153,18 +1157,21 @@ u32 func_001aff70(KwlnTask* task, s32 duration)
     return true;
 }
 
-// FUN_001b0020 NONMATCHING
+// FUN_001b0020
 u32 func_001b0020(KwlnTask* task, const RwV3d* position, s32 duration)
 {
     FldFrameMoveWork* work;
 
-    work = fldFrameMoveWork(task);
-    if (work->pointCount >= 47)
+    work = (FldFrameMoveWork*)task->workData;
+    if (work->pointCount < 47)
     {
-        return false;
+        work->points[work->pointCount].kind = 2;
+        work->points[work->pointCount].position = *position;
+        work->points[work->pointCount].duration = (f32)duration;
+        work->pointCount++;
+        return true;
     }
-    fldFrameMoveAppend(work, 2, position, (f32)duration);
-    return true;
+    return false;
 }
 
 // FUN_001b00c0 NONMATCHING
@@ -1713,7 +1720,7 @@ void* func_001acfc0(void* resource, FldFrameResourceSet* set)
     return resource;
 }
 
-// FUN_001ad050
+// FUN_001ad050 NONMATCHING
 void func_001ad050(void* collisionWorld, const RwV4d* position,
                    u32* direction, void* result)
 {
@@ -1749,19 +1756,19 @@ void func_001ad050(void* collisionWorld, const RwV4d* position,
         dst++;
     } while (i > 0);
     resources.position = *position;
-    resources.output = result;
     FUN_004916d0(collisionWorld, func_001acfc0, &resources);
 }
 
-// FUN_001ad120 NONMATCHING
+// FUN_001ad120
 void* func_001ad120(void* unused, void* collision, FldFrameAtomicQuery* query)
 {
     void* geometry;
     void* entry;
     u8* triangles;
     u8* triangle;
-    void** materials;
+    u32 offset;
     u32 materialIndex;
+    void** materials;
     void* material;
     s32 i;
 
@@ -1770,12 +1777,13 @@ void* func_001ad120(void* unused, void* collision, FldFrameAtomicQuery* query)
     entry = *(void**)((u8*)geometry + 8);
     entry = (void*)((uintptr_t)entry | 0x40);
     *(void**)((u8*)geometry + 8) = entry;
-    triangle = (u8*)((*(u32*)((u8*)collision + 0x18) * 8) +
-                     (u32)triangles);
+    offset = *(u32*)((u8*)collision + 0x18) * 8;
+    offset += (u32)triangles;
+    triangle = (u8*)offset;
     materialIndex = *(u16*)(triangle + 6);
     materials = *(void***)((u8*)geometry + 0x20);
     material = materials[materialIndex];
-    if (!K_Clump_MatUsrDataHasData(material, D_00678CE0))
+    if (!K_Clump_MatUsrDataHasData_typed(material, D_00678CE0_typed))
     {
         return collision;
     }
@@ -1784,7 +1792,9 @@ void* func_001ad120(void* unused, void* collision, FldFrameAtomicQuery* query)
     {
         void** slot;
 
-        slot = (void**)((u8*)query->output + 0x108 + i * 4);
+        slot = (void**)query->output;
+        slot += i;
+        slot = (void**)((u8*)slot + 0x108);
         if (*slot == NULL)
         {
             *slot = query->atomic;
