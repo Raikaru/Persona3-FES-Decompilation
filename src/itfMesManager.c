@@ -120,6 +120,8 @@ u32 FUN_003a4a70(int param_1,short param_2,short param_3);
 u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3);
 void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
+#pragma alias FUN_003a4dd0_typed FUN_003a4dd0
+extern void FUN_003a4dd0_typed(int param_1);
 void FUN_003a4ef0(long param_1);
 void FUN_0035ac90(int output, int source, int end, u32 length);
 void FUN_003a5030(int param_1);
@@ -326,7 +328,7 @@ found:
     return result;
 }
 
-// FUN_003a3060 NONMATCHING
+// FUN_003a3060
 void itfMesMngDestroyHandle(s32 mesHandleIdx)
 {
     if (mesHandleIdx >= 0
@@ -334,7 +336,7 @@ void itfMesMngDestroyHandle(s32 mesHandleIdx)
                        + mesHandleIdx * ITFMES_HANDLE_STRIDE
                        + ITFMES_HANDLE_ACTIVE_MES_OFFSET) != NULL)
     {
-        FUN_003a4dd0(mesHandleIdx);
+        FUN_003a4dd0_typed(mesHandleIdx);
     }
 }
 
