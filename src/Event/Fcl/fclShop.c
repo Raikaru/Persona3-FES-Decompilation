@@ -3662,7 +3662,9 @@ u64 FUN_003e94f0(u64 param_1,u64 param_2)
 
 }
 
-// FUN_003E96F0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_003E96F0
 
 
 u64 FUN_003e96f0(u64 param_1,u64 param_2)
@@ -3685,17 +3687,23 @@ u64 FUN_003e96f0(u64 param_1,u64 param_2)
 
     FUN_0040cad0(*(u32 *)(iVar2 + 0x10));
 
-  }
-
-  else if ((*(u32 *)(iVar2 + 4) & 2) == 0) {
-
-    FUN_00400690(*(u32 *)(iVar2 + 0xc));
+    goto done;
 
   }
 
+  if ((*(u32 *)(iVar2 + 4) & 2) != 0) {
+
+    return 0;
+
+  }
+
+  FUN_00400690(*(u32 *)(iVar2 + 0xc));
+
+done:
   return 0;
 
 }
+#pragma pop
 
 // FUN_003E9790
 
