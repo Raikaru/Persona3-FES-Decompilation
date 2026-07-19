@@ -1667,17 +1667,37 @@ void h_campStatusRenderMode(CampVec2 position, f32 scale, void* persona,
 void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
                                 s32 stat, s32 alpha)
 {
-    (void)scale;
-    h_campStatusDrawStatIcon(0x42c80000, position, stat, alpha);
+    switch (stat) {
+    case 0:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0, (u8)alpha, position.x + 29.0f, position.y + 50.0f, scale);
+        break;
+    case 1:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 1, (u8)alpha, position.x + 69.0f, position.y + 50.0f, scale);
+        break;
+    case 2:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 2, (u8)alpha, position.x + 109.0f, position.y + 50.0f, scale);
+        break;
+    case 3:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 3, (u8)alpha, position.x + 159.0f, position.y + 50.0f, scale);
+        break;
+    case 4:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 4, (u8)alpha, position.x + 199.0f, position.y + 50.0f, scale);
+        break;
+    case 5:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 5, (u8)alpha, position.x + 239.0f, position.y + 50.0f, scale);
+        break;
+    case 6:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 6, (u8)alpha, position.x + (f32)279, position.y + 50.0f, scale);
+        break;
+    case 7:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 7, (u8)alpha, position.x + (f32)319, position.y + 50.0f, scale);
+        break;
+    case 8:
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 8, (u8)alpha, position.x + (f32)359, position.y + 50.0f, scale);
+        break;
+    }
 }
 
-// FUN_00128480 NONMATCHING
-void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
-                                s32 alpha)
-{
-    (void)scale;
-    h_campStatusDrawStatIcons(0x42c80000, position, persona, alpha);
-}
 
 // FUN_00128720 NONMATCHING
 void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
@@ -1750,6 +1770,73 @@ void h_campStatusDrawStatValues(CampVec2 position, f32 scale, void* bonus,
     position.x + 85.0f, position.y + 131.0f + 76.0f - 25.0f, scale);
 }
 
+// FUN_00128480 NONMATCHING
+void h_campStatusDrawStatLabels(CampVec2 position, f32 scale, void* persona,
+                                s32 alpha)
+{
+    u32 parent;
+    s32 i;
+    s32 value;
+    s32 frame;
+
+    position.x += 32.0f;
+    position.y += 72.0f;
+    for (i = 0; i < 9; i++) {
+        switch (i) {
+        case 0:
+            value = FUN_00173660(persona, 0);
+            break;
+        case 1:
+            value = FUN_00173660(persona, 1);
+            break;
+        case 2:
+            value = FUN_00173660(persona, 2);
+            break;
+        case 3:
+            value = FUN_00173660(persona, 3);
+            break;
+        case 4:
+            value = FUN_00173660(persona, 4);
+            break;
+        case 5:
+            value = FUN_00173660(persona, 5);
+            break;
+        case 6:
+            value = FUN_00173660(persona, 6);
+            break;
+        case 7:
+            value = FUN_00173660(persona, 8);
+            break;
+        case 8:
+            value = FUN_00173660(persona, 9);
+            break;
+        }
+        frame = 15;
+        if ((value & 0x4000000) != 0) {
+            frame = 13;
+        }
+        else if ((value & 0x2000000) != 0) {
+            frame = 14;
+        }
+        else if ((value & 0x1000000) != 0) {
+            frame = 12;
+        }
+        else if ((value & 0x10000000) != 0) {
+            frame = 11;
+        }
+        else if ((value & 0x8000000) != 0) {
+            frame = 10;
+        }
+        campStatusDrawSpriteCall(parent, DAT_00833B98, frame, (u8)alpha,
+                                 position.x, position.y, scale);
+        if (i == 2) {
+            position.x = 162.0f;
+        }
+        else {
+            position.x += 40.0f;
+        }
+    }
+}
 // FUN_00128C40 NONMATCHING
 void h_campStatusDrawSkillValues(CampVec2 position, f32 scale, void* bonus,
                                  void* persona, s32 alpha)
