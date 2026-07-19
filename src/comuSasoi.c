@@ -78,7 +78,7 @@ u32 FUN_003c2570(u64 param_1)
 
   if (lVar3 == 0) {
 
-    FUN_0019d3f0(0x6a3318,0x104);
+    FUN_0019d3f0("comuSasoi.c",0x104);
 
   }
 
@@ -164,7 +164,7 @@ u32 FUN_003c2630(u32 param_1,u64 param_2,u64 param_3)
 
       if (lVar4 == 0) {
 
-        FUN_0019d3f0(0x6a3318,0x34a);
+        FUN_0019d3f0("comuSasoi.c",0x34a);
 
       }
 
@@ -224,7 +224,7 @@ u8 * FUN_003c2780(u32 param_1)
 
     if (iVar3 <= iVar6) {
 
-      FUN_0019d3f0(0x6a3318,0x3cd);
+      FUN_0019d3f0("comuSasoi.c",0x3cd);
 
       return (u8 *)0x0;
 
@@ -238,7 +238,7 @@ u8 * FUN_003c2780(u32 param_1)
 
       if (lVar4 == 0) {
 
-        FUN_0019d3f0(0x6a3318,0x3c1);
+        FUN_0019d3f0("comuSasoi.c",0x3c1);
 
       }
 
@@ -730,7 +730,7 @@ u32 * FUN_003c2ee0(long param_1)
 
   if (0x1d < param_1) {
 
-    FUN_0019d3f0(0x6a3318,0x558);
+    FUN_0019d3f0("comuSasoi.c",0x558);
 
   }
 
@@ -966,7 +966,7 @@ u32 FUN_003c3190(int *param_1)
 
     if (lVar7 != 0) {
 
-      FUN_0019d3f0(0x6a3318,0x5b5);
+      FUN_0019d3f0("comuSasoi.c",0x5b5);
 
     }
 
@@ -1032,7 +1032,7 @@ LAB_003c3274:
 
         if (lVar7 == 0) {
 
-          FUN_0019d3f0(0x6a3318,0x5d6);
+          FUN_0019d3f0("comuSasoi.c",0x5d6);
 
         }
 

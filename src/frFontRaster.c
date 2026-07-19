@@ -68,7 +68,7 @@ void FUN_003b35e0(int param_1)
 
   if (piGpffffb954 != (int *)0x0) {
 
-    FUN_0019d3f0(0x6a2898,0x24);
+    FUN_0019d3f0("frFontRaster.c",0x24);
 
   }
 
@@ -426,7 +426,7 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u64 param_4,short param_5,u32
 
   if (*(int *)(iVar5 + 0x1c) == 0) {
 
-    FUN_0019d3f0(0x6a2898,0x99);
+    FUN_0019d3f0("frFontRaster.c",0x99);
 
   }
 
@@ -610,7 +610,7 @@ u32 FUN_003b3e60(u32 param_1,long param_2,u64 param_3)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a2898,0x123);
+    FUN_0019d3f0("frFontRaster.c",0x123);
 
   }
 
@@ -714,7 +714,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
     FUN_005225a8(0x6a29f0);
 
-    FUN_0019d3f0(0x6a2898,0x179);
+    FUN_0019d3f0("frFontRaster.c",0x179);
 
   }
 
@@ -790,7 +790,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
     if (lVar3 == 0) {
 
-      FUN_0019d3f0(0x6a2898,0x1ac);
+      FUN_0019d3f0("frFontRaster.c",0x1ac);
 
     }
 

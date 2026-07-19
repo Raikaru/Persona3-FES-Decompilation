@@ -479,7 +479,7 @@ u32 FUN_003b88c0(u32 param_1,long param_2,u32 *param_3,long param_4)
 
       if (lVar3 == 0) {
 
-        FUN_0019d3f0(0x6a2dd8,0x23b);
+        FUN_0019d3f0("mt_sceneFunc.c",0x23b);
 
       }
 
@@ -2461,7 +2461,7 @@ u32 FUN_003bac40(Resrc *param_1,u32 param_2)
 
             if (lVar5 == 0) {
 
-              FUN_0019d3f0(0x6a2dd8,0x69a);
+              FUN_0019d3f0("mt_sceneFunc.c",0x69a);
 
             }
 
@@ -2519,7 +2519,7 @@ u32 FUN_003bac40(Resrc *param_1,u32 param_2)
 
           if (lVar5 == 0) {
 
-            FUN_0019d3f0(0x6a2dd8,0x6b3);
+            FUN_0019d3f0("mt_sceneFunc.c",0x6b3);
 
           }
 
@@ -2555,7 +2555,7 @@ u32 FUN_003bac40(Resrc *param_1,u32 param_2)
 
             if (*(int *)(puVar8 + 0x84) == 0) {
 
-              FUN_0019d3f0(0x6a2dd8,0x6c8);
+              FUN_0019d3f0("mt_sceneFunc.c",0x6c8);
 
             }
 
@@ -2613,7 +2613,7 @@ u32 FUN_003bac40(Resrc *param_1,u32 param_2)
 
           if (lVar5 == 0) {
 
-            FUN_0019d3f0(0x6a2dd8,0x6e3);
+            FUN_0019d3f0("mt_sceneFunc.c",0x6e3);
 
           }
 
@@ -3758,7 +3758,7 @@ float FUN_003bbed0(float param_1,float param_2,u32 param_3)
 
   if (5 < param_3) {
 
-    FUN_0019d3f0(0x6a2dd8,0x980);
+    FUN_0019d3f0("mt_sceneFunc.c",0x980);
 
   }
 

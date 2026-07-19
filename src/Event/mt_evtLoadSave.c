@@ -150,7 +150,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
   if (param_2 == 1) {
 
-    FUN_0019d3f0(0x6a0b00,0x1fe);
+    FUN_0019d3f0("mt_evtLoadSave.c",0x1fe);
 
   }
 
@@ -770,7 +770,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
       default:
 
-        FUN_0019d3f0(0x6a0b00,0x324);
+        FUN_0019d3f0("mt_evtLoadSave.c",0x324);
 
       }
 
@@ -996,7 +996,7 @@ u32 FUN_0038e860(long param_1,u64 param_2)
 
     if ((lVar2 == 0) || (lVar3 == 0)) {
 
-      FUN_0019d3f0(0x6a0b00,0x536);
+      FUN_0019d3f0("mt_evtLoadSave.c",0x536);
 
     }
 
@@ -1856,7 +1856,7 @@ void FUN_0038f440(int param_1,u64 param_2,int param_3)
 
     if (*(int *)(iVar7 + 0x40) == 0) {
 
-      FUN_0019d3f0(0x6a0b00,0x6e1);
+      FUN_0019d3f0("mt_evtLoadSave.c",0x6e1);
 
     }
 
@@ -3289,7 +3289,7 @@ void FUN_00390ef0(u64 param_1,u64 param_2)
 
       if (lVar6 == 0) {
 
-        FUN_0019d3f0(0x6a0b00,0x9b7);
+        FUN_0019d3f0("mt_evtLoadSave.c",0x9b7);
 
       }
 
@@ -3459,7 +3459,7 @@ void FUN_00391080(u64 param_1,u64 param_2)
 
         }
 
-        FUN_0019d3f0(0x6a0b00,0x7e7);
+        FUN_0019d3f0("mt_evtLoadSave.c",0x7e7);
 
 LAB_00391290:
         ;
@@ -4614,7 +4614,7 @@ u32 FUN_003912f0(u64 param_1,u64 param_2)
 
               if (lVar13 == 0) {
 
-                FUN_0019d3f0(0x6a0b00,0xcd3);
+                FUN_0019d3f0("mt_evtLoadSave.c",0xcd3);
 
               }
 
@@ -4656,7 +4656,7 @@ u32 FUN_003912f0(u64 param_1,u64 param_2)
 
                 if (lVar13 == 0) {
 
-                  FUN_0019d3f0(0x6a0b00,0xcf5);
+                  FUN_0019d3f0("mt_evtLoadSave.c",0xcf5);
 
                 }
 
@@ -4694,7 +4694,7 @@ u32 FUN_003912f0(u64 param_1,u64 param_2)
 
                 if (lVar23 == 0) {
 
-                  FUN_0019d3f0(0x6a0b00,0xd14);
+                  FUN_0019d3f0("mt_evtLoadSave.c",0xd14);
 
                 }
 
@@ -4944,7 +4944,7 @@ u32 FUN_003912f0(u64 param_1,u64 param_2)
 
           if (sVar4 == 0x13) {
 
-            FUN_0019d3f0(0x6a0b00,0xd8f);
+            FUN_0019d3f0("mt_evtLoadSave.c",0xd8f);
 
             if (*(int *)(*(int *)(iVar24 + 0x84) + 0x14) == 4) {
 
@@ -5742,7 +5742,7 @@ u32 FUN_003912f0(u64 param_1,u64 param_2)
 
         }
 
-        FUN_0019d3f0(0x6a0b00,0x7e7);
+        FUN_0019d3f0("mt_evtLoadSave.c",0x7e7);
 
 LAB_00392bb0:
         ;

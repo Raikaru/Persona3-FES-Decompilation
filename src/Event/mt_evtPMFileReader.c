@@ -110,7 +110,7 @@ u64 FUN_00397950(void)
 
         if (piVar2[0xe] == 0) {
 
-          FUN_0019d3f0(0x6a1090,0x76);
+          FUN_0019d3f0("mt_evtPMFileReader.c",0x76);
 
         }
 
@@ -160,7 +160,7 @@ u64 FUN_00397950(void)
 
         if (piVar2[0xf] == 0) {
 
-          FUN_0019d3f0(0x6a1090,0x91);
+          FUN_0019d3f0("mt_evtPMFileReader.c",0x91);
 
         }
 
@@ -502,7 +502,7 @@ u8 FUN_00398060(u64 param_1)
 
   if (lVar2 == 0) {
 
-    FUN_0019d3f0(0x6a1090,0x115);
+    FUN_0019d3f0("mt_evtPMFileReader.c",0x115);
 
   }
 
@@ -530,7 +530,7 @@ void FUN_003980e0(u64 param_1)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a1090,0x127);
+    FUN_0019d3f0("mt_evtPMFileReader.c",0x127);
 
   }
 
@@ -572,7 +572,7 @@ FUN_00398140(u64 param_1,u32 *param_2,u32 *param_3,u32 *param_4,int *param_5)
 
   if (lVar3 == 0) {
 
-    FUN_0019d3f0(0x6a1090,0x115);
+    FUN_0019d3f0("mt_evtPMFileReader.c",0x115);
 
   }
 
@@ -644,7 +644,7 @@ u8 FUN_003982d0(u64 param_1)
 
   if (lVar3 == 0) {
 
-    FUN_0019d3f0(0x6a1090,0x115);
+    FUN_0019d3f0("mt_evtPMFileReader.c",0x115);
 
   }
 
@@ -652,7 +652,7 @@ u8 FUN_003982d0(u64 param_1)
 
   if (*piVar1 != 7) {
 
-    FUN_0019d3f0(0x6a1090,0x175);
+    FUN_0019d3f0("mt_evtPMFileReader.c",0x175);
 
   }
 

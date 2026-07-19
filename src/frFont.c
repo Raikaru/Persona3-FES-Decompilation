@@ -253,7 +253,7 @@ void FUN_003afad0(u32 param_1,long param_2,long param_3)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x3ff);
+    FUN_0019d3f0("frFont.c",0x3ff);
 
   }
 
@@ -541,7 +541,7 @@ void FUN_003afe30(void)
 
       if ((&DAT_0095ad0c)[uVar1 * 8] == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x432);
+        FUN_0019d3f0("frFont.c",0x432);
 
       }
 
@@ -897,7 +897,7 @@ int FUN_003b03a0(void)
 
   if (iVar1 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x644);
+    FUN_0019d3f0("frFont.c",0x644);
 
   }
 
@@ -955,7 +955,7 @@ void FUN_003b0430(int param_1,u64 param_2)
 
       if (lVar4 == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x6c2);
+        FUN_0019d3f0("frFont.c",0x6c2);
 
       }
 
@@ -1321,7 +1321,7 @@ long FUN_003b0970(long param_1,u8 param_2,u8 param_3,u8 param_4,long param_5)
 
       if (param_5 == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x7da);
+        FUN_0019d3f0("frFont.c",0x7da);
 
       }
 
@@ -1365,7 +1365,7 @@ long FUN_003b0970(long param_1,u8 param_2,u8 param_3,u8 param_4,long param_5)
 
       if (iVar3 == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x7ef);
+        FUN_0019d3f0("frFont.c",0x7ef);
 
       }
 
@@ -1448,7 +1448,7 @@ void FUN_003b0c20(long param_1,u16 param_2)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x82c);
+    FUN_0019d3f0("frFont.c",0x82c);
 
   }
 
@@ -1520,7 +1520,7 @@ void FUN_003b0d70(long param_1,u32 param_2,u32 param_3)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x88c);
+    FUN_0019d3f0("frFont.c",0x88c);
 
   }
 
@@ -2918,7 +2918,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
         if (iVar6 == 0) {
 
-          FUN_0019d3f0(0x6a2730,0x818);
+          FUN_0019d3f0("frFont.c",0x818);
 
         }
 
@@ -2942,7 +2942,7 @@ void FUN_003b1d90(u32 param_1,int param_2)
 
       if (lVar8 == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x848);
+        FUN_0019d3f0("frFont.c",0x848);
 
       }
 
@@ -3094,7 +3094,7 @@ void FUN_003b2020(long param_1,int param_2)
 
         if (iVar5 == 0) {
 
-          FUN_0019d3f0(0x6a2730,0x818);
+          FUN_0019d3f0("frFont.c",0x818);
 
         }
 
@@ -3118,7 +3118,7 @@ void FUN_003b2020(long param_1,int param_2)
 
       if (lVar7 == 0) {
 
-        FUN_0019d3f0(0x6a2730,0x848);
+        FUN_0019d3f0("frFont.c",0x848);
 
       }
 
@@ -3194,7 +3194,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (iVar6 == 0) {
 
-      FUN_0019d3f0(0x6a2730,0x818);
+      FUN_0019d3f0("frFont.c",0x818);
 
     }
 
@@ -3210,7 +3210,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (puVar3 == (u16 *)0x0) {
 
-      FUN_0019d3f0(0x6a2730,0x82c);
+      FUN_0019d3f0("frFont.c",0x82c);
 
     }
 
@@ -3230,7 +3230,7 @@ void FUN_003b22a0(u32 *param_1)
 
     if (iVar6 == 0) {
 
-      FUN_0019d3f0(0x6a2730,0x88c);
+      FUN_0019d3f0("frFont.c",0x88c);
 
     }
 
@@ -3386,7 +3386,7 @@ u32 FUN_003b2430(u64 param_1)
 
           if (puVar4 == (u16 *)0x0) {
 
-            FUN_0019d3f0(0x6a2730,0x82c);
+            FUN_0019d3f0("frFont.c",0x82c);
 
           }
 
@@ -3406,7 +3406,7 @@ u32 FUN_003b2430(u64 param_1)
 
           if (iVar10 == 0) {
 
-            FUN_0019d3f0(0x6a2730,0x88c);
+            FUN_0019d3f0("frFont.c",0x88c);
 
           }
 
@@ -3502,7 +3502,7 @@ u32 FUN_003b2430(u64 param_1)
 
         if (iVar6 == 0) {
 
-          FUN_0019d3f0(0x6a2730,0x848);
+          FUN_0019d3f0("frFont.c",0x848);
 
         }
 
@@ -3524,7 +3524,7 @@ u32 FUN_003b2430(u64 param_1)
 
         if (iVar10 == 0) {
 
-          FUN_0019d3f0(0x6a2730,0x8a5);
+          FUN_0019d3f0("frFont.c",0x8a5);
 
         }
 
@@ -3542,13 +3542,13 @@ u32 FUN_003b2430(u64 param_1)
 
     if (0x4c < bVar1) {
 
-      FUN_0019d3f0(0x6a2730,0xdf9);
+      FUN_0019d3f0("frFont.c",0xdf9);
 
     }
 
     if (bVar1 < 2) {
 
-      FUN_0019d3f0(0x6a2730,0xdfa);
+      FUN_0019d3f0("frFont.c",0xdfa);
 
     }
 

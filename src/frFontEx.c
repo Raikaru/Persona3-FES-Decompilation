@@ -40,7 +40,7 @@ void FUN_003b2c60(u32 param_1,long param_2)
 
   if (param_2 == 0) {
 
-    FUN_0019d3f0(0x6a2888,0x13);
+    FUN_0019d3f0("frFontEx.c",0x13);
 
   }
 
@@ -144,7 +144,7 @@ int FUN_003b2cb0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x88c);
+    FUN_0019d3f0("frFont.c",0x88c);
 
   }
 
@@ -154,7 +154,7 @@ int FUN_003b2cb0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2888,0x13);
+    FUN_0019d3f0("frFontEx.c",0x13);
 
   }
 
@@ -228,7 +228,7 @@ int FUN_003b2f90(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x848);
+    FUN_0019d3f0("frFont.c",0x848);
 
   }
 
@@ -296,7 +296,7 @@ int FUN_003b2f90(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x88c);
+    FUN_0019d3f0("frFont.c",0x88c);
 
   }
 
@@ -306,7 +306,7 @@ int FUN_003b2f90(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2888,0x13);
+    FUN_0019d3f0("frFontEx.c",0x13);
 
   }
 
@@ -434,7 +434,7 @@ int FUN_003b32d0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2730,0x88c);
+    FUN_0019d3f0("frFont.c",0x88c);
 
   }
 
@@ -444,7 +444,7 @@ int FUN_003b32d0(u32 param_1,int param_2,int param_3,u32 param_4,u64 param_5,
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0(0x6a2888,0x13);
+    FUN_0019d3f0("frFontEx.c",0x13);
 
   }
 

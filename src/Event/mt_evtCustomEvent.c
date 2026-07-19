@@ -218,7 +218,7 @@ int FUN_003983e0(int param_1,u64 param_2)
 
   if ((0x16c < iVar2 + 5) || (iVar2 + 5 < 0)) {
 
-    FUN_0019d3f0(0x6a1200,0x110);
+    FUN_0019d3f0("mt_evtCustomEvent.c",0x110);
 
   }
 
@@ -368,7 +368,7 @@ u32 FUN_00398530(int param_1)
 
       if (lVar10 == 0) {
 
-        FUN_0019d3f0(0x6a1200,399);
+        FUN_0019d3f0("mt_evtCustomEvent.c",399);
 
       }
 
@@ -456,7 +456,7 @@ u32 FUN_00398530(int param_1)
 
     else if (lVar10 == 0) {
 
-      FUN_0019d3f0(0x6a1200,0x1b4);
+      FUN_0019d3f0("mt_evtCustomEvent.c",0x1b4);
 
     }
 
@@ -496,7 +496,7 @@ u32 FUN_00398530(int param_1)
 
       if (acStack_140[0] < '\x01') {
 
-        FUN_0019d3f0(0x6a1200,0x1df);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0x1df);
 
       }
 
@@ -2322,7 +2322,7 @@ u32 FUN_0039a8a0(int param_1)
 
         if (lVar10 == 0) {
 
-          FUN_0019d3f0(0x6a1200,0x6b7);
+          FUN_0019d3f0("mt_evtCustomEvent.c",0x6b7);
 
         }
 
@@ -2944,7 +2944,7 @@ u32 FUN_0039a8a0(int param_1)
 
     if (lVar10 == 0) {
 
-      FUN_0019d3f0(0x6a1200,0x896);
+      FUN_0019d3f0("mt_evtCustomEvent.c",0x896);
 
     }
 
@@ -3236,7 +3236,7 @@ u32 FUN_0039b950(u64 param_1)
 
       if (acStack_140[0] < '\x01') {
 
-        FUN_0019d3f0(0x6a1200,0x991);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0x991);
 
       }
 
@@ -3744,7 +3744,7 @@ u32 FUN_0039c440(int param_1)
 
     if (lVar9 == 0) {
 
-      FUN_0019d3f0(0x6a1200,0xb69);
+      FUN_0019d3f0("mt_evtCustomEvent.c",0xb69);
 
     }
 
@@ -3760,7 +3760,7 @@ u32 FUN_0039c440(int param_1)
 
       if (3 < iVar6) {
 
-        FUN_0019d3f0(0x6a1200,0xb1f);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0xb1f);
 
       }
 
@@ -3900,7 +3900,7 @@ u32 FUN_0039c440(int param_1)
 
     if (3 < iVar4) {
 
-      FUN_0019d3f0(0x6a1200,0xb1f);
+      FUN_0019d3f0("mt_evtCustomEvent.c",0xb1f);
 
     }
 
@@ -4086,7 +4086,7 @@ u32 FUN_0039c440(int param_1)
 
       else {
 
-        FUN_0019d3f0(0x6a1200,0xbfe);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0xbfe);
 
       }
 
@@ -4116,7 +4116,7 @@ u32 FUN_0039c440(int param_1)
 
       else {
 
-        FUN_0019d3f0(0x6a1200,0xc0e);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0xc0e);
 
       }
 
@@ -4174,7 +4174,7 @@ u32 FUN_0039c440(int param_1)
 
     else {
 
-      FUN_0019d3f0(0x6a1200,0xc2f);
+      FUN_0019d3f0("mt_evtCustomEvent.c",0xc2f);
 
     }
 
@@ -4466,7 +4466,7 @@ u32 FUN_0039d010(u64 param_1)
 
         if ((*(u32 *)(iVar7 + 4) & 8) != 0) {
 
-          FUN_0019d3f0(0x6a1200,0xd88);
+          FUN_0019d3f0("mt_evtCustomEvent.c",0xd88);
 
           return 0xffffffff;
 
@@ -5044,7 +5044,7 @@ u32 FUN_0039d8e0(int param_1)
 
         if (lVar6 == 0) {
 
-          FUN_0019d3f0(0x6a1200,0xf23);
+          FUN_0019d3f0("mt_evtCustomEvent.c",0xf23);
 
         }
 
@@ -5744,7 +5744,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
   if (*(int *)(param_1 + 0x938) == 0) {
 
-    FUN_0019d3f0(0x6a1200,0x11b8);
+    FUN_0019d3f0("mt_evtCustomEvent.c",0x11b8);
 
   }
 
