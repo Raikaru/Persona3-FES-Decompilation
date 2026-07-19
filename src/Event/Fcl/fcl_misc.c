@@ -1377,7 +1377,7 @@ void FUN_003c9570(u64 param_1)
 #define FUN_003c9570(...) ((void (*)(...))FUN_003c9570)(__VA_ARGS__)
 #undef FUN_003c9570
 #undef FUN_003c9790
-// FUN_003C9790 NONMATCHING
+// FUN_003C9790
 
 
 u8 FUN_003c9790(u64 param_1)
@@ -1395,6 +1395,13 @@ u8 FUN_003c9790(u64 param_1)
   FUN_003a27c0(*state, -1);
   return 1;
 }
+
+// FUN_003C9840
+int FUN_003c9840(void)
+{
+  return 0;
+}
+
 #define FUN_003c9570(...) ((void (*)(...))FUN_003c9570)(__VA_ARGS__)
 #define FUN_003c9790(...) ((u8 (*)(...))FUN_003c9790)(__VA_ARGS__)
 #undef FUN_003c9850
