@@ -775,28 +775,33 @@ done:
 }
 
 
-// FUN_00386C40 NONMATCHING
+// FUN_00386C40
 
 
 void FUN_00386c40(int param_1,int param_2)
 
 {
+  int* p;
+
   if (param_1 >= 0xd) goto done_index;
   if (param_1 < 0) goto done_index;
-  if (param_1 == 6) goto assign_value;
-  if (param_1 == 5) goto assign_value;
-  if (param_1 == 4) goto assign_value;
-  if (!(param_1 != 0)) goto assign_value;
-  goto add_value;
-assign_value:
-  *(int *)(&DAT_00958a60 + param_1 * 4) = param_2;
-  goto done_index;
-add_value:
-  *(int *)(&DAT_00958a60 + param_1 * 4) =
-      *(int *)(&DAT_00958a60 + param_1 * 4) + param_2;
+  switch (param_1) {
+  case 0:
+  case 4:
+  case 5:
+  case 6:
+    p = (int *)((u8 *)DAT_00958a60_abs + (param_1 << 2));
+    *p = param_2;
+    goto done_index;
+  default:
+    p = ((int *)DAT_00958a60_abs) + param_1;
+    *p = *p + param_2;
+    goto done_index;
+  }
 done_index:
   return;
 }
+
 
 
 // FUN_00386CD0 NONMATCHING
