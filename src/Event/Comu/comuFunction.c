@@ -12,7 +12,7 @@ extern u32 DAT_007ce66c;
 extern u32 DAT_0095b074;
 extern u8 DAT_0095b070[];
 extern u32 FUN_0035bb40(u32 param_1,u32 param_2,u32 param_3);
-extern void FUN_0019d3f0(u32 param_1,u32 param_2);
+extern void FUN_0019d3f0(char* param_1,u32 param_2);
 extern u32 FUN_0017e050(long param_1,long param_2,long param_3);
 extern u32 FUN_0027c2b0(void);
 extern u32 FUN_0027c330(void);
@@ -149,7 +149,7 @@ void FUN_003bdbd0(int param_1)
 
         if (lVar4 == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x1b6);
+          FUN_0019d3f0("comuFunction.c",0x1b6);
 
         }
 
@@ -419,7 +419,7 @@ u64 FUN_003bded0(u64 param_1)
 }
 #define FUN_003bded0(...) ((u64 (*)(...))FUN_003bded0)(__VA_ARGS__)
 #undef FUN_003bdfc0
-// FUN_003BDFC0 NONMATCHING
+// FUN_003BDFC0
 
 
 u8 FUN_003bdfc0(int param_1)
@@ -436,7 +436,7 @@ u8 FUN_003bdfc0(int param_1)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a3280,0x291);
+    FUN_0019d3f0("comuFunction.c",0x291);
 
   }
 
@@ -666,7 +666,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u64 param_5)
 
   if (lVar6 == 0) {
 
-    FUN_0019d3f0(0x6a3280,0x32a);
+    FUN_0019d3f0("comuFunction.c",0x32a);
 
   }
 
@@ -702,7 +702,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u64 param_5)
 
         if (*(int *)(&DAT_0095b4f0 + iVar9 * 4) == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x339);
+          FUN_0019d3f0("comuFunction.c",0x339);
 
         }
 
@@ -754,7 +754,7 @@ u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u64 param_5)
 
         if (*(int *)(&DAT_0095b568 + iVar9 * 4) == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x351);
+          FUN_0019d3f0("comuFunction.c",0x351);
 
         }
 
@@ -832,7 +832,7 @@ LAB_003be5a0:
 
         if (pbVar7 == (u8 *)0x0) {
 
-          FUN_0019d3f0(0x6a3280,0x365);
+          FUN_0019d3f0("comuFunction.c",0x365);
 
         }
 
@@ -892,7 +892,7 @@ LAB_003be5a0:
 
         if (*(int *)(&DAT_0095b4f0 + iVar9 * 4) == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x37d);
+          FUN_0019d3f0("comuFunction.c",0x37d);
 
         }
 
@@ -918,7 +918,7 @@ LAB_003be5a0:
 
         if (lVar6 == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x388);
+          FUN_0019d3f0("comuFunction.c",0x388);
 
         }
 
@@ -960,7 +960,7 @@ LAB_003be5a0:
 
         if (iVar9 == 0) {
 
-          FUN_0019d3f0(0x6a3280,0x3b3);
+          FUN_0019d3f0("comuFunction.c",0x3b3);
 
           return 0;
 
@@ -976,7 +976,7 @@ LAB_003be5a0:
 
           if ((cVar4 < '\x02') || ('\t' < cVar4)) {
 
-            FUN_0019d3f0(0x6a3280,0x3ca);
+            FUN_0019d3f0("comuFunction.c",0x3ca);
 
           }
 
@@ -1048,7 +1048,7 @@ u32 FUN_003be8e0(long param_1,u64 param_2)
 
   if ((0x1d < param_1) || (param_1 < 0)) {
 
-    FUN_0019d3f0(0x6a3280,1000);
+    FUN_0019d3f0("comuFunction.c",1000);
 
   }
 
@@ -1130,7 +1130,7 @@ u8 FUN_003bea20(int param_1,int param_2)
 
   if (!(param_1 < 4)) {
 
-    FUN_0019d3f0(0x6a3280,0x3f9);
+    FUN_0019d3f0("comuFunction.c",0x3f9);
 
   }
 
@@ -1139,7 +1139,7 @@ u8 FUN_003bea20(int param_1,int param_2)
   pbVar1 = (u8 *)(param_2 + 0x1e);
   if (!(*(u8 *)(param_2 + 0x1e) < 0x2a)) {
 
-    FUN_0019d3f0(0x6a3280,0x3fb);
+    FUN_0019d3f0("comuFunction.c",0x3fb);
 
   }
 
@@ -1188,7 +1188,7 @@ u32 FUN_003beab0(u32 param_1,u32 param_2,int *param_3)
 }
 #define FUN_003beab0(...) ((u32 (*)(...))FUN_003beab0)(__VA_ARGS__)
 #undef FUN_003beb10
-// FUN_003BEB10 NONMATCHING
+// FUN_003BEB10
 
 
 int FUN_003beb10(int param_1)
@@ -1196,19 +1196,21 @@ int FUN_003beb10(int param_1)
 
 
 {
+  u32 base;
 
   if ((param_1 < 0) || !(param_1 < 0x40)) {
 
-    FUN_0019d3f0(0x6a3280,0x416);
+    FUN_0019d3f0("comuFunction.c",0x416);
 
   }
 
-  return *(u32 *)0x0095b718 + param_1 * 0x20;
+  base = *(u32 *)0x0095b718;
+  return base + param_1 * 0x20;
 
 }
 #define FUN_003beb10(...) ((int (*)(...))FUN_003beb10)(__VA_ARGS__)
 #undef FUN_003beb70
-// FUN_003BEB70 NONMATCHING
+// FUN_003BEB70
 
 
 void FUN_003beb70(int param_1)
@@ -1225,7 +1227,7 @@ void FUN_003beb70(int param_1)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a3280,0x422);
+    FUN_0019d3f0("comuFunction.c",0x422);
 
   }
 
@@ -1236,7 +1238,7 @@ void FUN_003beb70(int param_1)
 }
 #define FUN_003beb70(...) ((void (*)(...))FUN_003beb70)(__VA_ARGS__)
 #undef FUN_003bebd0
-// FUN_003BEBD0 NONMATCHING
+// FUN_003BEBD0
 
 
 u8 FUN_003bebd0(int param_1)
@@ -1253,7 +1255,7 @@ u8 FUN_003bebd0(int param_1)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0(0x6a3280,0x42b);
+    FUN_0019d3f0("comuFunction.c",0x42b);
 
   }
 
@@ -1381,7 +1383,7 @@ int FUN_003beca0(int param_1)
 
           if (lVar9 == 0) {
 
-            FUN_0019d3f0(0x6a3280,0x42b);
+            FUN_0019d3f0("comuFunction.c",0x42b);
 
           }
 
@@ -1485,7 +1487,7 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
         if (0xe < iVar13) {
 
-          FUN_0019d3f0(0x6a3280,0x4b2);
+          FUN_0019d3f0("comuFunction.c",0x4b2);
 
         }
 
@@ -1503,7 +1505,7 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
     if (0xe < iVar13) {
 
-      FUN_0019d3f0(0x6a3280,0x4c4);
+      FUN_0019d3f0("comuFunction.c",0x4c4);
 
     }
 
@@ -1541,7 +1543,7 @@ u8 * FUN_003bee80(u16 param_1,int *param_2)
 
   if (iVar13 == 0) {
 
-    FUN_0019d3f0(0x6a3280,0x4dd);
+    FUN_0019d3f0("comuFunction.c",0x4dd);
 
   }
 
