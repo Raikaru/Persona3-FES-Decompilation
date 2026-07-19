@@ -55,7 +55,39 @@ u32 FUN_003d8370(long param_1,u32 param_2,u32 param_3);
 u32 FUN_003d84c0(u64 param_1,int param_2);
 u32 FUN_003d8630(int param_1,int param_2);
 void FUN_003d8850(u64 param_1,u32 param_2);
-void FUN_003d9820(u64 param_1,u32 param_2);
+typedef struct Fcm982Node Fcm982Node;
+typedef struct Fcm982Item Fcm982Item;
+typedef struct Fcm982Thing Fcm982Thing;
+typedef struct Fcm982Chain Fcm982Chain;
+typedef struct Fcm982Ctx Fcm982Ctx;
+typedef struct Fcm982Root Fcm982Root;
+typedef struct Fcm982Result Fcm982Result;
+struct Fcm982Thing {
+  u8 pad0[0x8]; void *unk8; u8 padc[0x14]; void *unk1c;
+  u8 pad20[0x40]; void *unk60;
+};
+struct Fcm982Node {
+  u8 pad0[0x10]; Fcm982Node *unk10; Fcm982Item *unk14;
+};
+struct Fcm982Item {
+  u8 pad0[0x1c]; Fcm982Thing *unk1c;
+};
+struct Fcm982Chain {
+  u8 pad0[0xc]; int unkc; u8 pad10[0x1c]; Fcm982Node *unk2c;
+};
+struct Fcm982Ctx {
+  u8 pad0[4]; Fcm982Node *unk4; u8 pad8[4]; Fcm982Node *unkc;
+  u8 pad10[0x14]; Fcm982Chain *unk24;
+};
+struct Fcm982Root {
+  u8 pad0[8]; void *unk8; Fcm982Ctx *unkc;
+};
+struct Fcm982Result {
+  u8 pad0[0x1a]; s16 unk1a; u8 pad1c[2]; s16 unk1e;
+  u8 pad20[0xa]; s16 unk2a; u8 pad2c[8]; void *unk34;
+};
+extern Fcm982Result *FUN_003e0330(void *param_1,int param_2,int param_3,int param_4);
+void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2);
 void FUN_003d9cc0(u64 param_1);
 void FUN_003d9ea0(u64 param_1);
 typedef int (*code)(...);
@@ -2955,31 +2987,147 @@ void FUN_003d8850(u64 param_1,u32 param_2)
 
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_003D9820 NONMATCHING
-
-
-void FUN_003d9820(u64 param_1,u32 param_2)
-
-
-
+void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
 {
+  int var_16;
+  Fcm982Result *temp_2;
+  Fcm982Ctx *temp_7;
+  Fcm982Node *var_18;
+  Fcm982Node *var_18_2;
+  Fcm982Node *var_18_3;
+  Fcm982Node *var_18_4;
 
-  if (param_2 < 8) {
-
-                    /* WARNING: Could not recover jumptable at 0x003d9864. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    (*(code *)(PTR_LAB_007bb820)[(int)param_2])();
-
-    return;
-
+  var_16 = 0;
+  temp_7 = arg0->unkc;
+  var_18 = temp_7->unk4;
+  switch (arg1) {
+  case 0:
+    if (arg2 == 0) {
+      var_18_2 = temp_7->unk24->unk2c;
+      while (var_18_2 != 0) {
+        temp_2 = FUN_003e0330(var_18_2->unk14->unk1c->unk8,0,0,
+          var_16 - (var_16 >> 2));
+        temp_2->unk1a =
+          (s16)(var_16 * -arg0->unkc->unk24->unkc);
+        var_18_2 = var_18_2->unk10;
+        var_16 += 1;
+      }
+      goto done;
+    }
+  case 1:
+    if (arg2 == 1) {
+      var_18_3 = temp_7->unk24->unk2c;
+      while (var_18_3 != 0) {
+        temp_2 = FUN_003e0330(var_18_3->unk14->unk1c->unk8,0,1,0);
+        temp_2->unk1e =
+          (s16)(var_16 * -arg0->unkc->unk24->unkc);
+        var_18_3 = var_18_3->unk10;
+        var_16 += 1;
+      }
+      goto done;
+    }
+  case 2:
+    if (arg2 == 3) {
+      var_18_4 = temp_7->unk24->unk2c;
+      while (var_18_4 != 0) {
+        temp_2 = FUN_003e0330(var_18_4->unk14->unk1c->unk8,0,1,0);
+        temp_2->unk1e = (s16)(var_16 * -arg0->unkc->unk24->unkc);
+        if (var_18_4 == arg0->unkc->unkc) {
+          temp_2->unk2a = 0xff;
+        }
+        var_18_4 = var_18_4->unk10;
+        var_16 += 1;
+      }
+      goto done;
+    }
+  default:
+    goto done;
+  case 3:
+    if (arg2 == 0) {
+      while (var_18 != 0) {
+        FUN_003e0330(var_18->unk14->unk1c->unk8,1,0,0);
+        var_18 = var_18->unk10;
+        var_16 += 1;
+      }
+      goto done;
+    }
+  case 4:
+    if (arg2 == 1) {
+      FUN_003e0330(temp_7->unkc->unk14->unk1c->unk8,1,1,0);
+      goto done;
+    }
+    if (arg2 == 3) {
+      FUN_003e0330(temp_7->unkc->unk14->unk1c->unk8,1,1,0);
+      goto done;
+    }
+    goto done;
+  case 5:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,2,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,2,1,0);
+      goto done;
+    }
+    goto done;
+  case 6:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,3,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,3,1,0);
+      goto done;
+    }
+    goto done;
+  case 7:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,4,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,4,1,0);
+    }
+    goto done;
+  case 8:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,5,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,5,1,0);
+      goto done;
+    }
+    goto done;
+  case 9:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,6,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,6,1,0);
+      goto done;
+    }
+    goto done;
+  case 10:
+    if (arg2 == 0) {
+      FUN_003e0330(arg0->unk8,7,0,0);
+      goto done;
+    }
+    if (arg2 == 1) {
+      FUN_003e0330(arg0->unk8,7,1,0);
+      goto done;
+    }
+    goto done;
   }
-
-  return;
-
+done:
+  ;
 }
-
+#pragma pop
 // FUN_003D9CC0 NONMATCHING
 
 
