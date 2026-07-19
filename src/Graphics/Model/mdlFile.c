@@ -8462,15 +8462,17 @@ void FUN_00324510(int param_1,u64 param_2)
 
 
 
-// FUN_003245B0 NONMATCHING
+// FUN_003245B0
 #pragma push
 #pragma opt_rebuildconditionals off
 int FUN_003245b0(int param_1)
 {
   int value;
+
   if (*(int *)(param_1 + 0x18) == 0) {
     goto check;
   }
+
   value = *(int *)(param_1 + 0x10);
   goto done;
 check:
@@ -8478,26 +8480,28 @@ check:
   if (value == 0) {
     goto zero;
   }
+
   value = (int)((u8 *)param_1 + value);
+  goto done;
+zero:
+  value = 0;
 done:
   return value;
-zero:
-  return 0;
 }
 #pragma pop
 
 
-
-
-// FUN_003245F0 NONMATCHING
+// FUN_003245F0
 #pragma push
 #pragma opt_rebuildconditionals off
 int FUN_003245f0(int param_1)
 {
   int value;
+
   if (*(int *)(param_1 + 0x28) == 0) {
     goto check;
   }
+
   value = *(int *)(param_1 + 0x20);
   goto done;
 check:
@@ -8505,10 +8509,13 @@ check:
   if (value == 0) {
     goto zero;
   }
+
+  value = (int)((u8 *)param_1 + value);
+  goto done;
+zero:
+  value = 0;
 done:
   return value;
-zero:
-  return 0;
 }
 #pragma pop
 
@@ -10409,41 +10416,40 @@ void FUN_00326190(u64 param_1,u64 param_2)
 
 
 
-// FUN_003261C0 NONMATCHING
-
-
+// FUN_003261C0
 #pragma push
-#pragma opt_rebuildconditionals off
 int FUN_003261c0(int param_1,int param_2)
 {
   int iVar1;
 
   iVar1 = *(int *)(param_1 + 0x8c);
-  goto next;
-compare:
-  if (*(int *)(iVar1 + 0x90) != param_2) goto next;
-  goto done;
-next:
-  iVar1 = *(int *)(iVar1 + 0xac);
-  if (iVar1 != 0) goto compare;
-  iVar1 = 0;
-done:
-  return iVar1;
+  while (iVar1 != 0) {
+    if (*(int *)(iVar1 + 0x90) == param_2) {
+      return iVar1;
+    }
+    iVar1 = *(int *)(iVar1 + 0xac);
+  }
+
+  return 0;
 }
 #pragma pop
 
 
 // FUN_00326200 NONMATCHING
 #pragma push
-#pragma opt_rebuildconditionals on
+#pragma opt_rebuildconditionals off
 int FUN_00326200(int param_1,int param_2)
 {
   int iVar1;
+
   iVar1 = *(volatile int *)(param_1 + 0x8c);
   while (iVar1 != 0) {
-    if (param_2-- == 0) break;
+    if (param_2-- == 0) {
+      return 0;
+    }
     iVar1 = *(int *)(iVar1 + 0xac);
   }
+
   return iVar1;
 }
 #pragma pop
@@ -10452,7 +10458,7 @@ int FUN_00326200(int param_1,int param_2)
 
 
 
-// FUN_00326240 NONMATCHING
+// FUN_00326240
 
 
 #pragma push
@@ -10464,18 +10470,15 @@ int FUN_00326240(int param_1,int param_2)
 
   iVar1 = 0;
   iVar2 = *(int *)(param_1 + 0x8c);
-  goto check;
-compare:
-  if (iVar2 != param_2) goto increment;
-  goto done;
-increment:
-  iVar1 = iVar1 + 1;
-  iVar2 = *(int *)(iVar2 + 0xac);
-check:
-  if (iVar2 != 0) goto compare;
-  iVar1 = 0;
-done:
-  return iVar1;
+  while (iVar2 != 0) {
+    if (iVar2 == param_2) {
+      return iVar1;
+    }
+    iVar1 = iVar1 + 1;
+    iVar2 = *(int *)(iVar2 + 0xac);
+  }
+
+  return 0;
 }
 #pragma pop
 
