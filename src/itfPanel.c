@@ -686,6 +686,19 @@ int FUN_003a9170(int param_1)
   }
   return 0;
 }
+
+// FUN_003A9268
+int FUN_003a9268(int* param_1)
+{
+  if (param_1[2] >= 10) {
+    param_1[0] = 0;
+    param_1[2] = 0;
+    param_1[3] = 0;
+    return 1;
+  }
+  return 0;
+}
+
 #define FUN_003a9170(...) ((u64 (*)(...))FUN_003a9170)(__VA_ARGS__)
 #undef FUN_003a92a0
 // FUN_003A92A0

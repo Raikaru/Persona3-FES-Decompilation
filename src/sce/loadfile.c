@@ -598,14 +598,25 @@ u32 FUN_0050c528(u32 _param_1, u32 _param_2, u32 *_param_3, u32 _param_4)
   return uVar1;
 }
 #pragma schedule on
-// FUN_0050C630 NONMATCHING
+// FUN_0050C630
 void FUN_0050c630(u32 param_1, u32 param_2, u32 *param_3)
 
 {
   FUN_0050c528(param_1, param_2, param_3, 1);
   return;
 }
-#pragma schedule off
+
+extern u8 DAT_007bdff8[];
+#pragma alias FUN_0050c528_str FUN_0050c528
+extern u32 FUN_0050c528_str(u32 param_1, int param_2, u32* param_3, u32 param_4);
+// FUN_0050C650 NONMATCHING
+void FUN_0050c650(u32 param_1, u32* param_2)
+{
+  u32* a2;
+  a2 = param_2;
+  FUN_0050c528_str(param_1, (int)(u8*)DAT_007bdff8, a2, 1);
+}
+
 // FUN_0050C678 NONMATCHING
 u32 FUN_0050c678(u32 param_1,u32 *param_2,u32 param_3)
 
