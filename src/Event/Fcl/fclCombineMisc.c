@@ -22,7 +22,7 @@ extern void (*DAT_0096017c)();
 extern int func_0016deb0(int);
 extern int func_0016dba0(int);
 extern s8 datGetSocialLinkLevel(int);
-extern u8 *gp0xffffb730;
+extern u8 (*gp0xffffb730)[1];
 extern int datSocialLinkLevelIsNotZero(int);
 /* FUSION_PROTOS */
 u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4);
@@ -125,14 +125,14 @@ s32 fclCombineMisc003d74b0(u32 param_1)
     base = (u8*)DAT_007ce420;
     return *(s32*)(DAT_006a5630 + (u32)base[(param_1 & 0xffff) * 0xe + 0xd] * 4);
 }
-// FUN_003d7a30 NONMATCHING
+// FUN_003d7a30
 s32 fclCombineMisc003d7a30(u32 *param_1, void *param_2, s32 param_3)
 {
     s32 idx;
     s32 link;
 
     idx = (u32)*(u16 *)((u8 *)param_1 + 2) * 0xe;
-    link = func_0016deb0(*(u8 *)(idx + gp0xffffb730 + 2));
+    link = func_0016deb0((*gp0xffffb730)[idx + 2]);
     func_0016dba0(link);
     FUN_003d74f0_i((int)param_1, (int)param_2, param_3);
     return 0;
@@ -292,20 +292,23 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 
 }
 
-// FUN_003D5730 NONMATCHING
+// FUN_003D5730
 
 
 s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4)
 {
     s16 uVar1;
+    s32 count;
     u16 *psVar3;
 
     if (param_1 == 0) {
         K_Assert("fclCombineMisc.c",0x58);
     }
-    if (param_3 >= *(int *)(DAT_006a5f44 + param_2 * 8)) {
-        return 0;
+    count = *(int *)(DAT_006a5f44 + param_2 * 8);
+    if (count > param_3) {
+        goto valid_index;
     }
+    return 0;
 valid_index:
     psVar3 = (u16 *)((u8 *)((PTR_DAT_006a5f40)[param_2 * 2]) + param_3 * 0x20);
     if (FUN_003d5bb0(*psVar3) == 0) {
@@ -1189,110 +1192,50 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4)
 
 
 char FUN_003d6910(void *param_1,int param_2,int *param_3)
-
-
-
 {
-
   char cVar1;
-
   int iVar2;
-
   int *piVar3;
-
   int iVar4;
-
   int *piVar5;
-
-    u16 auStack_10 [8];
-    int aiStack_30 [8];
-
-  
+  u16 auStack_10 [8];
+  int aiStack_30 [8];
 
   piVar5 = DAT_006a5fe0;
-
   piVar3 = aiStack_30;
-
   iVar2 = 5;
-
   do {
-
     iVar4 = *piVar5;
-
     piVar5 = piVar5 + 1;
-
     iVar2 = iVar2 + -1;
-
     *piVar3 = iVar4;
-
     piVar3 = piVar3 + 1;
-
   } while (0 < iVar2);
-
   if ((param_3 == 0) || (4 < param_2)) {
-
     K_Assert("fclCombineMisc.c",0x1c2);
-
   }
-
   memset(param_1,0,0x34);
-
   iVar2 = aiStack_30[(int)param_2];
-
   piVar3 = (int *)param_3;
-
   if (param_2 == 1) {
-
     cVar1 = FUN_003d6740(param_1,(void *)*piVar3,(void *)piVar3[1],(void *)piVar3[2]);
-
-    if (cVar1 == '\0') {
-
-      return '\0';
-
-    }
-
   }
-
   else if (param_2 == 0) {
-
     cVar1 = FUN_003d64a0(param_1,*(u16 *)(*piVar3 + 2),*(u16 *)(piVar3[1] + 2));
-
-    if (cVar1 == '\0') {
-
-      return '\0';
-
-    }
-
   }
-
   else {
-
-    for (iVar4 = 0; iVar4 < iVar2; iVar4 = iVar4 + 1) {
-
+    iVar4 = 0;
+    do {
       if (piVar3[iVar4] != 0) {
-
         auStack_10[iVar4] = *(u16 *)(piVar3[iVar4] + 2);
-
       }
-
-    }
-
+      iVar4 = iVar4 + 1;
+    } while (iVar4 < iVar2);
     cVar1 = FUN_003d6200(param_1,param_2,auStack_10,iVar2);
-
-    if (cVar1 == '\0') {
-
-      return '\0';
-
-    }
-
-    cVar1 = '\x02';
-
+    cVar1 = 2;
   }
-
   FUN_00176ac0(param_1,param_3,iVar2);
-
   return cVar1;
-
 }
 
 // FUN_003D6AE0 NONMATCHING
