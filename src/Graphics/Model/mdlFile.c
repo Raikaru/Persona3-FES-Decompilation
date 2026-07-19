@@ -23145,7 +23145,7 @@ void FUN_003322f0(int param_1,u32 *param_2)
 
 void FUN_00332310(int param_1,u32 *param_2)
 {
-  *(Vec128 *)(*(int *)(param_1 + 0x20)) = *(Vec128 *)param_2;
+  *(u_long128 *)(*(int *)(param_1 + 0x20)) = *(u_long128 *)param_2;
 }
 
 
