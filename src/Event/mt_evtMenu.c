@@ -313,8 +313,8 @@ extern u8 *PTR_s_START_007ccf50;
 extern u32 fGpffff80d0;
 extern u32 fGpffff8294;
 extern u32 fGpffff8438;
-extern u8 gp0xffff9d98;
-extern u8 gp0xffff9db8;
+extern s16 gp0xffff9d78;
+extern s16 gp0xffff9d7c;
 extern u8 gp0xffff9dd0;
 extern u8 gp0xffff9dd8;
 extern u8 gp0xffff9df8;
@@ -713,7 +713,7 @@ void FUN_00371350(int param_1,int param_2,int param_3,int param_4);
 void FUN_00371790(u64 param_1,u64 param_2,u32 param_3);
 void FUN_003722d0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_003747a0(int param_1,int param_2,int param_3,u64 param_4);
-void FUN_00374d30(u64 param_1,u64 param_2,u32 param_3);
+void FUN_00374d30(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_00375750(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4);
@@ -5625,34 +5625,71 @@ u32 FUN_00374c90(int param_1,int param_2,int param_3)
 // FUN_00374D30 NONMATCHING
 
 
-void FUN_00374d30(u64 param_1,u64 param_2,u32 param_3)
-
-
-
+void FUN_00374d30(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
+  int iVar2;
+  int iVar3;
+  u8 *pcVar4;
+  f32 fVar1;
 
-
-  if (param_3 < 8) {
-
-
-                    /* WARNING: Could not recover jumptable at 0x00374d88. Too many branches */
-
-
-                    /* WARNING: Treating indirect jump as call */
-
-
-    PTR_LAB_007ba7f0[param_3]();
-
-
-    return;
-
-
+  pcVar4 = param_4;
+  iVar3 = 0;
+  if (*(int *)(pcVar4 + 0x12c) == (int)param_3) {
+    iVar3 = 4;
   }
 
-
-  return;
-
-
+  switch (param_3) {
+  case 0:
+    iVar2 = param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,iVar2,0xe,
+                      (u32)&gp0xffffa168,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt6((param_1 + 8) * 0xc,iVar2,iVar3,
+                      (u32)&gp0xffffa170,
+                      (u32)*(s16 *)&gp0xffff9d78,fVar1);
+    break;
+  case 1:
+    iVar2 = param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,iVar2,0xe,
+                      (u32)&gp0xffffa178,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt6((param_1 + 8) * 0xc,iVar2,iVar3,
+                      (u32)&gp0xffffa180,
+                      (u32)*(s16 *)&gp0xffff9d7c,fVar1);
+    break;
+  case 2:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ec08,fVar1);
+    break;
+  case 3:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ec18,fVar1);
+    break;
+  case 4:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ea78,fVar1);
+    break;
+  case 5:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ea88,fVar1);
+    break;
+  case 6:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ec28,fVar1);
+    break;
+  case 7:
+    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    FUN_0038a260_evt5(param_1 * 0xc,param_2 * 0xc,iVar3,
+                      (u32)DAT_0069ea88,fVar1);
+    break;
+  }
 }
 
 
@@ -13799,25 +13836,90 @@ u32 FUN_0037f5e0(int param_1,int param_2,int param_3)
 
 
 void FUN_0037f650(int param_1,int param_2,u32 param_3,u8 *param_4)
-
-
-
 {
+  int iVar2;
+  int iVar3;
+  f32 fVar1;
 
-  if (param_3 < 8) {
-
-                    /* WARNING: Could not recover jumptable at 0x0037f6a4. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    PTR_LAB_007baa30[param_3]();
-
-    return;
-
+  iVar3 = 0;
+  if (*(int *)(param_4 + 0x190) == (int)param_3) {
+    iVar3 = 4;
   }
 
-  return;
-
+  switch (param_3) {
+  case 0:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fc68,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x198),fVar1);
+    break;
+  case 1:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fc78,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x19c),fVar1);
+    break;
+  case 2:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fc88,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a0),fVar1);
+    break;
+  case 3:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fc98,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a4),fVar1);
+    break;
+  case 4:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fca8,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a8),fVar1);
+    break;
+  case 5:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fcb8,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1ac),fVar1);
+    break;
+  case 6:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fcc8,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1b0),fVar1);
+    break;
+  case 7:
+    iVar2 = (int)param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069fcd8,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0xd) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1b4),fVar1);
+    break;
+  }
 }
 
 
@@ -15651,25 +15753,90 @@ u32 FUN_00381bf0(int param_1,int param_2,int param_3)
 
 
 void FUN_00381c60(int param_1,int param_2,u32 param_3,u8 *param_4)
-
-
-
 {
+  int iVar2;
+  int iVar3;
+  f32 fVar1;
 
-  if (param_3 < 8) {
-
-                    /* WARNING: Could not recover jumptable at 0x00381cb4. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    PTR_LAB_007bab30[param_3]();
-
-    return;
-
+  iVar3 = 0;
+  if (*(int *)(param_4 + 0x190) == (int)param_3) {
+    iVar3 = 4;
   }
 
-  return;
-
+  switch (param_3) {
+  case 0:
+    iVar2 = param_2 * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069ff20,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x198),fVar1);
+    break;
+  case 1:
+    iVar2 = (param_2 + 1) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069ff30,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x19c),fVar1);
+    break;
+  case 2:
+    iVar2 = (param_2 + 1) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069ff40,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a0),fVar1);
+    break;
+  case 3:
+    iVar2 = (param_2 + 1) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)DAT_0069ff50,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a4),fVar1);
+    break;
+  case 4:
+    iVar2 = (param_2 + 2) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)&gp0xffffa668,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1a8),fVar1);
+    break;
+  case 5:
+    iVar2 = (param_2 + 2) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)&gp0xffffa670,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1ac),fVar1);
+    break;
+  case 6:
+    iVar2 = (param_2 + 2) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)&gp0xffffa678,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1b0),fVar1);
+    break;
+  case 7:
+    iVar2 = (param_2 + 2) * 0xc;
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),iVar2,0,
+                      (u32)&gp0xffffa680,fVar1);
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)((param_1 + 0x10) * 0xc),iVar2,iVar3,
+                      (u32)&gp0xffffa3b8,*(u32 *)(param_4 + 0x1b4),fVar1);
+    break;
+  }
 }
 
 
