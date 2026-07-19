@@ -97,6 +97,16 @@ extern void func_004f1ed0(void* vertices, u32 count, void* matrix, u32 stride);
 extern void func_004f1fd0(u32 primitive, void* indices, u32 count);
 extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
+extern void func_0020ccc0(void* work, const u8* color);
+extern char D_0068E0A0[];
+extern u8 D_0068E090[];
+extern void func_0020d500(s32* work, void* matrix);
+extern u32 func_0021a3a0(void);
+extern u32 func_0021a410(void);
+extern u32 func_0021a480(s32 a, s32 b);
+extern u32 func_0021a590(u16 value);
+extern u32 func_0021b3a0(s32 value);
+extern u32 func_0021b420(s32 value);
 
 extern void* D_0068E108;
 extern f32 D_0068E110;
@@ -549,10 +559,297 @@ void func_0020ac90(void* work)
 void func_0020b250(void* work)
 {
     u8* panel = (u8*)work;
-    if ((*(u32*)panel & 1u) == 0) {
-        return;
+    u8* mode1;
+    void* matrix;
+    u8* mode0;
+    u8* common;
+    u8* mode2;
+    u8 color[4];
+    u8 alphaByte;
+    f32 alpha;
+    u8 c0;
+    u8 c1;
+    u8 c2;
+    u8 c3;
+
+    s32 mode;
+    mode = *(s32*)(panel + 4);
+    if (mode < 0 || mode >= 3) {
+        K_Assert(D_0068E0A0, 0x2A6);
     }
-    func_0020ac90(work);
+    mode = *(s32*)(panel + 4);
+    switch (mode) {
+    case 1:
+        mode1 = panel;
+        common = panel + 0xE0;
+        break;
+    case 0:
+        mode0 = panel;
+        common = panel + 0xE0;
+        break;
+    case 2:
+        mode2 = panel;
+        common = panel + 0xE0;
+        break;
+    }
+    matrix = func_004c38c0();
+    func_0020ca90(matrix, (const PanelTransform*)panel);
+    if (*(u32*)panel & 4) {
+        func_0020ccc0(common, panel + 0x40);
+        switch (*(s32*)(panel + 4)) {
+        case 0:
+            func_0020ccc0(mode0 + 0x178, panel + 0x40);
+            func_0020ccc0(mode0 + 0x208, panel + 0x40);
+            c0 = panel[0x43];
+            c1 = panel[0x40];
+            c2 = panel[0x41];
+            c3 = panel[0x42];
+            color[0] = c1;
+            color[1] = c2;
+            color[2] = c3;
+            color[3] = c0;
+            alphaByte = ((volatile u8*)panel)[0x43];
+            if ((s32)alphaByte >= 0) {
+                alpha = (f32)alphaByte;
+            } else {
+                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+            }
+            alpha = (30.0f * alpha) / 100.0f;
+            color[3] = (u8)(s32)alpha;
+            func_0020ccc0(mode0 + 0x298, color);
+            func_0020ccc0(mode0 + 0x328, color);
+            color[0] = panel[0x40];
+            color[1] = panel[0x41];
+            color[2] = panel[0x42];
+            color[3] = panel[0x43];
+            alpha = 255.0f * *(f32*)(mode0 + 0x5FC);
+            color[3] = (u8)(s32)alpha;
+            func_0020ccc0(mode0 + 0x3B8, color);
+            if (*(u32*)(mode0 + 0x170) & 1) {
+                color[0] = panel[0x40];
+                color[1] = panel[0x41];
+                color[2] = panel[0x42];
+                color[3] = panel[0x43];
+                color[0] = 0;
+                color[1] = 0;
+                color[2] = 0;
+                func_0020ccc0(mode0 + 0x448, color);
+            } else {
+                func_0020ccc0(mode0 + 0x448, panel + 0x40);
+            }
+            if (*(u32*)(mode0 + 0x170) & 1) {
+                color[0] = panel[0x40];
+                color[1] = panel[0x41];
+                color[2] = panel[0x42];
+                color[3] = panel[0x43];
+                color[3] = 0;
+                func_0020ccc0(mode0 + 0x4D8, color);
+            } else {
+                color[0] = panel[0x40];
+                color[1] = panel[0x41];
+                color[2] = panel[0x42];
+                color[3] = panel[0x43];
+                alpha = 255.0f * *(f32*)(mode0 + 0x5F8);
+                color[3] = (u8)(s32)alpha;
+                func_0020ccc0(mode0 + 0x4D8, color);
+            }
+            break;
+        case 1:
+            func_0020ccc0(mode2 + 0x208, panel + 0x40);
+            func_0020ccc0(mode2 + 0x178, panel + 0x40);
+            alphaByte = panel[0x43];
+            color[0] = panel[0x40];
+            color[1] = panel[0x41];
+            color[2] = panel[0x42];
+            color[3] = alphaByte;
+            color[0] = 0;
+            color[1] = 0;
+            color[2] = 0;
+            if ((s32)alphaByte >= 0) {
+                alpha = (f32)alphaByte;
+            } else {
+                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+            }
+            alpha = *(f32*)(mode2 + 0x32C) * (alpha * *(f32*)(mode2 + 0x328));
+            color[3] = (u8)(s32)alpha;
+            func_0020ccc0(mode2 + 0x298, color);
+            break;
+        case 2:
+            func_0020ccc0(mode1 + 0x170, panel + 0x40);
+            break;
+        }
+        *(u32*)panel &= ~4;
+    }
+    if (*(s32*)(panel + 4) == 0) {
+        color[0] = panel[0x40];
+        color[1] = panel[0x41];
+        color[2] = panel[0x42];
+        color[3] = panel[0x43];
+        alphaByte = panel[0x43];
+        if ((s32)alphaByte >= 0) {
+            alpha = (f32)alphaByte;
+        } else {
+            alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+        }
+        alpha = (255.0f * *(f32*)(mode0 + 0x5FC) * alpha) / 255.0f;
+        color[3] = (u8)(s32)alpha;
+        func_0020ccc0(mode0 + 0x3B8, color);
+        color[0] = panel[0x40];
+        color[1] = panel[0x41];
+        color[2] = panel[0x42];
+        color[3] = panel[0x43];
+        if (*(u32*)(mode0 + 0x170) & 1) {
+            color[3] = 0;
+        } else {
+            alphaByte = panel[0x43];
+            if ((s32)alphaByte >= 0) {
+                alpha = (f32)alphaByte;
+            } else {
+                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+            }
+            alpha = (255.0f * *(f32*)(mode0 + 0x5F8) * alpha) / 255.0f;
+            color[3] = (u8)(s32)alpha;
+        }
+        func_0020ccc0(mode0 + 0x4D8, color);
+    }
+    D_00960090(9U, 2U);
+    D_00960090(0x14U, 2U);
+    D_00960090(6U, 0U);
+    switch (*(s32*)(panel + 4)) {
+    case 1:
+        D_00960090(8U, 0U);
+        RpSkyRenderStateSet(3, (void*)0x317F3);
+        D_00960090(1U, func_0021a480(*(s32*)(panel + 0x170), *(s32*)(panel + 0x174)));
+        RpSkyRenderStateSet(2, (void*)0x44);
+        func_004f1ed0(panel + 0x178, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        break;
+    case 0:
+        mode0 = panel;
+        D_00960090(8U, 0U);
+        RpSkyRenderStateSet(3, (void*)0x317F3);
+        D_00960090(3U, 1U);
+        D_00960090(4U, 1U);
+        D_00960090(1U, func_0021b3a0(0));
+        RpSkyRenderStateSet(2, (void*)0x44);
+        func_004f1ed0(panel + 0x178, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x48);
+        D_00960090(1U, func_0021b3a0(4));
+        func_004f1ed0(panel + 0x3B8, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x44);
+        D_00960090(1U, func_0021a590((u16)*(s32*)(panel + 0x174)));
+        func_004f1ed0(panel + 0x448, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x48);
+        D_00960090(1U, func_0021b3a0(3));
+        func_004f1ed0(panel + 0x328, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x48);
+        D_00960090(1U, func_0021b3a0(2));
+        func_004f1ed0(panel + 0x298, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x48);
+        D_00960090(1U, func_0021a590((u16)*(s32*)(panel + 0x174)));
+        func_004f1ed0(panel + 0x4D8, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        RpSkyRenderStateSet(2, (void*)0x44);
+        D_00960090(1U, func_0021b3a0(1));
+        func_004f1ed0(panel + 0x208, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        if (*(u32*)panel & 2) {
+            RpSkyRenderStateSet(2, (void*)0x48);
+            D_00960090(3U, 3U);
+            D_00960090(4U, 3U);
+            D_00960090(1U, func_0021b3a0(5));
+            func_004f1ed0(panel + 0x568, 4U, matrix, 3U);
+            func_004f1fd0(3U, D_0068E090, 6U);
+            func_004f1f80();
+        }
+        break;
+    case 2:
+        D_00960090(8U, 0U);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        RpSkyRenderStateSet(3, (void*)0x317F3);
+        D_00960090(1U, func_0021a410());
+        func_004f1ed0(panel + 0x170, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+        break;
+    }
+    if (*(u32*)panel & 1) {
+        if (*(u32*)(panel + 0x48) == 0) {
+            if (*(s32*)(panel + 4) == 1) {
+                RpSkyRenderStateSet(2, (void*)0x6A);
+                D_00960090(1U, func_0021b3a0(1));
+                func_004f1ed0(mode0 + 0x208, 4U, matrix, 3U);
+                func_004f1fd0(3U, D_0068E090, 6U);
+                func_004f1f80();
+            }
+            RpSkyRenderStateSet(2, (void*)0x58);
+            D_00960090(4U, 3U);
+            D_00960090(1U, func_0021b3a0(6));
+            func_004f1ed0(panel + 0x4C, 4U, matrix, 3U);
+            func_004f1fd0(3U, D_0068E090, 6U);
+            func_004f1f80();
+            D_00960090(4U, 1U);
+        }
+    }
+    if (*(s32*)(panel + 4) == 1) {
+        D_00960090(6U, 0U);
+        D_00960090(8U, 0U);
+        RpSkyRenderStateSet(3, (void*)0x717FB);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        D_00960090(1U, func_0021b420(1));
+        func_004f1ed0(panel + 0x298, 4U, matrix, 3U);
+        func_004f1fd0(3U, D_0068E090, 6U);
+        func_004f1f80();
+    }
+    D_00960090(1U, func_0021a3a0());
+    RpSkyRenderStateSet(2, (void*)0x44);
+    D_00960090(6U, 0U);
+    D_00960090(8U, 0U);
+    func_004f1ed0(common, 4U, matrix, 3U);
+    func_004f1fd0(3U, D_0068E090, 6U);
+    func_004f1f80();
+    if (*(u32*)panel & 8) {
+        if ((*(u32*)(panel + 0xDC) & 1) == 0) {
+            D_00960090(6U, 0U);
+            D_00960090(8U, 0U);
+            RpSkyRenderStateSet(2, (void*)0x6A);
+            switch (*(s32*)(panel + 4)) {
+            case 0:
+                D_00960090(1U, func_0021b3a0(1));
+                func_004f1ed0(panel + 0x208, 4U, matrix, 3U);
+                break;
+            case 1:
+                D_00960090(1U, func_0021b420(0));
+                func_004f1ed0(panel + 0x208, 4U, matrix, 3U);
+                break;
+            case 2:
+                RpSkyRenderStateSet(3, (void*)0x71801);
+                RpSkyRenderStateSet(2, (void*)0x48);
+                break;
+            }
+            func_004f1fd0(3U, D_0068E090, 6U);
+            func_004f1f80();
+            RpSkyRenderStateSet(2, (void*)0x58);
+        } else {
+            RpSkyRenderStateSet(3, (void*)0x71801);
+            RpSkyRenderStateSet(2, (void*)0x48);
+        }
+        func_0020d500((s32*)(panel + 0xDC), matrix);
+    }
+    func_004c3880(matrix);
 }
 
 // FUN_0020c320
