@@ -4194,24 +4194,17 @@ u32 FUN_003f3e60(int param_1,u64 param_2)
 
 u64 FUN_003f3f00(u64 param_1)
 {
-  u32 uVar1;
-  u32 uVar2;
+  u64 uVar1;
+  long lVar2;
 
-  uVar1 = FUN_003c6ce0(param_1);
-  uVar2 = FUN_003c6d10(param_1);
-  if (uVar2 != 0) {
+  lVar2 = FUN_003c6ce0(param_1);
+  if ((lVar2 != 0) || (lVar2 = FUN_003c6d10(param_1), lVar2 != 0)) {
     func_0010a4e0(0,0,0,0);
   }
 
-  uVar2 = FUN_003c6ca0(param_1);
-  if (uVar2 != 0) {
+  lVar2 = FUN_003c6ca0(param_1);
+  if ((lVar2 != 0) || (lVar2 = FUN_003c6cc0(param_1), lVar2 != 0)) {
     func_0010a4e0(0,0,0,5);
-  }
-  else {
-    uVar2 = FUN_003c6cc0(param_1);
-    if (uVar2 != 0) {
-      func_0010a4e0(0,0,0,5);
-    }
   }
 
   return uVar1;
@@ -10509,7 +10502,7 @@ void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3)
   u32 uVar1;
 
   uVar1 = param_3;
-  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x52,0);
+  FUN_0040e3c0_u32(0.0f,0,0,uVar1 & 0xff,0x52,0);
   FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x53,0);
   FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x54,0);
   FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x50,0);
