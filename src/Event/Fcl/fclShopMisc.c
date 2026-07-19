@@ -63,6 +63,8 @@ u64 FUN_003f1470(int param_1);
 void FUN_003f1520(int param_1);
 int FUN_003f15d0(int param_1,int param_2);
 int FUN_003f1690(u64 param_1);
+int clndIsDateInRangeFromStart(s8 month, s8 day, u32 range);
+void FUN_0017c220(u16 *param_1);
 u16 FUN_003f1720(u32 param_1,u16 param_2);
 u32 FUN_003f1830(u16 *param_1,short param_2);
 u32 FUN_003f1910(u64 param_1);
@@ -203,7 +205,7 @@ u32 FUN_00401890(short param_1);
 u64 FUN_00401950(short param_1);
 u32 FUN_00401a00(u16 param_1,long param_2,short *param_3);
 u8 * FUN_00401c90(u32 *param_1,int param_2);
-u8 * FUN_00401cf0(long param_1);
+u8 * FUN_00401cf0(int param_1);
 short * FUN_00401d90(int param_1);
 u32 FUN_00401de0(u64 param_1,long param_2,long param_3);
 void FUN_00402400(int param_1,u16 *param_2);
@@ -10492,17 +10494,16 @@ u32 FUN_003fc980(int param_1)
 
 }
 
-// FUN_003FCA00 NONMATCHING
+// FUN_003FCA00
 void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3)
 {
   u32 uVar1;
-
   uVar1 = param_3;
-  FUN_0040e3c0_u32(0.0f,0,0,param_3 & 0xff,0x52,0);
-  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x53,0);
-  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x54,0);
-  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x50,0);
-  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x51,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x52,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x53,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x54,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x50,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x51,0);
   return;
 }
 
@@ -15527,48 +15528,40 @@ advance:
 // FUN_00401CF0 NONMATCHING
 
 
-u8 * FUN_00401cf0(long param_1)
-
-
-
+u8 * FUN_00401cf0(int param_1)
 {
-
   u8 bVar1;
-
   u8 *pbVar2;
-
   u32 uVar3;
-
-  
+  u32 uVar4;
 
   if (param_1 == 0) {
-
     K_Assert((const char *)(u32)DAT_006aede8,0x1ada);
-
   }
 
   pbVar2 = pbGpffffabe8;
   uVar3 = 0;
-
-  while( 1 ) {
-
-    if (uGpffffabec <= uVar3) {
-
-      return (u8 *)0x0;
-
-    }
-
-    bVar1 = *(u8 *)((int)param_1 + 4);
-
-    if ((*pbVar2 <= bVar1) && (bVar1 <= pbVar2[1])) break;
-
-    pbVar2 = pbVar2 + 0x2e;
-
-    uVar3 = uVar3 + 1;
-
+  uVar4 = uGpffffabec;
+  goto check;
+body:
+  bVar1 = *(u8 *)(param_1 + 4);
+  if (*pbVar2 > bVar1) {
+    goto increment;
   }
-
+  if (bVar1 <= pbVar2[1]) {
+    goto found;
+  }
+  goto increment;
+found:
   return pbVar2;
+increment:
+  pbVar2 = pbVar2 + 0x2e;
+  uVar3 = uVar3 + 1;
+check:
+  if (uVar3 < uVar4) {
+    goto body;
+  }
+  return (u8 *)0x0;
 
 }
 
@@ -18371,12 +18364,10 @@ int FUN_00405db0(u32* param_1, u32* param_2)
 {
   s16* base;
   s16 a;
-  s16 b;
 
   base = (s16*)((u8*)iGpffffac00 + 0x3a);
   a = base[*(s16*)(*(u32*)(*(u32*)(*param_1 + 0x14) + 0x1c) + 4) * 0x20];
-  b = base[*(s16*)(*(u32*)(*(u32*)(*param_2 + 0x14) + 0x1c) + 4) * 0x20];
-  return b - a;
+  return base[*(s16*)(*(u32*)(*(u32*)(*param_2 + 0x14) + 0x1c) + 4) * 0x20] - a;
 }
 
 // FUN_00405E00
