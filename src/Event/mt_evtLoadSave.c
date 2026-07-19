@@ -3161,55 +3161,64 @@ void FUN_00390c90(int param_1,u64 param_2)
 }
 #define FUN_00390c90(...) ((void (*)(...))FUN_00390c90)(__VA_ARGS__)
 #undef FUN_00390ef0
-// FUN_00390EF0 NONMATCHING
+// FUN_00390EF0
 
 
 void FUN_00390ef0(int param_1,int param_2)
 {
   extern u32 FUN_0039ec10(int,int,u32 *,u16 *);
   extern u32 FUN_00316bd0(int,u16,u32,u32,int);
-  u8 uVar1;
-  u8 uVar2;
-  u8 uVar3;
-  u8 uVar5;
+  u8 c0;
+  u8 c1;
+  u8 c2;
+  u8 c3;
+  u8 d0;
+  u8 d1;
+  u8 d2;
+  u8 d3;
   u16 uVar4;
   u8 *puVar5;
-  u32 lVar6;
+  u32 modelData;
+  u32 modelRes;
   u32 uVar7;
   float afStack_18[3];
-  u16 auStack_4[2];
+  volatile u16 auStack_4[2];
   u32 uStack_8;
 
   if (*(char *)(param_2 + 0x22) < 0) {
     return;
   }
-  lVar6 = FUN_0039ec10(param_1,*(char *)(param_2 + 0x22),&uStack_8,auStack_4);
-  if (lVar6 == 0) {
-    FUN_00361d60(param_2,0,0);
-  }
-  else {
-    uVar7 = FUN_00316bd0(5,auStack_4[0],lVar6,uStack_8,1);
+  modelData = FUN_0039ec10(param_1,*(char *)(param_2 + 0x22),&uStack_8,(u16 *)auStack_4);
+  if (modelData != 0) {
+    uVar7 = FUN_00316bd0(5,auStack_4[0],modelData,uStack_8,1);
     uVar4 = FUN_0039ec60(*(u32 *)(param_2 + 4));
     uVar4 = FUN_003b6270(uVar4,3,uVar7);
     FUN_003b9550(uVar4,1);
     afStack_18[0] = (float)(*(int *)(param_2 + 4) * 0x1e);
     afStack_18[1] = 0.0f;
-    afStack_18[2] = (float)(*(int *)(param_2 + 4) * -0x1e);
+    afStack_18[2] = (float)(-(*(int *)(param_2 + 4) * 0x1e));
     FUN_003b78b0(uVar4,afStack_18,0);
-    lVar6 = FUN_003b5d10(uVar4);
-    if (lVar6 == 0) {
+    modelRes = FUN_003b5d10(uVar4);
+    if (modelRes == 0) {
       FUN_0019d3f0("mt_evtLoadSave.c",0x9b7);
     }
-    FUN_00361d60(param_2,uVar4,lVar6);
+    FUN_00361d60(param_2,uVar4,modelRes);
     puVar5 = (u8 *)FUN_00318b00(uVar7);
-    uVar1 = puVar5[0];
-    uVar2 = puVar5[1];
-    uVar3 = puVar5[2];
-    uVar5 = puVar5[3];
-    *(u8 *)(param_2 + 0x54) = uVar1;
-    *(u8 *)(param_2 + 0x55) = uVar2;
-    *(u8 *)(param_2 + 0x56) = uVar3;
-    *(u8 *)(param_2 + 0x57) = uVar5;
+    c0 = puVar5[0];
+    c1 = puVar5[1];
+    c2 = puVar5[2];
+    c3 = puVar5[3];
+    d3 = c3;
+    d2 = c2;
+    d1 = c1;
+    d0 = c0;
+    *(u8 *)(param_2 + 0x54) = d0;
+    *(u8 *)(param_2 + 0x55) = d1;
+    *(u8 *)(param_2 + 0x56) = d2;
+    *(u8 *)(param_2 + 0x57) = d3;
+  }
+  else {
+    FUN_00361d60(param_2,0,0);
   }
   return;
 }
