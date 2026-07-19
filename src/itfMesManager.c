@@ -30,6 +30,18 @@ extern u32 DAT_00959ee0;
 extern u32 DAT_00959eec;
 extern code DAT_00960178;
 extern u8 * PTR_LAB_007bb150;
+#pragma alias DAT_00959870_abs DAT_00959870
+extern u8 DAT_00959870_abs[];
+#pragma alias DAT_00958bf0_abs DAT_00958bf0
+extern u8 DAT_00958bf0_abs[];
+#pragma alias DAT_00959eb0_abs DAT_00959eb0
+extern s8 DAT_00959eb0_abs[];
+extern u8 DAT_00959870[];
+extern u8 DAT_00958bf0[];
+extern u32 gp0xffffb7f8;
+extern u32 gp0xffffb7fc;
+extern u32 gp0xffffb800;
+extern s8 DAT_00959eb0[];
 extern code DAT_00960178;
 
 extern void thunk_FUN_003a6334();
@@ -99,7 +111,7 @@ void FUN_003a3b00(long param_1);
 void FUN_003a3c10(int param_1,int param_2);
 void FUN_003a3ce0(int param_1,int param_2,int param_3);
 u32 FUN_003a3f90(int param_1,int param_2);
-void FUN_003a4010(void);
+void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4);
 void FUN_003a4220(int param_1,u64 param_2,u64 param_3);
 void FUN_003a4270(int param_1);
 u32 FUN_003a42c0(long param_1,u64 param_2);
@@ -2081,33 +2093,87 @@ u32 FUN_003a3f90(int param_1,int param_2)
 }
 #define FUN_003a3f90(...) ((u32 (*)(...))FUN_003a3f90)(__VA_ARGS__)
 #undef FUN_003a4010
+#pragma alias FUN_003a4220_typed FUN_003a4220
+extern void FUN_003a4220_typed(int param_1,int param_2,u32 param_3);
+#pragma alias FUN_003a4270_typed FUN_003a4270
+extern void FUN_003a4270_typed(int param_1);
+#pragma alias FUN_003a6c10_typed FUN_003a6c10
+extern u16 *FUN_003a6c10_typed(int param_1,u16 *param_2);
+extern const char *func_00171110(s16 param_1,s16 param_2);
 // FUN_003A4010 NONMATCHING
 
-
-void FUN_003a4010(void)
-
-
-
+void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
 {
+  char buffer[0x10];
+  u16 text[0x20];
+  u16 *cursor;
+  u16 *end;
+  s8 value;
 
-  u32 in_a3;
-
-  
-
-  if (in_a3 < 0x12) {
-
-                    /* WARNING: Could not recover jumptable at 0x003a4048. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    (*(code *)(&PTR_LAB_007bb150)[(int)in_a3])();
-
-    return;
-
+  switch (param_4) {
+  case 0:
+    sprintf(buffer,(char *)&DAT_00958be8);
+    FUN_003a4220_typed(param_1,param_2,(u32)buffer);
+    break;
+  case 16:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)(*(u8 **)&gp0xffffb7f8 + param_3 * 0x13));
+    break;
+  case 8:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)(*(u8 **)&gp0xffffb800 + param_3 * 0x15));
+    break;
+  case 3:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)func_00171110((s16)(param_3 & 0xffff),2));
+    break;
+  case 17:
+    FUN_003a4270_typed(param_1);
+    break;
+  case 4:
+    cursor = text;
+    if (param_3 >= 0x3e9) {
+      cursor[0] = 0xb280;
+      cursor[1] = 0;
+    } else {
+      if (param_3 < 0) {
+        param_3 = -param_3;
+        cursor[0] = 0xa280;
+        cursor += 1;
+      }
+      end = FUN_003a6c10_typed(param_3,cursor);
+      end[0] = 0xa680;
+      end[1] = 0;
+    }
+    FUN_003a4220_typed(param_1,param_2,(u32)text);
+    break;
+  case 5:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)(*(u8 **)&gp0xffffb7fc + param_3 * 0x13));
+    break;
+  case 6:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)(DAT_00959870_abs + (param_3 << 5)));
+    break;
+  case 7:
+    FUN_003a4220_typed(param_1,param_2,
+                       (u32)(DAT_00958bf0_abs + (param_3 << 5)));
+    break;
+  case 9:
+    value = *(s8 *)(DAT_00959eb0_abs + param_3);
+    FUN_003a4220_typed(param_1,param_2,value);
+    break;
+  case 1:
+  case 2:
+  case 10:
+  case 11:
+  case 12:
+  case 13:
+  case 14:
+  case 15:
+  default:
+    break;
   }
-
-  return;
-
 }
 #define FUN_003a4010(...) ((void (*)(...))FUN_003a4010)(__VA_ARGS__)
 #undef FUN_003a4220
