@@ -74,6 +74,8 @@ extern void FUN_00128010(KwlnTask* task);
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
+extern void* DAT_00833B74;
+extern void* DAT_00833BA0;
 extern char gp0xffff897c[];
 extern f32 DAT_007caf38;
 extern void* DAT_00833B88;
@@ -1439,7 +1441,7 @@ s32 h_campStatusGetResult(KwlnTask* task)
     return work->result;
 }
 
-// FUN_00127B00 NONMATCHING
+// FUN_00127B00
 KwlnTask* h_campStatusCreatePartsTask(KwlnTask* parent, u32 priority,
                                       CampVec2 position, s16 mode,
                                       s16 screen)
@@ -1458,14 +1460,11 @@ KwlnTask* h_campStatusCreatePartsTask(KwlnTask* parent, u32 priority,
     if (task == NULL) {
         return NULL;
     }
-    work->x = position.x;
-    work->y = position.y;
-    work->ready = 1;
+    *(CampVec2*)((u8*)work + 4) = position;
+    work->reserved20[0] = 1;
     work->mode = mode;
     work->screen = screen;
-    if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL) {
-        *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) = 0;
-    }
+    *((s32*)DAT_007cdf50->workData + 4) = 0;
     return task;
 }
 
@@ -1611,7 +1610,7 @@ s32 h_campStatusGetPanelMode(KwlnTask* task)
     return work->result;
 }
 
-// FUN_00128040 NONMATCHING
+// FUN_00128040
 KwlnTask* h_campStatusCreatePanelTask(KwlnTask* parent, u32 priority,
                                       CampVec2 position, s16 mode,
                                       s16 panelMode)
@@ -1630,14 +1629,11 @@ KwlnTask* h_campStatusCreatePanelTask(KwlnTask* parent, u32 priority,
     if (task == NULL) {
         return NULL;
     }
-    work->x = position.x;
-    work->y = position.y;
+    *(CampVec2*)((u8*)work + 4) = position;
     work->ready = 1;
     work->priorityMode = mode;
+    *((s32*)DAT_007cdf50->workData + 4) = 0;
     work->panelMode = panelMode;
-    if (DAT_007cdf50 != NULL && DAT_007cdf50->workData != NULL) {
-        *((s32*)((u8*)DAT_007cdf50->workData + 0x10)) = 0;
-    }
     return task;
 }
 
@@ -1949,25 +1945,92 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
 void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                               void* persona, s32 frame)
 {
-    CampVec2 drawPos;
+    u32 parentTop;
+    u32 parentBottom;
     s32 alpha;
+    s32 icon;
+    s32 row;
+    s32 value;
+    s32 length;
+    f32 rowY;
+    char text[0x100];
+    void* glyph;
 
     if (frame >= 5) {
         return;
     }
-    drawPos = position;
-    drawPos.x += (f32)((frame * 300) / 5);
+    position.x += (f32)((frame * 300) / 5);
     alpha = (frame * 0xff) / 5;
-    h_campStatusDrawBody(0x42c80000, drawPos, persona, NULL, alpha);
-    (void)scale;
-}
-
-// FUN_0012AC60 NONMATCHING
-void h_campStatusDrawSteady(CampVec2 position, f32 scale,
-                            void* persona, s32 alpha)
-{
-    h_campStatusDrawBody(0x42c80000, position, persona, NULL, alpha);
-    (void)scale;
+    for (icon = 0; icon < 9; icon++) {
+        h_campStatusRenderStatIcon(position, scale, icon, alpha);
+    }
+    campStatusDrawSpriteCall(parentTop, DAT_00833B74, 0, alpha,
+                             34.0f, 415.0f, 100.0f);
+    campStatusDrawSpriteCall(parentTop, DAT_00833B74, 10, alpha,
+                             50.0f, 415.0f, 100.0f);
+    campStatusDrawSpriteCall(parentTop, DAT_00833B74, 11, alpha,
+                             212.0f, 415.0f, 100.0f);
+    campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 1, alpha,
+                             561.0f, 415.0f, 100.0f);
+    campStatusDrawSpriteCall(parentTop, DAT_00833BA0, 5, alpha,
+                             361.0f, 415.0f, 100.0f);
+    h_campStatusDrawStatLabels(position, scale, persona, alpha);
+    campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x12, alpha,
+                             position.x + 30.0f, position.y + 100.0f,
+                             scale);
+    campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x13, alpha,
+                             position.x + 30.0f, position.y + 159.0f,
+                             scale);
+    h_campStatusDrawStatValues(position, scale, NULL, persona, alpha);
+    for (row = 0; row < 5; row++) {
+        switch (row) {
+        case 0:
+            value = FUN_00173660(persona, 0) & 0xff;
+            break;
+        case 1:
+            value = FUN_00173660(persona, 1) & 0xff;
+            break;
+        case 2:
+            value = FUN_00173660(persona, 2) & 0xff;
+            break;
+        case 3:
+            value = FUN_00173660(persona, 3) & 0xff;
+            break;
+        case 4:
+            value = FUN_00173660(persona, 4) & 0xff;
+            break;
+        }
+        rowY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
+        campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x14, alpha,
+                                 position.x + 104.0f, rowY, scale);
+        campStatusDrawSpriteCall(parentTop, DAT_00833B98, 0x15, alpha,
+                                 position.x + 333.0f, rowY, scale);
+        glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
+        *((f32*)glyph + 11) = scale;
+        *((f32*)glyph + 4) = position.x + 108.0f;
+        *((f32*)glyph + 5) = rowY + 1.0f;
+        *((u8*)glyph + 0x18) = (u8)alpha;
+        length = (value * 0xe3) / 99;
+        *((s16*)glyph + 0x0e) = (s16)length;
+        FUN_001127d0(glyph, 1);
+        FUN_00115980(glyph);
+    }
+    h_campStatusDrawEquipment(position, scale, NULL, persona, alpha);
+    campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x11, alpha,
+                             position.x + 33.0f, position.y + 278.0f,
+                             scale);
+    campStatusDrawSpriteCall(parentBottom, DAT_00833B90, 0x22, alpha,
+                             position.x + 287.0f, position.y + 278.0f,
+                             scale);
+    if (*((u8*)persona + 4) == 0x63) {
+        FUN_00523ac8(text, gp0xffff8980);
+    }
+    else {
+        value = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, value);
+    }
+    FUN_0040eb50(parentBottom, (s32)(position.x + 287.0f),
+                 (s32)(position.y + 280.0f), 0xff - alpha, 4, text, 1);
 }
 /*
  * Persona status draw task.
