@@ -8488,6 +8488,32 @@ zero:
 done:
   return value;
 }
+
+// FUN_00324630
+void FUN_00324630(void)
+{
+}
+
+// FUN_00324640
+void FUN_00324640(void)
+{
+}
+
+// FUN_00324650
+int FUN_00324650(void)
+{
+  return 0;
+}
+
+// FUN_00324660
+void FUN_00324660(void)
+{
+}
+
+// FUN_00324670
+void FUN_00324670(void)
+{
+}
 #pragma pop
 
 
