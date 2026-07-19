@@ -1331,7 +1331,7 @@ u64 FUN_003af520(void)
 }
 #define FUN_003af520(...) ((u64 (*)(...))FUN_003af520)(__VA_ARGS__)
 #undef FUN_003af560
-// FUN_003AF560 NONMATCHING
+// FUN_003AF560
 
 
 u64 FUN_003af560(void)
@@ -1340,16 +1340,52 @@ u64 FUN_003af560(void)
 
 {
 
-  u16 uVar1;
+  s16 sVar1;
 
   
 
-  uVar1 = FUN_0016dd40();
+  sVar1 = FUN_0016dd40();
 
-  FUN_00172200(uVar1,0);
+  FUN_00172200(sVar1,0);
 
   return 0;
 
+}
+// FUN_003AF5A0 NONMATCHING
+u64 FUN_003af5a0(u32 param_1,int param_2)
+{
+  u8 bVar1;
+  u8 bVar2;
+  short sVar5;
+  u8 *pbVar4;
+  int iVar6;
+  int iVar7;
+  u32 uVar8;
+
+  iVar7 = *(int *)(param_2 + 0x18);
+  iVar6 = *(int *)(param_2 + 0x10);
+  iVar7 = iVar6 + iVar7;
+  iVar7 = iVar7;
+  pbVar4 = (u8 *)iVar7;
+  bVar1 = *pbVar4 - 1;
+  bVar2 = pbVar4[1];
+  if (bVar2 == 0xff) {
+    bVar2 = 0;
+  }
+  else {
+    bVar2 = (bVar2 - 1) & 0xff;
+  }
+  sVar5 = (short)(((u16)bVar2 << 8) | (bVar1 & 0xff));
+  if (*(int *)(*(int *)(param_2 + 0x14) + 0x34) != 0) {
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x38) = 1;
+  }
+  *(u32 *)(*(int *)(param_2 + 0x14) + 0x30) = param_1;
+  *(int *)(*(int *)(param_2 + 0x14) + 0x3c) = sVar5;
+  if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
+    *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
+  }
+  DAT_007cd4e8 = DAT_007cd4e8 | 0x80;
+  return 0;
 }
 #define FUN_003af560(...) ((u64 (*)(...))FUN_003af560)(__VA_ARGS__)
 #undef FUN_003af660
