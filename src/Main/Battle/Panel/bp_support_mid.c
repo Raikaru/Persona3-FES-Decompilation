@@ -565,13 +565,12 @@ void func_0020b250(void* work)
     u8* common;
     u8* mode2;
     u8 color[4];
-    u8 alphaByte;
     f32 alpha;
+    u8 alphaByte;
     u8 c0;
     u8 c1;
     u8 c2;
     u8 c3;
-
     s32 mode;
     mode = *(s32*)(panel + 4);
     if (mode < 0 || mode >= 3) {
@@ -600,10 +599,10 @@ void func_0020b250(void* work)
         case 0:
             func_0020ccc0(mode0 + 0x178, panel + 0x40);
             func_0020ccc0(mode0 + 0x208, panel + 0x40);
-            c0 = panel[0x43];
-            c1 = panel[0x40];
-            c2 = panel[0x41];
-            c3 = panel[0x42];
+            c1 = ((volatile u8*)panel)[0x40];
+            c2 = ((volatile u8*)panel)[0x41];
+            c3 = ((volatile u8*)panel)[0x42];
+            c0 = ((volatile u8*)panel)[0x43];
             color[0] = c1;
             color[1] = c2;
             color[2] = c3;
@@ -615,7 +614,11 @@ void func_0020b250(void* work)
                 alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
             }
             alpha = (30.0f * alpha) / 100.0f;
-            color[3] = (u8)(s32)alpha;
+            if (alpha < 2.1474836e9f) {
+                color[3] = (u8)(s32)alpha;
+            } else {
+                color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+            }
             func_0020ccc0(mode0 + 0x298, color);
             func_0020ccc0(mode0 + 0x328, color);
             color[0] = panel[0x40];
@@ -623,7 +626,11 @@ void func_0020b250(void* work)
             color[2] = panel[0x42];
             color[3] = panel[0x43];
             alpha = 255.0f * *(f32*)(mode0 + 0x5FC);
-            color[3] = (u8)(s32)alpha;
+            if (alpha < 2.1474836e9f) {
+                color[3] = (u8)(s32)alpha;
+            } else {
+                color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+            }
             func_0020ccc0(mode0 + 0x3B8, color);
             if (*(u32*)(mode0 + 0x170) & 1) {
                 color[0] = panel[0x40];
@@ -650,7 +657,11 @@ void func_0020b250(void* work)
                 color[2] = panel[0x42];
                 color[3] = panel[0x43];
                 alpha = 255.0f * *(f32*)(mode0 + 0x5F8);
-                color[3] = (u8)(s32)alpha;
+                if (alpha < 2.1474836e9f) {
+                    color[3] = (u8)(s32)alpha;
+                } else {
+                    color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+                }
                 func_0020ccc0(mode0 + 0x4D8, color);
             }
             break;
@@ -671,7 +682,11 @@ void func_0020b250(void* work)
                 alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
             }
             alpha = *(f32*)(mode2 + 0x32C) * (alpha * *(f32*)(mode2 + 0x328));
-            color[3] = (u8)(s32)alpha;
+            if (alpha < 2.1474836e9f) {
+                color[3] = (u8)(s32)alpha;
+            } else {
+                color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+            }
             func_0020ccc0(mode2 + 0x298, color);
             break;
         case 2:
@@ -692,7 +707,11 @@ void func_0020b250(void* work)
             alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
         }
         alpha = (255.0f * *(f32*)(mode0 + 0x5FC) * alpha) / 255.0f;
-        color[3] = (u8)(s32)alpha;
+        if (alpha < 2.1474836e9f) {
+            color[3] = (u8)(s32)alpha;
+        } else {
+            color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+        }
         func_0020ccc0(mode0 + 0x3B8, color);
         color[0] = panel[0x40];
         color[1] = panel[0x41];
@@ -708,7 +727,11 @@ void func_0020b250(void* work)
                 alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
             }
             alpha = (255.0f * *(f32*)(mode0 + 0x5F8) * alpha) / 255.0f;
-            color[3] = (u8)(s32)alpha;
+            if (alpha < 2.1474836e9f) {
+                color[3] = (u8)(s32)alpha;
+            } else {
+                color[3] = (u8)(s32)(alpha - 2.1474836e9f);
+            }
         }
         func_0020ccc0(mode0 + 0x4D8, color);
     }
