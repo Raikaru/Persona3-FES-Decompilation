@@ -1,6 +1,9 @@
 #include "Kernel/Kwln/kwlnTask.h"
 
 /* auto-extern (generated) */
+u32 datSocialLinkLevelIsNotZero(s16 socialLink);
+u64 FUN_00172660(s32 socialLink);
+extern char DAT_006aede8[];
 extern u32 gp0xffffac10;
 extern u32 gp0xfffface0;
 typedef int (*code)();
@@ -46,7 +49,7 @@ s16 FUN_003f00b0(int param_1);
 int FUN_003f00d0(int *param_1,u64 param_2,int *param_3);
 void FUN_003f01d0(int param_1,int param_2,int *param_3);
 u32 FUN_003f0240(int param_1);
-int FUN_003f0350(int param_1,long param_2);
+int FUN_003f0350(int param_1,int *param_2);
 char FUN_003f03e0(int param_1);
 u32 FUN_003f04f0(long param_1,int param_2);
 u32 * FUN_003f06e0(int *param_1,u64 param_2);
@@ -304,8 +307,8 @@ u32 DAT_006acc60;
 extern u8 DAT_006acc70[];
 extern u8 DAT_006acc72[];
 u32 DAT_006acca0;
-u32 DAT_006aedc0;
-u32 DAT_006aedc4;
+u32 DAT_006aedc0[];
+u32 DAT_006aedc4[];
 u32 DAT_006aee60;
 u32 DAT_006aeea0;
 u32 DAT_006aeee0;
@@ -709,43 +712,24 @@ u32 FUN_003f0240(int param_1)
 
 }
 
-// FUN_003F0350 NONMATCHING
+// FUN_003F0350
 
 
-int FUN_003f0350(int param_1,long param_2)
-
-
-
+int FUN_003f0350(int param_1,int *param_2)
 {
-
   int iVar1;
 
-  
-
   if (param_2 == 0) {
-
-    K_Assert((const char *)(u32)0x6aede8,0x13b);
-
+    K_Assert(DAT_006aede8,0x13b);
   }
 
-  iVar1 = *(int *)param_2;
-
-  if (iVar1 < *(int *)(param_1 + 0x18)) {
-
-    *(int *)param_2 = iVar1 + 1;
-
-    iVar1 = *(int *)(param_1 + 0x1c) + iVar1 * 0xc;
-
+  iVar1 = *param_2;
+  if (iVar1 >= *(int *)(param_1 + 0x18)) {
+    return 0;
   }
 
-  else {
-
-    iVar1 = 0;
-
-  }
-
-  return iVar1;
-
+  *param_2 = iVar1 + 1;
+  return *(int *)(param_1 + 0x1c) + iVar1 * 0xc;
 }
 
 // FUN_003F03E0 NONMATCHING
@@ -1873,63 +1857,34 @@ u16 FUN_003f12a0(int param_1,int param_2)
 
 }
 
-// FUN_003F1470 NONMATCHING
+// FUN_003F1470
 
 
 u64 FUN_003f1470(int param_1)
-
-
-
 {
+  s16 sVar1;
+  u32 uVar2;
 
-  long lVar1;
-
-  u64 uVar2;
-
-  u16 uVar3;
-
-  
-
-  if (param_1 == 8) {
-
-    uVar3 = 2;
-
+  switch (param_1) {
+  case 0:
+    sVar1 = 0xf;
+    break;
+  case 4:
+    sVar1 = 3;
+    break;
+  case 8:
+    sVar1 = 2;
+    break;
+  default:
+    return 0;
   }
 
-  else if (param_1 == 4) {
-
-    uVar3 = 3;
-
+  uVar2 = datSocialLinkLevelIsNotZero(sVar1);
+  if (uVar2 == 0) {
+    return 0;
   }
 
-  else {
-
-    if (param_1 != 0) {
-
-      return 0;
-
-    }
-
-    uVar3 = 0xf;
-
-  }
-
-  lVar1 = datSocialLinkLevelIsNotZero(uVar3);
-
-  if (lVar1 == 0) {
-
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    uVar2 = FUN_00172660(uVar3);
-
-  }
-
-  return uVar2;
-
+  return FUN_00172660(sVar1);
 }
 
 // FUN_003F1520 NONMATCHING
@@ -1989,53 +1944,34 @@ void FUN_003f1520(int param_1)
 
 }
 
-// FUN_003F15D0 NONMATCHING
+// FUN_003F15D0
 
 
 int FUN_003f15d0(int param_1,int param_2)
-
-
-
 {
-
   u8 *puVar1;
-
   u8 *puVar2;
 
-  
-
-  puVar1 = (u8 *)datGetMoney();
-
+  puVar1 = (u8 *)(u32)datGetMoney();
   puVar2 = puVar1;
 
-  if (9999999 < (int)(puVar1 + param_1 * param_2)) {
-
-    puVar2 = (u8 *)(&DAT_0098967f);
-
+  if (0x98967f < (s32)puVar1 + param_1 * param_2) {
+    puVar2 = (u8 *)(u32)0x98967f;
   }
 
-  if ((int)(puVar1 + param_1 * param_2) < 0) {
-
-    puVar2 = (u8 *)0x0;
-
+  if ((s32)puVar1 + param_1 * param_2 < 0) {
+    puVar2 = (u8 *)0;
   }
-
   else {
-
-    puVar2 = puVar2 + param_1 * param_2;
-
+    puVar2 = (u8 *)(u32)((s32)puVar2 + param_1 * param_2);
   }
 
-  if (0x98967e < (int)puVar2) {
-
-    puVar2 = (u8 *)(&DAT_0098967f);
-
+  if ((s32)puVar2 >= 0x98967f) {
+    puVar2 = (u8 *)(u32)0x98967f;
   }
 
-  datSetMoney(puVar2);
-
-  return (int)puVar2 - (int)puVar1;
-
+  datSetMoney((s32)puVar2);
+  return (s32)puVar2 - (s32)puVar1;
 }
 
 // FUN_003F1690 NONMATCHING
@@ -28978,41 +28914,26 @@ void FUN_0040c150(u32 param_1)
   );
 }
 
-// FUN_0040C170 NONMATCHING
+// FUN_0040C170
 
 
 u32 FUN_0040c170(void)
-
-
-
 {
-
   u32 uVar1;
-
+  u32 *puVar2;
   int iVar2;
 
-  
-
   uVar1 = FUN_0017d030();
-
   iVar2 = 0;
-
+  puVar2 = DAT_006aedc4;
   do {
-
-    if (uVar1 <= *(u32 *)(&DAT_006aedc4 + iVar2 * 8)) {
-
-      return *(u32 *)(&DAT_006aedc0 + iVar2 * 8);
-
+    if (uVar1 <= *(u32 *)((u8 *)puVar2 + iVar2 * 8 + 4)) {
+      return *(u32 *)((u8 *)puVar2 + iVar2 * 8);
     }
-
-    uVar1 = uVar1 - *(u32 *)(&DAT_006aedc4 + iVar2 * 8);
-
+    uVar1 = uVar1 - *(u32 *)((u8 *)puVar2 + iVar2 * 8 + 4);
     iVar2 = iVar2 + 1;
-
   } while (uVar1 != 0);
-
   return 0;
-
 }
 
 // FUN_0040C1E0 NONMATCHING
