@@ -1212,8 +1212,7 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
         {
             value = 99;
         }
-        fieldType = *(s16*)(work + 2);
-        func_00170860(-1, fieldType, (u16)value);
+        func_00170860(-1, *(s16*)(work + 2), (u16)value);
         scrSetIntReturnVal(1);
     }
     return true;
