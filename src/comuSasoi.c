@@ -855,31 +855,32 @@ u32 * FUN_003c3050(u64 param_1)
 }
 #define FUN_003c3050(...) ((u32 * (*)(...))FUN_003c3050)(__VA_ARGS__)
 #undef FUN_003c30b0
+#pragma alias DAT_0095b790_abs DAT_0095b790
+extern u8 DAT_0095b790_abs[];
+#pragma alias DAT_0095b794_abs DAT_0095b794
+extern u8 DAT_0095b794_abs[];
+#pragma alias DAT_0095b798_abs DAT_0095b798
+extern u8 DAT_0095b798_abs[];
+#pragma alias DAT_0095b79c_abs DAT_0095b79c
+extern u8 DAT_0095b79c_abs[];
 // FUN_003C30B0 NONMATCHING
 
 
 u8 FUN_003c30b0(void)
-
-
-
 {
+  u32 t0;
+  u32 t1;
+  u32 t2;
 
-  u8 bVar1;
-
-  
-
-  bVar1 = DAT_0095b790 != 0;
-
-  if (bVar1) {
-
-    FUN_00172b80(DAT_0095b794,DAT_0095b798,0x95b79c,1);
-
-    DAT_0095b790 = 0;
-
-  }
-
-  return bVar1;
-
+  if (*(u32*)DAT_0095b790_abs != 0) goto work;
+  return 0;
+work:
+  t0 = *(u32*)DAT_0095b794_abs;
+  t1 = *(u32*)DAT_0095b798_abs;
+  t2 = (u32)DAT_0095b79c_abs;
+  FUN_00172b80(t0,t1,t2,1);
+  *(u32*)DAT_0095b790_abs = 0;
+  return 1;
 }
 #define FUN_003c30b0(...) ((u8 (*)(...))FUN_003c30b0)(__VA_ARGS__)
 #undef FUN_003c3120
@@ -887,27 +888,20 @@ u8 FUN_003c30b0(void)
 
 
 u8 FUN_003c3120(void)
-
-
-
 {
+  u32 t0;
+  u32 t1;
+  u32 t2;
 
-  u8 bVar1;
-
-  
-
-  bVar1 = DAT_0095b790 != 0;
-
-  if (bVar1) {
-
-    FUN_00172b80(DAT_0095b794,DAT_0095b798,0x95b79c,0);
-
-    DAT_0095b790 = 0;
-
-  }
-
-  return bVar1;
-
+  if (*(u32*)DAT_0095b790_abs != 0) goto work;
+  return 0;
+work:
+  t0 = *(u32*)DAT_0095b794_abs;
+  t1 = *(u32*)DAT_0095b798_abs;
+  t2 = (u32)DAT_0095b79c_abs;
+  FUN_00172b80(t0,t1,t2,0);
+  *(u32*)DAT_0095b790_abs = 0;
+  return 1;
 }
 #define FUN_003c3120(...) ((u8 (*)(...))FUN_003c3120)(__VA_ARGS__)
 #undef FUN_003c3190
