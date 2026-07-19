@@ -182,7 +182,6 @@ void h_campDrawStatusOverview(int param_1)
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
     register void* parent;
-
     switch (param_2) {
     case 0:
         campDrawSprite(parent, (void*)DAT_00833a50[0], 0x2c,
@@ -253,7 +252,7 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
         campDrawSpriteXY(parent, (void*)DAT_00833a50[0x55], 9,
                          *(f32*)(param_1 + 0x38) + 97.0f,
-                         (*(f32*)(param_1 + 0x3c) + 389.0f) - 415.0f,
+                         (389.0f + *(f32*)(param_1 + 0x3c)) - 415.0f,
                          *(u8*)(param_1 + 0x40), *(f32*)(param_1 + 0x24));
         campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 3,
                         *(f32*)(param_1 + 0x38) + 122.0f,
@@ -1668,27 +1667,32 @@ void h_campDrawItemFrameSelected(int param_1)
   return;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0014F680 NONMATCHING
 u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 {
     CampSocialLinkRecord* entry;
     u8* socialEntry;
+    s32 second;
     s32 index1;
     s32 index2;
 
+    second = param_2;
+    param_2 = (s32)(uintptr_t)DAT_007cdfb8;
     for (index1 = 0; index1 < 9999; index1++) {
-        entry = DAT_007cdfb8 + index1;
+        entry = (CampSocialLinkRecord*)(uintptr_t)param_2 + index1;
         if (entry->first == 0) {
             break;
         }
-        if ((param_1 == entry->first) && (param_2 == entry->second)) {
-            if (*(s32*)((u8*)entry + 4) == 0) {
+        if ((param_1 == entry->first) && (second == entry->second)) {
+            if (entry->flag == 0) {
                 return 1;
             }
             if (FUN_0016f190() != 0) {
                 return 1;
             }
-            entry = DAT_007cdfb8 + index1;
+            param_2 = (s32)(uintptr_t)DAT_007cdfb8;
+            entry = (CampSocialLinkRecord*)(uintptr_t)param_2 + index1;
             if ((entry->first == 3) && (entry->type == 0x13)) {
                 return 1;
             }
@@ -1699,12 +1703,13 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
         if (socialEntry[0] == 0) {
             break;
         }
-        if ((socialEntry[0] == param_1) && (socialEntry[1] == param_2)) {
+        if ((socialEntry[0] == param_1) && (socialEntry[1] == second)) {
             return 1;
         }
     }
     return 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0014F7D0 NONMATCHING
 u32 h_campUpdateSystemMenuTask(int param_1)
