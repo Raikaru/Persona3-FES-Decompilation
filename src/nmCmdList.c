@@ -32,10 +32,10 @@ extern u32 DAT_0095be9d;
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_003c5e20(int param_1,long param_2);
-void FUN_003c5e80(int param_1,long param_2);
-void FUN_003c5ee0(int param_1,long param_2);
-void FUN_003c5f40(int param_1,long param_2);
+void FUN_003c5e20(int param_1,u32 param_2);
+void FUN_003c5e80(int param_1,u32 param_2);
+void FUN_003c5ee0(int param_1,u32 param_2);
+void FUN_003c5f40(int param_1,u32 param_2);
 void FUN_003c5fa0(u64 param_1,int param_2);
 u64 FUN_003c60f0(int param_1);
 u64 FUN_003c6120(u64 param_1,int param_2);
@@ -162,10 +162,10 @@ u8 FUN_003c83b0(void);
 #define FUN_003c83b0(...) ((u8 (*)(...))FUN_003c83b0)(__VA_ARGS__)
 
 #undef FUN_003c5e20
-// FUN_003C5E20 NONMATCHING
+// FUN_003C5E20
 
 
-void FUN_003c5e20(int param_1,long param_2)
+void FUN_003c5e20(int param_1,u32 param_2)
 
 
 
@@ -184,10 +184,10 @@ void FUN_003c5e20(int param_1,long param_2)
 }
 #define FUN_003c5e20(...) ((void (*)(...))FUN_003c5e20)(__VA_ARGS__)
 #undef FUN_003c5e80
-// FUN_003C5E80 NONMATCHING
+// FUN_003C5E80
 
 
-void FUN_003c5e80(int param_1,long param_2)
+void FUN_003c5e80(int param_1,u32 param_2)
 
 
 
@@ -206,10 +206,10 @@ void FUN_003c5e80(int param_1,long param_2)
 }
 #define FUN_003c5e80(...) ((void (*)(...))FUN_003c5e80)(__VA_ARGS__)
 #undef FUN_003c5ee0
-// FUN_003C5EE0 NONMATCHING
+// FUN_003C5EE0
 
 
-void FUN_003c5ee0(int param_1,long param_2)
+void FUN_003c5ee0(int param_1,u32 param_2)
 
 
 
@@ -228,10 +228,10 @@ void FUN_003c5ee0(int param_1,long param_2)
 }
 #define FUN_003c5ee0(...) ((void (*)(...))FUN_003c5ee0)(__VA_ARGS__)
 #undef FUN_003c5f40
-// FUN_003C5F40 NONMATCHING
+// FUN_003C5F40
 
 
-void FUN_003c5f40(int param_1,long param_2)
+void FUN_003c5f40(int param_1,u32 param_2)
 
 
 
@@ -1461,9 +1461,9 @@ int FUN_003c6fb0(int param_1)
 
   iVar2 = 0;
 
-  iVar3 = *(int *)(param_1 + 0xc);
-
   iVar1 = *(int *)(*(int *)(param_1 + 0x24) + 0x2c);
+
+  iVar3 = *(int *)(param_1 + 0xc);
 
   if (iVar1 != 0) {
 
