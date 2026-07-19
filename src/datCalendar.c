@@ -3099,7 +3099,9 @@ void func_001842c0(KwlnTask* task,
                   x + 571.0f, 67.0f, 50.0f);
 }
 
-// FUN_00184890 NONMATCHING
+extern void* DAT_007cdff0;
+
+// FUN_00184890
 void func_00184890(KwlnTask* task)
 {
     CalendarConfirmWork* work;
@@ -3110,7 +3112,7 @@ void func_00184890(KwlnTask* task)
         func_001124b0(work->resource);
         work->resource = NULL;
     }
-    *(void**)0x007cdff0 = NULL;
+    DAT_007cdff0 = NULL;
     RwFree(work);
 }
 
