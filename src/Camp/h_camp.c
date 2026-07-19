@@ -625,7 +625,69 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
 // FUN_0011cc80 NONMATCHING
 void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
 {
-    h_campDrawMenuEntryPass(work, alpha, 1);
+    struct {
+        f32 endX;
+        f32 endY;
+        f32 startX;
+        f32 startY;
+    } pos;
+    f32 temp;
+    s32 i;
+
+    pos.endX = 46.0f;
+    pos.endY = 59.0f;
+    pos.startX = pos.endX - 200.0f;
+    for (i = 0; i < 7; i++) {
+        pos.startY = pos.endY;
+        func_0018bc10(iGpffffb25c + i * 0x44, 0, 0, 1,
+                      *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                      alpha, 0, 0xa);
+        pos.endY += 19.0f;
+    }
+
+    pos.startX = -19.0f;
+    temp = (19.0f * (f32)work->selectedEntry) + 57.0f;
+    pos.startY = temp;
+    pos.endX = 181.0f;
+    pos.endY = temp;
+    func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 46.0f;
+    temp = 59.0f + 19.0f * (f32)work->selectedEntry;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x2ec, 0, 0, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 41.0f;
+    pos.endY = 11.0f;
+    pos.startX = pos.endX - 40.0f;
+    pos.startY = 11.0f;
+    func_0018bc10(iGpffffb25c + 0x330, 0, 0, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x19f;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x374, 0, 0, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x18b;
+    pos.endY = temp;
+    pos.startX = 44.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x3b8, 0, 2, 1,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
 }
 
 // FUN_0011cfb0 NONMATCHING
@@ -640,7 +702,69 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
 // FUN_0011d3a0 NONMATCHING
 void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
 {
-    h_campDrawMenuEntryPass(work, alpha, 2);
+    struct {
+        f32 endX;
+        f32 endY;
+        f32 startX;
+        f32 startY;
+    } pos;
+    f32 temp;
+    s32 i;
+
+    pos.endX = 46.0f;
+    pos.endY = 59.0f;
+    pos.startX = pos.endX - 200.0f;
+    for (i = 0; i < 7; i++) {
+        pos.startY = pos.endY;
+        func_0018bc10(iGpffffb25c + i * 0x44, 0, 0, 2,
+                      *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                      alpha, 0, 0xa);
+        pos.endY += 19.0f;
+    }
+
+    pos.startX = -19.0f;
+    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    pos.startY = temp;
+    pos.endX = 181.0f;
+    pos.endY = temp;
+    func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 46.0f;
+    temp = 59.0f + 19.0f * (f32)work->selectedEntry;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x2ec, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 41.0f;
+    pos.endY = 11.0f;
+    pos.startX = pos.endX - 40.0f;
+    pos.startY = 11.0f;
+    func_0018bc10(iGpffffb25c + 0x330, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x19f;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x374, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x18b;
+    pos.endY = temp;
+    pos.startX = 44.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x3b8, 0, 2, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
 }
 
 // FUN_0011d6d0 NONMATCHING
@@ -655,7 +779,69 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
 // FUN_0011da80 NONMATCHING
 void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
 {
-    h_campDrawMenuEntryPass(work, alpha, 2);
+    struct {
+        f32 endX;
+        f32 endY;
+        f32 startX;
+        f32 startY;
+    } pos;
+    f32 temp;
+    s32 i;
+
+    pos.endX = 46.0f;
+    pos.endY = 59.0f;
+    pos.startX = pos.endX - 200.0f;
+    for (i = 0; i < 7; i++) {
+        pos.startY = pos.endY;
+        func_0018bc10(iGpffffb25c + i * 0x44, 0, 0, 2,
+                      *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                      alpha, 0, 0xa);
+        pos.endY += 19.0f;
+    }
+
+    pos.startX = -19.0f;
+    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    pos.startY = temp;
+    pos.endX = 181.0f;
+    pos.endY = temp;
+    func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 46.0f;
+    temp = 59.0f + 19.0f * (f32)work->selectedEntry;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x2ec, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 41.0f;
+    pos.endY = 11.0f;
+    pos.startX = pos.endX - 40.0f;
+    pos.startY = 11.0f;
+    func_0018bc10(iGpffffb25c + 0x330, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x19f;
+    pos.endY = temp;
+    pos.startX = pos.endX - 200.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x374, 0, 0, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
+
+    pos.endX = 44.0f;
+    temp = (f32)0x18b;
+    pos.endY = temp;
+    pos.startX = 44.0f;
+    pos.startY = temp;
+    func_0018bc10(iGpffffb25c + 0x3b8, 0, 2, 2,
+                  *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
+                  alpha, 0, 0xa);
 }
 
 // FUN_0011ddb0 NONMATCHING
