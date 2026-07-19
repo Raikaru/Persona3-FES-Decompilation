@@ -1171,7 +1171,6 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
 {
   int iVar1;
   u8 *p;
-  void *pInterp;
 
   p = (u8 *)param_1;
   iVar1 = *(int *)(p + 0x18);
@@ -1191,8 +1190,8 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
   }
 
   if (*(int *)(p + 0x2c) != 0) {
-    pInterp = *(void **)(p + 0x24);
-    if (pInterp) {
+    iVar1 = *(int *)(p + 0x24);
+    if (iVar1 != 0) {
       func_0031e2c0();
     }
     if (*(int *)(p + 0x28) != 0) {
@@ -3762,31 +3761,22 @@ int func_00313f40(int param_1,u64 param_2)
 {
 
   int *piVar1;
-
   int *piVar2;
+
 
   
 
   piVar1 = (int *)func_004c21d0(param_2);
 
   while( true ) {
-
     piVar2 = (int *)func_004c21e0(param_2);
-
     if (piVar1 == piVar2) {
-
       piVar1 = (int *)func_004c1e70(param_2,0);
-
       *piVar1 = param_1;
-
       return param_1;
-
     }
-
     if (param_1 == *piVar1) break;
-
     piVar1 = piVar1 + 1;
-
   }
 
   return param_1;
@@ -6785,19 +6775,22 @@ u32 func_003186e0(int param_1, u32 param_2, s16 param_3)
     int* piVar1;
     s32 valid;
     u32 result;
-    int base;
+    u8* base;
+    int offset;
 
     result = 0;
     valid = 0;
-    piVar1 = *(int **)((param_2 & 0xffff) * 0x9c + param_1 + 0x118);
+    offset = (param_2 & 0xffff) * 0x9c;
+    offset += param_1;
+    piVar1 = *(int **)(offset + 0x118);
     if (piVar1 != NULL && (s32)*(u16 *)(piVar1 + 1) > (s32)param_3)
     {
         valid = 1;
     }
     if (valid)
     {
-        base = *piVar1;
-        base = param_3 * 0x50 + base;
+        base = (u8 *)*piVar1;
+        base = (u8 *)(param_3 * 0x50 + (u32)base);
         if (*(u8 **)(base + 0x40) == (u8 *)&DAT_009571d0)
         {
             result = 1;
@@ -7389,7 +7382,7 @@ void func_00319490(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5)
 
 
 
-// FUN_003195F0 NONMATCHING
+// FUN_003195F0
 
 
 void func_003195f0(int param_1,u32 param_2,Model* param_3)
@@ -7421,8 +7414,8 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
   }
 
   iVar2 = (param_2 & 0xffff) * 0xc;
-  param_1 = iVar2 + param_1;
-
+  iVar2 += param_1;
+  param_1 = iVar2;
   *(int *)(param_1 + 0x3b8) = iVar3;
 
   *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 4;
@@ -7500,7 +7493,7 @@ void func_003197c0(Model* param_1,RwMatrix* param_2)
   }
   return;
 }
-
+    
 
 
 
