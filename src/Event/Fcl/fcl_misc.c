@@ -106,6 +106,8 @@ extern void fclMiscFreeCall(s32);
 extern void fclMiscAssertCall(u32, u32);
 #pragma alias fclMisc3174e0Call FUN_003174e0
 extern void fclMisc3174e0Call(s32);
+#pragma alias fclMisc9460Call FUN_003c9460
+extern u32 fclMisc9460Call(u32 *);
 
 
 
@@ -486,37 +488,36 @@ u64 FUN_003c8770(u32 param_1, s32 param_2)
 }
 #define FUN_003c8770(...) ((u64 (*)(...))FUN_003c8770)(__VA_ARGS__)
 #undef FUN_003c8810
+ 
+ 
 // FUN_003C8810 NONMATCHING
-
-
 u64 FUN_003c8810(int *param_1)
 {
   int *item;
   int *node;
 
-  node = *(int **)(param_1[6] + 4);
-  while (node != 0) {
-    item = *(int **)((u8 *)node + 0x14);
-    if (*(int *)((u8 *)item + 8) == 0) {
-      node = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
+  item = *(int **)(param_1[6] + 4);
+  while (item != 0) {
+    node = *(int **)((u8 *)item + 0x14);
+    if (*(int *)((u8 *)node + 8) == 0) {
+      item = (int *)fclMiscC49e0Call(param_1[6], param_1[6] + 4);
     }
     else {
-      node = *(int **)((u8 *)node + 0x10);
+      item = *(int **)((u8 *)item + 0x10);
     }
   }
-  node = *(int **)(*param_1 + 4);
-  while (node != 0) {
-    item = *(int **)((u8 *)node + 0x14);
-    if ((*(u32 *)((u8 *)item + 4) & 2) == 0) {
-      node = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
+  item = *(int **)(*param_1 + 4);
+  while (item != 0) {
+    node = *(int **)((u8 *)item + 0x14);
+    if ((*(u32 *)((u8 *)node + 4) & 2) == 0) {
+      item = (int *)fclMiscC49e0Call(*param_1, *param_1 + 4);
     }
     else {
-      node = *(int **)((u8 *)node + 0x10);
+      item = *(int **)((u8 *)item + 0x10);
     }
   }
   return 0;
 }
-
 #define FUN_003c8810(...) ((u64 (*)(...))FUN_003c8810)(__VA_ARGS__)
 #undef FUN_003c88d0
 #pragma alias DAT_0095be80_abs DAT_0095be80
@@ -1170,7 +1171,7 @@ void FUN_003c9390(int *param_1)
   mode = *(s8 *)((u8 *)param_1 + 4);
   switch (mode) {
   case 0:
-    break;
+    goto done;
   case 1:
     if (fclMiscA2580Call(state) < 0) {
       *(u8 *)(param_1 + 1) = 2;
@@ -1185,10 +1186,13 @@ void FUN_003c9390(int *param_1)
     }
     break;
   case 3:
+    fclMisc9460Call((u32 *)param_1);
     break;
   }
-}
+done:
+  ;
 
+}
 #define FUN_003c9390(...) ((void (*)(...))FUN_003c9390)(__VA_ARGS__)
 #undef FUN_003c9460
 // FUN_003C9460
@@ -2538,24 +2542,30 @@ void FUN_003cacc0(int param_1)
 #define FUN_003cacc0(...) ((void (*)(...))FUN_003cacc0)(__VA_ARGS__)
 #undef FUN_003cb050
 // FUN_003CB050 NONMATCHING
-
-
 void FUN_003cb050(u32 param_1,s32 param_2,u32 param_3,s32 param_4,s32 param_5,
                   s32 param_6,s32 param_7,s32 param_8)
 {
   s32 offset;
+  s32 flags;
+  s32 kind;
+  f32 zero;
+  f32 one;
 
+  zero = 0.0f;
+  one = 1.0f;
   if (param_4 == 0) {
     offset = param_2 - param_6 * 4;
-    fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
-                     *(s16 *)(param_8 + 0x12) | 0xff00,param_5 + 2,0,0,
-                     *(u32 *)(param_8 + 0xd8));
+    kind = param_5 + 2;
+    flags = *(s16 *)(param_8 + 0x12) | -0x100;
+    fclMiscCa780Call(zero,zero,one,one,param_1,offset,
+                     flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
   else {
     offset = param_2 + (param_7 - param_6) * 4;
-    fclMiscCa780Call(0.0f,0.0f,1.0f,1.0f,param_1,offset,
-                     *(s16 *)(param_8 + 0x12) | 0xff00,param_5 + 2,0,0,
-                     *(u32 *)(param_8 + 0xd8));
+    kind = param_5 + 2;
+    flags = *(s16 *)(param_8 + 0x12) | -0x100;
+    fclMiscCa780Call(zero,zero,one,one,param_1,offset,
+                     flags,kind,0,0,*(u32 *)(param_8 + 0xd8));
   }
 }
 #define FUN_003cb050(...) ((void (*)(...))FUN_003cb050)(__VA_ARGS__)
