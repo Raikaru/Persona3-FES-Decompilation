@@ -66,6 +66,13 @@ Byte-matching these is confirmed wasted effort for a port. Several are also
 *not MWCC-matchable at all* (vendor toolchain objects — documented walls in
 rwcore's Deci2Call/SIO wrappers and the cri/libm forwarder stubs).
 
+**Decision (2026-07-18):** matching effort on `src/rw` is *stopped*. The ~235
+verified matches are kept as semantic ground truth; everything else stays as
+compiling C reference bodies (no inline-asm stubs — the repo-wide no-asm rule
+holds; the seven `.word` stubs introduced during the window sweep were
+reverted to C). Remaining rw work is Tier 2 inventory only: signatures and
+semantics of RW entry points reachable from game code, not byte-matches.
+
 | Subsystem | MATCH / total | Replacement strategy |
 |---|---|---|
 | `src/rw` | 209 / 1,683 (12.4%) | RenderWare 3.x → clean-room reimplementation (librw-style) or custom renderer behind the Tier 2 inventory. Needs the RW SDK version pinned from ELF sections/strings first. |
