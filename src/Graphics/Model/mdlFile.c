@@ -448,8 +448,8 @@ u64 FUN_00332070(u16 param_1,int param_2,u64 param_3);
 void FUN_003321d0(int param_1);
 void FUN_00332200(int param_1);
 void FUN_00332210(u64 param_1);
-void FUN_003322b0(int param_1,u32 *param_2);
-void FUN_003322d0(int param_1,u32 *param_2);
+u_long128 FUN_003322b0(int param_1,u32 *param_2);
+u_long128 FUN_003322d0(int param_1,u32 *param_2);
 #pragma alias FUN_003322d0_one FUN_003322d0
 extern void FUN_003322d0_one(int param_1);
 #pragma alias FUN_00332310_one FUN_00332310
@@ -508,7 +508,7 @@ void FUN_00337c40(int param_1);
 void FUN_00337c90(int param_1);
 void FUN_00337cf0(int param_1);
 void FUN_00337d40(int param_1);
-void FUN_00337dd0(Vec128 *dst,const Vec128 *src);
+u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src);
 u64 FUN_00337e90(int param_1);
 void FUN_00337f80(u64 param_1);
 void FUN_00337fd0(int param_1);
@@ -530,7 +530,7 @@ void FUN_003395d0(int param_1);
 void FUN_00339620(int param_1);
 void FUN_00339680(int param_1);
 void FUN_003396d0(int param_1);
-void FUN_00339760(Vec128 *dst,const Vec128 *src);
+u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src);
 void FUN_003397d0(int param_1);
 u64 FUN_003398c0(int param_1);
 void FUN_00339950(int param_1);
@@ -594,7 +594,7 @@ void FUN_00342280(int param_1);
 void FUN_003422d0(int param_1);
 void FUN_00342330(int param_1);
 void FUN_00342380(int param_1);
-void FUN_00342410(Vec128 *dst,const Vec128 *src);
+u_long128 FUN_00342410(Vec128 *dst,const Vec128 *src);
 void FUN_00342550(int param_1,int param_2);
 u64 FUN_00342890(u64 param_1,long param_2);
 u64 FUN_00342990(int param_1);
@@ -621,7 +621,7 @@ void FUN_00345fa0(int param_1);
 void FUN_00345ff0(int param_1);
 void FUN_00346050(int param_1);
 void FUN_003460a0(int param_1);
-void FUN_00346130(Vec128 *dst,const Vec128 *src);
+u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src);
 u64 FUN_003461a0(long param_1);
 void FUN_00346350(u64 param_1);
 u64 FUN_003463c0(u64 param_1);
@@ -23076,12 +23076,14 @@ void FUN_00332210(u64 param_1)
 
 
 
-// FUN_003322B0 NONMATCHING
+// FUN_003322B0
 
 
-void FUN_003322b0(int param_1,u32 *param_2)
+u_long128 FUN_003322b0(int param_1,u32 *param_2)
 {
-  *(u_long128 *)param_2 = *(u_long128 *)(*(int *)(param_1 + 0x20));
+  u_long128 value = *(u_long128 *)(*(int *)(param_1 + 0x20));
+  *(u_long128 *)param_2 = value;
+  return value;
 }
 
 
@@ -23090,9 +23092,11 @@ void FUN_003322b0(int param_1,u32 *param_2)
 // FUN_003322D0 NONMATCHING
 
 
-void FUN_003322d0(int param_1,u32 *param_2)
+u_long128 FUN_003322d0(int param_1,u32 *param_2)
 {
-  *(u_long128 *)(*(int *)(param_1 + 0x20)) = *(u_long128 *)param_2;
+  u_long128 value = *(u_long128 *)param_2;
+  *(u_long128 *)(*(int *)(param_1 + 0x20)) = value;
+  return value;
 }
 
 
@@ -29051,10 +29055,18 @@ void FUN_00337d40(int param_1)
 
 }
 
-// FUN_00337DD0 NONMATCHING
-void FUN_00337dd0(Vec128 *dst,const Vec128 *src)
+// FUN_00337DD0
+u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src)
 {
-  *dst = *src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+// FUN_00337DE0 NONMATCHING
+void FUN_00337de0(Vec128 *dst,const Vec128 *src)
+{
+  *(u_long128 *)dst = *(u_long128 *)src;
 }
 // FUN_00337DF0
 void FUN_00337df0(int param_1,int param_2)
@@ -30879,10 +30891,18 @@ void FUN_003396d0(int param_1)
 
 }
 
-// FUN_00339760 NONMATCHING
-void FUN_00339760(Vec128 *dst,const Vec128 *src)
+// FUN_00339760
+u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src)
 {
-  *dst = *src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+// FUN_00339770 NONMATCHING
+void FUN_00339770(Vec128 *dst,const Vec128 *src)
+{
+  *(u_long128 *)dst = *(u_long128 *)src;
 }
 // FUN_00339780
 void FUN_00339780(int param_1,int param_2)
@@ -40051,10 +40071,18 @@ void FUN_00342380(int param_1)
 
 }
 
-// FUN_00342410 NONMATCHING
-void FUN_00342410(Vec128 *dst,const Vec128 *src)
+// FUN_00342410
+u_long128 FUN_00342410(Vec128 *dst,const Vec128 *src)
 {
-  *dst = *src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+// FUN_00342420 NONMATCHING
+void FUN_00342420(Vec128 *dst,const Vec128 *src)
+{
+  *(u_long128 *)dst = *(u_long128 *)src;
 }
 // FUN_00342430
 void FUN_00342430(int param_1,int param_2)
@@ -43597,10 +43625,18 @@ void FUN_003460a0(int param_1)
 
 }
 
-// FUN_00346130 NONMATCHING
-void FUN_00346130(Vec128 *dst,const Vec128 *src)
+// FUN_00346130
+u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src)
 {
-  *dst = *src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
+}
+
+// FUN_00346140 NONMATCHING
+void FUN_00346140(Vec128 *dst,const Vec128 *src)
+{
+  *(u_long128 *)dst = *(u_long128 *)src;
 }
 // FUN_00346150
 void FUN_00346150(int param_1,int param_2)
