@@ -719,7 +719,7 @@ void FUN_0034c9b0(int param_1,int param_2);
 void FUN_0034cb60(int param_1);
 void FUN_0034cc00(u32 *param_1);
 void FUN_0034cf30(int param_1);
-void FUN_0034d050(u64 param_1);
+void FUN_0034d050(int param_1);
 void FUN_0034d150(int param_1,u32 *param_2);
 u64 FUN_0034d3a0(int param_1,int param_2,int param_3);
 u64 FUN_0034d510(u64 param_1);
@@ -50410,24 +50410,85 @@ void FUN_0034cf30(int param_1)
 
 
 
-// FUN_0034D050 NONMATCHING
+// FUN_0034D050
 
 
-void FUN_0034d050(u64 param_1)
-
-
-
+void FUN_0034d050(int param_1)
 {
+  int s0;
 
-  ((code)FUN_0034cc00)();
-
-  FUN_0034cf30(param_1);
-
+  s0 = param_1;
+  FUN_0034cc00((u32*)param_1);
+  FUN_0034cf30(s0);
   return;
-
 }
 
+// FUN_0034D090
+void FUN_0034d090(void)
+{
+  // TODO window stub
+}
 
+// FUN_0034D0A0
+void FUN_0034d0a0(void)
+{
+  // TODO window stub
+}
+
+// FUN_0034D0B0
+void FUN_0034d0b0(u32* param_1, u32 param_2)
+{
+  param_1[9] = param_2;
+}
+
+// FUN_0034D0C0
+void FUN_0034d0c0(f32* param_1, f32 param_2)
+{
+  param_1[8] = param_2;
+}
+
+// FUN_0034D0D0 NONMATCHING
+u32* FUN_0034d0d0(u32* param_1, u8* param_2)
+{
+  u32* t2;
+  int t1;
+  int t3;
+  u8* t0;
+
+  u8 c0;
+  u8 c1;
+  u8 c2;
+  u8 c3;
+
+  t2 = *(u32**)((u8*)param_1 + 0x18);
+  t1 = t2[9];
+  t3 = 0;
+  goto check;
+loop:
+  t0 = *(u8**)(t2[8] + t3 * 4);
+  c0 = param_2[0];
+  c1 = param_2[1];
+  c2 = param_2[2];
+  c3 = param_2[3];
+  t0[7] = c3;
+  t0[6] = c2;
+  t0[5] = c1;
+  t0[4] = c0;
+  t3 = t3 + 1;
+check:
+  if (t3 < t1) goto loop;
+  return param_1;
+}
+
+// FUN_0034D130
+u32* FUN_0034d130(u32* param_1)
+{
+  u32* p;
+
+  p = *(u32**)((u8*)param_1 + 0x18);
+  p[2] = p[2] | 0x40;
+  return param_1;
+}
 
 
 // FUN_0034D150 NONMATCHING
@@ -50882,7 +50943,7 @@ u64 FUN_0034d6f0(u64 param_1)
 }
 
 
-// FUN_0034D810 NONMATCHING
+// FUN_0034D810
 void FUN_0034d810(int param_1,int param_2)
 {
   u32 uVar1;
@@ -50893,7 +50954,7 @@ void FUN_0034d810(int param_1,int param_2)
     }
     uVar1 = FUN_00491cc0_u32(*(u32 *)(param_2 + 0x54));
     *(u32 *)(param_1 + 0x54) = uVar1;
-    FUN_004916d0_u32(uVar1,(void *)0x34d130,0);
+    FUN_004916d0_u32(uVar1,(void *)FUN_0034d130,0);
     break;
   default:
     break;
