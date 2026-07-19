@@ -168,7 +168,7 @@ void FUN_003a8350(int param_1);
 u64 FUN_003a8440(void);
 u64 FUN_003a84c0(void);
 void FUN_003a8530(void);
-void FUN_003a8590(void);
+void FUN_003a8590(u32* param_1);
 void FUN_003a8600(int param_1);
 void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6);
 u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
@@ -6300,43 +6300,34 @@ void FUN_003a8530(void)
 }
 #define FUN_003a8530(...) ((void (*)(...))FUN_003a8530)(__VA_ARGS__)
 #undef FUN_003a8590
-// FUN_003A8590 NONMATCHING
+// FUN_003A8590
 
 
-void FUN_003a8590(void)
-
-
-
+void FUN_003a8590(u32* param_1)
 {
-
+  u8* puVar2;
   int iVar1;
+  volatile u32 auStack_20[8];
 
-  u8 *puVar2;
-
-  u8 auStack_20 [32];
-
-  
-
-  puVar2 = auStack_20;
-
+  puVar2 = (u8*)auStack_20;
   iVar1 = 0x20;
-
-  if (iVar1 != 0) {
-
+  if (puVar2 != (u8*)0) {
     do {
-
       *puVar2 = 0;
-
       puVar2 = puVar2 + 1;
-
-      iVar1 = iVar1 + -1;
-
+      iVar1 = iVar1 - 1;
     } while (iVar1 != 0);
-
   }
 
+  auStack_20[0] = param_1[4];
+  auStack_20[1] = param_1[5];
+  auStack_20[2] = param_1[6];
+  auStack_20[3] = param_1[5];
+  auStack_20[4] = param_1[6];
+  auStack_20[5] = param_1[7];
+  auStack_20[6] = param_1[4];
+  auStack_20[7] = param_1[7];
   return;
-
 }
 #define FUN_003a8590(...) ((void (*)(...))FUN_003a8590)(__VA_ARGS__)
 #undef FUN_003a8600

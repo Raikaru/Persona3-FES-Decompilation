@@ -14608,11 +14608,7 @@ void FUN_00401170(u64 param_1)
 
 
 u32 FUN_00401210(int param_1)
-
-
-
 {
-
   u32 *puVar1;
   u32 *puVar2;
   u32 uVar2;
@@ -14620,10 +14616,7 @@ u32 FUN_00401210(int param_1)
   u32 uVar3;
   u32 *puVar4;
   code pcVar3;
-
   int iVar4;
-
-  
 
   puVar1 = *(u32 **)(param_1 + 0x3c);
   uVar4 = *puVar1;
@@ -14646,7 +14639,6 @@ u32 FUN_00401210(int param_1)
   }
 
   return 0;
-
 }
 
 // FUN_004012C0 NONMATCHING
@@ -15565,7 +15557,7 @@ check:
 
 }
 
-// FUN_00401D90 NONMATCHING
+// FUN_00401D90
 
 
 short * FUN_00401d90(int param_1)
@@ -15581,10 +15573,8 @@ short * FUN_00401d90(int param_1)
 
   
 
-  uVar2 = 0;
-
   psVar1 = (u16 *)psGpffffabf0;
-
+  uVar2 = 0;
   uVar3 = uGpffffabf4;
 
   while (uVar2 < uVar3) {
