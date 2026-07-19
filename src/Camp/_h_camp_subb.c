@@ -26,6 +26,12 @@ typedef struct CampEquipmentEntry
     u16 valueD;                 /* +0x22 */
 } CampEquipmentEntry;
 
+typedef struct CampEquipmentRecord24
+{
+    u8 reserved00[0x68];
+    s32 sourceIndex;
+} CampEquipmentRecord24;
+
 typedef struct CampEquipmentWork
 {
     u8 reserved00[0x0c];
@@ -37,6 +43,14 @@ typedef struct CampEquipmentWork
     s32 selectedEntry;          /* +0x2d68 */
     s32 firstVisibleEntry;      /* +0x2d6c */
 } CampEquipmentWork;
+
+typedef struct CampEquipmentWork24View
+{
+    u8 reserved00[0x2d64];
+    s32 entryCount;
+    s32 selectedEntry;
+    s32 firstVisibleEntry;
+} CampEquipmentWork24View;
 
 typedef struct CampEquipmentPanelWork
 {
@@ -317,7 +331,34 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 // FUN_0013c6a0 NONMATCHING
 u32 FUN_0013c6a0(s16 equipmentId)
 {
-    return campEquipmentFirstCategory(equipmentId);
+    s32 category;
+    u32* values = (u32*)func_00170ed0(equipmentId, &category);
+    s32 categoryMask;
+    s32 bit;
+
+    switch (category) {
+    case 0:
+        categoryMask = values[1];
+        goto firstBit;
+    case 1:
+        categoryMask = values[1];
+        goto firstBit;
+    case 2:
+        categoryMask = values[1];
+        goto firstBit;
+    case 3:
+        categoryMask = values[0];
+        goto firstBit;
+    default:
+        return 0;
+    }
+firstBit:
+    for (bit = 0; bit < 32; bit++) {
+        if ((categoryMask & (1 << bit)) != 0) {
+            return bit;
+        }
+    }
+    return 0;
 }
 
 // FUN_0013c780 NONMATCHING
@@ -1178,30 +1219,34 @@ void FUN_00140e30(void* texture,u64 position,CampEquipmentDetailWork* detail,s32
 
 void FUN_00141590(CampEquipmentWork* work)
 {
+    CampEquipmentWork24View* view = (CampEquipmentWork24View*)work;
+    u8* recordAddress;
     s32 firstVisibleEntry;
     s32 selectedEntry;
     s32 lastEntry;
     s32 lastVisibleEntry;
 
-    firstVisibleEntry = work->firstVisibleEntry;
-    selectedEntry = work->selectedEntry;
+    firstVisibleEntry = view->firstVisibleEntry;
+    selectedEntry = view->selectedEntry;
+    recordAddress = (u8*)work;
+    recordAddress += (firstVisibleEntry + selectedEntry) * 0x24;
     func_0016fea0(1,
-                  campEquipmentEntry(work, firstVisibleEntry + selectedEntry)->sourceIndex,
+                  ((CampEquipmentRecord24*)recordAddress)->sourceIndex,
                   0);
     FUN_0013cc90(work);
-    if (work->entryCount < 5) {
-        work->firstVisibleEntry = 0;
-        lastEntry = work->entryCount - 1;
+    if (view->entryCount < 5) {
+        view->firstVisibleEntry = 0;
+        lastEntry = view->entryCount - 1;
         if (lastEntry < selectedEntry) {
-            work->selectedEntry = lastEntry;
+            view->selectedEntry = lastEntry;
         } else {
-            work->selectedEntry = selectedEntry;
+            view->selectedEntry = selectedEntry;
         }
     } else {
-        lastVisibleEntry = work->entryCount - 5;
+        lastVisibleEntry = view->entryCount - 5;
         if (lastVisibleEntry < firstVisibleEntry) {
-            work->firstVisibleEntry = lastVisibleEntry;
-            work->selectedEntry = selectedEntry;
+            view->firstVisibleEntry = lastVisibleEntry;
+            view->selectedEntry = selectedEntry;
         }
     }
 }
