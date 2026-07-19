@@ -2908,26 +2908,18 @@ u64 FUN_003c82e0(int param_1)
 }
 #define FUN_003c82e0(...) ((u64 (*)(...))FUN_003c82e0)(__VA_ARGS__)
 #undef FUN_003c83b0
-// FUN_003C83B0 NONMATCHING
-
-
-
-
-
+// FUN_003C83B0
+extern u8 DAT_0095be90_abs[];
 
 u8 FUN_003c83b0(void)
-
-
-
 {
-
   u32 uVar1;
-
-  
-
-  uVar1 = FUN_003a3da0(DAT_0095be90);
-
+  u8* p;
+  p = DAT_0095be90_abs;
+  if (p != (u8*)0) goto nonzero;
+  return 0;
+nonzero:
+  uVar1 = FUN_003a3da0(*(u32*)p);
   return (uVar1 & 0x3300) != 0;
-
 }
 #define FUN_003c83b0(...) ((u8 (*)(...))FUN_003c83b0)(__VA_ARGS__)
