@@ -164,10 +164,12 @@ extern code DAT_0096017c;
 extern code DAT_00960184;
  #pragma alias DAT_00960184_abs DAT_00960184
  #pragma alias FUN_0019d3f0_evt FUN_0019d3f0
- extern void FUN_0019d3f0_evt(int param_1,int param_2);
+ extern void FUN_0019d3f0_evt(const char *param_1,int param_2);
  #pragma alias FUN_0038b2c0_b550 FUN_0038b2c0
  extern void FUN_0038b2c0_b550(u16 *param_1,u32 *param_2,u32 *param_3,u32 *param_4,int param_5);
 extern void FUN_003bb280(int param_1);
+extern int FUN_0031b680(u16 param_1,u16 param_2,u32 *param_3,int *param_4);
+extern u32 FUN_003b9500(int param_1,int param_2);
  extern int (*DAT_00960184_abs[])(...);
 extern u8 *PTR_DAT_0069d930;
 extern u8 *PTR_DAT_0069d960;
@@ -710,7 +712,7 @@ void FUN_0038d6b0(int param_1,u32 param_2);
 void FUN_0038d720(int param_1);
 void FUN_0038d790(int param_1);
 void FUN_0038d840(char *param_1,u8 *param_2,int param_3);
-void FUN_0038d910(u64 param_1);
+void FUN_0038d910(int param_1);
 void FUN_0038dad0(u32 param_1,long param_2,u64 param_3);
 void FUN_0038e660(u64 param_1,int param_2,int param_3);
 void FUN_0038f0f0(u64 param_1);
@@ -719,7 +721,7 @@ void FUN_0038f8c0(long param_1,u64 param_2,long param_3,short param_4);
 void FUN_0038fa10(int param_1,u64 param_2);
 void FUN_0038ffb0(int param_1,u64 param_2);
 
-// FUN_00386AE0 NONMATCHING
+// FUN_00386AE0
 
 
 int FUN_00386ae0(int param_1,int param_2)
@@ -736,7 +738,7 @@ int FUN_00386ae0(int param_1,int param_2)
 
   if (lVar1 == 0) {
 
-    FUN_0019d3f0((int)((u8 *)0x6a0000 + 0xa10),0x3b);
+    FUN_0019d3f0_evt("mt_evtMisc.c",0x3b);
 
   }
 
@@ -751,32 +753,25 @@ int FUN_00386ae0(int param_1,int param_2)
 
 
 void FUN_00386b70(u64 param_1,int param_2,int param_3)
-
-
-
 {
-
   (*DAT_0096017c_abs)();
 
-  if (param_2 < 0xd) {
-
-    if (param_2 >= 0) {
-
-      if (param_2 != 9) {
-        if (((param_2 == 6) || (param_2 == 5)) ||
-            ((param_2 == 4) || (param_2 == 0))) {
-          *(u32 *)(&DAT_00958a60_abs[(int)param_2 * 4]) = 0;
-        }
-        else {
-          *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) =
-              *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) - param_3;
-        }
-      }
-    }
-  }
-
+  if (param_2 >= 0xd) goto done;
+  if (param_2 < 0) goto done;
+  if (param_2 == 9) goto done;
+  if (param_2 == 6) goto zero;
+  if (param_2 == 5) goto zero;
+  if (param_2 == 4) goto zero;
+  if (param_2 == 0) goto zero;
+  goto subtract;
+zero:
+  *(u32 *)(&DAT_00958a60_abs[(int)param_2 * 4]) = 0;
+  goto done;
+subtract:
+  *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) =
+      *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) - param_3;
+done:
   return;
-
 }
 
 
@@ -785,28 +780,22 @@ void FUN_00386b70(u64 param_1,int param_2,int param_3)
 
 void FUN_00386c40(int param_1,int param_2)
 
-
-
 {
-
-  if ((param_1 < 0xd) && (-1 < param_1)) {
-
-    if ((param_1 == 6) || (((param_1 == 5 || (param_1 == 4)) || (param_1 == 0)))) {
-
-      *(int *)(&DAT_00958a60 + param_1 * 4) = param_2;
-
-    }
-
-    else {
-
-      *(int *)(&DAT_00958a60 + param_1 * 4) = *(int *)(&DAT_00958a60 + param_1 * 4) + param_2;
-
-    }
-
-  }
-
+  if (param_1 >= 0xd) goto done_index;
+  if (param_1 < 0) goto done_index;
+  if (param_1 == 6) goto assign_value;
+  if (param_1 == 5) goto assign_value;
+  if (param_1 == 4) goto assign_value;
+  if (!(param_1 != 0)) goto assign_value;
+  goto add_value;
+assign_value:
+  *(int *)(&DAT_00958a60 + param_1 * 4) = param_2;
+  goto done_index;
+add_value:
+  *(int *)(&DAT_00958a60 + param_1 * 4) =
+      *(int *)(&DAT_00958a60 + param_1 * 4) + param_2;
+done_index:
   return;
-
 }
 
 
@@ -818,31 +807,20 @@ u32 FUN_00386cd0(void)
 
 
 {
-
   int iVar1;
 
-  
-
   iVar1 = 0;
-
-  while( true ) {
-
+  while (true) {
     if (0xc < iVar1) {
-
       return 1;
-
     }
-
     if ((((iVar1 != 0) && (iVar1 != 4)) && (iVar1 != 5)) &&
-
-       ((iVar1 != 6 && (*(int *)(&DAT_00958a60 + iVar1 * 4) != 0)))) break;
-
+        ((iVar1 != 6 && (*(int *)(&DAT_00958a60 + iVar1 * 4) != 0)))) {
+      break;
+    }
     iVar1 = iVar1 + 1;
-
   }
-
   return 0;
-
 }
 
 
@@ -7719,22 +7697,14 @@ void FUN_0038d560(long param_1,long param_2,u32 param_3,u32 *param_4,
 
 
 void FUN_0038d6b0(int param_1,u32 param_2)
-
-
-
 {
-
-  if (param_1 < 10) {
-
-    if (param_1 >= 0) goto valid_index;
-    goto done_index;
-  }
+  if (param_1 >= 10) goto done_index;
+  if (param_1 >= 0) goto valid_index;
   goto done_index;
 valid_index:
   *(u32 *)(PTR_DAT_007cca5c + (int)param_1 * 4 + 800) = param_2;
 done_index:
   return;
-
 }
 
 
@@ -7789,7 +7759,7 @@ void FUN_0038d720(int param_1)
 }
 
 
-// FUN_0038D790 NONMATCHING
+// FUN_0038D790
 
 
 void FUN_0038d790(int param_1)
@@ -7808,7 +7778,7 @@ void FUN_0038d790(int param_1)
 
     if (lVar1 == 0) {
 
-      FUN_0019d3f0_evt((int)((u8 *)0x6a0000 + 0xa10),0x3b);
+      FUN_0019d3f0_evt("mt_evtMisc.c",0x3b);
 
     }
 
@@ -7818,7 +7788,7 @@ void FUN_0038d790(int param_1)
 
     if (lVar1 == 0) {
 
-      FUN_0019d3f0_evt((int)((u8 *)0x6a0000 + 0xa10),0x1261);
+      FUN_0019d3f0_evt("mt_evtMisc.c",0x1261);
 
     }
 
@@ -7897,49 +7867,29 @@ void FUN_0038d840(char *param_1,u8 *param_2,int param_3)
   return;
 
 }
-
-
-// FUN_0038D910 NONMATCHING
-
-
-void FUN_0038d910(u64 param_1)
+// FUN_0038D910
 
 
 
+void FUN_0038d910(int param_1)
 {
-
   int iVar1;
-
-  long lVar2;
-
+  int lVar2;
   u32 uStack_8;
-
   int iStack_4;
 
-  
-
-  iStack_4 = 0;
-
   uStack_8 = 0;
-
-  iVar1 = *(int *)((int)param_1 + 0x128);
-
-  lVar2 = FUN_0031b680(*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6),&iStack_4,
-
-                       &uStack_8);
-
-  if ((lVar2 == 1) && (iStack_4 == 0)) {
-
+  iStack_4 = 0;
+  iVar1 = *(int *)(param_1 + 0x128);
+  lVar2 = FUN_0031b680(*(u16 *)(iVar1 + 0xd4),*(u16 *)(iVar1 + 0xd6),
+                       &uStack_8,&iStack_4);
+  if ((lVar2 == 1) && (uStack_8 == 0)) {
     FUN_003b9500(param_1,0);
-
   }
-
-  return;
-
 }
 
 
-// FUN_0038D980 NONMATCHING
+// FUN_0038D980
 
 
 u32 FUN_0038d980(void)
@@ -7948,7 +7898,7 @@ u32 FUN_0038d980(void)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   u32 uVar2;
 
@@ -7956,19 +7906,16 @@ u32 FUN_0038d980(void)
 
   lVar1 = FUN_0035ed20(0);
 
-  if (lVar1 < 10) {
-
-    uVar2 = *(u32 *)(PTR_DAT_007cca5c + (int)lVar1 * 4 + 800);
-
+  if (lVar1 >= 10) {
+    FUN_0019d3f0_evt("mt_evtMisc.c",0x12f2);
   }
 
-  else {
-
-    FUN_0019d3f0("mt_evtMisc.c",0x12f2);
-
-    uVar2 = 0xffffffff;
-
-  }
+  if (!(lVar1 >= 10)) goto valid_index;
+  uVar2 = 0xffffffff;
+  goto done_index;
+valid_index:
+  uVar2 = *(u32 *)(PTR_DAT_007cca5c + (int)lVar1 * 4 + 800);
+done_index:
 
   FUN_0035f060(uVar2);
 
