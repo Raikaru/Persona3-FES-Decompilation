@@ -111,10 +111,60 @@ static u32 FldEvent_IsSceneBlocked(void)
     return false;
 }
 
-// FUN_001c6080 NONMATCHING
+// FUN_001c6080
 u32 func_001c6080(void)
 {
-    return FldEvent_IsSceneBlocked() == false;
+    MtScene* scene;
+    s32 major;
+    u32 result;
+
+    result = 1;
+    scene = gMtScene;
+    major = scene->fldMajorId;
+    if (major == 4 || major == 5 || major == 6 || major == 7 || major == 8 ||
+        major == 9 || major == 10 || major == 12 || major == 14 ||
+        major == 0x21 || major == 0x27)
+    {
+        goto blocked;
+    }
+    if (major == 0x1A && scene->fldMinorId == 0x33)
+    {
+        goto blocked;
+    }
+    if (major == 0x1A && scene->fldMinorId == 0x34)
+    {
+        goto blocked;
+    }
+    if (major == 0x1A && scene->fldMinorId == 0x35)
+    {
+        goto blocked;
+    }
+    if (major == 0x1B && scene->fldMinorId == 0x32)
+    {
+        goto blocked;
+    }
+    if (major == 0x20 && scene->fldMinorId == 1)
+    {
+        goto blocked;
+    }
+    if (major == 0x20 && scene->fldMinorId == 2)
+    {
+        goto blocked;
+    }
+    if (major == 0x23 && scene->fldMinorId == 1)
+    {
+        goto blocked;
+    }
+    if (major == 0x25 && scene->fldMinorId == 1)
+    {
+        goto blocked;
+    }
+    goto done;
+
+blocked:
+    result = 0;
+done:
+    return result;
 }
 
 // FUN_001c6450 NONMATCHING
