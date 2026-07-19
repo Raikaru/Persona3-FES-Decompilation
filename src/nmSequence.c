@@ -546,7 +546,7 @@ void FUN_003c5840(u64 param_1,int param_2)
 }
 #define FUN_003c5840(...) ((void (*)(...))FUN_003c5840)(__VA_ARGS__)
 #undef FUN_003c5870
-// FUN_003C5870 NONMATCHING
+// FUN_003C5870
 
 
 u64 FUN_003c5870(u64 param_1,int param_2)
@@ -555,10 +555,35 @@ u64 FUN_003c5870(u64 param_1,int param_2)
 
 {
 
-  (**(code **)(*(int *)(param_2 + 0x14) + 0x24))();
+  (*(code *)(*(int *)(param_2 + 0x14) + 0x24))();
 
   return 0;
 
+}
+// FUN_003C58A0
+void FUN_003c58a0(void)
+{
+  return;
+}
+// FUN_003C58B0
+void FUN_003c58b0(void)
+{
+  return;
+}
+// FUN_003C58C0
+void FUN_003c58c0(void)
+{
+  return;
+}
+// FUN_003C58D0
+void FUN_003c58d0(void)
+{
+  return;
+}
+// FUN_003C58E0
+void FUN_003c58e0(void)
+{
+  return;
 }
 #define FUN_003c5870(...) ((u64 (*)(...))FUN_003c5870)(__VA_ARGS__)
 #undef FUN_003c58f0
