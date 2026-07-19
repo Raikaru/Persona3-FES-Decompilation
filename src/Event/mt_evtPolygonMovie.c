@@ -33,7 +33,6 @@ extern PolyMovieData DAT_006a0cd0;
 extern PolyMovieBlock DAT_006a0cf0;
 extern PolyMovieData DAT_006a0d50;
 
-extern u8 * PTR_DAT_006a0cd8;
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
