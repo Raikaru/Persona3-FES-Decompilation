@@ -1148,7 +1148,7 @@ u8 FUN_003bea20(int param_1,int param_2)
 }
 #define FUN_003bea20(...) ((u8 (*)(...))FUN_003bea20)(__VA_ARGS__)
 #undef FUN_003beab0
-// FUN_003BEAB0 NONMATCHING
+// FUN_003BEAB0
 
 
 u32 FUN_003beab0(u32 param_1,u32 param_2,int *param_3)
@@ -1156,36 +1156,26 @@ u32 FUN_003beab0(u32 param_1,u32 param_2,int *param_3)
 
 
 {
-
   u8 *pbVar1;
-
+  u8 *pbBase;
   int iVar2;
 
-  
-
   iVar2 = 0;
-
-  while( 1 ) {
-
-    if (0x3f < iVar2) {
-
-      return 0;
-
-    }
-
-    pbVar1 = (u8 *)(DAT_0095b718 + iVar2 * 0x20);
-
-    if ((param_1 == *pbVar1) && (param_2 == pbVar1[1])) break;
-
-    iVar2 = iVar2 + 1;
-
-  }
-
+  pbBase = *(u8 **)(0x0095b718);
+  goto check;
+loop:
+  pbVar1 = pbBase + iVar2 * 0x20;
+  if (param_1 != *pbVar1) goto next;
+  if (param_2 != pbVar1[1]) goto next;
   *param_3 = iVar2;
-
   return 1;
-
+next:
+  iVar2 = iVar2 + 1;
+check:
+  if (iVar2 < 0x40) goto loop;
+  return 0;
 }
+
 #define FUN_003beab0(...) ((u32 (*)(...))FUN_003beab0)(__VA_ARGS__)
 #undef FUN_003beb10
 // FUN_003BEB10
@@ -1586,7 +1576,7 @@ u32 FUN_003bf130(void)
 }
 #define FUN_003bf130(...) ((u32 (*)(...))FUN_003bf130)(__VA_ARGS__)
 #undef FUN_003bf180
-// FUN_003BF180 NONMATCHING
+// FUN_003BF180
 
 
 void FUN_003bf180(u32 param_1,u32 param_2,u32 param_3)
@@ -1594,29 +1584,22 @@ void FUN_003bf180(u32 param_1,u32 param_2,u32 param_3)
 
 
 {
+  struct {
+    u8 data[12];
+    u32 param_1;
+    u32 param_2;
+    u32 param_3;
+    u32 pad;
+  } packet;
 
-  u8 auStack_20 [12];
+  FUN_00521408(packet.data,0,0x1c);
 
-  u32 uStack_14;
+  packet.param_1 = param_1;
+  packet.param_2 = param_2;
+  packet.param_3 = param_3;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  
-
-  FUN_00521408(auStack_20,0,0x1c);
-
-  uStack_14 = param_1;
-
-  uStack_10 = param_2;
-
-  uStack_c = param_3;
-
-  FUN_0027c080(3,auStack_20,0x1c,0);
-
+  FUN_0027c080(3,packet.data,0x1c,0);
   return;
-
 }
 #define FUN_003bf180(...) ((void (*)(...))FUN_003bf180)(__VA_ARGS__)
 #undef FUN_003bf200
@@ -1670,79 +1653,39 @@ FUN_003bf270(long param_1,long param_2,long param_3,long param_4,long param_5,lo
 
 
 {
-
-  if ((param_5 < param_3) || ((param_3 == param_5 && (param_6 < param_4)))) {
-
-    if (param_1 < param_3) {
-
-      if (param_1 <= param_5) {
-
-        if (param_5 != param_1) {
-
-          return 1;
-
-        }
-
-        if (param_2 <= param_6) {
-
-          return 1;
-
-        }
-
-      }
-
-    }
-
-    else {
-
+  if (param_5 < param_3 || ((param_3 == param_5) && (param_6 < param_4))) {
+    if (param_3 <= param_1) {
       if (param_3 != param_1) {
-
         return 1;
-
       }
-
       if (param_4 <= param_2) {
-
         return 1;
-
       }
-
+    } else {
+      if (param_1 <= param_5) {
+        if (param_5 != param_1) {
+          return 1;
+        }
+        if (param_2 <= param_6) {
+          return 1;
+        }
+      }
     }
-
-  }
-
-  else if ((param_3 <= param_1) && (param_1 <= param_5)) {
-
+  } else if ((param_3 <= param_1) && (param_1 <= param_5)) {
     if (param_3 == param_1) {
-
       if (param_4 <= param_2) {
-
         return 1;
-
       }
-
-    }
-
-    else {
-
+    } else {
       if (param_5 != param_1) {
-
         return 1;
-
       }
-
       if (param_2 <= param_6) {
-
         return 1;
-
       }
-
     }
-
   }
-
   return 0;
-
 }
 #define FUN_003bf270(...) ((u32 (*)(...))FUN_003bf270)(__VA_ARGS__)
 #undef FUN_003bf370
@@ -1878,79 +1821,39 @@ u32 FUN_003bf510(void)
 
 
 {
-
   int iVar1;
-
-  u8 bVar2;
-
   int *piVar3;
-
   int iVar4;
-
-  long lVar5;
-
-  
+  u32 lVar5;
 
   piVar3 = (int *)FUN_00195540();
-
   iVar4 = FUN_001717b0();
-
   iVar1 = *piVar3;
 
-  if (iVar1 == 3) {
-
+  switch (iVar1) {
+  case 0:
+    *piVar3 = 1;
+    break;
+  case 1:
+    lVar5 = FUN_003c3e80(iVar4 + 0x248);
+    if (lVar5 == 0) {
+      *piVar3 = 2;
+    }
+    break;
+  case 2:
+    return 0xffffffff;
+  case 3:
     lVar5 = FUN_0027c2b0();
-
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-
-      bVar2 = 1;
-
-    }
-
-    else {
-
-      bVar2 = 0;
-
-    }
-
-    if (bVar2) {
-
+    if ((lVar5 == 0) &&
+        ((lVar5 = FUN_0027c330()), lVar5 == -1)) {
       return 0xffffffff;
-
     }
-
-  }
-
-  else {
-
-    if (iVar1 == 2) {
-
-      return 0xffffffff;
-
-    }
-
-    if (iVar1 == 1) {
-
-      lVar5 = FUN_003c3e80(iVar4 + 0x248);
-
-      if (lVar5 == 0) {
-
-        *piVar3 = 2;
-
-      }
-
-    }
-
-    else if (iVar1 == 0) {
-
-      *piVar3 = 1;
-
-    }
-
+    break;
+  default:
+    break;
   }
 
   return 0;
-
 }
 #define FUN_003bf510(...) ((u32 (*)(...))FUN_003bf510)(__VA_ARGS__)
 #undef FUN_003bf610
