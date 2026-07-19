@@ -200,7 +200,7 @@ static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; retu
 #endif
 u64 FUN_0031d6b0(void);
 u64 FUN_0031d700(int *param_1);
-void FUN_0031d790(u64 param_1);
+void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
 u64 FUN_0031d7e0(int *param_1,u64 param_2,u64 param_3,u16 param_4,
 
@@ -1380,22 +1380,16 @@ u64 FUN_0031d700(int *param_1)
 
 
 
-// FUN_0031D790 NONMATCHING
+// FUN_0031D790
 
 
-void FUN_0031d790(u64 param_1)
-
-
-
+void FUN_0031d790(u32 *param_1)
 {
+  FUN_0031de30(param_1);
 
-  ((code)FUN_0031de30)();
-
-  (*DAT_0096017c)(param_1);
-
-  return;
-
+  DAT_0096017c_abs[0](param_1);
 }
+
 
 
 
@@ -5065,7 +5059,7 @@ void FUN_00321180(int param_1,u32 param_2)
 {
   int iVar1;
 
-  iVar1 = (int)*(u16 *)&uGpffff9d38;
+  iVar1 = (int)uGpffff9d38;
   if (iVar1 < 5) {
     iVar1 = 5;
   }
@@ -50526,7 +50520,7 @@ void FUN_0034d0c0(f32* param_1, f32 param_2)
   param_1[8] = param_2;
 }
 
-// FUN_0034D0D0 NONMATCHING
+// FUN_0034D0D0
 u32* FUN_0034d0d0(u32* param_1, u8* param_2)
 {
   u32* t2;
@@ -50549,10 +50543,14 @@ loop:
   c1 = param_2[1];
   c2 = param_2[2];
   c3 = param_2[3];
-  t0[7] = c3;
-  t0[6] = c2;
-  t0[5] = c1;
+  c0 = c0;
+  c1 = c1;
+  c2 = c2;
+  c3 = c3;
   t0[4] = c0;
+  t0[5] = c1;
+  t0[6] = c2;
+  t0[7] = c3;
   t3 = t3 + 1;
 check:
   if (t3 < t1) goto loop;
