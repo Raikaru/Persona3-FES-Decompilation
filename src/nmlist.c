@@ -1166,7 +1166,9 @@ void FUN_003c5180(long param_1,long param_2)
 }
 #define FUN_003c5180(...) ((void (*)(...))FUN_003c5180)(__VA_ARGS__)
 #undef FUN_003c5220
-// FUN_003C5220 NONMATCHING
+#pragma alias FUN_003c45f0_typed FUN_003c45f0
+void FUN_003c45f0_typed(void);
+// FUN_003C5220
 
 
 void FUN_003c5220(void)
@@ -1175,7 +1177,7 @@ void FUN_003c5220(void)
 
 {
 
-  FUN_003c45f0();
+  FUN_003c45f0_typed();
 
   return;
 
