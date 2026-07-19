@@ -760,7 +760,9 @@ void FUN_0039f410(int *param_1)
 }
 #define FUN_0039f410(...) ((void (*)(...))FUN_0039f410)(__VA_ARGS__)
 #undef FUN_0039f6e0
-// FUN_0039F6E0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_0039F6E0
 
 
 u8 FUN_0039f6e0(int *param_1)
@@ -773,21 +775,16 @@ u8 FUN_0039f6e0(int *param_1)
 
   
 
-  if ((u8)(*param_1 != 0)) {
+  if ((u8)(*param_1 != 0)) goto nonzero;
 
-    bVar1 = param_1[3] == 0;
+  return 1;
 
-  }
+nonzero:
 
-  else {
-
-    bVar1 = 1;
-
-  }
-
-  return bVar1;
+  return param_1[3] == 0;
 
 }
+#pragma pop
 #define FUN_0039f6e0(...) ((u8 (*)(...))FUN_0039f6e0)(__VA_ARGS__)
 #undef FUN_0039f710
 // FUN_0039F710 NONMATCHING
