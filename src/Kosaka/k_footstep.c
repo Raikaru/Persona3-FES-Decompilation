@@ -1049,15 +1049,326 @@ s32 func_001ded40(s32 charId)
     return 0;
 }
 
-// FUN_001df450 NONMATCHING
+// FUN_001df450
 s32 func_001df450(s32 mode)
 {
     u32 result = func_001dde00(mode);
-    if (result == 0)
+
+    switch (mode)
     {
-        return 0;
+    case 1:
+        goto footstep_target_mode1;
+    default:
+        goto footstep_target_done;
     }
-    return 6 + (s32)(RpRandom() % 3);
+footstep_target_mode1:
+        if (datGetScenarioMode() == 1)
+        {
+            if (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5)
+            {
+                result = 6 + (s32)(RpRandom() % 3U);
+                goto footstep_target_done;
+            }
+        }
+        if (func_001a0310() == 1)
+        {
+            result = 6 + (s32)(RpRandom() % 3U);
+            goto footstep_target_done;
+        }
+        if (gMtScene->fldMajorId == 7)
+        {
+            if (gMtScene->fldMinorId == 6)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_target_time_random;
+                }
+            }
+        }
+        if (gMtScene->fldMajorId == 8)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_target_time_random;
+                }
+            }
+        }
+        if (gMtScene->fldMajorId == 9)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                if (datGetTime() == 8)
+                {
+                    goto footstep_target_time_random;
+                }
+            }
+        }
+        goto footstep_target_after_time_random;
+
+footstep_target_time_random:
+        result = 6 + (s32)(RpRandom() % 3U);
+        goto footstep_target_done;
+
+footstep_target_after_time_random:
+        if (gMtScene->fldMajorId == 0xE && gMtScene->fldMinorId == 5)
+        {
+            goto footstep_target_done;
+        }
+        if (gMtScene->fldMajorId == 0xE)
+        {
+            if (datGetTime() == 6)
+            {
+                if (clndGetCurrentMonth() == 0xB)
+                {
+                    if (clndGetCurrentDay() == 0x12)
+                    {
+                        goto footstep_target_calendar_random;
+                    }
+                }
+                if (clndGetCurrentMonth() == 0xB)
+                {
+                    if (clndGetCurrentDay() == 0x13)
+                    {
+                        goto footstep_target_calendar_random;
+                    }
+                }
+            }
+        }
+        goto footstep_target_after_calendar_random;
+
+footstep_target_calendar_random:
+        result = 6 + (s32)(RpRandom() % 3U);
+        goto footstep_target_done;
+
+footstep_target_after_calendar_random:
+        if (gMtScene->fldMajorId == 0x21)
+        {
+            goto footstep_target_done;
+        }
+        if (gMtScene->fldMajorId == 7 && datGetFlag(0xE00) == 1)
+        {
+            goto footstep_target_done;
+        }
+        if (gMtScene->fldMajorId == 6)
+        {
+            if (datGetFlag(0xE60) == 1)
+            {
+                goto footstep_target_major6_random;
+            }
+        }
+        goto footstep_target_after_major6_random;
+
+footstep_target_major6_random:
+        result = 6 + (s32)(RpRandom() % 3U);
+        goto footstep_target_done;
+
+footstep_target_after_major6_random:
+        if (func_001a01c0() == 1)
+        {
+            goto footstep_target_special;
+        }
+        if (gMtScene->fldMajorId == 0x15)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x16)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x17)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x18)
+        {
+            if (gMtScene->fldMinorId == 0x33)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x19)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x1B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x29)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2C)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2D)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2E)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2F)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x29)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2A)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2B)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2C)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2D)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2E)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x2F)
+        {
+            if (gMtScene->fldMinorId == 0x32)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 1)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 2)
+            {
+                goto footstep_target_special;
+            }
+        }
+        if (gMtScene->fldMajorId == 0x27)
+        {
+            if (gMtScene->fldMinorId == 3)
+            {
+                goto footstep_target_special;
+            }
+        }
+    goto footstep_target_random_default;
+
+footstep_target_special:
+    result = 0xF;
+    goto footstep_target_done;
+
+
+footstep_target_random_default:
+    result = 6 + (s32)(RpRandom() % 3U);
+footstep_target_done:
+    return (s32)result;
 }
 
 // FUN_001dfa70 NONMATCHING
