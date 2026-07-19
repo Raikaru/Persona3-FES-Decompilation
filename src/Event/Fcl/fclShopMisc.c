@@ -302,6 +302,9 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u32 param_7,int param_8,long param_9);
 #pragma alias datGetFlag_s32 datGetFlag
 s32 datGetFlag_s32(s32 param_1);
+#pragma alias datSocialLinkLevelIsNotZero_s32 datSocialLinkLevelIsNotZero
+u32 datSocialLinkLevelIsNotZero_s32(s32 socialLink);
+void FUN_001725a0(u64 socialLink);
 #pragma alias datGetEquipmentIdx_s16 datGetEquipmentIdx
 s16 datGetEquipmentIdx_s16(s16 param_1,s16 param_2);
 #pragma alias FUN_0017c610_u64 FUN_0017c610
@@ -311,9 +314,13 @@ int FUN_004037e0_u64(u64 param_1);
 #pragma alias FUN_003f04f0_u32 FUN_003f04f0
 u32 FUN_003f04f0_u32(u32 param_1,int param_2);
 #pragma alias FUN_003f1dc0_u32 FUN_003f1dc0
-u32 FUN_003f1dc0_u32(s32 param_1,u32 param_2,s32 param_3);
+u32 FUN_003f1dc0_u32(s32 param_1,void *param_2,s32 param_3);
+#pragma alias FUN_003f1dc0_u64 FUN_003f1dc0
+u32 FUN_003f1dc0_u64(u64 param_1,void *param_2,s32 param_3);
 #pragma alias FUN_0040e3c0_f32 FUN_0040e3c0
 void FUN_0040e3c0_f32(float param_1,int param_2,int param_3,u8 param_4,int param_5,int param_6);
+#pragma alias FUN_0040e3c0_u32 FUN_0040e3c0
+void FUN_0040e3c0_u32(float param_1,int param_2,int param_3,u32 param_4,int param_5,int param_6);
 #pragma alias FUN_003e0680_typed FUN_003e0680
 void FUN_003e0680_typed(int param_1,code param_2,void *param_3);
 #pragma alias memset_typed memset
@@ -1929,62 +1936,36 @@ u64 FUN_003f1470(int param_1)
   return FUN_00172660(sVar1);
 }
 
-// FUN_003F1520 NONMATCHING
-
+// FUN_003F1520
 
 void FUN_003f1520(int param_1)
-
-
-
 {
+  s32 iVar1;
+  u32 uVar2;
 
-  long lVar1;
-
-  u16 uVar2;
-
-  
-
-  if (param_1 == 8) {
-
-    uVar2 = 2;
-
+  switch (param_1) {
+  case 0:
+    iVar1 = 0xf;
+    break;
+  case 4:
+    iVar1 = 3;
+    break;
+  case 8:
+    iVar1 = 2;
+    break;
+  default:
+    return;
   }
 
-  else if (param_1 == 4) {
-
-    uVar2 = 3;
-
+  uVar2 = datSocialLinkLevelIsNotZero_s32(iVar1);
+  if (uVar2 != 0) {
+    FUN_001725a0((s16)iVar1);
   }
-
   else {
-
-    if (param_1 != 0) {
-
-      return;
-
-    }
-
-    uVar2 = 0xf;
-
+    func_0016dfb0(iVar1);
   }
-
-  lVar1 = datSocialLinkLevelIsNotZero(uVar2);
-
-  if (lVar1 == 0) {
-
-    func_0016dfb0(uVar2);
-
-  }
-
-  else {
-
-    FUN_001725a0(uVar2);
-
-  }
-
-  return;
-
 }
+
 
 // FUN_003F15D0
 
@@ -2016,43 +1997,30 @@ int FUN_003f15d0(int param_1,int param_2)
   return (s32)puVar2 - (s32)puVar1;
 }
 
-// FUN_003F1690 NONMATCHING
+// FUN_003F1690
 
 
 int FUN_003f1690(u64 param_1)
-
-
-
 {
-
-  short sVar1;
-
+  u16 uVar1;
   int iVar2;
 
-  
-
   iVar2 = 0;
-
-  while( 1 ) {
-
-    if (299 < iVar2) {
-
-      return -1;
-
-    }
-
-    sVar1 = datGetEquipmentId(1,iVar2);
-
-    if (sVar1 == 0) break;
-
-    iVar2 = iVar2 + 1;
-
+  goto check;
+body:
+  uVar1 = datGetEquipmentId(1,iVar2);
+  if (uVar1 != 0) {
+    goto increment;
   }
-
   func_001831e0(1,(short)iVar2,param_1);
-
   return iVar2;
-
+increment:
+  iVar2 = iVar2 + 1;
+check:
+  if (iVar2 < 300) {
+    goto body;
+  }
+  return -1;
 }
 
 // FUN_003F1720 NONMATCHING
@@ -4225,36 +4193,28 @@ u32 FUN_003f3e60(int param_1,u64 param_2)
 
 
 u64 FUN_003f3f00(u64 param_1)
-
-
-
 {
+  u32 uVar1;
+  u32 uVar2;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  
-
-
-  lVar2 = FUN_003c6ce0(param_1);
-
-  if ((lVar2 != 0) || (lVar2 = FUN_003c6d10(param_1), lVar2 != 0)) {
-
+  uVar1 = FUN_003c6ce0(param_1);
+  uVar2 = FUN_003c6d10(param_1);
+  if (uVar2 != 0) {
     func_0010a4e0(0,0,0,0);
-
   }
 
-  lVar2 = FUN_003c6ca0(param_1);
-
-  if ((lVar2 != 0) || (lVar2 = FUN_003c6cc0(param_1), lVar2 != 0)) {
-
+  uVar2 = FUN_003c6ca0(param_1);
+  if (uVar2 != 0) {
     func_0010a4e0(0,0,0,5);
-
+  }
+  else {
+    uVar2 = FUN_003c6cc0(param_1);
+    if (uVar2 != 0) {
+      func_0010a4e0(0,0,0,5);
+    }
   }
 
   return uVar1;
-
 }
 
 // FUN_003F3FC0 NONMATCHING
@@ -10127,20 +10087,19 @@ u64 FUN_003fbc00(u32 *param_1)
 
 }
 
-// FUN_003FBE70 NONMATCHING
+// FUN_003FBE70
 
 
 void FUN_003fbe70(u8 *param_1,u8 *param_2)
 {
   s16 sVar1;
-  u16 *puVar2;
 
   memset_typed(param_1,0,0x98);
   sVar1 = datGetEquipmentIdx_s16(1,(s16)((s32)(*(u32 *)(param_2 + 4) & 0xf00) >> 8));
-  FUN_003f1dc0_u32(1,(u32)(param_1 + 0x50),(s32)sVar1);
+  FUN_003f1dc0_u32(1,param_1 + 0x50,(s32)sVar1);
   memcpy_typed(param_1 + 0x6c,param_2,0x1c);
-  *(u32 *)(puVar2 + 2) = *(u32 *)(puVar2 + 2) | 1;
-  *puVar2 = 1;
+  *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 1;
+  *(u16 *)param_1 = 1;
   return;
 }
 
@@ -10547,11 +10506,14 @@ u32 FUN_003fc980(int param_1)
 
 void FUN_003fca00(u64 param_1,u64 param_2,u32 param_3)
 {
-  FUN_0040e3c0_f32(0.0f,0,0,param_3 & 0xff,0x52,0);
-  FUN_0040e3c0_f32(0.0f,0,0,param_3 & 0xff,0x53,0);
-  FUN_0040e3c0_f32(0.0f,0,0,param_3 & 0xff,0x54,0);
-  FUN_0040e3c0_f32(0.0f,0,0,param_3 & 0xff,0x50,0);
-  FUN_0040e3c0_f32(0.0f,0,0,param_3 & 0xff,0x51,0);
+  u32 uVar1;
+
+  uVar1 = param_3;
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1,0x52,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x53,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x54,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x50,0);
+  FUN_0040e3c0_f32(0.0f,0,0,uVar1 & 0xff,0x51,0);
   return;
 }
 
@@ -11134,20 +11096,20 @@ u64 FUN_003fd570(int param_1,u32 *param_2)
 
 }
 
-// FUN_003FD730 NONMATCHING
-
-
+// FUN_003FD730
 u64 FUN_003fd730(u64 param_1,int param_2)
 {
-  u16 uVar1;
-  int iVar2;
+  s16 sVar1;
   int iVar3;
+  int iVar2;
+  u64 uVar4;
   u8 auStack_20[32];
 
+  uVar4 = param_1;
   iVar3 = *(int *)(*(int *)(param_2 + 4) + 4);
   for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-    uVar1 = datGetEquipmentIdx_s16((s16)param_1,(s16)iVar2);
-    FUN_003f1dc0(1,(long)auStack_20,(long)uVar1);
+    sVar1 = datGetEquipmentIdx_s16((s16)uVar4,(s16)iVar2);
+    FUN_003f1dc0_u64(uVar4,auStack_20,(s32)sVar1);
     memcpy_typed((void *)(*(int *)(*(int *)(iVar3 + 0x14) + 0x1c) + 4),auStack_20,0x1c);
     iVar3 = *(int *)(iVar3 + 0x10);
   }
@@ -16777,7 +16739,7 @@ void FUN_00403340(u16 param_1)
   FUN_00404470_alt(param_1,0);
 }
 
-// FUN_00403380 NONMATCHING
+// FUN_00403380
 
 
 u8 FUN_00403380(u64 param_1)
@@ -16785,7 +16747,7 @@ u8 FUN_00403380(u64 param_1)
   if (datGetFlag_s32((s16)param_1 + 0x1170) != 0) {
     return 3;
   }
-  if (FUN_003f04f0((long)FUN_004037e0_u64(param_1),0) != 0) {
+  if (FUN_003f04f0_u32(FUN_004037e0_u64(param_1),0) != 0) {
     return FUN_0017c610_u64(param_1) != 0;
   }
   return 2;
