@@ -56,7 +56,7 @@ void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
 void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
 void func_00316970(Model* mdl);
-u64 func_003115a0(u64 param_1, u64 param_2);
+u32 func_003115a0(void* param_1, u32* param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
 void func_00311480(MdlAnimResourceSet* resources, Model* mdl);
 extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
@@ -194,22 +194,15 @@ Model* mdlInit(u16 type, u16 id)
 Model* mdlSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
-    u16 modelType;
-    u16 modelId;
-    u16 modelFlags;
 
-    modelType = type;
-    modelId = id;
-    modelFlags = flags;
-    mdl = sMdlListTails[modelType];
+    mdl = sMdlListTails[type];
+    id &= 0xffff;
+    flags &= 0xffff;
     while (mdl != NULL)
     {
-        if (mdl->id == modelId)
+        if (mdl->id == id && (flags == 0 || (mdl->flags & flags) != 0))
         {
-            if (modelFlags == 0 || (mdl->flags & modelFlags) != 0)
-            {
-                break;
-            }
+            break;
         }
         mdl = mdl->prev;
     }
@@ -1235,34 +1228,23 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
 
 
 
-// FUN_003115A0 NONMATCHING
+// FUN_003115A0
 
 
-u64 func_003115a0(u64 param_1,u64 param_2)
+u32 func_003115a0(void* param_1, u32* param_2)
 {
+    u32 value;
 
-  long lVar1;
-
-  
-
-  lVar1 = func_00466710();
-
-  if (lVar1 == 0) {
-
-    func_004cb6e0((void*)(u32)param_1,(void(*)())func_003115a0,(void*)(u32)param_2);
-
-  }
-
-  else {
-
-    *(u32 *)param_2 = (int)lVar1;
-
-    param_1 = 0;
-
-  }
-
-  return param_1;
-
+    value = func_00466710();
+    if (value != 0)
+    {
+        goto store_value;
+    }
+    func_004cb6e0(param_1, (void (*)())func_003115a0, param_2);
+    return (u32)param_1;
+store_value:
+    *param_2 = value;
+    return 0;
 }
 
 
@@ -6189,29 +6171,18 @@ Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4)
 
 
 
-// FUN_003176C0 NONMATCHING
+// FUN_003176C0
 
 
-void func_003176c0(Model* param_1)
-
-
-
+void func_003176c0(Model* mdl)
 {
+    RwMatrix matrix;
+    RwFrame* frame;
 
-  u32 uVar1;
-
-  u8 auStack_40 [64];
-
-  
-
-  uVar1 = *(u32 *)(*(int *)((int)param_1 + 0xdc) + 4);
-
-  RwMatrixMultiply((RwMatrix*)auStack_40,(const RwMatrix*)((int)param_1 + 0x40),(RwMatrix*)param_1);
-
-  func_004cb7f0(uVar1,auStack_40,0);
-
-  return;
-
+    frame = *(RwFrame**)((u8*)mdl->clump + 4);
+    RwMatrixMultiply(&matrix, &mdl->identityMat, (const RwMatrix*)mdl);
+    func_004cb7f0(frame, &matrix, 0);
+    func_003197c0(mdl, &matrix);
 }
 
 
@@ -6822,37 +6793,30 @@ u32 func_00318620(Model* param_1,u16 param_2,s16 param_3)
 // FUN_003186E0 NONMATCHING
 
 
-u32 func_003186e0(int param_1,u32 param_2,short param_3)
-
-
-
+u32 func_003186e0(int param_1, u32 param_2, s16 param_3)
 {
+    int* piVar1;
+    s32 valid;
+    u32 result;
+    int base;
 
-  int *piVar1;
-
-  bool bVar2;
-
-  u32 uVar3;
-
-  
-
-  uVar3 = 0;
-
-  bVar2 = false;
-
-  piVar1 = *(int **)((param_2 & 0xffff) * 0x9c + param_1 + 0x118);
-  if ((piVar1 != (int *)0x0) && ((long)param_3 < (long)(u32)*(u16 *)(piVar1 + 1))) {
-    bVar2 = true;
-  }
-
-  if ((bVar2) && (*(u8 **)(param_3 * 0x50 + *piVar1 + 0x40) == (u8 *)&DAT_009571d0)) {
-
-    uVar3 = 1;
-
-  }
-
-  return uVar3;
-
+    result = 0;
+    valid = 0;
+    piVar1 = *(int **)((param_2 & 0xffff) * 0x9c + param_1 + 0x118);
+    if (piVar1 != NULL && (s32)*(u16 *)(piVar1 + 1) > (s32)param_3)
+    {
+        valid = 1;
+    }
+    if (valid)
+    {
+        base = *piVar1;
+        base = param_3 * 0x50 + base;
+        if (*(u8 **)(base + 0x40) == (u8 *)&DAT_009571d0)
+        {
+            result = 1;
+        }
+    }
+    return result;
 }
 
 
@@ -7251,34 +7215,27 @@ u32 func_00318fc0(int param_1)
 // FUN_00319230 NONMATCHING
 
 
-void func_00319230(int param_1,u16 param_2)
-
-
-
+void func_00319230(int param_1, u16 param_2)
 {
+    s32 i;
+    u8* slot;
+    Model* wpn;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  
-
-  *(u16 *)(param_1 + 0x418) = param_2;
-
-  for (uVar2 = 0; uVar2 < 5; uVar2 = uVar2 + 1 & 0xffff) {
-
-    iVar1 = param_1 + uVar2 * 0xc;
-
-    if (((*(u8 *)(iVar1 + 0x3b4) & 1) != 0) && (iVar1 = *(int *)(iVar1 + 0x3b8), iVar1 != 0)) {
-
-      *(u16 *)(iVar1 + 0x418) = param_2;
-
+    *(u16 *)(param_1 + 0x418) = param_2;
+    i = 0;
+    while ((i & 0xffff) < 5)
+    {
+        slot = (u8*)param_1 + (i & 0xffff) * 0xc;
+        if ((slot[0x3b4] & 1) != 0)
+        {
+            wpn = *(Model**)(slot + 0x3b8);
+            if (wpn != NULL)
+            {
+                *(u16*)((u8*)wpn + 0x418) = param_2;
+            }
+        }
+        i = (i + 1) & 0xffff;
     }
-
-  }
-
-  return;
-
 }
 
 
@@ -7482,7 +7439,8 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
     *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 0x2000;
   }
 
-  param_1 = param_1 + (param_2 & 0xffff) * 0xc;
+  iVar2 = (param_2 & 0xffff) * 0xc;
+  param_1 = iVar2 + param_1;
 
   *(int *)(param_1 + 0x3b8) = iVar3;
 
@@ -7504,33 +7462,23 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
 // FUN_003196F0 NONMATCHING
 
 
-void func_003196f0(Model* param_1,u16 param_2)
+void func_003196f0(Model* param_1, u16 param_2)
 {
+    int iVar1;
+    int iVar2;
+    int* pWpnMdl;
 
-  int iVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = (param_2 & 0xffff) * 0xc;
-
-  iVar1 = iVar2 + (int)(u8*)param_1;
-
-  if (*(int *)(iVar1 + 0x3b8) != 0) {
-
-    mdlDestroy((Model*)*(u32 *)(iVar1 + 0x3b8));
-
-    *(u32 *)(iVar1 + 0x3b8) = 0;
-
-    iVar2 = iVar2 + (int)(u8*)param_1;
-
-    *(u8 *)(iVar2 + 0x3b4) = *(u8 *)(iVar2 + 0x3b4) & 0xfe;
-
-  }
-
-  return;
-
+    iVar1 = (int)(u8*)param_1;
+    iVar2 = (param_2 & 0xffff) * 0xc;
+    iVar1 = iVar2 + iVar1;
+    pWpnMdl = (int*)(iVar1 + 0x3b8);
+    if (*pWpnMdl != 0)
+    {
+        mdlDestroy((Model*)*pWpnMdl);
+        *pWpnMdl = 0;
+        iVar2 = iVar2 + (int)(u8*)param_1;
+        *(u8*)(iVar2 + 0x3b4) = *(u8*)(iVar2 + 0x3b4) & 0xfe;
+    }
 }
 
 
