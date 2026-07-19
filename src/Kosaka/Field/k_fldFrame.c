@@ -26,6 +26,17 @@ typedef struct FldFrameResourceCollision
 
 extern RwV3d D_00683780[];
 extern const char D_00678CE0[];
+extern u32 K_Clump_MatUsrDataHasData(const void* material, const char* name);
+extern RwSphere* func_004912b0(void* atomic);
+extern RwCamera* DAT_00960070;
+#pragma alias DAT_00960070_abs DAT_00960070
+extern u8 DAT_00960070_abs[];
+typedef struct FldFrameAtomicQuery
+{
+    void* output;
+    u8 intersection[0x2c];
+    void* atomic;
+} FldFrameAtomicQuery;
 extern void func_001ab390(void* collision, const RwV3d* pos, RwV3d* translation,
                           f32 sphereCollisRadius);
 extern void func_001abd20(void* collisionWorld, const RwV3d* pos, RwV3d* translation,
@@ -1743,27 +1754,85 @@ void func_001ad050(void* collisionWorld, const RwV4d* position,
 }
 
 // FUN_001ad120 NONMATCHING
-void* func_001ad120(void* resource, void* unused, FldFrameResourceSet* set)
+void* func_001ad120(void* unused, void* collision, FldFrameAtomicQuery* query)
 {
-    if (resource != NULL && set != NULL && set->count < 64)
+    void* geometry;
+    void* entry;
+    u8* triangles;
+    u8* triangle;
+    void** materials;
+    u32 materialIndex;
+    void* material;
+    s32 i;
+
+    geometry = *(void**)((u8*)query->atomic + 0x18);
+    triangles = *(u8**)((u8*)geometry + 0x2c);
+    entry = *(void**)((u8*)geometry + 8);
+    entry = (void*)((uintptr_t)entry | 0x40);
+    *(void**)((u8*)geometry + 8) = entry;
+    triangle = (u8*)((*(u32*)((u8*)collision + 0x18) * 8) +
+                     (u32)triangles);
+    materialIndex = *(u16*)(triangle + 6);
+    materials = *(void***)((u8*)geometry + 0x20);
+    material = materials[materialIndex];
+    if (!K_Clump_MatUsrDataHasData(material, D_00678CE0))
     {
-        set->items[set->count++] = resource;
+        return collision;
     }
-    return unused;
+
+    for (i = 0; i < 64; i++)
+    {
+        void** slot;
+
+        slot = (void**)((u8*)query->output + 0x108 + i * 4);
+        if (*slot == NULL)
+        {
+            *slot = query->atomic;
+            (*(u32*)((u8*)query->output + 4))++;
+            break;
+        }
+        if (*slot == query->atomic)
+        {
+            break;
+        }
+    }
+    return collision;
 }
 
-// FUN_001ad220 NONMATCHING
-void func_001ad220(void** resource, const RwV3d* position, u32 resTypeId)
+// FUN_001ad220
+void func_001ad220(void* object, const RwV3d* point, void* result)
 {
-    FldFrameResourceSet resources;
+    FldFrameAtomicQuery query;
+    u32* src;
+    u32* dst;
+    u32 x;
+    u32 y;
+    s32 i;
+    RwSphere* sphere;
 
-    resources.count = 0;
-    resources.reserved = resTypeId;
-    if (resource != NULL && *resource != NULL)
+    memset(&query, 0, sizeof(query));
+    *(u32*)(query.intersection + 0x18) = 1;
+    src = (u32*)point;
+    dst = (u32*)query.intersection;
+    i = 3;
+    do
     {
-        func_00464120(*resource, resources.items, func_001ad120, &resources);
+        x = src[0];
+        y = src[1];
+        src += 2;
+        i--;
+        dst[0] = x;
+        dst[1] = y;
+        dst += 2;
+    } while (i > 0);
+    query.output = result;
+    sphere = func_004912b0(*(void**)object);
+    if (RwCameraFrustumTestSphere(*(RwCamera**)DAT_00960070_abs, sphere) != rwSPHEREOUTSIDE)
+    {
+        query.atomic = *(void**)object;
+        func_00464120(query.atomic, query.intersection,
+                      func_001ad120, &query);
     }
-    (void)position;
 }
 
 // FUN_001adc20 NONMATCHING
