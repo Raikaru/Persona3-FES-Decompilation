@@ -88,10 +88,10 @@ u64 FUN_003a9470(int param_1);
 u64 FUN_003a94e0(int param_1);
 u64 FUN_003a9510(int param_1);
 u64 FUN_003a9580(int param_1);
-u64 FUN_003a95f0(int param_1);
-u64 FUN_003a9630(int param_1);
-u64 FUN_003a9670(int param_1);
-u64 FUN_003a96b0(int param_1);
+int FUN_003a95f0(int param_1);
+int FUN_003a9630(int param_1);
+int FUN_003a9670(int param_1);
+int FUN_003a96b0(int param_1);
 void FUN_003a96f0(int *param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_003a9780(int *param_1,int param_2,int param_3,int param_4,int param_5);
 void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5);
@@ -132,6 +132,8 @@ u64 FUN_003acf80(u64 param_1,int param_2);
 u64 FUN_003ad030(u64 param_1,int param_2);
 u64 FUN_003ad1b0(u32 param_1,int param_2);
 u64 FUN_003ad400(u16 param_1,u16 param_2,u64 param_3,u64 param_4);
+#pragma alias FUN_003ad400_typed FUN_003ad400
+extern u64 FUN_003ad400_typed(u16 param_1,u16 param_2,u64 param_3,int param_4);
 u64 FUN_003ad640(u64 param_1,u64 param_2);
 u64 FUN_003ad740(u64 param_1,int param_2);
 u64 FUN_003ad860(u64 param_1,u64 param_2);
@@ -747,7 +749,7 @@ int FUN_003a92d0(int param_1)
 }
 #define FUN_003a92d0(...) ((u64 (*)(...))FUN_003a92d0)(__VA_ARGS__)
 #undef FUN_003a93a0
-// FUN_003A93A0 NONMATCHING
+// FUN_003A93A0
 u64 FUN_003a93a0(int param_1)
 {
   int *piVar1;
@@ -758,7 +760,7 @@ u64 FUN_003a93a0(int param_1)
   iVar2 = piVar1[2] + 1;
   piVar1[2] = iVar2;
   piVar1[3] = (1 - iVar2) * 255;
-  if (iVar2 > 0) {
+  if (piVar1[2] > 0) {
     *piVar1 = 0;
     piVar1[2] = 0;
     piVar1[3] = 0;
@@ -860,124 +862,88 @@ u64 FUN_003a9580(int param_1)
 }
 #define FUN_003a9580(...) ((u64 (*)(...))FUN_003a9580)(__VA_ARGS__)
 #undef FUN_003a95f0
-// FUN_003A95F0 NONMATCHING
+// FUN_003A95F0
+#pragma push
+#pragma opt_rebuildconditionals off
 
 
-u64 FUN_003a95f0(int param_1)
-
-
-
+int FUN_003a95f0(int param_1)
 {
+  int uVar1;
 
-  u64 uVar1;
-
-  
-
-  if (*(code **)(param_1 + 0x40) == (code *)0x0) {
-
-    uVar1 = 1;
-
-  }
-
-  else {
-
-    uVar1 = (**(code **)(param_1 + 0x40))();
-
-  }
-
+  if (*(code **)(param_1 + 0x40) == (code *)0x0)
+    goto set_one;
+  uVar1 = (*(code *)(param_1 + 0x40))();
+  goto done;
+set_one:
+  uVar1 = 1;
+done:
   return uVar1;
-
 }
+#pragma pop
 #define FUN_003a95f0(...) ((u64 (*)(...))FUN_003a95f0)(__VA_ARGS__)
 #undef FUN_003a9630
-// FUN_003A9630 NONMATCHING
+// FUN_003A9630
+#pragma push
+#pragma opt_rebuildconditionals off
 
 
-u64 FUN_003a9630(int param_1)
-
-
-
+int FUN_003a9630(int param_1)
 {
+  int uVar1;
 
-  u64 uVar1;
-
-  
-
-  if (*(code **)(param_1 + 0x44) == (code *)0x0) {
-
-    uVar1 = 1;
-
-  }
-
-  else {
-
-    uVar1 = (**(code **)(param_1 + 0x44))();
-
-  }
-
+  if (*(code **)(param_1 + 0x44) == (code *)0x0)
+    goto set_one;
+  uVar1 = (*(code *)(param_1 + 0x44))();
+  goto done;
+set_one:
+  uVar1 = 1;
+done:
   return uVar1;
-
 }
+#pragma pop
 #define FUN_003a9630(...) ((u64 (*)(...))FUN_003a9630)(__VA_ARGS__)
 #undef FUN_003a9670
-// FUN_003A9670 NONMATCHING
+// FUN_003A9670
+#pragma push
+#pragma opt_rebuildconditionals off
 
 
-u64 FUN_003a9670(int param_1)
-
-
-
+int FUN_003a9670(int param_1)
 {
+  int uVar1;
 
-  u64 uVar1;
-
-  
-
-  if (*(code **)(param_1 + 0x48) == (code *)0x0) {
-
-    uVar1 = 1;
-
-  }
-
-  else {
-
-    uVar1 = (**(code **)(param_1 + 0x48))();
-
-  }
-
+  if (*(code **)(param_1 + 0x48) == (code *)0x0)
+    goto set_one;
+  uVar1 = (*(code *)(param_1 + 0x48))();
+  goto done;
+set_one:
+  uVar1 = 1;
+done:
   return uVar1;
-
 }
+#pragma pop
 #define FUN_003a9670(...) ((u64 (*)(...))FUN_003a9670)(__VA_ARGS__)
 #undef FUN_003a96b0
-// FUN_003A96B0 NONMATCHING
+// FUN_003A96B0
+#pragma push
+#pragma opt_rebuildconditionals off
 
 
-u64 FUN_003a96b0(int param_1)
-
-
-
+int FUN_003a96b0(int param_1)
 {
+  int uVar1;
 
-  u64 uVar1;
-
-  
-
-  if (*(code **)(param_1 + 0x4c) == (code *)0x0) {
-
-    uVar1 = 1;
-
-  }
-
-  else {
-
-    uVar1 = (**(code **)(param_1 + 0x4c))();
-
-  }
-
+  if (*(code **)(param_1 + 0x4c) == (code *)0x0)
+    goto set_one;
+  uVar1 = (*(code *)(param_1 + 0x4c))();
+  goto done;
+set_one:
+  uVar1 = 1;
+done:
   return uVar1;
-
 }
+#pragma pop
 #define FUN_003a96b0(...) ((u64 (*)(...))FUN_003a96b0)(__VA_ARGS__)
 #undef FUN_003a96f0
 // FUN_003A96F0 NONMATCHING
@@ -1226,7 +1192,7 @@ void FUN_003a9930(int *param_1,int param_2,int param_3,int param_4,int param_5)
 }
 #define FUN_003a9930(...) ((void (*)(...))FUN_003a9930)(__VA_ARGS__)
 #undef FUN_003a9af0
-// FUN_003A9AF0 NONMATCHING
+// FUN_003A9AF0
 
 
 void FUN_003a9af0(int *param_1,u32 param_2,int param_3,int param_4,u32 param_5)
@@ -1235,33 +1201,37 @@ void FUN_003a9af0(int *param_1,u32 param_2,int param_3,int param_4,u32 param_5)
 
 {
 
-  int iVar1;
+  int iVar3;
 
   int iVar2;
 
-  int iVar3;
+  int iVar1;
 
-  int aiStack_18 [6];
+  struct {
+    int pad[2];
+    int values[6];
+  } stack;
 
   
 
-  aiStack_18[2] = param_2;
+  stack.values[2] = param_2;
 
-  aiStack_18[3] = param_4 + -0x5a0;
+  stack.values[3] = param_4 + -0x5a0;
 
-  aiStack_18[4] = param_4;
+  stack.values[4] = param_4;
 
-  aiStack_18[0] = param_3;
+  stack.values[0] = param_3;
 
-  aiStack_18[1] = param_5;
+  stack.values[1] = param_5;
 
   for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
 
-    iVar1 = aiStack_18[iVar3];
+    iVar2 = 0;
+    iVar1 = stack.values[iVar3];
 
-    for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
+    for (; iVar2 < 3; iVar2 = iVar2 + 1) {
 
-      *param_1 = aiStack_18[iVar2 + 2];
+      *param_1 = stack.values[iVar2 + 2];
 
       param_1[1] = iVar1;
 
@@ -4458,8 +4428,13 @@ u64 FUN_003adb00(u64 param_1,int param_2)
   u8 bVar1;
   u8 uVar2;
   u8 *pbVar3;
+  int iVar3;
+  int iVar4;
 
-  pbVar3 = (u8 *)(*(int *)((int)param_2 + 0x18) + *(int *)((int)param_2 + 0x10));
+  iVar3 = param_2;
+  iVar4 = *(int *)((int)param_2 + 0x18);
+  iVar4 += *(int *)((int)param_2 + 0x10);
+  pbVar3 = (u8 *)iVar4;
   bVar1 = pbVar3[0] - 1;
   uVar2 = pbVar3[1];
   if (uVar2 == 0xff) {
@@ -4467,7 +4442,7 @@ u64 FUN_003adb00(u64 param_1,int param_2)
   } else {
     uVar2 = (u32)(u8)(uVar2 - 1);
   }
-  ((u64 (*)(u16,u16,u64,int))FUN_003ad400)((u16)(uVar2 << 8 | bVar1),2,param_1,param_2);
+  FUN_003ad400_typed((u16)(uVar2 << 8 | bVar1),2,param_1,iVar3);
 
   return 0;
 
