@@ -140,7 +140,7 @@ int FUN_00131000(const void* left, const void* right)
 }
 
 // FUN_00131090 NONMATCHING
-s32 FUN_00131090(void* output, void* unused, s16 pcId, s16 category)
+s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
 {
     u16 indexes[300];
     s32 count;
@@ -159,23 +159,18 @@ s32 FUN_00131090(void* output, void* unused, s16 pcId, s16 category)
         if ((func_001712d0((s16)equipmentId) & 0x20) == 0) {
             continue;
         }
-        if (func_00171250((s16)equipmentId) != (u32)(s32)category) {
+        if (func_00171250((s16)equipmentId) != category) {
             continue;
         }
         indexes[count++] = (u16)index;
     }
     if (count >= 2) {
-        qsort(indexes, count, 2, FUN_00131000);
+        qsort(indexes, count, sizeof(indexes[0]), FUN_00131000);
     }
     for (index = 0; index < count; index++) {
         outputIndexes[index] = indexes[index];
     }
     return count;
-}
-
-static u32* campEquipWord(void* work, s32 offset)
-{
-    return (u32*)((u8*)work + offset);
 }
 
 static CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
