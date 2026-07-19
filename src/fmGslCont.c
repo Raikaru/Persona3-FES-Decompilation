@@ -246,33 +246,29 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,long pa
 }
 #define FUN_003b41a0(...) ((u32 (*)(...))FUN_003b41a0)(__VA_ARGS__)
 #undef FUN_003b44a0
-// FUN_003B44A0 NONMATCHING
+#pragma alias DAT_0095aebc_abs DAT_0095aebc
+extern u8 DAT_0095aebc_abs[];
+#pragma alias DAT_0095aea0_abs DAT_0095aea0
+extern u8 DAT_0095aea0_abs[];
+#pragma alias DAT_0095aea4_abs DAT_0095aea4
+extern u8 DAT_0095aea4_abs[];
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern u8 DAT_0096017c_abs[];
+// FUN_003B44A0
 
 
 u8 FUN_003b44a0(void)
-
-
-
 {
+  code* vt;
 
-  u8 bVar1;
-
-  
-
-  bVar1 = DAT_0095aebc != 0;
-
-  if (bVar1) {
-
-    (*DAT_0096017c)(DAT_0095aea0);
-
-    (*DAT_0096017c)(DAT_0095aea4);
-
-    DAT_0095aebc = 0;
-
-  }
-
-  return bVar1;
-
+  if (*(u32*)DAT_0095aebc_abs != 0) goto work;
+  return 0;
+work:
+  vt = (code*)DAT_0096017c_abs;
+  (*vt)(*(u32*)DAT_0095aea0_abs);
+  (*vt)(*(u32*)DAT_0095aea4_abs);
+  *(u32*)DAT_0095aebc_abs = 0;
+  return 1;
 }
 #define FUN_003b44a0(...) ((u8 (*)(...))FUN_003b44a0)(__VA_ARGS__)
 #undef FUN_003b4520
