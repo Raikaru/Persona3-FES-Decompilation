@@ -802,15 +802,20 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 // FUN_0038E660 NONMATCHING
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 void FUN_0038e660(int param_1,int param_2,int param_3)
 {
   extern u8 DAT_006a0b50[];
-  extern void FUN_005225a8(u8 *,u16,s16);
   int iVar1;
   int iVar2;
   int iVar4;
   int *piVar3;
   s16 *psVar2;
+  s16 c0;
+  s16 c1;
+  s16 c2;
+  s16 c3;
   struct {
     u16 uStack_40;
     u16 sStack_3e;
@@ -829,60 +834,70 @@ void FUN_0038e660(int param_1,int param_2,int param_3)
   while (piVar3 != (int *)0x0) {
     psVar2 = (s16 *)piVar3[0x1b];
     if (param_2 == 2) {
-      if ((*piVar3 == 5) || (*piVar3 == 0x13)) {
-        goto next_node;
+      if (*piVar3 != 5) {
+        if (*piVar3 == 0x13) {
+        }
+        else {
+          goto process_node;
+        }
       }
     }
-    else if (param_2 == 3) {
-      if (*piVar3 == 5) {
+    else if ((param_2 == 3) && (*piVar3 != 5)) {
+      if (*piVar3 == 0x13) {
         goto process_node;
       }
-      if (*piVar3 != 0x13) {
-        goto next_node;
-      }
-      goto process_node;
     }
+    else {
 process_node:
     for (; psVar2 != (s16 *)0x0; psVar2 = *(s16 **)(psVar2 + 0x26)) {
       stack.uStack_40 = (u16)*piVar3;
       stack.sStack_3e = *(u16 *)(psVar2 + 0);
       stack.sStack_3c = *(u16 *)(psVar2 + 1);
       stack.uStack_3a = (u16)*(u32 *)(psVar2 + 2);
-      stack.uStack_38 = (u16)*(u32 *)((int)piVar3 + 0xc);
+      stack.uStack_38 = *(volatile u16 *)((u8 *)piVar3 + 0xc);
       stack.uStack_36 = (s16)*(u32 *)(psVar2 + 0x1e);
-      stack.sStack_34 = psVar2[4];
-      stack.sStack_32 = psVar2[5];
-      stack.sStack_30 = psVar2[6];
-      stack.sStack_2e = psVar2[7];
+      c0 = psVar2[4];
+      c1 = psVar2[5];
+      c2 = psVar2[6];
+      c3 = psVar2[7];
+      stack.sStack_2e = c3;
+      stack.sStack_30 = c2;
+      stack.sStack_32 = c1;
+      stack.sStack_34 = c0;
       FUN_005225a8(DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
       for (iVar1 = 0; iVar1 < 10; iVar1 = iVar1 + 1) {
         iVar2 = iVar1 * 4;
-        iVar4 = iVar2;
-        iVar4 += (int)psVar2;
-        iVar2 += (int)&stack.auStack_2c[0];
+        iVar4 = (int)psVar2;
+        iVar4 += iVar2;
+        iVar2 += (int)&stack;
+        iVar2 += 0x74;
         *(f32 *)iVar2 = *(f32 *)(iVar4 + 0x10);
       }
-      if (*piVar3 != 8) {
-        goto send_packet;
+      switch (*piVar3) {
+      case 8:
+        if ((psVar2[8] == 0) && (psVar2[9] == 0)) {
+          stack.sStack_3c = 0;
+        }
+        else if (*(u16 **)(psVar2 + 0x26) != (u16 *)0x0) {
+          stack.sStack_3c = **(u16 **)(psVar2 + 0x26) - *(u16 *)psVar2;
+        }
+        else {
+          iVar2 = *(int *)(param_3 + 0x14);
+          stack.sStack_3c = iVar2 - *(u16 *)psVar2;
+        }
+        break;
+      default:
+        break;
       }
-      if ((psVar2[8] == 0) && (psVar2[9] == 0)) {
-        stack.sStack_3c = 0;
-      }
-      else if (*(s16 **)(psVar2 + 0x26) == (s16 *)0x0) {
-        iVar2 = *(int *)(param_3 + 0x14);
-        stack.sStack_3c = iVar2 - *psVar2;
-      }
-      else {
-        stack.sStack_3c = **(s16 **)(psVar2 + 0x26) - *psVar2;
-      }
-send_packet:
       FUN_004c0420(&stack,0x3c,1,param_1);
+    }
     }
 next_node:
     piVar3 = (int *)piVar3[0x25];
   }
   return;
 }
+#pragma pop
 
 
 #define FUN_0038e660(...) ((void (*)(...))FUN_0038e660)(__VA_ARGS__)
