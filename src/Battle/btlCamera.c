@@ -3888,6 +3888,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     btlUnitGetSphereWorldCenter(target, &work.center);
 
     sourceProduct = unit->unk_8c * unit->scale;
+    sourceProduct = sourceProduct;
     halfDistance = distance + fGpffff8094 * sourceProduct;
     halfDistance = halfDistance +
                    (work.center.y +
@@ -4142,8 +4143,9 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      FUN_002b64d0((BtlCamera*)param_1,
-                   (struct B64CameraWork*)(uintptr_t)(iVar4 + 0xec));
+      pCenter = (u8*)(iVar4 + 0xec);
+      FUN_002b64d0((BtlCamera*)iVar4,
+                   (struct B64CameraWork*)pCenter);
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {
@@ -5694,7 +5696,7 @@ void FUN_002b56e0(u8* param_1)
   FUN_002a2170(param_1, &scratch.outX);
 }
 
-// FUN_002b58f0 NONMATCHING
+// FUN_002b58f0
 
 void FUN_002b58f0(BtlCamera* param_1)
 {
@@ -5828,10 +5830,14 @@ void FUN_002b58f0(BtlCamera* param_1)
     quatY = quat.imag.y;
     quatZ = quat.imag.z;
     quatW = quat.real;
-    fStack_58 = quatW;
-    fStack_54 = quatZ;
-    fStack_50 = quatY;
+    quatX = quatX;
+    quatY = quatY;
+    quatZ = quatZ;
+    quatW = quatW;
     fStack_4c = quatX;
+    fStack_50 = quatY;
+    fStack_54 = quatZ;
+    fStack_58 = quatW;
     fVar3 = fVar3 - 100.0f;
     fStack_100 = fStack_f0 * fVar3;
     fStack_104 = fStack_f4 * fVar3;
