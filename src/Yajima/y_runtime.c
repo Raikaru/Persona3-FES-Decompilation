@@ -248,8 +248,6 @@ extern code DAT_0096017c;
 #pragma alias DAT_0087190c_abs DAT_0087190c
 #pragma alias DAT_0086e80c_abs DAT_0086e80c
 extern u8 DAT_0086e80c_abs[];
-#pragma alias DAT_0086eda0_abs DAT_0086eda0
-extern u8 DAT_0086eda0_abs[];
 #pragma alias FUN_00195020_call FUN_00195020
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
