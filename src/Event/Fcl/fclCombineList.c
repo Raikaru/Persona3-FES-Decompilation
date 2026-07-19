@@ -1636,7 +1636,7 @@ s32 fclCombineList003ddb00(FclList* list)
     return 0;
 }
 
-// FUN_003ddb90 NONMATCHING
+// FUN_003ddb90
 void fclCombineList003ddb90(FclList* list, FclSelection* selection)
 {
     s32 result_choice_index;
@@ -1644,6 +1644,7 @@ void fclCombineList003ddb90(FclList* list, FclSelection* selection)
     s16 social_link_index;
     s32 bonus_experience;
 
+    s32 persona_offset;
     memset(selection, 0, 0xa8);
     selection->flags |= 1;
     selection->state = 0;
@@ -1664,9 +1665,11 @@ void fclCombineList003ddb90(FclList* list, FclSelection* selection)
     FUN_003c9e30(selection->ui, (s8)(selection->result_choice_index + 1),
                   (s8)selection->current_choice_index);
     FUN_003c9b00(selection->ui, &selection->result_detail, &selection->fusion);
+    persona_offset = selection->result_detail.persona_id;
+    persona_offset = persona_offset * 0xe;
+    persona_offset += (s32)(void *)gp0xffffb730;
     social_link_index = FUN_0016deb0(
-        ((FclPersonaTableEntry*)gp0xffffb730)[
-            selection->result_detail.persona_id].data[2]);
+        ((FclPersonaTableEntry *)(void *)persona_offset)->data[2]);
     if (FUN_0016dba0(social_link_index) != 0) {
         bonus_experience = FUN_003d58c0(social_link_index, selection->result_detail.level);
         selection->bonus_experience = bonus_experience;
@@ -3630,10 +3633,10 @@ void FUN_003e0780(void)
 
 }
 
-// FUN_003E0830 NONMATCHING
+// FUN_003E0830
 u32 FUN_003e0830(void)
 {
-    if (FUN_003e0bc0() == 0) goto failed;
+    if (FUN_003e0bc0() != 0) goto failed;
     goto succeeded;
 failed:
     return -1;
