@@ -10,6 +10,11 @@ typedef u8 undefined1;
 typedef u16 undefined2;
 typedef u32 undefined4;
 typedef u64 undefined8;
+typedef struct CampPair
+{
+    f32 x;
+    f32 y;
+} CampPair;
 
 /* CONCAT44 packs IEEE-754 words, not numeric float casts. */
 static u32 campFloatBits(f32 value)
@@ -53,6 +58,15 @@ extern u8 DAT_005dbc50[];
 extern u8 DAT_005dbc60[];
 #pragma alias campAlloc DAT_00960184
 extern void* (*campAlloc[])(u32, u32, u32);
+extern void campDrawSprite(void* parent, void* resource, s32 frame,
+                           u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campDrawSprite FUN_001159f0
+#pragma alias campDrawSpriteX FUN_001159f0
+extern void campDrawSpriteX(void* parent, void* resource, s32 frame,
+                            f32 x, u32 alpha, f32 y, f32 scale);
+#pragma alias campDrawSpriteXY FUN_001159f0
+extern void campDrawSpriteXY(void* parent, void* resource, s32 frame,
+                             f32 x, f32 y, u32 alpha, f32 scale);
 #pragma alias campTaskCreate FUN_00194b20
 extern KwlnTask* campTaskCreate(KwlnTask*, const char*, u32,
                                 void* (*)(KwlnTask*), void (*)(KwlnTask*),
@@ -83,9 +97,8 @@ extern u32 FUN_00121de0();
 extern u32 FUN_00122710();
 extern u32 FUN_0013bce0();
 extern u32 FUN_0013be50();
-extern u32 FUN_0013cc90();
-extern u32 FUN_0013e710();
-extern u32 FUN_00140e30();
+extern void FUN_0013e710(CampPair position, f32 alpha, void* work, s32 fade);
+extern void FUN_00140e30(CampPair position, f32 alpha, void* work, s32 fade);
 extern u32 FUN_00141590();
 extern u32 FUN_00141660();
 extern u32 FUN_00141fb0();
@@ -168,55 +181,88 @@ void h_campDrawStatusOverview(int param_1)
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
 {
-  if (param_2 == 0x20) {
-    FUN_001159f0(*(float *)(param_1 + 0x38) + 20.0,*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-    FUN_001159f0(*(float *)(param_1 + 0x38) + 97.0,(*(float *)(param_1 + 0x3c) + 389.0) - 415.0,
-                 *(u32 *)(param_1 + 0x24));
-    FUN_001159f0(*(float *)(param_1 + 0x38) + 122.0,*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-  }
-  else if (param_2 == 0x1f) {
-    FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-    FUN_001159f0(*(float *)(param_1 + 0x38) + 16.0,*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-  }
-  else if (param_2 != 0x15) {
-    if (param_2 == 0x14) {
-      FUN_0013e710(*(u32 *)(param_1 + 0x24),*(u64 *)(param_1 + 0x38),
-                   *(u32 *)(param_3 + 0xa8),*(u32 *)(param_1 + 0x40));
+    register void* parent;
+
+    switch (param_2) {
+    case 0:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x2c,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 1:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x21,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 2:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 3:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x28,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 4:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 5:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x23,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+        campDrawSprite(parent, (void*)DAT_00833a50[1], 5,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 0x14:
+        FUN_0013e710(*(CampPair*)((u8*)param_1 + 0x38),
+                     *(f32*)(param_1 + 0x24),
+                     (void*)*(u32*)(param_3 + 0xa8), *(s32*)(param_1 + 0x40));
+        break;
+    case 0x15:
+        break;
+    case 0x1f:
+        campDrawSprite(parent, (void*)DAT_00833a50[2], 8,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        campDrawSpriteX(parent, (void*)DAT_00833a50[2], 4,
+                        *(f32*)(param_1 + 0x38) + 16.0f,
+                        *(u8*)(param_1 + 0x40),
+                        *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
+        break;
+    case 0x20:
+        campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 5,
+                        *(f32*)(param_1 + 0x38) + 20.0f,
+                        *(u8*)(param_1 + 0x40),
+                        *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
+        campDrawSpriteXY(parent, (void*)DAT_00833a50[0x55], 9,
+                         *(f32*)(param_1 + 0x38) + 97.0f,
+                         (*(f32*)(param_1 + 0x3c) + 389.0f) - 415.0f,
+                         *(u8*)(param_1 + 0x40), *(f32*)(param_1 + 0x24));
+        campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 3,
+                        *(f32*)(param_1 + 0x38) + 122.0f,
+                        *(u8*)(param_1 + 0x40),
+                        *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
+        break;
+    default:
+        break;
     }
-    else if ((((param_2 == 0xd) || (param_2 == 0xc)) || (param_2 == 0xb)) || (param_2 == 10)) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 5) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 4) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 3) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 2) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 1) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 0) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-  }
-  return;
 }
 
 // FUN_00148C10 NONMATCHING
@@ -499,57 +545,87 @@ void h_campDrawSocialList(int param_1)
   return;
 }
 
-// FUN_0014C290 NONMATCHING
+// FUN_0014C290
 void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
-
 {
-  if (param_2 == 0x1f) {
-    FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-    FUN_001159f0((*(float *)(param_1 + 0x38) - 561.0) + 459.0,*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-  }
-  else if (param_2 == 0x1e) {
-    FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-    FUN_001159f0(*(float *)(param_1 + 0x38) + 16.0,*(u32 *)(param_1 + 0x3c),
-                 *(u32 *)(param_1 + 0x24));
-  }
-  else if (param_2 != 0x15) {
-    if (param_2 == 0x14) {
-      FUN_00140e30(*(u32 *)(param_1 + 0x24),*(u64 *)(param_1 + 0x38),
-                   *(u32 *)(param_3 + 0xac),*(u32 *)(param_1 + 0x40));
+    register void* parent;
+
+    switch (param_2) {
+    case 0:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x2d,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 1:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x21,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 2:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 3:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x22,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 4:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 5:
+        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x29,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+        campDrawSprite(parent, (void*)DAT_00833a50[1], 6,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        break;
+    case 0x14:
+        FUN_00140e30(*(CampPair*)((u8*)param_1 + 0x38),
+                     *(f32*)(param_1 + 0x24),
+                     (void*)*(u32*)(param_3 + 0xac), *(s32*)(param_1 + 0x40));
+        break;
+    case 0x15:
+        break;
+    case 0x1e:
+        campDrawSprite(parent, (void*)DAT_00833a50[2], 8,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        campDrawSpriteX(parent, (void*)DAT_00833a50[2], 4,
+                        *(f32*)(param_1 + 0x38) + 16.0f,
+                        *(u8*)(param_1 + 0x40),
+                        *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
+        break;
+    case 0x1f:
+        campDrawSprite(parent, (void*)DAT_00833a50[0x55], 3,
+                       *(u8*)(param_1 + 0x40),
+                       *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
+                       *(f32*)(param_1 + 0x24));
+        campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 5,
+                        (*(f32*)(param_1 + 0x38) - 561.0f) + 459.0f,
+                        *(u8*)(param_1 + 0x40),
+                        *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
+        break;
+    default:
+        break;
     }
-    else if ((((param_2 == 0xd) || (param_2 == 0xc)) || (param_2 == 0xb)) || (param_2 == 10)) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 5) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 4) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 3) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 2) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 1) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-    else if (param_2 == 0) {
-      FUN_001159f0(*(u32 *)(param_1 + 0x38),*(u32 *)(param_1 + 0x3c),
-                   *(u32 *)(param_1 + 0x24));
-    }
-  }
-  return;
 }
 
 // FUN_0014C5C0 NONMATCHING
