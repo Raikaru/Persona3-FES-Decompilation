@@ -135,7 +135,7 @@ void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8
 u32 FUN_003b2a00(u32 param_1);
 void FUN_003b2a10(int param_1,u32 param_2);
 u64 FUN_003b2a30(u64 param_1,u32 param_2);
-u8 FUN_003b2bf0(u32 param_1,u32 param_2,u64 param_3);
+s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3);
 
 /* Region call-cast macros */
 #define FUN_003afa40(...) ((void (*)(...))FUN_003afa40)(__VA_ARGS__)
@@ -3812,74 +3812,42 @@ u64 FUN_003b2a30(u64 param_1,u32 param_2)
 }
 #define FUN_003b2a30(...) ((u64 (*)(...))FUN_003b2a30)(__VA_ARGS__)
 #undef FUN_003b2bf0
-// FUN_003B2BF0 NONMATCHING
+#pragma alias FUN_003b2a30_typed FUN_003b2a30
+u64 FUN_003b2a30_typed(void *param_1, u32 param_2);
+// FUN_003B2BF0
 
 
-u8 FUN_003b2bf0(u32 param_1,u32 param_2,u64 param_3)
-
-
-
+s8 FUN_003b2bf0(u32 param_1,u32 param_2,u32 param_3)
 {
+  struct {
+    u32 f00;
+    u32 f04;
+    u32 f08;
+    u8 f0c;
+    u8 f0d;
+    u8 f0e;
+    u8 f0f;
+    u32 f10;
+    u32 f14;
+    u32 f18;
+    u8 f1c;
+    u8 f1d;
+    u16 f1e;
+  } data;
 
-  u8 uVar1;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u8 uStack_14;
-
-  u8 uStack_13;
-
-  u8 uStack_12;
-
-  u8 uStack_11;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u16 uStack_2;
-
-  
-
-  uStack_20 = 0;
-
-  uStack_1c = 0;
-
-  uStack_18 = 0;
-
-  uStack_14 = 0;
-
-  uStack_13 = 0;
-
-  uStack_12 = 0;
-
-  uStack_11 = 0;
-
-  uStack_8 = 0;
-
-  uStack_4 = 1;
-
-  uStack_3 = 1;
-
-  uStack_2 = 0x20;
-
-  uStack_10 = param_1;
-
-  uStack_c = param_2;
-
-  uVar1 = FUN_003b2a30(&uStack_20,param_3);
-
-  return uVar1;
-
+  data.f00 = 0;
+  data.f04 = 0;
+  data.f08 = 0;
+  data.f0c = 0;
+  data.f0d = 0;
+  data.f0e = 0;
+  data.f0f = 0;
+  data.f10 = param_1;
+  data.f14 = param_2;
+  data.f18 = 0;
+  data.f1c = 1;
+  data.f1d = 1;
+  data.f1e = 0x20;
+  return FUN_003b2a30_typed(&data, param_3);
 }
 #define FUN_003b2bf0(...) ((u8 (*)(...))FUN_003b2bf0)(__VA_ARGS__)
