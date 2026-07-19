@@ -771,6 +771,7 @@ static s32 hmallocTaskUpdateE(void* task)
     } values[4];
     void* workMemory;
     void* created;
+    u64 combined;
 
     work = *(u32**)((u8*)task + 0x3c);
     state = work[0];
@@ -853,11 +854,12 @@ static s32 hmallocTaskUpdateE(void* task)
             }
             values[2].u = 0x40800000;
             values[3].u = 0x40800000;
+            combined = *(u64*)&values[2];
             indexValue = values[work[1]].u;
             __asm__ volatile ("" : "+r"(indexValue) : : "memory");
             __asm__ volatile ("addiu %0, $gp, -0x6c10"
                               : "=r"(image) : "r"(indexValue) : "memory");
-            func_00104d10(*(u64*)&values[2], image, indexValue);
+            func_00104d10(combined, image, indexValue);
             break;
         case 2:
             if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
