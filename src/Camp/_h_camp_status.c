@@ -137,6 +137,9 @@ extern s32 DAT_007e095a;
 
 extern void FUN_0012b300(CampVec2 position, f32 scale, void* persona,
                          u8 alpha);
+extern void FUN_0012b300_s32(CampVec2 position, f32 scale, void* persona,
+                             s32 alpha);
+#pragma alias FUN_0012b300_s32 FUN_0012b300
 
 void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
                                 s32 stat, s32 alpha);
@@ -858,8 +861,9 @@ typedef struct CampStatusVertex
     f32 pad1;
 } CampStatusVertex;
 
-extern void (*DAT_00960090)();
-extern void (*DAT_009600A0)();
+extern void (*DAT_00960090)(u32 state, u32 value);
+extern void (*DAT_009600A0)(u32 primitive, CampStatusVertex* vertices,
+                            s32 vertexCount);
 extern f32 DAT_00960088;
 extern s32 FUN_00198590();
 extern void (*jtbl_007B5B60[9])();
@@ -885,19 +889,16 @@ static void h_campStatusDrawQuad(f32 x, f32 y, f32 width, f32 height,
 
     camera = (void*)FUN_00198590();
     recipZ = 1.0f / *((f32*)camera + 0x20);
-    DAT_00960090(6, 1);
-    DAT_00960090(7, 2);
-    DAT_00960090(8, 1);
-    DAT_00960090(11, 6);
-    DAT_00960090(10, 5);
-    DAT_00960090(9, 2);
-    DAT_00960090(12, 1);
-    DAT_00960090(2, 4);
+    (*DAT_00960090)(6, 1);
+    (*DAT_00960090)(7, 2);
+    (*DAT_00960090)(8, 1);
+    (*DAT_00960090)(11, 6);
+    (*DAT_00960090)(10, 5);
+    (*DAT_00960090)(9, 2);
+    (*DAT_00960090)(12, 1);
+    (*DAT_00960090)(2, 4);
     for (i = 0; i < 4; i++) {
-        vertices[i].position.z = 0.0f;
-        vertices[i].cameraZ = 0.0f;
-        vertices[i].u = 0.0f;
-        vertices[i].v = 0.0f;
+        vertices[i].position.z = DAT_00960088 - x;
         vertices[i].recipZ = recipZ;
         vertices[i].color.r = 255.0f;
         vertices[i].color.g = 255.0f;
@@ -906,14 +907,22 @@ static void h_campStatusDrawQuad(f32 x, f32 y, f32 width, f32 height,
     }
     vertices[0].position.x = x;
     vertices[0].position.y = y;
+    vertices[0].u = 0.0f;
+    vertices[0].v = 0.0f;
     vertices[1].position.x = x + width;
     vertices[1].position.y = y;
+    vertices[1].u = 1.0f;
+    vertices[1].v = 0.0f;
     vertices[2].position.x = x;
     vertices[2].position.y = y + height;
+    vertices[2].u = 0.0f;
+    vertices[2].v = 1.0f;
     vertices[3].position.x = x + width;
     vertices[3].position.y = y + height;
-    DAT_00960090(1, texture);
-    DAT_009600A0(4, vertices, 4);
+    vertices[3].u = 1.0f;
+    vertices[3].v = 1.0f;
+    (*DAT_00960090)(1, texture);
+    (*DAT_009600A0)(4, vertices, 4);
 }
 
 static void h_campStatusDrawStatIcon(u32 parent, CampVec2 position,
@@ -1072,12 +1081,62 @@ static void h_campStatusDrawEquipmentSlots(u32 parent, CampVec2 position,
 void h_campStatusDrawViewport(f32 x, void* texture, CampVec2 position,
                               s32 alpha)
 {
-    (void)x;
-    h_campStatusDrawQuad(position.x, position.y, 512.0f, 1024.0f,
-                         (u32)texture, alpha);
-    h_campStatusDrawQuad(position.x, position.y + 80.0f, 512.0f, 1024.0f,
-                         (u32)texture, alpha);
+    CampStatusVertex vertices[4];
+    void* camera;
+    f32 recipZ;
+    s32 i;
+    void (**setState)();
+    void (**submitVertices)();
+    void* textureWork;
+
+    textureWork = texture;
+
+    camera = (void*)FUN_00198590();
+    recipZ = 1.0f / *((f32*)camera + 0x20);
+    setState = &DAT_00960090;
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(11, 6);
+    (*setState)(10, 5);
+    (*setState)(9, 2);
+    (*setState)(12, 1);
+    (*setState)(2, 4);
+    for (i = 0; i < 4; i++) {
+        vertices[i].position.z = DAT_00960088 - x;
+        vertices[i].recipZ = recipZ;
+        vertices[i].color.r = 255.0f;
+        vertices[i].color.g = 255.0f;
+        vertices[i].color.b = 255.0f;
+        vertices[i].color.a = (f32)alpha;
+    }
+    vertices[0].position.x = position.x;
+    vertices[0].position.y = position.y;
+    vertices[1].position.x = position.x + 512.0f;
+    vertices[1].position.y = position.y;
+    vertices[2].position.x = position.x;
+    vertices[2].position.y = position.y + 1024.0f;
+    vertices[3].position.x = position.x + 512.0f;
+    vertices[3].position.y = position.y + 1024.0f;
+    vertices[0].u = 0.0f;
+    vertices[0].v = 0.0f;
+    vertices[1].u = 1.0f;
+    vertices[1].v = 0.0f;
+    vertices[2].u = 0.0f;
+    vertices[2].v = 1.0f;
+    vertices[3].u = 1.0f;
+    vertices[3].v = 1.0f;
+    submitVertices = &DAT_009600A0;
+    (*setState)(1, *(u32*)textureWork);
+    (*submitVertices)(4, vertices, 4);
+    vertices[0].position.y = position.y + 1104.0f;
+    vertices[1].position.y = position.y + 1104.0f;
+    vertices[2].position.y = position.y + 2128.0f;
+    vertices[3].position.y = position.y + 2128.0f;
+    (*setState)(1, *(u32*)textureWork);
+    (*submitVertices)(4, vertices, 4);
 }
+
 
 static void h_campStatusDrawPanel(CampStatusPartsWork* work, s32 alpha,
                                   f32 yOffset, void* persona, void* bonus)
@@ -1588,21 +1647,23 @@ void h_campStatusDrawEntering(CampVec2 position, f32 scale,
                               void* persona, s32 frame);
 void h_campStatusDrawSteady(CampVec2 position, f32 scale,
                             void* persona, s32 alpha);
-// FUN_00128140 NONMATCHING
-void h_campStatusRenderMode(CampVec2 position, f32 scale, s32 mode,
-                            void* persona, s32 alpha)
+// FUN_00128140
+void h_campStatusRenderMode(CampVec2 position, f32 scale, void* persona,
+                            s32 mode, s32 frame, s32 alpha)
 {
-    if (mode == 0) {
-        h_campStatusDrawTransition(position, scale, persona, alpha);
-    }
-    else if (mode == 1) {
-        h_campStatusDrawEntering(position, scale, persona, alpha);
-    }
-    else if (mode == 2) {
+    switch (mode) {
+    case 0:
+        h_campStatusDrawTransition(position, scale, persona, frame);
+        break;
+    case 1:
+        h_campStatusDrawEntering(position, scale, persona, frame);
+        break;
+    case 2:
         h_campStatusDrawSteady(position, scale, persona, alpha);
-    }
-    else if (mode == 3) {
-        FUN_0012b300(position, scale, persona, (u8)alpha);
+        break;
+    case 3:
+        FUN_0012b300_s32(position, scale, persona, alpha);
+        break;
     }
 }
 
