@@ -489,9 +489,9 @@ u16* func_001b85a0(u32 index)
     u16 emptyId;
     record = (u16*)FIELD_DATA_AT(K_Field_Get(), 0x1164, void*);
     emptyCount = 0;
-    emptyId = 0xffff;
     for (;;)
     {
+        emptyId = 0xffff;
         if (emptyCount == index)
         {
             break;
