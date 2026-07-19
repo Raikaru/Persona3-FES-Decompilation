@@ -29604,7 +29604,7 @@ void FUN_0040d330(int param_1)
 
 }
 
-// FUN_0040D3B0 NONMATCHING
+// FUN_0040D3B0
 
 
 void FUN_0040d3b0(u32 param_1,u32 param_2,u16 param_3,int param_4)
@@ -29612,33 +29612,32 @@ void FUN_0040d3b0(u32 param_1,u32 param_2,u16 param_3,int param_4)
 
 
 {
+  struct {
+    u32 param1;
+    u32 param2;
+    u16 param3;
+    int param4;
+    u32 zero;
+  } data;
+  u32 *base;
 
-  u32 uStack_20;
+  base = *(u32 **)(*(int *)(param_4 + 0x24) + 0x44);
+  data.param1 = param_1;
+  data.param2 = param_2;
+  data.param3 = param_3;
+  data.param4 = param_4;
+  data.zero = 0;
 
-  u32 uStack_1c;
-
-  u16 uStack_18;
-
-  int iStack_14;
-
-  u32 uStack_10;
-
-  
-
-  uStack_10 = 0;
-
-  uStack_20 = param_1;
-
-  uStack_1c = param_2;
-
-  uStack_18 = param_3;
-
-  iStack_14 = param_4;
-
-  FUN_003e0680(*(u32 *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 8),0x40cc30,&uStack_20);
+  FUN_003e0680_typed(*(u32 *)(base + 2),(code)FUN_0040cc30,&data);
 
   return;
 
+}
+
+// FUN_0040D400
+void FUN_0040d400(void)
+{
+  return;
 }
 
 // FUN_0040D410
