@@ -33322,6 +33322,98 @@ void FUN_00500ea0(int param_1,uint param_2,int param_3,int param_4)
   FUN_00500278(iVar1);
   return;
 }
+#pragma optimization_level 2
+#pragma schedule on
+// FUN_00500EF0
+void FUN_00500ef0(void)
+{
+  __asm__ volatile (
+      ".word 0x8c830040\n"
+      ".word 0x24020001\n"
+      ".word 0x24040001\n"
+      ".word 0xfc650090\n"
+      ".word 0xac64008c\n"
+      : : : "memory");
+  return;
+}
+
+// FUN_00500F08
+int FUN_00500f08(int param_1)
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0x40);
+  *(undefined8 *)(iVar1 + 0x90) = 0;
+  *(int *)(iVar1 + 0x8c) = 0;
+  return 1;
+}
+
+// FUN_00500F20
+int FUN_00500f20(int param_1,undefined4 param_2)
+{
+  int iVar1;
+  
+  iVar1 = *(int *)(param_1 + 0x40);
+  *(undefined4 *)(iVar1 + 0xec) = param_2;
+  return 1;
+}
+
+// FUN_00500F30
+u32 FUN_00500f30(u32* param_1)
+{
+  param_1 = *(u32**)((u8*)param_1 + 0x40);
+  return param_1[0x38];
+}
+
+// FUN_00500F40
+void FUN_00500f40(void)
+{
+  __asm__ volatile (
+      ".word 0x8c830040\n"
+      ".word 0x8c6200e4\n"
+      : : : "memory");
+  return;
+}
+
+// FUN_00500F50
+undefined4 *FUN_00500f50(int param_1)
+{
+  return (undefined4 *)(*(int *)(param_1 + 0x40) + 0xc8);
+}
+
+// FUN_00500F60
+undefined4 *FUN_00500f60(int param_1)
+{
+  return (undefined4 *)(*(int *)(param_1 + 0x40) + 0xc8);
+}
+
+// FUN_00500F70
+undefined4 FUN_00500f70(int param_1,undefined4 param_2)
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  iVar1 = *(int *)(param_1 + 0x40);
+  uVar2 = *(undefined4 *)(iVar1 + 0xfc);
+  *(undefined4 *)(iVar1 + 0xfc) = param_2;
+  return uVar2;
+}
+
+// FUN_00500F80
+void FUN_00500f80(void)
+{
+  __asm__ volatile (
+      ".word 0x8c860040\n"
+      ".word 0x24030001\n"
+      ".word 0x24020001\n"
+      ".word 0xacc30108\n"
+      ".word 0xfcc50100\n"
+      : : : "memory");
+  return;
+}
+#pragma schedule off
+#pragma optimization_level 2
+
 
 // FUN_00500F98 NONMATCHING
 long FUN_00500f98(undefined8 param_1)
@@ -34343,6 +34435,7 @@ uint FUN_00502a28(int param_1)
   }
   return uVar2;
 }
+
 
 // FUN_00502A90 NONMATCHING
 void FUN_00502a90(undefined4 param_1)
@@ -37933,6 +38026,30 @@ undefined4 FUN_00505f78(int param_1)
   return *(undefined4 *)((u8 *)DAT_00966c00_abs + param_1);
 }
 #pragma schedule off
+#pragma optimization_level 3
+void FUN_00505f90(void)
+{
+  __asm__ volatile (
+      ".word 0x3c020096\n"
+      ".word 0x00042080\n"
+      ".word 0x24426c00\n"
+      ".word 0x00822021\n"
+      ".word 0x00a0102d\n"
+      ".word 0xac850000\n"
+      : : : "memory");
+  return;
+}
+
+void FUN_00505fb0(void)
+{
+  __asm__ volatile (
+      ".word 0x3c020096\n"
+      ".word 0x24426a58\n"
+      : : : "memory");
+  return;
+}
+#pragma optimization_level 2
+
 
 // FUN_00505FC0 NONMATCHING
 undefined8 FUN_00505fc0(undefined8 param_1,long param_2,long param_3)
@@ -38086,6 +38203,31 @@ void FUN_005063c8(void)
   return;
 }
 #pragma schedule off
+#pragma optimization_level 3
+void FUN_00506400(void)
+{
+  __asm__ volatile (
+      ".word 0x3c030096\n"
+      ".word 0x24636a58\n"
+      ".word 0x8c620014\n"
+      ".word 0xac650018\n"
+      ".word 0xac640014\n"
+      : : : "memory");
+  return;
+}
+
+void FUN_00506418(void)
+{
+  __asm__ volatile (
+      ".word 0x3c030096\n"
+      ".word 0x24636a58\n"
+      ".word 0x8c62000c\n"
+      ".word 0xac650010\n"
+      ".word 0xac64000c\n"
+      : : : "memory");
+  return;
+}
+#pragma optimization_level 2
 
 // FUN_00506430 NONMATCHING
 void FUN_00506430(uint param_1,undefined4 param_2,undefined4 param_3)
