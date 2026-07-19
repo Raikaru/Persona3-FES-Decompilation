@@ -523,6 +523,8 @@ long FUN_00494e30(u64 param_1);
 long FUN_004954c0(u64 param_1,long param_2);
 long FUN_00495b10(long param_1);
 long FUN_00496230(u64 param_1,char *param_2,u32 param_3);
+#pragma alias FUN_00496230_u32 FUN_00496230
+extern long FUN_00496230_u32(u32 param_1,u32 param_2,u32 param_3);
 long FUN_00497130(u64 param_1,long param_2,u64 param_3,u64 param_4,long param_5);
 long FUN_00498e70(int param_1);
 long FUN_00499140(long param_1,u32 param_2);
@@ -915,6 +917,8 @@ u64 FUN_00495a30(u64 param_1,int param_2);
 u64 FUN_00495cf0(u64 param_1,u32 param_2,u16 param_3,u16 param_4, u16 param_5,u16 param_6,u16 param_7,u16 param_8, u16 param_9);
 u64 FUN_00495f10(u64 param_1,code *param_2,u64 param_3);
 u64 FUN_00495fb0(u32 *param_1,char *param_2,u64 param_3,u64 param_4);
+#pragma alias FUN_00495fb0_u32 FUN_00495fb0
+extern u64 FUN_00495fb0_u32(u32 *param_1,char *param_2,u32 param_3,u32 param_4);
 u64 FUN_004967a0(u64 param_1);
 u64 FUN_00496be0(u32 param_1,u32 *param_2,int param_3,u32 *param_4);
 u64 FUN_00498720(int param_1,u64 param_2,u32 param_3);
@@ -9877,6 +9881,27 @@ void FUN_004959c0(u64 param_1)
   (*DAT_00960178)(param_1,0x30502);
   return;
 }
+#pragma optimization_level 2
+#pragma schedule on
+// FUN_004959E0
+u64 FUN_004959e0(u64 param_1)
+{
+  u32 callback;
+
+  DAT_007ce854 = DAT_007ce854 - 1;
+  if (DAT_007ce854 == 0) {
+    callback = DAT_007ce848;
+    if (callback != 0) {
+      FUN_004c3c30_typed(callback);
+      DAT_007ce848 = 0;
+    }
+  }
+  return param_1;
+}
+#pragma optimization_level 2
+#pragma schedule off
+
+
 
 // FUN_00495A30 NONMATCHING
 
@@ -13204,6 +13229,127 @@ u64 FUN_0049bc20(u64 param_1,u64 param_2)
   ((code)FUN_0049c160)(param_2,param_1);
   return param_1;
 }
+// FUN_0049BC50
+#pragma schedule on
+#pragma tailcall on
+u32 FUN_0049bc50(u32 param_1,u32 param_2,u32 param_3)
+{
+  char *base;
+
+  base = (char *)param_3;
+  FUN_00495fb0_u32(*(u32 **)(param_3 + 0x54),base,param_1,(u32)base + 0x20);
+  return;
+}
+#pragma tailcall off
+#pragma schedule off
+
+// FUN_0049BC70
+#pragma schedule on
+u32 FUN_0049bc70(u32 param_1,u32 param_2,u32 param_3)
+{
+  u32 result;
+  u32 base;
+
+  base = param_3;
+  result = (u32)FUN_00496230_u32(param_1,base,base + 0x20);
+  *(u32 *)(param_3 + 0x54) = result;
+  if (result == 0) {
+    param_1 = 0;
+  }
+  return param_1;
+}
+#pragma schedule off
+
+// FUN_0049BCC0
+#pragma schedule on
+#pragma tailcall on
+void FUN_0049bcc0(int param_1)
+{
+  FUN_004964f0(*(u32 *)(param_1 + 0x54),(char *)param_1);
+  return;
+}
+#pragma tailcall off
+#pragma schedule off
+
+// FUN_0049BCD0
+#pragma schedule on
+#pragma tailcall on
+u64 FUN_0049bcd0(u64 param_1,u64 param_2,u64 param_3)
+{
+  return FUN_0049e830(param_1,param_3);
+}
+#pragma tailcall off
+#pragma schedule off
+
+// FUN_0049BCE0
+#pragma schedule on
+u64 FUN_0049bce0(u64 param_1,u64 param_2,u64 param_3)
+{
+  u64 result;
+  u64 condition;
+
+  result = param_1;
+  condition = FUN_0049e9f0(param_1,param_3);
+  result = condition != 0 ? result : 0;
+  return result;
+}
+#pragma schedule off
+
+// FUN_0049BD10
+#pragma tailcall on
+int FUN_0049bd10(int param_1)
+{
+  return FUN_0049ecd0(param_1);
+}
+#pragma tailcall off
+
+// FUN_0049BD20
+#pragma schedule on
+#pragma tailcall on
+u64 FUN_0049bd20(u64 param_1,u64 param_2,u64 param_3)
+{
+  return FUN_0049ee70(param_1,param_3);
+}
+#pragma tailcall off
+#pragma schedule off
+
+// FUN_0049BD30
+#pragma schedule on
+u64 FUN_0049bd30(u64 param_1,u64 param_2,u64 param_3)
+{
+  u64 result;
+  u64 condition;
+
+  result = param_1;
+  condition = FUN_0049f040(param_1,param_3);
+  result = condition != 0 ? result : 0;
+  return result;
+}
+#pragma schedule off
+
+// FUN_0049BD60
+#pragma tailcall on
+int FUN_0049bd60(int param_1)
+{
+  return FUN_0049f340(param_1);
+}
+#pragma tailcall off
+
+// FUN_0049BD70
+#pragma schedule on
+void FUN_0049bd70(u32 param_1,u32 param_2,u32 param_3)
+{
+  u32 result;
+  char *base;
+
+  result = FUN_0049a170(param_3);
+  base = (char *)result;
+  FUN_00495fb0_u32(*(u32 **)(param_3 + 0x78),base,param_1,(u32)base + 0x10);
+  return;
+}
+#pragma schedule off
+
+
 
 // FUN_0049BDC0 NONMATCHING
 
