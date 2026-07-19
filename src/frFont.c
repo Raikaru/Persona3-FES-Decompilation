@@ -37,6 +37,8 @@ extern u32 DAT_007ce638;
 extern u32 DAT_007ce63c;
 extern u32 DAT_0095ac70;
 extern u32 DAT_0095acf0;
+#pragma alias DAT_0095acf0_abs DAT_0095acf0
+extern u32 DAT_0095acf0_abs[];
 extern u32 DAT_0095acf4;
 extern u32 DAT_0095acf8;
 extern u32 DAT_0095acfc;
@@ -62,6 +64,8 @@ extern u32 DAT_0095ae74;
 extern code DAT_00960090;
 extern code DAT_00960178;
 extern code DAT_0096017c;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 extern u32 LAB_003b28b8;
 extern u32 bGpffffb950;
 extern u32 gp0xffffa808;
@@ -82,6 +86,8 @@ extern u32 uGpffffb940;
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003afa40(void);
 void FUN_003afad0(u32 param_1,long param_2,long param_3);
+#pragma alias FUN_003afad0_typed FUN_003afad0
+extern void FUN_003afad0_typed(u32 param_1,u64 param_2,u32 param_3);
 void FUN_003afc30(u32 param_1);
 void FUN_003afc70(void);
 void FUN_003afe30(void);
@@ -97,7 +103,7 @@ long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4);
 int FUN_003b0840(short *param_1);
 long FUN_003b0970(long param_1,u8 param_2,u8 param_3,u8 param_4,long param_5);
 void FUN_003b0bb0(int param_1,u8 param_2);
-void FUN_003b0c20(long param_1,u16 param_2);
+void FUN_003b0c20(u32 param_1,u16 param_2);
 void FUN_003b0c70(FrFontNode *node);
 void FUN_003b0ce0(int param_1,u8 param_2);
 void FUN_003b0d70(long param_1,u32 param_2,u32 param_3);
@@ -318,7 +324,7 @@ void FUN_003afad0(u32 param_1,long param_2,long param_3)
 }
 #define FUN_003afad0(...) ((void (*)(...))FUN_003afad0)(__VA_ARGS__)
 #undef FUN_003afc30
-// FUN_003AFC30 NONMATCHING
+// FUN_003AFC30
 
 
 void FUN_003afc30(u32 param_1)
@@ -327,7 +333,7 @@ void FUN_003afc30(u32 param_1)
 
 {
 
-  (*DAT_0096017c)((&DAT_0095acf0)[(param_1 & 0xff) * 8]);
+  DAT_0096017c_abs[0](DAT_0095acf0_abs[(param_1 & 0xff) * 8]);
 
   return;
 
@@ -1437,10 +1443,10 @@ void FUN_003b0bb0(int param_1,u8 param_2)
 }
 #define FUN_003b0bb0(...) ((void (*)(...))FUN_003b0bb0)(__VA_ARGS__)
 #undef FUN_003b0c20
-// FUN_003B0C20 NONMATCHING
+// FUN_003B0C20
 
 
-void FUN_003b0c20(long param_1,u16 param_2)
+void FUN_003b0c20(u32 param_1,u16 param_2)
 
 
 
@@ -2412,7 +2418,7 @@ long FUN_003b1920(long param_1,long param_2,int param_3)
 }
 #define FUN_003b1920(...) ((long (*)(...))FUN_003b1920)(__VA_ARGS__)
 #undef FUN_003b19a0
-// FUN_003B19A0 NONMATCHING
+// FUN_003B19A0
 
 
 void FUN_003b19a0(u64 param_1)
@@ -2421,7 +2427,7 @@ void FUN_003b19a0(u64 param_1)
 
 {
 
-  FUN_003afad0(8,param_1,0);
+  FUN_003afad0_typed(8,param_1,0);
 
   return;
 
