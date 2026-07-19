@@ -19,6 +19,7 @@ extern RtAnimAnimation DAT_009571d0;
 extern u8 DAT_0069abb8[];
 extern void* jtbl_00960178[];
 
+extern s32 func_001a6c00(void* object, const char* name);
 void* FUN_00491cc0(RpClump* clump);
 void FUN_00491ea0(RpClump* clump);
 void* FUN_001a7570(RpClump* clump);
@@ -309,7 +310,6 @@ Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
 u32 mdlStreamRead(Model* mdl)
 {
     Model* source;
-
     if (mdl->flags & MDL_FLAG_STREAMDONE)
     {
         return true;
@@ -336,14 +336,13 @@ u32 mdlStreamRead(Model* mdl)
         {
             return false;
         }
-
         source = sMdlListTails[mdl->type];
         while (source != NULL)
         {
             if (source->id == mdl->id)
             {
                 if (source->flags & MDL_FLAG_STREAMDONE)
-                {
+            {
                     break;
                 }
             }
@@ -5574,7 +5573,7 @@ void func_00315c20(int param_1)
 
 
 
-// FUN_00315ED0 NONMATCHING
+// FUN_00315ED0
 
 
 Model* func_00315ed0(Model* param_1)
@@ -5588,14 +5587,12 @@ Model* func_00315ed0(Model* param_1)
   u32 uVar2;
 
   u32 uVar3;
-  u32 offset;
 
   
   iVar1 = *(int *)((int)param_1 + 0x18);
   uVar2 = *(u32 *)(iVar1 + 0x24);
   for (uVar3 = 0; uVar3 < uVar2; uVar3 = uVar3 + 1) {
-    offset = uVar3 * 4;
-    func_001b5a30(*(u32 *)(offset + *(int *)(iVar1 + 0x20)));
+    func_001b5a30(((u32 *)*(int *)(iVar1 + 0x20))[uVar3]);
   }
 
   return param_1;
@@ -7230,7 +7227,7 @@ bool func_00318ed0(u8* param_1,u32 param_2,u32 *param_3)
 
 
 
-// FUN_00318FC0 NONMATCHING
+// FUN_00318FC0
 
 
 u32 func_00318fc0(int param_1)
@@ -7245,7 +7242,7 @@ u32 func_00318fc0(int param_1)
   if (ptr != NULL) {
     return (u32)*ptr;
   }
-  return func_001a6c00(*(u32 *)(param_1 + 0xdc), (u8 *)&DAT_0069aee0 - 0x328);
+  return func_001a6c00(*(void **)(param_1 + 0xdc), (const char *)DAT_0069abb8);
 }
 
 
@@ -7477,21 +7474,15 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
 
   iVar3 = (int)uVar1;
 
-  if ((*(u16 *)(iVar2 + 0xd8) & 0x1000) == 0) {
-
-    *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 0x2000;
-
-  }
-
-  else {
-
+  if ((*(u16 *)(iVar2 + 0xd8) & 0x1000) != 0) {
     mdlCopy(param_3,uVar1);
-
     *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 0x1000;
-
+  }
+  else {
+    *(u16 *)(iVar3 + 0xd8) = *(u16 *)(iVar3 + 0xd8) | 0x2000;
   }
 
-  param_1 = (param_2 & 0xffff) * 0xc + param_1;
+  param_1 = param_1 + (param_2 & 0xffff) * 0xc;
 
   *(int *)(param_1 + 0x3b8) = iVar3;
 
