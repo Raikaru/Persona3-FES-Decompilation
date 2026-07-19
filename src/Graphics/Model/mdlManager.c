@@ -1169,67 +1169,46 @@ void FUN_0031e4d0(int *param_1,u16 param_2,u16 param_3);
 
 void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
 {
-
   int iVar1;
+  u8 *p;
+  void *pInterp;
 
-  
-
-  iVar1 = *(int *)(param_1 + 0x18);
-
-  if (*(int *)(param_1 + 0x1c) != iVar1) {
-
+  p = (u8 *)param_1;
+  iVar1 = *(int *)(p + 0x18);
+  if (*(int *)(p + 0x1c) != iVar1) {
     if (iVar1 != 0) {
-
       func_0031df80(iVar1);
-
     }
-
-    if (*(int *)(param_1 + 0x1c) != 0) {
-
+    if (*(int *)(p + 0x1c) != 0) {
+      func_0031ded0((void *)*(int *)(p + 0x1c));
     }
-
-    *(u32 *)(param_1 + 0x18) = *(u32 *)(param_1 + 0x1c);
-
+    *(u32 *)(p + 0x18) = *(u32 *)(p + 0x1c);
   }
 
-  if ((*(int *)(param_1 + 0x18) != 0) && (*(short *)(param_1 + 0x30) == 0)) {
-
+  if ((*(int *)(p + 0x18) != 0) && (*(u16 *)(p + 0x30) == 0)) {
+    func_0031dda0((void *)*(int *)(p + 0x18), (const RwV3d *)(p + 8));
+    func_0031d9c0((void *)*(int *)(p + 0x18), param_2);
   }
 
-  if (*(int *)(param_1 + 0x2c) != 0) {
-
-    if (*(int *)(param_1 + 0x24) != 0) {
-
+  if (*(int *)(p + 0x2c) != 0) {
+    pInterp = *(void **)(p + 0x24);
+    if (pInterp) {
       func_0031e2c0();
-
     }
-
-    if (*(int *)(param_1 + 0x28) != 0) {
-
-      func_0031e270(*(int *)(param_1 + 0x28),param_2);
-
+    if (*(int *)(p + 0x28) != 0) {
+      func_0031e270(*(int *)(p + 0x28), param_2);
     }
-
-    *(u32 *)(param_1 + 0x24) = *(u32 *)(param_1 + 0x28);
-
-    *(u32 *)(param_1 + 0x2c) = 0;
-
+    *(u32 *)(p + 0x24) = *(u32 *)(p + 0x28);
+    *(u32 *)(p + 0x2c) = 0;
   }
 
-  if ((*(int *)(param_1 + 0x24) != 0) && (*(short *)(param_1 + 0x30) == 0)) {
-
-    func_0031e1b0(*(int *)(param_1 + 0x24),param_2);
-
+  if ((*(int *)(p + 0x24) != 0) && (*(u16 *)(p + 0x30) == 0)) {
+    func_0031e1b0(*(int *)(p + 0x24), param_2);
   }
 
-  if (*(short *)(param_1 + 0x30) != 0) {
-
-    *(short *)(param_1 + 0x30) = *(short *)(param_1 + 0x30) + -1;
-
+  if (*(u16 *)(p + 0x30) > 0) {
+    *(u16 *)(p + 0x30) = *(u16 *)(p + 0x30) + -1;
   }
-
-  return;
-
 }
 
 
@@ -3723,8 +3702,7 @@ void func_00313ca0(int *param_1,u64 param_2)
 void func_00313e60(void* param_1)
 {
 
-  int *piVar1;
-
+  void *piVar1;
   int *piVar2;
 
   u32 uVar3;
@@ -3733,9 +3711,9 @@ void func_00313e60(void* param_1)
 
   piVar2 = (int *)param_1;
 
-  *(short *)((int)piVar2 + 0xe) = *(short *)((int)piVar2 + 0xe) + -1;
+  *(u16 *)((int)piVar2 + 0xe) = *(u16 *)((int)piVar2 + 0xe) + -1;
 
-  if (*(short *)((int)piVar2 + 0xe) == 0) {
+  if (*(u16 *)((int)piVar2 + 0xe) == 0) {
 
     if (piVar2[2] != 0) {
 
@@ -3751,9 +3729,11 @@ void func_00313e60(void* param_1)
 
     for (uVar3 = 0; uVar3 < *(u16 *)(piVar2 + 3); uVar3 = uVar3 + 1 & 0xffff) {
 
-      piVar1 = (int *)(*piVar2 + uVar3 * 8);
+      piVar1 = (void *)*piVar2;
+      piVar1 = (void *)((u8 *)piVar1 + (u16)uVar3 * 8);
 
-      if ((*piVar1 != 0) && ((*(u8 *)(piVar1 + 1) & 1) == 0)) {
+      if ((*(int *)piVar1 != 0) &&
+          ((*(u8 *)((u8 *)piVar1 + 4) & 1) == 0)) {
 
         func_004b78b0();
 
@@ -7230,7 +7210,7 @@ void func_00319230(int param_1, u16 param_2)
     *(u16 *)(param_1 + 0x418) = param_2;
     for (uVar2 = 0; uVar2 < 5; uVar2 = uVar2 + 1 & 0xffff)
     {
-        iVar1 = param_1 + uVar2 * 0xc;
+        iVar1 = param_1 + (u16)uVar2 * 0xc;
         if ((*(u8 *)(iVar1 + 0x3b4) & 1) != 0 &&
             (iVar1 = *(int *)(iVar1 + 0x3b8), iVar1 != 0))
         {
@@ -7460,7 +7440,7 @@ void func_003195f0(int param_1,u32 param_2,Model* param_3)
 
 
 
-// FUN_003196F0 NONMATCHING
+// FUN_003196F0
 
 
 void func_003196f0(Model* param_1, u16 param_2)
@@ -7471,7 +7451,8 @@ void func_003196f0(Model* param_1, u16 param_2)
 
     iVar1 = (int)(u8*)param_1;
     iVar2 = (param_2 & 0xffff) * 0xc;
-    iVar1 = iVar2 + iVar1;
+    iVar1 = iVar2;
+    iVar1 += (int)(u8*)param_1;
     pWpnMdl = (int*)(iVar1 + 0x3b8);
     if (*pWpnMdl != 0)
     {
@@ -7495,13 +7476,16 @@ void func_003197c0(Model* param_1,RwMatrix* param_2)
   int iVar3;
   u32 *puVar4;
   u32 *puVar5;
-  u32 uVar6;
+  u16 uVar6;
+  u32 uVar7;
+
+  uVar7 = 8;
 
   for (uVar6 = 0; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
-    iVar3 = *(int *)(param_1 + uVar6 * 0xc + 0x3b8);
+    iVar3 = *(int *)((u8 *)param_1 + (u16)uVar6 * 0xc + 0x3b8);
     if (iVar3 != 0) {
       puVar4 = (u32 *)(iVar3 + 0x90);
-      iVar3 = 8;
+      iVar3 = uVar7;
       puVar5 = (u32*)param_2;
       do {
         uVar1 = *puVar5;
