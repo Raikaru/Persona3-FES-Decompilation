@@ -194,15 +194,22 @@ Model* mdlInit(u16 type, u16 id)
 Model* mdlSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
+    u16 modelType;
+    u16 modelId;
+    u16 modelFlags;
 
-    mdl = sMdlListTails[type];
-    id &= 0xffff;
-    flags &= 0xffff;
+    modelType = type;
+    modelId = id;
+    modelFlags = flags;
+    mdl = sMdlListTails[modelType];
     while (mdl != NULL)
     {
-        if (mdl->id == id && (flags == 0 || (mdl->flags & flags) != 0))
+        if (mdl->id == modelId)
         {
-            break;
+            if (modelFlags == 0 || (mdl->flags & modelFlags) != 0)
+            {
+                break;
+            }
         }
         mdl = mdl->prev;
     }
@@ -7217,24 +7224,18 @@ u32 func_00318fc0(int param_1)
 
 void func_00319230(int param_1, u16 param_2)
 {
-    s32 i;
-    u8* slot;
-    Model* wpn;
+    int iVar1;
+    u32 uVar2;
 
     *(u16 *)(param_1 + 0x418) = param_2;
-    i = 0;
-    while ((i & 0xffff) < 5)
+    for (uVar2 = 0; uVar2 < 5; uVar2 = uVar2 + 1 & 0xffff)
     {
-        slot = (u8*)param_1 + (i & 0xffff) * 0xc;
-        if ((slot[0x3b4] & 1) != 0)
+        iVar1 = param_1 + uVar2 * 0xc;
+        if ((*(u8 *)(iVar1 + 0x3b4) & 1) != 0 &&
+            (iVar1 = *(int *)(iVar1 + 0x3b8), iVar1 != 0))
         {
-            wpn = *(Model**)(slot + 0x3b8);
-            if (wpn != NULL)
-            {
-                *(u16*)((u8*)wpn + 0x418) = param_2;
-            }
+            *(u16 *)(iVar1 + 0x418) = param_2;
         }
-        i = (i + 1) & 0xffff;
     }
 }
 
