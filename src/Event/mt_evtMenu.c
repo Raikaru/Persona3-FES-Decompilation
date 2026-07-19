@@ -346,6 +346,57 @@ extern u8 gp0xffffa140;
 extern u8 gp0xffffa148;
 extern u8 gp0xffffa150;
 extern u8 gp0xffffa350;
+extern u8 gp0xffffa108;
+extern u8 DAT_0069ea58[];
+extern u8 DAT_0069ea78[];
+extern u8 DAT_0069ea88[];
+extern u8 DAT_0069ec08[];
+extern u8 DAT_0069ec18[];
+extern u8 DAT_0069ec28[];
+extern u8 DAT_0069eca0[];
+extern u8 DAT_0069ecc8[];
+extern u8 DAT_0069ece0[];
+extern u8 DAT_0069ed00[];
+extern u8 DAT_0069ed20[];
+extern u8 DAT_0069ed40[];
+extern u8 DAT_0069ed60[];
+extern u8 DAT_0069eb38[];
+extern u8 DAT_0069fc68[];
+extern u8 DAT_0069fc78[];
+extern u8 DAT_0069fc88[];
+extern u8 DAT_0069fc98[];
+extern u8 DAT_0069fca8[];
+extern u8 DAT_0069fcb8[];
+extern u8 DAT_0069fcc8[];
+extern u8 DAT_0069fcd8[];
+extern u8 DAT_0069ff20[];
+extern u8 DAT_0069ff30[];
+extern u8 DAT_0069ff40[];
+extern u8 DAT_0069ff50[];
+extern u8 gp0xffffa118;
+extern u8 gp0xffffa120;
+extern u8 gp0xffffa128;
+extern u8 gp0xffffa168;
+extern u8 gp0xffffa170;
+extern u8 gp0xffffa178;
+extern u8 gp0xffffa180;
+extern u8 gp0xffffa570;
+extern u8 gp0xffffa578;
+extern u8 gp0xffffa580;
+extern u8 gp0xffffa588;
+extern u8 gp0xffffa590;
+extern u8 gp0xffffa598;
+extern u8 gp0xffffa5a0;
+extern u8 gp0xffffa5a8;
+extern u8 gp0xffffa5b0;
+extern u8 gp0xffffa5b8;
+extern u8 gp0xffffa5c0;
+extern u8 gp0xffffa5c8;
+extern u8 gp0xffffa5d0;
+extern u8 gp0xffffa668;
+extern u8 gp0xffffa670;
+extern u8 gp0xffffa678;
+extern u8 gp0xffffa680;
 extern u8 gp0xffffa3b8;
 extern u8 gp0xffffa608;
 extern u8 gp0xffffa610;
@@ -664,8 +715,8 @@ void FUN_003722d0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_003747a0(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00374d30(u64 param_1,u64 param_2,u32 param_3);
 void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4);
-void FUN_00375750(u64 param_1,u64 param_2,u32 param_3);
-void FUN_00375ab0(u64 param_1,u64 param_2,u32 param_3);
+void FUN_00375750(int param_1,int param_2,u32 param_3,u8 *param_4);
+void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5);
 void FUN_003797b0(u64 param_1,u64 param_2,int param_3,int param_4);
 void FUN_00379c30(int param_1,int param_2,int param_3,int param_4);
@@ -682,13 +733,13 @@ void FUN_0037d540(int param_1,int param_2,long param_3,int param_4);
 void FUN_0037dfc0(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_0037e460(u64 param_1,u64 param_2,u32 param_3);
 void FUN_0037f0c0(int param_1,int param_2,int param_3,int param_4);
-void FUN_0037f650(u64 param_1,u64 param_2,u32 param_3);
+void FUN_0037f650(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_0037ff80(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_00380a30(int param_1,int param_2,int param_3,int param_4);
 void FUN_00381110(int param_1,int param_2,int param_3,int param_4);
 void FUN_00381540(u64 param_1,u64 param_2,u32 param_3);
-void FUN_00381c60(u64 param_1,u64 param_2,u32 param_3);
+void FUN_00381c60(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_00382390(int param_1,int param_2,int param_3,int param_4);
 void FUN_00382760(int param_1,int param_2,int param_3,int param_4);
 void FUN_00382c80(int param_1,int param_2,int param_3,int param_4);
@@ -6020,26 +6071,42 @@ u32 FUN_003756e0(int param_1,int param_2,int param_3)
 // FUN_00375750 NONMATCHING
 
 
-void FUN_00375750(u64 param_1,u64 param_2,u32 param_3)
-
-
-
+void FUN_00375750(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
+  f32 fVar1;
 
-  if (param_3 < 6) {
-
-                    /* WARNING: Could not recover jumptable at 0x00375790. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    PTR_LAB_007ba830[(int)param_3]();
-
-    return;
-
+  switch (param_3) {
+  case 0:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)(param_1 * 0xc),(int)(param_2 * 0xc),4,
+                      (u32)&gp0xffffa108,*(u32 *)(param_4 + 0x16c),fVar1);
+    break;
+  case 1:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea58,fVar1);
+    break;
+  case 2:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069eca0,fVar1);
+    break;
+  case 3:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea78,fVar1);
+    break;
+  case 4:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea88,fVar1);
+    break;
+  case 5:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea88,fVar1);
+    break;
   }
-
-  return;
-
 }
 
 
@@ -6176,26 +6243,59 @@ u32 FUN_00375a40(int param_1,int param_2,int param_3)
 // FUN_00375AB0 NONMATCHING
 
 
-void FUN_00375ab0(u64 param_1,u64 param_2,u32 param_3)
-
-
-
+void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4)
 {
+  f32 fVar1;
 
-  if (param_3 < 10) {
-
-                    /* WARNING: Could not recover jumptable at 0x00375af0. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    PTR_LAB_007ba850[(int)param_3]();
-
-    return;
-
+  switch (param_3) {
+  case 0:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt6((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)&gp0xffffa108,*(u32 *)(param_4 + 0x16c),fVar1);
+    break;
+  case 1:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ecc8,fVar1);
+    break;
+  case 2:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ece0,fVar1);
+    break;
+  case 3:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ed00,fVar1);
+    break;
+  case 4:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea78,fVar1);
+    break;
+  case 5:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ea88,fVar1);
+    break;
+  case 6:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ed20,fVar1);
+    break;
+  case 7:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ed40,fVar1);
+    break;
+  case 8:
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
+    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      (u32)DAT_0069ed60,fVar1);
+    break;
+  case 9:
+    break;
   }
-
-  return;
-
 }
 
 
@@ -13698,7 +13798,7 @@ u32 FUN_0037f5e0(int param_1,int param_2,int param_3)
 // FUN_0037F650 NONMATCHING
 
 
-void FUN_0037f650(u64 param_1,u64 param_2,u32 param_3)
+void FUN_0037f650(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 
 
@@ -14280,8 +14380,8 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 
 {
-  u8 *pcVar4;
   int iVar2;
+  u8 *pcVar4;
   int iVar3;
   f32 fVar1;
 
@@ -15550,7 +15650,7 @@ u32 FUN_00381bf0(int param_1,int param_2,int param_3)
 // FUN_00381C60 NONMATCHING
 
 
-void FUN_00381c60(u64 param_1,u64 param_2,u32 param_3)
+void FUN_00381c60(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 
 
