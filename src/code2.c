@@ -26,6 +26,10 @@ extern u16 uRam80076740;
 extern u16 uRam80076742;
 extern u16 uRamb0001810;
 extern u16 uRamb0001820;
+#pragma alias uRamb0001810_abs uRamb0001810
+extern u32 uRamb0001810_abs[];
+#pragma alias uRamb0001820_abs uRamb0001820
+extern u32 uRamb0001820_abs[];
 extern u16 sRam80076740;
 extern u16 uRamb0001800;
 extern u16 sRamb0001800;
@@ -328,8 +332,15 @@ int FUN_00780640(int param_1)
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
-  SYNC(0);
-  return;
+  __asm__ volatile("sync");
+}
+
+// FUN_00780800 NONMATCHING
+void FUN_00780800(u32 param_1)
+{
+  uRamb0001820_abs[0] = param_1;
+  __asm__ volatile("sync");
+  uRamb0001810_abs[0] = 0x583;
 }
 
 // FUN_00780828 NONMATCHING
