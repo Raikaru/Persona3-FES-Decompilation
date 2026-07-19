@@ -1509,10 +1509,14 @@ void btlCameraFrameActionPair(BtlCamera* camera)
             blended.imag.x = blend.first.imag.x * w1;
             blended.imag.y = blend.first.imag.y * w1;
             blended.imag.z = blend.first.imag.z * w1;
-            blended.imag.x = 0.0f + blended.imag.x + blend.second.imag.x * ratio;
-            blended.imag.y = 0.0f + blended.imag.y + blend.second.imag.y * ratio;
-            blended.imag.z = 0.0f + blended.imag.z + blend.second.imag.z * ratio;
-            blended.real = blend.first.real * w1 + blend.second.real * ratio;
+            blended.imag.x = 0.0f + blended.imag.x +
+                             blend.second.imag.x * ratio;
+            blended.imag.y = 0.0f + blended.imag.y +
+                             blend.second.imag.y * ratio;
+            blended.imag.z = 0.0f + blended.imag.z +
+                             blend.second.imag.z * ratio;
+            blended.real = blend.first.real * w1 +
+                           blend.second.real * ratio;
         }
         RtQuatTransformVectors(&dir, &D_006978A0, 1, &blended);
         secondPos.x = firstPos.x + dir.x;
