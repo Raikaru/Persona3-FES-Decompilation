@@ -33,7 +33,15 @@ extern u8* DAT_007cdf5c;
 extern u8* DAT_007cdf60;
 extern s32 DAT_007cdf90;
 extern u16 DAT_007cdf94;
-extern s32 DAT_007cdfb8;
+typedef struct CampSocialLinkRecord
+{
+    s16 first;
+    s16 second;
+    s32 flag;
+    s16 type;
+    s16 reserved0a;
+} CampSocialLinkRecord;
+extern CampSocialLinkRecord* DAT_007cdfb8;
 extern u32 DAT_007e094e;
 extern u32 DAT_007e0952;
 extern u32 DAT_007e0958;
@@ -41,6 +49,14 @@ extern u32 DAT_007e095a;
 extern u32 DAT_00833a50[];
 extern void* DAT_00833b78;
 extern s32 (*DAT_00960184)();
+extern u8 DAT_005dbc50[];
+extern u8 DAT_005dbc60[];
+#pragma alias campAlloc DAT_00960184
+extern void* (*campAlloc[])(u32, u32, u32);
+#pragma alias campTaskCreate FUN_00194b20
+extern KwlnTask* campTaskCreate(KwlnTask*, const char*, u32,
+                                void* (*)(KwlnTask*), void (*)(KwlnTask*),
+                                void*);
 extern void h_campItemDestroyNewItemTask(KwlnTask* task);
 
 extern u32 FUN_00100d80();
@@ -151,7 +167,6 @@ void h_campDrawStatusOverview(int param_1)
 
 // FUN_00148880 NONMATCHING
 void h_campDrawListEntry(int param_1,int param_2,int param_3)
-
 {
   if (param_2 == 0x20) {
     FUN_001159f0(*(float *)(param_1 + 0x38) + 20.0,*(u32 *)(param_1 + 0x3c),
@@ -1510,30 +1525,25 @@ u32 h_campUpdateNewItemTask(int param_1)
   return 0;
 }
 
-// FUN_0014EE80 NONMATCHING
-s32 h_campCreateNewItemTask(u64 param_1,u64 param_2)
-
+// FUN_0014EE80
+KwlnTask* h_campCreateNewItemTask(KwlnTask* parent, u32 priority)
 {
-  u32 uVar1;
-  s32 lVar2;
-  s32 lVar3;
-  
-  lVar2 = (*DAT_00960184)(1,200,0x40000);
-  if (lVar2 == 0) {
-    lVar3 = 0;
-  }
-  else {
-    lVar3 = FUN_00194b20(param_1,0x5dbc50,param_2,(u32)h_campUpdateNewItemTask,(u32)h_campItemDestroyNewItemTask,lVar2);
-    if (lVar3 == 0) {
-      lVar3 = 0;
+    KwlnTask* task;
+    void* allocation;
+
+    allocation = (*campAlloc)(1, 0xc8, 0x40000);
+    if (allocation == NULL) {
+        return NULL;
     }
-    else {
-      uVar1 = FUN_00100d80(0x5dbc60,1);
-      ((u32 *)lVar2)[2] = uVar1;
-      *(u32 *)lVar2 = 2;
+    task = campTaskCreate(parent, (const char*)DAT_005dbc50, priority,
+                          (void* (*)(KwlnTask*))h_campUpdateNewItemTask,
+                          h_campItemDestroyNewItemTask, allocation);
+    if (task == NULL) {
+        return NULL;
     }
-  }
-  return lVar3;
+    *(u32*)((u8*)allocation + 8) = FUN_00100d80(DAT_005dbc60, 1);
+    *(u32*)allocation = 2;
+    return task;
 }
 
 // FUN_0014EF60 NONMATCHING
@@ -1583,48 +1593,41 @@ void h_campDrawItemFrameSelected(int param_1)
 }
 
 // FUN_0014F680 NONMATCHING
-u32 h_campIsSocialLinkAvailable(u16 param_1,u16 param_2)
-
+u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 {
-  u8 *pbVar1;
-  s32 lVar2;
-  u16 *puVar3;
-  s16 *psVar4;
-  int iVar5;
-  int iVar6;
-  
-  iVar5 = DAT_007cdfb8;
-  for (iVar6 = 0; iVar6 < 9999; iVar6 = iVar6 + 1) {
-    puVar3 = (u16 *)(iVar5 + iVar6 * 0xc);
-    if (*puVar3 == 0) break;
-    if ((param_1 == *puVar3) && (param_2 == puVar3[1])) {
-      if (*(int *)(puVar3 + 2) == 0) {
-        return 1;
-      }
-      lVar2 = FUN_0016f190();
-      if (lVar2 != 0) {
-        return 1;
-      }
-      psVar4 = (s16 *)(DAT_007cdfb8 + iVar6 * 0xc);
-      iVar5 = DAT_007cdfb8;
-      if ((*psVar4 == 3) && (psVar4[4] == 0x13)) {
-        return 1;
-      }
+    CampSocialLinkRecord* entry;
+    u8* socialEntry;
+    s32 index1;
+    s32 index2;
+
+    for (index1 = 0; index1 < 9999; index1++) {
+        entry = DAT_007cdfb8 + index1;
+        if (entry->first == 0) {
+            break;
+        }
+        if ((param_1 == entry->first) && (param_2 == entry->second)) {
+            if (*(s32*)((u8*)entry + 4) == 0) {
+                return 1;
+            }
+            if (FUN_0016f190() != 0) {
+                return 1;
+            }
+            entry = DAT_007cdfb8 + index1;
+            if ((entry->first == 3) && (entry->type == 0x13)) {
+                return 1;
+            }
+        }
     }
-  }
-  iVar5 = 0;
-  while( true ) {
-    if (0xff < iVar5) {
-      return 0;
+    for (index2 = 0; index2 < 0x100; index2++) {
+        socialEntry = (u8*)FUN_0017ae30(index2);
+        if (socialEntry[0] == 0) {
+            break;
+        }
+        if ((socialEntry[0] == param_1) && (socialEntry[1] == param_2)) {
+            return 1;
+        }
     }
-    pbVar1 = (u8 *)FUN_0017ae30(iVar5);
-    if (*pbVar1 == 0) break;
-    if ((*pbVar1 == param_1) && (pbVar1[1] == param_2)) {
-      return 1;
-    }
-    iVar5 = iVar5 + 1;
-  }
-  return 0;
+    return 0;
 }
 
 // FUN_0014F7D0 NONMATCHING
