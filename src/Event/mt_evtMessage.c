@@ -787,7 +787,9 @@ nonzero:
 #pragma pop
 #define FUN_0039f6e0(...) ((u8 (*)(...))FUN_0039f6e0)(__VA_ARGS__)
 #undef FUN_0039f710
-// FUN_0039F710 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_0039F710
 
 
 u32 FUN_0039f710(int *param_1)
@@ -796,25 +798,16 @@ u32 FUN_0039f710(int *param_1)
 
 {
 
-  u32 uVar1;
+  if ((u8)(*param_1 != 0)) goto nonzero;
 
-  
+  return 0;
 
-  if (!(u8)(*param_1 != 0)) {
+nonzero:
 
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    uVar1 = FUN_003a51a0(param_1[2]);
-
-  }
-
-  return uVar1;
+  return FUN_003a51a0(param_1[2]);
 
 }
+#pragma pop
 #define FUN_0039f710(...) ((u32 (*)(...))FUN_0039f710)(__VA_ARGS__)
 #undef FUN_0039f750
 // FUN_0039F750
