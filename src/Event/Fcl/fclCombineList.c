@@ -27,6 +27,10 @@ int FUN_003e0330(u64 param_1,u64 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(u64 param_1,u64 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
 void FUN_003e0680(u64 param_1,code* param_2,u64 param_3);
+#pragma alias FUN_003e0680_32 FUN_003e0680
+void FUN_003e0680_32(u32 param_1, code* param_2, u32 param_3);
+#pragma alias FUN_003e0680_p FUN_003e0680
+void FUN_003e0680_p(u32 param_1, code* param_2, void* param_3);
 void FUN_003e0700(long param_1);
 void FUN_003e0780(void);
 u32 FUN_003e0830(void);
@@ -968,14 +972,14 @@ s32 fclCombineList003db580(FclList* param_1)
     return 0;
 }
 
-// FUN_003db5e0 NONMATCHING
+// FUN_003DB5E0
 void fclCombineList003db5e0(FclOwner* param_1)
 {
     FclTaskLink* node;
-    FclList* root = param_1->container->work;
-    node = param_1->links;
-    while (node != 0) {
-        node = node->next;
+
+    FUN_003e0650((u32 *)param_1->container->work->result);
+    for (node = param_1->links; node != 0; node = node->next) {
+        FUN_003e0650((u32 *)node->payload->data.node_data->callback_target);
     }
 }
 
@@ -1978,7 +1982,7 @@ void fclCombineList003deb20(FclList* work)
     work->used = used;
 }
 
-// FUN_003deb80 NONMATCHING
+// FUN_003deb80
 void fclCombineList003deb80(s32 unused0, s32 unused1, s32 unused2, FclOwner* owner)
 {
     FclList* work = owner->container->work;
@@ -1986,18 +1990,22 @@ void fclCombineList003deb80(s32 unused0, s32 unused1, s32 unused2, FclOwner* own
     (void)unused0;
     (void)unused1;
     (void)unused2;
+    FUN_003e0680_32((u32)(void *)work->result,
+                    (code *)fclCombineList003db650,
+                    (u32)(void *)owner);
     work->flags |= 0x10000;
     FUN_003c4e70((s32)owner);
     work->flags &= 0xfffeffff;
 }
 
-// FUN_003dec00 NONMATCHING
+// FUN_003dec00
 void fclCombineList003dec00(s32 arg0, s32 arg1, s16 arg2, FclOwner* owner,
                              FclResourceNode* node)
 {
     FclDrawCallbackData data;
     FclList* work;
     FclResourceData* resource_data;
+    code *callback;
 
     memset(&data, 0, sizeof(data));
     work = owner->container->work;
@@ -2010,6 +2018,10 @@ void fclCombineList003dec00(s32 arg0, s32 arg1, s16 arg2, FclOwner* owner,
     data.resource_data = resource_data;
     data.owner = owner;
     data.node = node;
+    callback = (code *)fclCombineList003dd260;
+    FUN_003e0680_p((u32)(void *)resource_data->callback_target,
+                   callback,
+                   &data);
 }
 
 // FUN_003decd0
@@ -2603,70 +2615,43 @@ void FUN_003dff00(s32 param_1)
     }
 }
 
-// FUN_003DFF30 NONMATCHING
-
-
+// FUN_003DFF30
 u32 FUN_003dff30(int *param_1)
-
-
-
 {
+    int iVar1;
 
-  int iVar1;
-
-  
-
-  iVar1 = *(int *)(*param_1 + 4);
-
-  while( 1 ) {
-
-    if (iVar1 == 0) {
-
-      return 1;
-
+    iVar1 = *(int *)(*param_1 + 4);
+    goto check;
+body:
+    if ((*(u32 *)(*(int *)(iVar1 + 0x14) + 8) & 4) == 0) {
+        return 0;
     }
-
-    if ((*(u32 *)(*(int *)(iVar1 + 0x14) + 8) & 4) == 0) break;
-
     iVar1 = *(int *)(iVar1 + 0x10);
-
-  }
-
-  return 0;
-
+check:
+    if (iVar1 != 0) goto body;
+    return 1;
 }
 
 // FUN_003DFF80 NONMATCHING
-
-
 int FUN_003dff80(int *param_1,int param_2)
-
-
-
 {
+    int iVar1;
+    int iVar2;
 
-  int iVar1;
-
-  
-
-  iVar1 = *(int *)(*param_1 + 4);
-
-  while( 1 ) {
-
-    if (iVar1 == 0) {
-
-      return 0;
-
+    iVar1 = *(int *)(*param_1 + 4);
+    goto check;
+body:
+    iVar2 = *(int *)(iVar1 + 0x14);
+    if (*(int *)(iVar2 + 0x10) != param_2) {
+        iVar1 = *(int *)(iVar1 + 0x10);
+        goto check;
     }
-
-    if (*(int *)(*(int *)(iVar1 + 0x14) + 0x10) == param_2) break;
-
-    iVar1 = *(int *)(iVar1 + 0x10);
-
-  }
-
-  return *(int *)(iVar1 + 0x14);
-
+    goto found;
+check:
+    if (iVar1 != 0) goto body;
+    iVar2 = 0;
+found:
+    return iVar2;
 }
 
 // FUN_003DFFC0 NONMATCHING
