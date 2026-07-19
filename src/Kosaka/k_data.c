@@ -756,9 +756,9 @@ u16* func_001b8d60(u32 index)
     emptyCount = 0;
     i = 0;
     recordCount = sComuTableRecords;
-    emptyId = 0xffff;
     while (i < recordCount)
     {
+        emptyId = 0xffff;
         if (emptyCount == index)
         {
             break;
