@@ -301,7 +301,7 @@ void FUN_00322d40(int param_1,int param_2);
 u32 FUN_00322da0(int *param_1,int param_2);
 u64 FUN_00322dc0(u64 param_1);
 void FUN_00322f20(int param_1);
-u64 FUN_00322fb0(u64 param_1);
+u32 FUN_00322fb0(u32 param_1);
 void FUN_00322fd0(int param_1,u32 param_2,u32 *param_3);
 u64 FUN_003230f0(u64 param_1,u64 param_2,u64 param_3);
 int FUN_00323240(u32 param_1,int param_2,u16 param_3,u64 param_4);
@@ -353,6 +353,17 @@ void FUN_003257e0(u64 param_1);
 extern void FUN_003257e0_passthru(void);
 u64 FUN_00325920(u64 *param_1);
 void FUN_00325b80(int param_1);
+#pragma alias FUN_00325b80_passthru FUN_00325b80
+extern void FUN_00325b80_passthru(void);
+#pragma alias FUN_003252a0_passthru FUN_003252a0
+extern void FUN_003252a0_passthru(void);
+#pragma alias FUN_00325920_passthru FUN_00325920
+extern u32 FUN_00325920_passthru(void);
+#pragma alias FUN_00325e40_passthru FUN_00325e40
+extern void FUN_00325e40_passthru(void);
+/* FUN_003505d0 is also called with its first argument passed through. */
+#pragma alias FUN_003505d0_passthru FUN_003505d0
+extern void FUN_003505d0_passthru(void);
 void FUN_00325c10(u8 (*param_1) [16],u8 (*param_2) [16]);
 void FUN_00325d60(u64 param_1,u8 (*param_2) [16]);
 void FUN_00325e40(float param_1,u8 (*param_2) [16]);
@@ -7024,10 +7035,10 @@ void FUN_00322f20(int param_1)
 
 
 
-// FUN_00322FB0 NONMATCHING
+// FUN_00322FB0
 
 
-u64 FUN_00322fb0(u64 param_1)
+u32 FUN_00322fb0(u32 param_1)
 
 
 
@@ -47201,7 +47212,7 @@ u64 FUN_00349ed0(int param_1)
 
 
 
-// FUN_00349FA0 NONMATCHING
+// FUN_00349FA0
 
 
 void FUN_00349fa0(void)
@@ -47210,7 +47221,7 @@ void FUN_00349fa0(void)
 
 {
 
-  (*DAT_0096017c)();
+  DAT_0096017c_abs[0]();
 
   return;
 
@@ -47475,7 +47486,7 @@ void FUN_0034a280(int param_1)
 
 
 
-// FUN_0034A340 NONMATCHING
+// FUN_0034A340
 
 
 void FUN_0034a340(void)
@@ -47484,7 +47495,7 @@ void FUN_0034a340(void)
 
 {
 
-  (*DAT_0096017c)();
+  DAT_0096017c_abs[0]();
 
   return;
 
@@ -47911,7 +47922,7 @@ u64 FUN_0034a8c0(int param_1)
 
 
 
-// FUN_0034A990 NONMATCHING
+// FUN_0034A990
 
 
 void FUN_0034a990(void)
@@ -47920,7 +47931,7 @@ void FUN_0034a990(void)
 
 {
 
-  (*DAT_0096017c)();
+  DAT_0096017c_abs[0]();
 
   return;
 
@@ -51973,7 +51984,7 @@ void FUN_0034e3d0(u64 param_1)
 
 
 
-// FUN_0034E420 NONMATCHING
+// FUN_0034E420
 
 
 void FUN_0034e420(int param_1)
@@ -51982,7 +51993,7 @@ void FUN_0034e420(int param_1)
 
 {
 
-  ((code)FUN_003322d0)(*(u32 *)(param_1 + 0x58));
+  FUN_003322d0_one(*(u32 *)(param_1 + 0x58));
 
   return;
 
@@ -51991,7 +52002,7 @@ void FUN_0034e420(int param_1)
 
 
 
-// FUN_0034E450 NONMATCHING
+// FUN_0034E450
 
 
 void FUN_0034e450(int param_1)
@@ -52000,10 +52011,15 @@ void FUN_0034e450(int param_1)
 
 {
 
-  ((code)FUN_00332310)(*(u32 *)(param_1 + 0x58));
+  FUN_00332310_one(*(u32 *)(param_1 + 0x58));
 
   return;
 
+}
+// FUN_0034E480
+void FUN_0034e480(u32 *param_1, u32 param_2)
+{
+  param_1[1] = param_2;
 }
 
 
@@ -53323,7 +53339,7 @@ void FUN_0034fbe0(u64 param_1)
 
 
 
-// FUN_0034FC30 NONMATCHING
+// FUN_0034FC30
 
 
 void FUN_0034fc30(int param_1)
@@ -53332,7 +53348,7 @@ void FUN_0034fc30(int param_1)
 
 {
 
-  ((code)FUN_003322d0)(*(u32 *)(param_1 + 0x5c));
+  FUN_003322d0_one(*(u32 *)(param_1 + 0x5c));
 
   return;
 
@@ -53401,7 +53417,7 @@ void FUN_0034fcf0(void)
 
 
 
-// FUN_0034FD10 NONMATCHING
+// FUN_0034FD10
 
 
 void FUN_0034fd10(void)
@@ -53410,7 +53426,7 @@ void FUN_0034fd10(void)
 
 {
 
-  ((code)FUN_00325b80)();
+  FUN_00325b80_passthru();
 
   return;
 
@@ -53419,7 +53435,7 @@ void FUN_0034fd10(void)
 
 
 
-// FUN_0034FD30 NONMATCHING
+// FUN_0034FD30
 
 
 void FUN_0034fd30(void)
@@ -53428,7 +53444,7 @@ void FUN_0034fd30(void)
 
 {
 
-  ((code)FUN_003252a0)();
+  FUN_003252a0_passthru();
 
   return;
 
@@ -53437,7 +53453,7 @@ void FUN_0034fd30(void)
 
 
 
-// FUN_0034FD50 NONMATCHING
+// FUN_0034FD50
 
 
 u32 FUN_0034fd50(void)
@@ -53446,7 +53462,7 @@ u32 FUN_0034fd50(void)
 
 {
 
-  ((code)FUN_00325920)();
+  FUN_00325920_passthru();
 
   return;
 
@@ -53667,7 +53683,7 @@ void FUN_0034fe80(u64 param_1,u32 *param_2)
 
 
 
-// FUN_0034FF70 NONMATCHING
+// FUN_0034FF70
 
 
 void FUN_0034ff70(void)
@@ -53676,7 +53692,7 @@ void FUN_0034ff70(void)
 
 {
 
-  ((code)FUN_00325e40)();
+  FUN_00325e40_passthru();
 
   return;
 
@@ -54839,7 +54855,7 @@ void FUN_003505d0(int *param_1)
 
 
 
-// FUN_00351250 NONMATCHING
+// FUN_00351250
 
 
 void FUN_00351250(int param_1)
@@ -54850,10 +54866,15 @@ void FUN_00351250(int param_1)
 
   *(int *)(param_1 + 8) = *(int *)(param_1 + 8) + 1;
 
-  ((code)FUN_003505d0)();
+  FUN_003505d0_passthru();
 
   return;
 
+}
+// FUN_00351280
+void FUN_00351280(u32 *param_1, u32 param_2)
+{
+  *param_1 = param_2;
 }
 
 
