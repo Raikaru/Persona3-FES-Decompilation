@@ -71,6 +71,11 @@ extern void campDrawSpriteXY(void* parent, void* resource, s32 frame,
 extern KwlnTask* campTaskCreate(KwlnTask*, const char*, u32,
                                 void* (*)(KwlnTask*), void (*)(KwlnTask*),
                                 void*);
+extern void campDrawTransition(f32 depth, void* transition, s32 drawMode,
+                               s32 positionMode, s32 alphaMode,
+                               u64 start, u64 end, s32 param0, s32 tile,
+                               s32 startFrame, s32 endFrame);
+#pragma alias campDrawTransition func_0018bc10
 extern void h_campItemDestroyNewItemTask(KwlnTask* task);
 
 extern u32 FUN_00100d80();
@@ -149,33 +154,67 @@ extern u32 FUN_003c7d80();
 
 // FUN_001482F0 NONMATCHING
 void h_campDrawStatusOverview(int param_1)
-
 {
-  int iVar1;
-  float fVar2;
-  u64 uStack_38;
-  
-  func_0018bc10(0x42c80000, (void*)(*(u32 *)(param_1 + 0xc0)), 0, 2, 2, 0x4140000043bd8000, 0x4140000043bd8000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x44), 0, 2, 2, 0x41d8000041500000, 0x41d8000041500000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x88), 0, 2, 2, 0x41d8000042e00000, 0x41d8000042e00000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0xcc), 0, 2, 2, 0x41d8000043070000, 0x41d8000043070000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x110), 0, 2, 2, 0x41d80000438b0000, 0x41d80000438b0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x154), 0, 2, 2, 0x41d8000043968000, 0x41d8000043968000, 0, 0, 0, 0);
-  for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-    if (*(int *)(param_1 + 0x1c) + -1 < iVar1) {
-      *(u32 *)(*(int *)(param_1 + 0xc0) + iVar1 * 0x44 + 0x2ac) = 0;
+    union { f32 f; u32 u; } low;
+    s32 i;
+    f32 y;
+    u64 pos;
+    volatile u64 p0;
+    volatile u64 p1;
+    volatile u64 p2;
+    volatile u64 p3;
+    volatile u64 p4;
+    volatile u64 p5;
+    volatile u64 p6;
+    volatile u64 p7;
+    volatile u64 p8;
+    volatile u64 p9;
+
+    low.f = (f32)0x17b;
+    p0 = (((u64)0x41400000) << 32) | low.u;
+    p1 = 0x41d8000041500000ULL;
+    p2 = 0x41d8000042e00000ULL;
+    p3 = 0x41d8000043070000ULL;
+    p4 = 0x41d80000438b0000ULL;
+    p5 = 0x41d8000043968000ULL;
+    p6 = 0x4274000042d00000ULL;
+    p7 = 0x435b000042f80000ULL;
+    p8 = 0x43cf800043620000ULL;
+    p9 = 0x43cf800043db8000ULL;
+
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
+                       p0, p0, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 0, 2, 2,
+                       p1, p1, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 0, 2, 2,
+                       p2, p2, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 0, 2, 2,
+                       p3, p3, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 0, 2, 2,
+                       p4, p4, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 0, 2, 2,
+                       p5, p5, 0, 0, 0, 0);
+    for (i = 0; i < 4; i++) {
+        if (*(s32*)(param_1 + 0x1c) - 1 < i) {
+            *(u32*)(*(u32*)(param_1 + 0xc0) + i * 0x44 + 0x2ac) = 0;
+        } else {
+            y = (f32)(i * 0x55) + 64.0f;
+            pos = CAMP_PAIR_FLOAT_HIGH(y, 0x41f00000);
+            campDrawTransition(100.0f,
+                               (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
+                               0, 2, 2, pos,
+                               CAMP_PAIR_FLOAT_HIGH(y, 0x41f00000),
+                               0, 0, 0, 0);
+        }
     }
-    else {
-      fVar2 = (float)(iVar1 * 0x55) + 64.0;
-      uStack_38 = CAMP_PAIR_FLOAT_HIGH(fVar2,0x41f00000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + (iVar1 + 10) * 0x44), 0, 2, 2, uStack_38, CAMP_PAIR_FLOAT_HIGH(fVar2,0x41f00000), 0, 0, 0, 0);
-    }
-  }
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x550), 0, 2, 2, 0x4274000042d00000, 0x4274000042d00000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x594), 0, 2, 2, 0x435b000042f80000, 0x435b000042f80000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x83c), 0, 2, 2, 0x43cf800043620000, 0x43cf800043620000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc0) + 0x880), 0, 2, 2, 0x43cf800043db8000, 0x43cf800043db8000, 0, 0, 0, 0);
-  return;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2,
+                       p6, p6, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 0, 2, 2,
+                       p7, p7, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 0, 2, 2,
+                       p8, p8, 0, 0, 0, 0);
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 0, 2, 2,
+                       p9, p9, 0, 0, 0, 0);
 }
 
 // FUN_00148880 NONMATCHING
