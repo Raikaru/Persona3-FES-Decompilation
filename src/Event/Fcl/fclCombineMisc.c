@@ -19,14 +19,20 @@ extern u64 (*DAT_00960178)();
 extern void (*PTR_LAB_007bb7a0[])();
 extern void (*PTR_LAB_007bb820[])();
 extern void (*DAT_0096017c)();
+extern int func_0016deb0(int);
+extern int func_0016dba0(int);
+extern s8 datGetSocialLinkLevel(int);
+extern u8 *gp0xffffb730;
+extern int datSocialLinkLevelIsNotZero(int);
 /* FUSION_PROTOS */
 u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4);
-u16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4);
+#pragma alias FUN_003d5510_i FUN_003d5510
+extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
+s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4);
 int FUN_003d58c0(u16 param_1,int param_2);
-u32 FUN_003d5a40(u16 *param_1,u16 param_2,u16 *param_3,short param_4,void *param_5);
+s16 FUN_003d5dc0(u32 param_1);
 u64 FUN_003d5bb0(u32 param_1);
 short FUN_003d5cd0(u32 *param_1);
-u16 FUN_003d5dc0(u32 param_1);
 u8 FUN_003d5e60(void *param_1,void *param_2,void *param_3);
 u8 FUN_003d6200(void *param_1,int param_2,u16 *param_3,int param_4);
 u32 FUN_003d64a0(void *param_1,u16 param_2,u16 param_3);
@@ -39,6 +45,8 @@ u32 FUN_003d6f80(long param_1,long param_2,void *param_3);
 u32 FUN_003d71d0(long param_1,long param_2,void *param_3);
 u64 FUN_003d72f0(u16 *param_1);
 void FUN_003d74f0(long param_1,long param_2,int param_3);
+#pragma alias FUN_003d74f0_i FUN_003d74f0
+extern void FUN_003d74f0_i(int param_1, int param_2, int param_3);
 u32 FUN_003d7ac0(char param_1,u8 param_2,u16 *param_3);
 u32 FUN_003d7da0(char param_1,u8 param_2,u16 *param_3);
 u32 FUN_003d8080(long param_1,long param_2,int param_3);
@@ -120,14 +128,13 @@ s32 fclCombineMisc003d74b0(u32 param_1)
 // FUN_003d7a30 NONMATCHING
 s32 fclCombineMisc003d7a30(u32 *param_1, void *param_2, s32 param_3)
 {
-    s32 link;
     s32 idx;
-    u8* rec;
+    s32 link;
 
-    idx = (u32)*(u16*)(param_1 + 2) * 0xe;
-    rec = (u8*)(idx + (s32)DAT_007ce420);
-    link = FUN_0016deb0(rec[2]);
-    FUN_0016dba0(link);
+    idx = (u32)*(u16 *)((u8 *)param_1 + 2) * 0xe;
+    link = func_0016deb0(*(u8 *)(idx + gp0xffffb730 + 2));
+    func_0016dba0(link);
+    FUN_003d74f0_i((int)param_1, (int)param_2, param_3);
     return 0;
 }
 
@@ -288,64 +295,29 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 // FUN_003D5730 NONMATCHING
 
 
-u16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4)
-
-
-
+s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4)
 {
+    s16 uVar1;
+    u16 *psVar3;
 
-  u16 uVar1;
-
-  long lVar2;
-
-  short *psVar3;
-
-  
-
-  if (param_1 == 0) {
-
-    K_Assert((const char *)(u32)0x6a5f70,0x58);
-
-  }
-
-  if (param_3 < *(int *)(DAT_006a5f44 + param_2 * 8)) {
-
-    psVar3 = (short *)((PTR_DAT_006a5f40)[param_2 * 2] + param_3 * 0x20);
-
-    lVar2 = FUN_003d5bb0(*psVar3);
-
-    if (lVar2 == 0) {
-
-      uVar1 = 0;
-
+    if (param_1 == 0) {
+        K_Assert("fclCombineMisc.c",0x58);
     }
-
-    else if (*psVar3 == 0) {
-
-      uVar1 = 0;
-
+    if (param_3 >= *(int *)(DAT_006a5f44 + param_2 * 8)) {
+        return 0;
     }
-
-    else {
-
-      memset(param_1,0,0x28);
-
-      *(short **)((int)param_1 + 4) = psVar3;
-
-      uVar1 = FUN_003d5510(param_1,psVar3,param_2 + 2,param_4);
-
+valid_index:
+    psVar3 = (u16 *)((u8 *)((PTR_DAT_006a5f40)[param_2 * 2]) + param_3 * 0x20);
+    if (FUN_003d5bb0(*psVar3) == 0) {
+        return 0;
     }
-
-  }
-
-  else {
-
-    uVar1 = 0;
-
-  }
-
-  return uVar1;
-
+    if (*psVar3 == 0) {
+        return 0;
+    }
+    memset(param_1,0,0x28);
+    *(u16 **)((u8 *)param_1 + 4) = psVar3;
+    uVar1 = FUN_003d5510_i(param_1,psVar3,param_2 + 2,param_4);
+    return uVar1;
 }
 
 // FUN_003D58C0 NONMATCHING
@@ -618,47 +590,23 @@ short FUN_003d5cd0(u32 *param_1)
 
 }
 
-// FUN_003D5DC0 NONMATCHING
+// FUN_003D5DC0
 
 
-u16 FUN_003d5dc0(u32 param_1)
-
-
-
+s16 FUN_003d5dc0(u32 param_1)
 {
+    s32 iVar5;
+    s32 iVar4;
+    int link;
 
-  char cVar1;
-
-  u64 uVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  
-
-  iVar4 = 0;
-
-  iVar5 = (param_1 & 0xffff) * 0xe;
-
-  uVar2 = func_0016deb0(*(u8 *)(iVar5 + DAT_007ce420 + 2));
-
-  lVar3 = datSocialLinkLevelIsNotZero(uVar2);
-
-  if (lVar3 != 0) {
-
-    uVar2 = func_0016deb0(*(u8 *)(iVar5 + DAT_007ce420 + 2));
-
-    cVar1 = datGetSocialLinkLevel(uVar2);
-
-    iVar4 = (int)cVar1;
-
-  }
-
-  return u_NDEFGHIJKLM_006a53b0[iVar4];
-
+    iVar4 = 0;
+    iVar5 = (param_1 & 0xffff) * 0xe;
+    link = func_0016deb0(*(u8 *)(iVar5 + DAT_007ce420 + 2));
+    if (datSocialLinkLevelIsNotZero(link) != 0) {
+        link = func_0016deb0(*(u8 *)(iVar5 + DAT_007ce420 + 2));
+        iVar4 = (s32)datGetSocialLinkLevel(link);
+    }
+    return u_NDEFGHIJKLM_006a53b0[iVar4];
 }
 
 // FUN_003D5E60 NONMATCHING
@@ -1256,9 +1204,8 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
 
   int *piVar5;
 
-  int aiStack_30 [8];
-
-  u16 auStack_10 [8];
+    u16 auStack_10 [8];
+    int aiStack_30 [8];
 
   
 
@@ -1284,7 +1231,7 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
 
   if ((param_3 == 0) || (4 < param_2)) {
 
-    K_Assert((const char *)(u32)0x6a5f70,0x1c2);
+    K_Assert("fclCombineMisc.c",0x1c2);
 
   }
 

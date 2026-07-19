@@ -724,6 +724,8 @@ void FUN_0038a0c0(int param_1,long param_2);
 void FUN_0038a140(u32 param_1,u32 *param_2);
 void FUN_0038a180(int param_1,int param_2);
 void FUN_0038a260();
+#pragma alias FUN_00530da0_evt FUN_00530da0
+extern u32 FUN_00530da0_evt(f32 param_1);
 #pragma alias FUN_0038a260_evt FUN_0038a260
 extern void FUN_0038a260_evt(u32 param_1,int param_2,int param_3,int param_4,u32 param_5,
 
@@ -5563,19 +5565,27 @@ void FUN_00374d30(u64 param_1,u64 param_2,u32 param_3)
 
 {
 
+
   if (param_3 < 8) {
+
 
                     /* WARNING: Could not recover jumptable at 0x00374d88. Too many branches */
 
+
                     /* WARNING: Treating indirect jump as call */
+
 
     PTR_LAB_007ba7f0[param_3]();
 
+
     return;
+
 
   }
 
+
   return;
+
 
 }
 

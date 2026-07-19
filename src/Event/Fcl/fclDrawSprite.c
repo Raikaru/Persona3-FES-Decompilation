@@ -1,7 +1,7 @@
 #include "temporary.h"
 typedef int (*code)();
 /* FUSION_EXACT_PROTOS */
-void FUN_0040e300(u64 param_1,u32 param_2);
+void FUN_0040e300(u32 param_1,u32 param_2);
 void FUN_0040e360(void);
 void FUN_0040e390(void);
 void FUN_0040e3c0(u32 param_1,int param_2,int param_3,char param_4,int param_5,int param_6,int param_7);
@@ -9,15 +9,17 @@ void FUN_0040e3f0(float param_1,float param_2,float param_3,float param_4,int pa
                    char param_7,int param_8,int param_9,int param_10,int param_11);
 void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int param_5,int param_6,
                    char param_7,int param_8,int param_9,int param_10,int param_11);
-u64 FUN_0040e450(int param_1);
+u32 FUN_0040e450(int param_1);
 u32 FUN_0040e4f0(int *param_1);
-void FUN_0040e580(long param_1);
+void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5, int param_6, int param_7);
 u64 FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5, int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11, u16 param_12);
 u64 FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5, int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11, u16 param_12);
-void FUN_0040eb50(u64 param_1,u64 param_2,u32 param_3);
-void FUN_0040ebc0(void);
+s32 FUN_0040eb50(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7);
+s32 FUN_0040ebc0(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
 void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
+#pragma alias FUN_0040ec20_typed FUN_0040ec20
+s32 FUN_0040ec20_typed(u32 param_1,int param_2,u32 param_3,int param_4,const void *param_5,u32 param_6,u32 param_7,code param_8);
 u32 FUN_0040ec50();
 void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5, int param_6);
 u32 FUN_0040f030(int param_1,int param_2,long param_3);
@@ -25,9 +27,10 @@ u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3);
 u64 FUN_0040fab0(u64 param_1,int param_2);
 u64 FUN_0040fb90(u64 param_1,int param_2,long param_3);
+extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
+extern u32 DAT_006af960[];
+extern u32 DAT_006af980[];
 /* FUSION_GLOBALS */
-u32 DAT_006af960;
-u32 DAT_006af980;
 u32 DAT_006af9a0;
 u16 DAT_006af9c0[];
 u32 DAT_006af9d8;
@@ -37,17 +40,19 @@ u32 DAT_006af9f0;
 u32 DAT_006afa70;
 int DAT_006afaf0[];
 u32 DAT_006afb10;
-u32 DAT_007ce69c;
-s32 DAT_007ce6a0;
-code DAT_00960178;
-code DAT_0096017c;
+extern u32 DAT_007ce69c;
+extern s32 DAT_007ce6a0;
+extern code DAT_00960178[];
+extern code DAT_0096017c[];
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 #include "Kosaka/k_assert.h"
 
 
 // FUN_0040E300 NONMATCHING
-
-
-void FUN_0040e300(u64 param_1,u32 param_2)
+void FUN_0040e300(u32 param_1,u32 param_2)
 {
   if (DAT_007ce6a0 != 0) {
     FUN_0040e580(param_1);
@@ -130,10 +135,10 @@ void FUN_0040e420(float param_1,float param_2,float param_3,float param_4,int pa
       ".set reorder");
 }
 
-// FUN_0040E450 NONMATCHING
-u64 FUN_0040e450(int param_1)
+// FUN_0040E450
+u32 FUN_0040e450(int param_1)
 {
-  u64 uVar1;
+  u32 uVar1;
   int iVar2;
   u32 *puVar3;
   iVar2 = *(int *)(param_1 + 4) * 4 + 0x14;
@@ -158,7 +163,7 @@ u64 FUN_0040e450(int param_1)
 
 }
 
-// FUN_0040E4F0 NONMATCHING
+// FUN_0040E4F0
 
 
 u32 FUN_0040e4f0(int *param_1)
@@ -171,7 +176,7 @@ u32 FUN_0040e4f0(int *param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u8 auStack_4 [4];
 
@@ -181,9 +186,9 @@ u32 FUN_0040e4f0(int *param_1)
 
     iVar1 = *param_1;
 
-    uVar3 = H_Cdvd_CacheFindFile(*(u32 *)(*(int *)param_1[1] + iVar1 * 4),auStack_4);
+    uVar3 = (u32)H_Cdvd_CacheFindFile((const char *)*(u32 *)(*(int *)param_1[1] + iVar1 * 4),(u32 *)auStack_4);
 
-    uVar2 = func_00112420(uVar3);
+    uVar2 = (u32)func_00112420((void *)uVar3);
 
     *(u32 *)(param_1[2] + iVar1 * 4) = uVar2;
 
@@ -197,10 +202,10 @@ u32 FUN_0040e4f0(int *param_1)
 
 }
 
-// FUN_0040E580 NONMATCHING
+// FUN_0040E580
 
 
-void FUN_0040e580(long param_1)
+void FUN_0040e580(u32 param_1)
 
 
 
@@ -214,11 +219,11 @@ void FUN_0040e580(long param_1)
 
     for (iVar1 = 0; iVar1 < *(int *)(*(int *)((int)param_1 + 4) + 4); iVar1 = iVar1 + 1) {
 
-      func_001124b0(*(u32 *)(*(int *)((int)param_1 + 8) + iVar1 * 4));
+      func_001124b0((void *)*(u32 *)(*(int *)((int)param_1 + 8) + iVar1 * 4));
 
     }
 
-    (*DAT_0096017c)(param_1);
+    (*DAT_0096017c_abs)(param_1);
 
   }
 
@@ -446,93 +451,62 @@ FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 // FUN_0040EB50 NONMATCHING
 
 
-void FUN_0040eb50(u64 param_1,u64 param_2,u32 param_3)
+s32 FUN_0040eb50(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7)
 
 
 
 {
 
   u32 uVar1;
-
   int iVar2;
-
   u32 *puVar3;
-
   u32 *puVar4;
 
   u32 auStack_20 [8];
 
   
 
-  puVar4 = &DAT_006af960;
+  puVar4 = DAT_006af960;
 
   puVar3 = auStack_20;
 
   iVar2 = 5;
 
   do {
-
     uVar1 = *puVar4;
-
     puVar4 = puVar4 + 1;
-
     iVar2 = iVar2 + -1;
-
     *puVar3 = uVar1;
-
     puVar3 = puVar3 + 1;
-
   } while (0 < iVar2);
-
-
-  return;
+  return FUN_0040ec20_typed(param_2,param_3,(param_4 & 0xff) | 0xffffff00,param_5,
+                            param_6,param_7,auStack_20[param_5],(code)FUN_0040eef0);
 
 }
 
 // FUN_0040EBC0 NONMATCHING
 
 
-void FUN_0040ebc0(void)
-
-
-
+s32 FUN_0040ebc0(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7)
 {
-
   u32 uVar1;
-
   int iVar2;
-
   u32 *puVar3;
-
   u32 *puVar4;
-
   u32 auStack_20 [8];
 
-  
-
-  puVar4 = &DAT_006af980;
-
+  puVar4 = DAT_006af980;
   puVar3 = auStack_20;
-
   iVar2 = 5;
-
   do {
-
     uVar1 = *puVar4;
-
     puVar4 = puVar4 + 1;
-
     iVar2 = iVar2 + -1;
-
     *puVar3 = uVar1;
-
     puVar3 = puVar3 + 1;
-
   } while (0 < iVar2);
-
-
-  return;
-
+  return FUN_0040ec20_typed(param_2,param_3,param_4,param_5,param_6,param_7,
+                            auStack_20[param_5],(code)FUN_0040eef0);
 }
 
 // FUN_0040EC20

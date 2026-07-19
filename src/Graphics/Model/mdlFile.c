@@ -49640,8 +49640,14 @@ void FUN_0034c320(int param_1)
 
 }
 
-
-
+// FUN_0034C350
+void FUN_0034c350(u32* param_1)
+{
+  if ((param_1[0x23] >= param_1[0x26]) || (param_1[0x23] == 0)) {
+    *(f32*)(param_1 + 9) = 1.0f;
+    param_1[0x26] = param_1[0x26] + 1;
+  }
+}
 
 // FUN_0034C390 NONMATCHING
 
