@@ -1081,7 +1081,7 @@ u8 * FUN_00493710(int param_1,int param_2,u32 param_3);
 u8 * FUN_004aae60(void);
 u8 ** FUN_0049ff00(void);
 u8 ** FUN_004a3f10(void);
-u8 FUN_00435260(char param_1);
+u32 FUN_00435260(char param_1);
 s8 FUN_004353f0(int param_1);
 u8 FUN_00435810(void);
 u8 FUN_004359f0(u64 param_1,u8 param_2,u8 param_3,u32 *param_4, u8 param_5,u8 param_6);
@@ -2529,7 +2529,7 @@ u8 * FUN_00493710(int param_1,int param_2,u32 param_3);
 u8 * FUN_004aae60(void);
 u8 ** FUN_0049ff00(void);
 u8 ** FUN_004a3f10(void);
-u8 FUN_00435260(char param_1);
+u32 FUN_00435260(char param_1);
 s8 FUN_004353f0(int param_1);
 u8 FUN_00435810(void);
 u8 FUN_004359f0(u64 param_1,u8 param_2,u8 param_3,u32 *param_4, u8 param_5,u8 param_6);
@@ -5007,27 +5007,31 @@ void FUN_004350e0(char param_1,char param_2)
   return;
 }
 
-// FUN_00435260 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_00435260
 
-u8 FUN_00435260(char param_1)
+u32 FUN_00435260(char param_1)
 {
-  u8 bVar1;
-  u8 uVar2;
-  int iVar3;
+  int bVar1;
+  int uVar2;
+  u32 *puVar3;
   
   bVar1 = 0;
-  iVar3 = (int)param_1;
-  if ((DAT_008717e8_rows[iVar3 * 0x70] != 0) &&
-      (DAT_008717f4_rows[iVar3 * 0x70] != 0)) {
+  puVar3 = DAT_008717e8_rows + (int)param_1 * 0x70;
+  if ((*puVar3 != 0) &&
+      (DAT_008717f4_rows[(int)param_1 * 0x70] != 0)) {
     bVar1 = 1;
   }
+  bVar1 = bVar1 != 0;
   uVar2 = 1;
-  if (bVar1) {
-    uVar2 = *(u8 *)(*(int *)(DAT_0087190c_rows[iVar3 * 0x70] + 0x3c) + 0x1215);
+  if (bVar1 == 1) {
+    uVar2 = *(char *)(*(int *)(DAT_0087190c_rows[(int)param_1 * 0x70] + 0x3c) + 0x1215);
   }
   return uVar2;
 }
 
+#pragma pop
 // FUN_004352E0 NONMATCHING
 
 u32 FUN_004352e0(void)
@@ -13961,19 +13965,21 @@ u64 FUN_0044e560(u64 param_1)
   return uVar7;
 }
 
-// FUN_0044F060 NONMATCHING
+// FUN_0044F060
 
 u32 FUN_0044f060(float param_1,int param_2,float *param_3)
 {
   int iVar1;
+  int iVar2;
   int bVar1;
   float fVar2;
   RwV3d input;
   RwV3d delta;
   
   input = *(RwV3d *)param_3;
-  iVar1 = *(int *)(DAT_0086ef08_abs + *(char *)(*(int *)(param_2 + 0x3c) + 1) * 0x1c0);
+  iVar2 = *(volatile int *)(param_2 + 0x3c);
   bVar1 = 0;
+  iVar1 = *(int *)(DAT_0086ef08_abs + *(char *)(iVar2 + 1) * 0x1c0);
   delta.x = *(float *)(iVar1 + 0x100) - input.x;
   delta.y = *(float *)(iVar1 + 0x104) - input.y;
   delta.z = *(float *)(iVar1 + 0x108) - input.z;
