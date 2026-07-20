@@ -13,15 +13,20 @@ u32 FUN_0040e450(int param_1);
 u32 FUN_0040e4f0(int *param_1);
 void FUN_0040e580(u32 param_1);
 u64 FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5, int param_6, int param_7);
-u64 FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5, int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11, u16 param_12);
-u64 FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5, int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11, u16 param_12);
+u64 FUN_0040e710(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
+u64 FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5, int param_6,int param_7,int param_8,int param_9,int param_10,int param_11, int param_12);
+#pragma alias fclDrawSpriteCreate FUN_001158b0
+extern u32 fclDrawSpriteCreate();
+#pragma alias fclDrawSpriteEmit FUN_0040e3c0
+extern void fclDrawSpriteEmit(int param_1,int param_2,float param_3,int param_4,int param_5,int param_6);
 s32 FUN_0040eb50(float param_1,int param_2,int param_3,u8 param_4,int param_5,const void *param_6,int param_7);
 s32 FUN_0040ebc0(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7);
 void FUN_0040ec20(u32 param_1,int param_2,u32 param_3,u32 param_4,u32 param_5,u64 param_6,u32 param_7,int param_8);
 #pragma alias FUN_0040ec20_typed FUN_0040ec20
-s32 FUN_0040ec20_typed(u32 param_1,int param_2,u32 param_3,int param_4,const void *param_5,u32 param_6,u32 param_7,code param_8);
+void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
+
+                  int param_6);
 u32 FUN_0040ec50();
-void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5, int param_6);
 u32 FUN_0040f030(int param_1,int param_2,long param_3);
 u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3);
@@ -30,12 +35,17 @@ u64 FUN_0040fb90(u64 param_1,int param_2,long param_3);
 extern void *H_Cdvd_CacheFindFile(const char *path,u32 *fileSize);
 extern u32 DAT_006af960[];
 extern u32 DAT_006af980[];
-/* FUSION_GLOBALS */
+float DAT_006af9d8;
+float DAT_006af9dc;
+float DAT_006af9e0;
+#pragma alias DAT_006af9d8_abs DAT_006af9d8
+#pragma alias DAT_006af9dc_abs DAT_006af9dc
+#pragma alias DAT_006af9e0_abs DAT_006af9e0
+extern float DAT_006af9d8_abs[];
+extern float DAT_006af9dc_abs[];
+extern float DAT_006af9e0_abs[];
 u32 DAT_006af9a0;
 u16 DAT_006af9c0[];
-u32 DAT_006af9d8;
-u32 DAT_006af9dc;
-u32 DAT_006af9e0;
 u32 DAT_006af9f0;
 u32 DAT_006afa70;
 int DAT_006afaf0[];
@@ -282,11 +292,11 @@ FUN_0040e610(u32 param_1,int param_2,int param_3,char param_4,int param_5,int pa
 u64
 
 
-FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
+FUN_0040e710(float param_1,float param_2,float param_3,float param_4,int param_5,
 
-            int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11,
+            int param_6,int param_7,int param_8,int param_9,int param_10,int param_11,
 
-            u16 param_12)
+            int param_12)
 
 
 
@@ -294,7 +304,7 @@ FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   char *pcVar3;
 
@@ -304,51 +314,51 @@ FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   pcVar3 = (char *)(*(int *)(param_10 + 0xc) + param_8 * 8);
 
-  uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
+  uVar2 = fclDrawSpriteCreate(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
 
                        *(short *)(pcVar3 + 2) + param_9);
 
   iVar1 = (int)uVar2;
-  *(float *)(iVar1 + 0x10) = (float)(int)*(short *)(pcVar3 + 4) * param_3 + (float)param_5 + 0.0;
+  *(float *)(iVar1 + 0x10) = (float)(int)*(short *)(pcVar3 + 4) * param_3 + (float)param_5;
 
-  *(float *)(iVar1 + 0x14) = (float)(int)*(short *)(pcVar3 + 6) * param_4 + (float)param_6 + 0.0;
+  *(float *)(iVar1 + 0x14) = (float)(int)*(short *)(pcVar3 + 6) * param_4 + (float)param_6;
 
-  *(u32 *)(iVar1 + 0x2c) = param_1;
+  *(float *)(iVar1 + 0x2c) = param_1;
 
 
   *(u16 *)(iVar1 + 0x24) = param_11;
 
   *(u16 *)(iVar1 + 0x26) = param_12;
 
-  *(u32 *)(iVar1 + 0x20) = param_2;
+  *(float *)(iVar1 + 0x20) = param_2;
 
-  param_3 = param_3 * 4096.0;
+  param_3 = 4096.0f * param_3;
 
-  if (param_3 < 2.1474836e+09) {
+  if (2147483648.0f <= param_3) {
+
+    uVar4 = (u16)(int)(param_3 - 2147483648.0f);
+
+  }
+
+  else {
 
     uVar4 = (u16)(int)param_3;
 
   }
 
-  else {
-
-    uVar4 = (u16)(int)(param_3 - 2.1474836e+09);
-
-  }
-
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
-  param_4 = param_4 * 4096.0;
+  param_4 = 4096.0f * param_4;
 
-  if (param_4 < 2.1474836e+09) {
+  if (2147483648.0f <= param_4) {
 
-    uVar4 = (u16)(int)param_4;
+    uVar4 = (u16)(int)(param_4 - 2147483648.0f);
 
   }
 
   else {
 
-    uVar4 = (u16)(int)(param_4 - 2.1474836e+09);
+    uVar4 = (u16)(int)param_4;
 
   }
 
@@ -368,11 +378,11 @@ FUN_0040e710(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 u64
 
 
-FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
+FUN_0040e930(float param_1,float param_2,float param_3,float param_4,int param_5,
 
-            int param_6,char param_7,int param_8,int param_9,int param_10,u16 param_11,
+            int param_6,int param_7,int param_8,int param_9,int param_10,int param_11,
 
-            u16 param_12)
+            int param_12)
 
 
 
@@ -380,7 +390,7 @@ FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   char *pcVar3;
 
@@ -390,51 +400,51 @@ FUN_0040e930(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   pcVar3 = (char *)(*(int *)(param_10 + 0xc) + param_8 * 8);
 
-  uVar2 = FUN_001158b0(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
+  uVar2 = fclDrawSpriteCreate(0,*(u32 *)(*(int *)(param_10 + 8) + *pcVar3 * 4),
 
                        *(short *)(pcVar3 + 2) + param_9);
 
   iVar1 = (int)uVar2;
-  *(float *)(iVar1 + 0x10) = (float)(int)*(short *)(pcVar3 + 4) * param_3 + (float)param_5 + 0.0;
+  *(float *)(iVar1 + 0x10) = (float)(int)*(short *)(pcVar3 + 4) * param_3 + (float)param_5;
 
-  *(float *)(iVar1 + 0x14) = (float)(int)*(short *)(pcVar3 + 6) * param_4 + (float)param_6 + 0.0;
+  *(float *)(iVar1 + 0x14) = (float)(int)*(short *)(pcVar3 + 6) * param_4 + (float)param_6;
 
-  *(u32 *)(iVar1 + 0x2c) = param_1;
+  *(float *)(iVar1 + 0x2c) = param_1;
 
 
   *(u16 *)(iVar1 + 0x24) = param_11;
 
   *(u16 *)(iVar1 + 0x26) = param_12;
 
-  *(u32 *)(iVar1 + 0x20) = param_2;
+  *(float *)(iVar1 + 0x20) = param_2;
 
-  param_3 = param_3 * 4096.0;
+  param_3 = 4096.0f * param_3;
 
-  if (param_3 < 2.1474836e+09) {
+  if (2147483648.0f <= param_3) {
+
+    uVar4 = (u16)(int)(param_3 - 2147483648.0f);
+
+  }
+
+  else {
 
     uVar4 = (u16)(int)param_3;
 
   }
 
-  else {
-
-    uVar4 = (u16)(int)(param_3 - 2.1474836e+09);
-
-  }
-
   *(u16 *)(iVar1 + 0x28) = uVar4;
 
-  param_4 = param_4 * 4096.0;
+  param_4 = 4096.0f * param_4;
 
-  if (param_4 < 2.1474836e+09) {
+  if (2147483648.0f <= param_4) {
 
-    uVar4 = (u16)(int)param_4;
+    uVar4 = (u16)(int)(param_4 - 2147483648.0f);
 
   }
 
   else {
 
-    uVar4 = (u16)(int)(param_4 - 2.1474836e+09);
+    uVar4 = (u16)(int)param_4;
 
   }
 
@@ -662,7 +672,7 @@ u32 FUN_0040ec50(u32 param_1,int param_2,u32 param_3,u32 param_4,
 // FUN_0040EEF0 NONMATCHING
 
 
-void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5,
+void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
                  int param_6)
 
@@ -671,8 +681,9 @@ void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5,
 {
 
   u32 uVar1;
+  u32 uVar2;
 
-  u64 uVar2;
+  u32 maestro;
 
   int iVar3;
 
@@ -704,7 +715,7 @@ void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5,
 
   } while (0 < iVar3);
 
-  uVar2 = H_Maestro_001120a0(auStack_20[param_5]);
+  maestro = H_Maestro_001120a0(auStack_20[param_5]);
 
   if (param_5 - 3U < 2) {
 
@@ -712,7 +723,7 @@ void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5,
 
   }
 
-  uVar2 = FUN_001158b0(0,uVar2,param_6);
+  uVar2 = fclDrawSpriteCreate(0,maestro,param_6);
 
   iVar3 = (int)uVar2;
 
@@ -720,9 +731,9 @@ void FUN_0040eef0(u32 param_1,int param_2,int param_3,u64 param_4,int param_5,
 
   *(float *)(iVar3 + 0x14) = (float)param_3;
 
-  *(u32 *)(iVar3 + 0x2c) = param_1;
+  *(float *)(iVar3 + 0x2c) = param_1;
 
-  *(char *)(iVar3 + 0x19) = -1 - (char)param_4;
+  *(char *)(iVar3 + 0x19) = -1 - (param_4 & 0xff);
 
   *(char *)(iVar3 + 0x30) = (char)((u32)param_4 >> 0x18);
 
@@ -1032,17 +1043,16 @@ u32 FUN_0040f430(int param_1,int param_2)
 
   int iVar5;
 
-  u32 auStack_10 [4];
+  float auStack_10 [4];
 
   
 
   iVar1 = *(int *)(param_2 + 0xc);
 
-  auStack_10[0] = DAT_006af9d8;
+  auStack_10[0] = DAT_006af9d8_abs[0];
+  auStack_10[1] = DAT_006af9dc_abs[0];
+  auStack_10[2] = DAT_006af9e0_abs[0];
 
-  auStack_10[1] = DAT_006af9dc;
-
-  auStack_10[2] = DAT_006af9e0;
 
   lVar4 = FUN_003e6d70();
 
@@ -1057,24 +1067,24 @@ u32 FUN_0040f430(int param_1,int param_2)
     if (*(int *)(param_1 + 0x1c) == 2) {
 
       for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
-
         iVar3 = iVar1 + iVar5 * 0x14;
 
-        ((void (*)(...))FUN_0040e3c0)(0,*(u16 *)(iVar3 + 4),*(u16 *)(iVar3 + 6),
+        fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                     *(u8 *)(iVar3 + 0xc),0x56,0);
+                          *(u8 *)(iVar3 + 0xc),0x56,0);
 
-        ((void (*)(...))FUN_0040e3c0)(0,*(u16 *)(iVar3 + 4),*(u16 *)(iVar3 + 6),
+        fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                     *(u8 *)(iVar3 + 0xc),0x57,0);
+                          *(u8 *)(iVar3 + 0xc),0x57,0);
 
-        ((void (*)(...))FUN_0040e3c0)(0,*(u16 *)(iVar3 + 4),*(u16 *)(iVar3 + 6),
+        fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                     *(u8 *)(iVar3 + 0xc),0x58,0);
+                          *(u8 *)(iVar3 + 0xc),0x58,0);
 
-        ((void (*)(...))FUN_0040e3c0)(0,*(u16 *)(iVar3 + 4),*(u16 *)(iVar3 + 6),
+        fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                     *(u8 *)(iVar3 + 0xc),0x59,0);
+                          *(u8 *)(iVar3 + 0xc),0x59,0);
+
 
       }
 
@@ -1083,12 +1093,12 @@ u32 FUN_0040f430(int param_1,int param_2)
     else {
 
       for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
-
         iVar3 = iVar1 + iVar5 * 0x14;
 
-        ((void (*)(...))FUN_0040e3c0)(0,*(u16 *)(iVar3 + 4),*(u16 *)(iVar3 + 6),
+        fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                     *(u8 *)(iVar3 + 0xc),auStack_10[*(int *)(param_1 + 0x1c)],0);
+                          *(u8 *)(iVar3 + 0xc),((u32 *)auStack_10)[*(int *)(param_1 + 0x1c)],0);
+
 
       }
 
