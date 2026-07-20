@@ -7512,7 +7512,7 @@ u32 FUN_0043a9d0(u64 param_1,u64 param_2,char param_3)
   if (!bVar2) {
     return 4;
   }
-  cVar4 = ((code)FUN_00435440)(param_1);
+  cVar4 = FUN_00435440(param_1);
   if (cVar4 == '\0') {
     return 2;
   }
@@ -7552,7 +7552,7 @@ joined_r0x0043acd8:
 LAB_0043acec:
   if (bVar1) {
     if (param_3 == '\x01') {
-      cStack_70 = ((code)FUN_00435440)(param_1);
+      cStack_70 = FUN_00435440(param_1);
     }
     if (iVar15 == 0) {
       sStack_50 = ((code)FUN_0016c5f0)(1);
@@ -9846,7 +9846,7 @@ u32 FUN_0043ca30(u64 param_1)
     if (puVar2[600] == '\x01') {
       lVar8 = FUN_00108710();
       if (lVar8 != 0) {
-        ((code)FUN_0044a630)(param_1);
+        FUN_0044a630(param_1);
         FUN_001085c0();
         *puVar2 = 0x2f;
       }
@@ -11320,7 +11320,7 @@ u32 FUN_0043ca30(u64 param_1)
     if (puVar2[600] == '\x01') {
       lVar8 = FUN_00108710();
       if (lVar8 != 0) {
-        ((code)FUN_0044a630)(param_1);
+        FUN_0044a630(param_1);
         FUN_001085c0();
         *puVar2 = 0x2f;
       }
@@ -11336,7 +11336,7 @@ u32 FUN_0043ca30(u64 param_1)
         *puVar2 = 0x23;
       }
       else {
-        ((code)FUN_0044a630)(param_1);
+        FUN_0044a630(param_1);
         *puVar2 = 0x2d;
       }
     }
@@ -12589,7 +12589,7 @@ void FUN_0044af60(u64 param_1)
   case 1:
     uVar3 = ((code)FUN_0044e560)(param_1);
     *(u8 *)(iVar1 + 0x8a) = uVar3;
-    ((code)FUN_0044fab0)(param_1);
+    FUN_0044fab0(param_1);
     break;
   case 2:
     switch(*(u8 *)(iVar1 + 0x8a)) {
@@ -12626,10 +12626,10 @@ void FUN_0044af60(u64 param_1)
       *(float *)(iVar1 + 0x74) = *(float *)(iVar1 + 0x68) + (float)(*(u16 *)(iVar1 + 0x92) >> 1);
     }
     *(u8 *)(iVar1 + 4) = 3;
-    ((code)FUN_0044fab0)(param_1);
+    FUN_0044fab0(param_1);
     break;
   case 3:
-    cVar2 = ((code)FUN_0044fab0)();
+    cVar2 = FUN_0044fab0(param_1);
     if (cVar2 == '\x01') {
       return;
     }
@@ -12646,7 +12646,7 @@ void FUN_0044af60(u64 param_1)
     *(u32 *)(iVar1 + 0x68) = *(u32 *)(iVar1 + 0x74);
     *(u8 *)(iVar1 + 4) = 4;
   case 4:
-    cVar2 = ((code)FUN_0044fab0)(param_1);
+    cVar2 = FUN_0044fab0(param_1);
     if (cVar2 != '\x01') {
       iVar11 = *(int *)(iVar12 + 0x18);
       iVar9 = FUN_00488f30();
