@@ -2279,7 +2279,9 @@ void FUN_00362240(int param_1)
 }
 
 
-// FUN_00362290 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00362290
 
 
 u16 * FUN_00362290(int param_1)
@@ -2294,10 +2296,9 @@ u16 * FUN_00362290(int param_1)
 
   int iVar3;
 
-  int iVar4;
-
   int *piVar5;
 
+  int iVar4;
   
 
   puVar2 = (u16 *)0x0;
@@ -2335,6 +2336,7 @@ u16 * FUN_00362290(int param_1)
   return puVar2;
 
 }
+#pragma pop
 
 
 // FUN_00362310 NONMATCHING
