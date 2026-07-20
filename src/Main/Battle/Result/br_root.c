@@ -33,6 +33,7 @@ extern u32 jtbl_00960178[];
 extern u32 jtbl_0096017C[];
 
 /* Result-resource and data helpers not yet described by public headers. */
+extern s32 printf(const char *, ...);
  
 extern void func_002350f0(void);
 extern void func_00278550(void);
@@ -405,27 +406,31 @@ void func_001f0ab0(KwlnTask *task)
 }
 
 // FUN_001f0ad0 NONMATCHING
-void *func_001f0ad0(KwlnTask *task, const u8 *params)
+void func_001f0ad0(KwlnTask *task, const u8 *params)
 {
     u8 *work = BR_TASK_WORK(task);
-    u32 i;
+    s32 i;
+    s32 j;
+
     if ((BR_U32(params, 0) & 1) != 0) {
         BR_U32(work, 0) |= 2;
     }
     BR_U32(work, 0xb0) = BR_U32(params, 0x1c);
-    for (i = 0; i < BR_U32(params, 0x1c); i++) {
-        BR_U16(work, 0x98 + i * 8) = BR_U16(params, 4 + i * 8);
-        BR_U32(work, 0x9c + i * 8) = BR_U32(params, 8 + i * 8);
+    for (i = 0; i < (s32)BR_U32(params, 0x1c); i++) {
+        BR_U16(work + i * 8, 0x98) = BR_U16(params + i * 8, 4);
+        BR_U32(work + i * 8, 0x9c) = BR_U32(params + i * 8, 8);
     }
     BR_U32(work, 0xb4) = BR_U32(params, 0x20);
     BR_U32(work, 0x118) = BR_U32(params, 0x2c);
     BR_U32(work, 0x11c) = BR_U32(params, 0x30);
+    printf((const char *)0x006845c0, BR_U32(work, 0x118));
+    printf((const char *)0x006845d0, BR_U32(work, 0x11c));
     BR_U32(work, 0x114) = 0;
-    for (i = 0; i < BR_U32(params, 0x2c); i++) {
-        u16 id = BR_U16(params, 0x24 + i * 2);
-        if (id != 1 && BR_U32(work, 0x114) < 0x10) {
+    for (j = 0; j < (s32)BR_U32(params, 0x2c); j++) {
+        u16 id = BR_U16(params, 0x24 + j * 2);
+        if (id != 1) {
             BR_U16(work, 0x10c + BR_U32(work, 0x114) * 2) = id;
-            BR_U32(work, 0x114)++;
+            BR_U32(work, 0x114) = BR_U32(work, 0x114) + 1;
         }
     }
     BR_U32(work, 0x2a58) = BR_U32(params, 0x3c);
@@ -433,35 +438,39 @@ void *func_001f0ad0(KwlnTask *task, const u8 *params)
     BR_U32(work, 0x130) = BR_U32(params, 0x38);
     BR_U32(work, 0x124) = BR_U32(params, 0x3c);
     BR_U32(work, 0x128) = BR_U32(params, 0x40);
-    BR_U32(work, 0x120) = (BR_U32(params, 0) & 2) != 0;
-    return KWLNTASK_CONTINUE;
+    BR_U32(work, 0x120) = 0;
+    if ((BR_U32(params, 0) & 2) != 0) {
+        BR_U32(work, 0x120) |= 1;
+    }
 }
-
 // FUN_001f0c40 NONMATCHING
-void *func_001f0c40(KwlnTask *task)
+void func_001f0c40(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    u32 i;
-    for (i = 0; i < BR_U32(work, 0xb0); i++) {
-        u16 id = BR_U16(work, 0x98 + i * 8);
-        if (dat00171360(id)) {
-            func_00171390(id);
+    void *work = task->workData;
+    s32 i;
+    s32 j;
+    void *entry;
+
+    for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
+        entry = (u8 *)work + i * 8;
+        if (dat00171360(BR_U16(entry, 0x98)) != 0) {
+            func_00171390(BR_U16(entry, 0x98));
         } else {
-            s32 level = (s16)func_00170760(1, (s16)id);
-            level += BR_S32(work, 0x9c + i * 8);
-            if (level > 99) {
+            u32 level = func_00170760(1, BR_S16(entry, 0x98));
+            level = (level & 0xffff) + BR_S32(entry, 0x9c);
+            if (level >= 100) {
                 level = 99;
             }
-            func_00170860(1, (s16)id, (s16)level);
+            func_00170860(1, BR_S16(entry, 0x98), (u16)level);
         }
     }
-    for (i = 0; i < BR_U32(work, 0x108); i++) {
-        func_00174e20(BR_U16(work, 0xf0 + i * 2));
+    for (j = 0; j < (s32)BR_U32(work, 0x108); j++) {
+        func_00174e20(BR_U16(work, 0xf0 + j * 2));
     }
     BR_U32(work, 0) &= ~2u;
     BR_SET_STATE(work, 13);
-    return KWLNTASK_CONTINUE;
 }
+
 
 // FUN_001f0d70
 void func_001f0d70(KwlnTask *task)
@@ -600,10 +609,11 @@ void *func_001f1210(void)
 }
 
 // FUN_001f1240 NONMATCHING
-void *func_001f1240(KwlnTask *task)
+void func_001f1240(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    f32 ratio;
+    register f32 ratio;
+
     K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
     if ((BR_U32(work, 0) & 2) == 0) {
         ratio = (f32)BR_S32(work, 0xb4) / (f32)BR_S32(work, 0x11c);
@@ -616,15 +626,14 @@ void *func_001f1240(KwlnTask *task)
     } else if (ratio < 1.0f) {
         BR_U32(work, 0xb8) = 1;
     } else {
-        BR_U32(work, 0xb8) = (u32)(ratio + 0.5f);
+        BR_U32(work, 0xb8) = (s32)ratio;
     }
     BR_U32(work, 0x2a54) = BR_U32(work, 0x130);
-    BR_U32(work, 0x2a50) = func_001fbdf0(datGetLevel(1), BR_U32(work, 0x2a54),
+    BR_U32(work, 0x2a50) = func_001fbdf0((u8)datGetLevel(1), BR_U32(work, 0x2a54),
                                          BR_U32(work, 0xb8), BR_U32(work, 0x2a58),
                                          BR_U32(work, 0x11c));
     func_001f13b0(task);
     BR_U32(work, 0) |= 0x20000;
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001f13b0 NONMATCHING
@@ -792,36 +801,29 @@ void func_001f1c20(KwlnTask *task)
     sBrRoot = NULL;
     kwlnTaskDestroyWithHierarchy(task);
 }
-
-// FUN_001f1c50
-u8 *brRoot001f1c50(void)
-{
-    K_ASSERT(sBrRoot != NULL, 0x755);
-    return sBrRoot;
-}
-
+#pragma opt_propagation off
 // FUN_001f1c90 NONMATCHING
 void func_001f1c90(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
-    u8 params[0x100];
-    u32 i;
-    u32 flags = 0;
+    void *work = task->workData;
+    u32 params[12];
+    s32 i;
+
     func_001f1240(task);
+    BR_U32(params, 0) = 0;
     if (BR_U32(work, 0x2a5c) >= 0x65) {
-        flags |= 1;
+        BR_U32(params, 0) |= 1;
     }
     if (BR_U32(work, 0xb0) != 0) {
-        flags |= 2;
+        BR_U32(params, 0) |= 2;
     }
-    BR_U32(params, 0) = flags;
     BR_U32(params, 0x28) = BR_U32(work, 0x2a50);
     BR_U32(params, 0x2c) = BR_U32(work, 0xb0);
-    for (i = 0; i < BR_U32(work, 0xb0) && i < 8; i++) {
-        u8 *entry = params + 4 + i * 12;
-        BR_U32(entry, 0) = dat00171360(BR_U16(work, 0x98 + i * 8)) != 0;
-        BR_U16(entry, 4) = BR_U16(work, 0x98 + i * 8);
-        BR_U32(entry, 8) = BR_U32(work, 0x9c + i * 8);
+    for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
+        u8 *entry = (u8 *)work + i * 8 + 0x98;
+        ((u32 *)params)[i * 3 + 1] = dat00171360(BR_U16(entry, 0)) != 0;
+        ((u16 *)params)[i * 6 + 4] = BR_U16(entry, 0);
+        ((u32 *)params)[i * 3 + 3] = BR_U32(entry, 4);
     }
     if ((BR_U32(work, 0) & 2) == 0 && (BR_U32(work, 0) & 8) != 0) {
         brRes00233c00();
@@ -830,6 +832,7 @@ void func_001f1c90(KwlnTask *task)
     brPanel00236280();
     BR_U32(work, 0) |= 0x200000;
 }
+#pragma opt_propagation on
 
 // FUN_001f1df0
 void brRoot001f1df0(u16 *outIds, s32 *count)
@@ -1210,23 +1213,25 @@ void func_001f30d0(KwlnTask *task)
 void func_001f30f0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    float rect[4];
-    float position[3];
-    kwlnGetMainCamera();
+    u32 rect[3];
+
     func_004c9d70(kwlnGetMainCamera(), 1.0f);
     func_0021a840();
     BR_U32(work, 0xe4) = 0;
-    rect[0] = 0.0f; rect[1] = 100.0f; rect[2] = 0.0f; rect[3] = 0.0f;
+    rect[0] = 0;
+    rect[1] = 0x42c80000;
+    rect[2] = 0;
     func_0024fd10(work + 0xc034);
-    func_0024f9f0(work + 0xc034, rect);
+    func_0024f9f0(work + 0xc034, (const float *)rect);
     func_0024da60(work + 0xc034);
     func_0024f090(work + 0xc034);
-    rect[0] = 0.0f; rect[1] = 100.0f; rect[2] = 200.0f; rect[3] = 0.0f;
+    rect[0] = 0;
+    rect[1] = 0x42c80000;
+    rect[2] = 0x43480000;
     func_0024fd10(work + 0xc098);
-    func_0024f9f0(work + 0xc098, rect);
+    func_0024f9f0(work + 0xc098, (const float *)rect);
     func_0024da60(work + 0xc098);
     func_0024f090(work + 0xc098);
-    position[0] = 0.0f; position[1] = 0.0f; position[2] = 0.0f;
     func_0024d8d0(work + 0xbf28);
     sflCamera0024d2e0(0, work + 0xbf28);
     sflCamera0024d940(work + 0xbf28, work + 0xc034);
