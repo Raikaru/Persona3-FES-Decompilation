@@ -21,7 +21,7 @@ extern s32 FUN_001120a0();
 extern s32 FUN_001159f0(f32 x, f32 y, f32 alpha, ...);
 #pragma alias campPersonaDrawSprite FUN_001159f0
 extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
-                                  u32 alpha, f32 x, f32 y, f32 scale);
+                                  f32 x, f32 y, u8 alpha, f32 scale);
 #pragma alias campPersonaSetRenderState DAT_00960090
 extern f32 FUN_001126b0(void* particle);
 extern f32 FUN_00112740(void* particle);
@@ -33,11 +33,13 @@ extern s32 FUN_00115980();
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern KwlnTask* DAT_007cdf60;
+extern s32 DAT_007cdf68;
 extern void* DAT_00833B78;
-extern void* DAT_00833B90;
 extern void* DAT_00833B88;
+extern void* DAT_00833B90;
 extern char gp0xffff897c[];
 extern void* h_campUpdatePanelTransition(KwlnTask* task);
+extern void campPersonaSetRenderState(s32 state, s32 value);
 
 
 typedef struct CampPersonaKaniWork
@@ -304,9 +306,10 @@ typedef struct CampPersonaParticle
     f32 x;
     f32 y;
     s8 alpha;
-    u8 reserved19[3];
+    u8 reserved19[0xf];
     u16 scaleX;
     u16 scaleY;
+    f32 drawAlpha;
 } CampPersonaParticle;
 
 static s32 campPersonaClampFade(s32 fade)
@@ -399,48 +402,137 @@ drawStatus:
 done:;
 }
 
-// FUN_00124E60 NONMATCHING
+// FUN_00124E60
 void FUN_00124e60(CampVec2 position, f32 alpha, void* persona, s32 fade)
 {
     u8 level;
     register void* parent;
-    level = *((u8*)persona + 4);
 
+    level = *((u8*)persona + 4);
     if (level >= 10) {
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                              level / 10 + 0xb, fade,
-                              position.x + 67.0f,
-                              position.y + 127.0f, alpha);
+                                 level / 10 + 0xb,
+                                 position.x + 67.0f,
+                                 position.y + 127.0f, fade, alpha);
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                              *((u8*)((int)persona + 4)) % 10 + 0xb,
-                              fade, position.x + 82.0f,
-                              position.y + 127.0f, alpha);
+                                 *((u8*)((int)persona + 4)) % 10 + 0xb,
+                                 position.x + 82.0f,
+                                 position.y + 127.0f, fade, alpha);
     } else {
         campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                              level % 10 + 0xb, fade,
-                              position.x + 75.0f, position.y + 127.0f,
-                              alpha);
+                                 level % 10 + 0xb,
+                                 position.x + 75.0f,
+                                 position.y + 127.0f, fade, alpha);
     }
 }
 
 // FUN_00124FD0 NONMATCHING
 void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
 {
-    s32 i;
-    f32 effectAlpha;
+    char text[0x100];
+    CampPersonaParticle* particle;
+    s32 bright;
+    f32 x;
+    f32 y;
+    f32 scale;
+    register void* parent;
 
-    campPersonaDrawName(alpha, position.x, position.y, persona, fade);
-    if (persona == NULL || FUN_00176600(persona) == 0) {
+    bright = 0xff - fade;
+    FUN_00523ac8(text, gp0xffff897c,
+                 FUN_00173220(*(u16*)((u8*)persona + 2)));
+    FUN_003b32d0(alpha, (s32)(position.x + 111.0f),
+                 (s32)(position.y + 122.0f),
+                 (u32)(bright | 0xffffff00), 10, 1, text, 0x10, 0x74);
+    if (FUN_00176600(persona) == 0) {
         return;
     }
-    effectAlpha = (f32)campPersonaClampFade(0xff - fade);
-    FUN_001120a0(2);
-    FUN_001159f0(position.x + 252.0f, position.y + 110.0f, alpha, 6);
-    for (i = 0; i < 3; i++) {
-        campPersonaDrawEffectParticle(effectAlpha,
-                                      position.x + 256.0f + (f32)(i * 8),
-                                      position.y + 112.0f + (f32)(i * 5),
-                                      0x1b + i, 0x1000);
+
+    campPersonaSetRenderState(6, 1);
+    campPersonaSetRenderState(7, 2);
+    campPersonaSetRenderState(8, 1);
+    campPersonaSetRenderState(9, 1);
+    campPersonaSetRenderState(12, 1);
+    campPersonaSetRenderState(11, 6);
+    campPersonaSetRenderState(10, 5);
+    campPersonaSetRenderState(2, 4);
+    RpSkyRenderStateSet(2, 0x44);
+    RpSkyRenderStateSet(3, 0x717fb);
+
+    x = position.x + 272.0f;
+    y = position.y + 110.0f;
+    campPersonaDrawSprite(parent, DAT_00833B90, 0x1a,
+                          (u8)fade, x, y, alpha);
+
+    campPersonaSetRenderState(6, 0);
+    campPersonaSetRenderState(8, 1);
+    if (fade == 0) {
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, 0x1b);
+        particle->drawAlpha = alpha;
+        particle->x = position.x + 276.0f;
+        particle->y = position.y + 112.0f;
+        particle->alpha = (s8)fade;
+        FUN_001127d0(particle, 0);
+        FUN_00115980(particle);
+
+        campPersonaSetRenderState(6, 1);
+        campPersonaSetRenderState(8, 0);
+
+        DAT_007cdf68++;
+        if (DAT_007cdf68 >= 20) {
+            DAT_007cdf68 = 0;
+        }
+        RpSkyRenderStateSet(2, 0x48);
+        RpSkyRenderStateSet(3, 0x71801);
+
+        bright = DAT_007cdf68;
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, 0x1c);
+        particle->drawAlpha = alpha;
+        particle->x = position.x + 276.0f;
+        particle->y = position.y + 112.0f;
+        particle->alpha = 0;
+        particle->reserved19[0] = (u8)((bright << 7) / 10 + 0x7f);
+        particle->scaleX = 0x1000;
+        particle->scaleY = 0x1000;
+        FUN_001127d0(particle, 0);
+        FUN_00115980(particle);
+
+        campPersonaSetRenderState(2, 0x44);
+        campPersonaSetRenderState(3, 0x717fb);
+
+        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
+        scale = (f32)((10 - bright) * 0x518 / 10) + (f32)0xc18;
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, 0x1e);
+        particle->drawAlpha = alpha;
+        particle->alpha = 0;
+        particle->reserved19[0] = (u8)(bright * 0x66 / 10 + 0x66);
+        particle->scaleX = (u16)scale;
+        particle->scaleY = (u16)scale;
+        x = position.x + 276.0f;
+        y = position.y + 112.0f;
+        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
+        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
+        particle->x = x;
+        particle->y = y;
+        FUN_001127d0(particle, 0);
+        FUN_00115980(particle);
+
+        bright = DAT_007cdf68 >= 11 ? 20 - DAT_007cdf68 : DAT_007cdf68;
+        scale = (f32)(bright * 0x518 / 10) + (f32)0xc18;
+        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B90, 0x1d);
+        particle->drawAlpha = alpha;
+        particle->alpha = 0;
+        particle->reserved19[0] =
+            (u8)((10 - bright) * 0x66 / 10 + 0x66);
+        particle->scaleX = (u16)scale;
+        particle->scaleY = (u16)scale;
+        x = position.x + 276.0f;
+        y = position.y + 112.0f;
+        x = 19.0f + x - FUN_001126b0(particle) / 2.0f;
+        y = 15.0f + y - FUN_00112740(particle) / 2.0f;
+        particle->x = x;
+        particle->y = y;
+        FUN_001127d0(particle, 0);
+        FUN_00115980(particle);
     }
 }
 
@@ -491,14 +583,14 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     void* resource;
     s32 personaId;
     drawAlpha = alpha;
-    campPersonaDrawSprite(parent, DAT_00833B90, 1, fade,
+    campPersonaDrawSprite(parent, DAT_00833B90, 1,
                           position.x + 22.0f, position.y + 117.0f,
-                          drawAlpha);
+                          fade, drawAlpha);
     resource = DAT_00833B88;
     personaId = FUN_00173280(*(u16*)((u8*)persona + 2)) - 1;
-    campPersonaDrawSprite(parent, resource, personaId, fade,
+    campPersonaDrawSprite(parent, resource, personaId,
                           position.x + 105.0f, position.y + 142.0f,
-                          alpha);
+                          fade, alpha);
     FUN_00124e60(position, alpha, persona, fade);
     FUN_00124fd0(position, alpha, persona, fade);
 }
