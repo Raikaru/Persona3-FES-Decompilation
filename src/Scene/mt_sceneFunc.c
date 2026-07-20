@@ -28,6 +28,7 @@ extern u32 DAT_006a2f30;
 extern u32 DAT_006a2f38;
 extern u32 DAT_006a2f40;
 extern u32 DAT_006a2f48;
+extern char DAT_006a2df0[];
 extern u32 DAT_006a2f50;
 extern u32 DAT_007cad5c;
 extern u32 DAT_007cada0;
@@ -197,7 +198,7 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask);
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask);
 void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask);
 KwlnTask* MT_SceneFunc_CreateTasks();
-u32 FUN_003b88c0(u32 param_1,long param_2,u32 *param_3,long param_4);
+u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param_5);
 u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u8 FUN_003b8a60(long param_1,u32 *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
@@ -211,6 +212,17 @@ u64  FUN_003b91c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,
 u32  FUN_003b9260(u32 param_1,long param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7);
 u64  FUN_003b9320(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7);
 void FUN_003b93c0(u32 param_1,u16 param_2,u16 param_3,short param_4,  u16 param_5);
+#pragma alias FUN_003b8ff0_scene FUN_003b8ff0
+extern u32 FUN_003b8ff0_scene(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
+#pragma alias FUN_00530da0_scene FUN_00530da0
+extern u32 FUN_00530da0_scene(float param_1);
+#pragma alias FUN_003bc0e0_scene FUN_003bc0e0
+extern float FUN_003bc0e0_scene(char *param_1);
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
+extern void FUN_0019d3f0(const char *param_1,u32 param_2);
+#pragma alias FUN_003b9260_scene FUN_003b9260
+extern u32 FUN_003b9260_scene(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
 u32 FUN_003b9500(Resrc* param_1,int param_2);
 u32 FUN_003b9550(u64 param_1,int param_2);
 u32 FUN_003b95a0(void);
@@ -419,111 +431,55 @@ KwlnTask* MT_SceneFunc_CreateTasks()
 }
 
 #undef FUN_003b88c0
-// FUN_003B88C0 NONMATCHING
-
-
-u32 FUN_003b88c0(u32 param_1,long param_2,u32 *param_3,long param_4)
-
-
-
+// FUN_003B88C0
+u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param_5)
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
-  long lVar3;
-
-  u64 uVar4;
-
+  int iVar3;
+  u32 *puVar4;
   int iVar5;
-
-  u32 *puVar6;
-
-  int iVar7;
-
-  u32 uVar8;
-
-  
+  float fVar6;
 
   if (param_2 == 0) {
-
-    uVar8 = 0;
-
+    return 0;
   }
 
-  else {
-
-    iVar7 = (int)param_2;
-
-    uVar1 = *(u32 *)(iVar7 + 0x28);
-
-    *(u32 *)(iVar7 + 0x28) = uVar1 | 1;
-
-    *(u32 *)(iVar7 + 0x28) = uVar1 & 0xffffffbf | 1;
-
-    if (param_4 == 1) {
-
-      *(u32 *)(iVar7 + 0x28) = *(u32 *)(iVar7 + 0x28) | 0x40;
-
-    }
-
-    *(u32 *)(iVar7 + 0x58) = param_1;
-
-    *(u8 *)(iVar7 + 0x50) = 2;
-
-    *(u32 *)(iVar7 + 0x5c) = 0;
-
-    if (*(int *)(iVar7 + 0x54) == 0) {
-
-      lVar3 = (*DAT_00960178)(0x130,0x40000);
-
-      *(int *)(iVar7 + 0x54) = (int)lVar3;
-
-      if (lVar3 == 0) {
-
-        FUN_0019d3f0("mt_sceneFunc.c",0x23b);
-
-      }
-
-    }
-
-    puVar6 = *(u32 **)(iVar7 + 0x54);
-
-    iVar5 = 0x26;
-
-    do {
-
-      uVar8 = *param_3;
-
-      uVar2 = param_3[1];
-
-      param_3 = param_3 + 2;
-
-      iVar5 = iVar5 + -1;
-
-      *puVar6 = uVar8;
-
-      puVar6[1] = uVar2;
-
-      puVar6 = puVar6 + 2;
-
-    } while (0 < iVar5);
-
-    uVar8 = FUN_003bc0e0(*(u32 *)(iVar7 + 0x54));
-
-    *(u32 *)(iVar7 + 0x60) = uVar8;
-
-    uVar4 = FUN_00530da0(uVar8);
-
-    FUN_005225a8(0x6a2df0,uVar4);
-
-    uVar8 = 1;
-
+  iVar3 = (int)param_2;
+  uVar1 = param_2->flags;
+  uVar1 = uVar1 | 1;
+  param_2->flags = uVar1;
+  uVar1 = uVar1 & 0xffffffbf;
+  param_2->flags = uVar1;
+  if (param_4 == 1) {
+    param_2->flags = param_2->flags | 0x40;
   }
-
-  return uVar8;
-
+  *(float *)(iVar3 + 0x58) = param_1;
+  *(u8 *)(iVar3 + 0x50) = 2;
+  *(u32 *)(iVar3 + 0x5c) = 0;
+  if (*(u32 *)(iVar3 + 0x54) == 0) {
+    uVar2 = (u32)(*DAT_00960178_abs)(0x130,0x40000);
+    *(u32 *)(iVar3 + 0x54) = uVar2;
+    if (uVar2 == 0) {
+      FUN_0019d3f0("mt_sceneFunc.c",0x23b);
+    }
+  }
+  puVar4 = *(u32 **)(iVar3 + 0x54);
+  iVar5 = 0x26;
+  do {
+    uVar1 = *param_3;
+    uVar2 = param_3[1];
+    param_3 += 2;
+    iVar5--;
+    *puVar4 = uVar1;
+    puVar4[1] = uVar2;
+    puVar4 += 2;
+  } while (0 < iVar5);
+  fVar6 = FUN_003bc0e0_scene(*(char **)(iVar3 + 0x54));
+  *(float *)(iVar3 + 0x60) = fVar6;
+  uVar2 = FUN_00530da0_scene(fVar6);
+  FUN_005225a8(DAT_006a2df0,uVar2);
+  return 1;
 }
 #define FUN_003b88c0(...) ((u32 (*)(...))FUN_003b88c0)(__VA_ARGS__)
 #undef FUN_003b89f0
