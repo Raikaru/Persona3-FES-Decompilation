@@ -800,7 +800,7 @@ void func_00273d50(void)
     *(u32*)(work + 0x10) = 4;
 }
 
-// FUN_00273E90 NONMATCHING
+// FUN_00273E90
 void func_00273e90(void)
 {
     s32 existingCount;
@@ -810,6 +810,7 @@ void func_00273e90(void)
     s32 currentIndex;
     s32 existingIndex;
     u16* skills;
+    u8* source;
     s32 count;
     u8* work;
     u16* oldSkill;
@@ -818,9 +819,10 @@ void func_00273e90(void)
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
 
-    work = (u8*)sBrpSeq;
+    source = (u8*)sBrpSeq;
     count = FUN_00176a30((DatPersonaWork*)(uintptr_t)
-                         *(u32*)(work + 0x30));
+                         *(u32*)(source + 0x30));
+    work = source;
     skills = FUN_00173370((DatPersonaWork*)(uintptr_t)
                           *(u32*)(work + 0x30));
     for (copyIndex = 0; copyIndex < (s32)count; copyIndex++)
