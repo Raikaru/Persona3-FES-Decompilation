@@ -1015,7 +1015,7 @@ void func_002743a0(void)
     func_00273e90();
 }
 
-// FUN_002743E0 NONMATCHING
+// FUN_002743E0
 void func_002743e0(void* destination, s32* count)
 {
     s32 outCount;
@@ -1030,36 +1030,25 @@ void func_002743e0(void* destination, s32* count)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = sBrpSeq;
     skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
-    skillCount = (s32)FUN_00176a30(
-        (DatPersonaWork*)(uintptr_t)work[0xc]);
+    skillCount = (s32)FUN_00176a30((DatPersonaWork*)(uintptr_t)work[0xc]);
     outCount = 0;
-    copyIndex = 0;
-copy_loop:
-    if (copyIndex < skillCount)
-    {
-        ((u16*)destination)[outCount] = skills[copyIndex];
-        outCount++;
-        copyIndex++;
-        goto copy_loop;
-    }
-    i = (s32)work[0x1e];
-growth_loop:
-    if (i < 0x10)
+    for (copyIndex = 0; copyIndex < skillCount; copyIndex++)
+        ((u16*)destination)[outCount++] = skills[copyIndex];
+    for (i = (s32)work[0x1e]; i < 0x10; i++)
     {
         growth = (u8*)(uintptr_t)(i * 4 + work[0xd]) + 6;
         kind = *(s8*)(growth + 1);
         switch (kind)
         {
-        case 4:
-        case 0:
-            break;
         case 2:
             K_ASSERT(0, 0x4bc);
             break;
+        case 0:
+        case 4:
+            break;
         case 1:
             K_ASSERT(outCount < 16, 0x4c4);
-            ((u16*)destination)[outCount] = *(u16*)(growth + 2);
-            outCount++;
+            ((u16*)destination)[outCount++] = *(u16*)(growth + 2);
             break;
         case 3:
             K_ASSERT(0, 0x4cc);
@@ -1067,11 +1056,10 @@ growth_loop:
         default:
             break;
         }
-        i++;
-        goto growth_loop;
     }
     *count = outCount;
 }
+
 // FUN_00274590 NONMATCHING
 void func_00274590(void)
 {

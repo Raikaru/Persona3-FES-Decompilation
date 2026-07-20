@@ -332,20 +332,34 @@ int FUN_00780640(int param_1)
   return iVar6;
 }
 
-// FUN_007807E0 NONMATCHING
+#pragma push
+#pragma schedule on
+// FUN_007807E0
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
   __asm__ volatile("sync");
+  return;
 }
+#pragma pop
 
-// FUN_00780800 NONMATCHING
-void FUN_00780800(u32 param_1)
+#pragma push
+#pragma schedule on
+#pragma opt_propagation off
+#pragma opt_common_subs off
+// FUN_00780800
+volatile u32* FUN_00780800(u32 value)
 {
-  uRamb0001820_abs[0] = param_1;
+  volatile u32* reg;
+
+  reg = (volatile u32 *)0xb0001820;
+  *reg = value;
   __asm__ volatile("sync");
-  uRamb0001810_abs[0] = 0x583;
+  reg = (volatile u32 *)0xb0001810;
+  *reg = 0x583;
+  return reg;
 }
+#pragma pop
 
 // FUN_00780828 NONMATCHING
 void FUN_00780828(void)

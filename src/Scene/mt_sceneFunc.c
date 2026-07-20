@@ -2787,7 +2787,7 @@ FUN_003bb1d0(u16 param_1,u8 param_2,u8 param_3,u16 param_4,
 }
 #define FUN_003bb1d0(...) ((u32 (*)(...))FUN_003bb1d0)(__VA_ARGS__)
 #undef FUN_003bb280
-// FUN_003BB280 NONMATCHING
+// FUN_003BB280
 
 
 u32 FUN_003bb280(void)
@@ -2830,7 +2830,7 @@ u32 FUN_003bb280(void)
 
     else {
 
-      for (iVar1 = FUN_003b5d50(); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
+      for (iVar1 = FUN_003b5d50(7); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
 
         *(u32 *)(iVar1 + 0x108) = 0;
 
@@ -2846,6 +2846,7 @@ u32 FUN_003bb280(void)
   return uVar2;
 
 }
+
 #define FUN_003bb280(...) ((u32 (*)(...))FUN_003bb280)(__VA_ARGS__)
 #undef FUN_003bb340
 // FUN_003BB340

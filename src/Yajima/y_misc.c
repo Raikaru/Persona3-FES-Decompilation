@@ -5143,7 +5143,7 @@ void FUN_00429e80(int param_1,u8 param_2)
 
 }
 
-// FUN_00429E90 NONMATCHING
+// FUN_00429E90
 
 
 void FUN_00429e90(int param_1,u8 param_2)
@@ -5154,11 +5154,7 @@ void FUN_00429e90(int param_1,u8 param_2)
 
   int iVar1;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  YajimaVec3 local_20;
 
   
 
@@ -5166,13 +5162,9 @@ void FUN_00429e90(int param_1,u8 param_2)
 
   *(u8 *)(iVar1 + 0x865) = param_2;
 
-  K_FldFrame_CtlCopyPos(&uStack_10,*(u32 *)(DAT_008717f4 + 0x1e0));
+  K_FldFrame_CtlCopyPos(&local_20,*(u32 *)(DAT_008717f4[0] + 0x1e0));
 
-  *(u32 *)(iVar1 + 0x868) = uStack_10;
-
-  *(u32 *)(iVar1 + 0x86c) = uStack_c;
-
-  *(u32 *)(iVar1 + 0x870) = uStack_8;
+  *(YajimaVec3 *)(iVar1 + 0x868) = local_20;
 
   return;
 
