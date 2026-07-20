@@ -3204,7 +3204,6 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
 
     cursor = work->cursor;
     stop = 0;
-
     do
     {
         switch (*cursor)
@@ -3265,47 +3264,50 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             cursor++;
             break;
         case 0x200:
-            __asm__ volatile (
-                ".set noreorder\n\t"
-                "lhu $v1, 0x18(%1)\n\t"
-                "beq $v1, $zero, command_delay_zero\n\t"
-                "nop\n\t"
-                "b command_delay_done\n\t"
-                "nop\n"
-                "command_delay_zero:\n\t"
-                "lw $a0, 0x1c(%1)\n\t"
-                "beq $a0, $zero, command_delay_done\n\t"
-                "nop\n\t"
-                "bltz $a0, command_delay_unsigned\n\t"
-                "nop\n\t"
-                "mtc1 $a0, $f0\n\t"
-                "nop\n\t"
-                "cvt.s.w $f1, $f0\n\t"
-                "b command_delay_converted\n\t"
-                "nop\n"
-                "command_delay_unsigned:\n\t"
-                "srl $v1, $a0, 1\n\t"
-                "andi $v0, $a0, 1\n\t"
-                "or $v1, $v1, $v0\n\t"
-                "mtc1 $v1, $f0\n\t"
-                "nop\n\t"
-                "cvt.s.w $f1, $f0\n\t"
-                "add.s $f1, $f1, $f1\n"
-                "command_delay_converted:\n\t"
-                "lui $v0, 0x41f0\n\t"
-                "mtc1 $v0, $f0\n\t"
-                "nop\n\t"
-                "div.s $f12, $f1, $f0\n\t"
-                "nop\n\t"
-                "nop\n\t"
-                "lw $a0, 0x10(%1)\n\t"
-                "jal func_001ed080\n\t"
-                "nop\n"
-                "command_delay_done:\n\t"
-                "addiu %0, %0, 2\n\t"
-                ".set reorder"
-                : "+r"(cursor)
-                : "r"(work));
+            {
+                __asm__ volatile (
+                    ".set noreorder\n"
+                    "lhu $v1, 0x18(%1)\n"
+                    "beq $v1, $zero, command_delay_zero\n"
+                    "nop\n"
+                    "b command_delay_done\n"
+                    "nop\n"
+                    "command_delay_zero:\n"
+                    "lw $a0, 0x1c(%1)\n"
+                    "beq $a0, $zero, command_delay_done\n"
+                    "nop\n"
+                    "bltz $a0, command_delay_unsigned\n"
+                    "nop\n"
+                    "mtc1 $a0, $f0\n"
+                    "nop\n"
+                    "cvt.s.w $f1, $f0\n"
+                    "b command_delay_converted\n"
+                    "nop\n"
+                    "command_delay_unsigned:\n"
+                    "srl $v1, $a0, 1\n"
+                    "andi $v0, $a0, 1\n"
+                    "or $v1, $v1, $v0\n"
+                    "mtc1 $v1, $f0\n"
+                    "nop\n"
+                    "cvt.s.w $f1, $f0\n"
+                    "add.s $f1, $f1, $f1\n"
+                    "command_delay_converted:\n"
+                    "lui $v0, 0x41f0\n"
+                    "mtc1 $v0, $f0\n"
+                    "nop\n"
+                    "div.s $f12, $f1, $f0\n"
+                    "nop\n"
+                    "nop\n"
+                    "lw $a0, 0x10(%1)\n"
+                    "jal func_001ed080\n"
+                    "nop\n"
+                    "command_delay_done:\n"
+                    "addiu %0, %0, 2\n"
+                    ".set reorder\n"
+                    : "+r"(cursor)
+                    : "r"(work)
+                    : "$v0", "$v1", "$a0", "$f0", "$f1", "$f12", "memory");
+            }
             break;
         case 0x201:
             work->delay = (s16)cursor[1];
@@ -3331,7 +3333,6 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
             break;
         }
     } while ((u32)(stop != 0) ^ 1);
-
     work->cursor = cursor;
 }
 
