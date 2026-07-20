@@ -244,7 +244,7 @@ void bcmPanel00222fa0(void)
     FUN_0021e380(puVar1 + 0x10cc, uVar3, 1);
     FUN_002230e0();
 }
-// FUN_00222b90 NONMATCHING
+// FUN_00222b90
 void FUN_00222b90(void)
 {
     u32 table0;
@@ -262,15 +262,17 @@ void FUN_00222b90(void)
     records = work + 0x4660;
     table6 = FUN_0021c3f0(6);
     K_ASSERT((*(u32*)(work + 4) & 2) != 0, 0x60d);
-    resource = 0;
     i = 0;
     while (i < *(s32*)(work + 0x6070)) {
         record = records + i * 0x510;
         state = *(u32*)(record + 8);
-        if (state == 1) {
-            resource = FUN_0021cca0(table0, 0x31);
-        } else if (state == 0) {
+        switch (state) {
+        case 0:
             resource = FUN_0021cca0(table0, 0x30);
+            break;
+        case 1:
+            resource = FUN_0021cca0(table0, 0x31);
+            break;
         }
         FUN_0021d3b0(record + 0x10, resource);
         FUN_00238980(record + 0x110, 3, *(u32*)(record + 0xc), 1);
@@ -283,30 +285,34 @@ void FUN_00222b90(void)
         FUN_0021d3b0(work + 0x6900, resource);
     }
 }
-// FUN_00222d60 NONMATCHING
+// FUN_00222d60
 void FUN_00222d60(void)
 {
-    u32* work;
     u32 table0;
     u32 table6;
+    s32 i;
+    u8* work;
+    u8* records;
     u8* record;
-    u32 i;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    work = sBcmPanel;
+    work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
     table6 = FUN_0021c3f0(6);
-    K_ASSERT((work[1] & 1) != 0, 0x63c);
-    for (i = 0; i < work[0x181c]; i++)
-    {
-        record = bcm_panel_record(i);
+    records = work + 0x4660;
+    K_ASSERT((*(u32*)(work + 4) & 1) != 0, 0x63c);
+    i = 0;
+    while (i < *(s32*)(work + 0x6070)) {
+        record = records + i * 0x410;
         FUN_0021d3b0(record + 0x10, FUN_0021cca0(table0, 0x28));
         FUN_00238980(record + 0x110, 2, *(u32*)(record + 4), 1);
         FUN_0021d3b0(record + 0x310, FUN_0021cca0(table6, 0x1a));
+        i++;
     }
-    if (*(u32*)((u8*)work + 0x68f8) != 0)
-        FUN_0021d3b0((u8*)work + 0x6900,
-                     FUN_0021cca0(table6, *(u32*)((u8*)work + 0x68f4) + 0x20));
+    if (*(u32*)(work + 0x68f8) != 0) {
+        FUN_0021d3b0(work + 0x6900,
+                     FUN_0021cca0(table6, *(u32*)(work + 0x68f4) + 0x20));
+    }
 }
 /*
  * The command panel stores all of its render records in one work area.  The
@@ -396,25 +402,43 @@ static void bcm_panel_update_overlays(void)
 // FUN_002230e0 NONMATCHING
 void FUN_002230e0(void)
 {
-    u32 i;
-    u32 j;
-    u32 count;
+    u8* work;
+    u8* records;
+    u8* record;
+    u32 table0;
+    s32 i;
+    s32 j;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 state = *(u32*)record;
-        if (state == 0 || state == 2) {
-            bcm_panel_set_resource(record + 0x10, 0, 0x2f);
-        } else if (state == 1) {
-            for (j = 0; j < 2; ++j) {
-                bcm_panel_set_resource(record + 0x10 + j * 0x100, 0, 0x29);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    records = work + 0x4660;
+    K_ASSERT((*(u32*)(work + 4) & 4) != 0, 0x699);
+    i = 0;
+    while (i < *(s32*)(work + 0x6070)) {
+        record = records + i * 0x420;
+        switch (*(u32*)record) {
+        case 0:
+        case 2:
+            FUN_0021d3b0(record + 0x10,
+                         FUN_0021cca0(table0, 0x2f));
+            break;
+        case 1:
+            j = 0;
+            while (j < 2) {
+                FUN_0021d3b0(record + 0x10 + (j << 8),
+                             FUN_0021cca0(table0, 0x29));
+                j++;
             }
-            for (j = 2; j < 4; ++j) {
-                bcm_panel_set_resource(record + 0x10 + j * 0x100, 0, 0x2a);
+            j = 2;
+            while (j < 4) {
+                FUN_0021d3b0(record + 0x10 + (j << 8),
+                             FUN_0021cca0(table0, 0x2a));
+                j++;
             }
+            break;
         }
+        i++;
     }
 }
 
