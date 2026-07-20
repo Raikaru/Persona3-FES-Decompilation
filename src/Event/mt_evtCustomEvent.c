@@ -5429,7 +5429,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   
 
@@ -5441,7 +5441,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
   }
 
-  switch(*(u8 *)(param_2 + 0x10)) {
+  switch(*(s8 *)(param_2 + 0x10)) {
 
   case 0:
 
@@ -5458,7 +5458,6 @@ u32 FUN_0039e1b0(int param_1,int param_2)
     uVar3 = FUN_00194b20(*(u32 *)(param_1 + 0x92c),0x6a1660,0x10,0x398530,0x399830,uVar4);
 
     *(u32 *)(param_1 + 0x938) = uVar3;
-
     break;
 
   case 1:
