@@ -1151,7 +1151,7 @@ undefined4 FUN_00168810(undefined8 param_1)
     return 0;
 }
 
-// FUN_00169040 NONMATCHING
+// FUN_00169040
 void FUN_00169040(int param_1)
 {
     CampTargetLoadWork* work;
@@ -1159,20 +1159,20 @@ void FUN_00169040(int param_1)
 
     work = (CampTargetLoadWork*)(*(u32*)((u8*)(uintptr_t)param_1 + 0x3c));
     if (work->listA != NULL) {
-        (*DAT_0096017c)(work->listA);
+        (*(void (**)(...))0x0096017c)(work->listA);
         work->listA = NULL;
     }
     if (work->listB != NULL) {
-        (*DAT_0096017c)(work->listB);
+        (*(void (**)(...))0x0096017c)(work->listB);
         work->listB = NULL;
     }
     for (i = 0; i < 2; i++) {
-        if (work->resources[i] != NULL) {
-            FUN_001124b0(work->resources[i]);
+        if ((*(void**)((u8*)work + 0x14 + i * 4)) != NULL) {
+            FUN_001124b0(*(void**)((u8*)work + 0x14 + i * 4));
         }
         DAT_00833a50[i] = 0;
     }
-    (*DAT_0096017c)(work);
+    (*(void (**)(...))0x0096017c)(work);
 }
 
 // FUN_00169110 NONMATCHING
