@@ -3,6 +3,17 @@ typedef int (*code)(...);
 typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
+typedef struct NmlistNode {
+    u32 unk0[3];
+    struct NmlistNode *prev;
+    struct NmlistNode *next;
+} NmlistNode;
+typedef struct NmlistList {
+    NmlistNode *head;
+    NmlistNode *tail;
+    NmlistNode *cursor;
+    u16 count;
+} NmlistList;
 
 extern code DAT_00960178;
 extern code DAT_0096017c;
@@ -10,18 +21,21 @@ extern u8 LAB_003c4400[];
 extern u8 LAB_003c4410[];
 extern u8 LAB_003c4420[];
 extern u8 LAB_003c5210[];
+extern void K_Assert(const char *file, s32 line);
+extern const char D_006A3DE8[];
+extern void FUN_00521408(u32 dest, int value, u32 size);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-long FUN_003c4430(long param_1);
-long FUN_003c44d0(long param_1,long param_2,long param_3,long param_4);
+int *FUN_003c4430(int *param_1);
+int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
 void FUN_003c45f0(long param_1);
-long FUN_003c4650(u64 param_1,long param_2,long param_3);
-void FUN_003c4710(long param_1,long param_2,long param_3);
-int FUN_003c4820(long param_1,int param_2);
+int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
+void FUN_003c4710(int *param_1, int *param_2, int *param_3);
+int *FUN_003c4820(int *param_1, int *param_2);
 long FUN_003c4910(long param_1,long param_2,u64 param_3);
 u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3);
 void FUN_003c4a90(long param_1,long param_2);
@@ -43,12 +57,12 @@ void FUN_003c5180(long param_1,long param_2);
 void FUN_003c5220(void);
 
 /* Region call-cast macros */
-#define FUN_003c4430(...) ((long (*)(...))FUN_003c4430)(__VA_ARGS__)
-#define FUN_003c44d0(...) ((long (*)(...))FUN_003c44d0)(__VA_ARGS__)
+#define FUN_003c4430(...) ((int * (*)(...))FUN_003c4430)(__VA_ARGS__)
+#define FUN_003c44d0(...) ((int * (*)(...))FUN_003c44d0)(__VA_ARGS__)
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
-#define FUN_003c4650(...) ((long (*)(...))FUN_003c4650)(__VA_ARGS__)
+#define FUN_003c4650(...) ((int * (*)(...))FUN_003c4650)(__VA_ARGS__)
 #define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
-#define FUN_003c4820(...) ((int (*)(...))FUN_003c4820)(__VA_ARGS__)
+#define FUN_003c4820(...) ((int * (*)(...))FUN_003c4820)(__VA_ARGS__)
 #define FUN_003c4910(...) ((long (*)(...))FUN_003c4910)(__VA_ARGS__)
 #define FUN_003c49e0(...) ((u64 (*)(...))FUN_003c49e0)(__VA_ARGS__)
 #define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
@@ -70,125 +84,60 @@ void FUN_003c5220(void);
 #define FUN_003c5220(...) ((void (*)(...))FUN_003c5220)(__VA_ARGS__)
 
 #undef FUN_003c4430
-// FUN_003C4430 NONMATCHING
+// FUN_003C4430
 
 
-long FUN_003c4430(long param_1)
-
-
-
+int *FUN_003c4430(int *param_1)
 {
-
-  long lVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = (int)param_1 + 0x18;
-
-  lVar1 = (*DAT_00960178)(iVar3,0x40000);
-
-  if (lVar1 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x60);
-
-  }
-
-  FUN_00521408(lVar1,0,iVar3);
-
-  iVar2 = (int)lVar1;
-
-  if (param_1 != 0) {
-
-    *(int *)(iVar2 + 0x14) = iVar2 + 0x18;
-
-  }
-
-  *(int *)(iVar2 + 8) = iVar3;
-
-  return lVar1;
-
+    u8 *size;
+    int *object;
+    size = (u8 *)param_1 + 0x18;
+    object = (int *)(*(code *)0x00960178)(size, 0x40000);
+    if (object == 0) {
+        K_Assert(D_006A3DE8, 0x60);
+    }
+    FUN_00521408((u32)object, 0, (u32)size);
+    if (param_1 != 0) {
+        *(u32 *)((u8 *)object + 0x14) = (u32)((u8 *)object + 0x18);
+    }
+    *(u32 *)((u8 *)object + 8) = (u32)size;
+    return object;
 }
 #define FUN_003c4430(...) ((long (*)(...))FUN_003c4430)(__VA_ARGS__)
 #undef FUN_003c44d0
-// FUN_003C44D0 NONMATCHING
+// FUN_003C44D0
 
 
-long FUN_003c44d0(long param_1,long param_2,long param_3,long param_4)
-
-
-
+int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4)
 {
-
-  long lVar1;
-
-  int iVar2;
-
-  
-
-  iVar2 = (int)param_1 + 0x28;
-
-  lVar1 = (*DAT_00960178)(iVar2,0x40000);
-
-  if (lVar1 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x37);
-
-  }
-
-  FUN_00521408(lVar1,0,iVar2);
-
-  iVar2 = (int)lVar1;
-
-  if (param_1 != 0) {
-
-    *(int *)(iVar2 + 0x24) = iVar2 + 0x28;
-
-  }
-
-  *(int *)(iVar2 + 0x20) = (int)param_1;
-
-  if (param_2 == 0) {
-
-    *(u8 **)(iVar2 + 0x14) = (u8 *)&LAB_003c4400;
-
-  }
-
-  else {
-
-    *(int *)(iVar2 + 0x14) = (int)param_2;
-
-  }
-
-  if (param_3 == 0) {
-
-    *(u8 **)(iVar2 + 0x18) = (u8 *)&LAB_003c4410;
-
-  }
-
-  else {
-
-    *(int *)(iVar2 + 0x18) = (int)param_3;
-
-  }
-
-  if (param_4 == 0) {
-
-    *(u8 **)(iVar2 + 0x1c) = (u8 *)&LAB_003c4420;
-
-  }
-
-  else {
-
-    *(int *)(iVar2 + 0x1c) = (int)param_4;
-
-  }
-
-  return lVar1;
-
+    u8 *size;
+    int *object;
+    size = (u8 *)param_1 + 0x28;
+    object = (int *)(*(code *)0x00960178)(size, 0x40000);
+    if (object == 0) {
+        K_Assert(D_006A3DE8, 0x37);
+    }
+    FUN_00521408((u32)object, 0, (u32)size);
+    if (param_1 != 0) {
+        *(u32 *)((u8 *)object + 0x24) = (u32)((u8 *)object + 0x28);
+    }
+    *(u32 *)((u8 *)object + 0x20) = (u32)param_1;
+    if (param_2 != 0) {
+        *(code *)((u8 *)object + 0x14) = param_2;
+    } else {
+        *(code *)((u8 *)object + 0x14) = (code)LAB_003c4400;
+    }
+    if (param_3 != 0) {
+        *(code *)((u8 *)object + 0x18) = param_3;
+    } else {
+        *(code *)((u8 *)object + 0x18) = (code)LAB_003c4410;
+    }
+    if (param_4 != 0) {
+        *(code *)((u8 *)object + 0x1c) = param_4;
+    } else {
+        *(code *)((u8 *)object + 0x1c) = (code)LAB_003c4420;
+    }
+    return object;
 }
 #define FUN_003c44d0(...) ((long (*)(...))FUN_003c44d0)(__VA_ARGS__)
 #undef FUN_003c45f0
@@ -216,255 +165,125 @@ void FUN_003c45f0(long param_1)
 }
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
 #undef FUN_003c4650
-// FUN_003C4650 NONMATCHING
+// FUN_003C4650
 
 
-long FUN_003c4650(u64 param_1,long param_2,long param_3)
-
-
-
+int *FUN_003c4650(u32 param_1, int *param_2, int *param_3)
 {
-
-  long lVar1;
-
-  u32 *puVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = (int)param_3 + 0x18;
-
-  lVar1 = (*DAT_00960178)(iVar3,0x40000);
-
-  if (lVar1 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x60);
-
-  }
-
-  FUN_00521408(lVar1,0,iVar3);
-
-  puVar2 = (u32 *)lVar1;
-
-  if (param_3 != 0) {
-
-      puVar2[5] = (u32)(puVar2 + 6);
-
-  }
-
-  puVar2[2] = iVar3;
-
-  if (param_2 == 0) {
-
-      *puVar2 = (u32)puVar2;
-
-  }
-
-  else {
-
-    *puVar2 = (int)param_2;
-
-  }
-
-  return lVar1;
-
+    int *parent;
+    int *owner;
+    u8 *size;
+    int *object;
+    parent = param_2;
+    owner = param_3;
+    size = (u8 *)owner + 0x18;
+    object = (int *)(*(code *)0x00960178)(size, 0x40000);
+    if (object == 0) {
+        K_Assert(D_006A3DE8, 0x60);
+    }
+    FUN_00521408((u32)object, 0, (u32)size);
+    if (owner != 0) {
+        *(u32 *)((u8 *)object + 0x14) = (u32)((u8 *)object + 0x18);
+    }
+    *(u32 *)((u8 *)object + 8) = (u32)size;
+    if (parent == 0) {
+        *(u32 *)object = (u32)object;
+    } else {
+        *(u32 *)object = (u32)parent;
+    }
+    return object;
 }
 #define FUN_003c4650(...) ((long (*)(...))FUN_003c4650)(__VA_ARGS__)
 #undef FUN_003c4710
-// FUN_003C4710 NONMATCHING
+// FUN_003C4710
 
 
-void FUN_003c4710(long param_1,long param_2,long param_3)
-
-
-
+void FUN_003c4710(int *param_1, int *param_2, int *param_3)
 {
-
-  int iVar1;
-
-  int iVar2;
-
-  int *piVar3;
-
-  
-
-  if (param_1 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x115);
-
-  }
-
-  piVar3 = (int *)param_1;
-
-  *(short *)(piVar3 + 3) = (short)piVar3[3] + 1;
-
-  if (param_3 != 0) {
-
-    iVar1 = (int)param_3;
-
-    *(u32 *)(iVar1 + 0x10) = 0;
-
-    *(u32 *)(iVar1 + 0xc) = 0;
-
-    if (param_2 == 0) {
-
-      if (*piVar3 != 0) {
-
-        *(u32 *)(iVar1 + 0xc) = 0;
-
-        *(int *)(iVar1 + 0x10) = *piVar3;
-
-        *(int *)(*piVar3 + 0xc) = iVar1;
-
-      }
-
-      *piVar3 = iVar1;
-
-      if (piVar3[1] == 0) {
-
-        piVar3[1] = iVar1;
-
-      }
-
+    NmlistList *list;
+    NmlistNode *node;
+    NmlistNode *after;
+    if (param_1 == 0) {
+        K_Assert(D_006A3DE8, 0x115);
     }
-
-    else {
-
-      iVar2 = (int)param_2;
-
-      if (*(int *)(iVar2 + 0x10) == 0) {
-
-        *(int *)(iVar1 + 0xc) = iVar2;
-
-        *(u32 *)(iVar1 + 0x10) = 0;
-
-        *(int *)(iVar2 + 0x10) = iVar1;
-
-        piVar3[1] = iVar1;
-
-      }
-
-      else {
-
-        *(int *)(iVar1 + 0xc) = iVar2;
-
-        *(u32 *)(iVar1 + 0x10) = *(u32 *)(iVar2 + 0x10);
-
-        *(int *)(iVar2 + 0x10) = iVar1;
-
-        *(int *)(*(int *)(iVar1 + 0x10) + 0xc) = iVar1;
-
-      }
-
+    list = (NmlistList *)param_1;
+    node = (NmlistNode *)param_3;
+    after = (NmlistNode *)param_2;
+    list->count++;
+    if (node != 0) {
+        node->next = 0;
+        node->prev = 0;
+        if (after == 0) {
+            if (list->head != 0) {
+                node->prev = 0;
+                node->next = list->head;
+                list->head->prev = node;
+            }
+            list->head = node;
+            if (list->tail == 0) {
+                list->tail = node;
+            }
+        } else if (after->next != 0) {
+            node->prev = after;
+            node->next = after->next;
+            after->next = node;
+            node->next->prev = node;
+        } else {
+            node->prev = after;
+            node->next = 0;
+            after->next = node;
+            list->tail = node;
+        }
+        if (list->cursor == 0) {
+            list->cursor = node;
+        }
     }
-
-    if (piVar3[2] == 0) {
-
-      piVar3[2] = iVar1;
-
-    }
-
-  }
-
-  return;
-
 }
 #define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
 #undef FUN_003c4820
 // FUN_003C4820 NONMATCHING
 
 
-int FUN_003c4820(long param_1,int param_2)
-
-
-
+int *FUN_003c4820(int *param_1, int *param_2)
 {
-
-  int iVar1;
-
-  int iVar2;
-
-  int *piVar3;
-
-  
-
-  if (param_1 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x149);
-
-  }
-
-  if (param_2 == 0) {
-
-    FUN_0019d3f0("nmlist.c",0x14a);
-
-  }
-
-  piVar3 = (int *)param_1;
-
-  *(short *)(piVar3 + 3) = (short)piVar3[3] + -1;
-
-  iVar2 = *(int *)(param_2 + 0xc);
-
-  if (iVar2 == 0) {
-
-    iVar2 = *(int *)(param_2 + 0x10);
-
-    if (iVar2 == 0) {
-
-      if (*piVar3 == param_2) {
-
-        piVar3[1] = 0;
-
-        *piVar3 = 0;
-
-      }
-
-      iVar2 = 0;
-
+    int *list;
+    int *next;
+    int *previous;
+    if (param_1 == 0) {
+        K_Assert((const char *)0x006A3DE8, 0x149);
     }
-
-    else {
-
-      *(u32 *)(iVar2 + 0xc) = 0;
-
-      *piVar3 = iVar2;
-
+    if (param_2 == 0) {
+        K_Assert((const char *)0x006A3DE8, 0x14a);
     }
-
-  }
-
-  else {
-
-    iVar1 = *(int *)(param_2 + 0x10);
-
-    if (iVar1 == 0) {
-
-      *(u32 *)(iVar2 + 0x10) = 0;
-
-      piVar3[1] = iVar2;
-
+    list = param_1;
+    *(u16 *)((u8 *)list + 0xc) = *(u16 *)((u8 *)list + 0xc) - 1;
+    previous = *(int **)((u8 *)param_2 + 0xc);
+    if (previous == 0) {
+        next = *(int **)((u8 *)param_2 + 0x10);
+        if (next == 0) {
+            if (*(int **)list == param_2) {
+                *(int **)((u8 *)list + 4) = 0;
+                *(int **)list = 0;
+            }
+            next = 0;
+        } else {
+            *(int **)((u8 *)next + 0xc) = 0;
+            *(int **)list = next;
+        }
+    } else {
+        next = *(int **)((u8 *)param_2 + 0x10);
+        if (next == 0) {
+            *(int **)((u8 *)previous + 0x10) = 0;
+            *(int **)((u8 *)list + 4) = previous;
+        } else {
+            *(int **)((u8 *)previous + 0x10) = next;
+            *(int **)((u8 *)next + 0xc) = previous;
+            next = *(int **)((u8 *)next + 0x10);
+        }
     }
-
-    else {
-
-      *(int *)(iVar2 + 0x10) = iVar1;
-
-      *(int *)(iVar1 + 0xc) = iVar2;
-
-      iVar2 = *(int *)(iVar2 + 0x10);
-
-    }
-
-  }
-
-  *(u32 *)(param_2 + 0xc) = 0;
-
-  *(u32 *)(param_2 + 0x10) = 0;
-
-  return iVar2;
-
+    *(u32 *)((u8 *)param_2 + 0xc) = 0;
+    *(u32 *)((u8 *)param_2 + 0x10) = 0;
+    return next;
 }
 #define FUN_003c4820(...) ((int (*)(...))FUN_003c4820)(__VA_ARGS__)
 #undef FUN_003c4910
