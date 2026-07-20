@@ -32,7 +32,7 @@ typedef struct FrFontState {
 extern u32 DAT_006a2370;
 extern const char DAT_006a2730[];
 extern u32 DAT_007cd4f8;
-extern u32 DAT_007cd500;
+extern s16 DAT_007cd500;
 extern u32 DAT_007ce638;
 extern u32 DAT_007ce63c;
 extern u32 DAT_0095ac70;
@@ -57,8 +57,12 @@ extern u32 DAT_0095ad70;
 extern u32 DAT_0095ad90;
 extern u32 DAT_0095ae10;
 extern u32 DAT_0095ae14;
+#pragma alias DAT_0095ae14_abs DAT_0095ae14
+extern u32 DAT_0095ae14_abs[];
 extern u32 DAT_0095ae18;
 extern u32 DAT_0095ae1c;
+#pragma alias DAT_0095ae1c_abs DAT_0095ae1c
+extern u32 DAT_0095ae1c_abs[];
 extern u32 DAT_0095ae20;
 extern u32 DAT_0095ae24;
 extern u32 DAT_0095ae28;
@@ -1054,225 +1058,130 @@ void FUN_003b05c0(u16 *param_1)
 #undef FUN_003b0620
 // FUN_003B0620 NONMATCHING
 
-
 long FUN_003b0620(u16 param_1,u8 param_2,u8 param_3,u8 param_4)
-
-
-
 {
-
-  u8 bVar1;
-
-  char cVar2;
-
-
-  long lVar4;
-
-  u32 uVar5;
-
+  u16 uVar5;
   int iVar6;
+  u8 *puVar7;
 
-  u16 *puVar7;
-
-  
-
-  lVar4 = FUN_003b46b0(DAT_0095ae1c);
-
-  DAT_0095ae14 = DAT_0095ae14 + 1;
-
-  if (lVar4 == 0) {
-
+  puVar7 = (u8 *)FUN_003b46b0(DAT_0095ae1c_abs[0]);
+  DAT_0095ae14_abs[0] = DAT_0095ae14_abs[0] + 1;
+  if (puVar7 == (u8 *)0) {
     FUN_0019d400(0x6a2860,0x6a2730,0x743);
-
   }
-
-  puVar7 = (u16 *)lVar4;
-
-  *puVar7 = param_1;
-
-  *(u8 *)((int)puVar7 + 0x15) = param_2;
-
-  puVar7[2] = 0;
-
-  puVar7[3] = 0;
-
-  puVar7[4] = 0;
-
-  puVar7[5] = 0;
-
-  puVar7[6] = 0;
-
-  puVar7[7] = 0;
-
-  *(u8 *)(puVar7 + 10) = param_3;
-
-  puVar7[8] = 0xff00;
-
-  puVar7[9] = 0xffff;
-
-  *(u8 *)(puVar7 + 0xb) = param_4;
-
-  *(char *)((int)puVar7 + 0x17) = (char)DAT_007cd500;
-
-  puVar7[1] = 0;
-
-  puVar7[0xe] = 0;
-
-  puVar7[0xf] = 0;
-
-  puVar7[0x10] = 0;
-
-  puVar7[0x11] = 0;
-
-  puVar7[0x12] = 0;
-
-  puVar7[0x13] = 0;
-
-  puVar7[0x14] = 0;
-
-  puVar7[0x15] = 0;
-
-  uVar5 = (u32)*puVar7;
-
+  *(u16 *)puVar7 = param_1;
+  puVar7[0x15] = param_2;
+  *(u32 *)(puVar7 + 4) = 0;
+  *(u32 *)(puVar7 + 8) = 0;
+  *(u32 *)(puVar7 + 0xc) = 0;
+  puVar7[0x14] = param_3;
+  *(u32 *)(puVar7 + 0x10) = 0xffffff00;
+  puVar7[0x16] = param_4;
+  puVar7[0x17] = DAT_007cd500;
+  *(u16 *)(puVar7 + 2) = 0;
+  *(u32 *)(puVar7 + 0x1c) = 0;
+  *(u32 *)(puVar7 + 0x20) = 0;
+  *(u32 *)(puVar7 + 0x24) = 0;
+  *(u32 *)(puVar7 + 0x28) = 0;
+  uVar5 = *(u16 *)puVar7;
   if (uVar5 < 0x80) {
-
     if (uVar5 == 0x20) {
-
       iVar6 = 0x1f7;
-
     }
-
     else {
-
       iVar6 = uVar5 - 0x20;
-
     }
-
   }
-
   else {
-
-    iVar6 = ((int)(uVar5 - 0x8080 & 0xff00) >> 1) + (uVar5 - 0x8080 & 0x7f);
-
+    iVar6 = ((uVar5 - 0x8080 & 0xff00) >> 1) +
+            (uVar5 - 0x8080 & 0x7f);
   }
-
-  if ((int)(u32)*(u16 *)((&DAT_0095acf4)[(u32)param_2 * 8] + 0xe) <= iVar6) {
-
+  if (*(u16 *)((int)(&DAT_0095acf4)[(u32)param_2 * 8] + 0xe) <= iVar6) {
     iVar6 = 0x147;
-
   }
-
-  FUN_003b0430(lVar4,iVar6);
-  *(u32 *)(puVar7 + 0xe) = 0;
-
-  FUN_003b01d0(lVar4,iVar6);
-
-  if ((*(u8 *)((int)puVar7 + 0x17) & 0x10) == 0) {
-
-    puVar7[4] = 0;
-
-    puVar7[5] = 0;
-
+  FUN_003b0430((long)puVar7,iVar6);
+  *(u32 *)(puVar7 + 0x1c) = 0;
+  FUN_003b01d0((int)puVar7,iVar6);
+  if ((puVar7[0x17] & 0x10) == 0) {
+    *(u32 *)(puVar7 + 8) = 0;
+    *(u32 *)(puVar7 + 0xc) = 0;
   }
-
   else {
-
-    bVar1 = 0;
-
     if ((((iVar6 == 0x59) || (iVar6 == 0x51)) || (iVar6 == 0x50)) ||
-
-       (((iVar6 == 0x4a || (iVar6 == 0x47)) || (iVar6 == 0x31)))) {
-
-      bVar1 = 1;
-
+       (((iVar6 == 0x4a) || (iVar6 == 0x47)) || (iVar6 == 0x31))) {
+      *(u32 *)(puVar7 + 8) = 0x10;
     }
-
-    if (bVar1) {
-
-      cVar2 = '\x10';
-
-    }
-
     else {
-
-      cVar2 = '\0';
-
+      *(u32 *)(puVar7 + 8) = 0;
     }
-
-    *(int *)(puVar7 + 4) = (int)cVar2;
-
   }
-
-  return lVar4;
-
+  return (long)puVar7;
 }
 #define FUN_003b0620(...) ((long (*)(...))FUN_003b0620)(__VA_ARGS__)
 #undef FUN_003b0840
 // FUN_003B0840 NONMATCHING
 
-
+#pragma push
+#pragma opt_rebuildconditionals off
 int FUN_003b0840(short *param_1)
-
-
-
 {
-
-  short sVar1;
-
+  u16 *puVar3;
+  u16 sVar1;
   int iVar2;
-
   int iVar3;
 
-  
-
+  puVar3 = *(u16 **)((int)param_1 + 0x24);
   iVar2 = 0;
-
-  if ((((*(char *)((int)param_1 + 0x15) == '\0') || (*(char *)((int)param_1 + 0x15) == '\x01')) &&
-
-      (*(short **)(param_1 + 0x12) != (short *)0x0)) &&
-
-     ((((sVar1 = *param_1, sVar1 == -0x7f2b || (sVar1 == -0x7f31)) ||
-
-       ((sVar1 == -0x7f3b || ((sVar1 == -0x7f3f || (sVar1 == 0x75)))))) ||
-
-      ((sVar1 == 0x6f || ((sVar1 == 0x65 || (sVar1 == 0x61)))))))) {
-
-    sVar1 = **(short **)(param_1 + 0x12);
-
-    if (((sVar1 == 0x54) || (sVar1 == -0x7f4c)) && (iVar2 = 3, 0 < iGpffffb948)) {
-
-      iVar3 = iGpffffb948 * 3;
-
-      iVar2 = iVar3 >> 7;
-
-      if (iVar3 < 0) {
-
-        iVar2 = iVar3 + 0x7f >> 7;
-
-      }
-
-    }
-
-    if (((sVar1 == 0x59) || (sVar1 == -0x7f47)) && (iVar2 = 2, 0 < iGpffffb948)) {
-
-      iVar3 = iGpffffb948 * 2;
-
-      iVar2 = iVar3 >> 7;
-
-      if (iVar3 < 0) {
-
-        iVar2 = iVar3 + 0x7f >> 7;
-
-      }
-
-    }
-
+  if (*(u8 *)((int)param_1 + 0x15) == 0) {
+    goto LAB_003b0860;
   }
-
+  if (*(u8 *)((int)param_1 + 0x15) != 1) {
+    goto LAB_003b095c;
+  }
+LAB_003b0860:
+  if (puVar3 == (u16 *)0x0) {
+    goto LAB_003b095c;
+  }
+  sVar1 = *(u16 *)param_1;
+  if (sVar1 == 0x80d5) goto LAB_003b08d4;
+  if (sVar1 == 0x80cf) goto LAB_003b08d4;
+  if (sVar1 == 0x80c5) goto LAB_003b08d4;
+  if (sVar1 == 0x80c1) goto LAB_003b08d4;
+  if (sVar1 == 0x75) goto LAB_003b08d4;
+  if (sVar1 == 0x6f) goto LAB_003b08d4;
+  if (sVar1 == 0x65) goto LAB_003b08d4;
+  if (sVar1 == 0x61) goto LAB_003b08d4;
+  goto LAB_003b095c;
+LAB_003b08d4:
+  sVar1 = *puVar3;
+  if (sVar1 == 0x54) goto LAB_003b08f0;
+  if (sVar1 != 0x80b4) goto LAB_003b091c;
+LAB_003b08f0:
+  iVar2 = 3;
+  iVar3 = iGpffffb948;
+  if (iVar3 <= 0) goto LAB_003b091c;
+  iVar3 = iVar3 * 3;
+  iVar2 = iVar3 >> 7;
+  if (iVar3 < 0) {
+    iVar2 = iVar3 + 0x7f >> 7;
+  }
+LAB_003b091c:
+  if (sVar1 == 0x59) goto LAB_003b0934;
+  if (sVar1 != 0x80b9) goto LAB_003b095c;
+LAB_003b0934:
+  iVar2 = 2;
+  iVar3 = iGpffffb948;
+  if (iVar3 <= 0) goto LAB_003b095c;
+  iVar3 = iVar3 * 2;
+  iVar2 = iVar3 >> 7;
+  if (iVar3 < 0) {
+    iVar2 = iVar3 + 0x7f >> 7;
+  }
+LAB_003b095c:
   return iVar2;
-
 }
 #define FUN_003b0840(...) ((int (*)(...))FUN_003b0840)(__VA_ARGS__)
+#pragma pop
 #undef FUN_003b0970
 // FUN_003B0970 NONMATCHING
 
