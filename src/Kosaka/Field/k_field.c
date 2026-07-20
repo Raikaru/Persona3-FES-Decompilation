@@ -236,13 +236,11 @@ Field* K_Field_Get()
 extern RwMatrix* FUN_00318b60(void* model);
 extern u32 FUN_001d5a90(KwlnTask* task);
 extern void func_001d8cb0(void);
+extern u32 DAT_007ce24c;
 // FUN_001B9130
-asm u32 func_001b9130(void)
+u32 func_001b9130(void)
 {
-    .set noreorder
-    lw $v0, -0x4aa4($gp)
-    jr $ra
-    nop
+    return DAT_007ce24c;
 }
 
 // FUN_001b9140 NONMATCHING
