@@ -1405,46 +1405,363 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
     return 1;
 }
 
-// FUN_0011ea20 NONMATCHING
+// FUN_0011ea20
 void* h_campUpdateMenuTask(KwlnTask* task)
 {
     CampMenuWork* work;
 
     work = task->workData;
-    switch (work->state) {
+    switch (work->state)
+    {
     case 0:
         break;
     case 1:
+        work->state = 2;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 2:
         h_campUpdateMainMenuAnimation(task);
-        break;
-    case 3:
-        h_campUpdateStatusMainAnimation(task);
-        break;
-    case 5:
-        h_campUpdateItemMainAnimation(task);
-        break;
-    case 7:
-        h_campUpdateSocialMainAnimation(task);
-        break;
-    case 9:
-        h_campUpdateSkillMainAnimation(task);
-        break;
-    case 11:
-        h_campUpdateEquipMainAnimation(task);
-        break;
-    case 13:
-        h_campUpdatePersonaMainAnimation(task);
-        break;
-    case 15:
-        h_campUpdateSystemMainAnimation(task);
-        break;
-    }
-    if (work->animationState == 999) {
+        if (work->animationState != 999) {
+            goto done;
+        }
         work->state = 0;
+        goto done;
+    case 3:
+        work->state = 4;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 4:
+        h_campUpdateStatusMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 5:
+        work->state = 6;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 6:
+        return KWLNTASK_STOP;
+    case 7:
+        work->state = 8;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 8:
+        h_campUpdateStatusDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 9:
+        work->state = 10;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 10:
+        h_campUpdateStatusPersonaAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 11:
+        work->state = 12;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 12:
+        h_campUpdateStatusExitTransition(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 13:
+        work->state = 14;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 14:
+        h_campUpdateStatusFadeTransition(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 15:
+        work->state = 16;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 16:
+        h_campUpdateItemMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 17:
+        work->state = 18;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 18:
+        h_campUpdateItemDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 19:
+        work->state = 20;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 20:
+        h_campUpdateItemAnimationBlend(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 21:
+        work->state = 22;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 22:
+        h_campUpdateItemThirdAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 23:
+        work->state = 24;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 24:
+        h_campUpdateItemEighthAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 25:
+        work->state = 26;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 26:
+        h_campUpdateItemSixthAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 29:
+        work->state = 30;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 30:
+        h_campUpdateItemFifthAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 27:
+        work->state = 28;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 28:
+        h_campUpdateItemFourthAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 31:
+        work->state = 32;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 32:
+        h_campUpdateItemSeventhAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 33:
+        work->state = 34;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 34:
+        h_campUpdateSocialMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 35:
+        work->state = 36;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 36:
+        h_campUpdateSocialDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 37:
+        work->state = 38;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 38:
+        h_campUpdateSocialTransition(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 39:
+        work->state = 40;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 40:
+        h_campUpdateSkillMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 41:
+        work->state = 42;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 42:
+        h_campUpdateSkillDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 43:
+        work->state = 44;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 44:
+        h_campUpdateSkillEquipBlend(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 45:
+        work->state = 46;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 46:
+        h_campUpdateEquipMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 47:
+        work->state = 48;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 48:
+        h_campUpdateEquipDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 49:
+        work->state = 50;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 50:
+        h_campUpdateSkillEquipExitBlend(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 51:
+        work->state = 52;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 52:
+        h_campUpdatePersonaMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 53:
+        work->state = 54;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 54:
+        h_campUpdatePersonaDetailAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 55:
+        work->state = 56;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 56:
+        h_campUpdatePersonaBlend(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
+    case 57:
+        work->state = 58;
+        work->transitionComplete = 0;
+        work->animationState = 0;
+        goto done;
+    case 58:
+        h_campUpdateSystemMainAnimation(task);
+        if (work->animationState != 999) {
+            goto done;
+        }
+        work->state = 0;
+        goto done;
     }
+done:
     return KWLNTASK_CONTINUE;
 }
-
 // FUN_0011f120
 void h_campDestroyMenuTask(KwlnTask* task)
 {
