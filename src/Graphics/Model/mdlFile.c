@@ -4361,15 +4361,17 @@ void FUN_00320810(int *param_1)
 
       iVar1 = iVar3 + uVar2 * 0x10;
 
-      fVar4 = fVar5;
+      if (*(int *)(iVar1 + 0xc) != 0) {
 
-      if ((*(int *)(iVar1 + 0xc) != 0) && (fVar4 = *(float *)(iVar1 + 4), fVar4 <= fVar5)) {
+        fVar4 = *(float *)(iVar1 + 4);
 
-        fVar4 = fVar5;
+        if (fVar4 > fVar5) {
+
+          fVar5 = fVar4;
+
+        }
 
       }
-
-      fVar5 = fVar4;
 
     }
 
