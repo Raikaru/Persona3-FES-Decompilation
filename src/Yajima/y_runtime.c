@@ -18265,27 +18265,21 @@ void FUN_00458b00(void)
   }
   return;
 }
-#pragma opt_loop_invariants off
+// FUN_00458B60
+#pragma push
 #pragma opt_loop_invariants on
-// FUN_00458B60 NONMATCHING
 
 void FUN_00458b60(void)
+
 {
   int iVar1;
-
-  int iVar2;
-
+  
   for (iVar1 = 0; iVar1 < 4; iVar1 = iVar1 + 1) {
-
-    iVar2 = *(int *)(DAT_0086e80c_abs + iVar1 * 0x1c0 + 0x16c);
-
-    iVar2 = *(int *)(iVar2 + 0x3c);
-
-    *(u8 *)iVar2 = 6;
+    **(u8 **)(*(int *)(DAT_0086e6a0 + iVar1 * 0x1c0 + 0x16c) + 0x3c) = 6;
   }
   return;
 }
-#pragma opt_loop_invariants off
+#pragma pop
 
 #pragma alias FUN_002ff760_y2 FUN_002ff760
 #pragma alias FUN_003174e0_y2 FUN_003174e0
