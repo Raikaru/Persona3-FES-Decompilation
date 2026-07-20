@@ -15,6 +15,11 @@ typedef struct CampPair
     f32 x;
     f32 y;
 } CampPair;
+typedef union CampBits
+{
+    u64 u;
+    f32 f[2];
+} CampBits;
 
 /* CONCAT44 packs IEEE-754 words, not numeric float casts. */
 static u32 campFloatBits(f32 value)
@@ -155,66 +160,80 @@ extern u32 FUN_003c7d80();
 // FUN_001482F0 NONMATCHING
 void h_campDrawStatusOverview(int param_1)
 {
-    union { f32 f; u32 u; } low;
+    volatile CampBits sp98;
+    volatile CampPair pair;
+    volatile CampBits sp88;
+    volatile CampBits sp80;
+    volatile CampBits sp78;
+    volatile CampBits sp70;
+    volatile CampBits sp68;
+    volatile CampBits sp60;
+    volatile CampBits sp58;
+    volatile CampBits sp50;
+    volatile CampBits sp48;
+    volatile CampBits sp40;
     s32 i;
-    f32 y;
-    u64 pos;
-    volatile u64 p0;
-    volatile u64 p1;
-    volatile u64 p2;
-    volatile u64 p3;
-    volatile u64 p4;
-    volatile u64 p5;
-    volatile u64 p6;
-    volatile u64 p7;
-    volatile u64 p8;
-    volatile u64 p9;
-
-    low.f = (f32)0x17b;
-    p0 = (((u64)0x41400000) << 32) | low.u;
-    p1 = 0x41d8000041500000ULL;
-    p2 = 0x41d8000042e00000ULL;
-    p3 = 0x41d8000043070000ULL;
-    p4 = 0x41d80000438b0000ULL;
-    p5 = 0x41d8000043968000ULL;
-    p6 = 0x4274000042d00000ULL;
-    p7 = 0x435b000042f80000ULL;
-    p8 = 0x43cf800043620000ULL;
-    p9 = 0x43cf800043db8000ULL;
-
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2,
-                       p0, p0, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 0, 2, 2,
-                       p1, p1, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 0, 2, 2,
-                       p2, p2, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 0, 2, 2,
-                       p3, p3, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 0, 2, 2,
-                       p4, p4, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 0, 2, 2,
-                       p5, p5, 0, 0, 0, 0);
+    pair.x = (f32)0x17b;
+    pair.y = 12.0f;
+    sp98.u = *(u64*)&pair;
+    sp98.f[0] = pair.x + 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 0, 2, 2, sp98.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 13.0f;
+    pair.y = 27.0f;
+    sp40.u = *(u64*)&pair;
+    sp40.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x44), 0, 2, 2, sp40.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 112.0f;
+    pair.y = 27.0f;
+    sp48.u = *(u64*)&pair;
+    sp48.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x88), 0, 2, 2, sp48.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 135.0f;
+    pair.y = 27.0f;
+    sp50.u = *(u64*)&pair;
+    sp50.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0xcc), 0, 2, 2, sp50.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 278.0f;
+    pair.y = 27.0f;
+    sp58.u = *(u64*)&pair;
+    sp58.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x110), 0, 2, 2, sp58.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = (f32)0x12d;
+    pair.y = 27.0f;
+    sp60.u = *(u64*)&pair;
+    sp60.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x154), 0, 2, 2, sp60.u, *(u64*)&pair, 0, 0, 0, 0);
     for (i = 0; i < 4; i++) {
         if (*(s32*)(param_1 + 0x1c) - 1 < i) {
             *(u32*)(*(u32*)(param_1 + 0xc0) + i * 0x44 + 0x2ac) = 0;
         } else {
-            y = (f32)(i * 0x55) + 64.0f;
-            pos = CAMP_PAIR_FLOAT_HIGH(y, 0x41f00000);
-            campDrawTransition(100.0f,
-                               (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44),
-                               0, 2, 2, pos,
-                               CAMP_PAIR_FLOAT_HIGH(y, 0x41f00000),
-                               0, 0, 0, 0);
+            pair.x = 30.0f;
+            pair.y = 64.0f + (f32)(i * 0x55);
+            sp68.u = *(u64*)&pair;
+            sp68.f[0] += 0.0f;
+            campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + (i + 10) * 0x44), 0, 2, 2, sp68.u, *(u64*)&pair, 0, 0, 0, 0);
         }
     }
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2,
-                       p6, p6, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 0, 2, 2,
-                       p7, p7, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 0, 2, 2,
-                       p8, p8, 0, 0, 0, 0);
-    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 0, 2, 2,
-                       p9, p9, 0, 0, 0, 0);
+    pair.x = 104.0f;
+    pair.y = 61.0f;
+    sp70.u = *(u64*)&pair;
+    sp70.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x550), 0, 2, 2, sp70.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 124.0f;
+    pair.y = 219.0f;
+    sp78.u = *(u64*)&pair;
+    sp78.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x594), 0, 2, 2, sp78.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = 226.0f;
+    pair.y = (f32)0x19f;
+    sp80.u = *(u64*)&pair;
+    sp80.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x83c), 0, 2, 2, sp80.u, *(u64*)&pair, 0, 0, 0, 0);
+    pair.x = (f32)0x1b7;
+    pair.y = (f32)0x19f;
+    sp88.u = *(u64*)&pair;
+    sp88.f[0] += 0.0f;
+    campDrawTransition(100.0f, (void*)(*(u32*)(param_1 + 0xc0) + 0x880), 0, 2, 2, sp88.u, *(u64*)&pair, 0, 0, 0, 0);
 }
 
 // FUN_00148880 NONMATCHING
@@ -1715,6 +1734,7 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
     s32 second;
     s32 index1;
     s32 index2;
+    register s32 flag;
 
     second = param_2;
     param_2 = (s32)(uintptr_t)DAT_007cdfb8;
@@ -1724,7 +1744,8 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
             break;
         }
         if ((param_1 == entry->first) && (second == entry->second)) {
-            if (entry->flag == 0) {
+            flag = entry->flag;
+            if (flag == 0) {
                 return 1;
             }
             if (FUN_0016f190() != 0) {
