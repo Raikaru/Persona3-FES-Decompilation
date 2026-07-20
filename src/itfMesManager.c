@@ -829,7 +829,7 @@ u32 FUN_003a2900(void)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -861,7 +861,7 @@ u8 FUN_003a2970(void)
 
   u8 bVar2;
 
-  long lVar3;
+  int lVar3;
 
   u32 uVar4;
 
@@ -877,7 +877,7 @@ u8 FUN_003a2970(void)
 
   else {
 
-    puVar1 = *(u32 **)(DAT_00959eec_abs + (int)lVar3 * 0xd);
+    puVar1 = *(u32 **)(DAT_00959eec_abs + lVar3 * 0xd);
 
     if (puVar1 == (u32 *)0x0) {
 
