@@ -6,7 +6,7 @@
 #include "Graphics/Model/mdlManager.h"
 #include "libm.h"
 
-extern KwlnTask* func_001a3ae0(KwlnTask* parent, u32 width, u32 height, u32 unused);
+extern KwlnTask* func_001a3ae0(KwlnTask* parent, u32 width, u32 height);
 extern u32 func_001a3f20(KwlnTask* task, const void* descriptor);
 extern void func_001a3bf0(KwlnTask* task, u32 request);
 extern void func_001a4110(KwlnTask* task, u32 id, u32 value, u32 min, u32 max, u32 step);
@@ -32,10 +32,23 @@ extern RwFrame* func_004caf10(void);
 extern RwFrame* func_004caf80(RwFrame* frame);
 extern void func_004cb930(void* frame);
 extern RwMatrix* func_004c2fb0(RwMatrix* matrixOut, RwMatrix* matrixIn);
+extern void func_004cb7f0(void* dst, const void* src, u32 mode);
+ #pragma alias D_00960090_abs D_00960090
+extern void (*D_00960090_abs[])(u32 state, u32 value);
+ #pragma alias DAT_00960070_abs DAT_00960070
+extern RwCamera* DAT_00960070_abs[];
 extern f32 func_0052ea18(f32 x, f32 y);
 extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u16 DAT_007e094e_abs[];
 extern RwCamera* DAT_00960070;
 extern u16 DAT_007e094e;
+extern u8 D_007CC1BC;
+extern u8 D_007CC1C0;
+extern u8 D_007CC1C8;
+extern f32 D_007CC1D0;
+extern f32 D_007CC1D8;
+extern f32 D_007CB130;
 
 typedef struct KDrawResourceTaskWork
 {
@@ -63,7 +76,7 @@ typedef struct KDrawRenderObject
     u8* indexData;           // 0x2c
     u8* colors;              // 0x30
     u8 unknown_34[0x14];
-    void (*renderCallback)(void); // 0x48
+    void (*renderCallback)(void* object); // 0x48
     u8 unknown_4c[0x10];
     KDrawRenderGeometry* geometry; // 0x5c
 } KDrawRenderObject;
@@ -72,8 +85,10 @@ typedef struct KDrawRenderManager
 {
     u8 unknown_00[0x04];
     RwFrame* frame;          // 0x04
-    u8 unknown_08[0x0c];
-    KDrawRenderObject* renderObject; // 0x14
+    u8 unknown_08[0x10];
+    KDrawRenderObject* renderObject; // 0x18
+    u8 unknown_1c[0x2c];
+    void (*renderCallback)(void* object); // 0x48
 } KDrawRenderManager;
 
 typedef struct KDrawArcData
@@ -218,52 +233,50 @@ void K_Draw_SetCylinderHeight(KwlnTask* cylinderTask, f32 height)
     ((CylinderDrawWork*)cylinderTask->workData)->height = height;
 }
 
-// FUN_001A4940 NONMATCHING
+// FUN_001A4940
 void* func_001a4940(KwlnTask* task)
 {
     KDrawResourceTaskWork* work;
-    u32* value;
 
     work = (KDrawResourceTaskWork*)task->workData;
 
-    if (work->state == 2)
+    switch (work->state)
     {
-        return KWLNTASK_STOP;
-    }
-
-    if (work->state == 1)
-    {
-        value = func_001a41b0(work->renderTask, 0);
-        work->color[0] = (u8)*value;
-        value = func_001a41b0(work->renderTask, 1);
-        work->color[1] = (u8)*value;
-        value = func_001a41b0(work->renderTask, 2);
-        work->color[2] = (u8)*value;
-        value = func_001a41b0(work->renderTask, 3);
-        work->color[3] = (u8)*value;
-
-        if ((DAT_007e094e & 0x20) != 0)
-        {
-            work->state = 2;
-        }
-    }
-    else if (work->state == 0)
-    {
-        work->renderTask = func_001a3ae0(task, 0x100, 200, 0);
+    case 0:
+        work->renderTask = func_001a3ae0(task, 0x100, 200);
         func_001a4110(work->renderTask,
-                      func_001a3f20(work->renderTask, (const void*)0x007cc1bc),
+                      func_001a3f20(work->renderTask,
+                                    &D_007CC1BC),
                       work->color[0], 0, 0xff, 0);
         func_001a4110(work->renderTask,
-                      func_001a3f20(work->renderTask, (const void*)0x007cc1c0),
+                      func_001a3f20(work->renderTask,
+                                    &D_007CC1C0),
                       work->color[1], 0, 0xff, 0);
         func_001a4110(work->renderTask,
-                      func_001a3f20(work->renderTask, (const void*)0x007cc1c8),
+                      func_001a3f20(work->renderTask,
+                                    &D_007CC1C8),
                       work->color[2], 0, 0xff, 0);
         func_001a4110(work->renderTask,
-                      func_001a3f20(work->renderTask, (const void*)0x007cc1d0),
+                      func_001a3f20(work->renderTask,
+                                    (const u8*)&D_007CC1D0),
                       work->color[3], 0, 0xff, 0);
         func_001a3bf0(work->renderTask, 1);
         work->state++;
+        break;
+    case 1:
+        work->color[0] = (u8)*func_001a41b0(work->renderTask, 0);
+        work->color[1] = (u8)*func_001a41b0(work->renderTask, 1);
+        work->color[2] = (u8)*func_001a41b0(work->renderTask, 2);
+        work->color[3] = (u8)*func_001a41b0(work->renderTask, 3);
+        if ((DAT_007e094e_abs[0] & 0x20) != 0)
+        {
+            work->state = 2;
+        }
+        break;
+    case 2:
+        return KWLNTASK_STOP;
+    default:
+        break;
     }
 
     return KWLNTASK_CONTINUE;
@@ -420,41 +433,41 @@ void K_Draw_RotatePosition(KwlnTask* positionTask, const RwV3d* axis, f32 angle)
     RwMatrixRotate(&work->mat, axis, angle, rwCOMBINEPOSTCONCAT);
     RwMatrixTranslate(&work->mat, &originalPos, rwCOMBINEPOSTCONCAT);
 }
-// FUN_001A5000 NONMATCHING
+// FUN_001A5000
 void* func_001a5000(KwlnTask* task)
 {
-    PositionDrawWork* work;
     RwV3d line[2];
     RwV3d hitPoint;
     RwMatrixTolerance matTolerance;
+    u32 hit;
+    PositionDrawWork* work;
 
-    work = (PositionDrawWork*)task->workData;
-    line[0] = work->mat.pos;
-    line[1] = line[0];
+    line[1] = ((PositionDrawWork*)task->workData)->mat.pos;
+    line[0] = line[1];
     line[1].y -= 800.0f;
 
-    if (K_FldFrame_Raycast(line, &hitPoint) == 1)
+    hit = K_FldFrame_Raycast(line, &hitPoint);
+    if (hit == 1)
     {
         hitPoint.y += 3.0f;
+        work = (PositionDrawWork*)task->workData;
         work->mat.pos = hitPoint;
         RwEngineGetMatrixTolerances(&matTolerance);
         RwMatrixOptimize(&work->mat, &matTolerance);
         RwMatrixUpdate(&work->mat);
     }
 
-    return KWLNTASK_CONTINUE;
+    return;
 }
 
-// FUN_001A50F0 NONMATCHING
+// FUN_001A50F0
 void* func_001a50f0(KwlnTask* task)
 {
     KDrawArcTaskWork* work;
-    KDrawArcData* render;
-    KDrawRenderManager* manager;
-    KDrawRenderObject* renderObject;
+    volatile u8 unused[0x10];
     RwMatrix modelMatrix;
-    RwCamera* camera;
     RwSphere* sphere;
+    volatile void (**stateSet)(u32 state, u32 value);
 
     work = (KDrawArcTaskWork*)task->workData;
     if (work->state == 0)
@@ -462,32 +475,29 @@ void* func_001a50f0(KwlnTask* task)
         return KWLNTASK_CONTINUE;
     }
 
-    render = work->render;
-    manager = render->manager;
     if (work->model != NULL)
     {
         modelMatrix = *mdlGetMatrix(work->model);
-        RwFrameTransform(manager->frame, &modelMatrix, rwCOMBINEREPLACE);
+        func_004cb7f0(work->render->manager->frame, &modelMatrix, 0);
     }
 
-    camera = kwlnGetMainCamera();
-    if (RwCameraBeginUpdate(camera) != NULL)
+    if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
     {
-        (*D_00960090)(7, 2);
-        (*D_00960090)(6, 1);
-        (*D_00960090)(8, 0);
-        (*D_00960090)(0xc, 1);
+        stateSet = (volatile void (**)(u32, u32))D_00960090_abs;
+        (*stateSet)(7, 2);
+        (*stateSet)(6, 1);
+        (*stateSet)(8, 0);
+        (*stateSet)(0xc, 1);
         RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)0x44);
         RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)0x717fb);
 
-        renderObject = manager->renderObject;
-        sphere = func_004912b0(renderObject);
-        if (RwCameraFrustumTestSphere(DAT_00960070, sphere) != rwSPHEREOUTSIDE)
+        sphere = func_004912b0(work->render->manager);
+        if (RwCameraFrustumTestSphere(DAT_00960070_abs[0], sphere) != 0)
         {
-            renderObject->renderCallback();
+            work->render->manager->renderCallback(work->render->manager);
         }
 
-        RwCameraEndUpdate(camera);
+        RwCameraEndUpdate(kwlnGetMainCamera());
     }
 
     return KWLNTASK_CONTINUE;
@@ -515,6 +525,7 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     KDrawArcData* render;
     KDrawColorData* colorData;
     KDrawRenderObject* renderObject;
+    volatile f32 colorValue;
     KDrawRenderGeometry* geometry;
     RwSphere bounds;
     RwFrame* frame;
@@ -608,22 +619,21 @@ void func_001a56d0(KwlnTask* task, const RwV3d* center)
     render->center = *center;
 }
 
-// FUN_001A5700 NONMATCHING
+// FUN_001A5700
 void func_001a5700(KwlnTask* task, const RwRGBA* color)
 {
     KDrawArcTaskWork* work;
     KDrawRenderObject* renderObject;
-    u32 i;
+    s32 i;
+    RwRGBA* colors;
 
     work = (KDrawArcTaskWork*)task->workData;
     renderObject = work->render->manager->renderObject;
     func_00493370(renderObject, 0xfff);
+    colors = (RwRGBA*)renderObject->colors;
     for (i = 0; i < 0x22; i++)
     {
-        renderObject->colors[i * 4 + 0] = color->r;
-        renderObject->colors[i * 4 + 1] = color->g;
-        renderObject->colors[i * 4 + 2] = color->b;
-        renderObject->colors[i * 4 + 3] = color->a;
+        colors[i] = *color;
     }
     func_004933d0(renderObject);
 }
