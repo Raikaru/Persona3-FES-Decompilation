@@ -2095,12 +2095,12 @@ zero:
     return 0;
 }
 
-// FUN_003def40 NONMATCHING
+// FUN_003def40
 s32 fclCombineList003def40(s32 width, s32 count, s32 index)
 {
     s32 step;
 
-    if (!(count < 2)) {
+    if (count > 1) {
         step = (index * width) / (count - 1);
     } else {
         step = 0;
