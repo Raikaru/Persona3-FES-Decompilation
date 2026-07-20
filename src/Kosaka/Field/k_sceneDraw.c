@@ -49,10 +49,16 @@ extern void func_0034fdf0(Model* mdl, RwV3d* position);
 extern void func_004944b0(RpLight* light, const RwRGBAReal* color);
 extern void func_0049c3d0(RpWorld* world, RpLight* light);
 extern void func_0049c480(RpWorld* world, RpLight* light);
-void func_0019db10(KwlnTask* task);
-void func_0019de80(KwlnTask* task);
+s32 func_0019db10(KwlnTask* task);
+s32 func_0019de80(KwlnTask* task);
+#pragma alias uGpffffb3dc gCurrWorldIdx
+extern u32 uGpffffb3dc;
 s32 func_0019e1f0(const void* charPtr1, const void* charPtr2);
 extern u32 gUnk_008668f0[];
+extern u8 DAT_007ce0e8;
+extern u8 DAT_007ce0ec;
+extern u8 DAT_007ce0f0;
+extern u8 DAT_007ce0f4;
 
 #define SCENEDRAW_RESRC_PTR(resource, type, offset) (*(type**)((u8*)(resource) + (offset)))
 #define SCENEDRAW_RESRC_COLOR(resource, offset)     ((RwRGBAReal*)((u8*)(resource) + (offset)))
@@ -254,8 +260,10 @@ void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
     return KWLNTASK_CONTINUE;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0019db10 NONMATCHING
-void func_0019db10(KwlnTask* task)
+s32 func_0019db10(KwlnTask* task)
 {
     ResrcModelFld* modelFld;
     ResrcFld* fld;
@@ -270,9 +278,12 @@ void func_0019db10(KwlnTask* task)
     directionalColor = kwlnGetDirectionalLight()->color;
     directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
 
-    if (fld != NULL)
+    if (fld == NULL)
     {
-        func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        return 0;
+    }
+    
+        func_0049c480(kwlnGetWorld(uGpffffb3dc), func_00198580());
         func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
         func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
         RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
@@ -281,7 +292,7 @@ void func_0019db10(KwlnTask* task)
 
         if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
         {
-            if (gCurrWorldIdx == 1)
+            if (uGpffffb3dc == 1)
             {
                 setRenderState = &rwGlobals.device.setRenderState;
                 (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
@@ -315,14 +326,15 @@ void func_0019db10(KwlnTask* task)
             K_Assert("k_sceneDraw.c", 0x151);
         }
 
-        func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_0049c3d0(kwlnGetWorld(uGpffffb3dc), func_00198580());
         func_004944b0(kwlnGetAmbientLight(), &ambientColor);
         func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
         RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
                          &directionalMatrix,
                          rwCOMBINEREPLACE);
-    }
+    return 0;
 }
+#pragma pop
 
 // FUN_0019de40
 void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
@@ -334,9 +346,10 @@ void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 
     return KWLNTASK_CONTINUE;
 }
-
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0019de80 NONMATCHING
-void func_0019de80(KwlnTask* task)
+s32 func_0019de80(KwlnTask* task)
 {
     ResrcModelFld* modelFld;
     ResrcFld* fld;
@@ -351,9 +364,11 @@ void func_0019de80(KwlnTask* task)
     directionalColor = kwlnGetDirectionalLight()->color;
     directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
 
-    if (fld != NULL)
+    if (fld == NULL)
     {
-        func_0049c480(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        return 0;
+    }
+        func_0049c480(kwlnGetWorld(uGpffffb3dc), func_00198580());
         func_004944b0(kwlnGetAmbientLight(), K_Scene_GetFldAmbLightColor());
         func_004944b0(kwlnGetDirectionalLight(), (const RwRGBAReal*)func_0019fd70());
         RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
@@ -362,7 +377,7 @@ void func_0019de80(KwlnTask* task)
 
         if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
         {
-            if (gCurrWorldIdx == 1)
+            if (uGpffffb3dc == 1)
             {
                 setRenderState = &rwGlobals.device.setRenderState;
                 (*setRenderState)(rwRENDERSTATEFOGENABLE, (void*)true);
@@ -396,15 +411,16 @@ void func_0019de80(KwlnTask* task)
             K_Assert("k_sceneDraw.c", 0x198);
         }
 
-        func_0049c3d0(kwlnGetWorld(gCurrWorldIdx), func_00198580());
+        func_0049c3d0(kwlnGetWorld(uGpffffb3dc), func_00198580());
         func_004944b0(kwlnGetAmbientLight(), &ambientColor);
         func_004944b0(kwlnGetDirectionalLight(), &directionalColor);
         RwFrameTransform((RwFrame*)kwlnGetDirectionalLight()->object.object.parent,
                          &directionalMatrix,
                          rwCOMBINEREPLACE);
-    }
-}
 
+    return 0;
+}
+#pragma pop
 // FUN_0019e1b0
 void* K_SceneDraw_UpdateDrwTrnsFldObjPCTask(KwlnTask* drwTrnsFldObjPCTask)
 {
@@ -1000,12 +1016,21 @@ void K_Scene_SetShouldSortNpcs(u32 shouldSortNpcs)
 // FUN_0019f8f0 NONMATCHING
 void func_0019f8f0(const RwRGBAReal* color)
 {
+    volatile u8 redByte;
+    volatile u8 greenByte;
+    volatile u8 blueByte;
+    volatile u8 alphaByte;
     ResrcFld* fld;
     RwRGBA* clearColor;
-    u32 red;
-    u32 green;
-    u32 blue;
-    u32 alpha;
+    u32 fogColor;
+    f32 redf;
+    f32 greenf;
+    f32 bluef;
+    f32 alphaf;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 alpha;
 
     fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     while (fld != NULL)
@@ -1024,32 +1049,82 @@ void func_0019f8f0(const RwRGBAReal* color)
     }
 
     clearColor = kwlnGetClearColor();
-    if (clearColor == NULL)
-    {
-        return;
-    }
+    redByte = clearColor->r;
+    greenByte = clearColor->g;
+    blueByte = clearColor->b;
+    alphaByte = clearColor->a;
 
-    red = (u32)((f32)clearColor->r * color->r);
-    green = (u32)((f32)clearColor->g * color->g);
-    blue = (u32)((f32)clearColor->b * color->b);
-    alpha = (u32)((f32)clearColor->a * color->a);
-    if (red > 255) red = 255;
-    if (green > 255) green = 255;
-    if (blue > 255) blue = 255;
-    if (alpha > 255) alpha = 255;
+    if ((s8)redByte >= 0)
+        redf = (f32)redByte;
+    else
+        redf = (f32)(((u32)redByte >> 1) | (redByte & 1)) * 2.0f;
+    red = (s32)(redf * color->r);
+
+    if ((s8)greenByte >= 0)
+        greenf = (f32)greenByte;
+    else
+        greenf = (f32)(((u32)greenByte >> 1) | (greenByte & 1)) * 2.0f;
+    green = (s32)(greenf * color->g);
+
+    if ((s8)blueByte >= 0)
+        bluef = (f32)blueByte;
+    else
+        bluef = (f32)(((u32)blueByte >> 1) | (blueByte & 1)) * 2.0f;
+    blue = (s32)(bluef * color->b);
+
+    if ((s8)alphaByte >= 0)
+        alphaf = (f32)alphaByte;
+    else
+        alphaf = (f32)(((u32)alphaByte >> 1) | (alphaByte & 1)) * 2.0f;
+    alpha = (s32)(alphaf * color->a);
+
+    if ((u32)alpha >= 0x100) alpha = 0xff;
+    if ((u32)blue >= 0x100) blue = 0xff;
+    if ((u32)green >= 0x100) green = 0xff;
+    if ((u32)red >= 0x100) red = 0xff;
     kwlnSetClearColor((u8)red, (u8)green, (u8)blue, (u8)alpha);
 
-    red = (u32)((f32)gFogRed * color->r);
-    green = (u32)((f32)gFogGreen * color->g);
-    blue = (u32)((f32)gFogBlue * color->b);
-    alpha = (u32)((f32)gFogAlpha * color->a);
-    if (red > 255) red = 255;
-    if (green > 255) green = 255;
-    if (blue > 255) blue = 255;
-    if (alpha > 255) alpha = 255;
+    fogColor = (u32)DAT_007ce0f0 |
+               ((u32)DAT_007ce0ec << 8) |
+               ((u32)DAT_007ce0e8 << 16) |
+               ((u32)DAT_007ce0f4 << 24);
+
+    redByte = (u8)(fogColor >> 16);
+    greenByte = (u8)(fogColor >> 8);
+    blueByte = (u8)fogColor;
+    alphaByte = (u8)(fogColor >> 24);
+
+    if ((s8)redByte >= 0)
+        redf = (f32)redByte;
+    else
+        redf = (f32)(((u32)redByte >> 1) | (redByte & 1)) * 2.0f;
+    red = (s32)(redf * color->r);
+
+    if ((s8)greenByte >= 0)
+        greenf = (f32)greenByte;
+    else
+        greenf = (f32)(((u32)greenByte >> 1) | (greenByte & 1)) * 2.0f;
+    green = (s32)(greenf * color->g);
+
+    if ((s8)blueByte >= 0)
+        bluef = (f32)blueByte;
+    else
+        bluef = (f32)(((u32)blueByte >> 1) | (blueByte & 1)) * 2.0f;
+    blue = (s32)(bluef * color->b);
+
+    if ((s8)alphaByte >= 0)
+        alphaf = (f32)alphaByte;
+    else
+        alphaf = (f32)(((u32)alphaByte >> 1) | (alphaByte & 1)) * 2.0f;
+    alpha = (s32)(alphaf * color->a);
+
+    if ((u32)red >= 0x100) red = 0xff;
     gFogRed = (u8)red;
+    if ((u32)green >= 0x100) green = 0xff;
     gFogGreen = (u8)green;
+    if ((u32)blue >= 0x100) blue = 0xff;
     gFogBlue = (u8)blue;
+    if ((u32)alpha >= 0x100) alpha = 0xff;
     gFogAlpha = (u8)alpha;
 }
 
@@ -1626,44 +1701,40 @@ u32 func_001a11d0()
     return value;
 }
 
+
 // FUN_001a1210 NONMATCHING
-void func_001a1210(void* camera, const RwV3d* target, const RwV3d* position, const RwV3d* upVector)
+void func_001a1210(RwCamera* camera, const RwV3d* target, const RwV3d* position, const RwV3d* upVector)
 {
-    u8* data;
-    RwV3d* right;
-    RwV3d* up;
-    RwV3d* at;
-    RwV3d* cameraPosition;
     RwV3d defaultUp;
+    RwFrame* data;
+    RwMatrix* right;
+    RwV3d* up;
 
-    data = (u8*)(*(void**)((u8*)camera + 4));
-    right = (RwV3d*)(data + 0x10);
-    up = (RwV3d*)(data + 0x20);
-    at = (RwV3d*)(data + 0x30);
-    cameraPosition = (RwV3d*)(data + 0x40);
-    defaultUp.x = 0.0f;
-    defaultUp.y = 1.0f;
-    defaultUp.z = 0.0f;
-
-    *cameraPosition = *target;
-    at->x = position->x - cameraPosition->x;
-    at->y = position->y - cameraPosition->y;
-    at->z = position->z - cameraPosition->z;
-    RwV3dNormalize(at, at);
-    if (upVector == NULL)
+    up = &defaultUp;
+    *(s64*)&defaultUp = *(s64*)0x00678ab8;
+    defaultUp.z = *(f32*)0x00678ac0;
+    if (upVector != NULL)
     {
-        upVector = &defaultUp;
+        up = (RwV3d*)upVector;
     }
 
-    right->x = at->y * upVector->z - at->z * upVector->y;
-    right->y = at->z * upVector->x - at->x * upVector->z;
-    right->z = at->x * upVector->y - at->y * upVector->x;
-    RwV3dNormalize(right, right);
-    up->x = at->y * right->z - at->z * right->y;
-    up->y = at->z * right->x - at->x * right->z;
-    up->z = at->x * right->y - at->y * right->x;
-    RwV3dNormalize(up, up);
-    RwMatrixUpdate((RwMatrix*)(data + 0x10));
+    data = camera->object.object.parent;
+    right = &data->modelling;
+    data->modelling.pos = *target;
+    right->at.x = position->x - data->modelling.pos.x;
+    right->at.y = position->y - data->modelling.pos.y;
+    right->at.z = position->z - data->modelling.pos.z;
+    RwV3dNormalize(&right->at, &right->at);
+
+    right->right.x = right->at.y * up->z - right->at.z * up->y;
+    right->right.y = right->at.z * up->x - right->at.x * up->z;
+    right->right.z = right->at.x * up->y - right->at.y * up->x;
+    RwV3dNormalize(&right->right, &right->right);
+    right->up.x = right->at.y * right->right.z - right->at.z * right->right.y;
+    right->up.y = right->at.z * right->right.x - right->at.x * right->right.z;
+    right->up.z = right->at.x * right->right.y - right->at.y * right->right.x;
+    RwV3dNormalize(&right->up, &right->up);
+    RwMatrixUpdate(right);
     func_004cb270(data);
 }
 
