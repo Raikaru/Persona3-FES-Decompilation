@@ -131,6 +131,7 @@ void H_Dbprt_Main()
     H_Dbprt_DrawLog();
 }
 
+
 // FUN_00104710 NONMATCHING
 static void H_Dbprt_DrawText3D(void)
 {
@@ -181,7 +182,7 @@ static void H_Dbprt_DrawText3D(void)
 }
 
 // FUN_00104D10 NONMATCHING
-void H_Dbprt_FmtAt(RwV2d pos, const char* fmt, ...)
+void H_Dbprt_FmtAt(volatile RwV2d pos, const char* fmt, ...)
 {
     char buffer[HDBPRT_LOG_MAXCHAR];
     s32 character;
@@ -197,11 +198,21 @@ void H_Dbprt_FmtAt(RwV2d pos, const char* fmt, ...)
     baseX = (s32)pos.x;
     x = baseX;
     y = (s32)pos.y;
-    for (character = 0;
-         character < HDBPRT_LOG_MAXCHAR && pos.x < HDBPRT_GRID_WIDTH && pos.y < HDBPRT_GRID_HEIGHT &&
-             x < HDBPRT_GRID_WIDTH && y < HDBPRT_GRID_HEIGHT && (glyph = buffer[character]) != '\0';
-         character++)
+    character = 0;
+    while (character < HDBPRT_LOG_MAXCHAR)
     {
+        if (pos.x >= HDBPRT_GRID_WIDTH || pos.y >= HDBPRT_GRID_HEIGHT ||
+            x >= HDBPRT_GRID_WIDTH || y >= HDBPRT_GRID_HEIGHT)
+        {
+            break;
+        }
+
+        glyph = buffer[character];
+        if (glyph == '\0')
+        {
+            break;
+        }
+
         if (glyph == '\n')
         {
             x = baseX;
@@ -219,6 +230,7 @@ void H_Dbprt_FmtAt(RwV2d pos, const char* fmt, ...)
             }
             x++;
         }
+        character++;
     }
 }
 
@@ -244,8 +256,8 @@ static inline void H_Dbprt_AppendText3D(HDbText3D* text)
     }
 }
 
-// FUN_00104EB0 NONMATCHING
-void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...)
+// FUN_00104EB0
+void H_Dbprt_FmtCol3D(RwV2d pos, volatile RwRGBA color, const char* fmt, ...)
 {
     HDbText3D* text;
     va_list args;
@@ -257,11 +269,8 @@ void H_Dbprt_FmtCol3D(RwV2d pos, RwRGBA color, const char* fmt, ...)
     text->pos.x = pos.x;
     text->pos.y = pos.y;
     text->pos.z = 0.0f;
+    text->color = color;
     text->zOffset = 0.0f;
-    text->color.r = color.r;
-    text->color.g = color.g;
-    text->color.b = color.b;
-    text->color.a = color.a;
 
     H_Dbprt_AppendText3D(text);
 }
@@ -288,8 +297,8 @@ void H_Dbprt_Fmt3D(RwV2d pos, const char* fmt, ...)
     H_Dbprt_AppendText3D(text);
 }
 
-// FUN_001050E0 NONMATCHING
-void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, RwRGBA color, const char* fmt, ...)
+// FUN_001050E0
+void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, volatile RwRGBA color, const char* fmt, ...)
 {
     HDbText3D* text;
     va_list args;
@@ -302,10 +311,7 @@ void H_Dbprt_FmtZOff3D(RwV2d pos, f32 zOffset, RwRGBA color, const char* fmt, ..
     text->pos.y = pos.y;
     text->pos.z = 0.0f;
     text->zOffset = zOffset;
-    text->color.r = color.r;
-    text->color.g = color.g;
-    text->color.b = color.b;
-    text->color.a = color.a;
+    text->color = color;
 
     H_Dbprt_AppendText3D(text);
 }
