@@ -38,7 +38,7 @@ extern u8 * PTR_s_Go_home_006a25c0;
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 u64 FUN_003ae420(u64 param_1,int param_2);
-u64 FUN_003ae560(u64 param_1,u64 param_2);
+u64 FUN_003ae560(u64 param_1,int param_2);
 u64 FUN_003ae650(u64 param_1,int param_2);
 u64 FUN_003ae750(u64 param_1,int param_2);
 u64 FUN_003ae870(u64 param_1,u64 param_2);
@@ -91,127 +91,68 @@ void FUN_003af7a0(long param_1,u64 param_2);
 
 
 u64 FUN_003ae420(u64 param_1,int param_2)
-
-
-
 {
-
   char cVar1;
-
   u8 bVar2;
-
   u32 uVar3;
-
   u8 *pbVar4;
-
-  int iVar5;
-
   u16 uVar6;
 
-  
-
   pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
   bVar2 = pbVar4[1];
-
   if (bVar2 == 0xff) {
-
     uVar3 = 0;
-
+  } else {
+    uVar3 = (u8)(bVar2 - 1);
   }
-
-  else {
-
-    uVar3 = (u32)(u8)(bVar2 - 1);
-
-  }
-
-  uVar3 = uVar3 << 8 | *pbVar4 - 1 & 0xff;
-
-  iVar5 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
-  cVar1 = *(char *)(iVar5 + 3);
-
+  uVar3 = uVar3 << 8 | pbVar4[0] - 1 & 0xff;
+  cVar1 = pbVar4[3];
   if (cVar1 == -1) {
-
     bVar2 = 0;
-
-  }
-
-  else {
-
+  } else {
     bVar2 = cVar1 - 1;
-
   }
-
-  uVar6 = (u16)bVar2 << 8 | *(u8 *)(iVar5 + 2) - 1 & 0xff;
-
-  if (7 < uVar3) {
-
+  uVar6 = (u16)bVar2 << 8 | pbVar4[2] - 1 & 0xff;
+  if ((short)uVar3 < 0 || 7 < uVar3) {
     FUN_0019d3f0("frTagTable.c",0x2d1);
-
   }
-
-  if (((short)uVar6 < 0) || (3 < (short)uVar6)) {
-
+  if ((short)uVar6 < 0 || 3 < (short)uVar6) {
     FUN_0019d3f0("frTagTable.c",0x2d2);
-
   }
-
   FUN_0017c7f0(uVar3,uVar6);
-
   return 0;
-
 }
 #define FUN_003ae420(...) ((u64 (*)(...))FUN_003ae420)(__VA_ARGS__)
 #undef FUN_003ae560
 // FUN_003AE560 NONMATCHING
 
 
-u64 FUN_003ae560(u64 param_1,u64 param_2)
-
-
-
+u64 FUN_003ae560(u64 param_1,int param_2)
 {
-
+  s32 lVar1;
+  u32 uVar3;
   u8 bVar1;
-
-  u32 uVar2;
-
+  u8 **table;
   u8 *pbVar3;
 
-  
-
-  pbVar3 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
-
-  bVar1 = pbVar3[1];
-
-  if (bVar1 == 0xff) {
-
-    bVar1 = 0;
-
+  pbVar3 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  bVar1 = pbVar3[0] - 1;
+  uVar3 = pbVar3[1];
+  if (uVar3 == 0xff) {
+    uVar3 = 0;
+  } else {
+    uVar3 = (u8)(uVar3 - 1);
   }
-
-  else {
-
-    bVar1 = bVar1 - 1;
-
-  }
-
-  uVar2 = FUN_0016e190((u16)bVar1 << 8 | *pbVar3 - 1 & 0xff);
-
-  if (((long)uVar2 < 0) || (6 < uVar2)) {
-
+  uVar3 = uVar3 & 0xff;
+  lVar1 = FUN_0016e190((short)((uVar3 << 8) | (bVar1 & 0xff)));
+  if (lVar1 < 0 || (u32)lVar1 >= 7) {
     FUN_0019d3f0("frTagTable.c",0x2eb);
-
   }
-
   FUN_003b22a0(param_2);
-
-  FUN_003b2020((&PTR_s_Go_home_006a25c0)[(int)uVar2],param_2);
-
+  table = (u8 **)0x006a25c0;
+  table = table + lVar1;
+  FUN_003b2020(*table,param_2);
   return 0;
-
 }
 #define FUN_003ae560(...) ((u64 (*)(...))FUN_003ae560)(__VA_ARGS__)
 #undef FUN_003ae650
@@ -1289,22 +1230,60 @@ u32 FUN_003af390(void)
 // FUN_003AF3A0 NONMATCHING
 u64 FUN_003af3a0(u64 unused, int context)
 {
-  u8 *data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
-  u32 high = data[1] == 0xff ? 0 : (u8)(data[1] - 1);
-  DAT_0095abe0 = high << 8 | (data[0] - 1) & 0xff;
-  high = (s8)data[3] == -1 ? 0 : (u8)(data[3] - 1);
-  DAT_0095abe4 = high << 8 | (data[2] - 1) & 0xff;
+  u8 *data;
+  u32 low;
+  u32 high;
+  u32 value;
+
+  data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = high << 8 | low & 0xff;
+  *(u32 *)0x0095abe0 = value;
+  low = data[2] - 1;
+  high = data[3];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = high << 8 | low & 0xff;
+  *(u32 *)0x0095abe4 = value;
   return 0;
 }
 
 // FUN_003AF454 NONMATCHING
 u64 FUN_003af454(u64 unused, int context)
 {
-  u8 *data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
-  u32 high = data[1] == 0xff ? 0 : (u8)(data[1] - 1);
-  DAT_0095abe8 = high << 8 | (data[0] - 1) & 0xff;
-  high = (s8)data[3] == -1 ? 0 : (u8)(data[3] - 1);
-  DAT_0095abec = high << 8 | (data[2] - 1) & 0xff;
+  u8 *data;
+  u32 low;
+  u32 high;
+  u32 value;
+
+  data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = high << 8 | low & 0xff;
+  *(u32 *)0x0095abe8 = value;
+  low = data[2] - 1;
+  high = data[3];
+  if (high == 0xff) {
+    high = 0;
+  } else {
+    high = high - 1;
+  }
+  value = high << 8 | low & 0xff;
+  *(u32 *)0x0095abec = value;
   return 0;
 }
 
@@ -1362,11 +1341,10 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
   int iVar7;
   u32 uVar8;
 
-  iVar7 = *(int *)(param_2 + 0x18);
   iVar6 = *(int *)(param_2 + 0x10);
-  iVar7 = iVar6 + iVar7;
-  iVar7 = iVar7;
-  pbVar4 = (u8 *)iVar7;
+  iVar7 = *(int *)(param_2 + 0x18);
+  iVar6 = iVar6 + iVar7;
+  pbVar4 = (u8 *)iVar6;
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
   if (bVar2 == 0xff) {
