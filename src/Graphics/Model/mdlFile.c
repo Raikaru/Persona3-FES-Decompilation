@@ -351,6 +351,8 @@ void FUN_00324510(int param_1,u64 param_2);
 int FUN_003245b0(int param_1);
  #pragma alias FUN_003245b0_passthru FUN_003245b0
  extern int FUN_003245b0_passthru(void);
+#pragma alias FUN_003245b0_wide FUN_003245b0
+extern u64 FUN_003245b0_wide(void);
 int FUN_003245f0(int param_1);
 u64 FUN_00324680(u64 param_1);
 void FUN_00324740(u64 param_1);
@@ -44863,7 +44865,7 @@ u64 FUN_00347fc0(void)
 
   
 
-  uVar1 = ((code)FUN_003245b0)();
+  uVar1 = FUN_003245b0_wide();
 
   uVar2 = (*DAT_00960178)(0x14,0x40000);
 
