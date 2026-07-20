@@ -632,6 +632,7 @@ typedef struct BtlCameraQuatBlend
 extern void FUN_0027f7c0(BtlUnit* unit, RwV3d* out, void* p3, void* p4);
 extern RwV3d D_00697880;
 extern float fGpffff8094;
+#pragma alias fGpffff8094 DAT_007cad84
 extern float fGpffff8070;
 extern void FUN_004bdde0(f32* quat, const f32* axis, f32 angle, s32 mode);
 extern RwV3d D_006978A0;
@@ -1125,7 +1126,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         distance = unit->sphereRadius * unit->scale;
         btlUnitGetSphereWorldCenter(unit, &sphereCenter);
         RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
-        half = 0.5f * distance;
+        half = distance * 0.5f;
         scaled.x = forward.x * half;
         scaled.y = forward.y * half;
         scaled.z = forward.z * half;
@@ -3860,7 +3861,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
     FUN_002a3110((u16*)camera, param_2);
 }
 
-// FUN_002b17a0 NONMATCHING
+// FUN_002b17a0
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
 {
@@ -3891,6 +3892,7 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     u32 index;
     f32 tempHalf;
     f32 sourceProduct;
+    f32 scaledDistance;
     unit = camera->action->unit;
     target = camera->action->target.targetedActions[0]->unit;
     FUN_002a4470((f32*)&work.frames[0], (f32*)((u8*)camera + 0x9c));
@@ -3927,13 +3929,19 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     dot = work.pair[0] * work.pair[2] + work.pair[1] * work.pair[3];
     if (dot < 0.0f)
         goto negative_distance;
-    distance = distance * fGpffff8094;
+    __asm__ volatile ("mul.s %0, %1, %2"
+                      : "=f"(scaledDistance)
+                      : "f"(fGpffff8094), "f"(distance));
+    distance = scaledDistance;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
     goto distance_done;
 negative_distance:
-    distance = distance * 0.5f;
+    __asm__ volatile ("mul.s %0, %1, %2"
+                      : "=f"(scaledDistance)
+                      : "f"(0.5f), "f"(distance));
+    distance = scaledDistance;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
@@ -3949,7 +3957,7 @@ distance_done:
     work.difference.z = work.frames[0].pos.z - work.scaled.z;
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
-    index = 1;
+    __asm__ volatile ("daddiu %0, $zero, 1" : "=r"(index));
     while ((s32)(index & 0xffff) < 4)
     {
         if (dot < 0.0f)
@@ -4609,13 +4617,13 @@ void FUN_002b2eb0(int param_1, float *param_2)
     f32 unkB8;
     f32 result;
   } work;
+  f32 initial;
   f32 ratio;
   f32 angle;
-  register f32 initial;
   f32 inverse;
   f32 curve;
   f32 poly;
-  register f32 product;
+  f32 product;
 
   initial = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
   ratio = initial / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
@@ -5134,7 +5142,7 @@ void FUN_002b41e0(BtlCamera* camera)
     work.delta.y = work.current.pos.y - work.center.y;
     work.delta.z = work.current.pos.z - work.center.z;
     halfDistance = RwV3dLength(&work.delta) * 0.5f;
-    desiredDistance = (1.5f * radius) /
+    desiredDistance = (radius * 1.5f) /
                       FUN_0052e930(0.5f * camera->fovRad);
 
     RtQuatTransformVectors(&work.delta, &D_00697890, 1, &unit->rot);
