@@ -484,6 +484,8 @@ extern code FUN_001a9760;
 #pragma alias FUN_001a9760_typed FUN_001a9760
 extern void FUN_001a9760_typed(void *task, u32 value, void *position, u32 sound, u32 flags);
 extern code FUN_001aaa20;
+#pragma alias FUN_001aaa20_typed FUN_001aaa20
+extern void *FUN_001aaa20_typed(void *parent, u32 value);
 extern code FUN_001aaac0;
 #pragma alias FUN_001aaac0_typed FUN_001aaac0
 extern void FUN_001aaac0_typed(void *task, u32 value);
@@ -529,8 +531,12 @@ extern long FUN_001c7130(u32 param_1, u32 param_2);
 extern long FUN_001c7160(u32 param_1, void *param_2, void *param_3);
 extern code FUN_001c7270;
 extern code FUN_001c7b10;
+#pragma alias FUN_001c7b10_typed FUN_001c7b10
+extern u32 FUN_001c7b10_typed(const void *fldUnit);
 extern void FUN_001cd670(u32 param_1, int param_2);
 extern code FUN_001d0110;
+#pragma alias FUN_001d0110_typed FUN_001d0110
+extern void FUN_001d0110_typed(void *unit);
 extern code FUN_001d22a0;
 #pragma alias FUN_001d22a0_typed FUN_001d22a0
 extern void FUN_001d22a0_typed(void *work);
@@ -556,9 +562,17 @@ extern code FUN_001e13c0;
 #pragma alias FUN_001e13c0_typed FUN_001e13c0
 extern f32 FUN_001e13c0_typed(void);
 extern code FUN_00269690;
+#pragma alias FUN_00269690_typed FUN_00269690
+extern u32 FUN_00269690_typed(s32 mode, s32 index, u32 flags);
 extern code FUN_002699a0;
+#pragma alias FUN_002699a0_typed FUN_002699a0
+extern void FUN_002699a0_typed(u32 param_1);
 extern code FUN_002699d0;
+#pragma alias FUN_002699d0_typed FUN_002699d0
+extern void FUN_002699d0_typed(u32 param_1);
 extern code FUN_00269a10;
+#pragma alias FUN_00269a10_typed FUN_00269a10
+extern void FUN_00269a10_typed(u32 param_1, void *param_2);
 extern code FUN_00269c80;
 extern code FUN_00269ca0;
 extern code FUN_002ff340;
@@ -645,11 +659,17 @@ extern code FUN_00429e80;
 extern void FUN_00429e80_typed(int param_1, u8 param_2);
 extern int FUN_00488f30(void);
 extern code FUN_004c31b0;
+#pragma alias FUN_004c31b0_ym FUN_004c31b0
+extern void FUN_004c31b0_ym(f32 angle, void *matrix, const void *axis, u32 mode);
 extern code FUN_004c3880;
 extern code FUN_004c38c0;
+#pragma alias FUN_004c38c0_typed FUN_004c38c0
+extern u32 FUN_004c38c0_typed(void);
 extern float FUN_004c69f0(float *param_1, float *param_2);
 extern code FUN_004c6ac0;
 extern code FUN_004c6be0;
+#pragma alias FUN_004c6be0_typed FUN_004c6be0
+extern void FUN_004c6be0_typed(float *out, const float *basis, void *source);
 extern code FUN_004d0f00;
 extern u32 FUN_004d1260(u32 param_1, int param_2);
 extern code FUN_004d7f60;
@@ -11570,7 +11590,7 @@ void FUN_00447ad0(int param_1)
     FUN_00195020_y2();
     DAT_007ce6ac = 0;
   }
-  ((code)FUN_002699a0)(*(u32 *)(iVar1 + 0x47c));
+  FUN_002699a0_typed(*(u32 *)(iVar1 + 0x47c));
   (*DAT_0096017c)(*(u32 *)(param_1 + 0x3c));
   return;
 }
@@ -11603,7 +11623,7 @@ u64 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
     puVar4[600] = 0;
     puVar4[0x259] = 0;
     *(u32 *)(puVar4 + 0x480) = 0;
-    uVar1 = ((code)FUN_00269690)(1,0x18,0x10);
+    uVar1 = FUN_00269690_typed(1,0x18,0x10);
     *(u32 *)(puVar4 + 0x47c) = uVar1;
     *(u16 *)(puVar4 + 0x958) = 0;
     *(u16 *)(puVar4 + 0x95a) = 6;
@@ -12479,9 +12499,9 @@ void FUN_0044a990(int param_1,u32 *param_2)
   FUN_004d7f60_typed(2,0x44);
   FUN_004d7f60_typed(3,0x717fb);
   (*DAT_00960090)(1,*param_2);
-  ((code)FUN_002699d0)(*(u32 *)(param_1 + 0x47c));
+  FUN_002699d0_typed(*(u32 *)(param_1 + 0x47c));
   pcStack_8 = (code *)&FUN_0044a790;
-  ((code)FUN_00269a10)(*(u32 *)(param_1 + 0x47c),&pcStack_8);
+  FUN_00269a10_typed(*(u32 *)(param_1 + 0x47c),&pcStack_8);
   return;
 }
 
@@ -12576,7 +12596,7 @@ u64 FUN_0044ad20(u64 param_1,char param_2)
     piVar4 = (int *)((u8 *)DAT_0086ef2c + iVar5);
     if (*piVar4 == 4) {
       puVar6[2] = 3;
-      uVar1 = ((code)FUN_001aaa20)(uVar3,(u8 *)DAT_0086eda0 + iVar5);
+      uVar1 = (u32)FUN_001aaa20_typed((void *)(uVar3),(u32)((u8 *)DAT_0086eda0 + iVar5));
       *(u32 *)(puVar6 + 0x10) = uVar1;
     }
     puVar6[3] = 0;
@@ -13748,7 +13768,7 @@ void FUN_0044dfc0(u64 param_1)
     if (*(int *)(iVar2 + 0xc) != 0) {
       *(u32 *)(iVar2 + 0xc) = 0;
     }
-    lVar4 = ((code)FUN_001c7b10)((u8 *)DAT_008717a0 + *(char *)(iVar2 + 0x18) * 0x1c0);
+    lVar4 = FUN_001c7b10_typed((const void *)((u8 *)DAT_008717a0 + *(char *)(iVar2 + 0x18) * 0x1c0));
     if (lVar4 == 1) {
       lVar4 = FUN_001d8d80((int)((u8 *)DAT_008717a0 + *(char *)(iVar2 + 0x18) * 0x1c0));
       if (lVar4 == 0) {
@@ -16210,7 +16230,7 @@ u64 FUN_004542c0(char param_1)
     *(u32 *)(puVar3 + 4) = uStack_10;
     *(u32 *)(puVar3 + 8) = uStack_c;
     *(u32 *)(puVar3 + 0xc) = uStack_8;
-    ((code)FUN_001d0110)((u8 *)DAT_0086eda0 + param_1 * 0x1c0);
+    FUN_001d0110_typed((void *)((u8 *)DAT_0086eda0 + param_1 * 0x1c0));
   }
   return uVar2;
 }
@@ -17103,16 +17123,16 @@ void FUN_004561f0(float param_1,int param_2)
     auStack_40[iVar6 * 3 + 2] = auStack_90[iVar6 * 2 + 1];
     auStack_40[iVar6 * 3 + 1] = 0;
   }
-  uVar5 = ((code)FUN_004c38c0)();
+  uVar5 = FUN_004c38c0_typed();
   if (0.0 <= param_1) {
     param_1 = param_1 - 180.0;
   }
   else {
     param_1 = param_1 + 180.0;
   }
-  ((code)FUN_004c31b0)(param_1 + *(float *)(iVar1 + 0x138),uVar5,&uStack_10,2);
+  FUN_004c31b0_ym(param_1 + *(float *)(iVar1 + 0x138),(void *)(uVar5),(const void *)(&uStack_10),2);
   for (iVar6 = 0; iVar6 < 4; iVar6 = iVar6 + 1) {
-    ((code)FUN_004c6be0)(afStack_70 + iVar6 * 3,auStack_40 + iVar6 * 3,uVar5);
+    FUN_004c6be0_typed((float *)(afStack_70 + iVar6 * 3),(const float *)(auStack_40 + iVar6 * 3),(void *)(uVar5));
     iVar4 = iVar1 + iVar6 * 0x40;
     *(float *)(iVar4 + 0x10) = *(float *)(iVar1 + 0x120) + afStack_70[iVar6 * 3];
     *(float *)(iVar4 + 0x14) = *(float *)(iVar1 + 0x124) + afStack_70[iVar6 * 3 + 2];
