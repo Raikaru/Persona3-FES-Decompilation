@@ -3,6 +3,11 @@ typedef struct YajimaVec2 {
     f32 x;
     f32 y;
 } YajimaVec2;
+typedef struct YajimaVec3 {
+    f32 x;
+    f32 y;
+    f32 z;
+} YajimaVec3;
 typedef int (*code)(...);
 char cGpffffb9d4;
 char cGpffffb9d8;
@@ -156,10 +161,14 @@ u32 DAT_0086e80c;
 u32 DAT_0086eda0;
 u32 DAT_0086ede8;
 u32 DAT_0086edf4;
+#pragma alias DAT_0086edf4_abs DAT_0086edf4
+extern u8 DAT_0086edf4_abs[];
 u32 DAT_0086ef2c;
 u32 DAT_008717a0;
 u32 DAT_008717e8[];
 int DAT_008717f4[];
+#pragma alias DAT_008717f4_abs DAT_008717f4
+extern u8 DAT_008717f4_abs[];
 u32 DAT_00871948;
 u32 DAT_008719a8;
 u32 DAT_008719b4;
@@ -440,85 +449,42 @@ u32 FUN_004244e0(void)
 
 
 u32 FUN_004245c0(void)
-
-
-
 {
-
   short sVar1;
-
   u16 uVar2;
-
   short sVar3;
-
   int iVar4;
-
   int iVar5;
-
-  long lVar6;
-
+  int lVar6;
   u32 uVar7;
-
   int iVar8;
 
-  
-
   uVar7 = 0xffffffffffffffff;
-
   lVar6 = scrGetIntPara(0);
-
   iVar4 = scrGetIntPara(1);
-
   if ((lVar6 < 1) || (0xb < lVar6)) {
-
     scrSetIntReturnVal(0);
-
-  }
-
-  else {
-
+  } else {
     sVar1 = (short)lVar6;
-
     iVar5 = func_0016f490(sVar1 + 0x100);
-
     if ((iVar4 < iVar5) && (0 < iVar5)) {
-
       uVar2 = datGetEquipmentId(sVar1 + 0x100,iVar4);
-
       scrSetIntReturnVal(uVar2);
-
-    }
-
-    else {
-
+    } else {
       for (iVar8 = 0; iVar8 < 0x14; iVar8 = iVar8 + 1) {
-
         sVar3 = func_00170ab0(sVar1,(short)iVar8);
-
         if (0 < sVar3) {
-
           if (iVar4 == iVar5) {
-
             uVar7 = func_00170a40(sVar1,(short)iVar8);
-
             uVar7 = uVar7 & 0xffff;
-
           }
-
           iVar5 = iVar5 + 1;
-
         }
-
       }
-
       scrSetIntReturnVal(uVar7);
-
     }
-
   }
-
   return 1;
-
 }
 
 // FUN_00424730 NONMATCHING
@@ -540,7 +506,7 @@ u32 FUN_00424730(void)
 
   int iVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
@@ -5216,82 +5182,32 @@ void FUN_00429e90(int param_1,u8 param_2)
 
 
 float FUN_00429ef0(float param_1,char param_2)
-
-
-
 {
-
   int iVar1;
+  YajimaVec3 pos;
 
-  float fStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  K_FldFrame_CtlCopyPos(&fStack_20,*(u32 *)(DAT_008717f4[param_2 * 0x70] + 0x1e0));
-
-  fStack_10 = fStack_20;
-
-  uStack_c = uStack_1c;
-
-  uStack_8 = uStack_18;
-
-  iVar1 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4[param_2 * 0x70] + 0x1e0));
-
-  return (float)(int)((param_1 / 2.0 + 0.0) -
-
-                     (fStack_10 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0));
-
+  K_FldFrame_CtlCopyPos(&pos,
+      *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  iVar1 = K_FldFrame_CtlGetXGrid(
+      *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  return (float)(int)((param_1 / 2.0f + 0.0f) -
+      (pos.x - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f));
 }
 
 // FUN_00429FE0 NONMATCHING
 
 
 float FUN_00429fe0(float param_1,char param_2)
-
-
-
 {
-
   int iVar1;
+  YajimaVec3 pos;
 
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  float fStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
-
-  
-
-  K_FldFrame_CtlCopyPos(&uStack_20,*(u32 *)(DAT_008717f4[param_2 * 0x70] + 0x1e0));
-
-  uStack_10 = uStack_20;
-
-  uStack_c = uStack_1c;
-
-  fStack_8 = fStack_18;
-
-  iVar1 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4[param_2 * 0x70] + 0x1e0));
-
-  return (float)(int)((param_1 / 2.0 + 0.0) -
-
-                     (fStack_8 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0));
-
+  K_FldFrame_CtlCopyPos(&pos,
+      *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  iVar1 = K_FldFrame_CtlGetZGrid(
+      *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  return (float)(int)((param_1 / 2.0f + 0.0f) -
+      (pos.z - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f));
 }
 
 // FUN_0042A0D0 NONMATCHING
@@ -5331,111 +5247,75 @@ float FUN_0042a0d0(float param_1,float *param_2)
 
 
 float FUN_0042a180(float param_1,u32 *param_2)
-
-
-
 {
-
   int iVar1;
+  YajimaVec3 pos = *(YajimaVec3 *)param_2;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
-
-  
-
-  uStack_10 = *param_2;
-
-  uStack_c = param_2[1];
-
-  fStack_8 = (float)param_2[2];
-
-  iVar1 = FUN_0044f170(&uStack_10);
-
-  return (float)(int)((param_1 / 2.0 + 0.0) -
-
-                     (fStack_8 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0));
-
+  iVar1 = FUN_0044f170(&pos);
+  grid = (float)iVar1;
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = pos.z - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return (float)(int)(half + 0.0f - delta * ratio);
 }
 
 // FUN_0042A230 NONMATCHING
 
 
 float FUN_0042a230(float param_1,char param_2)
-
-
-
 {
-
   int iVar1;
+  volatile YajimaVec3 pos;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
-  float fStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  K_FldFrame_CtlCopyPos(&fStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + param_2 * 0x1c0) + 0x1e0));
-
-  fStack_10 = fStack_20;
-
-  uStack_c = uStack_1c;
-
-  uStack_8 = uStack_18;
-
-  iVar1 = K_FldFrame_CtlGetXGrid(*(u32 *)(*(int *)(&DAT_0086edf4 + param_2 * 0x1c0) + 0x1e0));
-
-  return (param_1 / 2.0 + 0.0) - (fStack_10 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0);
-
+  K_FldFrame_CtlCopyPos((YajimaVec3 *)&pos,
+      *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  iVar1 = K_FldFrame_CtlGetXGrid(
+      *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  grid = (float)iVar1;
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = pos.x - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return half + 0.0f - delta * ratio;
 }
 
 // FUN_0042A310 NONMATCHING
 
 
 float FUN_0042a310(float param_1,char param_2)
-
-
-
 {
-
   int iVar1;
+  volatile YajimaVec3 pos;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  float fStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
-
-  
-
-  K_FldFrame_CtlCopyPos(&uStack_20,*(u32 *)(*(int *)(&DAT_0086edf4 + param_2 * 0x1c0) + 0x1e0));
-
-  uStack_10 = uStack_20;
-
-  uStack_c = uStack_1c;
-
-  fStack_8 = fStack_18;
-
-  iVar1 = K_FldFrame_CtlGetZGrid(*(u32 *)(*(int *)(&DAT_0086edf4 + param_2 * 0x1c0) + 0x1e0));
-
-  return (param_1 / 2.0 + 0.0) - (fStack_8 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0);
-
+  K_FldFrame_CtlCopyPos((YajimaVec3 *)&pos,
+      *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  iVar1 = K_FldFrame_CtlGetZGrid(
+      *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  grid = (float)iVar1;
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = pos.z - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return half + 0.0f - delta * ratio;
 }
 
 // FUN_0042A3F0 NONMATCHING
@@ -5473,31 +5353,13 @@ float FUN_0042a3f0(float param_1,float *param_2)
 
 
 float FUN_0042a4a0(float param_1,u32 *param_2)
-
-
-
 {
-
   int iVar1;
+  YajimaVec3 pos = *(YajimaVec3 *)param_2;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  float fStack_8;
-
-  
-
-  uStack_10 = *param_2;
-
-  uStack_c = param_2[1];
-
-  fStack_8 = (float)param_2[2];
-
-  iVar1 = FUN_0044f170(&uStack_10);
-
-  return (param_1 / 2.0 + 0.0) - (fStack_8 - ((float)iVar1 * 800.0 - 400.0)) * (param_1 / 800.0);
-
+  iVar1 = FUN_0044f170(&pos);
+  return (param_1 / 2.0f + 0.0f) -
+      (pos.z - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f);
 }
 
 // FUN_0042A550 NONMATCHING
