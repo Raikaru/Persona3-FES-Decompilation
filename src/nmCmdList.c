@@ -31,6 +31,22 @@ extern u32 DAT_0095be9d;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
+extern void FUN_003b2cb0(float param_1,int param_2,int param_3,u32 param_4,
+                         u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
+#pragma alias FUN_003c63f0_typed FUN_003c63f0
+extern u64 FUN_003c63f0_typed(int param_1);
+#pragma alias FUN_003c6380_typed FUN_003c6380
+extern u64 FUN_003c6380_typed(int param_1);
+#pragma alias FUN_003c6900_typed FUN_003c6900
+extern void FUN_003c6900_typed(int param_1);
+#pragma alias FUN_003c69d0_typed FUN_003c69d0
+extern void FUN_003c69d0_typed(int param_1);
+#pragma alias FUN_003c6b70_typed FUN_003c6b70
+extern u64 FUN_003c6b70_typed(int param_1);
+#pragma alias FUN_003c6c50_typed FUN_003c6c50
+extern u32 FUN_003c6c50_typed(int param_1);
+#pragma alias FUN_003c6c80_typed FUN_003c6c80
+extern u32 FUN_003c6c80_typed(int param_1);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003c5e20(int param_1,u32 param_2);
 void FUN_003c5e80(int param_1,u32 param_2);
@@ -38,8 +54,8 @@ void FUN_003c5ee0(int param_1,u32 param_2);
 void FUN_003c5f40(int param_1,u32 param_2);
 void FUN_003c5fa0(u64 param_1,int param_2);
 u64 FUN_003c60f0(int param_1);
-u64 FUN_003c6120(u64 param_1,int param_2);
-u32 FUN_003c6270(u64 param_1);
+u64 FUN_003c6120(int param_1,int param_2);
+u32 FUN_003c6270(int param_1);
 u64 FUN_003c6380(u64 param_1);
 u64 FUN_003c63f0(u64 param_1);
 void FUN_003c6900(int param_1);
@@ -344,157 +360,90 @@ u64 FUN_003c60f0(int param_1)
 #undef FUN_003c6120
 // FUN_003C6120 NONMATCHING
 
-
-u64 FUN_003c6120(u64 param_1,int param_2)
-
-
-
+u64 FUN_003c6120(int param_1,int param_2)
 {
-
   u32 *puVar1;
-
   u32 *puVar2;
-
   int iVar3;
-
   u32 uVar4;
-
   u32 uVar5;
-
   u32 uVar6;
+  int iVar5;
+  u32 uVar7;
+  u32 uVar8;
+  u32 uVar9;
+  u32 uVar10;
 
-  
-
-  puVar1 = *(u32 **)((int)param_1 + 0x24);
-
+  puVar1 = *(u32 **)(param_1 + 0x24);
   puVar2 = *(u32 **)(param_2 + 0x14);
-
   iVar3 = *(int *)(*(int *)(puVar1[0xb] + 0x14) + 0xc);
-
   uVar4 = puVar2[3];
-
-  if ((iVar3 <= (int)uVar4) && ((int)uVar4 < (int)(puVar1[8] + iVar3))) {
-
-    uVar5 = puVar1[5];
-
-    uVar6 = puVar1[6];
-
-    iVar3 = puVar1[3] * (uVar4 - iVar3);
-
-    puVar2[4] = puVar1[7];
-
-    if ((*puVar1 & 0x800) == 0) {
-
-      *puVar2 = uVar5;
-
-      puVar2[1] = uVar6 + iVar3;
-
-    }
-
-    else {
-
-      *puVar2 = uVar5 + iVar3;
-
-      puVar2[1] = uVar6;
-
-    }
-
-    if (puVar2[2] != 0) {
-
-      FUN_003b2cb0(0,*puVar2,puVar2[1],puVar2[4] | 0xffffff00,
-
-                   param_2 == *(int *)((int)param_1 + 0xc),4,puVar2[2],0x10,0);
-
-    }
-
-    (*(code *)puVar1[0xc])(*puVar2,puVar2[1],puVar2[4],param_1,param_2);
-
+  if ((int)uVar4 < iVar3) {
+    return 0;
   }
-
+  if ((int)(puVar1[8] + iVar3) <= (int)uVar4) {
+    return 0;
+  }
+  uVar5 = puVar1[5];
+  uVar6 = puVar1[6];
+  iVar5 = puVar1[3] * ((int)uVar4 - iVar3);
+  puVar2[4] = puVar1[7];
+  if ((*puVar1 & 0x800) != 0) {
+    puVar2[0] = uVar5 + iVar5;
+    puVar2[1] = uVar6;
+  } else {
+    puVar2[0] = uVar5;
+    puVar2[1] = uVar6 + iVar5;
+  }
+  if (puVar2[2] != 0) {
+    uVar7 = puVar2[4] | 0xffffff00;
+    uVar8 = (u32)(param_2 == *(int *)(param_1 + 0xc));
+    uVar9 = puVar2[0];
+    uVar10 = puVar2[1];
+    FUN_003b2cb0(0.0f,uVar9,uVar10,uVar7,uVar8,4,puVar2[2],0x10,0);
+  }
+  ((code)puVar1[0xc])(puVar2[0],puVar2[1],puVar2[4],param_1,param_2);
   return 0;
-
 }
 #define FUN_003c6120(...) ((u64 (*)(...))FUN_003c6120)(__VA_ARGS__)
 #undef FUN_003c6270
 // FUN_003C6270 NONMATCHING
 
-
-u32 FUN_003c6270(u64 param_1)
-
-
-
+u32 FUN_003c6270(int param_1)
 {
-
   u32 *puVar1;
-
   u32 uVar2;
+  u32 uVar3;
 
-  long lVar3;
-
-  
-
-  puVar1 = *(u32 **)((int)param_1 + 0x24);
-
-  FUN_003c63f0();
-
-  FUN_003c6900(param_1);
-
-  FUN_003c69d0(param_1);
-
-  FUN_003c6b70(param_1);
-
-  (*(code *)puVar1[0xe])(param_1);
-
+  puVar1 = *(u32 **)(param_1 + 0x24);
+  FUN_003c63f0_typed(param_1);
+  FUN_003c6900_typed(param_1);
+  FUN_003c69d0_typed(param_1);
+  FUN_003c6b70_typed(param_1);
+  ((code)puVar1[0xe])(param_1);
   if ((*puVar1 & 0x1000) == 0) {
-
-    FUN_003c6380(param_1);
-
+    FUN_003c6380_typed(param_1);
   }
-
   if ((*puVar1 & 0x200) != 0) {
-
-    lVar3 = FUN_003c6c50(param_1);
-
-    if (lVar3 != 0) {
-
-      return *(u32 *)lVar3;
-
+    uVar3 = FUN_003c6c50_typed(param_1);
+    if (uVar3 != 0) {
+      return *(u32 *)uVar3;
     }
-
-    lVar3 = FUN_003c6c80(param_1);
-
-    if (lVar3 != 0) {
-
+    uVar3 = FUN_003c6c80_typed(param_1);
+    if (uVar3 != 0) {
       return 1;
-
     }
-
   }
-
   if ((*puVar1 & 2) == 0) {
-
-    if ((*puVar1 & 1) == 0) {
-
-      uVar2 = 2;
-
-    }
-
-    else {
-
+    if ((*puVar1 & 1) != 0) {
       uVar2 = 3;
-
+    } else {
+      uVar2 = 2;
     }
-
-  }
-
-  else {
-
+  } else {
     uVar2 = 0;
-
   }
-
   return uVar2;
-
 }
 #define FUN_003c6270(...) ((u32 (*)(...))FUN_003c6270)(__VA_ARGS__)
 #undef FUN_003c6380
@@ -870,119 +819,93 @@ void FUN_003c6900(int param_1)
 }
 #define FUN_003c6900(...) ((void (*)(...))FUN_003c6900)(__VA_ARGS__)
 #undef FUN_003c69d0
+
+
+typedef struct {
+  u32 flags;
+  short counter;
+  short duration1;
+  short duration2;
+  short state;
+  u8 pad[0x10];
+  u32 value;
+} NmCmdState;
+
 // FUN_003C69D0 NONMATCHING
-
-
 void FUN_003c69d0(int param_1)
-
-
-
 {
-
-  u32 *puVar1;
-
+  NmCmdState *puVar1;
   short sVar2;
-
   u32 uVar3;
 
-  
-
-  puVar1 = *(u32 **)(param_1 + 0x24);
-
-  switch(*(u16 *)((int)puVar1 + 10)) {
-
-  case 1:
-
-    uVar3 = *puVar1 & 0xfffffff7;
-
-    *puVar1 = uVar3;
-
-    *puVar1 = uVar3 | 2;
-
-    *puVar1 = uVar3 | 0x42;
-
-    *puVar1 = uVar3 | 0xc2;
-
-    *(u16 *)((int)puVar1 + 10) = 2;
-
-    *(u16 *)(puVar1 + 1) = 0;
-
-  case 2:
-
-    sVar2 = (short)puVar1[1] + 1;
-
-    *(short *)(puVar1 + 1) = sVar2;
-
-    puVar1[7] = (sVar2 * 0xff) / (int)*(short *)((int)puVar1 + 6);
-
-    if (*(short *)((int)puVar1 + 6) <= (short)puVar1[1]) {
-
-      puVar1[7] = 0xff;
-
-      *(u16 *)(puVar1 + 1) = 0;
-
-      uVar3 = *puVar1;
-
-      *puVar1 = uVar3 | 8;
-
-      *puVar1 = uVar3 | 0xc;
-
-      *puVar1 = uVar3 & 0xffffff7f | 0xc;
-
-      *(u16 *)((int)puVar1 + 10) = 5;
-
-    }
-
+  puVar1 = *(NmCmdState **)(param_1 + 0x24);
+  switch (puVar1->state) {
+  case 0:
     break;
-
-  case 3:
-
-    uVar3 = *puVar1;
-
-    *puVar1 = uVar3 & 0xfffffff7;
-
-    uVar3 = uVar3 & 0xfffffff3;
-
-    *puVar1 = uVar3;
-
-    *puVar1 = uVar3 | 0x100;
-
-    *(u16 *)((int)puVar1 + 10) = 4;
-
-    *(u16 *)(puVar1 + 1) = 0;
-
-  case 4:
-
-    sVar2 = (short)puVar1[1] + 1;
-
-    *(short *)(puVar1 + 1) = sVar2;
-
-    puVar1[7] = 0xff - (sVar2 * 0xff) / (int)(short)puVar1[2];
-
-    if ((short)puVar1[2] <= (short)puVar1[1]) {
-
-      puVar1[7] = 0;
-
-      *(u16 *)(puVar1 + 1) = 0;
-
-      uVar3 = *puVar1;
-
-      *puVar1 = uVar3 | 8;
-
-      *puVar1 = uVar3 & 0xfffffffd | 8;
-
-      *puVar1 = uVar3 & 0xfffffffd | 0x48;
-
-      *puVar1 = uVar3 & 0xfffffefd | 0x48;
-
-      *(u16 *)((int)puVar1 + 10) = 0;
-
+  case 1:
+    uVar3 = puVar1->flags & 0xfffffff7;
+    puVar1->flags = uVar3;
+    uVar3 |= 2;
+    puVar1->flags = uVar3;
+    uVar3 |= 0x40;
+    puVar1->flags = uVar3;
+    uVar3 |= 0x80;
+    puVar1->flags = uVar3;
+    puVar1->state = 2;
+    puVar1->counter = 0;
+  case 2:
+    sVar2 = puVar1->counter + 1;
+    puVar1->counter = sVar2;
+    puVar1->value = (sVar2 * 0xff) / (int)puVar1->duration1;
+    if (sVar2 < puVar1->duration1) {
+      break;
     }
-
+    puVar1->value = 0xff;
+    puVar1->counter = 0;
+    uVar3 = puVar1->flags;
+    uVar3 |= 8;
+    puVar1->flags = uVar3;
+    uVar3 |= 4;
+    puVar1->flags = uVar3;
+    uVar3 &= 0xffffff7f;
+    puVar1->flags = uVar3;
+    puVar1->state = 5;
+    break;
+  case 3:
+    uVar3 = puVar1->flags & 0xfffffff7;
+    puVar1->flags = uVar3;
+    uVar3 &= 0xfffffffb;
+    puVar1->flags = uVar3;
+    uVar3 |= 0x100;
+    puVar1->flags = uVar3;
+    puVar1->state = 4;
+    puVar1->counter = 0;
+  case 4:
+    sVar2 = puVar1->counter + 1;
+    puVar1->counter = sVar2;
+    puVar1->value = 0xff - (sVar2 * 0xff) / (int)puVar1->duration2;
+    if (sVar2 < puVar1->duration2) {
+      break;
+    }
+    puVar1->value = 0;
+    puVar1->counter = 0;
+    uVar3 = puVar1->flags;
+    uVar3 |= 8;
+    puVar1->flags = uVar3;
+    uVar3 &= 0xfffffffd;
+    puVar1->flags = uVar3;
+    uVar3 |= 0x40;
+    puVar1->flags = uVar3;
+    uVar3 &= 0xfffffeff;
+    puVar1->flags = uVar3;
+    puVar1->state = 0;
+    break;
+  case 5:
+    break;
+  default:
+    break;
   }
-
   return;
-
 }
 #define FUN_003c69d0(...) ((void (*)(...))FUN_003c69d0)(__VA_ARGS__)
 #undef FUN_003c6b70
