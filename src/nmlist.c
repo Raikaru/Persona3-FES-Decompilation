@@ -35,7 +35,7 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
 void FUN_003c45f0(long param_1);
 int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
 void FUN_003c4710(int *param_1, int *param_2, int *param_3);
-int *FUN_003c4820(int *param_1, int *param_2);
+int FUN_003c4820(long param_1, int param_2);
 long FUN_003c4910(long param_1,long param_2,u64 param_3);
 u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3);
 void FUN_003c4a90(long param_1,long param_2);
@@ -244,7 +244,7 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3)
 // FUN_003C4820 NONMATCHING
 
 
-int *FUN_003c4820(int *param_1, int *param_2)
+int FUN_003c4820(long param_1,int param_2)
 {
     int *list;
     int *next;
