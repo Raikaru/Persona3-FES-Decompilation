@@ -375,6 +375,7 @@ state3_done:
                 return -3;
             }
             break;
+        }
         case 2:
             if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
@@ -540,7 +541,6 @@ state3_done:
             }
             break;
 
-        }
         case 0xb:
             if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == 1)
             {
