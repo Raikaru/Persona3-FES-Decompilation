@@ -12,6 +12,8 @@ extern char *PTR_s_fcl_combine_pak_006a4384[];
 extern u8 **PTR_FUN_006a4620;
 extern u8 **PTR_FUN_006a46b0;
 extern u8 **PTR_FUN_006a46e0;
+#pragma alias PTR_FUN_006a46e0_abs PTR_FUN_006a46e0
+extern u8 PTR_FUN_006a46e0_abs[];
 extern u8 **PTR_FUN_006a4870;
 extern u8 **PTR_FUN_006a48a0;
 extern char gp0xffffaa60[];
@@ -19,6 +21,7 @@ extern char gp0xffffaa68[];
 extern char gp0xffffaa70[];
 extern char gp0xffffaa7c[];
 extern char s_NORMAL_006a4730[];
+extern char DAT_006a4710[];
 extern u32 DAT_006a4810[];
 extern u32 DAT_006a4830[];
 extern float fGpffff830c;
@@ -26,6 +29,8 @@ extern float fGpffff8224;
 extern int iGpffffb730;
 extern int iGpffffb7f4;
 extern int iGpffffb800;
+extern int printf();
+extern void H_Dbprt_FmtLog();
 extern u32 uGpffffaa78;
 extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
@@ -4186,139 +4191,66 @@ u64 FUN_003d2c10(long param_1)
 
 }
 
-// FUN_003D2F00 NONMATCHING
-
-
+// FUN_003D2F00
 void FUN_003d2f00(void)
-
-
-
 {
-
-  u32 *puVar1;
-
-  u32 *puVar2;
-
-  u64 uVar3;
-
-  u8 *puVar4;
-
-  u32 uVar5;
-
-  u8 *puVar6;
-
-  u32 uVar7;
-
-  u32 *puVar8;
-
-  int iVar9;
-
-  u64 *puVar10;
-
-  u8 **ppuVar11;
-
-  u64 uStack_60;
-
-  u32 auStack_58 [10];
-
-  u32 auStack_30 [12];
-
-  
-
-  puVar2 = (u32 *)0x24;
-
-  puVar8 = auStack_30;
-
-  puVar1 = puVar8;
-
-  while (puVar1 != (u32 *)0x0) {
-
-    *(u8 *)puVar8 = 0;
-
-    puVar8 = (u32 *)((int)puVar8 + 1);
-
-    puVar2 = (u32 *)((int)puVar2 + -1);
-
-    puVar1 = puVar2;
-
-  }
-
-  ppuVar11 = PTR_FUN_006a46e0;
-
-  puVar10 = &uStack_60;
-
-  iVar9 = 2;
-
-  do {
-
-    uVar3 = *(u64 *)ppuVar11;
-
-    puVar4 = ppuVar11[2];
-
-    puVar6 = ppuVar11[3];
-
-    ppuVar11 = ppuVar11 + 4;
-
-    iVar9 = iVar9 + -1;
-
-    *(int *)puVar10 = (int)uVar3;
-
-    *(int *)((int)puVar10 + 4) = (int)((u32)uVar3 >> 0x20);
-
-    *(u8 **)(puVar10 + 1) = puVar4;
-
-    *(u8 **)((int)puVar10 + 0xc) = puVar6;
-
-    puVar10 = puVar10 + 2;
-
-  } while (0 < iVar9);
-
-  *(u8 **)puVar10 = *ppuVar11;
-
-  puVar10 = &uStack_60;
-
-  puVar8 = auStack_30;
-
-  iVar9 = 2;
-
-  do {
-
-    uVar3 = *puVar10;
-
-    uVar5 = *(u32 *)(puVar10 + 1);
-
-    uVar7 = *(u32 *)((int)puVar10 + 0xc);
-
-    puVar10 = puVar10 + 2;
-
-    iVar9 = iVar9 + -1;
-
-    *puVar8 = (int)uVar3;
-
-    puVar8[1] = (int)((u32)uVar3 >> 0x20);
-
-    puVar8[2] = uVar5;
-
-    puVar8[3] = uVar7;
-
-    puVar8 = puVar8 + 4;
-
-  } while (0 < iVar9);
-
-  *puVar8 = *(u32 *)puVar10;
-
-  printf(&gp0xffffaa68,0x6a4648,0x48b);
-
-  printf(0x6a4710);
-
-  H_Dbprt_FmtLog(0x6a4710);
-
-  uVar3 = FUN_003c5240(uGpffffb994,1,auStack_30,0,0);
-
-  FUN_003c5480(uVar3);
-
-  return;
-
+    typedef unsigned int FusionU128 __attribute__((mode(TI)));
+    struct {
+        FusionU128 data1[2];
+        float f1;
+        u8 gap[0xc];
+        FusionU128 data2[2];
+        float f2;
+        u8 tail[0xc];
+    } stack;
+    FusionU128 *var_4;
+    FusionU128 *var_5;
+    FusionU128 *var_5_2;
+    FusionU128 temp_2;
+    FusionU128 temp_2_2;
+    s8 *var_3;
+    s32 var_2;
+    s32 var_3_2;
+    s32 var_3_3;
+    char *message;
+    u32 resource;
+    var_3 = (s8 *)stack.data2;
+    var_2 = 0x24;
+    if (var_3 != (s8 *)0) {
+        do {
+            *var_3 = 0;
+            var_3 += 1;
+            var_2 -= 1;
+        } while (var_2 != 0);
+    }
+    var_4 = (FusionU128 *)PTR_FUN_006a46e0_abs;
+    var_5 = stack.data1;
+    var_3_2 = 2;
+    do {
+        temp_2 = *var_4;
+        var_4 += 1;
+        var_3_2 -= 1;
+        *var_5 = temp_2;
+        var_5 += 1;
+    } while (var_3_2 > 0);
+    *(float *)var_5 = *(float *)var_4;
+    var_4 = stack.data1;
+    var_5 = stack.data2;
+    var_3_3 = 2;
+    do {
+        temp_2_2 = *var_4;
+        var_4 += 1;
+        var_3_3 -= 1;
+        *var_5 = temp_2_2;
+        var_5 += 1;
+    } while (var_3_3 > 0);
+    *(float *)var_5 = *(float *)var_4;
+    __asm__ volatile ("addiu %0, $gp, -0x5598" : "=r"(message));
+    printf(message, DAT_006a4648, 0x48b);
+    printf(DAT_006a4710);
+    H_Dbprt_FmtLog(DAT_006a4710);
+    __asm__ volatile ("lw %0, -0x466c($gp)" : "=r"(resource));
+    FUN_003c5480(FUN_003c5240(resource, 1, stack.data2, 0, 0));
 }
 
 // FUN_003D32E0 NONMATCHING
