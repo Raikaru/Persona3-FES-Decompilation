@@ -43932,15 +43932,19 @@ void FUN_00347100(int param_1)
 
 }
 // FUN_00347130
-void FUN_00347130(void)
+u_long128 FUN_00347130(Vec128 *dst,const Vec128 *src)
 {
-  // TODO window stub
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
 }
 
 // FUN_00347140
-void FUN_00347140(void)
+u_long128 FUN_00347140(Vec128 *dst,const Vec128 *src)
 {
-  // TODO window stub
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 
 // FUN_00347150
@@ -43950,9 +43954,9 @@ void FUN_00347150(u32* param_1, u32 param_2)
 }
 
 // FUN_00347160
-void FUN_00347160(void)
+void FUN_00347160(u32 *param_1,float param_2)
 {
-  // TODO window stub
+  *(float *)(param_1 + 8) = param_2;
 }
 
 
@@ -44653,15 +44657,17 @@ void FUN_00347cb0(int param_1)
 
 }
 // FUN_00347CE0
-void FUN_00347ce0(void)
+u_long128 FUN_00347ce0(Vec128 *dst,const Vec128 *src)
 {
-  // TODO window stub
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
 }
 
 // FUN_00347CF0
-void FUN_00347cf0(void)
+void FUN_00347cf0(u32 *param_1,u32 param_2)
 {
-  // TODO window stub
+  param_1[5] = param_2;
 }
 
 
@@ -49882,15 +49888,19 @@ void FUN_0034d050(int param_1)
 }
 
 // FUN_0034D090
-void FUN_0034d090(void)
+u_long128 FUN_0034d090(Vec128 *dst,const Vec128 *src)
 {
-  // TODO window stub
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)dst = value;
+  return value;
 }
 
 // FUN_0034D0A0
-void FUN_0034d0a0(void)
+u_long128 FUN_0034d0a0(Vec128 *dst,const Vec128 *src)
 {
-  // TODO window stub
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 
 // FUN_0034D0B0
