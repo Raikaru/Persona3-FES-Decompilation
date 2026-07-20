@@ -37,7 +37,7 @@ extern void func_00175ce0(DatPersonaWork* persona, u8* result);
 extern void* FUN_0017cd30(void* persona);
 
 u32 FUN_00176600(DatPersonaWork* persona);
-u32 FUN_00176680(DatPersonaWork* persona, u16 personaId);
+void FUN_00176680(DatPersonaWork* persona, u16 personaId);
 void FUN_00176da0(DatPersonaWork* persona);
 void FUN_00176fb0(u16 personaId, u16* skills, s32* skillCount);
 s32 FUN_001770d0(u16 personaId, s16 skillId);
@@ -251,31 +251,32 @@ s16 FUN_001748c0(void)
     return -1;
 }
 
-// FUN_001749a0 NONMATCHING
+// FUN_001749a0
 DatPersonaWork* FUN_001749a0(s16 personaId)
 {
-    u32 personaIdx;
     s16 foundIdx;
+    u32 personaIdx;
+    s32 targetPersonaId;
+    u8* personaBase;
 
     personaIdx = 0;
-    while (true)
+    targetPersonaId = personaId;
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        if ((FUN_00175410() & 0xffff) <= personaIdx)
-        {
-            foundIdx = -1;
-            break;
-        }
-
-        if ((gGlobalWork.heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) != 0 &&
-            gGlobalWork.heroPersona.personas[personaIdx].id == (u16)personaId)
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) != 0 &&
+            *(u16*)(personaBase + 0x9ae) == targetPersonaId)
         {
             foundIdx = (s16)personaIdx;
-            break;
+            goto found;
         }
 
         personaIdx = (personaIdx + 1) & 0xffff;
     }
 
+    foundIdx = -1;
+
+found:
     if (foundIdx == -1)
     {
         return NULL;
@@ -283,46 +284,44 @@ DatPersonaWork* FUN_001749a0(s16 personaId)
 
     return datPersonaGetHeroPersona(foundIdx);
 }
-
-// FUN_00174b40 NONMATCHING
+// FUN_00174b40
 void FUN_00174b40(s16 personaId)
 {
-    s32 loopIdx;
-    u16 personaIdx;
-    s16 targetPersonaId;
+    s16 foundPersonaId;
+    u32 personaIdx;
+    s32 targetPersonaId;
+    u8* personaBase;
 
     personaIdx = 0;
     targetPersonaId = personaId;
-    goto loop_check;
-
-loop_body:
-    if (((0, gGlobalWork.heroPersona.personas[personaIdx & 0xffff]).flags & PERSONA_FLAG_VALID) != 0 &&
-        gGlobalWork.heroPersona.personas[personaIdx & 0xffff].id == (u16)targetPersonaId)
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        goto found;
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) != 0 &&
+            *(u16*)(personaBase + 0x9ae) == targetPersonaId)
+        {
+            foundPersonaId = (s16)personaIdx;
+            goto found;
+        }
+
+        personaIdx = (personaIdx + 1) & 0xffff;
     }
 
-    personaIdx = (personaIdx + 1) & 0xffff;
-
-loop_check:
-    loopIdx = personaIdx;
-    if (loopIdx < (s32)(FUN_00175410() & 0xffff))
-    {
-        goto loop_body;
-    }
-
-    personaIdx = 0xffff;
+    foundPersonaId = -1;
 
 found:
-    FUN_00174c10((s16)personaIdx);
+    FUN_00174c10(foundPersonaId);
 }
-// FUN_00174c10 NONMATCHING
+// FUN_00174c10
 u32 FUN_00174c10(s16 heroPersonaIdx)
 {
     s16 selectedPersonaId;
+    s16 foundPersonaIdx;
+    s32 targetPersonaId;
     u32 personaIdx;
+    u8* personaBase;
 
-    if (heroPersonaIdx < 0 || (FUN_00175410() & 0xffff) <= (u16)heroPersonaIdx)
+    if (heroPersonaIdx < 0 || heroPersonaIdx >= (s32)(FUN_00175410() & 0xffff))
     {
         K_ASSERT(false, 0x369);
     }
@@ -333,31 +332,34 @@ u32 FUN_00174c10(s16 heroPersonaIdx)
     }
 
     selectedPersonaId = (s16)FUN_001752b0();
+    heroPersonaIdx = (s16)heroPersonaIdx;
     for (; heroPersonaIdx < 0xb; heroPersonaIdx++)
     {
         memcpy(&gGlobalWork.heroPersona.personas[heroPersonaIdx],
                &gGlobalWork.heroPersona.personas[heroPersonaIdx + 1], 0x34);
     }
     memset(&gGlobalWork.heroPersona.personas[11], 0, 0x34);
-
-    for (personaIdx = 0;
-         personaIdx < (FUN_00175410() & 0xffff);
-         personaIdx = (personaIdx + 1) & 0xffff)
+    personaIdx = 0;
+    targetPersonaId = (s16)selectedPersonaId;
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        if ((gGlobalWork.heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) != 0 &&
-            gGlobalWork.heroPersona.personas[personaIdx].id == (u16)selectedPersonaId)
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) != 0 &&
+            *(u16*)(personaBase + 0x9ae) == targetPersonaId)
         {
-            selectedPersonaId = (s16)personaIdx;
+            foundPersonaIdx = (s16)personaIdx;
             goto selected_persona_found;
         }
+
+        personaIdx = (personaIdx + 1) & 0xffff;
     }
 
-    selectedPersonaId = -1;
+    foundPersonaIdx = -1;
 
 selected_persona_found:
-    if (selectedPersonaId != -1)
+    if (foundPersonaIdx != -1)
     {
-        FUN_00175200(selectedPersonaId);
+        FUN_00175200(foundPersonaIdx);
     }
 
     return 1;
@@ -377,97 +379,110 @@ DatPersonaWork* FUN_00174e20(u16 personaId)
     return persona;
 }
 
-// FUN_00174e70 NONMATCHING
+// FUN_00174e70
 DatPersonaWork* FUN_00174e70(u16 personaId)
 {
+    s16 foundPersonaIdx;
     u32 personaIdx;
+    u8* personaBase;
     DatPersonaWork* persona;
 
     personaIdx = 0;
-    while (true)
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        if ((FUN_00175410() & 0xffff) <= personaIdx)
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) == 0)
         {
-            persona = NULL;
-            break;
-        }
-
-        if ((gGlobalWork.heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) == 0)
-        {
-            persona = &gGlobalWork.heroPersona.personas[personaIdx];
-            FUN_00176680(persona, personaId);
-            persona->flags &= 0xc;
-            persona->flags |= PERSONA_FLAG_VALID;
-            FUN_0017cd30(persona);
-            break;
+            foundPersonaIdx = (s16)personaIdx;
+            goto found;
         }
 
         personaIdx = (personaIdx + 1) & 0xffff;
     }
 
+    foundPersonaIdx = -1;
+
+found:
+    if (foundPersonaIdx == -1)
+    {
+        return NULL;
+    }
+
+    persona = &gGlobalWork.heroPersona.personas[foundPersonaIdx];
+    FUN_00176680(persona, personaId);
+    gGlobalWork.heroPersona.personas[foundPersonaIdx].flags &= 0xc;
+    gGlobalWork.heroPersona.personas[foundPersonaIdx].flags |= PERSONA_FLAG_VALID;
+    FUN_0017cd30(persona);
     return persona;
 }
 
-// FUN_00174fb0 NONMATCHING
+// FUN_00174fb0
 u8 FUN_00174fb0(DatPersonaWork* source)
 {
+    s16 foundPersonaIdx;
     u32 personaIdx;
+    u8* personaBase;
     DatPersonaWork* persona;
 
     K_ASSERT(source != NULL, 0x3b0);
-    K_ASSERT(source->id != 0 && source->id <= 0xff, 0x3b1);
+    K_ASSERT(source->id != 0 && source->id < 0x100, 0x3b1);
 
     personaIdx = 0;
-    while (true)
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        if ((FUN_00175410() & 0xffff) <= personaIdx)
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) == 0)
         {
-            persona = NULL;
-            break;
-        }
-
-        if ((gGlobalWork.heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) == 0)
-        {
-            persona = &gGlobalWork.heroPersona.personas[personaIdx];
-            memcpy(persona, source, 0x34);
-            persona->flags &= 0xc;
-            persona->flags |= PERSONA_FLAG_VALID;
-            FUN_0017cd30(persona);
-            break;
+            foundPersonaIdx = (s16)personaIdx;
+            goto found;
         }
 
         personaIdx = (personaIdx + 1) & 0xffff;
     }
 
-    return persona != NULL;
+    foundPersonaIdx = -1;
+
+found:
+    if (foundPersonaIdx == -1)
+    {
+        return 0;
+    }
+
+    persona = &gGlobalWork.heroPersona.personas[foundPersonaIdx];
+    memcpy(persona, source, 0x34);
+    gGlobalWork.heroPersona.personas[foundPersonaIdx].flags &= 0xc;
+    gGlobalWork.heroPersona.personas[foundPersonaIdx].flags |= PERSONA_FLAG_VALID;
+    FUN_0017cd30(persona);
+    return 1;
 }
 
-// FUN_00175130 NONMATCHING
+// FUN_00175130
 void FUN_00175130(s16 personaId)
 {
+    s16 foundPersonaId;
     u32 personaIdx;
-    s16 foundIdx;
+    s32 targetPersonaId;
+    u8* personaBase;
 
     personaIdx = 0;
-    while (true)
+    targetPersonaId = personaId;
+    while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
     {
-        if ((FUN_00175410() & 0xffff) <= personaIdx)
+        personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+        if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) != 0 &&
+            *(u16*)(personaBase + 0x9ae) == targetPersonaId)
         {
-            foundIdx = -1;
-            break;
-        }
-
-        if ((gGlobalWork.heroPersona.personas[personaIdx].flags & PERSONA_FLAG_VALID) != 0 &&
-            gGlobalWork.heroPersona.personas[personaIdx].id == (u16)personaId)
-        {
-            foundIdx = (s16)personaIdx;
-            break;
+            foundPersonaId = (s16)personaIdx;
+            goto found;
         }
 
         personaIdx = (personaIdx + 1) & 0xffff;
     }
 
-    FUN_00175200(foundIdx);
+    foundPersonaId = -1;
+
+found:
+    FUN_00175200(foundPersonaId);
 }
 
 // FUN_00175200
@@ -662,13 +677,13 @@ u32 func_001755c0(void)
     }
 }
 
-// FUN_001756f0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_001756f0
 u16 FUN_001756f0(void)
 {
     u16 validCount;
     u32 modeFlags;
     u16 maxPersonaCount;
-    DatGlobal* global;
     s32 personaCount;
     u16 personaIdx;
     u8 valid;
@@ -701,10 +716,10 @@ u16 FUN_001756f0(void)
     }
     personaIdx = 0;
     personaCount = (u16)maxPersonaCount;
-    global = &gGlobalWork;
     for (; personaIdx < personaCount; personaIdx++)
     {
-        valid = (global->heroPersona.personas[(s16)personaIdx].flags & PERSONA_FLAG_VALID) != 0;
+        valid = (gGlobalWork.heroPersona.personas[(s16)personaIdx].flags &
+                 PERSONA_FLAG_VALID) != 0;
         if (valid)
         {
             validCount++;
@@ -713,19 +728,22 @@ u16 FUN_001756f0(void)
 
     return validCount;
 }
+#pragma opt_loop_invariants off
 // FUN_001757f0
 void datPersonaClearHeroPersonas()
 {
     memset(gGlobalWork.heroPersona.personas, 0, sizeof(gGlobalWork.heroPersona.personas));
 }
-// FUN_00175820 NONMATCHING
+// FUN_00175820
 u32 func_00175820(u16 mode, u16 personaId)
 {
     DatPersonaWork* persona;
     DatPc* pcsNoReserved;
     s16 selectedIdx;
-    s32 maxPersonaCount;
-    s32 personaIdx;
+    u16 maxPersonaCount;
+    u32 personaIdx;
+    s32 targetPersonaId;
+    u8* personaBase;
 
     mode &= 0xffff;
     if (mode == 1)
@@ -739,24 +757,25 @@ u32 func_00175820(u16 mode, u16 personaId)
         {
             persona = &gGlobalWork.heroPersona.personas[selectedIdx];
             FUN_00176680(persona, personaId);
-            persona->flags &= 0xc;
-            persona->flags |= PERSONA_FLAG_VALID;
+            gGlobalWork.heroPersona.personas[selectedIdx].flags &= 0xc;
+            gGlobalWork.heroPersona.personas[selectedIdx].flags |= PERSONA_FLAG_VALID;
             FUN_0017cd30(persona);
         }
 
         K_ASSERT(persona != NULL, 0x38c);
-        for (personaIdx = 0; (s32)(personaIdx & 0xffff) <
-             (s32)(FUN_00175410() & 0xffff);
-             personaIdx = (personaIdx + 1) & 0xffff)
+        personaIdx = 0;
+        targetPersonaId = (s16)personaId;
+        while ((s32)(personaIdx & 0xffff) < (s32)(FUN_00175410() & 0xffff))
         {
-            if ((gGlobalWork.heroPersona.personas[personaIdx].flags &
-                 PERSONA_FLAG_VALID) != 0 &&
-                gGlobalWork.heroPersona.personas[personaIdx].id ==
-                    (u16)(s16)personaId)
+            personaBase = (u8*)&gGlobalWork + (u16)personaIdx * sizeof(DatPersonaWork);
+            if ((*(u16*)(personaBase + 0x9ac) & PERSONA_FLAG_VALID) != 0 &&
+                *(u16*)(personaBase + 0x9ae) == targetPersonaId)
             {
                 selectedIdx = (s16)personaIdx;
                 goto selected_idx_found;
             }
+
+            personaIdx = (personaIdx + 1) & 0xffff;
         }
 
         selectedIdx = -1;
@@ -791,14 +810,17 @@ selected_idx_found:
                 maxPersonaCount = 4;
             }
 
-            if ((s32)selectedIdx >= maxPersonaCount)
+            if ((s32)selectedIdx < (u16)maxPersonaCount)
             {
-                K_ASSERT(false, 0x486);
+                goto selected_idx_valid;
             }
         }
 
-        if (selectedIdx < 0 ||
-            (s32)(FUN_00175410() & 0xffff) <= (s32)(u16)selectedIdx)
+        K_ASSERT(false, 0x486);
+
+selected_idx_valid:
+
+        if (selectedIdx < 0 || selectedIdx >= (s32)(FUN_00175410() & 0xffff))
         {
             K_ASSERT(false, 0x3ca);
         }
@@ -814,25 +836,19 @@ selected_idx_found:
         if (mode == 1)
         {
             selectedIdx = gGlobalWork.heroPersona.equippedPersona;
-            if (selectedIdx < 0 ||
-                (s32)(FUN_00175410() & 0xffff) <= (s32)(u16)selectedIdx)
+            if (selectedIdx < 0 || selectedIdx >= (s32)(FUN_00175410() & 0xffff))
             {
                 K_ASSERT(false, 0x350);
             }
 
-            if ((gGlobalWork.heroPersona.personas[selectedIdx].flags &
-                 PERSONA_FLAG_VALID) == 0)
-            {
-                persona = NULL;
-            }
-            else
-            {
-                persona = &gGlobalWork.heroPersona.personas[selectedIdx];
-            }
+            persona = (gGlobalWork.heroPersona.personas[selectedIdx].flags &
+                       PERSONA_FLAG_VALID) != 0
+                          ? &gGlobalWork.heroPersona.personas[selectedIdx]
+                          : NULL;
         }
         else
         {
-            K_ASSERT(mode <= 10, 0x30b);
+            K_ASSERT(mode < 11, 0x30b);
             pcsNoReserved = &gPcs[PC_YUKARI];
             persona = &pcsNoReserved[mode - PC_YUKARI].persona;
         }
@@ -1152,29 +1168,28 @@ void datPersonaAddExp(DatPersonaWork* persona, s32 exp)
     persona->nextExp += exp;
 }
 
-// FUN_00176510 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_00176510
 void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
 {
     DatPersonaWork* persona_p = persona;
     s32 skillIdx;
     s32 nextSkillIdx;
     s32 maxSkills;
-    u16* skills;
 
     K_ASSERT(persona_p != NULL, 1478);
     maxSkills = PERSONA_MAX_SKILLS;
-    skills = persona_p->skills;
-    nextSkillIdx = 0;
     skillIdx = 0;
+    nextSkillIdx = 0;
     while (skillIdx < maxSkills)
     {
-        if (skills[skillIdx] == SKILL_SLASH_ATTACK)
+        if (persona_p->skills[skillIdx] == SKILL_SLASH_ATTACK)
         {
             nextSkillIdx = skillIdx + 1;
 
             while (nextSkillIdx < maxSkills)
             {
-                if (skills[nextSkillIdx] != SKILL_SLASH_ATTACK)
+                if (persona_p->skills[nextSkillIdx] != SKILL_SLASH_ATTACK)
                 {
                     break;
                 }
@@ -1191,17 +1206,18 @@ void datPersonaMoveValidSkillsOnTop(DatPersonaWork* persona)
         {
             if (nextSkillIdx < maxSkills)
             {
-                skills[skillIdx] = skills[nextSkillIdx];
+                persona_p->skills[skillIdx] = persona_p->skills[nextSkillIdx];
             }
             else
             {
-                skills[skillIdx] = SKILL_SLASH_ATTACK;
+                persona_p->skills[skillIdx] = SKILL_SLASH_ATTACK;
             }
         }
         skillIdx++;
         nextSkillIdx++;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_00176840
 u8 datPersonaSetSkill(DatPersonaWork* persona, u16 skillId)
@@ -1320,38 +1336,48 @@ u32 FUN_00176600(DatPersonaWork* persona)
     return 0;
 }
 
-// FUN_00176680 NONMATCHING
-u32 FUN_00176680(DatPersonaWork* persona, u16 personaId)
+// FUN_00176680
+void FUN_00176680(DatPersonaWork* persona, u16 personaId)
 {
+    u8 statData[0x28];
     u8* personaData;
-    s8 statData[0x28];
+    u32 personaOffset;
     u32 statIdx;
+    u8 level;
+    u8* statBytes;
+    u8* personaBytes;
 
     K_ASSERT(persona != NULL, 1515);
-    K_ASSERT(personaId != 0 && personaId <= 0xff, 1516);
+    K_ASSERT(personaId != 0 && personaId < 0x100, 1516);
 
-    personaData = DAT_007ce420 + (u32)personaId * 0x0e;
+    personaOffset = (u32)(u16)personaId * 0x0e;
+    personaData = DAT_007ce420 + personaOffset;
     persona->id = personaId;
     persona->level = personaData[3];
+    *((u8*)persona + 5) = personaData[9];
     *(u32*)((u8*)persona + 0x30) = 0;
     persona->nextExp = func_00176210(persona, personaData[3]);
     *(u32*)((u8*)persona + 0x2c) = 0;
-    memcpy(persona->naturalStats, personaData + 4, 5);
+    memcpy(persona->naturalStats, DAT_007ce420 + personaOffset + 4, 5);
     memset(persona->bonusStats, 0, 5);
     memset(persona->stats3, 0, 5);
     memset(persona->skills, 0, 0x10);
 
-    func_00175ce0(persona, (u8*)statData);
+    func_00175ce0(persona, statData);
 
-    K_ASSERT(persona->id != 0 && persona->id <= 0xff, 1362);
-    persona->level += statData[0];
-    for (statIdx = 0; statIdx < PERSONA_STAT_MAX; statIdx++)
+    K_ASSERT(persona->id != 0 && persona->id < 0x100, 1362);
+    level = persona->level;
+    persona->level = level + statData[0];
+    statIdx = 0;
+    while ((s32)(statIdx & 0xffff) < PERSONA_STAT_MAX)
     {
-        persona->naturalStats[statIdx] += statData[0x22 + statIdx];
+        statBytes = statData + (u16)statIdx;
+        personaBytes = (u8*)persona + (u16)statIdx;
+        personaBytes[0x1c] += statBytes[0x22];
+        statIdx = (statIdx + 1) & 0xffff;
     }
 
     FUN_00176da0(persona);
-    return 1;
 }
 
 // FUN_00176ac0 NONMATCHING
@@ -1426,40 +1452,66 @@ u64 FUN_00176d10(DatPersonaWork* persona, DatPersonaWork* source)
     return 0;
 }
 
-// FUN_00176da0 NONMATCHING
+// FUN_00176da0
 void FUN_00176da0(DatPersonaWork* persona)
 {
     u16 personaId;
     u8* skillData;
-    s16 skillId;
+    u16 skillId;
     s32 skillIdx;
     s32 skillSlotIdx;
-    s32 skillCount;
+    u16* skillSlot;
+    u32 scenarioPersona;
 
     personaId = persona->id;
     if (personaId >= 0xc0 && personaId <= 0xdf)
     {
+        scenarioPersona = 1;
+    }
+    else
+    {
+        scenarioPersona = 0;
+    }
+    if (scenarioPersona)
+    {
         skillData = DAT_007ce430 + (personaId - 0xc0) * 0x26e + 4;
-        skillCount = 0x20;
+        for (skillIdx = 0; skillIdx < 0x20; skillIdx++)
+        {
+            if (skillData[skillIdx * 4] == 0 &&
+                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
+            {
+                skillId = *(u16*)(skillData + skillIdx * 4 + 2);
+                K_ASSERT(persona != NULL && skillId != 0, 1546);
+                for (skillSlotIdx = 0; skillSlotIdx < PERSONA_MAX_SKILLS; skillSlotIdx++)
+                {
+                    skillSlot = (u16*)((u8*)persona + skillSlotIdx * 2 + 0xc);
+                    if (*skillSlot == SKILL_SLASH_ATTACK)
+                    {
+                        *skillSlot = skillId;
+                        break;
+                    }
+                }
+            }
+        }
     }
     else
     {
         skillData = DAT_007ce428 + (u32)personaId * 0x46 + 6;
-        skillCount = 0x10;
-    }
-
-    for (skillIdx = 0; skillIdx < skillCount; skillIdx++)
-    {
-        if (skillData[skillIdx * 4] == 0 && skillData[skillIdx * 4 + 1] == 1)
+        for (skillIdx = 0; skillIdx < 0x10; skillIdx++)
         {
-            skillId = *(s16*)(skillData + skillIdx * 4 + 2);
-            K_ASSERT(persona != NULL && skillId != 0, 1546);
-            for (skillSlotIdx = 0; skillSlotIdx < PERSONA_MAX_SKILLS; skillSlotIdx++)
+            if (skillData[skillIdx * 4] == 0 &&
+                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
             {
-                if (persona->skills[skillSlotIdx] == SKILL_SLASH_ATTACK)
+                skillId = *(u16*)(skillData + skillIdx * 4 + 2);
+                K_ASSERT(persona != NULL && skillId != 0, 1546);
+                for (skillSlotIdx = 0; skillSlotIdx < PERSONA_MAX_SKILLS; skillSlotIdx++)
                 {
-                    persona->skills[skillSlotIdx] = skillId;
-                    break;
+                    skillSlot = (u16*)((u8*)persona + skillSlotIdx * 2 + 0xc);
+                    if (*skillSlot == SKILL_SLASH_ATTACK)
+                    {
+                        *skillSlot = skillId;
+                        break;
+                    }
                 }
             }
         }
@@ -1467,42 +1519,38 @@ void FUN_00176da0(DatPersonaWork* persona)
 }
 
 #pragma opt_loop_invariants on
-// FUN_00176FB0 NONMATCHING
+static inline void datPersonaCollectValidSkills(u8* skillData, u16* skills,
+                                                s32* validSkills, s32 skillLimit)
+{
+    s32 skillIdx;
+
+    for (skillIdx = 0; skillIdx < skillLimit; skillIdx++)
+    {
+        if (skillData[skillIdx * 4] == 0 &&
+            ((s8*)skillData)[skillIdx * 4 + 1] == 1)
+        {
+            skills[*validSkills] = *(u16*)(skillData + skillIdx * 4 + 2);
+            (*validSkills)++;
+        }
+    }
+}
+
+// FUN_00176FB0
 void FUN_00176FB0(u16 personaId, u16* skills, s32* skillCount)
 {
     u8* skillData;
-    s32 skillIdx;
     s32 validSkills;
-    s32 skillLimit;
 
     validSkills = 0;
     if (personaId >= 0xc0 && personaId <= 0xdf)
     {
         skillData = DAT_007ce430 + (personaId - 0xc0) * 0x26e + 4;
-        skillLimit = 0x20;
-        for (skillIdx = 0; skillIdx < skillLimit; skillIdx++)
-        {
-            if (skillData[skillIdx * 4] == 0 &&
-                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
-            {
-                skills[validSkills] = *(u16*)(skillData + skillIdx * 4 + 2);
-                validSkills++;
-            }
-        }
+        datPersonaCollectValidSkills(skillData, skills, &validSkills, 0x20);
     }
     else
     {
         skillData = DAT_007ce428 + (u32)personaId * 0x46 + 6;
-        skillLimit = 0x10;
-        for (skillIdx = 0; skillIdx < skillLimit; skillIdx++)
-        {
-            if (skillData[skillIdx * 4] == 0 &&
-                ((s8*)skillData)[skillIdx * 4 + 1] == 1)
-            {
-                skills[validSkills] = *(u16*)(skillData + skillIdx * 4 + 2);
-                validSkills++;
-            }
-        }
+        datPersonaCollectValidSkills(skillData, skills, &validSkills, 0x10);
     }
 
     *skillCount = validSkills;
