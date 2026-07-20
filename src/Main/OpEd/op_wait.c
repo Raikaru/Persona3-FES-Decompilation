@@ -18,8 +18,8 @@ extern void* func_0021cce0(void* frame);
 extern void func_002699d0(void* value);
 extern void func_002699a0(void* value);
 extern void func_004d7f60(s32 state, u32 value);
-extern void (*D_00960090)(u32 state, u32 value);
-extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern u32 D_00960090[];
+extern u32 D_0096009C[];
 extern void func_00269a10(u32 id, void* callback);
 extern void func_00271230(u32* param);
 extern void func_002716d0(u32* param);
@@ -258,50 +258,64 @@ void opWait0026e000(void)
     u8* work;
     void* atlas;
     void* frame;
+    void (**setState)(u32 state, u32 value);
+    void (**setQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    void (**loopSetQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    u32 frameId;
     s32 i;
-    static const u32 spinner[3] = {9, 10, 0xb};
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (u8*)sOpWait;
     atlas = opResGetTitleSprite(0);
     if ((*(u32*)work & 1) == 0)
         return;
-    D_00960090(8, 0);
-    D_00960090(6, 0);
-    D_00960090(9, 2);
+    setState = (void (**)(u32, u32))D_00960090;
+    (*setState)(8, 0);
+    (*setState)(6, 0);
+    (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = opResGetTitleRaster(6);
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0x40, 4, 0, 1, 2);
-    D_0096009C(work + 0x40, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    setQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
+    (*setQuad)(work + 0x40, 4, 0, 1, 2);
+    (*setQuad)(work + 0x40, 4, 0, 2, 3);
     frame = opResGetTitleRaster(7);
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0x140, 4, 0, 1, 2);
-    D_0096009C(work + 0x140, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0x140, 4, 0, 1, 2);
+    (*setQuad)(work + 0x140, 4, 0, 2, 3);
     frame = opResGetTitleRaster(8);
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0x240, 4, 0, 1, 2);
-    D_0096009C(work + 0x240, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0x240, 4, 0, 1, 2);
+    (*setQuad)(work + 0x240, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
+    loopSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
     func_004d7f60(2, 0x44);
     for (i = 0; i < 3; i++)
     {
-        frame = opResGetTitleRaster(spinner[i]);
-        D_00960090(1, (u32)(unsigned long)frame);
-        D_0096009C(work + 0xe50 + (u32)i * 0x110, 4, 0, 1, 2);
-        D_0096009C(work + 0xe50 + (u32)i * 0x110, 4, 0, 2, 3);
+        if (i == 2)
+            frameId = 0xb;
+        else if (i == 1)
+            frameId = 0xa;
+        else if (i == 0)
+            frameId = 9;
+        else
+            continue;
+        frame = opResGetTitleRaster(frameId);
+        (*setState)(1, (u32)(unsigned long)frame);
+        (*loopSetQuad)(work + 0xe50 + (u32)i * 0x110, 4, 0, 1, 2);
+        (*loopSetQuad)(work + 0xe50 + (u32)i * 0x110, 4, 0, 2, 3);
     }
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = opResGetTitleRaster(0xc);
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0x340, 4, 0, 1, 2);
-    D_0096009C(work + 0x340, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0x340, 4, 0, 1, 2);
+    (*setQuad)(work + 0x340, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = opResGetTitleRaster(0xd);
-    D_00960090(1, (u32)(unsigned long)frame);
+    (*setState)(1, (u32)(unsigned long)frame);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_002699d0(*(void**)(work + 0x1170));
@@ -313,57 +327,62 @@ void opWait0026e000(void)
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 0x13));
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0x940, 4, 0, 1, 2);
-    D_0096009C(work + 0x940, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0x940, 4, 0, 1, 2);
+    (*setQuad)(work + 0x940, 4, 0, 2, 3);
     frame = func_0021cce0(func_0021cca0(atlas, 0x26));
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0xa40, 4, 0, 1, 2);
-    D_0096009C(work + 0xa40, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0xa40, 4, 0, 1, 2);
+    (*setQuad)(work + 0xa40, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 10));
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0xb40, 4, 0, 1, 2);
-    D_0096009C(work + 0xb40, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0xb40, 4, 0, 1, 2);
+    (*setQuad)(work + 0xb40, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
     frame = func_0021cce0(func_0021cca0(atlas, 0x10));
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(work + 0xd40, 4, 0, 1, 2);
-    D_0096009C(work + 0xd40, 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*setQuad)(work + 0xd40, 4, 0, 1, 2);
+    (*setQuad)(work + 0xd40, 4, 0, 2, 3);
 }
 
 // FUN_0026E780 NONMATCHING
 void opWait0026e780(void)
 {
-    static const u32 frameIds[5] = {0x13, 0x26, 10, 0xb, 0x10};
     u8* work;
     void* atlas;
     void* frame;
+    volatile u8 pad[16];
     f32 layout[4];
     s32 order[3];
     s32 i;
+    s32 j;
+    s32 k;
     s32 width;
     s32 height;
+    __asm__ volatile ("" : : "r"(pad) : "memory");
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (u8*)sOpWait;
     atlas = opResGetTitleSprite(0);
-    (void)func_00198590();
+    kwlnGetMainCamera();
     layout[0] = 0.0f;
     layout[1] = 0.0f;
     layout[2] = 1.0f;
     layout[3] = 1.0f;
+    func_0021eae0(work + 0x40, layout);
+    func_0021eac0(work + 0x40, 0.0f);
+    func_0021eae0(work + 0x140, layout);
+    func_0021eac0(work + 0x140, 0.0f);
+    func_0021eae0(work + 0x240, layout);
+    func_0021eac0(work + 0x240, 0.0f);
     for (i = 0; i < 3; i++)
-    {
-        func_0021eae0(work + 0x40 + (u32)i * 0x100, layout);
-        func_0021eac0(work + 0x40 + (u32)i * 0x100, 0.0f);
         order[i] = i;
-    }
-    for (i = 0; i < 0x10; i++)
+    for (j = 0; j < 0x10; j++)
     {
         s32 a = func_00488f30() % 3;
         s32 b = func_00488f30() & 1;
@@ -374,12 +393,12 @@ void opWait0026e780(void)
         order[a] = order[b];
         order[b] = t;
     }
-    for (i = 0; i < 3; i++)
+    for (k = 0; k < 3; k++)
     {
-        *(u32*)(work + 0xe40 + (u32)i * 0x110) =
-            (u32)(order[i] * 100 + 0x3c);
-        func_0021eae0(work + 0xe50 + (u32)i * 0x110, layout);
-        func_0021eac0(work + 0xe50 + (u32)i * 0x110, 0.0f);
+        *(u32*)(work + 0xe40 + (u32)k * 0x110) =
+            (u32)(order[k] * 100 + 0x3c);
+        func_0021eae0(work + 0xe50 + (u32)k * 0x110, layout);
+        func_0021eac0(work + 0xe50 + (u32)k * 0x110, 0.0f);
     }
     frame = opResGetTitleRaster(0xc);
     width = *(s32*)((u8*)frame + 0x0c);
@@ -402,11 +421,16 @@ void opWait0026e780(void)
     layout[3] = 1.0f;
     func_0021eb80(work + 0x840, layout);
     func_0021eac0(work + 0x840, 0.0f);
-    for (i = 0; i < 5; i++)
-    {
-        frame = func_0021cca0(atlas, frameIds[i]);
-        func_0021d3b0(work + 0x940 + (u32)i * 0x100, frame);
-    }
+    frame = func_0021cca0(atlas, 0x13);
+    func_0021d3b0(work + 0x940, frame);
+    frame = func_0021cca0(atlas, 0x26);
+    func_0021d3b0(work + 0xa40, frame);
+    frame = func_0021cca0(atlas, 10);
+    func_0021d3b0(work + 0xb40, frame);
+    frame = func_0021cca0(atlas, 0xb);
+    func_0021d3b0(work + 0xc40, frame);
+    frame = func_0021cca0(atlas, 0x10);
+    func_0021d3b0(work + 0xd40, frame);
     opWait0026ec50();
     work[0x0c] = 0;
     work[0x10] = 0;
