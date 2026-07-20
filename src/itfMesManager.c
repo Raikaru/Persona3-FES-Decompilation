@@ -69,6 +69,7 @@ extern int FUN_003b0c20();
 extern int FUN_003b0ce0();
 extern int thunk_FUN_003b0e04();
 extern s32 FUN_0035ed20(s32 index);
+extern char D_006A1A80[];
 extern char D_006A1AC0[];
 extern char D_006A1B30[];
 
@@ -970,13 +971,13 @@ u32 FUN_003a2b30(void)
 
 {
 
-  long lVar1;
+  int lVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   
 
@@ -990,7 +991,7 @@ u32 FUN_003a2b30(void)
 
     uVar4 = FUN_0035ed20(2);
 
-    FUN_005225a8(0x6a1a80,uVar2,uVar3,uVar4);
+    FUN_005225a8(D_006A1A80,uVar2,uVar3,uVar4);
 
     uVar2 = FUN_0035ed20(0);
 
