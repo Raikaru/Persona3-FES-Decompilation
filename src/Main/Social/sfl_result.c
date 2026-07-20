@@ -2395,14 +2395,14 @@ u32 func_001fc3c0(DatPersonaWork* persona)
 u32 func_001fc590(u8* event, void* target)
 {
     s32 damage;
-    s32 criticalDamage;
+    u32 criticalDamage;
     s32 boosted;
     u32 result = 0;
     u16 skill;
 
     skill = FUN_00308930();
     damage = FUN_00303130(skill, event, target, 1, 1, 1, 0, 1);
-    if ((*event & 4) == 0)
+    if ((*(u16*)event & 4) == 0)
     {
         damage = (s32)((f32)damage * 1.5f);
         criticalDamage = FUN_00488f30();
@@ -2420,7 +2420,7 @@ u32 func_001fc590(u8* event, void* target)
     FUN_00300410(target, damage);
     if (datCalcIsDead(target, 0) != 0)
     {
-        if ((*event & 4) == 0)
+        if ((*(u16*)event & 4) == 0)
             result = func_001fc870(event, target);
         datCalcClearBadStatus(target, 0x80);
         datCalcSetBadStatus(target, 0x80000);
