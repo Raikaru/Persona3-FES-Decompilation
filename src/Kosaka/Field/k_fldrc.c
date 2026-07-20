@@ -199,6 +199,17 @@ extern char D_00678DA0[];
 extern char D_00678DC0[];
 extern char D_00678DE0[];
 extern char D_00678DF8[];
+#pragma alias D_00678DF8_abs D_00678DF8
+extern char D_00678DF8_abs[];
+#pragma alias D_00678E50_abs D_00678E50
+extern char D_00678E50_abs[];
+#pragma alias D_00678E70_abs D_00678E70
+extern char D_00678E70_abs[];
+#pragma alias D_00678E90_abs D_00678E90
+extern char D_00678E90_abs[];
+extern char D_00678E50[];
+extern char D_00678E70[];
+extern char D_00678E90[];
 extern u8 D_00678F90[];
 extern HCdvd* func_001e2da0(u16 majorId, u16 minorId, s16 variant);
 extern HCdvd* func_001e7470(u16 majorId, u16 minorId);
@@ -2507,38 +2518,68 @@ u32 FUN_001b2f00(u32* resource)
     return result;
 }
 
-// FUN_001b32f0 NONMATCHING
-u32 FUN_001b32f0(u32 resource, u32 wanted, u32* hasOverlay)
+// FUN_001b32f0
+u32 FUN_001b32f0(void* resource, u32 wanted, u32* hasOverlay)
 {
-    u32 group;
-    u32 entry;
-    u32 count;
-    u32 i;
-    u32 type;
-    u32 match;
-    u32 found;
+    u32 outer;
+    s32 inner;
+    s32 count;
+    u32 result;
+    u32 type[2];
+    u32 match[2];
+    u32 found[2];
 
-    for (group = 0; group < *(u32*)(resource + 0x14); group++)
+    result = 0;
+    outer = 0;
+    goto outer_check;
+outer_body:
     {
-        entry = resource + group * 4;
-        count = FUN_001a6c00(*(u32*)(entry + 0x18), 0x678e50);
-        for (i = 0; i < count; i++)
+        u8* entry = (u8*)resource + outer * 4;
+        count = FUN_001a6c00(*(u32*)(entry + 0x18), D_00678E50_abs);
+        inner = 0;
+        goto inner_check;
+inner_body:
+        FUN_001a6e90(match, *(u32*)(entry + 0x18), D_00678E70_abs, inner);
+        if (match[0] == 0)
         {
-            FUN_001a6e90(&match, *(u32*)(entry + 0x18), 0x678e70, i);
-            if (match == 0)
-            {
-                FUN_0019d3f0(0x678df8, 0x5d2);
-            }
-            FUN_001a6e90(&type, *(u32*)(entry + 0x18), 0x678e50, i);
-            FUN_001a6e90(&found, *(u32*)(entry + 0x18), 0x678e90, i);
-            *hasOverlay = found != 0;
-            if ((type != 1) && (wanted == match))
-            {
-                return found;
-            }
+            K_Assert(D_00678DF8_abs, 0x5d2);
+        }
+        FUN_001a6e90(type, *(u32*)(entry + 0x18), D_00678E50_abs, inner);
+        FUN_001a6e90(found, *(u32*)(entry + 0x18), D_00678E90_abs, inner);
+        if (found[0] != 0)
+        {
+            *hasOverlay = 1;
+        }
+        else
+        {
+            *hasOverlay = 0;
+        }
+        if (type[0] == 1)
+        {
+            goto inner_increment;
+        }
+        if (wanted != match[0])
+        {
+            goto inner_increment;
+        }
+        result = type[1];
+        goto done;
+inner_increment:
+        inner++;
+inner_check:
+        if (inner < count)
+        {
+            goto inner_body;
+        }
+        outer++;
+outer_check:
+        if (outer < *(u32*)((u8*)resource + 0x14))
+        {
+            goto outer_body;
         }
     }
-    return 0;
+done:
+    return result;
 }
 // FUN_001b3480 NONMATCHING
 void FUN_001b3480(u32 resource)
@@ -2661,146 +2702,191 @@ void FUN_001b3480(u32 resource)
 // FUN_001b39e0 NONMATCHING
 u32 FUN_001b39e0(u32 resource)
 {
-    u32 i;
-    u32 record;
+    s32 firstIndex;
+    s32 secondIndex;
+    u8* record;
     u32 type;
     u32 object;
     u32 matrix;
-    u32 state;
-    u32 handle;
 
-    for (i = 0; i < *(u32*)(resource + 0x118); i++)
+    firstIndex = 0;
+    goto first_check;
+first_body:
+    record = (u8*)resource + firstIndex * 0x18;
+    type = *(u16*)(record + 0x11c);
+    if (type == 0)
     {
-        record = resource + i * 0x18;
-        type = *(u16*)(record + 0x1c);
-        if ((type == 0) || (type == 2))
-        {
-            if (FUN_00316f70(*(u32*)(record + 0x28)) == 0)
-            {
-                return 0;
-            }
-        }
-        else if ((type == 1) && (iGpffffb470 == 0) &&
-                 (*(u32*)(record + 0x30) != 0) &&
-                 (FUN_001016b0() == 0))
+        object = *(u32*)(record + 0x128);
+        if (FUN_00316f70(object) == 0)
         {
             return 0;
         }
+        goto first_increment;
     }
-    for (i = 0; i < *(u32*)(resource + 0x118); i++)
+    if (type == 2)
     {
-        record = resource + i * 0x18;
-        type = *(u16*)(record + 0x1c);
-        if ((type == 0) || (type == 2))
+        object = *(u32*)(record + 0x128);
+        if (FUN_00316f70(object) == 0)
         {
-            object = *(u32*)(record + 0x28);
-            matrix = FUN_004cb2f0(*(u32*)(record + 0x24));
-            FUN_00318a70(object, matrix, 0);
-            FUN_00319230(object, 3);
-            if ((*(u16*)(record + 0x1e) & 1) == 0)
-            {
-                FUN_003182d0(object, 0, 0, 8, 1);
-            }
-            else
-            {
-                FUN_003189f0(0, object, 0);
-            }
+            return 0;
         }
-        else if ((type == 1) && (*(u32*)(record + 0x30) != 0))
-        {
-            if (iGpffffb470 == 0)
-            {
-                object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x30) + 0x110));
-            }
-            else
-            {
-                object = FUN_0034fcd0();
-            }
-            *(u32*)(record + 0x12c) = object;
-            matrix = FUN_004cb2f0(*(u32*)(record + 0x24));
-            FUN_0034fdf0(object, matrix + 0x30);
-            if (iGpffffb470 == 0)
-            {
-                FUN_00100ec0(*(u32*)(record + 0x30));
-            }
-            *(u32*)(record + 0x30) = 0;
-        }
+        goto first_increment;
     }
-    if (*(u32*)(resource + 0xa40) != 0)
+    if (type != 1)
     {
-        FUN_001a14c0(*(u32*)(*(u32*)(resource + 0xa40) + 0x120));
-        (*DAT_0096017c)((void*)*(u32*)(resource + 0xa40));
-        *(u32*)(resource + 0xa40) = 0;
+        goto first_increment;
     }
-    state = 1;
-    handle = state;
-    return handle;
+    if (iGpffffb470 != 0)
+    {
+        goto first_increment;
+    }
+    object = *(u32*)(record + 0x130);
+    if (object == 0)
+    {
+        goto first_increment;
+    }
+    if (FUN_001016b0(object) != 0)
+    {
+        goto first_increment;
+    }
+    return 0;
+first_increment:
+    firstIndex++;
+first_check:
+    if ((u32)firstIndex < *(u32*)((u8*)resource + 0x118))
+    {
+        goto first_body;
+    }
+
+    secondIndex = 0;
+    goto second_check;
+second_body:
+    record = (u8*)resource + secondIndex * 0x18;
+    type = *(u16*)(record + 0x11c);
+    if (type == 0)
+    {
+        goto stream_model;
+    }
+    if (type == 2)
+    {
+        goto stream_model;
+    }
+    if (type != 1)
+    {
+        goto second_increment;
+    }
+    if (*(u32*)(record + 0x130) == 0)
+    {
+        goto second_increment;
+    }
+    if (iGpffffb470 == 0)
+    {
+        object = FUN_0034fcd0(*(u32*)(*(u32*)(record + 0x130) + 0x110));
+    }
+    else
+    {
+        object = FUN_0034fcd0();
+    }
+    *(u32*)(record + 0x12c) = object;
+    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+    FUN_0034fdf0(object, matrix + 0x30);
+    if (iGpffffb470 == 0)
+    {
+        FUN_00100ec0(*(u32*)(record + 0x130));
+    }
+    *(u32*)(record + 0x130) = 0;
+    goto second_increment;
+stream_model:
+    object = *(u32*)(record + 0x128);
+    matrix = (u32)FUN_004cb2f0(*(u32*)(record + 0x124));
+    FUN_00318a70(object, matrix, 0);
+    FUN_00319230(object, 3);
+    if ((*(u16*)(record + 0x11e) & 1) == 0)
+    {
+        FUN_003182d0(object, 0, 0, 8, 1);
+    }
+    else
+    {
+        FUN_003189f0(0, object, 0);
+    }
+second_increment:
+    secondIndex++;
+second_check:
+    if ((u32)secondIndex < *(u32*)((u8*)resource + 0x118))
+    {
+        goto second_body;
+    }
+    if (*(u32*)((u8*)resource + 0xa40) != 0)
+    {
+        object = *(u32*)((u8*)resource + 0xa40);
+        FUN_001a14c0(*(u32*)(object + 0x120));
+        (*(void (**)(void*))DAT_0096017c_abs)((void*)object);
+        *(u32*)((u8*)resource + 0xa40) = 0;
+    }
+    return 1;
 }
 
-// FUN_001b3c90 NONMATCHING
+// FUN_001b3c90
 void FUN_001b3c90(void* resource)
 {
-    u32* fields;
-    u32 i;
-    u32 count;
-    u16 type;
+    u32 firstIndex;
+    u32 secondIndex;
 
-    fields = (u32*)resource;
-    if ((*fields & 1) == 0)
+    if ((*(u32*)resource & 1) != 0)
     {
-        FUN_001a7710(fields[3]);
-        if (fields[2] != 0)
+        if (*(u32*)((u8*)resource + 8) != 0 &&
+            *(u32*)((u8*)resource + 8) != *(u32*)((u8*)resource + 0x0c))
         {
-            FUN_00491ea0();
+            FUN_0049a290(*(u32*)((u8*)resource + 8));
         }
-        if (fields[4] != 0)
+        if (*(u32*)((u8*)resource + 0x0c) != 0)
         {
-            FUN_00491ea0();
+            FUN_0049a290(*(u32*)((u8*)resource + 0x0c));
+        }
+        if (*(u32*)((u8*)resource + 0x10) != 0)
+        {
+            FUN_0049a290(*(u32*)((u8*)resource + 0x10));
         }
     }
     else
     {
-        if ((fields[2] != 0) && (fields[2] != fields[3]))
+        FUN_001a7710(*(u32*)((u8*)resource + 0x0c));
+        if (*(u32*)((u8*)resource + 8) != 0)
         {
-            FUN_0049a290();
+            FUN_00491ea0(*(u32*)((u8*)resource + 8));
         }
-        if (fields[3] != 0)
+        if (*(u32*)((u8*)resource + 0x10) != 0)
         {
-            FUN_0049a290();
-        }
-        if (fields[4] != 0)
-        {
-            FUN_0049a290();
+            FUN_00491ea0(*(u32*)((u8*)resource + 0x10));
         }
     }
-    count = fields[5];
-    for (i = 0; i < count; i++)
+    for (firstIndex = 0; firstIndex < *(u32*)((u8*)resource + 0x14); firstIndex++)
     {
-        FUN_001a7710(fields[i + 0x26]);
-        FUN_00491ea0(fields[i + 6]);
+        FUN_001a7710(*(u32*)((u8*)resource + 0x98 + firstIndex * 4));
+        FUN_00491ea0(*(u32*)((u8*)resource + 0x18 + firstIndex * 4));
     }
-    count = fields[0x46];
-    for (i = 0; i < count; i++)
+    for (secondIndex = 0; secondIndex < *(u32*)((u8*)resource + 0x118); secondIndex++)
     {
-        type = (u16)fields[i * 6 + 0x47];
+        u8* record = (u8*)resource + secondIndex * 0x18;
+        u16 type = *(u16*)(record + 0x11c);
         if ((type == 0) || (type == 2))
         {
-            FUN_003174e0(fields[i * 6 + 0x4a]);
+            FUN_003174e0(*(u32*)(record + 0x128));
         }
         else if (type == 1)
         {
-            FUN_0034fcf0(fields[i * 6 + 0x4b]);
+            FUN_0034fcf0(*(u32*)(record + 0x12c));
         }
     }
-    if (fields[0x287] != 0)
+    if (*(u32*)((u8*)resource + 0xa1c) != 0)
     {
-        FUN_0048da30();
+        FUN_0048da30(*(u32*)((u8*)resource + 0xa1c));
     }
-    if (fields[0x28f] != 0)
+    if (*(u32*)((u8*)resource + 0xa3c) != 0)
     {
-        (*DAT_0096017c)(NULL);
+        (*(void (**)(void*))DAT_0096017c_abs)(*(void**)((u8*)resource + 0xa3c));
     }
-    (*DAT_0096017c)(resource);
+    (*(void (**)(void*))DAT_0096017c_abs)(resource);
 }
 static void fldrc_render_begin(void)
 {
