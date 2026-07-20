@@ -593,7 +593,7 @@ KwlnTask* func_00180c40(KwlnTask* clndTask)
     s32 eventIndex;
 
     work = clndTask->workData;
-    H_Dbprt_FmtLog("calendar: early morning");
+    printf("calendar: early morning");
     datSetFlag(0xa80, true);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, false);
@@ -632,7 +632,7 @@ KwlnTask* func_00180c40(KwlnTask* clndTask)
             {
                 return func_00181950(clndTask, eventIndex);
             }
-            return func_003c1ab0(clndTask, datGetTime());
+            return func_003c1ab0(clndTask, datGetTime() & 0xff);
         }
     }
 
@@ -680,8 +680,10 @@ KwlnTask* func_00180ee0(KwlnTask* clndTask)
 // FUN_00181010 NONMATCHING
 KwlnTask* func_00181010(KwlnTask* clndTask)
 {
+    KwlnTask* result;
     s32 eventIndex;
 
+    result = NULL;
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, true);
@@ -690,29 +692,29 @@ KwlnTask* func_00181010(KwlnTask* clndTask)
     datSetFlag(0xa85, false);
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
-    H_Dbprt_FmtLog("calendar: lunch");
-
-    if (datGetSkipToTarget() != 0)
+    if (datGetSkipToTarget() == 0)
     {
-        return NULL;
-    }
-    eventIndex = clndFindAndExecSiteibiEvents();
-    if (eventIndex < 0)
-    {
-        if (clndGetCurrentWeekDay() == CALENDAR_DAY_SATURDAY)
+        printf("calendar: lunch");
+        eventIndex = clndFindAndExecSiteibiEvents();
+        if (eventIndex != -1)
         {
-            return NULL;
+            return func_00181950(clndTask, eventIndex);
         }
-        return func_003c1ab0(clndTask, datGetTime());
+        if ((datGetDaysSinceApr5() + 7) % 7 != 6)
+        {
+            result = func_003c1ab0(clndTask, datGetTime() & 0xff);
+        }
     }
-    return func_00181950(clndTask, eventIndex);
+    return result;
 }
 
-// FUN_00181170 NONMATCHING
+// FUN_00181170
 KwlnTask* func_00181170(KwlnTask* clndTask)
 {
+    KwlnTask* result;
     s32 eventIndex;
 
+    result = NULL;
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, false);
@@ -721,23 +723,27 @@ KwlnTask* func_00181170(KwlnTask* clndTask)
     datSetFlag(0xa85, false);
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
-    H_Dbprt_FmtLog("calendar: afternoon");
-
-    if (datGetSkipToTarget() != 0)
+    if (datGetSkipToTarget() == 0)
     {
-        return NULL;
-    }
-    eventIndex = clndFindAndExecSiteibiEvents();
-    if (eventIndex < 0)
-    {
-        if (func_0017db40(datGetDaysSinceApr5()) == 0 &&
-            clndGetCurrentWeekDay() == CALENDAR_DAY_SATURDAY)
+        printf("calendar: afternoon");
+        eventIndex = clndFindAndExecSiteibiEvents();
+        if (eventIndex != -1)
+        {
+            return func_00181950(clndTask, eventIndex);
+        }
+        if (func_0017db40(datGetDaysSinceApr5()) != 0)
+        {
+            result = func_003c1ab0(clndTask, datGetTime() & 0xff);
+            goto ret;
+        }
+        if ((datGetDaysSinceApr5() + 7) % 7 == 6)
         {
             return NULL;
         }
-        return func_003c1ab0(clndTask, datGetTime());
+        result = func_003c1ab0(clndTask, datGetTime() & 0xff);
     }
-    return func_00181950(clndTask, eventIndex);
+ret:
+    return result;
 }
 
 // FUN_00181310 NONMATCHING
@@ -767,11 +773,13 @@ KwlnTask* func_00181310(KwlnTask* clndTask)
     return func_00181950(clndTask, eventIndex);
 }
 
-// FUN_00181430 NONMATCHING
+// FUN_00181430
 KwlnTask* func_00181430(KwlnTask* clndTask)
 {
+    KwlnTask* result;
     s32 eventIndex;
 
+    result = NULL;
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, false);
@@ -780,19 +788,23 @@ KwlnTask* func_00181430(KwlnTask* clndTask)
     datSetFlag(0xa85, true);
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
-    H_Dbprt_FmtLog("calendar: evening");
-
-    if (datGetSkipToTarget() == 0 && datGetFlag(0xa01) == 0)
+    printf("calendar: evening");
+    if (datGetSkipToTarget() != 0)
+    {
+        goto done;
+    }
+    if (datGetFlag(0xa01) != 1)
     {
         eventIndex = clndFindAndExecSiteibiEvents();
-        if (eventIndex >= 0)
+        if (eventIndex != -1)
         {
             return func_00181950(clndTask, eventIndex);
         }
-        return func_003c1ab0(clndTask, datGetTime());
+        result = func_003c1ab0(clndTask, datGetTime() & 0xff);
     }
     datSetFlag(0xa01, false);
-    return NULL;
+done:
+    return result;
 }
 
 // FUN_00181580 NONMATCHING
