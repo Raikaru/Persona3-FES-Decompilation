@@ -824,7 +824,7 @@ u32 FUN_00410e70(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_004110F0 NONMATCHING
+// FUN_004110F0
 
 
 u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3)
@@ -838,12 +838,12 @@ u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3)
     switch(*(s16 *)(param_3 + 6)) {
     case 0:
       break;
-    case 1:
-    case 3:
-      FUN_003eec60(1);
-      break;
     case 2:
     case 4:
+      FUN_003eec60(1);
+      break;
+    case 1:
+    case 3:
       FUN_003eec60(0);
       break;
     case 5:
@@ -859,7 +859,7 @@ u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3)
 
 }
 
-// FUN_00411190 NONMATCHING
+// FUN_00411190
 
 
 u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3)
@@ -884,49 +884,49 @@ u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3)
 
       break;
 
-    case 6:
+    case 10:
 
       FUN_003ef970(1);
 
       break;
 
-    case 7:
+    case 6:
 
       FUN_003ef970(2);
 
       break;
 
-    case 8:
+    case 0xb:
 
       FUN_003ef970(3);
 
       break;
 
-    case 9:
+    case 7:
 
       FUN_003ef970(4);
 
       break;
 
-    case 10:
+    case 0xc:
 
       FUN_003ef970(5);
 
       break;
 
-    case 0xb:
+    case 8:
 
       FUN_003ef970(6);
 
       break;
 
-    case 0xc:
+    case 0xd:
 
       FUN_003ef970(7);
 
       break;
 
-    case 0xd:
+    case 9:
 
       FUN_003ef970(8);
 
