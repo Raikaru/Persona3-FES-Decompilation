@@ -41,6 +41,7 @@ extern u32 func_00316f70(Model* model);
 extern u32* PTR_DAT_007cd540;
 extern u16* puGpffffa850;
 extern void (*D_0096017c)(void* memory);
+extern u32 D_00960184[];
 
 void* gFldScrMemory; // 007ce228
 u32 gFldScrSize;     // 007ce224
@@ -251,8 +252,6 @@ void* func_001b7e60(KwlnTask* task)
 {
     FieldLoadWork* work;
     HCdvd* request;
-    void* source;
-    u32 sourceSize;
 
     work = (FieldLoadWork*)task->workData;
     if (work == NULL)
@@ -267,7 +266,6 @@ void* func_001b7e60(KwlnTask* task)
     {
         return KWLNTASK_CONTINUE;
     }
-
     if (work->state == 0)
     {
         request = H_Cdvd_Request(work->scenarioMode == 0
@@ -276,21 +274,16 @@ void* func_001b7e60(KwlnTask* task)
                                  HCDVD_FILENORMAL);
         work->request = request;
         work->enemyTableRequest = func_001d4360();
-        work->state = 1;
+        work->state++;
     }
-
     if (work->request != NULL && H_Cdvd_IsFileLoaded(work->request) != 0)
     {
-        source = work->request->fileMemory;
-        sourceSize = work->request->fileSize;
-        if (sourceSize > sizeof(gFldDngFloorsData))
+        if (work->request->fileSize >= 0x2000)
         {
-            sourceSize = sizeof(gFldDngFloorsData);
+            K_Assert((const char*)0x0067F440, 0xcd);
         }
-        if (source != NULL)
-        {
-            memcpy(gFldDngFloorsData, source, sourceSize);
-        }
+        memcpy(gFldDngFloorsData, work->request->fileMemory,
+               work->request->fileSize);
         H_Cdvd_Destroy(work->request);
         work->request = NULL;
     }
@@ -376,7 +369,7 @@ void* func_001b8160(void)
 // FUN_001b81f0 NONMATCHING
 u32 func_001b81f0(HCdvd* request)
 {
-    char path[128];
+    char path[76];
     void* source;
     u32 sourceSize;
     u32 cachedSize;
@@ -550,43 +543,38 @@ void* func_001b8680(void)
 // FUN_001b8710 NONMATCHING
 u32 func_001b8710(HCdvd* request)
 {
-    char path[128];
-    void* source;
-    u32 sourceSize;
+    char path[76];
+    void* memory;
     u32 cachedSize;
-    Field* field;
 
     if (request == NULL)
     {
         return true;
     }
-    field = K_Field_Get();
-    source = NULL;
-    sourceSize = 0;
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(request) != 0)
+        if (H_Cdvd_IsFileLoaded(request) == 0)
         {
-            source = request->fileMemory;
-            sourceSize = request->fileSize;
+            return false;
         }
-    }
-    else
-    {
-        sprintf(path, "field/pack/nm%03d_%03d.bmd", fieldCurrentMajor(),
-                fieldCurrentMinor());
-        source = H_Cdvd_CacheFindFile(path, &cachedSize);
-        sourceSize = cachedSize;
-    }
-    if (source == NULL || sourceSize == 0)
-    {
-        return false;
-    }
-    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x1154, void*), NULL,
-                       source, sourceSize);
-    if (K_Fldrc_GetFldPacCdvd() == NULL)
-    {
+        memory = (*(void* (**)(u32, u32, u32))D_00960184)(
+            1, request->fileSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+               request->fileMemory, request->fileSize);
         H_Cdvd_Destroy(request);
+        return true;
+    }
+    sprintf(path, "field/pack/nm%03d_%03d.bmd",
+            PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
+    request = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (request != NULL)
+    {
+        memory = (*(void* (**)(u32, u32, u32))D_00960184)(
+            1, cachedSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+               request, cachedSize);
     }
     return true;
 }
@@ -630,44 +618,40 @@ void* func_001b88d0(void)
 // FUN_001b8960 NONMATCHING
 u32 func_001b8960(HCdvd* request)
 {
-    char path[128];
-    void* source;
-    u32 sourceSize;
+    char path[76];
+    void* memory;
     u32 cachedSize;
-    Field* field;
 
     if (request == NULL)
     {
         return true;
     }
-    field = K_Field_Get();
-    source = NULL;
-    sourceSize = 0;
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(request) != 0)
+        if (H_Cdvd_IsFileLoaded(request) == 0)
         {
-            source = request->fileMemory;
-            sourceSize = request->fileSize;
+            return false;
         }
-    }
-    else
-    {
-        sprintf(path, "field/pack/ns%03d_%03d.bf", fieldCurrentMajor(),
-                fieldCurrentMinor());
-        source = H_Cdvd_CacheFindFile(path, &cachedSize);
-        sourceSize = cachedSize;
-    }
-    if (source == NULL || sourceSize == 0)
-    {
-        return false;
-    }
-    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x114c, void*), NULL,
-                       source, sourceSize);
-    FIELD_DATA_AT(field, 0x1150, u32) = sourceSize;
-    if (K_Fldrc_GetFldPacCdvd() == NULL)
-    {
+        memory = (*(void* (**)(u32, u32, u32))D_00960184)(
+            1, request->fileSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
+        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = request->fileSize;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+               request->fileMemory, request->fileSize);
         H_Cdvd_Destroy(request);
+        return true;
+    }
+    sprintf(path, "field/pack/ns%03d_%03d.bf",
+            PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
+    request = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (request != NULL)
+    {
+        memory = (*(void* (**)(u32, u32, u32))D_00960184)(
+            1, cachedSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
+        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+               request, cachedSize);
     }
     return true;
 }
@@ -685,27 +669,36 @@ void func_001b8ae0(void)
 // FUN_001b8b40 NONMATCHING
 void func_001b8b40(void)
 {
+    char path[128];
     HCdvd* request;
     s16* record;
+    u32 recordCount;
+    u32 fileSize;
     u32 i;
 
-    request = H_Cdvd_Request("field/table/comutbl.bin", HCDVD_FILENORMAL);
-    if (request == NULL)
+    sprintf(path, "field/table/comutbl.bin");
+    if (H_Cdvd_FileExists(path) == 0)
     {
         return;
     }
+    request = H_Cdvd_Request(path, HCDVD_FILENORMAL);
     H_Cdvd_ReadSync(request);
-    fieldReplaceBuffer((void**)&sComuTable, NULL, request->fileMemory,
-                       request->fileSize);
-    sComuTableRecords = request->fileSize >> 7;
+    sComuTable = (s16*)(*(void* (**)(u32, u32, u32))D_00960184)(
+        1, request->fileSize, rwMEMHINTDUR_GLOBAL);
+    fileSize = request->fileSize;
+    memcpy(sComuTable, request->fileMemory, fileSize);
+    recordCount = request->fileSize >> 7;
+    sComuTableRecords = recordCount;
     sComuTableEmptyRecords = 0;
     record = sComuTable;
-    for (i = 0; record != NULL && i < sComuTableRecords; i++)
+    i = 0;
+    while (i < recordCount)
     {
-        if (record[0] == -1)
+        if (*(u16*)record == 0xffff)
         {
             sComuTableEmptyRecords++;
         }
+        i++;
         record += 0x40;
     }
     H_Cdvd_Destroy(request);
