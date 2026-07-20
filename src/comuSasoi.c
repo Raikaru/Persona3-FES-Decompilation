@@ -13,6 +13,40 @@ extern u32 LAB_003c29b0;
 extern u32 LAB_003c2c00;
 extern u32 LAB_003c2db0;
 extern u32 LAB_003c3274;
+#pragma alias FUN_001720c0 func_001720c0
+#pragma alias FUN_00172a50 func_00172a50
+#pragma alias FUN_0019d3f0 func_0019d3f0
+extern s32 FUN_001720c0(u64 param_1, u8 *out);
+extern s32 FUN_00172a50(s16 param_1);
+extern void FUN_0019d3f0(const char *file, s32 line);
+extern u32 FUN_003bd870(void);
+extern s32 FUN_0017d920(void);
+extern s32 FUN_0017da40(void);
+extern s32 FUN_00521408(u32 dst, s32 value, s32 size);
+extern s32 FUN_003be8e0(u32 id, s32 index, ...);
+extern s32 FUN_003c40f0(s32 id);
+extern s32 FUN_001717c0(s32 id);
+extern s32 FUN_00172160(s32 id);
+extern s32 FUN_003c23f0(s32 id, u64 first, u64 second);
+extern s32 FUN_00172660(s32 id);
+extern s32 FUN_003951d0(s32 id);
+extern s32 FUN_003bdd50(void);
+extern s32 FUN_00172c50(void *out);
+extern s32 FUN_0017ddf0(void *first, void *second);
+extern s32 FUN_003be2a0(s32 arg0, s32 arg1, u64 id, s32 arg3, u32 arg4);
+extern s32 FUN_00395200(s32 max);
+extern s32 FUN_001717b0(void);
+extern s32 FUN_00395230(s32 max);
+extern s32 FUN_0016e100(s32 id);
+extern s32 FUN_0016dba0(s32 id);
+#pragma alias FUN_003c28a0_call FUN_003c28a0
+extern u32 FUN_003c28a0_call(u32, u32, u32, u32, u32 *, s32 *);
+#pragma alias FUN_003c2ab0_call FUN_003c2ab0
+extern u32 FUN_003c2ab0_call(u32, u32);
+#pragma alias FUN_003c2c50_call FUN_003c2c50
+extern u8 FUN_003c2c50_call(u32);
+#pragma alias FUN_003c2df0_call FUN_003c2df0
+extern u32 FUN_003c2df0_call(u32);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -53,7 +87,7 @@ u32 * FUN_003c3390(void);
 #define FUN_003c3390(...) ((u32 * (*)(...))FUN_003c3390)(__VA_ARGS__)
 
 #undef FUN_003c2570
-// FUN_003C2570 NONMATCHING
+// FUN_003C2570
 
 
 u32 FUN_003c2570(u64 param_1)
@@ -64,9 +98,9 @@ u32 FUN_003c2570(u64 param_1)
 
   u32 uVar1;
 
-  long lVar2;
+  int lVar2;
 
-  long lVar3;
+  int lVar3;
 
   u8 auStack_4 [4];
 
@@ -518,7 +552,7 @@ u8 FUN_003c2c50(u32 param_1)
 
   int *piVar3;
 
-  long lVar4;
+  int lVar4;
 
   u16 uVar5;
 
@@ -658,8 +692,6 @@ u32 FUN_003c2df0(u32 param_1)
 
   int iVar5;
 
-  
-
   iVar1 = FUN_003bd870();
 
   uVar2 = FUN_0017d920();
@@ -668,26 +700,22 @@ u32 FUN_003c2df0(u32 param_1)
 
   iVar5 = 0;
 
-  while( 1 ) {
-
+  while (1) {
     if (*(int *)(iVar1 + 0x654) <= iVar5) {
-
       return 0;
-
     }
 
     pbVar4 = (u8 *)(*(int *)(iVar1 + 0x650) + iVar5 * 3);
 
-    if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (param_1 == pbVar4[2])) break;
+    if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (param_1 == pbVar4[2])) {
+      break;
+    }
 
     if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (pbVar4[2] == 0xff)) {
-
       return 1;
-
     }
 
     iVar5 = iVar5 + 1;
-
   }
 
   return 1;
