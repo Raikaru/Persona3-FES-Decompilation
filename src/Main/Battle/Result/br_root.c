@@ -1209,7 +1209,7 @@ void func_001f30d0(KwlnTask *task)
     kwlnTaskDestroyWithHierarchy(task);
 }
 
-// FUN_001f30f0 NONMATCHING
+// FUN_001f30f0
 void func_001f30f0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
