@@ -32,6 +32,7 @@ extern RwV3d D_00683D78;
 extern f32 D_007CE82C;
 extern f32 D_007CE834;
 extern f32 D_007CAF38;
+extern u32 D_007CE2B8;
 
 extern volatile f32 DAT_007cb144;
 extern volatile f32 DAT_007caf24;
@@ -637,10 +638,7 @@ s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix,
 }
 
 // FUN_001E1840
-asm void* func_001e1840(void)
+void* func_001e1840(void)
 {
-    .set noreorder
-    addiu $v0, $gp, -0x4a38
-    jr $ra
-    nop
+    return &D_007CE2B8;
 }
