@@ -82,7 +82,7 @@ void FUN_003a8dc0(long param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5
 void FUN_003a8ea0(long param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 void FUN_003a8fb0(long param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5);
 void FUN_003a9080(u64 param_1);
-void FUN_003a90c0(long param_1,u64 param_2);
+void FUN_003a90c0(int param_1,u64 param_2);
 u64 FUN_003a9140(int param_1);
 int FUN_003a9230(int param_1);
 u64 FUN_003a92a0(int param_1);
@@ -256,7 +256,7 @@ void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5
 
   if ((param_4 == 0) || (param_5 == 0)) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x39);
+    FUN_0019d3f0(DAT_006a1bf8, 0x39);
 
   }
 
@@ -344,7 +344,7 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
   if ((param_1 < 0) || (0xe < param_1)) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x1b5);
+    FUN_0019d3f0(DAT_006a1bf8, 0x1b5);
 
   }
 
@@ -497,7 +497,7 @@ void FUN_003a8dc0(long param_1,u64 param_2,u64 param_3,u64 param_4,
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x24e);
+    FUN_0019d3f0(DAT_006a1bf8, 0x24e);
 
   }
 
@@ -543,7 +543,7 @@ void FUN_003a8ea0(long param_1,int param_2,int param_3,int param_4,int param_5,i
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x270);
+    FUN_0019d3f0(DAT_006a1bf8, 0x270);
 
   }
 
@@ -595,7 +595,7 @@ void FUN_003a8fb0(long param_1,u64 param_2,u64 param_3,u64 param_4,
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x294);
+    FUN_0019d3f0(DAT_006a1bf8, 0x294);
 
   }
 
@@ -645,7 +645,7 @@ void FUN_003a9080(u64 param_1)
 // FUN_003A90C0 NONMATCHING
 
 
-void FUN_003a90c0(long param_1,u64 param_2)
+void FUN_003a90c0(int param_1,u64 param_2)
 
 
 
@@ -653,11 +653,11 @@ void FUN_003a90c0(long param_1,u64 param_2)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0((const char *)0x6a1bf8,0x2d6);
+    FUN_0019d3f0(DAT_006a1bf8, 0x2d6);
 
   }
 
-  (*(code *)(&PTR_FUN_006a1c90)[*(u8 *)((int)param_1 + 0x3c)])(param_1,param_2);
+  (*(code *)(&PTR_FUN_006a1c90)[*(u8 *)(param_1 + 0x3c)])(param_1,param_2);
 
   return;
 
