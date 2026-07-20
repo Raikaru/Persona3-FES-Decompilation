@@ -557,10 +557,11 @@ u64 FUN_003c89a0(void)
             }
         } else {
             iVar4 = *(int *)(*piVar2 + 4);
-            if (iVar4 != 0) {
+            if (iVar4 == 0) {
+                iVar4 = 0;
+            } else {
                 goto LAB_003c8a68;
             }
-            iVar4 = 0;
             goto LAB_003c8a6c;
 LAB_003c8a68:
             iVar4 = *(int *)(iVar4 + 0x14);
