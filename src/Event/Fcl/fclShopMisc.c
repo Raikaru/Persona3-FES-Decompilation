@@ -27335,6 +27335,96 @@ u32 FUN_0040a490(u32 param_1)
   return uVar1;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_0040A5B0
+s32 FUN_0040a5b0(u32 *param_1, u32 *param_2)
+{
+  u32 entryA;
+  u32 entryB;
+  u32 t4;
+  u32 t5;
+  u8 *tablePtr;
+  s32 result;
+  u16 h;
+  u16 i;
+  u8 b1;
+  u8 b2;
+  u8 k;
+  u8 m;
+
+  entryA = *(u32 *)(*param_1 + 0x14);
+  entryA = *(u32 *)(entryA + 0x1c);
+  entryB = *(u32 *)(*param_2 + 0x14);
+  entryB = *(u32 *)(entryB + 0x1c);
+  t4 = *(u32 *)(entryA + 4);
+  t5 = *(u32 *)(entryB + 4);
+  b1 = *(u8 *)(t5 + 4);
+  b2 = *(u8 *)(t4 + 4);
+  result = (s32)b1 - (s32)b2;
+  if (result != 0) {
+    goto ret;
+  }
+  h = *(u16 *)(t5 + 2);
+  tablePtr = (u8 *)DAT_007ce420 + 2;
+  i = *(u16 *)(t4 + 2);
+  k = tablePtr[i * 0xe];
+  m = tablePtr[h * 0xe];
+  result = (s32)k - (s32)m;
+  if (result != 0) {
+    goto ret;
+  }
+  result = (s32)i - (s32)h;
+ret:
+  return result;
+}
+#pragma pop
+
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_0040A640
+s32 FUN_0040a640(u32 *param_1, u32 *param_2)
+{
+  u32 entryA;
+  u32 entryB;
+  u32 t5;
+  u32 t4;
+  u16 i;
+  u8 *tablePtr;
+  u16 h;
+  u8 m;
+  u8 k;
+  s32 result;
+  u8 bB;
+  u8 bA;
+
+  entryA = *(u32 *)(*param_1 + 0x14);
+  entryA = *(u32 *)(entryA + 0x1c);
+  entryB = *(u32 *)(*param_2 + 0x14);
+  entryB = *(u32 *)(entryB + 0x1c);
+  t5 = *(u32 *)(entryB + 4);
+  i = *(u16 *)(t5 + 2);
+  tablePtr = (u8 *)DAT_007ce420 + 2;
+  t4 = *(u32 *)(entryA + 4);
+  h = *(u16 *)(t4 + 2);
+  m = tablePtr[h * 0xe];
+  k = tablePtr[i * 0xe];
+  result = (s32)m - (s32)k;
+  if (result != 0) {
+    goto ret;
+  }
+  bB = *(u8 *)(t5 + 4);
+  bA = *(u8 *)(t4 + 4);
+  result = (s32)bB - (s32)bA;
+  if (result != 0) {
+    goto ret;
+  }
+  result = (s32)h - (s32)i;
+ret:
+  return result;
+}
+#pragma pop
+
 // FUN_0040A6D0 NONMATCHING
 
 
