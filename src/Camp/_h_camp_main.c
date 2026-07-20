@@ -576,6 +576,8 @@ extern KwlnTask* DAT_007cdf50;
 extern u32 DAT_007cdf6c;
 extern u32 DAT_007cdf70;
 extern u32 DAT_007cdf74;
+extern s32 iGpffffb284;
+extern s32 iGpffffb280;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
 extern u16 DAT_007e095a;
@@ -840,15 +842,15 @@ void FUN_00135120(KwlnTask* task)
     void* oldRequest;
     void* record;
     KwlnTask* queued;
+    const u16* cardTable;
+    void* knownText;
     s32 selected;
     char path[256];
-    work = (u32*)task->workData;
-    DAT_007cdf70 = 0;
 
+    work = (u32*)task->workData;
+    iGpffffb280 = 0;
     resource = (void*)work[0x59];
-    if (resource == NULL) {
-        h_campDestroyRequestAndResource(work, 0x56, 0x5b);
-    } else {
+    if (resource != NULL) {
         oldRequest = (void*)work[0x56];
         record = RwCalloc(1, 8, 0x40000);
         if (record != NULL) {
@@ -864,25 +866,75 @@ void FUN_00135120(KwlnTask* task)
         }
         work[0x59] = 0;
         work[0x56] = 0;
+    } else {
+        oldRequest = (void*)work[0x56];
+        if (oldRequest != NULL) {
+            H_Cdvd_Destroy((HCdvd*)oldRequest);
+            work[0x56] = 0;
+        }
+        resource = (void*)work[0x5b];
+        if (resource != NULL) {
+            FUN_004d0f00(resource);
+            work[0x5b] = 0;
+        }
     }
 
     selected = (s32)work[work[1] + work[2] + 8];
-    if (selected == 0 || selected == 0x1d) {
-        if (DAT_00833A60[work[5]] == 0) {
-            work[0x56] = 0;
-        } else {
-            h_campBuildCardPath(path, selected, work[5]);
-            work[0x56] = (u32)H_Cdvd_Request(path, 0);
-        }
-    } else if (D_005DBB00[selected * 3 + work[5]] == 0) {
-        work[0x56] = 0;
-    } else {
-        h_campBuildCardPath(path, selected, work[5]);
-        work[0x56] = (u32)H_Cdvd_Request(path, 0);
+    if (selected == 0) {
+        goto zero_card;
     }
+    if (selected == 0x1d) {
+        goto zero_card;
+    }
+
+    cardTable = D_005DBB00 + selected * 3;
+    if (cardTable[work[5]] == 0) {
+        goto done;
+    }
+    knownText = FUN_00172160(selected);
+    if (knownText != NULL) {
+        goto known_nonzero;
+    }
+    knownText = FUN_001717c0(selected);
+    if (knownText == NULL) {
+        goto fallback_nonzero;
+    }
+known_nonzero:
+    sprintf(path, D_005DBBC0,
+            (D_005DBB00 + selected * 3)[work[5]]);
+    goto request_nonzero;
+fallback_nonzero:
+    sprintf(path, D_005DBBF0,
+            (D_005DBB00 + selected * 3)[work[5]]);
+request_nonzero:
+    work[0x56] = (u32)H_Cdvd_Request(path, 0);
+    goto done;
+
+zero_card:
+    if (DAT_00833A60[work[5]] == 0) {
+        work[0x56] = 0;
+        goto done;
+    }
+    knownText = FUN_00172160(selected);
+    if (knownText != NULL) {
+        goto known_zero;
+    }
+    knownText = FUN_001717c0(selected);
+    if (knownText == NULL) {
+        goto fallback_zero;
+    }
+known_zero:
+    sprintf(path, D_005DBBC0, DAT_00833A60[work[5]]);
+    goto request_zero;
+fallback_zero:
+    sprintf(path, D_005DBBF0, DAT_00833A60[work[5]]);
+request_zero:
+    work[0x56] = (u32)H_Cdvd_Request(path, 0);
+done:
+    ;
 }
 
-// FUN_00135460 NONMATCHING
+// FUN_00135460
 void FUN_00135460(KwlnTask* task)
 {
     u32* work;
@@ -894,12 +946,9 @@ void FUN_00135460(KwlnTask* task)
     s16 selected;
 
     work = (u32*)task->workData;
-    DAT_007cdf74 = 0;
-
+    iGpffffb284 = 0;
     resource = (void*)work[0x5a];
-    if (resource == NULL) {
-        h_campDestroyRequestAndResource(work, 0x57, 0x5c);
-    } else {
+    if (resource != NULL) {
         oldRequest = (void*)work[0x57];
         record = RwCalloc(1, 8, 0x40000);
         if (record != NULL) {
@@ -915,6 +964,17 @@ void FUN_00135460(KwlnTask* task)
         }
         work[0x5a] = 0;
         work[0x57] = 0;
+    } else {
+        oldRequest = (void*)work[0x57];
+        if (oldRequest != NULL) {
+            H_Cdvd_Destroy((HCdvd*)oldRequest);
+            work[0x57] = 0;
+        }
+        resource = (void*)work[0x5c];
+        if (resource != NULL) {
+            FUN_004d0f00(resource);
+            work[0x5c] = 0;
+        }
     }
 
     selected = (s16)work[work[1] + work[2] + 8];
@@ -1416,42 +1476,63 @@ void FUN_001365b0(KwlnTask* task)
 {
     u8* work;
     s32 i;
+    u8* slot;
+    void** pendingPtr;
+    void** requestPtr;
+    void** resourcePtr;
+    void* pending;
+    void* request;
+    void* record;
+    KwlnTask* queued;
 
     work = (u8*)task->workData;
-    DAT_007cdf70 = 0;
-    DAT_007cdf74 = 0;
+    iGpffffb280 = 0;
+    iGpffffb284 = 0;
     for (i = 0; i < 2; i++) {
-        u8* slot = work + i * 4;
-        void* pending = *(void**)(slot + 0x164);
-        void* request = *(void**)(slot + 0x158);
+        slot = work + i * 4;
+        pendingPtr = (void**)(slot + 0x164);
+        pending = *pendingPtr;
         if (pending != NULL) {
-            void* owner = DAT_00960184(1, 8, 0x40000);
-            if (owner != NULL && FUN_00194B20(NULL, "camp_resource_task", 0x18bf,
-                                               FUN_00133C40, FUN_00133D00, owner) != NULL) {
-                ((void**)owner)[0] = pending;
-                ((void**)owner)[1] = request;
+            requestPtr = (void**)(slot + 0x158);
+            request = *requestPtr;
+            record = RwCalloc(1, 8, 0x40000);
+            if (record != NULL) {
+                queued = kwlnTaskCreate(NULL, D_005DB1F0, 0x18bf,
+                                        FUN_00133c40, FUN_00133d00, record);
+                if (queued != NULL) {
+                    if (request != NULL) {
+                        printf(D_005DB210, ((HCdvd*)request)->path);
+                    }
+                    ((u32*)record)[0] = (u32)pending;
+                    ((u32*)record)[1] = (u32)request;
+                }
             }
-            *(void**)(slot + 0x164) = NULL;
-            *(void**)(slot + 0x158) = NULL;
+            *pendingPtr = NULL;
+            *requestPtr = NULL;
         } else {
+            requestPtr = (void**)(slot + 0x158);
+            request = *requestPtr;
             if (request != NULL) {
                 H_Cdvd_Destroy((HCdvd*)request);
-                *(void**)(slot + 0x158) = NULL;
+                *requestPtr = NULL;
             }
-            if (*(void**)(slot + 0x16c) != NULL) {
-                func_004d0f00(*(void**)(slot + 0x16c));
-                *(void**)(slot + 0x16c) = NULL;
+            resourcePtr = (void**)(slot + 0x16c);
+            pending = *resourcePtr;
+            if (pending != NULL) {
+                FUN_004d0f00(pending);
+                *resourcePtr = NULL;
             }
         }
     }
-    if (*(void**)(work + 0x150) != NULL) {
-        H_Cdvd_Destroy(*(HCdvd**)(work + 0x150));
-        *(void**)(work + 0x150) = NULL;
+    requestPtr = (void**)(work + 0x150);
+    request = *requestPtr;
+    if (request != NULL) {
+        H_Cdvd_Destroy((HCdvd*)request);
+        *requestPtr = NULL;
     }
     FUN_003C7DD0(0x0b);
-    jtbl_0096017C(work);
+    (*jtbl_0096017C)(work);
 }
-
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
