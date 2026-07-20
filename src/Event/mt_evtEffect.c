@@ -4,79 +4,141 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
-extern u32 DAT_006a0eb0;
+extern f32 DAT_006a0eb0;
 extern char DAT_006a0e80[];
 extern char DAT_006a1030[];
+extern char DAT_006a0f80[];
+extern char DAT_006a0fb0[];
+extern char DAT_006a0fe0[];
 extern char DAT_006a0ea0[];
 extern char DAT_006a0f50[];
 extern char DAT_006a0f60[];
 extern char DAT_006a0f70[];
-extern u32 DAT_006a0eb4;
-extern u32 DAT_006a0eb8;
-extern u32 DAT_006a0ebc;
-extern u32 DAT_006a0ec0;
-extern u32 DAT_006a0ec4;
-extern u32 DAT_006a0ec8;
-extern u32 DAT_006a0ecc;
-extern u32 DAT_006a0ed0;
-extern u32 DAT_006a0ed4;
-extern u32 DAT_006a0ed8;
-extern u32 DAT_006a0edc;
+extern f32 DAT_006a0eb4;
+extern f32 DAT_006a0eb8;
+extern f32 DAT_006a0ebc;
+extern f32 DAT_006a0ec0;
+extern f32 DAT_006a0ec4;
+extern f32 DAT_006a0ec8;
+extern f32 DAT_006a0ecc;
+extern f32 DAT_006a0ed0;
+extern f32 DAT_006a0ed4;
+extern f32 DAT_006a0ed8;
+extern f32 DAT_006a0edc;
 extern u32 DAT_006a0ee0;
 extern u32 DAT_006a0ef0;
-extern u32 DAT_006a0efc;
-extern u32 DAT_006a0f00;
-extern u32 DAT_006a0f0c;
-extern u32 DAT_006a0f10;
-extern u32 DAT_006a0f14;
-extern u32 DAT_006a0f18;
-extern u32 DAT_007cad60;
-extern u32 DAT_007cafbc;
-extern u32 DAT_007cb12c;
-extern u32 DAT_00958aa0;
-extern u32 DAT_00958aa4;
-extern u32 DAT_00958aa8;
-extern u32 DAT_00958ab8;
+extern f32 DAT_006a0efc;
+extern f32 DAT_006a0f00;
+extern f32 DAT_006a0f0c;
+extern f32 DAT_006a0f10;
+extern f32 DAT_006a0f14;
+extern f32 DAT_006a0f18;
+extern f32 DAT_007cad60;
+extern f32 DAT_007cafbc;
+extern f32 DAT_007cb12c;
+extern f32 DAT_00958aa0;
+extern f32 DAT_00958aa4;
+extern f32 DAT_00958aa8;
+extern f32 DAT_00958ab8;
 extern u32 DAT_00958ac0;
 extern u32 DAT_00958ac4;
 extern u32 DAT_00958ac8;
 extern u32 DAT_00958acc;
-extern u32 DAT_00958ae0;
-extern u32 DAT_00958ae4;
-extern u32 DAT_00958ae8;
-extern u32 DAT_00958af8;
+extern f32 DAT_00958ae0;
+extern f32 DAT_00958ae4;
+extern f32 DAT_00958ae8;
+extern f32 DAT_00958af8;
 extern u32 DAT_00958b00;
 extern u32 DAT_00958b04;
 extern u32 DAT_00958b08;
 extern u32 DAT_00958b0c;
-extern u32 DAT_00958b20;
-extern u32 DAT_00958b24;
-extern u32 DAT_00958b28;
-extern u32 DAT_00958b38;
+extern f32 DAT_00958b20;
+extern f32 DAT_00958b24;
+extern f32 DAT_00958b28;
+extern f32 DAT_00958b38;
 extern u32 DAT_00958b40;
 extern u32 DAT_00958b44;
 extern u32 DAT_00958b48;
 extern u32 DAT_00958b4c;
-extern u32 DAT_00958b60;
-extern u32 DAT_00958b64;
-extern u32 DAT_00958b68;
-extern u32 DAT_00958b78;
+extern f32 DAT_00958b60;
+extern f32 DAT_00958b64;
+extern f32 DAT_00958b68;
+extern f32 DAT_00958b78;
 extern u32 DAT_00958b80;
 extern u32 DAT_00958b84;
 extern u32 DAT_00958b88;
 extern u32 DAT_00958b8c;
-extern u32 DAT_00958ba0;
-extern u32 DAT_00958ba4;
-extern u32 DAT_00958ba8;
+extern f32 DAT_00958ba0;
+extern f32 DAT_00958ba4;
+extern f32 DAT_00958ba8;
 extern u32 DAT_00958bc0;
 extern u32 DAT_00958bc4;
 extern u32 DAT_00958bc8;
 extern u32 DAT_00958bcc;
-extern u32 DAT_00960088;
+extern f32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
-extern u32 _DAT_006a0f1c;
+extern f32 _DAT_006a0f1c;
 extern void FUN_00194b20(u64, const char *, u32, u64 (*)(int), void *, void *);
+#pragma alias FUN_00198590_typed FUN_00198590
+extern int FUN_00198590_typed(void);
+#pragma alias FUN_00100d80_typed FUN_00100d80
+extern void *FUN_00100d80_typed(const char *, u32);
+#pragma alias FUN_001016b0_typed FUN_001016b0
+extern int FUN_001016b0_typed(void *);
+#pragma alias FUN_001021c0_typed FUN_001021c0
+extern void *FUN_001021c0_typed(const char *, u8 *);
+#pragma alias FUN_005225a8_typed FUN_005225a8
+extern void FUN_005225a8_typed(...);
+extern void *FUN_003b5cf0_typed(void);
+#pragma alias FUN_003b5d10_typed FUN_003b5d10
+extern void *FUN_003b5d10_typed(u16);
+#pragma alias FUN_003b7090_typed FUN_003b7090
+extern void FUN_003b7090_typed(s16);
+#pragma alias FUN_003b64c0_typed FUN_003b64c0
+extern u16 FUN_003b64c0_typed(u32, int, u64);
+#pragma alias FUN_003b9550_typed FUN_003b9550
+extern void FUN_003b9550_typed(u16, int);
+#define DAT_00958aa0 (*(f32 *)0x00958aa0)
+#define DAT_00958aa4 (*(f32 *)0x00958aa4)
+#define DAT_00958aa8 (*(f32 *)0x00958aa8)
+#define DAT_00958ab8 (*(f32 *)0x00958ab8)
+#define DAT_00958ac0 (*(u32 *)0x00958ac0)
+#define DAT_00958ac4 (*(u32 *)0x00958ac4)
+#define DAT_00958ac8 (*(u32 *)0x00958ac8)
+#define DAT_00958acc (*(u32 *)0x00958acc)
+#define DAT_00958ae0 (*(f32 *)0x00958ae0)
+#define DAT_00958ae4 (*(f32 *)0x00958ae4)
+#define DAT_00958ae8 (*(f32 *)0x00958ae8)
+#define DAT_00958af8 (*(f32 *)0x00958af8)
+#define DAT_00958b00 (*(u32 *)0x00958b00)
+#define DAT_00958b04 (*(u32 *)0x00958b04)
+#define DAT_00958b08 (*(u32 *)0x00958b08)
+#define DAT_00958b0c (*(u32 *)0x00958b0c)
+#define DAT_00958b20 (*(f32 *)0x00958b20)
+#define DAT_00958b24 (*(f32 *)0x00958b24)
+#define DAT_00958b28 (*(f32 *)0x00958b28)
+#define DAT_00958b38 (*(f32 *)0x00958b38)
+#define DAT_00958b40 (*(u32 *)0x00958b40)
+#define DAT_00958b44 (*(u32 *)0x00958b44)
+#define DAT_00958b48 (*(u32 *)0x00958b48)
+#define DAT_00958b4c (*(u32 *)0x00958b4c)
+#define DAT_00958b60 (*(f32 *)0x00958b60)
+#define DAT_00958b64 (*(f32 *)0x00958b64)
+#define DAT_00958b68 (*(f32 *)0x00958b68)
+#define DAT_00958b78 (*(f32 *)0x00958b78)
+#define DAT_00958b80 (*(u32 *)0x00958b80)
+#define DAT_00958b84 (*(u32 *)0x00958b84)
+#define DAT_00958b88 (*(u32 *)0x00958b88)
+#define DAT_00958b8c (*(u32 *)0x00958b8c)
+#define DAT_00958ba0 (*(f32 *)0x00958ba0)
+#define DAT_00958ba4 (*(f32 *)0x00958ba4)
+#define DAT_00958ba8 (*(f32 *)0x00958ba8)
+#define DAT_00958bc0 (*(u32 *)0x00958bc0)
+#define DAT_00958bc4 (*(u32 *)0x00958bc4)
+#define DAT_00958bc8 (*(u32 *)0x00958bc8)
+#define DAT_00958bcc (*(u32 *)0x00958bcc)
+#define DAT_00960088 (*(f32 *)0x00960088)
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -98,7 +160,7 @@ u64 FUN_003953b0(int param_1);
 void FUN_003953e0(u64 param_1);
 void FUN_00395420(void);
 void FUN_00395430(int param_1,long param_2,long param_3,long param_4,u32 param_5);
-void FUN_003954e0(int param_1);
+void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00395550(int param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
 void FUN_003957d0(f32 param_1, int param_2, u32 *param_3);
@@ -117,7 +179,7 @@ u32 FUN_003964c0(void);
 void FUN_00396530(int param_1);
 void FUN_003965d0(u32 *param_1);
 u32 FUN_003965f0(int *param_1);
-void FUN_00396760(int param_1,long param_2,int param_3,u64 param_4);
+void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
 u16 FUN_003968a0(int param_1,int param_2);
 void FUN_00396910(int param_1,long param_2);
 void FUN_003969b0(int param_1);
@@ -537,119 +599,62 @@ void FUN_00395550(int param_1,u32 param_2,u32 param_3)
 
 
 void FUN_00395570(int param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
 
-  
-
   if (*(int *)(param_1 + 0x670) != 0) {
-
     iVar1 = *(int *)(param_1 + 0x674);
-
     iVar2 = *(int *)(param_1 + 0x678);
-
     iVar3 = FUN_00198590();
 
-    DAT_00958ab8 = 1.0 / *(float *)(iVar3 + 0x80);
-
-    DAT_00958aa0 = (float)iVar1;
-
-    DAT_00958aa4 = (float)iVar2;
-
+    DAT_00958aa0 = (f32)iVar1;
+    DAT_00958aa4 = (f32)iVar2;
     DAT_00958aa8 = DAT_00960088;
-
     DAT_00958ac0 = 0x43480000;
-
     DAT_00958ac4 = 0x42a00000;
-
     DAT_00958ac8 = 0x42a00000;
-
     DAT_00958acc = 0x43750000;
-
-    DAT_00958ae0 = (float)(iVar1 + 0x200);
-
+    DAT_00958ab8 = 1.0f / *(f32 *)(iVar3 + 0x80);
+    DAT_00958ae0 = (f32)(iVar1 + 0x200);
+    DAT_00958ae4 = DAT_00958aa4;
     DAT_00958ae8 = DAT_00960088;
-
     DAT_00958b00 = 0x43480000;
-
     DAT_00958b04 = 0x42a00000;
-
     DAT_00958b08 = 0x42a00000;
-
     DAT_00958b0c = 0x43750000;
-
-    DAT_00958b24 = (float)(iVar2 + 0x200);
-
+    DAT_00958af8 = DAT_00958ab8;
+    DAT_00958b20 = DAT_00958ae0;
+    DAT_00958b24 = (f32)(iVar2 + 0x200);
     DAT_00958b28 = DAT_00960088;
-
     DAT_00958b40 = 0x43480000;
-
     DAT_00958b44 = 0x42a00000;
-
     DAT_00958b48 = 0x42a00000;
-
     DAT_00958b4c = 0x43750000;
-
+    DAT_00958b38 = DAT_00958ab8;
+    DAT_00958b60 = DAT_00958aa0;
+    DAT_00958b64 = DAT_00958b24;
     DAT_00958b68 = DAT_00960088;
-
     DAT_00958b80 = 0x43480000;
-
     DAT_00958b84 = 0x42a00000;
-
     DAT_00958b88 = 0x42a00000;
-
     DAT_00958b8c = 0x43750000;
-
+    DAT_00958b78 = DAT_00958ab8;
+    DAT_00958ba0 = DAT_00958aa0;
+    DAT_00958ba4 = DAT_00958aa4;
     DAT_00958ba8 = DAT_00960088;
-
     DAT_00958bc0 = 0x43480000;
-
     DAT_00958bc4 = 0x42a00000;
-
     DAT_00958bc8 = 0x42a00000;
-
     DAT_00958bcc = 0x43750000;
 
-    DAT_00958ae4 = DAT_00958aa4;
-
-    DAT_00958af8 = DAT_00958ab8;
-
-    DAT_00958b20 = DAT_00958ae0;
-
-    DAT_00958b38 = DAT_00958ab8;
-
-    DAT_00958b60 = DAT_00958aa0;
-
-    DAT_00958b64 = DAT_00958b24;
-
-    DAT_00958b78 = DAT_00958ab8;
-
-    DAT_00958ba0 = DAT_00958aa0;
-
-    DAT_00958ba4 = DAT_00958aa4;
-
-    (*DAT_00960090)(1,0);
-
-    (*DAT_00960090)(7,2);
-
-    (*DAT_00960090)(0xc,1);
-
-    (*DAT_009600a0)(2,0x958aa0,5);
-
+    (*(code *)0x00960090)(1,0);
+    (*(code *)0x00960090)(7,2);
+    (*(code *)0x00960090)(0xc,1);
+    (*(code *)0x009600a0)(2,0x958aa0,5);
     *(u32 *)(param_1 + 0x670) = 0;
-
   }
-
-  return;
-
 }
 #define FUN_00395570(...) ((void (*)(...))FUN_00395570)(__VA_ARGS__)
 #undef FUN_003957d0
@@ -1689,6 +1694,8 @@ void FUN_003965d0(u32 *param_1)
 // FUN_003965F0 NONMATCHING
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 u32 FUN_003965f0(int *param_1)
 
 
@@ -1697,7 +1704,6 @@ u32 FUN_003965f0(int *param_1)
 
   int iVar1;
 
-  u32 uVar2;
 
   int iVar3;
 
@@ -1707,9 +1713,12 @@ u32 FUN_003965f0(int *param_1)
 
   
 
-  uVar2 = 1;
 
-  if (*param_1 == 1) {
+  if (*param_1 == 1)
+    goto active;
+  goto done;
+active:
+  {
 
     iVar1 = param_1[2];
 
@@ -1733,7 +1742,7 @@ u32 FUN_003965f0(int *param_1)
 
         if (param_1[3] == 0) {
 
-          iVar3 = FUN_00100d80(param_1 + iVar1 * 0xb + 5,0);
+          iVar3 = (int)FUN_00100d80((const char *)(param_1 + iVar1 * 0xb + 5),0);
 
           param_1[iVar1 * 0xb + 0xe] = iVar3;
 
@@ -1743,11 +1752,11 @@ u32 FUN_003965f0(int *param_1)
 
         else {
 
-          lVar4 = FUN_001016b0();
+          lVar4 = FUN_001016b0((void *)param_1[3]);
 
           if (lVar4 == 1) {
 
-            iVar3 = FUN_001021c0(param_1 + iVar1 * 0xb + 5,auStack_4);
+            iVar3 = (int)FUN_001021c0((const char *)(param_1 + iVar1 * 0xb + 5),auStack_4);
 
             param_1[iVar1 * 0xb + 0xd] = iVar3;
 
@@ -1763,90 +1772,53 @@ u32 FUN_003965f0(int *param_1)
 
       }
 
-      uVar2 = 0;
 
     }
 
   }
 
-  return uVar2;
+done:
+  return 0;
 
 }
+#pragma pop
 #define FUN_003965f0(...) ((u32 (*)(...))FUN_003965f0)(__VA_ARGS__)
 #undef FUN_00396760
 // FUN_00396760 NONMATCHING
 
 
-void FUN_00396760(int param_1,long param_2,int param_3,u64 param_4)
-
-
-
+void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4)
 {
-
-  short sVar1;
-
+  u16 sVar1;
   u16 uVar2;
-
-  long lVar3;
-
+  u16 *puVar5;
   int iVar4;
 
-  u16 *puVar5;
-
-  
-
   if (((param_2 < 0x10) && (param_3 < *(int *)(param_1 + 4))) &&
-
-     (lVar3 = FUN_003b5cf0(), lVar3 != 0)) {
-
-    iVar4 = (int)param_2 * 2 + param_1;
-
+      FUN_003b5cf0_typed() != 0) {
+    iVar4 = (int)param_2 * 2;
+    iVar4 = iVar4 + param_1;
     puVar5 = (u16 *)(iVar4 + 0x170);
-
-    sVar1 = *(short *)(iVar4 + 0x170);
-
+    sVar1 = *(u16 *)(iVar4 + 0x170);
     if (sVar1 != 0) {
-
-      lVar3 = FUN_003b5d10(sVar1);
-
-      if (lVar3 != 0) {
-
-        FUN_003b7090(sVar1);
-
+      if (FUN_003b5d10_typed(sVar1) != 0) {
+        FUN_003b7090_typed(sVar1);
       }
-
       *puVar5 = 0;
-
     }
-
     if (param_3 < *(int *)(param_1 + 4)) {
-
       iVar4 = *(int *)(param_3 * 0x2c + param_1 + 0x34);
-
     }
-
     else {
-
       iVar4 = 0;
-
     }
-
     if (iVar4 != 0) {
-
-      uVar2 = FUN_003b64c0((int)param_2 + 200U & 0xffff,iVar4,param_4);
-
-      FUN_005225a8(0x6a0fe0,uVar2);
-
-      FUN_003b9550(uVar2,1);
-
+      uVar2 = FUN_003b64c0_typed((int)param_2 + 200U & 0xffff,iVar4,param_4);
+      FUN_005225a8_typed(DAT_006a0fe0,uVar2);
       *puVar5 = uVar2;
-
     }
-
   }
-
   return;
-
 }
 #define FUN_00396760(...) ((void (*)(...))FUN_00396760)(__VA_ARGS__)
 #undef FUN_003968a0
