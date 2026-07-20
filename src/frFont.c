@@ -36,10 +36,14 @@ extern u32 DAT_007cd500;
 extern u32 DAT_007ce638;
 extern u32 DAT_007ce63c;
 extern u32 DAT_0095ac70;
+#pragma alias DAT_0095ac70_abs DAT_0095ac70
+extern u32 DAT_0095ac70_abs[];
 extern u32 DAT_0095acf0;
 #pragma alias DAT_0095acf0_abs DAT_0095acf0
 extern u32 DAT_0095acf0_abs[];
 extern u32 DAT_0095acf4;
+#pragma alias DAT_0095acf4_abs DAT_0095acf4
+extern u32 DAT_0095acf4_abs[];
 extern u32 DAT_0095acf8;
 extern u32 DAT_0095acfc;
 extern u32 DAT_0095ad00;
@@ -106,7 +110,7 @@ void FUN_003b0bb0(int param_1,u8 param_2);
 void FUN_003b0c20(u32 param_1,u16 param_2);
 void FUN_003b0c70(FrFontNode *node);
 void FUN_003b0ce0(int param_1,u8 param_2);
-void FUN_003b0d70(long param_1,u32 param_2,u32 param_3);
+void FUN_003b0d70(int param_1,u32 param_2,u32 param_3);
 void FUN_003b0e04(int param_1,u8 param_2);
 void FUN_003b0e54(int param_1,u32 param_2);
 u16 FUN_003b0e70(s16 param_1);
@@ -1515,10 +1519,10 @@ void FUN_003b0ce0(int param_1,u8 param_2)
 }
 #define FUN_003b0ce0(...) ((void (*)(...))FUN_003b0ce0)(__VA_ARGS__)
 #undef FUN_003b0d70
-// FUN_003B0D70 NONMATCHING
+// FUN_003B0D70
 
 
-void FUN_003b0d70(long param_1,u32 param_2,u32 param_3)
+void FUN_003b0d70(int param_1,u32 param_2,u32 param_3)
 
 
 
@@ -1526,7 +1530,7 @@ void FUN_003b0d70(long param_1,u32 param_2,u32 param_3)
 
   if (param_1 == 0) {
 
-    FUN_0019d3f0("frFont.c",0x88c);
+    FUN_0019d3f0(DAT_006a2730,0x88c);
 
   }
 
@@ -2449,7 +2453,7 @@ int FUN_003b19d0(FrFontNode *node)
 }
 #define FUN_003b19d0(...) ((int (*)(...))FUN_003b19d0)(__VA_ARGS__)
 #undef FUN_003b1a10
-// FUN_003B1A10 NONMATCHING
+// FUN_003B1A10
 
 
 u16 FUN_003b1a10(u32 param_1)
@@ -2457,14 +2461,14 @@ u16 FUN_003b1a10(u32 param_1)
 
 
 {
-  u32 **base = (u32 **)0x0095acf4;
-  u32 *entry = *(u32 **)((u8*)base + (param_1 & 0xff) * 0x20);
+  u32 **base = (u32 **)DAT_0095acf4_abs;
+  u32 *entry = base[(param_1 & 0xff) * 8];
   return *(u16 *)((u8 *)entry + 0x10);
 
 }
 #define FUN_003b1a10(...) ((u16 (*)(...))FUN_003b1a10)(__VA_ARGS__)
 #undef FUN_003b1a40
-// FUN_003B1A40 NONMATCHING
+// FUN_003B1A40
 
 
 u16 FUN_003b1a40(u32 param_1)
@@ -2472,8 +2476,8 @@ u16 FUN_003b1a40(u32 param_1)
 
 
 {
-  u32 **base = (u32 **)0x0095acf4;
-  u32 *entry = *(u32 **)((u8*)base + (param_1 & 0xff) * 0x20);
+  u32 **base = (u32 **)DAT_0095acf4_abs;
+  u32 *entry = base[(param_1 & 0xff) * 8];
   return *(u16 *)((u8 *)entry + 0x12);
 
 }
@@ -3689,7 +3693,7 @@ u32 FUN_003b2a00(u32 param_1)
 }
 #define FUN_003b2a00(...) ((u32 (*)(...))FUN_003b2a00)(__VA_ARGS__)
 #undef FUN_003b2a10
-// FUN_003B2A10 NONMATCHING
+// FUN_003B2A10
 
 
 void FUN_003b2a10(int param_1,u32 param_2)
@@ -3697,7 +3701,7 @@ void FUN_003b2a10(int param_1,u32 param_2)
 
 
 {
-  u32 *base = (u32 *)0x0095ac70;
+  u32 *base = DAT_0095ac70_abs;
   u32 *entry = base + param_1;
   *entry = param_2;
 
