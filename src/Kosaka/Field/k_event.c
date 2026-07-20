@@ -9,6 +9,9 @@
 #include "Graphics/Model/mdlManager.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "h_snd.h"
+#include "Kosaka/Field/k_fldrc.h"
+#include "Kosaka/Field/k_field.h"
+#include "h_cdvd.h"
 #include "Main/Game/game_support.h"
 
 KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
@@ -16,7 +19,10 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
 extern f32 acosf(f32 x);
 
+extern const char D_00683710[];
 extern u32 func_002ff790(void* object);
+extern s16 D_006836B0[];
+extern f32 DAT_007caefc;
 extern s32 func_001c6dd0(const FldUnit* unit, f32 maxDist);
 u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat,
                                const RwV3d* targetPos,
@@ -175,76 +181,104 @@ u32 func_001c6450(const RwMatrix* viewerMat,
 {
     RwV3d delta;
     RwV3d line[2];
+    RwV3d hitPoint;
+    u32 result;
 
-    if (K_FldEvent_IsPosWithinFov(viewerMat, targetPos, fov) == false)
+    result = false;
+    if (K_FldEvent_IsPosWithinFov(viewerMat, targetPos, fov) != true)
     {
-        return false;
+        goto done;
     }
     delta.x = targetPos->x - viewerMat->pos.x;
     delta.y = targetPos->y - viewerMat->pos.y;
     delta.z = targetPos->z - viewerMat->pos.z;
     if (RwV3dLength(&delta) >= maxDist)
     {
-        return false;
+        goto done;
     }
 
     line[0] = viewerMat->pos;
     line[1] = *targetPos;
     line[0].y += 100.0f;
     line[1].y += 100.0f;
-    if (K_FldFrame_Raycast(line, &line[1]) == true)
+    if (K_FldFrame_Raycast(line, &hitPoint) != true)
     {
-        return false;
+        goto reverse;
     }
+    goto done;
+
+reverse:
     line[0] = *targetPos;
     line[1] = viewerMat->pos;
     line[0].y += 100.0f;
     line[1].y += 100.0f;
-    if (K_FldFrame_Raycast(line, &line[1]) == true)
+    result = true;
+    if (K_FldFrame_Raycast(line, &hitPoint) != true)
     {
-        return false;
+        goto done;
     }
-    return true;
+    result = false;
+done:
+    return result;
 }
 
 // FUN_001c65e0 NONMATCHING
 u32 func_001c65e0(const FldUnit* unit)
 {
+    const FldUnit* target;
+    FldUnit* units;
     const s16* thresholds;
+    u32 result;
+    u32 expected;
+    u32 valid;
     s32 sum;
     s32 active;
     s32 i;
     s32 average;
 
-    if (datGetFlag(0xc65) == true)
+    target = unit;
+    result = true;
+    expected = result;
+    if (datGetFlag(0xc65) != expected)
     {
-        return true;
+        goto scan;
     }
+    goto done;
+
+scan:
     sum = 0;
     active = 0;
+    units = gFldUnitsPc;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        if (gFldUnitsPc[i].genusBase != NULL &&
-            gFldUnitsPc[i].resrc != NULL)
+        valid = false;
+        if (units[i].genusBase != NULL && units[i].resrc != NULL)
         {
-            sum += gFldUnitsPc[i].unk_184;
+            valid = true;
+        }
+        if (valid != false)
+        {
+            sum += units[i].unk_184;
             active++;
         }
     }
-    if (active == 0)
-    {
-        return true;
-    }
+
     average = sum / active;
-    thresholds = (const s16*)0x006836b0;
-    for (i = 0; thresholds[i] != -1; i += 2)
+    thresholds = D_006836B0;
+    for (i = 0; thresholds[i * 2] != -1; i++)
     {
-        if (average <= thresholds[i])
+        if (average <= thresholds[i * 2])
         {
-            return (average - unit->unk_184) < thresholds[i + 1];
+            if ((average - target->unk_184) < thresholds[i * 2 + 1])
+            {
+                goto done;
+            }
+            result = false;
+            goto done;
         }
     }
-    return true;
+done:
+    return result;
 }
 
 // FUN_001c6720 NONMATCHING
@@ -341,21 +375,31 @@ s32 func_001c6dd0(const FldUnit* unit, f32 maxDist)
     s32 nearestIndex;
     s32 i;
 
-    nearest = 100000.0f;
+    nearest = DAT_007caefc;
     nearestIndex = -1;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         FldUnit* candidate;
+        DatUnitGenusBase* genusBase;
+        Model* candidateModel;
 
         candidate = &gFldUnitsPc[i];
-        if (candidate == unit || candidate->genusBase == NULL ||
-            candidate->mdl == NULL || func_002ff790(candidate->genusBase) == true)
+        genusBase = candidate->genusBase;
+        candidateModel = candidate->mdl;
+        if (candidate == unit || candidate->genusBase == NULL)
         {
             continue;
         }
-        delta.x = mdlGetMatrix(candidate->mdl)->pos.x - mdlGetMatrix(unit->mdl)->pos.x;
-        delta.y = mdlGetMatrix(candidate->mdl)->pos.y - mdlGetMatrix(unit->mdl)->pos.y;
-        delta.z = mdlGetMatrix(candidate->mdl)->pos.z - mdlGetMatrix(unit->mdl)->pos.z;
+        delta.x = mdlGetMatrix(candidate->mdl)->pos.x -
+                  mdlGetMatrix(unit->mdl)->pos.x;
+        delta.y = mdlGetMatrix(candidate->mdl)->pos.y -
+                  mdlGetMatrix(unit->mdl)->pos.y;
+        delta.z = mdlGetMatrix(candidate->mdl)->pos.z -
+                  mdlGetMatrix(unit->mdl)->pos.z;
+        if (func_002ff790(candidate->genusBase) == true)
+        {
+            continue;
+        }
         if (RwV3dLength(&delta) < maxDist &&
             RwV3dLength(&delta) < nearest)
         {
@@ -534,49 +578,43 @@ u32 func_001c7f20(void* resource)
     void* source;
     void* destination;
     void* (*allocate)(u32 count, u32 size, u32 flags);
-    u8* state;
 
     if (resource == NULL)
     {
         return true;
     }
-    state = (u8*)func_001b9120();
-    if (func_001b0910() == false)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (func_001016b0(resource) == false)
+        if (H_Cdvd_IsFileLoaded((HCdvd*)resource) == false)
         {
             return false;
         }
         func_001c80c0();
-        size = *(s32*)((u8*)resource + 0x118);
-        *(s32*)(state + 0x1144) = size / 0x2c;
+        size = ((HCdvd*)resource)->fileSize;
+        *(s32*)((u8*)K_Field_Get() + 0x1144) = size / 0x2c;
         allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
         destination = allocate(1, (u32)size, 0x40000);
-        *(void**)(state + 0x1148) = destination;
+        *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
         if (destination != NULL)
         {
-            source = *(void**)((u8*)resource + 0x110);
-            func_00521250(destination, (u32)source, (u32)size);
+            memcpy(destination, ((HCdvd*)resource)->fileMemory, (u32)size);
         }
-        func_00100ec0(resource);
+        H_Cdvd_Destroy((HCdvd*)resource);
     }
     else
     {
-        if (func_00523ac8(path, 0x683710, gMtScene->fldMajorId,
-                          gMtScene->fldMinorId) != 0)
+        sprintf(path, D_00683710, gMtScene->fldMajorId, gMtScene->fldMinorId);
+        source = H_Cdvd_CacheFindFile(path, (u32*)&size);
+        if (source != NULL)
         {
-            source = func_001021c0(path, &size);
-            if (source != NULL)
+            func_001c80c0();
+            *(s32*)((u8*)K_Field_Get() + 0x1144) = size / 0x2c;
+            allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
+            destination = allocate(1, (u32)size, 0x40000);
+            *(void**)((u8*)K_Field_Get() + 0x1148) = destination;
+            if (destination != NULL)
             {
-                func_001c80c0();
-                *(s32*)(state + 0x1144) = size / 0x2c;
-                allocate = (void* (*)(u32, u32, u32))DAT_00960184[0];
-                destination = allocate(1, (u32)size, 0x40000);
-                *(void**)(state + 0x1148) = destination;
-                if (destination != NULL)
-                {
-                    func_00521250(destination, (u32)source, (u32)size);
-                }
+                memcpy(destination, source, (u32)size);
             }
         }
     }
