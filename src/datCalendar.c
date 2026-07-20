@@ -16,6 +16,8 @@
  
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
+#pragma alias datSetTimeSkipTarget_u8 datSetTimeSkipTarget
+extern void datSetTimeSkipTarget_u8(u8 time);
 #define CLND_ALLOC(count, size, flags) \
     (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
 #define CLND_FREE(memory) (*(void (**)(void*))jtbl_0096017C)((memory))
@@ -2057,17 +2059,20 @@ void func_00181b70(void)
     }
 }
 
-// FUN_00181C20 NONMATCHING
+// FUN_00181C20
 u32 func_00181c20(void)
 {
     s32 timeSkip;
     s32 days;
+    u32 currentTime;
+
     timeSkip = scrGetIntPara(0);
     days = datGetDaysSinceApr5();
-    timeSkip = (datGetTime() & 0xff) + timeSkip;
+    currentTime = datGetTime() & 0xff;
+    timeSkip = currentTime + timeSkip;
     while (true)
     {
-        if (timeSkip < 9)
+        if (timeSkip <= 8)
         {
             break;
         }
@@ -2076,7 +2081,7 @@ u32 func_00181c20(void)
         days++;
     }
     datSetDaysSkipTarget(days);
-    datSetTimeSkipTarget(timeSkip);
+    datSetTimeSkipTarget_u8(timeSkip);
     datSetSkipToTarget(1);
     return 1;
 }

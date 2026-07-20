@@ -6,8 +6,14 @@ typedef u32 int3;
 
 extern u32 DAT_006a3340;
 extern u8 * PTR_DAT_006a3590;
+#pragma alias PTR_DAT_006a3590_abs PTR_DAT_006a3590
+extern u8 *PTR_DAT_006a3590_abs[];
 extern u8 * PTR_DAT_006a36a0;
 extern u8 * PTR_DAT_006a38e0;
+#pragma alias PTR_DAT_006a36a0_abs PTR_DAT_006a36a0
+extern u8* PTR_DAT_006a36a0_abs[];
+#pragma alias PTR_DAT_006a38e0_abs PTR_DAT_006a38e0
+extern u8* PTR_DAT_006a38e0_abs[];
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -924,100 +930,61 @@ u32 FUN_003c3e80(u64 param_1)
 }
 #define FUN_003c3e80(...) ((u32 (*)(...))FUN_003c3e80)(__VA_ARGS__)
 #undef FUN_003c3f40
-// FUN_003C3F40 NONMATCHING
+// FUN_003C3F40
 
 
-u8 * FUN_003c3f40(u32 param_1)
-
-
-
+u8 *FUN_003c3f40(u32 param_1)
 {
+  int index;
 
-  u8 *puVar1;
-
-  
-
-  if ((param_1 & 0xff) < 0x2a) {
-
-    puVar1 = (&PTR_DAT_006a3590)[param_1 & 0xff];
-
+  index = param_1 & 0xff;
+  if (index >= 0x2a) {
+    return 0;
   }
 
-  else {
-
-    puVar1 = (u8 *)0x0;
-
-  }
-
-  return puVar1;
-
+  return PTR_DAT_006a3590_abs[index];
 }
+
 #define FUN_003c3f40(...) ((u8 * (*)(...))FUN_003c3f40)(__VA_ARGS__)
 #undef FUN_003c3f80
-// FUN_003C3F80 NONMATCHING
+// FUN_003C3F80
 
 
-u8 * FUN_003c3f80(int param_1)
-
-
-
+u8* FUN_003c3f80(s32 socialLink)
 {
+  u8* result;
 
-  u8 *puVar1;
-
-  long lVar2;
-
-  
-
-  lVar2 = FUN_0016dce0((short)param_1);
-
-  if (lVar2 == 0) {
-
-    puVar1 = (u8 *)0x0;
-
+  if (FUN_0016dce0_direct((s16)socialLink) == 0)
+  {
+    result = NULL;
+  }
+  else
+  {
+    result = PTR_DAT_006a38e0_abs[socialLink];
   }
 
-  else {
-
-    puVar1 = (&PTR_DAT_006a38e0)[param_1];
-
-  }
-
-  return puVar1;
-
+  return result;
 }
+
 #define FUN_003c3f80(...) ((u8 * (*)(...))FUN_003c3f80)(__VA_ARGS__)
 #undef FUN_003c3fe0
-// FUN_003C3FE0 NONMATCHING
+// FUN_003C3FE0
 
 
-u8 * FUN_003c3fe0(int param_1)
-
-
-
+u8* FUN_003c3fe0(s32 socialLink)
 {
+  u8* result;
 
-  u8 *puVar1;
-
-  long lVar2;
-
-  
-
-  lVar2 = FUN_0016dce0((short)param_1);
-
-  if (lVar2 == 0) {
-
-    puVar1 = (u8 *)0x0;
-
+  if (FUN_0016dce0_direct((s16)socialLink) == 0)
+  {
+    result = NULL;
+  }
+  else
+  {
+    result = PTR_DAT_006a36a0_abs[socialLink];
   }
 
-  else {
-
-    puVar1 = (&PTR_DAT_006a36a0)[param_1];
-
-  }
-
-  return puVar1;
-
+  return result;
 }
+
 #define FUN_003c3fe0(...) ((u8 * (*)(...))FUN_003c3fe0)(__VA_ARGS__)

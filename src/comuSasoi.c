@@ -4,6 +4,10 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
+extern u32 D_0095b790[];
+extern u8 DAT_0095b79c[];
+#pragma alias DAT_0095b790_abs DAT_0095b790
+extern u32 DAT_0095b790_abs[];
 extern u32 DAT_0095b790;
 extern u32 DAT_0095b794;
 extern u32 DAT_0095b798;
@@ -63,7 +67,7 @@ u32 FUN_003c2b40(int *param_1,int *param_2);
 u8 FUN_003c2c50(u32 param_1);
 u32 FUN_003c2df0(u32 param_1);
 u32 * FUN_003c2ee0(long param_1);
-u32 * FUN_003c3050(u64 param_1);
+u32 * FUN_003c3050(u32 param_1);
 u8 FUN_003c30b0(void);
 u8 FUN_003c3120(void);
 u32 FUN_003c3190(int *param_1);
@@ -847,44 +851,23 @@ u32 * FUN_003c2ee0(long param_1)
 }
 #define FUN_003c2ee0(...) ((u32 * (*)(...))FUN_003c2ee0)(__VA_ARGS__)
 #undef FUN_003c3050
-// FUN_003C3050 NONMATCHING
+// FUN_003C3050
 
 
-u32 * FUN_003c3050(u64 param_1)
-
-
-
+u32 *FUN_003c3050(u32 param_1)
 {
-
-  u32 *puVar1;
-
-  long lVar2;
-
-  
-
-  lVar2 = FUN_003be2a0(0,0,param_1,7,0x95b79c);
-
-  if (lVar2 == 0) {
-
-    puVar1 = (u32 *)0x0;
-
+  if (FUN_003be2a0_u32(0,0,param_1,7,DAT_0095b79c) == 0) {
+    return 0;
   }
 
-  else {
-
-    DAT_0095b790 = 1;
-
-    puVar1 = &DAT_0095b790;
-
-  }
-
-  return puVar1;
-
+  DAT_0095b790_abs[0] = 1;
+  return (u32*)DAT_0095b790_abs;
 }
+
 #define FUN_003c3050(...) ((u32 * (*)(...))FUN_003c3050)(__VA_ARGS__)
 #undef FUN_003c30b0
 #pragma alias DAT_0095b790_abs DAT_0095b790
-extern u8 DAT_0095b790_abs[];
+extern u32 DAT_0095b790_abs[];
 #pragma alias DAT_0095b794_abs DAT_0095b794
 extern u8 DAT_0095b794_abs[];
 #pragma alias DAT_0095b798_abs DAT_0095b798
@@ -1073,7 +1056,7 @@ LAB_003c3274:
 }
 #define FUN_003c3190(...) ((u32 (*)(...))FUN_003c3190)(__VA_ARGS__)
 #undef FUN_003c3390
-// FUN_003C3390 NONMATCHING
+// FUN_003C3390
 
 
 u32 * FUN_003c3390(void)
@@ -1086,7 +1069,7 @@ u32 * FUN_003c3390(void)
 
   
 
-  if (DAT_0095b790 == 0) {
+  if (D_0095b790[0] == 0) {
 
     puVar1 = (u32 *)0x0;
 
@@ -1094,11 +1077,12 @@ u32 * FUN_003c3390(void)
 
   else {
 
-    puVar1 = &DAT_0095b790;
+    puVar1 = D_0095b790;
 
   }
 
   return puVar1;
 
 }
+
 #define FUN_003c3390(...) ((u32 * (*)(...))FUN_003c3390)(__VA_ARGS__)

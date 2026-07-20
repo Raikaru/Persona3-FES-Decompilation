@@ -802,6 +802,14 @@ void func_001f1c20(KwlnTask *task)
     kwlnTaskDestroyWithHierarchy(task);
 }
 #pragma opt_propagation off
+
+// FUN_001f1c50
+u8 *brRoot001f1c50(void)
+{
+    K_ASSERT(sBrRoot != NULL, 0x755);
+    return sBrRoot;
+}
+
 // FUN_001f1c90 NONMATCHING
 void func_001f1c90(KwlnTask *task)
 {
