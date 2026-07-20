@@ -2965,7 +2965,7 @@ void FUN_003d8850(u64 param_1,u32 param_2)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_003D9820 NONMATCHING
+// FUN_003D9820
 void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
 {
   int var_16;
@@ -2993,7 +2993,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       }
       goto done;
     }
-  case 1:
+    // fallthrough (arg1==1, unreachable via dispatch - part of case0's chain)
     if (arg2 == 1) {
       var_18_3 = temp_7->unk24->unk2c;
       while (var_18_3 != 0) {
@@ -3005,7 +3005,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       }
       goto done;
     }
-  case 2:
+    // fallthrough (arg1==2, unreachable via dispatch - part of case0's chain)
     if (arg2 == 3) {
       var_18_4 = temp_7->unk24->unk2c;
       while (var_18_4 != 0) {
@@ -3021,7 +3021,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
     }
   default:
     goto done;
-  case 3:
+  case 1:
     if (arg2 == 0) {
       while (var_18 != 0) {
         FUN_003e0330(var_18->unk14->unk1c->unk8,1,0,0);
@@ -3030,7 +3030,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       }
       goto done;
     }
-  case 4:
+    // fallthrough (arg1==4, unreachable via dispatch - part of this chain)
     if (arg2 == 1) {
       FUN_003e0330(temp_7->unkc->unk14->unk1c->unk8,1,1,0);
       goto done;
@@ -3040,7 +3040,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       goto done;
     }
     goto done;
-  case 5:
+  case 2:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,2,0,0);
       goto done;
@@ -3050,7 +3050,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       goto done;
     }
     goto done;
-  case 6:
+  case 3:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,3,0,0);
       goto done;
@@ -3060,7 +3060,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       goto done;
     }
     goto done;
-  case 7:
+  case 4:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,4,0,0);
       goto done;
@@ -3069,7 +3069,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       FUN_003e0330(arg0->unk8,4,1,0);
     }
     goto done;
-  case 8:
+  case 5:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,5,0,0);
       goto done;
@@ -3079,7 +3079,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       goto done;
     }
     goto done;
-  case 9:
+  case 6:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,6,0,0);
       goto done;
@@ -3089,7 +3089,7 @@ void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2)
       goto done;
     }
     goto done;
-  case 10:
+  case 7:
     if (arg2 == 0) {
       FUN_003e0330(arg0->unk8,7,0,0);
       goto done;
