@@ -491,7 +491,7 @@ u32 FUN_003b46f0(int *param_1,int param_2)
 }
 #define FUN_003b46f0(...) ((u32 (*)(...))FUN_003b46f0)(__VA_ARGS__)
 #undef FUN_003b4740
-// FUN_003B4740 NONMATCHING
+// FUN_003B4740
 
 
 u32 FUN_003b4740(int param_1)
@@ -500,7 +500,7 @@ u32 FUN_003b4740(int param_1)
 
 {
 
-  (*DAT_0096017c)(*(u32 *)(param_1 + -4));
+  (*(void (**)(...))0x0096017c)(*(u32 *)(param_1 + -4));
 
   return 1;
 
