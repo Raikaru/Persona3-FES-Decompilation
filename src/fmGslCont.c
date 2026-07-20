@@ -30,6 +30,20 @@ extern code DAT_00960178;
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
+extern u32 DAT_007cd530;
+extern u32 DAT_007cd538;
+extern char DAT_006a2a40[];
+extern void FUN_003cfe50(void);
+extern u64 FUN_003b18c0(void);
+extern void FUN_003afa40(void);
+#pragma alias FUN_00194e10_fmgsl FUN_00194e10
+extern u32 FUN_00194e10_fmgsl(void*, u32, u32, u32, code, code, void*);
+#pragma alias FUN_00100d80_fmgsl FUN_00100d80
+extern u32 FUN_00100d80_fmgsl(void*, u32);
+#pragma alias FUN_001023a0_fmgsl FUN_001023a0
+extern void FUN_001023a0_fmgsl(u32);
+#pragma alias FUN_00112370_fmgsl FUN_00112370
+extern u32 FUN_00112370_fmgsl(void*);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -845,6 +859,10 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
   int iVar3;
 
+  int iVar4;
+
+  iVar4 = 0xff0000;
+
   
 
   for (; 0 < param_7; param_7 = param_7 + -1) {
@@ -855,21 +873,18 @@ void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,i
 
     iVar1 = param_4 * param_6[2];
 
-    if (0xff0000 < iVar3) {
-
-      iVar3 = 0xff0000;
-
-    }
-
-    if (0xff0000 < iVar2) {
-
-      iVar2 = 0xff0000;
+    if (iVar4 < iVar3) {
+      iVar3 = iVar4;
 
     }
 
-    if (0xff0000 < iVar1) {
+    if (iVar4 < iVar2) {
+      iVar2 = iVar4;
 
-      iVar1 = 0xff0000;
+    }
+
+    if (iVar4 < iVar1) {
+      iVar1 = iVar4;
 
     }
 
@@ -1150,7 +1165,7 @@ void FUN_003b4ed0(void)
 }
 #define FUN_003b4ed0(...) ((void (*)(...))FUN_003b4ed0)(__VA_ARGS__)
 #undef FUN_003b4ee0
-// FUN_003B4EE0 NONMATCHING
+// FUN_003B4EE0
 
 
 void FUN_003b4ee0(void)
@@ -1159,7 +1174,7 @@ void FUN_003b4ee0(void)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u32 *puVar2;
 
@@ -1171,25 +1186,25 @@ void FUN_003b4ee0(void)
 
   puVar2 = (u32 *)FUN_003cf120();
 
-  uVar3 = FUN_00194e10(0x7cd530,0x18b0,0,0,0x3cfe50,0,0);
+  uVar3 = FUN_00194e10_fmgsl((void*)&DAT_007cd530,0x18b0,0,0,
+                             (code)FUN_003cfe50,0,0);
 
   *puVar2 = uVar3;
 
   FUN_003af7a0(0x100,0x100);
 
-  FUN_00194e10(0x7cd538,0x1064,0,0,0x3b18c0,0x3afa40,0);
+  FUN_00194e10_fmgsl((void*)&DAT_007cd538,0x1064,0,0,
+                      (code)FUN_003b18c0,
+                      (code)FUN_003afa40,0);
 
   FUN_003a4ce0();
 
   FUN_003c88d0();
 
-  uVar1 = FUN_00100d80(0x6a2a40,0);
+  uVar1 = FUN_00100d80_fmgsl(DAT_006a2a40,0);
+  FUN_001023a0_fmgsl(uVar1);
 
-  FUN_001023a0(uVar1);
-
-  DAT_007ce654 = FUN_00112370(0x6a2a40);
-
-  return;
+  DAT_007ce654 = FUN_00112370_fmgsl(DAT_006a2a40);
 
 }
 #define FUN_003b4ee0(...) ((void (*)(...))FUN_003b4ee0)(__VA_ARGS__)
