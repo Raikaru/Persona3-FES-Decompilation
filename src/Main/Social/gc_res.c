@@ -43,6 +43,7 @@ typedef struct GcResRequest
     u8 reserved0c[0x104];
     u32 type;
     u32 slot;
+    u8 reserved118[0xc];
 } GcResRequest;
 
 typedef struct GcResWork
@@ -119,81 +120,120 @@ void func_00219c90(void* work)
 }
 
 // FUN_00219D90 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
 void func_00219d90(void)
 {
-    u8* work;
-    u8* request;
-    u8* record;
-    HCdvd* cdvd;
-    u32 flags;
-    u32 state;
-    u32 type;
-    u32 slot;
+    GcResWork* work;
+    GcResRequest* request;
     s32 i;
 
-    work = gcResRequire();
-    for (i = 0; i < 0x20; i++) {
-        request = GC_REQUEST(work, i);
-        flags = GC_U32(request, 0x00);
-        if ((flags & 1) == 0) {
-            continue;
-        }
+    if (sGcRes != NULL) {
+        goto have_work;
+    }
+    K_ASSERT(false, 0x7c);
+have_work:
+    work = (GcResWork*)sGcRes;
+    i = 0;
+    goto check_loop;
 
-        state = GC_U32(request, 0x04);
-        if (state == 2) {
-            K_ASSERT(false, 0xf8);
-            continue;
-        }
-        if (state == 0) {
-            K_ASSERT(false, 0xc1);
-            continue;
-        }
-        if (state != 1) {
-            continue;
-        }
-        cdvd = (HCdvd*)GC_PTR(request, 0x08);
-        if (H_Cdvd_IsFileLoaded(cdvd) == 0) {
-            continue;
-        }
+body:
+    request = &work->requests[i];
+    if (((~request->flags) & 1) != 0) {
+        goto increment;
+    }
+    if (request->state == 2) {
+        goto assert_state2;
+    }
+    if (request->state == 1) {
+        goto process;
+    }
+    if (request->state == 0) {
+        goto assert_state0;
+    }
+    goto increment;
 
-        type = GC_U32(request, 0x110);
-        slot = GC_U32(request, 0x114);
-        if (type == 1) {
-            record = GC_PERSONA(work, slot);
-            K_ASSERT((GC_U32(record, 0x00) & 2) == 0, 0xeb);
-            GC_PTR(record, 0x08) = bpTexCreateTmxRaster(cdvd->fileMemory);
-            GC_U32(record, 0x00) |= 2;
-        } else if (type == 0) {
-            record = GC_PAIR(work, slot);
-            K_ASSERT((GC_U32(record, 0x00) & 2) == 0, 0xe3);
-            GC_PTR(record, 0x0c) = bpTexCreateTmxRaster(cdvd->fileMemory);
-            GC_U32(record, 0x00) |= 2;
-        } else if (type == 2) {
-            if (slot == 1) {
-                K_ASSERT((GC_U32(work, 0x0c) & 2) == 0, 0xd6);
-                GC_PTR(work, 0x08) = bpTexCreateTmxRaster(cdvd->fileMemory);
-                GC_U32(work, 0x0c) |= 2;
-                GC_U32(work, 0x48) = 1;
-                GC_U32(work, 0x00) &= ~4u;
-            } else if (slot == 0) {
-                K_ASSERT((GC_U32(work, 0x0c) & 1) == 0, 0xcf);
-                GC_PTR(work, 0x04) = bpTexCreateTmxRaster(cdvd->fileMemory);
-                GC_U32(work, 0x0c) |= 1;
-                GC_U32(work, 0x00) &= ~4u;
-            } else {
-                GC_U32(request, 0x04) = 2;
-                continue;
-            }
-        } else {
-            GC_U32(request, 0x04) = 2;
-            continue;
-        }
+assert_state0:
+    K_ASSERT(false, 0xc1);
+    goto increment;
 
-        H_Cdvd_Destroy(cdvd);
-        GC_U32(request, 0x00) &= ~1u;
-        GC_U32(request, 0x04) = 2;
+process:
+    if (H_Cdvd_IsFileLoaded((HCdvd*)request->cdvd) == 0) {
+        goto increment;
+    }
+    if (request->type == 1) {
+        goto persona;
+    }
+    if (request->type == 0) {
+        goto pair;
+    }
+    if (request->type == 2) {
+        goto misc;
+    }
+    goto set_state;
+
+misc:
+    if (request->slot == 1) {
+        goto misc_slot1;
+    }
+    if (request->slot == 0) {
+        goto misc_slot0;
+    }
+    goto set_state;
+
+misc_slot0:
+    K_ASSERT((work->loadedFlags & 1) == 0, 0xcf);
+    work->cardRaster =
+        bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
+    work->loadedFlags |= 1;
+    work->flags &= ~4u;
+    H_Cdvd_Destroy((HCdvd*)request->cdvd);
+    request->flags &= ~1u;
+    goto set_state;
+
+misc_slot1:
+    K_ASSERT((work->loadedFlags & 2) == 0, 0xd6);
+    work->miscRaster =
+        bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
+    work->loadedFlags |= 2;
+    work->unk44 = 1;
+    work->flags &= ~4u;
+    H_Cdvd_Destroy((HCdvd*)request->cdvd);
+    request->flags &= ~1u;
+    goto set_state;
+
+pair:
+    K_ASSERT((work->pairs[request->slot].flags & 2) == 0, 0xe3);
+    work->pairs[request->slot].raster =
+        bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
+    work->pairs[request->slot].flags |= 2;
+    H_Cdvd_Destroy((HCdvd*)request->cdvd);
+    request->flags &= ~1u;
+    goto set_state;
+
+persona:
+    K_ASSERT((work->personas[request->slot].flags & 2) == 0, 0xeb);
+    work->personas[request->slot].raster =
+        bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
+    work->personas[request->slot].flags |= 2;
+    H_Cdvd_Destroy((HCdvd*)request->cdvd);
+    request->flags &= ~1u;
+
+set_state:
+    request->state = 2;
+    goto increment;
+
+assert_state2:
+    K_ASSERT(false, 0xf8);
+
+increment:
+    i++;
+check_loop:
+    if (i < 0x20) {
+        goto body;
     }
 }
+#pragma pop
 
 // FUN_0021A120
 u32 func_0021a120(void)
