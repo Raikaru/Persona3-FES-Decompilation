@@ -18779,6 +18779,7 @@ void FUN_00459d60(void)
   return;
 }
 
+#pragma opt_loop_invariants on
 // FUN_00459E00 NONMATCHING
 
 u32 FUN_00459e00(char param_1)
@@ -18810,6 +18811,7 @@ loop_increment:
   }
   return 1;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00459E80
 
