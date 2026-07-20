@@ -481,7 +481,9 @@ u16* func_001b83f0(void)
     return best == record ? NULL : record;
 }
 
-// FUN_001b85a0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_001b85a0
 u16* func_001b85a0(u32 index)
 {
     u16* record;
@@ -489,9 +491,9 @@ u16* func_001b85a0(u32 index)
     u16 emptyId;
     record = (u16*)FIELD_DATA_AT(K_Field_Get(), 0x1164, void*);
     emptyCount = 0;
+    emptyId = 0xffff;
     for (;;)
     {
-        emptyId = 0xffff;
         if (emptyCount == index)
         {
             break;
@@ -504,6 +506,7 @@ u16* func_001b85a0(u32 index)
     }
     return record;
 }
+#pragma pop
 
 // FUN_001b8600
 void func_001b8600(void)
@@ -743,7 +746,9 @@ void func_001b8cf0(u8* work)
     }
 }
 
-// FUN_001b8d60 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_001b8d60
 u16* func_001b8d60(u32 index)
 {
     u16* record;
@@ -756,9 +761,9 @@ u16* func_001b8d60(u32 index)
     emptyCount = 0;
     i = 0;
     recordCount = sComuTableRecords;
+    emptyId = 0xffff;
     while (i < recordCount)
     {
-        emptyId = 0xffff;
         if (emptyCount == index)
         {
             break;
@@ -772,6 +777,7 @@ u16* func_001b8d60(u32 index)
     }
     return record;
 }
+#pragma pop
 
 // FUN_001b8db0 NONMATCHING
 s16* func_001b8db0(s16* table)
