@@ -198,7 +198,7 @@ static Vec128 mdlVecFromWord(u32 w) { Vec128 v = mdlVecZero(); v._0_4_ = w; retu
 #ifndef CONCAT11
 #define CONCAT11(hi, lo) ((u16)((((u16)(u8)(hi)) << 8) | (u8)(lo)))
 #endif
-u64 FUN_0031d6b0(void);
+u32 FUN_0031d6b0(void);
 u64 FUN_0031d700(int *param_1);
 void FUN_0031d790(u32 *param_1);
 void FUN_0031d7d0(u32 *param_1);
@@ -1342,22 +1342,22 @@ extern u32 uGpffffb856;
 extern u32 uGpffffbd48;
 extern u32 uGpffffbd68;
 
-// FUN_0031D6B0 NONMATCHING
+// FUN_0031D6B0
 
 
-u64 FUN_0031d6b0(void)
+u32 FUN_0031d6b0(void)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   
 
-  uVar1 = (*DAT_00960178)(4,0x40000);
+  uVar1 = (*DAT_00960178_abs)(4,0x40000);
 
-  ((code)FUN_0031d7d0)(uVar1);
+  FUN_0031d7d0((u32 *)uVar1);
 
   return uVar1;
 
