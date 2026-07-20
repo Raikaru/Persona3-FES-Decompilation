@@ -566,11 +566,7 @@ void func_0020b250(void* work)
     u8* mode2;
     u8 color[4];
     f32 alpha;
-    u8 alphaByte;
-    u8 c0;
-    u8 c1;
-    u8 c2;
-    u8 c3;
+    u32 value;
     s32 mode;
     mode = *(s32*)(panel + 4);
     if (mode < 0 || mode >= 3) {
@@ -599,19 +595,17 @@ void func_0020b250(void* work)
         case 0:
             func_0020ccc0(mode0 + 0x178, panel + 0x40);
             func_0020ccc0(mode0 + 0x208, panel + 0x40);
-            c1 = ((volatile u8*)panel)[0x40];
-            c2 = ((volatile u8*)panel)[0x41];
-            c3 = ((volatile u8*)panel)[0x42];
-            c0 = ((volatile u8*)panel)[0x43];
-            color[0] = c1;
-            color[1] = c2;
-            color[2] = c3;
-            color[3] = c0;
-            alphaByte = ((volatile u8*)panel)[0x43];
-            if ((s32)alphaByte >= 0) {
-                alpha = (f32)alphaByte;
+            color[0] = panel[0x40];
+            color[1] = panel[0x41];
+            color[2] = panel[0x42];
+            color[3] = panel[0x43];
+            value = panel[0x43];
+            if (value >= 0) {
+                alpha = (f32)value;
             } else {
-                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+                value = (value >> 1) | (value & 1);
+                alpha = (f32)value;
+                alpha += alpha;
             }
             alpha = (30.0f * alpha) / 100.0f;
             if (alpha < 2.1474836e9f) {
@@ -668,18 +662,20 @@ void func_0020b250(void* work)
         case 1:
             func_0020ccc0(mode2 + 0x208, panel + 0x40);
             func_0020ccc0(mode2 + 0x178, panel + 0x40);
-            alphaByte = panel[0x43];
+            value = panel[0x43];
             color[0] = panel[0x40];
             color[1] = panel[0x41];
             color[2] = panel[0x42];
-            color[3] = alphaByte;
+            color[3] = (u8)value;
             color[0] = 0;
             color[1] = 0;
             color[2] = 0;
-            if ((s32)alphaByte >= 0) {
-                alpha = (f32)alphaByte;
+            if (value >= 0) {
+                alpha = (f32)value;
             } else {
-                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+                value = (value >> 1) | (value & 1);
+                alpha = (f32)value;
+                alpha += alpha;
             }
             alpha = *(f32*)(mode2 + 0x32C) * (alpha * *(f32*)(mode2 + 0x328));
             if (alpha < 2.1474836e9f) {
@@ -700,11 +696,13 @@ void func_0020b250(void* work)
         color[1] = panel[0x41];
         color[2] = panel[0x42];
         color[3] = panel[0x43];
-        alphaByte = panel[0x43];
-        if ((s32)alphaByte >= 0) {
-            alpha = (f32)alphaByte;
+        value = panel[0x43];
+        if (value >= 0) {
+            alpha = (f32)value;
         } else {
-            alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+            value = (value >> 1) | (value & 1);
+            alpha = (f32)value;
+            alpha += alpha;
         }
         alpha = (255.0f * *(f32*)(mode0 + 0x5FC) * alpha) / 255.0f;
         if (alpha < 2.1474836e9f) {
@@ -720,11 +718,13 @@ void func_0020b250(void* work)
         if (*(u32*)(mode0 + 0x170) & 1) {
             color[3] = 0;
         } else {
-            alphaByte = panel[0x43];
-            if ((s32)alphaByte >= 0) {
-                alpha = (f32)alphaByte;
+            value = panel[0x43];
+            if (value >= 0) {
+                alpha = (f32)value;
             } else {
-                alpha = 2.0f * (f32)((alphaByte >> 1) | (alphaByte & 1));
+                value = (value >> 1) | (value & 1);
+                alpha = (f32)value;
+                alpha += alpha;
             }
             alpha = (255.0f * *(f32*)(mode0 + 0x5F8) * alpha) / 255.0f;
             if (alpha < 2.1474836e9f) {
@@ -1213,80 +1213,73 @@ void func_0020cd50(void* work, void* resource)
     *(u32*)work |= 8;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0020cda0 NONMATCHING
 void func_0020cda0(u8* work)
 {
-    struct Vec3
-    {
-        f32 x;
-        f32 y;
-        f32 z;
-    };
-    struct Vec3 position;
-    u8* vertex;
-    f32 x;
+    PanelVec3 position;
     f32 rowY;
-    f32 rowStep;
-    f32 yOffset;
+    f32 x;
     f32 half;
     f32 six;
-    f32 zero;
     f32 three;
-    s32 row;
-    s32 col;
-    s32 width;
-    s32 alternating;
-    *(u32*)work = 0;
+    f32 zero;
+    f32 rowStep;
+    f32 yOffset;
+    register u8* vertex;
+    register s32 alternating;
+    register s32 col;
+    register s32 row;
+    register s32 width;
+    register s32 widthEven;
+    register s32 widthOdd;
+
+    *(u32*)(work + 0) = 0;
     half = 0.5f;
     *(f32*)(work + 0x9a0) = half;
     *(f32*)(work + 0x9a4) = 0.375f;
     vertex = work + 4;
     row = 0;
-    alternating = ~row & 1;
-    six = 6.0f;
-    yOffset = fGpffff8318;
+    widthEven = 7;
+    widthOdd = 8;
     rowStep = fGpffff8338;
-    three = 3.0f;
+    yOffset = fGpffff8318;
+    six = 6.0f;
     zero = 0.0f;
-    while (row < 9)
-    {
-        rowY = rowStep * (f32)row - yOffset;
+    three = 3.0f;
+    while (row < 9) {
+        alternating = ~row & 1;
+        if (alternating != 0) {
+            width = widthOdd;
+        } else {
+            width = widthEven;
+        }
         col = 0;
-        width = alternating != 0 ? 8 : 7;
-        while (col < width)
-        {
-            if (alternating != 0)
-            {
-                if (col == 0)
-                {
+        rowY = rowStep * (f32)row - yOffset;
+        while (col < width) {
+            if (alternating != 0) {
+                if (col == 0) {
                     x = zero;
-                }
-                else if (col == width - 1)
-                {
+                } else if (col == width - 1) {
                     x = six;
-                }
-                else
-                {
+                } else {
                     x = half + (f32)(col - 1);
                 }
-            }
-            else
-            {
+            } else {
                 x = (f32)col;
             }
             position.x = x - three;
-            col++;
             position.y = rowY;
             position.z = zero;
-            *(struct Vec3*)vertex = position;
-            vertex = vertex + (0x24);
+            *(PanelVec3*)vertex = position;
+            col++;
+            vertex += 0x24;
         }
         row++;
-        alternating = ~row & 1;
     }
     K_ASSERT((vertex - (work + 4)) / 0x24 == 0x44, 0x591);
 }
-
+#pragma opt_loop_invariants off
 // FUN_0020cf20 NONMATCHING
 void func_0020cf20(void* destination, void* source)
 {
