@@ -35,7 +35,7 @@ int FUN_003c4df0(u64 param_1,int *param_2,int param_3);
 u32 FUN_003c4e50(u64 param_1, u32* param_2);
 u32 FUN_003c4e60(u64 param_1, int param_2);
 u64 FUN_003c4e70(u64 param_1);
-void FUN_003c4f30(long param_1);
+void FUN_003c4f30(int param_1);
 int FUN_003c4f80(int param_1);
 void FUN_003c4fc0(u64 param_1,u64 param_2);
 int FUN_003c50b0(int param_1,long param_2,int param_3);
@@ -978,10 +978,10 @@ u64 FUN_003c4e70(u64 param_1)
 }
 #define FUN_003c4e70(...) ((u64 (*)(...))FUN_003c4e70)(__VA_ARGS__)
 #undef FUN_003c4f30
-// FUN_003C4F30 NONMATCHING
+// FUN_003C4F30
 
 
-void FUN_003c4f30(long param_1)
+void FUN_003c4f30(int param_1)
 
 
 
@@ -991,7 +991,7 @@ void FUN_003c4f30(long param_1)
 
     FUN_00521408(param_1,0,*(u32 *)((int)param_1 + 8));
 
-    (*DAT_0096017c)(param_1);
+    (*(void (**)(...))0x0096017c)(param_1);
 
   }
 
