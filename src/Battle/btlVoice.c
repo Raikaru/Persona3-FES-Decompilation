@@ -3809,6 +3809,9 @@ extern u64 FUN_002822b0();
 extern u64 FUN_00282bc0();
 extern u64 FUN_00282c30();
 extern void FUN_00282d40(f32 speed, BtlUnit* unit, s16 id, u32 blend, s8 mode);
+extern void FUN_00282d40_call(BtlUnit* unit, s16 id, u32 blend, s8 mode,
+                              f32 speed);
+#pragma alias FUN_00282d40_call FUN_00282d40
 extern u64 FUN_002831c0();
 extern u64 FUN_002838d0();
 extern u64 FUN_00283c50(f32 value, u32 handle);
@@ -7874,13 +7877,15 @@ void func_002ea860(void)
   return;
 }
 
-// FUN_002eaa40 NONMATCHING
+#pragma opt_propagation off
+// FUN_002eaa40
 void func_002eaa40(void)
 {
     BtlUnit* unit;
     BtlUnit* selected;
     Model* model105;
     Model* model106;
+    s8 voiceValue;
 
     selected = 0;
     model105 = 0;
@@ -7924,10 +7929,12 @@ advance:
     FUN_003195f0(selected->mdl, 0, model105);
     FUN_003195f0(selected->mdl, 1, model106);
     FUN_002831c0(selected, 0);
-    FUN_00282d40(selected->unk_9e4, selected, selected->unk_9e0, 0,
-                 selected->unk_9e8);
+    voiceValue = selected->unk_9e8;
+    FUN_00282d40_call(selected, selected->unk_9e0, 0, voiceValue,
+                      selected->unk_9e4);
     FUN_00282bc0(selected);
 }
+#pragma opt_propagation on
 
 // FUN_002eab70
 void func_002eab70(void)
