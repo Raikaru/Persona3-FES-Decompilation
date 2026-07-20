@@ -178,6 +178,20 @@ static f32 camp_list_packed_high_f32(u64 packed)
     return camp_list_bits_to_float((u32)(packed >> 32));
 }
 #define CAMP_LIST_CONST_PTR(address) ((const char *)(uintptr_t)(address))
+typedef struct CampC520ListEntry
+{
+    u8 unknown00[0x0c];
+    u32 itemId;
+    u32 unknown10;
+    s16 mode;
+    u8 unknown16[2];
+    s32 spCost;
+    s32 hpCost;
+} CampC520ListEntry;
+#pragma alias campC520PartyId FUN_0016DD60
+extern u64 campC520PartyId(s32 index);
+#pragma alias campC520NearHero FUN_001C7CE0
+extern s32 campC520NearHero(s32 owner);
 
 /* Camp draw/animation work used by FUN_0015E150..FUN_00160800. */
 typedef struct CampDrawRecord
@@ -303,6 +317,14 @@ static inline CampDrawRecord *camp_draw_state_records(CampDrawWork *work)
 }
 
 /* Retail globals shared by these translated slices. */
+#pragma alias campC520PreviousMode DAT_00836ba8
+extern s16 campC520PreviousMode;
+#pragma alias campC520SetMode FUN_00175200
+extern void campC520SetMode(s16 mode);
+#pragma alias campC520GetHp FUN_0016C4F0
+extern s32 campC520GetHp(s32 arg0);
+#pragma alias campC520GetSp FUN_0016C570
+extern s32 campC520GetSp(s32 arg0);
 extern u32 uGpffffb29c;
 extern u32 uGpffffb288;
 extern KwlnTask *iGpffffb258;
@@ -334,6 +356,21 @@ extern void *FUN_00102100(void *cdvd, s32 fileIndex, u32 *fileSize);
 extern void *FUN_00112420(void *source);
 extern s32 FUN_00111f30(void *maestroBlob);
 extern void FUN_003c7d80(s32 slot, u64 textureId);
+typedef struct CampD8Object
+{
+    u8 unknown00[0x10];
+    f32 x;
+    f32 y;
+    u8 alpha;
+    u8 unknown19[0x13];
+    f32 drawContext;
+} CampD8Object;
+#pragma alias campD8MakeSprite FUN_001158B0
+extern CampD8Object *campD8MakeSprite(u32 parent, void *resource, u32 frame);
+#pragma alias campD8SetSprite FUN_001127D0
+extern void campD8SetSprite(CampD8Object *object, s32 mode);
+#pragma alias campD8SubmitSprite FUN_00115980
+extern void campD8SubmitSprite(CampD8Object *object);
 extern void FUN_00113a30(f32 x, f32 y, f32 z, u64 color, s32 width, s32 height);
 extern void FUN_00155830(void *record, void *blobPair, s32 index, u32 selectedPanel, const u32 *panelFlags);
 extern void FUN_001599f0(void *record, void *blobPair, s32 category, u32 selectedPage, u32 subPage);
@@ -502,31 +539,31 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 6:
         work->selectedPanel = 0;
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x000),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x000),
                      0, 2, 1, UINT64_C(0xc3c0800041a80000),
                      UINT64_C(0x4357000041a80000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x044),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x044),
                      0, 2, 1, UINT64_C(0xc3a90000424c0000),
                      UINT64_C(0x43830000424c0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x088),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x088),
                      0, 2, 1, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x0cc),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x0cc),
                      0, 2, 1, UINT64_C(0xc3fe000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x110),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x110),
                      0, 2, 1, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x154),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x154),
                      0, 2, 1, UINT64_C(0xc3fe000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x198),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x198),
                      0, 2, 1, UINT64_C(0x42ba000043938000),
                      UINT64_C(0x42ba000042be0000), 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x1a4c),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x1a4c),
                      0, 2, 1, UINT64_C(0x43c0800043c40000),
                      UINT64_C(0x43c0800043c40000), 0, 0);
         work->entriesReady = 0;
@@ -649,29 +686,29 @@ void *FUN_0015B430(KwlnTask *task)
                               work->panelFlags);
             }
         }
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x000),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x000),
                      0, 2, 2, UINT64_C(0x4357000041a80000),
                      UINT64_C(0x444bc00041a80000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x044),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x044),
                      0, 2, 2, UINT64_C(0x43830000424c0000),
                      UINT64_C(0x44578000424c0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x088),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x088),
                      0, 2, 2, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x0cc),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x0cc),
                      0, 2, 2, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x442d000042ae0000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x110),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x110),
                      0, 2, 2, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x154),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x154),
                      0, 2, 2, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x442d000043c20000), 0, 0);
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x198),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x198),
                      0, 2, 2, UINT64_C(0x42ba000042be0000),
                      UINT64_C(0x42ba000042be0000), 0, 0);
         work->state = 10;
-        FUN_0018bc10(UINT32_C(0x42c80000), camp_menu_record(work, 0x1a4c),
+        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x1a4c),
                      0, 2, 2, UINT64_C(0x43c0800043c40000),
                      UINT64_C(0x43c0800043c40000), 0, 0);
         break;
@@ -734,84 +771,95 @@ KwlnTask *FUN_0015C460(KwlnTask *param_1)
 // FUN_0015C520 NONMATCHING
 void FUN_0015C520(void *param_1, s32 param_2)
 {
-    u16 previous_mode;
-    u32 item_id;
-    u16 entry_mode;
+    u8 *base;
+    CampC520ListEntry *entry;
+    s32 owner_mode;
     s32 entry_index;
+    u32 item_id;
+    s16 previous_mode;
     s32 i;
     s32 found_count;
     s16 relation;
-    uintptr_t result;
+    void *result;
     u64 owner;
-    uintptr_t list;
+    s32 hp;
+    s32 sp;
 
-    list = camp_list_base_address((u32)(uintptr_t)param_1);
-    previous_mode = DAT_00836ba8;
-    entry_index = camp_list_load_s32(list, 0x7e0) + camp_list_load_s32(list, 0x7e4);
-    item_id = camp_list_load_u32(list, (size_t)entry_index * 0x14 + 0x0c);
-    entry_mode = camp_list_load_u16(list, (size_t)entry_index * 0x14 + 0x14);
-    FUN_00175200(entry_mode);
+    base = (u8 *)param_1;
+    owner_mode = param_2;
+    entry_index = *(s32 *)(base + 0x7e0) + *(s32 *)(base + 0x7e4);
+    entry = (CampC520ListEntry *)(base + entry_index * 0x14);
+    item_id = entry->itemId;
+    previous_mode = campC520PreviousMode;
+    campC520SetMode(entry->mode);
 
-    result = FUN_0017b660(1, item_id & 0xffffU);
-    if (result == (uintptr_t)0) {
-        if (param_2 == -2) {
-            FUN_0017b860(1, 1, item_id & 0xffffU, 0);
-            for (i = 0; i < 3; ++i) {
-                relation = FUN_0016dd60(i);
+    result = FUN_0017B660(1, item_id & 0xffffU);
+    if (result == NULL) {
+        if (owner_mode == -2) {
+            FUN_0017B860(1, 1, item_id & 0xffffU, 0);
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
                 if (relation != 0) {
-                    owner = (u64)(u16)FUN_0016dd60(i);
-                    if (FUN_001c7ce0(owner) != (uintptr_t)0) {
-                        owner = (u64)(u16)FUN_0016dd60(i);
-                        result = FUN_0017bc20(1, owner, item_id & 0xffffU, 0);
-                        if (result == (uintptr_t)0) {
-                            FUN_0017b860(1, owner, item_id & 0xffffU, 0);
+                    owner = campC520PartyId(i);
+                    if (campC520NearHero((s32)(s16)owner) != 0) {
+                        owner = campC520PartyId(i);
+                        result = FUN_0017BC20(1, owner, item_id & 0xffffU, 0);
+                        if (result == NULL) {
+                            FUN_0017B860(1, owner, item_id & 0xffffU, 0);
                         }
                     }
                 }
+                i++;
             }
         }
-        else if (param_2 == 0) {
-            result = FUN_001c7ce0(1);
-            if ((result != (uintptr_t)0) &&
-                (FUN_0017bc20(1, 1, item_id & 0xffffU, 0) == (uintptr_t)0)) {
-                FUN_0017b860(1, 1, item_id & 0xffffU, 0);
+        else if (owner_mode == 0) {
+            result = (void *)campC520NearHero(1);
+            if ((result != NULL) &&
+                (FUN_0017BC20(1, 1, item_id & 0xffffU, 0) == 0)) {
+                FUN_0017B860(1, 1, item_id & 0xffffU, 0);
             }
         }
         else {
             found_count = 0;
-            for (i = 0; i < 3; ++i) {
-                relation = FUN_0016dd60(i);
-                if ((relation != 0) && (++found_count, param_2 == found_count)) {
-                    owner = (u64)(u16)FUN_0016dd60(i);
-                    if (FUN_001c7ce0(owner) != (uintptr_t)0) {
-                        owner = (u64)(u16)FUN_0016dd60(i);
-                        result = FUN_0017bc20(1, owner, item_id & 0xffffU, 0);
-                        if (result == (uintptr_t)0) {
-                            FUN_0017b860(1, owner, item_id & 0xffffU, 0);
+            i = 0;
+            while (i < 3) {
+                relation = (s16)campC520PartyId(i);
+                if (relation != 0) {
+                    found_count++;
+                    if (owner_mode == found_count) {
+                        owner = campC520PartyId(i);
+                        if (campC520NearHero((s32)(s16)owner) != 0) {
+                            owner = campC520PartyId(i);
+                            result = FUN_0017BC20(1, owner, item_id & 0xffffU, 0);
+                            if (result == NULL) {
+                                FUN_0017B860(1, owner, item_id & 0xffffU, 0);
+                            }
                         }
+                        break;
                     }
-                    break;
                 }
+                i++;
             }
         }
 
         entry_index *= 0x14;
-        relation = FUN_0016c4f0(1);
-        FUN_0016cf40(1, (s16)(relation - (s16)camp_list_load_u32(
-            list, (size_t)entry_index + 0x1c)));
-        relation = FUN_0016c570(1);
-        FUN_0016cf90(1, (s16)(relation - (s16)camp_list_load_u32(
-            list, (size_t)entry_index + 0x18)));
+        hp = campC520GetHp(1);
+        FUN_0016CF40(1, (s16)((hp & 0xffff) -
+                             *(s32 *)(base + entry_index + 0x1c)));
+        sp = campC520GetSp(1);
+        FUN_0016CF90(1, (s16)((sp & 0xffff) -
+                             *(s32 *)(base + entry_index + 0x18)));
     }
 
-    FUN_00175200(previous_mode);
+    campC520SetMode(previous_mode);
 }
 
 // FUN_0015C840 NONMATCHING
 void FUN_0015C840(void *param_1)
 {
-    const uintptr_t list = camp_list_base_address((u32)(uintptr_t)param_1);
-    u16 previous_mode = DAT_00836ba8;
+    const uintptr_t list = (uintptr_t)param_1;
+    s16 previous_mode = DAT_00836ba8;
     u32 saved_entry[5];
     u32 candidate_entry[5];
     u32 swap_entry[5];
@@ -1087,38 +1135,41 @@ void FUN_0015CE50(u64 param_1, f32 param_2, void *param_3, s32 param_4)
 // FUN_0015D8E0 NONMATCHING
 void FUN_0015D8E0(u64 param_1, f32 param_2, u8 param_3)
 {
-    uintptr_t object;
-    float x;
-    float y;
+    union
+    {
+        u64 packed;
+        f32 value[2];
+    } position;
+    CampD8Object *object;
+    f32 x;
+    f32 y;
 
-    y = camp_list_packed_high_f32(param_2);
-    x = camp_list_packed_low_f32(param_2) + 218.0f;
-    object = FUN_001158b0(0, DAT_00833a50, 0x0c);
-    camp_list_store_u32(object, 0x2c, param_1);
-    camp_list_store_u32(object, 0x10,
-                   camp_list_float_to_bits(x + (float)DAT_007cdf8c));
-    camp_list_store_u32(object, 0x14, camp_list_float_to_bits(y + 382.0f));
-    memcpy((void *)(object + 0x18), &param_3, sizeof(param_3));
-    FUN_001127d0(object, 1);
-    FUN_00115980(object);
+    position.packed = param_1;
+    x = 218.0f + position.value[1];
+    y = 382.0f + position.value[0];
+    object = campD8MakeSprite(0, DAT_00833a50, 0x0c);
+    object->drawContext = param_2;
+    object->x = x + (f32)DAT_007cdf8c;
+    object->y = y;
+    object->alpha = param_3;
+    campD8SetSprite(object, 1);
+    campD8SubmitSprite(object);
 
     if (DAT_007cdf8c < -200) {
-        object = FUN_001158b0(0, DAT_00833a50, 0x0c);
-        camp_list_store_u32(object, 0x2c, param_1);
-        camp_list_store_u32(object, 0x10,
-                       camp_list_float_to_bits(x + (float)DAT_007cdf8c + 640.0f));
-        camp_list_store_u32(object, 0x14, camp_list_float_to_bits(y + 382.0f));
-        memcpy((void *)(object + 0x18), &param_3, sizeof(param_3));
-        FUN_001127d0(object, 1);
-        FUN_00115980(object);
+        object = campD8MakeSprite(0, DAT_00833a50, 0x0c);
+        object->drawContext = param_2;
+        object->x = x + (f32)DAT_007cdf8c + 640.0f;
+        object->y = y;
+        object->alpha = param_3;
+        campD8SetSprite(object, 1);
+        campD8SubmitSprite(object);
     }
 
     DAT_007cdf8c = DAT_007cdf8c - 1;
-    if ((float)DAT_007cdf8c < -640.0f) {
-        DAT_007cdf8c = (s32)((float)DAT_007cdf8c + 640.0f);
+    if ((f32)DAT_007cdf8c < -640.0f) {
+        DAT_007cdf8c = (s32)((f32)DAT_007cdf8c + 640.0f);
     }
 }
-
 // FUN_0015DA70 NONMATCHING
 void FUN_0015DA70(void *param_1)
 {
@@ -1152,38 +1203,34 @@ void FUN_0015DA70(void *param_1)
                          camp_list_pack_f32(row + 8.0f,
                                        camp_list_bits_to_float(0x42820000)),
                          0, 0);
-            FUN_0018bc10(0x42c80000,
-                         (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0b) * 0x44),
-                         0, 2, 1,
-                         camp_list_pack_f32(row + 31.0f,
-                                       camp_list_bits_to_float(0x41700000)),
-                         camp_list_pack_f32(row + 31.0f,
-                                       camp_list_bits_to_float(0x42820000)),
-                         0, 0);
-            FUN_0018bc10(0x42c80000,
-                         (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0c) * 0x44),
-                         0, 2, 1,
-                         camp_list_pack_f32(row + 45.0f,
-                                       camp_list_bits_to_float(0x41700000)),
-                         camp_list_pack_f32(row + 45.0f,
-                                       camp_list_bits_to_float(0x42820000)),
-                         0, 0);
-            FUN_0018bc10(0x42c80000,
-                         (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0d) * 0x44),
-                         0, 2, 1,
-                         camp_list_pack_f32(row + 64.0f,
-                                       camp_list_bits_to_float(0x41700000)),
-                         camp_list_pack_f32(row + 64.0f,
-                                       camp_list_bits_to_float(0x42820000)),
-                         0, 0);
-            FUN_0018bc10(0x42c80000,
-                         (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0e) * 0x44),
-                         0, 2, 1,
-                         camp_list_pack_f32(row + 2.0f,
-                                       camp_list_bits_to_float(0xc2100000)),
-                         camp_list_pack_f32(row + 2.0f,
-                                       camp_list_bits_to_float(0x41600000)),
-                         0, 0);
+            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0b) * 0x44),
+            0, 2, 1,
+            camp_list_pack_f32(row + 31.0f,
+                          camp_list_bits_to_float(0x41700000)),
+            camp_list_pack_f32(row + 31.0f,
+                          camp_list_bits_to_float(0x42820000)),
+            0, 0);
+            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0c) * 0x44),
+            0, 2, 1,
+            camp_list_pack_f32(row + 45.0f,
+                          camp_list_bits_to_float(0x41700000)),
+            camp_list_pack_f32(row + 45.0f,
+                          camp_list_bits_to_float(0x42820000)),
+            0, 0);
+            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0d) * 0x44),
+            0, 2, 1,
+            camp_list_pack_f32(row + 64.0f,
+                          camp_list_bits_to_float(0x41700000)),
+            camp_list_pack_f32(row + 64.0f,
+                          camp_list_bits_to_float(0x42820000)),
+            0, 0);
+            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0e) * 0x44),
+            0, 2, 1,
+            camp_list_pack_f32(row + 2.0f,
+                          camp_list_bits_to_float(0xc2100000)),
+            camp_list_pack_f32(row + 2.0f,
+                          camp_list_bits_to_float(0x41600000)),
+            0, 0);
             camp_list_store_u32(base + (size_t)i * 0x2a8, 0x400, 0);
             camp_list_store_u32(base + (size_t)i * 0x2a8, 0x444, 0);
         }
@@ -1293,9 +1340,8 @@ void FUN_0015E6E0(CampDrawWork *work)
                 tailHeight = 48.0f;
                 first = camp_draw_concat44_f32(x + 2.0f, 14.0f);
                 second = camp_draw_concat44_f32(x + 2.0f, 62.0f);
-                FUN_0018bc10(0x42c80000,
-                             camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                             0, 2, 1, first, second, 0, 0);
+                FUN_0018bc10(0x42c80000, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 1, first, second, 0, 0);
             } else {
                 tailHeight = 27.0f;
                 camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
@@ -1427,9 +1473,8 @@ void FUN_0015F320(CampDrawWork *work)
                 tailHeight = 48.0f;
                 first = camp_draw_concat44_f32(x + 2.0f, 62.0f);
                 second = camp_draw_concat44_f32(x + 2.0f, 14.0f);
-                FUN_0018bc10(0x42c80000,
-                             camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
-                             0, 2, 2, first, second, 0, 0);
+                FUN_0018bc10(0x42c80000, camp_draw_ptr_add(draw, (size_t)(i * 10 + 0x10) * 0x44),
+                0, 2, 2, first, second, 0, 0);
             } else {
                 tailHeight = 27.0f;
                 camp_draw_store_u32(draw, (size_t)i * 0x2a8 + 0x444, 0);
