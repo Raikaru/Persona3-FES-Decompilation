@@ -65,7 +65,7 @@ int FUN_003c6fb0(int param_1);
 void FUN_003c7000(u64 param_1);
 void FUN_003c7070(float param_1,float *param_2,float *param_3,float *param_4);
 void FUN_003c7270(void);
-void FUN_003c72a0(long param_1);
+void FUN_003c72a0(int param_1);
 #pragma alias FUN_003c72a0_typed FUN_003c72a0
 extern void FUN_003c72a0_typed(u32 param_1);
 u8 FUN_003c72d0(u64 param_1);
@@ -92,7 +92,7 @@ u32 FUN_003c7d50(void);
 u32 FUN_003c7d60(int param_1);
 void FUN_003c7d80(int param_1,u64 param_2);
 void FUN_003c7dd0(int param_1);
-void FUN_003c7e20(void);
+void FUN_003c7e20(u32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,u64 p7);
 u64  FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7,long param_8,u32 param_9);
 u64 FUN_003c8230(u32 *param_1,int param_2);
 u64 FUN_003c82e0(int param_1);
@@ -1612,10 +1612,10 @@ void FUN_003c7270(void)
 }
 #define FUN_003c7270(...) ((void (*)(...))FUN_003c7270)(__VA_ARGS__)
 #undef FUN_003c72a0
-// FUN_003C72A0 NONMATCHING
+// FUN_003C72A0
 
 
-void FUN_003c72a0(long param_1)
+void FUN_003c72a0(int param_1)
 
 
 
@@ -2628,20 +2628,16 @@ void FUN_003c7dd0(int param_1)
 }
 #define FUN_003c7dd0(...) ((void (*)(...))FUN_003c7dd0)(__VA_ARGS__)
 #undef FUN_003c7e20
-// FUN_003C7E20 NONMATCHING
+#undef FUN_003c7e50
+extern u64 FUN_003c7e50();
+// FUN_003C7E20
 
 
-void FUN_003c7e20(void)
-
-
-
+void FUN_003c7e20(u32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,u64 p7)
 {
-
-  FUN_003c7e50();
-
-  return;
-
+  FUN_003c7e50(p1,p2,p3,p4,p5,1,p6,p7);
 }
+#define FUN_003c7e50(...) ((u64 (*)(...))FUN_003c7e50)(__VA_ARGS__)
 #define FUN_003c7e20(...) ((void (*)(...))FUN_003c7e20)(__VA_ARGS__)
 #undef FUN_003c7e50
 // FUN_003C7E50 NONMATCHING
