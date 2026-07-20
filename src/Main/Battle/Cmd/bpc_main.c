@@ -11,7 +11,18 @@ extern f32 sinf(f32 angle);
 extern f32 cosf(f32 angle);
 
 /* BPC state rooted at DAT_007CE320 / GP-0x49D0. */
-static u32* sBpcWork;
+extern u32* DAT_007ce320;
+#define sBpcWork DAT_007ce320
+#pragma alias bppMain0020f8b0_u16 bppMain0020f8b0
+extern void bppMain0020f8b0_u16(u16 pcId);
+#pragma alias bppMain0020fb60_u16 bppMain0020fb60
+extern void bppMain0020fb60_u16(u16 pcId);
+#pragma alias bppMain0020f7d0_u16 bppMain0020f7d0
+extern void bppMain0020f7d0_u16(u16 pcId);
+#pragma alias bppMain0020fa80_u16 bppMain0020fa80
+extern void bppMain0020fa80_u16(u16 pcId);
+#pragma alias func_001775a0_s16 func_001775a0
+extern u32 func_001775a0_s16(s16 id);
 
 typedef void (*BpcRenderState)(s32 property, u32 value);
 typedef void (*BpcRenderQuad)(void* quad, s32 count, s32 group, s32 pass, s32 blend);
@@ -721,10 +732,9 @@ void FUN_00244a40(u32 param_1)
   uint uVar5;
   uint *puVar5;
   u32 uVar6;
-  long lVar7;
+  u32 lVar7;
   int unaff_s2_lo;
-  u32 uStack_18[2];
-  u8 auStack_10 [16];
+  u8 auStack_10[32];
   
   if (sBpcWork == (uint *)0x0) {
     K_Assert(D_0068E880, 0x97);
@@ -734,17 +744,20 @@ void FUN_00244a40(u32 param_1)
     K_Assert(D_0068E880, 0x371);
   }
   iVar3 = func_001ff430(puVar2[4]);
-  if ((*(char *)(iVar3 + 0xa2) != '\x01') && (*(char *)(iVar3 + 0xa2) == '\0')) {
-    bppMain0020f8b0(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
-    bppMain0020fa80(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+  switch (*(u8 *)(iVar3 + 0xa2)) {
+  case 1:
+    break;
+  case 0:
+    bppMain0020f8b0_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    bppMain0020fa80_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
     iVar3 = func_001ff430(param_1);
-    if (*(char *)(iVar3 + 0xa2) != '\0') {
+    if (*(u8 *)(iVar3 + 0xa2) != 0) {
       K_Assert(D_0068E880, 0x37b);
     }
-    bppMain0020fb60(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
-    bppMain0020f7d0(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    bppMain0020fb60_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    bppMain0020f7d0_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+    break;
   }
-  uVar5 = puVar2[1];
   if (uVar5 == 2) {
     puVar5 = FUN_00245bf0(puVar2[4]);
     if ((*puVar5 & 0x80) == 0) {
@@ -756,11 +769,11 @@ void FUN_00244a40(u32 param_1)
     FUN_00245970(puVar5);
   }
   uVar6 = func_001ff430(puVar2[4]);
-  func_00280580(uVar6,auStack_10);
-  lVar7 = func_002d20a0(auStack_10,uStack_18);
+  func_00280580(uVar6,auStack_10 + 0x10);
+  lVar7 = func_002d20a0(auStack_10 + 0x10,(f32 *)(auStack_10 + 8));
   if (lVar7 != 0) {
-    puVar2[0x1cb7] = uStack_18[0];
-    puVar2[0x1cb8] = uStack_18[1];
+    puVar2[0x1cb7] = *(u32 *)(auStack_10 + 8);
+    puVar2[0x1cb8] = *(u32 *)(auStack_10 + 0xc);
     *puVar2 = *puVar2 | 0x10;
   }
   if ((*puVar2 & 2) != 0) {
@@ -792,12 +805,12 @@ void FUN_00244a40(u32 param_1)
   }
   func_003b0170(puVar2[0x1b30]);
   iVar3 = func_001ff430(puVar2[4]);
-  if (*(char *)(iVar3 + 0xa2) == '\x01') {
+  if (*(u8 *)(iVar3 + 0xa2) == 1) {
     uVar1 = *(ushort *)(*(int *)(iVar3 + 0xa2c) + 2);
     unaff_s2_lo = DAT_007ce4e8 + (uint)uVar1 * 0x12 + (uint)uVar1;
   }
-  else if (*(char *)(iVar3 + 0xa2) == '\0') {
-    unaff_s2_lo = func_001775a0(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
+  else if (*(u8 *)(iVar3 + 0xa2) == 0) {
+    unaff_s2_lo = func_001775a0_s16(*(s16 *)(*(int *)(iVar3 + 0xa2c) + 2));
   }
   func_003b0e70(1);
   func_003b0e90(2);
