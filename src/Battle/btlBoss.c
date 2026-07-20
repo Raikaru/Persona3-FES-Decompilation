@@ -2703,10 +2703,17 @@ void FUN_002fd8a0(int param_1)
         if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
         {
             data = *(u8**)(param_1 + 0x30);
-            if (data[0xa2] == 1 &&
-                (*(u16*)(data + 0xa4) == 0x10c || *(u16*)(data + 0xa4) == 0x10b))
+            if (data[0xa2] == 1)
             {
-                FUN_00289860();
+                switch (*(u16*)(data + 0xa4))
+                {
+                case 0x10b:
+                case 0x10c:
+                    FUN_00289860();
+                    break;
+                default:
+                    break;
+                }
             }
         }
         break;
