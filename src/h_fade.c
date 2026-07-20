@@ -360,7 +360,6 @@ static void H_Fade_White()
     s16 i;
     f32 z;
     f32 col;
-
     setRenderState = &rwGlobals.device.setRenderState;
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
@@ -399,7 +398,6 @@ static void H_Fade_White()
                 sFadeActive = false;
             }
     }
-
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
     alpha = (sFadeCounter * 255) / sFadeDuration;
     i = 0;
@@ -668,7 +666,6 @@ static void H_Fade_Custom()
     f32 green;
     f32 blue;
     s16 i;
-
     setRenderState = &rwGlobals.device.setRenderState;
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
