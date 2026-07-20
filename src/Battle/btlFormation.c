@@ -397,6 +397,8 @@ extern void (*DAT_0096017c[])(...);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
 extern u32* PTR_DAT_00696f30;
+#pragma alias PTR_DAT_00696f30_abs PTR_DAT_00696f30
+extern u32* PTR_DAT_00696f30_abs[];
 extern code pcRam006971bc;
 extern code pcRam006971c8;
 extern code pcRam006971d4;
@@ -534,7 +536,7 @@ extern u32 func_002b9640(int param_1);
 extern void func_002b96e0(int param_1,u32 param_2);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,u64 param_6);
 extern void func_002b99d0(int param_1,int param_2,u64 param_3,u64 param_4);
-extern void func_002b9b00(int param_1,u64 param_2,int param_3,float *param_4);
+extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9c00(int param_1,u64 param_2,int param_3,float *param_4);
 extern void func_002b9d40(int param_1,u64 param_2,int param_3,float *param_4);
 extern void func_002b9e80(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
@@ -566,7 +568,7 @@ extern void func_002bb8f0(u32 param_1);
 extern u16 * func_002bb9c0(int param_1);
 extern u32 func_002bbac0(int param_1,u16 *param_2);
 extern void func_002bbbc0(int param_1);
-extern u64 func_002bbc00(u32 param_1);
+extern void* func_002bbc00(void* owner);
 extern void func_002bbd00(u32 param_1);
 extern void func_002bbdc0(u8 *param_1,short param_2);
 extern short func_002bbdf0(int param_1);
@@ -605,8 +607,8 @@ extern u32 func_002bd8e0(int *param_1);
 extern int func_002bdbd0(u32 param_1,u32 param_2,u32 param_3,u16 param_4, u16 param_5,u16 param_6,u16 param_7,u64 param_8);
 extern u32 func_002bdcd0(u16 *param_1);
 extern void func_002bddd0(void);
-extern u32 func_002bde10(int param_1,u16 *param_2);
-extern u32 func_002bdfb0(int param_1);
+extern u16 func_002bde10(int param_1,u16 *param_2);
+static u32 func_002bdfb0(int param_1);
 extern u32 func_002be2f0(int param_1);
 extern void func_002be390(short *param_1,short param_2,short param_3);
 extern u32 func_002be580(u64 param_1,int param_2);
@@ -649,6 +651,8 @@ extern void func_002bfc90(void);
 extern void func_002bfcb0(int param_1,u64 param_2,u32 param_3,u32 param_4,long param_5);
 #pragma alias func_002bfcb0_ptr func_002bfcb0
 extern void func_002bfcb0_ptr(int param_1,void *param_2,u32 param_3,u32 param_4,long param_5);
+#pragma alias func_002bfcb0_u64call func_002bfcb0
+extern void func_002bfcb0_u64call(u64 param_1,u64 param_2,u32 param_3,u32 param_4,long param_5);
 extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
 // Typed alias for callers that consume the helper's full 16-bit result.
 #pragma alias func_002bff60_u16 func_002bff60
@@ -746,7 +750,7 @@ extern u64 func_002c3430(u64 param_1,u64 param_2,u32 param_3,u16 param_4,int par
 extern u32 func_002c3770(u64 param_1,u64 param_2);
 #pragma alias func_002c3770_u32 func_002c3770
 extern u32 func_002c3770_u32(u32 param_1,u32 param_2);
-extern u32 func_002c3be0(u64 param_1);
+extern u32 func_002c3be0(u32 param_1);
 extern u32 func_002c3ce0(u64 param_1);
 extern u64 func_002c3e10(void);
 extern void func_002c3e20(u64 param_1,u64 param_2);
@@ -1011,7 +1015,7 @@ extern u32 func_002d0860(void);
 extern u32 func_002d08e0(void);
 extern u32 func_002d0970(void);
 extern u32 func_002d09d0(void);
-extern void func_002d0a30(void);
+extern u32 func_002d0a30(void);
 extern u32 func_002d0ac0(void);
 extern u32 func_002d0af0(void);
 extern u32 func_002d0b90(void);
@@ -1122,7 +1126,7 @@ void func_002b9030(u32 param_1)
   return;
 }
 
-// FUN_002b90d0 NONMATCHING
+// FUN_002b90d0
 
 void func_002b90d0(int destination, u32 source)
 {
@@ -1134,10 +1138,11 @@ void func_002b90d0(int destination, u32 source)
   u8* referencedEntry;
   u32 packed;
   u32 resource;
+  u32 continueLoop;
 
   func_00521250(destination, source, 0x630);
   outer = 0;
-  while (outer <= 1) {
+  while ((s32)(continueLoop = outer) < 2) {
     block = destination + (outer & 0xffff) * 0x314;
     count = *(u16 *)(block + 0x10);
     entry = (u8 *)(block + 0x1c);
@@ -1161,7 +1166,7 @@ void func_002b90d0(int destination, u32 source)
   *(u16 *)(destination + 0x630) |= 2;
 }
 
-// FUN_002b9220 NONMATCHING
+// FUN_002b9220
 
 void func_002b9220(int state)
 {
@@ -1170,8 +1175,10 @@ void func_002b9220(int state)
   int count;
   u8 *entry;
   int block;
+  u32 continueLoop;
 
-  for (outer = 0; outer <= 1; outer++) {
+  outer = 0;
+  while ((s32)(continueLoop = outer) < 2) {
     block = state + (outer & 0xffff) * 0x314;
     count = *(u16 *)(block + 0x10);
     entry = (u8 *)(block + 0x1c);
@@ -1183,6 +1190,7 @@ void func_002b9220(int state)
       entry += 0x18;
       index++;
     }
+    outer++;
   }
   *(u16 *)(state + 0x630) &= 0xfffd;
 }
@@ -1525,43 +1533,41 @@ void func_002b99d0(int param_1,int param_2,u64 param_3,u64 param_4)
   return;
 }
 
-// FUN_002b9b00 NONMATCHING
+#pragma alias func_0027ffb0_v3d func_0027ffb0
+extern void func_0027ffb0_v3d(int unit, RwV3d* out);
+#pragma alias func_00318ed0_v3d func_00318ed0
+extern s32 func_00318ed0_v3d(u32 model, u32 index, RwV3d* out);
 
-void func_002b9b00(int param_1,u64 param_2,int param_3,float *param_4)
+// FUN_002b9b00
 
+void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
 {
-  long lVar1 = 0;
-  float fStack_30 = 0;
-  float fStack_2c = 0;
-  float fStack_28 = 0;
-  float fStack_20 = 0;
-  float fStack_1c = 0;
-  float fStack_18 = 0;
-  float fStack_10 = 0;
-  float fStack_c = 0;
-  float fStack_8 = 0;
-  
-  if ((*(u32 *)((int)param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0(param_2,&fStack_10);
+  s32 result;
+  u16 index;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
   }
   else {
-    lVar1 = func_00318ed0(*(u32 *)((int)param_2 + 0x9f4),*(u16 *)(param_3 + 4),
-                         &fStack_10);
-    if (lVar1 == 0) {
-      fStack_18 = *(float *)(param_1 + 0x50);
-      fStack_20 = *(float *)(param_1 + 0x20) * fStack_18;
-      fStack_1c = *(float *)(param_1 + 0x24) * fStack_18;
-      fStack_18 = *(float *)(param_1 + 0x28) * fStack_18;
-      func_004be1e0(&fStack_30,&fStack_20,1,param_1 + 0x40);
-      fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
-      fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
-      fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(
+        *(u32*)(param_2 + 0x9f4), index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1, param_1 + 0x40);
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
     }
   }
-  *param_4 = fStack_10;
-  param_4[1] = fStack_c;
-  param_4[2] = fStack_8;
-  return;
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
 }
 
 // FUN_002b9c00 NONMATCHING
@@ -2110,21 +2116,21 @@ LAB_002ba8a0:
   return;
 }
 
-// FUN_002ba900 NONMATCHING
+// FUN_002ba900
 
 void func_002ba900(int param_1)
 {
   extern u16 func_00321130(void);
-  u16 index;
   u16 count;
-  int *entries;
   u32 savedState;
+  int *entries;
   s32 limit;
 
   if ((*(u32 *)(param_1 + 8) & 0x400) == 0) {
     entries = *(int **)(param_1 + 0x58);
     count = *(u16 *)(param_1 + 0x54);
     if ((*(u32 *)(param_1 + 8) & 0x8000) == 0) {
+      u16 index;
       index = 0;
       limit = count;
       while (index < limit) {
@@ -2133,11 +2139,13 @@ void func_002ba900(int param_1)
         entries++;
       }
     } else {
+      u16 index;
       savedState = func_00321130();
       func_00321320(DAT_00957100_abs);
       func_00321120(4);
       index = 0;
-      while (index < count) {
+      limit = count;
+      while (index < limit) {
         if (*entries != 0) func_00325500(*entries);
         index++;
         entries++;
@@ -2796,41 +2804,44 @@ void func_002bbbc0(int param_1)
   return;
 }
 
-// FUN_002bbc00 NONMATCHING
+// FUN_002bbc00
 
-u64 func_002bbc00(u32 param_1)
+void* func_002bbc00(void* owner)
 
 {
-  u8 *puVar1;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  u16 *puVar4;
-  
-  uVar2 = (*DAT_00960178)(0x18,0x40000);
-  puVar1 = (u8 *)uVar2;
-  *(u32 *)(puVar1 + 4) = param_1;
-  *(u16 *)(puVar1 + 0x10) = 0xffff;
-  *puVar1 = 0;
-  *(u32 *)(puVar1 + 0x14) = 0xffffffff;
-  *(u32 *)(puVar1 + 0xc) = 0;
-  uVar3 = (*DAT_00960178)(0x24,0x40000);
-  func_00521408(uVar3,0,0x24);
-  puVar4 = (u16 *)uVar3;
-  *(u32 *)(puVar4 + 2) = 0xffffffff;
-  *(u8 *)(puVar4 + 4) = 0x14;
-  *(u32 *)(puVar4 + 6) = 0;
-  *puVar4 = 0x200;
-  *(u32 *)(puVar4 + 0xe) = 0;
-  if (*(int *)(iGpffffb6fc + 400) == 0) {
-    *(u32 *)(puVar4 + 0x10) = 0;
+  u8* root;
+  u32 rootAddress;
+  u32 nodeAddress;
+  u16* node;
+  register u32 (* volatile *allocate)(...);
+
+  allocate = DAT_00960178_u32_abs;
+  rootAddress = (*allocate)(0x18, 0x40000);
+  root = (u8*)rootAddress;
+  *(void**)(root + 4) = owner;
+  *(s16*)(root + 0x10) = -1;
+  *root = 0;
+  *(s32*)(root + 0x14) = -1;
+  *(u32*)(root + 0xc) = 0;
+
+  nodeAddress = (*allocate)(0x24, 0x40000);
+  func_00521408((void*)nodeAddress, 0, 0x24);
+  node = (u16*)nodeAddress;
+  *(s32*)(node + 2) = -1;
+  *(u8*)(node + 4) = 0x14;
+  *(u32*)(node + 6) = 0;
+  *node = 0x200;
+  *(u32*)(node + 0xe) = 0;
+  if (*(int*)(iGpffffb6fc + 400) != 0) {
+    *(u16**)(*(int*)(iGpffffb6fc + 400) + 0x1c) = node;
+    *(u32*)(node + 0x10) = *(u32*)(iGpffffb6fc + 400);
   }
   else {
-    *(u16 **)(*(int *)(iGpffffb6fc + 400) + 0x1c) = puVar4;
-    *(u32 *)(puVar4 + 0x10) = *(u32 *)(iGpffffb6fc + 400);
+    *(u32*)(node + 0x10) = 0;
   }
-  *(u16 **)(iGpffffb6fc + 400) = puVar4;
-  *(u16 **)(puVar1 + 8) = puVar4;
-  return uVar2;
+  *(u16**)(iGpffffb6fc + 400) = node;
+  *(u16**)(root + 8) = node;
+  return root;
 }
 
 // FUN_002bbd00 MATCHING
@@ -3049,7 +3060,9 @@ void func_002bc0e0(int param_1, u8 *param_2)
   }
 }
 
-// FUN_002bc2f0 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+// FUN_002bc2f0
 
 void func_002bc2f0(void)
 
@@ -3088,6 +3101,7 @@ void func_002bc2f0(void)
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffbffff;
   return;
 }
+#pragma pop
 
 // FUN_002bc420
 
@@ -3106,7 +3120,9 @@ void func_002bc420(void)
   return;
 }
 
-// FUN_002bc480 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+// FUN_002bc480
 
 u32 func_002bc480(void)
 
@@ -3123,6 +3139,7 @@ u32 func_002bc480(void)
   u32 allocated = 0;
   u32 firstValue = 0;
   u32 firstOffset = 0;
+  u32 resourceSize;
   u8 auStack_4[4];
   
   if ((*(u32 *)(DAT_007ce3ec + 0x14) & 0x4000000) == 0) {
@@ -3153,7 +3170,8 @@ u32 func_002bc480(void)
       uVar1 = func_002b8f90(2);
       *(u32 *)(DAT_007ce3ec + secondIndex * 4 + 0xc24) = uVar1;
       allocated = (*DAT_00960178_u32_abs)(*(u32 *)(resource + 0x118),0x40000);
-      func_00521250(allocated,*(u32 *)(resource + 0x110),*(u32 *)(resource + 0x118));
+      resourceSize = *(u32 *)(resource + 0x118);
+      func_00521250(allocated,*(u32 *)(resource + 0x110),resourceSize);
       func_002b96e0(*(u32 *)(DAT_007ce3ec + secondIndex * 4 + 0xc24),allocated);
       func_00100ec0(resource);
     }
@@ -3162,6 +3180,7 @@ u32 func_002bc480(void)
   }
   return uVar1;
 }
+#pragma pop
 
 // FUN_002bc680
 
@@ -3177,7 +3196,9 @@ void func_002bc680(void)
   return;
 }
 
-// FUN_002bc6d0 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+// FUN_002bc6d0
 
 void func_002bc6d0(void)
 
@@ -3188,6 +3209,7 @@ void func_002bc6d0(void)
   u32 offset = 0;
   u32 resource = 0;
   u32 allocated = 0;
+  u32 resourceSize;
 
   while (index == 0) {
     offset = index * 4;
@@ -3195,13 +3217,15 @@ void func_002bc6d0(void)
     func_001023a0(resource);
     *(u32 *)((u8 *)&_DAT_007ce4f4 + offset) = func_002b8f90(2);
     allocated = (*DAT_00960178_u32_abs)(*(u32 *)(resource + 0x118),0x40000);
-    func_00521250(allocated,*(u32 *)(resource + 0x110),*(u32 *)(resource + 0x118));
+    resourceSize = *(u32 *)(resource + 0x118);
+    func_00521250(allocated,*(u32 *)(resource + 0x110),resourceSize);
     func_002b96e0(*(u32 *)((u8 *)&_DAT_007ce4f4 + offset),allocated);
     func_00100ec0(resource);
     index++;
   }
   return;
 }
+#pragma pop
 
 // FUN_002bc7b0
 
@@ -3337,36 +3361,39 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
   return;
 }
 
-// FUN_002bccd0 NONMATCHING
+// FUN_002bccd0
 
 void func_002bccd0(u32 param_1,u32 param_2)
-
 {
-  char cVar1 = 0;
-  u16 uVar2 = 0;
-  int in_v0_lo = 0;
-  
+  extern int func_00173220(u16);
+  extern int func_001778b0(short);
+  extern void func_003a4220(u32,u32,u32);
+  extern void func_001fea10(u32,u32);
+  extern void func_001fe9b0(u32);
+  u16 id;
+  u8 type;
+  int result;
+
   if (param_1 != 0) {
-    uVar2 = *(u16 *)((int)param_1 + 0xa4);
-    cVar1 = *(char *)((int)param_1 + 0xa2);
-    if (cVar1 == '\x02') {
-      in_v0_lo = func_00173220(uVar2);
+    id = *(u16 *)(param_1 + 0xa4);
+    type = *(u8 *)(param_1 + 0xa2);
+    switch (type) {
+    case 0:
+      result = func_001778b0((short)id);
+      break;
+    case 1:
+      result = (int)(DAT_007ce4e8 + id * 0x13);
+      break;
+    case 2:
+      result = func_00173220(id);
+      break;
     }
-    else if (cVar1 == '\x01') {
-      in_v0_lo = (int)(DAT_007ce4e8 + (u32)uVar2 * 0x12 + (u32)uVar2);
-    }
-    else if (cVar1 == '\0') {
-      in_v0_lo = func_001778b0(uVar2);
-    }
-    func_003a4220(*(u32 *)(DAT_007ce3ec + 0xba0),0,in_v0_lo);
+    func_003a4220(*(u32 *)(DAT_007ce3ec + 0xba0),0,result);
   }
-  if (param_2 < 0x1000) {
+  if (param_2 < 0x1000)
     func_001fea10(*(u32 *)(DAT_007ce3ec + 0xba0),param_2);
-  }
-  else {
-    func_001fe9b0(DAT_007ce4ec + ((int)param_2 - 0x1000U & 0xffff) * 0x13);
-  }
-  return;
+  else
+    func_001fe9b0((u32)(DAT_007ce4ec + ((param_2 - 0x1000) & 0xffff) * 0x13));
 }
 
 // FUN_002bcde0
@@ -3935,17 +3962,18 @@ void func_002bddd0(void)
   return;
 }
 
-// FUN_002bde10 NONMATCHING
+#pragma opt_loop_invariants on
+#pragma opt_lifetimes on
+// FUN_002bde10
 
-u32 func_002bde10(int unit, u16* output)
+u16 func_002bde10(int unit, u16* output)
 {
   u16 skill;
   u16 nextSkill;
   u16 count;
   u16 index;
   u16* unitSkills;
-  u16 lastIndex;
-  bool swapped;
+  u32 swapped;
 
   count = 0;
   unitSkills = (u16*)func_00308bb0_u32(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
@@ -3964,16 +3992,15 @@ u32 func_002bde10(int unit, u16* output)
       output[index] = 0;
     }
     if (count > 1) {
-      lastIndex = count - 1;
       do {
-        swapped = false;
-        for (index = 0; index < lastIndex; index++) {
+        swapped = 0;
+        for (index = 0; index < count - 1; index++) {
           skill = output[index];
           nextSkill = output[index + 1];
           if (nextSkill < skill) {
             output[index] = nextSkill;
             output[index + 1] = skill;
-            swapped = true;
+            swapped = 1;
           }
         }
       } while (swapped);
@@ -3981,10 +4008,12 @@ u32 func_002bde10(int unit, u16* output)
   }
   return count;
 }
+#pragma opt_lifetimes off
+#pragma opt_loop_invariants off
 
 // FUN_002bdfb0 NONMATCHING
 
-u32 func_002bdfb0(int state)
+static u32 func_002bdfb0(int state)
 {
   FormationMenuState* menu;
   s16 steps;
@@ -4067,7 +4096,7 @@ u32 func_002bdfb0(int state)
   return result;
 }
 
-// FUN_002be2f0 NONMATCHING
+// FUN_002be2f0
 
 u32 func_002be2f0(int param_1)
 {
@@ -4075,18 +4104,19 @@ u32 func_002be2f0(int param_1)
   void *entry;
 
   state = func_002bdfb0(param_1);
-  if (state == 2) {
-    entry = (&PTR_DAT_00696f30)[*(short *)(param_1 + 6)];
+  switch (state) {
+  case 1:
+    *(u16 *)(param_1 + 4) = 0;
+    *(u16 *)(param_1 + 6) = 0;
+    break;
+  case 2:
+    entry = PTR_DAT_00696f30_abs[*(short *)(param_1 + 6)];
     *(void **)(param_1 + 0x24) = entry;
     *(int *)((u8 *)entry + 0x20) = param_1;
     if (*(void (**)(void *))((u8 *)entry + 0x10) != 0) {
       (*(void (**)(void *))((u8 *)entry + 0x10))(entry);
     }
     return 2;
-  }
-  if (state == 1) {
-    *(u16 *)(param_1 + 4) = 0;
-    *(u16 *)(param_1 + 6) = 0;
   }
   return 0;
 }
@@ -4257,14 +4287,13 @@ void func_002be720(short *param_1,short param_2,short param_3,u64 param_4)
   return;
 }
 
-// FUN_002be9e0 NONMATCHING
+// FUN_002be9e0
 
 u64 func_002be9e0(int param_1,int param_2)
 {
   u16 sVar1 = 0;
   u16 uVar2 = 0;
   u64 uVar3 = 0;
-  int extraout_a0_lo = 0;
   
   *(u16 *)(param_1 + 0xc) = 0xdf;
   sVar1 = func_002bdfb0(param_1);
@@ -4274,7 +4303,7 @@ u64 func_002be9e0(int param_1,int param_2)
     break;
   case 2:
     *(u16 *)(param_2 + 0x6c) = 3;
-    *(short *)(param_2 + 0x70) = *(short *)(extraout_a0_lo + 6) + 0xfa1;
+    *(short *)(param_2 + 0x70) = *(short *)(param_1 + 6) + 0xfa1;
     uVar2 = func_0030bc20(*(u16 *)(param_2 + 0x70));
     *(u16 *)(param_2 + 0x6e) = uVar2;
     uVar3 = 3;
@@ -5036,38 +5065,40 @@ LAB_002bfefc:
   return;
 }
 
-// FUN_002bff60 NONMATCHING
+#pragma opt_propagation off
+// FUN_002bff60
 
 u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4)
 
 {
-  int iVar1 = 0;
-  u8 bVar2 = 0;
-  int iVar3 = 0;
-  u8 bVar4 = 0;
+  u32 original = param_3;
+  int iVar3;
+  u32 bVar4;
   
   if (param_2 != 0) {
-    iVar3 = (param_3 & 0xffff) * 0x2c;
-    iVar1 = (int)(iVar3 + DAT_007ce3f8);
-    bVar2 = *(u8 *)(iVar1 + 9);
-    bVar4 = *(u8 *)(iVar1 + 10);
+    iVar3 = (original & 0xffff) * 0x2c;
+    param_3 = DAT_007ce3f8[iVar3 + 9];
+    bVar4 = DAT_007ce3f8[iVar3 + 10];
     if (param_4 != 0) {
-      if (((bVar2 & 1) == 0) || ((bVar2 & 2) != 0)) {
-        if (((bVar2 & 2) != 0) && ((bVar2 & 1) == 0)) {
-          bVar2 = bVar2 & 0xfd | 1;
-        }
+      param_4 = (u8)param_3;
+      if (((param_4 & 1) != 0) && ((param_4 & 2) == 0)) {
+        param_3 = (u8)(param_3 & 0xfe);
+        param_3 = (u8)(param_3 | 2);
       }
-      else {
-        bVar2 = bVar2 & 0xfe | 2;
+      else if (((param_4 & 2) != 0) && ((param_4 & 1) == 0)) {
+        param_3 = (u8)(param_3 & 0xfd);
+        param_3 = (u8)(param_3 | 1);
       }
-      if ((bVar4 & 1) != 0) {
-        bVar4 = bVar4 & 0xfe | 2;
+      if (((u8)bVar4 & 1) != 0) {
+        bVar4 = (u8)(bVar4 & 0xfe);
+        bVar4 = (u8)(bVar4 | 2);
       }
     }
-    func_002bfcb0(param_1,param_2,bVar2,bVar4,*(u16 *)(iVar3 + DAT_007ce3f8 + 0xc));
+    func_002bfcb0_u64call(param_1,param_2,param_3,bVar4,*(u16 *)(iVar3 + (int)DAT_007ce3f8 + 0xc));
   }
-  return *(u8 *)((param_3 & 0xffff) * 0x2c + DAT_007ce3f8 + 8);
+  return DAT_007ce3f8[(original & 0xffff) * 0x2c + 8];
 }
+#pragma opt_propagation on
 
 // FUN_002c0070 NONMATCHING
 
@@ -5342,8 +5373,9 @@ long *func_002c08c0(int param_1)
   return 0;
 }
 
-// FUN_002c0970 NONMATCHING
+// FUN_002c0970
 #pragma opt_loop_invariants on
+#pragma opt_common_subs off
 
 u32 func_002c0970(int param_1)
 
@@ -5367,22 +5399,23 @@ u32 func_002c0970(int param_1)
   }
   return 0;
 }
+#pragma opt_common_subs on
 
-// FUN_002c09f0 NONMATCHING
+// FUN_002c09f0
 
 u32 func_002c09f0(int param_1)
 {
   u32 result;
-  u16 index;
-  s32 count;
+  u16 count;
+  s32 index;
   u32 bit;
 
   result = 0;
   index = 0;
   count = *(u16 *)(param_1 + 0x38);
   bit = 1;
-  for (; index < count; index = (u16)(index + 1)) {
-    u8 genus = *(u8 *)(*(int *)(*(int *)(param_1 + index * 4) + 0x30) + 0xa2);
+  for (; (index & 0xffff) < count; index = (u16)(index + 1)) {
+    u8 genus = *(u8 *)(*(int *)(*(int *)(param_1 + (u16)index * 4) + 0x30) + 0xa2);
     result = (result | ((bit << genus) & 0xffff)) & 0xffff;
   }
   return result;
@@ -5490,30 +5523,37 @@ void func_002c0ac0(int param_1,int param_2)
   return;
 }
 
-// FUN_002c0e30 NONMATCHING
-
+// FUN_002c0e30
 int func_002c0e30(short param_1,u32 param_2,u32 param_3)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  long lVar3 = 0;
-  
-  iVar1 = *(int *)(iGpffffb6fc + 0x14c);
-  while( true ) {
-    if (iVar1 == 0) {
-      return 0;
+  extern int func_0030b5a0(u32,u32);
+  extern int func_00300580(u32,u32);
+  u32 statusMask;
+  int unit;
+  u32 sideMask;
+  u32 activeOnly;
+  u32 id;
+  int data;
+
+  statusMask = param_3;
+  unit = *(int *)(DAT_007ce3ec + 0x14c);
+  sideMask = param_2 & 0xffff;
+  activeOnly = statusMask & 0x80000;
+  id = (u16)param_1;
+  while (unit != 0) {
+    if (((*(u16 *)(unit + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(unit + 0x1a) & 8) != 0)) {
+      data = *(int *)(unit + 0x30);
+      if ((sideMask & (1 << *(u8 *)(data + 0xa2))) != 0) {
+        if ((activeOnly == 0 || func_0030b5a0(*(u32 *)(data + 0xa2c),0) == 0) &&
+            func_00300580(*(u32 *)(data + 0xa2c),statusMask) == 0 &&
+            *(u16 *)(data + 0xa4) == id)
+          return unit;
+      }
     }
-    if (((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar1 + 0x30),
-        (param_2 & 0xffff & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0)) &&
-       ((((param_3 & 0x80000) == 0 ||
-         (lVar3 = func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar3 == 0)) &&
-        ((lVar3 = func_00300580(*(u32 *)(iVar2 + 0xa2c),param_3), lVar3 == 0 &&
-         (*(short *)(iVar2 + 0xa4) == param_1)))))) break;
-    iVar1 = *(int *)(iVar1 + 0x4a8);
+    unit = *(int *)(unit + 0x4a8);
   }
-  return iVar1;
+  return 0;
 }
 
 // FUN_002c0f40
@@ -5655,40 +5695,42 @@ void func_002c1440(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c1490 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c1490
 void func_002c1490(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
-    {
-    default:
-        shift = 1;
-        break;
-    case 0:
-        shift = 0;
-        break;
-    }
+    if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+    shift = 1;
+    goto done;
+nonzero:
+    shift = 0;
+done:
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c12f0);
     return;
 }
+#pragma pop
 
-// FUN_002c14f0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c14f0
 
 void func_002c14f0(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
-    {
-    default:
-        shift = 1;
-        break;
-    case 0:
-        shift = 0;
-        break;
-    }
+    if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+    shift = 1;
+    goto done;
+nonzero:
+    shift = 0;
+done:
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1360);
     return;
 }
+#pragma pop
 
 // FUN_002c1550
 
@@ -5712,24 +5754,28 @@ bool func_002c1590(int param_1,u32 param_2)
   return param_2 <= (uVar1 & 0xffff);
 }
 
-// FUN_002c15e0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c15e0
 
 bool func_002c15e0(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
   u16 genus;
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    genus = 0;
-    break;
-  case 0:
-    genus = 1;
-    break;
-  }
+  u32 shift;
+  if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  shift = 1;
+  goto done;
+nonzero:
+  shift = 0;
+done:
+  genus = shift;
   uVar1 = func_002d4cf0(1 << genus & 0xffff,0x80000);
   return param_2 <= (uVar1 & 0xffff);
 }
+#pragma pop
 
 
 // FUN_002c1650
@@ -5743,24 +5789,30 @@ bool func_002c1650(int param_1,u32 param_2)
   return (uVar1 & 0xffff) <= param_2;
 }
 
-// FUN_002c16a0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c16a0
 
 bool func_002c16a0(int param_1,u32 param_2)
 
 {
   u32 uVar1 = 0;
   u16 genus;
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    genus = 0;
-    break;
-  case 0:
-    genus = 1;
-    break;
+  {
+    u32 shift;
+    if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+      goto nonzero;
+    shift = 1;
+    goto done;
+nonzero:
+    shift = 0;
+done:
+    genus = shift;
   }
   uVar1 = func_002d4e10(1 << genus & 0xffff,0x80000);
   return (uVar1 & 0xffff) <= param_2;
 }
+#pragma pop
 
 
 // FUN_002c1710
@@ -5789,7 +5841,9 @@ void func_002c1740(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c17b0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c17b0
 
 void func_002c17b0(int param_1,u32 param_2)
 
@@ -5797,14 +5851,17 @@ void func_002c17b0(int param_1,u32 param_2)
   u32 genus;
   u16 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    genus = 0;
-    break;
-  case 0:
-    genus = 1;
-    break;
-  }
+  {
+      u32 branchValue;
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      branchValue = 1;
+      goto done;
+  nonzero:
+      branchValue = 0;
+  done:
+      genus = branchValue;
+    }
   shift = genus;
   if ((param_2 & 0x80000) != 0) {
     func_002c1080(param_1,param_2,1 << shift & 0xffff,0,0,(code *)&func_002c1710);
@@ -5814,8 +5871,11 @@ void func_002c17b0(int param_1,u32 param_2)
   }
   return;
 }
+#pragma pop
 
-// FUN_002c1850 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c1850
 
 bool func_002c1850(int param_1,u64 param_2)
 {
@@ -5825,14 +5885,17 @@ bool func_002c1850(int param_1,u64 param_2)
   int entry;
   int unit;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    genus = 0;
-    break;
-  case 0:
-    genus = 1;
-    break;
-  }
+  {
+      u32 branchValue;
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      branchValue = 1;
+      goto done;
+  nonzero:
+      branchValue = 0;
+  done:
+      genus = branchValue;
+    }
   shift = genus;
   sideMask = 1 << shift & 0xffff;
   for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
@@ -5846,6 +5909,7 @@ bool func_002c1850(int param_1,u64 param_2)
   if (entry == 0) return true;
   return false;
 }
+#pragma pop
 
 // FUN_002c1960
 
@@ -5880,7 +5944,9 @@ u32 func_002c1960(int param_1,u32 param_2)
   return 0;
 }
 
-// FUN_002c1a30 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c1a30
 
 u32 func_002c1a30(int param_1,u32 param_2)
 
@@ -5890,14 +5956,16 @@ u32 func_002c1a30(int param_1,u32 param_2)
   int entry;
   int unit;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    selectedSide = 0;
-    break;
-  case 0:
-    selectedSide = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      selectedSide = 1;
+      goto done;
+  nonzero:
+      selectedSide = 0;
+  done:
+      ;
+    }
   side = selectedSide & 0xffff;
   for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
     if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
@@ -5920,6 +5988,7 @@ u32 func_002c1a30(int param_1,u32 param_2)
   }
   return 0;
 }
+#pragma pop
 
 // FUN_002c1b10
 
@@ -5954,7 +6023,9 @@ u32 func_002c1b10(int param_1,u32 param_2)
   return 0;
 }
 
-// FUN_002c1bf0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c1bf0
 
 u32 func_002c1bf0(int param_1,u32 param_2)
 
@@ -5964,14 +6035,16 @@ u32 func_002c1bf0(int param_1,u32 param_2)
   int entry;
   int unit;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    selectedSide = 0;
-    break;
-  case 0:
-    selectedSide = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      selectedSide = 1;
+      goto done;
+  nonzero:
+      selectedSide = 0;
+  done:
+      ;
+    }
   side = selectedSide & 0xffff;
   for (entry = *(int *)(iGpffffb6fc + 0x14c); entry != 0; entry = *(int *)(entry + 0x4a8)) {
     if ((*(u16 *)(entry + 0x1a) & 1) == 0) {
@@ -5994,6 +6067,7 @@ u32 func_002c1bf0(int param_1,u32 param_2)
   }
   return 0;
 }
+#pragma pop
 
 // FUN_002c1ce0
 
@@ -6096,23 +6170,27 @@ void func_002c1f10(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c1f60 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c1f60
 
 void func_002c1f60(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e10);
     return;
 }
+#pragma pop
 
 // FUN_002c1fc0
 
@@ -6123,23 +6201,27 @@ void func_002c1fc0(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2010 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2010
 
 void func_002c2010(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e50);
     return;
 }
+#pragma pop
 
 // FUN_002c2070
 
@@ -6150,23 +6232,27 @@ void func_002c2070(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c20c0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c20c0
 
 void func_002c20c0(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1e90);
     return;
 }
+#pragma pop
 
 // FUN_002c2120
 
@@ -6177,23 +6263,27 @@ void func_002c2120(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2170 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2170
 
 void func_002c2170(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c1ed0);
     return;
 }
+#pragma pop
 
 // FUN_002c21d0
 
@@ -6218,23 +6308,27 @@ void func_002c2220(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2270 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2270
 
 void func_002c2270(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c21d0);
     return;
 }
+#pragma pop
 
 // FUN_002c22d0 MATCHING
 bool func_002c22d0(int param_1, int param_2)
@@ -6263,23 +6357,27 @@ void func_002c2310(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2360 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2360
 
 void func_002c2360(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c22d0);
     return;
 }
+#pragma pop
 
 // FUN_002c23c0
 
@@ -6306,23 +6404,27 @@ void func_002c2420(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2470 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2470
 
 void func_002c2470(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x80000, 0, (code*)&func_002c23c0);
     return;
 }
+#pragma pop
 
 // FUN_002c24d0 MATCHING
 bool func_002c24d0(int param_1, u32 param_2)
@@ -6377,23 +6479,27 @@ void func_002c25e0(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2630 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2630
 
 void func_002c2630(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e10);
     return;
 }
+#pragma pop
 
 // FUN_002c2690
 
@@ -6404,23 +6510,27 @@ void func_002c2690(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c26e0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c26e0
 
 void func_002c26e0(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e50);
     return;
 }
+#pragma pop
 
 // FUN_002c2740
 
@@ -6431,23 +6541,27 @@ void func_002c2740(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2790 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2790
 
 void func_002c2790(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1e90);
     return;
 }
+#pragma pop
 
 // FUN_002c27f0
 
@@ -6458,23 +6572,27 @@ void func_002c27f0(int param_1,u32 param_2)
   return;
 }
 
-// FUN_002c2840 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2840
 
 void func_002c2840(int param_1, u32 param_2)
 {
     u32 shift;
-    switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2))
     {
-    default:
+        if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+            goto nonzero;
         shift = 1;
-        break;
-    case 0:
+        goto done;
+    nonzero:
         shift = 0;
-        break;
+    done:
+        ;
     }
     func_002c1080(param_1, param_2, 1 << (shift & 0xffff) & 0xffff, 0x180000, 0, (code*)&func_002c1ed0);
     return;
 }
+#pragma pop
 
 // FUN_002c28a0 MATCHING
 bool func_002c28a0(int param_1, int param_2)
@@ -6482,65 +6600,78 @@ bool func_002c28a0(int param_1, int param_2)
     return *(u16*)(*(s32*)(param_1 + 0x30) + 0xa4) == param_2;
 }
 
-// FUN_002c28c0 NONMATCHING
-
+// FUN_002c28c0
 bool func_002c28c0(int param_1,int param_2)
-
 {
-  u8 bVar1 = 0;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  int iVar6 = 0;
-  int iVar7 = 0;
-  
-  bVar1 = *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2);
-  iVar6 = 0;
-  iVar5 = 0;
-  for (iVar7 = *(int *)(iGpffffb6fc + 0x14c); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x4a8)) {
-    if (((((*(u16 *)(iVar7 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar7 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar7 + 0x30),
-        (1 << (bVar1 & 0x1f) & 0xffffU & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0)) &&
-       (lVar4 = func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar4 == 0)) {
-      uVar3 = func_002ffd70(*(u32 *)(iVar2 + 0xa2c));
-      iVar6 = iVar6 + (uVar3 & 0xffff);
-      uVar3 = func_002ffdf0(*(u32 *)(iVar2 + 0xa2c));
-      iVar5 = iVar5 + (uVar3 & 0xffff);
+  extern int func_0030b5a0(u32,u32);
+  extern u32 func_002ffd70(u32);
+  extern u32 func_002ffdf0(u32);
+  u32 sideMask;
+  int unit;
+  u32 currentTotal;
+  u32 maximumTotal;
+  int data;
+
+  sideMask = 1 << *(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) & 0xffff;
+  currentTotal = 0;
+  maximumTotal = 0;
+  unit = *(int *)(DAT_007ce3ec + 0x14c);
+  while (unit != 0) {
+    if (((*(u16 *)(unit + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(unit + 0x1a) & 8) != 0)) {
+      data = *(int *)(unit + 0x30);
+      if ((sideMask & (1 << *(u8 *)(data + 0xa2))) != 0 &&
+          func_0030b5a0(*(u32 *)(data + 0xa2c),0) == 0) {
+        currentTotal += func_002ffd70(*(u32 *)(data + 0xa2c)) & 0xffff;
+        maximumTotal += func_002ffdf0(*(u32 *)(data + 0xa2c)) & 0xffff;
+      }
     }
+    unit = *(int *)(unit + 0x4a8);
   }
-  return (u32)(iVar6 * 100) <= (u32)(iVar5 * param_2);
+  return currentTotal * 100 <= maximumTotal * param_2;
 }
 
-// FUN_002c29e0 NONMATCHING
-
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c29e0
 bool func_002c29e0(int param_1,int param_2)
-
 {
-  char cVar1 = 0;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  int iVar5 = 0;
-  int iVar6 = 0;
-  int iVar7 = 0;
-  
-  cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-  iVar6 = 0;
-  iVar5 = 0;
-  for (iVar7 = *(int *)(iGpffffb6fc + 0x14c); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x4a8)) {
-    if (((((*(u16 *)(iVar7 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar7 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar7 + 0x30),
-        (1 << (u32)(cVar1 == '\0') & 0xffffU & 1 << (*(u8 *)(iVar2 + 0xa2) & 0x1f)) != 0)) &&
-       (lVar4 = func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar4 == 0)) {
-      uVar3 = func_002ffd70(*(u32 *)(iVar2 + 0xa2c));
-      iVar6 = iVar6 + (uVar3 & 0xffff);
-      uVar3 = func_002ffdf0(*(u32 *)(iVar2 + 0xa2c));
-      iVar5 = iVar5 + (uVar3 & 0xffff);
+  extern int func_0030b5a0(u32,u32);
+  extern u32 func_002ffd70(u32);
+  extern u32 func_002ffdf0(u32);
+  u32 sideMask;
+  int unit;
+  u32 shift;
+  u32 currentTotal;
+  u32 maximumTotal;
+  int data;
+
+  if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  shift = 1;
+  goto done;
+nonzero:
+  shift = 0;
+done:
+  sideMask = 1 << (shift & 0xffff) & 0xffff;
+  currentTotal = 0;
+  maximumTotal = 0;
+  unit = *(int *)(DAT_007ce3ec + 0x14c);
+  while (unit != 0) {
+    if (((*(u16 *)(unit + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(unit + 0x1a) & 8) != 0)) {
+      data = *(int *)(unit + 0x30);
+      if ((sideMask & (1 << *(u8 *)(data + 0xa2))) != 0 &&
+          func_0030b5a0(*(u32 *)(data + 0xa2c),0) == 0) {
+        currentTotal += func_002ffd70(*(u32 *)(data + 0xa2c)) & 0xffff;
+        maximumTotal += func_002ffdf0(*(u32 *)(data + 0xa2c)) & 0xffff;
+      }
     }
+    unit = *(int *)(unit + 0x4a8);
   }
-  return (u32)(iVar6 * 100) <= (u32)(iVar5 * param_2);
+  return currentTotal * 100 <= maximumTotal * param_2;
 }
+#pragma pop
 
 // FUN_002c2b20
 
@@ -6560,63 +6691,78 @@ bool func_002c2b20(int param_1,u16 param_2)
   }
   return func_003086f0(*(u32 *)(iVar1 + 0xa2c),param_2) == 0;
 }
-// FUN_002c2be0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2be0
 void func_002c2be0(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,6,
                  (code *)&func_002c1ed0);
   return;
 }
+#pragma pop
 
-// FUN_002c2c40 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2c40
 
 void func_002c2c40(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x180000,6,
                  (code *)&func_002c1ed0);
   return;
 }
+#pragma pop
 
-// FUN_002c2ca0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c2ca0
 
 void func_002c2ca0(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,7,
                  (code *)&func_002c1ed0);
   return;
 }
+#pragma pop
 
-// FUN_002c2d00 NONMATCHING
+// FUN_002c2d00
 
 u32 func_002c2d00(int param_1,u32 param_2)
 
@@ -6624,14 +6770,14 @@ u32 func_002c2d00(int param_1,u32 param_2)
   u16 uVar1 = 0;
   int iVar2 = 0;
   int iVar3 = 0;
-  bool bVar4 = 0;
+  u32 bVar4 = 0;
   short sVar5 = 0;
   u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
+  s32 uVar7 = 0;
+  u16* iVar8 = 0;
   long lVar9 = 0;
   u16 *puVar10;
-  u32 uVar11 = 0;
+  u16 uVar11 = 0;
   
   iVar2 = *(int *)(param_1 + 0x30);
   sVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c),0);
@@ -6639,41 +6785,37 @@ u32 func_002c2d00(int param_1,u32 param_2)
     uVar6 = 1;
   }
   else {
-    uVar7 = func_00308ba0(*(u32 *)(iVar2 + 0xa2c));
-    iVar8 = func_00308bb0(*(u32 *)(iVar2 + 0xa2c));
-    for (uVar11 = 0; uVar11 < (uVar7 & 0xffff); uVar11 = uVar11 + 1 & 0xffff) {
-      puVar10 = (u16 *)(iVar8 + uVar11 * 2);
+    uVar7 = (u16)func_00308ba0_u32(*(u32 *)(iVar2 + 0xa2c));
+    iVar8 = (u16*)func_00308bb0_u32(*(u32 *)(iVar2 + 0xa2c));
+    uVar11 = 0;
+    uVar7 = (u16)uVar7;
+    while (uVar11 < uVar7) {
+      puVar10 = &iVar8[uVar11];
       uVar1 = *puVar10;
       if (((uVar1 != 0) && (uVar1 < 0x1d0)) &&
          (sVar5 = func_003082f0(*(u32 *)(iVar2 + 0xa2c),uVar1), sVar5 == param_2)) {
         uVar1 = *puVar10;
-        if (0x26f < uVar1) {
-          func_0019d3f0(0x696f88,0x468);
+        if (uVar1 >= 0x270) {
+          func_0019d3f0(D_00696f50 + 0x38,0x468);
         }
         iVar3 = *(int *)(param_1 + 0x30);
-        lVar9 = func_00300580(*(u32 *)(iVar3 + 0xa2c),0x80274);
-        if (lVar9 == 0) {
-          lVar9 = func_003005e0(*(u32 *)(iVar3 + 0xa2c),uVar1);
-          if (lVar9 == 0) {
-            bVar4 = false;
-          }
-          else {
-            lVar9 = func_003086f0(*(u32 *)(iVar3 + 0xa2c),uVar1);
-            if (lVar9 == 0) {
-              bVar4 = true;
-            }
-            else {
-              bVar4 = false;
-            }
-          }
+        if (func_00300580(*(u32 *)(iVar3 + 0xa2c),0x80274) != 0) {
+          bVar4 = 0;
+        }
+        else if (func_003005e0(*(u32 *)(iVar3 + 0xa2c),uVar1) == 0) {
+          bVar4 = 0;
+        }
+        else if (func_003086f0(*(u32 *)(iVar3 + 0xa2c),uVar1) != 0) {
+          bVar4 = 0;
         }
         else {
-          bVar4 = false;
+          bVar4 = 1;
         }
         if (bVar4) {
           return 1;
         }
       }
+      uVar11++;
     }
     uVar6 = 0;
   }
@@ -6753,62 +6895,77 @@ void func_002c3120(u64 param_1,u16 param_2)
   return;
 }
 
-// FUN_002c3150 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c3150
 
 void func_002c3150(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,10,
                  (code *)&func_002c30f0);
   return;
 }
+#pragma pop
 
-// FUN_002c31b0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c31b0
 
 void func_002c31b0(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x180000,10,
                  (code *)&func_002c30f0);
   return;
 }
+#pragma pop
 
-// FUN_002c3210 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c3210
 
 void func_002c3210(int param_1,u32 param_2)
 {
   u32 shift;
 
-  switch (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2)) {
-  default:
-    shift = 1;
-    break;
-  case 0:
-    shift = 0;
-    break;
+  {
+      if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0)
+          goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
   }
   func_002c1080(param_1,param_2,1 << (shift & 0xffff) & 0xffff,0x80000,0xb,
                  (code *)&func_002c30f0);
   return;
 }
+#pragma pop
 
 // FUN_002c3270
 
@@ -6838,33 +6995,53 @@ u32 func_002c32e0(int param_1)
   return !((**(u16 **)(*(int *)(param_1 + 0x30) + 0xa2c) & 0x20));
 }
 
-// FUN_002c3300 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002c3300
 
 u32 func_002c3300(int param_1,u32 param_2)
 
 {
-  char cVar1 = 0;
-  u32 uVar2 = 0;
-  u32 uVar3 = 0;
-  int iVar4 = 0;
+  u32 genusValue;
   
-  cVar1 = *(char *)(*(int *)(param_1 + 0x30) + 0xa2);
-  uVar2 = func_002ffcc0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
-  iVar4 = *(int *)(iGpffffb6fc + 0x14c);
-  do {
-    if (iVar4 == 0) {
-      return 0;
-    }
-    if ((((*(u16 *)(iVar4 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar4 + 0x1a) & 8) != 0)) &&
-       ((bool)*(char *)(*(int *)(iVar4 + 0x30) + 0xa2) == (cVar1 == '\0'))) {
-      uVar3 = func_002ffcc0(*(u32 *)(*(int *)(iVar4 + 0x30) + 0xa2c));
-      if (((uVar2 & 0xff) <= (uVar3 & 0xff)) && (param_2 <= (uVar3 & 0xff) - (uVar2 & 0xff))) {
+  if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) != 0) {
+    goto nonzero_genus;
+  }
+  genusValue = 1;
+  goto genus_done;
+nonzero_genus:
+  genusValue = 0;
+genus_done:
+  {
+    u32 genus = (u16)genusValue;
+    u32 current = (u8)func_002ffcc0(*(u32 *)(*(int *)(param_1 + 0x30) + 0xa2c));
+    int unit = *(int *)(iGpffffb6fc + 0x14c);
+    u32 candidate;
+    u32 comparison;
+
+    genus = (u16)genus;
+    while (unit != 0) {
+      if (((*(u16 *)(unit + 0x1a) & 1) != 0) &&
+          ((*(u16 *)(unit + 0x1a) & 8) != 0) &&
+          (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) == genus)) {
+        candidate = (u8)func_002ffcc0(*(u32 *)(*(int *)(unit + 0x30) + 0xa2c));
+        comparison = candidate < current;
+        if (comparison != 0) {
+          goto next_unit;
+        }
+        comparison = (candidate - current) < param_2;
+        if (comparison != 0) {
+          goto next_unit;
+        }
         return 1;
       }
+next_unit:
+      unit = *(int *)(unit + 0x4a8);
     }
-    iVar4 = *(int *)(iVar4 + 0x4a8);
-  } while( true );
+  }
+  return 0;
 }
+#pragma pop
 
 // FUN_002c3400
 
@@ -7060,42 +7237,49 @@ u32 func_002c3770(u64 param_1,u64 param_2)
   return 1;
 }
 
-// FUN_002c3be0 NONMATCHING
-
-u32 func_002c3be0(u64 param_1)
-
+// FUN_002c3be0
+u32 func_002c3be0(u32 param_1)
 {
-  int iVar1 = 0;
-  short sVar2 = 0;
-  u32 uVar3 = 0;
-  int iVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  int iVar7 = 0;
-  
-  iVar7 = (int)param_1;
-  sVar2 = func_002bff60(param_1,iVar7 + 0x88,*(u16 *)(iVar7 + 0x6e),0);
-  if (sVar2 == 0) {
-    iVar4 = 0;
-    uVar5 = 0xfffffff;
-    for (uVar6 = 0; uVar6 < *(u16 *)(iVar7 + 0xc0); uVar6 = uVar6 + 1) {
-      iVar1 = *(int *)(iVar7 + uVar6 * 4 + 0x88);
-      uVar3 = (u32)*(u16 *)(*(int *)(*(int *)(iVar1 + 0x30) + 0xa2c) + 8);
-      if (uVar3 < uVar5) {
-        uVar5 = uVar3;
-        iVar4 = iVar1;
+  u32 unit;
+  u16 available;
+
+  unit = param_1;
+  available = func_002bff60_u16(unit,unit + 0x88,*(u16 *)(unit + 0x6e),0);
+  if (available != 0) {
+    u16 index;
+    u16 count;
+    index = 0;
+    while ((count = *(u16 *)(unit + 0xc0)), (u16)index < count) {
+      *(u32 *)(unit + (index & 0xffff) * 4 + 0x38) =
+          *(u32 *)(unit + (index & 0xffff) * 4 + 0x88);
+      index++;
+    }
+    *(u16 *)(unit + 0x6a) = count;
+    return 1;
+  }
+  {
+    u32 selected;
+    u32 index;
+    u32 lowest;
+    u32 count;
+    u32 candidate;
+    u32 stat;
+    selected = 0;
+    lowest = 0xfffffff;
+    index = 0;
+    count = *(u16 *)(unit + 0xc0);
+    while (index < count) {
+      candidate = *(u32 *)(unit + index * 4 + 0x88);
+      stat = *(u16 *)(*(int *)(*(int *)(candidate + 0x30) + 0xa2c) + 8);
+      if (stat < lowest) {
+        selected = candidate;
+        lowest = stat;
       }
+      index++;
     }
-    *(int *)(iVar7 + 0x38) = iVar4;
-    *(u16 *)(iVar7 + 0x6a) = 1;
+    *(u32 *)(unit + 0x38) = selected;
   }
-  else {
-    for (uVar5 = 0; uVar5 < *(u16 *)(iVar7 + 0xc0); uVar5 = uVar5 + 1 & 0xffff) {
-      iVar4 = iVar7 + uVar5 * 4;
-      *(u32 *)(iVar4 + 0x38) = *(u32 *)(iVar4 + 0x88);
-    }
-    *(u16 *)(iVar7 + 0x6a) = *(u16 *)(iVar7 + 0xc0);
-  }
+  *(u16 *)(unit + 0x6a) = 1;
   return 1;
 }
 
@@ -10555,7 +10739,9 @@ u32 func_002ca3e0(void)
   return 1;
 }
 
-// FUN_002ca480 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca480
 
 u32 func_002ca480(void)
 {
@@ -10573,14 +10759,16 @@ u32 func_002ca480(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10599,8 +10787,11 @@ u32 func_002ca480(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002ca590 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca590
 
 u32 func_002ca590(void)
 {
@@ -10618,14 +10809,16 @@ u32 func_002ca590(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10644,8 +10837,11 @@ u32 func_002ca590(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002ca6a0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca6a0
 
 u32 func_002ca6a0(void)
 {
@@ -10663,14 +10859,16 @@ u32 func_002ca6a0(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10689,73 +10887,102 @@ u32 func_002ca6a0(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002ca7b0 NONMATCHING
-
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca7b0
 u32 func_002ca7b0(void)
-
 {
-  u16 uVar1 = 0;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  
-  uVar3 = func_0035ed20(1);
-  iVar2 = func_0035f160();
-  uVar5 = 1 << (u32)(*(char *)(*(int *)(iVar2 + 0x30) + 0xa2) == '\0') & 0xffff;
-  if ((uVar3 & 0x80000) == 0) {
-    uVar1 = func_0035ed20(0);
-    lVar4 = func_002c0e30(uVar1,uVar5,0x80000);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern int func_002c0e30(u16,u32,u32);
+  extern void func_0035f060(u32);
+  u16 id;
+  u32 unit;
+  u32 argument;
+  u32 sideMask;
+  u32 shift;
+  int context;
+  u32 dispatchType;
+  u32 payload;
+  int result;
+  int dispatchResult;
+
+  argument = func_0035ed20(1);
+  unit = func_0035f160();
+  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  shift = 1;
+  goto done;
+nonzero:
+  shift = 0;
+done:
+  sideMask = 1 << shift & 0xffff;
+  if ((argument & 0x80000) != 0) {
+    id = func_0035ed20(0);
+    context = func_002c0e30(id,sideMask,0);
+  } else {
+    id = func_0035ed20(0);
+    context = func_002c0e30(id,sideMask,0x80000);
   }
-  else {
-    uVar1 = func_0035ed20(0);
-    lVar4 = func_002c0e30(uVar1,uVar5,0);
+  if (context != 0) {
+    dispatchType = (((argument & 0xffffff) | 0x0b000000) & 0xff000000) >> 24;
+    payload = (argument | 0x0b000000) & 0xffffff;
+    if (dispatchType == 0)
+      dispatchResult = 0;
+    else
+      dispatchResult = gFormationDispatchTable[dispatchType * 3](context,payload);
+    result = dispatchResult;
+  } else {
+    result = 0;
   }
-  if (lVar4 == 0) {
-    lVar4 = 0;
-  }
-  else {
-    lVar4 = (*pcRam00697234)(lVar4,uVar3 & 0xffffff);
-  }
-  func_0035f060(lVar4 != 0);
+  func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002ca900 NONMATCHING
-
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca900
 u32 func_002ca900(void)
-
 {
-  char cVar1 = 0;
-  u8 uVar2 = 0;
-  u16 uVar3 = 0;
-  int iVar4 = 0;
-  long lVar5 = 0;
-  u64 uVar6 = 0;
-  
-  iVar4 = func_0035f160();
-  cVar1 = *(char *)(*(int *)(iVar4 + 0x30) + 0xa2);
-  uVar3 = func_0035ed20(0);
-  lVar5 = func_002c0e30(uVar3,1 << (u32)(cVar1 == '\0') & 0xffff,0x80000);
-  if (lVar5 == 0) {
-    uVar2 = 0;
+  extern int func_002c0e30(u16,u32,u32);
+  extern int func_00301ca0(u32,u32);
+  u32 unit;
+  u32 shift;
+  u32 id;
+  int context;
+  u32 selector;
+  u32 result;
+
+  unit = func_0035f160_u32();
+  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  shift = 1;
+  goto done;
+nonzero:
+  shift = 0;
+done:
+  id = func_0035ed20_u32(0);
+  context = func_002c0e30((u16)id,1 << shift & 0xffff,0x80000);
+  if (context != 0) {
+    selector = func_0035ed20_u32(1);
+    if (func_00301ca0(*(u32 *)(*(int *)(context + 0x30) + 0xa2c),selector) != 0)
+      result = 1;
+    else
+      result = 0;
+  } else {
+    result = 0;
   }
-  else {
-    uVar6 = func_0035ed20(1);
-    lVar5 = func_00301ca0(*(u32 *)(*(int *)((int)lVar5 + 0x30) + 0xa2c),uVar6);
-    if (lVar5 == 0) {
-      uVar2 = 0;
-    }
-    else {
-      uVar2 = 1;
-    }
-  }
-  func_0035f060(uVar2);
+  func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002ca9d0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002ca9d0
 
 u32 func_002ca9d0(void)
 {
@@ -10773,14 +11000,16 @@ u32 func_002ca9d0(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10799,8 +11028,11 @@ u32 func_002ca9d0(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002caae0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002caae0
 
 u32 func_002caae0(void)
 {
@@ -10818,14 +11050,16 @@ u32 func_002caae0(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10844,8 +11078,11 @@ u32 func_002caae0(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002cabf0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cabf0
 
 u32 func_002cabf0(void)
 {
@@ -10863,14 +11100,16 @@ u32 func_002cabf0(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10889,8 +11128,11 @@ u32 func_002cabf0(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002cad00 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cad00
 
 u32 func_002cad00(void)
 {
@@ -10908,14 +11150,16 @@ u32 func_002cad00(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10934,8 +11178,11 @@ u32 func_002cad00(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002cae10 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cae10
 
 u32 func_002cae10(void)
 {
@@ -10953,14 +11200,16 @@ u32 func_002cae10(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -10979,8 +11228,11 @@ u32 func_002cae10(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002caf20 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002caf20
 
 u32 func_002caf20(void)
 {
@@ -10998,14 +11250,16 @@ u32 func_002caf20(void)
   int dispatchResult;
 
   unit = func_0035f160();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -11024,8 +11278,11 @@ u32 func_002caf20(void)
   func_0035f060(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002cb030 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cb030
 
 u32 func_002cb030(void)
 {
@@ -11037,14 +11294,16 @@ u32 func_002cb030(void)
   s32 result;
 
   unit = func_0035f160_u32();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   selector = func_0035ed20_u32(0);
   context = func_002c0e30((u16)selector,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -11055,8 +11314,11 @@ u32 func_002cb030(void)
   func_0035f060_u32(result != 0);
   return 1;
 }
+#pragma pop
 
-// FUN_002cb0e0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cb0e0
 
 u32 func_002cb0e0(void)
 {
@@ -11068,14 +11330,16 @@ u32 func_002cb0e0(void)
   s32 result;
 
   unit = func_0035f160_u32();
-  switch (*(u8 *)(*(int *)(unit + 0x30) + 0xa2)) {
-  default:
-    shift = 0;
-    break;
-  case 0:
-    shift = 1;
-    break;
-  }
+  {
+      if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      ;
+    }
   selector = func_0035ed20_u32(0);
   context = func_002c0e30((u16)selector,1 << shift & 0xffff,0x80000);
   if (context != 0) {
@@ -11086,6 +11350,7 @@ u32 func_002cb0e0(void)
   func_0035f060_u32(result != 0);
   return 1;
 }
+#pragma pop
 
 // FUN_002cb190
 
@@ -12590,7 +12855,9 @@ u32 func_002cda50(void)
   return 1;
 }
 
-// FUN_002cdad0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cdad0
 
 u32 func_002cdad0(void)
 {
@@ -12603,14 +12870,13 @@ u32 func_002cdad0(void)
   u32 result;
 
   actor = func_0035f160();
-  switch (*(u8 *)(*(int *)(actor + 0x30) + 0xa2)) {
-  default:
-    side = 1;
-    break;
-  case 0:
-    side = 0;
-    break;
-  }
+  if (*(u8 *)(*(int *)(actor + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  side = 1;
+  goto done;
+nonzero:
+  side = 0;
+done:
   id = func_0035ed20(0);
   context = func_002c0e30(id,1 << side & 0xffff,0x80000);
   if (context != 0) {
@@ -12622,6 +12888,7 @@ u32 func_002cdad0(void)
   func_0035f060(result);
   return 1;
 }
+#pragma pop
 
 // FUN_002cdb70
 
@@ -12734,7 +13001,9 @@ u32 func_002cde10(void)
   return 0xffffffff;
 }
 
-// FUN_002cde60 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002cde60
 
 u32 func_002cde60(void)
 
@@ -12745,18 +13014,22 @@ u32 func_002cde60(void)
   u16 genus;
   
   iVar2 = func_0035f160();
-  switch (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2)) {
-  default:
-    genus = 0;
-    break;
-  case 0:
-    genus = 1;
-    break;
-  }
+  {
+      u32 shift;
+      if (*(u8 *)(*(int *)(iVar2 + 0x30) + 0xa2) != 0)
+        goto nonzero;
+      shift = 1;
+      goto done;
+  nonzero:
+      shift = 0;
+  done:
+      genus = shift;
+    }
   uVar1 = func_002d4cf0(1 << genus & 0xffff,0x80000);
   func_0035f060(uVar1);
   return 0xffffffff;
 }
+#pragma pop
 
 // FUN_002cded0
 
@@ -12931,32 +13204,27 @@ u32 func_002ce2b0(void)
   return 1;
 }
 
-// FUN_002ce380 NONMATCHING
-
+// FUN_002ce380
 u32 func_002ce380(void)
-
 {
-  short sVar1 = 0;
-  int iVar2 = 0;
-  u32 uVar3 = 0;
-  u64 uVar4 = 0;
-  u32 uVar5 = 0;
-  long lVar6 = 0;
-  
-  uVar4 = func_0035f160();
-  iVar2 = (int)uVar4;
-  sVar1 = func_002bff60(uVar4,0,*(u16 *)(iVar2 + 0x6e),0);
-  if (sVar1 == 0) {
-    uVar5 = func_0035ed20(0);
-    uVar3 = func_0029a210(uVar5 & 0xfffffff);
-    *(u32 *)(iVar2 + 0x38) = uVar3;
-    *(u16 *)(iVar2 + 0x6a) = 1;
-  }
-  else {
-    lVar6 = (*(code *)PTR_FUN_006975e0)(uVar4,0);
-    if (lVar6 == 0) {
-      (*(code *)PTR_FUN_006975e0)(uVar4,0);
-    }
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_0029a210(u32);
+  u32 unit;
+  u16 available;
+  u32 actorId;
+  u32 actor;
+
+  unit = func_0035f160();
+  available = func_002bff60_u16(unit,0,*(u16 *)(unit + 0x6e),0);
+  if (available == 0) {
+    actorId = func_0035ed20(0);
+    actor = func_0029a210(actorId & 0xfffffff);
+    *(u32 *)(unit + 0x38) = actor;
+    *(u16 *)(unit + 0x6a) = 1;
+  } else {
+    if ((*(code *)PTR_FUN_006975e0)(unit,0) == 0)
+      (*(code *)PTR_FUN_006975e0)(unit,0);
   }
   return 1;
 }
@@ -13015,38 +13283,36 @@ u32 func_002ce4e0(void)
   return 1;
 }
 
-// FUN_002ce5c0 NONMATCHING
-
+// FUN_002ce5c0
 u32 func_002ce5c0(void)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  u64 uVar3 = 0;
-  u32 uVar4 = 0;
-  long lVar5 = 0;
-  
-  uVar3 = func_0035f160();
-  uVar4 = func_0035ed20(0);
-  lVar5 = func_002c3430(uVar3,uVar4,0,0x2e,0,(code *)&func_002c1ed0);
-  if (lVar5 == 1) {
-    iVar1 = (int)uVar3;
-    if (*(short *)(iVar1 + 0x6a) == 1) {
-      func_0035f060(*(u32 *)(*(int *)(iVar1 + 0x38) + 8) | 0x80000000);
-    }
-    else {
-      if ((uVar4 & 0xe) == 0) {
-        iVar2 = func_002ffbc0();
-        iVar1 = *(int *)(iVar2 * 4 + iVar1 + 0x38);
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_002ffbc0(u32);
+  extern u32 func_002c65d0(u32);
+  extern void func_0035f060(u32);
+  u32 unit;
+  u32 selector;
+  u32 selectedUnit;
+  u32 offset;
+
+  unit = func_0035f160();
+  selector = func_0035ed20(0);
+  if (func_002c3430(unit,selector,0,0x2e,0,(code *)&func_002c1ed0) == 1) {
+    if (*(u16 *)(unit + 0x6a) == 1) {
+      func_0035f060(*(u32 *)(*(int *)(unit + 0x38) + 8) | 0x80000000);
+    } else {
+      if ((selector & 0xe) != 0) {
+        selectedUnit = func_002c65d0(unit);
+      } else {
+        offset = func_002ffbc0(*(u16 *)(unit + 0x6a));
+        selectedUnit = *(u32 *)((offset << 2) + unit + 0x38);
       }
-      else {
-        iVar1 = func_002c65d0(uVar3);
-      }
-      func_0035f060(*(u32 *)(iVar1 + 8) | 0x80000000);
+      func_0035f060(*(u32 *)(selectedUnit + 8) | 0x80000000);
     }
-  }
-  else {
-    func_0035f060(0xffffffffffffffff);
+  } else {
+    func_0035f060(0xffffffff);
   }
   return 1;
 }
@@ -13268,54 +13534,78 @@ u32 func_002cec30(void)
   return 1;
 }
 
-// FUN_002ced60 NONMATCHING
-
-u32 func_002ced60(void)
-
+#pragma push
+#pragma opt_rebuildconditionals off
+static inline u16 btlFormationGetOpposingGenus(u32 unit)
 {
-  char cVar1 = 0;
-  u8 bVar2 = 0;
-  int iVar3 = 0;
-  u64 uVar4 = 0;
-  long lVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  u8 bVar8 = 0;
-  int aiStack_70 [12] = {0};
-  int aiStack_40 [14] = {0};
-  u16 uStack_8 = 0;
-  
-  uVar4 = func_0035f160();
-  cVar1 = *(char *)(*(int *)((int)uVar4 + 0x30) + 0xa2);
-  func_002bfcb0(uVar4,(u64)(u32)aiStack_40,2,0,0);
-  bVar8 = 0;
-  uVar6 = 0;
-  for (uVar7 = 0; uVar7 < uStack_8; uVar7 = uVar7 + 1 & 0xffff) {
-    iVar3 = aiStack_40[uVar7];
-    if (((((*(u16 *)(iVar3 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar3 + 0x1a) & 8) != 0)) &&
-        ((bool)*(char *)(*(int *)(iVar3 + 0x30) + 0xa2) == (cVar1 == '\0'))) &&
-       (lVar5 = func_0030b5a0(*(u32 *)(*(int *)(iVar3 + 0x30) + 0xa2c),0), lVar5 == 0)) {
-      bVar2 = func_002ffcc0(*(u32 *)(*(int *)(iVar3 + 0x30) + 0xa2c));
-      if (bVar2 == bVar8) {
-        aiStack_70[uVar6] = iVar3;
-        uVar6 = uVar6 + 1 & 0xffff;
-      }
-      else if (bVar8 < bVar2) {
-        uVar6 = 1;
-        aiStack_70[0] = iVar3;
-        bVar8 = bVar2;
+  u32 side;
+  if (*(u8 *)(*(int *)(unit + 0x30) + 0xa2) != 0)
+    goto nonzero;
+  side = 1;
+  goto done;
+nonzero:
+  side = 0;
+done:
+  return side;
+}
+// FUN_002ced60
+u32 func_002ced60(void)
+{
+  extern int func_0030b5a0(u32,u32);
+  extern u8 func_002ffcc0(u32);
+  extern u32 func_002ffbc0(u32);
+  struct {
+    int entries[14];
+    u16 count;
+    u16 selected;
+  } candidates;
+  int selected[12];
+  u32 unit;
+  u16 desired;
+  u32 highest;
+  u16 index;
+  u16 selectedCount;
+  int candidate;
+  u32 value;
+  u32 desiredValue;
+
+  unit = func_0035f160_u32();
+  desired = btlFormationGetOpposingGenus(unit);
+  func_002bfcb0_ptr(unit,&candidates,2,0,0);
+  highest = 0;
+  selectedCount = 0;
+  index = 0;
+  desiredValue = desired;
+  while (index < candidates.count) {
+    candidate = candidates.entries[index];
+    if (((*(u16 *)(candidate + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(candidate + 0x1a) & 8) != 0) &&
+        (*(u8 *)(*(int *)(candidate + 0x30) + 0xa2) == desiredValue) &&
+        (func_0030b5a0(
+            *(u32 *)(*(int *)(candidate + 0x30) + 0xa2c),0) == 0)) {
+      value = func_002ffcc0(
+          *(u32 *)(*(int *)(candidate + 0x30) + 0xa2c));
+      if (value == highest) {
+        selected[selectedCount] = candidate;
+        selectedCount++;
+      } else if (highest < value) {
+        highest = value;
+        selected[0] = candidate;
+        selectedCount = 1;
       }
     }
+    index++;
   }
-  if (uVar6 == 0) {
-    func_0035f060(0xffffffffffffffff);
-  }
-  else {
-    iVar3 = func_002ffbc0();
-    func_0035f060(*(u32 *)(aiStack_70[iVar3] + 8) | 0x80000000);
+  if (selectedCount > 0) {
+    value = func_002ffbc0(selectedCount);
+    func_0035f060_u32(
+        *(u32 *)(selected[value] + 8) | 0x80000000);
+  } else {
+    func_0035f060_u32(0xffffffff);
   }
   return 1;
 }
+#pragma pop
 
 // FUN_002cef10 NONMATCHING
 
@@ -13461,33 +13751,27 @@ u32 func_002cf1d0(void)
   return 0xffffffff;
 }
 
-// FUN_002cf340 NONMATCHING
-
+// FUN_002cf340
 u32 func_002cf340(void)
-
 {
-  short sVar1 = 0;
-  u64 uVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  
-  uVar2 = func_0035f160();
-  uVar3 = func_0035ed20(0);
-  lVar4 = func_002c3430(uVar2,uVar3,0,0x2c,0,(code *)&func_002c30f0);
-  if (lVar4 == 1) {
-    sVar1 = 0;
-    for (uVar6 = 0; uVar6 < *(u16 *)((int)uVar2 + 0x6a); uVar6 = uVar6 + 1 & 0xffff) {
-      uVar5 = func_00300530(*(u32 *)
-                            (*(int *)(*(int *)((int)uVar2 + uVar6 * 4 + 0x38) + 0x30) + 0xa2c));
-      if ((uVar5 & 0xffffffffffefffff) == 0) {
-        sVar1 = sVar1 + 1;
-      }
+  extern u32 func_0035f160(void);
+  extern u32 func_0035ed20(u32);
+  extern u32 func_002c3430(u32,u32,u32,u16,int,code *);
+  extern u32 func_00300530(u32);
+  extern void func_0035f060(u32);
+  u32 unit;
+  u32 index;
+  u32 count;
+
+  unit = func_0035f160();
+  if (func_002c3430(unit,func_0035ed20(0),0,0x2c,0,(code *)&func_002c30f0) == 1) {
+    count = 0;
+    for (index = 0; (u16)index < *(u16 *)(unit + 0x6a); index = index + 1 & 0xffff) {
+      if ((func_00300530(*(u32 *)(*(int *)(*(int *)(unit + (index & 0xffff) * 4 + 0x38) + 0x30) + 0xa2c)) & 0xffefffff) == 0)
+        count = count + 1 & 0xffff;
     }
-    func_0035f060(sVar1);
-  }
-  else {
+    func_0035f060((u16)count);
+  } else {
     func_0035f060(0);
   }
   return 0xffffffff;
@@ -13961,48 +14245,51 @@ u32 func_002d0150(void)
   return 1;
 }
 
-// FUN_002d0270 NONMATCHING
-
+// FUN_002d0270
 u32 func_002d0270(void)
-
 {
-  int iVar1 = 0;
-  int iVar2 = 0;
-  u64 uVar3 = 0;
-  long lVar4 = 0;
-  u32 uVar5 = 0;
-  u32 uVar6 = 0;
-  u32 uVar7 = 0;
-  int iVar8 = 0;
-  int iVar9 = 0;
-  
-  uVar3 = func_0035f160();
-  iVar9 = 0;
-  uVar6 = 0xfffffff;
-  iVar8 = 0;
-  uVar7 = uVar6;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x14c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x4a8)) {
-    if (((((*(u16 *)(iVar1 + 0x1a) & 1) != 0) && ((*(u16 *)(iVar1 + 0x1a) & 8) != 0)) &&
-        (iVar2 = *(int *)(iVar1 + 0x30), *(char *)(iVar2 + 0xa2) == '\x01')) &&
-       (lVar4 = func_0030b5a0(*(u32 *)(iVar2 + 0xa2c),0), lVar4 == 0)) {
-      uVar5 = func_002ffd70(*(u32 *)(iVar2 + 0xa2c));
-      uVar5 = uVar5 & 0xffff;
-      if ((uVar5 < uVar6) && (lVar4 = func_002c5030(uVar3,iVar1,0,0), -1 < lVar4)) {
-        uVar6 = uVar5;
-        iVar8 = iVar1;
-      }
-      if (uVar5 < uVar7) {
-        uVar7 = uVar5;
-        iVar9 = iVar1;
+  extern u32 func_0035f160(void);
+  extern int func_0030b5a0(u32,u32);
+  extern u32 func_002ffd70(u32);
+  extern int func_002c5030(u32,u32,u32,u32);
+  extern void func_0035f060(u32);
+  u32 context;
+  u32 candidate;
+  u32 fallbackSelected;
+  u32 preferredSelected;
+  u32 fallbackLowest;
+  u32 preferredLowest;
+  u32 candidateData;
+
+  context = func_0035f160();
+  fallbackSelected = 0;
+  fallbackLowest = 0xfffffff;
+  preferredSelected = 0;
+  preferredLowest = fallbackLowest;
+  for (candidate = *(u32 *)(DAT_007ce3ec + 0x14c); candidate != 0;
+       candidate = *(u32 *)(candidate + 0x4a8)) {
+    if (((*(u16 *)(candidate + 0x1a) & 1) != 0) &&
+        ((*(u16 *)(candidate + 0x1a) & 8) != 0)) {
+      candidateData = *(u32 *)(candidate + 0x30);
+      if ((*(u8 *)(candidateData + 0xa2) == 1) &&
+          (func_0030b5a0(*(u32 *)(candidateData + 0xa2c),0) == 0)) {
+        candidateData = func_002ffd70(*(u32 *)(candidateData + 0xa2c)) & 0xffff;
+        if ((candidateData < preferredLowest) &&
+            (func_002c5030(context,candidate,0,0) >= 0)) {
+          preferredSelected = candidate;
+          preferredLowest = candidateData;
+        }
+        if (candidateData < fallbackLowest) {
+          fallbackSelected = candidate;
+          fallbackLowest = candidateData;
+        }
       }
     }
   }
-  if (iVar8 == 0) {
-    func_0035f060(*(u32 *)(iVar9 + 8) | 0x80000000);
-  }
-  else {
-    func_0035f060(*(u32 *)(iVar8 + 8) | 0x80000000);
-  }
+  if (preferredSelected != 0)
+    func_0035f060(*(u32 *)(preferredSelected + 8) | 0x80000000);
+  else
+    func_0035f060(*(u32 *)(fallbackSelected + 8) | 0x80000000);
   return 1;
 }
 
@@ -14225,9 +14512,9 @@ u32 func_002d09d0(void)
   return 1;
 }
 
-// FUN_002d0a30 NONMATCHING
+// FUN_002d0a30
 
-void func_002d0a30(void)
+u32 func_002d0a30(void)
 {
   extern u32 func_0035f160(void);
   extern u32 func_0035ed20(u32);
@@ -14245,7 +14532,7 @@ void func_002d0a30(void)
   }
   *(u16 *)(unit + 0x6c) = 1;
   *(u16 *)(unit + 0x6e) = index;
-  return;
+  return 1;
 }
 
 // FUN_002d0ac0
