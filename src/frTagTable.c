@@ -4,6 +4,11 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
+extern u8 D_007CD524;
+extern u32 D_0095ABE0[];
+extern u32 D_0095ABE4[];
+extern u32 D_0095ABE8[];
+extern u32 D_0095ABEC[];
 extern u32 DAT_006a2660;
 extern s32 DAT_006a2680[];
 extern u8 DAT_006a26b0[];
@@ -214,69 +219,77 @@ u64 FUN_003ae650(u64 param_1,int param_2)
 }
 #define FUN_003ae650(...) ((u64 (*)(...))FUN_003ae650)(__VA_ARGS__)
 #undef FUN_003ae750
-// FUN_003AE750 NONMATCHING
-
-
-u64 FUN_003ae750(u64 param_1,int param_2)
-
-
-
+// FUN_003AE750
+#pragma push
+#pragma opt_propagation off
+u64 FUN_003ae750(u64 param_1, int param_2)
 {
+  u8* data;
+  u8 low;
+  u8 high;
+  int base;
+  int offset;
+  u32 first;
+  u32 second;
 
-  char cVar1;
-
-  u8 bVar2;
-
-  u8 bVar3;
-
-  u8 *pbVar4;
-
-  int iVar5;
-
-  
-
-  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-  bVar2 = pbVar4[1];
-
-  if (bVar2 == 0xff) {
-
-    bVar2 = 0;
-
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(base + offset);
+  low = data[0] - 1;
+  if (data[1] == 0xff)
+  {
+    high = 0;
   }
-
-  else {
-
-    bVar2 = bVar2 - 1;
-
+  else
+  {
+    high = data[1] - 1;
   }
+  first = (u32)high << 8 | low;
 
-  iVar5 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
-  cVar1 = *(char *)(iVar5 + 3);
-
-  if (cVar1 == -1) {
-
-    bVar3 = 0;
-
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(offset + base);
+  low = data[2] - 1;
+  if (data[3] == 0xff)
+  {
+    high = 0;
   }
-
-  else {
-
-    bVar3 = cVar1 - 1;
-
+  else
+  {
+    high = data[3] - 1;
   }
+  second = (u32)high << 8 | low;
 
-  FUN_00170c00(1,(u16)bVar2 << 8 | *pbVar4 - 1 & 0xff,
-
-               (u16)bVar3 << 8 | *(u8 *)(iVar5 + 2) - 1 & 0xff);
-
+  FUN_00170c00(1, (s16)first, (s16)second);
   return 0;
-
 }
+#pragma pop
+
+// FUN_003AE820
+u64 FUN_003ae820(u64 param_1,u64 param_2)
+{
+  DAT_007cd4e8 = DAT_007cd4e8 | 3;
+  return 1;
+}
+// FUN_003AE840
+u64 FUN_003ae840(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+// FUN_003AE850
+u64 FUN_003ae850(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+// FUN_003AE860
+u64 FUN_003ae860(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+
 #define FUN_003ae750(...) ((u64 (*)(...))FUN_003ae750)(__VA_ARGS__)
 #undef FUN_003ae870
-// FUN_003AE870 NONMATCHING
+// FUN_003AE870
 
 
 u64 FUN_003ae870(u64 param_1,u64 param_2)
@@ -285,7 +298,7 @@ u64 FUN_003ae870(u64 param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u8 auStack_8 [8];
 
@@ -293,7 +306,7 @@ u64 FUN_003ae870(u64 param_1,u64 param_2)
 
   uVar1 = FUN_0017d920();
 
-  FUN_00523ac8(auStack_8,0x7cd524,uVar1);
+  FUN_00523ac8(auStack_8,&D_007CD524,uVar1);
 
   FUN_003b22a0(param_2);
 
@@ -302,9 +315,10 @@ u64 FUN_003ae870(u64 param_1,u64 param_2)
   return 0;
 
 }
+
 #define FUN_003ae870(...) ((u64 (*)(...))FUN_003ae870)(__VA_ARGS__)
 #undef FUN_003ae8d0
-// FUN_003AE8D0 NONMATCHING
+// FUN_003AE8D0
 
 
 u64 FUN_003ae8d0(u64 param_1,u64 param_2)
@@ -313,7 +327,7 @@ u64 FUN_003ae8d0(u64 param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u8 auStack_8 [8];
 
@@ -321,7 +335,7 @@ u64 FUN_003ae8d0(u64 param_1,u64 param_2)
 
   uVar1 = FUN_0017da40();
 
-  FUN_00523ac8(auStack_8,0x7cd524,uVar1);
+  FUN_00523ac8(auStack_8,&D_007CD524,uVar1);
 
   FUN_003b22a0(param_2);
 
@@ -330,9 +344,10 @@ u64 FUN_003ae8d0(u64 param_1,u64 param_2)
   return 0;
 
 }
+
 #define FUN_003ae8d0(...) ((u64 (*)(...))FUN_003ae8d0)(__VA_ARGS__)
 #undef FUN_003ae930
-// FUN_003AE930 NONMATCHING
+// FUN_003AE930
 
 
 u64 FUN_003ae930(void)
@@ -341,7 +356,7 @@ u64 FUN_003ae930(void)
 
 {
 
-  u16 uVar1;
+  s16 uVar1;
 
   
 
@@ -352,9 +367,10 @@ u64 FUN_003ae930(void)
   return 0;
 
 }
+
 #define FUN_003ae930(...) ((u64 (*)(...))FUN_003ae930)(__VA_ARGS__)
 #undef FUN_003ae970
-// FUN_003AE970 NONMATCHING
+// FUN_003AE970
 
 
 u64 FUN_003ae970(void)
@@ -363,7 +379,7 @@ u64 FUN_003ae970(void)
 
 {
 
-  u16 uVar1;
+  s16 uVar1;
 
   
 
@@ -374,6 +390,7 @@ u64 FUN_003ae970(void)
   return 0;
 
 }
+
 #define FUN_003ae970(...) ((u64 (*)(...))FUN_003ae970)(__VA_ARGS__)
 #undef FUN_003ae9b0
 // FUN_003AE9B0
@@ -1227,33 +1244,80 @@ u32 FUN_003af390(void)
   return *(u32 *)0x0095abec;
 }
 #define FUN_003af390(...) ((u32 (*)(...))FUN_003af390)(__VA_ARGS__)
-// FUN_003AF3A0 NONMATCHING
+// FUN_003AF3A0
 u64 FUN_003af3a0(u64 unused, int context)
 {
-  u8 *data;
-  u32 low;
-  u32 high;
-  u32 value;
+  u8* data;
+  u8 low;
+  u8 high;
+  int base;
+  int offset;
 
-  data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(base + offset);
   low = data[0] - 1;
-  high = data[1];
-  if (high == 0xff) {
+  if (data[1] == 0xff)
+  {
     high = 0;
-  } else {
-    high = high - 1;
   }
-  value = high << 8 | low & 0xff;
-  *(u32 *)0x0095abe0 = value;
+  else
+  {
+    high = data[1] - 1;
+  }
+  D_0095ABE0[0] = (u32)high << 8 | low;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(offset + base);
   low = data[2] - 1;
-  high = data[3];
-  if (high == 0xff) {
+  if (data[3] == 0xff)
+  {
     high = 0;
-  } else {
-    high = high - 1;
   }
-  value = high << 8 | low & 0xff;
-  *(u32 *)0x0095abe4 = value;
+  else
+  {
+    high = data[3] - 1;
+  }
+  D_0095ABE4[0] = (u32)high << 8 | low;
+  return 0;
+}
+// FUN_003AF460
+u64 FUN_003af460(u64 unused, int context)
+{
+  u8* data;
+  u8 low;
+  u8 high;
+  int base;
+  int offset;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(base + offset);
+  low = data[0] - 1;
+  if (data[1] == 0xff)
+  {
+    high = 0;
+  }
+  else
+  {
+    high = data[1] - 1;
+  }
+  D_0095ABE8[0] = (u32)high << 8 | low;
+
+  offset = *(int *)(context + 0x18);
+  base = *(int *)(context + 0x10);
+  data = (u8 *)(offset + base);
+  low = data[2] - 1;
+  if (data[3] == 0xff)
+  {
+    high = 0;
+  }
+  else
+  {
+    high = data[3] - 1;
+  }
+  D_0095ABEC[0] = (u32)high << 8 | low;
   return 0;
 }
 
@@ -1288,7 +1352,7 @@ u64 FUN_003af454(u64 unused, int context)
 }
 
 #undef FUN_003af520
-// FUN_003AF520 NONMATCHING
+// FUN_003AF520
 
 
 u64 FUN_003af520(void)
@@ -1297,7 +1361,7 @@ u64 FUN_003af520(void)
 
 {
 
-  u16 uVar1;
+  s16 uVar1;
 
   
 
@@ -1308,6 +1372,7 @@ u64 FUN_003af520(void)
   return 0;
 
 }
+
 #define FUN_003af520(...) ((u64 (*)(...))FUN_003af520)(__VA_ARGS__)
 #undef FUN_003af560
 // FUN_003AF560
