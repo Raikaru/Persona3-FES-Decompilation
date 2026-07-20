@@ -530,12 +530,25 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
 
 
 /* ---- Recovered range 0x35A290-0x35AD50 (Ghidra reference, pending match) ---- */
-typedef int (*prim_code)(...);
+typedef struct
+{
+    u8 pad0[8];
+    struct
+    {
+        f32 x;
+        f32 y;
+        f32 z;
+        f32 w;
+    } quat;
+    f32 values[6];
+    f32 value30;
+} PrimInterpData;
+
+typedef void (*PrimFuncB)(void*, void*, void*, f32);
 typedef void (*PrimFuncA)(u64, int);
-typedef void (*PrimFuncB)(f32, int, int, int);
 typedef u32 (*PrimFuncC)(int, u64);
 typedef u64 (*PrimFuncD)(u64, u64);
-typedef void (*PrimFuncE)(int, int);
+typedef void (*PrimFuncE)(void*, void*);
 typedef void (*PrimFuncStub)(void);
 typedef struct
 {
@@ -570,12 +583,14 @@ extern long FUN_004c18b0(u64 stream, void* buf, int size);
 extern long FUN_004c1910(u64 stream, void* buf, int size);
 extern long FUN_004b6680(void* desc);
 extern void FUN_005225a8(u8* fmt, ...);
-void FUN_0035a290(u64 param_1,int param_2);
-void FUN_0035a3f0(float param_1,int param_2,int param_3,int param_4);
-void FUN_0035a620(float param_1,int param_2,int param_3,int param_4);
+extern f32 FUN_0052e878(f32 angle);
+extern f32 FUN_0052e9e8(void);
+void FUN_0035a290(u64 param_1, int param_2);
+void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1);
+void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
 u32 FUN_0035a6a0(int param_1,u64 param_2);
 u64 FUN_0035a770(u64 param_1,u64 param_2);
-void FUN_0035a870(int param_1,int param_2);
+void FUN_0035a870(void* param_1, void* param_2);
 
 // FUN_0035A290 NONMATCHING
 
@@ -689,133 +704,70 @@ void FUN_0035a290(u64 param_1,int param_2)
 // FUN_0035A3F0 NONMATCHING
 
 
-void FUN_0035a3f0(float param_1,int param_2,int param_3,int param_4)
-
-
-
+void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
 {
+    PrimInterpData* out = (PrimInterpData*)param_2;
+    const PrimInterpData* first = (const PrimInterpData*)param_3;
+    PrimInterpData* second = (PrimInterpData*)param_4;
+    f32 dot;
+    f32 firstWeight;
+    f32 secondWeight;
+    f32 angle;
+    f32 invSin;
 
-  float fVar1;
+    dot = first->quat.x * second->quat.x +
+          first->quat.y * second->quat.y +
+          first->quat.z * second->quat.z +
+          first->quat.w * second->quat.w;
+    if (dot < 0.0f)
+    {
+        dot = -dot;
+        second->quat.x = -second->quat.x;
+        second->quat.y = -second->quat.y;
+        second->quat.z = -second->quat.z;
+        second->quat.w = -second->quat.w;
+    }
 
-  float fVar2;
+    firstWeight = 1.0f - param_1;
+    secondWeight = param_1;
+    if (dot < fGpffff8028)
+    {
+        angle = FUN_0052e9e8();
+        invSin = 1.0f / FUN_0052e878(angle);
+        firstWeight = invSin * FUN_0052e878(firstWeight * angle);
+        secondWeight = invSin * FUN_0052e878(secondWeight * angle);
+    }
 
-  float fVar3;
+    out->quat.x = firstWeight * first->quat.x + secondWeight * second->quat.x;
+    out->quat.y = firstWeight * first->quat.y + secondWeight * second->quat.y;
+    out->quat.z = firstWeight * first->quat.z + secondWeight * second->quat.z;
+    out->quat.w = firstWeight * first->quat.w + secondWeight * second->quat.w;
 
-  
-
-  fVar2 = *(float *)(param_3 + 0x14) * *(float *)(param_4 + 0x14) +
-
-          *(float *)(param_3 + 0x10) * *(float *)(param_4 + 0x10) +
-
-          *(float *)(param_3 + 8) * *(float *)(param_4 + 8) +
-
-          *(float *)(param_3 + 0xc) * *(float *)(param_4 + 0xc);
-
-  if (fVar2 < 0.0) {
-
-    fVar2 = -fVar2;
-
-    *(float *)(param_4 + 8) = -*(float *)(param_4 + 8);
-
-    *(float *)(param_4 + 0xc) = -*(float *)(param_4 + 0xc);
-
-    *(float *)(param_4 + 0x10) = -*(float *)(param_4 + 0x10);
-
-    *(float *)(param_4 + 0x14) = -*(float *)(param_4 + 0x14);
-
-  }
-
-  fVar3 = 1.0 - param_1;
-
-  if (fVar2 < fGpffff8028) {
-
-    fVar2 = (float)FUN_0052e9e8();
-
-    fVar1 = (float)FUN_0052e878(fVar2);
-
-    fVar1 = 1.0 / fVar1;
-
-    fVar3 = (float)FUN_0052e878(fVar3 * fVar2);
-
-    fVar3 = fVar1 * fVar3;
-
-    param_1 = (float)FUN_0052e878(param_1 * fVar2);
-
-    param_1 = fVar1 * param_1;
-
-  }
-
-  *(float *)(param_2 + 8) = fVar3 * *(float *)(param_3 + 8) + param_1 * *(float *)(param_4 + 8);
-
-  *(float *)(param_2 + 0xc) =
-
-       fVar3 * *(float *)(param_3 + 0xc) + param_1 * *(float *)(param_4 + 0xc);
-
-  *(float *)(param_2 + 0x10) =
-
-       fVar3 * *(float *)(param_3 + 0x10) + param_1 * *(float *)(param_4 + 0x10);
-
-  *(float *)(param_2 + 0x14) =
-
-       fVar3 * *(float *)(param_3 + 0x14) + param_1 * *(float *)(param_4 + 0x14);
-
-  *(float *)(param_2 + 0x18) =
-
-       param_1 * (*(float *)(param_4 + 0x18) - *(float *)(param_3 + 0x18)) +
-
-       *(float *)(param_3 + 0x18) + 0.0;
-
-  *(float *)(param_2 + 0x1c) =
-
-       param_1 * (*(float *)(param_4 + 0x1c) - *(float *)(param_3 + 0x1c)) +
-
-       *(float *)(param_3 + 0x1c) + 0.0;
-
-  *(float *)(param_2 + 0x20) =
-
-       param_1 * (*(float *)(param_4 + 0x20) - *(float *)(param_3 + 0x20)) +
-
-       *(float *)(param_3 + 0x20) + 0.0;
-
-  *(float *)(param_2 + 0x24) =
-
-       param_1 * (*(float *)(param_4 + 0x24) - *(float *)(param_3 + 0x24)) +
-
-       *(float *)(param_3 + 0x24) + 0.0;
-
-  *(float *)(param_2 + 0x28) =
-
-       param_1 * (*(float *)(param_4 + 0x28) - *(float *)(param_3 + 0x28)) +
-
-       *(float *)(param_3 + 0x28) + 0.0;
-
-  *(float *)(param_2 + 0x2c) =
-
-       param_1 * (*(float *)(param_4 + 0x2c) - *(float *)(param_3 + 0x2c)) +
-
-       *(float *)(param_3 + 0x2c) + 0.0;
-
-  return;
-
+    out->values[0] = secondWeight * (second->values[0] - first->values[0]) + first->values[0] + 0.0f;
+    out->values[1] = secondWeight * (second->values[1] - first->values[1]) + first->values[1] + 0.0f;
+    out->values[2] = secondWeight * (second->values[2] - first->values[2]) + first->values[2] + 0.0f;
+    out->values[3] = secondWeight * (second->values[3] - first->values[3]) + first->values[3] + 0.0f;
+    out->values[4] = secondWeight * (second->values[4] - first->values[4]) + first->values[4] + 0.0f;
+    out->values[5] = secondWeight * (second->values[5] - first->values[5]) + first->values[5] + 0.0f;
 }
 
 // FUN_0035A620
 
 
-void FUN_0035a620(float param_1,int param_2,int param_3,int param_4)
-
-
-
+void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1)
 {
+    PrimInterpData* out = (PrimInterpData*)param_2;
+    const PrimInterpData* first = (const PrimInterpData*)param_3;
+    const PrimInterpData* second = (const PrimInterpData*)param_4;
+    f32 firstTime;
+    f32 secondTime;
+    f32 t;
 
-  FUN_0035a3f0((param_1 - *(float *)(param_3 + 4)) /
-               (*(float *)(param_4 + 4) - *(float *)(param_3 + 4)),
-               param_2, param_3, param_4);
-
-  *(float *)(param_2 + 0x30) = *(float *)(param_3 + 0x30) * *(float *)(param_4 + 0x30);
-
-  return;
-
+    firstTime = *(const f32*)((const u8*)first + 4);
+    secondTime = *(const f32*)((const u8*)second + 4);
+    t = (param_1 - firstTime) / (secondTime - firstTime);
+    FUN_0035a3f0(out, (void*)first, (void*)second, t);
+    out->value30 = first->value30 * second->value30;
 }
 
 // FUN_0035A6A0
@@ -897,108 +849,72 @@ u64 FUN_0035a770(u64 param_1,u64 param_2)
 // FUN_0035A870 NONMATCHING
 
 
-void FUN_0035a870(int param_1,int param_2)
-
-
-
+void FUN_0035a870(void* param_1, void* param_2)
 {
+    PrimInterpData* out = (PrimInterpData*)param_1;
+    const PrimInterpData* in = (const PrimInterpData*)param_2;
+    volatile f32 saved[4];
+    f32 ax;
+    f32 ay;
+    f32 az;
+    f32 aw;
+    f32 inY;
+    f32 inX;
+    f32 inZ;
+    f32 inW;
+    f32 norm;
+    f32 inverse;
+    f32 resultW;
+    f32 resultX;
+    f32 resultY;
+    f32 resultZ;
 
-  float in_f1;
+    ax = out->quat.x;
+    ay = out->quat.y;
+    az = out->quat.z;
+    aw = out->quat.w;
+    saved[0] = ax;
+    saved[1] = ay;
+    saved[2] = az;
+    saved[3] = aw;
 
-  float in_f0;
+    inY = in->quat.y;
+    inX = in->quat.x;
+    inZ = in->quat.z;
+    inW = in->quat.w;
+    norm = inY * inY + inX * inX + inZ * inZ + inW * inW;
+    if (norm > 0.0f)
+    {
+        inverse = 1.0f / norm;
+        inW = inW * inverse;
+        inverse = -inverse;
+        inX = inX * inverse;
+        inY = inY * inverse;
+        inZ = inZ * inverse;
+    }
 
-  float fVar1;
+    resultW = inW * aw - (inY * ay + inX * ax + inZ * az);
+    resultX = inZ * ay - inY * az;
+    resultY = inX * az - inZ * ax;
+    resultZ = inY * ax - inX * ay;
+    out->quat.w = resultW;
+    out->quat.x = resultX;
+    out->quat.y = resultY;
+    out->quat.z = resultZ;
 
-  float fVar2;
+    out->quat.x = out->quat.x + saved[0] * inW + 0.0f;
+    out->quat.y = out->quat.y + saved[1] * inW + 0.0f;
+    out->quat.z = out->quat.z + saved[2] * inW + 0.0f;
+    out->quat.x = out->quat.x + inX * saved[3] + 0.0f;
+    out->quat.y = out->quat.y + inY * saved[3] + 0.0f;
+    out->quat.z = out->quat.z + inZ * saved[3] + 0.0f;
 
-  float fVar3;
-
-  float fVar4;
-
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fVar9;
-
-  float in_f9;
-
-  float in_f10;
-
-  
-
-  fVar4 = *(float *)(param_1 + 8);
-
-  fVar6 = *(float *)(param_1 + 0xc);
-
-  fVar1 = *(float *)(param_1 + 0x10);
-
-  fVar2 = *(float *)(param_1 + 0x14);
-
-  fVar8 = *(float *)(param_2 + 0xc);
-
-  fVar9 = *(float *)(param_2 + 8);
-
-  fVar5 = *(float *)(param_2 + 0x10);
-
-  fVar7 = *(float *)(param_2 + 0x14);
-
-  fVar3 = fVar7 * fVar7 + fVar5 * fVar5 + fVar9 * fVar9 + fVar8 * fVar8;
-
-  if (0.0 < fVar3) {
-
-    fVar3 = 1.0 / fVar3;
-
-    in_f10 = fVar7 * fVar3;
-
-    fVar3 = -fVar3;
-
-    in_f9 = fVar9 * fVar3;
-
-    in_f1 = fVar8 * fVar3;
-
-    in_f0 = fVar5 * fVar3;
-
-  }
-
-  *(float *)(param_1 + 0x14) = in_f10 * fVar2 - (in_f0 * fVar1 + in_f9 * fVar4 + in_f1 * fVar6);
-
-  *(float *)(param_1 + 8) = in_f1 * fVar1 - in_f0 * fVar6;
-
-  *(float *)(param_1 + 0xc) = in_f0 * fVar4 - in_f9 * fVar1;
-
-  *(float *)(param_1 + 0x10) = in_f9 * fVar6 - in_f1 * fVar4;
-
-  *(float *)(param_1 + 8) = fVar4 * in_f10 + *(float *)(param_1 + 8) + 0.0;
-
-  *(float *)(param_1 + 0xc) = fVar6 * in_f10 + *(float *)(param_1 + 0xc) + 0.0;
-
-  *(float *)(param_1 + 0x10) = fVar1 * in_f10 + *(float *)(param_1 + 0x10) + 0.0;
-
-  *(float *)(param_1 + 8) = in_f9 * fVar2 + *(float *)(param_1 + 8) + 0.0;
-
-  *(float *)(param_1 + 0xc) = in_f1 * fVar2 + *(float *)(param_1 + 0xc) + 0.0;
-
-  *(float *)(param_1 + 0x10) = in_f0 * fVar2 + *(float *)(param_1 + 0x10) + 0.0;
-
-  *(float *)(param_1 + 0x18) = *(float *)(param_1 + 0x18) - *(float *)(param_2 + 0x18);
-
-  *(float *)(param_1 + 0x1c) = *(float *)(param_1 + 0x1c) - *(float *)(param_2 + 0x1c);
-
-  *(float *)(param_1 + 0x20) = *(float *)(param_1 + 0x20) - *(float *)(param_2 + 0x20);
-
-  *(float *)(param_1 + 0x24) = *(float *)(param_1 + 0x24) - *(float *)(param_2 + 0x24);
-
-  *(float *)(param_1 + 0x28) = *(float *)(param_1 + 0x28) - *(float *)(param_2 + 0x28);
-
-  *(float *)(param_1 + 0x2c) = *(float *)(param_1 + 0x2c) - *(float *)(param_2 + 0x2c);
-
-  return;
-
+    out->values[0] = out->values[0] - in->values[0];
+    out->values[1] = out->values[1] - in->values[1];
+    out->values[2] = out->values[2] - in->values[2];
+    out->values[3] = out->values[3] - in->values[3];
+    out->values[4] = out->values[4] - in->values[4];
+    out->values[5] = out->values[5] - in->values[5];
 }
 
 // FUN_0035ABA0
