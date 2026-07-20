@@ -120,7 +120,7 @@ void FUN_003a4220(int param_1,u64 param_2,u64 param_3);
 void FUN_003a4270(int param_1);
 u32 FUN_003a42c0(long param_1,u64 param_2);
 u64 FUN_003a4360(u64 param_1,long param_2);
-u32 FUN_003a4a70(int param_1,short param_2,short param_3);
+u32 FUN_003a4a70(int param_1, int param_2, int param_3);
 u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3);
 void FUN_003a4ce0(void);
 void FUN_003a4dd0(int param_1);
@@ -450,257 +450,154 @@ s16 itfMesMng003a3f20(s32 mesHandleIdx)
 }
 
 #undef FUN_003a2150
-// FUN_003A2150 NONMATCHING
+#pragma alias FUN_003a4360_typed FUN_003a4360
+extern void FUN_003a4360_typed(s32 param_1, s32 param_2);
+#pragma alias FUN_003a30c0_typed FUN_003a30c0
+extern s32 FUN_003a30c0_typed(s32 param_1, s32 param_2, s32 param_3);
+// FUN_003A2150
 
 
 u32 FUN_003a2150(void)
-
-
-
 {
+    s32 index;
+    s32 handle;
+    s32 object;
+    s8 *flag;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  long lVar3;
-
-  u64 uVar4;
-
-  
-
-  lVar3 = FUN_0035f140();
-
-  if (lVar3 < 0) {
-
-    uVar2 = 1;
-
-  }
-
-  else {
-
-    iVar1 = *(int *)(DAT_00959eec_abs + (int)lVar3 * 0xd);
-
-    if (iVar1 == 0) {
-
-      FUN_0019d3f0("itfMesManager.c",0x202);
-
-    }
-
-    uVar4 = FUN_0035ed20(0);
-
-    if (*(char *)(iVar1 + 0x34) == '\0') {
-
-      FUN_003a4360(lVar3,4);
-
-      lVar3 = FUN_003a30c0(lVar3,uVar4,0);
-
-      if (lVar3 == 0) {
-
+    index = FUN_0035f140();
+    if (index < 0)
         return 1;
+    object = *(s32*)(DAT_00959eec_abs + index * 0xd);
+    if (object == 0)
+        FUN_0019d3f0("itfMesManager.c", 0x202);
 
-      }
-
+    handle = FUN_0035ed20(0);
+    flag = (s8*)(object + 0x24);
+    if (flag[0x10] == 0)
+    {
+        FUN_003a4360_typed(index, 4);
+        if (FUN_003a30c0_typed(index, handle, 0) == 0)
+            return 1;
+    }
+    else if (flag[0x10] < 0)
+    {
+        flag[0x10] = 0;
+        return 1;
     }
 
-    else if (*(char *)(iVar1 + 0x34) < '\0') {
-
-      *(u8 *)(iVar1 + 0x34) = 0;
-
-      return 1;
-
-    }
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    return 0;
 }
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
 #undef FUN_003a2260
-// FUN_003A2260 NONMATCHING
+#pragma alias FUN_003a3e10_typed FUN_003a3e10
+#pragma alias FUN_003c9570_typed FUN_003c9570
+#pragma alias FUN_003a5210_typed FUN_003a5210
+#pragma alias FUN_003a2a30_typed FUN_003a2a30
+#pragma alias FUN_003a3420_typed FUN_003a3420
+#pragma alias FUN_003a6900_typed FUN_003a6900
+#pragma alias FUN_003a6930_typed FUN_003a6930
+#pragma alias FUN_003a69d0_typed FUN_003a69d0
+#pragma alias FUN_003a3e90_typed FUN_003a3e90
+extern void FUN_003a3e10_typed(s32, s32);
+extern void FUN_003c9570_typed(s32);
+extern void FUN_003a5210_typed(s32, s32, s32, s32, s32);
+extern void FUN_003a2a30_typed(s32);
+extern void FUN_003a3420_typed(s32, s32);
+extern void FUN_003a6900_typed(u32*, s32);
+extern void FUN_003a6930_typed(u32*, s32);
+extern void FUN_003a69d0_typed(u32*);
+extern void FUN_003a3e90_typed(s32, s32);
+// FUN_003A2260
 
 
 u32 FUN_003a2260(void)
-
-
-
 {
+    s32 index;
+    s32 handle;
+    s32 result;
+    u32 *object;
+    s8 *flag;
 
-  char cVar1;
-
-  u32 *puVar2;
-
-  u32 uVar3;
-
-  long lVar4;
-
-  u64 uVar5;
-
-  long lVar6;
-
-  
-
-  lVar4 = FUN_0035f140();
-
-  if (lVar4 < 0) {
-
-    uVar3 = 1;
-
-  }
-
-  else {
-
-    puVar2 = *(u32 **)(DAT_00959eec_abs + (int)lVar4 * 0xd);
-
-    if (puVar2 == (u32 *)0x0) {
-
-      FUN_0019d3f0("itfMesManager.c",0x231);
-
-    }
-
-    uVar5 = FUN_0035ed20(0);
-
-    cVar1 = (char)puVar2[0xd];
-
-    if (cVar1 == '\0') {
-
-      FUN_003a4360(lVar4,6);
-
-      FUN_003a3e10(lVar4,0x200000);
-
-      lVar6 = FUN_003a30c0(lVar4,uVar5,0);
-
-      FUN_003c9570(lVar4);
-
-      FUN_003a5210(lVar4,0,0,0x20,0);
-
-      if (lVar6 == 0) {
-
+    index = FUN_0035f140();
+    if (index < 0)
         return 1;
 
-      }
+    object = *(u32**)(DAT_00959eec_abs + index * 0xd);
+    if (object == NULL)
+        FUN_0019d3f0("itfMesManager.c", 0x231);
 
+    handle = FUN_0035ed20(0);
+    flag = (s8*)(object + 9);
+    if (flag[0x10] == 0)
+    {
+        FUN_003a4360_typed(index, 6);
+        FUN_003a3e10_typed(index, 0x200000);
+        result = FUN_003a30c0_typed(index, handle, 0);
+        FUN_003c9570_typed(index);
+        FUN_003a5210_typed(index, 0, 0, 0x20, 0);
+        if (result == 0)
+            return 1;
     }
-
-    else if (cVar1 < '\0') {
-
-      if (cVar1 == -1) {
-
-        FUN_003a2a30(lVar4);
-
-        FUN_003a3420(lVar4,0);
-
-        *(u8 *)(puVar2 + 0xd) = 0xfe;
-
-      }
-
-      else if ((*puVar2 & 0x300) == 0) {
-
-        FUN_003a4360(lVar4,4);
-
-        FUN_003a6900(puVar2 + 5,1);
-
-        FUN_003a6930(puVar2 + 9,1);
-
-        FUN_003a69d0(puVar2 + 0x2a);
-
-        FUN_003a3e90(lVar4,0x400000);
-
-        *(u8 *)(puVar2 + 0xd) = 0;
-
-        return 1;
-
-      }
-
+    else if (flag[0x10] < 0)
+    {
+        if (flag[0x10] == -1)
+        {
+            FUN_003a2a30_typed(index);
+            FUN_003a3420_typed(index, 0);
+            flag[0x10] = -2;
+        }
+        else if ((*object & 0x300) == 0)
+        {
+            FUN_003a4360_typed(index, 4);
+            FUN_003a6900_typed(object + 5, 1);
+            FUN_003a6930_typed(object + 9, 1);
+            FUN_003a69d0_typed(object + 0x2a);
+            FUN_003a3e90_typed(index, 0x400000);
+            flag[0x10] = 0;
+            return 1;
+        }
     }
-
-    uVar3 = 0;
-
-  }
-
-  return uVar3;
-
+    return 0;
 }
 #define FUN_003a2260(...) ((u32 (*)(...))FUN_003a2260)(__VA_ARGS__)
 #undef FUN_003a2440
-// FUN_003A2440 NONMATCHING
+// FUN_003A2440
 
 
 u32 FUN_003a2440(void)
-
-
-
 {
+    s32 index;
+    s32 handle;
+    s32 result;
+    u32 *object;
+    s8 *flag;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  long lVar3;
-
-  u64 uVar4;
-
-  long lVar5;
-
-  
-
-  lVar3 = FUN_0035f140();
-
-  if (lVar3 < 0) {
-
-    uVar2 = 1;
-
-  }
-
-  else {
-
-    iVar1 = *(int *)(DAT_00959eec_abs + (int)lVar3 * 0xd);
-
-    if (iVar1 == 0) {
-
-      FUN_0019d3f0("itfMesManager.c",0x272);
-
-    }
-
-    uVar4 = FUN_0035ed20(0);
-
-    if (*(char *)(iVar1 + 0x34) == '\0') {
-
-      FUN_003a4360(lVar3,7);
-
-      FUN_003a3e10(lVar3,0x200000);
-
-      lVar5 = FUN_003a30c0(lVar3,uVar4,0);
-
-      FUN_003c9570(lVar3);
-
-      FUN_003a5210(lVar3,1,5,0x20,0);
-
-      if (lVar5 == 0) {
-
+    index = FUN_0035f140();
+    if (index < 0)
         return 1;
 
-      }
+    object = *(u32**)(DAT_00959eec_abs + index * 0xd);
+    if (object == NULL)
+        FUN_0019d3f0("itfMesManager.c", 0x272);
 
+    handle = FUN_0035ed20(0);
+    flag = (s8*)(object + 9);
+    if (flag[0x10] == 0)
+    {
+        FUN_003a4360_typed(index, 7);
+        FUN_003a3e10_typed(index, 0x200000);
+        result = FUN_003a30c0_typed(index, handle, 0);
+        FUN_003c9570_typed(index);
+        FUN_003a5210_typed(index, 1, 5, 0x20, 0);
+        if (result == 0)
+            return 1;
     }
-
-    else if (*(char *)(iVar1 + 0x34) < '\0') {
-
-      *(u8 *)(iVar1 + 0x34) = 0;
-
-      return 1;
-
+    else if (flag[0x10] < 0)
+    {
+        flag[0x10] = 0;
+        return 1;
     }
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+    return 0;
 }
 #define FUN_003a2440(...) ((u32 (*)(...))FUN_003a2440)(__VA_ARGS__)
 #undef FUN_003a2580
@@ -1111,7 +1008,7 @@ u32 FUN_003a2b30(void)
 #define FUN_003a2b30(...) ((u32 (*)(...))FUN_003a2b30)(__VA_ARGS__)
 #undef FUN_003a4a70
 #undef FUN_003a2c10
-// FUN_003A2C10 NONMATCHING
+// FUN_003A2C10
 
 
 u32 FUN_003a2c10(void)
@@ -2117,11 +2014,11 @@ void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
     break;
   case 16:
     FUN_003a4220_typed(param_1,param_2,
-                       (u32)(*(u8 **)&gp0xffffb7f8 + param_3 * 0x13));
+                       (u32)((u8 *)gp0xffffb7f8 + param_3 * 0x13));
     break;
   case 8:
     FUN_003a4220_typed(param_1,param_2,
-                       (u32)(*(u8 **)&gp0xffffb800 + param_3 * 0x15));
+                       (u32)((u8 *)gp0xffffb800 + param_3 * 0x15));
     break;
   case 3:
     FUN_003a4220_typed(param_1,param_2,
@@ -2149,7 +2046,7 @@ void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
     break;
   case 5:
     FUN_003a4220_typed(param_1,param_2,
-                       (u32)(*(u8 **)&gp0xffffb7fc + param_3 * 0x13));
+                       (u32)((u8 *)gp0xffffb7fc + param_3 * 0x13));
     break;
   case 6:
     FUN_003a4220_typed(param_1,param_2,
@@ -2556,94 +2453,45 @@ u64 FUN_003a4360(u64 param_1,long param_2)
 // FUN_003A4A70 NONMATCHING
 
 
-u32 FUN_003a4a70(int param_1,short param_2,short param_3)
-
-
-
+u32 FUN_003a4a70(int param_1, int param_2, int param_3)
 {
+    u32 *object;
+    s16 *table;
+    s16 *found;
+    s16 count;
+    s32 i;
 
-  short sVar1;
+    object = *(u32**)(DAT_00959eec_abs + param_1 * 0xd);
+    table = (s16*)((u8*)object + 0x40);
+    found = NULL;
+    if (param_2 < 0 || param_2 >= 0x10)
+        return 0;
 
-  int iVar2;
+    if (param_2 == 6)
+        param_2 = 5;
+    if (param_2 == 6 || param_2 == 0xc || param_2 == 0xe)
+        return 0;
 
-  u32 uVar3;
-
-  int iVar4;
-
-  long lVar5;
-
-  short *psVar6;
-
-  
-
-  iVar2 = *(int *)(DAT_00959eec_abs + param_1 * 0xd);
-
-  psVar6 = (short *)0x0;
-
-  if ((param_2 < 0) || (0xf < param_2)) {
-
-    uVar3 = 0;
-
-  }
-
-  else {
-
-    if (param_2 == 6) {
-
-      param_2 = 5;
-
-    }
-
-    if (((param_2 == 6) || (param_2 == 0xc)) || (param_2 == 0xe)) {
-
-      uVar3 = 0;
-
-    }
-
-    else {
-
-      sVar1 = *(short *)(iVar2 + 0x66);
-
-      for (lVar5 = 0; lVar5 < sVar1; lVar5 = (long)((int)lVar5 + 1)) {
-
-        iVar4 = iVar2 + 0x40 + (int)lVar5 * 4;
-
-        if (*(short *)(iVar4 + 0x28) == param_2) {
-
-          psVar6 = (short *)(iVar4 + 0x28);
-
-          break;
-
+    count = *(s16*)((u8*)table + 0x26);
+    for (i = 0; i < count; i++)
+    {
+        s16 *entry = (s16*)((u8*)table + i * 4 + 0x28);
+        if (entry[0] == param_2)
+        {
+            found = entry;
+            break;
         }
-
-      }
-
-      if (psVar6 == (short *)0x0) {
-
-        if (0xe < (long)sVar1) {
-
-          return 0;
-
-        }
-
-        psVar6 = (short *)(iVar2 + 0x40 + sVar1 * 4 + 0x28);
-
-        *(short *)(iVar2 + 0x66) = *(short *)(iVar2 + 0x66) + 1;
-
-      }
-
-      *psVar6 = param_2;
-
-      psVar6[1] = param_3;
-
-      uVar3 = 1;
-
     }
-
-  }
-
-  return uVar3;
-
+    if (found == NULL)
+    {
+        if (count >= 0xf)
+            return 0;
+        found = (s16*)((u8*)table + count * 4 + 0x28);
+        *(s16*)((u8*)table + 0x26) = count + 1;
+    }
+    found[0] = param_2;
+    found[1] = param_3;
+    return 1;
 }
 #define FUN_003a4a70(...) ((u32 (*)(...))FUN_003a4a70)(__VA_ARGS__)
 #undef FUN_003a4b90
