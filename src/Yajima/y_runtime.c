@@ -313,7 +313,7 @@ extern u32 uGpffffba08;
 extern u32 uGpffffba28;
 extern char getCopCondition(int,int);
 
-extern code FUN_00100d80;
+extern u32 FUN_00100d80(u32 param_1, int param_2);
 extern code FUN_00100ec0;
 extern code FUN_001016b0;
 extern code FUN_00102100;
@@ -495,7 +495,7 @@ extern float FUN_004c69f0(float *param_1, float *param_2);
 extern code FUN_004c6ac0;
 extern code FUN_004c6be0;
 extern code FUN_004d0f00;
-extern code FUN_004d1260;
+extern u32 FUN_004d1260(u32 param_1, int param_2);
 extern code FUN_004d7f60;
 extern code FUN_00521250;
 extern code FUN_00521408;
@@ -1609,7 +1609,6 @@ extern u32 uGpffffba08;
 extern u32 uGpffffba28;
 extern char getCopCondition(int,int);
 
-extern code FUN_00100d80;
 extern code FUN_00100ec0;
 extern code FUN_001016b0;
 extern code FUN_00102100;
@@ -1898,7 +1897,6 @@ extern code FUN_004d1110;
 extern code FUN_004d1170;
 extern code FUN_004d11d0;
 extern code FUN_004d11f0;
-extern code FUN_004d1260;
 extern code FUN_004d13b0;
 extern code FUN_004d1840;
 extern code FUN_004d18c0;
@@ -2957,7 +2955,7 @@ void FUN_004302b0(void)
   u64 uVar1;
   long lVar2;
   
-  uVar1 = ((code)FUN_00100d80)(0x6b4510,0);
+  uVar1 = FUN_00100d80(0x6b4510,0);
   FUN_001023a0(uVar1);
   DAT_007ce6e4 = ((code)FUN_00112370)(0x6b4510);
   do {
@@ -2965,45 +2963,45 @@ void FUN_004302b0(void)
     lVar2 = ((code)FUN_00111f30)(DAT_007ce6e4);
   } while (lVar2 == 0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4528,0);
+  uVar1 = FUN_00100d80(0x6b4528,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0e0 = ((code)FUN_004d1260)(0x6b4528,0);
+  DAT_0095c0e0 = FUN_004d1260(0x6b4528,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4538,0);
+  uVar1 = FUN_00100d80(0x6b4538,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0e4 = ((code)FUN_004d1260)(0x6b4538,0);
+  DAT_0095c0e4 = FUN_004d1260(0x6b4538,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4548,0);
+  uVar1 = FUN_00100d80(0x6b4548,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0e8 = ((code)FUN_004d1260)(0x6b4548,0);
+  DAT_0095c0e8 = FUN_004d1260(0x6b4548,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4558,0);
+  uVar1 = FUN_00100d80(0x6b4558,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0ec = ((code)FUN_004d1260)(0x6b4558,0);
+  DAT_0095c0ec = FUN_004d1260(0x6b4558,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4568,0);
+  uVar1 = FUN_00100d80(0x6b4568,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0f0 = ((code)FUN_004d1260)(0x6b4568,0);
+  DAT_0095c0f0 = FUN_004d1260(0x6b4568,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4578,0);
+  uVar1 = FUN_00100d80(0x6b4578,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0f4 = ((code)FUN_004d1260)(0x6b4578,0);
+  DAT_0095c0f4 = FUN_004d1260(0x6b4578,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4588,0);
+  uVar1 = FUN_00100d80(0x6b4588,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0f8 = ((code)FUN_004d1260)(0x6b4588,0);
+  DAT_0095c0f8 = FUN_004d1260(0x6b4588,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b4598,0);
+  uVar1 = FUN_00100d80(0x6b4598,0);
   FUN_001023a0(uVar1);
-  DAT_0095c0fc = ((code)FUN_004d1260)(0x6b4598,0);
+  DAT_0095c0fc = FUN_004d1260(0x6b4598,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b45a8,0);
+  uVar1 = FUN_00100d80(0x6b45a8,0);
   FUN_001023a0(uVar1);
-  DAT_0095c100 = ((code)FUN_004d1260)(0x6b45a8,0);
+  DAT_0095c100 = FUN_004d1260(0x6b45a8,0);
   FUN_00100ec0_arg(uVar1);
-  uVar1 = ((code)FUN_00100d80)(0x6b45c0,0);
+  uVar1 = FUN_00100d80(0x6b45c0,0);
   FUN_001023a0(uVar1);
-  DAT_007ce6e0 = ((code)FUN_004d1260)(0x6b45c0,0);
+  DAT_007ce6e0 = FUN_004d1260(0x6b45c0,0);
   FUN_00100ec0_arg(uVar1);
   return;
 }
@@ -8391,7 +8389,7 @@ u32 FUN_0043ca30(u64 param_1)
   puVar2 = *(u8 **)((int)param_1 + 0x3c);
   switch(*puVar2) {
   case 0:
-    uVar6 = ((code)FUN_00100d80)(0x6b4820,1);
+    uVar6 = FUN_00100d80(0x6b4820,1);
     *(u32 *)(puVar2 + 0x24c) = uVar6;
     *puVar2 = 1;
   case 1:
@@ -8399,7 +8397,7 @@ u32 FUN_0043ca30(u64 param_1)
     if (lVar8 != 0) {
       if (puVar2[0x251] == '\0') {
         ((code)FUN_00449ed0)();
-        uVar6 = ((code)FUN_00100d80)(0x6b4840,0);
+        uVar6 = FUN_00100d80(0x6b4840,0);
         *(u32 *)(puVar2 + 0x240) = uVar6;
         *(u8 *)(DAT_007ce6ec + 0xac) = puVar2[0x250];
         *puVar2 = 2;
