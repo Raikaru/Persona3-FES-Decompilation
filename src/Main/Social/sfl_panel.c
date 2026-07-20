@@ -21,8 +21,9 @@ extern float DAT_007cad78;
 extern float DAT_007cae0c;
 extern float DAT_007caf38;
 extern float DAT_007cb034;
-extern void (*DAT_0096009c)();
-
+typedef int (*code)(...);
+extern code DAT_00960090[];
+extern code DAT_0096009c[];
 void func_0021d890();
 void func_0021d8e0();
 void func_0021d950();
@@ -141,15 +142,19 @@ void func_0023dac0(void)
     int i;
     int j;
     int interval;
+    int mode;
 
     K_ASSERT(sSflPanel != NULL, 0x7f);
     work = sSflPanel;
+    mode = work[1];
+    if (mode == 2 || mode == 1) {
+        goto mode12;
+    }
+    if (mode != 0) {
+        return;
+    }
     frame = work[2];
-    color.r = 0xff;
-    color.g = 0xff;
-    color.b = 0xff;
-
-    if (work[1] == 0) {
+    {
         if (frame < 4) {
             xOffset = 526.0f;
         } else if (frame < 8) {
@@ -176,6 +181,9 @@ void func_0023dac0(void)
             quad[i * 2 + 1] += 59.0f;
         }
         func_0021d8e0(work + 0x44, quad);
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
         color.a = (unsigned char)(alpha * 255.0f);
         func_0021d950(work + 0x44, &color);
 
@@ -199,12 +207,11 @@ void func_0023dac0(void)
         func_0021d890(work + 4, quad);
         color.a = (unsigned char)(alpha * 255.0f);
         func_0021d950(work + 4, &color);
-        return;
     }
+    goto done;
 
-    if (work[1] != 1 && work[1] != 2) {
-        return;
-    }
+mode12:
+    frame = work[2];
 
     for (i = 0; i < 2; i++) {
         if (i == 0) {
@@ -262,6 +269,9 @@ void func_0023dac0(void)
         panelSize[1] = scale * 488.0f;
         func_0021e170(work + 0x84 + i * 0x40, panelPosition, panelDirection, panelSize);
         color.a = (unsigned char)(panelPosition[0] * 255.0f);
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
         func_0021d950(work + 0x84 + i * 0x40, &color);
     }
 
@@ -269,7 +279,7 @@ void func_0023dac0(void)
     panelDirection[1] = -cosf(DAT_007cb034);
     panelPosition[0] = 320.0f;
     panelPosition[1] = 182.0f;
-    if (work[1] == 1) {
+    if (mode == 1) {
         panelSize[0] = 463.0f;
     } else {
         panelSize[0] = 510.0f;
@@ -302,7 +312,7 @@ void func_0023dac0(void)
     } else {
         alpha = 1.0f - (float)(frame - 0x16) / 8.0f;
     }
-    panelSize[0] = work[1] == 1 ? 463.0f : 510.0f;
+    panelSize[0] = mode == 1 ? 463.0f : 510.0f;
     panelSize[1] = 89.0f;
     func_0021e170(work + 0x144, panelPosition, panelDirection, panelSize);
     color.a = (unsigned char)(alpha * 255.0f);
@@ -321,68 +331,86 @@ void func_0023dac0(void)
         scale = 1.0f;
         alpha = 0.0f;
     }
-    panelSize[0] = (work[1] == 1 ? 463.0f : 510.0f) * scale;
+    panelSize[0] = (mode == 1 ? 463.0f : 510.0f) * scale;
     panelSize[1] = 89.0f * scale;
     func_0021e170(work + 0x184, panelPosition, panelDirection, panelSize);
     color.a = (unsigned char)(alpha * 255.0f);
     func_0021d950(work + 0x184, &color);
+done:
+    return;
 }
 
 // FUN_0023e970 NONMATCHING
 void func_0023e970(void)
 {
-    u32* work;
+    int base;
+    s32 mode;
+    s32 i;
     void* texture;
-    int i;
+    volatile code *quad;
+    volatile code *state;
+    volatile code *render;
 
     K_ASSERT(sSflPanel != NULL, 0x7f);
-    work = sSflPanel;
-    K_ASSERT(*work & 1, 0x29b);
+    base = (int)sSflPanel;
+    K_ASSERT(*(u32*)base & 1, 0x29b);
 
-    RwRenderStateSet(9, (void*)2);
-    RwRenderStateSet(0x14, (void*)2);
-    RwRenderStateSet(8, NULL);
-    RwRenderStateSet(6, NULL);
+    render = DAT_00960090;
+    (*render)(9, 2);
+    (*render)(0x14, 2);
+    (*render)(8, 0);
+    (*render)(6, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
 
-    if (work[1] == 1 || work[1] == 2) {
+    mode = *(s32*)(base + 4);
+    if (mode == 2 || mode == 1) {
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        RwRenderStateSet(6, (void*)1);
+        state = DAT_00960090;
+        (*state)(6, 1);
         texture = sflRes0020e690(0);
-        RwRenderStateSet(1, texture);
+        (*state)(1, texture);
         for (i = 0; i < 2; i++) {
-            DAT_0096009c(work + 0x84 + i * 0x40, 4, 0, 1, 2);
-            DAT_0096009c(work + 0x84 + i * 0x40, 4, 0, 2, 3);
+            quad = DAT_0096009c;
+            (*quad)(base + 0x210 + i * 0x100, 4, 0, 1, 2);
+            (*quad)(base + 0x210 + i * 0x100, 4, 0, 2, 3);
         }
-        RwRenderStateSet(6, NULL);
+        (*state)(6, 0);
 
-        texture = sflRes0020e690(work[1]);
+        texture = sflRes0020e690(mode);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        RwRenderStateSet(1, texture);
-        DAT_0096009c(work + 0x184, 4, 0, 1, 2);
-        DAT_0096009c(work + 0x184, 4, 0, 2, 3);
+        render = DAT_00960090;
+        (*render)(1, texture);
+        quad = DAT_0096009c;
+        (*quad)(base + 0x610, 4, 0, 1, 2);
+        (*quad)(base + 0x610, 4, 0, 2, 3);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
-        RwRenderStateSet(1, texture);
-        DAT_0096009c(work + 0x144, 4, 0, 1, 2);
-        DAT_0096009c(work + 0x144, 4, 0, 2, 3);
+        (*render)(1, texture);
+        quad = DAT_0096009c;
+        (*quad)(base + 0x510, 4, 0, 1, 2);
+        (*quad)(base + 0x510, 4, 0, 2, 3);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        RwRenderStateSet(1, texture);
-        DAT_0096009c(work + 0x104, 4, 0, 1, 2);
-        DAT_0096009c(work + 0x104, 4, 0, 2, 3);
-    } else if (work[1] == 0) {
+        (*render)(1, texture);
+        quad = DAT_0096009c;
+        (*quad)(base + 0x410, 4, 0, 1, 2);
+        (*quad)(base + 0x410, 4, 0, 2, 3);
+    } else if (mode == 0) {
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        RwRenderStateSet(1, sflRes0020e510(0));
-        DAT_0096009c(work + 0x44, 4, 0, 1, 2);
-        DAT_0096009c(work + 0x44, 4, 0, 2, 3);
-        RwRenderStateSet(1, sflRes0020e610(work[3] - 1));
-        DAT_0096009c(work + 4, 4, 0, 1, 2);
-        DAT_0096009c(work + 4, 4, 0, 2, 3);
+        state = render;
+        (*state)(1, sflRes0020e510(0));
+        quad = DAT_0096009c;
+        (*quad)(base + 0x110, 4, 0, 1, 2);
+        (*quad)(base + 0x110, 4, 0, 2, 3);
+        texture = sflRes0020e610(*(s32*)(base + 0xc) - 1);
+        (*state)(1, texture);
+        quad = DAT_0096009c;
+        (*quad)(base + 0x10, 4, 0, 1, 2);
+        (*quad)(base + 0x10, 4, 0, 2, 3);
     }
 }
 
