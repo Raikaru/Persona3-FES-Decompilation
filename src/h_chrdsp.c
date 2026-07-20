@@ -18,6 +18,37 @@ typedef struct HChrdspTexture
 } HChrdspTexture;
 
 extern HChrdspWork D_007E2680[HCHRDP_WORK_COUNT];
+#pragma alias D_00960090_abs D_00960090
+extern void (*D_00960090_abs[])(u32 state, u32 value);
+extern void* D_007E2BA8[][0x19C];
+extern void* D_007E2BC8[][0x19C];
+extern s16 D_007E2684[][0x338];
+extern s16 D_007E2688[][0x338];
+extern s16 D_007E268A[][0x338];
+extern s32 D_007E2BCC[][0x19C];
+extern u8 D_007E2BA0[][0x670];
+extern u8 D_007E2BA1[][0x670];
+extern u8 D_007E2BA2[][0x670];
+extern u8 D_007E2BA3[][0x670];
+extern f32 D_007E2BAC[][0x19C];
+extern f32 D_007E2BB0[][0x19C];
+extern u32 D_007E2BE4[][0x19C];
+extern const char* D_005D3350[];
+extern const char D_005D3CB0[];
+extern const char D_005D3CD0[];
+extern const char D_005D3CF0[];
+extern const char D_005D3D10[];
+extern const char D_005D3D30[];
+extern const char D_005D3D50[];
+extern const char D_005D3D70[];
+extern const char D_005D3D90[];
+extern const char D_005D3DB0[];
+extern const char D_005D3DD0[];
+extern const char D_005D3DF0[];
+extern const char D_005D3E10[];
+extern const char D_005D3E30[];
+extern const char D_005D3E50[];
+extern const char D_005D3E70[];
 extern const char* func_001022e0(HCdvd* cdvd, s32 entryIndex);
 extern void* func_0010c1a0(s32 kind, const char* name, const char* path,
                             s32 requestFlags, void* source, void* buffer,
@@ -31,7 +62,6 @@ extern s32 strcmp(const char* lhs, const char* rhs);
 extern void func_00133d30(void* stream, HCdvd* cdvd);
 extern void func_004d0f00(void* resource);
 
-static const char* const* const sBustupNames = (const char* const*)0x005D3350;
 
 static void H_Chrdsp_BuildQuad(RwIm2DVertex* vertices, f32 x, f32 y, f32 width,
                                 f32 height, f32 z, f32 recipZ, const RwRGBA* color)
@@ -293,18 +323,20 @@ void H_Chrdsp_Init(void)
         }
     }
 }
-// FUN_001058A0 NONMATCHING
+// FUN_001058A0
 void H_Chrdsp_Main(void)
 {
-    s32 workIndex;
-
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATEDESTBLEND, rwBLENDINVSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATESRCBLEND, rwBLENDSRCALPHA);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
-    RwRenderStateSet(rwRENDERSTATETEXTUREADDRESS, rwTEXTUREADDRESSBORDER);
+    s16 workIndex;
+    volatile void (**setRenderState)(u32 state, u32 value);
+    setRenderState = (volatile void (**)(u32, u32))D_00960090_abs;
+    (*setRenderState)(6, 1);
+    (*setRenderState)(7, 2);
+    (*setRenderState)(8, 1);
+    (*setRenderState)(0xB, 6);
+    (*setRenderState)(0xA, 5);
+    (*setRenderState)(9, 1);
+    (*setRenderState)(0xC, 1);
+    (*setRenderState)(2, 4);
 
     for (workIndex = 0; workIndex < HCHRDP_WORK_COUNT; workIndex++)
     {
@@ -336,54 +368,64 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     }
 }
 
-// FUN_00106730 NONMATCHING
+// FUN_00106730
 void func_00106730(s16 index)
 {
-    HChrdspWork* work;
+    s16 originalIndex;
     s32 resourceIndex;
+    HChrdspWork* work;
 
-    printf("!!! RELEASE CHAR %d\n", index);
-
-    work = &D_007E2680[index];
-    if (work->asyncRequest != NULL)
+    originalIndex = index;
+    printf(D_005D3CB0, originalIndex);
+    if (*(void**)((u8*)D_007E2BC8 + originalIndex * 0x670) != NULL)
     {
-        func_00133d30(work->asyncRequest, work->archive);
-        work->asyncRequest = NULL;
-        work->archive = NULL;
+        func_00133d30(*(void**)((u8*)D_007E2BC8 + originalIndex * 0x670),
+                      *(void**)((u8*)D_007E2BA8 + originalIndex * 0x670));
+        *(void**)((u8*)D_007E2BC8 + originalIndex * 0x670) = NULL;
+        *(void**)((u8*)D_007E2BA8 + originalIndex * 0x670) = NULL;
     }
-    else if (work->archive != NULL)
+    else if (*(void**)((u8*)D_007E2BA8 + originalIndex * 0x670) != NULL)
     {
-        H_Cdvd_Destroy(work->archive);
-        work->archive = NULL;
+        H_Cdvd_Destroy(*(HCdvd**)((u8*)D_007E2BA8 + originalIndex * 0x670));
+        *(void**)((u8*)D_007E2BA8 + originalIndex * 0x670) = NULL;
     }
 
-    for (resourceIndex = 0; resourceIndex < HCHRDP_LAYER_COUNT; resourceIndex++)
+    resourceIndex = 0;
+    work = (HChrdspWork*)((u8*)D_007E2680 + originalIndex * 0x670);
+    while (resourceIndex < HCHRDP_LAYER_COUNT)
     {
-        if (work->resources[resourceIndex] != NULL)
+        void** resource;
+
+        resource = (void**)((u8*)work + 0x14 + resourceIndex * 4);
+        if (*resource != NULL)
         {
-            func_004d0f00(work->resources[resourceIndex]);
-            work->resources[resourceIndex] = NULL;
+            func_004d0f00(*resource);
+            *resource = NULL;
         }
+        resourceIndex++;
     }
-
     work->state = HCHRDP_STATE_IDLE;
 }
 
 // FUN_00106860 NONMATCHING
 void func_00106860(s16 index, s16 characterId, s16 layer, s16 variant)
 {
-    HChrdspWork* work;
     char path[256];
+    s16 originalIndex;
+    s32 signedIndex;
     s32 entryIndex;
+    s32 offset;
 
-    printf("!!! READ DISP2  %d\n", index);
+    originalIndex = index;
+    signedIndex = originalIndex;
+    printf(D_005D3CD0, signedIndex);
 
-    work = &D_007E2680[index];
-    work->resourceIndex = 0;
-    work->characterId = characterId;
-    work->reserved08 = layer;
-    work->variant = variant;
-    func_00106730(index);
+    offset = signedIndex * 0x670;
+    *(s32*)((u8*)D_007E2BCC + offset) = 0;
+    *(s16*)((u8*)D_007E2684 + offset) = characterId;
+    *(s16*)((u8*)D_007E2688 + offset) = layer;
+    *(s16*)((u8*)D_007E268A + offset) = variant;
+    func_00106730(originalIndex);
 
     if (layer < HCHRDP_LAYER_COUNT)
     {
@@ -391,52 +433,52 @@ void func_00106860(s16 index, s16 characterId, s16 layer, s16 variant)
         {
             if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
             {
-                sprintf(path, "i_bust_%02d_%x%1da.tmx", characterId, layer, variant);
+                sprintf(path, D_005D3CF0, characterId, layer, variant);
             }
             else if (characterId == 9)
             {
-                sprintf(path, "i_bust_29_%x%1da.tmx", layer, variant);
+                sprintf(path, D_005D3D10, layer, variant);
             }
             else
             {
-                sprintf(path, "i_bust_%02d_%x%1da.tmx", characterId, layer, variant);
+                sprintf(path, D_005D3CF0, characterId, layer, variant);
             }
         }
         else if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
         {
-            sprintf(path, "i_bust_%02d_%x%1db.tmx", characterId, layer, variant);
+            sprintf(path, D_005D3D30, characterId, layer, variant);
         }
         else if (characterId == 9)
         {
-            sprintf(path, "i_bust_29_%x%1db.tmx", layer, variant);
+            sprintf(path, D_005D3D50, layer, variant);
         }
         else
         {
-            sprintf(path, "i_bust_%02d_%x%1db.tmx", characterId, layer, variant);
+            sprintf(path, D_005D3D30, characterId, layer, variant);
         }
     }
     else if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
     {
-        sprintf(path, "i_bust_%02d_%x%1d.tmx", characterId, layer, variant);
+        sprintf(path, D_005D3D70, characterId, layer, variant);
     }
     else if (characterId == 9)
     {
-        sprintf(path, "i_bust_29_%x%1d.tmx", layer, variant);
+        sprintf(path, D_005D3D90, layer, variant);
     }
     else
     {
-        sprintf(path, "i_bust_%02d_%x%1d.tmx", characterId, layer, variant);
+        sprintf(path, D_005D3D70, characterId, layer, variant);
     }
 
     for (entryIndex = 0; entryIndex < 0x1388; entryIndex++)
     {
-        if (sBustupNames[entryIndex][0] == '\0')
+        if (D_005D3350[entryIndex][0] == '\0')
         {
-            sprintf(path, "bustup/bust_dummy.bin");
+            sprintf(path, D_005D3DB0);
             break;
         }
 
-        if (strcmp(sBustupNames[entryIndex], path) == 0)
+        if (strcmp(D_005D3350[entryIndex], path) == 0)
         {
             if (layer < HCHRDP_LAYER_COUNT)
             {
@@ -444,56 +486,57 @@ void func_00106860(s16 index, s16 characterId, s16 layer, s16 variant)
                 {
                     if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
                     {
-                        sprintf(path, "bustup/i_b_%02d%x%1da.bin", characterId, layer, variant);
+                        sprintf(path, D_005D3DD0, characterId, layer, variant);
                     }
                     else if (characterId == 9)
                     {
-                        sprintf(path, "bustup/i_b_29%x%1da.bin", layer, variant);
+                        sprintf(path, D_005D3DF0, layer, variant);
                     }
                     else
                     {
-                        sprintf(path, "bustup/i_b_%02d%x%1da.bin", characterId, layer, variant);
+                        sprintf(path, D_005D3DD0, characterId, layer, variant);
                     }
                 }
                 else if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
                 {
-                    sprintf(path, "bustup/i_b_%02d%x%1db.bin", characterId, layer, variant);
+                    sprintf(path, D_005D3E10, characterId, layer, variant);
                 }
                 else if (characterId == 9)
                 {
-                    sprintf(path, "bustup/i_b_29%x%1db.bin", layer, variant);
+                    sprintf(path, D_005D3E30, layer, variant);
                 }
                 else
                 {
-                    sprintf(path, "bustup/i_b_%02d%x%1db.bin", characterId, layer, variant);
+                    sprintf(path, D_005D3E10, characterId, layer, variant);
                 }
             }
             else if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
             {
-                sprintf(path, "bustup/i_b_%02d%x%1d.bin", characterId, layer, variant);
+                sprintf(path, D_005D3E50, characterId, layer, variant);
             }
             else if (characterId == 9)
             {
-                sprintf(path, "bustup/i_b_29%x%1d.bin", layer, variant);
+                sprintf(path, D_005D3E70, layer, variant);
             }
             else
             {
-                sprintf(path, "bustup/i_b_%02d%x%1d.bin", characterId, layer, variant);
+                sprintf(path, D_005D3E50, characterId, layer, variant);
             }
             break;
         }
     }
 
-    strcpy(work->texturePath, path);
-    work->state = HCHRDP_STATE_LOAD_ARCHIVE;
-    work->archive = H_Cdvd_Request(work->texturePath, HCDVD_FILEARCHIVE);
-    work->color.r = 255;
-    work->color.g = 255;
-    work->color.b = 255;
-    work->color.a = 255;
-    work->layerWidth = 1.0f;
-    work->layerHeight = 1.0f;
-    work->usesCustomPath = true;
+    strcpy((char*)((u8*)D_007E2680 + offset + 0x568), path);
+    *(s16*)((u8*)D_007E2680 + offset) = HCHRDP_STATE_LOAD_ARCHIVE;
+    *(void**)((u8*)D_007E2BA8 + offset) =
+        H_Cdvd_Request((char*)((u8*)D_007E2680 + offset + 0x568), HCDVD_FILEARCHIVE);
+    *(u8*)((u8*)D_007E2BA0 + offset) = 255;
+    *(u8*)((u8*)D_007E2BA1 + offset) = 255;
+    *(u8*)((u8*)D_007E2BA2 + offset) = 255;
+    *(u8*)((u8*)D_007E2BA3 + offset) = 255;
+    *(f32*)((u8*)D_007E2BAC + offset) = 1.0f;
+    *(f32*)((u8*)D_007E2BB0 + offset) = 1.0f;
+    *(u32*)((u8*)D_007E2BE4 + offset) = true;
 }
 
 // FUN_00106e90
