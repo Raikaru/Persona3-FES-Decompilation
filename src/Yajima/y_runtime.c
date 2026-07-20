@@ -118,7 +118,7 @@ extern u32 DAT_006b4b82;
 extern u32 DAT_006b4b84;
 extern u32 DAT_006b4e00;
 extern u32 DAT_007bc460;
-extern u8 DAT_007bc610[];
+extern int DAT_007bc610[];
 extern u32 DAT_007bc6b0;
 extern u32 DAT_007bc730;
 extern u32 DAT_007caf94;
@@ -18196,31 +18196,25 @@ u32 FUN_004589e0(void)
   return 0;
 }
 
-// FUN_00458A80 NONMATCHING
+// FUN_00458A80
 
+#pragma push
+#pragma opt_loop_invariants on
 u32 FUN_00458a80(char param_1,char param_2)
-
 {
-  int *table;
-  int value;
-  int sentinel;
-  int index;
-  
-  table = (int *)((u8 *)DAT_007bc610 + param_1 * 0x28);
-  value = (int)param_2;
-  sentinel = -1;
-  index = 0;
-  while (1) {
-    if (value == table[index]) {
+  int iVar1;
+  int iVar2;
+  iVar2 = 0;
+  iVar1 = (int)(DAT_007bc610 + param_1 * 10);
+  do {
+    if ((long)param_2 == (long)*(int *)(iVar1 + iVar2 * 4)) {
       return 1;
     }
-    index = index + 1;
-    if (table[index] == sentinel) {
-      break;
-    }
-  }
+    iVar2 = iVar2 + 1;
+  } while (*(int *)(iVar1 + iVar2 * 4) != -1);
   return 0;
 }
+#pragma pop
 // FUN_00458B00 NONMATCHING
 
 void FUN_00458b00(void)
