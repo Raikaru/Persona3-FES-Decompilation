@@ -7003,6 +7003,14 @@ void FUN_0038cc10(int param_1,u16 *param_2,long param_3)
 
   u32 uVar15;
 
+  f32 fVar16;
+
+  f32 fVar17;
+
+  f32 fVar18;
+
+  f32 fVar19;
+
   u32 auStack_c0 [8];
 
   u32 uStack_a0;
@@ -7183,33 +7191,37 @@ void FUN_0038cc10(int param_1,u16 *param_2,long param_3)
 
         else if (iVar7 == 1) {
 
-          uVar15 = *(u32 *)(iVar6 + 0x130);
+          fVar16 = *(f32 *)(iVar6 + 300);
 
-          uVar13 = *(u32 *)(iVar6 + 0x134);
+          fVar17 = *(f32 *)(iVar6 + 0x130);
 
-          uVar14 = *(u32 *)(iVar6 + 0x138);
+          fVar18 = *(f32 *)(iVar6 + 0x134);
 
-          *(u32 *)(param_2 + 0x96) = *(u32 *)(iVar6 + 300);
+          fVar19 = *(f32 *)(iVar6 + 0x138);
 
-          *(u32 *)(param_2 + 0x98) = uVar15;
+          *(f32 *)(param_2 + 0x96) = fVar16;
 
-          *(u32 *)(param_2 + 0x9a) = uVar13;
+          *(f32 *)(param_2 + 0x98) = fVar17;
 
-          *(u32 *)(param_2 + 0x9c) = uVar14;
+          *(f32 *)(param_2 + 0x9a) = fVar18;
 
-          uVar15 = *(u32 *)(iVar6 + 0x140);
+          *(f32 *)(param_2 + 0x9c) = fVar19;
 
-          uVar13 = *(u32 *)(iVar6 + 0x144);
+          fVar16 = *(f32 *)(iVar6 + 0x13c);
 
-          uVar14 = *(u32 *)(iVar6 + 0x148);
+          fVar17 = *(f32 *)(iVar6 + 0x140);
 
-          *(u32 *)(param_2 + 0x9e) = *(u32 *)(iVar6 + 0x13c);
+          fVar18 = *(f32 *)(iVar6 + 0x144);
 
-          *(u32 *)(param_2 + 0xa0) = uVar15;
+          fVar19 = *(f32 *)(iVar6 + 0x148);
 
-          *(u32 *)(param_2 + 0xa2) = uVar13;
+          *(f32 *)(param_2 + 0x9e) = fVar16;
 
-          *(u32 *)(param_2 + 0xa4) = uVar14;
+          *(f32 *)(param_2 + 0xa0) = fVar17;
+
+          *(f32 *)(param_2 + 0xa2) = fVar18;
+
+          *(f32 *)(param_2 + 0xa4) = fVar19;
 
           puVar9 = (u32 *)(iVar6 + 0x150);
 
