@@ -2312,6 +2312,7 @@ u16 * FUN_00362290(int param_1)
 // FUN_00362310 NONMATCHING
 
 
+#pragma opt_loop_invariants on
 u16 * FUN_00362310(int param_1)
 
 
@@ -2365,6 +2366,7 @@ u16 * FUN_00362310(int param_1)
   return puVar2;
 
 }
+#pragma opt_loop_invariants off
 
 
 // FUN_00362390 NONMATCHING
