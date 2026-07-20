@@ -24,8 +24,8 @@ extern void* func_001158b0(void* unused, void* atlas, s32 tile);
 extern void func_00115980(void* sprite);
 extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
                           f32 x, f32 y, f32 depth);
-extern void func_00115ad0(void* unused, void* atlas, s32 tile, u32 alpha,
-                          u32 extraAlpha, f32 x, f32 y, f32 depth);
+extern void func_00115ad0(void* unused, void* atlas, s32 tile,
+                          f32 x, f32 y, u32 alpha, u32 extraAlpha, f32 depth);
 extern void func_00113a30(f32 depth, f32 x, f32 y, u32 color,
                           s32 width, s32 height);
 extern void func_00113d80(f32 depth, f32 x, f32 y, u32 color,
@@ -218,7 +218,7 @@ static void gsDrawSprite(void* atlas, s32 tile, u32 alpha,
 static void gsDrawSpriteAlt(void* atlas, s32 tile, u32 alpha,
                             u32 extraAlpha, f32 x, f32 y, f32 depth)
 {
-    func_00115ad0(NULL, atlas, tile, alpha, extraAlpha, x, y, depth);
+    func_00115ad0(NULL, atlas, tile, x, y, alpha, extraAlpha, depth);
 }
 
 static s16 gsMappedPcId(s16 pcId)
@@ -840,7 +840,7 @@ u32 func_0018bb20(void* transition)
     return alpha != 0xff;
 }
 
-// FUN_0018BB80 NONMATCHING
+// FUN_0018BB80
 u32 func_0018bb80(void* transition)
 {
     GsPosition position;
@@ -850,9 +850,13 @@ u32 func_0018bb80(void* transition)
     func_0018ba60(transition, &alpha);
     *(GsPosition*)((u8*)transition + 0x38) = position;
     GS_U32(transition, 0x40) = alpha;
-    gsDrawSpriteAlt(GS_PTR(transition, 0), GS_S32(transition, 0x14), 0xff, alpha,
-                    position.valueF[0], position.valueF[1], GS_F32(transition, 0x24));
-    return GS_U32(transition, 0x40) != 0xff;
+    {
+        void* unused;
+        func_00115ad0(unused, GS_PTR(transition, 0), GS_S32(transition, 0x14),
+                      position.valueF[0], position.valueF[1], 0xff, alpha,
+                      GS_F32(transition, 0x24));
+    }
+    return *(u32*)((u32)transition + 0x40) != 0xff;
 }
 
 
