@@ -1,4 +1,5 @@
 #include "Graphics/Effect/effMisc.h"
+#include "libm.h"
 #include "Kernel/Kwln/kwln.h"
 #include "sce/eestruct.h"
 #include "temporary.h"
@@ -103,9 +104,7 @@ void func_00357e30(void)
 void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
 {
     RwV4d quaternion;
-    f32 halfX;
-    f32 halfY;
-    f32 halfZ;
+    f32 halfAngle;
     f32 cosX;
     f32 sinX;
     f32 cosY;
@@ -113,16 +112,15 @@ void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
     f32 cosZ;
     f32 sinZ;
 
-    halfX = -0.5f * angleX;
-    cosX = cosf(halfX);
-    sinX = sinf(halfX);
-    halfY = -0.5f * angleY;
-    cosY = cosf(halfY);
-    sinY = sinf(halfY);
-    halfZ = -0.5f * angleZ;
-    cosZ = cosf(halfZ);
-    sinZ = sinf(halfZ);
-
+    halfAngle = -angleX * 0.5f;
+    cosX = cosf(halfAngle);
+    sinX = sinf(halfAngle);
+    halfAngle = -angleY * 0.5f;
+    cosY = cosf(halfAngle);
+    sinY = sinf(halfAngle);
+    halfAngle = -angleZ * 0.5f;
+    cosZ = cosf(halfAngle);
+    sinZ = sinf(halfAngle);
     quaternion.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
     quaternion.y = cosX * sinY * cosZ - sinX * cosY * sinZ;
     quaternion.z = sinX * sinY * cosZ + cosX * cosY * sinZ;
@@ -203,7 +201,7 @@ void effMiscRandInit(EffRandState* state, u32 seed)
     state->x[3] = (x << 0x18) | (x >> 0x08);
 }
 
-// FUN_00358160 NONMATCHING
+// FUN_00358160
 void func_00358160(f32 angle)
 {
     RwMatrix matrix;
@@ -213,22 +211,25 @@ void func_00358160(f32 angle)
     cosine = cosf(angle);
     sine = sinf(angle);
 
-    matrix.right.x = 1.0f;
-    matrix.right.y = 0.0f;
-    matrix.right.z = 0.0f;
-    matrix.flags = 0;
-    matrix.up.x = 0.0f;
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "qmfc2.ni $5, $vf0       \n"
+        "pextuw $4, $0, $5       \n"
+        "pextuw $2, $0, $4       \n"
+        "pextuw $3, $4, $0       \n"
+        "sq $2, 0(%0)            \n"
+        "sq $3, 16(%0)           \n"
+        "sq $4, 32(%0)           \n"
+        "sq $5, 48(%0)           \n"
+        ".set reorder"
+        :
+        : "r" (&matrix)
+        : "$2", "$3", "$4", "$5", "memory"
+    );
     matrix.up.y = cosine;
     matrix.up.z = sine;
-    matrix.pad1 = 0;
-    matrix.at.x = 0.0f;
     matrix.at.y = -sine;
     matrix.at.z = cosine;
-    matrix.pad2 = 0;
-    matrix.pos.x = 0.0f;
-    matrix.pos.y = 0.0f;
-    matrix.pos.z = 0.0f;
-    matrix.pad3 = 1;
 
     __asm__ volatile (
         ".set noreorder          \n"
@@ -249,31 +250,46 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     RwV3d normalizedAxis;
     f32 cosine;
     f32 sine;
-    f32 oneMinusCosine;
     f32 x;
     f32 y;
     f32 z;
 
-    RwV3dNormalize(&normalizedAxis, axis);
     cosine = cosf(angle);
     sine = sinf(angle);
-    oneMinusCosine = 1.0f - cosine;
+
+    __asm__ volatile (
+        ".set noreorder                              \n"
+        "lqc2 vf10, 0(%1)                            \n"
+        "vmul.xyz vf2, vf10, vf10                    \n"
+        "vmulax.w ACC, vf0, vf2x                    \n"
+        "vmadday.w ACC, vf0, vf2y                   \n"
+        "vmaddz.w vf2, vf0, vf2z                    \n"
+        "vrsqrt Q, vf0w, vf2w                       \n"
+        "vwaitq                                      \n"
+        "vmulq.xyz vf10, vf10, Q                    \n"
+        "sqc2 vf10, 0(%0)                            \n"
+        ".set reorder"
+        :
+        : "r" (&normalizedAxis), "r" (axis)
+        : "vf2", "vf10", "ACC", "Q", "memory"
+    );
+
     x = normalizedAxis.x;
     y = normalizedAxis.y;
     z = normalizedAxis.z;
 
     matrix->right.x = x * x + (1.0f - x * x) * cosine;
-    matrix->right.y = z * sine + x * y * oneMinusCosine;
-    matrix->right.z = x * z * oneMinusCosine - y * sine;
+    matrix->right.y = z * sine + x * y * (1.0f - cosine);
+    matrix->right.z = x * z * (1.0f - cosine) - y * sine;
     matrix->flags = 0;
 
-    matrix->up.x = x * y * oneMinusCosine - z * sine;
+    matrix->up.x = x * y * (1.0f - cosine) - z * sine;
     matrix->up.y = y * y + (1.0f - y * y) * cosine;
-    matrix->up.z = x * sine + y * z * oneMinusCosine;
+    matrix->up.z = x * sine + y * z * (1.0f - cosine);
     matrix->pad1 = 0;
 
-    matrix->at.x = x * z * oneMinusCosine + y * sine;
-    matrix->at.y = y * z * oneMinusCosine - x * sine;
+    matrix->at.x = x * z * (1.0f - cosine) + y * sine;
+    matrix->at.y = y * z * (1.0f - cosine) - x * sine;
     matrix->at.z = z * z + (1.0f - z * z) * cosine;
     matrix->pad2 = 0;
 
@@ -302,7 +318,7 @@ void func_00358340(const RwV3d* axis, f32 angle)
     );
 }
 
-// FUN_00358380 NONMATCHING
+// FUN_00358380
 void func_00358380(f32 angle)
 {
     RwMatrix matrix;
@@ -312,22 +328,25 @@ void func_00358380(f32 angle)
     cosine = cosf(angle);
     sine = sinf(angle);
 
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "qmfc2.ni $5, $vf0       \n"
+        "pextuw $4, $0, $5       \n"
+        "pextuw $2, $0, $4       \n"
+        "pextuw $3, $4, $0       \n"
+        "sq $2, 0(%0)            \n"
+        "sq $3, 16(%0)           \n"
+        "sq $4, 32(%0)           \n"
+        "sq $5, 48(%0)           \n"
+        ".set reorder"
+        :
+        : "r" (&matrix)
+        : "$2", "$3", "$4", "$5", "memory"
+    );
     matrix.right.x = cosine;
-    matrix.right.y = 0.0f;
     matrix.right.z = -sine;
-    matrix.flags = 0;
-    matrix.up.x = 0.0f;
-    matrix.up.y = 1.0f;
-    matrix.up.z = 0.0f;
-    matrix.pad1 = 0;
     matrix.at.x = sine;
-    matrix.at.y = 0.0f;
     matrix.at.z = cosine;
-    matrix.pad2 = 0;
-    matrix.pos.x = 0.0f;
-    matrix.pos.y = 0.0f;
-    matrix.pos.z = 0.0f;
-    matrix.pad3 = 1;
 
     __asm__ volatile (
         ".set noreorder          \n"
