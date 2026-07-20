@@ -262,7 +262,7 @@ void* K_SceneDraw_UpdateDrwOpcFldObjTask(KwlnTask* drwOpcFldObjTask)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_0019db10 NONMATCHING
+// FUN_0019db10
 s32 func_0019db10(KwlnTask* task)
 {
     ResrcModelFld* modelFld;
@@ -348,7 +348,7 @@ void* K_SceneDraw_UpdateDrwTrnsFldObjTask(KwlnTask* drwTrnsFldObjTask)
 }
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_0019de80 NONMATCHING
+// FUN_0019de80
 s32 func_0019de80(KwlnTask* task)
 {
     ResrcModelFld* modelFld;
