@@ -299,12 +299,13 @@ void* func_0021a480(s32 majorId, s32 minorId)
     return work->pairs[i].raster;
 }
 
-// FUN_0021A590 NONMATCHING
+// FUN_0021A590
 void* func_0021a590(s16 id)
 {
     const u8* work;
     const u8* record;
     u8* scaledIndex;
+    s32 recordOffset;
     u32 target;
     s32 i;
 
@@ -320,7 +321,8 @@ void* func_0021a590(s16 id)
         i++;
     }
     K_ASSERT(i < 0x10, 0x16a);
-    record = work + i * 0x10;
+    recordOffset = i * 0x10;
+    record = (const u8*)(recordOffset + (s32)work);
     K_ASSERT((GC_U32(record, 0x18c) & 2) != 0, 0x16c);
     scaledIndex = (u8*)(i * 0x10);
     return GC_PTR((u32)scaledIndex + (u32)work, 0x194);
