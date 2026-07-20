@@ -3568,11 +3568,12 @@ u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
     return result;
 }
 // FUN_002d6460 NONMATCHING
-s32 FUN_002d6460(BtlAction* action, s32* param_2, s16 param_3,
+s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
                  u64 param_4, s32 param_5)
 {
     s32 result = -1;
     u32 flags = (u32)param_2[2];
+    u32 mode;
 
     if (flags != 0 || ((u32)param_2[4] & 0x3c02aaU) != 0)
     {
@@ -3591,8 +3592,9 @@ s32 FUN_002d6460(BtlAction* action, s32* param_2, s16 param_3,
     {
         result = 10;
     }
+    mode = param_3 & 0xffff;
 
-    if (param_3 == 2 || param_3 == 4)
+    if (mode == 2 || mode == 4)
     {
         result = (action->unit->flags3 & 0x80U) != 0 ? 0x16 : -4;
     }
@@ -4536,16 +4538,14 @@ void FUN_002dae30(u64 param_1)
 // FUN_002db2a0 NONMATCHING
 void FUN_002db2a0(u32 param_1)
 {
-    u8* btl;
-    u32 slotIndex;
     s16 threshold;
-    u8* slot;
+    u32 index;
 
-    btl = iGpffffb6fc;
-    slotIndex = param_1 & 0xffff;
-    *(u16*)(btl + 0xa04) |= (u16)(1u << (param_1 & 0x1f));
+    index = param_1 & 0xffff;
+    *(u16*)(iGpffffb6fc + 0xa04) |=
+        (u16)(1u << index);
 
-    if (slotIndex == 2)
+    if (index == 2)
     {
         if (datGetFlag(0x140) != 0)
         {
@@ -4555,24 +4555,21 @@ void FUN_002db2a0(u32 param_1)
         {
             threshold = (s16)(datCalcRand(2) + 3);
         }
-        slot = btl + slotIndex * 4 + 0x9f8;
-        *(u16*)(slot + 0) = 0;
-        *(s16*)(slot + 2) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
     }
-    else if (slotIndex == 1)
+    else if (index == 1)
     {
         threshold = (s16)(datCalcRand(1) + 2);
-        slot = btl + slotIndex * 4 + 0x9f8;
-        *(u16*)(slot + 0) = 0;
-        *(s16*)(slot + 2) = threshold;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
     }
-    else if (slotIndex == 0)
+    else if (index == 0)
     {
         threshold = (s16)(datCalcRand(0) + 2);
-        slot = btl + slotIndex * 4 + 0x9f8;
-        *(u16*)(slot + 0) = 0;
-        *(s16*)(slot + 2) = threshold;
-        *(u32*)(btl + 0xa10) = 0;
+        *(u16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9f8) = 0;
+        *(s16*)(iGpffffb6fc + (param_1 & 0xffff) * 4 + 0x9fa) = threshold;
+        *(u32*)(iGpffffb6fc + 0xa10) = 0;
     }
 }
 typedef struct BtlTargetActionWork
@@ -5238,74 +5235,65 @@ s16 FUN_002dc670(BtlAction* action)
 // FUN_002dc830 NONMATCHING
 s32 FUN_002dc830(BtlAction* action)
 {
+    BtlUnit* unit;
     s32 result;
+    u32 status;
 
     if ((action->unk_1a & 1) == 0)
     {
         return -1;
     }
 
+    unit = action->unit;
     result = -1;
-    switch (datCalcGetBadStatusNoDown(action->unit->datUnit))
+    status = datCalcGetBadStatusNoDown(unit->datUnit);
+
+    if (status == 0x200)
     {
-        case 0x200:
-            if (action->target.commandId == 0xb || action->target.commandId == 8 ||
-                action->target.commandId == 7)
-            {
-                result = 0x14;
-            }
-            break;
-        case 0x40:
-            if (action->target.commandId == 0xb)
-            {
-                result = 0xc;
-            }
-            break;
-        case 0x20:
-            if (action->target.commandId == 0xb)
-            {
-                result = 10;
-            }
-            break;
-        case 0x10:
-            if (*((u8*)action + 0x28) == 0 && *((u8*)action + 0x29) == 0)
-            {
-                result = 0x12;
-            }
-            break;
-        case 8:
-            if (action->target.commandId == 0xb || action->target.commandId == 8 ||
-                action->target.commandId == 7)
-            {
-                result = 0x10;
-            }
-            else if (action->target.commandId == 0xc || action->target.commandId == 6)
-            {
-                result = 0xe;
-            }
-            break;
-        case 1:
-            result = 8;
-            if (action->target.commandId == 1)
-            {
-                result = 6;
-            }
-            break;
-        default:
-            break;
+        if (action->target.commandId == 0xb ||
+            action->target.commandId == 8 ||
+            action->target.commandId == 7)
+            result = 0x14;
+    }
+    else if (status == 0x40)
+    {
+        if (action->target.commandId == 0xb) result = 0xc;
+    }
+    else if (status == 0x20)
+    {
+        if (action->target.commandId == 0xb) result = 10;
+    }
+    else if (status == 0x10)
+    {
+        if (*(u8*)((u8*)action + 0x28) == 0 &&
+            *(u8*)((u8*)action + 0x29) == 0)
+            result = 0x12;
+    }
+    else if (status == 8)
+    {
+        if (action->target.commandId == 0xb ||
+            action->target.commandId == 8 ||
+            action->target.commandId == 7)
+            result = 0x10;
+        else if (action->target.commandId == 0xc ||
+                 action->target.commandId == 6)
+            result = 0xe;
+    }
+    else if (status == 1)
+    {
+        result = 8;
+        if (action->target.commandId == 1) result = 6;
     }
 
-    if (result >= 0 && action->unit->genus != 0)
-    {
+    if (result >= 0 && unit->genus != 0)
         result++;
-    }
-
     return result;
 }
 
 // FUN_002dca60 NONMATCHING
 s32 FUN_002dca60(BtlAction* action)
 {
+    BtlUnit* unit;
     s32 result;
 
     if ((action->unk_1a & 1) == 0)
@@ -5313,45 +5301,26 @@ s32 FUN_002dca60(BtlAction* action)
         return -1;
     }
 
+    unit = action->unit;
     result = -1;
-    switch (datCalcGetBadStatusNoDown(action->unit->datUnit))
+    switch (datCalcGetBadStatusNoDown(unit->datUnit))
     {
-        case 0x200:
-            result = 0x38;
-            break;
-        case 0x100:
-            result = 0x36;
-            break;
-        case 0x40:
-            result = 0x34;
-            break;
-        case 0x20:
-            result = 0x32;
-            break;
-        case 0x10:
-            result = 0x30;
-            break;
-        case 8:
-            result = 0x2e;
-            break;
-        case 4:
-            result = 0x2c;
-            break;
-        case 2:
-            result = 0x2a;
-            break;
-        case 1:
-            result = 0x28;
-            break;
-        default:
-            break;
+        case 0x200: result = 0x38; break;
+        case 0x100: result = 0x36; break;
+        case 0x40: result = 0x34; break;
+        case 0x20: result = 0x32; break;
+        case 0x10: result = 0x30; break;
+        case 8: result = 0x2e; break;
+        case 4: result = 0x2c; break;
+        case 2: result = 0x2a; break;
+        case 1: result = 0x28; break;
+        default: break;
     }
 
-    if (result >= 0 && action->unit->genus != 0)
+    if (result >= 0 && unit->genus != 0)
     {
         result++;
     }
-
     return result;
 }
 
