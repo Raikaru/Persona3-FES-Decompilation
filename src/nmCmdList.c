@@ -409,7 +409,7 @@ u64 FUN_003c6120(int param_1,int param_2)
 }
 #define FUN_003c6120(...) ((u64 (*)(...))FUN_003c6120)(__VA_ARGS__)
 #undef FUN_003c6270
-// FUN_003C6270 NONMATCHING
+// FUN_003C6270
 
 u32 FUN_003c6270(int param_1)
 {
@@ -437,11 +437,7 @@ u32 FUN_003c6270(int param_1)
     }
   }
   if ((*puVar1 & 2) == 0) {
-    if ((*puVar1 & 1) != 0) {
-      uVar2 = 3;
-    } else {
-      uVar2 = 2;
-    }
+    uVar2 = ((*puVar1 & 1) != 0) ? 3 : 2;
   } else {
     uVar2 = 0;
   }
