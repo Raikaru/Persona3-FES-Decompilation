@@ -53,7 +53,7 @@ extern u32 FUN_00112370_fmgsl(void*);
 u32  FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,long param_6);
 u8 FUN_003b44a0(void);
 int * FUN_003b4520(void);
-void FUN_003b4580(long param_1);
+void FUN_003b4580(int param_1);
 int * FUN_003b45f0(int param_1,int param_2);
 int * FUN_003b46b0(int param_1);
 u32 FUN_003b46f0(int *param_1,int param_2);
@@ -262,6 +262,8 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,long pa
 #undef FUN_003b44a0
 #pragma alias DAT_0095aebc_abs DAT_0095aebc
 extern u8 DAT_0095aebc_abs[];
+#pragma alias DAT_0095aeb8_abs DAT_0095aeb8
+extern u8 DAT_0095aeb8_abs[];
 #pragma alias DAT_0095aea0_abs DAT_0095aea0
 extern u8 DAT_0095aea0_abs[];
 #pragma alias DAT_0095aea4_abs DAT_0095aea4
@@ -325,43 +327,23 @@ int * FUN_003b4520(void)
 // FUN_003B4580 NONMATCHING
 
 
-void FUN_003b4580(long param_1)
-
-
-
+void FUN_003b4580(int param_1)
 {
-
+  int iVar2;
   int iVar1;
 
-  int iVar2;
-
-  int iVar3;
-
-  
-
   if (param_1 == 0) {
-
     FUN_0019d3f0("fmGslCont.c",0xc2);
-
   }
-
-  iVar2 = DAT_0095aebc;
-
-  iVar1 = *(int *)(DAT_0095aebc + 0x1c);
-
-  iVar3 = (int)param_1;
-
-  *(int *)(iVar3 + 0x18) = DAT_0095aebc;
-
-  *(int *)(iVar3 + 0x1c) = iVar1;
-
-  *(int *)(iVar2 + 0x1c) = iVar3;
-
-  *(int *)(iVar1 + 0x18) = iVar3;
-
-  DAT_0095aeb8 = DAT_0095aeb8 + 1;
-
+  iVar2 = *(int *)DAT_0095aebc_abs;
+  iVar1 = *(int *)(*(int *)DAT_0095aebc_abs + 0x1c);
+  *(int *)(param_1 + 0x18) = *(int *)DAT_0095aebc_abs;
+  *(int *)(param_1 + 0x1c) = iVar1;
+  *(int *)(iVar2 + 0x1c) = param_1;
+  *(int *)(iVar1 + 0x18) = param_1;
+  *(int *)DAT_0095aeb8_abs = *(int *)DAT_0095aeb8_abs + 1;
   return;
+
 
 }
 #define FUN_003b4580(...) ((void (*)(...))FUN_003b4580)(__VA_ARGS__)
