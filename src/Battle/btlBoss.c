@@ -52,6 +52,9 @@ extern f32 DAT_007caf58;
 extern f32 DAT_007caf5c;
 extern f32 DAT_007caf60;
 extern f32 DAT_007caf64;
+extern f32 DAT_007ca4e4;
+extern f32 DAT_007ca564;
+extern u32 DAT_007cc970;
 extern u8* DAT_007ce3ec;
 extern u8* DAT_007ce3f4;
 extern u8* iGpffffb6fc;
@@ -3330,237 +3333,134 @@ void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5)
 }
 
 // FUN_002FED10 NONMATCHING
-
-
-
-
-
-
-
-
 u32 FUN_002fed10(int param_1)
-
-
-
 {
+    struct
+    {
+        u8 pad[0x10];
+        u32 saved[9];
+        u8 colors[12];
+    } local;
+    u32 i;
+    u32 result;
+    u16* timer;
+    u16* counter;
+    char* state;
+    float progress;
+    float value;
+    float fade;
 
-  char cVar1;
-
-  char *pcVar2;
-
-  long lVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  u32 uVar8;
-
-  u32 auStack_30 [9];
-
-  u8 uStack_c;
-
-  u8 uStack_b;
-
-  u8 uStack_a;
-
-  u8 uStack_9;
-
-  u8 uStack_8;
-
-  u8 uStack_7;
-
-  u8 uStack_6;
-
-  u8 uStack_5;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 uStack_1;
-
-  
-
-  uVar5 = 0;
-
-  for (uVar4 = 0; uVar4 < 7; uVar4 = uVar4 + 1) {
-
-    (*DAT_00960094)(DAT_0069aa50[uVar4],auStack_30 + uVar4);
-
-  }
-
-  pcVar2 = *(char **)(param_1 + 0x3c);
-
-  cVar1 = *pcVar2;
-
-  if (cVar1 == '\x03') {
-
-    lVar3 = FUN_00108710();
-
-    if (lVar3 != 0) {
-
-      FUN_001085c0();
-
-      DAT_007ce508 = 0;
-
-      uVar5 = 0xffffffff;
-
+    result = 0;
+    for (i = 0; i < 7; i++)
+    {
+        (*DAT_00960094)(DAT_0069aa50[i], &local.saved[i]);
     }
 
-    goto LAB_002ff1b4;
-
-  }
-
-  if (cVar1 != '\x02') {
-
-    if (cVar1 != '\x01') goto LAB_002ff1b4;
-
-    if (DAT_007ce50c == 0) {
-
-      DAT_007ce50a = DAT_007ce50a + 1;
-
-      fVar7 = (float)DAT_007ce50a / 20.0;
-
-      (*DAT_00960090)(7,2);
-
-      (*DAT_00960090)(0x14,1);
-
-      (*DAT_00960090)(0xe,0);
-
-      (*DAT_00960090)(6,0);
-
-      (*DAT_00960090)(8,0);
-
-      (*DAT_00960090)(0xc,1);
-
-      (*DAT_00960090)(1,0);
-
-      FUN_004d7f60(2,0x44);
-
-      FUN_004d7f60(3,0x31801);
-
-      FUN_003294d0();
-
-      uStack_4 = 0xff;
-
-      uStack_3 = 0xff;
-
-      uStack_2 = 0xff;
-
-      fVar6 = (1.0 - fVar7 * fVar7 * fVar7 * fVar7 * fVar7 * fVar7) * 255.0;
-
-      if (fVar6 < 2.1474836e+09) {
-
-        uStack_1 = (u8)(int)fVar6;
-
-      }
-
-      else {
-
-        uStack_1 = (u8)(int)(fVar6 - 2.1474836e+09);
-
-      }
-
-      FUN_00358460(&uStack_4,0);
-
-      uStack_8 = 0xff;
-
-      uStack_7 = 0xff;
-
-      uStack_6 = 0xff;
-
-      fVar6 = (1.0 - fVar7 * fVar7) * 160.0;
-
-      if (fVar6 < 2.1474836e+09) {
-
-        uStack_5 = (u8)(int)fVar6;
-
-      }
-
-      else {
-
-        uStack_5 = (u8)(int)(fVar6 - 2.1474836e+09);
-
-      }
-
-      uStack_c = 0xff;
-
-      uStack_b = 0xff;
-
-      uStack_a = 0xff;
-
-      uStack_9 = uStack_1;
-
-
-      FUN_00329550();
-
-
-      if (0x13 < DAT_007ce50a) {
-
-        *pcVar2 = '\x03';
-
-      }
-
-      goto LAB_002ff1b4;
-
+    state = *(char**)((u8*)param_1 + 0x3c);
+    if (*state == 3)
+    {
+        if (FUN_00108710() != 0)
+        {
+            FUN_001085c0();
+            *(u8*)&DAT_007ce508 = 0;
+            result = 0xffffffff;
+        }
+        goto fd10_restore;
     }
 
-    DAT_007ce50c = DAT_007ce50c + -1;
+    if (*state == 1)
+    {
+        timer = (u16*)&DAT_007ce50c;
+        counter = (u16*)&DAT_007ce50a;
+        if (*timer == 0)
+        {
+            *counter = *counter + 1;
+            progress = (float)(s32)*counter / 20.0f;
 
-  }
+            (*DAT_00960090)(7, 2);
+            (*DAT_00960090)(0x14, 1);
+            (*DAT_00960090)(0xe, 0);
+            (*DAT_00960090)(6, 0);
+            (*DAT_00960090)(8, 0);
+            (*DAT_00960090)(0xc, 1);
+            (*DAT_00960090)(1, 0);
+            FUN_004d7f60(2, 0x44);
+            FUN_004d7f60(3, 0x31801);
+            FUN_003294d0();
 
+            local.colors[0] = 0xff;
+            local.colors[1] = 0xff;
+            local.colors[2] = 0xff;
+            value = 1.0f - progress * progress * progress * progress * progress * progress;
+            value *= 255.0f;
+            if (value < 2147483600.0f)
+                local.colors[3] = (u8)(s32)value;
+            else
+                local.colors[3] = (u8)(s32)(value - 2147483600.0f);
+            FUN_00358460(local.colors, 0);
 
-  uVar8 = DAT_007caf64;
+            local.colors[4] = 0xff;
+            local.colors[5] = 0xff;
+            local.colors[6] = 0xff;
+            value = (1.0f - progress * progress) * 160.0f;
+            if (value < 2147483600.0f)
+                local.colors[7] = (u8)(s32)value;
+            else
+                local.colors[7] = (u8)(s32)(value - 2147483600.0f);
 
-  if (*(short *)(pcVar2 + 6) == 1) {
+            local.colors[8] = 0xff;
+            local.colors[9] = 0xff;
+            local.colors[10] = 0xff;
+            local.colors[11] = local.colors[3];
+            FUN_00329550();
 
-    uVar8 = DAT_007caee4;
+            if (*counter > 0x13)
+                *state = 3;
+            goto fd10_restore;
+        }
+        *timer = *timer - 1;
+    }
 
-  }
+    local.colors[0] = 0xff;
+    local.colors[1] = 0xff;
+    local.colors[2] = 0xff;
 
-  uStack_4 = 0xff;
+    if (*(s16*)(state + 6) == 1)
+        local.colors[3] = 0x10;
+    else
+        local.colors[3] = 0x18;
 
-  uStack_3 = 0xff;
+    if (*state == 2)
+    {
+        (*DAT_00960090)(7, 2);
+        (*DAT_00960090)(0x14, 1);
+        (*DAT_00960090)(0xe, 0);
+        (*DAT_00960090)(6, 0);
+        (*DAT_00960090)(8, 0);
+        (*DAT_00960090)(0xc, 1);
+        (*DAT_00960090)(1, 0);
+        FUN_004d7f60(2, 0x44);
+        FUN_004d7f60(3, 0x31801);
+        FUN_002fe0b0(1.0f, (u8*)&DAT_007cc970, 0x44, 0x31801, 1);
 
-  uStack_2 = 0xff;
+        fade = (*(s16*)(state + 6) == 1) ? DAT_007ca4e4 : DAT_007ca564;
+        local.colors[0] = 0xff;
+        local.colors[1] = 0xff;
+        local.colors[2] = 0xff;
+        local.colors[3] = (*(s16*)(state + 6) == 1) ? 0x10 : 0x18;
+        FUN_002fe0b0(fade, local.colors, 0x44, 0x31801, 2);
+        local.colors[3] = 5;
+        FUN_002fe0b0(fade, local.colors, 0x48, 0x31801, 2);
+        goto fd10_restore;
+    }
 
-  if (*(short *)(pcVar2 + 6) == 1) {
-
-    uStack_1 = 0x10;
-
-  }
-
-  else {
-
-    uStack_1 = 0x18;
-
-  }
-
-
-  uStack_1 = 5;
-
-
-LAB_002ff1b4:
-
-  for (uVar4 = 0; uVar4 < 7; uVar4 = uVar4 + 1) {
-
-    (*DAT_00960090)(DAT_0069aa50[uVar4],auStack_30[uVar4]);
-
-  }
-
-  (*DAT_00960090)(1,0);
-
-  FUN_004d7f60(2,0x44);
-
-  FUN_004d7f60(3,0x717fb);
-
-  return uVar5;
-
+fd10_restore:
+    for (i = 0; i < 7; i++)
+    {
+        (*DAT_00960090)(DAT_0069aa50[i], local.saved[i]);
+    }
+    (*DAT_00960090)(1, 0);
+    FUN_004d7f60(2, 0x44);
+    FUN_004d7f60(3, 0x717fb);
+    return result;
 }
