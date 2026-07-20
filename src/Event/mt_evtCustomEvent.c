@@ -5,6 +5,7 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern u32 DAT_006a11d0;
+extern char D_006A1200[];
 extern u32 DAT_006a11d4;
 extern u32 DAT_007cd488;
 extern u32 DAT_007ce420;
@@ -52,13 +53,21 @@ extern char DAT_006a1820[];
 extern u32 FUN_003b5d10_eb90(u32);
 #pragma alias FUN_003b7090_eb90 FUN_003b7090
 extern void FUN_003b7090_eb90(u32);
+#pragma alias FUN_0016dd40_d010 FUN_0016dd40
+extern s16 FUN_0016dd40_d010(void);
+#pragma alias FUN_0016dce0_d010 FUN_0016dce0
+extern u32 FUN_0016dce0_d010(s16);
+#pragma alias FUN_003a2090_d010 FUN_003a2090
+extern u32 FUN_003a2090_d010(u32,s16,s8,u16);
+#pragma alias kwlnTaskExists_d010 kwlnTaskExists
+extern u32 kwlnTaskExists_d010(u32);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-int FUN_003983e0(int param_1,u64 param_2);
+int FUN_003983e0(int param_1,int param_2);
 u32 FUN_00398530(int param_1);
 void FUN_00399830(int param_1);
 u32 FUN_003998b0(int param_1);
@@ -78,7 +87,7 @@ u32 FUN_0039c440(int param_1);
 void FUN_0039cd60(int param_1);
 u32 FUN_0039cdc0(int param_1);
 void FUN_0039cfb0(int param_1);
-u32 FUN_0039d010(u64 param_1);
+u32 FUN_0039d010(int param_1);
 void FUN_0039d190(int param_1);
 void FUN_0039d1c0(int param_1);
 u32 FUN_0039d550(int param_1);
@@ -147,83 +156,42 @@ int FUN_0039ec60(int param_1);
 #define FUN_0039ec60(...) ((int (*)(...))FUN_0039ec60)(__VA_ARGS__)
 
 #undef FUN_003983e0
-// FUN_003983E0 NONMATCHING
+// FUN_003983E0
 
 
-int FUN_003983e0(int param_1,u64 param_2)
-
-
-
+int FUN_003983e0(int param_1,int param_2)
 {
-
-  long lVar1;
-
+  int iVar1;
   int iVar2;
 
-  int iVar3;
-
-  int iVar4;
-
-  
-
+  iVar1 = 0;
   iVar2 = 0;
-
-  lVar1 = FUN_00172160(param_2);
-
-  if (lVar1 == 1) {
-
-    iVar3 = 2;
-
+  if (FUN_00172160(param_2) == 1) {
+    iVar1 = 2;
   }
-
   else {
-
-    lVar1 = FUN_001717c0(param_2);
-
-    iVar3 = 0;
-
-    if (lVar1 == 1) {
-
-      iVar3 = 1;
-
+    if (FUN_001717c0(param_2) == 1) {
+      iVar1 = 1;
     }
-
   }
-
-  iVar4 = (int)param_2;
-
-  if (param_1 == 3) {
-
-    iVar2 = iVar3 + iVar4 * 0xc + 9;
-
+  switch (param_1) {
+  case 0:
+    iVar2 = iVar1 + param_2 * 0xc;
+    break;
+  case 1:
+    iVar2 = iVar1 + ((param_2 * 0xc) + 3);
+    break;
+  case 2:
+    iVar2 = iVar1 + ((param_2 * 0xc) + 6);
+    break;
+  case 3:
+    iVar2 = iVar1 + ((param_2 * 0xc) + 9);
+    break;
   }
-
-  else if (param_1 == 2) {
-
-    iVar2 = iVar3 + iVar4 * 0xc + 6;
-
+  if ((iVar2 + 5 >= 0x16d) || (iVar2 + 5 < 0)) {
+    FUN_0019d3f0(D_006A1200,0x110);
   }
-
-  else if (param_1 == 1) {
-
-    iVar2 = iVar3 + iVar4 * 0xc + 3;
-
-  }
-
-  else if (param_1 == 0) {
-
-    iVar2 = iVar3 + iVar4 * 0xc;
-
-  }
-
-  if ((0x16c < iVar2 + 5) || (iVar2 + 5 < 0)) {
-
-    FUN_0019d3f0("mt_evtCustomEvent.c",0x110);
-
-  }
-
   return iVar2 + 5;
-
 }
 #define FUN_003983e0(...) ((int (*)(...))FUN_003983e0)(__VA_ARGS__)
 #undef FUN_00398530
@@ -4388,108 +4356,45 @@ void FUN_0039cfb0(int param_1)
 // FUN_0039D010 NONMATCHING
 
 
-u32 FUN_0039d010(u64 param_1)
-
-
-
+u32 FUN_0039d010(int param_1)
 {
+  int *piVar1;
+  int *piVar2;
+  int iVar3;
+  s8 cVar4;
+  int sVar5;
+  u16 uVar6;
 
-  char cVar1;
-
-  u16 uVar2;
-
-  int *piVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  short sVar6;
-
-  int iVar7;
-
-  u32 uVar8;
-
-  long lVar9;
-
-  long lVar10;
-
-  
-
-  piVar3 = *(int **)((int)param_1 + 0x3c);
-
-  iVar7 = piVar3[1];
-
-  iVar4 = piVar3[2];
-
-  iVar5 = *piVar3;
-
-  if (iVar5 == 2) {
-
-    uVar8 = 0xffffffff;
-
-  }
-
-  else {
-
-    if (iVar5 == 1) {
-
-      lVar10 = FUN_00195460(piVar3[3]);
-
-      if (lVar10 == 0) {
-
-        *piVar3 = 2;
-
-      }
-
+  piVar1 = *(int **)(param_1 + 0x3c);
+  piVar2 = (int *)piVar1[1];
+  iVar3 = piVar1[2];
+  switch (piVar1[0]) {
+  case 0:
+    cVar4 = *(s8 *)(iVar3 + 0x14);
+    sVar5 = *(s8 *)(iVar3 + 0x18);
+    uVar6 = *(u16 *)(iVar3 + 0x16);
+    if ((cVar4 == 3) || (cVar4 == 2) || (cVar4 == 1)) {
+      sVar5 = FUN_0016dd40_d010();
     }
-
-    else if (iVar5 == 0) {
-
-      cVar1 = *(char *)(iVar4 + 0x14);
-
-      lVar10 = (long)*(char *)(iVar4 + 0x18);
-
-      uVar2 = *(u16 *)(iVar4 + 0x16);
-
-      if (((cVar1 == '\x03') || (cVar1 == '\x02')) || (cVar1 == '\x01')) {
-
-        sVar6 = FUN_0016dd40();
-
-        lVar10 = (long)sVar6;
-
+    if (FUN_0016dce0_d010((s16)sVar5) == 0) {
+      if ((piVar2[1] & 8) != 0) {
+        FUN_0019d3f0(D_006A1200,0xd88);
+        return 0xffffffff;
       }
-
-      lVar9 = FUN_0016dce0((short)lVar10);
-
-      if (lVar9 == 0) {
-
-        if ((*(u32 *)(iVar7 + 4) & 8) != 0) {
-
-          FUN_0019d3f0("mt_evtCustomEvent.c",0xd88);
-
-          return 0xffffffff;
-
-        }
-
-        lVar10 = 0;
-
-      }
-
-      iVar7 = FUN_003a2090(param_1,lVar10,cVar1,uVar2);
-
-      piVar3[3] = iVar7;
-
-      *piVar3 = 1;
-
+      sVar5 = 0;
     }
-
-    uVar8 = 0;
-
+    piVar1[3] = FUN_003a2090_d010(param_1,sVar5,cVar4,uVar6);
+    piVar1[0] = 1;
+    break;
+  case 1:
+    if (kwlnTaskExists_d010(piVar1[3]) == 0) {
+      piVar1[0] = 2;
+    }
+    break;
+  case 2:
+    return 0xffffffff;
   }
-
-  return uVar8;
-
+  return 0;
 }
 #define FUN_0039d010(...) ((u32 (*)(...))FUN_0039d010)(__VA_ARGS__)
 #undef FUN_0039d190
