@@ -327,30 +327,39 @@ void* func_001a6860(void* object, u32* context)
 // FUN_001a69a0 NONMATCHING
 void* func_001a69a0(void* object, const char* name, s32 value)
 {
-    s32 resourceIndex;
+    void* geometry;
     s32 elementIndex;
+    s32 resourceIndex;
     void* material;
-    void* result;
-
-    result = NULL;
-    for (resourceIndex = 0; resourceIndex < func_0048ede0(*(void**)((u8*)object + 4)); resourceIndex++)
+    struct
     {
-        material = func_0048ee30(*(void**)((u8*)object + 4), resourceIndex);
-        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), name) == 0)
+        char nameCopy[0x40];
+        void* result;
+        s32 inputValue;
+    } context;
+
+    geometry = *(void**)((u8*)object + 4);
+    strcpy(context.nameCopy, name);
+    context.result = NULL;
+    context.inputValue = value;
+    for (resourceIndex = 0; resourceIndex < func_0048ede0(geometry); resourceIndex++)
+    {
+        material = func_0048ee30(geometry, resourceIndex);
+        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), context.nameCopy) == 0)
         {
             for (elementIndex = 0; elementIndex < func_0048ef30(material); elementIndex++)
             {
                 if (RpUserDataArrayGetFormat((RpUserDataArray*)material) == rpINTUSERDATA &&
-                    RpUserDataArrayGetInt((RpUserDataArray*)material, elementIndex) == value)
+                    RpUserDataArrayGetInt((RpUserDataArray*)material, elementIndex) == context.inputValue)
                 {
-                    result = *(void**)((u8*)object + 4);
-                    return result;
+                    context.result = geometry;
+                    return context.result;
                 }
             }
         }
     }
-    func_004cb6e0(*(void**)((u8*)object + 4), (KClumpCallback)func_001a6860, (void*)name);
-    return result;
+    func_004cb6e0(geometry, (KClumpCallback)func_001a6860, context.nameCopy);
+    return context.result;
 }
 
 // FUN_001a6af0
@@ -444,39 +453,49 @@ void* func_001a6d20(void* object, u32* context)
 // FUN_001a6e90 NONMATCHING
 void func_001a6e90(f32* result, void* object, const char* name, s32 index)
 {
-    u32 context[0x15];
+    struct
+    {
+        char nameCopy[0x40];
+        s32 targetIndex;
+        s32 currentIndex;
+        s32 unused0;
+        s32 resultValue;
+        void* resultMaterial;
+    } context;
+    void* geometry;
     s32 resourceIndex;
     s32 elementIndex;
     void* material;
 
-    memset(context, 0, 0x54);
-    strcpy((char*)&context[0x18], name);
-    context[0x28] = (u32)index;
-    for (resourceIndex = 0; resourceIndex < func_0048ede0(*(void**)((u8*)object + 4)); resourceIndex++)
+    geometry = *(void**)((u8*)object + 4);
+    memset(&context, 0, 0x54);
+    strcpy(context.nameCopy, name);
+    context.targetIndex = index;
+    for (resourceIndex = 0; resourceIndex < func_0048ede0(geometry); resourceIndex++)
     {
-        material = func_0048ee30(*(void**)((u8*)object + 4), resourceIndex);
-        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), (char*)&context[0x18]) == 0)
+        material = func_0048ee30(geometry, resourceIndex);
+        if (strcmp(RpUserDataArrayGetName((RpUserDataArray*)material), context.nameCopy) == 0)
         {
             for (elementIndex = 0; elementIndex < func_0048ef30(material); elementIndex++)
             {
                 if (RpUserDataArrayGetFormat((RpUserDataArray*)material) == rpINTUSERDATA)
                 {
-                    if (context[0x28] == context[0x29])
+                    if (context.targetIndex == context.currentIndex)
                     {
-                        *(s32*)&context[0x2c] = RpUserDataArrayGetInt((RpUserDataArray*)material, elementIndex);
-                        *(void**)&context[0x2d] = material;
-                        *(f32*)result = *(f32*)&context[0x2c];
-                        *(f32*)((u8*)result + 4) = *(f32*)&context[0x2d];
+                        context.resultValue = RpUserDataArrayGetInt((RpUserDataArray*)material, elementIndex);
+                        context.resultMaterial = material;
+                        *(f32*)result = *(f32*)&context.resultValue;
+                        *(f32*)((u8*)result + 4) = *(f32*)&context.resultMaterial;
                         return;
                     }
-                    context[0x29]++;
+                    context.currentIndex++;
                 }
             }
         }
     }
-    func_004cb6e0(*(void**)((u8*)object + 4), (KClumpCallback)func_001a6d20, context);
-    *(f32*)result = *(f32*)&context[0x2c];
-    *(f32*)((u8*)result + 4) = *(f32*)&context[0x2d];
+    func_004cb6e0(geometry, (KClumpCallback)func_001a6d20, &context);
+    *(f32*)result = *(f32*)&context.resultValue;
+    *(f32*)((u8*)result + 4) = *(f32*)&context.resultMaterial;
 }
 
 // FUN_001a7020
@@ -535,7 +554,6 @@ void func_001a7170(void* object, void* data)
 void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
 {
     KClumpMaterialNode* node;
-    KClumpMaterialNode** head;
 
     node = (KClumpMaterialNode*)kclump_alloc(1, sizeof(KClumpMaterialNode), 0x40000);
     if (node == NULL)
@@ -553,53 +571,56 @@ void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
     node->colorScale[1] = 1.0f;
     node->colorScale[2] = 1.0f;
     node->colorScale[3] = 1.0f;
-    head = NULL;
     switch (kind)
     {
     case 0:
     case 1:
         node->kind = 1;
-        head = (KClumpMaterialNode**)&state[2];
+        node->next = *(KClumpMaterialNode**)&state[2];
+        *(KClumpMaterialNode**)&state[2] = node;
         break;
     case 2:
         node->kind = 2;
-        head = (KClumpMaterialNode**)&state[5];
+        node->next = *(KClumpMaterialNode**)&state[5];
+        *(KClumpMaterialNode**)&state[5] = node;
         break;
     case 3:
         node->kind = 3;
-        head = (KClumpMaterialNode**)&state[9];
+        node->next = *(KClumpMaterialNode**)&state[9];
+        *(KClumpMaterialNode**)&state[9] = node;
         break;
     case 4:
         node->kind = 4;
-        head = (KClumpMaterialNode**)&state[10];
+        node->next = *(KClumpMaterialNode**)&state[10];
+        *(KClumpMaterialNode**)&state[10] = node;
         break;
     case 5:
         node->kind = 5;
-        head = (KClumpMaterialNode**)&state[3];
+        node->next = *(KClumpMaterialNode**)&state[3];
+        *(KClumpMaterialNode**)&state[3] = node;
         break;
     case 6:
         node->kind = 6;
-        head = (KClumpMaterialNode**)&state[4];
+        node->next = *(KClumpMaterialNode**)&state[4];
+        *(KClumpMaterialNode**)&state[4] = node;
         break;
     case 7:
         node->kind = 7;
-        head = (KClumpMaterialNode**)&state[6];
+        node->next = *(KClumpMaterialNode**)&state[6];
+        *(KClumpMaterialNode**)&state[6] = node;
         break;
     case 8:
         node->kind = 8;
-        head = (KClumpMaterialNode**)&state[7];
+        node->next = *(KClumpMaterialNode**)&state[7];
+        *(KClumpMaterialNode**)&state[7] = node;
         break;
     case 9:
         node->kind = 9;
-        head = (KClumpMaterialNode**)&state[8];
+        node->next = *(KClumpMaterialNode**)&state[8];
+        *(KClumpMaterialNode**)&state[8] = node;
         break;
     default:
         break;
-    }
-    if (head != NULL)
-    {
-        node->next = *head;
-        *head = node;
     }
     state[0]++;
 }
@@ -607,13 +628,12 @@ void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
 // FUN_001a7370 NONMATCHING
 void* func_001a7370(void* material, u32* state)
 {
-    s32 index;
     s32 candidate;
     s32 current;
     s32 selected;
-    u32 value;
+    s32 value;
 
-    value = (u32)K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c28);
+    value = K_Clump_MatUsrDataGetInt((RpMaterial*)material, (const char*)0x00678c28);
     if (K_Clump_MatUsrDataHasData((RpMaterial*)material, (const char*)0x00678c38))
     {
         if (value < 2)
