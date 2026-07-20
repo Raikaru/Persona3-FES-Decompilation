@@ -3424,7 +3424,7 @@ u32 FUN_001FEEC0(void)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_001FEF90 NONMATCHING
+// FUN_001FEF90
 void FUN_001FEF90(u32 id)
 {
     u32 first;
@@ -3433,10 +3433,10 @@ void FUN_001FEF90(u32 id)
 
     switch ((u16)id)
     {
-    case 0:
+    case 2:
         first = 0xe3; second = 0xe4; third = 0xe5;
         break;
-    case 1:
+    case 3:
         if (datGetFlag(0xdf) != 0)
             goto flag_set;
         first = 0xe6;
@@ -3446,19 +3446,19 @@ void FUN_001FEF90(u32 id)
     flag_done:
         second = 0xe8; third = 0xe9;
         break;
-    case 2:
+    case 4:
         first = 0xea; second = 0xeb; third = 0xec;
         break;
-    case 3:
+    case 5:
         first = 0xed; second = 0xee; third = 0xef;
         break;
-    case 4:
+    case 7:
         first = 0xf0; second = 0xf1; third = 0xf2;
         break;
-    case 5:
+    case 8:
         first = 0xf3; second = 0xf4; third = 0xf5;
         break;
-    case 6:
+    case 9:
         if (datGetScenarioMode() != 0)
             goto scenario_set;
         first = 0xf6; second = 0xf7; third = 0xf8;
@@ -3466,12 +3466,8 @@ void FUN_001FEF90(u32 id)
     scenario_set:
         first = 0xfc; second = 0xfd; third = 0xfe;
         break;
-    case 7:
-        first = 0xf9; second = 0xfa; third = 0xfb;
-        break;
-    case 8:
-    case 9:
     case 10:
+        first = 0xf9; second = 0xfa; third = 0xfb;
         break;
     default:
         K_ASSERT(0, 0x468);
