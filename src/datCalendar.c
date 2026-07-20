@@ -3356,6 +3356,7 @@ typedef struct
     s16 sourceMonth;
     s16 sourceDay;
     s16 frame;
+    s16 padding;
     s16 currentMonth;
     s16 currentDay;
     s16 targetMonth;
@@ -3778,15 +3779,15 @@ void func_00185830(KwlnTask* task)
     CLND_FREE(work);
 }
 
-// FUN_00185880 NONMATCHING
+// FUN_00185880
 KwlnTask* func_00185880(KwlnTask* parent,
                         s16 sourceMonth,
                         s16 sourceDay,
                         s16 targetMonth,
                         s16 targetDay)
 {
-    CalendarDateTransitionWork* work;
     KwlnTask* task;
+    CalendarDateTransitionWork* work;
 
     work = CLND_ALLOC(1, sizeof(CalendarDateTransitionWork), 0x40000);
     if (work == NULL)
