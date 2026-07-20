@@ -21,6 +21,27 @@ extern void func_0010a4e0(s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 extern u8* D_0067EF00[];
 extern Model* D_008717F0;
 extern u32 D_00875A50[RESRC_ID_MASK + 1];
+extern u8 D_006791A0[];
+extern u8 D_0067B160[];
+extern u8 D_0067CFE0[];
+extern u8 D_006799FC[];
+extern u8 D_00679A16[];
+extern u8 D_00679A30[];
+extern u8 D_00679A4A[];
+extern const char D_00683BC8[];
+extern const char D_00683BE0[];
+extern void* func_004d1260(const char* path, s32 mode);
+extern u32 D_00875A60[];
+extern const char D_00683C00[];
+extern const char D_00683C20[];
+extern const char D_00683C40[];
+extern const char D_00683C60[];
+extern const char D_00683C80[];
+extern const char D_00683CA0[];
+extern const char D_00683CC0[];
+extern const char D_00683CE0[];
+extern const char D_00683D00[];
+extern const char D_00683D20[];
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
@@ -344,45 +365,52 @@ static u32 K_Footstep_GameState(void)
 void* func_001dc6f0(KwlnTask* task)
 {
     FldEffectWork* work;
-    if (task == NULL || task->workData == NULL)
-    {
-        return KWLNTASK_CONTINUE;
-    }
     work = (FldEffectWork*)task->workData;
     switch (work->state)
     {
     case 0:
-        if (work->eplTask == NULL || func_001a9180(work->eplTask) == 0)
+        if (func_001a9180(work->eplTask) != 0)
         {
-            return KWLNTASK_CONTINUE;
+            RwV3d pos;
+            pos = mdlGetMatrix(D_008717F0)->pos;
+            pos.y += 240.0f;
+            func_001a9390(work->eplTask, func_001a91b0(work->eplTask, &pos), 5);
+            work->timer = 0;
+            work->state += 1;
         }
-        {
-            RwV3d pos = mdlGetMatrix(D_008717F0)->pos;
-            void* effect;
-            pos.y += 70.0f;
-            effect = func_001a91b0(work->eplTask, &pos);
-            func_001a9390(work->eplTask, effect, 5);
-        }
-        work->timer = 0;
-        work->state = 1;
         break;
     case 1:
-        ++work->timer;
-        if (work->timer == 0x29 && work->mode != 0)
+        if (work->timer < 0x54)
         {
-            H_Fade_FadeOut();
-            H_Fade_SetDuration(1);
-            H_Fade_SetType(6);
+            if (work->timer >= 0x29)
+            {
+                s32 i;
+                func_001d4180();
+                for (i = 0; i < FLDUNIT_PC_MAX; ++i)
+                {
+                    FldUnit* unit = &gFldUnitsPc[i];
+                    if (unit->genusBase != NULL && unit->resrc != NULL)
+                    {
+                        unit->resrc->base.flags &= ~2u;
+                    }
+                }
+                if (work->mode == 1)
+                {
+                    H_Fade_FadeOut();
+                    H_Fade_SetDuration(1);
+                    H_Fade_SetType(6);
+                    work->state += 1;
+                }
+            }
+            work->timer += 1;
         }
-        if (work->timer >= 0x54)
+        else
         {
-            work->state = 2;
+            work->state += 1;
         }
         break;
     case 2:
         return KWLNTASK_STOP;
-    default:
-        break;
     }
     return KWLNTASK_CONTINUE;
 }
@@ -392,51 +420,48 @@ void func_001dc8e0(KwlnTask* task)
 {
     (*(void (**)(void*))jtbl_0096017C_abs)(task->workData);
 }
-// FUN_001dc910 NONMATCHING
-KwlnTask* func_001dc910(KwlnTask* parent, void* resource)
+// FUN_001dc910
+KwlnTask* func_001dc910(KwlnTask* parent, u32 mode)
 {
-    FldEffectWork* work;
     KwlnTask* task;
+    FldEffectWork* work;
+
     work = (FldEffectWork*)RwCalloc(1, sizeof(FldEffectWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
     }
-    task = kwlnTaskCreateWithAutoPriority(parent, 10, "field effect",
+    task = kwlnTaskCreateWithAutoPriority(parent, 10, D_00683BC8,
                                           func_001dc6f0, func_001dc8e0, work);
-    work->mode = resource != NULL ? 1 : 0;
-    if (resource != NULL && work->mode != 1)
+    work->mode = mode;
+    if (mode == 0)
     {
-        work->eplTask = (KwlnTask*)resource;
+        work->eplTask = (KwlnTask*)func_001a9080(task, D_00683BE0, 0x53, 0);
     }
-    else
+    else if (mode == 1)
     {
-        work->eplTask = (KwlnTask*)func_001a9080(
-            task, "field/effect", work->mode != 0 ? 0x32 : 0x53, 0);
+        work->eplTask = (KwlnTask*)func_001a9080(task, D_00683BE0, 0x32, 0);
     }
     return task;
 }
 
-// FUN_001dca10 NONMATCHING
+// FUN_001dca10
 void func_001dca10(void)
 {
-    static const char* const names[8] = {
-        "field/effect0.epl", "field/effect1.epl", "field/effect2.epl",
-        "field/effect3.epl", "field/effect4.epl", "field/effect5.epl",
-        "field/effect6.epl", "field/effect7.epl"
-    };
-    static void* resources[8];
-    HCdvd* cdvd = H_Cdvd_Request("field/effect.fld", HCDVD_FILENORMAL);
-    u32 i;
-    if (cdvd != NULL)
-    {
-        H_Cdvd_ReadSync(cdvd);
-        for (i = 0; i < 8; ++i)
-        {
-            resources[i] = (void*)(u32)func_004d1260(names[i], 0);
-        }
-        H_Cdvd_Destroy(cdvd);
-    }
+    HCdvd* cdvd;
+
+    cdvd = H_Cdvd_Request(D_00683C00, 1);
+    H_Cdvd_ReadSync(cdvd);
+    D_00875A60[0] = (u32)func_004d1260(D_00683C20, 0);
+    D_00875A60[1] = (u32)func_004d1260(D_00683C40, 0);
+    D_00875A60[2] = (u32)func_004d1260(D_00683C60, 0);
+    D_00875A60[3] = (u32)func_004d1260(D_00683C80, 0);
+    D_00875A60[4] = (u32)func_004d1260(D_00683CA0, 0);
+    D_00875A60[5] = (u32)func_004d1260(D_00683CC0, 0);
+    D_00875A60[6] = (u32)func_004d1260(D_00683CE0, 0);
+    D_00875A60[7] = (u32)func_004d1260(D_00683D00, 0);
+    D_00875A60[8] = (u32)func_004d1260(D_00683D20, 0);
+    H_Cdvd_Destroy(cdvd);
 }
 
 // FUN_001dcb60 NONMATCHING
@@ -576,40 +601,64 @@ void func_001dd8e0(void)
     }
 }
 
-// FUN_001ddb30 NONMATCHING
+// FUN_001ddb30
 const void* func_001ddb30(void)
 {
-    u32 floor = K_FldDungeon_GetCurrentFloor();
+    u32 floor;
+    u32 index;
+    u16* table;
+
+    floor = K_FldDungeon_GetCurrentFloor();
     if (floor == 0)
     {
-        return NULL;
+        index = 0;
+        table = *(u16**)(D_006791A0 + gMtScene->fldMajorId * 4);
+        if (table != NULL)
+        {
+            index = table[gMtScene->fldMinorId];
+        }
+        return D_006792E0 + index * 0x1A;
     }
     switch (floor)
     {
-    case 0x190: return D_006799FC;
-    case 0x191: return D_00679A16;
-    case 0x192: return D_00679A30;
-    case 0x193: return D_00679A4A;
+    case 0x190:
+        return D_006799FC;
+    case 0x191:
+        return D_00679A16;
+    case 0x192:
+        return D_00679A30;
+    case 0x193:
+        return D_00679A4A;
     default:
-        return D_006792E0 + floor * 0x78;
+        if (datGetScenarioMode() == 0)
+        {
+            return D_0067B160 + floor * 0x1A;
+        }
+        return D_0067CFE0 + floor * 0x1A;
     }
 }
 
-// FUN_001ddca0 NONMATCHING
+// FUN_001ddca0
 void func_001ddca0(s32 index)
 {
-    Field* field = K_Field_Get();
-    void* owner;
     const void* data;
-    if (field == NULL || (owner = *(void**)((u8*)field + 0x2C)) == NULL)
+    Field* field;
+
+    field = K_Field_Get();
+    if (*(void**)((u8*)field + 0x2C) == NULL)
     {
         return;
     }
-    data = index < 0 ? func_001ddb30() : D_006792E0 + (u32)index * 0x78;
-    if (data != NULL)
+    if (index == -1)
     {
-        func_0018e5c0(owner, data);
+        data = func_001ddb30();
     }
+    else
+    {
+        data = D_006792E0 + (u32)index * 0x1A;
+    }
+    field = K_Field_Get();
+    func_0018e5c0(*(void**)((u8*)field + 0x2C), data);
 }
 
 // FUN_001ddd30 NONMATCHING
