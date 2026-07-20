@@ -13,13 +13,16 @@ typedef struct BsaWork
     u32 words[0x29b0];
 } BsaWork;
 
-typedef void (*BsaSetRenderState)(u32 state, u32 value);
-typedef void (*BsaRenderQuad)(u32* quad, u32 count, u32 group, u32 pass, u32 blend);
+typedef int (*code)(...);
 
 extern u32 DAT_007ce4e8;
 extern u8* DAT_007ce410;
-extern BsaSetRenderState D_00960090;
-extern BsaRenderQuad D_0096009C;
+extern code D_00960090;
+#pragma alias D_00960090_abs D_00960090
+#pragma alias D_0096009C_abs D_0096009C
+extern code D_00960090_abs[];
+extern code D_0096009C_abs[];
+extern code D_0096009C;
 
 extern void* func_001ff430(u32 id);
 extern void func_0017b1e0(u16 id);
@@ -121,10 +124,11 @@ void bsaMain0020fe20(BsaWork* work)
     work->words[1] = 0;
 }
 
+#pragma optimization_level 1
 // FUN_0020FE30 NONMATCHING
+#define p ((u32*)work)
 void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
 {
-    u32* p;
     void* unit;
     u32 calc;
     u32 table6;
@@ -132,38 +136,34 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     u32 table2;
     u32 image;
     u16* slots;
-    u16 enemyId;
     s16 categories[9];
+    u16 enemyId;
     s16 slotId;
     s32 i;
     s32 count;
-    u32 flags;
-
-    p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
-    if ((p[1] & BSA_FLAG_ACTIVE) != 0)
+    if ((~p[1] & BSA_FLAG_ACTIVE) == 0)
         K_ASSERT(0, 0x91);
-    p[1] = 0;
-    p[1] = BSA_FLAG_ACTIVE | BSA_FLAG_TRANSITION;
-    p[0] = (u32)mode;
+    p[1] = BSA_FLAG_ACTIVE;
+    p[1] |= BSA_FLAG_TRANSITION;
+    p[0] = mode;
     p[0x29ac] = 0;
     p[0x29ad] = 0;
     p[2] = unitId;
 
     unit = func_001ff430(unitId);
-    calc = *(u32*)((u8*)unit + 0xa2c);
-    enemyId = *(u16*)((u8*)calc + 2);
-    *(u16*)(p + 3) = enemyId;
+    p[3] = *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2);
     p[1] &= ~BSA_FLAG_BOSS;
-    if (enemyId == 0x126)
+    if (*(u16*)((u8*)p + 0xc) == 0x126)
         p[1] |= BSA_FLAG_BOSS;
 
-    func_0017b1e0(enemyId);
+    func_0017b1e0(*(u16*)((u8*)unit + 0xa2c) + 0);
     func_003b0e70(1);
     func_003b0e90(2);
-    image = func_003b0970(DAT_007ce4e8 + enemyId * 0x3e, 2, 6, 0, 0);
+    image = func_003b0970(DAT_007ce4e8 + *(u16*)((u8*)p + 0xc) * 0x3e,
+                          2, 6, 0, 0);
     func_003b0e90(1);
     func_003b0e70(2);
     func_003b0e20(image, 0xffffffff);
@@ -171,15 +171,24 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_003b2c60(image, 0.0f);
     p[4] = image;
 
-    flags = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 0x1e);
-    if ((flags & 2) != 0) p[1] |= BSA_FLAG_TOP_LABEL;
-    if ((flags & 0x40) != 0) p[1] |= BSA_FLAG_RESOURCE;
-    if ((flags & 8) != 0) p[1] |= BSA_FLAG_STATUS;
-    if ((flags & 0x10) != 0) p[1] |= BSA_FLAG_PERSONA;
-    if ((flags & 0x20) != 0) p[1] |= BSA_FLAG_AILMENT;
-    p[0x1310] = DAT_007ce410[enemyId * 0x3e + 3];
-    p[0x1394] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 4);
-    p[0x1498] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 6);
+    if ((*(u16*)((u8*)DAT_007ce410 +
+                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 2) != 0)
+        p[1] |= BSA_FLAG_TOP_LABEL;
+    if ((*(u16*)((u8*)DAT_007ce410 +
+                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x40) != 0)
+        p[1] |= BSA_FLAG_RESOURCE;
+    if ((*(u16*)((u8*)DAT_007ce410 +
+                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 8) != 0)
+        p[1] |= BSA_FLAG_STATUS;
+    if ((*(u16*)((u8*)DAT_007ce410 +
+                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x10) != 0)
+        p[1] |= BSA_FLAG_PERSONA;
+    if ((*(u16*)((u8*)DAT_007ce410 +
+                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x20) != 0)
+        p[1] |= BSA_FLAG_AILMENT;
+    p[0x1310] = DAT_007ce410[*(u16*)((u8*)p + 0xc) * 0x3e + 3];
+    p[0x1394] = *(u16*)(DAT_007ce410 + *(u16*)((u8*)p + 0xc) * 0x3e + 4);
+    p[0x1498] = *(u16*)(DAT_007ce410 + *(u16*)((u8*)p + 0xc) * 0x3e + 6);
 
     for (i = 0; i < 9; i++) {
         switch (i) {
@@ -194,11 +203,12 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         case 8: slotId = 9; break;
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
-        categories[i] = (s16)bsaSkillCategory(func_00306e80(calc, slotId));
-        p[0x159c + i] = (u32)categories[i];
+        p[0x159c + i] = (u32)(s32)bsaSkillCategory(
+            func_00306e80(*(u32*)((u8*)unit + 0xa2c), slotId));
     }
-    p[0x17e8] = (u32)(s32)func_003082f0(calc, 0);
-    slots = func_00308bb0(calc);
+    p[0x17e8] = (u32)(s32)func_003082f0(
+        *(u32*)((u8*)unit + 0xa2c), 0);
+    slots = func_00308bb0(*(u32*)((u8*)unit + 0xa2c));
     count = 0;
     while (count < 8 && slots[count] != 0)
         count++;
@@ -214,10 +224,10 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_0021d3b0(p + 0x12d0, p[0x12d0]);
     p[0x1250] = func_0021cca0(table2, 0x31);
     func_0021d3b0(p + 0x1250, p[0x1250]);
-    if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
-        p[0x17ec] = func_0021cca0(table2, p[0x17e8] + 0x16);
-    else
+    if ((p[1] & BSA_FLAG_BOSS) == 0 || p[0x17e8] == 7)
         p[0x17ec] = func_0021cca0(table2, 0x3c);
+    else
+        p[0x17ec] = func_0021cca0(table2, p[0x17e8] + 0x16);
     func_0021d3b0(p + 0x17ec, p[0x17ec]);
     p[0x50] = func_0021cca0(table1, 0x47);
     func_0021d3b0(p + 0x50, p[0x50]);
@@ -262,10 +272,12 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = 0x2b;
         else
             *(s16*)((u8*)p + i * 2 + 0xa6b8) = func_0017d2e0() + 0x20;
-        image = func_0021cca0(table6, *(s16*)((u8*)p + i * 2 + 0xa6b8));
+        image = func_0021cca0(table6,
+                              *(s16*)((u8*)p + i * 2 + 0xa6b8));
         func_0021d3b0(p + i * 0x40 + 0x1050, image);
     }
-    p[0x590] = bsaMain00215830(DAT_007ce410[enemyId * 0x3e + 2]);
+    p[0x590] = bsaMain00215830(
+        DAT_007ce410[*(u16*)((u8*)p + 0xc) * 0x3e + 2]);
     func_0021d3b0(p + 0x590, p[0x590]);
     p[0x5d0] = func_0021cca0(table2, 0x2f);
     func_0021d3b0(p + 0x5d0, p[0x5d0]);
@@ -334,7 +346,8 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
             func_003b0e70(1);
             func_003b0e90(2);
             for (i = 0; i < (s32)p[0xd]; i++) {
-                image = func_003b0970(func_0030bb40(slots[i]), 2, 6, 0, 0);
+                image = func_003b0970(
+                    func_0030bb40(slots[i]), 2, 6, 0, 0);
                 func_003b0e20(image, 0xffffffff);
                 func_003b0d70(image, ((i / 4) * 0x96 + 0x82) * 0x10,
                               ((i % 4) * 0x19 + 100) * 8);
@@ -357,7 +370,9 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     }
     func_0010a4e0(1, 0, 2, 0x15);
 }
+#undef p
 
+#pragma optimization_level 2
 // FUN_00210D60
 void bsaMain00210d60(BsaWork* work)
 {
@@ -709,255 +724,257 @@ void bsaMain00213e80(BsaWork* work)
     u32 table2;
     u32 image;
     s32 i;
+    code renderState;
+    code renderQuad;
 
     p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
-    if ((p[1] & BSA_FLAG_ACTIVE) != 0) {
-        D_00960090(1, 0);
+    if ((~p[1] & BSA_FLAG_ACTIVE) == 0) {
+        renderState = D_00960090;
+        #define D_00960090_abs renderState
+        renderState(1, 0);
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
-        D_00960090(8, 0);
-        D_00960090(6, 0);
-        D_00960090(1, 0);
-        D_0096009C(p + 0x242c, 4, 0, 1, 2);
-        D_0096009C(p + 0x246c, 4, 0, 2, 3);
-        D_0096009C(p + 0x24ac, 4, 0, 1, 2);
-        D_0096009C(p + 0x24ec, 4, 0, 2, 3);
-        D_0096009C(p + 0x252c, 4, 0, 1, 2);
-        D_0096009C(p + 0x256c, 4, 0, 2, 3);
+        D_00960090_abs(8, 0);
+        D_00960090_abs(6, 0);
+        D_00960090_abs(1, 0);
+        renderQuad = D_0096009C;
+        #define D_0096009C_abs renderQuad
+        D_0096009C_abs(p + 0x242c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x246c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x24ac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x24ec, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x252c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x256c, 4, 0, 2, 3);
         if (p[0] == 1) {
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x80 + 0x25ac, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0x25ac, 4, 0, 2, 3);
-                D_0096009C(p + i * 0x80 + 0x25ec, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0x25ec, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0x25ac, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0x25ac, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0x25ec, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0x25ec, 4, 0, 2, 3);
             }
         }
     }
-    {
-        BsaRenderQuad* renderQuad;
-        renderQuad = (BsaRenderQuad*)D_0096009C;
-#define D_0096009C (*renderQuad)
     image = func_0021cce0(func_0021cca0(table2, 0x1f));
-    D_00960090(1, image);
-    D_0096009C(p + 0x10, 4, 0, 1, 2);
-    D_0096009C(p + 0x10, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x10, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x10, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x28));
-    D_00960090(1, image);
-    D_0096009C(p + 0x510, 4, 0, 1, 2);
-    D_0096009C(p + 0x510, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x510, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x510, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table1, 0x47));
-    D_00960090(1, image);
-    D_0096009C(p + 0x50, 4, 0, 1, 2);
-    D_0096009C(p + 0x50, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x50, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x50, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x30));
-    D_00960090(1, image);
-    D_0096009C(p + 0x90, 4, 0, 1, 2);
-    D_0096009C(p + 0x90, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x90, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x90, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table1, 0x48));
-    D_00960090(1, image);
-    D_0096009C(p + 0xd0, 4, 0, 1, 2);
-    D_0096009C(p + 0xd0, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0xd0, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0xd0, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x30));
-    D_00960090(1, image);
-    D_0096009C(p + 0x110, 4, 0, 1, 2);
-    D_0096009C(p + 0x110, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x110, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x110, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x21));
-    D_00960090(1, image);
-    D_0096009C(p + 0x150, 4, 0, 1, 2);
-    D_0096009C(p + 0x150, 4, 0, 2, 3);
-    D_0096009C(p + 0x190, 4, 0, 1, 2);
-    D_0096009C(p + 0x190, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x150, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x150, 4, 0, 2, 3);
+    D_0096009C_abs(p + 0x190, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x190, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x24));
-    D_00960090(1, image);
-    D_0096009C(p + 0x1d0, 4, 0, 1, 2);
-    D_0096009C(p + 0x1d0, 4, 0, 2, 3);
-    D_0096009C(p + 0x210, 4, 0, 1, 2);
-    D_0096009C(p + 0x210, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x1d0, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x1d0, 4, 0, 2, 3);
+    D_0096009C_abs(p + 0x210, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x210, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x22));
-    D_00960090(1, image);
-    D_0096009C(p + 0x250, 4, 0, 1, 2);
-    D_0096009C(p + 0x250, 4, 0, 2, 3);
-    D_0096009C(p + 0x290, 4, 0, 1, 2);
-    D_0096009C(p + 0x290, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x250, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x250, 4, 0, 2, 3);
+    D_0096009C_abs(p + 0x290, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x290, 4, 0, 2, 3);
     image = func_0021cce0(func_0021cca0(table2, 0x26));
-    D_00960090(1, image);
+    D_00960090_abs(1, image);
     for (i = 0; i < 9; i++) {
-        D_0096009C(p + i * 0x40 + 0x2d0, 4, 0, 1, 2);
-        D_0096009C(p + i * 0x40 + 0x2d0, 4, 0, 2, 3);
-    }
-#undef D_0096009C
+        D_0096009C_abs(p + i * 0x40 + 0x2d0, 4, 0, 1, 2);
+        D_0096009C_abs(p + i * 0x40 + 0x2d0, 4, 0, 2, 3);
     }
     if ((p[1] & BSA_FLAG_AILMENT) != 0) {
         image = func_0021cce0(func_0021cca0(table2, 0x32));
-        D_00960090(1, image);
-        D_0096009C(p + 0x1b2c, 4, 0, 1, 2);
-        D_0096009C(p + 0x1b2c, 4, 0, 2, 3);
-        D_0096009C(p + 0x1b6c, 4, 0, 1, 2);
-        D_0096009C(p + 0x1b6c, 4, 0, 2, 3);
-        D_0096009C(p + 0x1bac, 4, 0, 1, 2);
-        D_0096009C(p + 0x1bac, 4, 0, 2, 3);
-        D_0096009C(p + 0x1bec, 4, 0, 1, 2);
-        D_0096009C(p + 0x1bec, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x1b2c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1b2c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x1b6c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1b6c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x1bac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1bac, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x1bec, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1bec, 4, 0, 2, 3);
     } else {
         for (i = 0; i < 9; i++) {
             image = func_0021cce0(func_0021cca0(table2, i + 0x16));
-            D_00960090(1, image);
-            D_0096009C(p + i * 0x40 + 0x610, 4, 0, 1, 2);
-            D_0096009C(p + i * 0x40 + 0x610, 4, 0, 2, 3);
+            D_00960090_abs(1, image);
+            D_0096009C_abs(p + i * 0x40 + 0x610, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x40 + 0x610, 4, 0, 2, 3);
         }
         for (i = 0; i < 9; i++) {
             if (p[0x159c + i] != 5) {
                 image = func_0021cce0(func_0021cca0(table2, p[0x159c + i] + 0x29));
-                D_00960090(1, image);
-                D_0096009C(p + i * 0x40 + 0x15a8, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x40 + 0x15a8, 4, 0, 2, 3);
+                D_00960090_abs(1, image);
+                D_0096009C_abs(p + i * 0x40 + 0x15a8, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x40 + 0x15a8, 4, 0, 2, 3);
             }
         }
     }
     if ((p[1] & BSA_FLAG_TOP_LABEL) != 0) {
         image = func_0021cce0(func_0021cca0(table2, 0x32));
-        D_00960090(1, image);
-        D_0096009C(p + 0x182c, 4, 0, 1, 2);
-        D_0096009C(p + 0x182c, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x182c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x182c, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x33));
-        D_00960090(1, image);
-        D_0096009C(p + 0x186c, 4, 0, 1, 2);
-        D_0096009C(p + 0x186c, 4, 0, 2, 3);
-        D_0096009C(p + 0x18ac, 4, 0, 1, 2);
-        D_0096009C(p + 0x18ac, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x186c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x186c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x18ac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x18ac, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090(1, image);
-        D_0096009C(p + 0x18ec, 4, 0, 1, 2);
-        D_0096009C(p + 0x18ec, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x18ec, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x18ec, 4, 0, 2, 3);
     } else {
         image = (u32)func_00239140(1);
-        D_00960090(1, image);
+        D_00960090_abs(1, image);
         for (i = 0; i < 2; i++) {
-            D_0096009C(p + i * 0x40 + 0x1314, 4, 0, 1, 2);
-            D_0096009C(p + i * 0x40 + 0x1314, 4, 0, 2, 3);
+            D_0096009C_abs(p + i * 0x40 + 0x1314, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x40 + 0x1314, 4, 0, 2, 3);
         }
     }
     if ((p[1] & BSA_FLAG_STATUS) != 0) {
         image = func_0021cce0(func_0021cca0(table2, 0x32));
-        D_00960090(1, image);
-        D_0096009C(p + 0x192c, 4, 0, 1, 2);
-        D_0096009C(p + 0x192c, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x192c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x192c, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x34));
-        D_00960090(1, image);
-        D_0096009C(p + 0x196c, 4, 0, 1, 2);
-        D_0096009C(p + 0x196c, 4, 0, 2, 3);
-        D_0096009C(p + 0x19ac, 4, 0, 1, 2);
-        D_0096009C(p + 0x19ac, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x196c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x196c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x19ac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x19ac, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090(1, image);
-        D_0096009C(p + 0x19ec, 4, 0, 1, 2);
-        D_0096009C(p + 0x19ec, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x19ec, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x19ec, 4, 0, 2, 3);
     } else {
         image = (u32)func_00239140(1);
-        D_00960090(1, image);
+        D_00960090_abs(1, image);
         for (i = 0; i < 4; i++) {
-            D_0096009C(p + i * 0x40 + 0x1398, 4, 0, 1, 2);
-            D_0096009C(p + i * 0x40 + 0x1398, 4, 0, 2, 3);
+            D_0096009C_abs(p + i * 0x40 + 0x1398, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x40 + 0x1398, 4, 0, 2, 3);
         }
     }
     if ((p[1] & BSA_FLAG_PERSONA) != 0) {
         image = func_0021cce0(func_0021cca0(table2, 0x32));
-        D_00960090(1, image);
-        D_0096009C(p + 0x1a2c, 4, 0, 1, 2);
-        D_0096009C(p + 0x1a2c, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x1a2c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1a2c, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x34));
-        D_00960090(1, image);
-        D_0096009C(p + 0x1a6c, 4, 0, 1, 2);
-        D_0096009C(p + 0x1a6c, 4, 0, 2, 3);
-        D_0096009C(p + 0x1aac, 4, 0, 1, 2);
-        D_0096009C(p + 0x1aac, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x1a6c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1a6c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x1aac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1aac, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x36));
-        D_00960090(1, image);
-        D_0096009C(p + 0x1aec, 4, 0, 1, 2);
-        D_0096009C(p + 0x1aec, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x1aec, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1aec, 4, 0, 2, 3);
     } else {
         image = (u32)func_00239140(1);
-        D_00960090(1, image);
+        D_00960090_abs(1, image);
         for (i = 0; i < 4; i++) {
-            D_0096009C(p + i * 0x40 + 0x149c, 4, 0, 1, 2);
-            D_0096009C(p + i * 0x40 + 0x149c, 4, 0, 2, 3);
+            D_0096009C_abs(p + i * 0x40 + 0x149c, 4, 0, 1, 2);
+            D_0096009C_abs(p + i * 0x40 + 0x149c, 4, 0, 2, 3);
         }
     }
     image = func_0021cce0(func_0021cca0(table2, 0x2f));
-    D_00960090(1, image);
-    D_0096009C(p + 0x5d0, 4, 0, 1, 2);
-    D_0096009C(p + 0x5d0, 4, 0, 2, 3);
-    D_00960090(1, func_0021cce0(p[0x590]));
-    D_0096009C(p + 0x590, 4, 0, 1, 2);
-    D_0096009C(p + 0x590, 4, 0, 2, 3);
+    D_00960090_abs(1, image);
+    D_0096009C_abs(p + 0x5d0, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x5d0, 4, 0, 2, 3);
+    D_00960090_abs(1, func_0021cce0(p[0x590]));
+    D_0096009C_abs(p + 0x590, 4, 0, 1, 2);
+    D_0096009C_abs(p + 0x590, 4, 0, 2, 3);
     func_003b1360(p[4], 1, 0);
     if (p[0] == 1) {
         image = func_0021cce0(func_0021cca0(table2, 0x27));
-        D_00960090(1, image);
-        D_0096009C(p + 0x550, 4, 0, 1, 2);
-        D_0096009C(p + 0x550, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x550, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x550, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x20));
-        D_00960090(1, image);
-        D_0096009C(p + 0x12d0, 4, 0, 1, 2);
-        D_0096009C(p + 0x12d0, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x12d0, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x12d0, 4, 0, 2, 3);
         image = func_0021cce0(func_0021cca0(table2, 0x31));
-        D_00960090(1, image);
-        D_0096009C(p + 0x1250, 4, 0, 1, 2);
-        D_0096009C(p + 0x1250, 4, 0, 2, 3);
+        D_00960090_abs(1, image);
+        D_0096009C_abs(p + 0x1250, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x1250, 4, 0, 2, 3);
         if ((p[1] & BSA_FLAG_RESOURCE) != 0) {
             image = func_0021cce0(func_0021cca0(table2, 0x23));
-            D_00960090(1, image);
+            D_00960090_abs(1, image);
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x80 + 0x850, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0x850, 4, 0, 2, 3);
-                D_0096009C(p + i * 0x80 + 0x890, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0x890, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0x850, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0x890, 4, 0, 2, 3);
             }
             image = func_0021cce0(func_0021cca0(table2, 0x25));
-            D_00960090(1, image);
+            D_00960090_abs(1, image);
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x80 + 0xc50, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0xc50, 4, 0, 2, 3);
-                D_0096009C(p + i * 0x80 + 0xc90, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x80 + 0xc90, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0xc50, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x80 + 0xc90, 4, 0, 2, 3);
             }
             image = func_0021cce0(func_0021cca0(table2, 0x32));
-            D_00960090(1, image);
+            D_00960090_abs(1, image);
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x100 + 0x1c2c, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x100 + 0x1c2c, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x100 + 0x1c2c, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x100 + 0x1c2c, 4, 0, 2, 3);
             }
             image = func_0021cce0(func_0021cca0(table2, 0x35));
-            D_00960090(1, image);
+            D_00960090_abs(1, image);
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x100 + 0x1c6c, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x100 + 0x1c6c, 4, 0, 2, 3);
-                D_0096009C(p + i * 0x100 + 0x1cac, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x100 + 0x1cac, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x100 + 0x1c6c, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x100 + 0x1c6c, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x100 + 0x1cac, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x100 + 0x1cac, 4, 0, 2, 3);
             }
             image = func_0021cce0(func_0021cca0(table2, 0x36));
-            D_00960090(1, image);
+            D_00960090_abs(1, image);
             for (i = 0; i < 8; i++) {
-                D_0096009C(p + i * 0x100 + 0x1cec, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x100 + 0x1cec, 4, 0, 2, 3);
+                D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x100 + 0x1cec, 4, 0, 2, 3);
             }
         }
         else {
             for (i = 0; i < (s32)p[0xd]; i++) {
                 image = func_0021cce0(func_0021cca0(
                     table6, *(s16*)((u8*)p + i * 2 + 0xa6b8)));
-                D_00960090(1, image);
-                D_0096009C(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
-                D_0096009C(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
+                D_00960090_abs(1, image);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 1, 2);
+                D_0096009C_abs(p + i * 0x40 + 0x1050, 4, 0, 2, 3);
             }
             for (i = 0; i < (s32)p[0xd]; i++)
                 func_003b1360(p[i + 5], 1, 0);
         }
     }
 }
+#undef D_00960090_abs
+#undef D_0096009C_abs
 
 // FUN_00215770
 void bsaMain00215770(BsaWork* work)
