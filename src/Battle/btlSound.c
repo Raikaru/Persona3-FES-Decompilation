@@ -309,13 +309,21 @@ void func_002dcfb0(u16* work)
     }
 }
 
-// FUN_002dd020 NONMATCHING
+// FUN_002dd020
 u32 func_002dd020(u16* work)
 {
-    if (*(s16*)((u8*)gBtl + 0xa94 + (u32)work[0] * 6) != work[1] ||
-        *(s16*)((u8*)gBtl + 0xa96 + (u32)work[0] * 6) != work[2])
+    u16 channel;
+    u16 expectedCue;
+    uintptr_t address;
+    u8* slot;
+    expectedCue = work[1];
+    channel = work[0];
+    address = (u32)channel * 6;
+    address += (uintptr_t)gBtl;
+    slot = (u8*)address;
+    if (*(s16*)(slot + 0xa94) != expectedCue || *(s16*)(slot + 0xa96) != work[2])
     {
-        func_0010a4e0(1, (s16)work[0], (s16)work[1], (s16)work[2]);
+        func_0010a4e0(1, (s16)channel, (s16)expectedCue, (s16)work[2]);
         {
             u16 value;
             u32 base;
