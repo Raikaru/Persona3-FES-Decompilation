@@ -6197,10 +6197,6 @@ void FUN_00375750(int param_1,int param_2,u32 param_3,u8 *param_4)
                       (u32)DAT_0069ea78,fVar1);
     break;
   case 4:
-    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ea88,fVar1);
-    break;
   case 5:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
