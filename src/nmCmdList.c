@@ -1367,42 +1367,45 @@ u32 FUN_003c6f80(int param_1)
 }
 #define FUN_003c6f80(...) ((u32 (*)(...))FUN_003c6f80)(__VA_ARGS__)
 #undef FUN_003c6fb0
-// FUN_003C6FB0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_003C6FB0
 
 
 int FUN_003c6fb0(int param_1)
-
-
-
 {
+    int count;
+    int current;
+    int targetOwner;
+    u32 atEnd;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar2 = 0;
-
-  iVar1 = *(int *)(*(int *)(param_1 + 0x24) + 0x2c);
-
-  iVar3 = *(int *)(param_1 + 0xc);
-
-  if (iVar1 != 0) {
-
-    for (; (iVar3 != 0 && (iVar1 != iVar3)); iVar3 = *(int *)(iVar3 + 0xc)) {
-
-      iVar2 = iVar2 + 1;
-
+    count = 0;
+    targetOwner = *(volatile int *)(param_1 + 0x24);
+    current = *(volatile int *)(param_1 + 0xc);
+    param_1 = *(int *)(targetOwner + 0x2c);
+    if (param_1 == 0)
+    {
+        goto done;
     }
-
-  }
-
-  return iVar2;
-
+    goto check;
+loop:
+    current = *(int *)(current + 0xc);
+    count++;
+check:
+    atEnd = (current != 0) ^ 1;
+    if (atEnd)
+    {
+        goto done;
+    }
+    if (param_1 != current)
+    {
+        goto loop;
+    }
+done:
+    return count;
 }
+#pragma pop
+
 #define FUN_003c6fb0(...) ((int (*)(...))FUN_003c6fb0)(__VA_ARGS__)
 #undef FUN_003c7000
 // FUN_003C7000 NONMATCHING

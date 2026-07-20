@@ -624,7 +624,7 @@ void FUN_003a8fb0(long param_1,u64 param_2,u64 param_3,u64 param_4,
 }
 #define FUN_003a8fb0(...) ((void (*)(...))FUN_003a8fb0)(__VA_ARGS__)
 #undef FUN_003a9080
-// FUN_003A9080 NONMATCHING
+// FUN_003A9080
 
 
 void FUN_003a9080(u64 param_1)
@@ -633,13 +633,14 @@ void FUN_003a9080(u64 param_1)
 
 {
 
-  FUN_003ac590(0);
+  FUN_003ac590_direct(0);
 
-  FUN_003a90c0(param_1,0);
+  FUN_003a90c0_direct(param_1,0);
 
   return;
 
 }
+
 #define FUN_003a9080(...) ((void (*)(...))FUN_003a9080)(__VA_ARGS__)
 #undef FUN_003a90c0
 // FUN_003A90C0 NONMATCHING
@@ -948,7 +949,7 @@ done:
 #pragma pop
 #define FUN_003a96b0(...) ((u64 (*)(...))FUN_003a96b0)(__VA_ARGS__)
 #undef FUN_003a96f0
-// FUN_003A96F0 NONMATCHING
+// FUN_003A96F0 MATCHING
 
 
 void FUN_003a96f0(int *param_1,int param_2,int param_3,int param_4,int param_5)
@@ -983,7 +984,7 @@ void FUN_003a96f0(int *param_1,int param_2,int param_3,int param_4,int param_5)
 
   for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
 
-    iVar1 = aiStack_10[iVar2];
+    iVar1 = *(int *)(int)(aiStack_10 + iVar2);
 
     *param_1 = iVar1;
 
@@ -1000,6 +1001,7 @@ void FUN_003a96f0(int *param_1,int param_2,int param_3,int param_4,int param_5)
   return;
 
 }
+
 #define FUN_003a96f0(...) ((void (*)(...))FUN_003a96f0)(__VA_ARGS__)
 #undef FUN_003a9780
 // FUN_003A9780 NONMATCHING
@@ -4357,36 +4359,32 @@ u64 FUN_003ada00(u64 param_1,u64 param_2)
 }
 #define FUN_003ada00(...) ((u64 (*)(...))FUN_003ada00)(__VA_ARGS__)
 #undef FUN_003adb00
-// FUN_003ADB00 NONMATCHING
-
-
+// FUN_003ADB00
 u64 FUN_003adb00(u64 param_1,int param_2)
-
-
 {
+  u8 low;
+  u8 high;
+  u8 *data;
+  int state;
+  int offset;
+  int base;
 
-  u8 bVar1;
-  u8 uVar2;
-  u8 *pbVar3;
-  int iVar3;
-  int iVar4;
-
-  iVar3 = param_2;
-  iVar4 = *(int *)((int)param_2 + 0x18);
-  iVar4 += *(int *)((int)param_2 + 0x10);
-  pbVar3 = (u8 *)iVar4;
-  bVar1 = pbVar3[0] - 1;
-  uVar2 = pbVar3[1];
-  if (uVar2 == 0xff) {
-    uVar2 = 0;
+  state = param_2;
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  base = base + offset;
+  data = (u8 *)base;
+  low = data[0] - 1;
+  high = data[1];
+  if (high == 0xff) {
+    high = 0;
   } else {
-    uVar2 = (u32)(u8)(uVar2 - 1);
+    high = (u8)(high - 1);
   }
-  FUN_003ad400_typed((u16)(uVar2 << 8 | bVar1),2,param_1,iVar3);
-
+  FUN_003ad400_typed((u16)(high << 8 | low),2,param_1,state);
   return 0;
-
 }
+
 #define FUN_003adb00(...) ((u64 (*)(...))FUN_003adb00)(__VA_ARGS__)
 #undef FUN_003adb80
 // FUN_003ADB80 NONMATCHING

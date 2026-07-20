@@ -1467,6 +1467,8 @@ extern u32 DAT_007ce7b4;
 extern u32 DAT_0095de10;
 extern u32 DAT_0095de14;
 extern u32 DAT_0095de18;
+#pragma alias DAT_0095de18_abs DAT_0095de18
+extern u32 DAT_0095de18_abs[];
 extern u32 DAT_0095de1c;
 extern u32 DAT_0095de20;
 extern u32 DAT_0095de28;
@@ -3503,6 +3505,14 @@ int FUN_0048a2a0(int param_1,u32 param_2)
 }
 #pragma schedule off
 
+#pragma schedule on
+// FUN_0048A2C0
+u32 FUN_0048a2c0(int param_1)
+{
+  return *(u32 *)(param_1 + DAT_0095de18_abs[0]);
+}
+#pragma schedule off
+
 #pragma alias DAT_0095de18_abs DAT_0095de18
 extern u32 DAT_0095de18_abs[];
 
@@ -3691,6 +3701,13 @@ u64 FUN_0048a4b0(u64 param_1)
   }
   return param_1;
 }
+// FUN_0048A790
+#pragma optimization_level 3
+u64 FUN_0048a790(u64 param_1)
+{
+  return param_1;
+}
+#pragma optimization_level 2
 
 // FUN_0048A7A0 NONMATCHING
 #pragma schedule on
