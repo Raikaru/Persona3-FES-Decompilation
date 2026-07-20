@@ -3337,7 +3337,6 @@ u32 FUN_002fed10(int param_1)
 {
     struct
     {
-        u8 pad[0x10];
         u32 saved[9];
         u8 colors[12];
     } local;
