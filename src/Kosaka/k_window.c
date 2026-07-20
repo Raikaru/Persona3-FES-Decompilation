@@ -1052,46 +1052,52 @@ void func_001a3bf0(KwlnTask* task, u32 request)
     }
 }
 
-// FUN_001A3C30 NONMATCHING
+// FUN_001A3C30
 void func_001a3c30(KwlnTask* task)
 {
     KWindowManagerWork* manager;
     KWindowEntry* entry;
-    s32 maxWidth;
+    u32 maxWidth;
     s32 width;
     s32 height;
     s32 lineCount;
-    RwRect rect;
+    const char* type2String;
 
-    manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return;
-    }
-
-    maxWidth = 0;
+    manager = (KWindowManagerWork*)task->workData;
     entry = manager->entries;
+    maxWidth = 0;
     while (entry != NULL)
     {
         width = strlen(entry->name);
         switch (entry->type)
         {
-            case 4:
-                width += 8;
-                break;
-            case 3:
-                width += (entry->flags == 0) ? 9 : 11;
-                break;
-            case 2:
-                width += strlen(sKWindowType2Label) + 1;
+            case 0:
                 break;
             case 1:
                 width += strlen(entry->text) + 1;
                 break;
+            case 2:
+                __asm__ volatile ("addiu %0, $gp, -0x6b70"
+                                  : "=r"(type2String));
+                width += strlen(type2String) + 1;
+                break;
+            case 3:
+                if (entry->flags == 0)
+                {
+                    width += 9;
+                }
+                else
+                {
+                    width += 11;
+                }
+                break;
+            case 4:
+                width += 8;
+                break;
         }
-        if (width > maxWidth)
+        if (maxWidth < (u32)width)
         {
-            maxWidth = width;
+            maxWidth = (u32)width;
         }
         entry = entry->next;
     }
@@ -1099,58 +1105,59 @@ void func_001a3c30(KwlnTask* task)
     manager->width = maxWidth * 12 + 4;
     lineCount = manager->entryCount * 12 + 4;
     height = manager->visibleRows * 12 + 4;
+    manager->height = height;
     if (lineCount < height)
     {
-        height = lineCount;
+        manager->height = lineCount;
     }
-    manager->height = height;
     if (manager->windowTask != NULL)
     {
-        rect.x = manager->x;
-        rect.y = manager->y;
-        rect.w = manager->width;
-        rect.h = manager->height;
-        func_001a23e0(manager->windowTask, &rect);
+        func_001a23e0(manager->windowTask, (RwRect*)&manager->x);
     }
 }
 
-// FUN_001A3DC0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_001A3DC0
 void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
                    u32 count)
 {
     u32 i;
     u32 id;
-    const KWindowEntryDescriptor* descriptor;
 
-    descriptor = descriptors;
-    for (i = 0; i < count; i++)
+    i = 0;
+    while (i < count)
     {
-        id = func_001a3f20(task, descriptor->name);
-        switch (descriptor->type)
+        id = func_001a3f20(task, descriptors->name);
+        switch (descriptors->type)
         {
-            case 4:
-                func_001a4260(task, id, descriptor->value0,
-                              descriptor->value1, descriptor->value2);
-                break;
-            case 3:
-                func_001a4110(task, id, descriptor->value0,
-                              descriptor->value1, descriptor->value2,
-                              descriptor->value3);
-                break;
-            case 2:
-                func_001a41f0(task, id, descriptor->value0);
+            case 0:
                 break;
             case 1:
-                func_001a4090(task, id, descriptor->text);
+                func_001a4090(task, id, descriptors->text);
+                break;
+            case 2:
+                func_001a41f0(task, id, descriptors->value0);
+                break;
+            case 3:
+                func_001a4110(task, id, descriptors->value0,
+                              descriptors->value1, descriptors->value2,
+                              descriptors->value3);
+                break;
+            case 4:
+                func_001a4260(task, id, descriptors->value0,
+                              descriptors->value1, descriptors->value2);
                 break;
         }
-        if (descriptor->callback != NULL)
+        if (descriptors->callback != NULL)
         {
-            func_001a4050(task, id, descriptor->callback);
+            func_001a4050(task, id, descriptors->callback);
         }
-        descriptor++;
+        i++;
+        descriptors++;
     }
 }
+#pragma pop
 
 // FUN_001A3F20 NONMATCHING
 u32 func_001a3f20(KwlnTask* task, const char* name)
