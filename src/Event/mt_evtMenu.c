@@ -363,6 +363,9 @@ extern u8 DAT_0069ea88[];
 extern u8 DAT_0069ec48[];
 extern u8 DAT_0069ec60[];
 extern u8 DAT_0069ec80[];
+extern u8 DAT_0069fd78[];
+extern u8 DAT_0069fd88[];
+extern u8 DAT_0069fd98[];
 extern u8 DAT_0069ec08[];
 extern u8 DAT_0069ec18[];
 extern u8 DAT_0069ec28[];
@@ -14630,7 +14633,7 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
     iVar2 = param_2 * 0xc;
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,
-                      ((u8 *)0x6a000000 - 0x288));
+                      DAT_0069fd78);
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
                       &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x19c));
@@ -14655,7 +14658,7 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
     iVar2 = param_2 * 0xc;
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,
-                      ((u8 *)0x6a000000 - 0x278));
+                      DAT_0069fd88);
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
                       &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1a8));
@@ -14664,7 +14667,7 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
     iVar2 = param_2 * 0xc;
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,
-                      ((u8 *)0x6a000000 - 0x268));
+                      DAT_0069fd98);
     fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
                       &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1ac));
