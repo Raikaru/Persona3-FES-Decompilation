@@ -4662,7 +4662,7 @@ const void* func_00283fe0(BtlUnit* unit, u32 id)
     }
 }
 
-// FUN_00284040 NONMATCHING
+// FUN_00284040
 u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
 {
     s16 skillId;
@@ -4679,7 +4679,8 @@ u32 func_00284040(u64 unused, BtlUnit* unit, u64 id, s64 param_4)
     if (func_002d6370(id) != 0)
     {
         offset = skillId * 7;
-        flags = *(const u16*)((offset << 2) + ((uintptr_t)iGpffffb710 + 2));
+        offset = (u32)offset << 2;
+        flags = *(const u16*)(((uintptr_t)iGpffffb710 + 2) + offset);
         if (flags & 0x200)
         {
             goto return_zero;
