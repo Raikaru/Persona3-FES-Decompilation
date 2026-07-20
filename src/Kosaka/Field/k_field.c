@@ -52,6 +52,7 @@ static u32 sDungeonGenerationAttempts;  // 007ce260
 static u32 sDungeonGenerationFailed;    // 007ce264
 static u32 sDungeonRoomCounter;         // 007ce25c
 #include "Kernel/Kwln/kwlnTask.h"
+extern KwlnTask* gDungeonTask;
 #include "temporary.h"
 extern u32 D_00960184[];
 extern void (*jtbl_0096017C)(void* memory);
@@ -838,6 +839,7 @@ void func_001ba8d0(void)
 {
     Resrc* resource;
     Resrc* other;
+    u32 clearMask;
     KwlnTask* rootTask;
 
     resource = MT_Scene_GetResListHead(3);
@@ -853,22 +855,24 @@ void func_001ba8d0(void)
         }
         resource = resource->next;
     }
+    clearMask = ~2u;
     while (other != NULL)
     {
-        other->flags &= ~2u;
+        other->flags &= clearMask;
         other = other->next;
     }
     func_0019fec0(NULL);
     kwlnSetClearColor(0, 0, 0, 0);
     func_001985e0(0, 0, 0, 0);
-    if (FIELD_U32(0x007ce268) != 0)
+    if (gDungeonTask != NULL)
     {
         K_FldDungeon_RequestShutdown();
     }
     else
     {
         rootTask = sField.rootTask;
-        K_Field_SetShouldShutdown(rootTask, 1);
+        printf(D_0067F5E0);
+        ((u8*)rootTask->workData)[8] = 1;
     }
     func_001cd8e0();
     H_Snd_StopBgmFade(10);
@@ -1148,44 +1152,64 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
 }
 
 // FUN_001bb090 NONMATCHING
-void func_001bb090(const DungeonPattern* pattern, u32 x, u32 y, u8 direction)
+void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u8 direction)
 {
-    u32 col;
-    u32 row;
+    s32 startX;
+    s32 startY;
+    s32 col;
+    s32 row;
     u8* cell;
-    u8* field;
+    const u8* patternCell;
 
-    if (x + pattern->raw[1] - 1 > 0x0f)
+    startX = (u16)x;
+    startY = (u16)y;
+    if (startX + pattern->raw[1] - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x106);
     }
-    if (y + pattern->raw[2] - 1 > 0x0f)
+    if (startY + pattern->raw[2] - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x107);
     }
 
-    field = (u8*)K_Field_Get();
-    field[y * 0x100 + x * 0x10 + 0x49] = 1;
+    cell = (u8*)K_Field_Get() + startY * 0x100 + startX * 0x10;
+    cell[0x49] = 1;
     for (row = 0; row < pattern->raw[2]; row++)
     {
         for (col = 0; col < pattern->raw[1]; col++)
         {
-            cell = field + (y + row) * 0x100 + (x + col) * 0x10;
-            if (cell[0x48] == 0)
-            {
-                cell[0x48] = 1;
-                cell[0x53] = dungeonPatternCell((DungeonPattern*)pattern, col, row)[0x0e];
-                cell[0x4f] = pattern->raw[1];
-                cell[0x50] = pattern->raw[2];
-                cell[0x4a] = pattern->raw[0];
-                cell[0x4e] = direction;
-                cell[0x52] = dungeonPatternCell((DungeonPattern*)pattern, col, row)[0x0f];
-                cell[0x51] = sDungeonRoomCounter;
-            }
-            else
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            if (cell[0x48] != 0)
             {
                 K_Assert((const char*)D_006833A0, 0x124);
+                continue;
             }
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x48] = 1;
+            patternCell = pattern->raw + row * 0x18 + col * 8;
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x53] = patternCell[0x0e];
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x4f] = pattern->raw[1];
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x50] = pattern->raw[2];
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x4a] = pattern->raw[0];
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x4e] = direction;
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x52] = patternCell[0x0f];
+            cell = (u8*)K_Field_Get() +
+                   (startY + row) * 0x100 + (startX + col) * 0x10;
+            cell[0x51] = sDungeonRoomCounter;
         }
     }
     sDungeonRoomCounter++;
@@ -1880,41 +1904,47 @@ void func_001bf220(RwV3d* dst, u32 x, u32 y)
 // FUN_001bf340 NONMATCHING
 u32 func_001bf340(const FldDungeonFloorData* floorData)
 {
-    u32 chance;
-    u32 random;
-    u32 lower;
-    u32 upper;
-    u32 choice;
+    s32 chance;
+    u32 currentFloor;
+    s32 random;
+    s32 lower;
+    s32 upper;
+    s32 total;
+    s32 choice;
     s32 i;
 
-    chance = FUN_0016F380(0x3b);
-    if (K_FldDungeon_GetCurrentFloor() >= FUN_0016F380(0x0c))
+    chance = (s32)FUN_0016F380(0x3b);
+    currentFloor = K_FldDungeon_GetCurrentFloor();
+    if (currentFloor >= FUN_0016F380(0x0c))
     {
         return 0;
     }
-    if ((s16)(chance - 1) < 0)
+    if (chance - 1 < 0)
     {
         FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
-        return 0;
+        goto done;
     }
     if (floorData->minorId != 0)
     {
-        return 0;
+        goto done;
     }
-    if (chance != 1)
+    if (chance - 1 != 0)
     {
-        FUN_0016F3E0(0x3b, 0);
-        return 0;
+        FUN_0016F3E0(0x3b, chance - 1);
+        goto done;
     }
-    random = RpRandom() % 100;
-    lower = FUN_0016F380(0x3c);
+    random = (s32)(RpRandom() % 100);
+    lower = (s32)FUN_0016F380(0x3c);
     if (random >= lower)
     {
-        return 0;
+        goto done;
     }
-    lower = FUN_0016F380(0x3d);
-    upper = FUN_0016F380(0x3e);
-    choice = RpRandom() % (lower + upper + FUN_0016F380(0x37));
+    lower = (s32)FUN_0016F380(0x3d);
+    upper = (s32)FUN_0016F380(0x3e);
+    total = (s32)FUN_0016F380(0x37);
+    (void)FUN_0016F380(0x36);
+    total += lower + upper;
+    choice = (s32)(RpRandom() % total);
     FUN_0016F3E0(0x3b, FUN_0016F380(0x3a));
     if (choice < lower)
     {
@@ -1924,7 +1954,7 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
     {
         return 2;
     }
-    if (choice < lower + upper + FUN_0016F380(0x37))
+    if (choice < total)
     {
         return 3;
     }
@@ -1935,5 +1965,6 @@ u32 func_001bf340(const FldDungeonFloorData* floorData)
             return 4;
         }
     }
+done:
     return 0;
 }
