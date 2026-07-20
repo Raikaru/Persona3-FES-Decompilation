@@ -166,34 +166,39 @@ s32 fclCombine003cf120(void)
     return *(s32*)(DAT_007ce680 + 0x24);
 }
 
-// FUN_003cf160 NONMATCHING
-s16 fclCombine003cf160(s32 param_1, s32 param_2)
+// FUN_003cf160
+s64 fclCombine003cf160(s32 param_1, s32 param_2)
 {
     u32 lo;
     u32 mid;
     u32 hi;
-    s16 result;
+    s64 result;
 
-    FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x66);
+    FUN_005225a8((char*)&DAT_007cd728, DAT_006a4270, 0x66);
     lo = (u32)param_1 & 0xff;
     mid = ((u32)param_1 & 0xff00) >> 8;
     hi = ((u32)param_1 & 0xffff0000) >> 0x10;
     FUN_005225a8(DAT_006a4288, param_1, hi, mid, lo);
     FUN_001052b0(DAT_006a4288, param_1, hi, mid, lo);
     result = FUN_003cf960(param_1, param_2) != 0;
-    return result;
+    return (result << 48) >> 48;
 }
 
-// FUN_003cf240 NONMATCHING
-s32 fclCombine003cf240(s32 param_1, s16 param_2)
+#pragma push
+#pragma opt_propagation off
+// FUN_003cf240
+s32 fclCombine003cf240(s32 param_1, s32 param_2)
 {
     s16 index;
     s32 base;
+    s16 mask;
+    s32 offset;
+    s32 entryAddress;
     u32 lo;
     u32 mid;
     u32 hi;
 
-    FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x7e);
+    FUN_005225a8((char*)&DAT_007cd728, DAT_006a4270, 0x7e);
     lo = (u32)param_1 & 0xff;
     mid = ((u32)param_1 & 0xff00) >> 8;
     hi = ((u32)param_1 & 0xffff0000) >> 0x10;
@@ -202,15 +207,18 @@ s32 fclCombine003cf240(s32 param_1, s16 param_2)
     index = fclCombine003cf8f0(param_1);
     if (index != -1) {
         base = *(s32*)(DAT_007ce680 + 0x24);
-        *(s16*)((u8*)base + index * 0x14 + 4) =
-            *(s16*)((u8*)base + index * 0x14 + 4) | (param_2 & 0xff00);
-        FUN_005225a8(&gp0xffffaa38, DAT_006a4270, 0x83);
+        mask = param_2 & 0xff00;
+        offset = index * 0x14;
+        entryAddress = offset + base;
+        *(s16*)(entryAddress + 4) = *(s16*)(entryAddress + 4) | mask;
+        FUN_005225a8((char*)&DAT_007cd728, DAT_006a4270, 0x83);
         FUN_005225a8(DAT_006a42b0, index);
         FUN_001052b0(DAT_006a42b0, index);
         return 1;
     }
     return 0;
 }
+#pragma pop
 
 // FUN_003cf3a0
 s32 fclCombine003cf3a0(s32 param_1)

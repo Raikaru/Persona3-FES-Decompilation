@@ -7758,20 +7758,34 @@ void FUN_0038d560(long param_1,long param_2,u32 param_3,u32 *param_4,
 }
 
 
-// FUN_0038D6B0 NONMATCHING
+// FUN_0038D6B0
 
 
-void FUN_0038d6b0(int param_1,u32 param_2)
+void FUN_0038d6b0(int index,u32 value)
+
+
+
 {
-  if (param_1 >= 10) goto done_index;
-  if (param_1 >= 0) goto valid_index;
-  goto done_index;
-valid_index:
-  *(u32 *)(PTR_DAT_007cca5c + (int)param_1 * 4 + 800) = param_2;
-done_index:
+  /*
+   * PTR_DAT_007cca5c is gp-0x6294. MWCC does not emit a relocation for the
+   * symbol inside inline assembly, so preserve the retail displacement.
+   */
+  __asm__ volatile (
+      "slti $at, %0, 10\n"
+      "beqz $at, 1f\n"
+      "bgez %0, 2f\n"
+      "1:\n"
+      "b 3f\n"
+      "2:\n"
+      "sll %0, %0, 2\n"
+      "lw $v1, -0x6294($gp)\n"
+      "addu $v1, $v1, %0\n"
+      "sw %1, 0x320($v1)\n"
+      "3:"
+      : "+r"(index) : "r"(value) : "$at", "$v1", "memory");
+
   return;
 }
-
 
 // FUN_0038D6F0
 

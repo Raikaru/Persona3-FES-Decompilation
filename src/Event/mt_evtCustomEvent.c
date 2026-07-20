@@ -107,7 +107,7 @@ u32 FUN_0039e880(int param_1,u64 param_2,u32 param_3,int param_4,u64 param_5);
 void FUN_0039ea20(int param_1,int param_2);
 void FUN_0039eaa0(int param_1);
 void FUN_0039eb90(void);
-u32 FUN_0039ec10(int param_1,long param_2,u32 *param_3,u32 *param_4);
+u32 FUN_0039ec10(int param_1,int param_2,u32 *param_3,u32 *param_4);
 int FUN_0039ec60(int param_1);
 
 
@@ -6030,42 +6030,29 @@ void FUN_0039eb90(void)
 }
 #define FUN_0039eb90(...) ((void (*)(...))FUN_0039eb90)(__VA_ARGS__)
 #undef FUN_0039ec10
-// FUN_0039EC10 NONMATCHING
+// FUN_0039EC10
 
 
-u32 FUN_0039ec10(int param_1,long param_2,u32 *param_3,u32 *param_4)
-
-
-
+u32 FUN_0039ec10(int param_1,int param_2,u32 *param_3,u32 *param_4)
 {
+  int offset;
+  int halfOffset;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  
-
-  if ((param_2 < 5) && (-1 < param_2)) {
-
-    iVar2 = (int)param_2 * 4 + param_1;
-
-    *param_3 = *(u32 *)(iVar2 + 0x818);
-
-    *param_4 = (u32)*(u16 *)((int)param_2 * 2 + param_1 + 0x80c);
-
-    uVar1 = *(u32 *)(iVar2 + 0x7f8);
-
+  if ((param_2 >= 5) || (param_2 < 0)) {
+    return 0;
   }
 
-  else {
+  offset = param_2 * 4;
+  offset += param_1;
+  *param_3 = *(u32 *)(offset + 0x818);
 
-    uVar1 = 0;
+  halfOffset = param_2 * 2;
+  halfOffset += param_1;
+  *param_4 = *(u16 *)(halfOffset + 0x80c);
 
-  }
-
-  return uVar1;
-
+  return *(u32 *)(offset + 0x7f8);
 }
+
 #define FUN_0039ec10(...) ((u32 (*)(...))FUN_0039ec10)(__VA_ARGS__)
 #undef FUN_0039ec60
 // FUN_0039ec60
