@@ -532,7 +532,7 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
 {
     static const SflGroundVec2 quad[8] = {
         { -25.5f, -25.5f }, { 25.5f, -25.5f }, { -25.5f, 25.5f }, { 25.5f, 25.5f },
-        { -25.5f, -25.5f }, { 25.5f, -25.5f }, { -25.5f, 25.5f }, { 25.5f, 25.5f }
+        { -25.5f, -25.5f }, { -25.5f, -25.5f }, { -25.5f, 25.5f }, { 25.5f, 25.5f }
     };
     SflGroundVec2 transformed[8];
     f32 angle;
