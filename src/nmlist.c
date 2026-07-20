@@ -255,13 +255,13 @@ int FUN_003c4820(long param_1,int param_2)
     if (param_2 == 0) {
         K_Assert((const char *)0x006A3DE8, 0x14a);
     }
-    list = param_1;
+    list = (int *)param_1;
     *(u16 *)((u8 *)list + 0xc) = *(u16 *)((u8 *)list + 0xc) - 1;
     previous = *(int **)((u8 *)param_2 + 0xc);
     if (previous == 0) {
         next = *(int **)((u8 *)param_2 + 0x10);
         if (next == 0) {
-            if (*(int **)list == param_2) {
+            if (*(int **)list == (int *)param_2) {
                 *(int **)((u8 *)list + 4) = 0;
                 *(int **)list = 0;
             }
@@ -283,7 +283,7 @@ int FUN_003c4820(long param_1,int param_2)
     }
     *(u32 *)((u8 *)param_2 + 0xc) = 0;
     *(u32 *)((u8 *)param_2 + 0x10) = 0;
-    return next;
+    return (int)next;
 }
 #define FUN_003c4820(...) ((int (*)(...))FUN_003c4820)(__VA_ARGS__)
 #undef FUN_003c4910
