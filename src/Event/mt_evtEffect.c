@@ -160,7 +160,7 @@ u64 FUN_00395350(s16 param_1,int param_2);
 u64 FUN_003953b0(int param_1);
 void FUN_003953e0(u64 param_1);
 void FUN_00395420(void);
-void FUN_00395430(int param_1,long param_2,long param_3,long param_4,u32 param_5);
+void FUN_00395430(int param_1,int param_2,int param_3,int param_4,u32 param_5);
 void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00395550(int param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
@@ -483,10 +483,10 @@ void FUN_00395420(void)
 }
 #define FUN_00395420(...) ((void (*)(...))FUN_00395420)(__VA_ARGS__)
 #undef FUN_00395430
-// FUN_00395430 NONMATCHING
+// FUN_00395430
 
 
-void FUN_00395430(int param_1,long param_2,long param_3,long param_4,u32 param_5)
+void FUN_00395430(int param_1,int param_2,int param_3,int param_4,u32 param_5)
 
 
 
@@ -510,7 +510,7 @@ void FUN_00395430(int param_1,long param_2,long param_3,long param_4,u32 param_5
 
   }
 
-  param_5 = param_5 | (int)param_3 << 0x10 | (int)param_4 << 8;
+  param_5 = ((int)param_3 << 0x10 | (int)param_4 << 8) | param_5;
 
   if (param_2 == 0) {
 
