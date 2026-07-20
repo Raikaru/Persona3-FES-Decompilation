@@ -15286,40 +15286,42 @@ advance:
 
 }
 
-// FUN_00401CF0 NONMATCHING
+// FUN_00401CF0
 
 
 u8 * FUN_00401cf0(int param_1)
 {
-  u8 bVar1;
-  u8 *pbVar2;
-  u32 uVar3;
-  u32 uVar4;
+  u8 value;
+  u8 *entry;
+  u32 index;
+  u32 count;
+  u32 aboveRange;
 
   if (param_1 == 0) {
-    K_Assert((const char *)(u32)DAT_006aede8,0x1ada);
+    K_Assert((const char *)DAT_006aede8,0x1ada);
   }
 
-  pbVar2 = pbGpffffabe8;
-  uVar3 = 0;
-  uVar4 = uGpffffabec;
+  entry = pbGpffffabe8;
+  index = 0;
+  count = uGpffffabec;
   goto check;
 body:
-  bVar1 = *(u8 *)(param_1 + 4);
-  if (*pbVar2 > bVar1) {
+  value = *(u8 *)(param_1 + 4);
+  if (*entry > value) {
     goto increment;
   }
-  if (bVar1 <= pbVar2[1]) {
-    goto found;
+  aboveRange = entry[1] < value;
+  if (aboveRange) {
+    goto increment;
   }
-  goto increment;
+  goto found;
 found:
-  return pbVar2;
+  return entry;
 increment:
-  pbVar2 = pbVar2 + 0x2e;
-  uVar3 = uVar3 + 1;
+  entry = entry + 0x2e;
+  index = index + 1;
 check:
-  if (uVar3 < uVar4) {
+  if (index < count) {
     goto body;
   }
   return (u8 *)0x0;

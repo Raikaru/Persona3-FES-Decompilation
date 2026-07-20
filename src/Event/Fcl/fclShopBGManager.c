@@ -2133,47 +2133,41 @@ u32 FUN_004120a0(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00412580 NONMATCHING
-
-
+// FUN_00412580
+#pragma push
+#pragma opt_propagation off
 u64 FUN_00412580(u64 param_1,int param_2)
-
-
-
 {
+  int work;
+  s16 *entry;
+  int i;
+  float scale;
+  float zero;
+  s32 x;
+  s32 y;
+  u8 alpha;
+  s32 extra0;
+  s32 extra1;
+  s32 extra2;
+  s32 spriteId;
 
-  int iVar1;
-
-  s16 *puVar2;
-
-  int iVar3;
-
-  
-
-  iVar1 = *(int *)(param_2 + 0xc);
-
-  for (iVar3 = 0; iVar3 < 5; iVar3 = iVar3 + 1) {
-    puVar2 = (s16 *)(iVar1 + iVar3 * 0xc);
-    {
-      float fVar1;
-      s16 sVar2;
-      s16 sVar3;
-      u8 bVar4;
-      int iVar4;
-      fVar1 = *(float *)(puVar2 + 4);
-      sVar2 = *puVar2;
-      sVar3 = puVar2[1];
-      bVar4 = *(u8 *)(puVar2 + 2);
-      iVar4 = iVar3 + 0x51;
-      FUN_0040e3f0_typed(0, 0, fVar1, fVar1,
-                         sVar2, sVar3, bVar4, iVar4, 0, 0, 0);
-    }
-
+  work = *(int *)(param_2 + 0xc);
+  for (i = 0; i < 5; i = i + 1) {
+    entry = (s16 *)(work + i * 0xc);
+    scale = *(float *)(entry + 4);
+    x = *entry;
+    y = entry[1];
+    zero = 0.0f;
+    alpha = *(u8 *)(entry + 2);
+    spriteId = i + 0x51;
+    extra0 = 0;
+    extra1 = 0;
+    extra2 = 0;
+    FUN_0040e3f0_typed(zero,zero,scale,scale,x,y,alpha,spriteId,extra0,extra1,extra2);
   }
-
   return 0;
-
 }
+#pragma pop
 
 // FUN_00412610 NONMATCHING
 

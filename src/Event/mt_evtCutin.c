@@ -54,32 +54,43 @@ extern char DAT_006a1070[];
 #define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
 #define FUN_00397870(...) ((u32 (*)(...))FUN_00397870)(__VA_ARGS__)
 #undef FUN_00396e30
-// FUN_00396E30 NONMATCHING
+// FUN_00396E30
 
 
 u32 FUN_00396e30(int param_1)
 {
-    int iVar1;
-    u32 uVar2;
-    int lVar3;
+  extern int FUN_00195340(const char *);
+  extern int FUN_00195540(int);
+  int entry;
+  u32 result;
+  int manager;
+  int base;
+  int offset;
 
-    lVar3 = FUN_00195340("koma_Manager");
-    if (lVar3 == 0) {
-        uVar2 = 0;
-    } else if (param_1 >= 3) {
-        uVar2 = 0;
-    } else {
-        iVar1 = FUN_00195540(lVar3);
-        iVar1 = param_1 * 0xc + iVar1;
-        if (*(int *)(iVar1 + 8) == 0) {
-            uVar2 = 0;
-        } else {
-            uVar2 = 1;
-            *(u32 *)(iVar1 + 4) = 1;
-        }
+  manager = FUN_00195340("koma_Manager");
+  if (manager == 0) {
+    result = 0;
+  }
+  else if (param_1 >= 3) {
+    result = 0;
+  }
+  else {
+    base = FUN_00195540(manager);
+    offset = param_1 * 0xc;
+    /* Preserve retail's offset-first address addition. */
+    __asm__ volatile ("addu %0, %1, %2"
+                      : "=r"(entry) : "r"(offset), "r"(base));
+    if (*(int *)(entry + 8) == 0) {
+      result = 0;
     }
-    return uVar2;
+    else {
+      result = 1;
+      *(u32 *)(entry + 4) = 1;
+    }
+  }
+  return result;
 }
+
 #define FUN_00396e30(...) ((u32 (*)(...))FUN_00396e30)(__VA_ARGS__)
 #undef FUN_00396ed0
 // FUN_00396ED0

@@ -2309,65 +2309,47 @@ u16 * FUN_00362290(int param_1)
 #pragma pop
 
 
-// FUN_00362310 NONMATCHING
-
-
+#pragma push
 #pragma opt_loop_invariants on
-u16 * FUN_00362310(int param_1)
+// FUN_00362310
 
 
-
+u16* FUN_00362310(int param_1)
 {
+    u16* candidate;
+    u16* nearest;
+    int distance;
+    u32 candidateTime;
+    int currentTime;
+    int* group;
+    int nearestDistance;
 
-  u16 *puVar1;
-
-  u16 *puVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int *piVar5;
-
-  
-
-  puVar2 = (u16 *)0x0;
-
-  iVar4 = 99999;
-
-  for (piVar5 = *(int **)(param_1 + 0x84); piVar5 != (int *)0x0; piVar5 = (int *)piVar5[0x25]) {
-
-    if (*piVar5 == 2) {
-
-      for (puVar1 = (u16 *)piVar5[0x1b]; puVar1 != (u16 *)0x0;
-
-          puVar1 = *(u16 **)(puVar1 + 0x26)) {
-
-        if ((int)(u32)*puVar1 < *(int *)(param_1 + 0x18)) {
-
-          iVar3 = *(int *)(param_1 + 0x18) - (u32)*puVar1;
-
-          if (iVar3 < iVar4) {
-
-            iVar4 = iVar3;
-
-            puVar2 = puVar1;
-
-          }
-
+    nearest = NULL;
+    nearestDistance = 99999;
+    for (group = *(int**)(param_1 + 0x84); group != NULL; group = (int*)group[0x25])
+    {
+        if (*group == 2)
+        {
+            for (candidate = (u16*)group[0x1b]; candidate != NULL;
+                 candidate = *(u16**)(candidate + 0x26))
+            {
+                candidateTime = *(volatile u16*)candidate;
+                currentTime = *(volatile int*)(param_1 + 0x18);
+                if ((int)candidateTime < currentTime)
+                {
+                    distance = currentTime - candidateTime;
+                    if (distance < nearestDistance)
+                    {
+                        nearestDistance = distance;
+                        nearest = candidate;
+                    }
+                }
+            }
         }
-
-      }
-
     }
-
-  }
-
-  return puVar2;
-
+    return nearest;
 }
-#pragma opt_loop_invariants off
-
+#pragma pop
 
 // FUN_00362390 NONMATCHING
 

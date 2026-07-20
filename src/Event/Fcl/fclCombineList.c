@@ -2643,27 +2643,25 @@ check:
     return 1;
 }
 
-// FUN_003DFF80 NONMATCHING
-int FUN_003dff80(int *param_1,int param_2)
+// FUN_003DFF80
+#pragma push
+#pragma opt_rebuildconditionals off
+int FUN_003dff80(int* param_1, int param_2)
 {
-    int iVar1;
-    int iVar2;
+  int node;
+  int result;
 
-    iVar1 = *(int *)(*param_1 + 4);
-    goto check;
-body:
-    iVar2 = *(int *)(iVar1 + 0x14);
-    if (*(int *)(iVar2 + 0x10) != param_2) {
-        iVar1 = *(int *)(iVar1 + 0x10);
-        goto check;
+  node = *(int *)(*param_1 + 4);
+  while (node != 0) {
+    result = *(int *)(node + 0x14);
+    if (*(int *)(result + 0x10) == param_2) {
+      return result;
     }
-    goto found;
-check:
-    if (iVar1 != 0) goto body;
-    iVar2 = 0;
-found:
-    return iVar2;
+    node = *(int *)(node + 0x10);
+  }
+  return 0;
 }
+#pragma pop
 
 // FUN_003DFFC0 NONMATCHING
 

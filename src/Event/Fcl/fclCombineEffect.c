@@ -8,6 +8,9 @@ float fGpffff8328;
 float fGpffffad78;
 u32 uGpffffad78;
 /* FUSION_EXACT_PROTOS */
+#pragma alias mdlAnimSet_u32 mdlAnimSet
+extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
+                          u32 flags);
 u32 FUN_00417160(void *param_1);
 u32 FUN_00417330(u64 param_1,u32 param_2);
 u32 FUN_00417380(void);
@@ -1151,7 +1154,7 @@ void FUN_004180a0(u32 *param_1)
 
 }
 
-// FUN_004180E0 NONMATCHING
+// FUN_004180E0
 
 
 void FUN_004180e0(u32 *param_1,s16 param_2)
@@ -1160,7 +1163,12 @@ void FUN_004180e0(u32 *param_1,s16 param_2)
 
 {
 
-  *(u16 *)(*(int *)(FUN_003c4910(*param_1,param_2,0xc) + 0x14) + 2) = param_2;
+  FUN_003c4910(*param_1,param_2,0xc);
+  /* Preserve retail's in-register payload write through the call result. */
+  __asm__ volatile (
+      "lw $v0, 0x14($v0)\n"
+      "sh %0, 2($v0)"
+      : : "r"(param_2) : "$v0", "memory");
 
   return;
 
@@ -2868,23 +2876,13 @@ u8 FUN_00419f20(int param_1,int *param_2)
 
 }
 
-// FUN_0041A2C0 NONMATCHING
-
-
-u32 FUN_0041a2c0(int param_1,int *param_2)
-
-
-
+// FUN_0041A2C0
+u32 FUN_0041a2c0(int param_1, int* param_2)
 {
-
-  mdlAnimSet(*(u32 *)(param_2[1] + 8),0,*(u16 *)(param_1 + 0x20),
-
-               *(u32 *)(*param_2 + 0x10) & 0xffff,(int)*(u32 *)(*param_2 + 0x10) >> 0x10 & 0xffff)
-
-  ;
-
-  return 1;
-
+    mdlAnimSet_u32(*(u32*)(param_2[1] + 8), 0, *(s16*)(param_1 + 0x20),
+                   *(u32*)(*param_2 + 0x10) & 0xffff,
+                   ((s32)*(u32*)(*param_2 + 0x10) >> 16) & 0xffff);
+    return 1;
 }
 
 // FUN_0041A310 NONMATCHING
@@ -4123,37 +4121,28 @@ u64 FUN_0041b950(int param_1)
 
 }
 
-// FUN_0041BA60 NONMATCHING
+// FUN_0041BA60 MATCHING
 
 
 u64 FUN_0041ba60(int param_1)
-
-
-
 {
-
   s16 *puVar1;
-
   int iVar2;
 
-  
-
   for (iVar2 = *(int *)(**(int **)(param_1 + 0x3c) + 0xc); iVar2 != 0;
-
       iVar2 = *(int *)(iVar2 + 0x10)) {
-
     puVar1 = *(s16 **)(iVar2 + 0x14);
-
-    if ((((*puVar1 & 8) != 0) && ((*puVar1 & 1) != 0)) && ((char)puVar1[1] == '\x02')) {
-
-      FUN_0041bf80(*(u32 **)(puVar1 + 4));
-
+    if (((*puVar1 & 8) != 0) && ((*puVar1 & 1) != 0)) {
+      switch ((char)puVar1[1]) {
+      case 2:
+        FUN_0041bf80(*(u32 **)(puVar1 + 4));
+        break;
+      default:
+        break;
+      }
     }
-
   }
-
   return 0;
-
 }
 
 // FUN_0041BAF0 NONMATCHING
