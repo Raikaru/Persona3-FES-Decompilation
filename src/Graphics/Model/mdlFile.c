@@ -5625,16 +5625,16 @@ u64 FUN_00321a60(void)
 u64 FUN_00321b00(void)
 {
   RwCamera *camera;
-  void (*renderStateSet)(...);
+  void (**renderStateSet)(...);
   s8 color[4];
 
   camera = FUN_00198590_camera();
   if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(0);
     if (PTR_DAT_007cd540[0] >= 0xc8) {
-      renderStateSet = DAT_00960090;
       RpSkyRenderStateSet(2,0x44);
       RpSkyRenderStateSet(3,0x717fb);
+      renderStateSet = &DAT_00960090;
       (*renderStateSet)(0xe,0);
       (*renderStateSet)(6,0);
       (*renderStateSet)(8,0);
@@ -7611,7 +7611,7 @@ void FUN_00323920(RwMatrix *param_1,void *param_2,s32 param_3,f32 param_4)
 
 
 
-// FUN_00323A30 NONMATCHING
+// FUN_00323A30
 
 
 void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
@@ -7619,9 +7619,11 @@ void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
   f32 values[3];
   RwMatrix other;
   RwMatrix local;
-  u32 *src;
-  u32 *dst;
-  s32 i;
+  RwMatrix *var_6;
+  RwMatrix *var_7;
+  u32 temp_3;
+  u32 temp_4;
+  s32 var_5;
 
   if (param_4 != 0) {
     values[0] = ((f32 *)param_4)[0];
@@ -7647,16 +7649,18 @@ void FUN_00323a30(RwMatrix *param_1,void *param_2,s32 param_3,void *param_4)
     FUN_003296a0_typed(&other,param_3);
     RwMatrixMultiply(param_1,&local,&other);
   } else {
-    src = (u32 *)&local;
-    dst = (u32 *)param_1;
-    i = 8;
+    var_6 = &local;
+    var_5 = 8;
+    var_7 = param_1;
     do {
-      dst[0] = src[0];
-      dst[1] = src[1];
-      src += 2;
-      dst += 2;
-      i--;
-    } while (i > 0);
+      temp_4 = ((u32 *)var_6)[0];
+      temp_3 = ((u32 *)var_6)[1];
+      var_6 = (RwMatrix *)((u8 *)var_6 + 8);
+      var_5--;
+      ((u32 *)var_7)[0] = temp_4;
+      ((u32 *)var_7)[1] = temp_3;
+      var_7 = (RwMatrix *)((u8 *)var_7 + 8);
+    } while (var_5 > 0);
   }
   if (param_2 != 0) {
     values[0] = ((f32 *)param_2)[0];
@@ -50587,8 +50591,8 @@ void FUN_0034d670(u64 param_1)
 
 u64 FUN_0034d6f0(int param_1)
 {
-  int iVar1;
   u32 uVar2;
+  int iVar1;
   int iVar3;
   u32 *puVar4;
   u32 uVar5;
