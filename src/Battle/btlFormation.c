@@ -4851,30 +4851,42 @@ void func_002bf9a0(void)
   return;
 }
 
-// FUN_002bf9b0 NONMATCHING
+// FUN_002bf9b0
 
 void func_002bf9b0(void)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  u32 uVar3 = 0;
-  u32 uVar4 = 0;
-  
-  if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) && (lVar2 = btlFadeSuppressesFormationUpdates(), lVar2 == 0)) &&
-      ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) && ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) != 0)
-     ) {
-    for (uVar4 = 0; uVar4 < 4; uVar4 = uVar4 + 1) {
-      for (iVar1 = *(int *)(DAT_007ce3ec + uVar4 * 8 + 0x150); iVar1 != 0;
-          iVar1 = *(int *)(iVar1 + 0xa34)) {
-        if (*(int *)(iVar1 + 0xa2c) != 0) {
-          if (*(u8 *)(iVar1 + 0x37) != 0) {
-            uVar3 = 0xff;
+  int entry = 0;
+  long fadeSuppressed = 0;
+  u32 alpha = 0;
+  u32 listIndex = 0;
+  float firstZero;
+  float zero;
+  int callUnit;
+  u32 callColor;
+
+  if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) &&
+        (fadeSuppressed = btlFadeSuppressesFormationUpdates(), fadeSuppressed == 0)) &&
+       ((*(u32 *)(DAT_007ce3ec + 0x14) & 4) == 0)) &&
+      ((*(u32 *)(DAT_007ce3ec + 0xc) & 0x800) != 0)) {
+    for (listIndex = 0; listIndex < 4; listIndex = listIndex + 1) {
+      for (entry = *(int *)(DAT_007ce3ec + listIndex * 8 + 0x150); entry != 0;
+           entry = *(int *)(entry + 0xa34)) {
+        if (*(int *)(entry + 0xa2c) != 0) {
+          /* Preserve the retail call-argument setup order. */
+          __asm__ volatile ("mtc1 $zero, %0" : "=f"(zero));
+          if (*(u8 *)(entry + 0x37) != 0) {
+            alpha = 0xff;
           }
           else {
-            uVar3 = 0;
+            alpha = 0;
           }
-          func_002bce10(0.0f, 0.0f, iVar1, uVar3 | 0xb4736400, (float *)(iVar1 + 0xa04));
+          callColor = alpha | 0xb4736400;
+          __asm__ volatile ("daddu %0, %2, $zero" : "=r"(callUnit)
+                            : "r"(callColor), "r"(entry));
+          __asm__ volatile ("mov.s %0, %1" : "=f"(firstZero) : "f"(zero));
+          func_002bce10(firstZero, zero, callUnit, callColor,
+                        (float *)(entry + 0xa04));
         }
       }
     }
