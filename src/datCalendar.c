@@ -628,7 +628,7 @@ KwlnTask* func_00180c40(KwlnTask* clndTask)
         if (datGetSkipToTarget() == 0)
         {
             eventIndex = clndFindAndExecSiteibiEvents();
-            if (eventIndex >= 0)
+            if (eventIndex != -1)
             {
                 return func_00181950(clndTask, eventIndex);
             }
