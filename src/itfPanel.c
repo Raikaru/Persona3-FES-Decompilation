@@ -8,6 +8,10 @@ extern void FUN_0019d3f0(const char *file,s32 line);
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
 extern const char DAT_006a1d70[];
+extern const char DAT_006a1d50[];
+extern const char DAT_006a1d90[];
+extern const char DAT_006a1db0[];
+extern const char DAT_006a1dd0[];
 extern u32 DAT_006a1fdc;
 extern u32 DAT_006a1fec;
 extern u32 DAT_006a1ffc;
@@ -336,7 +340,7 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
   
 
-  FUN_005225a8(0x6a1d50);
+  FUN_005225a8(DAT_006a1d50);
 
   if ((param_1 < 0) || (0xe < param_1)) {
 
@@ -497,7 +501,7 @@ void FUN_003a8dc0(long param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  FUN_005225a8(0x6a1d90);
+  FUN_005225a8(DAT_006a1d90);
 
   iVar1 = (int)param_1;
 
@@ -543,7 +547,7 @@ void FUN_003a8ea0(long param_1,int param_2,int param_3,int param_4,int param_5,i
 
   }
 
-  FUN_005225a8(0x6a1db0);
+  FUN_005225a8(DAT_006a1db0);
 
   iVar1 = (int)param_1;
 
@@ -595,7 +599,7 @@ void FUN_003a8fb0(long param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  FUN_005225a8(0x6a1dd0);
+  FUN_005225a8(DAT_006a1dd0);
 
   iVar1 = (int)param_1;
 
