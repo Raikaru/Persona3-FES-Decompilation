@@ -1992,38 +1992,36 @@ f32 FUN_0016bc00(u32 param_1, u32 param_2)
     return (f32)(s32)iGpffffb2c0->groups[param_1 & 0xffff].records[param_2 & 0xffff].axis3;
 }
 
-// FUN_0016BC80 NONMATCHING
+// FUN_0016BC80
 void FUN_0016bc80(u32 param_1, u32 param_2, f32* param_3)
 {
-    CampDataBridgeGroup* group;
-    u32 color;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0xa5);
+        FUN_0019d3f0(D_005E3098, 0xa5);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    color = group->records[param_2 & 0xffff].color0;
-    param_3[0] = (f32)((color >> 24) & 0xff) / 255.0f;
-    param_3[1] = (f32)((color >> 16) & 0xff) / 255.0f;
-    param_3[2] = (f32)((color >> 8) & 0xff) / 255.0f;
-    param_3[3] = (f32)(color & 0xff) / 255.0f;
+    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 24) & 0xff) / 255.0f;
+    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 16) & 0xff) / 255.0f;
+    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 >> 8) & 0xff) / 255.0f;
+    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color0 & 0xff) / 255.0f;
 }
 
-// FUN_0016BDB0 NONMATCHING
+// FUN_0016BDB0
 void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
 {
-    CampDataBridgeGroup* group;
-    u32 color;
-
     if (iGpffffb2c0 == NULL) {
-        FUN_0019d3f0((const char*)0x5e3098, 0xaf);
+        FUN_0019d3f0(D_005E3098, 0xaf);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    color = group->records[param_2 & 0xffff].color1;
-    param_3[0] = (f32)((color >> 24) & 0xff) / 255.0f;
-    param_3[1] = (f32)((color >> 16) & 0xff) / 255.0f;
-    param_3[2] = (f32)((color >> 8) & 0xff) / 255.0f;
-    param_3[3] = (f32)(color & 0xff) / 255.0f;
+    param_3[0] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 24) & 0xff) / 255.0f;
+    param_3[1] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 16) & 0xff) / 255.0f;
+    param_3[2] = (f32)(s32)(((s32)iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 >> 8) & 0xff) / 255.0f;
+    param_3[3] = (f32)(s32)(iGpffffb2c0->groups[param_1 & 0xffff]
+        .records[param_2 & 0xffff].color1 & 0xff) / 255.0f;
 }
 
 // FUN_0016BEE0
