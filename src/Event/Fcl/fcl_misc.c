@@ -1,6 +1,6 @@
 #include "temporary.h"
 /* FUSION_GLOBALS */
-int *piGpffffb98c;
+extern int *piGpffffb98c;
 typedef int (*code)(...);
 /* FUSION_EXACT_PROTOS */
 u32 FUN_003c8b50();
@@ -108,6 +108,10 @@ extern void fclMiscAssertCall(u32, u32);
 extern void fclMisc3174e0Call(s32);
 #pragma alias fclMisc9460Call FUN_003c9460
 extern u32 fclMisc9460Call(u32 *);
+#pragma alias fclMisc8d80Int FUN_003c8d80
+extern u32 fclMisc8d80Int(void);
+#pragma alias fclMisc8550Call FUN_003c8550
+extern u64 fclMisc8550Call(u32);
 
 
 
@@ -121,6 +125,12 @@ extern u32 fclMisc9460Call(u32 *);
 #define FUN_003c8b50(...) ((u32 (*)(...))FUN_003c8b50)(__VA_ARGS__)
 #define FUN_003c8d80(...) ((u8 (*)(...))FUN_003c8d80)(__VA_ARGS__)
 #define FUN_003c8da0(...) ((void (*)(...))FUN_003c8da0)(__VA_ARGS__)
+#define FUN_003c8dc0(...) ((void (*)(...))FUN_003c8dc0)(__VA_ARGS__)
+#undef FUN_003c8d80
+extern u8 FUN_003c8d80(void);
+#define FUN_003c8d80(...) ((u8 (*)(...))FUN_003c8d80)(__VA_ARGS__)
+#undef FUN_003c8dc0
+extern void FUN_003c8dc0(u32);
 #define FUN_003c8dc0(...) ((void (*)(...))FUN_003c8dc0)(__VA_ARGS__)
 #define FUN_003c8dd0(...) ((void (*)(...))FUN_003c8dd0)(__VA_ARGS__)
 #define FUN_003c8de0(...) ((u64 (*)(...))FUN_003c8de0)(__VA_ARGS__)
@@ -239,88 +249,47 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 
 #undef FUN_003c8400
 // FUN_003C8400 NONMATCHING
-
-
-u32 FUN_003c8400(long param_1,int param_2)
-
-
-
+u32 FUN_003c8400(u32 param_1,int param_2)
 {
-
   int iVar1;
-
-  long lVar2;
-
+  u32 lVar2;
   int iVar3;
-
   int iVar4;
-
   u32 *puVar5;
-
   int iVar6;
 
-  
-
   if (param_1 == 0) {
-
     FUN_0019d3f0("fclMisc.c",0x396);
-
   }
-
   if ((param_2 < 0) || (0xb < param_2)) {
-
     FUN_0019d3f0("fclMisc.c",0x397);
-
   }
-
   iVar6 = (int)param_1;
-
   iVar1 = iVar6 + param_2 * 0xc;
-
   puVar5 = (u32 *)(iVar1 + 0x1c);
-
   if ((*(u32 *)(iVar1 + 0x1c) & 2) == 0) {
-
-    for (iVar3 = *(int *)(*(int *)(iVar6 + 0x18) + 4); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
-
+    for (iVar3 = *(int *)(*(int *)(iVar6 + 0x18) + 4);
+         iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
       iVar4 = *(int *)(iVar3 + 0x14);
-
       if (*(int *)(iVar4 + 4) == param_2) goto LAB_003c84bc;
-
     }
-
     iVar4 = 0;
-
 LAB_003c84bc:
-
     if (iVar4 == 0) {
-
       *(int *)(iVar1 + 0x20) = param_2;
-
-      lVar2 = FUN_003c4910(*(int *)(iVar6 + 0x18),*(u16 *)(*(int *)(iVar6 + 0x18) + 0x10) + 1,0);
-
+      lVar2 = FUN_003c4910(*(int *)(iVar6 + 0x18),
+                           *(u16 *)(*(int *)(iVar6 + 0x18) + 0x10) + 1, 0);
       if (lVar2 == 0) {
-
         FUN_0019d3f0(0x7bb4d8,0x50);
-
       }
-
-      *(u32 **)((int)lVar2 + 0x14) = puVar5;
-
+      *(u32 **)(lVar2 + 0x14) = puVar5;
       return 1;
-
     }
-
   }
-
   if ((*(u32 *)(iVar1 + 0x1c) & 4) != 0) {
-
     *puVar5 = *puVar5 & 0xfffffffb;
-
   }
-
   return 0;
-
 }
 #define FUN_003c8400(...) ((u32 (*)(...))FUN_003c8400)(__VA_ARGS__)
 #undef FUN_003c8550
@@ -554,97 +523,69 @@ void FUN_003c88d0(void)
 }
 #define FUN_003c88d0(...) ((void (*)(...))FUN_003c88d0)(__VA_ARGS__)
 #undef FUN_003c89a0
+#undef FUN_003c8770
+extern u64 FUN_003c8770(u32, s32);
+#undef FUN_003c8810
+extern u64 FUN_003c8810(int *);
+#undef FUN_003c8dc0
+extern void FUN_003c8dc0(u32);
+#undef FUN_003c8400
+extern u32 FUN_003c8400(u32, s32);
+#undef FUN_003c8b50
+extern u32 FUN_003c8b50();
+#undef FUN_003c91b0
+extern u8 FUN_003c91b0(u8 *, u32);
 // FUN_003C89A0 NONMATCHING
-
-
 u64 FUN_003c89a0(void)
-
-
-
 {
+    u32 result;
+    int *piVar2;
+    int iVar4;
 
-  u32 uVar1;
-
-  int *piVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-  
-
-  piVar2 = piGpffffb98c;
-
-  if ((piGpffffb98c[1] & 1U) != 0) {
-
-    if ((piGpffffb98c[1] & 2U) == 0) {
-
-      if (*(int *)(*piGpffffb98c + 4) == 0) {
-
-        iVar4 = 0;
-
-      }
-
-      else {
-
-        iVar4 = *(int *)(*(int *)(*piGpffffb98c + 4) + 0x14);
-
-      }
-
-      if (iVar4 != 0) {
-
-        piGpffffb98c[1] = piGpffffb98c[1] & 0xfffffffe;
-
-
-
-
-        uVar1 = *(u32 *)(iVar4 + 4);
-
-        *(u32 *)(iVar4 + 4) = uVar1 | 2;
-
-        *(u32 *)(iVar4 + 4) = uVar1 | 3;
-
-      }
-
-    }
-
-    else {
-
-
-
-      if (lVar3 != 0) {
-
-        piVar2[1] = piVar2[1] & 0xfffffffd;
-
-
-        FUN_003c4a90(*piVar2,*piVar2 + 4);
-
-        for (iVar4 = 0; iVar4 < 0xb; iVar4 = iVar4 + 1) {
-
-
+    piVar2 = piGpffffb98c;
+    if ((piVar2[1] & 1U) != 0) {
+        if ((piVar2[1] & 2U) != 0) {
+            FUN_003c8810(piVar2);
+            result = fclMisc8d80Int();
+            if (result != 0) {
+                piVar2[1] &= ~2;
+                FUN_003c8dc0(0);
+                FUN_003c4a90(*piVar2, *piVar2 + 4);
+                for (iVar4 = 0; iVar4 < 0xb; iVar4++) {
+                    FUN_003c8770((u32)piVar2, iVar4);
+                }
+            }
+        } else {
+            iVar4 = *(int *)(*piVar2 + 4);
+            if (iVar4 != 0) {
+                goto LAB_003c8a68;
+            }
+            iVar4 = 0;
+            goto LAB_003c8a6c;
+LAB_003c8a68:
+            iVar4 = *(int *)(iVar4 + 0x14);
+LAB_003c8a6c:
+            if (iVar4 == 0) {
+                goto LAB_003c8ac8;
+            }
+            piVar2[1] &= ~1;
+            FUN_003c91b0((u8 *)(iVar4 + 0x10), *(u32 *)(iVar4 + 0x28));
+            FUN_003c8400((u32)piVar2, 0);
+            FUN_003c8400((u32)piVar2, *(u32 *)(iVar4 + 0x2c));
+            *(u32 *)(iVar4 + 4) |= 2;
+            *(u32 *)(iVar4 + 4) |= 1;
         }
-
-      }
-
     }
-
-  }
-
-  iVar4 = *(int *)(*piVar2 + 4);
-
-  if (((iVar4 != 0) && ((*(u32 *)(*(int *)(iVar4 + 0x14) + 4) & 2) != 0)) &&
-
-     (lVar3 = FUN_003c8b50(piVar2), lVar3 != 0)) {
-
-    piVar2[1] = piVar2[1] | 1;
-
-    FUN_003c49e0(*piVar2,*piVar2 + 4,iVar4);
-
-  }
-
-
-  return 0;
-
+LAB_003c8ac8:
+    iVar4 = *(int *)(*piVar2 + 4);
+    if (iVar4 != 0 &&
+        ((*(u32 *)(*(u32 *)(iVar4 + 0x14) + 4) & 2) != 0) &&
+        FUN_003c8b50(piVar2) != 0) {
+        piVar2[1] |= 1;
+        FUN_003c49e0(*piVar2, *piVar2 + 4, iVar4);
+    }
+    fclMisc8550Call((u32)piVar2);
+    return 0;
 }
 #define FUN_003c89a0(...) ((u64 (*)(...))FUN_003c89a0)(__VA_ARGS__)
 #undef FUN_003c8b50
