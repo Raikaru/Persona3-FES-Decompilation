@@ -17,6 +17,19 @@
 typedef int (*code)(...);
 void FUN_0029ee20(u64 param_1);
 typedef struct BtlMainColorWork BtlMainColorWork;
+typedef struct BtlMainLerpWork
+{
+    f32 value0;
+    f32 value1;
+    f32 value2;
+    f32 value3;
+    f32 target0;
+    f32 target1;
+    f32 target2;
+    f32 target3;
+    u32 totalFrames;
+    u32 currentFrame;
+} BtlMainLerpWork;
 #define CONCAT13(a, b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 u32 FUN_0029f150(float *param_1);
 void FUN_0029f4b0(u32 param_1,u32 param_2,u32 param_3);
@@ -26,7 +39,7 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1);
 void FUN_002a0050(u32 param_1,u32 param_2,u32 param_3,float param_4,u16 param_5);
 u32 FUN_002a0440(float *param_1);
 BtlPacket* FUN_002a1080(s32 param_1, s16 param_2);
-u8 FUN_002a10e0(float *param_1);
+u8 FUN_002a10e0(BtlMainLerpWork *param_1);
 void FUN_002a1280(u32 param_1,u32 param_2);
 u8 FUN_002a1400(float *param_1);
 BtlPacket* FUN_002a16c0(s32 param_1);
@@ -68,9 +81,15 @@ extern u8 DAT_007ce4fa;
 extern u8 DAT_007ce4fb;
 extern u32 DAT_007cc973;
 extern u8* DAT_007ce3ec;
-extern u32 DAT_00957180;
-extern u32 DAT_00957184;
-extern u32 DAT_00957188;
+extern f32 DAT_00957180;
+extern f32 DAT_00957184;
+extern f32 DAT_00957188;
+#pragma alias DAT_00957180_abs DAT_00957180
+#pragma alias DAT_00957184_abs DAT_00957184
+#pragma alias DAT_00957188_abs DAT_00957188
+extern f32 DAT_00957180_abs[];
+extern f32 DAT_00957184_abs[];
+extern f32 DAT_00957188_abs[];
 extern u32 DAT_009572b0;
 extern u32 DAT_009572b4;
 extern u32 DAT_009572b8;
@@ -1484,7 +1503,6 @@ void btlMainInitStateEnd(BtlStateWork* work)
     DatUnit* data;
     u16 value;
     u16 index;
-    u32 flags;
 
     if (BTL_U16(0x1c) == 1)
     {
@@ -1511,13 +1529,11 @@ void btlMainInitStateEnd(BtlStateWork* work)
 
     FUN_002a4c50();
     FUN_002bf650();
-    flags = BTL_U32(0xc20);
-    if (flags != 0)
+    if (BTL_U32(0xc20) != 0)
     {
-        value = BTL_U16(0x1c);
-        if (value == 1)
+        if (BTL_U16(0x1c) == 1)
         {
-            if ((flags & 1) != 0)
+            if ((BTL_U32(0xc20) & 1) != 0)
             {
                 FUN_0016f1f0(0x1001);
             }
@@ -3604,106 +3620,79 @@ u32 FUN_002a0440(float *param_1)
 // FUN_002A10E0 NONMATCHING
 
 
-u8 FUN_002a10e0(float *param_1)
-
-
-
+u8 FUN_002a10e0(BtlMainLerpWork *param_1)
 {
+    f32 currentFloat;
+    f32 totalFloat;
+    f32 ratio;
+    f32 inverse;
+    f32 results[4];
+    f32 target0;
+    f32 target1;
+    f32 target2;
+    f32 target3;
+    u32 totalFrames;
+    u32 currentFrame;
+    u8* global;
 
-  float fVar1;
+    if (param_1->currentFrame == 0)
+    {
+        global = (u8*)iGpffffb6fc;
+        target0 = *(f32*)(global + 0x234);
+        target1 = *(f32*)(global + 0x238);
+        target2 = *(f32*)(global + 0x23c);
+        target3 = *(f32*)(global + 0x240);
+        param_1->target0 = target0;
+        param_1->target1 = target1;
+        param_1->target2 = target2;
+        param_1->target3 = target3;
+    }
 
-  float fVar2;
+    totalFrames = param_1->totalFrames;
+    currentFrame = param_1->currentFrame;
+    if (currentFrame < totalFrames)
+    {
+        if ((s32)currentFrame >= 0)
+        {
+            currentFloat = (f32)currentFrame;
+        }
+        else
+        {
+            currentFloat = (f32)(currentFrame >> 1);
+            currentFloat += currentFloat;
+        }
 
-  float fVar3;
+        if ((s32)totalFrames >= 0)
+        {
+            totalFloat = (f32)totalFrames;
+        }
+        else
+        {
+            totalFloat = (f32)(totalFrames >> 1);
+            totalFloat += totalFloat;
+        }
 
-  float fVar4;
+        ratio = currentFloat / totalFloat;
+        inverse = 1.0f - ratio;
+        results[0] = param_1->target0 * inverse + param_1->value0 * ratio;
+        results[1] = param_1->target1 * inverse + param_1->value1 * ratio;
+        results[2] = param_1->target2 * inverse + param_1->value2 * ratio;
+        results[3] = param_1->target3 * inverse + param_1->value3 * ratio;
+        global = (u8*)iGpffffb6fc;
+        *(f32*)(global + 0x234) = results[0];
+        *(f32*)(global + 0x238) = results[1];
+        *(f32*)(global + 0x23c) = results[2];
+        *(f32*)(global + 0x240) = results[3];
+        param_1->currentFrame++;
+        return 0;
+    }
 
-  float fVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fVar8;
-
-  float fVar9;
-
-  float fVar10;
-
-  
-
-  if (param_1[9] == 0.0) {
-
-    fVar9 = *(float *)(iGpffffb6fc + 0x238);
-
-    fVar1 = *(float *)(iGpffffb6fc + 0x23c);
-
-    fVar4 = *(float *)(iGpffffb6fc + 0x240);
-
-    param_1[4] = *(float *)(iGpffffb6fc + 0x234);
-
-    param_1[5] = fVar9;
-
-    param_1[6] = fVar1;
-
-    param_1[7] = fVar4;
-
-  }
-
-  fVar1 = param_1[8];
-
-  fVar4 = param_1[9];
-
-  if ((u32)fVar1 <= (u32)fVar4) {
-
-    fVar3 = param_1[1];
-
-    fVar9 = param_1[2];
-
-    fVar2 = param_1[3];
-
-    *(float *)(iGpffffb6fc + 0x234) = *param_1;
-
-    *(float *)(iGpffffb6fc + 0x238) = fVar3;
-
-    *(float *)(iGpffffb6fc + 0x23c) = fVar9;
-
-    *(float *)(iGpffffb6fc + 0x240) = fVar2;
-
-  }
-
-  else {
-
-    fVar8 = (float)(u32)fVar4 / (float)(u32)fVar1;
-
-    fVar10 = 1.0 - fVar8;
-
-    fVar9 = param_1[5];
-
-    fVar5 = param_1[1];
-
-    fVar2 = param_1[6];
-
-    fVar6 = param_1[2];
-
-    fVar3 = param_1[7];
-
-    fVar7 = param_1[3];
-
-    *(float *)(iGpffffb6fc + 0x234) = param_1[4] * fVar10 + *param_1 * fVar8;
-
-    *(float *)(iGpffffb6fc + 0x238) = fVar9 * fVar10 + fVar5 * fVar8;
-
-    *(float *)(iGpffffb6fc + 0x23c) = fVar2 * fVar10 + fVar6 * fVar8;
-
-    *(float *)(iGpffffb6fc + 0x240) = fVar3 * fVar10 + fVar7 * fVar8;
-
-    param_1[9] = (float)((int)param_1[9] + 1);
-
-  }
-
-  return (u32)fVar1 <= (u32)fVar4;
-
+    global = (u8*)iGpffffb6fc;
+    *(f32*)(global + 0x234) = param_1->value0;
+    *(f32*)(global + 0x238) = param_1->value1;
+    *(f32*)(global + 0x23c) = param_1->value2;
+    *(f32*)(global + 0x240) = param_1->value3;
+    return 1;
 }
 
 
@@ -4767,29 +4756,35 @@ void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
 {
   u8* iVar1;
-  u32 uVar2;
-  u32 uVar3;
+  u16 uVar3;
+  u16 uVar2;
   float fVar4;
   float fVar5;
   float fVar6;
+  float fVar7;
+  float fVar8;
+  float fVar9;
   float afStack_10 [4];
-  fVar5 = DAT_00957188;
-  fVar4 = DAT_00957184;
-  fVar6 = 1.0 - param_1;
-  afStack_10[0] = fVar6 * fVar6 * fVar6;
-  afStack_10[1] = param_1 * fVar6 * fVar6 * 3.0;
-  afStack_10[2] = fVar6 * param_1 * param_1 * 3.0;
-  afStack_10[3] = param_1 * param_1 * param_1;
-  uVar2 = (u32)*(u16 *)(param_2 + 0x74);
-  *param_3 = DAT_00957180;
-  param_3[1] = fVar4;
-  param_3[2] = fVar5;
+  fVar6 = 1.0f - param_1;
+  fVar7 = fVar6 * fVar6;
+  afStack_10[0] = fVar6 * fVar7;
+  afStack_10[1] = param_1 * fVar7 * 3.0f;
+  fVar8 = param_1 * param_1;
+  afStack_10[2] = fVar6 * fVar8 * 3.0f;
+  afStack_10[3] = param_1 * fVar8;
+  uVar2 = *(u16 *)(param_2 + 0x74);
+  fVar4 = *(f32*)0x00957180;
+  fVar5 = *(f32*)0x00957184;
+  fVar9 = *(f32*)0x00957188;
+  *param_3 = fVar4;
+  param_3[1] = fVar5;
+  param_3[2] = fVar9;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
     fVar6 = afStack_10[uVar3];
     iVar1 = param_2 + uVar2 * 0x1c;
     fVar4 = *(float *)(iVar1 + 8);
     fVar5 = *(float *)(iVar1 + 0xc);
-    *param_3 = *(float *)(iVar1 + 4) * fVar6 + *param_3 + 0.0;
+    *param_3 = *(float *)(iVar1 + 4) * fVar6 + *param_3 + 0.0f;
     param_3[1] = param_3[1] + fVar4 * fVar6;
     param_3[2] = param_3[2] + fVar5 * fVar6;
     uVar2 = uVar2 + 1 & 0xffff;
