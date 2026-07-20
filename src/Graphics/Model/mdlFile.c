@@ -307,7 +307,7 @@ u64 FUN_00322880(u64 param_1);
 void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,int param_2,float *param_3);
 void FUN_00322d10(int param_1,float *param_2);
-void FUN_00322d40(int param_1,int param_2);
+void FUN_00322d40(int param_1,u32 param_2);
 u32 FUN_00322da0(int *param_1,int param_2);
 u64 FUN_00322dc0(u64 param_1);
 void FUN_00322f20(int param_1);
@@ -6619,38 +6619,25 @@ void FUN_00322d10(int param_1,float *param_2)
 
 
 
-// FUN_00322D40 NONMATCHING
+// FUN_00322D40
 
 
-void FUN_00322d40(int param_1,int param_2)
-
-
-
+#pragma opt_loop_invariants on
+void FUN_00322d40(int param_1,u32 param_2)
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
 
-  
-
   iVar1 = *(int *)(param_1 + 0xc);
-
   for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {
-
     iVar2 = *(int *)(param_1 + 0x10) + iVar3 * 0x14;
-
-    *(int *)(iVar2 + 4) = param_2 % *(int *)(*(int *)(iVar2 + 0xc) + 0xc);
-
+    *(u32 *)(iVar2 + 4) = param_2 % *(u32 *)(*(int *)(iVar2 + 0xc) + 0xc);
     *(u32 *)(iVar2 + 8) = 1;
-
   }
-
   return;
-
 }
+#pragma opt_loop_invariants off
 
 
 
