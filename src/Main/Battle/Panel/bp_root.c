@@ -3330,29 +3330,29 @@ u32 FUN_001FE220(void)
 // FUN_001FE650 NONMATCHING
 void FUN_001FE650(void* descriptor)
 {
-    void* unit;
+    u8* desc;
     void* resource;
-    u32 flags;
+    s32 level;
 
-    unit = btlUnitFindFromId(*(u16*)((u8*)descriptor + 0x10));
-    K_ASSERT(unit != NULL, 0x2d5);
-    resource = (void*)func_00242a60();
-    if (resource == NULL)
+    desc = (u8*)descriptor;
+    K_ASSERT(btlUnitFindFromId(*(u16*)(desc + 0x10)) != NULL, 0x2d5);
+    if (func_00242a60() == 0)
     {
         return;
     }
-    flags = *(u32*)((u8*)descriptor + 8);
-    if (flags & 1) func_00242320(resource, 0);
-    else if (flags & 2) func_00242320(resource, 1);
-    else if (flags & 4) func_00242320(resource, 3);
-    else if (flags & 8) func_00242320(resource, 2);
-    func_00242a50(resource, *(u32*)((u8*)descriptor + 0x10));
-    if (flags & 0x10) func_00242600(resource, *(u32*)descriptor);
-    if (flags & 0x20) func_00242720(resource, *(u32*)((u8*)descriptor + 4));
-    if (flags & 0x40) func_00242a30(resource);
-    if (*(u32*)((u8*)descriptor + 0x14) >= 2)
+    resource = func_00242260();
+    if (*(u32*)(desc + 8) & 1) func_00242320(resource, 0);
+    else if (*(u32*)(desc + 8) & 2) func_00242320(resource, 1);
+    else if (*(u32*)(desc + 8) & 4) func_00242320(resource, 3);
+    else if (*(u32*)(desc + 8) & 8) func_00242320(resource, 2);
+    func_00242a50(resource, *(u32*)(desc + 0x10));
+    if (*(u32*)(desc + 8) & 0x10) func_00242600(resource, *(u32*)desc);
+    if (*(u32*)(desc + 8) & 0x20) func_00242720(resource, *(u32*)(desc + 4));
+    if (*(u32*)(desc + 8) & 0x40) func_00242a30(resource);
+    level = *(s32*)(desc + 0x14);
+    if (level >= 2)
     {
-        func_00242c20(resource, *(u32*)((u8*)descriptor + 0x18));
+        func_00242c20(resource, *(u32*)(desc + 0x18));
     }
     func_00242540(resource);
 }
@@ -3397,7 +3397,7 @@ void FUN_001FEAB0(void)
 u32 func_00208010(void);
 u32 func_00208050(void);
 u32 func_00208130(void);
-void func_0025be60(u16, u16, u16);
+void func_0025be60(u32, u32, u32);
 void bpRush0025d7b0(void);
 void func_0020fd80(void);
 void func_0020fdd0(void);
@@ -3422,12 +3422,14 @@ u32 FUN_001FEEC0(void)
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001FEF90 NONMATCHING
 void FUN_001FEF90(u32 id)
 {
-    u16 first;
-    u16 second;
-    u16 third;
+    u32 first;
+    u32 second;
+    u32 third;
 
     switch ((u16)id)
     {
@@ -3435,8 +3437,13 @@ void FUN_001FEF90(u32 id)
         first = 0xe3; second = 0xe4; third = 0xe5;
         break;
     case 1:
+        if (datGetFlag(0xdf) != 0)
+            goto flag_set;
         first = 0xe6;
-        if (datGetFlag(0xdf)) first = 0xe7;
+        goto flag_done;
+    flag_set:
+        first = 0xe7;
+    flag_done:
         second = 0xe8; third = 0xe9;
         break;
     case 2:
@@ -3452,31 +3459,36 @@ void FUN_001FEF90(u32 id)
         first = 0xf3; second = 0xf4; third = 0xf5;
         break;
     case 6:
-        if (datGetScenarioMode())
-        {
-            first = 0xfc; second = 0xfd; third = 0xfe;
-        }
-        else
-        {
-            first = 0xf6; second = 0xf7; third = 0xf8;
-        }
+        if (datGetScenarioMode() != 0)
+            goto scenario_set;
+        first = 0xf6; second = 0xf7; third = 0xf8;
+        break;
+    scenario_set:
+        first = 0xfc; second = 0xfd; third = 0xfe;
         break;
     case 7:
         first = 0xf9; second = 0xfa; third = 0xfb;
         break;
+    case 8:
+    case 9:
+    case 10:
+        break;
     default:
         K_ASSERT(0, 0x468);
-        return;
+        break;
     }
     func_0025be60(first, second, third);
 }
+#pragma pop
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001FF160 NONMATCHING
 void FUN_001FF160(u32 id)
 {
-    u16 first;
-    u16 second;
-    u16 third;
+    u32 first;
+    u32 second;
+    u32 third;
 
     switch ((u16)id)
     {
@@ -3499,24 +3511,27 @@ void FUN_001FF160(u32 id)
         first = 0x10e; second = 0x10f; third = 0x110;
         break;
     case 6:
-        if (datGetScenarioMode())
-        {
-            first = 0x117; second = 0x118; third = 0x119;
-        }
-        else
-        {
-            first = 0x111; second = 0x112; third = 0x113;
-        }
+        if (datGetScenarioMode() != 0)
+            goto scenario_set2;
+        first = 0x111; second = 0x112; third = 0x113;
+        break;
+    scenario_set2:
+        first = 0x117; second = 0x118; third = 0x119;
         break;
     case 7:
         first = 0x114; second = 0x115; third = 0x116;
         break;
+    case 8:
+    case 9:
+    case 10:
+        break;
     default:
         K_ASSERT(0, 0x4be);
-        return;
+        break;
     }
     func_0025be60(first, second, third);
 }
+#pragma pop
 
 // FUN_001FF370
 void FUN_001FF370(void)
