@@ -46978,7 +46978,7 @@ void FUN_00349fd0(u8 (*param_1) [16])
 
 
 
-// FUN_0034A1D0 NONMATCHING
+// FUN_0034A1D0
 
 
 void FUN_0034a1d0(int param_1)
@@ -46987,29 +46987,37 @@ void FUN_0034a1d0(int param_1)
 
 {
 
+  int *piVar3;
+
   u32 uVar1;
 
   int iVar2;
 
-  int *piVar3;
-
   int iVar4;
+
+  int *piVar5;
+
+  int *piVar6;
 
   
 
   piVar3 = *(int **)(param_1 + 0x20);
 
-  if ((*(u32 *)(*(int *)(param_1 + 0x24) + 0xcc) & 0xff000000) != 0) {
+  piVar5 = *(int **)(param_1 + 0x24);
+
+  piVar6 = (int *)((int)piVar5 + 0xc0);
+
+  if ((*(u32 *)((int)piVar5 + 0xcc) & 0xff000000) != 0) {
 
     uVar1 = *(u32 *)(*(int *)(param_1 + 0x28) + 8);
 
-    iVar2 = *(int *)(*(int *)(param_1 + 0x24) + 0xc0);
+    iVar2 = *piVar6;
 
     for (iVar4 = 0; iVar4 < iVar2; iVar4 = iVar4 + 1) {
 
-      if ((*piVar3 == 0) && (*(char *)((int)piVar3 + 0xf) != '\0')) {
+      if ((*piVar3 == 0) && (*(u8 *)((int)piVar3 + 0xf) > 0)) {
 
-        ((code)FUN_00348da0)(piVar3 + 2,uVar1);
+        FUN_00348da0((int)(piVar3 + 2),(u32 *)uVar1);
 
       }
 
