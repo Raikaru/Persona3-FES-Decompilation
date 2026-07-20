@@ -4263,6 +4263,8 @@ void FUN_00320770(int *param_1)
 
 {
 
+  u8 uVar0;
+
   u8 uVar1;
 
   u8 uVar2;
@@ -4279,9 +4281,9 @@ void FUN_00320770(int *param_1)
 
   int iVar8;
 
-  u32 uVar9;
+  f32 fVar9;
 
-  u32 uVar10;
+  f32 fVar10;
 
   
 
@@ -4295,13 +4297,15 @@ void FUN_00320770(int *param_1)
 
       iVar6 = *(int *)(*piVar5 + uVar7 * 4);
 
+      uVar0 = *(u8 *)(iVar8 + 0x40);
+
       uVar1 = *(u8 *)(iVar8 + 0x41);
 
       uVar2 = *(u8 *)(iVar8 + 0x42);
 
       uVar3 = *(u8 *)(iVar8 + 0x43);
 
-      *(u8 *)(iVar6 + 4) = *(u8 *)(iVar8 + 0x40);
+      *(u8 *)(iVar6 + 4) = uVar0;
 
       *(u8 *)(iVar6 + 5) = uVar1;
 
@@ -4311,15 +4315,15 @@ void FUN_00320770(int *param_1)
 
       iVar6 = *(int *)(*piVar5 + uVar7 * 4);
 
-      uVar9 = *(u32 *)(iVar8 + 0x48);
+      fVar9 = *(f32 *)(iVar8 + 0x48);
 
-      uVar10 = *(u32 *)(iVar8 + 0x4c);
+      fVar10 = *(f32 *)(iVar8 + 0x4c);
 
-      *(u32 *)(iVar6 + 0xc) = *(u32 *)(iVar8 + 0x44);
+      *(f32 *)(iVar6 + 0xc) = *(f32 *)(iVar8 + 0x44);
 
-      *(u32 *)(iVar6 + 0x10) = uVar9;
+      *(f32 *)(iVar6 + 0x10) = fVar9;
 
-      *(u32 *)(iVar6 + 0x14) = uVar10;
+      *(f32 *)(iVar6 + 0x14) = fVar10;
 
     }
 
