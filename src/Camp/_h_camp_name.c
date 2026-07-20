@@ -211,6 +211,11 @@ extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_0096017c;
 extern code DAT_00960184;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
+extern void FUN_001124b0(void);
+extern void FUN_00108f70(void);
+extern void FUN_0016f1f0(int param_1,int param_2);
 extern u32 PTR_DAT_006b46f0;
 extern u32 PTR_DAT_006b4720;
 extern u32 PTR_DAT_006b4de0;
@@ -259,7 +264,6 @@ extern code FUN_00111f30;
 extern code FUN_001120c0;
 extern code FUN_00112370;
 extern code FUN_00112420;
-extern code FUN_001124b0;
 extern code FUN_001126b0;
 extern code FUN_00112740;
 extern code FUN_001127d0;
@@ -278,7 +282,6 @@ extern code FUN_0016c970;
 extern code FUN_0016cf40;
 extern code FUN_0016cf90;
 extern code FUN_0016f190;
-extern code FUN_0016f1f0;
 extern code FUN_0016f490;
 extern code FUN_00170a40;
 extern code FUN_00170ab0;
@@ -1361,7 +1364,6 @@ extern code FUN_00108570;
 extern code FUN_001085c0;
 extern code FUN_00108670;
 extern code FUN_00108710;
-extern code FUN_00108f70;
 extern code FUN_00108fd0;
 extern code FUN_00109040;
 extern code FUN_0010a4e0;
@@ -1371,7 +1373,6 @@ extern code FUN_00111f30;
 extern code FUN_001120c0;
 extern code FUN_00112370;
 extern code FUN_00112420;
-extern code FUN_001124b0;
 extern code FUN_001126b0;
 extern code FUN_00112740;
 extern code FUN_001127d0;
@@ -1390,7 +1391,6 @@ extern code FUN_0016c970;
 extern code FUN_0016cf40;
 extern code FUN_0016cf90;
 extern code FUN_0016f190;
-extern code FUN_0016f1f0;
 extern code FUN_0016f490;
 extern code FUN_00170a40;
 extern code FUN_00170ab0;
@@ -2749,12 +2749,12 @@ void FUN_0045ea80(int param_1)
   
   iVar1 = *(int *)(param_1 + 0x3c);
   if (*(int *)(iVar1 + 8) != 0) {
-    ((code)FUN_001124b0)();
+    FUN_001124b0();
     *(u32 *)(iVar1 + 8) = 0;
   }
-  (*DAT_0096017c)(iVar1);
-  ((code)FUN_00108f70)();
-  ((code)FUN_0016f1f0)(0x1407,0);
+  (*DAT_0096017c_abs)(iVar1);
+  FUN_00108f70();
+  FUN_0016f1f0(0x1407,0);
   return;
 }
 
