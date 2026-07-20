@@ -1065,37 +1065,61 @@ void func_001d03f0(u16 charId)
 {
     u8* modelNode;
     FldUnit* unit;
+    u8* cache;
+    Model* cachedModel;
     s32 i;
-    u16 pcId;
+    s16 pcId;
     u32 sceneMode;
 
-    modelNode = FldUnit_FindModelNode(charId);
+    modelNode = (u8*)MT_Scene_GetResListHead(RESRC_TYPE_14);
+    if (modelNode != NULL || (charId & 0xffff) != 0xffff)
+    {
+        while (modelNode != NULL &&
+               ((*(u16*)modelNode & 0x3ff) != (charId & 0xffff)))
+        {
+            modelNode = *(u8**)(modelNode + 0xf8);
+        }
+    }
+
     unit = K_FldUnit_FindFreePc();
     if (unit != NULL)
     {
-        FldUnit_InitPcUnit(unit, 1, modelNode);
+        unit->genusBase = (DatUnitGenusBase*)datUnitCreatePc(1);
+        unit->mdl = (Model*)func_001cd9a0(1);
+        unit->charId = 1;
+        unit->unk_44 = 0;
+        unit->unk_184 = datPersonaGetLevelByPcId(1) & 0xff;
+        unit->unk_188 = datGetLevel(1) & 0xff;
+        unit->unk_174 = (KwlnTask*)func_001dd460(0, 0, 0x106f);
+        unit->unk_168 = modelNode;
     }
 
     sceneMode = func_001a0310();
-    if (sceneMode == 1 || (PTR_DAT_007cd540[0] == 8 && PTR_DAT_007cd540[1] == 3))
+    if (sceneMode == 1 ||
+        (PTR_DAT_007cd540[0] == 8 && PTR_DAT_007cd540[1] == 3))
     {
         for (i = 0; i < 3; i++)
         {
-            FldUnit_ClearPcMdlSlot(i + 1);
+            cache = (u8*)gFldUnitsPcMdl + i * 8;
+            cachedModel = *(Model**)(cache + 0xc);
+            if (cachedModel != NULL)
+            {
+                mdlDestroy(cachedModel);
+                *(Model**)(cache + 0xc) = NULL;
+                *(u16*)(cache + 8) = 0;
+                *(u16*)(cache + 0xa) = 0;
+            }
         }
     }
     else
     {
         for (i = 0; i < 3; i++)
         {
-            pcId = (u16)datGetPartyId(i);
-            if ((s16)pcId < 1)
+            pcId = (s16)datGetPartyId(i);
+            if (pcId > 0)
             {
-                FldUnit_ClearPcMdlSlot(i + 1);
-            }
-            else
-            {
-                if ((datGetBadStatusNoDown(pcId) & 0x80000) != 0 && datGetFlag(0xc21) == 1)
+                if ((datGetBadStatusNoDown(pcId) & 0x80000) != 0 &&
+                    datGetFlag(0xc21) == 1)
                 {
                     datSetHp(pcId, 1);
                     datClearBadStatus(pcId, 0x80000);
@@ -1103,7 +1127,39 @@ void func_001d03f0(u16 charId)
                 unit = K_FldUnit_FindFreePc();
                 if (unit != NULL)
                 {
-                    FldUnit_InitPcUnit(unit, pcId, modelNode);
+                    unit->genusBase = (DatUnitGenusBase*)datUnitCreatePc(
+                        (u16)pcId);
+                    unit->mdl = (Model*)func_001cd9a0((u16)pcId);
+                    unit->charId = (u16)pcId;
+                    unit->unk_44 = 0;
+                    unit->unk_184 =
+                        datPersonaGetLevelByPcId((u16)pcId) & 0xff;
+                    if (pcId == 1)
+                    {
+                        unit->unk_188 = datGetLevel(pcId) & 0xff;
+                        unit->unk_174 =
+                            (KwlnTask*)func_001dd460(0, 0, 0x106f);
+                    }
+                    else
+                    {
+                        unit->scrCdvd = (HCdvd*)func_00100d80(
+                            s__field_script_reserve_xxx_006837af +
+                                (u16)pcId * 0x20 + 1,
+                            0);
+                    }
+                    unit->unk_168 = modelNode;
+                }
+            }
+            else
+            {
+                cache = (u8*)gFldUnitsPcMdl + i * 8;
+                cachedModel = *(Model**)(cache + 0xc);
+                if (cachedModel != NULL)
+                {
+                    mdlDestroy(cachedModel);
+                    *(Model**)(cache + 0xc) = NULL;
+                    *(u16*)(cache + 8) = 0;
+                    *(u16*)(cache + 0xa) = 0;
                 }
             }
         }
@@ -1128,31 +1184,51 @@ static f32 FldUnit_NodeDistance(const RwV3d* a, const RwV3d* b)
 // FUN_001d0720 NONMATCHING
 s32 func_001d0720(s32 targetCount)
 {
-    s32 index;
     s32 spawned;
+    s32 major;
+    u16* values;
     u16 gridId;
     u32 area;
     u8* entry;
+    s32* ptr;
 
     spawned = 0;
     if (datGetFlag(0x1415) == 1)
     {
-        return 0;
+        goto done;
     }
-    if (((PTR_DAT_007cd540[0] >= 0x14 && PTR_DAT_007cd540[0] <= 0x1c) ||
-         (PTR_DAT_007cd540[0] >= 0x28 && PTR_DAT_007cd540[0] <= 0x30)) &&
-        PTR_DAT_007cd540[1] != 0)
+    ptr = (s32*)PTR_DAT_007cd540;
+    major = ptr[0];
+    if (major >= 0x14)
     {
-        return 0;
+        if (major < 0x1d)
+        {
+            goto done;
+        }
     }
+    if (major < 0x28)
+    {
+        goto spawn;
+    }
+    if (major >= 0x31)
+    {
+        goto spawn;
+    }
+    if (ptr[1] == 0)
+    {
+        goto spawn;
+    }
+    goto done;
 
+spawn:
+    values = (u16*)PTR_DAT_007cd540;
     while ((entry = (u8*)func_001d0880(spawned, targetCount)) != NULL)
     {
         gridId = func_001bff20();
-        area = func_001d7300(PTR_DAT_007cd540[0], PTR_DAT_007cd540[1], gridId);
-        if (PTR_DAT_007cd540[0] == 0x33 && PTR_DAT_007cd540[1] == 1)
+        area = func_001d7300(values[0], values[2], gridId);
+        if (values[0] == 0x33 && values[2] == 1)
         {
-            area = spawned + 0x1d2U | 0x10000;
+            area = ((u32)spawned + 0x1d2) | 0x10000;
         }
         if ((area & 0xffff) == 0xffff)
         {
@@ -1162,7 +1238,7 @@ s32 func_001d0720(s32 targetCount)
         func_001cf940(area, entry);
         spawned++;
     }
-    (void)index;
+done:
     return spawned;
 }
 
@@ -1384,34 +1460,38 @@ void func_001d0e50(s32 isDungeon)
     }
 }
 
-// FUN_001d11b0 NONMATCHING
+// FUN_001d11b0
 void func_001d11b0(void)
 {
     s32 i;
     s32 kind;
+    FldUnit* unit;
 
-    for (i = 0; i < FLDUNIT_EC_MAX; i++)
+    i = 0;
+    while (i < FLDUNIT_EC_MAX)
     {
-        if (gFldUnitsEc[i].genusBase != NULL)
+        unit = &gFldUnitsEc[i];
+        if (unit->genusBase != NULL)
         {
-            kind = gFldUnitsEc[i].unk_18c;
-            if (kind == 3)
+            kind = unit->unk_18c;
+            switch (kind)
             {
-                gFldUnitsEc[i].mdl = (Model*)func_00316e00(8, 4, 0);
-            }
-            else if (kind == 4)
-            {
-                gFldUnitsEc[i].mdl = (Model*)func_00316e00(8, 3, 0);
-            }
-            else if (kind == 2)
-            {
-                gFldUnitsEc[i].mdl = (Model*)func_00316e00(8, 2, 0);
-            }
-            else if (kind == 1 || kind == 5)
-            {
-                gFldUnitsEc[i].mdl = (Model*)func_00316e00(8, 1, 0);
+                case 5:
+                case 1:
+                    unit->mdl = (Model*)func_00316e00(8, 1, 0);
+                    break;
+                case 2:
+                    unit->mdl = (Model*)func_00316e00(8, 2, 0);
+                    break;
+                case 4:
+                    unit->mdl = (Model*)func_00316e00(8, 3, 0);
+                    break;
+                case 3:
+                    unit->mdl = (Model*)func_00316e00(8, 4, 0);
+                    break;
             }
         }
+        i++;
     }
 }
 
