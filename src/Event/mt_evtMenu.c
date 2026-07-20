@@ -6644,7 +6644,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
   int iVar17;
 
-  u32 uVar18;
+  f32 uVar18;
 
   u32 uStack_f0;
 
