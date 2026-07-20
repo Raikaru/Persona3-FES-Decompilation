@@ -50940,7 +50940,7 @@ void FUN_0034dc00(u64 param_1)
 
             if (-1 < *(char *)(puVar5 + 5)) {
 
-              ((code)FUN_0034d3a0)(param_1,puVar5);
+              FUN_0034d3a0((int)(param_1),(int)(puVar5),(int)(*(u32 *)pauVar6[1]));
 
               auVar3 = extraout_vf10;
 
@@ -53132,7 +53132,7 @@ void FUN_00350110(void)
 
     if ((DAT_007ce574 < DAT_00957bc0) || (DAT_00957bc0 == 0)) {
 
-      ((code)FUN_00348110)(0x957bc0);
+      FUN_00348110((int *)0x957bc0, DAT_007ce574);
 
     }
 
