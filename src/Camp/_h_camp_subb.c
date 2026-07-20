@@ -184,6 +184,10 @@ extern void FUN_003b2cb0(void* texture, s32 x, s32 y, s32 color, u32 font,
 extern void FUN_003b32d0(void* texture, s32 x, s32 y, s32 color, u32 font,
                          u32 alignment, const char* text, u32 maxWidth, u32 shadow);
 extern int sprintf(char* buffer, const char* format, ...);
+extern void func_0018bc10(f32 depth, void* transition, s32 drawMode,
+                          s32 positionMode, s32 alphaMode,
+                          u64 start, u64 end, s32 param0, s32 tile,
+                          s32 startFrame, s32 endFrame);
 extern void qsort(void* base, u32 count, u32 width,
                   int (*compare)(const void*, const void*));
 extern char DAT_007cb66c[];
@@ -283,49 +287,65 @@ static void campEquipmentClearCategoryCounts(CampEquipmentWork* work)
 // FUN_0013c240 NONMATCHING
 void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
 {
-    u16 candidateIndices[304];
-    s32 candidateCount = 0;
-    s32 scanIndex;
-    s32 recordCount = 1;
-    s16 selectedIndex;
-    CampEquipmentEntry* selectedEntry;
+    u16 indices[300];
+    s32 count = 0;
+    s32 scan = 0;
+    s32 outCount;
+    s32 index;
+    s32 category;
+    u32 categoryMask;
+    s16 selected;
+    s16 candidate;
 
-    for (scanIndex = 0; scanIndex < 300; scanIndex++) {
-        if (datGetEquipmentId(1, scanIndex) != 0) {
-            candidateIndices[candidateCount++] = (u16)scanIndex;
+    while (scan < 300) {
+        if (datGetEquipmentId(1, scan) != 0) {
+            indices[count] = (u16)scan;
+            count++;
         }
+        scan++;
     }
-    if (candidateCount > 1) {
-        qsort(candidateIndices, candidateCount, sizeof(candidateIndices[0]),
-              campCompareEquipmentIndex);
+    if (count >= 2) {
+        qsort(indices, count, 2, campCompareEquipmentIndex);
     }
 
-    selectedIndex = datGetEquipmentIdx(pcId, equipmentType);
-    selectedEntry = campEquipmentEntry(work, 0);
-    campEquipmentPopulate(selectedEntry, pcId, selectedIndex);
-    for (scanIndex = 0; scanIndex < candidateCount; scanIndex++) {
-        s16 candidate = (s16)candidateIndices[scanIndex];
-        u16 candidateId = datGetEquipmentId(1, candidate);
-        u32 categoryMask;
+    outCount = 0;
+    selected = datGetEquipmentIdx(pcId, equipmentType);
+    work->entries[0].itemId = datGetEquipmentId(pcId, selected);
+    work->entries[0].categoryMask = func_0016f720(pcId, selected);
+    work->entries[0].equipmentClass = (u8)func_00171250((s16)work->entries[0].itemId);
+    work->entries[0].effect = datGetEquipmentEffect(pcId, selected);
+    work->entries[0].slotType = func_0016f810(pcId, selected);
+    work->entries[0].sourceIndex = selected;
+    campEquipmentSetStats(&work->entries[0], pcId, selected);
+    outCount++;
 
-        if (candidateId == 0) {
-            continue;
+    index = 0;
+    while (index < count) {
+        candidate = (s16)indices[index];
+        if (datGetEquipmentId(1, candidate) != 0) {
+            categoryMask = func_001712d0((s16)datGetEquipmentId(1, candidate));
+            if ((categoryMask & (0x20u << ((pcId - 1) & 31))) != 0 &&
+                (s16)func_00171250((s16)datGetEquipmentId(1, candidate)) == equipmentType &&
+                candidate != datGetEquipmentIdx(1, equipmentType)) {
+                work->entries[outCount].itemId = datGetEquipmentId(1, candidate);
+                work->entries[outCount].categoryMask = func_0016f720(1, indices[index]);
+                work->entries[outCount].equipmentClass =
+                    (u8)func_00171250((s16)work->entries[outCount].itemId);
+                work->entries[outCount].effect = datGetEquipmentEffect(1, indices[index]);
+                work->entries[outCount].slotType = func_0016f810(1, indices[index]);
+                work->entries[outCount].sourceIndex = indices[index];
+                campEquipmentSetStats(&work->entries[outCount], 1, indices[index]);
+                outCount++;
+            }
         }
-        categoryMask = func_001712d0((s16)candidateId);
-        if ((categoryMask & (0x20u << ((pcId - 1) & 31))) == 0) {
-            continue;
-        }
-        if ((s16)func_00171250((s16)candidateId) != equipmentType) {
-            continue;
-        }
-        if (candidate == datGetEquipmentIdx(1, equipmentType)) {
-            continue;
-        }
-        campEquipmentPopulate(campEquipmentEntry(work, recordCount), 1, candidate);
-        recordCount++;
+        index++;
     }
-    campEquipmentClearCategoryCounts(work);
-    work->entryCount = recordCount;
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
+    work->entryCount = outCount;
 }
 
 // FUN_0013c6a0
@@ -433,27 +453,72 @@ void FUN_0013c780(CampEquipmentWork* work)
 // FUN_0013cc90 NONMATCHING
 void FUN_0013cc90(CampEquipmentWork* work)
 {
-    u16 candidateIndices[304];
-    s32 candidateCount = 0;
-    s32 scanIndex;
+    u16 indices[300];
+    s32 count = 0;
+    s32 scan = 0;
     s32 recordCount = 0;
+    s32 index;
+    s32 category;
+    s16 candidate;
+    u32 mask;
+    CampEquipmentEntry* entry;
+    u16* candidatePtr;
 
-    for (scanIndex = 0; scanIndex < 300; scanIndex++) {
-        if (datGetEquipmentId(1, scanIndex) != 0) {
-            candidateIndices[candidateCount++] = (u16)scanIndex;
+    while (scan < 300) {
+        if (datGetEquipmentId(1, scan) != 0) {
+            indices[count] = (u16)scan;
+            count++;
         }
+        scan++;
     }
-    if (candidateCount > 1) {
-        qsort(candidateIndices, candidateCount, sizeof(candidateIndices[0]),
-              campCompareEquipmentIndex);
+    if (count >= 2) {
+        qsort(indices, count, 2, campCompareEquipmentIndex);
     }
-    for (scanIndex = 0; scanIndex < candidateCount; scanIndex++) {
-        s16 candidate = (s16)candidateIndices[scanIndex];
+
+    index = 0;
+    while (index < count) {
+        candidatePtr = &indices[index];
+        candidate = (s16)*candidatePtr;
         if (datGetEquipmentId(1, candidate) != 0) {
-            campEquipmentPopulate(campEquipmentEntry(work, recordCount++), 1, candidate);
+            entry = &work->entries[recordCount];
+            entry->itemId = datGetEquipmentId(1, candidate);
+            category = 0;
+            mask = func_0016f720(1, candidate);
+            while (category < 0x15) {
+                if ((mask & (1u << category)) != 0) {
+                    entry->categoryMask = category;
+                    break;
+                }
+                category++;
+            }
+            entry->equipmentClass = (u8)func_00171250((s16)entry->itemId);
+            entry->effect = datGetEquipmentEffect(1, candidate);
+            entry->slotType = func_0016f810(1, candidate);
+            entry->sourceIndex = candidate;
+            switch (entry->equipmentClass) {
+            case 0:
+                entry->valueA = func_0016f9f0(1, candidate);
+                entry->valueB = func_0016fae0(1, candidate);
+                break;
+            case 1:
+                entry->valueC = func_0016fbd0(1, candidate);
+                break;
+            case 2:
+                entry->valueD = func_0016fcc0(1, candidate);
+                break;
+            default:
+                break;
+            }
+            recordCount++;
         }
+        index++;
     }
-    campEquipmentClearCategoryCounts(work);
+
+    category = 0;
+    while (category < 0x15) {
+        work->categoryCounts[category] = 0;
+        category++;
+    }
     work->entryCount = recordCount;
 }
 
@@ -1706,22 +1771,40 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 
 // FUN_00145350 NONMATCHING
 
-void FUN_00145350(CampEquipmentPanelWork* work,s32 hoverSlot)
-
+void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
 {
-  int index;
-  
-  for (index = 0; index < 0xc; index = index + 1) {
-    if (index < work->listCount) {
-      if (index == work->highlightedSlot) {
-        func_0018bc10(0x42ce0000, (void*)(work->drawBuffer + (index + 10) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + index * 0x44 + 0x2e0), CONCAT44((float)(index * 0x1d) + 61.0,0x41a80000), 0, 0, 0, 0);
-      }
-      else if (index == hoverSlot) {
-        func_0018bc10(0x42ce0000, (void*)(work->drawBuffer + (index + 10) * 0x44), 0, 2, 0, *(u64 *)(work->drawBuffer + index * 0x44 + 0x2e0), (u64)(u32)((float)(index * 0x1d) + 61.0) << 0x20, 0, 0, 0, 0);
-      }
+    s32 index;
+    f32 x;
+    f32 y;
+    u64 start;
+    u64 end;
+    union { u64 u; f32 f[2]; } packed;
+
+    for (index = 0; index < 0xc; index++) {
+        if (index < work->listCount) {
+            if (index == work->highlightedSlot) {
+                y = 21.0f;
+                x = (f32)(index * 0x1d) + 61.0f;
+                start = *(u64*)(work->drawBuffer + index * 0x44 + 0x2e0);
+                packed.f[0] = y;
+                packed.f[1] = x;
+                end = packed.u;
+                func_0018bc10(103.0f,
+                              work->drawBuffer + (index + 0xa) * 0x44,
+                              0, 2, 0, start, end, 0, 0, 0, 0);
+            } else if (index == hoverSlot) {
+                y = 0.0f;
+                x = (f32)(index * 0x1d) + 61.0f;
+                start = *(u64*)(work->drawBuffer + index * 0x44 + 0x2e0);
+                packed.f[0] = y;
+                packed.f[1] = x;
+                end = packed.u;
+                func_0018bc10(103.0f,
+                              work->drawBuffer + (index + 0xa) * 0x44,
+                              0, 2, 0, start, end, 0, 0, 0, 0);
+            }
+        }
     }
-  }
-  return;
 }
 
 
