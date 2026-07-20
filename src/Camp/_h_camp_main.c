@@ -650,7 +650,7 @@ void* FUN_00134a10(KwlnTask* task)
 {
     u32* work;
     u32 archiveSize;
-    u32 i;
+    s32 i;
     u32 ready;
     s32 resourceSize;
     void* source;
