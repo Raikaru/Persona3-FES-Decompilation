@@ -69,7 +69,7 @@ extern u32 FUN_00171110(s16, s32);
 extern void FUN_001828d0(s16, void*);
 extern u32 FUN_002347e0(void);
 extern void FUN_003c72d0(void*);
-extern void FUN_001fb4b0(u8*, s32, s32, s8, u8*, u8*);
+extern void FUN_001fb4b0(u8*, s32, s32, u8, u8*, u8*);
 extern u8* FUN_00275050(s32);
 extern u32 FUN_002751e0(void);
 extern s32 func_00274f00(void);
@@ -81,6 +81,16 @@ extern u32 DAT_007e094e;
 extern u16 DAT_007e0952;
 extern u16* DAT_007ce438;
 extern const char* PTR_s_Strength_0068ed70[];
+extern const char D_0068EDC0[];
+extern const char D_0068EDE0[];
+extern const char D_0068EDF0[];
+extern const char D_0068EE00[];
+extern const char D_0068EE10[];
+extern const char D_0068EE28[];
+extern const char D_0068EE40[];
+extern const char D_0068EE60[];
+extern const char D_0068EE80[];
+extern const char D_0068EE90[];
 extern u32 gp0xffff97d0;
 extern void FUN_00523ac8(void*, ...);
 extern void FUN_005225a8(u32, ...);
@@ -243,76 +253,119 @@ void func_00272380(void)
 // FUN_00272400 NONMATCHING
 void func_00272400(u32* param)
 {
-    DatPersonaWork* persona;
+    u32* work;
     u16* skills;
-    u16 skillCount;
-    u32 i;
-    u32 resultCount;
+    s32 skillCount;
+    s32 i;
+    s32 j;
+    s32 resultCount;
+    s32 resultIndex;
     u8* entry;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    K_ASSERT((brpSeqU32(0) & 1) == 0, 0xd6);
-    K_ASSERT((brpSeqU32(0) & 2) == 0, 0xd7);
-    K_ASSERT((brpSeqU32(0) & 0x10) == 0, 0xd8);
-    K_ASSERT((brpSeqU32(0) & 0x20) == 0, 0xd9);
+    work = sBrpSeq;
+    K_ASSERT((~work[0] & 1) != 0, 0xd6);
+    K_ASSERT((~work[0] & 2) != 0, 0xd7);
+    K_ASSERT((~work[0] & 0x10) != 0, 0xd8);
+    K_ASSERT((~work[0] & 0x20) != 0, 0xd9);
 
-    brpSeqPutU32(0, brpSeqU32(0) & ~0x0cu);
-    brpSeqPutU16(4, (u16)param[1]);
-    brpSeqPutU32(8, param[0]);
-    if ((brpSeqU32(0) & 0x80) == 0)
+    work[0] &= ~4u;
+    work[0] &= ~8u;
+    *(u16*)((u8*)work + 4) = *(u16*)((u8*)param + 4);
+    work[2] = param[0];
+    if ((~work[0] & 0x80) != 0)
     {
         FUN_003c72d0((void*)FUN_002347e0());
-        brpSeqPutU32(0, brpSeqU32(0) | 0x80);
+        work[0] |= 0x80;
     }
 
-    persona = FUN_001749a0((s16)brpSeqU16(4));
-    brpSeqPutU32(0x30, (u32)(uintptr_t)persona);
-    K_ASSERT(FUN_001761b0(persona) != 0, 0xe8);
-    FUN_00175ce0(persona, brpSeqBytes() + 0x38);
-    brpSeqPutU32(0x34, (u32)(uintptr_t)(DAT_007ce428 +
-                 (u32)brpSeqU16(4) * 0x46));
-
-    skillCount = FUN_00176a30(persona);
-    skills = FUN_00173370(persona);
-    for (i = 0; i < skillCount; i++)
-        brpSeqPutU16(0x60 + i * 2, skills[i]);
-    brpSeqPutU32(0x74, skillCount);
-    FUN_001fb4b0(brpSeqBytes() + 0x34, 0x10,
-                 (s32)DAT_007ce420[brpSeqU16(4) * 0x0e + 4] -
-                 (s32)DAT_007ce420[*(u16*)(brpSeqBytes() + 0x30) * 0x0e + 3],
-                 (s8)brpSeqU8(0x38), brpSeqBytes() + 0x78,
-                 brpSeqBytes() + 0x7c);
-    brpSeqPutU32(0x1b0, 0);
-    brpSeqPutU32(0x1b4, func_00274f00());
-    FUN_00176100(persona, brpSeqBytes() + 0x38);
-    if (func_002741f0() != 0)
-        brpSeqPutU32(0, brpSeqU32(0) | 0x10);
-
-    brpSeqPutU32(0x28, 0);
-    for (i = 0; i < 5 && brpSeqU8(0x5a + i) == 0; i++)
-        ;
-    brpSeqPutU32(0x28, i);
-    brpSeqPutU32(0x2c, 0);
-    for (i = 0; i < 5; i++)
-        if (brpSeqU8(0x5a + i) != 0)
-            brpSeqPutU32(0x2c, i);
-
-    resultCount = FUN_002751e0();
-    brpSeqPutU32(0x1c0, resultCount);
-    for (i = 0; i < resultCount; i++)
+    work[0xc] = (u32)(uintptr_t)FUN_001749a0((u16)work[1]);
+    K_ASSERT(FUN_001761b0((DatPersonaWork*)(uintptr_t)work[0xc]) != 0, 0xe8);
     {
-        entry = FUN_00275050((s32)i);
-        brpSeqPutU16(0x1c4 + i * 8, *(u16*)(entry + 2));
-        brpSeqPutU32(0x1c8 + i * 8,
-                     (u32)entry[0] +
-                     DAT_007ce420[brpSeqU16(4) * 0x0e + 3]);
+        DatPersonaWork* persona;
+        u8* destination;
+        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        destination = (u8*)work + 0x38;
+        FUN_00175ce0(persona, destination);
     }
+    work[0xd] = (u32)(uintptr_t)
+        (DAT_007ce428 + (u32)(u16)work[1] * 0x46);
 
-    brpSeqPutU32(0x10, 0);
-    if (brpSeqU32(0x28) < 5 && brpSeqU32(0x2c) < 5)
+    skillCount = (s32)FUN_00176a30(
+        (DatPersonaWork*)(uintptr_t)work[0xc]);
+    skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
+    for (i = 0; i < skillCount; i++)
+        *(u16*)((u8*)work + 0x60 + i * 2) = skills[i];
+    work[0x1d] = skillCount;
+    {
+        DatPersonaWork* persona;
+        s32 difference;
+        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        difference = (s32)persona->level -
+                     (s32)DAT_007ce420[persona->id * 0x0e + 3];
+        FUN_001fb4b0((u8*)(uintptr_t)work[0xd] + 6, 0x10,
+                     difference, *(u8*)((u8*)work + 0x38),
+                     (u8*)work + 0x78, (u8*)work + 0x7c);
+    }
+    work[0x6c] = 0;
+    work[0x6d] = func_00274f00();
+    {
+        DatPersonaWork* persona;
+        u8* destination;
+        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        destination = (u8*)work + 0x38;
+        FUN_00176100(persona, destination);
+    }
+    if (func_002741f0() != 0)
+        work[0] |= 0x10;
+    work[0xa] = 0;
+    i = 0;
+    goto first_check;
+first_body:
+    if (*(u8*)((u8*)work + 0x5a + i) != 0)
+        goto first_done;
+    i++;
+first_check:
+    if (i < 5)
+        goto first_body;
+first_done:
+    work[0xa] = i;
+    work[0xb] = 0;
+    j = 0;
+    goto last_check;
+last_body:
+    if (*(u8*)((u8*)work + 0x5a + j) == 0)
+        goto last_after;
+    work[0xb] = j;
+last_after:
+    j++;
+last_check:
+    if (j < 5)
+        goto last_body;
+
+    resultCount = (s32)FUN_002751e0();
+    work[0x70] = resultCount;
+    resultIndex = 0;
+    goto result_check;
+result_body:
+    entry = FUN_00275050(resultIndex);
+    *(u16*)((u8*)work + 0x1c4 + resultIndex * 8) =
+        *(u16*)(entry + 2);
+    *(u32*)((u8*)work + 0x1c8 + resultIndex * 8) =
+        (u32)entry[0] +
+        DAT_007ce420[
+            (*(u16*)((u8*)(uintptr_t)work[0xc] + 2)) * 0x0e + 3];
+    resultIndex++;
+result_check:
+    if (resultIndex < resultCount)
+        goto result_body;
+
+    work[4] = 0;
+    if ((s32)work[0xa] < 5 && (s32)work[0xb] < 5)
         func_00279660();
     func_00274c00();
-    brpSeqPutU32(0, brpSeqU32(0) | 0x101);
+    work[0] |= 0x100;
+    work[0] |= 1;
 }
 
 // FUN_002727C0
@@ -962,7 +1015,7 @@ void func_002743a0(void)
     func_00273e90();
 }
 
-// FUN_002743E0
+// FUN_002743E0 NONMATCHING
 void func_002743e0(void* destination, s32* count)
 {
     s32 outCount;
@@ -977,25 +1030,36 @@ void func_002743e0(void* destination, s32* count)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = sBrpSeq;
     skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
-    skillCount = (s32)FUN_00176a30((DatPersonaWork*)(uintptr_t)work[0xc]);
+    skillCount = (s32)FUN_00176a30(
+        (DatPersonaWork*)(uintptr_t)work[0xc]);
     outCount = 0;
-    for (copyIndex = 0; copyIndex < skillCount; copyIndex++)
-        ((u16*)destination)[outCount++] = skills[copyIndex];
-    for (i = (s32)work[0x1e]; i < 0x10; i++)
+    copyIndex = 0;
+copy_loop:
+    if (copyIndex < skillCount)
+    {
+        ((u16*)destination)[outCount] = skills[copyIndex];
+        outCount++;
+        copyIndex++;
+        goto copy_loop;
+    }
+    i = (s32)work[0x1e];
+growth_loop:
+    if (i < 0x10)
     {
         growth = (u8*)(uintptr_t)(i * 4 + work[0xd]) + 6;
         kind = *(s8*)(growth + 1);
         switch (kind)
         {
+        case 4:
+        case 0:
+            break;
         case 2:
             K_ASSERT(0, 0x4bc);
             break;
-        case 0:
-        case 4:
-            break;
         case 1:
             K_ASSERT(outCount < 16, 0x4c4);
-            ((u16*)destination)[outCount++] = *(u16*)(growth + 2);
+            ((u16*)destination)[outCount] = *(u16*)(growth + 2);
+            outCount++;
             break;
         case 3:
             K_ASSERT(0, 0x4cc);
@@ -1003,101 +1067,220 @@ void func_002743e0(void* destination, s32* count)
         default:
             break;
         }
+        i++;
+        goto growth_loop;
     }
     *count = outCount;
 }
 // FUN_00274590 NONMATCHING
 void func_00274590(void)
 {
-    DatPersonaWork* persona;
+    u32* work;
     u16* skills;
-    u16 excluded[16];
-    u16 candidates[16];
+    u8 scratch[0x60];
     s32 excludedCount;
-    u32 skillCount;
-    u32 candidateCount;
-    u32 i;
-    u32 j;
-    u32 random;
-    u32 chosen;
-    u8* rankMap;
+    s32 skillCount;
+    s32 candidateCount;
+    s32 modeIndex;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 randomValue;
+    s32 randomIndex;
+    s32 selected;
+    s32 desiredRank;
+    s8* rankMap;
     u8 level;
-    u8 desiredRank;
-    u8 variant;
-    u8* pair;
-    u16 first;
-    u16 second;
+    u16* pair;
+
+#define BRP_EXCLUDED ((u16*)scratch)
+#define BRP_CANDIDATES ((u16*)(scratch + 0x20))
+#define BRP_INDICES ((s32*)(scratch + 0x30))
+#define BRP_FLAGS ((s32*)(scratch + 0x50))
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    persona = (DatPersonaWork*)(uintptr_t)brpSeqU32(0x30);
-    skills = FUN_00173370(persona);
-    skillCount = FUN_00176a30(persona);
-    func_002743e0(excluded, &excludedCount);
-    rankMap = FUN_003d5c90();
+    work = sBrpSeq;
+    skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
+    skillCount = (s32)FUN_00176a30(
+        (DatPersonaWork*)(uintptr_t)work[0xc]);
+    rankMap = (s8*)FUN_003d5c90();
+    func_002743e0(BRP_EXCLUDED, &excludedCount);
+    FUN_005225a8((u32)(uintptr_t)D_0068EDC0);
+    randomValue = FUN_00488f30();
+    randomValue = (s32)((u32)randomValue % 100);
     level = FUN_0016c470(1);
-    FUN_005225a8(0x68edc0);
-    FUN_005225a8(0x68ede0, level);
-    FUN_005225a8(0x68edf0, level, 10);
+    FUN_005225a8((u32)(uintptr_t)D_0068EDE0, level);
+    FUN_005225a8((u32)(uintptr_t)D_0068EDF0, level, 10);
     if (level < 0xb)
     {
-        FUN_005225a8(0x68ee00);
-        return;
+        FUN_005225a8((u32)(uintptr_t)D_0068EE00);
+        goto done;
+    }
+    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+    FUN_005225a8((u32)(uintptr_t)(&gp0xffff97d0 + 1),
+                 randomValue, 0xc);
+    if (randomValue >= 0xc)
+    {
+        FUN_005225a8((u32)(uintptr_t)D_0068EE00);
+        goto done;
+    }
+    FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+    randomValue = FUN_00488f30() & 0xff;
+    FUN_005225a8((u32)(uintptr_t)D_0068EE10, randomValue, 1);
+    if (randomValue == 0)
+    {
+        BRP_FLAGS[0] = 0;
+        BRP_FLAGS[1] = 1;
+    }
+    else
+    {
+        BRP_FLAGS[0] = 1;
+        BRP_FLAGS[1] = 0;
     }
 
-    random = (u32)FUN_00488f30();
-    if (random % 100 >= 12)
+    for (modeIndex = 0; modeIndex < 2; modeIndex++)
     {
-        FUN_005225a8(0x68ee00);
-        return;
-    }
-    variant = (u8)FUN_00488f30();
-    candidateCount = 0;
-    for (pair = (u8*)DAT_007ce438;
-         *(u16*)pair != 0 || *(u16*)(pair + 2) != 0; pair += 4)
-    {
-        first = *(u16*)pair;
-        second = *(u16*)(pair + 2);
-        for (i = 0; i < skillCount && skills[i] != first; i++)
-            ;
-        if (i < skillCount)
+        if (BRP_FLAGS[modeIndex] == 1)
+            goto mode_one;
+        if (BRP_FLAGS[modeIndex] != 0)
+            goto next_mode;
+
+        candidateCount = 0;
+        pair = DAT_007ce438;
+        for (;; pair += 2)
         {
-            for (j = 0; j < (u32)excludedCount && excluded[j] != second; j++)
-                ;
-            if (j == (u32)excludedCount && candidateCount < ARRAY_SIZE(candidates))
-                candidates[candidateCount++] = first;
+            if (pair[0] == 0 && pair[1] == 0)
+                break;
+            i = 0;
+            while (i < skillCount && skills[i] != pair[0])
+                i++;
+            if (i < skillCount)
+            {
+                j = 0;
+                while (j < excludedCount && BRP_EXCLUDED[j] != pair[1])
+                    j++;
+                if (j == excludedCount)
+                {
+                    BRP_INDICES[candidateCount] = i;
+                    BRP_CANDIDATES[candidateCount] = pair[1];
+                    candidateCount++;
+                }
+            }
         }
-    }
-
-    if (candidateCount == 0)
-    {
-        FUN_005225a8(0x68ee00);
-        return;
-    }
-
-    chosen = candidates[(u32)FUN_00488f30() % candidateCount];
-    desiredRank = rankMap[chosen] + 1;
-    candidateCount = 0;
-    for (i = 0; i < 0x270; i++)
-    {
-        if (rankMap[i] == desiredRank)
+        FUN_005225a8((u32)(uintptr_t)D_0068EE28, candidateCount);
+        if (candidateCount == 0)
         {
-            for (j = 0; j < (u32)excludedCount && excluded[j] != i; j++)
-                ;
-            if (j == (u32)excludedCount && candidateCount < ARRAY_SIZE(candidates))
-                candidates[candidateCount++] = (u16)i;
+            FUN_005225a8((u32)(uintptr_t)D_0068EE00);
+            goto next_mode;
         }
-    }
-    if (candidateCount == 0)
-    {
-        FUN_005225a8(0x68ee00);
-        return;
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        randomValue = FUN_00488f30();
+        randomIndex = randomValue % candidateCount;
+        FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
+        selected = skills[BRP_INDICES[randomIndex]];
+        FUN_005225a8((u32)(uintptr_t)D_0068EE60, selected,
+                     BRP_CANDIDATES[randomIndex]);
+        *(u16*)((u8*)work + 0xa0) = (u16)selected;
+        *(u16*)((u8*)work + 0xa2) = BRP_CANDIDATES[randomIndex];
+        work[0x27] = 0;
+        work[0] |= 0x20;
+        goto done;
+
+mode_one:
+        candidateCount = 0;
+        pair = DAT_007ce438;
+        for (;; pair += 2)
+        {
+            if (pair[0] == 0 && pair[1] == 0)
+                break;
+            i = 0;
+            while (i < skillCount && skills[i] != pair[0])
+                i++;
+            if (i < skillCount)
+            {
+                j = 0;
+                while (j < excludedCount && BRP_EXCLUDED[j] != pair[1])
+                    j++;
+                if (j == excludedCount)
+                {
+                    BRP_INDICES[candidateCount] = i;
+                    BRP_CANDIDATES[candidateCount] = pair[1];
+                    candidateCount++;
+                }
+            }
+        }
+        FUN_005225a8((u32)(uintptr_t)D_0068EE28, candidateCount);
+        if (candidateCount == 0)
+        {
+            FUN_005225a8((u32)(uintptr_t)D_0068EE00);
+            goto next_mode;
+        }
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        randomValue = FUN_00488f30();
+        randomIndex = randomValue % candidateCount;
+        FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
+        selected = skills[BRP_INDICES[randomIndex]];
+        desiredRank = (s32)rankMap[selected] + 1;
+
+        candidateCount = 0;
+        i = 0;
+        while (i < 0x270)
+        {
+            if ((s32)rankMap[i] == desiredRank)
+            {
+                j = 0;
+                while (j < excludedCount && BRP_EXCLUDED[j] != i)
+                    j++;
+                if (j == excludedCount)
+                    candidateCount++;
+            }
+            i++;
+        }
+        FUN_005225a8((u32)(uintptr_t)D_0068EE80, candidateCount);
+        if (candidateCount == 0)
+        {
+            FUN_005225a8((u32)(uintptr_t)D_0068EE00);
+            goto next_mode;
+        }
+        FUN_005225a8((u32)(uintptr_t)&gp0xffff97d0);
+        randomValue = FUN_00488f30();
+        randomIndex = randomValue % candidateCount;
+        i = 0;
+        j = 0;
+        while (i < 0x270)
+        {
+            if ((s32)rankMap[i] == desiredRank)
+            {
+                k = 0;
+                while (k < excludedCount && BRP_EXCLUDED[k] != i)
+                    k++;
+                if (k == excludedCount)
+                {
+                    if (j == randomIndex)
+                        break;
+                    j++;
+                }
+            }
+            i++;
+        }
+        randomIndex = i & 0xffff;
+        FUN_005225a8((u32)(uintptr_t)D_0068EE90, selected, randomIndex);
+        *(u16*)((u8*)work + 0xa0) = (u16)selected;
+        *(u16*)((u8*)work + 0xa2) = (u16)randomIndex;
+        work[0x27] = 1;
+        work[0] |= 0x20;
+        goto done;
+
+next_mode:
+        continue;
     }
 
-    chosen = candidates[(u32)FUN_00488f30() % candidateCount];
-    brpSeqPutU16(0xa0, (u16)chosen);
-    brpSeqPutU16(0xa2, (u16)(rankMap[chosen]));
-    brpSeqPutU32(0x9c, variant != 0 ? 1 : 0);
-    brpSeqPutU32(0, brpSeqU32(0) | 0x20);
+done:
+#undef BRP_EXCLUDED
+#undef BRP_CANDIDATES
+#undef BRP_INDICES
+#undef BRP_FLAGS
+    return;
 }
 
 // FUN_00274C00
