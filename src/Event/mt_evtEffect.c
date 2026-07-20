@@ -7,6 +7,7 @@ typedef u32 int3;
 extern f32 DAT_006a0eb0;
 extern char DAT_006a0e80[];
 extern char DAT_006a1030[];
+extern char DAT_006a1000[];
 extern char DAT_006a0f80[];
 extern char DAT_006a0fb0[];
 extern char DAT_006a0fe0[];
@@ -181,7 +182,7 @@ void FUN_003965d0(u32 *param_1);
 u32 FUN_003965f0(int *param_1);
 void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
 u16 FUN_003968a0(int param_1,int param_2);
-void FUN_00396910(int param_1,long param_2);
+void FUN_00396910(int param_1,int param_2);
 void FUN_003969b0(int param_1);
 u64 FUN_00396a70(void);
 void FUN_00396ba0(void);
@@ -1853,7 +1854,7 @@ u16 FUN_003968a0(int param_1,int param_2)
 // FUN_00396910 NONMATCHING
 
 
-void FUN_00396910(int param_1,long param_2)
+void FUN_00396910(int param_1,int param_2)
 
 
 
@@ -1861,7 +1862,7 @@ void FUN_00396910(int param_1,long param_2)
 
   short sVar1;
 
-  long lVar2;
+  int lVar2;
 
   
 
@@ -1879,7 +1880,7 @@ void FUN_00396910(int param_1,long param_2)
 
         FUN_003b7090(sVar1);
 
-        FUN_005225a8(0x6a1000);
+        FUN_005225a8_typed(DAT_006a1000);
 
       }
 
@@ -1905,7 +1906,7 @@ void FUN_003969b0(int param_1)
 
   short sVar1;
 
-  long lVar2;
+  int lVar2;
 
   int iVar3;
 
@@ -1929,7 +1930,7 @@ void FUN_003969b0(int param_1)
 
           FUN_003b7090(sVar1);
 
-          FUN_005225a8(0x6a1000);
+          FUN_005225a8_typed(DAT_006a1000);
 
         }
 
