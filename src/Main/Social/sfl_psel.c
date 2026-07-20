@@ -116,89 +116,89 @@ static void sflPselDraw(void* object)
 // FUN_00260430 NONMATCHING
 void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
 {
-    static const u8 axisModes[8][2] = {
-        {0, 1}, {2, 0}, {0, 2}, {1, 0},
-        {2, 1}, {2, 2}, {2, 1}, {1, 1}
-    };
     u8* entry;
     u8* resource;
-    u32* resourceTable;
-    u32 flags;
     u32 xMode;
     u32 yMode;
-    float x0;
-    float x1;
-    float y0;
-    float y1;
-    float width;
-    float height;
+    f32 width;
+    f32 height;
 
-    entry = sflPselEntry(base, index);
-    resourceTable = (u32*)(uintptr_t)sflPselReadU32(base, 0x104);
-    resource = *(u8**)((u8*)resourceTable + sflPselReadU32(entry, 0x14) * 4);
-    flags = sflPselReadU32(entry, 0x18);
-    x0 = (float)sflPselReadS32(entry, 0x54);
-    x1 = (float)sflPselReadS32(entry, 0x5c);
-    y0 = (float)sflPselReadS32(entry, 0x58);
-    y1 = (float)sflPselReadS32(entry, 0x60);
-    width = (float)sflPselReadS32(resource, 0x0c);
-    height = (float)sflPselReadS32(resource, 0x10);
+    entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
+    resource = *(u8**)((u8*)base + 0x104 + *(u32*)(entry + 0x14) * 4);
+    {
+        f32 x[2] = {0.0f, 0.0f};
+        f32 y[2] = {0.0f, 0.0f};
 
-    if (axis >= 8) {
-        return;
-    }
-    xMode = axisModes[axis][0];
-    yMode = axisModes[axis][1];
+        x[0] = (f32)*(s32*)(entry + 0x54);
+        x[1] = (f32)*(s32*)(entry + 0x5c);
+        y[0] = (f32)*(s32*)(entry + 0x58);
+        y[1] = (f32)*(s32*)(entry + 0x60);
+        width = (f32)*(s32*)(resource + 0xc);
+        height = (f32)*(s32*)(resource + 0x10);
 
-    if (xMode == 2) {
-        if ((flags & 1) == 0) {
-            uv[0] = (x0 + 1.0f) / width;
-            uv[2] = x0 / width;
-        } else {
-            uv[0] = (x1 - 1.0f) / width;
-            uv[2] = x1 / width;
+        if (axis < 8) {
+            switch (axis) {
+            case 0: xMode = 0; yMode = 1; break;
+            case 1: xMode = 2; yMode = 0; break;
+            case 2: xMode = 0; yMode = 2; break;
+            case 3: xMode = 1; yMode = 0; break;
+            case 4: xMode = 2; yMode = 1; break;
+            case 5: xMode = 2; yMode = 2; break;
+            case 6: xMode = 2; yMode = 1; break;
+            case 7: xMode = 1; yMode = 1; break;
+            }
         }
-    } else if (xMode == 1) {
-        if ((flags & 1) == 0) {
-            uv[0] = x1 / width;
-            uv[2] = (x1 - 1.0f) / width;
-        } else {
-            uv[0] = x0 / width;
-            uv[2] = (x0 + 1.0f) / width;
-        }
-    } else if (xMode == 0) {
-        if ((flags & 1) == 0) {
-            uv[0] = x1 / width;
-            uv[2] = x0 / width;
-        } else {
-            uv[0] = x0 / width;
-            uv[2] = x1 / width;
-        }
-    }
 
-    if (yMode == 2) {
-        if ((flags & 2) == 0) {
-            uv[1] = (y0 + 1.0f) / height;
-            uv[3] = y0 / height;
-        } else {
-            uv[1] = (y1 - 1.0f) / height;
-            uv[3] = y1 / height;
+        if (xMode == 2) {
+            if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                uv[0] = (x[0] + 1.0f) / width;
+                uv[2] = x[0] / width;
+            } else {
+                uv[0] = (x[1] - 1.0f) / width;
+                uv[2] = x[1] / width;
+            }
+        } else if (xMode == 1) {
+            if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                uv[0] = x[1] / width;
+                uv[2] = (x[1] - 1.0f) / width;
+            } else {
+                uv[0] = x[0] / width;
+                uv[2] = (x[0] + 1.0f) / width;
+            }
+        } else if (xMode == 0) {
+            if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                uv[0] = x[1] / width;
+                uv[2] = x[0] / width;
+            } else {
+                uv[0] = x[0] / width;
+                uv[2] = x[1] / width;
+            }
         }
-    } else if (yMode == 1) {
-        if ((flags & 2) == 0) {
-            uv[1] = y1 / height;
-            uv[3] = (y1 - 1.0f) / height;
-        } else {
-            uv[1] = y0 / height;
-            uv[3] = (y0 + 1.0f) / height;
-        }
-    } else if (yMode == 0) {
-        if ((flags & 2) == 0) {
-            uv[1] = y1 / height;
-            uv[3] = y0 / height;
-        } else {
-            uv[1] = y0 / height;
-            uv[3] = y1 / height;
+
+        if (yMode == 2) {
+            if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                uv[1] = (y[0] + 1.0f) / height;
+                uv[3] = y[0] / height;
+            } else {
+                uv[1] = (y[1] - 1.0f) / height;
+                uv[3] = y[1] / height;
+            }
+        } else if (yMode == 1) {
+            if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                uv[1] = y[1] / height;
+                uv[3] = (y[1] - 1.0f) / height;
+            } else {
+                uv[1] = y[0] / height;
+                uv[3] = (y[0] + 1.0f) / height;
+            }
+        } else if (yMode == 0) {
+            if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                uv[1] = y[1] / height;
+                uv[3] = y[0] / height;
+            } else {
+                uv[1] = y[0] / height;
+                uv[3] = y[1] / height;
+            }
         }
     }
 }
@@ -298,7 +298,8 @@ void sflPsel00260e00(void)
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     D_00960090(1, 0);
-    sflPselDraw(sflPselBytes(work, 0x310));
+    D_0096009C((u32*)((u8*)work + 0x310), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x310), 4, 0, 2, 3);
 
     D_00960090(0x14, 2);
     D_00960090(8, 1);
@@ -306,15 +307,18 @@ void sflPsel00260e00(void)
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     D_00960090(1, 0);
-    sflPselDraw(sflPselBytes(work, 0x10));
+    D_0096009C((u32*)((u8*)work + 0x10), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x10), 4, 0, 2, 3);
 
     D_00960090(8, 0);
     D_00960090(6, 1);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x3a));
     D_00960090(1, texture);
-    sflPselDraw(sflPselBytes(work, 0x710));
+    D_0096009C((u32*)((u8*)work + 0x710), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x710), 4, 0, 2, 3);
     D_00960090(1, 0);
-    sflPselDraw(sflPselBytes(work, 0x810));
+    D_0096009C((u32*)((u8*)work + 0x810), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x810), 4, 0, 2, 3);
 
     D_00960090(8, 1);
     D_00960090(6, 1);
@@ -324,18 +328,21 @@ void sflPsel00260e00(void)
     D_00960090(6, 1);
     D_00960090(8, 1);
     D_00960090(1, 0);
-    sflPselDraw(sflPselBytes(work, 0x210));
+    D_0096009C((u32*)((u8*)work + 0x210), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x210), 4, 0, 2, 3);
 
     if (work[1] == 1) {
         D_00960090(6, 0);
         D_00960090(8, 1);
         D_00960090(1, 0);
-        sflPselDraw(sflPselBytes(work, 0x110));
+        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 2, 3);
     } else if (work[1] == 0) {
         D_00960090(6, 1);
         D_00960090(8, 1);
         D_00960090(1, 0);
-        sflPselDraw(sflPselBytes(work, 0x110));
+        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 2, 3);
     }
 
     D_00960090(6, 1);
@@ -343,13 +350,16 @@ void sflPsel00260e00(void)
     D_00960090(8, 0);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x34));
     D_00960090(1, texture);
-    sflPselDraw(sflPselBytes(work, 0x410));
+    D_0096009C((u32*)((u8*)work + 0x410), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x410), 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x35));
     D_00960090(1, texture);
-    sflPselDraw(sflPselBytes(work, 0x510));
+    D_0096009C((u32*)((u8*)work + 0x510), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x510), 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x36));
     D_00960090(1, texture);
-    sflPselDraw(sflPselBytes(work, 0x610));
+    D_0096009C((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
+    D_0096009C((u32*)((u8*)work + 0x610), 4, 0, 2, 3);
 }
 
 extern void FUN_0021d890(void*, const void*);
@@ -746,7 +756,7 @@ void func_00215b00(void)
     work = (u8*)sSflPsel;
     texture = sflRes0020ec50();
     hero = datPersonaGetByPcId(1);
-    heroCount = func_001756f0();
+    heroCount = func_001756f0() & 0xffff;
     totalCount = func_00175410() & 0xffff;
     *(u32*)(work + 8) = totalCount;
     count = *(u32*)(work + 4);
@@ -1172,6 +1182,8 @@ void func_002168f0(void)
     u8* work;
     u32 texture;
     s32 i;
+    void (**state)(u32 state, u32 value);
+    void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
     work = (u8*)sSflPsel;
@@ -1181,14 +1193,15 @@ void func_002168f0(void)
         return;
     }
     texture = sflRes0020ec50();
-    D_00960090(6, 1);
-    D_00960090(8, 0);
-    D_00960090(1, 0);
+    state = &D_00960090;
+    (*state)(6, 1);
+    (*state)(8, 0);
+    (*state)(1, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
-        u32 listIndex = *(u32*)(work + 0x5c60 + i * 4);
+        u32 listIndex = *(u32*)(work + 0x5c60) + i;
         u32 entryIndex = *(u32*)(work + 0x52e0 + listIndex * 4);
         func_00219370(work + 0x150 + i * 0x910,
                       (u32*)(work + 0x10 + entryIndex * 0x10),
@@ -1196,29 +1209,37 @@ void func_002168f0(void)
     }
     RpSkyRenderStateSet(3, (void*)0x71801);
     RpSkyRenderStateSet(2, (void*)0x48);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x31)));
-    sflPselDraw(work + 0x5340);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x32)));
-    sflPselDraw(work + 0x5440);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x31)));
+    draw = &D_0096009C;
+    (*draw)((u32*)(work + 0x5340), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5340), 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x32)));
+    (*draw)((u32*)(work + 0x5440), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5440), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x38)));
-    sflPselDraw(work + 0x5540);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x39)));
-    sflPselDraw(work + 0x5640);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x38)));
+    (*draw)((u32*)(work + 0x5540), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5540), 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x39)));
+    (*draw)((u32*)(work + 0x5640), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5640), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x33)));
-    sflPselDraw(work + 0x5740);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x33)));
+    (*draw)((u32*)(work + 0x5740), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5740), 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
     for (i = 0; i < 2; i++)
     {
-        sflPselDraw(work + 0x5840 + i * 0x40);
+        (*draw)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 1, 2);
+        (*draw)((u32*)(work + 0x5840 + i * 0x40), 4, 0, 2, 3);
     }
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x27)));
+    (*state)(1, func_0021cce0(func_0021cca0(texture, 0x27)));
     for (i = 0; i < 2; i++)
     {
-        sflPselDraw(work + 0x5a40 + i * 0x40);
+        (*draw)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 1, 2);
+        (*draw)((u32*)(work + 0x5a40 + i * 0x40), 4, 0, 2, 3);
     }
     if ((*(u32*)work & 8) != 0)
     {
@@ -1226,24 +1247,31 @@ void func_002168f0(void)
         func_00219370(work + 0x49d0,
                       (u32*)(work + 0x10 + entryIndex * 0x10), 0);
     }
-    D_00960090(6, 1);
-    D_00960090(8, 0);
+    state = &D_00960090;
+    (*state)(6, 1);
+    (*state)(8, 0);
     RpSkyRenderStateSet(3, (void*)0x71801);
     RpSkyRenderStateSet(2, (void*)0x48);
     texture = func_0021cce0(func_0021cca0(texture, 0x1e));
-    D_00960090(1, texture);
-    sflPselDraw(work + 0x5c90);
-    sflPselDraw(work + 0x5d90);
+    (*state)(1, texture);
+    draw = &D_0096009C;
+    (*draw)((u32*)(work + 0x5c90), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5c90), 4, 0, 2, 3);
+    (*draw)((u32*)(work + 0x5d90), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5d90), 4, 0, 2, 3);
     texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1f));
-    D_00960090(1, texture);
-    sflPselDraw(work + 0x5e90);
+    (*state)(1, texture);
+    (*draw)((u32*)(work + 0x5e90), 4, 0, 1, 2);
+    (*draw)((u32*)(work + 0x5e90), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     if (*(u32*)(work + 0x5330) > 8)
     {
         texture = func_0021cce0(func_0021cca0(sflRes0020ec50(), 0x1d));
-        D_00960090(1, texture);
-        sflPselDraw(work + 0x5f90);
+        (*state)(1, texture);
+        draw = &D_0096009C;
+        (*draw)((u32*)(work + 0x5f90), 4, 0, 1, 2);
+        (*draw)((u32*)(work + 0x5f90), 4, 0, 2, 3);
     }
 }
 
@@ -1890,18 +1918,19 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
 // FUN_00219370 NONMATCHING
 void func_00219370(void* panel, const u32* entry, s32 selected)
 {
-    u8* destination;
     u32 texture;
     u32 frame;
     u32 value;
     s32 i;
+    void (**state)(u32 state, u32 value);
+    void (**draw)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
 
     K_ASSERT(sSflPsel != NULL, 0xcb);
-    destination = (u8*)panel;
     texture = sflRes0020ec50();
-    D_00960090(6, 1);
-    D_00960090(8, 0);
-    D_00960090(1, 0);
+    state = &D_00960090;
+    (*state)(6, 1);
+    (*state)(8, 0);
+    (*state)(1, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     if (selected != 0)
@@ -1923,32 +1952,41 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
         frame = 0x21;
         value = 0x22;
     }
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
-    sflPselDraw(destination);
-    sflPselDraw(destination + 0x100);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, value)));
-    sflPselDraw(destination + 0x200);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    draw = &D_0096009C;
+    (*draw)((u32*)panel, 4, 0, 1, 2);
+    (*draw)((u32*)panel, 4, 0, 2, 3);
+    (*draw)((u32*)((u8*)panel + 0x100), 4, 0, 1, 2);
+    (*draw)((u32*)((u8*)panel + 0x100), 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, value)));
+    (*draw)((u32*)((u8*)panel + 0x200), 4, 0, 1, 2);
+    (*draw)((u32*)((u8*)panel + 0x200), 4, 0, 2, 3);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
     frame = selected != 0 ? 0x1a : ((*entry & 2) != 0 ? 0x3b : 0x18);
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
-    sflPselDraw(destination + 0x300);
-    D_00960090(1, func_0021cce0(func_002180b0(entry[2])));
-    sflPselDraw(destination + 0x400);
+    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 1, 2);
+    (*draw)((u32*)((u8*)panel + 0x300), 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_002180b0(entry[2])));
+    (*draw)((u32*)((u8*)panel + 0x400), 4, 0, 1, 2);
+    (*draw)((u32*)((u8*)panel + 0x400), 4, 0, 2, 3);
     frame = selected != 0 ? 0x1a : 0x19;
-    D_00960090(1, func_0021cce0(func_0021cca0(texture, frame)));
-    sflPselDraw(destination + 0x600);
-    D_00960090(1, func_00239140(selected != 0 ? 1 : 2));
+    (*state)(1, func_0021cce0(func_0021cca0(texture, frame)));
+    (*draw)((u32*)((u8*)panel + 0x600), 4, 0, 1, 2);
+    (*draw)((u32*)((u8*)panel + 0x600), 4, 0, 2, 3);
+    (*state)(1, func_00239140(selected != 0 ? 1 : 2));
     for (i = 0; i < 2; i++)
     {
-        sflPselDraw(destination + 0x700 + i * 0x100);
+        (*draw)((u32*)((u8*)panel + 0x700 + i * 0x100), 4, 0, 1, 2);
+        (*draw)((u32*)((u8*)panel + 0x700 + i * 0x100), 4, 0, 2, 3);
     }
     if ((*entry & 2) != 0)
     {
-        D_00960090(1, func_0021cce0(func_0021cca0(texture, 0x25)));
-        sflPselDraw(destination + 0x500);
+        (*state)(1, func_0021cce0(func_0021cca0(texture, 0x25)));
+        (*draw)((u32*)((u8*)panel + 0x500), 4, 0, 1, 2);
+        (*draw)((u32*)((u8*)panel + 0x500), 4, 0, 2, 3);
     }
-    func_003b1360(*(u32*)(destination + 0x900), 1, 0);
+    func_003b1360(*(u32*)((u8*)panel + 0x900), 1, 0);
 }
 
 // FUN_00219970
