@@ -17,6 +17,35 @@ extern u32 FUN_0017e050(long param_1,long param_2,long param_3);
 extern u32 FUN_0027c2b0(void);
 extern u32 FUN_0027c330(void);
 extern u32 FUN_0016dce0(s16 param_1);
+extern void K_Assert(const char *file,s32 line);
+extern char D_006A3280[];
+extern s8 datGetSocialLinkLevel(s16 socialLink);
+extern u32 datSocialLinkLevelIsNotZero(s16 socialLink);
+extern u32 func_00172a50(s32 socialLink);
+extern u32 func_00171960(s32 socialLink,s16 value);
+extern s8 func_0016dd20(s16 socialLink);
+extern void func_0016e410(s16 socialLink,s8 level);
+extern s32 func_003c2570(s32 socialLink);
+extern s32 clndGetCurrentMonth(void);
+extern s32 clndGetCurrentDay(void);
+extern u32 func_003c2b40(s32 *month,s32 *day);
+extern u32 func_003c2c50(u8 socialLink);
+extern s8 func_0016df30(s16 socialLink);
+extern u32 datGetNextExp(s16 pcId);
+extern u32 func_0016d280(s32 exp);
+extern void *kwlnTaskGetWorkData(void);
+extern s16 *datGetActiveSocialLinkPtr(void);
+extern u32 func_003c3e80(s32 param_1);
+extern u32 adminiGetNowSeqId(void);
+extern u32 adminiGetNextSeqId(void);
+extern s32 FUN_00172160(long socialLink);
+extern s32 FUN_001717c0(long socialLink);
+extern s32 FUN_00172660(long socialLink);
+#pragma alias FUN_003be1c0_typed FUN_003be1c0
+extern u32 FUN_003be1c0_typed(long param_1,s32 param_2);
+#pragma alias FUN_003be2a0_typed FUN_003be2a0
+extern u32 FUN_003be2a0_typed(...);
+extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
 extern void FUN_0016f1f0(int param_1,int param_2);
 #pragma alias FUN_0016f190_comu FUN_0016f190
 extern u32 FUN_0016f190_comu(int param_1);
@@ -1025,87 +1054,50 @@ LAB_003be5a0:
 
 
 u32 FUN_003be8e0(long param_1,u64 param_2)
-
-
-
 {
+  s32 var_7;
+  s8 cVar1;
+  s32 lVar2;
 
-  char cVar1;
-
-  long lVar2;
-
-  u64 uVar3;
-
-  
-
-  if ((0x1d < param_1) || (param_1 < 0)) {
-
-    FUN_0019d3f0("comuFunction.c",1000);
-
+  if ((param_1 >= 0x1e) || (param_1 < 0)) {
+    K_Assert(D_006A3280,0x3e8);
   }
 
-  cVar1 = FUN_0016dba0((short)param_1);
-
+  cVar1 = datGetSocialLinkLevel((s16)param_1);
   if (cVar1 == '\n') {
-
-    uVar3 = 5;
-
+    var_7 = 5;
   }
-
   else {
-
     lVar2 = FUN_00172160(param_1);
-
     if (lVar2 == 1) {
-
-      uVar3 = 4;
-
+      var_7 = 4;
     }
-
     else {
-
       lVar2 = FUN_001717c0(param_1);
-
       if (lVar2 == 1) {
-
-        uVar3 = 3;
-
+        var_7 = 3;
       }
-
       else {
-
         lVar2 = FUN_00172660(param_1);
-
         if (lVar2 == 1) {
-
-          lVar2 = FUN_003be1c0(param_1,cVar1 + 1);
-
-          uVar3 = 1;
-
+          lVar2 = FUN_003be1c0_typed(param_1,cVar1 + 1);
+          var_7 = 1;
           if (lVar2 == 1) {
-
-            uVar3 = 2;
-
+            var_7 = 2;
           }
-
+          else {
+            var_7 = 0;
+          }
         }
-
         else {
-
-          uVar3 = 0;
-
+          var_7 = 0;
         }
-
       }
-
     }
-
   }
 
-  FUN_003be2a0(0,0,param_1,uVar3,param_2);
-
+  FUN_003be2a0_typed(0,0,param_1,var_7,param_2);
   return 1;
-
 }
 #define FUN_003be8e0(...) ((u32 (*)(...))FUN_003be8e0)(__VA_ARGS__)
 #undef FUN_003bea20
