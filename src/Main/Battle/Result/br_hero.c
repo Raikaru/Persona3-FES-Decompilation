@@ -35,50 +35,43 @@ void brHero002630e0(void)
     FUN_003b0170(work[0xad4]);
     *work &= 0xfffffffe;
 }
-extern u32 FUN_00233d70();
-extern u32 FUN_00233d70();
-extern u32 FUN_0016c470();
-extern u32 FUN_0016c7e0();
-extern u32 FUN_0016c970();
-extern u32 FUN_0016d2f0();
-extern u32 FUN_0016c4f0();
-extern u32 FUN_0016c570();
-extern u32 FUN_0016c5f0();
-extern u32 FUN_0016c670();
-extern u32 FUN_0016c6f0();
-extern u32 FUN_00177280();
-extern u32 FUN_0016c740();
-extern u32 FUN_001772f0();
-extern u32 FUN_0016c790();
-extern u32 FUN_00177360();
-extern u32 FUN_0016c920();
-extern u32 FUN_0011f780();
-extern u32 FUN_00177790();
-extern u32 FUN_0021cca0();
-extern void FUN_0021d3b0();
-extern void FUN_0021d8e0();
-extern void FUN_0021d890();
-extern void FUN_0021d950();
-extern void FUN_0021e380();
-extern void FUN_0021eac0();
-extern void FUN_0021eae0();
-extern void FUN_0021eb80();
-extern void FUN_00238980();
-extern void FUN_00238dc0();
-extern void FUN_00238bf0();
-extern u32 FUN_00233df0();
-extern u32 FUN_003b0970();
-extern void FUN_003b0e70();
-extern void FUN_003b0e90();
-extern void FUN_003b0d70();
-extern void thunk_FUN_003b0e54();
-extern void FUN_003b1360();
-extern u32 FUN_00239140();
+typedef struct {
+    u32 unk0;
+    u32 unk4;
+    u32 unk8;
+    s32 width;
+    s32 height;
+} BrHeroResource;
+extern void* FUN_00233d70(s32);
+extern void* FUN_00233df0(s32);
+extern void* FUN_0021cca0(void*, s32);
+extern u32 FUN_0021cce0(void*);
+extern void FUN_0021d3b0(void*, void*);
+extern void FUN_0021d8e0(void*, float*);
+extern void FUN_0021d890(void*, float*);
+extern void FUN_0021d950(void*, u8*);
+extern void FUN_0021e380(void*, void*, s32);
+extern void FUN_0021eac0(void*, float);
+extern void FUN_0021eae0(void*, float*);
+extern void FUN_0021eb80(void*, float*);
+extern void FUN_00238980(void*, s32, s32, s32);
+extern void FUN_00238dc0(void*, s32, s32, s32, float*);
+extern void FUN_00238bf0(void*, s32, s32, s32, float*);
+extern void* brPersona00264ca0(s32);
+extern void* FUN_00264ca0(s32);
+extern void FUN_003b0e70(s32);
+extern void FUN_003b0e90(s32);
+extern void FUN_003b0d70(s32, s32, s32);
+extern void FUN_003b0e20(s32, s32);
+extern u32 FUN_00239140(s32);
+extern void RpSkyRenderStateSet(s32, void*);
+extern void thunk_FUN_003b0e54(s32, s32);
+extern void FUN_003b1360(s32, s32, s32);
 extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
 extern u32 uGpffffb948;
-extern u32 uGpffff83a8;
-extern u32 uGpffff83ac;
+extern float uGpffff83a8;
+extern float uGpffff83ac;
 
 static void brHeroSetColor(void* object, u8 r, u8 g, u8 b, u8 a)
 {
@@ -104,9 +97,10 @@ static void brHeroSetRect(void* object, float x, float y, float w, float h)
 void brHero00262790(void)
 {
     u32* w;
-    u32 text0;
-    u32 text1;
-    u32 value;
+    void* text0;
+    void* text1;
+    void* value;
+    u32 task;
     float rect[4];
     u8 color[4] = {0xff, 0xff, 0xff, 0xff};
     s32 i;
@@ -184,9 +178,9 @@ void brHero00262790(void)
     FUN_003b0e70(1);
     FUN_003b0e90(2);
     uGpffffb948 = 0x78;
-    value = FUN_003b0970(FUN_00177790(1), 1, 5, 0, 0);
+    task = (u32)FUN_003b0970(FUN_00177790(1), 1, 5, 0, 0);
     uGpffffb948 = 0;
-    w[0xad4] = value;
+    w[0xad4] = task;
     FUN_003b0e90(1);
     FUN_003b0e70(2);
     value = FUN_0021cca0(text1, 0x11);
@@ -202,101 +196,232 @@ void brHero00262790(void)
 // FUN_00263170 NONMATCHING
 void brHero00263170(void)
 {
+    void* text0;
+    void* text1;
     u32* w;
-    u32 text0;
-    u32 text1;
-    u32 resource;
+    BrHeroResource* resource;
+    float rect[4];
+    float width4;
+    float offset;
     float scroll;
-    s32 i;
-    static const float cardX[6] = {21.0f, 21.0f, 21.0f, 127.0f, 127.0f, 127.0f};
-    static const float cardY[6] = {49.0f, 97.0f, 147.0f, 49.0f, 97.0f, 147.0f};
-
+    u8 color[4];
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((*w & 1) == 0)
         return;
-    w[0xe58] = w[0xe58] < 0x41a ? w[0xe58] + 1 : 0;
+
+    if ((s32)w[0xe58] < 0x41a)
+        w[0xe58] += 1;
+    else
+        w[0xe58] = 0;
+
     text0 = FUN_00233d70(0);
     text1 = FUN_00233d70(1);
-    for (i = 0; i < 6; i++)
-    {
-        resource = FUN_0021cca0(text0, 0x16 + i);
-        brHeroSetRect(w + i * 0x40 + 4, cardX[i], cardY[i],
-                      (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    }
-    resource = FUN_0021cca0(text0, 0x1c);
-    for (i = 0; i < 3; i++)
-        brHeroSetRect(w + i * 0x40 + 0x244, 127.0f, 63.0f + i * 48.0f,
-                      (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text0, 0x1d);
-    for (i = 0; i < 3; i++)
-        brHeroSetRect(w + i * 0x40 + 0x304,
-                      (float)(s32)w[0x484 + i] * 20.0f + 127.0f,
-                      63.0f + i * 48.0f,
-                      (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    brHeroSetRect(w + 0x184, 0.0f, 0.0f, 640.0f, 37.0f);
-    brHeroSetColor(w + 0x184, 0xfe, 0xbd, 0x5e, 0xff);
-    brHeroSetRect(w + 0x1c4, 0.0f, 37.0f, 640.0f, 161.0f);
-    brHeroSetColor(w + 0x1c4, 0, 0x28, 0x3f, 0xff);
-    brHeroSetRect(w + 0x204, 0.0f, 198.0f, 640.0f, 448.0f);
-    brHeroSetColor(w + 0x204, 0x0d, 0x8a, 0xeb, 0xff);
-    resource = FUN_0021cca0(text0, w[0x484]);
-    brHeroSetRect(w + 0x3c4, 129.0f, 72.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text0, w[0x485] + 7);
-    brHeroSetRect(w + 0x404, 129.0f, 120.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text0, w[0x486] + 0xe);
-    brHeroSetRect(w + 0x444, 129.0f, 170.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    resource = FUN_00233df0(1);
-    scroll = ((float)(s32)w[0xe58] / 1050.0f) *
-             -((float)*(s32*)(resource + 0x0c) * 4.0f + 30.0f);
-    brHeroSetRect(w + 0x4c8, 190.0f, scroll,
-                  (float)*(s32*)(resource + 0x0c) * 2.0f,
-                  (float)*(s32*)(resource + 0x0c) * 4.0f);
-    brHeroSetRect(w + 0x508, 190.0f, scroll + (float)*(s32*)(resource + 0x0c) * 4.0f + 30.0f,
-                  (float)*(s32*)(resource + 0x0c) * 2.0f,
-                  (float)*(s32*)(resource + 0x0c) * 4.0f);
-    brHeroSetRect(w + 0x488, 449.0f, 29.0f, (float)uGpffff83a8, (float)uGpffff83ac);
-    resource = FUN_0021cca0(text1, 0);
-    brHeroSetRect(w + 0x548, 52.0f, 206.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text1, 4);
-    brHeroSetRect(w + 0x794, 224.0f, 238.0f,
-                  ((float)*(s32*)(resource + 0x0c) + 1.0f) * w[0x589] / w[0x58a],
-                  (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text1, 5);
-    brHeroSetRect(w + 0x954, 224.0f, 254.0f,
-                  ((float)*(s32*)(resource + 0x0c) + 1.0f) * w[0x58b] / w[0x58c],
-                  (float)*(s32*)(resource + 0x10));
-    brHeroSetRect(w + 0xa54, 50.0f, 0.0f, 353.0f, 42.0f);
-    resource = brPersona00264ca0(w[0x58d]);
-    brHeroSetRect(w + 0xa94, 216.0f, 255.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    FUN_003b0d70(w[0xad4], 0x9b0, 0x670);
-    thunk_FUN_003b0e54(w[0xad4], -0x33);
-    resource = FUN_0021cca0(text1, 0x11);
-    brHeroSetRect(w + 0xc58, 51.0f, 299.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
-    brHeroSetRect(w + 0xc98, 51.0f + (float)*(s32*)(resource + 0x0c), 299.0f,
-                  106.0f, (float)*(s32*)(resource + 0x10));
-    resource = FUN_0021cca0(text1, 0x22);
-    brHeroSetRect(w + 0xcd8, 305.0f, 299.0f,
-                  (float)*(s32*)(resource + 0x0c), (float)*(s32*)(resource + 0x10));
+
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x16);
+    rect[0] = 21.0f;
+    rect[1] = 49.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 4, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x17);
+    rect[0] = 21.0f;
+    rect[1] = 97.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x44, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x18);
+    rect[0] = 21.0f;
+    rect[1] = 147.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x84, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x19);
+    rect[0] = 127.0f;
+    rect[1] = 49.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0xc4, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1a);
+    rect[0] = 127.0f;
+    rect[1] = 97.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x104, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1b);
+    rect[0] = 127.0f;
+    rect[1] = 147.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x144, rect);
+
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1c);
+    rect[0] = 127.0f;
+    rect[1] = 63.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x244, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1c);
+    rect[1] = 111.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x284, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1c);
+    rect[1] = 161.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x2c4, rect);
+
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1d);
+    rect[0] = 127.0f + 20.0f * (float)(s32)w[0x484];
+    rect[1] = 63.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x304, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1d);
+    rect[0] = 127.0f + 20.0f * (float)(s32)w[0x485];
+    rect[1] = 111.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x344, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, 0x1d);
+    rect[0] = 127.0f + 20.0f * (float)(s32)w[0x486];
+    rect[1] = 161.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x384, rect);
+
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 640.0f;
+    rect[3] = 37.0f;
+    FUN_0021d8e0(w + 0x184, rect);
+    color[0] = 0xfe;
+    color[1] = 0xbd;
+    color[2] = 0x5e;
+    color[3] = 0xff;
+    FUN_0021d950(w + 0x184, color);
+    rect[0] = 0.0f;
+    rect[1] = 37.0f;
+    rect[2] = 640.0f;
+    rect[3] = 161.0f;
+    FUN_0021d8e0(w + 0x1c4, rect);
+    color[0] = 0;
+    color[1] = 0x28;
+    color[2] = 0x3f;
+    color[3] = 0xff;
+    FUN_0021d950(w + 0x1c4, color);
+    rect[0] = 0.0f;
+    rect[1] = 198.0f;
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    FUN_0021d8e0(w + 0x204, rect);
+    color[0] = 0x0d;
+    color[1] = 0x8a;
+    color[2] = 0xeb;
+    color[3] = 0xff;
+    FUN_0021d950(w + 0x204, color);
+
+    resource = (BrHeroResource*)FUN_0021cca0(text0, w[0x484]);
+    rect[0] = 129.0f;
+    rect[1] = 72.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x3c4, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, w[0x485] + 7);
+    rect[0] = 129.0f;
+    rect[1] = 120.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x404, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text0, w[0x486] + 0xe);
+    rect[0] = 129.0f;
+    rect[1] = 170.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x444, rect);
+
+    resource = (BrHeroResource*)FUN_00233df0(1);
+    width4 = (float)(resource->width * 4);
+    offset = width4 + 30.0f;
+    scroll = ((float)(s32)w[0xe58] / 1050.0f) * -offset;
+    rect[0] = 190.0f;
+    rect[1] = scroll;
+    rect[2] = (float)(resource->width * 2);
+    rect[3] = width4;
+    FUN_0021d8e0(w + 0x4c8, rect);
+    rect[1] = scroll + offset;
+    FUN_0021d8e0(w + 0x508, rect);
+
+    rect[0] = 449.0f;
+    rect[1] = 29.0f;
+    rect[2] = uGpffff83a8;
+    rect[3] = uGpffff83ac;
+    FUN_0021d8e0(w + 0x488, rect);
+
+    resource = (BrHeroResource*)FUN_0021cca0(text1, 0);
+    rect[0] = 52.0f;
+    rect[1] = 206.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x548, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text1, 4);
+    rect[0] = 224.0f;
+    rect[1] = 238.0f;
+    rect[2] = (1.0f + (float)resource->width) * (float)w[0x589] / (float)w[0x58a];
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x794, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text1, 5);
+    rect[0] = 224.0f;
+    rect[1] = 254.0f;
+    rect[2] = (1.0f + (float)resource->width) * (float)w[0x58b] / (float)w[0x58c];
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0x954, rect);
+
+    FUN_00233df0(0);
+    rect[0] = 50.0f;
+    rect[1] = 0.0f;
+    rect[2] = 353.0f;
+    rect[3] = 42.0f;
+    FUN_0021d8e0(w + 0xa54, rect);
+    resource = (BrHeroResource*)FUN_00264ca0(w[0x58d]);
+    rect[0] = 216.0f;
+    rect[1] = 255.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0xa94, rect);
+    FUN_003b0d70(w[0xad4], 0x431b0 * 0x10, 0x434e0 * 8);
+    FUN_003b0e20(w[0xad4], -0x33);
+
+    resource = (BrHeroResource*)FUN_0021cca0(text1, 0x11);
+    rect[0] = 51.0f;
+    rect[1] = 299.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0xc58, rect);
+    rect[0] = 51.0f + (float)resource->width;
+    rect[2] = 106.0f;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0xc98, rect);
+    resource = (BrHeroResource*)FUN_0021cca0(text1, 0x22);
+    rect[0] = 305.0f;
+    rect[1] = 299.0f;
+    rect[2] = (float)resource->width;
+    rect[3] = (float)resource->height;
+    FUN_0021d8e0(w + 0xcd8, rect);
 }
 
 // FUN_00263db0 NONMATCHING
 void brHero00263db0(void)
 {
-    u32 text1;
-    u32 text0;
-    u32 text3;
-    s32 i;
     u32* w;
-    u32 texture;
+    void* text0;
+    void* text1;
+    void* text3;
     void (*setRenderState)(u32, u32);
     void (*renderQuad)(u32*, u32, u32, u32, u32);
+    u32 texture;
+    s32 i;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((*w & 1) == 0)
