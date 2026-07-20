@@ -1248,34 +1248,32 @@ u32 FUN_004113f0(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00411710 NONMATCHING
-
-
-u64 FUN_00411710(u64 param_1,int param_2)
-
-
-
+// FUN_00411710
+u64 FUN_00411710(u64 param_1, int param_2)
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
 
-  
-
   iVar1 = *(int *)(param_2 + 0xc);
-
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+    s16 valueA;
+    s16 valueB;
+    f32 zero;
+    u8 flag;
+    int code;
+
     iVar2 = iVar1 + iVar3 * 0x14;
-    FUN_0040e3c0_i(*(s16 *)(iVar2 + 4), *(s16 *)(iVar2 + 6), 0.0f,
-                   *(u8 *)(iVar2 + 0xc), iVar3 + 0x61, 0);
-
+    valueA = *(s16 *)(iVar2 + 4);
+    valueB = *(s16 *)(iVar2 + 6);
+    asm volatile("" : "+r" (valueA), "+r" (valueB));
+    asm volatile("mtc1 $0, %0" : "=f" (zero));
+    flag = *(u8 *)(iVar2 + 0xc);
+    asm volatile("" : "+r" (flag));
+    code = iVar3 + 0x61;
+    FUN_0040e3c0(zero, valueA, valueB, flag, code, 0);
   }
-
   return 0;
-
 }
 
 // FUN_00411790 NONMATCHING
