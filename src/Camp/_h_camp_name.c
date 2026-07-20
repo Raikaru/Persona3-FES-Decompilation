@@ -597,7 +597,7 @@ u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(long param_1,long param_2);
 u32 FUN_0045df00(int param_1);
 u32 FUN_0045e3e0(u64 param_1);
-u32 FUN_0045e8c0(u64 param_1);
+u32 FUN_0045e8c0(int param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
 u32 FUN_00465590(int param_1,u64 param_2);
@@ -1863,7 +1863,7 @@ u32 FUN_0045b190(long param_1);
 u32 FUN_0045b420(long param_1,long param_2);
 u32 FUN_0045df00(int param_1);
 u32 FUN_0045e3e0(u64 param_1);
-u32 FUN_0045e8c0(u64 param_1);
+u32 FUN_0045e8c0(int param_1);
 u32 FUN_0045eaf0(void);
 u32 FUN_0045eba0(void);
 u32 FUN_00465590(int param_1,u64 param_2);
@@ -2606,24 +2606,42 @@ void FUN_004adca0(void);
 void FUN_004ae060(int param_1);
 void FUN_004ae940(u64 param_1);
 
-// FUN_0045E7E0 NONMATCHING
+
+
+#pragma alias DAT_0095c258_s1 DAT_0095c258
+extern u32 DAT_0095c258_s1[];
+#pragma alias DAT_0095c25c_s1 DAT_0095c25c
+extern u32 DAT_0095c25c_s1[];
+#pragma alias DAT_0095c260_s1 DAT_0095c260
+extern u32 DAT_0095c260_s1[];
+
+#pragma alias DAT_0095c240_mem DAT_0095c240
+extern u8 DAT_0095c240_mem[];
+#pragma alias DAT_0095c220_mem DAT_0095c220
+extern u8 DAT_0095c220_mem[];
+#pragma alias DAT_0095c240_loop DAT_0095c240
+extern u8 DAT_0095c240_loop[];
+#pragma alias DAT_0095c220_loop DAT_0095c220
+extern u8 DAT_0095c220_loop[];
+
+// FUN_0045E7E0
 
 void FUN_0045e7e0(void)
 
 {
   int iVar1;
   
-  DAT_0095c258 = 0;
-  DAT_0095c25c = 0;
-  DAT_0095c260 = 0;
+  DAT_0095c258_s1[0] = 0;
+  DAT_0095c25c_s1[0] = 0;
+  DAT_0095c260_s1[0] = 0;
   DAT_007ce718 = 0;
-  ((code)FUN_00521408)(0x95c240,0,0x12);
-  ((code)FUN_00521408)(0x95c220,0,0x12);
+  memset(DAT_0095c240_mem,0,0x12);
+  memset(DAT_0095c220_mem,0,0x12);
   for (iVar1 = 0; iVar1 < 8; iVar1 = iVar1 + 1) {
-    ((code)FUN_00523e68)(0x95c240,0x7cdb14);
+    strcat((char *)DAT_0095c240_loop,(char *)&gp0xffffae24);
   }
   for (iVar1 = 0; iVar1 < 8; iVar1 = iVar1 + 1) {
-    ((code)FUN_00523e68)(0x95c220,0x7cdb14);
+    strcat((char *)DAT_0095c220_loop,(char *)&gp0xffffae24);
   }
   DAT_007ce714 = 0;
   DAT_007ce710 = 0;
@@ -2631,38 +2649,74 @@ void FUN_0045e7e0(void)
   return;
 }
 
+#pragma alias FUN_0045e7e0_camp FUN_0045e7e0
+extern void FUN_0045e7e0_camp(void);
+#pragma alias FUN_00109040_camp FUN_00109040
+extern void FUN_00109040_camp(int,int);
+#pragma alias FUN_00112370_camp FUN_00112370
+extern u32 FUN_00112370_camp(int);
+#pragma alias FUN_00111f30_camp FUN_00111f30
+extern u32 FUN_00111f30_camp(u32);
+#pragma alias FUN_00194b80_camp FUN_00194b80
+extern u32 FUN_00194b80_camp(int,int,int,int,int,u32);
+#pragma alias FUN_00195290_camp FUN_00195290
+extern u32 FUN_00195290_camp(u32);
+
+#pragma alias DAT_006b4e80_camp DAT_006b4e80
+extern u8 DAT_006b4e80_camp[];
+#pragma alias DAT_006b4e70_camp DAT_006b4e70
+extern u8 DAT_006b4e70_camp[];
+#pragma alias DAT_00960184_camp DAT_00960184
+extern u32 (*DAT_00960184_camp[])(int,int,int);
+#pragma alias FUN_0045e3e0_camp FUN_0045e3e0
+extern u8 FUN_0045e3e0_camp[];
+#pragma alias FUN_0045e7b0_camp FUN_0045e7b0
+extern u8 FUN_0045e7b0_camp[];
+
 // FUN_0045E8C0 NONMATCHING
 
-u32 FUN_0045e8c0(u64 param_1)
+u32 FUN_0045e8c0(int param_1)
 
 {
   u32 *puVar1;
   u32 uVar2;
-  long lVar3;
+  u32 lVar3;
   
-  puVar1 = *(u32 **)((int)param_1 + 0x3c);
+  puVar1 = *(u32 **)(param_1 + 0x3c);
   switch(*puVar1) {
   case 0:
-    ((code)FUN_0045e7e0)();
+    FUN_0045e7e0_camp();
     *puVar1 = 1;
-    ((code)FUN_00109040)(0x4f,0x1e);
+    FUN_00109040_camp(0x4f,0x1e);
     break;
   case 1:
-    uVar2 = ((code)FUN_00112370)(0x6b4e80);
+    uVar2 = FUN_00112370_camp((int)DAT_006b4e80_camp);
     puVar1[2] = uVar2;
     *puVar1 = 2;
     break;
   case 2:
-    lVar3 = ((code)FUN_00111f30)(puVar1[2]);
+    lVar3 = FUN_00111f30_camp(puVar1[2]);
     if (lVar3 == 1) {
       DAT_007ce718 = puVar1[2];
-      lVar3 = (*DAT_00960184)(1,0x1c68,0x40000);
+      lVar3 = DAT_00960184_camp[0](1,0x1c68,0x40000);
       if (lVar3 == 0) {
         uVar2 = 0;
       }
       else {
-        ((code)FUN_00521408)(lVar3,0,0x1c68);
-        uVar2 = ((code)FUN_00194b80)(param_1,0x106f,0x6b4e70,0x45e3e0,0x45e7b0,lVar3);
+        memset((void *)lVar3,0,0x1c68);
+        {
+          int arg0;
+          int arg1;
+          int arg2;
+          int arg3;
+          int arg4;
+          arg0 = param_1;
+          arg1 = 0x106f;
+          arg2 = (int)DAT_006b4e70_camp;
+          arg3 = (int)FUN_0045e3e0_camp;
+          arg4 = (int)FUN_0045e7b0_camp;
+          uVar2 = FUN_00194b80_camp(arg0,arg1,arg2,arg3,arg4,lVar3);
+        }
       }
       puVar1[4] = uVar2;
       *puVar1 = 3;
@@ -2673,8 +2727,8 @@ u32 FUN_0045e8c0(u64 param_1)
     *puVar1 = 5;
     break;
   case 5:
-    lVar3 = ((code)FUN_00195290)(puVar1[4]);
-    if ((lVar3 == 3) || (lVar3 = ((code)FUN_00195290)(puVar1[4]), lVar3 == 0)) {
+    lVar3 = FUN_00195290_camp(puVar1[4]);
+    if ((lVar3 == 3) || (lVar3 = FUN_00195290_camp(puVar1[4]), lVar3 == 0)) {
       puVar1[4] = 0;
       *puVar1 = 6;
     }
