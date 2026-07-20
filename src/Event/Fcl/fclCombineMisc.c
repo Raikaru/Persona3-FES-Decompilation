@@ -25,6 +25,12 @@ extern s8 datGetSocialLinkLevel(int);
 extern u8 (*gp0xffffb730)[1];
 extern int datSocialLinkLevelIsNotZero(int);
 /* FUSION_PROTOS */
+#pragma alias memcpy_003d6e60 memcpy
+extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
+#pragma alias datPersonaFindSkillIdx_003d6e60 datPersonaFindSkillIdx
+extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
+#pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
+extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
 u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4);
 #pragma alias FUN_003d5510_i FUN_003d5510
 extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
@@ -40,7 +46,7 @@ u32 FUN_003d6740(void *param_1,void *param_2,void *param_3,void *param_4);
 char FUN_003d6910(void *param_1,int param_2,int *param_3);
 char FUN_003d6ae0(void *param_1,int param_2,int *param_3);
 u32 FUN_003d6c90(int param_1);
-u64 FUN_003d6e60(int param_1,int param_2);
+s32 FUN_003d6e60(int param_1,int param_2);
 u32 FUN_003d6f80(long param_1,long param_2,void *param_3);
 u32 FUN_003d71d0(long param_1,long param_2,void *param_3);
 u64 FUN_003d72f0(u16 *param_1);
@@ -1467,86 +1473,56 @@ u32 FUN_003d6c90(int param_1)
   return 0;
 
 }
-
 // FUN_003D6E60 NONMATCHING
-
-
-u64 FUN_003d6e60(int param_1,int param_2)
-
-
-
+s32 FUN_003d6e60(s32 param_1,s32 param_2)
 {
+  u8 sp50[0x34];
+  s32 temp_2;
+  s32 var_16;
+  s32 var_5;
+  u16 temp_19;
+  u16 temp_3;
+  u8 *temp_4;
 
-  short sVar1;
-
-  long lVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  u8 auStack_40 [12];
-
-  short asStack_34 [26];
-
-  
-
-  memcpy(auStack_40,param_1 + 4,0x34);
-
-  iVar4 = 0;
-
-  do {
-
-    if (7 < iVar4) {
-
-      for (iVar4 = 0; iVar4 < 8; iVar4 = iVar4 + 1) {
-
-        iVar3 = param_1 + iVar4 * 2;
-
-        if (*(short *)(iVar3 + 0x10) == asStack_34[iVar4]) {
-
-          *(u16 *)(iVar3 + 0x3e) = 0;
-
-        }
-
-        else {
-
-          *(short *)(iVar3 + 0x3e) = *(short *)(iVar3 + 0x10);
-
-        }
-
-      }
-
+  memcpy_003d6e60(sp50,(void *)(param_1 + 4),0x34);
+  var_16 = 0;
+  goto outer_check;
+outer_body:
+  temp_2 = var_16 * 2;
+  temp_19 = *(u16 *)(param_2 + temp_2 + 0x3e);
+  if (temp_19 != 0) {
+    if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
       return 0;
-
     }
-
-    sVar1 = *(short *)(param_2 + iVar4 * 2 + 0x3e);
-
-    if (sVar1 != 0) {
-
-      lVar2 = datPersonaCountValidSkills(param_1 + 4);
-
-      if (7 < lVar2) {
-
-        return 0;
-
-      }
-
-      lVar2 = datPersonaFindSkillIdx(param_1 + 4,sVar1);
-
-      if (lVar2 == -1) {
-
-        datPersonaSetSkill(param_1 + 4,sVar1);
-
-      }
-
+    if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
+      datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
     }
-
-    iVar4 = iVar4 + 1;
-
-  } while( 1 );
-
+  }
+outer_increment:
+  var_16 += 1;
+outer_check:
+  if (var_16 < 8) {
+    goto outer_body;
+  }
+  var_5 = 0;
+  goto inner_check;
+inner_body:
+  temp_2 = var_5 * 2;
+  temp_4 = (u8 *)(param_1 + temp_2);
+  temp_3 = *(u16 *)(temp_4 + 0x10);
+  if (temp_3 != *(u16 *)(sp50 + temp_2 + 0xc)) {
+    *(u16 *)(temp_4 + 0x3e) = temp_3;
+  }
+  else {
+    *(u16 *)(temp_4 + 0x3e) = 0U;
+  }
+inner_increment:
+  var_5 += 1;
+inner_check:
+  if (var_5 < 8) {
+    goto inner_body;
+  }
+  return 0;
 }
 
 // FUN_003D6F80 NONMATCHING
