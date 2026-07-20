@@ -38,6 +38,8 @@ extern FilterQuad sFilterGrid[FLDFILTER_GRID_HEIGHT][FLDFILTER_GRID_WIDTH];
 extern u32 gp0xffff95d8;
 #define FLDFILTER_ALPHA gp0xffff95d8
 
+extern const char D_00683A60[];
+extern const char D_00683A78[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern u32 D_00960184[];
@@ -432,7 +434,11 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     f32 dot;
 
     work = (FldFilterCameraWork*)cameraTask->workData;
-    if (work->playerResrc == NULL || work->state != 0)
+    if (work->playerResrc == NULL)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    if (work->state != 0)
     {
         return KWLNTASK_CONTINUE;
     }
@@ -574,6 +580,10 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 }
             }
             break;
+        case 1:
+        case 4:
+        default:
+            break;
     }
 
     K_Draw_SetCylinderDrawEnabled(cameraTask->child, (work->flags & 0x80000000) != 0);
@@ -606,9 +616,10 @@ void FUN_001d59e0(KwlnTask* cameraTask)
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
-    FldFilterCameraWork* work;
     KwlnTask* task;
-    RwFrame* mainFrame;
+    FldFilterCameraWork* work;
+    RwFrame** slot1;
+    RwFrame** slot0;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -617,28 +628,29 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
     }
     task = kwlnTaskCreateWithAutoPriority(parentTask,
                                           10,
-                                          (const char*)0x00683a60,
+                                          D_00683A60,
                                           (KwlnTaskUpdateFunc)FUN_001d5220,
                                           (KwlnTaskDestroyFunc)FUN_001d59e0,
                                           work);
-    work->frame = func_004caf10();
-    if (work->frame == NULL)
+    slot1 = &work->frame;
+    *slot1 = func_004caf10();
+    if (*slot1 == NULL)
     {
         kwlnTaskDestroyWithHierarchy(task);
         return NULL;
     }
-    func_004cb930(work->frame);
-    mainFrame = kwlnGetMainCamera()->object.object.parent;
-    work->parentFrame = mainFrame->object.parent;
-    if (work->parentFrame != NULL)
+    func_004cb930(*slot1);
+    slot0 = &work->parentFrame;
+    *slot0 = ((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent;
+    if (*slot0 != NULL)
     {
-        func_004cb590(mainFrame);
-        func_004cb420(work->parentFrame, work->frame);
-        func_004cb420(work->frame, mainFrame);
+        func_004cb590(kwlnGetMainCamera()->object.object.parent);
+        func_004cb420(*slot0, work->frame);
+        func_004cb420(*slot1, kwlnGetMainCamera()->object.object.parent);
     }
     else
     {
-        K_Assert((const char*)0x00683a78, 0x1b4);
+        K_Assert(D_00683A78, 0x1b4);
     }
     K_Draw_CreateCylinderTask(task);
     return task;
