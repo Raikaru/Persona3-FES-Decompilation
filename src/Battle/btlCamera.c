@@ -10202,7 +10202,7 @@ void FUN_002a4530(float *param_1,float *param_2,float *param_3,float *param_4)
   return;
 }
 
-// FUN_002A4A70 NONMATCHING
+// FUN_002A4A70
 
 
 void FUN_002a4a70(void)
@@ -10239,7 +10239,7 @@ void FUN_002a4a70(void)
   *(u16 *)(iGpffffb6fc + 0xf0) = 0;
   *(u16 *)(iGpffffb6fc + 0x10a) = 0;
   for (uVar4 = 0; (u16)uVar4 < 3; uVar4 = (u16)(uVar4 + 1)) {
-    idx = (u16)uVar4;
+    idx = uVar4 & 0xffff;
     *(u16 *)(iGpffffb6fc + idx * 2 + 0x104) = 0;
   }
   *(u32 *)(iGpffffb6fc + 0xf4) = *(u32 *)(iGpffffb6fc + 0xf4) | 2;
