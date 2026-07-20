@@ -755,7 +755,7 @@ static void* hmallocCreateTaskD(void)
     return task;
 }
 
-// FUN_00192B50 NONMATCHING
+// FUN_00192B50
 static s32 hmallocTaskUpdateE(void* task)
 {
     u32* work;
@@ -763,7 +763,8 @@ static s32 hmallocTaskUpdateE(void* task)
     f32 value0;
     f32 value1;
     const f32* image;
-    u32 indexValue;
+    u32* selected;
+    u64 packed;
     union
     {
         f32 f;
@@ -771,7 +772,6 @@ static s32 hmallocTaskUpdateE(void* task)
     } values[4];
     void* workMemory;
     void* created;
-    u64 combined;
 
     work = *(u32**)((u8*)task + 0x3c);
     state = work[0];
@@ -854,12 +854,13 @@ static s32 hmallocTaskUpdateE(void* task)
             }
             values[2].u = 0x40800000;
             values[3].u = 0x40800000;
-            combined = *(u64*)&values[2];
-            indexValue = values[work[1]].u;
-            __asm__ volatile ("" : "+r"(indexValue) : : "memory");
+            selected = (u32*)(uintptr_t)work[1];
+            __asm__ volatile ("sll %0, %0, 2\n\taddu %0, %0, $sp"
+                              : "+r"(selected) : : "memory");
+            packed = *(u64*)&values[2];
             __asm__ volatile ("addiu %0, $gp, -0x6c10"
-                              : "=r"(image) : "r"(indexValue) : "memory");
-            func_00104d10(combined, image, indexValue);
+                              : "=r"(image) : "r"(packed), "r"(selected) : "memory");
+            func_00104d10(packed, image, selected[12]);
             break;
         case 2:
             if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
