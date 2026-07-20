@@ -155,7 +155,7 @@ void FUN_00252340(void)
     float fVar11;
     float fVar12;
     float fVar13;
-    float afStack_30[5];
+    float afStack_30[8];
     float fStack_1c;
     u32 uStack_18;
     float fStack_14;
