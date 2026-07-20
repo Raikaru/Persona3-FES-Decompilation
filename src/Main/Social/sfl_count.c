@@ -17,6 +17,21 @@ extern void FUN_0021d890(void* work, const f32* values);
 extern void FUN_0021d8e0(void* work, const f32* values);
 extern void FUN_0021d950(void* work, const u8* color);
 
+typedef struct {
+    s32 sp80;
+    s32 sp84;
+    f32 sp88;
+    f32 sp8C;
+    f32 sp90;
+    f32 sp94;
+    s32 sp98;
+    f32 sp9C;
+    u8 padA0[0xc];
+    u8 spAC;
+    u8 spAD;
+    u8 spAE;
+    u8 spAF;
+} SflCountStack;
 static u32* sSflCount; // puGpffffb674
 
 // FUN_0025b4a0
@@ -84,133 +99,156 @@ void FUN_0025b4f0(void)
 }
 
 // FUN_0025B690 NONMATCHING
-
-
 void FUN_0025b690(void)
 {
     u32 uVar1;
+    u32 uVar2;
     u32* puVar2;
     s32 iVar3;
     s32 iVar4;
     s32 iVar5;
+    f32 fVar9;
+    f32 fVar8;
+    f32 fOne;
     f32 fVar6;
     f32 fVar7;
-    f32 fVar8;
-    f32 unaff_f24;
-    f32 fVar9;
-    f32 afStack_30[5];
-    f32 fStack_1c;
-    u32 uStack_18;
-    f32 fStack_14;
-    u8 uStack_4;
-    u8 uStack_3;
-    u8 uStack_2;
-    u8 uStack_1;
+    f32 temp_f0;
+    f32 temp_f0_2;
+    f32 temp_f0_3;
+    f32 temp_f1;
+    f32 var_f1;
+    s32 var_3;
+    s32 var_3_2;
+    s32 var_3_3;
+    s8 var_3_4;
+    s8 var_3_5;
+    u8* resource;
+    u8* temp_2_4;
+    SflCountStack stack;
+    u8* temp_2_5;
+    u8* temp_2_6;
+    u8* temp_2_7;
+    u8* temp_2_8;
+    u8* temp_2_9;
 
     K_ASSERT(sSflCount != NULL, 0x2b);
     puVar2 = sSflCount;
-    if ((~*sSflCount & 1) == 0) {
-        uVar1 = sSflCount[1];
-        sSflCount[1] = uVar1 + 1;
-        if (uVar1 + 1 == 0xb4) {
-            uVar1 = *sSflCount;
-            *sSflCount = uVar1 & 0xfffffffd;
-            *sSflCount = uVar1 & 0xfffffffc;
+    if ((~puVar2[0] & 1) == 0) {
+        uVar1 = puVar2[1] + 1;
+        puVar2[1] = uVar1;
+        if (uVar1 == 0xb4) {
+            uVar1 = puVar2[0] & ~2;
+            puVar2[0] = uVar1;
+            puVar2[0] = uVar1 & ~1;
         }
-        if ((*sSflCount & 2) == 0) {
-            fVar8 = 1.0;
-        } else {
-            uVar1 = sSflCount[2];
-            sSflCount[2] = uVar1 + 1;
-            if (uVar1 + 1 == 0x14) {
-                uVar1 = *sSflCount;
-                *sSflCount = uVar1 & 0xfffffffd;
-                *sSflCount = uVar1 & 0xfffffffc;
+        if (puVar2[0] & 2) {
+            uVar1 = puVar2[2] + 1;
+            puVar2[2] = uVar1;
+            if (uVar1 == 0x14) {
+                uVar1 = puVar2[0] & ~2;
+                puVar2[0] = uVar1;
+                puVar2[0] = uVar1 & ~1;
             }
-            fVar8 = 1.0 - (f32)(s32)sSflCount[2] / 20.0;
+            fOne = 1.0f;
+            fVar8 = fOne - ((f32)(s32)puVar2[2] / 20.0f);
+        } else {
+            fOne = 1.0f;
+            fVar8 = fOne;
         }
-
         for (iVar5 = 0; iVar5 < 3; iVar5++) {
-            iVar3 = (s32)FUN_0020e610(iVar5);
-            fVar6 = fGpffff83c4 * (f32)*(s32*)(iVar3 + 0xc);
-            fVar7 = fGpffff83c4 * (f32)*(s32*)(iVar3 + 0x10);
-            afStack_30[0] = 236.0;
-            afStack_30[1] = 196.0;
-            afStack_30[2] = fVar6 + 236.0;
-            afStack_30[3] = 196.0;
-            afStack_30[4] = fVar6 + 236.0;
-            fStack_1c = fVar7 + 196.0;
-            uStack_18 = 0x436c0000;
-            fStack_14 = fStack_1c;
+            resource = (u8*)FUN_0020e610(iVar5);
+            temp_f0 = fGpffff83c4;
+            fVar6 = temp_f0 * (f32)*(s32*)(resource + 0xc);
+            fVar7 = temp_f0 * (f32)*(s32*)(resource + 0x10);
+            stack.sp80 = 0x436c0000;
+            stack.sp84 = 0x43440000;
+            temp_f0_2 = 236.0f + fVar6;
+            stack.sp88 = temp_f0_2;
+            stack.sp8C = 196.0f;
+            stack.sp90 = temp_f0_2;
+            temp_f0_3 = 196.0f + fVar7;
+            stack.sp94 = temp_f0_3;
+            stack.sp9C = temp_f0_3;
             iVar3 = (2 - iVar5) * 0x1e + 0x5a;
-            fVar9 = unaff_f24;
-            if ((s32)puVar2[1] < iVar3) {
-                fVar9 = 1.0f;
+            uVar2 = puVar2[1];
+            if (uVar2 < iVar3) {
+                fVar9 = fOne;
             } else {
-                iVar4 = puVar2[1] - iVar3;
+                iVar4 = uVar2 - iVar3;
                 if (iVar4 < 0x14) {
-                    fVar9 = (f32)iVar4 / 20.0f + 0.5f;
+                    fVar9 = 0.5f + ((f32)iVar4 / 20.0f);
                 }
             }
-            for (iVar4 = 0; iVar4 < 4; iVar4++) {
-                afStack_30[iVar4 * 2] -= 319.0;
-                afStack_30[iVar4 * 2 + 1] -= 279.0;
+            var_3 = 0;
+            while (var_3 < 4) {
+                temp_2_4 = (u8*)&stack + var_3 * 8;
+                temp_2_5 = temp_2_4 + 4;
+                *(f32*)temp_2_4 = *(f32*)temp_2_4 - (f32)0x13f;
+                *(f32*)temp_2_5 = *(f32*)temp_2_5 - (f32)0x117;
+                var_3 += 1;
             }
-            for (iVar4 = 0; iVar4 < 4; iVar4++) {
-                afStack_30[iVar4 * 2] *= fVar9;
-                afStack_30[iVar4 * 2 + 1] *= fVar9;
+            var_3_2 = 0;
+            while (var_3_2 < 4) {
+                temp_2_6 = (u8*)&stack + var_3_2 * 8;
+                temp_2_7 = temp_2_6 + 4;
+                *(f32*)temp_2_6 = *(f32*)temp_2_6 * fVar9;
+                *(f32*)temp_2_7 = *(f32*)temp_2_7 * fVar9;
+                var_3_2 += 1;
             }
-            for (iVar4 = 0; iVar4 < 4; iVar4++) {
-                afStack_30[iVar4 * 2] += 319.0;
-                afStack_30[iVar4 * 2 + 1] += 279.0;
+            var_3_3 = 0;
+            while (var_3_3 < 4) {
+                temp_2_8 = (u8*)&stack + var_3_3 * 8;
+                temp_2_9 = temp_2_8 + 4;
+                *(f32*)temp_2_8 = *(f32*)temp_2_8 + (f32)0x13f;
+                *(f32*)temp_2_9 = *(f32*)temp_2_9 + (f32)0x117;
+                var_3_3 += 1;
             }
-            FUN_0021d890(puVar2 + iVar5 * 0x40 + 4, afStack_30);
-            afStack_30[0] = 236.0;
-            afStack_30[1] = 196.0;
-            afStack_30[2] = fVar6;
-            afStack_30[3] = fVar7;
-            FUN_0021d8e0(puVar2 + iVar5 * 0x40 + 0xc4, afStack_30);
-            if ((s32)puVar2[1] < iVar3) {
-                fVar6 = 0.0;
+            FUN_0021d890(puVar2 + iVar5 * 0x40 + 4, (f32*)&stack.sp80);
+            stack.sp80 = 0x436c0000;
+            stack.sp84 = 0x43440000;
+            stack.sp88 = fVar6;
+            stack.sp8C = fVar7;
+            FUN_0021d8e0(puVar2 + iVar5 * 0x40 + 0xc4, (f32*)&stack.sp80);
+            uVar2 = puVar2[1];
+            if (uVar2 < iVar3) {
+                var_f1 = 0.0f;
             } else {
-                iVar3 = puVar2[1] - iVar3;
+                iVar3 = uVar2 - iVar3;
                 if (iVar3 == 0) {
                     FUN_0010a4e0(1, 1, 6, 5);
                 }
-                if (iVar3 < 10) {
-                    fVar6 = (f32)iVar3 / 10.0;
+                if (iVar3 < 0xa) {
+                    var_f1 = (f32)iVar3 / 10.0f;
+                } else if (iVar3 < 0xf) {
+                    var_f1 = fOne;
+                } else if (iVar3 < 0x14) {
+                    var_f1 = 1.0f - ((f32)(iVar3 - 0xf) / 5.0f);
                 } else {
-                    fVar6 = 1.0;
-                    if (iVar3 > 0xe) {
-                        if (iVar3 < 0x14) {
-                            fVar6 = 1.0 - (f32)(iVar3 - 0xf) / 5.0;
-                        } else {
-                            fVar6 = 0.0;
-                        }
-                    }
+                    var_f1 = 0.0f;
                 }
             }
-            uStack_4 = 0xff;
-            uStack_3 = 0xff;
-            uStack_2 = 0xff;
-            fVar7 = fVar6 * 255.0 * fVar8;
-            fVar6 = fVar7 * 0.25;
-            if (fVar6 < 2.1474836e+09) {
-                uStack_1 = (u8)(s32)fVar6;
+            stack.spAC = 0xff;
+            stack.spAD = 0xff;
+            stack.spAE = 0xff;
+            fVar7 = 255.0f * var_f1 * fVar8;
+            temp_f1 = 0.25f * fVar7;
+            if (!(temp_f1 >= 2.1474836e9f)) {
+                var_3_4 = 0x4f000000 & 0xff;
             } else {
-                uStack_1 = (u8)(s32)(fVar6 - 2.1474836e+09);
+                var_3_4 = ((s32)(temp_f1 - 2.1474836e9f) | 0x80000000) & 0xff;
             }
-            FUN_0021d950(puVar2 + iVar5 * 0x40 + 4, &uStack_4);
-            uStack_4 = 0xff;
-            uStack_3 = 0xff;
-            uStack_2 = 0xff;
-            if (fVar7 < 2.1474836e+09) {
-                uStack_1 = (u8)(s32)fVar7;
+            stack.spAF = var_3_4;
+            FUN_0021d950(puVar2 + iVar5 * 0x40 + 4, &stack.spAC);
+            stack.spAC = 0xff;
+            stack.spAD = 0xff;
+            stack.spAE = 0xff;
+            if (!(fVar7 >= 2.1474836e9f)) {
+                var_3_5 = 0x4f000000 & 0xff;
             } else {
-                uStack_1 = (u8)(s32)(fVar7 - 2.1474836e+09);
+                var_3_5 = ((s32)(fVar7 - 2.1474836e9f) | 0x80000000) & 0xff;
             }
-            FUN_0021d950(puVar2 + iVar5 * 0x40 + 0xc4, &uStack_4);
-            unaff_f24 = fVar9;
+            stack.spAF = var_3_5;
+            FUN_0021d950(puVar2 + iVar5 * 0x40 + 0xc4, &stack.spAC);
         }
     }
 }
