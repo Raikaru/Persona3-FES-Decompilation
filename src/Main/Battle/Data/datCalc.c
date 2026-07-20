@@ -422,41 +422,36 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
             weapon = func_00170d60((s16)weaponId);
             category = weapon->category;
 
-            if (category == 0x8000 || category == 0x80)
+            switch (category)
             {
-                return WEAPON_TYPE_KNIFE;
+                case 0x1:
+                case 0x100:
+                    return WEAPON_TYPE_2H_SWORD;
+                case 0x2:
+                case 0x200:
+                    return WEAPON_TYPE_1H_SWORD;
+                case 0x4:
+                case 0x400:
+                    return WEAPON_TYPE_BOW;
+                case 0x8:
+                case 0x800:
+                    return WEAPON_TYPE_SPEAR;
+                case 0x10:
+                case 0x1000:
+                    return WEAPON_TYPE_AXE;
+                case 0x20:
+                case 0x2000:
+                    return WEAPON_TYPE_FIST;
+                case 0x40:
+                case 0x4000:
+                    return WEAPON_TYPE_GUN;
+                case 0x80:
+                case 0x8000:
+                    return WEAPON_TYPE_KNIFE;
+                default:
+                    K_ASSERT(false, 4237);
+                    return WEAPON_TYPE_1H_SWORD;
             }
-            if (category == 0x4000 || category == 0x40)
-            {
-                return WEAPON_TYPE_GUN;
-            }
-            if (category == 0x2000 || category == 0x20)
-            {
-                return WEAPON_TYPE_FIST;
-            }
-            if (category == 0x1000 || category == 0x10)
-            {
-                return WEAPON_TYPE_AXE;
-            }
-            if (category == 0x800 || category == 0x8)
-            {
-                return WEAPON_TYPE_SPEAR;
-            }
-            if (category == 0x400 || category == 0x4)
-            {
-                return WEAPON_TYPE_BOW;
-            }
-            if (category == 0x200 || category == 0x2)
-            {
-                return WEAPON_TYPE_1H_SWORD;
-            }
-            if (category == 0x100 || category == 0x1)
-            {
-                return WEAPON_TYPE_2H_SWORD;
-            }
-
-            K_ASSERT(false, 4237);
-            return WEAPON_TYPE_1H_SWORD;
         case PC_YUKARI:
             return WEAPON_TYPE_BOW;
         case PC_AIGIS:
