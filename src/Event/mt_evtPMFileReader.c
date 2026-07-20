@@ -271,7 +271,7 @@ void FUN_00397d60(void)
 
   iVar1 = (int)uVar2;
 
-  if (*(u16 *)(iVar1 + 0x18) != 0) {
+  if (*(u16 *)(iVar1 + 0x18) > 0) {
 
     FUN_003951a0();
 
