@@ -3925,10 +3925,9 @@ KwlnTask* func_00117490(KwlnTask* parent, void* blob)
     return task;
 }
 
-// FUN_001191C0 NONMATCHING
+// FUN_001191C0
 void func_001191c0(KwlnTask* task)
 {
-    s32 i;
     MaestroPerEffectWork* work;
     void** entry;
 
@@ -3938,22 +3937,30 @@ void func_001191c0(KwlnTask* task)
         H_Cdvd_CacheRemove(work->archiveCacheRequest);
     }
     func_001124b0(work->blob);
-    for (i = 0; i < 9; i++)
     {
-        entry = (void**)&work->cdvd[i];
-        if (work->cdvd[i] != NULL)
+        s32 i;
+
+        for (i = 0; i < 9; i++)
         {
-            H_Cdvd_Destroy(work->cdvd[i]);
-            *entry = NULL;
+            entry = (void**)&work->cdvd[i];
+            if (work->cdvd[i] != NULL)
+            {
+                H_Cdvd_Destroy(work->cdvd[i]);
+                *entry = NULL;
+            }
         }
     }
-    for (i = 0; i < 6; i++)
     {
-        entry = &work->loadedResources[i];
-        if (work->loadedResources[i] != NULL)
+        s32 i;
+
+        for (i = 0; i < 6; i++)
         {
-            func_004d0f00(work->loadedResources[i]);
-            *entry = NULL;
+            entry = &work->loadedResources[i];
+            if (work->loadedResources[i] != NULL)
+            {
+                func_004d0f00(work->loadedResources[i]);
+                *entry = NULL;
+            }
         }
     }
     MAESTRO_FREE(work);
