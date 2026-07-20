@@ -2637,42 +2637,46 @@ void btlActionUpdateStateRoundUpMes(BtlAction* action)
     }
 }
 
-// FUN_002984e0 NONMATCHING
+// FUN_002984e0
 void btlActionInitStateRoundUp(BtlAction* action)
 {
     u16 i;
-    u32 allInactive;
 
     FUN_002d15a0(&action->target);
     action->target.commandId = 2;
-    action->target.specificId = ACTION_U16(gBtl, 0xb98 + 0x13f);
+    action->target.specificId = ACTION_U16(gBtl, 0xb98) + 0x13f;
     FUN_002bff60(action, (BtlTarget*)action->unkData3, action->target.specificId, 0);
     i = 0;
     while (i < ACTION_U16(action, 0xc0))
     {
-        action->target.targetedActions[i] = *(BtlAction**)&action->unkData3[i * 4];
+        *(BtlAction**)((int)action + i * 4 + 0x38) = *(BtlAction**)((int)action + i * 4 + 0x88);
         i++;
     }
     action->target.targetedCount = ACTION_U16(action, 0xc0);
     FUN_002d6620(action);
-    allInactive = 1;
-    i = 0;
-    while (i < action->target.targetedCount)
     {
-        if (ACTION_U32(action->target.targetedActions[i], 0xd0) != 0)
+        u32 allInactive = 1;
+        u16 j = 0;
+        int count = action->target.targetedCount;
+
+        while (j < count)
         {
-            allInactive = 0;
-            break;
+            BtlAction* target = *((BtlAction**)action + j + 0xe);
+            if (ACTION_U32(target, 0xd0) != 0)
+            {
+                allInactive = 0;
+                break;
+            }
+            j++;
         }
-        i++;
+        if (allInactive != 0)
+        {
+            action->target.specificId = ACTION_U16(gBtl, 0xb98) + 0x14b;
+            ACTION_U32(action, 0x498) = 1;
+            return;
+        }
+        ACTION_U32(action, 0x498) = 0;
     }
-    if (allInactive != 0)
-    {
-        action->target.specificId = ACTION_U16(gBtl, 0xb98 + 0x14b);
-        action->unk_4ac = 1;
-        return;
-    }
-    action->unk_4ac = 0;
 }
 // FUN_00298610 NONMATCHING
 void btlActionUpdateStateRoundUp(BtlAction* action)
