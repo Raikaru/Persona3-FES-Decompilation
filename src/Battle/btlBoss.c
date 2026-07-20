@@ -1667,43 +1667,155 @@ BtlUnitAnimBounds* func_002fc520(BtlUnit* unit)
 // FUN_002fc5d0 NONMATCHING
 f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 animation)
 {
+    s32 temp_2;
+    s32 temp_3;
     u16 charId;
-    f32 base;
 
-    if ((gBtl->flags & 0x200000) == 0 || target->genus != 1)
+    if ((gBtl->flags & 0x200000) == 0)
     {
         return -1.0f;
     }
-    base = target->sphereRadius * target->scale;
+    if (target->genus != 1)
+    {
+        return -1.0f;
+    }
+    if (unit->genus == 2)
+    {
+        if (target->charId != 0xf1)
+        {
+            goto block_11;
+        }
+        temp_2 = animation & 0xffff;
+        if (temp_2 != 2 && temp_2 != 0)
+        {
+            return -1.0f;
+        }
+        return 500.0f + target->sphereRadius * target->scale;
+    }
+block_11:
+    temp_3 = animation & 0xffff;
+    if (temp_3 != 0xb && temp_3 != 6 && temp_3 != 5 && temp_3 != 4)
+    {
+        return -1.0f;
+    }
     charId = target->charId;
-    if (unit->genus == 2 && charId == 0xf1)
+    if (charId == 0xf1)
     {
-        return (animation == 2 || animation == 0) ? base + 500.0f : -1.0f;
+        return 950.0f + target->sphereRadius * target->scale;
     }
-    if (animation != 0xb && animation != 6 && animation != 5 && animation != 4)
+    if (charId == 0x1af)
     {
         return -1.0f;
     }
-    switch (charId)
+    if (charId == 0x126)
     {
-        case 0xf1: return base + 550.0f;
-        case 0x128: case 0x125: case 0x124: case 0x123: case 0x122:
-        case 0x121: case 0x120: case 0x11f: case 0x11e: case 0x11d:
-        case 0x11c: case 0x11b: case 0x11a: case 0x111: return base + 375.0f;
-        case 0x110: case 0x10f: return -1.0f;
-        case 0x10d: return base + 100.0f;
-        case 0x10c: case 0x10b: return -1.0f;
-        case 0x10a: return base + 200.0f;
-        case 0x109: return base;
-        case 0x108: return -1.0f;
-        case 0x107: return base + 125.0f;
-        case 0x115: return base + 50.0f;
-        case 0x106: return base + 175.0f;
-        case 0x105: case 0x104: return base + 150.0f;
-        case 0x103: case 0x102: case 0x101: return base + 100.0f;
-        case 0x100: return base + 150.0f;
-        default: return -1.0f;
+        return -1.0f;
     }
+    if (charId == 0x112)
+    {
+        return -1.0f;
+    }
+    if (charId == 0x128)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x125)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x124)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x123)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x122)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x121)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x120)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11f)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11e)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11d)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11c)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11b)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x11a)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x111)
+    {
+        return 375.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x110 || charId == 0x10f || charId == 0x10c || charId == 0x10b)
+    {
+        return -1.0f;
+    }
+    if (charId == 0x10d)
+    {
+        return 100.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x10a)
+    {
+        return 200.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x109)
+    {
+        return target->sphereRadius * target->scale;
+    }
+    if (charId == 0x108)
+    {
+        return -1.0f;
+    }
+    if (charId == 0x107)
+    {
+        return 125.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x115)
+    {
+        return 50.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x106)
+    {
+        return 175.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x105 || charId == 0x104)
+    {
+        return 150.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x103 || charId == 0x102 || charId == 0x101)
+    {
+        return 100.0f + target->sphereRadius * target->scale;
+    }
+    if (charId == 0x100)
+    {
+        return 150.0f + target->sphereRadius * target->scale;
+    }
+    return -1.0f;
 }
 
 /* Recovered battle-misc harvest: 0x002FCAA0-0x002FED10 */
