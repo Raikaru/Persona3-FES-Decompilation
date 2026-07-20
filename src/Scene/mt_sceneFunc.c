@@ -328,7 +328,9 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bdba0(...) ((u32 (*)(...))FUN_003bdba0)(__VA_ARGS__)
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)
 
-// FUN_003bccb0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_003bccb0
 void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
 {
     s32 i;
@@ -358,6 +360,7 @@ void* MT_SceneFunc_UpdateSceneMngTask(KwlnTask* sceneMngTask)
 
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_003bcd80
 void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask)
