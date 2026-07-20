@@ -558,7 +558,9 @@ extern u32 FUN_0030B5A0();
 extern u32 FUN_0030b5a0();
 extern u32 FUN_0030b5e0();
 extern u32 FUN_0030B5E0();
-extern void FUN_00311190(u32);
+extern u32 FUN_00311190(int);
+#pragma alias FUN_00311190_typed FUN_00311190
+extern void FUN_00311190_typed(u32);
 extern u32 FUN_003111f0();
 extern u32 FUN_00311250();
 extern void FUN_0035f080(float);
@@ -6879,7 +6881,7 @@ void FUN_0030cf00(void)
 
 
 
-// FUN_0030d000 NONMATCHING
+// FUN_0030d000
 void FUN_0030d000(void)
 
 {
@@ -6918,14 +6920,14 @@ nonpositive:
   fVar2 = 1.0f;
 done:
   #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
 
 
 
-// FUN_0030d0e0 NONMATCHING
+// FUN_0030d0e0
 void FUN_0030d0e0(void)
 {
   float fVar1;
@@ -6959,7 +6961,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -6967,7 +6969,7 @@ done:
 
 
 
-// FUN_0030d1c0 NONMATCHING
+// FUN_0030d1c0
 void FUN_0030d1c0(void)
 
 {
@@ -7002,7 +7004,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7010,7 +7012,7 @@ done:
 
 
 
-// FUN_0030d2a0 NONMATCHING
+// FUN_0030d2a0
 void FUN_0030d2a0(void)
 
 {
@@ -7045,7 +7047,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7053,7 +7055,7 @@ done:
 
 
 
-// FUN_0030d380 NONMATCHING
+// FUN_0030d380
 void FUN_0030d380(void)
 
 {
@@ -7088,7 +7090,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7428,7 +7430,7 @@ void FUN_0030e180(void)
 
 
 
-// FUN_0030e280 NONMATCHING
+// FUN_0030e280
 void FUN_0030e280(void)
 
 {
@@ -7463,7 +7465,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7471,7 +7473,7 @@ done:
 
 
 
-// FUN_0030e360 NONMATCHING
+// FUN_0030e360
 void FUN_0030e360(void)
 
 {
@@ -7506,7 +7508,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7514,7 +7516,7 @@ done:
 
 
 
-// FUN_0030e440 NONMATCHING
+// FUN_0030e440
 void FUN_0030e440(void)
 
 {
@@ -7549,7 +7551,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7557,7 +7559,7 @@ done:
 
 
 
-// FUN_0030e520 NONMATCHING
+// FUN_0030e520
 void FUN_0030e520(void)
 
 {
@@ -7592,7 +7594,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
@@ -7600,7 +7602,7 @@ done:
 
 
 
-// FUN_0030e600 NONMATCHING
+// FUN_0030e600
 void FUN_0030e600(void)
 
 {
@@ -7635,7 +7637,7 @@ nonpositive:
   fVar2 = 1.0f;
 done:
 #pragma pop
-  FUN_00311190((int)fVar2);
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
