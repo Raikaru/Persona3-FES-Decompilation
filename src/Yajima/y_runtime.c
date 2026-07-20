@@ -18922,10 +18922,10 @@ u32 FUN_0045a020(int param_1)
         puVar1[0x12] = 0x3f800000;
         *(u8 *)(puVar1 + 1) = 4;
       }
-      ((code)FUN_0045a490)();
+      FUN_0045a490();
       break;
     case 4:
-      ((code)FUN_0045a490)();
+      FUN_0045a490();
       ((code)FUN_0045ace0)();
       break;
     case 5:
@@ -18938,7 +18938,7 @@ u32 FUN_0045a020(int param_1)
         puVar1[0x12] = uGpffff82d4;
         *(u8 *)(puVar1 + 1) = 6;
       }
-      ((code)FUN_0045a490)();
+      FUN_0045a490();
       break;
     case 6:
       return 0xffffffff;
