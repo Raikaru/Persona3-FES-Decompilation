@@ -96,169 +96,216 @@ u8 K_Encount_001d77d0(u32 param_1, u16 flag, u32 areaId)
 // FUN_001d7300 NONMATCHING
 u32 K_Encount_001d7300(u32 param_1, u16 flag, u32 areaId)
 {
-    u16 result;
-    int encId;
-    int recOff;
-    int r;
-    int acc;
-    int tier;
-    int lo;
-    int hi;
-    int i;
-    int mapId;
-    u8* p;
+    s32 temp_16;
+    s32 temp_3;
+    s32 temp_3_3;
+    s32 temp_5;
+    s32 temp_5_2;
+    s32 var_18;
+    s32 var_19;
+    s32 var_20;
+    s32 var_5;
+    s32 var_7;
+    u16 var_17;
+    u16 var_21;
+    u32 temp_18;
+    u32 temp_6;
+    u32 temp_hi;
+    u32 var_17_2;
+    u8 temp_4_2;
+    u8* temp_3_2;
+    u8* temp_4;
 
-    result = 0xffff;
-    mapId = param_1 & 0xffff;
-    if ((0x14 <= mapId && mapId < 0x1d && flag == 0) ||
-        (0x28 <= mapId && mapId < 0x31 && flag == 0) ||
-        (0x33 <= mapId && mapId <= 0x3a) ||
-        (0x47 <= mapId && mapId < 0x4f))
+    var_21 = 0xffff;
+    temp_3 = param_1 & 0xffff;
+    if (((temp_3 >= 0x14) && (temp_3 < 0x1d) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x28) && (temp_3 < 0x31) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x33) && (temp_3 <= 0x3a)) ||
+        ((temp_3 >= 0x47) && (temp_3 < 0x4f)))
     {
-        encId = *(u16*)(DAT_007ce4b0 + (areaId & 0xffff) * 10);
+        var_17 = *(u16*)(DAT_007ce4b0 + (areaId & 0xffff) * 0xa);
+        goto block_15;
     }
-    else if (0x1f <= mapId && mapId < 0x28)
+    if ((temp_3 >= 0x1f) && (temp_3 < 0x28))
     {
-        encId = *(u16*)(DAT_007ce4b4 + mapId * 200 + (flag & 0xffff) * 10 - 0x1842);
+        var_17 = *(u16*)(DAT_007ce4b4 + temp_3 * 0xc8 + (flag & 0xffff) * 0xa -
+                         0x1842);
+        goto block_15;
     }
     else
     {
         return 0xffffffff;
     }
-    recOff = (encId & 0xffff) * 0x7c;
-    p = DAT_007ce4ac + recOff;
-    hi = p[0] + p[1] + p[2];
-    r = RpRandom() % hi;
-    p = DAT_007ce4ac + recOff;
-    if (r < (int)(u32)p[0])
-    {
-        tier = 1;
-        lo = 0;
-        hi = 0x14;
-    }
-    else if (r < (int)((u32)p[0] + (u32)p[1]))
-    {
-        tier = 2;
-        lo = 0x14;
-        hi = 0x19;
-    }
-    else
-    {
-        tier = 4;
-        lo = 0x19;
-        hi = 0x1e;
-    }
-    if (func_001c0040() == 3)
-    {
-        tier = 4;
-        lo = 0x19;
-        hi = 0x1e;
-    }
-    encId = 0;
-    p = DAT_007ce4ac + recOff;
-    for (i = lo; i < hi; i++)
-    {
-        if (*(u16*)(p + i * 4 + 4) != 0)
+block_15:
+        temp_16 = (var_17 & 0xffff) * 0x7c;
+        temp_4 = DAT_007ce4ac + temp_16;
+        temp_18 = temp_4[2] + (temp_4[0] + temp_4[1]);
+        temp_hi = RpRandom() % temp_18;
+        temp_5 = (s32)DAT_007ce4ac;
+        temp_4_2 = *(u8*)(temp_5 + temp_16);
+        if ((s32)temp_hi < (s32)temp_4_2)
         {
-            encId += *(u16*)(p + i * 4 + 6);
+            var_20 = 1;
+            var_19 = 0;
+            var_18 = 0x14;
         }
-    }
-    if (encId == 0)
-    {
-        return 0xffffffff;
-    }
-    r = RpRandom() % encId;
-    acc = 0;
-    p = DAT_007ce4ac + recOff;
-    for (; lo < hi; lo++)
-    {
-        acc += *(u16*)(p + lo * 4 + 6);
-        if (r < acc)
+        else if ((s32)temp_hi < (s32)(temp_4_2 +
+                                      *(u8*)(temp_5 + temp_16 + 1)))
         {
-            result = *(u16*)(p + lo * 4 + 4);
-            break;
+            var_20 = 2;
+            var_19 = 0x14;
+            var_18 = 0x19;
         }
+        else
+        {
+            var_20 = 4;
+            var_19 = 0x19;
+            var_18 = 0x1e;
+        }
+        if (func_001c0040() == 3)
+        {
+            var_20 = 4;
+            var_19 = 0x19;
+            var_18 = 0x1e;
+        }
+        var_17_2 = 0;
+        var_5 = var_19;
+loop_26:
+        if (var_5 < var_18)
+        {
+            temp_3_2 = DAT_007ce4ac + temp_16 + var_5 * 4;
+            if (*(u16*)(temp_3_2 + 4) != 0)
+            {
+                var_17_2 += *(u16*)(temp_3_2 + 6);
+            }
+            var_5 += 1;
+            goto loop_26;
+        }
+        if (var_17_2 == 0)
+        {
+            return 0xffffffff;
+        }
+        temp_6 = RpRandom() % var_17_2;
+        var_7 = 0;
+        temp_5_2 = (s32)DAT_007ce4ac;
+loop_33:
+        if (var_19 < var_18)
+        {
+            temp_3_3 = var_19 * 4;
+            var_7 += *(u16*)(temp_5_2 + temp_16 + temp_3_3 + 6);
+            if ((s32)temp_6 < var_7)
+            {
+                var_21 = *(u16*)(temp_3_3 + temp_16 + temp_5_2 + 4);
+            }
+            else
+            {
+                var_19 += 1;
+                goto loop_33;
+            }
+        }
+        return (var_20 << 0x10) | (var_21 & 0xffff);
     }
-    return tier << 0x10 | (result & 0xffff);
-}
 
 // FUN_001d78c0 NONMATCHING
 u16* K_Encount_001d78c0(u32 param_1, u16 flag, u32 areaId)
 {
-    u16 encId;
-    u8* recBase;
-    int mult;
-    int weightSum;
-    int r;
-    int acc;
-    int i;
-    int mapId;
-    u16* e;
+    s32 temp_3;
+    s32 var_16;
+    s32 var_18;
+    s32 var_4;
+    s32 var_4_2;
+    s32 var_6;
+    u16* temp_5;
+    u16* var_19;
+    u32 temp_3_3;
+    u32 var_17;
+    void* temp_3_2;
 
-    mapId = param_1 & 0xffff;
-    if ((0x14 <= mapId && mapId < 0x1d && flag == 0) ||
-        (0x28 <= mapId && mapId < 0x31 && flag == 0) ||
-        (0x33 <= mapId && mapId <= 0x3a) ||
-        (0x47 <= mapId && mapId < 0x4f))
+    var_19 = NULL;
+    temp_3 = param_1 & 0xffff;
+    if (((temp_3 >= 0x14) && (temp_3 < 0x1d) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x28) && (temp_3 < 0x31) && !(flag & 0xffff)) ||
+        ((temp_3 >= 0x33) && (temp_3 < 0x3b)) ||
+        ((temp_3 >= 0x47) && (temp_3 < 0x4f)))
     {
-        encId = *(u16*)(DAT_007ce4b0 + (areaId & 0xffff) * 10 + 6);
+        var_18 = (s32)(DAT_007ce4b8 +
+                       (*(u16*)(DAT_007ce4b0 + ((areaId & 0xffff) * 0xa) + 6) & 0xffff) *
+                           0xb4);
+        goto block_15;
     }
-    else if (0x1f <= mapId && mapId < 0x28)
+    if ((temp_3 >= 0x1f) && (temp_3 < 0x28))
     {
-        encId = *(u16*)(DAT_007ce4b4 + mapId * 200 + (flag & 0xffff) * 10 - 0x183c);
+        var_18 = (s32)(DAT_007ce4b8 +
+                       (*(u16*)(DAT_007ce4b4 + (temp_3 * 0xc8) +
+                                ((flag & 0xffff) * 0xa) - 0x183c) & 0xffff) *
+                           0xb4);
+        goto block_15;
     }
-    else
-    {
-        return NULL;
-    }
-    recBase = DAT_007ce4b8 + (encId & 0xffff) * 0xb4;
-    mult = 1;
+    return NULL;
+block_15:
+    var_16 = 1;
     if (func_001c0040() == 2)
     {
-        mult = 2;
+        var_16 = 2;
     }
-    weightSum = 0;
-    for (i = 0; i < 0xf; i++)
+    var_4 = 0;
+    var_17 = 0;
+loop_23:
+    if (var_4 < 0xf)
     {
-        e = (u16*)(recBase + i * 0xc);
-        if (e[1] != 0)
+        temp_3_2 = (u8*)var_18 + var_4 * 0xc;
+        if (*(u16*)((u8*)temp_3_2 + 2) != 0)
         {
-            if ((*(u8*)((int)e + 7) & 1) == 0)
+            if ((*(u8*)((u8*)temp_3_2 + 7) & 1) != 0)
             {
-                weightSum += e[0];
+                var_17 += var_16 * *(u16*)temp_3_2;
             }
             else
             {
-                weightSum += mult * e[0];
+                var_17 += *(u16*)temp_3_2;
             }
         }
+        var_4 += 1;
+        goto loop_23;
     }
-    K_ASSERT(weightSum != 0, 0x147);
-    r = RpRandom();
-    acc = 0;
-    for (i = 0;; i++)
+    if (var_17 == 0)
     {
-        if (0xe < i)
+        K_ASSERT(0, 0x147);
+    }
+    temp_3_3 = RpRandom() % var_17;
+    var_4_2 = 0;
+    var_6 = 0;
+loop_34:
+    if (var_4_2 < 0xf)
+    {
+        temp_5 = (u16*)((u8*)var_18 + var_4_2 * 0xc);
+        if (temp_5[1] != 0)
         {
-            return NULL;
-        }
-        e = (u16*)(recBase + i * 0xc);
-        if (e[1] != 0)
-        {
-            if ((*(u8*)((int)e + 7) & 1) == 0)
+            if ((((u8*)temp_5)[7] & 1) != 0)
             {
-                acc += e[0];
+                var_6 += var_16 * temp_5[0];
             }
             else
             {
-                acc += mult * e[0];
+                var_6 += temp_5[0];
             }
-            if (r % weightSum < acc)
+            if ((s32)temp_3_3 < var_6)
             {
-                return e;
+                var_19 = temp_5;
+            }
+            else
+            {
+                goto block_33;
             }
         }
+        else
+        {
+block_33:
+            var_4_2 += 1;
+            goto loop_34;
+        }
     }
+    return var_19;
 }
 typedef struct EncounterWork
 {
@@ -351,84 +398,129 @@ static void K_Encount_Face(FldUnit* unit, FldUnit* target)
 // FUN_001d7b70 NONMATCHING
 DatUnit* func_001d7b70(KwlnTask* task, s32 flatIndex)
 {
-    EncounterWork* work;
-    s32 index = 0;
-    u32 i;
+    s32 temp_3;
+    s32 temp_6;
+    s32 var_10;
+    s32 var_11;
+    s32 var_4;
+    s32 var_9;
+    s32 pcCount;
+    s32 ecCount;
+    void* temp_8;
+    void* ecBase;
 
-    if (task == NULL || task->workData == NULL || flatIndex < 0)
+    temp_8 = task->workData;
+    var_10 = 0;
+    var_4 = 0;
+    pcCount = *(s32*)((u8*)temp_8 + 0x10);
+    goto pc_check;
+pc_body:
+    if (flatIndex == var_10)
     {
-        return NULL;
+        return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + var_4 * 4 + 0x18) +
+                                      0x48))->unit;
     }
-    work = (EncounterWork*)task->workData;
-    for (i = 0; i < work->pcCount && i < 4; ++i)
+    var_10 += 1;
+    var_4 += 1;
+pc_check:
+    if (var_4 < pcCount)
     {
-        if (index++ == flatIndex)
-        {
-            return work->pc[i] != NULL && work->pc[i]->genusBase != NULL ?
-                       work->pc[i]->genusBase->unit : NULL;
-        }
+        goto pc_body;
     }
-    for (i = 0; i < work->ecCount && i < 4; ++i)
+    var_9 = 0;
+    ecCount = *(s32*)((u8*)temp_8 + 0x14);
+    goto ec_check;
+ec_body:
+    var_11 = 0;
+    temp_6 = var_9 * 4;
+    ecBase = (u8*)temp_8 + temp_6;
+    goto unit_check;
+unit_body:
+    temp_3 = var_11 * 0x3c;
+    if (((*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)ecBase + 0x28) + 0x48))->unit +
+         var_11)->id != 0)
     {
-        DatUnitGenusBase* genus = work->ec[i] != NULL ? work->ec[i]->genusBase : NULL;
-        u32 j;
-        if (genus == NULL || genus->unit == NULL)
+        if (flatIndex == var_10)
         {
-            continue;
+            return (*(DatUnitGenusBase**)((u8*)*(FldUnit**)((u8*)temp_8 + temp_6 +
+                                                           0x28) +
+                                          0x48))->unit + var_11;
         }
-        for (j = 0; j < 6; ++j)
-        {
-            if (genus->unit[j].id == 0)
-            {
-                continue;
-            }
-            if (index++ == flatIndex)
-            {
-                return &genus->unit[j];
-            }
-        }
+        var_10 += 1;
+        goto unit_next;
+    }
+unit_next:
+    var_11 += 1;
+unit_check:
+    if (var_11 < 6)
+    {
+        goto unit_body;
+    }
+    var_9 += 1;
+ec_check:
+    if (var_9 < ecCount)
+    {
+        goto ec_body;
     }
     return NULL;
 }
 
+
 // FUN_001d7c60 NONMATCHING
 FldUnit* func_001d7c60(KwlnTask* task, s32 flatIndex)
 {
-    EncounterWork* work;
-    s32 index = 0;
-    u32 i;
+    s32 temp_7;
+    s32 var_10;
+    s32 var_11;
+    s32 var_12;
+    s32 var_4;
+    void* temp_9;
 
-    if (task == NULL || task->workData == NULL || flatIndex < 0)
+    temp_9 = task->workData;
+    var_11 = 0;
+    var_4 = 0;
+    goto loop_4;
+pc_body:
+    if (flatIndex == var_11)
     {
-        return NULL;
+        return *(FldUnit**)((u8*)temp_9 + var_4 * 4 + 0x18);
     }
-    work = (EncounterWork*)task->workData;
-    for (i = 0; i < work->pcCount && i < 4; ++i)
+    var_11 += 1;
+    var_4 += 1;
+loop_4:
+    if (var_4 < *(s32*)((u8*)temp_9 + 0x10))
     {
-        if (index++ == flatIndex)
-        {
-            return work->pc[i];
-        }
+        goto pc_body;
     }
-    for (i = 0; i < work->ecCount && i < 4; ++i)
+    var_10 = 0;
+    goto loop_14;
+ec_body:
+    var_12 = 0;
+    temp_7 = var_10 * 4;
+    goto loop_12;
+unit_body:
+    if (((*(FldUnit**)((u8*)temp_9 + temp_7 + 0x28))->genusBase->unit +
+         var_12)->id != 0)
     {
-        DatUnitGenusBase* genus = work->ec[i] != NULL ? work->ec[i]->genusBase : NULL;
-        u32 j;
-        if (genus == NULL || genus->unit == NULL)
+        if (flatIndex == var_11)
         {
-            continue;
+            return *(FldUnit**)((u8*)temp_9 + temp_7 + 0x28);
         }
-        for (j = 0; j < 6; ++j)
-        {
-            if (genus->unit[j].id == 0)
-            {
-                continue;
-            }
-            if (index++ == flatIndex)
-            {
-                return work->ec[i];
-            }
-        }
+        var_11 += 1;
+        goto block_11;
+    }
+block_11:
+    var_12 += 1;
+loop_12:
+    if (var_12 < 6)
+    {
+        goto unit_body;
+    }
+    var_10 += 1;
+loop_14:
+    if (var_10 < *(s32*)((u8*)temp_9 + 0x14))
+    {
+        goto ec_body;
     }
     return NULL;
 }
