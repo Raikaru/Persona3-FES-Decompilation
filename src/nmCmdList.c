@@ -108,6 +108,8 @@ u32 FUN_003c7d50(void);
 u32 FUN_003c7d60(int param_1);
 void FUN_003c7d80(int param_1,u64 param_2);
 void FUN_003c7dd0(int param_1);
+#pragma alias FUN_003a3060_typed FUN_003a3060
+extern void FUN_003a3060_typed(s32 param_1);
 void FUN_003c7e20(u32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,u64 p7);
 u64  FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7,long param_8,u32 param_9);
 u64 FUN_003c8230(u32 *param_1,int param_2);
@@ -2471,17 +2473,8 @@ void FUN_003c7c90(long param_1)
 
 
 u32 FUN_003c7d50(void)
-
-
-
 {
-
-
-
-  asm {
-    .word 0x3c020096
-    .word 0x2442be90
-  }
+  return (u32)DAT_0095be90_ptr;
 }
 #define FUN_003c7d50(...) ((u32 (*)(...))FUN_003c7d50)(__VA_ARGS__)
 #undef FUN_003c7d60
@@ -2525,28 +2518,13 @@ void FUN_003c7d80(int param_1,u64 param_2)
 
 
 void FUN_003c7dd0(int param_1)
-
-
-
 {
-  asm {
-    .word 0x27bdffe0
-    .word 0xffbf0010
-    .word 0x7fb00000
-    .word 0x00042080
-    .word 0x3c03006a
-    .word 0x24633e50
-    .word 0x00648021
-    .word 0x8e040000
-    .word 0x04800005
-    .word 0x00000000
-    .word 0x0c0e8c18
-    .word 0x00000000
-    .word 0x2403ffff
-    .word 0xae030000
-    .word 0xdfbf0010
-    .word 0x7bb00000
-    .word 0x27bd0020
+  s32 value;
+
+  value = DAT_006a3e50_abs[param_1];
+  if (value >= 0) {
+    FUN_003a3060_typed(value);
+    DAT_006a3e50_abs[param_1] = -1;
   }
 }
 #define FUN_003c7dd0(...) ((void (*)(...))FUN_003c7dd0)(__VA_ARGS__)
