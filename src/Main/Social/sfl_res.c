@@ -165,27 +165,44 @@ void sflRes0020d820(void)
 {
     u32* work;
     s32 i;
+    s32 j;
+    u32 fileSize;
+    void* file;
+    void* copy;
 
-    sflResRequire();
+    K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
     if ((*work & 1) != 0) {
-        if ((work[1] & 2) == 0 && H_Cdvd_IsFileLoaded((void*)work[0x1a]) != 0) {
+        if (((~work[1]) & 2) == 0) {
+            goto first_check;
+        }
+        if (H_Cdvd_IsFileLoaded((void*)work[0x1a]) == 0)
+            goto first_clear;
             for (i = 0; i < 0xf; i++) {
                 switch (i) {
                 case 0:
-                    sflResLoadRaster(work, 0x1a, i, 5);
+                    work[5] = (u32)bpTexCreateTmxRaster(
+                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
                 case 1:
-                    sflResLoadRaster(work, 0x1a, i, 6);
+                    work[6] = (u32)bpTexCreateTmxRaster(
+                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
                 case 2:
-                    sflResLoadRaster(work, 0x1a, i, 7);
+                    work[7] = (u32)bpTexCreateTmxRaster(
+                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
-                case 3:
-                    sflResCopyFile(work, 0x1a, i, 0x16);
+                case 3: {
+                    void* caseCopy;
+                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    caseCopy = (*DAT_00960178)(fileSize, 0x40000);
+                    work[0x16] = (u32)caseCopy;
+                    memcpy((void*)work[0x16], file, fileSize);
                     break;
+                }
                 case 4:
-                    sflResLoadRaster(work, 0x1a, i, 8);
+                    work[8] = (u32)bpTexCreateTmxRaster(
+                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
                 case 5:
                 case 6:
@@ -193,22 +210,30 @@ void sflRes0020d820(void)
                 case 8:
                 case 9:
                 case 10:
-                    sflResLoadRaster(work, 0x1a, i, i + 5);
+                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    K_ASSERT(i - 5 >= 0, 0xa2);
+                    K_ASSERT(i - 5 < 6, 0xa3);
+                    work[i + 5] = (u32)bpTexCreateTmxRaster(file);
                     break;
-                case 11: {
-                    u32 fileSize;
-                    void* file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
-                    func_0021b4a0(file);
+                case 11:
+                    func_0021b4a0(H_Cdvd_ArchiveGetFile(
+                        (void*)work[0x1a], i, &fileSize));
                     break;
-                }
                 case 12:
-                    sflResLoadRaster(work, 0x1a, i, 9);
+                    work[9] = (u32)bpTexCreateTmxRaster(
+                        H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
                 case 13:
-                    sflResCopyFile(work, 0x1a, i, 0x1e);
+                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    copy = (*DAT_00960178)(fileSize, 0x40000);
+                    memcpy(copy, file, fileSize);
+                    work[0x1e] = (u32)copy;
                     break;
                 case 14:
-                    sflResCopyFile(work, 0x1a, i, 0x1f);
+                    file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
+                    copy = (*DAT_00960178)(fileSize, 0x40000);
+                    memcpy(copy, file, fileSize);
+                    work[0x1f] = (u32)copy;
                     break;
                 default:
                     K_ASSERT(0, 0xbb);
@@ -217,30 +242,53 @@ void sflRes0020d820(void)
             }
             H_Cdvd_Destroy((void*)work[0x1a]);
             work[1] |= 2;
-        }
+            goto first_clear;
+    first_check:
+        K_ASSERT((work[1] & 2) != 0, 0xc6);
+    first_clear:
         if ((work[1] & 2) != 0) {
             *work &= ~1u;
         }
     }
-    if ((*work & 2) != 0 && H_Cdvd_IsFileLoaded((void*)work[0x19]) != 0) {
-        sflRes0020e800(*(void**)((u8*)work[0x19] + 0x110));
-        H_Cdvd_Destroy((void*)work[0x19]);
-        work[1] |= 1;
-        *work &= ~2u;
+    if ((*work & 2) != 0) {
+        if (H_Cdvd_IsFileLoaded((void*)work[0x19]) != 0) {
+            K_ASSERT(((~work[1]) & 1) != 0, 0xd2);
+            sflRes0020e800(*(void**)((u8*)work[0x19] + 0x110));
+            H_Cdvd_Destroy((void*)work[0x19]);
+            work[1] |= 1;
+            *work &= ~2u;
+        }
     }
     if ((*work & 4) != 0) {
-        if ((work[1] & 4) == 0 && H_Cdvd_IsFileLoaded((void*)work[0x1b]) != 0) {
-            for (i = 0; i < 6; i++) {
-                sflResLoadRaster(work, 0x1b, i, i + 0x10);
-            }
-            H_Cdvd_Destroy((void*)work[0x1b]);
-            work[1] |= 4;
+        if (((~work[1]) & 4) == 0) {
+            goto four_check;
+        }
+        if (H_Cdvd_IsFileLoaded((void*)work[0x1b]) == 0) {
+            goto four_done;
+        }
+        for (j = 0; j < 6; j++) {
+            work[j + 0x10] = (u32)bpTexCreateTmxRaster(
+                H_Cdvd_ArchiveGetFile((void*)work[0x1b], j, &fileSize));
+        }
+        H_Cdvd_Destroy((void*)work[0x1b]);
+        work[1] |= 4;
+        goto four_done;
+    four_check:
+        K_ASSERT((work[1] & 4) != 0, 0x109);
+    four_done:
+        if ((work[1] & 4) != 0) {
             *work &= ~4u;
         }
     }
     if ((*work & 8) != 0 && H_Cdvd_IsFileLoaded((void*)work[0x1c]) != 0) {
-        sflResCopyFile(work, 0x1c, 0, 0x17);
-        sflResCopyFile(work, 0x1c, 1, 0x18);
+        file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], 0, &fileSize);
+        copy = (*DAT_00960178)(fileSize, 0x40000);
+        work[0x17] = (u32)copy;
+        memcpy(copy, file, fileSize);
+        file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], 1, &fileSize);
+        copy = (*DAT_00960178)(fileSize, 0x40000);
+        work[0x18] = (u32)copy;
+        memcpy(copy, file, fileSize);
         H_Cdvd_Destroy((void*)work[0x1c]);
         work[1] |= 8;
         *work &= ~8u;
