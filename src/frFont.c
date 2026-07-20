@@ -1464,32 +1464,46 @@ void thunk_FUN_003b0e04(int param_1, u8 param_2)
 }
 #pragma optimization_level 2
 // FUN_003B0DD8
+/* Falls through into FUN_003b0e04 (no jr $ra of its own); FUN_003b0e04
+ * branches back to this function's entry. Together they implement:
+ *   do {
+ *     for (v1 = *(int*)(param_1+0x1c); v1 != 0; v1 = *(int*)(v1+0x28))
+ *       *(u8*)(v1+0x14) = param_2;
+ *     param_1 = *(int*)(param_1+0x24);
+ *   } while (param_1 != 0);
+ * split across two retail symbols, which a single portable-C function
+ * cannot reproduce byte-for-byte (the loop-back branch must land at this
+ * function's exact address). Kept as readable mnemonic asm. */
 asm void FUN_003b0dd8(int param_1, u8 param_2)
 {
   .set noreorder
-  .word 0x8c83001c
-  .word 0x10000003
-  .word 0x00000000
-  .word 0xa0650014
-  .word 0x8c630028
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x1460fffa
-  .word 0x00000000
-  .word 0x8c840024
+  lw $v1, 0x1c($a0)
+  b FUN_003b0dd8_check
+  nop
+FUN_003b0dd8_store:
+  sb $a1, 0x14($v1)
+  lw $v1, 0x28($v1)
+FUN_003b0dd8_check:
+  nop
+  nop
+  nop
+  bnez $v1, FUN_003b0dd8_store
+  nop
+  lw $a0, 0x24($a0)
 }
 
 #define FUN_003b0d70(...) ((void (*)(...))FUN_003b0d70)(__VA_ARGS__)
 #undef FUN_003b0e04
 // FUN_003B0E04
+/* Continuation of FUN_003b0dd8 (see comment there); branches back to its
+ * start when param_1 != 0, otherwise returns. */
 asm void FUN_003b0e04(int param_1, u8 param_2)
 {
   .set noreorder
-  .word 0x1480fff4
-  .word 0x00000000
-  .word 0x03e00008
-  .word 0x00000000
+  .word 0x1480fff4  /* bnez $a0, FUN_003b0dd8 (label unavailable across function boundary) */
+  nop
+  jr $ra
+  nop
 }
 
 
@@ -1505,32 +1519,41 @@ void thunk_FUN_003b0e54(int param_1, u32 param_2)
 }
 #pragma optimization_level 2
 // FUN_003B0E28
+/* Falls through into FUN_003b0e54 (no jr $ra of its own); FUN_003b0e54
+ * branches back to this function's entry. Same structure as
+ * FUN_003b0dd8/FUN_003b0e04 above but stores a u32 at offset 0x10 instead
+ * of a u8 at offset 0x14; see that pair's comment for the full loop shape
+ * and why the cross-function branch cannot be portable C. */
 asm void FUN_003b0e28(int param_1, u32 param_2)
 {
   .set noreorder
-  .word 0x8c83001c
-  .word 0x10000003
-  .word 0x00000000
-  .word 0xac650010
-  .word 0x8c630028
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x1460fffa
-  .word 0x00000000
-  .word 0x8c840024
+  lw $v1, 0x1c($a0)
+  b FUN_003b0e28_check
+  nop
+FUN_003b0e28_store:
+  sw $a1, 0x10($v1)
+  lw $v1, 0x28($v1)
+FUN_003b0e28_check:
+  nop
+  nop
+  nop
+  bnez $v1, FUN_003b0e28_store
+  nop
+  lw $a0, 0x24($a0)
 }
 
 #define FUN_003b0e04(...) ((void (*)(...))FUN_003b0e04)(__VA_ARGS__)
 #undef FUN_003b0e54
 // FUN_003B0E54
+/* Continuation of FUN_003b0e28 (see comment there); branches back to its
+ * start when param_1 != 0, otherwise returns. */
 asm void FUN_003b0e54(int param_1, u32 param_2)
 {
   .set noreorder
-  .word 0x1480fff4
-  .word 0x00000000
-  .word 0x03e00008
-  .word 0x00000000
+  .word 0x1480fff4  /* bnez $a0, FUN_003b0e28 (label unavailable across function boundary) */
+  nop
+  jr $ra
+  nop
 }
 #define FUN_003b0e54(...) ((void (*)(...))FUN_003b0e54)(__VA_ARGS__)
 #undef FUN_003b0e70
