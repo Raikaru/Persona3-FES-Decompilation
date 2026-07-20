@@ -5,6 +5,8 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern u32 DAT_006a28d0;
+extern u8 DAT_006a28b0[];
+extern u8 DAT_006a29f0[];
 #pragma alias DAT_006a28d0_abs DAT_006a28d0
 extern u32 DAT_006a28d0_abs[];
 extern u16 DAT_006a28f0[];
@@ -94,7 +96,7 @@ void FUN_003b35e0(int count)
     block = FUN_004ce0f0(0x20,0x20,4,0x4504);
     node[5] = block;
     if (block == 0) {
-      FUN_005225a8(0x6a28b0);
+      FUN_005225a8((u32)(uintptr_t)DAT_006a28b0);
     } else {
       node = (int *)node[6];
     }
@@ -572,7 +574,7 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
   
 
   if (param_2 == (u8 *)0x0) {
-    FUN_005225a8(0x6a29f0);
+    FUN_005225a8((u32)(uintptr_t)DAT_006a29f0);
     FUN_0019d3f0("frFontRaster.c",0x179);
     return;
   }
