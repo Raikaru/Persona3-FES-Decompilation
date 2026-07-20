@@ -360,6 +360,9 @@ extern u8 DAT_0069eb48[];
 extern u8 DAT_0069eb58[];
 extern u8 DAT_0069ea78[];
 extern u8 DAT_0069ea88[];
+extern u8 DAT_0069ec48[];
+extern u8 DAT_0069ec60[];
+extern u8 DAT_0069ec80[];
 extern u8 DAT_0069ec08[];
 extern u8 DAT_0069ec18[];
 extern u8 DAT_0069ec28[];
@@ -5991,18 +5994,11 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     FUN_0038a260_evt6((u32)(param_1 * 0xc),(int)(param_2 * 0xc),4,
 
-                      0x6a000000 - 0x13b8,uVar1,fVar1);
+                      (u32)DAT_0069ec48,uVar1,fVar1);
 
     break;
 
   case 1:
-
-    fVar1 = FUN_0038a220(*(u32 *)((u8 *)param_4 + 0xe0));
-
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-
-                      0x6a000000 - 0x13a0,fVar1);
-
     break;
 
   case 2:
@@ -6011,7 +6007,7 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
 
-                      0x6a000000 - 0x1380,fVar1);
+                      (u32)DAT_0069ec60,fVar1);
 
     break;
 
@@ -6021,7 +6017,7 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
 
-                      0x6a000000 - 0x1588,fVar1);
+                      (u32)DAT_0069ec80,fVar1);
 
     break;
 
@@ -6031,7 +6027,7 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
 
-                      0x6a000000 - 0x1578,fVar1);
+                      (u32)DAT_0069ea78,fVar1);
 
     break;
 
@@ -6041,7 +6037,7 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
 
-                      0x6a000000 - 0x1588,fVar1);
+                      (u32)DAT_0069ea88,fVar1);
 
     break;
 
