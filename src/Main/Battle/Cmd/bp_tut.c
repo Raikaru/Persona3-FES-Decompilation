@@ -30,8 +30,8 @@ void FUN_00111500(KwlnTask* task);
 void FUN_00111530(KwlnTask* task);
 u32 FUN_00195460(KwlnTask* task);
 void FUN_003c72d0(s32 handle);
-void FUN_003c7430(s32 param_1);
-void FUN_003c74e0(s32 param_1);
+void FUN_003c7430();
+void FUN_003c74e0();
 void FUN_003c7560(s32 param_1);
 void FUN_003c7650(s32 param_1);
 void FUN_003c77a0(void);
@@ -90,13 +90,14 @@ void FUN_00251060(void)
 void FUN_002510d0(void)
 {
     BpTutWork* work;
-    u32 value;
     u32 result;
+    u32 value;
     s16 flags[4];
 
     if (sBpTut654 == NULL) {
         FUN_0019d3f0(DAT_0068e9c0, 0x39);
     }
+
     work = (BpTutWork*)sBpTut654;
     if ((~work->flags & 1) == 0) {
         switch (work->phase) {
@@ -105,25 +106,33 @@ void FUN_002510d0(void)
                 (FUN_001114b0(work->task) != 0)) {
                 FUN_003c72d0(FUN_0021c8b0(0));
                 FUN_00111530(work->task);
-                value = work->type;
-                if (value == 3) {
-                    FUN_003c7430(0x10);
-                } else if (value == 2) {
-                    FUN_003c7430(0xb);
-                } else if (value == 1) {
-                    FUN_003c7430(5);
-                } else if (value == 0) {
+                switch (work->type) {
+                case 0:
                     FUN_003c7430(0);
+                    break;
+                case 1:
+                    FUN_003c7430(5);
+                    break;
+                case 2:
+                    FUN_003c7430(0xb);
+                    break;
+                case 3:
+                    FUN_003c7430(0x10);
+                    break;
                 }
-                value = work->type;
-                if (value == 3) {
-                    FUN_003c74e0(0x11);
-                } else if (value == 2) {
-                    FUN_003c74e0(0xc);
-                } else if (value == 1) {
+                switch (work->type) {
+                case 0:
+                    FUN_003c74e0();
+                    break;
+                case 1:
                     FUN_003c74e0(6);
-                } else if (value == 0) {
-                    FUN_003c74e0(0);
+                    break;
+                case 2:
+                    FUN_003c74e0(0xc);
+                    break;
+                case 3:
+                    FUN_003c74e0(0x11);
+                    break;
                 }
                 FUN_003c7560(0);
                 work->step = 0;
@@ -135,102 +144,150 @@ void FUN_002510d0(void)
             switch (work->step) {
             case 0:
                 FUN_003c7990(1);
-                result = FUN_003c7850();
-                if (result == 0) {
-                    result = FUN_003c7610();
-                    if (result == 1) {
-                        FUN_003c7650(1);
-                        value = work->type;
-                        if (value == 3) {
-                            FUN_003c7430(0x14);
-                        } else if (value == 2) {
-                            FUN_003c7430(0xf);
-                        } else if (value == 1) {
-                            FUN_003c7430(10);
-                        } else if (value == 0) {
-                            FUN_003c7430(4);
-                        }
-                        work->step = 2;
-                    } else if (result == 0) {
+                if (FUN_003c7850() == 0) {
+                    switch (FUN_003c7610()) {
+                    case 0:
                         FUN_003c7650(1);
                         value = work->type;
                         if (value == 1) {
-                            FUN_003c7430(7);
-                            work->step = 3;
-                        } else if ((value == 3) || (value == 2) || (value == 0)) {
-                            if (value == 3) {
-                                FUN_003c7430(0x12);
-                            } else if (value == 2) {
-                                FUN_003c7430(0xd);
-                            } else if (value == 0) {
-                                FUN_003c7430(0);
-                            }
-                            value = work->type;
-                            if (value == 3) {
-                                FUN_003c74e0(0x13);
-                            } else if (value == 2) {
-                                FUN_003c74e0(0xe);
-                            } else if (value == 0) {
-                                FUN_003c74e0(0);
-                            }
-                            FUN_003c7560(0);
-                            work->step = 1;
+                            goto bpTut_step0_type1;
                         }
+                        if (value == 3) {
+                            goto bpTut_step0_type_common;
+                        }
+                        if (value == 2) {
+                            goto bpTut_step0_type_common;
+                        }
+                        if (value == 0) {
+                            goto bpTut_step0_type_common;
+                        }
+                        goto bpTut_step0_type_done;
+
+bpTut_step0_type_common:
+                        switch (value) {
+                        case 0:
+                            FUN_003c7430();
+                            break;
+                        case 2:
+                            FUN_003c7430(0xd);
+                            break;
+                        case 3:
+                            FUN_003c7430(0x12);
+                            break;
+                        }
+                        value = work->type;
+                        switch (value) {
+                        case 0:
+                            FUN_003c74e0();
+                            break;
+                        case 2:
+                            FUN_003c74e0(0xe);
+                            break;
+                        case 3:
+                            FUN_003c74e0(0x13);
+                            break;
+                        }
+                        FUN_003c7560(0);
+                        work->step = 1;
+                        goto bpTut_step0_type_done;
+
+bpTut_step0_type1:
+                        FUN_003c7430(7);
+                        work->step = 3;
+
+bpTut_step0_type_done:
+                        break;
+                        break;
+
+                    case 1:
+                        FUN_003c7650(1);
+                        switch (work->type) {
+                        case 0:
+                            FUN_003c7430(4);
+                            break;
+                        case 1:
+                            FUN_003c7430(10);
+                            break;
+                        case 2:
+                            FUN_003c7430(0xf);
+                            break;
+                        case 3:
+                            FUN_003c7430(0x14);
+                            break;
+                        }
+                        work->step = 2;
+                        break;
                     }
                 }
                 break;
 
             case 1:
                 FUN_003c7990(1);
-                result = FUN_003c7850();
-                if (result == 0) {
-                    result = FUN_003c7610();
-                    if (result == 0) {
+                if (FUN_003c7850() == 0) {
+                    switch (FUN_003c7610()) {
+                    case 0:
                         FUN_003c7650(1);
-                        value = work->type;
-                        if (value == 3) {
-                            FUN_003c7430(0x14);
-                        } else if (value == 2) {
-                            FUN_003c7430(0xf);
-                        } else if (value == 1) {
-                            FUN_003c7430(10);
-                        } else if (value == 0) {
+                        switch (work->type) {
+                        case 0:
                             FUN_003c7430(4);
+                            break;
+                        case 1:
+                            FUN_003c7430(10);
+                            break;
+                        case 2:
+                            FUN_003c7430(0xf);
+                            break;
+                        case 3:
+                            FUN_003c7430(0x14);
+                            break;
                         }
                         work->step = 2;
-                    } else if (result == 1) {
+                        break;
+
+                    case 1:
                         FUN_003c7650(1);
                         value = work->type;
                         if (value == 1) {
                             FUN_003c7430(7);
                             work->step = 3;
-                        } else if ((value == 3) || (value == 2) || (value == 0)) {
-                            if (value == 3) {
-                                FUN_003c7430(0x12);
-                            } else if (value == 2) {
+                        } else if ((value == 3) ||
+                                   (value == 2) ||
+                                   (value == 0)) {
+                            switch (value) {
+                            case 0:
+                                FUN_003c7430();
+                                break;
+                            case 2:
                                 FUN_003c7430(0xd);
-                            } else if (value == 0) {
-                                FUN_003c7430(0);
+                                break;
+                            case 3:
+                                FUN_003c7430(0x12);
+                                break;
                             }
                             value = work->type;
-                            if (value == 3) {
-                                FUN_003c74e0(0x13);
-                            } else if (value == 2) {
+                            switch (value) {
+                            case 0:
+                                FUN_003c74e0();
+                                break;
+                            case 2:
                                 FUN_003c74e0(0xe);
-                            } else if (value == 0) {
-                                FUN_003c74e0(0);
+                                break;
+                            case 3:
+                                FUN_003c74e0(0x13);
+                                break;
                             }
                             FUN_003c7560(0);
                             work->step = 1;
                         }
+                        break;
                     }
                 }
                 break;
 
+
             case 2:
                 FUN_003c7990(1);
-                result = FUN_003c7850();
-                if (result == 0) {
+                if (FUN_003c7850() == 0) {
                     FUN_003c7650(1);
                     FUN_00111500(work->task);
                     work->step = 7;
@@ -239,8 +296,7 @@ void FUN_002510d0(void)
 
             case 3:
                 FUN_003c7990(1);
-                result = FUN_003c7850();
-                if (result == 0) {
+                if (FUN_003c7850() == 0) {
                     FUN_003c7650(1);
                     FUN_00111500(work->task);
                     FUN_003c77a0();
@@ -259,8 +315,7 @@ void FUN_002510d0(void)
 
             case 5:
                 FUN_003c7990(1);
-                result = FUN_003c7850();
-                if (result == 0) {
+                if (FUN_003c7850() == 0) {
                     FUN_003c7650(1);
                     FUN_003c77a0();
                     FUN_003c72d0(FUN_0021c8b0(0));
@@ -277,16 +332,14 @@ void FUN_002510d0(void)
                 break;
 
             case 6:
-                result = FUN_001114b0(work->task);
-                if (result != 0) {
+                if (FUN_001114b0(work->task) != 0) {
                     FUN_00111530(work->task);
                     work->step = 1;
                 }
                 break;
 
             case 7:
-                result = FUN_00195460(work->task);
-                if (result == 0) {
+                if (FUN_00195460(work->task) == 0) {
                     FUN_00251a20();
                     work->flags &= ~1;
                 }
