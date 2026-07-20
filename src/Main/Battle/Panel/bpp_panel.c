@@ -20,13 +20,12 @@ extern void RpSkyRenderStateSet(s32 state, u32 value);
 // FUN_00232EA0 NONMATCHING
 void bppPanelDrawParameterLayout(BppPanelWork* work)
 {
-    u8* quad;
-    BppPanelRenderQuad* renderQuad;
-    s32 i;
-    u32 frame;
     u32 texture;
     BppPanelSetRenderState* setRenderState;
-
+    BppPanelRenderQuad* renderQuad;
+    u8* quad;
+    s32 i;
+    u32 frame;
     texture = func_0021c3f0(4);
     setRenderState = (BppPanelSetRenderState*)D_00960090;
     BPP_PANEL_SET_RENDER_STATE(9, 2);
