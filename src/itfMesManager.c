@@ -4632,7 +4632,7 @@ short * FUN_003a6c10(int param_1,short *param_2)
 
   for (; -1 < iVar2; iVar2 = iVar2 + -1) {
 
-    *param_2 = ((short)aiStack_30[iVar2] + 0x10) * 0x100 + -0x7f80;
+    *param_2 = (aiStack_30[iVar2] + 0x10) * 0x100 + -0x7f80;
 
     param_2 = param_2 + 1;
 
