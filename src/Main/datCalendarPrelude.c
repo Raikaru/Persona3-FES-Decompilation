@@ -13,6 +13,16 @@ extern void* memset(void* dst, u8 value, u32 size);
 extern int memcmp(const void* left, const void* right, u32 size);
 extern void qsort(void* base, u32 count, u32 width, int (*compare)(const void*, const void*));
 extern int printf(const char* fmt, ...);
+extern int sprintf(char* dst, const char* fmt, ...);
+extern void FUN_00521250(void* dst, const void* src, u32 size);
+extern void FUN_00523ac8(void* dst, const void* format, ...);
+extern u8 DAT_00833bb0[];
+extern u8 DAT_00833bd0[];
+extern u8 DAT_00833bf0[];
+extern u8 DAT_00836212[];
+extern char gp0xffff9388[];
+extern const char D_007cc078[];
+extern const char D_005e3820[];
 extern void FUN_0019d3f0(u32 file, u32 line);
 extern void FUN_00521408(void* dst, s32 value, u32 size);
 extern void func_001828d0(s16 id, void* record);
@@ -48,6 +58,7 @@ extern s32 D_005e3844[][2];
 extern u32 D_0083a21c[];
 extern u8 DAT_0083a718[];
 extern u8 DAT_00836200[];
+extern u32 DAT_007ce00c;
 extern s8* puGpffffb704;
 extern u8 D_0083A6FC[];
 extern const char D_005e3098[];
@@ -265,67 +276,81 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
 }
 
 // FUN_00179030 NONMATCHING
-void FUN_00179030(u32 saveType, s32 stream)
+void FUN_00179030(u32 saveType, void* stream)
 {
     u8* cursor = (u8*)stream;
     u32 id;
     u32 size;
 
-    if (saveType > 1) cursor += 0x34;
+    if (saveType >= 2) cursor += 0x34;
     for (;;)
     {
         memcpy(&id, cursor, 4);
+        printf((const char*)D_005e3820, id);
         if (id == 0xffffffff || id == 0x2000) break;
         memcpy(&size, cursor + 4, 4);
         cursor += 8;
-        if (U32(0x007ce00c) == 0)
-            FUN_00179360(saveType, id, size, cursor);
-        else
+        if (DAT_007ce00c != 0)
             FUN_0017a430(saveType, id, size, cursor);
+        else
+            FUN_00179360(saveType, id, size, cursor);
         cursor += size;
     }
-
-    if (U32(0x007ce00c) == 0)
+    if (DAT_007ce00c == 0)
     {
-        memset(PTR8(0x00833bb0), 0, 0x12);
-        memset(PTR8(0x00833bd0), 0, 0x12);
-        memset(PTR8(0x00833bf0), 0, 0x24);
-        memcpy(PTR8(0x00833bb0), PTR8(0x00836200), 0x12);
-        memcpy(PTR8(0x00833bd0), PTR8(0x00836212), 0x12);
+        FUN_00521408(DAT_00833bb0, 0, 0x12);
+        FUN_00521408(DAT_00833bd0, 0, 0x12);
+        FUN_00521408(DAT_00833bf0, 0, 0x24);
+        FUN_00521250(DAT_00833bb0, DAT_00836200, 0x12);
+        FUN_00521250(DAT_00833bd0, DAT_00836212, 0x12);
+        FUN_00523ac8(DAT_00833bf0, gp0xffff9388, DAT_00833bd0, DAT_00833bb0);
     }
 }
-
+ 
 // FUN_001791d0 NONMATCHING
-bool FUN_001791d0(u32 saveType, s32 stream, s32 streamSize)
+bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
 {
-    u8* cursor;
+    const u8* start = (const u8*)stream;
+    const u8* cursor = (const u8*)stream;
     u32 id;
     u32 size;
-    u32 consumed = 0;
-    u8 checksum = 0;
-    u8 stored;
+    u32 consumed;
+    u32 limit;
+    u32 checksum;
     u32 i;
+    u8 stored;
 
     if (streamSize < 0x1000) return false;
-    cursor = (u8*)stream + (saveType > 1 ? 0x34 : 0);
+    if (saveType >= 2)
+    {
+        cursor += 0x34;
+        start = cursor;
+    }
     if (saveType < 3) return true;
-    while (consumed < (u32)(streamSize - 0x34))
+    consumed = 0;
+    limit = (u32)(streamSize - 0x34);
+    for (;;)
     {
         memcpy(&id, cursor, 4);
         if (id == 0xffffffff) return false;
-        memcpy(&size, cursor + 4, 4);
-        if (size == 0) return false;
         if (id == 0x2000)
         {
+            checksum = 0;
+            for (i = 0; i < consumed; i++)
+                checksum = (checksum + start[i]) & 0xff;
+            memcpy(&size, cursor + 4, 4);
             memcpy(&stored, cursor + 8, 1);
-            return checksum == stored;
+            return (((u8)checksum ^ stored) == 0);
         }
-        for (i = 0; i < size; i++) checksum = (u8)(checksum + cursor[8 + i]);
+        memcpy(&size, cursor + 4, 4);
+        if (size == 0) return false;
         cursor += 8 + size;
         consumed += 8 + size;
+        if (consumed < limit) continue;
+        return false;
     }
-    return false;
 }
+
 
 // FUN_00179360 NONMATCHING
 void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
@@ -943,21 +968,29 @@ s32 FUN_0017c2f0(const u32* left, const u32* right)
 // FUN_0017c350 NONMATCHING
 void FUN_0017c350(void)
 {
-    s16* source = (s16*)ALLOCATE_SMALL(4, 4, 0x40000);
-    s16* sorted = (s16*)ALLOCATE_SMALL(4, 4, 0x40000);
+    s16* source;
+    u8** sorted;
     s32 count = 0;
     s32 i;
-    if (source == NULL || sorted == NULL)
-    {
-        if (source != NULL) RELEASE(source);
-        if (sorted != NULL) RELEASE(sorted);
-        return;
-    }
+
+    source = (s16*)(*(void* (**)(u32, u32))D_00960178)(0x10, 0x40000);
     memcpy(source, PTR8(0x0083a718), 0x10);
+    sorted = (u8**)(*(void* (**)(u32, u32))D_00960178)(0x10, 0x40000);
     memset(sorted, 0, 0x10);
-    for (i = 0; i < 4; i++) if (source[i] != -1) sorted[count++] = source[i];
-    if (count > 1) qsort(sorted, count, 4, (int (*)(const void*, const void*))FUN_0017c2f0);
-    for (i = 0; i < 4; i++) *(s16*)(0x0083a718 + i * 4) = sorted[i] == 0 ? -1 : sorted[i];
+    for (i = 0; i < 4; i++)
+    {
+        if (source[i * 2] != -1)
+            sorted[count++] = (u8*)(source + i * 2);
+    }
+    if (count != 0)
+        qsort(sorted, count, 4, (int (*)(const void*, const void*))FUN_0017c2f0);
+    for (i = 0; i < 4; i++)
+    {
+        if (sorted[i] != NULL)
+            memcpy(PTR8(0x00836200) + i * 4 + 0x4518, sorted[i], 4);
+        else
+            *(s16*)(PTR8(0x00836200) + i * 4 + 0x4518) = -1;
+    }
     RELEASE(sorted);
     RELEASE(source);
 }
@@ -1127,20 +1160,26 @@ void FUN_0017c960(const void* record)
 s32 FUN_0017ca10(const void* record)
 {
     const u8* source = (const u8*)record;
-    const u8* stored;
-    u16 id;
-    if (record == NULL) FUN_0019d3f0(0x5e3098, 0x1837);
+    u8* stored;
+    s32 id;
+    s32 i;
+
+    if (record == NULL) FUN_0019d3f0((u32)D_005e3098, 0x1837);
     id = *(const u16*)(source + 2);
-    if (id > 0xff) FUN_0019d3f0(0x5e3098, 0x1838);
-    stored = compendium_record(id);
+    if (id < 0 || id >= 0x100) FUN_0019d3f0((u32)D_005e3098, 0x1838);
+    stored = DAT_00836200 + id * 0x34 + 0xc1c;
     if ((*(const u16*)stored & 1) == 0) return -1;
     if (*(const u16*)stored != *(const u16*)source) return 1;
     if (stored[4] != source[4]) return 1;
     if (*(const u32*)(stored + 8) != *(const u32*)(source + 8)) return 1;
-    if (memcmp(stored + 0xc, source + 0xc, 0x10) != 0) return 1;
-    if (memcmp(stored + 0x1c, source + 0x1c, 5) != 0) return 1;
-    if (memcmp(stored + 0x21, source + 0x21, 5) != 0) return 1;
-    if (memcmp(stored + 0x26, source + 0x26, 5) != 0) return 1;
+    for (i = 0; i < 5; i++)
+        if (stored[0x1c + i] != source[0x1c + i]) return 1;
+    for (i = 0; i < 5; i++)
+        if ((s8)stored[0x21 + i] != (s8)source[0x21 + i]) return 1;
+    for (i = 0; i < 5; i++)
+        if ((s8)stored[0x26 + i] != (s8)source[0x26 + i]) return 1;
+    for (i = 0; i < 8; i++)
+        if (*(const u16*)(stored + 0xc + i * 2) != *(const u16*)(source + 0xc + i * 2)) return 1;
     return 0;
 }
 
@@ -1448,28 +1487,34 @@ void FUN_0017d3c0(void)
 // FUN_0017d450 NONMATCHING
 u32 FUN_0017d450(s32 index, const void* date)
 {
-    u8* current;
-    u8 newer;
+    u8 current[8];
+    s32 newer = 0;
+
     if (date == NULL) FUN_0019d3f0(0x5e3098, 0x1933);
     if (index >= 5) return 0;
-    current = PTR8(0x0083a834 + index * 0x10);
+    memcpy(current, DAT_00836200 + index * 0x10 + 0x4634, 8);
     if (index == 3) return 0;
-    if (index == 4) return current[1] < ((const u8*)date)[1];
-    newer = current[0] < ((const u8*)date)[0];
-    if (!newer && current[0] == ((const u8*)date)[0])
+    if (index == 4)
+        return current[1] < ((const u8*)date)[1];
+    if (current[0] < ((const u8*)date)[0])
+        newer = 1;
+    if (newer == 0 && current[0] == ((const u8*)date)[0])
     {
-        newer = current[1] < ((const u8*)date)[1];
-        if (!newer && current[1] == ((const u8*)date)[1])
+        if (current[1] < ((const u8*)date)[1])
+            newer = 1;
+        if (newer == 0 && current[1] == ((const u8*)date)[1])
         {
-            newer = *(const s16*)(current + 2) != *(const s16*)((const u8*)date + 2);
-            if (!newer) newer = *(const u32*)(current + 4) != *(const u32*)((const u8*)date + 4);
+            if (*(const s16*)(current + 2) != *(const s16*)((const u8*)date + 2))
+                newer = 1;
+            if (newer == 0 && *(const u32*)(current + 4) != *(const u32*)((const u8*)date + 4))
+                newer = 1;
         }
     }
-    if (newer)
+    if (newer != 0)
     {
         if (FUN_003f33d0(index, 4) != 0) return 1;
-        memcpy(PTR8(0x0083a834 + (index * 2 + 1) * 8), current, 8);
-        memcpy(current, date, 8);
+        memcpy(DAT_00836200 + (index * 2 + 1) * 8 + 0x4634, current, 8);
+        memcpy(DAT_00836200 + index * 0x10 + 0x4634, date, 8);
     }
     return 0;
 }
