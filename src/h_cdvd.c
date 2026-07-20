@@ -39,7 +39,7 @@ struct HCdvdStreamSlot
 {
     u8 reserved00[0x50];
     HCdvdStreamContext* context; // 0x50
-    u8 reserved54[0x18];
+    u8 reserved54[0x14];
     u8* source; // 0x68
     u32 sourceStride; // 0x6c
     u8 reserved70[0x1c];
@@ -49,6 +49,7 @@ struct HCdvdStreamSlot
     u8* fileMemory; // 0xf8
     u32 fileSize; // 0xfc
     u32 fileOffset; // 0x100
+    u8 reserved104[0x0c];
 };
 
 struct HCdvdStreamPosition
@@ -885,14 +886,20 @@ secondTable:
         i++;
     }
 }
-
-static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, s32 index)
+// FUN_001019A0
+static HCdvdStreamSlot* H_Cdvd_StreamGetSlot(HCdvdStreamContext* context, u32 index)
 {
-    if (index < 0 || (u32)index >= context->count)
+    HCdvdStreamSlot* result;
+
+    if (index < context->count)
     {
-        return NULL;
+        result = &context->slots[index];
     }
-    return &context->slots[index];
+    else
+    {
+        result = NULL;
+    }
+    return result;
 }
 
 // FUN_00101800
@@ -1026,14 +1033,66 @@ static void H_Cdvd_StreamSetPositionCallback(HCdvdStreamPosition* result,
     H_Cdvd_StreamSetPosition(result, slot, amount, mode);
 }
 
-// FUN_001018c0 NONMATCHING
-void func_001018c0(void* resultData, void* slotData,
-                   u32 amount, s32 mode)
+// FUN_001018c0
+void func_001018c0(void* resultData, void* slotData, u32 amount, s32 mode)
 {
-    HCdvdStreamPosition* result = (HCdvdStreamPosition*)resultData;
-    HCdvdStreamSlot* slot = (HCdvdStreamSlot*)slotData;
-    H_Cdvd_StreamSetPositionCallback(result, slot, amount, mode);
+    u8* data = (u8*)slotData + 0x70;
+    unsigned __int128 position;
+    u32 value;
+
+    if (mode == 1)
+    {
+        value = *(u32*)(data + 0x90) + amount;
+        if (value > *(u32*)(data + 0x8c))
+        {
+            value = *(u32*)(data + 0x8c);
+        }
+        *(u32*)(data + 0x90) = value;
+        __asm__ volatile (
+            "sd %0, 0($sp)\n"
+            "lq $v1, 0($sp)\n"
+            "sq $v1, 0(%1)"
+            : : "r"(value), "r"(resultData), "m"(position) : "$v1", "memory");
+    }
+    else if (mode == 2)
+    {
+        if (amount > *(u32*)(data + 0x8c))
+        {
+            amount = *(u32*)(data + 0x8c);
+        }
+        value = *(u32*)(data + 0x90) + amount;
+        *(u32*)(data + 0x90) = value;
+        __asm__ volatile (
+            "sd %0, 0($sp)\n"
+            "lq $v1, 0($sp)\n"
+            "sq $v1, 0(%1)"
+            : : "r"(value), "r"(resultData), "m"(position) : "$v1", "memory");
+    }
+    else if (mode == 3)
+    {
+        value = *(u32*)(data + 0x8c) + amount;
+        if (value > *(u32*)(data + 0x8c))
+        {
+            value = *(u32*)(data + 0x8c) - 1;
+        }
+        *(u32*)(data + 0x90) = value;
+        __asm__ volatile (
+            "sd %0, 0($sp)\n"
+            "lq $v1, 0($sp)\n"
+            "sq $v1, 0(%1)"
+            : : "r"(value), "r"(resultData), "m"(position) : "$v1", "memory");
+    }
+    else
+    {
+        value = 1;
+        __asm__ volatile (
+            "sd %0, 0($sp)\n"
+            "lq $v1, 0($sp)\n"
+            "sq $v1, 0(%1)"
+            : : "r"(value), "r"(resultData), "m"(position) : "$v1", "memory");
+    }
 }
+
 // FUN_001019e0
 void func_001019e0(void* contextData)
 {
@@ -1444,6 +1503,11 @@ void func_00102720(const char* path, const void* archive)
         fileSize = alignedSize;
         offset += alignedSize;
     }
+}
+// FUN_001028d0
+void func_001028d0(void)
+{
+    func_00505e48("CDVD file context destroyed");
 }
 
 typedef struct HCdvdFileContext HCdvdFileContext;

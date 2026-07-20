@@ -4394,7 +4394,7 @@ void FUN_00421f20(void)
 
 }
 
-// FUN_00421FB0 NONMATCHING
+// FUN_00421FB0
 
 
 void FUN_00421fb0(void)
@@ -4403,7 +4403,7 @@ void FUN_00421fb0(void)
 
 {
 
-  (*DAT_0096017c)(uGpffffb9b8);
+  (*(void (**)(...))0x0096017c)(uGpffffb9b8);
 
   uGpffffb9b8 = 0;
 
@@ -4757,7 +4757,7 @@ u32 FUN_00422670(int param_1)
 
 }
 
-// FUN_004229A0 NONMATCHING
+// FUN_004229A0
 
 
 void FUN_004229a0(int param_1)
@@ -4766,7 +4766,7 @@ void FUN_004229a0(int param_1)
 
 {
 
-  (*DAT_0096017c)(*(u32 *)(param_1 + 0x3c));
+  (*(void (**)(u32))0x0096017c)(*(u32 *)(param_1 + 0x3c));
 
   return;
 
