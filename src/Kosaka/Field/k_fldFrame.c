@@ -1416,18 +1416,20 @@ static void FldFrame_ApplyCollisions(FldFrameCollisionCollector* collector,
     }
 }
 
-// FUN_001aae10 NONMATCHING
+// FUN_001aae10
 RwV3d* func_001aae10(RwV3d* dst, const RwV3d* point,
                      const RwV3d* start, const RwV3d* end)
 {
     RwV3d edge;
     f32 projection;
     f32 edgeLengthSquared;
+    f32 fraction;
 
     edge.x = end->x - start->x;
     edge.y = end->y - start->y;
     edge.z = end->z - start->z;
-    projection = FldFrame_Dot(point, &edge) - FldFrame_Dot(start, &edge);
+    projection = point->x * edge.x + point->y * edge.y + point->z * edge.z -
+                 (start->x * edge.x + start->y * edge.y + start->z * edge.z);
 
     if (projection <= 0.0f)
     {
@@ -1435,13 +1437,16 @@ RwV3d* func_001aae10(RwV3d* dst, const RwV3d* point,
     }
     else
     {
-        edgeLengthSquared = FldFrame_LengthSquared(&edge);
-        if (projection < edgeLengthSquared && edgeLengthSquared > 0.0f)
+        edgeLengthSquared = edge.x * edge.x + edge.y * edge.y + edge.z * edge.z;
+        if (projection < edgeLengthSquared)
         {
-            projection /= edgeLengthSquared;
-            dst->x = start->x + edge.x * projection;
-            dst->y = start->y + edge.y * projection;
-            dst->z = start->z + edge.z * projection;
+            fraction = projection / edgeLengthSquared;
+            dst->x = edge.x * fraction;
+            dst->y = edge.y * fraction;
+            dst->z = edge.z * fraction;
+            dst->x += start->x;
+            dst->y += start->y;
+            dst->z += start->z;
         }
         else
         {
@@ -1846,14 +1851,14 @@ void func_001ad220(void* object, const RwV3d* point, void* result)
     }
 }
 
-// FUN_001adc20 NONMATCHING
+// FUN_001adc20
 void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position)
 {
     CollisCtl* ctl;
     RwMatrixTolerance tolerance;
 
     ctl = (CollisCtl*)collisCtlTask->workData;
-    if (ctl->mdl == NULL || position == NULL)
+    if (ctl->mdl == NULL)
     {
         return;
     }
@@ -1879,7 +1884,7 @@ void func_001add40(KwlnTask* collisCtlTask)
     }
 }
 
-// FUN_001ae0d0 NONMATCHING
+// FUN_001ae0d0
 void func_001ae0d0(KwlnTask* collisCtlTask)
 {
     CollisCtl* ctl;
@@ -1889,25 +1894,24 @@ void func_001ae0d0(KwlnTask* collisCtlTask)
     RwMatrixTolerance tolerance;
 
     ctl = (CollisCtl*)collisCtlTask->workData;
-    if (ctl->mdl == NULL)
-    {
-        return;
-    }
-
     matrix = mdlGetMatrix(ctl->mdl);
-    line[0] = matrix->pos;
-    line[0].y += ctl->sphereCollisRadius;
     line[1] = matrix->pos;
+    line[0] = line[1];
+    line[0].y += ctl->sphereCollisRadius;
     line[1].y -= 800.0f;
-    if (K_FldFrame_Raycast(line, &hitPoint))
+    if (K_FldFrame_Raycast(line, &hitPoint) == true)
     {
         hitPoint.y += 3.0f;
-        matrix->pos = hitPoint;
-        RwEngineGetMatrixTolerances(&tolerance);
-        RwMatrixOptimize(matrix, &tolerance);
-        RwMatrixUpdate(matrix);
-        ctl->xGrid = (matrix->pos.x + 400.0f) / 800.0f;
-        ctl->zGrid = (matrix->pos.z + 400.0f) / 800.0f;
+        ctl = (CollisCtl*)collisCtlTask->workData;
+        if (ctl->mdl != NULL)
+        {
+            mdlGetMatrix(ctl->mdl)->pos = hitPoint;
+            RwEngineGetMatrixTolerances(&tolerance);
+            RwMatrixOptimize(mdlGetMatrix(ctl->mdl), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix(ctl->mdl));
+            ctl->xGrid = (mdlGetMatrix(ctl->mdl)->pos.x + 400.0f) / 800.0f;
+            ctl->zGrid = (mdlGetMatrix(ctl->mdl)->pos.z + 400.0f) / 800.0f;
+        }
     }
 }
 
