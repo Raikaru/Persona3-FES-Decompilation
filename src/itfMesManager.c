@@ -669,7 +669,7 @@ u32 FUN_003a2660(void)
 
   u32 uVar2;
 
-  long lVar3;
+  int lVar3;
 
   u64 uVar4;
 
@@ -685,7 +685,7 @@ u32 FUN_003a2660(void)
 
   else {
 
-    iVar1 = *(int *)(DAT_00959eec_abs + (int)lVar3 * 0xd);
+    iVar1 = *(int *)(DAT_00959eec_abs + lVar3 * 0xd);
 
     if (iVar1 == 0) {
 
