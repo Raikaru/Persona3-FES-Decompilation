@@ -1495,7 +1495,7 @@ u32 btlMainUpdateStateFadeOut(BtlStateWork* work)
     return BTL_STATE_NULL;
 }
 
-// FUN_0029d870 NONMATCHING
+// FUN_0029d870
 void btlMainInitStateEnd(BtlStateWork* work)
 {
     BtlUnit* unit;
@@ -1503,6 +1503,7 @@ void btlMainInitStateEnd(BtlStateWork* work)
     DatUnit* data;
     u16 value;
     u16 index;
+    u32 flags;
 
     if (BTL_U16(0x1c) == 1)
     {
@@ -1529,13 +1530,15 @@ void btlMainInitStateEnd(BtlStateWork* work)
 
     FUN_002a4c50();
     FUN_002bf650();
-    if (BTL_U32(0xc20) != 0)
+    flags = BTL_U32(0xc20);
+    if (flags != 0)
     {
-        if (BTL_U16(0x1c) == 1)
+        value = BTL_U16(0x1c);
+        if (value == 1)
         {
-            if ((BTL_U32(0xc20) & 1) != 0)
+            if ((flags & 1) != 0)
             {
-                FUN_0016f1f0(0x1001);
+                FUN_0016f1f0(0x1001, 1);
             }
             if ((BTL_U32(0xc20) & 2) != 0)
             {
@@ -1561,7 +1564,7 @@ void btlMainInitStateEnd(BtlStateWork* work)
     }
 
     index = 1;
-    while (index < 11)
+    while (index <= 10)
     {
         data = (DatUnit*)FUN_0016cd60(index);
         switch (data->aiTactic)
@@ -1585,11 +1588,12 @@ void btlMainInitStateEnd(BtlStateWork* work)
         u16 state = action->currState;
         if (state != BTLACTION_STATE_EXIT)
         {
-            FUN_00299d60(action);
+            FUN_00299d60(action, BTLACTION_STATE_EXIT);
         }
     }
     btlPacket0027e4d0();
 }
+
 // FUN_0029db60
 u32 btlMainUpdateStateEnd(BtlStateWork* work)
 {

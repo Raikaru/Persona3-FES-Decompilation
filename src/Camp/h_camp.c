@@ -264,32 +264,36 @@ done:
 }
 #pragma pop
 
-// FUN_0011aae0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_0011aae0
 void h_campDestroySpriteSetupTask(KwlnTask* task)
 {
-    s32 i;
     CampSpriteSetupWork* work;
+    s32 i;
+    s32 j;
 
     work = task->workData;
     for (i = 0; i < 14; i++) {
         if (work->maestroResources[i] != NULL) {
             func_001124b0(work->maestroResources[i]);
-            work->maestroResources[i] = NULL;
         }
+        work->maestroResources[i] = NULL;
     }
     if (work->archive != NULL) {
         H_Cdvd_Destroy(work->archive);
     }
     if (work->cleanupOwner != NULL) {
         RwFree(work->cleanupOwner);
+        sCampSpriteSetupOwner = NULL;
     }
-    sCampSpriteSetupOwner = NULL;
-    for (i = 0; i < 14; i++) {
-        sCampSpriteResources[i] = NULL;
+    for (j = 0; j < 14; j++) {
+        sCampSpriteResources[j] = NULL;
     }
     RwFree(work);
     sCampSpriteSetupTask = NULL;
 }
+#pragma pop
 
 // FUN_0011abd0 NONMATCHING
 u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* selectedEntry)
