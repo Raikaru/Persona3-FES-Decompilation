@@ -45,11 +45,12 @@ void* func_00188c30(KwlnTask* task)
             iVar2 = (((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100;
             iVar2 = iVar2 * 0x80;
             iVar3 = iVar2 >> 0xc;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -60,11 +61,13 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 4;
             }
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           189.0f - (f32)(puVar1[1] + -8) / 2.0f,
                           ((f32)(puVar1[1] + -8) * 4.0f) / 2.0f + 16.0f);
@@ -76,11 +79,13 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 5;
             }
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           185.0f - ((f32)(puVar1[1] + -10) * 3.0f) / 4.0f,
                           20.0f - ((f32)(puVar1[1] + -10) * 11.0f) / 4.0f);
@@ -92,11 +97,13 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 6;
             }
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           185.0f - ((f32)(puVar1[1] + -0xe) * 2.0f) / 2.0f,
                           ((f32)(puVar1[1] + -0xe) * 7.0f) / 2.0f + 9.0f);
@@ -108,11 +115,13 @@ void* func_00188c30(KwlnTask* task)
                 puVar1[0] = 7;
             }
             iVar2 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           183.0f - ((f32)(puVar1[1] + -0x10) * 41.0f) / 34.0f,
                           16.0f - ((f32)(puVar1[1] + -0x10) * 50.0f) / 34.0f);
@@ -180,11 +189,12 @@ void* func_00189230(KwlnTask* task)
             fVar1 = 230.0f - ((f32)(puVar1[1] + -9) * 3.0f) / 2.0f;
             fVar2 = 89.0f - ((f32)(puVar1[1] + -9) * 7.0f) / 2.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -197,11 +207,12 @@ void* func_00189230(KwlnTask* task)
             fVar1 = ((f32)(puVar1[1] + -0xb) * 2.0f) / 2.0f + 227.0f;
             fVar2 = ((f32)(puVar1[1] + -0xb) * 6.0f) / 2.0f + 83.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -214,11 +225,12 @@ void* func_00189230(KwlnTask* task)
             fVar1 = 229.0f - ((f32)(puVar1[1] + -0xd) * 6.0f) / 4.0f;
             fVar2 = 89.0f - ((f32)(puVar1[1] + -0xd) * 7.0f) / 4.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -231,11 +243,12 @@ void* func_00189230(KwlnTask* task)
             fVar1 = 223.0f - (f32)(puVar1[1] + -0x11) / 2.0f;
             fVar2 = ((f32)(puVar1[1] + -0x11) * 5.0f) / 2.0f + 82.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -247,11 +260,12 @@ void* func_00189230(KwlnTask* task)
             }
             fVar4 = ((f32)(puVar1[1] + -0x13) * 17.0f) / 31.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x5a) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           222.0f - fVar4, 87.0f - fVar4);
@@ -320,11 +334,12 @@ void* func_00189810(KwlnTask* task)
             fVar2 = ((f32)(puVar1[1] + -0xc) * 7.0f) / 2.0f;
             fVar2 += 125.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -339,11 +354,12 @@ void* func_00189810(KwlnTask* task)
             fVar2 = ((f32)(puVar1[1] + -0xe) * 10.0f) / 2.0f;
             fVar2 = 132.0f - fVar2;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -358,11 +374,12 @@ void* func_00189810(KwlnTask* task)
             fVar2 = ((f32)(puVar1[1] + -0x10) * 9.0f) / 4.0f;
             fVar2 += 122.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -377,11 +394,12 @@ void* func_00189810(KwlnTask* task)
             fVar2 = ((f32)(puVar1[1] + -0x14) * 6.0f) / 2.0f;
             fVar2 = 131.0f - fVar2;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
             break;
@@ -393,11 +411,12 @@ void* func_00189810(KwlnTask* task)
             }
             fVar4 = ((f32)(puVar1[1] + -0x16) * 4.0f) / 28.0f;
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x50) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            iVar3 = iVar2 >> 0xc;
             func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           fVar4 + 311.0f, 125.0f - fVar4);
@@ -459,11 +478,13 @@ void* func_00189df0(KwlnTask* task)
                 puVar1[0] = 3;
             }
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           (f32)(puVar1[1] + -0xf) / 2.0f + 351.0f,
                           ((f32)(puVar1[1] + -0xf) * 3.0f) / 2.0f + 207.0f);
@@ -475,11 +496,13 @@ void* func_00189df0(KwlnTask* task)
                 puVar1[0] = 4;
             }
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           352.0f - ((f32)(puVar1[1] + -0x11) * 2.0f) / 2.0f,
                           204.0f - ((f32)(puVar1[1] + -0x11) * 9.0f) / 2.0f);
@@ -491,11 +514,13 @@ void* func_00189df0(KwlnTask* task)
                 puVar1[0] = 5;
             }
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           (f32)(puVar1[1] + -0x13) / 4.0f + 350.0f,
                           213.0f - ((f32)(puVar1[1] + -0x13) * 8.0f) / 4.0f);
@@ -507,11 +532,13 @@ void* func_00189df0(KwlnTask* task)
                 puVar1[0] = 6;
             }
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           (f32)(puVar1[1] + -0x17) / 2.0f + 351.0f,
                           205.0f - ((f32)(puVar1[1] + -0x17) * 9.0f) / 2.0f);
@@ -523,11 +550,13 @@ void* func_00189df0(KwlnTask* task)
                 puVar1[0] = 7;
             }
             iVar2 = ((((puVar1[2] * 0x14) / 0x32 + 0x46) * 0x1000) / 100) * 0x80;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           ((f32)(puVar1[1] + -0x19) * 9.0f) / 25.0f + 352.0f,
                           ((f32)(puVar1[1] + -0x19) * 3.0f) / 25.0f + 214.0f);
@@ -590,11 +619,13 @@ void* func_0018a3f0(KwlnTask* task)
                 puVar1[0] = 3;
             }
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           419.0f, 273.0f - ((f32)(puVar1[1] + -0x12) * 2.0f) / 2.0f);
             break;
@@ -605,11 +636,13 @@ void* func_0018a3f0(KwlnTask* task)
                 puVar1[0] = 4;
             }
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           ((f32)(puVar1[1] + -0x14) * 4.0f) / 2.0f + 419.0f,
                           ((f32)(puVar1[1] + -0x14) * 9.0f) / 2.0f + 271.0f);
@@ -621,11 +654,13 @@ void* func_0018a3f0(KwlnTask* task)
                 puVar1[0] = 5;
             }
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           (f32)(puVar1[1] + -0x16) / 4.0f + 423.0f,
                           280.0f - ((f32)(puVar1[1] + -0x16) * 4.0f) / 4.0f);
@@ -637,11 +672,13 @@ void* func_0018a3f0(KwlnTask* task)
                 puVar1[0] = 6;
             }
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           (f32)(puVar1[1] + -0x1a) / 2.0f + 428.0f,
                           ((f32)(puVar1[1] + -0x1a) * 10.0f) / 2.0f + 276.0f);
@@ -653,11 +690,13 @@ void* func_0018a3f0(KwlnTask* task)
                 puVar1[0] = 7;
             }
             iVar2 = ((((puVar1[2] * 5) / 0x32 + 0x5a) * 0x1000) / 100) * 0x40;
+            iVar3 = iVar2 >> 0xc;
             if (iVar2 < 0)
             {
                 iVar2 = iVar2 + 0xfff;
+                iVar3 = iVar2 >> 0xc;
             }
-            func_001140d0(0xffffffffU, iVar2 >> 0xc, iVar2 >> 0xc,
+            func_001140d0(0xffffffffU, iVar3, iVar3,
                           (const void*)(u32)puVar1[3], 0.0f,
                           ((f32)(puVar1[1] + -0x1c) * 22.0f) / 22.0f + 429.0f,
                           ((f32)(puVar1[1] + -0x1c) * 18.0f) / 22.0f + 286.0f);
