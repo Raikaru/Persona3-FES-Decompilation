@@ -1,6 +1,7 @@
 #include "Main/OpEd/op_fade_mid.h"
 #include "Main/Battle/Result/br_res.h"
 extern void K_Assert(const char* file, s32 line);
+extern const char D_0068ED88[];
 
 #define OP_MATCH_ASSERT(condition, line) \
     do {                                 \
@@ -102,8 +103,6 @@ extern u32 *DAT_007ce3c4;
 extern u32 *DAT_007ce3c8;
 extern u32 *DAT_007ce3cc;
 extern u32 *DAT_007ce3d0;
-
-/* The opening-result state pointers live in the small-data GP area. */
 #undef gOpWorkC0
 #undef gOpWorkC4
 #undef gOpWorkC8
@@ -157,102 +156,120 @@ static u8 opClampByte(f32 value)
 
 
 // FUN_00275050 NONMATCHING
+#pragma opt_loop_invariants off
 void func_00275050(s32 index)
 {
-    u8 *work;
-    u16 *skills;
-    s32 skillCount;
-    s32 i;
-    s32 found;
-    s32 slot;
-    s8 kind;
-
-    K_ASSERT(gOpWorkC0 != NULL, 0xb0);
-    work = OP_WORK0;
-    skills = datPersonaGetSkills(OP_PTR(work, 0x30));
-    skillCount = (s32)datPersonaCountValidSkills(OP_PTR(work, 0x30));
-    K_ASSERT(OP_S32(work, 0x1c0) > index, 0x638);
-    slot = 0;
-    for (i = 0; ; )
+    register u8 *temp_19;
+    register u16 *temp_18;
+    register u32 temp_17;
+    register s32 var_20;
+    register s32 var_21;
+    register s32 var_5;
+    register s8 temp_4;
+    if (gOpWorkC0 == NULL)
+        K_Assert(D_0068ED88, 0xb0);
+    temp_19 = (u8 *)gOpWorkC0;
+    temp_18 = datPersonaGetSkills(OP_PTR(temp_19, 0x30));
+    temp_17 = datPersonaCountValidSkills(OP_PTR(temp_19, 0x30));
+    if (index >= OP_S32(temp_19, 0x1c0))
+        K_Assert(D_0068ED88, 0x638);
+    var_21 = 0;
+    var_20 = 0;
+loop_5:
+    temp_4 = OP_S8((u8 *)(uintptr_t)(OP_S32(temp_19, 0x34) +
+        (OP_S32(temp_19, 0x78) + var_21) * 4), 7);
+    if (temp_4 == 4)
     {
-        void *entry = (void *)(uintptr_t)(OP_S32(work, 0x34) +
-            (OP_S32(work, 0x78) + i) * 4);
-        kind = OP_S8(entry, 7);
-        if (kind == 4)
+block_16:
+        var_21 += 1;
+        if (OP_S32(temp_19, 0x78) + var_21 >= 0x10)
+            K_Assert(D_0068ED88, 0x65b);
+        goto loop_5;
+    }
+    if (temp_4 != 1)
+    {
+        K_Assert(D_0068ED88, 0x644);
+        goto block_16;
+    }
+    var_5 = 0;
+loop_11:
+    if (var_5 < (s32)temp_17)
+    {
+        if (OP_U16((u8 *)(uintptr_t)(OP_S32(temp_19, 0x34) +
+            (OP_S32(temp_19, 0x78) + var_21) * 4), 8) != temp_18[var_5])
         {
-            i++;
-            K_ASSERT(OP_S32(work, 0x78) + i <= 0xf, 0x65b);
-            continue;
+            var_5 += 1;
+            goto loop_11;
         }
-        if (kind != 1)
-            K_Assert((const char *)0x68ed88, 0x644);
-        for (found = 0; found < skillCount; found++)
-        {
-            if (OP_U16(entry, 8) == skills[found])
-                break;
-        }
-        if (found == skillCount)
-        {
-            if (slot == index)
-                return;
-            slot++;
-        }
-        i++;
-        K_ASSERT(OP_S32(work, 0x78) + i <= 0xf, 0x65b);
+    }
+    if (var_5 != (s32)temp_17)
+        goto block_16;
+    if (var_20 != index)
+    {
+        var_20 += 1;
+        goto block_16;
     }
 }
+#pragma opt_loop_invariants on
 
 // FUN_002751e0 NONMATCHING
 s32 func_002751e0(void)
 {
-    s32 threshold;
-    s32 result;
-    s32 i;
-    s32 found;
-    s8 kind;
-    u16 *skills;
-    u32 skillCount;
-    void *work;
+    s32 temp_21;
+    s32 var_19;
+    s32 var_20;
+    s32 var_5;
+    s8 temp_3;
+    u16 *temp_17;
+    u32 temp_16;
+    void *temp_18;
+    void *temp_2;
 
-    K_ASSERT(gOpWorkC0 != NULL, 0xb0);
-    work = OP_WORK0;
-    skills = datPersonaGetSkills(OP_PTR(work, 0x30));
-    skillCount = datPersonaCountValidSkills(OP_PTR(work, 0x30));
-    result = 0;
-    i = 0;
-    threshold = OP_U8(OP_PTR(work, 0x30), 4) -
-        OP_U8((u8 *)DAT_007ce420 +
-            OP_U16(OP_PTR(work, 0x30), 2) * 0xe + 3, 0) -
-        OP_U8(work, 0x38);
-    for (;;)
+    if (gOpWorkC0 == NULL)
+        K_Assert(D_0068ED88, 0xb0);
+    temp_18 = OP_WORK0;
+    temp_17 = datPersonaGetSkills(OP_PTR(temp_18, 0x30));
+    temp_16 = datPersonaCountValidSkills(OP_PTR(temp_18, 0x30));
+    var_20 = 0;
+    var_19 = 0;
+    temp_21 = (OP_U8(OP_PTR(temp_18, 0x30), 4) -
+        OP_U8(DAT_007ce420 + OP_U16(OP_PTR(temp_18, 0x30), 2) * 0xe + 3, 0)) -
+        OP_U8(temp_18, 0x38);
+loop_3:
+    temp_2 = (void *)(uintptr_t)(OP_S32(temp_18, 0x34) +
+        (OP_S32(temp_18, 0x78) + var_20) * 4);
+    temp_3 = OP_S8(temp_2, 7);
+    switch (temp_3)
     {
-        void *entry = (void *)(uintptr_t)(OP_S32(work, 0x34) +
-            (OP_S32(work, 0x78) + i) * 4);
-        kind = OP_S8(entry, 7);
-        if (kind == 0)
-            break;
-        if (kind == 1)
+    case 0:
+        break;
+    default:
+        K_Assert(D_0068ED88, 0x686);
+    case 4:
+block_14:
+        var_20 += 1;
+        if (OP_S32(temp_18, 0x78) + var_20 != 0x10)
+            goto loop_3;
+        break;
+    case 1:
+        if (temp_21 < (s32)OP_U8(temp_2, 6))
         {
-            if (threshold < (s32)OP_U8(entry, 6))
+            var_5 = 0;
+loop_11:
+            if (var_5 < (s32)temp_16)
             {
-                for (found = 0; found < (s32)skillCount; found++)
+                if (OP_U16((u8 *)temp_2 + 8, 2) != temp_17[var_5])
                 {
-                    if (OP_U16(entry, 8) == skills[found])
-                        break;
+                    var_5 += 1;
+                    goto loop_11;
                 }
-                if (found == (s32)skillCount)
-                    result++;
             }
+            if (var_5 == (s32)temp_16)
+                var_19 += 1;
         }
-        else if (kind != 4)
-        {
-            K_ASSERT(kind == 4, 0x686);
-        }
-        i++;
-        if (OP_S32(work, 0x78) + i == 0x10)
-            break;
+        goto block_14;
     }
-    return result;
+    return var_19;
 }
 
 // FUN_00275370
