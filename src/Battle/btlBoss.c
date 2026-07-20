@@ -6,10 +6,18 @@
 #include "Kosaka/k_assert.h"
 #include "Battle/battle.h"
 #include "h_cdvd.h"
+#include "Script/scrScriptProcess.h"
 
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
+#pragma alias scrCreateTaskFromHeader_2 scrCreateTaskFromHeader
+extern KwlnTask* scrCreateTaskFromHeader_2(u32 priority, ScrHeader* header);
+extern void FUN_0035c1a0(KwlnTask* task, s32 value);
+extern void* FUN_0035ae10(KwlnTask* task);
+extern void FUN_003a4220(s32 handle, s32 arg_2, u32 value);
+extern u32 FUN_001778b0(u32 value);
+extern void FUN_00195550(KwlnTask* parent, KwlnTask* child);
 u32 FUN_002fcaa0(int param_1,u32 *param_2);
 u32 FUN_002fcf50(int param_1);
 u32 FUN_002fd060(BtlAction* action);
@@ -45,6 +53,7 @@ extern f32 DAT_007caf60;
 extern f32 DAT_007caf64;
 extern u8* DAT_007ce3ec;
 extern u8* DAT_007ce3f4;
+extern u8* iGpffffb6fc;
 extern u8* DAT_007ce42c;
 extern u8* DAT_007ce4b4;
 extern u32 DAT_007ce508;
@@ -665,38 +674,167 @@ loop_25:
 // FUN_002f8a40 NONMATCHING
 u32 func_002f8a40(BtlUnit* unit)
 {
-    u16 encounterId;
+    u32 encounterId;
 
     encounterId = btlBossGetEncounterId();
-    switch (encounterId)
+    if (encounterId == 0x1b4) goto block_1b4;
+    if (encounterId == 0x1b3) goto block_zero_1b3;
+    if (encounterId == 0x1b2) goto block_zero_1b2;
+    if (encounterId == 0x1b1) goto block_zero_1b1;
+    if (encounterId == 0x1b0) goto block_zero_1b0;
+    if (encounterId == 0x1af) goto block_zero_1af;
+    if (encounterId == 0x1ae) goto block_zero_1ae;
+    if (encounterId == 0x1ad) goto block_1ad;
+    if (encounterId == 0x1ac) goto block_1ac;
+    if (encounterId == 0x1ab) goto block_zero_1ab;
+    if (encounterId == 0x1aa) goto block_zero_1aa;
+    if (encounterId == 0x1a9) goto block_zero_1a9;
+    if (encounterId == 0x1a8) goto block_1a8;
+    if (encounterId == 0x1a7) goto block_zero_1a7;
+    if (encounterId == 0x1a6) goto block_1a6;
+    if (encounterId == 0x1a5) goto block_1a5;
+    if (encounterId == 0x1a4) goto block_1a4;
+    if (encounterId == 0x1a3) goto block_1a3;
+    if (encounterId == 0x1a2) goto block_1a2;
+    if (encounterId == 0x1a1) goto block_1a1;
+    if (encounterId == 0x1a0) goto block_1a0;
+    if (encounterId == 0x1c8) goto block_1c8;
+    goto block_default;
+
+block_1c8:
+    return 0;
+
+block_1a0:
+    if (unit->genus == 1)
     {
-        case 0x1b4:
-        case 0x1ac:
-            return unit->genus == 1;
-        case 0x1ad:
-            return unit->genus == 1 && unit->charId == 0x112;
-        case 0x1a8:
-            return unit->genus == 1 && unit->charId == 0x10d;
-        case 0x1a6:
-            return unit->genus == 1 && unit->charId == 0x10a;
-        case 0x1a5:
-            return unit->genus == 1 && unit->charId == 0x107;
-        case 0x1a4:
-            return unit->genus == 1 &&
-                   (unit->charId == 0x106 || unit->charId == 0x105 ||
-                    unit->charId == 0x115);
-        case 0x1a3:
-            return unit->genus == 1 && unit->charId == 0x104;
-        case 0x1a2:
-            return unit->genus == 1 && unit->charId == 0x103;
-        case 0x1a1:
-            return unit->genus == 1 &&
-                   (unit->charId == 0x102 || unit->charId == 0x101);
-        case 0x1a0:
-            return unit->genus == 1 && unit->charId == 0x100;
-        default:
-            return 0;
+        if (unit->charId == 0x100)
+        {
+            return 1;
+        }
     }
+    return 0;
+
+block_1a1:
+    if (unit->genus == 1)
+    {
+        charId_1a1:
+        if (unit->charId == 0x102 || unit->charId == 0x101)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_1a2:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x103)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_1a3:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x104)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_1a4:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x106 ||
+            unit->charId == 0x105 ||
+            unit->charId == 0x115)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_1a5:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x107)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_1a6:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x10a)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_zero_1a7:
+    return 0;
+
+block_1a8:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x10d)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_zero_1a9:
+    return 0;
+
+block_zero_1aa:
+    return 0;
+
+block_zero_1ab:
+    return 0;
+
+block_1ac:
+    return unit->genus == 1;
+
+block_1ad:
+    if (unit->genus == 1)
+    {
+        if (unit->charId == 0x112)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+block_zero_1ae:
+    return 0;
+
+block_zero_1af:
+    return 0;
+
+block_zero_1b0:
+    return 0;
+
+block_zero_1b1:
+    return 0;
+
+block_zero_1b2:
+    return 0;
+
+block_zero_1b3:
+    return 0;
+
+block_1b4:
+    return unit->genus == 1;
+
+block_default:
+    return 0;
 }
 
 // FUN_002f8ea0
@@ -1667,155 +1805,43 @@ BtlUnitAnimBounds* func_002fc520(BtlUnit* unit)
 // FUN_002fc5d0 NONMATCHING
 f32 func_002fc5d0(BtlUnit* unit, BtlUnit* target, s32 animation)
 {
-    s32 temp_2;
-    s32 temp_3;
     u16 charId;
+    f32 base;
 
-    if ((gBtl->flags & 0x200000) == 0)
+    if ((gBtl->flags & 0x200000) == 0 || target->genus != 1)
     {
         return -1.0f;
     }
-    if (target->genus != 1)
-    {
-        return -1.0f;
-    }
-    if (unit->genus == 2)
-    {
-        if (target->charId != 0xf1)
-        {
-            goto block_11;
-        }
-        temp_2 = animation & 0xffff;
-        if (temp_2 != 2 && temp_2 != 0)
-        {
-            return -1.0f;
-        }
-        return 500.0f + target->sphereRadius * target->scale;
-    }
-block_11:
-    temp_3 = animation & 0xffff;
-    if (temp_3 != 0xb && temp_3 != 6 && temp_3 != 5 && temp_3 != 4)
-    {
-        return -1.0f;
-    }
+    base = target->sphereRadius * target->scale;
     charId = target->charId;
-    if (charId == 0xf1)
+    if (unit->genus == 2 && charId == 0xf1)
     {
-        return 950.0f + target->sphereRadius * target->scale;
+        return (animation == 2 || animation == 0) ? base + 500.0f : -1.0f;
     }
-    if (charId == 0x1af)
-    {
-        return -1.0f;
-    }
-    if (charId == 0x126)
+    if (animation != 0xb && animation != 6 && animation != 5 && animation != 4)
     {
         return -1.0f;
     }
-    if (charId == 0x112)
+    switch (charId)
     {
-        return -1.0f;
+        case 0xf1: return base + 950.0f;
+        case 0x128: case 0x125: case 0x124: case 0x123: case 0x122:
+        case 0x121: case 0x120: case 0x11f: case 0x11e: case 0x11d:
+        case 0x11c: case 0x11b: case 0x11a: case 0x111: return base + 375.0f;
+        case 0x110: case 0x10f: return -1.0f;
+        case 0x10d: return base + 100.0f;
+        case 0x10c: case 0x10b: return -1.0f;
+        case 0x10a: return base + 200.0f;
+        case 0x109: return base;
+        case 0x108: return -1.0f;
+        case 0x107: return base + 125.0f;
+        case 0x115: return base + 50.0f;
+        case 0x106: return base + 175.0f;
+        case 0x105: case 0x104: return base + 150.0f;
+        case 0x103: case 0x102: case 0x101: return base + 100.0f;
+        case 0x100: return base + 150.0f;
+        default: return -1.0f;
     }
-    if (charId == 0x128)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x125)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x124)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x123)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x122)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x121)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x120)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11f)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11e)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11d)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11c)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11b)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x11a)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x111)
-    {
-        return 375.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x110 || charId == 0x10f || charId == 0x10c || charId == 0x10b)
-    {
-        return -1.0f;
-    }
-    if (charId == 0x10d)
-    {
-        return 100.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x10a)
-    {
-        return 200.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x109)
-    {
-        return target->sphereRadius * target->scale;
-    }
-    if (charId == 0x108)
-    {
-        return -1.0f;
-    }
-    if (charId == 0x107)
-    {
-        return 125.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x115)
-    {
-        return 50.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x106)
-    {
-        return 175.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x105 || charId == 0x104)
-    {
-        return 150.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x103 || charId == 0x102 || charId == 0x101)
-    {
-        return 100.0f + target->sphereRadius * target->scale;
-    }
-    if (charId == 0x100)
-    {
-        return 150.0f + target->sphereRadius * target->scale;
-    }
-    return -1.0f;
 }
 
 /* Recovered battle-misc harvest: 0x002FCAA0-0x002FED10 */
@@ -2398,51 +2424,60 @@ u32 FUN_002fd220(BtlAction* action, BtlAction* target)
 }
 
 // FUN_002FD2E0 NONMATCHING
-
-
-u32 FUN_002fd2e0(int param_1,u16 param_2)
+u32 FUN_002fd2e0(int param_1, u16 param_2)
 {
-  u32 uVar1;
-  u64 uVar2;
-  u64 uVar3;
-  int iVar4;
-  u32 header;
+    int iVar4;
+    KwlnTask* task;
+    ScrData* scr;
 
-  iVar4 = (int)(uintptr_t)((u8*)gBtl + (u32)param_2 * 4);
-  if ((*(int *)(iVar4 + 0xb2c) == *(int *)(param_1 + 8)) &&
-      (*(int *)(iVar4 + 0xb38) == *(int *)(param_1 + 0x20))) {
-    uVar1 = 0;
-  }
-  else {
-    if (param_2 == 2) {
-      if (*(int *)((u8*)gBtl + 0xb24) == -1) {
+    iVar4 = (int)(uintptr_t)((u8*)gBtl + (u32)param_2 * 4);
+    if (*(s32*)(iVar4 + 0xb2c) == *(s32*)(param_1 + 8) &&
+        *(s32*)(iVar4 + 0xb38) == *(s32*)(param_1 + 0x20))
+    {
         return 0;
-      }
     }
-    else if (param_2 == 1) {
-      if (*(int *)((u8*)gBtl + 0xb20) == -1) {
+
+    switch (param_2)
+    {
+    case 0:
+        if (*(s32*)((u8*)gBtl + 0xb1c) != -1)
+        {
+            goto fd2_create;
+        }
         return 0;
-      }
+    case 1:
+        if (*(s32*)((u8*)gBtl + 0xb20) != -1)
+        {
+            goto fd2_create;
+        }
+        return 0;
+    case 2:
+        if (*(s32*)((u8*)gBtl + 0xb24) != -1)
+        {
+            goto fd2_create;
+        }
+        return 0;
+    default:
+        break;
     }
-    else if ((param_2 == 0) && (*(int *)((u8*)gBtl + 0xb1c) == -1)) {
-      return 0;
+
+fd2_create:
+    task = scrCreateTaskFromHeader_2(
+        (u32)(*(s32*)(*(u8**)((u8*)gBtl + 0xd18) + 0x20) - 1),
+        *(ScrHeader**)DAT_0069aa50);
+    FUN_0035c1a0(task, *(s32*)((u8*)gBtl + 0x148));
+    scr = (ScrData*)FUN_0035ae10(task);
+    if (scr->mesHandleIdx >= 0)
+    {
+        FUN_003a4220(scr->mesHandleIdx, 0, FUN_001778b0(1));
     }
-    __asm__ volatile ("lw %0, -0x4820($gp)" : "=r"(header));
-    uVar2 = FUN_0035bb40(*(int *)(*(int *)((u8*)gBtl + 0xd18) + 0x20) + -1,
-                         header);
-    FUN_0035c1a0(uVar2,*(u32 *)((u8*)gBtl + 0x148));
-    iVar4 = FUN_0035ae10(uVar2);
-    if (-1 < *(int *)(iVar4 + 0xcc)) {
-      uVar3 = FUN_001778b0(1);
-      FUN_003a4220(*(u32 *)(iVar4 + 0xcc),0,uVar3);
-    }
-    FUN_00195550(*(u32 *)((u8*)gBtl + 0xd18),uVar2);
-    *(int *)((u8*)gBtl + 0xb28) = (int)uVar2;
-    *(u32 *)((u32)param_2 * 4 + (u8*)gBtl + 0xb2c) = *(u32 *)(param_1 + 8);
-    *(u32 *)((u32)param_2 * 4 + (u8*)gBtl + 0xb38) = *(u32 *)(param_1 + 0x20);
-    uVar1 = 1;
-  }
-  return uVar1;
+    FUN_00195550(*(KwlnTask**)((u8*)gBtl + 0xd18), task);
+    *(KwlnTask**)((u8*)gBtl + 0xb28) = task;
+    *(s32*)((u8*)gBtl + (u32)param_2 * 4 + 0xb2c) =
+        *(s32*)(param_1 + 8);
+    *(s32*)((u8*)gBtl + (u32)param_2 * 4 + 0xb38) =
+        *(s32*)(param_1 + 0x20);
+    return 1;
 }
 
 // FUN_002FD4A0
@@ -2654,151 +2689,109 @@ void FUN_002fd820(void)
 
 // FUN_002FD8A0 NONMATCHING
 void FUN_002fd8a0(int param_1)
-
-
-
 {
+    u8* data;
 
-  short sVar1;
-
-  
-
-  switch(*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8)) {
-
-  case 0x1a7:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       ((sVar1 = *(short *)(*(int *)(param_1 + 0x30) + 0xa4), sVar1 == 0x10c || (sVar1 == 0x10b))))
-
+    switch (*(u16*)(*(u8**)(DAT_007ce3ec + 0xbbc) + 8))
     {
-
-      FUN_00289860();
-
+    case 0x1a7:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 &&
+                (*(u16*)(data + 0xa4) == 0x10c || *(u16*)(data + 0xa4) == 0x10b))
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1a9:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0x108)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1aa:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0x10f)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1ab:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0x110)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1ae:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0x126)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1af:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0xe9)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1b0:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1 && *(u16*)(data + 0xa4) == 0xea)
+            {
+                FUN_00289860();
+            }
+        }
+        break;
+    case 0x1b1:
+    case 0x1b2:
+    case 0x1b3:
+        if ((*(u16*)(param_1 + 0x1a) & 1) != 0)
+        {
+            data = *(u8**)(param_1 + 0x30);
+            if (data[0xa2] == 1)
+            {
+                switch (*(u16*)(data + 0xa4))
+                {
+                case 0xeb:
+                case 0xec:
+                case 0xed:
+                case 0xee:
+                case 0xef:
+                case 0xf0:
+                    FUN_00289860();
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        break;
+    default:
+        break;
     }
-
-    break;
-
-  case 0x1a9:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x108)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1aa:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x10f)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1ab:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x110)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1ae:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0x126)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1af:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0xe9)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1b0:
-
-    if ((((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-        (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) &&
-
-       (*(short *)(*(int *)(param_1 + 0x30) + 0xa4) == 0xea)) {
-
-      FUN_00289860();
-
-    }
-
-    break;
-
-  case 0x1b1:
-
-  case 0x1b2:
-
-  case 0x1b3:
-
-    if (((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-
-       (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01')) {
-
-      switch(*(u16 *)(*(int *)(param_1 + 0x30) + 0xa4)) {
-
-      case 0xeb:
-
-      case 0xec:
-
-      case 0xed:
-
-      case 0xee:
-
-      case 0xef:
-
-      case 0xf0:
-
-        FUN_00289860();
-
-      }
-
-    }
-
-  }
-
-  return;
-
 }
 
 // FUN_002FDB70
