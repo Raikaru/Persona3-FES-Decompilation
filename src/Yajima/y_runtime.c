@@ -18248,7 +18248,8 @@ u32 FUN_00458a80(char param_1,char param_2)
   return 0;
 }
 #pragma pop
-// FUN_00458B00 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_00458B00
 
 void FUN_00458b00(void)
 {
@@ -18258,11 +18259,12 @@ void FUN_00458b00(void)
   for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
     puVar1 = *(u8 **)((u8 *)DAT_0086e6a0_rows[iVar2] + 0x16c);
     puVar1 = *(u8 **)(puVar1 + 0x3c);
-    puVar1[6] = puVar1[6] + '\x01';
+    *(s8 *)(puVar1 + 6) = *(s8 *)(puVar1 + 6) + 1;
     *puVar1 = 2;
   }
   return;
 }
+#pragma opt_loop_invariants off
 #pragma opt_loop_invariants on
 // FUN_00458B60 NONMATCHING
 
