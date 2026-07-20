@@ -2322,22 +2322,33 @@ void func_001d38d0(KwlnTask* task, s32 multiplier)
     }
 }
 
-// FUN_001d39c0 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+// FUN_001d39c0
 void func_001d39c0(KwlnTask* task)
 {
     s32* work;
     RwV3d spawnPos;
+    RwV3d* spawnPosPtr;
     RwV3d position;
+    f32 x;
+    f32 y;
+    f32 z;
 
     work = (s32*)task->workData;
     func_00452010(&position);
-    spawnPos.x = position.x;
-    spawnPos.y = position.y;
-    spawnPos.z = position.z;
-    K_FldUnit_CreateReaper(1, &spawnPos);
+    spawnPosPtr = &spawnPos;
+    x = position.x;
+    y = position.y;
+    z = position.z;
+    spawnPos.x = x;
+    spawnPos.y = y;
+    spawnPos.z = z;
+    K_FldUnit_CreateReaper(1, spawnPosPtr);
     work[5]++;
     work[0] = 1;
 }
+#pragma pop
 
 // FUN_001d3a30
 void* func_001d3a30(KwlnTask* task)
