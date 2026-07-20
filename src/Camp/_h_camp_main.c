@@ -730,6 +730,11 @@ void* FUN_00134a10(KwlnTask* task)
             work[0] = 9;
         }
         break;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        break;
     }
     return KWLNTASK_CONTINUE;
 }
