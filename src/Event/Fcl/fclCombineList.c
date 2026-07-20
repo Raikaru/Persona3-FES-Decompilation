@@ -6,6 +6,8 @@ extern float DAT_007caf14;
 extern float DAT_007caffc;
 extern int DAT_006a6040[];
 extern int DAT_006a6510[];
+extern int DAT_006A6510[];
+extern int DAT_006A66D0[];
 extern int DAT_006a66d0[];
 extern u32 DAT_007ce688;
 extern u32 uGpffffb998;
@@ -23,8 +25,8 @@ int FUN_003dff80(int *param_1,int param_2);
 int FUN_003dffc0(int *param_1,int param_2,long param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
 int FUN_003e0260(u64 param_1,u64 param_2);
-int FUN_003e0330(u64 param_1,u64 param_2,int param_3,u16 param_4);
-int FUN_003e04e0(u64 param_1,u64 param_2,int param_3,u16 param_4);
+int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
+int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
 void FUN_003e0680(u64 param_1,code* param_2,u64 param_3);
 #pragma alias FUN_003e0680_32 FUN_003e0680
@@ -682,19 +684,22 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
 // FUN_003da570 NONMATCHING
 void fclCombineList003da570(FclList* param_1, s32 param_2)
 {
-    FclOwner* list;
     FclTaskLink* node;
+    FclNodeData* data;
+    s32 mode;
     s32 i;
     s32 scratch[8];
 
-    list = param_1->list;
+    node = param_1->list->links;
+    mode = param_1->mode;
     memset(scratch, 0, sizeof(scratch));
     memcpy(scratch, param_1->values, param_1->used * 4);
-    node = list->links;
     while (node != 0) {
-        FclNodeData* data = node->payload->data.node_data;
-        for (i = 0; i < param_1->capacity; i++) {
-            if (fclCombineList003da3e0(param_1, i) == (s32)data->selection_detail) break;
+        data = node->payload->data.node_data;
+        i = 0;
+        while (i < param_1->capacity &&
+               fclCombineList003da3e0(param_1, i) != (s32)data->selection_detail) {
+            i++;
         }
         if (i >= param_1->capacity) {
             scratch[param_1->used] = (s32)data->selection_detail;
@@ -3176,361 +3181,153 @@ int FUN_003e0260(u64 param_1,u64 param_2)
 }
 
 // FUN_003E0330 NONMATCHING
-
-
-int FUN_003e0330(u64 param_1,u64 param_2,int param_3,u16 param_4)
-
-
-
+int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
-
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int *piVar4;
-
-  int *piVar5;
-
-  int aiStack_1e0 [6];
-
-  u16 uStack_1c8;
-
-  int iStack_1c4;
-
-  u16 uStack_1ac;
-
-  int iStack_1a8;
-
-  u16 uStack_190;
-
-  int iStack_18c;
-
-  u16 uStack_174;
-
-  int iStack_170;
-
-  u16 uStack_158;
-
-  int iStack_154;
-
-  u16 uStack_13c;
-
-  int iStack_138;
-
-  u16 uStack_120;
-
-  int iStack_11c;
-
-  u16 uStack_104;
-
-  int iStack_100;
-
-  u16 uStack_e8;
-
-  int iStack_e4;
-
-  u16 uStack_cc;
-
-  int iStack_c8;
-
-  u16 uStack_b0;
-
-  int iStack_ac;
-
-  u16 uStack_94;
-
-  int iStack_90;
-
-  u16 uStack_78;
-
-  int iStack_74;
-
-  u16 uStack_5c;
-
-  int iStack_58;
-
-  u16 uStack_40;
-
-  int iStack_3c;
-
-  u16 uStack_24;
-
-  u8 auStack_20 [4];
-
-  int iStack_1c;
-
-  
-
-  piVar5 = DAT_006a6510;
-
-  piVar4 = aiStack_1e0;
-
-  iVar3 = 0x38;
-
-  do {
-
-    iVar2 = *piVar5;
-
-    iVar1 = piVar5[1];
-
-    piVar5 = piVar5 + 2;
-
-    iVar3 = iVar3 + -1;
-
-    *piVar4 = iVar2;
-
-    piVar4[1] = iVar1;
-
-    piVar4 = piVar4 + 2;
-
-  } while (0 < iVar3);
-
-  aiStack_1e0[0] = (int)param_2;
-
-  uStack_1c8 = param_4;
-
-  iStack_1c4 = aiStack_1e0[0];
-
-  uStack_1ac = param_4;
-
-  iStack_1a8 = aiStack_1e0[0];
-
-  uStack_190 = param_4;
-
-  iStack_18c = aiStack_1e0[0];
-
-  uStack_174 = param_4;
-
-  iStack_170 = aiStack_1e0[0];
-
-  uStack_158 = param_4;
-
-  iStack_154 = aiStack_1e0[0];
-
-  uStack_13c = param_4;
-
-  iStack_138 = aiStack_1e0[0];
-
-  uStack_120 = param_4;
-
-  iStack_11c = aiStack_1e0[0];
-
-  uStack_104 = param_4;
-
-  iStack_100 = aiStack_1e0[0];
-
-  uStack_e8 = param_4;
-
-  iStack_e4 = aiStack_1e0[0];
-
-  uStack_cc = param_4;
-
-  iStack_c8 = aiStack_1e0[0];
-
-  uStack_b0 = param_4;
-
-  iStack_ac = aiStack_1e0[0];
-
-  uStack_94 = param_4;
-
-  iStack_90 = aiStack_1e0[0];
-
-  uStack_78 = param_4;
-
-  iStack_74 = aiStack_1e0[0];
-
-  uStack_5c = param_4;
-
-  iStack_58 = aiStack_1e0[0];
-
-  uStack_40 = param_4;
-
-  iStack_3c = aiStack_1e0[0];
-
-  uStack_24 = param_4;
-
-  memcpy(auStack_20,aiStack_1e0 + aiStack_1e0[0] * 0xe + param_3 * 7,0x1c);
-
-  iVar3 = FUN_003dff80((int *)param_1,param_2);
-
-  if (iVar3 == 0) {
-
-    iVar2 = (s32)FUN_003c4910((FclNodeList *)*(int *)param_1,*(u16 *)(*(int *)param_1 + 0x10) + 1,(FclNodeValueStorage *)(iStack_1c + 0x38));
-
-    iVar3 = *(int *)(iVar2 + 0x14);
-
-    *(int *)(iVar3 + 4) = iVar2;
-
-    if (iStack_1c != 0) {
-
-      *(int *)(iVar3 + 0x34) = iVar3 + 0x38;
-
+    struct FclPair {
+        s32 first;
+        s32 second;
+    };
+    struct {
+        s32 table[0x70];
+        u8 result[0x1c];
+    } work;
+    struct FclPair *src;
+    struct FclPair *dst;
+    s32 count;
+    s32 result_word;
+    FclAnimationNode* node;
+    FclNodeLink* link;
+
+    src = (struct FclPair *)DAT_006A6510;
+    dst = (struct FclPair *)work.table;
+    count = 0x38;
+    do {
+        dst->first = src->first;
+        dst->second = src->second;
+        src++;
+        count--;
+        dst++;
+    } while (count > 0);
+    work.table[0] = param_2;
+    *(u16 *)((byte *)work.table + 0x18) = param_4;
+    *(s32 *)((byte *)work.table + 0x1c) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x34) = param_4;
+    *(s32 *)((byte *)work.table + 0x38) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x50) = param_4;
+    *(s32 *)((byte *)work.table + 0x54) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x6c) = param_4;
+    *(s32 *)((byte *)work.table + 0x70) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x88) = param_4;
+    *(s32 *)((byte *)work.table + 0x8c) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xa4) = param_4;
+    *(s32 *)((byte *)work.table + 0xa8) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xc0) = param_4;
+    *(s32 *)((byte *)work.table + 0xc4) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xdc) = param_4;
+    *(s32 *)((byte *)work.table + 0xe0) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xf8) = param_4;
+    *(s32 *)((byte *)work.table + 0xfc) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x114) = param_4;
+    *(s32 *)((byte *)work.table + 0x118) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x130) = param_4;
+    *(s32 *)((byte *)work.table + 0x134) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x14c) = param_4;
+    *(s32 *)((byte *)work.table + 0x150) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x168) = param_4;
+    *(s32 *)((byte *)work.table + 0x16c) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x184) = param_4;
+    *(s32 *)((byte *)work.table + 0x188) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x1a0) = param_4;
+    *(s32 *)((byte *)work.table + 0x1a4) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x1bc) = param_4;
+    memcpy(work.result,
+           work.table + work.table[0] * 0xe + param_3 * 7,
+           0x1c);
+    result_word = *(s32 *)(work.result + 4);
+    node = (FclAnimationNode *)FUN_003dff80(param_1, param_2);
+    if (node == 0) {
+        link = FUN_003c4910((FclNodeList *)*(int *)param_1,
+                            *(u16 *)(*(int *)param_1 + 0x10) + 1,
+                            (FclNodeValueStorage *)(result_word + 0x38));
+        node = link->payload;
+        node->link = link;
+        if (result_word != 0)
+            node->value_storage = &node->inline_storage;
+        node->field_0c = 0;
+        node->flags |= 4;
     }
-
-    *(u32 *)(iVar3 + 0xc) = 0;
-
-    *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) | 4;
-
-  }
-
-  *(u32 *)(iVar3 + 0xc) = 1;
-
-  *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) & 0xfffffffb;
-
-  fclCombineList003df100((FclAnimationNode *)iVar3,(FclAnimationResultRecord *)auStack_20);
-
-  return iVar3;
-
+    node->field_0c = 1;
+    node->flags &= 0xfffffffb;
+    fclCombineList003df100(node, (FclAnimationResultRecord *)work.result);
+    return (int)node;
 }
 
 // FUN_003E04E0 NONMATCHING
 
 
-int FUN_003e04e0(u64 param_1,u64 param_2,int param_3,u16 param_4)
-
-
-
+int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
+    struct FclPair {
+        s32 first;
+        s32 second;
+    };
+    struct {
+        s32 table[0x38];
+        u8 result[0x1c];
+    } work;
+    struct FclPair *src;
+    struct FclPair *dst;
+    s32 count;
+    s32 result_word;
+    FclAnimationNode* node;
+    FclNodeLink* link;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int *piVar4;
-
-  int *piVar5;
-
-  int aiStack_100 [6];
-
-  u16 uStack_e8;
-
-  int iStack_e4;
-
-  u16 uStack_cc;
-
-  int iStack_c8;
-
-  u16 uStack_b0;
-
-  int iStack_ac;
-
-  u16 uStack_94;
-
-  int iStack_90;
-
-  u16 uStack_78;
-
-  int iStack_74;
-
-  u16 uStack_5c;
-
-  int iStack_58;
-
-  u16 uStack_40;
-
-  int iStack_3c;
-
-  u16 uStack_24;
-
-  u8 auStack_20 [4];
-
-  int iStack_1c;
-
-  
-
-  piVar5 = DAT_006a66d0;
-
-  piVar4 = aiStack_100;
-
-  iVar3 = 0x1c;
-
-  do {
-
-    iVar2 = *piVar5;
-
-    iVar1 = piVar5[1];
-
-    piVar5 = piVar5 + 2;
-
-    iVar3 = iVar3 + -1;
-
-    *piVar4 = iVar2;
-
-    piVar4[1] = iVar1;
-
-    piVar4 = piVar4 + 2;
-
-  } while (0 < iVar3);
-
-  aiStack_100[0] = (int)param_2;
-
-  uStack_e8 = param_4;
-
-  iStack_e4 = aiStack_100[0];
-
-  uStack_cc = param_4;
-
-  iStack_c8 = aiStack_100[0];
-
-  uStack_b0 = param_4;
-
-  iStack_ac = aiStack_100[0];
-
-  uStack_94 = param_4;
-
-  iStack_90 = aiStack_100[0];
-
-  uStack_78 = param_4;
-
-  iStack_74 = aiStack_100[0];
-
-  uStack_5c = param_4;
-
-  iStack_58 = aiStack_100[0];
-
-  uStack_40 = param_4;
-
-  iStack_3c = aiStack_100[0];
-
-  uStack_24 = param_4;
-
-  memcpy(auStack_20,aiStack_100 + aiStack_100[0] * 0xe + param_3 * 7,0x1c);
-
-  iVar3 = FUN_003dff80((int *)param_1,param_2);
-
-  if (iVar3 == 0) {
-
-    iVar2 = (s32)FUN_003c4910((FclNodeList *)*(int *)param_1,*(u16 *)(*(int *)param_1 + 0x10) + 1,(FclNodeValueStorage *)(iStack_1c + 0x38));
-
-    iVar3 = *(int *)(iVar2 + 0x14);
-
-    *(int *)(iVar3 + 4) = iVar2;
-
-    if (iStack_1c != 0) {
-
-      *(int *)(iVar3 + 0x34) = iVar3 + 0x38;
-
+    src = (struct FclPair *)DAT_006A66D0;
+    dst = (struct FclPair *)work.table;
+    count = 0x1c;
+    do {
+        dst->first = src->first;
+        dst->second = src->second;
+        src++;
+        count--;
+        dst++;
+    } while (count > 0);
+    work.table[0] = param_2;
+    *(u16 *)((byte *)work.table + 0x18) = param_4;
+    *(s32 *)((byte *)work.table + 0x1c) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x34) = param_4;
+    *(s32 *)((byte *)work.table + 0x38) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x50) = param_4;
+    *(s32 *)((byte *)work.table + 0x54) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x6c) = param_4;
+    *(s32 *)((byte *)work.table + 0x70) = work.table[0];
+    *(u16 *)((byte *)work.table + 0x88) = param_4;
+    *(s32 *)((byte *)work.table + 0x8c) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xa4) = param_4;
+    *(s32 *)((byte *)work.table + 0xa8) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xc0) = param_4;
+    *(s32 *)((byte *)work.table + 0xc4) = work.table[0];
+    *(u16 *)((byte *)work.table + 0xdc) = param_4;
+    memcpy(work.result,
+           work.table + work.table[0] * 0xe + param_3 * 7,
+           0x1c);
+    result_word = *(s32 *)(work.result + 4);
+    node = (FclAnimationNode *)FUN_003dff80(param_1, param_2);
+    if (node == 0) {
+        link = FUN_003c4910((FclNodeList *)*(int *)param_1,
+                            *(u16 *)(*(int *)param_1 + 0x10) + 1,
+                            (FclNodeValueStorage *)(result_word + 0x38));
+        node = link->payload;
+        node->link = link;
+        if (result_word != 0)
+            node->value_storage = &node->inline_storage;
+        node->field_0c = 0;
+        node->flags |= 4;
     }
-
-    *(u32 *)(iVar3 + 0xc) = 0;
-
-    *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) | 4;
-
-  }
-
-  *(u32 *)(iVar3 + 0xc) = 1;
-
-  *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8) & 0xfffffffb;
-
-  fclCombineList003df100((FclAnimationNode *)iVar3,(FclAnimationResultRecord *)auStack_20);
-
-  return iVar3;
-
+    node->field_0c = 1;
+    node->flags &= 0xfffffffb;
+    fclCombineList003df100(node, (FclAnimationResultRecord *)work.result);
+    return (int)node;
 }
 
 // FUN_003E0650
