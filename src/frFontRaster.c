@@ -44,9 +44,9 @@ void FUN_003b35e0(int param_1);
 void FUN_003b3740(void);
 void FUN_003b3770(void);
 u64  FUN_003b38f0(float param_1,int param_2,int param_3,u32 param_4,short param_5,u32 param_6,  u32 param_7,u32 param_8);
-long FUN_003b3d60(u64 param_1,u64 param_2,u64 param_3);
-long FUN_003b3dd0(void);
-u32 FUN_003b3e00(u32 param_1,short param_2);
+u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3);
+u32 FUN_003b3dd0(u32 param_1,int param_2);
+u32 FUN_003b3e00(u32 param_1,int param_2);
 u32 FUN_003b3e60(u32 param_1,u32 param_2,u32 param_3);
 void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 /* Region call-cast macros */
@@ -406,94 +406,73 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 param_4,short param_5,u32
 }
 #define FUN_003b38f0(...) ((u64 (*)(...))FUN_003b38f0)(__VA_ARGS__)
 #undef FUN_003b3d60
-// FUN_003B3D60 NONMATCHING
+// FUN_003B3D60
 
 
-long FUN_003b3d60(u64 param_1,u64 param_2,u64 param_3)
-
-
-
+u32 FUN_003b3d60(u32 param_1,u32 param_2,u32 param_3)
 {
+  u32 result;
 
-  long lVar1;
-
-  
-
-  lVar1 = FUN_003b3e00(param_1,param_3);
-
-  if ((lVar1 == 0) && (lVar1 = FUN_003b3e60(param_1,param_2,param_3), lVar1 == 0)) {
-
-    lVar1 = 0;
-
+  result = FUN_003b3e00_raw(param_1,param_3);
+  if (result == 0) {
+    result = FUN_003b3e60_raw(param_1,param_2,param_3);
+    if (result == 0) {
+      result = 0;
+    }
   }
 
-  return lVar1;
-
+  return result;
 }
+
 #define FUN_003b3d60(...) ((long (*)(...))FUN_003b3d60)(__VA_ARGS__)
 #undef FUN_003b3dd0
-// FUN_003B3DD0 NONMATCHING
+// FUN_003B3DD0
 
 
-long FUN_003b3dd0(void)
-
-
-
+u32 FUN_003b3dd0(u32 param_1,int param_2)
 {
+  u32 result;
 
-  long lVar1;
-
-  
-
-  lVar1 = FUN_003b3e00();
-
-  if (lVar1 == 0) {
-
-    lVar1 = 0;
-
+  result = FUN_003b3e00_typed(param_1,param_2);
+  if (result == 0) {
+    result = 0;
   }
 
-  return lVar1;
-
+  return result;
 }
+
 #define FUN_003b3dd0(...) ((long (*)(...))FUN_003b3dd0)(__VA_ARGS__)
 #undef FUN_003b3e00
-// FUN_003B3E00 NONMATCHING
+// FUN_003B3E00
 
 
-u32 FUN_003b3e00(u32 param_1,short param_2)
-
-
-
+u32 FUN_003b3e00(u32 param_1,int param_2)
 {
+  u32 *entry;
 
-  u32 *puVar1;
-
-  
-
-  puVar1 = *(u32 **)(iGpffffb954 + 8);
-
-  while( 1 ) {
-
-    if (puVar1 == (u32 *)0x0) {
-
-      return (u32)0;
-
-    }
-
-    if ((puVar1[1] == param_1) && ((short)puVar1[2] == param_2)) break;
-
-    puVar1 = (u32 *)puVar1[6];
-
+  entry = *(u32 **)(iGpffffb954 + 8);
+  goto check;
+body:
+  if (entry[1] != param_1) {
+    goto next;
   }
-
-  *(u16 *)((int)puVar1 + 10) = 1;
-
-  *puVar1 = *puVar1 | 1;
-
-  return (u32)puVar1;
-
+  if (*(s16 *)((u8 *)entry + 8) != param_2) {
+    goto next;
+  }
+  *(u16 *)((u8 *)entry + 10) = 1;
+  entry[0] |= 1;
+  goto done;
+next:
+  entry = (u32 *)entry[6];
+check:
+  if (entry != 0) {
+    goto body;
+  }
+  entry = 0;
+done:
+  return (u32)entry;
 }
+
 #define FUN_003b3e00(...) ((u32 (*)(...))FUN_003b3e00)(__VA_ARGS__)
 #undef FUN_003b3e60
 #undef FUN_003b3f90
