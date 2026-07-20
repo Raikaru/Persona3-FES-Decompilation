@@ -5140,7 +5140,8 @@ void FUN_002b41e0(BtlCamera* camera)
     work.delta.x = work.current.pos.x - work.center.x;
     work.delta.y = work.current.pos.y - work.center.y;
     work.delta.z = work.current.pos.z - work.center.z;
-    halfDistance = RwV3dLength(&work.delta) * 0.5f;
+    halfDistance = RwV3dLength(&work.delta);
+    halfDistance = halfDistance * 0.5f;
     desiredDistance = (1.5f * radius) /
                       FUN_0052e930(0.5f * camera->fovRad);
 
