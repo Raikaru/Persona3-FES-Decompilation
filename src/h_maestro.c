@@ -366,18 +366,19 @@ void func_00110620(KwlnTask* task, s16 index, s16 param_3, s16 param_4, s16 para
 void func_00110650(void* param_1, s32 sourceIndex, s32 destinationIndex)
 {
     MaestroResourceWork* work;
-    f32 source[4];
-    f32 destination[4];
-    f32 uv0[2];
-    f32 uv1[2];
-    f32 uv2[2];
-    f32 uv3[2];
+    struct
+    {
+        u8 pad[0x10];
+        f32 destination[4];
+        f32 source[4];
+        f32 uv[8];
+    } locals;
     void* texture;
     s32* dimensions;
 
     work = (MaestroResourceWork*)param_1;
-    func_004ac120(work->parsedResources[sourceIndex], source);
-    func_004ac120(work->parsedResources[destinationIndex], destination);
+    func_004ac120(work->parsedResources[sourceIndex], locals.source);
+    func_004ac120(work->parsedResources[destinationIndex], locals.destination);
 
     texture = *(void**)((u8*)work->effectResources[destinationIndex] + 0x68);
     if (texture == NULL)
@@ -386,15 +387,15 @@ void func_00110650(void* param_1, s32 sourceIndex, s32 destinationIndex)
     }
 
     dimensions = *(s32**)texture;
-    uv0[0] = (source[0] - destination[0]) * (f32)dimensions[3] / source[2] / source[2];
-    uv0[1] = ((448.0f - (destination[1] + destination[3])) - (448.0f - (source[1] + source[3]))) * (f32)dimensions[4] / source[3] / source[3];
-    uv1[0] = ((source[0] + source[2]) - destination[0]) * (f32)dimensions[3] / source[2] / source[2] + 1.0f;
-    uv1[1] = uv0[1] + 1.0f;
-    uv2[0] = uv1[0];
-    uv2[1] = ((448.0f - destination[1]) - (448.0f - (source[1] + source[3]))) * (f32)dimensions[4] / source[3] / source[3];
-    uv3[0] = uv0[0];
-    uv3[1] = uv2[1];
-    func_004a6200(work->effectResources[destinationIndex], uv0, uv1, uv2, uv3);
+    locals.uv[0] = (locals.source[0] - locals.destination[0]) * (f32)dimensions[3] / locals.source[2] / locals.source[2];
+    locals.uv[1] = ((448.0f - (locals.destination[1] + locals.destination[3])) - (448.0f - (locals.source[1] + locals.source[3]))) * (f32)dimensions[4] / locals.source[3] / locals.source[3];
+    locals.uv[2] = ((locals.source[0] + locals.source[2]) - locals.destination[0]) * (f32)dimensions[3] / locals.source[2] / locals.source[2] + 1.0f;
+    locals.uv[3] = locals.uv[1] + 1.0f;
+    locals.uv[4] = locals.uv[2];
+    locals.uv[5] = ((448.0f - locals.destination[1]) - (448.0f - (locals.source[1] + locals.source[3]))) * (f32)dimensions[4] / locals.source[3] / locals.source[3];
+    locals.uv[6] = locals.uv[0];
+    locals.uv[7] = locals.uv[5];
+    func_004a6200(work->effectResources[destinationIndex], &locals.uv[0], &locals.uv[2], &locals.uv[4], &locals.uv[6]);
 }
 
 // FUN_001107D0 NONMATCHING
@@ -676,9 +677,12 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
 // FUN_00111260 NONMATCHING
 KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
 {
-    MaestroStreamWork* work;
     KwlnTask* task;
-    s32 i;
+    MaestroStreamWork* work;
+    s16 dim0;
+    s16 dim1;
+    s16 dim2;
+    s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -692,10 +696,14 @@ KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
         return NULL;
     }
 
-    for (i = 0; i < 4; i++)
-    {
-        work->dimensions[i] = Maestro_Dimension(dimensions, i);
-    }
+    dim0 = ((s16*)&dimensions)[0];
+    dim1 = ((s16*)&dimensions)[1];
+    dim2 = ((s16*)&dimensions)[2];
+    dim3 = ((s16*)&dimensions)[3];
+    work->dimensions[0] = dim0;
+    work->dimensions[1] = dim1;
+    work->dimensions[2] = dim2;
+    work->dimensions[3] = dim3;
     sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->cdvd = (HCdvd*)archive;
@@ -704,10 +712,14 @@ KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
 }
 
 // FUN_00111380 NONMATCHING
-KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u32 param_3, void* archive, s16 dim0, s16 dim1, s16 dim2, s16 dim3)
+KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* archive)
 {
-    MaestroStreamWork* work;
     KwlnTask* task;
+    MaestroStreamWork* work;
+    s16 dim0;
+    s16 dim1;
+    s16 dim2;
+    s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
     if (work == NULL)
@@ -721,16 +733,21 @@ KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u32 param_3, void* archi
         return NULL;
     }
 
+    dim0 = ((s16*)&dimensions)[0];
+    dim1 = ((s16*)&dimensions)[1];
+    dim2 = ((s16*)&dimensions)[2];
+    dim3 = ((s16*)&dimensions)[3];
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
     work->dimensions[2] = dim2;
     work->dimensions[3] = dim3;
-    sprintf(work->path, D_005D6B30, dim0, dim1, dim2, dim3);
+    sprintf(work->path, D_005D6B30, work->dimensions[0], work->dimensions[1], work->dimensions[2], work->dimensions[3]);
     strcpy(work->basePath, D_005D6B50);
     work->createCustomPriorityTask = true;
-    work->resourceTaskPriority = param_3;
+    work->resourceTaskPriority = priority;
     work->useCdvd = false;
     work->cdvd = (HCdvd*)archive;
+    *(volatile u32*)&work->useCdvd = false;
     return task;
 }
 
@@ -1134,8 +1151,10 @@ u32 H_Maestro_00111f30(s16* param_1)
 }
 
 extern void* D_00833a40[];
+#pragma alias D_00833a40_abs D_00833a40
+extern void* D_00833a40_abs[];
 
-// FUN_00111F50 NONMATCHING
+// FUN_00111F50
 void func_00111f50(void)
 {
     HCdvd* requests[3];
@@ -1147,12 +1166,18 @@ void func_00111f50(void)
     H_Cdvd_ReadSync(requests[1]);
     H_Cdvd_ReadSync(requests[2]);
 
-    D_00833a40[0] = func_00112370(D_005D6BD0);
-    D_00833a40[1] = func_00112370(D_005D6BF0);
-    D_00833a40[2] = func_00112370(D_005D6C10);
-    while (((MaestroBlobNode*)D_00833a40[0])->state != 5 || ((MaestroBlobNode*)D_00833a40[1])->state != 5 || ((MaestroBlobNode*)D_00833a40[2])->state != 5)
+    D_00833a40_abs[0] = func_00112370(D_005D6BD0);
+    D_00833a40_abs[1] = func_00112370(D_005D6BF0);
+    D_00833a40_abs[2] = func_00112370(D_005D6C10);
+    for (;;)
     {
         func_001120c0();
+        if (((MaestroBlobNode*)D_00833a40_abs[0])->state == 5 &&
+            ((MaestroBlobNode*)D_00833a40_abs[1])->state == 5 &&
+            ((MaestroBlobNode*)D_00833a40_abs[2])->state == 5)
+        {
+            break;
+        }
     }
 
     H_Cdvd_Destroy(requests[0]);
@@ -4326,8 +4351,7 @@ static void MaestroEffectStartStreams(KwlnTask* task, MaestroPerEffectWork* work
         ((u64)(u16)dimensions[0]) |
         ((u64)(u16)dimensions[1] << 16) |
         ((u64)(u16)dimensions[2] << 32) |
-        ((u64)(u16)dimensions[3] << 48), &work->recordData[0],
-        dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
+        ((u64)(u16)dimensions[3] << 48), &work->recordData[0]);
 }
 
 static void MaestroEffectSetReady(MaestroPerEffectWork* work)
