@@ -28,6 +28,12 @@ void FUN_0038f8c0(int param_1,u64 param_2,int param_3,u16 param_4);
 extern u32 FUN_00361350_direct(int param_1,u16 param_2,u64 param_3);
 #pragma alias FUN_0038f440_direct FUN_0038f440
 extern void FUN_0038f440_direct(int param_1,u32 param_2,int param_3);
+#pragma alias FUN_005225a8_evt FUN_005225a8
+extern void FUN_005225a8_evt(const char *format,...);
+#pragma alias FUN_004c0420_evt FUN_004c0420
+extern void FUN_004c0420_evt(void *data,int size,int count,int arg);
+#pragma alias FUN_00361ca0_evt FUN_00361ca0
+extern u32 FUN_00361ca0_evt(int param_1,u64 param_2);
 void FUN_0038fa10(int param_1,u64 param_2);
 void FUN_0038ffb0(int param_1,u64 param_2);
 void FUN_003902c0(int param_1,u64 param_2);
@@ -812,10 +818,10 @@ void FUN_0038e660(int param_1,int param_2,int param_3)
   int iVar4;
   int *piVar3;
   s16 *psVar2;
-  s16 c0;
-  s16 c1;
-  s16 c2;
   s16 c3;
+  s16 c2;
+  s16 c1;
+  s16 c0;
   struct {
     u16 uStack_40;
     u16 sStack_3e;
@@ -860,11 +866,8 @@ process_node:
       c1 = psVar2[5];
       c2 = psVar2[6];
       c3 = psVar2[7];
-      stack.sStack_2e = c3;
-      stack.sStack_30 = c2;
-      stack.sStack_32 = c1;
-      stack.sStack_34 = c0;
-      FUN_005225a8(DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
+      (stack.sStack_34 = c0, stack.sStack_32 = c1, stack.sStack_30 = c2, stack.sStack_2e = c3);
+      FUN_005225a8_evt((const char *)DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
       for (iVar1 = 0; iVar1 < 10; iVar1 = iVar1 + 1) {
         iVar2 = iVar1 * 4;
         iVar4 = (int)psVar2;
@@ -889,7 +892,7 @@ process_node:
       default:
         break;
       }
-      FUN_004c0420(&stack,0x3c,1,param_1);
+      FUN_004c0420_evt(&stack,0x3c,1,param_1);
     }
     }
 next_node:
@@ -2282,7 +2285,7 @@ void FUN_0038ffb0(int param_1,u64 param_2)
 
   u16 uVar2;
 
-  short sVar3;
+  u16 sVar3;
 
   u16 uVar4;
 
@@ -2296,13 +2299,14 @@ void FUN_0038ffb0(int param_1,u64 param_2)
 
   int iVar9;
 
-  int aiStack_8 [2];
+  u64 pad[3];
+  u32 aiStack_8[2];
 
   
 
   for (iVar9 = 0; iVar9 < 2; iVar9 = iVar9 + 1) {
 
-    iVar6 = FUN_00361ca0(0x23,param_2);
+    iVar6 = FUN_00361ca0_evt(0x23,param_2);
 
     aiStack_8[iVar9] = iVar6;
 
@@ -2358,9 +2362,7 @@ void FUN_0038ffb0(int param_1,u64 param_2)
 
       }
 
-      iVar6 = FUN_00361350(aiStack_8[*(char *)(iVar5 + 1)],uVar4,param_2);
-
-      iVar5 = iVar9 * 0x3c;
+      iVar6 = FUN_00361350_direct(aiStack_8[*(char *)(iVar5 + 1)],uVar4,param_2);
 
       iVar8 = *(int *)(param_1 + 0x9c) + iVar5;
 
@@ -3043,132 +3045,86 @@ void FUN_00390c90(int param_1,u64 param_2)
 
 {
 
-  u16 uVar1;
+  u16 event_type;
+  u16 event_id;
+  u32 token;
+  u8 *object;
+  u8 *record;
+  u32 *source_word;
+  int i;
+  int stride;
+  s16 value_0;
+  s16 value_1;
+  s16 value_2;
+  s16 value_3;
+  struct {
+    s16 value_0;
+    s16 value_1;
+    s16 value_2;
+    s16 value_3;
+  } stack;
 
-  u16 uVar2;
-
-  short sVar3;
-
-  u16 uVar4;
-
-  int iVar5;
-
-  u64 uVar6;
-
-  int iVar7;
-
-  u32 *puVar8;
-
-  int iVar9;
-
-  int iVar10;
-
-  
-
-  uVar6 = FUN_00361ca0(0x2f);
-
-  for (iVar10 = 0; iVar10 < *(int *)(param_1 + 0xb0); iVar10 = iVar10 + 1) {
-
-    iVar5 = *(int *)(*(int *)(param_1 + 0x84) + 0x14);
-
-    if (iVar5 == 4) {
-
-      sVar3 = *(short *)(*(int *)(param_1 + 0x98) + iVar10 * 0x10);
-
+  token = FUN_00361ca0(0x2f);
+  for (i = 0; i < *(int *)(param_1 + 0xb0); i = i + 1) {
+    if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
+      event_type = *(u16 *)(*(int *)(param_1 + 0x98) + i * 0x10);
     }
-
     else {
-
-      sVar3 = *(short *)(*(int *)(param_1 + 0x9c) + iVar10 * 0x3c);
-
+      stride = i * 0x10 - i;
+      event_type = *(u16 *)(*(int *)(param_1 + 0x9c) + stride * 4);
     }
-
-    if (sVar3 == 0x2f) {
-
-      if (iVar5 == 4) {
-
-        uVar4 = *(u16 *)(*(int *)(param_1 + 0x98) + iVar10 * 0x10 + 2);
-
-      }
-
-      else {
-
-        uVar4 = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar10 * 0x3c + 2);
-
-      }
-
-      iVar5 = FUN_00361350(uVar6,uVar4,param_2);
-
-      iVar7 = iVar10 * 0x3c;
-
-      iVar9 = *(int *)(param_1 + 0x9c) + iVar7;
-
-      uVar4 = *(u16 *)(iVar9 + 0xe);
-
-      uVar1 = *(u16 *)(iVar9 + 0x10);
-
-      uVar2 = *(u16 *)(iVar9 + 0x12);
-
-      *(u16 *)(iVar5 + 8) = *(u16 *)(iVar9 + 0xc);
-
-      *(u16 *)(iVar5 + 10) = uVar4;
-
-      *(u16 *)(iVar5 + 0xc) = uVar1;
-
-      *(u16 *)(iVar5 + 0xe) = uVar2;
-
+    if ((event_type & 0xffff) == 0x2f) {
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
-
-        puVar8 = (u32 *)(*(int *)(param_1 + 0x98) + iVar10 * 0x10 + 8);
-
+        event_id = *(u16 *)(*(int *)(param_1 + 0x98) + i * 0x10 + 2);
       }
-
       else {
-
-        puVar8 = (u32 *)(*(int *)(param_1 + 0x9c) + iVar7 + 0x14);
-
+        event_id = *(u16 *)(*(int *)(param_1 + 0x9c) + stride * 4 + 2);
       }
-
-      *(u32 *)(iVar5 + 0x10) = *puVar8;
-
+      object = (u8 *)FUN_00361350_direct(token,event_id,param_2);
+      stride = i * 0x3c;
+      record = (u8 *)*(int *)(param_1 + 0x9c) + stride;
+      value_0 = *(s16 *)(record + 0xc);
+      value_1 = *(s16 *)(record + 0xe);
+      value_2 = *(s16 *)(record + 0x10);
+      value_3 = *(s16 *)(record + 0x12);
+      stack.value_0 = value_0;
+      stack.value_1 = value_1;
+      stack.value_2 = value_2;
+      stack.value_3 = value_3;
+      *(s16 *)(object + 8) = stack.value_0;
+      *(s16 *)(object + 10) = stack.value_1;
+      *(s16 *)(object + 0xc) = stack.value_2;
+      *(s16 *)(object + 0xe) = stack.value_3;
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
-
-        iVar9 = *(int *)(param_1 + 0x98) + iVar10 * 0x10 + 8;
-
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x98) + i * 0x10 + 8);
       }
-
       else {
-
-        iVar9 = *(int *)(param_1 + 0x9c) + iVar7 + 0x14;
-
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x9c) + stride + 0x14);
       }
-
-      *(u32 *)(iVar5 + 0x14) = *(u32 *)(iVar9 + 4);
-
+      *(u32 *)(object + 0x10) = *source_word;
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
-
-        iVar7 = *(int *)(param_1 + 0x98) + iVar10 * 0x10 + 8;
-
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x98) + i * 0x10 + 8);
       }
-
       else {
-
-        iVar7 = *(int *)(param_1 + 0x9c) + iVar7 + 0x14;
-
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x9c) + stride + 0x14);
       }
-
-      *(u32 *)(iVar5 + 0x18) = *(u32 *)(iVar7 + 8);
-
-      if ((*(char *)(iVar5 + 0x10) == '\x01') &&
-
-         ((*(short *)(iVar5 + 0x1a) < 10 || (500 < *(short *)(iVar5 + 0x1a))))) {
-
-        *(u16 *)(iVar5 + 0x1a) = 100;
-
+      *(u32 *)(object + 0x14) = *(source_word + 1);
+      if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x98) + i * 0x10 + 8);
       }
-
+      else {
+        source_word = (u32 *)((u8 *)*(int *)(param_1 + 0x9c) + stride + 0x14);
+      }
+      *(u32 *)(object + 0x18) = *(source_word + 2);
+      if (*(s8 *)(object + 0x10) == 1) {
+        if (*(s16 *)(object + 0x1a) < 10) {
+          *(u16 *)(object + 0x1a) = 100;
+        }
+        else if (500 <= *(s16 *)(object + 0x1a)) {
+          *(u16 *)(object + 0x1a) = 100;
+        }
+      }
     }
-
   }
 
   return;
