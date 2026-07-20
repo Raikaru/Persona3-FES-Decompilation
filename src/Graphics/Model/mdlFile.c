@@ -219,7 +219,7 @@ extern void FUN_0034fcf0_i(int param_1);
 #pragma alias FUN_0034fcd0_i FUN_0034fcd0
 extern u32 FUN_0034fcd0_i(u32 param_1);
 u64 FUN_0031dff0(u64 param_1,u64 param_2);
-u64 FUN_0031e0b0(int *param_1);
+u32 FUN_0031e0b0(int *param_1);
 void FUN_0031e130(u64 param_1);
 void FUN_0031e1b0(int param_1);
 void FUN_0031e1e0(int param_1);
@@ -2048,10 +2048,10 @@ u64 FUN_0031dff0(u64 param_1,u64 param_2)
 
 
 
-// FUN_0031E0B0 NONMATCHING
+// FUN_0031E0B0
 
 
-u64 FUN_0031e0b0(int *param_1)
+u32 FUN_0031e0b0(int *param_1)
 
 
 
@@ -2059,13 +2059,13 @@ u64 FUN_0031e0b0(int *param_1)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
 
-  uVar2 = (*DAT_00960178)(8,0x40000);
+  uVar2 = (*DAT_00960178_abs)(8,0x40000);
 
-  FUN_00521408(uVar2,0,8);
+  FUN_00521408((void *)uVar2,0,8);
 
   iVar1 = *param_1;
 
