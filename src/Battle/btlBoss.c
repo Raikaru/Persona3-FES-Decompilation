@@ -7,6 +7,7 @@
 #include "Battle/battle.h"
 #include "h_cdvd.h"
 #include "Script/scrScriptProcess.h"
+#include "rw/rwcore.h"
 
 
 /* Recovered battle-misc support prelude */
@@ -61,10 +62,12 @@ extern u32 DAT_007ce50a;
 extern u32 DAT_007ce50c;
 extern u32 DAT_007ce4d0;
 extern u32 DAT_0069aa50[];
-extern code DAT_0096008c;
-extern code DAT_00960090;
-extern code DAT_00960094;
-extern code DAT_009600a0;
+extern f32 DAT_0096008c;
+extern void (*DAT_00960090)(...);
+extern void (*DAT_00960094)(...);
+extern void (*DAT_009600a0)(...);
+extern void* kwlnGetMainCamera(void);
+extern void* FUN_004e3630(void);
 
 extern const BtlCameraStateEntry gBtlBossCameraStateEntries[][BTLCAMERA_STATE_MAX];
 
@@ -717,7 +720,6 @@ block_1a0:
 block_1a1:
     if (unit->genus == 1)
     {
-        charId_1a1:
         if (unit->charId == 0x102 || unit->charId == 0x101)
         {
             return 1;
@@ -3066,238 +3068,103 @@ u32 FUN_002fdfe0(int param_1)
 
 
 
-
-
 // FUN_002FE0B0 NONMATCHING
-void FUN_002fe0b0(float param_1,u8 *param_2,u64 param_3,u64 param_4,
-
-                 u64 param_5)
-
-
-
+void FUN_002fe0b0(float param_1, u8* param_2, u64 param_3, u64 param_4,
+                  u64 param_5)
 {
-
-  int iVar1;
-
-  u64 uVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  float fStack_100;
-
-  float fStack_fc;
-
-  u32 uStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float fStack_e8;
-
-  float fStack_e0;
-
-  float fStack_dc;
-
-  float fStack_d8;
-
-  float fStack_d4;
-
-  float fStack_c0;
-
-  float fStack_bc;
-
-  u32 uStack_b8;
-
-  u32 uStack_b0;
-
-  float fStack_ac;
-
-  float fStack_a8;
-
-  float fStack_a0;
-
-  float fStack_9c;
-
-  float fStack_98;
-
-  float fStack_94;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  u32 uStack_78;
-
-  float fStack_70;
-
-  u32 uStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  float fStack_54;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  u32 uStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  float fStack_20;
-
-  float fStack_1c;
-
-  float fStack_18;
-
-  float fStack_14;
-
-  
-
-  iVar1 = FUN_00198590();
-
-  uVar2 = FUN_004e3630();
-
-  fStack_80 = 640.0;
-
-  fStack_70 = 640.0 / (float)*(int *)((int)uVar2 + 0xc);
-
-  fStack_bc = 448.0;
-
-  fStack_ac = 448.0 / (float)*(int *)((int)uVar2 + 0x10);
-
-  if (param_1 == 0.0) {
-
-    fVar3 = 0.0;
-
-    fVar4 = 0.0;
-
-  }
-
-  else {
-
-    fVar3 = param_1 * -320.0 + DAT_007caf5c + 0.0;
-
-    fVar4 = param_1 * -224.0 + DAT_007caf60 + 0.0;
-
-    fStack_80 = param_1 * 320.0 + DAT_007caf5c + 0.0;
-
-    fStack_bc = param_1 * 224.0 + DAT_007caf60 + 0.0;
-
-  }
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(0x14,1);
-
-  (*DAT_00960090)(0xe,0);
-
-  (*DAT_00960090)(6,0);
-
-  (*DAT_00960090)(8,0);
-
-  (*DAT_00960090)(9,param_5);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(1,uVar2);
-
-  FUN_004d7f60(2,param_3);
-
-  FUN_004d7f60(3,param_4);
-
-  fStack_e8 = 1.0 / *(float *)(iVar1 + 0x84);
-
-  uStack_f8 = (u32)(uintptr_t)DAT_0096008c;
-
-  fStack_e0 = (float)*param_2;
-
-  fStack_dc = (float)param_2[1];
-
-  fStack_d8 = (float)param_2[2];
-
-  fStack_d4 = (float)param_2[3];
-
-  uStack_f0 = 0;
-
-  uStack_ec = 0;
-
-  uStack_b8 = (u32)(uintptr_t)DAT_0096008c;
-
-  fStack_a0 = (float)*param_2;
-
-  fStack_9c = (float)param_2[1];
-
-  fStack_98 = (float)param_2[2];
-
-  fStack_94 = (float)param_2[3];
-
-  uStack_b0 = 0;
-
-  uStack_78 = (u32)(uintptr_t)DAT_0096008c;
-
-  fStack_60 = (float)*param_2;
-
-  fStack_5c = (float)param_2[1];
-
-  fStack_58 = (float)param_2[2];
-
-  fStack_54 = (float)param_2[3];
-
-  uStack_6c = 0;
-
-  uStack_38 = (u32)(uintptr_t)DAT_0096008c;
-
-  fStack_20 = (float)*param_2;
-
-  fStack_1c = (float)param_2[1];
-
-  fStack_18 = (float)param_2[2];
-
-  fStack_14 = (float)param_2[3];
-
-  fStack_100 = fVar3;
-
-  fStack_fc = fVar4;
-
-  fStack_c0 = fVar3;
-
-  fStack_a8 = fStack_e8;
-
-  fStack_7c = fVar4;
-
-  fStack_68 = fStack_e8;
-
-  fStack_40 = fStack_80;
-
-  fStack_3c = fStack_bc;
-
-  fStack_30 = fStack_70;
-
-  fStack_2c = fStack_ac;
-
-  fStack_28 = fStack_e8;
-
-  (*DAT_009600a0)(4,&fStack_100,4);
-
-  (*DAT_00960090)(1,0);
-
-  return;
-
+    u8* camera;
+    void* viewport;
+    void (**setState)(...);
+    u8 padding[0x10];
+    u8 vertices[4][0x40];
+    f32 scaleX;
+    f32 scaleY;
+    f32 left;
+    f32 top;
+    f32 right;
+    f32 bottom;
+    f32 recipZ;
+    u32 value;
+
+    camera = (u8*)kwlnGetMainCamera();
+    viewport = FUN_004e3630();
+    setState = &DAT_00960090;
+    scaleX = 640.0f / (f32)*(s32*)((u8*)viewport + 0xc);
+    scaleY = 448.0f / (f32)*(s32*)((u8*)viewport + 0x10);
+
+    left = 0.0f;
+    top = 0.0f;
+    right = 640.0f;
+    bottom = 448.0f;
+    if (param_1 != 0.0f)
+    {
+        left = param_1 * -320.0f + DAT_007caf5c;
+        top = param_1 * -224.0f + DAT_007caf60;
+        right = param_1 * 320.0f + DAT_007caf5c;
+        bottom = param_1 * 224.0f + DAT_007caf60;
+    }
+
+
+    (*setState)(7, 2);
+    (*setState)(0x14, 1);
+    (*setState)(0xe, 0);
+    (*setState)(6, 0);
+    (*setState)(8, 0);
+    (*setState)(9, param_5);
+    (*setState)(0xc, 1);
+    (*setState)(1, viewport);
+    FUN_004d7f60(2, param_3);
+    FUN_004d7f60(3, param_4);
+    recipZ = 1.0f / *(f32*)(camera + 0x84);
+
+    *(f32*)(vertices[0] + 0x00) = left;
+    *(f32*)(vertices[0] + 0x04) = top;
+    *(f32*)(vertices[0] + 0x08) = DAT_0096008c;
+    value = param_2[0]; *(f32*)(vertices[0] + 0x20) = (f32)value;
+    value = param_2[1]; *(f32*)(vertices[0] + 0x24) = (f32)value;
+    value = param_2[2]; *(f32*)(vertices[0] + 0x28) = (f32)value;
+    value = param_2[3]; *(f32*)(vertices[0] + 0x2c) = (f32)value;
+    *(f32*)(vertices[0] + 0x10) = 0.0f;
+    *(f32*)(vertices[0] + 0x14) = 0.0f;
+    *(f32*)(vertices[0] + 0x18) = recipZ;
+
+    *(f32*)(vertices[1] + 0x00) = left;
+    *(f32*)(vertices[1] + 0x04) = bottom;
+    *(f32*)(vertices[1] + 0x08) = DAT_0096008c;
+    value = param_2[0]; *(f32*)(vertices[1] + 0x20) = (f32)value;
+    value = param_2[1]; *(f32*)(vertices[1] + 0x24) = (f32)value;
+    value = param_2[2]; *(f32*)(vertices[1] + 0x28) = (f32)value;
+    value = param_2[3]; *(f32*)(vertices[1] + 0x2c) = (f32)value;
+    *(f32*)(vertices[1] + 0x10) = 0.0f;
+    *(f32*)(vertices[1] + 0x14) = scaleY;
+    *(f32*)(vertices[1] + 0x18) = recipZ;
+
+    *(f32*)(vertices[2] + 0x00) = right;
+    *(f32*)(vertices[2] + 0x04) = bottom;
+    *(f32*)(vertices[2] + 0x08) = DAT_0096008c;
+    value = param_2[0]; *(f32*)(vertices[2] + 0x20) = (f32)value;
+    value = param_2[1]; *(f32*)(vertices[2] + 0x24) = (f32)value;
+    value = param_2[2]; *(f32*)(vertices[2] + 0x28) = (f32)value;
+    value = param_2[3]; *(f32*)(vertices[2] + 0x2c) = (f32)value;
+    *(f32*)(vertices[2] + 0x10) = scaleX;
+    *(f32*)(vertices[2] + 0x14) = 0.0f;
+    *(f32*)(vertices[2] + 0x18) = recipZ;
+
+    *(f32*)(vertices[3] + 0x00) = right;
+    *(f32*)(vertices[3] + 0x04) = top;
+    *(f32*)(vertices[3] + 0x08) = DAT_0096008c;
+    value = param_2[0]; *(f32*)(vertices[3] + 0x20) = (f32)value;
+    value = param_2[1]; *(f32*)(vertices[3] + 0x24) = (f32)value;
+    value = param_2[2]; *(f32*)(vertices[3] + 0x28) = (f32)value;
+    value = param_2[3]; *(f32*)(vertices[3] + 0x2c) = (f32)value;
+    *(f32*)(vertices[3] + 0x10) = scaleX;
+    *(f32*)(vertices[3] + 0x14) = scaleY;
+    *(f32*)(vertices[3] + 0x18) = recipZ;
+
+    (*DAT_009600a0)(4, vertices, 4);
+    (*setState)(1, 0);
 }
+
 
 
 
