@@ -28,6 +28,11 @@ extern void func_001e1360(KwlnTask* task, s32 arg);
 extern f32 func_001e13c0(void);
 extern s32 func_001e1590(KwlnTask* rotateTask, const RwMatrix* matrix, f32 playerHeading, f32 inputHeading);
 extern f32 D_007CE230;
+extern RwV3d D_00683D78;
+extern f32 D_007CE82C;
+extern f32 D_007CE834;
+extern f32 D_007CAF38;
+
 extern volatile f32 DAT_007cb144;
 extern volatile f32 DAT_007caf24;
 
@@ -38,14 +43,10 @@ static f32 sVPadMoveSpeed;
 void* K_VPad_UpdateTask(KwlnTask* task)
 {
     VPadWork* work;
-    RwCamera* camera;
-    RwFrame* cameraFrame;
-    RwFrame* playerFrame;
     RwMatrix cameraMat;
     RwMatrix playerMat;
     RwMatrix rotateMat;
     RwV3d axis;
-    HPad* pad;
     u16 buttons;
     f32 moveX;
     f32 moveY;
@@ -57,304 +58,336 @@ void* K_VPad_UpdateTask(KwlnTask* task)
     f32 movement;
     f32 speed;
     s32 animation;
-    s32 heading;
     s32 rotated;
     s32 forceAnimation;
-    s32 stationary;
     s32 cameraInput;
 
     work = (VPadWork*)task->workData;
-    camera = kwlnGetMainCamera();
+    kwlnGetMainCamera();
 
     if (work->cameraTask != NULL && kwlnTaskExists(work->cameraTask) != true)
     {
         work->cameraTask = NULL;
-        work->cameraHeading = func_001a5aa0(func_004cb2f0((void*)camera->object.object.parent));
+        work->cameraHeading =
+            func_001a5aa0(func_004cb2f0(kwlnGetMainCamera()->object.object.parent));
     }
 
-    if (work->state == 5)
+    switch (work->state)
     {
-        return KWLNTASK_STOP;
-    }
-    if (work->state == 2)
-    {
-        if (kwlnTaskExists(work->eventTask) != true)
-        {
-            func_001e1300(K_Field_Get()->playerPadTask, 0);
-            K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
-            work->state = 1;
-        }
-        return KWLNTASK_CONTINUE;
-    }
-    if (work->state == 0)
-    {
-        work->state = 1;
-        return KWLNTASK_CONTINUE;
-    }
-    if (work->state != 1 || work->controlMode == 1 || work->controlFlags == 1)
-    {
-        return KWLNTASK_CONTINUE;
-    }
+        case 0:
+            work->state++;
+            return KWLNTASK_CONTINUE;
 
-    pad = &gPads[HPAD_PORT_1];
-    buttons = pad->btn[0].pressed;
-    moveY = (f32)(u8)pad->lstickY - 128.0f;
-    if ((buttons & HPAD_BTN_UP) != 0)
-    {
-        moveY = -128.0f;
-    }
-    else if ((buttons & HPAD_BTN_DOWN) != 0)
-    {
-        moveY = 128.0f;
-    }
-    moveX = (f32)(u8)pad->lstickX - 128.0f;
-    if ((buttons & HPAD_BTN_LEFT) != 0)
-    {
-        moveX = -128.0f;
-    }
-    else if ((buttons & HPAD_BTN_RIGHT) != 0)
-    {
-        moveX = 128.0f;
-    }
-    rightY = (f32)(u8)pad->rstickY - 128.0f;
-    rightX = (f32)(u8)pad->rstickX - 128.0f;
-    cameraInput = 0;
+        case 1:
+            break;
 
-    if ((buttons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 || rightX > 48.0f)
-    {
-        cameraInput = 1;
-        if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
-        {
-            if ((buttons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 &&
-                (buttons & HPAD_BTN_CIRCLE) != 0 && work->cameraTask == NULL)
+        case 2:
+            if (kwlnTaskExists(work->eventTask) != true)
             {
-                work->cameraHeading -= 90.0f;
-                if (work->cameraHeading < 0.0f)
-                {
-                    work->cameraHeading += 360.0f;
-                }
-                heading = (s32)work->cameraHeading;
-                work->cameraTask = func_001d6630(task, 10, heading);
-                /* Continue with movement processing after starting camera task. */
+                func_001e1300(K_Field_Get()->playerPadTask, 0);
+                K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
+                work->state = 1;
             }
-            else if ((buttons & (HPAD_BTN_R2 | HPAD_BTN_R1)) == 0 ||
-                     (buttons & HPAD_BTN_CIRCLE) == 0)
-            {
-                f32 cameraSpeed;
+            return KWLNTASK_CONTINUE;
 
-                cameraSpeed = -1.0f;
-                if (datGetFlag(0x189) == true)
-                {
-                    cameraSpeed = -cameraSpeed;
-                }
-                func_001d5e30(K_Field_Get()->cameraCtlTask, cameraSpeed);
-                /* Continue with movement processing after updating camera pan. */
-            }
-        }
+        case 5:
+            return KWLNTASK_STOP;
+
+        default:
+            return KWLNTASK_CONTINUE;
     }
-    else if ((buttons & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 || rightX < -48.0f)
+
     {
-        cameraInput = 1;
-        if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
+        u32 value;
+
+
+        if (work->controlMode == 1 || work->controlFlags == 1)
         {
-            if ((buttons & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 &&
-                (buttons & HPAD_BTN_CIRCLE) != 0 && work->cameraTask == NULL)
-            {
-                work->cameraHeading += 90.0f;
-                if (work->cameraHeading >= 360.0f)
-                {
-                    work->cameraHeading -= 360.0f;
-                }
-                heading = (s32)work->cameraHeading;
-                work->cameraTask = func_001d6630(task, 10, heading);
-                /* Continue with movement processing after starting camera task. */
-            }
-            else if ((buttons & (HPAD_BTN_L2 | HPAD_BTN_L1)) == 0 ||
-                     (buttons & HPAD_BTN_CIRCLE) == 0)
-            {
-                f32 cameraSpeed;
-
-                cameraSpeed = 1.0f;
-                if (datGetFlag(0x189) == true)
-                {
-                    cameraSpeed = -cameraSpeed;
-                }
-                func_001d5e30(K_Field_Get()->cameraCtlTask, cameraSpeed);
-                /* Continue with movement processing after updating camera pan. */
-            }
-        }
-    }
-    if (cameraInput == 0 && (buttons & HPAD_BTN_CROSS) == 0 &&
-        (pad->btn[0].justPressed & HPAD_BTN_CIRCLE) != 0 &&
-        K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
-    {
-        work->cameraTask = func_001d6270(task, 10, -1);
-        return KWLNTASK_CONTINUE;
-    }
-
-    stationary = moveX >= -48.0f && moveX <= 48.0f && moveY >= -48.0f && moveY <= 48.0f;
-
-    if (stationary)
-    {
-        forceAnimation = 0;
-        if (work->stationaryFrames < 4)
-        {
-            work->stationaryFrames++;
             return KWLNTASK_CONTINUE;
         }
-        if (work->moveTimer == 0)
-        {
-            datSetFlag(0xC35, false);
-            animation = func_001dde00(1);
-            mdlAnimSet(work->mdl, 0, (s16)animation, 4, 1);
-        }
-        work->moveTimer++;
-        if (work->moveTimer == 60)
-        {
-            datSetFlag(0xC35, true);
-            work->animState = 1;
-        }
-        else if (work->moveTimer >= 361)
-        {
-            if ((datGetBadStatusNoDown(1) & 0x80) == 0)
-            {
-                forceAnimation = 1;
-            }
-            work->moveTimer = 61;
-        }
-        if (mdlAnimGetId(work->mdl, 0) >= 6 && work->mdl->animSlots[0].anim.isAnimEnd == 1)
-        {
-            work->animState = 1;
-        }
-        if (work->animState == 1)
-        {
-            animation = func_001dde00(1);
-            mdlAnimSet(work->mdl, 0, (s16)animation, 8, 1);
-            work->animState = 0;
-        }
-        if (forceAnimation != 0)
-        {
-            animation = func_001df450();
-            mdlAnimSet(work->mdl, 0, (s16)animation, 8, 0);
-        }
-        return KWLNTASK_CONTINUE;
-    }
+        buttons = gPads[HPAD_PORT_1].btn[0].pressed;
 
-    cameraFrame = (RwFrame*)camera->object.object.parent;
-    cameraMat = *RwFrameGetLTM(cameraFrame);
-    playerFrame = mdlGetClumpFrame(work->mdl);
-    playerMat = *RwFrameGetLTM(playerFrame);
-    func_004c2fb0(&cameraMat, &cameraMat);
-    cameraHeading = -func_0052ea18(cameraMat.up.x, cameraMat.right.x) * 180.0f / 3.14159265f;
-    func_004c2fb0(&playerMat, &playerMat);
-    playerHeading = -func_0052ea18(playerMat.up.x, playerMat.right.x) * 180.0f / 3.14159265f;
-    inputHeading = func_001b02c0(0, 0);
-
-    if (cameraHeading < 0.0f)
-    {
-        cameraHeading += 360.0f;
-    }
-    if (playerHeading < 0.0f)
-    {
-        playerHeading += 360.0f;
-    }
-    axis.x = 0.0f;
-    axis.y = 1.0f;
-    axis.z = 0.0f;
-    rotateMat.right.x = 1.0f;
-    rotateMat.right.y = 0.0f;
-    rotateMat.right.z = 0.0f;
-    rotateMat.up.x = 0.0f;
-    rotateMat.up.y = 1.0f;
-    rotateMat.up.z = 0.0f;
-    rotateMat.at.x = 0.0f;
-    rotateMat.at.y = 0.0f;
-    rotateMat.at.z = 1.0f;
-    rotateMat.pos.x = 0.0f;
-    rotateMat.pos.y = 0.0f;
-    rotateMat.pos.z = 0.0f;
-    rotateMat.flags = 0x20003;
-    rotateMat.pad1 = 0;
-    rotateMat.pad2 = 0;
-    rotateMat.pad3 = 0;
-    RwMatrixRotate(&rotateMat, &axis, cameraHeading, rwCOMBINEPOSTCONCAT);
-    RwMatrixRotate(&rotateMat, &axis, inputHeading, rwCOMBINEPOSTCONCAT);
-    rotated = func_001e1590(work->rotateTask, &rotateMat, playerHeading, cameraHeading + inputHeading);
-    if (K_VPad_IsRotating(work->rotateTask) == true)
-    {
-        sVPadMoveSpeed = 0.0f;
-        if (rotated != 0)
+        value = (u8)gPads[HPAD_PORT_1].lstickY;
+        if (value >= 0)
         {
-            work->moveTimer = 0;
-            work->stationaryFrames = 0;
-        }
-        return KWLNTASK_CONTINUE;
-    }
-    K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &rotateMat);
-
-    if (moveX >= -48.0f && moveX <= 48.0f)
-    {
-        moveX = 0.0f;
-    }
-    if (moveY >= -48.0f && moveY <= 48.0f)
-    {
-        moveY = 0.0f;
-    }
-    movement = sqrtf(moveX * moveX + moveY * moveY);
-
-    if (movement > 128.0f)
-    {
-        movement = 128.0f;
-    }
-    if (movement < 125.0f)
-    {
-        speed = 13.0f;
-    }
-    else
-    {
-        speed = 13.0f * sinf((movement / 128.0f) * (3.14159265f * 0.5f));
-    }
-    K_FldFrame_CtlMoveForward(speed, work->collisCtlTask);
-    sVPadMoveSpeed = speed;
-
-    if (rotated == 0)
-    {
-        if (speed <= 13.0f)
-        {
-            animation = func_001de630(1);
+            moveY = (f32)value;
         }
         else
         {
-            animation = func_001ded40(1);
+            value = (value >> 1) | (value & 1);
+            moveY = (f32)value;
+            moveY += moveY;
         }
-        if (work->animId != animation)
+        moveY -= 128.0f;
+        if ((buttons & HPAD_BTN_UP) != 0)
         {
-            if (work->animDebounce < 2)
+            moveY = -128.0f;
+        }
+        else if ((buttons & HPAD_BTN_DOWN) != 0)
+        {
+            moveY = 128.0f;
+        }
+
+        value = (u8)gPads[HPAD_PORT_1].lstickX;
+        if (value >= 0)
+        {
+            moveX = (f32)value;
+        }
+        else
+        {
+            value = (value >> 1) | (value & 1);
+            moveX = (f32)value;
+            moveX += moveX;
+        }
+        moveX -= 128.0f;
+        if ((buttons & HPAD_BTN_LEFT) != 0)
+        {
+            moveX = -128.0f;
+        }
+        else if ((buttons & HPAD_BTN_RIGHT) != 0)
+        {
+            moveX = 128.0f;
+        }
+
+        value = (u8)gPads[HPAD_PORT_1].rstickY;
+        if (value >= 0)
+        {
+            rightY = (f32)value;
+        }
+        else
+        {
+            value = (value >> 1) | (value & 1);
+            rightY = (f32)value;
+            rightY += rightY;
+        }
+        rightY -= 128.0f;
+        value = (u8)gPads[HPAD_PORT_1].rstickX;
+        if (value >= 0)
+        {
+            rightX = (f32)value;
+        }
+        else
+        {
+            value = (value >> 1) | (value & 1);
+            rightX = (f32)value;
+            rightX += rightX;
+        }
+        rightX -= 128.0f;
+        cameraInput = 0;
+
+        if ((buttons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 || rightX > 48.0f)
+        {
+            cameraInput = 1;
+            if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
             {
-                work->animDebounce++;
+                if ((buttons & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 &&
+                    (buttons & HPAD_BTN_CIRCLE) != 0)
+                {
+                    if (work->cameraTask == NULL)
+                    {
+                        work->cameraHeading -= 90.0f;
+                        if (work->cameraHeading < 0.0f)
+                        {
+                            work->cameraHeading += 360.0f;
+                        }
+                        work->cameraTask =
+                            func_001d6630(task, 10, (s32)work->cameraHeading);
+                    }
+                }
+                else
+                {
+                    speed = -D_007CE82C;
+                    if (datGetFlag(0x189) == true)
+                    {
+                        speed = -speed;
+                    }
+                    func_001d5e30(K_Field_Get()->cameraCtlTask, speed);
+                }
+            }
+        }
+        else if ((buttons & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 || rightX < -48.0f)
+        {
+            cameraInput = 1;
+            if (K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
+            {
+                if ((buttons & (HPAD_BTN_L2 | HPAD_BTN_L1)) != 0 &&
+                    (buttons & HPAD_BTN_CIRCLE) != 0)
+                {
+                    if (work->cameraTask == NULL)
+                    {
+                        work->cameraHeading += 90.0f;
+                        if (work->cameraHeading >= 360.0f)
+                        {
+                            work->cameraHeading -= 360.0f;
+                        }
+                        work->cameraTask =
+                            func_001d6630(task, 10, (s32)work->cameraHeading);
+                    }
+                }
+                else
+                {
+                    speed = D_007CE82C;
+                    if (datGetFlag(0x189) == true)
+                    {
+                        speed = -speed;
+                    }
+                    func_001d5e30(K_Field_Get()->cameraCtlTask, speed);
+                }
+            }
+        }
+
+        if (cameraInput == 0 && (buttons & HPAD_BTN_CROSS) == 0 &&
+            (gPads[HPAD_PORT_1].btn[0].justPressed & HPAD_BTN_CIRCLE) != 0 &&
+            K_FldCamera_GetType(K_Field_Get()->cameraCtlTask) == FLDCAMERA_TYPE_0)
+        {
+            work->cameraTask = func_001d6270(task, 10, -1);
+            return KWLNTASK_CONTINUE;
+        }
+
+        if (moveY < -48.0f || moveY > 48.0f ||
+            moveX < -48.0f || moveX > 48.0f)
+        {
+            cameraMat =
+                ((RwFrame*)kwlnGetMainCamera()->object.object.parent)->modelling;
+            playerMat = mdlGetClumpFrame(work->mdl)->modelling;
+            func_004c2fb0(&cameraMat, &cameraMat);
+            cameraHeading =
+                180.0f * -func_0052ea18(cameraMat.right.z, cameraMat.right.x) /
+                D_007CAF38;
+            func_004c2fb0(&playerMat, &playerMat);
+            playerHeading =
+                180.0f * -func_0052ea18(playerMat.right.z, playerMat.right.x) /
+                D_007CAF38;
+
+            if (moveX >= -48.0f && moveX <= 48.0f)
+            {
+                moveX = 0.0f;
+            }
+            if (moveY >= -48.0f && moveY <= 48.0f)
+            {
+                moveY = 0.0f;
+            }
+            if (cameraHeading < 0.0f)
+            {
+                cameraHeading += 360.0f;
+            }
+            if (playerHeading < 0.0f)
+            {
+                playerHeading += 360.0f;
+            }
+            if (K_VPad_IsRotating(work->rotateTask) == true)
+            {
+                return KWLNTASK_CONTINUE;
+            }
+            axis = D_00683D78;
+            inputHeading = func_001b02c0(0, 0);
+            RwMatrixSetIdentity(&rotateMat);
+            RwMatrixRotate(&rotateMat, &axis, cameraHeading, rwCOMBINEPRECONCAT);
+            RwMatrixRotate(&rotateMat, &axis, inputHeading, rwCOMBINEPRECONCAT);
+            rotated = func_001e1590(work->rotateTask, &rotateMat, playerHeading,
+                                    cameraHeading + inputHeading);
+            speed = 0.0f;
+            if (K_VPad_IsRotating(work->rotateTask) == false)
+            {
+                K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &rotateMat);
+                movement = RwV3dLength((RwV3d*)&moveX);
+                if (movement > 128.0f)
+                {
+                    movement = 128.0f;
+                }
+                if (movement < 125.0f)
+                {
+                    speed = 13.0f;
+                }
+                else
+                {
+                    speed = 128.0f * D_007CE834 *
+                            sinf((D_007CAF38 * 0.5f * movement) / 128.0f);
+                }
+                K_FldFrame_CtlMoveForward(speed, work->collisCtlTask);
+            }
+            sVPadMoveSpeed = speed;
+            if (rotated == 0)
+            {
+                if (speed <= 13.0f)
+                {
+                    animation = func_001de630(1);
+                }
+                else
+                {
+                    animation = func_001ded40(1);
+                }
+                if (work->animId != animation)
+                {
+                    if (work->animDebounce < 2)
+                    {
+                        work->animDebounce++;
+                    }
+                    else
+                    {
+                        work->animState = 0;
+                        work->animId = (s16)animation;
+                        work->animDebounce = 0;
+                    }
+                }
+                if (work->animState == 0)
+                {
+                    mdlAnimSet(work->mdl, 0, (s16)animation, 6, 1);
+                }
+            }
+            work->moveTimer = 0;
+            work->stationaryFrames = 0;
+        }
+        else
+        {
+            forceAnimation = 0;
+            if (work->stationaryFrames < 4)
+            {
+                work->stationaryFrames++;
             }
             else
             {
-                work->animState = 0;
-                work->animId = (s16)animation;
-                work->animDebounce = 0;
+                if (work->moveTimer == 0)
+                {
+                    datSetFlag(0xC35, false);
+                    animation = func_001dde00(1);
+                    mdlAnimSet(work->mdl, 0, (s16)animation, 4, 1);
+                }
+                work->moveTimer++;
+                if (work->moveTimer == 60)
+                {
+                    datSetFlag(0xC35, true);
+                    work->animState = 1;
+                }
+                else if (work->moveTimer >= 361)
+                {
+                    if ((datGetBadStatusNoDown(1) & 0x80) == 0)
+                    {
+                        forceAnimation = 1;
+                    }
+                    work->moveTimer = 61;
+                }
+                if (mdlAnimGetId(work->mdl, 0) >= 6 &&
+                    work->mdl->animSlots[0].anim.isAnimEnd == 1)
+                {
+                    work->animState = 1;
+                }
+                if (work->animState == 1)
+                {
+                    animation = func_001dde00(1);
+                    mdlAnimSet(work->mdl, 0, (s16)animation, 8, 1);
+                    work->animState = 0;
+                }
+                if (forceAnimation != 0)
+                {
+                    animation = func_001df450();
+                    mdlAnimSet(work->mdl, 0, (s16)animation, 8, 0);
+                }
             }
         }
-        if (work->animState == 0)
-        {
-            mdlAnimSet(work->mdl, 0, (s16)animation, 6, 1);
-            work->animState = 1;
-        }
-        work->moveTimer = 0;
-        work->stationaryFrames = 0;
-    }
-    else
-    {
-        work->moveTimer = 0;
-        work->stationaryFrames = 0;
-    }
+        return KWLNTASK_CONTINUE;
 
-    return KWLNTASK_CONTINUE;
+    }
 }
 
 // FUN_001e1200
