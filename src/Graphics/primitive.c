@@ -8,7 +8,7 @@
 // 8 bytes
 typedef struct 
 {
-    u32 renderState; // 0x00
+    RwRenderState renderState; // 0x00
     u32 val;         // 0x04
 } PrimRenderState;
 
@@ -42,10 +42,11 @@ static const RwRGBA sAxisColors[3] =
 static const RwV3d sSphereRotAxis = {1.0f, 0.0f, 0.0f}; // 0069cec8
 
 
-// FUN_00358a30 NONMATCHING
+// FUN_00358a30
 void primQuad3D(const RwV3d* pos, const RwRGBA* col, f32 size, u32 saveAndRestoreRenderState)
 {
     u32 i;
+    u32 j;
     const PrimRenderState* currRenderState;
     u32* currSavedRenderState;
     RwRenderStateSetFunc* setRenderState;
@@ -139,15 +140,15 @@ void primQuad3D(const RwV3d* pos, const RwRGBA* col, f32 size, u32 saveAndRestor
 
         if (saveAndRestoreRenderState)
         {
-            for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
+            for (j = 0; j < PRIM_RENDERSTATE_COUNT; j++)
             {
-                RwRenderStateSet(sRenderStates[i].renderState, savedRenderStates[i]);
+                RwRenderStateSet(sRenderStates[j].renderState, savedRenderStates[j]);
             }
         }
     }
 }
 
-// FUN_00359110 NONMATCHING
+// FUN_00359110
 void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;
@@ -194,13 +195,12 @@ void primLine3D(const RwV3d* startPos, const RwV3d* endPos, const RwRGBA* color,
 }
 
 #pragma optimization_level 1
-// FUN_00359380 NONMATCHING
+// FUN_00359380
 void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderState)
 {
     u32 i;
     const PrimRenderState* currRenderState;
     u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
-    u32* currSavedRenderState;
     u32 j;
     const RwV3d* currAxisDir;
     RwV3d finalAxisPoint;
@@ -211,8 +211,7 @@ void primAxisLine3D(const RwMatrix* mat, f32 length, u32 saveAndRestoreRenderSta
         for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
         {
             currRenderState = &sRenderStates[i];
-            currSavedRenderState = &savedRenderStates[i];
-            RwRenderStateGet(currRenderState->renderState, currSavedRenderState);
+            RwRenderStateGet(currRenderState->renderState, &savedRenderStates[i]);
             RwRenderStateSet(currRenderState->renderState, currRenderState->val);
         }
 
