@@ -160,30 +160,32 @@ static u32* sflCameraFindNode(u16 id)
     return NULL;
 }
 
-// FUN_0024D4C0 NONMATCHING
+static inline u32* sflCameraFindRequiredNode(u32* node, s32 id)
+{
+    u32 key;
+
+    key = (u16)id;
+    while (node != NULL) {
+        if (*(u16*)((u8*)node + 4) == key) {
+            return node;
+        }
+        node = (u32*)node[3];
+    }
+    K_ASSERT(0, 0xaf);
+    return NULL;
+}
+
+// FUN_0024D4C0
 void func_0024d4c0(s32 id)
 {
     u32* work;
     u32* node;
-    u32 key;
 
     K_ASSERT(sSflCamera != NULL, 0x3b);
     work = sSflCamera;
     K_ASSERT(work != NULL, 0x3b);
     node = (u32*)sSflCamera[1];
-    key = id & 0xffff;
-    while (node != NULL) {
-        switch (*(u16*)((u8*)node + 4) != key) {
-        case 0:
-            goto found;
-        default:
-            node = (u32*)node[3];
-            break;
-        }
-    }
-    K_ASSERT(0, 0xaf);
-    node = NULL;
-found:
+    node = sflCameraFindRequiredNode(node, id);
     *(u16*)((u8*)work + 0xc) = (u16)id;
     *work |= 2;
     switch (node[0xb]) {
