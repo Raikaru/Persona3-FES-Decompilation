@@ -2008,34 +2008,34 @@ s16 func_0016e190(s32 socialLink)
 // FUN_0016e2b0 NONMATCHING
 void func_0016e2b0(s16 socialLink, s32 amount)
 {
-    s8 level = gGlobalWork.heroStatus.socialLinkStat[socialLink];
+    s8 level;
     u32* progress;
+    u32* table;
+    u32 personaId;
 
-    if (!func_0016dce0(socialLink) || level <= 0 || level >= 10)
+    level = ((s8*)&gGlobalWork)[socialLink + 0x76];
+    if (socialLink < 0 || socialLink >= 30)
     {
         return;
     }
-
+    if (level <= 0 || level >= 10)
     {
-        u32 personaId;
-        if (func_0016dbc0(socialLink, &personaId))
-        {
-            amount = (s32)((f32)amount * FUN_003BDB80());
-        }
+        return;
     }
-
-    progress = (u32*)(gGlobalWork.heroStatus.socialLinkData + socialLink * 4);
+    if (func_0016dbc0(socialLink, &personaId))
+    {
+        amount = (s32)((f32)amount * FUN_003BDB80());
+    }
+    progress = (u32*)((u8*)&gGlobalWork + 0x94 + socialLink * 4);
     *progress += amount;
-
+    table = (u32*)FUN_003BDD90();
+    K_ASSERT(table != NULL, 1495);
+    if (*progress < table[(u8)level - 1])
     {
-        u8* table = FUN_003BDD90();
-        K_ASSERT(table != NULL, 1495);
-        if (*progress >= ((u32*)table)[(u8)level - 1])
-        {
-            *progress = ((u32*)table)[(u8)level - 1];
-            FUN_001723A0(socialLink, level + 1, true);
-        }
+        return;
     }
+    *progress = table[(u8)level - 1];
+    FUN_001723A0(socialLink, level + 1, true);
 }
 
 #pragma opt_propagation off
