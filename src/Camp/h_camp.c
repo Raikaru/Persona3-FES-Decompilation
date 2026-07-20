@@ -12,6 +12,15 @@ extern void func_004d0f00();
 extern void func_001958a0();
 extern void func_001957b0();
 extern void func_00123640();
+typedef struct CampVec2
+{
+    f32 x;
+    f32 y;
+} CampVec2;
+#pragma alias h_campStatusDrawScreen_typed func_00123640
+extern void h_campStatusDrawScreen_typed(CampVec2 position, CampVec2 otherPosition,
+                                          f32 alpha, s16 pcId, s32 mode,
+                                          s32 phase, s32 fade);
 extern f32 fGpffff839c;
 extern f32 fGpffff80c4;
 extern f32 fGpffff8088;
@@ -3200,41 +3209,172 @@ u32 h_campRequestMenuTransition(KwlnTask* task, u32 command)
 void* h_campUpdatePanelTransition(KwlnTask* task)
 {
     CampPanelTransitionWork* work;
-    s32 alpha;
+    CampVec2 pos;
 
     work = task->workData;
     switch (work->state) {
     case 0:
         if (work->transitionComplete != 0) {
-            work->frame = 0;
-            work->state = 2;
+            pos.x = 30.0f;
+            pos.y = 219.0f;
+            h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
         }
+        break;
+    case 1:
+        work->state = 2;
+        work->timer = 0;
         break;
     case 2:
-        work->frame++;
-        if (work->frame >= 0x15) {
-            work->frame = 0;
+        work->timer++;
+        if (work->timer == 0x15) {
             work->state = 0;
+            pos.x = 30.0f;
+            pos.y = 219.0f;
+            h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 0, work->timer, 0);
+            work->transitionComplete = 1;
         }
         break;
+    case 3:
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
+        work->state = 4;
+        break;
+    case 4:
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
+        work->state = 0;
+        work->transitionComplete = 1;
+        break;
+    case 5:
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
+        work->state = 6;
+        work->timer = 0;
+        break;
     case 6:
-        work->frame++;
-        alpha = 255 - (work->frame * 255 / 8);
-        if (alpha < 0) {
-            alpha = 0;
+    {
+        s32 timer;
+        s32 fade;
+
+        work->timer++;
+        timer = work->timer;
+        if (timer == 8) {
             work->transitionComplete = 0;
             work->state = 0;
         }
+        pos.x = 30.0f - (f32)((timer * 500) / 8);
+        pos.y = 219.0f;
+        fade = (timer * 255) / 8;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
-    case 10:
-        work->frame++;
-        if (work->frame >= 0x14) {
+    }
+    case 7:
+        work->timer = 0;
+        work->state = 8;
+        break;
+    case 8:
+    {
+        s32 timer;
+        s32 fade;
+
+        work->timer++;
+        timer = work->timer;
+        if (timer == 8) {
             work->transitionComplete = 1;
             work->state = 0;
         }
+        pos.x = 30.0f - (f32)(500 - (timer * 500) / 8);
+        pos.y = 219.0f;
+        fade = 255 - (timer * 255) / 8;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
-    default:
+    }
+    case 9:
+        work->state = 10;
+        work->timer = 0;
         break;
+    case 10:
+    {
+        s32 timer;
+        s32 fade;
+
+        work->timer++;
+        timer = work->timer;
+        if (timer == 0x14) {
+            work->transitionComplete = 1;
+            work->state = 0;
+        }
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        fade = 255 - (timer * 255) / 0x14;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
+        break;
+    }
+    case 11:
+        if (work->transitionComplete == 0) {
+            work->state = 0;
+            break;
+        }
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
+        work->timer = 0;
+        work->state = 12;
+        break;
+    case 12:
+    {
+        s32 timer;
+        s32 fade;
+
+        work->timer++;
+        timer = work->timer;
+        if (timer == 0xa) {
+            work->transitionComplete = 0;
+            work->state = 0;
+        }
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        fade = (timer * 255) / 0xa;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
+        break;
+    }
+    case 13:
+        if (work->transitionComplete == 0) {
+            work->state = 0;
+            break;
+        }
+        pos.x = 30.0f;
+        pos.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, 0);
+        work->timer = 0;
+        work->state = 14;
+        break;
+    case 14:
+    {
+        s32 timer;
+        CampVec2 other;
+
+        work->timer++;
+        timer = work->timer;
+        if (timer == 8) {
+            work->transitionComplete = 0;
+            work->state = 0;
+            break;
+        }
+        if (timer < 3) {
+            pos.x = 30.0f;
+        } else {
+            pos.x = 30.0f + (f32)(((timer - 3) * 84) / 5);
+        }
+        pos.y = 219.0f;
+        other.x = 30.0f;
+        other.y = 219.0f;
+        h_campStatusDrawScreen_typed(pos, other, 100.0f, work->drawId, 1, 0, 0);
+        break;
+    }
     }
     return KWLNTASK_CONTINUE;
 }
