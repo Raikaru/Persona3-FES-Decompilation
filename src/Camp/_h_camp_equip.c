@@ -30,8 +30,10 @@ extern s32 FUN_00115bc0();
 extern void FUN_00115980();
 extern void FUN_001127d0();
 extern s32 FUN_0011e380();
-extern u16 func_001712d0(s16 id);
+extern u32 func_001712d0(s16 id);
 extern u32 func_00171250(s16 id);
+#pragma alias campEquipComparatorCall FUN_00131000
+extern int campEquipComparatorCall(const void* left, const void* right);
 extern void qsort(void* base, u32 count, u32 width,
                   int (*compare)(const void*, const void*));
 extern s32 FUN_0010a4e0();
@@ -162,46 +164,55 @@ int FUN_00131000(const void* left, const void* right)
     return 1;
 }
 
-// FUN_00131090 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_00131090
 s32 FUN_00131090(void* output, void* unused, s16 pcId, s32 category)
 {
     u16 indexes[300];
-    s32 count;
     s32 index;
+    s32 count;
     u16 equipmentId;
     u16* outputIndexes;
+    s16 pcIdValue;
+    s32 categoryValue;
+    s32 copyIndex;
 
     (void)unused;
     outputIndexes = (u16*)output;
+    categoryValue = category;
     count = 0;
-    for (index = 0; index < 300; index++) {
-        equipmentId = datGetEquipmentId(pcId, index);
+    index = 0;
+    pcIdValue = pcId;
+    for (; index < 300; index++) {
+        equipmentId = datGetEquipmentId(pcIdValue, index);
         if (equipmentId == 0) {
             continue;
         }
         if ((func_001712d0((s16)equipmentId) & 0x20) == 0) {
             continue;
         }
-        if (func_00171250((s16)equipmentId) != category) {
+        if (func_00171250((s16)equipmentId) != categoryValue) {
             continue;
         }
         indexes[count++] = (u16)index;
     }
-    if (count >= 2) {
-        qsort(indexes, count, sizeof(indexes[0]), FUN_00131000);
+    if (count > 1) {
+        qsort(indexes, count, sizeof(indexes[0]), campEquipComparatorCall);
     }
-    for (index = 0; index < count; index++) {
-        outputIndexes[index] = indexes[index];
+    for (copyIndex = 0; copyIndex < count; copyIndex++) {
+        outputIndexes[copyIndex] = indexes[copyIndex];
     }
     return count;
 }
+#pragma pop
 
-static CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
+static inline CampEquipSprite* campEquipMakeSprite(void* atlas, s32 tile)
 {
     return (CampEquipSprite*)FUN_001158b0(0, atlas, tile);
 }
 
-static void campEquipDrawSprite(void* atlas, s32 tile, f32 scale,
+static inline void campEquipDrawSprite(void* atlas, s32 tile, f32 scale,
                                 f32 x, f32 y, u8 alpha)
 {
     CampEquipSprite* sprite;
@@ -388,7 +399,7 @@ void FUN_0012e170(void* atlas, s32 baseTile, CampVec2 position,
     }
 }
 
-static void campEquipAnimateMain(u32* work, s32 mode)
+static inline void campEquipAnimateMain(u32* work, s32 mode)
 {
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, mode, 0x4270000000000000ULL, 0x42700000c4160000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, mode, 0x42b4000000000000ULL, 0x42b40000c4160000ULL, 0, 0, 0, 0);
@@ -398,7 +409,7 @@ static void campEquipAnimateMain(u32* work, s32 mode)
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, mode, 0x4372000043360000ULL, 0x43720000c3d10000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, mode, 0x43cf800041e00000ULL, 0x43cf8000c40f0000ULL, 0, 0, 0, 0);
 }
-static void campEquipInitializeMain(u32* work)
+static inline void campEquipInitializeMain(u32* work)
 {
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1, 0x42700000c4160000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1, 0x42b40000c4160000ULL, 0x42b4000000000000ULL, 0, 0, 0, 0);
@@ -409,7 +420,7 @@ static void campEquipInitializeMain(u32* work)
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1, 0x43cf8000c40f0000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
 }
 
-static void campEquipCloseMain(u32* work)
+static inline void campEquipCloseMain(u32* work)
 {
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1, 0x4270000000000000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1, 0x42b4000000000000ULL, 0x42b4000000000000ULL, 0, 0, 0, 0);
@@ -420,7 +431,7 @@ static void campEquipCloseMain(u32* work)
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1, 0x43cf800041e00000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
 }
 
-static void campEquipAnimateList(u32* work, s32 mode)
+static inline void campEquipAnimateList(u32* work, s32 mode)
 {
     func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode, 0x4210000041980000ULL, 0x42100000c38c8000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode, 0x4214000043d18000ULL, 0x4214000043d18000ULL, 0, 0, 0, 0);
@@ -594,7 +605,7 @@ void* FUN_0012c430(KwlnTask* task)
     return NULL;
 }
 
-static CampVec2 campEquipRecordPosition(const u8* record)
+static inline CampVec2 campEquipRecordPosition(const u8* record)
 {
     CampVec2 position;
 
@@ -1100,7 +1111,7 @@ static void campEquipDrawEquipmentEffect(void* work, u8* record,
                  alpha);
 }
 
-static void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
+static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
                                   s32 yOffset)
 {
     s32 row;
