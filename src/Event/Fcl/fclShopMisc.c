@@ -14723,7 +14723,7 @@ int FUN_00401600(u64 param_1,u64 param_2,int param_3)
   return param_3;
 }
 
-// FUN_004016D0 NONMATCHING
+// FUN_004016D0
 
 
 u32 FUN_004016d0(u32 param_1)
@@ -14738,34 +14738,31 @@ u32 FUN_004016d0(u32 param_1)
   if (lVar1 <= lVar2) {
     if (lVar1 == lVar2) {
       uVar3 |= 2;
-      lVar1 = lVar2;
     }
     else {
       uVar3 = 2;
-      lVar1 = lVar2;
     }
+    lVar1 = lVar2;
   }
   lVar2 = FUN_00173a00_s32(param_1,2);
   if (lVar1 < lVar2) {
     if (lVar1 == lVar2) {
       uVar3 |= 4;
-      lVar1 = lVar2;
     }
     else {
       uVar3 = 4;
-      lVar1 = lVar2;
     }
+    lVar1 = lVar2;
   }
   lVar2 = FUN_00173a00_s32(param_1,3);
   if (lVar1 < lVar2) {
     if (lVar1 == lVar2) {
       uVar3 |= 8;
-      lVar1 = lVar2;
     }
     else {
       uVar3 = 8;
-      lVar1 = lVar2;
     }
+    lVar1 = lVar2;
   }
   lVar2 = FUN_00173a00_s32(param_1,4);
   if (lVar1 < lVar2) {
