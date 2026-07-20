@@ -1211,7 +1211,11 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
             work->transitionComplete = 1;
             break;
         case 2:
+            work->state = 11;
+            break;
         case 3:
+            work->state = 11;
+            break;
         case 4:
         case 6:
         case 7:
@@ -1219,9 +1223,11 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         case 9:
         case 11:
         case 12:
-        case 13:
         case 15:
         case 16:
+            work->state = 11;
+            break;
+        case 13:
             work->state = 11;
             break;
         case 5:
@@ -1232,7 +1238,9 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
         break;
     }
     case 2:
-        switch (work->command) {
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
         case 0:
         case 1:
             work->state = 3;
@@ -1247,8 +1255,11 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
             break;
         }
         break;
+    }
     case 3:
-        switch (work->command) {
+    {
+        u32 secondary = work->command;
+        switch (secondary) {
         case 0:
         case 1:
         case 2:
@@ -1261,6 +1272,7 @@ u32 h_campRequestRootMenuTransition(KwlnTask* task, u32 command)
             break;
         }
         break;
+    }
     case 4:
         if (work->command == 5) {
             work->state = 55;
