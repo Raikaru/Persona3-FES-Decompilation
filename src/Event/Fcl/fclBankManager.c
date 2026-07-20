@@ -4,7 +4,7 @@ typedef u32 undefined3;
 typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
-extern u32 DAT_007ce680;
+extern s32 DAT_007ce680;
 extern u32 LAB_003cff00;
 extern u32 LAB_003d00e8;
 
@@ -13,7 +13,9 @@ extern u32 LAB_003d00e8;
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-u64 FUN_003cfe50(void);
+s32 FUN_003cfe50(void);
+#pragma alias FUN_003cf6c0_ptr FUN_003cf6c0
+extern short FUN_003cf6c0_ptr(int *param_1);
 
 /* Region call-cast macros */
 #define FUN_003cfe50(...) ((u64 (*)(...))FUN_003cfe50)(__VA_ARGS__)
@@ -22,27 +24,28 @@ u64 FUN_003cfe50(void);
 // FUN_003CFE50 NONMATCHING
 
 
-u64 FUN_003cfe50(void)
+s32 FUN_003cfe50(void)
 
 
 
 {
 
-  u16 uVar1;
+  short uVar1;
 
   u8 bVar2;
 
   short sVar3;
 
-  long lVar4;
+  s32 lVar4;
 
-  int iVar5;
 
-  u16 *puVar6;
+  short *puVar6;
 
   int iVar7;
 
-  u16 *puVar8;
+  int iVar8;
+
+  short *puVar8;
 
   
 
@@ -52,29 +55,41 @@ u64 FUN_003cfe50(void)
 
   }
 
-  iVar7 = *(int *)(DAT_007ce680 + 0x24);
+  {
+    int *iVar5;
+    int *iVar6;
 
-  iVar5 = *(int *)(DAT_007ce680 + 4);
+    iVar8 = *(int *)(DAT_007ce680 + 0x24);
+    iVar5 = *(int **)(DAT_007ce680 + 4);
 
-  do {
+    goto LAB_003cfef8;
 
-    if (iVar5 == 0) goto LAB_003cff00;
+LAB_003cfe94:
+    iVar6 = *(int **)((char *)iVar5 + 0x10);
 
-    iVar5 = *(int *)(iVar5 + 0x10);
+    sVar3 = FUN_003cf6c0_ptr(iVar5);
 
-    sVar3 = FUN_003cf6c0();
+    if (sVar3 != -1) goto LAB_003cfef4;
 
-  } while (sVar3 != -1);
+    FUN_005225a8(0x7cd728,0x6a4270,0x279);
 
-  FUN_005225a8(0x7cd728,0x6a4270,0x279);
+    FUN_005225a8(0x6a4318);
 
-  FUN_005225a8(0x6a4318);
+    FUN_001052b0(0x6a4318);
 
-  FUN_001052b0(0x6a4318);
+    goto LAB_003cff00;
+
+LAB_003cfef4:
+    iVar5 = iVar6;
+
+LAB_003cfef8:
+    if (iVar5 != 0) goto LAB_003cfe94;
+  }
+
 
 LAB_003cff00:
 
-  puVar8 = (u16 *)(iVar7 + 4);
+  puVar8 = (short *)(iVar8 + 4);
 
   iVar7 = 0;
 
@@ -212,9 +227,12 @@ LAB_003cff00:
 
             puVar8[1] = 1;
 
-            puVar6 = (u16 *)(*(int *)(DAT_007ce680 + 0x24) + 4);
+            puVar6 = (short *)(*(int *)(DAT_007ce680 + 0x24) + 4);
 
-            for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
+            {
+              int iVar5;
+
+              for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
 
               if ((((puVar6 != puVar8) && (uVar1 = *puVar6, (uVar1 & 1) != 0)) && ((uVar1 & 8) != 0)
 
@@ -230,6 +248,7 @@ LAB_003cff00:
 
               puVar6 = puVar6 + 10;
 
+            }
             }
 
             bVar2 = 0;
