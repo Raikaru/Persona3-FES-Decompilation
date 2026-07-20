@@ -11,11 +11,16 @@ extern void func_0021d3b0(void* destination, void* source);
 extern void* func_0021cca0(void* resource, u32 index);
 extern void* func_0021cce0(void* frame);
 extern void func_004d7f60(s32 state, u32 value);
-extern void (*D_00960090)(u32 state, u32 value);
-extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+typedef void (*OpMenuSetState)(u32 state, u32 value);
+typedef void (*OpMenuDraw)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+typedef void (*OpMenuDrawWords)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
+extern u32 D_00960090[];
+extern u32 D_0096009C[];
 extern f32 func_0052e878(f32 value);
 extern f32 func_0052e6d8(f32 value);
 extern void* func_00198590(void);
+#pragma alias opResGetTitleRasterU32 opResGetTitleRaster
+extern u32 opResGetTitleRasterU32(u32 id);
 extern f32 fGpffff8248;
 extern f32 fGpffff80c0;
 extern f32 fGpffff82fc;
@@ -420,72 +425,77 @@ void opMenu0026a2c0(void)
     (void)pulse;
 }
 
-// FUN_0026C710 NONMATCHING
+// FUN_0026C710
 void opMenu0026c710(void)
 {
-    RwRaster* raster;
+    u32* work;
+    OpMenuSetState* setState;
+    OpMenuDrawWords* draw;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
-    (void)opResGetTitleSprite(0);
-    if ((opMenuGet(0) & 1) == 0)
+    work = sOpMenu;
+    opResGetTitleSprite(0);
+    if ((~work[0] & 1) != 0)
         return;
-    D_00960090(8, 0);
-    D_00960090(6, 0);
-    D_00960090(9, 2);
+    setState = (OpMenuSetState*)D_00960090;
+    (*setState)(8, 0);
+    (*setState)(6, 0);
+    (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    raster = opResGetTitleRaster(1);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x10), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x10), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(1));
+    draw = (OpMenuDrawWords*)D_0096009C;
+    (*draw)(work + 4, 4, 0, 1, 2);
+    (*draw)(work + 4, 4, 0, 2, 3);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    raster = opResGetTitleRaster(0);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x110), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x110), 4, 0, 2, 3);
-    D_0096009C(opMenuData(0x210), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x210), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(0));
+    (*draw)(work + 0x44, 4, 0, 1, 2);
+    (*draw)(work + 0x44, 4, 0, 2, 3);
+    (*draw)(work + 0x84, 4, 0, 1, 2);
+    (*draw)(work + 0x84, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x6a);
-    raster = opResGetTitleRaster(3);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x510), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x510), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(3));
+    (*draw)(work + 0x144, 4, 0, 1, 2);
+    (*draw)(work + 0x144, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x58);
-    raster = opResGetTitleRaster(4);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x310), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x310), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(4));
+    (*draw)(work + 0xc4, 4, 0, 1, 2);
+    (*draw)(work + 0xc4, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x6a);
-    raster = opResGetTitleRaster(3);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x610), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x610), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(3));
+    (*draw)(work + 0x184, 4, 0, 1, 2);
+    (*draw)(work + 0x184, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x58);
-    raster = opResGetTitleRaster(4);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x710), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x710), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(4));
+    (*draw)(work + 0x104, 4, 0, 1, 2);
+    (*draw)(work + 0x104, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    D_00960090(1, 0);
-    D_0096009C(opMenuData(0xa20), 3, 0, 1, 2);
+    (*setState)(1, opResGetTitleRasterU32(2));
+    (*draw)(work + 0x1c4, 4, 0, 1, 2);
+    (*draw)(work + 0x1c4, 4, 0, 2, 3);
+    func_004d7f60(3, 0x717fb);
+    func_004d7f60(2, 0x44);
+    (*setState)(1, 0);
+    (*draw)(work + 0x288, 3, 0, 1, 2);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    raster = opResGetTitleRaster(5);
-    D_00960090(1, (u32)(unsigned long)raster);
-    D_0096009C(opMenuData(0x810), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x810), 4, 0, 2, 3);
+    (*setState)(1, opResGetTitleRasterU32(5));
+    (*draw)(work + 0x204, 4, 0, 1, 2);
+    (*draw)(work + 0x204, 4, 0, 2, 3);
 }
 
 // FUN_0026CC90 NONMATCHING
 void opMenu0026cc90(void)
 {
     void* atlas;
+    OpMenuSetState* setState;
+    OpMenuDraw* draw;
     void* frame;
     u32 id;
     s32 i;
@@ -497,17 +507,19 @@ void opMenu0026cc90(void)
 
     K_ASSERT(sOpMenu != NULL, 0x87);
     atlas = opResGetTitleSprite(0);
+    setState = (OpMenuSetState*)D_00960090;
+    draw = (OpMenuDraw*)D_0096009C;
     if ((opMenuGet(0) & 1) == 0)
         return;
-    D_00960090(8, 0);
-    D_00960090(6, 0);
-    D_00960090(9, 2);
+    (*setState)(8, 0);
+    (*setState)(6, 0);
+    (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 0x15));
-    D_00960090(1, (u32)(unsigned long)frame);
-    D_0096009C(opMenuData(0x920), 4, 0, 1, 2);
-    D_0096009C(opMenuData(0x920), 4, 0, 2, 3);
+    (*setState)(1, (u32)(unsigned long)frame);
+    (*draw)(opMenuData(0x920), 4, 0, 1, 2);
+    (*draw)(opMenuData(0x920), 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
 
@@ -516,18 +528,18 @@ void opMenu0026cc90(void)
         for (i = 0; i < 2; i++)
         {
             frame = func_0021cce0(func_0021cca0(atlas, sideA[i]));
-            D_00960090(1, (u32)(unsigned long)frame);
-            D_0096009C(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, (u32)(unsigned long)frame);
+            (*draw)(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 1, 2);
+            (*draw)(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
         for (i = 0; i < 2; i++)
         {
             frame = func_0021cce0(func_0021cca0(atlas, sideB[i]));
-            D_00960090(1, (u32)(unsigned long)frame);
-            D_0096009C(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, (u32)(unsigned long)frame);
+            (*draw)(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 1, 2);
+            (*draw)(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 2, 3);
         }
     }
     else
@@ -535,33 +547,33 @@ void opMenu0026cc90(void)
         for (i = 0; i < 4; i++)
         {
             frame = func_0021cce0(func_0021cca0(atlas, choiceA[i]));
-            D_00960090(1, (u32)(unsigned long)frame);
-            D_0096009C(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, (u32)(unsigned long)frame);
+            (*draw)(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 1, 2);
+            (*draw)(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 2, 3);
             frame = func_0021cce0(func_0021cca0(atlas, choiceB[i]));
-            D_00960090(1, (u32)(unsigned long)frame);
-            D_0096009C(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, (u32)(unsigned long)frame);
+            (*draw)(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 1, 2);
+            (*draw)(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 2, 3);
             id = choiceC[i];
             frame = func_0021cce0(func_0021cca0(atlas, id));
-            D_00960090(1, (u32)(unsigned long)frame);
-            D_0096009C(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, (u32)(unsigned long)frame);
+            (*draw)(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 1, 2);
+            (*draw)(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
         id = opMenuGet(0x1a50) + 0x22;
         frame = func_0021cce0(func_0021cca0(atlas, id));
-        D_00960090(1, (u32)(unsigned long)frame);
+        (*setState)(1, (u32)(unsigned long)frame);
         if (opMenuGet(0x1a50) == 0)
         {
-            D_0096009C(opMenuData(0x1750), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0x1750), 4, 0, 2, 3);
+            (*draw)(opMenuData(0x1750), 4, 0, 1, 2);
+            (*draw)(opMenuData(0x1750), 4, 0, 2, 3);
         }
         else
         {
-            D_0096009C(opMenuData(0x1850), 4, 0, 1, 2);
-            D_0096009C(opMenuData(0x1850), 4, 0, 2, 3);
+            (*draw)(opMenuData(0x1850), 4, 0, 1, 2);
+            (*draw)(opMenuData(0x1850), 4, 0, 2, 3);
         }
     }
 }
