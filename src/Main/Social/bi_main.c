@@ -26,6 +26,7 @@ enum
     BI_SLOT_NUMERIC_1 = 0x200
 };
 
+extern void (*D_00960090)();
 extern void (*D_0096009C)();
 
 
@@ -49,10 +50,6 @@ void* kwlnGetMainCamera();
 
 
 
-static void biMainSetState(u32 state, u32 value)
-{
-    D_00960090(state, value);
-}
 
 static void biMainDrawQuad(void* vertices, u32 pass, u32 blend)
 {
@@ -164,10 +161,10 @@ void func_00241910(void)
     s32 i;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
-    biMainSetState(9, 2);
-    biMainSetState(0x14, 2);
-    biMainSetState(8, 0);
-    biMainSetState(6, 0);
+    D_00960090(9, 2);
+    D_00960090(0x14, 2);
+    D_00960090(8, 0);
+    D_00960090(6, 0);
     for (i = 0; i < BI_SLOT_COUNT; i++) {
         biMainDrawSlot(BI_SLOT(sBiMain, i));
     }
