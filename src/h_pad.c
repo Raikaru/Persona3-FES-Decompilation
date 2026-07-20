@@ -23,6 +23,13 @@ extern s32 scePadSetActAlign(s32 port, s32 slot, u8* align);
 extern s32 scePadGetReqState(s32 port, s32 slot);
 extern s32 scePadRead(s32 port, s32 slot, u8* data);
 extern s32 scePadSetActDirect(s32 port, s32 slot, u8* data);
+extern void* func_00520728(size_t size);
+extern void func_00520748(void* memory);
+extern s32 printf(const char* format, ...);
+extern const char D_005CEAE0[];
+extern const char D_005CEAF0[];
+extern const char D_005CEB10[];
+extern const char D_005CEB30[];
 
 HPad gWorkPads[HPAD_PORT_MAX]; // 007e09b0
 HPad gPads[HPAD_PORT_MAX];     // 007e0940
@@ -33,7 +40,11 @@ static u8 sRDataPort2[32]; // 007e0720
 static u8 sRDataPort1[32]; // 007e0700
 
 static s16 sRumbleState;
-static u16 sRumbleIntensity;
+static union
+{
+    u16 h;
+    u8 b;
+} sRumbleIntensity;
 static s16 sRumblePhase;
 static s16 sRumbleOffFrames;
 static s16 sRumbleOnFrames;
@@ -50,8 +61,8 @@ static RwMemoryFunctions sRwMemoryFunctions;
 // FUN_00103000 NONMATCHING
 void H_Pad_Init(void)
 {
-    s32 i;
     HPad* workPads;
+    s32 i;
 
     memset(&gWorkPads[HPAD_PORT_1], 0, sizeof(HPad));
     memset(&gWorkPads[HPAD_PORT_2], 0, sizeof(HPad));
@@ -66,9 +77,9 @@ void H_Pad_Init(void)
     for (i = 0; i < HPAD_PORT_MAX; i++)
     {
         workPads[i].port = i;
-        workPads[i].mainMode = 0;
-        workPads[i].state = HPAD_STATE_INITIALIZING;
         workPads[i].slot = 0;
+        workPads[i].state = HPAD_STATE_INITIALIZING;
+        workPads[i].mainMode = 0;
         workPads[i].requestedMainMode = 3;
     }
 }
@@ -237,11 +248,10 @@ void H_Pad_Poll(HPad* pad)
     }
 }
 
-// FUN_00103580 NONMATCHING
+// FUN_00103580
 void H_Pad_Update(void)
 {
     HPadPort port;
-    HPad* secondPad;
 
     for (port = HPAD_PORT_1; port < HPAD_PORT_MAX; port++)
     {
@@ -249,51 +259,48 @@ void H_Pad_Update(void)
         H_Pad_UpdateButtonStates(port);
     }
 
-    secondPad = &gWorkPads[HPAD_PORT_2];
-    secondPad->btn[0].pressed = 0;
-    secondPad->btn[0].justPressed = 0;
-    secondPad->btn[0].justReleased = 0;
-    secondPad->btn[1].justPressed = 0;
-    secondPad->btn[1].released = 0;
-    secondPad->lstickX = 128;
-    secondPad->lstickY = 128;
-    secondPad->rstickX = 128;
-    secondPad->rstickY = 128;
-
+    gWorkPads[HPAD_PORT_2].btn[0].pressed = 0;
+    gWorkPads[HPAD_PORT_2].btn[0].justPressed = 0;
+    gWorkPads[HPAD_PORT_2].btn[0].justReleased = 0;
+    gWorkPads[HPAD_PORT_2].btn[1].justPressed = 0;
+    gWorkPads[HPAD_PORT_2].btn[1].released = 0;
+    *(u8*)&gWorkPads[HPAD_PORT_2].lstickX = 0x80;
+    *(u8*)&gWorkPads[HPAD_PORT_2].lstickY = 0x80;
+    *(u8*)&gWorkPads[HPAD_PORT_2].rstickX = 0x80;
+    *(u8*)&gWorkPads[HPAD_PORT_2].rstickY = 0x80;
     H_Pad_UpdateRumble();
 }
 
-// FUN_00103650 NONMATCHING
+// FUN_00103650
 void H_Pad_UpdateButtonStates(HPadPort port)
 {
-    HPad* pad;
-    u16 pressed;
 
-    pad = &gWorkPads[port];
-    pad->btn[1].justPressed = pad->btn[0].pressed & 0xF0;
-    if ((u8)pad->lstickX >= 0xC1)
+    gWorkPads[port].btn[1].justPressed = gWorkPads[port].btn[0].pressed & 0xF0;
+    if ((u8)gWorkPads[port].lstickX > 0xC0)
     {
-        pad->btn[1].justPressed |= HPAD_BTN_RIGHT;
+        gWorkPads[port].btn[1].justPressed |= HPAD_BTN_RIGHT;
     }
-    if ((u8)pad->lstickX < 0x40)
+    if ((u8)gWorkPads[port].lstickX < 0x40)
     {
-        pad->btn[1].justPressed |= HPAD_BTN_LEFT;
+        gWorkPads[port].btn[1].justPressed |= HPAD_BTN_LEFT;
     }
-    if ((u8)pad->lstickY >= 0xC1)
+    if ((u8)gWorkPads[port].lstickY > 0xC0)
     {
-        pad->btn[1].justPressed |= HPAD_BTN_DOWN;
+        gWorkPads[port].btn[1].justPressed |= HPAD_BTN_DOWN;
     }
-    if ((u8)pad->lstickY < 0x40)
+    if ((u8)gWorkPads[port].lstickY < 0x40)
     {
-        pad->btn[1].justPressed |= HPAD_BTN_UP;
+        gWorkPads[port].btn[1].justPressed |= HPAD_BTN_UP;
     }
 
-    pressed = pad->btn[0].pressed;
-    pad->btn[0].justPressed = pressed & (pressed ^ pad->btn[0].released);
-    pressed = pad->btn[1].justPressed;
-    pad->btn[1].released = pressed & (pressed ^ pad->virtualPreviousPressed);
-    pad->btn[0].justReleased = pad->btn[0].justPressed;
-    pad->btn[1].justReleased = pad->btn[1].released;
+    gWorkPads[port].btn[0].justPressed =
+        gWorkPads[port].btn[0].pressed &
+        (gWorkPads[port].btn[0].pressed ^ gWorkPads[port].btn[0].released);
+    gWorkPads[port].btn[1].released =
+        gWorkPads[port].btn[1].justPressed &
+        (gWorkPads[port].btn[1].justPressed ^ gWorkPads[port].virtualPreviousPressed);
+    gWorkPads[port].btn[0].justReleased = gWorkPads[port].btn[0].justPressed;
+    gWorkPads[port].btn[1].justReleased = gWorkPads[port].btn[1].released;
 
     H_Pad_UpdateDirectionalButtonRepeat(port, HPAD_BTN_UP, 0);
     H_Pad_UpdateDirectionalButtonRepeat(port, HPAD_BTN_DOWN, 1);
@@ -309,58 +316,52 @@ void H_Pad_UpdateButtonStates(HPadPort port)
     H_Pad_UpdateFaceButtonRepeat(port, HPAD_BTN_SQUARE, 11);
 }
 
-// FUN_001038D0 NONMATCHING
-void H_Pad_UpdateFaceButtonRepeat(HPadPort port, u16 buttons, u8 repeatIndex)
+// FUN_001038D0
+void H_Pad_UpdateFaceButtonRepeat(HPadPort port, u16 buttons, s32 repeatIndex)
 {
-    HPad* pad;
-
-    pad = &gWorkPads[port];
-    if ((pad->btn[0].justPressed & buttons) != 0)
+    if ((gWorkPads[port].btn[0].justPressed & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex] = 7;
+        gWorkPads[port].repeatTimer[repeatIndex] = 7;
     }
-    else if ((pad->btn[0].pressed & buttons) != 0)
+    else if ((gWorkPads[port].btn[0].pressed & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex]--;
-        if (pad->repeatTimer[repeatIndex] == 0)
+        gWorkPads[port].repeatTimer[repeatIndex]--;
+        if (gWorkPads[port].repeatTimer[repeatIndex] == 0)
         {
-            pad->btn[0].justReleased |= buttons;
-            pad->repeatTimer[repeatIndex] = 3;
+            gWorkPads[port].btn[0].justReleased |= buttons;
+            gWorkPads[port].repeatTimer[repeatIndex] = 3;
         }
     }
 }
 
-// FUN_00103990 NONMATCHING
-void H_Pad_UpdateDirectionalButtonRepeat(HPadPort port, u16 buttons, u8 repeatIndex)
+// FUN_00103990
+void H_Pad_UpdateDirectionalButtonRepeat(HPadPort port, u16 buttons, s32 repeatIndex)
 {
-    HPad* pad;
-
-    pad = &gWorkPads[port];
-    if ((pad->btn[0].justPressed & buttons) != 0)
+    if ((gWorkPads[port].btn[0].justPressed & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex] = 7;
+        gWorkPads[port].repeatTimer[repeatIndex] = 7;
     }
-    else if ((pad->btn[0].pressed & buttons) != 0)
+    else if ((gWorkPads[port].btn[0].pressed & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex]--;
-        if (pad->repeatTimer[repeatIndex] == 0)
+        gWorkPads[port].repeatTimer[repeatIndex]--;
+        if (gWorkPads[port].repeatTimer[repeatIndex] == 0)
         {
-            pad->btn[0].justReleased |= buttons;
-            pad->repeatTimer[repeatIndex] = 3;
+            gWorkPads[port].btn[0].justReleased |= buttons;
+            gWorkPads[port].repeatTimer[repeatIndex] = 3;
         }
     }
 
-    if ((pad->btn[1].released & buttons) != 0)
+    if ((gWorkPads[port].btn[1].released & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex] = 7;
+        gWorkPads[port].repeatTimer[repeatIndex] = 7;
     }
-    else if ((pad->btn[1].justPressed & buttons) != 0)
+    else if ((gWorkPads[port].btn[1].justPressed & buttons) != 0)
     {
-        pad->repeatTimer[repeatIndex]--;
-        if (pad->repeatTimer[repeatIndex] == 0)
+        gWorkPads[port].repeatTimer[repeatIndex]--;
+        if (gWorkPads[port].repeatTimer[repeatIndex] == 0)
         {
-            pad->btn[1].justReleased |= buttons;
-            pad->repeatTimer[repeatIndex] = 3;
+            gWorkPads[port].btn[1].justReleased |= buttons;
+            gWorkPads[port].repeatTimer[repeatIndex] = 3;
         }
     }
 }
@@ -368,23 +369,20 @@ void H_Pad_UpdateDirectionalButtonRepeat(HPadPort port, u16 buttons, u8 repeatIn
 // FUN_00103B10 NONMATCHING
 void H_Pad_UpdateRumble(void)
 {
-    HPad* pad;
-
-    pad = &gWorkPads[HPAD_PORT_1];
     switch (sRumbleState)
     {
     case 0:
         sRumbleDuration = 0;
         sRumbleOnFrames = 0;
-        sRumbleIntensity = 0;
-        pad->actuator0 = 0;
-        pad->actuator1 = 0;
+        sRumbleIntensity.h = 0;
+        gWorkPads[HPAD_PORT_1].actuator0 = 0;
+        gWorkPads[HPAD_PORT_1].actuator1 = 0;
         sRumbleState++;
         break;
 
     case 1:
-        pad->actuator0 = 0;
-        pad->actuator1 = 0;
+        gWorkPads[HPAD_PORT_1].actuator0 = 0;
+        gWorkPads[HPAD_PORT_1].actuator1 = 0;
         break;
 
     case 2:
@@ -398,15 +396,17 @@ void H_Pad_UpdateRumble(void)
             {
                 if (sRumblePhase == 0)
                 {
-                    pad->actuator0 = sRumbleIntensity;
-                    pad->actuator1 = sRumbleIntensity;
+                    u8 intensityByte = sRumbleIntensity.b;
+                    u16 intensity = intensityByte;
+                    gWorkPads[HPAD_PORT_1].actuator0 = intensity;
+                    gWorkPads[HPAD_PORT_1].actuator1 = intensity;
                     sRumbleCadence = sRumbleOnFrames;
                     sRumblePhase = 1;
                 }
                 else
                 {
-                    pad->actuator0 = 0;
-                    pad->actuator1 = 0;
+                    gWorkPads[HPAD_PORT_1].actuator0 = 0;
+                    gWorkPads[HPAD_PORT_1].actuator1 = 0;
                     sRumbleCadence = sRumbleOffFrames;
                     sRumblePhase = 0;
                 }
@@ -430,7 +430,7 @@ void H_Pad_StartRumblePattern(s16 duration, u16 intensity, s16 onFrames, s16 off
         sRumbleCadence = 0;
         sRumbleOnFrames = onFrames;
         sRumbleOffFrames = offFrames;
-        sRumbleIntensity = intensity;
+        sRumbleIntensity.h = intensity;
         sRumbleState = 2;
         sRumblePhase = 0;
     }
@@ -443,7 +443,7 @@ void H_Pad_StopRumble(void)
     sRumbleCadence = 0;
     sRumbleOnFrames = 0;
     sRumbleOffFrames = 0;
-    sRumbleIntensity = 0;
+    sRumbleIntensity.h = 0;
     sRumbleState = HPAD_STATE_WAITING_FOR_MODE;
     sRumblePhase = 0;
     gWorkPads[HPAD_PORT_1].actuator0 = 0;
@@ -474,21 +474,48 @@ void H_Pad_RwFreeRaw(void* memory)
     H_Free(allocation);
 }
 
-// FUN_00103DA0 NONMATCHING
+// FUN_00103DA0
 void* H_Pad_RwAllocateRaw(size_t size)
 {
     HPadRwAllocation* allocation;
+    s32 intrState;
+    const char* message;
+
+    if (size == 0xAC)
+    {
+        __asm__ volatile ("addiu %0, $gp, -0x7A78" : "=r"(message));
+        printf(message);
+    }
 
     sRwAllocatedBytes += size;
-    allocation = (HPadRwAllocation*)H_Malloc(size + sizeof(HPadRwAllocation));
+    intrState = func_0050d3a0();
+    allocation = (HPadRwAllocation*)func_00520728(size + sizeof(HPadRwAllocation));
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
+
+    if (allocation == (HPadRwAllocation*)0x014CCBC8)
+    {
+        printf(D_005CEAE0);
+    }
     if (allocation == NULL)
     {
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEB10, size, sRwAllocatedBytes);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
+        printf(D_005CEAF0);
         if (datGetFlag(0x141A) != 0)
         {
             return NULL;
         }
 
-        K_ASSERT(false, 671);
+        K_Assert(D_005CEB30, 671);
         return NULL;
     }
 
@@ -503,26 +530,36 @@ void* H_Pad_RwAllocateRaw(size_t size)
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
     void* reallocated;
-    size_t copySize;
+    RwUInt32 copySize;
+    s32 intrState;
+    RwUInt32 mallocHint;
 
+    mallocHint = hint;
+    intrState = func_0050d3a0();
     if (memory == NULL)
     {
-        return H_Pad_RwMalloc(newSize, hint);
+        reallocated = H_Pad_RwMalloc(newSize, mallocHint);
     }
-
-    copySize = (size_t)(uintptr_t)*(void**)((u8*)memory - sizeof(void*));
-    if (newSize < copySize)
+    else
     {
-        copySize = newSize;
+        copySize = *(RwUInt32*)((u8*)memory - sizeof(void*));
+        if (newSize < copySize)
+        {
+            copySize = newSize;
+        }
+
+        reallocated = H_Pad_RwMalloc(newSize, mallocHint);
+        memcpy(reallocated, memory, copySize);
+        H_Pad_RwFree(memory);
+        sRwReallocCount++;
     }
 
-    reallocated = H_Pad_RwMalloc(newSize, hint);
-    memcpy(reallocated, memory, copySize);
-    H_Pad_RwFree(memory);
-    sRwReallocCount++;
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
     return reallocated;
 }
-
 // FUN_00104040 NONMATCHING
 void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint)
 {
