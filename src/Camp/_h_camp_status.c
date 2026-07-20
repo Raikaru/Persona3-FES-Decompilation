@@ -11,6 +11,7 @@ void* h_campStatusUpdatePcStatusRootTask(KwlnTask*);
 void* FUN_001311d0(KwlnTask*);
 void FUN_001124b0();
 extern void (*jtbl_0096017C)(void* memory);
+extern void (*jtbl_007B5AF0[6])();
 extern s32 FUN_001159f0();
 #pragma alias campStatusDrawSpriteCall FUN_001159f0
 extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
@@ -142,6 +143,15 @@ extern void FUN_0012b300(CampVec2 position, f32 scale, void* persona,
 extern void FUN_0012b300_s32(CampVec2 position, f32 scale, void* persona,
                              s32 alpha);
 #pragma alias FUN_0012b300_s32 FUN_0012b300
+extern void FUN_0012b860_s32(CampVec2 position, f32 scale, void* currentStats,
+                             void* persona, s32 alpha);
+#pragma alias FUN_0012b860_s32 FUN_0012b860
+extern void FUN_0012bce0_s32(CampVec2 position, f32 scale, void* unused,
+                             void* persona, s32 alpha);
+#pragma alias FUN_0012bce0_s32 FUN_0012bce0
+extern void FUN_0012bfb0_s32(CampVec2 position, f32 scale, void* currentStats,
+                             void* persona, s32 alpha);
+#pragma alias FUN_0012bfb0_s32 FUN_0012bfb0
 
 void h_campStatusRenderStatIcon(CampVec2 position, f32 scale,
                                 s32 stat, s32 alpha);
@@ -369,19 +379,21 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
 {
-    s32 icon;
+    s32 icon = 0x2B;
+    s32 bright = fade;
 
     switch (datGetPhysicalCondition(pcId)) {
-    case 0: icon = 0x2b; break;
-    case 1: icon = 0x0b; break;
-    case 2: icon = 0x0d; break;
-    case 3: icon = 0x0c; break;
-    case 4: icon = 0x10; break;
-    case 5: icon = 0x0e; break;
-    default: icon = 0x0f; break;
+    case 0: icon = 0x0B; break;
+    case 1: icon = 0x0D; break;
+    case 2: icon = 0x0C; break;
+    case 3: icon = 0x10; break;
+    case 4: icon = 0x0E; break;
+    case 5: icon = 0x0F; break;
+    default: break;
     }
-    FUN_001159f0(position.x + 184.0f, position.y + 76.0f, alpha,
-                 DAT_00833B90, icon, campStatusClampFade(fade));
+    campStatusDrawSpriteCall((u32)pcId, DAT_00833B90, icon,
+                             (u8)bright, position.x + 184.0f,
+                             position.y + 64.0f, alpha);
 }
 
 // FUN_00124090 NONMATCHING
@@ -2371,27 +2383,24 @@ static void campStatusResetPersonaAnimations(void* records)
 }
 
 // FUN_00133180 NONMATCHING
-void FUN_00133180(CampVec2 position, f32 alpha, void* currentStats,
-                  void* persona, s32 fade)
+void FUN_00133180(CampVec2 position, f32 alpha, void* persona,
+                  void* currentStats, s32 fade)
 {
-    CampVec2 drawPosition;
-    CampStatusSpriteDrawFn drawSprite;
     s32 drawAlpha;
-    s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012b860(position, alpha, currentStats, persona, (u8)drawAlpha);
-    drawPosition = position;
-    drawPosition.x += 12.0f;
-    drawPosition.y += 96.0f;
-    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
-    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
-               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
-    arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
-               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
-    FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
-    FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
+    FUN_0012b860_s32(position, alpha, persona, currentStats, drawAlpha);
+    position.x += 12.0f;
+    position.y += 96.0f;
+    campStatusDrawSpriteCall((u32)persona, DAT_00833B90, 1,
+                             drawAlpha, position.x + 22.0f,
+                             position.y + 117.0f, alpha);
+    campStatusDrawSpriteCall(
+        (u32)persona, DAT_00833B88,
+        (FUN_00173280(*(u16*)((u8*)currentStats + 2)) & 0xff) - 1,
+        drawAlpha, position.x + 105.0f, position.y + 142.0f, alpha);
+    FUN_00124e60(position, alpha, currentStats, drawAlpha);
+    FUN_00124fd0(position, alpha, currentStats, drawAlpha);
 }
 
 // FUN_001332F0 NONMATCHING
