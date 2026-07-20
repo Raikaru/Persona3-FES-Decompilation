@@ -22,6 +22,8 @@ int FUN_00288da0(int param_1,short param_2);
 void FUN_002891e0(void);
 u64 FUN_00289650(short param_1,u32 param_2,long param_3);
 extern f32 DAT_007cad78;
+extern f32 DAT_007cadb4;
+extern f32 DAT_007caea4;
 extern f32 DAT_007cada4;
 extern f32 DAT_007cb0cc;
 extern code DAT_00960090;
@@ -62,8 +64,8 @@ typedef struct BtlUnitPacketBackstep
     RwV3d origin;          // 0x00
     RwV3d displacement;    // 0x0c
     BtlUnit* unit;         // 0x18
-    s16 blendFrameCount;   // 0x1c
-    s16 counter;           // 0x1e
+    u16 blendFrameCount;   // 0x1c
+    u16 counter;           // 0x1e
     f32 phase;             // 0x20
 } BtlUnitPacketBackstep;
 
@@ -922,53 +924,68 @@ u32 func_00281f20(void* workData)
 {
     BtlUnitPacketBackstep* work;
     BtlUnit* unit;
-    RwV3d transformed;
-    f32 phase;
-    f32 factor;
-    f32 step;
-    u16 blendFrameCount;
+    RwV3d sp50;
+    f32 sp48;
+    f32 sp44;
+    f32 sp40;
+    f32 sp38;
+    f32 sp34;
+    f32 sp30;
+    f32 temp_f0;
+    f32 temp_f1;
+    f32 var_f0;
+    u16 temp_2;
+    u32 var_2;
 
     work = (BtlUnitPacketBackstep*)workData;
     unit = work->unit;
     if (work->counter == 0)
     {
-        work->phase = 0.6f;
+        work->phase = DAT_007cadb4;
         work->origin = unit->pos;
-        RtQuatTransformVectors(&transformed, &D_006978A0, 1, &unit->rot);
-        work->displacement.x = transformed.x * 400.0f;
-        work->displacement.y = transformed.y * 400.0f;
-        work->displacement.z = transformed.z * 400.0f;
+        RtQuatTransformVectors(&sp50, &D_006978A0, 1, &unit->rot);
+        work->displacement.x = 400.0f * sp50.x;
+        work->displacement.y = 400.0f * sp50.y;
+        work->displacement.z = 400.0f * sp50.z;
     }
 
-    blendFrameCount = (u16)work->blendFrameCount;
-    if (blendFrameCount == 0)
+    temp_2 = work->blendFrameCount;
+    if ((s32)temp_2 >= 0)
     {
-        step = 1.0f;
+        var_f0 = (f32)temp_2;
     }
     else
     {
-        step = 1.0f / ((f32)blendFrameCount * 2.0f);
+        var_f0 = 2.0f * (f32)((temp_2 >> 1) | (temp_2 & 1));
     }
-    work->phase += step;
-    phase = work->phase;
-    factor = ((phase * 4.0f + phase * (-2.0f * phase) - 1.0f) - 0.5f) * 2.0f;
-    if (factor < 1.0f)
+    work->phase += 1.0f / (2.0f * var_f0);
+    temp_f0 = work->phase;
+    temp_f1 = 2.0f * (4.0f * temp_f0 - 2.0f * temp_f0 * temp_f0 - 0.5f);
+    if (temp_f1 < DAT_007caea4)
     {
-        transformed.x = work->displacement.x * factor;
-        transformed.y = work->displacement.y * factor;
-        transformed.z = work->displacement.z * factor;
+        sp40 = work->displacement.x * temp_f1;
+        sp44 = work->displacement.y * temp_f1;
+        sp48 = work->displacement.z * temp_f1;
+        var_2 = 0;
     }
     else
     {
-        transformed = work->displacement;
+        sp40 = work->displacement.x;
+        sp44 = work->displacement.y;
+        sp48 = work->displacement.z;
+        var_2 = 1;
     }
 
-    unit->pos.x = work->origin.x + transformed.x;
-    unit->pos.y = work->origin.y + transformed.y;
-    unit->pos.z = work->origin.z + transformed.z;
+    sp30 = work->origin.x + sp40;
+    sp34 = work->origin.y + sp44;
+    temp_f0 = work->origin.z + sp48;
+    sp38 = temp_f0;
+    unit->pos.x = sp30;
+    unit->pos.y = sp34;
+    unit->pos.z = temp_f0;
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
     work->counter++;
-    return factor >= 1.0f;
+    return var_2;
 }
 
 // FUN_00282130
@@ -4228,7 +4245,7 @@ extern const u8 DAT_00693290[];
 extern const u8 DAT_006932e0[];
 extern const u8 iGpffffb718[];
 extern const u8 iGpffffb71c[];
-extern const u8 iGpffffb728[];
+extern const u8* iGpffffb728;
 extern const u8 iGpffffb73c[];
 extern const u16 gp0xffff9828[];
 extern u8* iGpffffb710;
@@ -4572,24 +4589,38 @@ static s16 btlUnitAnimCategory(const BtlUnit* unit, s16 id)
 }
 
 // FUN_00283C70 NONMATCHING
-u16 func_00283c70(BtlUnit* unit, u16 id)
+s16 func_00283c70(BtlUnit* unit, u16 id)
 {
     s16 category;
     u16 charId;
-    u32 unitId;
-    const u8* table;
+    u8 genus = unit->genus;
 
-    category = btlUnitAnimCategory(unit, (s16)id);
-    if (category < 0)
+    if (genus == UNIT_GENUS_EC)
     {
-        return 1;
+        if (id == 6 || id == 5 || id == 4)
+            category = 0;
+        else
+            category = -1;
+    }
+    else
+    {
+        if (id == 6)
+            category = 2;
+        else if (id == 5)
+            category = 1;
+        else if (id == 4)
+            category = 0;
+        else
+            category = -1;
     }
 
+    if (category == -1)
+        return 1;
+
     charId = unit->charId;
-    if (unit->genus == UNIT_GENUS_EC)
+    if (genus == UNIT_GENUS_EC)
     {
-        table = iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1a;
-        return *(const u16*)(table + category * 4);
+        return *(s16*)(iGpffffb728 + ((u32)charId * 0x1d + charId) * 8 + 0x1a + category * 4);
     }
 
     if (charId == 4)
@@ -4599,15 +4630,11 @@ u16 func_00283c70(BtlUnit* unit, u16 id)
 
     if (charId == 1)
     {
-        unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
-        table = iGpffffb718 + (unitId & 0xff) * 0x128 + 0x18;
-    }
-    else
-    {
-        table = iGpffffb71c + ((u32)charId * 0x10a) + 0x18;
+        u32 unitId = (u32)(uintptr_t)func_00308c60(unit->datUnit);
+        return *(s16*)(iGpffffb718 + (unitId & 0xff) * 0x128 + 0x18 + category * 4);
     }
 
-    return *(const u16*)(table + category * 4);
+    return *(s16*)(iGpffffb71c + ((u32)charId * 0x10a) + 0x18 + category * 4);
 }
 
 // FUN_00283E40 NONMATCHING
