@@ -1720,7 +1720,7 @@ void* func_001acfc0(void* resource, FldFrameResourceSet* set)
     return resource;
 }
 
-// FUN_001ad050 NONMATCHING
+// FUN_001ad050
 void func_001ad050(void* collisionWorld, const RwV4d* position,
                    u32* direction, void* result)
 {
@@ -1756,6 +1756,7 @@ void func_001ad050(void* collisionWorld, const RwV4d* position,
         dst++;
     } while (i > 0);
     resources.position = *position;
+    resources.output = result;
     FUN_004916d0(collisionWorld, func_001acfc0, &resources);
 }
 
