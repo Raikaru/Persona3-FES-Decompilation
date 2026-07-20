@@ -1122,7 +1122,7 @@ u64 FUN_003a2ef0(u64 param_1)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   u64 uVar2;
 
@@ -1130,7 +1130,7 @@ u64 FUN_003a2ef0(u64 param_1)
 
   
 
-  lVar1 = FUN_003a5090();
+  lVar1 = itfMesMngCheckBmdMagic((BmdHeader*)(u32)param_1);
 
   if (lVar1 != 1) {
 
