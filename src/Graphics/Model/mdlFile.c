@@ -1885,7 +1885,7 @@ void FUN_0031de30(u32 *param_1)
 
   
 
-  ((code)FUN_0031df80)();
+  FUN_0031df80(param_1);
 
   piVar2 = (int *)*param_1;
 
@@ -1897,11 +1897,11 @@ void FUN_0031de30(u32 *param_1)
 
     if (*(int *)(*piVar2 + 8) == 0) {
 
-      (*DAT_0096017c)();
+      (*DAT_0096017c_abs)((int *)*piVar2);
 
     }
 
-    (*DAT_0096017c)(piVar2);
+    (*DAT_0096017c_abs)(piVar2);
 
     piVar2 = piVar1;
 
