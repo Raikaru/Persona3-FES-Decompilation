@@ -44,6 +44,8 @@ typedef struct FldShadowRenderTex
 #define FLDSHADOW_RENDER_ACTIVE (*(u32*)0x007ce158)
 #define FLDSHADOW_CHAR_RENDER_GUARD (*(u32*)0x007cc1ec)
 #define FLDSHADOW_CAMERA_OFFSET ((const RwV3d*)0x00678920)
+#define FLDSHADOW_TASK_NAME ((const char*)0x00678930)
+#define FLDSHADOW_SOURCE_FILE ((const char*)0x00678948)
 
 extern void* func_0019b2b0(KwlnTask* renderTexTask);
 extern void func_0019bcf0(KwlnTask* renderTexTask);
@@ -73,6 +75,8 @@ extern void* func_004f1ed0(void* vertexBuffer, u32 vertexCount, u32 primitiveTyp
 extern void func_004f2150(s32 primitiveType);
 extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
+extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
+extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
 extern void (*jtbl_0096017C)(void* memory);
 extern void* memset(void* dest, s32 value, u32 size);
 extern s32 K_Scene_001a0250(void);
@@ -133,7 +137,8 @@ typedef struct FldShadowAtomicContext
     FldShadowProjectionWork* work; // 0x04
     void* atomic;                 // 0x08
 } FldShadowAtomicContext;
-static u8 K_FldShadow_DepthAlpha(f32 depth, u8 baseAlpha)
+
+static inline u8 K_FldShadow_DepthAlpha(f32 depth, u8 baseAlpha)
 {
     f32 alpha;
 
@@ -146,19 +151,19 @@ static u8 K_FldShadow_DepthAlpha(f32 depth, u8 baseAlpha)
     return (u8)(alpha * (f32)baseAlpha);
 }
 
-static u32 K_FldShadow_AxisHasNonNegative(f32 a, f32 b, f32 c)
+static inline u32 K_FldShadow_AxisHasNonNegative(f32 a, f32 b, f32 c)
 {
     return a >= 0.0f || b >= 0.0f || c >= 0.0f;
 }
 
-static u32 K_FldShadow_AxisHasAtMostOne(f32 a, f32 b, f32 c)
+static inline u32 K_FldShadow_AxisHasAtMostOne(f32 a, f32 b, f32 c)
 {
     return a <= 1.0f || b <= 1.0f || c <= 1.0f;
 }
 
-static void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
-                                     const RwV3d* normal,
-                                     const RwV3d* vertices)
+static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
+                                            const RwV3d* normal,
+                                            const RwV3d* vertices)
 {
     RwIm3DVertex* output;
     s32 vertexCount;
@@ -166,16 +171,23 @@ static void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
     u8 alpha1;
     u8 alpha2;
 
-    if (RwV3dDotProductMacro(normal, &work->projectionNormal) > 0.0f)
+    if (vertices[0].z < 0.0f && vertices[1].z < 0.0f && vertices[2].z < 0.0f)
     {
         return;
     }
-
-    if (!K_FldShadow_AxisHasNonNegative(vertices[0].z, vertices[1].z, vertices[2].z) ||
-        !K_FldShadow_AxisHasNonNegative(vertices[0].x, vertices[1].x, vertices[2].x) ||
-        !K_FldShadow_AxisHasAtMostOne(vertices[0].x, vertices[1].x, vertices[2].x) ||
-        !K_FldShadow_AxisHasNonNegative(vertices[0].y, vertices[1].y, vertices[2].y) ||
-        !K_FldShadow_AxisHasAtMostOne(vertices[0].y, vertices[1].y, vertices[2].y))
+    if (vertices[0].x < 0.0f && vertices[1].x < 0.0f && vertices[2].x < 0.0f)
+    {
+        return;
+    }
+    if (vertices[0].x > 1.0f && vertices[1].x > 1.0f && vertices[2].x > 1.0f)
+    {
+        return;
+    }
+    if (vertices[0].y < 0.0f && vertices[1].y < 0.0f && vertices[2].y < 0.0f)
+    {
+        return;
+    }
+    if (vertices[0].y > 1.0f && vertices[1].y > 1.0f && vertices[2].y > 1.0f)
     {
         return;
     }
@@ -281,26 +293,28 @@ void* func_00199d90(void* ignored1,
                     const FldShadowTriangle* triangle,
                     FldShadowProjectionWork* work)
 {
-    RwV3d vertices[3];
     RwV3d sourceVertices[3];
+    RwV3d vertices[3];
 
     (void)ignored1;
     (void)ignored2;
-
-    sourceVertices[0] = *triangle->vertices[0];
-    sourceVertices[1] = *triangle->vertices[1];
-    sourceVertices[2] = *triangle->vertices[2];
-    func_004c6c20(vertices, sourceVertices, 3, &work->projectionMatrix);
-    vertices[0].x += triangle->normal.x * 1.5f;
-    vertices[0].y += triangle->normal.y * 1.5f;
-    vertices[0].z += triangle->normal.z * 1.5f;
-    vertices[1].x += triangle->normal.x * 1.5f;
-    vertices[1].y += triangle->normal.y * 1.5f;
-    vertices[1].z += triangle->normal.z * 1.5f;
-    vertices[2].x += triangle->normal.x * 1.5f;
-    vertices[2].y += triangle->normal.y * 1.5f;
-    vertices[2].z += triangle->normal.z * 1.5f;
-    K_FldShadow_EmitTriangle(work, &triangle->normal, vertices);
+    if (!(RwV3dDotProductMacro(&triangle->normal, &work->projectionNormal) > 0.0f))
+    {
+        sourceVertices[0] = *triangle->vertices[0];
+        sourceVertices[1] = *triangle->vertices[1];
+        sourceVertices[2] = *triangle->vertices[2];
+        func_004c6c20(vertices, sourceVertices, 3, &work->projectionMatrix);
+        vertices[0].x += triangle->normal.x * 1.5f;
+        vertices[0].y += triangle->normal.y * 1.5f;
+        vertices[0].z += triangle->normal.z * 1.5f;
+        vertices[1].x += triangle->normal.x * 1.5f;
+        vertices[1].y += triangle->normal.y * 1.5f;
+        vertices[1].z += triangle->normal.z * 1.5f;
+        vertices[2].x += triangle->normal.x * 1.5f;
+        vertices[2].y += triangle->normal.y * 1.5f;
+        vertices[2].z += triangle->normal.z * 1.5f;
+        K_FldShadow_EmitTriangle(work, &triangle->normal, vertices);
+    }
     return (void*)triangle;
 }
 
@@ -309,27 +323,30 @@ void* func_0019a420(void* ignored,
                     const FldShadowTriangle* triangle,
                     FldShadowAtomicContext* context)
 {
+    RwV3d normal;
     RwV3d vertices[3];
-    RwMatrix* atomicMatrix;
     s32 i;
 
     (void)ignored;
-
+    normal = triangle->normal;
     for (i = 0; i < 3; i++)
     {
-        atomicMatrix = func_004cb2f0(*(void**)((u8*)context->atomic + 4));
-        func_004c6c20(&vertices[i], triangle->vertices[i], 1, atomicMatrix);
+        func_004c6c20(&vertices[i], triangle->vertices[i], 1,
+                      func_004cb2f0(*(void**)((u8*)context->atomic + 4)));
     }
-    vertices[0].x += triangle->normal.x * 1.5f;
-    vertices[0].y += triangle->normal.y * 1.5f;
-    vertices[0].z += triangle->normal.z * 1.5f;
-    vertices[1].x += triangle->normal.x * 1.5f;
-    vertices[1].y += triangle->normal.y * 1.5f;
-    vertices[1].z += triangle->normal.z * 1.5f;
-    vertices[2].x += triangle->normal.x * 1.5f;
-    vertices[2].y += triangle->normal.y * 1.5f;
-    vertices[2].z += triangle->normal.z * 1.5f;
-    K_FldShadow_EmitTriangle(context->work, &triangle->normal, vertices);
+    if (!(RwV3dDotProductMacro(&normal, &context->work->projectionNormal) > 0.0f))
+    {
+        vertices[0].x += normal.x * 1.5f;
+        vertices[0].y += normal.y * 1.5f;
+        vertices[0].z += normal.z * 1.5f;
+        vertices[1].x += normal.x * 1.5f;
+        vertices[1].y += normal.y * 1.5f;
+        vertices[1].z += normal.z * 1.5f;
+        vertices[2].x += normal.x * 1.5f;
+        vertices[2].y += normal.y * 1.5f;
+        vertices[2].z += normal.z * 1.5f;
+        K_FldShadow_EmitTriangle(context->work, &normal, vertices);
+    }
     return (void*)triangle;
 }
 
@@ -620,14 +637,17 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
     Resrc* source;
     RwV3d sourcePosition;
     s32 sourceIndex;
+    void* (*allocator)(u32 count, u32 size, u32 flags);
 
-    shadow = (FldShadowRenderTex*)RwCalloc(1, sizeof(FldShadowRenderTex), rwMEMHINTDUR_GLOBAL);
+    allocator = D_00960184;
+    shadow = (FldShadowRenderTex*)allocator(1, 0x8C, rwMEMHINTDUR_GLOBAL);
     if (shadow == NULL)
     {
         return NULL;
     }
 
-    task = kwlnTaskCreate(parent, "renderTex for shadow", 4171, func_0019b2b0, func_0019bcf0, shadow);
+    task = kwlnTaskCreate(parent, FLDSHADOW_TASK_NAME, 0x104B,
+                          func_0019b2b0, func_0019bcf0, shadow);
     shadow->resTypeId = resTypeId;
     shadow->mode = (u16)param_3;
 
@@ -635,13 +655,12 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
     source = MT_Scene_GetResListHead(RESRC_TYPE_19);
     while (source != NULL)
     {
-        sourcePosition = *(const RwV3d*)((const u8*)source + sizeof(Resrc));
-
+        sourcePosition = *(const RwV3d*)((const u8*)source + 0x100);
         if (sourceIndex == 0)
         {
             shadow->sourcePosition = sourcePosition;
         }
-        else if (sourceIndex == 1)
+        if (sourceIndex == 1)
         {
             f32 xDistance;
             f32 zDistance;
@@ -651,14 +670,12 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
             {
                 xDistance = -xDistance;
             }
-
             zDistance = shadow->sourcePosition.z - sourcePosition.z;
             if (zDistance < 0.0f)
             {
                 zDistance = -zDistance;
             }
-
-            if (xDistance > zDistance)
+            if (xDistance <= zDistance)
             {
                 shadow->projectionAxis.x = 0.0f;
                 shadow->projectionAxis.y = 0.0f;
@@ -670,64 +687,56 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
                 shadow->projectionAxis.y = 0.0f;
                 shadow->projectionAxis.z = 0.0f;
             }
-
             shadow->mode = 4;
         }
-
         sourceIndex++;
         source = source->next;
     }
 
-    switch (shadow->mode)
+    if (shadow->mode == 1)
     {
-        case 1:
-            shadow->texture = func_004d0e40(NULL);
-            if (shadow->texture == NULL)
+        shadow->texture = func_004d0e40(NULL);
+        if (shadow->texture == NULL)
+        {
+            K_Assert(FLDSHADOW_SOURCE_FILE, 0x5ED);
+        }
+
+        *(u32*)((u8*)shadow->texture + 0x50) =
+            (*(u32*)((u8*)shadow->texture + 0x50) & ~0x000000FF) | 0x00000002;
+        *(u32*)((u8*)shadow->texture + 0x50) =
+            (*(u32*)((u8*)shadow->texture + 0x50) & ~0x0000FF00) | 0x00003300;
+
+        shadow->raster = func_004ce0f0(0x80, 0x80, 0x20, 0x505);
+        if (shadow->raster != NULL)
+        {
+            func_004f1780(shadow->raster, true);
+        }
+        func_004d0be0(shadow->texture, shadow->raster);
+
+        shadow->camera = func_004ca090();
+        if (shadow->camera != NULL)
+        {
+            func_004d1840(shadow->camera, func_004caf10());
+            func_004cb930((RwFrame*)shadow->camera->object.object.parent,
+                          FLDSHADOW_CAMERA_OFFSET, rwCOMBINEREPLACE);
+            if (shadow->camera->object.object.parent != NULL)
             {
-                K_Assert("k_shadow.c", 1517);
+                shadow->camera->zBuffer = func_004ce0f0(0x80, 0x80, 0, 1);
+                RwCameraSetProjectionType(shadow->camera, (RwCameraProjection)2);
             }
-
-            *(u32*)((u8*)shadow->texture + 0x50) =
-                (*(u32*)((u8*)shadow->texture + 0x50) & ~0x000000ff) | 0x00000002;
-            *(u32*)((u8*)shadow->texture + 0x50) =
-                (*(u32*)((u8*)shadow->texture + 0x50) & ~0x0000ff00) | 0x00003300;
-
-            shadow->raster = RwRasterCreate(128, 128, 32, rwRASTERTYPECAMERATEXTURE | rwRASTERFORMAT8888);
-            if (shadow->raster != NULL)
-            {
-                func_004f1780(shadow->raster, true);
-            }
-
-            func_004d0be0(shadow->texture, shadow->raster);
-            shadow->camera = func_004ca090();
-            if (shadow->camera != NULL)
-            {
-                func_004d1840(shadow->camera, func_004caf10());
-                func_004cb930((RwFrame*)shadow->camera->object.object.parent,
-                              FLDSHADOW_CAMERA_OFFSET,
-                              rwCOMBINEREPLACE);
-
-                if (shadow->camera->object.object.parent != NULL)
-                {
-                    shadow->camera->zBuffer = RwRasterCreate(128, 128, 0, rwRASTERTYPEZBUFFER);
-                    RwCameraSetProjectionType(shadow->camera, (RwCameraProjection)2);
-                }
-            }
-            else
-            {
-                func_00199c60(shadow->camera);
-            }
-
-            func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
-            shadow->camera->frameBuffer = shadow->raster;
-            shadow->unk_48 = RwCalloc(1, 0x54d0, rwMEMHINTDUR_GLOBAL);
-            break;
-
-        case 4:
-        case 3:
-            shadow->radius = (f32*)RwCalloc(1, sizeof(RwV3d), rwMEMHINTDUR_GLOBAL);
-            shadow->radius[0] = 30.0f;
-            break;
+        }
+        else
+        {
+            func_00199c60(shadow->camera);
+        }
+        func_0049c160(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
+        shadow->camera->frameBuffer = shadow->raster;
+        shadow->unk_48 = allocator(1, 0x54D0, rwMEMHINTDUR_GLOBAL);
+    }
+    else if (shadow->mode == 3 || shadow->mode == 4)
+    {
+        shadow->radius = (f32*)allocator(1, 0x0C, rwMEMHINTDUR_GLOBAL);
+        shadow->radius[0] = 30.0f;
     }
 
     if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELCHAR)
@@ -736,9 +745,8 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         shadow->res = source;
         if (source == NULL)
         {
-            K_Assert("k_shadow.c", 1546);
+            K_Assert(FLDSHADOW_SOURCE_FILE, 0x60A);
         }
-
         shadow->model = ((ResrcModelChar*)source)->mdl;
     }
     else if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELNPC)
@@ -747,9 +755,8 @@ KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 p
         shadow->res = source;
         if (source == NULL)
         {
-            K_Assert("k_shadow.c", 1555);
+            K_Assert(FLDSHADOW_SOURCE_FILE, 0x613);
         }
-
         shadow->model = ((ResrcModelChar*)source)->mdl;
     }
 
@@ -1077,30 +1084,50 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
 // FUN_0019bcf0 NONMATCHING
 void func_0019bcf0(KwlnTask* renderTexTask)
 {
+    KwlnTask* task;
     FldShadowRenderTex* shadow;
     FldShadowRingWork* ring;
     RwFrame* frame;
+    RwCamera* camera;
+    RwRaster* raster;
+    void* texture;
 
-    shadow = renderTexTask != NULL ? (FldShadowRenderTex*)renderTexTask->workData : NULL;
-    if (shadow == NULL)
+    task = renderTexTask;
+    shadow = (FldShadowRenderTex*)task->workData;
+    if (shadow->mode == 3 || shadow->mode == 4)
     {
-        return;
+        goto destroyRing;
     }
-
     if (shadow->mode == 1)
     {
-        func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), shadow->camera);
-        func_00199c60(shadow->camera);
-        if (shadow->raster != NULL)
+        camera = shadow->camera;
+        func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), camera);
+        if (camera != NULL)
         {
-            func_004f1780(shadow->raster, false);
-            func_004cde90(shadow->raster);
+            frame = (RwFrame*)camera->object.object.parent;
+            if (frame != NULL)
+            {
+                func_004d1840(camera, NULL);
+                func_004caf80(frame);
+            }
+            raster = camera->zBuffer;
+            if (raster != NULL)
+            {
+                camera->zBuffer = NULL;
+                func_004cde90(raster);
+            }
+            if (camera->frameBuffer != NULL)
+            {
+                camera->frameBuffer = NULL;
+            }
+            func_004ca030(camera);
         }
-        if (shadow->texture != NULL)
-        {
-            func_004d0be0(shadow->texture, NULL);
-            func_004d0f00(shadow->texture);
-        }
+        raster = shadow->raster;
+        func_004f1780(raster, false);
+        func_004cde90(raster);
+        texture = shadow->texture;
+        func_004d0be0(texture, NULL);
+        func_004d0f00(texture);
         if (shadow->unk_48 != NULL)
         {
             (*jtbl_0096017C)(shadow->unk_48);
@@ -1108,6 +1135,7 @@ void func_0019bcf0(KwlnTask* renderTexTask)
         }
     }
 
+destroyRing:
     ring = (FldShadowRingWork*)shadow->radius;
     if (ring != NULL)
     {
@@ -1128,7 +1156,7 @@ void func_0019bcf0(KwlnTask* renderTexTask)
         (*jtbl_0096017C)(ring);
         shadow->radius = NULL;
     }
-    (*jtbl_0096017C)(shadow);
+    (*jtbl_0096017C)(task->workData);
 }
 
 // FUN_0019c2f0
