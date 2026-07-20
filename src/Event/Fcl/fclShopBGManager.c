@@ -22,7 +22,7 @@ u64 FUN_00410a10(u64 param_1,int param_2);
 u32 FUN_00410d30(int param_1,int param_2);
 u32 FUN_00410e70(u64 param_1,int param_2,long param_3);
 u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3);
-u32 FUN_00411190(u64 param_1,u64 param_2,long param_3);
+u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3);
 u32 FUN_00411340(u64 param_1,u64 param_2,long param_3);
 u32 FUN_004113f0(u64 param_1,int param_2,long param_3);
 u64 FUN_00411710(u64 param_1,int param_2);
@@ -859,10 +859,10 @@ u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3)
 
 }
 
-// FUN_00411190 NONMATCHING
+// FUN_00411190
 
 
-u32 FUN_00411190(u64 param_1,u64 param_2,long param_3)
+u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3)
 
 
 
@@ -870,8 +870,14 @@ u32 FUN_00411190(u64 param_1,u64 param_2,long param_3)
 
   if (param_3 != 0) {
 
-    switch(*(u16 *)((int)param_3 + 6)) {
+    switch(*(s16 *)((int)param_3 + 6)) {
 
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      break;
     case 5:
 
       FUN_003ef970(0);
@@ -880,49 +886,49 @@ u32 FUN_00411190(u64 param_1,u64 param_2,long param_3)
 
     case 6:
 
-      FUN_003ef970(2);
+      FUN_003ef970(1);
 
       break;
 
     case 7:
 
-      FUN_003ef970(4);
+      FUN_003ef970(2);
 
       break;
 
     case 8:
 
-      FUN_003ef970(6);
+      FUN_003ef970(3);
 
       break;
 
     case 9:
 
-      FUN_003ef970(8);
+      FUN_003ef970(4);
 
       break;
 
     case 10:
 
-      FUN_003ef970(1);
+      FUN_003ef970(5);
 
       break;
 
     case 0xb:
 
-      FUN_003ef970(3);
+      FUN_003ef970(6);
 
       break;
 
     case 0xc:
 
-      FUN_003ef970(5);
+      FUN_003ef970(7);
 
       break;
 
     case 0xd:
 
-      FUN_003ef970(7);
+      FUN_003ef970(8);
 
       break;
 
