@@ -4782,6 +4782,14 @@ void FUN_0038af70(u16 *param_1)
 
   u32 uVar6;
 
+  f32 fVar4;
+
+  f32 fVar5;
+
+  f32 fVar6;
+
+  f32 fVar7;
+
   
 
   iVar1 = FUN_003b5d10(*param_1);
@@ -4790,33 +4798,37 @@ void FUN_0038af70(u16 *param_1)
 
   if (iVar2 == 3) {
 
-    uVar6 = *(u32 *)(param_1 + 4);
+    fVar7 = *(f32 *)(param_1 + 2);
 
-    uVar4 = *(u32 *)(param_1 + 6);
+    fVar6 = *(f32 *)(param_1 + 4);
 
-    uVar5 = *(u32 *)(param_1 + 8);
+    fVar4 = *(f32 *)(param_1 + 6);
 
-    *(u32 *)(iVar1 + 300) = *(u32 *)(param_1 + 2);
+    fVar5 = *(f32 *)(param_1 + 8);
 
-    *(u32 *)(iVar1 + 0x130) = uVar6;
+    *(f32 *)(iVar1 + 300) = fVar7;
 
-    *(u32 *)(iVar1 + 0x134) = uVar4;
+    *(f32 *)(iVar1 + 0x130) = fVar6;
 
-    *(u32 *)(iVar1 + 0x138) = uVar5;
+    *(f32 *)(iVar1 + 0x134) = fVar4;
 
-    uVar6 = *(u32 *)(param_1 + 0xc);
+    *(f32 *)(iVar1 + 0x138) = fVar5;
 
-    uVar4 = *(u32 *)(param_1 + 0xe);
+    fVar7 = *(f32 *)(param_1 + 10);
 
-    uVar5 = *(u32 *)(param_1 + 0x10);
+    fVar6 = *(f32 *)(param_1 + 0xc);
 
-    *(u32 *)(iVar1 + 0x13c) = *(u32 *)(param_1 + 10);
+    fVar4 = *(f32 *)(param_1 + 0xe);
 
-    *(u32 *)(iVar1 + 0x140) = uVar6;
+    fVar5 = *(f32 *)(param_1 + 0x10);
 
-    *(u32 *)(iVar1 + 0x144) = uVar4;
+    *(f32 *)(iVar1 + 0x13c) = fVar7;
 
-    *(u32 *)(iVar1 + 0x148) = uVar5;
+    *(f32 *)(iVar1 + 0x140) = fVar6;
+
+    *(f32 *)(iVar1 + 0x144) = fVar4;
+
+    *(f32 *)(iVar1 + 0x148) = fVar5;
 
     param_1 = param_1 + 0x18;
 
@@ -4846,33 +4858,37 @@ void FUN_0038af70(u16 *param_1)
 
   else if (iVar2 == 1) {
 
-    uVar6 = *(u32 *)(param_1 + 4);
+    fVar7 = *(f32 *)(param_1 + 2);
 
-    uVar4 = *(u32 *)(param_1 + 6);
+    fVar6 = *(f32 *)(param_1 + 4);
 
-    uVar5 = *(u32 *)(param_1 + 8);
+    fVar4 = *(f32 *)(param_1 + 6);
 
-    *(u32 *)(iVar1 + 300) = *(u32 *)(param_1 + 2);
+    fVar5 = *(f32 *)(param_1 + 8);
 
-    *(u32 *)(iVar1 + 0x130) = uVar6;
+    *(f32 *)(iVar1 + 300) = fVar7;
 
-    *(u32 *)(iVar1 + 0x134) = uVar4;
+    *(f32 *)(iVar1 + 0x130) = fVar6;
 
-    *(u32 *)(iVar1 + 0x138) = uVar5;
+    *(f32 *)(iVar1 + 0x134) = fVar4;
 
-    uVar6 = *(u32 *)(param_1 + 0xc);
+    *(f32 *)(iVar1 + 0x138) = fVar5;
 
-    uVar4 = *(u32 *)(param_1 + 0xe);
+    fVar7 = *(f32 *)(param_1 + 10);
 
-    uVar5 = *(u32 *)(param_1 + 0x10);
+    fVar6 = *(f32 *)(param_1 + 0xc);
 
-    *(u32 *)(iVar1 + 0x13c) = *(u32 *)(param_1 + 10);
+    fVar4 = *(f32 *)(param_1 + 0xe);
 
-    *(u32 *)(iVar1 + 0x140) = uVar6;
+    fVar5 = *(f32 *)(param_1 + 0x10);
 
-    *(u32 *)(iVar1 + 0x144) = uVar4;
+    *(f32 *)(iVar1 + 0x13c) = fVar7;
 
-    *(u32 *)(iVar1 + 0x148) = uVar5;
+    *(f32 *)(iVar1 + 0x140) = fVar6;
+
+    *(f32 *)(iVar1 + 0x144) = fVar4;
+
+    *(f32 *)(iVar1 + 0x148) = fVar5;
 
     param_1 = param_1 + 0x18;
 
@@ -4902,33 +4918,37 @@ void FUN_0038af70(u16 *param_1)
 
   else if (iVar2 == 0xc) {
 
-    uVar6 = *(u32 *)(param_1 + 4);
+    fVar7 = *(f32 *)(param_1 + 2);
 
-    uVar4 = *(u32 *)(param_1 + 6);
+    fVar6 = *(f32 *)(param_1 + 4);
 
-    uVar5 = *(u32 *)(param_1 + 8);
+    fVar4 = *(f32 *)(param_1 + 6);
 
-    *(u32 *)(iVar1 + 0x100) = *(u32 *)(param_1 + 2);
+    fVar5 = *(f32 *)(param_1 + 8);
 
-    *(u32 *)(iVar1 + 0x104) = uVar6;
+    *(f32 *)(iVar1 + 0x100) = fVar7;
 
-    *(u32 *)(iVar1 + 0x108) = uVar4;
+    *(f32 *)(iVar1 + 0x104) = fVar6;
 
-    *(u32 *)(iVar1 + 0x10c) = uVar5;
+    *(f32 *)(iVar1 + 0x108) = fVar4;
 
-    uVar6 = *(u32 *)(param_1 + 0xc);
+    *(f32 *)(iVar1 + 0x10c) = fVar5;
 
-    uVar4 = *(u32 *)(param_1 + 0xe);
+    fVar7 = *(f32 *)(param_1 + 10);
 
-    uVar5 = *(u32 *)(param_1 + 0x10);
+    fVar6 = *(f32 *)(param_1 + 0xc);
 
-    *(u32 *)(iVar1 + 0x110) = *(u32 *)(param_1 + 10);
+    fVar4 = *(f32 *)(param_1 + 0xe);
 
-    *(u32 *)(iVar1 + 0x114) = uVar6;
+    fVar5 = *(f32 *)(param_1 + 0x10);
 
-    *(u32 *)(iVar1 + 0x118) = uVar4;
+    *(f32 *)(iVar1 + 0x110) = fVar7;
 
-    *(u32 *)(iVar1 + 0x11c) = uVar5;
+    *(f32 *)(iVar1 + 0x114) = fVar6;
+
+    *(f32 *)(iVar1 + 0x118) = fVar4;
+
+    *(f32 *)(iVar1 + 0x11c) = fVar5;
 
     param_1 = param_1 + 0x18;
 
