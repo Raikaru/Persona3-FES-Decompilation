@@ -1565,6 +1565,7 @@ void func_001fb1f0(u64 param_1,int param_2,int *param_3)
 }
 // FUN_001FB3F0 NONMATCHING
 #pragma optimization_level 1
+#pragma opt_loop_invariants on
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5)
 {
     int param_3_p = param_3;
@@ -1604,6 +1605,7 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
     *param_5 = 0;
   }
 }
+#pragma opt_loop_invariants off
 #pragma optimization_level 2
 // FUN_001FB4B0
 #pragma opt_loop_invariants on
