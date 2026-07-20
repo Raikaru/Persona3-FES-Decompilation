@@ -129,7 +129,7 @@ void FUN_003b35e0(int param_1)
 }
 #define FUN_003b35e0(...) ((void (*)(...))FUN_003b35e0)(__VA_ARGS__)
 #undef FUN_003b3740
-// FUN_003B3740 NONMATCHING
+// FUN_003B3740
 
 
 void FUN_003b3740(void)
@@ -138,7 +138,7 @@ void FUN_003b3740(void)
 
 {
 
-  (*DAT_0096017c)(uGpffffb954);
+  (*(void (**)(...))0x0096017c)(uGpffffb954);
 
   uGpffffb954 = 0;
 
