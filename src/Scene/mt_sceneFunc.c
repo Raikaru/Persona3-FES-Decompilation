@@ -48,6 +48,8 @@ extern u32 DAT_0095aff8;
 extern u32 DAT_0095affc;
 extern u32 DAT_0095b000;
 extern short * DAT_0095b070;
+#pragma alias DAT_0095b070_ptr DAT_0095b070
+extern u8 DAT_0095b070_ptr[];
 extern u32 DAT_0095b074;
 extern u32 DAT_0095b078;
 extern u32 DAT_0095b0f8;
@@ -111,10 +113,16 @@ extern u32 DAT_0095b4f0;
 extern u32 DAT_0095b568;
 extern u32 DAT_0095b5e0;
 extern u32 DAT_0095b658;
+#pragma alias DAT_0095b658_ptr DAT_0095b658
+extern u8 DAT_0095b658_ptr[];
 extern u32 DAT_0095b65c;
 extern u32 DAT_0095b660;
+#pragma alias DAT_0095b660_ptr DAT_0095b660
+extern u8 DAT_0095b660_ptr[];
 extern u32 DAT_0095b664;
 extern u32 DAT_0095b668;
+#pragma alias DAT_0095b668_ptr DAT_0095b668
+extern u8 DAT_0095b668_ptr[];
 extern u32 DAT_0095b66c;
 extern u32 DAT_0095b670;
 extern u32 DAT_0095b674;
@@ -4931,16 +4939,8 @@ void FUN_003bd280(void)
 
 
 short ** FUN_003bd870(void)
-
-
-
 {
-
-  asm {
-    .word 0x3c020096
-    .word 0x2442b070
-  }
-
+  return (short **)DAT_0095b070_ptr;
 }
 #define FUN_003bd870(...) ((short ** (*)(...))FUN_003bd870)(__VA_ARGS__)
 #undef FUN_003bd880
@@ -4948,16 +4948,8 @@ short ** FUN_003bd870(void)
 
 
 u32 * FUN_003bd880(void)
-
-
-
 {
-
-  asm {
-    .word 0x3c020096
-    .word 0x2442b658
-  }
-
+  return (u32 *)DAT_0095b658_ptr;
 }
 #define FUN_003bd880(...) ((u32 * (*)(...))FUN_003bd880)(__VA_ARGS__)
 #undef FUN_003bd890
@@ -4965,16 +4957,8 @@ u32 * FUN_003bd880(void)
 
 
 u32 * FUN_003bd890(void)
-
-
-
 {
-
-  asm {
-    .word 0x3c020096
-    .word 0x2442b660
-  }
-
+  return (u32 *)DAT_0095b660_ptr;
 }
 #define FUN_003bd890(...) ((u32 * (*)(...))FUN_003bd890)(__VA_ARGS__)
 #undef FUN_003bd8a0
@@ -4982,16 +4966,8 @@ u32 * FUN_003bd890(void)
 
 
 u32 * FUN_003bd8a0(void)
-
-
-
 {
-
-  asm {
-    .word 0x3c020096
-    .word 0x2442b668
-  }
-
+  return (u32 *)DAT_0095b668_ptr;
 }
 #define FUN_003bd8a0(...) ((u32 * (*)(...))FUN_003bd8a0)(__VA_ARGS__)
 #undef FUN_003bd8b0
