@@ -64,8 +64,8 @@ extern void func_003cdcd0(u32 object, s32 a, s32 b, s32 c);
 extern void func_003cde00(u32 object, s32 value);
 extern void func_003c72d0(u32 value);
 extern u32 func_003c7bc0(s32 mode, u32 value);
-extern u32 func_00173220(s16 value);
-extern u32 func_0017d790(s16 value);
+extern u32 func_00173220(u16 value);
+extern u32 func_0017d790(u16 value);
 extern void func_003c7430(u32 value);
 extern void func_003c7990(s32 value);
 extern u32 func_003c7850(void);
@@ -299,10 +299,14 @@ void func_0024adf0(void)
     u32* work;
     u32 flags;
     u32 value;
-    f32 opacity;
-    f32 angle;
-    f32 wave;
     BrpBirthColor color;
+    BrpBirthVec rotation = {1.0f, 0.0f, 0.0f};
+    BrpBirthVec origin;
+    f32 angle;
+    f32 opacity;
+    f32 wave;
+    u8* frame;
+
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
     func_0024bb30();
@@ -347,223 +351,236 @@ void func_0024adf0(void)
         func_002392d0();
         switch (work[2])
         {
-            case 1:
-                if (H_Fade_IsFadeOutDone() != 0)
+        case 1:
+            if (H_Fade_IsFadeOutDone() != 0)
+            {
+                work[4] = 0;
+                work[2] = 2;
+            }
+            break;
+        case 2:
+            if ((s32)work[4] < 0x1E)
+            {
+                work[4]++;
+            }
+            else
+            {
+                work[4] = 0;
+                work[2] = 3;
+            }
+            break;
+        case 3:
+            if ((s32)work[4] < 0x28)
+            {
+                work[4]++;
+            }
+            else
+            {
+                func_0010a4e0(1, 0, 8, 5);
+                work[4] = 0;
+                work[2] = 4;
+            }
+            break;
+        case 4:
+            if ((s32)work[4] < 0x14)
+            {
+                work[4]++;
+                color.r = 0xFF;
+                color.g = 0;
+                color.b = 0;
+                color.a = (u8)(255.0f -
+                    (255.0f * ((f32*)work)[4]) / 20.0f);
+                func_0034ff90((void*)(uintptr_t)work[0x3F3], &color);
+            }
+            else
+            {
+                if (work[0] == 1)
                 {
-                    work[4] = 0;
-                    work[2] = 2;
-                }
-                break;
-
-            case 2:
-                if (work[4] < 0x1E)
-                {
-                    work[4]++;
-                }
-                else
-                {
-                    work[4] = 0;
-                    work[2] = 3;
-                }
-                break;
-
-            case 3:
-                if (work[4] < 0x28)
-                {
-                    work[4]++;
-                }
-                else
-                {
-                    func_0010a4e0(1, 0, 8, 5);
-                    work[4] = 0;
-                    work[2] = 4;
-                }
-                break;
-
-            case 4:
-                if (work[4] < 0x14)
-                {
-                    u8 alpha;
-                    work[4]++;
-                    alpha = (u8)(255.0f - ((f32)work[4] * 255.0f) / 20.0f);
-                    brpBirthSetColor((void*)(uintptr_t)work[0x3F3], 0xFF, 0, 0, alpha);
-                }
-                else
-                {
-                    if (work[0] == 1)
-                    {
-                        work[0x3F2] = (u32)(uintptr_t)
-                            func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(1));
-                        work[1] |= 0x20;
-                        brpBirthSetOrigin((void*)(uintptr_t)work[0x3F2], 0.0f, 100.0f, 0.0f);
-                        func_0010a4e0(1, 0, 8, 6);
-                        work[1] &= ~1;
-                        work[2] = 7;
-                    }
-                    else if (work[0] == 0)
-                    {
-                        work[4] = 0;
-                        work[2] = 5;
-                    }
-                    brpBirthSetColor((void*)(uintptr_t)work[0x3F3], 0, 0, 0, 0);
-                }
-                break;
-
-            case 5:
-                if (work[4] < 0x1E)
-                {
-                    work[4]++;
-                }
-                else
-                {
-                    K_ASSERT((work[1] & 0x10) == 0, 0x1BF);
-                    work[0x3F1] = (u32)(uintptr_t)
-                        func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(2));
-                    work[1] |= 0x10;
-                    brpBirthSetOrigin((void*)(uintptr_t)work[0x3F1], 0.0f, 100.0f, -500.0f);
+                    work[0x3F2] = (u32)(uintptr_t)
+                        func_0034fcd0((const void*)(uintptr_t)
+                            brpRes0024bf20(1));
+                    work[1] |= 0x20;
+                    origin.x = 0.0f;
+                    origin.y = 100.0f;
+                    origin.z = 0.0f;
+                    func_0034fdf0((void*)(uintptr_t)work[0x3F2],
+                        &origin);
                     func_0010a4e0(1, 0, 8, 6);
-                    work[4] = 0;
-                    work[2] = 6;
-                }
-                break;
-
-            case 6:
-                if (work[4] == 0x1E)
-                {
-                    func_003cde00(work[0x3158], 1);
-                    K_ASSERT((work[1] & 0x100) == 0, 0x1D6);
-                    work[0x3F4] = (u32)(uintptr_t)
-                        func_0034fcd0((const void*)(uintptr_t)brpRes0024bf20(3));
-                    work[1] |= 0x100;
-                    brpBirthSetOrigin((void*)(uintptr_t)work[0x3F4], -60.0f, -50.0f, 0.0f);
-                }
-                if (work[4] < 0x3C)
-                {
-                    work[4]++;
-                }
-                else
-                {
-                    work[4] = 0;
-                    func_0024bf80();
-                    work[2] = 10;
-                }
-                break;
-
-            case 8:
-                if (H_Fade_IsFadeOutDone() != 0)
-                {
-                    if ((work[1] & 0x10) != 0)
-                    {
-                        func_0034fcf0((void*)(uintptr_t)work[0x3F1]);
-                        work[1] &= ~0x10;
-                    }
-                    if ((work[1] & 0x100) != 0)
-                    {
-                        func_0034fcf0((void*)(uintptr_t)work[0x3F4]);
-                        work[1] &= ~0x100;
-                    }
-                    if ((work[1] & 0x20) != 0)
-                    {
-                        func_0034fcf0((void*)(uintptr_t)work[0x3F2]);
-                        work[1] &= ~0x20;
-                    }
-                    if ((work[1] & 0x40) != 0)
-                    {
-                        func_0034fcf0((void*)(uintptr_t)work[0x3F3]);
-                        work[1] &= ~0x40;
-                    }
                     work[1] &= ~1;
-                    work[2] = 0;
-                }
-                break;
-
-            case 10:
-                if (brpRes0024c040() == 0)
-                {
-                    value = brpRes0024c090();
-                    func_003c72d0(value);
-                    value = func_00173220((s16)work[3]);
-                    func_003c7bc0(1, value);
-                    value = func_0017d790((s16)work[3]);
-                    func_003c7430(value);
-                    work[2] = 0xB;
-                }
-                break;
-
-            case 0xB:
-                func_003c7990(1);
-                if (func_003c7850() == 0)
-                {
-                    func_003c7650(1);
-                    func_003c77a0();
                     work[2] = 7;
-                    work[1] &= ~1;
                 }
-                break;
-
-            default:
-                break;
+                else if (work[0] == 0)
+                {
+                    work[4] = 0;
+                    work[2] = 5;
+                }
+                color.r = 0;
+                color.g = 0;
+                color.b = 0;
+                color.a = 0;
+                func_0034ff90((void*)(uintptr_t)work[0x3F3], &color);
+            }
+            break;
+        case 5:
+            if ((s32)work[4] < 0x1E)
+            {
+                work[4]++;
+            }
+            else
+            {
+                K_ASSERT((work[1] & 0x10) == 0, 0x1BF);
+                work[0x3F1] = (u32)(uintptr_t)
+                    func_0034fcd0((const void*)(uintptr_t)
+                        brpRes0024bf20(2));
+                work[1] |= 0x10;
+                origin.x = 0.0f;
+                origin.y = 100.0f;
+                origin.z = -500.0f;
+                func_0034fdf0((void*)(uintptr_t)work[0x3F1], &origin);
+                func_0010a4e0(1, 0, 8, 6);
+                work[4] = 0;
+                work[2] = 6;
+            }
+            break;
+        case 6:
+            if (work[4] == 0x1E)
+            {
+                func_003cde00(work[0x3158], 1);
+                K_ASSERT((work[1] & 0x100) == 0, 0x1D6);
+                work[0x3F4] = (u32)(uintptr_t)
+                    func_0034fcd0((const void*)(uintptr_t)
+                        brpRes0024bf20(3));
+                work[1] |= 0x100;
+                origin.x = -60.0f;
+                origin.y = -50.0f;
+                origin.z = 0.0f;
+                func_0034fdf0((void*)(uintptr_t)work[0x3F4], &origin);
+            }
+            if ((s32)work[4] < 0x3C)
+            {
+                work[4]++;
+            }
+            else
+            {
+                work[4] = 0;
+                func_0024bf80();
+                work[2] = 10;
+            }
+            break;
+        case 8:
+            if (H_Fade_IsFadeOutDone() != 0)
+            {
+                if ((work[1] & 0x10) != 0)
+                {
+                    func_0034fcf0((void*)(uintptr_t)work[0x3F1]);
+                    work[1] &= ~0x10;
+                }
+                if ((work[1] & 0x100) != 0)
+                {
+                    func_0034fcf0((void*)(uintptr_t)work[0x3F4]);
+                    work[1] &= ~0x100;
+                }
+                if ((work[1] & 0x20) != 0)
+                {
+                    func_0034fcf0((void*)(uintptr_t)work[0x3F2]);
+                    work[1] &= ~0x20;
+                }
+                if ((work[1] & 0x40) != 0)
+                {
+                    func_0034fcf0((void*)(uintptr_t)work[0x3F3]);
+                    work[1] &= ~0x40;
+                }
+                work[1] &= ~1;
+                work[2] = 0;
+            }
+            break;
+        case 10:
+            if (brpRes0024c040() == 0)
+            {
+                value = brpRes0024c090();
+                func_003c72d0(value);
+                value = func_00173220(*(u16*)((u8*)work + 0x0C));
+                func_003c7bc0(1, value);
+                value = func_0017d790(*(u16*)((u8*)work + 0x0C));
+                func_003c7430(value);
+                work[2] = 0xB;
+            }
+            break;
+        case 0xB:
+            func_003c7990(1);
+            if (func_003c7850() == 0)
+            {
+                func_003c7650(1);
+                func_003c77a0();
+                work[2] = 7;
+                work[1] &= ~1;
+            }
+            break;
+        default:
+            break;
         }
+        frame = (u8*)work + 0x1C;
 
-        opacity = 0.0f;
         switch (work[2])
         {
-            case 1:
-            case 2:
-                opacity = 0.0f;
-                break;
-            case 3:
-                opacity = (f32)work[4] / 40.0f;
-                break;
-            case 4:
-            case 5:
-                opacity = 1.0f;
-                break;
-            case 6:
-                opacity = 1.0f - (f32)work[4] / 60.0f;
-                break;
-            case 7:
-            case 8:
-                opacity = work[0] == 1 ? 1.0f : 0.0f;
-                break;
-            default:
-                break;
+        case 1:
+        case 2:
+            opacity = 0.0f;
+            break;
+        case 3:
+            opacity = ((f32*)work)[4] / 40.0f;
+            break;
+        case 4:
+        case 5:
+            opacity = 1.0f;
+            break;
+        case 6:
+            opacity = 1.0f - ((f32*)work)[4] / 60.0f;
+            break;
+        case 7:
+        case 8:
+            opacity = work[0] == 1 ? 1.0f : 0.0f;
+            break;
+        default:
+            opacity = 0.0f;
+            break;
         }
 
         work[5]++;
-        wave = fGpffff8248 * -((f32)work[5] / 50.0f) * 2.0f;
+        wave = fGpffff8248 *
+            (-(((f32*)work)[5] / 50.0f) * 2.0f);
         ((f32*)work)[0x3EC] = func_0052e878(wave) * -300.0f;
         ((f32*)work)[0x3EE] = func_0052e6d8(wave) * -300.0f;
         ((f32*)work)[0x3ED] =
-            func_0052e6d8(fGpffff8248 * ((f32)work[5] / 30.0f) * 2.0f) *
+            func_0052e6d8(fGpffff8248 *
+                ((((f32*)work)[5] / 30.0f) * 2.0f)) *
             400.0f + 100.0f;
+
         color.r = 0xFF;
         color.g = 0xFF;
         color.b = 0xFF;
         color.a = (u8)(opacity * 255.0f);
-        func_0020cc80((u8*)work + 0x1C, &color);
+        func_0020cc80(frame, &color);
 
         switch (work[2])
         {
-            case 1:
-            case 2:
-            case 3:
-                angle = 180.0f;
-                break;
-            case 4:
-                angle = (1.0f - (f32)work[4] / 20.0f) * 180.0f;
-                break;
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-                angle = 0.0f;
-                break;
-            default:
-                angle = 0.0f;
-                break;
+        case 1:
+        case 2:
+        case 3:
+            angle = 180.0f;
+            break;
+        case 4:
+            angle = (1.0f - ((f32*)work)[4] / 20.0f) * 180.0f;
+            break;
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        default:
+            angle = 0.0f;
+            break;
         }
-        func_004bdde0(angle, (u8*)work + 0x2C, &sBrpBirthRotation, 0);
+        func_004bdde0(angle, (u8*)work + 0x2C, &rotation, 0);
         if ((work[1] & 0x80) != 0)
         {
             func_003cdba0(work[0x3158], *(u16*)((u8*)work + 0x0C));
