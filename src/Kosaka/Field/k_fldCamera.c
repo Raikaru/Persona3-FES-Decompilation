@@ -29,6 +29,22 @@ typedef struct FldCameraResource
     f32 yDeadZone;          // 0x11c
 } FldCameraResource;
 
+typedef union FldCameraRuntimeCmr
+{
+    struct
+    {
+        RwMatrix mat;           // 0x00
+        f32 fov;                // 0x40
+        u16 type;               // 0x44
+        u16 pad;                // 0x46
+        RwV3d posOffset;        // 0x48
+        f32 xzDeadZone;         // 0x54
+        f32 yDeadZone;          // 0x58
+        u32 unk;                // 0x5c
+    } fields;
+    u_long128 q[6];
+} FldCameraRuntimeCmr;
+
 extern f32 FUN_001a5aa0(const RwMatrix* matrix);
 extern void FUN_001a1210(RwCamera* camera, const RwV3d* target,
                          const RwV3d* position, const RwV3d* upVector);
@@ -39,6 +55,8 @@ extern void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode);
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
+extern const char D_00683A8C[];
+extern const char D_00683A90[];
 extern void* DAT_00960184[];
 extern void* D_007CE2B0;
 extern void* func_00100d80(const char* path, u32 mode);
@@ -56,58 +74,71 @@ u32 K_FldCamera_GetType(KwlnTask* fldCameraTask)
 void func_001d5c10(KwlnTask* fldCameraTask, u32 type)
 {
     FldCamera* fldCamera;
+    void* field;
+    void* fieldSub;
     void* curve;
+    f32 amount;
     s32 i;
     RwV3d center;
 
     fldCamera = (FldCamera*)fldCameraTask->workData;
     fldCamera->type = type;
-
-    if (type == 3 || type == 4)
+    if (type == 3)
     {
-        curve = *(void**)((u8*)*(void**)((u8*)K_Field_Get() + 0x116c) + 0xa1c);
-        if (curve != NULL)
-        {
-            for (i = 0; i < 9; i++)
-            {
-                FUN_0048d480((f32)i * 0.125f, curve, 10,
-                             &fldCamera->deadZonePath[i], NULL);
-            }
-
-            if (fldCamera->pointTask0 == NULL)
-            {
-                fldCamera->pointTask0 = K_Draw_CreatePointTask(fldCameraTask);
-                fldCamera->pointTask1 = K_Draw_CreatePointTask(fldCameraTask);
-                fldCamera->pointTask2 = K_Draw_CreatePointTask(fldCameraTask);
-            }
-
-            K_Draw_SetPointDrawEnabled(fldCamera->pointTask0, true);
-            K_Draw_SetPointDrawEnabled(fldCamera->pointTask1, true);
-            K_Draw_SetPointDrawEnabled(fldCamera->pointTask2, true);
-            FUN_0048d270(curve, 0, &center);
-            K_Draw_SetPointCenter(fldCamera->pointTask0, &center);
-            K_Draw_SetPointColor(fldCamera->pointTask0,
-                                 (const RwRGBA*)(uintptr_t)0x00683a8c);
-            K_Draw_SetPointColor(fldCamera->pointTask1,
-                                 (const RwRGBA*)(uintptr_t)0x00683a90);
-            K_Draw_SetPointColor(fldCamera->pointTask2,
-                                 (const RwRGBA*)(uintptr_t)0x00683a90);
-        }
+        goto setup_dead_zone;
     }
-    else
+    if (type != 4)
     {
-        if (fldCamera->deadZoneTask != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(fldCamera->deadZoneTask);
-            fldCamera->deadZoneTask = NULL;
-        }
-        if (fldCamera->pointTask0 != NULL)
-        {
-            kwlnTaskDestroyWithHierarchy(fldCamera->pointTask0);
-            fldCamera->pointTask0 = NULL;
-            kwlnTaskDestroyWithHierarchy(fldCamera->pointTask1);
-            kwlnTaskDestroyWithHierarchy(fldCamera->pointTask2);
-        }
+        goto cleanup;
+    }
+
+setup_dead_zone:
+    curve = *(void**)((u8*)*(void**)((u8*)K_Field_Get() + 0x116c) + 0xa1c);
+    if (curve == NULL)
+    {
+        return;
+    }
+    for (i = 0; i < 9; i++)
+    {
+        field = K_Field_Get();
+        fieldSub = (void*)*(volatile void**)((u8*)field + 0x116c);
+        amount = (f32)i * 0.125f;
+        curve = (void*)*(volatile void**)((u8*)fieldSub + 0xa1c);
+        FUN_0048d480(amount, curve, 10,
+                     &fldCamera->deadZonePath[i], NULL);
+    }
+    if (fldCamera->pointTask0 == NULL)
+    {
+        fldCamera->pointTask0 = K_Draw_CreatePointTask(fldCameraTask);
+        fldCamera->pointTask1 = K_Draw_CreatePointTask(fldCameraTask);
+        fldCamera->pointTask2 = K_Draw_CreatePointTask(fldCameraTask);
+    }
+    K_Draw_SetPointDrawEnabled(fldCamera->pointTask0, true);
+    K_Draw_SetPointDrawEnabled(fldCamera->pointTask1, true);
+    K_Draw_SetPointDrawEnabled(fldCamera->pointTask2, true);
+    curve = *(void**)((u8*)*(void**)((u8*)K_Field_Get() + 0x116c) + 0xa1c);
+    FUN_0048d270(curve, 0, &center);
+    K_Draw_SetPointCenter(fldCamera->pointTask0, &center);
+    K_Draw_SetPointColor(fldCamera->pointTask0,
+                         (const RwRGBA*)D_00683A8C);
+    K_Draw_SetPointColor(fldCamera->pointTask1,
+                         (const RwRGBA*)D_00683A90);
+    K_Draw_SetPointColor(fldCamera->pointTask2,
+                         (const RwRGBA*)D_00683A90);
+    return;
+
+cleanup:
+    if (fldCamera->deadZoneTask != NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(fldCamera->deadZoneTask);
+        fldCamera->deadZoneTask = NULL;
+    }
+    if (fldCamera->pointTask0 != NULL)
+    {
+        kwlnTaskDestroyWithHierarchy(fldCamera->pointTask0);
+        fldCamera->pointTask0 = NULL;
+        kwlnTaskDestroyWithHierarchy(fldCamera->pointTask1);
+        kwlnTaskDestroyWithHierarchy(fldCamera->pointTask2);
     }
 }
 
@@ -386,9 +417,10 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
     return task;
 }
 
-// FUN_001d68e0 NONMATCHING
+// FUN_001d68e0
 void func_001d68e0(CmrFile* cmr, KwlnTask* fldCameraTask)
 {
+    u8 data[0x60] __attribute__((aligned(16)));
     FldCamera* fldCamera;
     RwCamera* camera;
     RwFrame* cameraFrame;
@@ -396,13 +428,15 @@ void func_001d68e0(CmrFile* cmr, KwlnTask* fldCameraTask)
     fldCamera = (FldCamera*)fldCameraTask->workData;
     camera = kwlnGetMainCamera();
     cameraFrame = (RwFrame*)camera->object.object.parent;
-    memset(cmr, 0, sizeof(CmrFile));
-    cmr->fov = K_View_GetFov(camera);
-    cmr->mat = cameraFrame->modelling;
-    cmr->type = (u16)fldCamera->type;
-    cmr->posOffset = fldCamera->posOffset;
-    cmr->xzDeadZone = fldCamera->xzDeadZone;
-    cmr->yDeadZone = fldCamera->yDeadZone;
+    memset(data, 0, 0x60);
+    ((FldCameraRuntimeCmr*)data)->fields.fov =
+        K_View_GetFov(kwlnGetMainCamera());
+    ((FldCameraRuntimeCmr*)data)->fields.mat = cameraFrame->modelling;
+    ((FldCameraRuntimeCmr*)data)->fields.type = (u16)fldCamera->type;
+    ((FldCameraRuntimeCmr*)data)->fields.posOffset = fldCamera->posOffset;
+    ((FldCameraRuntimeCmr*)data)->fields.xzDeadZone = fldCamera->xzDeadZone;
+    ((FldCameraRuntimeCmr*)data)->fields.yDeadZone = fldCamera->yDeadZone;
+    *(FldCameraRuntimeCmr*)cmr = *(FldCameraRuntimeCmr*)data;
 }
 
 // FUN_001d69e0 NONMATCHING
@@ -413,15 +447,20 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
     RwFrame* cameraFrame;
 
     camera = kwlnGetMainCamera();
+    K_View_SetFov(camera, ((const FldCameraRuntimeCmr*)cmr)->fields.fov);
+    camera = kwlnGetMainCamera();
     cameraFrame = (RwFrame*)camera->object.object.parent;
-    K_View_SetFov(camera, cmr->fov);
-    FUN_004cb7f0(cameraFrame, &cmr->mat, 0);
-    func_001d5c10(fldCameraTask, cmr->type);
+    FUN_004cb7f0(cameraFrame,
+                 &((const FldCameraRuntimeCmr*)cmr)->fields.mat, 0);
+    func_001d5c10(fldCameraTask,
+                  ((const FldCameraRuntimeCmr*)cmr)->fields.type);
 
     fldCamera = (FldCamera*)fldCameraTask->workData;
-    fldCamera->posOffset = cmr->posOffset;
-    fldCamera->xzDeadZone = cmr->xzDeadZone;
-    fldCamera->yDeadZone = cmr->yDeadZone;
+    fldCamera->posOffset = ((const FldCameraRuntimeCmr*)cmr)->fields.posOffset;
+    fldCamera->xzDeadZone =
+        ((const FldCameraRuntimeCmr*)cmr)->fields.xzDeadZone;
+    fldCamera->yDeadZone =
+        ((const FldCameraRuntimeCmr*)cmr)->fields.yDeadZone;
 
     if (fldCamera->type == 2)
     {
@@ -438,10 +477,8 @@ void func_001d69e0(KwlnTask* fldCameraTask, const CmrFile* cmr)
 HCdvd* func_001d6b10(void)
 {
     char path[128];
-    u32* fieldIds;
 
-    fieldIds = (u32*)(uintptr_t)CAMERA_FIELD_IDS;
-    if (fieldIds[0] == 0xffffffff)
+    if (CAMERA_FIELD_IDS[0] == 0xffffffff)
     {
         return NULL;
     }
@@ -449,7 +486,7 @@ HCdvd* func_001d6b10(void)
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
         sprintf(path, "field/env/f%03d_%03d.CMR",
-                (s32)fieldIds[0], (s32)fieldIds[1]);
+                (s32)CAMERA_FIELD_IDS[0], (s32)CAMERA_FIELD_IDS[1]);
         if (H_Cdvd_FileExists(path) == false)
         {
             return NULL;
