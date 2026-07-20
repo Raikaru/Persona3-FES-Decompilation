@@ -13,8 +13,9 @@ void FUN_0025fb60(int param_1,int param_2,float *uv);
 void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4);
 extern f32 DAT_007caff0;
 extern f32 DAT_00960088;
-extern code DAT_00960090;
-extern code DAT_0096009c;
+extern code DAT_00960090[];
+extern void FUN_004d7f60(s32 state, u32 value);
+extern code DAT_0096009c[];
 extern code DAT_00960178;
 extern char D_0068EC08[];
 
@@ -1147,155 +1148,92 @@ void FUN_0025da30(void)
 
 
 void FUN_0025ed40(void)
-
-
-
 {
-
-  int iVar1;
-
-  u64 uVar2;
-
-  
-
-  if (sBrItem == 0) {
-
-    FUN_0019d3f0(0x68ebf8,0x75);
-
-  }
-
-  iVar1 = (int)sBrItem;
-
-  (*DAT_00960090)(9,2);
-
-  (*DAT_00960090)(0x14,2);
-
-  (*DAT_00960090)(8,1);
-
-  (*DAT_00960090)(6,0);
-
-  FUN_004d7f60(3,0x717fb);
-
-  FUN_004d7f60(2,0x44);
-
-  (*DAT_00960090)(1,0);
-
-  (*DAT_0096009c)(iVar1 + 0x310,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x310,4,0,2,3);
-
-  (*DAT_00960090)(0x14,2);
-
-  (*DAT_00960090)(8,1);
-
-  (*DAT_00960090)(6,0);
-
-  FUN_004d7f60(3,0x717fb);
-
-  FUN_004d7f60(2,0x44);
-
-  (*DAT_00960090)(1,0);
-
-  (*DAT_0096009c)(iVar1 + 0x10,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x10,4,0,2,3);
-
-  (*DAT_00960090)(8,0);
-
-  (*DAT_00960090)(6,1);
-
-  uVar2 = FUN_00260940(*(u32 *)(iVar1 + 8),0x3a);
-
-  (*DAT_00960090)(1,uVar2);
-
-  (*DAT_0096009c)(iVar1 + 0x710,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x710,4,0,2,3);
-
-  (*DAT_00960090)(1,0);
-
-  (*DAT_0096009c)(iVar1 + 0x810,4,0,1,2);
-
-  (*DAT_00960090)(8,1);
-
-  (*DAT_00960090)(6,1);
-
-  FUN_004d7f60(3,0x717fb);
-
-  FUN_004d7f60(2,0x44);
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(8,1);
-
-  (*DAT_00960090)(1,0);
-
-  (*DAT_0096009c)(iVar1 + 0x210,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x210,4,0,2,3);
-
-  if (*(int *)(iVar1 + 4) == 1) {
-
-    (*DAT_00960090)(6,0);
-
-    (*DAT_00960090)(8,0);
-
-    (*DAT_00960090)(1,0);
-
-    (*DAT_0096009c)(iVar1 + 0x110,4,0,1,2);
-
-    (*DAT_0096009c)(iVar1 + 0x110,4,0,2,3);
-
-  }
-
-  else if (*(int *)(iVar1 + 4) == 0) {
-
-    (*DAT_00960090)(6);
-
-    (*DAT_00960090)(8,1);
-
-    (*DAT_00960090)(1,0);
-
-    (*DAT_0096009c)(iVar1 + 0x110,4,0,1,2);
-
-    (*DAT_0096009c)(iVar1 + 0x110,4,0,2,3);
-
-  }
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(6,1);
-
-  (*DAT_00960090)(8,0);
-
-  uVar2 = FUN_00260940(*(u32 *)(iVar1 + 8),0x34);
-
-  (*DAT_00960090)(1,uVar2);
-
-  (*DAT_0096009c)(iVar1 + 0x410,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x410,4,0,2,3);
-
-  uVar2 = FUN_00260940(*(u32 *)(iVar1 + 8),0x35);
-
-  (*DAT_00960090)(1,uVar2);
-
-  (*DAT_0096009c)(iVar1 + 0x510,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x510,4,0,2,3);
-
-  uVar2 = FUN_00260940(*(u32 *)(iVar1 + 8),0x36);
-
-  (*DAT_00960090)(1,uVar2);
-
-  (*DAT_0096009c)(iVar1 + 0x610,4,0,1,2);
-
-  (*DAT_0096009c)(iVar1 + 0x610,4,0,2,3);
-
-  return;
-
+    volatile code *state;
+    volatile code *quad;
+    int iVar1;
+    u32 uVar2;
+
+    if (sBrItem == (u32*)0) {
+        FUN_0019d3f0(0x68ebf8, 0x75);
+    }
+    iVar1 = (int)sBrItem;
+    state = DAT_00960090;
+    (*state)(9, 2);
+    (*state)(0x14, 2);
+    (*state)(8, 1);
+    (*state)(6, 0);
+    FUN_004d7f60(3, 0x717fb);
+    FUN_004d7f60(2, 0x44);
+    (*state)(1, 0);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x310, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x310, 4, 0, 2, 3);
+    (*state)(0x14, 2);
+    (*state)(8, 1);
+    (*state)(6, 0);
+    FUN_004d7f60(3, 0x717fb);
+    FUN_004d7f60(2, 0x44);
+    (*state)(1, 0);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x10, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x10, 4, 0, 2, 3);
+    (*state)(8, 0);
+    (*state)(6, 1);
+    uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x3a);
+    (*state)(1, uVar2);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x710, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x710, 4, 0, 2, 3);
+    (*state)(1, 0);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x810, 4, 0, 1, 2);
+    (*state)(8, 1);
+    (*state)(6, 1);
+    FUN_004d7f60(3, 0x717fb);
+    FUN_004d7f60(2, 0x44);
+    (*state)(6, 1);
+    (*state)(6, 1);
+    (*state)(8, 1);
+    (*state)(1, 0);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x210, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x210, 4, 0, 2, 3);
+    if (*(int*)(iVar1 + 4) == 1) {
+        (*state)(6, 0);
+        (*state)(8, 0);
+        (*state)(1, 0);
+        quad = state;
+        (*quad)(iVar1 + 0x110, 4, 0, 1, 2);
+        (*quad)(iVar1 + 0x110, 4, 0, 2, 3);
+    }
+    else if (*(int*)(iVar1 + 4) == 0) {
+        (*state)(6, 0);
+        (*state)(8, 1);
+        (*state)(1, 0);
+        quad = state;
+        (*quad)(iVar1 + 0x110, 4, 0, 1, 2);
+        (*quad)(iVar1 + 0x110, 4, 0, 2, 3);
+    }
+    state = DAT_00960090;
+    (*state)(6, 1);
+    (*state)(6, 1);
+    (*state)(8, 0);
+    uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x34);
+    (*state)(1, uVar2);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x410, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x410, 4, 0, 2, 3);
+    uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x35);
+    (*state)(1, uVar2);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x510, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x510, 4, 0, 2, 3);
+    uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x36);
+    (*state)(1, uVar2);
+    quad = DAT_0096009c;
+    (*quad)(iVar1 + 0x610, 4, 0, 1, 2);
+    (*quad)(iVar1 + 0x610, 4, 0, 2, 3);
 }
 
 
@@ -1337,59 +1275,57 @@ void FUN_0025ed40(void)
 // FUN_0025F5D0 NONMATCHING
 void FUN_0025f5d0(int param_1, int param_2, int param_3)
 {
-  int iVar1;
-  int iVar3;
-  u32 uVar2;
-  u8 abStack_20[0x10];
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  float fStack_4;
-  float fVar5;
+    int iVar1;
+    int iVar3;
+    u32 uVar2;
+    float uv[4];
+    u8 abStack_20[0x10];
+    float fVar5;
 
-  iVar1 = *(int *)((int)param_2 + 0x184) + param_3 * 0x80;
-  iVar3 = FUN_00198590();
-  fVar5 = 1.0f / *(float *)(iVar3 + 0x80);
-  FUN_0025fb60(param_2, param_3, &fStack_10);
-
-  for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-    uVar2 = *(u32 *)(iVar1 + iVar3 * 4 + 100);
-    abStack_20[iVar3 * 4] = (u8)((uVar2 >> 0x18) * 0xff >> 7);
-    abStack_20[iVar3 * 4 + 1] = (u8)((uVar2 >> 0x10 & 0xff) * 0xff >> 7);
-    abStack_20[iVar3 * 4 + 2] = (u8)((uVar2 >> 8 & 0xff) * 0xff >> 7);
-    abStack_20[iVar3 * 4 + 3] = (u8)((uVar2 & 0xff) * 0xff >> 7);
-  }
-
-  *(float *)(param_1 + 0x10) = fStack_10;
-  *(float *)(param_1 + 0x14) = fStack_c;
-  *(float *)(param_1 + 0x18) = fVar5;
-  *(float *)(param_1 + 8) = DAT_00960088;
-  *(float *)(param_1 + 0x20) = (float)abStack_20[0];
-  *(float *)(param_1 + 0x24) = (float)abStack_20[1];
-  *(float *)(param_1 + 0x28) = (float)abStack_20[2];
-  *(float *)(param_1 + 0x2c) = (float)abStack_20[3];
-  *(float *)(param_1 + 0x50) = fStack_8;
-  *(float *)(param_1 + 0x54) = fStack_c;
-  *(float *)(param_1 + 0x58) = fVar5;
-  *(float *)(param_1 + 0x48) = DAT_00960088;
-  *(float *)(param_1 + 0x60) = (float)abStack_20[4];
-  *(float *)(param_1 + 0x64) = (float)abStack_20[5];
-  *(float *)(param_1 + 0x68) = (float)abStack_20[6];
-  *(float *)(param_1 + 0x6c) = (float)abStack_20[7];
-  *(float *)(param_1 + 0x90) = fStack_8;
-  *(float *)(param_1 + 0x94) = fStack_4;
-  *(float *)(param_1 + 0x98) = fVar5;
-  *(float *)(param_1 + 0x88) = DAT_00960088;
-  *(float *)(param_1 + 0xa0) = (float)abStack_20[8];
-  *(float *)(param_1 + 0xa4) = (float)abStack_20[9];
-  *(float *)(param_1 + 0xa8) = (float)abStack_20[10];
-  *(float *)(param_1 + 0xac) = (float)abStack_20[11];
-  *(float *)(param_1 + 0xd0) = fStack_10;
-  *(float *)(param_1 + 0xd4) = fStack_4;
-  *(float *)(param_1 + 0xd8) = fVar5;
-  *(float *)(param_1 + 200) = DAT_00960088;
-  *(float *)(param_1 + 0xe0) = (float)abStack_20[12];
-  *(float *)(param_1 + 0xe4) = (float)abStack_20[13];
-  *(float *)(param_1 + 0xe8) = (float)abStack_20[14];
-  *(float *)(param_1 + 0xec) = (float)abStack_20[15];
+    iVar1 = *(int *)((int)param_2 + 0x184) + param_3 * 0x80;
+    iVar3 = FUN_00198590();
+    fVar5 = 1.0f / *(float *)(iVar3 + 0x80);
+    FUN_0025fb60(param_2, param_3, uv);
+    for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+        uVar2 = *(u32 *)(iVar1 + iVar3 * 4 + 100);
+        abStack_20[iVar3 * 4] = (u8)((uVar2 >> 0x18) * 0xff >> 7);
+        abStack_20[iVar3 * 4 + 1] =
+            (u8)(((uVar2 >> 0x10) & 0xff) * 0xff >> 7);
+        abStack_20[iVar3 * 4 + 2] =
+            (u8)(((uVar2 >> 8) & 0xff) * 0xff >> 7);
+        abStack_20[iVar3 * 4 + 3] =
+            (u8)((uVar2 & 0xff) * 0xff >> 7);
+    }
+    *(float *)(param_1 + 0x10) = uv[0];
+    *(float *)(param_1 + 0x14) = uv[1];
+    *(float *)(param_1 + 0x18) = fVar5;
+    *(float *)(param_1 + 8) = DAT_00960088;
+    *(float *)(param_1 + 0x20) = (float)abStack_20[0];
+    *(float *)(param_1 + 0x24) = (float)abStack_20[1];
+    *(float *)(param_1 + 0x28) = (float)abStack_20[2];
+    *(float *)(param_1 + 0x2c) = (float)abStack_20[3];
+    *(float *)(param_1 + 0x50) = uv[2];
+    *(float *)(param_1 + 0x54) = uv[1];
+    *(float *)(param_1 + 0x58) = fVar5;
+    *(float *)(param_1 + 0x48) = DAT_00960088;
+    *(float *)(param_1 + 0x60) = (float)abStack_20[4];
+    *(float *)(param_1 + 0x64) = (float)abStack_20[5];
+    *(float *)(param_1 + 0x68) = (float)abStack_20[6];
+    *(float *)(param_1 + 0x6c) = (float)abStack_20[7];
+    *(float *)(param_1 + 0x90) = uv[2];
+    *(float *)(param_1 + 0x94) = uv[3];
+    *(float *)(param_1 + 0x98) = fVar5;
+    *(float *)(param_1 + 0x88) = DAT_00960088;
+    *(float *)(param_1 + 0xa0) = (float)abStack_20[8];
+    *(float *)(param_1 + 0xa4) = (float)abStack_20[9];
+    *(float *)(param_1 + 0xa8) = (float)abStack_20[10];
+    *(float *)(param_1 + 0xac) = (float)abStack_20[11];
+    *(float *)(param_1 + 0xd0) = uv[0];
+    *(float *)(param_1 + 0xd4) = uv[3];
+    *(float *)(param_1 + 0xd8) = fVar5;
+    *(float *)(param_1 + 200) = DAT_00960088;
+    *(float *)(param_1 + 0xe0) = (float)abStack_20[12];
+    *(float *)(param_1 + 0xe4) = (float)abStack_20[13];
+    *(float *)(param_1 + 0xe8) = (float)abStack_20[14];
+    *(float *)(param_1 + 0xec) = (float)abStack_20[15];
 }
