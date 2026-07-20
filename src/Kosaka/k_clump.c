@@ -1188,11 +1188,11 @@ void func_001a8fe0(KwlnTask* task)
     kclump_free(work);
 }
 
-// FUN_001a9080 NONMATCHING
+// FUN_001a9080
 KwlnTask* func_001a9080(KwlnTask* parent, const char* path, u32 state, HCdvd* cdvd)
 {
-    u32* work;
     KwlnTask* task;
+    u32* work;
 
     work = (u32*)(*(void* (**)(u32, u32, u32))D_00960184)(1, 0xb4, 0x40000);
     if (work == NULL)
