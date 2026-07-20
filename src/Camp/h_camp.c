@@ -27,6 +27,7 @@ extern void func_0018bc10(void* transition, s32 drawMode,
                           f32 depth, s32 startFrame, s32 endFrame);
 extern void* DAT_00833B78;
 extern void* DAT_00833B8C;
+extern void* D_00833B70[14];
 extern void* func_001158b0(s32, void*, s32);
 extern void func_001127d0(void*, u32);
 extern void func_00115980(void*);
@@ -207,37 +208,61 @@ const char* h_camp_getCourageLevelString(s16 idx)
     return sCourageLevels[idx];
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0011a8a0 NONMATCHING
 void* h_campUpdateSpriteSetupTask(KwlnTask* task)
 {
     CampSpriteSetupWork* work;
-    static const s32 resourceSlots[8] = { 0, 1, 6, 8, 9, 10, 11, 12 };
     s32 i;
+    u32 ready;
     u32 size;
-    void* source;
 
     work = task->workData;
+    if (work->state == 3)
+        goto done;
+    if (work->state == 1)
+        goto wait_resources;
     if (work->state == 0) {
-        if (work->archive == NULL || !H_Cdvd_IsFileLoaded(work->archive)) {
-            return KWLNTASK_CONTINUE;
-        }
-        for (i = 0; i < (s32)ARRAY_SIZE(resourceSlots); i++) {
-            source = H_Cdvd_ArchiveGetFile(work->archive, i, &size);
-            work->maestroResources[resourceSlots[i]] = func_00112420(source);
-        }
+        if (!H_Cdvd_IsFileLoaded(work->archive))
+            goto done;
+        work->maestroResources[0] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 0, &size));
+        work->maestroResources[1] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 1, &size));
+        work->maestroResources[6] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 2, &size));
+        work->maestroResources[8] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 3, &size));
+        work->maestroResources[9] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 4, &size));
+        work->maestroResources[10] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 5, &size));
+        work->maestroResources[11] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 6, &size));
+        work->maestroResources[12] = func_00112420(
+            H_Cdvd_ArchiveGetFile(work->archive, 7, &size));
         work->state = 1;
     }
-    if (work->state == 1) {
-        for (i = 0; i < (s32)ARRAY_SIZE(work->maestroResources); i++) {
-            if (work->maestroResources[i] != NULL &&
-                !H_Maestro_00111f30(work->maestroResources[i])) {
-                return KWLNTASK_CONTINUE;
-            }
-        }
-        work->state = 3;
+    goto done;
+
+wait_resources:
+    ready = 1;
+    for (i = 0; i < 14; i++) {
+        if (work->maestroResources[i] != NULL &&
+            !H_Maestro_00111f30(work->maestroResources[i]))
+            ready = 0;
     }
+    if (!ready)
+        goto done;
+    for (i = 0; i < 14; i++)
+        D_00833B70[i] = work->maestroResources[i];
+    work->state = 3;
+
+done:
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_0011aae0 NONMATCHING
 void h_campDestroySpriteSetupTask(KwlnTask* task)
@@ -583,8 +608,8 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     pos.startX = -19.0f;
     temp = 57.0f + 19.0f * (f32)work->selectedEntry;
     pos.startY = temp;
-    pos.endX = 213.0f;
-    pos.endY = temp;
+    pos.endX = 181.0f;
+    pos.endY = pos.startY;
     func_0018bc10(iGpffffb25c + 0x2a8, 0, 2, 1,
                   *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
                   alpha, 0xa, 0x10);
@@ -749,11 +774,10 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
         pos.endY += 19.0f;
     }
 
-    pos.startX = -19.0f;
-    temp = (19.0f * (f32)work->selectedEntry) + 57.0f;
+    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
     pos.startY = temp;
     pos.endX = 181.0f;
-    pos.endY = temp;
+    pos.endY = pos.startY;
     func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 1,
                   *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
                   alpha, 0, 0xa);
@@ -917,7 +941,7 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
     temp = 57.0f + 19.0f * (f32)work->selectedEntry;
     pos.startY = temp;
     pos.endX = 181.0f;
-    pos.endY = temp;
+    pos.endY = pos.startY;
     func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 2,
                   *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
                   alpha, 0, 0xa);
@@ -1062,7 +1086,7 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
     temp = 57.0f + 19.0f * (f32)work->selectedEntry;
     pos.startY = temp;
     pos.endX = 181.0f;
-    pos.endY = temp;
+    pos.endY = pos.startY;
     func_0018bc10(iGpffffb25c + 0x2a8, 0, 0, 2,
                   *(u64*)&pos.startX, *(u64*)&pos.endX, 0, 0,
                   alpha, 0, 0xa);
