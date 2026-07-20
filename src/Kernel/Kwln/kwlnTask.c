@@ -220,13 +220,14 @@ void kwlnTaskAddToList(KwlnTask* task)
     }
 }
 
-// FUN_00193ec0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00193ec0
 u8 kwlnTaskUpdate(KwlnTask* task)
 {
-    HPad* pad;
+    s32 i;
     KwlnTaskUpdateFunc updateFunc;
     void* updateResult;
-    s32 i;
 
     if ((kwlnGetFlags() & 0xC0000000) != 0 &&
         task->priority >= 0x816 &&
@@ -260,10 +261,11 @@ u8 kwlnTaskUpdate(KwlnTask* task)
         {
             memset(gPads, 0, HPAD_PORT_MAX * sizeof(HPad));
 
-            for (i = 0, pad = gPads; i < HPAD_PORT_MAX; i++)
+            for (i = 0; i < HPAD_PORT_MAX; i++)
             {
-                pad[i].virtualPreviousPressed = pad[i].btn[1].released = pad[i].btn[1].justPressed = 0x80;
-                *((u8*)&pad[i].rstickY) = *((u8*)&pad[i].rstickX) = *((u8*)&pad[i].lstickY) = *((u8*)&pad[i].lstickX) = 0x80;
+                gPads[i].virtualPreviousPressed = gPads[i].btn[1].released = gPads[i].btn[1].justPressed = 0x80;
+                *((u8*)&gPads[i].rstickY) = *((u8*)&gPads[i].rstickX) =
+                    *((u8*)&gPads[i].lstickY) = *((u8*)&gPads[i].lstickX) = 0x80;
             }
         }
         else
@@ -303,6 +305,7 @@ u8 kwlnTaskUpdate(KwlnTask* task)
 
     return true;
 }
+#pragma pop
 
 // FUN_00194100 NONMATCHING
 void kwlnTaskUpdateAll()
@@ -1131,14 +1134,16 @@ KwlnTask* kwlnTaskGetUpdating()
     return sTaskUpdating;
 }
 
-// FUN_00195460 NONMATCHING. Return true if 'task' is in a list
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00195460. Return true if 'task' is in a list
 u32 kwlnTaskExists(KwlnTask* task)
 {
+    s32 i;
+    KwlnTask* currTask;
     KwlnTask* stagedList;
     KwlnTask* runningList;
     KwlnTask* destroyList;
-    s32 i;
-    KwlnTask* currTask;
 
     currTask = NULL;
     if (task == NULL)
@@ -1150,7 +1155,7 @@ u32 kwlnTaskExists(KwlnTask* task)
     stagedList = sStagedTaskHead;
     runningList = sRunningTaskHead;
     destroyList = sDestroyTaskHead;
-    while (i < 3)
+    for (; i < 3; i++)
     {
         switch (i)
         {
@@ -1168,14 +1173,11 @@ u32 kwlnTaskExists(KwlnTask* task)
 
             currTask = currTask->next;
         }
-
-        i++;
     }
 
     return false;
 }
-
-
+#pragma pop
 
 // FUN_00195520
 u32 kwlnTaskGetTimer(KwlnTask* task)

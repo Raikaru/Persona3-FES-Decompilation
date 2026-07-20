@@ -18,6 +18,8 @@ KwlnTask* K_FldEvent_CreateDrawCmdTask(KwlnTask* fldEventTask);
 
 extern void FUN_003b2cb0(f32 param_1, s32 param_2, s32 param_3, s32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u32 param_9);
 extern f32 acosf(f32 x);
+#pragma alias sDegreesPerRadian D_007CAFA0
+extern f32 sDegreesPerRadian;
 
 extern const char D_00683710[];
 extern u32 func_002ff790(void* object);
@@ -355,17 +357,23 @@ void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
     return NULL;
 }
 
-// FUN_001c6d70 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_001c6d70
 FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
 {
+    FldUnit* result;
     s32 index;
+
+    result = NULL;
     index = func_001c6dd0(unit, maxDist);
-    if (index < 0)
+    if (index > -1)
     {
-        return NULL;
+        result = &gFldUnitsPc[index];
     }
-    return &gFldUnitsPc[index];
+    return result;
 }
+#pragma pop
 
 // FUN_001c6dd0 NONMATCHING
 s32 func_001c6dd0(const FldUnit* unit, f32 maxDist)
@@ -855,7 +863,7 @@ u32 K_FldEvent_IsUnitNearFldHit(const FldUnit* unit)
     return isNear;
 }
 
-// FUN_001c6200 NONMATCHING
+// FUN_001c6200
 u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos, f32 fov)
 {
     u32 isWithinFov;
@@ -876,25 +884,27 @@ u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos,
     targetDir.z = targetPos->z - viewerMat->pos.z;
     RwV3dNormalize(&targetDir, &targetDir);
 
-    viewAngle = acosf((viewDir.z * forward.z) + (viewDir.x * forward.x) + (viewDir.y * forward.y));
-    viewAngle = (180.0f / 3.14159274f) * viewAngle;
+    viewAngle = sDegreesPerRadian * acosf((viewDir.x * forward.x) +
+                                         (viewDir.y * forward.y) +
+                                         (viewDir.z * forward.z));
     if (viewDir.x < 0.0f)
     {
         viewAngle *= -1.0f;
     }
     viewAngle += 180.0f;
 
-    targetAngle = acosf((targetDir.z * forward.z) + (targetDir.x * forward.x) + (targetDir.y * forward.y));
-    targetAngle = (180.0f / 3.14159274f) * targetAngle;
+    targetAngle = sDegreesPerRadian * acosf((targetDir.x * forward.x) +
+                                           (targetDir.y * forward.y) +
+                                           (targetDir.z * forward.z));
     if (targetDir.x < 0.0f)
     {
         targetAngle *= -1.0f;
     }
     targetAngle += 180.0f;
 
-    if (360.0f < viewAngle + halfFov)
+    if (!(viewAngle + halfFov <= 360.0f))
     {
-        if ((viewAngle - halfFov <= targetAngle) || (targetAngle <= (viewAngle + halfFov) - 360.0f))
+        if ((viewAngle - halfFov <= targetAngle) || !((viewAngle + halfFov) - 360.0f < targetAngle))
         {
             isWithinFov = true;
         }
@@ -903,12 +913,12 @@ u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat, const RwV3d* targetPos,
     {
         if (viewAngle - halfFov < 0.0f)
         {
-            if ((targetAngle <= viewAngle + halfFov) || ((viewAngle - halfFov) + 360.0f <= targetAngle))
+            if (!(viewAngle + halfFov < targetAngle) || ((viewAngle - halfFov) + 360.0f <= targetAngle))
             {
                 isWithinFov = true;
             }
         }
-        else if ((targetAngle <= viewAngle + halfFov) && (viewAngle - halfFov <= targetAngle))
+        else if (!(viewAngle + halfFov < targetAngle) && (viewAngle - halfFov <= targetAngle))
         {
             isWithinFov = true;
         }

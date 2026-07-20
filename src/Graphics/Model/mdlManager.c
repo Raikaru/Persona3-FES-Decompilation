@@ -205,7 +205,9 @@ Model* mdlInit(u16 type, u16 id)
     return mdl;
 }
 
-// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00316910. Search a model in list by its type, id and flags. Set 'flags' to 0 if no flag filter
 Model* mdlSearch(u16 type, u16 id, u16 flags)
 {
     Model* mdl;
@@ -217,6 +219,7 @@ Model* mdlSearch(u16 type, u16 id, u16 flags)
     modelId = id;
     modelFlags = flags;
     mdl = sMdlListTails[modelType];
+
     while (mdl != NULL)
     {
         if (mdl->id == modelId)
@@ -226,10 +229,13 @@ Model* mdlSearch(u16 type, u16 id, u16 flags)
                 break;
             }
         }
+
         mdl = mdl->prev;
     }
+
     return mdl;
 }
+#pragma pop
 
 // FUN_00316b40
 Model* mdlCreateFromPath(u16 type, u16 id, const char* path, u32 readMode)
