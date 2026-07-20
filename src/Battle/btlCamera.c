@@ -253,12 +253,11 @@ static const BtlCameraStateEntry sCameraStateEntries[] =
     {NULL, NULL, 1, 0, "NOP"}, // BTLCAMERA_STATE_NOP
 };
 
-// FUN_002a31b0 NONMATCHING
+// FUN_002a31b0
 void btlCameraUpdate(BtlCamera* camera)
 {
     f32 step;
     f32 t;
-    f32 poly;
     u16 flags;
     u8* g;
 
@@ -274,8 +273,9 @@ void btlCameraUpdate(BtlCamera* camera)
         {
             t = t + 1.0f / *(f32*)((u8*)camera + 0x84);
             *(f32*)((int)camera + 0x94) = t;
-            step = 2.0f * ((0.0f + -1.0f + (-2.0f * t) * t + 4.0f * t) - 0.5f) -
-                   *(f32*)((u8*)camera + 0x80);
+            step = 0.0f + -1.0f + (-2.0f * t) * t + 4.0f * t;
+            step = (step - 0.5f) * 2.0f;
+            step -= *(f32*)((u8*)camera + 0x80);
         }
         else
         {
@@ -1395,7 +1395,7 @@ void btlCameraFrameActionClose(BtlCamera* camera)
     }
 }
 
-// FUN_002a5fd0 NONMATCHING
+// FUN_002a5fd0
 void btlCameraFrameActionPair(BtlCamera* camera)
 {
     RwV3d secondPos;
@@ -1496,7 +1496,8 @@ void btlCameraFrameActionPair(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                w1 = x + x2 * x * r2;
+                r = x2 * x;
+                w1 = x + r * r2;
                 x = ratio * blend.scalar;
                 x2 = x * x;
                 r = fGpffff8048 + fGpffff8130 * x2;
@@ -1504,7 +1505,8 @@ void btlCameraFrameActionPair(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                ratio = x + x2 * x * r2;
+                r = x2 * x;
+                ratio = x + r * r2;
             }
             blended.imag.x = blend.first.imag.x * w1;
             blended.imag.y = blend.first.imag.y * w1;
@@ -1558,7 +1560,7 @@ void btlCameraFrameActionQuarter(BtlCamera* camera)
     }
 }
 
-// FUN_002a65f0 NONMATCHING
+// FUN_002a65f0
 void btlCameraFrameActionDuel(BtlCamera* camera)
 {
     f32 horiz[2];
@@ -1658,7 +1660,8 @@ void btlCameraFrameActionDuel(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                w1 = x + x2 * x * r2;
+                r = x2 * x;
+                w1 = x + r * r2;
                 x = ratio * blend.scalar;
                 x2 = x * x;
                 r = fGpffff8048 + fGpffff8130 * x2;
@@ -1666,7 +1669,8 @@ void btlCameraFrameActionDuel(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                ratio = x + x2 * x * r2;
+                r = x2 * x;
+                ratio = x + r * r2;
             }
             blended.imag.x = blend.first.imag.x * w1;
             blended.imag.y = blend.first.imag.y * w1;
@@ -1923,7 +1927,7 @@ void func_002a7380(void)
 {
 }
 
-// FUN_002a7390 NONMATCHING
+// FUN_002a7390
 void btlCameraFrameActionTarget(BtlCamera* camera)
 {
     f32 horiz[2];
@@ -1978,7 +1982,8 @@ void btlCameraFrameActionTarget(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                w1 = x + x2 * x * r2;
+                r = x2 * x;
+                w1 = x + r * r2;
                 x = ratio * blend.scalar;
                 x2 = x * x;
                 r = fGpffff8048 + fGpffff8130 * x2;
@@ -1986,7 +1991,8 @@ void btlCameraFrameActionTarget(BtlCamera* camera)
                 r = fGpffff8050 + x2 * r;
                 r = fGpffff8054 + x2 * r;
                 r2 = fGpffff8058 + x2 * r;
-                ratio = x + x2 * x * r2;
+                r = x2 * x;
+                ratio = x + r * r2;
             }
             blended.imag.x = blend.first.imag.x * w1;
             blended.imag.y = blend.first.imag.y * w1;
@@ -5657,7 +5663,7 @@ void FUN_002b5650(int param_1)
   FUN_002a3e80(0.0f, (u8 *)(uintptr_t)*(int *)(param_1 + 0xe0), 0, 0, 0x40);
 }
 
-// FUN_002b56e0 NONMATCHING
+// FUN_002b56e0
 
 void FUN_002b56e0(u8* param_1)
 {
@@ -5673,6 +5679,7 @@ void FUN_002b56e0(u8* param_1)
   } scratch;
   RwMatrix sp30;
 
+  f32 scale;
   unit = *(BtlUnit **)(*(int *)(iGpffffb6fc + 0x148) + 0x30);
   FUN_0027ffb0(unit, &spB0);
   spB0.y = 0.0f;
@@ -5688,9 +5695,10 @@ void FUN_002b56e0(u8* param_1)
   RwMatrixRotate(&sp30, &D_00697870, -30.0f, rwCOMBINEREPLACE);
   RwMatrixRotate(&sp30, &D_00697880, *(f32 *)(param_1 + 0x100), rwCOMBINEPOSTCONCAT);
   FUN_004c6c60(&spA0, &D_00697890, &sp30);
-  scratch.outX = spB0.x + 400.0f * spA0.x;
-  scratch.outY = spB0.y + 400.0f * spA0.y;
-  scratch.outZ = spB0.z + 400.0f * spA0.z;
+  scale = 400.0f;
+  scratch.outX = spB0.x + spA0.x * scale;
+  scratch.outY = spB0.y + spA0.y * scale;
+  scratch.outZ = spB0.z + spA0.z * scale;
   FUN_002a4690(scratch.quat, &scratch.outX, &spB0, &D_00697880);
   if (scratch.outY < 25.0f) {
     scratch.outY = 25.0f;
@@ -6633,15 +6641,16 @@ void FUN_002b7000(int param_1,u32 param_2,undefined4 param_3)
   }
 }
 
-// FUN_002b7060 NONMATCHING
+// FUN_002b7060
 
 #pragma opt_loop_invariants on
 s16 FUN_002b7060(void)
 {
   u16 vals[3];
   char buf[264];
-  u32 t0;
-  long t1;
+  u16 candidateIdx;
+  u16 selectedIdx;
+  u32 entryIdx;
   u8 *entry;
 
   if (FUN_002fa240() == 1) {
@@ -6654,16 +6663,19 @@ s16 FUN_002b7060(void)
                  ,vals[1],vals[0]);
     FUN_0019d400(buf,D_00696430,0x16e);
   }
-  for (t0 = 0; (u16)t0 < 0x18; t0 = (u16)(t0 + 1)) {
-    t1 = (u16)t0;
-    entry = D_00694F10 + (u16)t1 * 0xe0;
+  for (entryIdx = 0; (u32)(u16)entryIdx < 0x18;
+       entryIdx = (u16)(entryIdx + 1)) {
+    candidateIdx = (u16)entryIdx;
+    entry = D_00694F10 + (u16)candidateIdx * 0xe0;
     if (vals[0] > *(u16 *)(entry + 0xd8)) continue;
     if (vals[1] > *(u16 *)(entry + 0xda)) continue;
     if (vals[2] > *(u16 *)(entry + 0xdc)) continue;
-    return (s16)t1;
+    selectedIdx = candidateIdx;
+    goto done;
   }
-  t1 = 0x17;
-  return (s16)t1;
+  selectedIdx = 0x17;
+done:
+  return (s16)selectedIdx;
 }
 #pragma opt_loop_invariants off
 
