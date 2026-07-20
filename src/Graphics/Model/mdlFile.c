@@ -3027,7 +3027,7 @@ void FUN_0031eee0(int *param_1)
 
     if (iVar2 + -1 == 0) {
 
-      if (((short)piVar1[3] == 1) && (*piVar1 != 0)) {
+      if (((u16)piVar1[3] == 1) && (*piVar1 != 0)) {
 
         (*DAT_0096017c)();
 
