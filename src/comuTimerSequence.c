@@ -3384,7 +3384,7 @@ u32 FUN_003c1d20(u64 param_1)
 }
 #define FUN_003c1d20(...) ((u32 (*)(...))FUN_003c1d20)(__VA_ARGS__)
 #undef FUN_003c22f0
-// FUN_003C22F0 NONMATCHING
+// FUN_003C22F0
 
 
 void FUN_003c22f0(int param_1)
@@ -3395,13 +3395,14 @@ void FUN_003c22f0(int param_1)
 
   int iVar1;
 
+
   
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
   if (*(int *)(iVar1 + 0xb4) != 0) {
 
-    FUN_00100ec0();
+    FUN_00100ec0(*(u32 *)(iVar1 + 0xb4));
 
     *(u32 *)(iVar1 + 0xb4) = 0;
 
@@ -3409,7 +3410,7 @@ void FUN_003c22f0(int param_1)
 
   FUN_0039ee80(iVar1 + 0x94);
 
-  (*DAT_0096017c)(iVar1);
+  (*(void (**)(...))0x0096017c)(iVar1);
 
   return;
 
