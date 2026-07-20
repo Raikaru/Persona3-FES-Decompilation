@@ -1,4 +1,5 @@
 #include "Kosaka/Field/k_field.h"
+#include "Graphics/Model/mdlManager.h"
 #include "rw/rwplcore.h"
 #include "Kosaka/k_data.h"
 #include "Kosaka/Field/k_event.h"
@@ -7,6 +8,9 @@
 #include "Scene/resrcManager.h"
 #include "Main/g_data.h"
 #include "rw/rprandom.h"
+extern u32 DAT_008717e8;
+extern u32 DAT_008717f0;
+extern u32 DAT_008717f4;
 
 extern u8 D_0067F600[];
 extern const char D_0067F5E0[];
@@ -246,28 +250,32 @@ void func_001b9140(s16 majorId, s16 minorId)
 {
     f32 scale;
     f32 distance;
-    f32 clampedDistance;
-    RwCamera* camera;
-    RwMatrix* cameraMatrix;
-    RwMatrix* heroMatrix;
     RwV3d delta;
+    RwV3d cameraPosition;
+    RwMatrix* cameraMatrix;
 
     scale = 0.0f;
     if (FIELD_U32(0x008717e8) != 0 && FIELD_U32(0x008717f4) != 0)
     {
-        camera = kwlnGetMainCamera();
-        cameraMatrix = (RwMatrix*)func_004cb2f0(camera->object.object.parent);
-        heroMatrix = (RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0));
-        delta.x = cameraMatrix->pos.x - heroMatrix->pos.x;
-        delta.y = cameraMatrix->pos.y - heroMatrix->pos.y;
-        delta.z = cameraMatrix->pos.z - heroMatrix->pos.z;
+        cameraMatrix = (RwMatrix*)func_004cb2f0(
+            kwlnGetMainCamera()->object.object.parent);
+        cameraPosition = cameraMatrix->pos;
+        delta.x = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.x -
+                  cameraPosition.x;
+        delta.y = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.y -
+                  cameraPosition.y;
+        delta.z = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.z -
+                  cameraPosition.z;
         distance = RwV3dLength(&delta);
-        clampedDistance = distance < 720.0f ? 720.0f : distance;
-        if (clampedDistance > 1100.0f)
+        if (distance < 720.0f)
         {
-            clampedDistance = 1100.0f;
+            distance = 720.0f;
         }
-        scale = FIELD_F32(0x007cafec) * (clampedDistance / 1100.0f);
+        if (distance > 1100.0f)
+        {
+            distance = 1100.0f;
+        }
+        scale = FIELD_F32(0x007cafec) * (distance / 1100.0f);
     }
 
     if (majorId == 0x0e && minorId == 5)
