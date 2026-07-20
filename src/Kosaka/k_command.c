@@ -1166,7 +1166,9 @@ u32 K_Cmd_RESET_FIELD_OBJECT()
     return true;
 }
 
-// FUN_001C3B00 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+// FUN_001C3B00
 u32 K_Cmd_ADD_FIELD_OBJECT()
 {
     u8* object;
@@ -1204,6 +1206,8 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
     {
         s32 value;
         s16 fieldType;
+        s16 pcId;
+        u16 callValue;
 
         value = func_00170760(-1, (s16)type);
         work = *(u8**)(object + 0x11c);
@@ -1212,11 +1216,15 @@ u32 K_Cmd_ADD_FIELD_OBJECT()
         {
             value = 99;
         }
-        func_00170860(-1, *(s16*)(work + 2), (u16)value);
+        callValue = (u16)value;
+        fieldType = *(s16*)(work + 2);
+        pcId = -1;
+        func_00170860(pcId, fieldType, callValue);
         scrSetIntReturnVal(1);
     }
     return true;
 }
+#pragma pop
 
 // FUN_001C3CD0
 u32 FUN_001C3CD0()
