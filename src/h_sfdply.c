@@ -18,11 +18,10 @@ typedef struct HSfdImage
     u32 type;
     u32 width;
     u32 height;
-    u32 paletteOffset;
+    u32 depth;
     u32 stride;
     u8* pixels;
-    u32 pixelCount;
-    u32 bitDepth;
+    u8* palette;
 } HSfdImage;
 
 typedef struct HSfdTexture
@@ -354,7 +353,7 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
     RwFree(work);
 }
 
-// FUN_0010BC20 NONMATCHING
+// FUN_0010BC20
 KwlnTask* func_0010bc20(KwlnTask* parent, s32 id)
 {
     HSfd* work;
@@ -370,7 +369,6 @@ KwlnTask* func_0010bc20(KwlnTask* parent, s32 id)
                           H_SfdPlay_DestroyTask, work);
     if (task == NULL)
     {
-        RwFree(work);
         return NULL;
     }
 
@@ -392,7 +390,7 @@ KwlnTask* func_0010bce0(KwlnTask* parent, s32 id)
     return task;
 }
 
-// FUN_0010BDA0 NONMATCHING
+// FUN_0010BDA0
 KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
 {
     HSfd* work;
@@ -408,7 +406,6 @@ KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
                           H_SfdPlay_DestroyTask, work);
     if (task == NULL)
     {
-        RwFree(work);
         return NULL;
     }
 
@@ -974,72 +971,93 @@ void func_0010db60(s32 index, s32 format, s32 width, s32 height)
 void func_0010dd10(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    u32 x;
-    u32 y;
-    u8 alpha;
+    s32 y;
+    s32 x;
+    u32 alpha;
 
     dst = image->pixels;
-    for (y = 0; y < image->height; y++)
+    y = 0;
+    while (y < (s32)image->height)
     {
-        for (x = 0; x < image->width; x++)
+        x = 0;
+        while (x < (s32)image->width)
         {
-            dst[0] = source[0];
-            dst[1] = source[1];
-            dst[2] = source[2];
+            u8* pixel = dst + (x * 4);
+
+            pixel[0] = source[0];
+            pixel[1] = source[1];
+            pixel[2] = source[2];
             alpha = source[3];
-            dst[3] = (alpha >= 0x7F) ? 0xFF : (u8)((alpha * 255) / 127);
+            if ((s32)alpha >= 0x7F)
+            {
+                pixel[3] = 0xFF;
+            }
+            else
+            {
+                pixel[3] = (u8)(((alpha * 0xFF) - alpha) >> 7);
+            }
             source += 4;
-            dst += 4;
+            x++;
         }
-        dst += image->stride - (image->width * 4);
+        dst += image->stride;
+        y++;
     }
 }
-
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    u32 x;
-    u32 y;
+    s32 y;
+    s32 x;
 
     dst = image->pixels;
-    for (y = 0; y < image->height; y++)
+    y = 0;
+    while (y < (s32)image->height)
     {
-        for (x = 0; x < image->width; x++)
+        x = 0;
+        while (x < (s32)image->width)
         {
-            dst[0] = source[0];
-            dst[1] = source[1];
-            dst[2] = source[2];
-            dst[3] = 0xFF;
+            u8* pixel = dst + (x * 4);
+
+            pixel[0] = source[0];
+            pixel[1] = source[1];
+            pixel[2] = source[2];
+            pixel[3] = 0xFF;
             source += 3;
-            dst += 4;
+            x++;
         }
-        dst += image->stride - (image->width * 4);
+        dst += image->stride;
+        y++;
     }
 }
+
 
 // FUN_0010DE40 NONMATCHING
 void func_0010de40(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    u16 pixel;
-    u32 x;
-    u32 y;
-
+    const u16* pixels;
+    s32 y;
+    s32 x;
     dst = image->pixels;
-    for (y = 0; y < image->height; y++)
+    pixels = (const u16*)source;
+    y = 0;
+    while (y < (s32)image->height)
     {
-        for (x = 0; x < image->width; x++)
+        x = 0;
+        while (x < (s32)image->width)
         {
-            pixel = (u16)(source[0] | (source[1] << 8));
-            dst[0] = (u8)((pixel & 0x1F) << 3);
-            dst[1] = (u8)(((pixel >> 5) & 0x1F) << 3);
-            dst[2] = (u8)(((pixel >> 10) & 0x1F) << 3);
-            dst[3] = 0xFF;
-            source += 2;
-            dst += 4;
+            u8* pixel = dst + (x * 4);
+
+            pixel[0] = (u8)((pixels[0] & 0x1F) << 3);
+            pixel[1] = (u8)(((pixels[0] >> 5) & 0x1F) << 3);
+            pixel[2] = (u8)(((pixels[0] >> 10) & 0x1F) << 3);
+            pixel[3] = 0xFF;
+            pixels++;
+            x++;
         }
-        dst += image->stride - (image->width * 4);
+        dst += image->stride;
+        y++;
     }
 }
 
@@ -1047,22 +1065,28 @@ void func_0010de40(HSfdImage* image, const u8* source)
 void func_0010dee0(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    u32 x;
-    u32 y;
+    s32 y;
+    s32 x;
 
     dst = image->pixels;
-    for (y = 0; y < image->height; y++)
+    y = 0;
+    while (y < (s32)image->height)
     {
-        for (x = 0; x < image->width; x += 2)
+        x = 0;
+        while (x < ((s32)image->width >> 1))
         {
-            dst[0] = (u8)(source[0] & 0x0F);
-            dst[1] = (u8)((source[0] >> 4) & 0x0F);
+            u8* pixel = dst + (x * 2);
+
+            pixel[0] = source[0] & 0x0F;
+            pixel[1] = (source[0] >> 4) & 0x0F;
             source++;
-            dst += 2;
+            x++;
         }
-        dst += image->stride - image->width;
+        dst += image->stride;
+        y++;
     }
 }
+
 
 // FUN_0010DF60 NONMATCHING
 void func_0010df60(HSfdImage* image, const u8* source)
@@ -1072,7 +1096,7 @@ void func_0010df60(HSfdImage* image, const u8* source)
     u32 count;
     u8 alpha;
 
-    count = 1 << image->bitDepth;
+    count = 1 << image->depth;
     dst = image->pixels;
     for (i = 0; i < count; i++)
     {
@@ -1086,30 +1110,40 @@ void func_0010df60(HSfdImage* image, const u8* source)
     }
 }
 
-// FUN_0010E010 NONMATCHING
+// FUN_0010E010
 void func_0010e010(HSfdImage* image, s32 bitDepth)
 {
-    u8 color[4];
-    u32 i;
-    u32 count;
-    u8* pixels;
+    u8* pixels = image->palette;
+    s32 count;
+    s32 i;
 
     if (bitDepth != 8)
     {
         return;
     }
 
-    pixels = image->pixels;
+    i = 0;
     count = 1 << bitDepth;
-    for (i = 0; i < count; i++)
+    while (i < count)
     {
-        if ((i & 0x1F) >= 8 && (i & 0x1F) < 16)
+        if (((i % 0x20) >= 8) && ((i % 0x20) < 16))
         {
-            memcpy(color, pixels, sizeof(color));
-            memcpy(pixels, pixels + 0x20, sizeof(color));
-            memcpy(pixels + 0x20, color, sizeof(color));
+            u8* pixel = pixels + (i * 4);
+            u8 r = pixel[0];
+            u8 g = pixel[1];
+            u8 b = pixel[2];
+            u8 a = pixel[3];
+
+            pixel[0] = pixel[0x20];
+            pixel[1] = pixel[0x21];
+            pixel[2] = pixel[0x22];
+            pixel[3] = pixel[0x23];
+            pixel[0x20] = r;
+            pixel[0x21] = g;
+            pixel[0x22] = b;
+            pixel[0x23] = a;
         }
-        pixels += 4;
+        i++;
     }
 }
 
@@ -1163,7 +1197,6 @@ HSfdImage* func_0010e0d0(const u8* stream)
     }
 
     func_004cbf20(image);
-    image->bitDepth = bits;
     image->stride = image->width * 4;
     pixels = image->width * image->height;
     payload = stream + 0x40;
@@ -1303,7 +1336,7 @@ HSfdTexture* func_0010e880(const u8* stream)
     RwFree(image);
     if (stream[0x10] != 0)
     {
-        paletteSize = 1U << texture->image.bitDepth;
+        paletteSize = 1U << texture->image.depth;
         texture->palette = RwCalloc(paletteSize, 4, HSFD_STREAM_HINT);
         if (texture->palette == NULL)
         {
@@ -1311,8 +1344,7 @@ HSfdTexture* func_0010e880(const u8* stream)
             return NULL;
         }
         texture->paletteSize = paletteSize * 4;
-        func_0010e630(texture->palette, stream + texture->image.paletteOffset,
-                       texture->paletteSize);
+        func_0010e630(texture->palette, stream + 0x40, texture->paletteSize);
     }
     return texture;
 }
