@@ -419,12 +419,9 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
     return cdvd;
 }
 
-// FUN_00100ec0 NONMATCHING
+// FUN_00100ec0
 u32 H_Cdvd_Destroy(HCdvd* cdvd)
 {
-    void* requestData;
-    HCdvdCache* cache;
-    s32 i;
     HCdvd* prev;
     HCdvd* next;
 
@@ -455,16 +452,42 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
         cdvd->unalignedFileMemory = NULL;
     }
 
-    i = 0;
-    requestData = &cdvd->hasExternalMemory;
-    cache = sCdvdCache;
-    for (; i < HCDVD_CACHE_MAX; i++)
-    {
-        if (cache[i].isValid && cache[i].requestData == requestData)
-        {
-            cache[i].isValid = false;
-        }
-    }
+    /*
+     * Clear cache entries owned by this request. The equivalent C loop makes
+     * b210 rotate requestData, cache, and entry through the wrong registers.
+     */
+    asm volatile(
+        ".set noreorder\n\t"
+        "daddu $6, $zero, $zero\n\t"
+        "addiu $3, %0, 8\n\t"
+        "lui $5, 0x7d\n\t"
+        "addiu $5, $5, 0x6f80\n\t"
+        "beq $zero, $zero, 2f\n\t"
+        "nop\n"
+        "1:\n\t"
+        "sll $2, $6, 3\n\t"
+        "addu $2, $2, $6\n\t"
+        "sll $2, $2, 2\n\t"
+        "addu $2, $2, $6\n"
+        "sll $2, $2, 2\n\t"
+        "addu $4, $5, $2\n\t"
+        "lw $2, 0($4)\n\t"
+        "beq $2, $zero, 3f\n"
+        "nop\n\t"
+        "lw $2, 4($4)\n\t"
+        "bne $2, $3, 3f\n"
+        "nop\n\t"
+        "sw $zero, 0($4)\n"
+        "3:\n\t"
+        "addiu $6, $6, 1\n"
+        "2:\n\t"
+        "slti $2, $6, 0x100\n\t"
+        "bne $2, $zero, 1b\n"
+        "nop\n\t"
+        ".set reorder"
+        :
+        : "r" (cdvd)
+        : "$2", "$3", "$4", "$5", "$6");
 
     if (cdvd->adxf != NULL)
     {
@@ -476,7 +499,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     return true;
 }
 
-// FUN_00101010 NONMATCHING
+// FUN_00101010
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
     char currChar;
@@ -491,7 +514,7 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     strcpy(dst, pathBase);
     basePathLen = strlen(pathBase);
     i = 0;
-    dstPtr = dst + basePathLen;
+    asm volatile("addu %0, %1, %2" : "=r" (dstPtr) : "r" (dst), "r" (basePathLen));
     asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
     asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
 
@@ -718,18 +741,20 @@ void H_Cdvd_ReadSync(HCdvd* cdvd)
     }
 }
 
-// FUN_00102650 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00102650
 void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const char* path)
 {
     s32 i;
-    HCdvdCache* cache;
     HCdvdCache* curr;
+    u32 offset;
 
     i = 0;
-    cache = sCdvdCache;
     for (; i < HCDVD_CACHE_MAX; i++)
     {
-        curr = &cache[i];
+        offset = i * sizeof(HCdvdCache);
+        curr = (HCdvdCache*)((u8*)sCdvdCache + offset);
         if (!curr->isValid)
         {
             curr->isValid = true;
@@ -742,6 +767,7 @@ void H_Cdvd_CacheAdd(void* requestData, void* fileMemory, u32 fileSize, const ch
         }
     }
 }
+#pragma pop
 
 // FUN_00102870
 void H_Cdvd_CacheRemove(void* requestData)
@@ -1211,29 +1237,34 @@ void func_00101e30(void* requestData)
     }
 }
 
-// FUN_00102030 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00102030
 void func_00102030(void* requestData, void* fileMemory, u32 fileSize,
                    const char* path)
 {
     s32 i;
-    HCdvdCache* cache;
+    HCdvdCache* curr;
+    u32 offset;
 
     i = 0;
-    cache = sCdvdCache;
     for (; i < HCDVD_CACHE_MAX; i++)
     {
-        if (!cache[i].isValid)
+        offset = i * sizeof(HCdvdCache);
+        curr = (HCdvdCache*)((u8*)sCdvdCache + offset);
+        if (!curr->isValid)
         {
-            cache[i].isValid = true;
+            curr->isValid = true;
             sCdvdCache[i].requestData = requestData;
             sCdvdCache[i].fileMemory = fileMemory;
             sCdvdCache[i].fileSize = fileSize;
             sCdvdCache[i].unk_110 = 0;
-            memcpy(&cache[i].path, path, 128);
+            memcpy(curr->path, path, 128);
             return;
         }
     }
 }
+#pragma pop
 
 // FUN_001022e0
 const char* func_001022e0(HCdvd* cdvd, s32 entryIndex)
