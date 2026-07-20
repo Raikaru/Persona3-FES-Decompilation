@@ -531,10 +531,8 @@ void K_FldDungeon_FUN_001c03f0()
 void func_001bfcc0(void)
 {
     FldDungeon* dungeon;
-    FldDungeonFloorData* floorData;
     char eplPath[48];
     s32 i;
-
     if (gDungeonTask == NULL)
     {
         return;
@@ -544,23 +542,18 @@ void func_001bfcc0(void)
     dungeon->unk_08 = 0;
     func_001a9470(*(void**)((u8*)K_Field_Get() + 0x1200));
     func_001d4180();
-    floorData = &dungeon->floorsData[dungeon->currFloor];
-    if (floorData->effectId == floorData[1].effectId)
-    {
-        if (dungeon->effectEplTask != NULL)
-        {
-            func_001a9400(dungeon->effectEplTask, dungeon->effectEplSlot);
-        }
-    }
-    else
+
+    if (dungeon->floorsData[dungeon->currFloor].effectId !=
+        dungeon->floorsData[dungeon->currFloor + 1].effectId)
     {
         if (dungeon->effectEplTask != NULL)
         {
             kwlnTaskDestroyWithHierarchy(dungeon->effectEplTask);
         }
-        if (floorData->effectId < 0xff)
+        if (dungeon->floorsData[dungeon->currFloor + 1].effectId < 0xff)
         {
-            sprintf(eplPath, "field/effect/DNG%02d.EPL", floorData->effectId);
+            sprintf(eplPath, "field/effect/DNG%02d.EPL",
+                    dungeon->floorsData[dungeon->currFloor + 1].effectId);
             dungeon->effectEplTask = func_001a9080(
                 gDungeonTask, eplPath, -1, NULL);
         }
@@ -568,6 +561,10 @@ void func_001bfcc0(void)
         {
             dungeon->effectEplTask = NULL;
         }
+    }
+    else if (dungeon->effectEplTask != NULL)
+    {
+        func_001a9400(dungeon->effectEplTask, dungeon->effectEplSlot);
     }
 
     if (dungeon->currFloor + 1 > 1)
@@ -582,9 +579,10 @@ void func_001bfcc0(void)
         K_FldDungeon_FUN_001c03f0();
     }
 
-    floorData = &dungeon->floorsData[dungeon->currFloor];
-    if (floorData->majorId != floorData[1].majorId ||
-        floorData->minorId != floorData[1].minorId)
+    if (dungeon->floorsData[dungeon->currFloor].majorId !=
+            dungeon->floorsData[dungeon->currFloor + 1].majorId ||
+        dungeon->floorsData[dungeon->currFloor].minorId !=
+            dungeon->floorsData[dungeon->currFloor + 1].minorId)
     {
         dungeon->fieldFlags |= 0x80000000;
         if (K_Scene_001a0250() == true || func_001a02c0() == true)
@@ -855,54 +853,109 @@ void func_001c0920(KwlnTask* task)
     ((void (*)(void*))DAT_0096017c[0])(task->workData);
 }
 
-static void dungeonSetAlpha(Model* model, u8 alpha)
-{
-    RwRGBA color;
-
-    if (model == NULL)
-    {
-        return;
-    }
-    color = *mdlGetColor(model);
-    color.a = alpha;
-    mdlSetColor(model, &color);
-}
 
 // FUN_001c0960 NONMATCHING
 void* func_001c0960(KwlnTask* task)
 {
     u8* work;
-    Model* model;
+    u8* modelData;
+    u8* node;
+    RwRGBA* sourceColor;
     RwRGBA color;
-    f32 current;
-    f32 target;
-    u8 alpha;
+    f32 alpha;
+    f32 normalizedAlpha;
+    void* result;
 
     work = (u8*)task->workData;
-    model = *(Model**)(work + 0x104);
-    color = *mdlGetColor(model);
+    sourceColor = mdlGetColor(*(Model**)(*(u8**)(work + 4) + 0x104));
+    color = *sourceColor;
     if (*(u32*)work == 1)
     {
-        return KWLNTASK_STOP;
+        goto stop;
     }
     if (*(u32*)work == 0)
     {
-        current = (f32)color.a / 255.0f;
-        target = *(f32*)(work + 0x0c);
-        if (*(u32*)(work + 0x08) == 0)
+        if (*(s32*)(work + 8) > 0)
         {
-            alpha = (u8)(target * 255.0f);
-            *(u32*)work = 1;
+            alpha = (f32)sourceColor->a;
+            alpha -= *(f32*)(work + 0x0c);
+            alpha /= (f32)*(s32*)(work + 8);
+            alpha = (f32)sourceColor->a - alpha;
+            color.a = (u8)alpha;
+            *(s32*)(work + 8) -= 1;
         }
         else
         {
-            current += (target - current) / (f32)*(u32*)(work + 0x08);
-            alpha = (u8)(current * 255.0f);
-            *(u32*)(work + 0x08) -= 1;
+            alpha = *(f32*)(work + 0x0c);
+            color.a = (u8)alpha;
+            *(s32*)work += 1;
         }
-        dungeonSetAlpha(model, alpha);
+
+        normalizedAlpha = (f32)color.a / 255.0f;
+        modelData = *(u8**)(*(u8**)(*(u8**)(work + 4) + 0x104) + 0xe0);
+
+        node = *(u8**)(modelData + 8);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x14);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x18);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x20);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x0c);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x10);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x1c);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x24);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        node = *(u8**)(modelData + 0x28);
+        while (node != NULL)
+        {
+            *(f32*)(node + 0x18) = normalizedAlpha;
+            node = *(u8**)(node + 0x28);
+        }
+        mdlSetColor(*(Model**)(*(u8**)(work + 4) + 0x104), &color);
     }
-    return KWLNTASK_CONTINUE;
+    result = KWLNTASK_CONTINUE;
+    goto done;
+stop:
+    result = KWLNTASK_STOP;
+done:
+    return (void*)result;
 }
 
 // FUN_001c0d30
@@ -989,6 +1042,13 @@ extern void func_001c1e20(KwlnTask* transWallTask);
 extern void func_0017f8d0(void);
 extern void func_001d0270(void);
 extern void func_00171b50(u32 socialLink);
+#pragma alias datSetActiveSocialLink_s16 datSetActiveSocialLink
+extern void datSetActiveSocialLink_s16(s16 activeSocialLink);
+#pragma alias adminiGetNowSeqId_u32 adminiGetNowSeqId
+#pragma alias adminiGetNowSeqId_s32 adminiGetNowSeqId
+extern s32 adminiGetNowSeqId_s32(void);
+#pragma alias adminiGetNextSeqId_s32 adminiGetNextSeqId
+extern s32 adminiGetNextSeqId_s32(void);
 
 // 0x20c bytes. The transition controller keeps its collision-controller task
 // at offset 0x204; the remaining tail is reserved by the retail work layout.
@@ -1096,14 +1156,16 @@ u32 FUN_001c20b0(void)
     return true;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001C2160 NONMATCHING
 u32 FUN_001c2160(void)
 {
     SocialLinkSequenceData data;
-    u32 cmdTimer;
+    s32 cmdTimer;
+    u32 result;
 
     datSetActiveSocialLink(0xff);
-    memset(&data, 0, sizeof(data));
     data.unk_0c = (u32)scrGetIntPara(0);
     data.unk_10 = (u32)scrGetIntPara(1);
     data.unk_14 = (u32)scrGetIntPara(2);
@@ -1112,30 +1174,34 @@ u32 FUN_001c2160(void)
     if (cmdTimer == 0)
     {
         adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+        goto common_false;
     }
-    else if (cmdTimer > 10)
+    if (cmdTimer > 10 &&
+        adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
+        adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
     {
-        if (adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
-            adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
-        {
-            return true;
-        }
-        return false;
+        result = true;
+        goto done;
     }
-
-    return false;
+checks_false:
+    result = false;
+    goto done;
+common_false:
+    result = false;
+done:
+    return result;
 }
 
 // FUN_001C2240 NONMATCHING
 u32 FUN_001c2240(void)
 {
     SocialLinkSequenceData data;
-    u32 socialLink;
-    u32 cmdTimer;
+    s32 socialLink;
+    s32 cmdTimer;
+    u32 result;
 
-    socialLink = (u32)scrGetIntPara(3);
-    datSetActiveSocialLink((u16)socialLink);
-    memset(&data, 0, sizeof(data));
+    socialLink = scrGetIntPara(3);
+    datSetActiveSocialLink_s16((s16)socialLink);
     data.unk_0c = (u32)scrGetIntPara(0);
     data.unk_10 = (u32)scrGetIntPara(1);
     data.unk_14 = (u32)scrGetIntPara(2);
@@ -1144,21 +1210,25 @@ u32 FUN_001c2240(void)
     if (cmdTimer == 0)
     {
         adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
+        goto common_false;
     }
-    else if (cmdTimer > 10)
+    if (cmdTimer > 10 &&
+        adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
+        adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
     {
-        if (adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
-            adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
-        {
-            func_00171b50(socialLink);
-            return true;
-        }
-        return false;
+        func_00171b50(socialLink);
+        result = true;
+        goto done;
     }
-
-    return false;
+checks_false:
+    result = false;
+    goto done;
+common_false:
+    result = false;
+done:
+    return result;
 }
-
+#pragma pop
 // FUN_001C2340
 u32 FUN_001c2340(void)
 {
