@@ -7,7 +7,7 @@ extern u32 datCalcRand(u32 max);
 extern u32 FUN_00300c90(void* calc, u32 field);
 
 // FUN_0029a250
-u32 btlOrderRemoveAction(BtlAction** actions, u32 arrSize, BtlAction* action)
+static u32 btlOrderRemoveAction(BtlAction** actions, u32 arrSize, BtlAction* action)
 {
     BtlAction* curr;
     s32 i;
@@ -71,21 +71,20 @@ u32 btlOrderAddAction(BtlAction* action)
 
     return true;
 }
-#pragma optimization_level 3
-// FUN_0029a320 NONMATCHING
+// FUN_0029a320
 u32 FUN_0029a320(BtlAction* action)
 {
-    BtlAction* action_p = action;
+    BtlAction** actions;
     u32 removed;
 
+    actions = gBtl->order.actions;
     removed = 0;
-    while (btlOrderRemoveAction(gBtl->order.actions, BTL_MAXACTIONS, action_p) != 0)
+    while (btlOrderRemoveAction(actions, BTL_MAXACTIONS, action) == 1)
     {
         removed = 1;
     }
     return removed;
 }
-#pragma optimization_level 2
 
 // FUN_0029a380
 u32 FUN_0029a380(BtlAction* action)
@@ -471,9 +470,7 @@ void FUN_0029a750(void)
     }
 }
 #pragma opt_loop_invariants off
-#pragma optimization_level 4
-// FUN_0029abe0 NONMATCHING
-void FUN_0029abe0(BtlAction* action)
+static inline void btlOrderFinishAction(BtlAction* action)
 {
     if ((action->unk_18 & 4) != 0)
     {
@@ -482,29 +479,31 @@ void FUN_0029abe0(BtlAction* action)
     }
     else if ((gBtl->flags & BTL_FLAG2_UNK08) != 0)
     {
-        FUN_0029a4f0(action);
         gBtl->order.prevActionPlaying = action;
+        FUN_0029a4f0(action);
     }
 
     gBtl->order.flags |= 8;
 }
-#pragma optimization_level 2
 
-#pragma optimization_level 4
-// FUN_0029ac70 NONMATCHING
+// FUN_0029abe0
+void FUN_0029abe0(BtlAction* action)
+{
+    btlOrderFinishAction(action);
+}
+
+// FUN_0029ac70
 void FUN_0029ac70(BtlAction* action)
 {
     if ((action->unk_18 & 4) != 0)
     {
-        FUN_0029abe0(action);
+        btlOrderFinishAction(action);
     }
     else
     {
         gBtl->order.flags |= 8;
     }
 }
-#pragma schedule off
-#pragma optimization_level 2
 // FUN_0029adf0
 u32 FUN_0029adf0(BtlAction* action)
 {
