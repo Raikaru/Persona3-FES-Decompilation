@@ -162,6 +162,9 @@ extern const char D_005DBFA0[];
 extern const char D_005DBFD0[];
 extern const char D_005DC000[];
 extern const char D_005E3098[];
+extern const char D_005E30B0[];
+extern const char D_005E31F0[];
+extern const char D_005E3200[];
 
 /* Target entry prototypes keep all callbacks visible before their first use. */
 void FUN_001675b0(KwlnTask*);
@@ -2056,40 +2059,36 @@ void FUN_0016c010(void)
 {
     void* cdvd;
     s32* descriptor;
-    s32* payload;
+    u8* payload;
     CampDataBridgeRoot* root;
-    s32 recordCount0;
-    s32 auxiliaryCount0;
-    s32 recordCount1;
-    s32 auxiliaryCount1;
 
-    cdvd = (void*)(uintptr_t)FUN_00100d80((const char*)0x5e30b0, 0);
+    cdvd = (void*)(uintptr_t)FUN_00100d80(D_005E30B0, 0);
     FUN_001023a0(cdvd);
     descriptor = *(s32**)((u8*)cdvd + 0x110);
-    recordCount0 = descriptor[0];
-    auxiliaryCount0 = descriptor[1];
-    recordCount1 = descriptor[4];
-    auxiliaryCount1 = descriptor[5];
     root = (CampDataBridgeRoot*)(*DAT_00960178)(
-        (u32)((recordCount0 + recordCount1) * 0x20 + 0x20 +
-              (auxiliaryCount0 + auxiliaryCount1) * 0x10), 0x40000);
-    DAT_007cdfb0 = root;
-    root->groups[0].recordCount = recordCount0;
-    root->groups[0].auxiliaryCount = auxiliaryCount0;
+        (((descriptor[0] + descriptor[4]) << 5) + 0x20) +
+        ((descriptor[1] + descriptor[5]) << 4), 0x40000);
+    iGpffffb2c0 = root;
+    root->groups[0].recordCount = descriptor[0];
+    root->groups[0].auxiliaryCount = descriptor[1];
     root->groups[0].records = (CampDataBridgeRecord*)((u8*)root + 0x20);
-    root->groups[0].auxiliaryData = (u8*)root->groups[0].records + recordCount0 * 0x20;
-    root->groups[1].recordCount = recordCount1;
-    root->groups[1].auxiliaryCount = auxiliaryCount1;
-    root->groups[1].records = (CampDataBridgeRecord*)(root->groups[0].auxiliaryData + auxiliaryCount0 * 0x10);
-    root->groups[1].auxiliaryData = (u8*)root->groups[1].records + recordCount1 * 0x20;
-    payload = descriptor + 8;
-    FUN_00521250(root->groups[0].records, payload, (u32)(recordCount0 << 5));
-    payload += recordCount0 * 8;
-    FUN_00521250(root->groups[0].auxiliaryData, payload, (u32)(auxiliaryCount0 << 4));
-    payload += auxiliaryCount0 * 4;
-    FUN_00521250(root->groups[1].records, payload, (u32)(recordCount1 << 5));
-    FUN_00521250(root->groups[1].auxiliaryData, payload + recordCount1 * 8,
-                 (u32)(auxiliaryCount1 << 4));
+    root->groups[0].auxiliaryData =
+        (u8*)root->groups[0].records + (descriptor[0] << 5);
+    root->groups[1].recordCount = descriptor[4];
+    root->groups[1].auxiliaryCount = descriptor[5];
+    root->groups[1].records =
+        (CampDataBridgeRecord*)(root->groups[0].auxiliaryData +
+                                (descriptor[1] << 4));
+    root->groups[1].auxiliaryData =
+        (u8*)root->groups[1].records + (descriptor[4] << 5);
+    payload = (u8*)(descriptor + 8);
+    FUN_00521250(root->groups[0].records, payload, descriptor[0] << 5);
+    payload += descriptor[0] << 5;
+    FUN_00521250(root->groups[0].auxiliaryData, payload, descriptor[1] << 4);
+    payload += descriptor[1] << 4;
+    FUN_00521250(root->groups[1].records, payload, descriptor[4] << 5);
+    FUN_00521250(root->groups[1].auxiliaryData,
+                 payload + (descriptor[4] << 5), descriptor[5] << 4);
     FUN_00100ec0(cdvd);
 }
 
@@ -2126,36 +2125,65 @@ void FUN_0016c2f0(void)
 {
     s32* piVar1;
     u32 uVar2;
-    u8* dataBase;
+    u32 count;
+    s32 n;
+    u8* p;
 
-    dataBase = &DAT_0083bb40;
-    DAT_007cdfe4 = dataBase;
-    DAT_007cdfe0 = dataBase + DAT_0083bb30 * 0x28 + 0x10;
-    piVar1 = (s32*)(DAT_007cdfe0 +
-                    *(s32*)(dataBase + DAT_0083bb30 * 0x28) * 0x10);
-    DAT_007cdfdc = piVar1 + 4;
-    DAT_007cdfd8 = DAT_007cdfdc + *piVar1 * 8 + 4;
-    DAT_007cdfd4 = DAT_007cdfd8 + DAT_007cdfdc[*piVar1 * 8] * 8 + 4;
-    DAT_007cdfd0 = DAT_007cdfd4 +
-                   DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9 + 4;
-    DAT_007cdfcc = DAT_007cdfd0 +
-                   DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7 + 4;
-    DAT_007cdfc4 = DAT_007cdfcc +
-                   DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7 + 4;
-    DAT_007cdfc0 = DAT_007cdfc4 +
-                   DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4 + 4;
-    DAT_007cdfbc = DAT_007cdfc0 +
-                   DAT_007cdfc4[DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4] * 8 + 4;
-    DAT_007cdfb4 = DAT_007cdfbc +
-                   DAT_007cdfc0[DAT_007cdfc4[DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4] * 8] * 5 + 4;
-    DAT_007cdfc8 = DAT_007cdfb4 +
-                   DAT_007cdfbc[DAT_007cdfc0[DAT_007cdfc4[DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4] * 8] * 5] * 8 + 4;
-    DAT_007cdfb8 = DAT_007cdfc8 +
-                   DAT_007cdfb4[DAT_007cdfbc[DAT_007cdfc0[DAT_007cdfc4[DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4] * 8] * 5] * 8] * 2 + 4;
-    piVar1 = DAT_007cdfb8 +
-             DAT_007cdfc8[DAT_007cdfb4[DAT_007cdfbc[DAT_007cdfc0[DAT_007cdfc4[DAT_007cdfcc[DAT_007cdfd0[DAT_007cdfd4[DAT_007cdfd8[DAT_007cdfdc[*piVar1 * 8] * 8] * 9] * 7] * 7] * 4] * 8] * 5] * 8] * 2] * 3 + 4;
+    piVar1 = (s32*)0x83bb30;
+    count = (u32)*piVar1;
+    p = (u8*)piVar1 + 0x10;
+    DAT_007cdfe4 = p;
+    p += count * 0x28;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfe0 = p;
+    p += n << 4;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfdc = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd8 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd4 = (s32*)p;
+    p += ((n << 3) + n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfd0 = (s32*)p;
+    p += ((n << 3) - n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfcc = (s32*)p;
+    p += ((n << 3) - n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc4 = (s32*)p;
+    p += n << 4;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc0 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfbc = (s32*)p;
+    p += ((n << 2) + n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfb4 = (s32*)p;
+    p += n << 5;
+    n = *(s32*)p;
+    p += 0x10;
+    DAT_007cdfc8 = (s32*)p;
+    p += ((n << 1) + n) << 2;
+    n = *(s32*)p;
+    p += 0x10;
+    p += ((n << 1) + n) << 2;
+    piVar1 = (s32*)p;
     for (uVar2 = 0; uVar2 < 0x23; uVar2++) {
-        DAT_0083aaa0[uVar2] = (u32)piVar1;
+        ((u32*)0x83aaa0)[uVar2] = (u32)piVar1;
         piVar1 += 8;
     }
 }
