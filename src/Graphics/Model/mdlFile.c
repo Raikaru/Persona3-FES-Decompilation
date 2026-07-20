@@ -666,7 +666,7 @@ void FUN_00349870(int param_1);
 void FUN_00349a30(int param_1);
 void FUN_00349af0(u8 (*param_1) [16]);
 void FUN_00349d30(int param_1);
-u64 FUN_00349ed0(int param_1);
+u32 FUN_00349ed0(int param_1);
 void FUN_00349fa0(void);
 void FUN_00349fd0(u8 (*param_1) [16]);
 void FUN_0034a1d0(int param_1);
@@ -1330,6 +1330,7 @@ extern u32 uGpffff8160;
 extern u32 uGpffff8164;
 extern u32 uGpffff8198;
 extern u32 uGpffff81c0;
+extern f32 fGpffff81c0;
 extern u16 uGpffff9d38;
 #pragma alias gp0xffff9d38 uGpffff9d38
 extern u16 gp0xffff9d38;
@@ -46756,15 +46757,17 @@ void FUN_00349d30(int param_1)
 // FUN_00349ED0 NONMATCHING
 
 
-u64 FUN_00349ed0(int param_1)
+u32 FUN_00349ed0(int param_1)
 
 
 
 {
 
+  int *piVar5;
+
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 
@@ -46772,17 +46775,19 @@ u64 FUN_00349ed0(int param_1)
 
   
 
-  iVar1 = *(int *)(param_1 + 0xc0);
+  piVar5 = (int *)(param_1 + 0xc0);
 
-  uVar2 = (*DAT_00960178)(iVar1 * 0x34,0x40000);
+  iVar1 = *piVar5;
+
+  uVar2 = (*DAT_00960178_abs)(iVar1 * 0x34,0x40000);
 
   for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {
 
     iVar4 = (int)uVar2 + iVar3 * 0x34;
 
-    ((code)FUN_00348f30)(param_1 + 0xc0,iVar4);
+    FUN_00348f30((int)piVar5,(int *)iVar4);
 
-    *(u32 *)(iVar4 + 4) = uGpffff81c0;
+    *(f32 *)(iVar4 + 4) = fGpffff81c0;
 
   }
 
