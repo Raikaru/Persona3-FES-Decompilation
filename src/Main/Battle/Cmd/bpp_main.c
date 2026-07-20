@@ -161,7 +161,7 @@ void bppMain0020edf0(void)
             old_detail_done:
                 ;
             }
-            *work &= ~4u;
+            *work &= ~5u;
             *work &= ~2u;
             if (func_0029b0c0(action) == 0) {
                 goto changed_done;
