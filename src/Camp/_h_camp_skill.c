@@ -164,6 +164,7 @@ extern void FUN_001127d0(void* sprite, s32 enabled);
 extern void FUN_00115980(void* sprite);
 extern void FUN_0010a4e0(s32 first, ...);
 extern void FUN_004d0f00(void* parser);
+extern void (*jtbl_0096017C)(void* memory);
 
 extern KwlnTask* FUN_00166a50(KwlnTask* parent, u32 priority, s16 pcId,
                               u32 mode, u32 displayMode);
@@ -1285,32 +1286,14 @@ void FUN_001669b0(KwlnTask* task)
 {
     CampSkillInnerWork* work;
 
-    if (task == NULL || task->workData == NULL) {
-        return;
-    }
     work = (CampSkillInnerWork*)task->workData;
-    if (work->archiveParser != NULL) {
-        FUN_004d0f00(work->archiveParser);
-    }
-    if (work->resource0 != NULL) {
-        func_001124b0(work->resource0);
-    }
-    if (work->resource1 != NULL) {
-        func_001124b0(work->resource1);
-    }
-    if (work->archive != NULL) {
-        H_Cdvd_Destroy(work->archive);
-    }
-    if (work->listRecords != NULL) {
-        RwFree(work->listRecords);
-    }
-    if (work->detailRecords != NULL) {
-        RwFree(work->detailRecords);
-    }
-    if (work->detailData != NULL) {
-        RwFree(work->detailData);
-    }
-    RwFree(work);
+    FUN_004d0f00(work->archiveParser);
+    func_001124b0(work->resource0);
+    func_001124b0(work->resource1);
+    H_Cdvd_Destroy(work->archive);
+    jtbl_0096017C(work->listRecords);
+    jtbl_0096017C(work->detailRecords);
+    jtbl_0096017C(work);
 }
 
 // FUN_00166A50
