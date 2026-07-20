@@ -3334,6 +3334,7 @@ void FUN_004311f0(void *param_1,int param_2,int param_3)
   float fVar2;
   float fVar3;
   
+  fVar3 = 800.0f;
   uStack_4 = 0;
   if (param_2 >= 0) {
     fVar1 = (float)param_2;
