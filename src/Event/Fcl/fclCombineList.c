@@ -3198,7 +3198,7 @@ int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
     FclAnimationNode* node;
     FclNodeLink* link;
 
-    src = (struct FclPair *)DAT_006A6510;
+    src = (struct FclPair *)DAT_006a6510;
     dst = (struct FclPair *)work.table;
     count = 0x38;
     do {
