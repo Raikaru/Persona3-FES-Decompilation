@@ -632,7 +632,6 @@ typedef struct BtlCameraQuatBlend
 extern void FUN_0027f7c0(BtlUnit* unit, RwV3d* out, void* p3, void* p4);
 extern RwV3d D_00697880;
 extern float fGpffff8094;
-#pragma alias fGpffff8094 DAT_007cad84
 extern float fGpffff8070;
 extern void FUN_004bdde0(f32* quat, const f32* axis, f32 angle, s32 mode);
 extern RwV3d D_006978A0;
@@ -1126,7 +1125,7 @@ void btlCameraFrameAction(BtlCamera* camera, u32 closeView, s32 nearScale, s32 f
         distance = unit->sphereRadius * unit->scale;
         btlUnitGetSphereWorldCenter(unit, &sphereCenter);
         RtQuatTransformVectors(&forward, &D_00697890, 1, &unit->rot);
-        half = distance * 0.5f;
+        half = 0.5f * distance;
         scaled.x = forward.x * half;
         scaled.y = forward.y * half;
         scaled.z = forward.z * half;
@@ -4617,13 +4616,13 @@ void FUN_002b2eb0(int param_1, float *param_2)
     f32 unkB8;
     f32 result;
   } work;
-  f32 initial;
   f32 ratio;
   f32 angle;
+  register f32 initial;
   f32 inverse;
   f32 curve;
   f32 poly;
-  f32 product;
+  register f32 product;
 
   initial = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
   ratio = initial / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
@@ -5142,7 +5141,7 @@ void FUN_002b41e0(BtlCamera* camera)
     work.delta.y = work.current.pos.y - work.center.y;
     work.delta.z = work.current.pos.z - work.center.z;
     halfDistance = RwV3dLength(&work.delta) * 0.5f;
-    desiredDistance = (radius * 1.5f) /
+    desiredDistance = (1.5f * radius) /
                       FUN_0052e930(0.5f * camera->fovRad);
 
     RtQuatTransformVectors(&work.delta, &D_00697890, 1, &unit->rot);
