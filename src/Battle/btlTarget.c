@@ -83,6 +83,10 @@ extern u8* DAT_007ce42c;
 extern BtlCommandRecord* iGpffffb710;
 extern u32 DAT_007e094e;
 extern u32 DAT_007e0958;
+#pragma alias DAT_007e094e_u16 DAT_007e094e
+#pragma alias DAT_007e0958_u16 DAT_007e0958
+extern u16 DAT_007e094e_u16[];
+extern u16 DAT_007e0958_u16[];
 extern u8* gp0xffff9c60;
 extern u8* gp0xffff9c68;
 extern u8* gp0xffff9c70;
@@ -215,28 +219,68 @@ s32 FUN_002d1a70(void)
     return FUN_002FD7C0() != 0;
 }
 
-// FUN_002d1ac0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002d1ac0
 void FUN_002d1ac0(void)
 {
     s32 canToggle;
-    u32* flags = (u32*)(iGpffffb6fc + 0x0C);
+    u32* flags;
+    u32 flagsValue;
+    u32 mode;
 
-    if (!canToggle || (*flags & 0x4000) == 0) {
-        return;
+    flags = (u32*)(iGpffffb6fc + 0x0c);
+    if ((*flags & 0x80) != 0) {
+        canToggle = 0;
+    } else {
+        if (FUN_002FD7C0() != 0)
+            goto canToggleActive;
+        canToggle = 0;
+        goto canToggleDone;
+    canToggleActive:
+        canToggle = 1;
+    canToggleDone:
+        ;
     }
-    if ((*flags & 0x2000) == 0) {
-        if ((DAT_007e094e & 0x10) != 0 || (DAT_007e0958 & 0x10) != 0) {
-            *flags |= 0x2000;
-            FUN_0010A4E0(0, 0x0F, 0, 3);
-            FUN_001FF310();
-        }
-    } else if ((DAT_007e094e & 0x10) != 0 || (DAT_007e0958 & 0x10) != 0 ||
-               (DAT_007e094e & 0x20) != 0 || (DAT_007e0958 & 0x20) != 0) {
-        *flags &= ~0x2000u;
-        FUN_0010A4E0(0, 0x0F, 0, 4);
-        FUN_001FF330();
-    }
+    if (canToggle == 0)
+        goto done;
+    flags = (u32*)(iGpffffb6fc + 0x0c);
+    flagsValue = *flags;
+    if ((flagsValue & 0x4000) == 0)
+        goto done;
+    mode = flagsValue & 0x2000;
+    if (mode == 0)
+        goto enableChecks;
+    if ((DAT_007e094e_u16[0] & 0x10) != 0)
+        goto disable;
+    if ((DAT_007e0958_u16[0] & 0x10) != 0)
+        goto disable;
+    if ((DAT_007e094e_u16[0] & 0x20) != 0)
+        goto disable;
+    if ((DAT_007e0958_u16[0] & 0x20) == 0)
+        goto done;
+disable:
+    if (mode == 0)
+        goto done;
+    *flags &= ~0x2000u;
+    FUN_0010A4E0(0, 0x0f, 0, 4);
+    FUN_001FF330();
+    goto done;
+enableChecks:
+    if ((DAT_007e094e_u16[0] & 0x10) != 0)
+        goto enable;
+    if ((DAT_007e0958_u16[0] & 0x10) == 0)
+        goto done;
+enable:
+    if (mode != 0)
+        goto done;
+    *flags |= 0x2000;
+    FUN_0010A4E0(0, 0x0f, 0, 3);
+    FUN_001FF310();
+done:
+    ;
 }
+#pragma pop
 
 // FUN_002d1de0
 void FUN_002d1de0(u64 task, const RwV3d* from, const RwV3d* to)
@@ -365,20 +409,36 @@ void FUN_002d2280(s16* outX, s16* outZ, f32* position)
     if (outZ != NULL) *outZ = tileZ;
 }
 
-// FUN_002d2340 NONMATCHING
-void FUN_002d2340(f32 distance, u8* work, s16 start, s16 end)
+#pragma alias FUN_002d2340_s16 FUN_002d2340
+extern void FUN_002d2340_s16(f32 distance, u8* work, s16 start, s16 end);
+#pragma push
+#pragma opt_propagation off
+// FUN_002d2340
+void FUN_002d2340(f32 distance, u8* work, s32 start, s32 end)
 {
-    s16 tiles = (s16)((s32)distance / 0x19);
+    s32 tiles;
+    s16 leftTile;
+    s16 rightTile;
+    s16 span;
+    s16 topTile;
+    s16 bottomTile;
     f32 left;
     f32 right;
     f32 top;
     f32 bottom;
 
-    if ((s32)distance % 0x19 != 0) tiles++;
-    left = (f32)((start - tiles) * 0x19 - 0x6D6);
-    right = (f32)((end - tiles) * 0x19 - 0x6D6);
-    top = (f32)((start + tiles) * 0x19 - 0x6D6);
-    bottom = (f32)((end + tiles) * 0x19 - 0x6D6);
+    tiles = (s16)((s32)distance / 0x19);
+    if ((s32)distance % 0x19 != 0)
+        tiles = (s16)(tiles + 1);
+    leftTile = start - tiles;
+    rightTile = end - tiles;
+    left = (f32)(leftTile * 0x19 - 0x6d6);
+    right = (f32)(rightTile * 0x19 - 0x6d6);
+    span = (s16)tiles * 2;
+    topTile = leftTile + span;
+    bottomTile = rightTile + span;
+    top = (f32)(topTile * 0x19 - 0x6d6);
+    bottom = (f32)(bottomTile * 0x19 - 0x6d6);
     *(f32*)(work + 0x504) = left;
     *(f32*)(work + 0x508) = right;
     *(f32*)(work + 0x634) = top;
@@ -388,6 +448,7 @@ void FUN_002d2340(f32 distance, u8* work, s16 start, s16 end)
     *(f32*)(work + 0x894) = left;
     *(f32*)(work + 0x898) = bottom;
 }
+#pragma pop
 
 // FUN_002d2470
 s32 FUN_002d2470(const f32* a, const f32* b, const f32* point, f32 tolerance)
@@ -1291,7 +1352,7 @@ s32 func_002d8b30(void)
     return 0xb2;
 }
 
-// FUN_002d8b40 NONMATCHING
+// FUN_002d8b40
 
 s32 FUN_002d8b40(s32 param_1)
 {
@@ -1324,7 +1385,7 @@ s32 FUN_002d8b40(s32 param_1)
     hp = (u16)FUN_002ffd70(personaId);
     maxHp = (u16)FUN_002ffdf0(personaId);
     hpPercent = hp * 100 / maxHp;
-    if (hpPercent >= 0x47)
+    if (hpPercent > 0x46)
     {
         if (*(s32*)(*(s32*)(iGpffffb6fc + 0x148) + 0x20) < 3)
         {
@@ -1335,7 +1396,7 @@ s32 FUN_002d8b40(s32 param_1)
             return 0xd1;
         }
     }
-    if (hpPercent < 0x1f)
+    if (hpPercent <= 0x1e)
     {
         goto criticalHp;
     }
@@ -2779,7 +2840,7 @@ void FUN_002d3e00(BtlUnit* unit, RwV3d* outPos)
         outPos->y = 0.0f;
         outPos->z = (f32)((s32)tileZ * 0x19 - 0x6d6);
     }
-    FUN_002d2340(radius, raw, tileX, tileZ);
+    FUN_002d2340_s16(radius, raw, tileX, tileZ);
     *(s16*)(raw + 0x4fc) = tileX;
     *(s16*)(raw + 0x4fe) = tileZ;
     *(f32*)(raw + 0x500) = radius;
@@ -2852,7 +2913,7 @@ u32 FUN_002d4040(BtlUnit* unit)
     {
         return 0;
     }
-    FUN_002d2340(radius, raw, tileX, tileZ);
+    FUN_002d2340_s16(radius, raw, tileX, tileZ);
     *(s16*)(raw + 0x4fc) = tileX;
     *(s16*)(raw + 0x4fe) = tileZ;
     *(f32*)(raw + 0x500) = radius;
@@ -4289,50 +4350,57 @@ s32 FUN_002daa20(BtlAction* param_1, u16 param_2, s32 param_3, s32 param_4, s32 
     return FUN_002db9f0(param_2, (u64)result);
 }
 
-// FUN_002dad00 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_002dad00
 void FUN_002dad00(void)
 {
-    u8* btl;
+    u8* base;
+    u16* modePtr;
+    u16 mode;
+    s16* counter;
     u8* resourceTable;
     u8* record;
     s32 offset;
-    u16 mode;
-    u64 randomValue;
+    u32 recordOffset;
+    u32 randomValue;
 
-    btl = iGpffffb6fc;
-    mode = *(u16*)(btl + 0xa18);
-    if (mode != 2)
-    {
-        if (mode != 1)
-        {
+    base = iGpffffb6fc;
+    modePtr = (u16*)(base + 0xa18);
+    mode = *modePtr;
+    switch (mode) {
+    case 0:
+        goto updateFlag;
+    case 1:
+        counter = (s16*)(base + 0xa36);
+        if (*counter > 0) {
+            *counter = *counter - 1;
             goto updateFlag;
         }
-        if (*(s16*)(btl + 0xa36) > 0)
-        {
-            *(s16*)(btl + 0xa36) = *(s16*)(btl + 0xa36) - 1;
-            goto updateFlag;
-        }
-        *(u16*)(btl + 0xa18) = 2;
+        *modePtr = 2;
+    case 2:
+        break;
+    default:
+        goto updateFlag;
     }
-
-    resourceTable = *(u8**)(btl + 0xa1c);
+    resourceTable = *(u8**)(iGpffffb6fc + 0xa1c);
     record = *(u8**)(resourceTable + 0x110);
-    offset = *(u32*)(record + (u32)*(u16*)(btl + 0xa28) * 0xc + 4);
+    recordOffset = (u32)*(u16*)(iGpffffb6fc + 0xa28) * 0xc;
+    recordOffset += (u32)record;
+    offset = *(u32*)(recordOffset + 4);
     record += offset;
     FUN_003c8dd0(record);
     randomValue = datCalcRand((u32)FUN_003a3010(record));
-    FUN_003c8de0(*(u16*)(btl + 0xa14), randomValue, 0, 0);
-    *(u32*)(btl + 0xa20) = *(u32*)(btl + 0xa28);
-    *(u16*)(btl + 0xa24) = *(u16*)(btl + 0xa2c);
-    *(u16*)(btl + 0xa16) |= 1;
-    *(u16*)(btl + 0xa18) = 0;
-
+    FUN_003c8de0(*(u16*)(iGpffffb6fc + 0xa14), randomValue, 0, 0);
+    *(u32*)(iGpffffb6fc + 0xa20) = *(u32*)(iGpffffb6fc + 0xa28);
+    *(u16*)(iGpffffb6fc + 0xa24) = *(s16*)(iGpffffb6fc + 0xa2c);
+    *(u16*)(iGpffffb6fc + 0xa16) |= 1;
+    *(u16*)(iGpffffb6fc + 0xa18) = 0;
 updateFlag:
     if (FUN_003c8ea0() == 0)
-    {
-        *(u16*)(btl + 0xa16) &= (u16)~1;
-    }
+        *(u16*)(iGpffffb6fc + 0xa16) &= (u16)~1;
 }
+#pragma pop
 
 // FUN_002dae30 NONMATCHING
 void FUN_002dae30(u64 param_1)
@@ -4863,41 +4931,38 @@ u32 FUN_002dbb00(BtlUnit* param_1)
     return result;
 }
 
-// FUN_002dbeb0 NONMATCHING
+#pragma push
+// FUN_002dbeb0
 u32 FUN_002dbeb0(void* param_1)
 {
     BtlTargetCdWork* work = (BtlTargetCdWork*)param_1;
-    u16 state = work->state;
 
-    if (state == 4)
-        goto loaded;
-    if (state == 3)
-        goto signal;
-    if (state == 2)
+    switch (work->state)
     {
-        if (H_Cdvd_IsFileLoaded(*(HCdvd**)(iGpffffb6fc + 0xa1c)) == 0)
-            return 0;
-        goto signal;
-    }
-    if (state == 1)
-        goto request;
-    if (state == 0)
-    {
+    case 0:
         *(u16*)(iGpffffb6fc + 0xa14) = (work->resource == 0) ? 4 : 6;
-        goto request;
+    case 1:
+        *(HCdvd**)(iGpffffb6fc + 0xa1c) = H_Cdvd_Request(D_00697B90[work->resource], 0);
+        work->state = 2;
+        goto zero;
+    case 2:
+        if (H_Cdvd_IsFileLoaded(*(HCdvd**)(iGpffffb6fc + 0xa1c)) == 0)
+            goto zero;
+    case 3:
+        func_003c8da0((1u << *(u16*)(iGpffffb6fc + 0xa14)) | 1);
+        work->state = 4;
+    case 4:
+        *(u32*)(iGpffffb6fc + 0x0c) |= 0x01000000;
+        goto one;
+    default:
+        goto zero;
     }
-    return 0;
-request:
-    *(HCdvd**)(iGpffffb6fc + 0xa1c) = H_Cdvd_Request(D_00697B90[work->resource], 0);
-    work->state = 2;
-    return 0;
-signal:
-    func_003c8da0((1u << (*(u16*)(iGpffffb6fc + 0xa14) & 0x1f)) | 1);
-    work->state = 4;
-loaded:
-    *(u32*)(iGpffffb6fc + 0x0c) |= 0x01000000;
+one:
     return 1;
+zero:
+    return 0;
 }
+#pragma pop
 
 // FUN_002dbfe0
 BtlPacket* FUN_002dbfe0(u16 param_1)
