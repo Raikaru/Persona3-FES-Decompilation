@@ -12,16 +12,36 @@ typedef u32 int3;
 extern s8 DAT_006a3d70[];
 extern u16 DAT_006a3d72[];
 extern u8 * PTR_DAT_006a38e8;
+#pragma alias PTR_DAT_006a38e8_abs PTR_DAT_006a38e8
+extern u8 * PTR_DAT_006a38e8_abs[];
 extern u8 * PTR_DAT_007cd6ec;
 extern u8 * PTR_s_Susano_o_006a3ca0;
+#pragma alias PTR_s_Susano_o_006a3ca0_abs PTR_s_Susano_o_006a3ca0
+extern u8 * PTR_s_Susano_o_006a3ca0_abs[];
 extern u8 * PTR_s_next_Friday_006a3bf4;
+#pragma alias PTR_s_next_Friday_006a3bf4_abs PTR_s_next_Friday_006a3bf4
+extern u8 PTR_s_next_Friday_006a3bf4_abs[];
 extern u8 * PTR_s_next_Monday_006a3be4;
+#pragma alias PTR_s_next_Monday_006a3be4_abs PTR_s_next_Monday_006a3be4
+extern u8 PTR_s_next_Monday_006a3be4_abs[];
 extern u8 * PTR_s_next_Saturday_006a3bf8;
+#pragma alias PTR_s_next_Saturday_006a3bf8_abs PTR_s_next_Saturday_006a3bf8
+extern u8 PTR_s_next_Saturday_006a3bf8_abs[];
 extern u8 * PTR_s_next_Sunday_006a3be0;
+#pragma alias PTR_s_next_Sunday_006a3be0_abs PTR_s_next_Sunday_006a3be0
+extern u8 PTR_s_next_Sunday_006a3be0_abs[];
 extern u8 * PTR_s_next_Thursday_006a3bf0;
+#pragma alias PTR_s_next_Thursday_006a3bf0_abs PTR_s_next_Thursday_006a3bf0
+extern u8 PTR_s_next_Thursday_006a3bf0_abs[];
 extern u8 * PTR_s_next_Tuesday_006a3be8;
+#pragma alias PTR_s_next_Tuesday_006a3be8_abs PTR_s_next_Tuesday_006a3be8
+extern u8 PTR_s_next_Tuesday_006a3be8_abs[];
 extern u8 * PTR_s_next_Wednesday_006a3bec;
+#pragma alias PTR_s_next_Wednesday_006a3bec_abs PTR_s_next_Wednesday_006a3bec
+extern u8 PTR_s_next_Wednesday_006a3bec_abs[];
 extern u8 * PTR_s_tomorrow_006a3bfc;
+#pragma alias PTR_s_tomorrow_006a3bfc_abs PTR_s_tomorrow_006a3bfc
+extern u8 PTR_s_tomorrow_006a3bfc_abs[];
 
 static const char* daysStrings[CALENDAR_DAY_MAX] =
 {
@@ -140,7 +160,7 @@ u8 * FUN_003c4040(int param_1,int param_2)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -160,7 +180,7 @@ u8 * FUN_003c4040(int param_1,int param_2)
 
   }
 
-  return (&PTR_DAT_006a38e8)[param_2 * 6 + param_1];
+  return PTR_DAT_006a38e8_abs[param_2 * 6 + param_1];
 
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
@@ -216,7 +236,7 @@ u8 * FUN_003c4270(void)
 
   sVar1 = FUN_0016ef20();
 
-  puVar3 = PTR_s_tomorrow_006a3bfc;
+  puVar3 = *(u8 **)PTR_s_tomorrow_006a3bfc_abs;
 
   if (iVar2 != sVar1 + 1) {
 
@@ -226,43 +246,43 @@ u8 * FUN_003c4270(void)
 
     case 0:
 
-      puVar3 = PTR_s_next_Sunday_006a3be0;
+      puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
 
       break;
 
     case 1:
 
-      puVar3 = PTR_s_next_Monday_006a3be4;
+      puVar3 = *(u8 **)PTR_s_next_Monday_006a3be4_abs;
 
       break;
 
     case 2:
 
-      puVar3 = PTR_s_next_Tuesday_006a3be8;
+      puVar3 = *(u8 **)PTR_s_next_Tuesday_006a3be8_abs;
 
       break;
 
     case 3:
 
-      puVar3 = PTR_s_next_Wednesday_006a3bec;
+      puVar3 = *(u8 **)PTR_s_next_Wednesday_006a3bec_abs;
 
       break;
 
     case 4:
 
-      puVar3 = PTR_s_next_Thursday_006a3bf0;
+      puVar3 = *(u8 **)PTR_s_next_Thursday_006a3bf0_abs;
 
       break;
 
     case 5:
 
-      puVar3 = PTR_s_next_Friday_006a3bf4;
+      puVar3 = *(u8 **)PTR_s_next_Friday_006a3bf4_abs;
 
       break;
 
     case 6:
 
-      puVar3 = PTR_s_next_Saturday_006a3bf8;
+      puVar3 = *(u8 **)PTR_s_next_Saturday_006a3bf8_abs;
 
       break;
 
@@ -270,7 +290,7 @@ u8 * FUN_003c4270(void)
 
       FUN_0019d3f0("comuData.c",0xba);
 
-      puVar3 = PTR_s_next_Sunday_006a3be0;
+      puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
 
     }
 
@@ -281,24 +301,23 @@ u8 * FUN_003c4270(void)
 }
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
 #undef FUN_003c4390
-// FUN_003C4390 NONMATCHING
+// FUN_003C4390
 
 
 u8 * FUN_003c4390(int param_1)
-
-
-
 {
+  int index;
 
-  param_1 = param_1 + -1;
+  index = param_1 - 1;
 
-  if ((0x15 < param_1) || (param_1 < 0)) {
+  if ((0x15 < index) || (index < 0)) {
 
     FUN_0019d3f0("comuData.c",0xc6);
 
   }
 
-  return (&PTR_s_Susano_o_006a3ca0)[param_1];
+  return PTR_s_Susano_o_006a3ca0_abs[index];
+
 
 }
 #define FUN_003c4390(...) ((u8 * (*)(...))FUN_003c4390)(__VA_ARGS__)
