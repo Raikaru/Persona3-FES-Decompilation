@@ -7,6 +7,7 @@ typedef u32 int3;
 extern void FUN_0019d3f0(const char *file,s32 line);
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
+extern const char DAT_006a1d70[];
 extern u32 DAT_006a1fdc;
 extern u32 DAT_006a1fec;
 extern u32 DAT_006a1ffc;
@@ -71,15 +72,14 @@ extern u32 uGpffffb964;
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,  long param_7);
 u64 FUN_003a8b00(int param_1,long param_2);
-void FUN_003a8d60(long param_1);
+void FUN_003a8d60(int param_1);
 void FUN_003a8dc0(long param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u32 param_6);
 void FUN_003a8ea0(long param_1,int param_2,int param_3,int param_4,int param_5,int param_6);
 void FUN_003a8fb0(long param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5);
 void FUN_003a9080(u64 param_1);
 void FUN_003a90c0(long param_1,u64 param_2);
 u64 FUN_003a9140(int param_1);
-int FUN_003a9170(int param_1);
-int FUN_003a9230(int *param_1);
+int FUN_003a9230(int param_1);
 u64 FUN_003a92a0(int param_1);
 int FUN_003a92d0(int param_1);
 u64 FUN_003a93a0(int param_1);
@@ -446,20 +446,15 @@ u64 FUN_003a8b00(int param_1,long param_2)
 }
 #define FUN_003a8b00(...) ((u64 (*)(...))FUN_003a8b00)(__VA_ARGS__)
 #undef FUN_003a8d60
-// FUN_003A8D60 NONMATCHING
+// FUN_003A8D60
 
 
-void FUN_003a8d60(long param_1)
-
-
-
+void FUN_003a8d60(int param_1)
 {
-
   u32 *puVar1;
 
   
-
-  FUN_005225a8(0x6a1d70);
+  FUN_005225a8(DAT_006a1d70);
 
   if (param_1 != 0) {
 
@@ -696,17 +691,19 @@ int FUN_003a9170(int param_1)
   return 0;
 }
 
-// FUN_003A9230 NONMATCHING
-int FUN_003a9230(int *param_1)
+// FUN_003A9230
+int FUN_003a9230(int param_1)
 {
-  param_1 = *(int **)((int)param_1 + 8);
-  *param_1 = 3;
-  param_1[2] = param_1[2] + 1;
-  param_1[3] = 0xff - param_1[2] * 0x100 / 10;
-  if (param_1[2] >= 10) {
-    *param_1 = 0;
-    param_1[2] = 0;
-    param_1[3] = 0;
+  int* state;
+
+  state = *(int**)(param_1 + 8);
+  state[0] = 3;
+  state[2] = state[2] + 1;
+  state[3] = 0xff - state[2] * 0xff / 10;
+  if (state[2] >= 10) {
+    state[0] = 0;
+    state[2] = 0;
+    state[3] = 0;
     return 1;
   }
   return 0;
