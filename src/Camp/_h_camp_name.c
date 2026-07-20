@@ -1418,7 +1418,6 @@ extern code FUN_0018eb30;
 extern code FUN_00194b20;
 extern code FUN_00194b80;
 extern code FUN_00195020;
-extern code FUN_00195290;
 extern code FUN_00195460;
 extern code FUN_00198590;
 extern code FUN_001a0040;
@@ -2787,19 +2786,20 @@ u32 FUN_0045eaf0(void)
   return 1;
 }
 
+extern s32 FUN_00195290();
 // FUN_0045EBA0 NONMATCHING
 
 u32 FUN_0045eba0(void)
 
 {
   u32 uVar1;
-  long lVar2;
+  s32 lVar2;
   
   if (DAT_007ce708 == 0) {
     uVar1 = 1;
   }
   else {
-    lVar2 = ((code)FUN_00195290)();
+    lVar2 = FUN_00195290();
     if (lVar2 == 3) {
       DAT_007ce708 = 0;
       uVar1 = 1;
