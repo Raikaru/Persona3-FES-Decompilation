@@ -1859,7 +1859,7 @@ u32 FUN_002fcaa0(int param_1,u32 *param_2)
 
 {
 
-  short sVar1;
+  u16 sVar1;
 
   u32 uVar2;
 
@@ -1875,26 +1875,26 @@ u32 FUN_002fcaa0(int param_1,u32 *param_2)
 
     }
 
-    else if (*(char *)(*(int *)(param_1 + 0x30) + 0xa2) == '\x01') {
+    else if (*(u8 *)(*(int *)(param_1 + 0x30) + 0xa2) == 1) {
 
-      sVar1 = *(short *)(*(int *)(param_1 + 0x30) + 0xa4);
+      sVar1 = *(u16 *)(*(int *)(param_1 + 0x30) + 0xa4);
 
-      if ((sVar1 == 0x10c) || (sVar1 == 0x10b)) {
+      switch (sVar1)
+      {
+        case 0x10c:
+        case 0x10b:
+          *param_2 = *(u32 *)(DAT_007ce3ec + 0xb44);
 
-        *param_2 = *(u32 *)(DAT_007ce3ec + 0xb44);
+          param_2[1] = *(u32 *)(DAT_007ce3ec + 0xb48);
 
-        param_2[1] = *(u32 *)(DAT_007ce3ec + 0xb48);
+          param_2[2] = *(u32 *)(DAT_007ce3ec + 0xb4c);
 
-        param_2[2] = *(u32 *)(DAT_007ce3ec + 0xb4c);
+          uVar2 = 1;
+          break;
 
-        uVar2 = 1;
-
-      }
-
-      else {
-
-        uVar2 = 0;
-
+        default:
+          uVar2 = 0;
+          break;
       }
 
     }
