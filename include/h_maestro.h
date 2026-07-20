@@ -53,7 +53,7 @@ void func_00110e70(KwlnTask* task);
 KwlnTask* func_00110f80(KwlnTask* parent, u64 dimensions);
 KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions);
 KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive);
-KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u32 param_3, void* archive, s16 dim0, s16 dim1, s16 dim2, s16 dim3);
+KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* archive);
 u32 func_001114b0(KwlnTask* task);
 void func_00111500(KwlnTask* task);
 void func_00111520(KwlnTask* task, s16 count);
