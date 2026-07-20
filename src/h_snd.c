@@ -33,26 +33,127 @@ static void* sChannelData0[HSND_CHANNEL_COUNT];
 static void* sChannelData1[HSND_CHANNEL_COUNT];
 static void* sChannelData2[HSND_CHANNEL_COUNT];
 static void* sChannelData3[HSND_CHANNEL_COUNT];
-static s16 sChannelMap[HSND_CHANNEL_COUNT];
+static u8 sChannelMap[HSND_CHANNEL_COUNT][8];
 
 /* Retail D_005D4014: BGM id is the direct 12-byte-record index. */
-static const char* const sBgmAdxStrings[116] =
+static const char* const sBgmAdxStrings[116][3] =
 {
-    "01.ADX", "01.ADX", "26.ADX", NULL, "26.ADX", "26.ADX", "26.ADX", NULL,
-    "26.ADX", NULL, "26.ADX", NULL, "26.ADX", NULL, "26.ADX", NULL,
-    "26.ADX", NULL, "26.ADX", "19.ADX", "20.ADX", "21.ADX", "22.ADX", "23.ADX",
-    "24.ADX", "25.ADX", "26.ADX", "27.ADX", "28.ADX", "29.ADX", "30.ADX", "31.ADX",
-    "32.ADX", "26.ADX", "26.ADX", "35.ADX", "36.ADX", "37.ADX", "38.ADX", "39.ADX",
-    "40.ADX", "THEME.ADX", "THEME.ADX", "43.ADX", "44.ADX", "45.ADX", "46.ADX", "THEME.ADX",
-    "THEME.ADX", "THEME.ADX", "50.ADX", "51.ADX", "52.ADX", "53.ADX", "54.ADX", "55.ADX",
-    "56.ADX", "THEME.ADX", "THEME.ADX", "THEME.ADX", "60.ADX", "61.ADX", "62.ADX", "63.ADX",
-    "THEME.ADX", "THEME.ADX", "THEME.ADX", "THEME.ADX", "THEME.ADX", "THEME.ADX", "70.ADX", "71.ADX",
-    "72.ADX", "73.ADX", "74.ADX", "75.ADX", "76.ADX", "77.ADX", "78.ADX", "79.ADX",
-    "80.ADX", "81.ADX", "82.ADX", "83.ADX", "84.ADX", "85.ADX", "86.ADX", "87.ADX",
-    "88.ADX", "89.ADX", "90.ADX", "91.ADX", "92.ADX", "93.ADX", "94.ADX", "95.ADX",
-    "96.ADX", "97.ADX", "98.ADX", "99.ADX", "100.ADX", "101.ADX", "102.ADX", "103.ADX",
-    "104.ADX", "105.ADX", "106.ADX", "107.ADX", "108.ADX", "109.ADX", "110.ADX", "111.ADX",
-    "112.ADX", "113.ADX", "114.ADX", "115.ADX",
+    {"01.ADX", NULL, NULL},
+    {"01.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {NULL, NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"19.ADX", NULL, NULL},
+    {"20.ADX", NULL, NULL},
+    {"21.ADX", NULL, NULL},
+    {"22.ADX", NULL, NULL},
+    {"23.ADX", NULL, NULL},
+    {"24.ADX", NULL, NULL},
+    {"25.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"27.ADX", NULL, NULL},
+    {"28.ADX", NULL, NULL},
+    {"29.ADX", NULL, NULL},
+    {"30.ADX", NULL, NULL},
+    {"31.ADX", NULL, NULL},
+    {"32.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"26.ADX", NULL, NULL},
+    {"35.ADX", NULL, NULL},
+    {"36.ADX", NULL, NULL},
+    {"37.ADX", NULL, NULL},
+    {"38.ADX", NULL, NULL},
+    {"39.ADX", NULL, NULL},
+    {"40.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"43.ADX", NULL, NULL},
+    {"44.ADX", NULL, NULL},
+    {"45.ADX", NULL, NULL},
+    {"46.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"50.ADX", NULL, NULL},
+    {"51.ADX", NULL, NULL},
+    {"52.ADX", NULL, NULL},
+    {"53.ADX", NULL, NULL},
+    {"54.ADX", NULL, NULL},
+    {"55.ADX", NULL, NULL},
+    {"56.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"60.ADX", NULL, NULL},
+    {"61.ADX", NULL, NULL},
+    {"62.ADX", NULL, NULL},
+    {"63.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"THEME.ADX", NULL, NULL},
+    {"70.ADX", NULL, NULL},
+    {"71.ADX", NULL, NULL},
+    {"72.ADX", NULL, NULL},
+    {"73.ADX", NULL, NULL},
+    {"74.ADX", NULL, NULL},
+    {"75.ADX", NULL, NULL},
+    {"76.ADX", NULL, NULL},
+    {"77.ADX", NULL, NULL},
+    {"78.ADX", NULL, NULL},
+    {"79.ADX", NULL, NULL},
+    {"80.ADX", NULL, NULL},
+    {"81.ADX", NULL, NULL},
+    {"82.ADX", NULL, NULL},
+    {"83.ADX", NULL, NULL},
+    {"84.ADX", NULL, NULL},
+    {"85.ADX", NULL, NULL},
+    {"86.ADX", NULL, NULL},
+    {"87.ADX", NULL, NULL},
+    {"88.ADX", NULL, NULL},
+    {"89.ADX", NULL, NULL},
+    {"90.ADX", NULL, NULL},
+    {"91.ADX", NULL, NULL},
+    {"92.ADX", NULL, NULL},
+    {"93.ADX", NULL, NULL},
+    {"94.ADX", NULL, NULL},
+    {"95.ADX", NULL, NULL},
+    {"96.ADX", NULL, NULL},
+    {"97.ADX", NULL, NULL},
+    {"98.ADX", NULL, NULL},
+    {"99.ADX", NULL, NULL},
+    {"100.ADX", NULL, NULL},
+    {"101.ADX", NULL, NULL},
+    {"102.ADX", NULL, NULL},
+    {"103.ADX", NULL, NULL},
+    {"104.ADX", NULL, NULL},
+    {"105.ADX", NULL, NULL},
+    {"106.ADX", NULL, NULL},
+    {"107.ADX", NULL, NULL},
+    {"108.ADX", NULL, NULL},
+    {"109.ADX", NULL, NULL},
+    {"110.ADX", NULL, NULL},
+    {"111.ADX", NULL, NULL},
+    {"112.ADX", NULL, NULL},
+    {"113.ADX", NULL, NULL},
+    {"114.ADX", NULL, NULL},
+    {"115.ADX", NULL, NULL},
 };
 
 /* ACSSND entry points used by the retail sound state machine. */
@@ -191,7 +292,7 @@ extern void func_0010d7b0(s16 param1, s16 param2, void* data0, u32 data0Size,
 extern s32 func_0010d910(s16 param1);
 extern void func_0010da70(s16 bank, s16 cue);
 extern void func_0010db60(s32 bank, s32 cue, s32 variant, s32 pan);
-extern void* D_007E39F0;
+extern char D_007E39F0[];
 extern u32 D_00960184[];
 #define HSND_ALLOC(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags)
 
@@ -419,7 +520,7 @@ void H_Snd_00109180(s32 channelIndex)
             func_0054d118(channel->handle, false);
         }
 
-        name = sBgmAdxStrings[channel->id];
+        name = sBgmAdxStrings[channel->id][0];
         sprintf(channel->name, "%s", name);
         func_0054d238(channel->handle, true);
         if (channel->id == 0x3D)
@@ -532,30 +633,40 @@ s16 func_001099a0(void)
     return sChannels[0].id;
 }
 
-// FUN_001099D0 NONMATCHING
+// FUN_001099D0
 u8 H_Snd_PlayBgm(s16 id, s32 unused)
 {
-    HsndChannel* bgm;
+    s32 current;
 
     (void)unused;
-    bgm = &sChannels[0];
-    if (id != H_Snd_GetCurrentBgmId())
+    if (sChannels[0].active == false)
     {
-        func_0054d208(bgm->handle, true);
-        bgm->gate = false;
-        bgm->active = true;
-        bgm->state = HSND_CHANNEL_STARTING;
-        bgm->previousId = bgm->id;
-        bgm->id = id;
-        bgm->requestType = HSND_START_BGM;
-        sprintf(bgm->name, "%s", sBgmAdxStrings[id]);
-
-        if (datGetFlag(0x141E) == false)
-        {
-            H_Snd_00109180(0);
-        }
+        current = HSND_BGM_NONE;
+    }
+    else
+    {
+        current = sChannels[0].id;
     }
 
+    if (id != current)
+    {
+        func_0054d208(sChannels[0].handle, true);
+        sChannels[0].gate = false;
+        sChannels[0].active = true;
+        sChannels[0].state = HSND_CHANNEL_STARTING;
+        sChannels[0].previousId = sChannels[0].id;
+        sChannels[0].id = id;
+        sChannels[0].requestType = HSND_START_BGM;
+        sprintf(sChannels[0].name, "%s", sBgmAdxStrings[id][0]);
+
+        if (datGetFlag(0x141E) != 0)
+        {
+            return true;
+        }
+        H_Snd_00109180(0);
+    }
+
+done:
     return true;
 }
 
@@ -623,69 +734,78 @@ u32 H_Snd_FUN_00109df0(s32 slotIndex)
     return sSlotWork[index].state == HSND_CHANNEL_STARTING;
 }
 
-// FUN_00109E30 NONMATCHING
+// FUN_00109E30
 void func_00109e30(s16 channelIndex)
 {
-    HsndChannel* channel;
-    s16 index;
+    s16 original;
+    s16 normalized;
 
-    index = channelIndex;
-    if (index < HSND_CHANNEL_COUNT)
+    original = channelIndex;
+    normalized = channelIndex;
+    if (sChannels[original].active != false)
     {
-        channel = &sChannels[index];
-        if (channel->active != false)
+        func_0054d220(sChannels[original].handle, 10);
+        if (normalized < 2)
         {
-            func_0054d220(channel->handle, 10);
-
-            if (index < 2)
+            if (sChannels[original].active != false)
             {
-                if (channel->active != false)
-                {
-                    func_0054d100(channel->handle);
-                    channel->state = HSND_CHANNEL_INACTIVE;
-                    channel->active = false;
-                    channel->id = HSND_BGM_NONE;
-                }
+                func_0054d100(sChannels[original].handle);
+                sChannels[original].state = HSND_CHANNEL_INACTIVE;
+                sChannels[original].active = false;
+                sChannels[original].id = HSND_BGM_NONE;
             }
-            else
+        }
+        else
+        {
+            if (sChannels[original].active != false)
             {
-                if (channel->active != false)
-                {
-                    func_0054d100(channel->handle);
-                    channel->state = HSND_CHANNEL_INACTIVE;
-                    channel->active = false;
-                    channel->id = HSND_BGM_NONE;
-                }
+                func_0054d100(sChannels[original].handle);
+                sChannels[original].state = HSND_CHANNEL_INACTIVE;
+                sChannels[original].active = false;
+                sChannels[original].id = HSND_BGM_NONE;
             }
         }
     }
 }
 
-// FUN_00109F60 NONMATCHING
+// FUN_00109F60
 u8 func_00109f60(s16 channelIndex, s16 mappedChannelIndex)
 {
-    HsndChannel* channel;
-    HsndChannel* mappedChannel;
-
-    channel = H_Snd_GetChannel(channelIndex);
-    if (channelIndex >= HSND_CHANNEL_COUNT)
+    s32 index;
+    s16 mappedIndex;
+    
+    mappedIndex = mappedChannelIndex;
+    index = channelIndex;
+    if (index < HSND_CHANNEL_COUNT)
+    {
+        if (index < 2)
+        {
+            if (sChannels[index].active != false)
+            {
+                func_0054d100(sChannels[index].handle);
+                sChannels[index].state = HSND_CHANNEL_INACTIVE;
+                sChannels[index].active = false;
+                sChannels[index].id = HSND_BGM_NONE;
+            }
+        }
+        else
+        {
+            if (sChannels[index].active != false)
+            {
+                func_0054d100(sChannels[index].handle);
+                sChannels[index].state = HSND_CHANNEL_INACTIVE;
+                sChannels[index].active = false;
+                sChannels[index].id = HSND_BGM_NONE;
+            }
+        }
+    }
+    else
     {
         return true;
     }
 
-    if (channel != NULL && channel->active != false)
-    {
-        func_0054d100(channel->handle);
-        H_Snd_ClearChannel(channel);
-    }
-
-    mappedChannel = H_Snd_GetChannel(sChannelMap[mappedChannelIndex]);
-    if (mappedChannel != NULL)
-    {
-        mappedChannel->active = false;
-        mappedChannel->state = HSND_CHANNEL_INACTIVE;
-    }
-
+    sChannels[sChannelMap[mappedIndex][0]].active = false;
+    sChannels[sChannelMap[mappedIndex][0]].state = HSND_CHANNEL_INACTIVE;
     return true;
 }
 
@@ -818,44 +938,49 @@ void* H_Snd_StreamTaskUpdate(KwlnTask* task)
     s32 status;
 
     work = task->workData;
-    switch (work->state)
+    if (work->state == 2)
     {
-        case 2:
-            break;
+        goto done;
+    }
+    if (work->state == 1)
+    {
+        goto state1;
+    }
+    if (work->state == 0)
+    {
+        goto state0;
+    }
+    goto done;
 
-        case 0:
-            work->completedFrames = 0;
-            sprintf(filename, "sound/v%03d%03d.afs", work->namePart0, work->namePart1);
-            if (work->callback == NULL)
-            {
-                func_001024a0(work->source, filename, false, D_007E39F0);
-            }
-            else
-            {
-                func_001024a0(work->source, filename, false, work->callback);
-            }
-            work->state = 1;
-            break;
+state0:
+    work->completedFrames = 0;
+    sprintf(filename, "sound/v%03d%03d.afs", work->namePart0, work->namePart1);
+    if (work->callback == NULL)
+    {
+        func_001024a0(work->source, filename, false, D_007E39F0);
+    }
+    else
+    {
+        func_001024a0(work->source, filename, false, work->callback);
+    }
+    work->state = 1;
+    goto done;
 
-        case 1:
-            work->completedFrames++;
-            status = func_0053c268(work->source);
-            if (status == 4)
-            {
-                work->state = 0;
-            }
-            else if (status == 3)
-            {
-                printf("##### AFS =[%03d:%03d]  : TIME[%d] \n", work->namePart0,
-                       work->namePart1, work->completedFrames);
-                work->state = 2;
-            }
-            break;
-
-        default:
-            break;
+state1:
+    work->completedFrames++;
+    status = func_0053c268(work->source);
+    if (status == 4)
+    {
+        work->state = 0;
+    }
+    else if (status == 3)
+    {
+        printf("##### AFS =[%03d:%03d]  : TIME[%d] \n", work->namePart0,
+               work->namePart1, work->completedFrames);
+        work->state = 2;
     }
 
+done:
     return KWLNTASK_CONTINUE;
 }
 
