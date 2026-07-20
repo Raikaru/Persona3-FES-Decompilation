@@ -619,7 +619,9 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    temp = (f32)work->selectedEntry;
+    temp = temp * 19.0f;
+    temp = temp + 57.0f;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
@@ -951,7 +953,9 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    temp = (f32)work->selectedEntry;
+    temp = temp * 19.0f;
+    temp = temp + 57.0f;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
@@ -1096,7 +1100,9 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = 57.0f + 19.0f * (f32)work->selectedEntry;
+    temp = (f32)work->selectedEntry;
+    temp = temp * 19.0f;
+    temp = temp + 57.0f;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
