@@ -14,7 +14,7 @@ void FUN_00397ec0(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 u32 FUN_00397f80(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 u8 FUN_00398060(u64 param_1);
 void FUN_003980e0(u64 param_1);
-u32  FUN_00398140(u64 param_1,u32 *param_2,u32 *param_3,u32 *param_4,int *param_5);
+u32  FUN_00398140(u32 param_1,u32 *param_2,u32 *param_3,u32 *param_4,int *param_5);
 u8 FUN_003982d0(u64 param_1);
 void FUN_00398390(u32 *param_1,u32 param_2);
 u8 FUN_003983a0(int *param_1);
@@ -25,7 +25,7 @@ extern u32 FUN_00195540();
 extern u32 FUN_00194e10();
 extern s32 FUN_003bd8b0(u32 param_1, u32 param_2, u32 param_3);
 #pragma alias FUN_00195460_pm FUN_00195460
-extern u32 FUN_00195460_pm(void);
+extern u32 FUN_00195460_pm();
 #pragma alias FUN_00195540_pm FUN_00195540
 extern u32 FUN_00195540_pm();
 #pragma alias FUN_0019d3f0_pm FUN_0019d3f0
@@ -42,9 +42,55 @@ extern u8 DAT_006a11c0[];
 extern void FUN_006a11c0(void);
 #pragma alias FUN_003bd8b0_pm FUN_003bd8b0
 extern s32 FUN_003bd8b0_pm(u32 param_1, u32 param_2, u32 param_3);
+#pragma alias FUN_00395000_pm FUN_00395000
+extern void FUN_00395000_pm(u32 param_1,u32 param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
+#pragma alias FUN_00100d80_pm FUN_00100d80
+extern u32 FUN_00100d80_pm();
+#pragma alias FUN_001016b0_pm FUN_001016b0
+extern s32 FUN_001016b0_pm(u32 param_1);
+#pragma alias FUN_001021c0_pm FUN_001021c0
+extern s32 FUN_001021c0_pm(u8 *param_1,u32 *param_2);
+#pragma alias FUN_00386c40_pm FUN_00386c40
+extern void FUN_00386c40_pm(u32 param_1,u32 param_2);
+#pragma alias FUN_00394ce0_pm FUN_00394ce0
+extern u32 FUN_00394ce0_pm(int *param_1);
+#pragma alias FUN_00394d60_pm FUN_00394d60
+extern u32 FUN_00394d60_pm(int *param_1);
+#pragma alias FUN_00394df0_pm FUN_00394df0
+extern u32 FUN_00394df0_pm(int *param_1);
+#pragma alias FUN_00395170_pm FUN_00395170
+extern void FUN_00395170_pm(void);
+#pragma alias FUN_003951a0_pm FUN_003951a0
+extern void FUN_003951a0_pm(void);
+#pragma alias FUN_00395000_pm2 FUN_00395000
+extern void FUN_00395000_pm2(u32 param_1,u32 param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
+#pragma alias FUN_003bd9a0_pm2 FUN_003bd9a0
+extern u16 FUN_003bd9a0_pm2(u32 param_1,u32 param_2);
+#pragma alias FUN_005225a8_pm2 FUN_005225a8
+extern void FUN_005225a8_pm2(u32 param_1);
+#pragma alias FUN_00521408_pm2 FUN_00521408
+extern void FUN_00521408_pm2(void *param_1,u8 param_2,u32 param_3);
+#pragma alias FUN_00100ec0_pm FUN_00100ec0
+extern void FUN_00100ec0_pm(void);
 
-
+#define FUN_00395000 FUN_00395000_pm
+#define FUN_00100d80 FUN_00100d80_pm
+#define FUN_001016b0 FUN_001016b0_pm
+#define FUN_001021c0 FUN_001021c0_pm
+#define FUN_00386c40 FUN_00386c40_pm
+#define FUN_00394ce0 FUN_00394ce0_pm
+#define FUN_00394d60 FUN_00394d60_pm
+#define FUN_00394df0 FUN_00394df0_pm
+#define FUN_00395170 FUN_00395170_pm
+#define FUN_003951a0 FUN_003951a0_pm
+#define FUN_005225a8 FUN_005225a8_pm2
+#define FUN_003bd9a0 FUN_003bd9a0_pm2
 /* Region call-cast macros */
+#define FUN_00100ec0 FUN_00100ec0_pm
+#define FUN_0019d3f0 FUN_0019d3f0_pm
+#define FUN_00195460 FUN_00195460_pm
+#define FUN_00195540 FUN_00195540_pm
+#define FUN_00521408 FUN_00521408_pm2
 #define FUN_00397950(...) ((u64 (*)(...))FUN_00397950)(__VA_ARGS__)
 #define FUN_00397d60(...) ((void (*)(...))FUN_00397d60)(__VA_ARGS__)
 #define FUN_00397ec0(...) ((void (*)(...))FUN_00397ec0)(__VA_ARGS__)
@@ -61,277 +107,140 @@ extern s32 FUN_003bd8b0_pm(u32 param_1, u32 param_2, u32 param_3);
 
 
 u64 FUN_00397950(void)
-
-
-
 {
-
   u16 uVar1;
-
   int *piVar2;
-
   int iVar3;
-
-  long lVar4;
-
+  s32 lVar4;
   u8 auStack_110 [64];
-
   u8 auStack_d0 [64];
-
   u8 auStack_90 [64];
-
-  u8 auStack_50 [76];
-
+  u8 auStack_50 [64];
   u32 uStack_4;
 
-  
-
-  piVar2 = (int *)FUN_0035ae10();
-
-  FUN_00395000(piVar2[3],piVar2[4],auStack_50,auStack_90,auStack_d0,auStack_110);
-
-  if (piVar2[2] == 0) {
-
-    switch(*piVar2) {
-
-    case 0:
-
-      iVar3 = FUN_00100d80(auStack_50,0);
-
-      piVar2[7] = iVar3;
-
-      *piVar2 = 1;
-
-      break;
-
-    case 1:
-
-      lVar4 = FUN_001016b0(piVar2[7]);
-
-      if (lVar4 == 1) {
-
-        piVar2[10] = 0;
-
-        iVar3 = FUN_001021c0(auStack_50,&uStack_4);
-
-        piVar2[0xd] = iVar3;
-
-        FUN_00386c40(4,uStack_4);
-
-        *piVar2 = 2;
-
-      }
-
-      break;
-
-    case 2:
-
-      if (piVar2[1] == 1) {
-
-        iVar3 = FUN_00394d60(piVar2 + 0xe);
-
-        piVar2[0xb] = iVar3;
-
-        if (piVar2[0xe] == 0) {
-
-          FUN_0019d3f0("mt_evtPMFileReader.c",0x76);
-
-        }
-
-        *piVar2 = 4;
-
-      }
-
-      else {
-
-        iVar3 = FUN_00100d80(auStack_90,0);
-
-        piVar2[8] = iVar3;
-
-        *piVar2 = 3;
-
-      }
-
-      break;
-
-    case 3:
-
-      lVar4 = FUN_001016b0(piVar2[8]);
-
-      if (lVar4 == 1) {
-
-        *piVar2 = 4;
-
-        piVar2[0xb] = 0;
-
-        iVar3 = FUN_001021c0(auStack_90,&uStack_4);
-
-        piVar2[0xe] = iVar3;
-
-        FUN_00386c40(5,uStack_4);
-
-      }
-
-      break;
-
-    case 4:
-
-      if (piVar2[1] == 1) {
-
-        iVar3 = FUN_00394df0(piVar2 + 0xf);
-
-        piVar2[0xc] = iVar3;
-
-        if (piVar2[0xf] == 0) {
-
-          FUN_0019d3f0("mt_evtPMFileReader.c",0x91);
-
-        }
-
-        *piVar2 = 6;
-
-      }
-
-      else {
-
-        iVar3 = FUN_00100d80(auStack_d0,0);
-
-        piVar2[9] = iVar3;
-
-        *piVar2 = 5;
-
-      }
-
-      break;
-
-    case 5:
-
-      lVar4 = FUN_001016b0(piVar2[9]);
-
-      if (lVar4 == 1) {
-
-        *piVar2 = 6;
-
-        piVar2[0xc] = 0;
-
-        iVar3 = FUN_001021c0(auStack_d0,&uStack_4);
-
-        piVar2[0xf] = iVar3;
-
-        FUN_00386c40(6,uStack_4);
-
-      }
-
-      break;
-
-    case 6:
-
-      uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
-
-      *(u16 *)(piVar2 + 6) = uVar1;
-
-      if ((short)piVar2[6] != 0) {
-
-        FUN_00395170();
-
-      }
-
-      *piVar2 = 7;
-
-      FUN_005225a8(0x6a10b0);
-
-    }
-
-  }
-
-  else {
-
+  piVar2 = (int *)FUN_0035ae10_pm();
+  FUN_00395000(piVar2[3],piVar2[4],auStack_110,auStack_d0,auStack_90,auStack_50);
+  if (piVar2[2] != 0) {
     iVar3 = *piVar2;
-
-    if (iVar3 != 7) {
-
-      if (iVar3 == 1) {
-
-        lVar4 = FUN_001016b0(piVar2[7]);
-
-        if (lVar4 == 1) {
-
-          lVar4 = FUN_001021c0(auStack_50,&uStack_4);
-
-          piVar2[0xd] = (int)lVar4;
-
-          if (lVar4 == 0) {
-
-            iVar3 = FUN_00394ce0(piVar2 + 0xd);
-
-            piVar2[10] = iVar3;
-
-          }
-
-          FUN_00386c40(4,uStack_4);
-
-          lVar4 = FUN_001021c0(auStack_90,&uStack_4);
-
-          piVar2[0xe] = (int)lVar4;
-
-          if (lVar4 == 0) {
-
-            iVar3 = FUN_00394d60(piVar2 + 0xe);
-
-            piVar2[0xb] = iVar3;
-
-          }
-
-          FUN_00386c40(5,uStack_4);
-
-          lVar4 = FUN_001021c0(auStack_d0,&uStack_4);
-
-          piVar2[0xf] = (int)lVar4;
-
-          if (lVar4 == 0) {
-
-            iVar3 = FUN_00394df0(piVar2 + 0xf);
-
-            piVar2[0xc] = iVar3;
-
-          }
-
-          FUN_00386c40(6,uStack_4);
-
-          *piVar2 = 7;
-
-        }
-
-      }
-
-      else if (iVar3 == 0) {
-
-        piVar2[10] = 0;
-
-        piVar2[0xb] = 0;
-
-        piVar2[0xc] = 0;
-
-        piVar2[0xd] = 0;
-
-        piVar2[0xe] = 0;
-
-        piVar2[0xf] = 0;
-
-        iVar3 = FUN_00100d80(auStack_110);
-
-        piVar2[7] = iVar3;
-
-        *piVar2 = 1;
-
-      }
-
+    if (iVar3 == 7) {
     }
-
+    else if (iVar3 == 1) {
+      lVar4 = FUN_001016b0(piVar2[7]);
+      if (lVar4 == 1) {
+        lVar4 = FUN_001021c0(auStack_110,&uStack_4);
+        piVar2[0xd] = (int)lVar4;
+        if (lVar4 == 0) {
+          iVar3 = FUN_00394ce0(piVar2 + 0xd);
+          piVar2[10] = iVar3;
+        }
+        FUN_00386c40(4,uStack_4);
+        lVar4 = FUN_001021c0(auStack_d0,&uStack_4);
+        piVar2[0xe] = (int)lVar4;
+        if (lVar4 == 0) {
+          iVar3 = FUN_00394d60(piVar2 + 0xe);
+          piVar2[0xb] = iVar3;
+        }
+        FUN_00386c40(5,uStack_4);
+        lVar4 = FUN_001021c0(auStack_90,&uStack_4);
+        piVar2[0xf] = (int)lVar4;
+        if (lVar4 == 0) {
+          iVar3 = FUN_00394df0(piVar2 + 0xf);
+          piVar2[0xc] = iVar3;
+        }
+        FUN_00386c40(6,uStack_4);
+        *piVar2 = 7;
+      }
+    }
+    else if (iVar3 == 0) {
+      piVar2[10] = 0;
+      piVar2[0xb] = 0;
+      piVar2[0xc] = 0;
+      piVar2[0xd] = 0;
+      piVar2[0xe] = 0;
+      piVar2[0xf] = 0;
+      iVar3 = FUN_00100d80(auStack_50);
+      piVar2[7] = iVar3;
+      *piVar2 = 1;
+    }
   }
-
+  else {
+    switch(*piVar2) {
+    case 0:
+      iVar3 = FUN_00100d80(auStack_50,0);
+      piVar2[7] = iVar3;
+      *piVar2 = 1;
+      break;
+    case 1:
+      lVar4 = FUN_001016b0(piVar2[7]);
+      if (lVar4 == 1) {
+        piVar2[10] = 0;
+        iVar3 = FUN_001021c0(auStack_110,&uStack_4);
+        piVar2[0xd] = iVar3;
+        FUN_00386c40(4,uStack_4);
+        *piVar2 = 2;
+      }
+      break;
+    case 2:
+      if (piVar2[1] == 1) {
+        iVar3 = FUN_00394d60(piVar2 + 0xe);
+        piVar2[0xb] = iVar3;
+        if (piVar2[0xe] == 0) {
+          FUN_0019d3f0("mt_evtPMFileReader.c",0x76);
+        }
+        *piVar2 = 4;
+      }
+      else {
+        iVar3 = FUN_00100d80(auStack_d0,0);
+        piVar2[8] = iVar3;
+        *piVar2 = 3;
+      }
+      break;
+    case 3:
+      lVar4 = FUN_001016b0(piVar2[8]);
+      if (lVar4 == 1) {
+        *piVar2 = 4;
+        piVar2[0xb] = 0;
+        iVar3 = FUN_001021c0(auStack_d0,&uStack_4);
+        piVar2[0xe] = iVar3;
+        FUN_00386c40(5,uStack_4);
+      }
+      break;
+    case 4:
+      if (piVar2[1] == 1) {
+        iVar3 = FUN_00394df0(piVar2 + 0xf);
+        piVar2[0xc] = iVar3;
+        if (piVar2[0xf] == 0) {
+          FUN_0019d3f0("mt_evtPMFileReader.c",0x91);
+        }
+        *piVar2 = 6;
+      }
+      else {
+        iVar3 = FUN_00100d80(auStack_90,0);
+        piVar2[9] = iVar3;
+        *piVar2 = 5;
+      }
+      break;
+    case 5:
+      lVar4 = FUN_001016b0(piVar2[9]);
+      if (lVar4 == 1) {
+        *piVar2 = 6;
+        piVar2[0xc] = 0;
+        iVar3 = FUN_001021c0(auStack_90,&uStack_4);
+        piVar2[0xf] = iVar3;
+        FUN_00386c40(6,uStack_4);
+      }
+      break;
+    case 6:
+      uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
+      *(u16 *)(piVar2 + 6) = uVar1;
+      if ((short)piVar2[6] != 0) {
+        FUN_00395170();
+      }
+      *piVar2 = 7;
+      FUN_005225a8(0x6a10b0);
+    }
+  }
   return 0;
-
 }
 #define FUN_00397950(...) ((u64 (*)(...))FUN_00397950)(__VA_ARGS__)
 #undef FUN_00397d60
@@ -346,11 +255,12 @@ void FUN_00397d60(void)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
+  
 
-  uVar2 = FUN_0035ae10();
+  uVar2 = FUN_0035ae10_pm();
 
   iVar1 = (int)uVar2;
 
@@ -513,7 +423,7 @@ void FUN_003980e0(u64 param_1)
 
 u32
 
-FUN_00398140(u64 param_1,u32 *param_2,u32 *param_3,u32 *param_4,int *param_5)
+FUN_00398140(u32 param_1,u32 *param_2,u32 *param_3,u32 *param_4,int *param_5)
 
 
 
