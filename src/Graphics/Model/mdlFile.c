@@ -227,7 +227,9 @@ void FUN_0031e210(int param_1);
 void FUN_0031e240(int param_1);
 void FUN_0031e270(int param_1,u64 param_2);
 void FUN_0031e2c0(int param_1);
-u32 FUN_0031e300(u32 *param_1);
+int FUN_0031e300(u32 *param_1);
+#pragma alias FUN_0031e300_wide FUN_0031e300
+extern u64 FUN_0031e300_wide(u32 *param_1);
 int FUN_0031e310(short param_1,short param_2);
 u64 FUN_0031e420(short param_1,u32 param_2);
 void FUN_0031e4d0(int *param_1,u32 param_2,u32 param_3);
@@ -892,6 +894,8 @@ extern u64 FUN_001a4b70();
 extern u64 FUN_001a6400();
 extern u64 FUN_001b5ae0();
 extern u64 FUN_001eda00();
+#pragma alias FUN_001eda00_u32 FUN_001eda00
+extern u32 FUN_001eda00_u32(u64 param_1, u64 param_2);
 extern u64 FUN_001eda90();
 extern u64 FUN_001eded0();
 extern u64 FUN_001ee1d0();
@@ -2067,7 +2071,7 @@ void FUN_0031e240(int param_1)
 
 
 
-// FUN_0031E270 NONMATCHING
+// FUN_0031E270
 
 
 void FUN_0031e270(int param_1,u64 param_2)
@@ -2082,9 +2086,9 @@ void FUN_0031e270(int param_1,u64 param_2)
 
   
 
-  uVar1 = ((code)FUN_0031e300)();
+  uVar1 = FUN_0031e300_wide((u32 *)param_1);
 
-  uVar2 = FUN_001eda00(uVar1,param_2);
+  uVar2 = FUN_001eda00_u32(uVar1,param_2);
 
   *(u32 *)(param_1 + 4) = uVar2;
 
@@ -2122,7 +2126,7 @@ void FUN_0031e2c0(int param_1)
 // FUN_0031E300
 
 
-u32 FUN_0031e300(u32 *param_1)
+int FUN_0031e300(u32 *param_1)
 
 
 
