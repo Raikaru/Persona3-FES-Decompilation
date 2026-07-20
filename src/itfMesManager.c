@@ -3753,25 +3753,28 @@ int thunk_FUN_003a628c(int param_1)
 #define FUN_003a6140(...) ((long (*)(...))FUN_003a6140)(__VA_ARGS__)
 
 // FUN_003A6288
+/* Fall-through-only branch target for the loop in FUN_003a628c; never returns
+ * on its own and has no C equivalent (a normal C function always emits a
+ * return). Kept as single-instruction inline asm. */
 asm void FUN_003a6288(void)
 {
   .set noreorder
-  .word 0x0040202d
+  daddu $a0, $v0, $zero
 }
 
 // FUN_003A628C
 asm int FUN_003a628c(int param_1)
 {
   .set noreorder
-  .word 0x8c820024
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x1440fffa
-  .word 0x00000000
-  .word 0x0080102d
-  .word 0x03e00008
-  .word 0x00000000
+  lw $v0, 0x24($a0)
+  nop
+  nop
+  nop
+  .word 0x1440fffa  /* bnez $v0, FUN_003a6288 (label unavailable across function boundary) */
+  nop
+  daddu $v0, $a0, $zero
+  jr $ra
+  nop
 }
 #define FUN_003a628c(...) ((int (*)(...))FUN_003a628c)(__VA_ARGS__)
 #undef FUN_003a62b0
