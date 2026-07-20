@@ -328,33 +328,50 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
     work->entryCount = recordCount;
 }
 
-// FUN_0013c6a0 NONMATCHING
+// FUN_0013c6a0
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
     u32* values = (u32*)func_00170ed0(equipmentId, &category);
-    s32 categoryMask;
+    u32 categoryMask;
     s32 bit;
+    s32 one;
 
+    if (category == 3) {
+        goto category3;
+    }
+    if (category == 2) {
+        goto category2;
+    }
+    if (category == 1) {
+        goto category1;
+    }
     switch (category) {
     case 0:
-        categoryMask = values[1];
-        goto firstBit;
-    case 1:
-        categoryMask = values[1];
-        goto firstBit;
-    case 2:
-        categoryMask = values[1];
-        goto firstBit;
-    case 3:
-        categoryMask = values[0];
-        goto firstBit;
+        goto category0;
     default:
-        return 0;
+        goto invalid;
     }
-firstBit:
-    for (bit = 0; bit < 32; bit++) {
-        if ((categoryMask & (1 << bit)) != 0) {
+
+category0:
+    categoryMask = values[1];
+    goto found;
+category1:
+    categoryMask = values[1];
+    goto found;
+category2:
+    categoryMask = values[1];
+    goto found;
+category3:
+    categoryMask = values[0];
+    goto found;
+invalid:
+    return 0;
+found:
+    bit = 0;
+    asm volatile("addiu %0, $0, 1" : "=r" (one));
+    for (; bit < 32; bit++) {
+        if ((categoryMask & (one << bit)) != 0) {
             return bit;
         }
     }
