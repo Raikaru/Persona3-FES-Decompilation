@@ -153,7 +153,7 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   int iVar5;
   int iVar6;
   u32 uVar3;
-  
+
   iVar6 = 0x4c;
   iVar5 = 1;
   iVar4 = *piRam80074728;
@@ -202,45 +202,54 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   return param_1;
 }
 
+typedef struct {
+  u16 id;
+  u16 pad2;
+  u32 value4;
+  u32 value8;
+  u32 valuec;
+  u32 value10;
+} Code2Entry;
+
 // FUN_007803F8 NONMATCHING
 int FUN_007803f8(int param_1,int param_2)
 {
-  int iVar3;
-  int iVar4;
-  
-  iVar4 = 0;
+  Code2Entry *entries;
+  int i;
+  int j;
+
+  entries = (Code2Entry *)&uRam80076740;
+  i = 0;
   if (0 < iRam80076700) {
     do {
-      if (param_2 < func_0x00076038(param_1,*(u16 *)(iVar4 * 0x14 + -0x7ff898c0))) {
-        iVar3 = iRam80076700 + -1;
-        if (iVar3 < iVar4) {
-          return iVar4;
+      if (param_2 < func_0x00076038(param_1,entries[i].id)) {
+        j = iRam80076700 - 1;
+        if (j < i) {
+          return i;
         }
         do {
-          *(u32 *)(iVar3 * 0x14 + -0x7ff898c0) = *(u32 *)((iVar3 + -1) * 0x14 + -0x7ff898c0);
-          *(u32 *)(iVar3 * 0x14 + -0x7ff898c4) = *(u32 *)((iVar3 + -1) * 0x14 + -0x7ff898c4);
-          *(u32 *)(iVar3 * 0x14 + -0x7ff898b8) = *(u32 *)((iVar3 + -1) * 0x14 + -0x7ff898b8);
-          *(u32 *)(iVar3 * 0x14 + -0x7ff898bc) = *(u32 *)((iVar3 + -1) * 0x14 + -0x7ff898bc);
-          *(u32 *)(iVar3 * 0x14 + -0x7ff898b0) = *(u32 *)((iVar3 + -1) * 0x14 + -0x7ff898b0);
-          iVar3 = iVar3 + -1;
-        } while (iVar4 <= iVar3);
-        return iVar4;
+          entries[j] = entries[j - 1];
+          j = j - 1;
+        } while (i <= j);
+        return i;
       }
-      iVar4 = iVar4 + 1;
-    } while (iVar4 < iRam80076700);
+      i = i + 1;
+    } while (i < iRam80076700);
   }
-  return iVar4;
+  return i;
 }
 
 // FUN_00780500 NONMATCHING
 int FUN_00780500(u32 param_1,u32 param_2,u32 param_3)
 {
+  Code2Entry *entries;
   int iVar2;
   int iVar3;
   int lVar4;
   u64 uVar5;
   int iVar6;
-  
+
+  entries = (Code2Entry *)&uRam80076740;
   iVar2 = iRamb0001800;
   iVar6 = (param_1 & 0xffff) + iRamb0001800;
   if (iRam80076700 < 0x40) {
@@ -258,16 +267,15 @@ int FUN_00780500(u32 param_1,u32 param_2,u32 param_3)
 LAB_007805a0:
     if (-1 < lVar4) {
       iVar3 = func_0x00076058(iRamb0001800,iVar6);
-      iVar3 = iVar3 * 0x14;
       iRam80076700 = iRam80076700 + 1;
-      *(u16 *)(iVar3 + -0x7ff898be) = (u16)iVar2;
-      *(u16 *)(iVar3 + -0x7ff898c0) = (u16)iVar6;
-      *(int *)(iVar3 + -0x7ff898bc) = (int)lVar4;
-      *(u32 *)(iVar3 + -0x7ff898b0) = (u32)&_mips_gp0_value;
-      *(u32 *)(iVar3 + -0x7ff898b8) = param_2;
-      *(u32 *)(iVar3 + -0x7ff898b4) = param_3;
+      entries[iVar3].id = (u16)iVar6;
+      entries[iVar3].pad2 = (u16)iVar2;
+      entries[iVar3].value4 = (u32)lVar4;
+      entries[iVar3].value10 = (u32)&_mips_gp0_value;
+      entries[iVar3].value8 = param_2;
+      entries[iVar3].valuec = param_3;
       func_0x00076460(uRam80076740);
-      lVar4 = *(int *)(iVar3 + -0x7ff898bc);
+      lVar4 = entries[iVar3].value4;
     }
   }
   else {
@@ -279,37 +287,33 @@ LAB_007805a0:
 // FUN_00780640 NONMATCHING
 int FUN_00780640(int param_1)
 {
+  Code2Entry *entries;
   int iVar3;
   u32 uVar4;
   int iVar5;
   int iVar6;
   int iVar7;
   int iVar9;
-  
+
+  entries = (Code2Entry *)&uRam80076740;
   iVar5 = iRam80076700;
   iVar6 = -1;
   if ((0 < iRam80076700) && (iVar9 = 0, 0 < iRam80076700)) {
     do {
-      if (param_1 == *(int *)(iVar9 * 0x14 + -0x7ff898bc)) {
-        if ((*(u16 *)(iVar9 * 0x14 + -0x7ff898c0) == uRamb0001820) &&
+      if (param_1 == (int)entries[iVar9].value4) {
+        if ((entries[iVar9].id == uRamb0001820) &&
            (uVar4 = REG_INTC_STAT, (uVar4 & 0x1000) != 0)) {
           return -1;
         }
         iVar6 = iVar9;
-        if (iVar9 < iRam80076700 + -1) {
+        if (iVar9 < iRam80076700 - 1) {
           do {
             iVar7 = iVar6 + 1;
-            iVar3 = iVar7 * 0x14;
-            iVar6 = iVar6 * 0x14;
-            *(u32 *)(iVar6 + -0x7ff898c0) = *(u32 *)(iVar3 + -0x7ff898c0);
-            *(u32 *)(iVar6 + -0x7ff898c4) = *(u32 *)(iVar3 + -0x7ff898c4);
-            *(u32 *)(iVar6 + -0x7ff898b8) = *(u32 *)(iVar3 + -0x7ff898b8);
-            *(u32 *)(iVar6 + -0x7ff898bc) = *(u32 *)(iVar3 + -0x7ff898bc);
-            *(u32 *)(iVar6 + -0x7ff898b0) = *(u32 *)(iVar3 + -0x7ff898b0);
+            entries[iVar6] = entries[iVar7];
             iVar6 = iVar7;
-          } while (iVar7 < iVar5 + -1);
+          } while (iVar7 < iVar5 - 1);
         }
-        iRam80076700 = iRam80076700 + -1;
+        iRam80076700 = iRam80076700 - 1;
         uRam80076708 = uRam80076708 & ~(1ULL << param_1);
         if (iVar9 == 0) {
           func_0x00076460(uRam80076740);
@@ -346,22 +350,22 @@ void FUN_00780800(u32 param_1)
 // FUN_00780828 NONMATCHING
 void FUN_00780828(void)
 {
-  int sVar1;
-  u32 uVar2;
+  Code2Entry *entries;
+  u16 sVar1;
   u64 uVar3;
   u32 uVar4;
   int iVar5;
   int iVar6;
   int lVar7;
-  u32 uVar8;
   int iStack_ac;
   u32 uStack_a8;
   u32 uStack_a4;
-  
+
+  entries = (Code2Entry *)&uRam80076740;
   iVar6 = 0;
   do {
     if (iRam80076700 <= iVar6) goto LAB_007808bc;
-    sVar1 = *(short *)(iVar6 * 0x14 + -0x7ff898c0);
+    sVar1 = entries[iVar6].id;
     iVar6 = iVar6 + 1;
   } while (sRam80076740 == sVar1);
   func_0x00076460(sVar1);
@@ -371,25 +375,20 @@ LAB_007808bc:
     uVar3 = uRam80076748;
     sVar1 = sRam80076740;
     lVar7 = 0;
-    iRam80076700 = iRam80076700 + -1;
+    iRam80076700 = iRam80076700 - 1;
     iStack_ac = (int)((u64)uRam80076742 >> 0x10);
     if (0 < iRam80076700) {
       do {
-        iVar6 = lVar7 * 0x14;
         iVar5 = lVar7 + 1;
+        entries[lVar7] = entries[iVar5];
         lVar7 = iVar5;
-        iVar5 = iVar5 * 0x14;
-        *(u32 *)(iVar6 + -0x7ff898c0) = *(u32 *)(iVar5 + -0x7ff898c0);
-        *(u32 *)(iVar6 + -0x7ff898c4) = *(u32 *)(iVar5 + -0x7ff898c4);
-        *(u32 *)(iVar6 + -0x7ff898b8) = *(u32 *)(iVar5 + -0x7ff898b8);
-        *(u32 *)(iVar6 + -0x7ff898bc) = *(u32 *)(iVar5 + -0x7ff898bc);
-        *(u32 *)(iVar6 + -0x7ff898b0) = *(u32 *)(iVar5 + -0x7ff898b0);
       } while (lVar7 < iRam80076700);
     }
     uRam80076708 = uRam80076708 & ~(1ULL << (long)iStack_ac);
     uStack_a8 = (u32)uVar3;
     uStack_a4 = (u32)(uVar3 >> 0x20);
-    func_0x00076680(0x82000,uStack_a8,(long)iStack_ac,sVar1,uStack_a4,iRam80076700,uVar4);
+    func_0x00076680(0x82000,uStack_a8,(long)iStack_ac,sVar1,
+                    uStack_a4,iRam80076700,uVar4);
   } while ((0 < iRam80076700) && (sVar1 == sRam80076740));
   if (iRam80076700 < 1) {
     uRamb0001810 = 0x483;
