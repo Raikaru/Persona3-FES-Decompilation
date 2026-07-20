@@ -32,6 +32,14 @@ typedef struct {
 extern PolyMovieData DAT_006a0cd0;
 extern PolyMovieBlock DAT_006a0cf0;
 extern PolyMovieData DAT_006a0d50;
+extern u8 gp0xffffa768;
+extern u8 DAT_006a0d70[0x20];
+extern u8 DAT_006a0da0[0x20];
+extern u8 DAT_006a0dd0[0x20];
+extern u8 DAT_006a0e00[0x20];
+extern u8 DAT_006a0e20[0x20];
+extern u8 DAT_006a0e40[0x20];
+extern u8 DAT_006a0e60[0x20];
 
 
 #ifndef CONCAT44
@@ -42,15 +50,15 @@ extern PolyMovieData DAT_006a0d50;
 void FUN_00393e30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,  u32 param_5,u32 param_6);
 void FUN_00393f30(u64 param_1,u32 param_2);
 float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
-void FUN_00394070(float param_1,long param_2,u32 *param_3,long param_4,u32 *param_5);
+void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 int FUN_00394270(void);
 u64  FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5);
 void FUN_00394c30(u32 param_1,u32 param_2);
 u32 FUN_00394ce0(u32 *param_1);
 u32 FUN_00394d60(u32 *param_1);
 u32 FUN_00394df0(u32 *param_1);
-void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5);
-void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5,  long param_6);
+void FUN_00394e70(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5);
+void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
 
 
 /* Region call-cast macros */
@@ -217,140 +225,106 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 // FUN_00394070 NONMATCHING
 
 
-void FUN_00394070(float param_1,long param_2,u32 *param_3,long param_4,u32 *param_5)
-
-
-
+void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5)
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
   int iVar3;
-
-  int iVar4;
-
-  float fStack_40;
-
-  float fStack_3c;
-
-  float fStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
+  volatile float fStack_90[3];
+  volatile float fStack_80[3];
+  volatile float fStack_70[3];
+  volatile float fStack_60[3];
+  float fVar1;
+  float fVar2;
 
   if (param_5 == (u32 *)0x0) {
-
     FUN_0019d3f0("mt_evtPolygonMovie.c",0xb5);
-
   }
-
   if (param_2 == 0) {
-
-    param_1 = 0.0;
-
+    param_1 = 0.0f;
   }
-
   if (param_3 != (u32 *)0x0) {
-
-    if (param_4 == 0) {
-
+    if (param_4 == (u32 *)0x0) {
       iVar3 = 6;
-
       do {
-
         uVar1 = *param_3;
-
         uVar2 = param_3[1];
-
         param_3 = param_3 + 2;
-
         iVar3 = iVar3 + -1;
-
         *param_5 = uVar1;
-
         param_5[1] = uVar2;
-
         param_5 = param_5 + 2;
-
       } while (0 < iVar3);
-
     }
-
     else {
-
-      for (iVar3 = 0; iVar4 = (int)param_4, iVar3 < 4; iVar3 = iVar3 + 1) {
-
-        param_5[iVar3 + 8] =
-
-             param_1 * (*(float *)(iVar4 + iVar3 * 4 + 0x20) - (float)param_3[iVar3 + 8]) +
-
-             (float)param_3[iVar3 + 8] + 0.0;
-
-      }
-
+      __asm__ volatile ("mtc1 $zero, $f0" : : : "$f0");
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-
-        param_5[iVar3] =
-
-             param_1 * (*(float *)(iVar4 + iVar3 * 4) - (float)param_3[iVar3]) +
-
-             (float)param_3[iVar3] + 0.0;
-
+        fVar2 = *(float *)((int)param_4 + iVar3 * 4 + 0x20);
+        fVar1 = *(float *)((int)param_3 + iVar3 * 4 + 0x20);
+        fVar2 = fVar2 - fVar1;
+        __asm__ volatile (
+            "adda.s $f0, %1\n\t"
+            "madd.s %0, %2, %0"
+            : "+f"(fVar2)
+            : "f"(fVar1), "f"(param_1)
+            : "$f0");
+        *(float *)((int)param_5 + iVar3 * 4 + 0x20) = fVar2;
       }
-
-      uStack_10 = param_3[4];
-
-      uStack_c = param_3[5];
-
-      uStack_8 = param_3[6];
-
-      uStack_20 = *(u32 *)(iVar4 + 0x10);
-
-      uStack_1c = *(u32 *)(iVar4 + 0x14);
-
-      uStack_18 = *(u32 *)(iVar4 + 0x18);
-
-      FUN_003bbaa0(&uStack_10,&uStack_20,&fStack_30);
-
-      fStack_40 = fStack_30 * param_1 + (float)param_3[4] + 0.0;
-
-      fStack_3c = fStack_2c * param_1 + (float)param_3[5] + 0.0;
-
-      fStack_38 = fStack_28 * param_1 + (float)param_3[6] + 0.0;
-
-      FUN_003bb9b0(&fStack_40);
-
-      param_5[4] = fStack_40;
-
-      param_5[5] = fStack_3c;
-
-      param_5[6] = fStack_38;
-
+      __asm__ volatile ("mtc1 $zero, $f0" : : : "$f0");
+      for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
+        fVar2 = *(float *)((int)param_4 + iVar3 * 4);
+        fVar1 = *(float *)((int)param_3 + iVar3 * 4);
+        fVar2 = fVar2 - fVar1;
+        __asm__ volatile (
+            "adda.s $f0, %1\n\t"
+            "madd.s %0, %2, %0"
+            : "+f"(fVar2)
+            : "f"(fVar1), "f"(param_1)
+            : "$f0");
+        *(float *)((int)param_5 + iVar3 * 4) = fVar2;
+      }
+      fStack_90[0] = *(float *)((int)param_3 + 0x10);
+      fStack_90[1] = *(float *)((int)param_3 + 0x14);
+      fStack_90[2] = *(float *)((int)param_3 + 0x18);
+      fStack_80[0] = *(float *)((int)param_4 + 0x10);
+      fStack_80[1] = *(float *)((int)param_4 + 0x14);
+      fStack_80[2] = *(float *)((int)param_4 + 0x18);
+      FUN_003bbaa0((float *)fStack_90,(float *)fStack_80,(float *)fStack_70);
+      __asm__ volatile ("mtc1 $zero, $f2" : : : "$f2");
+      fVar2 = fStack_70[0];
+      fVar1 = *(float *)((int)param_3 + 0x10);
+      __asm__ volatile (
+          "adda.s $f2, %0\n\t"
+          "madd.s %0, %1, %2"
+          : "+f"(fVar1)
+          : "f"(fVar2), "f"(param_1)
+          : "$f2");
+      fStack_60[0] = fVar1;
+      fVar2 = fStack_70[1];
+      fVar1 = *(float *)((int)param_3 + 0x14);
+      __asm__ volatile (
+          "adda.s $f2, %0\n\t"
+          "madd.s %0, %1, %2"
+          : "+f"(fVar1)
+          : "f"(fVar2), "f"(param_1)
+          : "$f2");
+      fStack_60[1] = fVar1;
+      fVar2 = fStack_70[2];
+      fVar1 = *(float *)((int)param_3 + 0x18);
+      __asm__ volatile (
+          "adda.s $f2, %0\n\t"
+          "madd.s %0, %1, %2"
+          : "+f"(fVar1)
+          : "f"(fVar2), "f"(param_1)
+          : "$f2");
+      fStack_60[2] = fVar1;
+      FUN_003bb9b0((float *)fStack_60);
+      *(float *)((int)param_5 + 0x10) = fStack_60[0];
+      *(float *)((int)param_5 + 0x14) = fStack_60[1];
+      *(float *)((int)param_5 + 0x18) = fStack_60[2];
     }
-
   }
-
   return;
-
 }
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
 #undef FUN_00394270
@@ -1050,10 +1024,10 @@ u32 FUN_00394df0(u32 *param_1)
 }
 #define FUN_00394df0(...) ((u32 (*)(...))FUN_00394df0)(__VA_ARGS__)
 #undef FUN_00394e70
-// FUN_00394E70 NONMATCHING
+// FUN_00394E70
 
 
-void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
+void FUN_00394e70(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5)
 
 
 
@@ -1085,21 +1059,19 @@ void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 
   iVar1 = ((int)param_1 / 10) * 10;
 
-  FUN_00523ac8(auStack_100,0x6a0d70,iVar1,param_1,param_2);
+  FUN_00523ac8(auStack_100,&DAT_006a0d70,iVar1,param_1,param_2);
 
-  FUN_00523ac8(param_3,0x7cd458);
+  FUN_00523ac8(param_3,&gp0xffffa768);
 
   FUN_00523e68(param_3,auStack_100);
 
-  FUN_00523ac8(auStack_100,0x6a0da0,iVar1,param_1,param_2);
-
-  FUN_00523ac8(param_4,0x7cd458);
+  FUN_00523ac8(auStack_100,&DAT_006a0da0,iVar1,param_1,param_2);
+  FUN_00523ac8(param_4,&gp0xffffa768);
 
   FUN_00523e68(param_4,auStack_100);
 
-  FUN_00523ac8(auStack_100,0x6a0dd0,iVar1,param_1,param_2);
-
-  FUN_00523ac8(param_5,0x7cd458);
+  FUN_00523ac8(auStack_100,&DAT_006a0dd0,iVar1,param_1,param_2);
+  FUN_00523ac8(param_5,&gp0xffffa768);
 
   FUN_00523e68(param_5,auStack_100);
 
@@ -1108,12 +1080,10 @@ void FUN_00394e70(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 }
 #define FUN_00394e70(...) ((void (*)(...))FUN_00394e70)(__VA_ARGS__)
 #undef FUN_00395000
-// FUN_00395000 NONMATCHING
+// FUN_00395000
 
 
-void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5,
-
-                 long param_6)
+void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6)
 
 
 
@@ -1149,13 +1119,13 @@ void FUN_00395000(u64 param_1,u64 param_2,long param_3,long param_4,long param_5
 
   iVar1 = ((int)param_1 / 10) * 10;
 
-  FUN_00523ac8(param_3,0x6a0e00,iVar1,param_1,param_2);
+  FUN_00523ac8(param_3,&DAT_006a0e00,iVar1,param_1,param_2);
 
-  FUN_00523ac8(param_4,0x6a0e20,iVar1,param_1,param_2);
+  FUN_00523ac8(param_4,&DAT_006a0e20,iVar1,param_1,param_2);
 
-  FUN_00523ac8(param_5,0x6a0e40,iVar1,param_1,param_2);
+  FUN_00523ac8(param_5,&DAT_006a0e40,iVar1,param_1,param_2);
 
-  FUN_00523ac8(param_6,0x6a0e60,iVar1,param_1,param_2);
+  FUN_00523ac8(param_6,&DAT_006a0e60,iVar1,param_1,param_2);
 
   return;
 
