@@ -18798,7 +18798,7 @@ void FUN_00459d60(void)
 }
 
 #pragma opt_loop_invariants on
-// FUN_00459E00 NONMATCHING
+// FUN_00459E00
 
 u32 FUN_00459e00(char param_1)
 {
@@ -18812,7 +18812,7 @@ u32 FUN_00459e00(char param_1)
   iParam = param_1;
   iVar3 = iVar1 + 8;
   puVar2 = DAT_0086e80c_abs;
-  goto loop_increment;
+  goto loop_test;
 loop_body:
   if (iParam == iVar1) {
     goto loop_increment;
@@ -18824,6 +18824,7 @@ loop_body:
   return 0;
 loop_increment:
   iVar1 = iVar1 + 1;
+loop_test:
   if (iVar1 < iVar3 - 4) {
     goto loop_body;
   }
