@@ -39,10 +39,7 @@ u32 FUN_004198f0(int param_1,int param_2);
 u32 FUN_00419a30(u64 param_1,int *param_2);
 u32 FUN_00419a70(u64 param_1,int *param_2);
 u32 FUN_00419b80(int param_1);
-u32 FUN_00419c10(void *param_1,void **param_2);
-void FUN_003cdf40(u32 param_1,u8 *param_2);
-void FUN_003ce060(u32 param_1,float *param_2);
-void FUN_003ce180(u32 param_1,float *param_2);
+u32 FUN_00419c10(int param_1,int *param_2);
 u8 FUN_00419f20(int param_1,int *param_2);
 u32 FUN_0041a2c0(int param_1,int *param_2);
 u32 FUN_0041a310(u64 param_1,int param_2);
@@ -2624,99 +2621,64 @@ u32 FUN_00419b80(int param_1)
 
 
 // FUN_00419C10 NONMATCHING
-u32 FUN_00419c10(void *param_1,void **param_2)
+u32 FUN_00419c10(int param_1,int *param_2)
 {
-  u32 uVar1;
+  int iVar1;
   u32 uVar2;
-  s32 iVar3;
-  s32 iVar4;
-  s32 iVar5;
-  s32 iVar6;
-  float fStack_10;
-  float fStack_14;
-  float fStack_18;
+  int iVar3;
+  float fStack_20;
   float fStack_1c;
-  u8 uStack_2c;
-  u8 uStack_2d;
-  u8 uStack_2e;
-  u8 uStack_2f;
+  float fStack_18;
+  float fStack_14;
+  u8 uStack_4;
+  u8 uStack_3;
+  u8 uStack_2;
+  u8 uStack_1;
 
-  uVar2 = *(u32 *)((int)*param_2 + 0xc);
-  iVar3 = (uVar2 >> 0x18) & 0xff;
-  if (iVar3 >= 0) {
-    fStack_10 = (float)iVar3;
-  }
-  else {
-    fStack_10 = (float)(((u32)iVar3 >> 1) | (iVar3 & 1));
-    fStack_10 = fStack_10 + fStack_10;
-  }
-  iVar4 = (uVar2 >> 0x10) & 0xff;
-  if (iVar4 >= 0) {
-    fStack_14 = (float)iVar4;
-  }
-  else {
-    fStack_14 = (float)(((u32)iVar4 >> 1) | (iVar4 & 1));
-    fStack_14 = fStack_14 + fStack_14;
-  }
-  iVar5 = (uVar2 >> 8) & 0xff;
-  if (iVar5 >= 0) {
-    fStack_18 = (float)iVar5;
-  }
-  else {
-    fStack_18 = (float)(((u32)iVar5 >> 1) | (iVar5 & 1));
-    fStack_18 = fStack_18 + fStack_18;
-  }
-  iVar6 = uVar2 & 0xff;
-  if (iVar6 >= 0) {
-    fStack_1c = (float)iVar6;
-  }
-  else {
-    fStack_1c = (float)(((u32)iVar6 >> 1) | (iVar6 & 1));
-    fStack_1c = fStack_1c + fStack_1c;
-  }
-  if ((*(char *)((int)*param_2 + 4) == '@') &&
-      (*(char *)((int)*param_2 + 5) == '\x03')) {
-    iVar3 = *(s32 *)((int)*param_2 + 0x10);
+  iVar1 = *param_2;
+  uVar2 = *(u32 *)(iVar1 + 0xc);
+  iVar3 = *(int *)(iVar1 + 0x10);
+  fStack_20 = (float)(uVar2 >> 0x18);
+  fStack_1c = (float)(uVar2 >> 0x10 & 0xff);
+  fStack_18 = (float)(uVar2 >> 8 & 0xff);
+  fStack_14 = (float)(uVar2 & 0xff);
+  if ((*(char *)(iVar1 + 4) == '@') && (*(char *)(iVar1 + 5) == '\x03')) {
     if (iVar3 == 2) {
-      FUN_003ce180(*(u32 *)((int)param_1 + 0x18),&fStack_10);
+      FUN_003ce180(*(u32 *)(param_1 + 0x18),&fStack_20,*(u32 *)(iVar1 + 0x14));
     }
     else if (iVar3 == 1) {
-      FUN_003ce060(*(u32 *)((int)param_1 + 0x18),&fStack_10);
+      FUN_003ce060(*(u32 *)(param_1 + 0x18),&fStack_20);
     }
     else if (iVar3 == 0) {
-      if (!(fStack_10 >= 2.1474836e9f)) {
-        uStack_2c = (u8)(int)fStack_10;
+      if (fStack_20 < 2.1474836e+09) {
+        uStack_4 = (u8)(int)fStack_20;
       }
       else {
-        uStack_2c = (u8)((int)(fStack_10 - 2.1474836e9f) | 0x80000000);
+        uStack_4 = (u8)(int)(fStack_20 - 2.1474836e+09);
       }
-      if (!(fStack_14 >= 2.1474836e9f)) {
-        uStack_2d = (u8)(int)fStack_14;
-      }
-      else {
-        uStack_2d = (u8)((int)(fStack_14 - 2.1474836e9f) | 0x80000000);
-      }
-      if (!(fStack_18 >= 2.1474836e9f)) {
-        uStack_2e = (u8)(int)fStack_18;
+      if (fStack_1c < 2.1474836e+09) {
+        uStack_3 = (u8)(int)fStack_1c;
       }
       else {
-        uStack_2e = (u8)((int)(fStack_18 - 2.1474836e9f) | 0x80000000);
+        uStack_3 = (u8)(int)(fStack_1c - 2.1474836e+09);
       }
-      if (!(fStack_1c >= 2.1474836e9f)) {
-        uStack_2f = (u8)(int)fStack_1c;
+      if (fStack_18 < 2.1474836e+09) {
+        uStack_2 = (u8)(int)fStack_18;
       }
       else {
-        uStack_2f = (u8)((int)(fStack_1c - 2.1474836e9f) | 0x80000000);
+        uStack_2 = (u8)(int)(fStack_18 - 2.1474836e+09);
       }
-      uVar1 = *(u32 *)((int)param_1 + 0x18);
-      FUN_003cdf40(uVar1,&uStack_2c);
+      if (fStack_14 < 2.1474836e+09) {
+        uStack_1 = (u8)(int)fStack_14;
+      }
+      else {
+        uStack_1 = (u8)(int)(fStack_14 - 2.1474836e+09);
+      }
+      FUN_003cdf40(*(u32 *)(param_1 + 0x18),&uStack_4);
     }
   }
   return 1;
 }
-
-// FUN_00419F20 NONMATCHING
-
 
 u8 FUN_00419f20(int param_1,int *param_2)
 
