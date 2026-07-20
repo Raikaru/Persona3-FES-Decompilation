@@ -20,6 +20,9 @@ extern u8 DAT_0069abb8[];
 extern void* jtbl_00960178[];
 
 extern s32 func_001a6c00(void* object, const char* name);
+extern char DAT_007cca08[];
+#pragma alias DAT_007cca08_abs DAT_007cca08
+extern char DAT_007cca08_abs[];
 void* FUN_00491cc0(RpClump* clump);
 void FUN_00491ea0(RpClump* clump);
 void* FUN_001a7570(RpClump* clump);
@@ -306,10 +309,11 @@ Model* mdlCreateAndResolvePath(u16 type, u16 id, u32 readMode)
     return mdl;
 }
 
-// FUN_00316f70 NONMATCHING
+// FUN_00316f70
 u32 mdlStreamRead(Model* mdl)
 {
     Model* source;
+    u32 modelId;
     if (mdl->flags & MDL_FLAG_STREAMDONE)
     {
         return true;
@@ -336,13 +340,14 @@ u32 mdlStreamRead(Model* mdl)
         {
             return false;
         }
+        modelId = mdl->id;
         source = sMdlListTails[mdl->type];
         while (source != NULL)
         {
-            if (source->id == mdl->id)
+            if (source->id == modelId)
             {
                 if (source->flags & MDL_FLAG_STREAMDONE)
-            {
+                {
                     break;
                 }
             }
@@ -1126,8 +1131,8 @@ int func_00313f40(int param_1,u64 param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
-u64 func_003142b0(void* param_1);
-u64 func_00314510(u64 param_1);
+u32 func_003142b0(void* param_1);
+void* func_00314510(void* param_1);
 u64 func_00314650(u64 param_1);
 void* func_00315010(void* object, void* data);
 u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4);
@@ -3962,74 +3967,40 @@ u64 func_00314170(u64 param_1,long param_2)
 
 
 
-
 // FUN_003142B0 NONMATCHING
-
-
-u64 func_003142b0(void* param_1)
-
-
-
+u32 func_003142b0(void* param_1)
 {
+    s32 iVar1;
+    s32 iVar2;
+    void* uVar3;
+    char* uVar4;
+    s32 lVar5;
+    s32 iVar6;
+    s32 iVar7;
 
-  int iVar1;
-
-  int iVar2;
-
-  void* uVar3;
-
-  char* uVar4;
-
-  long lVar5;
-
-  int iVar6;
-
-  int iVar7;
-
-  
-
-  iVar1 = RpMaterialGetUserDataArrayCount();
-
-  iVar7 = 0;
-
-  do {
-
-    if (iVar1 <= iVar7) {
-
-      return 0;
-
-    }
-
-    uVar3 = RpMaterialGetUserDataArray(param_1,iVar7);
-
-    uVar4 = RpUserDataArrayGetName(uVar3);
-
-    lVar5 = strcmp((const char*)uVar4,(const char*)0x7cca08);
-
-    if (lVar5 == 0) {
-
-      iVar2 = func_0048ef30(uVar3);
-
-      for (iVar6 = 0; iVar6 < iVar2; iVar6 = iVar6 + 1) {
-
-        lVar5 = RpUserDataArrayGetFormat(uVar3);
-
-        if (lVar5 == 3) {
-
-          uVar3 = (void*)(u32)func_0048ef80(uVar3,iVar6);
-
-          return (u64)uVar3;
-
+    iVar1 = RpMaterialGetUserDataArrayCount();
+    iVar7 = 0;
+    while (iVar7 < iVar1)
+    {
+        uVar3 = RpMaterialGetUserDataArray(param_1, iVar7);
+        uVar4 = RpUserDataArrayGetName(uVar3);
+        if (strcmp(uVar4, DAT_007cca08) == 0)
+        {
+            iVar2 = func_0048ef30(uVar3);
+            iVar6 = 0;
+            while (iVar6 < iVar2)
+            {
+                lVar5 = RpUserDataArrayGetFormat(uVar3);
+                if (lVar5 == 3)
+                {
+                    return (u32)func_0048ef80(uVar3, iVar6);
+                }
+                iVar6++;
+            }
         }
-
-      }
-
+        iVar7++;
     }
-
-    iVar7 = iVar7 + 1;
-
-  } while( true );
-
+    return 0;
 }
 
 
@@ -4100,85 +4071,45 @@ void func_003143c0(u8* param_1,RpClump* param_2)
 
 
 
-// FUN_00314510 NONMATCHING
-
-
-u64 func_00314510(u64 param_1)
-
-
-
+// FUN_00314510
+void* func_00314510(void* param_1)
 {
-
   int iVar1;
-
   int iVar2;
-
-  bool bVar3;
-
-  long lVar4;
-
   int iVar5;
+  int bVar3;
+  s32 lVar4;
 
-  
-
-  iVar1 = *(int *)((int)param_1 + 0x18);
-
-  if (iVar1 != 0) {
-
-    lVar4 = func_0048a2c0(iVar1);
-
-    if (lVar4 == 0) {
-
-      func_00468dc0(param_1);
-
-    }
-
-    else {
-
-      bVar3 = false;
-
-      iVar2 = *(int *)(iVar1 + 0x24);
-
-      iVar5 = 0;
-
-      while ((iVar5 < iVar2 && (!bVar3))) {
-
-        lVar4 = func_00469030(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar5 * 4));
-
-        if (lVar4 != 0) {
-
-          bVar3 = true;
-
-        }
-
-        iVar5 = iVar5 + 1;
-
-      }
-
-      lVar4 = func_0048a480(param_1);
-
-      if (((lVar4 == 2) || (lVar4 == 1)) || ((lVar4 != 3 && (lVar4 != 0)))) {
-
-        if (bVar3) {
-
-          func_0048a3f0(param_1,2);
-
-        }
-
-        else {
-
-          func_0048a3f0(param_1,1);
-
-        }
-
-      }
-
-    }
-
+  iVar1 = *(int *)((u8*)param_1 + 0x18);
+  if (iVar1 == 0) {
+    return param_1;
   }
-
+  lVar4 = func_0048a2c0(iVar1);
+  if (lVar4 != 0) {
+    bVar3 = false;
+    iVar2 = *(int *)((u8*)iVar1 + 0x24);
+    iVar5 = 0;
+    while ((iVar5 < iVar2 && (!bVar3))) {
+      lVar4 = func_00469030(*(u32 *)(*(int *)((u8*)iVar1 + 0x20) + iVar5 * 4));
+      if (lVar4 != 0) {
+        bVar3 = true;
+      }
+      iVar5 = iVar5 + 1;
+    }
+    lVar4 = func_0048a480(param_1);
+    if (((lVar4 == 2) || (lVar4 == 1)) || ((lVar4 != 3 && (lVar4 != 0)))) {
+      if (bVar3) {
+        func_0048a3f0(param_1,2);
+      }
+      else {
+        func_0048a3f0(param_1,1);
+      }
+    }
+  }
+  else {
+    func_00468dc0(param_1);
+  }
   return param_1;
-
 }
 
 
