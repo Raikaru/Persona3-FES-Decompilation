@@ -590,22 +590,14 @@ s32 func_0018b360(KwlnTask* task)
     return GS_S32(task->workData, 0) > 3;
 }
 
-static KwlnTask* gsCreateAnimation(KwlnTask* parent, const char* name,
-                                   KwlnTaskUpdateFunc update,
-                                   void* workData)
-{
-    return kwlnTaskCreate(parent, name, 0x18c0, update,
-                          func_0018a9c0, workData);
-}
 
 // FUN_0018B380 NONMATCHING
 void* func_0018b380(KwlnTask* task)
 {
-    u8* work;
+    u8* work = (u8*)task->workData;
     void* allocation;
     KwlnTask* child;
 
-    work = (u8*)task->workData;
     if (GS_U32(work, 0) == 4)
     {
         func_00111530(GS_TASK(work, 0x14));
@@ -616,8 +608,8 @@ void* func_0018b380(KwlnTask* task)
         allocation = GS_ALLOC(1, 0x10, 0x40000);
         if (allocation != NULL)
         {
-            child = gsCreateAnimation(NULL, D_005E4320,
-                                      func_00188c30, allocation);
+            child = kwlnTaskCreate(NULL, D_005E4320, 0x18c0,
+                                   func_00188c30, func_0018a9c0, allocation);
             if (child != NULL)
             {
                 GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
@@ -626,8 +618,8 @@ void* func_0018b380(KwlnTask* task)
         allocation = GS_ALLOC(1, 0x10, 0x40000);
         if (allocation != NULL)
         {
-            child = gsCreateAnimation(NULL, D_005E4340,
-                                      func_00189230, allocation);
+            child = kwlnTaskCreate(NULL, D_005E4340, 0x18c0,
+                                   func_00189230, func_0018a9c0, allocation);
             if (child != NULL)
             {
                 GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
@@ -636,8 +628,8 @@ void* func_0018b380(KwlnTask* task)
         allocation = GS_ALLOC(1, 0x10, 0x40000);
         if (allocation != NULL)
         {
-            child = gsCreateAnimation(NULL, D_005E4360,
-                                      func_00189810, allocation);
+            child = kwlnTaskCreate(NULL, D_005E4360, 0x18c0,
+                                   func_00189810, func_0018a9c0, allocation);
             if (child != NULL)
             {
                 GS_U32(allocation, 0xc) = GS_U32(work, 0x38);
@@ -646,8 +638,8 @@ void* func_0018b380(KwlnTask* task)
         allocation = GS_ALLOC(1, 0x10, 0x40000);
         if (allocation != NULL)
         {
-            child = gsCreateAnimation(NULL, D_005E4380,
-                                      func_00189df0, allocation);
+            child = kwlnTaskCreate(NULL, D_005E4380, 0x18c0,
+                                   func_00189df0, func_0018a9c0, allocation);
             if (child != NULL)
             {
                 GS_U32(allocation, 0xc) = GS_U32(work, 0x3c);
@@ -656,8 +648,8 @@ void* func_0018b380(KwlnTask* task)
         allocation = GS_ALLOC(1, 0x10, 0x40000);
         if (allocation != NULL)
         {
-            child = gsCreateAnimation(NULL, D_005E43A0,
-                                      func_0018a3f0, allocation);
+            child = kwlnTaskCreate(NULL, D_005E43A0, 0x18c0,
+                                   func_0018a3f0, func_0018a9c0, allocation);
             if (child != NULL)
             {
                 GS_U32(allocation, 0xc) = GS_U32(work, 0x3c);
@@ -1598,25 +1590,36 @@ void* func_0018e540(KwlnTask* task)
 void func_0018e5c0(KwlnTask* task, void* record)
 {
     u8* work = (u8*)task->workData;
-    if (GS_U32(work, 0x208) == 0)
+    GsPackedPosition start;
+    GsPackedPosition end;
+
+    if (GS_U32(work, 0x208) != 0)
     {
-        func_0018bc10(200.0f, GS_PTR(work, 0x210), 0, 2, 1,
-                      (u64)0x43c78000c0c00000ULL,
-                      (u64)0x43c7800043420000ULL,
-                      0, 0, 0, 0);
-        GS_U32(work, 0x208) = 1;
+        func_00524270(work + 0x108, work + 8);
+        start.valueF[0] = 40.0f;
+        start.valueF[1] = 407.0f;
+        end.valueF[0] = 240.0f;
+        end.valueF[1] = 407.0f;
+        func_0018bc10(100.0f, (u8*)GS_PTR(work, 0x210) + 0x88,
+                      0, 2, 2, start.value, end.value, 0, 10, 0, 0);
     }
     else
     {
-        func_00524270(work + 0x108, work + 8);
-        func_0018bc10(200.0f, (u8*)GS_PTR(work, 0x210) + 0x88,
-                      0, 2, 2, (u64)0x43cb800042200000ULL,
-                      (u64)0x43cb800043700000ULL, 0, 0, 0, 0);
+        start.valueF[0] = 199.0f;
+        start.valueF[1] = 399.0f;
+        end.valueF[0] = 399.0f;
+        end.valueF[1] = 399.0f;
+        func_0018bc10(100.0f, GS_PTR(work, 0x210), 0, 2, 1,
+                      start.value, end.value, 0, 10, 0, 0);
+        GS_U32(work, 0x208) = 1;
     }
     func_00524270(work + 8, record);
-    func_0018bc10(200.0f, (u8*)GS_PTR(work, 0x210) + 0x44,
-                  0, 2, 1, (u64)0x43cb800042200000ULL,
-                  (u64)0x43cb800000000000ULL, 0, 0, 0, 0);
+    start.valueF[0] = -160.0f;
+    start.valueF[1] = 407.0f;
+    end.valueF[0] = 40.0f;
+    end.valueF[1] = 407.0f;
+    func_0018bc10(100.0f, (u8*)GS_PTR(work, 0x210) + 0x44,
+                  0, 2, 1, start.value, end.value, 0, 10, 0, 0);
 }
 
 // FUN_0018E7A0
