@@ -219,6 +219,12 @@ extern void FUN_002b2060(int param_1);
 extern void FUN_002a5f40(BtlCamera* camera);
 extern void FUN_002b4f40(int param_1);
 extern void FUN_002b4db0_float(float param_1);
+extern void FUN_002b0210(BtlCamera* camera);
+extern s32 FUN_002a3750(BtlCamera* camera, u32 unit);
+extern void btlUnit002880e0(BtlUnit* unit, u16 param_2);
+extern u32 FUN_0030c3a0(u16 *param_1);
+extern void FUN_002e70b0(BtlCamera* camera);
+extern void FUN_002b2800(BtlCamera *camera);
 extern f32 fGpffff8108;
 
 // FUN_002e7320
@@ -258,6 +264,79 @@ void FUN_002e8d20(int param_1)
 void FUN_002e8d40(BtlCamera* camera)
 {
     FUN_002b4db0_float(fGpffff8108);
+}
+
+// FUN_002e71c0
+void FUN_002e71c0(BtlCamera* camera)
+{
+    if (camera->action != NULL && (camera->action->unk_1a & 1) != 0)
+    {
+        if (*(u16*)(DAT_007ce3ec + 0xb78) == 1)
+        {
+            FUN_002b0210(camera);
+        }
+    }
+}
+
+// FUN_002e77c0
+void FUN_002e77c0(BtlCamera* camera)
+{
+    BtlAction* action;
+    action = camera->action;
+    if (action != NULL && (action->unk_1a & 1) != 0 &&
+        *(u8*)((u8*)action->unit + 0xa2) != 0)
+    {
+        FUN_002e70b0(camera);
+    }
+}
+
+// FUN_002e76a0
+void FUN_002e76a0(BtlCamera* camera)
+{
+    u32 result;
+
+    if (camera->action != NULL)
+    {
+        *(u32*)(DAT_007ce3ec + 0xb74) = *(u32*)((u8*)camera->action + 0x38);
+        result = FUN_0030c3a0((u16*)(uintptr_t)*(u32*)((u8*)camera->action->unit + 0xa2c));
+        if (result == 0)
+        {
+            FUN_002b2800(camera);
+        }
+    }
+}
+
+// FUN_002e7810
+void FUN_002e7810(BtlCamera* camera)
+{
+    BtlAction* action;
+    u32 flag;
+    action = camera->action;
+    if (action != NULL)
+    {
+        flag = action->unk_1a & 1;
+        if (flag != 0 && *(u8*)((u8*)action->unit + 0xa2) != 0)
+        {
+            if (action != NULL && flag != 0 && *(u16*)(DAT_007ce3ec + 0xb78) == 1)
+            {
+                FUN_002b0210(camera);
+            }
+        }
+    }
+}
+
+// FUN_002e87b0
+void FUN_002e87b0(BtlCamera* camera)
+{
+    int iVar1;
+    iVar1 = (int)(uintptr_t)camera;
+    if (*(u32*)(iVar1 + 0x120) != 0 &&
+        camera->action != NULL && (camera->action->unk_1a & 1) != 0 &&
+        FUN_002a3750(camera, *(u32*)(iVar1 + 0x120)) != 0)
+    {
+        btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(iVar1 + 0x120),
+                        *(u16*)(iVar1 + 0x124));
+    }
 }
 
 // FUN_002f9710
