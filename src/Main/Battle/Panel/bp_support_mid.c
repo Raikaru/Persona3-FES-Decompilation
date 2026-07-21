@@ -55,6 +55,22 @@ extern void* kwlnGetMainCamera(void);
 extern void* func_004ca5b0(void);
 extern void func_004ca560(void* viewport, void* cameraData);
 extern void func_004c3760(void* matrix, void* source, s32 mode);
+extern void func_004c6c60(PanelVec3* destination, const PanelVec3* source,
+                          const PanelMatrix* matrix);
+
+extern PanelVec3 D_0068E0C8;
+#pragma alias D_0068E0C8_abs D_0068E0C8
+extern u8 D_0068E0C8_abs[];
+extern PanelVec3 D_0068E0D8;
+#pragma alias D_0068E0D8_abs D_0068E0D8
+extern u8 D_0068E0D8_abs[];
+extern PanelVec3 D_0068E0E8;
+#pragma alias D_0068E0E8_abs D_0068E0E8
+extern u8 D_0068E0E8_abs[];
+extern PanelVec3 D_0068E0F8;
+#pragma alias D_0068E0F8_abs D_0068E0F8
+extern u8 D_0068E0F8_abs[];
+
 extern void* func_004c38c0(void);
 extern void func_004c3880(void* matrix);
 extern void* func_004cb2f0(void* model);
@@ -1849,13 +1865,168 @@ void func_0020cda0(u8* work)
 void func_0020cf20(void* destination, void* source)
 {
     u8* out = (u8*)destination;
-    const u8* in = (const u8*)source;
-    if (out == NULL || in == NULL) {
-        return;
+    register PanelTransform* transform = (PanelTransform*)source;
+    PanelVec3 axisZ;
+    PanelVec3 facingAxis;
+    PanelVec3 rotateAxis;
+    PanelVec3 transformedAxis;
+    PanelVec3 resourceCenter;
+    PanelVec3 transformedSource;
+    PanelVec3 localPoint;
+    PanelVec3 transformedPoint;
+    PanelVec3 cameraDirection;
+    PanelVec3 resourceDirection;
+    const PanelVec3* cameraPosition;
+    PanelMatrix* matrix;
+    void* camera;
+    s32 row;
+    s32 col;
+    s32 width;
+    s32 alternating;
+    u8* vertex;
+    f32 centerY;
+    f32 centerZ;
+
+    *(u64*)&axisZ = *(const u64*)D_0068E0C8_abs;
+    axisZ.z = *(f32*)(D_0068E0C8_abs + 8);
+    camera = kwlnGetMainCamera();
+    cameraPosition = (const PanelVec3*)((u8*)func_004cb2f0(*(void**)((u8*)camera + 4)) + 0x30);
+    *(u64*)&facingAxis = *(const u64*)D_0068E0D8_abs;
+    facingAxis.z = *(f32*)(D_0068E0D8_abs + 8);
+    *(u64*)&rotateAxis = *(const u64*)D_0068E0E8_abs;
+    rotateAxis.z = *(f32*)(D_0068E0E8_abs + 8);
+    *(u64*)&transformedAxis = *(const u64*)D_0068E0F8_abs;
+    transformedAxis.z = *(f32*)(D_0068E0F8_abs + 8);
+    matrix = (PanelMatrix*)func_004c38c0();
+    func_0020ca90(matrix, transform);
+    func_004c6c60(&facingAxis, &facingAxis, matrix);
+
+    resourceCenter.x = *(f32*)(out + 0x994);
+    resourceCenter.y = centerY = *(f32*)(out + 0x998);
+    resourceCenter.z = centerZ = *(f32*)(out + 0x99c);
+    if (transform->model != NULL) {
+        RwV3dTransformPoint(&transformedSource, &transform->translation,
+                            func_004cb2f0(transform->model));
+    } else {
+        transformedSource = transform->translation;
     }
-    *(u32*)(out + 0) &= ~2u;
-    *(f32*)(out + 0x20) = *(const f32*)(in + 0x20);
-    *(f32*)(out + 0x24) = *(const f32*)(in + 0x24);
-    *(f32*)(out + 0x28) = *(const f32*)(in + 0x28);
-    *(u32*)(out + 0) |= 1u;
+
+    {
+        f32 facing;
+
+        facing = facingAxis.x * (cameraPosition->x - transformedSource.x) +
+                 facingAxis.y * (cameraPosition->y - transformedSource.y) +
+                 facingAxis.z * (cameraPosition->z - transformedSource.z);
+        *(u32*)out &= ~2u;
+        if (facing < 0.0f) {
+            RwMatrixRotate(matrix, &rotateAxis, 180.0f, 1);
+            *(u32*)out |= 1;
+        }
+    }
+
+    {
+        u8* color = (u8*)transform + 0x40;
+
+        localPoint.x = 0.0f;
+        localPoint.y = 0.0f;
+        localPoint.z = 100.0f;
+        RwV3dTransformPoint(&transformedPoint, &localPoint, matrix);
+        func_004c6c60(&transformedAxis, &axisZ, matrix);
+        RwV3dNormalize(&transformedAxis, &transformedAxis);
+
+        vertex = out + 4;
+        for (row = 0; row < 9; row++) {
+            alternating = ~row & 1;
+            if (alternating != 0) {
+                width = 8;
+            } else {
+                width = 7;
+            }
+            for (col = 0; col < width; col++) {
+                f32 dot;
+                f32 reflectedX;
+                f32 reflectedY;
+                f32 reflectedZ;
+                f32 highlight;
+                f32 diffuse;
+                f32 alpha;
+                u32 alphaByte;
+
+                if (alternating != 0) {
+                    if (col == 0) {
+                        localPoint.x = 0.0f;
+                    } else if (col == width - 1) {
+                        localPoint.x = 6.0f;
+                    } else {
+                        localPoint.x = 0.5f + (f32)(col - 1);
+                    }
+                } else {
+                    localPoint.x = (f32)col;
+                }
+                localPoint.x -= 3.0f;
+                localPoint.y = fGpffff8338 * ((f32)row / 8.0f - 0.5f);
+                localPoint.z = 0.0f;
+                RwV3dTransformPoint(&transformedPoint, &localPoint, matrix);
+
+                cameraDirection.x = transformedPoint.x - cameraPosition->x;
+                cameraDirection.y = transformedPoint.y - cameraPosition->y;
+                cameraDirection.z = transformedPoint.z - cameraPosition->z;
+                RwV3dNormalize(&cameraDirection, &cameraDirection);
+                resourceDirection.x = transformedPoint.x - resourceCenter.x;
+                resourceDirection.y = transformedPoint.y - centerY;
+                resourceDirection.z = transformedPoint.z - centerZ;
+                RwV3dNormalize(&resourceDirection, &resourceDirection);
+
+                dot = axisZ.x * cameraDirection.x +
+                      axisZ.y * cameraDirection.y +
+                      axisZ.z * cameraDirection.z;
+                reflectedX = axisZ.x * dot - cameraDirection.x;
+                reflectedX = axisZ.x * dot + reflectedX;
+                reflectedY = axisZ.y * dot - cameraDirection.y;
+                reflectedY = axisZ.y * dot + reflectedY;
+                reflectedZ = axisZ.z * dot - cameraDirection.z;
+                reflectedZ = axisZ.z * dot + reflectedZ;
+                highlight = resourceDirection.x * reflectedX +
+                            resourceDirection.y * reflectedY +
+                            resourceDirection.z * reflectedZ;
+                if (highlight <= 0.0f) {
+                    alpha = 0.0f;
+                } else {
+                    alpha = highlight * highlight;
+                    alpha *= highlight;
+                    alpha *= highlight;
+                    alpha *= highlight;
+                    alpha *= highlight;
+                }
+
+                resourceDirection.x = transformedPoint.x - resourceCenter.x;
+                resourceDirection.y = transformedPoint.y - centerY;
+                resourceDirection.z = transformedPoint.z - centerZ;
+                RwV3dNormalize(&resourceDirection, &resourceDirection);
+                diffuse = resourceDirection.x * transformedAxis.x +
+                          resourceDirection.y * transformedAxis.y +
+                          resourceDirection.z * transformedAxis.z;
+                if (diffuse <= 0.0f) {
+                    diffuse = 0.0f;
+                }
+                diffuse *= *(f32*)(out + 0x9a0);
+                alpha = diffuse + alpha * *(f32*)(out + 0x9a4);
+                if (alpha > 1.0f) {
+                    alpha = 1.0f;
+                }
+                alphaByte = color[3];
+                alpha *= (f32)alphaByte;
+                if (alpha < 2147483648.0f) {
+                    vertex[0x0c] = (u8)(s32)alpha;
+                } else {
+                    vertex[0x0c] = (u8)(s32)(alpha - 2147483648.0f);
+                }
+                vertex[0x0d] = vertex[0x0c];
+                vertex[0x0e] = vertex[0x0c];
+                vertex[0x0f] = vertex[0x0c];
+                vertex += 0x24;
+            }
+        }
+    }
+    func_004c3880(matrix);
 }
