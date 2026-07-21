@@ -119,85 +119,83 @@ void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
     u8* entry;
     u8* resource;
     u32 xMode;
-    u32 yMode;
-    f32 width;
-    f32 height;
+    s32 width;
+    s32 height;
 
     entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
     resource = *(u8**)((u8*)base + 0x104 + *(u32*)(entry + 0x14) * 4);
     {
         f32 x[2] = {0.0f, 0.0f};
-        f32 y[2] = {0.0f, 0.0f};
-
         x[0] = (f32)*(s32*)(entry + 0x54);
         x[1] = (f32)*(s32*)(entry + 0x5c);
-        y[0] = (f32)*(s32*)(entry + 0x58);
-        y[1] = (f32)*(s32*)(entry + 0x60);
-        width = (f32)*(s32*)(resource + 0xc);
-        height = (f32)*(s32*)(resource + 0x10);
+        {
+            f32 y[2] = {0.0f, 0.0f};
+            y[0] = (f32)*(s32*)(entry + 0x58);
+            y[1] = (f32)*(s32*)(entry + 0x60);
+            width = *(s32*)(resource + 0xc);
+            height = *(s32*)(resource + 0x10);
 
-        if (axis < 8) {
             switch (axis) {
-            case 0: xMode = 0; yMode = 1; break;
-            case 1: xMode = 2; yMode = 0; break;
-            case 2: xMode = 0; yMode = 2; break;
-            case 3: xMode = 1; yMode = 0; break;
-            case 4: xMode = 2; yMode = 1; break;
-            case 5: xMode = 2; yMode = 2; break;
-            case 6: xMode = 2; yMode = 1; break;
-            case 7: xMode = 1; yMode = 1; break;
+            case 0: xMode = 0; axis = 1; break;
+            case 1: xMode = 2; axis = 0; break;
+            case 2: xMode = 0; axis = 2; break;
+            case 3: xMode = 1; axis = 0; break;
+            case 4: xMode = 2; axis = 1; break;
+            case 5: xMode = 2; axis = 2; break;
+            case 6: xMode = 2; axis = 1; break;
+            case 7: xMode = 1; axis = 1; break;
             }
-        }
 
-        if (xMode == 2) {
-            if ((*(u32*)(entry + 0x18) & 1) == 0) {
-                uv[0] = (x[0] + 1.0f) / width;
-                uv[2] = x[0] / width;
-            } else {
-                uv[0] = (x[1] - 1.0f) / width;
-                uv[2] = x[1] / width;
+            if (xMode == 2) {
+                if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                    uv[0] = (x[1] - 1.0f) / (f32)width;
+                    uv[2] = x[1] / (f32)width;
+                } else {
+                    uv[0] = (x[0] + 1.0f) / (f32)width;
+                    uv[2] = x[0] / (f32)width;
+                }
+            } else if (xMode == 1) {
+                if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                    uv[0] = x[0] / (f32)width;
+                    uv[2] = (x[0] + 1.0f) / (f32)width;
+                } else {
+                    uv[0] = x[1] / (f32)width;
+                    uv[2] = (x[1] - 1.0f) / (f32)width;
+                }
+            } else if (xMode == 0) {
+                if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                    uv[0] = x[0] / (f32)width;
+                    uv[2] = x[1] / (f32)width;
+                } else {
+                    uv[0] = x[1] / (f32)width;
+                    uv[2] = x[0] / (f32)width;
+                }
             }
-        } else if (xMode == 1) {
-            if ((*(u32*)(entry + 0x18) & 1) == 0) {
-                uv[0] = x[1] / width;
-                uv[2] = (x[1] - 1.0f) / width;
-            } else {
-                uv[0] = x[0] / width;
-                uv[2] = (x[0] + 1.0f) / width;
-            }
-        } else if (xMode == 0) {
-            if ((*(u32*)(entry + 0x18) & 1) == 0) {
-                uv[0] = x[1] / width;
-                uv[2] = x[0] / width;
-            } else {
-                uv[0] = x[0] / width;
-                uv[2] = x[1] / width;
-            }
-        }
 
-        if (yMode == 2) {
-            if ((*(u32*)(entry + 0x18) & 2) == 0) {
-                uv[1] = (y[0] + 1.0f) / height;
-                uv[3] = y[0] / height;
-            } else {
-                uv[1] = (y[1] - 1.0f) / height;
-                uv[3] = y[1] / height;
-            }
-        } else if (yMode == 1) {
-            if ((*(u32*)(entry + 0x18) & 2) == 0) {
-                uv[1] = y[1] / height;
-                uv[3] = (y[1] - 1.0f) / height;
-            } else {
-                uv[1] = y[0] / height;
-                uv[3] = (y[0] + 1.0f) / height;
-            }
-        } else if (yMode == 0) {
-            if ((*(u32*)(entry + 0x18) & 2) == 0) {
-                uv[1] = y[1] / height;
-                uv[3] = y[0] / height;
-            } else {
-                uv[1] = y[0] / height;
-                uv[3] = y[1] / height;
+            if (axis == 2) {
+                if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                    uv[1] = (y[1] - 1.0f) / (f32)height;
+                    uv[3] = y[1] / (f32)height;
+                } else {
+                    uv[1] = (y[0] + 1.0f) / (f32)height;
+                    uv[3] = y[0] / (f32)height;
+                }
+            } else if (axis == 1) {
+                if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                    uv[1] = y[0] / (f32)height;
+                    uv[3] = (y[0] + 1.0f) / (f32)height;
+                } else {
+                    uv[1] = y[1] / (f32)height;
+                    uv[3] = (y[1] - 1.0f) / (f32)height;
+                }
+            } else if (axis == 0) {
+                if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                    uv[1] = y[0] / (f32)height;
+                    uv[3] = y[1] / (f32)height;
+                } else {
+                    uv[1] = y[1] / (f32)height;
+                    uv[3] = y[0] / (f32)height;
+                }
             }
         }
     }
@@ -1452,7 +1450,6 @@ void func_00217780(void)
     work = (u8*)sSflPsel;
     texture = sflRes0020ec50();
     alpha = *(f32*)(work + 0x5c40);
-    alphaByte = (u8)(alpha * 255.0f);
     for (i = 0; i < (s32)*(u32*)(work + 0xc); i++)
     {
         origin[0] = 198.0f;
@@ -1477,6 +1474,7 @@ void func_00217780(void)
     origin[2] = (f32)*(s32*)(frame + 0xc);
     origin[3] = (f32)*(s32*)(frame + 0x10);
     func_0021d8e0(work + 0x5440, origin);
+    alphaByte = (u8)(*(f32*)(work + 0x5c40) * 255.0f);
     color[0] = 0xff;
     color[1] = 0xff;
     color[2] = 0xff;
