@@ -1017,14 +1017,9 @@ void func_0010d7b0(s32 index, s16 fileIndex, void* input, void* output,
     slot->state = 8;
 }
 
-// FUN_0010D910 NONMATCHING
-u32 func_0010d910(s32 index)
+// FUN_0010D910
+u32 func_0010d910(s16 index)
 {
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return false;
-    }
-
     return sSfdDecodeSlots[index].state == 1;
 }
 
