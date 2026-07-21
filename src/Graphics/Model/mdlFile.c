@@ -28393,7 +28393,7 @@ u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src)
 // FUN_00337DE0 NONMATCHING
 void FUN_00337de0(Vec128 *dst,const Vec128 *src)
 {
-  *(u_long128 *)dst = *(u_long128 *)src;
+  ((u_long128 *)dst)[1] = *(u_long128 *)src;
 }
 // FUN_00337DF0
 void FUN_00337df0(int param_1,int param_2)
@@ -30191,7 +30191,7 @@ u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src)
 // FUN_00339770 NONMATCHING
 void FUN_00339770(Vec128 *dst,const Vec128 *src)
 {
-  *(u_long128 *)dst = *(u_long128 *)src;
+  ((u_long128 *)dst)[1] = *(u_long128 *)src;
 }
 // FUN_00339780
 void FUN_00339780(int param_1,int param_2)
@@ -39364,7 +39364,7 @@ u_long128 FUN_00342410(Vec128 *dst,const Vec128 *src)
 // FUN_00342420 NONMATCHING
 void FUN_00342420(Vec128 *dst,const Vec128 *src)
 {
-  *(u_long128 *)dst = *(u_long128 *)src;
+  ((u_long128 *)dst)[1] = *(u_long128 *)src;
 }
 // FUN_00342430
 void FUN_00342430(int param_1,int param_2)
@@ -42911,7 +42911,7 @@ u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src)
 // FUN_00346140 NONMATCHING
 void FUN_00346140(Vec128 *dst,const Vec128 *src)
 {
-  *(u_long128 *)dst = *(u_long128 *)src;
+  ((u_long128 *)dst)[1] = *(u_long128 *)src;
 }
 // FUN_00346150
 void FUN_00346150(int param_1,int param_2)
