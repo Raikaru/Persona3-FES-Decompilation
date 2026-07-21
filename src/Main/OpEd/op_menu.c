@@ -9,12 +9,17 @@ extern void func_0021d890(void* destination, const f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
 extern void func_0021d3b0(void* destination, void* source);
 extern void* func_0021cca0(void* resource, u32 index);
-extern void* func_0021cce0(void* frame);
+extern u32 func_0021cce0(void* frame);
 extern void func_004d7f60(s32 state, u32 value);
 typedef void (*OpMenuSetState)(u32 state, u32 value);
 typedef void (*OpMenuDraw)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
 typedef void (*OpMenuDrawWords)(u32* quad, u32 layer, u32 group, u32 pass, u32 blend);
 extern u32 D_00960090[];
+typedef void (*OpMenuSetFrame)(u32 state, u32 value);
+#pragma alias opMenuStatePtr D_00960090
+extern u8 opMenuStatePtr[];
+#pragma alias opMenuDrawPtr D_0096009C
+extern u8 opMenuDrawPtr[];
 extern u32 D_0096009C[];
 extern f32 func_0052e878(f32 value);
 extern f32 func_0052e6d8(f32 value);
@@ -87,8 +92,6 @@ static void opMenuSetPoly(u32 offset, f32 x, f32 y, f32 width, f32 height,
     f32 poly[8];
     f32 centerX = width * 0.5f;
     f32 centerY = height * 0.5f;
-    f32 sine = func_0052e6d8(angle);
-    f32 cosine = func_0052e878(angle);
     s32 i;
 
     poly[0] = -centerX;
@@ -101,10 +104,17 @@ static void opMenuSetPoly(u32 offset, f32 x, f32 y, f32 width, f32 height,
     poly[7] = centerY;
     for (i = 0; i < 4; i++)
     {
-        f32 px = poly[i * 2] * scaleX;
+        f32 sineX = func_0052e878(angle);
         f32 py = poly[i * 2 + 1] * scaleY;
-        poly[i * 2] = px * cosine - py * sine + x + centerX;
-        poly[i * 2 + 1] = px * sine + py * cosine + y + centerY;
+        f32 cosineX = func_0052e6d8(angle);
+        f32 px = poly[i * 2] * scaleX;
+        f32 outX = px * cosineX - py * sineX + x + centerX;
+        f32 sineY = func_0052e878(angle);
+        f32 px2 = poly[i * 2] * scaleX;
+        f32 cosineY = func_0052e6d8(angle);
+        f32 outY = px2 * sineY + py * cosineY + y + centerY;
+        poly[i * 2] = outX;
+        poly[i * 2 + 1] = outY;
     }
     func_0021d890(opMenuData(offset), poly);
 }
@@ -493,87 +503,110 @@ void opMenu0026c710(void)
 // FUN_0026CC90 NONMATCHING
 void opMenu0026cc90(void)
 {
+    u32* work;
     void* atlas;
-    OpMenuSetState* setState;
+    OpMenuSetFrame* setState;
     OpMenuDraw* draw;
-    void* frame;
-    u32 id;
+    u32 frame;
     s32 i;
-    static const u32 sideA[2] = {0x1c, 0x1e};
-    static const u32 sideB[2] = {0x1d, 0x1f};
-    static const u32 choiceA[4] = {0, 2, 4, 0x19};
-    static const u32 choiceB[4] = {6, 7, 8, 0x1b};
-    static const u32 choiceC[4] = {1, 3, 5, 0x1a};
+    u32 id;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
+    work = sOpMenu;
     atlas = opResGetTitleSprite(0);
-    setState = (OpMenuSetState*)D_00960090;
-    draw = (OpMenuDraw*)D_0096009C;
-    if ((opMenuGet(0) & 1) == 0)
+    setState = (OpMenuSetFrame*)opMenuStatePtr;
+    draw = (OpMenuDraw*)opMenuDrawPtr;
+    if ((work[0] & 1) == 0)
         return;
+
     (*setState)(8, 0);
     (*setState)(6, 0);
     (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     frame = func_0021cce0(func_0021cca0(atlas, 0x15));
-    (*setState)(1, (u32)(unsigned long)frame);
-    (*draw)(opMenuData(0x920), 4, 0, 1, 2);
-    (*draw)(opMenuData(0x920), 4, 0, 2, 3);
+    (*setState)(1, frame);
+    (*draw)(work + 0x920 / 4, 4, 0, 1, 2);
+    (*draw)(work + 0x920 / 4, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
 
-    if ((opMenuGet(0) & 0x20) == 0)
+    if ((work[0] & 0x20) == 0)
     {
         for (i = 0; i < 2; i++)
         {
-            frame = func_0021cce0(func_0021cca0(atlas, sideA[i]));
-            (*setState)(1, (u32)(unsigned long)frame);
-            (*draw)(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 1, 2);
-            (*draw)(opMenuData(0x1a70 + (u32)i * 0x310), 4, 0, 2, 3);
+            id = i == 0 ? 0x1c : 0x1e;
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)((void*)((u8*)work + 0x1a70 + i * 0x310),
+                    4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0x1a70 + i * 0x310),
+                    4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
         for (i = 0; i < 2; i++)
         {
-            frame = func_0021cce0(func_0021cca0(atlas, sideB[i]));
-            (*setState)(1, (u32)(unsigned long)frame);
-            (*draw)(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 1, 2);
-            (*draw)(opMenuData(0x1b70 + (u32)i * 0x310), 4, 0, 2, 3);
+            id = i == 0 ? 0x1d : 0x1f;
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)((void*)((u8*)work + 0x1b70 + i * 0x310),
+                    4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0x1b70 + i * 0x310),
+                    4, 0, 2, 3);
         }
     }
     else
     {
         for (i = 0; i < 4; i++)
         {
-            frame = func_0021cce0(func_0021cca0(atlas, choiceA[i]));
-            (*setState)(1, (u32)(unsigned long)frame);
-            (*draw)(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 1, 2);
-            (*draw)(opMenuData(0xb10 + (u32)i * 0x310), 4, 0, 2, 3);
-            frame = func_0021cce0(func_0021cca0(atlas, choiceB[i]));
-            (*setState)(1, (u32)(unsigned long)frame);
-            (*draw)(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 1, 2);
-            (*draw)(opMenuData(0xc10 + (u32)i * 0x310), 4, 0, 2, 3);
-            id = choiceC[i];
+            if (i == 0) id = 0;
+            else if (i == 1) id = 2;
+            else if (i == 2) id = 4;
+            else id = 0x19;
             frame = func_0021cce0(func_0021cca0(atlas, id));
-            (*setState)(1, (u32)(unsigned long)frame);
-            (*draw)(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 1, 2);
-            (*draw)(opMenuData(0xd10 + (u32)i * 0x310), 4, 0, 2, 3);
+            (*setState)(1, frame);
+            (*draw)((void*)((u8*)work + 0xb10 + i * 0x310),
+                    4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0xb10 + i * 0x310),
+                    4, 0, 2, 3);
+
+            if (i == 0) id = 6;
+            else if (i == 1) id = 7;
+            else if (i == 2) id = 8;
+            else id = 0x1b;
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)((void*)((u8*)work + 0xc10 + i * 0x310),
+                    4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0xc10 + i * 0x310),
+                    4, 0, 2, 3);
+
+            if (i == 0) id = 1;
+            else if (i == 1) id = 3;
+            else if (i == 2) id = 5;
+            else id = 0x1a;
+            frame = func_0021cce0(func_0021cca0(atlas, id));
+            (*setState)(1, frame);
+            (*draw)((void*)((u8*)work + 0xd10 + i * 0x310),
+                    4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0xd10 + i * 0x310),
+                    4, 0, 2, 3);
         }
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
-        id = opMenuGet(0x1a50) + 0x22;
+        id = work[0x1a50 / 4] + 0x22;
         frame = func_0021cce0(func_0021cca0(atlas, id));
-        (*setState)(1, (u32)(unsigned long)frame);
-        if (opMenuGet(0x1a50) == 0)
+        (*setState)(1, frame);
+        if (work[0x1a50 / 4] == 0)
         {
-            (*draw)(opMenuData(0x1750), 4, 0, 1, 2);
-            (*draw)(opMenuData(0x1750), 4, 0, 2, 3);
+            (*draw)((void*)((u8*)work + 0x1750), 4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0x1750), 4, 0, 2, 3);
         }
         else
         {
-            (*draw)(opMenuData(0x1850), 4, 0, 1, 2);
-            (*draw)(opMenuData(0x1850), 4, 0, 2, 3);
+            (*draw)((void*)((u8*)work + 0x1850), 4, 0, 1, 2);
+            (*draw)((void*)((u8*)work + 0x1850), 4, 0, 2, 3);
         }
     }
 }
@@ -581,89 +614,133 @@ void opMenu0026cc90(void)
 // FUN_0026D430 NONMATCHING
 void opMenu0026d430(void)
 {
+    u32* work;
     void* atlas;
     u8* camera;
     f32 layout[4];
     f32 inverseZ;
     void* frame;
     s32 i;
-    static const u32 choiceA[4] = {0, 2, 4, 0x19};
-    static const u32 choiceB[4] = {1, 3, 5, 0x1a};
-    static const u32 choiceC[4] = {6, 7, 8, 0x1b};
-    static const u32 sideA[2] = {0x1c, 0x1e};
-    static const u32 sideB[2] = {0x1d, 0x1f};
+    u32* item;
+    u32 choice;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
+    work = sOpMenu;
     atlas = opResGetTitleSprite(0);
     camera = (u8*)func_00198590();
     inverseZ = 1.0f / *(f32*)(camera + 0x80);
+
     layout[0] = 0.0f;
     layout[1] = 0.0f;
     layout[2] = 1.0f;
     layout[3] = 1.0f;
-    for (i = 0; i < 9; i++)
-    {
-        u32 offset = 0x10 + (u32)i * 0x100;
-        func_0021eae0(opMenuData(offset), layout);
-        func_0021eac0(0, opMenuData(offset));
-    }
-    frame = func_0021cca0(atlas, 0x15);
-    func_0021d3b0(opMenuData(0x920), frame);
+    func_0021eae0(work + 4, layout);
+    func_0021eac0(0, work + 4);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
+    func_0021eae0(work + 0x44, layout);
+    func_0021eac0(0, work + 0x44);
+    func_0021eae0(work + 0x84, layout);
+    func_0021eac0(0, work + 0x84);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
+    func_0021eae0(work + 0xc4, layout);
+    func_0021eac0(0, work + 0xc4);
+    func_0021eae0(work + 0x104, layout);
+    func_0021eac0(0, work + 0x104);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
+    func_0021eae0(work + 0x144, layout);
+    func_0021eac0(0, work + 0x144);
+    func_0021eae0(work + 0x184, layout);
+    func_0021eac0(0, work + 0x184);
+    layout[0] = 0.0f;
+    layout[1] = 0.0f;
+    layout[2] = 1.0f;
+    layout[3] = 1.0f;
+    func_0021eae0(work + 0x1c4, layout);
+    func_0021eac0(0, work + 0x1c4);
+    func_0021eae0(work + 0x204, layout);
+    func_0021eac0(0, work + 0x204);
 
-    opMenuPut(0xaf8, 0);
+    frame = func_0021cca0(atlas, 0x15);
+    func_0021d3b0((u8*)work + 0x920, frame);
+
+    work[0xaf8 / 4] = 0;
     for (i = 0; i < 4; i++)
     {
-        u32 choice = 0xb00 + (u32)i * 0x310;
-        opMenuPut(choice, i == 0 ? 0 : 8);
-        opMenuPut(choice + 4, 0);
-        frame = func_0021cca0(atlas, choiceA[i]);
-        func_0021d3b0(opMenuData(0xb10 + (u32)i * 0x310), frame);
-        frame = func_0021cca0(atlas, choiceB[i]);
-        func_0021d3b0(opMenuData(0xc10 + (u32)i * 0x310), frame);
-        frame = func_0021cca0(atlas, choiceC[i]);
-        func_0021d3b0(opMenuData(0xd10 + (u32)i * 0x310), frame);
+        item = (u32*)((u8*)work + 0xb00 + i * 0x310);
+        item[0] = i == 0 ? 0 : 8;
+        item[1] = 0;
+        if (i == 3) choice = 0x19;
+        else if (i == 2) choice = 4;
+        else if (i == 1) choice = 2;
+        else choice = 0;
+        frame = func_0021cca0(atlas, choice);
+        func_0021d3b0((u8*)item + 0x10, frame);
+        if (i == 3) choice = 0x1a;
+        else if (i == 2) choice = 5;
+        else if (i == 1) choice = 3;
+        else choice = 1;
+        frame = func_0021cca0(atlas, choice);
+        func_0021d3b0((u8*)item + 0x110, frame);
+        if (i == 3) choice = 0x1b;
+        else if (i == 2) choice = 8;
+        else if (i == 1) choice = 7;
+        else choice = 6;
+        frame = func_0021cca0(atlas, choice);
+        func_0021d3b0((u8*)item + 0x210, frame);
     }
-    opMenuPut(0x1740, 0);
-    opMenuPut(0x1744, 0);
-    frame = func_0021cca0(atlas, 0x22);
-    func_0021d3b0(opMenuData(0x1750), frame);
-    frame = func_0021cca0(atlas, 0x23);
-    func_0021d3b0(opMenuData(0x1850), frame);
 
-    opMenuPut(0x1a50, 0);
+    work[0x1740 / 4] = 0;
+    work[0x1744 / 4] = 0;
+    frame = func_0021cca0(atlas, 0x22);
+    func_0021d3b0((u8*)work + 0x1750, frame);
+    frame = func_0021cca0(atlas, 0x23);
+    func_0021d3b0((u8*)work + 0x1850, frame);
+
+    work[0x1a50 / 4] = 0;
     for (i = 0; i < 2; i++)
     {
-        u32 side = 0x1a60 + (u32)i * 0x310;
-        opMenuPut(side, i == 0 ? 0 : 8);
-        opMenuPut(side + 4, 0);
-        frame = func_0021cca0(atlas, sideA[i]);
-        func_0021d3b0(opMenuData(0x1a70 + (u32)i * 0x310), frame);
-        frame = func_0021cca0(atlas, sideB[i]);
-        func_0021d3b0(opMenuData(0x1b70 + (u32)i * 0x310), frame);
+        item = (u32*)((u8*)work + 0x1a60 + i * 0x310);
+        item[0] = i == 0 ? 0 : 8;
+        item[1] = 0;
+        choice = i == 0 ? 0x1c : 0x1e;
+        frame = func_0021cca0(atlas, choice);
+        func_0021d3b0((u8*)item + 0x10, frame);
+        choice = i == 0 ? 0x1d : 0x1f;
+        frame = func_0021cca0(atlas, choice);
+        func_0021d3b0((u8*)item + 0x110, frame);
     }
 
-    opMenuPut(0xa28, 0);
-    opMenuPut(0xa30, 0);
-    opMenuPut(0xa34, 0);
-    opMenuPut(0xa38, *(u32*)&inverseZ);
-    opMenuPut(0xa68, 0);
-    opMenuPut(0xa70, 0);
-    opMenuPut(0xa74, 0);
-    opMenuPut(0xa78, *(u32*)&inverseZ);
-    opMenuPut(0xaa8, 0);
-    opMenuPut(0xab0, 0);
-    opMenuPut(0xab4, 0);
-    opMenuPut(0xab8, *(u32*)&inverseZ);
-    opMenuPut(0x910, 0);
-    opMenuPut(0x914, 0);
-    opMenuPut(0x918, 0);
-    opMenuPut(0xae0, 0);
-    opMenuPut(0xae4, 0);
-    opMenuPut(0xae8, 0);
-    opMenuPut(0xaec, 0);
-    opMenuPut(0xaf0, 0);
-    opMenuPut(0xaf4, 0);
-    *sOpMenu |= 8;
+    work[0xa28 / 4] = 0;
+    work[0xa30 / 4] = 0;
+    work[0xa34 / 4] = 0;
+    *(f32*)((u8*)work + 0xa38) = inverseZ;
+    work[0xa68 / 4] = 0;
+    work[0xa70 / 4] = 0;
+    work[0xa74 / 4] = 0;
+    *(f32*)((u8*)work + 0xa78) = inverseZ;
+    work[0xaa8 / 4] = 0;
+    work[0xab0 / 4] = 0;
+    work[0xab4 / 4] = 0;
+    *(f32*)((u8*)work + 0xab8) = inverseZ;
+    work[0x910 / 4] = 0;
+    work[0x914 / 4] = 0;
+    work[0x918 / 4] = 0;
+    work[0xae0 / 4] = 0;
+    work[0xae4 / 4] = 0;
+    work[0xae8 / 4] = 0;
+    work[0xaec / 4] = 0;
+    work[0xaf0 / 4] = 0;
+    work[0xaf4 / 4] = 0;
+    work[0] |= 8;
     opMenu0026dc70();
-    *sOpMenu |= 1;
+    work[0] |= 1;
 }
