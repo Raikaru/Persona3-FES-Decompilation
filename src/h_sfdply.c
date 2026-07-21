@@ -124,6 +124,7 @@ typedef struct HSfdRenderView
     s32 skyMode;
 } HSfdRenderView;
 
+static s32 sSfdFrameIndex;
 static KwlnTask* sSfdPlayTask;
 static HSfdQueueSlot sSfdQueue[HSFD_QUEUE_COUNT];
 static HSfdAsyncEntry sSfdEntries[HSFD_QUEUE_COUNT];
@@ -165,6 +166,10 @@ extern void func_005030f0();
 
 static s32 sSfdResumePending;
 static s32 sSfdResumeThreadId;
+extern void datSetFlag(s32 bit, u8 enabled);
+extern void FUN_004aa550(void* param1);
+extern void FUN_004b6350(void);
+extern u64 FUN_004b7630(u64 param1);
 
 typedef struct EeThreadStatus
 {
@@ -377,17 +382,51 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
     HSfd* work;
 
     work = (HSfd*)sfdPlayTask->workData;
-    if (work == NULL)
+
+    if (work->decoder != NULL)
     {
-        return;
+        if (work->streamAux != NULL)
+        {
+            func_00584338(work->streamAux);
+        }
+        func_0057db58(work->decoder);
+        work->decoder = NULL;
     }
 
-    H_SfdPlay_ResetTaskResources(work);
+    if (work->compressedFrameBuffer != NULL)
+    {
+        RwFree(work->compressedFrameBuffer);
+        work->compressedFrameBuffer = NULL;
+    }
+
+    if (work->displayBuffer != NULL)
+    {
+        RwFree(work->displayBuffer);
+        work->displayBuffer = NULL;
+        sSfdFrameIndex = 0;
+    }
+
+    if (work->renderTarget != NULL)
+    {
+        func_004cde90(work->renderTarget);
+        work->renderTarget = NULL;
+    }
+
+    datSetFlag(0x1407, 0);
+
     if (work->isStart == 0)
     {
         sSfdPlayTask = NULL;
     }
-    work->ownsCamera = 0;
+
+    if (work->ownsCamera != 0)
+    {
+        work->ownsCamera = 0;
+        FUN_004aa550(kwlnGetMainCamera());
+        FUN_004b6350();
+        FUN_004b7630(0x77e4e0);
+    }
+
     RwFree(work);
 }
 
