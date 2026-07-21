@@ -25,8 +25,9 @@ extern void campPersonaDrawSprite(void* parent, void* resource, s32 frame,
 #pragma alias campPersonaSetRenderState DAT_00960090
 extern f32 FUN_001126b0(void* particle);
 extern f32 FUN_00112740(void* particle);
-extern s32 FUN_00114450();
-extern s32 FUN_0011bba0();
+extern s32 FUN_00114450(f32 x, f32 y, f32 z, s32 a, s32 b, s32 c,
+                        s32 d);
+extern s32 FUN_0011bba0(s32 a, s32 b, f32 z, s32 c, s32 d);
 extern s32 FUN_001158b0();
 extern s32 FUN_001127d0();
 extern s32 FUN_00115980();
@@ -37,6 +38,18 @@ extern s32 DAT_007cdf68;
 extern void* DAT_00833B78;
 extern void* DAT_00833B88;
 extern void* DAT_00833B90;
+extern void* DAT_00833B74;
+extern void* DAT_00833BA0;
+#pragma alias DAT_00833B78_abs DAT_00833B78
+extern u8 DAT_00833B78_abs[];
+#pragma alias DAT_00833B88_abs DAT_00833B88
+extern u8 DAT_00833B88_abs[];
+#pragma alias DAT_00833B90_abs DAT_00833B90
+extern u8 DAT_00833B90_abs[];
+#pragma alias DAT_00833B74_abs DAT_00833B74
+extern u8 DAT_00833B74_abs[];
+#pragma alias DAT_00833BA0_abs DAT_00833BA0
+extern u8 DAT_00833BA0_abs[];
 extern char gp0xffff897c[];
 extern void* h_campUpdatePanelTransition(KwlnTask* task);
 extern void campPersonaSetRenderState(s32 state, s32 value);
@@ -543,8 +556,9 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
     s32 localFrame;
     s32 bright;
     f32 slide;
+    register void* parent;
 
-    if (frame <= 14) {
+    if (frame < 15) {
         return;
     }
     localFrame = frame - 15;
@@ -554,12 +568,14 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
         bright = 0xff - (localFrame * 0xff) / 3;
         slide = (f32)(((3 - localFrame) * 0x14) / 3);
     }
-    FUN_001159f0(position.x + 22.0f - slide, position.y + 117.0f,
-                 alpha, DAT_00833B90, 0, bright);
+    campPersonaDrawSprite(parent, DAT_00833B90, 1,
+                          position.x + 22.0f - slide,
+                          position.y + 117.0f, (u8)bright, alpha);
     if (localFrame > 0) {
-        FUN_00173280(*(u16*)((u8*)persona + 2));
-        FUN_001159f0(position.x + 105.0f, position.y + 142.0f,
-                     alpha, bright);
+        campPersonaDrawSprite(parent, DAT_00833B88,
+                              FUN_00173280(*(u16*)((u8*)persona + 2)) - 1,
+                              position.x + 105.0f, position.y + 142.0f,
+                              (u8)bright, alpha);
     }
     if (localFrame > 4) {
         FUN_00124e60(position, alpha, persona, bright);
@@ -606,44 +622,58 @@ static s32 campPersonaTransitionIsReady(void)
 // FUN_00125D70 NONMATCHING
 void* FUN_00125d70(KwlnTask* task)
 {
+    register void* parent;
     CampPersonaTransitionWork* work;
-    s32 i;
     s32 fade;
     f32 x;
     f32 y;
     CampPersonaParticle* particle;
 
     work = task->workData;
-    if (work->state != 0 && work->state != 1) {
+    if (work->state == 1) {
+        goto process;
+    }
+    if (work->state != 0) {
         return KWLNTASK_CONTINUE;
     }
-    if (work->state == 0) {
-        work->state = 1;
-        work->timer = 0;
-    }
+    work->timer = 0;
+    work->state = 1;
+process:
+
     if (work->mode == 0) {
         if (work->timer < 5) {
             if (campPersonaTransitionIsReady()) {
-                FUN_00114450(102.0f, 0.0f, -87.0f, -1, 0x4fa4ff19, 0x280, 0x280);
+                FUN_00114450(102.0f, 0.0f, -87.0f, -1,
+                             0x4fa4ff19, 0x280, 0x280);
             }
             FUN_0011bba0(0, 0, 102.0f, 0, 0);
-            campPersonaDrawEffectParticle(0.0f, 202.0f, 27.0f, 0, 0);
+            particle = (CampPersonaParticle*)FUN_001158b0(
+                0, *(void**)DAT_00833B78_abs, 0);
+            particle->drawAlpha = 101.0f;
+            particle->x = 428.0f;
+            particle->y = 27.0f;
+            particle->alpha = 0;
+            particle->scaleX = 0;
+            particle->scaleY = 0;
+            FUN_001127d0(particle, 1);
+            FUN_00115980(particle);
         }
         if (work->timer > 4 && work->timer < 20) {
-            fade = ((work->timer - 5) * 0xff) / 15;
+            fade = ((work->timer - 5) * 800) / 15;
             if (campPersonaTransitionIsReady()) {
-                FUN_00114450(102.0f, (f32)(-fade * 800 / 15),
-                             (f32)(fade * 800 / 15 - 87), -1,
-                             0x4fa4ff19, 0x280, 0x280);
+                FUN_00114450(102.0f, (f32)-fade, (f32)fade - 87.0f,
+                             -1, 0x4fa4ff19, 0x280, 0x280);
             }
             FUN_0011bba0(0, 0, 102.0f, (u16)fade, 0);
         }
         if (work->timer > 14) {
             fade = campPersonaClampFade((20 - work->timer) * 0xff / 5);
-            x = 428.0f + (f32)((work->timer - 15) * 21 / 10);
-            y = 27.0f + (f32)((work->timer - 15) * 2 / 10);
-            particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+            x = 428.0f + (f32)(((work->timer - 15) * 21) / 10);
+            y = 27.0f + (f32)(((work->timer - 15) * 2) / 10);
+            particle = (CampPersonaParticle*)FUN_001158b0(
+                0, *(void**)DAT_00833B78_abs, 0);
             if (particle != NULL) {
+                particle->drawAlpha = 101.0f;
                 particle->x = x;
                 particle->y = y;
                 particle->alpha = (s8)fade;
@@ -652,11 +682,16 @@ void* FUN_00125d70(KwlnTask* task)
                 FUN_001127d0(particle, 1);
                 FUN_00115980(particle);
             }
-            FUN_001159f0(528.0f, 207.0f, 200.0f);
-            FUN_001159f0(50.0f, 207.0f, 200.0f);
-            FUN_001159f0(194.0f, 207.0f, 200.0f);
-            FUN_001159f0(560.0f, 207.0f, 200.0f);
-            FUN_001159f0(382.0f, 207.0f, 200.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                                  34.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                                  50.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                                  194.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                                  561.0f, 415.0f, (u8)fade, 100.0f);
+            campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                                  382.0f, 415.0f, (u8)fade, 100.0f);
         }
         if (work->timer < 20) {
             work->timer++;
@@ -665,8 +700,10 @@ void* FUN_00125d70(KwlnTask* task)
         }
     } else if (work->mode == 1) {
         fade = work->timer == 8 ? 0 : 0xff - (work->timer * 0xff) / 8;
-        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+        particle = (CampPersonaParticle*)FUN_001158b0(
+            0, *(void**)DAT_00833B78_abs, 0);
         if (particle != NULL) {
+            particle->drawAlpha = 101.0f;
             particle->x = 449.0f;
             particle->y = 29.0f;
             particle->alpha = (s8)fade;
@@ -675,11 +712,16 @@ void* FUN_00125d70(KwlnTask* task)
             FUN_001127d0(particle, 1);
             FUN_00115980(particle);
         }
-        FUN_001159f0(528.0f, 207.0f, 200.0f);
-        FUN_001159f0(50.0f, 207.0f, 200.0f);
-        FUN_001159f0(194.0f, 207.0f, 200.0f);
-        FUN_001159f0(560.0f, 207.0f, 200.0f);
-        FUN_001159f0(382.0f, 207.0f, 200.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                              34.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                              50.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                              194.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                              561.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                              382.0f, 415.0f, (u8)fade, 100.0f);
         if (work->timer < 8) {
             work->timer++;
         } else {
@@ -687,8 +729,10 @@ void* FUN_00125d70(KwlnTask* task)
         }
     } else if (work->mode == 2 && work->timer != 8) {
         fade = (work->timer * 0xff) / 8;
-        particle = (CampPersonaParticle*)FUN_001158b0(0, DAT_00833B78, 0);
+        particle = (CampPersonaParticle*)FUN_001158b0(
+            0, *(void**)DAT_00833B78_abs, 0);
         if (particle != NULL) {
+            particle->drawAlpha = 101.0f;
             particle->x = 449.0f;
             particle->y = 29.0f;
             particle->alpha = (s8)fade;
@@ -697,13 +741,17 @@ void* FUN_00125d70(KwlnTask* task)
             FUN_001127d0(particle, 1);
             FUN_00115980(particle);
         }
-        FUN_001159f0(528.0f, 207.0f, 200.0f);
-        FUN_001159f0(50.0f, 207.0f, 200.0f);
-        FUN_001159f0(194.0f, 207.0f, 200.0f);
-        FUN_001159f0(560.0f, 207.0f, 200.0f);
-        FUN_001159f0(382.0f, 207.0f, 200.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                              34.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 9,
+                              50.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833B74_abs, 11,
+                              194.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                              561.0f, 415.0f, (u8)fade, 100.0f);
+        campPersonaDrawSprite(parent, *(void**)DAT_00833BA0_abs, 4,
+                              382.0f, 415.0f, (u8)fade, 100.0f);
         work->timer++;
     }
-    (void)i;
     return KWLNTASK_CONTINUE;
 }
