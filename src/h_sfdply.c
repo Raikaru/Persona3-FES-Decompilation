@@ -166,6 +166,15 @@ extern void func_005030f0();
 static s32 sSfdResumePending;
 static s32 sSfdResumeThreadId;
 
+typedef struct EeThreadStatus
+{
+    s32 status;
+    u8 reserved4[0x2C];
+} EeThreadStatus;
+
+extern void func_00503060();
+extern void func_005030d0();
+
 extern void* func_0057c680(void* descriptor);
 extern void* func_0057d5d8(void* descriptor);
 extern void func_0057e378(void* decoder, s32 mode);
@@ -492,18 +501,24 @@ u32 H_SfdPlayCmd_MOVIE_SYNC(void)
     return ((HSfd*)sSfdPlayTask->workData)->state == HSFD_STATE_IDLE;
 }
 
-// FUN_0010BF70 NONMATCHING
+// FUN_0010BF70
 void func_0010bf70(void)
 {
-    s32 i;
+    s32 wasEnabled;
+    EeThreadStatus threadStatus;
 
-    for (i = 0; i < HSFD_QUEUE_COUNT; i++)
+    wasEnabled = FUN_0050d3f0();
+    if (sSfdResumePending != 0)
     {
-        if (sSfdQueue[i].entry != NULL)
+        func_00503060(sSfdResumeThreadId, &threadStatus);
+        if ((threadStatus.status != 0xc) && (threadStatus.status != 8))
         {
-            sSfdQueue[i].state = 0;
-            sSfdQueue[i].entry = NULL;
+            func_005030d0(sSfdResumeThreadId);
         }
+    }
+    if (wasEnabled == 0)
+    {
+        FUN_0050d3a0();
     }
 }
 
