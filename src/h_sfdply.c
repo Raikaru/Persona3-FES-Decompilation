@@ -427,20 +427,30 @@ KwlnTask* H_SfdPlay_CreateTaskIdle(KwlnTask* parent)
     return task;
 }
 
-// FUN_0010BE60 NONMATCHING
+// FUN_0010BE60
 u32 H_SfdPlayCmd_CALL_MOVIE(void)
 {
     HSfd* work;
+    HSfd* newWork;
+    KwlnTask* task;
     s32 id;
 
     id = scrGetIntPara(0);
     if (sSfdPlayTask == NULL)
     {
-        H_SfdPlay_CreateTaskIdle(NULL);
-    }
-    if (sSfdPlayTask == NULL)
-    {
-        return false;
+        newWork = RwCalloc(1, sizeof(HSfd), HSFD_STREAM_HINT);
+        if (newWork != NULL)
+        {
+            task = kwlnTaskCreate(NULL, "H_SfdPlay", 7383, H_SfdPlay_UpdateTask,
+                                  H_SfdPlay_DestroyTask, newWork);
+            if (task != NULL)
+            {
+                newWork->id = HSFD_ORPHEUSAWAKENING;
+                newWork->isStart = false;
+                newWork->ownsCamera = false;
+                sSfdPlayTask = task;
+            }
+        }
     }
 
     work = (HSfd*)sSfdPlayTask->workData;
@@ -448,8 +458,8 @@ u32 H_SfdPlayCmd_CALL_MOVIE(void)
     work->stateTimer = 0;
     work->fadeFrame = 0;
     work->playbackFrame = 0;
-    work->streamFlags = 0;
     work->state = HSFD_STATE_WAIT_FOR_FADE;
+    work->streamFlags = 0;
     return true;
 }
 
