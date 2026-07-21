@@ -5202,7 +5202,7 @@ void FUN_002b3f80(BtlCamera* camera)
   FUN_002a3110((u16*)camera, 0.75f);
 }
 
-// FUN_002b41e0 NONMATCHING
+// FUN_002b41e0
 void FUN_002b41e0(BtlCamera* camera)
 {
     struct B41Work
@@ -5234,6 +5234,7 @@ void FUN_002b41e0(BtlCamera* camera)
     f32 sideOffset;
     f32 x;
     f32 xSquared;
+    f32 cube;
 
     unit = *(BtlUnit**)((u8*)camera->action + 0x30);
     radius = unit->sphereRadius * unit->scale;
@@ -5293,12 +5294,13 @@ void FUN_002b41e0(BtlCamera* camera)
             {
                 x = firstWeight * work.blend.scalar;
                 xSquared = x * x;
+                cube = xSquared * x;
                 firstWeight = fGpffff8130 * xSquared + fGpffff8048;
                 firstWeight = xSquared * firstWeight + fGpffff8118;
                 firstWeight = xSquared * firstWeight + fGpffff8050;
                 firstWeight = xSquared * firstWeight + fGpffff8054;
                 firstWeight = xSquared * firstWeight + fGpffff8058;
-                firstWeight = xSquared * x * firstWeight + x;
+                firstWeight = cube * firstWeight + x;
 
                 x = ratio * work.blend.scalar;
                 xSquared = x * x;

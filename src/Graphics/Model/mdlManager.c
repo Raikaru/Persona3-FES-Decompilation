@@ -1187,7 +1187,7 @@ u32 func_0031c7e0(int param_1);
 u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
 void FUN_0031e4d0(int *param_1,u16 param_2,u16 param_3);
 
-// FUN_00311480 NONMATCHING
+// FUN_00311480
 
 
 void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
@@ -1215,7 +1215,7 @@ void func_00311480(MdlAnimResourceSet* param_1,Model* param_2)
   if (*(int *)(p + 0x2c) != 0) {
     iVar1 = *(int *)(p + 0x24);
     if (iVar1 != 0) {
-      func_0031e2c0();
+      func_0031e2c0(iVar1);
     }
     if (*(int *)(p + 0x28) != 0) {
       func_0031e270(*(int *)(p + 0x28), param_2);
