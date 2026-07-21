@@ -47,6 +47,9 @@ extern u32 RpRandom(void);
 extern void bppPanelDrawParameterLayout(void* work);
 u32 FUN_0022e850(u32);
 void FUN_0022eb30(u32* object, u32 value, u32 colour);
+extern s32 sprintf(char* buffer, const char* format, ...);
+extern s32 strlen(const char* string);
+extern void K_Assert(const char* file, s32 line);
 extern f32 D_0068E380[];
 extern f32 D_0068E3BC[];
 extern u8 D_0068E4B0[];
@@ -3307,20 +3310,34 @@ void FUN_0022ea40(u32* object, u32 value)
 // FUN_0022EB30 NONMATCHING
 void FUN_0022eb30(u32* object, u32 value, u32 colour)
 {
-    u8* bytes;
-    u32 i;
+    f32 rect[4];
+    char text[0x100];
     u32 table;
+    s32 i;
+    s32 length;
 
-    if (object == NULL) {
-        return;
-    }
-    bytes = (u8*)object;
     table = FUN_0021c3f0(3);
-    for (i = 0; i < 3; ++i) {
-        u8* dst = bytes + 0x60 + i * 0x10;
-        *(u32*)dst = value + i;
-        *(u32*)(dst + 4) = colour;
-        FUN_0021d3b0(dst, FUN_0021cca0(table, 0x43 + i));
+    sprintf(text, "%d", value);
+    length = strlen(text);
+    if (length >= 4) {
+        K_Assert("bpp_panel.c", 0x471);
+    }
+    for (i = 0; i < length; ++i) {
+        u32 resource;
+
+        resource = FUN_0021cca0(table, text[length - 1 - i] - '0');
+        rect[0] = *(f32*)colour + (f32)((2 - i) * 16);
+        rect[1] = *(f32*)(colour + 4);
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0((u8*)object + i * 0x100, rect);
+    }
+    for (; length < 3; ++length) {
+        rect[0] = *(f32*)colour;
+        rect[1] = *(f32*)(colour + 4);
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        FUN_0021d8e0((u8*)object + length * 0x100, rect);
     }
 }
 
