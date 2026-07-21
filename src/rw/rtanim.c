@@ -2012,6 +2012,10 @@ extern code FUN_00524670;
 extern code FUN_00524828;
 extern code FUN_0052e6d8;
 extern code FUN_0052e878;
+#pragma alias FUN_0052e6d8_float FUN_0052e6d8
+extern float FUN_0052e6d8_float(u32 param_1);
+#pragma alias FUN_0052e878_float FUN_0052e878
+extern float FUN_0052e878_float(u32 param_1);
 extern code FUN_0052ea18;
 extern code FUN_005316d0;
 
@@ -28194,11 +28198,10 @@ u32 FUN_00486340(u32 param_1,int param_2,u32 param_3)
 // FUN_004866C0 NONMATCHING
 
 void FUN_004866c0(int param_1)
-
 {
   int iVar1;
   u32 uVar2;
-  
+
   iVar1 = *(int *)(param_1 + DAT_007ce770);
   **(code **)(iVar1 + 0x24) = (code)FUN_00488550;
   uVar2 = *(u32 *)(iVar1 + 0xa8);
@@ -28284,9 +28287,7 @@ void FUN_004866c0(int param_1)
     *(u32 *)(iVar1 + 0x34) = 0;
   }
   *(u8 **)(iVar1 + 0x38) = &LAB_00488b80;
-  return;
 }
-
 // FUN_00486C80 NONMATCHING
 
 void FUN_00486c80(int *param_1,float *param_2,float *param_3,int param_4,int param_5)
@@ -28466,13 +28467,13 @@ void FUN_00487280(int *param_1,float *param_2,float *param_3,int param_4,int par
   puVar8 = *(u32 **)(param_5 + 0x34);
   pfVar7 = (float *)*param_1;
   iVar2 = param_1[1];
-  fVar22 = *(float *)(param_5 + 0x70) * 0.5;
+  fVar22 = *(float *)(param_5 + 0x70) * 0.5f;
   iVar3 = *(int *)(param_5 + 0x38);
-  fVar21 = *(float *)(param_5 + 0x74) * 0.5;
+  fVar21 = *(float *)(param_5 + 0x74) * 0.5f;
   if (0 < param_4) {
     do {
-      fVar11 = (float)((code)FUN_0052e878)(*puVar8);
-      fVar12 = (float)((code)FUN_0052e6d8)(*puVar8);
+      fVar11 = FUN_0052e878_float(*puVar8);
+      fVar12 = FUN_0052e6d8_float(*puVar8);
       iVar10 = iVar10 + 1;
       pfVar6 = (float *)((int)pfVar7 + iVar2);
       fVar14 = -fVar11;
