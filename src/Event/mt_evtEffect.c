@@ -77,7 +77,11 @@ extern u32 DAT_00958bc4;
 extern u32 DAT_00958bc8;
 extern u32 DAT_00958bcc;
 extern f32 DAT_00960088;
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
 extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
 extern code DAT_009600a0;
 extern f32 _DAT_006a0f1c;
 extern void FUN_00194b20(u64, const char *, u32, u64 (*)(int), void *, void *);
@@ -100,46 +104,123 @@ extern void FUN_003b7090_typed(s16);
 extern u16 FUN_003b64c0_typed(u32, int, u64);
 #pragma alias FUN_003b9550_typed FUN_003b9550
 extern void FUN_003b9550_typed(u16, int);
-#define DAT_00958aa0 (*(f32 *)0x00958aa0)
-#define DAT_00958aa4 (*(f32 *)0x00958aa4)
-#define DAT_00958aa8 (*(f32 *)0x00958aa8)
-#define DAT_00958ab8 (*(f32 *)0x00958ab8)
-#define DAT_00958ac0 (*(u32 *)0x00958ac0)
-#define DAT_00958ac4 (*(u32 *)0x00958ac4)
-#define DAT_00958ac8 (*(u32 *)0x00958ac8)
-#define DAT_00958acc (*(u32 *)0x00958acc)
-#define DAT_00958ae0 (*(f32 *)0x00958ae0)
-#define DAT_00958ae4 (*(f32 *)0x00958ae4)
-#define DAT_00958ae8 (*(f32 *)0x00958ae8)
-#define DAT_00958af8 (*(f32 *)0x00958af8)
-#define DAT_00958b00 (*(u32 *)0x00958b00)
-#define DAT_00958b04 (*(u32 *)0x00958b04)
-#define DAT_00958b08 (*(u32 *)0x00958b08)
-#define DAT_00958b0c (*(u32 *)0x00958b0c)
-#define DAT_00958b20 (*(f32 *)0x00958b20)
-#define DAT_00958b24 (*(f32 *)0x00958b24)
-#define DAT_00958b28 (*(f32 *)0x00958b28)
-#define DAT_00958b38 (*(f32 *)0x00958b38)
-#define DAT_00958b40 (*(u32 *)0x00958b40)
-#define DAT_00958b44 (*(u32 *)0x00958b44)
-#define DAT_00958b48 (*(u32 *)0x00958b48)
-#define DAT_00958b4c (*(u32 *)0x00958b4c)
-#define DAT_00958b60 (*(f32 *)0x00958b60)
-#define DAT_00958b64 (*(f32 *)0x00958b64)
-#define DAT_00958b68 (*(f32 *)0x00958b68)
-#define DAT_00958b78 (*(f32 *)0x00958b78)
-#define DAT_00958b80 (*(u32 *)0x00958b80)
-#define DAT_00958b84 (*(u32 *)0x00958b84)
-#define DAT_00958b88 (*(u32 *)0x00958b88)
-#define DAT_00958b8c (*(u32 *)0x00958b8c)
-#define DAT_00958ba0 (*(f32 *)0x00958ba0)
-#define DAT_00958ba4 (*(f32 *)0x00958ba4)
-#define DAT_00958ba8 (*(f32 *)0x00958ba8)
-#define DAT_00958bc0 (*(u32 *)0x00958bc0)
-#define DAT_00958bc4 (*(u32 *)0x00958bc4)
-#define DAT_00958bc8 (*(u32 *)0x00958bc8)
-#define DAT_00958bcc (*(u32 *)0x00958bcc)
-#define DAT_00960088 (*(f32 *)0x00960088)
+#pragma alias DAT_00958aa0_abs DAT_00958aa0
+extern u8 DAT_00958aa0_abs[];
+#pragma alias DAT_00958aa4_abs DAT_00958aa4
+extern u8 DAT_00958aa4_abs[];
+#pragma alias DAT_00958aa8_abs DAT_00958aa8
+extern u8 DAT_00958aa8_abs[];
+#pragma alias DAT_00958ab8_abs DAT_00958ab8
+extern u8 DAT_00958ab8_abs[];
+#pragma alias DAT_00958ac0_abs DAT_00958ac0
+extern u8 DAT_00958ac0_abs[];
+#pragma alias DAT_00958ac4_abs DAT_00958ac4
+extern u8 DAT_00958ac4_abs[];
+#pragma alias DAT_00958ac8_abs DAT_00958ac8
+extern u8 DAT_00958ac8_abs[];
+#pragma alias DAT_00958acc_abs DAT_00958acc
+extern u8 DAT_00958acc_abs[];
+#pragma alias DAT_00958ae0_abs DAT_00958ae0
+extern u8 DAT_00958ae0_abs[];
+#pragma alias DAT_00958ae4_abs DAT_00958ae4
+extern u8 DAT_00958ae4_abs[];
+#pragma alias DAT_00958ae8_abs DAT_00958ae8
+extern u8 DAT_00958ae8_abs[];
+#pragma alias DAT_00958af8_abs DAT_00958af8
+extern u8 DAT_00958af8_abs[];
+#pragma alias DAT_00958b00_abs DAT_00958b00
+extern u8 DAT_00958b00_abs[];
+#pragma alias DAT_00958b04_abs DAT_00958b04
+extern u8 DAT_00958b04_abs[];
+#pragma alias DAT_00958b08_abs DAT_00958b08
+extern u8 DAT_00958b08_abs[];
+#pragma alias DAT_00958b0c_abs DAT_00958b0c
+extern u8 DAT_00958b0c_abs[];
+#pragma alias DAT_00958b20_abs DAT_00958b20
+extern u8 DAT_00958b20_abs[];
+#pragma alias DAT_00958b24_abs DAT_00958b24
+extern u8 DAT_00958b24_abs[];
+#pragma alias DAT_00958b28_abs DAT_00958b28
+extern u8 DAT_00958b28_abs[];
+#pragma alias DAT_00958b38_abs DAT_00958b38
+extern u8 DAT_00958b38_abs[];
+#pragma alias DAT_00958b40_abs DAT_00958b40
+extern u8 DAT_00958b40_abs[];
+#pragma alias DAT_00958b44_abs DAT_00958b44
+extern u8 DAT_00958b44_abs[];
+#pragma alias DAT_00958b48_abs DAT_00958b48
+extern u8 DAT_00958b48_abs[];
+#pragma alias DAT_00958b4c_abs DAT_00958b4c
+extern u8 DAT_00958b4c_abs[];
+#pragma alias DAT_00958b60_abs DAT_00958b60
+extern u8 DAT_00958b60_abs[];
+#pragma alias DAT_00958b64_abs DAT_00958b64
+extern u8 DAT_00958b64_abs[];
+#pragma alias DAT_00958b68_abs DAT_00958b68
+extern u8 DAT_00958b68_abs[];
+#pragma alias DAT_00958b78_abs DAT_00958b78
+extern u8 DAT_00958b78_abs[];
+#pragma alias DAT_00958b80_abs DAT_00958b80
+extern u8 DAT_00958b80_abs[];
+#pragma alias DAT_00958b84_abs DAT_00958b84
+extern u8 DAT_00958b84_abs[];
+#pragma alias DAT_00958b88_abs DAT_00958b88
+extern u8 DAT_00958b88_abs[];
+#pragma alias DAT_00958b8c_abs DAT_00958b8c
+extern u8 DAT_00958b8c_abs[];
+#pragma alias DAT_00958ba0_abs DAT_00958ba0
+extern u8 DAT_00958ba0_abs[];
+#pragma alias DAT_00958ba4_abs DAT_00958ba4
+extern u8 DAT_00958ba4_abs[];
+#pragma alias DAT_00958ba8_abs DAT_00958ba8
+extern u8 DAT_00958ba8_abs[];
+#pragma alias DAT_00958bc0_abs DAT_00958bc0
+extern u8 DAT_00958bc0_abs[];
+#pragma alias DAT_00958bc4_abs DAT_00958bc4
+extern u8 DAT_00958bc4_abs[];
+#pragma alias DAT_00958bc8_abs DAT_00958bc8
+extern u8 DAT_00958bc8_abs[];
+#pragma alias DAT_00958bcc_abs DAT_00958bcc
+extern u8 DAT_00958bcc_abs[];
+#define DAT_00958aa0 (*(f32 *)DAT_00958aa0_abs)
+#define DAT_00958aa4 (*(f32 *)DAT_00958aa4_abs)
+#define DAT_00958aa8 (*(f32 *)DAT_00958aa8_abs)
+#define DAT_00958ab8 (*(f32 *)DAT_00958ab8_abs)
+#define DAT_00958ac0 (*(u32 *)DAT_00958ac0_abs)
+#define DAT_00958ac4 (*(u32 *)DAT_00958ac4_abs)
+#define DAT_00958ac8 (*(u32 *)DAT_00958ac8_abs)
+#define DAT_00958acc (*(u32 *)DAT_00958acc_abs)
+#define DAT_00958ae0 (*(f32 *)DAT_00958ae0_abs)
+#define DAT_00958ae4 (*(f32 *)DAT_00958ae4_abs)
+#define DAT_00958ae8 (*(f32 *)DAT_00958ae8_abs)
+#define DAT_00958af8 (*(f32 *)DAT_00958af8_abs)
+#define DAT_00958b00 (*(u32 *)DAT_00958b00_abs)
+#define DAT_00958b04 (*(u32 *)DAT_00958b04_abs)
+#define DAT_00958b08 (*(u32 *)DAT_00958b08_abs)
+#define DAT_00958b0c (*(u32 *)DAT_00958b0c_abs)
+#define DAT_00958b20 (*(f32 *)DAT_00958b20_abs)
+#define DAT_00958b24 (*(f32 *)DAT_00958b24_abs)
+#define DAT_00958b28 (*(f32 *)DAT_00958b28_abs)
+#define DAT_00958b38 (*(f32 *)DAT_00958b38_abs)
+#define DAT_00958b40 (*(u32 *)DAT_00958b40_abs)
+#define DAT_00958b44 (*(u32 *)DAT_00958b44_abs)
+#define DAT_00958b48 (*(u32 *)DAT_00958b48_abs)
+#define DAT_00958b4c (*(u32 *)DAT_00958b4c_abs)
+#define DAT_00958b60 (*(f32 *)DAT_00958b60_abs)
+#define DAT_00958b64 (*(f32 *)DAT_00958b64_abs)
+#define DAT_00958b68 (*(f32 *)DAT_00958b68_abs)
+#define DAT_00958b78 (*(f32 *)DAT_00958b78_abs)
+#define DAT_00958b80 (*(u32 *)DAT_00958b80_abs)
+#define DAT_00958b84 (*(u32 *)DAT_00958b84_abs)
+#define DAT_00958b88 (*(u32 *)DAT_00958b88_abs)
+#define DAT_00958b8c (*(u32 *)DAT_00958b8c_abs)
+#define DAT_00958ba0 (*(f32 *)DAT_00958ba0_abs)
+#define DAT_00958ba4 (*(f32 *)DAT_00958ba4_abs)
+#define DAT_00958ba8 (*(f32 *)DAT_00958ba8_abs)
+#define DAT_00958bc0 (*(u32 *)DAT_00958bc0_abs)
+#define DAT_00958bc4 (*(u32 *)DAT_00958bc4_abs)
+#define DAT_00958bc8 (*(u32 *)DAT_00958bc8_abs)
+#define DAT_00958bcc (*(u32 *)DAT_00958bcc_abs)
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -604,23 +685,35 @@ void FUN_00395570(int param_1)
   int iVar1;
   int iVar2;
   int iVar3;
+  code *p;
+  f32 recip;
+  u8 *q0;
+  u8 *q1;
+  u8 *q2;
+  u8 *q3;
+  u8 *q4;
 
   if (*(int *)(param_1 + 0x670) != 0) {
     iVar1 = *(int *)(param_1 + 0x674);
     iVar2 = *(int *)(param_1 + 0x678);
     iVar3 = FUN_00198590();
 
+    recip = 1.0f / *(f32 *)(iVar3 + 0x80);
     DAT_00958aa0 = (f32)iVar1;
     DAT_00958aa4 = (f32)iVar2;
-    DAT_00958aa8 = DAT_00960088;
+    q0 = DAT_00960088_abs;
+    asm volatile("" : "+m"(q0));
+    DAT_00958aa8 = *(f32 *)q0;
     DAT_00958ac0 = 0x43480000;
     DAT_00958ac4 = 0x42a00000;
     DAT_00958ac8 = 0x42a00000;
     DAT_00958acc = 0x43750000;
-    DAT_00958ab8 = 1.0f / *(f32 *)(iVar3 + 0x80);
+    DAT_00958ab8 = recip;
     DAT_00958ae0 = (f32)(iVar1 + 0x200);
     DAT_00958ae4 = DAT_00958aa4;
-    DAT_00958ae8 = DAT_00960088;
+    q1 = DAT_00960088_abs;
+    asm volatile("" : "+m"(q1));
+    DAT_00958ae8 = *(f32 *)q1;
     DAT_00958b00 = 0x43480000;
     DAT_00958b04 = 0x42a00000;
     DAT_00958b08 = 0x42a00000;
@@ -628,7 +721,9 @@ void FUN_00395570(int param_1)
     DAT_00958af8 = DAT_00958ab8;
     DAT_00958b20 = DAT_00958ae0;
     DAT_00958b24 = (f32)(iVar2 + 0x200);
-    DAT_00958b28 = DAT_00960088;
+    q2 = DAT_00960088_abs;
+    asm volatile("" : "+m"(q2));
+    DAT_00958b28 = *(f32 *)q2;
     DAT_00958b40 = 0x43480000;
     DAT_00958b44 = 0x42a00000;
     DAT_00958b48 = 0x42a00000;
@@ -636,7 +731,9 @@ void FUN_00395570(int param_1)
     DAT_00958b38 = DAT_00958ab8;
     DAT_00958b60 = DAT_00958aa0;
     DAT_00958b64 = DAT_00958b24;
-    DAT_00958b68 = DAT_00960088;
+    q3 = DAT_00960088_abs;
+    asm volatile("" : "+m"(q3));
+    DAT_00958b68 = *(f32 *)q3;
     DAT_00958b80 = 0x43480000;
     DAT_00958b84 = 0x42a00000;
     DAT_00958b88 = 0x42a00000;
@@ -644,15 +741,19 @@ void FUN_00395570(int param_1)
     DAT_00958b78 = DAT_00958ab8;
     DAT_00958ba0 = DAT_00958aa0;
     DAT_00958ba4 = DAT_00958aa4;
-    DAT_00958ba8 = DAT_00960088;
+    q4 = DAT_00960088_abs;
+    asm volatile("" : "+m"(q4));
+    DAT_00958ba8 = *(f32 *)q4;
     DAT_00958bc0 = 0x43480000;
     DAT_00958bc4 = 0x42a00000;
     DAT_00958bc8 = 0x42a00000;
     DAT_00958bcc = 0x43750000;
 
-    (*(code *)0x00960090)(1,0);
-    (*(code *)0x00960090)(7,2);
-    (*(code *)0x00960090)(0xc,1);
+    p = (code *)&DAT_00960090_abs;
+    asm volatile("" : "+m"(p));
+    (*p)(1,0);
+    (*p)(7,2);
+    (*p)(0xc,1);
     (*(code *)0x009600a0)(2,0x958aa0,5);
     *(u32 *)(param_1 + 0x670) = 0;
   }
