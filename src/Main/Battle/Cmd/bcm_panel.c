@@ -37,6 +37,7 @@ extern void FUN_003b1360();
 extern u32 FUN_00239140(s32);
 extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
 extern void FUN_003b0e20(u32 resource, u32 color);
+extern u32 RpRandom(void);
 u32 FUN_0022e850(u32);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
@@ -1804,22 +1805,155 @@ void FUN_0022f1c0(u32* object, u64 event)
 void FUN_0022f3b0(u32* object)
 {
     u8* bytes;
+    u8* dst;
     u32 table;
     u32 state;
     u32 resource;
+    u32 randVal;
+    s32 i;
+    f32 rect[4];
 
-    if (object == NULL) {
-        return;
-    }
     bytes = (u8*)object;
     table = FUN_0021c3f0(4);
     state = object[0x20c];
-    resource = (state < 0xb) ? state + 0x20 : 0x20;
-    FUN_0021d3b0(bytes + 0x400,
-                 FUN_0021cca0(table, resource));
-    *(u32*)(bytes + 0x500) = state;
-    *(u32*)(bytes + 0x50c) = state * 2;
-    object[0] &= ~4u;
+
+    switch (state) {
+    case 0:
+        dst = bytes + 0x1060;
+        resource = FUN_0021cca0(table, 0);
+        for (i = 0; i < 3; ++i) {
+            FUN_0021d3b0(dst + i * 0x100, resource);
+        }
+        *(u32*)(dst + 0x30c) = 0;
+        break;
+
+    case 1:
+        dst = bytes + 0x1060;
+        for (i = 0; i < 3; ++i) {
+            u8* slot = dst + i * 0x200;
+            resource = FUN_0021cca0(table, 1);
+            FUN_0021d3b0(slot, resource);
+            resource = FUN_0021cca0(table, 2);
+            FUN_0021d3b0(slot + 0x100, resource);
+        }
+        *(u32*)(dst + 0x60c) = 0;
+        break;
+
+    case 2:
+        dst = bytes + 0x1060;
+        for (i = 0; i < 3; ++i) {
+            u8* slot = dst + i * 0x100;
+            randVal = RpRandom() % 5;
+            switch (randVal) {
+            case 4: resource = FUN_0021cca0(table, 7); break;
+            case 3: resource = FUN_0021cca0(table, 6); break;
+            case 2: resource = FUN_0021cca0(table, 5); break;
+            case 1: resource = FUN_0021cca0(table, 4); break;
+            case 0: resource = FUN_0021cca0(table, 3); break;
+            }
+            FUN_0021d3b0(slot, resource);
+            *(u32*)(dst + i * 4 + 0x300) = (i * 3 * 4) / 3;
+        }
+        *(u32*)(dst + 0x30c) = 0;
+        break;
+
+    case 3:
+        dst = bytes + 0x1060;
+        resource = FUN_0021cca0(table, 8);
+        FUN_0021d3b0(dst, resource);
+        FUN_0021d3b0(dst + 0x100, resource);
+        FUN_0021cd00(resource, rect);
+        {
+            f32 tmp = rect[0];
+            rect[0] = rect[2];
+            rect[2] = tmp;
+        }
+        FUN_0021eae0(dst + 0x100, rect);
+        randVal = RpRandom() % 30;
+        *(u32*)(dst + 0x20c) = randVal;
+        for (i = 0; i < 2; ++i) {
+            u32 value = randVal + (i * 15 * 2) / 2;
+            *(u32*)(dst + 0x200 + i * 4) = value;
+            *(u32*)(dst + 0x200 + i * 4) = value % 30;
+        }
+        break;
+
+    case 4:
+    case 10:
+        dst = bytes + 0x1060;
+        for (i = 0; i < 2; ++i) {
+            u8* slot = dst + i;
+            u8 bit = (u8)(RpRandom() & 1);
+            *slot = bit;
+            if (bit == 1) {
+                resource = FUN_0021cca0(table, 9);
+            } else if (bit == 0) {
+                resource = FUN_0021cca0(table, 9);
+            }
+            FUN_0021d3b0(dst + i * 0x100, resource);
+            *(u32*)(dst + i * 4 + 0x200) = (i * 3 * 4) / 2;
+        }
+        *(u32*)(dst + 0x20c) = 0;
+        break;
+
+    case 5:
+        dst = bytes + 0x1060;
+        resource = FUN_0021cca0(table, 0xb);
+        FUN_0021d3b0(dst, resource);
+        FUN_0021d3b0(dst + 0x100, resource);
+        resource = FUN_0021cca0(table, 0xc);
+        for (i = 0; i < 3; ++i) {
+            *(u8*)(dst + i) = (u8)i;
+            FUN_0021d3b0(dst + i * 0x100 + 0x200, resource);
+            *(u32*)(dst + i * 4 + 0x500) = (i * 5 * 8) / 3;
+        }
+        *(u32*)(dst + 0x510) = 0;
+        break;
+
+    case 6:
+        dst = bytes + 0x1060;
+        resource = FUN_0021cca0(table, 0xd);
+        FUN_0021d3b0(dst, resource);
+        resource = FUN_0021cca0(table, 0xe);
+        FUN_0021d3b0(dst + 0x100, resource);
+        resource = FUN_0021cca0(table, 0xe);
+        FUN_0021d3b0(dst + 0x200, resource);
+        randVal = RpRandom() % 20;
+        *(u32*)(dst + 0x300) = randVal;
+        break;
+
+    case 7:
+        dst = bytes + 0x1060;
+        for (i = 0; i < 4; ++i) {
+            u8* slot = dst + i;
+            u8 bit1 = (u8)(RpRandom() & 1);
+            u8 bit2 = (u8)(RpRandom() & 1);
+            u8 bit3;
+            *(slot + 0x410) = bit1;
+            *(slot + 0x414) = bit2;
+            bit3 = (u8)(RpRandom() & 1);
+            *(slot + 0x418) = bit3;
+            if (bit1 == 1) {
+                resource = FUN_0021cca0(table, 0x10);
+            } else if (bit1 == 0) {
+                resource = FUN_0021cca0(table, 0xf);
+            }
+            FUN_0021d3b0(dst + i * 0x100, resource);
+            *(u32*)(dst + i * 4 + 0x400) = (i * 5 * 8) / 4;
+        }
+        *(u32*)(dst + 0x41c) = 0;
+        break;
+
+    case 8:
+        resource = FUN_0021cca0(table, 0x11);
+        FUN_0021d3b0(bytes + 0x1060, resource);
+        break;
+
+    case 9:
+        resource = FUN_0021cca0(table, 0);
+        FUN_0021d3b0(bytes + 0x1060, resource);
+        break;
+    }
 }
 
 // FUN_0022FA80 NONMATCHING
