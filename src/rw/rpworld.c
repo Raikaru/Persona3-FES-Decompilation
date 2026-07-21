@@ -1981,6 +1981,10 @@ extern code FUN_004d18c0;
 extern code FUN_004d4df0;
 extern code FUN_004d51c0;
 extern code FUN_004d59d0;
+#pragma alias FUN_004d59d0_typed FUN_004d59d0
+extern void FUN_004d59d0_typed(int,int);
+#pragma alias FUN_004d5fe0_typed FUN_004d5fe0
+extern int FUN_004d5fe0_typed(int,int);
 extern code FUN_004d5e90;
 extern code FUN_004d5fe0;
 extern code FUN_004d7f60;
@@ -17692,6 +17696,7 @@ void FUN_004a2560(u64 param_1,int *param_2)
   return;
 }
 
+#pragma schedule on
 // FUN_004A26D0 NONMATCHING
 
 int FUN_004a26d0(int param_1,int *param_2,int param_3,u32 param_4)
@@ -17699,21 +17704,22 @@ int FUN_004a26d0(int param_1,int *param_2,int param_3,u32 param_4)
 {
   int iVar1;
   
-  ((code)FUN_004d59d0)(0,0x80);
-  iVar1 = ((code)FUN_004d5fe0)(param_3 + 0x18,0);
+  FUN_004d59d0_typed(0,0x80);
+  iVar1 = FUN_004d5fe0_typed(param_3 + 0x18,0);
   *param_2 = iVar1;
-  *(u32 *)(*param_2 + 4) = 0;
-  *(u32 *)*param_2 = 0;
-  *(u32 *)(*param_2 + 0xc) = *(u32 *)(param_1 + 8);
-  *(int *)(*param_2 + 8) = param_3;
-  *(u32 *)(*param_2 + 0x10) = 0;
-  *(u32 *)(*param_2 + 0x14) = param_4;
-  iVar1 = *param_2;
+  *(u32 *)(*(volatile int *)param_2 + 4) = 0;
+  *(u32 *)*(volatile int *)param_2 = 0;
+  *(u32 *)(*(volatile int *)param_2 + 0xc) = *(u32 *)(param_1 + 8);
+  *(int *)(*(volatile int *)param_2 + 8) = param_3;
+  *(u32 *)(*(volatile int *)param_2 + 0x10) = 0;
+  *(u32 *)(*(volatile int *)param_2 + 0x14) = param_4;
+  iVar1 = *(volatile int *)param_2;
   if (iVar1 == 0) {
     iVar1 = 0;
   }
   return iVar1;
 }
+#pragma schedule off
 
 // FUN_004A2BB0 NONMATCHING
 
