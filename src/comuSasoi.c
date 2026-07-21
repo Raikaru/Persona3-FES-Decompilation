@@ -886,9 +886,9 @@ u8 FUN_003c30b0(void)
   if (*(u32*)DAT_0095b790_abs != 0) goto work;
   return 0;
 work:
-  t0 = *(u32*)DAT_0095b794_abs;
-  t1 = *(u32*)DAT_0095b798_abs;
-  t2 = (u32)DAT_0095b79c_abs;
+  t0 = *(u32*)DAT_0095b79c_abs;
+  t1 = *(u32*)DAT_0095b794_abs;
+  t2 = (u32)DAT_0095b798_abs;
   FUN_00172b80(t0,t1,t2,1);
   *(u32*)DAT_0095b790_abs = 0;
   return 1;
@@ -907,9 +907,9 @@ u8 FUN_003c3120(void)
   if (*(u32*)DAT_0095b790_abs != 0) goto work;
   return 0;
 work:
-  t0 = *(u32*)DAT_0095b794_abs;
-  t1 = *(u32*)DAT_0095b798_abs;
-  t2 = (u32)DAT_0095b79c_abs;
+  t0 = *(u32*)DAT_0095b79c_abs;
+  t1 = *(u32*)DAT_0095b794_abs;
+  t2 = (u32)DAT_0095b798_abs;
   FUN_00172b80(t0,t1,t2,0);
   *(u32*)DAT_0095b790_abs = 0;
   return 1;
