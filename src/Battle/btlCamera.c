@@ -245,12 +245,115 @@ extern f32 FUN_002d1f30_typed(const f32 *first, const f32 *second);
 
 
 
-// 006939f0
+extern void FUN_002a5430(BtlCamera* camera);
+extern void FUN_002a5460(BtlCamera* camera);
+extern void btlCameraFrameActionDefault(BtlCamera* camera);
+extern void btlCameraFrameActionClose(BtlCamera* camera);
+extern void btlCameraFrameActionPair(BtlCamera* camera);
+extern void btlCameraFrameActionQuarter(BtlCamera* camera);
+extern void btlCameraFrameActionDuel(BtlCamera* camera);
+extern void FUN_002a6ed0(void);
+extern void btlCameraFrameActionSide(BtlCamera* camera);
+extern void func_002a7380(void);
+extern void btlCameraFrameActionTarget(BtlCamera* camera);
+extern void func_002a7820(void);
+extern void func_002ac540(BtlCamera* camera);
+extern void func_002ac6e0(BtlCamera* camera);
+extern void func_002ad680(BtlCamera* camera);
+extern void func_002ad770(BtlCamera* camera);
+extern void func_002adc30(BtlCamera* camera);
+extern void btlCameraNoop002adc70(void);
+extern void func_002adc80(BtlCamera* camera);
+extern void btlCameraNoop002adcc0(void);
+extern void func_002adcd0(BtlCamera* camera);
+extern void func_002ADD00(void);
+extern void func_002ae150(BtlCamera* camera);
+extern void func_002ae250(void);
+extern void func_002ae260(BtlCamera* camera);
+extern void func_002ae4c0(void);
+extern void func_002ae4d0(BtlCamera* camera);
+extern void func_002ae730(void);
+extern void func_002af7f0(BtlCamera* camera);
+extern void func_002af850(BtlCamera* camera);
+extern void func_002af960(BtlCamera* camera);
+extern void FUN_002b0210(int param_1);
+extern void FUN_002b1020(u64 param_1);
+extern void btlCameraNoOp(void);
+extern void FUN_002b1bc0(int param_1);
+extern void FUN_002b1cf0(int param_1);
+extern void FUN_002b1e00(int param_1);
+extern void FUN_002b2060(int param_1);
+extern void FUN_002b2800(BtlCamera *camera);
+extern void FUN_002b2880(int param_1);
+extern void FUN_002b2940(void *arg0);
+extern void FUN_002b2ea0(void);
+extern void FUN_002b32c0(u16* camera);
+extern void func_002b3330(void);
+extern void FUN_002b3340(BtlCamera* camera);
+extern void FUN_002b3680(void);
+extern void FUN_002b3690(BtlCamera* camera);
+extern void FUN_002b3980(BtlCamera* camera);
+extern void FUN_002b3c60(BtlCamera* camera);
+extern void FUN_002b3f80(BtlCamera* camera);
+extern void FUN_002b41e0(BtlCamera* camera);
+extern void FUN_002b4720(int param_1);
+extern void FUN_002b47b0(BtlCamera* camera);
+extern void FUN_002b4bc0(int param_1);
+extern void FUN_002b4c00(int param_1);
+extern void FUN_002b4f40(int param_1);
+extern void FUN_002b4fd0(void);
+extern void FUN_002b5000(int param_1);
+extern void FUN_002b5240(BtlCamera* camera);
+extern void FUN_002b55d0(void);
+extern void FUN_002b5600(void* param_1);
+extern void FUN_002b5650(int param_1);
+extern void FUN_002b56e0(u8* param_1);
+extern void FUN_002b58f0(BtlCamera* param_1);
+extern void FUN_002b5cd0(BtlCamera* camera);
+extern void FUN_002b6460(BtlCamera* camera);
+
 static const BtlCameraStateEntry sCameraStateEntries[] =
 {
-    // TODO
     {NULL, NULL, 0, 0, NULL}, // BTLCAMERA_STATE_NULL
-    {NULL, NULL, 1, 0, "NOP"}, // BTLCAMERA_STATE_NOP
+    {NULL, NULL, 1, 0, "NOP"}, // NOP
+    {FUN_002b3690, NULL, 1, 1, "ENCOUNT"}, // ENCOUNT
+    {FUN_002b47b0, NULL, 1, 1, "ANALYZE"}, // ANALYZE
+    {(void(*)(BtlCamera*))FUN_002b4bc0, (void(*)(BtlCamera*))FUN_002b4c00, 1, 1, "ASSIST"}, // ASSIST
+    {FUN_002b41e0, (void(*)(BtlCamera*))FUN_002b4720, 1, 1, "REINFORCE"}, // REINFORCE
+    {(void(*)(BtlCamera*))FUN_002b4f40, (void(*)(BtlCamera*))FUN_002b4fd0, 1, 1, "ROUNDUP"}, // ROUNDUP
+    {(void(*)(BtlCamera*))FUN_002b5000, NULL, 1, 1, "ESCAPE"}, // ESCAPE
+    {FUN_002b5240, NULL, 1, 1, "ESCAPE_MES"}, // ESCAPE_MES
+    {FUN_002a5430, FUN_002a5460, 1, 1, "OWN"}, // OWN
+    {func_002af960, (void(*)(BtlCamera*))FUN_002b0210, 1, 1, "ATTACK_SHORT"}, // ATTACK_SHORT
+    {(void(*)(BtlCamera*))FUN_002b1020, (void(*)(BtlCamera*))btlCameraNoOp, 1, 1, "ATTACK_LONG"}, // ATTACK_LONG
+    {(void(*)(BtlCamera*))FUN_002b1e00, (void(*)(BtlCamera*))FUN_002b2060, 1, 1, "ATTACK_DOWN_P"}, // ATTACK_DOWN_P
+    {FUN_002b2800, (void(*)(BtlCamera*))FUN_002b2880, 1, 1, "ATTACK_DOWN_E"}, // ATTACK_DOWN_E
+    {(void(*)(BtlCamera*))FUN_002b2940, (void(*)(BtlCamera*))FUN_002b2ea0, 1, 1, "ATTACK_SLIP"}, // ATTACK_SLIP
+    {(void(*)(BtlCamera*))FUN_002b1bc0, (void(*)(BtlCamera*))FUN_002b1cf0, 1, 1, "ATTACK_COMB"}, // ATTACK_COMB
+    {btlCameraFrameActionDefault, btlCameraFrameActionClose, 1, 1, "SKILL_RECITE_P"}, // SKILL_RECITE_P
+    {btlCameraFrameActionPair, btlCameraFrameActionQuarter, 1, 1, "SKILL_RECITE_E"}, // SKILL_RECITE_E
+    {btlCameraFrameActionDuel, (void(*)(BtlCamera*))FUN_002a6ed0, 1, 1, "MOVE_TARGET"}, // MOVE_TARGET
+    {btlCameraFrameActionSide, (void(*)(BtlCamera*))func_002a7380, 1, 1, "MOVE_TARGET_A"}, // MOVE_TARGET_A
+    {btlCameraFrameActionTarget, (void(*)(BtlCamera*))func_002a7820, 1, 1, "MOVE_HOME"}, // MOVE_HOME
+    {func_002ac540, func_002ac6e0, 1, 1, "SKILL_EXEC_PC"}, // SKILL_EXEC_PC
+    {func_002ad680, func_002ad770, 1, 1, "SKILL_EXEC_EC"}, // SKILL_EXEC_EC
+    {func_002adc30, (void(*)(BtlCamera*))btlCameraNoop002adc70, 1, 0, "SKILL_EXEC_ONE"}, // SKILL_EXEC_ONE
+    {func_002adc80, (void(*)(BtlCamera*))btlCameraNoop002adcc0, 1, 0, "SKILL_EXEC_REC"}, // SKILL_EXEC_REC
+    {func_002adcd0, (void(*)(BtlCamera*))func_002ADD00, 1, 1, "SKILL_EXEC_PS"}, // SKILL_EXEC_PS
+    {func_002ae260, (void(*)(BtlCamera*))func_002ae4c0, 1, 1, "PERSONA"}, // PERSONA
+    {func_002ae4d0, (void(*)(BtlCamera*))func_002ae730, 1, 1, "OVERLIMIT"}, // OVERLIMIT
+    {func_002ae150, (void(*)(BtlCamera*))func_002ae250, 0, 1, "COMMAND"}, // COMMAND
+    {func_002af7f0, func_002af850, 0, 1, "TARGET"}, // TARGET
+    {(void(*)(BtlCamera*))FUN_002b32c0, (void(*)(BtlCamera*))func_002b3330, 0, 1, "FREE"}, // FREE
+    {FUN_002b3340, (void(*)(BtlCamera*))FUN_002b3680, 0, 1, "RESET"}, // RESET
+    {FUN_002b3980, NULL, 1, 0, "WIN"}, // WIN
+    {FUN_002b3c60, NULL, 1, 0, "CONDITION"}, // CONDITION
+    {FUN_002b3f80, NULL, 1, 1, "ORDER"}, // ORDER
+    {(void(*)(BtlCamera*))FUN_002b55d0, (void(*)(BtlCamera*))FUN_002b5600, 0, 1, "CHANGE FORM"}, // CHANGE FORM
+    {(void(*)(BtlCamera*))FUN_002b5650, (void(*)(BtlCamera*))FUN_002b56e0, 0, 1, "NYX FEATHER"}, // NYX FEATHER
+    {FUN_002b58f0, NULL, 1, 0, "ALL"}, // ALL
+    {FUN_002b5cd0, NULL, 1, 0, "ENEMY_ALL"}, // ENEMY_ALL
+    {FUN_002b6460, NULL, 1, 0, "TARGET_ONLY"}, // TARGET_ONLY
 };
 
 // FUN_002a31b0
