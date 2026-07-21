@@ -476,16 +476,28 @@ u8 func_00109040(s16 id, s16 unused)
     return true;
 }
 
-// FUN_00109070 NONMATCHING
-u8 func_00109070(s16 channelIndex)
+// FUN_00109070
+u8 func_00109070(s32 channelIndex)
 {
-    HsndChannel* channel;
-
-    channel = H_Snd_GetChannel(channelIndex);
-    if (channel != NULL && channel->active != false)
+    if (channelIndex < 2)
     {
-        func_0054d100(channel->handle);
-        H_Snd_ClearChannel(channel);
+        if (sChannels[channelIndex].active != false)
+        {
+            func_0054d100(sChannels[channelIndex].handle);
+            sChannels[channelIndex].state = HSND_CHANNEL_INACTIVE;
+            sChannels[channelIndex].active = false;
+            sChannels[channelIndex].id = HSND_BGM_NONE;
+        }
+    }
+    else
+    {
+        if (sChannels[channelIndex].active != false)
+        {
+            func_0054d100(sChannels[channelIndex].handle);
+            sChannels[channelIndex].state = HSND_CHANNEL_INACTIVE;
+            sChannels[channelIndex].active = false;
+            sChannels[channelIndex].id = HSND_BGM_NONE;
+        }
     }
 
     return true;
@@ -815,18 +827,37 @@ void H_Snd_FUN_0010a0e0(s16 bank, s16 cue)
     func_0010da70(bank, cue);
 }
 
-// FUN_0010A100 NONMATCHING
+// FUN_0010A100
 void func_0010a100(s16 channelIndex, s32 unused, s32 fadeFrames)
 {
-    HsndChannel* channel;
-
     (void)unused;
-    channel = H_Snd_GetChannel(channelIndex);
-    if (channel != NULL && channel->active != false)
+    if (channelIndex < HSND_CHANNEL_COUNT)
     {
-        H_Snd_ApplyChannelFade(channel, fadeFrames);
-        func_0054d100(channel->handle);
-        H_Snd_ClearChannel(channel);
+        if (sChannels[channelIndex].active != false)
+        {
+            func_0054d220(sChannels[channelIndex].handle, fadeFrames);
+
+            if (channelIndex < 2)
+            {
+                if (sChannels[channelIndex].active != false)
+                {
+                    func_0054d100(sChannels[channelIndex].handle);
+                    sChannels[channelIndex].state = HSND_CHANNEL_INACTIVE;
+                    sChannels[channelIndex].active = false;
+                    sChannels[channelIndex].id = HSND_BGM_NONE;
+                }
+            }
+            else
+            {
+                if (sChannels[channelIndex].active != false)
+                {
+                    func_0054d100(sChannels[channelIndex].handle);
+                    sChannels[channelIndex].state = HSND_CHANNEL_INACTIVE;
+                    sChannels[channelIndex].active = false;
+                    sChannels[channelIndex].id = HSND_BGM_NONE;
+                }
+            }
+        }
     }
 }
 

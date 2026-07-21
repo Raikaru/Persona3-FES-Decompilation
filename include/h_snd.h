@@ -157,7 +157,7 @@ s16 H_Snd_GetCurrentBgmId(void);
 void H_Snd_StopBgm(void);
 void H_Snd_StopBgmFade(s16 fadeDuration);
 u8 func_00109040(s16 id, s16 unused);
-u8 func_00109070(s16 channelIndex);
+u8 func_00109070(s32 channelIndex);
 u8 func_00109170(void);
 void H_Snd_00109180(s32 channelIndex);
 s16 func_001099a0(void);
