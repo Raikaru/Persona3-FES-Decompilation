@@ -8,6 +8,10 @@ void FUN_0021d3b0();
 u32 FUN_0021cce0();
 extern u32 D_00960090[];
 extern u32 D_0096009C[];
+#pragma alias D_00960090_fn D_00960090
+#pragma alias D_0096009C_fn D_0096009C
+extern void (*D_00960090_fn)(u32, u32);
+extern void (*D_0096009C_fn)(u32*, u32, u32, u32, u32);
 extern void RpSkyRenderStateSet(u32, void*);
 extern void* FUN_00198590(void);
 void FUN_00226320();
@@ -1655,20 +1659,102 @@ void FUN_00228E40(void)
 // FUN_00229B40 NONMATCHING
 void FUN_00229B40(void)
 {
+    u8* base;
+    u8* records;
+    u8* record;
+    u32 table0;
+    u32 table6;
+    u32 resource;
     u32 i;
-    u32 count;
+    u32 state;
+    void (*setState)(u32, u32);
+    void (*setQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        if (*(u32*)record == 1) {
-            FUN_0021d3b0(record + 0x10,
-                         FUN_0021cca0(FUN_0021c3f0(0), 0x29));
+    base = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    records = base + 0x4660;
+    resource = FUN_0021cca0(table0, 0x23);
+    setState = D_00960090_fn;
+    setState(1, FUN_0021cce0(resource));
+    setQuad = D_0096009C_fn;
+    setQuad((u32*)(base + 0x4230), 4, 0, 1, 2);
+    setQuad((u32*)(base + 0x4230), 4, 0, 2, 3);
+    setQuad((u32*)(base + 0x4330), 4, 0, 1, 2);
+    setQuad((u32*)(base + 0x4330), 4, 0, 2, 3);
+    for (i = 0; i < *(u32*)(base + 0x6070); i++) {
+        record = records + i * 0x510;
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        FUN_003b1360(*(u32*)(record + 4), 1, 0);
+        state = *(u32*)(record + 8);
+        if (state == 1) {
+            resource = FUN_0021cca0(table0, 0x31);
+        } else if (state == 0) {
+            resource = FUN_0021cca0(table0, 0x30);
         }
-        *(u32*)(record + 0x20) = bcm_panel_read(0x4644);
+        setState(1, FUN_0021cce0(resource));
+        if (i == *(u32*)(base + 0x6068) - *(u32*)(base + 0x606c)) {
+            RpSkyRenderStateSet(3, (void*)0x71801);
+            RpSkyRenderStateSet(2, (void*)0x48);
+        } else {
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+        }
+        setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+        setState = D_00960090_fn;
+        setState(1, FUN_00239140(1));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x110), 4, 0, 2, 3);
+        setQuad((u32*)(record + 0x210), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x210), 4, 0, 2, 3);
+        setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        resource = FUN_0021cca0(table6, 0x2b);
+        setState(1, FUN_0021cce0(resource));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x410), 4, 0, 2, 3);
     }
-    bcm_panel_write(0x4644, 0);
+    if (*(u32*)(base + 0x4644) == 3) {
+        record = base + 0x6d00;
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        FUN_003b1360(*(u32*)(record + 4), 1, 0);
+        state = *(u32*)(record + 8);
+        if (state == 1) {
+            resource = FUN_0021cca0(table0, 0x31);
+        } else if (state == 0) {
+            resource = FUN_0021cca0(table0, 0x30);
+        }
+        setState = D_00960090_fn;
+        setState(1, FUN_0021cce0(resource));
+        RpSkyRenderStateSet(3, (void*)0x71801);
+        RpSkyRenderStateSet(2, (void*)0x48);
+        setQuad = D_0096009C_fn;
+        setQuad((u32*)(record + 0x10), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+        setState(1, FUN_00239140(1));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad((u32*)(record + 0x110), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x110), 4, 0, 2, 3);
+        setQuad((u32*)(record + 0x210), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x210), 4, 0, 2, 3);
+        setQuad((u32*)(record + 0x310), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+        resource = FUN_0021cca0(table6, 0x2b);
+        setState(1, FUN_0021cce0(resource));
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        setQuad((u32*)(record + 0x410), 4, 0, 1, 2);
+        setQuad((u32*)(record + 0x410), 4, 0, 2, 3);
+    }
 }
 
 // FUN_0022A2B0 NONMATCHING
