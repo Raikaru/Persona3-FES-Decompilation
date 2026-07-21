@@ -1932,8 +1932,8 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
     CampMainPackedPosition input;
-    f32 inputX;
-    f32 inputY;
+    register f32 inputX;
+    register f32 inputY;
     volatile u64 copied;
     volatile CampMainPackedPosition local;
     CampMainSpriteNode* sprite;
@@ -1954,6 +1954,7 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                  55.0f + *((volatile f32*)&copied),
                  36.0f + *(((volatile f32*)&copied) + 1), alpha);
     for (i = 0; i < 5; i++) {
+        local.coordinates.y = inputY + (f32)i * 64.0f + 49.0f;
         sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
         sprite->spriteScale = alpha;
         sprite->x = local.coordinates.x;
@@ -1976,6 +1977,7 @@ void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
     }
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];
+        local.coordinates.y = inputY + (f32)(i + start) * 64.0f + 49.0f;
         x = local.coordinates.x;
         y = local.coordinates.y + 24.0f;
         if (i == selected) {
@@ -2023,8 +2025,8 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
     CampMainPackedPosition input;
-    f32 inputX;
-    f32 inputY;
+    register f32 inputX;
+    register f32 inputY;
     volatile u64 copied;
     volatile CampMainPackedPosition local;
     CampMainSpriteNode* sprite;
@@ -2045,6 +2047,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                  55.0f + *((volatile f32*)&copied),
                  36.0f + *(((volatile f32*)&copied) + 1), alpha);
     for (i = 0; i < 5; i++) {
+        local.coordinates.y = inputY + (f32)i * 64.0f + 49.0f;
         sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
         sprite->spriteScale = alpha;
         sprite->x = local.coordinates.x;
@@ -2067,6 +2070,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
     }
     for (i = 0; i < visibleCount; i++) {
         id = entries[offset + i];
+        local.coordinates.y = inputY + (f32)(i + start) * 64.0f + 49.0f;
         x = local.coordinates.x;
         y = local.coordinates.y + 24.0f;
         if (i == selected) {
