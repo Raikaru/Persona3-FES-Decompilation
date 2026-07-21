@@ -144,7 +144,7 @@ u16 FUN_003b1a10(u32 param_1);
 u16 FUN_003b1a40(u32 param_1);
 void FUN_003b1a70(void);
 void FUN_003b1a80(u32 param_1);
-int FUN_003b1a90(long param_1);
+int FUN_003b1a90(int param_1);
 int FUN_003b1b00(int param_1,long param_2);
 void FUN_003b1bc0(u32 *param_1,int param_2,long param_3);
 void FUN_003b1c40(int param_1,int param_2,long param_3);
@@ -2423,25 +2423,15 @@ void FUN_003b1a80(u32 param_1)
 // FUN_003B1A90 NONMATCHING
 
 
-int FUN_003b1a90(long param_1)
-
-
-
+int FUN_003b1a90(int param_1)
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
 
-  
-
   iVar2 = 0;
-
   if (param_1 != 0) {
-
-    for (iVar1 = *(int *)((int)param_1 + 0x2c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
+    for (iVar1 = *(int *)(param_1 + 0x2c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
 
       for (iVar3 = iVar1; (iVar3 != 0 && (*(int *)(iVar3 + 8) < *(int *)(iVar1 + 8) + 100));
 
