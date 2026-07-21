@@ -7,6 +7,8 @@
 #include "Scene/resrcManager.h"
 #include "Kosaka/Field/k_field.h"
 #include "Kosaka/Field/k_fldFrame.h"
+extern f32 cosf(f32 x);
+extern f32 sinf(f32 x);
 
 extern s32 AddIntcHandler(s32 cause, s32 (*handler)(s32), s32 mode);
 extern s32 EnableIntc(s32 cause);
@@ -58,6 +60,7 @@ extern RwFrame* func_004caf10(void);
 extern RwCamera* func_004d1840(RwCamera* camera, RwFrame* frame);
 extern RwFrame* func_004cb930(RwFrame* frame, const RwV3d* translation, RwOpCombineType combineOp);
 extern RwMatrix* func_004c2fb0(RwMatrix* matrixOut, RwMatrix* matrixIn);
+extern void func_004c32a0(RwMatrix* destination, const RwMatrix* source);
 extern RwCamera* func_004c9db0(RwCamera* camera, f32 nearPlane);
 extern RwCamera* func_004c9d70(RwCamera* camera, f32 farPlane);
 extern void func_00317a20(Model* model);
@@ -75,6 +78,8 @@ extern void* func_004f1ed0(void* vertexBuffer, u32 vertexCount, u32 primitiveTyp
 extern void func_004f2150(s32 primitiveType);
 extern void func_004f1f80(void);
 extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias D_00960090_abs D_00960090
+extern void (*D_00960090_abs[])(u32 state, u32 value);
 extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
 extern void (*jtbl_0096017C)(void* memory);
@@ -124,6 +129,7 @@ typedef struct FldShadowProjectionWork
     s32 triangleCount;            // 0x5464
     u8 unk_5468[0x08];            // 0x5468
     RwV3d projectionNormal;       // 0x5470
+    u32 unk_547c;                  // 0x547c
     RwMatrix projectionMatrix;    // 0x5480
     u8 alpha;                     // 0x54c0
     u8 unk_54c1[0x03];            // 0x54c1
@@ -547,35 +553,45 @@ u32 func_0019ab80(f32 alpha,
                   u32 depthAlpha,
                   FldShadowProjectionWork* work)
 {
-    RwFrame* cameraFrame;
     RwMatrix* projectionMatrix;
     RwV3d scale;
     RwV3d translation;
     f32 viewWidth;
     u32 count;
+    RwFrame* frame;
+    volatile void (**stateSet)(u32, u32);
+    ResrcFld* field;
+    u8* collisionData;
+    void* collisionWorld;
+    u32 collisionCount;
+    u32 i;
+    u32 j;
+    ResrcFld* fields[4];
+    u16 resourceIds[4];
 
-    D_00960090(1, (u32)(uintptr_t)raster);
-    D_00960090(2, 3);
-    D_00960090(12, 1);
-    D_00960090(9, 2);
-    D_00960090(10, 5);
+    field = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    stateSet = (volatile void (**)(u32, u32))D_00960090_abs;
+    (*stateSet)(1, (u32)(uintptr_t)raster);
+    (*stateSet)(2, 3);
+    (*stateSet)(12, 1);
+    (*stateSet)(9, 2);
+    (*stateSet)(10, 5);
 
     if (alpha < 0.0f)
     {
         alpha = -alpha;
-        D_00960090(11, 5);
+        (*stateSet)(11, 5);
     }
     else
     {
-        D_00960090(11, 6);
+        (*stateSet)(11, 6);
     }
 
-    cameraFrame = camera != NULL ? (RwFrame*)camera->object.object.parent : NULL;
-    if (cameraFrame != NULL)
+    frame = (RwFrame*)camera->object.object.parent;
+    if (frame != NULL)
     {
-        work->projectionNormal = cameraFrame->modelling.pos;
-        projectionMatrix = &work->projectionMatrix;
-        *projectionMatrix = cameraFrame->modelling;
+        work->projectionNormal = frame->modelling.pos;
+        func_004c32a0(projectionMatrix, &frame->modelling);
 
         viewWidth = camera->viewWindow.x;
         scale.x = -0.5f / viewWidth;
@@ -597,35 +613,98 @@ u32 func_0019ab80(f32 alpha,
 
     if (drawField == 0)
     {
-        K_FldShadow_SubmitFieldGeometry(position, work, drawField);
+        collisionData = (u8*)field->unk_160;
+        collisionWorld = *(void**)(collisionData + 0x10);
+        if (collisionWorld != NULL)
+        {
+            func_00464020(collisionWorld, (void*)position,
+                          (void*)func_00199d90, work);
+        }
+        else
+        {
+            collisionCount = *(u32*)(collisionData + 0x14);
+            for (i = 0; i < collisionCount; i++)
+            {
+                func_00464020(*(void**)(collisionData + 0x18 + i * sizeof(void*)),
+                              (void*)position, (void*)func_00199d90, work);
+            }
+        }
     }
     else if (drawField == 1)
     {
-        K_FldShadow_SubmitFieldGeometry(position, work, drawField);
+        u32 fieldCount;
+        void* gridModel;
+        KwlnTask* collisionTask;
+        s32 xGrid;
+        s32 zGrid;
+        u8* gridCell;
+
+        fieldCount = 0;
+        gridModel = MT_Scene_GetRes(0x400);
+        collisionTask = gridModel != NULL
+            ? ((ResrcModelChar*)gridModel)->collisCtlTask : NULL;
+        xGrid = collisionTask != NULL ? K_FldFrame_CtlGetXGrid(collisionTask) : 0;
+        zGrid = collisionTask != NULL ? K_FldFrame_CtlGetZGrid(collisionTask) : 0;
+        gridCell = (u8*)K_Field_Get() + 0x4c + zGrid * 0x100 + xGrid * 0x10;
+        resourceIds[0] = *(u16*)(gridCell + 0x4c);
+        resourceIds[1] = *(u16*)(gridCell + 0x5c);
+        resourceIds[2] = *(u16*)(gridCell + 0x3c);
+        resourceIds[3] = *(u16*)(gridCell - 0xb4);
+        for (i = 0; i < 4; i++)
+        {
+            for (j = 0; j < fieldCount; j++)
+            {
+                if (resourceIds[i] == resourceIds[j])
+                    break;
+            }
+            if (j == fieldCount)
+            {
+                fields[fieldCount] = (ResrcFld*)MT_Scene_GetRes(resourceIds[i]);
+                if (fields[fieldCount] != NULL)
+                    fieldCount++;
+            }
+        }
+        for (i = 0; i < fieldCount; i++)
+        {
+            collisionData = (u8*)fields[i]->unk_160;
+            collisionWorld = *(void**)(collisionData + 0x10);
+            if (collisionWorld != NULL)
+            {
+                func_00464020(collisionWorld, (void*)position,
+                              (void*)func_00199d90, work);
+            }
+            else
+            {
+                collisionCount = *(u32*)(collisionData + 0x14);
+                for (j = 0; j < collisionCount; j++)
+                {
+                    func_00464020(*(void**)(collisionData + 0x18 + j * sizeof(void*)),
+                                  (void*)position, (void*)func_00199d90, work);
+                }
+            }
+        }
     }
 
     count = work->vertexCount;
     work->triangleCount = (s32)(count + work->flushedTriangles * 600) / 3;
     if (count != 0)
     {
-        D_00960090(1, (u32)(uintptr_t)raster);
-        D_00960090(14, 0);
-        D_00960090(6, 1);
-        D_00960090(8, 0);
+        (*stateSet)(1, (u32)(uintptr_t)raster);
+        (*stateSet)(14, 0);
+        (*stateSet)(6, 1);
+        (*stateSet)(8, 0);
         if (func_004f1ed0(work, count, 0, 0x19) != NULL)
         {
             func_004f2150(3);
             func_004f1f80();
         }
         if (gFogEnabled == 1)
-        {
-            D_00960090(14, 0);
-        }
+            (*stateSet)(14, 0);
         work->vertexCount = 0;
     }
 
-    D_00960090(11, 6);
-    D_00960090(10, 5);
+    (*stateSet)(11, 6);
+    (*stateSet)(10, 5);
     return true;
 }
 
@@ -954,21 +1033,26 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     RwV3d scale;
     RwV3d position;
     FldShadowRingWork* ring;
+    void* layout;
+    void* geometry;
+    void* renderObject;
+    u8* vertices;
+    u8* colors;
+    RwFrame* frame;
+    f32 ringAngle;
+    f32* vertex;
+    u16* index;
+    s32 i;
+    void (*render)(void*);
+    f32 ringBounds[4];
 
-    shadow = renderTexTask != NULL ? (FldShadowRenderTex*)renderTexTask->workData : NULL;
-    if (shadow == NULL || shadow->res == NULL)
-    {
+    shadow = (FldShadowRenderTex*)renderTexTask->workData;
+    if ((shadow->res->flags & FLDSHADOW_RESOURCE_FLAGS_DRAW) == 0)
         return KWLNTASK_CONTINUE;
-    }
-    if ((shadow->res->flags & FLDSHADOW_RESOURCE_FLAGS_DRAW) == 0 ||
-        shadow->unk_04 == 1)
-    {
+    if (shadow->unk_04 == 1)
         return KWLNTASK_CONTINUE;
-    }
     if (shadow->state == 2)
-    {
         return KWLNTASK_STOP;
-    }
 
     if (shadow->state == 0)
     {
@@ -976,7 +1060,62 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
         {
             if (shadow->model != NULL && mdlStreamRead(shadow->model) != 0)
             {
-                K_FldShadow_CreateRing(shadow);
+                ring = (FldShadowRingWork*)shadow->radius;
+                ring->colorData = func_00494be0();
+                *(RwRGBA*)((u8*)ring->colorData + 4) = *FLDSHADOW_RING_COLOR;
+                layout = func_00493710(0x22, 0x20, 0x4a);
+                for (i = 0; i < 0x20; i++)
+                {
+                    index = (u16*)((u8*)*(void**)((u8*)layout + 0x2c) + i * 8);
+                    func_00493210(layout, index, 0, (u16)(i + 2), (u16)(i + 1));
+                    func_00493230(layout, index, ring->colorData);
+                }
+                colors = *(u8**)((u8*)layout + 0x30);
+                colors[0] = 0;
+                colors[1] = 0;
+                colors[2] = 0;
+                colors[3] = 0x80;
+                for (i = 0; i < 0x21; i++)
+                {
+                    colors[i * 4 + 4] = 0;
+                    colors[i * 4 + 5] = 0;
+                    colors[i * 4 + 6] = 0;
+                    colors[i * 4 + 7] = 0;
+                }
+                geometry = *(void**)((u8*)layout + 0x5c);
+                vertices = *(u8**)((u8*)geometry + 0x14);
+                *(f32*)(vertices + 0) = 0.0f;
+                *(f32*)(vertices + 4) = 5.0f;
+                *(f32*)(vertices + 8) = 0.0f;
+                ringAngle = 0.0f;
+                for (i = 0; i < 0x20; i++)
+                {
+                    vertex = (f32*)(vertices + (i + 1) * 0x0c);
+                    vertex[0] = ring->radius * cosf(ringAngle);
+                    vertex[1] = 5.0f;
+                    vertex[2] = ring->radius * sinf(ringAngle);
+                    index = (u16*)((u8*)*(void**)((u8*)layout + 0x2c) + i * 8);
+                    func_00493210(layout, index, 0, (u16)(i + 2), (u16)(i + 1));
+                    ringAngle += FLDSHADOW_RING_ANGLE_STEP;
+                }
+                *(f32*)(vertices + 99 * sizeof(f32)) = ring->radius;
+                *(f32*)(vertices + 100 * sizeof(f32)) = 5.0f;
+                *(f32*)(vertices + 101 * sizeof(f32)) = 0.0f;
+                func_004933d0(layout);
+                geometry = *(void**)((u8*)layout + 0x5c);
+                func_00492e20(geometry, ringBounds);
+                *(f32*)((u8*)geometry + 4) = ringBounds[0];
+                *(f32*)((u8*)geometry + 8) = ringBounds[1];
+                *(f32*)((u8*)geometry + 0xc) = ringBounds[2];
+                *(f32*)((u8*)geometry + 0x10) = ringBounds[3];
+                ring->renderObject = func_00491880();
+                renderObject = ring->renderObject;
+                func_004919b0(renderObject, layout, 0);
+                func_00493b60(layout);
+                frame = func_004caf10();
+                func_00492d10(renderObject, frame);
+                func_004cb930((RwFrame*)*(void**)((u8*)renderObject + 4),
+                              NULL, 0);
                 shadow->state++;
             }
         }
@@ -1000,9 +1139,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     }
 
     if (shadow->state != 1)
-    {
         return KWLNTASK_CONTINUE;
-    }
 
     if (shadow->mode == 1)
     {
@@ -1014,19 +1151,15 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
             if (field != NULL && shadow->model != NULL)
             {
                 position = mdlGetMatrix(shadow->model)->pos;
-                func_0019ab80(1.0f,
-                              shadow->projectionDistance / 2.0f,
-                              shadow->camera,
-                              shadow->raster,
-                              (field->unk_160 != NULL && (*(u32*)field->unk_160 & 1) == 0) ? 1 : 0,
-                              &position,
-                              0,
+                func_0019ab80(1.0f, shadow->projectionDistance / 2.0f,
+                              shadow->camera, shadow->raster,
+                              field->unk_160 != NULL &&
+                                  (*(u32*)field->unk_160 & 1) == 0,
+                              &position, 0,
                               (FldShadowProjectionWork*)shadow->unk_48);
-                }
-            if (gFogEnabled == 1)
-            {
-                D_00960090(14, 0);
             }
+            if (gFogEnabled == 1)
+                D_00960090(14, 0);
             RwCameraEndUpdate(camera);
         }
         return KWLNTASK_CONTINUE;
@@ -1039,7 +1172,7 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
         {
             savedMatrix = *mdlGetMatrix(shadow->model);
             position = savedMatrix.pos;
-            if (shadow->projectionAxis.z < shadow->projectionAxis.x)
+            if (shadow->projectionAxis.z <= shadow->projectionAxis.x)
             {
                 scale.x = 1.0f;
                 scale.y = 1.0f;
@@ -1076,7 +1209,24 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
     ring = (FldShadowRingWork*)shadow->radius;
     if ((shadow->mode == 3 || shadow->mode == 4) && ring != NULL)
     {
-        K_FldShadow_RenderRing(shadow);
+        position = mdlGetMatrix(shadow->model)->pos;
+        frame = (RwFrame*)*(void**)((u8*)ring->renderObject + 4);
+        func_004cb750(frame, &position, rwCOMBINEREPLACE);
+        camera = kwlnGetMainCamera();
+        if (RwCameraBeginUpdate(camera) != NULL)
+        {
+            D_00960090(7, 2);
+            D_00960090(6, 1);
+            D_00960090(8, 0);
+            D_00960090(14, 0);
+            RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)0x44);
+            RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)0x717fb);
+            render = *(void (**)(void*))((u8*)ring->renderObject + 0x48);
+            render(ring->renderObject);
+            if (gFogEnabled == 1)
+                D_00960090(14, 0);
+            RwCameraEndUpdate(camera);
+        }
     }
     return KWLNTASK_CONTINUE;
 }
