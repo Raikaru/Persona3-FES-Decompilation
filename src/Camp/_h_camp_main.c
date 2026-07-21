@@ -236,7 +236,9 @@ typedef struct CampMainSpriteNode
     f32 x;                 /* 0x10 */
     f32 y;                 /* 0x14 */
     u8 alpha;              /* 0x18 */
-    u8 reserved19[0x13];   /* 0x19 */
+    u8 reserved19[0x0f];   /* 0x19..0x27 */
+    u16 reserved28;        /* 0x28 */
+    u16 rotation;          /* 0x2a */
     f32 spriteScale;       /* 0x2c */
 } CampMainSpriteNode;
 
@@ -255,6 +257,8 @@ extern void FUN_003b2cb0(f32 scale, s32 x, s32 y, s32 color, u32 font,
                          u32 shadow);
 extern int sprintf(char* buffer, const char* format, ...);
 extern void* D_00833BA4;
+extern void* D_00833B44;
+extern void* D_00833B48;
 extern char gp0xffff897c[];
 
 /* Pack the two f32 coordinates exactly as the retail ld/sd pair does. */
@@ -1355,6 +1359,7 @@ extern void* (*DAT_00960184)(u32 count, u32 size, u32 heap);
 extern void (*jtbl_0096017C)(void* work);
 extern void* DAT_00833B40[0x0b];
 extern void* DAT_00833B48;
+extern void* DAT_00833B68;
 extern void* DAT_00833A50[];
 extern void* DAT_00833A80[];
 extern s16 DAT_00833A60[];
@@ -1379,6 +1384,8 @@ extern const s16 D_005D7006[];
 extern const s16 D_005D6FEE[];
 extern const s16 D_005D72AA[];
 extern char gp0xffff897c[];
+extern void* DAT_00833B68;
+extern void* DAT_00833BA4;
 
 extern void* FUN_001158B0(void* owner, void* resource, s32 frame);
 extern void FUN_001127D0(void* sprite, s32 enabled);
@@ -1604,38 +1611,99 @@ void FUN_001368a0(f32 alpha, u64 position, u8 drawAlpha)
 // FUN_00136A10 NONMATCHING
 void FUN_00136a10(f32 alpha, u64 position, s32 id, s32 selected, s32 textAlpha)
 {
+    register void* parent;
     CampCarouselPackedPosition p;
-    s32 kind;
-    s32 glyphCount;
+    s32 socialLevel;
     s32 i;
+    s32 frame;
     u32 color;
     char text[0x100];
-    const char* label;
+    parent = NULL;
 
-    p = campCarouselUnpackPosition(position);
-    kind = FUN_0016DBA0((s16)id);
+    p.packed = position;
     color = (0xffU - (u32)textAlpha) | 0xffffff00U;
-    label = D_005D80E4[id * 10 + kind];
-    FUN_00523AC8(text, gp0xffff897c, label);
-    if (selected == 0) {
-        campDrawCardText(alpha, p.value.x + 173.0f, p.value.y + 53.0f,
-                         color, 10, text);
-    } else {
-        campDrawCardText(alpha, p.value.x + 173.0f, p.value.y + 53.0f,
-                         color, 6, text);
-    }
-    if (FUN_00172160(id) == NULL && FUN_001717C0(id) == NULL) {
-        campDrawCardSprite(DAT_00833B40, 0, alpha,
-                           p.value.x + 165.0f, p.value.y + 34.0f, textAlpha);
-        glyphCount = FUN_0016DBA0((s16)id);
-        for (i = 0; i < glyphCount; i++) {
-            campDrawCardSprite(DAT_00833B40, i + 1, alpha,
-                               p.value.x + 174.0f + i * 17.0f,
-                               p.value.y + 71.0f, textAlpha);
+    socialLevel = datGetSocialLinkLevel((s16)id);
+    if (selected != 0) {
+        if (socialLevel != 10) {
+            FUN_001159F0(parent, D_00833B44, 0x2c, (u8)textAlpha,
+                         p.value.x + 84.0f, p.value.y + 34.0f, alpha);
+            FUN_001159F0(parent, H_Maestro_001120a0(1), socialLevel + 0xb,
+                         (u8)textAlpha, p.value.x + 146.0f,
+                         p.value.y + 35.0f, alpha);
+        } else {
+            FUN_001159F0(parent, D_00833B44, 0x2e, (u8)textAlpha,
+                         p.value.x + 87.0f, p.value.y + 29.0f, alpha);
         }
+        FUN_001159F0(parent, D_00833B44, 0x2f, (u8)textAlpha,
+                     p.value.x + 83.0f, p.value.y + 47.0f, alpha);
+        frame = (DAT_005E3220[id] - 1) * 2 + 1;
+        FUN_001159F0(parent, D_00833B44, frame, (u8)textAlpha,
+                     p.value.x + 84.0f, p.value.y + 46.0f, alpha);
+        sprintf(text, gp0xffff897c,
+                D_005D80E4[id * 10 + socialLevel]);
+        FUN_003b2cb0(100.0f, (s32)p.value.x + 0xad,
+                     (s32)p.value.y + 0x35, color, 6, 1, text, 0x10, -1);
     } else {
-        campDrawCardSprite(DAT_00833B40, 0, alpha,
-                           p.value.x + 165.0f, p.value.y + 34.0f, textAlpha);
+        if (socialLevel != 10) {
+            FUN_001159F0(parent, D_00833B44, 0x2d, (u8)textAlpha,
+                         p.value.x + 84.0f, p.value.y + 34.0f, alpha);
+            FUN_001159F0(parent, H_Maestro_001120a0(2), socialLevel + 0xb,
+                         (u8)textAlpha, p.value.x + 146.0f,
+                         p.value.y + 35.0f, alpha);
+        } else {
+            FUN_001159F0(parent, D_00833B44, 0x2e, (u8)textAlpha,
+                         p.value.x + 87.0f, p.value.y + 29.0f, alpha);
+        }
+        if (socialLevel != 10) {
+            FUN_00115BC0(parent, D_00833B44, 0x30, (u8)textAlpha,
+                         0x4f, 0xa4, 0xff, p.value.x + 83.0f,
+                         p.value.y + 47.0f, alpha);
+        } else {
+            FUN_001159F0(parent, D_00833B44, 0x2f, (u8)textAlpha,
+                         p.value.x + 83.0f, p.value.y + 47.0f, alpha);
+        }
+        socialLevel = datGetSocialLinkLevel((s16)id);
+        if (socialLevel != 10) {
+            frame = (DAT_005E3220[id] - 1) * 2;
+        } else {
+            frame = (DAT_005E3220[id] - 1) * 2 + 1;
+        }
+        FUN_001159F0(parent, D_00833B44, frame, (u8)textAlpha,
+                     p.value.x + 84.0f, p.value.y + 46.0f, alpha);
+        socialLevel = datGetSocialLinkLevel((s16)id);
+        sprintf(text, gp0xffff897c,
+                D_005D80E4[id * 10 + socialLevel]);
+        FUN_003b2cb0(100.0f, (s32)p.value.x + 0xad,
+                     (s32)p.value.y + 0x35, color, 10, 1, text, 0x10, -1);
+    }
+    if (FUN_00172160(id) != NULL) {
+        FUN_001159F0(parent, D_00833B48, selected != 0 ? 0x10 : 6,
+                     (u8)textAlpha, p.value.x + 165.0f,
+                     p.value.y + 34.0f, alpha);
+        return;
+    }
+    if (FUN_001717C0(id) != NULL) {
+        FUN_001159F0(parent, D_00833B48, selected != 0 ? 0xf : 5,
+                     (u8)textAlpha, p.value.x + 165.0f,
+                     p.value.y + 34.0f, alpha);
+        return;
+    }
+    if (selected != 0) {
+        frame = 0x12;
+        socialLevel = 0x14;
+    } else {
+        frame = 0x11;
+        socialLevel = 0x13;
+        if (datGetSocialLinkLevel((s16)id) == 10) {
+            socialLevel = 0x14;
+        }
+    }
+    FUN_001159F0(parent, D_00833B48, frame, (u8)textAlpha,
+                 p.value.x + 165.0f, p.value.y + 34.0f, alpha);
+    for (i = 0; i < datGetSocialLinkLevel((s16)id); i++) {
+        FUN_001159F0(parent, D_00833B48, socialLevel, (u8)textAlpha,
+                     p.value.x + 174.0f + i * 17.0f,
+                     p.value.y + 37.0f, alpha);
     }
 }
 
@@ -1720,27 +1788,325 @@ void FUN_00137300(f32 alpha, u64 position, s32 id, s32 selected,
 void FUN_00137580(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
-    campDrawCarousel(alpha, position, entries, count, offset, selected,
-                     frame, frame < 10 ? (u8)((10 - frame) * 0xff / 10) : 0);
+    CampMainPackedPosition input;
+    volatile CampMainPackedPosition local;
+    CampMainSpriteNode* sprite;
+    s32 i;
+    s32 start;
+    s32 slot;
+    s32 visibleCount;
+    s32 visible;
+    s32 id;
+    s32 fade;
+    s32 rotation;
+    f32 x;
+    f32 y;
+
+    input.value = position;
+    local.value = 0;
+    FUN_001159f0(NULL, DAT_00833B48, 0, 0,
+                 local.coordinates.x + 55.0f,
+                 local.coordinates.y + 36.0f, alpha);
+    if (frame < 0x17) {
+        for (i = 0; i < 5; i++) {
+            visible = frame - i * 3;
+            local.coordinates.y = input.coordinates.y + i * 64.0f + 49.0f;
+            if (visible < 0) {
+                continue;
+            }
+            if (visible < 8) {
+                local.coordinates.x = 0.0f;
+                rotation = visible * 0x1000 / 8;
+                sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
+                sprite->spriteScale = alpha;
+                sprite->x = local.coordinates.x;
+                sprite->y = local.coordinates.y - 49.0f + 73.0f;
+                sprite->rotation = (u16)rotation;
+                sprite->alpha = 0;
+                FUN_001127D0(sprite, 1);
+                FUN_00115980(sprite);
+            } else {
+                local.coordinates.x = input.coordinates.x;
+                FUN_001159f0(NULL, DAT_00833B48, 0xd, 0,
+                             local.coordinates.x,
+                             local.coordinates.y - 49.0f + 73.0f, alpha);
+            }
+        }
+    }
+
+    visibleCount = count;
+    if (count == 4) {
+        start = 0;
+    } else if (count == 3) {
+        start = 1;
+    } else if (count == 2 || count == 1) {
+        start = 2;
+    } else if (count == 0) {
+        start = 0;
+        visibleCount = 0;
+    } else {
+        start = 0;
+        visibleCount = 5;
+    }
+    for (slot = 0; slot < visibleCount; slot++) {
+        id = entries[offset + slot];
+        i = slot + start;
+        visible = frame - (i * 3 + 8);
+        local.coordinates.y = input.coordinates.y + i * 64.0f + 49.0f;
+        if (visible > 0 && visible < 8) {
+            fade = (8 - visible) * 0xff / 8;
+            if (slot == selected) {
+                FUN_001159f0(NULL, DAT_00833B48, 0xe, (u32)fade,
+                             local.coordinates.x,
+                             local.coordinates.y - 49.0f + 73.0f, alpha);
+                FUN_00136a10(alpha, local.value, id, 1, fade);
+                FUN_00137300(alpha, local.value, id, 1, fade, 0);
+            } else {
+                FUN_00136a10(alpha, local.value, id, 0, fade);
+                FUN_00137300(alpha, local.value, id, 0, fade, 0);
+            }
+        } else if (visible >= 8) {
+            if (slot == selected) {
+                FUN_001159f0(NULL, DAT_00833B48, 0xe, 0,
+                             local.coordinates.x,
+                             local.coordinates.y - 49.0f + 73.0f, alpha);
+                FUN_00136a10(alpha, local.value, id, 1, 0);
+                FUN_00137300(alpha, local.value, id, 1, 0, 0);
+            } else {
+                FUN_00136a10(alpha, local.value, id, 0, 0);
+                FUN_00137300(alpha, local.value, id, 0, 0, 0);
+            }
+        }
+        i -= i - slot;
+    }
+    if (count < 10) {
+        FUN_001368a0(alpha, local.value, 0);
+    }
+
+    if (frame < 10) {
+        fade = (10 - frame) * 0xff / 10;
+        local.coordinates.x = -64.0f * (f32)(10 - frame);
+        local.coordinates.y = 0.0f;
+        sprite = FUN_001158b0(NULL, DAT_00833B40, 1);
+        sprite->spriteScale = alpha;
+        sprite->x = local.coordinates.x + 219.0f;
+        sprite->y = local.coordinates.y + 20.0f;
+        sprite->rotation = 0x1f40;
+        sprite->alpha = (u8)fade;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    } else {
+        local.value = 0;
+    }
+
+    x = input.coordinates.x;
+    y = input.coordinates.y;
+    FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
+                 x + 600.0f, y + 308.0f, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
+                 x + 600.0f, y + 402.0f, alpha - 1.0f);
+    if (count > 5) {
+        fade = offset * 59 / (count - 5);
+    } else {
+        fade = 0;
+    }
+    FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
+                 x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 8, 0,
+                 x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 9, 0,
+                 x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+
+    local.value = 0;
+    sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
+    sprite->spriteScale = alpha;
+    sprite->x = local.coordinates.x + 97.0f;
+    sprite->y = local.coordinates.y - 33.0f;
+    sprite->alpha = 0;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
 }
 
 // FUN_001380E0 NONMATCHING
 void FUN_001380e0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
-    campDrawCarousel(alpha, position, entries, count, offset, selected,
-                     frame, (u8)frame);
-    campDrawCardSprite(DAT_00833B40, 0, alpha, 1040.0f, -520.0f, 0);
+    CampMainPackedPosition input;
+    f32 inputX;
+    f32 inputY;
+    volatile u64 copied;
+    volatile CampMainPackedPosition local;
+    CampMainSpriteNode* sprite;
+    s32 i;
+    s32 start;
+    s32 visibleCount;
+    s32 id;
+    f32 x;
+    f32 y;
+    s32 fade;
+
+    input.value = position;
+    inputX = input.coordinates.x;
+    inputY = input.coordinates.y;
+    local.value = 0;
+    copied = local.value;
+    FUN_001159f0(NULL, DAT_00833B48, 0, 0,
+                 55.0f + *((volatile f32*)&copied),
+                 36.0f + *(((volatile f32*)&copied) + 1), alpha);
+    for (i = 0; i < 5; i++) {
+        sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
+        sprite->spriteScale = alpha;
+        sprite->x = local.coordinates.x;
+        sprite->y = local.coordinates.y + 24.0f;
+        sprite->rotation = 0x1000;
+        sprite->alpha = (u8)frame;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    }
+
+    start = 2;
+    visibleCount = count;
+    if (count == 4) {
+        start = 0;
+    } else if (count == 3) {
+        start = 1;
+    } else if (count > 4) {
+        start = 0;
+        visibleCount = 5;
+    }
+    for (i = 0; i < visibleCount; i++) {
+        id = entries[offset + i];
+        x = local.coordinates.x;
+        y = local.coordinates.y + 24.0f;
+        if (i == selected) {
+            FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, alpha);
+            FUN_00136a10(alpha, local.value, id, 1, 0);
+            FUN_00137300(alpha, local.value, id, 1, 0, 0);
+        } else {
+            FUN_00136a10(alpha, local.value, id, 0, 0);
+            FUN_00137300(alpha, local.value, id, 0, 0, 0);
+        }
+    }
+
+    x = inputX;
+    y = inputY;
+    FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
+                 x + 600.0f, y + 308.0f, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
+                 x + 600.0f, y + 402.0f, alpha - 1.0f);
+    fade = 0;
+    if (count > 5) {
+        fade = offset * 59 / (count - 5);
+    }
+    FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
+                 x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 8, 0,
+                 x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 9, 0,
+                 x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+
+    sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
+    sprite->spriteScale = alpha;
+    sprite->x = 97.0f;
+    sprite->y = -33.0f;
+    sprite->alpha = 0;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+    FUN_001159f0(NULL, DAT_00833B68, 0, 0, 36.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, DAT_00833B68, 6, 0, 80.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, D_00833BA4, 1, 0, 465.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, D_00833BA4, 3, 0, 561.0f, 415.0f, alpha);
 }
 
 // FUN_001387B0 NONMATCHING
 void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
                   s32 offset, s32 selected, s32 frame)
 {
-    campDrawCarousel(alpha, position, entries, count, offset, selected,
-                     frame, (u8)frame);
-    campDrawCardSprite(DAT_00833B40, 0, alpha, 1040.0f, -520.0f, 0);
-    campDrawCardSprite(DAT_00833B48, 1, alpha, 528.0f, 415.0f, 0);
+    CampMainPackedPosition input;
+    f32 inputX;
+    f32 inputY;
+    volatile u64 copied;
+    volatile CampMainPackedPosition local;
+    CampMainSpriteNode* sprite;
+    s32 i;
+    s32 start;
+    s32 visibleCount;
+    s32 id;
+    f32 x;
+    f32 y;
+    s32 fade;
+
+    input.value = position;
+    inputX = input.coordinates.x;
+    inputY = input.coordinates.y;
+    local.value = 0;
+    copied = local.value;
+    FUN_001159f0(NULL, DAT_00833B48, 0, 0,
+                 55.0f + *((volatile f32*)&copied),
+                 36.0f + *(((volatile f32*)&copied) + 1), alpha);
+    for (i = 0; i < 5; i++) {
+        sprite = FUN_001158b0(NULL, DAT_00833B48, 0xd);
+        sprite->spriteScale = alpha;
+        sprite->x = local.coordinates.x;
+        sprite->y = local.coordinates.y + 24.0f;
+        sprite->rotation = 0x1000;
+        sprite->alpha = (u8)frame;
+        FUN_001127D0(sprite, 1);
+        FUN_00115980(sprite);
+    }
+
+    start = 2;
+    visibleCount = count;
+    if (count == 4) {
+        start = 0;
+    } else if (count == 3) {
+        start = 1;
+    } else if (count > 4) {
+        start = 0;
+        visibleCount = 5;
+    }
+    for (i = 0; i < visibleCount; i++) {
+        id = entries[offset + i];
+        x = local.coordinates.x;
+        y = local.coordinates.y + 24.0f;
+        if (i == selected) {
+            FUN_001159f0(NULL, DAT_00833B48, 0xe, 0, x, y, alpha);
+            FUN_00136a10(alpha, local.value, id, 1, 0);
+            FUN_00137300(alpha, local.value, id, 1, 0, 0);
+        } else {
+            FUN_00136a10(alpha, local.value, id, 0, 0);
+            FUN_00137300(alpha, local.value, id, 0, 0, 0);
+        }
+    }
+    x = inputX;
+    y = inputY;
+    fade = 0;
+    FUN_001159f0(NULL, DAT_00833B48, 0xb, 0,
+                 x + 600.0f, y + 308.0f, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 0xc, 0,
+                 x + 600.0f, y + 402.0f, alpha - 1.0f);
+    if (count > 5) {
+        fade = offset * 59 / (count - 5);
+    }
+    FUN_001159f0(NULL, DAT_00833B48, 0xa, 0,
+                 x + 597.0f, y + 311.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 8, 0,
+                 x + 598.0f, y + 318.0f + (f32)fade, alpha - 1.0f);
+    FUN_001159f0(NULL, DAT_00833B48, 9, 0,
+                 x + 598.0f, y + 331.0f + (f32)fade, alpha - 1.0f);
+
+    sprite = FUN_001158b0(NULL, DAT_00833B40, 0);
+    sprite->spriteScale = alpha;
+    sprite->x = 97.0f;
+    sprite->y = -33.0f;
+    sprite->alpha = 0;
+    FUN_001127D0(sprite, 1);
+    FUN_00115980(sprite);
+    FUN_001159f0(NULL, DAT_00833B68, 0, 0, 36.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, DAT_00833B68, 6, 0, 80.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, D_00833BA4, 1, 0, 465.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, D_00833BA4, 3, 0, 561.0f, 415.0f, alpha);
+    FUN_001159f0(NULL, DAT_00833B48, 1, 0, 528.0f, 415.0f, alpha);
 }
 
 extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
