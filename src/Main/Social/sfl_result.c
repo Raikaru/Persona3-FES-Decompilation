@@ -176,15 +176,17 @@ extern u8 DAT_00684d70[];
 // FUN_001f9170 NONMATCHING
 u32 sflResult001f9170(s32 player)
 {
-    u8* flags;
-    u16 members[6];
-    s32 memberCount;
     s32 i;
+    char* flags;
+    char* base;
+    s16 members[6];
+    s32 memberCount;
     s32 j;
-
-    flags = func_00209d00();
-    for (i = 0; i <= 0xc; i++) {
-        if (flags[player * 0x1a + i * 2] == 0) {
+    base = (char*)func_00209d00();
+    flags = base + player * 0x1a;
+    i = 0;
+    for (; i <= 0xc; i++) {
+        if (flags[i * 2] == 0) {
             continue;
         }
         switch (i) {
@@ -192,9 +194,8 @@ u32 sflResult001f9170(s32 player)
             if (datGetHp(1) < datGetMaxHp(1)) {
                 return 1;
             }
-            break;
         case 1:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetHp(members[j]) < datGetMaxHp(members[j])) {
                     return 1;
@@ -205,9 +206,8 @@ u32 sflResult001f9170(s32 player)
             if (datGetSp(1) < func_0016c670(1)) {
                 return 1;
             }
-            break;
         case 3:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetSp(members[j]) < func_0016c670(members[j])) {
                     return 1;
@@ -218,9 +218,8 @@ u32 sflResult001f9170(s32 player)
             if ((datGetBadStatusNoDown(1) & 0x80) != 0) {
                 return 1;
             }
-            break;
         case 5:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
                     return 1;
@@ -235,7 +234,7 @@ u32 sflResult001f9170(s32 player)
             break;
         }
         case 8:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition == 3 || condition == 4 || condition == 5) {
@@ -251,7 +250,7 @@ u32 sflResult001f9170(s32 player)
             break;
         }
         case 10:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 u16 condition = datGetPhysicalCondition(members[j]);
                 if (condition != 1 && condition != 2) {
@@ -263,9 +262,8 @@ u32 sflResult001f9170(s32 player)
             if (datGetPhysicalCondition(1) != 2) {
                 return 1;
             }
-            break;
         case 12:
-            brRoot001f1df0(members, &memberCount);
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetPhysicalCondition(members[j]) != 2) {
                     return 1;
@@ -483,181 +481,92 @@ void sflResult001f9e90(u16 owner, s32 exp)
 
 
 void func_001fa0d0(void)
-
-
-
 {
-
-  u16 uVar1;
-
-  char *pcVar2;
-
-  u32 uVar3;
-
-  u8 auStack_20 [32];
-
-  
-
-  for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
-
-    uVar1 = (u16)uVar3;
-
-    switch(uVar3) {
-
-    case 2:
-
-    case 3:
-
-    case 4:
-
-    case 5:
-
-    case 7:
-
-    case 8:
-
-    case 9:
-
-    case 10:
-
-      switch(uVar3 & 0xffff) {
-
-      default:
-
-        FUN_0019d3f0(0x684ba8,0x35);
-
-        pcVar2 = (char *)0x0;
-
-        break;
-
-      case 2:
-
-        pcVar2 = pcGpffffb75c;
-
-        break;
-
-      case 3:
-
-        pcVar2 = pcGpffffb760;
-
-        break;
-
-      case 4:
-
-        pcVar2 = pcGpffffb764;
-
-        break;
-
-      case 5:
-
-        pcVar2 = pcGpffffb768;
-
-        break;
-
-      case 7:
-
-        pcVar2 = pcGpffffb76c;
-
-        break;
-
-      case 8:
-
-        pcVar2 = pcGpffffb770;
-
-        break;
-
-      case 9:
-
-        pcVar2 = pcGpffffb774;
-
-        break;
-
-      case 10:
-
-        pcVar2 = pcGpffffb778;
-
-      }
-
-      if (*pcVar2 != '\0') {
-
-        FUN_0019d3f0(0x684ba8,200);
-
-      }
-
-      if (*(short *)(pcVar2 + 2) != 0) {
-
-        FUN_00182c50(*(short *)(pcVar2 + 2),auStack_20);
-
-        FUN_001831e0(uVar1,0,auStack_20);
-
-        FUN_0016da50(uVar1,0,0);
-
-      }
-
-      if (*(short *)(pcVar2 + 4) != 0) {
-
-        FUN_00182c50(*(short *)(pcVar2 + 4),auStack_20);
-
-        FUN_001831e0(uVar1,1,auStack_20);
-
-        FUN_0016da50(uVar1,1,1);
-
-      }
-
-      if (*(short *)(pcVar2 + 6) != 0) {
-
-        FUN_00182c50(*(short *)(pcVar2 + 6),auStack_20);
-
-        FUN_001831e0(uVar1,2,auStack_20);
-
-        FUN_0016da50(uVar1,2,2);
-
-      }
-
-      if (*(short *)(pcVar2 + 8) != 0) {
-
-        FUN_00182c50(*(short *)(pcVar2 + 8),auStack_20);
-
-        FUN_001831e0(uVar1,3,auStack_20);
-
-        FUN_0016da50(uVar1,3,3);
-
-      }
-
-      break;
-
-    case 6:
-
-      FUN_00182c50(0xfe,auStack_20);
-
-      FUN_001831e0(uVar1,0,auStack_20);
-
-      FUN_0016da50(uVar1,0,0);
-
-      FUN_00182c50(0x43f,auStack_20);
-
-      FUN_001831e0(uVar1,1,auStack_20);
-
-      FUN_0016da50(uVar1,1,1);
-
-      FUN_00182c50(0x821,auStack_20);
-
-      FUN_001831e0(uVar1,2,auStack_20);
-
-      FUN_0016da50(uVar1,2,2);
-
-      FUN_00182c50(0xc47,auStack_20);
-
-      FUN_001831e0(uVar1,3,auStack_20);
-
-      FUN_0016da50(uVar1,3,3);
-
+    u16 uVar1;
+    char* pcVar2;
+    u32 uVar3;
+    u8 auStack_20[32];
+
+    for (uVar3 = 0; (int)uVar3 < 0xb; uVar3 = uVar3 + 1) {
+        uVar1 = (u16)uVar3;
+        switch (uVar3) {
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+            switch (uVar3 & 0xffff) {
+            default:
+                FUN_0019d3f0(0x684ba8, 0x35);
+                pcVar2 = (char*)0;
+                break;
+            case 2:
+                pcVar2 = pcGpffffb75c;
+                break;
+            case 3:
+                pcVar2 = pcGpffffb760;
+                break;
+            case 4:
+                pcVar2 = pcGpffffb764;
+                break;
+            case 5:
+                pcVar2 = pcGpffffb768;
+                break;
+            case 7:
+                pcVar2 = pcGpffffb76c;
+                break;
+            case 8:
+                pcVar2 = pcGpffffb770;
+                break;
+            case 9:
+                pcVar2 = pcGpffffb774;
+                break;
+            case 10:
+                pcVar2 = pcGpffffb778;
+                break;
+            }
+            if (*pcVar2 != '\0') {
+                FUN_0019d3f0(0x684ba8, 200);
+            }
+            if (*(short*)(pcVar2 + 2) != 0) {
+                FUN_00182c50(*(short*)(pcVar2 + 2), auStack_20);
+                FUN_001831e0(uVar1, 0, auStack_20);
+                FUN_0016da50(uVar1, 0, 0);
+            }
+            if (*(short*)(pcVar2 + 4) != 0) {
+                FUN_00182c50(*(short*)(pcVar2 + 4), auStack_20);
+                FUN_001831e0(uVar1, 1, auStack_20);
+                FUN_0016da50(uVar1, 1, 1);
+            }
+            if (*(short*)(pcVar2 + 6) != 0) {
+                FUN_00182c50(*(short*)(pcVar2 + 6), auStack_20);
+                FUN_001831e0(uVar1, 2, auStack_20);
+                FUN_0016da50(uVar1, 2, 2);
+            }
+            if (*(short*)(pcVar2 + 8) != 0) {
+                FUN_00182c50(*(short*)(pcVar2 + 8), auStack_20);
+                FUN_001831e0(uVar1, 3, auStack_20);
+                FUN_0016da50(uVar1, 3, 3);
+            }
+            break;
+        case 6:
+            FUN_00182c50(0xfe, auStack_20);
+            FUN_001831e0(uVar1, 0, auStack_20);
+            FUN_0016da50(uVar1, 0, 0);
+            FUN_00182c50(0x43f, auStack_20);
+            FUN_001831e0(uVar1, 1, auStack_20);
+            FUN_0016da50(uVar1, 1, 1);
+            FUN_00182c50(0x821, auStack_20);
+            FUN_001831e0(uVar1, 2, auStack_20);
+            FUN_0016da50(uVar1, 2, 2);
+            FUN_00182c50(0xc47, auStack_20);
+            FUN_001831e0(uVar1, 3, auStack_20);
+            FUN_0016da50(uVar1, 3, 3);
+        }
     }
-
-  }
-
-  return;
-
 }
 
 
@@ -724,9 +633,9 @@ void func_001fa4f0(u32 param_1)
 
   u32 uVar8;
 
-  u16 uVar9;
-
   u32 uVar10;
+
+  s16 uVar9;
 
   u32 uVar11;
 
@@ -1673,13 +1582,13 @@ u16 func_001fb560(u32 param_1)
 
   int iVar4;
 
-  u32 uVar5;
+  u16 uVar5;
 
   int iVar6;
 
   u32 uVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   int iVar9;
 
