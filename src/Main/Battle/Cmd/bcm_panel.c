@@ -905,29 +905,259 @@ panel_tail:
     }
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_002265D0 NONMATCHING
 void FUN_002265D0(void)
 {
-    u32 i;
-    u32 count;
-    u32 state;
+    u8* work;
+    u32 table0;
+    void* resource;
+    f32 posX;
+    f32 posY;
+    f32 rowY;
+    f32 rect[4];
+    u8 color[4];
+    s32 i;
+    s32 j;
+    f32 stateAlpha;
+    f32 transAlpha;
+    f32 rowOffset;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    state = bcm_panel_read(0x463c);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 kind = *(u32*)record;
-        bcm_panel_set_colour(record, (state == 4) ? 0xffu : 0x80u);
-        if (kind == 1) {
-            bcm_panel_set_colour(record + 0x100, 0xffu);
-            bcm_panel_set_colour(record + 0x200, 0xffu);
-            bcm_panel_set_colour(record + 0x300, 0xffu);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    stateAlpha = *(f32*)(work + 0x7214);
+    rowOffset = -26.0f * (f32)*(s32*)(work + 0x7210);
+
+    if (*(u32*)(work + 0x463c) == 3) {
+        if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
+            transAlpha = (f32)*(s32*)(work + 0x4658) / 6.0f;
+            posX = 38.0f + -191.0f * transAlpha;
+            posY = 237.0f + -66.0f * transAlpha;
+        } else if (*(u32*)(work + 0x4644) == 0 &&
+                   (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
+                   *(s32*)(work + 0x4658) < 6) {
+            transAlpha = (f32)*(s32*)(work + 0x4658) / 6.0f;
+            posX = -153.0f + 191.0f * transAlpha;
+            posY = 171.0f + 66.0f * transAlpha;
+        } else {
+            f32 f2 = (f32)*(s32*)(work + 0x4650);
+            posX = (38.0f * f2) / 3.0f;
+            posY = 277.0f + (-40.0f * f2) / 3.0f;
         }
-        *(u32*)record |= 4;
+    } else if (*(u32*)(work + 0x463c) == 0) {
+        f32 f3 = (f32)*(s32*)(work + 0x4650);
+        posX = 38.0f + (-38.0f * f3) / 3.0f;
+        posY = 237.0f + (40.0f * f3) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 4 || *(u32*)(work + 0x463c) == 1 ||
+               *(u32*)(work + 0x463c) == 2) {
+        f32 f2 = (f32)*(s32*)(work + 0x4650);
+        posX = (38.0f * f2) / 3.0f;
+        posY = 277.0f + (-40.0f * f2) / 3.0f;
     }
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x18f0, 0, 0x2f);
+
+    if (*(u32*)(work + 0x463c) == 3) {
+        stateAlpha = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 0) {
+        stateAlpha = (f32)((3 - *(s32*)(work + 0x4650)) / 3);
+    } else if (*(u32*)(work + 0x463c) == 4 || *(u32*)(work + 0x463c) == 1 ||
+               *(u32*)(work + 0x463c) == 2) {
+        stateAlpha = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    }
+
+    if (*(u32*)(work + 0x463c) == 3) {
+        if (*(u32*)(work + 0x4644) == 0) {
+            if ((*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
+                *(s32*)(work + 0x4658) < 6) {
+                transAlpha = (f32)*(s32*)(work + 0x4658) / 6.0f;
+            } else {
+                transAlpha = 1.0f;
+            }
+        } else if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
+            transAlpha = (f32)(6 - *(s32*)(work + 0x4658)) / 6.0f;
+        } else {
+            transAlpha = 1.0f;
+        }
+    } else {
+        transAlpha = 1.0f;
+    }
+
+    {
+        f32 complement = 1.0f - transAlpha;
+        f32 negRowOffset = -rowOffset;
+        posY = posY + complement * negRowOffset;
+        rowY = posY + rowOffset;
+        posY = rowY;
+    }
+    *(f32*)(work + 0x6050) = posX;
+    *(f32*)(work + 0x6054) = rowY;
+
+    {
+        f32 y75 = 75.0f + rowOffset;
+        for (i = 0; i < 9; ++i) {
+            switch (i) {
+            case 0: case 1: case 2: case 3:
+                resource = (void*)FUN_0021cca0(table0, i + 0x1e);
+                break;
+            case 4: case 5:
+                resource = (void*)FUN_0021cca0(table0, i + 0x1a);
+                break;
+            }
+            rect[0] = posX;
+            rect[1] = rowY;
+            switch (i) {
+            case 0: rect[0] += 11.0f; rect[1] += 4.0f; break;
+            case 1: rect[0] += 11.0f; rect[1] += y75; break;
+            case 2: rect[0] += 241.0f; rect[1] += 4.0f; break;
+            case 3: rect[0] += 241.0f; rect[1] += y75; break;
+            case 4: rect[0] += 159.0f; rect[1] += 4.0f; break;
+            case 5: rect[0] += 159.0f; rect[1] += y75; break;
+            case 6: rect[0] += 11.0f; rect[1] += 75.0f; break;
+            case 7: rect[0] += 241.0f; rect[1] += 75.0f; break;
+            case 8: rect[0] += 159.0f; rect[1] += 75.0f; break;
+            }
+            switch (i) {
+            case 0: case 1: case 2: case 3:
+                rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+                rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+                break;
+            case 4: case 5:
+                rect[2] = 82.0f;
+                rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+                break;
+            case 6: case 7:
+                rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+                rect[3] = rowOffset;
+                break;
+            case 8:
+                rect[2] = 82.0f;
+                rect[3] = rowOffset;
+                break;
+            }
+            FUN_0021d8e0(work + i * 0x100 + 0x1530, rect);
+        }
+    }
+
+    color[0] = (u8)(u32)(40.0f + 215.0f * transAlpha);
+    color[1] = (u8)(u32)(40.0f + 215.0f * transAlpha);
+    color[2] = (u8)(u32)(30.0f + 225.0f * transAlpha);
+    color[3] = (u8)(u32)(stateAlpha * (255.0f * (80.0f + 20.0f * transAlpha) / 100.0f) *
+                          *(f32*)(work + 0x7214));
+    for (i = 0; i < 9; ++i) {
+        FUN_0021d950(work + i * 0x100 + 0x1530, color);
+    }
+
+    resource = (void*)FUN_0021cca0(table0, 0x26);
+    {
+        f32 baseX = 20.0f + posX;
+        f32 baseY = 40.0f + rowY;
+
+        rect[0] = baseX;
+        rect[1] = baseY - 3.0f;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(work + 0x1e30, rect);
+
+        resource = (void*)FUN_0021cca0(table0, 0x27);
+        rect[0] = baseX;
+        rect[1] = 102.0f + rowY + rowOffset;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(work + 0x1f30, rect);
+
+        resource = (void*)FUN_0021cca0(table0, 0x26);
+        rect[0] = baseX;
+        rect[1] = 16.0f + baseY - 3.0f;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = 57.0f + rowOffset;
+        FUN_0021d8e0(work + 0x2030, rect);
+
+        resource = (void*)FUN_0021cca0(table0, 0x1d);
+        {
+            f32 top = (36.0f + rowY + rowOffset) - 3.0f;
+            f32 bottom = 91.0f + rowY + rowOffset;
+            rect[0] = 22.0f + posX;
+            if (*(s32*)(work + 0x6074) >= 5) {
+                f32 t = (f32)*(s32*)(work + 0x606c);
+                f32 range = bottom - top;
+                f32 denom = (f32)(*(s32*)(work + 0x6074) - 4);
+                rect[1] = top + (t * range) / denom;
+            } else {
+                rect[1] = top;
+            }
+            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(work + 0x2130, rect);
+        }
+    }
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)(255.0f * stateAlpha * *(f32*)(work + 0x7214));
+    for (i = 0; i < 3; ++i) {
+        FUN_0021d950(work + i * 0x100 + 0x1e30, color);
+    }
+    FUN_0021d950(work + 0x2130, color);
+
+    resource = (void*)FUN_0021cca0(table0, 0x2c);
+    {
+        f32 quadX = 47.0f + posX;
+        f32 rowBaseY = 43.0f + rowY;
+        for (j = 0; j < 6; ++j) {
+            u8* slot = work + j * 0x200;
+            f32 quadY = rowBaseY + (f32)(j * 26);
+            rect[0] = quadX;
+            rect[1] = quadY;
+            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(slot + 0x2230, rect);
+
+            rect[0] = quadX + (f32)*(s32*)((u8*)resource + 0xc);
+            rect[1] = quadY;
+            rect[2] = 311.0f;
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(slot + 0x2330, rect);
+        }
+    }
+
+    if (*(u32*)(work + 0x463c) == 3) {
+        if (*(u32*)(work + 0x4644) == 0) {
+            if ((*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
+                *(s32*)(work + 0x4658) < 6) {
+                transAlpha = (f32)*(s32*)(work + 0x4658) / 6.0f;
+            } else {
+                transAlpha = 1.0f;
+            }
+        } else if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
+            transAlpha = (f32)(6 - *(s32*)(work + 0x4658)) / 6.0f;
+        } else {
+            transAlpha = 1.0f;
+        }
+    } else {
+        transAlpha = 1.0f;
+    }
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)((f32)((s32)(30.0f + 225.0f * transAlpha) & 0xff) * 2.0f *
+                          stateAlpha * *(f32*)(work + 0x7214));
+    for (j = 0; j < 2; ++j) {
+        u8* slot = work + j * 0x200;
+        FUN_0021d950(slot + 0x2230, color);
+        FUN_0021d950(slot + 0x2330, color);
+    }
+
+    color[3] = (u8)(u32)(255.0f * transAlpha);
+    for (j = 2; j < 6; ++j) {
+        u8* slot = work + j * 0x200;
+        FUN_0021d950(slot + 0x2230, color);
+        FUN_0021d950(slot + 0x2330, color);
+    }
 }
+#pragma pop
 
 // FUN_00227800 NONMATCHING
 void FUN_00227800(void)
