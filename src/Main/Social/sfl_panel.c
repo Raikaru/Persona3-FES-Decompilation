@@ -24,6 +24,10 @@ extern float DAT_007cb034;
 typedef int (*code)(...);
 extern code DAT_00960090[];
 extern code DAT_0096009c[];
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern u8 DAT_0096009c_abs[];
 void func_0021d890();
 void func_0021d8e0();
 void func_0021d950();
@@ -231,6 +235,8 @@ mode12:
             }
             K_ASSERT(interval >= 0, 0x1b7);
             K_ASSERT(interval < 4, 0x1b8);
+            K_ASSERT(interval >= 0, 0x1bb);
+            K_ASSERT(interval < 4, 0x1bc);
             alpha = (float)(frame - DAT_0068e800[interval]) /
                     (float)(DAT_0068e800[interval + 1] - DAT_0068e800[interval]);
             panelPosition[0] = alpha * (DAT_0068e820[interval + 1] - DAT_0068e820[interval]) +
@@ -252,14 +258,15 @@ mode12:
                 scale = 1.0f;
             }
             K_ASSERT(interval >= 0, 0x1d8);
+            K_ASSERT(interval >= 0, 0x1db);
             K_ASSERT(interval < 3, 0x1dc);
             alpha = (float)(frame - DAT_0068e830[interval]) /
                     (float)(DAT_0068e834[interval] - DAT_0068e830[interval]);
             panelPosition[0] = alpha * (DAT_0068e840[interval + 1] - DAT_0068e840[interval]) +
                                DAT_0068e840[interval];
             angle = DAT_007caf38 *
-                    (alpha * (DAT_0068e854[interval + 1] - DAT_0068e854[interval]) +
-                     DAT_0068e854[interval]) /
+                    (alpha * (DAT_0068e850[interval + 1] - DAT_0068e850[interval]) +
+                     DAT_0068e850[interval]) /
                     360.0f * 2.0f;
             panelDirection[0] = sinf(angle);
             panelDirection[1] = -cosf(angle);
@@ -312,6 +319,8 @@ mode12:
     } else {
         alpha = 1.0f - (float)(frame - 0x16) / 8.0f;
     }
+    panelDirection[0] = sinf(DAT_007cb034);
+    panelDirection[1] = -cosf(DAT_007cb034);
     panelSize[0] = mode == 1 ? 463.0f : 510.0f;
     panelSize[1] = 89.0f;
     func_0021e170(work + 0x144, panelPosition, panelDirection, panelSize);
@@ -331,6 +340,8 @@ mode12:
         scale = 1.0f;
         alpha = 0.0f;
     }
+    panelDirection[0] = sinf(DAT_007cb034);
+    panelDirection[1] = -cosf(DAT_007cb034);
     panelSize[0] = (mode == 1 ? 463.0f : 510.0f) * scale;
     panelSize[1] = 89.0f * scale;
     func_0021e170(work + 0x184, panelPosition, panelDirection, panelSize);
@@ -355,7 +366,7 @@ void func_0023e970(void)
     base = (int)sSflPanel;
     K_ASSERT(*(u32*)base & 1, 0x29b);
 
-    render = DAT_00960090;
+    render = (code *)&DAT_00960090_abs;
     (*render)(9, 2);
     (*render)(0x14, 2);
     (*render)(8, 0);
@@ -367,12 +378,12 @@ void func_0023e970(void)
     if (mode == 2 || mode == 1) {
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        state = DAT_00960090;
+        state = (code *)&DAT_00960090_abs;
         (*state)(6, 1);
         texture = sflRes0020e690(0);
         (*state)(1, texture);
         for (i = 0; i < 2; i++) {
-            quad = DAT_0096009c;
+            quad = (code *)&DAT_0096009c_abs;
             (*quad)(base + 0x210 + i * 0x100, 4, 0, 1, 2);
             (*quad)(base + 0x210 + i * 0x100, 4, 0, 2, 3);
         }
@@ -381,21 +392,21 @@ void func_0023e970(void)
         texture = sflRes0020e690(mode);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
-        render = DAT_00960090;
+        render = (code *)&DAT_00960090_abs;
         (*render)(1, texture);
-        quad = DAT_0096009c;
+        quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x610, 4, 0, 1, 2);
         (*quad)(base + 0x610, 4, 0, 2, 3);
         RpSkyRenderStateSet(3, (void*)0x717fb);
         RpSkyRenderStateSet(2, (void*)0x44);
         (*render)(1, texture);
-        quad = DAT_0096009c;
+        quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x510, 4, 0, 1, 2);
         (*quad)(base + 0x510, 4, 0, 2, 3);
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         (*render)(1, texture);
-        quad = DAT_0096009c;
+        quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x410, 4, 0, 1, 2);
         (*quad)(base + 0x410, 4, 0, 2, 3);
     } else if (mode == 0) {
@@ -403,12 +414,12 @@ void func_0023e970(void)
         RpSkyRenderStateSet(2, (void*)0x48);
         state = render;
         (*state)(1, sflRes0020e510(0));
-        quad = DAT_0096009c;
+        quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x110, 4, 0, 1, 2);
         (*quad)(base + 0x110, 4, 0, 2, 3);
         texture = sflRes0020e610(*(s32*)(base + 0xc) - 1);
         (*state)(1, texture);
-        quad = DAT_0096009c;
+        quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x10, 4, 0, 1, 2);
         (*quad)(base + 0x10, 4, 0, 2, 3);
     }
