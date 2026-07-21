@@ -20,7 +20,7 @@ void FUN_0050e000(long param_1);
 void FUN_0050f3d0(void);
 void FUN_0050d780(void);
 u32 FUN_0050def0(void);
-long FUN_0050ce40(void);
+int FUN_0050ce40(void);
 void FUN_0050db38(void);
 extern u32 ram0x00780b90;
 extern u32 DAT_0077f8f4;
@@ -905,7 +905,7 @@ void FUN_0050cc78(void)
 
 // FUN_0050CD60 RFU086_WaitEvnetFlag
 
-u64 RFU086_WaitEvnetFlag(u64 param_1,u64 param_2,u64 param_3,u64 param_4,u64 param_5)
+u64 RFU086_WaitEvnetFlag(int param_1,int param_2,int param_3,int param_4,int param_5)
 
 {
   PS2_SYSCALL(0x56);
@@ -939,97 +939,86 @@ void FUN_0050ce00(void)
   return;
 }
 // FUN_0050CE40 NONMATCHING
-long FUN_0050ce40(void)
-
+int FUN_0050ce40(void)
 {
-  u32 *puVar1;
-  u32 *puVar2;
-  u32 *puVar3;
-  u32 uVar4;
+  u32 uVar1;
+  int iVar3;
+  int iVar4;
   int iVar5;
   u32 *puVar6;
-  long lVar7;
-  long lVar8;
-  long lVar9;
   
-  iVar5 = DAT_0077fb98 + DAT_0077fb9c;
-  FUN_00505ec8(0x7be030,DAT_0077fb98 + -1,DAT_0077fb98,iVar5 + -1,iVar5,iVar5 + DAT_0077fba0 + -1);
+  FUN_00505ec8(0x7be030,DAT_0077fb98 + -1,DAT_0077fb98,
+               DAT_0077fb98 + DAT_0077fb9c + -1,
+               DAT_0077fb98 + DAT_0077fb9c,
+               DAT_0077fb98 + DAT_0077fb9c + DAT_0077fba0 + -1);
   Wired = 0;
   SYNC(0x10);
-  lVar8 = (long)DAT_0077fb98;
-  lVar9 = 0;
-  if (0x30 < lVar8) {
+  iVar3 = DAT_0077fb98;
+  iVar4 = 0;
+  if (0x30 < iVar3) {
     FUN_00505ec8(0x7be068);
+    FUN_0050da58(1);
   }
-  if (lVar9 < lVar8) {
-    uVar4 = *(u32 *)PTR_DAT_0077fba8;
+  if (iVar4 < iVar3) {
     puVar6 = (u32 *)PTR_DAT_0077fba8;
-    while( true ) {
-      puVar1 = puVar6 + 1;
-      puVar2 = puVar6 + 2;
-      puVar3 = puVar6 + 3;
-      puVar6 = puVar6 + 4;
-      RFU086_WaitEvnetFlag(lVar9,uVar4,*puVar1,*puVar2,*puVar3);
-      lVar9 = (long)((int)lVar9 + 1);
-      if (lVar8 <= lVar9) break;
-      uVar4 = *puVar6;
+    uVar1 = *puVar6;
+    while (true) {
+      RFU086_WaitEvnetFlag(iVar4,uVar1,puVar6[1],puVar6[2],puVar6[3]);
+      puVar6 += 4;
+      iVar4 = iVar4 + 1;
+      if (iVar3 <= iVar4) break;
+      uVar1 = *puVar6;
     }
   }
-  lVar8 = (long)((int)lVar9 + DAT_0077fb9c);
-  if (0x30 < lVar8) {
+  iVar3 = iVar4 + DAT_0077fb9c;
+  if (0x30 < iVar3) {
     FUN_00505ec8(0x7be080);
     FUN_0050da58(1);
   }
-  if (lVar9 < lVar8) {
-    uVar4 = *(u32 *)PTR_DAT_0077fbac;
+  if (iVar4 < iVar3) {
     puVar6 = (u32 *)PTR_DAT_0077fbac;
-    while( true ) {
-      puVar1 = puVar6 + 1;
-      puVar2 = puVar6 + 2;
-      puVar3 = puVar6 + 3;
-      puVar6 = puVar6 + 4;
-      RFU086_WaitEvnetFlag(lVar9,uVar4,*puVar1,*puVar2,*puVar3);
-      lVar9 = (long)((int)lVar9 + 1);
-      if (lVar8 <= lVar9) break;
-      uVar4 = *puVar6;
+    uVar1 = *puVar6;
+    while (true) {
+      RFU086_WaitEvnetFlag(iVar4,uVar1,puVar6[1],puVar6[2],puVar6[3]);
+      puVar6 += 4;
+      iVar4 = iVar4 + 1;
+      if (iVar3 <= iVar4) break;
+      uVar1 = *puVar6;
     }
   }
-  Wired = (int)lVar9;
+  Wired = iVar4;
   SYNC(0x10);
   DAT_0077fba4 = Wired;
   if (0 < DAT_0077fba0) {
-    lVar8 = (long)(Wired + DAT_0077fba0);
-    if (0x30 < lVar8) {
+    iVar3 = Wired + DAT_0077fba0;
+    if (0x30 < iVar3) {
       FUN_00505ec8(0x7be098);
       FUN_0050da58(1);
     }
-    if (lVar9 < lVar8) {
-      uVar4 = *(u32 *)PTR_DAT_0077fbb0;
+    if (iVar4 < iVar3) {
       puVar6 = (u32 *)PTR_DAT_0077fbb0;
-      while( true ) {
-        puVar1 = puVar6 + 1;
-        puVar2 = puVar6 + 2;
-        puVar3 = puVar6 + 3;
-        puVar6 = puVar6 + 4;
-        RFU086_WaitEvnetFlag(lVar9,uVar4,*puVar1,*puVar2,*puVar3);
-        lVar9 = (long)((int)lVar9 + 1);
-        if (lVar8 <= lVar9) break;
-        uVar4 = *puVar6;
+      uVar1 = *puVar6;
+      while (true) {
+        RFU086_WaitEvnetFlag(iVar4,uVar1,puVar6[1],puVar6[2],puVar6[3]);
+        puVar6 += 4;
+        iVar4 = iVar4 + 1;
+        if (iVar3 <= iVar4) break;
+        uVar1 = *puVar6;
       }
     }
   }
-  iVar5 = (int)lVar9 * 0x2000;
-  lVar8 = (long)iVar5;
-  if (lVar9 < 0x30) {
+  iVar3 = iVar4;
+  iVar5 = iVar4 * 0x2000;
+  if (iVar4 < 0x30) {
     iVar5 = iVar5 + -0x20000000;
     do {
-      lVar7 = (long)((int)lVar9 + 1);
-      RFU086_WaitEvnetFlag(lVar9,0,iVar5,0,0);
+      iVar3 = iVar4 + 1;
+      RFU086_WaitEvnetFlag(iVar4,0,iVar5,0,0);
       iVar5 = iVar5 + 0x2000;
-      lVar9 = lVar7;
-    } while (lVar7 < 0x30);
+      iVar4 = iVar3;
+    } while (iVar3 < 0x30);
   }
-  return lVar8;
+  return iVar3;
 }
 // FUN_0050D3A0 NONMATCHING
 bool FUN_0050d3a0(void)
@@ -2627,7 +2616,6 @@ u32 FUN_0050fbc0(void)
 }
 // FUN_0050FC38 NONMATCHING
 u32 FUN_0050fc38(u64 *param_1,char *param_2,u32 param_3)
-
 {
   char cVar1;
   u64 uVar2;
@@ -2635,18 +2623,18 @@ u32 FUN_0050fc38(u64 *param_1,char *param_2,u32 param_3)
   u64 uVar4;
   u32 uVar5;
   int iVar6;
-  long lVar7;
+  int iVar7;
   
   FUN_0050f960();
   iVar6 = PollSema(DAT_00780ba8);
   if (DAT_00780ba8 == iVar6) {
     DAT_00780b9c = 1;
-    lVar7 = FUN_00510148(1);
-    if (lVar7 == 0) {
+    iVar7 = FUN_00510148(1);
+    if (iVar7 == 0) {
       FUN_005068a8(0);
       if (DAT_00780bcc < 0) {
-        while( true ) {
-          while (lVar7 = FUN_00507050(0x96dc00,0xffffffff80000597,0), lVar7 < 0) {
+        while (true) {
+          while (iVar7 = FUN_00507050(0x96dc00,0xffffffff80000597,0), iVar7 < 0) {
             if (0 < ram0x00780b90) {
               FUN_00505e48(0x7be160);
             }
@@ -2681,11 +2669,11 @@ u32 FUN_0050fc38(u64 *param_1,char *param_2,u32 param_3)
       DAT_0096dba4 = (u32)(&DAT_0096da80);
       DAT_0096dba8 = param_3;
       FUN_005067f8(0x96da80,300);
-      lVar7 = FUN_00507230(0x96dc00,0,0,0x96da80,300,0x96dbc0,4,0);
+      iVar7 = FUN_00507230(0x96dc00,0,0,0x96da80,300,0x96dbc0,4,0);
       uVar4 = DAT_2096da98;
       uVar3 = DAT_2096da90;
       uVar2 = DAT_2096da88;
-      if (-1 < lVar7) {
+      if (-1 < iVar7) {
         *param_1 = DAT_2096da80;
         param_1[1] = uVar2;
         param_1[2] = uVar3;
