@@ -5474,33 +5474,18 @@ u64 FUN_00321b00(void)
 
 
 
-// FUN_00321C50 NONMATCHING
+// FUN_00321C50
 
 
 u64 FUN_00321c50(void)
-
-
-
 {
+  RwCamera *camera;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  
-
-  uVar1 = FUN_00198590();
-
-  lVar2 = (long)(int)RwCameraBeginUpdate(uVar1);
-
-  if (lVar2 != 0) {
-
+  camera = FUN_00198590_camera();
+  if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(1);
-
-    uVar1 = FUN_00198590();
-
-    RwCameraEndUpdate(uVar1);
-
+    camera = FUN_00198590_camera();
+    RwCameraEndUpdate(camera);
   }
 
   return 0;
@@ -5528,33 +5513,16 @@ u64 FUN_00321cb0(void)
 
 
 
-// FUN_00321CE0 NONMATCHING
-
-
+// FUN_00321CE0
 u64 FUN_00321ce0(void)
-
-
-
 {
+  RwCamera *camera;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  
-
-  uVar1 = FUN_00198590();
-
-  lVar2 = (long)(int)RwCameraBeginUpdate(uVar1);
-
-  if (lVar2 != 0) {
-
+  camera = FUN_00198590_camera();
+  if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(3);
-
-    uVar1 = FUN_00198590();
-
-    RwCameraEndUpdate(uVar1);
-
+    camera = FUN_00198590_camera();
+    RwCameraEndUpdate(camera);
   }
 
   return 0;
@@ -5670,33 +5638,16 @@ u64 FUN_00321e20(void)
 
 
 
-// FUN_00321E50 NONMATCHING
-
-
+// FUN_00321E50
 u64 FUN_00321e50(void)
-
-
-
 {
+  RwCamera *camera;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  
-
-  uVar1 = FUN_00198590();
-
-  lVar2 = (long)(int)RwCameraBeginUpdate(uVar1);
-
-  if (lVar2 != 0) {
-
+  camera = FUN_00198590_camera();
+  if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(6);
-
-    uVar1 = FUN_00198590();
-
-    RwCameraEndUpdate(uVar1);
-
+    camera = FUN_00198590_camera();
+    RwCameraEndUpdate(camera);
   }
 
   return 0;
@@ -5706,33 +5657,16 @@ u64 FUN_00321e50(void)
 
 
 
-// FUN_00321EB0 NONMATCHING
-
-
+// FUN_00321EB0
 u64 FUN_00321eb0(void)
-
-
-
 {
+  RwCamera *camera;
 
-  u64 uVar1;
-
-  long lVar2;
-
-  
-
-  uVar1 = FUN_00198590();
-
-  lVar2 = (long)(int)RwCameraBeginUpdate(uVar1);
-
-  if (lVar2 != 0) {
-
+  camera = FUN_00198590_camera();
+  if (RwCameraBeginUpdate(camera) != 0) {
     FUN_00321360(7);
-
-    uVar1 = FUN_00198590();
-
-    RwCameraEndUpdate(uVar1);
-
+    camera = FUN_00198590_camera();
+    RwCameraEndUpdate(camera);
   }
 
   return 0;
