@@ -63,6 +63,7 @@ void H_Pad_Init(void)
 {
     HPad* workPads;
     s32 i;
+    s32 requestedMainMode;
 
     memset(&gWorkPads[HPAD_PORT_1], 0, sizeof(HPad));
     memset(&gWorkPads[HPAD_PORT_2], 0, sizeof(HPad));
@@ -73,14 +74,16 @@ void H_Pad_Init(void)
     scePadPortOpen(HPAD_PORT_1, 0, sAddrPort1);
     scePadPortOpen(HPAD_PORT_2, 0, sAddrPort2);
 
+    i = 0;
     workPads = gWorkPads;
-    for (i = 0; i < HPAD_PORT_MAX; i++)
+    asm volatile("addiu %0, $0, 3" : "=r" (requestedMainMode));
+    for (; i < HPAD_PORT_MAX; i++)
     {
         workPads[i].port = i;
         workPads[i].slot = 0;
         workPads[i].state = HPAD_STATE_INITIALIZING;
         workPads[i].mainMode = 0;
-        workPads[i].requestedMainMode = 3;
+        workPads[i].requestedMainMode = requestedMainMode;
     }
 }
 
