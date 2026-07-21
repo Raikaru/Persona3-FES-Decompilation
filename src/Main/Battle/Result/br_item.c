@@ -13,9 +13,13 @@ void FUN_0025fb60(int param_1,int param_2,float *uv);
 void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4);
 extern f32 DAT_007caff0;
 extern f32 DAT_00960088;
-extern code DAT_00960090[];
-extern void FUN_004d7f60(s32 state, u32 value);
-extern code DAT_0096009c[];
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u8 DAT_00960088_abs[];
+extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern code DAT_00960090_abs[];
+extern code DAT_0096009c_abs[];
 extern code DAT_00960178;
 extern char D_0068EC08[];
 
@@ -367,7 +371,7 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 
   *(float *)(param_1 + 0x18) = fVar2;
 
-  *(float *)(param_1 + 8) = DAT_00960088;
+  *(float *)(param_1 + 8) = *(f32*)DAT_00960088_abs;
 
   *(float *)(param_1 + 0x20) = (float)((unaff_s5_lo >> 0x18) * 0xff >> 7 & 0xff);
 
@@ -383,7 +387,7 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 
   *(float *)(param_1 + 0x58) = fVar2;
 
-  *(float *)(param_1 + 0x48) = DAT_00960088;
+  *(float *)(param_1 + 0x48) = *(f32*)DAT_00960088_abs;
 
   *(float *)(param_1 + 0x60) = (float)((unaff_s4_lo >> 0x18) * 0xff >> 7 & 0xff);
 
@@ -399,7 +403,7 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 
   *(float *)(param_1 + 0x98) = fVar2;
 
-  *(float *)(param_1 + 0x88) = DAT_00960088;
+  *(float *)(param_1 + 0x88) = *(f32*)DAT_00960088_abs;
 
   *(float *)(param_1 + 0xa0) = (float)((unaff_s3_lo >> 0x18) * 0xff >> 7 & 0xff);
 
@@ -415,7 +419,7 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 
   *(float *)(param_1 + 0xd8) = fVar2;
 
-  *(float *)(param_1 + 200) = DAT_00960088;
+  *(float *)(param_1 + 200) = *(f32*)DAT_00960088_abs;
 
   *(float *)(param_1 + 0xe0) = (float)((unaff_s2_lo >> 0x18) * 0xff >> 7 & 0xff);
 
@@ -1151,14 +1155,15 @@ void FUN_0025ed40(void)
 {
     volatile code *state;
     volatile code *quad;
-    int iVar1;
+    char *iVar1;
     u32 uVar2;
 
     if (sBrItem == (u32*)0) {
         FUN_0019d3f0(0x68ebf8, 0x75);
     }
-    iVar1 = (int)sBrItem;
-    state = DAT_00960090;
+    iVar1 = (char*)sBrItem;
+    state = DAT_00960090_abs;
+    quad = DAT_0096009c_abs;
     (*state)(9, 2);
     (*state)(0x14, 2);
     (*state)(8, 1);
@@ -1166,7 +1171,7 @@ void FUN_0025ed40(void)
     FUN_004d7f60(3, 0x717fb);
     FUN_004d7f60(2, 0x44);
     (*state)(1, 0);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x310, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x310, 4, 0, 2, 3);
     (*state)(0x14, 2);
@@ -1175,18 +1180,18 @@ void FUN_0025ed40(void)
     FUN_004d7f60(3, 0x717fb);
     FUN_004d7f60(2, 0x44);
     (*state)(1, 0);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x10, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x10, 4, 0, 2, 3);
     (*state)(8, 0);
     (*state)(6, 1);
     uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x3a);
     (*state)(1, uVar2);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x710, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x710, 4, 0, 2, 3);
     (*state)(1, 0);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x810, 4, 0, 1, 2);
     (*state)(8, 1);
     (*state)(6, 1);
@@ -1196,7 +1201,7 @@ void FUN_0025ed40(void)
     (*state)(6, 1);
     (*state)(8, 1);
     (*state)(1, 0);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x210, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x210, 4, 0, 2, 3);
     if (*(int*)(iVar1 + 4) == 1) {
@@ -1215,23 +1220,23 @@ void FUN_0025ed40(void)
         (*quad)(iVar1 + 0x110, 4, 0, 1, 2);
         (*quad)(iVar1 + 0x110, 4, 0, 2, 3);
     }
-    state = DAT_00960090;
+    state = DAT_00960090_abs;
     (*state)(6, 1);
     (*state)(6, 1);
     (*state)(8, 0);
     uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x34);
     (*state)(1, uVar2);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x410, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x410, 4, 0, 2, 3);
     uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x35);
     (*state)(1, uVar2);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x510, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x510, 4, 0, 2, 3);
     uVar2 = FUN_00260940(*(u32*)(iVar1 + 8), 0x36);
     (*state)(1, uVar2);
-    quad = DAT_0096009c;
+    quad = DAT_0096009c_abs;
     (*quad)(iVar1 + 0x610, 4, 0, 1, 2);
     (*quad)(iVar1 + 0x610, 4, 0, 2, 3);
 }
@@ -1272,15 +1277,17 @@ void FUN_0025ed40(void)
 
 
 
-// FUN_0025F5D0 NONMATCHING
+// FUN_0025F5D0
 void FUN_0025f5d0(int param_1, int param_2, int param_3)
 {
     int iVar1;
     int iVar3;
     u32 uVar2;
+    u8 *puVar4;
     float uv[4];
     u8 abStack_20[0x10];
     float fVar5;
+    u32 depthAddress;
 
     iVar1 = *(int *)((int)param_2 + 0x184) + param_3 * 0x80;
     iVar3 = FUN_00198590();
@@ -1288,18 +1295,17 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     FUN_0025fb60(param_2, param_3, uv);
     for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
         uVar2 = *(u32 *)(iVar1 + iVar3 * 4 + 100);
-        abStack_20[iVar3 * 4] = (u8)((uVar2 >> 0x18) * 0xff >> 7);
-        abStack_20[iVar3 * 4 + 1] =
-            (u8)(((uVar2 >> 0x10) & 0xff) * 0xff >> 7);
-        abStack_20[iVar3 * 4 + 2] =
-            (u8)(((uVar2 >> 8) & 0xff) * 0xff >> 7);
-        abStack_20[iVar3 * 4 + 3] =
-            (u8)((uVar2 & 0xff) * 0xff >> 7);
+        puVar4 = abStack_20 + iVar3 * 4;
+        puVar4[0] = (u8)((uVar2 >> 0x18) * 0xff >> 7);
+        puVar4[1] = (u8)(((uVar2 >> 0x10) & 0xff) * 0xff >> 7);
+        puVar4[2] = (u8)(((uVar2 >> 8) & 0xff) * 0xff >> 7);
+        puVar4[3] = (u8)((uVar2 & 0xff) * 0xff >> 7);
     }
     *(float *)(param_1 + 0x10) = uv[0];
     *(float *)(param_1 + 0x14) = uv[1];
     *(float *)(param_1 + 0x18) = fVar5;
-    *(float *)(param_1 + 8) = DAT_00960088;
+    depthAddress = (u32)DAT_00960088_abs;
+    *(float *)(param_1 + 8) = *(volatile f32*)depthAddress;
     *(float *)(param_1 + 0x20) = (float)abStack_20[0];
     *(float *)(param_1 + 0x24) = (float)abStack_20[1];
     *(float *)(param_1 + 0x28) = (float)abStack_20[2];
@@ -1307,7 +1313,7 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     *(float *)(param_1 + 0x50) = uv[2];
     *(float *)(param_1 + 0x54) = uv[1];
     *(float *)(param_1 + 0x58) = fVar5;
-    *(float *)(param_1 + 0x48) = DAT_00960088;
+    *(float *)(param_1 + 0x48) = *(volatile f32*)depthAddress;
     *(float *)(param_1 + 0x60) = (float)abStack_20[4];
     *(float *)(param_1 + 0x64) = (float)abStack_20[5];
     *(float *)(param_1 + 0x68) = (float)abStack_20[6];
@@ -1315,7 +1321,7 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     *(float *)(param_1 + 0x90) = uv[2];
     *(float *)(param_1 + 0x94) = uv[3];
     *(float *)(param_1 + 0x98) = fVar5;
-    *(float *)(param_1 + 0x88) = DAT_00960088;
+    *(float *)(param_1 + 0x88) = *(volatile f32*)depthAddress;
     *(float *)(param_1 + 0xa0) = (float)abStack_20[8];
     *(float *)(param_1 + 0xa4) = (float)abStack_20[9];
     *(float *)(param_1 + 0xa8) = (float)abStack_20[10];
@@ -1323,7 +1329,7 @@ void FUN_0025f5d0(int param_1, int param_2, int param_3)
     *(float *)(param_1 + 0xd0) = uv[0];
     *(float *)(param_1 + 0xd4) = uv[3];
     *(float *)(param_1 + 0xd8) = fVar5;
-    *(float *)(param_1 + 200) = DAT_00960088;
+    *(float *)(param_1 + 200) = *(volatile f32*)depthAddress;
     *(float *)(param_1 + 0xe0) = (float)abStack_20[12];
     *(float *)(param_1 + 0xe4) = (float)abStack_20[13];
     *(float *)(param_1 + 0xe8) = (float)abStack_20[14];
