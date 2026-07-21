@@ -262,14 +262,7 @@ void FUN_00397d60(void)
 
   int iVar1;
 
-  u32 uVar2;
-
-  
-  
-
-  uVar2 = FUN_0035ae10_pm();
-
-  iVar1 = (int)uVar2;
+  iVar1 = (int)FUN_0035ae10_pm();
 
   if (*(u16 *)(iVar1 + 0x18) > 0) {
 
@@ -337,7 +330,7 @@ void FUN_00397d60(void)
 
   }
 
-  FUN_00386b70(uVar2,1,0x40);
+  FUN_00386b70(iVar1,1,0x40);
   return;
 
 }
