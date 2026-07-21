@@ -557,19 +557,58 @@ void func_001dd5f0(KwlnTask* task, u32 value)
     *(u32*)((u8*)task->workData + 0x224) = value;
 }
 
-// FUN_001dd600 NONMATCHING
+// FUN_001dd600
 u32 func_001dd600(void)
 {
-    u32 state = K_Footstep_GameState();
-    if (datGetFlag(0xC35) != 0)
+    s32 major;
+    u32 result;
+
+    result = 0;
+    if (func_001a01c0() == 1)
     {
-        return 0;
+        result = 1;
     }
-    if (state == 0)
+    major = gMtScene->fldMajorId;
+    if (major == 33)
     {
-        return 1;
+        result = 0;
     }
-    return state == 1 || state == 2 || state == 3 || state == 4 || state == 5;
+    if (datGetFlag(0xc27) == 1)
+    {
+        result = 1;
+    }
+    major = gMtScene->fldMajorId;
+    if ((major == 21 && gMtScene->fldMinorId == 50) ||
+        (major == 22 && gMtScene->fldMinorId == 50) ||
+        (major == 22 && gMtScene->fldMinorId == 51) ||
+        (major == 23 && gMtScene->fldMinorId == 50) ||
+        (major == 23 && gMtScene->fldMinorId == 51) ||
+        (major == 24 && gMtScene->fldMinorId == 50) ||
+        (major == 26 && gMtScene->fldMinorId == 50) ||
+        (major == 26 && gMtScene->fldMinorId == 51) ||
+        (major == 26 && gMtScene->fldMinorId == 52) ||
+        (major == 26 && gMtScene->fldMinorId == 53) ||
+        (major == 27 && gMtScene->fldMinorId == 50))
+    {
+        result = 1;
+    }
+    if ((major == 4 && gMtScene->fldMinorId == 10) ||
+        (major == 39 && gMtScene->fldMinorId == 1) ||
+        (major == 39 && gMtScene->fldMinorId == 3))
+    {
+        result = 1;
+    }
+    if ((major == 41 && gMtScene->fldMinorId == 50) ||
+        (major == 42 && gMtScene->fldMinorId == 50) ||
+        (major == 43 && gMtScene->fldMinorId == 50) ||
+        (major == 44 && gMtScene->fldMinorId == 50) ||
+        (major == 45 && gMtScene->fldMinorId == 50) ||
+        (major == 46 && gMtScene->fldMinorId == 50) ||
+        (major == 47 && gMtScene->fldMinorId == 50))
+    {
+        result = 1;
+    }
+    return result;
 }
 
 // FUN_001dd8e0 NONMATCHING
@@ -1078,24 +1117,228 @@ s32 func_001de630(s32 charId)
 // FUN_001ded40 NONMATCHING
 s32 func_001ded40(s32 charId)
 {
-    if (charId == 0)
-    {
-        return 0;
+    s32 result;
+    s32 major;
+
+    result = 0;
+    if (charId == 6) goto handler_6;
+    if (charId == 13) goto handler_13;
+    if (charId == 10) goto handler_10;
+    if (charId == 7) goto handler_7;
+    if (charId == 5) goto handler_5;
+    if (charId == 2) goto handler_2;
+    switch (charId) {
+    case 1: goto handler_1;
     }
-    if (K_Footstep_StatusResult(5) == 0)
+    goto default_case;
+
+handler_1:
+    if (datGetScenarioMode() == 1)
     {
-        return 5;
+        if (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5)
+        {
+            result = 5;
+            if (datGetFlag(0xc35))
+            {
+                result -= 1;
+            }
+            goto done;
+        }
     }
-    if (charId == 6 || charId == 10 || charId == 13)
+    if (func_001a0310() == 1)
     {
-        return 1;
+        result = 5;
+        if (datGetFlag(0xc35))
+        {
+            result -= 1;
+        }
+        goto done;
     }
-    if (charId == 1 || charId == 2 || charId == 3 || charId == 4 || charId == 5 ||
-        charId == 7 || charId == 8 || charId == 9 || charId == 11 || charId == 12)
+    if (gMtScene->fldMajorId == 7)
     {
-        return 3;
+        if (gMtScene->fldMinorId == 6)
+        {
+            if (datGetTime() == 8)
+            {
+                goto special_result;
+            }
+        }
     }
-    return 0;
+    if (gMtScene->fldMajorId == 8)
+    {
+        if (gMtScene->fldMinorId == 1)
+        {
+            if (datGetTime() == 8)
+            {
+                goto special_result;
+            }
+        }
+    }
+    if (gMtScene->fldMajorId == 9)
+    {
+        if (gMtScene->fldMinorId == 1)
+        {
+            if (datGetTime() == 8)
+            {
+                goto special_result;
+            }
+        }
+    }
+    goto after_special_result;
+special_result:
+    result = 5;
+    if (datGetFlag(0xc35))
+    {
+        result -= 1;
+    }
+    goto done;
+after_special_result:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    if (major == 33)
+    {
+        result = 3;
+        if (datGetFlag(0xc35))
+        {
+            result -= 1;
+        }
+        goto done;
+    }
+    if (major == 7)
+    {
+        if (datGetFlag(0xe00) == 1)
+        {
+            goto done;
+        }
+    }
+    major = gMtScene->fldMajorId;
+    if (major == 6 && datGetFlag(0xe60) == 1)
+    {
+        result = 5;
+        if (datGetFlag(0xc35))
+        {
+            result -= 1;
+        }
+        goto done;
+    }
+    if (func_001a01c0() == 1 ||
+        (major == 21 && gMtScene->fldMinorId == 50) ||
+        (major == 22 && gMtScene->fldMinorId == 50) ||
+        (major == 22 && gMtScene->fldMinorId == 51) ||
+        (major == 23 && gMtScene->fldMinorId == 50) ||
+        (major == 23 && gMtScene->fldMinorId == 51) ||
+        (major == 24 && gMtScene->fldMinorId == 50) ||
+        (major == 24 && gMtScene->fldMinorId == 51) ||
+        (major == 25 && gMtScene->fldMinorId == 50) ||
+        (major == 26 && gMtScene->fldMinorId == 50) ||
+        (major == 27 && gMtScene->fldMinorId == 50) ||
+        (major == 41 && gMtScene->fldMinorId == 50) ||
+        (major == 42 && gMtScene->fldMinorId == 50) ||
+        (major == 43 && gMtScene->fldMinorId == 50) ||
+        (major == 44 && gMtScene->fldMinorId == 50) ||
+        (major == 45 && gMtScene->fldMinorId == 50) ||
+        (major == 46 && gMtScene->fldMinorId == 50) ||
+        (major == 47 && gMtScene->fldMinorId == 50) ||
+        (major == 39 && gMtScene->fldMinorId == 1) ||
+        (major == 39 && gMtScene->fldMinorId == 2) ||
+        (major == 39 && gMtScene->fldMinorId == 3))
+    {
+        result = 3;
+        goto done;
+    }
+    result = 5;
+    if (datGetFlag(0xc35))
+    {
+        result -= 1;
+    }
+    goto done;
+
+handler_2:
+    major = gMtScene->fldMajorId;
+    if (major == 6 || major == 7)
+    {
+        result = 2;
+        goto done;
+    }
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    result = 3;
+    goto done;
+
+handler_5:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    if (datGetFlag(0xc2f) == 1)
+    {
+        result = 2;
+        goto done;
+    }
+    if (gMtScene->fldMajorId == 33)
+    {
+        goto done;
+    }
+    result = 3;
+    goto done;
+
+handler_7:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    if (major == 33)
+    {
+        result = 1;
+        goto done;
+    }
+    result = 3;
+    goto done;
+
+handler_10:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    result = 3;
+    goto done;
+
+handler_13:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+        goto done;
+    }
+    result = 3;
+    goto done;
+
+handler_6:
+    major = gMtScene->fldMajorId;
+    if (major == 14 && gMtScene->fldMinorId == 5)
+    {
+        result = 1;
+    }
+    goto done;
+
+default_case:
+    result = 3;
+
+done:
+    return result;
 }
 
 // FUN_001df450
