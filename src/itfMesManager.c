@@ -166,8 +166,6 @@ long FUN_003a6140(u32 *param_1,int param_2,u32 param_3,u64 param_4,int param_5, 
 int FUN_003a628c(int param_1);
 void FUN_003a62b0(int param_1,int param_2);
 int FUN_003a62e0(int param_1,int param_2);
-void FUN_003a6334(int param_1,int param_2,int param_3);
-void FUN_003a6360(int param_1,u32 param_2);
 void FUN_003a6380(int param_1,int param_2,int param_3,u8 param_4);
 void FUN_003a6410(int param_1,u32 param_2);
 int FUN_003a6460(int param_1);
@@ -271,8 +269,6 @@ u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
 #define FUN_003a628c(...) ((int (*)(...))FUN_003a628c)(__VA_ARGS__)
 #define FUN_003a62b0(...) ((void (*)(...))FUN_003a62b0)(__VA_ARGS__)
 #define FUN_003a62e0(...) ((int (*)(...))FUN_003a62e0)(__VA_ARGS__)
-#define FUN_003a6334(...) ((void (*)(...))FUN_003a6334)(__VA_ARGS__)
-#define FUN_003a6360(...) ((void (*)(...))FUN_003a6360)(__VA_ARGS__)
 #define FUN_003a6380(...) ((void (*)(...))FUN_003a6380)(__VA_ARGS__)
 #define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
 #define FUN_003a6460(...) ((int (*)(...))FUN_003a6460)(__VA_ARGS__)
@@ -3841,93 +3837,24 @@ int FUN_003a62e0(int param_1,int param_2)
 
 
 // FUN_003A6310 thunk_FUN_003a6334
-
-
 void thunk_FUN_003a6334(int param_1,int param_2,int param_3)
-
-
-
 {
-
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
     *(int *)(param_1 + 4) = *(int *)(param_1 + 4) + param_2;
-
     *(int *)(param_1 + 8) = *(int *)(param_1 + 8) + param_3;
-
   }
-
   return;
-
 }
-
-#define FUN_003a62e0(...) ((int (*)(...))FUN_003a62e0)(__VA_ARGS__)
-#undef FUN_003a6334
-// FUN_003A6334 NONMATCHING
-
-
-void FUN_003a6334(int param_1,int param_2,int param_3)
-
-
-
-{
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    *(int *)(param_1 + 4) = *(int *)(param_1 + 4) + param_2;
-
-    *(int *)(param_1 + 8) = *(int *)(param_1 + 8) + param_3;
-
-  }
-
-  return;
-
-}
-
-
-
-
 
 // FUN_003A6350 thunk_FUN_003a6360
-
-
 void thunk_FUN_003a6360(int param_1,u32 param_2)
-
-
-
 {
-
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
     *(u32 *)(param_1 + 0x14) = param_2;
-
   }
-
   return;
-
 }
 
-#define FUN_003a6334(...) ((void (*)(...))FUN_003a6334)(__VA_ARGS__)
-#undef FUN_003a6360
-// FUN_003A6360 NONMATCHING
-
-
-void FUN_003a6360(int param_1,u32 param_2)
-
-
-
-{
-
-  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x24)) {
-
-    *(u32 *)(param_1 + 0x14) = param_2;
-
-  }
-
-  return;
-
-}
-#define FUN_003a6360(...) ((void (*)(...))FUN_003a6360)(__VA_ARGS__)
 #undef FUN_003a6380
 // FUN_003A6380 NONMATCHING
 
