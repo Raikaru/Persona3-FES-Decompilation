@@ -542,16 +542,180 @@ void func_0020ac80(void* work)
     (void)work;
 }
 
+extern f32 DAT_007cadd4;
+extern f32 DAT_007cad7c;
+extern f32 DAT_007cad74;
+extern f32 DAT_007caee8;
+extern f32 FUN_0052e878(f32 angle);
+extern f32 FUN_0052e6d8(f32 angle);
+extern void func_0020cf20(void* destination, void* source);
+
 // FUN_0020ac90 NONMATCHING
 void func_0020ac90(void* work)
 {
     u8* panel = (u8*)work;
-    /* Project the panel's anchor through the active camera and retain a
-       conservative visibility bit for the draw routine. */
-    if (*(u32*)(panel + 0) & 2u) {
-        *(u32*)(panel + 0) |= 1u;
-    } else {
-        *(u32*)(panel + 0) &= ~2u;
+    f32 phase;
+    f32 frac;
+    f32 blend;
+    s32 state;
+    s32 i;
+    f32 corner[4][2];
+    f32 angle;
+    f32 sinA;
+    f32 cosA;
+
+    *(f32*)(panel + 0x3c) += DAT_007cadd4;
+    state = *(s32*)(panel + 4);
+
+    if (state == 1)
+    {
+        phase = *(f32*)(panel + 0x3c) / 2.0f;
+        frac = phase - (f32)(s32)phase;
+        if (frac < 0.5f)
+        {
+            blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+        }
+        else
+        {
+            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+        }
+        *(f32*)(panel + 0x32c) = blend;
+
+        phase = *(f32*)(panel + 0x3c) / 20.0f;
+        frac = phase - (f32)(s32)phase;
+        blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
+        *(f32*)(panel + 0x4f4) = 0.5f + blend;
+        *(f32*)(panel + 0x518) = 0.5f - blend;
+        *(f32*)(panel + 0x53c) = 0.5f - blend;
+        *(f32*)(panel + 0x560) = 0.5f + blend;
+
+        blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
+        *(f32*)(panel + 0x4f8) = 0.5f - blend;
+        *(f32*)(panel + 0x51c) = 0.5f - blend;
+        *(f32*)(panel + 0x540) = 0.5f + blend;
+        *(f32*)(panel + 0x564) = 0.5f + blend;
+    }
+    else if (state == 0)
+    {
+        phase = *(f32*)(panel + 0x3c) / 8.0f;
+        frac = phase - (f32)(s32)phase;
+        *(f32*)(panel + 0x2b8) = frac;
+        *(f32*)(panel + 0x2dc) = frac;
+        *(f32*)(panel + 0x300) = 1.0f + frac;
+        *(f32*)(panel + 0x324) = 1.0f + frac;
+
+        phase = *(f32*)(panel + 0x3c) / 6.0f;
+        frac = phase - (f32)(s32)phase;
+        *(f32*)(panel + 0x348) = frac;
+        *(f32*)(panel + 0x36c) = frac;
+        *(f32*)(panel + 0x390) = 1.0f + frac;
+        *(f32*)(panel + 0x3b4) = 1.0f + frac;
+
+        phase = *(f32*)(panel + 0x3c) / 4.0f;
+        frac = phase - (f32)(s32)phase;
+        if (frac < 0.5f)
+        {
+            blend = DAT_007cad7c + DAT_007cad7c * frac / 0.5f;
+        }
+        else
+        {
+            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad7c + DAT_007cad7c;
+        }
+        *(f32*)(panel + 0x5fc) = blend;
+
+        phase = *(f32*)(panel + 0x3c) / 2.0f;
+        frac = phase - (f32)(s32)phase;
+        if (frac < 0.5f)
+        {
+            blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+        }
+        else
+        {
+            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+        }
+        *(f32*)(panel + 0x5f8) = blend;
+
+        phase = *(f32*)(panel + 0x3c) / 20.0f;
+        frac = phase - (f32)(s32)phase;
+        blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
+        *(f32*)(panel + 0x2b4) = 0.5f + blend;
+        *(f32*)(panel + 0x2d8) = 0.5f - blend;
+        *(f32*)(panel + 0x2fc) = 0.5f - blend;
+        *(f32*)(panel + 0x320) = 0.5f + blend;
+
+        blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
+        *(f32*)(panel + 0x2b8) = 0.5f - blend;
+        *(f32*)(panel + 0x2dc) = 0.5f - blend;
+        *(f32*)(panel + 0x300) = 0.5f + blend;
+        *(f32*)(panel + 0x324) = 0.5f + blend;
+    }
+
+    if ((*(u32*)(panel + 0) & 2) != 0 && *(s32*)(panel + 4) == 0)
+    {
+        corner[0][0] = 1.0f;
+        corner[0][1] = 1.0f;
+        corner[1][0] = 0.0f;
+        corner[1][1] = 1.0f;
+        corner[2][0] = 0.0f;
+        corner[2][1] = 0.0f;
+        corner[3][0] = 1.0f;
+        corner[3][1] = 0.0f;
+
+        for (i = 0; i < 4; i++)
+        {
+            corner[i][0] -= 0.5f;
+            corner[i][1] -= 0.5f;
+        }
+
+        angle = DAT_007caee8 * (*(f32*)(panel + 0x3c) / 4.0f);
+        for (i = 0; i < 4; i++)
+        {
+            sinA = FUN_0052e878(angle);
+            cosA = FUN_0052e6d8(angle);
+            corner[i][0] = corner[i][0] * cosA - corner[i][1] * sinA;
+            sinA = FUN_0052e878(angle);
+            cosA = FUN_0052e6d8(angle);
+            corner[i][1] = corner[i][0] * sinA + corner[i][1] * cosA;
+        }
+
+        for (i = 0; i < 4; i++)
+        {
+            corner[i][0] += 0.5f;
+            corner[i][1] += 0.5f;
+        }
+
+        *(f32*)(panel + 0x584) = corner[0][0];
+        *(f32*)(panel + 0x588) = corner[0][1];
+        *(f32*)(panel + 0x5a8) = corner[1][0];
+        *(f32*)(panel + 0x5ac) = corner[1][1];
+        *(f32*)(panel + 0x5cc) = corner[2][0];
+        *(f32*)(panel + 0x5d0) = corner[2][1];
+        *(f32*)(panel + 0x5f0) = corner[3][0];
+        *(f32*)(panel + 0x5f4) = corner[3][1];
+    }
+
+    if (*(u32*)(panel + 0) & 1)
+    {
+        *(u32*)(panel + 0x44) += 0x10000;
+        if (*(s32*)(panel + 0x48) == 1)
+        {
+        }
+        else if (*(s32*)(panel + 0x48) == 0)
+        {
+            if (*(u32*)(panel + 0x44) >= 0x1e0000)
+            {
+                *(u32*)(panel + 0) &= ~2u;
+            }
+        }
+        else
+        {
+            *(u32*)(panel + 0) &= ~2u;
+        }
+    }
+
+    if (*(u32*)(panel + 0) & 8)
+    {
+        func_0020cf20(panel + 0xdc, panel);
     }
 }
 
