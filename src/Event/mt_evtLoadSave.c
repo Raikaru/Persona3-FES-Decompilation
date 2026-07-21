@@ -7,6 +7,12 @@ typedef u32 int3;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 typedef u8 bool;
+typedef struct {
+  short f0;
+  short f1;
+  short f2;
+  short f3;
+} MtEvtHalf4;
 
 extern u32 LAB_00391290;
 extern u32 DAT_007cca68;
@@ -22,12 +28,12 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3);
 void FUN_0038e660(int param_1,int param_2,int param_3);
 u32 FUN_0038e860(long param_1,u64 param_2);
 void FUN_0038f0f0(u64 param_1);
-void FUN_0038f440(int param_1,u64 param_2,int param_3);
+void FUN_0038f440(u8 *param_1,void *param_2,int param_3);
 void FUN_0038f8c0(int param_1,u64 param_2,int param_3,u16 param_4);
 #pragma alias FUN_00361350_direct FUN_00361350
 extern u32 FUN_00361350_direct(int param_1,u16 param_2,u64 param_3);
 #pragma alias FUN_0038f440_direct FUN_0038f440
-extern void FUN_0038f440_direct(int param_1,u32 param_2,int param_3);
+extern void FUN_0038f440_direct(u8 *param_1,void *param_2,int param_3);
 #pragma alias FUN_005225a8_evt FUN_005225a8
 extern void FUN_005225a8_evt(const char *format,...);
 #pragma alias FUN_004c0420_evt FUN_004c0420
@@ -1590,7 +1596,7 @@ void FUN_0038f0f0(u64 param_1)
 // FUN_0038F440 NONMATCHING
 
 
-void FUN_0038f440(int param_1,u64 param_2,int param_3)
+void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
 
 
 
@@ -1606,11 +1612,12 @@ void FUN_0038f440(int param_1,u64 param_2,int param_3)
 
   int iVar5;
 
-  u8 *puVar6;
+  char *puVar6;
 
   int iVar7;
 
   int iVar8;
+  MtEvtHalf4 half4;
 
   
 
@@ -1618,31 +1625,23 @@ void FUN_0038f440(int param_1,u64 param_2,int param_3)
 
   iVar8 = iVar5 + *(int *)(param_1 + 0x9c);
 
-  uVar1 = *(u16 *)(iVar8 + 0xe);
-
-  uVar2 = *(u16 *)(iVar8 + 0x10);
-
-  uVar3 = *(u16 *)(iVar8 + 0x12);
-
   iVar7 = (int)param_2;
 
-  *(u16 *)(iVar7 + 8) = *(u16 *)(iVar8 + 0xc);
+  half4 = *(MtEvtHalf4 *)(iVar8 + 0xc);
 
-  *(u16 *)(iVar7 + 10) = uVar1;
+  asm volatile("" : "+m"(half4));
 
-  *(u16 *)(iVar7 + 0xc) = uVar2;
-
-  *(u16 *)(iVar7 + 0xe) = uVar3;
+  *(MtEvtHalf4 *)(iVar7 + 8) = half4;
 
   if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
 
-    puVar6 = (u8 *)(*(int *)(param_1 + 0x98) + param_3 * 0x10 + 8);
+    puVar6 = (char *)(*(int *)(param_1 + 0x98) + param_3 * 0x10 + 8);
 
   }
 
   else {
 
-    puVar6 = (u8 *)(*(int *)(param_1 + 0x9c) + iVar5 + 0x14);
+    puVar6 = (char *)(*(int *)(param_1 + 0x9c) + iVar5 + 0x14);
 
   }
 
@@ -1854,6 +1853,7 @@ void FUN_0038f440(int param_1,u64 param_2,int param_3)
 
 
 #define FUN_0038f440(...) ((void (*)(...))FUN_0038f440)(__VA_ARGS__)
+
 #undef FUN_0038f8c0
 // FUN_0038F8C0
 
@@ -1900,7 +1900,7 @@ start:
           uVar2 = *(u16 *)(iVar5 + 2);
         }
         uVar4 = FUN_00361350_direct(param_3,uVar2,param_2);
-        FUN_0038f440_direct(param_1,uVar4,iVar6);
+        FUN_0038f440_direct((u8 *)param_1,(void *)uVar4,iVar6);
       }
     }
   }
@@ -2458,6 +2458,7 @@ void FUN_0038ffb0(int param_1,u64 param_2)
 
 #define FUN_0038ffb0(...) ((void (*)(...))FUN_0038ffb0)(__VA_ARGS__)
 #undef FUN_003902c0
+ 
 // FUN_003902C0 NONMATCHING
 
 
@@ -2553,19 +2554,20 @@ void FUN_003902c0(int param_1,u64 param_2)
 
       iVar8 = *(int *)(param_1 + 0x9c) + iVar5;
 
-      uVar4 = *(u16 *)(iVar8 + 0xe);
+      uVar1 = *(u16 *)(iVar8 + 0xc);
 
-      uVar1 = *(u16 *)(iVar8 + 0x10);
+      uVar2 = *(u16 *)(iVar8 + 0xe);
 
-      uVar2 = *(u16 *)(iVar8 + 0x12);
+      sVar3 = *(u16 *)(iVar8 + 0x10);
 
-      *(u16 *)(iVar6 + 8) = *(u16 *)(iVar8 + 0xc);
+      uVar4 = *(u16 *)(iVar8 + 0x12);
 
-      *(u16 *)(iVar6 + 10) = uVar4;
+      *(u16 *)(iVar6 + 8) = uVar1;
+      *(u16 *)(iVar6 + 10) = uVar2;
 
-      *(u16 *)(iVar6 + 0xc) = uVar1;
+      *(u16 *)(iVar6 + 0xc) = sVar3;
 
-      *(u16 *)(iVar6 + 0xe) = uVar2;
+      *(u16 *)(iVar6 + 0xe) = uVar4;
 
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
 
@@ -2840,6 +2842,9 @@ void FUN_003905f0(int param_1,u64 param_2)
 }
 #define FUN_003905f0(...) ((void (*)(...))FUN_003905f0)(__VA_ARGS__)
 #undef FUN_00390920
+#pragma push
+#pragma opt_common_subs off
+ 
 // FUN_00390920 NONMATCHING
 
 
@@ -2856,16 +2861,18 @@ void FUN_00390920(int param_1,u64 param_2)
   short sVar3;
 
   u16 uVar4;
+  u16 eventType;
 
   int iVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int iVar8;
 
   u32 *puVar9;
+  MtEvtHalf4 half4;
 
   int iVar10;
 
@@ -2881,17 +2888,17 @@ void FUN_00390920(int param_1,u64 param_2)
 
     if (iVar5 == 4) {
 
-      sVar3 = *(short *)(*(int *)(param_1 + 0x98) + iVar11 * 0x10);
+      eventType = *(u16 *)(*(int *)(param_1 + 0x98) + iVar11 * 0x10);
 
     }
 
     else {
 
-      sVar3 = *(short *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c);
+      eventType = *(u16 *)(*(int *)(param_1 + 0x9c) + iVar11 * 0x3c);
 
     }
 
-    if (sVar3 == 0x29) {
+    if (eventType == 0x29) {
 
       if (iVar5 == 4) {
 
@@ -2911,21 +2918,11 @@ void FUN_00390920(int param_1,u64 param_2)
 
       iVar10 = *(int *)(param_1 + 0x9c) + iVar8;
 
-      uVar4 = *(u16 *)(iVar10 + 0xe);
-
-      uVar1 = *(u16 *)(iVar10 + 0x10);
-
-      uVar2 = *(u16 *)(iVar10 + 0x12);
-
       iVar5 = (int)uVar7;
 
-      *(u16 *)(iVar5 + 8) = *(u16 *)(iVar10 + 0xc);
-
-      *(u16 *)(iVar5 + 10) = uVar4;
-
-      *(u16 *)(iVar5 + 0xc) = uVar1;
-
-      *(u16 *)(iVar5 + 0xe) = uVar2;
+      half4 = *(MtEvtHalf4 *)(iVar10 + 0xc);
+      asm volatile("" : "+m"(half4));
+      *(MtEvtHalf4 *)(iVar5 + 8) = half4;
 
       if (*(int *)(*(int *)(param_1 + 0x84) + 0x14) == 4) {
 
@@ -3023,7 +3020,7 @@ void FUN_00390920(int param_1,u64 param_2)
 
         FUN_00521250(*(u32 *)(iVar5 + 0x40),
 
-                     *(int *)(param_1 + 100) + (sVar3 * 0x12 + (int)sVar3) * 0x10,0x130);
+                     *(int *)(param_1 + 100) + (sVar3 * 0x12 + sVar3) * 0x10,0x130);
 
       }
 
@@ -3034,6 +3031,8 @@ void FUN_00390920(int param_1,u64 param_2)
   return;
 
 }
+#pragma opt_common_subs on
+#pragma pop
 #define FUN_00390920(...) ((void (*)(...))FUN_00390920)(__VA_ARGS__)
 #undef FUN_00390c90
 // FUN_00390C90 NONMATCHING
