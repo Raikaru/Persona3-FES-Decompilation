@@ -160,6 +160,17 @@ extern const char D_005DBF40[];
 extern const char D_005DBF70[];
 extern const char D_005DBFA0[];
 extern const char D_005DBFD0[];
+/* These task archive names are addressed absolutely by retail. */
+#pragma alias D_005DBF20_abs D_005DBF20
+extern u8 D_005DBF20_abs[];
+#pragma alias D_005DBF40_abs D_005DBF40
+extern u8 D_005DBF40_abs[];
+#pragma alias D_005DBF70_abs D_005DBF70
+extern u8 D_005DBF70_abs[];
+#pragma alias D_005DBFA0_abs D_005DBFA0
+extern u8 D_005DBFA0_abs[];
+#pragma alias D_005DBFD0_abs D_005DBFD0
+extern u8 D_005DBFD0_abs[];
 extern const char D_005DC000[];
 extern const char D_005E3098[];
 extern const char D_005E30B0[];
@@ -775,7 +786,7 @@ void* FUN_00168220(KwlnTask* task)
     work = (CampBridgeBlendWork*)task->workData;
     switch (work->state) {
     case 0:
-        work->archive = (u32)H_Cdvd_Request(D_005DBF20, 1);
+        work->archive = (u32)H_Cdvd_Request((const char*)D_005DBF20_abs, 1);
         work->state = 1;
         break;
     case 1:
@@ -785,21 +796,39 @@ void* FUN_00168220(KwlnTask* task)
         break;
     case 3:
         if (work->mode == 3) {
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd, D_005DBFD0);
-            work->targetTask = child;
+            goto camp_blend_mode3;
         }
-        else if (work->mode == 2) {
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd, D_005DBFA0);
-            work->targetTask = child;
+        if (work->mode == 2) {
+            goto camp_blend_mode2;
         }
-        else if (work->mode == 1) {
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd, D_005DBF70);
-            work->targetTask = child;
+        if (work->mode == 1) {
+            goto camp_blend_mode1;
         }
-        else if (work->mode == 0) {
-            child = (u32)H_Maestro_CreateTask(task, 0x18bd, D_005DBF40);
-            work->targetTask = child;
+        if (work->mode == 0) {
+            goto camp_blend_mode0;
         }
+        goto camp_blend_mode_done;
+
+camp_blend_mode3:
+        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                          (const char*)D_005DBFD0_abs);
+        work->targetTask = child;
+        goto camp_blend_mode_done;
+camp_blend_mode2:
+        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                          (const char*)D_005DBFA0_abs);
+        work->targetTask = child;
+        goto camp_blend_mode_done;
+camp_blend_mode1:
+        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                          (const char*)D_005DBF70_abs);
+        work->targetTask = child;
+        goto camp_blend_mode_done;
+camp_blend_mode0:
+        child = (u32)H_Maestro_CreateTask(task, 0x18bd,
+                                          (const char*)D_005DBF40_abs);
+        work->targetTask = child;
+camp_blend_mode_done:
         work->timer = 0;
         work->state = 4;
         break;
