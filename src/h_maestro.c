@@ -160,6 +160,8 @@ typedef struct MaestroOutputRecord
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
+ #pragma alias D_00960090_abs D_00960090
+ extern u8 D_00960090_abs[];
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern f32 D_00960088;
 extern RwV3d D_005D6C28;
@@ -191,6 +193,7 @@ extern const char D_005D6C10[];
 extern void* func_0010f6c0(KwlnTask* task);
 extern const char* func_001022e0(HCdvd* cdvd, s32 entryIndex);
 extern void* func_0010c1a0(void* param_1, const char* path, ...);
+extern void func_00102720(const char* path, const void* archive);
 extern void* func_0010c3a0(void* stream, u32* finished, u32 param_3);
 extern void func_0010a4e0(u32 param_1, u32 param_2, s8 param_3, s8 param_4);
 extern void* func_0010e880(const void* entry);
@@ -4241,7 +4244,7 @@ void* func_001193d0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-static void MaestroEffectRequestFiles(MaestroPerEffectWork* work)
+static inline void MaestroEffectRequestFiles(MaestroPerEffectWork* work)
 {
     char path[0x100];
     s32 i;
@@ -4259,28 +4262,81 @@ static void MaestroEffectRequestFiles(MaestroPerEffectWork* work)
         work->effectCount--;
     }
 
-    for (i = 0; i <= work->effectCount; i++)
-    {
-        sprintf(path, D_005D6E90, work->effectIds[i]);
-        work->cdvd[i + 1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
-    }
     if (datGetScenarioMode() != 0)
     {
-        work->cdvd[0] = H_Cdvd_Request(
-            work->effectCount == 0 ? D_005D6EC0 :
-            work->effectCount == 1 ? D_005D6EE0 : D_005D6F00,
-            HCDVD_FILEARCHIVE);
+        if (work->effectCount == 0)
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6EC0, HCDVD_FILEARCHIVE);
+        }
+        else if (work->effectCount == 1)
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            if (work->effectIds[1] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[1]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->cdvd[2] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6EE0, HCDVD_FILEARCHIVE);
+        }
+        else
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            if (work->effectIds[1] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[1]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->cdvd[2] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            if (work->effectIds[2] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[2]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[2]);
+            work->cdvd[3] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6F00, HCDVD_FILEARCHIVE);
+        }
     }
     else
     {
-        work->cdvd[0] = H_Cdvd_Request(
-            work->effectCount == 0 ? D_005D6F20 :
-            work->effectCount == 1 ? D_005D6F40 : D_005D6F60,
-            HCDVD_FILEARCHIVE);
+        if (work->effectCount == 0)
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6F20, HCDVD_FILEARCHIVE);
+        }
+        else if (work->effectCount == 1)
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->cdvd[2] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6F40, HCDVD_FILEARCHIVE);
+        }
+        else
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->cdvd[1] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->cdvd[2] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            sprintf(path, D_005D6E90, work->effectIds[2]);
+            work->cdvd[3] = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+            work->cdvd[0] = H_Cdvd_Request(D_005D6F60, HCDVD_FILEARCHIVE);
+        }
     }
 }
 
-static void MaestroEffectLoadRecords(KwlnTask* task, MaestroPerEffectWork* work)
+static inline void MaestroEffectLoadRecords(KwlnTask* task, MaestroPerEffectWork* work)
 {
     u8* record;
     u32 size;
@@ -4323,38 +4379,222 @@ static void MaestroEffectLoadRecords(KwlnTask* task, MaestroPerEffectWork* work)
     work->state = 2;
 }
 
-static void MaestroEffectStartStreams(KwlnTask* task, MaestroPerEffectWork* work)
+static inline void MaestroEffectStartStreams(KwlnTask* task, MaestroPerEffectWork* work)
 {
     s16 dimensions[4];
-    s32 i;
     u32 size;
+    u32 scenario;
+    char path[0x100];
 
-    for (i = 0; i < 6; i++)
+    scenario = datGetScenarioMode();
+    if (scenario != 0)
     {
-        work->streams[i] = NULL;
+        if (work->effectCount == 0)
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0xf6);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0xf7);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 3, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 1;
+            dimensions[2] = 0x0a;
+            dimensions[3] = 5;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
+        else if (work->effectCount == 1)
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x10c);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x10d);
+            if (work->effectIds[1] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[1]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->streams[2] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x113);
+            work->streams[3] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x115);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 4, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 1;
+            dimensions[2] = 0x0b;
+            dimensions[3] = 5;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
+        else
+        {
+            if (work->effectIds[0] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[0]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x12b);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x12c);
+            if (work->effectIds[1] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[1]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->streams[2] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x132);
+            work->streams[3] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x133);
+            if (work->effectIds[2] == 9)
+                sprintf(path, D_005D6E60, work->effectIds[2]);
+            else
+                sprintf(path, D_005D6E90, work->effectIds[2]);
+            work->streams[4] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x139);
+            work->streams[5] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x13a);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 5, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 2;
+            dimensions[2] = 0x0a;
+            dimensions[3] = 5;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
     }
-    for (i = 0; i <= work->effectCount; i++)
+    else
     {
-        work->streams[i * 2] = func_0010c1a0(NULL, D_005D6F80,
-                                              0, 0, 0, 0, 0, 0);
-        work->streams[i * 2 + 1] = func_0010c1a0(
-            NULL, D_005D6F90, 0, 0, 0, 0, 0, 0);
-        H_Cdvd_CacheAdd(work->streams[i * 2],
-                        H_Cdvd_ArchiveGetFile(work->cdvd[0], i + 3, &size),
-                        size, D_005D6FB8);
+        if (work->effectCount == 0)
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x14d);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x14e);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 3, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 1;
+            dimensions[2] = 0x0a;
+            dimensions[3] = 0;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
+        else if (work->effectCount == 1)
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x15e);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x15f);
+            sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->streams[2] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x161);
+            work->streams[3] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x162);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 4, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 1;
+            dimensions[2] = 0x0a;
+            dimensions[3] = 0;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
+        else
+        {
+            sprintf(path, D_005D6E90, work->effectIds[0]);
+            work->streams[0] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x172);
+            work->streams[1] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x174);
+            sprintf(path, D_005D6E90, work->effectIds[1]);
+            work->streams[2] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x176);
+            work->streams[3] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x178);
+            sprintf(path, D_005D6E90, work->effectIds[2]);
+            work->streams[4] = func_0010c1a0(NULL, path,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x17a);
+            work->streams[5] = func_0010c1a0(NULL, D_005D6F90,
+                                              0, 0, 0, 0, 0, 0,
+                                              D_005D6FB8, 0x17c);
+            work->archiveCacheRequest = H_Cdvd_ArchiveGetFile(
+                work->cdvd[0], 5, &size);
+            func_00102720(D_005D6FB8, work->archiveCacheRequest);
+            dimensions[0] = 0x28;
+            dimensions[1] = 2;
+            dimensions[2] = 0x0a;
+            dimensions[3] = 0;
+            work->streamTask = func_00111380(task, 0x18c0,
+                ((u64)(u16)dimensions[0]) |
+                ((u64)(u16)dimensions[1] << 16) |
+                ((u64)(u16)dimensions[2] << 32) |
+                ((u64)(u16)dimensions[3] << 48),
+                (u8*)work + 0x124);
+        }
     }
-    dimensions[0] = 0x28;
-    dimensions[1] = (s16)(work->effectCount + 1);
-    dimensions[2] = 0x0a;
-    dimensions[3] = datGetScenarioMode() != 0 ? 5 : 0;
-    work->streamTask = func_00111380(task, 0x18c0,
-        ((u64)(u16)dimensions[0]) |
-        ((u64)(u16)dimensions[1] << 16) |
-        ((u64)(u16)dimensions[2] << 32) |
-        ((u64)(u16)dimensions[3] << 48), &work->recordData[0]);
+
 }
 
-static void MaestroEffectSetReady(MaestroPerEffectWork* work)
+static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
 {
     s32 i;
 
@@ -4369,29 +4609,45 @@ static void MaestroEffectSetReady(MaestroPerEffectWork* work)
     work->state = 4;
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00117540 NONMATCHING
 void* func_00117540(KwlnTask* task)
 {
     MaestroPerEffectWork* work;
+    void (**stateFn)(u32, u32);
     u32 ready;
     u32 size;
     s32 i;
     s32 j;
+    s32 frame;
+    s32 segment;
+    f32 radius;
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    u64 point0;
+    u64 point1;
 
     work = (MaestroPerEffectWork*)task->workData;
-    (*D_00960090)(6, 1);
-    (*D_00960090)(7, 2);
-    (*D_00960090)(8, 1);
-    (*D_00960090)(9, 1);
-    (*D_00960090)(12, 1);
-    (*D_00960090)(11, 6);
-    (*D_00960090)(10, 5);
+    kwlnGetMainCamera();
+    stateFn = (void (**)(u32, u32))D_00960090_abs;
+    (*stateFn)(6, 1);
+    (*stateFn)(7, 2);
+    (*stateFn)(8, 1);
+    (*stateFn)(9, 1);
+    (*stateFn)(12, 1);
+    (*stateFn)(11, 6);
+    (*stateFn)(10, 5);
 
     switch (work->state)
     {
     case 0:
         MaestroEffectRequestFiles(work);
         work->state = 1;
+        break;
+    case 3:
         break;
     case 1:
         ready = true;
@@ -4437,21 +4693,86 @@ void* func_00117540(KwlnTask* task)
         }
         if (ready != 0 && func_001114b0(work->streamTask) != 0)
         {
-            for (i = 0; i < work->effectCount + 1; i++)
+            if (work->effectCount == 0)
             {
-                for (j = 0; j < 2; j++)
-                {
-                    if (work->loadedResources[i * 2 + j] != NULL)
-                    {
-                        *(u32*)((u8*)work->loadedResources[i * 2 + j] + 0x50) =
-                            (*(u32*)((u8*)work->loadedResources[i * 2 + j] + 0x50) &
-                             0xffff00ff) | 0x3300;
-                    }
-                }
-                func_001105d0(work->resourceTasks[i], 0,
-                              work->loadedResources[i * 2 + 1]);
-                func_001105d0(work->resourceTasks[i], 1,
-                              work->loadedResources[i * 2]);
+                if (work->loadedResources[0] != NULL)
+                    *(u32*)((u8*)work->loadedResources[0] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[0] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[1] != NULL)
+                    *(u32*)((u8*)work->loadedResources[1] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[1] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[0], 0,
+                              work->loadedResources[1]);
+                func_001105d0(work->resourceTasks[0], 1,
+                              work->loadedResources[0]);
+            }
+            else if (work->effectCount == 1)
+            {
+                if (work->loadedResources[0] != NULL)
+                    *(u32*)((u8*)work->loadedResources[0] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[0] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[1] != NULL)
+                    *(u32*)((u8*)work->loadedResources[1] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[1] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[0], 0,
+                              work->loadedResources[1]);
+                func_001105d0(work->resourceTasks[0], 1,
+                              work->loadedResources[0]);
+                if (work->loadedResources[2] != NULL)
+                    *(u32*)((u8*)work->loadedResources[2] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[2] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[3] != NULL)
+                    *(u32*)((u8*)work->loadedResources[3] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[3] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[1], 0,
+                              work->loadedResources[3]);
+                func_001105d0(work->resourceTasks[1], 1,
+                              work->loadedResources[2]);
+            }
+            else
+            {
+                if (work->loadedResources[0] != NULL)
+                    *(u32*)((u8*)work->loadedResources[0] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[0] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[1] != NULL)
+                    *(u32*)((u8*)work->loadedResources[1] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[1] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[0], 0,
+                              work->loadedResources[1]);
+                func_001105d0(work->resourceTasks[0], 1,
+                              work->loadedResources[0]);
+                if (work->loadedResources[2] != NULL)
+                    *(u32*)((u8*)work->loadedResources[2] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[2] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[3] != NULL)
+                    *(u32*)((u8*)work->loadedResources[3] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[3] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[1], 0,
+                              work->loadedResources[3]);
+                func_001105d0(work->resourceTasks[1], 1,
+                              work->loadedResources[2]);
+                if (work->loadedResources[4] != NULL)
+                    *(u32*)((u8*)work->loadedResources[4] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[4] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                if (work->loadedResources[5] != NULL)
+                    *(u32*)((u8*)work->loadedResources[5] + 0x50) =
+                        (*(u32*)((u8*)work->loadedResources[5] + 0x50) &
+                         0xffff00ff) | 0x3300;
+                func_001105d0(work->resourceTasks[2], 0,
+                              work->loadedResources[5]);
+                func_001105d0(work->resourceTasks[2], 1,
+                              work->loadedResources[4]);
             }
             work->state = 3;
         }
@@ -4462,7 +4783,50 @@ void* func_00117540(KwlnTask* task)
         work->state = 5;
         break;
     case 5:
-        work->frame++;
+        frame = work->frame;
+        if (frame >= 10)
+        {
+            segment = frame - 10;
+            if (segment < 30)
+            {
+                u32 alpha;
+
+                if (segment < 5)
+                    alpha = (u32)(segment * 0xff / 5);
+                else
+                    alpha = 0xff;
+                func_00113a30(100.0f, 0.0f, 0.0f,
+                              0x0f395600 | alpha, 0x280, 0x1c0);
+            }
+            else
+            {
+                segment -= 30;
+                if (segment >= 0x29)
+                    return KWLNTASK_STOP;
+                radius = (f32)(segment * 60);
+                for (i = 0; i < 24; i++)
+                {
+                    f32 angle0;
+                    f32 angle1;
+                    u32 bits;
+
+                    angle0 = (f32)(i * 400 / 24) * 0.017453292f;
+                    angle1 = (f32)((i + 1) * 400 / 24) * 0.017453292f;
+                    x0 = cosf(angle0) * radius;
+                    y0 = sinf(angle0) * radius;
+                    x1 = cosf(angle1) * radius;
+                    y1 = sinf(angle1) * radius;
+                    bits = *(u32*)&x0;
+                    point0 = ((u64)*(u32*)&y0 << 32) | bits;
+                    bits = *(u32*)&x1;
+                    point1 = ((u64)*(u32*)&y1 << 32) | bits;
+                    func_00115350(100.0f, 0x0f3956ff,
+                                  point0, point1, point1, point0,
+                                  0xff, 0xff, 0xff, 0xff);
+                }
+            }
+        }
+        work->frame = frame + 1;
         for (i = 0; i < 3; i++)
         {
             if (work->resourceTasks[i] != NULL)
@@ -4483,12 +4847,9 @@ void* func_00117540(KwlnTask* task)
         }
         break;
     }
-    if (work->frame > 0x50)
-    {
-        return KWLNTASK_STOP;
-    }
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_00119AA0 NONMATCHING
 void* func_00119aa0(KwlnTask* task)
