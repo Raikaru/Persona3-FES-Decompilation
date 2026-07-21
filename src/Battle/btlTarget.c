@@ -102,6 +102,7 @@ extern s32 FUN_002FD7C0(void);
 extern void FUN_002C6A00(void*, void*, u16);
 extern s32 FUN_002FFBC0(s32);
 extern void FUN_004C6AC0(f32*);
+extern f32 FUN_004c6af0(f32*);
 extern f32 FUN_004C6B20(RwV2d* dst, const RwV2d* src);
 extern void FUN_004C6BE0(f32*, u64, s32);
 extern f32 FUN_0052E9E8(f32);
@@ -2923,40 +2924,160 @@ u32 FUN_002d4040(BtlUnit* unit)
 // FUN_002d41c0 NONMATCHING
 u32 FUN_002d41c0(RwV2d* output, f32 radius)
 {
-    RwV2d start;
-    RwV2d end;
-    RwV2d* points = output;
-    u16 count = 0;
+    RwV2d points[128];
+    RwV2d previousDelta;
+    RwV2d currentDelta;
+    RwV2d previousUnit;
+    RwV2d currentUnit;
+    RwV2d p0;
+    RwV2d p1;
+    RwV2d p2;
+    RwV2d p3;
     u8* node;
+    u8* chosen;
+    u16 count;
+    u16 i;
+    f32 previousLength;
+    f32 currentLength;
+    f32 halfRadius;
+    f32 dot;
 
-    start.x = *(f32*)(iGpffffb6fc + 0x798);
-    start.y = *(f32*)(iGpffffb6fc + 0x79c);
-    end.x = *(f32*)(iGpffffb6fc + 0x8c8);
-    end.y = *(f32*)(iGpffffb6fc + 0x8cc);
-    if (FUN_002d2a00(radius * 0.5f, (f32*)&start, (f32*)&end) == 0)
+    count = 0;
+    halfRadius = radius * 0.5f;
+    if (FUN_002d2a00(halfRadius,
+                     (f32*)(iGpffffb6fc + 0x798),
+                     (f32*)(iGpffffb6fc + 0x8c8)) == 0)
     {
-        points[count++] = start;
-        points[count++] = end;
+        points[0].x = *(f32*)(iGpffffb6fc + 0x8c8);
+        points[0].y = *(f32*)(iGpffffb6fc + 0x8cc);
+        points[1].x = *(f32*)(iGpffffb6fc + 0x798);
+        points[1].y = *(f32*)(iGpffffb6fc + 0x79c);
+        count = 2;
     }
     else
     {
-        points[count++] = start;
-        for (node = *(u8**)(iGpffffb6fc + 0x2cc);
-             node != NULL && count < 0x7f;
-             node = *(u8**)(node + 0x4cc))
+        node = iGpffffb6fc + 0x8c0;
+        while (node != NULL)
         {
-            u8* record = node;
-            if (*(f32*)(record + 0x1c) > 0.0f)
+            chosen = node;
+            if (count > 0)
             {
-                points[count].x = *(f32*)(record + 0x10);
-                points[count].y = *(f32*)(record + 0x14);
-                count++;
+                while (node != NULL)
+                {
+                    if (FUN_002d2a00(halfRadius,
+                                     (f32*)&points[count - 1],
+                                     (f32*)(node + 8)) != 0)
+                    {
+                        break;
+                    }
+                    chosen = node;
+                    node = *(u8**)(node + 0x2c);
+                }
             }
+            points[count].x = *(f32*)(chosen + 8);
+            points[count].y = *(f32*)(chosen + 0xc);
+            if (count >= 2)
+            {
+                previousDelta.x = points[count - 1].x -
+                                  points[count - 2].x;
+                previousDelta.y = points[count - 1].y -
+                                  points[count - 2].y;
+                currentDelta.x = points[count].x -
+                                 points[count - 1].x;
+                currentDelta.y = points[count].y -
+                                 points[count - 1].y;
+                dot = previousDelta.x * currentDelta.x +
+                      previousDelta.y * currentDelta.y;
+                if (dot > 0.0f)
+                {
+                    previousLength =
+                        FUN_004C6B20(&previousUnit, &previousDelta);
+                    currentLength =
+                        FUN_004C6B20(&currentUnit, &currentDelta);
+                    if (previousLength < 250.0f &&
+                        currentLength < 250.0f)
+                    {
+                        count--;
+                        node = chosen;
+                        continue;
+                    }
+                    points[count - 1].x =
+                        points[count - 2].x +
+                        currentUnit.x * currentLength * 0.65f;
+                    points[count - 1].y =
+                        points[count - 2].y +
+                        currentUnit.y * currentLength * 0.65f;
+                }
+            }
+            count++;
+            node = *(u8**)(chosen + 0x2c);
+            if (count >= 0x7f)
+                break;
         }
-        points[count++] = end;
     }
-    *(u16*)((u8*)output + 0x400) = count;
-    return count >= 2;
+
+    if (count < 2)
+    {
+        *(u16*)((u8*)output + 0x400) = 0;
+        return 0;
+    }
+    if (count < 3)
+    {
+        output[0] = points[1];
+        output[1] = points[0];
+        *(u16*)((u8*)output + 0x400) = 2;
+        return 1;
+    }
+
+    i = 0;
+    while (count - 1 > 0)
+    {
+        u16 index = count - 1;
+        if ((u16)(index + 1) < count)
+            p0 = points[index + 1];
+        else
+            p0 = points[count - 1];
+        p1 = points[index];
+        if (index == 0)
+            p2 = points[0];
+        else
+            p2 = points[index - 1];
+        if (index < count - 1)
+            p3 = points[index + 1];
+        else
+            p3 = points[count - 1];
+
+        output[i] = p1;
+        output[i + 1].x = 0.8671875f * p1.x -
+                          0.0703125f * p0.x +
+                          0.226563f * p2.x -
+                          0.0234375f * p3.x;
+        output[i + 1].y = 0.8671875f * p1.y -
+                          0.0703125f * p0.y +
+                          0.226563f * p2.y -
+                          0.0234375f * p3.y;
+        output[i + 2].x = -0.0625f * p1.x +
+                          0.5625f * p0.x +
+                          0.5625f * p2.x -
+                          0.0625f * p3.x;
+        output[i + 2].y = -0.0625f * p1.y +
+                          0.5625f * p0.y +
+                          0.5625f * p2.y -
+                          0.0625f * p3.y;
+        output[i + 3].x = 0.226563f * p1.x -
+                          0.0234375f * p0.x +
+                          0.8671875f * p2.x -
+                          0.0703125f * p3.x;
+        output[i + 3].y = 0.226563f * p1.y -
+                          0.0234375f * p0.y +
+                          0.8671875f * p2.y -
+                          0.0703125f * p3.y;
+        i += 4;
+        count--;
+    }
+    output[i] = points[0];
+    *(u16*)((u8*)output + 0x400) = i + 1;
+    return 1;
 }
 
 // FUN_002d4800
@@ -3016,28 +3137,146 @@ void* FUN_002d4810(void)
 // FUN_002d48c0 NONMATCHING
 u32 FUN_002d48c0(void* work, const RwV2d* start, const RwV2d* end, f32 radius)
 {
-    u8* raw = (u8*)work;
-    u8* btl = iGpffffb6fc;
+    u8* selected;
+    u8* current;
+    u8* previous;
+    u8* record;
+    u8* slot;
+    u16 index;
+    u32 inFirst;
+    u32 inSecond;
     u32 result;
+    f32 score;
+    RwV2d delta;
 
-    *(u8*)(raw + 0x404) = 1;
+    *(u8*)((u8*)work + 0x404) = 1;
     if (FUN_002d2a00(radius * 0.5f, (f32*)start, (f32*)end) == 0)
     {
-        *(f32*)(raw + 0) = start->x;
-        *(f32*)(raw + 4) = start->y;
-        *(f32*)(raw + 8) = end->x;
-        *(f32*)(raw + 0xc) = end->y;
-        *(u16*)(raw + 0x400) = 2;
-        *(u8*)(raw + 0x404) = 2;
+        *(f32*)((u8*)work + 0x00) = start->x;
+        *(f32*)((u8*)work + 0x04) = start->y;
+        *(f32*)((u8*)work + 0x08) = end->x;
+        *(f32*)((u8*)work + 0x0c) = end->y;
+        *(u16*)((u8*)work + 0x400) = 2;
+        *(u8*)((u8*)work + 0x404) = 2;
         return 1;
     }
-    *(f32*)(btl + 0x798) = start->x;
-    *(f32*)(btl + 0x79c) = start->y;
-    *(f32*)(btl + 0x8c8) = end->x;
-    *(f32*)(btl + 0x8cc) = end->y;
+
+    *(f32*)(iGpffffb6fc + 0x798) = start->x;
+    *(f32*)(iGpffffb6fc + 0x79c) = start->y;
+    *(f32*)(iGpffffb6fc + 0x8c8) = end->x;
+    *(f32*)(iGpffffb6fc + 0x8cc) = end->y;
     FUN_002d32b0(radius);
-    result = FUN_002d41c0((RwV2d*)work, radius);
-    *(u8*)(raw + 0x404) = result ? 2 : 3;
+    if (*(u32*)(iGpffffb6fc + 0x7c0) == 0 ||
+        *(u32*)(iGpffffb6fc + 0x8f0) == 0)
+    {
+        *(u8*)((u8*)work + 0x404) = 3;
+        return 0;
+    }
+
+    *(u32*)(iGpffffb6fc + 0x9f0) = 0;
+    *(u32*)(iGpffffb6fc + 0x9f4) = 0;
+    *(u32*)(iGpffffb6fc + 0x7ac) = 0;
+    delta.x = *(f32*)(iGpffffb6fc + 0x798) -
+              *(f32*)(iGpffffb6fc + 0x8c8);
+    delta.y = *(f32*)(iGpffffb6fc + 0x79c) -
+              *(f32*)(iGpffffb6fc + 0x8cc);
+    *(f32*)(iGpffffb6fc + 0x7b0) = FUN_004c6af0((f32*)&delta);
+    *(u32*)(iGpffffb6fc + 0x7bc) = 0;
+    *(u32*)(iGpffffb6fc + 0x7b4) = *(u32*)(iGpffffb6fc + 0x9f0);
+    *(u32*)(iGpffffb6fc + 0x9f0) = (u32)(iGpffffb6fc + 0x790);
+
+    result = 0;
+    for (;;)
+    {
+        selected = (u8*)FUN_002d4810();
+        if (selected == iGpffffb6fc + 0x8c0)
+        {
+            result = 1;
+            break;
+        }
+
+        index = 0;
+        while (*(u8**)(selected + 0x30 + index * 4) != NULL)
+        {
+            score = *(f32*)(selected + 0x1c) +
+                    *(f32*)(selected + 0xb0 + index * 4);
+            inFirst = 0;
+            for (current = *(u8**)(iGpffffb6fc + 0x9f0);
+                 current != NULL;
+                 current = *(u8**)(current + 0x24))
+            {
+                if (current == iGpffffb6fc)
+                {
+                    inFirst = 1;
+                    break;
+                }
+            }
+            inSecond = 0;
+            for (current = *(u8**)(iGpffffb6fc + 0x9f4);
+                 current != NULL;
+                 current = *(u8**)(current + 0x28))
+            {
+                if (current == iGpffffb6fc)
+                {
+                    inSecond = 1;
+                    break;
+                }
+            }
+            if ((inFirst == 0 && inSecond == 0) ||
+                *(f32*)(selected + 0x1c) > score)
+            {
+                slot = selected + 0x30 + index * 4;
+                record = *(u8**)slot;
+                *(f32*)(selected + 0x1c) = score;
+                delta.x = *(f32*)(record + 0x08) -
+                          *(f32*)(iGpffffb6fc + 0x8c8);
+                delta.y = *(f32*)(record + 0x0c) -
+                          *(f32*)(iGpffffb6fc + 0x8cc);
+                *(f32*)(record + 0x20) +=
+                    FUN_004c6af0((f32*)&delta);
+                *(u8**)(record + 0x2c) = selected;
+                if (inSecond != 0)
+                {
+                    previous = NULL;
+                    current = *(u8**)(iGpffffb6fc + 0x9f4);
+                    while (current != record)
+                    {
+                        previous = current;
+                        current = *(u8**)(current + 0x28);
+                    }
+                    if (previous != NULL)
+                        *(u8**)(previous + 0x28) =
+                            *(u8**)(current + 0x28);
+                    else
+                        *(u8**)(iGpffffb6fc + 0x9f4) =
+                            *(u8**)(current + 0x28);
+                }
+                if (inFirst == 0)
+                {
+                    *(u8**)(record + 0x24) =
+                        *(u8**)(iGpffffb6fc + 0x9f0);
+                    *(u8**)(iGpffffb6fc + 0x9f0) = record;
+                }
+            }
+            index++;
+        }
+        if (*(u8**)(selected + 0x30 + index * 4) == NULL)
+        {
+            *(u8**)(selected + 0x28) =
+                *(u8**)(iGpffffb6fc + 0x9f4);
+            *(u8**)(iGpffffb6fc + 0x9f4) = selected;
+        }
+        if (*(u8**)(iGpffffb6fc + 0x9f0) == NULL)
+            break;
+    }
+    if (result != 0)
+    {
+        *(u8*)((u8*)work + 0x404) = 2;
+    }
+    else
+    {
+        *(u8*)((u8*)work + 0x404) = 3;
+    }
     return result;
 }
 
