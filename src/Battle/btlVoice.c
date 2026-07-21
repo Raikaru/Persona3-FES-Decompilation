@@ -6479,125 +6479,131 @@ void func_002e7810(int param_1)
 void func_002e7880(void)
 {
 }
+typedef struct
+{
+  u8 pad_00[0xe0];
+  BtlAction *action;
+  u8 pad_e4[0x2c];
+  u16 mode;
+  u8 pad_112[0xe];
+  BtlUnit *unit;
+  u16 unk_124;
+} BtlVoiceCameraWork;
+#pragma alias FUN_002a3e80_short FUN_002a3e80
+extern void FUN_002a3e80_short(f32 param_1, u8 *param_2,
+                               u8 *param_3, u32 param_4);
+
+
+static inline void btlVoicePlayCameraVoice(u8 *voiceData,
+                                           f32 *startTransform,
+                                           f32 *endTransform,
+                                           RwV3d *startPosition,
+                                           RwV3d *endPosition)
+{
+  f32 duration;
+
+  FUN_002a4690(startTransform, voiceData + 4, voiceData + 0x10,
+               D_00697880);
+  *startPosition = *(RwV3d *)(voiceData + 4);
+  FUN_002a4690(endTransform, voiceData + 0x1c, voiceData + 0x28,
+               D_00697880);
+  *endPosition = *(RwV3d *)(voiceData + 0x1c);
+  duration = (f32)*(s16 *)voiceData / 30.0f;
+  FUN_002a2290((u8 *)DAT_007ce3ec + 0x20,
+               (f32 *)startPosition, (f32 *)endPosition, 1);
+  FUN_002a3110((u8 *)DAT_007ce3ec + 0x20, duration);
+}
 
 // FUN_002e7890 NONMATCHING
 void func_002e7890(u64 param_1)
-
 {
-  char cVar1;
-  short sVar2;
-  int iVar3;
-  int iVar4;
-  u32 bVar5;
-  u16 uVar6;
-  u32 uVar7;
-  int iVar8;
-  s32 lVar9;
-  int iVar10;
-  u32 uStack_c0;
-  u32 uStack_bc;
-  u32 uStack_b8;
-  u8 auStack_b4 [16];
-  u32 uStack_a4;
-  u32 uStack_a0;
-  u32 uStack_9c;
-  u8 auStack_98 [24];
-  u32 uStack_80;
-  u32 uStack_7c;
-  u32 uStack_78;
-  u8 auStack_74 [16];
-  u32 uStack_64;
-  u32 uStack_60;
-  u32 uStack_5c;
-  u8 auStack_58 [24];
-  u32 uStack_40;
-  u32 uStack_3c;
-  u32 uStack_38;
-  u8 auStack_34 [16];
-  u32 uStack_24;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u8 auStack_18 [20];
-  u32 uStack_4;
-  
-  iVar10 = (int)param_1;
-  iVar8 = *(int *)(*(int *)(iVar10 + 0xe0) + 0x30);
-  iVar3 = *(int *)(iVar8 + 0xa00);
-  if ((*(int *)(iVar10 + 0xe0) != 0) && (*(char *)(iVar8 + 0xa2) == '\0')) {
-    for (uVar7 = 0; uVar7 < *(u16 *)(*(int *)(iVar10 + 0xe0) + 0x6a); uVar7 = uVar7 + 1 & 0xffff)
-    {
-      iVar4 = *(int *)(*(int *)(*(int *)(iVar10 + 0xe0) + uVar7 * 4 + 0x38) + 0x30);
-      if (*(char *)(iVar4 + 0xa2) == '\x01') {
-        FUN_0027fcf0(iVar4,iVar8 + 4);
-      }
+  BtlVoiceCameraWork *work;
+  BtlAction *action;
+  BtlUnit *unit;
+  BtlUnit *persona;
+  u16 index;
+  u16 mode;
+  u8 color[4];
+  u8 *base;
+  u8 *voiceData;
+  s8 voiceType;
+  u32 isSpecial;
+  u32 randomIndex;
+  f32 startTransform[5];
+  f32 endTransform[5];
+  RwV3d startPosition;
+  RwV3d endPosition;
+
+  work = (BtlVoiceCameraWork *)(uintptr_t)param_1;
+  action = work->action;
+  unit = action->unit;
+  persona = unit->personaUnit;
+
+  if ((action != NULL) && (unit->genus == 0)) {
+    for (index = 0; index < action->target.targetedCount; index++) {
+      BtlUnit *targetUnit = action->target.targetedActions[index]->unit;
+      if (targetUnit->genus == 1)
+        FUN_0027fcf0(targetUnit, &unit->pos);
     }
   }
-  uVar6 = FUN_002a7830(param_1);
-  *(u16 *)(iVar10 + 0x110) = uVar6;
-  bVar5 = false;
-  if (iVar3 != 0) {
-    bVar5 = lVar9 != 0;
+
+  mode = (u16)FUN_002a7830(work);
+  work->mode = mode;
+  isSpecial = 0;
+  if (persona != NULL)
+    isSpecial = (u32)FUN_002fdbb0(unit, persona);
+
+  if ((isSpecial != 0) && (mode != 1)) {
+    FUN_00287510(persona);
+    color[0] = ((u8 *)persona)[0x30];
+    color[1] = ((u8 *)persona)[0x31];
+    color[2] = ((u8 *)persona)[0x32];
+    color[3] = 0;
+    FUN_0027f730(persona, *(u32 *)color);
   }
-  if ((bVar5) && (*(short *)(iVar10 + 0x110) != 1)) {
-    FUN_00287510(iVar3);
-    uStack_4 = (u32)*(u32 *)(iVar3 + 0x30);
-    FUN_0027f730(iVar3,uStack_4);
-  }
-  FUN_002880e0(iVar3,0);
-  switch(*(u16 *)(iVar10 + 0x110)) {
+  FUN_002880e0((u32)(uintptr_t)persona, 0);
+  base = (u8 *)(uintptr_t)(*(u32 *)((u8 *)DAT_007ce3ec + 0xb18));
+
+  switch (mode) {
   case 0:
   case 1:
   case 2:
   case 4:
-    FUN_002ac540(param_1);
-    iVar8 = *(int *)(iVar10 + 0xe0);
-    if ((((*(short *)(iVar8 + 0x6a) == 1) && (*(char *)(*(int *)(iVar8 + 0x30) + 0xa2) == '\0')) &&
-        (iVar8 != *(int *)(iVar8 + 0x38))) &&
-       (*(char *)(*(int *)(*(int *)(iVar8 + 0x38) + 0x30) + 0xa2) == '\0')) {
+    FUN_002ac540(work);
+    action = work->action;
+    if ((action->target.targetedCount == 1) &&
+        (action != action->target.targetedActions[0]) &&
+        (action->target.targetedActions[0]->unit->genus == 0)) {
+      FUN_002a3e80_short(0.0f, 0, 0, 8);
     }
     break;
   case 3:
   case 5:
-    iVar8 = *(int *)(*(int *)(iVar10 + 0xe0) + 0x30);
-    uVar7 = FUN_002ffbc0(2);
-    cVar1 = *(char *)(iVar8 + 0x9f0);
-    iVar8 = *(int *)(DAT_007ce3ec + 0xb18) + (cVar1 * 0xc + (int)cVar1) * 8 +
-            (uVar7 & 0xffff) * 0x34;
-    uStack_40 = *(u32 *)(iVar8 + 8);
-    uStack_3c = *(u32 *)(iVar8 + 0xc);
-    uStack_38 = *(u32 *)(iVar8 + 0x10);
-    uStack_24 = *(u32 *)(iVar8 + 0x20);
-    uStack_20 = *(u32 *)(iVar8 + 0x24);
-    uStack_1c = *(u32 *)(iVar8 + 0x28);
-    sVar2 = *(short *)(iVar8 + 4);
+    randomIndex = FUN_002ffbc0(2);
+    voiceType = unit->unk_9f0;
+    voiceData = base + (voiceType * 0x68) +
+                ((randomIndex & 0xffff) * 0x34) + 4;
+    btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
+                             &startPosition, &endPosition);
+    FUN_002a3e80(0.0f, (u8 *)work->action, 0, 0, 0x40);
     break;
   case 6:
-    if ((*(u16 *)(*(int *)(iVar10 + 0xe0) + 0x1a) & 1) != 0) {
-      if (*(char *)(*(int *)(*(int *)(iVar10 + 0xe0) + 0x30) + 0xa2) == '\0') {
-        iVar8 = *(int *)(DAT_007ce3ec + 0xb18);
-        uStack_80 = *(u32 *)(iVar8 + 0x3b0);
-        uStack_7c = *(u32 *)(iVar8 + 0x3b4);
-        uStack_78 = *(u32 *)(iVar8 + 0x3b8);
-        uStack_64 = *(u32 *)(iVar8 + 0x3c8);
-        uStack_60 = *(u32 *)(iVar8 + 0x3cc);
-        uStack_5c = *(u32 *)(iVar8 + 0x3d0);
-        sVar2 = *(short *)(iVar8 + 0x3ac);
-      }
-      else {
-        uVar7 = FUN_002ffbc0(2);
-        iVar8 = *(int *)(DAT_007ce3ec + 0xb18) + (uVar7 & 0xffff) * 0x34;
-        uStack_c0 = *(u32 *)(iVar8 + 0x210);
-        uStack_bc = *(u32 *)(iVar8 + 0x214);
-        uStack_b8 = *(u32 *)(iVar8 + 0x218);
-        uStack_a4 = *(u32 *)(iVar8 + 0x228);
-        uStack_a0 = *(u32 *)(iVar8 + 0x22c);
-        uStack_9c = *(u32 *)(iVar8 + 0x230);
-        sVar2 = *(short *)(iVar8 + 0x20c);
-      }
+    action = work->action;
+    if ((action->unk_1a & 1) == 0)
+      break;
+    if (unit->genus == 0)
+      voiceData = base + 0x3ac + 4;
+    else {
+      randomIndex = FUN_002ffbc0(2);
+      voiceData = base + ((randomIndex & 0xffff) * 0x34) + 0x20c + 4;
     }
+    btlVoicePlayCameraVoice(voiceData, startTransform, endTransform,
+                             &startPosition, &endPosition);
+    FUN_002a3e80(0.0f, (u8 *)work->action, 0, 0, 0x40);
+    break;
   }
-  return;
 }
+
 
 // FUN_002e7db0 NONMATCHING
 void func_002e7db0(u64 param_1)
