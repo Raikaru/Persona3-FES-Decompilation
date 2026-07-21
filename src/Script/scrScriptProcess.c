@@ -154,7 +154,8 @@ ScrData* scrStartScript(ScrHeader* header,
     return scr;
 }
 
-// FUN_0035b930 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0035b930
 ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
 {
     ScrLblPrcd* prcd;
@@ -226,6 +227,7 @@ ScrData* scrStartScript2(ScrHeader* header, u32 prcdIdx)
                           strings,
                           prcdIdx);
 }
+#pragma opt_loop_invariants off
 
 // FUN_0035bb40. Create a script task by a script header
 KwlnTask* scrCreateTaskFromHeader(u32 priority, ScrHeader* header, u32 prcdIdx)
