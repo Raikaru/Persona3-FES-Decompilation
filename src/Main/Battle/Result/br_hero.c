@@ -69,6 +69,10 @@ extern void thunk_FUN_003b0e54(s32, s32);
 extern void FUN_003b1360(s32, s32, s32);
 extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
+#pragma alias D_00960090_abs D_00960090
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_00960090_abs[];
+extern u8 D_0096009C_abs[];
 extern u32 uGpffffb948;
 extern float uGpffff83a8;
 extern float uGpffff83ac;
@@ -101,34 +105,37 @@ void brHero00262790(void)
     void* text1;
     void* value;
     u32 task;
+    u8 color[4];
     float rect[4];
-    u8 color[4] = {0xff, 0xff, 0xff, 0xff};
     s32 i;
+    u32 status;
+    u32 level;
     static const s32 menuIds[6] = {6, 7, 8, 10, 9, 9};
 
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     text0 = FUN_00233d70(0);
     text1 = FUN_00233d70(1);
-    w[0x588] = FUN_0016c470(1) & 0xff;
+    level = FUN_0016c470(1) & 0xff;
     FUN_0016c7e0(1);
-    (void)FUN_0016c970(1);
+    status = FUN_0016c970(1);
+    w[0x588] = level;
     w[0x591] = FUN_0016d2f0(1);
     w[0x589] = FUN_0016c4f0(1) & 0xffff;
     w[0x58b] = FUN_0016c570(1) & 0xffff;
     w[0x58a] = FUN_0016c5f0(1) & 0xffff;
     w[0x58c] = FUN_0016c670(1) & 0xffff;
-    w[0x484] = (s32)FUN_00177280(FUN_0016c6f0(1)) - 1;
-    w[0x485] = (s32)FUN_001772f0(FUN_0016c740(1)) - 1;
-    w[0x486] = (s32)FUN_00177360(FUN_0016c790(1)) - 1;
+    w[0x484] = (s16)FUN_00177280(FUN_0016c6f0(1)) - 1;
+    w[0x485] = (s16)FUN_001772f0(FUN_0016c740(1)) - 1;
+    w[0x486] = (s16)FUN_00177360(FUN_0016c790(1)) - 1;
     w[0x58d] = FUN_0016c920(1) & 0xffff;
     K_ASSERT((s32)w[0x484] >= 0, 0x89);
     K_ASSERT((s32)w[0x485] >= 0, 0x8a);
     K_ASSERT((s32)w[0x486] >= 0, 0x8b);
     w[0] &= ~2u;
-    if (FUN_0016c970(1) & 0x80)
+    if (status & 0x80)
         w[0] |= 2;
-    if (w[0x591] > 99999)
+    if (99999u < w[0x591])
         w[0x591] = 99999;
 
     for (i = 0; i < 6; i++)
@@ -149,6 +156,10 @@ void brHero00262790(void)
     rect[1] = 0.0f;
     rect[2] = 1.0f;
     rect[3] = 1.0f;
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
     for (i = 0; i < 2; i++)
     {
         FUN_0021eb80(w + i * 0x40 + 0x4c8, rect);
@@ -411,6 +422,8 @@ void brHero00263170(void)
     FUN_0021d8e0(w + 0xcd8, rect);
 }
 
+#define setRenderState(...) (*setRenderState)(__VA_ARGS__)
+#define renderQuad(...) (*renderQuad)(__VA_ARGS__)
 // FUN_00263db0 NONMATCHING
 void brHero00263db0(void)
 {
@@ -418,10 +431,10 @@ void brHero00263db0(void)
     void* text0;
     void* text1;
     void* text3;
-    void (*setRenderState)(u32, u32);
-    void (*renderQuad)(u32*, u32, u32, u32, u32);
-    u32 texture;
+    void (**setRenderState)(u32, u32);
+    void (**renderQuad)(u32*, u32, u32, u32, u32);
     s32 i;
+    u32 texture;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
     if ((*w & 1) == 0)
@@ -429,8 +442,7 @@ void brHero00263db0(void)
     text0 = FUN_00233d70(0);
     text1 = FUN_00233d70(1);
     text3 = FUN_00233d70(3);
-    setRenderState = D_00960090;
-    renderQuad = D_0096009C;
+    setRenderState = (void (**)(u32, u32))D_00960090_abs;
     setRenderState(9, 2);
     setRenderState(6, 0);
     setRenderState(8, 0);
@@ -439,6 +451,7 @@ void brHero00263db0(void)
     setRenderState(1, 0);
     for (i = 0; i < 3; i++)
     {
+        renderQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
         renderQuad(w + i * 0x40 + 0x184, 4, 0, 1, 2);
         renderQuad(w + i * 0x40 + 0x184, 4, 0, 2, 3);
     }
@@ -562,3 +575,5 @@ void brHero00263db0(void)
         renderQuad(w + i * 0x40 + 0xd18, 4, 0, 2, 3);
     }
 }
+#undef setRenderState
+#undef renderQuad
