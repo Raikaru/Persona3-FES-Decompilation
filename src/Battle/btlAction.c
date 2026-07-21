@@ -10,6 +10,7 @@
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
 #include "Main/Battle/Data/datCalc.h"
+#include "Main/Battle/Data/datPersona.h"
 #include "temporary.h"
 extern u32 func_002e4430();
 
@@ -37,7 +38,7 @@ BtlPacket* FUN_00282130();
 BtlPacket* FUN_002822b0();
 BtlPacket* FUN_00282650();
 BtlPacket* FUN_002843e0(BtlUnit* unit, u16 id);
-void FUN_00175130(u16 id);
+void FUN_00175130(s16 id);
 s32 FUN_002fcf50(BtlAction* action);
 BtlPacket* FUN_00284200();
 BtlPacket* FUN_00284c90();
@@ -2043,79 +2044,1924 @@ void btlActionInitStateSkill(BtlAction* action)
 {
     (void)action;
 }
-// FUN_00290be0 NONMATCHING
-void btlActionUpdateStateSkill(BtlAction* action)
-{
-    BtlPacket* marker;
-    BtlPacket* root;
-    BtlPacket* hitPacket;
-    BtlAction* victim;
-    BtlAction* basis;
-    u16 targetIndex;
-    u8 hitIndex;
-    s16 totalDelay;
 
+
+extern u32 func_0027fc80(BtlUnit *);
+extern u32 func_00280870(s32, u32, RwV3d *, u32);
+extern s64 func_002835e0(BtlUnit *, u16, u32);
+extern s64 func_002838d0(BtlUnit *, u32, u32);
+extern u16 func_00283a70(BtlUnit *, u32);
+extern s64 func_00284040(BtlUnit *, BtlUnit *, s16, s32);
+extern s64 func_002b7060(u32);
+extern s32 func_002b8f90(u32);
+extern u32 func_002b9030(s32);
+extern f32 func_002b9590(BtlUnit *);
+extern u64 func_002b9640(u8 *);
+extern s32 func_002d1600(BtlTarget *);
+extern s32 func_002d4cc0(u16);
+extern s32 func_002d4e10(u32, u32);
+extern s32 func_002d5bf0(BtlUnit *);
+extern s32 func_002d5c70(BtlUnit *);
+extern u32 func_002d5dc0(s32 *);
+extern s32 func_002d5eb0(BtlAction *);
+extern s32 func_002d5f50(BtlAction *);
+extern s32 func_002d5fb0(BtlAction *);
+extern s32 func_002d6090(BtlAction *);
+extern s32 func_002d6130(BtlAction *);
+extern s32 func_002d6210(BtlAction *);
+extern s32 func_002d6290(BtlAction *);
+extern s32 func_002d62d0(BtlAction *);
+extern u64 func_002d6370(s16);
+extern s32 func_002dc130(BtlAction *);
+extern s32 func_002ddc80(u16);
+extern s64 func_002f8fd0(BtlUnit *, s16);
+extern s64 func_002f9690(BtlUnit *);
+extern s32 func_002fcaa0(BtlAction *, u32 *);
+extern u32 func_002fd060(BtlAction *);
+extern s32 func_002fd160(BtlAction *);
+extern s32 func_002fdbb0(BtlAction *, BtlUnit *);
+extern s32 func_002fdcb0(BtlUnit *);
+extern u32 func_002fddb0(BtlUnit *, RwV3d *);
+extern s32 func_002fded0(s16);
+extern s64 func_003082f0(DatUnit *, u16);
+extern u64 func_00308a50(u16);
+
+extern BtlPacket* func_002d8330(BtlAction*);
+extern BtlPacket* btlUnit00286240(BtlUnit*);
+extern BtlPacket* btlUnit002860b0(BtlUnit*);
+extern BtlPacket* func_002e35d0(u16, u16);
+extern BtlPacket* func_002e36f0(void);
+extern BtlPacket* func_002e37e0(void);
+extern BtlPacket* func_002dd8e0(BtlUnit*);
+extern BtlPacket* func_002dd100(u32, u32, u32);
+extern BtlPacket* func_002b8900(BtlAction*, u32, u32);
+extern BtlPacket* func_002b8b70(BtlUnit*, BtlAction*, BtlAction*, u16);
+extern BtlPacket* func_002e3de0(u32, u32);
+extern BtlPacket* func_002e3f20(void);
+extern BtlPacket* func_002dd690(u16, s8*);
+extern BtlPacket* func_002bac00(s32, s8*, u16);
+extern BtlPacket* func_002baf90(s32, BtlUnit*, BtlUnit*, u32);
+extern BtlPacket* func_002bd480(BtlUnit*, ...);
+extern BtlPacket* func_002bd230(BtlUnit*, u32, u32);
+extern BtlPacket* btlUnit002843e0(BtlUnit*, u16);
+extern BtlPacket* btlUnit00284f50(BtlUnit*, u16, f32, u16);
+extern BtlPacket* btlUnit00284c90(BtlUnit*);
+extern BtlPacket* btlUnit002857f0(BtlUnit*);
+extern BtlPacket* func_002dd5e0(u16);
+extern BtlPacket* func_0027f410(u32, BtlAction*);
+extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
+extern BtlPacket* func_0029fa50(u32);
+extern BtlPacket* func_002a1080(u32, u16);
+extern BtlPacket* func_002a16c0(u32);
+extern BtlPacket* func_002a1db0(u32);
+extern DatPersonaWork* datPersonaGetByPcId(u16);
+extern BtlPacket* func_002dd960(BtlUnit*);
+extern BtlPacket* func_002bd590(BtlUnit*, s32);
+extern BtlPacket* func_002bd690(BtlUnit*, u16);
+extern BtlPacket* func_002bd850(BtlUnit*, s16);
+extern BtlPacket* func_002bdbd0(BtlUnit*, BtlUnit*, s32, ...);
+extern BtlPacket* func_002d7e20(BtlAction*, BtlAction*, void*, u32, ...);
+extern BtlPacket* func_002d8090(BtlAction*);
+extern BtlPacket* func_002d7fb0(BtlAction*, u32);
+extern BtlPacket* func_002db740(BtlAction*, u16, ...);
+// FUN_00290be0 NONMATCHING
+void btlActionUpdateStateSkill(BtlAction *action) {
+    extern u8 *gp0xffffb714;
+    u32 sp53C;
+    u32 sp538;
+    u32 sp530;
+    u32 sp52C;
+    u32 sp528;
+    RwV3d sp518;
+    s32 sp4FC;
+    s32 sp4F8;
+    s32 sp4F4;
+    s32 sp4F0;
+    s8 sp470;
+    BtlAction *sp460;
+    BtlUnit *sp450;
+    BtlPacket *sp44C;
+    BtlPacket *sp448;
+    BtlPacket *sp444;
+    BtlPacket *sp440;
+    BtlPacket *sp43C;
+    s32 sp438;
+    u64 sp420;
+    u64 sp410;
+    u64 sp400;
+    s16 sp3F0;
+    s16 sp3E0;
+    s16 sp3D0;
+    s16 sp3C0;                                      /* compiler-managed */
+    s32 sp3B0;
+    s32 sp3A0;
+    s32 sp390;
+    s32 sp380;
+    u16 sp370;
+    u16 sp360;
+    u16 sp350;
+    u16 sp340;
+    u16 sp330;
+    u16 sp320;
+    u16 sp310;
+    u16 sp300;
+    s32 sp2F0;
+    s32 sp2EC;
+    s32 sp2D0;
+    s32 sp2C0;
+    s32 sp2B0;
+    s32 sp2AC;
+    s32 sp290;
+    s32 sp280;
+    s32 sp27C;
+    s32 sp260;
+    u16 sp250;
+    u16 sp240;
+    s32 sp230;
+    s32 *sp220;
+    BtlPacket *sp21C;
+    BtlPacket *sp218;
+    BtlPacket *sp214;
+    s16 sp200;
+    void *sp1FC;
+    u64 sp1E0;
+    u64 sp1D0;
+    u64 sp1C0;
+    u64 sp1B0;
+    u64 sp1A0;
+    u64 sp190;
+    u64 sp180;
+    u64 sp170;
+    u64 sp160;
+    u64 sp150;
+    u64 sp140;
+    u64 sp130;
+    u64 sp120;
+    u64 sp110;
+    u64 sp100;
+    u64 spF0;
+    u64 spE0;
+    u64 spD0;
+    u64 spC0;
+    u64 spB0;
+    BtlAction *temp_s2_3;
+    BtlAction *temp_v0_64;
+    BtlAction *var_a2;
+    BtlAction *var_s5_2;
+    BtlPacket *temp_v0_101;
+    BtlPacket *temp_v0_102;
+    BtlPacket *temp_v0_103;
+    BtlPacket *temp_v0_104;
+    BtlPacket *temp_v0_105;
+    BtlPacket *temp_v0_106;
+    BtlPacket *temp_v0_107;
+    BtlPacket *temp_v0_108;
+    BtlPacket *temp_v0_109;
+    BtlPacket *temp_v0_10;
+    BtlPacket *temp_v0_110;
+    BtlPacket *temp_v0_111;
+    BtlPacket *temp_v0_112;
+    BtlPacket *temp_v0_113;
+    BtlPacket *temp_v0_114;
+    BtlPacket *temp_v0_115;
+    BtlPacket *temp_v0_117;
+    BtlPacket *temp_v0_118;
+    BtlPacket *temp_v0_119;
+    BtlPacket *temp_v0_11;
+    BtlPacket *temp_v0_120;
+    BtlPacket *temp_v0_121;
+    BtlPacket *temp_v0_122;
+    BtlPacket *temp_v0_123;
+    BtlPacket *temp_v0_125;
+    BtlPacket *temp_v0_126;
+    BtlPacket *temp_v0_127;
+    BtlPacket *temp_v0_128;
+    BtlPacket *temp_v0_129;
+    BtlPacket *temp_v0_12;
+    BtlPacket *temp_v0_130;
+    BtlPacket *temp_v0_131;
+    BtlPacket *temp_v0_132;
+    BtlPacket *temp_v0_133;
+    BtlPacket *temp_v0_134;
+    BtlPacket *temp_v0_136;
+    BtlPacket *temp_v0_137;
+    BtlPacket *temp_v0_138;
+    BtlPacket *temp_v0_139;
+    BtlPacket *temp_v0_13;
+    BtlPacket *temp_v0_140;
+    BtlPacket *temp_v0_141;
+    BtlPacket *temp_v0_142;
+    BtlPacket *temp_v0_143;
+    BtlPacket *temp_v0_144;
+    BtlPacket *temp_v0_145;
+    BtlPacket *temp_v0_146;
+    BtlPacket *temp_v0_147;
+    BtlPacket *temp_v0_148;
+    BtlPacket *temp_v0_149;
+    BtlPacket *temp_v0_14;
+    BtlPacket *temp_v0_150;
+    BtlPacket *temp_v0_151;
+    BtlPacket *temp_v0_152;
+    BtlPacket *temp_v0_153;
+    BtlPacket *temp_v0_154;
+    BtlPacket *temp_v0_155;
+    BtlPacket *temp_v0_156;
+    BtlPacket *temp_v0_157;
+    BtlPacket *temp_v0_158;
+    BtlPacket *temp_v0_159;
+    BtlPacket *temp_v0_15;
+    BtlPacket *temp_v0_160;
+    BtlPacket *temp_v0_161;
+    BtlPacket *temp_v0_162;
+    BtlPacket *temp_v0_163;
+    BtlPacket *temp_v0_164;
+    BtlPacket *temp_v0_165;
+    BtlPacket *temp_v0_166;
+    BtlPacket *temp_v0_167;
+    BtlPacket *temp_v0_16;
+    BtlPacket *temp_v0_17;
+    BtlPacket *temp_v0_18;
+    BtlPacket *temp_v0_19;
+    BtlPacket *temp_v0_20;
+    BtlPacket *temp_v0_21;
+    BtlPacket *temp_v0_22;
+    BtlPacket *temp_v0_23;
+    BtlPacket *temp_v0_24;
+    BtlPacket *temp_v0_25;
+    BtlPacket *temp_v0_26;
+    BtlPacket *temp_v0_27;
+    BtlPacket *temp_v0_28;
+    BtlPacket *temp_v0_29;
+    BtlPacket *temp_v0_32;
+    BtlPacket *temp_v0_33;
+    BtlPacket *temp_v0_34;
+    BtlPacket *temp_v0_35;
+    BtlPacket *temp_v0_36;
+    BtlPacket *temp_v0_37;
+    BtlPacket *temp_v0_38;
+    BtlPacket *temp_v0_39;
+    BtlPacket *temp_v0_3;
+    BtlPacket *temp_v0_40;
+    BtlPacket *temp_v0_41;
+    BtlPacket *temp_v0_42;
+    BtlPacket *temp_v0_43;
+    BtlPacket *temp_v0_44;
+    BtlPacket *temp_v0_45;
+    BtlPacket *temp_v0_46;
+    BtlPacket *temp_v0_48;
+    BtlPacket *temp_v0_49;
+    BtlPacket *temp_v0_4;
+    BtlPacket *temp_v0_50;
+    BtlPacket *temp_v0_51;
+    BtlPacket *temp_v0_52;
+    BtlPacket *temp_v0_53;
+    BtlPacket *temp_v0_54;
+    BtlPacket *temp_v0_55;
+    BtlPacket *temp_v0_56;
+    BtlPacket *temp_v0_57;
+    BtlPacket *temp_v0_58;
+    BtlPacket *temp_v0_59;
+    BtlPacket *temp_v0_5;
+    BtlPacket *temp_v0_60;
+    BtlPacket *temp_v0_61;
+    BtlPacket *temp_v0_62;
+    BtlPacket *temp_v0_63;
+    BtlPacket *temp_v0_65;
+    BtlPacket *temp_v0_66;
+    BtlPacket *temp_v0_67;
+    BtlPacket *temp_v0_68;
+    BtlPacket *temp_v0_69;
+    BtlPacket *temp_v0_6;
+    BtlPacket *temp_v0_70;
+    BtlPacket *temp_v0_71;
+    BtlPacket *temp_v0_72;
+    BtlPacket *temp_v0_73;
+    BtlPacket *temp_v0_74;
+    BtlPacket *temp_v0_75;
+    BtlPacket *temp_v0_76;
+    BtlPacket *temp_v0_77;
+    BtlPacket *temp_v0_78;
+    BtlPacket *temp_v0_79;
+    BtlPacket *temp_v0_7;
+    BtlPacket *temp_v0_80;
+    BtlPacket *temp_v0_81;
+    BtlPacket *temp_v0_82;
+    BtlPacket *temp_v0_83;
+    BtlPacket *temp_v0_84;
+    BtlPacket *temp_v0_85;
+    BtlPacket *temp_v0_86;
+    BtlPacket *temp_v0_87;
+    BtlPacket *temp_v0_88;
+    BtlPacket *temp_v0_89;
+    BtlPacket *temp_v0_8;
+    BtlPacket *temp_v0_90;
+    BtlPacket *temp_v0_91;
+    BtlPacket *temp_v0_92;
+    BtlPacket *temp_v0_93;
+    BtlPacket *temp_v0_94;
+    BtlPacket *temp_v0_95;
+    BtlPacket *temp_v0_96;
+    BtlPacket *temp_v0_97;
+    BtlPacket *temp_v0_99;
+    BtlPacket *temp_v0_9;
+    BtlPacket *var_s1_2;
+    BtlPacket *var_s1_3;
+    BtlPacket *var_s2_4;
+    BtlPacket *var_s3;
+    BtlPacket *var_s3_3;
+    BtlPacket *var_v0_6;
+    BtlUnit *temp_a0;
+    BtlUnit *temp_a0_10;
+    BtlUnit *temp_a0_13;
+    BtlUnit *temp_a0_14;
+    BtlUnit *temp_a0_6;
+    BtlUnit *temp_a0_8;
+    BtlUnit *temp_a1;
+    BtlUnit *temp_a1_2;
+    BtlUnit *temp_a1_3;
+    BtlUnit *temp_a1_4;
+    BtlUnit *temp_a1_7;
+    BtlUnit *temp_v0;
+    BtlUnit *temp_v1_15;
+    BtlUnit *var_a2_2;
+    f32 temp_f20;
+    u64 temp_v0_2;
+    u64 var_a1;
+    s16 temp_a1_5;
+    s16 temp_a1_6;
+    s16 temp_s3_4;
+    s16 temp_s7;
+    s16 temp_v1_11;
+    s16 var_s2_2;
+    s16 var_v0_12;
+    s16 var_v0_4;
+    s16 var_v1_2;
+    s32 *temp_v0_124;
+    s32 temp_a0_2;
+    s32 temp_a0_9;
+    s32 temp_fp;
+    s32 temp_s2;
+    s32 temp_s3_3;
+    s32 temp_v0_100;
+    s32 temp_v0_47;
+    s32 temp_v0_98;
+    s32 temp_v1_10;
+    s32 temp_v1_5;
+    s32 var_v0_10;
+    s32 var_v0_11;
+    s32 var_v0_2;
+    s32 var_v0_3;
+    s32 var_v0_7;
+    s32 var_v0_8;
+    s32 var_v0_9;
+    s64 temp_s3;
+    s64 temp_s3_2;
+    s64 temp_s6;
+    s64 temp_v0_30;
+    s64 temp_v0_31;
+    s64 temp_v1_12;
+    s64 var_s1;
+    s64 var_s2;
+    s64 var_s2_3;
+    s64 var_v0;
+    s64 var_v1;
+    s8 var_s6;
+    u16 temp_a2;
+    u16 temp_v1;
+    u16 temp_v1_16;
+    u16 temp_v1_2;
+    u16 temp_v1_6;
+    u16 var_a3;
+    u16 var_v1_3;
+    u32 temp_a0_12;
+    u32 var_v0_5;
+    u64 temp_s0;
+    u64 temp_s2_2;
+    u64 temp_s2_4;
+    u64 var_s3_2;
+    u64 var_s5;
+    u8 temp_v1_14;
+    u8 var_a2_3;
+    void *temp_a0_11;
+    void *temp_a0_3;
+    void *temp_a0_4;
+    void *temp_a0_5;
+    void *temp_a0_7;
+    void *temp_v0_116;
+    void *temp_v0_135;
+    void *temp_v1_13;
+    void *temp_v1_3;
+    void *temp_v1_4;
+    void *temp_v1_7;
+    void *temp_v1_8;
+    void *temp_v1_9;
+
+    u64 saved_reg_s1, saved_reg_s2, saved_reg_s5;
+    BtlPacket *saved_reg_s3;
+    var_s1 = saved_reg_s1;
+    var_s2 = saved_reg_s2;
+    var_s3 = saved_reg_s3;
+    var_s5 = saved_reg_s5;
+    temp_v0 = action->unit;
+    var_s6 = (s8) temp_v0->genus;
+    sp450 = temp_v0->personaUnit;
+    temp_s7 = (s16) action->target.specificId;
+    sp460 = action->target.targetedActions[0];
+    sp410 = 0;
+    sp400 = 0;
+    sp390 = 0;
+    sp380 = 0;
+    sp320 = 0;
+    sp3D0 = 0;
+    sp3A0 = 0;
+    sp2F0 = 0;
+    sp2D0 = 0;
+    sp2C0 = 0;
+    sp2B0 = 0;
+    sp2AC = 0;
+    sp290 = 0;
+    sp280 = 0;
+    sp27C = 0;
+    sp300 = 6;
+    sp1E0 = (*(iGpffffb708 + (temp_s7 * 0x2C)) & 2) != 0;
+    temp_v0_2 = (action->unk_1a & 0x10) != 0;
+    sp1D0 = temp_v0_2;
+    if (temp_v0_2 != 0) {
+        sp1D0 = sp1E0 == 0;
+    }
+    sp1C0 = action->target.commandId == 3;
+    sp2EC = func_002d6290(action);
+    sp1B0 = func_002d6370(temp_s7);
+    sp1A0 = func_00308a50(action->target.originalSpecificId);
+    sp440 = NULL;
+    temp_s0 = action->uid;
     btlAction0028a780(action);
-    marker = action->target.commandId == 3 ? FUN_002bd690(action->unit, action->target.unk_38) :
-                                             FUN_002bd590(action->unit, action->target.specificId);
-    ACTION_U16(marker, 0x48) = 1;
-    marker->actionUID = action->uid;
-    btlPacketRegister(marker, BTLPACKET_TYPE_2D);
-    root = btlUnitCreateAnimPacket(action->unit, 7, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-    root->actionUID = action->uid;
-    btlPacketRegister(root, BTLPACKET_TYPE_1);
-    marker = btlCameraCreateSetStatePacket(action,
-             action->unit->genus == UNIT_GENUS_PC ? BTLCAMERA_STATE_SKILLEXEC_PC : BTLCAMERA_STATE_SKILLEXEC_EC);
-    marker->parentUID = root->uid;
-    marker->actionUID = action->uid;
-    btlPacketRegister(marker, BTLPACKET_TYPE_0);
-    action->unk_18 |= 0x200;
-    totalDelay = 0;
-    for (targetIndex = 0; targetIndex < action->target.targetedCount; targetIndex++)
-    {
-        u8 hitCount;
-        victim = action->target.targetedActions[targetIndex];
-        if (victim == NULL)
-        {
-            continue;
+    sp438 = func_002b8f90(1);
+    if (action->unk_18 & 0x100) {
+        var_s6 = -1;
+    }
+    sp310 = 1;
+    temp_s6 = (s64) ((s64) var_s6 << 0x38) >> 0x38;
+    if (temp_s6 == 0) {
+        temp_a0 = action->unit;
+        temp_v1 = temp_a0->charId;
+        if ((temp_v1 != 0xA) && (temp_v1 != 3)) {
+
+        } else {
+            sp310 = 0x10;
         }
-        basis = ACTION_U32(victim, 0xd4) != 0 ? action : victim;
-        hitCount = ACTION_U8(victim, 0xc8);
-        for (hitIndex = 0; hitIndex < hitCount; hitIndex++)
-        {
-            u8* result = (u8*)victim + 0xe0 + hitIndex * 0x1c;
-            hitPacket = btlUnitCreateAnimPacket(basis->unit, ACTION_U8(result, 0x18), 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
-            hitPacket->unk_00 = 0xb;
-            hitPacket->parentUID = root->uid;
-            ACTION_U16(hitPacket, 0x48) = totalDelay;
-            hitPacket->actionUID = action->uid;
-            btlPacketRegister(hitPacket, BTLPACKET_TYPE_1);
-            marker = FUN_002d7e20(action, basis, result, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
-            marker->parentUID = hitPacket->uid;
-            ACTION_U16(marker, 0x48) = totalDelay;
-            marker->actionUID = action->uid;
-            btlPacketRegister(marker, BTLPACKET_TYPE_1);
-            marker = FUN_002bdbd0(action->unit, basis->unit, action->target.specificId,
-                                  ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce), hitIndex, hitCount, result);
-            marker->parentUID = hitPacket->uid;
-            ACTION_U16(marker, 0x48) = totalDelay;
-            marker->unk_47 &= ~0x20;
-            marker->actionUID = action->uid;
-            btlPacketRegister(marker, BTLPACKET_TYPE_2D);
-            totalDelay += 7;
+        if ((func_002d5bf0(temp_a0) != 0) || (func_002d5c70(action->unit) != 0)) {
+            sp310 = 0x10;
+        }
+    } else if (temp_s6 == 1) {
+        temp_v1_2 = action->unit->charId;
+        if ((temp_v1_2 != 0xEE) && (temp_v1_2 != 0xE9) && (temp_v1_2 != 0x126) && (temp_v1_2 != 0x110) && (temp_v1_2 != 0x10B)) {
+
+        } else {
+            sp310 = 0x10;
         }
     }
-    marker->parentUID = root->uid;
-    marker->actionUID = action->uid;
-    btlPacketRegister(marker, BTLPACKET_TYPE_1);
-    marker->parentUID = root->uid;
-    marker->actionUID = action->uid;
-    btlPacketRegister(marker, BTLPACKET_TYPE_1);
-    marker->parentUID = root->uid;
-    marker->actionUID = action->uid;
-    btlPacketRegister(marker, BTLPACKET_TYPE_1);
-    btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
+    if (temp_s6 >= 0) {
+        if (sp2EC != 0) {
+            temp_v0_3 = btlUnitCreateRotateTowardUnitPacket(action->unit, action->target.targetedActions[0]->unit, 0U);
+            temp_v0_3->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_3, 0U);
+        } else if (temp_s6 == 0) {
+            func_00280870(func_002d1600(&action->target) & 0xFFFF, 1, &sp518, 0);
+            temp_v0_4 = btlUnitCreateRotatePacket(action->unit, &sp518, 0U);
+            temp_v0_4->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_4, 0U);
+        } else if (func_002fdcb0(action->unit) != 0) {
+            func_002fddb0(action->unit, &sp518);
+            temp_v0_5 = btlUnitCreateRotatePacket(action->unit, &sp518, 0U);
+            temp_v0_5->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_5, 0U);
+        }
+        temp_v0_6 = btlUnitCreateLookAtUnitPacket(NULL, action->unit, 3U);
+        temp_v0_6->actionUID = action->uid;
+        btlPacketRegister(temp_v0_6, 1U);
+        temp_v0_7 = btlUnitCreateLookAtDeactivatePacket(action->unit, 0U);
+        temp_v0_7->actionUID = action->uid;
+        btlPacketRegister(temp_v0_7, 1U);
+        action->unk_18 |= 0x200;
+        temp_v0_8 = func_002d8330(action);
+        temp_v0_8->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_8, 1U);
+    }
+    temp_fp = temp_s7 * 0x1C;
+    if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x100) {
+        var_v0 = 3;
+    } else {
+        var_v0 = 1;
+    }
+    sp190 = (u64) ((s64) (var_v0 << 0x30) >> 0x30);
+    if (sp1C0 == 0) {
+        temp_v0_9 = func_002bd590(action->unit, temp_s7 & 0xFFFF);
+        temp_v0_9->preUpdateDelay = (s16) sp190;
+        temp_v0_9->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_9, 3U);
+    } else {
+        temp_v0_10 = func_002bd690(action->unit, action->target.unk_38);
+        temp_v0_10->preUpdateDelay = (s16) sp190;
+        temp_v0_10->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_10, 3U);
+    }
+    if ((sp1D0 == 1) && (temp_s6 != -1)) {
+        if ((sp1C0 == 0) && (sp1A0 == 0)) {
+            if (temp_s6 == 0) {
+                if (!(action->unk_18 & 0x40) && ((temp_s2 = func_002ddc80(action->unit->charId), (func_002d5eb0(action) != 0)) || (temp_s2 != 0))) {
+                    var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
+                    if ((var_s1 != -1) && ((datCalcRand(0x64U) < 0x14U) || (temp_s2 != 0))) {
+                        sp2F0 = 1;
+                        action->unk_18 |= 0x40;
+                    }
+                }
+            } else if ((temp_s6 == 1) && !(action->unk_18 & 0x40)) {
+                var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
+                if (var_s1 != -1) {
+                    sp2F0 = 1;
+                    action->unk_18 |= 0x40;
+                }
+            }
+            if (func_002fcaa0(action, &sp528) == 0) {
+                temp_v1_3 = (u8*)gBtl;
+                sp528 = (*(u32*)((u8*)gBtl + 0xC94));
+                sp52C = (*(u32*)((u8*)gBtl + 0xC98));
+                sp530 = (*(u32*)((u8*)gBtl + 0xC9C));
+            }
+            if ((func_002d6370(temp_s7) == 0) && (func_002d5f50(action) == 0)) {
+                temp_a0_2 = func_002d1600(&action->target) & 0xFFFF;
+                if ((temp_s6 == 0) && ((temp_a0_2 & 0xFFFF) == 2)) {
+                    sp2D0 = (effMiscRand(NULL) & 1) != 0;
+                } else if ((temp_s6 == 1) && ((temp_a0_2 & 0xFFFF) == 1)) {
+                    sp2D0 = 1;
+                }
+            }
+            if ((func_002fdbb0(action, sp450) != 0) || ((*(u32*)((u8*)gBtl + 0x10)) & 0x40)) {
+                sp2D0 = 1;
+            }
+            if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x4000) {
+                sp2D0 = 1;
+                sp3A0 = 0xC;
+            }
+            if ((temp_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
+                sp280 = 1;
+                sp2D0 = 1;
+                sp2F0 = 0;
+                temp_v0_11 = btlUnitCreateLookAtDeactivatePacket(NULL, 3U);
+                temp_v0_11->actionUID = action->uid;
+                btlPacketRegister(temp_v0_11, 1U);
+                temp_a0_3 = (u8*)gBtl;
+                (*(u32*)((u8*)gBtl + 0xC)) = (s32) ((*(u32*)((u8*)gBtl + 0xC)) | 0x400000);
+                temp_v1_4 = (u8*)gBtl;
+                *(u16*)((u8*)gBtl + 0x18) = (u16)(*(u16*)((u8*)gBtl + 0x18) | 6);
+            }
+            if ((temp_s6 == 0) && (func_002d5fb0(action) != 0)) {
+                btlPacketRegister(btlVoice002e2be0(action, 0x10, 0, 0, 0), 1U);
+            } else if (sp2F0 != 0) {
+                temp_v0_12 = func_002dd960(action->unit);
+                temp_v0_12->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_12, 1U);
+            }
+            if (temp_s6 == 1) {
+                var_v1 = (s64) (func_002f9690(action->unit) << 0x30) >> 0x30;
+                if (var_v1 == -1) {
+                    var_v1 = 6;
+                }
+            } else {
+                var_v1 = 6;
+            }
+            temp_v0_13 = btlUnitCreateAnimPacket(action->unit, 0xCU, var_v1 & 0xFFFF, 1.0f, 4U);
+            temp_v0_13->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_13, 1U);
+            var_s3_2 = temp_v0_13->uid;
+            if (temp_s6 == 0) {
+                temp_v0_14 = btlUnit00286240(action->unit);
+                temp_v0_14->unk_00 = 4;
+                temp_v0_14->parentUID = var_s3_2;
+                temp_v0_14->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_14, 1U);
+                temp_v0_15 = btlUnit002860b0(action->unit);
+                temp_v0_15->unk_00 = 4;
+                temp_v0_15->parentUID = var_s3_2;
+                temp_v0_15->preUpdateDelay = 6;
+                temp_v0_15->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_15, 1U);
+            }
+            var_s2_2 = ((s64) (func_002838d0(action->unit, 0xC, 0x3F800000) << 0x30) >> 0x30) + 6;
+            if (temp_s6 == 0) {
+                var_v0_2 = 0x10;
+            } else {
+                var_v0_2 = 0x11;
+            }
+            temp_v0_16 = btlCameraCreateSetStatePacket(action, var_v0_2 & 0xFFFF);
+            temp_v0_16->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_16, 0U);
+            var_s5 = temp_v0_16->uid;
+            if (sp2F0 != 0) {
+                temp_v0_17 = func_002e35d0(var_s1 & 0xFFFF, sp450->charId);
+                temp_v0_17->unk_00 = 4;
+                temp_v0_17->parentUID = var_s3_2;
+                temp_v0_17->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_17, 1U);
+                temp_v0_18 = func_002e36f0();
+                temp_v0_18->unk_00 = 4;
+                temp_v0_18->parentUID = temp_v0_17->uid;
+                temp_v0_18->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_18, 1U);
+                temp_v0_19 = btlVoice002e2be0(action, 0xC, (s32) sp450->charId, 0, 0);
+                temp_v0_19->unk_00 = 5;
+                temp_v0_19->parentUID = temp_v0_18->uid;
+                temp_v0_19->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_19, 1U);
+                temp_v0_20 = func_002dd100(0xA, 2, 0x12U);
+                temp_v0_20->unk_00 = 5;
+                temp_v0_20->parentUID = temp_v0_18->uid;
+                temp_v0_20->preUpdateDelay = 5;
+                temp_v0_20->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_20, 1U);
+                temp_v0_21 = func_002dd8e0(action->unit);
+                temp_v0_21->unk_00 = 4;
+                temp_v0_21->parentUID = temp_v0_18->uid;
+                temp_v0_21->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_21, 1U);
+                var_s3_2 = temp_v0_18->uid;
+                sp400 = var_s3_2;
+                var_s2_2 = 0;
+                temp_v0_22 = func_002e37e0();
+                temp_v0_22->unk_00 = 4;
+                temp_v0_22->parentUID = var_s3_2;
+                temp_v0_22->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_22, 1U);
+            }
+            temp_v0_23 = func_002b8900(action, (action->unk_18 & 0x10) != 0, 1);
+            temp_v0_23->unk_00 = 4;
+            temp_v0_23->parentUID = var_s3_2;
+            temp_v0_23->preUpdateDelay = var_s2_2 - (var_s2_2 >> 3);
+            temp_v0_23->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_23, 0U);
+            sp410 = temp_v0_23->uid;
+            if (sp2EC != 0) {
+                var_a2 = action->target.targetedActions[0];
+            } else {
+                var_a2 = NULL;
+            }
+            temp_v0_24 = func_002b8b70(sp450, action, var_a2, temp_s7 & 0xFFFF);
+            temp_v0_24->unk_00 = 5;
+            temp_v0_24->parentUID = sp410;
+            temp_v0_24->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_24, 0U);
+            if (sp2F0 != 0) {
+                temp_v0_25 = btlUnitCreateModelPacket(sp450, sp450->charId, 0x1DU);
+                var_s1_2 = temp_v0_25;
+                temp_v0_25->unk_00 = 5;
+                temp_v0_25->parentUID = sp400;
+                temp_v0_25->postUpdateWaits[0].type = 5;
+                temp_v0_25->postUpdateWaits[0].value = sp410;
+            } else {
+                temp_v0_26 = btlUnitCreateModelPacket(sp450, sp450->charId, 0xDU);
+                var_s1_2 = temp_v0_26;
+                temp_v0_26->preUpdateDelay = var_s2_2;
+            }
+            var_s1_2->actionUID = temp_s0;
+            btlPacketRegister(var_s1_2, 1U);
+            temp_v0_27 = func_0027f2f0();
+            temp_v0_27->unk_00 = 4;
+            temp_v0_27->parentUID = var_s1_2->uid;
+            temp_v0_27->preUpdateDelay = 0xC;
+            temp_v0_27->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_27, 1U);
+            temp_v0_28 = func_002bb2f0(sp528, action->unit, 0U, temp_v0_27->uid, 0);
+            temp_v0_28->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_28, 2U);
+            temp_v0_29 = func_002dd100(0xA, 2, 0U);
+            temp_v0_29->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_29, 1U);
+            temp_a1 = action->unit;
+            temp_v0_30 = (s64) (func_00284040(temp_a1->personaUnit, temp_a1, temp_s7, sp2EC) << 0x30) >> 0x30;
+            sp3F0 = (s16) temp_v0_30;
+            temp_v0_31 = (s64) (func_002835e0(action->unit->personaUnit, temp_v0_30 & 0xFFFF, 0x3F800000) << 0x30) >> 0x30;
+            sp3B0 = (s32) temp_v0_31;
+            sp300 = func_00283a70(action->unit, 0xF);
+            var_s1 = (s64) var_s1_2->uid;
+            temp_v1_5 = temp_v0_31 + 0x12;
+            if (sp3A0 < temp_v1_5) {
+                var_s2 = temp_v1_5 - sp3A0;
+            } else {
+                var_s2 = 0;
+            }
+            temp_v0_32 = btlUnitCreateAnimPacket(action->unit, 0xEU, 0U, 1.0f, 5U);
+            temp_v0_32->unk_00 = 4;
+            temp_v0_32->parentUID = (u64) var_s1;
+            temp_v0_32->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_32, 1U);
+            temp_s3 = (s64) (func_002835e0(action->unit, 0xEU, 0x3F800000) << 0x30) >> 0x30;
+            temp_v0_33 = func_002bb2f0(sp52C, action->unit, 0U, 0U, 0);
+            temp_v0_33->unk_00 = 4;
+            temp_v0_33->parentUID = (u64) var_s1;
+            temp_v0_33->preUpdateDelay = (s16) temp_s3;
+            temp_v0_33->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_33, 2U);
+            temp_v0_34 = func_002dd100(0xC, 2, sp310);
+            temp_v0_34->unk_00 = 4;
+            temp_v0_34->parentUID = (u64) var_s1;
+            temp_v0_34->preUpdateDelay = (s16) temp_s3;
+            temp_v0_34->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_34, 1U);
+            temp_v0_35 = func_002bb2f0(sp530, action->unit, 0U, 0U, 0);
+            temp_v0_35->unk_00 = 4;
+            temp_v0_35->parentUID = (u64) var_s1;
+            temp_v0_35->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_35, 2U);
+            temp_v0_36 = func_002dd100(0xD, 2, 2U);
+            temp_v0_36->unk_00 = 4;
+            temp_v0_36->parentUID = (u64) var_s1;
+            temp_v0_36->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_36, 1U);
+            temp_v0_37 = btlUnit00285d30(action->unit, 0xFF808080U, 0, 0xC, 0, 0);
+            temp_v0_37->unk_00 = 4;
+            temp_v0_37->parentUID = (u64) var_s1;
+            temp_v0_37->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_37, 1U);
+            temp_v0_38 = btlUnitCreateAnimPacket(sp450, (u16) sp3F0, 0U, 1.0f, 2U);
+            var_s3 = temp_v0_38;
+            temp_v0_38->unk_00 = 4;
+            temp_v0_38->parentUID = (u64) var_s1;
+            temp_v0_38->preUpdateDelay = 0xF;
+            temp_v0_38->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+            temp_v0_39 = btlUnit00285d30(sp450, func_0027fc80(sp450), 8, 0, 0, 0);
+            temp_v0_39->unk_00 = 4;
+            temp_v0_39->parentUID = var_s3->uid;
+            temp_v0_39->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_39, 1U);
+            if ((sp2D0 == 1) && (sp280 == 0) && !((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
+                if (temp_s6 == 0) {
+                    var_v0_3 = 0x15;
+                } else {
+                    var_v0_3 = 0x16;
+                }
+                temp_v0_40 = btlCameraCreateSetStatePacket(action, var_v0_3 & 0xFFFF);
+                temp_v0_40->unk_00 = 4;
+                temp_v0_40->parentUID = var_s3->uid;
+                if (sp3B0 >= sp3A0) {
+                    var_v0_4 = sp3B0 - sp3A0;
+                } else {
+                    var_v0_4 = 0;
+                }
+                temp_v0_40->preUpdateDelay = var_v0_4;
+                temp_v0_40->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_40, 0U);
+            }
+            sp420 = var_s3->uid;
+        } else if ((sp1C0 == 0) && (sp1A0 == 1)) {
+            temp_v0_41 = btlUnitCreateAnimPacket(action->unit, 0xCU, 6U, 1.0f, 4U);
+            temp_v0_41->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_41, 1U);
+            temp_s2_2 = temp_v0_41->uid;
+            temp_s3_2 = (s64) (func_002838d0(action->unit, 0xC, 0x3F800000) << 0x30) >> 0x30;
+            temp_v0_42 = btlCameraCreateSetStatePacket(action, 0x10U);
+            temp_v0_42->unk_00 = 4;
+            temp_v0_42->parentUID = temp_s2_2;
+            temp_v0_42->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_42, 0U);
+            var_s5 = temp_v0_42->uid;
+            temp_v0_43 = func_002e3de0(action->unit->charId, action->target.originalSpecificId);
+            temp_v0_43->unk_00 = 4;
+            temp_v0_43->parentUID = temp_s2_2;
+            temp_v0_43->preUpdateDelay = temp_s3_2 + 6;
+            temp_v0_43->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_43, 1U);
+            temp_v0_44 = func_002e3f20();
+            temp_v0_44->unk_00 = 4;
+            temp_v0_44->parentUID = temp_v0_43->uid;
+            temp_v0_44->preUpdateDelay = 0x17;
+            temp_v0_44->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_44, 1U);
+            temp_v0_45 = func_002dd690(3, (s8 *)0x693328);
+            temp_v0_45->unk_00 = 5;
+            temp_v0_45->parentUID = temp_v0_44->uid;
+            temp_v0_45->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_45, 1U);
+            temp_a2 = action->target.originalSpecificId;
+            if ((temp_a2 != 0x11D) && (temp_a2 != 0x11C) && (temp_a2 != 0x117) && (temp_a2 != 0x114) && (temp_a2 != 0x113)) {
+                sprintf((char*)&sp470, (char*)0x693338, temp_a2);
+                temp_v0_46 = func_002dd690(3, &sp470);
+                temp_v0_46->unk_00 = 0xA;
+                temp_v0_46->parentUID = 0x400;
+                temp_v0_46->preUpdateWait.type = 0xA;
+                temp_v0_46->preUpdateWait.value = 0x903;
+                temp_v0_46->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_46, 1U);
+            }
+            sp400 = temp_v0_43->uid;
+            sp2F0 = 1;
+            temp_v1_6 = *((u8*)iGpffffb710 + 2 + temp_fp);
+            if (temp_v1_6 & 0x400) {
+                sp200 = 0x18;
+            } else {
+                sp200 = 0x19;
+            }
+            if (temp_v1_6 & 0x1000) {
+                temp_v0_47 = func_002d62d0(action);
+                sp27C = temp_v0_47;
+                if (temp_v0_47 != 0) {
+                    sp280 = 1;
+                }
+                temp_v0_48 = btlUnitCreateLookAtDeactivatePacket(NULL, 3U);
+                temp_v0_48->actionUID = action->uid;
+                btlPacketRegister(temp_v0_48, 1U);
+                temp_a0_4 = (u8*)gBtl;
+                (*(u32*)((u8*)gBtl + 0xC)) = (s32) ((*(u32*)((u8*)gBtl + 0xC)) | 0x400000);
+                temp_v1_7 = (u8*)gBtl;
+                *(u16*)((u8*)gBtl + 0x18) = (u16)(*(u16*)((u8*)gBtl + 0x18) | 6);
+            }
+            temp_v0_49 = btlUnitCreateAnimPacket(action->unit, 0x17U, 0U, 1.0f, 2 & 0xFFFF);
+            temp_v0_49->unk_00 = 4;
+            temp_v0_49->parentUID = sp400;
+            temp_v0_49->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_49, 1U);
+            temp_v0_50 = func_0027f2f0();
+            temp_v0_50->unk_00 = 4;
+            temp_v0_50->parentUID = temp_v0_49->uid;
+            temp_v0_50->preUpdateDelay = 0xC;
+            temp_v0_50->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_50, 1U);
+            temp_v0_51 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xC94)), action->unit, 0U, temp_v0_50->uid, 0);
+            temp_v0_51->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_51, 2U);
+            temp_v0_52 = func_002dd100(0xA, 2, 0U);
+            temp_v0_52->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_52, 1U);
+            temp_v0_53 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xC98)), action->unit, 0U, 0U, 0);
+            temp_v0_53->unk_00 = 4;
+            temp_v0_53->parentUID = temp_v0_49->uid;
+            temp_v0_53->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_53, 2U);
+            temp_v0_54 = func_002dd100(0xC, 2, sp310);
+            temp_v0_54->unk_00 = 4;
+            temp_v0_54->parentUID = temp_v0_49->uid;
+            temp_v0_54->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_54, 1U);
+            temp_v0_55 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xC9C)), action->unit, 0U, 0U, 0);
+            temp_v0_55->unk_00 = 4;
+            temp_v0_55->parentUID = temp_v0_49->uid;
+            temp_v0_55->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_55, 2U);
+            temp_v0_56 = func_002dd100(0xD, 2, 2U);
+            temp_v0_56->unk_00 = 4;
+            temp_v0_56->parentUID = temp_v0_49->uid;
+            temp_v0_56->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_56, 1U);
+            temp_v0_57 = btlUnitCreateAnimPacket(action->unit, (u16) sp200, 0U, 1.0f, 2U);
+            var_s3 = temp_v0_57;
+            temp_v0_57->unk_00 = 4;
+            temp_v0_57->parentUID = temp_v0_44->uid;
+            var_s3->preUpdateDelay = func_002838d0(action->unit, 0x17, 0x3F800000);
+            var_s3->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+            var_s1 = (s64) var_s3->uid;
+            var_s2 = (s64) (func_002835e0(action->unit, (u16) sp200, 0x3F800000) << 0x30) >> 0x30;
+            temp_v0_58 = func_0027f2f0();
+            sp214 = temp_v0_58;
+            temp_v0_58->unk_00 = 4;
+            temp_v0_58->parentUID = var_s3->uid;
+            temp_v0_58->preUpdateDelay = 0xC;
+            temp_v0_58->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_58, 1U);
+            temp_v0_59 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xC94)), action->unit, 0U, temp_v0_58->uid, 0);
+            temp_v0_59->unk_00 = 4;
+            temp_v0_59->parentUID = sp400;
+            temp_v0_59->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_59, 2U);
+            temp_v0_60 = func_002dd100(0xA, 2, 0U);
+            temp_v0_60->unk_00 = 4;
+            temp_v0_60->parentUID = sp400;
+            temp_v0_60->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_60, 1U);
+            temp_v0_61 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xD0C)), action->unit, 0U, 0U, 0);
+            temp_v0_61->unk_00 = 4;
+            temp_v0_61->parentUID = var_s3->uid;
+            temp_v0_61->preUpdateDelay = 0;
+            temp_v0_61->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_61, 2U);
+            temp_v0_62 = func_002dd100(0xE, 2, 3U);
+            temp_v0_62->unk_00 = 4;
+            temp_v0_62->parentUID = var_s3->uid;
+            temp_v0_62->preUpdateDelay = 0;
+            temp_v0_62->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_62, 1U);
+            temp_v0_63 = btlUnit00285d30(action->unit, 0xFF808080U, 0, 0xC, 0, 0);
+            temp_v0_63->unk_00 = 4;
+            temp_v0_63->parentUID = var_s3->uid;
+            temp_v0_63->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_63, 1U);
+            if (((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x1000) && (sp27C == 0)) {
+                temp_v0_64 = action->target.targetedActions[0];
+                sp460 = temp_v0_64;
+                temp_v0_65 = btlCameraCreateSetStatePacket(action, 0x15U);
+                temp_v0_65->unk_00 = 4;
+                temp_v0_65->parentUID = (u64) var_s1;
+                temp_v0_65->preUpdateDelay = (s16) var_s2;
+                temp_v0_65->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_65, 0U);
+                temp_v0_66 = btlUnitCreateRotateTowardUnitPacket(temp_v0_64->unit, action->unit, 2U);
+                temp_v0_66->unk_00 = 4;
+                temp_v0_66->parentUID = (u64) var_s1;
+                temp_v0_66->preUpdateDelay = (s16) var_s2;
+                temp_v0_66->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_66, 0U);
+            }
+            sp410 = var_s3->uid;
+        } else if ((sp1C0 == 1) && (sp1A0 == 0)) {
+            if ((temp_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
+                sp280 = 1;
+                sp2D0 = 1;
+                temp_v0_67 = btlUnitCreateLookAtDeactivatePacket(NULL, 3U);
+                temp_v0_67->actionUID = action->uid;
+                btlPacketRegister(temp_v0_67, 1U);
+                temp_a0_5 = (u8*)gBtl;
+                (*(u32*)((u8*)gBtl + 0xC)) = (s32) ((*(u32*)((u8*)gBtl + 0xC)) | 0x400000);
+                temp_v1_8 = (u8*)gBtl;
+                *(u16*)((u8*)gBtl + 0x18) = (u16)(*(u16*)((u8*)gBtl + 0x18) | 6);
+            }
+            temp_v0_68 = btlUnitCreateAnimPacket(action->unit, 0x15U, 6U, 1.0f, 0U);
+            var_s3 = temp_v0_68;
+            temp_v0_68->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+            var_s5 = var_s3->uid;
+            var_s1 = 0;
+            var_s2 = ((s64) (func_002838d0(action->unit, 0x15, 0x3F800000) << 0x30) >> 0x30) + 6;
+            if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
+                if (func_002d6290(action) == 1) {
+                    temp_v0_69 = func_002b8900(action, 0, 1);
+                    temp_v0_69->unk_00 = 4;
+                    temp_v0_69->parentUID = var_s3->uid;
+                    temp_v0_69->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_69, 0U);
+                }
+                if (sp2D0 == 0) {
+                    temp_v0_70 = btlCameraCreateSetStatePacket(action, 0x15U);
+                    temp_v0_70->unk_00 = 4;
+                    temp_v0_70->parentUID = var_s3->uid;
+                    temp_v0_70->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_70, 0U);
+                } else {
+                    temp_v0_71 = btlCameraCreateSetStatePacket(action, 0x17U);
+                    temp_v0_71->unk_00 = 4;
+                    temp_v0_71->parentUID = var_s3->uid;
+                    temp_v0_71->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_71, 0U);
+                }
+            }
+            temp_v0_72 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xD04)), action->unit, var_s2 + 6, 0U, 0);
+            temp_v0_72->unk_00 = 4;
+            temp_v0_72->parentUID = var_s3->uid;
+            btlPacketRegister(temp_v0_72, 1U);
+        }
+    } else if ((sp1D0 == 0) && (temp_s6 != -1)) {
+        sp2B0 = 1;
+        if ((sp1E0 == 1) || (func_002d6370(temp_s7) != 0)) {
+            if ((sp1E0 == 1) || (var_s2_3 = (s64) (func_002f8fd0(action->unit, temp_s7) << 0x30) >> 0x30, (var_s2_3 == -1))) {
+                var_s2_3 = 4;
+            }
+            var_a3 = 2;
+        } else {
+            var_s2_3 = (s64) (func_002f8fd0(action->unit, temp_s7) << 0x30) >> 0x30;
+            if (var_s2_3 == -1) {
+                var_s2_3 = 7;
+            }
+            var_a3 = 3;
+        }
+        temp_a0_6 = action->unit;
+        if ((temp_a0_6->genus == 1) && ((*(u16*)((u8*)iGpffffb728 + temp_a0_6->charId * 0xE8 + 0x18)) & 1)) {
+            var_a3 = 0;
+            sp2AC = 1;
+            sp2B0 = 0;
+        }
+        if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x100)) {
+            temp_v0_73 = btlUnitCreateAnimPacket(temp_a0_6, (u16) var_s2_3, 6U, 1.0f, var_a3);
+            var_s3 = temp_v0_73;
+            temp_v0_73->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+            temp_v0_74 = btlCameraCreateSetStatePacket(action, 0x11U);
+            temp_v0_74->unk_00 = 4;
+            temp_v0_74->parentUID = var_s3->uid;
+            temp_v0_74->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_74, 0U);
+        } else {
+            temp_v0_75 = func_0027f2f0();
+            var_s3 = temp_v0_75;
+            temp_v0_75->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+        }
+        var_s5 = var_s3->uid;
+        var_s1 = 0;
+        var_s2 = ((s64) (func_002835e0(action->unit, var_s2_3 & 0xFFFF, 0x3F800000) << 0x30) >> 0x30) + 6;
+        if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
+            temp_v0_76 = func_002b8900(action, (action->unk_18 & 0x10) != 0, 1);
+            sp218 = temp_v0_76;
+            temp_v0_76->unk_00 = 4;
+            temp_v0_76->parentUID = var_s3->uid;
+            if (var_s2 >= 0xD) {
+                var_v1_2 = var_s2 - 0xC;
+            } else {
+                var_v1_2 = 0;
+            }
+            sp218->preUpdateDelay = var_v1_2;
+            sp218->actionUID = temp_s0;
+            btlPacketRegister(sp218, 0U);
+            sp410 = sp218->uid;
+            temp_v0_77 = btlCameraCreateSetStatePacket(action, 0x16U);
+            temp_v0_77->unk_00 = 4;
+            temp_v0_77->parentUID = sp410;
+            temp_v0_77->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_77, 0U);
+        }
+        if (sp1E0 == 0) {
+            var_v0_5 = func_002fd060(action);
+            if (var_v0_5 == 0) {
+                var_v0_5 = (*(u32*)((u8*)gBtl + 0xCA8));
+            }
+            temp_v0_78 = func_002bb2f0(var_v0_5, action->unit, var_s2 + 6, 0U, 0);
+            temp_v0_78->unk_00 = 4;
+            temp_v0_78->parentUID = var_s3->uid;
+            btlPacketRegister(temp_v0_78, 1U);
+            temp_v0_79 = func_002dd100(0xA, 2, 5U);
+            temp_v0_79->unk_00 = 4;
+            temp_v0_79->parentUID = var_s3->uid;
+            btlPacketRegister(temp_v0_79, 1U);
+        }
+    } else {
+        var_s5 = 0;
+        var_s1 = 0;
+        var_s2 = 0;
+        if (action->unk_18 & 0x100) {
+            temp_v0_80 = func_002e35d0(6, (*(u16*)((u8*)datPersonaGetByPcId(6) + 2)));
+            sp21C = temp_v0_80;
+            temp_v0_80->unk_00 = 4;
+            temp_v0_80->parentUID = (u64) saved_reg_s3;
+            temp_v0_80->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_80, 1U);
+            temp_v0_81 = func_002e36f0();
+            temp_v0_81->unk_00 = 4;
+            temp_v0_81->parentUID = sp21C->uid;
+            temp_v0_81->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_81, 1U);
+            temp_v0_82 = func_002dd690(3, (s8 *)0x693348);
+            temp_v0_82->unk_00 = 5;
+            temp_v0_82->parentUID = temp_v0_81->uid;
+            temp_v0_82->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_82, 1U);
+            var_s1 = (s64) temp_v0_81->uid;
+            temp_v0_83 = func_002e37e0();
+            temp_v0_83->unk_00 = 4;
+            temp_v0_83->parentUID = (u64) var_s1;
+            temp_v0_83->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_83, 1U);
+            temp_v0_84 = btlCameraCreateSetStatePacket(action, 4U);
+            temp_v0_84->unk_00 = 4;
+            temp_v0_84->parentUID = (u64) var_s1;
+            temp_v0_84->preUpdateDelay = 4;
+            temp_v0_84->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_84, 0U);
+            sp280 = 1;
+            temp_v0_85 = btlUnitCreateLookAtDeactivatePacket(NULL, 3U);
+            temp_v0_85->actionUID = action->uid;
+            btlPacketRegister(temp_v0_85, 1U);
+            temp_a0_7 = (u8*)gBtl;
+            (*(u32*)((u8*)gBtl + 0xC)) = (s32) ((*(u32*)((u8*)gBtl + 0xC)) | 0x400000);
+            temp_v1_9 = (u8*)gBtl;
+            *(u16*)((u8*)gBtl + 0x18) = (u16)(*(u16*)((u8*)gBtl + 0x18) | 6);
+        } else {
+            temp_v0_86 = btlCameraCreateSetStatePacket(action, 0x25U);
+            temp_v0_86->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_86, 0U);
+        }
+    }
+    sp250 = temp_s7 & 0xFFFF;
+    func_0029ea60(sp250, &sp53C, &sp538);
+    temp_v0_87 = func_0029f4b0(sp53C, sp538, 0x10U);
+    temp_v0_87->unk_00 = 4;
+    temp_v0_87->parentUID = var_s5;
+    temp_v0_87->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_87, 1U);
+    sp1FC = func_0029ec00(sp250);
+    func_0029ec80(sp250, &sp53C, &sp538);
+    temp_v0_88 = func_002a0050(sp1FC, sp53C, sp538, 0x10U, 0);
+    temp_v0_88->unk_00 = 4;
+    temp_v0_88->parentUID = var_s5;
+    temp_v0_88->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_88, 1U);
+    sp240 = temp_s7 & 0xFFFF;
+    temp_v0_89 = func_002a1280(func_0029ec50(sp240), 0x10U);
+    temp_v0_89->unk_00 = 4;
+    temp_v0_89->parentUID = var_s5;
+    temp_v0_89->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_89, 1U);
+    temp_v0_90 = func_002a1b00(action, sp240, 8U);
+    temp_v0_90->unk_00 = 4;
+    temp_v0_90->parentUID = var_s5;
+    temp_v0_90->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_90, 1U);
+    func_002bb6f0(sp240, &sp470);
+    if (sp2F0 != 0) {
+        temp_v0_91 = func_0027f2f0();
+        temp_v0_91->unk_00 = 4;
+        temp_v0_91->parentUID = (u64) var_s1;
+        temp_v0_91->preUpdateDelay = (s16) var_s2;
+        btlPacketRegister(temp_v0_91, 1U);
+        temp_v0_92 = func_002bac00(sp438, &sp470, 1);
+        sp44C = temp_v0_92;
+        temp_v0_92->unk_00 = 5;
+        temp_v0_92->parentUID = sp400;
+        temp_v0_92->postUpdateWaits[0].type = 5;
+        temp_v0_92->postUpdateWaits[0].value = temp_v0_91->uid;
+        temp_v0_92->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_92, 1U);
+        temp_v0_93 = btlSoundCreateSkillSEPacket(sp250, 1U);
+        sp448 = temp_v0_93;
+        temp_v0_93->unk_00 = 5;
+        temp_v0_93->parentUID = sp400;
+        btlPacketRegister(temp_v0_93, 1U);
+    } else {
+        temp_v0_94 = func_002bac00(sp438, &sp470, 0);
+        sp44C = temp_v0_94;
+        temp_v0_94->unk_00 = 4;
+        temp_v0_94->parentUID = (u64) var_s1;
+        temp_v0_94->preUpdateDelay = (s16) var_s2;
+        temp_v0_94->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_94, 1U);
+        temp_v0_95 = btlSoundCreateSkillSEPacket(sp250, 0U);
+        sp448 = temp_v0_95;
+        temp_v0_95->unk_00 = 4;
+        temp_v0_95->parentUID = sp44C->uid;
+        btlPacketRegister(temp_v0_95, 1U);
+    }
+    if (action->target.targetedCount == 1) {
+        var_a2_2 = sp460->unit;
+    } else {
+        var_a2_2 = action->unit;
+    }
+    temp_v0_96 = func_002baf90(sp438, action->unit, var_a2_2, 0);
+    var_s1_3 = temp_v0_96;
+    temp_v0_96->unk_00 = 4;
+    temp_v0_96->parentUID = sp44C->uid;
+    temp_v0_96->preUpdateWait.type = 4;
+    temp_v0_96->preUpdateWait.value = sp448->uid;
+    if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x80) {
+        var_s1_3->actionUID = temp_s0;
+    }
+    btlPacketRegister(var_s1_3, 2U);
+    sp180 = (u64) var_s1_3->uid;
+    temp_v0_97 = func_002dd5e0(0);
+    temp_v0_97->unk_00 = 5;
+    temp_v0_97->parentUID = var_s1_3->uid;
+    btlPacketRegister(temp_v0_97, 1U);
+    temp_v0_98 = func_002fded0(temp_s7);
+    if (temp_v0_98 != 0) {
+        temp_v0_99 = func_0027f410(temp_v0_98, action);
+        temp_v0_99->unk_00 = 5;
+        temp_v0_99->parentUID = var_s1_3->uid;
+        btlPacketRegister(temp_v0_99, 1U);
+    }
+    sp444 = NULL;
+    sp3E0 = 0x1E;
+    sp330 = 0;
+    sp170 = func_002d4cc0(sp250) & 0xFFFF;
+    sp3C0 = 0;
+    sp370 = 0;
+    sp260 = (s32) ((s64) ((s64) temp_s7 << 0x30) >> 0x30);
+loop_306:
+    sp230 = (s32) sp370;
+    if ((s32) sp370 < (s32) action->target.targetedCount) {
+        temp_s2_3 = action->target.targetedActions[sp370];
+        sp350 = (u16) ACTION_U8(temp_s2_3, 0xc8);
+        sp340 = 0;
+        sp160 = func_002b9640(&ACTION_U8(temp_s2_3, 0xc8));
+        temp_v1_10 = ACTION_U32(temp_s2_3, 0xd4);
+        if (temp_v1_10 != 0) {
+            var_s5_2 = action;
+        } else {
+            var_s5_2 = temp_s2_3;
+        }
+        temp_v0_100 = ACTION_U32(temp_s2_3, 0xd0);
+        if ((temp_v0_100 != 0) && (action->unit->genus != var_s5_2->unit->genus)) {
+            sp390 += 1;
+        }
+        if (ACTION_U32(temp_s2_3, 0xcc + sp350 * 0x1c) & 0x100000) {
+            sp380 += 1;
+            sp320 |= ACTION_U16(temp_s2_3, 0xce);
+        }
+        temp_a0_8 = var_s5_2->unit;
+        var_a2_3 = temp_a0_8->genus;
+        var_a1 = 1;
+        sp150 = 1;
+        if (var_a2_3 == 1) {
+            var_a2_3 = temp_a0_8->charId * 0x4C;
+            var_a1 = (*(gp0xffffb714 + var_a2_3) & 1) == 0;
+            sp150 = var_a1;
+        }
+        if ((temp_v0_100 != 0) || (temp_v1_10 != 0)) {
+            sp3E0 = 0x2D;
+        }
+        temp_v0_101 = func_002bd480(temp_a0_8, var_a1, var_a2_3);
+        temp_v0_101->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_101, 1U);
+        if ((ACTION_U16(temp_s2_3, 0xcc) != 0x400) && (ACTION_U32(temp_s2_3, 0xd4) != 1)) {
+            var_s1_3 = func_002baf90(sp438, action->unit, var_s5_2->unit, 1);
+            if (sp444 == NULL) {
+                if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x2000)) {
+                    var_s1_3->unk_00 = 4;
+                    var_s1_3->parentUID = sp44C->uid;
+                    var_s1_3->preUpdateWait.type = 4;
+                    var_s1_3->preUpdateWait.value = sp448->uid;
+                } else {
+                    var_s1_3->unk_00 = 4;
+                    var_s1_3->parentUID = (u64) sp180;
+                }
+                var_s1_3->preUpdateDelay = (s16) sp330;
+            } else {
+                var_s1_3->unk_00 = 4;
+                var_s1_3->parentUID = sp444->uid;
+            }
+            if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x80) {
+                var_s1_3->actionUID = temp_s0;
+            }
+            btlPacketRegister(var_s1_3, 2U);
+            temp_v0_102 = func_002dd5e0(1);
+            temp_v0_102->unk_00 = 5;
+            temp_v0_102->parentUID = var_s1_3->uid;
+            btlPacketRegister(temp_v0_102, 1U);
+        } else {
+            temp_v0_103 = func_002baf90(sp438, action->unit, var_s5_2->unit, 1);
+            var_s1_3 = temp_v0_103;
+            temp_v0_103->unk_00 = 4;
+            temp_v0_103->parentUID = sp44C->uid;
+            temp_v0_103->preUpdateWait.type = 4;
+            temp_v0_103->preUpdateWait.value = sp448->uid;
+            temp_v0_103->preUpdateDelay = (s16) sp330;
+            if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x80) {
+                var_s1_3->actionUID = temp_s0;
+            }
+            btlPacketRegister(var_s1_3, 2U);
+            if ((ACTION_U16(temp_s2_3, 0xcc) != 0x400) && (ACTION_U32(temp_s2_3, 0xd4) == 1) && (sp230 == 0)) {
+                temp_v0_104 = func_002baf90(sp438, action->unit, var_s5_2->unit, 1);
+                sp43C = temp_v0_104;
+                temp_v0_104->unk_00 = 5;
+                temp_v0_104->parentUID = var_s1_3->uid;
+                if ((ACTION_U32(temp_s2_3, 0xd4) != 0) && ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 8)) {
+                    sp43C->preUpdateDelay = 8;
+                }
+                sp43C->actionUID = temp_s0;
+                btlPacketRegister(sp43C, 2U);
+                temp_v0_105 = func_002dd5e0(1);
+                temp_v0_105->unk_00 = 5;
+                temp_v0_105->parentUID = sp43C->uid;
+                btlPacketRegister(temp_v0_105, 1U);
+            }
+        }
+        if (sp2EC != 0) {
+            temp_v0_106 = btlUnitCreateLookAtUnitPacket(NULL, var_s5_2->unit, 3U);
+            temp_v0_106->unk_00 = 5;
+            temp_v0_106->parentUID = var_s1_3->uid;
+            temp_v0_106->actionUID = action->uid;
+            btlPacketRegister(temp_v0_106, 1U);
+            if (var_s5_2 != action) {
+                temp_v0_107 = btlUnitCreateLookAtUnitPacket(var_s5_2->unit, action->unit, 0U);
+                temp_v0_107->unk_00 = 5;
+                temp_v0_107->parentUID = var_s1_3->uid;
+                temp_v0_107->actionUID = action->uid;
+                btlPacketRegister(temp_v0_107, 1U);
+            } else {
+                temp_v0_108 = btlUnitCreateLookAtDeactivatePacket(var_s5_2->unit, 0U);
+                temp_v0_108->unk_00 = 5;
+                temp_v0_108->parentUID = var_s1_3->uid;
+                temp_v0_108->actionUID = action->uid;
+                btlPacketRegister(temp_v0_108, 1U);
+            }
+            action->unk_18 |= 0x200;
+        } else if ((sp230 == 0) && (temp_s6 == 0)) {
+            temp_a0_9 = func_002d1600(&action->target) & 0xFFFF;
+            if (temp_a0_9 == 2) {
+                func_00280870(temp_a0_9, 1, &sp518, 0);
+                temp_v0_109 = btlUnitCreateLookAtPacket(NULL, &sp518, 1U);
+                temp_v0_109->unk_00 = 5;
+                temp_v0_109->parentUID = var_s1_3->uid;
+                temp_v0_109->actionUID = action->uid;
+                btlPacketRegister(temp_v0_109, 1U);
+            }
+        }
+        if (sp280 == 1) {
+            if ((sp444 == NULL) && (temp_s6 != -1)) {
+                if ((sp1D0 == 1) && (sp1A0 == 0) && (sp1C0 == 0)) {
+                    temp_v0_110 = btlUnit00285d30(sp450, 0U, 0, 0, 0, 0);
+                    temp_v0_110->unk_00 = 5;
+                    temp_v0_110->parentUID = var_s1_3->uid;
+                    temp_v0_110->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_110, 0U);
+                }
+                if (sp2B0 == 0) {
+                    var_v0_6 = btlUnit002843e0(action->unit, sp300);
+                } else {
+                    var_v0_6 = btlUnit00284f50(action->unit, 0, 0, 0x3F800000);
+                }
+                var_v0_6->unk_00 = 5;
+                var_v0_6->parentUID = var_s1_3->uid;
+                var_v0_6->actionUID = temp_s0;
+                btlPacketRegister(var_v0_6, 1U);
+                temp_v0_111 = btlUnit00285d30(action->unit, -1U, 0, 0, 0, 0);
+                temp_v0_111->unk_00 = 5;
+                temp_v0_111->parentUID = var_s1_3->uid;
+                temp_v0_111->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_111, 1U);
+            }
+            if (var_s5_2 != action) {
+                temp_v0_112 = btlUnitCreateRotateTowardUnitPacket(var_s5_2->unit, action->unit, 2U);
+                temp_v0_112->unk_00 = 5;
+                temp_v0_112->parentUID = var_s1_3->uid;
+                temp_v0_112->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_112, 0U);
+            }
+            temp_v0_113 = btlCameraCreateSetStatePacket(var_s5_2, 0x18U);
+            sp444 = temp_v0_113;
+            temp_v0_113->unk_00 = 5;
+            temp_v0_113->parentUID = var_s1_3->uid;
+            temp_v0_113->postUpdateWaits[0].type = 0xB;
+            temp_v0_113->postUpdateWaits[0].value = var_s1_3->uid;
+            temp_v0_113->postUpdateDelay = 0x12;
+            temp_v0_113->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_113, 0U);
+        }
+        if (ACTION_U32(temp_s2_3, 0xd4) != 0) {
+            var_v0_7 = func_002fd160(temp_s2_3);
+            if (var_v0_7 == 0) {
+                var_v0_7 = (*(u32*)((u8*)gBtl + 0xC8C));
+            }
+            sp440 = func_002baf90(var_v0_7, action->unit, temp_s2_3->unit, 1);
+            if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 4) {
+                sp440->unk_00 = 0xB;
+                sp440->parentUID = var_s1_3->uid;
+            } else {
+                sp440->unk_00 = 5;
+                sp440->parentUID = (u64) sp180;
+            }
+            btlPacketRegister(sp440, 1U);
+            temp_v0_114 = func_002dd100(0xD, 2, 6U);
+            temp_v0_114->unk_00 = 5;
+            temp_v0_114->parentUID = sp440->uid;
+            btlPacketRegister(temp_v0_114, 1U);
+        }
+        var_v1_3 = ACTION_U16(temp_s2_3, 0xcc);
+        if (var_v1_3 == 0x400) {
+            sp440 = func_002baf90((*(u32*)((u8*)gBtl + 0xC90)), action->unit, var_s5_2->unit, 1);
+            if ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 4) {
+                sp440->unk_00 = 0xB;
+                sp440->parentUID = var_s1_3->uid;
+            } else {
+                sp440->unk_00 = 5;
+                sp440->parentUID = (u64) sp180;
+            }
+            btlPacketRegister(sp440, 1U);
+            temp_v0_115 = func_002dd100(0xC, 2, 7U);
+            temp_v0_115->unk_00 = 5;
+            temp_v0_115->parentUID = sp440->uid;
+            var_v1_3 = (u16) (u32) btlPacketRegister(temp_v0_115, 1U);
+            sp3D0 = 0xA;
+        }
+        sp360 = 0;
+        sp140 = (u64) sp350;
+        sp130 = sp350 - 1;
+        sp120 = sp3D0 + 0x2B;
+loop_302:
+        spB0 = (u64) sp360;
+        if ((s32) var_v1_3 < sp140) {
+            temp_v0_116 = (u8*)temp_s2_3 + sp360 * 0x1C;
+            sp110 = (u64) temp_v0_116;
+            sp100 = (u64) ((u8*)temp_v0_116 + 0xF8);
+            temp_v0_117 = btlUnitCreateAnimPacket(var_s5_2->unit, (u16) ACTION_U8(temp_s2_3, 0xf8 + sp360 * 0x1c), 0U, 1.0f, 0U);
+            var_s3 = temp_v0_117;
+            temp_v0_117->unk_00 = 0xB;
+            temp_v0_117->parentUID = var_s1_3->uid;
+            temp_v0_117->preUpdateDelay = (s16) sp340;
+            if ((ACTION_U32(temp_s2_3, 0xd4) != 0) && ((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 8)) {
+                var_s3->preUpdateDelay += 8;
+            }
+            var_s3->actionUID = temp_s0;
+            btlPacketRegister(var_s3, 1U);
+            if ((spB0 == sp130) && (ACTION_U32(temp_s2_3, 0xe8 + sp360 * 0x1c) & 0x100000)) {
+                if (sp150 != 0) {
+                    if (sp2EC != 0) {
+                        if (sp410 != 0) {
+                            temp_f20 = 100.0f * func_002b9590(var_s5_2->unit);
+                            if (func_002d6370(temp_s7) != 0) {
+                                var_v0_8 = 3;
+                            } else {
+                                var_v0_8 = 2;
+                            }
+                            temp_v0_118 = func_002b7bd0(action->unit, var_s5_2->unit, var_v0_8 & 0xFFFF, temp_f20);
+                            temp_v0_118->unk_00 = 5;
+                            temp_v0_118->parentUID = sp410;
+                            temp_v0_118->actionUID = temp_s0;
+                            btlPacketRegister(temp_v0_118, 0U);
+                        }
+                        temp_a1_2 = var_s5_2->unit;
+                        temp_v0_119 = func_002baf90((*(u32*)((u8*)gBtl + 0xD00)), temp_a1_2, temp_a1_2, 1);
+                        temp_v0_119->unk_00 = 5;
+                        temp_v0_119->parentUID = var_s3->uid;
+                        temp_v0_119->preUpdateDelay = 1;
+                        temp_v0_119->actionUID = temp_s0;
+                        btlPacketRegister(temp_v0_119, 2U);
+                    } else {
+                        temp_a1_3 = var_s5_2->unit;
+                        temp_v0_120 = func_002baf90((*(u32*)((u8*)gBtl + 0xCFC)), temp_a1_3, temp_a1_3, 1);
+                        temp_v0_120->unk_00 = 5;
+                        temp_v0_120->parentUID = var_s3->uid;
+                        temp_v0_120->preUpdateDelay = 1;
+                        temp_v0_120->actionUID = temp_s0;
+                        btlPacketRegister(temp_v0_120, 2U);
+                    }
+                    if (ACTION_U32(temp_s2_3, 0xd0) == 0) {
+                        temp_a1_4 = var_s5_2->unit;
+                        temp_v0_121 = func_002baf90((*(u32*)((u8*)gBtl + 0xCF8)), temp_a1_4, temp_a1_4, 1);
+                        temp_v0_121->unk_00 = 5;
+                        temp_v0_121->parentUID = var_s3->uid;
+                        temp_v0_121->preUpdateDelay = 0x10;
+                        temp_v0_121->actionUID = temp_s0;
+                        btlPacketRegister(temp_v0_121, 2U);
+                    }
+                }
+                temp_v0_122 = btlUnit00284c90(var_s5_2->unit);
+                temp_v0_122->unk_00 = 5;
+                temp_v0_122->parentUID = var_s3->uid;
+                temp_v0_122->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_122, 1U);
+            }
+            if ((sp280 == 0) && ((ACTION_U8(temp_s2_3, 0xf8 + sp360 * 0x1c) != -1) || (temp_s2_3->unit->genus != action->unit->genus)) && (datCalcChkBadStatus(temp_s2_3->unit->datUnit, 0x180000U) == 0)) {
+                temp_v0_123 = btlUnitCreateRotateTowardUnitPacket(temp_s2_3->unit, action->unit, 2U);
+                if ((ACTION_U32(temp_s2_3, 0xd4) != 0) && (sp440 != NULL)) {
+                    temp_v0_123->unk_00 = 5;
+                    temp_v0_123->parentUID = sp440->uid;
+                } else {
+                    temp_v0_123->unk_00 = 5;
+                    temp_v0_123->parentUID = var_s3->uid;
+                }
+                temp_v0_123->unk_47 &= 0xDF;
+                temp_v0_123->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_123, 1U);
+            }
+            temp_v0_124 = (void*)((u8*)temp_s2_3 + sp360 * 0x1C + 0xE0);
+            sp220 = temp_v0_124;
+            temp_v0_125 = func_002d7e20(action, var_s5_2, temp_v0_124, ACTION_U16(temp_s2_3, 0xcc));
+            temp_v0_125->unk_00 = 5;
+            temp_v0_125->parentUID = var_s3->uid;
+            temp_v0_125->preUpdateDelay = sp3D0;
+            temp_v0_125->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_125, 1U);
+            temp_v0_126 = func_002d8090(temp_s2_3);
+            temp_v0_126->unk_00 = 5;
+            temp_v0_126->parentUID = var_s3->uid;
+            temp_v0_126->preUpdateDelay = sp3D0;
+            temp_v0_126->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_126, 1U);
+            if ((sp230 == (action->target.targetedCount - 1)) && (spB0 == (ACTION_U8(temp_s2_3, 0xc8) - 1))) {
+                temp_v0_127 = func_002d8090(action);
+                temp_v0_127->unk_00 = 5;
+                temp_v0_127->parentUID = var_s3->uid;
+                temp_v0_127->preUpdateDelay = sp3D0;
+                temp_v0_127->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_127, 1U);
+            }
+            if ((sp230 == 0) && (spB0 == 0) && !(action->unk_18 & 4)) {
+                temp_v0_128 = func_002d7fb0(action, ACTION_U8(action, 0xca));
+                temp_v0_128->unk_00 = 5;
+                temp_v0_128->parentUID = var_s3->uid;
+                temp_v0_128->preUpdateDelay = sp3D0;
+                temp_v0_128->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_128, 1U);
+            }
+            if (spB0 == (ACTION_U8(temp_s2_3, 0xc8) - 1)) {
+                temp_a1_5 = ACTION_S16(action, 0xDC);
+                if (temp_a1_5 != 0) {
+                    temp_v0_129 = func_002bd850(action->unit, temp_a1_5);
+                    temp_v0_129->unk_00 = 5;
+                    temp_v0_129->parentUID = var_s3->uid;
+                    temp_v0_129->unk_47 &= 0xDF;
+                    temp_v0_129->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_129, 3U);
+                } else {
+                    temp_a1_6 = ACTION_U32(temp_s2_3, 0xdc);
+                    if (temp_a1_6 != 0) {
+                        temp_v0_130 = func_002bd850(temp_s2_3->unit, temp_a1_6);
+                        temp_v0_130->unk_00 = 5;
+                        temp_v0_130->parentUID = var_s3->uid;
+                        temp_v0_130->unk_47 &= 0xDF;
+                        temp_v0_130->actionUID = temp_s0;
+                        btlPacketRegister(temp_v0_130, 3U);
+                    }
+                }
+            }
+            if ((spB0 == 0) && ((*(s32*)((u8*)temp_s2_3 + 0xe0 + sp360 * 0x1c)) != 0)) {
+                temp_v0_131 = func_002bd230(var_s5_2->unit, 0, 0);
+                temp_v0_131->unk_00 = 5;
+                temp_v0_131->parentUID = var_s3->uid;
+                temp_v0_131->preUpdateDelay = sp3D0;
+                temp_v0_131->unk_47 &= 0xDF;
+                temp_v0_131->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_131, 3U);
+            }
+            spF0 = sp110 + 0xFA;
+            if (ACTION_U16(temp_s2_3, 0xfa + sp360 * 0x1c) & 1) {
+                func_002d5dc0(&sp4F0);
+                sp4FC = 0x100000;
+                temp_v0_132 = func_002d7e20(temp_s2_3, temp_s2_3, &sp4F0, 1U, 1U);
+                temp_v0_132->unk_00 = 4;
+                temp_v0_132->parentUID = var_s3->uid;
+                temp_v0_132->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_132, 1U);
+                if (ACTION_U16(temp_s2_3, 0xfa + sp360 * 0x1c) & 2) {
+                    temp_v0_133 = btlUnitCreateAnimPacket(temp_s2_3->unit, 0xAU, 0U, 1.0f, 0U);
+                    temp_v0_133->unk_00 = 4;
+                    temp_v0_133->parentUID = var_s3->uid;
+                    temp_v0_133->actionUID = temp_s0;
+                    btlPacketRegister(temp_v0_133, 1U);
+                }
+                temp_v0_134 = btlUnit00284c90(temp_s2_3->unit);
+                temp_v0_134->unk_00 = 4;
+                temp_v0_134->parentUID = var_s3->uid;
+                temp_v0_134->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_134, 1U);
+            }
+            if (ACTION_U16(temp_s2_3, 0xfa + sp360 * 0x1c) & 0x20) {
+                sp2C0 = 1;
+                (*(u16*)((u8*)gBtl + 0x1C)) = 3;
+            }
+            if (ACTION_U16(temp_s2_3, 0xfa + sp360 * 0x1c) & 0x40) {
+                sp290 = 1;
+            }
+            temp_v0_135 = (u8*)temp_s2_3 + sp360 * 0x1C;
+            spE0 = (u64) temp_v0_135;
+            temp_v0_136 = func_002bdbd0(action->unit, var_s5_2->unit, sp260, ACTION_U16(temp_s2_3, 0xcc), ACTION_U16(temp_s2_3, 0xce), sp360, sp350, (u8*)temp_s2_3 + 0xe0 + sp360 * 0x1c);
+            temp_v0_136->unk_00 = 5;
+            temp_v0_136->parentUID = var_s3->uid;
+            temp_v0_136->preUpdateDelay = sp3D0;
+            temp_v0_136->unk_47 &= 0xDF;
+            temp_v0_136->actionUID = temp_s0;
+            var_v1_3 = (u16) (u32) btlPacketRegister(temp_v0_136, 3U);
+            spD0 = (u64) ((u8*)temp_v0_135 + 0xF4);
+            if ((ACTION_S16(temp_s2_3, 0xf4 + sp360 * 0x1c) > 0) || (ACTION_S16(temp_s2_3, 0xf6 + sp360 * 0x1c) > 0)) {
+                spC0 = (u64) ((s64) ((s64) sp120 << 0x30) >> 0x30);
+                func_002d5dc0(&sp4F0);
+                sp4F0 = (s32) ACTION_S16(temp_s2_3, 0xf4 + sp360 * 0x1c);
+                sp4F4 = (s32) ACTION_S16(temp_s2_3, 0xf6 + sp360 * 0x1c);
+                temp_v0_137 = func_002d7e20(action, action, &sp4F0, 1U, 1U);
+                temp_v0_137->unk_00 = 4;
+                temp_v0_137->parentUID = var_s3->uid;
+                temp_v0_137->preUpdateDelay = (s16) spC0;
+                temp_v0_137->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_137, 1U);
+                temp_a0_10 = action->unit;
+                temp_v0_138 = func_002bdbd0(temp_a0_10, temp_a0_10, -1, 1U, 1U, sp360, sp350, &sp4F0);
+                temp_v0_138->unk_00 = 4;
+                temp_v0_138->parentUID = var_s3->uid;
+                temp_v0_138->preUpdateDelay = (s16) spC0;
+                temp_v0_138->actionUID = temp_s0;
+                var_v1_3 = (u16) (u32) btlPacketRegister(temp_v0_138, 3U);
+                if (sp4F0 != 0) {
+                    if (spB0 == 0) {
+                        temp_v0_139 = func_002bd480(action->unit);
+                        temp_v0_139->actionUID = temp_s0;
+                        btlPacketRegister(temp_v0_139, 1U);
+                    }
+                    temp_v0_140 = func_002bd230(action->unit, 0, 0);
+                    temp_v0_140->unk_00 = 4;
+                    temp_v0_140->parentUID = var_s3->uid;
+                    temp_v0_140->preUpdateDelay = (s16) spC0;
+                    temp_v0_140->actionUID = temp_s0;
+                    var_v1_3 = (u16) (u32) btlPacketRegister(temp_v0_140, 3U);
+                }
+            }
+            sp340 += 7;
+            sp360 += 1;
+            goto loop_302;
+        }
+        if (sp3C0 < (s32) sp340) {
+            sp3C0 = sp340;
+        }
+        sp330 += sp170;
+        sp370 += 1;
+        goto loop_306;
+    }
+    temp_s2_4 = var_s3->uid;
+    temp_v1_11 = ACTION_S16(action, 0xDE);
+    if (temp_v1_11 != -1) {
+        temp_v0_141 = func_002db740(action, temp_v1_11 & 0xFFFF, 0, 0);
+        temp_v0_141->unk_00 = 5;
+        temp_v0_141->parentUID = temp_s2_4;
+        temp_v0_141->preUpdateDelay = (s16) sp3C0;
+        temp_v0_141->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_141, 1U);
+    } else if (sp390 > 0) {
+        if (temp_s6 == 0) {
+            temp_s3_3 = func_002d4e10(2, 0x80000) & 0xFFFF;
+            if (((s32) action->unk_28 <= 0) && (action->unit->charId != 1) && (datCalcRand(0x64U) < 0x32U)) {
+                if (action->unit->genus != 0) {
+                    var_v0_9 = 0;
+                } else {
+                    temp_a0_11 = (u8*)gBtl;
+                    if ((*(s16*)((u8*)gBtl + 0xA38)) != -1) {
+                        temp_v1_12 = (s64) ((temp_s3_3 - sp390) << 0x30) >> 0x30;
+                        if (temp_v1_12 <= 0) {
+                            temp_a0_12 = func_002d4e10(2, 0x80000) & 0xFFFF;
+                            temp_v1_13 = (u8*)gBtl;
+                            if (((u32) ((s16) (*(s16*)((u8*)gBtl + 0xA3A)) >> 1) >= temp_a0_12) && (temp_s3_4 = (*(s16*)((u8*)gBtl + 0xA38)), (temp_s3_4 != ((s64) (func_002b7060(temp_a0_12) << 0x30) >> 0x30)))) {
+                                var_v0_9 = 1;
+                            } else {
+                                goto block_323;
+                            }
+                        } else if (((s16) (*(s16*)((u8*)gBtl + 0xA3A)) >> 1) >= temp_v1_12) {
+                            var_v0_9 = 1;
+                        } else {
+                            goto block_323;
+                        }
+                    } else {
+block_323:
+                        var_v0_9 = 0;
+                    }
+                }
+                if (var_v0_9 != 0) {
+                    goto block_325;
+                }
+                temp_v0_142 = btlVoice002e2be0(action, 0xD, sp390, 0, 0);
+                temp_v0_142->unk_00 = 5;
+                temp_v0_142->parentUID = temp_s2_4;
+                temp_v0_142->preUpdateDelay = (s16) sp3C0;
+                btlPacketRegister(temp_v0_142, 1U);
+            } else {
+block_325:
+                temp_v0_143 = func_002db740(action, 0x16, sp390, 0);
+                temp_v0_143->unk_00 = 5;
+                temp_v0_143->parentUID = temp_s2_4;
+                temp_v0_143->preUpdateDelay = (s16) sp3C0;
+                temp_v0_143->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_143, 1U);
+            }
+        }
+    } else if ((sp380 > 0) && (temp_v1_14 = ACTION_U8(action, 0xca), ((temp_v1_14 & 1) != 0)) && !(temp_v1_14 & 2)) {
+        temp_v0_144 = func_002db740(action, 0x17, (s32) sp320, 0);
+        temp_v0_144->unk_00 = 5;
+        temp_v0_144->parentUID = temp_s2_4;
+        temp_v0_144->preUpdateDelay = (s16) sp3C0;
+        temp_v0_144->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_144, 1U);
+    } else if ((sp2EC != 0) && (action->unit->charId == 1) && (temp_s6 == 0) && (func_002d5fb0(action) != 0) && (func_002d6090(action) == 0)) {
+        temp_v0_145 = btlVoice002e2be0(action->target.targetedActions[0], 0x11, 0, 0, 0);
+        temp_v0_145->unk_00 = 5;
+        temp_v0_145->parentUID = temp_s2_4;
+        temp_v0_145->preUpdateDelay = (s16) sp3C0;
+        btlPacketRegister(temp_v0_145, 1U);
+    } else if (sp390 == 0) {
+        if (func_002d6130(action) != 0) {
+            temp_v0_146 = btlVoice002e2be0(action, 0xE, 0, 0, 0);
+            temp_v0_146->unk_00 = 5;
+            temp_v0_146->parentUID = temp_s2_4;
+            temp_v0_146->preUpdateDelay = (s16) sp3C0;
+            btlPacketRegister(temp_v0_146, 1U);
+        } else if ((func_002d6210(action) == 1) && (func_002d5f50(action) == 0) && (sp290 == 0)) {
+            temp_v0_147 = btlVoice002e2be0(action, 0xF, (s32) ((s64) (func_003082f0(action->unit->datUnit, sp250) << 0x30) >> 0x30), 0, 0);
+            temp_v0_147->unk_00 = 5;
+            temp_v0_147->parentUID = temp_s2_4;
+            temp_v0_147->preUpdateDelay = (s16) sp3C0;
+            btlPacketRegister(temp_v0_147, 1U);
+        }
+    }
+    if (sp290 != 0) {
+        if (sp280 == 1) {
+            temp_v0_148 = btlCameraCreateSetStatePacket(action, 0x17U);
+            sp444 = temp_v0_148;
+            temp_v0_148->unk_00 = 0xB;
+            temp_v0_148->parentUID = var_s1_3->uid;
+            temp_v0_148->preUpdateDelay = 0x18;
+            temp_v0_148->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_148, 0U);
+        }
+        if (action->unit->genus == 0) {
+            func_002d5dc0(&sp4F0);
+            sp4F0 = -((datCalcGetHp(action->unit->datUnit) & 0xFFFF) - 1);
+            var_s2_4 = func_002d7e20(action, action, &sp4F0, 1U, 1U);
+            if (sp280 == 1) {
+                var_s2_4->unk_00 = 4;
+                var_s2_4->parentUID = sp444->uid;
+            } else {
+                var_s2_4->unk_00 = 0xB;
+                var_s2_4->parentUID = var_s1_3->uid;
+            }
+            var_s2_4->actionUID = temp_s0;
+            btlPacketRegister(var_s2_4, 1U);
+            temp_a0_13 = action->unit;
+            temp_v0_149 = func_002bdbd0(temp_a0_13, temp_a0_13, -1, 0U);
+            temp_v0_149->unk_00 = 4;
+            temp_v0_149->parentUID = var_s2_4->uid;
+            temp_v0_149->unk_47 &= 0xDF;
+            temp_v0_149->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_149, 3U);
+            temp_v0_150 = func_002bd230(action->unit, 0, 0);
+            temp_v0_150->unk_00 = 4;
+            temp_v0_150->parentUID = var_s2_4->uid;
+            temp_v0_150->unk_47 &= 0xDF;
+            temp_v0_150->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_150, 3U);
+        } else {
+            func_002d5dc0(&sp4F0);
+            sp4F8 = 0x80000;
+            var_s2_4 = func_002d7e20(action, action, &sp4F0, 1U, 1U);
+            if (sp280 == 1) {
+                var_s2_4->unk_00 = 4;
+                var_s2_4->parentUID = sp444->uid;
+            } else {
+                var_s2_4->unk_00 = 0xB;
+                var_s2_4->parentUID = var_s1_3->uid;
+            }
+            var_s2_4->actionUID = temp_s0;
+            btlPacketRegister(var_s2_4, 1U);
+        }
+        if (sp2AC == 0) {
+            if (sp2B0 == 0) {
+                var_s3_3 = btlUnit002843e0(action->unit, sp300);
+            } else {
+                var_s3_3 = btlUnit00284f50(action->unit, 0, 0, 0x3F800000);
+            }
+            var_s3_3->unk_00 = 4;
+            var_s3_3->parentUID = var_s2_4->uid;
+            var_s3_3->actionUID = temp_s0;
+            btlPacketRegister(var_s3_3, 1U);
+        } else {
+            temp_v0_151 = btlUnit00284c90(action->unit);
+            var_s3_3 = temp_v0_151;
+            temp_v0_151->unk_00 = 4;
+            temp_v0_151->parentUID = var_s2_4->uid;
+            temp_v0_151->actionUID = temp_s0;
+            btlPacketRegister(var_s3_3, 1U);
+        }
+        temp_a0_14 = action->unit;
+        if (temp_a0_14->flags3 & 0x20) {
+            temp_v0_152 = func_0027f2f0();
+            temp_v0_152->unk_00 = 4;
+            temp_v0_152->parentUID = var_s2_4->uid;
+            temp_v0_152->postUpdateDelay = 0x3C;
+            temp_v0_152->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_152, 1U);
+        } else {
+            temp_v0_153 = btlUnit00285d30(temp_a0_14, 0xFFFFFFU, 6, 0, 0, 0);
+            temp_v0_153->unk_00 = 4;
+            temp_v0_153->parentUID = var_s2_4->uid;
+            temp_v0_153->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_153, 1U);
+            temp_a1_7 = action->unit;
+            temp_v0_154 = func_002baf90((*(u32*)((u8*)gBtl + 0xCB0)), temp_a1_7, temp_a1_7, 0);
+            temp_v0_154->unk_00 = 4;
+            temp_v0_154->parentUID = var_s2_4->uid;
+            temp_v0_154->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_154, 2U);
+            temp_v0_155 = func_002dd100(0xA, 2, 8U);
+            temp_v0_155->unk_00 = 4;
+            temp_v0_155->parentUID = var_s2_4->uid;
+            temp_v0_155->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_155, 1U);
+            temp_v1_15 = action->unit;
+            temp_v1_15->flags3 |= 0x100;
+        }
+    } else if (sp2AC == 0) {
+        if (sp2B0 == 0) {
+            var_s3_3 = btlUnit002843e0(action->unit, sp300);
+        } else {
+            var_s3_3 = btlUnit00284f50(action->unit, 0, 0, 0x3F800000);
+        }
+        var_s3_3->unk_00 = 0xB;
+        var_s3_3->parentUID = var_s1_3->uid;
+        if (temp_s6 == 0) {
+            var_s3_3->preUpdateDelay = sp3E0;
+        } else {
+            var_s3_3->preUpdateDelay = 8;
+            var_s3_3->postUpdateDelay = sp3E0;
+        }
+        var_s3_3->actionUID = temp_s0;
+        btlPacketRegister(var_s3_3, 1U);
+    } else {
+        temp_v0_156 = btlUnit00284c90(action->unit);
+        var_s3_3 = temp_v0_156;
+        temp_v0_156->unk_00 = 0xB;
+        temp_v0_156->parentUID = var_s1_3->uid;
+        temp_v0_156->preUpdateDelay = sp3E0;
+        temp_v0_156->actionUID = temp_s0;
+        btlPacketRegister(var_s3_3, 1U);
+    }
+    temp_v0_157 = func_0029fa50(0x10);
+    temp_v0_157->unk_00 = 4;
+    temp_v0_157->parentUID = var_s3_3->uid;
+    temp_v0_157->unk_47 &= 0xDF;
+    temp_v0_157->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_157, 1U);
+    if (sp2C0 != 0) {
+        var_v0_10 = 2;
+    } else {
+        var_v0_10 = 0;
+    }
+    temp_v0_158 = func_002a1080(0x10, var_v0_10 & 0xFFFF);
+    temp_v0_158->unk_00 = 4;
+    temp_v0_158->parentUID = var_s3_3->uid;
+    temp_v0_158->unk_47 &= 0xDF;
+    temp_v0_158->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_158, 1U);
+    temp_v0_159 = func_002a16c0(0x10);
+    temp_v0_159->unk_00 = 4;
+    temp_v0_159->parentUID = var_s3_3->uid;
+    temp_v0_159->unk_47 &= 0xDF;
+    temp_v0_159->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_159, 1U);
+    temp_v0_160 = func_002a1db0(8);
+    temp_v0_160->unk_00 = 4;
+    temp_v0_160->parentUID = var_s1_3->uid;
+    temp_v0_160->unk_47 &= 0xDF;
+    temp_v0_160->actionUID = temp_s0;
+    btlPacketRegister(temp_v0_160, 0U);
+    if ((sp1D0 == 1) && (temp_s6 != -1) && (sp1C0 == 0)) {
+        if (sp2D0 == 0) {
+            if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
+                if (temp_s6 == 0) {
+                    var_v0_11 = 0x15;
+                } else {
+                    var_v0_11 = 0x16;
+                }
+                temp_v0_161 = btlCameraCreateSetStatePacket(action, var_v0_11 & 0xFFFF);
+                temp_v0_161->unk_00 = 5;
+                temp_v0_161->parentUID = sp410;
+                temp_v0_161->actionUID = temp_s0;
+                btlPacketRegister(temp_v0_161, 0U);
+            }
+        } else {
+            temp_v0_162 = btlCameraCreateSetStatePacket(action, 0x19U);
+            temp_v0_162->unk_00 = 5;
+            temp_v0_162->parentUID = sp410;
+            temp_v0_162->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_162, 0U);
+        }
+        if (sp2C0 == 0) {
+            temp_v0_163 = btlUnit00285d30(action->unit, -1U, 0, 0xC, 0, 0);
+            temp_v0_163->unk_00 = 0xB;
+            temp_v0_163->parentUID = var_s1_3->uid;
+            temp_v0_163->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_163, 1U);
+        }
+        if (sp1A0 == 0) {
+            temp_v0_164 = btlUnit00285d30(sp450, 0xFFFFFFU, 8, 0, 0, 0);
+            temp_v0_164->unk_00 = 0xB;
+            temp_v0_164->parentUID = var_s1_3->uid;
+            if (sp2EC != 0) {
+                if (sp1B0 == 0) {
+                    goto block_394;
+                }
+                var_v0_12 = 7;
+            } else {
+block_394:
+                var_v0_12 = 0xF;
+            }
+            temp_v0_164->preUpdateDelay = var_v0_12;
+            temp_v0_164->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_164, 1U);
+            temp_v0_165 = func_002bb2f0((*(u32*)((u8*)gBtl + 0xCEC)), sp450, (u32) sp3B0, 0U, 0);
+            temp_v0_165->unk_00 = 4;
+            temp_v0_165->parentUID = sp420;
+            temp_v0_165->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_165, 2U);
+            temp_v0_166 = btlUnit002857f0(sp450);
+            temp_v0_166->unk_00 = 4;
+            temp_v0_166->parentUID = temp_v0_164->uid;
+            temp_v0_166->preUpdateDelay = 1;
+            temp_v0_166->actionUID = temp_s0;
+            btlPacketRegister(temp_v0_166, 1U);
+        }
+    }
+    if (sp2C0 == 1) {
+        temp_v0_167 = btlCreateSetFlagsPacket(0x80U);
+        temp_v0_167->unk_00 = 4;
+        temp_v0_167->parentUID = var_s1_3->uid;
+        temp_v0_167->preUpdateDelay = 0xC;
+        temp_v0_167->actionUID = temp_s0;
+        btlPacketRegister(temp_v0_167, 1U);
+    }
+    func_002b9030(sp438);
+    if (func_002dc130(action) != 0) {
+        btlActionSetState(action, 0x19U);
+        return;
+    }
+    temp_v1_16 = action->target.commandId;
+    if ((temp_v1_16 != 2) && (temp_v1_16 != 3) && (temp_v1_16 != 1)) {
+
+    }
+    btlActionSetState(action, 0x1EU);
 }
+/* Warning: struct Model is not defined (only forward-declared) */
 
 // FUN_00294d10
 void btlActionInitStateReinforce(BtlAction* action)
