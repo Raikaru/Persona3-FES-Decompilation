@@ -137,7 +137,7 @@ void FUN_003b1330(u64 param_1,u64 param_2);
 int FUN_003b1360(long param_1,u64 param_2,u32 param_3);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
-long FUN_003b1920(long param_1,long param_2,int param_3);
+int FUN_003b1920(int param_1,int param_2,int param_3);
 void FUN_003b19a0(u64 param_1);
 int FUN_003b19d0(FrFontNode *node);
 u16 FUN_003b1a10(u32 param_1);
@@ -2296,41 +2296,27 @@ u64 FUN_003b18c0(void)
 // FUN_003B1920 NONMATCHING
 
 
-long FUN_003b1920(long param_1,long param_2,int param_3)
-
-
-
+int FUN_003b1920(int param_1,int param_2,int param_3)
 {
-
-  long lVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = (int)param_2;
-
-  iVar2 = (int)param_1;
+  int lVar1;
 
   lVar1 = param_2;
 
   if ((param_1 != 0) && (lVar1 = param_1, param_2 != 0)) {
 
-    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar3 + 0x2c);
+    *(u32 *)(param_1 + 0x28) = *(u32 *)(param_2 + 0x2c);
 
-    *(int *)(*(int *)(iVar3 + 0x2c) + 0x24) = iVar2;
+    *(int *)(*(int *)(param_2 + 0x2c) + 0x24) = param_1;
 
-    *(u32 *)(iVar3 + 0x2c) = *(u32 *)(iVar2 + 0x2c);
+    *(u32 *)(param_2 + 0x2c) = *(u32 *)(param_1 + 0x2c);
 
     lVar1 = param_2;
 
     if (param_3 == 1) {
 
-      *(int *)(iVar3 + 4) = *(int *)(iVar2 + 4) + *(int *)(iVar2 + 0xc) * 0x10;
+      *(int *)(param_2 + 4) = *(int *)(param_1 + 4) + *(int *)(param_1 + 0xc) * 0x10;
 
-      *(u32 *)(iVar3 + 8) = *(u32 *)(iVar2 + 8);
+      *(u32 *)(param_2 + 8) = *(u32 *)(param_1 + 8);
 
     }
 
