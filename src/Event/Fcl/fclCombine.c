@@ -943,7 +943,6 @@ extern s32 FUN_003dffc0(s32 param_1, s32 param_2, s32 param_3);
 extern u32 fclCombineList003df100();
 
 struct _m2c_stack_func_003d06d0 {
-    /* 0x0000 */ char pad0[0x30];
     /* 0x0030 */ s32 sp30;                          /* inferred */
     /* 0x0034 */ char pad34[0x14];                  /* maybe part of sp30[6]s32 */
     /* 0x0048 */ s16 sp48;                          /* inferred */
@@ -1263,7 +1262,167 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x08D4 */ s32 sp8D4;                         /* inferred */
     /* 0x08D8 */ char pad8D8[0x14];                 /* maybe part of sp8D4[6]s32 */
     /* 0x08EC */ s16 sp8EC;                         /* inferred */
-    /* 0x08EE */ char pad8EE[0x462];                /* maybe part of sp8EC[0x232]s32 */
+    /* 0x08EE */ char pad8EE[2];
+    /* 0x08F0 */ s32 sp8F0;
+    /* 0x08F4 */ char pad8F4[0x14];
+    /* 0x0908 */ s16 sp908;
+    /* 0x090A */ char pad90A[2];
+    /* 0x090C */ s32 sp90C;
+    /* 0x0910 */ char pad910[0x14];
+    /* 0x0924 */ s16 sp924;
+    /* 0x0926 */ char pad926[2];
+    /* 0x0928 */ s32 sp928;
+    /* 0x092C */ char pad92C[0x14];
+    /* 0x0940 */ s16 sp940;
+    /* 0x0942 */ char pad942[2];
+    /* 0x0944 */ s32 sp944;
+    /* 0x0948 */ char pad948[0x14];
+    /* 0x095C */ s16 sp95C;
+    /* 0x095E */ char pad95E[2];
+    /* 0x0960 */ s32 sp960;
+    /* 0x0964 */ char pad964[0x14];
+    /* 0x0978 */ s16 sp978;
+    /* 0x097A */ char pad97A[2];
+    /* 0x097C */ s32 sp97C;
+    /* 0x0980 */ char pad980[0x14];
+    /* 0x0994 */ s16 sp994;
+    /* 0x0996 */ char pad996[2];
+    /* 0x0998 */ s32 sp998;
+    /* 0x099C */ char pad99C[0x14];
+    /* 0x09B0 */ s16 sp9B0;
+    /* 0x09B2 */ char pad9B2[2];
+    /* 0x09B4 */ s32 sp9B4;
+    /* 0x09B8 */ char pad9B8[0x14];
+    /* 0x09CC */ s16 sp9CC;
+    /* 0x09CE */ char pad9CE[2];
+    /* 0x09D0 */ s32 sp9D0;
+    /* 0x09D4 */ char pad9D4[0x14];
+    /* 0x09E8 */ s16 sp9E8;
+    /* 0x09EA */ char pad9EA[2];
+    /* 0x09EC */ s32 sp9EC;
+    /* 0x09F0 */ char pad9F0[0x14];
+    /* 0x0A04 */ s16 spA04;
+    /* 0x0A06 */ char padA06[2];
+    /* 0x0A08 */ s32 spA08;
+    /* 0x0A0C */ char padA0C[0x14];
+    /* 0x0A20 */ s16 spA20;
+    /* 0x0A22 */ char padA22[2];
+    /* 0x0A24 */ s32 spA24;
+    /* 0x0A28 */ char padA28[0x14];
+    /* 0x0A3C */ s16 spA3C;
+    /* 0x0A3E */ char padA3E[2];
+    /* 0x0A40 */ s32 spA40;
+    /* 0x0A44 */ char padA44[0x14];
+    /* 0x0A58 */ s16 spA58;
+    /* 0x0A5A */ char padA5A[2];
+    /* 0x0A5C */ s32 spA5C;
+    /* 0x0A60 */ char padA60[0x14];
+    /* 0x0A74 */ s16 spA74;
+    /* 0x0A76 */ char padA76[2];
+    /* 0x0A78 */ s32 spA78;
+    /* 0x0A7C */ char padA7C[0x14];
+    /* 0x0A90 */ s16 spA90;
+    /* 0x0A92 */ char padA92[2];
+    /* 0x0A94 */ s32 spA94;
+    /* 0x0A98 */ char padA98[0x14];
+    /* 0x0AAC */ s16 spAAC;
+    /* 0x0AAE */ char padAAE[2];
+    /* 0x0AB0 */ s32 spAB0;
+    /* 0x0AB4 */ char padAB4[0x14];
+    /* 0x0AC8 */ s16 spAC8;
+    /* 0x0ACA */ char padACA[2];
+    /* 0x0ACC */ s32 spACC;
+    /* 0x0AD0 */ char padAD0[0x14];
+    /* 0x0AE4 */ s16 spAE4;
+    /* 0x0AE6 */ char padAE6[2];
+    /* 0x0AE8 */ s32 spAE8;
+    /* 0x0AEC */ char padAEC[0x14];
+    /* 0x0B00 */ s16 spB00;
+    /* 0x0B02 */ char padB02[2];
+    /* 0x0B04 */ s32 spB04;
+    /* 0x0B08 */ char padB08[0x14];
+    /* 0x0B1C */ s16 spB1C;
+    /* 0x0B1E */ char padB1E[2];
+    /* 0x0B20 */ s32 spB20;
+    /* 0x0B24 */ char padB24[0x14];
+    /* 0x0B38 */ s16 spB38;
+    /* 0x0B3A */ char padB3A[2];
+    /* 0x0B3C */ s32 spB3C;
+    /* 0x0B40 */ char padB40[0x14];
+    /* 0x0B54 */ s16 spB54;
+    /* 0x0B56 */ char padB56[2];
+    /* 0x0B58 */ s32 spB58;
+    /* 0x0B5C */ char padB5C[0x14];
+    /* 0x0B70 */ s16 spB70;
+    /* 0x0B72 */ char padB72[2];
+    /* 0x0B74 */ s32 spB74;
+    /* 0x0B78 */ char padB78[0x14];
+    /* 0x0B8C */ s16 spB8C;
+    /* 0x0B8E */ char padB8E[2];
+    /* 0x0B90 */ s32 spB90;
+    /* 0x0B94 */ char padB94[0x14];
+    /* 0x0BA8 */ s16 spBA8;
+    /* 0x0BAA */ char padBAA[2];
+    /* 0x0BAC */ s32 spBAC;
+    /* 0x0BB0 */ char padBB0[0x14];
+    /* 0x0BC4 */ s16 spBC4;
+    /* 0x0BC6 */ char padBC6[2];
+    /* 0x0BC8 */ s32 spBC8;
+    /* 0x0BCC */ char padBCC[0x14];
+    /* 0x0BE0 */ s16 spBE0;
+    /* 0x0BE2 */ char padBE2[2];
+    /* 0x0BE4 */ s32 spBE4;
+    /* 0x0BE8 */ char padBE8[0x14];
+    /* 0x0BFC */ s16 spBFC;
+    /* 0x0BFE */ char padBFE[2];
+    /* 0x0C00 */ s32 spC00;
+    /* 0x0C04 */ char padC04[0x14];
+    /* 0x0C18 */ s16 spC18;
+    /* 0x0C1A */ char padC1A[2];
+    /* 0x0C1C */ s32 spC1C;
+    /* 0x0C20 */ char padC20[0x14];
+    /* 0x0C34 */ s16 spC34;
+    /* 0x0C36 */ char padC36[2];
+    /* 0x0C38 */ s32 spC38;
+    /* 0x0C3C */ char padC3C[0x14];
+    /* 0x0C50 */ s16 spC50;
+    /* 0x0C52 */ char padC52[2];
+    /* 0x0C54 */ s32 spC54;
+    /* 0x0C58 */ char padC58[0x14];
+    /* 0x0C6C */ s16 spC6C;
+    /* 0x0C6E */ char padC6E[2];
+    /* 0x0C70 */ s32 spC70;
+    /* 0x0C74 */ char padC74[0x14];
+    /* 0x0C88 */ s16 spC88;
+    /* 0x0C8A */ char padC8A[2];
+    /* 0x0C8C */ s32 spC8C;
+    /* 0x0C90 */ char padC90[0x14];
+    /* 0x0CA4 */ s16 spCA4;
+    /* 0x0CA6 */ char padCA6[2];
+    /* 0x0CA8 */ s32 spCA8;
+    /* 0x0CAC */ char padCAC[0x14];
+    /* 0x0CC0 */ s16 spCC0;
+    /* 0x0CC2 */ char padCC2[2];
+    /* 0x0CC4 */ s32 spCC4;
+    /* 0x0CC8 */ char padCC8[0x14];
+    /* 0x0CDC */ s16 spCDC;
+    /* 0x0CDE */ char padCDE[2];
+    /* 0x0CE0 */ s32 spCE0;
+    /* 0x0CE4 */ char padCE4[0x14];
+    /* 0x0CF8 */ s16 spCF8;
+    /* 0x0CFA */ char padCFA[2];
+    /* 0x0CFC */ s32 spCFC;
+    /* 0x0D00 */ char padD00[0x14];
+    /* 0x0D14 */ s16 spD14;
+    /* 0x0D16 */ char padD16[2];
+    /* 0x0D18 */ s32 spD18;
+    /* 0x0D1C */ char padD1C[0x14];
+    /* 0x0D30 */ s16 spD30;
+    /* 0x0D32 */ char padD32[2];
+    /* 0x0D34 */ s32 spD34;
+    /* 0x0D38 */ char padD38[0x14];
+    /* 0x0D4C */ s16 spD4C;
+    /* 0x0D4E */ char padD4E[2];
     /* 0x0D50 */ s32 spD50;                         /* inferred */
     /* 0x0D54 */ char padD54[0x14];                 /* maybe part of spD50[6]s32 */
     /* 0x0D68 */ s16 spD68;                         /* inferred */
@@ -1343,7 +1502,87 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x0F64 */ s32 spF64;                         /* inferred */
     /* 0x0F68 */ char padF68[0x14];                 /* maybe part of spF64[6]s32 */
     /* 0x0F7C */ s16 spF7C;                         /* inferred */
-    /* 0x0F7E */ char padF7E[0x232];                /* maybe part of spF7C[0x11A]s32 */
+    /* 0x0F7E */ char padF7E[2];
+    /* 0x0F80 */ s32 spF80;
+    /* 0x0F84 */ char padF84[0x14];
+    /* 0x0F98 */ s16 spF98;
+    /* 0x0F9A */ char padF9A[2];
+    /* 0x0F9C */ s32 spF9C;
+    /* 0x0FA0 */ char padFA0[0x14];
+    /* 0x0FB4 */ s16 spFB4;
+    /* 0x0FB6 */ char padFB6[2];
+    /* 0x0FB8 */ s32 spFB8;
+    /* 0x0FBC */ char padFBC[0x14];
+    /* 0x0FD0 */ s16 spFD0;
+    /* 0x0FD2 */ char padFD2[2];
+    /* 0x0FD4 */ s32 spFD4;
+    /* 0x0FD8 */ char padFD8[0x14];
+    /* 0x0FEC */ s16 spFEC;
+    /* 0x0FEE */ char padFEE[2];
+    /* 0x0FF0 */ s32 spFF0;
+    /* 0x0FF4 */ char padFF4[0x14];
+    /* 0x1008 */ s16 sp1008;
+    /* 0x100A */ char pad100A[2];
+    /* 0x100C */ s32 sp100C;
+    /* 0x1010 */ char pad1010[0x14];
+    /* 0x1024 */ s16 sp1024;
+    /* 0x1026 */ char pad1026[2];
+    /* 0x1028 */ s32 sp1028;
+    /* 0x102C */ char pad102C[0x14];
+    /* 0x1040 */ s16 sp1040;
+    /* 0x1042 */ char pad1042[2];
+    /* 0x1044 */ s32 sp1044;
+    /* 0x1048 */ char pad1048[0x14];
+    /* 0x105C */ s16 sp105C;
+    /* 0x105E */ char pad105E[2];
+    /* 0x1060 */ s32 sp1060;
+    /* 0x1064 */ char pad1064[0x14];
+    /* 0x1078 */ s16 sp1078;
+    /* 0x107A */ char pad107A[2];
+    /* 0x107C */ s32 sp107C;
+    /* 0x1080 */ char pad1080[0x14];
+    /* 0x1094 */ s16 sp1094;
+    /* 0x1096 */ char pad1096[2];
+    /* 0x1098 */ s32 sp1098;
+    /* 0x109C */ char pad109C[0x14];
+    /* 0x10B0 */ s16 sp10B0;
+    /* 0x10B2 */ char pad10B2[2];
+    /* 0x10B4 */ s32 sp10B4;
+    /* 0x10B8 */ char pad10B8[0x14];
+    /* 0x10CC */ s16 sp10CC;
+    /* 0x10CE */ char pad10CE[2];
+    /* 0x10D0 */ s32 sp10D0;
+    /* 0x10D4 */ char pad10D4[0x14];
+    /* 0x10E8 */ s16 sp10E8;
+    /* 0x10EA */ char pad10EA[2];
+    /* 0x10EC */ s32 sp10EC;
+    /* 0x10F0 */ char pad10F0[0x14];
+    /* 0x1104 */ s16 sp1104;
+    /* 0x1106 */ char pad1106[2];
+    /* 0x1108 */ s32 sp1108;
+    /* 0x110C */ char pad110C[0x14];
+    /* 0x1120 */ s16 sp1120;
+    /* 0x1122 */ char pad1122[2];
+    /* 0x1124 */ s32 sp1124;
+    /* 0x1128 */ char pad1128[0x14];
+    /* 0x113C */ s16 sp113C;
+    /* 0x113E */ char pad113E[2];
+    /* 0x1140 */ s32 sp1140;
+    /* 0x1144 */ char pad1144[0x14];
+    /* 0x1158 */ s16 sp1158;
+    /* 0x115A */ char pad115A[2];
+    /* 0x115C */ s32 sp115C;
+    /* 0x1160 */ char pad1160[0x14];
+    /* 0x1174 */ s16 sp1174;
+    /* 0x1176 */ char pad1176[2];
+    /* 0x1178 */ s32 sp1178;
+    /* 0x117C */ char pad117C[0x14];
+    /* 0x1190 */ s16 sp1190;
+    /* 0x1192 */ char pad1192[2];
+    /* 0x1194 */ s32 sp1194;
+    /* 0x1198 */ char pad1198[0x14];
+    /* 0x11AC */ s16 sp11AC;
+    /* 0x11AE */ char pad11AE[2];
     /* 0x11B0 */ s32 sp11B0;                        /* inferred */
     /* 0x11B4 */ char pad11B4[0x14];                /* maybe part of sp11B0[6]s32 */
     /* 0x11C8 */ s16 sp11C8;                        /* inferred */
@@ -1421,7 +1660,7 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x13C0 */ s16 sp13C0;                        /* inferred */
     /* 0x13C2 */ char pad13C2[2];
     /* 0x13C4 */ s32 sp13C4;                        /* inferred */
-    /* 0x13C8 */ char pad13C8[0x14];                /* maybe part of sp13C4[6]s32 */
+    char pad13C8_extra[0x14];
     /* 0x13DC */ s16 sp13DC;                        /* inferred */
     /* 0x13DE */ char pad13DE[2];
     /* 0x13E0 */ s32 sp13E0;                        /* inferred */
@@ -1583,7 +1822,87 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x1824 */ s32 sp1824;                        /* inferred */
     /* 0x1828 */ char pad1828[0x14];                /* maybe part of sp1824[6]s32 */
     /* 0x183C */ s16 sp183C;                        /* inferred */
-    /* 0x183E */ char pad183E[0x232];               /* maybe part of sp183C[0x11A]s32 */
+    /* 0x183E */ char pad183E[2];
+    /* 0x1840 */ s32 sp1840;
+    /* 0x1844 */ char pad1844[0x14];
+    /* 0x1858 */ s16 sp1858;
+    /* 0x185A */ char pad185A[2];
+    /* 0x185C */ s32 sp185C;
+    /* 0x1860 */ char pad1860[0x14];
+    /* 0x1874 */ s16 sp1874;
+    /* 0x1876 */ char pad1876[2];
+    /* 0x1878 */ s32 sp1878;
+    /* 0x187C */ char pad187C[0x14];
+    /* 0x1890 */ s16 sp1890;
+    /* 0x1892 */ char pad1892[2];
+    /* 0x1894 */ s32 sp1894;
+    /* 0x1898 */ char pad1898[0x14];
+    /* 0x18AC */ s16 sp18AC;
+    /* 0x18AE */ char pad18AE[2];
+    /* 0x18B0 */ s32 sp18B0;
+    /* 0x18B4 */ char pad18B4[0x14];
+    /* 0x18C8 */ s16 sp18C8;
+    /* 0x18CA */ char pad18CA[2];
+    /* 0x18CC */ s32 sp18CC;
+    /* 0x18D0 */ char pad18D0[0x14];
+    /* 0x18E4 */ s16 sp18E4;
+    /* 0x18E6 */ char pad18E6[2];
+    /* 0x18E8 */ s32 sp18E8;
+    /* 0x18EC */ char pad18EC[0x14];
+    /* 0x1900 */ s16 sp1900;
+    /* 0x1902 */ char pad1902[2];
+    /* 0x1904 */ s32 sp1904;
+    /* 0x1908 */ char pad1908[0x14];
+    /* 0x191C */ s16 sp191C;
+    /* 0x191E */ char pad191E[2];
+    /* 0x1920 */ s32 sp1920;
+    /* 0x1924 */ char pad1924[0x14];
+    /* 0x1938 */ s16 sp1938;
+    /* 0x193A */ char pad193A[2];
+    /* 0x193C */ s32 sp193C;
+    /* 0x1940 */ char pad1940[0x14];
+    /* 0x1954 */ s16 sp1954;
+    /* 0x1956 */ char pad1956[2];
+    /* 0x1958 */ s32 sp1958;
+    /* 0x195C */ char pad195C[0x14];
+    /* 0x1970 */ s16 sp1970;
+    /* 0x1972 */ char pad1972[2];
+    /* 0x1974 */ s32 sp1974;
+    /* 0x1978 */ char pad1978[0x14];
+    /* 0x198C */ s16 sp198C;
+    /* 0x198E */ char pad198E[2];
+    /* 0x1990 */ s32 sp1990;
+    /* 0x1994 */ char pad1994[0x14];
+    /* 0x19A8 */ s16 sp19A8;
+    /* 0x19AA */ char pad19AA[2];
+    /* 0x19AC */ s32 sp19AC;
+    /* 0x19B0 */ char pad19B0[0x14];
+    /* 0x19C4 */ s16 sp19C4;
+    /* 0x19C6 */ char pad19C6[2];
+    /* 0x19C8 */ s32 sp19C8;
+    /* 0x19CC */ char pad19CC[0x14];
+    /* 0x19E0 */ s16 sp19E0;
+    /* 0x19E2 */ char pad19E2[2];
+    /* 0x19E4 */ s32 sp19E4;
+    /* 0x19E8 */ char pad19E8[0x14];
+    /* 0x19FC */ s16 sp19FC;
+    /* 0x19FE */ char pad19FE[2];
+    /* 0x1A00 */ s32 sp1A00;
+    /* 0x1A04 */ char pad1A04[0x14];
+    /* 0x1A18 */ s16 sp1A18;
+    /* 0x1A1A */ char pad1A1A[2];
+    /* 0x1A1C */ s32 sp1A1C;
+    /* 0x1A20 */ char pad1A20[0x14];
+    /* 0x1A34 */ s16 sp1A34;
+    /* 0x1A36 */ char pad1A36[2];
+    /* 0x1A38 */ s32 sp1A38;
+    /* 0x1A3C */ char pad1A3C[0x14];
+    /* 0x1A50 */ s16 sp1A50;
+    /* 0x1A52 */ char pad1A52[2];
+    /* 0x1A54 */ s32 sp1A54;
+    /* 0x1A58 */ char pad1A58[0x14];
+    /* 0x1A6C */ s16 sp1A6C;
+    /* 0x1A6E */ char pad1A6E[2];
     /* 0x1A70 */ s32 sp1A70;                        /* inferred */
     /* 0x1A74 */ char pad1A74[0x14];                /* maybe part of sp1A70[6]s32 */
     /* 0x1A88 */ s16 sp1A88;                        /* inferred */
@@ -2225,67 +2544,63 @@ struct _m2c_stack_func_003d06d0 {
     /* 0x2BEC */ s16 sp2BEC;                        /* inferred */
     /* 0x2BEE */ char pad2BEE[2];
     /* 0x2BF0 */ s32 sp2BF0;                          /* inferred */
-    /* 0x2BF0 */ char pad2BF0[4];
     /* 0x2BF4 */ s32 sp2BF4;                        /* inferred */
     /* 0x2BF8 */ char pad2BF8[0x18];                /* maybe part of sp2BF4[7]s32 */
     /* 0x2C10 */ s32 sp2C10;                          /* inferred */
-    /* 0x2C10 */ char pad2C10[4];
     /* 0x2C14 */ s32 sp2C14;                        /* inferred */
     /* 0x2C18 */ char pad2C18[0x18];                /* maybe part of sp2C14[7]s32 */
     /* 0x2C30 */ s32 sp2C30;                          /* inferred */
-    /* 0x2C30 */ char pad2C30[4];
     /* 0x2C34 */ s32 sp2C34;                        /* inferred */
     /* 0x2C38 */ char pad2C38[0x18];                /* maybe part of sp2C34[7]s32 */
     /* 0x2C50 */ s32 sp2C50;                          /* inferred */
-    /* 0x2C50 */ char pad2C50[4];
     /* 0x2C54 */ s32 sp2C54;                        /* inferred */
-    /* 0x2C58 */ char pad2C58[0x58];                /* maybe part of sp2C54[0x17]s32 */
+    /* 0x2C58 */ char pad2C58[0x18];
+    /* 0x2C70 */ s32 sp2C70;
+    /* 0x2C74 */ s32 sp2C74;
+    /* 0x2C78 */ char pad2C78[0x18];
+    /* 0x2C90 */ s32 sp2C90;
+    /* 0x2C94 */ s32 sp2C94;
+    /* 0x2C98 */ char pad2C98[0x18];
     /* 0x2CB0 */ s32 sp2CB0;                          /* inferred */
-    /* 0x2CB0 */ char pad2CB0[4];
     /* 0x2CB4 */ s32 sp2CB4;                        /* inferred */
-    /* 0x2CB8 */ char pad2CB8[0x38];                /* maybe part of sp2CB4[0xF]s32 */
+    /* 0x2CB8 */ char pad2CB8[0x18];
+    /* 0x2CD0 */ s32 sp2CD0;
+    /* 0x2CD4 */ s32 sp2CD4;
+    /* 0x2CD8 */ char pad2CD8[0x18];
     /* 0x2CF0 */ s32 sp2CF0;                          /* inferred */
-    /* 0x2CF0 */ char pad2CF0[4];
     /* 0x2CF4 */ s32 sp2CF4;                        /* inferred */
     /* 0x2CF8 */ char pad2CF8[0x18];                /* maybe part of sp2CF4[7]s32 */
     /* 0x2D10 */ s32 sp2D10;                          /* inferred */
-    /* 0x2D10 */ char pad2D10[4];
     /* 0x2D14 */ s32 sp2D14;                        /* inferred */
     /* 0x2D18 */ char pad2D18[0x18];                /* maybe part of sp2D14[7]s32 */
     /* 0x2D30 */ s32 sp2D30;                          /* inferred */
-    /* 0x2D30 */ char pad2D30[4];
     /* 0x2D34 */ s32 sp2D34;                        /* inferred */
-    /* 0x2D38 */ char pad2D38[0x38];                /* maybe part of sp2D34[0xF]s32 */
+    /* 0x2D38 */ char pad2D38[0x18];
+    /* 0x2D50 */ s32 sp2D50;
+    /* 0x2D54 */ s32 sp2D54;
+    /* 0x2D58 */ char pad2D58[0x18];
     /* 0x2D70 */ s32 sp2D70;                          /* inferred */
-    /* 0x2D70 */ char pad2D70[4];
     /* 0x2D74 */ s32 sp2D74;                        /* inferred */
     /* 0x2D78 */ char pad2D78[0x18];                /* maybe part of sp2D74[7]s32 */
     /* 0x2D90 */ s32 sp2D90;                          /* inferred */
-    /* 0x2D90 */ char pad2D90[4];
     /* 0x2D94 */ s32 sp2D94;                        /* inferred */
     /* 0x2D98 */ char pad2D98[0x18];                /* maybe part of sp2D94[7]s32 */
     /* 0x2DB0 */ s32 sp2DB0;                          /* inferred */
-    /* 0x2DB0 */ char pad2DB0[4];
     /* 0x2DB4 */ s32 sp2DB4;                        /* inferred */
     /* 0x2DB8 */ char pad2DB8[0x18];                /* maybe part of sp2DB4[7]s32 */
     /* 0x2DD0 */ s32 sp2DD0;                          /* inferred */
-    /* 0x2DD0 */ char pad2DD0[4];
     /* 0x2DD4 */ s32 sp2DD4;                        /* inferred */
     /* 0x2DD8 */ char pad2DD8[0x18];                /* maybe part of sp2DD4[7]s32 */
     /* 0x2DF0 */ s32 sp2DF0;                          /* inferred */
-    /* 0x2DF0 */ char pad2DF0[4];
     /* 0x2DF4 */ s32 sp2DF4;                        /* inferred */
     /* 0x2DF8 */ char pad2DF8[0x18];                /* maybe part of sp2DF4[7]s32 */
     /* 0x2E10 */ s32 sp2E10;                          /* inferred */
-    /* 0x2E10 */ char pad2E10[4];
     /* 0x2E14 */ s32 sp2E14;                        /* inferred */
     /* 0x2E18 */ char pad2E18[0x18];                /* maybe part of sp2E14[7]s32 */
     /* 0x2E30 */ s32 sp2E30;                          /* inferred */
-    /* 0x2E30 */ char pad2E30[4];
     /* 0x2E34 */ s32 sp2E34;                        /* inferred */
     /* 0x2E38 */ char pad2E38[0x18];                /* maybe part of sp2E34[7]s32 */
     /* 0x2E50 */ s32 sp2E50;                          /* inferred */
-    /* 0x2E50 */ char pad2E50[4];
     /* 0x2E54 */ s32 sp2E54;                        /* inferred */
     /* 0x2E58 */ char pad2E58[0x18];
 };                                                  /* size = 0x2E70 */
@@ -2773,6 +3088,64 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         break;
         break;
     case 5:                                         /* switch 1 */
+        if (param_3 == 0) {
+            temp_16 = *(s32 *)(param_1 + 0xd4);
+            var_6 = DAT_006a43e0;
+            var_5 = &stack.sp1840;
+            var_4 = 0x46;
+            do {
+                temp_3 = var_6[0];
+                temp_2 = var_6[1];
+                var_6 += 2;
+                var_4 -= 1;
+                var_5[0] = temp_3;
+                var_5[1] = temp_2;
+                var_5 += 2;
+            } while (var_4 > 0);
+            stack.sp1840 = 4;
+            stack.sp1858 = 0;
+            stack.sp185C = 4;
+            stack.sp1874 = 0;
+            stack.sp1878 = 4;
+            stack.sp1890 = 0;
+            stack.sp1894 = 4;
+            stack.sp18AC = 0;
+            stack.sp18B0 = 4;
+            stack.sp18C8 = 0;
+            stack.sp18CC = 4;
+            stack.sp18E4 = 0;
+            stack.sp18E8 = 4;
+            stack.sp1900 = 0;
+            stack.sp1904 = 4;
+            stack.sp191C = 0;
+            stack.sp1920 = 4;
+            stack.sp1938 = 0;
+            stack.sp193C = 4;
+            stack.sp1954 = 0;
+            stack.sp1958 = 4;
+            stack.sp1970 = 0;
+            stack.sp1974 = 4;
+            stack.sp198C = 0;
+            stack.sp1990 = 4;
+            stack.sp19A8 = 0;
+            stack.sp19AC = 4;
+            stack.sp19C4 = 0;
+            stack.sp19C8 = 4;
+            stack.sp19E0 = 0;
+            stack.sp19E4 = 4;
+            stack.sp19FC = 0;
+            stack.sp1A00 = 4;
+            stack.sp1A18 = 0;
+            stack.sp1A1C = 4;
+            stack.sp1A34 = 0;
+            stack.sp1A38 = 4;
+            stack.sp1A50 = 0;
+            stack.sp1A54 = 4;
+            stack.sp1A6C = 0;
+            memcpy(&stack.sp2D50, &stack.sp1920, 0x1C);
+            fclCombineList003df100(FUN_003dffc0(temp_16, 4, stack.sp2D54), &stack.sp2D50);
+            return;
+        }
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -2955,6 +3328,64 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         break;
         break;
     case 8:                                         /* switch 1 */
+        if (param_3 == 0) {
+            temp_16 = *(s32 *)(param_1 + 0xd4);
+            var_6 = DAT_006a43e0;
+            var_5 = &stack.spF80;
+            var_4 = 0x46;
+            do {
+                temp_3 = var_6[0];
+                temp_2 = var_6[1];
+                var_6 += 2;
+                var_4 -= 1;
+                var_5[0] = temp_3;
+                var_5[1] = temp_2;
+                var_5 += 2;
+            } while (var_4 > 0);
+            stack.spF80 = 6;
+            stack.spF98 = 0;
+            stack.spF9C = 6;
+            stack.spFB4 = 0;
+            stack.spFB8 = 6;
+            stack.spFD0 = 0;
+            stack.spFD4 = 6;
+            stack.spFEC = 0;
+            stack.spFF0 = 6;
+            stack.sp1008 = 0;
+            stack.sp100C = 6;
+            stack.sp1024 = 0;
+            stack.sp1028 = 6;
+            stack.sp1040 = 0;
+            stack.sp1044 = 6;
+            stack.sp105C = 0;
+            stack.sp1060 = 6;
+            stack.sp1078 = 0;
+            stack.sp107C = 6;
+            stack.sp1094 = 0;
+            stack.sp1098 = 6;
+            stack.sp10B0 = 0;
+            stack.sp10B4 = 6;
+            stack.sp10CC = 0;
+            stack.sp10D0 = 6;
+            stack.sp10E8 = 0;
+            stack.sp10EC = 6;
+            stack.sp1104 = 0;
+            stack.sp1108 = 6;
+            stack.sp1120 = 0;
+            stack.sp1124 = 6;
+            stack.sp113C = 0;
+            stack.sp1140 = 6;
+            stack.sp1158 = 0;
+            stack.sp115C = 6;
+            stack.sp1174 = 0;
+            stack.sp1178 = 6;
+            stack.sp1190 = 0;
+            stack.sp1194 = 6;
+            stack.sp11AC = 0;
+            memcpy(&stack.sp2CD0, &stack.sp10D0, 0x1C);
+            fclCombineList003df100(FUN_003dffc0(temp_16, 6, stack.sp2CD4), &stack.sp2CD0);
+            return;
+        }
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3016,6 +3447,122 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         break;
         break;
     case 9:                                         /* switch 1 */
+        if (param_3 == 0) {
+            temp_16 = *(s32 *)(param_1 + 0xd4);
+            var_6 = DAT_006a43e0;
+            var_5 = &stack.spB20;
+            var_4 = 0x46;
+            do {
+                temp_3 = var_6[0];
+                temp_2 = var_6[1];
+                var_6 += 2;
+                var_4 -= 1;
+                var_5[0] = temp_3;
+                var_5[1] = temp_2;
+                var_5 += 2;
+            } while (var_4 > 0);
+            stack.spB20 = 7;
+            stack.spB38 = 0;
+            stack.spB3C = 7;
+            stack.spB54 = 0;
+            stack.spB58 = 7;
+            stack.spB70 = 0;
+            stack.spB74 = 7;
+            stack.spB8C = 0;
+            stack.spB90 = 7;
+            stack.spBA8 = 0;
+            stack.spBAC = 7;
+            stack.spBC4 = 0;
+            stack.spBC8 = 7;
+            stack.spBE0 = 0;
+            stack.spBE4 = 7;
+            stack.spBFC = 0;
+            stack.spC00 = 7;
+            stack.spC18 = 0;
+            stack.spC1C = 7;
+            stack.spC34 = 0;
+            stack.spC38 = 7;
+            stack.spC50 = 0;
+            stack.spC54 = 7;
+            stack.spC6C = 0;
+            stack.spC70 = 7;
+            stack.spC88 = 0;
+            stack.spC8C = 7;
+            stack.spCA4 = 0;
+            stack.spCA8 = 7;
+            stack.spCC0 = 0;
+            stack.spCC4 = 7;
+            stack.spCDC = 0;
+            stack.spCE0 = 7;
+            stack.spCF8 = 0;
+            stack.spCFC = 7;
+            stack.spD14 = 0;
+            stack.spD18 = 7;
+            stack.spD30 = 0;
+            stack.spD34 = 7;
+            stack.spD4C = 0;
+            memcpy(&stack.sp2C90, &stack.spCA8, 0x1C);
+            fclCombineList003df100(FUN_003dffc0(temp_16, 7, stack.sp2C94), &stack.sp2C90);
+            return;
+        }
+        if (param_3 == 1) {
+            temp_16 = *(s32 *)(param_1 + 0xd4);
+            var_6 = DAT_006a43e0;
+            var_5 = &stack.sp8F0;
+            var_4 = 0x46;
+            do {
+                temp_3 = var_6[0];
+                temp_2 = var_6[1];
+                var_6 += 2;
+                var_4 -= 1;
+                var_5[0] = temp_3;
+                var_5[1] = temp_2;
+                var_5 += 2;
+            } while (var_4 > 0);
+            stack.sp8F0 = 7;
+            stack.sp908 = 0;
+            stack.sp90C = 7;
+            stack.sp924 = 0;
+            stack.sp928 = 7;
+            stack.sp940 = 0;
+            stack.sp944 = 7;
+            stack.sp95C = 0;
+            stack.sp960 = 7;
+            stack.sp978 = 0;
+            stack.sp97C = 7;
+            stack.sp994 = 0;
+            stack.sp998 = 7;
+            stack.sp9B0 = 0;
+            stack.sp9B4 = 7;
+            stack.sp9CC = 0;
+            stack.sp9D0 = 7;
+            stack.sp9E8 = 0;
+            stack.sp9EC = 7;
+            stack.spA04 = 0;
+            stack.spA08 = 7;
+            stack.spA20 = 0;
+            stack.spA24 = 7;
+            stack.spA3C = 0;
+            stack.spA40 = 7;
+            stack.spA58 = 0;
+            stack.spA5C = 7;
+            stack.spA74 = 0;
+            stack.spA78 = 7;
+            stack.spA90 = 0;
+            stack.spA94 = 7;
+            stack.spAAC = 0;
+            stack.spAB0 = 7;
+            stack.spAC8 = 0;
+            stack.spACC = 7;
+            stack.spAE4 = 0;
+            stack.spAE8 = 7;
+            stack.spB00 = 0;
+            stack.spB04 = 7;
+            stack.spB1C = 0;
+            memcpy(&stack.sp2C70, &stack.spA94, 0x1C);
+            fclCombineList003df100(FUN_003dffc0(temp_16, 7, stack.sp2C74), &stack.sp2C70);
+            return;
+        }
         switch (param_3) {                             /* switch 3; irregular */
         case 0:                                     /* switch 3 */
             temp_16 = *(s32 *)(param_1 + 0xd4);
