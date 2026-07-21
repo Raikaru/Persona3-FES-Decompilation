@@ -27,7 +27,7 @@ void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 
                   int param_6);
 u32 FUN_0040ec50();
-u32 FUN_0040f030(int param_1,int param_2,long param_3);
+u32 FUN_0040f030(int param_1,int param_2,int param_3);
 u32 FUN_0040f430(int param_1,int param_2);
 u32 FUN_0040f5d0(u64 param_1,int param_2,long param_3);
 u64 FUN_0040fab0(u64 param_1,int param_2);
@@ -46,6 +46,9 @@ extern float DAT_006af9dc_abs[];
 extern float DAT_006af9e0_abs[];
 u32 DAT_006af9a0;
 u16 DAT_006af9c0[];
+typedef short DAT_006af9c0_abs_t;
+#pragma alias DAT_006af9c0_abs DAT_006af9c0
+extern DAT_006af9c0_abs_t DAT_006af9c0_abs[];
 u32 DAT_006af9f0;
 u32 DAT_006afa70;
 int DAT_006afaf0[];
@@ -752,15 +755,15 @@ void FUN_0040eef0(float param_1,int param_2,int param_3,int param_4,int param_5,
 // FUN_0040F030 NONMATCHING
 
 
-u32 FUN_0040f030(int param_1,int param_2,long param_3)
+u32 FUN_0040f030(int param_1,int param_2,int param_3)
 
 
 
 {
 
-  u16 uVar1;
+  short uVar1;
 
-  u16 uVar2;
+  short uVar2;
 
   u32 *puVar3;
 
@@ -770,13 +773,13 @@ u32 FUN_0040f030(int param_1,int param_2,long param_3)
 
   u32 uVar6;
 
-  long lVar7;
+  u32 lVar7;
 
   int iVar8;
 
-  u16 *puVar9;
+  short *puVar10;
 
-  u16 *puVar10;
+  short *puVar9;
 
   u32 *puVar11;
 
@@ -784,13 +787,13 @@ u32 FUN_0040f030(int param_1,int param_2,long param_3)
 
   short sVar13;
 
-  u16 auStack_20 [16];
+  short auStack_20 [16];
 
   
 
   puVar3 = *(u32 **)(param_2 + 0xc);
 
-  puVar10 = DAT_006af9c0;
+  puVar10 = DAT_006af9c0_abs;
 
   puVar9 = auStack_20;
 
@@ -811,7 +814,6 @@ u32 FUN_0040f030(int param_1,int param_2,long param_3)
     puVar9[1] = uVar2;
 
     puVar9 = puVar9 + 2;
-
   } while (0 < iVar8);
 
   lVar7 = FUN_003e6d70();
@@ -828,60 +830,71 @@ u32 FUN_0040f030(int param_1,int param_2,long param_3)
 
       sVar13 = *(short *)((int)param_3 + 6);
 
-      if (sVar13 == 4) {
+      if (sVar13 != 4) {
 
-        uVar4 = *puVar3;
+        if ((sVar13 != 2) && (sVar13 == 1)) {
 
-        *puVar3 = uVar4 | 2;
+          memset(puVar3,0,0x28);
 
-        *puVar3 = uVar4 | 10;
+          *(u16 *)(puVar3 + 2) = 0x140;
 
-        uVar4 = puVar3[5];
+          *(u16 *)(puVar3 + 1) = 0x140;
 
-        puVar3[5] = uVar4 | 2;
+          *(u16 *)((int)puVar3 + 6) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
 
-        puVar3[5] = uVar4 | 10;
+          *(u16 *)((int)puVar3 + 0xe) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
 
-      }
+          uVar4 = *puVar3;
 
-      else if ((sVar13 != 2) && (sVar13 == 1)) {
+          *puVar3 = uVar4 | 1;
 
-        memset(puVar3,0,0x28);
+          *puVar3 = uVar4 & 0xfffffff7 | 1;
 
-        *(u16 *)(puVar3 + 2) = 0x140;
+          *(u16 *)(puVar3 + 7) = 0x280;
 
-        *(u16 *)(puVar3 + 1) = 0x140;
+          *(u16 *)(puVar3 + 6) = 0x280;
 
-        *(u16 *)((int)puVar3 + 6) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
+          *(u16 *)((int)puVar3 + 0x1a) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
 
-        *(u16 *)((int)puVar3 + 0xe) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
+          *(u16 *)(puVar3 + 9) = 0x30;
 
-        uVar4 = *puVar3;
+          *(u16 *)((int)puVar3 + 0x22) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
 
-        *puVar3 = uVar4 | 1;
+          uVar4 = puVar3[5];
 
-        *puVar3 = uVar4 & 0xfffffff7 | 1;
+          puVar3[5] = uVar4 | 4;
 
-        *(u16 *)(puVar3 + 7) = 0x280;
+          puVar3[5] = uVar4 & 0xfffffff7 | 4;
 
-        *(u16 *)(puVar3 + 6) = 0x280;
+          puVar3[10] = 0;
 
-        *(u16 *)((int)puVar3 + 0x1a) = auStack_20[*(int *)(param_1 + 0x1c) * 4];
-
-        *(u16 *)(puVar3 + 9) = 0x30;
-
-        *(u16 *)((int)puVar3 + 0x22) = auStack_20[*(int *)(param_1 + 0x1c) * 4 + 1];
-
-        uVar4 = puVar3[5];
-
-        puVar3[5] = uVar4 | 4;
-
-        puVar3[5] = uVar4 & 0xfffffff7 | 4;
-
-        puVar3[10] = 0;
+        }
 
       }
 
+      else {
+
+        uVar4 = *puVar3;
+
+        uVar4 = uVar4 | 2;
+
+        *puVar3 = uVar4;
+
+        uVar4 = uVar4 | 8;
+
+        *puVar3 = uVar4;
+
+        uVar4 = puVar3[5];
+
+        uVar4 = uVar4 | 2;
+
+        puVar3[5] = uVar4;
+
+        uVar4 = uVar4 | 8;
+
+        puVar3[5] = uVar4;
+
+      }
     }
 
     uVar4 = puVar3[10];
