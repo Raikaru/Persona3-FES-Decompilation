@@ -92,11 +92,17 @@ void func_002496e0(void* work)
         u8* data;
         s32 stride;
     };
-    struct LocalBuffers {
-        u8 pad[0x20];
-        volatile f32 dimensions[2];
+    struct Local {
+        f32 uv[4];
+        f32 world[3];
+        u8 pad0[4];
+        f32 origin[3];
+        u8 pad1[4];
+        f32 dimensions[2];
         struct Buffer positions;
         struct Buffer colors;
+        u8 pad2[4];
+        u8 white[4];
     };
     u8* base;
     u8* node;
@@ -104,48 +110,44 @@ void func_002496e0(void* work)
     void** texture;
     void* matrix;
     f32* position;
-    struct LocalBuffers buffers;
-    f32 uv[4];
-    f32 origin[3];
-    f32 world[3];
-    u8 white[4];
     u8* color;
     s32 j;
     s32 i;
+    struct Local local;
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
-    *(void**)(base + 0x600) = func_00474210(0x80, 0x20080003, NULL);
+    *(u32*)(base + 0x600) = (u32)func_00474210(0x80, 0x20080003, NULL);
     func_00492d10(*(void**)(base + 0x600), func_004caf10());
 
     texture = func_003210a0(1);
-    uv[0] = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
-    uv[1] = 1.0f / (f32)*(s32*)((u8*)*texture + 0x10);
-    uv[2] = ((f32)*(s32*)((u8*)*texture + 0xc) - 1.0f) /
-            (f32)*(s32*)((u8*)*texture + 0xc);
-    uv[3] = ((f32)*(s32*)((u8*)*texture + 0x10) - 1.0f) /
-            (f32)*(s32*)((u8*)*texture + 0x10);
+    local.uv[0] = 1.0f / (f32)*(s32*)((u8*)*texture + 0xc);
+    local.uv[1] = 1.0f / (f32)*(s32*)((u8*)*texture + 0x10);
+    local.uv[2] = ((f32)*(s32*)((u8*)*texture + 0xc) - 1.0f) /
+                  (f32)*(s32*)((u8*)*texture + 0xc);
+    local.uv[3] = ((f32)*(s32*)((u8*)*texture + 0x10) - 1.0f) /
+                  (f32)*(s32*)((u8*)*texture + 0x10);
 
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    func_00521250(node + 0xe0, uv, sizeof(uv));
+    func_00521250(node + 0xe0, local.uv, sizeof(local.uv));
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x80000;
-    buffers.dimensions[0] = 20.0f;
-    buffers.dimensions[1] = 20.0f;
+    local.dimensions[0] = 20.0f;
+    local.dimensions[1] = 20.0f;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    *(f32*)(node + 0xc0) = buffers.dimensions[0];
-    *(f32*)(node + 0xc4) = buffers.dimensions[1];
+    *(f32*)(node + 0xc0) = local.dimensions[0];
+    *(f32*)(node + 0xc4) = local.dimensions[1];
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x4000;
     func_00494d50(
         **(void***)((u8*)*(void**)(*(u8**)(base + 0x600) + 0x18) + 0x20), texture);
 
-    white[0] = 0xff;
-    white[1] = 0xff;
-    white[2] = 0xff;
-    white[3] = 0xff;
+    local.white[0] = 0xff;
+    local.white[1] = 0xff;
+    local.white[2] = 0xff;
+    local.white[3] = 0xff;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    func_00521250(node + 0xd0, white, 0x10);
+    func_00521250(node + 0xd0, local.white, 0x10);
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x40000;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
@@ -163,18 +165,18 @@ void func_002496e0(void* work)
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x10000000;
 
-    func_00474640(*(void**)(base + 0x600), (void**)&buffers.colors.data, 2, 0x40000000);
-    func_00474640(*(void**)(base + 0x600), (void**)&buffers.positions.data, 1, 0x40000000);
-    color = buffers.colors.data;
+    func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 2, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 1, 0x40000000);
+    color = local.colors.data;
     for (j = 0; j < 0x80; j++) {
         color[0] = 0xff;
         color[1] = 0xff;
         color[2] = 0xff;
         color[3] = 0x80;
-        color += buffers.colors.stride;
+        color += local.colors.stride;
     }
 
-    position = (f32*)buffers.positions.data;
+    position = (f32*)local.positions.data;
     for (i = 0; i < 0x80; i++) {
         u32 random;
         f32 ratio;
@@ -196,18 +198,18 @@ void func_002496e0(void* work)
         value = ratio * 300.0f - 150.0f;
         saved[2] = value;
         position[2] = value;
-        position = (f32*)((u8*)position + buffers.positions.stride);
+        position = (f32*)((u8*)position + local.positions.stride);
     }
 
     func_004747f0(*(void**)(base + 0x600));
     matrix = func_004cb2f0(*(void**)(camera + 4));
-    origin[0] = 0.0f;
-    origin[1] = 0.0f;
-    origin[2] = 100.0f;
-    func_004c6be0(world, origin, matrix);
-    *(f32*)(base + 0x608) = world[0];
-    *(f32*)(base + 0x60c) = world[1];
-    *(f32*)(base + 0x610) = world[2];
+    local.origin[0] = 0.0f;
+    local.origin[1] = 0.0f;
+    local.origin[2] = 100.0f;
+    func_004c6be0(local.world, local.origin, matrix);
+    *(f32*)(base + 0x608) = local.world[0];
+    *(f32*)(base + 0x60c) = local.world[1];
+    *(f32*)(base + 0x610) = local.world[2];
     *(u32*)(base + 0x604) |= 1;
 }
 #pragma opt_loop_invariants off
@@ -219,47 +221,109 @@ void func_00249c10(void* work)
         u8* data;
         s32 stride;
     };
+    struct Local {
+        struct Buffer colors;
+        struct Buffer positions;
+        f32 transformed[3];
+        u8 pad0[4];
+        f32 origin[3];
+        u8 pad1[4];
+        f32 point[3];
+    };
     u8* base;
     u8* camera;
-    u8* resource;
-    void* cameraMatrix;
     void* frame;
     void* matrix;
-    struct Buffer colors;
-    struct Buffer positions;
-    f32 translated[3];
-    f32 origin[3];
+    void* cameraMatrix;
+    struct Local local;
     f32 deltaX;
     f32 deltaY;
     f32 deltaZ;
+    f32 alpha;
+    s32 i;
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
-    if (camera == NULL || (*(u32*)(base + 0x604) & 1u) == 0) {
+    if ((~*(u32*)(base + 0x604) & 1u) != 0) {
         return;
     }
-
     cameraMatrix = func_004cb2f0(*(void**)(camera + 4));
-    resource = *(u8**)(base + 0x600);
-    frame = *(void**)(resource + 4);
+    frame = *(void**)(*(u8**)(base + 0x600) + 4);
     matrix = func_004c38c0();
     func_004c32a0(matrix, cameraMatrix);
-    origin[0] = 0.0f;
-    origin[1] = 0.0f;
-    origin[2] = 100.0f;
-    RwV3dTransformPoint(translated, origin, cameraMatrix);
-    deltaX = translated[0] - *(f32*)(base + 0x608);
-    deltaY = translated[1] - *(f32*)(base + 0x60c);
-    deltaZ = translated[2] - *(f32*)(base + 0x610);
-    func_004cb750(frame, translated, 0);
-    func_00474640(resource, (void**)&colors.data, 2, 0x40000000);
-    func_00474640(resource, (void**)&positions.data, 1, 0x40000000);
-    *(f32*)(base + 0x608) = translated[0];
-    *(f32*)(base + 0x60c) = translated[1];
-    *(f32*)(base + 0x610) = translated[2];
-    func_004747f0(resource);
+
+    local.origin[0] = 0.0f;
+    local.origin[1] = 0.0f;
+    local.origin[2] = 100.0f;
+    RwV3dTransformPoint(local.transformed, local.origin, cameraMatrix);
+
+    deltaX = local.transformed[0] - *(f32*)(base + 0x608);
+    deltaY = local.transformed[1] - *(f32*)(base + 0x60c);
+    deltaZ = local.transformed[2] - *(f32*)(base + 0x610);
+    func_004cb750(frame, local.transformed, 0);
+    func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 2, 0x40000000);
+    func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 1, 0x40000000);
+
+    {
+        u8* color;
+        f32* position;
+
+        color = local.colors.data;
+        position = (f32*)local.positions.data;
+        for (i = 0; i < 0x80; i++) {
+            f32* vertex;
+
+            vertex = (f32*)(base + i * 0xc);
+            vertex[0] -= deltaX;
+            if (vertex[0] < -150.0f) {
+                vertex[0] += 300.0f;
+            } else if (vertex[0] > 150.0f) {
+                vertex[0] -= 300.0f;
+            }
+            vertex[1] -= deltaY;
+            if (vertex[1] < -150.0f) {
+                vertex[1] += 300.0f;
+            } else if (vertex[1] > 150.0f) {
+                vertex[1] -= 300.0f;
+            }
+            vertex[2] -= deltaZ;
+            if (vertex[2] < -150.0f) {
+                vertex[2] += 300.0f;
+            } else if (vertex[2] > 150.0f) {
+                vertex[2] -= 300.0f;
+            }
+
+            position[0] = local.transformed[0] + vertex[0];
+            position[1] = local.transformed[1] + vertex[1];
+            position[2] = local.transformed[2] + vertex[2];
+            RwV3dTransformPoint(local.point, position, matrix);
+
+            if (local.point[2] < 100.0f) {
+                if (local.point[2] < 40.0f) {
+                    alpha = 0.0f;
+                } else {
+                    alpha = (local.point[2] - 40.0f) / 60.0f;
+                }
+            } else if (local.point[2] < 170.0f) {
+                alpha = 1.0f;
+            } else if (local.point[2] < 230.0f) {
+                alpha = 1.0f - (local.point[2] - 170.0f) / 60.0f;
+            } else {
+                alpha = 0.0f;
+            }
+
+            color[0] = *(u8*)(base + 0x614);
+            color[1] = *(u8*)(base + 0x615);
+            color[2] = *(u8*)(base + 0x616);
+            color[3] = (u8)((f32)*(u8*)(base + 0x617) * alpha);
+            color += local.colors.stride;
+            position = (f32*)((u8*)position + local.positions.stride);
+        }
+    }
+
+    *(f32*)(base + 0x608) = local.transformed[0];
+    *(f32*)(base + 0x60c) = local.transformed[1];
+    *(f32*)(base + 0x610) = local.transformed[2];
+    func_004747f0(*(void**)(base + 0x600));
     func_004c3880(matrix);
-    (void)deltaX;
-    (void)deltaY;
-    (void)deltaZ;
 }
