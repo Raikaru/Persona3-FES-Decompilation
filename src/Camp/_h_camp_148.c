@@ -1734,7 +1734,6 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
     s32 second;
     s32 index1;
     s32 index2;
-    register s32 flag;
 
     second = param_2;
     param_2 = (s32)(uintptr_t)DAT_007cdfb8;
@@ -1744,8 +1743,7 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
             break;
         }
         if ((param_1 == entry->first) && (second == entry->second)) {
-            flag = entry->flag;
-            if (flag == 0) {
+            if (entry->flag == 0) {
                 return 1;
             }
             if (FUN_0016f190() != 0) {
