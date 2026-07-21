@@ -58,6 +58,7 @@ extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
 extern const char D_00683A90[];
 extern void* DAT_00960184[];
+extern u32* PTR_DAT_007cd540;
 extern void* D_007CE2B0;
 extern void* func_00100d80(const char* path, u32 mode);
 extern void func_001023a0(void* object);
@@ -326,7 +327,7 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabsf(directDelta) < fabsf(wrappedDelta))
+    if (fabs((f64)directDelta) < fabs((f64)wrappedDelta))
     {
         work->angleDelta = directDelta;
     }
@@ -406,7 +407,7 @@ KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
         wrappedDelta -= 360.0f;
     }
 
-    if (fabsf(directDelta) < fabsf(wrappedDelta))
+    if (fabs((f64)directDelta) < fabs((f64)wrappedDelta))
     {
         work->angleDelta = directDelta;
     }
@@ -496,7 +497,6 @@ HCdvd* func_001d6b10(void)
 
     return (HCdvd*)(uintptr_t)1;
 }
-
 // FUN_001d6bc0 NONMATCHING
 u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
                   RwV3d* posOffset, f32* xzDeadZone, f32* yDeadZone)
@@ -508,54 +508,96 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
     char path[76];
     u32 fileSize;
     u32* fieldIds;
-    HCdvd* fldPacCdvd;
 
     if (cmrRequest == NULL)
     {
         return true;
     }
 
-    fldPacCdvd = K_Fldrc_GetFldPacCdvd();
-    fieldIds = (u32*)(uintptr_t)CAMERA_FIELD_IDS;
-    if (fldPacCdvd == NULL)
+    if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
         if (H_Cdvd_IsFileLoaded(cmrRequest) == false)
         {
             return false;
         }
         cmr = (CmrFile*)cmrRequest->fileMemory;
-    }
-    else
-    {
-        sprintf(path, "field/pack/f%03d_%03d.CMR",
-                (s32)fieldIds[0], (s32)fieldIds[1]);
-        cmr = (CmrFile*)H_Cdvd_CacheFindFile(path, &fileSize);
-        if (cmr == NULL)
+        if (matrix != NULL)
         {
-            return true;
+            *matrix = cmr->mat;
+            *fov = cmr->fov;
+            *type = (u32)cmr->type;
+            *posOffset = cmr->posOffset;
+            *xzDeadZone = cmr->xzDeadZone;
+            *yDeadZone = cmr->yDeadZone;
         }
+        else
+        {
+            camera = kwlnGetMainCamera();
+            cameraFrame = (RwFrame*)camera->object.object.parent;
+            K_View_SetFov(camera, cmr->fov);
+            FUN_004cb7f0(cameraFrame, &cmr->mat, 0);
+            func_001d5c10(K_Field_Get()->cameraCtlTask, cmr->type);
+            ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->posOffset =
+                cmr->posOffset;
+            if (cmr->xzDeadZone == 0.0f && K_Scene_001a0250() == false)
+            {
+                cmr->xzDeadZone = 50.0f;
+            }
+            ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->xzDeadZone =
+                cmr->xzDeadZone;
+            ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->yDeadZone =
+                cmr->yDeadZone;
+            fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
+            if (fldCamera->type == 2)
+            {
+                FUN_001a1210(camera, &cameraFrame->modelling.pos,
+                             &fldCamera->frame->modelling.pos, NULL);
+            }
+            else if (fldCamera->type == 5 || fldCamera->type == 0)
+            {
+                func_001d5e30(K_Field_Get()->cameraCtlTask, 0.0f);
+            }
+        }
+        H_Cdvd_Destroy(cmrRequest);
+        return true;
     }
 
-    if (matrix == NULL)
+    fieldIds = PTR_DAT_007cd540;
+    sprintf(path, "field/pack/f%03d_%03d.CMR",
+            (s32)fieldIds[0], (s32)fieldIds[1]);
+    cmr = (CmrFile*)H_Cdvd_CacheFindFile(path, &fileSize);
+    if (cmr == NULL)
+    {
+        return true;
+    }
+
+    if (matrix != NULL)
+    {
+        *matrix = cmr->mat;
+        *fov = cmr->fov;
+        *type = (u32)cmr->type;
+        *posOffset = cmr->posOffset;
+        *xzDeadZone = cmr->xzDeadZone;
+        *yDeadZone = cmr->yDeadZone;
+    }
+    else
     {
         camera = kwlnGetMainCamera();
         cameraFrame = (RwFrame*)camera->object.object.parent;
         K_View_SetFov(camera, cmr->fov);
         FUN_004cb7f0(cameraFrame, &cmr->mat, 0);
         func_001d5c10(K_Field_Get()->cameraCtlTask, cmr->type);
-
-        fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
-        fldCamera->posOffset = cmr->posOffset;
+        ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->posOffset =
+            cmr->posOffset;
         if (cmr->xzDeadZone == 0.0f && K_Scene_001a0250() == false)
         {
-            fldCamera->xzDeadZone = 50.0f;
+            cmr->xzDeadZone = 50.0f;
         }
-        else
-        {
-            fldCamera->xzDeadZone = cmr->xzDeadZone;
-        }
-        fldCamera->yDeadZone = cmr->yDeadZone;
-
+        ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->xzDeadZone =
+            cmr->xzDeadZone;
+        ((FldCamera*)K_Field_Get()->cameraCtlTask->workData)->yDeadZone =
+            cmr->yDeadZone;
+        fldCamera = (FldCamera*)K_Field_Get()->cameraCtlTask->workData;
         if (fldCamera->type == 2)
         {
             FUN_001a1210(camera, &cameraFrame->modelling.pos,
@@ -566,20 +608,7 @@ u32 func_001d6bc0(HCdvd* cmrRequest, RwMatrix* matrix, f32* fov, u32* type,
             func_001d5e30(K_Field_Get()->cameraCtlTask, 0.0f);
         }
     }
-    else
-    {
-        *matrix = cmr->mat;
-        *fov = cmr->fov;
-        *type = (u32)cmr->type;
-        *posOffset = cmr->posOffset;
-        *xzDeadZone = cmr->xzDeadZone;
-        *yDeadZone = cmr->yDeadZone;
-    }
 
-    if (fldPacCdvd == NULL)
-    {
-        H_Cdvd_Destroy(cmrRequest);
-    }
     return true;
 }
 
