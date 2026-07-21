@@ -41,6 +41,9 @@ u32 FUN_00419790(int param_1,int param_2);
 u32 FUN_004198f0(int param_1,int param_2);
 u32 FUN_00419a30(u64 param_1,int *param_2);
 u32 FUN_00419a70(u64 param_1,int *param_2);
+u32 FUN_00419b00(int param_1);
+u32 FUN_00419b20(int param_1);
+u32 FUN_00419b40(int param_1);
 u32 FUN_00419b80(int param_1);
 u32 FUN_00419c10(int param_1,int *param_2);
 u8 FUN_00419f20(int param_1,int *param_2);
@@ -2546,7 +2549,7 @@ u32 FUN_00419a30(u64 param_1,int *param_2)
 
 }
 
-// FUN_00419A70 NONMATCHING
+// FUN_00419A70
 
 
 u32 FUN_00419a70(u64 param_1,int *param_2)
@@ -2563,7 +2566,7 @@ u32 FUN_00419a70(u64 param_1,int *param_2)
 
   iVar1 = *param_2;
 
-  if (*(int *)(iVar1 + 0xc) == 0) {
+  if (*(int *)(iVar1 + 0xc) != 0) {
 
     H_Fade_FadeIn();
 
@@ -2577,14 +2580,55 @@ u32 FUN_00419a70(u64 param_1,int *param_2)
 
   uVar2 = *(u32 *)(iVar1 + 0x18);
 
-  H_Fade_SetCustomColor(uVar2 >> 0x18,uVar2 >> 0x10 & 0xff,uVar2 >> 8 & 0xff);
+  H_Fade_SetCustomColor((u8)(uVar2 >> 0x18),(u8)(uVar2 >> 0x10),(u8)(uVar2 >> 8));
 
-  H_Fade_SetType(*(u16 *)(iVar1 + 0x10));
+  H_Fade_SetType(*(s16 *)(iVar1 + 0x10));
 
-  H_Fade_SetDuration(*(u16 *)(iVar1 + 0x14));
+  H_Fade_SetDuration(*(s16 *)(iVar1 + 0x14));
 
   return 1;
 
+}
+
+// FUN_00419B00
+u32 FUN_00419b00(int param_1)
+{
+  int iVar1;
+  u32 uVar2;
+
+  iVar1 = *(int *)(param_1 + 0x3c);
+  uVar2 = *(u32 *)(iVar1 + 0x10) | 2;
+  *(u32 *)(iVar1 + 0x10) = uVar2;
+  return 1;
+}
+
+// FUN_00419B20
+u32 FUN_00419b20(int param_1)
+{
+  int iVar1;
+  u32 uVar2;
+
+  iVar1 = *(int *)(param_1 + 0x3c);
+  uVar2 = *(u32 *)(iVar1 + 0x10) | 1;
+  *(u32 *)(iVar1 + 0x10) = uVar2;
+  return 1;
+}
+
+// FUN_00419B40
+u32 FUN_00419b40(int param_1)
+{
+  int iVar1;
+  int iVar2;
+  u32 uVar3;
+
+  iVar1 = *(int *)(param_1 + 0x3c);
+  iVar2 = *(int *)(iVar1 + 4);
+  if ((u32)*(u16 *)(iVar2 + 0x10) < 2) {
+    uVar3 = *(u32 *)(iVar1 + 0x10) | 1;
+    *(u32 *)(iVar1 + 0x10) = uVar3;
+    return 1;
+  }
+  return 0;
 }
 
 // FUN_00419B80 NONMATCHING
