@@ -625,11 +625,11 @@ u64 FUN_003affd0(u64 param_1)
 
   
 
-  cVar1 = FUN_003b0ec0();
+  cVar1 = FUN_003b0ec0_direct();
 
   if (cVar1 == '\0') {
 
-    param_1 = FUN_003b0030(param_1);
+    param_1 = FUN_003b0030_direct(param_1);
 
   }
 
@@ -731,11 +731,11 @@ u64 FUN_003b0170(u64 param_1)
 
   
 
-  cVar1 = FUN_003b0ec0();
+  cVar1 = FUN_003b0ec0_direct();
 
   if (cVar1 == '\0') {
 
-    param_1 = FUN_003b0030(param_1);
+    param_1 = FUN_003b0030_direct(param_1);
 
   }
 
