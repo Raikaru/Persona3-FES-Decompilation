@@ -716,24 +716,26 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
 // FUN_00109CA0 NONMATCHING
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)
 {
-    HsndSlotWork* slot;
-
-    slot = &sSlotWork[slotIndex];
     if (H_Snd_FUN_00109df0(slotIndex) != 0)
     {
-        return parameter == slot->param2;
+        if (parameter == sSlotWork[slotIndex].param2)
+        {
+            return true;
+        }
     }
-
-    if (slot->state == HSND_CHANNEL_PLAYING && parameter != slot->param2)
+    else
     {
-        K_Assert(__FILE__, 0x34B);
+        if (sSlotWork[slotIndex].state == HSND_CHANNEL_RELEASING && parameter != sSlotWork[slotIndex].param2)
+        {
+            K_Assert(__FILE__, 0x34B);
+        }
     }
 
-    slot->callbackMode = false;
-    slot->completed = false;
-    slot->param1 = slotIndex;
-    slot->param2 = parameter;
-    slot->state = 2;
+    sSlotWork[slotIndex].callbackMode = false;
+    sSlotWork[slotIndex].completed = false;
+    sSlotWork[slotIndex].param1 = slotIndex;
+    sSlotWork[slotIndex].param2 = parameter;
+    sSlotWork[slotIndex].state = 2;
     return true;
 }
 
