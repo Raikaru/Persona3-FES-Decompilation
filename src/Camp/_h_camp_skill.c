@@ -220,10 +220,29 @@ typedef void (*CampSkillValueCall)(f32 depth, s32 x, s32 y, s32 color,
                                    s32 style, s32 font, s32 alignment,
                                    u32 value);
 
+#pragma alias FUN_001159f0_typed FUN_001159f0
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u32 alpha,
+                                f32 x, f32 y, f32 depth);
+#pragma alias FUN_00115bc0_typed FUN_00115bc0
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u32 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
+#pragma alias FUN_003b32d0_typed FUN_003b32d0
+extern void FUN_003b32d0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
+                                s32 alignment, const char* text, s32 maxWidth,
+                                s32 shadow);
+#pragma alias FUN_003b2cb0_typed FUN_003b2cb0
+extern void FUN_003b2cb0_typed(f32 depth, s32 x, s32 y, s32 color, s32 font,
+                                s32 alignment, const char* text, s32 maxWidth,
+                                s32 shadow);
+#pragma alias FUN_003c7e20_typed FUN_003c7e20
+extern void FUN_003c7e20_typed(f32 depth, s32 x, s32 y, s32 color, s32 style,
+                                s32 font, s32 alignment, u32 value);
+
 static void campSkillDrawSprite(const CampSkillRecord* record, void* atlas,
                                 s32 tile, f32 x, f32 y)
 {
-    ((CampSkillSpriteCall)FUN_001159f0)(NULL, atlas, tile, record->alpha,
+    FUN_001159f0_typed(NULL, atlas, tile, record->alpha,
                                         x, y, record->depth);
 }
 
@@ -231,7 +250,7 @@ static void campSkillDrawTintedSprite(const CampSkillRecord* record,
                                       void* atlas, s32 tile, f32 x, f32 y,
                                       u32 red, u32 green, u32 blue)
 {
-    ((CampSkillTintSpriteCall)FUN_00115bc0)(
+    FUN_00115bc0_typed(
         NULL, atlas, tile, record->alpha, red, green, blue, x, y,
         record->depth);
 }
@@ -240,7 +259,7 @@ static void campSkillDrawText(const CampSkillRecord* record, s32 x, s32 y,
                               s32 color, s32 font, const char* text,
                               s32 shadow)
 {
-    ((CampSkillTextCall)FUN_003b32d0)(
+    FUN_003b32d0_typed(
         record->depth, x, y, color, font, 1, text, 0x10, shadow);
 }
 
@@ -248,7 +267,7 @@ static void campSkillDrawSmallText(const CampSkillRecord* record, s32 x,
                                    s32 y, s32 color, s32 font,
                                    const char* text, s32 shadow)
 {
-    ((CampSkillTextCall)FUN_003b2cb0)(
+    FUN_003b2cb0_typed(
         record->depth, x, y, color, font, 1, text, 0x10, shadow);
 }
 
@@ -388,36 +407,213 @@ static void campSkillDrawSkillDecorations(CampSkillRecord* record,
 }
 
 // FUN_00161D90 NONMATCHING
+#pragma schedule on
 void FUN_00161d90(void* recordData, s32 index, CampSkillInnerWork* work)
 {
     CampSkillRecord* record;
+    s16 equipment;
+    u16 id;
+    u8 effect;
+    s32 style;
+    s32 value;
+    s32 valueA;
+    s32 valueB;
+    void* atlas;
+    void* glyphs;
+    char text[0x100];
 
-    if (recordData == NULL || work == NULL || index < 0 || index >= 9) {
-        return;
-    }
     record = (CampSkillRecord*)recordData;
     switch (index) {
+    case 2:
+    {
+        /* -- category 0 -- */
+        equipment = datGetEquipmentIdx(work->pcId, 0);
+        valueA = (s32)func_0016f9f0(work->pcId, equipment);
+        equipment = datGetEquipmentIdx(work->pcId, 0);
+        valueB = (s32)func_0016fae0(work->pcId, equipment);
+        FUN_001159f0_typed(recordData, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
+        if (work->category == 0 && work->commandFlags == 0)
+        {
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 0);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(recordData, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 10, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x26, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(2), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x27, record->alpha, record->x + 348.0f, record->y + 7.0f, record->depth);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(2), record->x + 385.0f, record->y + 14.0f, valueB, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 0);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_001159f0_typed(recordData, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 6, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x20, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(1), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x27, record->alpha, record->x + 348.0f, record->y + 7.0f, record->depth);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(1), record->x + 385.0f, record->y + 14.0f, valueB, 3);
+        }
+        break;
+    }
+    case 3:
+    {
+        /* -- category 1 -- */
+        equipment = datGetEquipmentIdx(work->pcId, 1);
+        FUN_001159f0_typed(recordData, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
+        if (work->category == 1 && work->commandFlags == 0)
+        {
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 1);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(recordData, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 10, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x28, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            valueA = (s32)func_0016fbd0(work->pcId, equipment);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(2), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 1);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_001159f0_typed(recordData, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 6, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x22, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            valueA = (s32)func_0016fbd0(work->pcId, equipment);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(1), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+        }
+        break;
+    }
+    case 4:
+    {
+        /* -- category 2 -- */
+        equipment = datGetEquipmentIdx(work->pcId, 2);
+        FUN_001159f0_typed(recordData, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
+        if (work->category == 2 && work->commandFlags == 0)
+        {
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 2);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(recordData, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 10, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x29, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            valueA = (s32)func_0016fcc0(work->pcId, equipment);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(2), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 2);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_001159f0_typed(recordData, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 6, text, 0x76);
+
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x23, record->alpha, record->x + 247.0f, record->y + 7.0f, record->depth);
+            valueA = (s32)func_0016fcc0(work->pcId, equipment);
+            campSkillDrawNumber(record, (void*)H_Maestro_001120a0(1), record->x + 284.0f, record->y + 14.0f, valueA, 3);
+        }
+        break;
+    }
+    case 5:
+    {
+        /* -- category 3 -- */
+        equipment = datGetEquipmentIdx(work->pcId, 3);
+        FUN_001159f0_typed(recordData, DAT_00833B94, 0x24, record->alpha, record->x - 15.0f, record->y + 4.0f, record->depth);
+        if (work->category == 3 && work->commandFlags == 0)
+        {
+            FUN_001159f0_typed(recordData, DAT_00833B94, 0x2a, record->alpha, record->x - 15.0f, record->y - 3.0f, record->depth);
+            equipment = datGetEquipmentIdx(work->pcId, 3);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_00115bc0_typed(recordData, DAT_00833B70, style * 2, record->alpha, 0x20, 0x43, 0x78, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 10, text, 0x76);
+        }
+        else
+        {
+            equipment = datGetEquipmentIdx(work->pcId, 3);
+            style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+            FUN_001159f0_typed(recordData, DAT_00833B70, style * 2 + 1, record->alpha, record->x, record->y, record->depth);
+            id = datGetEquipmentId(work->pcId, equipment);
+            effect = func_0016f810(work->pcId, equipment);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            campSkillDrawText(record, (s32)(record->x + 40.0f), (s32)(record->y + 11.0f),
+                              campSkillDrawColor(record), 6, text, 0x76);
+        }
+        break;
+    }
     case 0:
-        campSkillDrawSkillAnimatedTail(record, work);
+    {
+        s32 color;
+        color = (s32)((255 - record->alpha) | 0xffffff00);
+        FUN_001140d0(color, 0x200, 0x400, work->archiveParser, record->depth, record->x, record->y);
+        if (record->y < -616.0f) {
+            FUN_001140d0(color, 0x200, 0x400, work->archiveParser, record->depth, record->x, record->y + 1064.0f);
+        }
+        record->animationTail -= 1.0f;
+        if (record->animationTail < -1064.0f) {
+            record->animationTail = 0.0f;
+        }
+        break;
+    }
+    case 7:
+        FUN_001159f0_typed(recordData, work->resource0, 1, record->alpha, record->x, record->y, record->depth);
+        break;
+    case 8:
+        if (work->commandFlags != 0) {
+            FUN_001159f0_typed(recordData, DAT_00833BA0, 8, record->alpha, record->x + 182.0f, record->y, record->depth);
+            FUN_001159f0_typed(recordData, DAT_00833BA0, 4, record->alpha, record->x + 342.0f, record->y, record->depth);
+        } else {
+            FUN_001159f0_typed(recordData, DAT_00833BA0, 4, record->alpha, record->x + 232.0f, record->y, record->depth);
+            FUN_001159f0_typed(recordData, DAT_00833BA0, 2, record->alpha, record->x + 451.0f, record->y, record->depth);
+        }
+        FUN_001159f0_typed(recordData, DAT_00833BA0, 1, record->alpha, record->x + 561.0f, record->y, record->depth);
         break;
     case 1:
     case 6:
         break;
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-        campSkillDrawEquipmentRow(record, work, index - 2);
-        break;
-    case 7:
-        campSkillDrawSprite(record, work->resource0, 1, record->x,
-                            record->y);
-        break;
-    case 8:
-        campSkillDrawSkillDecorations(record, work);
-        break;
     }
 }
+#pragma schedule off
 
 static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
 {
@@ -673,7 +869,7 @@ static void campSkillDrawDetailSelection(CampSkillRecord* record,
     entry = campSkillDetailEntry(work, first + selected);
     packed = (u32)*(u16*)(entry + 0x64) |
              ((u32)*(u8*)(entry + 0x7c) << 16);
-    ((CampSkillValueCall)FUN_003c7e20)(
+    FUN_003c7e20_typed(
         record->depth, (s32)record->x, (s32)record->y,
         campSkillDrawColor(record), 1, 10, 1, packed);
 }
