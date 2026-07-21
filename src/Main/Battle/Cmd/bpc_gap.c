@@ -101,62 +101,140 @@ void FUN_00248580(void* destination, void* origin)
 // FUN_00248620 NONMATCHING
 void FUN_00248620(void)
 {
-    u8* work;
+    u32* entry;
+    u32* work;
     u32 texture;
-    u32 frame;
-    void* entry;
+    f32 left;
+    f32 base;
     f32 total;
-    s32 count;
-    s32 i;
-    f32 rect[4];
-    u8 color[4] = { 0xff, 0xff, 0xff, 0xff };
-    u8* slot;
+    f32 half;
+    struct {
+        f32 rect[4];
+        u8 reserved[0x1c];
+        u8 color[4];
+    } layout;
+    s32 y;
 
     K_ASSERT(sBpc324 != NULL, 0x3d);
-    work = (u8*)sBpc324;
+    work = sBpc324;
     texture = func_0021c3f0(1);
-    if ((*sBpc324 & 1u) != 0) {
-        if (*(u32*)(work + 8) < 0x2d) {
-            (*(u32*)(work + 8))++;
+    if ((*work & 1u) != 0) {
+        if ((s32)work[2] < 0x2d) {
+            work[2]++;
         } else {
             FUN_002491f0();
-            *sBpc324 &= ~2u;
+            *work &= ~1u;
         }
     }
-    if ((*sBpc324 & 1u) == 0) {
+    if ((*work & 1u) == 0) {
         return;
     }
-    *sBpc324 |= 2;
+    *work |= 2;
+
     total = 0.0f;
-    count = 0;
-    entry = *(void**)(work + 4);
-    while (entry != NULL && count < 0x40) {
+    entry = (u32*)work[1];
+    while (entry != NULL) {
         total += (f32)func_003b19d0((u32)entry);
-        entry = *(void**)((u8*)entry + 0x24);
-        count++;
+        entry = (u32*)entry[9];
     }
-    if (count == 0) {
-        count = 1;
+    half = total / 2.0f;
+    base = 309.0f - half;
+    left = base - 57.0f;
+
+    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x43);
+    layout.rect[0] = left;
+    layout.rect[1] = 100.0f;
+    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    func_0021d8e0(work + 4, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 4, layout.color);
+
+    layout.rect[0] = (f32)*(s32*)((u8*)entry + 0xc) + left;
+    layout.rect[1] = 100.0f;
+    half = 309.0f + half;
+    layout.rect[2] = 57.0f + half - 16.0f;
+    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    func_0021d8e0(work + 0x44, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 0x44, layout.color);
+
+    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x44);
+    layout.rect[0] = left;
+    layout.rect[1] = 100.0f;
+    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    func_0021d8e0(work + 0x84, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 0x84, layout.color);
+
+    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0);
+    layout.rect[0] = base - 86.0f;
+    layout.rect[1] = 54.0f;
+    layout.rect[2] = 86.0f + half - layout.rect[0];
+    layout.rect[3] = (f32)((*(s32*)((u8*)entry + 0x10) * 518) / 100);
+    func_0021d8e0(work + 0xc4, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 0xc4, layout.color);
+
+    half = 0.0f;
+    entry = (u32*)work[1];
+    while (entry != NULL) {
+        half += (f32)func_003b19d0((u32)entry);
+        entry = (u32*)entry[9];
     }
-    frame = func_0021cca0(texture, 0x43);
-    rect[0] = 0.0f;
-    rect[1] = 0.0f;
-    rect[2] = 417.0f;
-    rect[3] = 250.0f;
-    func_0021d8e0(work + 0x10, rect);
-    func_0021d3b0(work + 0x10, frame);
-    func_0021d950(work + 0x10, color);
-    *(f32*)(work + 0x60) = 0.0f;
-    *(f32*)(work + 0x64) = 200.0f;
-    *(f32*)(work + 0x68) = 40.0f + total / (f32)count;
-    *(f32*)(work + 0x6c) = 40.0f;
-    func_0021d8e0(work + 0x110, (f32*)(work + 0x60));
-    func_0021d950(work + 0x110, color);
-    for (i = 0; i < 3; i++) {
-        slot = work + 0x210 + i * 0x100;
-        func_0021d3b0(slot, func_0021cca0(texture, 0x44));
-        func_0021d950(slot, color);
+    y = (s32)662.0f;
+    entry = (u32*)work[1];
+    while (entry != NULL) {
+        half -= (f32)func_003b19d0((u32)entry);
+        func_003b0d70((u32)entry, (s32)(16.0f * (base + half)), y);
+        entry = (u32*)entry[9];
     }
+
+    layout.color[0] = 0xc8;
+    layout.color[1] = 0xe6;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_003b0e20(work[1],
+                   ((u32)layout.color[0] << 24) | ((u32)layout.color[1] << 16) |
+                   ((u32)layout.color[2] << 8) | layout.color[3]);
+
+    entry = (u32*)(uintptr_t)func_0021cca0(texture, 0x42);
+    half = total / 2.0f;
+    base = 309.0f - half;
+    layout.rect[0] = base - 28.0f;
+    layout.rect[1] = 91.0f;
+    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    func_0021d8e0(work + 0x104, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 0x104, layout.color);
+
+    layout.rect[0] = 309.0f + half + 28.0f - 16.0f;
+    layout.rect[1] = 91.0f;
+    layout.rect[2] = (f32)*(s32*)((u8*)entry + 0xc);
+    layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
+    func_0021d8e0(work + 0x144, layout.rect);
+    layout.color[0] = 0xff;
+    layout.color[1] = 0xff;
+    layout.color[2] = 0xff;
+    layout.color[3] = 0xff;
+    func_0021d950(work + 0x144, layout.color);
 }
 
 // FUN_00248BB0
