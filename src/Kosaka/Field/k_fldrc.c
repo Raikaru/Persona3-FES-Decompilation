@@ -29,14 +29,14 @@ extern u32 DAT_00678f60;
 extern u64 DAT_00678f68;
 extern u32 DAT_00678f70;
 extern u32 DAT_007ce0d4;
-extern u32 DAT_007ce0d8;
-extern u32 DAT_007ce0dc;
-extern u32 DAT_007ce0e0;
-extern u32 DAT_007ce0e4;
-extern u32 DAT_007ce0e8;
-extern u32 DAT_007ce0ec;
-extern u32 DAT_007ce0f0;
-extern u32 DAT_007ce0f4;
+extern u8 DAT_007ce0d8;
+extern u8 DAT_007ce0dc;
+extern u8 DAT_007ce0e0;
+extern u8 DAT_007ce0e4;
+extern u8 DAT_007ce0e8;
+extern u8 DAT_007ce0ec;
+extern u8 DAT_007ce0f0;
+extern u8 DAT_007ce0f4;
 
 /* Unrecovered engine entry points are kept typed at the ABI boundary. */
 extern u32 FUN_001008b0();
@@ -142,8 +142,8 @@ extern u32 FUN_004c6be0();
 extern u32 FUN_004c8680();
 extern u32 FUN_004c9d00();
 extern u32 FUN_004c9d10();
-extern u32 FUN_004c9d70();
-extern u32 FUN_004c9db0();
+extern u32 FUN_004c9d70(u32 camera, f32 value);
+extern u32 FUN_004c9db0(u32 camera, f32 value);
 extern u32 FUN_004cb270();
 extern u32 FUN_004cb2f0();
 extern u32 FUN_004cb7f0();
@@ -1791,7 +1791,7 @@ static void fldrc_copy_words(u32 dst, u32 src, u32 count)
     }
 }
 
-static void fldrc_apply_field_config(u32 resource, u32 config)
+static inline void fldrc_apply_field_config(u32 config)
 {
     u32* dst;
     u32 listA;
@@ -1809,7 +1809,14 @@ static void fldrc_apply_field_config(u32 resource, u32 config)
     FUN_0019fe20(*(u8*)(config + 9));
     FUN_0019fe70(*(u8*)(config + 10));
     FUN_0019fec0(*(u8*)(config + 0x0b));
-    DAT_007ce0d4 = (*(u8*)(config + 0x0f) == 1);
+    if (*(u8*)(config + 0x0f) == 1)
+    {
+        DAT_007ce0d4 = 1;
+    }
+    else
+    {
+        DAT_007ce0d4 = 0;
+    }
     DAT_007ce0d8 = *(u8*)(config + 0x0c);
     DAT_007ce0dc = *(u8*)(config + 0x0d);
     DAT_007ce0e0 = *(u8*)(config + 0x0e);
@@ -1820,8 +1827,8 @@ static void fldrc_apply_field_config(u32 resource, u32 config)
     DAT_007ce0f4 = 0;
     FUN_001985b0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
     FUN_001985e0(DAT_007ce0d8, DAT_007ce0dc, DAT_007ce0e0, 0);
-    FUN_004c9db0(*(u32*)(config + 0x14), FUN_00198590());
-    *(u32*)(FUN_00198590() + 0x88) = *(u32*)(config + 0x10);
+    FUN_004c9db0(FUN_00198590(), *(f32*)(config + 0x14));
+    *(f32*)(FUN_00198590() + 0x88) = *(f32*)(config + 0x10);
     FUN_00198590();
 
     version = *(u32*)(config + 4);
@@ -1830,11 +1837,11 @@ static void fldrc_apply_field_config(u32 resource, u32 config)
         farPlane = *(f32*)(config + 0x18);
         if (farPlane > 1.0f)
         {
-            FUN_004c9d70(farPlane, FUN_00198590());
+            FUN_004c9d70(FUN_00198590(), farPlane);
         }
         if (farPlane == 50.0f)
         {
-            FUN_004c9d70(0x42c80000, FUN_00198590());
+            FUN_004c9d70(FUN_00198590(), 100.0f);
         }
         if (*(s8*)(config + 0x1ff) == -1)
         {
@@ -1848,19 +1855,69 @@ static void fldrc_apply_field_config(u32 resource, u32 config)
     }
 
     dst = (u32*)FUN_0019fd40();
-    fldrc_copy_words((u32)dst, config + 0x1c, 4);
+    ((f32*)dst)[0] = *(f32*)(config + 0x1c);
+    ((f32*)dst)[1] = *(f32*)(config + 0x20);
+    ((f32*)dst)[2] = *(f32*)(config + 0x24);
+    ((f32*)dst)[3] = *(f32*)(config + 0x28);
     dst = (u32*)FUN_0019fd70();
-    fldrc_copy_words((u32)dst, config + 0x2c, 4);
+    ((f32*)dst)[0] = *(f32*)(config + 0x2c);
+    ((f32*)dst)[1] = *(f32*)(config + 0x30);
+    ((f32*)dst)[2] = *(f32*)(config + 0x34);
+    ((f32*)dst)[3] = *(f32*)(config + 0x38);
     dst = (u32*)FUN_0019fda0();
-    fldrc_copy_words((u32)dst, config + 0x40, 16);
+    {
+        u32* src = (u32*)(config + 0x40);
+        u32 n = 8;
+        while (n > 0)
+        {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            src += 2;
+            dst += 2;
+            n--;
+        }
+    }
 
     if (listB != 0)
     {
-        fldrc_copy_words(listB + 0x100, config + 0x80, 4);
-        fldrc_copy_words(listB + 0x110, config + 0x90, 4);
-        fldrc_copy_words(listB + 0x120, config + 0xa0, 16);
-        fldrc_copy_words(listB + 0x160, config + 0xe0, 4);
-        fldrc_copy_words(listB + 0x170, config + 0xf0, 16);
+        ((f32*)(listB + 0x100))[0] = *(f32*)(config + 0x80);
+        ((f32*)(listB + 0x100))[1] = *(f32*)(config + 0x84);
+        ((f32*)(listB + 0x100))[2] = *(f32*)(config + 0x88);
+        ((f32*)(listB + 0x100))[3] = *(f32*)(config + 0x8c);
+        ((f32*)(listB + 0x110))[0] = *(f32*)(config + 0x90);
+        ((f32*)(listB + 0x110))[1] = *(f32*)(config + 0x94);
+        ((f32*)(listB + 0x110))[2] = *(f32*)(config + 0x98);
+        ((f32*)(listB + 0x110))[3] = *(f32*)(config + 0x9c);
+        {
+            u32* src = (u32*)(config + 0xa0);
+            u32* out = (u32*)(listB + 0x120);
+            u32 n = 8;
+            while (n > 0)
+            {
+                out[0] = src[0];
+                out[1] = src[1];
+                src += 2;
+                out += 2;
+                n--;
+            }
+        }
+        ((f32*)(listB + 0x160))[0] = *(f32*)(config + 0xe0);
+        ((f32*)(listB + 0x160))[1] = *(f32*)(config + 0xe4);
+        ((f32*)(listB + 0x160))[2] = *(f32*)(config + 0xe8);
+        ((f32*)(listB + 0x160))[3] = *(f32*)(config + 0xec);
+        {
+            u32* src = (u32*)(config + 0xf0);
+            u32* out = (u32*)(listB + 0x170);
+            u32 n = 8;
+            while (n > 0)
+            {
+                out[0] = src[0];
+                out[1] = src[1];
+                src += 2;
+                out += 2;
+                n--;
+            }
+        }
     }
 
     if (version > 0x10000)
@@ -1912,7 +1969,6 @@ static void fldrc_apply_field_config(u32 resource, u32 config)
     {
         FUN_001a1540(0, 0, 0x178, 0x678ff0);
     }
-    (void)resource;
 }
 
 // FUN_001b61f0 NONMATCHING
@@ -1934,7 +1990,7 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
             return 0;
         }
         config = *(u32*)((u8*)resource + 0x110);
-        fldrc_apply_field_config((u32)resource, config);
+        fldrc_apply_field_config(config);
         FUN_00100ec0((u32)resource);
         return 1;
     }
@@ -1948,7 +2004,7 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
     config = FUN_001021c0(path, path);
     if (config != 0)
     {
-        fldrc_apply_field_config((u32)resource, config);
+        fldrc_apply_field_config(config);
     }
     return 1;
 }
