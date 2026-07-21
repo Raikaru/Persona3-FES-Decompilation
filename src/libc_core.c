@@ -12,17 +12,21 @@
 #define _vnop() ((void)0)
 /* auto-extern (generated) */
 
-// Fix return types for EE math functions (declared void but used as expressions)
-#define FUN_00531170_real FUN_00531170
-#define FUN_00531170(a,b) ((unsigned long long (*)(unsigned long long, unsigned long long))FUN_00531170_real)(a,b)
-#define FUN_005311c8_real FUN_005311c8
-#define FUN_005311c8(a,b) ((unsigned long long (*)(unsigned long long, unsigned long long))FUN_005311c8_real)(a,b)
-#define FUN_00531230_real FUN_00531230
-#define FUN_00531230(a,b) ((unsigned long long (*)(unsigned long long, unsigned long long))FUN_00531230_real)(a,b)
-#define FUN_00531480_real FUN_00531480
-#define FUN_00531480(a,b) ((unsigned long long (*)(unsigned long long, unsigned long long))FUN_00531480_real)(a,b)
-#define FUN_005316d0_real FUN_005316d0
-#define FUN_005316d0(a,b) ((long long (*)(unsigned long long, unsigned long long))FUN_005316d0_real)(a,b)
+#pragma alias FUN_00531170_typed FUN_00531170
+extern u64 FUN_00531170_typed(u64, u64);
+#define FUN_00531170(a,b) FUN_00531170_typed(a,b)
+#pragma alias FUN_005311c8_typed FUN_005311c8
+extern u64 FUN_005311c8_typed(u64, u64);
+#define FUN_005311c8(a,b) FUN_005311c8_typed(a,b)
+#pragma alias FUN_00531230_typed FUN_00531230
+extern u64 FUN_00531230_typed(u64, u64);
+#define FUN_00531230(a,b) FUN_00531230_typed(a,b)
+#pragma alias FUN_00531480_typed FUN_00531480
+extern u64 FUN_00531480_typed(u64, u64);
+#define FUN_00531480(a,b) FUN_00531480_typed(a,b)
+#pragma alias FUN_005316d0_typed FUN_005316d0
+extern s64 FUN_005316d0_typed(u64, u64);
+#define FUN_005316d0(a,b) FUN_005316d0_typed(a,b)
 
 // Declare string constants from Ghidra dumps
 extern char s_0000000000000000bug_in_vfprintf__007bedb0[];
@@ -694,9 +698,26 @@ int printf(const char* fmt, ...)
     return func_00526238(stream, fmt, args);
 }
 
-static void qsort_swap(u8* left, u8* right, u32 width)
+static inline void qsort_swap(u8* left, u8* right, u32 width, s32 swaptype)
 {
-    while (width-- != 0) { u8 value = *left; *left++ = *right; *right++ = value; }
+    u32 count;
+    u64 value64;
+    if (swaptype <= 1) {
+        count = width >> 3;
+        do {
+            value64 = *(u64*)left;
+            *(u64*)left = *(u64*)right;
+            *(u64*)right = value64;
+            left += 8;
+            right += 8;
+        } while (--count != 0);
+    } else {
+        while (width-- != 0) {
+            u8 value = *left;
+            *left++ = *right;
+            *right++ = value;
+        }
+    }
 }
 
 static void qsort_partition(u8* base, s32 first, s32 last, u32 width, int (*compare)(const void*, const void*))
@@ -706,27 +727,102 @@ static void qsort_partition(u8* base, s32 first, s32 last, u32 width, int (*comp
     while (left <= right) {
         while (compare(base + left * width, pivot) < 0) left++;
         while (compare(base + right * width, pivot) > 0) right--;
-        if (left <= right) { qsort_swap(base + left * width, base + right * width, width); left++; right--; }
+        if (left <= right) { qsort_swap(base + left * width, base + right * width, width, 2); left++; right--; }
     }
     if (first < right) qsort_partition(base, first, right, width, compare);
     if (left < last) qsort_partition(base, left, last, width, compare);
 }
 
-// FUN_005225f8 NONMATCHING
-void qsort(void* base, u32 count, u32 width, int (*compare)(const void*, const void*))
+static inline u8* qsort_med3(u8* a, u8* b, u8* c, int (*compare)(const void*, const void*))
 {
-    u8* elements = (u8*)base;
-    u32 index;
-
-    if (elements == NULL || compare == NULL || width == 0) return;
-    for (index = 1; index < count; index++) {
-        u32 cursor = index;
-        while (cursor > 0 && compare(elements + (cursor - 1) * width, elements + cursor * width) > 0) {
-            qsort_swap(elements + (cursor - 1) * width, elements + cursor * width, width);
-            cursor--;
+    return compare(a, b) < 0
+        ? (compare(b, c) < 0 ? b : (compare(a, c) < 0 ? c : a))
+        : (compare(b, c) > 0 ? b : (compare(a, c) < 0 ? a : c));
+}
+#pragma optimization_level 3
+#pragma schedule on
+// FUN_005225f8 NONMATCHING
+void qsort(void* base, u32 n, u32 es, int (*compare)(const void*, const void*))
+{
+    u8 *a;
+    u8 *pa, *pb, *pc, *pd, *pl, *pm, *pn;
+    s32 swaptype, swapCount;
+    s32 d, r;
+    a = (u8*)base;
+qsort_loop:
+    swaptype = (((u32)a & 7) != 0 || (es & 7) != 0) ? 2 : (es == 8 ? 0 : 1);
+    swapCount = 0;
+    if (n < 7) {
+        for (pm = a + es; pm < a + n * es; pm += es) {
+            for (pl = pm; pl > a && compare(pl - es, pl) > 0; pl -= es) {
+                qsort_swap(pl, pl - es, es, swaptype);
+            }
         }
+        return;
+    }
+    pm = a + (n >> 1) * es;
+    if (n > 7) {
+        pl = a;
+        pn = a + (n - 1) * es;
+        if (n > 40) {
+            d = (n >> 3) * es;
+            pl = qsort_med3(pl, pl + d, pl + 2 * d, compare);
+            pm = qsort_med3(pm - d, pm, pm + d, compare);
+            pn = qsort_med3(pn - 2 * d, pn - d, pn, compare);
+        }
+        pm = qsort_med3(pl, pm, pn, compare);
+    }
+    qsort_swap(a, pm, es, swaptype);
+    pa = pb = a + es;
+    pc = pd = a + (n - 1) * es;
+    for (;;) {
+        s32 cmpResult;
+        while (pb <= pc && (cmpResult = compare(pb, a)) <= 0) {
+            if (cmpResult == 0) {
+                swapCount = 1;
+                qsort_swap(pa, pb, es, swaptype);
+                pa += es;
+            }
+            pb += es;
+        }
+        while (pb <= pc && (cmpResult = compare(pc, a)) >= 0) {
+            if (cmpResult == 0) {
+                swapCount = 1;
+                qsort_swap(pc, pd, es, swaptype);
+                pd -= es;
+            }
+            pc -= es;
+        }
+        if (pb > pc) break;
+        qsort_swap(pb, pc, es, swaptype);
+        swapCount = 1;
+        pb += es;
+        pc -= es;
+    }
+    if (swapCount == 0) {
+        for (pm = a + es; pm < a + n * es; pm += es) {
+            for (pl = pm; pl > a && compare(pl - es, pl) > 0; pl -= es) {
+                qsort_swap(pl, pl - es, es, swaptype);
+            }
+        }
+        return;
+    }
+    pn = a + n * es;
+    r = pa - a < pb - pa ? pa - a : pb - pa;
+    if (r > 0) qsort_swap(a, pb - r, r, swaptype);
+    r = pd - pc < pn - pd - es ? pd - pc : pn - pd - es;
+    if (r > 0) qsort_swap(pb, pn - r, r, swaptype);
+    r = pb - pa;
+    if ((u32)r > es) qsort(a, r / es, es, compare);
+    r = pd - pc;
+    if ((u32)r > es) {
+        a = pn - r;
+        n = r / es;
+        goto qsort_loop;
     }
 }
+#pragma schedule off
+#pragma optimization_level 2
 
 // FUN_00522f38 NONMATCHING
 s32 __write(s32* error, s32 descriptor, const void* buffer, u32 count)
