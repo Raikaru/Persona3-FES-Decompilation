@@ -155,13 +155,23 @@ static u32 bit_mask(s32 value)
     return 1u << (value & 31);
 }
 
-static void save_chunk(u8** cursor, u32 id, u32 size, const void* source)
-{
-    memcpy(*cursor, &id, 4);
-    memcpy(*cursor + 4, &size, 4);
-    memcpy(*cursor + 8, source, size);
-    *cursor += size + 8;
-}
+#define SAVE_CHUNK(cursor, id_value, chunk_size, source) \
+    do { \
+        id = (id_value); \
+        size = (chunk_size); \
+        memcpy((cursor), &id, 4); \
+        memcpy((cursor) + 4, &size, 4); \
+        memcpy((cursor) + 8, (source), size); \
+        (cursor) += size + 8; \
+    } while (0)
+#define SAVE_AT(base, offset, id_value, chunk_size, source) \
+    do { \
+        id = (id_value); \
+        size = (chunk_size); \
+        memcpy((base) + (offset), &id, 4); \
+        memcpy((base) + (offset) + 4, &size, 4); \
+        memcpy((base) + (offset) + 8, (source), size); \
+    } while (0)
 
 // FUN_00177d40
 void FUN_00177d40(void)
@@ -179,97 +189,116 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     u8* buffer;
     u8* cursor;
     u8 header[0x34];
+    u32 id;
+    u32 size;
     u8 checksum;
+    u32 chunkOffset;
     u32 i;
-    static const u32 baseIds[] =
-    {
-        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
-        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-    };
-    static const u32 baseSizes[] =
-    {
-        0x24, 0x50, 0x508, 0x10, 8, 6000, 600, 2, 1, 4, 2, 1, 0x400,
-        2, 0x270, 0x3400, 0x2c0, 4, 8, 4, 4, 4, 4, 0x2c, 0x200, 0x1c,
-        0x10, 8, 4, 0x100, 0x90,
-    };
-    static const u32 baseSources[] =
-    {
-        0x00836200, 0x00836224, 0x00836274, 0x0083677c, 0x0083678c,
-        0, 0, 0x0083679c, 0x0083679e, 0x008367a0, 0x008367a4,
-        0x008367a6, 0x008367a7, 0x00836ba8, 0x00836bac, 0x00836e1c,
-        0x0083a21c, 0x0083a6dc, 0x0083a6e0, 0x0083a6e8, 0x0083a6ec,
-        0x0083a6f0, 0x0083a6f4, 0x0083a8c4, 0x0083a4dc, 0x0083a6fc,
-        0x0083a718, 0x0083a728, 0x0083a730, 0x0083a734, 0x0083a834,
-    };
-    u8* resourceTable = PTRP(0x00836794);
-    u8* levelTable = PTRP(0x00836798);
+    u32 today;
+    u32 month;
+    u32 day;
 
+    U32(0x0083a6ec) = ((u32*)D_00960184)[0];
+    U32(0x0083a6f0) = ((u32*)D_00960184)[1];
+    U32(0x0083a6f4) = (u32)FUN_001bff20();
     buffer = (u8*)ALLOCATE(1, 0x20000, 0x40000);
-    if (buffer == NULL)
-    {
-        if (saveSize != NULL) *saveSize = 0;
-        return NULL;
-    }
+    chunkOffset = 0;
+    memcpy(buffer, &saveType, 4);
 
     memset(header, 0, sizeof(header));
-    memcpy(header, PTR8(0x0083679c), 4);
-    memcpy(header + 4, PTR8(0x0083a598), 4);
-    memcpy(header + 8, PTR8(0x00836200), 0x24);
-    header[0x2c] = (u8)FUN_0017d7b0();
-    header[0x2d] = (U32(0x0083a47c) & 0x2000000) != 0 ? 2 :
-                   ((U32(0x0083a47c) & 0x20000) != 0 ? 1 : 0);
-    header[0x2e] = (u8)FUN_001bff20();
-    header[0x2f] = (u8)U32(0x0083a6ec);
-    header[0x30] = (u8)U32(0x0083a6f0);
-    checksum = 0;
-    for (i = 0; i < 0x32; i++) checksum = (u8)(checksum + header[i]);
-    header[0x31] = checksum;
-
-    memcpy(buffer, &saveType, 4);
-    cursor = buffer + 4;
-    memcpy(cursor, header, sizeof(header));
-    cursor += sizeof(header);
-
-    for (i = 0; i < ARRAY_SIZE(baseIds); i++)
+    *(u16*)(header + 0) = U16(0x0083679c);
+    *(u16*)(header + 2) = U8(0x0083679e);
+    *(u32*)(header + 4) = U32(0x0083a598);
+    today = U32(0x00836268);
+    month = 0;
+    day = 0;
+    while (day < 99)
     {
-        const void* source = (const void*)(baseSources[i]);
-        if (i == 5) source = resourceTable;
-        if (i == 6) source = levelTable;
-        save_chunk(&cursor, baseIds[i], baseSizes[i], source);
+        if (today < PTR32(0x005dc050)[day]) break;
+        month = (month + 1) & 0xff;
+        day = (day + 1) & 0xff;
     }
-    save_chunk(&cursor, 0x21, 0x1a8, PTR8(0x0083a8f0));
-    save_chunk(&cursor, 0x22, 1, PTR8(0x0083679e));
-    save_chunk(&cursor, 0x23, 4, PTR8(0x0083aa98));
-    save_chunk(&cursor, 0x24, 4, PTR8(0x0083a6f8));
+    if (day >= 99) month = 99;
+    header[8] = (u8)month;
+    header[9] = (U32(0x0083a47c) & 0x2000000) != 0 ? 2 :
+                ((U32(0x0083a47c) & 0x20000) != 0 ? 1 : 0);
+    header[10] = (u8)FUN_0017d7b0();
+    header[11] = (u8)U32(0x0083a6ec);
+    for (i = 0; i < 0x12; i++)
+        header[0x0c + i] = DAT_00836200[i];
+    for (i = 0; i < 0x12; i++)
+        header[0x1e + i] = DAT_00836200[0x12 + i];
+    header[0x30] = (u8)((u32*)D_00960184)[0];
+    header[0x31] = (u8)((u32*)D_00960184)[1];
+
+    memcpy(buffer + 4, header, sizeof(header));
+    SAVE_AT(buffer, 0x38, 1, 0x24, PTR8(0x00836200));
+    SAVE_AT(buffer, 0x64, 2, 0x50, PTR8(0x00836224));
+    SAVE_AT(buffer, 0xbc, 3, 0x508, PTR8(0x00836274));
+    SAVE_AT(buffer, 0x5cc, 4, 0x10, PTR8(0x0083677c));
+    SAVE_AT(buffer, 0x5e4, 5, 8, PTR8(0x0083678c));
+    SAVE_AT(buffer, 0x5f4, 6, 0x1770, PTRP(0x00836794));
+    SAVE_AT(buffer, 0x1d6c, 7, 0x258, PTRP(0x00836798));
+    SAVE_AT(buffer, 0x1fcc, 8, 2, PTR8(0x0083679c));
+    SAVE_AT(buffer, 0x1fd6, 9, 1, PTR8(0x0083679e));
+    SAVE_AT(buffer, 0x1fdf, 10, 4, PTR8(0x008367a0));
+    SAVE_AT(buffer, 0x1fe7, 11, 2, PTR8(0x008367a4));
+    SAVE_AT(buffer, 0x1fef, 12, 1, PTR8(0x008367a6));
+    SAVE_AT(buffer, 0x1ff5, 13, 0x400, PTR8(0x008367a7));
+    SAVE_AT(buffer, 0x2406, 14, 2, PTR8(0x00836ba8));
+    SAVE_AT(buffer, 0x2410, 15, 0x270, PTR8(0x00836bac));
+    SAVE_AT(buffer, 0x2688, 16, 0x3400, PTR8(0x00836e1c));
+    SAVE_AT(buffer, 0x5a90, 17, 0x2c0, PTR8(0x0083a21c));
+    SAVE_AT(buffer, 0x5d58, 18, 4, PTR8(0x0083a6dc));
+    SAVE_AT(buffer, 0x5d64, 19, 8, PTR8(0x0083a6e0));
+    SAVE_AT(buffer, 0x5d74, 20, 4, PTR8(0x0083a6e8));
+    SAVE_AT(buffer, 0x5d80, 21, 4, PTR8(0x0083a6ec));
+    SAVE_AT(buffer, 0x5d8c, 22, 4, PTR8(0x0083a6f0));
+    SAVE_AT(buffer, 0x5d98, 23, 4, PTR8(0x0083a6f4));
+    SAVE_AT(buffer, 0x5da4, 24, 0x2c, PTR8(0x0083a8c4));
+    SAVE_AT(buffer, 0x5dd8, 25, 0x200, PTR8(0x0083a4dc));
+    SAVE_AT(buffer, 0x5fe0, 26, 0x1c, PTR8(0x0083a6fc));
+    SAVE_AT(buffer, 0x6004, 27, 0x10, PTR8(0x0083a718));
+    SAVE_AT(buffer, 0x601c, 28, 8, PTR8(0x0083a728));
+    SAVE_AT(buffer, 0x602c, 29, 4, PTR8(0x0083a730));
+    SAVE_AT(buffer, 0x6038, 30, 0x100, PTR8(0x0083a734));
+    SAVE_AT(buffer, 0x6140, 31, 0x90, PTR8(0x0083a834));
+    SAVE_AT(buffer, 0x61d8, 0x21, 0x1a8, PTR8(0x0083a8f0));
+    SAVE_AT(buffer, 0x6388, 0x22, 1, PTR8(0x0083679e));
+    SAVE_AT(buffer, 0x6391, 0x23, 4, PTR8(0x0083aa98));
+    SAVE_AT(buffer, 0x639d, 0x24, 4, PTR8(0x0083a6f8));
+    chunkOffset += 0x63a9;
+    cursor = buffer + 0x63a9;
 
     for (i = 0; i < 10; i++)
     {
         u32 base = 0x100 + i * 0x100;
-        u32 source = 0x00834010 + i * 0x364;
-        save_chunk(&cursor, base,       4,    PTR8(source));
-        save_chunk(&cursor, base + 1,   0x50, PTR8(source + 4));
-        save_chunk(&cursor, base + 2,   8,    PTR8(source + 0x54));
-        save_chunk(&cursor, base + 3,   0x50, PTR8(source + 0x5c));
-        save_chunk(&cursor, base + 4,   0x30, PTR8(source + 0xac));
-        save_chunk(&cursor, base + 5,   0x34, PTR8(source + 0xdc));
-        save_chunk(&cursor, base + 6,   0x10, PTR8(source + 0x110));
-        save_chunk(&cursor, base + 7,   0x10, PTR8(source + 0x120));
-        save_chunk(&cursor, base + 8,   0x50, PTR8(source + 0x130));
-        save_chunk(&cursor, base + 9,   0x190, PTR8(source + 0x180));
-        save_chunk(&cursor, base + 10,  0x50, PTR8(source + 0x310));
-        save_chunk(&cursor, base + 11,  4,    PTR8(source + 0x360));
+        u32 sourceAddress = 0x00834010 + i * 0x364;
+        SAVE_CHUNK(cursor, base, 4, PTR8(sourceAddress));
+        SAVE_CHUNK(cursor, base + 1, 0x50, PTR8(sourceAddress + 4));
+        SAVE_CHUNK(cursor, base + 2, 8, PTR8(sourceAddress + 0x54));
+        SAVE_CHUNK(cursor, base + 3, 0x50, PTR8(sourceAddress + 0x5c));
+        SAVE_CHUNK(cursor, base + 4, 0x30, PTR8(sourceAddress + 0xac));
+        SAVE_CHUNK(cursor, base + 5, 0x34, PTR8(sourceAddress + 0xdc));
+        SAVE_CHUNK(cursor, base + 6, 0x10, PTR8(sourceAddress + 0x110));
+        SAVE_CHUNK(cursor, base + 7, 0x10, PTR8(sourceAddress + 0x120));
+        SAVE_CHUNK(cursor, base + 8, 0x50, PTR8(sourceAddress + 0x130));
+        SAVE_CHUNK(cursor, base + 9, 0x190, PTR8(sourceAddress + 0x180));
+        SAVE_CHUNK(cursor, base + 10, 0x50, PTR8(sourceAddress + 0x310));
+        SAVE_CHUNK(cursor, base + 11, 4, PTR8(sourceAddress + 0x360));
+        chunkOffset += 0x3c4;
     }
-    save_chunk(&cursor, 0x1000, 400, PTR8(0x00833e80));
-    save_chunk(&cursor, 0x1001, 600, PTR8(0x00833c20));
+    SAVE_CHUNK(cursor, 0x1000, 400, PTR8(0x00833e80));
+    SAVE_CHUNK(cursor, 0x1001, 600, PTR8(0x00833c20));
     checksum = 0;
-    for (i = 0; i < (u32)(cursor - (buffer + 0x38)); i++) checksum = (u8)(checksum + buffer[0x38 + i]);
-    save_chunk(&cursor, 0x2000, 1, &checksum);
+    for (i = 0; i < chunkOffset + 0x3c0; i++)
+        checksum = (u8)(checksum + buffer[0x38 + i]);
+    SAVE_CHUNK(cursor, 0x2000, 1, &checksum);
     {
         u32 end = 0xffffffff;
         memcpy(cursor, &end, 4);
         cursor += 4;
     }
-
     if (saveSize != NULL) *saveSize = (s32)(cursor - buffer);
     printf("save image size %d\n", (s32)(cursor - buffer));
     return buffer;
