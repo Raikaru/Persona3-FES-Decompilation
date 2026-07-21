@@ -298,12 +298,10 @@ mode_done:
 
         FUN_0025ce30(252.0f, 302.0f, puVar1[1]);
         fVar9 = fVar7 + 30.0f;
-        FUN_0025cdb0(fVar9, fVar8 - 10.0f, puVar1[2]);
+        FUN_0025cdb0(fVar9, fVar8 - 5.0f, puVar1[2]);
         iVar2 = FUN_003b19d0(puVar1[2]);
-        fVar9 = fVar9 + (f32)iVar2;
-        fVar9 = fVar9 + 25.0f;
-        fVar9 = fVar9 + 30.0f;
-        FUN_0025cdb0(fVar9, fVar8 - 10.0f, puVar1[3]);
+        FUN_0025cdb0(30.0f + (25.0f + (fVar9 + (f32)iVar2)),
+                     fVar8 - 5.0f, puVar1[3]);
         fVar10 = 255.0f * fVar10 * fVar6;
         if (fVar10 < 2.1474836e+09f) {
             uVar5 = (u32)(s32)fVar10;
