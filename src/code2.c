@@ -145,6 +145,10 @@ void FUN_0077ffa0(void)
   return;
 }
 
+#pragma push
+#pragma schedule on
+#pragma optimization_level 3
+ 
 // FUN_00780070 NONMATCHING
 int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
 {
@@ -201,6 +205,7 @@ int FUN_00780070(int param_1,u32 param_2,int param_3,int param_4)
   pcRam80074768();
   return param_1;
 }
+#pragma pop
 
 typedef struct {
   u16 id;
@@ -405,7 +410,7 @@ LAB_007808bc:
                     uStack_a4,iRam80076700,uVar4);
   } while ((0 < iRam80076700) && (sVar1 == sRam80076740));
   if (iRam80076700 < 1) {
-    uRamb0001810 = 0x483;
+    uRamb0001810 = 0x83;
   }
   else {
     func_0x00076460(sRam80076740);
