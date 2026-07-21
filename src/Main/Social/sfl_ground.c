@@ -127,6 +127,8 @@ void func_0021e170(void* destination, const void* center,
                    const void* direction, const void* size);
 void func_0021eb80(void* destination, const f32* layout);
 f32 func_0052ea18();
+f32 func_00269c80(f32 value);
+f32 func_00269ca0(f32 value);
 f32 sqrtf(f32 value);
 u32 RpRandom();
 void RpSkyRenderStateSet();
@@ -242,10 +244,10 @@ static void sflGroundInitParticle(u32* particle)
     lifetime = 0x78 + RpRandom() % 0x3c;
     particle[0x45] = lifetime;
     particle[1] = RpRandom() % 3;
-    GROUND_F32(particle, 0x118) = -20.0f + 680.0f * sflGroundRandomUnit();
-    GROUND_F32(particle, 0x11c) = -20.0f + 500.0f * sflGroundRandomUnit();
-    GROUND_F32(particle, 0x120) = 160.0f * sflGroundRandomUnit();
-    GROUND_F32(particle, 0x124) = 480.0f * sflGroundRandomUnit();
+    GROUND_F32(particle, 0x118) = 640.0f * sflGroundRandomUnit();
+    GROUND_F32(particle, 0x11c) = 448.0f * sflGroundRandomUnit();
+    GROUND_F32(particle, 0x120) = 640.0f * sflGroundRandomUnit();
+    GROUND_F32(particle, 0x124) = 448.0f * sflGroundRandomUnit();
     particle[0x40] = RpRandom() % lifetime;
 }
 
@@ -351,64 +353,323 @@ void sflGround00239280(void)
 void func_002392d0(void)
 {
     u32* work;
+    u8* particle;
+    u8* tile;
     SflGroundVec2 center;
     SflGroundVec2 direction;
     SflGroundVec2 scale;
     SflGroundColor color;
-    f32 opacity;
+    f32 rect[4];
+    f32 fade;
+    f32 panelFade;
+    f32 panelScale;
+    f32 panelPhase;
+    f32 frameAngle;
+    f32 frameFraction;
+    f32 x;
+    f32 y;
+    f32 distance;
+    f32 angle;
+    f32 wave;
+    f32 wave2;
+    f32 alpha;
     s32 i;
+    s32 j;
+    s32 row;
+    s32 column;
+    s32 active;
+    s32 found;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
+    (void)kwlnGetMainCamera();
+
+    /*
+     * The first switch is deliberately written as four separate arms.  The
+     * retail task does not increment the animation clock for states 1/2;
+     * those states only consume their one-shot flag.
+     */
     switch (work[3]) {
     case 1:
-        if ((work[0] & 1) != 0 && work[1]++ >= 20) {
-            work[0] &= ~1;
+        if ((work[0] & 1) != 0) {
+            if ((s32)work[1] < 20)
+                work[1]++;
+            else
+                work[0] &= ~1;
         }
         break;
     case 2:
-        if ((work[0] & 4) != 0 && work[1]++ >= 30) {
-            work[0] &= ~4;
+        if ((work[0] & 4) != 0) {
+            if ((s32)work[1] < 30)
+                work[1]++;
+            else
+                work[0] &= ~4;
         }
         break;
     case 3:
-        if ((work[0] & 2) != 0 && work[1]++ >= 30) {
-            work[0] &= ~2;
+        if ((work[0] & 2) != 0) {
+            if ((s32)work[1] < 30)
+                work[1]++;
+            else
+                work[0] &= ~2;
         }
+        work[0x1abc] = (work[0x1abc] + 1) % 240;
         break;
     case 4:
-        if ((work[0] & 0x20) != 0 && work[1]++ >= 30) {
-            work[0] &= ~0x20;
+        if ((work[0] & 0x20) != 0) {
+            if ((s32)work[1] < 30)
+                work[1]++;
+            else
+                work[0] &= ~0x20;
         }
+        work[0x1abc] = (work[0x1abc] + 1) % 240;
         break;
     default:
         break;
     }
 
     work[2] = (work[2] + 1) % 180;
-    work[0x1abc] = (work[0x1abc] + 1) % 240;
-    opacity = work[3] == 5 ? 1.0f : sflGroundClamp01((f32)work[1] / 30.0f);
+    if (work[3] == 5)
+        fade = 1.0f;
+    else
+        fade = sflGroundClamp01((f32)work[1] / 30.0f);
+
     color.r = 0xff;
     color.g = 0xff;
     color.b = 0xff;
-    color.a = sflGroundAlpha(opacity);
-    scale.x = 1.0f;
-    scale.y = 1.0f;
-    for (i = 0; i < 6; i++) {
-        center.x = 160.0f;
-        center.y = 96.0f + (f32)(i * 20);
-        direction.x = cosf((f32)(work[2] + i * 20) / 40.0f);
-        direction.y = sinf((f32)(work[2] + i * 20) / 40.0f);
-        func_0023c520(GROUND_PTR(work, SFL_GROUND_PANEL_OFFSET + i * SFL_GROUND_PANEL_STRIDE),
-                       &center, &direction, &scale);
-        func_0023c850(GROUND_PTR(work, SFL_GROUND_PANEL_OFFSET + i * SFL_GROUND_PANEL_STRIDE), &color);
+    color.a = 0xff;
+
+    /*
+     * The full-screen tile.  The source uses the normalized progress for
+     * the alpha of this tile, while the remaining tiles use the state
+     * dependent value below.
+     */
+    panelFade = 0.0f;
+    if (work[3] == 1) {
+        if ((work[0] & 1) != 0) {
+            if ((s32)work[1] < 10)
+                panelFade = 0.0f;
+            else if ((s32)work[1] < 42)
+                panelFade = (f32)((s32)work[1] - 10) / 32.0f;
+            else
+                panelFade = 1.0f;
+        }
+    } else if (work[3] == 5 || work[3] == 2 ||
+               work[3] == 3 || work[3] == 4) {
+        panelFade = 1.0f;
     }
-    for (i = 0; i < 9; i++) {
-        center.x = (f32)i * 8.0f;
-        center.y = 0.0f;
-        func_0021d8e0(GROUND_PTR(work, 0x4710 + i * 0x420), &center);
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    func_0021d8e0(GROUND_PTR(work, 0x10), rect);
+    color.a = sflGroundAlpha(panelFade);
+    func_0021d950(GROUND_PTR(work, 0x10), &color);
+
+    /*
+     * The 9x11 curtain grid is animated in the ground task itself.  Keep the
+     * radial calculation here (rather than replacing it with a helper): the
+     * original has one independent wave calculation per tile.
+     */
+    frameAngle = (2.0f * gPI) * ((f32)work[2] / 90.0f);
+    frameFraction = (f32)work[2] / 180.0f;
+    panelScale = 204.0f * panelFade;
+    for (row = 0; row < 9; row++) {
+        for (column = 0; column < 11; column++) {
+            tile = (u8*)work + SFL_GROUND_TILE_OFFSET +
+                   (row * 11 + column) * SFL_GROUND_TILE_STRIDE;
+            x = (f32)column * 64.0f;
+            y = (f32)row * 56.0f - 224.0f;
+            GROUND_F32(tile, 0) = x;
+            GROUND_F32(tile, 4) = frameAngle;
+            GROUND_F32(tile, 0x20) = 255.0f;
+            GROUND_F32(tile, 0x24) = 255.0f;
+            GROUND_F32(tile, 0x28) = 255.0f;
+            alpha = panelScale;
+            if (alpha < 0.0f)
+                alpha = 0.0f;
+            wave = alpha * 255.0f;
+            GROUND_F32(tile, 0x2c) = (f32)sflGroundAlpha(wave);
+
+            distance = sqrtf((x - 320.0f) * (x - 320.0f) + y * y);
+            angle = func_0052ea18(y, x - 320.0f);
+            /*
+             * These are the four calls seen in every retail tile body:
+             * three sine terms for the travelling wave and one cosine term
+             * for the orthogonal scale.
+             */
+            wave = func_00269c80(1.95f * (distance / 780.0f) * 2.0f -
+                                 frameAngle * 1.9f);
+            wave2 = func_00269c80(angle + frameAngle);
+            wave = distance + wave * (distance * 0.08f);
+            wave2 = func_00269c80(angle - frameAngle) * wave2;
+            GROUND_F32(tile, 0x10) =
+                (func_00269c80(angle) * wave2 + 320.0f) / 640.0f;
+            GROUND_F32(tile, 0x14) =
+                (func_00269ca0(angle) * wave + 224.0f) / 448.0f;
+        }
     }
-    sflGroundUpdateParticles(work, opacity);
+
+    /*
+     * State 1 has six independently animated title panels.  Retail lays
+     * these out in this non-address order (the first two are the top pair).
+     */
+    if (work[3] == 1 && (work[0] & 1) != 0) {
+        static const u32 panelOffsets[6] = { 0x910, 0xb10, 0x110,
+                                             0x310, 0x510, 0x710 };
+        panelPhase = (f32)(work[1] % 40) / 40.0f;
+        panelScale = 1.0f;
+        color.a = sflGroundAlpha(panelFade);
+        direction.x = cosf(0.8f);
+        direction.y = sinf(0.8f);
+        for (i = 0; i < 6; i++) {
+            angle = 0.8f + (f32)i * 0.25f;
+            center.x = 320.0f + cosf(angle) * (60.0f + panelPhase * 8.0f);
+            center.y = 224.0f + sinf(angle) * (60.0f + panelPhase * 8.0f);
+            scale.x = panelScale;
+            scale.y = panelScale;
+            func_0023c520(GROUND_PTR(work, panelOffsets[i]), &center,
+                          &direction, &scale);
+            func_0023c850(GROUND_PTR(work, panelOffsets[i]), &color);
+        }
+    }
+
+    /*
+     * States 3/4 draw seven four-quad effects.  Their particle pool is
+     * topped up before the update pass, so a partially initialized scene is
+     * still rendered deterministically.
+     */
+    if (work[3] == 3 || work[3] == 4) {
+        panelFade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+    }
+    color.a = sflGroundAlpha(fade);
+    active = 0;
+    for (i = 0; i < 48; i++) {
+        particle = (u8*)work + SFL_GROUND_PARTICLE_OFFSET +
+                   i * SFL_GROUND_PARTICLE_STRIDE;
+        if ((GROUND_U32(particle, 0) & 1) != 0)
+            active++;
+    }
+    found = 0;
+    for (i = 0; i < 48 - active; i++) {
+        for (j = 0; j < 48; j++) {
+            particle = (u8*)work + SFL_GROUND_PARTICLE_OFFSET +
+                       j * SFL_GROUND_PARTICLE_STRIDE;
+            if ((GROUND_U32(particle, 0) & 1) == 0) {
+                found = 1;
+                break;
+            }
+        }
+        K_ASSERT(found != 0, 0x2e4);
+        sflGroundInitParticle((u32*)particle);
+        found = 0;
+    }
+
+    for (i = 0; i < 48; i++) {
+        f32 progress;
+        f32 width;
+        f32 height;
+        f32 deltaX;
+        f32 deltaY;
+
+        particle = (u8*)work + SFL_GROUND_PARTICLE_OFFSET +
+                   i * SFL_GROUND_PARTICLE_STRIDE;
+        if ((GROUND_U32(particle, 0) & 1) == 0)
+            continue;
+        GROUND_U32(particle, 0x110)++;
+        if (GROUND_U32(particle, 0x110) > GROUND_U32(particle, 0x114)) {
+            GROUND_U32(particle, 0) &= ~1;
+            continue;
+        }
+        if (GROUND_U32(particle, 4) == 0) {
+            width = 0.015f;
+            height = 0.08f;
+        } else if (GROUND_U32(particle, 4) == 1) {
+            width = 0.16f;
+            height = 0.08f;
+        } else {
+            width = 0.16f;
+            height = 0.35f;
+        }
+        progress = (f32)GROUND_U32(particle, 0x110) /
+                   (f32)GROUND_U32(particle, 0x114);
+        if (progress < 0.08f)
+            progress /= 0.08f;
+        else if (progress >= 0.8f)
+            progress = 1.0f - (progress - 0.8f) / 0.43f;
+        scale.x = 63.0f * width;
+        scale.y = 81.0f * width;
+        deltaX = GROUND_F32(particle, 0x120) -
+                 GROUND_F32(particle, 0x118);
+        deltaY = GROUND_F32(particle, 0x124) -
+                 GROUND_F32(particle, 0x11c);
+        center.x = GROUND_F32(particle, 0x118) + deltaX * progress;
+        center.y = GROUND_F32(particle, 0x11c) + deltaY * progress;
+        direction.x = deltaX;
+        direction.y = deltaY;
+        func_0021e170(particle + 0x10, &center, &direction, &scale);
+        color.a = sflGroundAlpha(fade * height * progress);
+        func_0021d950(particle + 0x10, &color);
+    }
+
+    if (work[3] == 3 || work[3] == 4) {
+        f32 ribbonPhase;
+
+        panelScale = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        color.a = sflGroundAlpha(panelScale);
+        for (i = 0; i < 7; i++) {
+            tile = (u8*)work + 0x4810 + i * 0x420;
+            ribbonPhase = GROUND_F32(tile, 0x410) + 0.033333335f;
+            if (ribbonPhase > 1.0f)
+                ribbonPhase -= 1.0f;
+            GROUND_F32(tile, 0x410) = ribbonPhase;
+            GROUND_U32(tile, 0x414) =
+                (GROUND_U32(tile, 0x414) + 1) & 0xfff;
+            scale.x = 102.0f * (0.08f + 0.033333335f *
+                                 ((f32)GROUND_U32(tile, 0x414) / 4096.0f));
+            scale.y = 192.0f * (0.08f + 0.033333335f *
+                                 ((f32)GROUND_U32(tile, 0x414) / 4096.0f));
+            direction.x = 0.0f;
+            direction.y = 0.43f;
+            for (j = 0; j < 4; j++) {
+                center.x = (f32)i * (640.0f / 7.0f) + 45.714287f;
+                center.y = 640.0f *
+                           (ribbonPhase + (f32)j / 8.0f);
+                if ((i & 1) != 0)
+                    center.y = 640.0f * (1.0f - ribbonPhase -
+                                         (f32)j / 8.0f);
+                center.y -= 96.0f;
+                func_0021e170(tile + 0x10 + j * 0x100, &center,
+                              &direction, &scale);
+                color.a = sflGroundAlpha(panelScale * 0.43f);
+                func_0021d950(tile + 0x10 + j * 0x100, &color);
+            }
+        }
+    }
+
+    /*
+     * The six narrow strips are the final transition layer.  Three texture
+     * phases are used, repeated for the two halves of the strip array.
+     */
+    if (work[3] == 3 || work[3] == 4) {
+        static const u32 stripOffsets[6] = { 0x64f0, 0x65f0, 0x66f0,
+                                             0x67f0, 0x68f0, 0x69f0 };
+        static const s32 stripPhases[6] = { 0, 160, 80, 160, 160, 80 };
+        for (i = 0; i < 6; i++) {
+            f32 phase;
+
+            phase = (f32)((work[0x1abc] + stripPhases[i]) % 240) / 240.0f;
+            rect[0] = (1.0f - phase) * 1659.0f - 503.0f;
+            rect[1] = 0.0f;
+            rect[2] = 1659.0f;
+            rect[3] = 44.0f;
+            color.a = sflGroundAlpha(fade);
+            func_0021d8e0(GROUND_PTR(work, stripOffsets[i]), rect);
+            func_0021d950(GROUND_PTR(work, stripOffsets[i]), &color);
+        }
+    }
+
+    color.a = sflGroundAlpha(panelFade);
     func_0024a230(GROUND_PTR(work, SFL_GROUND_WORK_SIZE), &color);
     func_00249c10(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 }
