@@ -5547,7 +5547,7 @@ u64 FUN_00321d40(void)
 
   int iVar3;
 
-  u64 uVar4;
+  RwCamera *camera;
 
   long lVar5;
 
@@ -5591,17 +5591,15 @@ u64 FUN_00321d40(void)
 
     FUN_004cb7f0(*(u32 *)(iVar3 + 4),0x9572e0,0);
 
-    uVar4 = FUN_00198590();
+    camera = FUN_00198590_camera();
 
-    lVar5 = (long)(int)RwCameraBeginUpdate(uVar4);
-
-    if (lVar5 != 0) {
+    if (RwCameraBeginUpdate(camera) != 0) {
 
       FUN_00321360(4);
 
-      uVar4 = FUN_00198590();
+      camera = FUN_00198590_camera();
 
-      RwCameraEndUpdate(uVar4);
+      RwCameraEndUpdate(camera);
 
     }
 
