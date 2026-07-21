@@ -845,7 +845,7 @@ u32 FUN_003a2900(void)
 
   lVar1 = FUN_0035f140();
 
-  if (-1 < lVar1) {
+  if (lVar1 >= 0) {
 
     FUN_003a4990(lVar1,4,0);
 
