@@ -241,11 +241,10 @@ void FUN_0031eee0(int *param_1);
 void FUN_0031ef80(int *param_1,short param_2,short param_3);
 void FUN_0031f5c0(int *param_1);
 void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4);
-void FUN_0031f740(float param_1,int *param_2);
-#pragma alias FUN_0031f740_ret FUN_0031f740
-extern u32 FUN_0031f740_ret(float param_1, int *param_2);
-u8 * FUN_0031f870(void);
-void FUN_0031f9d0(void);
+u32 FUN_0031f740(float param_1,int *param_2);
+u8 * FUN_0031f7a0(float param_1,int *param_2);
+u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
+void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
 void FUN_0031faf0(int param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
 u8 * FUN_0031fd00(void);
@@ -3333,129 +3332,115 @@ void FUN_0031f6d0(u32 *param_1,u16 param_2,u16 param_3,u16 param_4)
 
 
 
-// FUN_0031F740 NONMATCHING
-
-
-void FUN_0031f740(float param_1,int *param_2)
-
-
-
+// FUN_0031F740
+u32 FUN_0031f740(float param_1,int *param_2)
 {
+  int high;
+  int low;
+  int stride;
+  u8 *data;
+  int mid;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = *param_2 + -1;
-
-  iVar2 = 0;
-
+  low = 0;
+  high = *param_2 - 1;
+  stride = param_2[2];
+  data = (u8 *)param_2[3];
   do {
-
-    iVar1 = iVar2 + iVar3 + 1 >> 1;
-
-    if (param_1 < *(float *)(param_2[3] + param_2[2] * iVar1)) {
-
-      iVar3 = iVar1 + -1;
-
-      iVar1 = iVar2;
-
+    mid = (low + high + 1) >> 1;
+    if (param_1 < *(float *)(data + stride * mid)) {
+      high = --mid;
     }
-
-    iVar2 = iVar1;
-
-  } while (iVar1 < iVar3);
-
-  return;
-
+    else {
+      low = mid;
+    }
+  } while (low < high);
+  return (u32)mid;
 }
 
 
 
 
+// FUN_0031F7A0 NONMATCHING
+u8 * FUN_0031f7a0(float param_1,int *param_2)
+{
+  float *key;
+  float fraction;
+  float start;
+  float output;
+  float difference;
+  int high;
+  int low;
+  int stride;
+  u8 *data;
+  int mid;
+
+  data = (u8 *)param_2[3];
+  low = 0;
+  high = *param_2 - 1;
+  stride = param_2[2];
+  do {
+    mid = (low + high + 1) >> 1;
+    if (param_1 < *(float *)(data + stride * mid)) {
+      high = --mid;
+    }
+    else {
+      low = mid;
+    }
+  } while (low < high);
+  if ((u32)mid >= (u32)(*param_2 - 1)) {
+    *(float *)&DAT_007ce534 = *(float *)(data + mid * 8 + 4);
+  }
+  else {
+    key = (float *)(data + mid * 8);
+    start = key[0];
+    output = key[1];
+    fraction = param_1 - start;
+    fraction /= key[2] - start;
+    difference = key[3] - output;
+    *(float *)&DAT_007ce534 = difference * fraction + output + 0.0f;
+  }
+  *(float *)&DAT_007ce530 = param_1;
+  return (u8 *)&DAT_007ce538;
+}
+
 // FUN_0031F870 NONMATCHING
 
 
-u8 * FUN_0031f870(void)
-
-
-
+u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5)
 {
-
   float fVar1;
-
   u32 uVar2;
-
   float *pfVar3;
+  int data1;
+  int data2;
 
-  int extraout_t0_lo;
-
-  int extraout_t0_lo_00;
-
-  int *extraout_t1_lo;
-
-  u64 extraout_t1;
-
-  int *extraout_t2_lo;
-
-  u32 extraout_f13;
-
-  float extraout_f13_00;
-
-  float extraout_f12;
-
-  float extraout_f14;
-
-  
-
-  uVar2 = ((code)FUN_0031f740)();
-
-  if (uVar2 < *extraout_t2_lo - 1U) {
-
-    pfVar3 = (float *)(extraout_t0_lo + uVar2 * 8);
-
-    DAT_007ce534 = (pfVar3[3] - pfVar3[1]) * ((extraout_f12 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
-
-                   pfVar3[1] + 0.0;
-
+  data1 = param_2[3];
+  data2 = param_4[3];
+  uVar2 = FUN_0031f740(param_1,param_2);
+  if (uVar2 < *param_2 - 1U) {
+    pfVar3 = (float *)(data1 + uVar2 * 8);
+    *(float *)&DAT_007ce534 =
+        (pfVar3[3] - pfVar3[1]) * ((param_1 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
+        pfVar3[1] + 0.0f;
   }
-
   else {
-
-    DAT_007ce534 = *(float *)(uVar2 * 8 + extraout_t0_lo + 4);
-
+    *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data1 + 4);
   }
-
-  fVar1 = DAT_007ce534;
-
-  uVar2 = FUN_0031f740_ret((float)(extraout_f13),(int *)(extraout_t1));
-
-  if (uVar2 < *extraout_t1_lo - 1U) {
-
-    pfVar3 = (float *)(extraout_t0_lo_00 + uVar2 * 8);
-
-    DAT_007ce534 = (pfVar3[3] - pfVar3[1]) * ((extraout_f13_00 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
-
-                   pfVar3[1] + 0.0;
-
+  fVar1 = *(float *)&DAT_007ce534;
+  uVar2 = FUN_0031f740(param_3,param_4);
+  if (uVar2 < *param_4 - 1U) {
+    pfVar3 = (float *)(data2 + uVar2 * 8);
+    *(float *)&DAT_007ce534 =
+        (pfVar3[3] - pfVar3[1]) * ((param_3 - *pfVar3) / (pfVar3[2] - *pfVar3)) +
+        pfVar3[1] + 0.0f;
   }
-
   else {
-
-    DAT_007ce534 = *(float *)(uVar2 * 8 + extraout_t0_lo_00 + 4);
-
+    *(float *)&DAT_007ce534 = *(float *)(uVar2 * 8 + data2 + 4);
   }
-
-  DAT_007ce53c = (DAT_007ce534 - fVar1) * extraout_f14 + fVar1 + 0.0;
-
-  DAT_007ce530 = extraout_f13_00;
-
+  *(float *)&DAT_007ce53c =
+      (*(float *)&DAT_007ce534 - fVar1) * param_5 + fVar1 + 0.0f;
+  *(float *)&DAT_007ce530 = param_3;
   return (u8 *)&DAT_007ce538;
-
 }
 
 
@@ -3468,54 +3453,27 @@ u8 * FUN_0031f870(void)
 
 
 
-void FUN_0031f9d0(void)
-
-
-
+void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 {
-
   u32 uVar1;
-
   float *pfVar2;
+  int data;
 
-  int extraout_t0_lo;
-
-  int extraout_t1_lo;
-
-  int *extraout_t2_lo;
-
-  float extraout_f13;
-
-  float extraout_f12;
-
-  
-
-  uVar1 = ((code)FUN_0031f740)();
-
-  if (uVar1 < *extraout_t2_lo - 1U) {
-
-    pfVar2 = (float *)(extraout_t0_lo + uVar1 * 8);
-
-    DAT_007ce534 = (pfVar2[3] - pfVar2[1]) * ((extraout_f12 - *pfVar2) / (pfVar2[2] - *pfVar2)) +
-
-                   pfVar2[1] + 0.0;
-
+  data = param_2[3];
+  uVar1 = FUN_0031f740(param_1,param_2);
+  if (uVar1 < *param_2 - 1U) {
+    pfVar2 = (float *)(data + uVar1 * 8);
+    *(float *)&DAT_007ce534 =
+        (pfVar2[3] - pfVar2[1]) * ((param_1 - *pfVar2) / (pfVar2[2] - *pfVar2)) +
+        pfVar2[1] + 0.0f;
   }
-
   else {
-
-    DAT_007ce534 = *(float *)(uVar1 * 8 + extraout_t0_lo + 4);
-
+    *(float *)&DAT_007ce534 = *(float *)(uVar1 * 8 + data + 4);
   }
-
-  DAT_007ce530 = extraout_f12;
-
-  DAT_007ce534 = ((1.0 - (float)*(u8 *)(extraout_t1_lo + 3) / 255.0) - DAT_007ce534) *
-
-                 extraout_f13 + DAT_007ce534 + 0.0;
-
-  return;
-
+  *(float *)&DAT_007ce530 = param_1;
+  *(float *)&DAT_007ce534 =
+      ((1.0f - (float)*(u8 *)((u8 *)param_4 + 3) / 255.0f) -
+       *(float *)&DAT_007ce534) * param_3 + *(float *)&DAT_007ce534 + 0.0f;
 }
 
 
@@ -54741,7 +54699,7 @@ u32 FUN_00351bb0(u16 param_1)
 
 
 
-// FUN_00351C20 NONMATCHING
+// FUN_00351C20
 
 
 void FUN_00351c20(void)
@@ -54749,21 +54707,60 @@ void FUN_00351c20(void)
 
 
 {
+  extern const char DAT_0069cca0[];
 
-  u64 uVar1;
+  u32 uVar1;
 
   
 
-  uVar1 = (*DAT_00960178)(0x10,0x40000);
+  uVar1 = (*DAT_00960178_abs)(0x10,0x40000);
 
   FUN_00521408(uVar1,0,0x10);
 
   *(u8 *)uVar1 = 0;
 
-  FUN_00194b20(0,0x69cca0,0x1059,0x351a10,0,uVar1);
+  FUN_00194b20(0,DAT_0069cca0,0x1059,FUN_00351a10,0,uVar1);
 
   return;
 
+}
+// FUN_00351CA0
+void FUN_00351ca0(int *param_1)
+{
+  volatile int *pVar1;
+  int iVar1;
+  u8 *puVar2;
+  u8 uVar3;
+  u8 uVar4;
+  u8 uVar5;
+  u8 uVar6;
+
+  pVar1 = *(int **)(param_1 + 7);
+  iVar1 = *(int *)(pVar1 + 1);
+  if (*(volatile u8 *)&bGpffffb857 != 0xff) {
+    puVar2 = *(u8 **)(iVar1 + 0x14);
+    uVar3 = *(volatile u8 *)&bGpffffb854;
+    uVar4 = *(volatile u8 *)&bGpffffb855;
+    uVar5 = *(volatile u8 *)&bGpffffb856;
+    uVar6 = *(volatile u8 *)&bGpffffb857;
+    puVar2[4] = uVar3;
+    puVar2[5] = uVar4;
+    puVar2[6] = uVar5;
+    puVar2[7] = uVar6;
+  }
+  else {
+    *(volatile u8 *)&bGpffffb857 = 0xfe;
+    puVar2 = *(u8 **)(iVar1 + 0x14);
+    uVar3 = *(volatile u8 *)&bGpffffb854;
+    uVar4 = *(volatile u8 *)&bGpffffb855;
+    uVar5 = *(volatile u8 *)&bGpffffb856;
+    uVar6 = *(volatile u8 *)&bGpffffb857;
+    puVar2[4] = uVar3;
+    puVar2[5] = uVar4;
+    puVar2[6] = uVar5;
+    puVar2[7] = uVar6;
+    *(volatile u8 *)&bGpffffb857 = 0xff;
+  }
 }
 
 
