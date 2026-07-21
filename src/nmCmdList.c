@@ -1856,18 +1856,14 @@ u64 FUN_003c75b0(void)
 
 
 u8 FUN_003c7610(void)
-
-
-
 {
-
   u8 uVar1;
 
-  long lVar2;
+  int lVar2;
 
   
 
-  lVar2 = FUN_003c7d50();
+  lVar2 = FUN_003c7d50_direct();
 
   if (lVar2 == 0) {
 
@@ -1877,7 +1873,7 @@ u8 FUN_003c7610(void)
 
   else {
 
-    uVar1 = *(u8 *)((int)lVar2 + 0xd);
+    uVar1 = *(s8 *)(lVar2 + 0xd);
 
   }
 
