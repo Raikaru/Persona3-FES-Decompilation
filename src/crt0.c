@@ -13,6 +13,7 @@ extern void func_0051f6a0(...);
 extern void func_0050da58(s32 status);
 extern void FlushCache(s32 mode);
 extern int main(int argc, char* argv[]);
+extern void FUN_00100220_ExitThread(void);
 
 // FUN_00100008 NONMATCHING
 void func_00100008(void)
@@ -36,15 +37,24 @@ void func_00100008(void)
 
     func_0050d658(0, 0, 0, 0, 0, 0, (void*)0x009ACC80,
                   (void*)-1, (void*)0x000A0000, (void*)0x0095C280,
-                  (void*)0x00100220, 0, 0, 0, 0);
+                  (void*)FUN_00100220_ExitThread, 0, 0, 0, 0);
     FlushCache(0);
     func_005033e0(0);
     func_0051f6a0((void*)(uintptr_t)main(
         (s32)D_0095C280[0], (char**)&D_0095C280[1]));
 }
 
-// FUN_00100218 NONMATCHING
+// FUN_00100220 ExitThread NONMATCHING
+void FUN_00100220_ExitThread(void)
+{
+    __asm__ volatile ("addiu $v1, $zero, 0x23\n" "syscall 0" : : : "memory");
+}
+
+// FUN_00100218
+#pragma optimization_level 3
+#pragma tailcall on
 void func_00100218(s32 status)
 {
     func_0050da58(status);
 }
+#pragma optimization_level 2
