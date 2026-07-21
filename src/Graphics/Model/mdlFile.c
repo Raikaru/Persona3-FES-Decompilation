@@ -10472,13 +10472,13 @@ void FUN_00326740(u64 param_1)
 
   if (puVar1[0x11] != 0) {
 
-    FUN_00322660((int)(param_1));
+    FUN_00322660(puVar1[0x11]);
 
   }
 
   if (puVar1[0x12] != 0) {
 
-    FUN_00322f20((int)(param_1));
+    FUN_00322f20(puVar1[0x12]);
 
   }
 
@@ -10614,7 +10614,7 @@ void FUN_003269e0(int param_1,int param_2)
 
     if (*(int *)(param_1 + 0x44) != 0) {
 
-      FUN_00322660((int)(param_1));
+      FUN_00322660(*(int *)(param_1 + 0x44));
 
     }
 
@@ -10724,7 +10724,7 @@ void FUN_003269e0(int param_1,int param_2)
 
     if (*(int *)(param_1 + 0x48) != 0) {
 
-      FUN_00322f20((int)(param_1));
+      FUN_00322f20(*(int *)(param_1 + 0x48));
 
     }
 
@@ -10891,7 +10891,7 @@ void FUN_00326e50(int param_1,u64 param_2)
 
 
 
-// FUN_00326F00 NONMATCHING
+// FUN_00326F00
 
 
 void FUN_00326f00(int param_1,u64 param_2)
@@ -10906,7 +10906,7 @@ void FUN_00326f00(int param_1,u64 param_2)
 
   if (*(int *)(param_1 + 0x44) != 0) {
 
-    FUN_00322660((int)(param_1));
+    FUN_00322660(*(int *)(param_1 + 0x44));
 
   }
 
@@ -11069,7 +11069,7 @@ void FUN_00327090(u32 *param_1,u64 param_2)
 
 
 
-// FUN_003271C0 NONMATCHING
+// FUN_003271C0
 
 
 void FUN_003271c0(int param_1,u64 param_2)
@@ -11084,7 +11084,7 @@ void FUN_003271c0(int param_1,u64 param_2)
 
   if (*(int *)(param_1 + 0x48) != 0) {
 
-    FUN_00322f20((int)(param_1));
+    FUN_00322f20(*(int *)(param_1 + 0x48));
 
   }
 
@@ -43073,13 +43073,13 @@ void FUN_00346350(u64 param_1)
 
   if (*(int *)(iVar1 + 0xcc) != 0) {
 
-    FUN_00322f20((int)(param_1));
+    FUN_00322f20(*(int *)(iVar1 + 0xcc));
 
   }
 
   if (*(int *)(iVar1 + 0xd0) != 0) {
 
-    FUN_00322660((int)(param_1));
+    FUN_00322660(*(int *)(iVar1 + 0xd0));
 
   }
 
@@ -43157,7 +43157,7 @@ void FUN_00346460(int param_1,int param_2)
 
       if (*(int *)(param_1 + 0xcc) != 0) {
 
-        FUN_00322f20((int)(param_1));
+        FUN_00322f20(*(int *)(param_1 + 0xcc));
 
       }
 
@@ -43173,7 +43173,7 @@ void FUN_00346460(int param_1,int param_2)
 
     if (*(int *)(param_1 + 0xd0) != 0) {
 
-      FUN_00322660((int)(param_1));
+      FUN_00322660(*(int *)(param_1 + 0xd0));
 
     }
 
@@ -53247,13 +53247,13 @@ void FUN_003503e0(u64 param_1)
 
   if (*(int *)(iVar1 + 0xa8) != 0) {
 
-    FUN_00322f20((int)(param_1));
+    FUN_00322f20(*(int *)(iVar1 + 0xa8));
 
   }
 
   if (*(int *)(iVar1 + 0xac) != 0) {
 
-    FUN_00322660((int)(param_1));
+    FUN_00322660(*(int *)(iVar1 + 0xac));
 
   }
 
@@ -53343,7 +53343,7 @@ void FUN_00350500(int param_1,int param_2)
 
       if (*(int *)(param_1 + 0xa8) != 0) {
 
-        FUN_00322f20((int)(param_1));
+        FUN_00322f20(*(int *)(param_1 + 0xa8));
 
       }
 
@@ -53359,7 +53359,7 @@ void FUN_00350500(int param_1,int param_2)
 
     if (*(int *)(param_1 + 0xac) != 0) {
 
-      FUN_00322660((int)(param_1));
+      FUN_00322660(*(int *)(param_1 + 0xac));
 
     }
 

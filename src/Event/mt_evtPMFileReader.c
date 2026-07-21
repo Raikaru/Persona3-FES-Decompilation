@@ -61,7 +61,7 @@ extern u32 FUN_00394df0_pm(int *param_1);
 #pragma alias FUN_00395170_pm FUN_00395170
 extern void FUN_00395170_pm(void);
 #pragma alias FUN_003951a0_pm FUN_003951a0
-extern void FUN_003951a0_pm(void);
+extern void FUN_003951a0_pm(u32 param_1);
 #pragma alias FUN_00395000_pm2 FUN_00395000
 extern void FUN_00395000_pm2(u32 param_1,u32 param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8 *param_6);
 #pragma alias FUN_003bd9a0_pm2 FUN_003bd9a0
@@ -78,7 +78,7 @@ extern u8 DAT_006a1190[];
 #pragma alias FUN_00521408_pm2 FUN_00521408
 extern void FUN_00521408_pm2(void *param_1,u8 param_2,u32 param_3);
 #pragma alias FUN_00100ec0_pm FUN_00100ec0
-extern void FUN_00100ec0_pm(void);
+extern void FUN_00100ec0_pm(u32 param_1);
 
 #define FUN_00395000 FUN_00395000_pm
 #define FUN_00100d80 FUN_00100d80_pm
@@ -251,7 +251,7 @@ u64 FUN_00397950(void)
 }
 #define FUN_00397950(...) ((u64 (*)(...))FUN_00397950)(__VA_ARGS__)
 #undef FUN_00397d60
-// FUN_00397D60 NONMATCHING
+// FUN_00397D60
 
 
 void FUN_00397d60(void)
@@ -266,13 +266,13 @@ void FUN_00397d60(void)
 
   if (*(u16 *)(iVar1 + 0x18) > 0) {
 
-    FUN_003951a0();
+    FUN_003951a0(*(u16 *)(iVar1 + 0x18));
 
   }
 
   if (*(int *)(iVar1 + 0x1c) != 0) {
 
-    FUN_00100ec0();
+    FUN_00100ec0(*(int *)(iVar1 + 0x1c));
 
     *(u32 *)(iVar1 + 0x1c) = 0;
 
@@ -292,7 +292,7 @@ void FUN_00397d60(void)
 
   if (*(int *)(iVar1 + 0x20) != 0) {
 
-    FUN_00100ec0();
+    FUN_00100ec0(*(int *)(iVar1 + 0x20));
 
     *(u32 *)(iVar1 + 0x20) = 0;
 
@@ -312,7 +312,7 @@ void FUN_00397d60(void)
 
   if (*(int *)(iVar1 + 0x24) != 0) {
 
-    FUN_00100ec0();
+    FUN_00100ec0(*(int *)(iVar1 + 0x24));
 
     *(u32 *)(iVar1 + 0x24) = 0;
 
