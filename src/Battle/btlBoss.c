@@ -215,129 +215,166 @@ const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
     return entry;
 }
 
-extern void FUN_002b2060(int param_1);
-extern void FUN_002a5f40(BtlCamera* camera);
-extern void FUN_002b4f40(int param_1);
-extern void FUN_002b4db0_float(float param_1);
-extern void FUN_002b0210(BtlCamera* camera);
-extern s32 FUN_002a3750(BtlCamera* camera, u32 unit);
-extern void btlUnit002880e0(BtlUnit* unit, u16 param_2);
-extern u32 FUN_0030c3a0(u16 *param_1);
-extern void FUN_002e70b0(BtlCamera* camera);
-extern void FUN_002b2800(BtlCamera *camera);
-extern f32 fGpffff8108;
+extern void func_002e4a30(void);
+extern void func_002e4a40(u64 param_1);
+extern void func_002e4f50(BtlCamera* camera);
+extern void func_002e5040(void);
+extern void func_002e5060(u64 param_1);
+extern void func_002e58a0(u64 param_1);
+extern void func_002e70b0(BtlCamera* camera);
+extern void func_002e71c0(int param_1);
+extern void func_002e7210(BtlCamera* camera);
+extern void func_002e7320(void);
+extern void func_002e7330(u64 param_1);
+extern void func_002e7680(void);
+extern void func_002e76a0(BtlCamera* camera);
+extern void func_002e7710(BtlCamera* camera);
+extern void func_002e77c0(BtlCamera* camera);
+extern void func_002e7810(int param_1);
+extern void func_002e7880(void);
+extern void func_002e7890(u64 param_1);
+extern void func_002e82b0(u64 param_1);
+extern void func_002e87b0(BtlCamera* camera);
+extern void func_002e8820(BtlCamera *camera);
+extern void func_002e8a40(BtlCamera* camera);
+extern void func_002e8c80(void);
+extern void func_002e8c90(int param_1);
+extern void func_002e8d20(void);
+extern void func_002e8d40(void);
+extern void func_002e8d70(void *param_1);
+extern void func_002e8e20(void);
+extern void func_002e8f40(void);
+extern void func_002e9060(void);
 
-// FUN_002e7320
-void FUN_002e7320(BtlCamera* camera)
+const BtlCameraStateEntry gBtlBossCameraStateEntries[3][BTLCAMERA_STATE_MAX] =
 {
-}
-
-// FUN_002e7680
-void FUN_002e7680(int param_1)
-{
-    FUN_002b2060(param_1);
-}
-
-// FUN_002e7880
-void FUN_002e7880(BtlCamera* camera)
-{
-}
-
-// FUN_002e5040
-void FUN_002e5040(BtlCamera* camera)
-{
-    FUN_002a5f40(camera);
-}
-
-// FUN_002e8c80
-void FUN_002e8c80(BtlCamera* camera)
-{
-}
-
-// FUN_002e8d20
-void FUN_002e8d20(int param_1)
-{
-    FUN_002b4f40(param_1);
-}
-
-// FUN_002e8d40
-void FUN_002e8d40(BtlCamera* camera)
-{
-    FUN_002b4db0_float(fGpffff8108);
-}
-
-// FUN_002e71c0
-void FUN_002e71c0(BtlCamera* camera)
-{
-    if (camera->action != NULL && (camera->action->unk_1a & 1) != 0)
     {
-        if (*(u16*)(DAT_007ce3ec + 0xb78) == 1)
-        {
-            FUN_002b0210(camera);
-        }
-    }
-}
-
-// FUN_002e77c0
-void FUN_002e77c0(BtlCamera* camera)
-{
-    BtlAction* action;
-    action = camera->action;
-    if (action != NULL && (action->unk_1a & 1) != 0 &&
-        *(u8*)((u8*)action->unit + 0xa2) != 0)
+        {NULL, NULL, 0, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8d20, (void(*)(BtlCamera*))func_002e8d40, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e4a40, NULL, 1, 0, NULL},
+        {func_002e70b0, (void(*)(BtlCamera*))func_002e71c0, 1, 1, NULL},
+        {func_002e7210, (void(*)(BtlCamera*))func_002e7320, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e7330, (void(*)(BtlCamera*))func_002e7680, 1, 1, NULL},
+        {func_002e76a0, func_002e7710, 1, 1, NULL},
+        {func_002e77c0, (void(*)(BtlCamera*))func_002e7810, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e4f50, (void(*)(BtlCamera*))func_002e5040, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e5060, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e58a0, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e58a0, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e7880, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e7890, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e82b0, func_002e87b0, 1, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 0, 1, NULL},
+        {func_002e8a40, (void(*)(BtlCamera*))func_002e8c80, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8c90, NULL, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8c90, NULL, 0, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e8d70, NULL, 1, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8e20, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e8f40, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+    },
     {
-        FUN_002e70b0(camera);
-    }
-}
-
-// FUN_002e76a0
-void FUN_002e76a0(BtlCamera* camera)
-{
-    u32 result;
-
-    if (camera->action != NULL)
+        {NULL, NULL, 0, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e5060, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e7890, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e82b0, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 0, 1, NULL},
+        {func_002e8a40, (void(*)(BtlCamera*))func_002e8c80, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8c90, NULL, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8c90, NULL, 0, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e8d70, NULL, 1, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e8e20, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e8f40, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+    },
     {
-        *(u32*)(DAT_007ce3ec + 0xb74) = *(u32*)((u8*)camera->action + 0x38);
-        result = FUN_0030c3a0((u16*)(uintptr_t)*(u32*)((u8*)camera->action->unit + 0xa2c));
-        if (result == 0)
-        {
-            FUN_002b2800(camera);
-        }
-    }
-}
-
-// FUN_002e7810
-void FUN_002e7810(BtlCamera* camera)
-{
-    BtlAction* action;
-    u32 flag;
-    action = camera->action;
-    if (action != NULL)
-    {
-        flag = action->unk_1a & 1;
-        if (flag != 0 && *(u8*)((u8*)action->unit + 0xa2) != 0)
-        {
-            if (action != NULL && flag != 0 && *(u16*)(DAT_007ce3ec + 0xb78) == 1)
-            {
-                FUN_002b0210(camera);
-            }
-        }
-    }
-}
-
-// FUN_002e87b0
-void FUN_002e87b0(BtlCamera* camera)
-{
-    int iVar1;
-    iVar1 = (int)(uintptr_t)camera;
-    if (*(u32*)(iVar1 + 0x120) != 0 &&
-        camera->action != NULL && (camera->action->unk_1a & 1) != 0 &&
-        FUN_002a3750(camera, *(u32*)(iVar1 + 0x120)) != 0)
-    {
-        btlUnit002880e0((BtlUnit*)(uintptr_t)*(u32*)(iVar1 + 0x120),
-                        *(u16*)(iVar1 + 0x124));
-    }
-}
+        {NULL, NULL, 0, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e9060, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e4a30, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e4a30, NULL, 1, 1, NULL},
+        {(void(*)(BtlCamera*))func_002e4a30, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {NULL, NULL, 1, 1, NULL},
+        {func_002e8820, NULL, 0, 1, NULL},
+        {func_002e8a40, (void(*)(BtlCamera*))func_002e8c80, 0, 1, NULL},
+        {func_002e8820, NULL, 0, 1, NULL},
+        {func_002e8820, NULL, 0, 1, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+        {(void(*)(BtlCamera*))func_002e8d70, NULL, 1, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {NULL, NULL, 0, 1, NULL},
+        {func_002e8820, NULL, 1, 0, NULL},
+        {func_002e8820, NULL, 1, 0, NULL},
+        {NULL, NULL, 1, 0, NULL},
+    },
+};
 
 // FUN_002f9710
 void btlBossInitLoadPakPacket(void* work)
