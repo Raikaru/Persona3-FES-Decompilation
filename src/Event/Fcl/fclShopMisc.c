@@ -741,55 +741,52 @@ void FUN_003f01d0(int param_1,int param_2,int *param_3)
   FUN_003f00d0(ptr,0,param_3);
 }
 
-// FUN_003F0240 NONMATCHING
-
-
+// FUN_003F0240
 u32 FUN_003f0240(int param_1)
-
-
-
 {
+  u8 *ptr;
+  int mode;
+  int result;
 
-  int iVar1;
-
-  long lVar2;
-
-  
-
-  if ((param_1 < 0) || (8 < param_1)) {
-
-    K_Assert((const char *)(u32)0x6aede8,0xb9);
-
+  if ((param_1 < 0) || !(param_1 < 9)) {
+    K_Assert((const char *)DAT_006aede8,0xb9);
   }
 
-  lVar2 = datGetScenarioMode();
+  mode = datGetScenarioMode();
 
-  iVar1 = param_1;
-
-  if (lVar2 != 0) {
-
-    iVar1 = param_1 + 9;
-
+  if (mode == 0) {
+    ptr = (u8 *)&DAT_006ac9d0 + param_1 * 0x24;
+  }
+  else {
+    ptr = (u8 *)&DAT_006ac9d0 + (param_1 + 9) * 0x24;
+  }
+  if (param_1 == 2) {
+    goto special;
+  }
+  if (param_1 == 1) {
+    goto special;
+  }
+  switch (param_1) {
+    case 0:
+      goto special;
+    default:
+      goto zero;
   }
 
-  if (((param_1 == 2) || (param_1 == 1)) || (param_1 == 0)) {
-
-
-    if (lVar2 == 0) {
-
-
-    }
-
-    if (lVar2 != 0) {
-
-      return 1;
-
-    }
-
+special:
+  result = FUN_003f00d0((int *)(ptr + 8),1,0);
+  if (result == 0) {
+    result = FUN_003f00d0((int *)(ptr + 8),0,0);
+  }
+  if (result == 0) {
+    goto zero;
   }
 
+one:
+  return 1;
+
+zero:
   return 0;
-
 }
 
 // FUN_003F0350
