@@ -138,6 +138,16 @@ static const char* const sSfdDecodePaths[] =
     "sound/spu/bse.hd", "sound/spu/bse.bd", "sound/spu/bse.sq"
 };
 
+typedef struct HSfdDmaDescriptor
+{
+    const void* src;
+    void* dst;
+    u32 size;
+    u32 mode;
+} HSfdDmaDescriptor;
+
+static HSfdDmaDescriptor sSfdDmaDescriptor;
+
 extern void* func_0057c680(void* descriptor);
 extern void* func_0057d5d8(void* descriptor);
 extern void func_0057e378(void* decoder, s32 mode);
@@ -153,6 +163,7 @@ extern s32 func_004c5250(void* stream, void* dst, u32 bytes);
 extern void func_004c5780(void* stream, s32 mode);
 extern HSfdImage* func_004cbe00(u32 width, u32 height, u32 bits);
 extern void func_004cbf20(HSfdImage* image);
+extern void FlushCache(s32 mode);
 
 static void H_SfdPlay_ResetTaskResources(HSfd* work)
 {
@@ -743,15 +754,39 @@ void func_0010cac0(void)
     }
 }
 
-// FUN_0010CCE0 NONMATCHING
+// FUN_0010CCE0
 s32 func_0010cce0(void* dst, const void* src, s32 size)
 {
-    if ((dst == NULL) || (src == NULL) || (size <= 0))
+    s32 dmaId;
+    s32 status;
+
+    if (size <= 0)
     {
         return 0;
     }
 
-    memcpy(dst, src, size);
+    sSfdDmaDescriptor.src = src;
+    sSfdDmaDescriptor.dst = dst;
+    sSfdDmaDescriptor.size = size;
+    sSfdDmaDescriptor.mode = 0;
+
+    FlushCache(0);
+    dmaId = sceSifSetDma(&sSfdDmaDescriptor, 1);
+    if (dmaId == 0)
+    {
+        K_Assert("h_sndcom.c", 0x107);
+    }
+
+    do
+    {
+        status = sceSifDmaStat(dmaId);
+    } while (status >= 0);
+
+    do
+    {
+        status = sceSifDmaStat(dmaId);
+    } while (status > 0 || status == 0);
+
     return size;
 }
 
