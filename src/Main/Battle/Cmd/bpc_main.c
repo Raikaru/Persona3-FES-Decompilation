@@ -3,6 +3,7 @@
 #include "Battle/battle.h"
 #include "Main/Battle/Cmd/bpp_main.h"
 extern const char D_0068E880[];
+extern const char DAT_007cc468[];
 
 typedef unsigned int uint;
 typedef unsigned short ushort;
@@ -175,7 +176,6 @@ void FUN_00242cc0(void)
         if ((uVar2 & 0x80) != 0) goto LAB_0024307c;
       }
 LAB_00242e4c:
-      uVar2 = *puVar6;
       if ((uVar2 & 0x10) != 0) {
         if ((int)puVar6[0x1c4] < 10) {
           puVar6[0x1c4] = puVar6[0x1c4] + 1;
@@ -520,16 +520,17 @@ void FUN_002441b0(u32 param_1)
 
 {
   ushort uVar1;
-  uint *puVar2;
+  int unaff_s1_lo;
   short sVar3;
   int iVar4;
   uint uVar5;
   int iVar6;
-  u32 uVar7;
-  long lVar8;
   u32 uVar9;
-  int unaff_s1_lo;
+  long lVar8;
+  register u32 uVar7;
+  uint *puVar2;
   int iVar10;
+  const char *message;
   
   if (sBpcWork == (uint *)0x0) {
     K_Assert(D_0068E880, 0x97);
@@ -544,14 +545,21 @@ void FUN_002441b0(u32 param_1)
   if ((int)puVar2[2] < 1) {
     K_Assert(D_0068E880, 0x26a);
   }
-  printf((const char*)0x7cc468, param_1);
+  __asm__ volatile ("addiu %0, $gp, -0x6888" : "=r"(message));
+  printf(message, param_1);
   uVar5 = *puVar2;
-  *puVar2 = uVar5 & 0xfffffffb;
-  *puVar2 = uVar5 & 0xfffffff3;
-  *puVar2 = uVar5 & 0xffffffe3;
-  *puVar2 = uVar5 & 0xffffffc3;
-  *puVar2 = uVar5 & 0xffffffc1;
-  *puVar2 = uVar5 & 0xfffffec1;
+  uVar5 = uVar5 & 0xfffffffb;
+  *puVar2 = uVar5;
+  uVar5 = uVar5 & 0xfffffff3;
+  *puVar2 = uVar5;
+  uVar5 = uVar5 & 0xffffffe3;
+  *puVar2 = uVar5;
+  uVar5 = uVar5 & 0xffffffc3;
+  *puVar2 = uVar5;
+  uVar5 = uVar5 & 0xffffffc1;
+  *puVar2 = uVar5;
+  uVar5 = uVar5 & 0xfffffec1;
+  *puVar2 = uVar5;
   if (puVar2[2] == 1) {
     *puVar2 = *puVar2 | 2;
   }
@@ -758,6 +766,7 @@ void FUN_00244a40(u32 param_1)
     bppMain0020f7d0_u16(*(u16 *)(*(int *)(iVar3 + 0xa2c) + 2));
     break;
   }
+  uVar5 = puVar2[1];
   if (uVar5 == 2) {
     puVar5 = FUN_00245bf0(puVar2[4]);
     if ((*puVar5 & 0x80) == 0) {
