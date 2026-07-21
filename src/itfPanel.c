@@ -53,6 +53,8 @@ extern u32 LAB_003aa508;
 extern u32 LAB_006a1de8;
 extern u8 * PTR_FUN_006a1c10;
 extern u8 * PTR_FUN_006a1c90;
+#pragma alias PTR_FUN_006a1c90_abs PTR_FUN_006a1c90
+extern u8 PTR_FUN_006a1c90_abs[];
 extern u8 * PTR_LAB_006a1c50;
 extern u8 * PTR_s_Sayonara_006a24d0;
 extern u32 fGpffff8110;
@@ -643,7 +645,7 @@ void FUN_003a9080(u64 param_1)
 
 #define FUN_003a9080(...) ((void (*)(...))FUN_003a9080)(__VA_ARGS__)
 #undef FUN_003a90c0
-// FUN_003A90C0 NONMATCHING
+// FUN_003A90C0
 
 
 void FUN_003a90c0(int param_1,u64 param_2)
@@ -658,7 +660,7 @@ void FUN_003a90c0(int param_1,u64 param_2)
 
   }
 
-  (*(code *)(&PTR_FUN_006a1c90)[*(u8 *)(param_1 + 0x3c)])(param_1,param_2);
+  ((code *)PTR_FUN_006a1c90_abs)[*(u8 *)(param_1 + 0x3c)](param_1,param_2);
 
   return;
 
