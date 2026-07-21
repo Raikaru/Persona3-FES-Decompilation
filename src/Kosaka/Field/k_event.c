@@ -323,40 +323,90 @@ void* func_001c6720(f32 maxDist, const FldUnit* unit)
 // FUN_001c6a20 NONMATCHING
 void* func_001c6a20(const FldUnit* unit, f32 maxDist, f32 fov)
 {
+    FldUnit* result;
+    FldUnit* candidate;
+    FldUnit** entry;
     RwMatrix* viewerMat;
-    u8* cell;
-    void* object;
-    Model* model;
-    RwMatrix* objectMat;
+    RwV3d delta;
+    RwV3d line[2];
+    RwV3d hitPoint;
+    const RwV3d* viewerPos;
+    f32 nearest;
+    f32 distance;
+    s32 rawX;
+    s32 x;
+    s32 rawZ;
+    s32 z;
     s32 i;
+    u8* cell;
 
-    viewerMat = mdlGetMatrix(unit->mdl);
-    cell = FldEvent_MapCell(&viewerMat->pos);
-    for (i = 0; i < 0x31; i++)
+    result = NULL;
+    nearest = DAT_007caefc;
+    viewerPos = &mdlGetMatrix(unit->mdl)->pos;
+    x = 0;
+    if (K_Scene_001a0250() != false)
     {
-        object = *(void**)(cell + 0x60 + i * sizeof(void*));
-        if (object == NULL)
+        rawX = (s32)((s32)(viewerPos->x + 400.0f) / 800.0f);
+        x = rawX >> 2;
+        if (rawX < 0)
         {
-            break;
-        }
-        if (*(u32*)((u8*)object + 0x48) == 0)
-        {
-            continue;
-        }
-        model = *(Model**)((u8*)object + 0x50);
-        if (model == NULL)
-        {
-            continue;
-        }
-        objectMat = mdlGetMatrix(model);
-        if (func_001c6450(viewerMat, &objectMat->pos, fov, maxDist) == true)
-        {
-            return object;
+            x = (rawX + 3) >> 2;
         }
     }
-    return NULL;
-}
 
+    z = 0;
+    viewerPos = &mdlGetMatrix(unit->mdl)->pos;
+    if (K_Scene_001a0250() != false)
+    {
+        rawZ = (s32)((s32)(viewerPos->z + 400.0f) / 800.0f);
+        z = rawZ >> 2;
+        if (rawZ < 0)
+        {
+            z = (rawZ + 3) >> 2;
+        }
+    }
+
+    i = 0;
+    cell = (u8*)0x0086b180 + z * 0x310 + x * 0xc4;
+    entry = (FldUnit**)(cell + i * 4);
+    candidate = *entry;
+    while (candidate != NULL)
+    {
+        if (candidate->genusBase != NULL)
+        {
+            viewerMat = mdlGetMatrix(unit->mdl);
+            if (K_FldEvent_IsPosWithinFov(viewerMat,
+                                           &mdlGetMatrix(candidate->mdl)->pos,
+                                           fov) != false)
+            {
+                delta.x = mdlGetMatrix(candidate->mdl)->pos.x -
+                          mdlGetMatrix(unit->mdl)->pos.x;
+                delta.y = mdlGetMatrix(candidate->mdl)->pos.y -
+                          mdlGetMatrix(unit->mdl)->pos.y;
+                delta.z = mdlGetMatrix(candidate->mdl)->pos.z -
+                          mdlGetMatrix(unit->mdl)->pos.z;
+
+                line[0] = mdlGetMatrix(unit->mdl)->pos;
+                line[1] = mdlGetMatrix(candidate->mdl)->pos;
+                line[0].y += 100.0f;
+                line[1].y += 100.0f;
+                if (K_FldFrame_Raycast(line, &hitPoint) == false)
+                {
+                    distance = RwV3dLength(&delta);
+                    if (distance < maxDist && distance < nearest)
+                    {
+                        result = *entry;
+                        nearest = distance;
+                }
+            }
+        }
+        }
+        i++;
+        entry = (FldUnit**)(cell + i * 4);
+        candidate = *entry;
+    }
+    return result;
+}
 #pragma push
 #pragma opt_rebuildconditionals off
 // FUN_001c6d70
