@@ -30,6 +30,18 @@ extern KwlnTask* iGpffffb270;
 extern void func_001958a0(void* source, KwlnTask* destination);
 extern void func_001957b0(KwlnTask* source, KwlnTask* destination);
 extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e0958;
+extern u16 DAT_007e095a;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0958_abs DAT_007e0958
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e0958_abs[];
+extern u8 DAT_007e095a_abs[];
 extern u8* iGpffffb25c;
 extern void func_0018bc10(void* transition, s32 drawMode,
                           s32 positionMode, s32 alphaMode,
@@ -311,27 +323,135 @@ void h_campDestroySpriteSetupTask(KwlnTask* task)
 // FUN_0011abd0 NONMATCHING
 u32 h_campUpdatePagedCursor(u32 pageSize, u32 entryCount, s32* firstEntry, s32* selectedEntry)
 {
-    s32 lastEntry;
+    s32 selected, first;
+    u32 changed;
+    u16 dpad;
+    s32 down;
+    s32 up;
 
-    if (entryCount == 0 || pageSize == 0) {
-        return 0;
+    first = *firstEntry;
+    selected = *selectedEntry;
+    changed = 0;
+    down = 1;
+    dpad = *(u16*)DAT_007e0952_abs;
+    if ((dpad & 0x1000) == 0 && (*(u16*)DAT_007e095a_abs & 0x1000) == 0) {
+        down = 0;
     }
-    lastEntry = (s32)entryCount - 1;
-    if (*selectedEntry < 0) {
-        *selectedEntry = 0;
-    } else if (*selectedEntry > lastEntry) {
-        *selectedEntry = lastEntry;
+
+    if (down) {
+        if (selected == 1) {
+            func_0010a4e0(0, 0, 0, 0);
+            changed = 1;
+            if (first != 0) {
+                first--;
+            } else {
+                selected--;
+            }
+        } else if (selected == 0) {
+            if (((*(u16*)DAT_007e094e_abs & 0x1000) != 0) || ((*(u16*)DAT_007e0958_abs & 0x1000) != 0)) {
+                if ((s32)entryCount < (s32)pageSize) {
+                    func_0010a4e0(0, 0, 0, 0);
+                    changed = 1;
+                    selected = entryCount - 1;
+                    first = pageSize - entryCount;
+                } else if (entryCount != 0 && entryCount != 1) {
+                    func_0010a4e0(0, 0, 0, 0);
+                    changed = 1;
+                    selected = pageSize - 1;
+                    first = 0;
+                }
+            }
+        } else {
+            if (entryCount != 0 && entryCount != 1) {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                selected--;
+            }
+        }
+    } else {
+    up = 1;
+    if ((dpad & 0x4000) == 0 && (*(u16*)DAT_007e095a_abs & 0x4000) == 0) {
+        up = 0;
     }
-    if (*firstEntry > *selectedEntry) {
-        *firstEntry = *selectedEntry;
+    if (up) {
+        if (selected == (s32)entryCount - 2) {
+            if (first + (s32)entryCount < (s32)pageSize) {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                first++;
+            } else if (first + (s32)entryCount - 1 < (s32)pageSize) {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                selected++;
+            } else if ((s32)pageSize - 1 == first + selected) {
+                if (((*(u16*)DAT_007e094e_abs & 0x4000) != 0) || ((*(u16*)DAT_007e0958_abs & 0x4000) != 0)) {
+                    if (entryCount != 0 && entryCount != 1) {
+                        func_0010a4e0(0, 0, 0, 0);
+                        changed = 1;
+                        first = 0;
+                        selected = 0;
+                    }
+                }
+            }
+        } else if ((s32)pageSize - 1 == first + selected) {
+            if (((*(u16*)DAT_007e094e_abs & 0x4000) != 0) || ((*(u16*)DAT_007e0958_abs & 0x4000) != 0)) {
+                if (entryCount != 0 && entryCount != 1) {
+                    func_0010a4e0(0, 0, 0, 0);
+                    changed = 1;
+                    first = 0;
+                    selected = 0;
+                }
+            }
+        } else {
+            if (entryCount != 0 && entryCount != 1) {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                selected++;
+            }
+        }
+    } else if ((dpad & 1) != 0) {
+        if ((s32)entryCount < (s32)pageSize) {
+            if (first < (s32)entryCount) {
+                if (first != 0) {
+                    func_0010a4e0(0, 0, 0, 0);
+                    changed = 1;
+                    first = 0;
+                }
+            } else {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                first -= entryCount;
+            }
+            if (selected == (s32)entryCount - 1) {
+                selected--;
+            }
+        }
+    } else if ((dpad & 2) != 0) {
+        if ((s32)entryCount < (s32)pageSize) {
+            if (entryCount * 2 + first < (s32)pageSize) {
+                func_0010a4e0(0, 0, 0, 0);
+                changed = 1;
+                first += entryCount;
+            } else {
+                s32 newFirst = pageSize - entryCount;
+                if (first != newFirst) {
+                    func_0010a4e0(0, 0, 0, 0);
+                    changed = 1;
+                    first = newFirst;
+                }
+            }
+            if (selected == 0) {
+                selected++;
+            }
+        }
     }
-    if (*selectedEntry >= *firstEntry + (s32)pageSize) {
-        *firstEntry = *selectedEntry - (s32)pageSize + 1;
     }
-    if (*firstEntry < 0) {
-        *firstEntry = 0;
+
+    if (changed) {
+        *firstEntry = first;
+        *selectedEntry = selected;
     }
-    return 1;
+    return changed;
 }
 
 // FUN_0011b0b0
