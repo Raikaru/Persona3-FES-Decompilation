@@ -492,15 +492,15 @@ s32 FUN_0040eb50(float param_1,int param_2,int param_3,u8 param_4,int param_5,co
 
 }
 
-// FUN_0040EBC0 NONMATCHING
+// FUN_0040EBC0
 
 
 s32 FUN_0040ebc0(float param_1,int param_2,int param_3,int param_4,int param_5,const void *param_6,int param_7)
 {
-  u32 uVar1;
-  int iVar2;
-  u32 *puVar3;
   u32 *puVar4;
+  u32 *puVar3;
+  int iVar2;
+  u32 uVar1;
   u32 auStack_20 [8];
 
   puVar4 = DAT_006af980;
