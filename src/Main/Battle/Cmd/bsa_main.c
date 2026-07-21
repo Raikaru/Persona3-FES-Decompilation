@@ -69,7 +69,7 @@ extern void func_004d7f60(s32 state, u32 value);
 #define BSA_FRAME_W(frame) ((f32)((s32*)(frame))[3])
 #define BSA_FRAME_H(frame) ((f32)((s32*)(frame))[4])
 
-static u8 bsaAlpha(f32 value)
+static inline u8 bsaAlpha(f32 value)
 {
     if (value <= 0.0f)
         return 0;
@@ -78,28 +78,28 @@ static u8 bsaAlpha(f32 value)
     return (u8)(s32)value;
 }
 
-static void bsaSetColor(void* destination, u8 alpha)
-{
-    u8 color[4];
-    color[0] = 0xff;
-    color[1] = 0xff;
-    color[2] = 0xff;
-    color[3] = alpha;
-    func_0021d950(destination, color);
-}
+#define bsaPlaceQuad(work, destination, frame, x, y, width, height, alpha) \
+    do { \
+        rect[0] = (x); \
+        rect[1] = (y); \
+        rect[2] = (width) < 0.0f ? BSA_FRAME_W(frame) : (width); \
+        rect[3] = (height) < 0.0f ? BSA_FRAME_H(frame) : (height); \
+        func_0021d8e0((work) + (destination), rect); \
+        drawColor[0] = 0xff; \
+        drawColor[1] = 0xff; \
+        drawColor[2] = 0xff; \
+        drawColor[3] = (alpha); \
+        func_0021d950((work) + (destination), drawColor); \
+    } while (0)
+#define bsaSetColor(destination, alpha) \
+    do { \
+        drawColor[0] = 0xff; \
+        drawColor[1] = 0xff; \
+        drawColor[2] = 0xff; \
+        drawColor[3] = (alpha); \
+        func_0021d950((destination), drawColor); \
+    } while (0)
 
-/* Set a quad from a frame.  Width/height below zero use the frame dimensions. */
-static void bsaPlaceQuad(u32* work, u32 destination, u32 frame, f32 x, f32 y,
-                         f32 width, f32 height, u8 alpha)
-{
-    f32 rect[4];
-    rect[0] = x;
-    rect[1] = y;
-    rect[2] = width < 0.0f ? BSA_FRAME_W(frame) : width;
-    rect[3] = height < 0.0f ? BSA_FRAME_H(frame) : height;
-    func_0021d8e0(work + destination, rect);
-    bsaSetColor(work + destination, alpha);
-}
 
 
 
@@ -383,33 +383,33 @@ void bsaMain00210d60(BsaWork* work)
     p[1] |= BSA_FLAG_TRANSITION;
 }
  
-static void bsaTransition(u32* p, f32* alpha, f32* slide, f32* iconAlpha)
+static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
 {
     s32 timer;
-    timer = (s32)p[0x29ac];
+    timer = ((s32*)p)[0x29ac];
     *slide = 0.0f;
     *iconAlpha = 1.0f;
     if ((p[1] & BSA_FLAG_TRANSITION) == 0)
         return;
-    if (p[0x29ad] == 1) {
-        if (timer < 10) p[0x29ac] = ++timer;
+    if (((s32*)p)[0x29ad] == 1) {
+        if (timer < 10) ((s32*)p)[0x29ac] = ++timer;
         else {
             p[1] &= ~BSA_FLAG_TRANSITION;
             bsaMain00215770((BsaWork*)p);
             p[1] &= ~BSA_FLAG_ACTIVE;
         }
-        *alpha = 1.0f - (f32)p[0x29ac] / 10.0f;
+        *alpha = 1.0f - (f32)((s32*)p)[0x29ac] / 10.0f;
     } else {
-        if (timer < 10) p[0x29ac] = ++timer;
+        if (timer < 10) ((s32*)p)[0x29ac] = ++timer;
         else p[1] &= ~BSA_FLAG_TRANSITION;
-        *alpha = (f32)p[0x29ac] / 10.0f;
+        *alpha = (f32)((s32*)p)[0x29ac] / 10.0f;
     }
     if ((p[1] & BSA_FLAG_TRANSITION) == 0) {
-        *alpha = p[0x29ad] == 1 ? 0.0f : 1.0f;
+        *alpha = ((s32*)p)[0x29ad] == 1 ? 0.0f : 1.0f;
         return;
     }
-    if (p[0x29ad] == 1) {
-        *iconAlpha = 1.0f - (f32)p[0x29ac] / 10.0f;
+    if (((s32*)p)[0x29ad] == 1) {
+        *iconAlpha = 1.0f - (f32)((s32*)p)[0x29ac] / 10.0f;
     } else if (timer < 4) {
         *iconAlpha = 0.0f;
     } else if (timer < 8) {
@@ -421,7 +421,7 @@ static void bsaTransition(u32* p, f32* alpha, f32* slide, f32* iconAlpha)
 // FUN_00210D90 NONMATCHING
 void bsaMain00210d90(BsaWork* work)
 {
-    u32* p;
+    s32* p;
     u32 table6;
     u32 table1;
     u32 table2;
@@ -439,7 +439,7 @@ void bsaMain00210d90(BsaWork* work)
     u8 drawColor[4];
     u8 color;
 
-    p = work->words;
+    p = (s32*)work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
@@ -449,6 +449,7 @@ void bsaMain00210d90(BsaWork* work)
     alpha = 1.0f;
     slide = 0.0f;
     iconAlpha = 1.0f;
+    bsaTransition(p, &alpha, &slide, &iconAlpha);
     base = (p[0] == 0) ? 180.0f : 0.0f;
     color = bsaAlpha(alpha * 255.0f);
 
@@ -467,6 +468,75 @@ void bsaMain00210d90(BsaWork* work)
     bsaPlaceQuad(p, 0x510, image, 18.0f, base + 54.0f + slide,
                  -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
 
+    if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
+        f32 origin[2];
+        origin[0] = p[0x1310] < 10 ? 66.0f : 58.0f;
+        origin[1] = base + 62.0f;
+        bpIFont00238a50(p + 0x1314, 2, p[0x1310], 1, origin);
+        bsaSetColor(p + 0x1314, color);
+        bsaSetColor(p + 0x1354, color);
+    } else {
+        image = func_0021cca0(table2, 0x32);
+        bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
+                     -1.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x33);
+        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f,
+                     -1.0f, -1.0f, color);
+        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image),
+                     base + 58.0f, 30.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x36);
+        bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f,
+                     -1.0f, -1.0f, color);
+    }
+    if ((p[1] & BSA_FLAG_STATUS) == 0) {
+        f32 origin[2];
+        origin[0] = 181.0f;
+        origin[1] = base + 113.0f;
+        bpIFont00238a50(p + 0x1398, 4, p[0x1394], 1, origin);
+        for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, color);
+    } else {
+        image = func_0021cca0(table2, 0x32);
+        bsaPlaceQuad(p, 0x192c, image, 178.0f, base + 109.0f,
+                     -1.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x34);
+        bsaPlaceQuad(p, 0x196c, image, 167.0f, base + 109.0f,
+                     -1.0f, -1.0f, color);
+        bsaPlaceQuad(p, 0x19ac, image, 167.0f + BSA_FRAME_W(image),
+                     base + 109.0f, 43.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x36);
+        bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f,
+                     -1.0f, -1.0f, color);
+    }
+    if ((p[1] & BSA_FLAG_PERSONA) == 0) {
+        f32 origin[2];
+        origin[0] = 181.0f;
+        origin[1] = base + 130.0f;
+        bpIFont00238a50(p + 0x149c, 4, p[0x1498], 1, origin);
+        for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, color);
+    } else {
+        image = func_0021cca0(table2, 0x32);
+        bsaPlaceQuad(p, 0x1a2c, image, 178.0f, base + 126.0f,
+                     -1.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x34);
+        bsaPlaceQuad(p, 0x1a6c, image, 167.0f, base + 126.0f,
+                     -1.0f, -1.0f, color);
+        bsaPlaceQuad(p, 0x1aac, image, 167.0f + BSA_FRAME_W(image),
+                     base + 126.0f, 43.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x36);
+        bsaPlaceQuad(p, 0x1aec, image, 214.0f, base + 126.0f,
+                     -1.0f, -1.0f, color);
+    }
+
+
+    resource = p[4];
+    func_003b0e20(resource, 0xffffff00u | color);
+    func_003b0d70(resource, 0xa10, (s32)((base + 77.0f) * 8.0f));
+    image = bsaMain00215830(DAT_007ce410[(*(u16*)(p + 3)) * 0x3e + 2]);
+    bsaPlaceQuad(p, 0x590, image, 59.0f, base + 78.0f,
+                 -1.0f, -1.0f, color);
+    image = func_0021cca0(table2, 0x2f);
+    bsaPlaceQuad(p, 0x5d0, image, 148.0f, base + 88.0f,
+                 -1.0f, -1.0f, color);
     image = func_0021cca0(table1, 0x47);
     bsaPlaceQuad(p, 0x50, image, 59.0f, base + 111.0f,
                  -1.0f, -1.0f, color);
@@ -494,76 +564,6 @@ void bsaMain00210d90(BsaWork* work)
                  -1.0f, -1.0f, color);
     bsaPlaceQuad(p, 0x290, image, 46.0f, base + 158.0f,
                  -1.0f, 45.0f, color);
-    if ((p[1] & BSA_FLAG_TOP_LABEL) != 0) {
-        image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x33);
-        bsaPlaceQuad(p, 0x186c, image, 106.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
-        bsaPlaceQuad(p, 0x18ac, image, 106.0f + BSA_FRAME_W(image),
-                     base + 58.0f, 30.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x18ec, image, 140.0f, base + 58.0f,
-                     -1.0f, -1.0f, color);
-    } else {
-        f32 origin[2];
-        origin[0] = p[0x1310] < 10 ? 66.0f : 58.0f;
-        origin[1] = base + 62.0f;
-        bpIFont00238a50(p + 0x1314, 2, p[0x1310], 1, origin);
-        bsaSetColor(p + 0x1314, color);
-        bsaSetColor(p + 0x1354, color);
-    }
-
-    if ((p[1] & BSA_FLAG_STATUS) != 0) {
-        image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x192c, image, 178.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x34);
-        bsaPlaceQuad(p, 0x196c, image, 167.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
-        bsaPlaceQuad(p, 0x19ac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 109.0f, 43.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x19ec, image, 214.0f, base + 109.0f,
-                     -1.0f, -1.0f, color);
-    } else {
-        f32 origin[2];
-        origin[0] = 181.0f;
-        origin[1] = base + 113.0f;
-        bpIFont00238a50(p + 0x1398, 4, p[0x1394], 1, origin);
-        for (i = 0; i < 4; i++) bsaSetColor(p + 0x1398 + i * 0x40, color);
-    }
-
-    if ((p[1] & BSA_FLAG_PERSONA) != 0) {
-        image = func_0021cca0(table2, 0x32);
-        bsaPlaceQuad(p, 0x1a2c, image, 178.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x34);
-        bsaPlaceQuad(p, 0x1a6c, image, 167.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
-        bsaPlaceQuad(p, 0x1aac, image, 167.0f + BSA_FRAME_W(image),
-                     base + 126.0f, 43.0f, -1.0f, color);
-        image = func_0021cca0(table2, 0x36);
-        bsaPlaceQuad(p, 0x1aec, image, 214.0f, base + 126.0f,
-                     -1.0f, -1.0f, color);
-    } else {
-        f32 origin[2];
-        origin[0] = 181.0f;
-        origin[1] = base + 130.0f;
-        bpIFont00238a50(p + 0x149c, 4, p[0x1498], 1, origin);
-        for (i = 0; i < 4; i++) bsaSetColor(p + 0x149c + i * 0x40, color);
-    }
-
-    resource = p[4];
-    func_003b0e20(resource, 0xffffff00u | color);
-    func_003b0d70(resource, 0xa10, (s32)((base + 77.0f) * 8.0f));
-    image = bsaMain00215830(DAT_007ce410[(*(u16*)(p + 3)) * 0x3e + 2]);
-    bsaPlaceQuad(p, 0x590, image, 59.0f, base + 78.0f,
-                 -1.0f, -1.0f, color);
-    image = func_0021cca0(table2, 0x2f);
-    bsaPlaceQuad(p, 0x5d0, image, 148.0f, base + 88.0f,
-                 -1.0f, -1.0f, color);
 
     for (i = 0; i < 9; i++) {
         image = func_0021cca0(table2, 0x26);
@@ -577,7 +577,7 @@ void bsaMain00210d90(BsaWork* work)
                      (f32)i * 37.0f + 53.0f, base + 166.0f,
                      -1.0f, -1.0f, color);
     }
-    if ((p[1] & BSA_FLAG_AILMENT) != 0) {
+    if ((p[1] & BSA_FLAG_AILMENT) == 0) {
         for (i = 0; i < 9; i++) {
             if (p[0x159c + i] != 5) {
                 image = func_0021cca0(table2, p[0x159c + i] + 0x29);
@@ -586,6 +586,18 @@ void bsaMain00210d90(BsaWork* work)
                              -1.0f, -1.0f, color);
             }
         }
+    } else {
+        image = func_0021cca0(table2, 0x32);
+        bsaPlaceQuad(p, 0x1b2c, image, 178.0f, base + 171.0f,
+                     -1.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x35);
+        bsaPlaceQuad(p, 0x1b6c, image, 137.0f, base + 171.0f,
+                     -1.0f, -1.0f, color);
+        bsaPlaceQuad(p, 0x1bac, image, 137.0f + BSA_FRAME_W(image),
+                     base + 171.0f, 103.0f, -1.0f, color);
+        image = func_0021cca0(table2, 0x36);
+        bsaPlaceQuad(p, 0x1bec, image, 244.0f, base + 171.0f,
+                     -1.0f, -1.0f, color);
     }
 
     if (p[0] == 1) {
@@ -668,13 +680,11 @@ void bsaMain00210d90(BsaWork* work)
     }
 
     if (p[0] == 1) {
-        f32 rect[4];
         rect[0] = -1.0f; rect[1] = 39.0f; rect[2] = 51.0f; rect[3] = 370.0f;
         func_0021d8e0(p + 0x242c, rect);
         rect[0] = 50.0f; rect[1] = 39.0f; rect[2] = 500.0f; rect[3] = 370.0f;
         func_0021d8e0(p + 0x246c, rect);
     } else {
-        f32 rect[4];
         rect[0] = -1.0f; rect[1] = 219.0f; rect[2] = 51.0f; rect[3] = 190.0f;
         func_0021d8e0(p + 0x242c, rect);
         rect[0] = 50.0f; rect[1] = 219.0f; rect[2] = 500.0f; rect[3] = 190.0f;
@@ -697,20 +707,19 @@ void bsaMain00210d90(BsaWork* work)
                      groupY, 200.0f, 26.0f, 0xff);
     }
     {
-        u8 panelColor[4];
-        panelColor[0] = 0x1e; panelColor[1] = 0x1e; panelColor[2] = 0x1e;
-        panelColor[3] = bsaAlpha(alpha * 255.0f);
-        func_0021d950(p + 0x242c, panelColor);
-        func_0021dd60(p + 0x246c, panelColor);
-        panelColor[0] = 0x22; panelColor[1] = 0x21; panelColor[2] = 0x1f;
-        panelColor[3] = bsaAlpha(alpha * 204.0f);
-        func_0021d950(p + 0x24ac, panelColor);
-        func_0021dd60(p + 0x24ec, panelColor);
-        func_0021d950(p + 0x252c, panelColor);
-        func_0021dd60(p + 0x256c, panelColor);
+        drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
+        drawColor[3] = bsaAlpha(alpha * 255.0f);
+        func_0021d950(p + 0x242c, drawColor);
+        func_0021dd60(p + 0x246c, drawColor);
+        drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
+        drawColor[3] = bsaAlpha(alpha * 204.0f);
+        func_0021d950(p + 0x24ac, drawColor);
+        func_0021dd60(p + 0x24ec, drawColor);
+        func_0021d950(p + 0x252c, drawColor);
+        func_0021dd60(p + 0x256c, drawColor);
         for (i = 0; i < 8; i++) {
-            func_0021d950(p + i * 0x80 + 0x25ac, panelColor);
-            func_0021dd60(p + i * 0x80 + 0x25ec, panelColor);
+            func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
+            func_0021dd60(p + i * 0x80 + 0x25ec, drawColor);
         }
     }
 }
