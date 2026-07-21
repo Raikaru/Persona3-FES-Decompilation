@@ -202,8 +202,6 @@ void FUN_003970d0(void)
   u32 *puVar4;
   u32 *puVar5;
 
-  
-
   lVar1 = FUN_00195340("koma_Manager");
 
   if (lVar1 != 0) {
