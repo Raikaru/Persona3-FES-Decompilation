@@ -81,6 +81,8 @@ extern u8 DAT_0095ae64_abs[];
 extern const char DAT_006a2710[];
 extern u32 DAT_0095ae74;
 extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern code DAT_00960090_abs[];
 extern code DAT_00960178;
 extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
@@ -132,9 +134,9 @@ u16 FUN_003b0e70(s16 param_1);
 u16 FUN_003b0e90(u16 param_1);
 u32 FUN_003b0ec0(int param_1);
 int FUN_003b0f50(int param_1,u16 *param_2,u8 param_3,u32 param_4);
-void FUN_003b1300(u64 param_1);
-void FUN_003b1330(u64 param_1,u64 param_2);
-int FUN_003b1360(long param_1,u64 param_2,u32 param_3);
+void FUN_003b1300(void *param_1);
+void FUN_003b1330(void *param_1,u64 param_2);
+int FUN_003b1360(void *param_1,u64 param_2,u32 param_3);
 int FUN_003b1710(long param_1);
 u64 FUN_003b18c0(void);
 int FUN_003b1920(int param_1,int param_2,int param_3);
@@ -153,7 +155,7 @@ void FUN_003b1d90(u32 param_1,int param_2);
 void FUN_003b2020(long param_1,int param_2);
 void FUN_003b22a0(u32 *param_1);
 void FUN_003b2400(FrFontState *state);
-u32 FUN_003b2430(u64 param_1);
+u32 FUN_003b2430(void *param_1);
 void FUN_003b2900(u32 param_1,u32 param_2,u32 param_3,u32 param_4);
 void FUN_003b2940(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,u32 param_7,u32 param_8);
 void FUN_003b2990(u32 param_1,u32 param_2,int param_3,u8 param_4,  u8 param_5,u8 param_6,u8 param_7,u32 param_8,  u32 param_9);
@@ -1904,7 +1906,7 @@ int FUN_003b0f50(int param_1,u16 *param_2,u8 param_3,u32 param_4)
 // FUN_003B1300
 
 
-void FUN_003b1300(u64 param_1)
+void FUN_003b1300(void *param_1)
 
 
 
@@ -1918,7 +1920,7 @@ void FUN_003b1300(u64 param_1)
 // FUN_003B1330
 
 
-void FUN_003b1330(u64 param_1,u64 param_2)
+void FUN_003b1330(void *param_1,u64 param_2)
 
 
 
@@ -1935,7 +1937,7 @@ void FUN_003b1330(u64 param_1,u64 param_2)
 // FUN_003B1360 NONMATCHING
 
 
-int FUN_003b1360(long param_1,u64 param_2,u32 param_3)
+int FUN_003b1360(void *param_1,u64 param_2,u32 param_3)
 
 
 
@@ -1955,6 +1957,8 @@ int FUN_003b1360(long param_1,u64 param_2,u32 param_3)
 
   long lVar7;
 
+  code *fn;
+
   int iVar8;
 
   int iVar9;
@@ -1967,21 +1971,23 @@ int FUN_003b1360(long param_1,u64 param_2,u32 param_3)
 
   if ((uGpffffa810 & 0x40) == 0) {
 
-    (*DAT_00960090)(6,1);
+    fn = (code *)&DAT_00960090_abs;
 
-    (*DAT_00960090)(7,2);
+    (*fn)(6,bVar5);
 
-    (*DAT_00960090)(9,2);
+    (*fn)(7,2);
 
-    (*DAT_00960090)(0xc,1);
+    (*fn)(9,2);
 
-    (*DAT_00960090)(10,5);
+    (*fn)(0xc,bVar5);
 
-    (*DAT_00960090)(0xb,6);
+    (*fn)(10,5);
 
-    (*DAT_00960090)(2,4);
+    (*fn)(0xb,6);
 
-    (*DAT_00960090)(0xe,0);
+    (*fn)(2,4);
+
+    (*fn)(0xe,0);
 
     FUN_004d7f60(2,0x44);
 
@@ -3177,7 +3183,7 @@ void FUN_003b2400(FrFontState *state)
 // FUN_003B2430 NONMATCHING
 
 
-u32 FUN_003b2430(u64 param_1)
+u32 FUN_003b2430(void *param_1)
 
 
 
@@ -3185,7 +3191,7 @@ u32 FUN_003b2430(u64 param_1)
 
   u8 bVar1;
 
-  u8 bVar2;
+  u32 bVar2;
 
   u16 uVar3;
 
@@ -3218,7 +3224,6 @@ u32 FUN_003b2430(u64 param_1)
   
 
   puVar12 = (u32 *)param_1;
-
   if (((*(u8 *)puVar12[4] & 0xf0) != 0xf0) && (((u8 *)puVar12[4])[1] == 8)) {
 
     puVar12[6] = puVar12[6] + 4;
@@ -3238,7 +3243,6 @@ u32 FUN_003b2430(u64 param_1)
       puVar12[6] = iVar10 + 1;
 
       bVar2 = *(u8 *)(puVar12[4] + iVar10);
-
       uVar13 = (u32)bVar2;
 
       if (uVar13 == 0) goto LAB_003b28b8;
