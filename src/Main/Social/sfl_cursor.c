@@ -27,6 +27,19 @@ extern f32 fGpffff82fc;
 extern u32 uGpffffb670;
 
 typedef struct { f32 a; f32 b; f32 c; } SflVec3;
+typedef struct {
+  u32 flags;
+  f32 from[3];
+  f32 to[3];
+  f32 position[3];
+  u32 frame;
+  u32 previous;
+  u32 active;
+  u32 timer;
+  u8 padding[0xc68];
+  u32 state;
+} SflCursorWork;
+
 
 static u32* sSflCursor; // puGpffffb670
 
@@ -119,55 +132,52 @@ void FUN_0025a130(void)
   K_ASSERT(sSflCursor != NULL, 0x47);
   puVar1 = sSflCursor;
   if ((~*puVar1 & 1) == 0) {
-    uVar3 = puVar1[0xd];
-    puVar1[0xd] = uVar3 + 1;
-    puVar1[0xd] = (uVar3 + 1) % 0x3c;
+    puVar1[0xd] = puVar1[0xd] + 1;
+    puVar1[0xd] = puVar1[0xd] % 0x3c;
     if ((*puVar1 & 2) != 0) {
       uVar3 = puVar1[0x328];
       if (uVar3 == 2) {
-        uVar3 = puVar1[10];
-        puVar1[10] = uVar3 + 1;
-        if (uVar3 + 1 == 0x10) {
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 0x10) {
           *puVar1 = *puVar1 & 0xfffffffd;
         }
       } else if (uVar3 == 3) {
-        uVar3 = puVar1[10];
-        puVar1[10] = uVar3 + 1;
-        if (uVar3 + 1 == 0x10) {
-          uVar3 = *puVar1;
-          *puVar1 = uVar3 & 0xfffffffd;
-          *puVar1 = uVar3 & 0xfffffffc;
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 0x10) {
+          *puVar1 = *puVar1 & 0xfffffffd;
+          *puVar1 = *puVar1 & 0xfffffffc;
         }
       } else if (uVar3 == 1) {
-        uVar3 = puVar1[10];
-        puVar1[10] = uVar3 + 1;
-        if (uVar3 + 1 == 4) {
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 4) {
           *puVar1 = *puVar1 & 0xfffffffd;
         }
       } else if (uVar3 == 0) {
-        uVar3 = puVar1[10];
-        puVar1[10] = uVar3 + 1;
-        if (uVar3 + 1 == 4) {
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 4) {
           *puVar1 = *puVar1 & 0xfffffffd;
         }
         fVar4 = (f32)(s32)puVar1[10] / 4.0f;
-        fStack_10 = (f32)puVar1[4] - (f32)puVar1[1];
-        fStack_14 = (f32)puVar1[5] - (f32)puVar1[2];
-        fStack_18 = (f32)puVar1[6] - (f32)puVar1[3];
+        fStack_10 = ((SflCursorWork*)puVar1)->to[0] -
+                    ((SflCursorWork*)puVar1)->from[0];
+        fStack_14 = ((SflCursorWork*)puVar1)->to[1] -
+                    ((SflCursorWork*)puVar1)->from[1];
+        fStack_18 = ((SflCursorWork*)puVar1)->to[2] -
+                    ((SflCursorWork*)puVar1)->from[2];
         fStack_10 *= fVar4;
         fStack_14 *= fVar4;
         fStack_18 *= fVar4;
-        fStack_10 += (f32)puVar1[1];
-        fStack_14 += (f32)puVar1[2];
-        fStack_18 += (f32)puVar1[3];
-        puVar1[7] = (u32)fStack_10;
-        puVar1[8] = (u32)fStack_14;
-        puVar1[9] = (u32)fStack_18;
+        fStack_10 += ((SflCursorWork*)puVar1)->from[0];
+        fStack_14 += ((SflCursorWork*)puVar1)->from[1];
+        fStack_18 += ((SflCursorWork*)puVar1)->from[2];
+        ((SflCursorWork*)puVar1)->position[0] = fStack_10;
+        ((SflCursorWork*)puVar1)->position[1] = fStack_14;
+        ((SflCursorWork*)puVar1)->position[2] = fStack_18;
       }
     }
-    for (uVar3 = 0; (s32)uVar3 < 6; uVar3 = uVar3 + 1) {
+    for (uVar3 = 0; uVar3 < 6; uVar3 = uVar3 + 1) {
       puVar2 = puVar1 + uVar3 * 0x84 + 0x10;
-      if (uVar3 == puVar1[0xc]) {
+      if (uVar3 == (s32)puVar1[0xc]) {
         if ((s32)*puVar2 < 0x100) {
           *puVar2 = *puVar2 + 0x19;
         }
@@ -183,7 +193,7 @@ void FUN_0025a130(void)
         }
       }
       puVar2++;
-      if (uVar3 == puVar1[0xc]) {
+      if (uVar3 == (s32)puVar1[0xc]) {
         if ((s32)*puVar2 < 0x100) {
           *puVar2 = *puVar2 + 0x40;
         }
@@ -200,10 +210,11 @@ void FUN_0025a130(void)
       }
     }
   }
+  FUN_0025aad0();
   return;
 }
 
-// FUN_0025A440 NONMATCHING
+// FUN_0025A440
 
 
 void FUN_0025a440(void)
@@ -242,25 +253,31 @@ void FUN_0025a440(void)
     for (uVar4 = 0; uVar4 < 6; uVar4 = uVar4 + 1) {
       puVar2 = puVar1 + uVar4 * 0x84 + 0x10;
       bVar3 = 0;
-      if (((*puVar1 & 2) == 0) || (puVar1[0x328] != 1)) {
-        if (uVar4 == (s32)puVar1[0xc]) {
+      if (((*puVar1 & 2) != 0) && (puVar1[0x328] == 1)) {
+        if ((uVar4 == (s32)puVar1[0xc]) ||
+            (uVar4 == (s32)puVar1[0xb])) {
           bVar3 = 1;
         }
-      } else if ((uVar4 == (s32)puVar1[0xc]) ||
-                 (uVar4 == (s32)puVar1[0xb])) {
+      } else if (uVar4 == (s32)puVar1[0xc]) {
         bVar3 = 1;
       }
       if (bVar3) {
+        volatile code *pTexInner;
+
         uVar2 = FUN_0020e510(2);
         (*pRender)(1,uVar2);
-        (*pTex)(puVar2 + 4,4,0,1,2);
-        (*pTex)(puVar2 + 4,4,0,2,3);
+        pTexInner = DAT_0096009c_abs;
+        (*pTexInner)(puVar2 + 4,4,0,1,2);
+        (*pTexInner)(puVar2 + 4,4,0,2,3);
       }
       if (*puVar2 != 0) {
+        volatile code *pTexInner;
+
         uVar2 = FUN_0020e510(1);
         (*pRender)(1,uVar2);
-        (*pTex)(puVar2 + 0x44,4,0,1,2);
-        (*pTex)(puVar2 + 0x44,4,0,2,3);
+        pTexInner = DAT_0096009c_abs;
+        (*pTexInner)(puVar2 + 0x44,4,0,1,2);
+        (*pTexInner)(puVar2 + 0x44,4,0,2,3);
       }
     }
   }
