@@ -86,7 +86,6 @@ extern f32 DAT_007caf48;
 extern f32 DAT_007caf4c;
 extern f32 DAT_007caf50;
 extern f32 DAT_007caf54;
-extern code DAT_00960178[];
 extern code DAT_0096017c[];
 extern int iGpffffb710;
 extern u16 (*gp0xffffb710)[14];
@@ -119,6 +118,8 @@ extern void FUN_002a4690_b6070(void* out, const void* first, const void* second,
 extern void FUN_002a2290_b6070(BtlCamera* camera, const RwV3d* start, const RwV3d* end, s32 mode);
 #pragma alias FUN_002a3110_b6070 FUN_002a3110
 extern void FUN_002a3110_b6070(BtlCamera* camera, f32 step);
+#pragma alias FUN_002a3160_typed FUN_002a3160
+extern void FUN_002a3160_typed(BtlCamera* camera, f32 step);
 void FUN_002a4a70(void);
 void FUN_002a4c20(void);
 extern f32 DAT_007cae38;
@@ -7688,8 +7689,9 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   int iVar3;
   u8 bVar4;
   u8 bVar5;
-  long lVar6;
-  long lVar7;
+  s32 lVar6;
+  s32 lVar7;
+  s32 lVar8;
   u32 uVar8;
   int iVar9;
   float fVar10;
@@ -7749,6 +7751,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   iVar9 = (int)camera;
   iVar2 = *(int *)(*(int *)(iVar9 + 0xe0) + 0x30);
   iVar3 = *(int *)(iVar2 + 0xa00);
+  lVar6 = FUN_002a3520(iVar9);
   if ((lVar6 == 0) && (lVar6 = FUN_002a3550((u8*)camera), lVar6 == 0)) {
     bVar4 = 0;
   }
@@ -7789,6 +7792,8 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   fStack_114 = *(float *)(iVar9 + 0xa4) - fStack_68;
   fStack_58 = fStack_68;
   FUN_004c6b20(&fStack_118,&fStack_118);
+  lVar8 = FUN_002a3420(iVar9);
+  lVar7 = FUN_002a3820_u32(iVar9);
   fVar14 = fStack_18 * fStack_118 + -fStack_20 * fStack_114;
   if ((bVar4) ||
      ((*(ushort *)
@@ -7800,7 +7805,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
   else {
     bVar4 = 0;
   }
-  if ((lVar6 != 0) || (((bVar4 && (lVar6 = FUN_002a3380((u8*)camera), lVar6 != 0)) && (lVar7 == 0)))) {
+  if ((lVar8 != 0) || (((bVar4 && (lVar6 = FUN_002a3380((u8*)camera), lVar6 != 0)) && (lVar7 == 0)))) {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar3),1);
     *(int *)(iVar9 + 0x120) = iVar3;
     *(undefined2 *)(iVar9 + 0x124) = 0;
@@ -7957,7 +7962,7 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
         fStack_5c = 1000.0;
         fStack_cc = 500.0;
         uVar16 = 0x3fc00000;
-        bVar5 = 0;
+        bVar5 = 1;
         *(undefined4 *)(iVar9 + 0xdc) = 4;
       }
       else if (sVar1 == 0x2c) {
@@ -8007,11 +8012,17 @@ void func_002aa2b0(BtlCamera* camera, int param_2, int param_3)
     fStack_c8 = fStack_ac + fStack_8;
   }
   if (0 < *(int *)(iVar9 + 0xdc)) {
+    FUN_002a3e80(0.0f, (u8*)camera->action, 0, 0, 1);
   }
+  FUN_002a3590(&fStack_d0, &fStack_d0);
+  FUN_002a3590(&fStack_b4, &fStack_b4);
+  FUN_002a2290_b6070(camera, (RwV3d*)&fStack_d0,
+                     (RwV3d*)&fStack_b4, 1);
   if (bVar5) {
-    FUN_002a3160(uVar16,camera);
+    FUN_002a3160_typed(camera, *(f32*)&uVar16);
   }
   else {
+    FUN_002a3110_b6070(camera, *(f32*)&uVar16);
   }
   if (param_2 != 0) {
     FUN_00351bb0(0xc);
