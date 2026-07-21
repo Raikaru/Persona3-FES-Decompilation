@@ -479,102 +479,117 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 // FUN_001944C0 NONMATCHING. Set task flags for one task, its hierarchy, or the task lists.
 void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
 {
+    u32 listIndex;
     KwlnTask* currentTask;
     u32 maskedFlags;
-    s32 listIndex;
+    u32 clearFlags;
+    currentTask = NULL;
+    asm volatile("" : "+m"(currentTask));
 
-    switch (scope)
+    if (scope == 2)
     {
-        case 2:
-            if (task == NULL)
-            {
-                K_ASSERT(false, 703);
-            }
-
-            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
-            if (enabled != 0)
-            {
-                task->stateAndFlags |= maskedFlags;
-            }
-            else
-            {
-                task->stateAndFlags &= ~maskedFlags;
-            }
-
-            currentTask = task->child;
-            while (currentTask != NULL)
-            {
-                kwlnTaskSetFlagsRecursive(enabled, currentTask, flags);
-                currentTask = currentTask->sibling;
-            }
-            return;
-
-        case 3:
-            break;
-
-        case 1:
-            if (task == NULL)
-            {
-                K_ASSERT(false, 677);
-            }
-            break;
-
-        case 0:
-            if (task == NULL)
-            {
-                K_ASSERT(false, 669);
-            }
-
-            maskedFlags = flags & ~KWLNTASK_STATE_MASK;
-            if (enabled != 0)
-            {
-                task->stateAndFlags |= maskedFlags;
-            }
-            else
-            {
-                task->stateAndFlags &= ~maskedFlags;
-            }
-            return;
-
-        default:
-            K_ASSERT(false, 708);
-            return;
+        goto scopeTwo;
     }
-
-    listIndex = 0;
-    while (listIndex < 3)
+    if (scope == 3)
     {
-        if (listIndex == 2)
+        goto scopeLists;
+    }
+    if (scope == 1)
+    {
+        goto scopeOne;
+    }
+    if (scope == 0)
+    {
+        if (task == NULL)
         {
-            currentTask = sDestroyTaskHead;
+            K_ASSERT(false, 669);
         }
-        else if (listIndex == 1)
+
+        if (enabled != 0)
         {
-            currentTask = sRunningTaskHead;
+            task->stateAndFlags |= flags & ~KWLNTASK_STATE_MASK;
         }
         else
         {
-            currentTask = sStagedTaskHead;
+            task->stateAndFlags &= ~(flags & ~KWLNTASK_STATE_MASK);
+        }
+        return;
+    }
+    goto scopeDefault;
+
+
+scopeOne:
+    if (task == NULL)
+    {
+        K_ASSERT(false, 677);
+    }
+
+scopeLists:
+    maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+    clearFlags = ~maskedFlags;
+    listIndex = 0;
+    asm volatile("" : "+m"(listIndex));
+    for (; listIndex < 3; listIndex++)
+    {
+        switch (listIndex)
+        {
+            case 0:
+                currentTask = sStagedTaskHead;
+                break;
+
+            case 1:
+                currentTask = sRunningTaskHead;
+                break;
+
+            case 2:
+                currentTask = sDestroyTaskHead;
+                break;
         }
 
         while (currentTask != NULL)
         {
             if (scope == 3 || currentTask != task)
             {
-                maskedFlags = flags & ~KWLNTASK_STATE_MASK;
                 if (enabled != 0)
                 {
                     currentTask->stateAndFlags |= maskedFlags;
                 }
                 else
                 {
-                    currentTask->stateAndFlags &= ~maskedFlags;
+                    currentTask->stateAndFlags &= clearFlags;
                 }
             }
             currentTask = currentTask->next;
         }
-        listIndex++;
     }
+    return;
+
+scopeTwo:
+    if (task == NULL)
+    {
+        K_ASSERT(false, 703);
+    }
+
+    if (enabled != 0)
+    {
+        task->stateAndFlags |= flags & ~KWLNTASK_STATE_MASK;
+    }
+    else
+    {
+        task->stateAndFlags &= ~(flags & ~KWLNTASK_STATE_MASK);
+    }
+
+    currentTask = task->child;
+    while (currentTask != NULL)
+    {
+        kwlnTaskSetFlagsRecursive(enabled, currentTask, flags);
+        currentTask = currentTask->sibling;
+    }
+    return;
+
+scopeDefault:
+    K_ASSERT(false, 708);
+    return;
 }
 
 // FUN_00194750
