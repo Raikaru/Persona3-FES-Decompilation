@@ -26,7 +26,7 @@ void FUN_00224860();
 void FUN_00225670();
 void FUN_00227d10();
 void FUN_00238980();
-void FUN_00238bf0();
+void bpIFont00238bf0(void* glyphs, s32 capacity, const char* text, s32 font, const float* origin);
 void FUN_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* layout);
 void FUN_0022e780(u32*, u32);
 void FUN_0022e900(u32*, s32);
@@ -1064,22 +1064,201 @@ void FUN_00229B40(void)
 // FUN_0022A2B0 NONMATCHING
 void FUN_0022A2B0(void)
 {
-    u32 i;
-    u32 j;
-    u32 count;
+    u8* work;
+    u8* records;
+    u8* record;
+    u8* overlay;
+    u32 table0;
+    u32 table6;
+    void* frame;
+    f32* basePos;
+    f32 weight;
+    f32 alpha1;
+    f32 alpha2;
+    f32 blend;
+    f32 scaled;
+    u8 alphaByte;
+    u32 whiteColour;
+    u32 greyColour;
+    u32 sub;
     u32 colour;
+    f32 rect[4];
+    u8 color[4];
+    s32 i;
+    s32 current;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    colour = bcm_panel_read(0x4650) & 0xff;
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_set_colour(record, colour | 0xffffff00u);
-        for (j = 0; j < 4 && *(u32*)record == 1; ++j) {
-            bcm_panel_set_colour(record + j * 0x100,
-                                 colour | 0xffffff00u);
-        }
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    records = work + 0x4660;
+    basePos = (f32*)(work + 0x6050);
+    weight = *(f32*)(work + 0x7214);
+
+    if (*(u32*)(work + 0x463c) == 0) {
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 1) {
+        alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    } else {
+        K_ASSERT(0, 0xfb4);
     }
+
+    if (*(u32*)(work + 0x4644) == 4) {
+        alpha2 = 0.0f;
+    } else if (*(u32*)(work + 0x4644) == 0) {
+        alpha2 = 1.0f;
+    }
+    scaled = alpha1 * alpha2;
+    blend = 1.0f - scaled;
+
+    frame = (void*)FUN_0021cca0(table0, 0x23);
+    rect[0] = 188.0f + basePos[0];
+    rect[1] = 19.0f + basePos[1] +
+              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4230, rect);
+
+    frame = (void*)FUN_0021cca0(table0, 0x23);
+    rect[0] = 188.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[1] = 19.0f + basePos[1] +
+              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+    rect[2] = 312.0f;
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4330, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
+    color[3] = alphaByte;
+    FUN_0021d950(work + 0x4230, color);
+    FUN_0021d950(work + 0x4330, color);
+
+    whiteColour = alphaByte | 0xffffff00u;
+    greyColour = alphaByte | 0xccccccu | 0xcc000000u;
+
+    for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
+        record = records + i * 0x410;
+
+        frame = (void*)FUN_0021cca0(table6, 0x1a);
+        sub = *(u32*)record;
+        rect[0] = 65.0f + basePos[0];
+        rect[1] = 19.0f + basePos[1] + (f32)(i * 26);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        colour = (i == current) ? whiteColour : greyColour;
+        FUN_003b0d70(sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
+        FUN_003b0e20(sub, colour);
+
+        frame = (void*)FUN_0021cca0(table0, 0x28);
+        rect[0] = 147.0f + basePos[0];
+        rect[1] = 19.5f + basePos[1] + (f32)(i * 26);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x10, rect);
+
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = alphaByte;
+        FUN_0021d950(record + 0x10, color);
+
+        rect[0] = 315.0f + basePos[0];
+        rect[1] = 29.0f + basePos[1] + (f32)(i * 26);
+        bpIFont00238bf0(record + 0x110, 2, (const char*)(size_t)*(u32*)(record + 4), 1, rect);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        if (i == current) {
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+        } else {
+            color[0] = 0x5a;
+            color[1] = 0x5a;
+            color[2] = 0x5a;
+        }
+        color[3] = alphaByte;
+        FUN_0021d950(record + 0x110, color);
+        FUN_0021d950(record + 0x210, color);
+        FUN_0021d950(record + 0x310, color);
+
+        frame = (void*)FUN_0021cca0(table6, 0x1a);
+        rect[0] = 96.5f + basePos[0];
+        rect[1] = 16.0f + basePos[1] + (f32)(i * 26);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x310, rect);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        if (i == current) {
+            color[0] = 0xc7;
+            color[1] = 0xd3;
+            color[2] = 0xe3;
+        } else {
+            color[0] = 0x44;
+            color[1] = 0x4e;
+            color[2] = 0x50;
+        }
+        color[3] = alphaByte;
+        FUN_0021d950(record + 0x310, color);
+    }
+
+    if (*(u32*)(work + 0x4644) != 4) {
+        return;
+    }
+
+    overlay = work + 0x6d00;
+
+    frame = (void*)FUN_0021cca0(table6, 0x1a);
+    sub = *(u32*)overlay;
+    rect[0] = 65.0f + basePos[0];
+    rect[1] = 19.0f + basePos[1] + 77.0f;
+
+    scaled = 255.0f * blend * weight;
+    alphaByte = (u8)(u32)scaled;
+    colour = alphaByte | 0xffffff00u;
+    FUN_003b0d70(sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
+    FUN_003b0e20(sub, colour);
+
+    frame = (void*)FUN_0021cca0(table0, 0x28);
+    rect[0] = 147.0f + basePos[0];
+    rect[1] = 148.0f + basePos[1];
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(overlay + 0x10, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(overlay + 0x10, color);
+
+    rect[0] = 315.0f + basePos[0];
+    rect[1] = 158.0f + basePos[1];
+    bpIFont00238bf0(overlay + 0x110, 2, (const char*)(size_t)*(u32*)(overlay + 4), 1, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(overlay + 0x110, color);
+    FUN_0021d950(overlay + 0x210, color);
+    FUN_0021d950(overlay + 0x310, color);
+
+    frame = (void*)FUN_0021cca0(table6, 0x1a);
+    rect[0] = 96.5f + basePos[0];
+    rect[1] = 16.0f + basePos[1];
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(overlay + 0x310, rect);
+
+    color[0] = *((u8*)frame + 0x1c);
+    color[1] = *((u8*)frame + 0x1d);
+    color[2] = *((u8*)frame + 0x1e);
+    color[3] = alphaByte;
+    FUN_0021d950(overlay + 0x310, color);
 }
 
 // FUN_0022AE80 NONMATCHING
