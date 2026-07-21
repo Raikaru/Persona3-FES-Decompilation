@@ -46,10 +46,11 @@ extern u16 func_003b6b90(u16 resourceId, const RwV3d* position, f32 angle);
 extern u16 func_003b6c50(u16 resourceId, const RwV3d* position, f32 angle);
 extern u16 func_003b6d10(u16 resourceId, const RwV3d* position, f32 angle);
 extern RwMatrix* func_004c38c0(void);
-extern void func_004c31b0(f32 angle, void* object, const void* axis, u32 mode);
+extern void func_004c31b0(void* object, const void* axis, f32 angle, u32 mode);
 extern void func_004c6be0(void* dst, const void* src, void* object);
 extern void func_004c3880(RwMatrix* matrix);
 extern u32 func_001c7160(const FldUnit* enemy, const FldUnit* party, f32 distance);
+extern u16 func_003b6dd0(u16 resourceId, const RwV3d* position, f32 angle);
 extern u32 FUN_0016F380(u32 parameter);
 extern void FUN_0016F3E0(u32 parameter, u32 value);
 static u32 sDungeonGenerationAttempts;  // 007ce260
@@ -1224,42 +1225,86 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u8 direction)
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
+    u8* fieldRoot;
     u8* fieldCell;
+    u8* source;
+    u8* roomCopy;
+    u8* records;
+    u8* record;
+    u8* modelResource;
+    u8* sceneResource;
+    RwV3d origin;
+    RwV3d axis;
+    RwV3d position;
+    RwMatrix* matrix;
     u32 width;
     u32 height;
-    u32 col;
     u32 row;
-    u32 sourceIndex;
-    u32 modelCount;
+    u32 col;
     u32 i;
-    RwV3d origin;
-    u8* roomCopy;
-    u8* modelRecord;
-    u32* sourceResource;
+    u32 count;
+    u32 version;
+    u32 direction;
+    u32 sourceIndex;
+    u32 orientation;
+    u32 resourceId;
     u16 roomResId;
-    u16 modelResId;
-    u16 modelKind;
-    Resrc* roomResource;
-    Resrc* modelResource;
+    u16 ids[4];
+    f32 angle;
+    volatile u8 framePadding[0x70];
+    framePadding[0] = framePadding[0];
+    axis = *(RwV3d*)D_006833B0;
 
-    fieldCell = dungeonCell((s32)x, (s32)y);
-    if (fieldCell[0x48] == 0 || fieldCell[0x49] == 0)
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    if (fieldCell[0x48] == 0)
+    {
+        return;
+    }
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    if (fieldCell[0x49] == 0)
     {
         return;
     }
 
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
     width = fieldCell[0x4f];
+    if ((u32)x + width - 1 >= 0x10)
+    {
+        K_Assert((const char*)D_006833A0, 0x139);
+    }
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
     height = fieldCell[0x50];
+    if ((u32)y + height - 1 >= 0x10)
+    {
+        K_Assert((const char*)D_006833A0, 0x13a);
+    }
+
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    width = fieldCell[0x4f];
     origin.x = (f32)x * 800.0f + (f32)(width - 1) * 400.0f;
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
     origin.y = (f32)(s8)fieldCell[0x52] * 300.0f;
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    height = fieldCell[0x50];
     origin.z = (f32)y * 800.0f + (f32)(height - 1) * 400.0f;
+
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
     sourceIndex = fieldCell[0x4a];
-    sourceResource = *(u32**)((u8*)K_Field_Get() +
-                               0x116c + sourceIndex * sizeof(void*));
-    roomCopy = (u8*)func_001b5380(
-        sourceResource, &origin, (fieldCell[0x4e] + 2) & 3);
+    source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    direction = fieldCell[0x4e];
+    roomCopy = (u8*)func_001b5380((u32*)source, &origin, (direction + 2) & 3);
     roomResId = func_003b6790(patternId, roomCopy);
-    roomResource = MT_Scene_GetRes(roomResId);
+    sceneResource = (u8*)MT_Scene_GetRes(roomResId);
     func_001a0150(roomResId, 1);
     func_0019ff10();
 
@@ -1267,56 +1312,360 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     {
         for (col = 0; col < width; col++)
         {
-            fieldCell = dungeonCell((s32)(x + col), (s32)(y + row));
+            fieldRoot = (u8*)K_Field_Get();
+            fieldCell = fieldRoot + ((u32)y + row) * 0x100 +
+                        ((u32)x + col) * 0x10;
             *(u16*)(fieldCell + 0x4c) = roomResId;
-            if (roomCopy != NULL)
-            {
-                fieldCell[0x48] = 1;
-            }
         }
     }
-
-    if (roomCopy == NULL)
+    for (i = 0; i < *(u32*)(roomCopy + 0x118); i++)
     {
-        return;
-    }
-
-    modelCount = *(u32*)(roomCopy + 0x118);
-    for (i = 0; i < modelCount; i++)
-    {
-        modelRecord = roomCopy + 0x11c + i * 0x18;
-        modelKind = *(u16*)modelRecord;
-        if (modelKind == 0)
+        record = roomCopy + 0x11c + i * 0x18;
+        if (*(u16*)record == 0)
         {
-            modelResId = (u16)K_Misc_FindNextFreeResId(RESRC_TYPE_MODELFLD);
-            modelResId = MT_Scene_CreateResModelFld(
-                modelResId, *(Model**)(modelRecord + 0x0c));
-            modelResource = MT_Scene_GetRes(modelResId);
-            if (modelResource != NULL && roomResource != NULL)
-            {
-                *(u32*)((u8*)modelResource + 0x100) =
-                    *(u32*)((u8*)roomResource + 0x100);
-                *(u32*)((u8*)modelResource + 0x104) =
-                    *(u32*)((u8*)roomResource + 0x104);
-                *(u32*)((u8*)modelResource + 0x108) =
-                    *(u32*)((u8*)roomResource + 0x108);
-                *(u32*)((u8*)modelResource + 0x10c) =
-                    *(u32*)((u8*)roomResource + 0x10c);
-            }
+            resourceId = K_Misc_FindNextFreeResId(RESRC_TYPE_MODELFLD);
+            resourceId = MT_Scene_CreateResModelFld(
+                (u16)resourceId, *(Model**)(record + 0x0c));
+            modelResource = (u8*)MT_Scene_GetRes((u16)resourceId);
+            *(u32*)(modelResource + 0x100) =
+                *(u32*)(sceneResource + 0x100);
+            *(u32*)(modelResource + 0x104) =
+                *(u32*)(sceneResource + 0x104);
+            *(u32*)(modelResource + 0x108) =
+                *(u32*)(sceneResource + 0x108);
+            *(u32*)(modelResource + 0x10c) =
+                *(u32*)(sceneResource + 0x10c);
         }
-        else if (modelKind == 1)
+        else if (*(u16*)record == 1)
         {
-            modelResId = (u16)K_Misc_FindNextFreeResId(RESRC_TYPE_11);
-            modelResId = func_003b66b0(
-                modelResId, *(Model**)(modelRecord + 0x10));
+            resourceId = K_Misc_FindNextFreeResId(RESRC_TYPE_11);
+            resourceId = func_003b66b0(
+                (u16)resourceId, *(Model**)(record + 0x10));
+            modelResource = (u8*)MT_Scene_GetRes((u16)resourceId);
+            *(u32*)(modelResource + 0x100) =
+                *(u32*)(sceneResource + 0x100);
+            *(u32*)(modelResource + 0x104) =
+                *(u32*)(sceneResource + 0x104);
+            *(u32*)(modelResource + 0x108) =
+                *(u32*)(sceneResource + 0x108);
+            *(u32*)(modelResource + 0x10c) =
+                *(u32*)(sceneResource + 0x10c);
         }
         else
         {
             continue;
         }
-        func_001a0150(modelResId, 1);
+        func_001a0150((u16)resourceId, 1);
     }
     *(u32*)(roomCopy + 0x118) = 0;
+
+    fieldRoot = (u8*)K_Field_Get();
+    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+    sourceIndex = fieldCell[0x4a];
+    source = *(u8**)(fieldRoot + 0x116c + sourceIndex * 4);
+    source = *(u8**)(source + 0xa3c);
+    matrix = func_004c38c0();
+    if (source == NULL)
+    {
+        func_004c3880(matrix);
+        return;
+    }
+
+    version = *(u32*)(source + 4);
+    if (version == 0x1000)
+    {
+        records = source + 0x28;
+    }
+    else if (version == 0x1001)
+    {
+        records = source + 0x30;
+    }
+    else if (version == 0x1002)
+    {
+        records = source + 0x38;
+    }
+    else
+    {
+        records = source + 0x48;
+    }
+
+    for (i = 0; i < *(u32*)(source + 8); i++)
+    {
+        record = records + i * 0x20;
+        if (K_Scene_001a0250() == 1)
+        {
+            resourceId = func_003b6870(*(u16*)record & 0x3ff,
+                                       record + 8, *(u32*)(record + 4),
+                                       *(f32*)(record + 0x14),
+                                       *(f32*)(record + 0x18),
+                                       *(f32*)(record + 0x1c));
+            modelResource = (u8*)MT_Scene_GetRes((u16)resourceId);
+            func_001e6af0(modelResource + 0x11c, modelResource + 0x104,
+                          *(f32*)(modelResource + 0x110),
+                          *(f32*)(modelResource + 0x114),
+                          *(f32*)(modelResource + 0x118));
+            fieldRoot = (u8*)K_Field_Get();
+            fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+            orientation = (fieldCell[0x4e] + 2) & 3;
+            angle = (f32)orientation * 90.0f;
+            func_004c31b0(matrix, &axis, angle, 2);
+            for (count = 0; count < 4; count++)
+            {
+                position = *(RwV3d*)(modelResource + 0x11c + count * 0xc);
+                func_004c6be0(&position, &position, matrix);
+                position.x += origin.x;
+                position.y += origin.y;
+                position.z += origin.z;
+                *(RwV3d*)(modelResource + 0x11c + count * 0xc) = position;
+            }
+        }
+    }
+
+    records += *(u32*)(source + 8) * 0x20;
+    for (i = 0; i < *(u32*)(source + 0x10); i++)
+    {
+        record = records + i * 0x14;
+        if (K_Scene_001a0250() == 1)
+        {
+            position = *(RwV3d*)(record + 4);
+            fieldRoot = (u8*)K_Field_Get();
+            fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+            orientation = (fieldCell[0x4e] + 2) & 3;
+            angle = (f32)orientation * 90.0f;
+            func_004c31b0(matrix, &axis, angle, 2);
+            func_004c6be0(&position, &position, matrix);
+            position.x += origin.x;
+            position.y += origin.y;
+            position.z += origin.z;
+            angle += *(f32*)(record + 0x10);
+            while (angle > 360.0f)
+            {
+                angle -= 360.0f;
+            }
+            resourceId = K_Misc_FindNextFreeResId(0xf);
+            func_003b6b90((u16)resourceId, &position, angle);
+        }
+    }
+    records += *(u32*)(source + 0x10) * 0x14;
+    for (i = 0; i < *(u32*)(source + 0x18); i++)
+    {
+        record = records + i * 0x14;
+        if (K_Scene_001a0250() == 1)
+        {
+            position = *(RwV3d*)(record + 4);
+            fieldRoot = (u8*)K_Field_Get();
+            fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+            orientation = (fieldCell[0x4e] + 2) & 3;
+            angle = (f32)orientation * 90.0f;
+            func_004c31b0(matrix, &axis, angle, 2);
+            func_004c6be0(&position, &position, matrix);
+            position.x += origin.x;
+            position.y += origin.y;
+            position.z += origin.z;
+            angle += *(f32*)(record + 0x10);
+            while (angle > 360.0f)
+            {
+                angle -= 360.0f;
+            }
+            resourceId = K_Misc_FindNextFreeResId(0x10);
+            func_003b6c50((u16)resourceId, &position, angle);
+        }
+    }
+    records += *(u32*)(source + 0x18) * 0x14;
+    for (i = 0; i < *(u32*)(source + 0x20); i++)
+    {
+        record = records + i * 0x14;
+        if (K_Scene_001a0250() == 1)
+        {
+            position = *(RwV3d*)(record + 4);
+            fieldRoot = (u8*)K_Field_Get();
+            fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+            orientation = (fieldCell[0x4e] + 2) & 3;
+            angle = (f32)orientation * 90.0f;
+            func_004c31b0(matrix, &axis, angle, 2);
+            func_004c6be0(&position, &position, matrix);
+            position.x += origin.x;
+            position.y += origin.y;
+            position.z += origin.z;
+            angle += *(f32*)(record + 0x10);
+            while (angle > 360.0f)
+            {
+                angle -= 360.0f;
+            }
+            resourceId = K_Misc_FindNextFreeResId(0x11);
+            func_003b6d10((u16)resourceId, &position, angle);
+        }
+    }
+    records += *(u32*)(source + 0x20) * 0x14;
+
+    if (version >= 0x1001)
+    {
+        for (i = 0; i < *(u32*)(source + 0x28); i++)
+        {
+            record = records + i * 0x14;
+            if (K_Scene_001a0250() == 1)
+            {
+                position = *(RwV3d*)(record + 4);
+                fieldRoot = (u8*)K_Field_Get();
+                fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+                orientation = (fieldCell[0x4e] + 2) & 3;
+                angle = (f32)orientation * 90.0f;
+                func_004c31b0(matrix, &axis, angle, 2);
+                func_004c6be0(&position, &position, matrix);
+                position.x += origin.x;
+                position.y += origin.y;
+                position.z += origin.z;
+                angle += *(f32*)(record + 0x10);
+                while (angle > 360.0f)
+                {
+                    angle -= 360.0f;
+                }
+                resourceId = K_Misc_FindNextFreeResId(0x11);
+                func_003b6d10((u16)resourceId, &position, angle);
+            }
+        }
+        records += *(u32*)(source + 0x28) * 0x14;
+    }
+    if (version >= 0x1002)
+    {
+        records += *(u32*)(source + 0x30) * 0x20;
+        if (version >= 0x1003)
+        {
+            for (i = 0; i < *(u32*)(source + 0x38); i++)
+            {
+                record = records + i * 0x14;
+                if (K_Scene_001a0250() == 1)
+                {
+                    position = *(RwV3d*)(record + 4);
+                    fieldRoot = (u8*)K_Field_Get();
+                    fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+                    orientation = (fieldCell[0x4e] + 2) & 3;
+                    angle = (f32)orientation * 90.0f;
+                    func_004c31b0(matrix, &axis, angle, 2);
+                    func_004c6be0(&position, &position, matrix);
+                    position.x += origin.x;
+                    position.y += origin.y;
+                    position.z += origin.z;
+                    angle += *(f32*)(record + 0x10);
+                    while (angle > 360.0f)
+                    {
+                        angle -= 360.0f;
+                    }
+                    ids[i] = (u16)K_Misc_FindNextFreeResId(0x12);
+                    func_003b6dd0(ids[i], &position, angle);
+                }
+            }
+        }
+    }
+
+    count = *(u32*)(source + 0x38);
+    if (count >= 5)
+    {
+        K_Assert((const char*)D_006833A0, 0x212);
+    }
+    if (count == 1)
+    {
+        fieldRoot = (u8*)K_Field_Get();
+        fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+        direction = fieldCell[0x4e];
+        if (direction == 0)
+        {
+            *(u16*)(fieldCell + 0x54) = 0xffff;
+            *(u16*)(fieldCell + 0x64) = ids[0];
+            *(u16*)(fieldCell + 0x154) = ids[1];
+            *(u16*)(fieldCell + 0x164) = ids[2];
+        }
+        else if (direction == 1)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[0];
+            *(u16*)(fieldCell + 0x64) = ids[2];
+            *(u16*)(fieldCell + 0x154) = 0xffff;
+            *(u16*)(fieldCell + 0x164) = ids[1];
+        }
+        else if (direction == 2)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[2];
+            *(u16*)(fieldCell + 0x64) = ids[1];
+            *(u16*)(fieldCell + 0x154) = ids[0];
+            *(u16*)(fieldCell + 0x164) = 0xffff;
+        }
+        else
+        {
+            *(u16*)(fieldCell + 0x54) = ids[1];
+            *(u16*)(fieldCell + 0x64) = 0xffff;
+            *(u16*)(fieldCell + 0x154) = ids[0];
+            *(u16*)(fieldCell + 0x164) = ids[2];
+        }
+    }
+    else if (count == 3)
+    {
+        fieldRoot = (u8*)K_Field_Get();
+        fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+        direction = fieldCell[0x4e];
+        if (direction == 0)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[0];
+            *(u16*)(fieldCell + 0x64) = ids[1];
+            *(u16*)(fieldCell + 0x154) = ids[2];
+            *(u16*)(fieldCell + 0x164) = ids[3];
+        }
+        else if (direction == 1)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[1];
+            *(u16*)(fieldCell + 0x64) = ids[3];
+            *(u16*)(fieldCell + 0x154) = ids[0];
+            *(u16*)(fieldCell + 0x164) = ids[2];
+        }
+        else if (direction == 2)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[3];
+            *(u16*)(fieldCell + 0x64) = ids[2];
+            *(u16*)(fieldCell + 0x154) = ids[1];
+            *(u16*)(fieldCell + 0x164) = ids[0];
+        }
+        else
+        {
+            *(u16*)(fieldCell + 0x54) = ids[2];
+            *(u16*)(fieldCell + 0x64) = ids[0];
+            *(u16*)(fieldCell + 0x154) = ids[3];
+            *(u16*)(fieldCell + 0x164) = ids[1];
+        }
+    }
+    else if (count == 4)
+    {
+        fieldRoot = (u8*)K_Field_Get();
+        fieldCell = fieldRoot + (u32)y * 0x100 + (u32)x * 0x10;
+        direction = fieldCell[0x4e];
+        if (direction == 0)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[0];
+            *(u16*)(fieldCell + 0x64) = ids[1];
+            *(u16*)(fieldCell + 0x154) = ids[2];
+            *(u16*)(fieldCell + 0x164) = ids[3];
+        }
+        else if (direction == 1)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[1];
+            *(u16*)(fieldCell + 0x64) = ids[3];
+            *(u16*)(fieldCell + 0x154) = ids[0];
+            *(u16*)(fieldCell + 0x164) = ids[2];
+        }
+        else if (direction == 2)
+        {
+            *(u16*)(fieldCell + 0x54) = ids[3];
+            *(u16*)(fieldCell + 0x64) = ids[2];
+            *(u16*)(fieldCell + 0x154) = ids[1];
+            *(u16*)(fieldCell + 0x164) = ids[0];
+        }
+        else
+        {
+            *(u16*)(fieldCell + 0x54) = ids[2];
+            *(u16*)(fieldCell + 0x64) = ids[0];
+            *(u16*)(fieldCell + 0x154) = ids[3];
+            *(u16*)(fieldCell + 0x164) = ids[1];
+        }
+    }
+    func_004c3880(matrix);
 }
 
 // FUN_001bc630 NONMATCHING
