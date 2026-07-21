@@ -28,6 +28,21 @@ extern void func_0021d8e0(void* panel, const float* rect);
 extern void func_0021d950(void* panel, const u8* color);
 extern int sprintf(char* buffer, const char* format, ...);
 extern u32 strlen(const char* string);
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_0096009C)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
+#pragma alias brPanelSetStateRaw D_00960090
+#pragma alias brPanelSetQuadRaw D_0096009C
+extern void (*brPanelSetStateRaw)(u32 state, u32 value);
+extern void (*brPanelSetQuadRaw)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
+extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u32 func_0021cce0(void* frame);
+extern u32 func_00239140(s32 index);
+#pragma alias brPanelResRaw brRes00234570
+extern u32 brPanelResRaw(s32 type);
+extern void func_003b0d70(u32 resource, s32 offset, s32 flags);
+extern u32 datGetScenarioMode(void);
+extern f32 sqrtf(f32 value);
+extern void bpIFont00238a50(void* glyphs, s32 capacity, s32 value, s32 style, const float* origin);
 
 static void brPanel002361d0(void* glyph, s32 digit, s32 style);
 static void brPanel00236390(void);
@@ -247,23 +262,186 @@ void brPanel00235010(void)
     brPanel00236390();
 }
 
+#pragma push
+#pragma opt_common_subs off
+#pragma optimization_level 3
+#pragma schedule on
+#define D_00960090 brPanelSetState
+#define D_0096009C brPanelSetQuad
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
 {
+    u8* work;
+    u8* entry;
+    u32 texture;
+    u32 digitTexture;
+    u32 frame;
+    void (*brPanelSetState)(u32 state, u32 value);
+    void (*brPanelSetQuad)(u32* quad, u32 primitive, u32 offset, u32 first, u32 second);
     s32 i;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
-    if ((BR_PANEL_WORD(0) & 1) == 0) {
+    work = (u8*)sBrPanel;
+    if ((*(u32*)work & 1) == 0) {
         return;
     }
-    func_003b1360(BR_PANEL_WORD(0x310), 1, 0);
-    for (i = 0; i < (s32)BR_PANEL_WORD(0x1d50); i++) {
-        if (*(u32*)(BR_PANEL_ENTRY(i) + 0xc) != 0) {
-            func_003b1360(*(u32*)(BR_PANEL_ENTRY(i) + 0xc), 1, 0);
-        }
+
+    texture = brRes00234570(0);
+    digitTexture = brRes00234570(1);
+    brPanelSetState = brPanelSetStateRaw;
+    brPanelSetQuad = brPanelSetQuadRaw;
+
+    D_00960090(9, 2);
+    D_00960090(0x14, 2);
+    D_00960090(8, 1);
+    D_00960090(6, 0);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+    frame = func_0021cce0(func_0021cca0(texture, 4));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x2560), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x2560), 4, 0, 2, 3);
+
+    D_00960090(8, 1);
+    D_00960090(6, 0);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+    frame = func_0021cce0(func_0021cca0(texture, 4));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x2260), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x2260), 4, 0, 2, 3);
+
+    D_00960090(8, 0);
+    D_00960090(6, 1);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+    frame = func_0021cce0(func_0021cca0(texture, 4));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0xd20), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0xd20), 4, 0, 2, 3);
+    frame = func_0021cce0(func_0021cca0(digitTexture, 0xd));
+    D_00960090(1, frame);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+
+    for (i = 0; i < 7; i++) {
+        D_0096009C((u32*)(work + 0x520 + i * 0x100), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x520 + i * 0x100), 4, 0, 2, 3);
     }
-    brPanel00236390();
+    frame = func_0021cce0(func_0021cca0(texture, 2));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0xc20), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0xc20), 4, 0, 2, 3);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+
+    for (i = 0; i < (s32)*(u32*)(work + 0x1d50); i++) {
+        entry = work + 0xe20 + i * 0x510;
+        frame = func_0021cce0(func_0021cca0(texture, 4));
+        D_00960090(1, frame);
+        D_0096009C((u32*)(entry + 0x10), 4, 0, 1, 2);
+        D_0096009C((u32*)(entry + 0x10), 4, 0, 2, 3);
+        func_003b0e70(0x40);
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        func_003b1360(*(u32*)(entry + 0xc), 1, 0);
+        func_003b0e90(0x40);
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        frame = func_0021cce0(func_0021cca0(texture, 1));
+        D_00960090(1, frame);
+        D_0096009C((u32*)(entry + 0x110), 4, 0, 1, 2);
+        D_0096009C((u32*)(entry + 0x110), 4, 0, 2, 3);
+        if (*(s32*)entry == 0) {
+            frame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xa);
+        } else {
+            frame = (u32)(uintptr_t)func_0021cca0(digitTexture, 0xb);
+        }
+        frame = func_0021cce0((void*)(uintptr_t)frame);
+        D_00960090(1, frame);
+        D_0096009C((u32*)(entry + 0x410), 4, 0, 1, 2);
+        D_0096009C((u32*)(entry + 0x410), 4, 0, 2, 3);
+    }
+
+    D_00960090(8, 0);
+    D_00960090(6, 1);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+    frame = func_0021cce0(func_0021cca0(texture, 0));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x10), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x10), 4, 0, 2, 3);
+    frame = func_0021cce0(func_0021cca0(texture, 5));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x110), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x110), 4, 0, 2, 3);
+    frame = func_0021cce0(func_0021cca0(texture, 3));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x210), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x210), 4, 0, 2, 3);
+    func_003b0e70(0x40);
+    func_003b1360(*(u32*)(work + 0x310), 1, 0);
+    func_003b0e90(0x40);
+    frame = func_00239140(1);
+    D_00960090(1, frame);
+    RpSkyRenderStateSet(3, 0x717fb);
+    RpSkyRenderStateSet(2, 0x44);
+    D_0096009C((u32*)(work + 0x320), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x320), 4, 0, 2, 3);
+    D_0096009C((u32*)(work + 0x420), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x420), 4, 0, 2, 3);
+    D_00960090(6, 1);
+    D_00960090(1, 0);
+    D_0096009C((u32*)(work + 0x2460), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x2460), 4, 0, 2, 3);
+
+    if (*(s32*)(work + 0x266c) == 1) {
+        D_00960090(1, 0);
+        D_0096009C((u32*)(work + 0x2360), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x2360), 4, 0, 2, 3);
+    } else if (*(s32*)(work + 0x266c) == 2) {
+        D_00960090(6, 0);
+        D_00960090(8, 0);
+        D_00960090(1, 0);
+        D_0096009C((u32*)(work + 0x2360), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x2360), 4, 0, 2, 3);
+    }
+
+    D_00960090(6, 1);
+    frame = func_0021cce0(func_0021cca0(texture, 6));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x1d60), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x1d60), 4, 0, 2, 3);
+    frame = func_0021cce0(func_0021cca0(texture, 9));
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x1e60), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x1e60), 4, 0, 2, 3);
+    if (*(u32*)work & 8) {
+        frame = (u32)(uintptr_t)func_0021cca0(texture, 0xa);
+    } else {
+        frame = (u32)(uintptr_t)func_0021cca0(texture, 8);
+    }
+    frame = func_0021cce0((void*)(uintptr_t)frame);
+    D_00960090(1, frame);
+    D_0096009C((u32*)(work + 0x1f60), 4, 0, 1, 2);
+    D_0096009C((u32*)(work + 0x1f60), 4, 0, 2, 3);
+    if (*(u32*)work & 4) {
+        frame = func_0021cce0(func_0021cca0(texture, 7));
+        D_00960090(1, frame);
+        D_0096009C((u32*)(work + 0x2160), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x2160), 4, 0, 2, 3);
+        frame = func_0021cce0(func_0021cca0(texture, 9));
+        D_00960090(1, frame);
+        D_0096009C((u32*)(work + 0x2060), 4, 0, 1, 2);
+        D_0096009C((u32*)(work + 0x2060), 4, 0, 2, 3);
+    }
 }
+#undef D_00960090
+#undef D_0096009C
+#pragma schedule off
+#pragma optimization_level 2
+#pragma opt_common_subs on
+#pragma pop
 
 // FUN_00235f30
 void brPanel00235f30(void* glyphs, s32 capacity, s32 value, s32 style)
@@ -373,36 +551,482 @@ u32 brPanel00236340(void)
     return BR_PANEL_WORD(0) & 2;
 }
 
+#pragma optimization_level 3
+#pragma schedule on
+#define brRes00234570(x) ((x) == 0 ? texture : digitTexture)
+#define BR_PANEL_SET_RECT(dst, x, y, w, h) \
+    do { \
+        rect[0] = (x); \
+        rect[1] = (y); \
+        rect[2] = (w); \
+        rect[3] = (h); \
+        func_0021d8e0((dst), rect); \
+    } while (0)
+#define BR_PANEL_SET_VERTICES(dst) \
+    do { func_0021d890((dst), rect); } while (0)
+#define BR_PANEL_ANIMATE(dst, duration) \
+    do { anim = func_0021ea00((duration)); \
+         func_0021eac0((dst), anim); } while (0)
+#define BR_PANEL_SET_COLOR(dst, alpha) \
+    do { \
+        color[0] = 0xff; \
+        color[1] = 0xff; \
+        color[2] = 0xff; \
+        color[3] = (u8)(u32)(255.0f * (alpha)); \
+        func_0021d950((dst), color); \
+    } while (0)
 // FUN_00236390 NONMATCHING
 static void brPanel00236390(void)
 {
+    u8* work;
+    u8* entry;
+    void* frame;
+    u32 texture;
+    u32 digitTexture;
+    s32 mode;
+    s32 timer;
+    s32 value;
+    s32 length;
     s32 i;
-    float alpha;
-    u8 color;
+    f32 alpha;
+    f32 shift;
+    f32 shift2;
+    f32 scale;
+    f32 textWidth;
+    f32 root2;
+    f32 anim;
+    u8 color[4];
+    f32 rect[8];
+    char text[0x100];
+    char text2[0x100];
+    u32 packedColor;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
-    if ((BR_PANEL_WORD(0) & 1) == 0) {
-        return;
-    }
-    if (BR_PANEL_WORD(0x266c) == 0) {
+    work = (u8*)sBrPanel;
+    root2 = sqrtf(2.0f);
+    texture = brPanelResRaw(0);
+    digitTexture = brPanelResRaw(1);
+    frame = func_0021cca0(texture, 0);
+    mode = *(s32*)(work + 0x266c);
+    timer = *(s32*)(work + 0x2668);
+
+    if (mode == 0) {
+        shift = 0.0f;
         alpha = 0.0f;
-    } else if (BR_PANEL_WORD(0x266c) == 1) {
-        alpha = BR_PANEL_WORD(0x2668) < 10 ? (float)BR_PANEL_WORD(0x2668) / 10.0f : 1.0f;
+    } else if (mode == 1) {
+        shift = 1.0f;
+        alpha = 1.0f;
+        if (timer < 2) {
+            shift = 0.0f;
+        } else if (timer < 8) {
+            shift = (1.0f - (f32)(timer - 2) / 6.0f) * (f32)*(s32*)((u8*)frame + 0xc);
+        } else {
+            shift = 0.0f;
+        }
     } else {
-        alpha = BR_PANEL_WORD(0x2668) < 10 ? 1.0f - (float)BR_PANEL_WORD(0x2668) / 10.0f : 0.0f;
-    }
-    color = (u8)(alpha * 255.0f);
-    brPanelSetColor((u8*)sBrPanel + 0x2560, 0xff, 0xff, 0xff, color);
-    for (i = 0; i < 2; i++) {
-        brPanelSetColor((u8*)sBrPanel + 0x320 + i * 0x100, 0xff, 0xff, 0xff, color);
-    }
-    for (i = 0; i < 7; i++) {
-        brPanelSetColor((u8*)sBrPanel + 0x520 + i * 0x100, 0xff, 0xff, 0xff, color);
-    }
-    for (i = 0; i < (s32)BR_PANEL_WORD(0x1d50); i++) {
-        u8* entry = BR_PANEL_ENTRY(i);
-        if (*(u32*)(entry + 0xc) != 0) {
-            func_003b2c60(*(u32*)(entry + 0xc), alpha);
+        shift = (f32)((*(s32*)((u8*)frame + 0xc) + 1) / 2);
+        alpha = 0.0f;
+        if (timer < 10) {
+            shift *= (f32)timer / 32.0f;
+            alpha = 1.0f - (f32)timer / 32.0f;
+        } else {
+            shift = 0.0f;
         }
     }
+    BR_PANEL_SET_RECT(work + 0x10, 381.0f + shift, 55.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_ANIMATE(work + 0x10, 0x28);
+    BR_PANEL_SET_COLOR(work + 0x10, alpha);
+
+    frame = func_0021cca0(brRes00234570(0), 5);
+    if (mode == 0) {
+        shift = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        shift = 100.0f;
+        alpha = 0.0f;
+        if (timer >= 3) {
+            if (timer < 10) {
+                shift = (1.0f - (f32)(timer - 3) / 6.0f) * 100.0f;
+            } else {
+                shift = 0.0f;
+                alpha = 1.0f;
+            }
+        }
+    } else {
+        shift = 0.0f;
+        alpha = 1.0f;
+        if (timer >= 0 && timer < 10) {
+            scale = (f32)timer / 10.0f;
+            shift = scale * 40.0f;
+            alpha = 1.0f - scale;
+        }
+    }
+    BR_PANEL_SET_RECT(work + 0x110, 397.0f + shift, 342.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_ANIMATE(work + 0x110, 0x28);
+    BR_PANEL_SET_COLOR(work + 0x110, alpha);
+
+    frame = func_0021cca0(brRes00234570(0), 3);
+    if (mode == 0) {
+        shift = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        shift = 200.0f;
+        alpha = 0.0f;
+        if (timer >= 4) {
+            if (timer < 10) {
+                shift = (1.0f - (f32)(timer - 4) / 6.0f) * 200.0f;
+            } else {
+                shift = 0.0f;
+                alpha = 1.0f;
+            }
+        }
+    } else {
+        shift = 0.0f;
+        alpha = 1.0f;
+        if (timer >= 0 && timer < 10) {
+            scale = (f32)timer / 10.0f;
+            shift = scale * 160.0f;
+            alpha = 1.0f - scale;
+        }
+    }
+    BR_PANEL_SET_RECT(work + 0x210, 413.0f + shift, 372.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_ANIMATE(work + 0x210, 0x28);
+    BR_PANEL_SET_COLOR(work + 0x210, alpha);
+
+    value = *(s32*)(work + 0x2660);
+    K_ASSERT(value > 0 && value < 100, 0x3bd);
+    if (mode == 0) {
+        shift = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        shift = 100.0f;
+        alpha = 0.0f;
+        if (timer >= 5) {
+            if (timer < 11) {
+                shift = (1.0f - (f32)(timer - 5) / 6.0f) * 100.0f;
+            } else {
+                shift = 0.0f;
+                alpha = 1.0f;
+            }
+        }
+    } else {
+        shift = 0.0f;
+        alpha = 1.0f;
+        if (timer >= 0 && timer < 10) {
+            scale = (f32)timer / 10.0f;
+            shift = scale * 40.0f;
+            alpha = 1.0f - scale;
+        }
+    }
+    if (datGetScenarioMode() != 0) {
+        func_003b0d70(*(u32*)(work + 0x310),
+                      (s32)((477.0f + shift) * 16.0f), 0xc28);
+    } else {
+        func_003b0d70(*(u32*)(work + 0x310),
+                      (s32)((427.0f + shift) * 16.0f), 0xc28);
+    }
+    packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
+    func_003b0e20(*(u32*)(work + 0x310), packedColor);
+
+    if (value < 10) {
+        rect[0] = 465.0f + shift;
+    } else {
+        rect[0] = 473.0f + shift;
+    }
+    rect[1] = 372.0f;
+    rect[2] = 0.0f;
+    rect[3] = 0.0f;
+    bpIFont00238a50(work + 0x320, 2, value, 1, rect);
+    BR_PANEL_SET_COLOR(work + 0x320, alpha);
+    BR_PANEL_SET_COLOR(work + 0x420, alpha);
+
+    if (mode == 0) {
+        shift = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        shift = 40.0f;
+        alpha = 0.0f;
+        if (timer >= 5) {
+            if (timer < 11) {
+                shift = (1.0f - (f32)(timer - 5) / 6.0f) * 40.0f;
+            } else {
+                shift = 0.0f;
+                alpha = 1.0f;
+            }
+        }
+    } else {
+        shift = 0.0f;
+        alpha = 1.0f;
+        if (timer >= 0 && timer < 10) {
+            scale = (f32)timer / 10.0f;
+            shift = scale * 40.0f;
+            alpha = 1.0f - scale;
+        }
+    }
+    sprintf(text, "%d", *(s32*)(work + 0x2664));
+    length = (s32)strlen(text);
+    textWidth = (f32)(length * 23);
+    frame = func_0021cca0(brRes00234570(0), 2);
+    rect[0] = 350.0f - (textWidth + 40.0f +
+                        (f32)*(s32*)((u8*)frame + 0xc)) / 2.0f + shift;
+    rect[1] = 154.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    brPanel00235ff0(work + 0x520, 7, *(s32*)(work + 0x2664), 0, rect);
+    BR_PANEL_SET_COLOR(work + 0x520, alpha);
+    BR_PANEL_SET_COLOR(work + 0x620, alpha);
+    BR_PANEL_SET_COLOR(work + 0x720, alpha);
+    BR_PANEL_SET_COLOR(work + 0x820, alpha);
+    BR_PANEL_SET_COLOR(work + 0x920, alpha);
+    BR_PANEL_SET_COLOR(work + 0xa20, alpha);
+    BR_PANEL_SET_COLOR(work + 0xb20, alpha);
+
+    sprintf(text2, "%d", *(s32*)(work + 0x2664));
+    length = (s32)strlen(text2);
+    textWidth = (f32)(length * 23);
+    frame = func_0021cca0(brRes00234570(0), 2);
+    rect[0] = 40.0f + textWidth +
+              40.0f - 0.0f + shift;
+    rect[1] = 158.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    BR_PANEL_SET_RECT(work + 0xc20, rect[0], rect[1], rect[2], rect[3]);
+    BR_PANEL_ANIMATE(work + 0xc20, 0x28);
+    BR_PANEL_SET_COLOR(work + 0xc20, alpha);
+
+    for (i = 0; i < (s32)*(u32*)(work + 0x1d50); i++) {
+        entry = work + 0xe20 + i * 0x510;
+        if (mode == 0) {
+            shift = 0.0f;
+            alpha = 0.0f;
+            scale = 1.0f;
+        } else if (mode == 1) {
+            scale = 1.0f;
+            alpha = 1.0f;
+            shift = (f32)(*(s32*)(work + 0x2668) - (i + 4));
+            if (shift <= 0.0f) {
+                shift = -100.0f;
+                alpha = 0.0f;
+            } else if (shift < 4.0f) {
+                scale = 1.0f - (shift - 1.0f) / 3.0f;
+                shift = -100.0f * scale;
+            } else {
+                shift = 0.0f;
+            }
+        } else {
+            scale = 1.0f;
+            shift = 0.0f;
+            alpha = 1.0f;
+            if (timer < 10) {
+                alpha = 1.0f - (f32)timer / 10.0f;
+            } else {
+                alpha = 0.0f;
+            }
+        }
+        func_003b0d70(*(u32*)(entry + 0xc),
+                      (s32)((210.0f + shift) * 16.0f),
+                      (210 + i * 30) * 8);
+        packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
+        func_003b0e20(*(u32*)(entry + 0xc), packedColor);
+
+        frame = func_0021cca0(brRes00234570(0), 4);
+        BR_PANEL_SET_RECT(entry + 0x10, 0.0f, 233.0f + (f32)(i * 30),
+                          (f32)*(s32*)((u8*)frame + 0xc) * scale,
+                          (f32)*(s32*)((u8*)frame + 0x10));
+        BR_PANEL_ANIMATE(entry + 0x10, 0x28);
+        BR_PANEL_SET_COLOR(entry + 0x10, alpha);
+
+        frame = func_0021cca0(brRes00234570(0), 1);
+        BR_PANEL_SET_RECT(entry + 0x110, 373.0f - (f32)(i * 30) + shift,
+                          221.0f + (f32)i,
+                          (f32)*(s32*)((u8*)frame + 0xc),
+                          (f32)*(s32*)((u8*)frame + 0x10));
+        BR_PANEL_ANIMATE(entry + 0x110, 0x28);
+        BR_PANEL_SET_COLOR(entry + 0x110, alpha);
+
+        sprintf(text, "%d", *(s32*)(entry + 8));
+        length = (s32)strlen(text);
+        rect[0] = (*(s32*)(entry + 8) < 10 ? 401.0f : 393.0f) -
+                  (f32)(length * 23) / 2.0f + shift;
+        rect[1] = 221.0f + (f32)i;
+        brPanel00235ff0(entry + 0x210, 2, *(s32*)(entry + 8), 1, rect);
+        BR_PANEL_SET_COLOR(entry + 0x210, alpha);
+        BR_PANEL_SET_COLOR(entry + 0x310, alpha);
+
+        if (*(s32*)entry == 0) {
+            frame = func_0021cca0(brRes00234570(1), 0xa);
+        } else {
+            frame = func_0021cca0(brRes00234570(1), 0xb);
+        }
+        rect[0] = 142.0f - (f32)(i * 30) + shift;
+        rect[1] = 205.0f + (f32)(i * 30);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        BR_PANEL_SET_RECT(entry + 0x410, rect[0], rect[1], rect[2], rect[3]);
+        BR_PANEL_ANIMATE(entry + 0x410, 0x28);
+        BR_PANEL_SET_COLOR(entry + 0x410, alpha);
+    }
+
+    frame = func_0021cca0(brRes00234570(0), 6);
+    BR_PANEL_SET_RECT(work + 0x1d60, 320.0f, 448.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_SET_COLOR(work + 0x1d60, alpha);
+    frame = func_0021cca0(brRes00234570(0), 7);
+    BR_PANEL_SET_RECT(work + 0x2160, 128.0f, 180.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_SET_COLOR(work + 0x2160, alpha);
+    frame = func_0021cca0(brRes00234570(0), 9);
+    BR_PANEL_SET_RECT(work + 0x2060, 8.0f, 260.0f,
+                      (f32)*(s32*)((u8*)frame + 0xc),
+                      (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_SET_COLOR(work + 0x2060, alpha);
+    if (mode == 0) {
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        rect[4] = 0.0f;
+        rect[5] = 0.0f;
+        rect[6] = 0.0f;
+        rect[7] = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
+        rect[0] = 320.0f;
+        rect[1] = -640.0f / root2;
+        rect[2] = -448.0f / root2;
+        rect[3] = 224.0f;
+        scale = (timer < 8) ? (f32)timer / 8.0f : 1.0f;
+        shift = 1096.0f * scale / root2;
+        rect[4] = rect[2] + shift;
+        rect[5] = rect[3] + shift;
+        rect[6] = rect[0] + shift;
+        rect[7] = rect[1] + shift;
+        alpha = 1.0f;
+    } else {
+        root2 = sqrtf(2.0f);
+        rect[0] = 320.0f;
+        rect[1] = -640.0f / root2;
+        rect[2] = -448.0f / root2;
+        rect[3] = 224.0f;
+        scale = (timer < 10) ? (f32)timer / 10.0f : 1.0f;
+        shift = 1096.0f * scale / root2;
+        rect[4] = rect[2] + shift;
+        rect[5] = rect[3] + shift;
+        rect[6] = rect[0] + shift;
+        rect[7] = rect[1] + shift;
+        alpha = 1.0f - scale;
+    }
+    BR_PANEL_SET_VERTICES(work + 0x2260);
+    BR_PANEL_ANIMATE(work + 0x2260, 0x32);
+    color[0] = 0xe;
+    color[1] = 0x8b;
+    color[2] = 0xec;
+    color[3] = (u8)(u32)(255.0f * alpha);
+    func_0021d950(work + 0x2260, color);
+
+    if (mode == 0) {
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        rect[4] = 0.0f;
+        rect[5] = 0.0f;
+        rect[6] = 0.0f;
+        rect[7] = 0.0f;
+        alpha = 0.0f;
+    } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
+        rect[0] = 320.0f;
+        rect[1] = -640.0f / root2;
+        rect[2] = -448.0f / root2;
+        rect[3] = 224.0f;
+        scale = (timer < 10) ? (f32)timer / 10.0f : 1.0f;
+        shift = 1096.0f * scale / root2;
+        rect[4] = rect[2] + shift;
+        rect[5] = rect[3] + shift;
+        rect[6] = rect[0] + shift;
+        rect[7] = rect[1] + shift;
+        alpha = 1.0f;
+    } else {
+        root2 = sqrtf(2.0f);
+        scale = (f32)timer / 10.0f;
+        if (timer >= 10) {
+            scale = 0.0f;
+        }
+        shift = (350.0f / root2 - 350.0f) * scale;
+        rect[0] = 320.0f + shift;
+        rect[1] = -320.0f + shift;
+        rect[2] = -224.0f + shift;
+        rect[3] = 224.0f + shift;
+        rect[4] = 320.0f + shift;
+        rect[5] = -320.0f + shift;
+        rect[6] = -224.0f + shift;
+        rect[7] = 224.0f + shift;
+        alpha = 1.0f - scale;
+    }
+    BR_PANEL_SET_VERTICES(work + 0x2360);
+    BR_PANEL_ANIMATE(work + 0x2360, 0x23);
+    color[0] = 4;
+    color[1] = 0x29;
+    color[2] = 0x46;
+    color[3] = (u8)(u32)(255.0f * alpha);
+    func_0021d950(work + 0x2360, color);
+
+    if (mode == 0) {
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        rect[2] = 0.0f;
+        rect[3] = 0.0f;
+        rect[4] = 0.0f;
+        rect[5] = 0.0f;
+        rect[6] = 0.0f;
+        rect[7] = 0.0f;
+    } else if (mode == 1) {
+        root2 = sqrtf(2.0f);
+        scale = (f32)timer / 10.0f;
+        rect[0] = 320.0f;
+        rect[1] = -320.0f / root2;
+        rect[2] = -224.0f / root2;
+        rect[3] = 224.0f;
+        shift = 1096.0f * scale / root2;
+        rect[4] = rect[2] + shift;
+        rect[5] = rect[3] + shift;
+        rect[6] = rect[0] + shift;
+        rect[7] = rect[1] + shift;
+    } else {
+        root2 = sqrtf(2.0f);
+        scale = (f32)timer / 10.0f;
+        shift = (350.0f / root2 - 350.0f) * scale;
+        rect[0] = 320.0f + shift;
+        rect[1] = -320.0f + shift;
+        rect[2] = -224.0f + shift;
+        rect[3] = 224.0f + shift;
+        rect[4] = 320.0f + shift;
+        rect[5] = -320.0f + shift;
+        rect[6] = -224.0f + shift;
+        rect[7] = 224.0f + shift;
+    }
+    BR_PANEL_SET_VERTICES(work + 0x2460);
+    BR_PANEL_ANIMATE(work + 0x2460, 0x23);
+    color[0] = 0x4f;
+    color[1] = 0xa4;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0021d950(work + 0x2460, color);
 }
+#undef brRes00234570
+#undef BR_PANEL_SET_RECT
+#undef BR_PANEL_SET_VERTICES
+#undef BR_PANEL_ANIMATE
+#undef BR_PANEL_SET_COLOR
+#pragma schedule off
+#pragma optimization_level 2
