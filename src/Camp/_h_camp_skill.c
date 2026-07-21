@@ -121,10 +121,10 @@ extern void* DAT_00833B70;
 extern u8 DAT_00833B70_abs[];
 extern void* DAT_00833B94;
 extern void* DAT_00833BA0;
-extern s32 DAT_007e094e;
-extern s32 DAT_007e0952;
-extern s32 DAT_007e0958;
-extern s32 DAT_007e095a;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e0958;
+extern u16 DAT_007e095a;
 
 extern void* FUN_00160800(KwlnTask* task);
 extern void FUN_00122630(KwlnTask* task);
@@ -144,7 +144,9 @@ extern void* FUN_0010c1a0(void* first, ...);
 extern void* FUN_0010c3a0(void* first, ...);
 extern void* FUN_0018b6d0(s32 count);
 extern s32 FUN_0018b700(void* record);
-extern void FUN_0018bc10(u32 first, ...);
+extern void FUN_0018bc10(f32 first, void* animation, s32 start,
+                         s32 end, s32 mode, u64 startValues,
+                         u64 endValues, u32 param8, u32 param9);
 extern void FUN_001159f0(f32 first, ...);
 extern void FUN_00115bc0(f32 first, ...);
 extern void FUN_001140d0(s32 color, s32 width, s32 height, void* parser,
@@ -1041,41 +1043,209 @@ static void campSkillScroll(f32* x, f32* y)
     }
 }
 
-static void campSkillBeginMainTransition(CampSkillInnerWork* work,
-                                          s32 direction)
+typedef union CampSkillAnimPair
 {
+    u64 q;
+    f32 f[2];
+} CampSkillAnimPair;
+
+static inline void campSkillOpenMain(CampSkillInnerWork* work)
+{
+    CampSkillAnimPair start;
+    CampSkillAnimPair end;
     s32 i;
-    f32 x;
-    f32 y;
 
     if (DAT_007cdf54 != NULL) {
-        h_campRequestMenuTransition(DAT_007cdf54, direction == 0 ? 0 : 2);
+        h_campRequestMenuTransition(DAT_007cdf54, 2);
     }
     if (DAT_007cdf58 != NULL) {
-        FUN_00122710(DAT_007cdf58, direction == 0 ? 0 : 2);
-    }
-    if (work->listRecords == NULL) {
-        return;
+        FUN_00122710(DAT_007cdf58, 2);
     }
     for (i = 0; i < 4; i++) {
-        CampSkillRecord* record;
-
-        record = &work->listRecords[i + 2];
-        x = 47.0f + (f32)(i * 0x24);
-        y = direction == 0 ? 240.0f : -285.0f;
-        FUN_0018bc10(0x42c80000, record, 0, 2, 1, x, y, 0, 0);
+        start.f[0] = 15.0f;
+        start.f[1] = 47.0f + (f32)(i * 0x24);
+        end = start;
+        if (work->displayMode != 0) {
+            end.f[0] -= 300.0f;
+        } else {
+            end.f[1] += 300.0f;
+        }
+        FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, 1,
+                     end.q, start.q, 0, 0);
     }
-    FUN_0018bc10(0x42c80000, &work->listRecords[6], 0, 2, 1,
-                 400.0f, 400.0f, 0, 0);
-    FUN_0018bc10(0x42c80000, work->listRecords, 0, 2, 1,
-                 direction == 0 ? 300.0f : -112.0f, 188.0f, 0, 0);
-    FUN_0018bc10(0x42c80000, &work->listRecords[7], 0, 2, 1,
-                 direction == 0 ? 336.0f : 230.0f, 16.0f, 0, 0);
-    FUN_0018bc10(0x42c80000, &work->listRecords[8], 0, 2, 1,
-                 direction == 0 ? 700.0f : -300.0f, 414.0f, 0, 0);
+    start.f[0] = 400.0f;
+    start.f[1] = 0.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, 1,
+                 start.q, start.q, 0, 0);
+
+    start.f[0] = 188.0f;
+    start.f[1] = 0.0f;
+    end = start;
+    if (work->displayMode != 0) {
+        end.f[0] -= 300.0f;
+    } else {
+        end.f[1] += 300.0f;
+    }
+    FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
+                 end.q, start.q, 0, 0);
+
+    start.f[0] = 358.0f;
+    start.f[1] = 36.0f;
+    end = start;
+    if (work->displayMode != 0) {
+        end.f[0] -= 300.0f;
+    } else {
+        end.f[1] += 300.0f;
+    }
+    FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, 1,
+                 end.q, start.q, 0, 0);
+
+    start.f[0] = 0.0f;
+    start.f[1] = 415.0f;
+    end = start;
+    if (work->displayMode != 0) {
+        end.f[0] -= 300.0f;
+    } else {
+        end.f[1] += 300.0f;
+    }
+    FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, 1,
+                 end.q, start.q, 0, 0);
 }
 
-static s32 campSkillUpdateMainRecords(CampSkillInnerWork* work,
+static inline void campSkillCloseMain(CampSkillInnerWork* work)
+{
+    CampSkillAnimPair pair;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        pair.f[0] = 15.0f;
+        pair.f[1] = 47.0f + (f32)(i * 0x24);
+        FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, 1,
+                     pair.q, pair.q, 0, 0);
+    }
+    pair.f[0] = 400.0f;
+    pair.f[1] = 0.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+
+    pair.f[0] = work->listRecords[0].animation;
+    pair.f[1] = work->listRecords[0].animationTail;
+    FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 358.0f;
+    pair.f[1] = 36.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 415.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    if (DAT_007cdf54 != NULL) {
+        h_campRequestMenuTransition(DAT_007cdf54, 0);
+    }
+}
+
+static inline void campSkillReturnMain(CampSkillInnerWork* work)
+{
+    CampSkillAnimPair start;
+    CampSkillAnimPair end;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        start.f[0] = 15.0f;
+        start.f[1] = 47.0f + (f32)(i * 0x24);
+        end = start;
+        end.f[0] -= 300.0f;
+        FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, 1,
+                     start.q, end.q, 0, 0);
+    }
+    start.f[0] = 400.0f;
+    start.f[1] = 0.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, 1,
+                 start.q, start.q, 0, 0);
+    start.f[0] = work->listRecords[0].animation;
+    start.f[1] = work->listRecords[0].animationTail;
+    end = start;
+    end.f[0] -= 300.0f;
+    FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
+                 start.q, end.q, 0, 0);
+    start.f[0] = 358.0f;
+    start.f[1] = 36.0f;
+    end = start;
+    end.f[0] -= 300.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, 1,
+                 start.q, end.q, 0, 0);
+    start.f[0] = 0.0f;
+    start.f[1] = 415.0f;
+    end = start;
+    end.f[0] -= 300.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, 1,
+                 start.q, end.q, 0, 0);
+    if (DAT_007cdf54 != NULL) {
+        h_campRequestMenuTransition(DAT_007cdf54, 0);
+    }
+}
+
+static inline void campSkillOpenDetail(CampSkillInnerWork* work)
+{
+    CampSkillAnimPair pair;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        pair.f[0] = 15.0f;
+        pair.f[1] = 47.0f + (f32)(i * 0x24);
+        FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, 1,
+                     pair.q, pair.q, 0, 0);
+    }
+    pair.f[0] = 400.0f;
+    pair.f[1] = 0.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = work->listRecords[0].animation;
+    pair.f[1] = work->listRecords[0].animationTail;
+    FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+
+    pair.f[0] = 19.0f;
+    pair.f[1] = 36.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x44, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 20.1875f;
+    pair.f[1] = 37.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x88, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 60.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0xcc, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 117.0f;
+    pair.f[1] = 108.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x110, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 486.0f;
+    pair.f[1] = 364.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x198, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 28.0f;
+    pair.f[1] = 421.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x1dc, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+}
+
+static inline void campSkillAnimateDetail(CampSkillInnerWork* work, s32 mode)
+{
+    CampSkillAnimPair pair;
+    s32 i;
+
+    for (i = 0; i < 4; i++) {
+        pair.f[0] = 15.0f;
+        pair.f[1] = 47.0f + (f32)(i * 0x24);
+        FUN_0018bc10(100.0f, &work->detailRecords[i + 2], 0, 2, mode,
+                     pair.q, pair.q, 0, 0);
+    }
+}
+
+static inline s32 campSkillUpdateMainRecords(CampSkillInnerWork* work,
                                       s32 drawRecords)
 {
     CampSkillRecord* records;
@@ -1108,22 +1278,6 @@ static s32 campSkillUpdateMainRecords(CampSkillInnerWork* work,
     return complete;
 }
 
-static void campSkillAnimateDetail(CampSkillInnerWork* work, s32 mode)
-{
-    s32 i;
-    f32 x;
-    f32 y;
-
-    if (work->detailRecords == NULL) {
-        return;
-    }
-    for (i = 0; i < 4; i++) {
-        x = 47.0f + (f32)(i * 0x24);
-        y = mode == 0 ? 240.0f : -285.0f;
-        FUN_0018bc10(0x42c80000, &work->detailRecords[i + 2],
-                     0, 2, mode == 0 ? 1 : 2, x, y, 0, 0);
-    }
-}
 
 static void campSkillFinishChild(KwlnTask* child)
 {
@@ -1238,67 +1392,56 @@ void FUN_00161d60(KwlnTask* task)
     RwFree(task->workData);
 }
 
-static void campSkillBuildAnimationPath(char* path, s16 pcId)
+static inline void campSkillBuildAnimationPath(char* path, s16 pcId)
 {
-    if (datGetScenarioMode() == SCENARIO_MODE_ANSWER) {
-        if (pcId == 3 || pcId == 1) {
-            sprintf(path, "camp/skill/anm/if_c_skl02.anm");
+    if (datGetScenarioMode() != 0) {
+        if (pcId == 9) {
+            sprintf(path, "camp/AGS_camp_fr%02d.pak", pcId);
+        } else if (pcId == 3 || pcId == 1) {
+            sprintf(path, "camp/AGS_camp_fr03.pak");
         } else {
-            sprintf(path, "camp/skill/anm/if_c_skl%02d.anm", pcId);
+            sprintf(path, "camp/camp_fr%02d.pak", pcId);
         }
     } else {
-        sprintf(path, "camp/skill/anm/if_c_skl%02d.anm", pcId);
+        sprintf(path, "camp/camp_fr%02d.pak", pcId);
     }
 }
 
-static void campSkillPrepareDetail(CampSkillInnerWork* work,
-                                   KwlnTask* parentTask)
+static inline void campSkillPrepareDetail(CampSkillInnerWork* work,
+                                          KwlnTask* parentTask)
 {
     s32 i;
     u8* data;
+    u8* entry;
 
-    if (parentTask != NULL && parentTask->parent != NULL &&
-        parentTask->parent->workData != NULL) {
-        *(u32*)((u8*)parentTask->parent->workData + 0x2c) = 0;
-    }
+    *(u32*)((u8*)parentTask->parent->workData + 0x2c) = 0;
     data = (u8*)RwCalloc(1, 0x2d70, 0x40000);
-    if (data == NULL) {
-        work->detailData = NULL;
-        return;
-    }
     for (i = 0; i < 0x140; i++) {
-        u8* entry;
-
         entry = data + i * 0x24;
         *(s32*)(entry + 0x64) = -1;
-        *(s32*)(entry + 0x68) = -1;
         *(s32*)(entry + 0x6c) = 0;
+        *(s32*)(entry + 0x68) = -1;
         *(s32*)(entry + 0x70) = 0;
     }
     work->detailData = data;
+    FUN_001685e0(DAT_007cdf88, 4);
+    for (i = 0; i < 10; i++) {
+        CampSkillRecord* record;
+
+        record = &work->listRecords[i];
+        if (record->enabled != 0 && FUN_0018b700(record) != 0) {
+            FUN_00161d90(record, i, work);
+        }
+    }
     FUN_0013c240(data, work->pcId, (s16)work->category);
-    if (DAT_007cdf88 != NULL) {
-        FUN_001685e0(DAT_007cdf88, 4);
-    }
-    if (DAT_007cdf54 != NULL) {
-        h_campRequestMenuTransition(DAT_007cdf54, 0);
-    }
-    campSkillUpdateMainRecords(work, 0);
+    h_campRequestMenuTransition(DAT_007cdf54, 0);
 }
 
-static void campSkillSwapEquipment(CampSkillInnerWork* work)
+static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 {
     s32 row;
     s32 equipment;
     s32 oldEquipment;
-    u16 id;
-    u32 type;
-    u8 color;
-    u8 effect;
-    u16 first;
-    u16 second;
-    u16 third;
-    u16 fourth;
     u16 oldId;
     u32 oldType;
     u8 oldColor;
@@ -1307,10 +1450,15 @@ static void campSkillSwapEquipment(CampSkillInnerWork* work)
     u16 oldSecond;
     u16 oldThird;
     u16 oldFourth;
+    u16 id;
+    u32 type;
+    u8 color;
+    u8 effect;
+    u16 first;
+    u16 second;
+    u16 third;
+    u16 fourth;
 
-    if (work->detailData == NULL) {
-        return;
-    }
     row = *(s32*)(work->detailData + 0x2d6c) +
           *(s32*)(work->detailData + 0x2d68);
     if (row == 0) {
@@ -1318,15 +1466,6 @@ static void campSkillSwapEquipment(CampSkillInnerWork* work)
     }
     equipment = *(s32*)(work->detailData + row * 0x24 + 0x68);
     oldEquipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
-
-    id = datGetEquipmentId(1, equipment);
-    type = func_0016f720(1, equipment);
-    color = func_0016f810(1, equipment);
-    effect = datGetEquipmentEffect(1, equipment);
-    first = func_0016f9f0(1, equipment);
-    second = func_0016fae0(1, equipment);
-    third = func_0016fbd0(1, equipment);
-    fourth = func_0016fcc0(1, equipment);
 
     oldId = datGetEquipmentId(work->pcId, oldEquipment);
     oldType = func_0016f720(work->pcId, oldEquipment);
@@ -1336,6 +1475,15 @@ static void campSkillSwapEquipment(CampSkillInnerWork* work)
     oldSecond = func_0016fae0(work->pcId, oldEquipment);
     oldThird = func_0016fbd0(work->pcId, oldEquipment);
     oldFourth = func_0016fcc0(work->pcId, oldEquipment);
+
+    id = datGetEquipmentId(1, equipment);
+    type = func_0016f720(1, equipment);
+    color = func_0016f810(1, equipment);
+    effect = datGetEquipmentEffect(1, equipment);
+    first = func_0016f9f0(1, equipment);
+    second = func_0016fae0(1, equipment);
+    third = func_0016fbd0(1, equipment);
+    fourth = func_0016fcc0(1, equipment);
 
     func_0016fea0(work->pcId, oldEquipment, id);
     func_0016ff90(work->pcId, oldEquipment, type);
@@ -1365,8 +1513,8 @@ void* FUN_00164920(KwlnTask* task)
     u32 fileSize;
     s32 parserReady;
     s32 complete;
-    s32 i;
-    u32 buttons;
+    s32 buttons;
+    s32 repeatButtons;
 
     work = (CampSkillInnerWork*)task->workData;
     switch (work->state) {
@@ -1397,7 +1545,7 @@ void* FUN_00164920(KwlnTask* task)
         if (H_Maestro_00111f30((s16*)work->resource0) == 0) {
             parserReady = 0;
         }
-        if (H_Maestro_00111f30((s16*)work->resource1) == 0) {
+        if (H_Maestro_00111f30((s16*)work->resource0) == 0) {
             parserReady = 0;
         }
         if (parserReady != 0) {
@@ -1410,48 +1558,62 @@ void* FUN_00164920(KwlnTask* task)
         }
         break;
     case 2:
-        campSkillBeginMainTransition(work, 0);
+        campSkillOpenMain(work);
         work->state = 3;
         break;
     case 3:
         complete = campSkillUpdateMainRecords(work, 0);
         if (complete != 0) {
-            buttons = (u32)DAT_007e094e | (u32)DAT_007e095a;
-            if ((DAT_007e094e & 0x40) != 0) {
-                FUN_0010a4e0(0, 0, 0, 1);
-                work->command = 1;
-                work->state = 8;
-            } else if ((DAT_007e094e & 0x20) != 0) {
+            buttons = DAT_007e094e;
+            if ((buttons & 0x40) != 0) {
+                if (work->commandFlags == 0) {
+                    FUN_0010a4e0(0, 0, 0, 1);
+                    work->state = 9;
+                }
+            } else if ((buttons & 0x20) != 0) {
                 FUN_0010a4e0(0, 0, 0, 2);
                 work->command = (u32)-1;
                 work->state = 8;
-            } else if (work->commandFlags != 0) {
-                if ((buttons & 4) != 0) {
+            } else {
+                repeatButtons = DAT_007e0952;
+                if ((repeatButtons & 0x2000) != 0 ||
+                    (DAT_007e095a & 0x2000) != 0) {
                     FUN_0010a4e0(0, 0, 0, 0);
-                    work->command = 3;
+                    work->command = 1;
                     work->state = 8;
-                } else if ((buttons & 8) != 0) {
-                    FUN_0010a4e0(0, 0, 0, 0);
-                    work->command = 2;
-                    work->state = 8;
-                }
-            } else if ((buttons & 0x1000) != 0) {
-                work->category--;
-                if (work->category < 0) {
-                    work->category = 3;
-                }
-            } else if ((buttons & 0x4000) != 0) {
-                work->category++;
-                if (work->category > 3) {
-                    work->category = 0;
+                } else if (work->commandFlags == 0 &&
+                           ((repeatButtons & 0x1000) != 0 ||
+                            (DAT_007e095a & 0x1000) != 0)) {
+                    if (work->category == 0) {
+                        if ((buttons & 0x1000) != 0 ||
+                            (DAT_007e0958 & 0x1000) != 0) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                            work->category = 3;
+                        }
+                    } else {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        work->category--;
+                    }
+                } else if (work->commandFlags == 0 &&
+                           ((repeatButtons & 0x4000) != 0 ||
+                            (DAT_007e095a & 0x4000) != 0)) {
+                    if (work->category == 3) {
+                        if ((buttons & 0x4000) != 0 ||
+                            (DAT_007e0958 & 0x4000) != 0) {
+                            FUN_0010a4e0(0, 0, 0, 0);
+                            work->category = 0;
+                        }
+                    } else {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        work->category++;
+                    }
                 }
             }
         }
         break;
     case 4:
-        campSkillUpdateMainRecords(work, 0);
         if (campSkillUpdateMainRecords(work, 0) != 0) {
-            campSkillBeginMainTransition(work, 1);
+            campSkillCloseMain(work);
             work->state = 5;
         }
         break;
@@ -1461,9 +1623,10 @@ void* FUN_00164920(KwlnTask* task)
         }
         break;
     case 6:
-        campSkillUpdateMainRecords(work, 0);
-        campSkillAnimateDetail(work, 2);
-        work->state = 7;
+        if (campSkillUpdateMainRecords(work, 0) != 0) {
+            campSkillReturnMain(work);
+            work->state = 7;
+        }
         break;
     case 7:
         if (campSkillUpdateMainRecords(work, 0) != 0) {
@@ -1475,8 +1638,7 @@ void* FUN_00164920(KwlnTask* task)
         break;
     case 9:
         campSkillPrepareDetail(work, task);
-        campSkillBeginMainTransition(work, 1);
-        campSkillAnimateDetail(work, 1);
+        campSkillOpenDetail(work);
         work->state = 10;
         break;
     case 10:
@@ -1489,16 +1651,18 @@ void* FUN_00164920(KwlnTask* task)
     case 11:
         complete = campSkillUpdateMainRecords(work, 1);
         if (complete != 0) {
-            buttons = (u32)DAT_007e094e | (u32)DAT_007e095a;
-            if ((DAT_007e094e & 0x20) != 0) {
+            buttons = DAT_007e094e;
+            if ((buttons & 0x20) != 0) {
                 FUN_0010a4e0(0, 0, 0, 2);
                 work->state = 12;
-            } else if ((DAT_007e094e & 0x40) != 0) {
+            } else if ((buttons & 0x40) != 0) {
                 FUN_0010a4e0(0, 0, 0, 7);
                 campSkillSwapEquipment(work);
                 work->state = 12;
             } else if ((buttons & 0x1000) != 0 ||
-                       (buttons & 0x4000) != 0) {
+                       (buttons & 0x4000) != 0 ||
+                       (DAT_007e095a & 0x1000) != 0 ||
+                       (DAT_007e095a & 0x4000) != 0) {
                 if (work->detailData != NULL) {
                     h_campUpdatePagedCursor(
                         *(u32*)(work->detailData + 0x2d64), 5,
@@ -1522,9 +1686,7 @@ void* FUN_00164920(KwlnTask* task)
     case 13:
         complete = campSkillUpdateMainRecords(work, 1);
         if (complete != 0) {
-            if (task->parent != NULL && task->parent->workData != NULL) {
-                *(u32*)((u8*)task->parent->workData + 0x2c) = 1;
-            }
+            *(u32*)((u8*)task->parent->workData + 0x2c) = 1;
             if (work->detailData != NULL) {
                 RwFree(work->detailData);
                 work->detailData = NULL;
