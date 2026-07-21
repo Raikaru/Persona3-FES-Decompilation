@@ -401,13 +401,57 @@ void FUN_0012e170(void* atlas, s32 baseTile, CampVec2 position,
 
 static inline void campEquipAnimateMain(u32* work, s32 mode)
 {
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, mode, 0x4270000000000000ULL, 0x42700000c4160000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, mode, 0x42b4000000000000ULL, 0x42b40000c4160000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, mode, 0x42f0000000000000ULL, 0x42f00000c4160000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, mode, 0x4316000000000000ULL, 0x43160000c4160000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, mode, 0x436a000043f38000ULL, 0x436a00004444c000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, mode, 0x4372000043360000ULL, 0x43720000c3d10000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, mode, 0x43cf800041e00000ULL, 0x43cf8000c40f0000ULL, 0, 0, 0, 0);
+    CampVec2 position;
+    CampVec2 start;
+
+    position.x = 0.0f;
+    position.y = 60.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 90.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 120.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 150.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 487.0f;
+    position.y = 234.5f;
+    start = position;
+    start.x += 300.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 182.0f;
+    position.y = 242.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+    position.x = 28.0f;
+    position.y = 415.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, mode,
+                  *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
 }
 static inline void campEquipInitializeMain(u32* work)
 {
@@ -415,7 +459,7 @@ static inline void campEquipInitializeMain(u32* work)
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1, 0x42b40000c4160000ULL, 0x42b4000000000000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 1, 0x42f00000c4160000ULL, 0x42f0000000000000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 1, 0x43160000c4160000ULL, 0x4316000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1, 0xc28400004444c000ULL, 0x436a000043f38000ULL, 0, 0, 0, 0);
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1, 0x436a00004444c000ULL, 0x436a000043f38000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 1, 0x43720000c3d10000ULL, 0x4372000043360000ULL, 0, 0, 0, 0);
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1, 0x43cf8000c40f0000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
 }
@@ -433,13 +477,66 @@ static inline void campEquipCloseMain(u32* work)
 
 static inline void campEquipAnimateList(u32* work, s32 mode)
 {
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode, 0x4210000041980000ULL, 0x42100000c38c8000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode, 0x4214000043d18000ULL, 0x4214000043d18000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x88), 0, 2, mode, 0x4270000000000000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, mode, 0x42d8000042ea0000ULL, 0x42d8000042ea0000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, mode, 0x43b6800043f38000ULL, 0x43b6800043f38000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x198), 0, 2, mode, 0x4372000043290000ULL, 0x4372000043290000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode, 0x43cf800041e00000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
+    if (mode == 1) {
+        CampVec2 position;
+        CampVec2 start;
+        s16 category;
+
+        position.x = 19.0f;
+        position.y = 36.0f;
+        start = position;
+        start.x -= 300.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode,
+                      *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 419.0f;
+        position.y = 37.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        category = *(s16*)((u8*)work + 0x1c);
+        position.x = 0.0f;
+        position.y = 65.0f + 30.0f * (f32)category;
+        position.y -= 5.0f;
+        start.x = 0.0f;
+        start.y = 60.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x88), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
+
+        position.x = 117.0f;
+        position.y = 108.0f;
+        start = position;
+        start.x += 100.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, mode,
+                      *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 487.0f;
+        position.y = 365.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 169.0f;
+        position.y = 242.0f;
+        start = position;
+        start.x -= 600.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x198), 0, 2, mode,
+                      *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 28.0f;
+        position.y = 415.0f;
+        start = position;
+        start.x -= 600.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode,
+                      *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+    } else {
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode, 0x4210000041980000ULL, 0x4210000041980000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode, 0x4214000043d18000ULL, 0x4214000043d18000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x88), 0, 2, mode, 0x4270000000000000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, mode, 0x42d8000042ea0000ULL, 0x42d8000042ea0000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, mode, 0x43b6800043f38000ULL, 0x43b6800043f38000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x198), 0, 2, mode, 0x4372000043290000ULL, 0x4372000043290000ULL, 0, 0, 0, 0);
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode, 0x43cf800041e00000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
+    }
 }
 
 // FUN_0012C430 NONMATCHING
@@ -508,8 +605,6 @@ void* FUN_0012c430(KwlnTask* task)
         campEquipAnimateMain(work, 2);
         FUN_0012ddc0(work);
         FUN_0012dc20(work);
-        func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 2, 0x4372000043360000ULL, 0x43720000c3d10000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 2, 0x43cf800041e00000ULL, 0x43cf8000c40f0000ULL, 0, 0, 0, 0);
         func_0018bc10(100.0f, (void*)(work[0xb0]), 0, 2, 2, *(u64*)((u8*)work[0xb0] + 0x38), *(u64*)((u8*)work[0xb0] + 0x38), 0, 0, 0, 0);
         work[1] = 6;
         break;
@@ -534,8 +629,6 @@ void* FUN_0012c430(KwlnTask* task)
     case 8:
         campEquipAnimateMain(work, 2);
         campEquipAnimateList(work, 1);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, 1, 0x42d8000043590000ULL, 0x42d8000042ea0000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, 1, 0x438480004412c000ULL, 0x43b6800043f38000ULL, 0, 0, 0, 0);
         FUN_0012ddc0(work);
         FUN_0012dc20(work);
         FUN_0012dcf0(work);
