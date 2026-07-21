@@ -528,9 +528,9 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
   uStack_28 = DAT_006a6f38;
 
-  uStack_38 = DAT_007cd7d0;
+  uStack_38 = DAT_007cad7c;
 
-  uStack_34 = DAT_007cd7d4;
+  uStack_34 = DAT_007cad84;
 
   uStack_48 = DAT_006a6f40;
 
