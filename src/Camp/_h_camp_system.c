@@ -137,7 +137,7 @@ static u32 camp_menu_address(const void *pointer)
 }
 
 /* Item-list work used by FUN_0015C520/FUN_0015C840/FUN_0015CE50. */
-static uintptr_t camp_list_base_address(u32 base)
+static inline uintptr_t camp_list_base_address(u32 base)
 {
     return (uintptr_t)(u32)base;
 }
@@ -346,6 +346,9 @@ extern s32 DAT_007cdf8c;
 extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
 extern const char D_005DBD20[];
 
+extern void FUN_0018bc10(f32 first, void *animation, s32 start,
+                         s32 end, s32 mode, u64 startValues,
+                         u64 endValues, u32 param8, u32 param9);
 /* Explicit unresolved retail API declarations. */
 extern void *FUN_0010c1a0(u32 mode, const char *path, u32 arg2, u32 arg3, u32 arg4, u32 arg5, u32 arg6, u32 arg7);
 extern s32 FUN_0010c3a0(void *request, u32 *loaded, u64 arg3);
@@ -1182,49 +1185,49 @@ void FUN_0015DA70(void *param_1)
     count = camp_list_load_s32(
         camp_list_base_address((u32)(uintptr_t)param_1), 0x4c);
 
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + 0x44), 0, 2, 1,
-                 UINT64_C(0x41b00000429e0000), UINT64_C(0x41b0000041e80000), 0, 0);
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)base, 0, 2, 1, 0, 0, 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + 0x44), 0, 2, 1,
+                 0x41b00000429e0000ULL, 0x41b0000041e80000ULL, 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)base, 0, 2, 1, 0, 0, 0, 0);
     camp_list_store_u32(base, 0x8c, 0);
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + 0xcc), 0, 2, 1,
-                 UINT64_C(0x43cd800043f88000), UINT64_C(0x43cd800043df8000), 0, 0);
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + 0x110), 0, 2, 1,
-                 UINT64_C(0x41c0000043450000), UINT64_C(0x41c0000043770000), 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + 0xcc), 0, 2, 1,
+                 0x43cd800043f88000ULL, 0x43cd800043df8000ULL, 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + 0x110), 0, 2, 1,
+                 0x41c0000043450000ULL, 0x41c0000043770000ULL, 0, 0);
 
     for (i = 0; i < 4; ++i) {
         if (i < count) {
             float row = (float)(i * 0x55) + 42.0f;
             s32 item_offset = i * 10;
 
-            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(i + 1) * 0x2a8),
+            FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + (size_t)(i + 1) * 0x2a8),
                          0, 2, 1,
                          camp_list_pack_f32(row + 8.0f,
                                        camp_list_bits_to_float(0x41700000)),
                          camp_list_pack_f32(row + 8.0f,
                                        camp_list_bits_to_float(0x42820000)),
                          0, 0);
-            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0b) * 0x44),
+            FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0b) * 0x44),
             0, 2, 1,
             camp_list_pack_f32(row + 31.0f,
                           camp_list_bits_to_float(0x41700000)),
             camp_list_pack_f32(row + 31.0f,
                           camp_list_bits_to_float(0x42820000)),
             0, 0);
-            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0c) * 0x44),
+            FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0c) * 0x44),
             0, 2, 1,
             camp_list_pack_f32(row + 45.0f,
                           camp_list_bits_to_float(0x41700000)),
             camp_list_pack_f32(row + 45.0f,
                           camp_list_bits_to_float(0x42820000)),
             0, 0);
-            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0d) * 0x44),
+            FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0d) * 0x44),
             0, 2, 1,
             camp_list_pack_f32(row + 64.0f,
                           camp_list_bits_to_float(0x41700000)),
             camp_list_pack_f32(row + 64.0f,
                           camp_list_bits_to_float(0x42820000)),
             0, 0);
-            FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0e) * 0x44),
+            FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + (size_t)(item_offset + 0x0e) * 0x44),
             0, 2, 1,
             camp_list_pack_f32(row + 2.0f,
                           camp_list_bits_to_float(0xc2100000)),
@@ -1246,11 +1249,11 @@ void FUN_0015DA70(void *param_1)
         }
     }
 
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + 0xd48), 0, 2, 1,
-                 UINT64_C(0x43cf8000c2040000), UINT64_C(0x43cf800041880000), 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + 0xd48), 0, 2, 1,
+                 0x43cf8000c2040000ULL, 0x43cf800041880000ULL, 0, 0);
     camp_list_store_u32(base, 0xd90, 0);
-    FUN_0018bc10(0x42c80000, (void *)(uintptr_t)(base + 0xdd0), 0, 2, 1,
-                 UINT64_C(0x43cf800043db0000), UINT64_C(0x43cf800043f40000), 0, 0);
+    FUN_0018bc10(100.0f, (void *)(uintptr_t)(base + 0xdd0), 0, 2, 1,
+                 0x43cf800043db0000ULL, 0x43cf800043f40000ULL, 0, 0);
 }
 
 // FUN_0015E150 NONMATCHING
