@@ -37,6 +37,8 @@ extern void FUN_003b1360();
 extern u32 FUN_00239140(s32);
 extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
 extern void FUN_003b0e20(u32 resource, u32 color);
+extern void FUN_0021dd60(void* destination, const u8* colors);
+extern f32 fGpffff83e8;
 extern u32 RpRandom(void);
 extern void bppPanelDrawParameterLayout(void* work);
 u32 FUN_0022e850(u32);
@@ -1970,22 +1972,165 @@ void FUN_0022AE80(void)
 // FUN_0022B630 NONMATCHING
 void FUN_0022B630(void)
 {
-    u32 i;
-    u32 count;
     u8* base;
+    u32 table0;
+    u32 table6;
+    f32 weight;
+    u32 slot;
+    u8* icon;
+    u8* iconSlot;
+    f32 layout[4];
+    u8 colour[16];
+    u32 i;
+    u32 alpha;
+    u8 overlayColour[4];
+    u32 packedColour;
+    u32 dispatch;
+    u32 secondaryDispatch;
+    u32 entry;
+    u32 target;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_set_resource(record + 0x10, 0, 0x42);
-        *(u32*)(record + 0x90) = i;
-        *(u32*)(record + 0x94) = 0;
-        *(u32*)(record + 0x98) = 0;
-        *(u32*)(record + 0x9c) = 0;
+    base = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    weight = *(f32*)(base + 0x7214);
+    for (slot = 0; slot < 3; slot++) {
+        icon = (u8*)FUN_0021cca0(table0, slot + 0x3e);
+        dispatch = *(u32*)(base + 0x463c);
+        if (dispatch == 4) goto group_high;
+        if (dispatch == 3) goto group_high;
+        if (dispatch == 1) goto group_high;
+        if (dispatch == 2) goto group_high;
+        switch (dispatch) {
+        case 0: goto group_low;
+        }
+        goto group_done;
+    group_low:
+        if (slot == 2) goto low_2;
+        if (slot == 1) goto low_1;
+        switch (slot) {
+        case 0: goto low_0;
+        }
+        goto group_done;
+    low_0:
+        layout[0] = 233.0f; layout[1] = 379.0f;
+        goto group_done;
+    low_1:
+        layout[0] = 98.0f; layout[1] = 379.0f;
+        goto group_done;
+    low_2:
+        layout[0] = 485.0f; layout[1] = 379.0f;
+        goto group_done;
+    group_high:
+        if (slot == 2) goto high_2;
+        if (slot == 1) goto high_1;
+        switch (slot) {
+        case 0: goto high_0;
+        }
+        goto group_done;
+    high_0:
+        layout[0] = 193.0f; layout[1] = 379.0f;
+        goto group_done;
+    high_1:
+        layout[0] = 58.0f; layout[1] = 379.0f;
+        goto group_done;
+    high_2:
+        layout[0] = 445.0f; layout[1] = 379.0f;
+    group_done:
+        layout[2] = (f32)*(s32*)(icon + 0xc);
+        layout[3] = (f32)*(s32*)(icon + 0x10);
+        iconSlot = base + (slot << 8) + 0x65f0;
+        FUN_0021d8e0(iconSlot, layout);
+        for (i = 0; i < 4; i++) {
+            u8* dst;
+            u8* src;
+            u8 r, g, b, a;
+            src = icon + i * 4;
+            r = src[0x1c];
+            g = src[0x1d];
+            b = src[0x1e];
+            a = src[0x1f];
+            dst = colour + i * 4;
+            dst[0] = r;
+            dst[1] = g;
+            dst[2] = b;
+            dst[3] = a;
+            alpha = src[0x1f];
+            dst[3] = (u8)(u32)((f32)alpha * weight);
+        }
+        FUN_0021dd60(iconSlot, colour);
     }
-    bcm_panel_write(0x463c, 3);
+    overlayColour[0] = 0xc6;
+    overlayColour[1] = 0xca;
+    overlayColour[2] = 0xdb;
+    overlayColour[3] = (u8)(u32)(fGpffff83e8 * weight);
+    packedColour = ((u32)overlayColour[0] << 0x18) | ((u32)overlayColour[1] << 0x10) |
+                   ((u32)overlayColour[2] << 8) | overlayColour[3];
+    dispatch = *(u32*)(base + 0x463c);
+    switch (dispatch) {
+    case 3:
+        secondaryDispatch = *(u32*)(base + 0x4644);
+        if (secondaryDispatch == 1 || secondaryDispatch == 2) {
+            entry = *(u32*)(base + 0x68f0);
+            target = *(u32*)(entry + 0x24);
+            if (target != 0) {
+                FUN_003b0d70(target, 0xc60, 0xbe8);
+                FUN_003b0d70(*(u32*)(base + 0x68f0), 0xc60, 0xc98);
+                entry = *(u32*)(base + 0x68f0);
+                FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
+                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+            } else {
+                FUN_003b0d70(entry, 0xc60, 0xbe8);
+                FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+            }
+        }
+        break;
+    case 1: case 2:
+        entry = *(u32*)(base + 0x68f0);
+        target = *(u32*)(entry + 0x24);
+        if (target != 0) {
+            FUN_003b0d70(target, 0xc60, 0xbe8);
+            FUN_003b0d70(*(u32*)(base + 0x68f0), 0xc60, 0xc98);
+            entry = *(u32*)(base + 0x68f0);
+            FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+        } else {
+            FUN_003b0d70(entry, 0xc60, 0xbe8);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+        }
+        if (*(u32*)(base + 0x68f8) != 0) {
+            u32 frameId;
+            u8* frame;
+            frameId = *(u32*)(base + 0x68f4) + 0x20;
+            frame = (u8*)FUN_0021cca0(table6, frameId);
+            layout[0] = 161.0f;
+            layout[1] = 190.0f;
+            layout[2] = (f32)*(s32*)(frame + 0xc);
+            layout[3] = (f32)*(s32*)(frame + 0x10);
+            FUN_0021d8e0(base + 0x6900, layout);
+            overlayColour[0] = 0x8c;
+            overlayColour[1] = 0x96;
+            overlayColour[2] = 0xb4;
+            overlayColour[3] = (u8)(u32)(255.0f * weight);
+            FUN_0021d950(base + 0x6900, overlayColour);
+        }
+        break;
+    case 0:
+        entry = *(u32*)(base + 0x68f0);
+        target = *(u32*)(entry + 0x24);
+        if (target != 0) {
+            FUN_003b0d70(target, 0x1020, 0xbe8);
+            FUN_003b0d70(*(u32*)(base + 0x68f0), 0x1020, 0xc98);
+            entry = *(u32*)(base + 0x68f0);
+            FUN_003b0e20(*(u32*)(entry + 0x24), packedColour);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+        } else {
+            FUN_003b0d70(entry, 0x1020, 0xbe8);
+            FUN_003b0e20(*(u32*)(base + 0x68f0), packedColour);
+        }
+        break;
+    }
 }
 // FUN_0022BCF0 NONMATCHING
 void FUN_0022BCF0(void)
