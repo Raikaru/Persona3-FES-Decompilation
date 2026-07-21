@@ -3365,42 +3365,173 @@ void h_campUpdateSystemMainAnimation(KwlnTask* task)
     }
 }
 
-// FUN_00121de0 NONMATCHING
+// FUN_00121de0
 u32 h_campRequestMenuTransition(KwlnTask* task, u32 command)
 {
     CampMenuWork* work;
+    u32 timer;
 
     work = task->workData;
-    work->command = command;
-    switch (command) {
+    switch (command)
+    {
     case 0:
-    case 1:
-        work->state = 1;
-        break;
-    case 2:
-        work->state = 3;
-        break;
-    case 3:
-        work->state = 5;
-        break;
-    case 4:
-        work->state = 7;
-        break;
-    case 5:
-        work->state = 9;
-        break;
-    case 6:
         work->state = 11;
         break;
+    case 1:
+        switch (work->timer)
+        {
+        case 0:
+            work->state = 1;
+            break;
+        case 3:
+            work->state = 9;
+            break;
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 11:
+        case 12:
+        case 13:
+        case 15:
+        case 16:
+            work->state = 9;
+            break;
+        case 5:
+            work->state = 9;
+            break;
+        }
+        break;
+    case 2:
+        switch (work->timer)
+        {
+        case 0:
+            work->state = 1;
+            break;
+        case 1:
+        case 2:
+            break;
+        case 3:
+            work->state = 7;
+            break;
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 13:
+            work->state = 9;
+            break;
+        case 5:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        }
+        break;
+    case 3:
+        switch (work->timer)
+        {
+        case 0:
+        case 1:
+            break;
+        case 2:
+            work->state = 5;
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        }
+        break;
+    case 4:
+    case 5:
+    case 6:
     case 7:
-        work->state = 13;
-        break;
     case 8:
-        work->state = 15;
+    case 15:
+    case 16:
+        switch (work->timer)
+        {
+        case 0:
+            break;
+        case 1:
+            work->state = 11;
+            break;
+        case 2:
+            work->state = 11;
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        }
         break;
-    default:
-        return 0;
+    case 9:
+        switch (work->timer)
+        {
+        case 0:
+            break;
+        case 1:
+            work->state = 13;
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        }
+        break;
+    case 13:
+        switch (work->timer)
+        {
+        case 0:
+            break;
+        case 1:
+            work->state = 13;
+            break;
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        }
+        break;
     }
+    work->timer = command;
     return 1;
 }
 
