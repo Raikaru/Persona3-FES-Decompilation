@@ -1079,7 +1079,8 @@ KwlnTask* func_0017fad0(void)
     return task;
 }
 
-#define CLND_SKIP_TRANSITION_ACTIVE (*(u32*)0x007cdffc)
+#define CLND_SKIP_TRANSITION_ACTIVE DAT_007cdffc
+extern u32 DAT_007cdffc;
 
 
 // FUN_0017d830 NONMATCHING
@@ -1980,6 +1981,9 @@ typedef struct
     s16 flagsOn[10];
     s16 flagsOff[6];
 } CalendarScenarioEntry;
+extern CalendarScenarioEntry CLND_SCENARIO_TABLE[];
+#pragma alias CLND_SCENARIO_TABLE_abs CLND_SCENARIO_TABLE
+extern u8 CLND_SCENARIO_TABLE_abs[];
 
 typedef struct
 {
@@ -2090,13 +2094,12 @@ u32 func_00181c20(void)
 void* func_00181cc0(KwlnTask* task)
 {
     CalendarAigesWork* work;
-    CalendarScenarioEntry* entry;
+    KwlnTask* parent;
+    CalendarScenarioEntry* scenarioTable;
     KwlnTask* displayTask;
-    s32 scenarioIndex;
-    s32 i;
+    s32 time;
     s32 month;
     s32 day;
-    s32 time;
     CalendarFieldSequenceData fieldData;
     struct
     {
@@ -2104,24 +2107,25 @@ void* func_00181cc0(KwlnTask* task)
         u32 reserved04;
     } dungeonData;
 
-    work = (CalendarAigesWork*)task->workData;
-    if (work->state > 10)
+    parent = task;
+    work = (CalendarAigesWork*)parent->workData;
+    scenarioTable = (CalendarScenarioEntry*)CLND_SCENARIO_TABLE_abs;
+    if (work->state < 11)
     {
-        return KWLNTASK_CONTINUE;
-    }
-
     switch (work->state)
     {
         case 0:
             if (CLND_SKIP_TRANSITION_ACTIVE != 0)
             {
-                month = clndGetCurrentMonth();
-                day = clndGetCurrentDay();
+                month = datGetDaysSinceApr5();
+                month = clndGetMonthFromDaysSinceApr5(month);
+                day = datGetDaysSinceApr5();
+                day = clndGetDayOfMonthFromDaysSinceApr5(day);
                 time = datGetTime() & 0xff;
                 displayTask = work->calendarDisplayTask;
                 if (displayTask == NULL)
                 {
-                    work->calendarDisplayTask = func_00188440(task, month, day, time);
+                    work->calendarDisplayTask = func_00188440(parent, month, day, time);
                 }
                 else
                 {
@@ -2148,50 +2152,68 @@ void* func_00181cc0(KwlnTask* task)
                 break;
             }
 
-            scenarioIndex = func_0017d810();
-            entry = &CLND_SCENARIO_TABLE[scenarioIndex];
-            month = entry->month;
-            day = entry->day;
-            time = entry->time;
+            month = scenarioTable[func_0017d810()].month;
+            day = scenarioTable[func_0017d810()].day;
+            time = scenarioTable[func_0017d810()].time;
             datSetDaysSinceApr5(clndGetDaysSinceStartFromDate(month, day));
             datSetTime((u8)time);
-            for (i = 0; i < 10; i++)
-            {
-                if (entry->flagsOn[i] != -1)
-                {
-                    datSetFlag(entry->flagsOn[i], true);
-                }
-            }
-            for (i = 0; i < 6; i++)
-            {
-                if (entry->flagsOff[i] != -1)
-                {
-                    datSetFlag(entry->flagsOff[i], false);
-                }
-            }
+
+            if (scenarioTable[func_0017d810()].flagsOn[0] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[0], true);
+            if (scenarioTable[func_0017d810()].flagsOn[1] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[1], true);
+            if (scenarioTable[func_0017d810()].flagsOn[2] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[2], true);
+            if (scenarioTable[func_0017d810()].flagsOn[3] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[3], true);
+            if (scenarioTable[func_0017d810()].flagsOn[4] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[4], true);
+            if (scenarioTable[func_0017d810()].flagsOn[5] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[5], true);
+            if (scenarioTable[func_0017d810()].flagsOn[6] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[6], true);
+            if (scenarioTable[func_0017d810()].flagsOn[7] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[7], true);
+            if (scenarioTable[func_0017d810()].flagsOn[8] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[8], true);
+            if (scenarioTable[func_0017d810()].flagsOn[9] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOn[9], true);
+            if (scenarioTable[func_0017d810()].flagsOff[0] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[0], false);
+            if (scenarioTable[func_0017d810()].flagsOff[1] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[1], false);
+            if (scenarioTable[func_0017d810()].flagsOff[2] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[2], false);
+            if (scenarioTable[func_0017d810()].flagsOff[3] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[3], false);
+            if (scenarioTable[func_0017d810()].flagsOff[4] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[4], false);
+            if (scenarioTable[func_0017d810()].flagsOff[5] != -1)
+                datSetFlag(scenarioTable[func_0017d810()].flagsOff[5], false);
 
             displayTask = work->calendarDisplayTask;
             if (displayTask == NULL)
             {
-                work->calendarDisplayTask = func_00188440(task, month, day, time);
+                work->calendarDisplayTask = func_00188440(parent, month, day, time);
             }
             else
             {
                 func_00188420(displayTask, month, day, time);
             }
 
-            if (entry->mode != 0xff)
+            if (scenarioTable[func_0017d810()].mode != 0xff)
             {
-                work->actionTask = func_001ba5f0(task,
-                                                0, 0, 0, 0, 0, 0, 0,
-                                                entry->procedure,
-                                                entry->argument,
-                                                entry->mode,
+                work->actionTask = func_001ba5f0(parent,
+                                                0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                                scenarioTable[func_0017d810()].procedure,
+                                                scenarioTable[func_0017d810()].argument,
+                                                scenarioTable[func_0017d810()].mode,
                                                 0);
             }
             else
             {
-                work->actionTask = func_003bdd60(0xf, entry->procedure);
+                work->actionTask = func_003bdd60(0xf,
+                                                  scenarioTable[func_0017d810()].procedure);
             }
             work->state = 1;
             break;
@@ -2271,6 +2293,7 @@ void* func_00181cc0(KwlnTask* task)
                           func_0017d810());
             break;
     }
+        }
     return KWLNTASK_CONTINUE;
 }
 
