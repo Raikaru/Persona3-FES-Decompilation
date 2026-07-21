@@ -1731,6 +1731,8 @@ void func_001bd8c0(void)
 }
 
 // FUN_001bd950 NONMATCHING
+#pragma optimization_level 3
+#pragma schedule on
 void func_001bd950(void)
 {
     Resrc* fieldResource;
@@ -1742,8 +1744,6 @@ void func_001bd950(void)
     s32 zGrid;
     s32 i;
     f32 angle;
-    const s16* offsets;
-    u32 offsetCount;
 
     if (K_Scene_001a0250() != true && func_001a02c0() != true)
     {
@@ -1761,12 +1761,11 @@ void func_001bd950(void)
             ((ResrcModelChar*)heroResource)->collisCtlTask);
         zGrid = K_FldFrame_CtlGetZGrid(
             ((ResrcModelChar*)heroResource)->collisCtlTask);
-        for (fieldResource = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-             fieldResource != NULL;
-             fieldResource = fieldResource->next)
+        for (; fieldResource != NULL; fieldResource = fieldResource->next)
         {
             fieldResource->flags &= ~2u;
         }
+        (void)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
     }
     else
     {
@@ -1774,6 +1773,7 @@ void func_001bd950(void)
         {
             fieldResource->flags |= 2;
         }
+        (void)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
         xGrid = 0;
         zGrid = 0;
     }
@@ -1782,59 +1782,193 @@ void func_001bd950(void)
         &((RwFrame*)kwlnGetMainCamera()->object.object.parent)->modelling);
     if (angle >= -22.5f && angle <= 22.5f)
     {
-        offsets = sDungeonVisibilityOffsets0;
-        offsetCount = sizeof(sDungeonVisibilityOffsets0) /
-                      sizeof(sDungeonVisibilityOffsets0[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x33c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
     }
     else if (angle > 22.5f && angle <= 67.5f)
     {
-        offsets = sDungeonVisibilityOffsets1;
-        offsetCount = sizeof(sDungeonVisibilityOffsets1) /
-                      sizeof(sDungeonVisibilityOffsets1[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x33c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
     }
     else if (angle > 67.5f && angle <= 112.5f)
     {
-        offsets = sDungeonVisibilityOffsets2;
-        offsetCount = sizeof(sDungeonVisibilityOffsets2) /
-                      sizeof(sDungeonVisibilityOffsets2[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x17c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
     }
     else if (angle > 112.5f && angle <= 157.5f)
     {
-        offsets = sDungeonVisibilityOffsets3;
-        offsetCount = sizeof(sDungeonVisibilityOffsets3) /
-                      sizeof(sDungeonVisibilityOffsets3[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x84), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x17c), 1);
     }
     else if (angle > 157.5f || angle < -157.5f)
     {
-        offsets = sDungeonVisibilityOffsets4;
-        offsetCount = sizeof(sDungeonVisibilityOffsets4) /
-                      sizeof(sDungeonVisibilityOffsets4[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x84), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
     }
     else if (angle >= -157.5f && angle < -112.5f)
     {
-        offsets = sDungeonVisibilityOffsets5;
-        offsetCount = sizeof(sDungeonVisibilityOffsets5) /
-                      sizeof(sDungeonVisibilityOffsets5[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x11c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
     }
     else if (angle >= -112.5f && angle < -67.5f)
     {
-        offsets = sDungeonVisibilityOffsets6;
-        offsetCount = sizeof(sDungeonVisibilityOffsets6) /
-                      sizeof(sDungeonVisibilityOffsets6[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xe4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x11c), 1);
     }
     else
     {
-        offsets = sDungeonVisibilityOffsets7;
-        offsetCount = sizeof(sDungeonVisibilityOffsets7) /
-                      sizeof(sDungeonVisibilityOffsets7[0]);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xe4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
     }
-    if (heroResource != NULL)
-    {
-        dungeonShowResources(xGrid, zGrid, offsets, offsetCount);
-    }
-    for (modelFld = MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
-         modelFld != NULL;
-         modelFld = modelFld->next)
+    for (; modelFld != NULL; modelFld = modelFld->next)
     {
         parent = *(Resrc**)((u8*)modelFld + 0x100);
         if (parent != NULL && (parent->flags & 2) != 0)
@@ -1846,9 +1980,7 @@ void func_001bd950(void)
             modelFld->flags &= ~2u;
         }
     }
-    for (modelNpc = MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
-         modelNpc != NULL;
-         modelNpc = modelNpc->next)
+    for (; modelNpc != NULL; modelNpc = modelNpc->next)
     {
         parent = *(Resrc**)((u8*)modelNpc + 0x100);
         if (parent != NULL && (parent->flags & 2) != 0)
@@ -1879,6 +2011,7 @@ void func_001bd950(void)
         }
     }
 }
+#pragma schedule off
 
 // FUN_001bf220 NONMATCHING
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
