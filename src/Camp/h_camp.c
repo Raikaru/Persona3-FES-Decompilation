@@ -26,6 +26,7 @@ extern f32 fGpffff80c4;
 extern f32 fGpffff8088;
 extern f32 fGpffff82fc;
 extern void* uGpffffb260;
+extern KwlnTask* iGpffffb270;
 extern void func_001958a0(void* source, KwlnTask* destination);
 extern void func_001957b0(KwlnTask* source, KwlnTask* destination);
 extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
@@ -43,6 +44,9 @@ extern void func_00115980(void*);
 extern void func_00114450(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
                           s32 ignoredWidth, s32 height,
                           const u32* textureState);
+#pragma alias func_00114450_7arg func_00114450
+extern void func_00114450_7arg(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
+                               s32 ignoredWidth, s32 height);
 #pragma alias h_campDrawSprite FUN_001159f0
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
@@ -684,8 +688,9 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
     if (frame >= 0x10 && frame < 0x16) {
         phase = frame - 0x10;
         if (phase >= 4) {
-            textureState = NULL;
-            if (uGpffffb260 != NULL) {
+            if (uGpffffb260 == NULL) {
+                textureState = NULL;
+            } else {
                 stage = *(void**)((u8*)uGpffffb260 + 0x3c);
                 if (*(u32*)stage == 3) {
                     textureState = *(void**)((u8*)stage + 0xc);
@@ -707,8 +712,9 @@ void h_campUpdateRootMenuEntryEffect(CampRootDrawWork* work, f32 alpha)
         }
 
         fade = 0x32 - ((phase * 0x32) / 6);
-        textureState = NULL;
-        if (uGpffffb260 != NULL) {
+        if (uGpffffb260 == NULL) {
+            textureState = NULL;
+        } else {
             stage = *(void**)((u8*)uGpffffb260 + 0x3c);
             if (*(u32*)stage == 3) {
                 textureState = *(void**)((u8*)stage + 0xc);
@@ -1021,8 +1027,9 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
     frame = work->frame;
     fade = (frame * 0xff) / 22;
     remaining = 0xff - fade;
-    textureState = NULL;
-    if (uGpffffb260 != NULL) {
+    if (uGpffffb260 == NULL) {
+        textureState = NULL;
+    } else {
         stage = *(void**)((u8*)uGpffffb260 + 0x3c);
         if (*(u32*)stage == 3) {
             textureState = *(void**)((u8*)stage + 0xc);
@@ -1188,9 +1195,75 @@ void h_campUpdateRootMenuEntryFinish(CampRootDrawWork* work, f32 alpha)
 // FUN_0011dfe0 NONMATCHING
 void h_campUpdateRootMenuSelectionEffect(CampRootDrawWork* work, f32 alpha)
 {
-    if (work->selectedEntry >= 0) {
-        work->transitionDuration = (u32)(alpha * 2.5f + 54.0f);
+    register void* parent;
+    void* stage;
+    void* textureState;
+    void* node;
+    s32 cacheIndex;
+    f32* cacheSlot;
+    f32 oldDuration;
+    f32 newDuration;
+    CampVec2 pos;
+    f32 x;
+    f32 y;
+
+    if (iGpffffb270 == NULL) {
+        textureState = NULL;
+    } else {
+        stage = iGpffffb270->workData;
+        if (*(u32*)stage == 3) {
+            textureState = *(void**)((u8*)stage + 0xc);
+        } else {
+            textureState = NULL;
+        }
     }
+    if (textureState != NULL) {
+        func_00114450_7arg(2.0f + alpha, 0.0f, -87.0f, -1, 0x4fa4ff19, 0x280, 0x280);
+    }
+    h_campNoopRootDrawCallback();
+
+    node = func_001158b0(0, DAT_00833B78, 0);
+    *(f32*)((u8*)node + 0x2c) = 1.0f + alpha;
+    *(u32*)((u8*)node + 0x10) = 0x43d60000;
+    *(u32*)((u8*)node + 0x14) = 0x41d80000;
+    *(u8*)((u8*)node + 0x18) = 0;
+    *(u16*)((u8*)node + 0x28) = 0x1000;
+    *(u16*)((u8*)node + 0x2a) = 0x1000;
+    func_001127d0(node, 1);
+    func_00115980(node);
+
+    cacheIndex = work->selectedEntry * 19 + 0x39;
+    cacheSlot = (f32*)(iGpffffb25c + 0x2dc);
+    if (*cacheSlot != (f32)cacheIndex) {
+        *cacheSlot = (f32)cacheIndex;
+    } else {
+        work->drawChild = (KwlnTask*)1;
+    }
+
+    oldDuration = (f32)work->transitionDuration;
+    work->transitionDuration = (u32)(oldDuration + 1.0f);
+    newDuration = (f32)work->transitionDuration;
+    if (!(newDuration <= 767.0f)) {
+        work->transitionDuration = (u32)(newDuration - 448.0f);
+    }
+
+    pos.x = 0.0f;
+    pos.y = oldDuration;
+    x = 589.0f + pos.x;
+    y = pos.y - 190.0f;
+    h_campDrawSprite(parent, DAT_00833B8C, 3, 0, x, y, 100.0f);
+    y = (pos.y - 129.0f) - 190.0f;
+    h_campDrawSprite(parent, DAT_00833B8C, 4, 0, x, y, 100.0f);
+    if (!(pos.y <= 448.0f)) {
+        pos.y -= 448.0f;
+        x = 589.0f + pos.x;
+        y = pos.y - 190.0f;
+        h_campDrawSprite(parent, DAT_00833B8C, 3, 0, x, y, 100.0f);
+        y = (pos.y - 129.0f) - 190.0f;
+        h_campDrawSprite(parent, DAT_00833B8C, 4, 0, x, y, 100.0f);
+    }
+
+    h_campDrawRootUi(work, alpha);
 }
 
 // FUN_0011e370
