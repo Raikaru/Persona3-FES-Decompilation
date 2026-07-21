@@ -567,88 +567,92 @@ void func_0020ac90(void* work)
     *(f32*)(panel + 0x3c) += DAT_007cadd4;
     state = *(s32*)(panel + 4);
 
-    if (state == 1)
+    if (state == 1) goto state1;
+    if (state == 0) goto state0;
+    goto shared_tail;
+
+state0:
+    phase = *(f32*)(panel + 0x3c) / 8.0f;
+    frac = phase - (f32)(s32)phase;
+    *(f32*)(panel + 0x2b8) = frac;
+    *(f32*)(panel + 0x2dc) = frac;
+    *(f32*)(panel + 0x300) = 1.0f + frac;
+    *(f32*)(panel + 0x324) = 1.0f + frac;
+
+    phase = *(f32*)(panel + 0x3c) / 6.0f;
+    frac = phase - (f32)(s32)phase;
+    *(f32*)(panel + 0x348) = frac;
+    *(f32*)(panel + 0x36c) = frac;
+    *(f32*)(panel + 0x390) = 1.0f + frac;
+    *(f32*)(panel + 0x3b4) = 1.0f + frac;
+
+    phase = *(f32*)(panel + 0x3c) / 4.0f;
+    frac = phase - (f32)(s32)phase;
+    if (frac < 0.5f)
     {
-        phase = *(f32*)(panel + 0x3c) / 2.0f;
-        frac = phase - (f32)(s32)phase;
-        if (frac < 0.5f)
-        {
-            blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
-        }
-        else
-        {
-            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
-        }
-        *(f32*)(panel + 0x32c) = blend;
-
-        phase = *(f32*)(panel + 0x3c) / 20.0f;
-        frac = phase - (f32)(s32)phase;
-        blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
-        *(f32*)(panel + 0x4f4) = 0.5f + blend;
-        *(f32*)(panel + 0x518) = 0.5f - blend;
-        *(f32*)(panel + 0x53c) = 0.5f - blend;
-        *(f32*)(panel + 0x560) = 0.5f + blend;
-
-        blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
-        *(f32*)(panel + 0x4f8) = 0.5f - blend;
-        *(f32*)(panel + 0x51c) = 0.5f - blend;
-        *(f32*)(panel + 0x540) = 0.5f + blend;
-        *(f32*)(panel + 0x564) = 0.5f + blend;
+        blend = DAT_007cad7c + DAT_007cad7c * frac / 0.5f;
     }
-    else if (state == 0)
+    else
     {
-        phase = *(f32*)(panel + 0x3c) / 8.0f;
-        frac = phase - (f32)(s32)phase;
-        *(f32*)(panel + 0x2b8) = frac;
-        *(f32*)(panel + 0x2dc) = frac;
-        *(f32*)(panel + 0x300) = 1.0f + frac;
-        *(f32*)(panel + 0x324) = 1.0f + frac;
-
-        phase = *(f32*)(panel + 0x3c) / 6.0f;
-        frac = phase - (f32)(s32)phase;
-        *(f32*)(panel + 0x348) = frac;
-        *(f32*)(panel + 0x36c) = frac;
-        *(f32*)(panel + 0x390) = 1.0f + frac;
-        *(f32*)(panel + 0x3b4) = 1.0f + frac;
-
-        phase = *(f32*)(panel + 0x3c) / 4.0f;
-        frac = phase - (f32)(s32)phase;
-        if (frac < 0.5f)
-        {
-            blend = DAT_007cad7c + DAT_007cad7c * frac / 0.5f;
-        }
-        else
-        {
-            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad7c + DAT_007cad7c;
-        }
-        *(f32*)(panel + 0x5fc) = blend;
-
-        phase = *(f32*)(panel + 0x3c) / 2.0f;
-        frac = phase - (f32)(s32)phase;
-        if (frac < 0.5f)
-        {
-            blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
-        }
-        else
-        {
-            blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
-        }
-        *(f32*)(panel + 0x5f8) = blend;
-
-        phase = *(f32*)(panel + 0x3c) / 20.0f;
-        frac = phase - (f32)(s32)phase;
-        blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
-        *(f32*)(panel + 0x2b4) = 0.5f + blend;
-        *(f32*)(panel + 0x2d8) = 0.5f - blend;
-        *(f32*)(panel + 0x2fc) = 0.5f - blend;
-        *(f32*)(panel + 0x320) = 0.5f + blend;
-
-        blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
-        *(f32*)(panel + 0x2b8) = 0.5f - blend;
-        *(f32*)(panel + 0x2dc) = 0.5f - blend;
-        *(f32*)(panel + 0x300) = 0.5f + blend;
-        *(f32*)(panel + 0x324) = 0.5f + blend;
+        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad7c + DAT_007cad7c;
     }
+    *(f32*)(panel + 0x5fc) = blend;
+
+    phase = *(f32*)(panel + 0x3c) / 2.0f;
+    frac = phase - (f32)(s32)phase;
+    if (frac < 0.5f)
+    {
+        blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+    }
+    else
+    {
+        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+    }
+    *(f32*)(panel + 0x5f8) = blend;
+
+    phase = *(f32*)(panel + 0x3c) / 20.0f;
+    frac = phase - (f32)(s32)phase;
+    blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
+    *(f32*)(panel + 0x2b4) = 0.5f + blend;
+    *(f32*)(panel + 0x2d8) = 0.5f - blend;
+    *(f32*)(panel + 0x2fc) = 0.5f - blend;
+    *(f32*)(panel + 0x320) = 0.5f + blend;
+
+    blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
+    *(f32*)(panel + 0x2b8) = 0.5f - blend;
+    *(f32*)(panel + 0x2dc) = 0.5f - blend;
+    *(f32*)(panel + 0x300) = 0.5f + blend;
+    *(f32*)(panel + 0x324) = 0.5f + blend;
+    goto shared_tail;
+
+state1:
+    phase = *(f32*)(panel + 0x3c) / 2.0f;
+    frac = phase - (f32)(s32)phase;
+    if (frac < 0.5f)
+    {
+        blend = DAT_007cad74 + DAT_007cad74 * frac / 0.5f;
+    }
+    else
+    {
+        blend = (1.0f - (frac - 0.5f) / 0.5f) * DAT_007cad74 + DAT_007cad74;
+    }
+    *(f32*)(panel + 0x32c) = blend;
+
+    phase = *(f32*)(panel + 0x3c) / 20.0f;
+    frac = phase - (f32)(s32)phase;
+    blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
+    *(f32*)(panel + 0x4f4) = 0.5f + blend;
+    *(f32*)(panel + 0x518) = 0.5f - blend;
+    *(f32*)(panel + 0x53c) = 0.5f - blend;
+    *(f32*)(panel + 0x560) = 0.5f + blend;
+
+    blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
+    *(f32*)(panel + 0x4f8) = 0.5f - blend;
+    *(f32*)(panel + 0x51c) = 0.5f - blend;
+    *(f32*)(panel + 0x540) = 0.5f + blend;
+    *(f32*)(panel + 0x564) = 0.5f + blend;
+
+shared_tail:
 
     if ((*(u32*)(panel + 0) & 2) != 0 && *(s32*)(panel + 4) == 0)
     {
