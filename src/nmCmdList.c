@@ -1601,7 +1601,7 @@ u8 FUN_003c72d0(u64 param_1)
 
   DAT_0095be9d = 1;
 
-  uVar3 = FUN_003c7d50();
+  uVar3 = FUN_003c7d50_direct();
 
   bVar1 = *(int *)uVar3 < 0;
 
@@ -1633,7 +1633,7 @@ void FUN_003c7390(u64 param_1)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if ((lVar1 != 0) && (-1 < *(int *)lVar1)) {
 
@@ -1659,7 +1659,7 @@ void FUN_003c73e0(u64 param_1)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if ((lVar1 != 0) && (-1 < *(int *)lVar1)) {
 
@@ -1689,7 +1689,7 @@ u32 FUN_003c7430(u64 param_1)
 
   
 
-  lVar2 = FUN_003c7d50();
+  lVar2 = FUN_003c7d50_direct();
 
   if (lVar2 == 0) {
 
@@ -1749,7 +1749,7 @@ u32 FUN_003c74e0(int param_1)
 
   
 
-  lVar3 = FUN_003c7d50();
+  lVar3 = FUN_003c7d50_direct();
 
   if (lVar3 == 0) {
 
@@ -1799,7 +1799,7 @@ void FUN_003c7560(u8 param_1)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if ((lVar1 != 0) && (-1 < *(int *)lVar1)) {
 
@@ -1827,7 +1827,7 @@ u64 FUN_003c75b0(void)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if (lVar1 == 0) {
 
@@ -1899,7 +1899,7 @@ u32 FUN_003c7650(long param_1)
 
   
 
-  lVar2 = FUN_003c7d50();
+  lVar2 = FUN_003c7d50_direct();
 
   if (lVar2 == 0) {
 
@@ -1961,7 +1961,7 @@ u32 FUN_003c7700(void)
 
   
 
-  lVar2 = FUN_003c7d50();
+  lVar2 = FUN_003c7d50_direct();
 
   if (lVar2 == 0) {
 
@@ -2019,7 +2019,7 @@ u32 FUN_003c77a0(void)
 
   
 
-  lVar2 = FUN_003c7d50();
+  lVar2 = FUN_003c7d50_direct();
 
   FUN_005225a8(0x7cd6f8,0x6a3e18,0x158);
 
@@ -2077,7 +2077,7 @@ u8 FUN_003c7850(void)
 
   
 
-  lVar3 = FUN_003c7d50();
+  lVar3 = FUN_003c7d50_direct();
 
   if (lVar3 == 0) {
 
@@ -2133,7 +2133,7 @@ u32 FUN_003c78d0(void)
 
   
 
-  lVar3 = FUN_003c7d50();
+  lVar3 = FUN_003c7d50_direct();
 
   if (lVar3 == 0) {
 
@@ -2159,7 +2159,7 @@ u32 FUN_003c78d0(void)
 
     else {
 
-      lVar4 = FUN_003c7d50();
+      lVar4 = FUN_003c7d50_direct();
 
       if (lVar4 == 0) {
 
@@ -2219,7 +2219,7 @@ void FUN_003c7990(long param_1)
 
   
 
-  lVar5 = FUN_003c7d50();
+  lVar5 = FUN_003c7d50_direct();
 
   piVar4 = (int *)lVar5;
 
@@ -2229,7 +2229,7 @@ void FUN_003c7990(long param_1)
 
     if (cVar1 == '\x03') {
 
-      lVar5 = FUN_003c7d50();
+      lVar5 = FUN_003c7d50_direct();
 
       piVar4 = (int *)lVar5;
 
@@ -2267,7 +2267,7 @@ void FUN_003c7990(long param_1)
 
       if (*(char *)((int)piVar4 + 5) == '\0') {
 
-        lVar5 = FUN_003c7d50();
+        lVar5 = FUN_003c7d50_direct();
 
         if (lVar5 == 0) {
 
@@ -2293,7 +2293,7 @@ void FUN_003c7990(long param_1)
 
           else {
 
-            lVar6 = FUN_003c7d50();
+            lVar6 = FUN_003c7d50_direct();
 
             if (lVar6 == 0) {
 
@@ -2373,7 +2373,7 @@ void FUN_003c7bc0(u64 param_1,u64 param_2)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if (lVar1 != 0) {
 
@@ -2399,7 +2399,7 @@ void FUN_003c7c20(u64 param_1,u64 param_2,u64 param_3)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if (lVar1 != 0) {
 
@@ -2427,7 +2427,7 @@ void FUN_003c7c90(long param_1)
 
   
 
-  lVar1 = FUN_003c7d50();
+  lVar1 = FUN_003c7d50_direct();
 
   if (lVar1 != 0) {
 
