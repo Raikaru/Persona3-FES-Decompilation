@@ -60,7 +60,7 @@ u32 FUN_003d8260(long param_1,u32 param_2);
 u32 FUN_003d8370(long param_1,u32 param_2,u32 param_3);
 u32 FUN_003d84c0(u64 param_1,int param_2);
 u32 FUN_003d8630(int param_1,int param_2);
-void FUN_003d8850(u64 param_1,u32 param_2);
+void FUN_003d8850();
 typedef struct Fcm982Node Fcm982Node;
 typedef struct Fcm982Item Fcm982Item;
 typedef struct Fcm982Thing Fcm982Thing;
@@ -92,6 +92,47 @@ struct Fcm982Result {
   u8 pad0[0x1a]; s16 unk1a; u8 pad1c[2]; s16 unk1e;
   u8 pad20[0xa]; s16 unk2a; u8 pad2c[8]; void *unk34;
 };
+typedef struct FcmDispatchWork FcmDispatchWork;
+typedef struct FcmDispatchOwner FcmDispatchOwner;
+typedef struct FcmDispatchLink FcmDispatchLink;
+typedef struct FcmDispatchMeta FcmDispatchMeta;
+typedef struct FcmDispatchNode FcmDispatchNode;
+typedef struct FcmDispatchResult FcmDispatchResult;
+struct FcmDispatchWork {
+  u32 flags;
+  s32 mode;
+  u8 pad8[4];
+  s32 capacity;
+  s32 used;
+  FcmDispatchOwner *owners;
+  void **values;
+  u8 pad1c[0x190];
+  void *result;
+};
+struct FcmDispatchOwner {
+  u8 pad0[4];
+  FcmDispatchLink *links;
+  u8 pad8[4];
+  FcmDispatchLink *root;
+};
+struct FcmDispatchLink {
+  u8 pad0[0x10];
+  FcmDispatchLink *next;
+  FcmDispatchMeta *payload;
+};
+struct FcmDispatchMeta {
+  u8 pad0[0x1c];
+  FcmDispatchNode *data;
+};
+struct FcmDispatchNode {
+  u8 pad0[0x60];
+  void *callback_target;
+};
+struct FcmDispatchResult {
+  u8 pad0[0x34];
+  void *payload;
+};
+extern FcmDispatchResult *FUN_003e0260();
 extern Fcm982Result *FUN_003e0330(void *param_1,int param_2,int param_3,int param_4);
 void FUN_003d9820(Fcm982Root *arg0,u32 arg1,u32 arg2);
 void FUN_003d9cc0(u64 param_1);
@@ -2938,29 +2979,418 @@ u32 FUN_003d8630(int param_1,int param_2)
 
 }
 
-// FUN_003D8850 NONMATCHING
-
-
-void FUN_003d8850(u64 param_1,u32 param_2)
-
-
-
+// FUN_003D8850
+void FUN_003d8850(FcmDispatchWork *work,u32 command,u32 mode)
 {
+  int index;
+  FcmDispatchLink *link;
+  FcmDispatchResult *result;
 
-  if (param_2 < 0x1d) {
-
-                    /* WARNING: Could not recover jumptable at 0x003d8894. Too many branches */
-
-                    /* WARNING: Treating indirect jump as call */
-
-    (*(code *)(PTR_LAB_007bb7a0)[(int)param_2])();
-
-    return;
-
+  index = 0;
+  link = work->owners->links;
+  switch (command) {
+  case 0:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,0,0,
+          index - (index >> 2));
+        link = link->next;
+        index += 1;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,0,1,0);
+        link = link->next;
+        index += 1;
+      }
+    }
+    break;
+  case 1:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,1,0,
+          index - (index >> 2));
+        link = link->next;
+        index += 1;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,1,1,0);
+        link = link->next;
+        index += 1;
+      }
+    }
+    break;
+  case 2:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,2,0,index * 3);
+        link = link->next;
+        index += 1;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,2,1,0);
+        link = link->next;
+        index += 1;
+      }
+    }
+    break;
+  case 3:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,3,0,0);
+        link = link->next;
+        index += 1;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,3,1,0);
+        link = link->next;
+        index += 1;
+      }
+    }
+    break;
+  case 4:
+    if (mode == 0) {
+      FUN_003e0260(work->result,4,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,4,1,0);
+    }
+    break;
+  case 5:
+    if (mode == 0) {
+      FUN_003e0260(work->result,5,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,5,1,0);
+    }
+    break;
+  case 6:
+    if (mode == 0) {
+      FUN_003e0260(work->result,6,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,6,1,0);
+    }
+    break;
+  case 7:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,7,0,
+          index - (index >> 2));
+        link = link->next;
+        index += 1;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,7,1,0);
+        link = link->next;
+        index += 1;
+      }
+    }
+    break;
+  case 8:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,8,0,0);
+        link = link->next;
+      }
+    } else if (mode == 1) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,8,1,0);
+        link = link->next;
+      }
+    }
+    break;
+  case 9:
+    if (mode == 0) {
+      FUN_003e0260(work->result,9,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,9,1,0);
+    }
+    break;
+  case 10:
+    if (mode == 0) {
+      FUN_003e0260(work->result,10,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,10,1,0);
+    }
+    break;
+  case 11:
+    if (mode == 0) {
+      while (link != 0) {
+        FUN_003e0260(link->payload->data->callback_target,11,0,0);
+        link = link->next;
+      }
+    } else if (mode == 1) {
+      FUN_003e0260(work->owners->root->payload->data->callback_target,11,1,0);
+    }
+    break;
+  case 12:
+    if (mode == 0) {
+      FUN_003e0260(work->result,12,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,12,1,0);
+    }
+    break;
+  case 13:
+    if (work->capacity == 3) {
+      if (mode == 0) {
+        FUN_003e0260(work->result,13,0,0);
+        FUN_003e0260(work->result,14,1,0);
+      } else if (mode == 1) {
+        FUN_003e0260(work->result,13,1,0);
+      }
+    }
+    break;
+  case 14:
+    break;
+  case 15:
+    if (mode == 0) {
+      FUN_003e0260(work->result,15,0,0);
+    } else if (mode == 1) {
+      FUN_003e0260(work->result,15,1,0);
+    }
+    break;
+  case 16:
+  case 17:
+  case 18:
+  case 19:
+  case 20:
+  case 21:
+    break;
+  case 22:
+    if (mode == 0) {
+      if (work->mode >= 2) {
+        FUN_003e0260(work->result,19,0,0);
+      } else {
+        switch (work->used) {
+        case 0:
+          FUN_003e0260(work->result,16,0,0);
+          break;
+        case 1:
+          FUN_003e0260(work->result,17,0,0);
+          break;
+        case 2:
+          FUN_003e0260(work->result,18,0,0);
+          break;
+        default:
+          break;
+        }
+      }
+    } else if (mode == 1) {
+      if (work->mode >= 2) {
+        FUN_003e0260(work->result,19,1,0);
+      } else {
+        switch (work->used) {
+        case 0:
+          FUN_003e0260(work->result,16,1,0);
+          break;
+        case 1:
+          FUN_003e0260(work->result,17,1,0);
+          break;
+        case 2:
+          FUN_003e0260(work->result,18,1,0);
+          break;
+        default:
+          break;
+        }
+      }
+    }
+    break;
+  case 23:
+    if (mode == 0) {
+      switch (work->used) {
+      case 0:
+        break;
+      case 1:
+        FUN_003e0260(work->result,16,0,0);
+        break;
+      case 2:
+        FUN_003e0260(work->result,17,0,0);
+        break;
+      case 3:
+        FUN_003e0260(work->result,18,0,0);
+        break;
+      default:
+        FUN_003e0260(work->result,19,0,0);
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 0:
+        break;
+      case 1:
+        FUN_003e0260(work->result,16,1,0);
+        break;
+      case 2:
+        FUN_003e0260(work->result,17,1,0);
+        break;
+      case 3:
+        FUN_003e0260(work->result,18,1,0);
+        break;
+      default:
+        FUN_003e0260(work->result,19,1,0);
+        break;
+      }
+    }
+    break;
+  case 24:
+    if (mode == 0) {
+      switch (work->used) {
+      case 0:
+        FUN_003e0260(work->result,17,0,0);
+        break;
+      case 1:
+        FUN_003e0260(work->result,18,0,0);
+        break;
+      case 2:
+        break;
+      default:
+        FUN_003e0260(work->result,19,0,0);
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 0:
+        FUN_003e0260(work->result,17,1,0);
+        break;
+      case 1:
+        FUN_003e0260(work->result,18,1,0);
+        break;
+      case 2:
+        break;
+      default:
+        FUN_003e0260(work->result,19,1,0);
+        break;
+      }
+    }
+    break;
+  case 25:
+    if (mode == 0) {
+      switch (work->used) {
+      case 1:
+        result = FUN_003e0260(work->result,20,0,0);
+        if (work->values[0] != 0) {
+          memcpy(result->payload,work->values[0],0x34);
+        }
+        break;
+      case 2:
+        result = FUN_003e0260(work->result,21,0,0);
+        if (work->values[1] != 0) {
+          memcpy(result->payload,work->values[1],0x34);
+        }
+        break;
+      default:
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 1:
+        FUN_003e0260(work->result,20,1,0);
+        break;
+      case 2:
+        FUN_003e0260(work->result,21,1,0);
+        break;
+      default:
+        break;
+      }
+    }
+    break;
+  case 27:
+    if (mode == 0) {
+      switch (work->used) {
+      case 0:
+        FUN_003e0260(work->result,20,0,0);
+        break;
+      case 1:
+        FUN_003e0260(work->result,21,0,0);
+        break;
+      default:
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 0:
+        FUN_003e0260(work->result,20,1,0);
+        break;
+      case 1:
+        FUN_003e0260(work->result,21,1,0);
+        break;
+      default:
+        break;
+      }
+    }
+    break;
+  case 26:
+    if (mode == 0) {
+      switch (work->used) {
+      case 2:
+        FUN_003e0260(work->result,20,0,0);
+        break;
+      case 3:
+        FUN_003e0260(work->result,21,0,0);
+        break;
+      default:
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 2:
+        FUN_003e0260(work->result,20,1,0);
+        break;
+      case 3:
+        FUN_003e0260(work->result,21,1,0);
+        break;
+      default:
+        break;
+      }
+    }
+    break;
+  case 28:
+    if (mode == 0) {
+      switch (work->used) {
+      case 1:
+        result = FUN_003e0260(work->result,20,0,0);
+        if (work->values[0] != 0) {
+          memcpy(result->payload,work->values[0],0x34);
+        }
+        break;
+      case 2:
+      case 3:
+        if (work->values[0] != 0) {
+          result = FUN_003e0260(work->result,20,0,0);
+          memcpy(result->payload,work->values[0],0x34);
+        }
+        if (work->values[1] != 0) {
+          result = FUN_003e0260(work->result,21,0,5);
+          memcpy(result->payload,work->values[1],0x34);
+        }
+        break;
+      default:
+        break;
+      }
+    } else if (mode == 1) {
+      switch (work->used) {
+      case 1:
+        FUN_003e0260(work->result,20,1,0);
+        break;
+      case 2:
+      case 3:
+        if (work->values[0] != 0) {
+          FUN_003e0260(work->result,20,1,0);
+        }
+        if (work->values[1] != 0) {
+          FUN_003e0260(work->result,21,1,0);
+        }
+        break;
+      default:
+        break;
+      }
+    }
+    break;
+  default:
+    break;
   }
-
-  return;
-
 }
 
 #pragma push
