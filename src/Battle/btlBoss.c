@@ -215,6 +215,51 @@ const BtlCameraStateEntry* btlBossGetCameraStateEntry(u16 cameraState)
     return entry;
 }
 
+extern void FUN_002b2060(int param_1);
+extern void FUN_002a5f40(BtlCamera* camera);
+extern void FUN_002b4f40(int param_1);
+extern void FUN_002b4db0_float(float param_1);
+extern f32 fGpffff8108;
+
+// FUN_002e7320
+void FUN_002e7320(BtlCamera* camera)
+{
+}
+
+// FUN_002e7680
+void FUN_002e7680(int param_1)
+{
+    FUN_002b2060(param_1);
+}
+
+// FUN_002e7880
+void FUN_002e7880(BtlCamera* camera)
+{
+}
+
+// FUN_002e5040
+void FUN_002e5040(BtlCamera* camera)
+{
+    FUN_002a5f40(camera);
+}
+
+// FUN_002e8c80
+void FUN_002e8c80(BtlCamera* camera)
+{
+}
+
+// FUN_002e8d20
+void FUN_002e8d20(int param_1)
+{
+    FUN_002b4f40(param_1);
+}
+
+// FUN_002e8d40
+void FUN_002e8d40(BtlCamera* camera)
+{
+    FUN_002b4db0_float(fGpffff8108);
+}
+
 // FUN_002f9710
 void btlBossInitLoadPakPacket(void* work)
 {
