@@ -64,8 +64,16 @@ extern u32 FUN_0016f190(u32 flag);
 extern u32 FUN_0017e480(u32 a, u32 b, u32 c, u32 d);
 extern void K_Assert(const char* message, s32 line);
 extern void (*D_00960090)(u32 state, ...);
+extern u32 D_007CC1E4;
+extern u32 D_007CC1F4;
+extern u32 D_007CC1F8;
+extern u32 D_007CC1C0;
 extern void (*jtbl_0096017C)(void* memory);
 extern void* D_007D2D60;
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_007D2D60_abs D_007D2D60
+extern u8 D_007D2D60_abs[];
 extern u32 D_00960184[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
@@ -781,6 +789,8 @@ void func_001a7910(void* object, f32* scale)
 void func_001a7b50(void* state, u32 mode)
 {
     KClumpMaterialNode* item;
+    RwSphere* sphere;
+    void* resources;
     u32 found;
 
     if (state == NULL)
@@ -789,46 +799,128 @@ void func_001a7b50(void* state, u32 mode)
     }
     if (mode == 1)
     {
-        D_00960090(6);
-        D_00960090(8, 1);
+        void (**renderState)(u32, ...);
+
+        renderState = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState)(6);
+        (*renderState)(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x717fb);
-    kclump_render_list((void*)((u8*)state + 8), 0x007cc1e4);
-
-    item = *(KClumpMaterialNode**)((u8*)state + 0x14);
+    item = *(KClumpMaterialNode**)((u8*)state + 8);
     while (item != NULL)
     {
-        found = 0;
-        if (item->object != NULL)
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
-            func_001a7910(item->object, (f32*)((u8*)item + 0x0c));
-            func_004932c0((void*)kclump_word(item->object, 0x18), (KClumpCallback)kclump_alpha_callback, &found);
-            if (item->colorScale[0] >= 1.0f && found == 1)
+            if (item->enabled == 1)
             {
-                kclump_render_item(item, 0x007cc1f0);
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+            }
+            if ((&D_007CC1C0)[9] == 1)
+            {
+                (*(void (**)(void))((u8*)item->object + 0x48))();
+            }
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
             }
         }
         item = item->next;
     }
-
+    item = *(KClumpMaterialNode**)((u8*)state + 0x14);
+    while (item != NULL)
+    {
+        found = 0;
+        resources = *(void**)((u8*)item->object + 0x18);
+        if (resources != NULL)
+        {
+            func_001a7910(item->object, (f32*)((u8*)item + 0xc));
+            func_004932c0(resources, (KClumpCallback)kclump_alpha_callback, &found);
+            if (item->colorScale[3] >= 1.0f && found == 1)
+            {
+                sphere = func_004912b0(item->object);
+                if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
+                {
+                    if (item->enabled == 1)
+                    {
+                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+                    }
+                    if ((&D_007CC1C0)[9] == 1)
+                    {
+                        (*(void (**)(void))((u8*)item->object + 0x48))();
+                    }
+                    if (item->enabled == 1)
+                    {
+                        (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+                    }
+                }
+            }
+        }
+        item = item->next;
+    }
     if (mode == 1)
     {
-        D_00960090(6);
-        D_00960090(8, 0);
+        void (**renderState)(u32, ...);
+
+        renderState = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState)(6);
+        (*renderState)(8, 0);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x717fb);
-    kclump_render_list((void*)((u8*)state + 0x18), 0x007cc1f4);
-
+    item = *(KClumpMaterialNode**)((u8*)state + 0x18);
+    while (item != NULL)
+    {
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
+        {
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+            }
+            if ((&D_007CC1C0)[13] == 1)
+            {
+                (*(void (**)(void))((u8*)item->object + 0x48))();
+            }
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+            }
+        }
+        item = item->next;
+    }
     if (mode == 1)
     {
-        D_00960090(6);
-        D_00960090(8, 1);
+        void (**renderState)(u32, ...);
+
+        renderState = (void (**)(u32, ...))D_00960090_abs;
+        (*renderState)(6);
+        (*renderState)(8, 1);
     }
     RpSkyRenderStateSet(2, (void*)0x44);
     RpSkyRenderStateSet(3, (void*)0x715fb);
-    kclump_render_list((void*)((u8*)state + 0x1c), 0x007cc1f8);
+    item = *(KClumpMaterialNode**)((u8*)state + 0x1c);
+    while (item != NULL)
+    {
+        sphere = func_004912b0(item->object);
+        if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
+        {
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
+            }
+            if ((&D_007CC1C0)[14] == 1)
+            {
+                (*(void (**)(void))((u8*)item->object + 0x48))();
+            }
+            if (item->enabled == 1)
+            {
+                (*(void (**)(u32, ...))(u8*)0x00960090)(0xe);
+            }
+        }
+        item = item->next;
+    }
 }
 
 // FUN_001a7fc0 NONMATCHING
