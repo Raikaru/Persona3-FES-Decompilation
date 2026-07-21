@@ -610,7 +610,7 @@ void FUN_00224940(void)
     basePos = (f32*)(work + 0x6050);
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
-    rect[0] = 188.0f + basePos[0];
+    rect[0] = 47.0f + basePos[0];
     rect[1] = 19.0f + basePos[1] +
               (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
@@ -618,7 +618,7 @@ void FUN_00224940(void)
     FUN_0021d8e0(work + 0x4230, rect);
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
-    rect[0] = 188.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[0] = 47.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
     rect[1] = 19.0f + basePos[1] +
               (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
     rect[2] = 312.0f;
@@ -1112,7 +1112,7 @@ void FUN_0022A2B0(void)
     blend = 1.0f - scaled;
 
     frame = (void*)FUN_0021cca0(table0, 0x23);
-    rect[0] = 188.0f + basePos[0];
+    rect[0] = 47.0f + basePos[0];
     rect[1] = 19.0f + basePos[1] +
               (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
     rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
@@ -1120,7 +1120,7 @@ void FUN_0022A2B0(void)
     FUN_0021d8e0(work + 0x4230, rect);
 
     frame = (void*)FUN_0021cca0(table0, 0x23);
-    rect[0] = 188.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[0] = 47.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
     rect[1] = 19.0f + basePos[1] +
               (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
     rect[2] = 312.0f;
