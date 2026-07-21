@@ -74,10 +74,12 @@ extern void func_00318a90(void* model, void* value, u32 count);
 extern void func_00319230(void* model, u32 value);
 extern void func_00318ad0(void* model, void* value);
 extern void* func_00318b00(void* model);
-extern void func_003174e0(void);
+extern void func_003174e0(void* model);
 extern void* func_00317450(void* value);
 extern void func_00317730(void* model);
 extern void func_003182d0(void* model, u32 slot, u32 anim, u32 blend, u32 flags);
+extern f32 func_00318910(void* model, u32 slot, u32 anim);
+extern void func_00318770(void* model, u32 slot, f32 value);
 extern void func_0031c1d0(void* model);
 extern void func_00319190(void* model);
 extern u32 func_0016f190(u32 flag);
@@ -228,7 +230,7 @@ FldUnit* K_FldUnit_FindFreePc()
     return free;
 }
 
-static void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
+static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 {
     FldUnitMdl* cache;
     Model* model;
@@ -248,7 +250,7 @@ static void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
         }
         if (cache->mdl != NULL)
         {
-            func_003174e0();
+            func_003174e0(cache->mdl);
             cache->mdl = NULL;
         }
         cache->mdl = model;
@@ -274,7 +276,6 @@ void* func_001cd9a0(u32 charId)
     s32 i;
     s32 major;
     s32 minor;
-    u32 special;
 
     slot = 0;
     for (i = 0; i < 3; i++)
@@ -290,20 +291,26 @@ void* func_001cd9a0(u32 charId)
     minor = PTR_DAT_007cd540[1];
     type = 1;
     id = (u16)charId;
-    special = charId;
-
-    if (special == 13 || special == 10)
+    if (charId == 13)
     {
-        id = (u16)special;
         if (major == 14 && minor == 5)
         {
             type = 9;
             id = 0xd00;
         }
+        return FldUnit_LoadPcModel(slot, type, id);
     }
-    else if (special == 7)
+    if (charId == 10)
     {
-        id = 7;
+        if (major == 14 && minor == 5)
+        {
+            type = 9;
+            id = 0xd00;
+        }
+        return FldUnit_LoadPcModel(slot, type, id);
+    }
+    if (charId == 7)
+    {
         if (major == 14 && minor == 5)
         {
             type = 9;
@@ -314,10 +321,10 @@ void* func_001cd9a0(u32 charId)
             type = 9;
             id = 0x701;
         }
+        return FldUnit_LoadPcModel(slot, type, id);
     }
-    else if (special == 5)
+    if (charId == 5)
     {
-        id = 5;
         if (major == 14 && minor == 5)
         {
             type = 9;
@@ -333,8 +340,9 @@ void* func_001cd9a0(u32 charId)
             type = 9;
             id = 0x501;
         }
+        return FldUnit_LoadPcModel(slot, type, id);
     }
-    else if (special == 1)
+    if (charId == 1)
     {
         if (func_0017d800() == true && (major == 4 || major == 5))
         {
@@ -398,45 +406,116 @@ void* func_001cd9a0(u32 charId)
         else if (func_0016f190(0xa89) == true)
         {
             type = 9;
-            id = func_0017e480(6, 1, 9, 0x1e) == true ? 0x103 : 0x102;
+            if (func_0017e480(6, 1, 9, 0x1e) == true)
+            {
+                id = 0x103;
+            }
+            else
+            {
+                id = 0x102;
+            }
         }
         else
         {
             type = 9;
-            id = func_0017e480(6, 1, 9, 0x1e) == true ? 0x101 : 0x100;
+            if (func_0017e480(6, 1, 9, 0x1e) == true)
+            {
+                id = 0x101;
+            }
+            else
+            {
+                id = 0x100;
+            }
         }
+        return FldUnit_LoadPcModel(slot, type, id);
     }
-    else if (special == 2)
+    if (charId == 2)
     {
-        id = 2;
         if (major == 6 || major == 7)
         {
             type = 9;
             id = 0x200;
         }
+        return FldUnit_LoadPcModel(slot, type, id);
     }
     return FldUnit_LoadPcModel(slot, type, id);
 }
 
-static void FldUnit_SetPcFormationPosition(s32 index,
-                                            FldUnit* unit,
-                                            RwMatrix* reference,
-                                            const RwV3d* fieldPosition)
+static inline void FldUnit_SetPcFormationPosition(s32 index,
+                                                    FldUnit* unit,
+                                                    RwMatrix* reference,
+                                                    const RwV3d* fieldPosition)
 {
     RwV3d offset;
     RwV3d position;
+    KwlnTask* collisCtlTask;
 
-    if (unit->resrc == NULL)
-    {
-        return;
-    }
-    position = reference->pos;
+    collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
     if (index == 0)
     {
-        position = *fieldPosition;
+        func_001adc20(collisCtlTask, fieldPosition);
+    }
+    else if (index == 1)
+    {
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        position.x += offset.x * 240.0f;
+        position.y += offset.y * 240.0f;
+        position.z += offset.z * 240.0f;
+        func_001adc20(collisCtlTask, &position);
+    }
+    else if (index == 2)
+    {
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 240.0f;
+        position.y += offset.y * 240.0f;
+        position.z += offset.z * 240.0f;
+        func_001adc20(collisCtlTask, &position);
+    }
+    else
+    {
+        position = reference->pos;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 150.0f;
+        position.y += offset.y * 150.0f;
+        position.z += offset.z * 150.0f;
+        func_001adc20(collisCtlTask, &position);
+    }
+}
+
+static inline void FldUnit_SetPcDungeonPosition(s32 index,
+                                                 FldUnit* unit,
+                                                 RwMatrix* reference)
+{
+    RwV3d position;
+    RwV3d offset;
+    RwV3d axis;
+    KwlnTask* task;
+    f32 angle;
+
+    task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
+    axis.x = 0.0f;
+    axis.y = 1.0f;
+    axis.z = 0.0f;
+    angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
+    if (index == 0)
+    {
+        func_001adff0(task, &axis, angle);
+        func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
     }
     else if (index == 1 || index == 2)
     {
+        position = reference->pos;
         offset = reference->right;
         RwV3dNormalize(&offset, &offset);
         if (index == 2)
@@ -448,9 +527,20 @@ static void FldUnit_SetPcFormationPosition(s32 index,
         position.x += offset.x * 240.0f;
         position.y += offset.y * 240.0f;
         position.z += offset.z * 240.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, &axis, angle);
+        func_001adc20(task, &position);
     }
     else
     {
+        position = reference->pos;
         offset = reference->at;
         RwV3dNormalize(&offset, &offset);
         offset.x = -offset.x;
@@ -459,8 +549,9 @@ static void FldUnit_SetPcFormationPosition(s32 index,
         position.x += offset.x * 150.0f;
         position.y += offset.y * 150.0f;
         position.z += offset.z * 150.0f;
+        func_001adff0(task, &axis, angle);
+        func_001adc20(task, &position);
     }
-    func_001adc20(((ResrcModelChar*)unit->resrc)->collisCtlTask, &position);
 }
 
 // FUN_001CE880 NONMATCHING
@@ -506,6 +597,7 @@ u32 func_001ce960(void)
     HCdvd* cdvd;
     RwMatrix* reference;
     RwV3d fieldPosition;
+    RwV3d fixedPosition;
     RwV3d axis;
     RwV3d scale;
     void* (*allocate)(u32 count, u32 size, u32 flags);
@@ -561,26 +653,12 @@ u32 func_001ce960(void)
     {
         return false;
     }
-    field = func_001b9120();
-    fieldPosition.x = (f32)(s8)field[0x3c] * 72.0f;
-    fieldPosition.y = 2.0f;
-    fieldPosition.z = (f32)(s8)field[0x3d] * 72.0f;
+    fixedPosition.x = 30.0f;
+    fixedPosition.y = 30.0f;
+    fixedPosition.z = 30.0f;
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 0.0f;
-    if (gFldUnitsPc[0].resrc != NULL)
-    {
-        memcpy(reference,
-               mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
-               sizeof(RwMatrix));
-    }
-    else
-    {
-        memset(reference, 0, sizeof(RwMatrix));
-        reference->right.x = 1.0f;
-        reference->up.y = 1.0f;
-        reference->at.z = 1.0f;
-    }
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
@@ -594,7 +672,6 @@ u32 func_001ce960(void)
         unit->resrc = resource;
         if (resource == NULL)
         {
-            func_004c3880(reference);
             return false;
         }
         func_001ad8c0(i == 0 ? 60.0f : 35.0f,
@@ -610,9 +687,20 @@ u32 func_001ce960(void)
 
         if (K_Scene_001a0250() == 1)
         {
-            cell = field + ((u32)field[0x3d] << 8) +
-                   ((u32)field[0x3c] << 4);
-            orientation = (s8)cell[0x4e] + 2;
+            field = func_001b9120();
+            fieldPosition.x = (f32)(s8)field[0x3c] * 72.0f;
+            fieldPosition.y = 2.0f;
+            field = func_001b9120();
+            fieldPosition.z = (f32)(s8)field[0x3d] * 72.0f;
+            memcpy(reference,
+                   mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
+                   sizeof(RwMatrix));
+            field = func_001b9120();
+            orientation = (u8)field[0x3d] << 8;
+            field = func_001b9120();
+            orientation += (u8)field[0x3c] << 4;
+            cell = func_001b9120();
+            orientation = (s8)cell[orientation + 0x4e] + 2;
             orientation &= ~3;
             func_001adff0(resource->collisCtlTask,
                           &axis, (f32)orientation * 90.0f);
@@ -646,13 +734,24 @@ u32 func_001ce960(void)
         }
         else
         {
-            FldUnit_SetPcFormationPosition(i, unit, reference,
-                                           &fieldPosition);
-            if (unit->unk_168 != NULL &&
-                func_002ff790(unit->genusBase) == false)
+            if (unit->unk_168 == NULL)
             {
+                func_001adc20(resource->collisCtlTask, &fixedPosition);
+                RwMatrixUpdate(mdlGetMatrix(unit->mdl));
                 func_003182d0(unit->mdl, 0,
                               (u32)func_001dde00(unit->charId), 0, 1);
+            }
+            else
+            {
+                memcpy(reference,
+                       mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
+                       sizeof(RwMatrix));
+                if (func_002ff790(unit->genusBase) == false)
+                {
+                    func_003182d0(unit->mdl, 0, 0x15, 0, 0);
+                    func_00318770(unit->mdl, 0, func_00318910(unit->mdl, 0, 0x15) - 10.0f);
+                }
+                FldUnit_SetPcDungeonPosition(i, unit, reference);
             }
             func_001a01c0();
         }
@@ -667,8 +766,8 @@ u32 func_001ce960(void)
         func_001a0dc0(resourceId, 1);
         func_001ad870(resource->collisCtlTask, 0x40000000);
     }
-    func_004c3880(reference);
-    if (PTR_DAT_007cd540[0] == 0xE && PTR_DAT_007cd540[1] == 5)
+    if ((PTR_DAT_007cd540[0] == 0xE && PTR_DAT_007cd540[1] == 5) ||
+        K_Scene_001a0250() == 1)
     {
         func_00434f60(0);
     }
@@ -680,6 +779,7 @@ u32 func_001ce960(void)
     {
         func_004350e0(0, 1);
     }
+    func_004c3880(reference);
     return true;
 }
 // FUN_001CF940 NONMATCHING
