@@ -34648,8 +34648,9 @@ void FUN_005485d8(int param_1)
 
 // FUN_00548678 NONMATCHING
 
-
-void FUN_00548678(u64 param_1)
+#pragma schedule on
+#pragma tailcall on
+void FUN_00548678(u32 param_1)
 
 
 
@@ -34660,10 +34661,12 @@ void FUN_00548678(u64 param_1)
   FUN_005486a8(param_1);
 
   FUN_00539850();
-
   return;
 
+
 }
+#pragma tailcall off
+#pragma schedule off
 
 
 
@@ -34672,7 +34675,7 @@ void FUN_00548678(u64 param_1)
 // FUN_005486A8 NONMATCHING
 
 
-void FUN_005486a8(long param_1)
+void FUN_005486a8(u32 param_1)
 
 
 
