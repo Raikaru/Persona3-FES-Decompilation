@@ -665,7 +665,7 @@ void FUN_00347d60(void);
 void FUN_00347f80(void);
 u64 FUN_00347fc0(void);
 void FUN_00348030(u64 param_1);
-u64 FUN_00348090(int param_1);
+u32 FUN_00348090(int param_1);
 void FUN_003482b0(MdlAnimationCursor *param_1);
 void FUN_00348300(MdlAnimationCursor *param_1);
 u32 FUN_00348340(u8 *param_1,float *param_2);
@@ -44902,17 +44902,11 @@ void FUN_00348030(u64 param_1)
 // FUN_00348090 NONMATCHING
 
 
-u64 FUN_00348090(int param_1)
-
-
-
+u32 FUN_00348090(int param_1)
 {
+  u32 uVar1;
 
-  u64 uVar1;
-
-  
-
-  uVar1 = (*DAT_00960178)(0x14,0x40000);
+  uVar1 = (*DAT_00960178_abs)(0x14,0x40000);
 
   *(u32 *)uVar1 = 0;
 
