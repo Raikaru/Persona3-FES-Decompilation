@@ -215,6 +215,10 @@ typedef s32 (*HmallocStepCallback)(void);
 extern u8 D_00846F00[];
 extern u32 D_00960184[];
 extern u32 jtbl_0096017C[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern u8 jtbl_0096017C_abs[];
 extern const char D_005E4C80[];
 extern const char D_005E4C60[];
 extern const char D_005E4CA0[];
@@ -241,9 +245,9 @@ extern const char D_005E4E70[];
 extern const u16 D_007E094E;
 extern const u16 D_007E0952;
 #define HMALLOC_ENGINE_ALLOC(count, size, flags) \
-    (*(HmallocAllocator*)D_00960184)((count), (size), (flags))
+    (*(HmallocAllocator*)D_00960184_abs)((count), (size), (flags))
 #define HMALLOC_ENGINE_FREE(memory) \
-    (*(HmallocReleaser*)jtbl_0096017C)((memory))
+    (*(HmallocReleaser*)jtbl_0096017C_abs)((memory))
 #define HMALLOC_STEP_TABLE ((HmallocStepCallback*)0x005e4d00)
 
 extern void func_004f1e20(u64 source, void* bytes, u16* header);
@@ -285,13 +289,13 @@ extern s32 func_00524128(const char* path, const char* name);
 extern s32 func_00420340(void* task, s32 flags);
 extern void func_0035f060();
 
-static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
+static void hmallocInitTilePacket(u32 texture, u32 packet, u32 source, s32 a3,
                                    s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                    s32 a9, s32 a10);
 static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
                                     s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
                                     s32 a8, s32 a9);
-static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
+static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
                                  s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                  s32 a9, s32 a10);
 static void hmallocPackHeader(u64* out, u32 a1, s32 a2, u32 a3, u32 a4,
@@ -332,7 +336,7 @@ void hmallocPrepareTilePacket(u64 source, u32 owner, s32 tileIndex, s32 tileCoun
 }
 
 // FUN_00191E60
-static void hmallocInitTilePacket(u64 texture, u64 packet, u64 source, s32 a3,
+static void hmallocInitTilePacket(u32 texture, u32 packet, u32 source, s32 a3,
                                    s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                    s32 a9, s32 a10)
 {
@@ -344,59 +348,69 @@ static void hmallocInitTilePacket32(u32 texture, void* packet, u32 source,
                                     s32 a3, s32 a4, s32 a5, s32 a6, s32 a7,
                                     s32 a8, s32 a9)
 {
-    hmallocInitTilePacket((u64)texture, (u64)(uintptr_t)packet, (u64)source,
+    hmallocInitTilePacket(texture, (u32)(uintptr_t)packet, source,
                           a3, a4, a5, a6, a7, a8, a9, 0);
 }
 
 // FUN_00191EC0 NONMATCHING
-static void hmallocEmitCommands(u64 texture, u64 packet, u64 source, s32 a3,
+static void hmallocEmitCommands(u32 texture, u32 packet, u32 source, s32 a3,
                                  s32 a4, s32 a5, s32 a6, s32 a7, s32 a8,
                                  s32 a9, s32 a10)
 {
     u8* command;
+    u32* output;
     s32 rowCount;
     s32 i;
     s32 stride;
     u32 imageOffset;
     s32 blockCount;
-    command = (u8*)(uintptr_t)packet;
-    a7 >>= 4;
-    hmallocPackHeader((u64*)command, 0, 0, 0, 1, 0, 3);
-    hmallocPackDescriptor((u32*)(command + 0x10), 0xe, 1, 0, 0, 0, 0, 2);
+    s32 tileCount;
+    s32 loopCount;
+    s32 offsetA;
+    s32 offsetB;
+    s32 offsetC;
 
-    rowCount = a6 + 0x3f;
-    if (rowCount < 0)
-    {
-        rowCount = a6 + 0x7e;
-    }
-    rowCount = (rowCount >> 6) * 0x40;
-    hmallocWriteImage((u32*)(command + 0x20), (u32)texture,
-                      (u32)(rowCount >> 6), 0);
-    hmallocWriteScale((u32*)(command + 0x30), 0x10, (u32)(a7 << 4));
-    command += 0x40;
-    imageOffset = (u32)source + (u32)(a8 >> 4) * (u32)a3 *
-                  (u32)(a7 + (u32)(a10 >> 4)) + (u32)a3 * (u32)(a9 >> 4);
-    blockCount = a6 * 0x400;
+    loopCount = a6 >> 4;
+    tileCount = a7 >> 4;
+    hmallocPackHeader((u64*)(uintptr_t)packet, 0, 0, 0, 1, 0, 3);
+    hmallocPackDescriptor((u32*)(uintptr_t)(packet + 0x10), 0xe, 1, 0,
+                          0, 0, 0, 2);
+
+    rowCount = ((a6 + 0x3f) / 0x40) * 0x40;
+    asm volatile("" : "+m"(rowCount));
+    output = (u32*)(uintptr_t)(packet + 0x20);
+    hmallocWriteImage(output, texture, (u32)(rowCount / 0x40), 0);
+    output = (u32*)(uintptr_t)(packet + 0x30);
+    hmallocWriteScale(output, 0x10, (u32)(tileCount << 4));
+    command = (u8*)(uintptr_t)(packet + 0x40);
+    offsetA = a8 >> 4;
+    offsetB = a9 >> 4;
+    imageOffset = source +
+                  (u32)a3 * ((u32)tileCount + (u32)offsetA) *
+                      (u32)offsetB;
+    offsetC = a10 >> 4;
+    imageOffset += (u32)offsetC;
+    blockCount = tileCount * 0x400;
     if (blockCount < 0)
     {
         blockCount += 0xf;
     }
     stride = blockCount >> 4;
-    for (i = 0; i < (a6 >> 4); i++)
+    for (i = 0; i < loopCount; i++)
     {
         hmallocPackHeader((u64*)command, 0, 0, 0, 1, 0, 4);
         hmallocPackDescriptor((u32*)(command + 0x10), 0xe, 1, 0, 0, 0,
                               0, 2);
         hmallocWriteTile((u32*)(command + 0x20), 0,
-                         (u32)(a4 + i * 0x10), (s64)a5);
+                         (u32)(a4 + i * 0x10), (u32)a5);
         hmallocWriteSolid((u32*)(command + 0x30), 0);
         hmallocPackDescriptor((u32*)(command + 0x40), 0, 0, 2, 0, 0,
-                              i == ((a6 >> 4) - 1), (u32)stride);
+                              i == (loopCount - 1), (u32)stride);
         hmallocPackHeader((u64*)(command + 0x50), 0,
                           imageOffset & 0x0fffffff, 0, 3, 0,
-                          (u64)stride);
+                          (u32)stride);
         command += 0x60;
-        imageOffset += (u32)a3 * (u32)a7 + (u32)a3 * (u32)(a10 >> 4);
+        imageOffset += (u32)a3 * ((u32)tileCount + 1);
     }
     hmallocPackHeader((u64*)command, 0, 0, 0, 0, 7, 0);
 }
@@ -970,101 +984,115 @@ void* hmallocCreateTaskE(void)
 static s32 hmallocTaskUpdateF(void* task)
 {
     u32* work;
+    HmallocAllocator allocator;
     u32 state;
-
     work = *(u32**)((u8*)task + 0x3c);
     state = work[0];
+    allocator = (HmallocAllocator)(uintptr_t)D_00960184_abs;
     if (state == 3)
     {
-        return -1;
+        goto stateThree;
     }
-
     if (state == 1)
     {
-        if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
-        {
-            sHmallocResourceReady = 0;
-            if (sHmallocResourceMode == 0)
-            {
-                if (sHmallocResourceA != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceA);
-                }
-                if (sHmallocResourceB != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceB);
-                }
-                if (sHmallocResourceC != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceC);
-                }
-                if (sHmallocResourceD != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceD);
-                }
-                sHmallocResourceA = NULL;
-                sHmallocResourceB = NULL;
-                sHmallocResourceC = NULL;
-                sHmallocResourceD = NULL;
-                work[1] = (u32)-1;
-                work[0] = 3;
-            }
-            else
-            {
-                work[1] = 1;
-                hmallocApplyInputTable();
-                sHmallocResourceMode = 0;
-                if (sHmallocResourceA != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceA);
-                }
-                if (sHmallocResourceB != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceB);
-                }
-                if (sHmallocResourceC != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceC);
-                }
-                if (sHmallocResourceD != NULL)
-                {
-                    HMALLOC_ENGINE_FREE(sHmallocResourceD);
-                }
-                sHmallocResourceA = NULL;
-                sHmallocResourceB = NULL;
-                sHmallocResourceC = NULL;
-                sHmallocResourceD = NULL;
-                work[0] = 3;
-            }
-        }
+        goto stateOne;
     }
-    else if (state == 0)
+    if (state == 0)
     {
-        if (sHmallocResourceA != NULL)
-        {
-            HMALLOC_ENGINE_FREE(sHmallocResourceA);
-        }
-        if (sHmallocResourceB != NULL)
-        {
-            HMALLOC_ENGINE_FREE(sHmallocResourceB);
-        }
-        if (sHmallocResourceC != NULL)
-        {
-            HMALLOC_ENGINE_FREE(sHmallocResourceC);
-        }
-        if (sHmallocResourceD != NULL)
-        {
-            HMALLOC_ENGINE_FREE(sHmallocResourceD);
-        }
-        sHmallocResourceA = HMALLOC_ENGINE_ALLOC(1, 0x50, 0x40000);
-        sHmallocResourceB = HMALLOC_ENGINE_ALLOC(1, 0x3400, 0x40000);
-        sHmallocResourceC = HMALLOC_ENGINE_ALLOC(1, 0x2c0, 0x40000);
-        sHmallocResourceD = HMALLOC_ENGINE_ALLOC(1, 0x2c, 0x40000);
-        sHmallocResourceMode = 0;
-        sHmallocResourceReady = 1;
-        work[2] = (u32)(uintptr_t)func_00420340(task, 0);
-        work[0] = 1;
+        goto stateZero;
     }
+    goto done;
+
+stateZero:
+    if (sHmallocResourceA != NULL)
+    {
+        HMALLOC_ENGINE_FREE(sHmallocResourceA);
+    }
+    if (sHmallocResourceB != NULL)
+    {
+        HMALLOC_ENGINE_FREE(sHmallocResourceB);
+    }
+    if (sHmallocResourceC != NULL)
+    {
+        HMALLOC_ENGINE_FREE(sHmallocResourceC);
+    }
+    if (sHmallocResourceD != NULL)
+    {
+        HMALLOC_ENGINE_FREE(sHmallocResourceD);
+    }
+    sHmallocResourceA = (*allocator)(1, 0x50, 0x40000);
+    sHmallocResourceB = (*allocator)(1, 0x3400, 0x40000);
+    sHmallocResourceC = (*allocator)(1, 0x2c0, 0x40000);
+    sHmallocResourceD = (*allocator)(1, 0x2c, 0x40000);
+    sHmallocResourceMode = 0;
+    sHmallocResourceReady = 1;
+    work[2] = (u32)(uintptr_t)func_00420340(task, 0);
+    work[0] = 1;
+    goto done;
+
+stateOne:
+    if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
+    {
+        sHmallocResourceReady = 0;
+        if (sHmallocResourceMode == 0)
+        {
+            if (sHmallocResourceA != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceA);
+            }
+            if (sHmallocResourceB != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceB);
+            }
+            if (sHmallocResourceC != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceC);
+            }
+            if (sHmallocResourceD != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceD);
+            }
+            sHmallocResourceA = NULL;
+            sHmallocResourceB = NULL;
+            sHmallocResourceC = NULL;
+            sHmallocResourceD = NULL;
+            work[1] = (u32)-1;
+            work[0] = 3;
+        }
+        else
+        {
+            work[1] = 1;
+            hmallocApplyInputTable();
+            sHmallocResourceMode = 0;
+            if (sHmallocResourceA != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceA);
+            }
+            if (sHmallocResourceB != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceB);
+            }
+            if (sHmallocResourceC != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceC);
+            }
+            if (sHmallocResourceD != NULL)
+            {
+                HMALLOC_ENGINE_FREE(sHmallocResourceD);
+            }
+            sHmallocResourceA = NULL;
+            sHmallocResourceB = NULL;
+            sHmallocResourceC = NULL;
+            sHmallocResourceD = NULL;
+            work[0] = 3;
+        }
+    }
+    goto done;
+
+stateThree:
+    return -1;
+
+done:
     return 0;
 }
 
