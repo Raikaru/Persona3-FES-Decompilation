@@ -13595,9 +13595,9 @@ void FUN_00329800(u8 (*param_1) [16],u8 (*param_2) [16])
 
   
 
-  iVar1 = FUN_00198590();
+  iVar1 = (int)FUN_00198590_camera();
 
-  iVar1 = FUN_004cb2f0(*(u32 *)(iVar1 + 4));
+  iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
 
   auVar2 = _lqc2(*param_1);
 
