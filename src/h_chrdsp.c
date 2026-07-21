@@ -347,22 +347,287 @@ void H_Chrdsp_Main(void)
 // FUN_001059B0 NONMATCHING
 void H_Chrdsp_UpdateWork(HChrdspWork* work)
 {
+    RwIm2DVertex overlayVertices[4];
+    char archivePath[256];
+    const char* archiveEntry;
+    HChrdspTexture* texture;
+    RwCamera* camera;
+    RwV2d position;
+    f32 recipZ;
+    f32 overlayYOffset;
+    s32 quadIndex;
+    s32 vertexIndex;
+    u32 isReady;
+
     switch (work->state)
     {
+
+    case HCHRDP_STATE_UNAVAILABLE:
+        break;
     case HCHRDP_STATE_LOAD_ARCHIVE:
-        H_Chrdsp_LoadArchiveLayer(work);
+        if (H_Cdvd_IsFileLoaded(work->archive) == 0)
+        {
+            break;
+        }
+        if (work->usesCustomPath == 0)
+        {
+            if ((datGetScenarioMode() != 0) && (work->characterId == 9))
+            {
+                sprintf(archivePath, "test/char/i_bust29_%1d", work->resourceIndex);
+            }
+            else
+            {
+                sprintf(archivePath, "test/char/i_bust%02d_%1d",
+                        work->characterId, work->resourceIndex);
+            }
+        }
+        archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+        if (archiveEntry == NULL)
+        {
+            H_Cdvd_Destroy(work->archive);
+            work->archive = NULL;
+            work->state = HCHRDP_STATE_UNAVAILABLE;
+            break;
+        }
+        archiveEntry = func_001022e0(work->archive, work->resourceIndex);
+        sprintf(work->texturePath, "bustup/%s", archiveEntry);
+        work->asyncRequest = func_0010c1a0(0, work->texturePath, NULL, 0, NULL,
+                                           NULL, 0, NULL, "h_chrdsp.c", NULL,
+                                           (void*)0x9F);
+        work->state = HCHRDP_STATE_PARSE_LAYER;
         break;
 
     case HCHRDP_STATE_PARSE_LAYER:
-        H_Chrdsp_ParseLayer(work);
+        isReady = false;
+        texture = (HChrdspTexture*)func_0010c3a0(work->asyncRequest,
+                                                  &isReady, NULL);
+        work->resources[work->resourceIndex] = texture;
+        if (isReady == false)
+        {
+            break;
+        }
+        texture->renderFlags = (texture->renderFlags & 0xFFFF00FF) | 0x00003300;
+        work->asyncRequest = NULL;
+        work->resourceIndex++;
+        work->state = HCHRDP_STATE_LOAD_ARCHIVE;
         break;
 
     case HCHRDP_STATE_DRAW:
-        H_Chrdsp_Draw(work);
+        camera = kwlnGetMainCamera();
+        recipZ = 1.0f / camera->nearPlane;
+        position = work->position;
+        if (work->characterId == 39)
+        {
+            position.y += 48.0f;
+        }
+
+        for (quadIndex = 0; quadIndex < HCHRDP_QUAD_COUNT; quadIndex++)
+        {
+            for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
+            {
+                work->vertices[quadIndex][vertexIndex].u.els.scrVertex.z =
+                    RwIm2DGetNearScreenZ() - work->zOffset;
+                work->vertices[quadIndex][vertexIndex].u.els.recipZ = recipZ;
+                work->vertices[quadIndex][vertexIndex].u.els.color.r =
+                    (f32)work->color.r;
+                work->vertices[quadIndex][vertexIndex].u.els.color.g =
+                    (f32)work->color.g;
+                work->vertices[quadIndex][vertexIndex].u.els.color.b =
+                    (f32)work->color.b;
+                work->vertices[quadIndex][vertexIndex].u.els.color.a =
+                    (f32)work->color.a;
+            }
+
+            work->vertices[quadIndex][0].u.els.scrVertex.x =
+                position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+            work->vertices[quadIndex][0].u.els.scrVertex.y =
+                position.y + 256.0f - work->layerHeight * 512.0f / 2.0f;
+            work->vertices[quadIndex][0].u.els.u = 0.0f;
+            work->vertices[quadIndex][0].u.els.v = 0.0f;
+            work->vertices[quadIndex][1].u.els.scrVertex.x =
+                position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+            work->vertices[quadIndex][1].u.els.scrVertex.y =
+                position.y + 256.0f - work->layerHeight * 512.0f / 2.0f;
+            work->vertices[quadIndex][1].u.els.u = 1.0f;
+            work->vertices[quadIndex][1].u.els.v = 0.0f;
+            work->vertices[quadIndex][2].u.els.scrVertex.x =
+                position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+            work->vertices[quadIndex][2].u.els.scrVertex.y =
+                position.y + 256.0f + work->layerHeight * 512.0f / 2.0f - 1.0f;
+            work->vertices[quadIndex][2].u.els.u = 0.0f;
+            work->vertices[quadIndex][2].u.els.v = 1.0f;
+            work->vertices[quadIndex][3].u.els.scrVertex.x =
+                position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+            work->vertices[quadIndex][3].u.els.scrVertex.y =
+                position.y + 256.0f + work->layerHeight * 512.0f / 2.0f - 1.0f;
+            work->vertices[quadIndex][3].u.els.u = 1.0f;
+            work->vertices[quadIndex][3].u.els.v = 1.0f;
+        }
+        D_00960090(1, (u32)((HChrdspTexture*)work->resources[0])->raster);
+        D_009600A0(rwPRIMTYPETRISTRIP, work->vertices[0], 4);
+
+        if ((work->resourceIndex < 2) || (work->color.a != 255) ||
+            (work->drawMiddleLayer == 0))
+        {
+            break;
+        }
+
+        work->alphaTimer--;
+        if (work->alphaTimer <= 0)
+        {
+            work->alphaPhase = work->alphaPhase == 0;
+            work->alphaIndex++;
+            if (work->alphaIndex >= 6)
+            {
+                work->alphaIndex = 0;
+            }
+            work->alphaTimer = H_Chrdsp_GetFadeFrames(work->alphaIndex);
+        }
+
+        switch (work->characterId)
+        {
+        case 15:
+            overlayYOffset = 189.0f;
+            break;
+        case 10:
+            overlayYOffset = 149.0f;
+            break;
+        case 39:
+            overlayYOffset = 81.0f;
+            break;
+        case 30:
+            overlayYOffset = 100.0f;
+            break;
+        case 42:
+            overlayYOffset = 76.0f;
+            break;
+        case 48:
+            overlayYOffset = 97.0f;
+            break;
+        case 12:
+            overlayYOffset = 134.0f;
+            break;
+        case 9:
+            overlayYOffset = 122.0f;
+            break;
+        case 5:
+            if ((work->variant == 4) || (work->variant == 5) ||
+                (work->variant == 6))
+            {
+                overlayYOffset = 101.0f;
+            }
+            else
+            {
+                overlayYOffset = 111.0f;
+            }
+            break;
+        case 8:
+            overlayYOffset = 130.0f;
+            break;
+        case 6:
+            overlayYOffset = 116.0f;
+            break;
+        case 13:
+            overlayYOffset = 119.0f;
+            break;
+        case 27:
+            overlayYOffset = 136.0f;
+            break;
+        default:
+            overlayYOffset = 111.0f;
+            break;
+        }
+
+        for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
+        {
+            overlayVertices[vertexIndex].u.els.scrVertex.z =
+                RwIm2DGetNearScreenZ() - work->zOffset;
+            overlayVertices[vertexIndex].u.els.recipZ = recipZ;
+            overlayVertices[vertexIndex].u.els.color.r = (f32)work->color.r;
+            overlayVertices[vertexIndex].u.els.color.g = (f32)work->color.g;
+            overlayVertices[vertexIndex].u.els.color.b = (f32)work->color.b;
+            overlayVertices[vertexIndex].u.els.color.a = (f32)work->color.a;
+        }
+        overlayVertices[0].u.els.scrVertex.x =
+            position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+        overlayVertices[0].u.els.scrVertex.y =
+            position.y + 32.0f - work->layerHeight * 64.0f / 2.0f +
+            overlayYOffset;
+        overlayVertices[0].u.els.u = 0.0f;
+        overlayVertices[0].u.els.v = 0.0f;
+        overlayVertices[1].u.els.scrVertex.x =
+            position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+        overlayVertices[1].u.els.scrVertex.y =
+            position.y + 32.0f - work->layerHeight * 64.0f / 2.0f +
+            overlayYOffset;
+        overlayVertices[1].u.els.u = 1.0f;
+        overlayVertices[1].u.els.v = 0.0f;
+        overlayVertices[2].u.els.scrVertex.x =
+            position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+        overlayVertices[2].u.els.scrVertex.y =
+            position.y + 32.0f + work->layerHeight * 64.0f / 2.0f - 1.0f +
+            overlayYOffset;
+        overlayVertices[2].u.els.u = 0.0f;
+        overlayVertices[2].u.els.v = 1.0f;
+        overlayVertices[3].u.els.scrVertex.x =
+            position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+        overlayVertices[3].u.els.scrVertex.y =
+            position.y + 32.0f + work->layerHeight * 64.0f / 2.0f - 1.0f +
+            overlayYOffset;
+        overlayVertices[3].u.els.u = 1.0f;
+        overlayVertices[3].u.els.v = 1.0f;
+        D_00960090(1, (u32)((HChrdspTexture*)work->resources[1])->raster);
+        D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
+
+        if ((work->resourceIndex < HCHRDP_LAYER_COUNT) ||
+            (work->color.a != 255) || (work->drawTopLayer == 0))
+        {
+            break;
+        }
+
+        for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
+        {
+            overlayVertices[vertexIndex].u.els.scrVertex.z =
+                RwIm2DGetNearScreenZ() - work->zOffset;
+            overlayVertices[vertexIndex].u.els.recipZ = recipZ;
+            overlayVertices[vertexIndex].u.els.color.r = (f32)work->color.r;
+            overlayVertices[vertexIndex].u.els.color.g = (f32)work->color.g;
+            overlayVertices[vertexIndex].u.els.color.b = (f32)work->color.b;
+            overlayVertices[vertexIndex].u.els.color.a = (f32)work->color.a;
+        }
+        overlayVertices[0].u.els.scrVertex.x =
+            position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+        overlayVertices[0].u.els.scrVertex.y =
+            position.y + 32.0f - work->layerHeight * 64.0f / 2.0f +
+            overlayYOffset + 155.0f;
+        overlayVertices[0].u.els.u = 0.0f;
+        overlayVertices[0].u.els.v = 0.0f;
+        overlayVertices[1].u.els.scrVertex.x =
+            position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+        overlayVertices[1].u.els.scrVertex.y =
+            position.y + 32.0f - work->layerHeight * 64.0f / 2.0f +
+            overlayYOffset + 155.0f;
+        overlayVertices[1].u.els.u = 1.0f;
+        overlayVertices[1].u.els.v = 0.0f;
+        overlayVertices[2].u.els.scrVertex.x =
+            position.x + 256.0f - work->layerWidth * 512.0f / 2.0f;
+        overlayVertices[2].u.els.scrVertex.y =
+            position.y + 32.0f + work->layerHeight * 64.0f / 2.0f - 1.0f +
+            overlayYOffset + 155.0f;
+        overlayVertices[2].u.els.u = 0.0f;
+        overlayVertices[2].u.els.v = 1.0f;
+        overlayVertices[3].u.els.scrVertex.x =
+            position.x + 256.0f + work->layerWidth * 512.0f / 2.0f - 1.0f;
+        overlayVertices[3].u.els.scrVertex.y =
+            position.y + 32.0f + work->layerHeight * 64.0f / 2.0f - 1.0f +
+            overlayYOffset + 155.0f;
+        overlayVertices[3].u.els.u = 1.0f;
+        overlayVertices[3].u.els.v = 1.0f;
+        D_00960090(1, (u32)((HChrdspTexture*)work->resources[2])->raster);
+        D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
         break;
 
     case HCHRDP_STATE_IDLE:
-    case HCHRDP_STATE_UNAVAILABLE:
     default:
         break;
     }
