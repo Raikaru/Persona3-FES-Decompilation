@@ -3542,7 +3542,7 @@ u32 FUN_00413b70(u64 param_1,int param_2,long param_3)
 
   
 
-  asm volatile("move %0, %1" : "=r" (lVar19) : "r" (param_3) : "a0", "a1", "a2", "a3");
+  lVar19 = (long)param_3;
 
   iVar1 = *(int *)(param_2 + 0xc);
 
