@@ -1020,27 +1020,225 @@ void FUN_002289B0(void)
                  FUN_0021cca0(FUN_0021c3f0(0), 0x24));
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00228E40 NONMATCHING
 void FUN_00228E40(void)
 {
-    u32 i;
-    u32 j;
-    u32 count;
+    u8* work;
+    u8* records;
+    u8* record;
+    u8* overlay;
+    u32 table0;
+    u32 table6;
+    void* frame;
+    f32* basePos;
+    f32 weight;
+    f32 alpha1;
+    f32 alpha2;
+    f32 rawScaled;
+    f32 blend;
+    u8 alphaByte;
+    s32 rawInt;
+    u32 percentColour;
+    u32 signedColour;
+    u32 greyColour;
+    u32 sub;
+    u32 colour;
+    f32 rect[4];
+    u8 color[4];
+    s32 i;
+    s32 current;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        for (j = 0; j < 4; ++j) {
-            u8* quad = record + j * 0x100;
-            bcm_panel_set_colour(quad, 0xffffffffu);
-            if (j < 2) {
-                bcm_panel_set_resource(quad + 0x10, 0, 0x29);
-            }
-        }
-        *(u32*)record |= 4;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    records = work + 0x4660;
+    basePos = (f32*)(work + 0x6050);
+    weight = *(f32*)(work + 0x7214);
+
+    if (*(u32*)(work + 0x463c) == 0) {
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 2) {
+        alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    } else {
+        K_ASSERT(0, 0xe59);
     }
+
+    if (*(u32*)(work + 0x4644) == 3) {
+        alpha2 = 0.0f;
+    } else if (*(u32*)(work + 0x4644) == 0) {
+        alpha2 = 1.0f;
+    }
+    rawScaled = alpha1 * alpha2;
+    blend = 1.0f - rawScaled;
+
+    frame = (void*)FUN_0021cca0(table0, 0x23);
+    rect[0] = 47.0f + basePos[0];
+    rect[1] = 19.0f + basePos[1] +
+              (f32)((*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26);
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4230, rect);
+
+    frame = (void*)FUN_0021cca0(table0, 0x23);
+    rect[0] = 47.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[1] = 19.0f + basePos[1] +
+              (f32)((*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26);
+    rect[2] = 312.0f;
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4330, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    alphaByte = (u8)(u32)(255.0f * rawScaled * weight);
+    color[3] = alphaByte;
+    FUN_0021d950(work + 0x4230, color);
+    FUN_0021d950(work + 0x4330, color);
+
+    percentColour = ((u8)(u32)(255.0f * rawScaled * weight) * 50 / 100) | 0xffffff00u;
+    rawInt = (s32)(255.0f * rawScaled * weight);
+    signedColour = (u32)rawInt | 0xffffff00u;
+    greyColour = (u32)rawInt | 0xcccccc00u;
+
+    for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
+        record = records + i * 0x510;
+
+        frame = (void*)FUN_0021cca0(table6, 0x2b);
+        sub = *(u32*)(record + 4);
+        rect[0] = 65.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+        rect[1] = 19.0f + basePos[1] + (f32)(i * 26);
+        FUN_003b0d70(sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        if (*(u32*)record & 1) {
+            colour = percentColour;
+        } else if (i == current) {
+            colour = signedColour;
+        } else {
+            colour = greyColour;
+        }
+        FUN_003b0e20(sub, colour);
+
+        if (*(u32*)(record + 8) == 0) {
+            frame = (void*)FUN_0021cca0(table0, 0x30);
+        } else if (*(u32*)(record + 8) == 1) {
+            frame = (void*)FUN_0021cca0(table0, 0x31);
+        }
+        rect[0] = 327.0f + basePos[0];
+        rect[1] = 32.0f + basePos[1] + (f32)(i * 26);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x10, rect);
+
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = (u8)(u32)(255.0f * rawScaled * weight);
+        FUN_0021d950(record + 0x10, color);
+
+        rect[0] = 281.0f + basePos[0];
+        rect[1] = 30.0f + basePos[1] + (f32)(i * 26);
+        bpIFont00238bf0(record + 0x110, 3, (const char*)(size_t)*(u32*)(record + 0xc), 1, rect);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        if (i == current) {
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+        } else {
+            color[0] = 0x5a;
+            color[1] = 0x5a;
+            color[2] = 0x5a;
+        }
+        alphaByte = (u8)(u32)(255.0f * rawScaled * weight);
+        color[3] = alphaByte;
+        FUN_0021d950(record + 0x110, color);
+        FUN_0021d950(record + 0x210, color);
+        FUN_0021d950(record + 0x310, color);
+
+        frame = (void*)FUN_0021cca0(table6, 0x2b);
+        rect[0] = 56.0f + basePos[0];
+        rect[1] = 16.0f + basePos[1] + (f32)(i * 26);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x410, rect);
+
+        current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+        if (i == current) {
+            color[0] = 0xc7;
+            color[1] = 0xd3;
+            color[2] = 0xe3;
+        } else {
+            color[0] = 0x44;
+            color[1] = 0x4e;
+            color[2] = 0x50;
+        }
+        color[3] = (u8)(u32)(255.0f * rawScaled * weight);
+        FUN_0021d950(record + 0x410, color);
+    }
+
+    if (*(u32*)(work + 0x4644) != 3) {
+        return;
+    }
+
+    overlay = work + 0x6d00;
+
+    frame = (void*)FUN_0021cca0(table6, 0x2b);
+    sub = *(u32*)(overlay + 4);
+    rect[0] = 65.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[1] = 19.0f + basePos[1] + 77.0f;
+    FUN_003b0d70(sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
+
+    colour = (u8)(u32)(255.0f * blend * weight) | 0xffffff00u;
+    FUN_003b0e20(sub, colour);
+
+    if (*(u32*)(overlay + 8) == 0) {
+        frame = (void*)FUN_0021cca0(table0, 0x30);
+    } else if (*(u32*)(overlay + 8) == 1) {
+        frame = (void*)FUN_0021cca0(table0, 0x31);
+    }
+    rect[0] = 327.0f + basePos[0];
+    rect[1] = 33.0f + basePos[1] + 77.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(overlay + 0x10, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)(255.0f * blend * weight);
+    FUN_0021d950(overlay + 0x10, color);
+
+    rect[0] = 281.0f + basePos[0];
+    rect[1] = 31.0f + basePos[1] + 77.0f;
+    bpIFont00238bf0(overlay + 0x110, 3, (const char*)(size_t)*(u32*)(overlay + 0xc), 1, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    alphaByte = (u8)(u32)(255.0f * blend * weight);
+    color[3] = alphaByte;
+    FUN_0021d950(overlay + 0x110, color);
+    FUN_0021d950(overlay + 0x210, color);
+    FUN_0021d950(overlay + 0x310, color);
+
+    frame = (void*)FUN_0021cca0(table6, 0x2b);
+    rect[0] = 56.0f + basePos[0];
+    rect[1] = 16.0f + basePos[1] + 77.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(overlay + 0x410, rect);
+
+    color[0] = *((u8*)frame + 0x1c);
+    color[1] = *((u8*)frame + 0x1d);
+    color[2] = *((u8*)frame + 0x1e);
+    color[3] = (u8)(u32)(255.0f * blend * weight);
+    FUN_0021d950(overlay + 0x410, color);
 }
+#pragma pop
 
 // FUN_00229B40 NONMATCHING
 void FUN_00229B40(void)
