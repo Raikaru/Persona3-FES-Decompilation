@@ -980,26 +980,198 @@ void FUN_00227D10(void)
     }
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00227F30 NONMATCHING
 void FUN_00227F30(void)
 {
-    u32 i;
-    u32 count;
-    u32 alpha;
+    u8* work;
+    u32 table0;
+    void* resource;
+    f32 baseX;
+    f32 baseY;
+    f32 x;
+    f32 y;
+    f32 rect[4];
+    u8 color[4];
+    s32 i;
+    s32 j;
+    f32 alpha1;
+    u8 alphaByte;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    alpha = bcm_panel_read(0x4650) & 0xff;
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_layout_record(record, i, alpha);
-        if (*(u32*)record == 1) {
-            bcm_panel_layout_record(record + 0x100, i, alpha);
-            bcm_panel_layout_record(record + 0x200, i, alpha);
-            bcm_panel_layout_record(record + 0x300, i, alpha);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    baseX = 38.0f;
+    baseY = 237.0f;
+    *(f32*)(work + 0x6058) = baseX;
+    *(f32*)(work + 0x605c) = baseY;
+
+    for (i = 0; i < 6; ++i) {
+        switch (i) {
+        case 0: case 1: case 2: case 3:
+            resource = (void*)FUN_0021cca0(table0, i + 0x1e);
+            break;
+        case 4: case 5:
+            resource = (void*)FUN_0021cca0(table0, i + 0x1a);
+            break;
+        }
+        x = baseX;
+        y = baseY;
+        switch (i) {
+        case 0: x += 11.0f; y += 4.0f; break;
+        case 1: x += 11.0f; y += 75.0f; break;
+        case 2: x += 201.0f; y += 4.0f; break;
+        case 3: x += 201.0f; y += 75.0f; break;
+        case 4: x += 11.0f + (f32)*(s32*)((u8*)resource + 0xc); y += 4.0f; break;
+        case 5: x += 11.0f + (f32)*(s32*)((u8*)resource + 0xc); y += 75.0f; break;
+        }
+        rect[0] = x;
+        rect[1] = y;
+        switch (i) {
+        case 0: case 1: case 2: case 3:
+            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            break;
+        case 4: case 5:
+            rect[2] = 42.0f;
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            break;
+        }
+        FUN_0021d8e0(work + i * 0x100 + 0x2e30, rect);
+    }
+
+    if (*(u32*)(work + 0x463c) == 0) {
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 1 || *(u32*)(work + 0x463c) == 2) {
+        alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 3) {
+        if (*(u32*)(work + 0x4644) == 0) {
+            if (*(s32*)(work + 0x4658) == 6) {
+                alpha1 = 1.0f;
+            } else {
+                alpha1 = (f32)(6 - *(s32*)(work + 0x4658)) / 6.0f;
+            }
+        } else if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
+            alpha1 = (f32)*(s32*)(work + 0x4658) / 6.0f;
         }
     }
+    alphaByte = (u8)(u32)(255.0f * alpha1 * *(f32*)(work + 0x7214));
+
+    if (*(u32*)(work + 0x4644) == 0) {
+        u8 percent = (u8)((*(s32*)(work + 0x4658) * 255) / 6);
+        color[0] = percent;
+        color[1] = percent;
+        color[2] = percent;
+    } else if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
+        u8 percent = (u8)(((6 - *(s32*)(work + 0x4658)) * 255) / 6);
+        color[0] = percent;
+        color[1] = percent;
+        color[2] = percent;
+    }
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    for (i = 0; i < 6; ++i) {
+        FUN_0021d950(work + i * 0x100 + 0x2e30, color);
+    }
+
+    resource = (void*)FUN_0021cca0(table0, 0x26);
+    x = 20.0f + baseX;
+    y = 32.0f + baseY;
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    FUN_0021d8e0(work + 0x3430, rect);
+
+    resource = (void*)FUN_0021cca0(table0, 0x27);
+    rect[0] = x;
+    rect[1] = 102.0f + baseY;
+    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    FUN_0021d8e0(work + 0x3530, rect);
+
+    resource = (void*)FUN_0021cca0(table0, 0x26);
+    rect[0] = x;
+    rect[1] = 16.0f + y;
+    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+    rect[3] = 54.0f;
+    FUN_0021d8e0(work + 0x3630, rect);
+
+    resource = (void*)FUN_0021cca0(table0, 0x1d);
+    {
+        f32 top = (36.0f + baseY) - 3.0f;
+        f32 bottom = (91.0f + baseY) - 3.0f;
+        rect[0] = 22.0f + baseX;
+        if (*(s32*)(work + 0x6074) >= 5) {
+            f32 t = (f32)*(s32*)(work + 0x606c);
+            f32 range = bottom - top;
+            f32 denom = (f32)(*(s32*)(work + 0x6074) - 4);
+            rect[1] = top + (t * range) / denom;
+        } else {
+            rect[1] = top;
+        }
+    }
+    rect[2] = (f32)(*(s32*)((u8*)resource + 0xc) * 5);
+    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+
+    if (*(u32*)(work + 0x463c) == 0) {
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 1 || *(u32*)(work + 0x463c) == 2 ||
+               *(u32*)(work + 0x463c) == 3) {
+        alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    }
+    color[3] = (u8)(u32)(255.0f * alpha1 * *(f32*)(work + 0x7214));
+
+    for (i = 0; i < 3; ++i) {
+        FUN_0021d950(work + i * 0x100 + 0x3430, color);
+    }
+    FUN_0021d950(work + 0x3730, color);
+
+    resource = (void*)FUN_0021cca0(table0, 0x2c);
+    x = 47.0f + baseX;
+    {
+        f32 y0 = 43.0f + baseY;
+        for (j = 0; j < 4; ++j) {
+            u8* record2 = work + j * 0x200;
+            y = y0 + (f32)(j * 26);
+            rect[0] = x;
+            rect[1] = y;
+            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(record2 + 0x3830, rect);
+
+            rect[0] = x + (f32)*(s32*)((u8*)resource + 0xc);
+            rect[1] = y;
+            rect[2] = 276.0f;
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(record2 + 0x3930, rect);
+        }
+    }
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    if (*(u32*)(work + 0x463c) == 0) {
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 1 || *(u32*)(work + 0x463c) == 2 ||
+               *(u32*)(work + 0x463c) == 3) {
+        alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    }
+    color[3] = (u8)(u32)(255.0f * alpha1 * *(f32*)(work + 0x7214));
+
+    for (j = 0; j < 4; ++j) {
+        u8* record2 = work + j * 0x200;
+        FUN_0021d950(record2 + 0x3830, color);
+        FUN_0021d950(record2 + 0x3930, color);
+    }
 }
+#pragma pop
 
 // FUN_002289B0 NONMATCHING
 void FUN_002289B0(void)
