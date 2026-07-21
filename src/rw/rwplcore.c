@@ -5210,18 +5210,163 @@ u64 FUN_004c6560(u64 param_1,u64 param_2)
   }
   return param_1;
 }
+#pragma optimization_level 3
 // FUN_004C65D0 NONMATCHING
-u64 FUN_004c65d0(u64 param_1,u64 param_2,u64 param_3)
-
+u64 FUN_004c65d0(u32 *param_1, u32 *param_2, u32 *param_3)
 {
-  u32 *puVar1;
-  
-  for (puVar1 = *(u32 **)((int)param_1 + 0x10); puVar1 != (u32 *)0x0;
-      puVar1 = (u32 *)puVar1[0xc]) {
-    (*(code *)puVar1[10])(param_2,param_3,*puVar1,puVar1[1]);
-  }
-  return param_1;
+    u32 *node;
+
+    for (node = (u32 *)param_1[4]; node != (u32 *)0; node = (u32 *)node[0xc]) {
+        ((code)node[10])(param_2, param_3, node[0], node[1]);
+    }
+    return (u64)param_1;
 }
+// FUN_004C6640 NONMATCHING
+RwV3d* FUN_004c6640(RwV3d *out, const RwV3d *in, int count, const RwMatrix *matrix)
+{
+    RwV3d *result = out;
+    RwReal rightX;
+    RwReal rightY;
+    RwReal rightZ;
+    RwReal upX;
+    RwReal upY;
+    RwReal upZ;
+    RwReal atX;
+    RwReal atY;
+    RwReal atZ;
+    RwReal posX;
+    RwReal posY;
+    RwReal posZ;
+
+    count--;
+    if (count < 0) {
+        return result;
+    }
+    rightX = matrix->right.x;
+    rightY = matrix->right.y;
+    rightZ = matrix->right.z;
+    upX = matrix->up.x;
+    upY = matrix->up.y;
+    upZ = matrix->up.z;
+    atX = matrix->at.x;
+    atY = matrix->at.y;
+    atZ = matrix->at.z;
+    posX = matrix->pos.x;
+    posY = matrix->pos.y;
+    posZ = matrix->pos.z;
+    do {
+        RwReal x = in->x;
+        RwReal y;
+        RwReal z;
+
+        count--;
+        y = in->y;
+        z = in->z;
+        in++;
+        out->x = x * rightX + y * upX + z * atX + posX;
+        out->y = x * rightY + y * upY + z * atY + posY;
+        out->z = x * rightZ + y * upZ + z * atZ + posZ;
+        out++;
+    } while (count >= 0);
+    return result;
+}
+
+// FUN_004C6700 NONMATCHING
+RwV3d* FUN_004c6700(RwV3d *out, const RwV3d *in, const RwMatrix *matrix)
+{
+    RwV3d *result = out;
+    RwReal x = in->x;
+    RwReal y = in->y;
+    RwReal z = in->z;
+    RwReal rightX = matrix->right.x;
+    RwReal rightY = matrix->right.y;
+    RwReal rightZ = matrix->right.z;
+    RwReal upX = matrix->up.x;
+    RwReal upY = matrix->up.y;
+    RwReal upZ = matrix->up.z;
+    RwReal atX = matrix->at.x;
+    RwReal atY = matrix->at.y;
+    RwReal atZ = matrix->at.z;
+    RwReal posX = matrix->pos.x;
+    RwReal posY = matrix->pos.y;
+    RwReal posZ = matrix->pos.z;
+
+    out->x = x * rightX + y * upX + z * atX + posX;
+    out->y = x * rightY + y * upY + z * atY + posY;
+    out->z = x * rightZ + y * upZ + z * atZ + posZ;
+    return result;
+}
+
+// FUN_004C67A0 NONMATCHING
+RwV3d* FUN_004c67a0(RwV3d *out, const RwV3d *in, int count, const RwMatrix *matrix)
+{
+    RwV3d *result = out;
+    RwReal rightX;
+    RwReal rightY;
+    RwReal rightZ;
+    RwReal upX;
+    RwReal upY;
+    RwReal upZ;
+    RwReal atX;
+    RwReal atY;
+    RwReal atZ;
+
+    count--;
+    if (count < 0) {
+        return result;
+    }
+    rightX = matrix->right.x;
+    rightY = matrix->right.y;
+    rightZ = matrix->right.z;
+    upX = matrix->up.x;
+    upY = matrix->up.y;
+    upZ = matrix->up.z;
+    atX = matrix->at.x;
+    atY = matrix->at.y;
+    atZ = matrix->at.z;
+    do {
+        RwReal x = in->x;
+        RwReal y;
+        RwReal z;
+
+        count--;
+        y = in->y;
+        z = in->z;
+        in++;
+        out->x = x * rightX + y * upX + z * atX;
+        out->y = x * rightY + y * upY + z * atY;
+        out->z = x * rightZ + y * upZ + z * atZ;
+        out++;
+    } while (count >= 0);
+    return result;
+}
+
+// FUN_004C6840 NONMATCHING
+RwV3d* FUN_004c6840(RwV3d *out, const RwV3d *in, const RwMatrix *matrix)
+{
+    RwV3d *result = out;
+    RwReal x = in->x;
+    RwReal y = in->y;
+    RwReal z = in->z;
+    RwReal rightX = matrix->right.x;
+    RwReal rightY = matrix->right.y;
+    RwReal rightZ = matrix->right.z;
+    RwReal upX = matrix->up.x;
+    RwReal upY = matrix->up.y;
+    RwReal upZ = matrix->up.z;
+    RwReal atX = matrix->at.x;
+    RwReal atY = matrix->at.y;
+    RwReal atZ = matrix->at.z;
+
+    out->x = x * rightX + y * upX + z * atX;
+    out->y = x * rightY + y * upY + z * atY;
+    out->z = x * rightZ + y * upZ + z * atZ;
+    return result;
+}
+
+
+
+
 // FUN_004C68C0 NONMATCHING
 u32
 FUN_004c68c0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4)
