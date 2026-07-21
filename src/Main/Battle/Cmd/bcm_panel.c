@@ -34,6 +34,7 @@ void FUN_0022e9a0(u32*, s32);
 void FUN_0022ea40(u32*, u32);
 void FUN_0022ecb0(u8*, u8*, f32);
 extern void FUN_003b1360();
+extern u32 FUN_00239140(s32);
 u32 FUN_0022e850(u32);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
@@ -958,21 +959,99 @@ void FUN_0022A2B0(void)
 // FUN_0022AE80 NONMATCHING
 void FUN_0022AE80(void)
 {
-    u32 i;
-    u32 count;
-    u8* base;
+    u8* work;
+    u8* records;
+    u8* record;
+    u8* overlay;
+    u32 table0;
+    u32 table6;
+    u32 texture;
+    s32 i;
+    void (*pRender)(u32, u32);
+    void (*pQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_set_resource(record + 0x10, 0, 0x2f);
-        *(u32*)(record + 0x50) = i * 0x30;
-        *(u32*)(record + 0x60) = bcm_panel_read(0x4644);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    records = work + 0x4660;
+
+    texture = FUN_0021cce0(FUN_0021cca0(table0, 0x23));
+    pRender = (void (*)(u32, u32))D_00960090;
+    pRender(1, texture);
+    pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
+    pQuad((u32*)(work + 0x4230), 4, 0, 1, 2);
+    pQuad((u32*)(work + 0x4230), 4, 0, 2, 3);
+    pQuad((u32*)(work + 0x4330), 4, 0, 1, 2);
+    pQuad((u32*)(work + 0x4330), 4, 0, 2, 3);
+
+    for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
+        record = records + i * 0x410;
+
+        FUN_003b1360(*(u32*)record, 1, 0);
+
+        texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
+        pRender = (void (*)(u32, u32))D_00960090;
+        pRender(1, texture);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
+        pQuad((u32*)(record + 0x10), 4, 0, 1, 2);
+        pQuad((u32*)(record + 0x10), 4, 0, 2, 3);
+
+        texture = FUN_00239140(1);
+        pRender(1, texture);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        pQuad((u32*)(record + 0x110), 4, 0, 1, 2);
+        pQuad((u32*)(record + 0x110), 4, 0, 2, 3);
+        pQuad((u32*)(record + 0x210), 4, 0, 1, 2);
+        pQuad((u32*)(record + 0x210), 4, 0, 2, 3);
+        pQuad((u32*)(record + 0x310), 4, 0, 1, 2);
+        pQuad((u32*)(record + 0x310), 4, 0, 2, 3);
+
+        texture = FUN_0021cce0(FUN_0021cca0(table6, 0x1a));
+        pRender(1, texture);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        pQuad((u32*)(record + 0x310), 4, 0, 1, 2);
+        pQuad((u32*)(record + 0x310), 4, 0, 2, 3);
     }
-    FUN_0021d3b0(base + 0x6d00,
-                 FUN_0021cca0(FUN_0021c3f0(0), 0x13));
+
+    if (*(u32*)(work + 0x4644) != 4) {
+        return;
+    }
+
+    overlay = work + 0x6d00;
+
+    FUN_003b1360(*(u32*)overlay, 1, 0);
+
+    texture = FUN_0021cce0(FUN_0021cca0(table0, 0x28));
+    pRender = (void (*)(u32, u32))D_00960090;
+    pRender(1, texture);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    pQuad = (void (*)(u32*, u32, u32, u32, u32))D_0096009C;
+    pQuad((u32*)(overlay + 0x10), 4, 0, 1, 2);
+    pQuad((u32*)(overlay + 0x10), 4, 0, 2, 3);
+
+    texture = FUN_00239140(1);
+    pRender(1, texture);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    pQuad((u32*)(overlay + 0x110), 4, 0, 1, 2);
+    pQuad((u32*)(overlay + 0x110), 4, 0, 2, 3);
+    pQuad((u32*)(overlay + 0x210), 4, 0, 1, 2);
+    pQuad((u32*)(overlay + 0x210), 4, 0, 2, 3);
+    pQuad((u32*)(overlay + 0x310), 4, 0, 1, 2);
+    pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
+
+    texture = FUN_0021cce0(FUN_0021cca0(table6, 0x1a));
+    pRender(1, texture);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    pQuad((u32*)(overlay + 0x310), 4, 0, 1, 2);
+    pQuad((u32*)(overlay + 0x310), 4, 0, 2, 3);
 }
 
 // FUN_0022B630 NONMATCHING
