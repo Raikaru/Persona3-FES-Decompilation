@@ -35,6 +35,11 @@ extern void* DAT_007cdf84;
 extern void* DAT_007cdf88;
 extern s32 DAT_007e094e;
 extern s32 DAT_007e0958;
+/* Retail accesses these flag words by absolute address. */
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e094e_abs[];
+#pragma alias DAT_007e0958_abs DAT_007e0958
+extern u8 DAT_007e0958_abs[];
 extern u32 DAT_00833a50[];
 extern s32 iGpffffb258;
 extern s32 uGpffffb290;
@@ -92,9 +97,9 @@ extern u32 FUN_00115de0();
 extern u32 FUN_00119f10();
 extern u32 FUN_0011abd0();
 extern u32 FUN_00122710();
-extern u32 FUN_0012a560();
-extern u32 FUN_0012ac60();
-extern u32 FUN_00129b30();
+extern u32 FUN_0012a560(f32, u64, s32);
+extern u32 FUN_0012ac60(f32, u64, s32);
+extern u32 FUN_00129b30(f32, u64, s32);
 extern u32 FUN_0013c240();
 extern u32 FUN_0013c780();
 extern u32 FUN_0013cf80();
@@ -513,10 +518,11 @@ void* FUN_00167930(KwlnTask* task)
         personaWork = (CampBridgePersonaDispWork*)
             (*DAT_00960184)(1, 300, 0x40000);
         if (personaWork != 0) {
-            child = kwlnTaskCreate(task, D_005DB190, 0x18bf,
-                                 func_00133780,
-                                 h_campPersonaDestroyDispCtlDrawTask,
-                                 personaWork);
+            child = kwlnTaskCreate(
+                task, D_005DB190, 0x18bf,
+                func_00133780,
+                h_campPersonaDestroyDispCtlDrawTask,
+                personaWork);
             if (child != 0) {
                 personaWork->personaId = personaId;
                 personaWork->mode = 0xffffffff;
@@ -559,7 +565,7 @@ void* FUN_00167930(KwlnTask* task)
             }
             value = *(s16*)((u8*)work + 0x04);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_00129b30(0x42c80000, 0, persona, value);
+            FUN_00129b30(100.0f, CAMP_PTR64(persona), value);
         }
         else {
             opacity = *(s16*)((u8*)work + 0x0c);
@@ -575,13 +581,13 @@ void* FUN_00167930(KwlnTask* task)
             }
             opacity = *(s16*)((u8*)work + 0x0c);
             persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-            FUN_0012ac60(0x42c80000, 0, persona, 0xff - opacity);
+            FUN_0012ac60(100.0f, CAMP_PTR64(persona), 0xff - opacity);
         }
         if (complete) {
             if (transitionKind == 0) {
-                if ((DAT_007e094e & 0x20) == 0) {
-                    if (((DAT_007e094e & 0x8000) != 0) ||
-                        ((DAT_007e0958 & 0x8000) != 0)) {
+                if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                    if (((*(u16*)DAT_007e094e_abs & 0x8000) != 0) ||
+                        ((*(u16*)DAT_007e0958_abs & 0x8000) != 0)) {
                         func_0010a4e0(0, 0, 0, 0);
                         work->command = 1;
                     }
@@ -591,11 +597,11 @@ void* FUN_00167930(KwlnTask* task)
                     work->command = 0xffffffff;
                 }
             }
-            else if ((DAT_007e094e & 0x20) == 0) {
-                if (((DAT_007e094e & 0x8000) == 0) &&
-                    ((DAT_007e0958 & 0x8000) == 0)) {
-                    if ((DAT_007e094e & 8) == 0) {
-                        if ((DAT_007e094e & 4) != 0) {
+            else if ((*(u16*)DAT_007e094e_abs & 0x20) == 0) {
+                if (((*(u16*)DAT_007e094e_abs & 0x8000) == 0) &&
+                    ((*(u16*)DAT_007e0958_abs & 0x8000) == 0)) {
+                    if ((*(u16*)DAT_007e094e_abs & 8) == 0) {
+                        if ((*(u16*)DAT_007e094e_abs & 4) != 0) {
                             func_0010a4e0(0, 0, 0, 0);
                             work->command = 3;
                         }
@@ -623,11 +629,11 @@ void* FUN_00167930(KwlnTask* task)
             return KWLNTASK_STOP;
         }
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60(0x42c80000, 0, persona, 0xff - opacity);
+        FUN_0012ac60(100.0f, CAMP_PTR64(persona), 0xff - opacity);
         /* Retail intentionally falls through into case 4. */
     case 4:
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
-        FUN_0012ac60(0x42c80000, 0, persona, 0);
+        FUN_0012ac60(100.0f, CAMP_PTR64(persona), 0);
         *(s16*)((u8*)work + 0x10) = 0;
         work->state = 5;
         break;
@@ -640,7 +646,7 @@ void* FUN_00167930(KwlnTask* task)
         *(s16*)((u8*)work + 0x10) = timer;
         persona = datPersonaGetByPcId(*(s16*)((u8*)work + 0x0e));
         fadeValue = timer;
-        FUN_0012a560(0x42c80000, 0, persona, fadeValue);
+        FUN_0012a560(100.0f, CAMP_PTR64(persona), fadeValue);
         break;
     }
     return KWLNTASK_CONTINUE;
