@@ -464,37 +464,283 @@ void FUN_002230e0(void)
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
+    u8* base;
+    u8* records;
+    u32 table0;
+    f32 weight;
+    f32 alpha1;
+    u32 alphaByte;
+    u8* pos;
+    void* frame;
+    f32 layout[4];
+    u8 colour[4];
+    u32 dispatch;
+    u32 secondaryDispatch;
+    u32 selIndex;
+    u8* selRecord;
+    u32 kind;
+    void* handle;
+    s32 halfWidth;
+    u32 colourA, colourB, colourC, colourD;
+    u32 scaledAlphaColour;
     u32 i;
-    u32 count;
-    u32 alpha;
-    u32 state;
+    u32 selColour;
+    s32 x, y;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    state = bcm_panel_read(0x463c);
-    alpha = bcm_panel_read(0x4658);
-    if (state == 0) {
-        alpha = (3u - (bcm_panel_read(0x4650) & 3u)) * 0x55u;
-    } else if (state == 3) {
-        alpha = (bcm_panel_read(0x4658) < 6u)
-                    ? bcm_panel_read(0x4658) * 0x2au
-                    : bcm_panel_read(0x4650);
-    } else {
-        alpha = bcm_panel_read(0x4650);
+    base = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    records = base + 0x4660;
+    weight = *(f32*)(base + 0x7214);
+    dispatch = *(u32*)(base + 0x463c);
+    if (dispatch == 0) goto alpha_case0;
+    switch (dispatch) {
+    case 3: goto alpha_case3;
     }
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 kind = *(u32*)record;
-        bcm_panel_layout_record(record, i, alpha);
-        if (kind == 1) {
-            bcm_panel_layout_record(record + 0x100, i, alpha);
-            bcm_panel_layout_record(record + 0x200, i, alpha);
-            bcm_panel_layout_record(record + 0x300, i, alpha);
+    goto alpha_assert;
+alpha_case3:
+    secondaryDispatch = *(u32*)(base + 0x4644);
+    if (secondaryDispatch == 2) goto alpha_ratio;
+    if (secondaryDispatch == 1) goto alpha_ratio;
+    if (secondaryDispatch == 0) goto alpha_check_state;
+    goto alpha_done;
+alpha_check_state:
+    if (*(u32*)(base + 0x4648) == 1) goto alpha_check_timer;
+    if (*(u32*)(base + 0x4648) == 2) goto alpha_check_timer;
+    goto alpha_frac;
+alpha_check_timer:
+    if (*(s32*)(base + 0x4658) >= 6) goto alpha_frac;
+    alpha1 = (f32)*(s32*)(base + 0x4658) / 6.0f;
+    goto alpha_done;
+alpha_frac:
+    alpha1 = (f32)*(s32*)(base + 0x4650) / 3.0f;
+    goto alpha_done;
+alpha_ratio:
+    alpha1 = (f32)((6 - *(s32*)(base + 0x4658)) / 6);
+    goto alpha_done;
+alpha_case0:
+    alpha1 = (f32)((3 - *(s32*)(base + 0x4650)) / 3);
+    goto alpha_done;
+alpha_assert:
+    K_ASSERT(0, 0x6e5);
+alpha_done:
+    ;
+    alphaByte = (u8)(u32)(255.0f * alpha1 * weight);
+    pos = base + 0x6050;
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    layout[0] = 47.0f + *(f32*)(pos + 0);
+    layout[1] = 19.0f + *(f32*)(pos + 4) +
+                (f32)((*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c)) * 26);
+    layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(base + 0x4230, layout);
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    layout[0] = 47.0f + *(f32*)(pos + 0) + (f32)*(s32*)((u8*)frame + 0xc);
+    layout[1] = 19.0f + *(f32*)(pos + 4) +
+                (f32)((*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c)) * 26);
+    layout[2] = 312.0f;
+    layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(base + 0x4330, layout);
+
+    colour[0] = 0xff;
+    colour[1] = 0xff;
+    colour[2] = 0xff;
+    colour[3] = (u8)alphaByte;
+    FUN_0021d950(base + 0x4230, colour);
+    FUN_0021d950(base + 0x4330, colour);
+
+    *(u32*)base &= ~4;
+    if (*(u32*)(base + 0x463c) == 3) {
+        secondaryDispatch = *(u32*)(base + 0x4644);
+        if (secondaryDispatch == 2) goto sel_a;
+        if (secondaryDispatch == 1) goto sel_a;
+        if (secondaryDispatch == 0) goto sel_b_check1;
+        goto sel_done;
+    sel_b_check1:
+        if (*(u32*)(base + 0x4648) == 1) goto sel_b_check2;
+        if (*(u32*)(base + 0x4648) == 2) goto sel_b_check2;
+        goto sel_done;
+    sel_b_check2:
+        if (*(s32*)(base + 0x4658) >= 6) goto sel_done;
+        K_ASSERT((*(u32*)base & 4) != 0, 0x711);
+        goto sel_b;
+    sel_b:
+        colourA = (alphaByte & 0xff) | 0xffffff00u;
+        *(u32*)(records + 0x18c4) = colourA;
+        colourB = 0xff - (alphaByte & 0xff);
+        *(u32*)(records + 0x18c8) = colourB | 0xff9d9d00u;
+        *(u32*)(records + 0x18cc) = colourB | 0xffffff00u;
+        selIndex = *(u32*)(records + 0x18c0);
+        selRecord = records + selIndex * 0x420;
+        kind = *(u32*)selRecord;
+        if (kind == 1) goto sel_b_kind1;
+        if (kind == 2) goto sel_b_kind02;
+        if (kind == 0) goto sel_b_kind02;
+        goto sel_join;
+    sel_b_kind1:
+        handle = *(void**)(selRecord + 8);
+        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
+        *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
+        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
+        goto sel_join;
+    sel_b_kind02:
+        *(f32*)(records + 0x18d0) = 51.0f + *(f32*)(pos + 0);
+        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
+        goto sel_join;
+    sel_a:
+        colourA = (alphaByte & 0xff) | 0xffffff00u;
+        *(u32*)(records + 0x18c4) = colourA;
+        colourB = 0xff - (alphaByte & 0xff);
+        *(u32*)(records + 0x18c8) = colourB | 0xff9d9d00u;
+        *(u32*)(records + 0x18cc) = colourB | 0xffffff00u;
+        selIndex = *(u32*)(records + 0x18c0);
+        selRecord = records + selIndex * 0x420;
+        kind = *(u32*)selRecord;
+        if (kind == 1) goto sel_a_kind1;
+        if (kind == 2) goto sel_a_kind02;
+        if (kind == 0) goto sel_a_kind02;
+        goto sel_join;
+    sel_a_kind1:
+        handle = *(void**)(selRecord + 8);
+        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
+        *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
+        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
+        goto sel_join;
+    sel_a_kind02:
+        *(f32*)(records + 0x18d0) = 51.0f + *(f32*)(pos + 0);
+        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
+    sel_join:
+        *(f32*)(records + 0x18d8) = 171.0f + *(f32*)(pos + 0);
+        *(f32*)(records + 0x18dc) = 19.0f + *(f32*)(pos + 4);
+        *(u32*)base |= 4;
+    sel_done:
+        ;
+    }
+    if (*(u32*)base & 4) {
+        frame = (void*)FUN_0021cca0(table0, 0x2f);
+        FUN_0021d3b0(records + 0x18f0, frame);
+        layout[0] = 178.0f + *(f32*)(pos + 0);
+        layout[1] = 55.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(records + 0x18f0, layout);
+        colour[0] = 0xff;
+        colour[1] = 0xff;
+        colour[2] = 0xff;
+        colour[3] = 0xff - (alphaByte & 0xff);
+        FUN_0021d950(records + 0x18f0, colour);
+    }
+
+    colourA = (alphaByte & 0xff) | 0xffffff00u;
+    colourB = (alphaByte & 0xff) | 0xffbeffd2u;
+    scaledAlphaColour = ((alphaByte & 0xff) << 7) / 0xff;
+    scaledAlphaColour = 0xffffff00u | scaledAlphaColour;
+    colourC = (alphaByte & 0xff) | 0xffcccccc00u;
+    colourD = (alphaByte & 0xff) | 0xff64cc6400u;
+    for (i = 0; i < *(u32*)(base + 0x6070); i++) {
+        u8* record = records + i * 0x420;
+        kind = *(u32*)record;
+        if (kind == 1) goto loop_kind1;
+        if (kind == 2) goto loop_kind02;
+        if (kind == 0) goto loop_kind02;
+        goto loop_next;
+    loop_kind02:
+        handle = *(void**)(record + 8);
+        layout[0] = 51.0f + *(f32*)(pos + 0);
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
+        if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
+            if (*(u32*)(record + 0x410) != 0) {
+                selColour = scaledAlphaColour;
+            } else if (kind == 2) {
+                selColour = colourB;
+            } else if (kind == 0) {
+                selColour = colourA;
+            }
+        } else {
+            if (*(u32*)(record + 0x410) != 0) {
+                selColour = scaledAlphaColour;
+            } else if (kind == 2) {
+                selColour = colourD;
+            } else if (kind == 0) {
+                selColour = colourC;
+            }
         }
-        *(u32*)record |= 4;
-    }
-    if (bcm_panel_read(0) & 4) {
-        bcm_panel_set_resource(bcm_panel_bytes() + 0x18f0, 0, 0x2f);
+        x = (s32)layout[0] << 4;
+        y = (s32)layout[1] << 3;
+        FUN_003b0d70((u32)handle, x, y);
+        FUN_003b0e20((u32)handle, selColour);
+        handle = *(void**)(record + 0xc);
+        layout[0] = 182.0f + *(f32*)(pos + 0);
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
+        x = (s32)layout[0] << 4;
+        y = (s32)layout[1] << 3;
+        FUN_003b0d70((u32)handle, x, y);
+        FUN_003b0e20((u32)handle, selColour);
+        frame = (void*)FUN_0021cca0(table0, 0x2f);
+        layout[0] = 171.0f + *(f32*)(pos + 0);
+        layout[1] = 28.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x10, layout);
+        colour[0] = 0xff;
+        colour[1] = 0xff;
+        colour[2] = 0xff;
+        colour[3] = (u8)alphaByte;
+        FUN_0021d950(record + 0x10, colour);
+        goto loop_next;
+    loop_kind1:
+        handle = *(void**)(record + 8);
+        halfWidth = FUN_003b19d0((u32)handle);
+        halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
+        layout[0] = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
+        layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
+        if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
+            selColour = colourA;
+        } else {
+            selColour = colourC;
+        }
+        x = (s32)layout[0] << 4;
+        y = (s32)layout[1] << 3;
+        FUN_003b0d70((u32)handle, x, y);
+        FUN_003b0e20((u32)handle, selColour);
+        frame = (void*)FUN_0021cca0(table0, 0x29);
+        layout[0] = 79.0f + *(f32*)(pos + 0);
+        layout[1] = 29.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x10, layout);
+        layout[0] = 99.0f + *(f32*)(pos + 0);
+        layout[1] = 29.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x110, layout);
+        frame = (void*)FUN_0021cca0(table0, 0x2a);
+        layout[0] = 253.0f + *(f32*)(pos + 0);
+        layout[1] = 29.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x210, layout);
+        layout[0] = 273.0f + *(f32*)(pos + 0);
+        layout[1] = 29.0f + *(f32*)(pos + 4);
+        layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record + 0x310, layout);
+        {
+            u32 j;
+            for (j = 0; j < 4; j++) {
+                colour[0] = 0xff;
+                colour[1] = 0xff;
+                colour[2] = 0xff;
+                colour[3] = (u8)alphaByte;
+                FUN_0021d950(record + j * 0x100 + 0x10, colour);
+            }
+        }
+    loop_next:
+        ;
     }
 }
 
