@@ -67,9 +67,16 @@ float atanf(float x)
     float s1;
     float s2;
     float z;
+    float y;
+    union {
+        float f;
+        u32 i;
+    } ux;
 
-    hx = *(s32*)&x;
+    ux.f = x;
+    hx = ux.i;
     ix = hx & 0x7FFFFFFF;
+    y = x;
 
     if (ix > 0x507FFFFF)
     {
@@ -93,30 +100,30 @@ float atanf(float x)
     }
     else
     {
-        x = fabsf(x);
+        y = fabsf(y);
         if (ix <= 0x3F2FFFFF)
         {
             id = 0;
-            x = ((x + x) - 1.0f) / (2.0f + x);
+            y = ((y + y) - 1.0f) / (2.0f + y);
         }
         else if (ix <= 0x3F97FFFF)
         {
             id = 1;
-            x = (x - 1.0f) / (x + 1.0f);
+            y = (y - 1.0f) / (y + 1.0f);
         }
         else if (ix <= 0x401BFFFF)
         {
             id = 2;
-            x = (x - 1.5f) / (1.0f + (1.5f * x));
+            y = (y - 1.5f) / (1.0f + (1.5f * y));
         }
         else
         {
             id = 3;
-            x = -1.0f / x;
+            y = -1.0f / y;
         }
     }
 
-    z = x * x;
+    z = y * y;
     w = z * z;
     s1 = z * (sAtanTerms[0] + (w * (sAtanTerms[2] + (w * (sAtanTerms[4] +
          (w * (sAtanTerms[6] + (w * (sAtanTerms[8] + (w * sAtanTerms[10]))))))))));
@@ -125,10 +132,10 @@ float atanf(float x)
 
     if (id < 0)
     {
-        return x - (x * (s1 + s2));
+        return y - (y * (s1 + s2));
     }
 
-    z = sAtanHi[id] - ((x * (s1 + s2) - sAtanLo[id]) - x);
+    z = sAtanHi[id] - ((y * (s1 + s2) - sAtanLo[id]) - y);
     if (hx < 0)
     {
         return -z;
