@@ -169,6 +169,8 @@ extern u32 FUN_0010bc20();
 extern u32 FUN_001928d0();
 extern u32 FUN_00192aa0();
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00265030 NONMATCHING
 void opRoot00265030(void)
 {
@@ -458,6 +460,7 @@ void opRoot00265030(void)
     opMenu0026a2c0();
     FUN_00271ec0();
 }
+#pragma pop
 
 // FUN_00265f80
 void opRoot00265f80(void)
