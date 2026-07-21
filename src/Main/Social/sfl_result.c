@@ -2392,6 +2392,8 @@ u32 func_001fc3c0(DatPersonaWork* persona)
 }
 
 // FUN_001FC590 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
 u32 func_001fc590(u8* event, void* target)
 {
     s32 damage;
@@ -2402,20 +2404,18 @@ u32 func_001fc590(u8* event, void* target)
 
     skill = FUN_00308930();
     damage = FUN_00303130(skill, event, target, 1, 1, 1, 0, 1);
-    if ((*(u16*)event & 4) == 0)
-    {
-        damage = (s32)((f32)damage * 1.5f);
-        criticalDamage = FUN_00488f30();
-        if ((u32)(criticalDamage % 500) < 100)
-            damage *= 3;
-    }
-    else
-    {
-        damage = (s32)((f32)damage * 0.5f);
-        criticalDamage = FUN_00488f30();
-        if ((u32)(criticalDamage % 500) < 100)
-            damage = 0;
-    }
+    if ((*(u16*)event & 4) == 0) goto branch_zero;
+    damage = (s32)((f32)damage * 0.5f);
+    criticalDamage = FUN_00488f30();
+    if ((u32)(criticalDamage % 500) < 100)
+        damage = 0;
+    goto after_branch;
+branch_zero:
+    damage = (s32)((f32)damage * 1.5f);
+    criticalDamage = FUN_00488f30();
+    if ((u32)(criticalDamage % 500) < 100)
+        damage *= 3;
+after_branch:
 
     FUN_00300410(target, damage);
     if (datCalcIsDead(target, 0) != 0)
@@ -2427,6 +2427,7 @@ u32 func_001fc590(u8* event, void* target)
     }
     return result;
 }
+#pragma pop
 // FUN_001FC720 NONMATCHING
 
 
