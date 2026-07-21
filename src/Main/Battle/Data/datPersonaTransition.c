@@ -17,12 +17,12 @@ extern void func_00306d90(s32 channel, u16 skillId);
 extern s32 FUN_00175ca0(DatPersonaWork* persona);
 extern s8 FUN_00173c60(DatPersonaWork* persona, u16 statId);
 
-static void assertStat(u16 statId, s32 line)
+static inline void assertStat(u16 statId, s32 line)
 {
     K_ASSERT(statId < PERSONA_STAT_MAX, line);
 }
 
-static s8 personaEquipmentBonus(u16 owner, s16 equipmentIdx, u16 statId)
+static inline s16 personaEquipmentBonus(u16 owner, s16 equipmentIdx, u16 statId)
 {
     u16 itemId = 0;
     u8* itemTable = NULL;
@@ -58,7 +58,7 @@ static s8 personaEquipmentBonus(u16 owner, s16 equipmentIdx, u16 statId)
     return *(s16*)(itemTable + 4 + statId * 2);
 }
 
-static u16 personaEquipmentOwner(DatPersonaWork* persona)
+static inline u16 personaEquipmentOwner(DatPersonaWork* persona)
 {
     u16 owner;
 
@@ -72,7 +72,7 @@ static u16 personaEquipmentOwner(DatPersonaWork* persona)
     return *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
 }
 
-static s16 personaEquipmentIndex(u16 owner)
+static inline s16 personaEquipmentIndex(u16 owner)
 {
     if (owner == 1)
     {
@@ -85,30 +85,61 @@ static s16 personaEquipmentIndex(u16 owner)
     return -1;
 }
 
-static s8 personaEquipmentEffects(u16 owner, u16 statId)
+static inline s16 personaEquipmentEffects(u16 owner, u16 statId)
 {
-    static const u16 effects[PERSONA_STAT_MAX][6] = {
-        { 0x00, 0x02, 0x03, 0x04, 0x05, 0x83 },
-        { 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x85 },
-        { 0x06, 0x07, 0x08, 0x09, 0x0A, 0x84 },
-        { 0x10, 0x11, 0x12, 0x13, 0x14, 0x86 },
-        { 0x15, 0x16, 0x17, 0x18, 0x19, 0x87 }
-    };
-    static const u8 weights[6] = { 1, 2, 3, 4, 5, 10 };
-    s32 total = 0;
-    s32 i;
+    s16 total = 0;
 
-    for (i = 0; i < 6; i++)
+    switch (statId)
     {
-        total += datCalcCountEquipmentWithEffectById(owner, effects[statId][i]) * weights[i];
+    case 0:
+        total += datCalcCountEquipmentWithEffectById(owner, 0);
+        total += datCalcCountEquipmentWithEffectById(owner, 2) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 3) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 4) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 5) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x83) * 10;
+        break;
+    case 1:
+        total += datCalcCountEquipmentWithEffectById(owner, 0xB);
+        total += datCalcCountEquipmentWithEffectById(owner, 0xC) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xD) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xE) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xF) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x85) * 10;
+        break;
+    case 2:
+        total += datCalcCountEquipmentWithEffectById(owner, 6);
+        total += datCalcCountEquipmentWithEffectById(owner, 7) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 8) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 9) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0xA) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x84) * 10;
+        break;
+    case 3:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x10);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x11) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x12) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x13) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x14) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x86) * 10;
+        break;
+    case 4:
+        total += datCalcCountEquipmentWithEffectById(owner, 0x15);
+        total += datCalcCountEquipmentWithEffectById(owner, 0x16) * 2;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x17) * 3;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x18) * 4;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x19) * 5;
+        total += datCalcCountEquipmentWithEffectById(owner, 0x87) * 10;
+        break;
     }
+
     total += datCalcCountEquipmentWithEffectById(owner, 0x88);
     total += datCalcCountEquipmentWithEffectById(owner, 0x89) * 2;
     total += datCalcCountEquipmentWithEffectById(owner, 0x8A) * 3;
     total += datCalcCountEquipmentWithEffectById(owner, 0x8B) * 4;
     total += datCalcCountEquipmentWithEffectById(owner, 0x8C) * 5;
     total += datCalcCountEquipmentWithEffectById(owner, 0x8D) * 10;
-    return (s8)total;
+    return total;
 }
 
 // FUN_00173220
@@ -271,7 +302,7 @@ s16 FUN_00173a00(DatPersonaWork* persona, u16 statId)
 // FUN_00173C60 NONMATCHING
 s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
 {
-    s8 total = 0;
+    s16 total = 0;
     s16 equipmentIdx;
     u16 owner;
 
