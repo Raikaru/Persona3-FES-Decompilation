@@ -300,6 +300,8 @@ extern void FUN_00321f10_passthru(void);
 void FUN_00321fe0(void);
 void FUN_00322010(void);
 u64 FUN_00322530(long param_1);
+#pragma alias FUN_00322530_u32 FUN_00322530
+extern u32 FUN_00322530_u32(long param_1);
 u64 FUN_003225d0(int *param_1);
 void FUN_00322660(int param_1);
 void FUN_003226b0(int *param_1,int param_2);
@@ -310,6 +312,8 @@ void FUN_00322d10(int param_1,float *param_2);
 void FUN_00322d40(int param_1,u32 param_2);
 u32 FUN_00322da0(int *param_1,int param_2);
 u64 FUN_00322dc0(u64 param_1);
+#pragma alias FUN_00322dc0_u32 FUN_00322dc0
+extern u32 FUN_00322dc0_u32(u64 param_1);
 void FUN_00322f20(int param_1);
 u32 FUN_00322fb0(u32 param_1);
 void FUN_00322fd0(int param_1,u32 param_2,u32 *param_3);
@@ -10972,7 +10976,7 @@ void FUN_00326f00(int param_1,u64 param_2)
 
   }
 
-  uVar1 = FUN_00322530(param_2);
+  uVar1 = FUN_00322530_u32(param_2);
 
   *(u32 *)(param_1 + 0x44) = uVar1;
 
@@ -11150,7 +11154,7 @@ void FUN_003271c0(int param_1,u64 param_2)
 
   }
 
-  uVar1 = FUN_00322dc0(param_2);
+  uVar1 = FUN_00322dc0_u32(param_2);
 
   *(u32 *)(param_1 + 0x48) = uVar1;
 
