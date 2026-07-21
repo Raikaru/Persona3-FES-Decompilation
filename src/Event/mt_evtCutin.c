@@ -28,7 +28,7 @@ extern int FUN_00195340(const char *);
 extern int FUN_00195540(int);
 #pragma alias FUN_00396f50_int FUN_00396f50
 extern void FUN_00396f50_int(int);
-extern void FUN_00195020(void);
+extern void FUN_00195020(u32 param_1);
 extern void FUN_0019d3f0(const char *,u32);
 extern int FUN_0035ed20(int);
 extern int FUN_0035f130(void);
@@ -175,7 +175,7 @@ void FUN_00397030(int param_1)
         iVar4 = param_1 * 0xc;
         iVar3 = iVar4 + iVar1;
         if (*(int *)(iVar3 + 8) != 0) {
-            FUN_00195020();
+            FUN_00195020(*(u32 *)(iVar3 + 8));
             *(u32 *)(iVar3 + 8) = 0;
             *(u32 *)(iVar1 + iVar4) = 0;
         }
@@ -184,7 +184,7 @@ void FUN_00397030(int param_1)
 }
 #define FUN_00397030(...) ((void (*)(...))FUN_00397030)(__VA_ARGS__)
 #undef FUN_003970d0
-// FUN_003970D0 NONMATCHING
+// FUN_003970D0
 
 
 void FUN_003970d0(void)
@@ -219,7 +219,7 @@ void FUN_003970d0(void)
         iVar2 = *puVar5;
         if (iVar2 != 0) {
 
-          FUN_00195020();
+          FUN_00195020(iVar2);
 
           *puVar5 = 0;
           *puVar4 = 0;

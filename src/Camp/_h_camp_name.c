@@ -213,7 +213,7 @@ extern code DAT_0096017c;
 extern code DAT_00960184;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern void (*DAT_0096017c_abs[])(...);
-extern void FUN_001124b0(void);
+extern void FUN_001124b0(u32 param_1);
 extern void FUN_00108f70(void);
 extern void FUN_0016f1f0(int param_1,int param_2);
 #pragma alias DAT_00960184_abs DAT_00960184
@@ -2745,7 +2745,7 @@ u32 FUN_0045e8c0(int param_1)
   return 0;
 }
 
-// FUN_0045EA80 NONMATCHING
+// FUN_0045EA80
 
 void FUN_0045ea80(int param_1)
 
@@ -2754,7 +2754,7 @@ void FUN_0045ea80(int param_1)
   
   iVar1 = *(int *)(param_1 + 0x3c);
   if (*(int *)(iVar1 + 8) != 0) {
-    FUN_001124b0();
+    FUN_001124b0(*(u32 *)(iVar1 + 8));
     *(u32 *)(iVar1 + 8) = 0;
   }
   (*DAT_0096017c_abs)(iVar1);
@@ -2786,8 +2786,8 @@ u32 FUN_0045eaf0(void)
   return 1;
 }
 
-extern s32 FUN_00195290();
-// FUN_0045EBA0 NONMATCHING
+extern s32 FUN_00195290(u32 param_1);
+// FUN_0045EBA0
 
 u32 FUN_0045eba0(void)
 
@@ -2799,7 +2799,7 @@ u32 FUN_0045eba0(void)
     uVar1 = 1;
   }
   else {
-    lVar2 = FUN_00195290();
+    lVar2 = FUN_00195290(DAT_007ce708);
     if (lVar2 == 3) {
       DAT_007ce708 = 0;
       uVar1 = 1;

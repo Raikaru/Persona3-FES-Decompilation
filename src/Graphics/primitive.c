@@ -583,7 +583,7 @@ extern long FUN_004c1910(u64 stream, void* buf, int size);
 extern long FUN_004b6680(void* desc);
 extern void FUN_005225a8(u8* fmt, ...);
 extern f32 FUN_0052e878(f32 angle);
-extern f32 FUN_0052e9e8(void);
+extern f32 FUN_0052e9e8(f32 param_1);
 void FUN_0035a290(u64 param_1, int param_2);
 void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1);
 void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
@@ -700,7 +700,7 @@ void FUN_0035a290(u64 param_1,int param_2)
 
 }
 
-// FUN_0035A3F0 NONMATCHING
+// FUN_0035A3F0
 
 
 void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
@@ -731,7 +731,7 @@ void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1)
     secondWeight = param_1;
     if (dot < fGpffff8028)
     {
-        angle = FUN_0052e9e8();
+        angle = FUN_0052e9e8(dot);
         invSin = 1.0f / FUN_0052e878(angle);
         firstWeight = invSin * FUN_0052e878(firstWeight * angle);
         secondWeight = invSin * FUN_0052e878(secondWeight * angle);

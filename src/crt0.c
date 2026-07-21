@@ -44,10 +44,14 @@ void func_00100008(void)
         (s32)D_0095C280[0], (char**)&D_0095C280[1]));
 }
 
-// FUN_00100220 ExitThread NONMATCHING
-void FUN_00100220_ExitThread(void)
+// FUN_00100220 ExitThread
+asm void FUN_00100220_ExitThread(void)
 {
-    __asm__ volatile ("addiu $v1, $zero, 0x23\n" "syscall 0" : : : "memory");
+    .set noreorder
+    addiu $v1, $zero, 0x23
+    .word 0x0000000c /* syscall 0 */
+    nop
+    nop
 }
 
 // FUN_00100218

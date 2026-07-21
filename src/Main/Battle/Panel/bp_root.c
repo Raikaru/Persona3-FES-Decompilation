@@ -3082,7 +3082,7 @@ void func_00242a50(void*, u32);
 void func_00242600(void*, u32);
 void func_00242720(void*, u32);
 void func_00242a30(void*);
-void func_00242c20(void*, u32);
+void func_00242c20(void*, u32, u32);
 void func_00242540(void*);
 void func_002453d0(s32);
 void func_002441b0(s32);
@@ -3352,7 +3352,7 @@ void FUN_001FE650(void* descriptor)
     level = *(s32*)(desc + 0x14);
     if (level >= 2)
     {
-        func_00242c20(resource, *(u32*)(desc + 0x18));
+        func_00242c20(resource, *(u32*)(desc + 0x18), level);
     }
     func_00242540(resource);
 }
