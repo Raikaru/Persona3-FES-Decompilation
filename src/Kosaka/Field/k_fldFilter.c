@@ -56,6 +56,9 @@ extern void func_004cb930(RwFrame* frame);
 extern void func_004cb750(RwFrame* frame, const RwV3d* translation, RwOpCombineType combine);
 extern void FUN_001a1210(RwCamera* camera, const RwV3d* at, const RwV3d* position, const RwV3d* up);
 extern void* FUN_0048d480(f32 frame, void* curve, s32 flags, RwV3d* output, s32 unused);
+extern s32 func_00530da0(f32 value);
+extern const char D_00683A48[];
+extern const char D_007CC2CC[];
 
 /* Work data for the field camera controller (the public header intentionally
  * keeps the post-camera fields opaque). */
@@ -141,6 +144,9 @@ void K_FldFilter_Init()
 }
 
 // FUN_001d4610 NONMATCHING
+#pragma push
+#pragma optimization_level 3
+#pragma schedule on
 void K_FldFilter_Main()
 {
     u32 packed0;
@@ -347,6 +353,7 @@ void K_FldFilter_Main()
     func_004d7f60(2, 0x44);
     func_004d7f60(3, 0x717fb);
 }
+#pragma pop
 
 // FUN_001d50c0
 void FUN_001d50c0(s32 index, u32 type, s32 duration)
@@ -408,6 +415,9 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     return bestIndex;
 }
 // FUN_001d5220 NONMATCHING
+#pragma push
+#pragma optimization_level 3
+#pragma schedule on
 void* FUN_001d5220(KwlnTask* cameraTask)
 {
     FldFilterCameraWork* work;
@@ -459,7 +469,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 {
                     func_004cb590(mainFrame);
                     func_004cb420(work->parentFrame, work->frame);
-                    func_004cb420(work->frame, mainFrame);
+                    func_004cb420(work->frame, kwlnGetMainCamera()->object.object.parent);
                 }
             }
             else
@@ -474,7 +484,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                 {
                     func_004cb590(work->frame);
                 }
-                func_004cb420(work->parentFrame, mainFrame);
+                func_004cb420(work->parentFrame, kwlnGetMainCamera()->object.object.parent);
             }
 
             cameraPos.x += work->posOffset.x;
@@ -555,6 +565,13 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                     amount = sqrtf(projection.x * projection.x + projection.y * projection.y + projection.z * projection.z);
                     fraction = amount / sqrtf(denominator);
                     dot = delta.x * projection.x + delta.y * projection.y + delta.z * projection.z;
+                    printf(D_00683A48,
+                           func_00530da0(amount),
+                           func_00530da0(amount),
+                           func_00530da0(fraction),
+                           func_00530da0(dot));
+                    asm volatile("" : "+m"(dot));
+                    dot = delta.x * projection.x + delta.y * projection.y + delta.z * projection.z;
                     if (dot < 0.0f)
                     {
                         fraction = 0.0f;
@@ -564,7 +581,10 @@ void* FUN_001d5220(KwlnTask* cameraTask)
                         fraction = 1.0f;
                     }
                     fraction *= 0.25f;
+                    printf(D_007CC2CC, func_00530da0(fraction));
                     fraction += (f32)previous * 0.125f;
+                    printf(D_007CC2CC, func_00530da0(fraction));
+                    printf(D_007CC2CC, func_00530da0(fraction));
                     if (fraction > 1.0f)
                     {
                         fraction = 1.0f;
@@ -593,6 +613,7 @@ void* FUN_001d5220(KwlnTask* cameraTask)
     K_Draw_SetCylinderHeight(cameraTask->child, work->yDeadZone);
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_001d59e0
 void FUN_001d59e0(KwlnTask* cameraTask)
