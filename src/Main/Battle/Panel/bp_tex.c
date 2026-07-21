@@ -403,6 +403,7 @@ static void bpTexSetUvAxis(f32 start,
 }
 
 #pragma optimization_level 3
+#pragma opt_common_subs off
 // FUN_0021cd00 NONMATCHING
 void func_0021cd00(void* frameData, f32* uv)
 {
@@ -412,27 +413,43 @@ void func_0021cd00(void* frameData, f32* uv)
     u8* raster;
     s32 rasterWidth;
     s32 rasterHeight;
-    f32 x;
-    f32 xEnd;
-    f32 y;
-    f32 yEnd;
+    f32 yRange[2] = {0};
+    f32 xRange[2] = {0};
 
     frame = (BpTexFrameData*)frameData;
     texture = (u8*)(uintptr_t)frame->texture;
     rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
     raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, frame->rasterIndex * 4);
+    yRange[0] = (f32)frame->y;
+    yRange[1] = (f32)(frame->y + frame->height);
+    xRange[0] = (f32)frame->x;
+    xRange[1] = (f32)(frame->x + frame->width);
     rasterWidth = *(s32*)(raster + 0x0c);
     rasterHeight = *(s32*)(raster + 0x10);
-    x = (f32)frame->x;
-    xEnd = (f32)(frame->x + frame->width);
-    y = (f32)frame->y;
-    yEnd = (f32)(frame->y + frame->height);
 
-    bpTexSetUvAxis(x, xEnd, rasterWidth, frame->id, 0,
-                   &uv[0], &uv[2]);
-    bpTexSetUvAxis(y, yEnd, rasterHeight, frame->id >> 1, 0,
-                   &uv[1], &uv[3]);
+    if ((frame->id & 1) != 0)
+    {
+        uv[0] = yRange[1] / (f32)rasterWidth;
+        uv[2] = yRange[0] / (f32)rasterWidth;
+    }
+    else
+    {
+        uv[0] = yRange[0] / (f32)rasterWidth;
+        uv[2] = yRange[1] / (f32)rasterWidth;
+    }
+
+    if ((frame->id & 2) != 0)
+    {
+        uv[1] = xRange[1] / (f32)rasterHeight;
+        uv[3] = xRange[0] / (f32)rasterHeight;
+    }
+    else
+    {
+        uv[1] = xRange[0] / (f32)rasterHeight;
+        uv[3] = xRange[1] / (f32)rasterHeight;
+    }
 }
+#pragma opt_common_subs on
 
 #pragma optimization_level 3
 // FUN_0021cec0 NONMATCHING
