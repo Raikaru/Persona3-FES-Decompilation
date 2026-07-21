@@ -1626,7 +1626,7 @@ extern BtlUnitAnimBounds DAT_0069A0E8;
 extern BtlUnitAnimBounds DAT_0069A5A8;
 extern BtlBossAnimRecord* D_007CE4C0;
 
-static u32 btlBossCreateModePacket(u16 archiveIndex)
+static inline u32 btlBossCreateModePacket(u16 archiveIndex)
 {
     void* object;
     void* file;
@@ -1653,34 +1653,63 @@ void func_002fac80()
     func_0029a470(*(void**)((u8*)gBtl + 0x148));
 }
 
-// FUN_002facc0 NONMATCHING
+// FUN_002facc0
 u32 func_002facc0()
 {
-    switch (btlBossGetEncounterIdCall())
+    switch (btlBossGetEncounterId())
     {
-        case 0x1b4: return btlBossCreateModePacket(1);
+        case 0x1c8:
+            return btlBossCreateModePacket(0);
+        case 0x1a0:
+            func_002e9450();
+            return 1;
+        case 0x1a1:
+            func_002e9ac0();
+            return 1;
+        case 0x1a2:
+            return btlBossCreateModePacket(1);
+        case 0x1a3:
+            return btlBossCreateModePacket(1);
+        case 0x1a4:
+            return btlBossCreateModePacket(1);
+        case 0x1a5:
+            return btlBossCreateModePacket(1);
+        case 0x1a6:
+            func_002ec790();
+            return 1;
+        case 0x1a7:
+            return btlBossCreateModePacket(1);
+        case 0x1a8:
+            func_002ef670();
+            return 1;
+        case 0x1a9:
+            btlBossCreateModePacket(1);
+            goto btlBossReturnZero;
+        case 0x1aa:
+            btlBossCreateModePacket(1);
+            goto btlBossReturnZero;
+        case 0x1ab:
+            btlBossCreateModePacket(1);
+            goto btlBossReturnZero;
+        case 0x1ac:
+            return btlBossCreateModePacket(1);
+        case 0x1ad:
+            return btlBossCreateModePacket(1);
+        case 0x1ae:
+            return btlBossCreateModePacket(1);
+        case 0x1af:
+            return btlBossCreateModePacket(1);
+        case 0x1b0:
+            return btlBossCreateModePacket(1);
         case 0x1b1:
         case 0x1b2:
-        case 0x1b3: return btlBossCreateModePacket(1);
-        case 0x1b0: return btlBossCreateModePacket(1);
-        case 0x1af: return btlBossCreateModePacket(1);
-        case 0x1ae: return btlBossCreateModePacket(1);
-        case 0x1ad: return btlBossCreateModePacket(1);
-        case 0x1ac: return btlBossCreateModePacket(1);
-        case 0x1ab: return btlBossCreateModePacket(1);
-        case 0x1aa: return btlBossCreateModePacket(1);
-        case 0x1a9: return btlBossCreateModePacket(1);
-        case 0x1a8: func_002ef670(); return 1;
-        case 0x1a7: return btlBossCreateModePacket(1);
-        case 0x1a6: func_002ec790(); return 1;
-        case 0x1a5: return btlBossCreateModePacket(1);
-        case 0x1a4: return btlBossCreateModePacket(1);
-        case 0x1a3: return btlBossCreateModePacket(1);
-        case 0x1a2: return btlBossCreateModePacket(1);
-        case 0x1a1: func_002e9ac0(); return 1;
-        case 0x1a0: func_002e9450(); return 1;
-        case 0x1c8: return btlBossCreateModePacket(0);
-        default: return 0;
+        case 0x1b3:
+            return btlBossCreateModePacket(1);
+        case 0x1b4:
+            return btlBossCreateModePacket(1);
+        default:
+        btlBossReturnZero:
+            return 0;
     }
 }
 
