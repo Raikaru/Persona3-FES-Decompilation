@@ -11,6 +11,20 @@ typedef struct FadeDayTmx FadeDayTmx;
 typedef struct HSfdAsyncEntry HSfdAsyncEntry;
 
 extern const f32 DAT_007caf38;
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
+typedef struct HFadeRwGlobals
+{
+    u8 pad[0x88];
+    RwReal zBufferNear;
+    RwReal zBufferFar;
+    RwRenderStateSetFunc setRenderState;
+    RwRenderStateGetFunc getRenderState;
+    u8 unkData[0x08];
+    RwIm2DRenderPrimitiveFunction fpIm2DRenderPrimitive;
+} HFadeRwGlobals;
+
+
 
 extern FadeDayEpl* func_0034fcd0(const void* eplBlob);
 extern void func_0034fcf0(FadeDayEpl* epl);
@@ -109,6 +123,7 @@ void H_Fade_Clear()
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_001071f0 NONMATCHING
 static void H_Fade_Anim()
 {
@@ -219,7 +234,7 @@ static void H_Fade_Anim()
     blue = 40.0f;
     alpha = 255.0f;
     i = 0;
-    z = RwIm2DGetNearScreenZ() - 100.0f;
+    z = ((HFadeRwGlobals*)rwGlobals_abs)->zBufferNear - 100.0f;
     for (; i < 4; i++)
     {
         vertices[i].u.els.scrVertex.z = z;
@@ -241,10 +256,10 @@ static void H_Fade_Anim()
 
     vertices[3].u.els.scrVertex.x = SCREEN_WIDTH;
     vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
-
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
-    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*((HFadeRwGlobals*)rwGlobals_abs)->setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
+    (*((HFadeRwGlobals*)rwGlobals_abs)->fpIm2DRenderPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
+#pragma opt_loop_invariants off
 
 // FUN_001075b0 NONMATCHING
 static void H_Fade_Transition()
@@ -429,6 +444,7 @@ static void H_Fade_White()
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
+#pragma opt_loop_invariants on
 // FUN_00107b20 NONMATCHING
 static void H_Fade_Day()
 {
@@ -445,7 +461,7 @@ static void H_Fade_Day()
     s16 alpha;
     s16 i;
 
-    setRenderState = &rwGlobals.device.setRenderState;
+    setRenderState = &((HFadeRwGlobals*)rwGlobals_abs)->setRenderState;
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
     (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
@@ -593,7 +609,7 @@ static void H_Fade_Day()
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
     alpha = (sFadeCounter * 255) / sFadeDuration;
     i = 0;
-    z = RwIm2DGetNearScreenZ() - 100.0f;
+    z = ((HFadeRwGlobals*)rwGlobals_abs)->zBufferNear - 100.0f;
     for (; i < 4; i++)
     {
         vertices[i].u.els.scrVertex.z = z;
@@ -616,9 +632,11 @@ static void H_Fade_Day()
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
     if (!drawDayTexture)
     {
-        RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
-        return;
+        (*((HFadeRwGlobals*)rwGlobals_abs)->fpIm2DRenderPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
     }
+
+    if (drawDayTexture)
+    {
 
     {
         u32 packedColor;
@@ -652,8 +670,10 @@ static void H_Fade_Day()
         func_001140d0(packedColor, travel + 640, travel + 640, sFadeDayTmx,
                        99.0f, (f32)-halfTravel, (f32)(-96 - halfTravel));
     }
+    }
 }
 
+#pragma opt_loop_invariants off
 // FUN_001081e0 NONMATCHING
 static void H_Fade_Custom()
 {
@@ -666,7 +686,7 @@ static void H_Fade_Custom()
     f32 green;
     f32 blue;
     s16 i;
-    setRenderState = &rwGlobals.device.setRenderState;
+    setRenderState = &((HFadeRwGlobals*)rwGlobals_abs)->setRenderState;
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
     (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
@@ -738,7 +758,7 @@ static void H_Fade_Custom()
     green = (f32)sFadeGreen;
     blue = (f32)sFadeBlue;
     i = 0;
-    z = RwIm2DGetNearScreenZ() - 100.0f;
+    z = ((HFadeRwGlobals*)rwGlobals_abs)->zBufferNear - 100.0f;
     for (; i < 4; i++)
     {
         vertices[i].u.els.scrVertex.z = z;
@@ -759,7 +779,7 @@ static void H_Fade_Custom()
     vertices[3].u.els.scrVertex.y = SCREEN_HEIGHT;
 
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
-    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*((HFadeRwGlobals*)rwGlobals_abs)->fpIm2DRenderPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_00108570
