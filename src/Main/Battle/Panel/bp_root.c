@@ -2521,7 +2521,7 @@ void FUN_00205760(void)
     if ((*(u32*)(gBcmWork + 0x77a0) & 0x20) == 0)
         *(u32*)(gBcmWork + 0xc) |= 0x40;
 }
-// FUN_002057C0
+// FUN_002057C0 NONMATCHING
 void FUN_002057C0(void)
 {
     u8* work;
@@ -2671,7 +2671,7 @@ void FUN_002057C0(void)
     printf("start command operation ----------+\n");
 }
 
-// FUN_00205D60
+// FUN_00205D60 NONMATCHING
 void FUN_00205D60(void)
 {
     u8* work;
@@ -2883,7 +2883,7 @@ void FUN_002065A0(void)
     panelSetWork32(0x7734, index);
     FUN_00205D60();
 }
-// FUN_00206740
+// FUN_00206740 NONMATCHING
 void FUN_00206740(void)
 {
     u8* work;
@@ -3074,7 +3074,7 @@ void FUN_00206F70(void)
     func_00225670();
 }
 
-// FUN_00207010
+// FUN_00207010 NONMATCHING
 void FUN_00207010(void)
 {
     u8* work;
@@ -3147,7 +3147,7 @@ static void panelTargetEffect(u32 first, u32 second)
 u32 bpRoot_0021c720_ret(void);
 #pragma alias bpRoot_003c72d0_arg func_003c72d0
 u32 bpRoot_003c72d0_arg(u32);
-// FUN_00207340
+// FUN_00207340 NONMATCHING
 void FUN_00207340(void)
 {
     u8* work;
