@@ -1311,6 +1311,44 @@ typedef struct FldFrameResourceSet
     u32 reserved;
     void* items[64];
 } FldFrameResourceSet;
+typedef struct FldFrameResourceTable
+{
+    u32 count;
+    u8 reserved[4];
+    void* items[64];
+} FldFrameResourceTable;
+
+typedef struct FldFrameMaterialWork
+{
+    u8 reserved_00[8];
+    u32 flags;
+    u8 reserved_0c[0x14];
+    void* items;
+    u32 itemCount;
+    u8 reserved_28[4];
+    void* indices;
+} FldFrameMaterialWork;
+
+typedef struct FldFrameMaterialLink
+{
+    u8 reserved_00[0x18];
+    FldFrameMaterialWork* work;
+} FldFrameMaterialLink;
+
+typedef struct FldFrameMaterialSet
+{
+    FldFrameResourceTable* table;
+    u8 reserved_04[0x2c];
+    FldFrameMaterialLink* link;
+} FldFrameMaterialSet;
+
+typedef struct FldFrameMaterialIndex
+{
+    u8 reserved_00[6];
+    u16 value;
+} FldFrameMaterialIndex;
+
+static const char sFldFrameMaterialName[] = "per3TrnsWall";
 
 static f32 FldFrame_Dot(const RwV3d* a, const RwV3d* b)
 {
@@ -1700,25 +1738,55 @@ u32 func_001acb70(void* collisionWorld, const RwV3d* line,
     return raycast.didHit;
 }
 
-// FUN_001ace90 NONMATCHING
-void* func_001ace90(void* resource, void* unused, FldFrameResourceSet* set)
+// FUN_001ace90
+void* func_001ace90(void* resource, void* unused, FldFrameMaterialSet* set)
 {
-    u32 i;
-
-    (void)unused;
-    if (resource == NULL || set == NULL || set->count >= 64)
+    FldFrameMaterialWork* work;
+    FldFrameResourceTable* table;
+    FldFrameMaterialIndex* indices;
+    void** slot;
+    void* item;
+    s32 count;
+    s32 j;
+    s32 i;
+    u32 key;
+    u16 index;
+    work = set->link->work;
+    indices = (FldFrameMaterialIndex*)work->indices;
+    work->flags |= 0x40;
+    key = *(u32*)((u8*)unused + 0x18);
+    index = indices[key].value;
+    item = ((void**)work->items)[index];
+    if (!K_Clump_MatUsrDataHasData_typed(item, sFldFrameMaterialName))
     {
         return unused;
     }
 
-    for (i = 0; i < set->count; i++)
+    count = work->itemCount;
+    i = 0;
+    while (i < count)
     {
-        if (set->items[i] == resource)
+        item = ((void**)work->items)[i];
+        j = 0;
+        while (j < 0x40)
         {
-            return unused;
+            table = set->table;
+            slot = (void**)((u8*)table + j * 4 + 8);
+            if (*slot == NULL)
+            {
+                *slot = item;
+                table = set->table;
+                table->count++;
+                break;
+            }
+            if (*slot == item)
+            {
+                break;
+            }
+            j++;
         }
+        i++;
     }
-    set->items[set->count++] = resource;
     return unused;
 }
 
