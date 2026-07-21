@@ -2391,15 +2391,15 @@ u32 func_001fc3c0(DatPersonaWork* persona)
     return result;
 }
 
-// FUN_001FC590 NONMATCHING
+// FUN_001FC590
 #pragma push
 #pragma opt_rebuildconditionals off
 u32 func_001fc590(u8* event, void* target)
 {
+    u32 result = 0;
     s32 damage;
     u32 criticalDamage;
     s32 boosted;
-    u32 result = 0;
     u16 skill;
 
     skill = FUN_00308930();
