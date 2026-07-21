@@ -193,6 +193,22 @@ void FUN_002c70d0(BtlAction* action, BtlTarget* target);
 u32 FUN_002c7280(BtlTarget* target);
 BtlPacket* FUN_002db740(BtlAction* action, u16 param_2, u32 param_3, u32 param_4, u32 param_5);
 u16 FUN_00308930(DatUnit* unit);
+u32 FUN_002b8f90(u16 param_1);
+BtlPacket* FUN_002d8330(BtlAction* action);
+void func_0029ea60(u16 param_1, u32* param_2, u32* param_3);
+BtlPacket* func_0029f4b0(u32 param_1, u32 param_2, u32 param_3);
+void* func_0029ec00(u16 param_1);
+void func_0029ec80(u16 param_1, u32* param_2, u32* param_3);
+BtlPacket* func_002a0050(void* param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5);
+void* func_0029ec50(u16 param_1);
+BtlPacket* func_002a1280(void* param_1, u32 param_2);
+BtlPacket* func_002a1b00(BtlAction* action, u16 param_2, u32 param_3);
+void func_002bb6f0(u16 param_1, void* param_2);
+BtlPacket* func_0027f2f0(void);
+BtlPacket* func_002bb2f0(u32 param_1, BtlUnit* unit, u32 param_3, u64 param_4, u16 param_5);
+void* FUN_00289650(u32 param_1, u16 param_2, u32 param_3);
+BtlPacket* btlSoundCreateSkillSEPacket(u16 skillId, u16 flags);
+BtlPacket* btlUnit00285d30(BtlUnit* unit, u32 targetCol, s16 param_3, s16 param_4, u8 mode, u8 flags);
 
 // 12 bytes
 typedef struct
@@ -2169,31 +2185,255 @@ void btlActionInitStateSummon(BtlAction* action)
 void btlActionUpdateStateSummon(BtlAction* action)
 {
     BtlPacket* packet;
+    BtlPacket* castAnim;
+    BtlPacket* camPacket;
+    BtlPacket* castChain;
+    BtlPacket* savedSE;
+    BtlPacket* packet2;
+    BtlPacket* tailPacket;
+    BtlPacket* resourcePacket;
+    BtlPacket* modelPacket;
+    BtlPacket* waitPacket;
+    u32 formation;
+    void* handle;
+    u16 specificId;
+    s16 castDelay;
+    u32 outA;
+    u32 outB;
+    char stackBufE0[0x88];
+    u32 didFormationSetup;
+    u64 chainUID;
     u16 i;
+    u16 childId;
+    u16 state;
+    BtlAction* child;
+    BtlUnit* childUnit;
 
-    packet = FUN_002bd590(action->unit, action->target.specificId);
+    btlAction0028a780(action);
+    formation = FUN_002b8f90(1);
+    specificId = action->target.specificId;
+
+    packet = FUN_002bd590(action->unit, specificId);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
-    packet = btlUnitCreateAnimPacket(action->unit, 7, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+
+    packet = FUN_002d8330(action);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002d7fb0(action, 0);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    castAnim = btlUnitCreateAnimPacket(action->unit, 7, 6, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+    castAnim->actionUID = action->uid;
+    btlPacketRegister(castAnim, BTLPACKET_TYPE_1);
+
+    camPacket = btlCameraCreateSetStatePacket(action, 0x11);
+    camPacket->unk_00 = 4;
+    camPacket->parentUID = castAnim->uid;
+    camPacket->actionUID = action->uid;
+    btlPacketRegister(camPacket, BTLPACKET_TYPE_0);
+
+    castDelay = func_002835e0(action->unit, 7, 1.0f);
+
+    func_0029ea60(specificId, &outB, &outA);
+    packet = func_0029f4b0(outB, outA, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    handle = func_0029ec00(specificId);
+    func_0029ec80(specificId, &outB, &outA);
+    packet = func_002a0050(handle, outB, outA, 0x10, 0);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    handle = func_0029ec50(specificId);
+    packet = func_002a1280(handle, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = func_002a1b00(action, specificId, 0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    func_002bb6f0(specificId, stackBufE0);
+    castChain = FUN_002bac00(formation, stackBufE0, 0);
+    castChain->unk_00 = 4;
+    castChain->parentUID = 0;
+    castChain->preUpdateDelay = castDelay + 6;
+    castChain->actionUID = action->uid;
+    btlPacketRegister(castChain, BTLPACKET_TYPE_1);
+
+    savedSE = btlSoundCreateSkillSEPacket(specificId, 0);
+    savedSE->unk_00 = 4;
+    savedSE->parentUID = castChain->uid;
+    savedSE->actionUID = action->uid;
+    btlPacketRegister(savedSE, BTLPACKET_TYPE_1);
+
+    packet2 = FUN_002baf90(formation, action->unit, action->unit, 0, 0);
+    packet2->unk_00 = 4;
+    packet2->parentUID = castChain->uid;
+    packet2->preUpdateWait.type = 4;
+    packet2->preUpdateWait.value = savedSE->uid;
+    btlPacketRegister(packet2, BTLPACKET_TYPE_3D);
+
+    waitPacket = FUN_002dd5e0(0);
+    waitPacket->unk_00 = 5;
+    waitPacket->parentUID = packet2->uid;
+    btlPacketRegister(waitPacket, BTLPACKET_TYPE_1);
+
+    chainUID = castChain->uid;
+
+    tailPacket = func_0027f2f0();
+    tailPacket->unk_00 = 4;
+    tailPacket->parentUID = chainUID;
+    tailPacket->preUpdateDelay = 0x18;
+    tailPacket->actionUID = action->uid;
+    btlPacketRegister(tailPacket, BTLPACKET_TYPE_1);
+
+    packet = func_002bb2f0(ACTION_U32(gBtl, 0xca8), action->unit, 0, tailPacket->uid, 0x100);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002dd100(0xa, 2, 5);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    didFormationSetup = 0;
     for (i = 0; i < 3; i++)
     {
-        if (action->target.unk_3e[i] != 0)
+        childId = action->target.unk_3e[i];
+        if (childId == 0)
         {
-            BtlAction* child = (BtlAction*)FUN_00289650(1, action->target.unk_3e[i], 0);
-            if (child != NULL && child->unit != NULL)
-            {
-                child->unit->datUnit = (DatUnit*)FUN_002ff540(ACTION_U32(gBtl, 0xbbc), action->target.unk_3e[i]);
-                FUN_002889c0(child->unit, action->target.unk_3e[i]);
-            }
+            continue;
         }
+        child = (BtlAction*)FUN_00289650(1, childId, 0);
+        childUnit = child->unit;
+        childUnit->datUnit = (DatUnit*)FUN_002ff540(ACTION_U32(gBtl, 0xbbc), childId);
+        FUN_002889c0(childUnit, childId);
+        if (!didFormationSetup)
+        {
+            packet = btlFormation002b8f40(0);
+            packet->unk_00 = 4;
+            packet->parentUID = savedSE->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+            if ((iGpffffb710[(s16)action->target.specificId].flags & 0x40) == 0)
+            {
+                packet = FUN_002bc7e0(8);
+                packet->unk_00 = 4;
+                packet->parentUID = savedSE->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+                camPacket = btlCameraCreateSetStatePacket(action, 0x26);
+                camPacket->unk_00 = 4;
+                camPacket->parentUID = savedSE->uid;
+                camPacket->actionUID = action->uid;
+                btlPacketRegister(camPacket, BTLPACKET_TYPE_0);
+            }
+            didFormationSetup = 1;
+        }
+        modelPacket = btlUnitCreateModelPacket(childUnit, childId, 0x7e);
+        modelPacket->unk_00 = 4;
+        modelPacket->parentUID = chainUID;
+        modelPacket->actionUID = action->uid;
+        btlPacketRegister(modelPacket, BTLPACKET_TYPE_1);
+
+        resourcePacket = FUN_002864a0(childUnit, childId, 0x10);
+        resourcePacket->unk_00 = 4;
+        resourcePacket->parentUID = modelPacket->uid;
+        btlPacketRegister(resourcePacket, BTLPACKET_TYPE_1);
+
+        waitPacket = FUN_002baf90(formation, action->unit, childUnit, 1, 0x100);
+        waitPacket->unk_00 = 4;
+        waitPacket->parentUID = resourcePacket->uid;
+        waitPacket->preUpdateWait.type = 4;
+        waitPacket->preUpdateWait.value = savedSE->uid;
+        waitPacket->actionUID = action->uid;
+        btlPacketRegister(waitPacket, BTLPACKET_TYPE_3D);
+
+        packet = FUN_002dd5e0(1);
+        packet->unk_00 = 5;
+        packet->parentUID = waitPacket->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        packet = btlUnit00285d30(childUnit, 0xe0ffffff, 0xc, 0, 3, 1);
+        packet->unk_00 = 4;
+        packet->parentUID = resourcePacket->uid;
+        packet->preUpdateWait.type = 0xb;
+        packet->preUpdateWait.value = waitPacket->uid;
+        packet->preUpdateDelay = 1;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+        chainUID = resourcePacket->uid;
     }
+
     packet = FUN_002db740(action, 5, 0, 0, 0);
+    packet->unk_00 = 0xb;
+    packet->parentUID = chainUID;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    FUN_001fdd40();
+
+    packet = FUN_0029fa50(0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->unk_47 &= ~0x20;
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    FUN_001fdd40();
-    btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
+
+    packet = FUN_002a1080(0x10, 0);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->unk_47 &= ~0x20;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002a16c0(0x10);
+    packet->unk_00 = 4;
+    packet->parentUID = castAnim->uid;
+    packet->unk_47 &= ~0x20;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    packet = FUN_002a1db0(8);
+    packet->unk_00 = 4;
+    packet->parentUID = chainUID;
+    packet->unk_47 &= ~0x20;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+
+    func_002b9030(formation);
+
+    if (FUN_002dc130(action))
+    {
+        btlActionSetState(action, BTLACTION_STATE_BADDMG);
+        return;
+    }
+    if (action->target.commandId == 2 || action->target.commandId == 3 || action->target.commandId == 1)
+    {
+        state = BTLACTION_STATE_PACKET;
+    }
+    else
+    {
+        state = BTLACTION_STATE_PACKET;
+    }
+    btlActionSetState(action, state);
 }
 
 // FUN_00295a10
