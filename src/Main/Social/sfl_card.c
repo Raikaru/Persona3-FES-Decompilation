@@ -66,6 +66,7 @@ extern void FUN_002503f0(void*, u32, void*);
 extern void FUN_00250be0(void*, u32, void*);
 extern u32 FUN_0034fcd0(void*);
 extern void FUN_004bdde0(f32, f32*, const f32*, u32);
+extern u32 FUN_00488f30(void);
 
 // FUN_00255170
 void sflCard00255170(u32* param_1)
@@ -1046,8 +1047,8 @@ void FUN_00258630(u32 *param_1)
     f32 frame_offset;
     f32 rect[4];
     f32 rotation[3];
-    f32 origin[3];
     f32 transformed[4];
+    f32 origin[3];
     f32 frame;
 
     *(u64 *)origin = *(u64 *)DAT_0068eab0_abs;
@@ -1055,22 +1056,24 @@ void FUN_00258630(u32 *param_1)
     flags = *param_1;
     *param_1 = flags | 0x100;
     if ((~(flags | 0x100) & 8) != 0) {
-        if (param_1[1] == 2) {
-            FUN_0020ab30(param_1 + 6);
-        } else if (param_1[1] == 0) {
-            FUN_00209f00(param_1 + 6);
-            FUN_0020c590(param_1 + 6, (u16)param_1[2]);
-            if ((*param_1 & 1) != 0) {
-                FUN_0020d6c0(param_1 + 6);
+        if (param_1[1] != 2) {
+            if (param_1[1] == 0) {
+                FUN_00209f00(param_1 + 6);
+                FUN_0020c590(param_1 + 6, (u16)param_1[2]);
+                if ((*param_1 & 1) != 0) {
+                    FUN_0020d6c0(param_1 + 6);
+                }
+                if ((*param_1 & 0x400) != 0) {
+                    FUN_0020d710(param_1 + 6);
+                }
+            } else if (param_1[1] == 1) {
+                FUN_0020a800(param_1 + 6);
+                FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
+            } else {
+                K_ASSERT(0, 0x8de);
             }
-            if ((*param_1 & 0x400) != 0) {
-                FUN_0020d710(param_1 + 6);
-            }
-        } else if (param_1[1] == 1) {
-            FUN_0020a800(param_1 + 6);
-            FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
         } else {
-            K_ASSERT(0, 0x8de);
+            FUN_0020ab30(param_1 + 6);
         }
 
         scale[0] = 10.0f;
@@ -1152,9 +1155,8 @@ void FUN_00258b40(void)
 
   int iVar6;
 
-  int iVar4;
-
-  int iVar5;
+  u32 iVar4;
+  u32 iVar5;
 
   int iVar7;
 
@@ -1198,9 +1200,9 @@ void FUN_00258b40(void)
 
   }
 
-  uVar3 = FUN_00488f30();
-
-  for (iVar6 = 0; iVar6 < (int)((uVar3 & 0xf) + 0x400); iVar6 = iVar6 + 1) {
+  uVar3 = 0x400;
+  uVar3 = uVar3 + (FUN_00488f30() & 0xf);
+  for (iVar6 = 0; iVar6 < (int)uVar3; iVar6 = iVar6 + 1) {
 
     iVar4 = FUN_00488f30();
 
@@ -1210,7 +1212,7 @@ void FUN_00258b40(void)
 
     iVar5 = iVar5 % (int)(puVar1[0x499f] - 1);
 
-    if (iVar4 <= iVar5) {
+    if ((int)iVar4 <= (int)iVar5) {
 
       iVar7 = iVar5 + 1;
 
