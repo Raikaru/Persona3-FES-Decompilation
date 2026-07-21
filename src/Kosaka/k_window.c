@@ -62,9 +62,17 @@ typedef struct KWindowQuadStore
 
 typedef struct KWindowRenderLayout
 {
-    u8 unknown00[0x5c];
+    u8 unknown00[0x30];
+    RwRGBA* tileColors;
+    u8 unknown34[0x28];
     KWindowQuadStore* quadStore;
 } KWindowRenderLayout;
+
+typedef struct KWindowRenderData
+{
+    u8 unknown00[0x18];
+    KWindowRenderLayout* layout;
+} KWindowRenderData;
 // FUN_001a1550 NONMATCHING
 void* func_001a1550(KwlnTask* task)
 {
@@ -80,27 +88,87 @@ void* func_001a1550(KwlnTask* task)
     switch (work->state)
     {
         case 0:
+        {
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+            RwRGBA* tile;
+            f32 tileColor;
+            u8* tileBytes;
+            s32 i;
+
             work->renderData = func_001e78c0(5, 0x48);
             work->colorDataA = func_00494be0();
+            colorA = (RwRGBA*)((u8*)work->colorDataA + 4);
+            *colorA = work->colorA;
             work->colorDataB = func_00494be0();
-            if (work->renderData == NULL || work->colorDataA == NULL || work->colorDataB == NULL)
+            colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
+            *colorB = work->colorB;
+
+            renderData = (KWindowRenderData*)work->renderData;
+            tile = renderData->layout->tileColors;
+            tileColor = *(f32*)((u8*)&gp0xffff9460 - 4);
+            tileBytes = (u8*)&tileColor;
+            i = 0;
+            while (i < 4)
             {
-                work->state = 8;
-                break;
+                func_001e7aa0(work->renderData, i, work->colorDataA);
+                ((u8*)tile)[i * 16 + 0] = tileBytes[0];
+                ((u8*)tile)[i * 16 + 1] = tileBytes[1];
+                ((u8*)tile)[i * 16 + 2] = tileBytes[2];
+                ((u8*)tile)[i * 16 + 3] = tileBytes[3];
+                ((u8*)tile)[i * 16 + 4] = tileBytes[0];
+                ((u8*)tile)[i * 16 + 5] = tileBytes[1];
+                ((u8*)tile)[i * 16 + 6] = tileBytes[2];
+                ((u8*)tile)[i * 16 + 7] = tileBytes[3];
+                ((u8*)tile)[i * 16 + 8] = tileBytes[0];
+                ((u8*)tile)[i * 16 + 9] = tileBytes[1];
+                ((u8*)tile)[i * 16 + 10] = tileBytes[2];
+                ((u8*)tile)[i * 16 + 11] = tileBytes[3];
+                ((u8*)tile)[i * 16 + 12] = tileBytes[0];
+                ((u8*)tile)[i * 16 + 13] = tileBytes[1];
+                ((u8*)tile)[i * 16 + 14] = tileBytes[2];
+                ((u8*)tile)[i * 16 + 15] = tileBytes[3];
+                quad = renderData->layout->quadStore->quad + i;
+                quad->vertex[0].x = 0.0f;
+                quad->vertex[0].y = 0.0f;
+                quad->vertex[1].x = 0.0f;
+                quad->vertex[1].y = 0.0f;
+                quad->vertex[2].x = 0.0f;
+                quad->vertex[2].y = 0.0f;
+                quad->vertex[3].x = 0.0f;
+                quad->vertex[3].y = 0.0f;
+                func_001e7b10(quad, func_001e7c20(-16));
+                i++;
             }
 
-            colorA = (RwRGBA*)((u8*)work->colorDataA + 4);
-            colorA->r = work->colorA.r;
-            colorA->g = work->colorA.g;
-            colorA->b = work->colorA.b;
-            colorA->a = work->colorA.a;
-            colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
-            colorB->r = work->colorB.r;
-            colorB->g = work->colorB.g;
-            colorB->b = work->colorB.b;
-            colorB->a = work->colorB.a;
-            func_001e7aa0(work->renderData, 0, work->colorDataA);
-            func_001e7aa0(work->renderData, 1, work->colorDataB);
+            func_001e7aa0(work->renderData, 4, work->colorDataB);
+            ((u8*)tile)[0x40] = tileBytes[0];
+            ((u8*)tile)[0x41] = tileBytes[1];
+            ((u8*)tile)[0x42] = tileBytes[2];
+            ((u8*)tile)[0x43] = tileBytes[3];
+            ((u8*)tile)[0x44] = tileBytes[0];
+            ((u8*)tile)[0x45] = tileBytes[1];
+            ((u8*)tile)[0x46] = tileBytes[2];
+            ((u8*)tile)[0x47] = tileBytes[3];
+            ((u8*)tile)[0x48] = tileBytes[0];
+            ((u8*)tile)[0x49] = tileBytes[1];
+            ((u8*)tile)[0x4a] = tileBytes[2];
+            ((u8*)tile)[0x4b] = tileBytes[3];
+            ((u8*)tile)[0x4c] = tileBytes[0];
+            ((u8*)tile)[0x4d] = tileBytes[1];
+            ((u8*)tile)[0x4e] = tileBytes[2];
+            ((u8*)tile)[0x4f] = tileBytes[3];
+            quad = renderData->layout->quadStore->quad + 4;
+            quad->vertex[0].x = (f32)work->rect.x;
+            quad->vertex[0].y = (f32)work->rect.y;
+            quad->vertex[1].x = (f32)(work->rect.x + work->rect.w);
+            quad->vertex[1].y = (f32)work->rect.y;
+            quad->vertex[2].x = (f32)work->rect.x;
+            quad->vertex[2].y = (f32)(work->rect.y + work->rect.h);
+            quad->vertex[3].x = (f32)(work->rect.x + work->rect.w);
+            quad->vertex[3].y = (f32)(work->rect.y + work->rect.h);
+            func_001e7b10(quad, func_001e7c20(-32));
+            func_004933d0(renderData->layout);
             work->horizontalOffset = 0.0f;
             work->verticalOffset = 0.0f;
             work->horizontalInset = 0.0f;
@@ -109,6 +177,7 @@ void* func_001a1550(KwlnTask* task)
             work->fieldOfView = func_001a4600(kwlnGetMainCamera());
             work->state = 1;
             break;
+        }
 
         case 1:
             width = (f32)work->rect.w;
@@ -232,11 +301,7 @@ void* func_001a1550(KwlnTask* task)
 }
 
 
-typedef struct KWindowRenderData
-{
-    u8 unknown00[0x18];
-    KWindowRenderLayout* layout;
-} KWindowRenderData;
+ 
 
 // FUN_001A2170 NONMATCHING
 void func_001a2170(KwlnTask* task)
@@ -313,70 +378,85 @@ void func_001a23d0(KwlnTask* task, u32 request)
 void func_001a23e0(KwlnTask* task, const RwRect* rect)
 {
     KWindowTaskWork* work;
-    KWindowRenderData* renderData;
-    KWindowRenderLayout* layout;
-    KWindowQuad* quad;
-    f32 left;
-    f32 top;
-    f32 right;
-    f32 bottom;
+    RwRect localRect;
 
+    localRect = *rect;
     work = (KWindowTaskWork*)task->workData;
     if (work->state != 6)
     {
         return;
     }
 
-    renderData = (KWindowRenderData*)work->renderData;
-    layout = renderData->layout;
-    func_00493370(layout, 2);
-    quad = layout->quadStore->quad;
-    left = (f32)rect->x;
-    top = (f32)rect->y;
-    right = (f32)(rect->x + rect->w);
-    bottom = (f32)(rect->y + rect->h);
+    func_00493370(((KWindowRenderData*)work->renderData)->layout, 2);
 
-    quad[0].vertex[0].x = left;
-    quad[0].vertex[0].y = top;
-    quad[0].vertex[1].x = right;
-    quad[0].vertex[1].y = top;
-    quad[0].vertex[2].x = left;
-    quad[0].vertex[2].y = top + 2.0f;
-    func_001e7b10(&quad[0], func_001e7c20(-16));
+    {
+        KWindowQuad* quad;
 
-    quad[1].vertex[0].x = right - 2.0f;
-    quad[1].vertex[0].y = top;
-    quad[1].vertex[1].x = right;
-    quad[1].vertex[1].y = top;
-    quad[1].vertex[2].x = right - 2.0f;
-    quad[1].vertex[2].y = top + 2.0f;
-    func_001e7b10(&quad[1], func_001e7c20(-16));
+        quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        quad[0].vertex[0].x = (f32)localRect.x;
+        quad[0].vertex[0].y = (f32)localRect.y;
+        quad[0].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[0].vertex[1].y = (f32)localRect.y;
+        quad[0].vertex[2].x = (f32)localRect.x;
+        quad[0].vertex[2].y = (f32)(localRect.y + 2);
+        func_001e7b10(&quad[0], func_001e7c20(-16));
+    }
 
-    quad[2].vertex[0].x = left;
-    quad[2].vertex[0].y = bottom - 2.0f;
-    quad[2].vertex[1].x = right;
-    quad[2].vertex[1].y = bottom - 2.0f;
-    quad[2].vertex[2].x = left;
-    quad[2].vertex[2].y = bottom;
-    func_001e7b10(&quad[2], func_001e7c20(-16));
+    {
+        KWindowQuad* quad;
 
-    quad[3].vertex[0].x = left;
-    quad[3].vertex[0].y = bottom - 2.0f;
-    quad[3].vertex[1].x = left + 2.0f;
-    quad[3].vertex[1].y = bottom - 2.0f;
-    quad[3].vertex[2].x = left;
-    quad[3].vertex[2].y = bottom;
-    func_001e7b10(&quad[3], func_001e7c20(-16));
+        quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        quad[1].vertex[0].x = (f32)(localRect.x + localRect.w - 2);
+        quad[1].vertex[0].y = (f32)localRect.y;
+        quad[1].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[1].vertex[1].y = (f32)localRect.y;
+        quad[1].vertex[2].x = (f32)(localRect.x + localRect.w - 2);
+        quad[1].vertex[2].y = (f32)(localRect.y + 2);
+        func_001e7b10(&quad[1], func_001e7c20(-16));
+    }
 
-    quad[4].vertex[0].x = left;
-    quad[4].vertex[0].y = top;
-    quad[4].vertex[1].x = left;
-    quad[4].vertex[1].y = top + 2.0f;
-    quad[4].vertex[2].x = left + 2.0f;
-    quad[4].vertex[2].y = top;
-    func_001e7b10(&quad[4], func_001e7c20(-32));
+    {
+        KWindowQuad* quad;
 
-    func_004933d0(layout);
+        quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        quad[2].vertex[0].x = (f32)localRect.x;
+        quad[2].vertex[0].y = (f32)(localRect.y + localRect.h - 2);
+        quad[2].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[2].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
+        quad[2].vertex[2].x = (f32)localRect.x;
+        quad[2].vertex[2].y = (f32)(localRect.y + localRect.h);
+        func_001e7b10(&quad[2], func_001e7c20(-16));
+    }
+
+    {
+        KWindowQuad* quad;
+
+        quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        quad[3].vertex[0].x = (f32)localRect.x;
+        quad[3].vertex[0].y = (f32)(localRect.y + localRect.h - 2);
+        quad[3].vertex[1].x = (f32)(localRect.x + 2);
+        quad[3].vertex[1].y = (f32)(localRect.y + localRect.h - 2);
+        quad[3].vertex[2].x = (f32)localRect.x;
+        quad[3].vertex[2].y = (f32)(localRect.y + localRect.h);
+        func_001e7b10(&quad[3], func_001e7c20(-16));
+    }
+
+    {
+        KWindowQuad* quad;
+
+        quad = ((KWindowRenderData*)work->renderData)->layout->quadStore->quad;
+        quad[4].vertex[0].x = (f32)localRect.x;
+        quad[4].vertex[0].y = (f32)localRect.y;
+        quad[4].vertex[1].x = (f32)(localRect.x + localRect.w);
+        quad[4].vertex[1].y = (f32)localRect.y;
+        quad[4].vertex[2].x = (f32)localRect.x;
+        quad[4].vertex[2].y = (f32)(localRect.y + localRect.h);
+        quad[4].vertex[3].x = (f32)(localRect.x + localRect.w);
+        quad[4].vertex[3].y = (f32)(localRect.y + localRect.h);
+        func_001e7b10(&quad[4], func_001e7c20(-32));
+    }
+
+    func_004933d0(((KWindowRenderData*)work->renderData)->layout);
 }
 /*
  * The task below owns the small text/value editor used by the debug window.
@@ -474,7 +554,7 @@ void func_001a4260(KwlnTask* task, u32 id, s32 value, s32 minValue,
 KWindowEntry* func_001a4330(KwlnTask* task, s32 id);
 s32 func_001a4510(KwlnTask* task);
 
-static KWindowManagerWork* KWindow_GetManager(KwlnTask* task)
+static inline KWindowManagerWork* KWindow_GetManager(KwlnTask* task)
 {
     return (KWindowManagerWork*)task->workData;
 }
@@ -500,7 +580,7 @@ static KWindowEntry* KWindow_GetCurrentEntry(KWindowManagerWork* manager)
     return entry;
 }
 
-static void KWindow_InvokeEntryCallback(KWindowEntry* entry)
+static inline void KWindow_InvokeEntryCallback(KWindowEntry* entry)
 {
     void* value;
 
@@ -533,7 +613,7 @@ static void KWindow_InvokeEntryCallback(KWindowEntry* entry)
     }
 }
 
-static void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
+static inline void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
                                     f32 floatDelta)
 {
     f32 value;
@@ -574,7 +654,7 @@ static void KWindow_ApplyValueDelta(KWindowEntry* entry, s32 delta,
     }
 }
 
-static void KWindow_MoveDown(KWindowManagerWork* manager)
+static inline void KWindow_MoveDown(KWindowManagerWork* manager)
 {
     s32 visible;
 
@@ -601,7 +681,7 @@ static void KWindow_MoveDown(KWindowManagerWork* manager)
     }
 }
 
-static void KWindow_MoveUp(KWindowManagerWork* manager)
+static inline void KWindow_MoveUp(KWindowManagerWork* manager)
 {
     s32 visible;
 
@@ -627,7 +707,7 @@ static void KWindow_MoveUp(KWindowManagerWork* manager)
     }
 }
 
-static void KWindow_SetManagerRender(KWindowManagerWork* manager)
+static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
 {
     KWindowRenderData* renderData;
     KWindowRenderLayout* layout;
@@ -709,7 +789,7 @@ static void KWindow_SetManagerRender(KWindowManagerWork* manager)
     (void)colorB;
 }
 
-static void KWindow_DrawSelection(KWindowManagerWork* manager)
+static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
 {
     KWindowRenderData* renderData;
     KWindowRenderLayout* layout;
@@ -916,8 +996,8 @@ void* func_001a2a80(KwlnTask* task)
                 break;
             }
 
-            entry = KWindow_GetCurrentEntry(manager);
             input = DAT_007e0952;
+            entry = func_001a4330(task, func_001a4510(task));
             if ((manager->flags & 1) == 0)
             {
                 KWindow_DrawSelection(manager);
