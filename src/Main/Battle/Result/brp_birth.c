@@ -296,50 +296,52 @@ static void brpBirthSetOrigin(void* resource, f32 x, f32 y, f32 z)
 // FUN_0024ADF0 NONMATCHING
 void func_0024adf0(void)
 {
-    u32* work;
     u32 flags;
-    u32 value;
     BrpBirthColor color;
-    BrpBirthVec rotation = {1.0f, 0.0f, 0.0f};
+    BrpBirthVec rotation;
     BrpBirthVec origin;
     f32 angle;
     f32 opacity;
     f32 wave;
     u8* frame;
+    u32* work;
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
     work = sBrpBirthWork;
+    rotation = sBrpBirthRotation;
     func_0024bb30();
     sflRes0020d820();
     func_00219d90();
-
     flags = work[1];
     if ((flags & 2) != 0)
     {
-        if (work[0] == 1)
+        if (work[0] != 1)
+        {
+            if (work[0] == 0)
+            {
+                if ((flags & 4) == 0 &&
+                    func_003cdc80(work[0x3158]) == 0)
+                {
+                    func_003cdcd0(work[0x3158], 0, 0, 1);
+                    work[1] |= 4;
+                }
+                if ((work[1] & 8) == 0 && func_0021a120() == 0)
+                {
+                    work[1] |= 8;
+                }
+                if ((work[1] & 0xC) == 0xC && brpRes0024bed0() == 0)
+                {
+                    work[1] &= ~2;
+                }
+            }
+        }
+        else
         {
             if ((flags & 8) == 0 && func_0021a120() == 0)
             {
                 work[1] |= 8;
             }
             if ((work[1] & 8) != 0 && brpRes0024bed0() == 0)
-            {
-                work[1] &= ~2;
-            }
-        }
-        else if (work[0] == 0)
-        {
-            if ((flags & 4) == 0 &&
-                func_003cdc80(work[0x3158]) == 0)
-            {
-                func_003cdcd0(work[0x3158], 0, 0, 1);
-                work[1] |= 4;
-            }
-            if ((work[1] & 8) == 0 && func_0021a120() == 0)
-            {
-                work[1] |= 8;
-            }
-            if ((work[1] & 0xC) == 0xC && brpRes0024bed0() == 0)
             {
                 work[1] &= ~2;
             }
@@ -497,12 +499,11 @@ void func_0024adf0(void)
         case 10:
             if (brpRes0024c040() == 0)
             {
-                value = brpRes0024c090();
-                func_003c72d0(value);
-                value = func_00173220(*(u16*)((u8*)work + 0x0C));
-                func_003c7bc0(1, value);
-                value = func_0017d790(*(u16*)((u8*)work + 0x0C));
-                func_003c7430(value);
+                func_003c72d0(brpRes0024c090());
+                func_003c7bc0(1,
+                    func_00173220(*(u16*)((u8*)work + 0x0C)));
+                func_003c7430(
+                    func_0017d790(*(u16*)((u8*)work + 0x0C)));
                 work[2] = 0xB;
             }
             break;
@@ -520,7 +521,6 @@ void func_0024adf0(void)
             break;
         }
         frame = (u8*)work + 0x1C;
-
         switch (work[2])
         {
         case 1:
