@@ -128,6 +128,16 @@ static KwlnTask* sSfdPlayTask;
 static HSfdQueueSlot sSfdQueue[HSFD_QUEUE_COUNT];
 static HSfdAsyncEntry sSfdEntries[HSFD_QUEUE_COUNT];
 static HSfdDecodeSlot sSfdDecodeSlots[HSFD_DECODE_SLOTS];
+
+typedef struct HSfdCueEntry
+{
+    s32 active;
+    s16 bank;
+    s16 reserved6;
+    s32 param;
+} HSfdCueEntry;
+
+static HSfdCueEntry sSfdCueTable[8];
 static u8* sSfdScratch;
 static u8* sSfdDecodeBuffer;
 static u8* sSfdFrameBuffers[4];
@@ -147,6 +157,8 @@ typedef struct HSfdDmaDescriptor
 } HSfdDmaDescriptor;
 
 static HSfdDmaDescriptor sSfdDmaDescriptor;
+extern void func_0051e028();
+extern s32 func_0051df58();
 
 extern void* func_0057c680(void* descriptor);
 extern void* func_0057d5d8(void* descriptor);
@@ -975,40 +987,41 @@ void func_0010d950(s32 index)
     slot->state = 0;
 }
 
-// FUN_0010DA70 NONMATCHING
-void func_0010da70(s32 index, s32 format)
+// FUN_0010DA70
+void func_0010da70(s16 bank, s16 cue)
 {
-    HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
+    if ((sSfdDecodeSlots[bank].state == 1) && (sSfdDecodeSlots[bank].status != 0))
     {
-        return;
-    }
-
-    slot = &sSfdDecodeSlots[index];
-    if ((slot->state == 1) && (slot->resource != NULL))
-    {
-        slot->decodeHandle = format;
-        slot->state = 2;
+        if (sSfdCueTable[cue].active != 0)
+        {
+            func_0051e028(sSfdDecodeSlots[bank].outputHandle, 1, 10, sSfdCueTable[cue].param);
+            func_0051df58(sSfdDecodeSlots[bank].outputHandle, 2, 10, sSfdCueTable[cue].param);
+            sSfdCueTable[cue].active = 0;
+        }
     }
 }
 
 // FUN_0010DB60 NONMATCHING
-void func_0010db60(s32 index, s32 format, s32 width, s32 height)
+void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
 {
-    HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
+    if ((sSfdDecodeSlots[bank].state == 1) && (sSfdDecodeSlots[bank].status != 0))
     {
-        return;
-    }
+        if (sSfdCueTable[cue].active != 0)
+        {
+            if ((sSfdDecodeSlots[bank].state == 1) && (sSfdDecodeSlots[bank].status != 0))
+            {
+                if (sSfdCueTable[cue].active != 0)
+                {
+                    func_0051e028(sSfdDecodeSlots[bank].outputHandle, 1, 10, sSfdCueTable[cue].param);
+                    func_0051df58(sSfdDecodeSlots[bank].outputHandle, 2, 10, sSfdCueTable[cue].param);
+                    sSfdCueTable[cue].active = 0;
+                }
+            }
+        }
 
-    slot = &sSfdDecodeSlots[index];
-    if ((slot->state == 1) && (slot->resource != NULL))
-    {
-        slot->decodeHandle = format;
-        slot->outputSize = width * height;
-        slot->state = 1;
+        sSfdCueTable[cue].bank = bank;
+        sSfdCueTable[cue].active = 1;
+        sSfdCueTable[cue].param = func_0051df58(sSfdDecodeSlots[bank].outputHandle, 0, 10, param3, param4);
     }
 }
 
