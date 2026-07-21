@@ -1010,6 +1010,8 @@ extern u64 FUN_004ca090();
 extern u64 FUN_004caf10();
 extern u64 FUN_004caf80();
 extern u64 FUN_004cb2f0();
+#pragma alias FUN_004cb2f0_u32 FUN_004cb2f0
+extern u32 FUN_004cb2f0_u32();
 extern u64 FUN_004cb420();
 extern u64 FUN_004cb750(u32 param_1,void *param_2,u32 param_3);
 extern u64 FUN_004cb7f0();
@@ -13522,28 +13524,22 @@ void FUN_003296a0(u32 *param_1,u8 (*param_2) [16])
 
 
 
-// FUN_00329740 NONMATCHING
+// FUN_00329740
 
 
 void FUN_00329740(u32 *param_1)
-
-
-
 {
-
   int iVar1;
 
-  
+  iVar1 = (int)FUN_00198590_camera();
 
-  iVar1 = FUN_00198590();
+  iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
 
-  iVar1 = FUN_004cb2f0(*(u32 *)(iVar1 + 4));
+  *(float *)param_1 = *(float *)(iVar1 + 0x20);
 
-  *param_1 = *(u32 *)(iVar1 + 0x20);
+  *(float *)(param_1 + 1) = *(float *)(iVar1 + 0x24);
 
-  param_1[1] = *(u32 *)(iVar1 + 0x24);
-
-  param_1[2] = *(u32 *)(iVar1 + 0x28);
+  *(float *)(param_1 + 2) = *(float *)(iVar1 + 0x28);
 
   param_1[3] = 0;
 
@@ -13554,28 +13550,20 @@ void FUN_00329740(u32 *param_1)
 
 
 
-// FUN_003297A0 NONMATCHING
-
-
+// FUN_003297A0
 void FUN_003297a0(u32 *param_1)
-
-
-
 {
-
   int iVar1;
 
-  
+  iVar1 = (int)FUN_00198590_camera();
 
-  iVar1 = FUN_00198590();
+  iVar1 = FUN_004cb2f0_u32(*(u32 *)(iVar1 + 4));
 
-  iVar1 = FUN_004cb2f0(*(u32 *)(iVar1 + 4));
+  *(float *)param_1 = *(float *)(iVar1 + 0x30);
 
-  *param_1 = *(u32 *)(iVar1 + 0x30);
+  *(float *)(param_1 + 1) = *(float *)(iVar1 + 0x34);
 
-  param_1[1] = *(u32 *)(iVar1 + 0x34);
-
-  param_1[2] = *(u32 *)(iVar1 + 0x38);
+  *(float *)(param_1 + 2) = *(float *)(iVar1 + 0x38);
 
   param_1[3] = 0;
 
