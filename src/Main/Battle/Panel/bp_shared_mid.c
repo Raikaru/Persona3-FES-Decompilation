@@ -1,16 +1,22 @@
 #include "Main/Battle/Panel/bp_mid.h"
+#include "Battle/btlUnit.h"
 #include "Kosaka/k_assert.h"
 BattlePanelWork* gBattlePanelWork;
 
 extern u32 func_0021c3f0(s32 texture);
 extern void* func_0021cca0(u32 texture, s32 frame);
+extern void func_0021cd00(void* frame, f32* rectangle);
 extern void func_0021d3b0(void* destination, void* frame);
 extern void func_0021d8e0(void* destination, const void* layout);
+extern void func_0021d950(void* destination, const u8* color);
+extern void func_0021eb80(void* destination, const f32* layout);
 extern void* btlOrderGetUnitByIdx(u16 index);
 extern u32 datCalcIsDead(void* calc, u32 mode);
 extern void* func_001ff430(u32 id);
 extern u32 datCalcGetHp(void* calc);
 extern u32 datCalcGetMaxHp(void* calc);
+extern void func_00280580(BtlUnit* unit, RwV3d* position);
+extern u32 func_002d20a0(const RwV3d* position, RwV3d* projected);
 extern void func_00208f60(void);
 extern void func_00209a00(void* dst, u32 count, u32 slot, u32 align, f32 scale, const f32* origin);
 extern void func_00209940(void* dst, u32 capacity, s32 value);
@@ -22,6 +28,8 @@ extern void func_0020c660(void* dst);
 extern u32 func_0021cce0(void* frame);
 extern u32 func_00209c00(void);
 extern void RpSkyRenderStateSet(s32 state, u32 value);
+extern u8* iGpffffb6fc;
+extern f32 fGpffff7f20;
 typedef void (*BpSetRenderState)(u32 state, u32 value);
 typedef void (*BpRenderQuad)(void* vertices, u32 count, u32 first, u32 second, u32 third);
 extern u32 D_00960090[];
@@ -55,37 +63,100 @@ void func_00208b20(void)
 void func_00208b30(void)
 {
     u8* work;
-    void* unit;
-    u32 unitIds[0x14];
     u32 texture1;
     u32 texture5;
     s32 count;
-    s32 slotCount;
+    u8* battleWork;
+    BtlUnit* unit;
+    BtlUnit* player;
+    BtlUnit* enemy;
+    u32 unitIds[0x14];
     s32 i;
+    s32 j;
     u8* slot;
+
     K_ASSERT(gBattlePanelWork != NULL, 0x47);
     work = (u8*)gBattlePanelWork;
+    battleWork = iGpffffb6fc;
     texture1 = func_0021c3f0(1);
     texture5 = func_0021c3f0(5);
     count = 0;
     for (;;) {
-        unit = btlOrderGetUnitByIdx((u16)count);
-        if (unit == NULL) {
+        unit = (BtlUnit*)btlOrderGetUnitByIdx((u16)count);
+        if (unit == NULL)
             break;
-        }
         K_ASSERT(count < 0x14, 0x6f);
-        if (datCalcIsDead((void*)((u8*)unit + 0xa2c), 0) != 0) {
+        if (datCalcIsDead(unit->datUnit, 0) != 0)
             K_ASSERT(0, 0x70);
-        }
-        unitIds[count] = *(u32*)((u8*)unit + 0xa8);
+        unitIds[count] = unit->id;
         count++;
     }
-    slotCount = count;
-    *(u32*)(work + 0x2950) = slotCount;
-    for (i = 0; i < slotCount; i++) {
-        slot = work + i * 0x420;
-        *(u32*)(slot + 0x10) = 0;
-        *(u32*)(slot + 0x228) = 0;
+
+    i = 0;
+    player = *(BtlUnit**)(battleWork + 0x150);
+    while (player != NULL) {
+        if (((player->flags3 & 8) != 0) &&
+            (datCalcIsDead(player->datUnit, 0) == 0)) {
+            *(u32*)(work + i * 0x420 + 0x14) = player->id;
+            i++;
+        }
+        player = player->next;
+    }
+    enemy = *(BtlUnit**)(battleWork + 0x158);
+    while (enemy != NULL) {
+        if (((enemy->flags3 & 8) != 0) &&
+            (datCalcIsDead(enemy->datUnit, 0) == 0)) {
+            *(u32*)(work + i * 0x420 + 0x14) = enemy->id;
+            i++;
+        }
+        enemy = enemy->next;
+    }
+    i = 0;
+    while (i < *(s32*)(work + 0x2950)) {
+        slot = work + i * 0x420 + 0x10;
+        *(u32*)slot = 0;
+        *(u32*)(slot + 0x218) = 0;
+        j = 0;
+        while (j < count) {
+            if (*(u32*)(slot + 4) == unitIds[j]) {
+                if (j == 9) {
+                    *(s32*)(slot + 0x210) = -1;
+                    *(s32*)(slot + 0x214) = -1;
+                    *(s32*)(slot + 0x218) = 2;
+                } else {
+                    s32 n = *(s32*)(slot + 0x218);
+                    *(s32*)(slot + 0x210 + n * 4) = j;
+                    *(s32*)(slot + 0x218) = n + 1;
+                }
+            }
+            j++;
+        }
+        K_ASSERT(*(u32*)(slot + 0x218) != 0, 0xaa);
+        unit = (BtlUnit*)func_001ff430(*(u32*)(slot + 4));
+        *(u32*)(slot + 8) = datCalcGetHp(unit->datUnit) & 0xffff;
+        *(u32*)(slot + 0xc) = datCalcGetMaxHp(unit->datUnit) & 0xffff;
+        i++;
+    }
+
+    i = 0;
+    while (i < *(s32*)(work + 0x2950)) {
+        slot = work + i * 0x420 + 0x10;
+        j = 0;
+        while (j < *(s32*)(slot + 0x218)) {
+            s32 value = *(s32*)(slot + 0x210 + j * 4);
+            if (value == -1) {
+                func_00209940(slot + 0x10 + (j << 8), 1, 1 - j);
+            } else if (value == 0) {
+                void* frame = func_0021cca0(texture1, 0x46);
+                func_0021d3b0(slot + 0x10 + (j << 8), frame);
+            } else {
+                func_00209940(slot + 0x10 + (j << 8), 1, value + 1);
+            }
+            j++;
+        }
+        func_0021d3b0(slot + 0x310, func_0021cca0(texture1, 1));
+        func_0021d3b0(slot + 0x210, func_0021cca0(texture5, 4));
+        i++;
     }
     func_00208f60();
     *(u32*)work |= 1;
@@ -95,25 +166,107 @@ void func_00208b30(void)
 void func_00208f60(void)
 {
     u8* work;
-    u32 count;
-    u32 i;
+    u32 texture1;
+    u32 texture5;
+    u8* slot;
+    BtlUnit* unit;
+    void* frame;
+    RwV3d position;
+    RwV3d projected;
+    f32 layout[4];
+    f32 origin[2];
+    f32 rectangle[4];
+    u8 color[4];
+    f32 scale;
+    f32 ratio;
+    s32 count;
+    s32 i;
+    s32 j;
 
     K_ASSERT(gBattlePanelWork != NULL, 0x47);
-    work = BP_WORK();
-    count = *(u32*)(work + 0x2950);
+    work = (u8*)gBattlePanelWork;
+    texture1 = func_0021c3f0(1);
+    texture5 = func_0021c3f0(5);
+    count = *(s32*)(work + 0x2950);
     for (i = 0; i < count; i++) {
-        u8* slot = work + i * 0x420 + 0x10;
-        u32 unitId = *(u32*)(slot + 4);
-        void* unit = func_001ff430(unitId);
-        if (unit != NULL) {
-            *(u32*)(slot + 8) = datCalcGetHp((void*)((u8*)unit + 0xa2c));
-            *(u32*)(slot + 0xc) = datCalcGetMaxHp((void*)((u8*)unit + 0xa2c));
-        }
+        slot = work + i * 0x420;
         *(u32*)(slot + 0x10) &= ~1u;
-        func_00209940(slot + 0x210, 2, 0);
-        func_00209940(slot + 0x220, 2, 0);
+        unit = (BtlUnit*)func_001ff430(*(u32*)(slot + 0x14));
+        func_00280580(unit, &position);
+        if (func_002d20a0(&position, &projected) == 0) {
+            *(u32*)(slot + 0x10) |= 1;
+            continue;
+        }
+        layout[0] = projected.x - 55.0f;
+        layout[1] = projected.y - 55.0f;
+        layout[1] = layout[1] + 20.0f;
+        origin[0] = 39.0f + layout[0];
+        origin[1] = 47.0f + layout[1];
+        layout[0] = origin[0];
+        layout[1] = origin[1] - 3.0f;
+        scale = origin[1] + 40.0f;
+        ratio = origin[0] + 30.0f;
+        for (j = 0; j < *(s32*)(slot + 0x228); j++) {
+            s32 value = *(s32*)(slot + 0x210 + j * 4);
+            u8* destination = slot + 0x20 + (j << 8);
+
+            if (value == 0) {
+                frame = func_0021cca0(texture1, 0x46);
+                layout[0] = origin[0];
+                layout[1] = origin[1] - 3.0f;
+                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+                func_0021d8e0(destination, layout);
+                color[0] = 0xff;
+                color[1] = 0xff;
+                color[2] = 0xff;
+                color[3] = 0xff;
+                func_0021d950(destination, color);
+                continue;
+            }
+            if (j == 1) {
+                origin[0] = ratio;
+                origin[1] = scale;
+                scale = fGpffff7f20;
+            } else if (j == 0) {
+                origin[0] = layout[0];
+                origin[1] = scale;
+                scale = 1.0f;
+            }
+            if (value == -1)
+                func_00209a00(destination, 1, 1 - j, 1, scale, origin);
+            else
+                func_00209a00(destination, 1, value + 1, 1, scale, origin);
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+            color[3] = 0xff;
+            func_0021d950(destination, color);
+        }
+        func_0021d3b0(slot + 0x320, func_0021cca0(texture1, 1));
+        func_0021d3b0(slot + 0x220, func_0021cca0(texture5, 4));
     }
 
+    frame = func_0021cca0(texture1, 1);
+    func_0021cd00(frame, rectangle);
+    slot += 0x10;
+    ratio = (f32)*(s32*)(slot + 8) / (f32)*(s32*)(slot + 0xc);
+    layout[0] = rectangle[0];
+    layout[1] = rectangle[1];
+    layout[2] = (rectangle[2] - rectangle[0]) * ratio;
+    layout[3] = rectangle[3] - rectangle[1];
+    func_0021eb80(slot + 0x210, layout);
+    frame = func_0021cca0(texture5, 4);
+    layout[0] = 55.0f + (projected.x - 55.0f);
+    layout[1] = 55.0f + (20.0f + (projected.y - 55.0f));
+    layout[2] = (f32)*(s32*)((u8*)frame + 0xc) * ratio;
+    layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    func_0021d8e0(slot + 0x210, layout);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0021d950(slot + 0x210, color);
 }
 // FUN_002094f0
 void func_002094f0(void)
