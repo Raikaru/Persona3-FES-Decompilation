@@ -3,6 +3,7 @@
 
 #include "libm.h"
 
+typedef int (*code)(...);
 extern void* opRes00266c50(u32 id);
 extern void* func_0021cca0(void* resource, u32 index);
 extern void* func_0021cce0(void* frame);
@@ -11,10 +12,12 @@ extern void func_0021d8e0(void* destination, const f32* layout);
 extern void func_0021d890(void* destination, const f32* layout);
 extern void func_0021d950(void* destination, const u8* color);
 extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern void (*D_0096009C)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 extern void func_004d7f60(s32 state, u32 value);
-extern void* (*DAT_00960178)(u32 size, u32 heap);
-#pragma alias DAT_00960178_abs DAT_00960178
 extern u32 (*DAT_00960178_abs[])(u32 size, u32 heap);
 extern void (*DAT_0096017c[])(void* memory);
 extern void (*D_009600A4[])(u32, u32, u32, u32, u32);
@@ -684,69 +687,74 @@ void opTitle00267430(void)
         }
     }
 }
-
 // FUN_00268E20 NONMATCHING
 void opTitle00268e20(void)
 {
-    u32* work;
-    void* resource;
     void* frame;
+    code *state;
     s32 i;
+    u32* slot;
+    code *quad;
+    void* resource;
+    u32* work;
 
     K_ASSERT(sOpTitle != NULL, 0x8e);
     work = sOpTitle;
     resource = opRes00266c50(0);
-    if ((*work & 1) != 0)
+    if ((~*work & 1) == 0)
     {
-        (*D_00960090)(8, 0);
-        (*D_00960090)(6, 0);
-        (*D_00960090)(9, 2);
+        state = (code *)&D_00960090_abs;
+        (*state)(8, 0);
+        (*state)(6, 0);
+        (*state)(9, 2);
 
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = func_0021cce0(func_0021cca0(resource, 0xe));
-        (*D_00960090)(1, (u32)(uintptr_t)frame);
-        (*D_0096009C)(work + 4, 4, 0, 1, 2);
-        (*D_0096009C)(work + 4, 4, 0, 2, 3);
+        (*state)(1, (u32)(uintptr_t)frame);
+        quad = (code *)&D_0096009C_abs;
+        (*quad)(work + 4, 4, 0, 1, 2);
+        (*quad)(work + 4, 4, 0, 2, 3);
 
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = func_0021cce0(func_0021cca0(resource, 0xd));
-        (*D_00960090)(1, (u32)(uintptr_t)frame);
-        (*D_0096009C)(work + 0x44, 4, 0, 1, 2);
-        (*D_0096009C)(work + 0x44, 4, 0, 2, 3);
+        (*state)(1, (u32)(uintptr_t)frame);
+        (*quad)(work + 0x44, 4, 0, 1, 2);
+        (*quad)(work + 0x44, 4, 0, 2, 3);
 
         func_004d7f60(2, 0x48);
         func_004d7f60(3, 0x71801);
         frame = func_0021cce0(func_0021cca0(resource, 0x25));
-        (*D_00960090)(1, (u32)(uintptr_t)frame);
-        (*D_0096009C)(work + 0xc4, 4, 0, 1, 2);
-        (*D_0096009C)(work + 0xc4, 4, 0, 2, 3);
+        (*state)(1, (u32)(uintptr_t)frame);
+        (*quad)(work + 0xc4, 4, 0, 1, 2);
+        (*quad)(work + 0xc4, 4, 0, 2, 3);
 
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = func_0021cce0(func_0021cca0(resource, 0x24));
-        (*D_00960090)(1, (u32)(uintptr_t)frame);
-        (*D_0096009C)(work + 0x104, 4, 0, 1, 2);
-        (*D_0096009C)(work + 0x104, 4, 0, 2, 3);
+        (*state)(1, (u32)(uintptr_t)frame);
+        (*quad)(work + 0x104, 4, 0, 1, 2);
+        (*quad)(work + 0x104, 4, 0, 2, 3);
 
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         for (i = 0; i < 9; i++)
         {
-            if ((work[i * 0x48 + 0x184] & 1) != 0)
+            slot = work + i * 0x48 + 0x184;
+            if ((~*slot & 1) == 0)
             {
                 func_004d7f60(2, 0x6a);
                 frame = func_0021cce0(func_0021cca0(resource, 0x11));
-                (*D_00960090)(1, (u32)(uintptr_t)frame);
-                (*D_0096009C)(work + 0x84, 4, 0, 1, 2);
-                (*D_0096009C)(work + 0x84, 4, 0, 2, 3);
+                (*state)(1, (u32)(uintptr_t)frame);
+                (*quad)(work + 0x84, 4, 0, 1, 2);
+                (*quad)(work + 0x84, 4, 0, 2, 3);
 
                 func_004d7f60(2, 0x58);
                 frame = func_0021cce0(func_0021cca0(resource, 0xf));
-                (*D_00960090)(1, (u32)(uintptr_t)frame);
-                (*D_0096009C)(work + i * 0x48 + 0x188, 4, 0, 1, 2);
-                (*D_0096009C)(work + i * 0x48 + 0x188, 4, 0, 2, 3);
+                (*state)(1, (u32)(uintptr_t)frame);
+                (*quad)(slot + 4, 4, 0, 1, 2);
+                (*quad)(slot + 4, 4, 0, 2, 3);
             }
         }
     }
