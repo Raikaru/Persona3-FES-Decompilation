@@ -688,14 +688,11 @@ void func_0021e380(void* destination, void* frameData, u32 mode)
     const u8* fourthColor;
     f32 uv[4];
     f32 reciprocalDepth;
+    u32 depthAddress;
 
     frame = (BpTexFrameData*)frameData;
     camera = kwlnGetMainCamera();
     reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
-    firstColor = frame->color;
-    secondColor = frame->color;
-    thirdColor = frame->color;
-    fourthColor = frame->color;
     switch (mode)
     {
         case 0:
@@ -754,18 +751,19 @@ void func_0021e380(void* destination, void* frameData, u32 mode)
             thirdColor = frame->color;
             fourthColor = frame->color;
             break;
-        default:
-            func_0021cec0(frame, uv, mode);
-            break;
     }
-    bpTexWriteVertex(destination, uv[0], uv[1], firstColor,
-                     D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0x40, uv[2], uv[1], secondColor,
-                     D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0x80, uv[2], uv[3], thirdColor,
-                     D_00960088, reciprocalDepth);
-    bpTexWriteVertex((u8*)destination + 0xc0, uv[0], uv[3], fourthColor,
-                     D_00960088, reciprocalDepth);
+    BP_TEX_F32(destination, 0x10) = uv[0];
+    BP_TEX_F32(destination, 0x14) = uv[1];
+    BP_TEX_F32(destination, 0x18) = reciprocalDepth;
+    depthAddress = (u32)D_00960088_abs;
+    BP_TEX_F32(destination, 0x08) = *(volatile f32*)depthAddress;
+    BP_TEX_WRITE_COLOR_INLINE(destination, 0, firstColor);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0x40, uv[2], uv[1], secondColor,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0x80, uv[2], uv[3], thirdColor,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
+    BP_TEX_WRITE_VERTEX_INLINE(destination, 0xc0, uv[0], uv[3], fourthColor,
+                               *(volatile f32*)depthAddress, reciprocalDepth);
 }
 
 // FUN_0021ea00
