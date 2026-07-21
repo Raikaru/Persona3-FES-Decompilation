@@ -417,44 +417,141 @@ void func_002392d0(void)
 void func_0023b990(void)
 {
     u32* work;
+    s32 state;
     s32 i;
     s32 j;
+    register const volatile u32* const stateTable = &D_00960090[0];
+    register const volatile u32* const drawTable = &D_0096009C[0];
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
-    sflGroundCallState(9, 2);
-    sflGroundCallState(0x14, 2);
-    sflGroundCallState(8, 0);
-    if (work[3] >= 1 && work[3] <= 5) {
-        sflGroundSetSkyState(0x717fb);
-        sflGroundCallState(1, (u32)sflRes0020e590(0));
+    state = work[3];
+    
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
+    ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
+
+    if (state >= 1 && state <= 5) {
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflRes0020e590(0));
+        
         for (i = 0; i < 6; i++) {
-            sflGroundDraw(GROUND_PTR(work, SFL_GROUND_PANEL_OFFSET + i * SFL_GROUND_PANEL_STRIDE), 1, 2);
-            sflGroundDraw(GROUND_PTR(work, SFL_GROUND_PANEL_OFFSET + i * SFL_GROUND_PANEL_STRIDE), 2, 3);
+            void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
+            ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 1, 2);
+            ((SflGroundRenderQuadCallback)(void*)drawTable[0])(vertices, 4, 0, 2, 3);
         }
     }
-    if (work[3] == 3 || work[3] == 4) {
-        sflGroundSetSkyState(0x71801);
-        for (i = 0; i < 7; i++) {
-            for (j = 0; j < 4; j++) {
-                sflGroundDraw(GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100), 1, 2);
+
+    if (state == 1) {
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 3);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 4);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 6);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 1);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 5);
+        for (i = 0; i < 6; i++) {
+            func_0023c8c0(GROUND_PTR(work, 0x110 + i * 0x200));
+        }
+    }
+
+    if (state >= 1 && state <= 5) {
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflRes0020e590(2));
+        for (i = 0; i < 48; i++) {
+            u8* particle = (u8*)work + 0xd10 + i * 0x1300;
+            if ((GROUND_U32(particle, 0) & 1) != 0) {
+                u32 particleType = GROUND_U32(particle, 4);
+                if (particleType == 0 || particleType == 2) {
+                    RpSkyRenderStateSet(3, 0x717fb);
+                    RpSkyRenderStateSet(2, 0x44);
+                } else if (particleType == 1) {
+                    RpSkyRenderStateSet(3, 0x71801);
+                    RpSkyRenderStateSet(2, 0x48);
+                }
+                if (particleType <= 2) {
+                    
+                    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                        particle + 0x10, 4, 0, 1, 2);
+                    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                        particle + 0x10, 4, 0, 2, 3);
+                }
             }
         }
     }
+
+    if (state == 3 || state == 4) {
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflRes0020e690(4));
+        for (i = 0; i < 7; i++) {
+            for (j = 0; j < 4; j++) {
+                
+                ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                    GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100 + 0x10),
+                    4, 0, 1, 2);
+                ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+                    GROUND_PTR(work, 0x4810 + i * 0x420 + j * 0x100 + 0x10),
+                    4, 0, 2, 3);
+            }
+        }
+    }
+
+    func_0024a180(GROUND_PTR(work, 0x8780));
+
+    if (state == 3 || state == 4) {
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflRes0020e510(3));
+        
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x4610), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x4610), 4, 0, 2, 3);
+
+        RpSkyRenderStateSet(3, 0x717fb);
+        RpSkyRenderStateSet(2, 0x44);
+        ((SflGroundRenderStateCallback)(void*)stateTable[0])(
+            1, (u32)sflRes0020e690(5));
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x4710), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x4710), 4, 0, 2, 3);
+    }
+
+    
     if ((work[0] & 8) == 0) {
-        sflGroundDraw(GROUND_PTR(work, 0x65f0), 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x65f0), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x65f0), 4, 0, 2, 3);
     }
     if ((work[0] & 0x10) == 0) {
-        sflGroundDraw(GROUND_PTR(work, 0x66f0), 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x66f0), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x66f0), 4, 0, 2, 3);
     }
-    sflGroundDraw(GROUND_PTR(work, 0x67f0), 1, 2);
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+        GROUND_PTR(work, 0x67f0), 4, 0, 1, 2);
+    ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+        GROUND_PTR(work, 0x67f0), 4, 0, 2, 3);
     if ((work[0] & 8) == 0) {
-        sflGroundDraw(GROUND_PTR(work, 0x68f0), 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x68f0), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x68f0), 4, 0, 2, 3);
     }
     if ((work[0] & 0x10) == 0) {
-        sflGroundDraw(GROUND_PTR(work, 0x69f0), 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x69f0), 4, 0, 1, 2);
+        ((SflGroundRenderQuadCallback)(void*)drawTable[0])(
+            GROUND_PTR(work, 0x69f0), 4, 0, 2, 3);
     }
-    func_0024a180(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 }
 
 // FUN_0023C280
@@ -531,25 +628,57 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
                    const SflGroundVec2* direction, const SflGroundVec2* scale)
 {
     static const SflGroundVec2 quad[8] = {
-        { -25.5f, -25.5f }, { 25.5f, -25.5f }, { -25.5f, 25.5f }, { 25.5f, 25.5f },
-        { -25.5f, -25.5f }, { -25.5f, -25.5f }, { -25.5f, 25.5f }, { 25.5f, 25.5f }
+        { 0.0f, 0.0f }, { 253.0f, 0.0f }, { 253.0f, 51.0f }, { 0.0f, 51.0f },
+        { 251.0f, -15.0f }, { 433.0f, -15.0f }, { 433.0f, 60.0f }, { 251.0f, 60.0f }
     };
     SflGroundVec2 transformed[8];
+    f32 length;
     f32 angle;
-    f32 c;
-    f32 s;
+    f32 sine;
+    f32 cosine;
     f32 x;
     f32 y;
     s32 i;
+    s32 j;
 
-    angle = func_0052ea18(direction->x, -direction->y);
-    c = cosf(angle);
-    s = sinf(angle);
     for (i = 0; i < 8; i++) {
-        x = quad[i].x * scale->x;
-        y = quad[i].y * scale->y;
-        transformed[i].x = center->x + x * c - y * s;
-        transformed[i].y = center->y + x * s + y * c;
+        transformed[i] = quad[i];
+    }
+
+    length = sqrtf(direction->x * direction->x + direction->y * direction->y);
+    angle = func_0052ea18(direction->x / length, -(direction->y / length)) - gPI;
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            transformed[i * 4 + j].x -= 126.5f;
+            transformed[i * 4 + j].y -= 25.5f;
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            transformed[i * 4 + j].x *= scale->x;
+            transformed[i * 4 + j].y *= scale->y;
+        }
+    }
+
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            sine = sinf(angle);
+            y = transformed[i * 4 + j].y;
+            cosine = cosf(angle);
+            x = transformed[i * 4 + j].x;
+            transformed[i * 4 + j].x = x * cosine - y * sine;
+            sine = sinf(angle);
+            cosine = cosf(angle);
+            y = transformed[i * 4 + j].y;
+            transformed[i * 4 + j].y = x * sine + y * cosine;
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        for (j = 0; j < 4; j++) {
+            transformed[i * 4 + j].x += center->x;
+            transformed[i * 4 + j].y += center->y;
+        }
     }
     for (i = 0; i < 2; i++) {
         func_0021d890((u8*)destination + i * 0x100, &transformed[i * 4]);
