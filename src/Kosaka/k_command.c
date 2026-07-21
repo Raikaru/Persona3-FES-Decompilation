@@ -1365,8 +1365,8 @@ u32 FUN_001C4080()
 // FUN_001C4120 NONMATCHING
 u32 FUN_001C4120()
 {
-    s32 resourceTypeId;
     s32 mode;
+    s32 resourceTypeId;
     Resrc* hit;
     Resrc* resource;
     Model* model;
@@ -1383,6 +1383,7 @@ u32 FUN_001C4120()
     resourceTypeId = scrGetIntPara(0);
     mode = scrGetIntPara(1);
     hit = MT_Scene_GetResListHead(RESRC_TYPE_14);
+    axis = D_00683670;
     while (hit != NULL && RESRC_GET_ID(hit->resTypeId) != RESRC_GET_ID(mode))
     {
         hit = hit->next;
@@ -1390,7 +1391,6 @@ u32 FUN_001C4120()
     K_ASSERT(hit != NULL, 1292);
 
     type = RESRC_GET_TYPE(resourceTypeId);
-    axis = D_00683670;
     targetPosition.x = *(f32*)((u8*)hit + 0x100);
     targetPosition.y = *(f32*)((u8*)hit + 0x104);
     targetPosition.z = *(f32*)((u8*)hit + 0x108);
@@ -1439,7 +1439,6 @@ u32 FUN_001C4120()
             RwEngineGetMatrixTolerances(&tolerance);
             RwMatrixOptimize(matrix, &tolerance);
             RwMatrixUpdate(matrix);
-
             if (npc->baseMdl != NULL)
             {
                 scale.x = K_FldFrame_CtlGetSphereCollisRadius(npc->collisCtlTask);
@@ -2081,7 +2080,7 @@ u32 func_001c5980()
 
     if (state == 1)
     {
-        slot = 0;
+        slot = 1;
         while (slot < 4)
         {
             unit = &gFldUnitsPc[slot];
