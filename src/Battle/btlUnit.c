@@ -22,6 +22,16 @@ int FUN_00288da0(int param_1,short param_2);
 void FUN_002891e0(void);
 u64 FUN_00289650(short param_1,u32 param_2,long param_3);
 extern f32 DAT_007cad78;
+extern f32 fGpffff8218;
+extern void mdl00318a70(Model* mdl, RwMatrix* matrix, u32 mode);
+extern void func_0029ee20(BtlUnit* unit);
+extern void func_002fd520(BtlUnit* unit);
+extern u32 func_002bbfa0(u32 bad);
+extern s16 func_002bbdf0(void* value);
+extern void func_002bc0e0(u32 bad, u8* color);
+extern void func_002bbdc0(void* value, s16 id);
+extern void func_002bbf80(void* value, u32 color);
+extern void func_002bbe00(void* value);
 extern f32 DAT_007cadb4;
 extern f32 DAT_007caea4;
 extern f32 DAT_007cada4;
@@ -4824,31 +4834,213 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
 void func_00286540(void)
 {
     u32 genus;
+    u32 i;
+    u32 magic;
+    s16 statusId;
     BtlUnit* unit;
+    BtlUnit* child;
+    Model* mdl;
+    f32 fade;
+    RwMatrix matrix;
+    RwV3d vector;
+    RwRGBA color;
 
-    if (gBtl == NULL)
+    genus = 0;
+    do
     {
-        return;
-    }
-
-    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
-    {
-        unit = gBtl->unitLists[genus].head;
+        unit = *(BtlUnit**)((u8*)gBtl + 0x154 + (genus << 3));
         while (unit != NULL)
         {
             func_00280da0(unit);
             func_002826d0(unit);
-            if ((unit->flags2 & BTLUNIT_FLAG2_UPDATE) &&
-                unit->mdl != NULL)
+
+            if (genus == UNIT_GENUS_PS)
             {
-                mdlSetColor(unit->mdl, &unit->cols[BTLUNIT_COL_MAIN]);
-                mdl00317730(unit->mdl);
-                func_002d4040(unit);
-                unit->flags2 &= ~BTLUNIT_FLAG2_DIRTY;
+                func_002fd520(unit);
             }
-            unit = unit->next;
+            else if (genus == UNIT_GENUS_EC &&
+                     (unit->flags2 & BTLUNIT_FLAG2_UPDATE) &&
+                     unit->resTypeId != 0)
+            {
+                func_001a0e50(unit->resTypeId,
+                              *(u8*)((u8*)unit + 0xac) == 1);
+            }
+
+            if (unit->flags2 & BTLUNIT_FLAG2_UPDATE)
+            {
+                func_0029ee20(unit);
+
+                if ((unit->flags & 3) != 0 && !(unit->flags & 4))
+                {
+                    if (unit->cols[1].a >= 0x1d)
+                    {
+                        unit->cols[1].a -= 0x1c;
+                    }
+                    else
+                    {
+                        unit->cols[1].a = 0;
+                    }
+                    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+                }
+                else if (unit->cols[1].a < 0xff)
+                {
+                    if (unit->cols[1].a < 0xe3)
+                    {
+                        unit->cols[1].a += 0x1c;
+                    }
+                    else
+                    {
+                        unit->cols[1].a = 0xff;
+                    }
+                    unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
+                }
+
+                if (unit->unk_4c > 0)
+                {
+                    fade = (f32)unit->unk_4c / 8.0f;
+                    unit->cols[BTLUNIT_COL_MAX - 1].r =
+                        (u8)((f32)unit->unk_44[4] + fade *
+                             ((f32)unit->unk_44[0] - (f32)unit->unk_44[4]));
+                    unit->cols[BTLUNIT_COL_MAX - 1].g =
+                        (u8)((f32)unit->unk_44[5] + fade *
+                             ((f32)unit->unk_44[1] - (f32)unit->unk_44[5]));
+                    unit->cols[BTLUNIT_COL_MAX - 1].b =
+                        (u8)((f32)unit->unk_44[6] + fade *
+                             ((f32)unit->unk_44[2] - (f32)unit->unk_44[6]));
+                }
+                unit->unk_4c--;
+
+                if (unit->flags2 & BTLUNIT_FLAG2_DIRTY)
+                {
+                    f32 xx;
+                    f32 yy;
+                    f32 zz;
+                    f32 ww;
+
+                    xx = unit->rot.imag.x;
+                    yy = unit->rot.imag.y;
+                    zz = unit->rot.imag.z;
+                    ww = unit->rot.real;
+                    matrix.right.x = 1.0f - 2.0f * (yy * yy + zz * zz);
+                    matrix.right.y = 2.0f * (xx * yy + zz * ww);
+                    matrix.right.z = 2.0f * (xx * zz - yy * ww);
+                    matrix.up.x = 2.0f * (xx * yy - zz * ww);
+                    matrix.up.y = 1.0f - 2.0f * (xx * xx + zz * zz);
+                    matrix.up.z = 2.0f * (yy * zz + xx * ww);
+                    matrix.at.x = 2.0f * (xx * zz + yy * ww);
+                    matrix.at.y = 2.0f * (yy * zz - xx * ww);
+                    matrix.at.z = 1.0f - 2.0f * (xx * xx + yy * yy);
+                    matrix.pos.x = 0.0f;
+                    matrix.pos.y = 0.0f;
+                    matrix.pos.z = 0.0f;
+                    matrix.flags = 3;
+                    mdl = unit->mdl;
+                    mdl00318a70(mdl, &matrix, 0);
+
+                    vector.x = unit->scale;
+                    vector.y = unit->scale;
+                    vector.z = unit->scale;
+                    mdlScale(mdl, &vector, rwCOMBINEPOSTCONCAT);
+                    vector.x = unit->pos.x + unit->posOffset.x;
+                    vector.y = unit->pos.y + unit->posOffset.y;
+                    vector.z = unit->pos.z + unit->posOffset.z;
+                    mdlTranslate(mdl, &vector, rwCOMBINEPOSTCONCAT);
+
+                    color.r = unit->cols[BTLUNIT_COL_MAIN].r;
+                    color.g = unit->cols[BTLUNIT_COL_MAIN].g;
+                    color.b = unit->cols[BTLUNIT_COL_MAIN].b;
+                    color.a = unit->cols[BTLUNIT_COL_MAIN].a;
+
+                    color.g = (u8)(((f32)unit->cols[1].g * fGpffff8218) *
+                                   ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (u8)(((f32)unit->cols[1].b * fGpffff8218) *
+                                   ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (u8)(((f32)unit->cols[1].a * fGpffff8218) *
+                                   ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (u8)(((f32)unit->cols[1].r * fGpffff8218) *
+                                   ((f32)color.r * fGpffff8218) + 0.5f);
+
+                    color.g = (u8)(((f32)unit->cols[3].g * fGpffff8218) *
+                                   ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (u8)(((f32)unit->cols[3].b * fGpffff8218) *
+                                   ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (u8)(((f32)unit->cols[3].a * fGpffff8218) *
+                                   ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (u8)(((f32)unit->cols[3].r * fGpffff8218) *
+                                   ((f32)color.r * fGpffff8218) + 0.5f);
+
+                    color.g = (u8)(((f32)unit->cols[4].g * fGpffff8218) *
+                                   ((f32)color.g * fGpffff8218) + 0.5f);
+                    color.b = (u8)(((f32)unit->cols[4].b * fGpffff8218) *
+                                   ((f32)color.b * fGpffff8218) + 0.5f);
+                    color.a = (u8)(((f32)unit->cols[4].a * fGpffff8218) *
+                                   ((f32)color.a * fGpffff8218) + 0.5f);
+                    color.r = (u8)(((f32)unit->cols[4].r * fGpffff8218) *
+                                   ((f32)color.r * fGpffff8218) + 0.5f);
+
+                    if (color.a >= 0xfe)
+                    {
+                        color.a = 0xff;
+                        magic = 0x737fb;
+                        FUN_00287cf0(unit, 2);
+                        FUN_00287cf0(unit, 5);
+                    }
+                    else if (genus != UNIT_GENUS_EC)
+                    {
+                        magic = 0x737fb;
+                        FUN_00287b20((int)unit, 2);
+                        FUN_00287b20((int)unit, 5);
+                    }
+
+                    mdl = unit->mdl;
+                    if (mdl->gsTest1Reg != magic)
+                    {
+                        mdl->gsTest1Reg = magic;
+                        for (i = 0; i < 5; i++)
+                            if (mdl->attachedWpns[i].wpnMdl != NULL)
+                            {
+                                mdl->attachedWpns[i].wpnMdl->gsTest1Reg = magic;
+                            }
+                    }
+
+                    unit->unk_4e[0] = color.r;
+                    unit->unk_4e[1] = color.g;
+                    unit->unk_4e[2] = color.b;
+                    unit->unk_4e[3] = color.a;
+                    mdlSetColor(mdl, &color);
+                    func_002d4040(unit);
+                    unit->flags2 &= ~BTLUNIT_FLAG2_DIRTY;
+                }
+
+                mdl = unit->mdl;
+                if (mdl->flags & 4)
+                {
+                    mdl00317730(mdl);
+                }
+                if (unit->unk_9f8 != NULL && btlUnit00287580(unit))
+                {
+                    if (unit->datUnit != NULL)
+                    {
+                        statusId = (s16)func_002bbfa0(unit->datUnit->bad);
+                        if (statusId != (s16)func_002bbdf0(unit->unk_9f8))
+                        {
+                            func_002bc0e0(unit->datUnit->bad, &unit->unk_44[4]);
+                            unit->unk_44[0] = unit->cols[4].r;
+                            unit->unk_44[1] = unit->cols[4].g;
+                            unit->unk_44[2] = unit->cols[4].b;
+                            unit->unk_44[3] = unit->cols[4].a;
+                            unit->unk_4c = 8;
+                            func_002bbdc0(unit->unk_9f8, statusId);
+                        }
+                    }
+                    func_002bbf80(unit->unk_9f8, *(u32*)&unit->unk_4e[0]);
+                    func_002bbe00(unit->unk_9f8);
+                }
+            }
+            unit = unit->prev;
         }
-    }
+        genus++;
+    } while (genus < UNIT_GENUS_MAX);
 }
 extern void func_00287ea0(BtlUnit* unit);
 extern u32 DAT_007cc970;
