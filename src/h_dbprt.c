@@ -136,24 +136,34 @@ void H_Dbprt_Main()
 static void H_Dbprt_DrawText3D(void)
 {
     HDbText3D* text;
+    RwV2d uv[4];
+    RwIm2DVertex vertices[4];
     f32 recipZ;
     f32 z;
+    f32 u;
+    f32 v;
     s32 character;
+    s32 vertex;
     s8 glyph;
 
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+    kwlnGetMainCamera();
+    kwlnGetMainCamera();
+    kwlnGetMainCamera();
 
     kwlnPushCommonRenderStates();
     RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
 
     text = sText3DList;
-    while (text != NULL)
+    while (true)
     {
-        if (text->pos.z == 0.0f)
+        if (text == NULL)
         {
-            z = RwIm2DGetNearScreenZ() - text->zOffset;
+            break;
         }
-        else
+        kwlnGetMainCamera();
+        kwlnGetMainCamera();
+        if (text->pos.z != 0.0f)
         {
             z = H_Dbprt_CalculateScreenZ(text->pos.z);
         }
@@ -168,12 +178,77 @@ static void H_Dbprt_DrawText3D(void)
 
             if (glyph != ' ')
             {
-                H_Dbprt_DrawGlyph(text->pos.x + 12.0f * (f32)character,
-                                   text->pos.y,
-                                   z,
-                                   recipZ,
-                                   &text->color,
-                                   (s32)glyph - ' ');
+                if (text->pos.z == 0.0f)
+                {
+                    vertices[0].u.els.scrVertex.x = text->pos.x + 12.0f * (f32)character;
+                    vertices[0].u.els.scrVertex.y = text->pos.y;
+                    vertices[1].u.els.scrVertex.x = vertices[0].u.els.scrVertex.x + 12.0f;
+                    vertices[1].u.els.scrVertex.y = vertices[0].u.els.scrVertex.y;
+                    vertices[2].u.els.scrVertex.x = vertices[0].u.els.scrVertex.x;
+                    vertices[2].u.els.scrVertex.y = vertices[0].u.els.scrVertex.y + 12.0f;
+                    vertices[3].u.els.scrVertex.x = vertices[1].u.els.scrVertex.x;
+                    vertices[3].u.els.scrVertex.y = vertices[2].u.els.scrVertex.y;
+
+                    u = 0.0625f * (f32)((glyph - ' ') % 16);
+                    v = 0.0625f * (f32)((glyph - ' ') / 16);
+                    uv[0].x = u;
+                    uv[0].y = v;
+                    uv[1].x = u + 0.046875f;
+                    uv[1].y = v;
+                    uv[2].x = u;
+                    uv[2].y = v + 0.046875f;
+                    uv[3].x = u + 0.046875f;
+                    uv[3].y = v + 0.046875f;
+
+                    z = RwIm2DGetNearScreenZ() - text->zOffset;
+                    for (vertex = 0; vertex < 4; vertex++)
+                    {
+                        vertices[vertex].u.els.scrVertex.z = z;
+                        vertices[vertex].u.els.color.r = text->color.r;
+                        vertices[vertex].u.els.color.g = text->color.g;
+                        vertices[vertex].u.els.color.b = text->color.b;
+                        vertices[vertex].u.els.color.a = text->color.a;
+                        vertices[vertex].u.els.recipZ = recipZ;
+                        vertices[vertex].u.els.u = uv[vertex].x;
+                        vertices[vertex].u.els.v = uv[vertex].y;
+                    }
+                }
+                else
+                {
+                    vertices[0].u.els.scrVertex.x = text->pos.x + 12.0f * (f32)character;
+                    vertices[0].u.els.scrVertex.y = text->pos.y;
+                    vertices[1].u.els.scrVertex.x = vertices[0].u.els.scrVertex.x + 12.0f;
+                    vertices[1].u.els.scrVertex.y = vertices[0].u.els.scrVertex.y;
+                    vertices[2].u.els.scrVertex.x = vertices[0].u.els.scrVertex.x;
+                    vertices[2].u.els.scrVertex.y = vertices[0].u.els.scrVertex.y + 12.0f;
+                    vertices[3].u.els.scrVertex.x = vertices[1].u.els.scrVertex.x;
+                    vertices[3].u.els.scrVertex.y = vertices[2].u.els.scrVertex.y;
+
+                    u = 0.0625f * (f32)((glyph - ' ') % 16);
+                    v = 0.0625f * (f32)((glyph - ' ') / 16);
+                    uv[0].x = u;
+                    uv[0].y = v;
+                    uv[1].x = u + 0.046875f;
+                    uv[1].y = v;
+                    uv[2].x = u;
+                    uv[2].y = v + 0.046875f;
+                    uv[3].x = u + 0.046875f;
+                    uv[3].y = v + 0.046875f;
+
+                    for (vertex = 0; vertex < 4; vertex++)
+                    {
+                        vertices[vertex].u.els.scrVertex.z = z;
+                        vertices[vertex].u.els.color.r = text->color.r;
+                        vertices[vertex].u.els.color.g = text->color.g;
+                        vertices[vertex].u.els.color.b = text->color.b;
+                        vertices[vertex].u.els.color.a = text->color.a;
+                        vertices[vertex].u.els.recipZ = recipZ;
+                        vertices[vertex].u.els.u = uv[vertex].x;
+                        vertices[vertex].u.els.v = uv[vertex].y;
+                    }
+                }
+
+                RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
             }
         }
 
