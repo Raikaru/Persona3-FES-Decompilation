@@ -1986,6 +1986,7 @@ u32 func_001f65e0(void)
 
 // FUN_001f6630 NONMATCHING
 void func_001f6630(void)
+{
     u8 *work = sBrReward;
     u32 i;
     K_ASSERT(work != NULL, 0x8c);
