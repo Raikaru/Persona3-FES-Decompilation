@@ -1394,7 +1394,7 @@ u32 FUN_0031d6b0(void)
 
 
 
-// FUN_0031D700 NONMATCHING
+// FUN_0031D700
 
 
 u32 FUN_0031d700(int *param_1)
@@ -1403,9 +1403,9 @@ u32 FUN_0031d700(int *param_1)
 
 {
 
-  int iVar1;
-
   u32 uVar2;
+
+  int iVar1;
 
   
 
@@ -49384,9 +49384,9 @@ void FUN_0034cb60(int param_1)
 
   u32 uVar1;
 
-  u32 uVar2;
-
   u32 *puVar3;
+
+  u32 uVar2;
 
   
 
