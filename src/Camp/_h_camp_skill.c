@@ -117,6 +117,8 @@ extern KwlnTask* DAT_007cdf54;
 extern KwlnTask* DAT_007cdf58;
 extern KwlnTask* DAT_007cdf88;
 extern void* DAT_00833B70;
+#pragma alias DAT_00833B70_abs DAT_00833B70
+extern u8 DAT_00833B70_abs[];
 extern void* DAT_00833B94;
 extern void* DAT_00833BA0;
 extern s32 DAT_007e094e;
@@ -221,10 +223,10 @@ typedef void (*CampSkillValueCall)(f32 depth, s32 x, s32 y, s32 color,
                                    u32 value);
 
 #pragma alias FUN_001159f0_typed FUN_001159f0
-extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u32 alpha,
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 f32 x, f32 y, f32 depth);
 #pragma alias FUN_00115bc0_typed FUN_00115bc0
-extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u32 alpha,
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
                                 u32 red, u32 green, u32 blue, f32 x, f32 y,
                                 f32 depth);
 #pragma alias FUN_003b32d0_typed FUN_003b32d0
@@ -620,322 +622,380 @@ static u8* campSkillDetailEntry(const CampSkillInnerWork* work, s32 index)
     return work->detailData + index * 0x24;
 }
 
-static void campSkillDrawDetailBase(CampSkillRecord* record,
-                                    CampSkillInnerWork* work)
-{
-    campSkillDrawSprite(record, work->resource1, 0x17, record->x,
-                        record->y);
-}
-
-static void campSkillDrawDetailTabs(CampSkillRecord* record,
-                                    CampSkillInnerWork* work)
-{
-    (void)datGetEquipmentIdx(work->pcId, (s16)work->category);
-    switch (work->category) {
-    case 0:
-        campSkillDrawSprite(record, work->resource1, 0x12, record->x,
-                            record->y);
-        campSkillDrawSprite(record, work->resource1, 0x15,
-                            record->x + 89.0f, record->y);
-        break;
-    case 1:
-        campSkillDrawSprite(record, work->resource1, 0x13,
-                            record->x + 4.0f, record->y);
-        break;
-    case 2:
-        campSkillDrawSprite(record, work->resource1, 0x14,
-                            record->x + 4.0f, record->y);
-        break;
-    }
-}
-
-static void campSkillDrawDetailEquipment(CampSkillRecord* record,
-                                         CampSkillInnerWork* work)
-{
-    s16 equipment;
-    s32 style;
-    s32 category;
-    s32 valueA;
-    s32 valueB;
-    u16 id;
-    u8 effect;
-    s32 alpha;
-    char text[0x100];
-    CampSkillVec2 position;
-
-    category = work->category;
-    if (category < 0 || category > 3) {
-        return;
-    }
-    equipment = datGetEquipmentIdx(work->pcId, (s16)category);
-    style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
-    id = datGetEquipmentId(work->pcId, equipment);
-    effect = func_0016f810(work->pcId, equipment);
-    alpha = (s32)record->alpha;
-
-    campSkillDrawSprite(record, work->resource1, 0x18, record->x,
-                        record->y);
-    campSkillDrawSprite(record, work->resource1, category * 2,
-                        record->x + 19.0f, record->y + 6.0f);
-    campSkillDrawSprite(record, DAT_00833B70, style * 2 + 1,
-                        record->x + 130.0f, record->y + 1.0f);
-    sprintf(text, "%d", (s32)func_00171110(id, effect));
-    campSkillDrawSmallText(record, (s32)(record->x + 170.0f),
-                           (s32)(record->y + 10.0f),
-                           campSkillDrawColor(record), 6, text, 0);
-
-    if (category == 0) {
-        valueA = (s32)func_0016f9f0(work->pcId, equipment);
-        valueB = (s32)func_0016fae0(work->pcId, equipment);
-        position.x = record->x + 434.0f;
-        position.y = record->y + 15.0f;
-        FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                     (s32)record->depth, 0xff, 0xff, 0xff, alpha, valueA,
-                     3);
-        position.x = record->x + 525.0f;
-        FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                     (s32)record->depth, 0xff, 0xff, 0xff, alpha, valueB,
-                     3);
-    } else if (category == 1) {
-        valueA = (s32)func_0016fbd0(work->pcId, equipment);
-        position.x = record->x + 434.0f;
-        position.y = record->y + 15.0f;
-        FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                     (s32)record->depth, 0xff, 0xff, 0xff, alpha, valueA,
-                     3);
-    } else if (category == 2) {
-        valueA = (s32)func_0016fcc0(work->pcId, equipment);
-        position.x = record->x + 434.0f;
-        position.y = record->y + 15.0f;
-        FUN_0012e170((void*)H_Maestro_001120a0(1), 0xb, position,
-                     (s32)record->depth, 0xff, 0xff, 0xff, alpha, valueA,
-                     3);
-    }
-}
-
-static void campSkillDrawDetailStat(CampSkillRecord* record,
-                                    CampSkillInnerWork* work, f32 x, f32 y,
-                                    u16 value, s32 baseline, s32 selected)
-{
-    s32 tile;
-    void* atlas;
-
-    if ((s32)value != baseline) {
-        tile = value > baseline ? (selected ? 0x1e : 0x1f)
-                                : (selected ? 0x20 : 0x21);
-        campSkillDrawSprite(record, work->resource1, tile, x + 49.0f,
-                            y - 3.0f);
-    }
-    atlas = (void*)H_Maestro_001120a0(selected ? 1 : 2);
-    if (selected && (s32)value > baseline) {
-        campSkillDrawNumberColor(record, atlas, x, y, 0xf3, 0xb3, 0xbd,
-                                 (s32)value, 3);
-    } else {
-        campSkillDrawNumberColor(record, atlas, x, y, 0xff, 0xff, 0xff,
-                                 (s32)value, 3);
-    }
-}
-
-static void campSkillDrawDetailList(CampSkillRecord* record,
-                                    CampSkillInnerWork* work)
-{
-    s32 row;
-    s32 count;
-    s32 first;
-    s32 selected;
-    s32 scrollbar;
-    s32 baselineA;
-    s32 baselineB;
-    s16 equipment;
-    u8* data;
-    void* atlas;
-    char text[0x100];
-    s32 color;
-
-    data = work->detailData;
-    if (data == NULL) {
-        return;
-    }
-    count = *(s32*)(data + 0x2d64);
-    selected = *(s32*)(data + 0x2d68);
-    first = *(s32*)(data + 0x2d6c);
-    atlas = work->resource1;
-    color = campSkillDrawColor(record);
-    baselineA = 0;
-    baselineB = 0;
-    if (work->category >= 0 && work->category <= 2) {
-        equipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
-        if (work->category == 0) {
-            baselineA = func_0016f9f0(work->pcId, equipment);
-            baselineB = func_0016fae0(work->pcId, equipment);
-        } else if (work->category == 1) {
-            baselineA = func_0016fbd0(work->pcId, equipment);
-        } else {
-            baselineA = func_0016fcc0(work->pcId, equipment);
-        }
-    }
-
-    campSkillDrawSprite(record, atlas, 0x27, record->x + 483.0f,
-                        record->y + 1.0f);
-    if (count > 5) {
-        scrollbar = (first * 90) / (count - 5);
-    } else {
-        scrollbar = 0;
-    }
-    campSkillDrawSprite(record, atlas, 0x28, record->x + 483.0f,
-                        record->y + 3.0f + (f32)scrollbar);
-
-    for (row = 0; row < 5; row++) {
-        s32 item;
-        s32 style;
-        s32 rowOffset;
-        s32 selectedRow;
-        s32 value;
-        u16 id;
-        u8 effect;
-        u8* entry;
-
-        item = first + row;
-        if (item < 0 || item >= count) {
-            continue;
-        }
-        entry = campSkillDetailEntry(work, item);
-        style = FUN_0012df50(*(u32*)(entry + 0x78));
-        id = *(u16*)(entry + 0x64);
-        effect = *(u8*)(entry + 0x7d);
-        value = (s32)func_00171110(id, effect);
-        sprintf(text, "%d", value);
-        rowOffset = row * 26;
-        selectedRow = selected == row;
-
-        if (selectedRow) {
-            campSkillDrawSprite(record, atlas, 0x25, record->x,
-                                record->y + (f32)rowOffset);
-            campSkillDrawSprite(record, atlas, 0x26, record->x + 470.0f,
-                                record->y + (f32)rowOffset);
-        } else {
-            campSkillDrawSprite(record, DAT_00833B70, style * 2 + 1,
-                                record->x + 13.0f,
-                                record->y - 5.0f + (f32)rowOffset);
-        }
-        campSkillDrawSmallText(
-            record, (s32)(record->x + 53.0f),
-            (s32)(record->y + 9.0f + (f32)rowOffset), color,
-            selectedRow ? 6 : 10, text, 0);
-
-        if (work->category == 0) {
-            campSkillDrawDetailStat(
-                record, work, record->x + 317.0f,
-                record->y + 9.0f + (f32)rowOffset, *(u16*)(entry + 0x80),
-                baselineA, selectedRow);
-            campSkillDrawDetailStat(
-                record, work, record->x + 408.0f,
-                record->y + 9.0f + (f32)rowOffset, *(u16*)(entry + 0x82),
-                baselineB, selectedRow);
-        } else if (work->category == 1) {
-            campSkillDrawDetailStat(
-                record, work, record->x + 317.0f,
-                record->y + 9.0f + (f32)rowOffset, *(u16*)(entry + 0x84),
-                baselineA, selectedRow);
-        } else if (work->category == 2) {
-            campSkillDrawDetailStat(
-                record, work, record->x + 317.0f,
-                record->y + 9.0f + (f32)rowOffset, *(u16*)(entry + 0x86),
-                baselineA, selectedRow);
-        }
-    }
-}
-
-static void campSkillDrawDetailSelection(CampSkillRecord* record,
-                                         CampSkillInnerWork* work)
-{
-    u8* data;
-    u8* entry;
-    s32 selected;
-    s32 first;
-    s32 count;
-    u32 packed;
-
-    data = work->detailData;
-    if (data == NULL) {
-        return;
-    }
-    selected = *(s32*)(data + 0x2d68);
-    first = *(s32*)(data + 0x2d6c);
-    count = *(s32*)(data + 0x2d64);
-    if (first + selected < 0 || first + selected >= count) {
-        return;
-    }
-    entry = campSkillDetailEntry(work, first + selected);
-    packed = (u32)*(u16*)(entry + 0x64) |
-             ((u32)*(u8*)(entry + 0x7c) << 16);
-    FUN_003c7e20_typed(
-        record->depth, (s32)record->x, (s32)record->y,
-        campSkillDrawColor(record), 1, 10, 1, packed);
-}
-
-static void campSkillDrawDetailSprite(CampSkillRecord* record,
-                                      CampSkillInnerWork* work)
-{
-    u8* sprite;
-
-    sprite = (u8*)FUN_001158b0(NULL, work->resource1, 0x1b);
-    if (sprite == NULL) {
-        return;
-    }
-    *(f32*)(sprite + 0x2c) = record->depth;
-    *(f32*)(sprite + 0x10) = record->x;
-    *(f32*)(sprite + 0x14) = record->y;
-    *(u8*)(sprite + 0x18) = (u8)record->alpha;
-    *(f32*)(sprite + 0x20) = -45.0f;
-    FUN_001127d0(sprite, 1);
-    FUN_00115980(sprite);
-}
-
-static void campSkillDrawDetailFrame(CampSkillRecord* record,
-                                      CampSkillInnerWork* work)
-{
-    campSkillDrawSprite(record, work->resource1, 0x24, record->x,
-                        record->y);
-    campSkillDrawSprite(record, work->resource1, 0x23, record->x + 15.0f,
-                        record->y - 5.0f);
-}
-
+#pragma push
 // FUN_00163330 NONMATCHING
+#pragma optimization_level 3
+#pragma schedule on
 void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 {
     CampSkillRecord* record;
 
-    if (recordData == NULL || work == NULL || index < 0 || index >= 8) {
-        return;
-    }
     record = (CampSkillRecord*)recordData;
     switch (index) {
     case 0:
-        campSkillDrawDetailBase(record, work);
+        FUN_001159f0_typed(recordData, work->resource1, 0x17, record->alpha,
+                           record->x, record->y, record->depth);
         break;
     case 1:
-        campSkillDrawDetailTabs(record, work);
+    {
+        (void)datGetEquipmentIdx(work->pcId, (s16)work->category);
+        switch (work->category) {
+        case 0:
+            FUN_001159f0_typed(recordData, work->resource1, 0x12, record->alpha,
+                               record->x, record->y, record->depth);
+            FUN_001159f0_typed(recordData, work->resource1, 0x15, record->alpha,
+                               record->x + 89.0f, record->y, record->depth);
+            break;
+        case 1:
+            FUN_001159f0_typed(recordData, work->resource1, 0x13, record->alpha,
+                               record->x + 4.0f, record->y, record->depth);
+            break;
+        case 2:
+            FUN_001159f0_typed(recordData, work->resource1, 0x14, record->alpha,
+                               record->x + 4.0f, record->y, record->depth);
+            break;
+        }
         break;
+    }
     case 2:
-        campSkillDrawDetailEquipment(record, work);
+    {
+        s16 equipment;
+        s32 style;
+        u16 id;
+        u8 effect;
+        s32 valueA;
+        char text[0x100];
+        CampSkillVec2 position;
+
+        equipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
+        style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
+        id = datGetEquipmentId(work->pcId, equipment);
+        effect = func_0016f810(work->pcId, equipment);
+        sprintf(text, "%d", (s32)func_00171110(id, effect));
+
+        switch (work->category) {
+        case 0:
+            FUN_001159f0_typed(recordData, work->resource1, 0x18, record->alpha,
+                               record->x, record->y, record->depth);
+            FUN_001159f0_typed(recordData, work->resource1, 0, record->alpha,
+                               record->x + 19.0f, record->y + 6.0f, record->depth);
+            FUN_001159f0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha,
+                               record->x + 130.0f, record->y + 1.0f, record->depth);
+            FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
+                               (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0);
+            {
+                void* numAtlas = (void*)H_Maestro_001120a0(1);
+                valueA = (s32)func_0016f9f0(work->pcId, equipment);
+                position.x = record->x + 434.0f;
+                position.y = record->y + 15.0f;
+                FUN_0012e170(numAtlas, 0xb, position,
+                             (s32)record->depth, 0xff, 0xff, 0xff, (s32)record->alpha,
+                             valueA, 3);
+                numAtlas = (void*)H_Maestro_001120a0(1);
+                valueA = (s32)func_0016fae0(work->pcId, equipment);
+                position.x = record->x + 525.0f;
+                FUN_0012e170(numAtlas, 0xb, position,
+                             (s32)record->depth, 0xff, 0xff, 0xff, (s32)record->alpha,
+                             valueA, 3);
+            }
+            break;
+        case 1:
+            FUN_001159f0_typed(recordData, work->resource1, 0x18, record->alpha,
+                               record->x, record->y, record->depth);
+            FUN_001159f0_typed(recordData, work->resource1, 2, record->alpha,
+                               record->x + 19.0f, record->y + 6.0f, record->depth);
+            FUN_001159f0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha,
+                               record->x + 130.0f, record->y + 1.0f, record->depth);
+            FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
+                               (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0);
+            {
+                void* numAtlas = (void*)H_Maestro_001120a0(1);
+                valueA = (s32)func_0016fbd0(work->pcId, equipment);
+                position.x = record->x + 434.0f;
+                position.y = record->y + 15.0f;
+                FUN_0012e170(numAtlas, 0xb, position,
+                             (s32)record->depth, 0xff, 0xff, 0xff, (s32)record->alpha,
+                             valueA, 3);
+            }
+            break;
+        case 2:
+            FUN_001159f0_typed(recordData, work->resource1, 0x18, record->alpha,
+                               record->x, record->y, record->depth);
+            FUN_001159f0_typed(recordData, work->resource1, 4, record->alpha,
+                               record->x + 19.0f, record->y + 6.0f, record->depth);
+            FUN_001159f0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha,
+                               record->x + 130.0f, record->y + 1.0f, record->depth);
+            FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
+                               (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0);
+            {
+                void* numAtlas = (void*)H_Maestro_001120a0(1);
+                valueA = (s32)func_0016fcc0(work->pcId, equipment);
+                position.x = record->x + 434.0f;
+                position.y = record->y + 15.0f;
+                FUN_0012e170(numAtlas, 0xb, position,
+                             (s32)record->depth, 0xff, 0xff, 0xff, (s32)record->alpha,
+                             valueA, 3);
+            }
+            break;
+        case 3:
+            FUN_001159f0_typed(recordData, work->resource1, 0x18, record->alpha,
+                               record->x, record->y, record->depth);
+            FUN_001159f0_typed(recordData, work->resource1, 6, record->alpha,
+                               record->x + 19.0f, record->y + 6.0f, record->depth);
+            FUN_001159f0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2 + 1, record->alpha,
+                               record->x + 130.0f, record->y + 1.0f, record->depth);
+            FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
+                               (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
+                               6, 1, text, 0x10, 0);
+            break;
+        }
         break;
+    }
     case 3:
-        campSkillDrawDetailList(record, work);
+    {
+        s32 row;
+        s32 count;
+        s32 first;
+        s32 selected;
+        s32 scrollbar;
+        s32 baselineA;
+        s32 baselineB;
+        s16 equipment;
+        u8* data;
+        void* atlas;
+        char text[0x100];
+
+        data = work->detailData;
+        count = *(s32*)(data + 0x2d64);
+        selected = *(s32*)(data + 0x2d68);
+        first = *(s32*)(data + 0x2d6c);
+        atlas = work->resource1;
+
+        FUN_001159f0_typed(recordData, atlas, 0x27, record->alpha,
+                           record->x + 483.0f, record->y + 1.0f, record->depth);
+        scrollbar = (count > 5) ? (first * 90) / (count - 5) : 0;
+        FUN_001159f0_typed(recordData, atlas, 0x28, record->alpha,
+                           record->x + 483.0f, record->y + 3.0f + (f32)scrollbar,
+                           record->depth);
+
+        baselineA = 0;
+        baselineB = 0;
+        if (work->category >= 0 && work->category <= 2) {
+            equipment = datGetEquipmentIdx(work->pcId, (s16)work->category);
+            if (work->category == 0) {
+                baselineA = func_0016f9f0(work->pcId, equipment);
+                baselineB = func_0016fae0(work->pcId, equipment);
+            } else if (work->category == 1) {
+                baselineA = func_0016fbd0(work->pcId, equipment);
+            } else {
+                baselineA = func_0016fcc0(work->pcId, equipment);
+            }
+        }
+
+        for (row = 0; row < 5; row++) {
+            s32 item;
+            s32 style;
+            s32 rowOffset;
+            s32 selectedRow;
+            s32 value;
+            u16 id;
+            u8 effect;
+            u8* entry;
+            s32 font;
+            s32 tileUp;
+            s32 tileDown;
+
+            item = first + row;
+            if (item >= count) {
+                continue;
+            }
+            entry = campSkillDetailEntry(work, item);
+            style = FUN_0012df50(*(u32*)(entry + 0x78));
+            id = *(u16*)(entry + 0x64);
+            effect = *(u8*)(entry + 0x7d);
+            value = (s32)func_00171110(id, effect);
+            sprintf(text, "%d", value);
+            rowOffset = row * 26;
+            selectedRow = selected == row;
+            font = selectedRow ? 6 : 10;
+            tileUp = selectedRow ? 0x1e : 0x1f;
+            tileDown = selectedRow ? 0x20 : 0x21;
+
+            if (selectedRow) {
+                FUN_001159f0_typed(recordData, atlas, 0x25, record->alpha,
+                                   record->x, record->y + (f32)rowOffset,
+                                   record->depth);
+                FUN_001159f0_typed(recordData, atlas, 0x26, record->alpha,
+                                   record->x + 470.0f, record->y + (f32)rowOffset,
+                                   record->depth);
+            } else {
+                FUN_00115bc0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2, record->alpha,
+                                   0x20, 0x43, 0x78, record->x + 13.0f,
+                                   record->y - 5.0f + (f32)rowOffset, record->depth);
+            }
+            FUN_001159f0_typed(recordData, *(void**)DAT_00833B70_abs, style * 2 + (selectedRow ? 1 : 0),
+                               record->alpha, record->x + 13.0f,
+                               record->y - 5.0f + (f32)rowOffset, record->depth);
+
+            FUN_003b2cb0_typed(record->depth, (s32)(record->x + 53.0f),
+                               (s32)(record->y + 9.0f + (f32)rowOffset),
+                               (s32)((0xffU - record->alpha) | 0xffffff00U), font, 1, text, 0x10, 0);
+
+            if (work->category == 0) {
+                u16 statA = *(u16*)(entry + 0x80);
+                u16 statB = *(u16*)(entry + 0x82);
+                void* numAtlas;
+                CampSkillVec2 position;
+
+                position.x = record->x + 317.0f;
+                position.y = record->y + 9.0f + (f32)rowOffset;
+                if ((s32)statA != baselineA) {
+                    if (statA > baselineA) {
+                        FUN_001159f0_typed(recordData, work->resource1, tileUp,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    } else {
+                        FUN_001159f0_typed(recordData, work->resource1, tileDown,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    }
+                }
+                numAtlas = (void*)H_Maestro_001120a0(selectedRow ? 1 : 2);
+                {
+                    u8 r = 0xff, g = 0xff, b = 0xff;
+                    if (selectedRow && (s32)statA > baselineA) {
+                        r = 0xf3; g = 0xb3; b = 0xbd;
+                    }
+                    FUN_0012e170(numAtlas, 0xb, position, (s32)record->depth,
+                                 r, g, b, (s32)record->alpha, statA, 3);
+                }
+
+                position.x = record->x + 408.0f;
+                if ((s32)statB != baselineB) {
+                    if (statB > baselineB) {
+                        FUN_001159f0_typed(recordData, work->resource1, tileUp,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    } else {
+                        FUN_001159f0_typed(recordData, work->resource1, tileDown,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    }
+                }
+                numAtlas = (void*)H_Maestro_001120a0(selectedRow ? 1 : 2);
+                {
+                    u8 r = 0xff, g = 0xff, b = 0xff;
+                    if (selectedRow && (s32)statB > baselineB) {
+                        r = 0xf3; g = 0xb3; b = 0xbd;
+                    }
+                    FUN_0012e170(numAtlas, 0xb, position, (s32)record->depth,
+                                 r, g, b, (s32)record->alpha, statB, 3);
+                }
+            } else if (work->category == 1) {
+                u16 statA = *(u16*)(entry + 0x84);
+                void* numAtlas;
+                CampSkillVec2 position;
+
+                position.x = record->x + 317.0f;
+                position.y = record->y + 9.0f + (f32)rowOffset;
+                if ((s32)statA != baselineA) {
+                    if (statA > baselineA) {
+                        FUN_001159f0_typed(recordData, work->resource1, tileUp,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    } else {
+                        FUN_001159f0_typed(recordData, work->resource1, tileDown,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    }
+                }
+                numAtlas = (void*)H_Maestro_001120a0(selectedRow ? 1 : 2);
+                {
+                    u8 r = 0xff, g = 0xff, b = 0xff;
+                    if (selectedRow && (s32)statA > baselineA) {
+                        r = 0xf3; g = 0xb3; b = 0xbd;
+                    }
+                    FUN_0012e170(numAtlas, 0xb, position, (s32)record->depth,
+                                 r, g, b, (s32)record->alpha, statA, 3);
+                }
+            } else if (work->category == 2) {
+                u16 statA = *(u16*)(entry + 0x86);
+                void* numAtlas;
+                CampSkillVec2 position;
+
+                position.x = record->x + 317.0f;
+                position.y = record->y + 9.0f + (f32)rowOffset;
+                if ((s32)statA != baselineA) {
+                    if (statA > baselineA) {
+                        FUN_001159f0_typed(recordData, work->resource1, tileUp,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    } else {
+                        FUN_001159f0_typed(recordData, work->resource1, tileDown,
+                                           record->alpha, position.x + 49.0f,
+                                           position.y - 3.0f, record->depth);
+                    }
+                }
+                numAtlas = (void*)H_Maestro_001120a0(selectedRow ? 1 : 2);
+                {
+                    u8 r = 0xff, g = 0xff, b = 0xff;
+                    if (selectedRow && (s32)statA > baselineA) {
+                        r = 0xf3; g = 0xb3; b = 0xbd;
+                    }
+                    FUN_0012e170(numAtlas, 0xb, position, (s32)record->depth,
+                                 r, g, b, (s32)record->alpha, statA, 3);
+                }
+            }
+        }
         break;
+    }
     case 4:
-        campSkillDrawDetailSprite(record, work);
+    {
+        u8* sprite;
+
+        sprite = (u8*)FUN_001158b0(NULL, work->resource1, 0x1b);
+        *(f32*)(sprite + 0x2c) = record->depth;
+        *(f32*)(sprite + 0x10) = record->x;
+        *(f32*)(sprite + 0x14) = record->y;
+        *(u8*)(sprite + 0x18) = (u8)record->alpha;
+        *(f32*)(sprite + 0x20) = -45.0f;
+        FUN_001127d0(sprite, 1);
+        FUN_00115980(sprite);
+        break;
+    }
+    case 6:
+    {
+        u8* data;
+        u8* entry;
+        s32 selected;
+        s32 first;
+        u32 packed;
+
+        data = work->detailData;
+        selected = *(s32*)(data + 0x2d68);
+        first = *(s32*)(data + 0x2d6c);
+        entry = campSkillDetailEntry(work, first + selected);
+        packed = (u32)*(u16*)(entry + 0x64) |
+                 ((u32)*(u8*)(entry + 0x7c) << 16);
+        FUN_003c7e20_typed(
+            record->depth, (s32)record->x, (s32)record->y,
+            (s32)((0xffU - record->alpha) | 0xffffff00U), 1, 10, 1, packed);
+        break;
+    }
+    case 7:
+        FUN_001159f0_typed(recordData, work->resource1, 0x24, record->alpha,
+                           record->x, record->y, record->depth);
+        FUN_001159f0_typed(recordData, work->resource1, 0x23, record->alpha,
+                           record->x + 15.0f, record->y - 5.0f, record->depth);
         break;
     case 5:
         break;
-    case 6:
-        campSkillDrawDetailSelection(record, work);
-        break;
-    case 7:
-        campSkillDrawDetailFrame(record, work);
-        break;
     }
 }
+#pragma pop
 
 
 static void campSkillStartPanelPersona(KwlnTask* parent, s16 pcId)
