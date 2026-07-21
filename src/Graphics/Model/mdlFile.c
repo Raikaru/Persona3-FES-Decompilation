@@ -46407,7 +46407,7 @@ void FUN_00349d30(int param_1)
 
 
 
-// FUN_00349ED0 NONMATCHING
+// FUN_00349ED0
 
 
 u32 FUN_00349ed0(int param_1)
@@ -46416,13 +46416,13 @@ u32 FUN_00349ed0(int param_1)
 
 {
 
-  int *piVar5;
-
-  int iVar1;
+  int iVar3;
 
   u32 uVar2;
 
-  int iVar3;
+  int iVar1;
+
+  int *piVar5;
 
   int iVar4;
 
@@ -47129,7 +47129,7 @@ void FUN_0034a800(int param_1)
 
 
 
-// FUN_0034A8C0 NONMATCHING
+// FUN_0034A8C0
 
 
 u32 FUN_0034a8c0(int param_1)
@@ -47138,13 +47138,13 @@ u32 FUN_0034a8c0(int param_1)
 
 {
 
-  int *piVar5;
-
-  int iVar1;
+  int iVar3;
 
   u32 uVar2;
 
-  int iVar3;
+  int iVar1;
+
+  int *piVar5;
 
   int iVar4;
 
