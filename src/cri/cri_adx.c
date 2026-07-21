@@ -3057,7 +3057,7 @@ void FUN_005322c8(int param_1)
 
 {
 
-  FUN_00548678(*(u32 *)(param_1 + 4));
+  FUN_00548678(*(s32 *)(param_1 + 4));
 
   return;
 
