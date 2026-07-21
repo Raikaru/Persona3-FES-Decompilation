@@ -5508,7 +5508,7 @@ u32 FUN_0039e1b0(int param_1,int param_2)
 
     uVar3 = *(u32 *)(param_1 + 0x92c);
 
-    uVar4 = (*DAT_00960178)(0x8dc,0x40000);
+    uVar4 = (*DAT_00960178_abs)(0x8dc,0x40000);
 
     FUN_00521408(uVar4,0,0x8dc);
 
