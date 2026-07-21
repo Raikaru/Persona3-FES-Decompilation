@@ -8,16 +8,19 @@ extern u32 DAT_006a3e50;
 #pragma alias DAT_006a3e50_abs DAT_006a3e50
 extern u32 DAT_006a3e50_abs[];
 extern u32 DAT_006a3e60;
+#pragma alias DAT_006a3e60_abs DAT_006a3e60
+extern u8 DAT_006a3e60_abs[];
+#define DAT_006a3e60 (*(u32*)DAT_006a3e60_abs)
 extern s32 DAT_006a3e90[];
 extern s32 DAT_006a3eb0[];
 extern u32 DAT_007cae18;
 extern u32 DAT_007cb01c;
-extern u32 DAT_007e094c;
-extern u32 DAT_007e094e;
-extern u32 DAT_007e0952;
-extern u32 DAT_007e0956;
-extern u32 DAT_007e0958;
-extern u32 DAT_007e095a;
+extern u16 DAT_007e094c;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e0956;
+extern u16 DAT_007e0958;
+extern u16 DAT_007e095a;
 extern u32 DAT_0095be90;
 #pragma alias DAT_0095be90_ptr DAT_0095be90
 extern u32 DAT_0095be90_ptr[];
