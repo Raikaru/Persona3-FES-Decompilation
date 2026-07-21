@@ -1649,7 +1649,7 @@ u32 FUN_002ded60(int param_1)
 case2_zero:
         uVar1 = 0xa4;
 case2_done:
-        goto switch_epilogue;
+        break;
     case 3:
         if (*(s32*)DAT_00697be4_abs == -1)
         {
@@ -1757,7 +1757,6 @@ case8_done:
         break;
     }
 
-switch_epilogue:
     return uVar1;
 }
 #pragma pop
