@@ -93,6 +93,18 @@ extern u32 uGpffffaff0;
 extern u32 DAT_0077e4c0;
 extern u32 DAT_0077e4c4;
 extern u32 DAT_0077e4c8;
+#pragma alias DAT_0077e4c0_abs DAT_0077e4c0
+#pragma alias DAT_0077e4c4_abs DAT_0077e4c4
+#pragma alias DAT_0077e4c8_abs DAT_0077e4c8
+extern u32 DAT_0077e4c0_abs[];
+extern u32 DAT_0077e4c4_abs[];
+extern u32 DAT_0077e4c8_abs[];
+#pragma alias FUN_004c31b0_typed FUN_004c31b0
+extern void FUN_004c31b0_typed(float angle, int matrix, int axis, int combine);
+#pragma alias DAT_007bcbc8_abs DAT_007bcbc8
+#pragma alias DAT_007bcbd8_abs DAT_007bcbd8
+extern u8 DAT_007bcbc8_abs[];
+extern u8 DAT_007bcbd8_abs[];
 extern u32 DAT_0077e4d0;
 extern u32 DAT_0077e4d4;
 extern u32 DAT_0077e4d8;
@@ -5060,14 +5072,96 @@ u32 FUN_004b7e10(int param_1,u64 param_2)
 }
 // FUN_004B7F30 NONMATCHING
 int FUN_004b7f30(int param_1)
-
 {
   int iVar1;
   int iVar2;
-  
+
   iVar1 = FUN_004b91b0_arg(*(u32 *)(param_1 + 0x14));
   iVar2 = iVar1 + 4;
   return iVar2 + (*(int *)(param_1 + 4) << 5);
+}
+// FUN_004B7F80 NONMATCHING
+void FUN_004b7f80(RwMatrix *matrix, const f32 *src)
+{
+  matrix->right.x = src[2];
+  matrix->right.y = src[3];
+  matrix->right.z = 0.0f;
+  matrix->up.x = src[4];
+  matrix->up.y = src[5];
+  matrix->up.z = 0.0f;
+  matrix->at.x = 0.0f;
+  matrix->at.y = 0.0f;
+  matrix->at.z = 0.0f;
+  matrix->pos.x = src[6];
+  matrix->pos.y = src[7];
+  matrix->pos.z = 0.0f;
+  FUN_004c2f10((int)matrix);
+}
+// FUN_004B7FD0 NONMATCHING
+void FUN_004b7fd0(f32 t, f32 *out, const f32 *a, const f32 *b)
+{
+  f32 ratio;
+
+  ratio = (t - a[1]) / (b[1] - a[1]);
+  out[2] = a[2] + ratio * (b[2] - a[2]);
+  out[3] = a[3] + ratio * (b[3] - a[3]);
+  out[4] = a[4] + ratio * (b[4] - a[4]);
+  out[5] = a[5] + ratio * (b[5] - a[5]);
+  out[6] = a[6] + ratio * (b[6] - a[6]);
+  out[7] = a[7] + ratio * (b[7] - a[7]);
+}
+// FUN_004B8080 NONMATCHING
+void FUN_004b8080(f32 t, f32 *out, const f32 *a, const f32 *b)
+{
+  out[2] = a[2] + t * (b[2] - a[2]);
+  out[3] = a[3] + t * (b[3] - a[3]);
+  out[4] = a[4] + t * (b[4] - a[4]);
+  out[5] = a[5] + t * (b[5] - a[5]);
+  out[6] = a[6] + t * (b[6] - a[6]);
+  out[7] = a[7] + t * (b[7] - a[7]);
+}
+// FUN_004B8120 NONMATCHING
+void FUN_004b8120(f32 *out, const f32 *matrix)
+{
+  f32 a;
+  f32 b;
+  f32 c;
+  f32 d;
+  f32 det;
+  f32 x0;
+  f32 x1;
+  f32 x2;
+  f32 x3;
+
+  a = matrix[2];
+  b = matrix[3];
+  c = matrix[4];
+  d = matrix[5];
+  det = a * d - b * c;
+  if (det == 0.0f) {
+    out[6] = out[6] - matrix[6];
+    out[7] = out[7] - matrix[7];
+  }
+  else {
+    x0 = out[0];
+    x1 = out[1];
+    x2 = out[2];
+    x3 = out[3];
+    out[0] = (d * x0 - c * x1) / det;
+    out[1] = (d * x2 - c * x3) / det;
+    out[2] = (-b * x0 + a * x1) / det;
+    out[3] = (-b * x2 + a * x3) / det;
+  }
+}
+// FUN_004B81F0 NONMATCHING
+void FUN_004b81f0(f32 *out, const f32 *a, const f32 *b)
+{
+  out[2] = a[3] * b[4] + a[2] * b[2];
+  out[3] = a[3] * b[5] + a[2] * b[3];
+  out[4] = a[5] * b[4] + a[4] * b[2];
+  out[5] = a[5] * b[5] + a[4] * b[3];
+  out[6] = a[6] + b[6];
+  out[7] = a[7] + b[7];
 }
 // FUN_004B8290 NONMATCHING
 u32 FUN_004b8290(u32 param_1,u32 *param_2)
@@ -5097,36 +5191,81 @@ u32 FUN_004b8290(u32 param_1,u32 *param_2)
   puVar1[5] = fVar6;
   return param_1;
 }
+#pragma schedule on
 // FUN_004B82D0 NONMATCHING
-void FUN_004b82d0(u64 param_1,int param_2)
-
+void FUN_004b82d0(RwMatrix *matrix, const f32 *src)
 {
-  u32 *puVar1;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
-  
-  uStack_10 = DAT_0077e4c0;
-  uStack_c = DAT_0077e4c4;
-  uStack_8 = DAT_0077e4c8;
-  puVar1 = (u32 *)param_1;
-  *puVar1 = *(u32 *)(param_2 + 0xc);
-  puVar1[1] = *(u32 *)(param_2 + 0x14);
-  puVar1[2] = 0;
-  puVar1[4] = 0;
-  puVar1[5] = *(u32 *)(param_2 + 0x10);
-  puVar1[6] = 0;
-  puVar1[8] = 0;
-  puVar1[9] = 0;
-  puVar1[10] = 0;
-  puVar1[0xc] = *(u32 *)(param_2 + 0x18);
-  puVar1[0xd] = *(u32 *)(param_2 + 0x1c);
-  puVar1[0xe] = 0;
-  FUN_004c2f10();
-  FUN_004c35d0(param_1,0x7bcbc8,2);
-  FUN_004c31b0((*(float *)(param_2 + 8) / 3.1415927) * 180.0,param_1,&uStack_10,2);
-  FUN_004c35d0(param_1,0x7bcbd8,2);
-  return;
+  RwV3d axis;
+
+  axis.x = *(f32 *)DAT_0077e4c0_abs;
+  axis.y = *(f32 *)DAT_0077e4c4_abs;
+  axis.z = *(f32 *)DAT_0077e4c8_abs;
+  matrix->right.x = src[3];
+  matrix->right.y = src[5];
+  matrix->right.z = 0.0f;
+  matrix->up.x = 0.0f;
+  matrix->up.y = src[4];
+  matrix->up.z = 0.0f;
+  matrix->at.x = 0.0f;
+  matrix->at.y = 0.0f;
+  matrix->at.z = 0.0f;
+  matrix->pos.x = src[6];
+  matrix->pos.y = src[7];
+  matrix->pos.z = 0.0f;
+  FUN_004c2f10((int)matrix);
+  FUN_004c35d0((int)matrix,(int)DAT_007bcbc8_abs,2);
+  FUN_004c31b0_typed(src[2] / 3.1415927f * 180.0f,(int)matrix,(int)&axis,2);
+  FUN_004c35d0((int)matrix,(int)DAT_007bcbd8_abs,2);
+}
+#pragma schedule off
+// FUN_004B83D0 NONMATCHING
+void FUN_004b83d0(f32 t, f32 *out, const f32 *a, const f32 *b)
+{
+  f32 ratio;
+  f32 delta;
+
+  ratio = (t - a[1]) / (b[1] - a[1]);
+  delta = b[2] - a[2];
+  if (delta < -180.0f)
+    delta += 360.0f;
+  else if (delta > 180.0f)
+    delta -= 360.0f;
+  out[2] = a[2] + ratio * delta;
+  delta = b[3] - a[3];
+  out[3] = a[3] + ratio * delta;
+  delta = b[4] - a[4];
+  out[4] = a[4] + ratio * delta;
+  delta = b[5] - a[5];
+  out[5] = a[5] + ratio * delta;
+  delta = b[6] - a[6];
+  out[6] = a[6] + ratio * delta;
+  delta = b[7] - a[7];
+  out[7] = a[7] + ratio * delta;
+}
+// FUN_004B8500 NONMATCHING
+void FUN_004b8500(f32 t, f32 *out, const f32 *a, const f32 *b)
+{
+  f32 delta;
+
+  delta = b[2] - a[2];
+  if (delta < -180.0f)
+    delta += 360.0f;
+  else if (delta > 180.0f)
+    delta -= 360.0f;
+  out[2] = a[2] + t * delta;
+  out[3] = a[3] + t * (b[3] - a[3]);
+  out[4] = a[4] + t * (b[4] - a[4]);
+  out[5] = a[5] + t * (b[5] - a[5]);
+  out[6] = a[6] + t * (b[6] - a[6]);
+  out[7] = a[7] + t * (b[7] - a[7]);
+}
+// FUN_004B8610
+void FUN_004b8610(void)
+{
+}
+// FUN_004B8620
+void FUN_004b8620(void)
+{
 }
 // FUN_004B8630 NONMATCHING
 u64 FUN_004b8630(u64 param_1,float *param_2)
