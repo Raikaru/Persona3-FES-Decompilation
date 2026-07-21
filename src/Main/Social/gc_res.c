@@ -144,14 +144,13 @@ body:
     }
     if (request->state == 2) {
         goto assert_state2;
-    }
-    if (request->state == 1) {
+    } else if (request->state == 1) {
         goto process;
-    }
-    if (request->state == 0) {
+    } else if (request->state == 0) {
         goto assert_state0;
+    } else {
+        goto increment;
     }
-    goto increment;
 
 assert_state0:
     K_ASSERT(false, 0xc1);
@@ -161,49 +160,37 @@ process:
     if (H_Cdvd_IsFileLoaded((HCdvd*)request->cdvd) == 0) {
         goto increment;
     }
-    if (request->type == 1) {
-        goto persona;
-    }
-    if (request->type == 0) {
-        goto pair;
-    }
-    if (request->type == 2) {
-        goto misc;
-    }
+    if (request->type == 1) { goto persona; }
+    if (request->type == 0) { goto pair; }
+    if (request->type == 2) { goto misc; }
     goto set_state;
 
 misc:
-    if (request->slot == 1) {
-        goto misc_slot1;
-    }
-    if (request->slot == 0) {
-        goto misc_slot0;
-    }
+    if (request->slot == 1) { goto misc_slot1; }
+    if (request->slot == 0) { goto misc_slot0; }
     goto set_state;
 
 misc_slot0:
-    K_ASSERT((work->loadedFlags & 1) == 0, 0xcf);
+    K_ASSERT(((~work->loadedFlags) & 1) != 0, 0xcf);
     work->cardRaster =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
     work->loadedFlags |= 1;
-    work->flags &= ~4u;
     H_Cdvd_Destroy((HCdvd*)request->cdvd);
     request->flags &= ~1u;
     goto set_state;
 
 misc_slot1:
-    K_ASSERT((work->loadedFlags & 2) == 0, 0xd6);
+    K_ASSERT(((~work->loadedFlags) & 2) != 0, 0xd6);
     work->miscRaster =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
     work->loadedFlags |= 2;
-    work->unk44 = 1;
-    work->flags &= ~4u;
+    work->pendingCount = 1;
     H_Cdvd_Destroy((HCdvd*)request->cdvd);
     request->flags &= ~1u;
     goto set_state;
 
 pair:
-    K_ASSERT((work->pairs[request->slot].flags & 2) == 0, 0xe3);
+    K_ASSERT(((~work->pairs[request->slot].flags) & 2) != 0, 0xe3);
     work->pairs[request->slot].raster =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
     work->pairs[request->slot].flags |= 2;
@@ -212,7 +199,7 @@ pair:
     goto set_state;
 
 persona:
-    K_ASSERT((work->personas[request->slot].flags & 2) == 0, 0xeb);
+    K_ASSERT(((~work->personas[request->slot].flags) & 2) != 0, 0xeb);
     work->personas[request->slot].raster =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
     work->personas[request->slot].flags |= 2;
@@ -424,35 +411,35 @@ void func_0021a840(void)
     }
 }
 
-// FUN_0021A920 NONMATCHING
+// FUN_0021A920
 void func_0021a920(s32 majorId, s32 minorId)
 {
-    u8* work;
-    u8* record;
-    u8* request;
+    s32 index;
+    GcResWork* work;
+    GcResPair* record;
+    GcResRequest* request;
     char prefix[16];
     char path[256];
     char suffix;
-    s32 index;
 
     K_ASSERT(sGcRes != NULL, 0x7c);
-    work = sGcRes;
+    work = (GcResWork*)sGcRes;
     if (func_0021ac90(majorId, minorId) != false) {
         func_0021ae30(majorId, minorId);
         return;
     }
 
     index = func_0021af30();
-    record = GC_PAIR(work, index);
-    GC_U32(record, 0x04) = (u32)majorId;
-    GC_U32(record, 0x08) = (u32)minorId;
-    GC_U32(record, 0x0c) = 0;
-    GC_U32(record, 0x10) = 1;
-    GC_U32(record, 0x00) |= 1;
+    record = &work->pairs[index];
+    record->majorId = majorId;
+    record->minorId = minorId;
+    record->raster = NULL;
+    record->refs = 1;
+    record->flags |= 1;
 
-    request = (u8*)func_0021b2d0();
-    GC_U32(request, 0x110) = 0;
-    GC_U32(request, 0x114) = (u32)index;
+    request = (GcResRequest*)func_0021b2d0();
+    request->type = 0;
+    request->slot = index;
     switch (majorId) {
     case 0:
         strcpy(prefix, "sword");
@@ -467,14 +454,12 @@ void func_0021a920(s32 majorId, s32 minorId)
         strcpy(prefix, "cup");
         break;
     default:
-        prefix[0] = '\0';
         break;
     }
-    if (GC_U32(record, 0x08) < 0xb) {
-        sprintf(path, "card/sarcana/%s_c%02d.tmx", prefix, GC_U32(record, 0x08));
+    if (record->minorId < 0xb) {
+        sprintf(path, "card/sarcana/%s_c%02d.tmx", prefix, record->minorId);
     } else {
-        suffix = '\0';
-        switch (GC_U32(record, 0x08)) {
+        switch (record->minorId) {
         case 0xb:
             suffix = 'p';
             break;
@@ -492,9 +477,9 @@ void func_0021a920(s32 majorId, s32 minorId)
         }
         sprintf(path, "card/sarcana/%s_c0%c.tmx", prefix, suffix);
     }
-    GC_PTR(request, 0x08) = H_Cdvd_Request(path, HCDVD_FILENORMAL);
-    GC_U32(request, 0x04) = 1;
-    GC_U32(request, 0x00) |= 1;
+    request->cdvd = H_Cdvd_Request(path, HCDVD_FILENORMAL);
+    request->state = 1;
+    request->flags |= 1;
 }
 
 // FUN_0021ab80
