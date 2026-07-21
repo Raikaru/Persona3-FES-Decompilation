@@ -351,12 +351,54 @@ state3_done:
             return 2;
         }
         case 4:
-            if (func_0018f190(&cardMode, (u32*)&cardCode, &cardError) == -1)
+        {
+            s32 status;
+            status = func_0018f190(&cardMode, (u32*)&cardCode, &cardError);
+            if (status == -1)
             {
-                FUN_00513598(sSocketNo);
-                sMemcardSeqMode = 5;
+                goto state4_error;
             }
+            if (status == 1)
+            {
+                goto state4_body;
+            }
+            goto state4_done;
+
+state4_body:
+            if (cardCode != 0)
+            {
+                goto state4_done;
+            }
+            if (cardCode == 0x2f)
+            {
+                goto state4_done;
+            }
+            if (cardCode == 0x9001)
+            {
+                goto state4_return3;
+            }
+            if (cardCode == 0x13)
+            {
+                goto state4_return3;
+            }
+            if (cardCode == 0x6f)
+            {
+                goto state4_return3;
+            }
+            if (cardCode == 0x9003)
+            {
+                goto state4_return3;
+            }
+            goto state4_done;
+
+state4_return3:
+            return -3;
+state4_error:
+            FUN_00513598(sSocketNo);
+            sMemcardSeqMode = 5;
+state4_done:
             break;
+        }
         case 5:
         {
             s32 status;
