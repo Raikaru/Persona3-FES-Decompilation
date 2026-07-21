@@ -38,6 +38,7 @@ extern u32 FUN_00239140(s32);
 extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
 extern void FUN_003b0e20(u32 resource, u32 color);
 extern u32 RpRandom(void);
+extern void bppPanelDrawParameterLayout(void* work);
 u32 FUN_0022e850(u32);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
@@ -1420,24 +1421,162 @@ void FUN_0022c8a0(u32* object)
 // FUN_0022DF10 NONMATCHING
 void FUN_0022df10(u32* object)
 {
-    u8* bytes;
-    u32 table;
-    u32 i;
+    u32 table3;
+    u32 table5;
+    u32 text;
+    u32 resource;
 
-    if (object == NULL) {
-        return;
-    }
-    bytes = (u8*)object;
-    if ((object[0] & 1) == 0) {
-        return;
-    }
-    table = FUN_0021c3f0(3);
-    for (i = 0; i < 6; ++i) {
-        u8* slot = bytes + 0x510 + i * 0x10;
-        if (*(u32*)slot != 0) {
-            FUN_0021d3b0(slot + 0x10,
-                         FUN_0021cca0(table, 0x2f));
+    K_ASSERT((object[0] & 1) != 0, 0x390);
+    table3 = FUN_0021c3f0(3);
+    table5 = FUN_0021c3f0(5);
+    text = FUN_0021c450(*(u16*)((u8*)object + 4));
+    ((void (*)(u32, u32))D_00960090)(0x14, 2);
+    ((void (*)(u32, u32))D_00960090)(8, 0);
+    ((void (*)(u32, u32))D_00960090)(6, 0);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(FUN_0021cca0(text, 1)));
+
+    if ((object[0] & 0x20) != 0) {
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+        ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+            ((u32*)((u8*)object + 0x310), 4, 0, 1, 2);
+        ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+            ((u32*)((u8*)object + 0x310), 4, 0, 2, 3);
+
+        if (!((object[0] & 4) != 0 && object[0x20c] == 8)) {
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+                ((u32*)((u8*)object + 0x410), 4, 0, 1, 2);
+            ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+                ((u32*)((u8*)object + 0x410), 4, 0, 2, 3);
         }
+    }
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x110), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x110), 4, 0, 2, 3);
+
+    if ((object[0] & 0x20) == 0) {
+        goto check210_flag8;
+    }
+    if ((object[0] & 4) == 0) {
+        goto draw210;
+    }
+    if (object[0x20c] != 8) {
+        goto draw210;
+    }
+check210_flag8:
+    if ((object[0] & 8) != 0) {
+        goto draw210;
+    }
+    if ((object[0] & 0x100) == 0) {
+        goto skip210;
+    }
+draw210:
+    RpSkyRenderStateSet(3, (void*)0x71801);
+    RpSkyRenderStateSet(2, (void*)0x48);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x210), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x210), 4, 0, 2, 3);
+skip210:
+
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(FUN_0021cca0(text, 0)));
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x10), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x10), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table3, 0xa);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x630), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x630), 4, 0, 2, 3);
+
+    if ((object[0] & 0x20) == 0) {
+        goto check730_flag8;
+    }
+    if ((object[0] & 4) == 0) {
+        goto draw730;
+    }
+    if (object[0x20c] != 8) {
+        goto draw730;
+    }
+check730_flag8:
+    if ((object[0] & 8) != 0) {
+        goto draw730;
+    }
+    if ((object[0] & 0x100) == 0) {
+        goto skip730;
+    }
+draw730:
+    RpSkyRenderStateSet(3, (void*)0x71801);
+    RpSkyRenderStateSet(2, (void*)0x48);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x730), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x730), 4, 0, 2, 3);
+skip730:
+
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    resource = FUN_0021cca0(table3, 0);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x860), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x860), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x960), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0x960), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xa60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xa60), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xb60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xb60), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xc60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xc60), 4, 0, 2, 3);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xd60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xd60), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table5, 2);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xe60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xe60), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table5, 3);
+    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xf60), 4, 0, 1, 2);
+    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+        ((u32*)((u8*)object + 0xf60), 4, 0, 2, 3);
+
+    if ((object[0] & 2) != 0) {
+        resource = FUN_0021cca0(table3, FUN_0022e850(object[0x14a]));
+        ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+        ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+            ((u32*)((u8*)object + 0x530), 4, 0, 1, 2);
+        ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
+            ((u32*)((u8*)object + 0x530), 4, 0, 2, 3);
+    }
+    if ((object[0] & 4) != 0) {
+        bppPanelDrawParameterLayout((void*)object);
     }
 }
 
