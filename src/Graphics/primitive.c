@@ -446,10 +446,11 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
     u32 savedRenderStates[PRIM_RENDERSTATE_COUNT];
     RwSphere sphere;
     RwV3d circleCenter;
-    RwV3d lineStart;
     RwV3d lineEnd;
+    RwV3d lineStart;
     f32 heightStep;
     f32 halfHeight;
+    f32 negHalfHeight;
     f32 angle;
 
     sphere.radius = (radius > height) ? radius : height;
@@ -486,17 +487,22 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
         primCircleLine3D(&circleCenter, radius, color, NULL, false);
         circleCenter.y += heightStep;
     }
-
     angle = 0.0f;
-    halfHeight = -0.5f * height;
+    negHalfHeight = -height * 0.5f;
     for (i = 0; i < 10; i++)
     {
-        lineStart.x = center->x + radius * cosf(angle);
-        lineStart.y = center->y + halfHeight;
-        lineStart.z = center->z + radius * sinf(angle);
+        lineStart.x = radius * cosf(angle);
+        lineStart.y = negHalfHeight;
+        lineStart.z = radius * sinf(angle);
         lineEnd.x = lineStart.x;
-        lineEnd.y = center->y + halfHeight + height;
+        lineEnd.y = halfHeight;
         lineEnd.z = lineStart.z;
+        lineStart.x += center->x;
+        lineStart.y += center->y;
+        lineStart.z += center->z;
+        lineEnd.x += center->x;
+        lineEnd.y += center->y;
+        lineEnd.z += center->z;
         primLine3D(&lineStart, &lineEnd, color, false);
         angle += g18deg + g18deg;
     }
@@ -504,12 +510,19 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
     angle = 0.0f;
     for (i = 0; i < 5; i++)
     {
-        lineStart.x = center->x + radius * cosf(angle);
-        lineStart.y = center->y - 0.5f * height;
-        lineStart.z = center->z + radius * sinf(angle);
-        lineEnd.x = center->x + radius * cosf(angle + 3.14159274f);
-        lineEnd.y = lineStart.y;
-        lineEnd.z = center->z + radius * sinf(angle + 3.14159274f);
+        lineStart.x = radius * cosf(angle);
+        lineStart.y = negHalfHeight;
+        lineStart.z = radius * sinf(angle);
+        angle += gPI;
+        lineEnd.x = radius * cosf(angle);
+        lineEnd.y = negHalfHeight;
+        lineEnd.z = radius * sinf(angle);
+        lineStart.x += center->x;
+        lineStart.y += center->y;
+        lineStart.z += center->z;
+        lineEnd.x += center->x;
+        lineEnd.y += center->y;
+        lineEnd.z += center->z;
         primLine3D(&lineStart, &lineEnd, color, false);
 
         lineStart.y += height;
@@ -517,7 +530,6 @@ void primCylinderLine3D(const RwV3d* center, f32 radius, f32 height, const RwRGB
         primLine3D(&lineStart, &lineEnd, color, false);
         angle += g18deg + g18deg;
     }
-
     if (saveAndRestoreRenderState)
     {
         for (i = 0; i < PRIM_RENDERSTATE_COUNT; i++)
