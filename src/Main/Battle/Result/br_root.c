@@ -187,10 +187,9 @@ extern u8 *func_00209d00(void);
 extern u8 *func_00209c40(void);
 extern u8 *func_00209c80(void);
 extern u8 *func_00209cc0(void);
-extern u8 *func_00209d40(void *);
-extern void func_00209e80(void);
-extern void func_00209e90(void);
-extern void func_00255130(void);
+extern char *func_00209e80(void);
+extern char *func_00209e90(void);
+extern u32 func_00255130(void);
 extern void func_00254e10(void);
 extern void sflCard002537f0(u16);
 extern void sflCard002536b0(u32, u32);
@@ -229,6 +228,38 @@ extern void *scrStartScriptFirstPrcd(void *header);
 extern void func_0021ab80(u16 id);
 extern void func_0021a920(u32 majorId, u32 minorId);
 extern char D_00684850[];
+extern char D_00684620[];
+extern char D_006846CE[];
+extern char D_006846DE[];
+extern char D_00684718[];
+extern char D_00684730[];
+extern char D_00684750[];
+extern char D_00684770[];
+extern char D_00684788[];
+extern char D_006847A0[];
+extern char D_006847D0[];
+extern char D_006847E0[];
+extern char D_006847F0[];
+extern char D_00684800[];
+extern char D_00684810[];
+extern char D_00684820[];
+extern char D_00684830[];
+extern char D_00684840[];
+extern char D_00696950[];
+extern char D_00696948[];
+extern char D_00696964[];
+extern char D_00696960[];
+extern char D_00696958[];
+extern u32 func_00255130(void);
+extern void func_00257f10(void);
+extern void func_002599c0(u32, u32);
+extern void func_00259a60(u32, s32);
+extern void sflScript00259970(void);
+extern f32 func_00530da0(f32);
+extern u32 datGetScenarioMode(void);
+extern void func_0020e200(void);
+extern u32 func_001f9170(s32);
+extern void func_00173660(DatPersonaWork *, s32);
 extern void func_0021a120(void);
 extern void func_00258300(void);
 extern void func_002550b0(void);
@@ -1414,20 +1445,171 @@ u32 func_001f4990(void)
 void func_001f4a00(void)
 {
     u8 *work = sBrCard;
+    DatPersonaWork *persona;
+    const u8 *actTable;
+    const u8 *valueTable;
     u32 i;
-    K_ASSERT(work != NULL, 0xfe);
-    func_00209e10();
-    func_00209e80();
-    func_00209e90();
-    BR_U32(work, 4) |= 0x20;
-    sflScript00259690(work + 0x1e990, 0x400);
-    sflScript00259b00(10);
-    for (i = 0; i < 8; i++) {
-        sflScript00259b60((u16)(i + 1));
+    s32 count;
+    s32 selected;
+    s32 active;
+    s32 groups;
+    s32 lastGroup;
+    s32 groupSize[4];
+    u32 enabled[4];
+    volatile u32 framePad[8];
+    f32 progress;
+    f32 maxProgress;
+    f32 ratio0;
+    f32 ratio1;
+    f32 ratio2;
+    u32 random;
+
+    if (work == NULL) {
+        K_Assert("sfl_root.c", 0xfe);
     }
-    sflCard002537f0((u16)(0x2e + (RpRandom() % 5)));
-    sflCard00258490();
-    BR_U32(work, 8) = 8;
+    work = sBrCard;
+    func_00209e10();
+    valueTable = (const u8 *)func_00209e80();
+    actTable = (const u8 *)func_00209e90();
+    BR_U32(work, 4) |= 0x20;
+    persona = datPersonaGetByPcId(1);
+    func_00173660(persona, 4);
+    datPersonaGetLevel(persona);
+    sflScript00259690(work + 0x1e990, 0x400);
+    printf(D_006847A0);
+    printf(D_00696964);
+    sflScript00259b00(10);
+    count = (s32)func_00255130();
+    printf(D_006847D0, count);
+    printf(D_00696964);
+
+    valueTable += BR_U32(work, 0x1fd54) * 6;
+    actTable += BR_U32(work, 0x1fd58) * 3;
+    ratio0 = (f32)(s32)valueTable[0];
+    ratio1 = (f32)(s32)valueTable[1];
+    ratio2 = (f32)(s32)valueTable[2];
+    maxProgress = ratio0 + ratio1 + ratio2;
+    ratio0 = (f32)(s32)valueTable[0] / maxProgress;
+    ratio1 = (f32)(s32)valueTable[2] / maxProgress;
+    ratio2 = (f32)(s32)valueTable[1] / maxProgress;
+    printf(D_00696950, valueTable[1], valueTable[0]);
+    printf(D_006847E0, (s32)func_00530da0(ratio0));
+    printf(D_006847F0, (s32)func_00530da0(ratio1));
+    printf(D_00684800, (s32)func_00530da0(ratio2));
+    printf(D_00696964);
+    printf(D_00696948);
+    printf(D_006847E0, (s32)func_00530da0(1.0f));
+    printf(D_006847F0, (s32)func_00530da0(1.0f));
+    printf(D_00684800, (s32)func_00530da0(3.0f));
+    printf(D_00696964);
+    printf(D_00684810,
+           (s32)func_00530da0(ratio0 * ratio1 + ratio2 * ratio0));
+    printf(D_00684820, actTable[2]);
+
+    maxProgress = (f32)(s32)actTable[2] +
+                  (f32)(RpRandom() % 1);
+    framePad[0] = actTable[0];
+    framePad[1] = actTable[2];
+    framePad[2] = actTable[2];
+    framePad[3] = actTable[1];
+    if (actTable[0] == 0 && actTable[2] != 0) {
+        framePad[0] = 1;
+    }
+    framePad[7] = 0;
+
+    groups = 0;
+    lastGroup = 0;
+    if (maxProgress < 1.0f) {
+        K_Assert("sfl_root.c", 0x871);
+    }
+    printf(D_00684830, (s32)func_00530da0(maxProgress - 0.5f));
+    progress = 0.0f;
+    while (progress <= maxProgress - 0.5f) {
+        u32 totalWeight;
+        u32 choiceWeight;
+
+        sflScript00259c60((u16)((f32)actTable[0] +
+                                progress * ((f32)actTable[1] -
+                                            (f32)actTable[0]) / maxProgress));
+        for (i = 0; i < 4; i++) {
+            enabled[i] = 0;
+        }
+        enabled[0] = 1;
+        enabled[3] = 1;
+        if (count >= 3) {
+            enabled[1] = 1;
+        }
+        if (groups != 0 && lastGroup == 0) {
+            enabled[2] = 1;
+        }
+        totalWeight = 0;
+        for (i = 0; i < 4; i++) {
+            if (enabled[i] != 0) {
+                totalWeight += framePad[i];
+            }
+        }
+        if (totalWeight == 0) {
+            K_Assert("sfl_root.c", 0x88b);
+        }
+        random = RpRandom() % totalWeight;
+        selected = 0;
+        for (i = 0; i < 4; i++) {
+            if (enabled[i] != 0) {
+                selected = (s32)i;
+                random -= framePad[i];
+                if ((s32)random < 0) {
+                    break;
+                }
+            }
+        }
+
+        if (selected == 0) {
+            lastGroup = 0;
+            random = RpRandom() % (u32)count;
+            active = (s32)(RpRandom() % (u32)(count - 1));
+            if ((u32)active >= random) {
+                selected = active + 1;
+            } else {
+                selected = random;
+                random = (u32)active;
+            }
+            func_002599c0(random, (u32)selected);
+            progress += 1.0f;
+            printf(D_00684840, (s32)func_00530da0(progress));
+        } else if (selected == 1) {
+            lastGroup = 1;
+            active = (s32)(RpRandom() % (u32)(count - 2)) + 2;
+            func_00259a60(RpRandom() % (u32)((count - active) + 1), active);
+            progress += 1.0f;
+            printf(D_00684840, (s32)func_00530da0(progress));
+            groupSize[groups] = active;
+            groups++;
+            count -= active - 1;
+        } else if (selected == 2) {
+            sflScript00259b60(0);
+            printf(D_00684840, (s32)func_00530da0(progress));
+            groups--;
+            count += groupSize[groups] - 1;
+        }
+        if (selected == 0 || selected == 1 || selected == 2) {
+            sflScript00259c10();
+            sflScript00259bc0();
+        }
+        if (selected == 3) {
+            sflScript00259cc0();
+            progress += 3.0f;
+            printf(D_00684840, (s32)func_00530da0(progress));
+        }
+    }
+    for (i = 0; i < groups; i++) {
+        sflScript00259b60(0);
+        sflScript00259c10();
+        sflScript00259bc0();
+    }
+    sflScript00259970();
+    func_00257f10();
+    func_0010a4e0(1, 0, 6, 1);
+    BR_U32(work, 8) = 7;
 }
 
 // FUN_001f53a0
@@ -1804,7 +1986,6 @@ u32 func_001f65e0(void)
 
 // FUN_001f6630 NONMATCHING
 void func_001f6630(void)
-{
     u8 *work = sBrReward;
     u32 i;
     K_ASSERT(work != NULL, 0x8c);
