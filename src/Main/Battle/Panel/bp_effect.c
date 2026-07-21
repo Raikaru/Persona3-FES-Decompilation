@@ -31,11 +31,18 @@ void FUN_0024c100(u32* work)
 void FUN_0024c110(void)
 {
     u8* work;
-    s32 timer;
-    u32 mode;
-    f32 fade;
-    f32 pulse;
+    f32 vertices[8];
     f32 rect[4];
+    u8 color[4];
+    f32 fade;
+    f32 baseX;
+    f32 baseY;
+    f32 offsetX;
+    f32 offsetY;
+    f32 overlayScale;
+    f32 phase;
+    f32 centerX;
+    f32 centerY;
     s32 i;
 
     K_ASSERT(sBpEffect != NULL, 0x37);
@@ -44,45 +51,178 @@ void FUN_0024c110(void)
     {
         return;
     }
-    timer = *(s32*)(work + 0xc);
-    if (timer < 0x3c) {
-        timer++;
-        *(u32*)(work + 0xc) = timer;
+
+    if (*(s32*)(work + 0xc) < 0x3c) {
+        (*(s32*)(work + 0xc))++;
     } else {
         *(u32*)(work + 4) &= ~1u;
         return;
     }
-    if (timer == 14) {
+
+    if (*(s32*)(work + 0xc) == 14) {
         func_0010a4e0(1, 0, 7, 5);
     }
-    mode = *(u32*)work;
-    if (timer < 10) {
+    if (*(u32*)work != 1) {
+        if (*(u32*)work) {
+        } else {
+            baseX = 60.0f;
+            baseY = -40.0f;
+        }
+    } else {
+        baseX = -60.0f;
+        baseY = 40.0f;
+    }
+
+    if (*(s32*)(work + 0xc) < 10) {
         fade = 0.0f;
-    } else if (timer < 15) {
-        fade = (f32)(timer - 10) / 5.0f;
-    } else if (timer < 0x2a) {
+        offsetX = 0.0f;
+        offsetY = 0.0f;
+    } else if (*(s32*)(work + 0xc) < 15) {
+        fade = (f32)(*(s32*)(work + 0xc) - 10) / 5.0f;
+        offsetX = baseX * (1.0f - fade);
+        offsetY = baseY * (1.0f - fade);
+    } else if (*(s32*)(work + 0xc) < 0x2a) {
         fade = 1.0f;
-    } else if (timer < 0x32) {
-        fade = 1.0f - (f32)(timer - 0x29) / 8.0f;
+        offsetX = 0.0f;
+        offsetY = 0.0f;
+    } else if (*(s32*)(work + 0xc) < 0x32) {
+        phase = (f32)(*(s32*)(work + 0xc) - 0x2a) / 8.0f;
+        fade = 1.0f - phase;
+        offsetX = (-baseX) * 3.5f * DAT_007cad60 * phase;
+        offsetY = (-baseY) * 3.0f * DAT_007cad60 * phase;
     } else {
         fade = 0.0f;
+        offsetX = 0.0f;
+        offsetY = 0.0f;
     }
-    pulse = mode == 1 ? 1.0f : 0.0f;
+
+    rect[0] = 210.0f + offsetX;
+    rect[1] = 178.0f + offsetY;
+    if (*(u32*)work == 1) {
+        rect[2] = 428.0f;
+        rect[3] = 256.0f;
+    } else if (*(u32*)work == 0) {
+        rect[2] = (f32)0x1a1;
+        rect[3] = 250.0f;
+    }
+    func_0021d8e0(work + 0x110, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)(255.0f * fade);
+    func_0021d950(work + 0x110, color);
+
+    if (*(s32*)(work + 0xc) < 10) {
+        baseY = 0.0f;
+        baseX = 1.0f;
+        overlayScale = baseX;
+    } else if (*(s32*)(work + 0xc) < 15) {
+        baseY = (f32)(*(s32*)(work + 0xc) - 10) / 5.0f;
+        baseX = 1.0f;
+        overlayScale = baseX + DAT_007cafec * (baseX - baseY);
+    } else if (*(s32*)(work + 0xc) < 0x2d) {
+        baseX = 1.0f;
+        baseY = baseX;
+        overlayScale = baseX;
+    } else if (*(s32*)(work + 0xc) < 0x37) {
+        baseY = (f32)(*(s32*)(work + 0xc) - 0x2d) / 8.0f;
+        baseX = 1.0f;
+        baseY = baseX - baseY;
+        overlayScale = baseX;
+    } else {
+        baseY = 0.0f;
+        baseX = 1.0f;
+        overlayScale = baseX;
+    }
+
+    rect[0] = 210.0f;
+    rect[1] = 178.0f;
+    if (*(u32*)work == 1) {
+        rect[2] = 428.0f;
+        rect[3] = 256.0f;
+    } else if (*(u32*)work == 0) {
+        rect[2] = (f32)0x1a1;
+        rect[3] = 250.0f;
+    }
+
+    vertices[0] = rect[0];
+    vertices[1] = rect[1];
+    vertices[2] = rect[0] + rect[2];
+    vertices[3] = rect[1];
+    vertices[4] = vertices[2];
+    vertices[5] = rect[1] + rect[3];
+    vertices[6] = rect[0];
+    vertices[7] = vertices[5];
+
+    centerX = rect[2] / 2.0f;
+    centerY = rect[3] / 2.0f;
+    for (i = 0; i < 4; i++) {
+        vertices[i * 2] -= centerX;
+        vertices[i * 2 + 1] -= centerY;
+    }
+    for (i = 0; i < 4; i++) {
+        vertices[i * 2] *= overlayScale;
+        vertices[i * 2 + 1] *= overlayScale;
+    }
+    for (i = 0; i < 4; i++) {
+        vertices[i * 2] += centerX;
+        vertices[i * 2 + 1] += centerY;
+    }
+    func_0021d890(work + 0x210, vertices);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)(255.0f * baseY);
+    func_0021d950(work + 0x210, color);
+
     rect[0] = 0.0f;
     rect[1] = 0.0f;
-    rect[2] = mode == 1 ? 438.0f : 417.0f;
-    rect[3] = mode == 1 ? 256.0f : 250.0f;
-    func_0021eb80(work + 0x110, rect);
-    func_0021eb80(work + 0x210, rect);
-    func_0021eac0(work + 0x110, fade);
-    func_0021eac0(work + 0x210, fade);
-    func_0021eac0(work + 0x10, fade * (0.8f + pulse * 0.2f));
-    for (i = 0; i < 3; i++) {
-        *(f32*)(work + 0x310 + i * 0x40) = fade;
-    }
-}
+    rect[2] = 640.0f;
+    rect[3] = 448.0f;
+    func_0021d8e0(work + 0x10, rect);
 
+    if (*(u32*)work == 1) {
+        color[0] = 0x37;
+        color[1] = 0;
+        color[2] = 3;
+    } else if (*(u32*)work == 0) {
+        color[0] = 0;
+        color[1] = 0x11;
+        color[2] = 0x48;
+    }
+    color[3] = (u8)(u32)(153.0f * baseX);
+    func_0021d950(work + 0x10, color);
+
+    *(f32*)(work + 0x310) = -360.0f;
+    *(f32*)(work + 0x314) = 448.0f;
+    *(f32*)(work + 0x350) = 640.0f;
+    *(f32*)(work + 0x354) = 148.0f;
+    *(f32*)(work + 0x390) = 640.0f;
+    *(f32*)(work + 0x394) = 448.0f;
+
+    if (*(u32*)work == 1) {
+        color[0] = 0x2d;
+        color[1] = 2;
+        color[2] = 8;
+    } else if (*(u32*)work == 0) {
+        color[0] = 0;
+        color[1] = 0x44;
+        color[2] = 0xc8;
+    }
+    color[3] = 0;
+    *(f32*)(work + 0x330) = (f32)(u32)color[0];
+    *(f32*)(work + 0x334) = (f32)(u32)color[1];
+    *(f32*)(work + 0x338) = (f32)(u32)color[2];
+    *(f32*)(work + 0x33c) = (f32)(u32)color[3];
+    *(f32*)(work + 0x370) = (f32)(u32)color[0];
+    *(f32*)(work + 0x374) = (f32)(u32)color[1];
+    *(f32*)(work + 0x378) = (f32)(u32)color[2];
+    *(f32*)(work + 0x37c) = (f32)(u32)color[3];
+}
 // FUN_0024CCA0
+
 void FUN_0024cca0(void)
 {
     u8* work;
