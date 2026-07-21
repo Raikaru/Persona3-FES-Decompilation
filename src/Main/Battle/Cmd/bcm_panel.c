@@ -19,15 +19,15 @@ void FUN_002230e0();
 u32 FUN_0021c450();
 u32 FUN_0021cd00();
 void FUN_0021d890();
-void FUN_0021d950();
-void FUN_0021d8e0();
+void FUN_0021d950(void* destination, const u8* color);
+void FUN_0021d8e0(void* destination, const f32* rect);
 void FUN_0022c210();
 void FUN_00224860();
 void FUN_00225670();
 void FUN_00227d10();
 void FUN_00238980();
 void FUN_00238bf0();
-void FUN_00238dc0();
+void FUN_00238dc0(void* destination, s32 count, u32 value, s32 mode, const f32* layout);
 void FUN_0022e780(u32*, u32);
 void FUN_0022e900(u32*, s32);
 void FUN_0022e9a0(u32*, s32);
@@ -35,6 +35,8 @@ void FUN_0022ea40(u32*, u32);
 void FUN_0022ecb0(u8*, u8*, f32);
 extern void FUN_003b1360();
 extern u32 FUN_00239140(s32);
+extern void FUN_003b0d70(u32 resource, s32 x, s32 y);
+extern void FUN_003b0e20(u32 resource, u32 color);
 u32 FUN_0022e850(u32);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
@@ -566,27 +568,149 @@ void FUN_00224860(void)
 // FUN_00224940 NONMATCHING
 void FUN_00224940(void)
 {
-    u32 i;
-    u32 j;
-    u32 count;
-    u32 alpha;
+    u8* work;
+    u8* records;
+    u8* record;
+    u8* sub;
+    u32 table0;
+    u32 table1;
+    u32 table3;
+    void* frame;
+    f32* basePos;
+    f32 weight;
+    f32 alphaF;
+    u8 alphaByte;
+    u32 alphaU32;
+    u32 defaultColour;
+    u32 colour;
+    f32 rect[4];
+    u8 color[4];
+    s32 i;
+    s32 j;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    alpha = bcm_panel_read(0x4650);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 kind = *(u32*)record;
-        bcm_panel_layout_record(record, i, alpha);
-        if (kind == 1) {
-            for (j = 0; j < 4; ++j) {
-                bcm_panel_layout_record(record + j * 0x100, i, alpha);
-            }
-        }
-        *(u32*)record |= 4;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    table1 = FUN_0021c3f0(1);
+    table3 = FUN_0021c3f0(3);
+    records = work + 0x4660;
+    weight = *(f32*)(work + 0x7214);
+
+    if (*(u32*)(work + 0x463c) == 0) {
+        alphaF = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+    } else if (*(u32*)(work + 0x463c) == 4) {
+        alphaF = (f32)*(s32*)(work + 0x4650) / 3.0f;
+    } else {
+        K_ASSERT(0, 0x8b3);
     }
-    bcm_panel_set_resource(bcm_panel_bytes() + 0xf50, 0, 0x13);
-    bcm_panel_set_resource(bcm_panel_bytes() + 0x1050, 0, 0x4b);
+    alphaByte = (u8)(u32)(255.0f * alphaF * weight);
+
+    basePos = (f32*)(work + 0x6050);
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    rect[0] = 188.0f + basePos[0];
+    rect[1] = 19.0f + basePos[1] +
+              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4230, rect);
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    rect[0] = 188.0f + basePos[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[1] = 19.0f + basePos[1] +
+              (f32)(*(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) * 26.0f;
+    rect[2] = 312.0f;
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4330, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(work + 0x4230, color);
+    FUN_0021d950(work + 0x4330, color);
+
+    alphaU32 = (u32)alphaByte;
+    defaultColour = 0xffffff00u | alphaU32;
+
+    for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
+        record = records + i * 0x310;
+        sub = *(u8**)(record + 0x300);
+
+        rect[0] = 143.0f + basePos[0];
+        rect[1] = 19.0f + basePos[1] + (f32)(i * 26);
+
+        if (*(void**)(sub + 0x1c) != NULL) {
+            colour = (*(u32*)(*(u8**)(sub + 0x1c) + 0x10) & 0xffffff00u) | alphaU32;
+        } else {
+            colour = defaultColour;
+        }
+
+        FUN_003b0d70((u32)sub, (s32)rect[0] << 4, (s32)rect[1] << 3);
+        FUN_003b0e20((u32)sub, colour);
+
+        frame = (void*)FUN_0021cca0(table0, 0x44);
+        rect[0] = 59.0f + basePos[0];
+        rect[1] = 30.0f + basePos[1] + (f32)(i * 26);
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(record, rect);
+
+        if (i == *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) {
+            color[0] = 0xf5;
+            color[1] = 0xf5;
+            color[2] = 0xff;
+        } else {
+            color[0] = 0x5a;
+            color[1] = 0x5a;
+            color[2] = 0x5a;
+        }
+        color[3] = alphaByte;
+        FUN_0021d950(record, color);
+
+        rect[0] = 95.0f + basePos[0];
+        rect[1] = 30.0f + basePos[1] + (f32)(i * 26);
+        FUN_00238dc0(record + 0x100, 2, *(u32*)(record + 0x304), 1, rect);
+
+        if (i == *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c)) {
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+        } else {
+            color[0] = 0x5a;
+            color[1] = 0x5a;
+            color[2] = 0x5a;
+        }
+        color[3] = alphaByte;
+
+        for (j = 0; j < 2; ++j) {
+            FUN_0021d950(record + j * 0x100 + 0x100, color);
+        }
+    }
+
+    frame = (void*)FUN_0021cca0(table3, 0x13);
+    rect[0] = 264.0f + basePos[0];
+    rect[1] = 126.0f + basePos[1];
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(records + 0xf50, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(records + 0xf50, color);
+
+    frame = (void*)FUN_0021cca0(table1, 0x4b);
+    rect[0] = 287.0f + basePos[0];
+    rect[1] = 126.0f + basePos[1];
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(records + 0x1050, rect);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(records + 0x1050, color);
 }
 
 // FUN_00225040 NONMATCHING
@@ -677,7 +801,7 @@ void FUN_00225670(void)
     }
     *(u32*)(overlay + 0x8) = 0;
     *(u32*)(overlay + 0xc) = 0;
-    FUN_0021d8e0(overlay, overlay);
+    FUN_0021d8e0(overlay, (const f32*)overlay);
 }
 
 // FUN_002257F0 NONMATCHING
