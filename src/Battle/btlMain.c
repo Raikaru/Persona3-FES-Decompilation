@@ -48,9 +48,10 @@ void FUN_002a1b00(s32 param_1,s16 param_2,s32 param_3);
 u32 FUN_002a1b70(u32 *param_1);
 void FUN_002a1db0(s32 param_1);
 void FUN_002a1e00(float param_1,float *param_2,float *param_3,float *param_4);
+extern void FUN_002a1e00_typed(f32* out, f32* first, f32* second, f32 weight);
 u32 FUN_002a2050(u16 *param_1,f32 *param_2,f32 *param_3);
 void FUN_002a2170(u16 *param_1,f32 *param_2);
-void FUN_002a2290(u16 *param_1,long param_2,long param_3,u16 param_4);
+void FUN_002a2290(u16 *param_1,f32 *param_2,f32 *param_3,u16 param_4);
 void FUN_002a2660(u16 *param_1,long param_2,long param_3,long param_4,long param_5,u16 param_6  );
 void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1);
 void FUN_002a2b50(u8* param_2, f32* param_3, f32 param_1);
@@ -4217,266 +4218,197 @@ void FUN_002a2170(u16 *param_1,f32 *param_2)
 // FUN_002A2290 NONMATCHING
 
 
-void FUN_002a2290(u16 *param_1,long param_2,long param_3,u16 param_4)
-
-
-
+void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 {
+    u16 index;
+    u32 address;
+    f32 *entry;
+    f32 *source;
+    f32 value1;
+    f32 value2;
+    f32 value3;
+    f32 value4;
+    f32 work[7];
 
-  u16 uVar1;
-
-  u32 *puVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  *param_1 = param_4;
-
-  param_1[0x3a] = 0;
-
-  param_1[0x3b] = 0;
-
-  param_1[0x3c] = 0;
-
-  param_1[0x40] = 0;
-
-  param_1[0x41] = 0;
-
-  param_1[0x3e] = 0;
-
-  param_1[0x3f] = 0;
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    puVar2 = (u32 *)param_2;
-
-    if (param_2 != 0) {
-
-      uVar3 = puVar2[1];
-
-      uVar4 = puVar2[2];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = *puVar2;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uVar4;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c),uVar1,param_2);
-
-      }
-
+    *param_1 = param_4;
+    param_1[0x3a] = 0;
+    param_1[0x3b] = 0;
+    param_1[0x3c] = 0;
+    *(u32*)((u8*)param_1 + 0x80) = 0;
+    *(u32*)((u8*)param_1 + 0x7c) = 0;
+    if (param_1[0x3b] < 4)
+    {
+        index = param_1[0x3c];
+        if (param_2 != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 4);
+            value2 = param_2[0];
+            value3 = param_2[1];
+            value1 = param_2[2];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value1;
+            if ((*param_1 & 1) == 0)
+            {
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, param_2);
+            }
+        }
+        source = param_2 + 3;
+        if (source != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 0x10);
+            value2 = source[0];
+            value3 = source[1];
+            value4 = source[2];
+            value1 = source[3];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value4;
+            entry[3] = value1;
+        }
+        index++;
+        if (index >= 4)
+        {
+            index = 0;
+        }
+        param_1[0x3c] = index;
+        param_1[0x3b]++;
     }
 
-    if (puVar2 + 3 != (u32 *)0x0) {
-
-      uVar5 = puVar2[4];
-
-      uVar3 = puVar2[5];
-
-      uVar4 = puVar2[6];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = puVar2[3];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uVar5;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
-
+    FUN_002a1e00_typed(work, param_2, param_3, fGpffff82c8);
+    if (param_1[0x3b] < 4)
+    {
+        index = param_1[0x3c];
+        if (work != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 4);
+            value2 = work[0];
+            value3 = work[1];
+            value1 = work[2];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value1;
+            if ((*param_1 & 1) == 0)
+            {
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
+            }
+        }
+        source = work + 3;
+        if (source != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 0x10);
+            value2 = source[0];
+            value3 = source[1];
+            value4 = source[2];
+            value1 = source[3];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value4;
+            entry[3] = value1;
+        }
+        index++;
+        if (index >= 4)
+        {
+            index = 0;
+        }
+        param_1[0x3c] = index;
+        param_1[0x3b]++;
     }
 
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
+    FUN_002a1e00_typed(work, param_2, param_3, fGpffff805c);
+    if (param_1[0x3b] < 4)
+    {
+        index = param_1[0x3c];
+        if (work != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 4);
+            value2 = work[0];
+            value3 = work[1];
+            value1 = work[2];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value1;
+            if ((*param_1 & 1) == 0)
+            {
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
+            }
+        }
+        source = work + 3;
+        if (source != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 0x10);
+            value2 = source[0];
+            value3 = source[1];
+            value4 = source[2];
+            value1 = source[3];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value4;
+            entry[3] = value1;
+        }
+        index++;
+        if (index >= 4)
+        {
+            index = 0;
+        }
+        param_1[0x3c] = index;
+        param_1[0x3b]++;
     }
 
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-  }
-
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    if ((u8*)0 != (u8 *)0x20) {
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = uStack_20;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uStack_1c;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uStack_18;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c));
-
-      }
-
+    if (param_1[0x3b] < 4)
+    {
+        index = param_1[0x3c];
+        if (param_3 != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 4);
+            value2 = param_3[0];
+            value3 = param_3[1];
+            value1 = param_3[2];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value1;
+            if ((*param_1 & 1) == 0)
+            {
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, param_3);
+            }
+        }
+        source = param_3 + 3;
+        if (source != ((void*)0))
+        {
+            address = (u32)index * 0x1c;
+            address += (u32)param_1;
+            entry = (f32*)(address + 0x10);
+            value2 = source[0];
+            value3 = source[1];
+            value4 = source[2];
+            value1 = source[3];
+            entry[0] = value2;
+            entry[1] = value3;
+            entry[2] = value4;
+            entry[3] = value1;
+        }
+        index++;
+        if (index >= 4)
+        {
+            index = 0;
+        }
+        param_1[0x3c] = index;
+        param_1[0x3b]++;
     }
-
-    if ((u8*)0 != (u8 *)0x14) {
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = uStack_14;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uStack_10;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uStack_c;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uStack_8;
-
-    }
-
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
-    }
-
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-  }
-
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    if ((u8*)0 != (u8 *)0x20) {
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = uStack_20;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uStack_1c;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uStack_18;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c));
-
-      }
-
-    }
-
-    if ((u8*)0 != (u8 *)0x14) {
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = uStack_14;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uStack_10;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uStack_c;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uStack_8;
-
-    }
-
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
-    }
-
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-  }
-
-  if (param_1[0x3b] < 4) {
-
-    uVar1 = param_1[0x3c];
-
-    puVar2 = (u32 *)param_3;
-
-    if (param_3 != 0) {
-
-      uVar3 = puVar2[1];
-
-      uVar4 = puVar2[2];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 2) = *puVar2;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 4) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 6) = uVar4;
-
-      if ((*param_1 & 1) == 0) {
-
-        FUN_0048d370(*(u32 *)(param_1 + 0x4c),uVar1,param_3);
-
-      }
-
-    }
-
-    if (puVar2 + 3 != (u32 *)0x0) {
-
-      uVar5 = puVar2[4];
-
-      uVar3 = puVar2[5];
-
-      uVar4 = puVar2[6];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 8) = puVar2[3];
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 10) = uVar5;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xc) = uVar3;
-
-      *(u32 *)(param_1 + (u32)uVar1 * 0xe + 0xe) = uVar4;
-
-    }
-
-    uVar1 = uVar1 + 1;
-
-    if (3 < uVar1) {
-
-      uVar1 = 0;
-
-    }
-
-    param_1[0x3c] = uVar1;
-
-    param_1[0x3b] = param_1[0x3b] + 1;
-
-  }
-
-  return;
-
 }
 
 // FUN_002A2660 NONMATCHING
