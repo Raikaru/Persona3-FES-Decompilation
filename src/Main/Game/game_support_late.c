@@ -53,6 +53,8 @@ extern u32 jtbl_0096017C[];
 
 /* Render-state callback table and data resources. */
 extern void (*D_00960090)(u32 state, u32 value);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern void* D_00846730[0x12];
 extern void* DAT_007ce008;
 
@@ -209,19 +211,19 @@ typedef struct GsSprite
     f32 depth;
 } GsSprite;
 
-static void gsDrawSprite(void* atlas, s32 tile, u32 alpha,
-                         f32 x, f32 y, f32 depth)
+static inline void gsDrawSprite(void* atlas, s32 tile, u32 alpha,
+                                f32 x, f32 y, f32 depth)
 {
     func_001159f0(NULL, atlas, tile, alpha, x, y, depth);
 }
 
-static void gsDrawSpriteAlt(void* atlas, s32 tile, u32 alpha,
-                            u32 extraAlpha, f32 x, f32 y, f32 depth)
+static inline void gsDrawSpriteAlt(void* atlas, s32 tile, u32 alpha,
+                                   u32 extraAlpha, f32 x, f32 y, f32 depth)
 {
     func_00115ad0(NULL, atlas, tile, x, y, alpha, extraAlpha, depth);
 }
 
-static s16 gsMappedPcId(s16 pcId)
+static inline s16 gsMappedPcId(s16 pcId)
 {
     if (datGetScenarioMode() != 0)
     {
@@ -241,15 +243,15 @@ static s16 gsMappedPcId(s16 pcId)
     return pcId;
 }
 
-static void* gsPcAtlas(void* object, s16 pcId)
+static inline void* gsPcAtlas(void* object, s16 pcId)
 {
     return GS_PTR(object, 0x3c + ((u32)gsMappedPcId(pcId) * 4));
 }
 
-static void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
+static inline void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
 {
-    void* transition;
     void* atlas;
+    void* transition;
     f32 depth;
     f32 x;
     f32 y;
@@ -268,9 +270,8 @@ static void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
     gsDrawSprite(GS_PTR(object, 0x2c), tile2, alpha, x + 44.0f, y + 39.0f, depth);
 }
 
-static void gsDrawStatusBars(void* object)
+static inline void gsDrawStatusBars(void* object)
 {
-    void* transition;
     s16 pcId;
     f32 x;
     f32 y;
@@ -279,6 +280,7 @@ static void gsDrawStatusBars(void* object)
     u32 value;
     u32 maxValue;
     u32 width;
+    void* transition;
 
     transition = GS_PTR(object, 0x70);
     pcId = GS_S16(object, 0x14);
@@ -308,10 +310,10 @@ static void gsDrawStatusBars(void* object)
     gsDrawSprite(GS_PTR(object, 0x2c), 2, alpha, x + 50.0f, y + 51.0f, depth - 2.0f);
 }
 
-static void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
-                                 s32 tile, s32 timer, s32 maxTimer,
-                                 s32 xOffset, s32 yOffset,
-                                 u32 alpha, s16 scale)
+static inline void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
+                                        s32 tile, s32 timer, s32 maxTimer,
+                                        s32 xOffset, s32 yOffset,
+                                        u32 alpha, s16 scale)
 {
     void* transition;
     void* sprite;
@@ -1716,38 +1718,54 @@ void* func_0018eb40(KwlnTask* task)
     u8* work = (u8*)task->workData;
     char path[264];
     GsPackedDimensions dimensions;
-    void* archive;
     KwlnTask* loader;
-    s32 i;
-    s32 id;
+    void (**renderState)(u32, u32);
     u32 mode;
 
     kwlnGetMainCamera();
-    D_00960090(6, 1);
-    D_00960090(7, 2);
-    D_00960090(8, 1);
-    D_00960090(9, 1);
-    D_00960090(0xc, 1);
-    D_00960090(0xb, 6);
-    D_00960090(10, 5);
+    renderState = (void (**)(u32, u32))D_00960090_abs;
+    (*renderState)(6, 1);
+    (*renderState)(7, 2);
+    (*renderState)(8, 1);
+    (*renderState)(9, 1);
+    (*renderState)(0xc, 1);
+    (*renderState)(0xb, 6);
+    (*renderState)(10, 5);
     mode = GS_U32(work, 0);
     switch (mode)
     {
     case 0:
         switch (GS_U32(work, 4))
         {
-        case 3: archive = (void*)D_005E45A0; break;
-        case 4: archive = (void*)D_005E45C0; break;
-        case 5: archive = (void*)D_005E45E0; break;
-        case 7: archive = (void*)D_005E4600; break;
-        case 8: archive = (void*)D_005E4620; break;
-        case 9:
-            archive = datGetScenarioMode() == 0 ? (void*)D_005E4660 : (void*)D_005E4640;
+        case 0:
+        case 1:
+        case 2:
+        case 6:
+        default:
+            sprintf(path, (const char*)D_005E4580);
             break;
-        case 10: archive = (void*)D_005E4680; break;
-        default: archive = (void*)D_005E4580; break;
+        case 3:
+            sprintf(path, (const char*)D_005E45A0);
+            break;
+        case 4:
+            sprintf(path, (const char*)D_005E45C0);
+            break;
+        case 5:
+            sprintf(path, (const char*)D_005E45E0);
+            break;
+        case 7:
+            sprintf(path, (const char*)D_005E4600);
+            break;
+        case 8:
+            sprintf(path, (const char*)D_005E4620);
+            break;
+        case 9:
+            sprintf(path, (const char*)(datGetScenarioMode() == 0 ? D_005E4660 : D_005E4640));
+            break;
+        case 10:
+            sprintf(path, (const char*)D_005E4680);
+            break;
         }
-        strcpy(path, (const char*)archive);
         GS_U32(work, 0) = 1;
         break;
     case 1:
@@ -1756,9 +1774,13 @@ void* func_0018eb40(KwlnTask* task)
         dimensions.valueS[2] = 0xb;
         switch (GS_U32(work, 4))
         {
+        case 0: dimensions.valueS[3] = 0; break;
+        case 1: dimensions.valueS[3] = 0; break;
+        case 2: dimensions.valueS[3] = 0; break;
         case 3: dimensions.valueS[3] = 1; break;
         case 4: dimensions.valueS[3] = 2; break;
         case 5: dimensions.valueS[3] = 3; break;
+        case 6: dimensions.valueS[3] = 0; break;
         case 7: dimensions.valueS[3] = 4; break;
         case 8: dimensions.valueS[3] = 5; break;
         case 9: dimensions.valueS[3] = datGetScenarioMode() == 0 ? 6 : 8; break;
@@ -1775,6 +1797,8 @@ void* func_0018eb40(KwlnTask* task)
             func_00111520(GS_TASK(work, 8), 0x32);
             GS_U32(work, 0) = 3;
         }
+        break;
+    case 3:
         break;
     case 4:
         func_00111530(GS_TASK(work, 8));
@@ -1798,8 +1822,6 @@ void* func_0018eb40(KwlnTask* task)
     default:
         break;
     }
-    (void)path;
-    (void)id;
     return KWLNTASK_CONTINUE;
 }
 
