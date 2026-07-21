@@ -533,6 +533,7 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     u32 i;
     KwlnTask* task;
 
+    colorValue = D_007CC1D8;
     work = (KDrawArcTaskWork*)RwCalloc(1, sizeof(KDrawArcTaskWork),
                                        rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -547,14 +548,17 @@ KwlnTask* func_001a5320(KwlnTask* parent)
                           func_001a5280,
                           work);
 
-    render = (KDrawArcData*)RwCalloc(1, sizeof(KDrawArcData), rwMEMHINTDUR_GLOBAL);
-    work->render = render;
-    render->radius = 400.0f;
+    work->render = (KDrawArcData*)RwCalloc(1, sizeof(KDrawArcData), rwMEMHINTDUR_GLOBAL);
+    work->render->angle = 0.0f;
+    work->render->center.x = 0.0f;
+    work->render->center.y = 0.0f;
+    work->render->center.z = 0.0f;
+    work->render->radius = 400.0f;
+    render = work->render;
 
     colorData = (KDrawColorData*)func_00494be0();
     render->colorData = colorData;
-    colorData->color = *(const RwRGBA*)0x007cc1d8;
-
+    colorData->color = *(const RwRGBA*)&colorValue;
     renderObject = (KDrawRenderObject*)func_00493710(0x22, 0x20, 0x4a);
     for (i = 0; i < 0x20; i++)
     {
@@ -642,7 +646,6 @@ void func_001a5700(KwlnTask* task, const RwRGBA* color)
 void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 {
     KDrawArcTaskWork* work;
-    KDrawArcData* render;
     KDrawRenderObject* renderObject;
     f32 fullAngle;
     f32 normalizedAngle;
@@ -651,51 +654,51 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     u32 i;
 
     work = (KDrawArcTaskWork*)task->workData;
-    render = work->render;
-    render->radius = radius;
-    render->angle = angle;
+    work->render->radius = radius;
+    work->render->angle = angle;
 
-    if (render->angle < 0.0f)
+    if (work->render->angle < 0.0f)
     {
-        render->angle = 0.0f;
+        work->render->angle = 0.0f;
     }
-    if (render->angle > 360.0f)
+    if (work->render->angle > 360.0f)
     {
-        render->angle = 360.0f;
+        work->render->angle = 360.0f;
     }
 
-    fullAngle = gPI * 2.0f;
-    normalizedAngle = render->angle / 360.0f;
+    normalizedAngle = work->render->angle / 360.0f;
     if (normalizedAngle <= 0.5f)
     {
+        fullAngle = gPI;
         startAngle = (fullAngle * (0.5f - normalizedAngle)) / 2.0f;
     }
     else
     {
+        fullAngle = gPI;
         startAngle = fullAngle * -((normalizedAngle - 0.5f) / 2.0f);
     }
 
-    renderObject = render->manager->renderObject;
+    renderObject = work->render->manager->renderObject;
     func_00493370(renderObject, 0xfff);
-    renderObject->geometry->vertices[0] = render->center;
+    renderObject->geometry->vertices[0] = work->render->center;
     theta = startAngle;
     for (i = 0; i < 0x20; i++)
     {
         renderObject->geometry->vertices[i + 1].x =
-            render->radius * cosf(theta) + render->center.x;
-        renderObject->geometry->vertices[i + 1].y = render->center.y;
+            work->render->radius * cosf(theta) + work->render->center.x;
+        renderObject->geometry->vertices[i + 1].y = work->render->center.y;
         renderObject->geometry->vertices[i + 1].z =
-            render->radius * sinf(theta) + render->center.z;
+            work->render->radius * sinf(theta) + work->render->center.z;
         theta += (fullAngle * normalizedAngle) / 32.0f;
     }
 
-    if (render->angle == 360.0f)
+    if (work->render->angle == 360.0f)
     {
         renderObject->geometry->vertices[0x21].x =
-            render->radius * cosf(startAngle) + render->center.x;
-        renderObject->geometry->vertices[0x21].y = render->center.y;
+            work->render->radius * cosf(startAngle) + work->render->center.x;
+        renderObject->geometry->vertices[0x21].y = work->render->center.y;
         renderObject->geometry->vertices[0x21].z =
-            render->radius * sinf(startAngle) + render->center.z;
+            work->render->radius * sinf(startAngle) + work->render->center.z;
     }
     else
     {
@@ -704,6 +707,7 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     }
     func_004933d0(renderObject);
 }
+
 
 // FUN_001A5AA0
 f32 func_001a5aa0(const RwMatrix* matrix)
