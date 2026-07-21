@@ -905,9 +905,7 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
   iVar7 = (int)param_1;
 
   uVar1 = *(u16 *)(iVar7 + 2);
-  if ((uVar1 == 0) || (0xff < uVar1)) {
-    K_ASSERT(false, 0x4c1);
-  }
+  K_ASSERT(uVar1 != 0 && uVar1 < 0x100, 0x4c1);
 
   FUN_00521408(param_2,0,0x28);
 
@@ -917,9 +915,7 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
     }
 
     iVar8 = iVar7 + uVar11;
-
     puVar10 = auStack_10 + uVar11;
-
     *puVar10 = (u16)*(u8 *)(iVar8 + 0x1c);
 
     if (4 < uVar11) {
@@ -952,15 +948,10 @@ void func_00175ce0(DatPersonaWork* param_1,u8* param_2)
     uVar4 = *(u16 *)(iVar7 + 2);
 
     if ((uVar4 < 0xc0) || (0xdf < uVar4)) {
-
       bVar2 = false;
-
     }
-
     else {
-
       bVar2 = true;
-
     }
 
     pcVar12 = (char *)param_2;
@@ -1104,17 +1095,14 @@ u8 func_001761b0(DatPersonaWork* param_1)
 
 
 #pragma push
-#pragma opt_rebuildconditionals off
+#pragma opt_rebuildconditionals on
 
-u32 func_00176210(DatPersonaWork* persona, s32 level)
+u32 func_00176210(DatPersonaWork* persona, u16 level)
 {
     s32 persona_i = (s32)persona;
-    u16 personaId;
-    u8 isScenario;
-    s32 scenarioMode;
-    s32 result;
     f32 levelF;
     f32 growthF;
+    s32 result;
 
     if ((level & 0xffff) < 2)
     {
@@ -1127,46 +1115,15 @@ u32 func_00176210(DatPersonaWork* persona, s32 level)
             level = 99;
         }
 
-        personaId = *(u16*)(persona_i + 2);
-        if ((personaId < 0xc0) || (0xdf < personaId))
+        if ((*(u16*)(persona_i + 2) < 0xc0) ||
+            (0xdf < *(u16*)(persona_i + 2)))
         {
-            isScenario = 0;
-        }
-        else
-        {
-            isScenario = 1;
-        }
-
-        if (isScenario)
-        {
-            if ((personaId < 0xc0) || (0xdf < personaId))
-            {
-                K_ASSERT(false, 0x5a4);
-            }
-
-            personaId = *(u16*)(persona_i + 2);
-            personaId = *(u16*)(DAT_007ce430 + (u32)personaId * 0x26e - 0x1d280);
-            if ((personaId < 2) || (10 < personaId))
-            {
-                K_ASSERT(false, 0x5a6);
-            }
-
-            result = *(s32*)(DAT_007ce434 + (u32)personaId * 0x188 +
-                             (u32)(level & 0xffff) * 4 - 0x318);
-        }
-        else
-        {
-            if (0xff < *(u16*)(persona_i + 2))
-            {
-                K_ASSERT(false, 0x599);
-            }
-
+            K_ASSERT(*(u16*)(persona_i + 2) < 0x100, 0x599);
             levelF = (f32)level;
-            personaId = *(u16*)(persona_i + 2);
-            growthF = (f32)*(u8*)(DAT_007ce420 + (u32)personaId * 0xe + 3);
+            growthF = (f32)*(u8*)(DAT_007ce420 +
+                                   (u32)*(u16*)(persona_i + 2) * 0xe + 3);
 
-            scenarioMode = FUN_0017d800();
-            if (scenarioMode == 0)
+            if (FUN_0017d800() == 0)
             {
                 result = (s32)(((DAT_007caed8 + 0.0f) -
                                 DAT_007caed4 * growthF) *
@@ -1177,6 +1134,19 @@ u32 func_00176210(DatPersonaWork* persona, s32 level)
                 result = (s32)((2.5f - DAT_007caedc * growthF) *
                                levelF * DAT_007cada8 * levelF * levelF + 10.0f);
             }
+        }
+        else
+        {
+            u16 scenarioLevel;
+
+            K_ASSERT((*(u16*)(persona_i + 2) >= 0xc0) &&
+                     (*(u16*)(persona_i + 2) < 0xe0), 0x5a4);
+            scenarioLevel =
+                *(u16*)(DAT_007ce430 +
+                        (u32)*(u16*)(persona_i + 2) * 0x26e - 0x1d280);
+            K_ASSERT(scenarioLevel >= 2 && scenarioLevel < 0xb, 0x5a6);
+            result = *(s32*)(DAT_007ce434 + (u32)scenarioLevel * 0x188 +
+                             (u32)(level & 0xffff) * 4 - 0x318);
         }
     }
 
