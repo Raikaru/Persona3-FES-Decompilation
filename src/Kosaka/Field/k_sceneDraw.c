@@ -46,6 +46,7 @@ void func_001a0040(u32 visible, u32 updateField);
 u32 func_001a02c0();
 extern void func_0034fd70(Model* mdl, s32 param);
 extern void func_0034fdf0(Model* mdl, RwV3d* position);
+extern void func_00521408(void* dst, s32 value, u32 size);
 extern void func_004944b0(RpLight* light, const RwRGBAReal* color);
 extern void func_0049c3d0(RpWorld* world, RpLight* light);
 extern void func_0049c480(RpWorld* world, RpLight* light);
@@ -771,7 +772,6 @@ s32 K_SceneDraw_CompareNpcDistToCamera(const void* npcPtr1, const void* npcPtr2)
 void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
 {
     ResrcModelNpc* npcRes;
-    ResrcModelNpc* npcList[SCENEDRAW_MAX_SORTED_MODELS] = { NULL };
     ResrcLightNpc* npcLight;
     RwRGBAReal ambientColor;
     RwRGBAReal directionalColor;
@@ -783,6 +783,7 @@ void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
     s32 i;
     s32 slot;
     u32 flags;
+    ResrcModelNpc* npcList[SCENEDRAW_MAX_SORTED_MODELS];
 
     npcRes = (ResrcModelNpc*)MT_Scene_GetResListHead(RESRC_TYPE_MODELNPC);
     npcLight = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
@@ -791,6 +792,7 @@ void* K_SceneDraw_UpdateDrwTrnsNpcSrtTask(KwlnTask* drwTrnsNpcSrtTask)
     directionalMatrix = ((RwFrame*)kwlnGetDirectionalLight()->object.object.parent)->modelling;
     secondaryDirectionalColor = func_00198580()->color;
     secondaryDirectionalMatrix = ((RwFrame*)func_00198580()->object.object.parent)->modelling;
+    func_00521408(npcList, 0, sizeof(npcList));
 
     npcCount = 0;
     while (npcRes != NULL)
