@@ -579,7 +579,7 @@ void FUN_00301690(u32 param_1);
 s8 FUN_00301750(int param_1,u32 param_2);
 void FUN_00301870(int param_1);
 
-float FUN_00301880(u32 param_1,u32 param_2,...);
+float FUN_00301880(u32 param_1,u32 param_2);
 u8 FUN_00301ca0(u32 param_1,u32 param_2);
 void FUN_00302380(u32 param_1,u32 param_2,u32 param_3);
 void FUN_00302c50(u32 param_1);
@@ -591,7 +591,7 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
                  short param_6,u32 param_7,char param_8);
 
 u32 FUN_00305970(u32 param_1,u32 param_2,u32 param_3);
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4,...);
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4);
 u32 FUN_00306510(u32 param_1,u32 param_2,u32 param_3,u16 param_4);
 u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
 u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4);
@@ -1332,7 +1332,7 @@ void FUN_00301870(int param_1)
 
 // FUN_00301880 NONMATCHING
 
-float FUN_00301880(u32 param_1,u32 param_2,...)
+float FUN_00301880(u32 param_1,u32 param_2)
 
 {
   u8 bVar1;
@@ -1343,12 +1343,12 @@ float FUN_00301880(u32 param_1,u32 param_2,...)
   float fVar6;
   
   uVar4 = param_2 & 0xff;
-  if (0x14 < uVar4) {
+  if (0x14 < (s32)uVar4) {
     FUN_0019d3f0(0x69aa80,0x4e8);
     FUN_0019d3f0(0x69aa80,0x4b8);
   }
   puVar5 = (u16 *)param_1;
-  if (uVar4 < 0x11) {
+  if ((s32)uVar4 < 0x11) {
     cVar2 = FUN_00300f60(param_1,param_2);
   }
   else {
@@ -1781,12 +1781,6 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
     if ((param_2 & 0x1000000) != 0) {
       FUN_00301230(param_1,9,param_3);
     }
-    if ((param_2 & 0x2000000) != 0) {
-      FUN_00301230(param_1,10,param_3);
-    }
-    if ((param_2 & 0x4000000) != 0) {
-      FUN_00301230(param_1,0xb,param_3);
-    }
   }
   return;
 }
@@ -2121,13 +2115,13 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
   cVar1 = *(char *)(iVar11 + iGpffffb708 + 2);
   puVar10 = (u16 *)param_2;
   if (cVar1 == '\x02') {
-    fVar18 = (float)FUN_00301880(param_2,1,param_1);
-    fVar12 = (float)FUN_00301880(param_3,3,param_1);
+    fVar18 = (float)FUN_00301880(param_2,1);
+    fVar12 = (float)FUN_00301880(param_3,3);
     *(u32 *)(puVar10 + 0xc) = *(u32 *)(puVar10 + 0xc) | 0x100000;
   }
   else if (cVar1 == '\x01') {
-    fVar18 = (float)FUN_00301880(param_2,0,param_1);
-    fVar12 = (float)FUN_00301880(param_3,3,param_1);
+    fVar18 = (float)FUN_00301880(param_2,0);
+    fVar12 = (float)FUN_00301880(param_3,3);
     *(u32 *)(puVar10 + 0xc) = *(u32 *)(puVar10 + 0xc) | 0x80000;
   }
   else {
@@ -3371,7 +3365,7 @@ LAB_00305f20:
 
 
 // FUN_00306020 NONMATCHING
-u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4,...)
+u32 FUN_00306020(u32 param_1,u32 param_2,u32 param_3,short param_4)
 
 {
   u16 uVar1;
@@ -3556,7 +3550,7 @@ u32 FUN_00306610(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   if ((param_2 != 0) && (param_3 != 0)) {
     lVar2 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
     lVar3 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
-    uVar4 = FUN_00306020(param_1,param_2,param_3,1,1,0);
+    uVar4 = FUN_00306020(param_1,param_2,param_3,1);
     if (0x1cf < (param_1 & 0xffff)) {
       FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
     }
@@ -3639,7 +3633,7 @@ u32 FUN_003068d0(u32 param_1,s32 param_2,s32 param_3,u32 param_4)
   }
   lVar4 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,1);
   lVar5 = FUN_00303130(param_1,param_2,param_3,1,1,1,param_4,2);
-  lVar6 = FUN_00306020(param_1,param_2,param_3,1,1,0);
+  lVar6 = FUN_00306020(param_1,param_2,param_3,1);
   if (0x1cf < (param_1 & 0xffff)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
   }
@@ -5209,8 +5203,8 @@ LAB_00309700:
   if ((((uVar10 == 0x200) || (uVar10 == 2)) || (uVar10 == 0x40)) || (uVar10 == 0x20)) {
     return 1;
   }
-  fVar20 = (float)FUN_00301880(param_1,4,param_3);
-  fVar21 = (float)FUN_00301880(param_2,2,param_3);
+  fVar20 = (float)FUN_00301880(param_1,4);
+  fVar21 = (float)FUN_00301880(param_2,2);
   fVar25 = 1.0;
   fVar24 = 1.0;
   iVar19 = 0;
