@@ -3508,6 +3508,8 @@ u32 FUN_00413b70(u64 param_1,int param_2,long param_3)
 
   u32 uVar18;
 
+  register long lVar19;
+
   u32 *puStack_20360;
 
   u32 auStack_2035c [32787];
@@ -3539,6 +3541,8 @@ u32 FUN_00413b70(u64 param_1,int param_2,long param_3)
   u32 auStack_90 [36];
 
   
+
+  asm volatile("move %0, %1" : "=r" (lVar19) : "r" (param_3) : "a0", "a1", "a2", "a3");
 
   iVar1 = *(int *)(param_2 + 0xc);
 
@@ -3722,9 +3726,9 @@ u32 FUN_00413b70(u64 param_1,int param_2,long param_3)
 
   puStack_2d8 = auStack_2d0;
 
-  if (param_3 != 0) {
+  if (lVar19 != 0) {
 
-    iVar9 = (int)param_3;
+    iVar9 = (int)lVar19;
 
     uVar18 = (int)*(short *)(iVar9 + 6) - 0x17;
 
