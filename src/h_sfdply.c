@@ -159,6 +159,12 @@ typedef struct HSfdDmaDescriptor
 static HSfdDmaDescriptor sSfdDmaDescriptor;
 extern void func_0051e028();
 extern s32 func_0051df58();
+extern s32 FUN_0050d3f0(void);
+extern s32 FUN_0050d3a0(void);
+extern void func_005030f0();
+
+static s32 sSfdResumePending;
+static s32 sSfdResumeThreadId;
 
 extern void* func_0057c680(void* descriptor);
 extern void* func_0057d5d8(void* descriptor);
@@ -501,15 +507,19 @@ void func_0010bf70(void)
     }
 }
 
-// FUN_0010BFF0 NONMATCHING
+// FUN_0010BFF0
 void func_0010bff0(void)
 {
-    s32 i;
+    s32 wasEnabled;
 
-    for (i = 0; i < HSFD_QUEUE_COUNT; i++)
+    wasEnabled = FUN_0050d3f0();
+    if (sSfdResumePending != 0)
     {
-        sSfdQueue[i].state = 0;
-        sSfdQueue[i].entry = NULL;
+        func_005030f0(sSfdResumeThreadId);
+    }
+    if (wasEnabled == 0)
+    {
+        FUN_0050d3a0();
     }
 }
 
