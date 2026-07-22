@@ -1956,13 +1956,10 @@ void func_001add40(KwlnTask* collisCtlTask)
     CollisCtl* ctl;
 
     ctl = (CollisCtl*)collisCtlTask->workData;
-    if (ctl->mdl != NULL)
-    {
-        ctl->xGrid = (mdlGetMatrix(ctl->mdl)->pos.x + 400.0f) / 800.0f;
-        ctl->zGrid = (mdlGetMatrix(ctl->mdl)->pos.z + 400.0f) / 800.0f;
-    }
-}
+    ctl->xGrid = (mdlGetMatrix(ctl->mdl)->pos.x + 400.0f) / 800.0f;
+    ctl->zGrid = (mdlGetMatrix(ctl->mdl)->pos.z + 400.0f) / 800.0f;
 
+}
 // FUN_001ae0d0
 void func_001ae0d0(KwlnTask* collisCtlTask)
 {
