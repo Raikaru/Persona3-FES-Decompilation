@@ -304,6 +304,8 @@ extern u8 PTR_DAT_00782f30_abs[];
 extern void* PTR_DAT_00782f48;
 extern void* PTR_DAT_00782f4c;
 extern void* PTR_DAT_007beb30;
+#pragma alias PTR_DAT_007beb30_abs PTR_DAT_007beb30
+extern u8 PTR_DAT_007beb30_abs[];
 extern void* PTR_PTR_00782f50;
 extern void* PTR_PTR_00782f54;
 extern u32 _DAT_00783350;
@@ -8474,14 +8476,14 @@ u8 * FUN_005204a0(int param_1,u32 param_2,void *param_3)
   }
   return (u8 *)&DAT_007beb60;
 }
+#pragma push
+#pragma schedule on
 // FUN_00520528
-asm u8 ** FUN_00520528(void)
+u8 ** FUN_00520528(void)
 {
-  .set noreorder
-  lui $v0, 0x7c
-  jr $ra
-  addiu $v0, $v0, -0x14d0
+  return (u8 **)PTR_DAT_007beb30_abs;
 }
+#pragma pop
 // FUN_00520538 NONMATCHING
 void FUN_00520538(u32 param_1,void *param_2)
 
