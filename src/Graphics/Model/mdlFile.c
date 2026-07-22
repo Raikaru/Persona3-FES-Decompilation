@@ -3765,21 +3765,15 @@ void FUN_0031fde0(void)
 
   return;
 }
-// FUN_0031ff40 NONMATCHING
+// FUN_0031ff40
 void FUN_0031ff40(float *param_1,u8 *param_2)
 {
   u8 *puVar1;
-  u32 uVar2;
-  u32 uVar3;
-  u32 uVar4;
 
   puVar1 = param_2 + 4;
-  uVar2 = (u32)(param_1[1] * 255.0f);
-  puVar1[0] = (u8)(uVar2 & 0xff);
-  uVar3 = (u32)(param_1[2] * 255.0f);
-  puVar1[1] = (u8)(uVar3 & 0xff);
-  uVar4 = (u32)(param_1[3] * 255.0f);
-  puVar1[2] = (u8)(uVar4 & 0xff);
+  puVar1[0] = (u8)(param_1[1] * 255.0f);
+  puVar1[1] = (u8)(param_1[2] * 255.0f);
+  puVar1[2] = (u8)(param_1[3] * 255.0f);
 }
 
 // FUN_00320060
