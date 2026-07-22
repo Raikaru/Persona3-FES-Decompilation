@@ -66,15 +66,13 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 
 void FUN_003b35e0(int count)
 {
-  register int limit;
   int i;
+  register int limit;
   int size;
   u32 memory;
   int *node;
   u32 block;
   int *current;
-  int *next;
-  int *newNode;
 
   size = count * 0x21c + 0x18;
   if (piGpffffb954 != (int *)0x0) {
@@ -91,10 +89,8 @@ void FUN_003b35e0(int count)
   i = 0;
   limit = count - 1;
   for (; i < limit; i = i + 1) {
-    next = (int *)node[3];
-    newNode = next + 0x80;
-    node[6] = (int)newNode;
-    node = newNode;
+    node[6] = (int)(node[3] + 0x200);
+    node = (int *)node[6];
     node[3] = (int)(node + 7);
   }
   piGpffffb954[5] = (int)node;
