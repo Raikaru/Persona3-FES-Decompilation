@@ -372,19 +372,11 @@ void sceSifInitRpc(unsigned int mode)
     func_0050d3f0();
 }
 
-// FUN_00506A48
-asm void sceSifExitRpc(void)
+// FUN_00506A48 NONMATCHING
+void sceSifExitRpc(void)
 {
-    .set noreorder
-    addiu $sp, $sp, -0x10
-    sd $ra, 0($sp)
-    .word 0x0c1418f2
-    nop
-    lui $v0, 0x78
-    ld $ra, 0($sp)
-    sw $zero, -0xb50($v0)
-    jr $ra
-    addiu $sp, $sp, 0x10
+    FUN_005063c8();
+    DAT_0077f4b0 = 0;
 }
 
 
