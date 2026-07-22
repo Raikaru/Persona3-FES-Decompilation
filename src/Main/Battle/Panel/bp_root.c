@@ -3646,7 +3646,6 @@ void FUN_001FE650(void* descriptor)
     u8* desc;
     void* resource;
     s32 level;
-
     desc = (u8*)descriptor;
     K_ASSERT(btlUnitFindFromId(*(u16*)(desc + 0x10)) != NULL, 0x2d5);
     if (func_00242a60() == 0)
