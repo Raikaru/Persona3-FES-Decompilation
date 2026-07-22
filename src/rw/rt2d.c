@@ -5146,16 +5146,7 @@ void FUN_004b8120(f32 *out, const f32 *matrix)
 // FUN_004B81F0 NONMATCHING
 void FUN_004b81f0(f32 *out, const f32 *a, const f32 *b)
 {
-  f32 f1;
-  f32 f0;
-  f32 f3;
-  f32 f2;
-
-  f1 = a[3];
-  f0 = b[4];
-  f3 = a[2];
-  f2 = b[2];
-  out[2] = f1 * f0 + f3 * f2;
+  out[2] = a[3] * b[4] + a[2] * b[2];
   out[3] = a[3] * b[5] + a[2] * b[3];
   out[4] = a[5] * b[4] + a[4] * b[2];
   out[5] = a[5] * b[5] + a[4] * b[3];
