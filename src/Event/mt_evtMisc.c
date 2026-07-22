@@ -4936,11 +4936,14 @@ void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 }
 
 
+extern u8 D_006A2A70[];
+extern u8 D_006A2A60[];
+extern int FUN_004c31b0();
 extern void FUN_004c31b0_b600(void *matrix, void *axis, float angle, int mode);
 #pragma alias FUN_004c31b0_b600 FUN_004c31b0
 #pragma push
 #pragma schedule off
-// FUN_0038B600 NONMATCHING
+// FUN_0038B600
 
 
 void FUN_0038b600(u32 *param_1,u32 *param_2)
@@ -4948,8 +4951,8 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
   u32 uVar1;
   u32 uVar2;
   float *pfParam2;
-  int iVar3;
   u32 *puVar4;
+  int iVar3;
   u32 auStack_40[16];
 
   auStack_40[10] = 0x3f800000;
@@ -4966,8 +4969,8 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
   auStack_40[12] = 0;
   auStack_40[3] = auStack_40[3] | 0x20003;
   pfParam2 = (float *)param_2;
-  FUN_004c31b0_b600(auStack_40,(void *)((u8 *)0x6a0000 + 0x2a70),pfParam2[1],1);
-  FUN_004c31b0_b600(auStack_40,(void *)((u8 *)0x6a0000 + 0x2a60),pfParam2[0],1);
+  FUN_004c31b0_b600(auStack_40,D_006A2A70,pfParam2[1],1);
+  FUN_004c31b0_b600(auStack_40,D_006A2A60,pfParam2[0],1);
   puVar4 = auStack_40;
   iVar3 = 8;
   do {
