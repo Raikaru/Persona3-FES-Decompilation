@@ -347,6 +347,10 @@ void FUN_00324310(u64 param_1);
  #pragma alias FUN_00324310_i FUN_00324310
  extern void FUN_00324310_i(int param_1);
 void FUN_003243d0(void);
+#pragma alias FUN_003243d0_1arg FUN_003243d0
+extern void FUN_003243d0_1arg(u32 param_1);
+#pragma alias FUN_003243d0_2arg FUN_003243d0
+extern void FUN_003243d0_2arg(u32 param_1,u16 param_2);
 void FUN_003243f0(int param_1,u64 param_2);
 void FUN_00324470(float param_1,int param_2,u32 *param_3,u32 *param_4);
 void FUN_003244c0(int param_1);
@@ -1027,6 +1031,8 @@ extern u64 FUN_004d81b0();
 extern u64 FUN_004e3630();
 extern u64 FUN_004f1780();
 extern u64 FUN_00521250();
+#pragma alias FUN_00521250_mdl FUN_00521250
+extern void FUN_00521250_mdl(void *destination,const void *source,u32 size);
 extern u64 FUN_00521408();
 extern u64 FUN_005225a8();
 extern u64 FUN_00523ac8();
@@ -4201,7 +4207,6 @@ void FUN_00320810(int *param_1)
         fVar4 = *(float *)(iVar1 + 4);
 
         if (fVar4 > fVar5) {
-
           fVar5 = fVar4;
 
         }
@@ -24669,22 +24674,15 @@ void FUN_00334220(int param_1)
 
 
 
-// FUN_003342C0 NONMATCHING
+// FUN_003342C0
 
 
 void FUN_003342c0(int param_1,u16 param_2)
-
-
-
 {
-
-  FUN_003243d0();
-
-  FUN_003243d0();
-
-  return;
-
+  FUN_003243d0_1arg(*(u32 *)(param_1 + 0x10));
+  FUN_003243d0_2arg(*(u32 *)(param_1 + 0x14),param_2);
 }
+
 
 
 
@@ -28348,10 +28346,12 @@ u_long128 FUN_00337dd0(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-// FUN_00337DE0 NONMATCHING
-void FUN_00337de0(Vec128 *dst,const Vec128 *src)
+// FUN_00337DE0
+u_long128 FUN_00337de0(Vec128 *dst,const Vec128 *src)
 {
-  ((u_long128 *)dst)[1] = *(u_long128 *)src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 // FUN_00337DF0
 void FUN_00337df0(int param_1,int param_2)
@@ -30146,10 +30146,12 @@ u_long128 FUN_00339760(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-// FUN_00339770 NONMATCHING
-void FUN_00339770(Vec128 *dst,const Vec128 *src)
+// FUN_00339770
+u_long128 FUN_00339770(Vec128 *dst,const Vec128 *src)
 {
-  ((u_long128 *)dst)[1] = *(u_long128 *)src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 // FUN_00339780
 void FUN_00339780(int param_1,int param_2)
@@ -39319,10 +39321,12 @@ u_long128 FUN_00342410(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-// FUN_00342420 NONMATCHING
-void FUN_00342420(Vec128 *dst,const Vec128 *src)
+// FUN_00342420
+u_long128 FUN_00342420(Vec128 *dst,const Vec128 *src)
 {
-  ((u_long128 *)dst)[1] = *(u_long128 *)src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 // FUN_00342430
 void FUN_00342430(int param_1,int param_2)
@@ -42866,10 +42870,12 @@ u_long128 FUN_00346130(Vec128 *dst,const Vec128 *src)
   return value;
 }
 
-// FUN_00346140 NONMATCHING
-void FUN_00346140(Vec128 *dst,const Vec128 *src)
+// FUN_00346140
+u_long128 FUN_00346140(Vec128 *dst,const Vec128 *src)
 {
-  ((u_long128 *)dst)[1] = *(u_long128 *)src;
+  u_long128 value = *(u_long128 *)src;
+  *(u_long128 *)(dst + 1) = value;
+  return value;
 }
 // FUN_00346150
 void FUN_00346150(int param_1,int param_2)
@@ -44777,22 +44783,27 @@ void FUN_00348030(u64 param_1)
 
 
 
-// FUN_00348090 NONMATCHING
+// FUN_00348090
 
 
 u32 FUN_00348090(int param_1)
 {
   u32 uVar1;
+  void *destination;
+  const void *source;
 
   uVar1 = (*DAT_00960178_abs)(0x14,0x40000);
 
   *(u32 *)uVar1 = 0;
 
-  FUN_00521250((u32 *)uVar1 + 1,param_1 + 4,0x10);
+  destination = (void *)((u32 *)uVar1 + 1);
+  asm volatile("" : "+m"(destination));
+  source = (const void *)(param_1 + 4);
+  FUN_00521250_mdl(destination,source,0x10);
 
   return uVar1;
-
 }
+
 // FUN_00348100
 void FUN_00348100(int *param_1)
 {
@@ -49331,7 +49342,7 @@ void FUN_0034c9b0(int param_1,int param_2)
 
 
 
-// FUN_0034CB60 NONMATCHING
+// FUN_0034CB60
 
 
 void FUN_0034cb60(int param_1)
@@ -49364,7 +49375,7 @@ void FUN_0034cb60(int param_1)
 
   }
 
-  FUN_00318770(0,*(u32 *)(param_1 + 0xa0),0);
+  FUN_00318770(*(u32 *)(param_1 + 0xa0),0,0);
 
   *(u32 *)(param_1 + 0x2c) = 0;
 
