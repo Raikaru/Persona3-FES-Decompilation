@@ -383,7 +383,7 @@ u64 FUN_00324bd0(u64 param_1);
 void FUN_003252a0(u64 param_1);
 void FUN_00325500(u64 param_1);
 void FUN_003257a0(u64 param_1);
-void FUN_003257e0(u64 param_1);
+void FUN_003257e0(u32 param_1);
 #pragma alias FUN_003257e0_passthru FUN_003257e0
 extern void FUN_003257e0_passthru(void);
 u64 FUN_00325920(u64 *param_1);
@@ -1410,6 +1410,8 @@ extern u8 PTR_LAB_0069be20_abs[];
 extern code PTR_LAB_0069be28[];
 extern code PTR_LAB_0069be2c[];
 extern void* PTR_LAB_0069be30;
+#pragma alias PTR_LAB_0069be30_abs PTR_LAB_0069be30
+extern u8 PTR_LAB_0069be30_abs[];
 extern void* PTR_LAB_0069be34;
 extern code PTR_LAB_0069be3c[];
 extern code PTR_LAB_0069be40[];
@@ -9139,17 +9141,17 @@ void FUN_003257a0(u64 param_1)
 // FUN_003257E0 NONMATCHING
 
 
-void FUN_003257e0(u64 param_1)
+void FUN_003257e0(u32 param_1)
 
 
 
 {
 
+  int iVar3;
+
   int iVar1;
 
   int iVar2;
-
-  int iVar3;
 
   
 
@@ -9165,15 +9167,14 @@ void FUN_003257e0(u64 param_1)
 
       if (*(int *)(iVar2 + 8) != 0) {
 
-        (*(code *)(&PTR_LAB_0069be30)
-
-                  [(u32)*(u16 *)(iVar2 + 4) * 0xc + (u32)*(u16 *)(iVar2 + 4)])();
+        (*(code *)(PTR_LAB_0069be30_abs +
+                   (u32)*(u16 *)(iVar2 + 4) * 0xc + (u32)*(u16 *)(iVar2 + 4)))();
 
       }
 
       if (*(int *)(iVar2 + 0x18) != 0) {
 
-        (*DAT_0096017c)();
+        DAT_0096017c_abs[0]();
 
         *(u32 *)(iVar2 + 0x10) = 0;
 
@@ -9185,7 +9186,7 @@ void FUN_003257e0(u64 param_1)
 
       if (*(int *)(iVar2 + 0x28) != 0) {
 
-        (*DAT_0096017c)();
+        DAT_0096017c_abs[0]();
 
         *(u32 *)(iVar2 + 0x20) = 0;
 
@@ -9195,17 +9196,17 @@ void FUN_003257e0(u64 param_1)
 
       }
 
-      (*DAT_0096017c)(iVar2);
+      DAT_0096017c_abs[0](iVar2);
 
     }
 
-    (*DAT_0096017c)(iVar3);
+    DAT_0096017c_abs[0](iVar3);
 
     iVar3 = iVar1;
 
   }
 
-  (*DAT_0096017c)(param_1);
+  DAT_0096017c_abs[0](param_1);
 
   return;
 
