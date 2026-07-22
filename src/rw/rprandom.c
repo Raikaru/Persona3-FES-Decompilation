@@ -2777,7 +2777,7 @@ void FUN_004aba20(u64 param_1,u64 param_2,int param_3);
 u64 FUN_00488cd0(u64 param_1)
 {
   if (*(int *)((u8 *)DAT_00960070_abs + iGpffffba88) != 0) {
-    DAT_0096017c_abs[0]();
+    DAT_0096017c_abs[0](*(int *)((u8 *)DAT_00960070_abs + iGpffffba88));
     *(u32 *)((u8 *)DAT_00960070_abs + iGpffffba88) = 0;
   }
   return param_1;
