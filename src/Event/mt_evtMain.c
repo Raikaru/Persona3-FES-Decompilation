@@ -13941,7 +13941,6 @@ u32 FUN_0036da10(int param_1)
 {
 
   u8 uVar1;
-  int *piVar1;
 
   short sVar2;
 
@@ -13957,8 +13956,7 @@ u32 FUN_0036da10(int param_1)
 
   
 
-  piVar1 = *(int **)(param_1 + 8);
-  iVar3 = piVar1[0x25];
+  iVar3 = *(int *)(*(int *)(param_1 + 8) + 0x94);
 
   iVar4 = *(int *)(iVar3 + 0x10);
 
