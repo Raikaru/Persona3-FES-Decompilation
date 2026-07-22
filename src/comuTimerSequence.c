@@ -233,7 +233,7 @@ u32 FUN_003bf720(void)
 }
 #define FUN_003bf720(...) ((u32 (*)(...))FUN_003bf720)(__VA_ARGS__)
 #undef FUN_003bf8e0
-// FUN_003BF8E0 NONMATCHING
+// FUN_003BF8E0
 
 
 code * FUN_003bf8e0(void)
@@ -1667,7 +1667,7 @@ code * FUN_003c09a0(void)
 }
 #define FUN_003c09a0(...) ((code * (*)(...))FUN_003c09a0)(__VA_ARGS__)
 #undef FUN_003c0b30
-// FUN_003C0B30 NONMATCHING
+// FUN_003C0B30
 
 
 code * FUN_003c0b30(void)
@@ -1841,7 +1841,7 @@ u32 FUN_003c0c30(void)
 }
 #define FUN_003c0c30(...) ((u32 (*)(...))FUN_003c0c30)(__VA_ARGS__)
 #undef FUN_003c0d20
-// FUN_003C0D20 NONMATCHING
+// FUN_003C0D20
 
 
 code * FUN_003c0d20(void)
