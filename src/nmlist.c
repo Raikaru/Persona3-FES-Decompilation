@@ -16,6 +16,8 @@ typedef struct NmlistList {
 } NmlistList;
 
 extern code DAT_00960178;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 extern code DAT_0096017c;
 extern u8 LAB_003c4400[];
 extern u8 LAB_003c4410[];
@@ -54,7 +56,7 @@ u64 FUN_003c4e70(int *param_1);
 void FUN_003c4f30(int param_1);
 int FUN_003c4f80(int param_1);
 void FUN_003c4fc0(u64 param_1,u64 param_2);
-int FUN_003c50b0(int param_1,long param_2,int param_3);
+int FUN_003c50b0(int param_1,u32 param_2,int param_3);
 void FUN_003c5180(long param_1,long param_2);
 void FUN_003c5220(void);
 
@@ -143,29 +145,23 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4)
 }
 #define FUN_003c44d0(...) ((long (*)(...))FUN_003c44d0)(__VA_ARGS__)
 #undef FUN_003c45f0
-// FUN_003C45F0 NONMATCHING
+#undef FUN_003c4a90
+// FUN_003C45F0
 
 
 void FUN_003c45f0(int param_1)
-
-
-
 {
-
-  FUN_003c4a90(param_1,(int)param_1 + 4);
-
-  if (param_1 != 0) {
-
-    FUN_00521408(param_1,0,*(u32 *)((int)param_1 + 0x20));
-
-    (*DAT_0096017c)(param_1);
-
-  }
-
-  return;
-
+    FUN_003c4a90(param_1, (int)param_1 + 4);
+    if (param_1 == 0)
+    {
+        return;
+    }
+    FUN_00521408(param_1, 0, *(u32 *)((int)param_1 + 0x20));
+    DAT_0096017c_abs[0](param_1);
 }
+#pragma schedule off
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
+#define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #undef FUN_003c4650
 // FUN_003C4650
 
@@ -381,57 +377,33 @@ u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
 }
 #define FUN_003c49e0(...) ((u64 (*)(...))FUN_003c49e0)(__VA_ARGS__)
 #undef FUN_003c4a90
-// FUN_003C4A90 NONMATCHING
-
-
-void FUN_003c4a90(int param_1,int param_2)
-
-
-
+// FUN_003C4A90
+void FUN_003c4a90(int param_1, int param_2)
 {
+    NmlistList* list;
+    NmlistNode* node;
+    NmlistNode* next;
 
-  int iVar1;
-
-  int iVar2;
-
-  int *piVar3;
-
-  
-
-  if ((param_1 != 0) && (param_2 != 0)) {
-
-    piVar3 = (int *)param_2;
-
-    iVar1 = *piVar3;
-
-    while (iVar2 = iVar1, iVar2 != 0) {
-
-      iVar1 = *(int *)(iVar2 + 0x10);
-
-      (*(code *)((int)param_1 + 0x18))(param_1,iVar2);
-
-      if (iVar2 != 0) {
-
-        FUN_00521408(iVar2,0,*(u32 *)(iVar2 + 8));
-
-        (*DAT_0096017c)(iVar2);
-
-      }
-
+    if (param_1 != 0 && param_2 != 0)
+    {
+        list = (NmlistList*)param_2;
+        node = list->head;
+        while (node != 0)
+        {
+            next = node->next;
+            (*(code *)((u8*)param_1 + 0x18))(param_1, node);
+            if (node != 0)
+            {
+                FUN_00521408((u32)node, 0, node->unk0[2]);
+                DAT_0096017c_abs[0](node);
+            }
+            node = next;
+        }
+        list->count = 0;
+        list->cursor = 0;
+        list->tail = 0;
+        list->head = 0;
     }
-
-    *(u16 *)(piVar3 + 3) = 0;
-
-    piVar3[2] = 0;
-
-    piVar3[1] = 0;
-
-    *piVar3 = 0;
-
-  }
-
-  return;
-
 }
 #define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #undef FUN_003c4b50
@@ -799,47 +771,33 @@ void FUN_003c4fc0(u64 param_1,u64 param_2)
 }
 #define FUN_003c4fc0(...) ((void (*)(...))FUN_003c4fc0)(__VA_ARGS__)
 #undef FUN_003c50b0
+#undef FUN_003c4710
+#pragma alias FUN_003c4710_u32 FUN_003c4710
+extern void FUN_003c4710_u32(u32 param_1, u32 param_2, u32 param_3);
 // FUN_003C50B0 NONMATCHING
-
-
-int FUN_003c50b0(int param_1,long param_2,int param_3)
-
-
-
+int FUN_003c50b0(int param_1, u32 param_2, int param_3)
 {
+    int index;
+    u32* values;
 
-  int iVar1;
-
-  
-
-  if ((param_2 == 0) || (param_3 == 0)) {
-
-    iVar1 = 0;
-
-  }
-
-  else {
-
-    if (param_1 + 4 != 0) {
-
-      FUN_00521408(param_1 + 4,0,0x10);
-
+    if (param_2 == 0 || param_3 == 0)
+    {
+        return 0;
     }
-
-    for (iVar1 = 0; iVar1 < param_3; iVar1 = iVar1 + 1) {
-
-      FUN_003c4710(param_1 + 4,*(u32 *)(param_1 + 8),
-
-                   *(u32 *)((int)param_2 + iVar1 * 4));
-
+    if (param_1 + 4 != 0)
+    {
+        FUN_00521408(param_1 + 4, 0, 0x10);
     }
-
-  }
-
-  return iVar1;
-
+    values = (u32*)param_2;
+    for (index = 0; index < param_3; index++)
+    {
+        FUN_003c4710_u32((u32)(param_1 + 4),
+                         *(u32 *)(param_1 + 8), values[index]);
+    }
+    return index;
 }
 #define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
+#define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
 #undef FUN_003c5180
 // FUN_003C5180 NONMATCHING
 
