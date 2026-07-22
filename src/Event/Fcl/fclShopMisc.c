@@ -11863,7 +11863,7 @@ u32 FUN_003fe850(u16 param_1,u64 param_2)
   u32 *pVar;
   int iVar1;
 
-  pVar = (u32 *)FUN_003c58f0_ptr(0,0x58,6,0x1e);
+  pVar = (u32 *)FUN_003c58f0(0,0x58,6,0x1e);
   iVar1 = *(int *)(pVar[9] + 0x44);
   *(u16 *)(iVar1 + 4) = param_1;
   *(s16 *)(iVar1 + 6) = -5;
