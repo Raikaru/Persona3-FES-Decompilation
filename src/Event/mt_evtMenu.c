@@ -411,6 +411,7 @@ extern u8 DAT_0069fc68[];
 extern u8 DAT_0069fc50[];
 extern u8 DAT_0069f9c0[];
 extern u8 DAT_0069fa70[];
+extern u8 DAT_0069fb58[];
 extern u8 DAT_0069fc78[];
 extern u8 DAT_0069fc88[];
 extern u8 DAT_0069fc98[];
@@ -6061,9 +6062,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     uVar1 = FUN_00530da0_evt(*(f32 *)((u8 *)param_4 + 0x184));
 
-    FUN_0038a260_evt6((u32)(param_1 * 0xc),(int)(param_2 * 0xc),4,
-
-                      (u32)DAT_0069ec48,uVar1,fVar1);
+    FUN_0038a260_f32_6(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),4,
+                      DAT_0069ec48,uVar1);
 
     break;
 
@@ -6074,9 +6074,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     fVar1 = FUN_0038a220(*(u32 *)((u8 *)param_4 + 0xe0));
 
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-
-                      (u32)DAT_0069ec60,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      DAT_0069ec60);
 
     break;
 
@@ -6084,9 +6083,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     fVar1 = FUN_0038a220(*(u32 *)((u8 *)param_4 + 0xe0));
 
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-
-                      (u32)DAT_0069ec80,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      DAT_0069ec80);
 
     break;
 
@@ -6094,9 +6092,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     fVar1 = FUN_0038a220(*(u32 *)((u8 *)param_4 + 0xe0));
 
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-
-                      (u32)DAT_0069ea78,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      DAT_0069ea78);
 
     break;
 
@@ -6104,9 +6101,8 @@ void FUN_003753c0(int param_1,int param_2,u32 param_3,u8 *param_4)
 
     fVar1 = FUN_0038a220(*(u32 *)((u8 *)param_4 + 0xe0));
 
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-
-                      (u32)DAT_0069ea88,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                      DAT_0069ea88);
 
     break;
 
@@ -12259,7 +12255,7 @@ u32 FUN_0037d4d0(int param_1,int param_2,int param_3)
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x69fb58);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,DAT_0069fb58);
 
   return 2;
 
