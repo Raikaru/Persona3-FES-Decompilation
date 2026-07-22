@@ -69,9 +69,7 @@ extern u32 D_007CC1F8;
 extern u32 D_007CC1C0;
 extern void (*jtbl_0096017C)(void* memory);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
-extern void (*jtbl_0096017C_abs)(void* memory);
-#pragma alias jtbl_0096017C_addr jtbl_0096017C
-extern u8 jtbl_0096017C_addr[];
+extern u32 jtbl_0096017C_abs[];
 extern void* D_007D2D60;
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
@@ -1300,7 +1298,7 @@ s32 func_001a8db0(KwlnTask* task)
     return 0;
 }
 
-// FUN_001a8fe0 NONMATCHING
+// FUN_001a8fe0
 void func_001a8fe0(KwlnTask* task)
 {
     u32* work;
@@ -1320,7 +1318,7 @@ void func_001a8fe0(KwlnTask* task)
     {
         func_0034fcf0((void*)work[5]);
     }
-    (*(void (**)(void*))jtbl_0096017C_addr)(parent->workData);
+    (*(void (**)(void*))jtbl_0096017C_abs)(parent->workData);
 }
 
 // FUN_001a9080
