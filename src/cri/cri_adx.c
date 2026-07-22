@@ -2771,7 +2771,6 @@ u8 FUN_005320b8(int param_1)
 
 
 
-// FUN_005320E8
 
 
 #pragma push
@@ -5406,7 +5405,6 @@ s8 FUN_00533ca0(int param_1)
 
 
 
-// FUN_00533CA8
 
 
 #pragma push
@@ -5859,7 +5857,6 @@ LAB_005342a4:
 
 
 
-// FUN_00534308
 
 
 #pragma push
@@ -6394,7 +6391,6 @@ LAB_005349ac:
 
 
 
-// FUN_005349C8
 
 
 #pragma push
@@ -6836,7 +6832,6 @@ void FUN_00534db0(int *param_1,int param_2)
 
 
 
-// FUN_00534E28
 
 #pragma push
 #pragma schedule on
@@ -7038,7 +7033,6 @@ u32 FUN_00535170(int param_1)
 
 
 
-// FUN_00535178
 
 
 #pragma push
@@ -7993,176 +7987,68 @@ void FUN_00535a80(int param_1)
 
 
 
-// FUN_00535A88
 
-asm void FUN_00535a88(u32 *param_1)
+#pragma push
+#pragma schedule on
+// FUN_00535A88 NONMATCHING
+void FUN_00535a88(u32 *param_1)
 {
-  .set noreorder
-  .word 0x27bdff80
-  .word 0xffb20040
-  .word 0xffb40050
-  .word 0x0080a02d
-  .word 0xffb00030
-  .word 0xffb10038
-  .word 0xffb30048
-  .word 0xffb50058
-  .word 0xffb60060
-  .word 0xffb70068
-  .word 0xffbe0070
-  .word 0xffbf0078
-  .word 0xafa00020
-  .word 0xc6800020
-  .word 0x46800020
-  .word 0xc6810024
-  .word 0x8e82001c
-  .word 0x46010002
-  .word 0x46000064
-  .word 0x44120800
-  .word 0x18400083
-  .word 0xdfb00030
-  .word 0x2697000c
-  .word 0x26820014
-  .word 0xafb70028
-  .word 0x269e0004
-  .word 0xafa2002c
-  .word 0x00000000
-  .word 0x8fa30020
-  .word 0x8fc40000
-  .word 0x00038880
-  .word 0x8c830000
-  .word 0x8c620024
-  .word 0x0040f809
-  .word 0x24050001
-  .word 0x52400001
-  .word 0x000001cd
-  .word 0x000287c2
-  .word 0x8ee40000
-  .word 0x02028021
-  .word 0x00108043
-  .word 0x8c830000
-  .word 0x0212001a
-  .word 0x8c620024
-  .word 0x00008012
-  .word 0x0040f809
-  .word 0x0000282d
-  .word 0x28430000
-  .word 0x2444000f
-  .word 0x0083100b
-  .word 0x00021903
-  .word 0x0203102a
-  .word 0x0202180b
-  .word 0x58600057
-  .word 0x8fa30020
-  .word 0x8fa20028
-  .word 0x0060b02d
-  .word 0x8fb5002c
-  .word 0x00518821
-  .word 0xafb10024
-  .word 0x0000802d
-  .word 0x1a400025
-  .word 0x0000982d
-  .word 0x03c0882d
-  .word 0x8e240000
-  .word 0x00000000
-  .word 0x02503023
-  .word 0x03a0382d
-  .word 0x00063040
-  .word 0x8c830000
-  .word 0x8c620018
-  .word 0x0040f809
-  .word 0x24050001
-  .word 0x8fa30004
-  .word 0x000317c2
-  .word 0x00621821
-  .word 0x00034043
-  .word 0x1900000b
-  .word 0x8fa70000
-  .word 0x0100302d
-  .word 0x84e40000
-  .word 0x24e70002
-  .word 0x24c6ffff
-  .word 0x00042823
-  .word 0x28820000
-  .word 0x00a2200b
-  .word 0x0264182a
-  .word 0x14c0fff8
-  .word 0x0083980b
-  .word 0x8e240000
-  .word 0x02088021
-  .word 0x0000282d
-  .word 0x8c830000
-  .word 0x8c620020
-  .word 0x0040f809
-  .word 0x03a0302d
-  .word 0x0212182a
-  .word 0x5460ffe0
-  .word 0x8e240000
-  .word 0x8ee40000
-  .word 0x27a30010
-  .word 0x0060382d
-  .word 0x0000282d
-  .word 0x8c830000
-  .word 0x8c620018
-  .word 0x0040f809
-  .word 0x24060010
-  .word 0x8fa30014
-  .word 0x14600009
-  .word 0x8fa70010
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x1000fffa
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x27a30010
-  .word 0x8fa20024
-  .word 0x0060302d
-  .word 0xacf30000
-  .word 0x24050001
-  .word 0x8c440000
-  .word 0x26d6ffff
-  .word 0x8ea20000
-  .word 0x8c830000
-  .word 0xace20004
-  .word 0x8c680020
-  .word 0x8e830020
-  .word 0xacf2000c
-  .word 0x0100f809
-  .word 0xace30008
-  .word 0x8ea20000
-  .word 0x00521021
-  .word 0xaea20000
-  .word 0x8e83002c
-  .word 0x24630001
-  .word 0x16c0ffb1
-  .word 0xae83002c
-  .word 0x8fa30020
-  .word 0x26f70004
-  .word 0x8e82001c
-  .word 0x27de0004
-  .word 0x24630001
-  .word 0xafa30020
-  .word 0x0062102a
-  .word 0x8fa3002c
-  .word 0x24630004
-  .word 0x1440ff86
-  .word 0xafa3002c
-  .word 0xdfb00030
-  .word 0xdfb10038
-  .word 0xdfb20040
-  .word 0xdfb30048
-  .word 0xdfb40050
-  .word 0xdfb50058
-  .word 0xdfb60060
-  .word 0xdfb70068
-  .word 0xdfbe0070
-  .word 0xdfbf0078
-  .word 0x03e00008
-  .word 0x27bd0080
-  .word 0x00000000
+  u32 *sources;
+  u32 *destinations;
+  u32 *output;
+  u32 work[4];
+  int sample_count;
+  int channel_count;
+  int i;
+  int j;
+  int available;
+  int capacity;
+  int samples;
+  int average;
+  int per_sample;
+  u32 *source;
+  u32 *destination;
+
+  sources = (u32 *)(u32)param_1[1];
+  destinations = (u32 *)(u32)param_1[3];
+  output = (u32 *)(u32)param_1[5];
+  sample_count = (int)(*(float *)(param_1 + 8) * *(float *)(param_1 + 9));
+  if (sample_count <= 0) {
+    return;
+  }
+  channel_count = (int)param_1[7];
+  for (i = 0; i < channel_count; i++) {
+    source = (u32 *)(u32)sources[i];
+    destination = (u32 *)(u32)destinations[i];
+    available = (**(code **)(*(int *)source + 0x24))(source,1);
+    average = (available + (int)((u32)available >> 31)) >> 1;
+    capacity = (**(code **)(*(int *)destination + 0x24))(destination,1);
+    samples = capacity;
+    if (samples < 0) {
+      samples += 15;
+    }
+    samples >>= 4;
+    per_sample = average / sample_count;
+    if (per_sample < samples) {
+      samples = per_sample;
+    }
+    if (samples <= 0) {
+      continue;
+    }
+    for (j = samples; j > 0; j--) {
+      (**(code **)(*(int *)source + 0x18))(source,0,16,work);
+      while (work[1] == 0) {
+      }
+      work[0] = 0;
+      work[2] = param_1[8];
+      work[3] = sample_count;
+      (**(code **)(*(int *)destination + 0x20))(destination,1,work[1],work);
+      output += sample_count;
+      param_1[11] += 1;
+    }
+  }
 }
+#pragma pop
 
 
 
@@ -8301,7 +8187,6 @@ void FUN_00535dd8(int param_1)
 
 
 
-// FUN_00535E08
 
 
 
