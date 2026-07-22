@@ -625,6 +625,7 @@ u64 FUN_003affd0(u64 param_1)
 
   char cVar1;
 
+
   
 
   cVar1 = FUN_003b0ec0_direct();
@@ -730,6 +731,7 @@ u64 FUN_003b0170(u64 param_1)
 {
 
   char cVar1;
+
 
   
 
