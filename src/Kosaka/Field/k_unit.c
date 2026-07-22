@@ -1719,9 +1719,10 @@ void func_001d1860(u32 value)
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL)
+        if (unit->genusBase != NULL &&
+            ((volatile FldUnit*)unit)->resrc != NULL)
         {
-            func_0019c2f0(unit->resrc->renderTexShadowTask, value);
+            func_0019c2f0(((volatile FldUnit*)unit)->resrc->renderTexShadowTask, value);
         }
     }
 }
@@ -1752,10 +1753,11 @@ void func_001d19d0(void)
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (unit->genusBase != NULL && unit->resrc != NULL)
+        if (((volatile FldUnit*)unit)->genusBase != NULL &&
+            ((volatile FldUnit*)unit)->resrc != NULL)
         {
-            unit->unk_17c = 0;
-            func_001a60d0(0, unit->mdl, 0xff);
+            ((volatile FldUnit*)unit)->unk_17c = 0;
+            func_001a60d0(0, ((volatile FldUnit*)unit)->mdl, 0xff);
         }
     }
 }
