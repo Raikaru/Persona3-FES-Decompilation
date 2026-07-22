@@ -2607,13 +2607,9 @@ void func_002f5330(int param_1)
     case 0xef:
     case 0xf0:
       work->flags = flags | 0x10;
-      uVar2 = *(u32 *)(iVar1 + 0x9c);
-      uVar2 = uVar2 | 0x100;
-      *(u32 *)(iVar1 + 0x9c) = uVar2;
-      uVar2 = uVar2 | 0x40;
-      *(u32 *)(iVar1 + 0x9c) = uVar2;
-      uVar2 = uVar2 | 0x80;
-      *(u32 *)(iVar1 + 0x9c) = uVar2;
+      *(u32 *)(iVar1 + 0x9c) |= 0x100;
+      *(u32 *)(iVar1 + 0x9c) |= 0x40;
+      *(u32 *)(iVar1 + 0x9c) |= 0x80;
       **(u16 **)(iVar1 + 0xa2c) = **(u16 **)(iVar1 + 0xa2c) | 0x40;
     }
     kind = *(u16 *)(iVar1 + 0xa4);
