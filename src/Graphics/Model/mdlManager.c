@@ -737,13 +737,14 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
     return true;
 }
 
-// FUN_00318770 NONMATCHING
+// FUN_00318770
 void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
 {
     MdlAnimEntryTable* table;
     RpHAnimHierarchy* hierarchy;
     s16 id;
     f32 scaledFrame;
+    u8* state;
 
     scaledFrame = gFrameDuration * frame;
     id = mdl->animSlots[slotIdx].anim.id;
@@ -762,7 +763,9 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
 
     if (slotIdx == 0)
     {
-        func_00314730(scaledFrame, (u8*)mdl + 0x364);
+        state = (u8*)mdl + 0x364;
+        asm volatile("" : "+r"(state));
+        func_00314730(scaledFrame, state);
     }
 }
 
