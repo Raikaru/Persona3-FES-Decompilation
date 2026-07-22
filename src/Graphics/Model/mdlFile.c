@@ -4233,7 +4233,7 @@ void FUN_00320810(int *param_1)
 
 {
 
-  int *iVar1;
+  u8 *iVar1;
   int iVar3;
   u32 uVar2;
   float fVar4;
@@ -4245,9 +4245,9 @@ void FUN_00320810(int *param_1)
   fVar5 = 0.0;
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-      iVar1 = (int *)(iVar3 + uVar2 * 0x10);
-      if (iVar1[3] != 0) {
-        fVar4 = ((float *)iVar1)[1];
+      iVar1 = (u8 *)(iVar3 + uVar2 * 0x10);
+      if (*(int *)(iVar1 + 0xc) != 0) {
+        fVar4 = *(float *)(iVar1 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
         }
@@ -35316,10 +35316,8 @@ u32 FUN_0033e7f0(int param_1)
 
 
   u32 uVar3;
-
   int *piVar1;
   int iVar2;
-  u8 *puVar4;
 
   
 
@@ -35328,13 +35326,11 @@ u32 FUN_0033e7f0(int param_1)
 
 
   uVar3 = (u32)piVar1;
-  *(int *)uVar3 = (int)(piVar1 + 4);
-  ((int *)uVar3)[2] = (int)piVar1;
+  *piVar1 = (int)(piVar1 + 4);
+  piVar1[2] = (int)piVar1;
 
-  puVar4 = (u8 *)0x6a0000;
-  puVar4 = puVar4 - 0x42a0;
-  iVar2 = FUN_003233a0(*(u16 *)(param_1 + 0x38),3,5,(u32)puVar4,0x48);
-  ((int *)uVar3)[1] = iVar2;
+  iVar2 = FUN_003233a0(*(u16 *)(param_1 + 0x38),3,5,0x69bd60,0x48);
+  piVar1[1] = iVar2;
   return uVar3;
 
 }
@@ -58559,7 +58555,7 @@ u32 FUN_003570b0(int param_1)
   u32 *puVar2;
 
   u32 uVar3;
-  int iVar4;
+  u32 iVar4;
   int *piVar1;
 
   piVar1 = *(int **)(param_1 + 0x30);
@@ -58567,19 +58563,16 @@ u32 FUN_003570b0(int param_1)
   *puVar2 = 0;
   *(u16 *)(puVar2 + 1) = 0;
   if (*piVar1 != 0) {
-    goto nonzero;
+    uVar3 = FUN_0034bf10(*piVar1);
+    *puVar2 = uVar3;
+    uVar3 = FUN_00318fc0(uVar3);
+    if (uVar3 >> 1 != 0) {
+      iVar4 = FUN_00357fd0(0);
+      *(short *)(puVar2 + 1) = (short)(iVar4 % (int)(uVar3 >> 1) << 1);
+    }
+  } else {
+    *puVar2 = 0;
   }
-  *puVar2 = 0;
-  goto done;
-nonzero:
-  uVar3 = FUN_0034bf10(*piVar1);
-  *puVar2 = uVar3;
-  uVar3 = FUN_00318fc0(uVar3);
-  if (uVar3 >> 1 != 0) {
-    iVar4 = FUN_00357fd0(0);
-    *(short *)(puVar2 + 1) = (short)(iVar4 % (int)(uVar3 >> 1) << 1);
-  }
-done:
   return (u32)puVar2;
 }
 #pragma pop
