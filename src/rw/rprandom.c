@@ -1485,6 +1485,8 @@ extern u32 DAT_00960070_abs[];
 extern u32 DAT_0095de14_abs[];
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern void (*DAT_0096017c_abs[])(void);
+#pragma alias DAT_0096017c_abs2 DAT_0096017c
+extern u8 DAT_0096017c_abs2[];
 #pragma alias DAT_0096018c_abs DAT_0096018c
 extern void (*DAT_0096018c_abs[])(u32,u64);
 #pragma alias FUN_004ca520_typed FUN_004ca520
@@ -2811,18 +2813,20 @@ u32 FUN_00488fe0(void)
   return lVar1 >= 0;
 }
 #pragma schedule off
-#pragma schedule on
+#pragma schedule off
 // FUN_00489020 NONMATCHING
 u32 FUN_00489020(int param_1)
 {
-  u32 *puVar1;
+  u32 *puVar1 = (u32 *)(param_1 + 0x2c);
   u32 uVar2;
+  u32 uVar3;
 
-  puVar1 = (u32 *)(param_1 + 0x2c);
-  if (*(int *)(param_1 + 0x38) != 0) {
+  uVar3 = *(int *)(param_1 + 0x38);
+  if (uVar3 != 0) {
     DAT_0096017c_abs[0]();
   }
   uVar2 = 1;
+  asm volatile("" : "+m"(uVar2));
   puVar1[0] = 0;
   puVar1[1] = 0;
   puVar1[2] = 0;
@@ -2925,17 +2929,24 @@ u64 FUN_00489160(u64 param_1,long param_2)
   return param_1;
 }
 
+#pragma schedule on
 // FUN_00489320 NONMATCHING
 int FUN_00489320(int *param_1)
 {
   int iVar1;
-
+  int iVar2;
+  int iVar3;
   iVar1 = 0xc;
   if (param_1[0xc] != 0) {
-    iVar1 = *param_1 + param_1[0xc] * 2 + param_1[0xd] * 2 + 0xc;
+    iVar2 = param_1[0xc] * 2;
+    iVar3 = *param_1;
+    iVar2 = iVar3 + iVar2;
+    iVar2 = iVar2 + param_1[0xd] * 2;
+    iVar1 = iVar1 + iVar2;
   }
   return iVar1;
 }
+#pragma schedule off
 
 
 // FUN_00489350 NONMATCHING
@@ -3546,11 +3557,15 @@ u64 FUN_0048a2e0(u64 param_1,int param_2)
 // FUN_0048A370 NONMATCHING
 u64 FUN_0048a370(int param_1)
 {
-  if (*(int *)(param_1 + 0x44) != 0) {
+  int iVar1;
+
+  iVar1 = param_1;
+  param_1 = *(int *)(param_1 + 0x44);
+  if (param_1 != 0) {
     DAT_0096017c_abs[0]();
   }
-  FUN_00489020(param_1);
-  DAT_0096018c_abs[0](DAT_0095de28,param_1);
+  FUN_00489020(iVar1);
+  DAT_0096018c_abs[0](DAT_0095de28,iVar1);
   return 0;
 }
 #pragma schedule off
