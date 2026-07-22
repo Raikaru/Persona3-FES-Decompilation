@@ -90,8 +90,8 @@ void FUN_00251060(void)
 void FUN_002510d0(void)
 {
     BpTutWork* work;
-    u32 result;
     u32 value;
+    u32 result;
     s16 flags[4];
 
     if (sBpTut654 == NULL) {
@@ -149,54 +149,41 @@ void FUN_002510d0(void)
                     case 0:
                         FUN_003c7650(1);
                         value = work->type;
-                        if (value == 1) {
-                            goto bpTut_step0_type1;
-                        }
-                        if (value == 3) {
-                            goto bpTut_step0_type_common;
-                        }
-                        if (value == 2) {
-                            goto bpTut_step0_type_common;
-                        }
-                        if (value == 0) {
-                            goto bpTut_step0_type_common;
-                        }
-                        goto bpTut_step0_type_done;
-
-bpTut_step0_type_common:
                         switch (value) {
-                        case 0:
-                            FUN_003c7430();
-                            break;
-                        case 2:
-                            FUN_003c7430(0xd);
-                            break;
                         case 3:
-                            FUN_003c7430(0x12);
+                        case 2:
+                        case 0:
+                            switch (value) {
+                            case 0:
+                                FUN_003c7430();
+                                break;
+                            case 2:
+                                FUN_003c7430(0xd);
+                                break;
+                            case 3:
+                                FUN_003c7430(0x12);
+                                break;
+                            }
+                            value = work->type;
+                            switch (value) {
+                            case 0:
+                                FUN_003c74e0();
+                                break;
+                            case 2:
+                                FUN_003c74e0(0xe);
+                                break;
+                            case 3:
+                                FUN_003c74e0(0x13);
+                                break;
+                            }
+                            FUN_003c7560(0);
+                            work->step = 1;
+                            break;
+                        case 1:
+                            FUN_003c7430(7);
+                            work->step = 3;
                             break;
                         }
-                        value = work->type;
-                        switch (value) {
-                        case 0:
-                            FUN_003c74e0();
-                            break;
-                        case 2:
-                            FUN_003c74e0(0xe);
-                            break;
-                        case 3:
-                            FUN_003c74e0(0x13);
-                            break;
-                        }
-                        FUN_003c7560(0);
-                        work->step = 1;
-                        goto bpTut_step0_type_done;
-
-bpTut_step0_type1:
-                        FUN_003c7430(7);
-                        work->step = 3;
-
-bpTut_step0_type_done:
-                        break;
                         break;
 
                     case 1:
@@ -225,34 +212,13 @@ bpTut_step0_type_done:
                 FUN_003c7990(1);
                 if (FUN_003c7850() == 0) {
                     switch (FUN_003c7610()) {
-                    case 0:
-                        FUN_003c7650(1);
-                        switch (work->type) {
-                        case 0:
-                            FUN_003c7430(4);
-                            break;
-                        case 1:
-                            FUN_003c7430(10);
-                            break;
-                        case 2:
-                            FUN_003c7430(0xf);
-                            break;
-                        case 3:
-                            FUN_003c7430(0x14);
-                            break;
-                        }
-                        work->step = 2;
-                        break;
-
                     case 1:
                         FUN_003c7650(1);
                         value = work->type;
-                        if (value == 1) {
-                            FUN_003c7430(7);
-                            work->step = 3;
-                        } else if ((value == 3) ||
-                                   (value == 2) ||
-                                   (value == 0)) {
+                        switch (value) {
+                        case 3:
+                        case 2:
+                        case 0:
                             switch (value) {
                             case 0:
                                 FUN_003c7430();
@@ -278,7 +244,31 @@ bpTut_step0_type_done:
                             }
                             FUN_003c7560(0);
                             work->step = 1;
+                            break;
+                        case 1:
+                            FUN_003c7430(7);
+                            work->step = 3;
+                            break;
                         }
+                        break;
+
+                    case 0:
+                        FUN_003c7650(1);
+                        switch (work->type) {
+                        case 0:
+                            FUN_003c7430(4);
+                            break;
+                        case 1:
+                            FUN_003c7430(10);
+                            break;
+                        case 2:
+                            FUN_003c7430(0xf);
+                            break;
+                        case 3:
+                            FUN_003c7430(0x14);
+                            break;
+                        }
+                        work->step = 2;
                         break;
                     }
                 }
