@@ -6586,14 +6586,15 @@ void func_00317a20(u64 param_1)
 
 u32 func_00318620(Model* param_1, u16 param_2, s16 param_3)
 {
+    MdlAnimEntryTable* table;
     int* piVar1;
     s16 id;
     u32 uVar2;
 
     uVar2 = 0;
-    piVar1 = *(int **)((u32)param_2 * 0x9c + (u8*)param_1 + 0x118);
-    if (piVar1 != NULL && (id = param_3, (s32)id < (s32)(u32)*(u16 *)(piVar1 + 1)) &&
-        *(int *)(id * 0x50 + *piVar1 + 0x40) != 0)
+    table = param_1->animSlots[param_2].anim.table;
+    if (table != NULL && (id = param_3, (s32)id < (s32)(u32)table->count) &&
+        table->entries[id].rtAnim != NULL)
     {
         uVar2 = 1;
     }
