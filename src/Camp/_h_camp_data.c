@@ -740,7 +740,7 @@ u32 FUN_00168040(void)
     return 1;
 }
 
-// FUN_00168100 NONMATCHING
+// FUN_00168100
 u32 FUN_00168100(void)
 {
     s16 value;

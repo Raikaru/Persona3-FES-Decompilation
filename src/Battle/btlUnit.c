@@ -5967,7 +5967,7 @@ u64 FUN_00289650(short param_1,u32 param_2,long param_3)
 }
 
 /* Recovered battle-misc harvest: 0x00287B20-0x00287CF0 */
-// FUN_00287B20 NONMATCHING
+// FUN_00287B20
 
 
 void FUN_00287b20(int param_1,u16 param_2)

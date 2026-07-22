@@ -1512,7 +1512,7 @@ RwMatrix* func_001a0a50()
     return NULL;
 }
 
-// FUN_001a0a90 NONMATCHING
+// FUN_001a0a90
 void K_Scene_InitCharLight()
 {
     RwRGBAReal* ambientColor;

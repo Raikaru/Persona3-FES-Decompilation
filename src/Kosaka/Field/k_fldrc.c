@@ -1608,7 +1608,7 @@ void FUN_001b5a00(u32 task, u32 value)
     FUN_001d5130(value);
 }
 
-// FUN_001b5a30 NONMATCHING
+// FUN_001b5a30
 void FUN_001b5a30(u8* color)
 {
     u32 value;

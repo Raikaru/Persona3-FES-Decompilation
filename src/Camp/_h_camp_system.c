@@ -53,7 +53,7 @@ void h_campSystemDestroyMenuDrawTask(KwlnTask* task)
     RwFree(workData);
 }
 
-// FUN_001548A0 NONMATCHING
+// FUN_001548A0
 KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
 {
     KwlnTask *task;
@@ -749,7 +749,7 @@ void *FUN_0015B430(KwlnTask *task)
     return 0;
 }
 
-// FUN_0015C460 NONMATCHING
+// FUN_0015C460
 KwlnTask *FUN_0015C460(KwlnTask *param_1)
 {
     KwlnTask *task;
