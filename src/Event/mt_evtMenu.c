@@ -1254,19 +1254,13 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   int iVar1;
   int iVar2;
 
-  float fVar2;
 
   
 
   iVar1 = 0;
 
-  fVar2 = (float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0));
-  asm volatile("" : "+f"(fVar2));
-
-  fVar2 = 1.0f + fVar2;
-
   FUN_00385990_f32(param_7,(int)param_1 * 0xc,param_2 * 0xc,param_3 * 0xc,
-                   param_4 * 0xc,fVar2);
+                   param_4 * 0xc,(float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0)) + 1.0f);
 
   if (param_8 != 0) {
 
@@ -5735,8 +5729,8 @@ u32 FUN_00374c90(int param_1,int param_2,int param_3)
 
 {
 
-  f32 uVar1;
 
+  f32 uVar1;
   u8 auStack_20 [32];
 
   
