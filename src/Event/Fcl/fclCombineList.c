@@ -38,7 +38,7 @@ void FUN_003e0680(u64 param_1,code* param_2,u64 param_3);
 void FUN_003e0680_32(u32 param_1, code* param_2, u32 param_3);
 #pragma alias FUN_003e0680_p FUN_003e0680
 void FUN_003e0680_p(u32 param_1, code* param_2, void* param_3);
-void FUN_003e0700(long param_1);
+void FUN_003e0700(s32 param_1);
 void FUN_003e0780(void);
 u32 FUN_003e0830(void);
 u64 FUN_003e0870(void);
@@ -3377,10 +3377,12 @@ void FUN_003e0680(u64 param_1,code* param_2,u64 param_3)
 
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_003E0700 NONMATCHING
 
 
-void FUN_003e0700(long param_1)
+void FUN_003e0700(s32 param_1)
 
 
 
@@ -3388,25 +3390,31 @@ void FUN_003e0700(long param_1)
 
   u32 uStack_4;
 
-  
-
   uStack_4 = (u32)param_1;
-
-  if ((((param_1 == 4) || (param_1 == 2)) || (param_1 == 1)) || (param_1 == 0)) {
-
-    adminiChangeSeq(7,&uStack_4,4,0);
-
+  if (param_1 == 4)
+      goto change_seq;
+  if (param_1 == 2)
+      goto change_seq;
+  if (param_1 == 1)
+      goto change_seq;
+  switch (param_1) {
+  case 0:
+      goto change_seq;
+  default:
+      goto default_seq;
   }
+change_seq:
+  adminiChangeSeq(7, &uStack_4, 4, 0);
+  goto done;
 
-  else {
+default_seq:
+  FUN_003e0780();
 
-    FUN_003e0780();
-
-  }
-
+done:
   return;
 
 }
+#pragma pop
 
 // FUN_003E0780 NONMATCHING
 
