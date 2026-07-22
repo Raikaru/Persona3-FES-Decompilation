@@ -502,7 +502,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     return true;
 }
 
-// FUN_00101010
+// FUN_00101010 NONMATCHING
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
 {
     char currChar;
@@ -517,9 +517,9 @@ void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
     strcpy(dst, pathBase);
     basePathLen = strlen(pathBase);
     i = 0;
-    asm volatile("addu %0, %1, %2" : "=r" (dstPtr) : "r" (dst), "r" (basePathLen));
-    asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
-    asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
+    dstPtr = dst + basePathLen;
+    slash = 0x2f;
+    backslash = 0x5c;
 
     while (i < 0xff)
     {
@@ -602,9 +602,9 @@ void H_Cdvd_NormalizePath(const char* src, char* dst)
 
     writeIndex = 0;
     readIndex = 0;
-    asm volatile("addiu %0, $0, 0x5c" : "=r" (backslash));
-    asm volatile("addiu %0, $0, 0x2f" : "=r" (slash));
-    asm volatile("addiu %0, $0, 0x2e" : "=r" (dot));
+    backslash = 0x5c;
+    slash = 0x2f;
+    dot = 0x2e;
     while (readIndex < 0xfd)
     {
         sourcePtr = src + readIndex;
