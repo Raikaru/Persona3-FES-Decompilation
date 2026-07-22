@@ -1032,7 +1032,6 @@ f32 FUN_004b1a70(int param_1)
 #pragma optimization_level 2
 // FUN_004B1A80 NONMATCHING
 int FUN_004b1a80(u32 *param_1)
-
 {
   int iVar1;
   int iVar2;
@@ -4516,8 +4515,13 @@ void FUN_004b7010(int param_1,u32 param_2,u32 param_3)
 // FUN_004B7020 NONMATCHING
 u32 FUN_004b7020(int param_1,int param_2)
 {
-  FUN_00521250((param_1 + 0x4c),(param_2 + 0x4c),
-               *(int *)(param_1 + 0x24) * *(int *)(param_1 + 0x2c));
+  int iVar1;
+  int iVar2;
+  int iVar3;
+  iVar1 = *(int *)(param_1 + 0x24);
+  iVar2 = *(int *)(param_1 + 0x2c);
+  iVar3 = iVar1 * iVar2;
+  FUN_00521250(param_1 + 0x4c,param_2 + 0x4c,iVar3);
   return 1;
 }
 // FUN_004B7050 NONMATCHING
@@ -5185,9 +5189,11 @@ u32 FUN_004b8290(u32 param_1,u32 *param_2)
   f32 fVar4;
   f32 fVar5;
   f32 fVar6;
+  u32 result;
   puVar1 = (f32 *)param_1;
   src = (f32 *)param_2;
   fVar4 = src[0];
+  result = param_1;
   fVar3 = src[1];
   fVar2 = src[4];
   fVar1 = src[5];
@@ -5199,7 +5205,7 @@ u32 FUN_004b8290(u32 param_1,u32 *param_2)
   puVar1[3] = fVar1;
   puVar1[4] = fVar6;
   puVar1[5] = fVar5;
-  return param_1;
+  return result;
 }
 #pragma schedule on
 // FUN_004B82D0 NONMATCHING
