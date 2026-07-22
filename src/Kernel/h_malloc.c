@@ -495,7 +495,7 @@ static void hmallocWriteSolid(u32* out, u32 value)
     out[3] = 0;
 }
 
-// FUN_001923B0 NONMATCHING
+// FUN_001923B0
 static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
@@ -563,7 +563,7 @@ static void* hmallocCreateTaskA(void* parent)
     return task;
 }
 
-// FUN_00192570 NONMATCHING
+// FUN_00192570
 static s32 hmallocTaskUpdateB(void* task)
 {
     u32* work;
