@@ -3339,6 +3339,19 @@ u64 FUN_00465ae0(u64 param_1)
 }
 #pragma schedule off
 
+#pragma schedule on
+// FUN_00465B20
+int FUN_00465b20(int param_1)
+{
+  int result;
+
+  result = param_1;
+  param_1 = param_1 + iGpffffba40;
+  *(u32 *)(param_1 + 4) = 0;
+  *(u32 *)param_1 = 0xffffffff;
+  return result;
+}
+
 // FUN_00465B40 NONMATCHING
 
 int FUN_00465b40(int param_1)
