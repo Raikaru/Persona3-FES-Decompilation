@@ -39,9 +39,9 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
 void FUN_003c45f0(int param_1);
 int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
 void FUN_003c4710(int *param_1, int *param_2, int *param_3);
-int FUN_003c4820(long param_1, int param_2);
-long FUN_003c4910(long param_1,long param_2,u64 param_3);
-u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3);
+NmlistNode *FUN_003c4820(int *param_1, int *param_2);
+int *FUN_003c4910(int *param_1, int *param_2, int *param_3);
+NmlistNode *FUN_003c49e0(int *param_1, int *param_2, NmlistNode *param_3);
 void FUN_003c4a90(int param_1,int param_2);
 int * FUN_003c4b50(int *param_1,int *param_2,int param_3);
 int FUN_003c4bf0(int *param_1,int *param_2,int param_3);
@@ -52,12 +52,12 @@ u64 FUN_003c4de0(u64 param_1,int param_2,u32 param_3);
 int FUN_003c4df0(u64 param_1,int *param_2,int param_3);
 u32 FUN_003c4e50(u64 param_1, u32* param_2);
 u32 FUN_003c4e60(u64 param_1, int param_2);
-u64 FUN_003c4e70(int *param_1);
+int *FUN_003c4e70(int *param_1);
 void FUN_003c4f30(int param_1);
 int FUN_003c4f80(int param_1);
-void FUN_003c4fc0(u64 param_1,u64 param_2);
+void FUN_003c4fc0(int *param_1, int *param_2);
 int FUN_003c50b0(int param_1,u32 param_2,int param_3);
-void FUN_003c5180(long param_1,long param_2);
+void FUN_003c5180(int param_1, int param_2);
 void FUN_003c5220(void);
 
 /* Region call-cast macros */
@@ -66,9 +66,9 @@ void FUN_003c5220(void);
 #define FUN_003c45f0(...) ((void (*)(...))FUN_003c45f0)(__VA_ARGS__)
 #define FUN_003c4650(...) ((int * (*)(...))FUN_003c4650)(__VA_ARGS__)
 #define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
-#define FUN_003c4820(...) ((int * (*)(...))FUN_003c4820)(__VA_ARGS__)
-#define FUN_003c4910(...) ((long (*)(...))FUN_003c4910)(__VA_ARGS__)
-#define FUN_003c49e0(...) ((u64 (*)(...))FUN_003c49e0)(__VA_ARGS__)
+#define FUN_003c4820(...) ((NmlistNode * (*)(...))FUN_003c4820)(__VA_ARGS__)
+#define FUN_003c4910(...) ((int * (*)(...))FUN_003c4910)(__VA_ARGS__)
+#define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
 #define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #define FUN_003c4b50(...) ((int * (*)(...))FUN_003c4b50)(__VA_ARGS__)
 #define FUN_003c4bf0(...) ((int (*)(...))FUN_003c4bf0)(__VA_ARGS__)
@@ -79,7 +79,7 @@ void FUN_003c5220(void);
 #define FUN_003c4df0(...) ((int (*)(...))FUN_003c4df0)(__VA_ARGS__)
 #define FUN_003c4e50(...) ((u32 (*)(...))FUN_003c4e50)(__VA_ARGS__)
 #define FUN_003c4e60(...) ((u32 (*)(...))FUN_003c4e60)(__VA_ARGS__)
-#define FUN_003c4e70(...) ((u64 (*)(...))FUN_003c4e70)(__VA_ARGS__)
+#define FUN_003c4e70(...) ((int * (*)(...))FUN_003c4e70)(__VA_ARGS__)
 #define FUN_003c4f30(...) ((void (*)(...))FUN_003c4f30)(__VA_ARGS__)
 #define FUN_003c4f80(...) ((int (*)(...))FUN_003c4f80)(__VA_ARGS__)
 #define FUN_003c4fc0(...) ((void (*)(...))FUN_003c4fc0)(__VA_ARGS__)
@@ -107,7 +107,7 @@ int *FUN_003c4430(int *param_1)
     *(u32 *)((u8 *)object + 8) = (u32)size;
     return object;
 }
-#define FUN_003c4430(...) ((long (*)(...))FUN_003c4430)(__VA_ARGS__)
+#define FUN_003c4430(...) ((int * (*)(...))FUN_003c4430)(__VA_ARGS__)
 #undef FUN_003c44d0
 // FUN_003C44D0
 
@@ -143,7 +143,7 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4)
     }
     return object;
 }
-#define FUN_003c44d0(...) ((long (*)(...))FUN_003c44d0)(__VA_ARGS__)
+#define FUN_003c44d0(...) ((int * (*)(...))FUN_003c44d0)(__VA_ARGS__)
 #undef FUN_003c45f0
 #undef FUN_003c4a90
 // FUN_003C45F0
@@ -191,7 +191,7 @@ int *FUN_003c4650(u32 param_1, int *param_2, int *param_3)
     }
     return object;
 }
-#define FUN_003c4650(...) ((long (*)(...))FUN_003c4650)(__VA_ARGS__)
+#define FUN_003c4650(...) ((int * (*)(...))FUN_003c4650)(__VA_ARGS__)
 #undef FUN_003c4710
 // FUN_003C4710
 
@@ -242,59 +242,62 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3)
 // FUN_003C4820 NONMATCHING
 
 
-int FUN_003c4820(long param_1,int param_2)
+NmlistNode *FUN_003c4820(int *param_1,int *param_2)
 {
-    int *list;
-    int *next;
-    int *previous;
+    NmlistList *list;
+    NmlistNode *node;
+    NmlistNode *next;
+
     if (param_1 == 0) {
-        K_Assert((const char *)0x006A3DE8, 0x149);
+        K_Assert((const char *)D_006A3DE8_abs, 0x149);
     }
     if (param_2 == 0) {
-        K_Assert((const char *)0x006A3DE8, 0x14a);
+        K_Assert((const char *)D_006A3DE8_abs, 0x14a);
     }
-    list = (int *)param_1;
-    *(u16 *)((u8 *)list + 0xc) = *(u16 *)((u8 *)list + 0xc) - 1;
-    previous = *(int **)((u8 *)param_2 + 0xc);
-    if (previous == 0) {
-        next = *(int **)((u8 *)param_2 + 0x10);
+    list = (NmlistList *)param_1;
+    node = (NmlistNode *)param_2;
+    list->count--;
+    if (node->prev == 0) {
+        next = node->next;
         if (next == 0) {
-            if (*(int **)list == (int *)param_2) {
-                *(int **)((u8 *)list + 4) = 0;
-                *(int **)list = 0;
+            if (list->head == node) {
+                list->tail = 0;
+                list->head = 0;
             }
             next = 0;
-        } else {
-            *(int **)((u8 *)next + 0xc) = 0;
-            *(int **)list = next;
         }
-    } else {
-        next = *(int **)((u8 *)param_2 + 0x10);
-        if (next == 0) {
-            *(int **)((u8 *)previous + 0x10) = 0;
-            *(int **)((u8 *)list + 4) = previous;
-        } else {
-            *(int **)((u8 *)previous + 0x10) = next;
-            *(int **)((u8 *)next + 0xc) = previous;
-            next = *(int **)((u8 *)next + 0x10);
+        else {
+            next->prev = 0;
+            list->head = next;
         }
     }
-    *(u32 *)((u8 *)param_2 + 0xc) = 0;
-    *(u32 *)((u8 *)param_2 + 0x10) = 0;
-    return (int)next;
+    else {
+        next = node->next;
+        if (next == 0) {
+            node->prev->next = 0;
+            list->tail = node->prev;
+        }
+        else {
+            node->prev->next = next;
+            next->prev = node->prev;
+        }
+    }
+    node->prev = 0;
+    node->next = 0;
+    return next;
 }
-#define FUN_003c4820(...) ((int (*)(...))FUN_003c4820)(__VA_ARGS__)
+#define FUN_003c4820(...) ((NmlistNode * (*)(...))FUN_003c4820)(__VA_ARGS__)
 #undef FUN_003c4910
 // FUN_003C4910 NONMATCHING
 
 
-long FUN_003c4910(long param_1,long param_2,u64 param_3)
+int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 
 
 
 {
 
-  long lVar1;
+  int *lVar1;
 
   u32 *puVar2;
 
@@ -339,26 +342,26 @@ long FUN_003c4910(long param_1,long param_2,u64 param_3)
   return lVar1;
 
 }
-#define FUN_003c4910(...) ((long (*)(...))FUN_003c4910)(__VA_ARGS__)
+#define FUN_003c4910(...) ((int * (*)(...))FUN_003c4910)(__VA_ARGS__)
 #undef FUN_003c49e0
 // FUN_003C49E0 NONMATCHING
 
 
-u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
+NmlistNode *FUN_003c49e0(int *param_1,int *param_2,NmlistNode *param_3)
 
 
 
 {
 
-  u64 uVar1;
+  NmlistNode *uVar1;
 
   
 
   uVar1 = FUN_003c4820(param_2,param_3);
 
-  if (param_3 == *(int *)((int)param_2 + 8)) {
+  if (param_3 == *(NmlistNode **)((u8 *)param_2 + 8)) {
 
-    *(int *)((int)param_2 + 8) = (int)uVar1;
+    *(NmlistNode **)((u8 *)param_2 + 8) = uVar1;
 
   }
 
@@ -366,7 +369,7 @@ u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
 
   if (param_3 != 0) {
 
-    FUN_00521408(param_3,0,*(u32 *)(param_3 + 8));
+    FUN_00521408((u32)param_3,0,*(u32 *)((u8 *)param_3 + 8));
 
     (*DAT_0096017c)(param_3);
 
@@ -375,7 +378,7 @@ u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
   return uVar1;
 
 }
-#define FUN_003c49e0(...) ((u64 (*)(...))FUN_003c49e0)(__VA_ARGS__)
+#define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
 #undef FUN_003c4a90
 // FUN_003C4A90
 void FUN_003c4a90(int param_1, int param_2)
@@ -639,7 +642,7 @@ u32 FUN_003c4e60(u64 param_1, int param_2)
 // FUN_003C4E70 NONMATCHING
 
 
-u64 FUN_003c4e70(int *param_1)
+int *FUN_003c4e70(int *param_1)
 {
   int *node;
   int *next;
@@ -722,7 +725,7 @@ int FUN_003c4f80(int param_1)
 // FUN_003C4FC0 NONMATCHING
 
 
-void FUN_003c4fc0(u64 param_1,u64 param_2)
+void FUN_003c4fc0(int *param_1,int *param_2)
 
 
 
@@ -811,35 +814,35 @@ int FUN_003c5170(void)
 // FUN_003C5180 NONMATCHING
 
 
-void FUN_003c5180(long param_1,long param_2)
+void FUN_003c5180(int param_1,int param_2)
 
 
 
 {
 
-  int iVar1;
+  int *iVar1;
 
   
 
-  iVar1 = FUN_003c44d0((int)param_2 + 0x30,0x3c57e0,0x3c5810,0x3c5840);
+  iVar1 = FUN_003c44d0((int *)(param_2 + 0x30),0x3c57e0,0x3c5810,0x3c5840);
 
-  iVar1 = *(int *)(iVar1 + 0x24);
+  iVar1 = *(int **)((u8 *)iVar1 + 0x24);
 
   if (param_1 == 0) {
 
-    *(u8 **)(iVar1 + 8) = (u8 *)&LAB_003c5210;
+    *(u8 **)((u8 *)iVar1 + 8) = (u8 *)&LAB_003c5210;
 
   }
 
   else {
 
-    *(int *)(iVar1 + 8) = (int)param_1;
+    *(int **)((u8 *)iVar1 + 8) = (int *)param_1;
 
   }
 
   if (param_2 != 0) {
 
-    *(int *)(iVar1 + 0xc) = iVar1 + 0x30;
+    *(int **)((u8 *)iVar1 + 0xc) = (int *)((u8 *)iVar1 + 0x30);
 
   }
 
