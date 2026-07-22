@@ -1233,7 +1233,7 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
 }
 
-// FUN_00418230 NONMATCHING
+// FUN_00418230
 
 
 u64 FUN_00418230(u64 param_1,u8 *param_2)
@@ -1296,7 +1296,16 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
     (*DAT_0096017c_abs)(*(u32 *)(iVar1 + 8));
 
+    break;
+
+  case 7:
+
+  case 8:
+
+    break;
+
   }
+
 
   return 0;
 
