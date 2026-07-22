@@ -527,7 +527,7 @@ u32 FUN_005112d0(void)
   u32 uVar2;
   long lVar3;
   int iVar4;
-  
+
   puVar1 = &DAT_0096dd94;
   iVar4 = 3;
   do {
@@ -774,13 +774,13 @@ char FUN_00511a58(u64 param_1,int param_2)
   return cStack_20;
 }
 // FUN_00511B08 NONMATCHING
-u64 FUN_00511b08(u64 param_1,u64 param_2,u8 param_3)
+u64 FUN_00511b08(int param_1,int param_2,u8 param_3)
 
 {
   u64 uVar1;
   long lVar2;
   
-  if ((&DAT_0096dd20)[(int)param_1 * 0x1c + (int)param_2 * 7] == 0) {
+  if ((&DAT_0096dd20)[param_1 * 0x1c + param_2 * 7] == 0) {
     uVar1 = 0;
   }
   else {
@@ -913,7 +913,7 @@ bool FUN_00512070(u64 param_1,u64 param_2,int param_3)
   return bVar2;
 }
 // FUN_00512138 NONMATCHING
-int FUN_00512138(u64 param_1,u64 param_2,int param_3)
+int FUN_00512138(int param_1,int param_2,int param_3)
 
 {
   u8 *puVar1;
