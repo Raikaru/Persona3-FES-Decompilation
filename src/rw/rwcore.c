@@ -5697,40 +5697,42 @@ float FUN_004d2b50(int param_1,int *param_2,int param_3,byte *param_4,float *par
   return fVar6;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma schedule on
 // FUN_004D2D60 NONMATCHING
 bool FUN_004d2d60(int param_1,float *param_2,int *param_3,int *param_4)
 
 {
   byte bVar1;
   bool bVar2;
-  float *pfVar3;
   int iVar4;
-  int iVar5;
   int iVar6;
+  float *pfVar3;
   undefined4 *puVar7;
   undefined4 uVar8;
   undefined4 uVar9;
   undefined4 uVar10;
-  byte abStack_20 [16];
   float afStack_10 [4];
+  byte abStack_20 [16];
   
   afStack_10[0] = FUN_004d2b50(param_1,param_3,0,abStack_20,param_2);
   afStack_10[1] = FUN_004d2b50(param_1,param_3,1,abStack_20,param_2);
   afStack_10[2] = FUN_004d2b50(param_1,param_3,2,abStack_20,param_2);
   afStack_10[3] = FUN_004d2b50(param_1,param_3,3,abStack_20,param_2);
   iVar6 = 0;
-  pfVar3 = afStack_10;
   iVar4 = 0;
+  pfVar3 = afStack_10;
   do {
-    iVar5 = iVar6;
-    if (afStack_10[iVar4] <= *pfVar3) {
-      iVar5 = iVar4;
-    }
-    iVar6 = iVar6 + 1;
+    if (!(*pfVar3 < afStack_10[iVar6])) goto skip_best;
+    iVar6 = iVar4;
+skip_best:
+    asm volatile("" : "+m"(iVar6));
+    iVar4 = iVar4 + 1;
     pfVar3 = pfVar3 + 1;
-    iVar4 = iVar5;
-  } while (iVar6 < 4);
-  bVar2 = afStack_10[iVar5] < *(float *)((int)param_2 + 0x14);
+  } while (iVar4 < 4);
+  pfVar3 = afStack_10 + iVar6;
+  bVar2 = afStack_10[iVar6] < *(float *)((int)param_2 + 0x14);
   if (bVar2) {
     puVar7 = (undefined4 *)param_3;
     uVar10 = puVar7[1];
@@ -5747,12 +5749,14 @@ bool FUN_004d2d60(int param_1,float *param_2,int *param_3,int *param_4)
     param_4[5] = uVar10;
     param_4[6] = uVar8;
     param_4[7] = uVar9;
-    bVar1 = abStack_20[iVar5 * 4];
-    param_4[iVar5] = (uint)bVar1;
-    puVar7[iVar5 + 4] = (uint)bVar1;
+    bVar1 = abStack_20[iVar6 * 4];
+    param_4[iVar6] = (uint)bVar1;
+    puVar7[iVar6 + 4] = (uint)bVar1;
   }
   return bVar2;
 }
+#pragma schedule off
+#pragma pop
 
 // FUN_004D2ED0 NONMATCHING
 u32 *FUN_004d2ed0(u32 *param_1,byte *param_2,long param_3)
@@ -29966,6 +29970,28 @@ undefined4 FUN_004fa9f8(byte *param_1)
   DAT_00965ad0 = *(undefined8 *)(param_1 + 8);
   DAT_00965ad8 = *(undefined4 *)(param_1 + 0x10);
   return 0;
+}
+
+// FUN_004FABD0 NONMATCHING
+undefined4 *FUN_004fabd0(undefined4 *param_1)
+{
+  struct Copy20 {
+    u64 a;
+    u64 b;
+    u32 c;
+  };
+  *(struct Copy20 *)param_1 = *(struct Copy20 *)&DAT_00965ac8;
+  return param_1;
+}
+
+// FUN_004FAC08 NONMATCHING
+undefined4 FUN_004fac08(undefined4 param_1)
+{
+  undefined4 uVar1;
+
+  uVar1 = REG_DMAC_ENABLER;
+  REG_DMAC_ENABLER = param_1;
+  return uVar1;
 }
 
 // FUN_004FAC20 NONMATCHING
