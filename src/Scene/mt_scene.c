@@ -65,6 +65,7 @@ extern void* DAT_0086bdc0[9];
 
 static MtScene sMtScene;       // 0095afc0
 MtScene* gMtScene = &sMtScene; // 007cd540
+extern Resrc* resrcMngCreateRes(ResrcManager* resManager, u16 resTypeId);
 
 
 
@@ -664,39 +665,20 @@ void FUN_003b58c0(short param_1)
 
 
 void FUN_003b5980(short param_1)
-
-
-
 {
+    int iVar1;
 
-  int iVar1;
-
-  
-
-  if ((PTR_DAT_007cd540_u32[3] & 1) == 0) {
-
-    *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
-
-  }
-
-  else if (*(short *)(PTR_DAT_007cd540_u32 + 6) != param_1) {
-
-    PTR_DAT_007cd540_u32[3] = PTR_DAT_007cd540_u32[3] | 4;
-
-    *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
-
-    if ((PTR_DAT_007cd540_u32[3] & 2) == 0) {
-
-      iVar1 = FUN_001b9120();
-
-      *(u32 *)(iVar1 + 0x1058) = 0x28;
-
+    if ((PTR_DAT_007cd540_u32[3] & 1) == 0) {
+        *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
     }
-
-  }
-
-  return;
-
+    else if (*(short *)(PTR_DAT_007cd540_u32 + 6) != param_1) {
+        PTR_DAT_007cd540_u32[3] = PTR_DAT_007cd540_u32[3] | 4;
+        *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
+        if ((PTR_DAT_007cd540_u32[3] & 2) == 0) {
+            iVar1 = FUN_001b9120();
+            *(u32 *)(iVar1 + 0x1058) = 0x28;
+        }
+    }
 }
 #define FUN_003b5980(...) ((void (*)(...))FUN_003b5980)(__VA_ARGS__)
 #undef FUN_003b5d00
@@ -748,11 +730,10 @@ extern u8 D_006A2BE8_abs[];
 u32 FUN_003b5e90(u16 param_1)
 {
     u16 uVar1;
-    u32 lVar2;
+    Resrc* lVar2;
     u32 typeId;
-
     uVar1 = ((param_1 & 0xffff) & 0x3ff) | 0x2000;
-    if (*(u32 *)(PTR_DAT_007cd540 + 8) == 0)
+    if (gMtScene->resManager == NULL)
     {
         FUN_005225a8(D_006A2BB0_abs);
         return 0;
@@ -765,7 +746,7 @@ u32 FUN_003b5e90(u16 param_1)
         return 0;
     }
 
-    lVar2 = FUN_003b50d0(*(u32 *)(PTR_DAT_007cd540 + 8), uVar1);
+    lVar2 = resrcMngCreateRes(gMtScene->resManager, uVar1);
     if (lVar2 == 0)
     {
         return 0;
@@ -1147,37 +1128,26 @@ u32 FUN_003b6790(u32 param_1,long param_2)
 u32 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
 {
   u16 uVar1;
-  u8 *colorBytes;
   Resrc *res1;
-  float fVar5;
-  float fVar6;
-  float fVar7;
-
   uVar1 = param_1 & 0x3ff | 0x3400;
-  if (PTR_DAT_007cd540_u32[2] == 0) {
-    FUN_005225a8(0x6a2bb0);
+  if (gMtScene->resManager == NULL) {
+    FUN_005225a8(D_006A2BB0_abs);
     uVar1 = 0;
   }
   else {
-    res1 = (Resrc *)FUN_003b50d0(PTR_DAT_007cd540_u32[2],uVar1);
+    res1 = resrcMngCreateRes(gMtScene->resManager,uVar1);
     if (res1 == 0) {
       uVar1 = 0;
     }
     else {
-      fVar5 = param_2->x;
-      fVar6 = param_2->y;
-      fVar7 = param_2->z;
-      *(float *)((u8 *)res1 + 0x104) = fVar5;
-      *(float *)((u8 *)res1 + 0x108) = fVar6;
-      *(float *)((u8 *)res1 + 0x10c) = fVar7;
+      *(RwV3d *)((u8 *)res1 + 0x104) = *param_2;
       *(float *)((u8 *)res1 + 0x110) = param_4;
       *(float *)((u8 *)res1 + 0x114) = param_5;
       *(float *)((u8 *)res1 + 0x118) = param_6;
-      colorBytes = (u8 *)&param_3;
-      *(u8 *)((u8 *)res1 + 0x100) = colorBytes[0];
-      *(u8 *)((u8 *)res1 + 0x101) = colorBytes[1];
-      *(u8 *)((u8 *)res1 + 0x102) = colorBytes[2];
-      *(u8 *)((u8 *)res1 + 0x103) = colorBytes[3];
+      *(u8 *)((u8 *)res1 + 0x100) = ((u8 *)&param_3)[0];
+      *(u8 *)((u8 *)res1 + 0x101) = ((u8 *)&param_3)[1];
+      *(u8 *)((u8 *)res1 + 0x102) = ((u8 *)&param_3)[2];
+      *(u8 *)((u8 *)res1 + 0x103) = ((u8 *)&param_3)[3];
       FUN_001e6af0((u8 *)res1 + 0x11c,param_2,param_4,param_5,param_6);
       res1->flags = res1->flags | 8;
     }
@@ -1192,37 +1162,27 @@ u32 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
 u32 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
 {
   u16 uVar1;
-  u8 *colorBytes;
   Resrc *res1;
-  float fVar5;
-  float fVar6;
-  float fVar7;
 
   uVar1 = param_1 & 0x3ff | 0x5400;
-  if (PTR_DAT_007cd540_u32[2] == 0) {
-    FUN_005225a8(0x6a2bb0);
+  if (gMtScene->resManager == NULL) {
+    FUN_005225a8(D_006A2BB0_abs);
     uVar1 = 0;
   }
   else {
-    res1 = (Resrc *)FUN_003b50d0(PTR_DAT_007cd540_u32[2],uVar1);
+    res1 = resrcMngCreateRes(gMtScene->resManager,uVar1);
     if (res1 == 0) {
       uVar1 = 0;
     }
     else {
-      fVar5 = param_2->x;
-      fVar6 = param_2->y;
-      fVar7 = param_2->z;
-      *(float *)((u8 *)res1 + 0x104) = fVar5;
-      *(float *)((u8 *)res1 + 0x108) = fVar6;
-      *(float *)((u8 *)res1 + 0x10c) = fVar7;
+      *(RwV3d *)((u8 *)res1 + 0x104) = *param_2;
       *(float *)((u8 *)res1 + 0x110) = param_4;
       *(float *)((u8 *)res1 + 0x114) = param_5;
       *(float *)((u8 *)res1 + 0x118) = param_6;
-      colorBytes = (u8 *)&param_3;
-      *(u8 *)((u8 *)res1 + 0x100) = colorBytes[0];
-      *(u8 *)((u8 *)res1 + 0x101) = colorBytes[1];
-      *(u8 *)((u8 *)res1 + 0x102) = colorBytes[2];
-      *(u8 *)((u8 *)res1 + 0x103) = colorBytes[3];
+      *(u8 *)((u8 *)res1 + 0x100) = ((u8 *)&param_3)[0];
+      *(u8 *)((u8 *)res1 + 0x101) = ((u8 *)&param_3)[1];
+      *(u8 *)((u8 *)res1 + 0x102) = ((u8 *)&param_3)[2];
+      *(u8 *)((u8 *)res1 + 0x103) = ((u8 *)&param_3)[3];
       FUN_001e6af0((u8 *)res1 + 0x11c,param_2,param_4,param_5,param_6);
       res1->flags = res1->flags | 8;
     }
