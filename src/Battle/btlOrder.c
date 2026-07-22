@@ -261,6 +261,7 @@ void FUN_0029a570(void)
 
 #pragma opt_loop_invariants on
 // FUN_0029a690 NONMATCHING
+// The residual is limited to MWCCPS2 register coloring/scheduling; logical control flow and object size match retail.
 void FUN_0029a690(u16 genus)
 {
     u32 count;
@@ -314,6 +315,7 @@ void FUN_0029a690(u16 genus)
 #pragma opt_loop_invariants off
 #pragma opt_loop_invariants on
 // FUN_0029a750 NONMATCHING
+// The residual is limited to MWCCPS2 register coloring/scheduling; logical control flow and object size match retail.
 void FUN_0029a750(void)
 {
     u16 playerCount;
