@@ -4745,7 +4745,6 @@ FUN_004c5960(int param_1,int param_2,u32 param_3,u32 param_4,u32 param_5)
 }
 // FUN_004C59B0 NONMATCHING
 u32 FUN_004c59b0(int param_1,int param_2,u32 param_3)
-
 {
   u32 *puVar1;
   u32 uVar2;
@@ -5036,7 +5035,6 @@ u32 FUN_004c6000(void)
 }
 // FUN_004C6170 NONMATCHING
 u32 FUN_004c6170(int param_1,int param_2)
-
 {
   u32 *puVar1;
   
@@ -5450,12 +5448,16 @@ RwReal RwV3dLength(const RwV3d* in)
 }
 #pragma optimization_level 2
 
-// FUN_004C6AF0 NONMATCHING
+// FUN_004C6AF0
+#pragma optimization_level 3
+#pragma schedule on
 float FUN_004c6af0(float *param_1)
 
 {
   return SQRT(*param_1 * *param_1 + param_1[1] * param_1[1]);
 }
+#pragma optimization_level 2
+#pragma schedule off
 // FUN_004C6B20 NONMATCHING
 float FUN_004c6b20(float *param_1,float *param_2)
 
@@ -5509,12 +5511,14 @@ u64 FUN_004c6ca0(u64 param_1)
   (**(code **)(&DAT_00960084 + DAT_007ce910))();
   return param_1;
 }
-// FUN_004C6CE0 NONMATCHING
+// FUN_004C6CE0
+#pragma optimization_level 3
 u64 FUN_004c6ce0(u64 param_1)
 {
   DAT_00960088 = DAT_00960088 - 1;
   return param_1;
 }
+#pragma optimization_level 2
 // FUN_004C6D00 NONMATCHING
 u64 FUN_004c6d00(u64 param_1,u32 param_2)
 {
