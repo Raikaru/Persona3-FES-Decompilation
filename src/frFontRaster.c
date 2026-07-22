@@ -66,11 +66,15 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3);
 
 void FUN_003b35e0(int count)
 {
+  register int limit;
   int i;
   int size;
   u32 memory;
   int *node;
   u32 block;
+  int *current;
+  int *next;
+  int *newNode;
 
   size = count * 0x21c + 0x18;
   if (piGpffffb954 != (int *)0x0) {
@@ -84,21 +88,24 @@ void FUN_003b35e0(int count)
   node = (int *)piGpffffb954[1];
   node[3] = (int)(node + 7);
   piGpffffb954[4] = (int)node;
-  for (i = 0; i < count - 1; i = i + 1) {
-    int *next = (int *)node[3];
-    node[6] = (int)(next + 0x80);
-    next[0x83] = (int)(next + 0x87);
-    node = next + 0x80;
+  i = 0;
+  limit = count - 1;
+  for (; i < limit; i = i + 1) {
+    next = (int *)node[3];
+    newNode = next + 0x80;
+    node[6] = (int)newNode;
+    node = newNode;
+    node[3] = (int)(node + 7);
   }
   piGpffffb954[5] = (int)node;
-  node = (int *)piGpffffb954[4];
-  while (node != (int *)0x0) {
+  current = (int *)piGpffffb954[4];
+  while (current != (int *)0x0) {
     block = FUN_004ce0f0(0x20,0x20,4,0x4504);
-    node[5] = block;
+    current[5] = block;
     if (block == 0) {
       FUN_005225a8((u32)(uintptr_t)DAT_006a28b0);
     } else {
-      node = (int *)node[6];
+      current = (int *)current[6];
     }
   }
 }
