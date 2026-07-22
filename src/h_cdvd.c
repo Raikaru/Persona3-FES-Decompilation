@@ -422,15 +422,12 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
     return cdvd;
 }
 
-// FUN_00100ec0 NONMATCHING
+
 u32 H_Cdvd_Destroy(HCdvd* cdvd)
 {
     HCdvd* prev;
     HCdvd* next;
     s32 i;
-    HCdvdCache* cacheBase;
-    void* requestData;
-    HCdvdCache* cache;
 
     if (cdvd->readState != HCDVD_READ_QUEUED)
     {
@@ -459,14 +456,12 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
         cdvd->unalignedFileMemory = NULL;
     }
 
-    requestData = &cdvd->hasExternalMemory;
-    cacheBase = sCdvdCache;
     for (i = 0; i < HCDVD_CACHE_MAX; i++)
     {
-        cache = &cacheBase[i];
-        if (cache->isValid && cache->requestData == requestData)
+        if (sCdvdCache[i].isValid &&
+            sCdvdCache[i].requestData == &cdvd->hasExternalMemory)
         {
-            cache->isValid = false;
+            sCdvdCache[i].isValid = false;
         }
     }
 
