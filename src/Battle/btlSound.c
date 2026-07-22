@@ -1613,7 +1613,6 @@ u32 FUN_002de4e0(int param_1)
 
 }
 
-// FUN_002DED60 NONMATCHING
 #pragma push
 #pragma opt_rebuildconditionals on
 
@@ -1641,14 +1640,7 @@ u32 FUN_002ded60(int param_1)
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BE0_abs);
         }
-        if (lVar2 != 0)
-        {
-            uVar1 = 0xa5;
-        }
-        else
-        {
-            uVar1 = 0xa4;
-        }
+        uVar1 = (lVar2 != 0) ? 0xa5 : 0xa4;
         break;
     case 3:
         if (*(s32*)DAT_00697be4_abs == -1)
@@ -1659,12 +1651,7 @@ u32 FUN_002ded60(int param_1)
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697be4_abs);
         }
-        if (lVar2 == 0) goto case3_zero;
-        uVar1 = 0xf6;
-        goto case3_done;
-case3_zero:
-        uVar1 = 0xf5;
-case3_done:
+        uVar1 = (lVar2 != 0) ? 0xf6 : 0xf5;
         break;
     case 4:
         if (*(s32*)DAT_00697BE8_abs == -1)
@@ -1675,12 +1662,7 @@ case3_done:
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BE8_abs);
         }
-        if (lVar2 == 0) goto case4_zero;
-        uVar1 = 0x15b;
-        goto case4_done;
-case4_zero:
-        uVar1 = 0x15a;
-case4_done:
+        uVar1 = (lVar2 != 0) ? 0x15b : 0x15a;
         break;
     case 5:
         if (*(s32*)DAT_00697BEC_abs == -1)
@@ -1691,12 +1673,7 @@ case4_done:
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BEC_abs);
         }
-        if (lVar2 == 0) goto case5_zero;
-        uVar1 = 0x1a4;
-        goto case5_done;
-case5_zero:
-        uVar1 = 0x1a3;
-case5_done:
+        uVar1 = (lVar2 != 0) ? 0x1a4 : 0x1a3;
         break;
     case 7:
         if (*(s32*)DAT_00697BF4_abs == -1)
@@ -1707,12 +1684,7 @@ case5_done:
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BF4_abs);
         }
-        if (lVar2 == 0) goto case7_zero;
-        uVar1 = 0x1ed;
-        goto case7_done;
-case7_zero:
-        uVar1 = 0x1ec;
-case7_done:
+        uVar1 = (lVar2 != 0) ? 0x1ed : 0x1ec;
         break;
     case 8:
         if (*(s32*)DAT_00697BF8_abs == -1)
@@ -1723,12 +1695,7 @@ case7_done:
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BF8_abs);
         }
-        if (lVar2 == 0) goto case8_zero;
-        uVar1 = 0x236;
-        goto case8_done;
-case8_zero:
-        uVar1 = 0x235;
-case8_done:
+        uVar1 = (lVar2 != 0) ? 0x236 : 0x235;
         break;
     case 9:
         lVar2 = FUN_0017d800();
