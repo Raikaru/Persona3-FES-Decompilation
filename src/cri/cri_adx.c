@@ -2260,19 +2260,14 @@ u32 FUN_00531ac0(int param_1)
 }
 #pragma pop
 
-
-
-
-
+#pragma push
+#pragma schedule on
 // FUN_00531AC8
-
-
-asm u32 FUN_00531ac8(int param_1)
+u32 FUN_00531ac8(int param_1)
 {
-  .set noreorder
-  jr $ra
-  lw $v0, 0x1c($a0)
+  return *(u32 *)(param_1 + 0x1c);
 }
+#pragma pop
 
 
 
