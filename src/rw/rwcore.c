@@ -2464,16 +2464,18 @@ undefined8 FUN_004ccc30(undefined8 param_1,int *param_2)
   return 0;
 }
 
-// FUN_004CCD20 NONMATCHING
+#pragma schedule on
+// FUN_004CCD20
 undefined4 FUN_004ccd20(undefined8 param_1)
 
 {
   undefined4 uStack_4;
   
   uStack_4 = 0;
-  FUN_004cc6d0(param_1,0x14,(code *)0x4ccc30,&uStack_4);
+  FUN_004cc6d0(param_1,0x14,(code *)FUN_004ccc30,&uStack_4);
   return uStack_4;
 }
+#pragma schedule off
 
 // FUN_004CCD50 NONMATCHING
 undefined4 FUN_004ccd50(undefined8 param_1,long param_2,long param_3)
@@ -4901,15 +4903,16 @@ void FUN_004d13b0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
   return;
 }
 
+#pragma schedule on
 // FUN_004D13E0 NONMATCHING
 bool FUN_004d13e0(void)
-
 {
-  long lVar1;
+  int lVar1;
   
-  lVar1 = (**(code **)((int)&DAT_0096009c + iGpffffbc60))();
+  lVar1 = (*(code *)(iGpffffbc60 + (int)DAT_00960070_abs + 0x2c))();
   return lVar1 != 0;
 }
+#pragma schedule off
 
 // FUN_004D1420 NONMATCHING
 undefined8 FUN_004d1420(undefined8 param_1)
@@ -9173,6 +9176,8 @@ undefined4 FUN_004d81b0(int param_1,uint *param_2)
   return 1;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_004D82A0 NONMATCHING
 undefined4 FUN_004d82a0(long param_1)
 
@@ -9180,13 +9185,13 @@ undefined4 FUN_004d82a0(long param_1)
   undefined4 uVar1;
   
   if (DAT_007ceac8 == 0) {
-    if (param_1 == 0) {
-      DAT_007cddd8 = 0x10;
-      DAT_00960088 = 0x477fff00;
-    }
-    else {
+    if (param_1 != 0) {
       DAT_007cddd8 = 0x20;
       DAT_00960088 = 0x4b7fffff;
+    }
+    else {
+      DAT_007cddd8 = 0x10;
+      DAT_00960088 = 0x477fff00;
     }
     uVar1 = 1;
   }
@@ -9195,6 +9200,7 @@ undefined4 FUN_004d82a0(long param_1)
   }
   return uVar1;
 }
+#pragma pop
 
 #pragma optimization_level 3
 // FUN_004D8300
@@ -36066,8 +36072,9 @@ undefined4 FUN_00503930(void)
   return 1;
 }
 #pragma schedule off
-// FUN_00503938 NONMATCHING
-undefined8 FUN_00503938(int param_1,undefined8 param_2)
+#pragma schedule on
+// FUN_00503938
+undefined4 FUN_00503938(int param_1,undefined8 param_2)
 
 {
   if (param_1 == 1) {
@@ -36075,6 +36082,7 @@ undefined8 FUN_00503938(int param_1,undefined8 param_2)
   }
   return 0;
 }
+#pragma schedule off
 #pragma optimization_level 3
 #pragma schedule on
 // FUN_00503960 NONMATCHING
@@ -36889,7 +36897,6 @@ undefined4 * FUN_00504678(undefined4 param_1)
 }
 // FUN_005046A0 NONMATCHING
 void FUN_005046a0(int *param_1)
-
 {
   int iVar1;
   
