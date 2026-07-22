@@ -14437,18 +14437,17 @@ u32 FUN_0036e260(int param_1)
   iVar1 = *(int *)(param_1 + 0x3c);
 
   lVar3 = FUN_00108710();
+
   if (lVar3 == 0) {
-    FUN_005225a8((u8 *)0x6a0000 - 0x2030);
+    FUN_005225a8(0x69dfd0);
     uVar2 = 0;
-  } else if ((*(s8 *)(iVar1 + 0x4c) & 4) == 0) {
+  }
+  else if (((*(s8 *)(iVar1 + 0x4c) & 4) == 0) ||
+           (lVar3 = FUN_002ff310(), lVar3 == 1)) {
     uVar2 = 0xffffffff;
-  } else {
-    lVar3 = FUN_002ff310();
-    if (lVar3 == 1) {
-      uVar2 = 0xffffffff;
-    } else {
-      uVar2 = 0;
-    }
+  }
+  else {
+    uVar2 = 0;
   }
 
 
