@@ -1961,7 +1961,7 @@ void FUN_003a3ce0(int param_1,int param_2,int param_3)
 }
 #define FUN_003a3ce0(...) ((void (*)(...))FUN_003a3ce0)(__VA_ARGS__)
 #undef FUN_003a3f90
-// FUN_003A3F90
+// FUN_003A3F90 NONMATCHING
 
 
 u32 FUN_003a3f90(int param_1,int param_2)
@@ -1984,9 +1984,7 @@ u32 FUN_003a3f90(int param_1,int param_2)
   }
 
   offset = param_2 * 4;
-  /* Preserve retail's offset-first address addition. */
-  __asm__ volatile ("addu %0, %1, %2"
-                    : "=r"(address) : "r"(offset), "r"(iVar1));
+  address = offset + iVar1;
   return *(u32 *)(address + 0xd4);
 
 }

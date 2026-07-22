@@ -316,7 +316,7 @@ void func_002798f0(void)
     K_ASSERT(sOpTailA != NULL, 0x61);
     sOpTailA[0] |= 0x40;
 }
-// FUN_00279940
+// FUN_00279940 NONMATCHING
 u32* func_00279940(const u32* header)
 {
     u32 size;
@@ -339,28 +339,11 @@ u32* func_00279940(const u32* header)
     data = out = (u32*)(*DAT_00960178)(size, 0x40000);
     data += 5;
     out[2] = (u32)data;
-    /* Preserve the retail accumulator through both 4-byte alignment joins. */
-    __asm__ volatile (
-        "lw $v0, 0xc(%2)\n"
-        "sll $v0, $v0, 2\n"
-        "addu $v0, %3, $v0\n"
-        "andi $a0, $v0, 3\n"
-        "beqz $a0, 1f\n"
-        "addiu $v1, $zero, 4\n"
-        "subu $v1, $v1, $a0\n"
-        "addu $v0, $v0, $v1\n"
-        "1:\n"
-        "sw $v0, 0xc(%1)\n"
-        "lw $v1, 0x18(%2)\n"
-        "addu $v0, $v0, $v1\n"
-        "andi $a0, $v0, 3\n"
-        "beqz $a0, 2f\n"
-        "addiu $v1, $zero, 4\n"
-        "subu $v1, $v1, $a0\n"
-        "addu $v0, $v0, $v1\n"
-        "2:\n"
-        "sw $v0, 0x10(%1)"
-        : "=r"(size) : "r"(out), "r"(header), "r"(data) : "memory");
+    cursor = (u32)(data + header[3]);
+    cursor = (cursor + 3) & ~3;
+    out[3] = cursor;
+    cursor += header[6];
+    out[4] = (cursor + 3) & ~3;
     out[1] = header[3];
     out[0] = header[0];
     func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);
