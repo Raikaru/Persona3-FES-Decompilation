@@ -616,7 +616,7 @@ void FUN_00340790(int param_1);
 void FUN_003407e0(int param_1);
 void FUN_00341ba0(u64 param_1);
 u64 FUN_00341f10(u32 param_1,u64 param_2);
-u64 FUN_00341fd0(u64 param_1);
+u64 FUN_00341fd0(u32 param_1);
 void FUN_003420c0(u32 param_1);
 u64 FUN_00342130(u64 param_1);
 void FUN_00342280(int param_1);
@@ -38982,51 +38982,53 @@ u64 FUN_00341f10(u32 param_1,u64 param_2)
 
 
 // FUN_00341FD0 NONMATCHING
-
-
-u64 FUN_00341fd0(u64 param_1)
-
-
-
+ 
+ 
+u64 FUN_00341fd0(u32 param_1)
+ 
+ 
+ 
 {
-
+ 
   u16 uVar1;
-
+ 
   u32 uVar2;
-
-  u64 uVar3;
-
-  u64 uVar4;
-
-  u64 uVar5;
-
+ 
+  u32 uVar3;
+ 
+  u32 uVar4;
+ 
+  u32 uVar5;
+ 
   int iVar6;
-
-  
-
-  uVar3 = FUN_003245f0((int)(param_1));
-
-  if (*(short *)((int)param_1 + 0x1c) == 4) {
-
+ 
+ 
+ 
+  uVar3 = FUN_003245f0(param_1);
+ 
+  if (*(u16 *)(param_1 + 0x1c) == 4) {
+ 
     uVar3 = 0;
-
+ 
   }
-
-  uVar4 = FUN_003245b0((int)(param_1));
-
-  uVar1 = *(u16 *)((int)param_1 + 0xc);
-
+ 
+  uVar4 = FUN_003245b0(param_1);
+ 
+  uVar1 = *(u16 *)(param_1 + 0xc);
+ 
   uVar5 = FUN_00341f10(uVar1,uVar4);
-
+ 
   iVar6 = (u32)uVar1 * 0x1c;
-
+ 
   uVar2 = (*(code *)(&DAT_0069c854 + iVar6))(uVar4,uVar3);
-
-  *(u32 *)((int)uVar5 + 0x3c) = uVar2;
-
+ 
+  *(u32 *)(uVar5 + 0x3c) = uVar2;
+ 
         DAT_0069c850[(u32)uVar1].callback0(uVar5);
-
+ 
   return uVar5;
+ 
+}
 
 }
 
@@ -44640,14 +44642,14 @@ u64 FUN_00347fc0(void)
 {
 
   u64 uVar1;
-
+  u32 uVar2;
   u64 uVar2;
 
   
 
   uVar1 = FUN_003245b0_wide();
 
-  uVar2 = (*DAT_00960178)(0x14,0x40000);
+  uVar2 = (*DAT_00960178_abs)(0x14,0x40000);
 
   *(u32 *)uVar2 = 0;
 
@@ -52622,7 +52624,6 @@ void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2)
 
 // FUN_0034FE30 NONMATCHING
 
-
 void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
 {
   __int128 auVar5;
@@ -53239,6 +53240,18 @@ void FUN_00350500(int param_1,int param_2)
 
 
 
+
+// FUN_003505a0
+void FUN_003505a0(int *param_1)
+{
+  param_1[2] = 0;
+}
+
+// FUN_003505b0
+void FUN_003505b0(int *param_1)
+{
+  param_1[2] = param_1[2] + 1;
+}
 
 // FUN_003505D0 NONMATCHING
 void FUN_003505d0(int *param_1)
