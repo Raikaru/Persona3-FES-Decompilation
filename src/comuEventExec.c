@@ -22,8 +22,10 @@ extern u8* PTR_DAT_006a38e0_abs[];
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-u8 FUN_003c33c0(u8 *param_1,int *param_2,long param_3);
-u32 FUN_003c3e80(u64 param_1);
+u32 FUN_003bf130(void);
+#pragma alias FUN_003c33c0_call FUN_003c33c0
+extern u32 FUN_003c33c0_call();
+u32 FUN_003c3e80(u8 *param_1);
 u8 * FUN_003c3f40(u32 param_1);
 u8 * FUN_003c3f80(int param_1);
 u8 * FUN_003c3fe0(int param_1);
@@ -840,68 +842,35 @@ u8 FUN_003c33c0(u8 *param_1,int *param_2,long param_3)
 
 }
 #pragma pop
-#define FUN_003c33c0(...) ((u8 (*)(...))FUN_003c33c0)(__VA_ARGS__)
+#undef FUN_003c33c0
 #undef FUN_003c3e80
-// FUN_003C3E80 NONMATCHING
+// FUN_003C3E80
 
 
-u32 FUN_003c3e80(u64 param_1)
-
-
-
+u32 FUN_003c3e80(u8 *param_1)
 {
-
   int iVar1;
-
-  u32 uVar2;
-
-  long lVar3;
-
-  u8 bVar4;
-
   int iStack_4;
 
-  
-
   iStack_4 = 0;
-
-  bVar4 = 0;
-
-  if (*(int *)((int)param_1 + 0xc) == 2) {
-
-    lVar3 = FUN_003bf130();
-
-    bVar4 = lVar3 == 1;
-
+  if (FUN_003c33c0_call(param_1,&iStack_4,
+                   (*(int *)(param_1 + 0xc) == 2) &&
+                   (FUN_003bf130() == 1)) != 1) {
+    goto return_zero;
   }
-
-  lVar3 = FUN_003c33c0(param_1,&iStack_4,bVar4);
-
-  if (lVar3 == 1) {
-
-    if (iStack_4 != 0) {
-
-      iVar1 = (int)param_1 + (iStack_4 + -1) * 6;
-
-      FUN_003bf180(*(u16 *)(iVar1 + 0x20),*(u8 *)(iVar1 + 0x22),
-
-                   *(u8 *)(iVar1 + 0x23));
-
-    }
-
-    uVar2 = 1;
-
+  if (iStack_4 != 0) {
+    iVar1 = (int)(param_1 + (iStack_4 + -1) * 6);
+    FUN_003bf180(*(u16 *)(iVar1 + 0x20),*(u8 *)(iVar1 + 0x22),
+                 *(u8 *)(iVar1 + 0x23));
   }
+  goto return_one;
 
-  else {
-
-    uVar2 = 0;
-
-  }
-
-  return uVar2;
-
+return_zero:
+  return 0;
+return_one:
+  return 1;
 }
+
 #define FUN_003c3e80(...) ((u32 (*)(...))FUN_003c3e80)(__VA_ARGS__)
 #undef FUN_003c3f40
 // FUN_003C3F40
