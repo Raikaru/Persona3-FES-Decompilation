@@ -4100,7 +4100,7 @@ u64 FUN_0041b950(int param_1)
 
   char cVar1;
 
-  u16 *puVar2;
+  s16 *puVar2;
 
   int iVar3;
 
@@ -4112,7 +4112,7 @@ u64 FUN_0041b950(int param_1)
 
       iVar4 = *(int *)(iVar4 + 0x10)) {
 
-    puVar2 = *(u16 **)(iVar4 + 0x14);
+    puVar2 = *(s16 **)(iVar4 + 0x14);
 
     if (((*puVar2 & 4) != 0) && ((*puVar2 & 1) != 0)) {
 
