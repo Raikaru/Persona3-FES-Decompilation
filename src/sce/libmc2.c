@@ -1379,18 +1379,23 @@ void FUN_00514928(int *param_1,int *param_2)
   return;
 }
 #pragma schedule off
+#pragma schedule on
+#pragma optimization_level 3
+#pragma opt_lifetimes on
 // FUN_00514950 NONMATCHING
 int FUN_00514950(void)
-
 {
-  int aiStack_20 [4];
-  
-  aiStack_20[0] = FUN_005136f8(0,0);
-  if (aiStack_20[0] == 0) {
-    FUN_00514858(0,0,aiStack_20);
+  int iVar1;
+
+  iVar1 = FUN_005136f8(0,0);
+  if (iVar1 == 0) {
+    FUN_00514858(0,0,&iVar1);
   }
-  return aiStack_20[0];
+  return iVar1;
 }
+#pragma schedule off
+#pragma opt_lifetimes off
+#pragma optimization_level 2
 // FUN_00514990 NONMATCHING
 int FUN_00514990(void)
 
@@ -4775,16 +4780,19 @@ int FUN_0051a078(u64 param_1,u64 param_2)
 }
 // FUN_0051A140 NONMATCHING
 u32 FUN_0051a140(void)
-
 {
   u32 *puVar1;
-  
-  puVar1 = &DAT_0097ccc0;
+  u32 *puVar2;
+  u32 *puVar3;
+
+  puVar3 = (u32 *)DAT_0097ccc0_abs;
+  puVar1 = puVar3;
+  puVar2 = puVar3 + 0x2008;
   do {
     *puVar1 = 0xffffffff;
     puVar1[3] = 0;
     puVar1 = puVar1 + 0x1004;
-  } while ((int)puVar1 < 0x984ce0);
+  } while ((int)puVar1 < (int)puVar2);
   return 1;
 }
 // FUN_0051A180
@@ -4923,8 +4931,9 @@ bool FUN_0051a2f8(u64 param_1)
 // FUN_0051A418 NONMATCHING
 u64 FUN_0051a418(int param_1,u64 param_2,int param_3,int param_4)
 {
-  return FUN_0051b8d0(param_1,param_2,param_3 * (u32)*(u16 *)(&DAT_0078280a + param_1 * 0x184),
-               (u32)*(u16 *)(&DAT_0078280a + param_1 * 0x184) * param_4);
+  return FUN_0051b8d0(param_1,param_2,
+                      param_3 * (u32)*(u16 *)((u8 *)&DAT_0078280a + param_1 * 0x184),
+                      (u32)*(u16 *)((u8 *)&DAT_0078280a + param_1 * 0x184) * param_4);
 }
 // FUN_0051A458 NONMATCHING
 u64 FUN_0051a458(int param_1,u64 param_2,int param_3,int param_4)
@@ -5914,7 +5923,6 @@ bool FUN_0051c0c0(int param_1)
 }
 // FUN_0051C0F8 NONMATCHING
 int FUN_0051c0f8(void)
-
 {
   int iVar1;
   int *piVar2;
@@ -5984,7 +5992,6 @@ long FUN_0051c130(u32 *param_1)
 }
 // FUN_0051C250 NONMATCHING
 bool FUN_0051c250(u32 param_1)
-
 {
   if (1 < param_1) {
     return false;
