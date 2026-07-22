@@ -5409,16 +5409,18 @@ s8 FUN_00533ca0(int param_1)
 // FUN_00533CA8
 
 
-asm void FUN_00533ca8(int param_1,int param_2)
+#pragma push
+#pragma schedule on
+// FUN_00533CA8 NONMATCHING
+void FUN_00533ca8(int param_1,int param_2)
 {
-  .set noreorder
-  .word 0x8c8200c4
-  .word 0x24030001
-  .word 0xac8300c8
-  .word 0x00451021
-  .word 0x03e00008
-  .word 0xac8200c4
+  u32 value;
+
+  value = *(u32 *)(param_1 + 0xc4);
+  *(u32 *)(param_1 + 0xc8) = 1;
+  *(u32 *)(param_1 + 0xc4) = value + param_2;
 }
+#pragma pop
 
 
 
