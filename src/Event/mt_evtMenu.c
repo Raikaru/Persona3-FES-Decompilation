@@ -5739,12 +5739,13 @@ u32 FUN_00374c90(int param_1,int param_2,int param_3)
 
   
 
-  FUN_00523ac8(auStack_20,0x69ebf0,DAT_007cca68,DAT_007cca6c);
+  FUN_00523ac8(auStack_20,DAT_006a0000_abs - 0x1410,
+               *(s16 *)((u8 *)&DAT_007cca68 - 0x6288),
+               *(s16 *)((u8 *)&DAT_007cca6c - 0x6284));
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
-
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x7ccd58,auStack_20);
-
+  FUN_0038a260_f32_6(uVar1,param_1 * 0xc,param_2 * 0xc,0,
+                    &gp0xffffa068 - 0x5f98,(u32)auStack_20);
   return 2;
 
 }
