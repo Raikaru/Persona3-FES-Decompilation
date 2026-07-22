@@ -5580,6 +5580,7 @@ u64 FUN_00315f50(u64 param_1,u32 *param_2)
 
 
 
+// FUN_00315F50 NONMATCHING
 u64 func_00315f50(u64 param_1,u32 *param_2)
 
 
@@ -6314,6 +6315,7 @@ void FUN_00317a20(Model* param_1)
 
 
 
+// FUN_00317A20 NONMATCHING
 void func_00317a20(u64 param_1)
 
 
