@@ -1714,42 +1714,48 @@ void func_001d17f0(s32 destroyModel)
 void func_001d1860(u32 value)
 {
     s32 i;
+    FldUnit* unit;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL)
+        unit = &gFldUnitsPc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            func_0019c2f0(gFldUnitsPc[i].resrc->renderTexShadowTask, value);
+            func_0019c2f0(unit->resrc->renderTexShadowTask, value);
         }
     }
 }
+
 
 // FUN_001d1910 NONMATCHING
 void func_001d1910(void)
 {
     s32 i;
+    FldUnit* unit;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL)
+        unit = &gFldUnitsPc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            func_001a60d0(0, gFldUnitsPc[i].mdl, 0);
-            gFldUnitsPc[i].unk_17c = 0;
+            func_001a60d0(0, unit->mdl, 0);
+            unit->unk_17c = 0;
         }
     }
 }
-
 // FUN_001d19d0 NONMATCHING
 void func_001d19d0(void)
 {
     s32 i;
+    FldUnit* unit;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        if (gFldUnitsPc[i].genusBase != NULL && gFldUnitsPc[i].resrc != NULL)
+        unit = &gFldUnitsPc[i];
+        if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            gFldUnitsPc[i].unk_17c = 0;
-            func_001a60d0(0, gFldUnitsPc[i].mdl, 0xff);
+            unit->unk_17c = 0;
+            func_001a60d0(0, unit->mdl, 0xff);
         }
     }
 }
@@ -2450,6 +2456,9 @@ void func_001d3810(KwlnTask* task, u32 value)
     }
 }
 
+#pragma push
+#pragma opt_propagation off
+#pragma opt_rebuildconditionals off
 // FUN_001d3830 NONMATCHING
 s32 func_001d3830(KwlnTask* task)
 {
@@ -2459,18 +2468,27 @@ s32 func_001d3830(KwlnTask* task)
     result = -1;
     if (((s32*)task->workData)[3] != 0)
     {
-        remaining = func_001d38a0(task);
-        if (remaining == 0)
-        {
-            result = 2;
-        }
-        else if (remaining < 0x3c)
-        {
-            result = 1;
-        }
+        goto have_work;
     }
+    goto done;
+have_work:
+    remaining = func_001d38a0(task);
+    if (remaining != 0)
+    {
+        goto check_remaining;
+    }
+    result = 2;
+    goto done;
+check_remaining:
+    if (remaining >= 0x3c)
+    {
+        goto done;
+    }
+    result = 1;
+done:
     return result;
 }
+#pragma pop
 
 // FUN_001d38a0
 s32 func_001d38a0(KwlnTask* task)
