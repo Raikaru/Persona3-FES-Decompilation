@@ -4454,7 +4454,9 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 
 {
 
-  u8 bVar1;
+
+  u32 uVar5;
+  u32 uVar6;
 
   u8 bVar2;
 
@@ -4462,15 +4464,13 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 
   u64 uVar4;
 
-  u8 *pbVar5;
-
   
 
-  pbVar5 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  uVar5 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  uVar6 = *(u8 *)uVar5;
 
-  bVar1 = *pbVar5;
 
-  bVar2 = pbVar5[1];
+  bVar2 = *(u8 *)(uVar5 + 1);
 
   if (bVar2 == 0xff) {
 
@@ -4484,11 +4484,12 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 
   }
 
+  uVar3 = uVar3 << 8 | uVar6 - 1 & 0xff;
   FUN_0017db00();
 
   uVar4 = FUN_0016dd40();
 
-  FUN_0016e2b0(uVar4,uVar3 << 8 | bVar1 - 1 & 0xff);
+  FUN_0016e2b0(uVar4,uVar3);
 
   return 0;
 
