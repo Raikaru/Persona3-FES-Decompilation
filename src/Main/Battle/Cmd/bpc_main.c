@@ -545,7 +545,7 @@ void FUN_002441b0(u32 param_1)
   if ((int)puVar2[2] < 1) {
     K_Assert(D_0068E880, 0x26a);
   }
-  __asm__ volatile ("addiu %0, $gp, -0x6888" : "=r"(message));
+  message = DAT_007cc468;
   printf(message, param_1);
   uVar5 = *puVar2;
   uVar5 = uVar5 & 0xfffffffb;
