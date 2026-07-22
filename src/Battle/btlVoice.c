@@ -3768,6 +3768,10 @@ extern u32 iGpffffb810;
 extern float uGpffff8108;
 extern u32 uGpffffb21c;
 extern s16 uGpffff9c98;
+#pragma alias gp0xffff9c98 uGpffff9c98
+extern s16 gp0xffff9c98;
+#pragma alias gp0xffff9c9a uGpffff9c9a
+extern s16 gp0xffff9c9a;
 extern s16 uGpffff9c9a;
 extern s16 uGpffff9ca0;
 extern s16 uGpffff9ca2;
@@ -7403,7 +7407,6 @@ LAB_002e9848:
 
 // FUN_002e9950 NONMATCHING
 void func_002e9950(void)
-
 {
   u16 sVar1;
   int iVar2;
@@ -7449,7 +7452,6 @@ void func_002e9950(void)
     FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position);
     FUN_0027f650(iVar2,&position);
   }
-  return;
 }
 
 // FUN_002e9ac0 NONMATCHING
@@ -7614,13 +7616,14 @@ void func_002ea060(void)
   int iVar2;
   u16 kind;
   s16 index;
+  s16 slotIndex;
   f32 positions[4];
   f32* point;
   RwV3d position;
   s16 slots[2];
   *(VoicePositions *)positions = *(VoicePositions *)DAT_00699c80_abs;
-  slots[0] = uGpffff9c98;
-  slots[1] = uGpffff9c9a;
+  slots[0] = gp0xffff9c98;
+  slots[1] = gp0xffff9c9a;
   index = 0;
   position.y = 0.0f;
   for (iVar1 = *(int *)(iGpffffb6fc + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
@@ -7636,20 +7639,23 @@ void func_002ea060(void)
       *(u8 *)(iVar1 + 0x9f0) = 1;
     }
     else {
-      point = positions + index * 2;
+      slotIndex = index;
+      point = positions + slotIndex * 2;
       position.x = point[0];
       position.z = point[1];
-      *(u8 *)(iVar1 + 0x9f0) = slots[index];
-      index = (s16)(index + 1);
+      *(u8 *)(iVar1 + 0x9f0) = slots[slotIndex];
+      index = index + 1;
     }
     FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&position);
     FUN_0027f650(iVar1,&position);
   }
   for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
     kind = *(u16 *)(iVar2 + 0xa4);
-    if (kind == 0x103) {
+    switch (kind) {
+    case 0x103:
       position.x = 0.0f;
       position.z = -300.0f;
+      break;
     }
     FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position);
     FUN_0027f650(iVar2,&position);
