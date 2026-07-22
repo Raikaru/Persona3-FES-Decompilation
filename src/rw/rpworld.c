@@ -1979,6 +1979,8 @@ extern code FUN_004d13b0;
 extern code FUN_004d1840;
 extern code FUN_004d18c0;
 extern code FUN_004d4df0;
+#pragma alias FUN_004d4df0_typed FUN_004d4df0
+extern void FUN_004d4df0_typed(void);
 extern code FUN_004d51c0;
 extern code FUN_004d59d0;
 #pragma alias FUN_004d59d0_typed FUN_004d59d0
@@ -9918,7 +9920,6 @@ u64 FUN_004959e0(u64 param_1)
   }
   return param_1;
 }
-#pragma optimization_level 2
 #pragma schedule off
 
 
@@ -12453,7 +12454,6 @@ u32 FUN_0049a3d0(u32 param_1,code *param_2)
   *(code **)((int)param_1 + 0x68) = param_2;
   return param_1;
 }
-#pragma schedule off
 #pragma optimization_level 2
 
 // FUN_0049A400 NONMATCHING
@@ -13482,7 +13482,6 @@ u64 FUN_0049c160(u64 param_1,int param_2)
 // FUN_0049C1B0 NONMATCHING
 
 u64 FUN_0049c1b0(u64 param_1,int param_2)
-
 {
   u8 *puVar1;
   
@@ -13928,12 +13927,14 @@ void FUN_0049cbd0(int param_1,float *param_2)
 // FUN_0049CC30 NONMATCHING
 
 void FUN_0049cc30(int param_1)
-
 {
-  if (*(int *)(param_1 + 0x18) != 0) {
-    ((code)FUN_004d4df0)();
-    ((code)FUN_004d4df0)();
+  if (*(int *)(param_1 + 0x18) == 0) {
+    goto done;
   }
+  FUN_004d4df0_typed();
+  FUN_004d4df0_typed();
+  goto done;
+done:
   return;
 }
 
@@ -23946,7 +23947,6 @@ void FUN_004adb50(void)
 // FUN_004ADB80 NONMATCHING
 
 u32 FUN_004adb80(void)
-
 {
   u32 uVar1;
   
