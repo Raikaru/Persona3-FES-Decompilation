@@ -673,14 +673,21 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
     i = 0;
     while (i < param_1->used) {
         K_ASSERT(param_1 != 0, 0x411);
-        if (i >= param_1->capacity)
-            p = 0;
-        else {
-            p = (s32)(void *)param_1->values;
-            p += i << 2;
-            p = *(s32 *)p;
+        if (i < param_1->capacity)
+            goto has_capacity;
+        p = 0;
+        goto after_capacity;
+    has_capacity:
+        p = (s32)(void *)param_1->values;
+        p += i << 2;
+        p = *(s32 *)p;
+    after_capacity:
+        if (p == 0) {
+            i++;
+            continue;
         }
-        if (p != 0 && p == param_2) return param_2;
+        if (p == param_2)
+            return param_2;
         i++;
     }
     return 0;
