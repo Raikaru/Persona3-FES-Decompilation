@@ -20,6 +20,16 @@ int FUN_00423bf0(int param_1);
 char FUN_00423b50(int param_1);
 u32 FUN_0041ec70(int param_1);
 void FUN_004215b0(u64 param_1,u32 param_2);
+extern u32 kwlnTaskGetWorkData(void);
+#pragma alias H_Cdvd_Destroy_u32 H_Cdvd_Destroy
+extern u32 H_Cdvd_Destroy_u32(u32 cdvd);
+extern u64 FUN_00420f60(u64 param_1, int param_2);
+extern u64 FUN_00421330(void);
+extern void FUN_00420f90(void);
+extern u64 FUN_00421460(void);
+extern const char D_006B4380[];
+extern const char D_006B4390[];
+extern void FUN_0040e360(void);
 extern u32 DAT_007e0958;
 extern u32 DAT_007e095a;
 extern u32 DAT_006b42c0;
@@ -1631,31 +1641,18 @@ u32 FUN_0041e830(void)
 
 }
 
-// FUN_0041EAF0 NONMATCHING
-
-
+// FUN_0041EAF0
 void FUN_0041eaf0(void)
-
-
-
 {
+    u32 work;
 
-  u64 uVar1;
-
-  
-
-  uVar1 = kwlnTaskGetWorkData();
-
-  if (*(int *)((int)uVar1 + 0x3b4) != 0) {
-
-    H_Cdvd_Destroy();
-
-  }
-
-  FUN_0040e360();
-
-  return;
-
+    work = kwlnTaskGetWorkData();
+    if (*(u32 *)(work + 0x3b4) != 0)
+    {
+        H_Cdvd_Destroy_u32(*(u32 *)(work + 0x3b4));
+    }
+    FUN_0040e360();
+    FUN_004202e0(work);
 }
 
 // FUN_0041EB50 NONMATCHING
@@ -3703,7 +3700,7 @@ u64 FUN_00421460(void)
 
 }
 
-// FUN_004214E0 NONMATCHING
+// FUN_004214E0
 
 
 u32 FUN_004214e0(u64 param_1,int param_2)
@@ -3714,13 +3711,13 @@ u32 FUN_004214e0(u64 param_1,int param_2)
 
   int *piVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 
   
 
-  iVar3 = FUN_003c44d0(0x28,0,0x420f60,0);
+  iVar3 = FUN_003c44d0(0x28,0,(void *)FUN_00420f60,0);
 
   piVar1 = *(int **)(iVar3 + 0x24);
 
@@ -3732,9 +3729,9 @@ u32 FUN_004214e0(u64 param_1,int param_2)
 
   piVar1[3] = param_2;
 
-  uVar2 = kwlnTaskCreate(param_1,0x6b4380,10,0x421330,0x420f90,piVar1);
+  uVar2 = kwlnTaskCreate(param_1,D_006B4380,10,(void *)FUN_00421330,(void *)FUN_00420f90,piVar1);
 
-  iVar3 = kwlnTaskCreate(uVar2,0x6b4390,0x1cc9,0x421460,0,piVar1);
+  iVar3 = kwlnTaskCreate(uVar2,D_006B4390,0x1cc9,(void *)FUN_00421460,0,piVar1);
 
   piVar1[4] = iVar3;
 
@@ -3834,45 +3831,25 @@ LAB_004216a0:
 
 }
 
-// FUN_00421700 NONMATCHING
-
-
+// FUN_00421700
 int FUN_00421700(void)
-
-
-
 {
+    u32* work;
+    u32* node;
 
-  int iVar1;
+    work = (u32*)kwlnTaskGetWorkData();
+    node = *(u32**)((u8*)work + 0x18);
+    if (node != NULL)
+    {
+        if ((node[1] & 4) != 0)
+        {
+            return node[4] + 1;
+        }
+        return 0;
 
-  
-
-  iVar1 = kwlnTaskGetWorkData();
-
-  iVar1 = *(int *)(iVar1 + 0x18);
-
-  if (iVar1 == 0) {
-
-    iVar1 = 1;
-
-  }
-
-  else if ((*(u32 *)(iVar1 + 4) & 4) == 0) {
-
-    iVar1 = 0;
-
-  }
-
-  else {
-
-    iVar1 = *(int *)(iVar1 + 0x10) + 1;
-
-  }
-
-  return iVar1;
-
+    }
+    return 1;
 }
-
 // FUN_00421760
 
 

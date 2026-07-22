@@ -142,6 +142,10 @@ typedef struct HSfdCueEntry
 } HSfdCueEntry;
 
 static HSfdCueEntry sSfdCueTable[8];
+#pragma alias sSfdDecodeSlots_abs sSfdDecodeSlots
+extern HSfdDecodeSlot sSfdDecodeSlots_abs[];
+#pragma alias sSfdCueTable_abs sSfdCueTable
+extern HSfdCueEntry sSfdCueTable_abs[];
 static u8* sSfdScratch;
 static u8* sSfdDecodeBuffer;
 static u8* sSfdFrameBuffers[4];
@@ -161,8 +165,12 @@ typedef struct HSfdDmaDescriptor
 } HSfdDmaDescriptor;
 
 static HSfdDmaDescriptor sSfdDmaDescriptor;
-extern void func_0051e028();
-extern s32 func_0051df58();
+extern void func_0051e028(s32 outputHandle, s32 channel, s32 count, s32 value);
+extern s32 func_0051df58(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
+#pragma alias func_0051e028_t func_0051e028
+extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value);
+#pragma alias func_0051df58_t func_0051df58
+extern s32 func_0051df58_t(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
 extern s32 FUN_0050d3f0(void);
 extern s32 FUN_0050d3a0(void);
 extern void func_005030f0();
@@ -379,7 +387,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_0010BB00 NONMATCHING
+// FUN_0010BB00
 void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
 {
     HSfd* work;
@@ -390,7 +398,7 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
     {
         if (work->streamAux != NULL)
         {
-            func_00584338(work->streamAux);
+            func_00584338(work->decoder);
         }
         func_0057db58(work->decoder);
         work->decoder = NULL;
@@ -457,16 +465,28 @@ KwlnTask* func_0010bc20(KwlnTask* parent, s32 id)
     return task;
 }
 
-// FUN_0010BCE0 NONMATCHING
+// FUN_0010BCE0
 KwlnTask* func_0010bce0(KwlnTask* parent, s32 id)
 {
+    HSfd* work;
     KwlnTask* task;
 
-    task = func_0010bc20(parent, id);
-    if (task != NULL)
+    work = RwCalloc(1, sizeof(HSfd), HSFD_STREAM_HINT);
+    if (work == NULL)
     {
-        ((HSfd*)task->workData)->ownsCamera = false;
+        return NULL;
     }
+
+    task = kwlnTaskCreate(parent, "H_SfdPlay", 7383, H_SfdPlay_UpdateTask,
+                          H_SfdPlay_DestroyTask, work);
+    if (task == NULL)
+    {
+        return NULL;
+    }
+
+    work->isStart = true;
+    work->id = id;
+    work->ownsCamera = false;
     return task;
 }
 
@@ -1063,31 +1083,33 @@ void func_0010da70(s16 bank, s16 cue)
     }
 }
 
-// FUN_0010DB60 NONMATCHING
+// FUN_0010DB60
 void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
 {
-    if ((sSfdDecodeSlots[bank].state == 1) && (sSfdDecodeSlots[bank].status != 0))
+    s32 outputHandle;
+
+    if ((sSfdDecodeSlots_abs[bank].state == 1) && (sSfdDecodeSlots_abs[bank].status != 0))
     {
-        if (sSfdCueTable[cue].active != 0)
+        if (sSfdCueTable_abs[cue].active != 0)
         {
-            if ((sSfdDecodeSlots[bank].state == 1) && (sSfdDecodeSlots[bank].status != 0))
+            if ((sSfdDecodeSlots_abs[bank].state == 1) && (sSfdDecodeSlots_abs[bank].status != 0))
             {
-                if (sSfdCueTable[cue].active != 0)
+                if (sSfdCueTable_abs[cue].active != 0)
                 {
-                    func_0051e028(sSfdDecodeSlots[bank].outputHandle, 1, 10, sSfdCueTable[cue].param);
-                    func_0051df58(sSfdDecodeSlots[bank].outputHandle, 2, 10, sSfdCueTable[cue].param);
-                    sSfdCueTable[cue].active = 0;
+                    func_0051e028_t(sSfdDecodeSlots_abs[bank].outputHandle, 1, 10, sSfdCueTable_abs[cue].param);
+                    func_0051df58_t(sSfdDecodeSlots_abs[bank].outputHandle, 2, 10, sSfdCueTable_abs[cue].param);
+                    sSfdCueTable_abs[cue].active = 0;
                 }
             }
         }
 
-        sSfdCueTable[cue].bank = bank;
-        sSfdCueTable[cue].active = 1;
-        sSfdCueTable[cue].param = func_0051df58(sSfdDecodeSlots[bank].outputHandle, 0, 10, param3, param4);
+        sSfdCueTable_abs[cue].bank = bank;
+        sSfdCueTable_abs[cue].active = 1;
+        outputHandle = sSfdDecodeSlots_abs[bank].outputHandle;
+        asm volatile("" : "+m"(outputHandle));
+        sSfdCueTable_abs[cue].param = func_0051df58_t(outputHandle, 0, 10, param3, param4);
     }
 }
-
-// FUN_0010DD10 NONMATCHING
 void func_0010dd10(HSfdImage* image, const u8* source)
 {
     u8* dst;
