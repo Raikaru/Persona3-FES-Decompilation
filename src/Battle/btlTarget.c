@@ -5562,11 +5562,9 @@ s32 FUN_002dca60(BtlAction* action)
     }
     if (unit->genus == 0)
     {
+        return result;
     }
-    else
-    {
-        result++;
-    }
+    result++;
     return result;
 }
 
