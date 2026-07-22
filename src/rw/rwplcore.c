@@ -28,6 +28,10 @@ long FUN_004ca090(void);
 u64 FUN_004c53f0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 #pragma alias FUN_004c61b0_raw FUN_004c61b0
+#pragma alias FUN_004c5140_u32_raw FUN_004c5140
+extern u32 FUN_004c5140_u32_raw(u32,u32,u32,u32,u32);
+#pragma alias FUN_004c1450_u32_raw FUN_004c1450
+extern u32 FUN_004c1450_u32_raw(u32,u32,u32,u32,u32);
 extern void FUN_004c61b0_raw();
 u32 FUN_004c3c30(int param_1);
 long FUN_004c1d10(RwInt32 param_1,...);
@@ -36,7 +40,7 @@ u64 FUN_004c1c50(u64 param_1);
 u32 FUN_004bfa70(int param_1,u64 param_2);
 void FUN_004c6e60(int param_1);
 u32 FUN_004c6e50(void);
-u64 FUN_004c58a0(u64 param_1,u64 param_2,u64 param_3);
+u32 FUN_004c58a0(u32 param_1,u32 param_2,u32 param_3);
 u64 FUN_004c9d20(u64 param_1,u32 *param_2);
 u64 FUN_004c5620(u64 param_1,u32 param_2);
 RwBool RwEngineSetMatrixTolerances(const RwMatrixTolerance* const tolerance);
@@ -1991,33 +1995,37 @@ u64 FUN_004c1910(u64 param_1)
   }
   return param_1;
 }
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma schedule on
 // FUN_004C1970 NONMATCHING
-u64 FUN_004c1970(u64 param_1,u64 param_2)
+u32 FUN_004c1970(u32 param_1,u32 param_2)
 
 {
   u32 uVar1;
-  long lVar2;
+  u32 lVar2;
   u32 *puVar3;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
   u32 uStack_4;
   
-  lVar2 = (long)(FUN_004c1450(param_1,(u64)(unsigned int)(&uStack_4),(u64)(unsigned int)(&uStack_8),(u64)(unsigned int)(&uStack_c),(u64)(unsigned int)(&uStack_10)));
-  if (lVar2 == 0) {
-    param_1 = 0;
-  }
-  else {
-    puVar3 = (u32 *)param_2;
-    *puVar3 = uStack_4;
-    puVar3[1] = uStack_8;
-    puVar3[2] = uStack_c;
-    puVar3[3] = uStack_10;
-    uVar1 = (u32)(unsigned int)FUN_004c12d0((int *)(unsigned int)param_2);
-    puVar3[4] = uVar1;
-  }
+  lVar2 = FUN_004c1450_u32_raw(param_1,(u32)(unsigned int)(&uStack_10),(u32)(unsigned int)(&uStack_c),(u32)(unsigned int)(&uStack_8),(u32)(unsigned int)(&uStack_4));
+  asm volatile("" : "+m"(lVar2));
+  if (lVar2 != 0) goto success;
+  return 0;
+success:
+  puVar3 = (u32 *)param_2;
+  *puVar3 = uStack_10;
+  puVar3[1] = uStack_c;
+  puVar3[2] = uStack_8;
+  puVar3[3] = uStack_4;
+  uVar1 = (u32)(unsigned int)FUN_004c12d0((int *)(unsigned int)param_2);
+  puVar3[4] = uVar1;
   return param_1;
 }
+#pragma schedule off
+#pragma pop
 // FUN_004C19F0 NONMATCHING
 long FUN_004c19f0(u64 param_1,long param_2)
 
@@ -4704,14 +4712,14 @@ bool FUN_004c5780(u64 param_1,long param_2)
   return bVar4;
 }
 // FUN_004C58A0 NONMATCHING
-u64 FUN_004c58a0(u64 param_1,u64 param_2,u64 param_3)
+u32 FUN_004c58a0(u32 param_1,u32 param_2,u32 param_3)
 
 {
-  u64 uVar1;
-  long lVar2;
+  u32 uVar1;
+  u32 lVar2;
   
   uVar1 = (*DAT_00960188)(*(u32 *)((int)&DAT_00960070 + DAT_007ce8f8),0x30404);
-  lVar2 = FUN_004c5140(uVar1,1,param_1,param_2,param_3);
+  lVar2 = FUN_004c5140_u32_raw(uVar1,1,param_1,param_2,param_3);
   if (lVar2 == 0) {
     (*DAT_0096018c)(*(u32 *)((int)&DAT_00960070 + DAT_007ce8f8),uVar1);
     uVar1 = 0;
@@ -5177,10 +5185,10 @@ int FUN_004c61b0(int *param_1,int param_2,int param_3,long param_4,long param_5,
   return iVar5;
 }
 // FUN_004C64B0 NONMATCHING
-u64 FUN_004c64b0(u64 param_1,u64 param_2)
+u32 FUN_004c64b0(u32 param_1,u32 param_2)
 
 {
-  long lVar1;
+  u32 lVar1;
   u32 *puVar2;
   
   puVar2 = *(u32 **)((int)param_1 + 0x10);
@@ -6095,7 +6103,7 @@ u32 FUN_004c79e0(long param_1)
   return uVar4;
 }
 // FUN_004C7A50 NONMATCHING
-u64 FUN_004c7a50(u64 param_1,float *param_2,int param_3)
+u32 FUN_004c7a50(u32 param_1,float *param_2,int param_3)
 
 {
   bool bVar1;
