@@ -7119,24 +7119,21 @@ u32 FUN_00535170(int param_1)
 // FUN_00535178
 
 
-asm void FUN_00535178(int param_1)
+#pragma push
+#pragma schedule on
+// FUN_00535178 NONMATCHING
+void FUN_00535178(int param_1)
 {
-  .set noreorder
-  .word 0x2403000f
-  .word 0x2482003c
-  .word 0x2463ffff
-  .word 0xac400000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x0461fffa
-  .word 0x2442fffc
-  .word 0xac8000ac
-  .word 0xac8000a4
-  .word 0x03e00008
-  .word 0xac8000a8
-  .word 0x00000000
+  int i;
+
+  for (i = 0; i < 15; i++) {
+    *(u32 *)(param_1 + i * 4) = 0;
+  }
+  *(u32 *)(param_1 + 0xac) = 0;
+  *(u32 *)(param_1 + 0xa4) = 0;
+  *(u32 *)(param_1 + 0xa8) = 0;
 }
+#pragma pop
 
 
 
