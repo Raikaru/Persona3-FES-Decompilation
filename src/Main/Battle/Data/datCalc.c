@@ -6870,7 +6870,7 @@ void FUN_0030cf00(void)
 
 
 
-// FUN_0030d000 NONMATCHING
+// FUN_0030d000
 #pragma schedule off
 void FUN_0030d000(void)
 
@@ -6901,7 +6901,7 @@ done:
 
 
 
-// FUN_0030d0e0 NONMATCHING
+// FUN_0030d0e0
 #pragma schedule off
 void FUN_0030d0e0(void)
 {
@@ -6932,7 +6932,7 @@ done:
 
 
 
-// FUN_0030d1c0 NONMATCHING
+// FUN_0030d1c0
 #pragma schedule off
 void FUN_0030d1c0(void)
 
@@ -6964,7 +6964,7 @@ done:
 
 
 
-// FUN_0030d2a0 NONMATCHING
+// FUN_0030d2a0
 #pragma schedule off
 void FUN_0030d2a0(void)
 
@@ -6996,7 +6996,7 @@ done:
 
 
 
-// FUN_0030d380 NONMATCHING
+// FUN_0030d380
 #pragma schedule off
 void FUN_0030d380(void)
 
@@ -7360,7 +7360,7 @@ void FUN_0030e180(void)
 
 
 
-// FUN_0030e280 NONMATCHING
+// FUN_0030e280
 #pragma schedule off
 void FUN_0030e280(void)
 
@@ -7392,7 +7392,7 @@ done:
 
 
 
-// FUN_0030e360 NONMATCHING
+// FUN_0030e360
 #pragma schedule off
 void FUN_0030e360(void)
 
@@ -7424,7 +7424,7 @@ done:
 
 
 
-// FUN_0030e440 NONMATCHING
+// FUN_0030e440
 #pragma schedule off
 void FUN_0030e440(void)
 
@@ -7456,7 +7456,7 @@ done:
 
 
 
-// FUN_0030e520 NONMATCHING
+// FUN_0030e520
 #pragma schedule off
 void FUN_0030e520(void)
 
@@ -7488,7 +7488,7 @@ done:
 
 
 
-// FUN_0030e600 NONMATCHING
+// FUN_0030e600
 #pragma schedule off
 void FUN_0030e600(void)
 
