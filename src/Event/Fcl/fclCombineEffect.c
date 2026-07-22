@@ -134,8 +134,9 @@ u32 DAT_006b3098;
 u32 DAT_006b30a0;
 u32 DAT_006b3f60;
 u32 DAT_007cda6c;
-float DAT_007cdae0;
-float DAT_007cdae4;
+extern float DAT_007cdae0;
+extern float DAT_007cdae4;
+extern u8 DAT_006b2aa0[];
 u32 DAT_007e094c;
 u32 DAT_007e094e;
 u32 DAT_007e0956;
@@ -3850,8 +3851,11 @@ u8 FUN_0041b530(int param_1)
 
 void FUN_0041b550(int param_1)
 {
+  u32 *model_data;
+
+  model_data = *(u32 **)(*(u32 **)(param_1 + 0x40) + 1);
   *(u32 *)(param_1 + 0x44) =
-      0x006b2aa0 + *(u32 *)*(u32 *)(*(u32 *)(*(u32 *)(param_1 + 0x40) + 4) + 0x14) * 8;
+      (u32)DAT_006b2aa0 + *(u32 *)*(u32 **)(model_data + 5) * 8;
   *(u32 *)(*(u32 *)(param_1 + 0x3c) + 8) = 0;
   *(u32 *)(*(u32 *)(param_1 + 0x3c) + 0x10) &= ~1;
   FUN_003c49e0(*(int *)(param_1 + 0x40), *(int *)(param_1 + 0x40) + 4);
