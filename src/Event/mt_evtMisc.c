@@ -810,7 +810,7 @@ done_index:
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_00386CD0 NONMATCHING
+// FUN_00386CD0
 
 
 u32 FUN_00386cd0(void)
