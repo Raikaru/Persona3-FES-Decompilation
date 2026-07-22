@@ -450,7 +450,7 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
                     return WEAPON_TYPE_KNIFE;
                 default:
                     K_ASSERT(false, 4237);
-                    return WEAPON_TYPE_1H_SWORD;
+                    goto default_weapon_type;
             }
         case PC_YUKARI:
             return WEAPON_TYPE_BOW;
@@ -472,6 +472,7 @@ u32 datCalcGetHeldWeaponType(DatUnit* unit)
             return WEAPON_TYPE_KNIFE;
         default:
             K_ASSERT(false, 4259);
+default_weapon_type:
             return WEAPON_TYPE_1H_SWORD;
     }
 }
