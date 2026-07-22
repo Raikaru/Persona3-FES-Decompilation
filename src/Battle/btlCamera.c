@@ -4264,9 +4264,8 @@ void FUN_002b2060(int param_1)
      ((*(int *)(iVar4 + 0x100) == *(int *)(iVar1 + 0x38) && ((*(u16 *)(iVar1 + 0x1a) & 1) != 0)))
      ) {
     if (FUN_002b6bd0(iVar4 + 0xec) != 0) {
-      pCenter = (u8*)(iVar4 + 0xec);
       FUN_002b64d0((BtlCamera*)iVar4,
-                   (struct B64CameraWork*)pCenter);
+                   (struct B64CameraWork*)(iVar4 + 0xec));
     }
     pVar = FUN_002b6cd0(iVar4 + 0xec);
     if (pVar != 0) {
@@ -4720,30 +4719,30 @@ void FUN_002b2eb0(int param_1, float *param_2)
     f32 unkB8;
     f32 result;
   } work;
-  f32 ratio;
+  f32 initial;
+  register f32 ratio;
   f32 angle;
-  register f32 initial;
   f32 inverse;
   f32 curve;
   f32 poly;
   register f32 product;
 
-  initial = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
-  ratio = initial / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
+  ratio = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
+  initial = ratio / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
   work.output[0] = 0.0f;
   work.output[1] = work.result;
-  work.output[2] = -initial;
+  work.output[2] = -ratio;
   FUN_002a4690(param_2 + 3, work.output, &work.helper, (const void *)DAT_00697880_arr);
   angle = FUN_002d1f30_typed((f32 *)(param_1 + 0xa8), param_2 + 3);
   if (!(angle <= fGpffff80d4)) {
-    ratio = fGpffff80d4 / angle;
+    initial = fGpffff80d4 / angle;
     FUN_004be310_typed((void *)(param_1 + 0xa8), param_2 + 3, work.values);
-    if (ratio <= 0.0f) {
+    if (initial <= 0.0f) {
       work.blend = *(RtQuat *)(param_1 + 0xa8);
-    } else if (1.0f <= ratio) {
+    } else if (1.0f <= initial) {
       work.blend = *(RtQuat *)((u8 *)param_2 + 0xc);
     } else {
-      inverse = 1.0f - ratio;
+      inverse = 1.0f - initial;
       if (work.flag == 0) {
         inverse = inverse * work.values[8];
         curve = inverse * inverse;
@@ -4754,23 +4753,23 @@ void FUN_002b2eb0(int param_1, float *param_2)
         poly = curve * poly + fGpffff8058 + 0.0f;
         product = curve * inverse;
         inverse = product * poly + inverse + 0.0f;
-        ratio = ratio * work.values[8];
-        curve = ratio * ratio;
+        initial = initial * work.values[8];
+        curve = initial * initial;
         poly = fGpffff8114 * curve + fGpffff8048 + 0.0f;
         poly = curve * poly + fGpffff8118 + 0.0f;
         poly = curve * poly + fGpffff8050 + 0.0f;
         poly = curve * poly + fGpffff8054 + 0.0f;
         poly = curve * poly + fGpffff8058 + 0.0f;
-        product = curve * ratio;
-        ratio = product * poly + ratio + 0.0f;
+        product = curve * initial;
+        initial = product * poly + initial + 0.0f;
       }
       work.blend.imag.x = work.values[0] * inverse;
       work.blend.imag.y = work.values[1] * inverse;
       work.blend.imag.z = work.values[2] * inverse;
-      work.blend.imag.x = work.blend.imag.x + work.values[4] * ratio + 0.0f;
-      work.blend.imag.y = work.blend.imag.y + work.values[5] * ratio + 0.0f;
-      work.blend.imag.z = work.blend.imag.z + work.values[6] * ratio + 0.0f;
-      work.blend.real = work.values[3] * inverse + work.values[7] * ratio;
+      work.blend.imag.x = work.blend.imag.x + work.values[4] * initial + 0.0f;
+      work.blend.imag.y = work.blend.imag.y + work.values[5] * initial + 0.0f;
+      work.blend.imag.z = work.blend.imag.z + work.values[6] * initial + 0.0f;
+      work.blend.real = work.values[3] * inverse + work.values[7] * initial;
     }
     FUN_004be1e0_typed(&work.transformed, (const RwV3d *)DAT_006978A0_arr, 1, &work.blend);
     work.output[0] = work.helper.x + work.transformed.x;
@@ -4778,19 +4777,19 @@ void FUN_002b2eb0(int param_1, float *param_2)
     work.output[2] = work.helper.z + work.transformed.z;
     FUN_002a4690(param_2 + 3, work.output, &work.helper, (const void *)DAT_00697880_arr);
   }
-  if (ratio < 700.0f) {
-    ratio = 700.0f;
+  if (initial < 700.0f) {
+    initial = 700.0f;
   }
   FUN_004be1e0_typed(&work.transformed, (const RwV3d *)DAT_006978A0_arr, 1, param_2 + 3);
-  work.transformed.x = work.transformed.x * ratio;
-  work.transformed.y = work.transformed.y * ratio;
-  work.transformed.z = work.transformed.z * ratio;
-  ratio = ratio * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
-  ratio = ratio * 0.21875f;
+  work.transformed.x = work.transformed.x * initial;
+  work.transformed.y = work.transformed.y * initial;
+  work.transformed.z = work.transformed.z * initial;
+  initial = initial * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
+  initial = initial * 0.21875f;
   work.scale[0] = work.transformed.x;
   work.scale[1] = work.transformed.z;
   FUN_004c6b20_typed(work.scale, work.scale);
-  curve = ratio;
+  curve = initial;
   work.helper.x = work.helper.x + work.scale[1] * curve + 0.0f;
   work.helper.z = work.helper.z - work.scale[0] * curve + 0.0f;
   param_2[0] = work.helper.x + work.transformed.x;
