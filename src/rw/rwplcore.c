@@ -5486,31 +5486,52 @@ float FUN_004c6b20(float *param_1,float *param_2)
   return fVar3;
 }
 // FUN_004C6BE0 NONMATCHING
+#pragma schedule on
 u64 FUN_004c6be0(u64 param_1)
 
 {
-  (**(code **)((int)&DAT_00960078 + DAT_007ce910))();
+  {
+    struct FnSlot { u32 a; u32 b; code fn; };
+    struct FnSlot *slot;
+    slot = (struct FnSlot *)(DAT_00960070_abs + DAT_007ce910);
+    slot->fn();
+  }
   return param_1;
 }
 // FUN_004C6C20 NONMATCHING
 u64 FUN_004c6c20(u64 param_1)
 
 {
-  (**(code **)(&DAT_0096007c + DAT_007ce910))();
+  {
+    struct FnSlot { u32 a; u32 b; code f0; code f1; code f2; code f3; };
+    struct FnSlot *slot;
+    slot = (struct FnSlot *)(DAT_00960070_abs + DAT_007ce910);
+    slot->f1();
+  }
   return param_1;
 }
 // FUN_004C6C60 NONMATCHING
 u64 FUN_004c6c60(u64 param_1)
 
 {
-  (**(code **)((int)&DAT_00960080 + DAT_007ce910))();
+  {
+    struct FnSlot { u32 a; u32 b; code f0; code f1; code f2; code f3; };
+    struct FnSlot *slot;
+    slot = (struct FnSlot *)(DAT_00960070_abs + DAT_007ce910);
+    slot->f2();
+  }
   return param_1;
 }
 // FUN_004C6CA0 NONMATCHING
 u64 FUN_004c6ca0(u64 param_1)
 
 {
-  (**(code **)(&DAT_00960084 + DAT_007ce910))();
+  {
+    struct FnSlot { u32 a; u32 b; code f0; code f1; code f2; code f3; };
+    struct FnSlot *slot;
+    slot = (struct FnSlot *)(DAT_00960070_abs + DAT_007ce910);
+    slot->f3();
+  }
   return param_1;
 }
 // FUN_004C6CE0
@@ -5564,11 +5585,13 @@ void FUN_004c6d60(u32 *param_1,int param_2)
 bool FUN_004c6df0(u32 *param_1,int param_2)
 
 {
-  int iVar1;
   int *piVar2;
+  int iVar1;
   
-  piVar2 = (int *)((int)param_1 + 0x27U & 0xffffffe0);
-  iVar1 = (((int)param_1 + param_2 & 0xffffffe0U) - (int)piVar2) + -0x20;
+  iVar1 = ((int)param_1 + param_2) & 0xffffffe0;
+  piVar2 = (int *)((int)param_1 + 0x27U);
+  piVar2 = (int *)((int)piVar2 & 0xffffffe0);
+  iVar1 = iVar1 - (int)piVar2 - 0x20;
   if (0x1f < iVar1) {
     *piVar2 = (int)param_1;
     piVar2[1] = 0;
@@ -5688,11 +5711,12 @@ u64 FUN_004c7020(u64 param_1,int param_2)
   return param_1;
 }
 // FUN_004C70A0 NONMATCHING
+#pragma schedule on
 u64 FUN_004c70a0(u64 param_1)
 
 {
-  if (*(int *)((int)&DAT_00960070 + DAT_007ce918) != 0) {
-    FUN_004c3c30(0);
+  if (*(int *)(DAT_00960070_abs + DAT_007ce918) != 0) {
+    FUN_004c3c30(*(int *)(DAT_00960070_abs + DAT_007ce918));
   }
   DAT_007ce91c = DAT_007ce91c + -1;
   return param_1;
@@ -5768,13 +5792,13 @@ char * FUN_004c7260(char *param_1,char param_2)
 {
   char *pcVar1;
   pcVar1 = (char *)0x0;
-  while (*param_1 != '\0') {
+  do {
     if (*param_1 == param_2) {
       pcVar1 = param_1;
       break;
     }
     param_1 = param_1 + 1;
-  }
+  } while (*param_1 != '\0');
   return pcVar1;
 }
 // FUN_004C72A0 NONMATCHING
