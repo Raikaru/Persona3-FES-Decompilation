@@ -5,6 +5,8 @@ extern float DAT_007cae00;
 extern float DAT_007caf14;
 extern float DAT_007caffc;
 extern int DAT_006a6040[];
+#pragma alias DAT_006a6040_abs DAT_006a6040
+extern u8 DAT_006a6040_abs[];
 extern int DAT_006a6510[];
 #pragma alias DAT_006a6510_abs DAT_006a6510
 extern u8 DAT_006a6510_abs[];
@@ -2744,196 +2746,25 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
 {
 
   int iVar1;
-
   int iVar2;
-
-  int iVar3;
-
-  int *piVar4;
-
   int *piVar5;
-
-  int aiStack_4d0 [6];
-
-  u16 uStack_4b8;
-
-  int iStack_4b4;
-
-  u16 uStack_49c;
-
-  int iStack_498;
-
-  u16 uStack_480;
-
-  int iStack_47c;
-
-  u16 uStack_464;
-
-  int iStack_460;
-
-  u16 uStack_448;
-
-  int iStack_444;
-
-  u16 uStack_42c;
-
-  int iStack_428;
-
-  u16 uStack_410;
-
-  int iStack_40c;
-
-  u16 uStack_3f4;
-
-  int iStack_3f0;
-
-  u16 uStack_3d8;
-
-  int iStack_3d4;
-
-  u16 uStack_3bc;
-
-  int iStack_3b8;
-
-  u16 uStack_3a0;
-
-  int iStack_39c;
-
-  u16 uStack_384;
-
-  int iStack_380;
-
-  u16 uStack_368;
-
-  int iStack_364;
-
-  u16 uStack_34c;
-
-  int iStack_348;
-
-  u16 uStack_330;
-
-  int iStack_32c;
-
-  u16 uStack_314;
-
-  int iStack_310;
-
-  u16 uStack_2f8;
-
-  int iStack_2f4;
-
-  u16 uStack_2dc;
-
-  int iStack_2d8;
-
-  u16 uStack_2c0;
-
-  int iStack_2bc;
-
-  u16 uStack_2a4;
-
-  int iStack_2a0;
-
-  u16 uStack_288;
-
-  int iStack_284;
-
-  u16 uStack_26c;
-
-  int iStack_268;
-
-  u16 uStack_250;
-
-  int iStack_24c;
-
-  u16 uStack_234;
-
-  int iStack_230;
-
-  u16 uStack_218;
-
-  int iStack_214;
-
-  u16 uStack_1fc;
-
-  int iStack_1f8;
-
-  u16 uStack_1e0;
-
-  int iStack_1dc;
-
-  u16 uStack_1c4;
-
-  int iStack_1c0;
-
-  u16 uStack_1a8;
-
-  int iStack_1a4;
-
-  u16 uStack_18c;
-
-  int iStack_188;
-
-  u16 uStack_170;
-
-  int iStack_16c;
-
-  u16 uStack_154;
-
-  int iStack_150;
-
-  u16 uStack_138;
-
-  int iStack_134;
-
-  u16 uStack_11c;
-
-  int iStack_118;
-
-  u16 uStack_100;
-
-  int iStack_fc;
-
-  u16 uStack_e4;
-
-  int iStack_e0;
-
-  u16 uStack_c8;
-
-  int iStack_c4;
-
-  u16 uStack_ac;
-
-  int iStack_a8;
-
-  u16 uStack_90;
-
-  int iStack_8c;
-
-  u16 uStack_74;
-
-  int iStack_70;
-
-  u16 uStack_58;
-
-  int iStack_54;
-
-  u16 uStack_3c;
-
-  int iStack_38;
-
-  u16 uStack_20;
-
-  int iStack_1c;
-
-  u16 uStack_4;
-
-  
-
-  piVar5 = DAT_006a6040;
-
-  piVar4 = aiStack_4d0;
+  int *piVar4;
+  int iVar3;
+  struct {
+    s32 first;
+    u8 prefix[0x14];
+    struct {
+      volatile u16 value;
+      u16 pad;
+      volatile int index;
+      u8 tail[0x14];
+    } pairs[43];
+    volatile u16 last;
+  } work;
+
+  piVar5 = (int*)DAT_006a6040_abs;
+
+  piVar4 = (int*)&work;
 
   iVar3 = 0x9a;
 
@@ -2955,183 +2786,96 @@ void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4)
 
   } while (0 < iVar3);
 
-  aiStack_4d0[0] = param_2;
-
-  uStack_4b8 = param_4;
-
-  iStack_4b4 = param_2;
-
-  uStack_49c = param_4;
-
-  iStack_498 = param_2;
-
-  uStack_480 = param_4;
-
-  iStack_47c = param_2;
-
-  uStack_464 = param_4;
-
-  iStack_460 = param_2;
-
-  uStack_448 = param_4;
-
-  iStack_444 = param_2;
-
-  uStack_42c = param_4;
-
-  iStack_428 = param_2;
-
-  uStack_410 = param_4;
-
-  iStack_40c = param_2;
-
-  uStack_3f4 = param_4;
-
-  iStack_3f0 = param_2;
-
-  uStack_3d8 = param_4;
-
-  iStack_3d4 = param_2;
-
-  uStack_3bc = param_4;
-
-  iStack_3b8 = param_2;
-
-  uStack_3a0 = param_4;
-
-  iStack_39c = param_2;
-
-  uStack_384 = param_4;
-
-  iStack_380 = param_2;
-
-  uStack_368 = param_4;
-
-  iStack_364 = param_2;
-
-  uStack_34c = param_4;
-
-  iStack_348 = param_2;
-
-  uStack_330 = param_4;
-
-  iStack_32c = param_2;
-
-  uStack_314 = param_4;
-
-  iStack_310 = param_2;
-
-  uStack_2f8 = param_4;
-
-  iStack_2f4 = param_2;
-
-  uStack_2dc = param_4;
-
-  iStack_2d8 = param_2;
-
-  uStack_2c0 = param_4;
-
-  iStack_2bc = param_2;
-
-  uStack_2a4 = param_4;
-
-  iStack_2a0 = param_2;
-
-  uStack_288 = param_4;
-
-  iStack_284 = param_2;
-
-  uStack_26c = param_4;
-
-  iStack_268 = param_2;
-
-  uStack_250 = param_4;
-
-  iStack_24c = param_2;
-
-  uStack_234 = param_4;
-
-  iStack_230 = param_2;
-
-  uStack_218 = param_4;
-
-  iStack_214 = param_2;
-
-  uStack_1fc = param_4;
-
-  iStack_1f8 = param_2;
-
-  uStack_1e0 = param_4;
-
-  iStack_1dc = param_2;
-
-  uStack_1c4 = param_4;
-
-  iStack_1c0 = param_2;
-
-  uStack_1a8 = param_4;
-
-  iStack_1a4 = param_2;
-
-  uStack_18c = param_4;
-
-  iStack_188 = param_2;
-
-  uStack_170 = param_4;
-
-  iStack_16c = param_2;
-
-  uStack_154 = param_4;
-
-  iStack_150 = param_2;
-
-  uStack_138 = param_4;
-
-  iStack_134 = param_2;
-
-  uStack_11c = param_4;
-
-  iStack_118 = param_2;
-
-  uStack_100 = param_4;
-
-  iStack_fc = param_2;
-
-  uStack_e4 = param_4;
-
-  iStack_e0 = param_2;
-
-  uStack_c8 = param_4;
-
-  iStack_c4 = param_2;
-
-  uStack_ac = param_4;
-
-  iStack_a8 = param_2;
-
-  uStack_90 = param_4;
-
-  iStack_8c = param_2;
-
-  uStack_74 = param_4;
-
-  iStack_70 = param_2;
-
-  uStack_58 = param_4;
-
-  iStack_54 = param_2;
-
-  uStack_3c = param_4;
-
-  iStack_38 = param_2;
-
-  uStack_20 = param_4;
-
-  iStack_1c = param_2;
-
-  uStack_4 = param_4;
-
-  memcpy(param_1,aiStack_4d0 + param_2 * 0xe + param_3 * 7,0x1c);
+  work.first = param_2;
+  work.pairs[0].value = param_4;
+  work.pairs[0].index = param_2;
+  work.pairs[1].value = param_4;
+  work.pairs[1].index = param_2;
+  work.pairs[2].value = param_4;
+  work.pairs[2].index = param_2;
+  work.pairs[3].value = param_4;
+  work.pairs[3].index = param_2;
+  work.pairs[4].value = param_4;
+  work.pairs[4].index = param_2;
+  work.pairs[5].value = param_4;
+  work.pairs[5].index = param_2;
+  work.pairs[6].value = param_4;
+  work.pairs[6].index = param_2;
+  work.pairs[7].value = param_4;
+  work.pairs[7].index = param_2;
+  work.pairs[8].value = param_4;
+  work.pairs[8].index = param_2;
+  work.pairs[9].value = param_4;
+  work.pairs[9].index = param_2;
+  work.pairs[10].value = param_4;
+  work.pairs[10].index = param_2;
+  work.pairs[11].value = param_4;
+  work.pairs[11].index = param_2;
+  work.pairs[12].value = param_4;
+  work.pairs[12].index = param_2;
+  work.pairs[13].value = param_4;
+  work.pairs[13].index = param_2;
+  work.pairs[14].value = param_4;
+  work.pairs[14].index = param_2;
+  work.pairs[15].value = param_4;
+  work.pairs[15].index = param_2;
+  work.pairs[16].value = param_4;
+  work.pairs[16].index = param_2;
+  work.pairs[17].value = param_4;
+  work.pairs[17].index = param_2;
+  work.pairs[18].value = param_4;
+  work.pairs[18].index = param_2;
+  work.pairs[19].value = param_4;
+  work.pairs[19].index = param_2;
+  work.pairs[20].value = param_4;
+  work.pairs[20].index = param_2;
+  work.pairs[21].value = param_4;
+  work.pairs[21].index = param_2;
+  work.pairs[22].value = param_4;
+  work.pairs[22].index = param_2;
+  work.pairs[23].value = param_4;
+  work.pairs[23].index = param_2;
+  work.pairs[24].value = param_4;
+  work.pairs[24].index = param_2;
+  work.pairs[25].value = param_4;
+  work.pairs[25].index = param_2;
+  work.pairs[26].value = param_4;
+  work.pairs[26].index = param_2;
+  work.pairs[27].value = param_4;
+  work.pairs[27].index = param_2;
+  work.pairs[28].value = param_4;
+  work.pairs[28].index = param_2;
+  work.pairs[29].value = param_4;
+  work.pairs[29].index = param_2;
+  work.pairs[30].value = param_4;
+  work.pairs[30].index = param_2;
+  work.pairs[31].value = param_4;
+  work.pairs[31].index = param_2;
+  work.pairs[32].value = param_4;
+  work.pairs[32].index = param_2;
+  work.pairs[33].value = param_4;
+  work.pairs[33].index = param_2;
+  work.pairs[34].value = param_4;
+  work.pairs[34].index = param_2;
+  work.pairs[35].value = param_4;
+  work.pairs[35].index = param_2;
+  work.pairs[36].value = param_4;
+  work.pairs[36].index = param_2;
+  work.pairs[37].value = param_4;
+  work.pairs[37].index = param_2;
+  work.pairs[38].value = param_4;
+  work.pairs[38].index = param_2;
+  work.pairs[39].value = param_4;
+  work.pairs[39].index = param_2;
+  work.pairs[40].value = param_4;
+  work.pairs[40].index = param_2;
+  work.pairs[41].value = param_4;
+  work.pairs[41].index = param_2;
+  work.pairs[42].value = param_4;
+  work.pairs[42].index = param_2;
+  work.last = param_4;
+
+  memcpy(param_1,(int*)&work + param_2 * 0xe + param_3 * 7,0x1c);
 
   return;
 
