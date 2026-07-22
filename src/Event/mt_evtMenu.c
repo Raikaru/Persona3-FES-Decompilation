@@ -1134,7 +1134,7 @@ extern u8 DAT_007e0000[];
 // Force absolute addressing to match retail's DAT_007e0000 accesses.
 #pragma alias DAT_007e0000_abs DAT_007e0000
 extern u8 DAT_007e0000_abs[];
-// FUN_0036F680 NONMATCHING
+// FUN_0036F680
 
 
 void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5,
