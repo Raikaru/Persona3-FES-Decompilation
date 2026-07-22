@@ -5554,12 +5554,14 @@ u64 FUN_00321ce0(void)
 
 u64 FUN_00321d40(void)
 {
-  register int count;
   register u32 *src;
   register u32 *dst;
+  register int count;
   u32 model;
   RwCamera *camera;
   u32 auStack_40[16];
+  u32 value0;
+  u32 value1;
 
   if (iGpffffb850 != 0) {
     model = FUN_00198590_u32();
@@ -5567,10 +5569,12 @@ u64 FUN_00321d40(void)
     dst = auStack_40;
     count = 8;
     do {
-      *dst = *src;
-      dst[1] = src[1];
+      value1 = *src;
+      value0 = src[1];
       src += 2;
       count--;
+      *dst = value1;
+      dst[1] = value0;
       dst += 2;
     } while (count > 0);
     model = FUN_00198590_u32();
@@ -23011,7 +23015,7 @@ void FUN_00332ac0(u32 *param_1,u16 param_2,int *param_3)
 
   if (param_1[0xc] != 0) {
 
-    FUN_003321d0((int)(param_1));
+    FUN_003321d0((int)param_1);
 
   }
 
@@ -30890,9 +30894,7 @@ void FUN_0033a3e0(int param_1)
 
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
-  FUN_00521408(*(u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
-
-               (short)puVar1[4] * 0xc);
+  FUN_00521408(*(u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,(short)puVar1[4] * 0xc);
 
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
 
@@ -35381,6 +35383,7 @@ u32 FUN_0033e7f0(int param_1)
 
   
 
+
   piVar1 = (int *)(*DAT_00960178_abs)(*(int *)(param_1 + 0x38) * 0x2c + 0x10,0x40000);
 
   uVar3 = (u32)piVar1;
@@ -35392,7 +35395,6 @@ u32 FUN_0033e7f0(int param_1)
   iVar2 = FUN_003233a0(*(u16 *)(param_1 + 0x38),3,5,0x69bd60,0x48);
 
   piVar1[1] = iVar2;
-
   return uVar3;
 
 }
@@ -52948,10 +52950,10 @@ void FUN_00350190(void)
 
   uVar2 = FUN_0035ed20_i(1);
 
-  DAT_00957bc0 = uVar1;
-  DAT_00957bc4 = (u16)uVar2;
-  DAT_00957bc8 = 0;
-  DAT_00957bcc = 0;
+  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
+  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
+  *(volatile u32 *)DAT_00957bc8_abs = 0;
+  *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;
