@@ -171,11 +171,11 @@ u64 FUN_003fe690_p(u32 param_1,u64 param_2,int param_3);
 #pragma alias FUN_003fe690_3 FUN_003fe690
 u64 FUN_003fe690_3(u64 param_1,u64 param_2,int param_3);
 #pragma alias FUN_003c5e80_p FUN_003c5e80
-void FUN_003c5e80_p(u32 param_1,u32 param_2);
+void FUN_003c5e80_p(u32 param_1,code param_2);
 #pragma alias FUN_003c5e20_p FUN_003c5e20
-void FUN_003c5e20_p(u32 param_1,u32 param_2);
+void FUN_003c5e20_p(u32 param_1,code param_2);
 #pragma alias FUN_003c5ee0_p FUN_003c5ee0
-void FUN_003c5ee0_p(u32 param_1,u32 param_2);
+void FUN_003c5ee0_p(u32 param_1,code param_2);
 u64 FUN_003fe7d0(u64 param_1,int param_2);
 u32 FUN_003fe850(u16 param_1,u64 param_2);
 u8 FUN_003fe950(u64 param_1);
@@ -11870,9 +11870,9 @@ u32 FUN_003fe850(u16 param_1,u64 param_2)
 
   FUN_003fe690_p((u32)pVar,param_2,0);
   FUN_003c6ee0((u32)pVar);
-  FUN_003c5e80_p((u32)pVar,(u32)FUN_003fadc0);
-  FUN_003c5e20_p((u32)pVar,(u32)FUN_003f4de0);
-  FUN_003c5ee0_p((u32)pVar,(u32)FUN_003f9510);
+  FUN_003c5e80_p((u32)pVar,(code)FUN_003fadc0);
+  FUN_003c5e20_p((u32)pVar,(code)FUN_003f4de0);
+  FUN_003c5ee0_p((u32)pVar,(code)FUN_003f9510);
   FUN_003c6d40((u32)pVar,0x19,0x79);
 
   *(u16 *)(pVar[9] + 6) = 0xb;
