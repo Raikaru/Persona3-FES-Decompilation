@@ -1790,7 +1790,7 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
 
 
 
-// FUN_00302c50 NONMATCHING
+// FUN_00302c50
 void FUN_00302c50(u32 param_1)
 {
     u32 i;
