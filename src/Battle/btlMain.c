@@ -4709,9 +4709,9 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   afStack_10[2] = fVar6 * fVar8 * 3.0f;
   afStack_10[3] = param_1 * fVar8;
   uVar2 = *(u16 *)(param_2 + 0x74);
-  fVar4 = *(f32*)0x00957180;
-  fVar5 = *(f32*)0x00957184;
-  fVar9 = *(f32*)0x00957188;
+  fVar4 = DAT_00957180_abs[0];
+  fVar5 = DAT_00957184_abs[0];
+  fVar9 = DAT_00957188_abs[0];
   *param_3 = fVar4;
   param_3[1] = fVar5;
   param_3[2] = fVar9;
