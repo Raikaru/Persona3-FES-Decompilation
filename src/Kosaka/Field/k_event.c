@@ -175,7 +175,7 @@ done:
     return result;
 }
 
-// FUN_001c6450 NONMATCHING
+// FUN_001c6450
 u32 func_001c6450(const RwMatrix* viewerMat,
                   const RwV3d* targetPos,
                   f32 fov,
@@ -184,7 +184,8 @@ u32 func_001c6450(const RwMatrix* viewerMat,
     RwV3d delta;
     RwV3d line[2];
     RwV3d hitPoint;
-    u32 result;
+    s32 result;
+    u32 rayResult;
 
     result = false;
     if (K_FldEvent_IsPosWithinFov(viewerMat, targetPos, fov) != true)
@@ -203,23 +204,20 @@ u32 func_001c6450(const RwMatrix* viewerMat,
     line[1] = *targetPos;
     line[0].y += 100.0f;
     line[1].y += 100.0f;
-    if (K_FldFrame_Raycast(line, &hitPoint) != true)
+    if (K_FldFrame_Raycast(line, &hitPoint) == true)
     {
-        goto reverse;
+        return false;
     }
-    goto done;
 
-reverse:
-    line[0] = *targetPos;
-    line[1] = viewerMat->pos;
-    line[0].y += 100.0f;
-    line[1].y += 100.0f;
+    hitPoint = line[0];
+    line[0] = line[1];
+    line[1] = hitPoint;
+    rayResult = K_FldFrame_Raycast(line, &hitPoint);
     result = true;
-    if (K_FldFrame_Raycast(line, &hitPoint) != true)
+    if (rayResult == true)
     {
-        goto done;
+        return false;
     }
-    result = false;
 done:
     return result;
 }
