@@ -745,7 +745,7 @@ u32 scrComu00360020(void)
 }
 #pragma optimization_level 2
 
-// FUN_00360110
+// FUN_00360110 NONMATCHING
 u32 scrComu00360110(void)
 {
     int i;
@@ -779,15 +779,7 @@ loop:
     i++;
 
 tail:
-    __asm__ volatile (
-        ".set noreorder\n"
-        "addiu $a0, %1, 2\n"
-        "slt %0, %2, $a0\n"
-        ".set reorder"
-        : "=r"(loopContinue)
-        : "r"(bVar1), "r"(i)
-        : "a0"
-    );
+    loopContinue = i < bVar1 + 2;
     if (loopContinue) {
         goto loop;
     }

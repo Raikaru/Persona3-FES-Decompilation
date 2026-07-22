@@ -365,18 +365,10 @@ u32 FUN_004243d0(void)
 
 }
 
-// FUN_00424470
+// FUN_00424470 NONMATCHING
 void FUN_00424470(void)
 {
-  __asm__ volatile (
-      ".set noreorder                   \n"
-      "addiu $v0, $zero, 1              \n"
-      "sb $v0, -0x4640($gp)             \n"
-      ".set reorder"
-      :
-      :
-      : "v0", "memory"
-  );
+  cGpffffb9c0 = 1;
 }
 
 // FUN_00424480
@@ -385,23 +377,14 @@ u32 FUN_00424480(void)
   return *(char *)(iGpffffb9b8 + 8) == 1;
 }
 
-// FUN_004244A0
+// FUN_004244A0 NONMATCHING
 void FUN_004244a0(void)
 {
   u8 uVar1;
   
   uVar1 = scrGetIntPara(0);
   *(u8 *)(DAT_007ce6a8 + 10) = uVar1;
-  __asm__ volatile (
-      ".set noreorder                   \n"
-      "addiu $v0, $zero, 1              \n"
-      "lw $v1, -0x4648($gp)             \n"
-      "sb $v0, 9($v1)                   \n"
-      ".set reorder"
-      :
-      :
-      : "v0", "v1", "memory"
-  );
+  iGpffffb9b8[9] = 1;
 }
 
 // FUN_004244E0 NONMATCHING
