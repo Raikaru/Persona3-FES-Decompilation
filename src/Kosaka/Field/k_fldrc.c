@@ -18,7 +18,7 @@ typedef u32 undefined4;
 typedef u64 undefined8;
 extern void* (*DAT_00960184)(u32, ...);
 #pragma alias DAT_00960184_abs DAT_00960184
-extern void* (*DAT_00960184_abs[])(...);
+extern u8 DAT_00960184_abs[];
 extern void (*DAT_0096017c)(void*);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern u32 DAT_0096017c_abs[];
@@ -54,7 +54,8 @@ extern u32 FUN_0017d920();
 extern u32 FUN_0017da40();
 extern u32 FUN_0017e480();
 extern u32 FUN_00194b20();
-extern u32 FUN_00194b80();
+extern u32 FUN_00194b80(u32 parent, u32 priority, const char* name,
+                        u32 init, u32 destroy, u32 work);
 extern u32 FUN_00195460();
 extern u32 FUN_00198540();
 extern u32 FUN_00198560();
@@ -200,6 +201,10 @@ extern char D_00678E08[];
 extern char D_00678E18[];
 extern char D_00678FD0[];
 extern char D_00679030[];
+#pragma alias D_00679030_abs D_00679030
+extern char D_00679030_abs[];
+#pragma alias D_00679040_abs D_00679040
+extern char D_00679040_abs[];
 extern char D_00679040[];
 extern char D_00679060[];
 extern char D_00678DA0[];
@@ -2170,28 +2175,37 @@ u32 FUN_001b6eb0(u16 group, u32 id)
 u32 FUN_001b75e0(u32 task)
 {
     s32* work;
-    u32 state;
-    u32 loaded;
 
     work = (s32*)*(u32*)(task + 0x3c);
-    state = (u32)work[0];
-    if (state == 2)
+    if (work[0] == 2)
     {
-        return 0xffffffff;
+        goto state2;
     }
-    if (state == 1)
+    if (work[0] == 1)
     {
-        loaded = FUN_00195460(work[2]);
-        if (loaded != 1)
-        {
-            work[0] = (s32)(state + 1);
-        }
+        goto state1;
     }
-    else if ((state == 0) && (FUN_001016b0(work[1]) != 0))
+    if (work[0] == 0)
     {
-        work[2] = FUN_0035bb40(10, *(u32*)(work[1] + 0x110), 0);
-        work[0] = (s32)(state + 1);
+        goto state0;
     }
+    goto done;
+state0:
+    if (FUN_001016b0((u32)work[1]) != 0)
+    {
+        work[2] = (s32)FUN_0035bb40(10, *(u32*)((u8*)work[1] + 0x110), 0);
+        work[0] = work[0] + 1;
+    }
+    goto done;
+state1:
+    if (FUN_00195460((u32)work[2]) != 1)
+    {
+        work[0] = work[0] + 1;
+    }
+    goto done;
+state2:
+    return 0xffffffff;
+done:
     return 0;
 }
 
@@ -2205,17 +2219,17 @@ void FUN_001b76b0(u32 task)
 // FUN_001b7700 NONMATCHING
 void* FUN_001b7700(void* parent)
 {
-    u32 work;
     void* task;
+    u32 work;
 
-    work = (u32)(*DAT_00960184_abs)(1, 0x0c, 0x40000);
+    work = (u32)(*(void* (**)(u32, u32, u32))DAT_00960184_abs)(1, 0x0c, 0x40000);
     if (work == 0)
     {
         return NULL;
     }
-    task = (void*)FUN_00194b80((u32)parent, 10, D_00679030,
-                               0x1b75e0, 0x1b76b0, work);
-    *(u32*)(work + 4) = FUN_00100d80(D_00679040, 0);
+    task = (void*)FUN_00194b80((u32)parent, 10, D_00679030_abs,
+                               (u32)FUN_001b75e0, (u32)FUN_001b76b0, work);
+    *(u32*)(work + 4) = FUN_00100d80(D_00679040_abs, 0);
     return task;
 }
 
