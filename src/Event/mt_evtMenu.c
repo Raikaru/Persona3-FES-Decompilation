@@ -16765,7 +16765,7 @@ int FUN_00382840(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_00382C10 NONMATCHING
+// FUN_00382C10
 
 
 u32 FUN_00382c10(int param_1,int param_2,int param_3)
@@ -16780,7 +16780,7 @@ u32 FUN_00382c10(int param_1,int param_2,int param_3)
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x69fff8);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,DAT_006a0000_abs - 8);
 
   return 2;
 
