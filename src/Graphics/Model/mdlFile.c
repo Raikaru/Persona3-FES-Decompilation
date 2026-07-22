@@ -53196,36 +53196,21 @@ void FUN_00350500(int param_1,int param_2)
 
   
 
-  if (*(int *)(param_2 + 0xac) == 0) {
-
-    if (*(int *)(param_2 + 0xa8) != 0) {
-
-      if (*(int *)(param_1 + 0xa8) != 0) {
-
-        FUN_00322f20(*(int *)(param_1 + 0xa8));
-
-      }
-
-      uVar1 = FUN_00322fb0(*(u32 *)(param_2 + 0xa8));
-
-      *(u32 *)(param_1 + 0xa8) = uVar1;
-
-    }
-
-  }
-
-  else {
-
+  if (*(int *)(param_2 + 0xac) != 0) {
     if (*(int *)(param_1 + 0xac) != 0) {
-
       FUN_00322660(*(int *)(param_1 + 0xac));
-
     }
-
     uVar1 = FUN_003225d0((int *)(*(u32 *)(param_2 + 0xac)));
-
     *(u32 *)(param_1 + 0xac) = uVar1;
-
+  }
+  else {
+    if (*(int *)(param_2 + 0xa8) != 0) {
+      if (*(int *)(param_1 + 0xa8) != 0) {
+        FUN_00322f20(*(int *)(param_1 + 0xa8));
+      }
+      uVar1 = FUN_00322fb0(*(u32 *)(param_2 + 0xa8));
+      *(u32 *)(param_1 + 0xa8) = uVar1;
+    }
   }
 
   return;
