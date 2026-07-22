@@ -2690,7 +2690,7 @@ void func_001d4180(void)
     }
 }
 
-// FUN_001d4290
+// FUN_001d4290 NONMATCHING
 void func_001d4290(void)
 {
     char path[128];
@@ -2711,22 +2711,15 @@ void func_001d4290(void)
         object = (HCdvd*)func_00100d80(path, 0);
         func_001023a0(object);
         DAT_007ce290 = DAT_00871ec0;
-        __asm__ volatile (
-            ".set noreorder\n"
-            "lw %1, 0x118(%2)\n"
-            "lw %0, 0x110(%2)\n"
-            ".set reorder"
-            : "=r" (fileMemory), "=r" (fileSize)
-            : "r" (object)
-            : "memory"
-        );
+        fileMemory = object->fileMemory;
+        fileSize = object->fileSize;
         func_00521250(DAT_00871ec0, fileMemory, fileSize);
         DAT_007ce294 = DAT_007ce290 + 0x180;
         func_00100ec0(object);
     }
 }
 
-// FUN_001d43e0
+// FUN_001d43e0 NONMATCHING
 u32 func_001d43e0(void* object)
 {
     HCdvd* cdvd;
@@ -2739,15 +2732,8 @@ u32 func_001d43e0(void* object)
     }
     cdvd = (HCdvd*)object;
     DAT_007ce290 = DAT_00871ec0;
-    __asm__ volatile (
-        ".set noreorder\n"
-        "lw %1, 0x118(%2)\n"
-        "lw %0, 0x110(%2)\n"
-        ".set reorder"
-        : "=r" (fileMemory), "=r" (fileSize)
-        : "r" (cdvd)
-        : "memory"
-    );
+    fileMemory = cdvd->fileMemory;
+    fileSize = cdvd->fileSize;
     func_00521250(DAT_00871ec0, fileMemory, fileSize);
     DAT_007ce294 = DAT_007ce290 + 0x180;
     func_00100ec0(cdvd);

@@ -375,7 +375,7 @@ void K_FldFrame_DestroyCtlTask(KwlnTask* collisCtlTask)
     RwFree(collisCtlTask->workData);
 }
 
-// FUN_001ad660
+// FUN_001ad660 NONMATCHING
 KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, f32 sphereCollisRadius)
 {
     KwlnTask* task;
@@ -410,26 +410,15 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
             ctl->mdl = ((ResrcModelChar*)res)->mdl;
         }
         i = 0;
-        __asm__ volatile ("la $a2, gFldUnitsPc");
         for (; i < FLDUNIT_PC_MAX; i++)
         {
-            __asm__ volatile (
-                "sll $v1, %1, 3\n"
-                "subu $v1, $v1, %1\n"
-                "sll $a3, $v1, 6\n"
-                "addu %0, $a2, $a3"
-                : "=r"(units)
-                : "r"(i));
+            units = &gFldUnitsPc[i];
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
                 u16 charId;
 
-                __asm__ volatile (
-                    "la %0, gFldUnitsPc + 0x1a8\n"
-                    "addu %0, %0, $a3\n"
-                    "lhu %0, 0(%0)"
-                    : "=r"(charId));
+                charId = units->charId;
                 ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;
@@ -437,26 +426,15 @@ KwlnTask* K_FldFrame_CreateCtlTask(KwlnTask* parent, u32 resTypeId, s32 unused, 
         }
 
         i = 0;
-        __asm__ volatile ("la $a2, gFldUnitsEc");
         for (; i < FLDUNIT_EC_MAX; i++)
         {
-            __asm__ volatile (
-                "sll $v1, %1, 3\n"
-                "subu $v1, $v1, %1\n"
-                "sll $a3, $v1, 6\n"
-                "addu %0, $a2, $a3"
-                : "=r"(units)
-                : "r"(i));
+            units = &gFldUnitsEc[i];
             if (units->genusBase != NULL &&
                 units->mdl == ((ResrcModelChar*)res)->mdl)
             {
                 u16 charId;
 
-                __asm__ volatile (
-                    "la %0, gFldUnitsEc + 0x1a8\n"
-                    "addu %0, %0, $a3\n"
-                    "lhu %0, 0(%0)"
-                    : "=r"(charId));
+                charId = units->charId;
                 ctl->charId = charId;
                 ctl->fldUnit = units;
                 break;
