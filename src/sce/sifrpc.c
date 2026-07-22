@@ -22,6 +22,8 @@ extern u32 DAT_0077f54c;
 extern u32 DAT_009684c0;
 extern u32 DAT_009684c4;
 extern u32 DAT_009684c8;
+#pragma alias DAT_009684c8_abs DAT_009684c8
+extern u8 DAT_009684c8_abs[];
 extern u32 DAT_00968500;
 #pragma alias DAT_00968500_abs DAT_00968500
 extern u8 DAT_00968500_abs[];
@@ -796,15 +798,12 @@ int sceSifCheckStatRpc(SifRpcClientData_t* client)
     SifRpcPacket_t* packet;
 
     packet = (SifRpcPacket_t*)client->header.packet;
-    if (packet == 0)
-        goto fail;
-    if (client->header.rpc_id != (u_int)packet->rpc_id)
-        goto fail;
-    if (packet->record_id & SIF_RPC_PACKET_BUSY)
-        goto success;
-fail:
-    return 0;
-success:
+    if (packet == 0 ||
+        client->header.rpc_id != (u_int)packet->rpc_id ||
+        (packet->record_id & SIF_RPC_PACKET_BUSY) == 0)
+    {
+        return 0;
+    }
     return 1;
 }
 
@@ -1390,14 +1389,20 @@ bool FUN_00508378(void)
   }
   return bVar2;
 }
+#pragma schedule on
 // FUN_00508408 NONMATCHING
 u64 FUN_00508408(void)
-
 {
-  DAT_0077f53c = 0;
-  FUN_00521408(0x969c28,0,4);
+  void *ptr;
+  
+  *(u32 *)DAT_0077f53c_abs = 0;
+  asm volatile("" : "+m"(*(u32 *)DAT_0077f53c_abs));
+  ptr = (void *)DAT_009684c8_abs;
+  asm volatile("" : "+m"(ptr));
+  FUN_00521408(ptr,0,4);
   return 0;
 }
+#pragma schedule off
 // FUN_00508440 NONMATCHING
 u32 FUN_00508440(u32 param_1,u32 param_2)
 
