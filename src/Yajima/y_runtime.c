@@ -7459,25 +7459,27 @@ u32 FUN_0043a230(char param_1)
 
 {
   char cVar1;
-  u8 bVar2;
+  int bVar2;
   u32 uVar3;
   int iVar4;
   
   bVar2 = 0;
   iVar4 = (int)param_1;
-  if ((((u8 *)DAT_008717e8)[iVar4 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar4 * 0x70] != 0)) {
+  if ((DAT_008717e8_rows[iVar4 * 0x70] != 0) &&
+      (DAT_008717f4_rows[iVar4 * 0x70] != 0)) {
     bVar2 = 1;
   }
-  if (((bVar2) &&
-      (*(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar4 * 0x1c0) + 0x3c) + 1) == '\x05')) &&
-     ((cVar1 = *(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar4 * 0x1c0) + 0x3c) + 0x1218),
-      cVar1 == '\x03' || (cVar1 == '\x06')))) {
-    uVar3 = 1;
+  bVar2 = bVar2 != 0;
+  if (bVar2 == 1) {
+    iVar4 = DAT_0087190c_rows[iVar4 * 0x70];
+    if (*(char *)(*(int *)(iVar4 + 0x3c) + 1) == '\x05') {
+      cVar1 = *(char *)(*(int *)(iVar4 + 0x3c) + 0x1218);
+      if (cVar1 == '\x03' || cVar1 == '\x06') {
+        return 1;
+      }
+    }
   }
-  else {
-    uVar3 = 0;
-  }
-  return uVar3;
+  return 0;
 }
 
 // FUN_0043A2F0 NONMATCHING
