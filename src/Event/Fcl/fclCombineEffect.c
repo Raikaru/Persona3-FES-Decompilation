@@ -4560,10 +4560,13 @@ void FUN_0041bf80(u32 *param_1)
 // FUN_0041C140 NONMATCHING
 void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
 {
-  float afStack_8 [2];
-  afStack_8[0] = DAT_007cdae0;
-  afStack_8[1] = DAT_007cdae4;
-  FUN_0040e3c0(param_1,param_2,param_3,((u32 *)afStack_8)[param_4]);
+  struct Pair {
+    float a;
+    float b;
+  } pair;
+
+  pair = *(struct Pair *)&DAT_007cdae0;
+  FUN_0040e3c0(param_1,param_2,param_3,((u32 *)&pair)[param_4]);
   return;
 }
 
