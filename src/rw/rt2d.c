@@ -1619,16 +1619,17 @@ u64 FUN_004b2810(float param_1,u64 param_2,u64 param_3)
   ((code)FUN_004b26a0)(param_3);
   return param_2;
 }
-// FUN_004B2A90 NONMATCHING
-u64 FUN_004b2a90(u64 param_1,u64 param_2,u64 param_3)
-
+#pragma schedule on
+// FUN_004B2A90
+u32 FUN_004b2a90(u32 param_1,u64 param_2,u64 param_3)
 {
   u32 *puVar1;
   
   puVar1 = (u32 *)FUN_004c1e70(param_3,0x301a9);
-  *puVar1 = (int)param_1;
+  *puVar1 = param_1;
   return param_1;
 }
+#pragma schedule off
 // FUN_004B2AD0 NONMATCHING
 u64 FUN_004b2ad0(u64 param_1,u32 param_2)
 
@@ -2618,7 +2619,6 @@ FUN_004b3f50(u64 param_1,u64 param_2,int *param_3,int param_4,u64 param_5)
 }
 // FUN_004B4090 NONMATCHING
 int FUN_004b4090(int *param_1)
-
 {
   int iVar1;
   
@@ -2917,7 +2917,7 @@ u64 FUN_004b4720(u64 param_1,u32 *param_2)
   return param_1;
 }
 // FUN_004B4790 NONMATCHING
-u64 FUN_004b4790(u64 param_1,int param_2)
+u64 FUN_004b4790(u64 param_1,u64 param_2)
 
 {
   long lVar1;
@@ -4367,7 +4367,6 @@ int FUN_004b6d90(int *param_1)
 #pragma optimization_level 2
 // FUN_004B6DD0 NONMATCHING
 int FUN_004b6dd0(int *param_1)
-
 {
   u32 *vtable;
   u32 *puVar1;
@@ -4394,20 +4393,22 @@ void FUN_004b6e10(int param_1,int param_2)
 
 {
   u32 *puVar1;
+  u32 minusOne;
 
   puVar1 = (u32 *)(*DAT_00960178_abs)(param_1 * param_2 + 0x4c,0x3001b);
+  minusOne = 0xffffffff;
   puVar1[0xb] = param_1;
   *puVar1 = 0;
   puVar1[2] = 0;
   puVar1[1] = 0;
+  puVar1[0xc] = 0;
   puVar1[5] = 0xbf800000;
   puVar1[4] = 0;
   puVar1[6] = 0;
   puVar1[7] = 0;
   puVar1[9] = param_2;
-  puVar1[10] = 0xffffffff;
+  puVar1[10] = minusOne;
   puVar1[8] = param_2;
-  puVar1[0xc] = 0;
   puVar1[0xd] = 0;
   puVar1[0xe] = (u32)(puVar1);
   puVar1[0xf] = 0;
@@ -5064,9 +5065,9 @@ int FUN_004b7f30(int param_1)
   int iVar1;
   int iVar2;
 
-  iVar1 = FUN_004b91b0_arg(*(u32 *)(param_1 + 0x14));
-  iVar2 = iVar1 + 4;
-  return iVar2 + (*(int *)(param_1 + 4) << 5);
+  iVar1 = 4;
+  iVar2 = FUN_004b91b0_arg(*(u32 *)(param_1 + 0x14));
+  return iVar1 + iVar2 + (*(int *)(param_1 + 4) << 5);
 }
 // FUN_004B7F80 NONMATCHING
 void FUN_004b7f80(RwMatrix *matrix, const f32 *src)
