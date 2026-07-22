@@ -686,8 +686,9 @@ void func_001b8b40(void)
     s16* record;
     s32 recordCount;
     u32 fileSize;
-    s32 i;
+    u32 allocSize;
     u16 emptyId;
+    s32 i;
 
     sprintf(path, "field/table/comutbl.bin");
     if (H_Cdvd_FileExists(path) == 0)
@@ -696,15 +697,16 @@ void func_001b8b40(void)
     }
     request = H_Cdvd_Request(path, HCDVD_FILENORMAL);
     H_Cdvd_ReadSync(request);
+    allocSize = ((volatile HCdvd*)request)->fileSize;
     sComuTable = (s16*)(*(void* (**)(u32, u32, u32))D_00960184_abs)(
-        1, request->fileSize, rwMEMHINTDUR_GLOBAL);
+        1, allocSize, rwMEMHINTDUR_GLOBAL);
     fileSize = request->fileSize;
     memcpy(sComuTable, request->fileMemory, (s32)fileSize);
     recordCount = request->fileSize >> 7;
     sComuTableRecords = recordCount;
     record = sComuTable;
-    i = 0;
     emptyId = 0xffff;
+    i = 0;
     while (i < recordCount)
     {
         if (*(u16*)record == emptyId)
@@ -877,8 +879,8 @@ u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
     const u8* record;
     u32 count;
     u32 i;
-    u32 type;
     u32 result;
+    u32 type;
 
     count = byteSize / 0x0c;
     record = records + count * 0x0c - 0x0c;
