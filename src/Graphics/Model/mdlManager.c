@@ -755,7 +755,7 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
             table->entries[id].rtAnim != (RtAnimAnimation*)DAT_009571d0_abs)
         {
             hierarchy = mdl->animSlots[slotIdx].anim.hierarchy;
-            FUN_004b74c0(scaledFrame, hierarchy->currentAnim);
+            FUN_004b74c0(scaledFrame, ((volatile RpHAnimHierarchy*)hierarchy)->currentAnim);
             mdl->animSlots[slotIdx].anim.flags |= MDLANIM_FLAG_FRAMESET;
         }
     }
