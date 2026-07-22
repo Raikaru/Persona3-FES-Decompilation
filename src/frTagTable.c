@@ -128,36 +128,45 @@ void FUN_003af7a0(int param_1,u64 param_2);
 // FUN_003AE420 NONMATCHING
 
 
-u64 FUN_003ae420(u64 param_1,int param_2)
+u64 FUN_003ae420(u64 param_1, int param_2)
 {
-  char cVar1;
-  u8 bVar2;
-  u32 uVar3;
-  u8 *pbVar4;
-  u16 uVar6;
+  u8 *data;
+  u8 low;
+  u8 high;
+  int base;
+  int offset;
+  s32 first;
+  s16 second;
 
-  pbVar4 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-  bVar2 = pbVar4[1];
-  if (bVar2 == 0xff) {
-    uVar3 = 0;
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(base + offset);
+  low = data[0] - 1;
+  if (data[1] == 0xff) {
+    high = 0;
   } else {
-    uVar3 = (u8)(bVar2 - 1);
+    high = data[1] - 1;
   }
-  uVar3 = uVar3 << 8 | pbVar4[0] - 1 & 0xff;
-  cVar1 = pbVar4[3];
-  if (cVar1 == -1) {
-    bVar2 = 0;
+  first = (u32)high << 8 | low;
+
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(offset + base);
+  low = data[2] - 1;
+  if (data[3] == 0xff) {
+    high = 0;
   } else {
-    bVar2 = cVar1 - 1;
+    high = data[3] - 1;
   }
-  uVar6 = (u16)bVar2 << 8 | pbVar4[2] - 1 & 0xff;
-  if ((short)uVar3 < 0 || 7 < uVar3) {
+  second = (u32)high << 8 | low;
+
+  if (first < 0 || first > 7) {
     FUN_0019d3f0("frTagTable.c",0x2d1);
   }
-  if ((short)uVar6 < 0 || 3 < (short)uVar6) {
+  if (second < 0 || second > 3) {
     FUN_0019d3f0("frTagTable.c",0x2d2);
   }
-  FUN_0017c7f0(uVar3,uVar6);
+  FUN_0017c7f0(first, second);
   return 0;
 }
 #define FUN_003ae420(...) ((u64 (*)(...))FUN_003ae420)(__VA_ARGS__)
@@ -172,9 +181,12 @@ u64 FUN_003ae560(u64 param_1,int param_2)
   u8 bVar1;
   u8 **table;
   u32 offset;
+  u32 base;
   u8 *pbVar3;
 
-  pbVar3 = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  pbVar3 = (u8 *)(base + offset);
   bVar1 = pbVar3[0] - 1;
   uVar3 = pbVar3[1];
   if (uVar3 == 0xff) {
@@ -1175,35 +1187,6 @@ u64 FUN_003af460(u64 unused, int context)
   return 0;
 }
 
-// FUN_003AF454 NONMATCHING
-u64 FUN_003af454(u64 unused, int context)
-{
-  u8 *data;
-  u32 low;
-  u32 high;
-  u32 value;
-
-  data = (u8 *)(*(int *)(context + 0x10) + *(int *)(context + 0x18));
-  low = data[0] - 1;
-  high = data[1];
-  if (high == 0xff) {
-    high = 0;
-  } else {
-    high = high - 1;
-  }
-  value = high << 8 | low & 0xff;
-  *(u32 *)0x0095abe8 = value;
-  low = data[2] - 1;
-  high = data[3];
-  if (high == 0xff) {
-    high = 0;
-  } else {
-    high = high - 1;
-  }
-  value = high << 8 | low & 0xff;
-  *(u32 *)0x0095abec = value;
-  return 0;
-}
 
 #undef FUN_003af520
 // FUN_003AF520
@@ -1256,14 +1239,13 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
   u8 bVar2;
   short sVar5;
   u8 *pbVar4;
-  int iVar7;
-  int iVar6;
+  int base;
+  int offset;
   u32 uVar8;
 
-  iVar7 = *(int *)(param_2 + 0x18);
-  iVar6 = *(int *)(param_2 + 0x10);
-  iVar7 = iVar6 + iVar7;
-  pbVar4 = (u8 *)iVar7;
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  pbVar4 = (u8 *)(base + offset);
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
   if (bVar2 == 0xff) {
