@@ -75,45 +75,45 @@ extern char gp0xffff897c[];
 extern u32 DAT_0083aaa0[];
 extern u32 uGpffff8884;
 
-static f32 campDrawX(const CampMenuDrawItem* item)
+static inline f32 campDrawX(const CampMenuDrawItem* item)
 {
     return item->x;
 }
 
-static f32 campDrawY(const CampMenuDrawItem* item)
+static inline f32 campDrawY(const CampMenuDrawItem* item)
 {
     return item->y;
 }
 
-static u32 campDrawAlpha(const CampMenuDrawItem* item)
+static inline u32 campDrawAlpha(const CampMenuDrawItem* item)
 {
     return (0xffU - item->alpha) | 0xffffff00U;
 }
 
-static void campSprite(const CampMenuDrawItem* item, f32 x, f32 y)
+static inline void campSprite(const CampMenuDrawItem* item, f32 x, f32 y)
 {
     campMenuDrawSprite(0, NULL, 0, item->alpha, x, y, item->scale);
 }
 
-static void campSpriteAlt(const CampMenuDrawItem* item, f32 x, f32 y)
+static inline void campSpriteAlt(const CampMenuDrawItem* item, f32 x, f32 y)
 {
     campMenuDrawSpriteAlt(0, NULL, 0, item->alpha, x, y, item->scale,
                           0, 0, 0);
 }
 
-static void campText(const CampMenuDrawItem* item, f32 x, f32 y,
-                     const char* text, s32 font, s32 width)
+static inline void campText(const CampMenuDrawItem* item, f32 x, f32 y,
+                            const char* text, s32 font, s32 width)
 {
     FUN_003b32d0(item->scale, (s32)x, (s32)y, campDrawAlpha(item), font, 1,
                  text, 0x10, width);
 }
 
-static void campDrawPanel(const CampMenuDrawItem* item)
+static inline void campDrawPanel(const CampMenuDrawItem* item)
 {
     campSprite(item, campDrawX(item), campDrawY(item));
 }
 
-static void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spacing)
+static inline void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spacing)
 {
     s32 i;
     for (i = 0; i < count; i++) {
@@ -475,7 +475,7 @@ u32 FUN_00156140(CampMenuDrawItem* items, const char** labels, s32 count,
     return complete;
 }
 
-static void campDrawPersonaName(CampMenuDrawItem* item, s32 personaId, s32 selected)
+static inline void campDrawPersonaName(CampMenuDrawItem* item, s32 personaId, s32 selected)
 {
     u8 text[0x100];
     void* record = FUN_0016f190(personaId + 0x13d0);
