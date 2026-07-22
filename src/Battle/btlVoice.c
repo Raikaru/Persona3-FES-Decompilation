@@ -763,32 +763,31 @@ void func_002f1680(void)
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int iVar5;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
+  VoiceSlots auStack_18;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
   
   puVar6 = (u32*)DAT_0069a110;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9cd0;
-  auStack_18[1] = uGpffff9cd2;
-  auStack_18[2] = uGpffff9cd4;
+  } while (0 < iVar5);
+  auStack_18 = *(VoiceSlots *)&uGpffff9cd0;
   sVar7 = 0;
   uStack_c = 0;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
@@ -801,7 +800,7 @@ void func_002f1680(void)
       iVar3 = (int)sVar7;
       uStack_10 = auStack_30[iVar3 * 2];
       uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
@@ -864,38 +863,36 @@ void func_002f1810(void)
 
 // FUN_002f19d0 NONMATCHING
 void func_002f19d0(void)
-
 {
   u32 uVar1;
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int iVar5;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
+  VoiceSlots auStack_18;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
-  
+
   puVar6 = (u32*)DAT_0069a150;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9cd8;
-  auStack_18[1] = uGpffff9cda;
-  auStack_18[2] = uGpffff9cdc;
+  } while (0 < iVar5);
+  auStack_18 = *(VoiceSlots *)&uGpffff9cd8;
   sVar7 = 0;
   uStack_c = 0;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
@@ -908,7 +905,7 @@ void func_002f19d0(void)
       iVar3 = (int)sVar7;
       uStack_10 = auStack_30[iVar3 * 2];
       uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
@@ -1047,32 +1044,31 @@ void func_002f1f00(void)
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int iVar5;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
+  VoiceSlots auStack_18;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
   
   puVar6 = (u32*)DAT_0069a190;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9ce0;
-  auStack_18[1] = uGpffff9ce2;
-  auStack_18[2] = uGpffff9ce4;
+  } while (0 < iVar5);
+  auStack_18 = *(VoiceSlots *)&uGpffff9ce0;
   sVar7 = 0;
   uStack_c = 0;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
@@ -1085,7 +1081,7 @@ void func_002f1f00(void)
       iVar3 = (int)sVar7;
       uStack_10 = auStack_30[iVar3 * 2];
       uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
@@ -1154,34 +1150,31 @@ void func_002f2250(void)
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int iVar5;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
+  VoiceSlots auStack_18;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
   
   puVar6 = (u32*)DAT_0069a210;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9ce8;
-  auStack_18[1] = uGpffff9cea;
-  auStack_18[2] = uGpffff9cec;
-  sVar7 = 0;
-  uStack_c = 0;
+  } while (0 < iVar5);
+  auStack_18 = *(VoiceSlots *)&uGpffff9ce8;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
     if (*(short *)(iVar4 + 0xa4) == 1) {
       uStack_10 = 0x43160000;
@@ -1192,7 +1185,7 @@ void func_002f2250(void)
       iVar3 = (int)sVar7;
       uStack_10 = auStack_30[iVar3 * 2];
       uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
@@ -2818,32 +2811,31 @@ void func_002f5a70(void)
   u32 uVar2;
   int iVar3;
   int iVar4;
+  int iVar5;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
+  VoiceSlots auStack_18;
   u32 uStack_10;
   u32 uStack_c;
   u32 uStack_8;
   
   puVar6 = (u32*)DAT_0069a550;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = DAT_007cc9f0;
-  auStack_18[1] = DAT_007cc9f2;
-  auStack_18[2] = DAT_007cc9f4;
+  } while (0 < iVar5);
+  auStack_18 = *(VoiceSlots *)&DAT_007cc9f0;
   sVar7 = 0;
   uStack_c = 0;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
@@ -2856,7 +2848,7 @@ void func_002f5a70(void)
       iVar3 = (int)sVar7;
       uStack_10 = auStack_30[iVar3 * 2];
       uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
