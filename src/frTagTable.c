@@ -67,6 +67,8 @@ extern u8 DAT_0095ae40_abs[];
 #pragma alias DAT_0095ae60_abs DAT_0095ae60
 extern u8 DAT_0095ae60_abs[];
 extern u8 * PTR_s_Go_home_006a25c0;
+#pragma alias PTR_s_Go_home_006a25c0_abs PTR_s_Go_home_006a25c0
+extern u8 PTR_s_Go_home_006a25c0_abs[];
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -169,9 +171,10 @@ u64 FUN_003ae560(u64 param_1,int param_2)
   u32 uVar3;
   u8 bVar1;
   u8 **table;
+  u32 offset;
   u8 *pbVar3;
 
-  pbVar3 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  pbVar3 = (u8 *)(*(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10));
   bVar1 = pbVar3[0] - 1;
   uVar3 = pbVar3[1];
   if (uVar3 == 0xff) {
@@ -185,8 +188,10 @@ u64 FUN_003ae560(u64 param_1,int param_2)
     FUN_0019d3f0("frTagTable.c",0x2eb);
   }
   FUN_003b22a0(param_2);
-  table = (u8 **)0x006a25c0;
-  table = table + lVar1;
+  offset = lVar1 << 2;
+  asm volatile("" : "+m"(offset));
+  table = (u8 **)&PTR_s_Go_home_006a25c0_abs;
+  table = (u8 **)((u8 *)table + offset);
   FUN_003b2020(*table,param_2);
   return 0;
 }
@@ -1257,7 +1262,7 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
 
   iVar7 = *(int *)(param_2 + 0x18);
   iVar6 = *(int *)(param_2 + 0x10);
-  iVar7 = iVar7 + iVar6;
+  iVar7 = iVar6 + iVar7;
   pbVar4 = (u8 *)iVar7;
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
