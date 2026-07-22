@@ -537,8 +537,8 @@ extern void func_002b96e0(int param_1,u32 param_2);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,u64 param_6);
 extern void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
-extern void func_002b9c00(int param_1,u64 param_2,int param_3,float *param_4);
-extern void func_002b9d40(int param_1,u64 param_2,int param_3,float *param_4);
+extern void func_002b9c00(int param_1,int param_2,int param_3,float *param_4);
+extern void func_002b9d40(int param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9e80(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 extern void func_002b9f30(u64 param_1,int param_2,u64 param_3,u64 param_4);
 extern void func_002ba000(u64 param_1,int param_2,u64 param_3,u64 param_4);
@@ -1566,96 +1566,85 @@ void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
 
 // FUN_002b9c00 NONMATCHING
 
-void func_002b9c00(int param_1,u64 param_2,int param_3,float *param_4)
+void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
 
 {
-  int iVar1;
-  long lVar2;
-  int iVar3;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
-  
-  if ((*(u32 *)((int)param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0(param_2,&fStack_10);
+  s32 result;
+  u16 index;
+  u32 model;
+  u32 model_variant;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
   }
   else {
-    iVar1 = *(int *)((int)param_2 + 0x9f4);
-    iVar3 = *(int *)(iVar1 + 0x3c4);
-    if (iVar3 == 0) {
-      iVar3 = iVar1;
+    model = *(u32*)(param_2 + 0x9f4);
+    model_variant = *(u32*)(model + 0x3c4);
+    if (model_variant == 0) {
+      model_variant = model;
     }
-    func_003176c0(iVar3);
-    func_00318b90(iVar3);
-    lVar2 = func_00318ed0(iVar3,*(u16 *)(param_3 + 4),&fStack_10);
-    if (lVar2 == 0) {
-      fStack_18 = *(float *)(param_1 + 0x50);
-      fStack_20 = *(float *)(param_1 + 0x20) * fStack_18;
-      fStack_1c = *(float *)(param_1 + 0x24) * fStack_18;
-      fStack_18 = *(float *)(param_1 + 0x28) * fStack_18;
-      func_004be1e0(&fStack_30,&fStack_20,1,param_1 + 0x40);
-      fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
-      fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
-      fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
+    func_003176c0(model_variant);
+    func_00318b90(model_variant);
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(model_variant, index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1,
+          (void*)((volatile u8*)param_1 + 0x40));
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
     }
   }
-  *param_4 = fStack_10;
-  param_4[1] = fStack_c;
-  param_4[2] = fStack_8;
-  return;
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
 }
 
 // FUN_002b9d40 NONMATCHING
 
-void func_002b9d40(int param_1,u64 param_2,int param_3,float *param_4)
-
+void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  int iVar3 = 0;
-  float fStack_30 = 0;
-  float fStack_2c = 0;
-  float fStack_28 = 0;
-  float fStack_20 = 0;
-  float fStack_1c = 0;
-  float fStack_18 = 0;
-  float fStack_10 = 0;
-  float fStack_c = 0;
-  float fStack_8 = 0;
-  
-  if ((*(u32 *)((int)param_2 + 0x98) & 2) == 0) {
-    func_0027ffb0(param_2,&fStack_10);
+  s32 result;
+  u16 index;
+  u32 model;
+  u32 model_variant;
+  RwV3d position;
+  RwV3d scaled;
+  RwV3d transformed;
+
+  if ((*(u32*)(param_2 + 0x98) & 2) == 0) {
+    func_0027ffb0_v3d(param_2, &position);
   }
   else {
-    iVar1 = *(int *)((int)param_2 + 0x9f4);
-    iVar3 = *(int *)(iVar1 + 0x3b8);
-    if (iVar3 == 0) {
-      iVar3 = iVar1;
+    model = *(u32*)(param_2 + 0x9f4);
+    model_variant = *(u32*)(model + 0x3b8);
+    if (model_variant == 0) {
+      model_variant = model;
     }
-    func_003176c0(iVar3);
-    func_00318b90(iVar3);
-    lVar2 = func_00318ed0(iVar3,*(u16 *)(param_3 + 4),&fStack_10);
-    if (lVar2 == 0) {
-      fStack_18 = *(float *)(param_1 + 0x50);
-      fStack_20 = *(float *)(param_1 + 0x20) * fStack_18;
-      fStack_1c = *(float *)(param_1 + 0x24) * fStack_18;
-      fStack_18 = *(float *)(param_1 + 0x28) * fStack_18;
-      func_004be1e0(&fStack_30,&fStack_20,1,param_1 + 0x40);
-      fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
-      fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
-      fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
+    func_003176c0(model_variant);
+    func_00318b90(model_variant);
+    index = *(u16*)(param_3 + 4);
+    result = func_00318ed0_v3d(model_variant, index, &position);
+    if (result == 0) {
+      scaled.x = *(f32*)(param_1 + 0x20) * *(f32*)(param_1 + 0x50);
+      scaled.y = *(f32*)(param_1 + 0x24) * *(f32*)(param_1 + 0x50);
+      scaled.z = *(f32*)(param_1 + 0x28) * *(f32*)(param_1 + 0x50);
+      func_004be1e0(&transformed, &scaled, 1,
+          (void*)((volatile u8*)param_1 + 0x40));
+      position.x = transformed.x + *(f32*)(param_1 + 0x34);
+      position.y = transformed.y + *(f32*)(param_1 + 0x38);
+      position.z = transformed.z + *(f32*)(param_1 + 0x3c);
     }
   }
-  *param_4 = fStack_10;
-  param_4[1] = fStack_c;
-  param_4[2] = fStack_8;
-  return;
+  param_4[0] = position.x;
+  param_4[1] = position.y;
+  param_4[2] = position.z;
 }
 
 // FUN_002b9e80 NONMATCHING
