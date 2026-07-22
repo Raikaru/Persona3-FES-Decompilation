@@ -899,35 +899,28 @@ asm u32 FUN_00530c60(u32 *param_1)
 
 
 
-// FUN_00530D18
-
-
-asm void FUN_00530d18(u32 *param_1,u32 *param_2)
+#pragma push
+#pragma schedule on
+// FUN_00530D18 NONMATCHING
+void FUN_00530d18(u32 *param_1,u32 *param_2)
 {
-  .set noreorder
-  .word 0x8c8f0000
-  .word 0x3c0d007f
-  .word 0x35adffff
-  .word 0x000f67c2
-  .word 0x000f75c2
-  .word 0x01ed7824
-  .word 0xacac0004
-  .word 0x000f69c0
-  .word 0x31ce00ff
-  .word 0x15c00004
-  .word 0x25cfff81
-  .word 0x240f0002
-  .word 0x03e00008
-  .word 0xacaf0000
-  .word 0xacaf0008
-  .word 0x240e0003
-  .word 0xacae0000
-  .word 0x3c0f4000
-  .word 0x01af7825
-  .word 0x03e00008
-  .word 0xacaf000c
-  .word 0x00000000
+  u32 value;
+  u32 exponent;
+
+  value = param_1[0];
+  param_2[1] = value >> 31;
+  exponent = (value >> 23) & 0xff;
+  if (exponent == 0) {
+    param_2[0] = 2;
+    param_2[2] = 2;
+    return;
+  }
+
+  param_2[2] = exponent - 0x7f;
+  param_2[0] = 3;
+  param_2[3] = (value << 7) & 0x3fffffff | 0x40000000;
 }
+#pragma pop
 
 
 
