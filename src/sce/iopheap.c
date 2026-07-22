@@ -4,11 +4,22 @@
 
 /* auto-extern (generated) */
 u32 FUN_0050b710(u32 param_1);
+extern int FUN_00507230(u32, u32, u32, u32, u32, u32, u32, u32);
 extern int DAT_0077f558;
 extern u32 DAT_00969d40;
 extern u32 DAT_00969d80;
 extern u32 DAT_00969d84;
 extern u32 DAT_00969d88;
+#pragma alias DAT_0077f558_abs DAT_0077f558
+#pragma alias DAT_00969d40_abs DAT_00969d40
+#pragma alias DAT_00969d80_abs DAT_00969d80
+#pragma alias DAT_00969d84_abs DAT_00969d84
+#pragma alias DAT_00969d88_abs DAT_00969d88
+extern u8 DAT_0077f558_abs[];
+extern u8 DAT_00969d40_abs[];
+extern u8 DAT_00969d80_abs[];
+extern u8 DAT_00969d84_abs[];
+extern u8 DAT_00969d88_abs[];
 
 typedef union SifIopHeapValue
 {
@@ -57,22 +68,21 @@ int sceSifInitIopHeap(void)
 // FUN_0050b620 NONMATCHING
 u32 FUN_0050b620(u32 param_1)
 {
-    long result;
+    int result;
 
-    if (DAT_0077f558 >= 0)
+    if (*(int*)DAT_0077f558_abs >= 0)
     {
-        DAT_00969d80 = param_1;
+        *(u32*)DAT_00969d80_abs = param_1;
         result = FUN_00507230(0x969d00, 1, 0, 0x969d80, 4, 0x969d40, 4, 0);
         if (result >= 0)
         {
-            return DAT_00969d40;
+            return *(u32*)DAT_00969d40_abs;
         }
     }
     return 0;
 }
 // FUN_0050B690 NONMATCHING
 u32 FUN_0050b690(u32 param_1,u32 param_2,u32 param_3)
-
 {
   u32 uVar1;
   int lVar2;
@@ -207,15 +217,15 @@ u32 FUN_0050b9e8(u32 param_1)
 
 {
   u32 uVar1;
-  long lVar2;
-  
-  if (DAT_0077f558 < 0) {
+  int lVar2;
+
+  if (*(int*)DAT_0077f558_abs < 0) {
     uVar1 = 0;
   }
   else {
-    DAT_00969d80 = param_1;
+    *(u32*)DAT_00969d80_abs = param_1;
     lVar2 = FUN_00507230(0x969d00,8,0,0x969d80,4,0x969d40,4,0);
-    uVar1 = DAT_00969d40;
+    uVar1 = *(u32*)DAT_00969d40_abs;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
     }
@@ -227,15 +237,15 @@ u32 FUN_0050ba68(u32 param_1)
 
 {
   u32 uVar1;
-  long lVar2;
-  
-  if (DAT_0077f558 < 0) {
+  int lVar2;
+
+  if (*(int*)DAT_0077f558_abs < 0) {
     uVar1 = 0;
   }
   else {
-    DAT_00969d80 = param_1;
+    *(u32*)DAT_00969d80_abs = param_1;
     lVar2 = FUN_00507230(0x969d00,9,0,0x969d80,4,0x969d40,4,0);
-    uVar1 = DAT_00969d40;
+    uVar1 = *(u32*)DAT_00969d40_abs;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
     }
