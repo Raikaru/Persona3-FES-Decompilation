@@ -659,6 +659,7 @@ LAB_003c2db0:
 #undef FUN_003c2df0
 
 
+// FUN_003C2DF0
 #pragma opt_loop_invariants on
 u32 FUN_003c2df0(u32 param_1)
 {
