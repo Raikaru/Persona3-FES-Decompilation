@@ -111,7 +111,7 @@ s8 FUN_003c7610(void);
 u32 FUN_003c7650(int param_1);
 u32 FUN_003c7700(void);
 u32 FUN_003c77a0(void);
-u8 FUN_003c7850(void);
+s8 FUN_003c7850(void);
 u32 FUN_003c78d0(void);
 void FUN_003c7990(long param_1);
 #pragma alias FUN_003c7990_typed FUN_003c7990
@@ -178,7 +178,7 @@ u8 FUN_003c83b0(void);
 #define FUN_003c7650(...) ((u32 (*)(...))FUN_003c7650)(__VA_ARGS__)
 #define FUN_003c7700(...) ((u32 (*)(...))FUN_003c7700)(__VA_ARGS__)
 #define FUN_003c77a0(...) ((u32 (*)(...))FUN_003c77a0)(__VA_ARGS__)
-#define FUN_003c7850(...) ((u8 (*)(...))FUN_003c7850)(__VA_ARGS__)
+#define FUN_003c7850(...) ((s8 (*)(...))FUN_003c7850)(__VA_ARGS__)
 #define FUN_003c78d0(...) ((u32 (*)(...))FUN_003c78d0)(__VA_ARGS__)
 #define FUN_003c7990(...) ((void (*)(...))FUN_003c7990)(__VA_ARGS__)
 #define FUN_003c7b90(...) ((void (*)(...))FUN_003c7b90)(__VA_ARGS__)
@@ -2035,30 +2035,38 @@ u32 FUN_003c77a0(void)
 }
 #define FUN_003c77a0(...) ((u32 (*)(...))FUN_003c77a0)(__VA_ARGS__)
 #undef FUN_003c7850
-// FUN_003C7850 NONMATCHING
+// FUN_003C7850
 
 
-u8 FUN_003c7850(void)
-
-
-
+s8 FUN_003c7850(void)
 {
-  extern u8 *FUN_003c7d50_direct(void);
-  u8 uVar1;
+  extern u8 *FUN_003c7d50_ptr(void);
+  s8 uVar1;
   int *piVar2;
   u8 *lVar3;
 
-  lVar3 = FUN_003c7d50_direct();
+  lVar3 = FUN_003c7d50_ptr();
   if (lVar3 == 0) {
     uVar1 = 0;
-  } else {
+  }
+  else {
     piVar2 = (int *)lVar3;
     if (*piVar2 < 0) {
       uVar1 = 0;
-    } else if ((*(char *)((int)piVar2 + 5) == '\0') || ((char)piVar2[1] != '\x02')) {
-      uVar1 = (u8)piVar2[1];
-    } else {
+    }
+    else {
+      if (*(char *)((int)piVar2 + 5) == '\0') {
+        goto value;
+      }
+      if ((char)piVar2[1] != '\x02') {
+        goto value;
+      }
       uVar1 = 0;
+      goto done;
+value:
+      uVar1 = *(s8 *)((int)piVar2 + 4);
+done:
+      ;
     }
   }
   return uVar1;
