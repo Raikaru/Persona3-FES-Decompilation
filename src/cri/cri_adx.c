@@ -2339,29 +2339,26 @@ void FUN_00531b00(u64 param_1,u64 param_2,long param_3,u32 param_4,
 
 
 
-// FUN_00531BC0
+#pragma push
+#pragma schedule on
+// FUN_00531BC0 NONMATCHING
 
 
-asm void FUN_00531bc0(char *param_1)
+void FUN_00531bc0(char *param_1)
 {
-  .set noreorder
-  .word 0x0080382d
-  .word 0x24060003
-  .word 0x8ce20004
-  .word 0x8ce50024
-  .word 0x8ce30028
-  .word 0x00021023
-  .word 0x80e40000
-  .word 0xace30024
-  .word 0xace50028
-  .word 0x14860003
-  .word 0xace20004
-  .word 0x24020002
-  .word 0xa0e20000
-  .word 0x03e00008
-  .word 0x00000000
-  .word 0x00000000
+  int value;
+  u32 swap;
+
+  value = -*(int *)(param_1 + 4);
+  swap = *(u32 *)(param_1 + 0x24);
+  *(u32 *)(param_1 + 0x24) = *(u32 *)(param_1 + 0x28);
+  *(u32 *)(param_1 + 0x28) = swap;
+  *(int *)(param_1 + 4) = value;
+  if (value != 3) {
+    *param_1 = 2;
+  }
 }
+#pragma pop
 
 
 
