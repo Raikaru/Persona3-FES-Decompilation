@@ -1174,7 +1174,7 @@ void func_00315c20(int param_1);
 Model* func_00315ed0(Model* param_1);
 u64 func_00315f50(u64 param_1,u32 *param_2);
 void func_00316320(u64 param_1,u32* param_2,u16 param_3);
-u64 func_00316360(u64 param_1,u32 *param_2);
+u32 func_00316360(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
 u64 func_003165e0(u64 param_1);
 Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
@@ -5630,48 +5630,29 @@ void func_00316320(u64 param_1,u32* param_2,u16 param_3)
 // FUN_00316360 NONMATCHING
 
 
-u64 func_00316360(u64 param_1,u32 *param_2)
-
-
-
+u32 func_00316360(void* param_1,u32 *param_2)
 {
+    int iVar1;
+    u32 uVar2;
+    u32 uVar3;
+    u32 uVar4;
+    u32 offset;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  
-
-  iVar1 = *(int *)((int)param_1 + 0x18);
-
-  uVar2 = *(u32 *)(iVar1 + 0x24);
-
-  uVar4 = 0;
-
-  while( true ) {
-
-    if (uVar2 <= uVar4) {
-
-      return param_1;
-
+    iVar1 = *(int *)((int)param_1 + 0x18);
+    uVar2 = *(u32 *)(iVar1 + 0x24);
+    uVar4 = 0;
+    while (uVar4 < uVar2)
+    {
+        offset = uVar4 << 2;
+        uVar3 = K_Clump_MatUsrDataGetInt(*(u32 *)(*(int *)(iVar1 + 0x20) + offset), 0x6a0000 - 0x5460);
+        if (uVar3 >> 0x18 != 0)
+        {
+            *param_2 = 0;
+            return 0;
+        }
+        uVar4 = uVar4 + 1;
     }
-
-    uVar3 = K_Clump_MatUsrDataGetInt(*(u32 *)(*(int *)(iVar1 + 0x20) + uVar4 * 4),0x69aba0);
-
-    if (uVar3 >> 0x18 != 0) break;
-
-    uVar4 = uVar4 + 1;
-
-  }
-
-  *param_2 = 0;
-
-  return 0;
-
+    return (u32)param_1;
 }
 
 
