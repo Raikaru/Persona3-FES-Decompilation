@@ -332,12 +332,12 @@ void* func_001a6860(void* object, u32* context)
     return object;
 }
 
-// FUN_001a69a0 NONMATCHING
+// FUN_001a69a0
 void* func_001a69a0(void* object, const char* name, s32 value)
 {
-    void* geometry;
-    s32 elementIndex;
     s32 resourceIndex;
+    s32 elementIndex;
+    void* geometry;
     void* material;
     struct
     {
@@ -458,7 +458,7 @@ void* func_001a6d20(void* object, u32* context)
     return object;
 }
 
-// FUN_001a6e90 NONMATCHING
+// FUN_001a6e90
 void func_001a6e90(f32* result, void* object, const char* name, s32 index)
 {
     struct
@@ -470,9 +470,9 @@ void func_001a6e90(f32* result, void* object, const char* name, s32 index)
         s32 resultValue;
         void* resultMaterial;
     } context;
-    void* geometry;
     s32 resourceIndex;
     s32 elementIndex;
+    void* geometry;
     void* material;
 
     geometry = *(void**)((u8*)object + 4);
@@ -491,9 +491,8 @@ void func_001a6e90(f32* result, void* object, const char* name, s32 index)
                     if (context.targetIndex == context.currentIndex)
                     {
                         context.resultValue = RpUserDataArrayGetInt((RpUserDataArray*)material, elementIndex);
-                        context.resultMaterial = material;
-                        *(f32*)result = *(f32*)&context.resultValue;
-                        *(f32*)((u8*)result + 4) = *(f32*)&context.resultMaterial;
+                        context.resultMaterial = geometry;
+                        *(RwV2d*)result = *(RwV2d*)&context.resultValue;
                         return;
                     }
                     context.currentIndex++;
@@ -502,8 +501,7 @@ void func_001a6e90(f32* result, void* object, const char* name, s32 index)
         }
     }
     func_004cb6e0(geometry, (KClumpCallback)func_001a6d20, &context);
-    *(f32*)result = *(f32*)&context.resultValue;
-    *(f32*)((u8*)result + 4) = *(f32*)&context.resultMaterial;
+    *(RwV2d*)result = *(RwV2d*)&context.resultValue;
 }
 
 // FUN_001a7020
@@ -817,7 +815,7 @@ void func_001a7b50(void* state, u32 mode)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
-            if ((&D_007CC1C0)[9] == 1)
+            if (D_007CC1C0 == 1)
             {
                 (*(void (**)(void))((u8*)item->object + 0x48))();
             }
@@ -846,7 +844,7 @@ void func_001a7b50(void* state, u32 mode)
                     {
                         (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
                     }
-                    if ((&D_007CC1C0)[9] == 1)
+                    if (D_007CC1C0 == 1)
                     {
                         (*(void (**)(void))((u8*)item->object + 0x48))();
                     }
@@ -879,7 +877,7 @@ void func_001a7b50(void* state, u32 mode)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
-            if ((&D_007CC1C0)[13] == 1)
+            if (*(u32*)((u8*)&D_007CC1C0 + 0x10) == 1)
             {
                 (*(void (**)(void))((u8*)item->object + 0x48))();
             }
@@ -910,7 +908,7 @@ void func_001a7b50(void* state, u32 mode)
             {
                 (*(void (**)(u32, ...))(u8*)0x00960090)(0xe, 0);
             }
-            if ((&D_007CC1C0)[14] == 1)
+            if (*(u32*)((u8*)&D_007CC1C0 + 0x14) == 1)
             {
                 (*(void (**)(void))((u8*)item->object + 0x48))();
             }
