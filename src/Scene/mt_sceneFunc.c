@@ -210,7 +210,7 @@ u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param
 u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u8 FUN_003b8a60(long param_1,u32 *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
-u32 FUN_003b8c30(u64 param_1,u32 *param_2,u32 param_3);
+u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
 u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_003b8e80(u32 param_1,u64 param_2,u32 param_3);
@@ -228,6 +228,13 @@ extern u32 FUN_00530da0_scene(float param_1);
 extern float FUN_003bc0e0_scene(char *param_1);
 #pragma alias DAT_00960178_abs DAT_00960178
 extern code DAT_00960178_abs[];
+#pragma alias FUN_00100d80_typed_scene FUN_00100d80
+extern void *FUN_00100d80_typed_scene(const char *param_1,u32 param_2);
+
+// FUN_003bd130 keeps an absolute table base in retail.
+#pragma alias DAT_0095b000_abs DAT_0095b000
+extern u8 DAT_0095b000_abs[];
+
 extern void FUN_0019d3f0(const char *param_1,u32 param_2);
 #pragma alias FUN_003b9260_scene FUN_003b9260
 extern u32 FUN_003b9260_scene(float param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5,u32 param_6,u32 param_7);
@@ -495,15 +502,13 @@ u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param
 #undef FUN_003b89f0
 // FUN_003B89F0 NONMATCHING
 
-
 u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 
 
 {
 
-  long lVar1;
-
+  u32 lVar1;
   u64 uVar2;
 
   
@@ -680,19 +685,23 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 // FUN_003B8C30 NONMATCHING
 
 
-u32 FUN_003b8c30(u64 param_1,u32 *param_2,u32 param_3)
-
+u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 
 
 {
 
   int iVar1;
 
-  long lVar2;
+  u32 lVar2;
+
 
   u32 uVar3;
-
   u32 uVar4;
+  float fVar1;
+
+  float fVar2;
+
+  float fVar3;
 
   
 
@@ -716,21 +725,29 @@ u32 FUN_003b8c30(u64 param_1,u32 *param_2,u32 param_3)
 
     *(u32 *)(iVar1 + 0x28) = *(u32 *)(iVar1 + 0x28) | 0x8000;
 
-    *(u32 *)(iVar1 + 0x88) = *(u32 *)(iVar1 + 0x1c);
+    fVar1 = *(float *)(iVar1 + 0x1c);
 
-    *(u32 *)(iVar1 + 0x8c) = *(u32 *)(iVar1 + 0x20);
+    fVar2 = *(float *)(iVar1 + 0x20);
 
-    *(u32 *)(iVar1 + 0x90) = *(u32 *)(iVar1 + 0x24);
+    fVar3 = *(float *)(iVar1 + 0x24);
 
-    uVar3 = param_2[1];
+    *(float *)(iVar1 + 0x88) = fVar1;
 
-    uVar4 = param_2[2];
+    *(float *)(iVar1 + 0x8c) = fVar2;
 
-    *(u32 *)(iVar1 + 0x94) = *param_2;
+    *(float *)(iVar1 + 0x90) = fVar3;
 
-    *(u32 *)(iVar1 + 0x98) = uVar3;
+    fVar2 = *(float *)(param_2 + 0);
 
-    *(u32 *)(iVar1 + 0x9c) = uVar4;
+    fVar3 = *(float *)(param_2 + 1);
+
+    fVar1 = *(float *)(param_2 + 2);
+
+    *(float *)(iVar1 + 0x94) = fVar2;
+
+    *(float *)(iVar1 + 0x98) = fVar3;
+
+    *(float *)(iVar1 + 0x9c) = fVar1;
 
     *(u32 *)(iVar1 + 0xa0) = param_3;
 
@@ -833,17 +850,15 @@ u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4)
 #undef FUN_003b8e10
 // FUN_003B8E10 NONMATCHING
 
-
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
   u64 uVar2;
-
   
 
   lVar1 = FUN_003b5d10();
@@ -871,18 +886,17 @@ u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 u32 FUN_003b8e80(u32 param_1,u64 param_2,u32 param_3)
 
 
-
 {
 
   u16 *puVar1;
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   
-
   lVar3 = FUN_003b5d10();
+
 
   if (lVar3 == 0) {
 
@@ -4656,7 +4670,9 @@ void FUN_003bd130(void)
 
 {
 
-  u64 uVar1;
+  void *pVar1;
+
+  void **ppVar2;
 
   int iVar2;
 
@@ -4666,11 +4682,13 @@ void FUN_003bd130(void)
 
     if (PTR_s_icon_ICON1_EPL_006a3130[iVar2] != (u8 *)0x0) {
 
-      uVar1 = FUN_00100d80(PTR_s_icon_ICON1_EPL_006a3130[iVar2],0);
+      ppVar2 = (void **)(DAT_0095b000_abs + iVar2 * 4);
 
-      *(int *)(&DAT_0095b000 + iVar2 * 4) = (int)uVar1;
+      pVar1 = FUN_00100d80_typed_scene((const char *)PTR_s_icon_ICON1_EPL_006a3130[iVar2],0);
 
-      FUN_001023a0(uVar1);
+      *ppVar2 = pVar1;
+
+      FUN_001023a0(pVar1);
 
     }
 
