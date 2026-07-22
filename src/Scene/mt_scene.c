@@ -90,7 +90,7 @@ void FUN_003b58c0(short param_1);
 void FUN_003b5980(short param_1);
 u32 FUN_003b5d00(void);
 Resrc* FUN_003b5da0(u32 param_1);
-u32 FUN_003b5e90(u16 param_1);
+u16 FUN_003b5e90(u16 param_1);
 u16 FUN_003b5f70(u16 param_1);
 u32 FUN_003b6180(u32 param_1,long param_2);
 u32 FUN_003b64c0(u32 param_1,long param_2,u8 param_3);
@@ -719,7 +719,7 @@ extern const char D_006A2BE8[];
 #pragma alias D_006A2BE8_abs D_006A2BE8
 extern u8 D_006A2BE8_abs[];
 #undef FUN_003b5e90
-// FUN_003B5E90 NONMATCHING
+// FUN_003B5E90
 
 
 
@@ -727,7 +727,7 @@ extern u8 D_006A2BE8_abs[];
 
 
 
-u32 FUN_003b5e90(u16 param_1)
+u16 FUN_003b5e90(u16 param_1)
 {
     u16 uVar1;
     Resrc* lVar2;
