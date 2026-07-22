@@ -3292,50 +3292,60 @@ void FUN_0038a140(u32 param_1,u32 *param_2)
 }
 
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0038A180 NONMATCHING
 
 
 void FUN_0038a180(int param_1,int param_2)
-
-
-
 {
-  u16 uVar1;
-  u16 uVar2;
-  u16 uVar3;
+  float *pfVar5;
+  s16 *psVar6;
+  s16 *psVar7;
+  s16 *psVar8;
+  s16 *psVar9;
+  s16 uVar1;
+  s16 uVar2;
+  s16 uVar3;
+  s16 uVar4;
   int iVar4;
 
-  
-
-  if ((iGpffffb924 == param_1) && (iGpffffb924 == 0x21)) {
-
-    *(u16 *)(param_2 + 2) = (u16)(DAT_00958970 >> 16);
-
-    for (iVar4 = 0; iVar4 < 10; iVar4 = iVar4 + 1) {
-
-      *(u32 *)(param_2 + iVar4 * 4 + 0x10) = *(u32 *)(&DAT_00958980 + iVar4 * 4);
-
-      uVar3 = DAT_0095897e;
-
-      uVar2 = DAT_0095897c;
-
-      uVar1 = DAT_0095897a;
-
-      *(u16 *)(param_2 + 8) = DAT_00958978;
-
-      *(u16 *)(param_2 + 10) = uVar1;
-
-      *(u16 *)(param_2 + 0xc) = uVar2;
-
-      *(u16 *)(param_2 + 0xe) = uVar3;
-
-    }
-
+  if (iGpffffb924 != param_1) {
+    return;
   }
-
+  switch (iGpffffb924) {
+  case 0x21:
+    break;
+  default:
+    return;
+  }
+  *(u16 *)(param_2 + 2) = *(u16 *)0x958972;
+  iVar4 = 0;
+  pfVar5 = (float *)0x958970;
+  asm volatile("" : "+r"(pfVar5));
+  psVar6 = (s16 *)0x96000000;
+  asm volatile("" : "+r"(psVar6));
+  psVar7 = (s16 *)0x96000000;
+  asm volatile("" : "+r"(psVar7));
+  psVar8 = (s16 *)0x96000000;
+  asm volatile("" : "+r"(psVar8));
+  psVar9 = (s16 *)0x96000000;
+  asm volatile("" : "+r"(psVar9));
+  do {
+    *(float *)(param_2 + iVar4 * 4 + 0x10) = pfVar5[iVar4];
+    uVar3 = psVar9[-0x3b44];
+    uVar2 = psVar8[-0x3b43];
+    uVar1 = psVar7[-0x3b42];
+    uVar4 = psVar6[-0x3b41];
+    *(u16 *)(param_2 + 8) = uVar4;
+    *(u16 *)(param_2 + 10) = uVar1;
+    *(u16 *)(param_2 + 0xc) = uVar2;
+    *(u16 *)(param_2 + 0xe) = uVar3;
+    iVar4 = iVar4 + 1;
+  } while (iVar4 < 10);
   return;
-
 }
+#pragma pop
 
 
 // FUN_0038A220
@@ -4926,7 +4936,7 @@ void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 }
 
 
-extern void FUN_004c31b0_b600(float angle, void *matrix, void *axis, int mode);
+extern void FUN_004c31b0_b600(void *matrix, void *axis, float angle, int mode);
 #pragma alias FUN_004c31b0_b600 FUN_004c31b0
 #pragma push
 #pragma schedule off
@@ -4937,7 +4947,7 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
 {
   u32 uVar1;
   u32 uVar2;
-  volatile float *pfParam2;
+  float *pfParam2;
   int iVar3;
   u32 *puVar4;
   u32 auStack_40[16];
@@ -4956,8 +4966,8 @@ void FUN_0038b600(u32 *param_1,u32 *param_2)
   auStack_40[12] = 0;
   auStack_40[3] = auStack_40[3] | 0x20003;
   pfParam2 = (float *)param_2;
-  FUN_004c31b0_b600(pfParam2[1],auStack_40,(void *)0x6a2a70,1);
-  FUN_004c31b0_b600(pfParam2[0],auStack_40,(void *)0x6a2a60,1);
+  FUN_004c31b0_b600(auStack_40,(void *)((u8 *)0x6a0000 + 0x2a70),pfParam2[1],1);
+  FUN_004c31b0_b600(auStack_40,(void *)((u8 *)0x6a0000 + 0x2a60),pfParam2[0],1);
   puVar4 = auStack_40;
   iVar3 = 8;
   do {
