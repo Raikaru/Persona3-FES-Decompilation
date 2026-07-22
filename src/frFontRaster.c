@@ -529,25 +529,32 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
   short uVar2;
 
-  long lVar3;
-
-  int iVar4;
-
-  u32 uVar5;
-
-  u16 *puVar6;
-
-  u32 uVar7;
+  u32 lVar3;
 
   short *puVar8;
 
-  u32 uVar9;
+  u32 uVar7;
 
-  u32 uVar10;
+  u16 *puVar6;
+
+  u32 uVar5;
+
+  int iVar4;
+
+  u32 base;
+  u32 outer16;
+  u32 inner16;
+  u32 pixelOffset;
+
+  u8 rawByte;
+
+  int uVar10;
+
+  int uVar9;
+
   u8 *src;
 
   u8 *pbVar11;
-
   u16 auStack_100 [128];
 
   
@@ -587,26 +594,28 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
     for (uVar5 = 0; (int)uVar5 < 0x20; uVar5 = uVar5 + 1) {
 
-      for (uVar7 = 0; (int)uVar7 < 0x20; uVar7 = uVar7 + 1) {
+      uVar7 = 0;
 
-        uVar9 = (u32)auStack_100
+      outer16 = uVar5 & 0xffff;
+      puVar6 = auStack_100 + ((int)(outer16 & 7) >> 2) * 0x40 + (outer16 & 3) * 0x10;
+      base = ((int)outer16 >> 2) * 0x80;
 
-                      [((int)(uVar5 & 7) >> 2) * 0x40 + (uVar5 & 3) * 0x10 + (uVar7 & 0xf)] +
+      while ((int)uVar7 < 0x20) {
+        inner16 = uVar7 & 0xffff;
+        pixelOffset = (u32)puVar6[inner16 & 0xf] +
+                      (base + ((int)inner16 >> 4) * 0x20 & 0xffffU);
 
-                (((int)(uVar7 & 0xffff) >> 4) * 0x20 + ((int)(uVar5 & 0xffff) >> 2) * 0x80 & 0xffffU
+        uVar9 = pixelOffset & 0xffff;
+        pbVar11 = (u8 *)(iVar4 + ((int)uVar9 >> 1));
 
-                );
+        rawByte = *src;
+        uVar10 = rawByte >> ((uVar7 & 1) << 2);
 
-        pbVar11 = (u8 *)(iVar4 + ((int)(uVar9 & 0xffff) >> 1));
-
-        uVar10 = (int)(u32)*src >> ((uVar7 & 1) << 2);
-
-        if ((uVar9 & 1) == 0) {
+        if ((pixelOffset & 1) == 0) {
 
           *pbVar11 = (u8)uVar10 & 0xf;
 
         }
-
         else {
 
           *pbVar11 = *pbVar11 | (u8)((uVar10 & 0xf) << 4);
@@ -619,8 +628,8 @@ void FUN_003b3f90(int param_1,u8 *param_2,int param_3)
 
         }
 
+        uVar7 = uVar7 + 1;
       }
-
     }
 
     FUN_004cde00(*(u32 *)(param_1 + 0x14));
