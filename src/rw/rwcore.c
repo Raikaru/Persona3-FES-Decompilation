@@ -24781,16 +24781,15 @@ bool FUN_004f1f80(void)
 {
   int iVar1;
   
-  iVar1 = *(int *)(&DAT_009600b4 + iGpffffbe30);
+  iVar1 = *(int *)(DAT_00960070_abs + iGpffffbe30 + 0x44);
   if (iVar1 != 0) {
-    FUN_00521408(&DAT_009600b0 + iGpffffbe30,0,0x3c);
+    FUN_00521408(DAT_00960070_abs + iGpffffbe30 + 0x40,0,0x3c);
   }
   return iVar1 != 0;
 }
 
 // FUN_004F1FD0 NONMATCHING
 undefined4 FUN_004f1fd0(long param_1,undefined4 param_2,uint param_3)
-
 {
   int iVar1;
   uint uVar2;
@@ -29857,7 +29856,7 @@ void FUN_004fa798(undefined8 param_1)
 }
 
 // FUN_004FA808 NONMATCHING
-void FUN_004fa808(undefined8 param_1,uint param_2,int param_3)
+void FUN_004fa808(int param_1,uint param_2,int param_3)
 
 {
   uint uVar1;
@@ -30114,8 +30113,9 @@ uint FUN_004faec0(uint *param_1,long param_2)
   return uVar1;
 }
 
+#pragma schedule on
 // FUN_004FAEF8 NONMATCHING
-bool FUN_004faef8(int param_1,uint param_2,int param_3,undefined8 param_4)
+bool FUN_004faef8(int param_1,uint param_2,int param_3,uint param_4)
 
 {
   bool bVar1;
@@ -30129,6 +30129,7 @@ bool FUN_004faef8(int param_1,uint param_2,int param_3,undefined8 param_4)
   }
   return bVar1;
 }
+#pragma schedule off
 
 // FUN_004FAF30 NONMATCHING
 uint FUN_004faf30(uint *param_1)
