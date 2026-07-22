@@ -27,6 +27,9 @@ extern void* uGpffffb590;
 extern f32 fGpffff8248;
 extern u8 gp0xffff95d0[8];
 extern u8* DAT_007ce290;
+extern u32 DAT_007ce280;
+extern u32 DAT_007ce284;
+extern u32 DAT_007ce288;
 extern u8* DAT_007ce294;
 extern u8 DAT_0086be80[0x2700];
 extern void* DAT_0086b180[0x310];
@@ -172,11 +175,11 @@ void func_001cd7a0(void)
     sFldUnitsEcCount = 0;
     memset(DAT_0086e580, 0, 0x118);
     memset(DAT_0086be80, 0, 0x2700);
-    *(u32*)0x007ce288 = 0;
-    *(u32*)0x007ce284 = 0;
+    DAT_007ce288 = 0;
+    DAT_007ce284 = 0;
     memset(DAT_0086bdc0, 0, 0x40);
+    DAT_007ce280 = 0;
     memset(DAT_0086b180, 0, 0xc40);
-    *(u32*)0x007ce280 = 0;
 }
 
 // FUN_001CD8E0 NONMATCHING
@@ -1599,10 +1602,12 @@ void func_001d11b0(void)
 u32 func_001d12d0(void)
 {
     s32 i;
+    FldUnit* unit;
 
     for (i = 0; i < FLDUNIT_EC_MAX; i++)
     {
-        if (gFldUnitsEc[i].genusBase != NULL && func_00316f70(gFldUnitsEc[i].mdl) == 0)
+        unit = &gFldUnitsEc[i];
+        if (unit->genusBase != NULL && func_00316f70(unit->mdl) == 0)
         {
             return 0;
         }
