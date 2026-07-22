@@ -285,6 +285,8 @@ extern u8 DAT_0086e6e8_abs[];
 extern void FUN_00195020_call(u32 param_1);
 extern u8 DAT_0087190c_abs[];
 #pragma alias DAT_0086ef0c_abs DAT_0086ef0c
+#pragma alias DAT_0086ef10_abs DAT_0086ef10
+extern u8 DAT_0086ef10_abs[];
 #pragma alias DAT_0086ef08_abs DAT_0086ef08
 extern u8 DAT_0086ef08_abs[];
 extern u8 DAT_0086ef0c_abs[];
@@ -16209,8 +16211,8 @@ FUN_00453ed0(char param_1,char param_2,char param_3,u32 *param_4,char param_5,ch
   }
   return uVar9;
 }
+// FUN_00454110
 
-// FUN_00454110 NONMATCHING
 
 void FUN_00454110(int param_1)
 {
@@ -16220,19 +16222,19 @@ void FUN_00454110(int param_1)
   iVar2 = *(int *)(param_1 + 0x3c);
   cVar1 = *(char *)(iVar2 + 2);
   switch (cVar1) {
-  case '\x06':
-    break;
-  case '\x05':
-    FUN_001b00c0(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0));
-    FUN_001b0240(*(u32 *)((u8 *)DAT_0086ef10 + *(char *)(iVar2 + 1) * 0x1c0),0);
-    DAT_007ce6f4 = (short)*(char *)(iVar2 + 1);
-    DAT_007ce6f0 = 0;
+  case '\x03':
+    FUN_0044d600(param_1);
     break;
   case '\x04':
     FUN_0044b7d0(param_1);
     break;
-  case '\x03':
-    FUN_0044d600(param_1);
+  case '\x05':
+    FUN_001b00c0(*(u32 *)(DAT_0086ef10_abs + *(char *)(iVar2 + 1) * 0x1c0));
+    FUN_001b0240(*(u32 *)(DAT_0086ef10_abs + *(char *)(iVar2 + 1) * 0x1c0),0);
+    *(s16 *)&DAT_007ce6f4 = (short)*(char *)(iVar2 + 1);
+    *(u8 *)&DAT_007ce6f0 = 0;
+    break;
+  case '\x06':
     break;
   default:
     break;
