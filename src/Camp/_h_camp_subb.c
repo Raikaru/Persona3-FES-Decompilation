@@ -540,6 +540,8 @@ void FUN_0013cf80(s16 pcId, CampEquipmentWork* work)
     }
     work->entryCount = recordCount;
 }
+ 
+#pragma optimization_level 2
 
 // FUN_0013d1a0 NONMATCHING
 
@@ -1773,6 +1775,7 @@ void FUN_00144910(CampEquipmentPanelWork* work)
 
 
 
+#pragma schedule on
 // FUN_00145350 NONMATCHING
 
 void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
@@ -1810,6 +1813,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
         }
     }
 }
+#pragma schedule off
 
 
 
