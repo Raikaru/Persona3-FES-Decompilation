@@ -2143,12 +2143,12 @@ int param_3;
   int *piVar1;
 
   int *piVar2;
-
   int *piVar3;
+
 
   
 
-  piVar2 = (int *)(*(void* (**)(u32,u32,u32))D_00960184)(1,0x34,0x40000);
+  piVar2 = (int *)(*(void* (**)(u32,u32,u32))D_00960184_abs)(1,0x34,0x40000);
 
   *(u8 *)(piVar2 + 0xc) = 0xff;
 
@@ -2173,19 +2173,12 @@ int param_3;
     }
 
     else {
-
       do {
-
         piVar3 = piVar1;
-
         piVar1 = (int *)*piVar3;
-
       } while ((int *)*piVar3 != (int *)0x0);
-
       *piVar3 = (int)piVar2;
-
       piVar2[1] = (int)piVar3;
-
     }
 
   }
