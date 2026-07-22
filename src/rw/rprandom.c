@@ -1488,7 +1488,7 @@ extern u32 DAT_00960070_abs[];
 #pragma alias DAT_0095de14_abs DAT_0095de14
 extern u32 DAT_0095de14_abs[];
 #pragma alias DAT_0096017c_abs DAT_0096017c
-extern void (*DAT_0096017c_abs[])(void);
+extern void (*DAT_0096017c_abs[])(...);
 #pragma alias DAT_0096017c_abs2 DAT_0096017c
 extern u8 DAT_0096017c_abs2[];
 #pragma alias DAT_0096018c_abs DAT_0096018c
@@ -2816,7 +2816,7 @@ u32 FUN_00488fe0(void)
   uGpffffba88 = lVar1;
   return lVar1 >= 0;
 }
-#pragma schedule off
+#pragma schedule on
 // FUN_00489020 NONMATCHING
 u32 FUN_00489020(int param_1)
 {
@@ -2825,10 +2825,11 @@ u32 FUN_00489020(int param_1)
 
   param_1 = *(int *)(param_1 + 0x38);
   if (param_1 != 0) {
-    DAT_0096017c_abs[0]();
+    DAT_0096017c_abs[0](param_1);
   }
   uVar2 = 1;
   asm volatile("" : "+m"(uVar2));
+  asm volatile("" : "+m"(*puVar1));
   puVar1[0] = 0;
   puVar1[1] = 0;
   puVar1[2] = 0;
