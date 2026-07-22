@@ -389,6 +389,8 @@ extern u8 DAT_0069fc20_abs[];
 extern u8 DAT_0069fcf0_abs[];
 #pragma alias DAT_0069fd60_abs DAT_0069fd60
 extern u8 DAT_0069fd60_abs[];
+#pragma alias DAT_0069fdb0_abs DAT_0069fdb0
+extern u8 DAT_0069fdb0_abs[];
 #pragma alias DAT_0069ea58_abs DAT_0069ea58
 extern u8 DAT_0069ea58_abs[];
 extern u8 DAT_0069ea68[];
@@ -743,7 +745,7 @@ u32 FUN_00385e20(int param_1);
 u32 FUN_00385f00(int param_1);
 u32 FUN_00386060(int param_1);
 u32 FUN_00386130(int param_1,f32 *param_2,f32 *param_3);
-u64 FUN_00386230(int param_1,u32 *param_2,u32 *param_3);
+u32 FUN_00386230(int param_1,u32 *param_2,u32 *param_3);
 u32 FUN_00386310(int param_1);
 u64 FUN_00386430(int param_1,short param_2,u32 param_3);
 u32 FUN_003865f0(int param_1);
@@ -15026,7 +15028,7 @@ u32 FUN_003809c0(int param_1,int param_2,int param_3)
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x69fdb0);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,DAT_0069fdb0_abs);
 
   return 2;
 
@@ -19653,16 +19655,17 @@ void FUN_00386210(u32 *param_1,u32 *param_2)
 }
 
 
-// FUN_00386230 NONMATCHING
+// FUN_00386230
 
 
-u64 FUN_00386230(int param_1,u32 *param_2,u32 *param_3)
+u32 FUN_00386230(int param_1,u32 *param_2,u32 *param_3)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
+  struct Vec3 { f32 x; f32 y; f32 z; };
 
   
 
@@ -19674,17 +19677,9 @@ u64 FUN_00386230(int param_1,u32 *param_2,u32 *param_3)
 
   *(u32 *)(param_1 + 0x16c) = 0xc;
 
-  DAT_009588a0 = *param_2;
+  *(struct Vec3 *)DAT_009588a0_abs = *(struct Vec3 *)param_2;
 
-  DAT_009588a4 = param_2[1];
-
-  DAT_009588a8 = param_2[2];
-
-  DAT_00958890 = *param_3;
-
-  DAT_00958894 = param_3[1];
-
-  DAT_00958898 = param_3[2];
+  *(struct Vec3 *)DAT_00958890_abs = *(struct Vec3 *)param_3;
 
   return uVar1;
 
