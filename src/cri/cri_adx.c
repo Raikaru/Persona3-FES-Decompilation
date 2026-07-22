@@ -2242,23 +2242,23 @@ void FUN_00531a90(long param_1)
 
 
 
-// FUN_00531AB8
-
-asm u8 FUN_00531ab8(u8 *param_1)
+#pragma push
+#pragma schedule on
+// FUN_00531AB8 NONMATCHING
+u8 FUN_00531ab8(u8 *param_1)
 {
-  .set noreorder
-  jr $ra
-  lb $v0, 0($a0)
+  return *(s8 *)param_1;
 }
+#pragma pop
 
+#pragma push
+#pragma schedule on
 // FUN_00531AC0
-
-asm u32 FUN_00531ac0(int param_1)
+u32 FUN_00531ac0(int param_1)
 {
-  .set noreorder
-  jr $ra
-  lw $v0, 8($a0)
+  return *(u32 *)(param_1 + 8);
 }
+#pragma pop
 
 
 
