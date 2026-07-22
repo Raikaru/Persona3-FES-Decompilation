@@ -60160,8 +60160,7 @@ u32 FUN_0055a7b0(u32 param_1)
 #pragma schedule on
 u32 FUN_0055a7c0(void)
 {
-  u32 *base = (u32 *)0x007a0000;
-  return *(u32 *)((u8 *)base + 0x2a78);
+  return *(u32 *)0x007a2a78;
 }
 #pragma schedule off
 
@@ -159684,8 +159683,7 @@ float FUN_005a1cb0(int param_1)
   return (float)param_1 / *(float *)&_DAT_007b5060;
 }
 
-// FUN_005A1CE0 NONMATCHING
-
+// FUN_005A1CE0
 
 
 
@@ -159700,6 +159698,40 @@ u32 FUN_005a1ce0(u64 param_1)
   return segment;
 }
 #pragma schedule off
+#pragma schedule on
+// FUN_005a1cf0 NONMATCHING
+void FUN_005a1cf0(u8 *param_1)
+{
+  u64 value = (u32)-1;
+
+  value >>= 1;
+  *(u32 *)(param_1 + 0x18) = 0;
+  *(u64 *)(param_1 + 8) = value;
+  *(u64 *)param_1 = 0;
+  *(u64 *)(param_1 + 0x10) = 0;
+}
+
+// FUN_005a1d10 NONMATCHING
+void FUN_005a1d10(u8 *param_1,s64 param_2)
+{
+  u64 high;
+  u64 low;
+  u64 sum;
+  u32 count;
+
+  high = *(u64 *)(param_1 + 8);
+  low = *(u64 *)(param_1 + 0x10);
+  sum = *(u64 *)param_1 + param_2;
+  count = *(u32 *)(param_1 + 0x18) + 1;
+  if (param_2 < high)
+    high = param_2;
+  if (low < param_2)
+    low = param_2;
+  *(u32 *)(param_1 + 0x18) = count;
+  *(u64 *)param_1 = sum;
+  *(u64 *)(param_1 + 8) = high;
+  *(u64 *)(param_1 + 0x10) = low;
+}
 
 
 
