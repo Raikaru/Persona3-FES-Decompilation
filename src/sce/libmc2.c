@@ -50,7 +50,7 @@ bool FUN_0051c280(int param_1);
 bool FUN_0051c0c0(int param_1);
 u32 FUN_0051b5f0(int param_1,u64 *param_2);
 u32 FUN_0051a1e0(u64 param_1);
-u32 FUN_0051fa20(u64 param_1);
+u32 FUN_0051fa20(u32 param_1);
 void FUN_0051d588(int param_1,...);
 u32 FUN_0051afd8(int param_1,u64 *param_2);
 u32 FUN_0051ab08(int param_1,int param_2);
@@ -8002,22 +8002,25 @@ u32 * FUN_0051f908(u64 param_1)
   *puVar3 = 0xc;
   return (u32 *)0x0;
 }
+#pragma tailcall on
+#pragma alias FUN_0051f838_u32 FUN_0051f838
+extern u32 FUN_0051f838_u32(u32 *param_1,u16 param_2,u16 param_3,u32 param_4);
 // FUN_0051FA20 NONMATCHING
-u32 FUN_0051fa20(u64 param_1)
+u32 FUN_0051fa20(u32 param_1)
 {
   int iVar1;
   
   iVar1 = (int)param_1;
   *(u32 *)(iVar1 + 0x1d8) = 0;
-  *(u8 **)(iVar1 + 0x3c) = &LAB_0051f9e0;
+  *(u8 **)(iVar1 + 0x3c) = (u8 *)0x0051f9e0;
   *(u32 *)(iVar1 + 0x38) = 1;
   *(int *)(iVar1 + 0x1e0) = iVar1 + 0x1e4;
   *(u32 *)(iVar1 + 0x1dc) = 3;
   FUN_0051f838((u32 *)(iVar1 + 4),4,0,(u32)param_1);
   FUN_0051f838((u32 *)(iVar1 + 8),9,1,(u32)param_1);
-  FUN_0051f838((u32 *)(iVar1 + 0xc),10,2,(u32)param_1);
-  return 0;
+  return FUN_0051f838_u32((u32 *)(iVar1 + 0xc),10,2,(u32)param_1);
 }
+#pragma tailcall off
 // FUN_0051FAA0 NONMATCHING
 int FUN_0051faa0(int param_1,long param_2,int param_3,u64 param_4)
 
