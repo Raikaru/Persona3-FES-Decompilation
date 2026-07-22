@@ -1066,67 +1066,33 @@ u32 FUN_003a2c10(void)
 
 
 int FUN_003a2c90(int param_1,int param_2)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   int iVar3;
-
-  u32 auStack_1f0 [42];
-
-  u8 auStack_148 [328];
-
-  
+  u8 auStack_1f0[0x1e8];
 
   if ((param_2 < 0) || (3 < param_2)) {
-
     FUN_0019d3f0("itfMesManager.c",0x659);
-
   }
-
   iVar2 = (int)param_2 * 8;
-
   if (*(int *)(iVar2 + param_1 + 0x14) == 0) {
-
     iVar3 = 0;
-
-  }
-
-  else {
-
+  } else {
     iVar1 = *(int *)(param_1 + 0xc);
-
     if (iVar1 != 0) {
-
-      FUN_00521250(auStack_1f0,iVar1,0x1e8);
-
+      FUN_00521250(auStack_1f0,0,0x1e8);
     }
-
     iVar2 = param_1 + iVar2;
-
     iVar3 = iVar2 + 0x14;
-
     *(u32 *)(param_1 + 0xc) = *(u32 *)(iVar2 + 0x14);
-
     *(u32 *)(param_1 + 0x10) = *(u32 *)(iVar2 + 0x14);
-
     if (iVar1 != 0) {
-
       **(u32 **)(param_1 + 0xc) = auStack_1f0[0];
-
-      FUN_00521250(*(int *)(param_1 + 0xc) + 0xa8,auStack_148,0x2c);
-
+      FUN_00521250(*(int *)(param_1 + 0xc) + 0xa8,auStack_1f0 + 0xa8,0x2c);
     }
-
   }
-
   return iVar3;
-
 }
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
 #undef FUN_003a2ef0
