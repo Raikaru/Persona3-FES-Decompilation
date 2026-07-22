@@ -1394,6 +1394,8 @@ extern u32 DAT_0077ddb0;
 #pragma alias DAT_0077ddb0_abs DAT_0077ddb0
 extern u8 DAT_0077ddb0_abs[];
 extern u32 DAT_0077ddd0;
+#pragma alias DAT_0077ddd0_abs DAT_0077ddd0
+extern u8 DAT_0077ddd0_abs[];
 extern u32 DAT_0077dec0;
 extern u32 DAT_0077dee0;
 extern u32 DAT_007bcac2;
@@ -12768,24 +12770,28 @@ u64 FUN_0049a870(u64 param_1,code *param_2,u64 param_3)
   return param_1;
 }
 
-// FUN_0049A920 NONMATCHING
+#pragma schedule on
+#pragma tailcall on
+// FUN_0049A920
 
 void FUN_0049a920(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                  u64 param_5)
 
 {
-  ((code)FUN_004c61b0)(0x77ddd0,param_1,param_2,param_3,param_4,param_5);
-  return;
+  FUN_004c61b0_raw((u32)DAT_0077ddd0_abs,param_1,param_2,param_3,param_4,param_5);
 }
+#pragma tailcall off
 
-// FUN_0049A950 NONMATCHING
+#pragma schedule on
+#pragma tailcall on
+// FUN_0049A950
 
 void FUN_0049a950(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 {
-  ((code)FUN_004c5960)(0x77ddd0,param_1,param_2,param_3,param_4);
-  return;
+  FUN_004c5960_raw((u32)DAT_0077ddd0_abs,param_1,param_2,param_3,param_4);
 }
+#pragma tailcall off
 
 // FUN_0049A980 NONMATCHING
 
@@ -16228,23 +16234,27 @@ long FUN_0049fe40(int param_1,int param_2,int param_3)
   int iVar1;
 
   if (param_1 == 0) {
-    return 0;
-  }
-  iVar1 = *(int *)(param_1 + 0x14);
-  if (iVar1 == 0) {
-    return 0;
-  }
-  if (param_2 == 2) {
-    *(int *)(iVar1 + 0x14) = param_3;
-  }
-  else if (param_2 == 1) {
-    if (param_3 == 0) {
-      return 0;
-    }
-    *(int *)(iVar1 + 0x10) = param_3;
+    param_1 = 0;
   }
   else {
-    return 0;
+    iVar1 = *(int *)(param_1 + 0x14);
+    if (iVar1 == 0) {
+      param_1 = 0;
+    }
+    else if (param_2 == 2) {
+      *(int *)(iVar1 + 0x14) = param_3;
+    }
+    else if (param_2 == 1) {
+      if (param_3 == 0) {
+        param_1 = 0;
+      }
+      else {
+        *(int *)(iVar1 + 0x10) = param_3;
+      }
+    }
+    else {
+      param_1 = 0;
+    }
   }
   return param_1;
 }
