@@ -338,7 +338,7 @@ int FUN_00780640(int param_1)
 
 #pragma push
 #pragma schedule on
-// FUN_007807E0
+// FUN_007807E0 NONMATCHING
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
@@ -350,7 +350,7 @@ void FUN_007807e0(u16 param_1)
 #pragma schedule on
 #pragma opt_propagation off
 #pragma opt_common_subs off
-// FUN_00780800
+// FUN_00780800 NONMATCHING
 volatile u32* FUN_00780800(u32 value)
 {
   volatile u32* reg;

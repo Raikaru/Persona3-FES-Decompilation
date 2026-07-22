@@ -700,7 +700,7 @@ void func_001ddca0(s32 index)
     func_0018e5c0(*(void**)((u8*)field + 0x2C), data);
 }
 
-// FUN_001ddd30 NONMATCHING
+// FUN_001ddd30
 u32 func_001ddd30(void)
 {
     u32 result = 0;

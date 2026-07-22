@@ -3964,7 +3964,7 @@ void FUN_002b1060(BtlCamera* camera, f32 param_1, f32 param_2)
     FUN_002a3110((u16*)camera, param_2);
 }
 
-// FUN_002b17a0
+// FUN_002b17a0 NONMATCHING
 
 void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
 {
@@ -4693,7 +4693,7 @@ void FUN_002b2ea0(void)
 {
 }
 
-// FUN_002b2eb0 NONMATCHING
+// FUN_002b2eb0
 
 void FUN_002b2eb0(int param_1, float *param_2)
 {

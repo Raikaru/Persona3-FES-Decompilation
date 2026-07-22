@@ -1413,7 +1413,7 @@ u32 FUN_001c20b0(void)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_001C2160 NONMATCHING
+// FUN_001C2160
 u32 FUN_001c2160(void)
 {
     SocialLinkSequenceData data;
