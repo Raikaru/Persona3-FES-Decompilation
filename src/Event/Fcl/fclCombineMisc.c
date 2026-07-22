@@ -550,7 +550,7 @@ u32 FUN_003d5a40(u16 *param_1,u16 param_2,u16 *param_3,short param_4,void *param
 
 }
 
-// FUN_003D5BB0 NONMATCHING
+// FUN_003D5BB0
 
 
 u64 FUN_003d5bb0(u32 param_1)
@@ -559,68 +559,37 @@ u64 FUN_003d5bb0(u32 param_1)
 
 {
 
-  long lVar1;
-
+  u32 lVar1;
   int iVar2;
-
-  u64 uVar3;
-
+  u32 uVar3;
   u32 uVar4;
-
-  
-
-  uVar3 = 1;
-
-  uVar4 = 0;
-
-  do {
-
-    if (0x42 < uVar4) {
-
-      return uVar3;
-
-    }
-
-    iVar2 = uVar4 * 8;
-
-    if ((param_1 & 0xffff) == (long)*(short *)(DAT_006a5414 + iVar2)) {
-
-      if ((*(u16 *)(DAT_006a5416 + iVar2) & 1) == 0) {
-
-        if ((*(u16 *)(DAT_006a5416 + iVar2) & 2) != 0) {
-
-          uVar3 = 0;
-
-          lVar1 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar2));
-
-          if (lVar1 == 1) {
-
-            return 1;
-
-          }
-
-        }
-
-      }
-
-      else {
-
-        lVar1 = datGetFlag(*(u32 *)(DAT_006a5410 + iVar2));
-
+  u64 uVar5;
+  u8 *puVar6;
+  s16 uVar7;
+  uVar5 = 1;
+  uVar3 = 0;
+  uVar4 = param_1 & 0xffff;
+  while (uVar3 < 0x43) {
+    iVar2 = uVar3 * 8;
+    puVar6 = DAT_006a5410 + iVar2;
+    if (uVar4 == *(s16 *)(puVar6 + 4)) {
+      uVar7 = *(s16 *)(puVar6 + 6);
+      if ((uVar7 & 1) != 0) {
+        lVar1 = datGetFlag(*(u32 *)puVar6);
         if (lVar1 == 0) {
-
           return 0;
-
         }
-
+      } else if ((uVar7 & 2) != 0) {
+        uVar5 = 0;
+        lVar1 = datGetFlag(*(u32 *)puVar6);
+        if (lVar1 == 1) {
+          return 1;
+        }
       }
-
     }
-
-    uVar4 = uVar4 + 1;
-
-  } while( 1 );
-
+    uVar3 = uVar3 + 1;
+  }
+  return uVar5;
 }
 
 // FUN_003D5CD0 NONMATCHING
@@ -638,16 +607,13 @@ short FUN_003d5cd0(u32 *param_1)
 
   u32 *puVar3;
 
-  short sVar4;
-
-  short sVar5;
+  s32 sVar4;
+  s32 sVar5;
 
   
 
   sVar4 = 0;
-
   memset(param_1,0,0x90);
-
   for (sVar5 = 0; uVar2 = FUN_00175410(), (long)sVar5 < (long)(uVar2 & 0xffff); sVar5 = sVar5 + 1) {
 
     lVar1 = datPersonaGetHeroPersona(sVar5);
@@ -1274,44 +1240,47 @@ char FUN_003d6910(void *param_1,int param_2,int *param_3)
 {
   char cVar1;
   int iVar2;
+  int *piVar5;
   int *piVar3;
   int iVar4;
-  int *piVar5;
+  int iVar6;
   u16 auStack_10 [8];
   int aiStack_30 [8];
 
   piVar5 = DAT_006a5fe0;
   piVar3 = aiStack_30;
-  iVar2 = 5;
+  iVar6 = 5;
   do {
     iVar4 = *piVar5;
     piVar5 = piVar5 + 1;
-    iVar2 = iVar2 + -1;
+    iVar6 = iVar6 + -1;
     *piVar3 = iVar4;
     piVar3 = piVar3 + 1;
-  } while (0 < iVar2);
+  } while (0 < iVar6);
   if ((param_3 == 0) || (4 < param_2)) {
     K_Assert("fclCombineMisc.c",0x1c2);
   }
   memset(param_1,0,0x34);
   iVar2 = aiStack_30[(int)param_2];
   piVar3 = (int *)param_3;
-  if (param_2 == 1) {
-    cVar1 = FUN_003d6740(param_1,(void *)*piVar3,(void *)piVar3[1],(void *)piVar3[2]);
-  }
-  else if (param_2 == 0) {
-    cVar1 = FUN_003d64a0(param_1,*(u16 *)(*piVar3 + 2),*(u16 *)(piVar3[1] + 2));
+  if (param_2 != 1) {
+    if (param_2 == 0) {
+      cVar1 = FUN_003d64a0(param_1,*(u16 *)(*piVar3 + 2),*(u16 *)(piVar3[1] + 2));
+    }
+    else {
+      iVar4 = 0;
+      do {
+        if (piVar3[iVar4] != 0) {
+          auStack_10[iVar4] = *(u16 *)(piVar3[iVar4] + 2);
+        }
+        iVar4 = iVar4 + 1;
+      } while (iVar4 < iVar2);
+      cVar1 = FUN_003d6200(param_1,param_2,auStack_10,iVar2);
+      cVar1 = 2;
+    }
   }
   else {
-    iVar4 = 0;
-    do {
-      if (piVar3[iVar4] != 0) {
-        auStack_10[iVar4] = *(u16 *)(piVar3[iVar4] + 2);
-      }
-      iVar4 = iVar4 + 1;
-    } while (iVar4 < iVar2);
-    cVar1 = FUN_003d6200(param_1,param_2,auStack_10,iVar2);
-    cVar1 = 2;
+    cVar1 = FUN_003d6740(param_1,(void *)*piVar3,(void *)piVar3[1],(void *)piVar3[2]);
   }
   FUN_00176ac0(param_1,param_3,iVar2);
   return cVar1;
