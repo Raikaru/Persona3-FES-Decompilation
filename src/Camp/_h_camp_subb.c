@@ -348,7 +348,7 @@ void FUN_0013c240(CampEquipmentWork* work, s16 pcId, s16 equipmentType)
     work->entryCount = outCount;
 }
 
-// FUN_0013c6a0
+// FUN_0013c6a0 NONMATCHING
 u32 FUN_0013c6a0(s16 equipmentId)
 {
     s32 category;
@@ -389,7 +389,7 @@ invalid:
     return 0;
 found:
     bit = 0;
-    asm volatile("addiu %0, $0, 1" : "=r" (one));
+    one = 1;
     for (; bit < 32; bit++) {
         if ((categoryMask & (one << bit)) != 0) {
             return bit;
