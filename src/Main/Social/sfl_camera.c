@@ -246,31 +246,59 @@ void func_0024d5e0(void* node)
 // FUN_0024D7D0 NONMATCHING
 void func_0024d7d0(void* camera, const RwV3d* position)
 {
-    RwV3d direction;
-    f32 length;
     u8* matrix;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 real;
+    f32 norm;
+    f32 scale;
+    f32 twoX;
+    f32 twoY;
+    f32 twoZ;
+    f32 xx;
+    f32 xy;
+    f32 xz;
+    f32 yy;
+    f32 yz;
+    f32 zz;
+    f32 xw;
+    f32 yw;
+    f32 zw;
 
-    K_ASSERT(camera != NULL, 0x3b);
     matrix = *(u8**)((u8*)camera + 4);
-    if (matrix == NULL || position == NULL) {
-        return;
-    }
-    direction = *position;
-    length = RwV3dLength(&direction);
-    if (length > 0.0f) {
-        direction.x /= length;
-        direction.y /= length;
-        direction.z /= length;
-    }
-    *(f32*)(matrix + 0x10) = 1.0f - direction.x * direction.x;
-    *(f32*)(matrix + 0x14) = direction.x * direction.y;
-    *(f32*)(matrix + 0x18) = direction.x * direction.z;
-    *(f32*)(matrix + 0x20) = direction.y * direction.x;
-    *(f32*)(matrix + 0x24) = 1.0f - direction.y * direction.y;
-    *(f32*)(matrix + 0x28) = direction.y * direction.z;
-    *(f32*)(matrix + 0x30) = direction.z * direction.x;
-    *(f32*)(matrix + 0x34) = direction.z * direction.y;
-    *(f32*)(matrix + 0x38) = 1.0f - direction.z * direction.z;
+    x = *(f32*)((u8*)position + 0x14);
+    y = *(f32*)((u8*)position + 0x10);
+    z = *(f32*)((u8*)position + 0x18);
+    real = *(f32*)((u8*)position + 0x1c);
+
+    norm = x * x;
+    norm += y * y;
+    norm += z * z;
+    norm = norm + real * real;
+    scale = 2.0f / norm;
+    twoX = y * scale;
+    twoY = x * scale;
+    twoZ = z * scale;
+    xw = twoX * real;
+    yw = twoY * real;
+    zw = twoZ * real;
+    xx = y * twoX;
+    xy = y * twoY;
+    xz = y * twoZ;
+    yy = x * twoY;
+    yz = x * twoZ;
+    zz = z * twoZ;
+
+    *(f32*)(matrix + 0x10) = 1.0f - (yy + zz);
+    *(f32*)(matrix + 0x14) = xy + zw;
+    *(f32*)(matrix + 0x18) = xz - yw;
+    *(f32*)(matrix + 0x20) = xy - zw;
+    *(f32*)(matrix + 0x24) = 1.0f - (zz + xx);
+    *(f32*)(matrix + 0x28) = yz + xw;
+    *(f32*)(matrix + 0x30) = xz + yw;
+    *(f32*)(matrix + 0x34) = yz - xw;
+    *(f32*)(matrix + 0x38) = 1.0f - (xx + yy);
     *(u32*)(matrix + 0x40) = 0;
     *(u32*)(matrix + 0x44) = 0;
     *(u32*)(matrix + 0x48) = 0;
