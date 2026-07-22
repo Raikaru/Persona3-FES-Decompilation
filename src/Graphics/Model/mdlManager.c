@@ -3725,23 +3725,28 @@ void func_00313e60(void* param_1)
 
 
 
+#pragma push
+#pragma opt_propagation off
 // FUN_00313F40 NONMATCHING
 
 
-int func_00313f40(int param_1,void* param_2)
+int func_00313f40(register int param_1,register void* param_2)
 {
-  register int *piVar1;
-  piVar1 = (int *)func_004c21d0(param_2);
-  while (piVar1 != (int *)func_004c21e0(param_2)) {
+  int *piVar1;
+  void* list;
+  list = param_2;
+  piVar1 = (int *)func_004c21d0(list);
+  while (piVar1 != (int *)func_004c21e0(list)) {
     if (param_1 == *piVar1) {
       return param_1;
     }
     piVar1++;
   }
 
-  *(int *)func_004c1e70(param_2,0) = param_1;
+  *(int *)func_004c1e70(list,0) = param_1;
   return param_1;
 }
+#pragma pop
 
 
 
