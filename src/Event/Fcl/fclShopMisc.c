@@ -1420,10 +1420,10 @@ long FUN_003f0d60(int param_1,u64 param_2)
   default:
     return 0;
   }
-  if (datSocialLinkLevelIsNotZero((s16)((s64)(var_16 << 0x30) >> 0x30)) == 0) {
+  if (datSocialLinkLevelIsNotZero((s16)var_16) == 0) {
     return 0;
   }
-  func_0016e2b0((s64)(var_16 << 0x30) >> 0x30,(s64)var_17);
+  func_0016e2b0((s16)var_16,(s64)var_17);
   return (s64)var_17;
 }
 
@@ -14422,11 +14422,11 @@ void FUN_00401170(u64 param_1)
 u32 FUN_00401210(int param_1)
 {
   u32 *puVar1;
-  u32 *puVar2;
+  u32 *puVar4;
   u32 uVar2;
   u32 uVar4;
   u32 uVar3;
-  u32 *puVar4;
+  u32 *puVar2;
   code pcVar3;
   int iVar4;
 
