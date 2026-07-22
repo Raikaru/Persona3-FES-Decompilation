@@ -5485,7 +5485,7 @@ float FUN_004c6b20(float *param_1,float *param_2)
   }
   return fVar3;
 }
-// FUN_004C6BE0 NONMATCHING
+// FUN_004C6BE0
 #pragma schedule on
 u64 FUN_004c6be0(u64 param_1)
 
@@ -5498,7 +5498,7 @@ u64 FUN_004c6be0(u64 param_1)
   }
   return param_1;
 }
-// FUN_004C6C20 NONMATCHING
+// FUN_004C6C20
 u64 FUN_004c6c20(u64 param_1)
 
 {
@@ -5510,7 +5510,7 @@ u64 FUN_004c6c20(u64 param_1)
   }
   return param_1;
 }
-// FUN_004C6C60 NONMATCHING
+// FUN_004C6C60
 u64 FUN_004c6c60(u64 param_1)
 
 {
@@ -5522,7 +5522,7 @@ u64 FUN_004c6c60(u64 param_1)
   }
   return param_1;
 }
-// FUN_004C6CA0 NONMATCHING
+// FUN_004C6CA0
 u64 FUN_004c6ca0(u64 param_1)
 
 {
