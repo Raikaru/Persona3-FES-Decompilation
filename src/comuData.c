@@ -150,6 +150,11 @@ const char* ComuData_GetUltSLPersonasString(u32 idx)
     return ultSLPersonasStrings[idx];
 }
 
+static inline uintptr_t ComuData_AddOffsetFirst(uintptr_t offset, uintptr_t base)
+{
+    return offset + base;
+}
+
 #undef FUN_003c4040
 #pragma push
 #pragma opt_propagation off
@@ -178,7 +183,8 @@ u8 * FUN_003c4040(int param_2,int param_1)
   base = PTR_DAT_006a38e8_abs;
   asm volatile("" : "+m"(base));
   base += offset;
-  return *(u8 **)(second * 4 + base);
+  return *(u8 **)(uintptr_t)ComuData_AddOffsetFirst((uintptr_t)(second * 4),
+                                                     (uintptr_t)base);
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
 #pragma pop
