@@ -31,7 +31,7 @@ u32 FUN_00424370(void);
 u32 FUN_004243d0(void);
 u32 FUN_00424470(void);
 u32 FUN_00424480(void);
-void FUN_004244a0(void);
+u32 FUN_004244a0(void);
 u32 FUN_004244e0(void);
 u32 FUN_004245c0(void);
 u32 FUN_00424730(void);
@@ -382,13 +382,14 @@ u32 FUN_00424480(void)
 }
 
 // FUN_004244A0 NONMATCHING
-void FUN_004244a0(void)
+u32 FUN_004244a0(void)
 {
   u8 uVar1;
 
   uVar1 = scrGetIntPara(0);
   *(u8 *)(DAT_007ce6a8 + 10) = uVar1;
   iGpffffb9b8[9] = 1;
+  return 1;
 }
 
 // FUN_004244E0
