@@ -453,7 +453,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
 
     if (cdvd->fileMemory != NULL && cdvd->hasExternalMemory == false)
     {
-        RwFree(cdvd->unalignedFileMemory);
+        (*(void (**)(void*))((u8*)&rwGlobals + 0x17c))(cdvd->unalignedFileMemory);
         cdvd->fileMemory = NULL;
         cdvd->unalignedFileMemory = NULL;
     }
@@ -472,7 +472,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
         cdvd->adxf = NULL;
     }
 
-    RwFree(cdvd);
+    (*(void (**)(void*))((u8*)&rwGlobals + 0x17c))(cdvd);
     return true;
 }
 
