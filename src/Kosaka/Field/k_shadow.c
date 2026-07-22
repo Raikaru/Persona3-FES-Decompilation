@@ -1114,8 +1114,8 @@ void* func_0019b2b0(KwlnTask* renderTexTask)
                 func_00493b60(layout);
                 frame = func_004caf10();
                 func_00492d10(renderObject, frame);
-                func_004cb930((RwFrame*)*(void**)((u8*)renderObject + 4),
-                              NULL, 0);
+                ((void (*)(RwFrame*))func_004cb930)(
+                    (RwFrame*)*(void**)((u8*)renderObject + 4));
                 shadow->state++;
             }
         }
