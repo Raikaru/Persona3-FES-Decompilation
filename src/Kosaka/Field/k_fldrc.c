@@ -17,6 +17,8 @@ typedef u16 undefined2;
 typedef u32 undefined4;
 typedef u64 undefined8;
 extern void* (*DAT_00960184)(u32, ...);
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
 extern void (*DAT_0096017c)(void*);
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern u32 DAT_0096017c_abs[];
@@ -197,6 +199,8 @@ extern char D_00678D80[];
 extern char D_00678E08[];
 extern char D_00678E18[];
 extern char D_00678FD0[];
+extern char D_00679030[];
+extern char D_00679040[];
 extern char D_00679060[];
 extern char D_00678DA0[];
 extern char D_00678DC0[];
@@ -2204,14 +2208,14 @@ void* FUN_001b7700(void* parent)
     u32 work;
     void* task;
 
-    work = (u32)(*DAT_00960184)(1, 0x0c, 0x40000);
+    work = (u32)(*DAT_00960184_abs)(1, 0x0c, 0x40000);
     if (work == 0)
     {
         return NULL;
     }
-    task = (void*)FUN_00194b80((u32)parent, 10, 0x679030,
+    task = (void*)FUN_00194b80((u32)parent, 10, D_00679030,
                                0x1b75e0, 0x1b76b0, work);
-    *(u32*)(work + 4) = FUN_00100d80(0x679040, 0);
+    *(u32*)(work + 4) = FUN_00100d80(D_00679040, 0);
     return task;
 }
 
