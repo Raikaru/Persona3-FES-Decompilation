@@ -11,11 +11,13 @@ extern u8 DAT_006a4383[];
 extern char *PTR_s_fcl_combine_pak_006a4384[];
 extern u8 **PTR_FUN_006a4620;
 extern u8 **PTR_FUN_006a46b0;
+#pragma alias PTR_FUN_006a4620_abs PTR_FUN_006a4620
+extern u8 PTR_FUN_006a4620_abs[];
 extern u8 **PTR_FUN_006a46e0;
 #pragma alias PTR_FUN_006a46e0_abs PTR_FUN_006a46e0
 extern u8 PTR_FUN_006a46e0_abs[];
 extern u8 **PTR_FUN_006a4870;
-extern u8 **PTR_FUN_006a48a0;
+extern u8 *PTR_FUN_006a48a0[];
 extern char gp0xffffaa60[];
 extern char gp0xffffaa68[];
 extern char gp0xffffaa70[];
@@ -48,7 +50,7 @@ void FUN_003d3760(int param_1,long param_2,int param_3);
 void FUN_003d38b0(u64 param_1,int param_2,int param_3);
 u64 FUN_003d3b70(long param_1,u32 param_2);
 u8 * FUN_003d3d20(u64 param_1,u64 param_2);
-u64 FUN_003d4de0(long param_1);
+u32 FUN_003d4de0(s32 param_1);
 u8 * FUN_003d4ff0(u64 param_1,u64 param_2);
 typedef int (*code)(...);
 
@@ -4286,7 +4288,7 @@ void FUN_003d25c0(long param_1)
 
   
 
-  ppuVar8 = PTR_FUN_006a4620;
+  ppuVar8 = (u8 **)PTR_FUN_006a4620_abs;
 
   puVar7 = auStack_30;
 
@@ -6170,7 +6172,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 // FUN_003D4DE0 NONMATCHING
 
 
-u64 FUN_003d4de0(long param_1)
+u32 FUN_003d4de0(s32 param_1)
 
 
 
@@ -6178,7 +6180,8 @@ u64 FUN_003d4de0(long param_1)
 
   u64 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
+  u32 uVar8;
 
   u8 *puVar3;
 
@@ -6226,19 +6229,19 @@ u64 FUN_003d4de0(long param_1)
 
   *puVar6 = (u32)*ppuVar7;
 
-  uVar1 = FUN_003c5240(DAT_007ce684,4,auStack_30,0,2);
+  uVar8 = FUN_003c5240(DAT_007ce684,4,auStack_30,0,2);
 
   if (param_1 != 0) {
 
-    *(int *)((int)param_1 + 0x20) = (int)uVar1;
+    *(int *)((int)param_1 + 0x20) = (int)uVar8;
+
+    uVar2 = FUN_003c5460(DAT_007ce684);
+
+    FUN_003d06d0(uVar2,7,0);
 
   }
 
-  uVar2 = FUN_003c5460(DAT_007ce684);
-
-  FUN_003d06d0(uVar2,7,0);
-
-  return uVar1;
+  return uVar8;
 
 }
 
