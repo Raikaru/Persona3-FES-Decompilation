@@ -45,6 +45,10 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 NmlistNode *FUN_003c4820(int *param_1, int *param_2);
 int *FUN_003c4910(int *param_1, int *param_2, int *param_3);
 NmlistNode *FUN_003c49e0(int *param_1, int *param_2, NmlistNode *param_3);
+#pragma alias FUN_003c4430_typed FUN_003c4430
+extern int *FUN_003c4430_typed(int *param_1);
+#pragma alias FUN_003c4710_typed FUN_003c4710
+extern void FUN_003c4710_typed(int *param_1, int *param_2, int *param_3);
 void FUN_003c4a90(int param_1,int param_2);
 int * FUN_003c4b50(int *param_1,int *param_2,int param_3);
 int FUN_003c4bf0(int *param_1,int *param_2,int param_3);
@@ -247,9 +251,9 @@ void FUN_003c4710(int *param_1, int *param_2, int *param_3)
 
 NmlistNode *FUN_003c4820(int *param_1,int *param_2)
 {
-    NmlistList *list;
-    NmlistNode *node;
-    NmlistNode *next;
+    int *list;
+    int *node;
+    int *next;
 
     if (param_1 == 0) {
         K_Assert((const char *)D_006A3DE8_abs, 0x149);
@@ -257,41 +261,41 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
     if (param_2 == 0) {
         K_Assert((const char *)D_006A3DE8_abs, 0x14a);
     }
-    list = (NmlistList *)param_1;
-    node = (NmlistNode *)param_2;
-    list->count--;
-    if (node->prev == 0) {
-        next = node->next;
+    list = param_1;
+    node = param_2;
+    *(u16 *)(list + 3) = *(u16 *)(list + 3) - 1;
+    if (*(int *)(node + 3) == 0) {
+        next = *(int **)(node + 4);
         if (next == 0) {
-            if (list->head == node) {
-                list->tail = 0;
-                list->head = 0;
+            if (*list == (int)node) {
+                list[1] = 0;
+                *list = 0;
             }
             next = 0;
         }
         else {
-            next->prev = 0;
-            list->head = next;
+            next[3] = 0;
+            *list = (int)next;
         }
     }
     else {
-        next = node->next;
+        next = *(int **)(node + 4);
         if (next == 0) {
-            node->prev->next = 0;
-            list->tail = node->prev;
+            *(int **)(*(u8 **)(node + 3) + 0x10) = 0;
+            list[1] = *(int *)(node + 3);
         }
         else {
-            node->prev->next = next;
-            next->prev = node->prev;
+            *(int **)(*(u8 **)(node + 3) + 0x10) = next;
+            next[3] = *(int *)(node + 3);
         }
     }
-    node->prev = 0;
-    node->next = 0;
-    return next;
+    *(u32 *)(node + 3) = 0;
+    *(u32 *)(node + 4) = 0;
+    return (NmlistNode *)next;
 }
 #define FUN_003c4820(...) ((NmlistNode * (*)(...))FUN_003c4820)(__VA_ARGS__)
 #undef FUN_003c4910
-// FUN_003C4910 NONMATCHING
+// FUN_003C4910
 
 
 int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
@@ -314,7 +318,7 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 
   }
 
-  lVar1 = FUN_003c4430(param_3);
+  lVar1 = FUN_003c4430_typed(param_3);
 
   puVar2 = (u32 *)lVar1;
 
@@ -338,7 +342,7 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 
   iVar3 = (int)param_1;
 
-  FUN_003c4710(iVar3 + 4,*(u32 *)(iVar3 + 8),lVar1);
+  FUN_003c4710_typed((int *)(iVar3 + 4),(int *)*(u32 *)(iVar3 + 8),lVar1);
 
   (*(code *)(iVar3 + 0x14))(param_1,lVar1);
 
