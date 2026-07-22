@@ -50,10 +50,6 @@ extern u32 DAT_0069e180;
 extern char DAT_0069e1a0[];
 extern char DAT_0069e1a2[];
 extern char DAT_0069e1aa[];
-#pragma alias DAT_0069e1a0_abs DAT_0069e1a0
-extern u8 DAT_0069e1a0_abs[];
-#pragma alias DAT_0069e1aa_abs DAT_0069e1aa
-extern u8 DAT_0069e1aa_abs[];
 #pragma alias DAT_0069e888_abs DAT_0069e888
 extern u8 DAT_0069e888_abs[];
 #pragma alias DAT_0069fdf0_abs DAT_0069fdf0
@@ -1263,6 +1259,7 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
   iVar1 = 0;
 
   fVar2 = (float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0));
+  asm volatile("" : "+f"(fVar2));
 
   fVar2 = 1.0f + fVar2;
 
@@ -9634,7 +9631,7 @@ u32 FUN_0037a4d0(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037A560 NONMATCHING
+// FUN_0037A560
 
 
 void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
@@ -9643,7 +9640,7 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   f32 uVar2;
 
@@ -9675,9 +9672,8 @@ void FUN_0037a560(int param_1,int param_2,int param_3,int param_4)
 
     uVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
 
-    FUN_0038a260(uVar2,param_1 * 0xc,param_2 * 0xc,uVar1,
-
-                 *(u32 *)(*(int *)(param_4 + 0x124) + param_3 * 4));
+    FUN_0038a260_f32_5(uVar2,param_1 * 0xc,param_2 * 0xc,(int)uVar1,
+                       (void *)*(u32 *)(*(int *)(param_4 + 0x124) + param_3 * 4));
 
   }
 
