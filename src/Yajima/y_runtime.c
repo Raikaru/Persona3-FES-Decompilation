@@ -5258,26 +5258,26 @@ u32 FUN_00435260(char param_1)
 // FUN_004352E0 NONMATCHING
 
 u32 FUN_004352e0(void)
-
 {
   int iVar1;
   int iVar2;
-  
-  iVar2 = 1;
-  while( 1 ) {
-    if (3 < iVar2) {
-      return 0;
-    }
+  u8 *row;
+  u8 *base;
+
+  base = DAT_008717a0_bytes;
+  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
     iVar1 = 0;
-    if ((((u8 *)DAT_008717e8)[iVar2 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar2 * 0x70] != 0)) {
+    row = base + iVar2 * 0x1c0;
+    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
       iVar1 = 1;
     }
-    if ((iVar1 != 0) &&
-       (*(char *)(*(int *)(*(int *)((u8 *)DAT_0087190c + iVar2 * 0x1c0) + 0x3c) + 0x1215) == '\x01'))
-    break;
-    iVar2 = iVar2 + 1;
+    iVar1 = iVar1 != 0;
+    if ((iVar1 == 1) &&
+        (*(char *)(*(int *)(*(int *)(row + 0x16c) + 0x3c) + 0x1215) == '\x01')) {
+      return 1;
+    }
   }
-  return 1;
+  return 0;
 }
 
 // FUN_00435370 NONMATCHING
@@ -18345,24 +18345,22 @@ void FUN_004589d0(int param_1,u8 param_2)
 // FUN_004589E0 NONMATCHING
 
 u32 FUN_004589e0(void)
-
 {
   long lVar1;
   int iVar2;
-  
-  iVar2 = 0;
-  while( 1 ) {
-    if (3 < iVar2) {
-      return 1;
-    }
-    lVar1 = FUN_001b0220(*(u32 *)((u8 *)DAT_0086e810 + iVar2 * 0x1c0));
-    if (lVar1 != 0) break;
-    if ('\0' < *(char *)(*(int *)(((u8 *)DAT_0086e80c)[iVar2 * 0x70] + 0x3c) + 7)) {
+  u8 *row;
+
+  for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
+    row = DAT_0086e6a0_rows[iVar2];
+    lVar1 = FUN_001b0220(*(u32 *)(row + 0x170));
+    if (lVar1 != 0) {
       return 0;
     }
-    iVar2 = iVar2 + 1;
+    if (*(char *)(*(int *)(*(int *)(row + 0x16c) + 0x3c) + 7) > 0) {
+      return 0;
+    }
   }
-  return 0;
+  return 1;
 }
 
 // FUN_00458A80
@@ -18429,7 +18427,6 @@ extern void FUN_00195020_y2(void);
 // FUN_00458BB0 NONMATCHING
 void FUN_00458bb0(void)
 {
-  int iVar1;
   int bVar2;
   int iVar3;
   u8 *row;
@@ -18440,21 +18437,19 @@ void FUN_00458bb0(void)
     if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
       bVar2 = 1;
     }
-    if ((bVar2 != 0) == 1) {
+    bVar2 = bVar2 != 0;
+    if (bVar2 == 1) {
       FUN_002ff760_y2(*(u32 *)(row + 0x48));
-      iVar1 = *(int *)(row + 0x50);
-      if (iVar1 != 0) {
+      if (*(int *)(row + 0x50) != 0) {
         FUN_003174e0_y2();
       }
       if (*(u16 **)(row + 0x54) != (u16 *)0x0) {
         FUN_003b7090_y2(**(u16 **)(row + 0x54));
       }
-      iVar1 = *(int *)(row + 0x170);
-      if (iVar1 != 0) {
+      if (*(int *)(row + 0x170) != 0) {
         FUN_00195020_y2();
       }
-      iVar1 = *(int *)(row + 0x16c);
-      if (iVar1 != 0) {
+      if (*(int *)(row + 0x16c) != 0) {
         FUN_00195020_y2();
       }
       *(u32 *)(row + 0x50) = 0;
