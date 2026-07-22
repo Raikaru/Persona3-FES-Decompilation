@@ -1404,28 +1404,21 @@ found:
     return &entry->floatValue;
 }
 
-// FUN_001A4330 NONMATCHING
+// FUN_001A4330
 KWindowEntry* func_001a4330(KwlnTask* task, s32 id)
 {
-    KWindowManagerWork* manager;
     KWindowEntry* entry;
 
-    manager = KWindow_GetManager(task);
-    if (manager == NULL || id == -1)
+    entry = KWindow_GetManager(task)->entries;
+    if (id == -1)
     {
         return NULL;
     }
-
-    entry = manager->entries;
-    while (entry != NULL)
+    while (entry->id != id)
     {
-        if (entry->id == id)
-        {
-            return entry;
-        }
         entry = entry->next;
     }
-    return NULL;
+    return entry;
 }
 
 // FUN_001A4380 NONMATCHING
