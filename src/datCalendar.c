@@ -1126,31 +1126,43 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
     return month;
 }
 
+#pragma push
+#pragma opt_propagation off
 // FUN_0017d8b0 NONMATCHING
 s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
     s32 dayAccumulator = 0;
     s32 m = CALENDAR_MONTH_APRIL;
+    const s16* numOfDays = gNumOfDaysInMonths;
+    register s32 firstMonth = CALENDAR_MONTH_JANUARY;
+    register s32 monthEnd = CALENDAR_MONTH_MAX;
+    register s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
+    s32 startMonth = CALENDAR_MONTH_APRIL;
 
-    while (month != CALENDAR_MONTH_APRIL)
+    for (;;)
     {
+        if (month == startMonth)
+        {
+            break;
+        }
 
-        dayAccumulator += gNumOfDaysInMonths[m - 1];
+        dayAccumulator += numOfDays[m - 1];
         m++;
         month--;
 
         if (month == 0)
         {
-            month = CALENDAR_MONTH_DECEMBER;
+            month = monthsInYear;
         }
-        if (m == CALENDAR_MONTH_MAX)
+        if (m == monthEnd)
         {
-            m = CALENDAR_MONTH_JANUARY;
+            m = firstMonth;
         }
     }
 
-    return dayAccumulator + day - 5; // - 5 because the game starts in april 5th
+    return dayAccumulator + (day - 5); // - 5 because the game starts in april 5th
 }
+#pragma pop
 
 // FUN_0017d920 NONMATCHING
 u32 clndGetCurrentMonth()
