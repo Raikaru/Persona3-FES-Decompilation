@@ -1064,49 +1064,38 @@ asm u32 FUN_00530de0(u32 *param_1)
 
 
 
-// FUN_00530EB8
-
-
-asm void FUN_00530eb8(u32 *param_1,u32 *param_2)
+#pragma push
+#pragma schedule on
+// FUN_00530EB8 NONMATCHING
+void FUN_00530eb8(u32 *param_1,u32 *param_2)
 {
-  .set noreorder
-  .word 0xdc8e0000
-  .word 0x240ff000
-  .word 0x000f7b3a
-  .word 0x000e6ffe
-  .word 0x000e653e
-  .word 0x01cf7024
-  .word 0xacad0004
-  .word 0x318c07ff
-  .word 0x11800011
-  .word 0x240f0002
-  .word 0x240f07ff
-  .word 0x158f0010
-  .word 0x000e7a38
-  .word 0x11c0000c
-  .word 0x240f0004
-  .word 0x240f0001
-  .word 0x000f7cfc
-  .word 0x01cf7824
-  .word 0x11e00004
-  .word 0x240f0001
-  .word 0xacaf0000
-  .word 0x03e00008
-  .word 0xfcae0010
-  .word 0x1000fffd
-  .word 0xaca00000
-  .word 0x00000000
-  .word 0x03e00008
-  .word 0xacaf0000
-  .word 0x258dfc01
-  .word 0x240e0001
-  .word 0xacad0008
-  .word 0x000e773c
-  .word 0x01ee7825
-  .word 0xfcaf0010
-  .word 0x1000fff7
-  .word 0x240f0003
+  u64 bits;
+  u64 fraction;
+  u32 exponent;
+
+  bits = *(u64 *)param_1;
+  fraction = bits & 0x000fffffffffffffULL;
+  exponent = (u32)((bits >> 52) & 0x7ff);
+  *(u32 *)(param_2 + 1) = (u32)(bits >> 63);
+
+  if (exponent == 0) {
+    *(u32 *)param_2 = 2;
+    *(u64 *)(param_2 + 4) = 0;
+    return;
+  }
+
+  if (exponent == 0x7ff) {
+    *(u32 *)param_2 = 4;
+    *(u32 *)(param_2 + 2) = 0x7ff;
+    *(u64 *)(param_2 + 4) = fraction << 8;
+    return;
+  }
+
+  *(u32 *)param_2 = 3;
+  *(u32 *)(param_2 + 2) = exponent - 0x3ff;
+  *(u64 *)(param_2 + 4) = (fraction | 0x0010000000000000ULL) << 8;
 }
+#pragma pop
 
 
 
