@@ -387,6 +387,8 @@ extern u8 DAT_0069e6f0[];
 extern u8 DAT_0069fc20_abs[];
 #pragma alias DAT_0069fcf0_abs DAT_0069fcf0
 extern u8 DAT_0069fcf0_abs[];
+#pragma alias DAT_0069fd60_abs DAT_0069fd60
+extern u8 DAT_0069fd60_abs[];
 #pragma alias DAT_0069ea58_abs DAT_0069ea58
 extern u8 DAT_0069ea58_abs[];
 extern u8 DAT_0069ea68[];
@@ -736,7 +738,7 @@ u64 FUN_00379f30(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0037a640(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0037abd0(u64 param_1,u64 param_2,u64 param_3);
 u32 FUN_00385bd0(int param_1,u64 param_2);
-u64 FUN_00385cd0(int param_1);
+u32 FUN_00385cd0(int param_1);
 u32 FUN_00385e20(int param_1);
 u32 FUN_00385f00(int param_1);
 u32 FUN_00386060(int param_1);
@@ -14683,7 +14685,7 @@ u32 FUN_00380310(int param_1,int param_2,int param_3)
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x69fd60);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,DAT_0069fd60_abs);
   return 2;
 
 }
@@ -19340,21 +19342,21 @@ u32 FUN_00385bd0(int param_1,u64 param_2)
 // FUN_00385CD0 NONMATCHING
 
 
-u64 FUN_00385cd0(int param_1)
+u32 FUN_00385cd0(int param_1)
 
 
 
 {
 
+  u32 uVar3;
+
   u32 *puVar1;
 
   int *piVar2;
 
-  u64 uVar3;
-
   float fVar4;
 
-  u32 uVar5;
+  float fVar5;
 
   
 
@@ -19364,41 +19366,41 @@ u64 FUN_00385cd0(int param_1)
 
   FUN_001a3bf0(uVar3,1);
 
-  uVar5 = *(u32 *)(param_1 + 0x198);
+  fVar5 = *(float *)(param_1 + 0x198);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,0);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
-  uVar5 = *(u32 *)(param_1 + 0x19c);
+  fVar5 = *(float *)(param_1 + 0x19c);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,1);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
-  uVar5 = *(u32 *)(param_1 + 0x1a0);
+  fVar5 = *(float *)(param_1 + 0x1a0);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,2);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
-  uVar5 = *(u32 *)(param_1 + 0x1a4);
+  fVar5 = *(float *)(param_1 + 0x1a4);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,3);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
-  uVar5 = *(u32 *)(param_1 + 0x1a8);
+  fVar5 = *(float *)(param_1 + 0x1a8);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,4);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
-  uVar5 = *(u32 *)(param_1 + 0x1ac);
+  fVar5 = *(float *)(param_1 + 0x1ac);
 
   puVar1 = (u32 *)FUN_001a42f0(uVar3,5);
 
-  *puVar1 = uVar5;
+  *(float *)puVar1 = fVar5;
 
   fVar4 = *(float *)(param_1 + 0x1b0);
 
