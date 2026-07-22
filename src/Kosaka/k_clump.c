@@ -69,12 +69,17 @@ extern u32 D_007CC1F4;
 extern u32 D_007CC1F8;
 extern u32 D_007CC1C0;
 extern void (*jtbl_0096017C)(void* memory);
+#pragma alias jtbl_0096017C_abs jtbl_0096017C
+extern void (*jtbl_0096017C_abs)(void* memory);
 extern void* D_007D2D60;
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 #pragma alias D_007D2D60_abs D_007D2D60
 extern u8 D_007D2D60_abs[];
 extern u32 D_00960184[];
+extern char D_00678C78[];
+#pragma alias D_00678C78_abs D_00678C78
+extern char D_00678C78_abs[];
 extern const char D_00678BD8[];
 extern const char D_00678BE8[];
 extern const char D_00678C88[];
@@ -219,12 +224,14 @@ s32 K_Clump_MatUsrDataGetInt(const RpMaterial* material, const char* name)
     return value;
 }
 
-// FUN_001a64f0 NONMATCHING
+// FUN_001a64f0
 u32 K_Clump_MatUsrDataHasData(const RpMaterial* material, const char* name)
 {
     s32 i;
+    u32 result;
     RpUserDataArray* userData;
 
+    result = 0;
     for (i = 0; i < RpMaterialGetUserDataArrayCount(material); i++)
     {
         userData = RpMaterialGetUserDataArray(material, i);
@@ -232,10 +239,11 @@ u32 K_Clump_MatUsrDataHasData(const RpMaterial* material, const char* name)
         RpUserDataArrayGetName(userData);
         if (strcmp(RpUserDataArrayGetName(userData), name) == 0)
         {
-            return true;
+            result = 1;
+            break;
         }
     }
-    return false;
+    return result;
 }
 
 // FUN_001a65c0 NONMATCHING
@@ -666,14 +674,14 @@ void* func_001a7370(void* material, u32* state)
     return material;
 }
 
-// FUN_001a74e0 NONMATCHING
+// FUN_001a74e0
 void* func_001a74e0(void* object, u32* state)
 {
     u32 callbackState[3];
     void* resources;
 
     memset(callbackState, 0, sizeof(callbackState));
-    resources = (void*)kclump_word(object, 0x18);
+    resources = ((KClumpContainer*)object)->resources;
     if (resources != NULL)
     {
         func_004932c0(resources, (KClumpCallback)func_001a7370, callbackState);
@@ -1096,21 +1104,28 @@ void func_001a8910(u32* count)
     *count = 0;
 }
 
-// FUN_001a8920 NONMATCHING
+// FUN_001a8920
 void func_001a8920(u32* entries, const u32* source)
 {
     u32* destination;
     s32 i;
+    u32 value;
 
-    if (entries[0] >= 0x80)
+    if ((s32)entries[0] >= 0x80)
     {
-        K_Assert((const char*)0x00678c78, 0x3eb);
+        K_Assert(D_00678C78_abs, 0x3eb);
     }
-    destination = entries + entries[0] * 11 + 1;
-    for (i = 0; i < 11; i++)
+    destination = (u32*)(entries[0] * 11 * 4);
+    destination = (u32*)((u8*)destination + (u32)entries);
+    destination++;
+    i = 11;
+    do
     {
-        destination[i] = source[i];
-    }
+        value = *source++;
+        i--;
+        *destination = value;
+        destination++;
+    } while (i > 0);
     entries[0]++;
 }
 
@@ -1282,8 +1297,10 @@ void func_001a8fe0(KwlnTask* task)
 {
     u32* work;
     s32 i;
+    KwlnTask* parent;
 
-    work = (u32*)task->workData;
+    parent = task;
+    work = (u32*)parent->workData;
     for (i = 0; i < 8; i++)
     {
         if (work[9 + i] != 0)
@@ -1295,7 +1312,8 @@ void func_001a8fe0(KwlnTask* task)
     {
         func_0034fcf0((void*)work[5]);
     }
-    kclump_free(work);
+    func_0034fcf0(work);
+    jtbl_0096017C_abs(parent->workData);
 }
 
 // FUN_001a9080
