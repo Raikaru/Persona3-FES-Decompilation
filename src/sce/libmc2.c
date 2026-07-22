@@ -29,7 +29,7 @@ u32 FUN_0051b1b0(int param_1);
 u64 FUN_0051aa48(int param_1,u64 param_2,int param_3,int param_4);
 u32 FUN_0051ab98(u32 param_1,int *param_2,int *param_3);
 u32 FUN_0051bd10(int param_1,int param_2,int param_3,int param_4);
-u32 FUN_0051a180(u64 param_1, int *param_2);
+u32 FUN_0051a180(u32 param_1, int *param_2);
 u32 FUN_0051c770(u32 *param_1,u32 param_2,u32 param_3);
 u64 FUN_0051a418(int param_1,u64 param_2,int param_3,int param_4);
 u64 FUN_0051a458(int param_1,u64 param_2,int param_3,int param_4);
@@ -4795,18 +4795,14 @@ u32 FUN_0051a140(void)
   } while ((int)puVar1 < (int)puVar2);
   return 1;
 }
+#pragma push
+#pragma schedule on
 // FUN_0051A180
-asm u32 FUN_0051a180(u64 param_1, int *param_2)
+u32 FUN_0051a180(u32 param_1, int *param_2)
 {
-  .set noreorder
-  addiu $sp, $sp, -0x10
-  sd $ra, 0($sp)
-  .word 0x0c146bf6
-  nop
-  ld $ra, 0($sp)
-  jr $ra
-  addiu $sp, $sp, 0x10
+  return FUN_0051afd8((int)param_1, (u64 *)param_2);
 }
+#pragma pop
 // FUN_0051A1A0
 asm u64 FUN_0051a1a0(u64 param_1)
 {
