@@ -2034,7 +2034,8 @@ extern u8 func_00171550(s16 unused1, s16 unused2, u16 index);
 extern const char D_005E3F20[];
 extern void* func_00112370(const char* path);
 extern void func_001124b0(void* node);
-#define CLND_CALENDAR_X (*(f32*)0x007cdff8)
+extern f32 gp0xffffb308;
+#define CLND_CALENDAR_X gp0xffffb308
 extern void func_001159f0(void* unused, void* atlas, s32 tile, u32 alpha,
                            f32 x, f32 y, f32 depth);
 extern void func_00115ad0(void* unused, void* atlas, s32 tile, u32 alpha,
@@ -2597,7 +2598,17 @@ void* func_001832c0(KwlnTask* task)
     CalendarXWork* work;
 
     work = (CalendarXWork*)task->workData;
-    if (work->active == 0)
+    if (work->active != 0)
+    {
+        if (datGetFlag(0x141d) != 0 || datGetFlag(0x1407) != 0)
+        {
+            work->active = 0;
+            work->start = work->current;
+            work->target = 400.0f;
+            work->timer = 10;
+        }
+    }
+    else
     {
         if (datGetFlag(0x141d) == 0 && datGetFlag(0x1407) == 0)
         {
@@ -2606,13 +2617,6 @@ void* func_001832c0(KwlnTask* task)
             work->target = 0.0f;
             work->timer = 10;
         }
-    }
-    else if (datGetFlag(0x141d) != 0 || datGetFlag(0x1407) != 0)
-    {
-        work->active = 0;
-        work->start = work->current;
-        work->target = 400.0f;
-        work->timer = 10;
     }
     if (work->timer != 0)
     {
@@ -3406,7 +3410,6 @@ extern RwV3d* func_004c6c20(RwV3d* pointsOut,
 extern void* func_004c9d10(RwCamera* camera);
 extern void* func_004c9d00(RwCamera* camera);
 
-#define CLND_CALENDAR_X (*(f32*)0x007cdff8)
 #define CLND_MOON_X_SCALE (*(f32*)0x007cb174)
 #define CLND_MOON_Y_SCALE (*(f32*)0x007cb178)
 
