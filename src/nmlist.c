@@ -23,6 +23,9 @@ extern u8 LAB_003c4400[];
 extern u8 LAB_003c4410[];
 extern u8 LAB_003c4420[];
 extern u8 LAB_003c5210[];
+extern u8 LAB_003c57e0[];
+extern u8 LAB_003c5810[];
+extern u8 LAB_003c5840[];
 extern void K_Assert(const char *file, s32 line);
 extern const char D_006A3DE8[];
 #pragma alias D_006A3DE8_abs D_006A3DE8
@@ -54,10 +57,10 @@ u32 FUN_003c4e50(u64 param_1, u32* param_2);
 u32 FUN_003c4e60(u64 param_1, int param_2);
 int *FUN_003c4e70(int *param_1);
 void FUN_003c4f30(int param_1);
-int FUN_003c4f80(int param_1);
 void FUN_003c4fc0(int *param_1, int *param_2);
 int FUN_003c50b0(int param_1,u32 param_2,int param_3);
 void FUN_003c5180(int param_1, int param_2);
+int FUN_003c5210(void);
 void FUN_003c5220(void);
 
 /* Region call-cast macros */
@@ -811,26 +814,25 @@ int FUN_003c5170(void)
 #define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
 #define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
 #undef FUN_003c5180
-// FUN_003C5180 NONMATCHING
-
+#undef FUN_003c44d0
+// FUN_003C5180
 
 void FUN_003c5180(int param_1,int param_2)
 
 
 
 {
-
   int *iVar1;
 
   
 
-  iVar1 = FUN_003c44d0((int *)(param_2 + 0x30),0x3c57e0,0x3c5810,0x3c5840);
+  iVar1 = FUN_003c44d0((int *)(param_2 + 0x30),(code)LAB_003c57e0,(code)LAB_003c5810,(code)LAB_003c5840);
 
   iVar1 = *(int **)((u8 *)iVar1 + 0x24);
 
   if (param_1 == 0) {
 
-    *(u8 **)((u8 *)iVar1 + 8) = (u8 *)&LAB_003c5210;
+    *(u8 **)((u8 *)iVar1 + 8) = (u8 *)&FUN_003c5210;
 
   }
 
@@ -843,13 +845,15 @@ void FUN_003c5180(int param_1,int param_2)
   if (param_2 != 0) {
 
     *(int **)((u8 *)iVar1 + 0xc) = (int *)((u8 *)iVar1 + 0x30);
-
   }
-
   return;
-
 }
 #define FUN_003c5180(...) ((void (*)(...))FUN_003c5180)(__VA_ARGS__)
+// FUN_003C5210
+int FUN_003c5210(void)
+{
+    return 0;
+}
 #undef FUN_003c5220
 #pragma alias FUN_003c45f0_typed FUN_003c45f0
 void FUN_003c45f0_typed(void);
