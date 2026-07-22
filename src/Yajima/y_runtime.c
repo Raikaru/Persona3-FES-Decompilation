@@ -4443,7 +4443,6 @@ void FUN_004334d0(int param_1)
   int iVar1;
   int iVar2;
   
-  
   iVar2 = *(int *)(param_1 + 0x3c);
   iVar1 = FUN_001b9120_u32();
   if (*(u8 *)(iVar1 + *(char *)(iVar2 + 0xdd) * 0x100 + *(char *)(iVar2 + 0xdc) * 0x10 + 0x4f) ==
@@ -4451,12 +4450,18 @@ void FUN_004334d0(int param_1)
     iVar1 = FUN_001b9120_u32();
     if (*(u8 *)(iVar1 + *(char *)(iVar2 + 0xdd) * 0x100 + *(char *)(iVar2 + 0xdc) * 0x10 + 0x49)
         == 1) {
-      iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-      *(u8 *)(iVar1 + 0x10a) = *(u8 *)(iVar1 + 0x10a) + 1;
-      iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-      *(u8 *)(iVar1 + 0x119) = *(u8 *)(iVar1 + 0x119) + 1;
-      iVar2 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-      *(u8 *)(iVar2 + 0x11a) = *(u8 *)(iVar2 + 0x11a) + 1;
+      *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+              ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x10a) =
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x10a) + 1;
+      *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+              ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x119) =
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x119) + 1;
+      *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+              ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x11a) =
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x11a) + 1;
     }
     else {
       iVar1 = FUN_001b9120_u32();
@@ -4465,12 +4470,18 @@ void FUN_004334d0(int param_1)
          (iVar1 = FUN_001b9120_u32(),
          *(u8 *)(iVar1 + *(char *)(iVar2 + 0xdd) * 0x100 + *(char *)(iVar2 + 0xdc) * 0x10 + -0xb1)
          == 2)) {
-        iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-        *(u8 *)(iVar1 + 0x10a) = *(u8 *)(iVar1 + 0x10a) + 1;
-        iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-        *(u8 *)(iVar1 + 0xf9) = *(u8 *)(iVar1 + 0xf9) + 1;
-        iVar2 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-        *(u8 *)(iVar2 + 0xfa) = *(u8 *)(iVar2 + 0xfa) + 1;
+        *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x10a) =
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x10a) + 1;
+        *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf9) =
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf9) + 1;
+        *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xfa) =
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xfa) + 1;
       }
       else {
         iVar1 = FUN_001b9120_u32();
@@ -4479,12 +4490,18 @@ void FUN_004334d0(int param_1)
            (iVar1 = FUN_001b9120_u32(),
            *(u8 *)(iVar1 + *(char *)(iVar2 + 0xdd) * 0x100 + *(char *)(iVar2 + 0xdc) * 0x10 + 0x3f
                     ) == 2)) {
-          iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-          *(u8 *)(iVar1 + 0x108) = *(u8 *)(iVar1 + 0x108) + 1;
-          iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-          *(u8 *)(iVar1 + 0x119) = *(u8 *)(iVar1 + 0x119) + 1;
-          iVar2 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-          *(u8 *)(iVar2 + 0x118) = *(u8 *)(iVar2 + 0x118) + 1;
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x108) =
+              *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                      ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x108) + 1;
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x119) =
+              *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                      ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x119) + 1;
+          *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                  ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x118) =
+              *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                      ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x118) + 1;
         }
         else {
           iVar1 = FUN_001b9120_u32();
@@ -4493,12 +4510,18 @@ void FUN_004334d0(int param_1)
              (iVar1 = FUN_001b9120_u32(),
              *(u8 *)(iVar1 + *(char *)(iVar2 + 0xdd) * 0x100 + *(char *)(iVar2 + 0xdc) * 0x10 +
                       -0xc1) == 2)) {
-            iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-            *(u8 *)(iVar1 + 0x108) = *(u8 *)(iVar1 + 0x108) + 1;
-            iVar1 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-            *(u8 *)(iVar1 + 0xf9) = *(u8 *)(iVar1 + 0xf9) + 1;
-            iVar2 = (u32)*(u8 *)(iVar2 + 0xf8) + iVar2 + (u32)*(u8 *)(iVar2 + 0xf9) * 0x10;
-            *(u8 *)(iVar2 + 0xf8) = *(u8 *)(iVar2 + 0xf8) + 1;
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x108) =
+                *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                        ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0x108) + 1;
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf9) =
+                *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                        ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf9) + 1;
+            *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                    ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf8) =
+                *(u8 *)((u32)*(u8 *)(iVar2 + 0xf9) * 0x10 +
+                        ((u32)*(u8 *)(iVar2 + 0xf8) + iVar2) + 0xf8) + 1;
           }
         }
       }
