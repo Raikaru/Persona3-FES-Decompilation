@@ -221,6 +221,7 @@ extern code DAT_0096017c_abs[];
 #pragma alias FUN_004264d0_u32 FUN_004264d0
 extern u32 FUN_004264d0_u32(u32 param_1,s8 param_2);
 code DAT_00960184;
+extern char DAT_006b4400[];
 #pragma alias DAT_00960184_abs DAT_00960184
 extern code DAT_00960184_abs[];
 u32 LAB_00425aec[];
@@ -1655,7 +1656,7 @@ void FUN_00425ba0(int param_1)
 
 }
 
-// FUN_00425C60 NONMATCHING
+// FUN_00425C60
 
 
 u32 FUN_00425c60(u64 param_1,u8 param_2)
@@ -1669,7 +1670,7 @@ u32 FUN_00425c60(u64 param_1,u8 param_2)
     uVar2 = 0;
   }
   else {
-    uVar2 = kwlnTaskCreate(param_1, 0x6b4400, 0x831,
+    uVar2 = kwlnTaskCreate(param_1, DAT_006b4400, 0x831,
                            (void *)FUN_00425690, (void *)FUN_00425ba0,
                            lVar1);
 
