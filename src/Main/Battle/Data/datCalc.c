@@ -401,7 +401,7 @@ u32 datCalc00308ba0(void)
     return 8;
 }
 
-// FUN_00308c60 NONMATCHING
+// FUN_00308c60
 u32 datCalcGetHeldWeaponType(DatUnit* unit)
 {
     s16 weaponIdx;
