@@ -158,7 +158,7 @@ static inline uintptr_t ComuData_AddOffsetFirst(uintptr_t offset, uintptr_t base
 #undef FUN_003c4040
 #pragma push
 #pragma opt_propagation off
-// FUN_003C4040 NONMATCHING
+// FUN_003C4040
 
 
 u8 * FUN_003c4040(int param_2,int param_1)
