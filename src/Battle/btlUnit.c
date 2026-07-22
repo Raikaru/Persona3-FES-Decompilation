@@ -14,7 +14,7 @@
 
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
-void FUN_00287b20(int param_1,short param_2);
+void FUN_00287b20(int param_1,u16 param_2);
 void FUN_00287cf0(BtlUnit* unit, u16 mode);
 void FUN_00287ea0(BtlUnit* unit);
 void FUN_00288110(BtlUnit* unit);
@@ -4681,6 +4681,7 @@ u16 func_00283e40(BtlUnit* unit, s16 id)
     return *(const u16*)(table + category * 4);
 }
 
+
 // FUN_00283FE0
 const void* func_00283fe0(BtlUnit* unit, u32 id)
 {
@@ -5969,100 +5970,63 @@ u64 FUN_00289650(short param_1,u32 param_2,long param_3)
 // FUN_00287B20 NONMATCHING
 
 
-void FUN_00287b20(int param_1,short param_2)
-
-
-
+void FUN_00287b20(int param_1,u16 param_2)
 {
+    u16 uVar1;
+    u32 uVar2;
+    s16 sVar3;
+    u32 uVar4;
 
-  u16 uVar1;
+    uVar4 = *(u32*)(param_1 + 0x98) & 2;
+    if (uVar4 != 0)
+    {
+        switch (param_2)
+        {
+            case 5:
+                if ((*(u32*)(param_1 + 0x9c) & 0x800) == 0 &&
+                    *(u16*)(param_1 + 0x9f2) != 0 &&
+                    (*(u32*)(param_1 + 0x9c) & 8) != 0)
+                {
+                    if (uVar4 != 0)
+                        sVar3 = *(s16*)(param_1 + 0x9ce);
+                    else
+                        sVar3 = 0;
 
-  u32 uVar2;
+                    if (sVar3 != 0x12)
+                    {
+                        FUN_001a0dc0(*(u16*)(param_1 + 0x9f2), 0);
+                        *(u32*)(param_1 + 0x9c) |= 0x800;
+                    }
+                }
+                break;
 
-  short sVar3;
+            case 1:
+                FUN_00319010(*(u32*)(param_1 + 0x9f4));
+                *(f32*)(*(int*)(param_1 + 0x9f4) + 0x39c) = DAT_007cad78;
+                *(f32*)(*(int*)(param_1 + 0x9f4) + 0x3a0) =
+                    *(f32*)(*(int*)(param_1 + 0x9f4) + 0x39c);
+                *(f32*)(*(int*)(param_1 + 0x9f4) + 0x3a4) = 1.0f;
+                break;
 
-  u32 uVar4;
+            case 2:
+                FUN_00319050(*(u32*)(param_1 + 0x9f4));
+                break;
 
-  
+            case 3:
+                uVar1 = FUN_00319200(*(u32*)(param_1 + 0x9f4));
+                FUN_003191f0(*(u32*)(param_1 + 0x9f4), (u16)(uVar1 | 0x1000));
+                uVar1 = FUN_00319200(*(u32*)(param_1 + 0x9f4));
+                FUN_003191f0(*(u32*)(param_1 + 0x9f4), (u16)(uVar1 | 0x2000));
+                uVar2 = (u16)FUN_00319200(*(u32*)(param_1 + 0x9f4));
+                uVar2 &= -0x801;
+                FUN_003191f0(*(u32*)(param_1 + 0x9f4), (u16)uVar2);
+                break;
 
-  uVar4 = *(u32 *)(param_1 + 0x98) & 2;
-
-  if (uVar4 != 0) {
-
-    if (param_2 == 4) {
-
-      *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) =
-
-           *(u16 *)(*(int *)(param_1 + 0x9f4) + 0x3fe) | 0x10;
-
+            case 4:
+                *(u16*)(*(int*)(param_1 + 0x9f4) + 0x3fe) |= 0x10;
+                break;
+        }
     }
-
-    else if (param_2 == 3) {
-
-      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
-
-      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 | 0x1000);
-
-      uVar1 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
-
-      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar1 | 0x2000);
-
-      uVar2 = FUN_00319200(*(u32 *)(param_1 + 0x9f4));
-
-      FUN_003191f0(*(u32 *)(param_1 + 0x9f4),uVar2 & 0xf7ff);
-
-    }
-
-    else if (param_2 == 2) {
-
-      FUN_00319050(*(u32 *)(param_1 + 0x9f4));
-
-    }
-
-    else if (param_2 == 1) {
-
-      FUN_00319010(*(u32 *)(param_1 + 0x9f4));
-
-      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x39c) = DAT_007cad78;
-
-      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x3a0) =
-
-           *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x39c);
-
-      *(u32 *)(*(int *)(param_1 + 0x9f4) + 0x3a4) = 0x3f800000;
-
-    }
-
-    else if ((((param_2 == 5) && ((*(u32 *)(param_1 + 0x9c) & 0x800) == 0)) &&
-
-             (*(short *)(param_1 + 0x9f2) != 0)) && ((*(u32 *)(param_1 + 0x9c) & 8) != 0)) {
-
-      if (uVar4 == 0) {
-
-        sVar3 = 0;
-
-      }
-
-      else {
-
-        sVar3 = *(short *)(param_1 + 0x9ce);
-
-      }
-
-      if (sVar3 != 0x12) {
-
-        FUN_001a0dc0(*(short *)(param_1 + 0x9f2),0);
-
-        *(u32 *)(param_1 + 0x9c) = *(u32 *)(param_1 + 0x9c) | 0x800;
-
-      }
-
-    }
-
-  }
-
-  return;
-
 }
 
 // FUN_00287CF0
