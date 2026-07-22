@@ -4462,8 +4462,12 @@ u64 FUN_003adf70(u64 param_1,int param_2)
   u32 uVar3;
   int uVar4;
   u32 combined;
+  int first;
+  int second;
   
-  uVar5 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
+  first = *(volatile int *)(param_2 + 0x18);
+  second = *(volatile int *)(param_2 + 0x10);
+  uVar5 = second + first;
   uVar6 = *(u8 *)uVar5 - 1;
   bVar2 = *(u8 *)(uVar5 + 1);
   if (bVar2 == 0xff) {
