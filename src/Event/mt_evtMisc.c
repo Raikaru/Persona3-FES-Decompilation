@@ -509,7 +509,7 @@ u32 FUN_00386cd0(void);
 u32 FUN_00386e10(int param_1);
 u32 FUN_00386e30(int param_1);
 u32 FUN_0038a0b0(int param_1);
-u32 FUN_0038a4b0(u64 param_1,int param_2,u32 *param_3,u32 *param_4);
+u32 FUN_0038a4b0(u64 param_1,u8 *param_2,u32 *param_3,u32 *param_4);
 u32 FUN_0038d6f0(int param_1);
 u32 FUN_0038d980(void);
 u32 FUN_0038e860(long param_1,u64 param_2);
@@ -3486,7 +3486,7 @@ int FUN_0038a480(int param_1,int param_2,int param_3,int param_4)
 // FUN_0038A4B0 NONMATCHING
 
 
-u32 FUN_0038a4b0(u64 param_1,int param_2,u32 *param_3,u32 *param_4)
+u32 FUN_0038a4b0(u64 param_1,u8 *param_2,u32 *param_3,u32 *param_4)
 
 
 
@@ -3494,18 +3494,19 @@ u32 FUN_0038a4b0(u64 param_1,int param_2,u32 *param_3,u32 *param_4)
 
   u32 uVar1;
 
-  long lVar2;
+  s32 lVar2;
 
   u16 uStack_2;
+  s32 type;
 
   
 
   *param_3 = (int)*(short *)(param_2 + 0x10) & 0xfff;
 
   *param_4 = (int)*(short *)(param_2 + 0x10) >> 0xc & 0xf;
+  type = *(s8 *)(param_2 + 0x15);
 
-  switch(*(u8 *)(param_2 + 0x15)) {
-
+  switch(type) {
   case 1:
 
   case 2:
@@ -3518,31 +3519,27 @@ u32 FUN_0038a4b0(u64 param_1,int param_2,u32 *param_3,u32 *param_4)
 
     uStack_2 = 0;
 
-    lVar2 = FUN_00397580(param_1,*(char *)(param_2 + 0x15) + -1,&uStack_2);
-
-    if (lVar2 != 1) {
-
-      return 0;
-
+    lVar2 = FUN_00397580(param_1,*(s8 *)(param_2 + 0x15) + -1,&uStack_2);
+    if (lVar2 == 1) {
+      if (uStack_2 == 0xffff) {
+        return 0;
+      }
+      *param_3 = *param_3 + (u32)uStack_2;
     }
-
-    if (uStack_2 == 0xffff) {
-
+    else {
       return 0;
-
     }
-
-    *param_3 = *param_3 + (u32)uStack_2;
-
-  default:
-
-    uVar1 = 1;
-
-    break;
+    goto success;
 
   case 6:
 
     uVar1 = 0;
+
+    break;
+
+  default:
+  success:
+    uVar1 = 1;
 
   }
 
