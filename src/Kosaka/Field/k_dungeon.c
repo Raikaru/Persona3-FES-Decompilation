@@ -529,7 +529,7 @@ void K_FldDungeon_FUN_001c03f0()
     }
 }
 
-// FUN_001bfcc0 NONMATCHING
+// FUN_001bfcc0
 void func_001bfcc0(void)
 {
     FldDungeon* dungeon;
@@ -601,10 +601,7 @@ void func_001bfcc0(void)
     }
 
     dungeon->currFloor++;
-    if (dungeon->fldRootTask != NULL)
-    {
-        K_Field_SetShouldShutdown(dungeon->fldRootTask, true);
-    }
+    K_Field_SetShouldShutdown(dungeon->fldRootTask, true);
     dungeon->state = FLDDUNGEON_STATE_UNK_04;
 }
 
@@ -839,7 +836,8 @@ void* func_001c0880(KwlnTask* task)
             else
             {
                 alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
-                        (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) / (f32)frames;
+                        (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) /
+                            (f32)frames;
                 *(s32*)(work + 8) = frames - 1;
             }
             *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
