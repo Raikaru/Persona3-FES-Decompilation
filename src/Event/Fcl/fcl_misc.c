@@ -530,7 +530,7 @@ extern u64 FUN_003c8810(int *);
 #undef FUN_003c8dc0
 extern void FUN_003c8dc0(u32);
 #undef FUN_003c8400
-extern u32 FUN_003c8400(u32, s32);
+extern u32 FUN_003c8400();
 #undef FUN_003c8b50
 extern u32 FUN_003c8b50();
 #undef FUN_003c91b0
@@ -541,6 +541,7 @@ u64 FUN_003c89a0(void)
     u32 result;
     int *piVar2;
     int iVar4;
+    register int *pContext;
 
     piVar2 = piGpffffb98c;
     if ((piVar2[1] & 1U) != 0) {
@@ -579,11 +580,13 @@ LAB_003c8a6c:
     }
 LAB_003c8ac8:
     iVar4 = *(int *)(*piVar2 + 4);
-    if (iVar4 != 0 &&
-        ((*(u32 *)(*(u32 *)(iVar4 + 0x14) + 4) & 2) != 0) &&
-        FUN_003c8b50(piVar2) != 0) {
-        piVar2[1] |= 1;
-        FUN_003c49e0(*piVar2, *piVar2 + 4, iVar4);
+    if (iVar4 != 0) {
+        pContext = *(int **)(iVar4 + 0x14);
+        if ((pContext[1] & 2U) != 0 &&
+            FUN_003c8b50(piVar2, pContext) != 0) {
+            piVar2[1] |= 1;
+            FUN_003c49e0(*piVar2, *piVar2 + 4, iVar4);
+        }
     }
     fclMisc8550Call((u32)piVar2);
     return 0;

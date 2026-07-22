@@ -3995,7 +3995,6 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     u32 index;
     f32 tempHalf;
     f32 sourceProduct;
-    f32 scaledDistance;
     unit = camera->action->unit;
     target = camera->action->target.targetedActions[0]->unit;
     FUN_002a4470((f32*)&work.frames[0], (f32*)((u8*)camera + 0x9c));
@@ -4032,19 +4031,13 @@ void FUN_002b17a0(BtlCamera* camera, f32 param_1, f32 param_2)
     dot = work.pair[0] * work.pair[2] + work.pair[1] * work.pair[3];
     if (dot < 0.0f)
         goto negative_distance;
-    __asm__ volatile ("mul.s %0, %1, %2"
-                      : "=f"(scaledDistance)
-                      : "f"(fGpffff8094), "f"(distance));
-    distance = scaledDistance;
+    distance = distance * fGpffff8094;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
     goto distance_done;
 negative_distance:
-    __asm__ volatile ("mul.s %0, %1, %2"
-                      : "=f"(scaledDistance)
-                      : "f"(0.5f), "f"(distance));
-    distance = scaledDistance;
+    distance = distance * 0.5f;
     work.scaled.x = work.normalized.x * distance;
     work.scaled.y = work.normalized.y * distance;
     work.scaled.z = work.normalized.z * distance;
@@ -4060,7 +4053,7 @@ distance_done:
     work.difference.z = work.frames[0].pos.z - work.scaled.z;
     halfDistance = param_1 / 3.0f;
     angle = halfDistance;
-    __asm__ volatile ("daddiu %0, $zero, 1" : "=r"(index));
+    index = 1;
     while ((s32)(index & 0xffff) < 4)
     {
         if (dot < 0.0f)
@@ -4722,11 +4715,11 @@ void FUN_002b2eb0(int param_1, float *param_2)
   f32 initial;
   register f32 ratio;
   f32 angle;
+  f32 factor;
   f32 inverse;
   f32 curve;
   f32 poly;
-  register f32 product;
-
+  f32 product;
   ratio = FUN_00280870(3, 1, &work.helper, &work.result, &work.unkB8, 1);
   initial = ratio / FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
   work.output[0] = 0.0f;
@@ -4735,14 +4728,14 @@ void FUN_002b2eb0(int param_1, float *param_2)
   FUN_002a4690(param_2 + 3, work.output, &work.helper, (const void *)DAT_00697880_arr);
   angle = FUN_002d1f30_typed((f32 *)(param_1 + 0xa8), param_2 + 3);
   if (!(angle <= fGpffff80d4)) {
-    initial = fGpffff80d4 / angle;
+    factor = fGpffff80d4 / angle;
     FUN_004be310_typed((void *)(param_1 + 0xa8), param_2 + 3, work.values);
-    if (initial <= 0.0f) {
+    if (factor <= 0.0f) {
       work.blend = *(RtQuat *)(param_1 + 0xa8);
-    } else if (1.0f <= initial) {
+    } else if (1.0f <= factor) {
       work.blend = *(RtQuat *)((u8 *)param_2 + 0xc);
     } else {
-      inverse = 1.0f - initial;
+      inverse = 1.0f - factor;
       if (work.flag == 0) {
         inverse = inverse * work.values[8];
         curve = inverse * inverse;
@@ -4753,23 +4746,23 @@ void FUN_002b2eb0(int param_1, float *param_2)
         poly = curve * poly + fGpffff8058 + 0.0f;
         product = curve * inverse;
         inverse = product * poly + inverse + 0.0f;
-        initial = initial * work.values[8];
-        curve = initial * initial;
+        factor = factor * work.values[8];
+        curve = factor * factor;
         poly = fGpffff8114 * curve + fGpffff8048 + 0.0f;
         poly = curve * poly + fGpffff8118 + 0.0f;
         poly = curve * poly + fGpffff8050 + 0.0f;
         poly = curve * poly + fGpffff8054 + 0.0f;
         poly = curve * poly + fGpffff8058 + 0.0f;
-        product = curve * initial;
-        initial = product * poly + initial + 0.0f;
+        product = curve * factor;
+        factor = product * poly + factor + 0.0f;
       }
       work.blend.imag.x = work.values[0] * inverse;
       work.blend.imag.y = work.values[1] * inverse;
       work.blend.imag.z = work.values[2] * inverse;
-      work.blend.imag.x = work.blend.imag.x + work.values[4] * initial + 0.0f;
-      work.blend.imag.y = work.blend.imag.y + work.values[5] * initial + 0.0f;
-      work.blend.imag.z = work.blend.imag.z + work.values[6] * initial + 0.0f;
-      work.blend.real = work.values[3] * inverse + work.values[7] * initial;
+      work.blend.imag.x = work.blend.imag.x + work.values[4] * factor + 0.0f;
+      work.blend.imag.y = work.blend.imag.y + work.values[5] * factor + 0.0f;
+      work.blend.imag.z = work.blend.imag.z + work.values[6] * factor + 0.0f;
+      work.blend.real = work.values[3] * inverse + work.values[7] * factor;
     }
     FUN_004be1e0_typed(&work.transformed, (const RwV3d *)DAT_006978A0_arr, 1, &work.blend);
     work.output[0] = work.helper.x + work.transformed.x;
@@ -4784,14 +4777,13 @@ void FUN_002b2eb0(int param_1, float *param_2)
   work.transformed.x = work.transformed.x * initial;
   work.transformed.y = work.transformed.y * initial;
   work.transformed.z = work.transformed.z * initial;
-  initial = initial * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
-  initial = initial * 0.21875f;
+  factor = initial * FUN_0052e930(fGpffff8070 * (0.5f * *(f32 *)(param_1 + 0xb8)));
+  factor = factor * 0.21875f;
   work.scale[0] = work.transformed.x;
   work.scale[1] = work.transformed.z;
   FUN_004c6b20_typed(work.scale, work.scale);
-  curve = initial;
-  work.helper.x = work.helper.x + work.scale[1] * curve + 0.0f;
-  work.helper.z = work.helper.z - work.scale[0] * curve + 0.0f;
+  work.helper.x = work.helper.x + work.scale[1] * factor + 0.0f;
+  work.helper.z = work.helper.z - work.scale[0] * factor + 0.0f;
   param_2[0] = work.helper.x + work.transformed.x;
   param_2[1] = work.helper.y + work.transformed.y;
   param_2[2] = work.helper.z + work.transformed.z;
