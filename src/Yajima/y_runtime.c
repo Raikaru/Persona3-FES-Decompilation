@@ -5211,23 +5211,17 @@ void FUN_00434f70(void)
  
 void FUN_00435060(u8 param_1)
 {
+  u8 *base;
   int iVar2;
   u8 *puVar1;
-  u8 *puVar2;
-  int bVar1;
-  
-  puVar2 = DAT_008717a0_bytes;
+
+  base = DAT_008717a0_bytes;
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
-    bVar1 = 0;
-    puVar1 = puVar2 + iVar2 * 0x1c0;
+    puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x1215) = param_1;
     }
   }
-  return;
 }
 
 // FUN_004350E0 NONMATCHING
@@ -5296,20 +5290,14 @@ u32 FUN_00435260(char param_1)
 
 u32 FUN_004352e0(void)
 {
-  int iVar1;
+  u8 *base;
   int iVar2;
   u8 *row;
-  u8 *base;
 
   base = DAT_008717a0_bytes;
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
-    iVar1 = 0;
     row = base + iVar2 * 0x1c0;
-    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
-      iVar1 = 1;
-    }
-    iVar1 = iVar1 != 0;
-    if ((iVar1 == 1) &&
+    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0) &&
         (*(char *)(*(int *)(*(int *)(row + 0x16c) + 0x3c) + 0x1215) == '\x01')) {
       return 1;
     }
@@ -5321,26 +5309,18 @@ u32 FUN_004352e0(void)
 
 void FUN_00435370(u8 param_1)
 {
-  u8 *puVar1;
-  u8 *puVar2;
+  u8 *base;
   int iVar2;
-  int bVar1;
+  u8 *puVar1;
 
-  iVar2 = 1;
-  puVar2 = DAT_008717a0_bytes;
-  while (iVar2 < 4) {
-    bVar1 = 0;
-    puVar1 = puVar2 + iVar2 * 0x1c0;
+  base = DAT_008717a0_bytes;
+  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+    puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x1216) = param_1;
     }
-    iVar2 = iVar2 + 1;
   }
   *(u8 *)&DAT_007cdb10 = param_1;
-  return;
 }
 
 // FUN_004353F0
@@ -15868,25 +15848,17 @@ void FUN_004532d0(char param_1)
 
 void FUN_004533e0(u8 param_1)
 {
-  u8 *puVar1;
-  u8 *puVar2;
+  u8 *base;
   int iVar2;
-  int bVar1;
+  u8 *puVar1;
 
-  iVar2 = 0;
-  puVar2 = DAT_0086eda0_bytes;
-  while (iVar2 < 0x18) {
-    bVar1 = 0;
-    puVar1 = puVar2 + iVar2 * 0x1c0;
+  base = DAT_0086eda0_bytes;
+  for (iVar2 = 0; iVar2 < 0x18; iVar2 = iVar2 + 1) {
+    puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
-      bVar1 = 1;
-    }
-    if (bVar1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x41) = param_1;
     }
-    iVar2 = iVar2 + 1;
   }
-  return;
 }
 
 // FUN_00453460
