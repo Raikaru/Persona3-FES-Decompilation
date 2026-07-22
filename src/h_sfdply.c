@@ -1110,6 +1110,7 @@ void func_0010db60(s16 bank, s16 cue, s16 param3, s16 param4)
         sSfdCueTable_abs[cue].param = func_0051df58_t(outputHandle, 0, 10, param3, param4);
     }
 }
+// FUN_0010DD10 NONMATCHING
 void func_0010dd10(HSfdImage* image, const u8* source)
 {
     u8* dst;
