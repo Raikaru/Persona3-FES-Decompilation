@@ -185,7 +185,7 @@ u64 FUN_00397950(void)
   else {
     switch(*piVar2) {
     case 0:
-      iVar3 = FUN_00100d80(auStack_50,0);
+      iVar3 = FUN_00100d80(auStack_110,0);
       piVar2[7] = iVar3;
       *piVar2 = 1;
       break;
@@ -252,7 +252,8 @@ u64 FUN_00397950(void)
     case 6:
       uVar1 = FUN_003bd9a0(piVar2[3],piVar2[4]);
       *(u16 *)(piVar2 + 6) = uVar1;
-      if (*(u16 *)(piVar2 + 6) > 0) {
+      uVar1 = *(u16 *)(piVar2 + 6);
+      if (uVar1 > 0) {
         FUN_00395170();
       }
       *piVar2 = 7;
