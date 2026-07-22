@@ -3861,21 +3861,16 @@ LAB_00528834:
 // FUN_005288C8 NONMATCHING
 void FUN_005288c8(u8 *param_1)
 {
-  u8 *apuStack_70 [2];
-  u32 uStack_68;
-  u16 uStack_64;
-  u8 *puStack_60;
-  u32 uStack_5c;
-  u8 *puStack_1c;
-  
-  uStack_5c = 0x7fffffff;
-  uStack_64 = 0x208;
-  puStack_1c = PTR_DAT_00782f30;
-  uStack_68 = 0x7fffffff;
-  apuStack_70[0] = param_1;
-  puStack_60 = param_1;
-  *apuStack_70[0] = 0;
-  return;
+  u8 stack[0x58];
+  *(u32 *)(stack + 0x14) = 0x7fffffff;
+  *(u16 *)(stack + 0xc) = 0x208;
+  *(u8 **)(stack + 0x54) = *(u8 **)PTR_DAT_00782f30_abs;
+  *(u32 *)(stack + 8) = 0x7fffffff;
+  *(u8 **)stack = param_1;
+  *(u8 **)(stack + 0x10) = param_1;
+  asm volatile("" : "+m"(stack));
+  FUN_00526238(stack);
+  **(u8 **)stack = 0;
 }
 // FUN_00528920 NONMATCHING
 void FUN_00528920(u32 param_1,u8 *param_2)
