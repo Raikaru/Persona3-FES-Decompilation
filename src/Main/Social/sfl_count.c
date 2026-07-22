@@ -8,7 +8,11 @@ void FUN_0025b4f0(void);
 void FUN_0025b690(void);
 void FUN_0025bbf0(void);
 extern code DAT_00960090;
+#pragma alias DAT_00960090_abs DAT_00960090
+extern u8 DAT_00960090_abs[];
 extern code DAT_0096009c;
+#pragma alias DAT_0096009c_abs DAT_0096009c
+extern u8 DAT_0096009c_abs[];
 extern f32 fGpffff83c4;
 extern void* FUN_0020e610(s32 index);
 extern void FUN_0021eb80(void* work, const f32* values);
@@ -98,11 +102,12 @@ void FUN_0025b4f0(void)
     *work |= 1;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0025B690 NONMATCHING
 void FUN_0025b690(void)
 {
     u32 uVar1;
-    u32 uVar2;
+    s32 uVar2;
     u32* puVar2;
     s32 iVar3;
     s32 iVar4;
@@ -120,16 +125,13 @@ void FUN_0025b690(void)
     s32 var_3;
     s32 var_3_2;
     s32 var_3_3;
-    s8 var_3_4;
-    s8 var_3_5;
+    u8 var_3_4;
+    u8 var_3_5;
     u8* resource;
     u8* temp_2_4;
     SflCountStack stack;
-    u8* temp_2_5;
     u8* temp_2_6;
-    u8* temp_2_7;
     u8* temp_2_8;
-    u8* temp_2_9;
 
     K_ASSERT(sSflCount != NULL, 0x2b);
     puVar2 = sSflCount;
@@ -149,17 +151,21 @@ void FUN_0025b690(void)
                 puVar2[0] = uVar1;
                 puVar2[0] = uVar1 & ~1;
             }
+            temp_f0 = (f32)(s32)puVar2[2];
+            temp_f0 = temp_f0 / 20.0f;
             fOne = 1.0f;
-            fVar8 = fOne - ((f32)(s32)puVar2[2] / 20.0f);
+            fVar8 = fOne - temp_f0;
         } else {
             fOne = 1.0f;
             fVar8 = fOne;
         }
         for (iVar5 = 0; iVar5 < 3; iVar5++) {
             resource = (u8*)FUN_0020e610(iVar5);
+            fVar6 = (f32)*(s32*)(resource + 0xc);
+            fVar7 = (f32)*(s32*)(resource + 0x10);
             temp_f0 = fGpffff83c4;
-            fVar6 = temp_f0 * (f32)*(s32*)(resource + 0xc);
-            fVar7 = temp_f0 * (f32)*(s32*)(resource + 0x10);
+            fVar6 = temp_f0 * fVar6;
+            fVar7 = temp_f0 * fVar7;
             stack.sp80 = 0x436c0000;
             stack.sp84 = 0x43440000;
             temp_f0_2 = 236.0f + fVar6;
@@ -168,6 +174,7 @@ void FUN_0025b690(void)
             stack.sp90 = temp_f0_2;
             temp_f0_3 = 196.0f + fVar7;
             stack.sp94 = temp_f0_3;
+            stack.sp98 = 0x436c0000;
             stack.sp9C = temp_f0_3;
             iVar3 = (2 - iVar5) * 0x1e + 0x5a;
             uVar2 = puVar2[1];
@@ -179,29 +186,24 @@ void FUN_0025b690(void)
                     fVar9 = 0.5f + ((f32)iVar4 / 20.0f);
                 }
             }
-            var_3 = 0;
-            while (var_3 < 4) {
+            temp_f0_2 = 319.0f;
+            temp_f0_3 = 279.0f;
+            for (var_3 = 0; var_3 < 4; var_3++) {
                 temp_2_4 = (u8*)&stack + var_3 * 8;
-                temp_2_5 = temp_2_4 + 4;
-                *(f32*)temp_2_4 = *(f32*)temp_2_4 - (f32)0x13f;
-                *(f32*)temp_2_5 = *(f32*)temp_2_5 - (f32)0x117;
-                var_3 += 1;
+                *(f32*)temp_2_4 = *(f32*)temp_2_4 - temp_f0_2;
+                *(f32*)(temp_2_4 + 4) = *(f32*)(temp_2_4 + 4) - temp_f0_3;
             }
-            var_3_2 = 0;
-            while (var_3_2 < 4) {
+            for (var_3_2 = 0; var_3_2 < 4; var_3_2++) {
                 temp_2_6 = (u8*)&stack + var_3_2 * 8;
-                temp_2_7 = temp_2_6 + 4;
                 *(f32*)temp_2_6 = *(f32*)temp_2_6 * fVar9;
-                *(f32*)temp_2_7 = *(f32*)temp_2_7 * fVar9;
-                var_3_2 += 1;
+                *(f32*)(temp_2_6 + 4) = *(f32*)(temp_2_6 + 4) * fVar9;
             }
-            var_3_3 = 0;
-            while (var_3_3 < 4) {
+            temp_f0_2 = 319.0f;
+            temp_f0_3 = 279.0f;
+            for (var_3_3 = 0; var_3_3 < 4; var_3_3++) {
                 temp_2_8 = (u8*)&stack + var_3_3 * 8;
-                temp_2_9 = temp_2_8 + 4;
-                *(f32*)temp_2_8 = *(f32*)temp_2_8 + (f32)0x13f;
-                *(f32*)temp_2_9 = *(f32*)temp_2_9 + (f32)0x117;
-                var_3_3 += 1;
+                *(f32*)temp_2_8 = *(f32*)temp_2_8 + temp_f0_2;
+                *(f32*)(temp_2_8 + 4) = *(f32*)(temp_2_8 + 4) + temp_f0_3;
             }
             FUN_0021d890(puVar2 + iVar5 * 0x40 + 4, (f32*)&stack.sp80);
             stack.sp80 = 0x436c0000;
@@ -232,43 +234,35 @@ void FUN_0025b690(void)
             stack.spAE = 0xff;
             fVar7 = 255.0f * var_f1 * fVar8;
             temp_f1 = 0.25f * fVar7;
-            if (!(temp_f1 >= 2.1474836e9f)) {
-                var_3_4 = 0x4f000000 & 0xff;
-            } else {
-                var_3_4 = ((s32)(temp_f1 - 2.1474836e9f) | 0x80000000) & 0xff;
-            }
+            var_3_4 = (u8)(u32)temp_f1;
             stack.spAF = var_3_4;
             FUN_0021d950(puVar2 + iVar5 * 0x40 + 4, &stack.spAC);
             stack.spAC = 0xff;
             stack.spAD = 0xff;
             stack.spAE = 0xff;
-            if (!(fVar7 >= 2.1474836e9f)) {
-                var_3_5 = 0x4f000000 & 0xff;
-            } else {
-                var_3_5 = ((s32)(fVar7 - 2.1474836e9f) | 0x80000000) & 0xff;
-            }
+            var_3_5 = (u8)(u32)fVar7;
             stack.spAF = var_3_5;
             FUN_0021d950(puVar2 + iVar5 * 0x40 + 0xc4, &stack.spAC);
         }
     }
 }
+#pragma opt_loop_invariants off
 
-// FUN_0025BBF0 NONMATCHING
+// FUN_0025BBF0
 
 
 void FUN_0025bbf0(void)
 {
-    code draw;
-    code render;
+    volatile code *draw;
+    volatile code *render;
     u32* work;
     u32 resource;
-    u32* drawWork;
     s32 i;
 
     K_ASSERT(sSflCount != NULL, 0x2b);
     work = sSflCount;
     if ((~*work & 1) == 0) {
-        render = DAT_00960090;
+        render = (code *)&DAT_00960090_abs;
         (*render)(9, 2);
         (*render)(0x14, 2);
         (*render)(8, 0);
@@ -281,13 +275,17 @@ void FUN_0025bbf0(void)
         for (i = 0; i < 3; i++) {
             resource = (u32)FUN_0020e610(i);
             (*render)(1, resource);
-            drawWork = work + i * 0x40 + 4;
-            draw = DAT_0096009c;
-            (*draw)(drawWork, 4, 0, 1, 2);
-            (*draw)(drawWork, 4, 0, 2, 3);
-            drawWork = work + i * 0x40 + 0xc4;
-            (*draw)(drawWork, 4, 0, 1, 2);
-            (*draw)(drawWork, 4, 0, 2, 3);
+            {
+                u32* drawWork = work + i * 0x40 + 4;
+                draw = (code *)&DAT_0096009c_abs;
+                (*draw)(drawWork, 4, 0, 1, 2);
+                (*draw)(drawWork, 4, 0, 2, 3);
+            }
+            {
+                u32* drawWork = work + i * 0x40 + 0xc4;
+                (*draw)(drawWork, 4, 0, 1, 2);
+                (*draw)(drawWork, 4, 0, 2, 3);
+            }
         }
     }
 }
