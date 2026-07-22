@@ -18,6 +18,12 @@ u32 FUN_0050fbc0(void);
 long FUN_0050e508(void);
 void FUN_0050e000(long param_1);
 void FUN_0050f3d0(void);
+#pragma alias FUN_0050cc78_arg FUN_0050cc78
+extern void FUN_0050cc78_arg(int param_1);
+#pragma alias FUN_0050d880_3 FUN_0050d880
+extern int FUN_0050d880_3(u32 param_1,u32 param_2,u32 param_3);
+#pragma alias _ExecOSD_typed _ExecOSD
+extern void _ExecOSD_typed(u32 param_1,u32 param_2);
 void FUN_0050d780(void);
 u32 FUN_0050def0(void);
 int FUN_0050ce40(void);
@@ -40,6 +46,8 @@ extern int DAT_0077f560;
 extern u8 DAT_0077f560_abs[];
 extern u32 DAT_0077f898;
 extern u32 DAT_0077f8e0;
+#pragma alias DAT_0077f8e0_abs DAT_0077f8e0
+extern u8 DAT_0077f8e0_abs[];
 extern u32 DAT_0077f8e8;
 extern u32 DAT_0077f8f0;
 extern u32 DAT_0077f8f8;
@@ -892,7 +900,6 @@ void RFU116_SetSyscall(void)
 }
 // FUN_0050CC78 NONMATCHING
 void FUN_0050cc78(void)
-
 {
   u32 uVar1;
   u64 uVar2;
@@ -1132,12 +1139,11 @@ int FUN_0050d500(u32 param_1,u32 param_2,u32 param_3)
 }
 // FUN_0050D510 NONMATCHING
 u32 FUN_0050d510(int param_1)
-
 {
-  u32 local;
+  u32 local[4];
   
-  FUN_0050d478(&local,(u32)((*(u32 *)DAT_0077fbb8_abs) + param_1 * 4),4);
-  return local;
+  FUN_0050d478(local,(u32)((*(u32 *)DAT_0077fbb8_abs) + param_1 * 4),4);
+  return local[0];
 }
 // FUN_0050D548 NONMATCHING
 void FUN_0050d548(void)
@@ -1174,16 +1180,26 @@ void FUN_0050d548(void)
 // FUN_0050D648 RFU116_SetSyscall
 void FUN_0050d648(void) { PS2_SYSCALL(0x74); }
 
+#pragma optimization_level 3
+#pragma tailcall on
 // FUN_0050D658 NONMATCHING
+#pragma schedule on
 void FUN_0050d658(void)
-
 {
-  FUN_0050d408();
-  FUN_0050d548();
-  FUN_00503f38();
-  FUN_0050cc78();
-  return;
+    FUN_0050d408();
+    FUN_0050d548();
+    FUN_00503f38();
+    FUN_0050cc78_arg(2);
+    FUN_0050def0();
+    FUN_00503f38();
+    FUN_0050d780();
+    FUN_0050cc78();
+    FUN_0050f3d0();
+    return;
 }
+#pragma schedule off
+#pragma optimization_level 2
+#pragma tailcall off
 
 // FUN_0050D6B0 RFU116_SetSyscall
 void FUN_0050d6b0(void) { PS2_SYSCALL(0x74); }
@@ -1356,15 +1372,20 @@ void FUN_0050da58(int param_1)
   _Exit(param_1);
   return;
 }
+#pragma optimization_level 3
+#pragma schedule on
+#pragma tailcall on
 // FUN_0050DA80 NONMATCHING
-void FUN_0050da80(u64 param_1,u64 param_2)
-
+void FUN_0050da80(u32 param_1,u32 param_1_hi)
 {
-  FUN_0050d880();
+  FUN_0050d880_3((u32)(s_SceKernelLibcEh_007be0c0 + 0x10),param_1,param_1_hi);
   thunk_FUN_0050ce00();
-  _ExecOSD(param_1,DAT_0077f8e0 + 4);
+  _ExecOSD_typed(param_1,*(u32 *)DAT_0077f8e0_abs + 4);
   return;
 }
+#pragma tailcall off
+#pragma schedule off
+#pragma optimization_level 2
 
 // FUN_0050DAD0 RFU116_SetSyscall
 void FUN_0050dad0(void) { PS2_SYSCALL(0x74); }
