@@ -9,6 +9,8 @@ extern u32 DAT_007ce674;
 extern u32 DAT_007ce678;
 extern u8 DAT_0095b750[];
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
 extern u32 LAB_003c2530;
 extern u32 _DAT_007ce678;
@@ -3428,20 +3430,19 @@ void FUN_003c2350(u64 param_1,u16 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   
 
-  uVar1 = (*DAT_00960178)(0xb8,0x40000);
+  uVar1 = (*DAT_00960178_abs)(0xb8,0x40000);
 
   FUN_00521408(uVar1,0,0xb8);
 
   *(u16 *)((int)uVar1 + 0xc) = param_2;
 
-  FUN_00194b20(param_1,0x6a3308,0x10,0x3c1d20,0x3c22f0,uVar1);
+  FUN_00194b20(param_1,(void*)0x6a3308,0x10,(void*)0x3c1d20,(void*)0x3c22f0,uVar1);
 
   return;
-
 }
 #define FUN_003c2350(...) ((void (*)(...))FUN_003c2350)(__VA_ARGS__)
 #undef FUN_003c23f0
