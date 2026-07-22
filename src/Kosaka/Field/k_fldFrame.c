@@ -851,25 +851,25 @@ u32 func_001ae480(KwlnTask* task)
     FldFrameMoveWork* work;
     s32 i;
 
-    work = fldFrameMoveWork(task);
-    if (work->pointCount <= 0)
+    work = (FldFrameMoveWork*)task->workData;
+    if (work->pointCount > 0)
     {
-        return false;
+        if ((work->flags & 0x80000000) != 0 &&
+            work->points[0].drawTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(work->points[0].drawTask);
+            work->points[0].drawTask = NULL;
+        }
+        memset(&work->points[0], 0, sizeof(FldFrameMovePoint));
+        work->pointCount--;
+        for (i = 0; i < work->pointCount; i++)
+        {
+            fldFrameMoveCopyPoint(&work->points[i], &work->points[i + 1]);
+        }
+        memset(&work->points[work->pointCount], 0, sizeof(FldFrameMovePoint));
+        return true;
     }
-    if ((work->flags & 0x80000000) != 0 &&
-        work->points[0].drawTask != NULL)
-    {
-        kwlnTaskDestroyWithHierarchy(work->points[0].drawTask);
-        work->points[0].drawTask = NULL;
-    }
-    memset(&work->points[0], 0, sizeof(FldFrameMovePoint));
-    work->pointCount--;
-    for (i = 0; i < work->pointCount; i++)
-    {
-        fldFrameMoveCopyPoint(&work->points[i], &work->points[i + 1]);
-    }
-    memset(&work->points[work->pointCount], 0, sizeof(FldFrameMovePoint));
-    return true;
+    return false;
 }
 
 static void fldFrameMoveSetAnimation(FldFrameMoveWork* work,
