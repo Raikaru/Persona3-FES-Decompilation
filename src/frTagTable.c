@@ -14,6 +14,7 @@ extern s32 DAT_006a2680[];
 extern u8 DAT_006a26b0[];
 extern char DAT_006a26f0[];
 extern u32 DAT_007cd4e8;
+extern u32 uGpffffa7f8;
 extern u32 DAT_007cd500;
 extern u32 DAT_007ce648;
 extern u32 DAT_0095abe0;
@@ -1250,14 +1251,14 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
   u8 bVar2;
   short sVar5;
   u8 *pbVar4;
-  int iVar6;
   int iVar7;
+  int iVar6;
   u32 uVar8;
 
-  iVar6 = *(int *)(param_2 + 0x10);
   iVar7 = *(int *)(param_2 + 0x18);
-  iVar6 = iVar6 + iVar7;
-  pbVar4 = (u8 *)iVar6;
+  iVar6 = *(int *)(param_2 + 0x10);
+  iVar7 = iVar7 + iVar6;
+  pbVar4 = (u8 *)iVar7;
   bVar1 = *pbVar4 - 1;
   bVar2 = pbVar4[1];
   if (bVar2 == 0xff) {
@@ -1275,7 +1276,7 @@ u64 FUN_003af5a0(u32 param_1,int param_2)
   if (*(int *)(*(int *)(param_2 + 0x14) + 0x3c) < 0) {
     *(u32 *)(*(int *)(param_2 + 0x14) + 0x3c) = 0;
   }
-  DAT_007cd4e8 = DAT_007cd4e8 | 0x80;
+  uGpffffa7f8 = uGpffffa7f8 | 0x80;
   return 0;
 }
 #define FUN_003af560(...) ((u64 (*)(...))FUN_003af560)(__VA_ARGS__)
