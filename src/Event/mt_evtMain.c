@@ -6357,55 +6357,33 @@ void FUN_00366210(u32 param_1,int param_2)
 
 
 void FUN_00366330(u32 param_1,int param_2)
-
-
-
 {
+  int *piVar3;
 
   u16 *puVar1;
 
-  long lVar2;
-
-  int *piVar3;
-
-  
+  u32 lVar2;
 
   piVar3 = *(int **)(param_2 + 0x84);
-
-  do {
-
-    if (piVar3 == (int *)0x0) {
-
+  goto outer_check;
+outer_body:
+  if (*piVar3 == 0x26) {
+    puVar1 = (u16 *)piVar3[0x1b];
+    goto inner_check;
+inner_body:
+    lVar2 = FUN_00360ed0(puVar1);
+    if ((lVar2 != 0) && (*puVar1 == param_1)) {
+      *(int *)(param_2 + 0x28) = (int)(short)puVar1[8];
+      *(u32 *)(param_2 + 0x24) = 1;
       return;
-
     }
-
-    if (*piVar3 == 0x26) {
-
-      for (puVar1 = (u16 *)piVar3[0x1b]; puVar1 != (u16 *)0x0;
-
-          puVar1 = *(u16 **)(puVar1 + 0x26)) {
-
-        lVar2 = FUN_00360ed0(puVar1);
-
-        if ((lVar2 != 0) && (*puVar1 == param_1)) {
-
-          *(int *)(param_2 + 0x28) = (int)(short)puVar1[8];
-
-          *(u32 *)(param_2 + 0x24) = 1;
-
-          return;
-
-        }
-
-      }
-
-    }
-
-    piVar3 = (int *)piVar3[0x25];
-
-  } while( true );
-
+    puVar1 = *(u16 **)(puVar1 + 0x26);
+inner_check:
+    if (puVar1 != (u16 *)0x0) goto inner_body;
+  }
+  piVar3 = (int *)piVar3[0x25];
+outer_check:
+  if (piVar3 != (int *)0x0) goto outer_body;
 }
 
 
