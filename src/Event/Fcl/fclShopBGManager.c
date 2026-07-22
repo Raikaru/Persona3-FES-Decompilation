@@ -90,10 +90,18 @@ u32 DAT_006b0450;
 u32 DAT_006b04d0;
 u32 DAT_006b0a00;
 u32 DAT_006b0a60;
-u32 DAT_006b0ac0;
-u32 DAT_006b0ac4;
-u32 DAT_006b0ac8;
-u32 DAT_006b0acc;
+float DAT_006b0ac0;
+float DAT_006b0ac4;
+float DAT_006b0ac8;
+float DAT_006b0acc;
+#pragma alias DAT_006b0ac0_abs DAT_006b0ac0
+extern u8 DAT_006b0ac0_abs[];
+#pragma alias DAT_006b0ac4_abs DAT_006b0ac4
+extern u8 DAT_006b0ac4_abs[];
+#pragma alias DAT_006b0ac8_abs DAT_006b0ac8
+extern u8 DAT_006b0ac8_abs[];
+#pragma alias DAT_006b0acc_abs DAT_006b0acc
+extern u8 DAT_006b0acc_abs[];
 u32 DAT_006b0ad0;
 u32 DAT_006b0cb0;
 u32 DAT_006b0dd4;
@@ -2475,9 +2483,9 @@ u32 FUN_00412610(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00412AF0 NONMATCHING
-
-
+// FUN_00412AF0
+#pragma push
+#pragma opt_propagation off
 u64 FUN_00412af0(u64 param_1,int param_2)
 
 
@@ -2485,38 +2493,54 @@ u64 FUN_00412af0(u64 param_1,int param_2)
 {
 
   int iVar1;
-
-  u16 *puVar2;
-
+  s16 *puVar2;
   int iVar3;
-
-  u32 auStack_10 [4];
+  float fVar3;
+  float fVar2;
+  float fVar1;
+  float fVar0;
+  float afStack_10[4];
+  float scale;
+  float zero;
+  s32 x;
+  s32 y;
+  u8 alpha;
+  s32 spriteId;
+  s32 extra0;
+  s32 extra1;
+  s32 extra2;
 
   
 
   iVar1 = *(int *)(param_2 + 0xc);
 
-  auStack_10[0] = DAT_006b0ac0;
-
-  auStack_10[1] = DAT_006b0ac4;
-
-  auStack_10[2] = DAT_006b0ac8;
-
-  auStack_10[3] = DAT_006b0acc;
+  fVar3 = *(float *)DAT_006b0ac0_abs;
+  fVar2 = *(float *)DAT_006b0ac4_abs;
+  fVar1 = *(float *)DAT_006b0ac8_abs;
+  fVar0 = *(float *)DAT_006b0acc_abs;
+  afStack_10[0] = fVar3;
+  afStack_10[1] = fVar2;
+  afStack_10[2] = fVar1;
+  afStack_10[3] = fVar0;
 
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-
-    puVar2 = (u16 *)(iVar1 + iVar3 * 0xc);
-
-    FUN_0040e3f0(0,0,*(u32 *)(puVar2 + 4),*(u32 *)(puVar2 + 4),*puVar2,puVar2[1],
-
-                 *(u8 *)(puVar2 + 2),auStack_10[iVar3],0,0,0);
-
+    puVar2 = (s16 *)(iVar1 + iVar3 * 0xc);
+    scale = *(float *)(puVar2 + 4);
+    x = *puVar2;
+    y = puVar2[1];
+    zero = 0.0f;
+    alpha = *(u8 *)(puVar2 + 2);
+    spriteId = *(s32 *)&afStack_10[iVar3];
+    extra0 = 0;
+    extra1 = 0;
+    extra2 = 0;
+    FUN_0040e3f0_typed(zero,zero,scale,scale,x,y,alpha,spriteId,extra0,extra1,extra2);
   }
 
   return 0;
-
 }
+#pragma pop
+
 
 // FUN_00412BC0 NONMATCHING
 
