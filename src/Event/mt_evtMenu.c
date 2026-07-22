@@ -19874,7 +19874,7 @@ u32 FUN_003865f0(int param_1)
 // FUN_00386680 NONMATCHING
 
 
-u64
+u32
 
 FUN_00386680(int param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5
 
@@ -19886,7 +19886,7 @@ FUN_00386680(int param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5
 
   u32 *puVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
 
