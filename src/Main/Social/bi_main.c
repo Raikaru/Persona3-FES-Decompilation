@@ -28,6 +28,8 @@ enum
 
 extern void (*D_00960090)();
 extern void (*D_0096009C)();
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 
 
 void* func_0021c3f0();
@@ -544,7 +546,7 @@ void func_0023f540(void)
     do { \
         s32 biDigitIndex; \
         frame = func_0021cca0(renderContext, 0x2e); \
-        stateSet(1, (u32)func_0021cce0(frame)); \
+        (*stateSet)(1, (u32)func_0021cce0(frame)); \
         RpSkyRenderStateSet(3, (void*)0x717fb); \
         RpSkyRenderStateSet(2, (void*)0x44); \
         for (biDigitIndex = 0; biDigitIndex < 5; biDigitIndex++) { \
@@ -560,18 +562,18 @@ void func_00241910(void)
     u8* slot;
     void* frame;
     void* renderContext;
-    void (*stateSet)(u32, u32);
+    void (**stateSet)(u32, u32);
     u32 flags;
     u32 mode;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
     work = sBiMain;
     renderContext = func_0021c3f0(1);
-    stateSet = D_00960090;
-    stateSet(9, 2);
-    stateSet(0x14, 2);
-    stateSet(8, 0);
-    stateSet(6, 0);
+    stateSet = (void (**)(u32, u32))D_00960090_abs;
+    (*stateSet)(9, 2);
+    (*stateSet)(0x14, 2);
+    (*stateSet)(8, 0);
+    (*stateSet)(6, 0);
     for (i = 0; i < BI_SLOT_COUNT; i++) {
         slot = BI_SLOT(work, i);
         flags = BI_U32(slot, 0);
@@ -584,18 +586,18 @@ void func_00241910(void)
         switch (mode) {
         case 0:
             frame = func_0021cca0(renderContext, 0xa);
-            stateSet(1, (u32)func_0021cce0(frame));
+            (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
                 BI_MAIN_DRAW_ALT(slot + 0x10);
             } else {
                 frame = func_0021cca0(renderContext, 0xb);
-                stateSet(1, (u32)func_0021cce0(frame));
+                (*stateSet)(1, (u32)func_0021cce0(frame));
                 BI_MAIN_DRAW_BASIC(slot + 0x10);
             }
             break;
         case 1:
             frame = func_0021cca0(renderContext, 0x12);
-            stateSet(1, (u32)func_0021cce0(frame));
+            (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
                 BI_MAIN_DRAW_ALT(slot + 0x10);
             } else {
@@ -604,7 +606,7 @@ void func_00241910(void)
             break;
         case 2:
             frame = func_0021cca0(renderContext, 0x1d);
-            stateSet(1, (u32)func_0021cce0(frame));
+            (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
                 BI_MAIN_DRAW_ALT(slot + 0x10);
             } else {
@@ -613,7 +615,7 @@ void func_00241910(void)
             break;
         case 3:
             frame = func_0021cca0(renderContext, 0x13);
-            stateSet(1, (u32)func_0021cce0(frame));
+            (*stateSet)(1, (u32)func_0021cce0(frame));
             if ((flags & BI_SLOT_ALT_STYLE) != 0) {
                 BI_MAIN_DRAW_ALT(slot + 0x10);
             } else {
