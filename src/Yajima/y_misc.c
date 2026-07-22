@@ -29,7 +29,7 @@ u8 FUN_004242b0(void);
 u32 FUN_00424310(void);
 u32 FUN_00424370(void);
 u32 FUN_004243d0(void);
-void FUN_00424470(void);
+u32 FUN_00424470(void);
 u32 FUN_00424480(void);
 void FUN_004244a0(void);
 u32 FUN_004244e0(void);
@@ -366,9 +366,13 @@ u32 FUN_004243d0(void)
 }
 
 // FUN_00424470 NONMATCHING
-void FUN_00424470(void)
+u32 FUN_00424470(void)
 {
-  cGpffffb9c0 = 1;
+  u32 uVar1;
+
+  uVar1 = 1;
+  cGpffffb9c0 = uVar1;
+  return uVar1;
 }
 
 // FUN_00424480
