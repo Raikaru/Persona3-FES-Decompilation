@@ -1792,28 +1792,30 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00302c50 NONMATCHING
 void FUN_00302c50(u32 param_1)
 {
-  u32 uVar1;
-  int iVar2;
-  u32 uVar3;
-  
-  iVar2 = (int)param_1;
-  uVar1 = *(u32 *)(iVar2 + 0x18);
-  if (uVar1 != 0) {
-    for (uVar3 = 0; uVar3 < 0x15; uVar3 = uVar3 + 1) {
-      if ((uVar1 & 1 << (uVar3 & 0x1f)) != 0) {
-        if (0x14 < (uVar3 & 0xff)) {
-          FUN_0019d3f0((u32)D_0069aa80, 0x499);
+    u8 i;
+    u32 mask;
+
+    mask = *(u32*)(param_1 + 0x18);
+    if (mask != 0)
+    {
+        for (i = 0; i < 0x15; i++)
+        {
+            if ((mask & (1 << i)) != 0)
+            {
+                if (i > 0x14)
+                {
+                    FUN_0019d3f0((u32)D_0069aa80, 0x499);
+                }
+                if (i < 0x11)
+                {
+                    FUN_00301030(param_1, i, 0);
+                    FUN_00301150(param_1, i, 0);
+                }
+                *(u32*)(param_1 + 0x14) &= ~(1 << i);
+            }
         }
-        if ((uVar3 & 0xff) < 0x11) {
-          FUN_00301030(param_1,uVar3 & 0xff,0);
-          FUN_00301150(param_1,uVar3 & 0xff,0);
-        }
-        *(u32 *)(iVar2 + 0x14) = *(u32 *)(iVar2 + 0x14) & ~(1 << (uVar3 & 0x1f));
-      }
+        *(u32*)(param_1 + 0x18) = 0;
     }
-    *(u32 *)(iVar2 + 0x18) = 0;
-  }
-  return;
 }
 
 
