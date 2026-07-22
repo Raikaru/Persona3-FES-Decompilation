@@ -5529,7 +5529,7 @@ s32 FUN_002dc830(BtlAction* action)
     return result;
 }
 
-// FUN_002dca60 NONMATCHING
+// FUN_002dca60
 s32 FUN_002dca60(BtlAction* action)
 {
     BtlUnit* unit;
