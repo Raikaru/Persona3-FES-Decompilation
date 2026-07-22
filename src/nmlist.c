@@ -791,10 +791,19 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
     values = (u32*)param_2;
     for (index = 0; index < param_3; index++)
     {
+        u32* entry;
+        u32 current;
+        entry = &values[index];
+        current = *entry;
         FUN_003c4710_u32((u32)(param_1 + 4),
-                         *(u32 *)(param_1 + 8), values[index]);
+                         *(u32 *)(param_1 + 8), current);
     }
     return index;
+}
+// FUN_003C5170
+int FUN_003c5170(void)
+{
+    return 0;
 }
 #define FUN_003c50b0(...) ((int (*)(...))FUN_003c50b0)(__VA_ARGS__)
 #define FUN_003c4710(...) ((void (*)(...))FUN_003c4710)(__VA_ARGS__)
