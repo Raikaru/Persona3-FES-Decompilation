@@ -4043,7 +4043,7 @@ u64 FUN_0041b810(int param_1)
 
   char cVar1;
 
-  u16 *puVar2;
+  s16 *puVar2;
 
   int iVar3;
 
@@ -4055,39 +4055,30 @@ u64 FUN_0041b810(int param_1)
 
       iVar4 = *(int *)(iVar4 + 0x10)) {
 
-    puVar2 = *(u16 **)(iVar4 + 0x14);
+    puVar2 = *(s16 **)(iVar4 + 0x14);
 
     if (((*puVar2 & 2) != 0) && ((*puVar2 & 1) != 0)) {
 
       cVar1 = (char)puVar2[1];
 
-      if (cVar1 == '\x03') {
-
-        FUN_00317a20(*(u32 *)(puVar2 + 4));
-
-      }
-
-      else if (cVar1 == '\x06') {
-
+      switch (cVar1) {
+      case 1:
+        if (((FUN_0034fdb0(*(u32 *)(puVar2 + 4),5), *(int *)(puVar2 + 2) != 0)) &&
+            (iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) <= iVar3)) {
+          *puVar2 = *puVar2 & 0xfffe;
+        }
+        break;
+      case 2:
+        break;
+      case 6:
         func_0020ac90(*(u32 *)(puVar2 + 4));
-
         func_0020b250(*(u32 *)(puVar2 + 4));
-
-      }
-
-      else if (cVar1 == '\x02') {
-
-
-      }
-
-      else if (((cVar1 == '\x01') &&
-
-               (FUN_0034fdb0(*(u32 *)(puVar2 + 4),5), *(int *)(puVar2 + 2) != 0)) &&
-
-              (iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) <= iVar3)) {
-
-        *puVar2 = *puVar2 & 0xfffe;
-
+        break;
+      case 3:
+        FUN_00317a20(*(u32 *)(puVar2 + 4));
+        break;
+      default:
+        break;
       }
 
     }
