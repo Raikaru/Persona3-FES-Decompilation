@@ -1302,7 +1302,7 @@ void FUN_00492c60(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00492c90(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00492cc0(u64 param_1,u64 param_2);
 void FUN_00492ce0(u64 param_1,u64 param_2);
-void FUN_00492d00(u64 param_1);
+void FUN_00492d00(u32 param_1);
 void FUN_00493c50(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00493c80(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00494520(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
@@ -1368,13 +1368,23 @@ void FUN_004ae060(int param_1);
 void FUN_004ae940(u64 param_1);
 
 extern u32 DAT_0077dce0;
+#pragma alias DAT_0077dce0_abs DAT_0077dce0
+extern u8 DAT_0077dce0_abs[];
 extern u32 DAT_0077dd00;
+#pragma alias DAT_0077dd00_abs DAT_0077dd00
+extern u8 DAT_0077dd00_abs[];
 extern u32 DAT_0077dd20;
 extern u32 DAT_0077dd40;
+#pragma alias DAT_0077dd20_abs DAT_0077dd20
+extern u8 DAT_0077dd20_abs[];
 extern u32 DAT_0077dd60;
 extern u32 DAT_0077dd78;
+#pragma alias DAT_0077dd40_abs DAT_0077dd40
+extern u8 DAT_0077dd40_abs[];
 extern u32 DAT_0077dd7c;
 extern u32 DAT_0077dd80;
+#pragma alias DAT_0077dd60_abs DAT_0077dd60
+extern u8 DAT_0077dd60_abs[];
 extern u32 DAT_0077dda4;
 extern u32 DAT_0077ddb0;
 #pragma alias DAT_0077ddb0_abs DAT_0077ddb0
@@ -1929,6 +1939,16 @@ extern code FUN_004c5a50;
 extern code FUN_004c5c30;
 extern code FUN_004c6170;
 extern code FUN_004c61b0;
+#pragma alias FUN_004c5960_raw FUN_004c5960
+extern void FUN_004c5960_raw();
+#pragma alias FUN_004c59b0_raw FUN_004c59b0
+extern void FUN_004c59b0_raw();
+#pragma alias FUN_004c6170_raw FUN_004c6170
+extern void FUN_004c6170_raw();
+#pragma alias FUN_004c6170_u32 FUN_004c6170
+extern u32 FUN_004c6170_u32(u32 param_1,u32 param_2);
+#pragma alias FUN_004c61b0_raw FUN_004c61b0
+extern void FUN_004c61b0_raw();
 extern code FUN_004c64b0;
 extern code FUN_004c6560;
 extern code FUN_004c65d0;
@@ -2888,7 +2908,7 @@ void FUN_00492c60(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00492c90(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00492cc0(u64 param_1,u64 param_2);
 void FUN_00492ce0(u64 param_1,u64 param_2);
-void FUN_00492d00(u64 param_1);
+void FUN_00492d00(u32 param_1);
 void FUN_00493c50(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00493c80(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00494520(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
@@ -8110,61 +8130,70 @@ long FUN_004920a0(u64 param_1)
   return lVar2;
 }
 
-// FUN_00492C30 NONMATCHING
+#pragma schedule on
+#pragma tailcall on
+// FUN_00492C30
 
 void FUN_00492c30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                  u64 param_5)
 
 {
-  ((code)FUN_004c61b0)(0x77dce0,param_1,param_2,param_3,param_4,param_5);
-  return;
+  FUN_004c61b0_raw((u32)DAT_0077dce0_abs,param_1,param_2,param_3,param_4,param_5);
 }
+#pragma tailcall off
+#pragma schedule off
 
-// FUN_00492C60 NONMATCHING
+#pragma schedule on
+#pragma tailcall on
+// FUN_00492C60
 
 void FUN_00492c60(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                  u64 param_5)
 
 {
-  ((code)FUN_004c61b0)(0x77dd00,param_1,param_2,param_3,param_4,param_5);
-  return;
+  FUN_004c61b0_raw((u32)DAT_0077dd00_abs,param_1,param_2,param_3,param_4,param_5);
 }
 
-// FUN_00492C90 NONMATCHING
+// FUN_00492C90
 
 void FUN_00492c90(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 {
-  ((code)FUN_004c5960)(0x77dce0,param_1,param_2,param_3,param_4);
-  return;
+  FUN_004c5960_raw((u32)DAT_0077dce0_abs,param_1,param_2,param_3,param_4);
 }
 
-// FUN_00492CC0 NONMATCHING
+// FUN_00492CC0
 
 void FUN_00492cc0(u64 param_1,u64 param_2)
 
 {
-  ((code)FUN_004c59b0)(0x77dce0,param_1,param_2);
-  return;
+  FUN_004c59b0_raw((u32)DAT_0077dce0_abs,param_1,param_2);
 }
 
-// FUN_00492CE0 NONMATCHING
+#pragma schedule on
+
+#pragma tailcall on
+
+// FUN_00492CE0
 
 void FUN_00492ce0(u64 param_1,u64 param_2)
 
 {
-  ((code)FUN_004c5a00)(0x77dce0,param_1,param_2);
-  return;
+  FUN_004c5a00_u32((u32)DAT_0077dce0_abs,param_1,param_2);
 }
+#pragma tailcall off
+#pragma schedule off
 
+#pragma schedule on
 // FUN_00492D00 NONMATCHING
 
-void FUN_00492d00(u64 param_1)
+void FUN_00492d00(u32 param_1)
 
 {
-  ((code)FUN_004c6170)(0x77dce0,param_1);
-  return;
+  FUN_004c6170_u32((u32)DAT_0077dce0_abs,param_1);
 }
+#pragma tailcall off
+#pragma schedule off
 
 // FUN_00492D10 NONMATCHING
 
