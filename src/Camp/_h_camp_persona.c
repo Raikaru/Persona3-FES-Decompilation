@@ -143,34 +143,162 @@ KwlnTask* FUN_00122660(KwlnTask* parent)
     return task;
 }
 
-// FUN_00122710 NONMATCHING
+// FUN_00122710
 u32 FUN_00122710(KwlnTask* task, u32 command)
 {
     CampPanelTransitionWork* work;
 
     work = task->workData;
     switch (command) {
-    case 0: case 4: case 5: case 6: case 7: case 8: case 9: case 10:
+    case 0:
         work->state = 5;
         break;
-    case 1: case 2: case 3:
-        work->state = 1;
+    case 1:
+        switch (work->unused_0c) {
+        case 0:
+            work->state = 1;
+            break;
+        case 1:
+        case 10:
+        case 14:
+            break;
+        case 2:
+            work->state = 3;
+            break;
+        case 3:
+            work->state = 13;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 11:
+        case 12:
+        case 13:
+        case 15:
+        case 16:
+            work->state = 3;
+            break;
+        }
         break;
-    case 11:
-        work->state = 3;
+    case 2:
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        case 3:
+            work->state = 11;
+            break;
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 13:
+            work->state = 3;
+            break;
+        }
         break;
-    case 12: case 13: case 14:
-        work->state = 5;
+    case 3:
+        switch (work->unused_0c) {
+        case 0:
+        case 1:
+        case 3:
+        case 5:
+        case 10:
+        case 11:
+        case 12:
+            break;
+        case 2:
+            work->state = 9;
+            break;
+        case 4:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 13:
+            work->state = 3;
+            break;
+        }
         break;
+    case 4:
+    case 5:
+    case 6:
+        switch (work->unused_0c) {
+        case 0:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        case 2:
+            work->state = 5;
+            break;
+        case 3:
+            work->state = 5;
+            break;
+        }
+        break;
+    case 7:
+    case 8:
+    case 9:
     case 15:
-        work->state = 7;
-        break;
     case 16:
-        work->state = 9;
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 1:
+            work->state = 5;
+            break;
+        }
         break;
-    default:
-        work->unused_0c = command;
-        return 1;
+    case 10:
+    case 11:
+    case 12:
+    case 14:
+        break;
+    case 13:
+        switch (work->unused_0c) {
+        case 0:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+            break;
+        case 1:
+            work->state = 7;
+            break;
+        }
+        break;
     }
     work->unused_0c = command;
     return 1;
