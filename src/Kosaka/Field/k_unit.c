@@ -1753,10 +1753,10 @@ void func_001d19d0(void)
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
-        if (((volatile FldUnit*)unit)->genusBase != NULL &&
-            ((volatile FldUnit*)unit)->resrc != NULL)
+        if (unit->genusBase != NULL &&
+            unit->resrc != NULL)
         {
-            ((volatile FldUnit*)unit)->unk_17c = 0;
+            unit->unk_17c = 0;
             func_001a60d0(0, ((volatile FldUnit*)unit)->mdl, 0xff);
         }
     }
