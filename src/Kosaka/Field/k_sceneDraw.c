@@ -56,6 +56,8 @@ s32 func_0019de80(KwlnTask* task);
 extern u32 uGpffffb3dc;
 s32 func_0019e1f0(const void* charPtr1, const void* charPtr2);
 extern u32 gUnk_008668f0[];
+extern f32 fGpffff80e0;
+extern f32 fGpffff8084;
 extern u8 DAT_007ce0e8;
 extern u8 DAT_007ce0ec;
 extern u8 DAT_007ce0f0;
@@ -1513,33 +1515,94 @@ RwMatrix* func_001a0a50()
 // FUN_001a0a90 NONMATCHING
 void K_Scene_InitCharLight()
 {
-    ResrcLightChar* res;
-    RwV3d axisY;
-    RwV3d axisX;
+    RwRGBAReal* ambientColor;
+    RwRGBAReal* directionalColor;
+    RwMatrix* directionalMat;
+    RwV4d* unk160;
+    RwV4d* unk170;
+    Resrc* res;
+    f32 ambientValue;
+    f32 directionalValue;
+    RwV3d axis;
 
-    res = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
-    axisY.x = 0.0f;
-    axisY.y = 1.0f;
-    axisY.z = 0.0f;
-    axisX.x = 1.0f;
-    axisX.y = 0.0f;
-    axisX.z = 0.0f;
-    if (res == NULL)
+    res = MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
     {
-        return;
+        ambientColor = (RwRGBAReal*)((u8*)res + 0x100);
     }
+    else
+    {
+        ambientColor = NULL;
+    }
+    res = MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        directionalColor = (RwRGBAReal*)((u8*)res + 0x110);
+    }
+    else
+    {
+        directionalColor = NULL;
+    }
+    res = MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        directionalMat = (RwMatrix*)((u8*)res + 0x120);
+    }
+    else
+    {
+        directionalMat = NULL;
+    }
+    res = MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        unk160 = (RwV4d*)((u8*)res + 0x160);
+    }
+    else
+    {
+        unk160 = NULL;
+    }
+    res = MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
+    if (res != NULL)
+    {
+        unk170 = (RwV4d*)((u8*)res + 0x170);
+    }
+    else
+    {
+        unk170 = NULL;
+    }
+    ambientValue = fGpffff80e0;
 
-    res->ambientColor.r = 0.65f;
-    res->ambientColor.g = 0.65f;
-    res->ambientColor.b = 0.65f;
-    res->ambientColor.a = 0.0f;
-    res->directionalColor.r = 0.0f;
-    res->directionalColor.g = 0.0f;
-    res->directionalColor.b = 0.0f;
-    res->directionalColor.a = 0.0f;
-    RwMatrixSetIdentity(&res->directionalMat);
-    RwMatrixRotate(&res->directionalMat, &axisY, -180.0f, rwCOMBINEPOSTCONCAT);
-    RwMatrixRotate(&res->directionalMat, &axisX, -45.0f, rwCOMBINEPOSTCONCAT);
+    ambientColor->r = ambientValue;
+    ambientColor->g = ambientValue;
+    ambientColor->b = ambientValue;
+    ambientColor->a = 0.0f;
+    directionalValue = fGpffff8084;
+    directionalColor->r = directionalValue;
+    directionalColor->g = directionalValue;
+    directionalColor->b = directionalValue;
+    directionalColor->a = 0.0f;
+    unk160->x = 0.0f;
+    unk160->y = 0.0f;
+    unk160->z = 0.0f;
+    unk160->w = 0.0f;
+    RwMatrixSetIdentity(directionalMat);
+    axis.x = 0.0f;
+    axis.y = 1.0f;
+    axis.z = 0.0f;
+    func_004c31b0(-180.0f, directionalMat, &axis, rwCOMBINEPOSTCONCAT);
+    axis.x = 1.0f;
+    axis.y = 0.0f;
+    axis.z = 0.0f;
+    func_004c31b0(-45.0f, directionalMat, &axis, rwCOMBINEPOSTCONCAT);
+    RwMatrixSetIdentity((RwMatrix*)unk170);
+    axis.x = 0.0f;
+    axis.y = 1.0f;
+    axis.z = 0.0f;
+    func_004c31b0(-180.0f, (RwMatrix*)unk170, &axis, rwCOMBINEPOSTCONCAT);
+    axis.x = 1.0f;
+    axis.y = 0.0f;
+    axis.z = 0.0f;
+    func_004c31b0(-45.0f, (RwMatrix*)unk170, &axis, rwCOMBINEPOSTCONCAT);
 }
 
 // FUN_001a0d00
