@@ -3118,14 +3118,12 @@ u32 FUN_00430180(u64 param_1)
 void FUN_00430220(int param_1,u64 param_2)
 
 {
-  float *pfVar2;
-  float *pfVar3;
-  
-  pfVar2 = (float *)&param_2;
-  *(u16 *)(*(int *)(param_1 + 0x3c)) = (short)(int)pfVar2[0];
-  pfVar3 = pfVar2 + 1;
-  *(u16 *)(*(int *)(param_1 + 0x3c) + 2) = (short)(int)pfVar3[0];
-  *(u8 *)(*(int *)(param_1 + 0x3c) + 0x18) = 1;
+  u8 *puVar1;
+
+  puVar1 = (u8 *)*(int *)(param_1 + 0x3c);
+  *(u16 *)puVar1 = (short)(int)*(float *)&param_2;
+  *(u16 *)(puVar1 + 2) = (short)(int)*((float *)&param_2 + 1);
+  *(u8 *)(puVar1 + 0x18) = 1;
   return;
 }
 
