@@ -2243,11 +2243,11 @@ void func_00115980(int *param_1)
   return;
 
 }
-// FUN_001159F0 NONMATCHING
+// FUN_001159F0
 
 
-void func_001159f0(int unused0, int unused1, int unused2, u8 param_4,
-                   f32 param_1, f32 param_2, f32 param_3)
+void func_001159f0(int unused0, int unused1, int unused2,
+                   f32 param_1, f32 param_2, u8 param_4, f32 param_3)
 
 
 
