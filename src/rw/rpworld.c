@@ -7030,7 +7030,7 @@ u64 FUN_00490d00(u64 param_1)
 }
 
 #pragma schedule on
-// FUN_00490D40 NONMATCHING
+// FUN_00490D40
 
 u32 FUN_00490d40(int param_1)
 
@@ -7040,6 +7040,14 @@ u32 FUN_00490d40(int param_1)
   iVar1 = param_1;
   FUN_00492060_typed(*(u32 *)(iVar1 + iGpffffbb20),(u32)param_1);
   FUN_004ca030_typed((u32)param_1);
+  return param_1;
+}
+#pragma schedule off
+
+#pragma schedule on
+// FUN_00490D80
+u32 FUN_00490d80(u32 param_1)
+{
   return param_1;
 }
 #pragma schedule off
@@ -7695,7 +7703,7 @@ long FUN_00491de0(void)
     *(u8 **)(puVar2 + 0x1c) = puVar2 + 0x18;
     *(u32 *)(puVar2 + 0x24) = 0;
     *(u32 *)(puVar2 + 0x20) = 0;
-    *(u8 **)(puVar2 + 0x28) = &LAB_00490d80;
+    *(u8 **)(puVar2 + 0x28) = (u8 *)&FUN_00490d80;
     ((code)FUN_004c64b0)(0x77dd00,lVar1);
   }
   return lVar1;
