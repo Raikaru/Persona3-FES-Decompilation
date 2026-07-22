@@ -1,4 +1,92 @@
 #include "Kernel/Kwln/kwlnTask.h"
+typedef struct FclShopDispatchResult {
+  u32 value;
+  u32 value_aux;
+  s16 field08;
+  s16 field0a;
+  s16 field0c;
+  s16 field0e;
+  s16 field10;
+  s16 field12;
+  s16 field14;
+  s16 field16;
+  s16 field18;
+  u16 field1a;
+} FclShopDispatchResult;
+
+typedef struct FclShopDispatchSource {
+  FclShopDispatchResult alternate[18];
+  u8 pad1f8[8];
+  FclShopDispatchResult primary[18];
+  u8 pad3f8[8];
+} FclShopDispatchSource;
+
+typedef struct FclShopDispatchOutput {
+  FclShopDispatchResult result;
+  u8 pad1c[4];
+} FclShopDispatchOutput;
+
+typedef struct FclShopDispatchStack {
+  FclShopDispatchSource source[8];
+  FclShopDispatchOutput output[16];
+} FclShopDispatchStack;
+
+extern u32 D_006AF3E0[];
+extern u32 FUN_003dffc0();
+extern u32 fclCombineList003df100();
+
+#define FCL_SHOP_DISPATCH_BUILD(SRC, OUT, OWNER, ID) do { \
+  u32 *copy_src = D_006AF3E0; \
+  u32 *copy_dst = (u32 *)(SRC); \
+  int copy_count = 0x3f; \
+  do { \
+    copy_dst[0] = copy_src[0]; \
+    copy_dst[1] = copy_src[1]; \
+    copy_src += 2; \
+    copy_count = copy_count - 1; \
+    copy_dst += 2; \
+  } while (copy_count > 0); \
+  (SRC)[0].value = (ID); \
+  (SRC)[0].field18 = 0; \
+  (SRC)[1].value = (ID); \
+  (SRC)[1].field18 = 0; \
+  (SRC)[2].value = (ID); \
+  (SRC)[2].field18 = 0; \
+  (SRC)[3].value = (ID); \
+  (SRC)[3].field18 = 0; \
+  (SRC)[4].value = (ID); \
+  (SRC)[4].field18 = 0; \
+  (SRC)[5].value = (ID); \
+  (SRC)[5].field18 = 0; \
+  (SRC)[6].value = (ID); \
+  (SRC)[6].field18 = 0; \
+  (SRC)[7].value = (ID); \
+  (SRC)[7].field18 = 0; \
+  (SRC)[8].value = (ID); \
+  (SRC)[8].field18 = 0; \
+  (SRC)[9].value = (ID); \
+  (SRC)[9].field18 = 0; \
+  (SRC)[10].value = (ID); \
+  (SRC)[10].field18 = 0; \
+  (SRC)[11].value = (ID); \
+  (SRC)[11].field18 = 0; \
+  (SRC)[12].value = (ID); \
+  (SRC)[12].field18 = 0; \
+  (SRC)[13].value = (ID); \
+  (SRC)[13].field18 = 0; \
+  (SRC)[14].value = (ID); \
+  (SRC)[14].field18 = 0; \
+  (SRC)[15].value = (ID); \
+  (SRC)[15].field18 = 0; \
+  (SRC)[16].value = (ID); \
+  (SRC)[16].field18 = 0; \
+  (SRC)[17].value = (ID); \
+  (SRC)[17].field18 = 0; \
+  memcpy((OUT), (SRC), 0x1c); \
+  fclCombineList003df100( \
+      FUN_003dffc0((OWNER), (ID), *((u32 *)((u8 *)(OUT) + 4))), \
+      (OUT)); \
+} while (0)
 
 /* auto-extern (generated) */
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
@@ -261,7 +349,7 @@ void FUN_00404470(short param_1);
 void FUN_00404470_alt(short param_1,int param_2);
 void FUN_004044c0(short param_1);
 void FUN_004045d0(u64 param_1);
-void FUN_00404750(u64 param_1,u32 param_2);
+void FUN_00404750(u32 param_1,u32 param_2,u32 param_3);
 u64 FUN_00405970(u64 param_1,int param_2);
 void FUN_00405a90(u64 param_1,int param_2);
 u64 FUN_00405ac0(u64 param_1,long param_2);
@@ -17818,65 +17906,115 @@ LAB_004046bc:
 }
 
 // FUN_00404750 NONMATCHING
-
-
-void FUN_00404750(u64 param_1,u32 param_2)
-
-
-
+void FUN_00404750(u32 param_1,u32 param_2,u32 param_3)
 {
-  if (param_2 < 8) {
+  FclShopDispatchStack stack;
+  u8 *obj;
+  u8 *table;
+  u8 *item;
+  u8 *owner;
 
-                    /* WARNING: Could not recover jumptable at 0x00404788. Too many branches */
-                    /* WARNING: Treating indirect jump as call */
-
-    (*(code *)((u32 **)&PTR_LAB_007bbde0)[(int)param_2])();
-
-    return;
-
+  obj = (u8 *)param_1;
+  table = *(u8 **)(*(u8 **)(obj + 0x24) + 0x44);
+  switch (param_2) {
+  case 0:
+    if (param_3 == 0) {
+      item = *(u8 **)(obj + 4);
+      while (item != 0) {
+        owner = *(u8 **)(*(u8 **)(*(u8 **)(item + 0x14) + 0x1c) + 8);
+        FCL_SHOP_DISPATCH_BUILD(stack.source[7].primary, &stack.output[15].result, owner, 0);
+        item = *(u8 **)(item + 0x10);
+      }
+    }
+    else if (param_3 == 1) {
+      item = *(u8 **)(obj + 4);
+      while (item != 0) {
+        owner = *(u8 **)(*(u8 **)(*(u8 **)(item + 0x14) + 0x1c) + 8);
+        FCL_SHOP_DISPATCH_BUILD(stack.source[7].alternate, &stack.output[14].result, owner, 0);
+        item = *(u8 **)(item + 0x10);
+      }
+    }
+    break;
+  case 1:
+    if (param_3 == 0) {
+      item = *(u8 **)(obj + 4);
+      while (item != 0) {
+        owner = *(u8 **)(*(u8 **)(*(u8 **)(item + 0x14) + 0x1c) + 8);
+        FCL_SHOP_DISPATCH_BUILD(stack.source[6].primary, &stack.output[13].result, owner, 1);
+        item = *(u8 **)(item + 0x10);
+      }
+    }
+    else if (param_3 == 1) {
+      item = *(u8 **)(obj + 0xc);
+      if (item != 0) {
+        owner = *(u8 **)(*(u8 **)(*(u8 **)(item + 0x14) + 0x1c) + 8);
+        FCL_SHOP_DISPATCH_BUILD(stack.source[6].alternate, &stack.output[12].result, owner, 1);
+      }
+    }
+    break;
+  case 2:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[5].primary, &stack.output[11].result, owner, 2);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[5].alternate, &stack.output[10].result, owner, 2);
+    }
+    break;
+  case 3:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[4].primary, &stack.output[9].result, owner, 3);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[4].alternate, &stack.output[8].result, owner, 3);
+    }
+    break;
+  case 4:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[3].primary, &stack.output[7].result, owner, 4);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[3].alternate, &stack.output[6].result, owner, 4);
+    }
+    break;
+  case 5:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[2].primary, &stack.output[5].result, owner, 5);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[2].alternate, &stack.output[4].result, owner, 5);
+    }
+    break;
+  case 6:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[1].primary, &stack.output[3].result, owner, 6);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[1].alternate, &stack.output[2].result, owner, 6);
+    }
+    break;
+  case 7:
+    if (param_3 == 0) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[0].primary, &stack.output[1].result, owner, 7);
+    }
+    else if (param_3 == 1) {
+      owner = *(u8 **)(table + 8);
+      FCL_SHOP_DISPATCH_BUILD(stack.source[0].alternate, &stack.output[0].result, owner, 7);
+    }
+    break;
+  default:
+    break;
   }
-
-  return;
-
-}
-// FUN_00404790 NONMATCHING
-void FUN_00404790(void)
-{
-}
-
-// FUN_004049F4 NONMATCHING
-void FUN_004049f4(void)
-{
-}
-
-// FUN_00404C50 NONMATCHING
-void FUN_00404c50(void)
-{
-}
-
-// FUN_00404E7C NONMATCHING
-void FUN_00404e7c(void)
-{
-}
-
-// FUN_004050A8 NONMATCHING
-void FUN_004050a8(void)
-{
-}
-
-// FUN_004052D4 NONMATCHING
-void FUN_004052d4(void)
-{
-}
-
-// FUN_00405500 NONMATCHING
-void FUN_00405500(void)
-{
-}
-
-// FUN_0040572C NONMATCHING
-void FUN_0040572c(void)
-{
 }
 
 // FUN_00405970 NONMATCHING
