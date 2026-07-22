@@ -1478,12 +1478,12 @@ void func_001fb1f0(u64 param_1,int param_2,int *param_3)
 void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5)
 {
     int param_3_p = param_3;
-  s32 last;
-  u8 foundStart;
-  s32 i;
-  s32 upperBound;
-  s32 first;
-  u8 *entry;
+    s32 last;
+    u8 foundStart;
+    s32 i;
+    s32 upperBound;
+    s32 first;
+    u8 *entry;
 
   upperBound = param_2 + param_3_p;
   foundStart = 0;
