@@ -533,7 +533,7 @@ long FUN_00499140(long param_1,u32 param_2);
 long FUN_0049a080(long param_1);
 long FUN_0049a400(u32 *param_1);
 long FUN_0049c810(void);
-long FUN_0049fe40(long param_1,int param_2,long param_3);
+long FUN_0049fe40(int param_1,int param_2,int param_3);
 long FUN_0049fec0(long param_1,u32 param_2);
 long FUN_004a35c0(long param_1,long param_2,u32 param_3);
 long FUN_004a38f0(long param_1,long param_2,long param_3,long param_4);
@@ -2171,7 +2171,7 @@ long FUN_00499140(long param_1,u32 param_2);
 long FUN_0049a080(long param_1);
 long FUN_0049a400(u32 *param_1);
 long FUN_0049c810(void);
-long FUN_0049fe40(long param_1,int param_2,long param_3);
+long FUN_0049fe40(int param_1,int param_2,int param_3);
 long FUN_0049fec0(long param_1,u32 param_2);
 long FUN_004a35c0(long param_1,long param_2,u32 param_3);
 long FUN_004a38f0(long param_1,long param_2,long param_3,long param_4);
@@ -11839,33 +11839,33 @@ void FUN_00499230(void)
 }
 #pragma tailcall off
 
-// FUN_00499250 NONMATCHING
+#pragma schedule on
+#pragma tailcall on
+// FUN_00499250
 
 void FUN_00499250(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
                  u64 param_5)
 
 {
-  ((code)FUN_004c61b0)(0x77ddb0,param_1,param_2,param_3,param_4,param_5);
-  return;
+  FUN_004c61b0_raw((u32)DAT_0077ddb0_abs,param_1,param_2,param_3,param_4,param_5);
 }
 
-// FUN_00499280 NONMATCHING
+// FUN_00499280
 
 void FUN_00499280(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 {
-  ((code)FUN_004c5960)(0x77ddb0,param_1,param_2,param_3,param_4);
-  return;
+  FUN_004c5960_raw((u32)DAT_0077ddb0_abs,param_1,param_2,param_3,param_4);
 }
 
-// FUN_004992B0 NONMATCHING
+// FUN_004992B0
 
 void FUN_004992b0(u64 param_1,u64 param_2)
 
 {
-  ((code)FUN_004c59b0)(0x77ddb0,param_1,param_2);
-  return;
+  FUN_004c59b0_raw((u32)DAT_0077ddb0_abs,param_1,param_2);
 }
+#pragma tailcall off
 
 #pragma tailcall on
 // FUN_004992D0
@@ -16199,7 +16199,7 @@ u64 FUN_0049faa0(u64 param_1)
 
 // FUN_0049FE40 NONMATCHING
 
-long FUN_0049fe40(long param_1,int param_2,long param_3)
+long FUN_0049fe40(int param_1,int param_2,int param_3)
 
 {
   int iVar1;
