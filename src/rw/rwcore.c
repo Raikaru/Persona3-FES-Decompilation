@@ -5,6 +5,9 @@
     __asm__ volatile ("addiu $v1, $zero, %0\n" "syscall 0" \
                       : : "i"(number) : "memory")
 
+/* Deci2 wrappers use the syscall entry's two-argument ABI. */
+#pragma alias Deci2Call_typed FUN_00503590_Deci2Call
+extern long Deci2Call_typed(int command, void *args);
 /* auto-extern (generated) */
 extern u32 DAT_007cea80;
 extern u32 *DAT_007ce9c8;
@@ -1614,7 +1617,6 @@ undefined8 FUN_004cb270(undefined8 param_1)
 
 // FUN_004CB2F0 NONMATCHING
 int FUN_004cb2f0(int param_1)
-
 {
   if ((*(byte *)(*(int *)(param_1 + 0xa0) + 3) & 1) != 0) {
     FUN_004cf4c0(param_1);
@@ -5055,11 +5057,10 @@ void FUN_004d1840(int param_1,long param_2)
 void FUN_004d18c0(int param_1)
 
 {
-  if (*(int *)(param_1 + 4) == 0) {
-    return;
+  if (*(int *)(param_1 + 4) != 0) {
+    **(undefined4 **)(param_1 + 0xc) = *(undefined4 *)(param_1 + 8);
+    *(undefined4 *)(*(int *)(param_1 + 8) + 4) = *(undefined4 *)(param_1 + 0xc);
   }
-  **(undefined4 **)(param_1 + 0xc) = *(undefined4 *)(param_1 + 8);
-  *(undefined4 *)(*(int *)(param_1 + 8) + 4) = *(undefined4 *)(param_1 + 0xc);
   return;
 }
 
@@ -8404,6 +8405,8 @@ void FUN_004d6b10(void)
   _ctc2((uint)uVar1 | 2);
   return;
 }
+#pragma push
+#pragma schedule on
 // FUN_004D6B60 NONMATCHING
 int FUN_004d6b60(uint param_1)
 
@@ -8419,8 +8422,10 @@ int FUN_004d6b60(uint param_1)
     iVar1 = iVar1 + 1;
   } while (param_1 != 0);
 done:
+  asm volatile("" : "+m"(iVar1));
   return iVar1;
 }
+#pragma pop
 
 // FUN_004D6B90 NONMATCHING
 undefined8 FUN_004d6b90(long param_1,ulong param_2)
@@ -36757,7 +36762,7 @@ long FUN_00504440(uint param_1,undefined4 param_2,undefined4 param_3)
   puStack_14 = (u8 *)(&DAT_20966510);
   uStack_1c = param_2;
   uStack_18 = param_3;
-  return Deci2Call(1,&uStack_20);
+  return Deci2Call_typed(1,&uStack_20);
 }
 
 // FUN_00504488 NONMATCHING
@@ -36767,7 +36772,7 @@ void FUN_00504488(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(2,auStack_20);
+  Deci2Call_typed(2,auStack_20);
   return;
 }
 
@@ -36780,7 +36785,7 @@ long FUN_005044b0(undefined4 param_1,char param_2)
   
   iStack_1c = (int)param_2;
   uStack_20 = param_1;
-  return Deci2Call(3,&uStack_20);
+  return Deci2Call_typed(3,&uStack_20);
 }
 
 // FUN_005044E0 NONMATCHING
@@ -36790,7 +36795,7 @@ void FUN_005044e0(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(4,auStack_20);
+  Deci2Call_typed(4,auStack_20);
   return;
 }
 
@@ -36805,7 +36810,7 @@ void FUN_00504508(uint param_1,undefined4 param_2,undefined4 param_3)
   uStack_30 = param_1 & 0xff;
   uStack_2c = param_2;
   uStack_28 = param_3;
-  Deci2Call(0x20,&uStack_30);
+  Deci2Call_typed(0x20,&uStack_30);
   return;
 }
 
@@ -36816,7 +36821,7 @@ void FUN_00504538(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(0x21,auStack_20);
+  Deci2Call_typed(0x21,auStack_20);
   return;
 }
 
@@ -36831,7 +36836,7 @@ long FUN_00504560(undefined4 param_1,undefined4 param_2,uint param_3)
   uStack_18 = param_3 & 0xffff;
   uStack_20 = param_1;
   uStack_1c = param_2;
-  return Deci2Call(0xfffffffffffffffb,&uStack_20);
+  return Deci2Call_typed(0xfffffffffffffffb,&uStack_20);
 }
 
 // FUN_00504598 NONMATCHING
@@ -36845,7 +36850,7 @@ long FUN_00504598(undefined4 param_1,undefined4 param_2,uint param_3)
   uStack_18 = param_3 & 0xffff;
   uStack_20 = param_1;
   uStack_1c = param_2;
-  return Deci2Call(0xfffffffffffffffa,&uStack_20);
+  return Deci2Call_typed(0xfffffffffffffffa,&uStack_20);
 }
 
 // FUN_00504600 NONMATCHING
@@ -36855,7 +36860,7 @@ void FUN_00504600(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(0xfffffffffffffff8,auStack_20);
+  Deci2Call_typed(0xfffffffffffffff8,auStack_20);
   return;
 }
 
@@ -36866,7 +36871,7 @@ void FUN_00504628(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(0xfffffffffffffff7,auStack_20);
+  Deci2Call_typed(0xfffffffffffffff7,auStack_20);
   return;
 }
 
@@ -36877,7 +36882,7 @@ void FUN_00504650(undefined4 param_1)
   undefined4 auStack_20 [4];
   
   auStack_20[0] = param_1;
-  Deci2Call(0x10,auStack_20);
+  Deci2Call_typed(0x10,auStack_20);
   return;
 }
 
