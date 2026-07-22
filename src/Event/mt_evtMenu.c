@@ -613,6 +613,8 @@ code * FUN_0036ed30(u64 param_1);
 code * FUN_0036edd0(void);
 code * FUN_0036ee30(void);
 float FUN_0038a220(int param_1);
+#pragma alias FUN_00523ac8_evt4 FUN_00523ac8
+extern void FUN_00523ac8_evt4(u8 *param_1,void *param_2,int param_3,int param_4);
 float FUN_0038a900(int param_1);
 int FUN_00361830(int param_1);
 int FUN_00361ee0(int param_1,int param_2);
@@ -9413,11 +9415,11 @@ u32 FUN_0037a150(int param_1,int param_2,int param_3)
 
   
 
-  FUN_00523ac8(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
+  FUN_00523ac8_evt4(auStack_10,&gp0xffffa4b0,param_3 + 0x130,param_3 + 0x13c);
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,auStack_10);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,auStack_10);
 
   return 2;
 
@@ -14665,65 +14667,63 @@ void FUN_00380380(int param_1,int param_2,u32 param_3,u8 *param_4)
 
 
 {
-  u8 *pcVar4;
   int iVar2;
   int iVar3;
   f32 fVar1;
 
-  pcVar4 = param_4;
   iVar3 = 0;
-  if (*(int *)(pcVar4 + 0x190) == (int)param_3) {
+  if (*(int *)(param_4 + 0x190) == (int)param_3) {
     iVar3 = 4;
   }
 
   switch (param_3) {
   case 0:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2, fVar1,0,&gp0xffffa608);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x198));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
     break;
   case 1:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,DAT_0069fd78);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x19c));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x19c));
     break;
   case 2:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,&gp0xffffa610);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1a0));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x1a0));
     break;
   case 3:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,&gp0xffffa618);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1a4));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x1a4));
     break;
   case 4:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,DAT_0069fd88);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1a8));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x1a8));
     break;
   case 5:
     iVar2 = param_2 * 0xc;
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evt9(param_1 * 0xc,iVar2,fVar1,0,DAT_0069fd98);
-    fVar1 = FUN_0038a220(*(u32 *)(pcVar4 + 0xe0));
+    fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_evtA((param_1 + 0x10) * 0xc,iVar2,fVar1,iVar3,
-                      &gp0xffffa3b8,*(u32 *)(pcVar4 + 0x1ac));
+                      &gp0xffffa3b8,*(u32 *)(param_4 + 0x1ac));
     break;
   }
 }
