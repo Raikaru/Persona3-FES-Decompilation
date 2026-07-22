@@ -2440,12 +2440,12 @@ void func_00115bc0(int unused0, int unused1, int unused2,
   return;
 
 }
-// FUN_00115CD0 NONMATCHING
+// FUN_00115CD0
 
 
-void func_00115cd0(int unused0, int unused1, int unused2, u8 param_4,
-                   u8 param_5, u8 param_6, u8 param_7,
-                   f32 param_1, f32 param_2, f32 param_3)
+void func_00115cd0(int unused0, int unused1, int unused2,
+                   f32 param_1, f32 param_2, u8 param_4, u8 param_5,
+                   u8 param_6, u8 param_7, f32 param_3)
 
 
 
@@ -2514,9 +2514,9 @@ void func_00115cd0(int unused0, int unused1, int unused2, u8 param_4,
 // FUN_00115DE0 NONMATCHING
 
 
-void func_00115de0(int unused0, int unused1, int unused2, u16 param_4,
-                   u8 param_5, u8 param_6, u8 param_7, u8 param_8,
-                   f32 param_1, f32 param_2, f32 param_3)
+void func_00115de0(int unused0, int unused1, int unused2,
+                   f32 param_1, f32 param_2, u16 param_4, u8 param_5,
+                   u8 param_6, u8 param_7, u8 param_8, f32 param_3)
 
 
 {
@@ -2529,7 +2529,6 @@ void func_00115de0(int unused0, int unused1, int unused2, u16 param_4,
   
 
   uVar3 = func_001158b0(0);
-
   piVar2 = (int *)uVar3;
 
   ((f32 *)piVar2)[0xb] = param_3;
@@ -2578,7 +2577,6 @@ void func_00115de0(int unused0, int unused1, int unused2, u16 param_4,
   }
 
   MAESTRO_FREE((void*)piVar2);
-
   return;
 
 }
