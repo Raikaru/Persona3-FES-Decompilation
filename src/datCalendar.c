@@ -1121,11 +1121,14 @@ extern u32 DAT_007cdffc;
 
 
  
+#pragma push
+#pragma opt_loop_invariants on
+ 
 // FUN_0017d830 NONMATCHING
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
+    s16 days;
     s16 month;
-    register s16 days;
     const s16* numOfDays;
 
     month = CALENDAR_MONTH_APRIL;
@@ -1193,8 +1196,8 @@ s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 // FUN_0017d920 NONMATCHING
 u32 clndGetCurrentMonth()
 {
-    s16 month;
     s16 daysSinceApr5;
+    s16 month;
     const s16* numOfDays;
 
     daysSinceApr5 = datGetDaysSinceApr5();
@@ -1222,8 +1225,8 @@ u32 clndGetCurrentMonth()
 // FUN_0017d9c0 NONMATCHING
 s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
-    s16 month;
     s16 days;
+    s16 month;
     const s16* numOfDays;
 
     month = CALENDAR_MONTH_APRIL;
@@ -1252,8 +1255,8 @@ s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
 // FUN_0017da40. Return the current day of the month NONMATCHING
 u32 clndGetCurrentDay()
 {
-    s16 month;
     s16 daysSinceApr5;
+    s16 month;
     const s16* numOfDays;
     daysSinceApr5 = datGetDaysSinceApr5();
     month = CALENDAR_MONTH_APRIL;
@@ -1276,6 +1279,7 @@ u32 clndGetCurrentDay()
 
     return daysSinceApr5 + 1;
 }
+#pragma pop
 
 // FUN_0017dae0
 s32 clndGetWeekDay(s32 daysSinceApr5)
