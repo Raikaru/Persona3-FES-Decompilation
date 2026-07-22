@@ -67,7 +67,7 @@ bool FUN_0051bbd8(int param_1,u32 param_2);
 u64 FUN_0051a498(int param_1);
 u32 FUN_0051af98(int param_1,u64 *param_2);
 u64 FUN_0051b8d0(int param_1,u64 param_2,u32 param_3,u32 param_4);
-u32 FUN_00520410(int param_1,code *param_2);
+u32 FUN_00520410(int param_1,u32 (*param_2)(int));
 u32 FUN_0051c8a0(u32 param_1);
 u64 FUN_0051a9e0(u64 param_1,int param_2,u64 param_3,int param_4);
 extern u32 ram0x007827d8;
@@ -7807,7 +7807,7 @@ u64 FUN_0051f6a0(u64 param_1)
   thunk_FUN_0050da58(param_1);
   puVar2 = PTR_DAT_00782f30;
   if (extraout_a0 == 0) {
-    uVar4 = (int)(FUN_00520410((int)(u32)PTR_DAT_00782f30,(code *)0x51f728));
+    uVar4 = (int)(FUN_00520410((int)(u32)PTR_DAT_00782f30,(u32 (*)(int))0x51f728));
     return uVar4;
   }
   piVar6 = (int *)extraout_a0;
@@ -7869,7 +7869,7 @@ u64 FUN_0051f728(long param_1)
   
   puVar2 = PTR_DAT_00782f30;
   if (param_1 == 0) {
-    uVar4 = (int)(FUN_00520410((int)(u32)PTR_DAT_00782f30,(code *)0x51f728));
+    uVar4 = (int)(FUN_00520410((int)(u32)PTR_DAT_00782f30,(u32 (*)(int))0x51f728));
     return uVar4;
   }
   piVar6 = (int *)param_1;
@@ -8443,36 +8443,37 @@ LAB_005201f0:
   uVar8 = (u16)puVar7[3];
   goto joined_r0x00520184;
 }
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_00520410 NONMATCHING
-u32 FUN_00520410(int param_1,code *param_2)
+u32 FUN_00520410(int param_1,u32 (*param_2)(int))
 
 {
-  u32 uVar1;
-  int iVar2;
-  int iVar3;
   int *piVar4;
   u32 uVar5;
+  int iVar3;
+  int iVar2;
+  u32 uVar1;
   
   piVar4 = (int *)(param_1 + 0x1d8);
   uVar5 = 0;
-  if (piVar4 != (int *)0x0) {
-    iVar3 = *(int *)(param_1 + 0x1dc);
-    while( true ) {
-      iVar2 = piVar4[2];
-      while (iVar3 = iVar3 + -1, -1 < iVar3) {
-        if (*(short *)(iVar2 + 0xc) != 0) {
-          uVar1 = (*param_2)(iVar2);
-          uVar5 = uVar5 | uVar1;
-        }
-        iVar2 = iVar2 + 0x58;
+  while (piVar4 != (int *)0x0) {
+    iVar3 = piVar4[1];
+    iVar2 = piVar4[2];
+    while (-1 < iVar3) {
+      if (*(short *)(iVar2 + 0xc) != 0) {
+        uVar1 = param_2(iVar2);
+        uVar5 = uVar5 | uVar1;
       }
-      piVar4 = (int *)*piVar4;
-      if (piVar4 == (int *)0x0) break;
-      iVar3 = piVar4[1];
+      iVar3 = iVar3 + -1;
+      iVar2 = iVar2 + 0x58;
     }
+    piVar4 = (int *)*piVar4;
   }
   return uVar5;
 }
+#pragma schedule off
+#pragma optimization_level 2
 // FUN_005204A0 NONMATCHING
 u8 * FUN_005204a0(int param_1,u32 param_2,void *param_3)
 
