@@ -34,6 +34,10 @@ extern int FUN_0035ed20(int);
 extern int FUN_0035f130(void);
 extern char DAT_006a1050[];
 extern char DAT_006a1070[];
+#pragma alias DAT_006a1050_abs DAT_006a1050
+extern u8 DAT_006a1050_abs[];
+#pragma alias DAT_006a1070_abs DAT_006a1070
+extern u8 DAT_006a1070_abs[];
 
 
 /* Region call-cast macros */
@@ -403,7 +407,7 @@ done:
 }
 #define FUN_003973e0(...) ((u8 (*)(...))FUN_003973e0)(__VA_ARGS__)
 #undef FUN_00397450
-// FUN_00397450 NONMATCHING
+// FUN_00397450
 
 
 void FUN_00397450(void)
@@ -412,10 +416,9 @@ void FUN_00397450(void)
 
 {
 
+  int uVar1;
   int iVar3;
-  u16 uVar1;
   int lVar2;
-
   
 
   lVar2 = FUN_003b5cf0();
@@ -424,12 +427,12 @@ void FUN_00397450(void)
     return;
   }
   for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-    uVar1 = iVar3 + 900U & 0x3ff | 0xc00;
-    FUN_005225a8(DAT_006a1050,uVar1);
+    uVar1 = (u16)(iVar3 + 900U & 0x3ff | 0xc00);
+    FUN_005225a8(DAT_006a1050_abs,uVar1);
     lVar2 = FUN_003b5d10(uVar1);
     if (lVar2 != 0) {
       FUN_003b7090(uVar1);
-      FUN_005225a8(DAT_006a1070);
+      FUN_005225a8(DAT_006a1070_abs);
     }
   }
 
