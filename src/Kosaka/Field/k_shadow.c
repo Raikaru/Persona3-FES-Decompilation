@@ -277,17 +277,19 @@ void func_00199c60(RwCamera* camera)
     func_004ca030(camera);
 }
 
-// FUN_00199cf0 NONMATCHING
+// FUN_00199cf0
 void* func_00199cf0(void* atomic, FldShadowBoundsAccum* accum)
 {
     const RwSphere* sphere;
 
     sphere = func_004912b0(atomic);
-    if (accum->radius < sphere->radius)
+    if (sphere->radius > accum->radius)
     {
+        sphere = func_004912b0(atomic);
         accum->center = sphere->center;
         accum->largestAtomic = atomic;
     }
+    sphere = func_004912b0(atomic);
     accum->radius += sphere->radius;
     accum->count++;
     return atomic;
