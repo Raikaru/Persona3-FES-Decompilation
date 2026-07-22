@@ -12250,12 +12250,15 @@ void FUN_00449d60(u64 param_1)
   return;
 }
 
-// FUN_00449ED0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_00449ED0
 
 void FUN_00449ed0(void)
 
 {
   int iVar1;
+  int iVar2;
   
   iGpffffb9fc = (*DAT_00960184_abs)(1,200,0x40000);
   for (iVar1 = 0; iVar1 < 0x1e; iVar1 = iVar1 + 1) {
@@ -12268,11 +12271,13 @@ void FUN_00449ed0(void)
   *(u8 *)(iGpffffb9fc + 0xa5) = 0;
   *(u8 *)(iGpffffb9fc + 0xac) = 0;
   *(u8 *)(iGpffffb9fc + 0xad) = 1;
-  for (iVar1 = 0; iVar1 < 6; iVar1 = iVar1 + 1) {
-    *(u8 *)(iGpffffb9fc + iVar1 + 0xa6) = 2;
+  iVar1 = 2;
+  for (iVar2 = 0; iVar2 < 6; iVar2 = iVar2 + 1) {
+    *(u8 *)(iGpffffb9fc + iVar2 + 0xa6) = (u8)iVar1;
   }
   return;
 }
+#pragma pop
 
 // FUN_00449FA0
 
