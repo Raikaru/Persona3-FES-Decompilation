@@ -199,6 +199,29 @@ struct ResrcType7
     s32 unk_108;
 };
 
+typedef struct SceneInterpWork SceneInterpWork;
+struct SceneInterpWork
+{
+  u8 pad0[0x10];
+  float value10;
+  float value14;
+  float value18;
+  u8 pad1[0xc];
+  u32 flags28;
+  u8 pad2[0x38];
+  float value64;
+  float value68;
+  float value6c;
+  float value70;
+  float value74;
+  float value78;
+  u8 value7c;
+  u8 value7d;
+  u8 pad3[2];
+  u32 value80;
+  u32 value84;
+};
+
 
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
@@ -208,7 +231,7 @@ void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask);
 KwlnTask* MT_SceneFunc_CreateTasks();
 u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param_5);
 u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
-u8 FUN_003b8a60(long param_1,u32 *param_2,u32 param_3,u8 param_4);
+u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
 u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
@@ -356,6 +379,7 @@ u16 FUN_003bdbb0(void);
 #define FUN_003bdb80(...) ((float (*)(...))FUN_003bdb80)(__VA_ARGS__)
 #define FUN_003bdba0(...) ((u32 (*)(...))FUN_003bdba0)(__VA_ARGS__)
 #define FUN_003bdbb0(...) ((u16 (*)(...))FUN_003bdbb0)(__VA_ARGS__)
+
 
 #pragma push
 #pragma opt_loop_invariants on
@@ -532,66 +556,52 @@ u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 }
 #define FUN_003b89f0(...) ((u64 (*)(...))FUN_003b89f0)(__VA_ARGS__)
 #undef FUN_003b8a60
+#undef FUN_003bba70
+#undef FUN_003bb9b0
+
 // FUN_003B8A60 NONMATCHING
 
 
-u8 FUN_003b8a60(long param_1,u32 *param_2,u32 param_3,u8 param_4)
-
-
-
+u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
 {
+  float values[3];
+  float source10;
+  float source14;
+  float source18;
 
-  int iVar1;
+  source10 = 0.0f;
+  source14 = 0.0f;
+  source18 = 0.0f;
+  values[0] = param_2[0];
+  values[1] = param_2[1];
+  values[2] = param_2[2];
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  uStack_10 = *param_2;
-
-  uStack_c = param_2[1];
-
-  uStack_8 = param_2[2];
-
-  if (param_1 != 0) {
-
-    FUN_003bba70();
-
-    FUN_003bb9b0(&uStack_10);
-
-    iVar1 = (int)param_1;
-
-    *(u32 *)(iVar1 + 0x28) = *(u32 *)(iVar1 + 0x28) | 4;
-
-    *(u32 *)(iVar1 + 100) = *(u32 *)(iVar1 + 0x10);
-
-    *(u32 *)(iVar1 + 0x68) = *(u32 *)(iVar1 + 0x14);
-
-    *(u32 *)(iVar1 + 0x6c) = *(u32 *)(iVar1 + 0x18);
-
-    *(u32 *)(iVar1 + 0x70) = uStack_10;
-
-    *(u32 *)(iVar1 + 0x74) = uStack_c;
-
-    *(u32 *)(iVar1 + 0x78) = uStack_8;
-
-    *(u8 *)(iVar1 + 0x7c) = 0;
-
-    *(u8 *)(iVar1 + 0x7d) = param_4;
-
-    *(u32 *)(iVar1 + 0x80) = param_3;
-
-    *(u32 *)(iVar1 + 0x84) = 0;
-
+  if (param_1 == 0) {
+    return 0;
   }
 
-  return param_1 != 0;
+  FUN_003bba70((int)param_1);
+  FUN_003bb9b0(values);
+  param_1->flags28 |= 4;
+  source10 = param_1->value10;
+  source18 = param_1->value18;
+  source14 = param_1->value14;
+  param_1->value64 = source10;
+  param_1->value68 = source14;
+  param_1->value6c = source18;
+  param_1->value70 = values[0];
+  param_1->value74 = values[1];
+  param_1->value78 = values[2];
+  param_1->value7c = 0;
+  param_1->value7d = param_4;
+  param_1->value80 = param_3;
+  param_1->value84 = 0;
 
+  return 1;
 }
+
+#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
+#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
 #define FUN_003b8a60(...) ((u8 (*)(...))FUN_003b8a60)(__VA_ARGS__)
 #undef FUN_003b8b30
 // FUN_003B8B30 NONMATCHING
