@@ -191,7 +191,7 @@ void FUN_00167ec0(KwlnTask*);
 void FUN_00167ef0(KwlnTask*);
 void FUN_00167f10(KwlnTask*);
 u32 FUN_00167f30(KwlnTask*);
-KwlnTask* FUN_00167f40(KwlnTask*, u32, u64, u16, u16, u16);
+KwlnTask* FUN_00167f40(KwlnTask*, u32, ulong, u16, u16, u16);
 u32 FUN_00168040(void);
 u32 FUN_00168100(void);
 bool FUN_001681d0(void);
@@ -685,7 +685,7 @@ u32 FUN_00167f30(KwlnTask* task)
 }
 
 // FUN_00167f40 NONMATCHING
-KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, u64 packedValue,
+KwlnTask* FUN_00167f40(KwlnTask* parent, u32 priority, ulong packedValue,
                        u16 param4, u16 param5, u16 param6)
 {
     CampBridgeScreenWork* work;
@@ -743,12 +743,12 @@ u32 FUN_00168040(void)
 // FUN_00168100 NONMATCHING
 u32 FUN_00168100(void)
 {
-    u16 value;
+    s16 value;
     void* allocated;
     KwlnTask* taskValue;
 
-    value = (u16)scrGetIntPara(0);
-    allocated = (*DAT_00960184)(1, 0x14, 0x40000);
+    value = (s16)scrGetIntPara(0);
+    allocated = (*DAT_00960184_abs)(1, 0x14, 0x40000);
     if (allocated == 0) {
         taskValue = 0;
     }
@@ -1259,12 +1259,12 @@ void FUN_001691F0(undefined8 param_1, undefined8 param_2,
 // FUN_00169330 NONMATCHING
 undefined4 FUN_00169330(void)
 {
-    s16 language;
     void* allocation;
     void* task;
+    s16 language;
 
     language = (s16)FUN_0035ed20(0);
-    allocation = (*DAT_00960184)(1, 0x28, 0x40000);
+    allocation = (*DAT_00960184_abs)(1, 0x28, 0x40000);
     if (allocation == NULL) {
         task = NULL;
     } else {
@@ -1536,7 +1536,7 @@ void FUN_00169B90(undefined8 param_1, undefined8 param_2,
 // FUN_0016A030 NONMATCHING
 undefined4 FUN_0016A030(void)
 {
-    s16 itemId;
+    u16 itemId;
     u16 source;
     s16 category;
     u32 amount;
@@ -1559,7 +1559,7 @@ undefined4 FUN_0016A030(void)
         source = 0xffff;
         for (i = 0; i < 300; i++) {
             category = (s16)i;
-            itemId = (s16)func_00170760(0xffff, category + 4000);
+            itemId = (u16)func_00170760(0xffff, category + 4000);
             if (itemId != 0) {
                 amount = func_00170760(0xffff, category + 4000);
                 secondaryAmount = func_00170760(1, category + 4000);
@@ -1594,19 +1594,19 @@ undefined4 FUN_0016A030(void)
 
     sourceCount = 0;
     for (i = 0; i < 0x14; i++) {
-        if ((s16)FUN_0016f630(source, i) != 0) {
+        if ((u16)FUN_0016f630(source, i) != 0) {
             sourceCount++;
         }
     }
     generatedCount = 0;
     for (i = 0; i < 300; i++) {
-        if ((s16)FUN_0016f630(1, i) != 0) {
+        if ((u16)FUN_0016f630(1, i) != 0) {
             generatedCount++;
         }
     }
     if (sourceCount + generatedCount < 0x12d) {
         for (lastMode = 0; lastMode < 0x14; lastMode++) {
-            itemId = (s16)FUN_0016f630(source, lastMode);
+            itemId = (u16)FUN_0016f630(source, lastMode);
             if (itemId != 0) {
                 itemRecord.itemId = (u16)FUN_0016f630(source, lastMode);
                 itemRecord.quantity = FUN_0016f720(source, lastMode);
@@ -1624,7 +1624,7 @@ undefined4 FUN_0016A030(void)
     } else {
         if (lastMode != -1) {
             for (lastMode = 0; lastMode < 0x14; lastMode++) {
-                itemId = (s16)FUN_0016f630(source, lastMode);
+                itemId = (u16)FUN_0016f630(source, lastMode);
                 if (itemId != 0) {
                     packed = FUN_0016f630(source, lastMode);
                     FUN_0016fea0(0xffffffffffffffffULL, lastMode, packed);

@@ -477,18 +477,19 @@ void func_001f0ad0(KwlnTask *task, const u8 *params)
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
-    void *work = task->workData;
+    u8 *work;
     s32 i;
     s32 j;
-    void *entry;
+    u8 *entry;
+    work = task->workData;
 
     for (i = 0; i < (s32)BR_U32(work, 0xb0); i++) {
         entry = (u8 *)work + i * 8;
         if (dat00171360(BR_U16(entry, 0x98)) != 0) {
             func_00171390(BR_U16(entry, 0x98));
         } else {
-            u32 level = func_00170760(1, BR_S16(entry, 0x98));
-            level = (level & 0xffff) + BR_S32(entry, 0x9c);
+            s32 level = (s32)(func_00170760(1, BR_S16(entry, 0x98)) & 0xffff);
+            level += BR_S32(entry, 0x9c);
             if (level >= 100) {
                 level = 99;
             }
@@ -643,7 +644,7 @@ void *func_001f1210(void)
 void func_001f1240(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
-    register f32 ratio;
+    f32 ratio;
 
     K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
     if ((BR_U32(work, 0) & 2) == 0) {
@@ -1964,12 +1965,12 @@ void func_001f64c0(void)
         if (BR_U32(work, 8) == 1) {
             if ((flags & 0x400) == 0) {
                 for (i = 0; i < BR_U32(work, 0x341c); i++) {
-                    u32 idx = BR_U32(work, 0x3c + i * 4);
+                    u32 idx = BR_U32(work + i * 4, 0x3c);
                     u8 *entry = work + idx * 0x670 + 0x5c;
                     func_0020b250(entry + 0xc);
                 }
                 for (i = 0; i < BR_U32(work, 0x3418); i++) {
-                    u32 idx = BR_U32(work, 0x1c + i * 4);
+                    u32 idx = BR_U32(work + i * 4, 0x1c);
                     u8 *entry = work + idx * 0x670 + 0x5c;
                     func_0020b250(entry + 0xc);
                 }
