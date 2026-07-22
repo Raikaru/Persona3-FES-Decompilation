@@ -7704,39 +7704,55 @@ u64 FUN_00491ff0(u64 param_1,int param_2)
   return param_1;
 }
 
-// FUN_00492020 NONMATCHING
+#pragma schedule on
+// FUN_00492020
 
 u64 FUN_00492020(u64 param_1,int param_2)
 {
   u64 result;
   u32 *puVar1;
-  
+  u32 first;
+  u32 second;
+
   result = param_1;
   puVar1 = (u32 *)((u8 *)param_2 + iGpffffbb24);
-  *(u32 *)puVar1[2] = puVar1[1];
-  *(u32 *)(puVar1[1] + 4) = puVar1[2];
+  first = puVar1[1];
+  second = puVar1[2];
+  *(u32 *)second = first;
+  second = puVar1[2];
+  first = puVar1[1];
+  *(u32 *)(first + 4) = second;
   puVar1[2] = 0;
   puVar1[1] = 0;
   *puVar1 = 0;
   return result;
 }
 
-// FUN_00492060 NONMATCHING
+#pragma schedule on
+// FUN_00492060
 
 u64 FUN_00492060(u64 param_1,int param_2)
-
 {
+  u64 result;
   u32 *puVar1;
-  
+  u32 first;
+  u32 second;
+
+  result = param_1;
   puVar1 = (u32 *)(param_2 + iGpffffbb20);
-  *(u32 *)puVar1[2] = puVar1[1];
-  *(u32 *)(puVar1[1] + 4) = puVar1[2];
+  first = puVar1[1];
+  second = puVar1[2];
+  *(u32 *)second = first;
+  second = puVar1[2];
+  first = puVar1[1];
+  *(u32 *)(first + 4) = second;
   puVar1[2] = 0;
   puVar1[1] = 0;
   *puVar1 = 0;
-  return param_1;
+  return result;
 }
 
+#pragma schedule off
 // FUN_004920A0 NONMATCHING
 
 long FUN_004920a0(u64 param_1)
@@ -12431,11 +12447,9 @@ LAB_0049a39c:
 // FUN_0049A3D0 NONMATCHING
 u32 FUN_0049a3d0(u32 param_1,code *param_2)
 {
-  if (param_2 != (code *)0x0) {
-    goto write_callback;
+  if (param_2 == (code *)0x0) {
+    param_2 = (code *)FUN_00499b90;
   }
-  param_2 = (code *)FUN_00499b90;
-write_callback:
   *(code **)((int)param_1 + 0x68) = param_2;
   return param_1;
 }
