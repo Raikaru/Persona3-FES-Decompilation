@@ -738,21 +738,28 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
 // FUN_00318770 NONMATCHING
 void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
 {
-    MdlAnim* anim;
+    u8* slotBase;
+    MdlAnimEntryTable* table;
+    RpHAnimHierarchy* hierarchy;
+    s16 id;
+    f32 scaledFrame;
 
-    frame *= gFrameDuration;
-    anim = &mdl->animSlots[slotIdx].anim;
-    if (anim->id >= 0 && anim->table != NULL && anim->id < anim->table->count &&
-        anim->table->entries[anim->id].rtAnim != NULL &&
-        anim->table->entries[anim->id].rtAnim != &DAT_009571d0)
+    scaledFrame = gFrameDuration * frame;
+    slotBase = (u8*)mdl + (u32)slotIdx * sizeof(MdlAnimSlot);
+    id = *(s16*)(slotBase + 4);
+    table = *(MdlAnimEntryTable**)(slotBase + 0x2c);
+    if (id >= 0 && table != NULL && id < table->count &&
+        table->entries[id].rtAnim != NULL &&
+        table->entries[id].rtAnim != &DAT_009571d0)
     {
-        FUN_004b74c0(frame, anim->hierarchy->currentAnim);
-        anim->flags |= MDLANIM_FLAG_FRAMESET;
+        hierarchy = *(RpHAnimHierarchy**)(slotBase + 0x20);
+        FUN_004b74c0(scaledFrame, hierarchy->currentAnim);
+        *(u16*)((u8*)mdl + (u32)slotIdx * sizeof(MdlAnimSlot)) |= MDLANIM_FLAG_FRAMESET;
     }
 
     if (slotIdx == 0)
     {
-        func_00314730(frame, (u8*)mdl + 0x364);
+        func_00314730(scaledFrame, (u8*)mdl + 0x364);
     }
 }
 
@@ -1153,7 +1160,7 @@ void func_00312e80(int param_1);
 long func_00312f90(long param_1);
 u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
-int func_00313f40(int param_1,u64 param_2);
+int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
@@ -3721,22 +3728,18 @@ void func_00313e60(void* param_1)
 // FUN_00313F40 NONMATCHING
 
 
-int func_00313f40(int param_1,u64 param_2)
+int func_00313f40(int param_1,void* param_2)
 {
-  int *piVar1;
-  int *piVar2;
-
-  for (piVar1 = (int *)func_004c21d0(param_2);
-       ; piVar1++) {
-    piVar2 = (int *)func_004c21e0(param_2);
-    if (piVar1 == piVar2) {
-      piVar1 = (int *)func_004c1e70(param_2,0);
-      *piVar1 = param_1;
+  register int *piVar1;
+  piVar1 = (int *)func_004c21d0(param_2);
+  while (piVar1 != (int *)func_004c21e0(param_2)) {
+    if (param_1 == *piVar1) {
       return param_1;
     }
-    if (param_1 == *piVar1) break;
+    piVar1++;
   }
 
+  *(int *)func_004c1e70(param_2,0) = param_1;
   return param_1;
 }
 
