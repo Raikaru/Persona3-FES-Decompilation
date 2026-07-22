@@ -1153,7 +1153,7 @@ void func_00312e80(int param_1);
 long func_00312f90(long param_1);
 u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
-int func_00313f40(int param_1,u64 param_2);
+int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
@@ -1278,20 +1278,20 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
     u8* out;
     u8* in1;
     u8* in2;
-
+    u8* in2Out;
     offset2 = param_2->offsetInParent;
     offset3 = param_3->offsetInParent;
     offset4 = param_4->offsetInParent;
     for (frame = offset2; frame < param_2->numNodes + param_2->offsetInParent; frame++)
     {
         in2 = (u8*)param_4 +
-              param_4->currentInterpKeyFrameSize * (frame - offset4);
+              param_4->currentInterpKeyFrameSize * (frame - offset4) + 0x4c;
         out = (u8*)param_2 +
               param_2->currentInterpKeyFrameSize * (frame - offset2);
         in1 = (u8*)param_3 +
               param_3->currentInterpKeyFrameSize * (frame - offset3);
-        alpha = *(f32*)(in2 + 0x7c);
-        param_2->keyFrameBlendCB(out + 0x4c, in1 + 0x4c, in2 + 0x4c,
+        alpha = *(f32*)(in2 + 0x30);
+        param_2->keyFrameBlendCB(out + 0x4c, in1 + 0x4c, in2,
                                  param_1 * alpha);
     }
     return 1;
@@ -3735,33 +3735,22 @@ void func_00313e60(void* param_1)
 // FUN_00313F40 NONMATCHING
 
 
-int func_00313f40(int param_1,u64 param_2)
-
-
-
+int func_00313f40(int param_1,void* param_2)
 {
-
   int *piVar1;
-  int *piVar2;
+  void *registry;
 
-
-  
-
-  piVar1 = (int *)func_004c21d0(param_2);
-
-  while( true ) {
-    piVar2 = (int *)func_004c21e0(param_2);
-    if (piVar1 == piVar2) {
+  registry = param_2;
+  piVar1 = (int *)func_004c21d0(registry);
+  while (param_1 != *piVar1) {
+    piVar1 = piVar1 + 1;
+    if (piVar1 == (int *)func_004c21e0(registry)) {
       piVar1 = (int *)func_004c1e70(param_2,0);
       *piVar1 = param_1;
       return param_1;
     }
-    if (param_1 == *piVar1) break;
-    piVar1 = piVar1 + 1;
   }
-
   return param_1;
-
 }
 
 
@@ -5693,47 +5682,27 @@ u64 func_00316360(u64 param_1,u32 *param_2)
 
 
 
-// FUN_00316410 NONMATCHING
+// FUN_00316410
 
 
-u64 func_00316410(u64 param_1)
-
-
-
+u32 func_00316410(void* param_1)
 {
+  extern u32 func_00469030(u32);
+  extern void func_00469510(u32, u32);
+  u8 *interp;
+  u32 count;
+  u32 index;
+  u32 entry;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
-
-  
-
-  iVar1 = *(int *)((int)param_1 + 0x18);
-
-  uVar2 = *(u32 *)(iVar1 + 0x24);
-
-  for (uVar5 = 0; uVar5 < uVar2; uVar5 = uVar5 + 1) {
-
-    uVar3 = *(u32 *)(*(int *)(iVar1 + 0x20) + uVar5 * 4);
-
-    uVar4 = func_00469030(uVar3);
-
-    if ((uVar4 & 2) != 0) {
-
-      func_00469510(uVar3,1);
-
+  interp = *(u8 **)((u8 *)param_1 + 0x18);
+  count = *(u32 *)(interp + 0x24);
+  for (index = 0; index < count; index++) {
+    entry = *(u32 *)(*(u32 **)(interp + 0x20) + index);
+    if ((func_00469030(entry) & 2) != 0) {
+      func_00469510(entry, 1);
     }
-
   }
-
-  return param_1;
-
+  return (u32)param_1;
 }
 
 
