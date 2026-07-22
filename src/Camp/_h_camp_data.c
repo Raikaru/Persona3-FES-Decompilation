@@ -2071,8 +2071,11 @@ void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
     if (iGpffffb2c0 == NULL) {
         FUN_0019d3f0(D_005E3098, 0xb8);
     }
-    group = &iGpffffb2c0->groups[param_1 & 0xffff];
-    record = &group->records[param_2 & 0xffff];
+    group = (CampDataBridgeGroup*)((param_1 & 0xffff) * sizeof(CampDataBridgeGroup) +
+        (u8*)iGpffffb2c0);
+    record = group->records;
+    record = (CampDataBridgeRecord*)((param_2 & 0xffff) * sizeof(CampDataBridgeRecord) +
+        (u8*)record);
     FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
 }
 
