@@ -66,7 +66,7 @@ int FUN_003f1690(u64 param_1);
 int clndIsDateInRangeFromStart(s8 month, s8 day, u32 range);
 void FUN_0017c220(u16 *param_1);
 u16 FUN_003f1720(u32 param_1,u16 param_2);
-u32 FUN_003f1830(u16 *param_1,short param_2);
+u32 FUN_003f1830(short *param_1,short param_2);
 u32 FUN_003f1910(u64 param_1);
 u32 FUN_003f1a10(u32 param_1);
 void FUN_003f1ba0(long param_1,u32 param_2);
@@ -2026,34 +2026,25 @@ u16 FUN_003f1720(u32 param_1,u16 param_2)
 // FUN_003F1830 NONMATCHING
 
 
-u32 FUN_003f1830(u16 *param_1,short param_2)
+u32 FUN_003f1830(short *param_1,short param_2)
 
 
 
 {
 
-  u16 uVar1;
-
   int iStack_4;
+  short sVar1;
 
   
-
   iStack_4 = -1;
-
-  uVar1 = *param_1;
-
-  func_00170ed0(uVar1,&iStack_4);
+  sVar1 = *param_1;
+  func_00170ed0(sVar1,&iStack_4);
 
   if (iStack_4 == 4) {
-
-    func_00170c00(1,uVar1,-param_2);
-
+    func_00170c00(1,sVar1,-param_2);
   }
-
   else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
-
     func_0016fea0(1,param_1[1],0);
-
   }
 
   return 1;
