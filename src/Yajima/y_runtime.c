@@ -15868,22 +15868,20 @@ void FUN_004532d0(char param_1)
 
 void FUN_004533e0(u8 param_1)
 {
-  u8 *puVar1;
-  u8 *puVar2;
   int iVar2;
   int bVar1;
-  int one;
+  u8 *puVar1;
+  u8 *puVar2;
 
   iVar2 = 0;
-  one = 1;
   puVar2 = DAT_0086eda0_bytes;
   while (iVar2 < 0x18) {
     bVar1 = 0;
     puVar1 = puVar2 + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
-      bVar1 = one;
+      bVar1 = 1;
     }
-    if (bVar1 == one) {
+    if (bVar1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x41) = param_1;
     }
     iVar2 = iVar2 + 1;
@@ -16122,8 +16120,8 @@ void FUN_00453d90(char param_1)
     *(u16 *)(iVar7 + 0xc9a) = 0;
     iVar8 = iVar8 + 1;
   }
-  bVar2 = *(u8 *)(iVar4 + 0x8b);
-  bVar1 = *(u8 *)(iVar4 + 0x8c);
+  bVar2 = *(volatile u8 *)(iVar4 + 0x8b);
+  bVar1 = *(volatile u8 *)(iVar4 + 0x8c);
   iVar7 = *(int *)(iVar4 + 0x94);
   iVar8 = iVar4 + iVar7 * 4;
   *(u16 *)(iVar8 + 0xc98) = bVar2;
@@ -16131,7 +16129,6 @@ void FUN_00453d90(char param_1)
   iVar8 = iVar4 + iVar7 * 4;
   *(u16 *)(iVar8 + 0xc9a) = bVar1;
   do {
-    iVar7 = *(int *)(iVar4 + 0x94);
     iVar8 = iVar4 + iVar7 * 4;
     sVar2 = *(short *)(iVar8 + 0xc9a);
     iVar9 = (int)sVar2 << 4;
