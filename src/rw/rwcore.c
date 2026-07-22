@@ -4918,7 +4918,7 @@ void FUN_004d13b0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 }
 
 #pragma schedule on
-// FUN_004D13E0 NONMATCHING
+// FUN_004D13E0
 bool FUN_004d13e0(void)
 {
   int lVar1;
@@ -14860,7 +14860,7 @@ undefined8 FUN_004e2b70(ulong param_1)
 }
 
 #pragma optimization_level 3
-// FUN_004E2F00 NONMATCHING
+// FUN_004E2F00
 undefined * FUN_004e2f00(void)
 
 {
