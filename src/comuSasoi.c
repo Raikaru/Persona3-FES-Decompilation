@@ -657,54 +657,39 @@ LAB_003c2db0:
 }
 #define FUN_003c2c50(...) ((u8 (*)(...))FUN_003c2c50)(__VA_ARGS__)
 #undef FUN_003c2df0
-// FUN_003C2DF0 NONMATCHING
 
 
+#pragma opt_loop_invariants on
 u32 FUN_003c2df0(u32 param_1)
-
-
-
 {
-
   int iVar1;
-
   u32 uVar2;
-
   u32 uVar3;
-
   u8 *pbVar4;
-
   int iVar5;
+  int iVar6;
+  u8 bVar7;
 
   iVar1 = FUN_003bd870();
-
   uVar2 = FUN_0017d920();
-
   uVar3 = FUN_0017da40();
-
   iVar5 = 0;
-
-  while (1) {
-    if (*(int *)(iVar1 + 0x654) <= iVar5) {
-      return 0;
-    }
-
-    pbVar4 = (u8 *)(*(int *)(iVar1 + 0x650) + iVar5 * 3);
-
+  iVar6 = *(int *)(iVar1 + 0x654);
+  bVar7 = 0xff;
+  while (iVar5 < iVar6) {
+    pbVar4 = (u8 *)*(int *)(iVar1 + 0x650);
+    pbVar4 = pbVar4 + iVar5 * 3;
     if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (param_1 == pbVar4[2])) {
-      break;
-    }
-
-    if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (pbVar4[2] == 0xff)) {
       return 1;
     }
-
+    if (((uVar2 == *pbVar4) && (uVar3 == pbVar4[1])) && (pbVar4[2] == bVar7)) {
+      return 1;
+    }
     iVar5 = iVar5 + 1;
   }
-
-  return 1;
-
+  return 0;
 }
+#pragma opt_loop_invariants off
 #define FUN_003c2df0(...) ((u32 (*)(...))FUN_003c2df0)(__VA_ARGS__)
 #undef FUN_003c2ee0
 // FUN_003C2EE0 NONMATCHING
