@@ -50077,7 +50077,7 @@ void FUN_0034d810(int param_1,int param_2)
 
 
 
-// FUN_0034D8A0 NONMATCHING
+// FUN_0034D8A0
 
 void FUN_0034d8a0(int param_1,u16 param_2,int param_3)
 
@@ -51291,7 +51291,7 @@ void FUN_0034e800(int param_1,int param_2)
 
 
 
-// FUN_0034E820 NONMATCHING
+// FUN_0034E820
 
 void FUN_0034e820(int param_1,u16 param_2,int param_3)
 
