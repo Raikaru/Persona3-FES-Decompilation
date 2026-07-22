@@ -230,7 +230,9 @@ void MT_SceneFunc_DestroySceneMngTask(KwlnTask* sceneMngTask);
 void* MT_SceneFunc_UpdateSceneMngDrawTask(KwlnTask* sceneMngDrawTask);
 KwlnTask* MT_SceneFunc_CreateTasks();
 u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param_5);
-u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
+#pragma alias FUN_003b88c0_scene FUN_003b88c0
+extern u32 FUN_003b88c0_scene(Resrc *param_1,u32 param_2,float param_3,u32 param_4);
+u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
@@ -318,7 +320,7 @@ u16 FUN_003bdbb0(void);
 
 /* Region call-cast macros */
 #define FUN_003b88c0(...) ((u32 (*)(...))FUN_003b88c0)(__VA_ARGS__)
-#define FUN_003b89f0(...) ((u64 (*)(...))FUN_003b89f0)(__VA_ARGS__)
+#define FUN_003b89f0(...) ((u32 (*)(...))FUN_003b89f0)(__VA_ARGS__)
 #define FUN_003b8a60(...) ((u8 (*)(...))FUN_003b8a60)(__VA_ARGS__)
 #define FUN_003b8b30(...) ((u32 (*)(...))FUN_003b8b30)(__VA_ARGS__)
 #define FUN_003b8c30(...) ((u32 (*)(...))FUN_003b8c30)(__VA_ARGS__)
@@ -526,37 +528,37 @@ u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param
 }
 #define FUN_003b88c0(...) ((u32 (*)(...))FUN_003b88c0)(__VA_ARGS__)
 #undef FUN_003b89f0
-// FUN_003B89F0 NONMATCHING
+// FUN_003B89F0
 
-u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
+u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4)
 
 
 
 {
 
   u32 lVar1;
-  u64 uVar2;
+  u32 uVar2;
 
   
 
   lVar1 = FUN_003b5d10();
 
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
 
-    uVar2 = 0;
+    uVar2 = FUN_003b88c0_scene((Resrc *)lVar1,param_2,param_3,param_4);
 
   }
 
   else {
 
-    uVar2 = FUN_003b88c0(param_1,lVar1,param_3,param_4);
+    uVar2 = 0;
 
   }
 
   return uVar2;
 
 }
-#define FUN_003b89f0(...) ((u64 (*)(...))FUN_003b89f0)(__VA_ARGS__)
+#define FUN_003b89f0(...) ((u32 (*)(...))FUN_003b89f0)(__VA_ARGS__)
 #undef FUN_003b8a60
 #undef FUN_003bba70
 #undef FUN_003bb9b0
