@@ -34305,6 +34305,7 @@ void FUN_0033d890(int param_1)
   int iVar3;
 
   u32 *puVar4;
+  volatile u32 *puVar5;
 
   
 
@@ -34316,9 +34317,8 @@ void FUN_0033d890(int param_1)
 
   FUN_00493370(*(u32 *)(*(int *)(puVar1 + 8) + 0x18),2);
 
-  FUN_00521408(*(u32 *)(*(int *)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c) + 0x14),0,
-
-               (short)puVar1[4] * 0xc);
+  puVar5 = *(u32 **)(*(int *)(*(int *)(puVar1 + 8) + 0x18) + 0x5c);
+  FUN_00521408(puVar5[5],0,(short)puVar1[4] * 0xc);
 
   iVar3 = *(int *)(*(int *)(puVar1 + 8) + 0x18);
 
