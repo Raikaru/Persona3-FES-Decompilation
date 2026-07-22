@@ -14471,7 +14471,7 @@ void FUN_00401170(u64 param_1)
 
 }
 
-// FUN_00401210 NONMATCHING
+// FUN_00401210
 
 
 u32 FUN_00401210(int param_1)
@@ -14481,9 +14481,9 @@ u32 FUN_00401210(int param_1)
   u32 uVar2;
   u32 uVar4;
   u32 uVar3;
+  u32 *puVar2;
   code pcVar3;
   int iVar4;
-
   puVar1 = *(u32 **)(param_1 + 0x3c);
   uVar4 = *puVar1;
   uVar3 = uVar4 & 1;
@@ -14493,10 +14493,11 @@ u32 FUN_00401210(int param_1)
   puVar4 = (u32 *)puVar1[2];
   if (uVar3 != 0) {
     for (iVar4 = *(int *)(puVar4 + 1); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
-      uVar2 = (*(u32 **)(iVar4 + 0x14))[2];
-      if (((*(int *)(uVar2 + 0x14) == 0) && ((**(u32 **)(iVar4 + 0x14) & 1) != 0)) &&
+      puVar2 = *(u32 **)(iVar4 + 0x14);
+      uVar2 = puVar2[2];
+      if (((*(int *)(uVar2 + 0x14) == 0) && ((*puVar2 & 1) != 0)) &&
          (pcVar3 = *(code *)(uVar2 + 4), pcVar3 != (code)0)) {
-        (*pcVar3)(puVar1);
+        (*pcVar3)(puVar1,puVar2);
       }
     }
   }
