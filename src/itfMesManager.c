@@ -147,9 +147,17 @@ int FUN_003a5100(int param_1);
 u32 FUN_003a5120(int param_1,int param_2);
 u32 FUN_003a51a0(int param_1);
 void FUN_003a5210(int param_1,u64 param_2,u8 param_3,u8 param_4,  s16 param_5);
-u64  FUN_003a52c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7,u64 param_8);
-u64  FUN_003a53b0(int param_1,int param_2,u64 param_3,u8 param_4,u8 param_5,  u32 param_6,int param_7,int param_8);
-void FUN_003a5540(int p1,int p2,u64 p3,u8 p4,u8 p5,int p6,int p7);
+u64  FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
+                  s32 param_5,s32 param_6,s32 param_7,s32 param_8);
+u64  FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,  u32 param_6,int param_7,int param_8,int param_9);
+#pragma alias FUN_003a53b0_8 FUN_003a53b0
+extern u64 FUN_003a53b0_8(int param_1,int param_2,u64 param_3,int param_4,int param_5,
+                          u32 param_6,int param_7,int param_8);
+#pragma alias FUN_003a5fd0_typed FUN_003a5fd0
+void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
+#pragma alias FUN_003b0ce0_typed FUN_003b0ce0
+extern void FUN_003b0ce0_typed(u64 param_1,u64 param_2);
+void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7);
 u64  FUN_003a5570(u32 param_1,u64 param_2,u64 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,u64 param_8,u64 param_9  );
 u64  FUN_003a56f0(u32 param_1,u64 param_2,u64 param_3,u32 param_4,  u64 param_5,long param_6,u64 param_7,long param_8,u64 param_9,  int param_10,int param_11);
 u32 FUN_003a5940(int param_1,int param_2);
@@ -255,7 +263,7 @@ u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
 #define FUN_003a51a0(...) ((u32 (*)(...))FUN_003a51a0)(__VA_ARGS__)
 #define FUN_003a5210(...) ((void (*)(...))FUN_003a5210)(__VA_ARGS__)
 #define FUN_003a52c0(...) ((u64 (*)(...))FUN_003a52c0)(__VA_ARGS__)
-#define FUN_003a53b0(...) ((u64 (*)(...))FUN_003a53b0)(__VA_ARGS__)
+#define FUN_003a53b0(...) FUN_003a53b0_typed(__VA_ARGS__)
 #define FUN_003a5540(...) ((void (*)(...))FUN_003a5540)(__VA_ARGS__)
 #define FUN_003a5570(...) ((u64 (*)(...))FUN_003a5570)(__VA_ARGS__)
 #define FUN_003a56f0(...) ((u64 (*)(...))FUN_003a56f0)(__VA_ARGS__)
@@ -263,7 +271,7 @@ u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
 #define FUN_003a5980(...) ((void (*)(...))FUN_003a5980)(__VA_ARGS__)
 #define FUN_003a5ca0(...) ((void (*)(...))FUN_003a5ca0)(__VA_ARGS__)
 #define FUN_003a5ea0(...) ((void (*)(...))FUN_003a5ea0)(__VA_ARGS__)
-#define FUN_003a5fd0(...) ((void (*)(...))FUN_003a5fd0)(__VA_ARGS__)
+#define FUN_003a5fd0(...) FUN_003a5fd0_typed(__VA_ARGS__)
 #define FUN_003a6030(...) ((u32 (*)(...))FUN_003a6030)(__VA_ARGS__)
 #define FUN_003a6060(...) ((void (*)(...))FUN_003a6060)(__VA_ARGS__)
 #define FUN_003a6100(...) ((int (*)(...))FUN_003a6100)(__VA_ARGS__)
@@ -2903,14 +2911,15 @@ void FUN_003a5210(int param_1,u64 param_2,u8 param_3,u8 param_4,
 }
 #define FUN_003a5210(...) ((void (*)(...))FUN_003a5210)(__VA_ARGS__)
 #undef FUN_003a52c0
+#undef FUN_003a53b0
 // FUN_003A52C0 NONMATCHING
 
 
 u64
 
-FUN_003a52c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
+FUN_003a52c0(u32 param_1,s32 param_2,f32 param_3,s32 param_4,
 
-            u64 param_5,u64 param_6,u64 param_7,u64 param_8)
+            s32 param_5,s32 param_6,s32 param_7,s32 param_8)
 
 
 
@@ -2929,16 +2938,14 @@ FUN_003a52c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
   return uVar1;
 
 }
-#define FUN_003a52c0(...) ((u64 (*)(...))FUN_003a52c0)(__VA_ARGS__)
-#undef FUN_003a53b0
+
+
 // FUN_003A53B0 NONMATCHING
-
-
 u64
 
-FUN_003a53b0(int param_1,int param_2,u64 param_3,u8 param_4,u8 param_5,
+FUN_003a53b0(int param_1,int param_2,f32 param_3,int param_4,int param_5,
 
-            u32 param_6,int param_7,int param_8)
+            u32 param_6,int param_7,int param_8,int param_9)
 
 
 
@@ -3003,9 +3010,9 @@ FUN_003a53b0(int param_1,int param_2,u64 param_3,u8 param_4,u8 param_5,
 
 
 #undef FUN_003a53b0
-void FUN_003a5540(int p1,int p2,u64 p3,u8 p4,u8 p5,int p6,int p7)
+void FUN_003a5540(int p1,int p2,u64 p3,int p4,int p5,int p6,int p7)
 {
-  FUN_003a53b0(p1,p2,p3,p4,p5,0,p6,p7);
+  FUN_003a53b0_8(p1,p2,p3,p4,p5,0,p6,p7);
 }
 #define FUN_003a53b0(...) ((u64 (*)(...))FUN_003a53b0)(__VA_ARGS__)
 #define FUN_003a5540(...) ((void (*)(...))FUN_003a5540)(__VA_ARGS__)
