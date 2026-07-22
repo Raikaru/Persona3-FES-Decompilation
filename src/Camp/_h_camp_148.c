@@ -1767,7 +1767,7 @@ void h_campDrawItemFrameSelected(int param_1)
 }
 
 #pragma opt_loop_invariants on
-// FUN_0014F680 NONMATCHING
+// FUN_0014F680
 u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 {
     CampSocialLinkRecord* entry;
