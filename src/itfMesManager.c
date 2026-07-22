@@ -1959,6 +1959,8 @@ u32 FUN_003a3f90(int param_1,int param_2)
 #undef FUN_003a4010
 #pragma alias FUN_003a4220_typed FUN_003a4220
 extern void FUN_003a4220_typed(int param_1,int param_2,u32 param_3);
+#pragma alias FUN_003a4220_buffer FUN_003a4220
+extern void FUN_003a4220_buffer(int param_1,int param_2,void *param_3);
 #pragma alias FUN_003a4270_typed FUN_003a4270
 extern void FUN_003a4270_typed(int param_1);
 #pragma alias FUN_003a6c10_typed FUN_003a6c10
@@ -1977,7 +1979,7 @@ void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
   switch (param_4) {
   case 0:
     sprintf(buffer,(char *)&DAT_00958be8);
-    FUN_003a4220_typed(param_1,param_2,(u32)buffer);
+    FUN_003a4220_buffer(param_1,param_2,buffer);
     break;
   case 16:
     FUN_003a4220_typed(param_1,param_2,
@@ -1996,20 +1998,21 @@ void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
     break;
   case 4:
     cursor = text;
-    if (param_3 >= 0x3e9) {
-      cursor[0] = 0xb280;
-      cursor[1] = 0;
-    } else {
-      if (param_3 < 0) {
-        param_3 = -param_3;
-        cursor[0] = 0xa280;
-        cursor += 1;
-      }
-      end = FUN_003a6c10_typed(param_3,cursor);
-      end[0] = 0xa680;
-      end[1] = 0;
+    if (param_3 < 0x3e9) goto LAB_003a4134;
+    cursor[0] = 0xb280;
+    cursor[1] = 0;
+    goto LAB_003a4164;
+LAB_003a4134:
+    if (param_3 < 0) {
+      param_3 = -param_3;
+      cursor[0] = 0xa280;
+      cursor += 1;
     }
-    FUN_003a4220_typed(param_1,param_2,(u32)text);
+    end = FUN_003a6c10_typed(param_3,cursor);
+    end[0] = 0xa680;
+    end[1] = 0;
+LAB_003a4164:
+    FUN_003a4220_buffer(param_1,param_2,text);
     break;
   case 5:
     FUN_003a4220_typed(param_1,param_2,
