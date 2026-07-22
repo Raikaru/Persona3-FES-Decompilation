@@ -3183,6 +3183,7 @@ int FUN_003e0260(u64 param_1,u64 param_2)
 
 }
 
+// FUN_003E0330
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
     struct FclPair {
@@ -3268,6 +3269,7 @@ int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
     return (int)node;
 }
 
+// FUN_003E04E0
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
     struct FclPair {
