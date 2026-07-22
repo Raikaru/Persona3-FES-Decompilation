@@ -3359,20 +3359,11 @@ u32 FUN_004b5270(u64 param_1,long param_2)
 }
 // FUN_004B5330 NONMATCHING
 u32 FUN_004b5330(u32 param_1)
-
 {
-  u32 uVar2;
-  u32 lVar1;
-  
-  uVar2 = param_1;
-  param_1 = *(u32 *)(param_1 + 0x24);
-  if (param_1 != 0) {
-    lVar1 = FUN_004ae940();
-    if (lVar1 == 0) {
-      return 0;
-    }
+  if (*(u32 *)(param_1 + 0x24) == 0 || FUN_004ae940() == 0) {
+    return 0;
   }
-  return uVar2;
+  return param_1;
 }
 // FUN_004B5380 NONMATCHING
 void FUN_004b5380(u64 param_1,u64 param_2)
@@ -3828,7 +3819,6 @@ long FUN_004b5ec0(u64 param_1,long param_2,u64 param_3)
 #pragma schedule on
 // FUN_004B6000 NONMATCHING
 int FUN_004b6000(int *param_1,int param_2)
-
 {
   int iVar1;
   
@@ -4024,12 +4014,10 @@ u64 FUN_004b65a0(u64 param_1)
 u64 FUN_004b6600(u64 param_1)
 {
   u64 uVar2;
-  u32 *puVar1;
-  
+
   uVar2 = param_1;
-  puVar1 = (u32 *)DAT_007ce8a4;
   DAT_007ce8a0 = 0;
-  if (puVar1 != (u32 *)0x0) {
+  if (DAT_007ce8a4 != 0) {
     FUN_004c3c30();
     DAT_007ce8a4 = 0;
   }
@@ -6030,8 +6018,6 @@ u32 FUN_004b97f0(int param_1)
   } while (count < 8);
   return 0;
 }
-#pragma push
-#pragma opt_rebuildconditionals off
 // FUN_004B9840 NONMATCHING
 int FUN_004b9840(u32 param_1)
 {
@@ -6040,7 +6026,6 @@ int FUN_004b9840(u32 param_1)
   }
   return 0;
 }
-#pragma pop
 // FUN_004B9870 NONMATCHING
 u32 FUN_004b9870(u64 param_1,u32 param_2,int param_3)
 
