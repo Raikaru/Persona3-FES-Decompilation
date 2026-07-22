@@ -7746,13 +7746,10 @@ LAB_0051eb14:
   }
   return pcVar19;
 }
-// FUN_0051F690
-asm u8 * FUN_0051f690(void)
+// FUN_0051F690 NONMATCHING
+u8 * FUN_0051f690(void)
 {
-  .set noreorder
-  lui $t7, 0x78
-  jr $ra
-  lw $v0, 0x2f30($t7)
+  return *(u8 **)PTR_DAT_00782f30_abs;
 }
 // FUN_0051F6A0 NONMATCHING
 u64 FUN_0051f6a0(u64 param_1)
