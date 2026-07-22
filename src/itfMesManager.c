@@ -1067,7 +1067,7 @@ int FUN_003a2c90(int param_1,int param_2)
   u32 auStack_1f0[0x7a];
 
   iVar1 = 0;
-  if ((param_2 < 0) || (3 < param_2)) {
+  if ((param_2 < 0) || (param_2 >= 4)) {
     FUN_0019d3f0("itfMesManager.c",0x659);
   }
   param_2 = param_2 * 8;
@@ -1079,7 +1079,7 @@ int FUN_003a2c90(int param_1,int param_2)
       FUN_00521250(auStack_1f0,oldPtr,0x1e8);
       iVar1 = 1;
     }
-    param_2 = param_2 + param_1;
+    param_2 = param_1 + param_2;
     slot = (u32 *)(param_2 + 0x14);
     *(volatile u32 *)((u8 *)param_1 + 0xc) = *slot;
     *(volatile u32 *)((u8 *)param_1 + 0x10) = *slot;
