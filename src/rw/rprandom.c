@@ -1488,7 +1488,11 @@ extern void (*DAT_0096017c_abs[])(void);
 #pragma alias DAT_0096018c_abs DAT_0096018c
 extern void (*DAT_0096018c_abs[])(u32,u64);
 #pragma alias FUN_004ca520_typed FUN_004ca520
-extern int FUN_004ca520_typed(int,int,int,int);
+extern int FUN_004ca520_typed(int,int,u8*,u8*);
+#pragma alias FUN_00488d40_abs FUN_00488d40
+extern u8 FUN_00488d40_abs[];
+#pragma alias FUN_00488cd0_abs FUN_00488cd0
+extern u8 FUN_00488cd0_abs[];
 #pragma alias FUN_00521408_typed FUN_00521408
 extern void FUN_00521408_typed(int,int,int);
 extern u32 DAT_00960074;
@@ -2797,12 +2801,12 @@ u64 FUN_00488d40(u64 param_1)
 }
 
 #pragma schedule on
-// FUN_00488FE0 NONMATCHING
+// FUN_00488FE0
 u32 FUN_00488fe0(void)
 {
   int lVar1;
 
-  lVar1 = FUN_004ca520_typed(0x10,0x10c,(int)FUN_00488d40,(int)FUN_00488cd0);
+  lVar1 = FUN_004ca520_typed(0x10,0x10c,FUN_00488d40_abs,FUN_00488cd0_abs);
   uGpffffba88 = lVar1;
   return lVar1 >= 0;
 }
