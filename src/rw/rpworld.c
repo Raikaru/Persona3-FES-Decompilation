@@ -951,6 +951,8 @@ u64 FUN_0049bbf0(u64 param_1,u64 param_2);
 u64 FUN_0049bc20(u64 param_1,u64 param_2);
 u64 FUN_0049bdc0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0049c160(u64 param_1,int param_2);
+#pragma alias FUN_0049c160_wide FUN_0049c160
+extern u64 FUN_0049c160_wide(u64 param_1,u64 param_2);
 u64 FUN_0049c1b0(u64 param_1,int param_2);
 u64 FUN_0049c1e0(u64 param_1,int param_2);
 #pragma alias FUN_0049c1e0_wide FUN_0049c1e0
@@ -1307,7 +1309,7 @@ void FUN_00494db0(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00494de0(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00494e10(u64 param_1,u64 param_2);
 void FUN_00495480(int *param_1,int param_2);
-void FUN_004959c0(u64 param_1);
+int FUN_004959c0(u64 param_1);
 void FUN_00496580(void);
 void FUN_00496ad0(u64 param_1,int *param_2,short param_3,short param_4,int param_5, int param_6);
 void FUN_00496f60(int param_1,int param_2,long param_3);
@@ -1587,6 +1589,8 @@ extern code DAT_00960158;
 extern code DAT_00960164;
 extern code DAT_00960174;
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern int (*DAT_00960178_abs[])(u64,u64);
 extern code DAT_0096017c;
 extern code DAT_00960180;
 extern code DAT_00960188;
@@ -1913,6 +1917,8 @@ extern code FUN_004c58a0;
 extern code FUN_004c5960;
 extern code FUN_004c59b0;
 extern code FUN_004c5a00;
+#pragma alias FUN_004c5a00_typed FUN_004c5a00
+extern void FUN_004c5a00_typed(u64 param_1,u64 param_2,u64 param_3);
 extern code FUN_004c5a50;
 extern code FUN_004c5c30;
 extern code FUN_004c6170;
@@ -2533,6 +2539,8 @@ u64 FUN_0049bbf0(u64 param_1,u64 param_2);
 u64 FUN_0049bc20(u64 param_1,u64 param_2);
 u64 FUN_0049bdc0(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0049c160(u64 param_1,int param_2);
+#pragma alias FUN_0049c160_wide FUN_0049c160
+extern u64 FUN_0049c160_wide(u64 param_1,u64 param_2);
 u64 FUN_0049c1b0(u64 param_1,int param_2);
 u64 FUN_0049c1e0(u64 param_1,int param_2);
 u64 FUN_0049c240(u64 param_1,u64 param_2);
@@ -2883,7 +2891,7 @@ void FUN_00494db0(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
 void FUN_00494de0(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 void FUN_00494e10(u64 param_1,u64 param_2);
 void FUN_00495480(int *param_1,int param_2);
-void FUN_004959c0(u64 param_1);
+int FUN_004959c0(u64 param_1);
 void FUN_00496580(void);
 void FUN_00496ad0(u64 param_1,int *param_2,short param_3,short param_4,int param_5, int param_6);
 void FUN_00496f60(int param_1,int param_2,long param_3);
@@ -9893,16 +9901,17 @@ long FUN_004954c0(u64 param_1,long param_2)
   return param_2;
 }
 
-// FUN_004959C0 NONMATCHING
+#pragma tailcall on
+// FUN_004959C0
 
-void FUN_004959c0(u64 param_1)
+int FUN_004959c0(u64 param_1)
 
 {
                     /* WARNING: Could not recover jumptable at 0x004959d0. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-  (*DAT_00960178)(param_1,0x30502);
-  return;
+  return DAT_00960178_abs[0](param_1,0x30502);
 }
+#pragma tailcall off
 #pragma optimization_level 2
 #pragma schedule on
 // FUN_004959E0 NONMATCHING
@@ -10025,8 +10034,9 @@ u32 FUN_00495c20(u64 param_1)
 u32 FUN_00495c80(int *param_1)
 
 {
-  if ((((*param_1 != 0) || ((short)param_1[1] != 0)) || (*(short *)((int)param_1 + 6) != 0)) ||
-     ((param_1[2] != 0 || (param_1[3] != 0)))) {
+  if ((((*param_1 != 0) || ((short)param_1[1] != 0)) ||
+      (*(short *)((int)param_1 + 6) != 0)) ||
+     (param_1[2] != 0 || (param_1[3] != 0))) {
     (*DAT_0096017c)();
   }
   return 1;
@@ -11795,13 +11805,25 @@ void FUN_004992b0(u64 param_1,u64 param_2)
   return;
 }
 
+#pragma tailcall on
 // FUN_004992D0 NONMATCHING
 
 void FUN_004992d0(u64 param_1,u64 param_2)
 
 {
-  ((code)FUN_004c5a00)(0x77ddb0,param_1,param_2);
-  return;
+  FUN_004c5a00_typed(0x77ddb0,param_1,param_2);
+}
+#pragma tailcall off
+// FUN_004992F0 NONMATCHING
+u32 FUN_004992f0(u32 param_1,u32 *param_2)
+{
+  if (*param_2 == param_1) {
+    goto equal;
+  }
+  return param_1;
+equal:
+  param_2[1] = 1;
+  return 0;
 }
 
 // FUN_00499320 NONMATCHING
@@ -13239,14 +13261,16 @@ u64 FUN_0049bbf0(u64 param_1,u64 param_2)
 }
 #pragma optimization_level 2
 
-// FUN_0049BC20 NONMATCHING
+#pragma optimization_level 3
+// FUN_0049BC20
 
 u64 FUN_0049bc20(u64 param_1,u64 param_2)
 
 {
-  ((code)FUN_0049c160)(param_2,param_1);
+  FUN_0049c160_wide(param_2,param_1);
   return param_1;
 }
+#pragma optimization_level 2
 // FUN_0049BC50
 #pragma schedule on
 #pragma tailcall on
