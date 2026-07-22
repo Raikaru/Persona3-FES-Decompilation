@@ -154,6 +154,7 @@ extern char DAT_006b2af8[];
 extern char DAT_006b2b10[];
 extern char DAT_006b2b20[];
 extern char DAT_006b2b40[];
+extern char DAT_006b2ad0[];
 code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
@@ -185,7 +186,7 @@ u32 FUN_00417160(void *param_1)
   lVar3 = (u32)(*DAT_00960178_abs)(0x60,0x40000);
   if (lVar3 == 0) {
 
-    K_Assert((const char *)0x6b2ad0,0x215);
+    K_Assert(DAT_006b2ad0,0x215);
 
   }
 
@@ -206,21 +207,21 @@ u32 FUN_00417160(void *param_1)
 
   *(u32 *)((int)lVar3 + 0x40) = uVar1;
 
-  uVar4 = kwlnTaskCreate(0,(u32)DAT_006b2ae8,10,(u32)FUN_00417410,(u32)FUN_00417680,lVar3);
+  uVar4 = (u32)kwlnTaskCreate(0,DAT_006b2ae8,10,FUN_00417410,FUN_00417680,(void *)lVar3);
 
-  uVar1 = kwlnTaskCreate(uVar4,(u32)DAT_006b2af8,0x18a6,(u32)FUN_00417540,0,lVar3);
+  uVar1 = (u32)kwlnTaskCreate(uVar4,DAT_006b2af8,0x18a6,FUN_00417540,0,(void *)lVar3);
 
   *(u32 *)((int)lVar3 + 8) = uVar1;
 
-  uVar1 = kwlnTaskCreate(uVar4,(u32)DAT_006b2b10,0x83d,(u32)FUN_00417590,0,lVar3);
+  uVar1 = (u32)kwlnTaskCreate(uVar4,DAT_006b2b10,0x83d,FUN_00417590,0,(void *)lVar3);
 
   *(u32 *)((int)lVar3 + 0xc) = uVar1;
 
-  uVar1 = kwlnTaskCreate(uVar4,(u32)DAT_006b2b20,0x106f,(u32)FUN_004175e0,0,lVar3);
+  uVar1 = (u32)kwlnTaskCreate(uVar4,DAT_006b2b20,0x106f,FUN_004175e0,0,(void *)lVar3);
 
   *(u32 *)((int)lVar3 + 0x10) = uVar1;
 
-  uVar1 = kwlnTaskCreate(uVar4,(u32)DAT_006b2b40,0x147a,(u32)FUN_00417630,0,lVar3);
+  uVar1 = (u32)kwlnTaskCreate(uVar4,DAT_006b2b40,0x147a,FUN_00417630,0,(void *)lVar3);
 
   *(u32 *)((int)lVar3 + 0x14) = uVar1;
 
@@ -3850,9 +3851,11 @@ u8 FUN_0041b530(int param_1)
 
 void FUN_0041b550(int param_1)
 {
+  u32 *effect_data;
   u32 *model_data;
 
-  model_data = *(u32 **)(*(u32 **)(param_1 + 0x40) + 1);
+  effect_data = *(u32 **)(param_1 + 0x40);
+  model_data = *(u32 **)(effect_data + 1);
   *(u32 *)(param_1 + 0x44) =
       (u32)DAT_006b2aa0 + *(u32 *)*(u32 **)(model_data + 5) * 8;
   *(u32 *)(*(u32 *)(param_1 + 0x3c) + 8) = 0;
@@ -4555,23 +4558,15 @@ void FUN_0041bf80(u32 *param_1)
 }
 
 // FUN_0041C140 NONMATCHING
-
-
 void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
-
-
-
 {
-
   float afStack_8 [2];
   afStack_8[0] = DAT_007cdae0;
   afStack_8[1] = DAT_007cdae4;
-
   FUN_0040e3c0(param_1,param_2,param_3,((u32 *)afStack_8)[param_4]);
-
   return;
-
 }
+
 
 // FUN_0041C180 NONMATCHING
 
