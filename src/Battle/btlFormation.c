@@ -1317,7 +1317,7 @@ float func_002b9590(int param_1)
   return fVar1;
 }
 
-// FUN_002b9600 NONMATCHING
+// FUN_002b9600
 
 void func_002b9600(u32 *param_1)
 
@@ -2653,7 +2653,6 @@ void func_002bb770(void)
 // FUN_002bb7d0 NONMATCHING
 
 u64 func_002bb7d0(void)
-
 {
   u32 uVar4 = 0;
   u64 uVar2 = 0;
