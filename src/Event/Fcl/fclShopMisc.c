@@ -17825,11 +17825,9 @@ void FUN_00404750(u64 param_1,u32 param_2)
 
 
 {
-
   if (param_2 < 8) {
 
                     /* WARNING: Could not recover jumptable at 0x00404788. Too many branches */
-
                     /* WARNING: Treating indirect jump as call */
 
     (*(code *)((u32 **)&PTR_LAB_007bbde0)[(int)param_2])();
