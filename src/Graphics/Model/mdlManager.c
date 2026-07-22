@@ -1171,7 +1171,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
 void func_00312c70(u8* param_1,int param_2);
 void func_00312d40(u8* param_1,u8* param_2);
 void func_00312e80(int param_1);
-long func_00312f90(long param_1);
+u32 func_00312f90(u32 param_1);
 u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
 int func_00313f40(int param_1,void* param_2);
@@ -1180,7 +1180,7 @@ u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
 u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
-u64 func_00314650(u64 param_1);
+u32 func_00314650(u32 param_1);
 void* func_00315010(void* object, void* data);
 u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4);
 void func_003151d0(Model* param_1);
@@ -2851,7 +2851,7 @@ void func_00312e80(int param_1)
 // FUN_00312F90 NONMATCHING
 
 
-long func_00312f90(long param_1)
+u32 func_00312f90(u32 param_1)
 
 
 
@@ -2861,7 +2861,7 @@ long func_00312f90(long param_1)
 
   u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 
@@ -2873,9 +2873,19 @@ long func_00312f90(long param_1)
 
   iVar5 = (int)param_1;
 
-  if ((((*(int *)(iVar5 + 0x18) != 0) && (lVar3 = func_0048a2c0(), lVar3 != 0)) &&
-
-      (uVar4 = func_0048a3d0(lVar3), 0x40 < uVar4)) && (param_1 != 0)) {
+  iVar1 = *(int *)(iVar5 + 0x18);
+  if (iVar1 != 0) {
+    lVar3 = func_0048a2c0(iVar1);
+    if (lVar3 != 0) {
+      uVar4 = func_0048a3d0(lVar3);
+      if (0x40 < uVar4) {
+        if (param_1 != 0) {
+          
+          
+          
+          
+          
+          
 
     uVar2 = func_0046a890(0x1001f);
 
@@ -2891,6 +2901,9 @@ long func_00312f90(long param_1)
 
     }
 
+        }
+      }
+    }
   }
 
   return param_1;
@@ -4092,7 +4105,7 @@ void* func_00314510(void* param_1)
 // FUN_00314650 NONMATCHING
 
 
-u64 func_00314650(u64 param_1)
+u32 func_00314650(u32 param_1)
 
 
 
@@ -4102,7 +4115,7 @@ u64 func_00314650(u64 param_1)
 
   int iVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   u32 uVar4;
 
@@ -4112,9 +4125,14 @@ u64 func_00314650(u64 param_1)
 
   iVar1 = *(int *)((int)param_1 + 0x18);
 
-  if (((iVar1 != 0) && (lVar3 = func_0048a2c0(iVar1), lVar3 != 0)) &&
-
-     (uVar4 = func_0048a3d0(lVar3), 0x40 < uVar4)) {
+  if (iVar1 != 0) {
+    lVar3 = func_0048a2c0(iVar1);
+    if (lVar3 != 0) {
+      uVar4 = func_0048a3d0(lVar3);
+      if (0x40 < uVar4) {
+        
+        
+        
 
     iVar2 = *(int *)(iVar1 + 0x24);
 
@@ -4124,6 +4142,8 @@ u64 func_00314650(u64 param_1)
 
     }
 
+      }
+    }
   }
 
   return param_1;
