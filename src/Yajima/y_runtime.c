@@ -7457,7 +7457,7 @@ void FUN_0043a1a0(char param_1,u8 param_2)
   return;
 }
 
-// FUN_0043A230 NONMATCHING
+// FUN_0043A230
 
 u32 FUN_0043a230(char param_1)
 
