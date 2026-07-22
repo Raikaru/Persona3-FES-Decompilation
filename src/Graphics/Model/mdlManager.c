@@ -2685,7 +2685,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
 
 
-// FUN_00312C70 NONMATCHING
+// FUN_00312C70
 
 
 void func_00312c70(u8* param_1,int param_2)
@@ -6581,7 +6581,7 @@ void func_00317a20(u64 param_1)
 
 
 
-// FUN_00318620 NONMATCHING
+// FUN_00318620
 
 
 u32 func_00318620(Model* param_1, u16 param_2, s16 param_3)
