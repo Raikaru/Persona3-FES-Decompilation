@@ -6911,16 +6911,17 @@ asm int FUN_0051e0e0(int param_1)
   daddu $v0, $a0, $zero
 }
 #pragma schedule on
+#pragma optimization_level 3
 // FUN_0051E0F0 NONMATCHING
 u64 FUN_0051e0f0(u64 param_1)
-
 {
-  int result;
-  result = FUN_00525c50(param_1,0,10);
-  return (u64)result;
+  return (u64)FUN_00525c50(param_1,0,10);
 }
+#pragma optimization_level 2
 #pragma schedule off
 // FUN_0051E118 NONMATCHING
+#pragma optimization_level 3
+#pragma opt_lifetimes on
 void FUN_0051e118(u8 *param_1,int param_2)
 {
   param_2 = param_2 + -1;
@@ -6932,12 +6933,16 @@ void FUN_0051e118(u8 *param_1,int param_2)
     } while (param_2 != -1);
   }
 }
+#pragma opt_lifetimes off
+#pragma optimization_level 2
 #pragma schedule on
+#pragma tailcall on
 // FUN_0051E150 NONMATCHING
 long FUN_0051e150(int param_1,int param_2)
 {
-  return FUN_0051e178((u64)(u32)*(void **)PTR_DAT_00782f30_abs,param_1,param_2);
+  return FUN_0051e178((int)*(void **)PTR_DAT_00782f30_abs,param_1,param_2);
 }
+#pragma tailcall off
 #pragma schedule off
 // FUN_0051E178 NONMATCHING
 long FUN_0051e178(u64 param_1,int param_2,int param_3)
@@ -8571,18 +8576,21 @@ LAB_0052065c:
 }
 #pragma schedule on
 // FUN_00520728 NONMATCHING
+#pragma tailcall on
 u32 * FUN_00520728(int param_1)
 {
-  return FUN_005209c0((u64)(u32)*(void **)PTR_DAT_00782f30_abs,param_1);
+  return FUN_005209c0((int)*(void **)PTR_DAT_00782f30_abs,param_1);
 }
+#pragma tailcall off
 #pragma schedule on
 // FUN_00520748 NONMATCHING
+#pragma tailcall on
 void FUN_00520748(u64 param_1)
-
 {
   FUN_0051fbb0((int)*(void **)PTR_DAT_00782f30_abs,param_1);
   return;
 }
+#pragma tailcall off
 #pragma schedule off
 // FUN_00520768 NONMATCHING
 void FUN_00520768(u64 param_1,int param_2)
