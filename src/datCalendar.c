@@ -4031,7 +4031,7 @@ void func_00186050(void* resource, u64 position, u32 alpha)
                   clndPackedY(position), 48.0f);
 }
 
-// FUN_00186100 NONMATCHING
+// FUN_00186100
 void func_00186100(void* resource, u64 position, u32 alpha)
 {
     f32 x;
@@ -4056,7 +4056,7 @@ void func_00186100(void* resource, u64 position, u32 alpha)
                   x, y, 48.0f);
 }
 
-// FUN_00186140 NONMATCHING
+// FUN_00186140
 void func_00186140(void* resource, u64 position, u32 alpha)
 {
     f32 x;
