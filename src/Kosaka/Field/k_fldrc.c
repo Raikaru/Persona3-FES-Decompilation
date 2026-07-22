@@ -1609,21 +1609,20 @@ void FUN_001b5a00(u32 task, u32 value)
 }
 
 // FUN_001b5a30 NONMATCHING
-void FUN_001b5a30(u32 color)
+void FUN_001b5a30(u8* color)
 {
     u32 value;
-    u8* rgba;
+    u32 packed;
 
-    if (FUN_001a64f0(color, D_00678F90) == 0)
+    if (FUN_001a64f0((u32)color, D_00678F90) == 0)
     {
-        rgba = (u8*)(color + 4);
-        value = FUN_0048ee70(color, D_00678F90, 1, 1);
-        value = FUN_0048eed0(color, value);
-        FUN_0048efa0(value, 0,
-                     (u32)rgba[2] |
-                     ((u32)rgba[1] << 8) |
-                     ((u32)rgba[3] << 24) |
-                     ((u32)rgba[0] << 16));
+        packed = (u32)color[7] << 24 |
+                 (u32)color[4] << 16 |
+                 (u32)color[5] << 8 |
+                 (u32)color[6];
+        value = FUN_0048ee70((u32)color, D_00678F90, 1, 1);
+        value = FUN_0048eed0((u32)color, value);
+        FUN_0048efa0(value, 0, packed);
     }
 }
 
