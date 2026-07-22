@@ -387,7 +387,7 @@ void FUN_004244a0(void)
   iGpffffb9b8[9] = 1;
 }
 
-// FUN_004244E0 NONMATCHING
+// FUN_004244E0
 
 
 u32 FUN_004244e0(void)
