@@ -422,19 +422,24 @@ int FUN_00506a70(int *param_1)
   FUN_0050d3f0();
   return 0;
 }
+#pragma optimization_level 1
+#pragma schedule on
 // FUN_00506B18 NONMATCHING
 void FUN_00506b18(int param_1)
 
 {
+  int uVar2;
   u32 uVar1;
-  u32 uVar2;
   
+  uVar2 = 0xffff0000;
+  uVar2 |= 0xfffe;
   uVar1 = *(u32 *)(param_1 + 0x10);
-  uVar2 = 0xfffffffe;
   *(u32 *)(param_1 + 0x18) = 0;
   *(u32 *)(param_1 + 0x10) = uVar1 & uVar2;
   return;
 }
+#pragma optimization_level 2
+#pragma schedule off
 // FUN_00506B38 NONMATCHING
 int FUN_00506b38(u64 param_1)
 
