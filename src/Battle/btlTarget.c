@@ -5544,19 +5544,26 @@ s32 FUN_002dca60(BtlAction* action)
     result = -1;
     switch (datCalcGetBadStatusNoDown(unit->datUnit))
     {
-        case 0x200: result = 0x38; break;
-        case 0x100: result = 0x36; break;
-        case 0x40: result = 0x34; break;
-        case 0x20: result = 0x32; break;
-        case 0x10: result = 0x30; break;
-        case 8: result = 0x2e; break;
-        case 4: result = 0x2c; break;
-        case 2: result = 0x2a; break;
         case 1: result = 0x28; break;
+        case 2: result = 0x2a; break;
+        case 4: result = 0x2c; break;
+        case 8: result = 0x2e; break;
+        case 0x10: result = 0x30; break;
+        case 0x20: result = 0x32; break;
+        case 0x40: result = 0x34; break;
+        case 0x100: result = 0x36; break;
+        case 0x200: result = 0x38; break;
         default: break;
     }
 
-    if (result >= 0 && unit->genus != 0)
+    if (result < 0)
+    {
+        return -1;
+    }
+    if (unit->genus == 0)
+    {
+    }
+    else
     {
         result++;
     }
