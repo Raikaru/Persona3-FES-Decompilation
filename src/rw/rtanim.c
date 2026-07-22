@@ -1940,7 +1940,7 @@ extern code FUN_004ca030;
 extern code FUN_004ca510;
 extern code FUN_004ca520;
 #pragma alias FUN_004ca520_typed FUN_004ca520
-extern int FUN_004ca520_typed(int,int,int,int);
+extern int FUN_004ca520_typed(int,int,u8*,u8*);
 extern code FUN_004ca550;
 extern code FUN_004cace0;
 extern code FUN_004cad30;
@@ -29374,14 +29374,14 @@ long FUN_0048dab0(int param_1,long param_2,u64 param_3)
 }
 
 #pragma schedule on
-// FUN_0048DCF0 NONMATCHING
+// FUN_0048DCF0
 
 int FUN_0048dcf0(void)
 
 {
   int lVar1;
   
-  lVar1 = FUN_004ca520_typed(0,0x102,(int)FUN_0048cfa0,(int)FUN_0048cf00);
+  lVar1 = FUN_004ca520_typed(0,0x102,(u8*)FUN_0048cfa0,(u8*)FUN_0048cf00);
   return lVar1 >= 0;
 }
 #pragma schedule off
