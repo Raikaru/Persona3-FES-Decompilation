@@ -6871,6 +6871,7 @@ void FUN_0030cf00(void)
 
 
 // FUN_0030d000 NONMATCHING
+#pragma schedule off
 void FUN_0030d000(void)
 
 {
@@ -6878,7 +6879,8 @@ void FUN_0030d000(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
   #pragma push
@@ -6900,13 +6902,15 @@ done:
 
 
 // FUN_0030d0e0 NONMATCHING
+#pragma schedule off
 void FUN_0030d0e0(void)
 {
   float fVar1;
   float fVar2;
 
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -6929,6 +6933,7 @@ done:
 
 
 // FUN_0030d1c0 NONMATCHING
+#pragma schedule off
 void FUN_0030d1c0(void)
 
 {
@@ -6936,7 +6941,8 @@ void FUN_0030d1c0(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -6959,6 +6965,7 @@ done:
 
 
 // FUN_0030d2a0 NONMATCHING
+#pragma schedule off
 void FUN_0030d2a0(void)
 
 {
@@ -6966,7 +6973,8 @@ void FUN_0030d2a0(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -6989,6 +6997,7 @@ done:
 
 
 // FUN_0030d380 NONMATCHING
+#pragma schedule off
 void FUN_0030d380(void)
 
 {
@@ -6996,7 +7005,8 @@ void FUN_0030d380(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -7351,6 +7361,7 @@ void FUN_0030e180(void)
 
 
 // FUN_0030e280 NONMATCHING
+#pragma schedule off
 void FUN_0030e280(void)
 
 {
@@ -7358,7 +7369,8 @@ void FUN_0030e280(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -7381,6 +7393,7 @@ done:
 
 
 // FUN_0030e360 NONMATCHING
+#pragma schedule off
 void FUN_0030e360(void)
 
 {
@@ -7388,7 +7401,8 @@ void FUN_0030e360(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -7411,6 +7425,7 @@ done:
 
 
 // FUN_0030e440 NONMATCHING
+#pragma schedule off
 void FUN_0030e440(void)
 
 {
@@ -7418,7 +7433,8 @@ void FUN_0030e440(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -7441,6 +7457,7 @@ done:
 
 
 // FUN_0030e520 NONMATCHING
+#pragma schedule off
 void FUN_0030e520(void)
 
 {
@@ -7448,7 +7465,8 @@ void FUN_0030e520(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
@@ -7471,6 +7489,7 @@ done:
 
 
 // FUN_0030e600 NONMATCHING
+#pragma schedule off
 void FUN_0030e600(void)
 
 {
@@ -7478,7 +7497,8 @@ void FUN_0030e600(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
   fVar1 *= fVar2;
 #pragma push
