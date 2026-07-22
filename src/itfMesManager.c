@@ -977,8 +977,10 @@ void FUN_003a2a30(u64 param_1)
 
 }
 #define FUN_003a2a30(...) ((void (*)(...))FUN_003a2a30)(__VA_ARGS__)
+#pragma alias FUN_003a4010_typed FUN_003a4010
+extern void FUN_003a4010_typed(int param_1,int param_2,int param_3,u32 param_4);
 #undef FUN_003a2b30
-// FUN_003A2B30 NONMATCHING
+// FUN_003A2B30
 
 
 u32 FUN_003a2b30(void)
@@ -999,26 +1001,17 @@ u32 FUN_003a2b30(void)
 
   lVar1 = FUN_0035f140();
 
-  if (-1 < lVar1) {
-
-    uVar2 = FUN_0035ed20(0);
-
-    uVar3 = FUN_0035ed20(1);
-
-    uVar4 = FUN_0035ed20(2);
-
-    FUN_005225a8(D_006A1A80,uVar2,uVar3,uVar4);
-
-    uVar2 = FUN_0035ed20(0);
-
-    uVar3 = FUN_0035ed20(1);
-
-    uVar4 = FUN_0035ed20(2);
-
-    FUN_003a4010(lVar1,uVar2,uVar3,uVar4);
-
+  if (lVar1 < 0) {
+    return 1;
   }
-
+  uVar2 = FUN_0035ed20(0);
+  uVar3 = FUN_0035ed20(1);
+  uVar4 = FUN_0035ed20(2);
+  FUN_005225a8(D_006A1A80,uVar2,uVar3,uVar4);
+  uVar2 = FUN_0035ed20(0);
+  uVar3 = FUN_0035ed20(1);
+  uVar4 = FUN_0035ed20(2);
+  FUN_003a4010_typed(lVar1,uVar2,uVar3,uVar4);
   return 1;
 
 }
