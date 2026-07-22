@@ -33519,6 +33519,7 @@ undefined4 FUN_00501128(u8* param_1)
 }
 #pragma schedule off
 
+#pragma schedule on
 // FUN_00501150 NONMATCHING
 undefined4 FUN_00501150(u8* param_1)
 
@@ -33527,7 +33528,6 @@ undefined4 FUN_00501150(u8* param_1)
   FUN_005028d8((int *)(param_1 + 0x68));
   return 1;
 }
-#pragma optimization_level 2
 #pragma schedule off
 
 // FUN_00501178 NONMATCHING
