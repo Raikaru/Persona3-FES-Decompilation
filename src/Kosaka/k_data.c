@@ -876,13 +876,12 @@ s16* func_001b8db0(s16* table)
 }
 
 // FUN_001b8fd0
-u32 func_001b8fd0(register const u8* unit, register const u8* records, register u32 byteSize)
+u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
 {
-    register const u8* record;
-    register u32 count;
-    register u32 i;
-    register u32 result;
-
+    const u8* record;
+    u32 count;
+    u32 i;
+    u32 result;
     count = byteSize / 0x0c;
     record = records + count * 0x0c - 0x0c;
     result = 0;
