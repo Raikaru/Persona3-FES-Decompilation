@@ -5448,11 +5448,10 @@ u64 FUN_00469280(u64 param_1,u32 param_2)
 // FUN_004692E0 NONMATCHING
 
 u64 FUN_004692e0(float param_1,u64 param_2)
-
 {
   u32 uVar1;
   int iVar2;
-  
+
   uVar1 = 0;
   do {
     iVar2 = *(int *)((int)param_2 + iGpffffba48) + uVar1 * 0x40;

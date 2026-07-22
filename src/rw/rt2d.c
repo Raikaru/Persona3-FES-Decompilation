@@ -16,7 +16,7 @@ u64 FUN_004b62a0(int param_1,u64 param_2,u64 param_3,u64 param_4,
 u32 FUN_004b97f0(int param_1);
 u64 FUN_004b8630(u64 param_1,float *param_2);
 u32 FUN_004b2ba0(int param_1);
-u64 FUN_004b3440(u64 param_1);
+int FUN_004b3440(int param_1);
 u32 FUN_004b91b0(void);
 long FUN_004b90a0(u64 param_1);
 long FUN_004b6a40(u64 param_1);
@@ -58,7 +58,7 @@ extern f32 FUN_004b1b60(int param_1);
 extern u64 FUN_004b1290(u64 param_1,u64 param_2);
 extern u64 FUN_004b14c0(float param_1,u64 param_2);
 extern void FUN_004b1870(u64 param_1,u64 param_2,int param_3);
-extern u64 FUN_004b2ad0(u64 param_1,u32 param_2);
+extern int FUN_004b2ad0(int param_1,u32 param_2);
 extern u64 FUN_004b2b40(u64 param_1);
 extern u64 FUN_004b1240(u64 param_1,u64 param_2);
 extern u32 FUN_004b42e0(u64 param_1);
@@ -72,8 +72,8 @@ extern void FUN_004b26a0(u32 *param_1);
 extern void FUN_004b2bc0(void);
 extern u64 FUN_004b2bf0(u64 param_1,long param_2,u64 param_3);
 extern long FUN_004b2c80(int param_1,long param_2,u64 param_3);
-extern u64 FUN_004b30a0(u64 param_1);
-extern u64 FUN_004b3100(u64 param_1);
+extern u32 * FUN_004b30a0(u32 *param_1);
+extern u32 * FUN_004b3100(u32 *param_1);
 extern u64 FUN_004b5d80(u64 param_1,u64 param_2,u64 param_3);
 extern u32 FUN_004b6ec0(u32 *param_1,int *param_2);
 extern u64 FUN_004b6840(u32 param_1,int param_2,int param_3,u32 param_4);
@@ -1631,8 +1631,9 @@ u32 FUN_004b2a90(u32 param_1,u64 param_2,u64 param_3)
   return param_1;
 }
 #pragma schedule off
+#pragma schedule on
 // FUN_004B2AD0 NONMATCHING
-u64 FUN_004b2ad0(u64 param_1,u32 param_2)
+int FUN_004b2ad0(int param_1,u32 param_2)
 
 {
   u32 uVar1;
@@ -1653,6 +1654,7 @@ u64 FUN_004b2ad0(u64 param_1,u32 param_2)
   }
   return param_1;
 }
+#pragma schedule off
 // FUN_004B2B40 NONMATCHING
 u64 FUN_004b2b40(u64 param_1)
 
@@ -1795,19 +1797,24 @@ long FUN_004b2c80(int param_1,long param_2,u64 param_3)
   }
   return param_2;
 }
+#pragma optimization_level 3
 // FUN_004B2E20 NONMATCHING
-u64 FUN_004b2e20(u64 param_1)
-
+#pragma push
+#pragma opt_rebuildconditionals off
+int FUN_004b2e20(int param_1)
 {
   u32 uVar1;
-  
+
   uVar1 = FUN_004c1d50(0x10,0x301a9);
-  *(u32 *)((int)param_1 + 0xc) = uVar1;
-  if (*(int *)((int)param_1 + 0xc) == 0) {
-    param_1 = 0;
-  }
+  *(volatile u32 *)((int)param_1 + 0xc) = uVar1;
+  if (*(volatile int *)((int)param_1 + 0xc) != 0) goto done;
+  param_1 = 0;
+done:
   return param_1;
 }
+#pragma pop
+#pragma optimization_level 2
+#pragma schedule off
 // FUN_004B2E70 NONMATCHING
 u64 FUN_004b2e70(u64 param_1)
 
@@ -1899,15 +1906,16 @@ int FUN_004b3030(int param_1,long param_2)
   }
   return iVar1;
 }
+#pragma optimization_level 3
 // FUN_004B30A0 NONMATCHING
-u64 FUN_004b30a0(u64 param_1)
+u32 * FUN_004b30a0(u32 *param_1)
 
 {
-  u32 *puVar1;
   int iVar2;
+  u32 *puVar1;
   
-  puVar1 = (u32 *)param_1;
   iVar2 = 0;
+  puVar1 = (u32 *)param_1;
   *puVar1 = 0xffffffff;
   puVar1[1] = 0xffffffff;
   puVar1[2] = 0;
@@ -1927,14 +1935,14 @@ u64 FUN_004b30a0(u64 param_1)
   return param_1;
 }
 // FUN_004B3100 NONMATCHING
-u64 FUN_004b3100(u64 param_1)
+u32 * FUN_004b3100(u32 *param_1)
 
 {
-  u32 *puVar1;
   int iVar2;
+  u32 *puVar1;
   
-  puVar1 = (u32 *)param_1;
   iVar2 = 0;
+  puVar1 = (u32 *)param_1;
   *puVar1 = 0xffffffff;
   puVar1[1] = 0xffffffff;
   puVar1[2] = 0;
@@ -1953,6 +1961,7 @@ u64 FUN_004b3100(u64 param_1)
   } while (iVar2 < 0x20);
   return param_1;
 }
+#pragma optimization_level 2
 // FUN_004B3160 NONMATCHING
 long FUN_004b3160(long param_1,u64 param_2)
 
@@ -2082,26 +2091,31 @@ LAB_004b32a8:
   }
   return param_1;
 }
+#pragma optimization_level 3
 // FUN_004B3440 NONMATCHING
-u64 FUN_004b3440(u64 param_1)
+int FUN_004b3440(int param_1)
 
 {
   u32 uVar1;
   
   uVar1 = FUN_004c1d50(0x90,0x301b1);
-  *(u32 *)((int)param_1 + 0x10) = uVar1;
-  if (*(int *)((int)param_1 + 0x10) == 0) {
+  *(volatile u32 *)((int)param_1 + 0x10) = uVar1;
+  if (*(volatile int *)((int)param_1 + 0x10) == 0) {
     param_1 = 0;
   }
   return param_1;
 }
+#pragma optimization_level 2
 // FUN_004B3490 NONMATCHING
-u64 FUN_004b3490(u64 param_1)
+int FUN_004b3490(int param_1)
 
 {
-  if (*(int *)((int)param_1 + 0x10) != 0) {
+  volatile int *ptr;
+
+  ptr = (volatile int *)param_1;
+  if (ptr[4] != 0) {
     FUN_004c20b0();
-    *(u32 *)((int)param_1 + 0x10) = 0;
+    ptr[4] = 0;
   }
   return param_1;
 }
