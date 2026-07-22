@@ -7392,11 +7392,8 @@ u64 FUN_00367390(u64 param_1,u64 param_2,int param_3)
 {
 
   short uVar1;
-
   short uVar2;
-
   short uVar3;
-
   short uVar4;
 
   int iVar6;
@@ -7477,6 +7474,7 @@ u32 FUN_00367440(int param_1,int param_2,int param_3)
   int iVar2;
 
   int iVar3;
+  int iVar4;
 
   
 
@@ -7486,12 +7484,11 @@ u32 FUN_00367440(int param_1,int param_2,int param_3)
 
     iVar1 = *(int *)(*(int *)(iVar3 + 0x164) + 0x6c);
     iVar2 = 0;
+    iVar4 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
 
-    for (; (iVar2 < *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c) && (iVar1 != 0));
-        iVar1 = *(int *)(iVar1 + 0x4c)) {
-
+    for (; (iVar2 < iVar4 && (iVar1 != 0));) {
+      iVar1 = *(int *)(iVar1 + 0x4c);
       iVar2 = iVar2 + 1;
-
     }
 
   }
@@ -14505,7 +14502,6 @@ u32 FUN_0036e260(int param_1)
   iVar1 = *(int *)(param_1 + 0x3c);
 
   lVar3 = FUN_00108710();
-
   if (lVar3 == 0) {
     FUN_005225a8(0x69dfd0);
     uVar2 = 0;
