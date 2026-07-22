@@ -199,6 +199,8 @@ extern u32 DAT_0077e6d0;
 extern u32 DAT_0077e6f0;
 extern u32 DAT_0077ef70;
 extern u32 DAT_0077f0f0;
+#pragma alias DAT_0077f0f0_abs DAT_0077f0f0
+extern u32 DAT_0077f0f0_abs[];
 extern u32 DAT_0077f1b0;
 extern u32 DAT_0077f1d0;
 extern u32 DAT_0077f200;
@@ -14858,9 +14860,7 @@ undefined8 FUN_004e2b70(ulong param_1)
 undefined * FUN_004e2f00(void)
 
 {
-  int *base;
-  base = (int *)0x780000;
-  return (undefined *)(base - 0x3c4);
+  return (undefined *)DAT_0077f0f0_abs;
 }
 #pragma optimization_level 2
 
