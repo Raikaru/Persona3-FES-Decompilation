@@ -394,14 +394,21 @@ Bigint* __dtoa_Balloc(DtoaContext* context, s32 k)
     return value;
 }
 
+#pragma optimization_level 3
 // FUN_00521620 NONMATCHING
 void __dtoa_Bfree(DtoaContext* context, Bigint* value)
 {
+    s32 k;
+    Bigint** freeList;
     if (value != NULL) {
-        value->next = context->freelist[value->k];
-        context->freelist[value->k] = value;
+        k = value->k;
+        freeList = context->freelist;
+        freeList += k;
+        value->next = *freeList;
+        *freeList = value;
     }
 }
+#pragma optimization_level 2
 
 // FUN_00521650 NONMATCHING
 Bigint* __dtoa_multadd(DtoaContext* context, Bigint* value, s32 multiplier, s32 addend)
@@ -491,17 +498,17 @@ s32 __dtoa_lo0bits(u32* value)
     *value = word;
     return count;
 }
-
-// FUN_005219c8 NONMATCHING
-Bigint* __dtoa_i2b(DtoaContext* context, s32 input)
+#pragma optimization_level 3
+// FUN_005219C8 NONMATCHING
+Bigint* __dtoa_i2b(DtoaContext* context, u32 input)
 {
-    Bigint* value = __dtoa_Balloc(context, 1);
-    if (value != NULL) {
-        value->x[0] = input;
-        value->wds = 1;
-    }
+    Bigint* value;
+    value = __dtoa_Balloc(context, 1);
+    value->x[0] = input;
+    value->wds = 1;
     return value;
 }
+#pragma optimization_level 2
 
 // FUN_00521a00 NONMATCHING
 Bigint* __dtoa_mult(DtoaContext* context, Bigint* left, Bigint* right)
@@ -894,7 +901,9 @@ s32 __isinf(u64 value)
     difference = 0x7ff00000 - aggregate;
     return 1 - ((difference | -difference) >> 31);
 }
+#pragma optimization_level 2
 
+#pragma optimization_level 3
 // FUN_00523778 NONMATCHING
 s32 __isnan(u64 value)
 {
@@ -906,6 +915,7 @@ s32 __isnan(u64 value)
     aggregate |= (u32)(low | -low) >> 31;
     return (0x7ff00000 - aggregate) >> 31;
 }
+#pragma optimization_level 2
 
 // FUN_005237b0 NONMATCHING
 f64 ldexp(f64 value, s32 exponent)
@@ -1981,11 +1991,9 @@ switchD_00524b18_caseD_9:
 }
 // FUN_00525920 NONMATCHING
 void FUN_00525920(u64 param_1,u64 param_2)
-
 {
-  u64 uVar1;
-  
-  uVar1 = (u64)(u32)FUN_00524aa8((u64)(u32)PTR_DAT_00782f30,param_1,param_2);
+  u32 uVar1;
+  uVar1 = FUN_00524aa8((u64)(u32)PTR_DAT_00782f30,param_1,param_2);
   FUN_005318a0(uVar1);
   return;
 }
@@ -3895,10 +3903,8 @@ void FUN_00528920(u32 param_1,u8 *param_2)
 }
 // FUN_00528970 NONMATCHING
 long FUN_00528970(int *param_1,u64 param_2,u64 param_3,u64 param_4)
-
 {
   long lVar1;
-  
   DAT_009acc20[0] = 0;
   lVar1 = FUN_00503728(param_2,param_3,param_4);
   if ((lVar1 == -1) && (DAT_009acc20 != 0)) {
