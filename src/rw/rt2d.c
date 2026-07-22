@@ -3835,13 +3835,13 @@ long FUN_004b5ec0(u64 param_1,long param_2,u64 param_3)
   return param_2;
 }
 #pragma schedule on
-// FUN_004B6000 NONMATCHING
+// FUN_004B6000
 int FUN_004b6000(int *param_1,int param_2)
 {
   int iVar1;
   
   if (*param_1 != 0) {
-    iVar1 = FUN_004c2090();
+    iVar1 = FUN_004c2090(*param_1);
     iVar1 = iVar1 + param_2 * 0x10;
   }
   else {
