@@ -33,7 +33,7 @@ int FUN_003e0260(u64 param_1,u64 param_2);
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4);
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4);
 u64 FUN_003e0650(u32 *param_1);
-void FUN_003e0680(u64 param_1,code* param_2,u64 param_3);
+void FUN_003e0680(u32 param_1,code* param_2,u32 param_3);
 #pragma alias FUN_003e0680_32 FUN_003e0680
 void FUN_003e0680_32(u32 param_1, code* param_2, u32 param_3);
 #pragma alias FUN_003e0680_p FUN_003e0680
@@ -3354,10 +3354,10 @@ u64 FUN_003e0650(u32 *param_1)
 
 }
 
-// FUN_003E0680 NONMATCHING
+// FUN_003E0680
 
 
-void FUN_003e0680(u64 param_1,code* param_2,u64 param_3)
+void FUN_003e0680(u32 param_1,code* param_2,u32 param_3)
 
 
 
