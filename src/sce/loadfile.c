@@ -1154,6 +1154,7 @@ u32 FUN_0050d510(int param_1)
   FUN_0050d478(local,(u32)((*(u32 *)DAT_0077fbb8_abs) + param_1 * 4),4);
   return local[0];
 }
+#pragma optimization_level 3
 // FUN_0050D548 NONMATCHING
 void FUN_0050d548(void)
 
@@ -1185,6 +1186,7 @@ void FUN_0050d548(void)
   DAT_0077fbb8 = uVar5;
   return;
 }
+#pragma optimization_level 2
 
 // FUN_0050D648 RFU116_SetSyscall
 void FUN_0050d648(void) { PS2_SYSCALL(0x74); }
@@ -2028,6 +2030,7 @@ u32 FUN_0050e900(u32 param_1)
   return uVar2;
 }
 #pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_0050E950 NONMATCHING
 u32 FUN_0050e950(u32 param_1)
 
@@ -2064,6 +2067,7 @@ u32 FUN_0050e950(u32 param_1)
   }
   return uVar2;
 }
+#pragma optimization_level 2
 // FUN_0050EA30 NONMATCHING
 u64 FUN_0050ea30(u64 param_1)
 
@@ -2078,6 +2082,7 @@ u64 FUN_0050ea30(u64 param_1)
   }
   return uVar2;
 }
+#pragma optimization_level 3
 // FUN_0050EA80 NONMATCHING
 long FUN_0050ea80(u32 param_1,u64 param_2)
 
@@ -2116,6 +2121,7 @@ long FUN_0050ea80(u32 param_1,u64 param_2)
   }
   return lVar5;
 }
+#pragma optimization_level 2
 // FUN_0050EB50 NONMATCHING
 long FUN_0050eb50(u32 param_1)
 
@@ -2322,6 +2328,7 @@ long FUN_0050f030(u32 param_1,u64 param_2,u64 param_3,u32 *param_4)
   }
   return lVar2;
 }
+#pragma optimization_level 3
 // FUN_0050F090 NONMATCHING
 u32 FUN_0050f090(u64 param_1,long param_2,u32 param_3)
 
@@ -2371,6 +2378,7 @@ u32 FUN_0050f090(u64 param_1,long param_2,u32 param_3)
   return uVar3;
 }
 // FUN_0050F1C0 NONMATCHING
+#pragma optimization_level 3
 u32 FUN_0050f1c0(u64 param_1,long param_2,u32 param_3)
 
 {
@@ -2405,6 +2413,7 @@ u32 FUN_0050f1c0(u64 param_1,long param_2,u32 param_3)
   }
   return uVar3;
 }
+#pragma optimization_level 2
 // FUN_0050F2B0 NONMATCHING
 u32 FUN_0050f2b0(u32 param_1)
 
