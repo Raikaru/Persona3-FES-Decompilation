@@ -958,6 +958,8 @@ u64 FUN_0049c1e0(u64 param_1,int param_2);
 #pragma alias FUN_0049c1e0_wide FUN_0049c1e0
 extern u64 FUN_0049c1e0_wide(u64 param_1,u64 param_2);
 u64 FUN_0049c240(u64 param_1,u64 param_2);
+#pragma alias FUN_0049c240_typed FUN_0049c240
+extern u64 FUN_0049c240_typed(int param_1,u64 param_2);
 u64 FUN_0049c330(u64 param_1,code *param_2,u64 param_3);
 #pragma alias FUN_0049c330_typed FUN_0049c330
 extern u64 FUN_0049c330_typed(u32 param_1,u32 param_2,u64 param_3);
@@ -12471,14 +12473,22 @@ LAB_0049a39c:
 
 #pragma optimization_level 3
 #pragma schedule on
+#pragma optimization_level 2
+ 
 // FUN_0049A3D0 NONMATCHING
 u32 FUN_0049a3d0(u32 param_1,code *param_2)
 {
-  if (param_2 == (code *)0x0) {
-    param_2 = (code *)FUN_00499b90;
+  u32 result;
+
+  result = param_1;
+  if (param_2 != (code *)0x0) {
+    *(code **)((int)param_1 + 0x68) = param_2;
   }
-  *(code **)((int)param_1 + 0x68) = param_2;
-  return param_1;
+  else {
+    param_2 = (code *)FUN_00499b90;
+    *(code **)((int)param_1 + 0x68) = param_2;
+  }
+  return result;
 }
 #pragma optimization_level 2
 
@@ -13000,10 +13010,12 @@ u64 FUN_0049b2e0(u64 param_1)
 // FUN_0049B3F0 NONMATCHING
 
 u64 FUN_0049b3f0(u64 param_1,int param_2)
-
 {
-  if (*(int *)(param_2 + iGpffffbb80) != 0) {
-    ((code)FUN_0049c240)(*(int *)(param_2 + iGpffffbb80),param_1);
+  int callback;
+
+  callback = *(int *)(param_2 + iGpffffbb80);
+  if (callback != 0) {
+    FUN_0049c240_typed(callback,param_1);
   }
   return param_1;
 }
