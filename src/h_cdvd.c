@@ -428,6 +428,8 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     HCdvd* prev;
     HCdvd* next;
     s32 i;
+    HCdvdCache* cacheBase;
+    void* requestData;
     HCdvdCache* cache;
 
     if (cdvd->readState != HCDVD_READ_QUEUED)
@@ -457,10 +459,12 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
         cdvd->unalignedFileMemory = NULL;
     }
 
+    requestData = &cdvd->hasExternalMemory;
+    cacheBase = sCdvdCache;
     for (i = 0; i < HCDVD_CACHE_MAX; i++)
     {
-        cache = &sCdvdCache[i];
-        if (cache->isValid && cache->requestData == cdvd)
+        cache = &cacheBase[i];
+        if (cache->isValid && cache->requestData == requestData)
         {
             cache->isValid = false;
         }
@@ -475,6 +479,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     RwFree(cdvd);
     return true;
 }
+
 
 // FUN_00101010 NONMATCHING
 void H_Cdvd_BuildPathUppercase(const char* src, char* dst)
