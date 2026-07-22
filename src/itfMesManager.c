@@ -116,7 +116,7 @@ int FUN_003a2c90(int param_1,int param_2);
 u64 FUN_003a2ef0(u64 param_1);
 u32 FUN_003a3010(int param_1);
 u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3);
-void FUN_003a3420(long param_1,s32 param_2);
+void FUN_003a3420(int param_1,s32 param_2);
 void FUN_003a3470(u32 *param_1,s32 param_2);
 void FUN_003a3530(u32 *param_1);
 void FUN_003a3680(u32 *param_1);
@@ -1410,20 +1410,23 @@ u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3)
 }
 #define FUN_003a30c0(...) ((u32 (*)(...))FUN_003a30c0)(__VA_ARGS__)
 #undef FUN_003a3420
-// FUN_003A3420 NONMATCHING
+#undef FUN_003a3470
+// FUN_003A3420
 
 
-void FUN_003a3420(long param_1,s32 param_2)
+void FUN_003a3420(int param_1,s32 param_2)
 
 
 
 {
 
-  if (-1 < param_1) {
+  if (param_1 < 0) {
 
-    FUN_003a3470(*(u32 *)(DAT_00959eec_abs + (int)param_1 * 0xd),param_2);
+    return;
 
   }
+
+  FUN_003a3470((u32 *)(*(u32 *)(DAT_00959eec_abs + param_1 * 0xd)),param_2);
 
   return;
 
@@ -4534,32 +4537,35 @@ short * FUN_003a6c10(int param_1,short *param_2)
 {
 
   int iVar1;
-
   int iVar2;
+
 
   int aiStack_30 [12];
 
   
 
   iVar1 = 0;
+  iVar2 = 10;
 
   do {
 
-    iVar2 = iVar1;
+    aiStack_30[iVar1] = param_1 % iVar2;
 
-    aiStack_30[iVar2] = param_1 % 10;
+    param_1 = param_1 / iVar2;
 
-    param_1 = param_1 / 10;
+    iVar1 = iVar1 + 1;
 
     if (param_1 < 1) break;
 
-    iVar1 = iVar2 + 1;
+  } while (iVar1 < 10);
 
-  } while (iVar2 + 1 < 10);
+  iVar2 = iVar1 + -1;
 
-  for (; -1 < iVar2; iVar2 = iVar2 + -1) {
+  for (; iVar2 >= 0;) {
 
-    *param_2 = (aiStack_30[iVar2] + 0x10) * 0x100 + -0x7f80;
+    *param_2 = (aiStack_30[iVar2] + 0x10) * 0x100 + 0x8080;
+
+    iVar2 = iVar2 + -1;
 
     param_2 = param_2 + 1;
 
