@@ -4614,8 +4614,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   u32 uVar6;
 
-  u8 *pbVar7;
 
+  u8 *pbVar7;
   int iVar8;
 
   int *piVar9;
