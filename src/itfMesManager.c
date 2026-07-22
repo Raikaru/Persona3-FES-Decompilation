@@ -1060,7 +1060,7 @@ u32 FUN_003a2c10(void)
 
 int FUN_003a2c90(int param_1,int param_2)
 {
-  int iVar3;
+  u32 *slot;
   int iVar1;
   int oldPtr;
   u32 *dest;
@@ -1079,17 +1079,19 @@ int FUN_003a2c90(int param_1,int param_2)
       FUN_00521250(auStack_1f0,oldPtr,0x1e8);
       iVar1 = 1;
     }
-    param_2 = param_1 + param_2;
-    iVar3 = param_2 + 0x14;
-    *(u32 *)(param_1 + 0xc) = *(u32 *)iVar3;
-    *(u32 *)(param_1 + 0x10) = *(u32 *)iVar3;
+    param_2 = param_2 + param_1;
+    slot = (u32 *)(param_2 + 0x14);
+    *(volatile u32 *)((u8 *)param_1 + 0xc) = *slot;
+    *(volatile u32 *)((u8 *)param_1 + 0x10) = *slot;
     if (iVar1 != 0) {
+      u32 first;
+      first = auStack_1f0[0];
       dest = *(u32 **)(param_1 + 0xc);
-      *dest = auStack_1f0[0];
-      FUN_00521250((int)dest + 0xa8,auStack_1f0 + 0xa8,0x2c);
+      *dest = first;
+      FUN_00521250((int)*(u32 **)(param_1 + 0xc) + 0xa8,(u8 *)auStack_1f0 + 0xa8,0x2c);
     }
   }
-  return iVar3;
+  return (int)slot;
 }
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
 #undef FUN_003a2ef0
