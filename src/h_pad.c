@@ -384,14 +384,14 @@ void H_Pad_UpdateRumble(void)
         sRumbleDuration = 0;
         sRumbleOnFrames = 0;
         sRumbleIntensity.h = 0;
-        gWorkPads[HPAD_PORT_1].actuator0 = 0;
-        gWorkPads[HPAD_PORT_1].actuator1 = 0;
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = 0;
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = 0;
         sRumbleState++;
         break;
 
     case 1:
-        gWorkPads[HPAD_PORT_1].actuator0 = 0;
-        gWorkPads[HPAD_PORT_1].actuator1 = 0;
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = 0;
+        ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = 0;
         break;
 
     case 2:
@@ -405,17 +405,19 @@ void H_Pad_UpdateRumble(void)
             {
                 if (sRumblePhase == 0)
                 {
-                    u8 intensityByte = sRumbleIntensity.b;
-                    u16 intensity = intensityByte;
-                    gWorkPads[HPAD_PORT_1].actuator0 = intensity;
-                    gWorkPads[HPAD_PORT_1].actuator1 = intensity;
+                    u16 intensity;
+                    u8 intensityByte;
+                    intensityByte = sRumbleIntensity.b;
+                    intensity = intensityByte;
+                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = intensity;
+                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = intensity;
                     sRumbleCadence = sRumbleOnFrames;
                     sRumblePhase = 1;
                 }
                 else
                 {
-                    gWorkPads[HPAD_PORT_1].actuator0 = 0;
-                    gWorkPads[HPAD_PORT_1].actuator1 = 0;
+                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = 0;
+                    ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = 0;
                     sRumbleCadence = sRumbleOffFrames;
                     sRumblePhase = 0;
                 }
@@ -468,6 +470,9 @@ void H_Pad_IgnoreRumbleCallback(void)
 void H_Pad_RwFreeRaw(void* memory)
 {
     HPadRwAllocation* allocation;
+    u32 size;
+    u32 hint;
+    s32 intrState;
 
     if (memory == NULL)
     {
@@ -475,15 +480,22 @@ void H_Pad_RwFreeRaw(void* memory)
     }
 
     allocation = (HPadRwAllocation*)((u8*)memory - sizeof(HPadRwAllocation));
-    sRwAllocatedBytes -= allocation->size;
-    if (allocation->hint != 0)
+    size = allocation->size;
+    hint = allocation->hint;
+    sRwAllocatedBytes -= size;
+    intrState = func_0050d3a0();
+    if (hint != 0)
     {
-        memset(allocation, 0, allocation->size);
+        memset(allocation, 0, size);
     }
-    H_Free(allocation);
+    func_00520748(allocation);
+    if (intrState != 0)
+    {
+        func_0050d3f0();
+    }
 }
 
-// FUN_00103DA0
+// FUN_00103DA0 NONMATCHING
 void* H_Pad_RwAllocateRaw(size_t size)
 {
     HPadRwAllocation* allocation;
@@ -492,7 +504,7 @@ void* H_Pad_RwAllocateRaw(size_t size)
 
     if (size == 0xAC)
     {
-        __asm__ volatile ("addiu %0, $gp, -0x7A78" : "=r"(message));
+        message = D_005CEAE0;
         printf(message);
     }
 
@@ -539,7 +551,7 @@ void* H_Pad_RwAllocateRaw(size_t size)
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
     void* reallocated;
-    RwUInt32 copySize;
+    size_t copySize;
     s32 intrState;
     RwUInt32 mallocHint;
 

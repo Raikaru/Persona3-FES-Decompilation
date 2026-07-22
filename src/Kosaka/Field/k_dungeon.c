@@ -1301,10 +1301,9 @@ extern void func_00171b50(u32 socialLink);
 #pragma alias datSetActiveSocialLink_s16 datSetActiveSocialLink
 extern void datSetActiveSocialLink_s16(s16 activeSocialLink);
 #pragma alias adminiGetNowSeqId_u32 adminiGetNowSeqId
-#pragma alias adminiGetNowSeqId_s32 adminiGetNowSeqId
-extern s32 adminiGetNowSeqId_s32(void);
-#pragma alias adminiGetNextSeqId_s32 adminiGetNextSeqId
-extern s32 adminiGetNextSeqId_s32(void);
+extern u32 adminiGetNowSeqId_u32(void);
+#pragma alias adminiGetNextSeqId_u32 adminiGetNextSeqId
+extern u32 adminiGetNextSeqId_u32(void);
 
 // 0x20c bytes. The transition controller keeps its collision-controller task
 // at offset 0x204; the remaining tail is reserved by the retail work layout.
@@ -1432,13 +1431,20 @@ u32 FUN_001c2160(void)
         adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
         goto common_false;
     }
-    if (cmdTimer > 10 &&
-        adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
-        adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
+    if ((s32)scrGetCmdTimer() <= 10)
     {
-        result = true;
-        goto done;
+        goto common_false;
     }
+    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
+    {
+        goto checks_false;
+    }
+    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
+    {
+        goto checks_false;
+    }
+    result = true;
+    goto done;
 checks_false:
     result = false;
     goto done;
@@ -1448,7 +1454,7 @@ done:
     return result;
 }
 
-// FUN_001C2240 NONMATCHING
+// FUN_001C2240
 u32 FUN_001c2240(void)
 {
     SocialLinkSequenceData data;
@@ -1468,14 +1474,21 @@ u32 FUN_001c2240(void)
         adminiChangeSeq(ADMINI_SEQ_FIELD2, &data, 0x1c, false);
         goto common_false;
     }
-    if (cmdTimer > 10 &&
-        adminiGetNowSeqId() == ADMINI_SEQ_NULL &&
-        adminiGetNextSeqId() == ADMINI_SEQ_INVALID)
+    if ((s32)scrGetCmdTimer() <= 10)
     {
-        func_00171b50(socialLink);
-        result = true;
-        goto done;
+        goto common_false;
     }
+    if (adminiGetNowSeqId_u32() != ADMINI_SEQ_NULL)
+    {
+        goto checks_false;
+    }
+    if (adminiGetNextSeqId_u32() != ADMINI_SEQ_INVALID)
+    {
+        goto checks_false;
+    }
+    func_00171b50(socialLink);
+    result = true;
+    goto done;
 checks_false:
     result = false;
     goto done;
