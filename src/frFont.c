@@ -1581,7 +1581,7 @@ u16 FUN_003b0e70(s16 param_1)
 }
 #define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
 #undef FUN_003b0e90
-// FUN_003B0E90 NONMATCHING
+// FUN_003B0E90
 
 u16 FUN_003b0e90(u16 param_1)
 {
