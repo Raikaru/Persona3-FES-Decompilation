@@ -18,6 +18,11 @@ u32 uGpffffb9ec;
 u32 uGpffffb9f4;
 extern u8 cGpffffb9c0;
 extern u8* iGpffffb9b8;
+static inline uintptr_t Yajima_AddOffsetFirst(uintptr_t offset, uintptr_t base)
+{
+  return offset + base;
+}
+
 /* FUSION_EXACT_PROTOS */
 u16 func_00170a40(s16 pcId, s16 index);
 s16 func_00170ab0(s16 pcId, s16 index);
@@ -1062,13 +1067,15 @@ u32 FUN_00425190(void)
 
     uVar2 = scrGetIntPara(0);
 
-    *(u8 *)(*(char *)(iVar1 + 0xa0) * 4 + iVar1 + 4) = uVar2;
+    *(u8 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+        (u32)*(s8 *)(iVar1 + 0xa0) * 4, (uintptr_t)iVar1) + 4) = uVar2;
 
     iVar1 = (int)DAT_007ce6ec_abs;
 
     uVar3 = scrGetIntPara(1);
 
-    *(u16 *)(*(char *)(iVar1 + 0xa0) * 4 + iVar1 + 6) = uVar3;
+    *(u16 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+        (u32)*(s8 *)(iVar1 + 0xa0) * 4, (uintptr_t)iVar1) + 6) = uVar3;
 
     *(char *)(DAT_007ce6ec_abs + 0xa0) = *(char *)(DAT_007ce6ec_abs + 0xa0) + '\x01';
 
