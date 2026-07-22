@@ -115,6 +115,8 @@ void FUN_003afe30(void);
 void FUN_003aff50(void);
 u64 FUN_003affd0(u64 param_1);
 u32 FUN_003b0030(int param_1);
+#pragma alias FUN_003b0030_u64 FUN_003b0030
+extern u64 FUN_003b0030_u64(u64 param_1);
 u64 FUN_003b0170(u64 param_1);
 void FUN_003b01d0(int param_1,int param_2);
 int FUN_003b03a0(void);
@@ -614,7 +616,7 @@ void FUN_003aff50(void)
 
 #define FUN_003aff50(...) ((void (*)(...))FUN_003aff50)(__VA_ARGS__)
 #undef FUN_003affd0
-// FUN_003AFFD0 NONMATCHING
+// FUN_003AFFD0 MATCHING
 
 
 u64 FUN_003affd0(u64 param_1)
@@ -624,19 +626,21 @@ u64 FUN_003affd0(u64 param_1)
 {
 
   char cVar1;
+  u64 uVar2;
 
 
   
 
   cVar1 = FUN_003b0ec0_direct();
 
-  if (cVar1 == '\0') {
-
-    param_1 = FUN_003b0030_direct(param_1);
-
+  if (cVar1 != '\0') {
+    uVar2 = param_1;
+  }
+  else {
+    uVar2 = FUN_003b0030_u64(param_1);
   }
 
-  return param_1;
+  return uVar2;
 
 }
 #define FUN_003affd0(...) ((u64 (*)(...))FUN_003affd0)(__VA_ARGS__)
