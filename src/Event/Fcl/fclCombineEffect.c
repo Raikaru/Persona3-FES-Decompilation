@@ -1244,7 +1244,7 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
   int iVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   
 
@@ -1261,6 +1261,7 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
   case 2:
 
 
+    lVar2 = FUN_0041be50(*(u32 *)(iVar1 + 8));
     if (lVar2 != 0) {
 
       FUN_004d0f00(lVar2);
@@ -1277,7 +1278,7 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
   case 4:
 
-    (*DAT_0096017c)(*(u32 *)(iVar1 + 8));
+    (*DAT_0096017c_abs)(*(u32 *)(iVar1 + 8));
 
     break;
 
@@ -1285,7 +1286,7 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
     func_0021a1b0();
 
-    (*DAT_0096017c)(*(u32 *)(iVar1 + 8));
+    (*DAT_0096017c_abs)(*(u32 *)(iVar1 + 8));
 
     break;
 
@@ -1293,7 +1294,7 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
     func_0020ac80(*(u32 *)(iVar1 + 8));
 
-    (*DAT_0096017c)(*(u32 *)(iVar1 + 8));
+    (*DAT_0096017c_abs)(*(u32 *)(iVar1 + 8));
 
   }
 
