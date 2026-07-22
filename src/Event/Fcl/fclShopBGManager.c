@@ -3453,29 +3453,41 @@ u64 FUN_004138e0(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00413B10 NONMATCHING
+// FUN_00413B10
+#pragma push
+#pragma opt_propagation off
 
 
 u64 FUN_00413b10(u64 param_1,int param_2)
-
-
-
 {
+  volatile u8 *puVar1;
+  float zero;
+  float fVar3;
+  float one;
+  s32 x;
+  s32 y;
+  s32 a3;
+  s32 t0;
+  s32 t1;
+  s32 t2;
+  u8 bVar2;
 
-  {
-    u8 *puVar1;
-    float fVar3;
-    u8 bVar2;
-    puVar1 = *(u8 **)(param_2 + 0xc);
-    fVar3 = *(float *)(puVar1 + 4);
-    bVar2 = puVar1[8];
-    FUN_0040e3f0_typed(0.0f, fGpffff80d0 * fVar3,
-                       1.0f, 1.0f, 0, 0, bVar2, 0x68, 0, 0x74, 0x7d);
-  }
-
+  puVar1 = *(u8 **)(param_2 + 0xc);
+  zero = 0.0f;
+  bVar2 = puVar1[8];
+  fVar3 = fGpffff80d0 * *(float *)(puVar1 + 4);
+  one = 1.0f;
+  x = 0;
+  y = 0;
+  a3 = 0x68;
+  t0 = 0;
+  t1 = 0x74;
+  t2 = 0x7d;
+  FUN_0040e3f0_typed(zero, fVar3, one, one, x, y, bVar2,
+                     a3, t0, t1, t2);
   return 0;
-
 }
+#pragma pop
 
 
 
