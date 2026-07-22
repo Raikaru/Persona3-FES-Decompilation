@@ -3211,6 +3211,7 @@ void FUN_00430630(int param_1)
 {
   int iVar1;
   int iVar2;
+  int iVar3;
   
   iVar1 = *(int *)(param_1 + 0x3c);
   iVar2 = FUN_001158b0(0,DAT_007ce6e4,0);
@@ -3229,13 +3230,15 @@ void FUN_00430630(int param_1)
   *(int *)(iVar1 + 0x54) = iVar2;
   *(u8 *)(iVar2 + 0x18) = 0xff;
   *(u32 *)(*(int *)(iVar1 + 0x54) + 0x10) = 0x40e00000;
-  *(u32 *)(*(int *)(iVar1 + 0x54) + 0x14) = 0x439c8000;
+  iVar3 = 0x139;
+  *(float *)(*(int *)(iVar1 + 0x54) + 0x14) = (float)iVar3;
   *(u32 *)(*(int *)(iVar1 + 0x54) + 0x2c) = 0x42480000;
   iVar2 = FUN_001158b0(0,DAT_007ce6e4,3);
   *(int *)(iVar1 + 0x58) = iVar2;
   *(u8 *)(iVar2 + 0x18) = 0xff;
   *(u32 *)(*(int *)(iVar1 + 0x58) + 0x10) = 0x42be0000;
-  *(u32 *)(*(int *)(iVar1 + 0x58) + 0x14) = 0x439c8000;
+  iVar3 = 0x139;
+  *(float *)(*(int *)(iVar1 + 0x58) + 0x14) = (float)iVar3;
   *(u32 *)(*(int *)(iVar1 + 0x58) + 0x2c) = 0x42480000;
   return;
 }
