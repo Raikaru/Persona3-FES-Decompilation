@@ -5084,6 +5084,7 @@ void FUN_00434d30(void)
     ((u8 *)DAT_007ce6e8)[iVar3] = 0;
   }
 }
+// FUN_00434E60 NONMATCHING
 void FUN_00434e60(void)
 
 {
