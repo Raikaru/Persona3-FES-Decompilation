@@ -164,20 +164,21 @@ u8 * FUN_003c4040(int param_2,int param_1)
   u8 *base;
   int offset;
 
-  first = param_2;
-  second = param_1;
-  lVar1 = FUN_00172a50((short)first);
+  first = param_1;
+  second = param_2;
+  lVar1 = FUN_00172a50((short)second);
   if (lVar1 == 0) {
     FUN_0019d3f0("comuData.c",0x30);
   }
-  lVar1 = FUN_00172a50((short)second);
+  lVar1 = FUN_00172a50((short)first);
   if (lVar1 == 0) {
     FUN_0019d3f0("comuData.c",0x32);
   }
   offset = first * 0x18;
-  base = (u8 *)0x006a38e8;
+  base = PTR_DAT_006a38e8_abs;
   asm volatile("" : "+m"(base));
-  return *(u8 **)(base + offset + second * 4);
+  base += offset;
+  return *(u8 **)(second * 4 + base);
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
 #pragma pop
