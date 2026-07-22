@@ -156,11 +156,9 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 
 
 {
-  float product;
 
   if (param_4 != 0) {
-    product = param_3 * param_1;
-    param_2 = product + param_2 * (1.0f - param_1);
+    param_2 = param_3 * param_1 + param_2 * (1.0f - param_1);
   }
   return param_2;
 
