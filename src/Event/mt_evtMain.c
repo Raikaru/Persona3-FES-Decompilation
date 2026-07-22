@@ -14497,16 +14497,20 @@ u32 FUN_0036e260(int param_1)
   if (lVar3 == 0) {
     FUN_005225a8(0x69dfd0);
     uVar2 = 0;
+    goto LAB_0036e2d0;
   }
-  else if (((*(s8 *)(iVar1 + 0x4c) & 4) == 0) ||
-           (lVar3 = FUN_002ff310(), lVar3 == 1)) {
-    uVar2 = 0xffffffff;
+  if ((*(s8 *)(iVar1 + 0x4c) & 4) == 0) {
+    goto LAB_0036e2cc;
   }
-  else {
-    uVar2 = 0;
+  lVar3 = FUN_002ff310();
+  if (lVar3 == 1) {
+    goto LAB_0036e2cc;
   }
-
-
+  uVar2 = 0;
+  goto LAB_0036e2d0;
+LAB_0036e2cc:
+  uVar2 = 0xffffffff;
+LAB_0036e2d0:
   return uVar2;
 
 }
