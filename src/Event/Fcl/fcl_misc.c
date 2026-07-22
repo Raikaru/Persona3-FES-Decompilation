@@ -3499,8 +3499,7 @@ u32 FUN_003cdba0(u64 param_1,u32 param_2)
   if (context == 0) {
     fclMiscAssertCall((u32)DAT_006a3e18,0x9e2);
   }
-  if (*(s16 *)(context + 0xc) == param_2) {
-    *(u16 *)(context + 0xe) = 0;
+  if (*(s16 *)(context + 0xc) == (param_2 & 0xffff)) {
     result = 0;
   }
   else {
@@ -3510,7 +3509,7 @@ u32 FUN_003cdba0(u64 param_1,u32 param_2)
       result = 0;
     }
     else {
-      if (param_2 == 0) {
+      if ((param_2 & 0xffff) == 0) {
         if (*(s32 *)(context + 0x18) != 0) {
           fclMisc3174e0Call(*(u32 *)(context + 0x18));
           *(u32 *)(context + 0x18) = 0;
