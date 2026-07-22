@@ -1051,14 +1051,15 @@ u32 func_0017f990(void)
         return true;
     }
 
-    work = sClndTask->workData;
     if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
     {
+        work = sClndTask->workData;
         work->stopDelay = 0x3c;
         work->state = CLNDTASK_STATE_STOP_DELAY;
     }
     else
     {
+        work = sClndTask->workData;
         work->debugCursorBg = (KwlnTask*)(uintptr_t)0x3c;
         work->state = CLNDTASK_STATE_BEGIN_DAY_08;
     }
@@ -1066,7 +1067,6 @@ u32 func_0017f990(void)
     return true;
 }
 
-// FUN_0017FAD0
 KwlnTask* func_0017fad0(void)
 {
     KwlnTask* task;
