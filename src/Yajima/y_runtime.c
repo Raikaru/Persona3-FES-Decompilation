@@ -12257,7 +12257,7 @@ void FUN_00449ed0(void)
 {
   int iVar1;
   
-  iGpffffb9fc = (*DAT_00960184)(1,200,0x40000);
+  iGpffffb9fc = (*DAT_00960184_abs)(1,200,0x40000);
   for (iVar1 = 0; iVar1 < 0x1e; iVar1 = iVar1 + 1) {
     *(u8 *)(iGpffffb9fc + iVar1 * 4 + 4) = 0;
     *(u16 *)(iGpffffb9fc + iVar1 * 4 + 6) = 0;
