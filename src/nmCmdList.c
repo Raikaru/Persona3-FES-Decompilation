@@ -1904,7 +1904,7 @@ s8 FUN_003c7610(void)
 }
 #define FUN_003c7610(...) ((s8 (*)(...))FUN_003c7610)(__VA_ARGS__)
 #undef FUN_003c7650
-// FUN_003C7650 NONMATCHING
+// FUN_003C7650
 
 
 u32 FUN_003c7650(int param_1)
@@ -1967,7 +1967,7 @@ u32 FUN_003c7650(int param_1)
 }
 #define FUN_003c7650(...) ((u32 (*)(...))FUN_003c7650)(__VA_ARGS__)
 #undef FUN_003c7700
-// FUN_003C7700 NONMATCHING
+// FUN_003C7700
 
 
 u32 FUN_003c7700(void)
@@ -2385,7 +2385,7 @@ void FUN_003c7b90(void)
 }
 #define FUN_003c7b90(...) ((void (*)(...))FUN_003c7b90)(__VA_ARGS__)
 #undef FUN_003c7bc0
-// FUN_003C7BC0 NONMATCHING
+// FUN_003C7BC0
 
 
 void FUN_003c7bc0(u64 param_1,u64 param_2)
@@ -2412,7 +2412,7 @@ void FUN_003c7bc0(u64 param_1,u64 param_2)
 }
 #define FUN_003c7bc0(...) ((void (*)(...))FUN_003c7bc0)(__VA_ARGS__)
 #undef FUN_003c7c20
-// FUN_003C7C20 NONMATCHING
+// FUN_003C7C20
 
 
 void FUN_003c7c20(u64 param_1,u64 param_2,u64 param_3)
