@@ -2709,19 +2709,10 @@ u32 FUN_0045e8c0(int param_1)
       }
       else {
         memset((void *)lVar3,0,0x1c68);
-        {
-          int arg0;
-          int arg1;
-          int arg2;
-          int arg3;
-          int arg4;
-          arg0 = param_1;
-          arg1 = 0x106f;
-          arg2 = (int)DAT_006b4e70_camp;
-          arg3 = (int)FUN_0045e3e0_camp;
-          arg4 = (int)FUN_0045e7b0_camp;
-          uVar2 = FUN_00194b80_camp(arg0,arg1,arg2,arg3,arg4,lVar3);
-        }
+        uVar2 = FUN_00194b80_camp(param_1, 0x106f,
+                                  (int)DAT_006b4e70_camp,
+                                  (int)FUN_0045e3e0_camp,
+                                  (int)FUN_0045e7b0_camp, lVar3);
       }
       puVar1[4] = uVar2;
       *puVar1 = 3;
