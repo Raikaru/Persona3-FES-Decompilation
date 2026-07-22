@@ -5862,62 +5862,32 @@ LAB_005342a4:
 // FUN_00534308
 
 
-asm void FUN_00534308(int param_1,int *param_2)
+#pragma push
+#pragma schedule on
+// FUN_00534308 NONMATCHING
+void FUN_00534308(int param_1,int *param_2)
 {
-  .set noreorder
-  .word 0x27bdfff0
-  .word 0x24020001
-  .word 0xffbf0000
-  .word 0x8ca30000
-  .word 0x50620013
-  .word 0x8c820008
-  .word 0x50600009
-  .word 0x8c820008
-  .word 0x24020002
-  .word 0x10620016
-  .word 0x24020003
-  .word 0x1062001e
-  .word 0xdfbf0000
-  .word 0x10000024
-  .word 0x00000000
-  .word 0x00000000
-  .word 0x8ca50004
-  .word 0x8c430000
-  .word 0x8c660008
-  .word 0x00c0f809
-  .word 0x0040202d
-  .word 0x1000001c
-  .word 0xdfbf0000
-  .word 0x00000000
-  .word 0x8ca6000c
-  .word 0x8c430000
-  .word 0x0040202d
-  .word 0x8c67000c
-  .word 0x00e0f809
-  .word 0x8ca50008
-  .word 0x10000013
-  .word 0xdfbf0000
-  .word 0x8c820008
-  .word 0x8ca60014
-  .word 0x8c430000
-  .word 0x0040202d
-  .word 0x8c670010
-  .word 0x00e0f809
-  .word 0x8ca50010
-  .word 0x1000000a
-  .word 0xdfbf0000
-  .word 0x00000000
-  .word 0x8c820008
-  .word 0x8ca6001c
-  .word 0x8c430000
-  .word 0x0040202d
-  .word 0x8c670014
-  .word 0x00e0f809
-  .word 0x8ca50018
-  .word 0xdfbf0000
-  .word 0x03e00008
-  .word 0x27bd0010
+  int state;
+
+  state = *param_2;
+  if (state == 1) {
+    if (*(int *)(param_1 + 8) == 0) {
+      return;
+    }
+    (**(code **)(param_1 + 0))(0,param_2[2],param_2[3],*(u32 *)(param_1 + 0xc));
+  } else if (state == 2) {
+    if (*(int *)(param_1 + 8) == 0) {
+      return;
+    }
+    (**(code **)(param_1 + 0))(0,param_2[4],param_2[5],*(u32 *)(param_1 + 0x10));
+  } else if (state == 3) {
+    if (*(int *)(param_1 + 8) == 0) {
+      return;
+    }
+    (**(code **)(param_1 + 0))(0,param_2[6],param_2[7],*(u32 *)(param_1 + 0x14));
+  }
 }
+#pragma pop
 
 
 
