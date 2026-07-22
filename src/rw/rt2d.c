@@ -93,6 +93,7 @@ extern u32 uGpffffaff0;
 extern u32 DAT_0077e4c0;
 extern u32 DAT_0077e4c4;
 extern u32 DAT_0077e4c8;
+extern u8 DAT_0077e4e0[];
 #pragma alias DAT_0077e4c0_abs DAT_0077e4c0
 #pragma alias DAT_0077e4c4_abs DAT_0077e4c4
 #pragma alias DAT_0077e4c8_abs DAT_0077e4c8
@@ -3822,7 +3823,7 @@ int FUN_004b6000(int *param_1,int param_2)
 {
   int iVar1;
   
-  if ((param_1 = (int *)*param_1) != (int *)0) {
+  if (*param_1 != 0) {
     iVar1 = FUN_004c2090();
     iVar1 = iVar1 + param_2 * 0x10;
   }
@@ -5145,7 +5146,16 @@ void FUN_004b8120(f32 *out, const f32 *matrix)
 // FUN_004B81F0 NONMATCHING
 void FUN_004b81f0(f32 *out, const f32 *a, const f32 *b)
 {
-  out[2] = a[3] * b[4] + a[2] * b[2];
+  f32 f1;
+  f32 f0;
+  f32 f3;
+  f32 f2;
+
+  f1 = a[3];
+  f0 = b[4];
+  f3 = a[2];
+  f2 = b[2];
+  out[2] = f1 * f0 + f3 * f2;
   out[3] = a[3] * b[5] + a[2] * b[3];
   out[4] = a[5] * b[4] + a[4] * b[2];
   out[5] = a[5] * b[5] + a[4] * b[3];
@@ -5319,15 +5329,17 @@ u64 FUN_004b8740(u64 param_1)
 #pragma schedule on
 // FUN_004B87D0 NONMATCHING
 u64 FUN_004b87d0(u64 param_1)
-
 {
+  u64 uVar2;
+
+  uVar2 = param_1;
   DAT_007ce8ac = DAT_007ce8ac + -1;
-  FUN_004b7690(0x77e4e0);
+  FUN_004b7690((int)DAT_0077e4e0);
   if (DAT_007ce8b0 != 0) {
     FUN_004c3c30();
     DAT_007ce8b0 = 0;
   }
-  return param_1;
+  return uVar2;
 }
 #pragma schedule off
 // FUN_004B8830 NONMATCHING
