@@ -3366,7 +3366,7 @@ u32 FUN_0031f740(float param_1,int *param_2)
 
 
 
-// FUN_0031F7A0 NONMATCHING
+// FUN_0031F7A0
 u8 * FUN_0031f7a0(float param_1,int *param_2)
 {
   float *key;
@@ -3379,6 +3379,7 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
   int stride;
   u8 *data;
   int mid;
+  u32 address;
 
   data = (u8 *)param_2[3];
   low = 0;
@@ -3394,10 +3395,12 @@ u8 * FUN_0031f7a0(float param_1,int *param_2)
     }
   } while (low < high);
   if ((u32)mid >= (u32)(*param_2 - 1)) {
-    *(float *)&DAT_007ce534 = *(float *)(data + mid * 8 + 4);
+    address = mid * 8;
+    address += (u32)data;
+    *(float *)&DAT_007ce534 = *(float *)(address + 4);
   }
   else {
-    key = (float *)(data + mid * 8);
+    key = (float *)((u32)(mid * 8) + (u32)data);
     start = key[0];
     output = key[1];
     fraction = param_1 - start;
@@ -4174,6 +4177,7 @@ void FUN_00320770(int *param_1)
 
 
 // FUN_00320810 NONMATCHING
+#pragma optimization_level 1
 
 
 void FUN_00320810(int *param_1)
@@ -4182,44 +4186,32 @@ void FUN_00320810(int *param_1)
 
 {
 
-  int iVar1;
-
-  u32 uVar2;
-
+  u8 *iVar1;
   int iVar3;
-
+  u32 uVar2;
   float fVar4;
-
   float fVar5;
 
   
 
+
   fVar5 = 0.0;
-
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
-
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
-
-      iVar1 = iVar3 + uVar2 * 0x10;
-
+      iVar1 = (u8 *)(iVar3 + uVar2 * 0x10);
       if (*(int *)(iVar1 + 0xc) != 0) {
-
         fVar4 = *(float *)(iVar1 + 4);
-
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
-
         }
-
       }
-
     }
-
   }
 
   return;
 
 }
+#pragma optimization_level 2
 
 
 
