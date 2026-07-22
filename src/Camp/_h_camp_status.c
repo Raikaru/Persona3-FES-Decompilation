@@ -16,6 +16,9 @@ extern s32 FUN_001159f0();
 #pragma alias campStatusDrawSpriteCall FUN_001159f0
 extern s32 campStatusDrawSpriteCall(u32 parent, void* resource, s32 frame,
                                     u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campStatusDrawSpriteCallXY FUN_001159f0
+extern s32 campStatusDrawSpriteCallXY(u32 parent, void* resource, s32 frame,
+                                      f32 x, f32 y, u32 alpha, f32 scale);
 
 extern s32 FUN_001120a0();
 #pragma alias campStatusGetFont FUN_001120a0
@@ -377,14 +380,16 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                          maximum);
 }
 
-#pragma schedule on
-// FUN_00123F80 NONMATCHING
+#pragma schedule off
+// FUN_00123F80
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
 {
-    u32 parent = (u16)pcId;
-    s32 icon = 0x2B;
-    s32 bright = fade;
+    u32 parent;
+    s32 icon;
+    s32 bright;
+    icon = 0x2B;
+    bright = fade;
     switch (datGetPhysicalCondition(pcId)) {
     case 0: icon = 0x0B; break;
     case 1: icon = 0x0D; break;
@@ -394,9 +399,10 @@ void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
     case 5: icon = 0x0F; break;
     default: break;
     }
-    campStatusDrawSpriteCall(parent, DAT_00833B90_abs, icon,
-                             (u8)bright, position.x + 184.0f,
-                             position.y + 76.0f, alpha);
+    campStatusDrawSpriteCallXY(parent, *(void**)DAT_00833B90_abs, icon,
+                               position.x + 184.0f,
+                               (position.y + 88.0f) - 12.0f,
+                               (u8)bright, alpha);
 }
 #pragma schedule off
 
