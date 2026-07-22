@@ -1109,6 +1109,14 @@ extern s32 DAT_009571b8;
 extern float* DAT_009571bc;
 extern code DAT_009571b0;
 extern s32 DAT_009571b4;
+#pragma alias DAT_009571b0_abs DAT_009571b0
+extern code DAT_009571b0_abs[];
+#pragma alias DAT_009571b4_abs DAT_009571b4
+extern u8 DAT_009571b4_abs[];
+#pragma alias DAT_009571b8_abs DAT_009571b8
+extern u8 DAT_009571b8_abs[];
+#pragma alias DAT_009571bc_abs DAT_009571bc
+extern u8 DAT_009571bc_abs[];
 extern float fGpffff80e4;
 extern u8 LAB_003131f8;
 extern f32 DAT_007cada4;
@@ -2686,21 +2694,21 @@ void func_00312c70(u8* param_1,int param_2)
 
 {
 
-  if (DAT_009571b8 == param_2) {
+  if (*(s32*)DAT_009571b8_abs == param_2) {
 
-    *(float *)(param_2 + 0x18) = *(float *)(param_2 + 0x18) * *DAT_009571bc;
+    *(float *)(param_2 + 0x18) = *(float *)(param_2 + 0x18) * *(*(float**)DAT_009571bc_abs);
 
-    *(float *)(param_2 + 0x1c) = *(float *)(param_2 + 0x1c) * DAT_009571bc[1];
+    *(float *)(param_2 + 0x1c) = *(float *)(param_2 + 0x1c) * (*(float**)DAT_009571bc_abs)[1];
 
-    *(float *)(param_2 + 0x20) = *(float *)(param_2 + 0x20) * DAT_009571bc[2];
+    *(float *)(param_2 + 0x20) = *(float *)(param_2 + 0x20) * (*(float**)DAT_009571bc_abs)[2];
 
   }
 
-  (*DAT_009571b0)(param_1,param_2);
+  (*DAT_009571b0_abs)(param_1,param_2);
 
-  if (DAT_009571b4 == param_2) {
+  if (*(s32*)DAT_009571b4_abs == param_2) {
 
-    RwMatrixScale((RwMatrix*)param_1,(const RwV3d*)DAT_009571bc,1);
+    RwMatrixScale((RwMatrix*)param_1,(const RwV3d*)*(float**)DAT_009571bc_abs,1);
 
   }
 
