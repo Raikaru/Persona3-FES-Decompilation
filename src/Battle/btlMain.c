@@ -4294,13 +4294,12 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
                 FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
             }
         }
-        source = work + 3;
-        if (source != ((void*)0))
+        if (work + 3 != ((void*)0))
         {
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
-            *(RwV4d*)entry = *(RwV4d*)source;
+            *(RwV4d*)entry = *(RwV4d*)(work + 3);
         }
         index++;
         if (index >= 4)
@@ -4326,13 +4325,12 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
                 FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
             }
         }
-        source = work + 3;
-        if (source != ((void*)0))
+        if (work + 3 != ((void*)0))
         {
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
-            *(RwV4d*)entry = *(RwV4d*)source;
+            *(RwV4d*)entry = *(RwV4d*)(work + 3);
         }
         index++;
         if (index >= 4)
