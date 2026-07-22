@@ -1140,24 +1140,24 @@ u32 FUN_003c6d80(int param_1)
   u32 flags;
   u32 result;
 
-  flags = **(u32 **)(param_1 + 0x24);
   result = 0;
+  flags = **(u32 **)(param_1 + 0x24);
   if ((flags & 0x400) != 0) {
     result |= 0x80000000;
   }
   if ((flags & 4) != 0) {
     result |= 0x40000000;
   }
-  if ((flags & 2) == 0) {
-    return result | 2;
-  }
-  if ((flags & 0x100) == 0) {
-    if ((flags & 0x80) == 0) {
-      return result | 1;
+  if ((flags & 2) != 0) {
+    if ((flags & 0x100) != 0) {
+      return result | 0x14;
     }
-    return result | 0xc;
+    if ((flags & 0x80) != 0) {
+      return result | 0xc;
+    }
+    return result | 1;
   }
-  return result | 0x14;
+  return result | 2;
 }
 #define FUN_003c6d80(...) ((u32 (*)(...))FUN_003c6d80)(__VA_ARGS__)
 #undef FUN_003c6e10
@@ -2044,49 +2044,24 @@ u8 FUN_003c7850(void)
 
 {
   extern u8 *FUN_003c7d50_direct(void);
-
   u8 uVar1;
-
   int *piVar2;
-
   u8 *lVar3;
 
-  
-
   lVar3 = FUN_003c7d50_direct();
-
   if (lVar3 == 0) {
-
     uVar1 = 0;
-
-  }
-
-  else {
-
+  } else {
     piVar2 = (int *)lVar3;
-
     if (*piVar2 < 0) {
-
       uVar1 = 0;
-
-    }
-
-    else if ((*(char *)((int)piVar2 + 5) == '\0') || ((char)piVar2[1] != '\x02')) {
-
+    } else if ((*(char *)((int)piVar2 + 5) == '\0') || ((char)piVar2[1] != '\x02')) {
       uVar1 = (u8)piVar2[1];
-
-    }
-
-    else {
-
+    } else {
       uVar1 = 0;
-
     }
-
   }
-
   return uVar1;
-
 }
 #define FUN_003c7850(...) ((u8 (*)(...))FUN_003c7850)(__VA_ARGS__)
 #undef FUN_003c78d0
