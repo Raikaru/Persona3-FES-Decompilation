@@ -182,19 +182,24 @@ void func_001cd7a0(void)
     memset(DAT_0086b180, 0, 0xc40);
 }
 
+#pragma opt_loop_invariants on
+
 // FUN_001CD8E0 NONMATCHING
 void func_001cd8e0(void)
 {
     s32 i;
+    FldUnit* units = gFldUnitsPc;
+    FldUnitMdl* models = gFldUnitsPcMdl;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        gFldUnitsPc[i].unk_44 = 1;
-        gFldUnitsPcMdl[i].mdl = NULL;
-        gFldUnitsPcMdl[i].type = 0;
-        gFldUnitsPcMdl[i].id = 0;
+        units[i].unk_44 = 1;
+        models[i].mdl = NULL;
+        models[i].type = 0;
+        models[i].id = 0;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_001cd870
 void K_FldUnit_DestroyPcMdl(s32 unitId)
