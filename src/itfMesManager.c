@@ -3891,13 +3891,13 @@ void FUN_003a6410(int param_1,u32 param_2)
 #pragma pop
 #define FUN_003a6410(...) ((void (*)(...))FUN_003a6410)(__VA_ARGS__)
 #undef FUN_003a6460
-// FUN_003A6460 NONMATCHING
+// FUN_003A6460
 
 int FUN_003a6460(int param_1)
 {
+  int iVar3;
   int iVar1;
   int iVar2;
-  int iVar3;
 
   iVar3 = 0;
   goto outer_test;
