@@ -50099,20 +50099,19 @@ void FUN_0034d8a0(int param_1,u16 param_2,int param_3)
   
 
 
-  puVar4 = (u32 *)param_1;
 
-  if (*(volatile int *)((int)param_1 + 0x58) != 0) {
+  if (*(int *)((int)param_1 + 0x58) != 0) {
 
-    FUN_003321d0((int)(param_1));
-
+    FUN_003321d0(*(int *)((int)param_1 + 0x58));
   }
+  puVar4 = (u32 *)param_1;
 
   uVar2 = FUN_00332070_u32((u32)(u16)param_2,*puVar4,param_3);
   puVar4[0x16] = uVar2;
 
-  if (*(volatile int *)((int)param_1 + 0x60) != 0) {
+  if (*(int *)((int)param_1 + 0x60) != 0) {
 
-    DAT_0096017c_abs[0]();
+    DAT_0096017c_abs[0](*(int *)((int)param_1 + 0x60));
 
   }
 
@@ -51313,20 +51312,19 @@ void FUN_0034e820(int param_1,u16 param_2,int param_3)
 
   
 
-  puVar4 = (u32 *)param_1;
 
-  if (*(volatile int *)((int)param_1 + 0x5c) != 0) {
+  if (*(int *)((int)param_1 + 0x5c) != 0) {
 
-    FUN_003321d0((int)(param_1));
-
+    FUN_003321d0(*(int *)((int)param_1 + 0x5c));
   }
+  puVar4 = (u32 *)param_1;
 
   uVar2 = FUN_00332070_u32((u32)(u16)param_2,*puVar4,param_3);
   puVar4[0x17] = uVar2;
 
-  if (*(volatile int *)((int)param_1 + 0x68) != 0) {
+  if (*(int *)((int)param_1 + 0x68) != 0) {
 
-    DAT_0096017c_abs[0]();
+    DAT_0096017c_abs[0](*(int *)((int)param_1 + 0x68));
 
   }
 
