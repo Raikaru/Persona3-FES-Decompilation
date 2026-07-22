@@ -6,6 +6,10 @@ extern float DAT_007caf14;
 extern float DAT_007caffc;
 extern int DAT_006a6040[];
 extern int DAT_006a6510[];
+#pragma alias DAT_006a6510_abs DAT_006a6510
+extern u8 DAT_006a6510_abs[];
+#pragma alias DAT_006A66D0_abs DAT_006A66D0
+extern u8 DAT_006A66D0_abs[];
 extern int DAT_006A6510[];
 extern int DAT_006A66D0[];
 extern int DAT_006a66d0[];
@@ -3179,7 +3183,6 @@ int FUN_003e0260(u64 param_1,u64 param_2)
 
 }
 
-// FUN_003E0330 NONMATCHING
 int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
     struct FclPair {
@@ -3192,19 +3195,23 @@ int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
     } work;
     struct FclPair *src;
     struct FclPair *dst;
+    s32 first;
+    s32 second;
     s32 count;
     s32 result_word;
     FclAnimationNode* node;
     FclNodeLink* link;
 
-    src = (struct FclPair *)DAT_006a6510;
+    src = (struct FclPair *)DAT_006a6510_abs;
     dst = (struct FclPair *)work.table;
     count = 0x38;
     do {
-        dst->first = src->first;
-        dst->second = src->second;
+        first = src->first;
+        second = src->second;
         src++;
         count--;
+        dst->first = first;
+        dst->second = second;
         dst++;
     } while (count > 0);
     work.table[0] = param_2;
@@ -3261,9 +3268,6 @@ int FUN_003e0330(int *param_1,s32 param_2,int param_3,u16 param_4)
     return (int)node;
 }
 
-// FUN_003E04E0 NONMATCHING
-
-
 int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4)
 {
     struct FclPair {
@@ -3278,17 +3282,21 @@ int FUN_003e04e0(int *param_1,s32 param_2,int param_3,u16 param_4)
     struct FclPair *dst;
     s32 count;
     s32 result_word;
+    s32 first;
+    s32 second;
     FclAnimationNode* node;
     FclNodeLink* link;
 
-    src = (struct FclPair *)DAT_006A66D0;
+    src = (struct FclPair *)DAT_006A66D0_abs;
     dst = (struct FclPair *)work.table;
     count = 0x1c;
     do {
-        dst->first = src->first;
-        dst->second = src->second;
+        first = src->first;
+        second = src->second;
         src++;
         count--;
+        dst->first = first;
+        dst->second = second;
         dst++;
     } while (count > 0);
     work.table[0] = param_2;
