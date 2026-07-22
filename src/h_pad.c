@@ -466,7 +466,7 @@ void H_Pad_IgnoreRumbleCallback(void)
 {
 }
 
-// FUN_00103D00 NONMATCHING
+// FUN_00103D00
 void H_Pad_RwFreeRaw(void* memory)
 {
     HPadRwAllocation* allocation;

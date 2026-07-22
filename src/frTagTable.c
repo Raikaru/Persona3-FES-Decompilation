@@ -171,7 +171,7 @@ u64 FUN_003ae420(u64 param_1, int param_2)
 }
 #define FUN_003ae420(...) ((u64 (*)(...))FUN_003ae420)(__VA_ARGS__)
 #undef FUN_003ae560
-// FUN_003AE560 NONMATCHING
+// FUN_003AE560
 
 
 u64 FUN_003ae560(u64 param_1,int param_2)
@@ -1232,7 +1232,7 @@ u64 FUN_003af560(void)
   return 0;
 
 }
-// FUN_003AF5A0 NONMATCHING
+// FUN_003AF5A0
 u64 FUN_003af5a0(u32 param_1,int param_2)
 {
   u8 bVar1;

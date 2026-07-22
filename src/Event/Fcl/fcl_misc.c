@@ -535,7 +535,7 @@ extern u32 FUN_003c8400();
 extern u32 FUN_003c8b50();
 #undef FUN_003c91b0
 extern u8 FUN_003c91b0(u8 *, u32);
-// FUN_003C89A0 NONMATCHING
+// FUN_003C89A0
 u64 FUN_003c89a0(void)
 {
     u32 result;

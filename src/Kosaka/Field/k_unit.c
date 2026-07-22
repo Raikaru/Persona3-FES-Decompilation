@@ -166,7 +166,7 @@ static void FldUnit_ClearPcMdlSlot(s32 index)
     }
 }
 
-// FUN_001CD7A0 NONMATCHING
+// FUN_001CD7A0
 void func_001cd7a0(void)
 {
     memset(gFldUnitsPcMdl, 0, sizeof(gFldUnitsPcMdl));
@@ -1598,7 +1598,7 @@ void func_001d11b0(void)
     }
 }
 
-// FUN_001d12d0 NONMATCHING
+// FUN_001d12d0
 u32 func_001d12d0(void)
 {
     s32 i;

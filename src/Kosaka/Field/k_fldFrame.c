@@ -1950,7 +1950,7 @@ void func_001adc20(KwlnTask* collisCtlTask, const RwV3d* position)
     ctl->zGrid = (mdlGetMatrix(ctl->mdl)->pos.z + 400.0f) / 800.0f;
 }
 
-// FUN_001add40 NONMATCHING
+// FUN_001add40
 void func_001add40(KwlnTask* collisCtlTask)
 {
     CollisCtl* ctl;
