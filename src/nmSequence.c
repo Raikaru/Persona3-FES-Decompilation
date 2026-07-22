@@ -175,6 +175,7 @@ void FUN_003c53e0(u32 *param_1,u32 param_2)
 
 {
   u32 *puVar1;
+
   puVar1 = (u32 *)*param_1;
   while (puVar1 != (u32 *)0x0) {
     if (param_2 < *puVar1) {
@@ -183,11 +184,11 @@ void FUN_003c53e0(u32 *param_1,u32 param_2)
     }
     puVar1 = (u32 *)puVar1[4];
   }
-  if (puVar1 != (u32 *)0x0) {
-    FUN_003c4710(param_1,(u32)puVar1);
+  if (puVar1 == (u32 *)0x0) {
+    FUN_003c4710(param_1,param_1[1]);
   }
   else {
-    FUN_003c4710(param_1,param_1[1]);
+    FUN_003c4710(param_1,(u32)puVar1);
   }
 }
 
