@@ -754,7 +754,7 @@ void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
     {
         hierarchy = *(RpHAnimHierarchy**)(slotBase + 0x20);
         FUN_004b74c0(scaledFrame, hierarchy->currentAnim);
-        *(u16*)((u8*)mdl + (u32)slotIdx * sizeof(MdlAnimSlot)) |= MDLANIM_FLAG_FRAMESET;
+        *(u16*)slotBase |= MDLANIM_FLAG_FRAMESET;
     }
 
     if (slotIdx == 0)
@@ -6595,40 +6595,30 @@ void func_00317a20(u64 param_1)
 // FUN_00318620 NONMATCHING
 
 
-u32 func_00318620(Model* param_1,u16 param_2,s16 param_3)
+u32 func_00318620(Model* param_1, u16 param_2, s16 param_3)
 {
+    int* piVar1;
+    s16 id;
+    u32 uVar2;
 
-  int *piVar1;
+    uVar2 = 0;
+    piVar1 = *(int **)((u32)param_2 * 0x9c + (u8*)param_1 + 0x118);
+    if (piVar1 != NULL && (id = param_3, (s32)id < (s32)(u32)*(u16 *)(piVar1 + 1)) &&
+        *(int *)(id * 0x50 + *piVar1 + 0x40) != 0)
+    {
+        uVar2 = 1;
+    }
 
-  u32 uVar2;
+    if (param_2 == 0 && (piVar1 = *(int **)((u8*)param_1 + 0x35c), piVar1 != NULL) &&
+        (s32)param_3 < (s32)(u32)*(u16 *)(piVar1 + 1) &&
+        *(int *)(*piVar1 + param_3 * 8) != 0)
+    {
+        uVar2 = 1;
+    }
 
-  
-
-  uVar2 = 0;
-
-  piVar1 = *(int **)((u32)param_2 * 0x9c + param_1 + 0x118);
-
-  if (((piVar1 != (int *)0x0) && ((long)param_3 < (long)(u32)*(u16 *)(piVar1 + 1))) &&
-
-     (*(int *)(param_3 * 0x50 + *piVar1 + 0x40) != 0)) {
-
-    uVar2 = 1;
-
-  }
-
-  if (((param_2 == 0) && (piVar1 = *(int **)(param_1 + 0x35c), piVar1 != (int *)0x0)) &&
-
-     (((long)param_3 < (long)(u32)*(u16 *)(piVar1 + 1) &&
-
-      (*(int *)(*piVar1 + param_3 * 8) != 0)))) {
-
-    uVar2 = 1;
-
-  }
-
-  return uVar2;
-
+    return uVar2;
 }
+
 
 
 
