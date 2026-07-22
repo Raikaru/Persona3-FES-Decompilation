@@ -44,6 +44,8 @@ void FUN_003c9e30(u32 param_1,int param_2,s8 param_3);
 f32 func_00171510(s16 row, s16 column);
 void FUN_003eff00(u64 param_1,u8 *param_2);
 u8 * FUN_003efff0(int param_1);
+#pragma alias FUN_003efff0_u64 FUN_003efff0
+u8 * FUN_003efff0_u64(u64 param_1);
 s16 FUN_003f0090(int param_1);
 s16 FUN_003f00b0(int param_1);
 int FUN_003f00d0(int *param_1,u64 param_2,int *param_3);
@@ -51,6 +53,8 @@ void FUN_003f01d0(int param_1,int param_2,int *param_3);
 u32 FUN_003f0240(int param_1);
 int FUN_003f0350(int param_1,int *param_2);
 char FUN_003f03e0(int param_1);
+#pragma alias FUN_003f03e0_u64 FUN_003f03e0
+char FUN_003f03e0_u64(u64 param_1);
 u32 FUN_003f04f0(long param_1,int param_2);
 u32 * FUN_003f06e0(int *param_1,u32 param_2);
 short FUN_003f0830(int param_1);
@@ -552,64 +556,33 @@ void fclShopMisc003fb290(void* param_1, void* param_2)
 
 // HARVESTED 3D-42FF
 
-// FUN_003EFF00 NONMATCHING
+// FUN_003EFF00
 
 
 void FUN_003eff00(u64 param_1,u8 *param_2)
-
-
-
 {
-
+  u8 *puVar1;
+  u8 *puVar2;
+  u32 uStack_20[4];
   int iVar1;
-
-  u8 uVar2;
-
-  u16 uVar3;
-
-  u32 uVar4;
-
-  u64 uVar5;
-
-  long lVar6;
-
   int iStack_4;
 
-  
-
-
+  asm volatile("" : "+m"(uStack_20));
+  puVar1 = FUN_003efff0_u64(param_1);
   iStack_4 = 0;
-
-  do {
-
-
-    if (lVar6 == 0) goto LAB_003eff84;
-
-    iVar1 = *(int *)lVar6;
-
-    uVar4 = datGetLevel(1);
-
-  } while (iVar1 <= (int)(uVar4 & 0xff));
-
-  iStack_4 = iStack_4 + -1;
-
-LAB_003eff84:
-
-  *param_2 = (char)iStack_4;
-
-
-  param_2[1] = uVar2;
-
-
-  *(u16 *)(param_2 + 2) = uVar3;
-
+  while ((puVar2 = (u8 *)FUN_003f0350((int)puVar1,&iStack_4)) != 0) {
+    iVar1 = *(int *)puVar2;
+    if ((datGetLevel(1) & 0xff) < iVar1) {
+      iStack_4 = iStack_4 - 1;
+      break;
+    }
+  }
+  *param_2 = (u8)iStack_4;
+  param_2[1] = (u8)FUN_003f03e0_u64(param_1);
+  *(u16 *)(param_2 + 2) = (u16)FUN_003f2510();
   iStack_4 = 0;
-
-
-  *(int *)(param_2 + 4) = iStack_4;
-
-  return;
-
+  FUN_003f01d0((int)puVar1,0,&iStack_4);
+  *(u32 *)(param_2 + 4) = (u32)iStack_4;
 }
 
 // FUN_003EFFF0
