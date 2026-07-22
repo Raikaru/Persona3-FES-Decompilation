@@ -75,6 +75,8 @@ extern void FUN_00128010(KwlnTask* task);
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
+#pragma alias DAT_00833B90_abs DAT_00833B90
+extern u8 DAT_00833B90_abs[];
 extern void* DAT_00833B74;
 extern void* DAT_00833BA0;
 extern char gp0xffff897c[];
@@ -380,6 +382,7 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
 {
+    u32 parent = (u16)pcId;
     s32 icon = 0x2B;
     s32 bright = fade;
     switch (datGetPhysicalCondition(pcId)) {
@@ -391,7 +394,7 @@ void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
     case 5: icon = 0x0F; break;
     default: break;
     }
-    campStatusDrawSpriteCall((u32)pcId, DAT_00833B90, icon,
+    campStatusDrawSpriteCall(parent, DAT_00833B90_abs, icon,
                              (u8)bright, position.x + 184.0f,
                              position.y + 76.0f, alpha);
 }
