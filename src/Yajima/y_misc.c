@@ -65,7 +65,7 @@ u32 FUN_004255d0(void);
 u32 FUN_00425640(void);
 u64 FUN_00425690(int param_1);
 void FUN_00425ba0(int param_1);
-u64 FUN_00425c60(u64 param_1,u8 param_2);
+u32 FUN_00425c60(u64 param_1,u8 param_2);
 void FUN_00425d10(int param_1,u8 param_2);
 void FUN_00425d30(int param_1,u8 param_2,u8 param_3);
 u32 FUN_00425d50(u8 param_1,u8 param_2);
@@ -221,6 +221,8 @@ extern code DAT_0096017c_abs[];
 #pragma alias FUN_004264d0_u32 FUN_004264d0
 extern u32 FUN_004264d0_u32(u32 param_1,s8 param_2);
 code DAT_00960184;
+#pragma alias DAT_00960184_abs DAT_00960184
+extern code DAT_00960184_abs[];
 u32 LAB_00425aec[];
 u8 *PTR_DAT_007cd540;
 /* FUSION_PROTOS */
@@ -1656,44 +1658,27 @@ void FUN_00425ba0(int param_1)
 // FUN_00425C60 NONMATCHING
 
 
-u64 FUN_00425c60(u64 param_1,u8 param_2)
-
-
-
+u32 FUN_00425c60(u64 param_1,u8 param_2)
 {
+  u8 *lVar1;
+  u32 uVar2;
 
-  long lVar1;
-
-  u64 uVar2;
-
-  u8 *puVar3;
-
-  
-
-  lVar1 = (*DAT_00960184)(1,4,0x40000);
+  lVar1 = (u8 *)(uintptr_t)(*DAT_00960184_abs)(1,4,0x40000);
 
   if (lVar1 == 0) {
-
     uVar2 = 0;
-
   }
-
   else {
+    uVar2 = kwlnTaskCreate(param_1, 0x6b4400, 0x831,
+                           (void *)FUN_00425690, (void *)FUN_00425ba0,
+                           lVar1);
 
-    uVar2 = kwlnTaskCreate(param_1,0x6b4400,0x831,0x425690,0x425ba0,lVar1);
-
-    puVar3 = (u8 *)lVar1;
-
-    *puVar3 = 0;
-
-    puVar3[1] = param_2;
-
-    puVar3[2] = 0;
-
+    lVar1[0] = 0;
+    lVar1[1] = param_2;
+    lVar1[2] = 0;
   }
 
   return uVar2;
-
 }
 
 // FUN_00425D10
