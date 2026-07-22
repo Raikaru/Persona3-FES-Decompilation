@@ -91,6 +91,8 @@ static KwlnTask* sClndTask; // 007cdfec. Task name = "CalenderDraw"
 
 s32 clndFindAndExecSiteibiEvents();
 u32 func_0017db40(s16 daysSinceApr5);
+#pragma alias clndGetTimeSigned datGetTime
+extern s16 clndGetTimeSigned(void);
 KwlnTask* func_0017fc70(KwlnTask* clndTask);
 KwlnTask* func_00180a20(KwlnTask* clndTask);
 KwlnTask* func_00180c40(KwlnTask* clndTask);
@@ -613,6 +615,7 @@ KwlnTask* func_00180c40(KwlnTask* clndTask)
         func_001fa450();
         func_0017fe10(clndTask);
         work->validateSkipTarget = false;
+        goto calendar_done;
     }
     else
     {
@@ -634,11 +637,19 @@ KwlnTask* func_00180c40(KwlnTask* clndTask)
             {
                 return func_00181950(clndTask, eventIndex);
             }
+            if (func_0017db40(clndGetTimeSigned()) != 0)
+            {
+                goto early_morning_time;
+            }
+            return func_003c1ab0(clndTask, datGetTime() & 0xff);
+early_morning_time:
             return func_003c1ab0(clndTask, datGetTime() & 0xff);
         }
     }
 
     return NULL;
+calendar_done:
+    ;
 }
 
 // FUN_00180E60
