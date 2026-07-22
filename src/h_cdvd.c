@@ -422,11 +422,13 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
     return cdvd;
 }
 
-// FUN_00100ec0
+// FUN_00100ec0 NONMATCHING
 u32 H_Cdvd_Destroy(HCdvd* cdvd)
 {
     HCdvd* prev;
     HCdvd* next;
+    s32 i;
+    HCdvdCache* cache;
 
     if (cdvd->readState != HCDVD_READ_QUEUED)
     {
@@ -455,42 +457,14 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
         cdvd->unalignedFileMemory = NULL;
     }
 
-    /*
-     * Clear cache entries owned by this request. The equivalent C loop makes
-     * b210 rotate requestData, cache, and entry through the wrong registers.
-     */
-    asm volatile(
-        ".set noreorder\n\t"
-        "daddu $6, $zero, $zero\n\t"
-        "addiu $3, %0, 8\n\t"
-        "lui $5, 0x7d\n\t"
-        "addiu $5, $5, 0x6f80\n\t"
-        "beq $zero, $zero, 2f\n\t"
-        "nop\n"
-        "1:\n\t"
-        "sll $2, $6, 3\n\t"
-        "addu $2, $2, $6\n\t"
-        "sll $2, $2, 2\n\t"
-        "addu $2, $2, $6\n"
-        "sll $2, $2, 2\n\t"
-        "addu $4, $5, $2\n\t"
-        "lw $2, 0($4)\n\t"
-        "beq $2, $zero, 3f\n"
-        "nop\n\t"
-        "lw $2, 4($4)\n\t"
-        "bne $2, $3, 3f\n"
-        "nop\n\t"
-        "sw $zero, 0($4)\n"
-        "3:\n\t"
-        "addiu $6, $6, 1\n"
-        "2:\n\t"
-        "slti $2, $6, 0x100\n\t"
-        "bne $2, $zero, 1b\n"
-        "nop\n\t"
-        ".set reorder"
-        :
-        : "r" (cdvd)
-        : "$2", "$3", "$4", "$5", "$6");
+    for (i = 0; i < HCDVD_CACHE_MAX; i++)
+    {
+        cache = &sCdvdCache[i];
+        if (cache->isValid && cache->requestData == cdvd)
+        {
+            cache->isValid = false;
+        }
+    }
 
     if (cdvd->adxf != NULL)
     {

@@ -2062,21 +2062,17 @@ void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
         .records[param_2 & 0xffff].color1 & 0xff) / 255.0f;
 }
 
-// FUN_0016BEE0
+// FUN_0016BEE0 NONMATCHING
 void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
 {
     CampDataBridgeGroup* group;
     CampDataBridgeRecord* record;
-    u32 offset;
 
     if (iGpffffb2c0 == NULL) {
         FUN_0019d3f0(D_005E3098, 0xb8);
     }
-    offset = (param_1 & 0xffff) * 0x10;
-    __asm__ volatile ("addu %0, %1, %2" : "=r"(group) : "r"(offset), "r"(iGpffffb2c0));
-    record = group->records;
-    offset = (param_2 & 0xffff) * 0x20;
-    __asm__ volatile ("addu %0, %1, %2" : "=r"(record) : "r"(offset), "r"(record));
+    group = &iGpffffb2c0->groups[param_1 & 0xffff];
+    record = &group->records[param_2 & 0xffff];
     FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
 }
 
