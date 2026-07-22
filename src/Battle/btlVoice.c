@@ -85,6 +85,10 @@ typedef struct
 } VoiceSlots;
 typedef struct
 {
+    s16 values[2];
+} VoiceSlotPair;
+typedef struct
+{
   f32 values[4];
 } VoicePositions;
 
@@ -7609,7 +7613,7 @@ u32 func_002e9f10(BtlAction* action)
     return 1;
 }
 
-// FUN_002ea060 NONMATCHING
+// FUN_002ea060
 void func_002ea060(void)
 {
   int iVar1;
@@ -7620,10 +7624,9 @@ void func_002ea060(void)
   f32 positions[4];
   f32* point;
   RwV3d position;
-  s16 slots[2];
+  VoiceSlotPair slots;
   *(VoicePositions *)positions = *(VoicePositions *)DAT_00699c80_abs;
-  slots[0] = gp0xffff9c98;
-  slots[1] = gp0xffff9c9a;
+  slots = *(VoiceSlotPair *)&gp0xffff9c98;
   index = 0;
   position.y = 0.0f;
   for (iVar1 = *(int *)(iGpffffb6fc + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
@@ -7643,7 +7646,7 @@ void func_002ea060(void)
       point = positions + slotIndex * 2;
       position.x = point[0];
       position.z = point[1];
-      *(u8 *)(iVar1 + 0x9f0) = slots[slotIndex];
+      *(u8 *)(iVar1 + 0x9f0) = slots.values[slotIndex];
       index++;
     }
     FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&position);
