@@ -693,8 +693,8 @@ KwlnTask* func_00180ee0(KwlnTask* clndTask)
 // FUN_00181010 NONMATCHING
 KwlnTask* func_00181010(KwlnTask* clndTask)
 {
-    KwlnTask* result;
     s32 eventIndex;
+    KwlnTask* result;
 
     result = NULL;
     datSetFlag(0xa80, false);
@@ -713,10 +713,11 @@ KwlnTask* func_00181010(KwlnTask* clndTask)
         {
             return func_00181950(clndTask, eventIndex);
         }
-        if ((datGetDaysSinceApr5() + 7) % 7 != 6)
+        if ((datGetDaysSinceApr5() + 7) % 7 == 6)
         {
-            result = func_003c1ab0(clndTask, datGetTime() & 0xff);
+            return NULL;
         }
+        result = func_003c1ab0(clndTask, datGetTime() & 0xff);
     }
     return result;
 }
