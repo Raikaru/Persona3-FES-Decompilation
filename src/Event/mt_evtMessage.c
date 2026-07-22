@@ -18,6 +18,12 @@ extern code DAT_00960178;
 extern code DAT_0096017c;
 extern u32 gp0xffffa7b8;
 extern u8 *FUN_003c3f40(u32 param_1);
+extern s8 FUN_0016df30(s16 param_1);
+extern int FUN_0030bbb0(u8 param_1);
+extern u8 *FUN_003c4390(int param_1);
+extern u32 FUN_0010c3a0(u32 param_1,int *param_2,int param_3);
+#pragma alias FUN_0039f2a0_narg FUN_0039f2a0
+extern void FUN_0039f2a0_narg(void);
 extern u8 *FUN_003c3f80(int param_1);
 extern u8 *FUN_0013bcb0(u64 param_1, u64 param_2);
 extern void FUN_003189f0(u32 param_1, int param_2, float param_3);
@@ -49,7 +55,7 @@ u8 FUN_0039eee0(int *param_1);
 void FUN_0039eef0(int *param_1,u64 param_2,u64 param_3);
 void FUN_0039ef30(int *param_1);
 void FUN_0039ef70(int *param_1,u64 param_2,int param_3);
-void FUN_0039efd0(int *param_1,u64 param_2,s16 param_3);
+void FUN_0039efd0(int *param_1,u64 param_2,u16 param_3);
 void FUN_0039f050(int *param_1,int param_2,u16 param_3);
 void FUN_0039f0c0(int *param_1,u64 param_2,u8 param_3);
 void FUN_0039f120(int *param_1,u64 param_2,u64 param_3,u64 param_4);
@@ -349,7 +355,7 @@ void FUN_0039ef70(int *param_1,u64 param_2,int param_3)
 // FUN_0039EFD0 NONMATCHING
 
 
-void FUN_0039efd0(int *param_1,u64 param_2,s16 param_3)
+void FUN_0039efd0(int *param_1,u64 param_2,u16 param_3)
 
 
 
@@ -365,7 +371,7 @@ void FUN_0039efd0(int *param_1,u64 param_2,s16 param_3)
 
   uVar2 = FUN_0030bbb0(uVar1);
 
-  if (*param_1 != 0) {
+  if ((u8)(*param_1 != 0)) {
 
     FUN_003a4220(param_1[2],param_2,uVar2);
 
@@ -462,10 +468,8 @@ void FUN_0039f190(int *param_1,u64 param_2,u16 param_3)
 
 
 {
-
-  u8 uVar1;
-
-  u64 uVar2;
+  s8 uVar1;
+  u8 *uVar2;
 
   
 
@@ -473,7 +477,7 @@ void FUN_0039f190(int *param_1,u64 param_2,u16 param_3)
 
   uVar2 = FUN_003c4390(uVar1);
 
-  if (*param_1 != 0) {
+  if ((u8)(*param_1 != 0)) {
 
     FUN_003a4220(param_1[2],param_2,uVar2);
 
@@ -493,11 +497,11 @@ void FUN_0039f210(int *param_1,int param_2,int param_3,int param_4)
 
 {
 
-  if (*param_1 != 0) {
+  if ((u8)(*param_1 != 0)) {
 
     if (param_1[3] != 0) {
 
-      FUN_0039f2a0();
+      FUN_0039f2a0_narg();
 
     }
 
@@ -533,22 +537,16 @@ void FUN_0039f2a0(int *param_1)
 
   iVar1 = param_1[2];
 
-  if ((*param_1 != 0) && (param_1[3] != 0)) {
-
-    FUN_003a25f0(iVar1,0);
-
-    FUN_003a2a30(iVar1);
-
-    FUN_003a3420(iVar1,0);
-
-    FUN_003a3e90(iVar1,0x800000);
-
-    FUN_003a3e90(iVar1,0x100000);
-
-    FUN_003a25f0(iVar1,1);
-
-    param_1[3] = 0;
-
+  if ((u8)(*param_1 != 0)) {
+    if (param_1[3] != 0) {
+      FUN_003a25f0(iVar1,0);
+      FUN_003a2a30(iVar1);
+      FUN_003a3420(iVar1,0);
+      FUN_003a3e90(iVar1,0x800000);
+      FUN_003a3e90(iVar1,0x100000);
+      FUN_003a25f0(iVar1,1);
+      param_1[3] = 0;
+    }
   }
 
   return;
@@ -569,7 +567,7 @@ void FUN_0039f350(int *param_1)
 
   
 
-  if (((*param_1 != 0) && (param_1[3] != 0)) && (iVar1 = param_1[2], param_1[3] != 0)) {
+  if ((((u8)(*param_1 != 0)) && (param_1[3] != 0)) && (iVar1 = param_1[2], param_1[3] != 0)) {
 
     FUN_003a25f0(iVar1,0);
 
@@ -881,51 +879,38 @@ u8 FUN_0039f850(int param_1)
 {
 
   u32 uVar1;
-
+  u32 *puVar4;
+  u32 *puVar5;
   int iVar2;
-
   int iVar3;
-
+  int iVar4;
   int iStack_4;
 
   
 
   for (iVar3 = 0; iVar3 < *(int *)(param_1 + 0x70); iVar3 = iVar3 + 1) {
-
     iVar2 = param_1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0x68) == 0) {
-
-      uVar1 = FUN_0010c3a0(*(u32 *)(iVar2 + 0x60),&iStack_4,0);
-
+    puVar4 = (u32 *)(iVar2 + 0x68);
+    if (*puVar4 == 0) {
+      puVar5 = (u32 *)(iVar2 + 0x60);
+      uVar1 = FUN_0010c3a0(*puVar5,&iStack_4,0);
       if (iStack_4 == 1) {
-
-        *(u32 *)(iVar2 + 0x68) = uVar1;
-
-        *(u32 *)(iVar2 + 0x60) = 0;
-
+        *puVar4 = uVar1;
+        *puVar5 = 0;
       }
-
     }
-
   }
 
-  iVar3 = 0;
-
-  while( 1 ) {
-
-    if (*(int *)(param_1 + 0x70) <= iVar3) {
-
-      return 1;
-
+  uVar1 = 1;
+  for (iVar4 = 0; iVar4 < *(int *)(param_1 + 0x70); iVar4 = iVar4 + 1) {
+    if (*(int *)(param_1 + iVar4 * 4 + 0x68) == 0) {
+      uVar1 = 0;
+      break;
     }
-
-    if (*(int *)(param_1 + iVar3 * 4 + 0x68) == 0) break;
-
-    iVar3 = iVar3 + 1;
-
   }
-
+  if (uVar1 == 1) {
+    return 1;
+  }
   return 0;
 
 }
