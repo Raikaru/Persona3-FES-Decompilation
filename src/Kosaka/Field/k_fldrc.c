@@ -194,6 +194,8 @@ extern void* uGpffffb590;
 extern s32* piGpffffa850;
 extern u16* puGpffffa850;
 extern char D_00678D80[];
+extern char D_00678E08[];
+extern char D_00678E18[];
 extern char D_00679060[];
 extern char D_00678DA0[];
 extern char D_00678DC0[];
@@ -253,7 +255,7 @@ extern u32 func_001d6bc0(HCdvd* request, RwMatrix* matrix, f32* fov,
                          f32* yDeadZone);
 u32 func_001b09b0(void);
 void* FUN_001b2860(char* path);
-void* FUN_001b2780(u16 majorId, u16 minorId);
+void* FUN_001b2780(s16 majorId, s16 minorId);
 void FUN_001b5e30(u32 color, const void* scale);
 void FUN_001b5e60(u32 color, const void* scale);
 void FUN_001b60a0(u32 value, const void* scale);
@@ -2216,25 +2218,25 @@ void FUN_001b77b0(void* parent, const s16* params)
     *field = task;
     (void)parent;
 }
-// FUN_001b2780 NONMATCHING
-void* FUN_001b2780(u16 majorId, u16 minorId)
+// FUN_001b2780
+void* FUN_001b2780(s16 majorId, s16 minorId)
 {
     char path[40];
     char token[8];
 
     if (iGpffffb470 == 0)
     {
-        FUN_00524270(path, 0x678e08);
+        FUN_00524270(path, D_00678E08);
     }
     else
     {
-        FUN_00524270(path, 0x678e18);
+        FUN_00524270(path, D_00678E18);
     }
-    FUN_00523ac8(token, &gp0xffff9538, majorId);
+    FUN_00523ac8(token, (const char*)&gp0xffff9538 - 0x6ac8, majorId);
     FUN_00523e68(path, token);
-    FUN_00523ac8(token, &gp0xffff9540, minorId);
+    FUN_00523ac8(token, (const char*)&gp0xffff9540 - 0x6ac0, minorId);
     FUN_00523e68(path, token);
-    FUN_00523e68(path, &gp0xffff9548);
+    FUN_00523e68(path, (const char*)&gp0xffff9548 - 0x6ab8);
     return FUN_001b2860(path);
 }
 
