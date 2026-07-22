@@ -2917,18 +2917,22 @@ u64 FUN_004b4720(u64 param_1,u32 *param_2)
   param_2[0xc] = 0;
   return param_1;
 }
+#pragma alias FUN_004b1620_ptr FUN_004b1620
+extern u64 FUN_004b1620_ptr(u8 *param_1,u8 *param_2);
+#pragma schedule on
 // FUN_004B4790 NONMATCHING
-u64 FUN_004b4790(u64 param_1,u64 param_2)
+u64 FUN_004b4790(u64 param_1,u8 *param_2)
 
 {
   long lVar1;
   
-  lVar1 = FUN_004b1620(param_2 + 4,param_2 + 0x20);
+  lVar1 = FUN_004b1620_ptr(param_2 + 4,param_2 + 0x20);
   if (lVar1 == 0) {
     param_1 = 0;
   }
   return param_1;
 }
+#pragma schedule off
 // FUN_004B47D0 NONMATCHING
 u64 FUN_004b47d0(u64 param_1)
 
@@ -5143,16 +5147,18 @@ void FUN_004b8120(f32 *out, const f32 *matrix)
     out[3] = (-b * x2 + a * x3) / det;
   }
 }
-// FUN_004B81F0 NONMATCHING
+// FUN_004B81F0
+#pragma schedule on
 void FUN_004b81f0(f32 *out, const f32 *a, const f32 *b)
 {
-  out[2] = a[3] * b[4] + a[2] * b[2];
-  out[3] = a[3] * b[5] + a[2] * b[3];
-  out[4] = a[5] * b[4] + a[4] * b[2];
-  out[5] = a[5] * b[5] + a[4] * b[3];
+  out[2] = a[2] * b[2] + a[3] * b[4];
+  out[3] = a[2] * b[3] + a[3] * b[5];
+  out[4] = a[4] * b[2] + a[5] * b[4];
+  out[5] = a[4] * b[3] + a[5] * b[5];
   out[6] = a[6] + b[6];
   out[7] = a[7] + b[7];
 }
+#pragma schedule off
 // FUN_004B8290 NONMATCHING
 u32 FUN_004b8290(u32 param_1,u32 *param_2)
 {
@@ -5164,21 +5170,20 @@ u32 FUN_004b8290(u32 param_1,u32 *param_2)
   f32 fVar4;
   f32 fVar5;
   f32 fVar6;
-
   puVar1 = (f32 *)param_1;
   src = (f32 *)param_2;
-  fVar5 = src[0];
-  fVar4 = src[1];
-  fVar3 = src[4];
-  fVar2 = src[5];
-  fVar1 = src[0xc];
-  fVar6 = src[0xd];
-  puVar1[0] = fVar5;
-  puVar1[1] = fVar4;
-  puVar1[2] = fVar3;
-  puVar1[3] = fVar2;
-  puVar1[4] = fVar1;
-  puVar1[5] = fVar6;
+  fVar4 = src[0];
+  fVar3 = src[1];
+  fVar2 = src[4];
+  fVar1 = src[5];
+  fVar6 = src[0xc];
+  fVar5 = src[0xd];
+  puVar1[0] = fVar4;
+  puVar1[1] = fVar3;
+  puVar1[2] = fVar2;
+  puVar1[3] = fVar1;
+  puVar1[4] = fVar6;
+  puVar1[5] = fVar5;
   return param_1;
 }
 #pragma schedule on
@@ -5321,16 +5326,13 @@ u64 FUN_004b8740(u64 param_1)
 // FUN_004B87D0 NONMATCHING
 u64 FUN_004b87d0(u64 param_1)
 {
-  u64 uVar2;
-
-  uVar2 = param_1;
   DAT_007ce8ac = DAT_007ce8ac + -1;
   FUN_004b7690((int)DAT_0077e4e0);
   if (DAT_007ce8b0 != 0) {
-    FUN_004c3c30();
+    FUN_004c3c30(DAT_007ce8b0);
     DAT_007ce8b0 = 0;
   }
-  return uVar2;
+  return param_1;
 }
 #pragma schedule off
 // FUN_004B8830 NONMATCHING
