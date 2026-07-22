@@ -1952,47 +1952,28 @@ u16 FUN_003968a0(int param_1,int param_2)
 }
 #define FUN_003968a0(...) ((u16 (*)(...))FUN_003968a0)(__VA_ARGS__)
 #undef FUN_00396910
-// FUN_00396910 NONMATCHING
-
+// FUN_00396910
 
 void FUN_00396910(int param_1,int param_2)
-
-
-
 {
+  u16 *puVar5;
+  u16 sVar1;
+  int iVar4;
 
-  short sVar1;
-
-  int lVar2;
-
-  
-
-  if ((param_2 < 0x10) && (lVar2 = FUN_003b5cf0(), lVar2 != 0)) {
-
-    param_1 = (int)param_2 * 2 + param_1;
-
-    sVar1 = *(short *)(param_1 + 0x170);
-
+  if ((param_2 < 0x10) && (FUN_003b5cf0() != 0)) {
+    iVar4 = (int)param_2 * 2;
+    iVar4 = iVar4 + param_1;
+    puVar5 = (u16 *)(iVar4 + 0x170);
+    sVar1 = *(u16 *)(iVar4 + 0x170);
     if (sVar1 != 0) {
-
-      lVar2 = FUN_003b5d10(sVar1);
-
-      if (lVar2 != 0) {
-
+      if (FUN_003b5d10(sVar1) != 0) {
         FUN_003b7090(sVar1);
-
         FUN_005225a8_typed(DAT_006a1000);
-
       }
-
-      *(u16 *)(param_1 + 0x170) = 0;
-
+      *puVar5 = 0;
     }
-
   }
-
   return;
-
 }
 #define FUN_00396910(...) ((void (*)(...))FUN_00396910)(__VA_ARGS__)
 #undef FUN_003969b0
