@@ -1005,12 +1005,13 @@ int sprintf(char* buffer, const char* fmt, ...)
 }
 
 // FUN_00523B38
-asm void* __string_scan_callback(void)
+#pragma push
+#pragma schedule on
+void* __string_scan_callback(void)
 {
-    .set noreorder
-    jr $ra
-    daddu $v0, $zero, $zero
+    return (void*)0;
 }
+#pragma pop
 
 static void init_string_scan_stream(u8* stream, const char* input)
 {
