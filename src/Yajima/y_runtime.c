@@ -18422,16 +18422,21 @@ void FUN_00458b60(void)
 #pragma alias FUN_003b7090_y2 FUN_003b7090
 #pragma alias FUN_00195020_y2 FUN_00195020
 extern void FUN_002ff760_y2(u32 param_1);
-extern void FUN_003174e0_y2(void);
+extern void FUN_003174e0_y2(u32 param_1);
 extern void FUN_003b7090_y2(u32 param_1);
-extern void FUN_00195020_y2(void);
+#pragma alias FUN_00195020_call2 FUN_00195020
+extern void FUN_00195020_call2(u32 param_1);
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_00458BB0 NONMATCHING
+// FUN_00458BB0
 void FUN_00458bb0(void)
 {
   int bVar2;
   int iVar3;
+  u8 *field50;
+  u32 field54;
+  u8 *field16c;
+  u8 *field170;
   u8 *row;
 
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
@@ -18443,17 +18448,21 @@ void FUN_00458bb0(void)
     bVar2 = bVar2 != 0;
     if (bVar2 == 1) {
       FUN_002ff760_y2(*(u32 *)(row + 0x48));
-      if (*(int *)(row + 0x50) != 0) {
-        FUN_003174e0_y2();
+      field50 = *(u8 **)(row + 0x50);
+      if (field50 != (u8 *)0) {
+        FUN_003174e0_y2((u32)field50);
       }
-      if (*(u16 **)(row + 0x54) != (u16 *)0x0) {
+      field54 = *(u32 *)(row + 0x54);
+      if (field54 != 0) {
         FUN_003b7090_y2(**(u16 **)(row + 0x54));
       }
-      if (*(int *)(row + 0x170) != 0) {
-        FUN_00195020_y2();
+      field170 = *(u8 **)(row + 0x170);
+      if (field170 != (u8 *)0) {
+        FUN_00195020_call2((u32)field170);
       }
-      if (*(int *)(row + 0x16c) != 0) {
-        FUN_00195020_y2();
+      field16c = *(u8 **)(row + 0x16c);
+      if (field16c != (u8 *)0) {
+        FUN_00195020_call2((u32)field16c);
       }
       *(u32 *)(row + 0x50) = 0;
       *(u32 *)(row + 0x54) = 0;
