@@ -34,13 +34,13 @@ extern void FUN_00521408(u32 dest, int value, u32 size);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 int *FUN_003c4430(int *param_1);
 int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4);
-void FUN_003c45f0(long param_1);
+void FUN_003c45f0(int param_1);
 int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
 void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 int FUN_003c4820(long param_1, int param_2);
 long FUN_003c4910(long param_1,long param_2,u64 param_3);
 u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3);
-void FUN_003c4a90(long param_1,long param_2);
+void FUN_003c4a90(int param_1,int param_2);
 int * FUN_003c4b50(int *param_1,int *param_2,int param_3);
 int FUN_003c4bf0(int *param_1,int *param_2,int param_3);
 u32 FUN_003c4c80(int *param_1,int *param_2);
@@ -146,7 +146,7 @@ int *FUN_003c44d0(int *param_1, code param_2, code param_3, code param_4)
 // FUN_003C45F0 NONMATCHING
 
 
-void FUN_003c45f0(long param_1)
+void FUN_003c45f0(int param_1)
 
 
 
@@ -384,7 +384,7 @@ u64 FUN_003c49e0(u64 param_1,u64 param_2,int param_3)
 // FUN_003C4A90 NONMATCHING
 
 
-void FUN_003c4a90(long param_1,long param_2)
+void FUN_003c4a90(int param_1,int param_2)
 
 
 

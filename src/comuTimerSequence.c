@@ -246,13 +246,13 @@ code * FUN_003bf8e0(void)
 
   code *pcVar2;
 
-  long lVar3;
+  int lVar3;
 
   
 
   puVar1 = (u32 *)FUN_00195540();
 
-  lVar3 = FUN_003c3190(0x7ce678);
+  lVar3 = FUN_003c3190((u32)&DAT_007ce678);
 
   if (lVar3 == 1) {
 
@@ -1680,7 +1680,7 @@ code * FUN_003c0b30(void)
 
   code *pcVar2;
 
-  long lVar3;
+  int lVar3;
 
   
 
@@ -1854,17 +1854,17 @@ code * FUN_003c0d20(void)
 
   code *pcVar2;
 
-  long lVar3;
+  int lVar3;
 
-  u8 auStack_2 [2];
+  u16 auStack_2;
 
   
 
   puVar1 = (u32 *)FUN_00195540();
 
-  lVar3 = FUN_00172c50(auStack_2);
+  lVar3 = FUN_00172c50(&auStack_2);
 
-  if (lVar3 == 0) {
+  if (lVar3 != 0) {
 
     *puVar1 = 0;
 
@@ -2320,7 +2320,7 @@ u32 FUN_003c1340(void)
 
   int *piVar2;
 
-  long lVar3;
+  int lVar3;
 
   u16 uStack_20;
 
