@@ -110,7 +110,7 @@ extern u32 func_001016b0(void);
 extern u32 func_0017d800(void);
 extern void func_00195020(void* task);
 extern void func_0019c2f0(void* task, u32 value);
-extern void func_001a60d0(u32 mode, void* model, u32 value);
+extern void func_001a60d0();
 extern u32 func_00195460(void);
 extern void func_001ad870(void* task, u32 flags);
 extern void func_001add40(void* task);
@@ -1739,7 +1739,7 @@ void func_001d1910(void)
         unit = &gFldUnitsPc[i];
         if (unit->genusBase != NULL && unit->resrc != NULL)
         {
-            func_001a60d0(0, unit->mdl, 0);
+            func_001a60d0(0, unit->mdl, 0, 1);
             unit->unk_17c = 0;
         }
     }
