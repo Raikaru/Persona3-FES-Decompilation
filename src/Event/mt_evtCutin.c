@@ -19,7 +19,7 @@ void FUN_00397450(void);
 u32 FUN_00397500(int param_1);
 void FUN_00397510(int param_1,u32 param_2);
 u32 FUN_00397520(int param_1,u32 *param_2);
-u8 FUN_00397580(int param_1,int param_2,u16 *param_3);
+u32 FUN_00397580(int param_1,int param_2,u16 *param_3);
 u32 FUN_00397630(int param_1,int param_2,u32 *param_3);
 u32 FUN_003976f0(int param_1,int param_2,u32 *param_3,u32 *param_4);
 u8 FUN_003977c0(int param_1,u32 *param_2,u32 *param_3,u32 *param_4);
@@ -52,7 +52,7 @@ extern u8 DAT_006a1070_abs[];
 #define FUN_00397500(...) ((u32 (*)(...))FUN_00397500)(__VA_ARGS__)
 #define FUN_00397510(...) ((void (*)(...))FUN_00397510)(__VA_ARGS__)
 #define FUN_00397520(...) ((u32 (*)(...))FUN_00397520)(__VA_ARGS__)
-#define FUN_00397580(...) ((u8 (*)(...))FUN_00397580)(__VA_ARGS__)
+#define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
 #define FUN_00397630(...) ((u32 (*)(...))FUN_00397630)(__VA_ARGS__)
 #define FUN_003976f0(...) ((u32 (*)(...))FUN_003976f0)(__VA_ARGS__)
 #define FUN_003977c0(...) ((u8 (*)(...))FUN_003977c0)(__VA_ARGS__)
@@ -81,9 +81,7 @@ u32 FUN_00396e30(int param_1)
   else {
     base = FUN_00195540(manager);
     offset = param_1 * 0xc;
-    /* Preserve retail's offset-first address addition. */
-    __asm__ volatile ("addu %0, %1, %2"
-                      : "=r"(entry) : "r"(offset), "r"(base));
+    entry = offset + base;
     if (*(int *)(entry + 8) == 0) {
       result = 0;
     }
@@ -128,29 +126,23 @@ void FUN_00396f50(int param_1)
 
 {
 
-  int lVar1;
+  int manager;
+  int base;
+  int *state_ptr;
+  int *entry;
 
-  int iVar2;
-
-  int *piVar4;
-  int *piVar3;
-
-  
-
-  lVar1 = FUN_00195340("koma_Manager");
-
-  if ((lVar1 != 0) && (param_1 < 3)) {
-    iVar2 = FUN_00195540(lVar1);
-    piVar3 = (int *)((int)param_1 * 0xc + iVar2);
-    piVar4 = piVar3 + 2;
-    if (*piVar4 != 0) {
-      iVar2 = *piVar3;
-      if (iVar2 == 2) goto state_action;
-      if (iVar2 == 1) goto state_action;
-      if (iVar2 == 0) goto state_done;
+  manager = FUN_00195340("koma_Manager");
+  if ((manager != 0) && (param_1 < 3)) {
+    base = FUN_00195540(manager);
+    entry = (int *)((int)param_1 * 0xc + base);
+    state_ptr = entry + 2;
+    if (*state_ptr != 0) {
+      if (*entry == 2) goto state_action;
+      if (*entry == 1) goto state_action;
+      if (*entry == 0) goto state_done;
       FUN_00111500();
-      *piVar3 = 0;
-      *piVar4 = 0;
+      *entry = 0;
+      *state_ptr = 0;
       goto state_done;
 state_action:
       FUN_00397030(param_1);
@@ -497,7 +489,7 @@ u32 FUN_00397520(int param_1,u32 *param_2)
 // FUN_00397580 NONMATCHING
 
 
-u8 FUN_00397580(int param_1,int param_2,u16 *param_3)
+u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
 {
     int iVar1;
     int iVar2;
@@ -523,7 +515,7 @@ u8 FUN_00397580(int param_1,int param_2,u16 *param_3)
     }
     return bVar2;
 }
-#define FUN_00397580(...) ((u8 (*)(...))FUN_00397580)(__VA_ARGS__)
+#define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
 #undef FUN_00397630
 // FUN_00397630 NONMATCHING
 
