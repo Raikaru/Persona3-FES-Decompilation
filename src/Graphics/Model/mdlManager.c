@@ -5636,15 +5636,15 @@ u32 func_00316360(void* param_1,u32 *param_2)
     u32 uVar2;
     u32 uVar3;
     u32 uVar4;
-    u32 offset;
+    u32 *entries;
 
     iVar1 = *(int *)((int)param_1 + 0x18);
     uVar2 = *(u32 *)(iVar1 + 0x24);
     uVar4 = 0;
     while (uVar4 < uVar2)
     {
-        offset = uVar4 << 2;
-        uVar3 = K_Clump_MatUsrDataGetInt(*(u32 *)(*(int *)(iVar1 + 0x20) + offset), 0x6a0000 - 0x5460);
+        entries = *(u32 **)(iVar1 + 0x20);
+        uVar3 = K_Clump_MatUsrDataGetInt(entries[uVar4], "per3modelMatColor");
         if (uVar3 >> 0x18 != 0)
         {
             *param_2 = 0;
