@@ -95,8 +95,8 @@ u16 FUN_003b5f70(u16 param_1);
 u32 FUN_003b6180(u32 param_1,long param_2);
 u32 FUN_003b64c0(u32 param_1,long param_2,u8 param_3);
 u32 FUN_003b66b0(u32 param_1,long param_2);
-u32 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
-u32 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
+u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
+u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
 u32 FUN_003b6ad0(u32 param_1,u32 param_2,u32 *param_3);
 u32 FUN_003b6b90(u32 param_1,u32 param_2,u32 *param_3);
 u32 FUN_003b6c50(u32 param_1,u32 param_2,u32 *param_3);
@@ -1125,19 +1125,19 @@ u32 FUN_003b6790(u32 param_1,long param_2)
 // FUN_003B6870 NONMATCHING
 
 
-u32 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
+u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
 {
   u16 uVar1;
   Resrc *res1;
   uVar1 = param_1 & 0x3ff | 0x3400;
   if (gMtScene->resManager == NULL) {
     FUN_005225a8(D_006A2BB0_abs);
-    uVar1 = 0;
+    return 0;
   }
   else {
     res1 = resrcMngCreateRes(gMtScene->resManager,uVar1);
     if (res1 == 0) {
-      uVar1 = 0;
+      return 0;
     }
     else {
       *(RwV3d *)((u8 *)res1 + 0x104) = *param_2;
@@ -1159,7 +1159,7 @@ u32 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
 // FUN_003B69A0 NONMATCHING
 
 
-u32 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
+u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
 {
   u16 uVar1;
   Resrc *res1;
@@ -1167,12 +1167,12 @@ u32 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
   uVar1 = param_1 & 0x3ff | 0x5400;
   if (gMtScene->resManager == NULL) {
     FUN_005225a8(D_006A2BB0_abs);
-    uVar1 = 0;
+    return 0;
   }
   else {
     res1 = resrcMngCreateRes(gMtScene->resManager,uVar1);
     if (res1 == 0) {
-      uVar1 = 0;
+      return 0;
     }
     else {
       *(RwV3d *)((u8 *)res1 + 0x104) = *param_2;
