@@ -196,6 +196,7 @@ extern u16* puGpffffa850;
 extern char D_00678D80[];
 extern char D_00678E08[];
 extern char D_00678E18[];
+extern char D_00678FD0[];
 extern char D_00679060[];
 extern char D_00678DA0[];
 extern char D_00678DC0[];
@@ -1754,7 +1755,9 @@ void FUN_001b60d0(u32 value, const void* scale)
 {
     FUN_0049a7c0(value, (void (*)())FUN_001b5e90, (u32)scale);
 }
-// FUN_001b6100 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_001b6100
 u32 FUN_001b6100(u32 id)
 {
     char path[128];
@@ -1767,21 +1770,33 @@ u32 FUN_001b6100(u32 id)
     }
     if (K_Fldrc_GetFldPacCdvd() != NULL)
     {
-        return 1;
+        goto have_pac;
     }
-    FUN_00523ac8(path, 0x678fd0, *PTR_DAT_007cd540, id);
+    FUN_00523ac8(path, D_00678FD0, *PTR_DAT_007cd540, id);
     current = (s32)*PTR_DAT_007cd540;
-    if ((current > 0x32) && (current < 0x3b))
+    if (current < 0x33)
     {
-        FUN_00523ac8(path, 0x678fd0, current - 0x1e, 0);
+        goto archive_ready;
     }
+    if (current >= 0x3b)
+    {
+        goto archive_ready;
+    }
+    FUN_00523ac8(path, D_00678FD0, current - 0x1e, 0);
+archive_ready:
     if (FUN_001008b0(path) == 0)
     {
-        return 0;
+        value = 0;
+        goto done;
     }
     value = FUN_00100d80(path, 0);
+    goto done;
+have_pac:
+    value = 1;
+done:
     return value;
 }
+#pragma pop
 
 static void fldrc_copy_words(u32 dst, u32 src, u32 count)
 {
