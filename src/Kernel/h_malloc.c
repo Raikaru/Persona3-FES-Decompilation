@@ -249,6 +249,8 @@ extern const u16 D_007E0952;
 #define HMALLOC_ENGINE_FREE(memory) \
     (*(HmallocReleaser*)jtbl_0096017C_abs)((memory))
 #define HMALLOC_STEP_TABLE ((HmallocStepCallback*)0x005e4d00)
+#define HMALLOC_GLOBAL_FLOAT_VALUES ((const f32*)0x007cc0d8)
+#define HMALLOC_GLOBAL_IMAGE_VALUES ((const f32*)0x007cc0e0)
 
 extern void func_004f1e20(u64 source, void* bytes, u16* header);
 extern void func_004d5000(void* packet, u32 size);
@@ -489,7 +491,7 @@ static void hmallocWriteSolid(u32* out, u32 value)
     out[3] = 0;
 }
 
-// FUN_001923B0
+// FUN_001923B0 NONMATCHING
 static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
@@ -508,7 +510,7 @@ static s32 hmallocTaskUpdateA(void* task)
             if (func_001016b0((void*)(uintptr_t)work[1]) == 1)
             {
                 resource = (HCdvd*)(uintptr_t)work[1];
-                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                fileSize = resource->fileSize;
                 destination = D_0083BB30;
                 __asm__ volatile ("" : : "r"(destination) : "memory");
                 func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
@@ -555,7 +557,7 @@ static void* hmallocCreateTaskA(void* parent)
     return task;
 }
 
-// FUN_00192570
+// FUN_00192570 NONMATCHING
 static s32 hmallocTaskUpdateB(void* task)
 {
     u32* work;
@@ -576,12 +578,12 @@ static s32 hmallocTaskUpdateB(void* task)
                 func_001016b0((void*)(uintptr_t)work[2]) == 1)
             {
                 resource = (HCdvd*)(uintptr_t)work[1];
-                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                fileSize = resource->fileSize;
                 destination = D_0083BB30;
                 __asm__ volatile ("" : : "r"(destination) : "memory");
                 func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
                 resource = (HCdvd*)(uintptr_t)work[2];
-                __asm__ volatile ("lw %0, 0x118(%1)" : "=r"(fileSize) : "r"(resource) : "memory");
+                fileSize = resource->fileSize;
                 destination = D_0083AB30;
                 __asm__ volatile ("" : : "r"(destination) : "memory");
                 func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
@@ -769,15 +771,13 @@ static void* hmallocCreateTaskD(void)
     return task;
 }
 
-// FUN_00192B50
+// FUN_00192B50 NONMATCHING
 static s32 hmallocTaskUpdateE(void* task)
 {
     u32* work;
     u32 state;
     f32 value0;
     f32 value1;
-    const f32* image;
-    u32* selected;
     u64 packed;
     union
     {
@@ -795,8 +795,8 @@ static s32 hmallocTaskUpdateE(void* task)
             work[0] = 1;
             break;
         case 1:
-            __asm__ volatile ("lwc1 %0, -0x6c18($gp)" : "=f"(value0) : : "memory");
-            __asm__ volatile ("lwc1 %0, -0x6c14($gp)" : "=f"(value1) : : "memory");
+            value0 = HMALLOC_GLOBAL_FLOAT_VALUES[0];
+            value1 = HMALLOC_GLOBAL_FLOAT_VALUES[1];
             values[0].f = value0;
             values[1].f = value1;
             if ((D_007E094E & 0x40) != 0)
@@ -868,13 +868,9 @@ static s32 hmallocTaskUpdateE(void* task)
             }
             values[2].u = 0x40800000;
             values[3].u = 0x40800000;
-            selected = (u32*)(uintptr_t)work[1];
-            __asm__ volatile ("sll %0, %0, 2\n\taddu %0, %0, $sp"
-                              : "+r"(selected) : : "memory");
             packed = *(u64*)&values[2];
-            __asm__ volatile ("addiu %0, $gp, -0x6c10"
-                              : "=r"(image) : "r"(packed), "r"(selected) : "memory");
-            func_00104d10(packed, image, selected[12]);
+            func_00104d10(packed, HMALLOC_GLOBAL_IMAGE_VALUES,
+                          values[work[1]].u);
             break;
         case 2:
             if (kwlnTaskGetState((void*)(uintptr_t)work[2]) == 3)
