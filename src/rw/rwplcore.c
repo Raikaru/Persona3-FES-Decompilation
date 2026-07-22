@@ -202,12 +202,17 @@ extern void func_004c4570(void);
 extern void func_004c7400(void);
 extern RwReal sinf(RwReal angle);
 extern RwReal cosf(RwReal angle);
+extern RwReal sqrtf(RwReal value);
+#ifndef SQRT
+#define SQRT(x) sqrtf(x)
+#endif
 long thunk_FUN_004c3970(int param_1,u32 param_2,long param_3,int param_4,long param_5,u32 param_6);
 
 typedef RwV3d* (*RwV3dTransformPointFn)(RwV3d* pointOut, const RwV3d* pointIn, const RwMatrix* matrix);
 
 extern RwInt32 rwV3dTransformPointOffset;
 extern RwInt32 rwMatrixTolerancesOffset;
+#pragma optimization_level 3
 
 // 00960070
 RwGlobals rwGlobals;
@@ -325,6 +330,7 @@ void FUN_004be310(float *param_1,float *param_2,float *param_3)
   }
   return;
 }
+#pragma optimization_level 2
 // FUN_004BE930 NONMATCHING
 u64
 FUN_004be930(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6)
@@ -5754,11 +5760,8 @@ char * FUN_004c7210(char *param_1)
   return param_1;
 }
 // FUN_004C7260 NONMATCHING
-char * FUN_004c7260(char *param_1,int param_2)
+char * FUN_004c7260(char *param_1,char param_2)
 {
-  if (param_1 == (char *)0x0) {
-    return (char *)0x0;
-  }
   while (*param_1 != '\0') {
     if (*param_1 == param_2) {
       return param_1;
@@ -5768,7 +5771,7 @@ char * FUN_004c7260(char *param_1,int param_2)
   return (char *)0x0;
 }
 // FUN_004C72A0 NONMATCHING
-char * FUN_004c72a0(char *param_1,int param_2)
+char * FUN_004c72a0(char *param_1,char param_2)
 {
   char *pcVar1;
   char *pcVar2;
