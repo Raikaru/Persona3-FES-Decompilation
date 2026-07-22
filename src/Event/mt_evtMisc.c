@@ -7299,9 +7299,6 @@ void FUN_0038d560(long param_1,long param_2,u32 param_3,u32 *param_4,
 
 
 void FUN_0038d6b0(int index,u32 value)
-
-
-
 {
   /*
    * PTR_DAT_007cca5c is gp-0x6294. MWCC does not emit a relocation for the
