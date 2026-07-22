@@ -1067,6 +1067,7 @@ u32 func_0017f990(void)
     return true;
 }
 
+// FUN_0017FAD0
 KwlnTask* func_0017fad0(void)
 {
     KwlnTask* task;
