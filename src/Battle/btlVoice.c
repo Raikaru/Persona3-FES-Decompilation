@@ -132,6 +132,8 @@ extern u8 DAT_0069a190[];
 extern u8 DAT_0069a1d0[];
 extern u8 DAT_0069a1d2[];
 extern u8 DAT_0069a210[];
+#pragma alias DAT_0069a210_abs DAT_0069a210
+extern u8 DAT_0069a210_abs[];
 extern u8 DAT_0069a470[];
 extern u8 DAT_0069a4f0[];
 extern u8 DAT_0069a550[];
@@ -1151,18 +1153,19 @@ void func_002f2250(void)
   int iVar3;
   int iVar4;
   int iVar5;
+  int iVar6;
   u32 *puVar5;
   u32 *puVar6;
   short sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  VoiceSlots auStack_18;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
-  
-  puVar6 = (u32*)DAT_0069a210;
+  union {
+    u32 raw[3];
+    f32 vec[3];
+  } uStack_10;
+  s16 auStack_18[3];
+  puVar6 = (u32*)DAT_0069a210_abs;
   puVar5 = auStack_30;
   iVar5 = 3;
   do {
@@ -1174,28 +1177,29 @@ void func_002f2250(void)
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
   } while (0 < iVar5);
-  auStack_18 = *(VoiceSlots *)&uGpffff9ce8;
-  for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = 0x43160000;
-      uStack_8 = 0x43fa0000;
+  *(VoiceSlots *)auStack_18 = *(VoiceSlots *)&uGpffff9ce8;
+  sVar7 = 0;
+  uStack_10.raw[1] = 0;
+  for (iVar4 = *(int *)(iGpffffb6fc_ptr + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
+    if (*(u16 *)(iVar4 + 0xa4) == 1) {
+      uStack_10.raw[0] = 0x43160000;
+      uStack_10.raw[2] = 0x43fa0000;
       *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     else {
-      iVar3 = (int)sVar7;
-      uStack_10 = auStack_30[iVar3 * 2];
-      uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18.values[iVar3];
+      uStack_10.vec[0] = *(f32 *)(auStack_30 + (sVar7 * 2));
+      uStack_10.vec[2] = *(f32 *)(auStack_30 + (sVar7 * 2) + 1);
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[sVar7];
       sVar7 = sVar7 + 1;
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
-  for (iVar4 = *(int *)(iGpffffb6fc + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    uStack_10 = 0;
-    uStack_8 = 0xc3fa0000;
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+  for (iVar6 = *(int *)(iGpffffb6fc_ptr + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
+    uStack_10.raw[0] = 0;
+    uStack_10.raw[2] = 0xc3fa0000;
+    FUN_002d2280(iVar6 + 0x94,iVar6 + 0x96,&uStack_10);
+    FUN_0027f650(iVar6,&uStack_10);
   }
   return;
 }
