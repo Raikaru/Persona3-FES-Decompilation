@@ -19,7 +19,7 @@ extern u8 PTR_FUN_006a46e0_abs[];
 extern u8 **PTR_FUN_006a4870;
 extern u8 *PTR_FUN_006a48a0[];
 extern char gp0xffffaa60[];
-extern char gp0xffffaa68[];
+extern char gp0xffffaa68;
 extern char gp0xffffaa70[];
 extern char gp0xffffaa7c[];
 extern char s_NORMAL_006a4730[];
@@ -4748,7 +4748,7 @@ u64 FUN_003d2c10(long param_1)
 
 }
 
-// FUN_003D2F00 NONMATCHING
+// FUN_003D2F00
 void FUN_003d2f00(void)
 {
     typedef unsigned int FusionU128 __attribute__((mode(TI)));
@@ -4802,7 +4802,7 @@ void FUN_003d2f00(void)
         var_5 += 1;
     } while (var_3_3 > 0);
     *(float *)var_5 = *(float *)var_4;
-    message = gp0xffffaa68;
+    message = &gp0xffffaa68;
     printf(message, DAT_006a4648, 0x48b);
     printf(DAT_006a4710);
     H_Dbprt_FmtLog(DAT_006a4710);
