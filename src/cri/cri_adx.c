@@ -6838,151 +6838,73 @@ void FUN_00534db0(int *param_1,int param_2)
 
 // FUN_00534E28
 
-asm int FUN_00534e28(u64 param_1,int *param_2)
+#pragma push
+#pragma schedule on
+// FUN_00534E28 NONMATCHING
+int FUN_00534e28(u64 param_1,int *param_2)
 {
-  .set noreorder
-  .word 0x00a0482d
-  .word 0x8d2a001c
-  .word 0x1140003d
-  .word 0x8d220024
-  .word 0x1040001b
-  .word 0x240203e8
-  .word 0x8d230008
-  .word 0x240661a8
-  .word 0x2405002c
-  .word 0x0062001a
-  .word 0x50400001
-  .word 0x000001cd
-  .word 0x8d240000
-  .word 0x8d27000c
-  .word 0x24840001
-  .word 0x00001812
-  .word 0x00661818
-  .word 0x7065001a
-  .word 0x70001812
-  .word 0x00641818
-  .word 0x24620800
-  .word 0x24630fff
-  .word 0x28440000
-  .word 0x0064100b
-  .word 0x000212c3
-  .word 0x000212c0
-  .word 0x340185a4
-  .word 0x00221021
-  .word 0x00471018
-  .word 0x1000005d
-  .word 0x24450050
-  .word 0x00000000
-  .word 0x8d260008
-  .word 0x50400001
-  .word 0x000001cd
-  .word 0x8d230004
-  .word 0x00c2001a
-  .word 0x2402002c
-  .word 0x00032980
-  .word 0x240761a8
-  .word 0x00a32821
-  .word 0x00052880
-  .word 0x8d240000
-  .word 0x00a32823
-  .word 0x8d28000c
-  .word 0x24840001
-  .word 0x00052980
-  .word 0x00003012
-  .word 0x00661818
-  .word 0x70671818
-  .word 0x0062001a
-  .word 0x00001812
-  .word 0x00641818
-  .word 0x24620800
-  .word 0x24630fff
-  .word 0x28440000
-  .word 0x0064100b
-  .word 0x000212c3
-  .word 0x000212c0
-  .word 0x00451021
-  .word 0x24420024
-  .word 0x00481018
-  .word 0x1000003c
-  .word 0x24450050
-  .word 0x1040001b
-  .word 0x240203e8
-  .word 0x8d230008
-  .word 0x240661a8
-  .word 0x2405002c
-  .word 0x0062001a
-  .word 0x50400001
-  .word 0x000001cd
-  .word 0x8d240000
-  .word 0x8d270010
-  .word 0x24840001
-  .word 0x00001812
-  .word 0x00661818
-  .word 0x7065001a
-  .word 0x70001812
-  .word 0x00641818
-  .word 0x24620800
-  .word 0x24630fff
-  .word 0x28440000
-  .word 0x0064100b
-  .word 0x000212c3
-  .word 0x000212c0
-  .word 0x24420024
-  .word 0x00471018
-  .word 0x340585cc
-  .word 0x00a22821
-  .word 0x10000021
-  .word 0x8d230020
-  .word 0x8d260008
-  .word 0x50400001
-  .word 0x000001cd
-  .word 0x8d230004
-  .word 0x00c2001a
-  .word 0x2402002c
-  .word 0x00032980
-  .word 0x240761a8
-  .word 0x00a32821
-  .word 0x00052880
-  .word 0x8d240000
-  .word 0x00a32823
-  .word 0x8d280010
-  .word 0x24840001
-  .word 0x00052980
-  .word 0x00003012
-  .word 0x00661818
-  .word 0x70671818
-  .word 0x0062001a
-  .word 0x00001812
-  .word 0x00641818
-  .word 0x24620800
-  .word 0x24630fff
-  .word 0x28440000
-  .word 0x0064100b
-  .word 0x000212c3
-  .word 0x000212c0
-  .word 0x24420024
-  .word 0x00481018
-  .word 0x00451021
-  .word 0x2445004c
-  .word 0x8d230020
-  .word 0x24a23000
-  .word 0x8d240018
-  .word 0x0043280b
-  .word 0x24a50044
-  .word 0x00051040
-  .word 0x0044280b
-  .word 0x11400004
-  .word 0x24a301d0
-  .word 0x8d22000c
-  .word 0x00021080
-  .word 0x00621821
-  .word 0x03e00008
-  .word 0x0060102d
-  .word 0x00000000
+  int t2;
+  int mode;
+  int q;
+  int x;
+  int offset;
+  int result;
+
+  t2 = param_2[7];
+  mode = param_2[9];
+  if (t2 != 0) {
+    if (mode != 0) {
+      q = param_2[2] / 1000;
+      x = q + 2048;
+      if (x < 0) {
+        x = q + 4095;
+      }
+      x = (x >> 11) << 11;
+      offset = x + 0x85a4 + 80;
+    } else {
+      q = param_2[1] / 44;
+      x = q + 2048;
+      if (x < 0) {
+        x = q + 4095;
+      }
+      x = (x >> 11) << 11;
+      offset = ((((param_2[1] << 6) + param_2[1]) << 2) - param_2[1]) << 6;
+      offset += x + 36 + 80;
+    }
+  } else if (mode != 0) {
+    q = param_2[2] / 1000;
+    x = q + 2048;
+    if (x < 0) {
+      x = q + 4095;
+    }
+    x = (x >> 11) << 11;
+    offset = x + 36 + 0x85cc;
+  } else {
+    q = param_2[1] / 44;
+    x = q + 2048;
+    if (x < 0) {
+      x = q + 4095;
+    }
+    x = (x >> 11) << 11;
+    offset = ((((param_2[1] << 6) + param_2[1]) << 2) - param_2[1]) << 6;
+    offset += x + 36;
+    offset += 76;
+  }
+
+  if (offset + 12288 != 0) {
+    offset = param_2[8];
+  }
+  offset += 68;
+  if (offset * 2 != 0) {
+    offset = param_2[6];
+  }
+  result = offset + 464;
+  if (t2 != 0) {
+    result += param_2[3] * 4;
+  }
+  return result;
 }
-
-
-
+#pragma pop
 
 
 // FUN_00535050 NONMATCHING
