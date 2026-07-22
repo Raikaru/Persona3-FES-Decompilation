@@ -3091,24 +3091,16 @@ void FUN_0045edc0(void)
 }
 #pragma optimization_level 2
 
-// FUN_0045EDD0
-asm int FUN_0045edd0(u32 *param_1)
+// FUN_0045EDD0 NONMATCHING
+int FUN_0045edd0(u32 *param_1)
 {
-  .set noreorder
-  lhu $v0, 0x1e($a0)
-  addiu $a1, $zero, 0x30
-  lw $v1, 0($a0)
-  sll $v0, $v0, 4
-  andi $v1, $v1, 1
-  beq $v1, $zero, 1f
-  addu $v0, $a1, $v0
-  lhu $v1, 0x1c($a0)
-  sll $v1, $v1, 1
-  addu $v0, $v0, $v1
-1:
-  jr $ra
-  nop
-  .set reorder
+  int result;
+
+  result = (u32)*(u16 *)((int)param_1 + 0x1e) * 0x10 + 0x30;
+  if ((*param_1 & 1) != 0) {
+    result = result + (u32)(u16)param_1[7] * 2;
+  }
+  return result;
 }
 
 // FUN_0045EE00 NONMATCHING
