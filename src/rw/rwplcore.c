@@ -144,7 +144,7 @@ extern u32 DAT_00960170;
 extern u32 DAT_00960174;
 extern code *DAT_00960178;
 #pragma alias DAT_0096017c_abs DAT_0096017c
-extern void (*DAT_0096017c_abs[])(u32);
+extern void (*DAT_0096017c_abs[])(...);
 extern code *DAT_0096017c;
 extern code *DAT_00960180;
 extern code *DAT_00960184;
@@ -1260,7 +1260,7 @@ u64 FUN_004c0240(u64 param_1,u64 param_2)
   return uVar4;
 }
 // FUN_004C0370 NONMATCHING
-u64 FUN_004c0370(u64 param_1)
+u64 FUN_004c0370(int param_1)
 
 {
   int iVar1;
@@ -1268,26 +1268,26 @@ u64 FUN_004c0370(u64 param_1)
   iVar1 = *(int *)((int)param_1 + 0x50);
   WaitSema(DAT_007ce8c0);
   *(u32 *)((int)param_1 + 0x38) = 1;
-  (**(code **)(iVar1 + 0x2c))(param_1);
+  (*(code *)(iVar1 + 0x2c))(param_1);
   SignalSema(DAT_007ce8c0);
   return 0;
 }
 // FUN_004C03D0 NONMATCHING
-int FUN_004c03d0(u64 param_1,int param_2,int param_3,u64 param_4)
+u32 FUN_004c03d0(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
 {
-  int iVar1;
+  u32 iVar1;
   
-  iVar1 = (**(code **)(*(int *)((int)param_4 + 0x50) + 0x30))(param_4,param_1,param_2 * param_3);
+  iVar1 = (*(code *)(*(int *)((int)param_4 + 0x50) + 0x30))(param_4,param_1,param_2 * param_3);
   return iVar1 / param_2;
 }
 // FUN_004C0420 NONMATCHING
-int FUN_004c0420(u64 param_1,int param_2,int param_3,u64 param_4)
+u32 FUN_004c0420(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
 {
-  int iVar1;
+  u32 iVar1;
   
-  iVar1 = (**(code **)(*(int *)((int)param_4 + 0x50) + 0x34))(param_4,param_1,param_2 * param_3);
+  iVar1 = (*(code *)(*(int *)((int)param_4 + 0x50) + 0x34))(param_4,param_1,param_2 * param_3);
   return iVar1 / param_2;
 }
 // FUN_004C0470 NONMATCHING
@@ -2282,18 +2282,18 @@ u32 FUN_004c2090(u32 *param_1)
   return result;
 }
 // FUN_004C20B0 NONMATCHING
-u32 FUN_004c20b0(u64 param_1)
+u32 FUN_004c20b0(int param_1)
 
 {
   int *piVar1;
   
-  piVar1 = (int *)param_1;
-  if ((*piVar1 != 0) && (piVar1[2] != 0)) {
-    (*DAT_0096017c)();
+  if ((*(int *)param_1 != 0) && (*(int *)((int)param_1 + 8) != 0)) {
+    piVar1 = (int *)param_1;
+    (*DAT_0096017c_abs)();
     *piVar1 = 0;
     piVar1[2] = 0;
   }
-  (*DAT_0096017c)(param_1);
+  (*DAT_0096017c_abs)(param_1);
   return 1;
 }
 #pragma optimization_level 3
@@ -4979,7 +4979,7 @@ bool FUN_004c5f70(void)
   return lVar1 != 0;
 }
 // FUN_004C5FC0 NONMATCHING
-u64 FUN_004c5fc0(u64 param_1,u64 param_2)
+void FUN_004c5fc0(int param_1,int param_2)
 {
   u32 *puVar1;
   
@@ -4989,7 +4989,7 @@ u64 FUN_004c5fc0(u64 param_1,u64 param_2)
     puVar1[4] = 0;
     puVar1[5] = 0;
   }
-  return (*DAT_0096018c)(param_2,param_1);
+  ((void (*)(u32,u32))DAT_0096018c_abs[0])(param_2,param_1);
 }
 // FUN_004C6000 NONMATCHING
 u32 FUN_004c6000(void)
