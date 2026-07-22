@@ -756,7 +756,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3);
 u64 FUN_0036be10(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0036cc30(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0036f500(int param_1);
-u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3);
+u64 FUN_003709d0(int param_1,int param_2,u8 *param_3);
 u64 FUN_003715b0(int param_1,int param_2,int param_3);
 u64 FUN_00379f30(u64 param_1,u64 param_2,u64 param_3);
 u64 FUN_0037a640(u64 param_1,u64 param_2,u64 param_3);
@@ -832,7 +832,7 @@ void FUN_0036f680(int param_1,int param_2,int param_3,int param_4,u64 param_5, i
 void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,int param_6,int param_7,int param_8,code *param_9);
 void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4);
 void FUN_003702a0(int param_1,int param_2,int param_3,u64 param_4);
-void FUN_00371350(int param_1,int param_2,int param_3,int param_4);
+void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4);
 void FUN_00371790(int param_1,int param_2,u32 param_3,u8 *param_4);
 void FUN_003722d0(u32 param_1,u32 param_2,u32 param_3,u8 *param_4);
 void FUN_003747a0(int param_1,int param_2,int param_3,u64 param_4);
@@ -875,6 +875,9 @@ void FUN_00384a50(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00385260(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_003858c0(int param_1);
 void FUN_00385990(u32 param_1,int param_2,int param_3,int param_4,u32 param_5, u32 param_6);
+#pragma alias FUN_00385990_f32 FUN_00385990
+extern void FUN_00385990_f32(u32 param_1,int param_2,int param_3,int param_4,
+                              int param_5,f32 param_6);
 void FUN_00385b20(int param_1);
 void FUN_00385b90(void);
 void FUN_00385ba0(void);
@@ -1239,6 +1242,7 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
 {
 
   int iVar1;
+  int iVar2;
 
   float fVar2;
 
@@ -1248,13 +1252,16 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
 
   fVar2 = (float)FUN_0038a220(*(u32 *)((int)param_7 + 0xe0));
 
-  FUN_00385990(fVar2 + 1.0,param_7,(int)param_1 * 0xc,param_2 * 0xc,param_3 * 0xc,param_4 * 0xc);
+  fVar2 = 1.0f + fVar2;
+
+  FUN_00385990_f32(param_7,(int)param_1 * 0xc,param_2 * 0xc,param_3 * 0xc,
+                   param_4 * 0xc,fVar2);
 
   if (param_8 != 0) {
 
-    iVar1 = (*(code *)param_8)(param_1,param_2,param_7);
-
-    param_2 = param_2 + iVar1;
+    iVar2 = ((code)param_8)(param_1,param_2,param_7);
+    param_2 = param_2 + iVar2;
+    iVar1 = iVar1 + iVar2;
 
   }
 
@@ -1262,7 +1269,7 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
 
     if (param_9 != (code *)0x0) {
 
-      (*param_9)(param_1,param_2,param_5,param_7);
+      ((code)param_9)(param_1,param_2,param_5,param_7);
 
       param_5 = param_5 + 1;
 
@@ -2020,15 +2027,15 @@ void FUN_003702a0(int param_1,int param_2,int param_3,u64 param_4)
 // FUN_003709D0 NONMATCHING
 
 
-u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3)
+u64 FUN_003709d0(int param_1,int param_2,u8 *param_3)
 
 
 
 {
 
-  int iVar1;
-
   int iVar2;
+
+  int iVar1;
 
   u64 uVar3;
 
@@ -2048,9 +2055,9 @@ u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3)
 
   
 
-  iVar6 = 0;
-
   iVar2 = 0;
+
+  iVar6 = 0;
 
   FUN_00521408(&uStack_4,0,4);
 
@@ -2072,7 +2079,7 @@ u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3)
 
     }
 
-    FUN_0036f900(param_1,param_2,0x19,0xf,0,1,param_3,0x370230,0);
+    FUN_0036f900(param_1,param_2,0x19,0xf,0,1,(int)param_3,0x370230,0);
 
     if (*(int *)(iVar7 + 0xd4) == 0x10) {
 
@@ -2732,7 +2739,7 @@ u64 FUN_003709d0(u64 param_1,u64 param_2,u64 param_3)
 // FUN_00371350 NONMATCHING
 
 
-void FUN_00371350(int param_1,int param_2,int param_3,int param_4)
+void FUN_00371350(int param_1,int param_2,int param_3,u8 *param_4)
 
 
 
@@ -2839,8 +2846,6 @@ void FUN_00371350(int param_1,int param_2,int param_3,int param_4)
 }
 
 
-#pragma push
-#pragma opt_propagation off
 // FUN_003715B0 NONMATCHING
 
 
@@ -2916,7 +2921,6 @@ u64 FUN_003715b0(int param_1,int param_2,int param_3)
   return uVar3;
 
 }
-#pragma pop
 
 
 // FUN_00371710
