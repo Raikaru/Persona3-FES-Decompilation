@@ -4288,12 +4288,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 4);
-            value2 = work[0];
-            value3 = work[1];
-            value1 = work[2];
-            entry[0] = value2;
-            entry[1] = value3;
-            entry[2] = value1;
+            *(RwV3d*)entry = *(RwV3d*)work;
             if ((*param_1 & 1) == 0)
             {
                 FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
@@ -4305,14 +4300,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
-            value2 = source[0];
-            value3 = source[1];
-            value4 = source[2];
-            value1 = source[3];
-            entry[0] = value2;
-            entry[1] = value3;
-            entry[2] = value4;
-            entry[3] = value1;
+            *(RwV4d*)entry = *(RwV4d*)source;
         }
         index++;
         if (index >= 4)
@@ -4332,12 +4320,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 4);
-            value2 = work[0];
-            value3 = work[1];
-            value1 = work[2];
-            entry[0] = value2;
-            entry[1] = value3;
-            entry[2] = value1;
+            *(RwV3d*)entry = *(RwV3d*)work;
             if ((*param_1 & 1) == 0)
             {
                 FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
@@ -4349,14 +4332,7 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             address = (u32)index * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
-            value2 = source[0];
-            value3 = source[1];
-            value4 = source[2];
-            value1 = source[3];
-            entry[0] = value2;
-            entry[1] = value3;
-            entry[2] = value4;
-            entry[3] = value1;
+            *(RwV4d*)entry = *(RwV4d*)source;
         }
         index++;
         if (index >= 4)
