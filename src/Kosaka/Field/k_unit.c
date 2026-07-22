@@ -184,7 +184,7 @@ void func_001cd7a0(void)
 
 #pragma opt_loop_invariants on
 
-// FUN_001CD8E0 NONMATCHING
+// FUN_001CD8E0
 void func_001cd8e0(void)
 {
     s32 i;
