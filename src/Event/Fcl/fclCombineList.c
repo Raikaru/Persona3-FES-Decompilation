@@ -675,15 +675,13 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
     i = 0;
     while (i < param_1->used) {
         K_ASSERT(param_1 != 0, 0x411);
-        if (i < param_1->capacity)
-            goto has_capacity;
-        p = 0;
-        goto after_capacity;
-    has_capacity:
-        p = (s32)(void *)param_1->values;
-        p += i << 2;
-        p = *(s32 *)p;
-    after_capacity:
+        if (param_1->capacity <= i)
+            p = 0;
+        else {
+            p = (s32)(void *)param_1->values;
+            p += i << 2;
+            p = *(s32 *)p;
+        }
         if (p == 0) {
             i++;
             continue;
@@ -1161,10 +1159,16 @@ void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* own
     (void)unused0;
     (void)unused1;
     (void)unused2;
+    FUN_003e0680_32((u32)(void *)work->result,
+                    (code *)fclCombineList003db650,
+                    (u32)(void *)owner);
     work->flags |= 0x10000;
     FUN_003c4e70((s32)owner);
     work->flags &= 0xfffeffff;
     work->flags |= 0x10000;
+    FUN_003e0680_32((u32)(void *)work->result,
+                    (code *)fclCombineList003db650,
+                    (u32)(void *)owner);
     work->flags &= 0xfffeffff;
 }
 
@@ -2133,12 +2137,13 @@ s32 fclCombineList003def80(FclNodeListContext* context)
     FclNodeLink* node;
     FclAnimationNode* selected;
     node = context->list->primary_head;
-    selected = (node != 0) ? node->payload : 0;
-    if (selected == 0) return 0;
+    selected = (FclAnimationNode*)FUN_003dfac0((int*)context);
+    if (selected == 0)
+        return 0;
     while (node != 0) {
         FclAnimationNode* payload = node->payload;
         if ((payload->flags & 4) != 0) {
-            s16 direction = selected->current_z;
+            s16 direction = *(volatile s16*)((u8*)selected + 0x20);
 
             fclCombineList003df220(payload, payload->value, 1, payload->source_value,
                                     direction, 0);
