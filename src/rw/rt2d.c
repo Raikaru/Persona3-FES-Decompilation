@@ -1907,7 +1907,7 @@ int FUN_004b3030(int param_1,long param_2)
   return iVar1;
 }
 #pragma optimization_level 3
-// FUN_004B30A0 NONMATCHING
+// FUN_004B30A0
 u32 * FUN_004b30a0(u32 *param_1)
 
 {
@@ -1934,7 +1934,7 @@ u32 * FUN_004b30a0(u32 *param_1)
   } while (iVar2 < 0x20);
   return param_1;
 }
-// FUN_004B3100 NONMATCHING
+// FUN_004B3100
 u32 * FUN_004b3100(u32 *param_1)
 
 {
