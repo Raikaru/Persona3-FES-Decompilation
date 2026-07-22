@@ -1013,7 +1013,7 @@ u32 func_0017e050(s32 category, s16 month, s32 day)
            clndGetCurrentWeekDay() == category % 10 - 1;
 }
 
-// FUN_0017F8D0 NONMATCHING
+// FUN_0017F8D0
 void func_0017f8d0(void)
 {
     CalendarTaskWork* work;
@@ -1023,23 +1023,31 @@ void func_0017f8d0(void)
         return;
     }
 
-    work = sClndTask->workData;
     if (datGetScenarioMode() == SCENARIO_MODE_JOURNEY)
     {
+        work = sClndTask->workData;
         if (work->state != CLNDTASK_STATE_WAIT_SKIP_CONFIRM)
         {
             work->state = CLNDTASK_STATE_CONFIRM_DAY_CHANGE;
         }
+        if (work->actionTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(work->actionTask);
+            work->actionTask = NULL;
+        }
     }
-    else if (work->state != CLNDTASK_STATE_BEGIN_DAY)
+    else
     {
-        work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
-    }
-
-    if (work->actionTask != NULL)
-    {
-        kwlnTaskDestroyWithHierarchy(work->actionTask);
-        work->actionTask = NULL;
+        work = sClndTask->workData;
+        if (work->state != CLNDTASK_STATE_BEGIN_DAY)
+        {
+            work->state = CLNDTASK_STATE_DEBUG_WAIT_CLOSE;
+        }
+        if (work->actionTask != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(work->actionTask);
+            work->actionTask = NULL;
+        }
     }
 }
 
