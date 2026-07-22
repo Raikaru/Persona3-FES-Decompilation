@@ -2832,7 +2832,7 @@ int FUN_003a5100(int param_1)
 }
 #define FUN_003a5100(...) ((int (*)(...))FUN_003a5100)(__VA_ARGS__)
 #undef FUN_003a5120
-// FUN_003A5120 NONMATCHING
+// FUN_003A5120
 
 
 u32 FUN_003a5120(int param_1,int param_2)
@@ -2841,11 +2841,11 @@ u32 FUN_003a5120(int param_1,int param_2)
 
 {
 
+  u32 base;
+  u32 offset;
   int iVar1;
 
-  
-
-  iVar1 = *(int *)(DAT_00959eec_abs + param_1 * 0xd);
+  iVar1 = *(int *)(itfMesEntries + param_1 * 0xd);
 
   if (iVar1 == 0) {
 
@@ -2853,7 +2853,10 @@ u32 FUN_003a5120(int param_1,int param_2)
 
   }
 
-  return *(u32 *)(param_2 * 8 + *(int *)(iVar1 + 4) + 0x20);
+  base = *(int *)(iVar1 + 4);
+  asm volatile("" : "+m"(base));
+  offset = param_2 * 8;
+  return *(u32 *)(offset + base + 0x20);
 
 }
 #define FUN_003a5120(...) ((u32 (*)(...))FUN_003a5120)(__VA_ARGS__)
