@@ -27,6 +27,8 @@ u32 * FUN_004bfd50(u64 param_1);
 long FUN_004ca090(void);
 u64 FUN_004c53f0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
+#pragma alias FUN_004c61b0_raw FUN_004c61b0
+extern void FUN_004c61b0_raw();
 u32 FUN_004c3c30(int param_1);
 long FUN_004c1d10(RwInt32 param_1,...);
 u32 FUN_004bfde0(u64 param_1);
@@ -7385,11 +7387,11 @@ u32 FUN_004ca510(void)
 {
   return 0x37002;
 }
-// FUN_004CA520 NONMATCHING
+// FUN_004CA520
 void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 
 {
-  FUN_004c61b0((int *)0x77e630,param_1,param_2,param_3,param_4,0);
+  FUN_004c61b0_raw((int *)(DAT_00780000 - 0x19d0),param_1,param_2,param_3,param_4,0);
   return;
 }
 // FUN_004CA550
