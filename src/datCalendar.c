@@ -1121,8 +1121,6 @@ extern u32 DAT_007cdffc;
 
 
  
-#pragma push
-#pragma opt_propagation off
 // FUN_0017d830 NONMATCHING
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
@@ -1152,7 +1150,6 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 
     return month;
 }
-#pragma pop
 
 #pragma push
 #pragma opt_propagation off
@@ -1200,8 +1197,9 @@ u32 clndGetCurrentMonth()
     s16 daysSinceApr5;
     const s16* numOfDays;
 
-    daysSinceApr5 = datGetDaysSinceApr5() + 4;
+    daysSinceApr5 = datGetDaysSinceApr5();
     month = CALENDAR_MONTH_APRIL;
+    daysSinceApr5 += 4;
     numOfDays = gNumOfDaysInMonths;
     while (true)
     {
@@ -1257,9 +1255,9 @@ u32 clndGetCurrentDay()
     s16 month;
     s16 daysSinceApr5;
     const s16* numOfDays;
-
-    daysSinceApr5 = datGetDaysSinceApr5() + 4;
+    daysSinceApr5 = datGetDaysSinceApr5();
     month = CALENDAR_MONTH_APRIL;
+    daysSinceApr5 += 4;
     numOfDays = gNumOfDaysInMonths;
     while (true)
     {
