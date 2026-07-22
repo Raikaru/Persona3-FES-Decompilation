@@ -2753,25 +2753,19 @@ int FUN_00531f90(int param_1,long param_2)
 
 
 
-// FUN_005320B8
-
-
-asm u8 FUN_005320b8(int param_1)
+#pragma push
+#pragma schedule on
+// FUN_005320B8 NONMATCHING
+u8 FUN_005320b8(int param_1)
 {
-  .set noreorder
-  .word 0x27bdfff0
-  .word 0xffbf0000
-  .word 0x8c82002c
-  .word 0x50400005
-  .word 0x0000102d
-  .word 0x8c850034
-  .word 0x0040f809
-  .word 0x8c840030
-  .word 0x24020001
-  .word 0xdfbf0000
-  .word 0x03e00008
-  .word 0x27bd0010
+  if (*(int *)(param_1 + 0x2c) == 0) {
+    return 0;
+  }
+
+  (**(code **)(param_1 + 0x2c))(*(u32 *)(param_1 + 0x30),*(u32 *)(param_1 + 0x34));
+  return 1;
 }
+#pragma pop
 
 
 
