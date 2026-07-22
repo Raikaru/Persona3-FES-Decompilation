@@ -2450,41 +2450,54 @@ invalid:
 // FUN_00170860 NONMATCHING
 void func_00170860(s16 pcId, s16 index, u16 value)
 {
-    s16 i;
+    u8* idBase;
+    u8* heroEquip;
+    s32 address;
+    s32 i;
 
     K_ASSERT(value <= 99, 2341);
     if (pcId == PC_HERO)
     {
-        *(u16*)((u8*)gGlobalWork.heroEquip.unkPtr - 8000 + index * 2) = value;
-        return;
+        heroEquip = *(u8* volatile*)&gGlobalWork.heroEquip.unkPtr;
+        address = index * 2;
+        address += (s32)heroEquip;
+        *(u16*)(address - 8000) = value;
+        goto done;
     }
     if (pcId == -1)
     {
         *(u16*)(D_00831CE0 + index * 2) = value;
-        return;
+        goto done;
     }
-    if (pcId <= 0xff)
+    if (pcId < 0x100)
     {
-        return;
+        goto done;
     }
 
-    for (i = 0; i < 20; i++)
+    i = 0;
+    idBase = (u8*)gPcs + pcId * 0x364;
+    for (; i < 20; i++)
     {
-        u16* entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
-        if (*entry == (u16)pcId)
+        if (*(u16*)(idBase + i * 4 - 0x367b8) == pcId)
         {
+            u16* entry;
+
+            entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
             entry[1] = value;
             if (value == 0)
             {
                 *entry = 0;
             }
-            return;
+            goto done;
         }
     }
 
-    for (i = 0; i < 20; i++)
+    i = 0;
+    for (; i < 20; i++)
     {
-        u16* entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
+        u16* entry;
+
+        entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
         if (*entry == 0)
         {
             entry[1] = value;
@@ -2492,9 +2505,11 @@ void func_00170860(s16 pcId, s16 index, u16 value)
             {
                 *entry = 0;
             }
-            return;
+            goto done;
         }
     }
+done:
+    return;
 }
 
 // FUN_00170a40
