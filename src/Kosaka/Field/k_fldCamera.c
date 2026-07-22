@@ -71,16 +71,16 @@ u32 K_FldCamera_GetType(KwlnTask* fldCameraTask)
     return ((FldCamera*)fldCameraTask->workData)->type;
 }
 
-// FUN_001d5c10 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_001d5c10
 void func_001d5c10(KwlnTask* fldCameraTask, u32 type)
 {
     FldCamera* fldCamera;
     void* field;
     void* fieldSub;
-    void* curve;
     f32 amount;
     RwV3d* destination;
-    u32 destinationOffset;
+    void* curve;
     s32 i;
     RwV3d center;
 
@@ -107,13 +107,10 @@ setup_dead_zone:
         fieldSub = (void*)*(volatile void**)((u8*)field + 0x116c);
         amount = (f32)i * 0.125f;
         asm volatile("" : "+m"(amount));
-        destinationOffset = (u32)(i * 0xc);
-        asm volatile("" : "+r"(destinationOffset));
-        destination = (RwV3d*)((u8*)fldCamera->deadZonePath +
-                                destinationOffset);
-        curve = (void*)*(volatile void**)((u8*)fieldSub + 0xa1c);
-        FUN_0048d480(amount, curve, 10,
-                     destination, NULL);
+        destination = &fldCamera->deadZonePath[i];
+        FUN_0048d480(amount,
+                     (void*)*(volatile void**)((u8*)fieldSub + 0xa1c),
+                     10, destination, NULL);
     }
     if (fldCamera->pointTask0 == NULL)
     {
@@ -149,6 +146,7 @@ cleanup:
         kwlnTaskDestroyWithHierarchy(fldCamera->pointTask2);
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_001d5e10
 RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask)
