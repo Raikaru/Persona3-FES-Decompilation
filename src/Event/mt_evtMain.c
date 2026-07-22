@@ -7391,10 +7391,14 @@ u64 FUN_00367390(u64 param_1,u64 param_2,int param_3)
 
 {
 
-  short uVar1;
-  short uVar2;
-  short uVar3;
-  short uVar4;
+  struct Pair {
+    short a;
+    short b;
+    short c;
+    short d;
+  };
+  struct Pair *src;
+  struct Pair *dst;
 
   int iVar6;
 
@@ -7438,21 +7442,9 @@ u64 FUN_00367390(u64 param_1,u64 param_2,int param_3)
 
   }
 
-  uVar1 = *(short *)(iVar5 + 0x784);
-
-  uVar2 = *(short *)(iVar5 + 0x786);
-
-  uVar3 = *(short *)(iVar5 + 0x788);
-
-  uVar4 = *(short *)(iVar5 + 0x78a);
-
-  *(u16 *)(iVar6 + 8) = uVar1;
-
-  *(u16 *)(iVar6 + 10) = uVar2;
-
-  *(u16 *)(iVar6 + 0xc) = uVar3;
-
-  *(u16 *)(iVar6 + 0xe) = uVar4;
+  src = (struct Pair *)(iVar5 + 0x784);
+  dst = (struct Pair *)(iVar6 + 8);
+  *dst = *src;
 
   FUN_0036f640(param_3);
 
