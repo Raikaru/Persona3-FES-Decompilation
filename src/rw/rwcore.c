@@ -4922,8 +4922,12 @@ void FUN_004d13b0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undef
 bool FUN_004d13e0(void)
 {
   int lVar1;
+  undefined *base;
+  int offset;
   
-  lVar1 = (*(code *)(iGpffffbc60 + (int)DAT_00960070_abs + 0x2c))();
+  base = DAT_00960070_abs;
+  offset = iGpffffbc60;
+  lVar1 = (*(code *)(base + offset + 0x2c))();
   return lVar1 != 0;
 }
 #pragma schedule off
