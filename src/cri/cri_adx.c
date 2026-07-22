@@ -56,6 +56,12 @@ extern u32 DAT_007a1d7c_abs[];
 #pragma alias DAT_007836c4_abs DAT_007836c4
 extern void *DAT_007836c4_abs[];
 
+#pragma alias DAT_007a0918_abs DAT_007a0918
+extern u8 DAT_007a0918_abs[];
+#pragma alias DAT_007a091c_abs DAT_007a091c
+extern u8 DAT_007a091c_abs[];
+#pragma alias DAT_007b47bc_abs DAT_007b47bc
+extern u32 DAT_007b47bc_abs[];
 /* forward declarations */
 void cvFs_init_wrapper(u64 param_1);
 void cvFs_add_default_device_inner(void);
@@ -5414,8 +5420,9 @@ void FUN_00533ca8(int param_1,int param_2)
   u32 value;
 
   value = *(u32 *)(param_1 + 0xc4);
+  value = value + param_2;
   *(u32 *)(param_1 + 0xc8) = 1;
-  *(u32 *)(param_1 + 0xc4) = value + param_2;
+  *(u32 *)(param_1 + 0xc4) = value;
 }
 #pragma pop
 
@@ -57462,15 +57469,14 @@ u64 FUN_00558898(void)
 
 void FUN_00558988(u32 param_1)
 
-
-
 {
+  register u8 *new_ptr;
+  register u8 *old_ptr;
 
-  DAT_007a0918 = DAT_007a091c;
-
-  DAT_007a091c = param_1;
-
-  return;
+  new_ptr = DAT_007a091c_abs;
+  old_ptr = DAT_007a0918_abs;
+  *(u32 *)old_ptr = *(u32 *)new_ptr;
+  *(u32 *)new_ptr = param_1;
 
 }
 
@@ -87033,6 +87039,35 @@ u32 FUN_0056def8(void)
 
   return *puVar1;
 
+}
+// FUN_0056DF18
+void FUN_0056df18(void)
+{
+}
+
+// FUN_0056DF20
+void FUN_0056df20(void)
+{
+}
+
+// FUN_0056DF28
+void FUN_0056df28(void)
+{
+}
+
+// FUN_0056DF30
+void FUN_0056df30(void)
+{
+}
+
+// FUN_0056DF38
+void FUN_0056df38(void)
+{
+}
+
+// FUN_0056DF40 NONMATCHING
+void FUN_0056df40(void)
+{
 }
 
 
@@ -141422,6 +141457,8 @@ u64 FUN_00595ac0(u64 param_1,u64 param_2)
 
 
 
+#pragma optimization_level 2
+#pragma schedule on
 // FUN_00595B30 NONMATCHING
 
 
@@ -141433,11 +141470,12 @@ void FUN_00595b30(void)
 
   FUN_00595b58();
 
-  DAT_007b47bc = 0;
+  DAT_007b47bc_abs[0] = 0;
 
   return;
 
 }
+#pragma schedule off
 
 
 
@@ -151952,6 +151990,23 @@ void FUN_0059cc70(u64 param_1)
   return;
 
 }
+// FUN_0059CC90 NONMATCHING
+void FUN_0059cc90(u64 param_1)
+{
+  (void)param_1;
+}
+
+// FUN_0059CCB0 NONMATCHING
+void FUN_0059ccb0(u64 param_1)
+{
+  (void)param_1;
+}
+
+// FUN_0059CCD0 NONMATCHING
+void FUN_0059ccd0(u64 param_1)
+{
+  (void)param_1;
+}
 
 
 
@@ -152211,6 +152266,19 @@ void FUN_0059cee8(u64 param_1)
 
   return;
 
+}
+// FUN_0059CF08 NONMATCHING
+void FUN_0059cf08(u64 param_1)
+{
+  (void)param_1;
+}
+
+// FUN_0059CF28 NONMATCHING
+void FUN_0059cf28(u64 param_1,u64 param_2,u64 param_3)
+{
+  (void)param_1;
+  (void)param_2;
+  (void)param_3;
 }
 
 
