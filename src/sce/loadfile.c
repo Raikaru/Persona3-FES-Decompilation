@@ -520,19 +520,13 @@ void FUN_0050c280(u32 param_1, long param_2, u64 *param_3)
 }
 #pragma schedule off
 // FUN_0050C2A0
-asm int FUN_0050c2a0(void)
+#pragma push
+#pragma schedule on
+int FUN_0050c2a0(u32 param_1, long param_2, u64 *param_3, u32 *param_4)
 {
-  .set noreorder
-  addiu $sp, $sp, -0x10
-  sd $ra, 0($sp)
-  jal FUN_0050bcb0
-  nop
-  ld $ra, 0($sp)
-  jr $ra
-  addiu $sp, $sp, 0x10
-  nop
-  .set reorder
+  return FUN_0050bcb0(param_1, param_2, param_3, param_4);
 }
+#pragma pop
 // FUN_0050C2C0 NONMATCHING
 static int sif_load_module_request(const char* path, int argument_length, const char* arguments, int* module_result, int function)
 {
