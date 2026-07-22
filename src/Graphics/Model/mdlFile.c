@@ -1232,6 +1232,9 @@ extern u32 DAT_00957250;
 extern u32 DAT_00957254;
 extern u32 DAT_00957258;
 extern u32 DAT_0095725c;
+extern u32 DAT_00957260;
+#pragma alias DAT_00957260_abs DAT_00957260
+extern u8 DAT_00957260_abs[];
 extern u32 DAT_00957270;
 extern u32 DAT_009572b0;
 extern u32 DAT_009572b4;
@@ -3757,7 +3760,33 @@ void FUN_0031fde0(void)
        *(float *)(iVar3 + 0xc) + 0.0;
 
   return;
+}
+// FUN_0031ff40 NONMATCHING
+void FUN_0031ff40(float *param_1,u8 *param_2)
+{
+  u8 *puVar1;
+  u32 uVar2;
+  u32 uVar3;
+  u32 uVar4;
 
+  puVar1 = param_2 + 4;
+  uVar2 = (u32)(param_1[1] * 255.0f);
+  puVar1[0] = (u8)(uVar2 & 0xff);
+  uVar3 = (u32)(param_1[2] * 255.0f);
+  puVar1[1] = (u8)(uVar3 & 0xff);
+  uVar4 = (u32)(param_1[3] * 255.0f);
+  puVar1[2] = (u8)(uVar4 & 0xff);
+}
+
+// FUN_00320060 NONMATCHING
+u32 * FUN_00320060(void)
+{
+  return (u32 *)DAT_00957260_abs;
+}
+
+// FUN_00320070 NONMATCHING
+void FUN_00320070(void)
+{
 }
 
 
