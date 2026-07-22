@@ -123,20 +123,14 @@ u32 param_1;
     }
     return result;
 }
+#pragma push
+#pragma schedule on
 // FUN_0050B788
-asm int FUN_0050b788(void* address)
+int FUN_0050b788(void* address)
 {
-  .set noreorder
-  addiu $sp, $sp, -0x10
-  sd $ra, 0($sp)
-  jal FUN_0050b710
-  nop
-  ld $ra, 0($sp)
-  jr $ra
-  addiu $sp, $sp, 0x10
-  nop
-  .set reorder
+  return FUN_0050b710((u32)address);
 }
+#pragma pop
 // FUN_0050B7A8 NONMATCHING
 int sceSifLoadIopHeap(const char* path, void* address)
 {
