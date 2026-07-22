@@ -155,9 +155,8 @@ extern u32 DAT_009589d0;
 extern u32 DAT_009589e0;
 extern u32 DAT_009589e4;
 extern u32 DAT_009589e8;
-extern u32 DAT_00958a60;
- #pragma alias DAT_00958a60_abs DAT_00958a60
- extern u8 DAT_00958a60_abs[];
+#pragma alias DAT_00958a60_abs DAT_00958a60
+extern u8 DAT_00958a60_abs[];
 extern u32 DAT_00958a90;
 extern f32 DAT_00960088;
 #pragma alias DAT_00960088_abs DAT_00960088
@@ -169,8 +168,8 @@ extern code DAT_009600a0;
 #pragma alias DAT_009600a0_abs DAT_009600a0
 extern code DAT_009600a0_abs[];
 extern code DAT_0096017c;
- #pragma alias DAT_0096017c_abs DAT_0096017c
- extern void (*DAT_0096017c_abs[])(...);
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern void (*DAT_0096017c_abs[])(...);
 extern code DAT_00960184;
  #pragma alias DAT_00960184_abs DAT_00960184
  #pragma alias FUN_0019d3f0_evt FUN_0019d3f0
@@ -759,30 +758,25 @@ int FUN_00386ae0(int param_1,int param_2)
 }
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_00386B70 NONMATCHING
 
 
 void FUN_00386b70(u64 param_1,int param_2,int param_3)
 {
   (*DAT_0096017c_abs)();
-
-  if (param_2 >= 0xd) goto done;
-  if (param_2 < 0) goto done;
-  if (param_2 == 9) goto done;
-  if (param_2 == 6) goto zero;
-  if (param_2 == 5) goto zero;
-  if (param_2 == 4) goto zero;
-  if (param_2 == 0) goto zero;
-  goto subtract;
-zero:
-  *(u32 *)(&DAT_00958a60_abs[(int)param_2 * 4]) = 0;
-  goto done;
-subtract:
-  *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) =
-      *(int *)(&DAT_00958a60_abs[(int)param_2 * 4]) - param_3;
-done:
+  if ((param_2 < 0xd) && (param_2 >= 0) && (param_2 != 9)) {
+    if ((param_2 == 6) || (param_2 == 5) || (param_2 == 4) || (param_2 == 0)) {
+      *(u32 *)(&DAT_00958a60_abs[param_2 * 4]) = 0;
+    } else {
+      *(int *)(&DAT_00958a60_abs[param_2 * 4]) =
+          *(int *)(&DAT_00958a60_abs[param_2 * 4]) - param_3;
+    }
+  }
   return;
 }
+#pragma pop
 
 
 // FUN_00386C40
@@ -814,6 +808,8 @@ done_index:
 
 
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00386CD0 NONMATCHING
 
 
@@ -824,19 +820,15 @@ u32 FUN_00386cd0(void)
 {
   int iVar1;
 
-  iVar1 = 0;
-  while (true) {
-    if (0xc < iVar1) {
-      return 1;
+  for (iVar1 = 0; iVar1 < 0xd; iVar1 = iVar1 + 1) {
+    if ((iVar1 != 0) && (iVar1 != 4) && (iVar1 != 5) &&
+        (iVar1 != 6) && (((u32 *)DAT_00958a60_abs)[iVar1] != 0)) {
+      return 0;
     }
-    if ((((iVar1 != 0) && (iVar1 != 4)) && (iVar1 != 5)) &&
-        ((iVar1 != 6 && (*(int *)(&DAT_00958a60 + iVar1 * 4) != 0)))) {
-      break;
-    }
-    iVar1 = iVar1 + 1;
   }
-  return 0;
+  return 1;
 }
+#pragma pop
 
 
 // FUN_00386D50 NONMATCHING
@@ -3308,13 +3300,9 @@ void FUN_0038a180(int param_1,int param_2)
 
 
 {
-
   u16 uVar1;
-
   u16 uVar2;
-
   u16 uVar3;
-
   int iVar4;
 
   
