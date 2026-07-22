@@ -21,6 +21,9 @@ extern s16 DAT_006a2080[];
 extern u32 DAT_006a20a0;
 extern u32 DAT_006a20c0;
 extern u32 DAT_006a212c;
+#pragma alias DAT_006a212c_abs DAT_006a212c
+extern u8 DAT_006a212c_abs[];
+extern u32 DAT_007cd520;
 extern void FUN_006a1e00(void);
 extern void FUN_006a1e60(void);
 extern void FUN_006a1ea0(void);
@@ -2964,36 +2967,31 @@ void FUN_003ac500(int param_1,u64 param_2)
 {
 
   int iVar1;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  u32 uStack_4;
+  int iVar2;
+  u32 *p;
+  u32 auStack_10[4];
 
   
 
-  iVar1 = *(int *)(param_1 + 0x38) * 0x67;
 
+  p = (u32 *)param_1;
+  iVar1 = p[0xe] * 0x67;
+
+  iVar2 = iVar1 >> 7;
   if (iVar1 < 0) {
-
     iVar1 = iVar1 + 0x7f;
-
+    iVar2 = iVar1 >> 7;
   }
 
-  DAT_006a212c = iVar1 >> 7;
+  *(u32 *)DAT_006a212c_abs = iVar2;
 
-  uStack_10 = *(u32 *)(param_1 + 0x10);
+  auStack_10[0] = p[4];
+  auStack_10[1] = p[5];
+  auStack_10[2] = p[6];
+  auStack_10[3] = p[7];
+  asm volatile("" : "+m"(auStack_10));
 
-  uStack_c = *(u32 *)(param_1 + 0x14);
-
-  uStack_8 = *(u32 *)(param_1 + 0x18);
-
-  uStack_4 = *(u32 *)(param_1 + 0x1c);
-
-  FUN_003b4d10(&uStack_10,0x6a2120,*(u32 *)(param_1 + 0xc),0x240,param_2);
+  FUN_003b4d10(auStack_10,0x6a2120,p[3],0x240,param_2);
 
   return;
 
@@ -3077,7 +3075,7 @@ u64 FUN_003ac600(u64 param_1,u64 param_2)
 }
 #define FUN_003ac600(...) ((u64 (*)(...))FUN_003ac600)(__VA_ARGS__)
 #undef FUN_003ac820
-// FUN_003AC820 NONMATCHING
+// FUN_003AC820
 
 
 u64 FUN_003ac820(u64 param_1,u64 param_2)
@@ -3086,15 +3084,13 @@ u64 FUN_003ac820(u64 param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u8 auStack_8 [8];
 
-  
-
   uVar1 = FUN_00177670(1);
 
-  FUN_00523ac8(auStack_8,0x7cd520,uVar1);
+  FUN_00523ac8((char *)auStack_8,&DAT_007cd520,uVar1);
 
   FUN_003b22a0(param_2);
 
@@ -3105,7 +3101,7 @@ u64 FUN_003ac820(u64 param_1,u64 param_2)
 }
 #define FUN_003ac820(...) ((u64 (*)(...))FUN_003ac820)(__VA_ARGS__)
 #undef FUN_003ac890
-// FUN_003AC890 NONMATCHING
+// FUN_003AC890
 
 
 u64 FUN_003ac890(u64 param_1,u64 param_2)
@@ -3114,15 +3110,13 @@ u64 FUN_003ac890(u64 param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   u8 auStack_8 [8];
 
-  
-
   uVar1 = FUN_00177790(1);
 
-  FUN_00523ac8(auStack_8,0x7cd520,uVar1);
+  FUN_00523ac8((char *)auStack_8,&DAT_007cd520,uVar1);
 
   FUN_003b22a0(param_2);
 
