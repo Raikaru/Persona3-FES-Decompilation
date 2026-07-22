@@ -169,6 +169,8 @@ extern void FUN_00115980(void* sprite);
 extern void FUN_0010a4e0(s32 first, ...);
 extern void FUN_004d0f00(void* parser);
 extern void (*jtbl_0096017C)(void* memory);
+ #pragma alias jtbl_0096017C_abs jtbl_0096017C
+ extern void (*jtbl_0096017C_abs[])(...);
 
 extern KwlnTask* FUN_00166a50(KwlnTask* parent, u32 priority, s16 pcId,
                               u32 mode, u32 displayMode);
@@ -1695,19 +1697,21 @@ void* FUN_00164920(KwlnTask* task)
 #pragma schedule off
 #pragma pop
 
-// FUN_001669B0 NONMATCHING
+// FUN_001669B0
 void FUN_001669b0(KwlnTask* task)
 {
     CampSkillInnerWork* work;
+    void (**freeMemory)(void*);
 
     work = (CampSkillInnerWork*)task->workData;
     FUN_004d0f00(work->archiveParser);
     func_001124b0(work->resource0);
     func_001124b0(work->resource1);
     H_Cdvd_Destroy(work->archive);
-    jtbl_0096017C(work->listRecords);
-    jtbl_0096017C(work->detailRecords);
-    jtbl_0096017C(work);
+    freeMemory = (void (**)(void*))jtbl_0096017C_abs;
+    (*freeMemory)(work->listRecords);
+    (*freeMemory)(work->detailRecords);
+    (*freeMemory)(work);
 }
 
 // FUN_00166A50
