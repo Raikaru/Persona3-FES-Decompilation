@@ -58587,7 +58587,7 @@ u32 FUN_003570b0(int param_1)
   if (*piVar1 != 0) {
     uVar3 = FUN_0034bf10(*piVar1);
     *puVar2 = uVar3;
-    uVar3 = FUN_00318fc0(uVar3);
+    uVar3 = (u32)FUN_00318fc0(uVar3);
     if (uVar3 >> 1 != 0) {
       iVar4 = FUN_00357fd0(0);
       *(short *)(puVar2 + 1) = (short)(iVar4 % (int)(uVar3 >> 1) << 1);
