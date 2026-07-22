@@ -721,32 +721,48 @@ u16 FUN_002d5550(void)
 }
 
 // FUN_002d5570 NONMATCHING
-u16 FUN_002d5570(s32 param_1)
+s32 FUN_002d5570(s32 param_1)
 {
-    u16 result = 0xffff;
+    s16 result;
 
     if (param_1 < 0x110 || param_1 > 0x130)
     {
-        return result;
+        return -1;
     }
-    if (param_1 == 0x115)
+    result = -1;
+    switch (param_1)
     {
-        switch (datCalcRand(8))
-        {
-            case 0: result = 0x100; break;
-            case 1: result = 0x101; break;
-            case 2: result = 0x102; break;
-            case 3: result = 0x103; break;
-            case 4: result = 0x104; break;
-            case 5: result = 0x105; break;
-            case 6: result = 0x106; break;
-            case 7: result = 0x109; break;
-        }
+    case 0x115:
+        goto random8;
+    default:
+        break;
     }
-    else if (param_1 == 0x112 && datCalcRand(100) < 5)
+    switch (param_1)
+    {
+    case 0x112:
+        goto random100;
+    default:
+        goto done;
+    }
+random100:
+    if ((s32)datCalcRand(100) < 5)
     {
         result = 0x122;
     }
+    goto done;
+random8:
+    switch (datCalcRand(8))
+    {
+        case 0: return 0x100;
+        case 1: return 0x101;
+        case 2: return 0x102;
+        case 3: return 0x103;
+        case 4: return 0x104;
+        case 5: return 0x105;
+        case 6: return 0x106;
+        case 7: return 0x109;
+    }
+done:
     return result;
 }
 
