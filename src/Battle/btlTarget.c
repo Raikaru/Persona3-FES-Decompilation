@@ -720,7 +720,7 @@ u16 FUN_002d5550(void)
     return gBtl->startInfo.enmUnits->encountId;
 }
 
-// FUN_002d5570 NONMATCHING
+// FUN_002d5570
 s32 FUN_002d5570(s32 param_1)
 {
     s16 result;
@@ -3822,7 +3822,7 @@ u32 FUN_002d63b0(BtlUnit* unit, s16 commandId, s32 param_3)
     }
     return result;
 }
-// FUN_002d6460 NONMATCHING
+// FUN_002d6460
 s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
                  u64 param_4, s32 param_5)
 {
