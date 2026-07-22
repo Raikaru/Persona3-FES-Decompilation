@@ -2946,6 +2946,8 @@ void FUN_0031eeb0(u32 *param_1)
 
 
 // FUN_0031EEE0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
 void FUN_0031eee0(int *param_1)
 
 
@@ -2967,11 +2969,17 @@ void FUN_0031eee0(int *param_1)
     piVar1[1] = iVar2 + -1;
 
     if (iVar2 + -1 == 0) {
-
-      if (((u16)piVar1[3] == 1) && (*piVar1 != 0)) {
-        (*DAT_0096017c)();
+      if ((u16)piVar1[3] != 1) {
+        goto check_ptr;
       }
-      (*DAT_0096017c)(piVar1);
+      goto call_all;
+check_ptr:
+      if (*piVar1 == 0) {
+        goto call_all;
+      }
+      DAT_0096017c_abs[0]();
+call_all:
+      DAT_0096017c_abs[0](piVar1);
 
     }
 
@@ -2982,6 +2990,7 @@ void FUN_0031eee0(int *param_1)
   return;
 
 }
+#pragma pop
 
 
 
@@ -4269,7 +4278,6 @@ void FUN_00320810(int *param_1)
   u8 *iVar1;
   int iVar3;
   u32 uVar2;
-  int iVar4;
   float fVar4;
   float fVar5;
 
@@ -4280,8 +4288,7 @@ void FUN_00320810(int *param_1)
   for (iVar3 = *param_1; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x54)) {
     for (uVar2 = 0; uVar2 < 4; uVar2 = uVar2 + 1) {
       iVar1 = (u8 *)(iVar3 + uVar2 * 0x10);
-      iVar4 = *(int *)(iVar1 + 0xc);
-      if (iVar4 != 0) {
+      if (*(int *)(iVar1 + 0xc) != 0) {
         fVar4 = *(float *)(iVar1 + 4);
         if (fVar4 > fVar5) {
           fVar5 = fVar4;
@@ -13694,7 +13701,7 @@ void FUN_003299b0(void)
 
 {
 
-  volatile __int128 auVar1;
+  __int128 auVar1;
 
   int iVar2;
 
@@ -23550,7 +23557,7 @@ u64 FUN_003330e0(u32 param_1,u64 param_2)
 
 
 
-// FUN_00333300 NONMATCHING
+// FUN_00333300
 
 
 void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
@@ -23565,6 +23572,7 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
 
   u8 uVar3;
   u8 uVar4;
+  u8 uVar5;
 
   int iVar4;
 
@@ -23574,14 +23582,15 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
 
   iVar4 = *(int *)(param_1 + 0x10);
 
-  uVar4 = param_3[3];
+  uVar4 = *(volatile u8 *)(param_3 + 3);
   if (uVar4 != 0xff) {
     iVar5 = (param_2 & 0xffff) * 4;
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
+    uVar5 = *param_3;
     uVar1 = param_3[1];
     uVar2 = param_3[2];
     uVar3 = param_3[3];
-    *(u8 *)(iVar4 + 4) = *param_3;
+    *(u8 *)(iVar4 + 4) = uVar5;
     *(u8 *)(iVar4 + 5) = uVar1;
     *(u8 *)(iVar4 + 6) = uVar2;
     *(u8 *)(iVar4 + 7) = uVar3;
@@ -23590,10 +23599,11 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
     param_3[3] = 0xfe;
     iVar5 = (param_2 & 0xffff) * 4;
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
+    uVar5 = *param_3;
     uVar1 = param_3[1];
     uVar2 = param_3[2];
     uVar3 = param_3[3];
-    *(u8 *)(iVar4 + 4) = *param_3;
+    *(u8 *)(iVar4 + 4) = uVar5;
     *(u8 *)(iVar4 + 5) = uVar1;
     *(u8 *)(iVar4 + 6) = uVar2;
     *(u8 *)(iVar4 + 7) = uVar3;
@@ -23602,13 +23612,14 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
 
   iVar4 = *(int *)(param_1 + 0x14);
 
-  uVar4 = param_3[3];
+  uVar4 = *(volatile u8 *)(param_3 + 3);
   if (uVar4 != 0xff) {
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
+    uVar5 = *param_3;
     uVar1 = param_3[1];
     uVar2 = param_3[2];
     uVar3 = param_3[3];
-    *(u8 *)(iVar4 + 4) = *param_3;
+    *(u8 *)(iVar4 + 4) = uVar5;
     *(u8 *)(iVar4 + 5) = uVar1;
     *(u8 *)(iVar4 + 6) = uVar2;
     *(u8 *)(iVar4 + 7) = uVar3;
@@ -23616,10 +23627,11 @@ void FUN_00333300(int param_1,u32 param_2,u8 *param_3)
   else {
     param_3[3] = 0xfe;
     iVar4 = *(int *)(*(int *)(iVar4 + 0x28) + iVar5);
+    uVar5 = *param_3;
     uVar1 = param_3[1];
     uVar2 = param_3[2];
     uVar3 = param_3[3];
-    *(u8 *)(iVar4 + 4) = *param_3;
+    *(u8 *)(iVar4 + 4) = uVar5;
     *(u8 *)(iVar4 + 5) = uVar1;
     *(u8 *)(iVar4 + 6) = uVar2;
     *(u8 *)(iVar4 + 7) = uVar3;
@@ -35361,7 +35373,7 @@ u32 FUN_0033e7f0(int param_1)
 
   *piVar1 = (int)(piVar1 + 4);
 
-  piVar1[2] = uVar3;
+  piVar1[2] = (int)piVar1;
 
   iVar2 = FUN_003233a0(*(u16 *)(param_1 + 0x38),3,5,0x69bd60,0x48);
   piVar1[1] = iVar2;
@@ -50152,6 +50164,7 @@ void FUN_0034d8a0(u64 param_1,u16 param_2,u64 param_3)
   u32 uVar5;
 
   
+
 
   puVar4 = (u32 *)param_1;
 
