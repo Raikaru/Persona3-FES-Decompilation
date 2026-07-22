@@ -6397,22 +6397,21 @@ LAB_005349ac:
 // FUN_005349C8
 
 
-asm void FUN_005349c8(long param_1)
+#pragma push
+#pragma schedule on
+// FUN_005349C8 NONMATCHING
+void FUN_005349c8(long param_1)
 {
-  .set noreorder
-  .word 0x27bdfff0
-  .word 0x0080102d
-  .word 0x10400006
-  .word 0xffbf0000
-  .word 0x8c4200cc
-  .word 0x50400004
-  .word 0xdfbf0000
-  .word 0x0040f809
-  .word 0x00000000
-  .word 0xdfbf0000
-  .word 0x03e00008
-  .word 0x27bd0010
+  code *callback;
+
+  if (param_1 != 0) {
+    callback = *(code **)(param_1 + 0xcc);
+    if (callback != (code *)0) {
+      (*callback)();
+    }
+  }
 }
+#pragma pop
 
 
 
