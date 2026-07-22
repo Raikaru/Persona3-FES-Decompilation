@@ -9582,7 +9582,7 @@ u32 FUN_0037a2b0(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_0037A4D0 NONMATCHING
+// FUN_0037A4D0
 
 
 u32 FUN_0037a4d0(int param_1,int param_2,int param_3)
@@ -12244,7 +12244,7 @@ u32 FUN_0037d4d0(int param_1,int param_2,int param_3)
 }
 
 
-// FUN_0037D540 NONMATCHING
+// FUN_0037D540
 
 void FUN_0037d540(int param_1,int param_2,long param_3,int param_4)
 

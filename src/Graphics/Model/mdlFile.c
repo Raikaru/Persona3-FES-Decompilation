@@ -48409,7 +48409,7 @@ void FUN_0034bd60(u32 param_1)
   *(u16 *)(param_1 + 0xd8) = *(u16 *)(param_1 + 0xd8) & 0xfffd;
 }
 
-// FUN_0034BDF0 NONMATCHING
+// FUN_0034BDF0
 
 
 u32 FUN_0034bdf0(u32 param_1,u32 param_2)
@@ -52417,7 +52417,7 @@ void FUN_0034fba0(int param_1)
 
 
 
-// FUN_0034FBE0 NONMATCHING
+// FUN_0034FBE0
 
 
 void FUN_0034fbe0(u32 param_1)

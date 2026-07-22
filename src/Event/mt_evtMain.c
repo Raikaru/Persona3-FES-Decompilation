@@ -7382,7 +7382,7 @@ u64 FUN_00367230(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_00367390 NONMATCHING
+// FUN_00367390
 
 
 u64 FUN_00367390(u64 param_1,u64 param_2,int param_3)
@@ -7453,7 +7453,7 @@ u64 FUN_00367390(u64 param_1,u64 param_2,int param_3)
 }
 
 
-// FUN_00367440 NONMATCHING
+// FUN_00367440
 
 u32 FUN_00367440(int param_1,int param_2,int param_3)
 
