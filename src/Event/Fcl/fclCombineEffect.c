@@ -1233,7 +1233,7 @@ u64 FUN_00418130(u64 param_1,char *param_2)
 
 }
 
-// FUN_00418230 NONMATCHING
+// FUN_00418230
 
 
 u64 FUN_00418230(u64 param_1,u8 *param_2)
@@ -1309,6 +1309,19 @@ u64 FUN_00418230(u64 param_1,u8 *param_2)
 
   return 0;
 
+}
+
+// FUN_00418340
+u8 FUN_00418340(int param_1,int *param_2)
+{
+  s16 *puVar4;
+  int *piVar5;
+
+  puVar4 = (s16 *)param_2[1];
+  piVar5 = (int *)*param_2;
+  *puVar4 = *puVar4 | *(s16 *)(piVar5 + 3);
+  *puVar4 = *puVar4 & (s16)~piVar5[4];
+  return 1;
 }
 
 // FUN_00418390 NONMATCHING
