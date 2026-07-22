@@ -158,6 +158,8 @@ typedef struct MaestroOutputRecord
 } MaestroOutputRecord;
 
 extern u32 D_00960184[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
 extern u32 jtbl_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
  #pragma alias D_00960090_abs D_00960090
@@ -169,7 +171,7 @@ extern MaestroRenderNode* DAT_00833a4c;
 extern MaestroBlobNode* DAT_00833a50;
 extern int* DAT_007cdf3c;
 extern const char* D_005D66E0[];
-#define MAESTRO_ALLOC(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags)
+#define MAESTRO_ALLOC(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184_abs)(count, size, flags)
 #define MAESTRO_FREE(memory) (*(void (**)(void*))jtbl_0096017C)(memory)
 extern const s8 D_005D53E0[];
 extern const char D_005D5880[];
@@ -677,14 +679,14 @@ KwlnTask* func_00111150(KwlnTask* parent, u64 dimensions)
     return task;
 }
 
-// FUN_00111260 NONMATCHING
+// FUN_00111260
 KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
 {
     KwlnTask* task;
     MaestroStreamWork* work;
+    s16 dim2;
     s16 dim0;
     s16 dim1;
-    s16 dim2;
     s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
@@ -699,10 +701,10 @@ KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
         return NULL;
     }
 
-    dim0 = ((s16*)&dimensions)[0];
-    dim1 = ((s16*)&dimensions)[1];
-    dim2 = ((s16*)&dimensions)[2];
-    dim3 = ((s16*)&dimensions)[3];
+    dim0 = ((volatile s16*)&dimensions)[0];
+    dim1 = ((volatile s16*)&dimensions)[1];
+    dim2 = ((volatile s16*)&dimensions)[2];
+    dim3 = ((volatile s16*)&dimensions)[3];
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
     work->dimensions[2] = dim2;
@@ -714,14 +716,14 @@ KwlnTask* func_00111260(KwlnTask* parent, u64 dimensions, void* archive)
     return task;
 }
 
-// FUN_00111380 NONMATCHING
+// FUN_00111380
 KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* archive)
 {
     KwlnTask* task;
     MaestroStreamWork* work;
+    s16 dim2;
     s16 dim0;
     s16 dim1;
-    s16 dim2;
     s16 dim3;
 
     work = (MaestroStreamWork*)MAESTRO_ALLOC(1, sizeof(MaestroStreamWork), 0x40000);
@@ -736,10 +738,10 @@ KwlnTask* func_00111380(KwlnTask* parent, u32 priority, u64 dimensions, void* ar
         return NULL;
     }
 
-    dim0 = ((s16*)&dimensions)[0];
-    dim1 = ((s16*)&dimensions)[1];
-    dim2 = ((s16*)&dimensions)[2];
-    dim3 = ((s16*)&dimensions)[3];
+    dim0 = ((volatile s16*)&dimensions)[0];
+    dim1 = ((volatile s16*)&dimensions)[1];
+    dim2 = ((volatile s16*)&dimensions)[2];
+    dim3 = ((volatile s16*)&dimensions)[3];
     work->dimensions[0] = dim0;
     work->dimensions[1] = dim1;
     work->dimensions[2] = dim2;
