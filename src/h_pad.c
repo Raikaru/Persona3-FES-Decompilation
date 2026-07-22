@@ -38,6 +38,14 @@ static u_long128 sAddrPort1[scePadDmaBufferMax] __attribute__((aligned(64))); //
 static u_long128 sAddrPort2[scePadDmaBufferMax] __attribute__((aligned(64))); // 007e0740
 static u8 sRDataPort2[32]; // 007e0720
 static u8 sRDataPort1[32]; // 007e0700
+#pragma alias gWorkPads_abs gWorkPads
+extern u8 gWorkPads_abs[];
+#pragma alias gPads_abs gPads
+extern u8 gPads_abs[];
+#pragma alias sAddrPort1_abs sAddrPort1
+extern u8 sAddrPort1_abs[];
+#pragma alias sAddrPort2_abs sAddrPort2
+extern u8 sAddrPort2_abs[];
 
 static s16 sRumbleState;
 static union
@@ -65,17 +73,17 @@ void H_Pad_Init(void)
     s32 i;
     s32 requestedMainMode;
 
-    memset(&gWorkPads[HPAD_PORT_1], 0, sizeof(HPad));
-    memset(&gWorkPads[HPAD_PORT_2], 0, sizeof(HPad));
-    memset(&gPads[HPAD_PORT_1], 0, sizeof(HPad));
-    memset(&gPads[HPAD_PORT_2], 0, sizeof(HPad));
+    memset(((HPad*)gWorkPads_abs) + HPAD_PORT_1, 0, sizeof(HPad));
+    memset(((HPad*)gWorkPads_abs) + HPAD_PORT_2, 0, sizeof(HPad));
+    memset(((HPad*)gPads_abs) + HPAD_PORT_1, 0, sizeof(HPad));
+    memset(((HPad*)gPads_abs) + HPAD_PORT_2, 0, sizeof(HPad));
 
     scePadInit(0);
-    scePadPortOpen(HPAD_PORT_1, 0, sAddrPort1);
-    scePadPortOpen(HPAD_PORT_2, 0, sAddrPort2);
+    scePadPortOpen(HPAD_PORT_1, 0, (u_long128*)sAddrPort1_abs);
+    scePadPortOpen(HPAD_PORT_2, 0, (u_long128*)sAddrPort2_abs);
 
     i = 0;
-    workPads = gWorkPads;
+    workPads = (HPad*)gWorkPads_abs;
     asm volatile("addiu %0, $0, 3" : "=r" (requestedMainMode));
     for (; i < HPAD_PORT_MAX; i++)
     {
@@ -532,9 +540,9 @@ void* H_Pad_RwAllocateRaw(size_t size)
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
-    register void* reallocated;
-    register s32 intrState;
-    register RwUInt32 copySize;
+    void* reallocated;
+    RwUInt32 copySize;
+    s32 intrState;
     RwUInt32 mallocHint;
 
     mallocHint = hint;
