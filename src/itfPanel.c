@@ -60,6 +60,8 @@ extern u8 * PTR_FUN_006a1c90;
 extern u8 PTR_FUN_006a1c90_abs[];
 extern u8 * PTR_LAB_006a1c50;
 extern u8 * PTR_s_Sayonara_006a24d0;
+#pragma alias PTR_s_Sayonara_006a24d0_abs PTR_s_Sayonara_006a24d0
+extern u8 PTR_s_Sayonara_006a24d0_abs[];
 extern f32 fGpffff8110;
 extern f32 fGpffff839c;
 extern f32 fGpffff845c;
@@ -160,7 +162,7 @@ u64 FUN_003adf70(u64 param_1,int param_2);
 u64 FUN_003ae000(u64 param_1,int param_2);
 u64 FUN_003ae160(u64 param_1,int param_2);
 u64 FUN_003ae260(u64 param_1,int param_2);
-u64 FUN_003ae360(u64 param_1,u64 param_2);
+u64 FUN_003ae360(u64 param_1,int param_2);
 
 /* Region call-cast macros */
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
@@ -4755,10 +4757,10 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 }
 #define FUN_003ae260(...) ((u64 (*)(...))FUN_003ae260)(__VA_ARGS__)
 #undef FUN_003ae360
-// FUN_003AE360 NONMATCHING
+// FUN_003AE360
 
 
-u64 FUN_003ae360(u64 param_1,u64 param_2)
+u64 FUN_003ae360(u64 param_1,int param_2)
 
 
 
@@ -4768,15 +4770,29 @@ u64 FUN_003ae360(u64 param_1,u64 param_2)
 
   u32 uVar2;
 
+  u32 uVar3;
+
   int iVar3;
+
+  int offset;
+
+  int base;
 
   u8 *pbVar4;
 
   
 
-  pbVar4 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
+  offset = *(volatile int *)(param_2 + 0x18);
 
-  bVar1 = pbVar4[1];
+  base = *(volatile int *)(param_2 + 0x10);
+
+  pbVar4 = (u8 *)(base + offset);
+
+  uVar3 = *(volatile u8 *)pbVar4;
+
+  uVar3 = uVar3 - 1 & 0xff;
+
+  bVar1 = *(volatile u8 *)(pbVar4 + 1);
 
   if (bVar1 == 0xff) {
 
@@ -4790,13 +4806,21 @@ u64 FUN_003ae360(u64 param_1,u64 param_2)
 
   }
 
-  uVar2 = uVar2 << 8 | *pbVar4 - 1 & 0xff;
+  uVar2 = (uVar2 & 0xff) << 8;
+
+  uVar3 = uVar3 & 0xff;
+
+  uVar2 = uVar2 | uVar3;
 
   FUN_003b22a0(param_2);
 
   iVar3 = FUN_0017c860(uVar2);
 
-  FUN_003b2020((&PTR_s_Sayonara_006a24d0)[uVar2 * 4 + iVar3],param_2);
+  offset = iVar3 << 2;
+
+  uVar2 = uVar2 << 4;
+
+  FUN_003b2020(*(u8 **)((u8 *)&PTR_s_Sayonara_006a24d0_abs + uVar2 + offset),param_2);
 
   return 0;
 
