@@ -73,8 +73,7 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
     MdlAnimEntryTable* table;
     u32 size;
     u32 i;
-    f32 one;
-    u32 matrixFlags;
+    volatile MdlAnimEntryTable* vtable;
 
     size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
     table = (MdlAnimEntryTable*)RwMalloc(size, rwMEMHINTDUR_GLOBAL);
@@ -82,20 +81,24 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 
     table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
     table->count = animCount;
+    vtable = table;
 
-    one = 1.0f;
-    matrixFlags = rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
-    for (i = 0; i < table->count; i++)
+    for (i = 0; i < vtable->count; i++)
     {
-        table->entries[i].identityMat.right.x = table->entries[i].identityMat.up.y =
-            table->entries[i].identityMat.at.z = one;
-        table->entries[i].identityMat.right.y = table->entries[i].identityMat.right.z =
-            table->entries[i].identityMat.up.x = 0.0f;
-        table->entries[i].identityMat.up.z = table->entries[i].identityMat.at.x =
-            table->entries[i].identityMat.at.y = 0.0f;
-        table->entries[i].identityMat.pos.x = table->entries[i].identityMat.pos.y =
-            table->entries[i].identityMat.pos.z = 0.0f;
-        table->entries[i].identityMat.flags |= matrixFlags;
+        vtable->entries[i].identityMat.right.x =
+            vtable->entries[i].identityMat.up.y =
+            vtable->entries[i].identityMat.at.z = 1.0f;
+        vtable->entries[i].identityMat.right.y =
+            vtable->entries[i].identityMat.right.z =
+            vtable->entries[i].identityMat.up.x = 0.0f;
+        vtable->entries[i].identityMat.up.z =
+            vtable->entries[i].identityMat.at.x =
+            vtable->entries[i].identityMat.at.y = 0.0f;
+        vtable->entries[i].identityMat.pos.x =
+            vtable->entries[i].identityMat.pos.y =
+            vtable->entries[i].identityMat.pos.z = 0.0f;
+        vtable->entries[i].identityMat.flags |=
+            rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
     }
 
     table->unk_06 = 1;
@@ -1144,7 +1147,8 @@ extern void* PTR_PTR_0069ae80[];
 extern void* RpMaterialGetUserDataArray(void* material,int data);
 extern char* RpUserDataArrayGetName(void* userData);
 extern int RpUserDataArrayGetFormat(void* userData);
-u32 func_00311640(float param_1,int param_2,int param_3,int param_4);
+u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+                  RtAnimInterpolator* param_4, f32 param_1);
 u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
 void func_00312c70(u8* param_1,int param_2);
 void func_00312d40(u8* param_1,u8* param_2);
@@ -1266,50 +1270,34 @@ store_value:
 
 
 // FUN_00311640 NONMATCHING
-
-
-u32 func_00311640(float param_1,int param_2,int param_3,int param_4)
-
-
-
+u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
+                  RtAnimInterpolator* param_4, f32 param_1)
 {
+    s32 frame;
+    s32 offset2;
+    s32 offset3;
+    s32 offset4;
+    f32 alpha;
+    u8* out;
+    u8* in1;
+    u8* in2;
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  
-
-  iVar2 = *(int *)(param_3 + 0x34);
-
-  iVar3 = *(int *)(param_4 + 0x34);
-
-  iVar1 = *(int *)(param_2 + 0x34);
-
-  for (iVar5 = iVar1; iVar5 < *(int *)(param_2 + 0x2c) + *(int *)(param_2 + 0x34); iVar5 = iVar5 + 1
-
-      ) {
-
-    iVar4 = *(int *)(param_4 + 0x24) * (iVar5 - iVar3) + param_4;
-
-    (*(code *)(param_2 + 0x40))
-
-              (param_1 * *(float *)(iVar4 + 0x7c),
-
-               *(int *)(param_2 + 0x24) * (iVar5 - iVar1) + param_2 + 0x4c,
-
-               *(int *)(param_3 + 0x24) * (iVar5 - iVar2) + param_3 + 0x4c,iVar4 + 0x4c);
-
-  }
-
-  return 1;
-
+    offset2 = param_2->offsetInParent;
+    offset3 = param_3->offsetInParent;
+    offset4 = param_4->offsetInParent;
+    for (frame = offset2; frame < param_2->numNodes + param_2->offsetInParent; frame++)
+    {
+        in2 = (u8*)param_4 +
+              param_4->currentInterpKeyFrameSize * (frame - offset4);
+        out = (u8*)param_2 +
+              param_2->currentInterpKeyFrameSize * (frame - offset2);
+        in1 = (u8*)param_3 +
+              param_3->currentInterpKeyFrameSize * (frame - offset3);
+        alpha = *(f32*)(in2 + 0x7c);
+        param_2->keyFrameBlendCB(out + 0x4c, in1 + 0x4c, in2 + 0x4c,
+                                 param_1 * alpha);
+    }
+    return 1;
 }
 
 
@@ -2749,21 +2737,16 @@ void func_00312d40(u8* param_1,u8* param_2)
     *(code *)(iVar1 + 0x3c) = (code)func_00312c70;
 
     DAT_009571b4 = *(int *)(iVar2 + 0x20) + 0x4c +
-
                    *(int *)(*(int *)(iVar2 + 0x20) + 0x24) * *(int *)(iVar3 + 0x34);
-
     DAT_009571b8 = DAT_009571b4;
 
     if (*(float *)(iVar3 + 8) == 0.0) {
-
       DAT_009571b8 = 0;
 
     }
 
     DAT_009571bc = (float*)(iVar3 + 0x38);
-
     DAT_009571c0 = *(u32 *)(iVar3 + 0x44);
-
     DAT_009571c4 = *(u32 *)(iVar3 + 0x48);
 
     if ((*(u16 *)(iVar3 + 0x4c) & 0x1e0) == 0) {
@@ -2793,7 +2776,7 @@ void func_00312d40(u8* param_1,u8* param_2)
 
 
 
-// FUN_00312E80 NONMATCHING
+// FUN_00312E80
 
 
 void func_00312e80(int param_1)
@@ -2803,69 +2786,41 @@ void func_00312e80(int param_1)
 {
 
   u32 uVar1;
-
-  u64 uVar2;
+  u32 uVar2;
 
   
 
   uVar2 = func_00469030();
 
   switch(uVar2) {
-
-  default:
-
-    uVar1 = func_0046a890(0x10020);
-
-    *(u32 *)(param_1 + 8) = uVar1;
-
-    break;
-
   case 1:
-
     uVar1 = func_0046a890(0x10021);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
     break;
-
   case 2:
-
     uVar1 = func_0046a890(0x10022);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
     break;
-
   case 3:
-
     uVar1 = func_0046a890(0x10023);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
     break;
-
   case 4:
-
     uVar1 = func_0046a890(0x10024);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
     break;
-
   case 5:
-
     uVar1 = func_0046a890(0x1002a);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
     break;
-
   case 6:
-
     uVar1 = func_0046a890(0x1002b);
-
     *(u32 *)(param_1 + 8) = uVar1;
-
+    break;
+  default:
+    uVar1 = func_0046a890(0x10020);
+    *(u32 *)(param_1 + 8) = uVar1;
+    break;
   }
 
   return;
@@ -3341,11 +3296,10 @@ LAB_0031379c:
 
     if (((*puVar4 & 2) != 0) && (param_2 != 0)) {
 
-      func_00311640(0x3f800000,*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
-
-                   *(u32 *)(*(int *)((int)param_2 + 0x20) + 0x20),
-
-                   *(u32 *)(*(int *)(puVar4 + 0x10) + 0x20));
+      func_00311640((RtAnimInterpolator*)*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
+                    (RtAnimInterpolator*)*(u32 *)(*(int *)((int)param_2 + 0x20) + 0x20),
+                    (RtAnimInterpolator*)*(u32 *)(*(int *)(puVar4 + 0x10) + 0x20),
+                    1.0f);
 
     }
 
