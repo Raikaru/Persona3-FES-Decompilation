@@ -6870,7 +6870,7 @@ void FUN_0030cf00(void)
 
 
 
-// FUN_0030d000
+// FUN_0030d000 NONMATCHING
 void FUN_0030d000(void)
 
 {
@@ -6878,26 +6878,9 @@ void FUN_0030d000(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile (
-      "mul.s %0, %0, $f0"
-      : "+f"(fVar1)
-      :
-      : "$f0");
+  fVar1 *= fVar2;
   #pragma push
   #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -6916,29 +6899,16 @@ done:
 
 
 
-// FUN_0030d0e0
+// FUN_0030d0e0 NONMATCHING
 void FUN_0030d0e0(void)
 {
   float fVar1;
   float fVar2;
 
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -6958,7 +6928,7 @@ done:
 
 
 
-// FUN_0030d1c0
+// FUN_0030d1c0 NONMATCHING
 void FUN_0030d1c0(void)
 
 {
@@ -6966,22 +6936,9 @@ void FUN_0030d1c0(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7001,7 +6958,7 @@ done:
 
 
 
-// FUN_0030d2a0
+// FUN_0030d2a0 NONMATCHING
 void FUN_0030d2a0(void)
 
 {
@@ -7009,22 +6966,9 @@ void FUN_0030d2a0(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7044,7 +6988,7 @@ done:
 
 
 
-// FUN_0030d380
+// FUN_0030d380 NONMATCHING
 void FUN_0030d380(void)
 
 {
@@ -7052,22 +6996,9 @@ void FUN_0030d380(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7419,7 +7350,7 @@ void FUN_0030e180(void)
 
 
 
-// FUN_0030e280
+// FUN_0030e280 NONMATCHING
 void FUN_0030e280(void)
 
 {
@@ -7427,22 +7358,9 @@ void FUN_0030e280(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7462,7 +7380,7 @@ done:
 
 
 
-// FUN_0030e360
+// FUN_0030e360 NONMATCHING
 void FUN_0030e360(void)
 
 {
@@ -7470,22 +7388,9 @@ void FUN_0030e360(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7505,7 +7410,7 @@ done:
 
 
 
-// FUN_0030e440
+// FUN_0030e440 NONMATCHING
 void FUN_0030e440(void)
 
 {
@@ -7513,22 +7418,9 @@ void FUN_0030e440(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7548,7 +7440,7 @@ done:
 
 
 
-// FUN_0030e520
+// FUN_0030e520 NONMATCHING
 void FUN_0030e520(void)
 
 {
@@ -7556,22 +7448,9 @@ void FUN_0030e520(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
@@ -7591,7 +7470,7 @@ done:
 
 
 
-// FUN_0030e600
+// FUN_0030e600 NONMATCHING
 void FUN_0030e600(void)
 
 {
@@ -7599,22 +7478,9 @@ void FUN_0030e600(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
-  __asm__ volatile (
-      "lui $2, 0x3f80\n\t"
-      "mtc1 $2, $f1\n\t"
-      "sub.s $f3, $f0, $f1\n\t"
-      "lui $2, 0x4040\n\t"
-      "mtc1 $2, $f2\n\t"
-      "lui $2, 0x4000\n\t"
-      "mtc1 $2, $f1\n\t"
-      "mtc1 $zero, $f0\n\t"
-      "adda.s $f0, $f1\n\t"
-      "madd.s %0, $f2, $f3"
-      : "=f"(fVar1)
-      :
-      : "$2", "$f0", "$f1", "$f2", "$f3");
+  fVar1 = 2.0f + 3.0f * (fVar1 - 1.0f);
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  __asm__ volatile ("mul.s %0, %0, $f0" : "+f"(fVar1) : : "$f0");
+  fVar1 *= fVar2;
 #pragma push
 #pragma opt_rebuildconditionals off
   if (fVar1 <= 0.0f)
