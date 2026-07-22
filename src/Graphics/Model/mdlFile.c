@@ -153,7 +153,7 @@ static float _fStack_50;
 static u32 *piGpffffa850;
 static u8 *puGpffffbd04;
 static int cGpffffb857;
-static int sGpffffb880;
+static u16 sGpffffb880;
 static u8 bGpffffb854, bGpffffb855, bGpffffb856, bGpffffb857;
 static Vec128 mdlVecZero(void) { Vec128 v; v._0_8_ = 0; v._8_8_ = 0; return v; }
 static Vec128 mdlVecKeep(Vec128 v) { return v; }
@@ -728,7 +728,7 @@ void FUN_0034bc80(u32 param_1);
 u32 FUN_0034bcf0(u32 param_1);
 void FUN_0034bd10(void);
 void FUN_0034bd60(u32 param_1);
-u64 FUN_0034bdf0(u64 param_1,u64 param_2);
+u32 FUN_0034bdf0(u64 param_1,u64 param_2);
 void FUN_0034bef0();
 u64 FUN_0034bf10(int param_1);
 u64 FUN_0034bfc0(long param_1);
@@ -942,7 +942,11 @@ extern u64 FUN_002ffbc0();
 extern u64 FUN_00308c60();
 extern u64 FUN_0030b5a0();
 extern u64 FUN_00316910();
+#pragma alias FUN_00316910_typed FUN_00316910
+extern u64 FUN_00316910_typed(u16 type,u16 id,u32 mode);
 extern u64 FUN_00316bd0();
+#pragma alias FUN_00316bd0_u32 FUN_00316bd0
+extern u32 FUN_00316bd0_u32();
 extern u64 FUN_00316e00();
 #pragma alias FUN_00316e00_u32 FUN_00316e00
 extern u32 FUN_00316e00_u32(u16 type,u16 id,u32 readMode);
@@ -967,7 +971,8 @@ extern u64 FUN_00357dd0();
 extern u64 FUN_00357e00();
 extern u64 FUN_00357e30();
 extern u64 FUN_00357ea0();
-extern u64 FUN_00357fd0();
+#pragma alias FUN_00357fd0_u32 FUN_00357fd0
+extern u32 FUN_00357fd0_u32(u32 seed);
 extern u64 FUN_00358030();
 extern u64 FUN_003580f0();
 extern u64 FUN_00358160();
@@ -24682,41 +24687,23 @@ void FUN_003342c0(int param_1,u16 param_2)
 
 
 // FUN_00334310 NONMATCHING
-
-
 void FUN_00334310(int param_1)
-
-
-
 {
-
+  u32 *puVar4;
   u32 uVar1;
-
+  u32 uVar5;
   u32 uVar2;
-
   u32 uVar3;
 
-  int iVar4;
-
-  
-
-  iVar4 = **(int **)(param_1 + 0x30);
-
+  puVar4 = *(u32 **)(*(int *)(param_1 + 0x30));
   uVar1 = *(u32 *)(*(int *)(param_1 + 0x34) + 0x38);
-
-  for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1) {
-
-    uVar2 = FUN_00357fd0(0);
-
-    *(u32 *)(iVar4 + 4) = -1 - (uVar2 & 3);
-
-    iVar4 = iVar4 + 0x10;
-
+  for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1, puVar4 = puVar4 + 4) {
+    uVar2 = FUN_00357fd0_u32(0);
+    uVar5 = uVar2 & 3;
+    puVar4[1] = -1 - uVar5;
   }
-
-  return;
-
 }
+
 
 
 
@@ -26924,53 +26911,23 @@ void FUN_00336630(u64 param_1)
 
 
 // FUN_003368A0 NONMATCHING
-
-
 void FUN_003368a0(int param_1)
-
-
-
 {
-
+  u32 *puVar4;
   u32 uVar1;
-
+  u32 uVar5;
   u32 uVar2;
-
   u32 uVar3;
 
-  int iVar4;
-
-  
-
-  iVar4 = **(int **)(param_1 + 0x30);
-
+  puVar4 = *(u32 **)(*(int *)(param_1 + 0x30));
   uVar1 = *(u32 *)(*(int *)(param_1 + 0x34) + 0x38);
-
-  for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1) {
-
-    uVar2 = FUN_00357fd0(0);
-
-    *(u32 *)(iVar4 + 4) = -1 - (uVar2 & 3);
-
-    iVar4 = iVar4 + 0xc;
-
+  for (uVar3 = 0; uVar3 < uVar1; uVar3 = uVar3 + 1, puVar4 = (u32 *)((u8 *)puVar4 + 0xc)) {
+    uVar2 = FUN_00357fd0_u32(0);
+    uVar5 = uVar2 & 3;
+    puVar4[1] = -1 - uVar5;
   }
-
-  return;
-
 }
-
-
-
-
 // FUN_00336920 NONMATCHING
-
-
-
-
-
-
-
 
 
 
@@ -26979,7 +26936,6 @@ u64 FUN_00336920(int param_1)
 
 
 {
-
   int iVar1;
 
   u32 uVar2;
@@ -48487,7 +48443,7 @@ void FUN_0034bd60(u32 param_1)
 // FUN_0034BDF0 NONMATCHING
 
 
-u64 FUN_0034bdf0(u64 param_1,u64 param_2)
+u32 FUN_0034bdf0(u64 param_1,u64 param_2)
 
 
 
@@ -48495,17 +48451,17 @@ u64 FUN_0034bdf0(u64 param_1,u64 param_2)
 
   long lVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
 
-  while (lVar1 = FUN_00316910(6,sGpffffb880,0), lVar1 != 0) {
+  while (lVar1 = FUN_00316910_typed(6,sGpffffb880,0), lVar1 != 0) {
 
     sGpffffb880 = sGpffffb880 + 1;
 
   }
 
-  uVar2 = FUN_00316bd0(6,sGpffffb880,param_1,param_2,1);
+  uVar2 = FUN_00316bd0_u32(6,sGpffffb880,param_1,param_2,1);
 
   FUN_00318b10(uVar2);
 
@@ -48515,7 +48471,7 @@ u64 FUN_0034bdf0(u64 param_1,u64 param_2)
 
     FUN_003182d0(uVar2,0,0,0,0);
 
-    FUN_003189f0(0x3f800000,uVar2,0);
+    FUN_003189f0_f32(1.0f,uVar2,0);
 
   }
 
@@ -48647,7 +48603,7 @@ u64 FUN_0034bfc0(long param_1)
 
       uVar1 = *(u32 *)((int)param_1 + 0x24);
 
-      while (lVar6 = FUN_00316910(6,sGpffffb880,0), lVar6 != 0) {
+      while (lVar6 = FUN_00316910_typed(6,sGpffffb880,0), lVar6 != 0) {
 
         sGpffffb880 = sGpffffb880 + 1;
 
