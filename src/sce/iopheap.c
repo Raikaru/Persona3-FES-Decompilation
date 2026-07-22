@@ -5,16 +5,6 @@
 /* auto-extern (generated) */
 u32 FUN_0050b710(u32 param_1);
 extern int DAT_0077f558;
-#pragma alias DAT_0077f558_abs DAT_0077f558
-extern u8 DAT_0077f558_abs[];
-#pragma alias DAT_00969d40_abs DAT_00969d40
-extern u8 DAT_00969d40_abs[];
-#pragma alias DAT_00969d80_abs DAT_00969d80
-extern u8 DAT_00969d80_abs[];
-#pragma alias DAT_00969d84_abs DAT_00969d84
-extern u8 DAT_00969d84_abs[];
-#pragma alias DAT_00969d88_abs DAT_00969d88
-extern u8 DAT_00969d88_abs[];
 extern u32 DAT_00969d40;
 extern u32 DAT_00969d80;
 extern u32 DAT_00969d84;
