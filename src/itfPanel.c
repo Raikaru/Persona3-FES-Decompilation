@@ -20,6 +20,12 @@ extern s16 DAT_006a2060[];
 extern s16 DAT_006a2080[];
 extern u32 DAT_006a20a0;
 extern u32 DAT_006a20c0;
+extern u8 DAT_006a1ee0[];
+extern u8 DAT_006a1ef0[];
+#pragma alias DAT_006a1ee0_abs DAT_006a1ee0
+extern u8 DAT_006a1ee0_abs[];
+#pragma alias DAT_006a1ef0_abs DAT_006a1ef0
+extern u8 DAT_006a1ef0_abs[];
 extern u32 DAT_006a212c;
 #pragma alias DAT_006a212c_abs DAT_006a212c
 extern u8 DAT_006a212c_abs[];
@@ -1384,7 +1390,7 @@ void FUN_003a9cf0(int param_1,u64 param_2,u64 param_3,u64 param_4,
 }
 #define FUN_003a9cf0(...) ((void (*)(...))FUN_003a9cf0)(__VA_ARGS__)
 #undef FUN_003a9e20
-// FUN_003A9E20 NONMATCHING
+// FUN_003A9E20
 
 
 void FUN_003a9e20(int param_1,u64 param_2)
@@ -1397,15 +1403,20 @@ void FUN_003a9e20(int param_1,u64 param_2)
 
   int iVar2;
 
+  int iVar3;
+  int index;
+
   
 
-  iVar1 = *(int *)(param_1 + 8);
+  iVar2 = *(int *)(param_1 + 8);
+  iVar3 = iVar2 + 0x40;
 
-  *(u32 *)(iVar1 + 0x5c) = *(u32 *)(param_1 + 0x38);
+  *(u32 *)(iVar2 + 0x5c) = *(u32 *)(param_1 + 0x38);
 
-  for (iVar2 = 0; iVar2 < 3; iVar2 = iVar2 + 1) {
+  for (iVar1 = 0; iVar1 < 3; iVar1 = iVar1 + 1) {
 
-    FUN_003b4b40(iVar1,iVar1 + 0x40,iVar2 * 4 + 0x6a1ee0,iVar2 * 4 + 0x6a1ef0,
+    index = iVar1 << 2;
+    FUN_003b4b40(iVar2,iVar3,DAT_006a1ee0_abs + index,DAT_006a1ef0_abs + index,
 
                  *(u32 *)(param_1 + 0xc),param_2);
 
