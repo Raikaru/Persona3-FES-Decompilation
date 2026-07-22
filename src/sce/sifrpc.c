@@ -438,35 +438,55 @@ void FUN_00506b18(int param_1)
   *(u32 *)(param_1 + 0x10) = uVar1 & uVar2;
   return;
 }
+typedef struct SifRpcAllocatorState
+{
+    u8 padding0[0x14];
+    u8* packets;
+    int packet_count;
+    u8* packets2;
+    int packet_count2;
+    int packet_index;
+} SifRpcAllocatorState_t;
+
+typedef struct SifRpcQueueState
+{
+    u8 padding[0x28];
+    SifRpcDataQueue_t* queues;
+} SifRpcQueueState_t;
+
+typedef struct SifRpcSendPacket
+{
+    u8 padding[0x24];
+    void* source;
+    void* destination;
+    int size;
+} SifRpcSendPacket_t;
+
+extern int FUN_00506670(int command, void* packet, int packet_size, void* source, void* destination, int size);
+
 #pragma optimization_level 2
 #pragma schedule off
 // FUN_00506B38 NONMATCHING
-int FUN_00506b38(u64 param_1)
-
+SifRpcPacket_t* FUN_00506b38(SifRpcAllocatorState_t* state)
 {
+    int packet_count;
+    int packet_index;
+    int index;
 
-  int iVar1;
-  
-  iVar1 = *(int *)(param_1 + 0x24) % *(int *)(param_1 + 0x18);
-  if (*(int *)(param_1 + 0x18) == 0) {
-    trap(7);
-  }
-  *(int *)(param_1 + 0x24) = iVar1 + 1;
-  return *(int *)(param_1 + 0x14) + iVar1 * 0x40;
+    packet_count = state->packet_count;
+    packet_index = state->packet_index;
+    index = packet_index % packet_count;
+    state->packet_index = index + 1;
+    return (SifRpcPacket_t*)(state->packets + index * SIF_RPC_PACKET_SIZE);
 }
 // FUN_00506B68 NONMATCHING
-int FUN_00506b68(int param_1,int param_2)
-
+SifRpcPacket_t* FUN_00506b68(SifRpcAllocatorState_t* state, int index)
 {
-  int iVar1;
-  
-  if ((param_2 < 0) || (*(int *)(param_1 + 0x20) <= param_2)) {
-    iVar1 = FUN_00506b38(0);
-  }
-  else {
-    iVar1 = *(int *)(param_1 + 0x1c) + param_2 * 0x40;
-  }
-  return iVar1;
+    if (index >= 0 && index < state->packet_count2)
+    {
+        return (SifRpcPacket_t*)(state->packets2 + index * SIF_RPC_PACKET_SIZE);
+    }
+    return FUN_00506b38(state);
 }
 // FUN_00506BA8 NONMATCHING
 void FUN_00506ba8(int param_1)
@@ -506,23 +526,18 @@ LAB_00506c40:
   *puVar3 = 0;
   return;
 }
+#pragma schedule on
 // FUN_00506C78 NONMATCHING
-u32 FUN_00506c78(void)
-
+u32 FUN_00506c78(u32 unused0, u32 unused1, u32 unused2, SifRpcSendPacket_t* packet)
 {
-  long lVar1;
-  u32 uVar2;
-  int iVar3;
-  u64 in_a3;
-  
-  iVar3 = (int)in_a3;
-  lVar1 = FUN_00506670(0xffffffff80000008,in_a3,0x40,*(u32 *)(iVar3 + 0x24),
-                       *(u32 *)(iVar3 + 0x28),*(u32 *)(iVar3 + 0x2c));
-  uVar2 = 0x800;
-  if (lVar1 != 0) {
-    uVar2 = 0;
-  }
-  return uVar2;
+    int result;
+
+    result = FUN_00506670(-2147483640, packet, 0x40, packet->source, packet->destination, packet->size);
+    if (result != 0)
+    {
+        return 0;
+    }
+    return 0x800;
 }
 // FUN_00506CB8 NONMATCHING
 void FUN_00506cb8(int param_1,u64 param_2)
@@ -534,10 +549,10 @@ void FUN_00506cb8(int param_1,u64 param_2)
   int iVar4;
   
   if ((*(u32 *)(param_1 + 0x10) & 4) == 0) {
-    uVar2 = FUN_00506b38(param_2);
+    uVar2 = (u64)FUN_00506b38((SifRpcAllocatorState_t*)param_2);
   }
   else {
-    uVar2 = FUN_00506b68(param_2,*(u32 *)(param_1 + 0x10) >> 0x10);
+    uVar2 = (u64)FUN_00506b68((SifRpcAllocatorState_t*)param_2,*(u32 *)(param_1 + 0x10) >> 0x10);
   }
   uVar1 = *(u32 *)(param_1 + 0x1c);
   iVar4 = (int)uVar2;
@@ -547,8 +562,10 @@ void FUN_00506cb8(int param_1,u64 param_2)
   *(u32 *)(iVar4 + 0x24) = *(u32 *)(param_1 + 0x20);
   *(u32 *)(iVar4 + 0x28) = *(u32 *)(param_1 + 0x24);
   *(u32 *)(iVar4 + 0x2c) = *(u32 *)(param_1 + 0x28);
-  lVar3 = FUN_00506670(0xffffffff80000008,uVar2,0x40,*(u32 *)(param_1 + 0x20),
-                       *(u32 *)(param_1 + 0x24),*(u32 *)(param_1 + 0x28));
+  lVar3 = FUN_00506670(0xffffffff80000008,(void *)(u32)uVar2,0x40,
+                       (void *)*(u32 *)(param_1 + 0x20),
+                       (void *)*(u32 *)(param_1 + 0x24),
+                       *(u32 *)(param_1 + 0x28));
   if (lVar3 == 0) {
     FUN_0050f1c0(0x800,0x506c78,uVar2);
     return;
@@ -603,52 +620,34 @@ int sceSifBindRpc(SifRpcClientData_t* client, int server_id, int mode)
 
 
 // FUN_00506EF0 NONMATCHING
-int * FUN_00506ef0(int param_1,int param_2)
-
+SifRpcServerData_t* FUN_00506ef0(int server_id, SifRpcQueueState_t* state)
 {
-  int iVar1;
-  int *piVar2;
-  int iVar3;
-  
-  iVar3 = *(int *)(param_2 + 0x28);
-  if (iVar3 != 0) {
-    piVar2 = *(int **)(iVar3 + 8);
-    while( true ) {
-      if (piVar2 == (int *)0x0) {
-        iVar3 = *(int *)(iVar3 + 0x14);
-      }
-      else {
-        iVar1 = *piVar2;
-        while( true ) {
-          if (iVar1 == param_1) {
-            return piVar2;
-          }
-          piVar2 = (int *)piVar2[0xe];
-          if (piVar2 == (int *)0x0) break;
-          iVar1 = *piVar2;
+    SifRpcDataQueue_t* queue;
+    SifRpcServerData_t* server;
+
+    for (queue = state->queues; queue != 0; queue = queue->next)
+    {
+        for (server = queue->servers; server != 0; server = server->link)
+        {
+            if (server->server_id == server_id)
+            {
+                return server;
+            }
         }
-        iVar3 = *(int *)(iVar3 + 0x14);
-      }
-      if (iVar3 == 0) break;
-      piVar2 = *(int **)(iVar3 + 8);
     }
-  }
-  return (int *)0x0;
+    return 0;
 }
 // FUN_00506F40 NONMATCHING
-u32 FUN_00506f40(void)
-
+u32 FUN_00506f40(u32 unused0, u32 unused1, u32 unused2, void* packet)
 {
-  long lVar1;
-  u32 uVar2;
-  u64 in_a3;
-  
-  lVar1 = FUN_00506670(0xffffffff80000008,in_a3,0x40,0,0,0);
-  uVar2 = 0x800;
-  if (lVar1 != 0) {
-    uVar2 = 0;
-  }
-  return uVar2;
+    int result;
+
+    result = FUN_00506670(0x80000008, packet, 0x40, 0, 0, 0);
+    if (result != 0)
+    {
+        return 0;
+    }
+    return 0x800;
 }
 // FUN_00506F80 NONMATCHING
 void FUN_00506f80(int param_1,u64 param_2)
@@ -659,13 +658,13 @@ void FUN_00506f80(int param_1,u64 param_2)
   long lVar3;
   int iVar4;
   
-  uVar2 = FUN_00506b38(param_2);
+  uVar2 = (u64)FUN_00506b38((SifRpcAllocatorState_t*)param_2);
   uVar1 = *(u32 *)(param_1 + 0x14);
   iVar4 = (int)uVar2;
   *(u32 *)(iVar4 + 0x1c) = *(u32 *)(param_1 + 0x1c);
   *(u32 *)(iVar4 + 0x14) = uVar1;
   *(u32 *)(iVar4 + 0x20) = 0x80000009;
-  lVar3 = (long)(FUN_00506ef0(*(u32 *)(param_1 + 0x20),param_2));
+  lVar3 = (long)(FUN_00506ef0(*(u32 *)(param_1 + 0x20),(SifRpcQueueState_t*)param_2));
   if (lVar3 == 0) {
     *(u32 *)(iVar4 + 0x24) = 0;
     *(u32 *)(iVar4 + 0x28) = 0;
@@ -674,7 +673,7 @@ void FUN_00506f80(int param_1,u64 param_2)
     *(int *)(iVar4 + 0x24) = (int)lVar3;
     *(u32 *)(iVar4 + 0x28) = *(u32 *)((int)lVar3 + 8);
   }
-  lVar3 = FUN_00506670(0xffffffff80000008,uVar2,0x40,0,0,0);
+  lVar3 = FUN_00506670(0xffffffff80000008,(void *)(u32)uVar2,0x40,0,0,0);
   if (lVar3 == 0) {
     FUN_0050f1c0(0x800,0x506f40,uVar2);
     return;
