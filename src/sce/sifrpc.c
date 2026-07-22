@@ -15,6 +15,8 @@ extern u32 DAT_0077f53c;
 extern u8 DAT_0077f53c_abs[];
 extern u32 DAT_0077f540;
 extern u32 DAT_0077f544;
+#pragma alias DAT_0077f544_abs DAT_0077f544
+extern u8 DAT_0077f544_abs[];
 extern u32 DAT_0077f548;
 extern u32 DAT_0077f54c;
 extern u32 DAT_009684c0;
@@ -416,8 +418,13 @@ int FUN_00506a70(int *param_1)
 void FUN_00506b18(int param_1)
 
 {
+  u32 uVar1;
+  u32 uVar2;
+  
+  uVar1 = *(u32 *)(param_1 + 0x10);
+  uVar2 = 0xfffffffe;
   *(u32 *)(param_1 + 0x18) = 0;
-  *(u32 *)(param_1 + 0x10) = *(u32 *)(param_1 + 0x10) & 0xfffffffe;
+  *(u32 *)(param_1 + 0x10) = uVar1 & uVar2;
   return;
 }
 // FUN_00506B38 NONMATCHING
@@ -783,11 +790,16 @@ int sceSifCheckStatRpc(SifRpcClientData_t* client)
     SifRpcPacket_t* packet;
 
     packet = (SifRpcPacket_t*)client->header.packet;
-    if (packet == 0 || client->header.rpc_id != (u_int)packet->rpc_id)
-    {
-        return 0;
-    }
-    return (packet->record_id & SIF_RPC_PACKET_BUSY) != 0;
+    if (packet == 0)
+        goto fail;
+    if (client->header.rpc_id != (u_int)packet->rpc_id)
+        goto fail;
+    if (packet->record_id & SIF_RPC_PACKET_BUSY)
+        goto success;
+fail:
+    return 0;
+success:
+    return 1;
 }
 
 // FUN_00507470 NONMATCHING
@@ -1251,7 +1263,7 @@ u64 FUN_00508048(u32 param_1)
 
 {
   FUN_00507ff0();
-  WaitSema(DAT_0077f544);
+  WaitSema(*(u32 *)DAT_0077f544_abs);
   return 0;
 }
 // FUN_00508078 NONMATCHING
@@ -1265,8 +1277,11 @@ void FUN_00508078(void)
 void FUN_00508128(u64 param_1,u32 *param_2)
 
 {
-  if ((code *)*param_2 != (code *)0x0) {
-    (*(code *)*param_2)(param_2[1]);
+  void (*callback)(u32);
+  
+  callback = (void (*)(u32))*param_2;
+  if (callback != (void (*)(u32))0) {
+    (*callback)(param_2[1]);
   }
   SYNC(0);
   EI();
@@ -2039,7 +2054,7 @@ FUN_00509570(u64 param_1,u32 param_2,long param_3,u32 param_4,u32 param_5,
   return 0xfffffff7;
 }
 // FUN_00509758 NONMATCHING
-u32 FUN_00509758(char *param_1,u64 param_2)
+u32 FUN_00509758(char *param_1,u32 param_2)
 
 {
   char cVar1;
@@ -2100,10 +2115,10 @@ u32 FUN_00509758(char *param_1,u64 param_2)
   return auStack_a0[0];
 }
 // FUN_00509908 NONMATCHING
-void FUN_00509908(u64 param_1)
+void FUN_00509908(char *param_1)
 
 {
-  FUN_00509758((char *)param_1,6);
+  FUN_00509758(param_1,6);
   return;
 }
 // FUN_00509928 NONMATCHING
@@ -2169,10 +2184,10 @@ u32 FUN_00509928(char *param_1,u32 param_2)
   return auStack_a0[0];
 }
 // FUN_00509AE0 NONMATCHING
-void FUN_00509ae0(u64 param_1)
+void FUN_00509ae0(char *param_1)
 
 {
-  FUN_00509758((char *)param_1,8);
+  FUN_00509758(param_1,8);
   return;
 }
 // FUN_00509B00 NONMATCHING
@@ -2317,10 +2332,10 @@ u32 FUN_00509d80(u32 param_1)
   return auStack_60[0];
 }
 // FUN_00509EB0 NONMATCHING
-void FUN_00509eb0(u64 param_1)
+void FUN_00509eb0(char *param_1)
 
 {
-  FUN_00509758((char *)param_1,0x10);
+  FUN_00509758(param_1,0x10);
   return;
 }
 // FUN_00509ED0 NONMATCHING
@@ -2670,10 +2685,10 @@ u32 FUN_0050a660(char *param_1,char *param_2)
   return auStack_90[0];
 }
 // FUN_0050A868 NONMATCHING
-void FUN_0050a868(u64 param_1)
+void FUN_0050a868(char *param_1)
 
 {
-  FUN_00509758((char *)param_1,0x12);
+  FUN_00509758(param_1,0x12);
   return;
 }
 // FUN_0050A888 NONMATCHING
@@ -2828,10 +2843,10 @@ u32 FUN_0050aa38(char *param_1,char *param_2,u32 param_3,int param_4,int param_5
   return auStack_b0[0];
 }
 // FUN_0050ACB8 NONMATCHING
-void FUN_0050acb8(u64 param_1)
+void FUN_0050acb8(char *param_1)
 
 {
-  FUN_00509758((char *)param_1,0x15);
+  FUN_00509758(param_1,0x15);
   return;
 }
 // FUN_0050ACD8 NONMATCHING
