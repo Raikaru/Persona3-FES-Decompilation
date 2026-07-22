@@ -800,7 +800,8 @@ void func_001a7b50(void* state, u32 mode)
     RwSphere* sphere;
     void* resources;
     u32 found;
-
+    void* object;
+    void (**resourceCall)(void*);
     if (state == NULL)
     {
         return;
@@ -818,7 +819,8 @@ void func_001a7b50(void* state, u32 mode)
     item = *(KClumpMaterialNode**)((u8*)state + 8);
     while (item != NULL)
     {
-        sphere = func_004912b0(item->object);
+        object = (void*)*(volatile void**)&item->object;
+        sphere = func_004912b0(object);
         if (RwCameraFrustumTestSphere((RwCamera*)*(void**)(u8*)0x00960070, sphere) != rwSPHEREOUTSIDE)
         {
             if (item->enabled == 1)
@@ -827,7 +829,9 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (D_007CC1C0 == 1)
             {
-                (*(void (**)(void))((u8*)item->object + 0x48))();
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
             }
             if (item->enabled == 1)
             {
@@ -856,7 +860,9 @@ void func_001a7b50(void* state, u32 mode)
                     }
                     if (D_007CC1C0 == 1)
                     {
-                        (*(void (**)(void))((u8*)item->object + 0x48))();
+                        object = item->object;
+                        resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                        (*resourceCall)(object);
                     }
                     if (item->enabled == 1)
                     {
@@ -889,7 +895,9 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (*(u32*)((u8*)&D_007CC1C0 + 0x10) == 1)
             {
-                (*(void (**)(void))((u8*)item->object + 0x48))();
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
             }
             if (item->enabled == 1)
             {
@@ -920,7 +928,9 @@ void func_001a7b50(void* state, u32 mode)
             }
             if (*(u32*)((u8*)&D_007CC1C0 + 0x14) == 1)
             {
-                (*(void (**)(void))((u8*)item->object + 0x48))();
+                object = item->object;
+                resourceCall = (void (**)(void*))((u8*)object + 0x48);
+                (*resourceCall)(object);
             }
             if (item->enabled == 1)
             {
