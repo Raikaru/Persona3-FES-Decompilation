@@ -52,6 +52,8 @@ extern code DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
 extern code DAT_0096017c;
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
 extern code DAT_00960184;
 extern void* PTR_DAT_007cda78;
 extern void* PTR_PTR_007cdac8;
@@ -4223,29 +4225,18 @@ u64 FUN_00421770(u64 param_1)
 
 }
 
-// FUN_00421D70 NONMATCHING
-
-
+// FUN_00421D70
 void FUN_00421d70(int param_1)
-
-
-
 {
+  int *piVar1;
+  code *fn;
 
-  int iVar1;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
+  piVar1 = *(int **)(param_1 + 0x3c);
+  FUN_00421fb0();
   MT_Scene_Destroy();
-
-  (*DAT_0096017c)(*(u32 *)(iVar1 + 0x68));
-
-  (*DAT_0096017c)(*(u32 *)(param_1 + 0x3c));
-
-  return;
-
+  fn = (code *)&DAT_0096017c_abs;
+  (*fn)(*(u32 *)((u8 *)piVar1 + 0x68));
+  (*fn)(*(u32 *)(param_1 + 0x3c));
 }
 
 // FUN_00421DE0 NONMATCHING
@@ -4876,47 +4867,35 @@ void FUN_00422c10(int param_1,int param_2)
 
 }
 
-// FUN_00422C30 NONMATCHING
+// FUN_00422C30
 
 
 void FUN_00422c30(int param_1,u64 param_2,int param_3)
-
-
-
 {
+  typedef struct McVec4 {
+    float f0;
+    float f1;
+    float f2;
+    float f3;
+  } McVec4;
+  typedef struct McScratch {
+    u64 pair;
+    McVec4 vec;
+  } McScratch;
+  typedef struct McFrame {
+    u64 pad;
+    McScratch scratch;
+  } McFrame;
+  McFrame frame;
+  int *work;
 
-  int iVar1;
-
-  u32 uVar2;
-
-  u32 uVar3;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  
-
-  uVar2 = *(u32 *)(param_3 + 8);
-
-  uVar3 = *(u32 *)(param_3 + 0xc);
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
-  uStack_18 = (u32)param_2;
-
-  *(u32 *)(iVar1 + 0x134) = uStack_18;
-
-  uStack_14 = (u32)((u32)param_2 >> 0x20);
-
-  *(u32 *)(iVar1 + 0x138) = uStack_14;
-
-  *(u32 *)(iVar1 + 300) = uVar3;
-
-  *(u32 *)(iVar1 + 0x128) = uVar2;
-
-  return;
-
+  frame.scratch.pair = param_2;
+  frame.scratch.vec = *(McVec4 *)param_3;
+  work = *(int **)(param_1 + 0x3c);
+  *(float *)((u8 *)work + 0x134) = *(float *)((u8 *)&frame.scratch + 0);
+  *(float *)((u8 *)work + 0x138) = *(float *)((u8 *)&frame.scratch + 4);
+  *(u32 *)((u8 *)work + 0x12c) = ((u32 *)&frame.scratch.vec)[3];
+  *(u32 *)((u8 *)work + 0x128) = ((u32 *)&frame.scratch.vec)[2];
 }
 
 // FUN_00422C90
@@ -5719,46 +5698,29 @@ char FUN_00423b50(int param_1)
 
 }
 
-// FUN_00423B70 NONMATCHING
-
-
+// FUN_00423B70
 bool FUN_00423b70(int param_1)
-
-
-
 {
+  char value;
 
-  return **(char **)(param_1 + 0x3c) == '\x06' || **(char **)(param_1 + 0x3c) == '\f';
-
+  value = **(char **)(param_1 + 0x3c);
+  if (value == 6) {
+    return true;
+  }
+  return value == 0xc;
 }
 
-// FUN_00423BA0 NONMATCHING
-
-
+// FUN_00423BA0
 void FUN_00423ba0(int param_1)
-
-
-
 {
-
   u8 *puVar1;
-
-  long lVar2;
-
-  
+  int i;
 
   puVar1 = *(u8 **)(param_1 + 0x3c);
-
-  for (lVar2 = 0; lVar2 < (char)puVar1[0x8e]; lVar2 = (long)((int)lVar2 + 1)) {
-
-    *(u16 *)(puVar1 + (int)lVar2 * 6 + 0x52) = 0;
-
+  for (i = 0; i < (char)puVar1[0x8e]; i++) {
+    *(u16 *)(puVar1 + i * 6 + 0x52) = 0;
   }
-
   *puVar1 = 10;
-
-  return;
-
 }
 
 // FUN_00423BF0
