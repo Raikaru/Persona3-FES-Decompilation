@@ -73,7 +73,8 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
     MdlAnimEntryTable* table;
     u32 size;
     u32 i;
-    volatile MdlAnimEntryTable* vtable;
+    f32 one;
+    u32 matrixFlags;
 
     size = animCount * sizeof(MdlAnimEntry) + sizeof(MdlAnimEntryTable);
     table = (MdlAnimEntryTable*)RwMalloc(size, rwMEMHINTDUR_GLOBAL);
@@ -81,24 +82,20 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 
     table->entries = (MdlAnimEntry*)((u8*)table + sizeof(MdlAnimEntryTable));
     table->count = animCount;
-    vtable = table;
 
-    for (i = 0; i < vtable->count; i++)
+    one = 1.0f;
+    matrixFlags = rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
+    for (i = 0; i < table->count; i++)
     {
-        vtable->entries[i].identityMat.right.x =
-            vtable->entries[i].identityMat.up.y =
-            vtable->entries[i].identityMat.at.z = 1.0f;
-        vtable->entries[i].identityMat.right.y =
-            vtable->entries[i].identityMat.right.z =
-            vtable->entries[i].identityMat.up.x = 0.0f;
-        vtable->entries[i].identityMat.up.z =
-            vtable->entries[i].identityMat.at.x =
-            vtable->entries[i].identityMat.at.y = 0.0f;
-        vtable->entries[i].identityMat.pos.x =
-            vtable->entries[i].identityMat.pos.y =
-            vtable->entries[i].identityMat.pos.z = 0.0f;
-        vtable->entries[i].identityMat.flags |=
-            rwMATRIXINTERNALIDENTITY | rwMATRIXTYPEORTHONORMAL;
+        table->entries[i].identityMat.right.x = table->entries[i].identityMat.up.y =
+            table->entries[i].identityMat.at.z = one;
+        table->entries[i].identityMat.right.y = table->entries[i].identityMat.right.z =
+            table->entries[i].identityMat.up.x = 0.0f;
+        table->entries[i].identityMat.up.z = table->entries[i].identityMat.at.x =
+            table->entries[i].identityMat.at.y = 0.0f;
+        table->entries[i].identityMat.pos.x = table->entries[i].identityMat.pos.y =
+            table->entries[i].identityMat.pos.z = 0.0f;
+        table->entries[i].identityMat.flags |= matrixFlags;
     }
 
     table->unk_06 = 1;
