@@ -15868,10 +15868,10 @@ void FUN_004532d0(char param_1)
 
 void FUN_004533e0(u8 param_1)
 {
-  int iVar2;
-  int bVar1;
   u8 *puVar1;
   u8 *puVar2;
+  int iVar2;
+  int bVar1;
 
   iVar2 = 0;
   puVar2 = DAT_0086eda0_bytes;
