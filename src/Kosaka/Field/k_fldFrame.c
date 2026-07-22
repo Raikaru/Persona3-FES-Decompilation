@@ -845,6 +845,9 @@ static void fldFrameMoveAppend(FldFrameMoveWork* work,
     work->pointCount++;
 }
 
+
+#pragma opt_loop_invariants on
+
 // FUN_001ae480 NONMATCHING
 u32 func_001ae480(KwlnTask* task)
 {
@@ -864,14 +867,31 @@ u32 func_001ae480(KwlnTask* task)
         work->pointCount--;
         for (i = 0; i < work->pointCount; i++)
         {
-            fldFrameMoveCopyPoint(&work->points[i], &work->points[i + 1]);
+            s32 j;
+            u8* pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
+            u32* source = (u32*)(pointBase + 0x38);
+            u32* destination = (u32*)(pointBase + 0x20);
+
+            j = 3;
+            do
+            {
+                u32 value0 = source[0];
+                u32 value1 = source[1];
+
+                source += 2;
+                j--;
+                destination[0] = value0;
+                destination[1] = value1;
+                destination += 2;
+            } while (j > 0);
+            *(u32*)(pointBase + 0x4c) = 0;
         }
-        memset(&work->points[work->pointCount], 0, sizeof(FldFrameMovePoint));
         return true;
     }
     return false;
 }
 
+#pragma opt_loop_invariants off
 static void fldFrameMoveSetAnimation(FldFrameMoveWork* work,
                                      s16 animation,
                                      u16 blendFrames)
