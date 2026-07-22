@@ -1266,6 +1266,7 @@ void FUN_003a9b80(int param_1,u64 param_2,int param_3,u64 param_4,int param_5)
   u32 *puVar3;
   u32 value1;
   u32 value2;
+  u32 *p;
   u32 auStack_10[4];
 
   puVar3 = (u32 *)(param_1 + 4);
@@ -1276,7 +1277,8 @@ void FUN_003a9b80(int param_1,u64 param_2,int param_3,u64 param_4,int param_5)
   value1 = param_3 + 0x160;
   value2 = param_5 + -0x140;
   for (iVar2 = 0; iVar2 < 4; iVar2 = iVar2 + 1) {
-    uVar1 = auStack_10[iVar2];
+    p = auStack_10 + iVar2;
+    uVar1 = *(u32 *)((int)p + 0);
     *puVar3 = uVar1;
     puVar3[1] = value1;
     puVar3[2] = uVar1;
