@@ -3681,52 +3681,38 @@ void func_00313ca0(int *param_1,u64 param_2)
 
 void func_00313e60(void* param_1)
 {
-
   void *piVar1;
   int *piVar2;
 
-  u32 uVar3;
-
-  
+  s32 uVar3;
 
   piVar2 = (int *)param_1;
 
   *(u16 *)((int)piVar2 + 0xe) = *(u16 *)((int)piVar2 + 0xe) + -1;
 
   if (*(u16 *)((int)piVar2 + 0xe) == 0) {
-
     if (piVar2[2] != 0) {
-
-      func_004c20b0();
-
+      func_004c20b0((void *)piVar2[2]);
     }
 
     if (piVar2[1] != 0) {
-
-      func_004b78b0();
-
+      func_004b78b0((void *)piVar2[1]);
     }
 
-    for (uVar3 = 0; uVar3 < *(u16 *)(piVar2 + 3); uVar3 = uVar3 + 1 & 0xffff) {
-
+    for (uVar3 = 0; (uVar3 & 0xffff) < *(u16 *)(piVar2 + 3); uVar3 = uVar3 + 1 & 0xffff) {
       piVar1 = (void *)*piVar2;
       piVar1 = (void *)((u8 *)piVar1 + (u16)uVar3 * 8);
 
       if ((*(int *)piVar1 != 0) &&
           ((*(u8 *)((u8 *)piVar1 + 4) & 1) == 0)) {
-
-        func_004b78b0();
-
+        func_004b78b0(*(void **)piVar1);
       }
-
     }
 
     (*DAT_0096017c)(param_1);
-
   }
 
   return;
-
 }
 
 
@@ -3740,8 +3726,8 @@ int func_00313f40(int param_1,u64 param_2)
   int *piVar1;
   int *piVar2;
 
-  piVar1 = (int *)func_004c21d0(param_2);
-  while( true ) {
+  for (piVar1 = (int *)func_004c21d0(param_2);
+       ; piVar1++) {
     piVar2 = (int *)func_004c21e0(param_2);
     if (piVar1 == piVar2) {
       piVar1 = (int *)func_004c1e70(param_2,0);
@@ -3749,7 +3735,6 @@ int func_00313f40(int param_1,u64 param_2)
       return param_1;
     }
     if (param_1 == *piVar1) break;
-    piVar1 = piVar1 + 1;
   }
 
   return param_1;
