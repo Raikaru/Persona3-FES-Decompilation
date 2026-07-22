@@ -1121,6 +1121,8 @@ extern u32 DAT_007cdffc;
 
 
  
+#pragma push
+#pragma opt_propagation off
 // FUN_0017d830 NONMATCHING
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
@@ -1150,6 +1152,7 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 
     return month;
 }
+#pragma pop
 
 #pragma push
 #pragma opt_propagation off
@@ -2393,32 +2396,27 @@ KwlnTask* func_00182750(KwlnTask* parent)
     return task;
 }
 
-// FUN_00182810 NONMATCHING
+// FUN_00182810
 u8 func_00182810(u32 index)
 {
     u8* weights;
     s32 random;
-    s32 threshold;
 
     weights = (u8*)(uintptr_t)func_001714b0(index);
     random = func_00488f30() % 100;
-    threshold = weights[4];
-    if (random < threshold)
+    if (random < weights[4])
     {
         return 4;
     }
-    threshold += weights[3];
-    if (random < threshold)
+    if (random < weights[3] + weights[4])
     {
         return 3;
     }
-    threshold += weights[2];
-    if (random < threshold)
+    if (random < weights[2] + weights[3] + weights[4])
     {
         return 2;
     }
-    threshold += weights[1];
-    return random < threshold;
+    return random < weights[1] + weights[2] + weights[3] + weights[4];
 }
 
 // FUN_001828D0 NONMATCHING
