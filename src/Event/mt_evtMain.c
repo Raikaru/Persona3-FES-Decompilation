@@ -245,6 +245,8 @@ extern u8 *PTR_s_MOVE_D_0069ee34;
 extern u8 *PTR_s_MOVE_D_007ccf10;
 extern u8 *PTR_s_NORMAL_0069d940;
 extern u8 *PTR_s_NORMAL_007ccc60;
+extern u8 *PTR_s_NORMAL_007cd2d0;
+extern u8 *PTR_s_NOSTOP_007ccfac;
 extern u8 *PTR_s_NO_KEYFREE_007ccfb8;
 extern u8 *PTR_s_OFFSET_0069e6a0;
 extern u8 *PTR_s_RELEASE_0069ee28;
