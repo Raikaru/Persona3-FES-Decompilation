@@ -1450,14 +1450,6 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
     u16 oldSecond;
     u16 oldThird;
     u16 oldFourth;
-    u16 id;
-    u32 type;
-    u8 color;
-    u8 effect;
-    u16 first;
-    u16 second;
-    u16 third;
-    u16 fourth;
 
     row = *(s32*)(work->detailData + 0x2d6c) +
           *(s32*)(work->detailData + 0x2d68);
@@ -1476,23 +1468,22 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
     oldThird = func_0016fbd0(work->pcId, oldEquipment);
     oldFourth = func_0016fcc0(work->pcId, oldEquipment);
 
-    id = datGetEquipmentId(1, equipment);
-    type = func_0016f720(1, equipment);
-    color = func_0016f810(1, equipment);
-    effect = datGetEquipmentEffect(1, equipment);
-    first = func_0016f9f0(1, equipment);
-    second = func_0016fae0(1, equipment);
-    third = func_0016fbd0(1, equipment);
-    fourth = func_0016fcc0(1, equipment);
-
-    func_0016fea0(work->pcId, oldEquipment, id);
-    func_0016ff90(work->pcId, oldEquipment, type);
-    func_00170080(work->pcId, oldEquipment, color);
-    func_00170170(work->pcId, oldEquipment, effect);
-    func_00170260(work->pcId, oldEquipment, first);
-    func_00170350(work->pcId, oldEquipment, second);
-    func_00170440(work->pcId, oldEquipment, third);
-    func_00170530(work->pcId, oldEquipment, fourth);
+    func_0016fea0(work->pcId, oldEquipment,
+                  datGetEquipmentId(1, equipment));
+    func_0016ff90(work->pcId, oldEquipment,
+                  func_0016f720(1, equipment));
+    func_00170080(work->pcId, oldEquipment,
+                  func_0016f810(1, equipment));
+    func_00170170(work->pcId, oldEquipment,
+                  datGetEquipmentEffect(1, equipment));
+    func_00170260(work->pcId, oldEquipment,
+                  func_0016f9f0(1, equipment));
+    func_00170350(work->pcId, oldEquipment,
+                  func_0016fae0(1, equipment));
+    func_00170440(work->pcId, oldEquipment,
+                  func_0016fbd0(1, equipment));
+    func_00170530(work->pcId, oldEquipment,
+                  func_0016fcc0(1, equipment));
 
     func_0016fea0(1, equipment, oldId);
     func_0016ff90(1, equipment, oldType);
@@ -1505,6 +1496,9 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
     FUN_00177c10(work->pcId, (s16)oldEquipment);
 }
 
+#pragma push
+#pragma schedule on
+#pragma optimization_level 3
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
 {
@@ -1698,6 +1692,8 @@ void* FUN_00164920(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma schedule off
+#pragma pop
 
 // FUN_001669B0 NONMATCHING
 void FUN_001669b0(KwlnTask* task)
