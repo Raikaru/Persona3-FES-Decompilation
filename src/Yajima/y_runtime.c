@@ -5078,28 +5078,25 @@ u32 FUN_00434920(float param_1,float param_2,int param_3,float *param_4)
 // FUN_00434C90 NONMATCHING
 
 void FUN_00434c90(char param_1)
-
 {
-  long lVar1;
-  long lVar2;
+  int iVar1;
+  int iVar2;
   int iVar3;
-  
-  lVar2 = 1;
-  while( 1 ) {
-    if (3 < lVar2) {
-      return;
-    }
-    lVar1 = 0;
+  u8 *base;
+
+  base = (u8 *)DAT_007ce6e8;
+  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+    iVar1 = 0;
     for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-      if ((char)((u8 *)DAT_007ce6e8)[iVar3] == lVar2) {
-        lVar1 = 1;
+      if ((char)base[iVar3] == iVar2) {
+        iVar1 = 1;
       }
     }
-    if ((char)lVar1 == '\0') break;
-    lVar2 = (long)((int)lVar2 + 1);
+    if (iVar1 == 0) {
+      base[(char)(param_1 - 1)] = (u8)iVar2;
+      return;
+    }
   }
-  ((u8 *)DAT_007ce6e8)[(char)(param_1 + -1)] = (char)lVar2;
-  return;
 }
 
 // FUN_00434D30 NONMATCHING
