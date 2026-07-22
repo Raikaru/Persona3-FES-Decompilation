@@ -164,25 +164,39 @@ extern u32 func_00488f30(void);
 void* clndUpdateTask(KwlnTask* clndTask);
 void clndDestroyTask(KwlnTask* clndTask);
 
-// FUN_0017FC70 NONMATCHING
+#pragma push
+#pragma opt_propagation off
+ 
+// FUN_0017FC70
 KwlnTask* func_0017fc70(KwlnTask* clndTask)
 {
     s32 eventIndex;
+    register KwlnTask* task = clndTask;
+    register KwlnTask* actionTask = NULL;
 
-    if (datGetSkipToTarget() != 0 || datGetFlag(0xa02) != 0)
+    if (datGetSkipToTarget() == 0)
     {
-        return NULL;
+        if (datGetFlag(0xa02) != 1)
+        {
+            eventIndex = clndFindAndExecSiteibiEvents();
+            if (eventIndex != -1)
+            {
+                return func_00181950(task, eventIndex);
+            }
+            else
+            {
+                H_Dbprt_FmtLog("calendar: no late-night event");
+                {
+                    u8 time = datGetTime() & 0xff;
+                    actionTask = func_003c1ab0(task, time);
+                }
+            }
+        }
     }
 
-    eventIndex = clndFindAndExecSiteibiEvents();
-    if (eventIndex < 0)
-    {
-        H_Dbprt_FmtLog("calendar: no late-night event");
-        return func_003c1ab0(clndTask, datGetTime());
-    }
-
-    return func_00181950(clndTask, eventIndex);
+    return actionTask;
 }
+#pragma pop
 
 // FUN_0017FD30 NONMATCHING
 u32 func_0017fd30(void)
