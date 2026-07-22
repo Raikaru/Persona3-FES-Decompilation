@@ -430,7 +430,9 @@ u32 FUN_003c2ab0(u32 param_1,u32 param_2)
 }
 #define FUN_003c2ab0(...) ((u32 (*)(...))FUN_003c2ab0)(__VA_ARGS__)
 #undef FUN_003c2b40
-// FUN_003C2B40 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_003C2B40
 
 
 u32 FUN_003c2b40(int *param_1,int *param_2)
@@ -439,7 +441,7 @@ u32 FUN_003c2b40(int *param_1,int *param_2)
 
 {
 
-  u8 bVar1;
+  u32 bVar1;
 
   int uVar2;
 
@@ -503,7 +505,7 @@ u32 FUN_003c2b40(int *param_1,int *param_2)
 LAB_003c2c00:
     uVar5 = 1;
 
-    if (bVar1) {
+    if (bVar1 == 1) {
       uVar5 = 0;
     }
     else {
@@ -516,6 +518,7 @@ LAB_003c2c00:
   return uVar5;
 
 }
+#pragma pop
 #define FUN_003c2b40(...) ((u32 (*)(...))FUN_003c2b40)(__VA_ARGS__)
 #undef FUN_003c2c50
 // FUN_003C2C50 NONMATCHING
@@ -843,15 +846,15 @@ u32 *FUN_003c3050(u32 param_1)
 
 #define FUN_003c3050(...) ((u32 * (*)(...))FUN_003c3050)(__VA_ARGS__)
 #undef FUN_003c30b0
-#pragma alias DAT_0095b790_abs DAT_0095b790
-extern u32 DAT_0095b790_abs[];
+#pragma alias DAT_0095b790_wrap_abs DAT_0095b790
+extern u8 DAT_0095b790_wrap_abs[];
 #pragma alias DAT_0095b794_abs DAT_0095b794
 extern u8 DAT_0095b794_abs[];
 #pragma alias DAT_0095b798_abs DAT_0095b798
 extern u8 DAT_0095b798_abs[];
 #pragma alias DAT_0095b79c_abs DAT_0095b79c
 extern u8 DAT_0095b79c_abs[];
-// FUN_003C30B0 NONMATCHING
+// FUN_003C30B0
 
 
 u8 FUN_003c30b0(void)
@@ -860,19 +863,21 @@ u8 FUN_003c30b0(void)
   u32 t1;
   u32 t2;
 
-  if (*(u32*)DAT_0095b790_abs != 0) goto work;
+  if (*(u32*)DAT_0095b790_wrap_abs != 0) goto work;
   return 0;
 work:
   t0 = *(u32*)DAT_0095b794_abs;
   t1 = *(u32*)DAT_0095b798_abs;
+  asm volatile("" : "+m"(t0));
+  asm volatile("" : "+m"(t1));
   t2 = (u32)DAT_0095b79c_abs;
   FUN_00172b80(t0,t1,t2,1);
-  *(u32*)DAT_0095b790_abs = 0;
+  *(u32*)DAT_0095b790_wrap_abs = 0;
   return 1;
 }
 #define FUN_003c30b0(...) ((u8 (*)(...))FUN_003c30b0)(__VA_ARGS__)
 #undef FUN_003c3120
-// FUN_003C3120 NONMATCHING
+// FUN_003C3120
 
 
 u8 FUN_003c3120(void)
@@ -881,14 +886,16 @@ u8 FUN_003c3120(void)
   u32 t1;
   u32 t2;
 
-  if (*(u32*)DAT_0095b790_abs != 0) goto work;
+  if (*(u32*)DAT_0095b790_wrap_abs != 0) goto work;
   return 0;
 work:
   t0 = *(u32*)DAT_0095b794_abs;
   t1 = *(u32*)DAT_0095b798_abs;
+  asm volatile("" : "+m"(t0));
+  asm volatile("" : "+m"(t1));
   t2 = (u32)DAT_0095b79c_abs;
   FUN_00172b80(t0,t1,t2,0);
-  *(u32*)DAT_0095b790_abs = 0;
+  *(u32*)DAT_0095b790_wrap_abs = 0;
   return 1;
 }
 #define FUN_003c3120(...) ((u8 (*)(...))FUN_003c3120)(__VA_ARGS__)
