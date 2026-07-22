@@ -3778,13 +3778,13 @@ void FUN_0031ff40(float *param_1,u8 *param_2)
   puVar1[2] = (u8)(uVar4 & 0xff);
 }
 
-// FUN_00320060 NONMATCHING
+// FUN_00320060
 u32 * FUN_00320060(void)
 {
   return (u32 *)DAT_00957260_abs;
 }
 
-// FUN_00320070 NONMATCHING
+// FUN_00320070
 void FUN_00320070(void)
 {
 }
