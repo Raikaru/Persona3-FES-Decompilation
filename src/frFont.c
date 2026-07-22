@@ -725,7 +725,7 @@ u32 FUN_003b0030(int param_1)
 }
 #define FUN_003b0030(...) ((u32 (*)(...))FUN_003b0030)(__VA_ARGS__)
 #undef FUN_003b0170
-// FUN_003B0170 NONMATCHING
+// FUN_003B0170 MATCHING
 
 
 u64 FUN_003b0170(u64 param_1)
@@ -735,19 +735,21 @@ u64 FUN_003b0170(u64 param_1)
 {
 
   char cVar1;
+  u64 uVar2;
 
 
   
 
   cVar1 = FUN_003b0ec0_direct();
 
-  if (cVar1 == '\0') {
-
-    param_1 = FUN_003b0030_direct(param_1);
-
+  if (cVar1 != '\0') {
+    uVar2 = param_1;
+  }
+  else {
+    uVar2 = FUN_003b0030_u64(param_1);
   }
 
-  return param_1;
+  return uVar2;
 
 }
 #define FUN_003b0170(...) ((u64 (*)(...))FUN_003b0170)(__VA_ARGS__)
