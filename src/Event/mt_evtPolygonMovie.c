@@ -111,7 +111,10 @@ void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u3
 }
 #define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
 #undef FUN_00393f30
-// FUN_00393F30 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+ 
+// FUN_00393F30
 
 
 void FUN_00393f30(u8 *param_1,u32 param_2)
@@ -119,10 +122,10 @@ void FUN_00393f30(u8 *param_1,u32 param_2)
   u32 values[3];
   u8 *base;
   int result;
-  int i;
-  int j;
-  u32 kind;
+  u32 kind = 5;
   u8 *entry;
+  int j;
+  int i;
 
   base = param_1 + 0x8e0;
   *(u32 *)(param_1 + 0x18) = *(u32 *)(param_1 + 0x10);
@@ -136,7 +139,6 @@ void FUN_00393f30(u8 *param_1,u32 param_2)
   result = FUN_003977c0(param_1,values,values + 1,values + 2);
   if (result == 1) {
     *(u32 *)(base + 4) = 3;
-    kind = 5;
     for (j = 0; j < 3; j = j + 1) {
       entry = base + j * 0xc;
       *(u32 *)(entry + 8) = kind;
@@ -146,6 +148,8 @@ void FUN_00393f30(u8 *param_1,u32 param_2)
   *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 0x10000;
   *(u32 *)(base + 0x40) = param_2;
 }
+#pragma opt_loop_invariants off
+#pragma pop
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
 #undef FUN_00394040
 // FUN_00394040 MATCHING
