@@ -3379,7 +3379,7 @@ void FUN_003e0680(u64 param_1,code* param_2,u64 param_3)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_003E0700 NONMATCHING
+// FUN_003E0700
 
 
 void FUN_003e0700(s32 param_1)
