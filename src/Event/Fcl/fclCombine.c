@@ -4748,7 +4748,7 @@ u64 FUN_003d2c10(long param_1)
 
 }
 
-// FUN_003D2F00
+// FUN_003D2F00 NONMATCHING
 void FUN_003d2f00(void)
 {
     typedef unsigned int FusionU128 __attribute__((mode(TI)));
@@ -4802,11 +4802,11 @@ void FUN_003d2f00(void)
         var_5 += 1;
     } while (var_3_3 > 0);
     *(float *)var_5 = *(float *)var_4;
-    __asm__ volatile ("addiu %0, $gp, -0x5598" : "=r"(message));
+    message = gp0xffffaa68;
     printf(message, DAT_006a4648, 0x48b);
     printf(DAT_006a4710);
     H_Dbprt_FmtLog(DAT_006a4710);
-    __asm__ volatile ("lw %0, -0x466c($gp)" : "=r"(resource));
+    resource = uGpffffb994;
     FUN_003c5480(FUN_003c5240(resource, 1, stack.data2, 0, 0));
 }
 
