@@ -495,7 +495,6 @@ static void hmallocWriteSolid(u32* out, u32 value)
 static s32 hmallocTaskUpdateA(void* task)
 {
     u32* work;
-    void* destination;
     HCdvd* resource;
     u32 fileSize;
 
@@ -511,9 +510,7 @@ static s32 hmallocTaskUpdateA(void* task)
             {
                 resource = (HCdvd*)(uintptr_t)work[1];
                 fileSize = resource->fileSize;
-                destination = D_0083BB30;
-                __asm__ volatile ("" : : "r"(destination) : "memory");
-                func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
+                func_00521250(D_0083BB30, (u32)(uintptr_t)resource->fileMemory, fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
                 func_0016c2f0();
