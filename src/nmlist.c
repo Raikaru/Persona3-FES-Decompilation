@@ -16,9 +16,9 @@ typedef struct NmlistList {
 } NmlistList;
 
 extern code DAT_00960178;
+extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
-extern code DAT_0096017c;
 extern u8 LAB_003c4400[];
 extern u8 LAB_003c4410[];
 extern u8 LAB_003c4420[];
@@ -359,35 +359,27 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 
 
 NmlistNode *FUN_003c49e0(int *param_1,int *param_2,NmlistNode *param_3)
-
-
-
 {
+  u32 list;
+  u32 list2;
+  u32 node;
+  u32 uVar1;
 
-  NmlistNode *uVar1;
-
-  uVar1 = FUN_003c4820_typed(param_2,(int *)param_3);
-
-
-  if (param_3 == *(NmlistNode **)((u8 *)param_2 + 8)) {
-
-    *(NmlistNode **)((u8 *)param_2 + 8) = uVar1;
-
+  list = (u32)param_1;
+  list2 = (u32)param_2;
+  node = (u32)param_3;
+  uVar1 = (u32)FUN_003c4820_typed((int *)list2,(int *)node);
+  if (node == *(u32 *)((u8 *)list2 + 8)) {
+    *(u32 *)((u8 *)list2 + 8) = uVar1;
   }
-
-  (*(code *)((int)param_1 + 0x18))(param_1,param_3);
-
-  if (param_3 != 0) {
-
-    FUN_00521408((u32)param_3,0,*(u32 *)((u8 *)param_3 + 8));
-
-    (*DAT_0096017c)(param_3);
-
+  (*(code *)((u8 *)list + 0x18))((int *)list,(int *)node);
+  if (node != 0) {
+    FUN_00521408(node,0,*(u32 *)((u8 *)node + 8));
+    (*DAT_0096017c)((int *)node);
   }
-
-  return uVar1;
-
+  return (NmlistNode *)uVar1;
 }
+
 #define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
 #undef FUN_003c4a90
 // FUN_003C4A90
@@ -741,13 +733,10 @@ void FUN_003c4fc0(int *param_1,int *param_2)
 
 {
 
-  u64 uVar1;
-
-  int iVar2;
-
-  int iVar3;
-
   int iVar4;
+  u32 uVar1;
+  int iVar3;
+  int iVar2;
 
   
 
@@ -762,10 +751,9 @@ void FUN_003c4fc0(int *param_1,int *param_2)
     uVar1 = (*DAT_00960178)((u32)*(u16 *)(iVar2 + 0x10) << 2,0x40000);
 
     for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
-
       *(int *)((int)uVar1 + iVar3 * 4) = iVar4;
-
       iVar3 = iVar3 + 1;
+
 
     }
 
@@ -776,12 +764,11 @@ void FUN_003c4fc0(int *param_1,int *param_2)
     *(u32 *)(iVar2 + 0xc) = *(u32 *)(iVar2 + 4);
 
     (*DAT_0096017c)(uVar1);
-
   }
 
   return;
-
 }
+
 #define FUN_003c4fc0(...) ((void (*)(...))FUN_003c4fc0)(__VA_ARGS__)
 #undef FUN_003c50b0
 #undef FUN_003c4710
