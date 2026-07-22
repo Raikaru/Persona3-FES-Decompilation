@@ -3927,53 +3927,32 @@ void FUN_003a6410(int param_1,u32 param_2)
 #undef FUN_003a6460
 // FUN_003A6460 NONMATCHING
 
-
 int FUN_003a6460(int param_1)
-
-
-
 {
-
-  int *piVar1;
-
+  int iVar1;
   int iVar2;
-
   int iVar3;
 
-  
-
   iVar3 = 0;
-
+  goto outer_test;
+outer_body:
+  iVar1 = *(int *)(param_1 + 8);
+  iVar2 = 0;
   do {
-
+    iVar2 += *(int *)(param_1 + 0xc);
+    param_1 = *(int *)(param_1 + 0x24);
     if (param_1 == 0) {
-
-      return iVar3 << 4;
-
+      break;
     }
-
-    piVar1 = (int *)(param_1 + 8);
-
-    iVar2 = 0;
-
-    do {
-
-      iVar2 = iVar2 + *(int *)(param_1 + 0xc);
-
-      param_1 = *(int *)(param_1 + 0x24);
-
-      if (param_1 == 0) break;
-
-    } while (*piVar1 == *(int *)(param_1 + 8));
-
-    if (iVar3 < iVar2) {
-
-      iVar3 = iVar2;
-
-    }
-
-  } while( 1 );
-
+  } while (iVar1 == *(int *)(param_1 + 8));
+  if (iVar3 < iVar2) {
+    iVar3 = iVar2;
+  }
+outer_test:
+  if (param_1 != 0) {
+    goto outer_body;
+  }
+  return iVar3 << 4;
 }
 #define FUN_003a6460(...) ((int (*)(...))FUN_003a6460)(__VA_ARGS__)
 #undef FUN_003a64c0
