@@ -544,6 +544,7 @@ static int sif_load_module_request(const char* path, int argument_length, const 
     return request.result;
 }
 
+#pragma schedule on
 // FUN_0050C4E8 NONMATCHING
 int sceSifLoadModule(const char* filename, int args, const char* argp)
 {
@@ -551,12 +552,15 @@ int sceSifLoadModule(const char* filename, int args, const char* argp)
 
     return sif_load_module_request(filename, args, argp, &module_result, SIF_LOADFILE_MODULE);
 }
+#pragma schedule off
 
-// FUN_0050C508 NONMATCHING
+#pragma schedule on
+// FUN_0050C508
 int sceSifLoadStartModule(const char* filename, int args, const char* argp, int* result)
 {
     return sif_load_module_request(filename, args, argp, result, SIF_LOADFILE_MODULE);
 }
+#pragma schedule off
 
 // FUN_0050C528 NONMATCHING
 u32 FUN_0050c528(u32 _param_1, u32 _param_2, u32 *_param_3, u32 _param_4)
@@ -1399,7 +1403,7 @@ void FUN_0050db38(void)
   return;
 }
 // FUN_0050DC10 NONMATCHING
-void FUN_0050dc10(u64 param_1,u64 param_2)
+void FUN_0050dc10(u32 param_1,u32 param_2)
 
 {
   u32 unaff_retaddr;
@@ -1413,27 +1417,31 @@ void FUN_0050dc10(u64 param_1,u64 param_2)
   SYNC(0x10);
   *(u32 *)param_1 = (u32)param_2;
   ErrorPC = unaff_retaddr;
-  SYNC(0x10);
   return;
 }
+#pragma optimization_level 3
+#pragma tailcall on
 // FUN_0050DC80 NONMATCHING
-void FUN_0050dc80(u64 param_1)
+void FUN_0050dc80(u32 param_1)
 {
-  FUN_0050dc10(0xffffffffb0001000,param_1);
-  return;
+  FUN_0050dc10(0xb0001000,param_1);
 }
+#pragma optimization_level 3
+#pragma tailcall on
 // FUN_0050DC90 NONMATCHING
-void FUN_0050dc90(u64 param_1)
+void FUN_0050dc90(u32 param_1)
 {
   FUN_0050dc10(0xffffffffb0001010,param_1);
   return;
 }
 // FUN_0050DCA0 NONMATCHING
-void FUN_0050dca0(u64 param_1)
+void FUN_0050dca0(u32 param_1)
 {
   FUN_0050dc10(0xffffffffb0001020,param_1);
   return;
 }
+#pragma tailcall off
+#pragma optimization_level 2
 // FUN_0050DCB0 NONMATCHING
 u32 FUN_0050dcb0(u32 param_1)
 
