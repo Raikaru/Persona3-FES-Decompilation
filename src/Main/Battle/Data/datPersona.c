@@ -1376,36 +1376,45 @@ void FUN_00176680(DatPersonaWork* persona, u16 personaId)
 // FUN_00176ac0 NONMATCHING
 u64 FUN_00176ac0(DatPersonaWork* persona, DatPersonaWork* const* personas, s32 personaCount)
 {
-    s32 bonusTotals[PERSONA_STAT_MAX] = {0};
-    s32 stat3Totals[PERSONA_STAT_MAX] = {0};
+    s32 totals[PERSONA_STAT_MAX * 2];
+    s32* total_p;
+    u8* stat_p;
+    u8* stat_dest;
     s32 statIdx;
     s32 personaIdx;
+    s32 statIdx2;
     s32 statDelta;
     u32 currentStat;
 
     K_ASSERT(persona != NULL && personas != NULL && personaCount != 0, 1671);
+    FUN_00521408(totals, 0, 0x28);
 
     for (statIdx = 0; statIdx < PERSONA_STAT_MAX; statIdx++)
     {
-        for (personaIdx = 0; personaIdx < personaCount; personaIdx++)
+        personaIdx = 0;
+        total_p = &totals[statIdx * 2];
+        for (; personaIdx < personaCount; personaIdx++)
         {
-            bonusTotals[statIdx] += personas[personaIdx]->bonusStats[statIdx];
-            stat3Totals[statIdx] += (u8)personas[personaIdx]->stats3[statIdx];
+            total_p[0] += personas[personaIdx]->bonusStats[statIdx];
+            total_p[1] += (u8)personas[personaIdx]->stats3[statIdx];
         }
     }
 
-    for (statIdx = 0; statIdx < PERSONA_STAT_MAX; statIdx++)
+    for (statIdx2 = 0; statIdx2 < PERSONA_STAT_MAX; statIdx2++)
     {
-        statDelta = bonusTotals[statIdx] + stat3Totals[statIdx] / personaCount;
-        K_ASSERT(persona != NULL && statIdx < PERSONA_STAT_MAX, 1623);
-        currentStat = (u8)persona->stats3[statIdx];
+        total_p = &totals[statIdx2 * 2];
+        statDelta = total_p[0] + total_p[1] / (u32)personaCount;
+        K_ASSERT(persona != NULL && (u8)statIdx2 < PERSONA_STAT_MAX, 1623);
+        stat_p = (u8*)persona + (u8)statIdx2;
+        stat_dest = stat_p + 0x26;
+        currentStat = stat_p[0x26];
         if (currentStat + statDelta < 100)
         {
-            persona->stats3[statIdx] = (s8)(currentStat + statDelta);
+            stat_dest[0] = (s8)(currentStat + (u8)statDelta);
         }
         else
         {
-            persona->stats3[statIdx] = 99;
+            stat_dest[0] = (s8)(currentStat + (u8)(0x63 - currentStat));
         }
     }
     return 0;
