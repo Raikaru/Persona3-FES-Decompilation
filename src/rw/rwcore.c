@@ -760,6 +760,8 @@ extern u32 DAT_00966a54;
 #pragma alias DAT_00966a54_abs DAT_00966a54
 extern u32 DAT_00966a54_abs[];
 extern u32* DAT_00966a58;
+#pragma alias DAT_00966a58_abs DAT_00966a58
+extern u8 DAT_00966a58_abs[];
 extern u32 DAT_00966a5c;
 extern u32 DAT_00966a60;
 extern u32 DAT_00966a64;
@@ -38026,10 +38028,10 @@ void FUN_00505f90(uint param_1,undefined4 param_2)
   *(undefined4 *)((u8 *)DAT_00966c00_abs + param_1) = param_2;
 }
 
-// FUN_00505FB0 NONMATCHING
+// FUN_00505FB0
 u32* FUN_00505fb0(void)
 {
-  return DAT_00966a58;
+  return (u32 *)DAT_00966a58_abs;
 }
 #pragma optimization_level 2
 
@@ -38187,25 +38189,27 @@ void FUN_005063c8(void)
 }
 #pragma schedule off
 #pragma optimization_level 3
-// FUN_00506400 NONMATCHING
+// FUN_00506400
 u32 FUN_00506400(undefined4 param_1,undefined4 param_2)
 {
+  u32* p;
   u32 uVar1;
-  
-  uVar1 = DAT_00966a58[5];
-  DAT_00966a58[6] = param_2;
-  DAT_00966a58[5] = param_1;
+  p = (u32 *)DAT_00966a58_abs;
+  uVar1 = p[5];
+  p[6] = param_2;
+  p[5] = param_1;
   return uVar1;
 }
 
-// FUN_00506418 NONMATCHING
+// FUN_00506418
 u32 FUN_00506418(undefined4 param_1,undefined4 param_2)
 {
+  u32* p;
   u32 uVar1;
-  
-  uVar1 = DAT_00966a58[3];
-  DAT_00966a58[4] = param_2;
-  DAT_00966a58[3] = param_1;
+  p = (u32 *)DAT_00966a58_abs;
+  uVar1 = p[3];
+  p[4] = param_2;
+  p[3] = param_1;
   return uVar1;
 }
 #pragma optimization_level 2
