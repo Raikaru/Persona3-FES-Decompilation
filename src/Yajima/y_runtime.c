@@ -3204,7 +3204,7 @@ void FUN_004302b0(void)
   return;
 }
 
-// FUN_00430630 NONMATCHING
+// FUN_00430630
 
 void FUN_00430630(int param_1)
 
