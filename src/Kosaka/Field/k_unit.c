@@ -2695,8 +2695,8 @@ void func_001d4290(void)
 {
     char path[128];
     HCdvd* object;
-    void* fileMemory;
     u32 fileSize;
+    void* fileMemory;
 
     if (func_0017d800() == 0)
     {
@@ -2711,20 +2711,19 @@ void func_001d4290(void)
         object = (HCdvd*)func_00100d80(path, 0);
         func_001023a0(object);
         DAT_007ce290 = DAT_00871ec0;
-        fileMemory = object->fileMemory;
-        fileSize = object->fileSize;
+        fileSize = ((volatile HCdvd*)object)->fileSize;
+        fileMemory = ((volatile HCdvd*)object)->fileMemory;
         func_00521250(DAT_00871ec0, fileMemory, fileSize);
         DAT_007ce294 = DAT_007ce290 + 0x180;
         func_00100ec0(object);
     }
 }
-
 // FUN_001d43e0 NONMATCHING
 u32 func_001d43e0(void* object)
 {
     HCdvd* cdvd;
-    void* fileMemory;
     u32 fileSize;
+    void* fileMemory;
 
     if (func_001016b0() == 0)
     {
@@ -2732,8 +2731,8 @@ u32 func_001d43e0(void* object)
     }
     cdvd = (HCdvd*)object;
     DAT_007ce290 = DAT_00871ec0;
-    fileMemory = cdvd->fileMemory;
-    fileSize = cdvd->fileSize;
+    fileSize = ((volatile HCdvd*)cdvd)->fileSize;
+    fileMemory = ((volatile HCdvd*)cdvd)->fileMemory;
     func_00521250(DAT_00871ec0, fileMemory, fileSize);
     DAT_007ce294 = DAT_007ce290 + 0x180;
     func_00100ec0(cdvd);
