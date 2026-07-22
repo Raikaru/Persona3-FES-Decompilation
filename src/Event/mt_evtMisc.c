@@ -4926,94 +4926,52 @@ void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4)
 }
 
 
+extern void FUN_004c31b0_b600(float angle, void *matrix, void *axis, int mode);
+#pragma alias FUN_004c31b0_b600 FUN_004c31b0
+#pragma push
+#pragma schedule off
 // FUN_0038B600 NONMATCHING
 
 
 void FUN_0038b600(u32 *param_1,u32 *param_2)
-
-
-
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
+  volatile float *pfParam2;
   int iVar3;
-
   u32 *puVar4;
+  u32 auStack_40[16];
 
-  u32 auStack_40 [8];
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
-
-  uStack_18 = 0x3f800000;
-
+  auStack_40[10] = 0x3f800000;
   auStack_40[5] = 0x3f800000;
-
   auStack_40[0] = 0x3f800000;
-
   auStack_40[4] = 0;
-
   auStack_40[2] = 0;
-
   auStack_40[1] = 0;
-
-  uStack_1c = 0;
-
-  uStack_20 = 0;
-
+  auStack_40[9] = 0;
+  auStack_40[8] = 0;
   auStack_40[6] = 0;
-
-  uStack_8 = 0;
-
-  uStack_c = 0;
-
-  uStack_10 = 0;
-
+  auStack_40[14] = 0;
+  auStack_40[13] = 0;
+  auStack_40[12] = 0;
   auStack_40[3] = auStack_40[3] | 0x20003;
-
-  FUN_004c31b0(param_2[1],auStack_40,0x6a2a70,1);
-
-  FUN_004c31b0(*param_2,auStack_40,0x6a2a60,1);
-
+  pfParam2 = (float *)param_2;
+  FUN_004c31b0_b600(pfParam2[1],auStack_40,(void *)0x6a2a70,1);
+  FUN_004c31b0_b600(pfParam2[0],auStack_40,(void *)0x6a2a60,1);
   puVar4 = auStack_40;
-
   iVar3 = 8;
-
   do {
-
     uVar1 = *puVar4;
-
     uVar2 = puVar4[1];
-
     puVar4 = puVar4 + 2;
-
     iVar3 = iVar3 + -1;
-
     *param_1 = uVar1;
-
     param_1[1] = uVar2;
-
     param_1 = param_1 + 2;
-
   } while (0 < iVar3);
-
   return;
-
 }
+#pragma pop
 
 
 // FUN_0038B6E0 NONMATCHING
@@ -7419,38 +7377,35 @@ void FUN_0038d840(char *param_1,u8 *param_2,int param_3)
 {
 
   int iVar1;
-
   int iVar2;
-
   int iVar3;
-
-  u32 uVar4;
-
-  u32 uVar5;
+  float *pfVar7;
+  float *pfVar8;
+  float fVar4;
+  float fVar5;
+  float fVar6;
 
   
 
   if (*param_1 == '\0') {
-
     iVar1 = (u32)(u8)param_1[1] * 3;
 
     *param_2 = param_1[1];
 
     for (iVar3 = 0; iVar3 < iVar1 + 1; iVar3 = iVar3 + 1) {
 
-      if (param_3 == 1) {
 
+      if (param_3 == 1) {
         iVar2 = iVar1 - iVar3;
 
-        uVar4 = *(u32 *)(param_1 + iVar2 * 0xc + 8);
-
-        uVar5 = *(u32 *)(param_1 + iVar2 * 0xc + 0xc);
-
-        *(u32 *)(param_2 + iVar3 * 0xc + 4) = *(u32 *)(param_1 + iVar2 * 0xc + 4);
-
-        *(u32 *)(param_2 + iVar3 * 0xc + 8) = uVar4;
-
-        *(u32 *)(param_2 + iVar3 * 0xc + 0xc) = uVar5;
+        pfVar7 = (float *)(param_1 + iVar2 * 0xc);
+        pfVar8 = (float *)(param_2 + iVar3 * 0xc);
+        fVar4 = pfVar7[1];
+        fVar5 = pfVar7[2];
+        fVar6 = pfVar7[3];
+        pfVar8[1] = fVar4;
+        pfVar8[2] = fVar5;
+        pfVar8[3] = fVar6;
 
       }
 
@@ -7458,15 +7413,14 @@ void FUN_0038d840(char *param_1,u8 *param_2,int param_3)
 
         iVar2 = iVar3 * 0xc;
 
-        uVar4 = *(u32 *)(param_1 + iVar2 + 8);
-
-        uVar5 = *(u32 *)(param_1 + iVar2 + 0xc);
-
-        *(u32 *)(param_2 + iVar2 + 4) = *(u32 *)(param_1 + iVar2 + 4);
-
-        *(u32 *)(param_2 + iVar2 + 8) = uVar4;
-
-        *(u32 *)(param_2 + iVar2 + 0xc) = uVar5;
+        pfVar7 = (float *)(param_1 + iVar2);
+        pfVar8 = (float *)(param_2 + iVar2);
+        fVar4 = pfVar7[1];
+        fVar5 = pfVar7[2];
+        fVar6 = pfVar7[3];
+        pfVar8[1] = fVar4;
+        pfVar8[2] = fVar5;
+        pfVar8[3] = fVar6;
 
       }
 
@@ -7534,48 +7488,30 @@ done_index:
 }
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0038DA10 NONMATCHING
 
 
 u64 FUN_0038da10(u16 *param_1)
-
-
-
 {
-
   int iVar1;
 
-  
-
   iVar1 = *(int *)(param_1 + 0x1c);
-
-  if (iVar1 == 0x29) {
-
-    if (*(char *)(param_1 + 8) == '\0') {
-
-      return 1;
-
-    }
-
-    if (*(char *)(param_1 + 8) == '\x05') {
-
-      return 1;
-
-    }
-
-  }
-
-  else if ((((iVar1 == 0x30) || (iVar1 == 1)) &&
-
-           (FUN_005225a8(0x6a0ac0,*param_1), *(char *)(param_1 + 8) == '\x01')) &&
-
-          (*(char *)(param_1 + 10) == '\x01')) {
-
-    return 1;
-
-  }
-
+  if (iVar1 == 0x29) goto case_29;
+  if (iVar1 == 0x30) goto common_case;
+  if (iVar1 == 1) goto common_case;
+  goto done_index;
+common_case:
+  FUN_005225a8(0x6a0ac0,*param_1);
+  if (*(char *)(param_1 + 8) != '\x01') goto done_index;
+  if (*(char *)(param_1 + 10) != '\x01') goto done_index;
+  return 1;
+case_29:
+  if (*(char *)(param_1 + 8) == '\0') return 1;
+  if (*(char *)(param_1 + 8) == '\x05') return 1;
+done_index:
   return 0;
-
 }
+#pragma pop
 
