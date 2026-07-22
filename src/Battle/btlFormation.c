@@ -535,7 +535,7 @@ extern void func_002b9600(u32 *param_1);
 extern u32 func_002b9640(int param_1);
 extern void func_002b96e0(int param_1,u32 param_2);
 extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,u64 param_6);
-extern void func_002b99d0(int param_1,int param_2,u64 param_3,u64 param_4);
+extern void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9c00(int param_1,u64 param_2,int param_3,float *param_4);
 extern void func_002b9d40(int param_1,u64 param_2,int param_3,float *param_4);
@@ -1491,30 +1491,30 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
 
 // FUN_002b99d0 NONMATCHING
 
-void func_002b99d0(int param_1,int param_2,u64 param_3,u64 param_4)
+void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
 
 {
-  u16 uVar1 = 0;
-  float fVar2 = 0;
-  float fVar3 = 0;
-  float fStack_30 = 0;
-  float fStack_2c = 0;
-  float fStack_28 = 0;
-  float fStack_20 = 0;
-  float fStack_1c = 0;
-  float fStack_18 = 0;
-  float fStack_10 = 0;
-  float fStack_c = 0;
-  float fStack_8 = 0;
+  u16 uVar1;
+  float fVar2;
+  float fVar3;
+  float fStack_30;
+  float fStack_2c;
+  float fStack_28;
+  float fStack_20;
+  float fStack_1c;
+  float fStack_18;
+  float fStack_10;
+  float fStack_c;
+  float fStack_8;
   
   uVar1 = *(u16 *)((int)param_3 + 4);
   if (uVar1 == 0) {
-    fVar3 = *(float *)(param_1 + 0x30) * *(float *)(param_2 + 0x2c);
+    fVar2 = *(float *)(param_1 + 0x30) * *(float *)(param_2 + 0x2c);
   }
   else {
-    fVar3 = (float)uVar1;
+    fVar2 = (float)uVar1;
   }
-  fVar2 = *(float *)(param_1 + 0x2c) * *(float *)(param_2 + 0x2c) * 0.5;
+  fVar3 = *(float *)(param_1 + 0x2c) * *(float *)(param_2 + 0x2c) * 0.5;
   fStack_18 = *(float *)(param_1 + 0x50);
   fStack_20 = *(float *)(param_1 + 0x20) * fStack_18;
   fStack_1c = *(float *)(param_1 + 0x24) * fStack_18;
@@ -1523,7 +1523,7 @@ void func_002b99d0(int param_1,int param_2,u64 param_3,u64 param_4)
   fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
   fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
   fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
-  func_002b96f0(fVar3,fVar2,&fStack_10,(u32 *)(param_1 + 0x40),param_3,param_4);
+  func_002b96f0(fVar2,fVar3,&fStack_10,(u32 *)(param_1 + 0x40),param_3,param_4);
   return;
 }
 
@@ -1569,18 +1569,18 @@ void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
 void func_002b9c00(int param_1,u64 param_2,int param_3,float *param_4)
 
 {
-  int iVar1 = 0;
-  long lVar2 = 0;
-  int iVar3 = 0;
-  float fStack_30 = 0;
-  float fStack_2c = 0;
-  float fStack_28 = 0;
-  float fStack_20 = 0;
-  float fStack_1c = 0;
-  float fStack_18 = 0;
-  float fStack_10 = 0;
-  float fStack_c = 0;
-  float fStack_8 = 0;
+  int iVar1;
+  long lVar2;
+  int iVar3;
+  float fStack_30;
+  float fStack_2c;
+  float fStack_28;
+  float fStack_20;
+  float fStack_1c;
+  float fStack_18;
+  float fStack_10;
+  float fStack_c;
+  float fStack_8;
   
   if ((*(u32 *)((int)param_2 + 0x98) & 2) == 0) {
     func_0027ffb0(param_2,&fStack_10);
@@ -2272,20 +2272,16 @@ void func_002bacb0(u32 *param_1)
 u32 func_002bad60(u32 *param_1)
 
 {
-  short sVar1 = 0;
+  short sVar1;
   u16 *puVar2;
-  int iVar3 = 0;
-  u32 uVar4 = 0;
-  long lVar5 = 0;
-  u32 unaff_s1_lo = 0;
-  u32 unaff_s2_lo = 0;
+  int iVar3;
+  u32 uVar4;
+  u32 unaff_s1_lo;
+  u32 unaff_s2_lo;
   
-  lVar5 = func_002b9350(*param_1);
-  if (lVar5 == 0) {
-    uVar4 = 0;
-  }
-  else {
-    puVar2 = (u16 *)param_1[4];
+  if (func_002b9350(*param_1) == 0)
+    return 0;
+  puVar2 = (u16 *)param_1[4];
     if ((*(u32 *)(puVar2 + 2) & 0xff000000) == 0) {
       uVar4 = 1;
     }
@@ -2314,7 +2310,6 @@ u32 func_002bad60(u32 *param_1)
       }
       uVar4 = 0;
     }
-  }
   return uVar4;
 }
 
