@@ -2946,8 +2946,6 @@ void FUN_0031eeb0(u32 *param_1)
 
 
 // FUN_0031EEE0 NONMATCHING
-#pragma push
-#pragma opt_rebuildconditionals off
 void FUN_0031eee0(int *param_1)
 
 
@@ -2969,17 +2967,10 @@ void FUN_0031eee0(int *param_1)
     piVar1[1] = iVar2 + -1;
 
     if (iVar2 + -1 == 0) {
-      if ((u16)piVar1[3] != 1) {
-        goto check_ptr;
+      if (((u16)piVar1[3] == 1) && (*piVar1 != 0)) {
+        (*DAT_0096017c)();
       }
-      goto call_all;
-check_ptr:
-      if (*piVar1 == 0) {
-        goto call_all;
-      }
-      DAT_0096017c_abs[0]();
-call_all:
-      DAT_0096017c_abs[0](piVar1);
+      (*DAT_0096017c)(piVar1);
 
     }
 
@@ -2990,7 +2981,6 @@ call_all:
   return;
 
 }
-#pragma pop
 
 
 
