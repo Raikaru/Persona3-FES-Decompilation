@@ -424,12 +424,12 @@ static void bcm_panel_update_overlays(void)
 // FUN_002230e0 NONMATCHING
 void FUN_002230e0(void)
 {
-    u8* work;
-    u8* records;
-    u8* record;
-    u32 table0;
-    s32 i;
     s32 j;
+    s32 i;
+    u32 table0;
+    u8* record;
+    u8* records;
+    u8* work;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
@@ -463,8 +463,6 @@ void FUN_002230e0(void)
         i++;
     }
 }
-
-// FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
     u8* base;
