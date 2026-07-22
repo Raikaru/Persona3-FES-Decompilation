@@ -868,10 +868,10 @@ process_node:
       stack.uStack_3a = (u16)*(u32 *)(psVar2 + 2);
       stack.uStack_38 = *(volatile u16 *)((u8 *)piVar3 + 0xc);
       stack.uStack_36 = (s16)*(u32 *)(psVar2 + 0x1e);
-      c0 = psVar2[4];
-      c1 = psVar2[5];
-      c2 = psVar2[6];
-      c3 = psVar2[7];
+      c0 = ((volatile s16 *)psVar2)[4];
+      c1 = ((volatile s16 *)psVar2)[5];
+      c2 = ((volatile s16 *)psVar2)[6];
+      c3 = ((volatile s16 *)psVar2)[7];
       (stack.sStack_34 = c0, stack.sStack_32 = c1, stack.sStack_30 = c2, stack.sStack_2e = c3);
       FUN_005225a8_evt((const char *)DAT_006a0b50,*(u16 *)((u8 *)piVar3 + 0xc),stack.uStack_36);
       for (iVar1 = 0; iVar1 < 10; iVar1 = iVar1 + 1) {
