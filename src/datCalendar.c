@@ -1041,7 +1041,7 @@ void func_0017f8d0(void)
     }
 }
 
-// FUN_0017F990 NONMATCHING
+// FUN_0017F990
 u32 func_0017f990(void)
 {
     CalendarTaskWork* work;
@@ -4478,7 +4478,7 @@ void* func_00186d50(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00187050 NONMATCHING
+// FUN_00187050
 void func_00187050(KwlnTask* task)
 {
     CalendarTransitionWork* work;
