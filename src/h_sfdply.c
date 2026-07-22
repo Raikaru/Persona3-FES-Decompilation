@@ -5,6 +5,9 @@
 #include "h_sfdply.h"
 #include "rw/rwplcore.h"
 #include "temporary.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
+extern u8 D_0077e4e0[];
 
 #define HSFD_QUEUE_COUNT 256
 #define HSFD_DECODE_SLOTS 6
@@ -169,7 +172,7 @@ static s32 sSfdResumeThreadId;
 extern void datSetFlag(s32 bit, u8 enabled);
 extern void FUN_004aa550(void* param1);
 extern void FUN_004b6350(void);
-extern u64 FUN_004b7630(u64 param1);
+extern void FUN_004b7630(void* param1);
 
 typedef struct EeThreadStatus
 {
@@ -395,13 +398,13 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
 
     if (work->compressedFrameBuffer != NULL)
     {
-        RwFree(work->compressedFrameBuffer);
+        (*(void (**)(void*))((u8*)rwGlobals_abs + 0x17c))(work->compressedFrameBuffer);
         work->compressedFrameBuffer = NULL;
     }
 
     if (work->displayBuffer != NULL)
     {
-        RwFree(work->displayBuffer);
+        (*(void (**)(void*))((u8*)rwGlobals_abs + 0x17c))(work->displayBuffer);
         work->displayBuffer = NULL;
         sSfdFrameIndex = 0;
     }
@@ -424,10 +427,10 @@ void H_SfdPlay_DestroyTask(KwlnTask* sfdPlayTask)
         work->ownsCamera = 0;
         FUN_004aa550(kwlnGetMainCamera());
         FUN_004b6350();
-        FUN_004b7630(0x77e4e0);
+        FUN_004b7630(D_0077e4e0);
     }
 
-    RwFree(work);
+    (*(void (**)(void*))((u8*)rwGlobals_abs + 0x17c))(work);
 }
 
 // FUN_0010BC20
