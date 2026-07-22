@@ -183,6 +183,8 @@ extern void func_0054d220(void* handle, s32 frames);
 extern void func_0054d238(void* handle, s32 value);
 extern void func_0054d2b0(void* handle, s32 parameter);
 extern u32 D_00960178[];
+ #pragma alias H_Snd_FUN_00109df0_s16 H_Snd_FUN_00109df0
+ extern u32 H_Snd_FUN_00109df0_s16(s16 slotIndex);
 
 #define HSND_BACKEND_ALLOC(context, flags) \
     (*(void* (**)(void*, u32))D_00960178)((context), (flags))
@@ -713,10 +715,10 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
     slot->data5 = data2Size;
 }
 
-// FUN_00109CA0 NONMATCHING
+// FUN_00109CA0
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)
 {
-    if (H_Snd_FUN_00109df0(slotIndex) != 0)
+    if (H_Snd_FUN_00109df0_s16(slotIndex) != 0)
     {
         if (parameter == sSlotWork[slotIndex].param2)
         {
