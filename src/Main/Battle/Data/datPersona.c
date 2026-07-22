@@ -1383,7 +1383,7 @@ void FUN_00176680(DatPersonaWork* persona, u16 personaId)
     FUN_00176da0(persona);
 }
 
-// FUN_00176ac0 NONMATCHING
+// FUN_00176ac0
 u64 FUN_00176ac0(DatPersonaWork* persona, DatPersonaWork* const* personas, s32 personaCount)
 {
     s32 totals[PERSONA_STAT_MAX * 2];

@@ -672,7 +672,7 @@ void func_00106730(s16 index)
     work->state = HCHRDP_STATE_IDLE;
 }
 
-// FUN_00106860 NONMATCHING
+// FUN_00106860
 void func_00106860(s16 index, s16 characterId, s16 layer, s16 variant)
 {
     char path[256];
