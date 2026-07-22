@@ -2364,13 +2364,14 @@ void func_001bd950(void)
 #pragma push
 #pragma opt_rebuildconditionals off
 
-// FUN_001bf220 NONMATCHING
+// FUN_001bf220
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
 {
     Resrc* resource;
     u8* cell;
     u32 offset;
-    u16 id;
+    u32 id;
+    u32 resourceTypeId;
     RwV3d result;
     resource = MT_Scene_GetResListHead(0x12);
     memset(&result, 0, sizeof(result));
@@ -2379,9 +2380,11 @@ void func_001bf220(RwV3d* dst, u32 x, u32 y)
         offset = ((u32)(u16)y << 8) + ((u32)(u16)x << 4);
         while (resource != NULL)
         {
-            cell = (u8*)K_Field_Get() + offset;
-            id = *(u16*)(cell + 0x54);
-            if ((resource->resTypeId & 0x3ff) == (id & 0x3ff))
+            resourceTypeId = resource->resTypeId & 0x3ff;
+            cell = (u8*)offset;
+            cell += (u32)K_Field_Get();
+            id = *(u32*)(cell + 0x54);
+            if (resourceTypeId == (id & 0x3ff))
             {
                 result = *(RwV3d*)((u8*)resource + 0x100);
                 break;
