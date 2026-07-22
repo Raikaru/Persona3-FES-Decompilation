@@ -1311,9 +1311,9 @@ void func_001a8fe0(KwlnTask* task)
     work = (u32*)parent->workData;
     for (i = 0; i < 8; i++)
     {
-        if (work[9 + i] != 0)
+        if (*(u32*)((u8*)work + (i * 4) + 36) != 0)
         {
-            func_0034fcf0((void*)work[9 + i]);
+            func_0034fcf0((void*)*(u32*)((u8*)work + (i * 4) + 36));
         }
     }
     if (work[5] != 0)
