@@ -61,6 +61,8 @@ const s16 gNumOfDaysInMonths[CALENDAR_MONTH_MAX - 1] =
 {  /*JAN FEB MAR APR MAY JUN JUL AUG SEP OCT NOV DEC*/
      31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 };
+#pragma alias gNumOfDaysInMonths_abs gNumOfDaysInMonths
+extern u8 gNumOfDaysInMonths_abs[];
 
 // 005e38d0. Moon phases from April 5, 2009 through April 4, 2010.
 // Values intentionally use MoonPhases' retail enum order; the final four entries are zero.
@@ -1096,6 +1098,7 @@ KwlnTask* func_0017fad0(void)
 extern u32 DAT_007cdffc;
 
 
+ 
 // FUN_0017d830 NONMATCHING
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
@@ -1133,11 +1136,12 @@ s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
     s32 dayAccumulator = 0;
     s32 m = CALENDAR_MONTH_APRIL;
-    const s16* numOfDays = gNumOfDaysInMonths;
-    register s32 firstMonth = CALENDAR_MONTH_JANUARY;
+    const s16* numOfDays = (const s16*)gNumOfDaysInMonths_abs;
     register s32 monthEnd = CALENDAR_MONTH_MAX;
     register s32 monthsInYear = CALENDAR_MONTH_DECEMBER;
-    s32 startMonth = CALENDAR_MONTH_APRIL;
+    register s32 firstMonth = CALENDAR_MONTH_JANUARY;
+    s32 startMonth;
+    startMonth = m;
 
     for (;;)
     {
