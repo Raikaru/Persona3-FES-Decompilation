@@ -995,7 +995,6 @@ int FUN_005124a0(u64 param_1,u64 param_2,u64 *param_3)
 }
 // FUN_00512570 NONMATCHING
 u32 FUN_00512570(void)
-
 {
   u32 uVar1;
   long lVar2;
