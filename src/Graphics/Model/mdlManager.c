@@ -1266,7 +1266,7 @@ store_value:
 
 
 
-// FUN_00311640 NONMATCHING
+// FUN_00311640
 u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1)
 {
@@ -1284,12 +1284,12 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
     offset4 = param_4->offsetInParent;
     for (frame = offset2; frame < param_2->numNodes + param_2->offsetInParent; frame++)
     {
-        in2 = (u8*)param_4 +
-              param_4->currentInterpKeyFrameSize * (frame - offset4) + 0x4c;
-        out = (u8*)param_2 +
-              param_2->currentInterpKeyFrameSize * (frame - offset2);
-        in1 = (u8*)param_3 +
-              param_3->currentInterpKeyFrameSize * (frame - offset3);
+        in2 = (u8*)(param_4->currentInterpKeyFrameSize * (frame - offset4) -
+                     (0u - (u32)param_4)) + 0x4c;
+        out = (u8*)(param_2->currentInterpKeyFrameSize * (frame - offset2) -
+                    (0u - (u32)param_2));
+        in1 = (u8*)(param_3->currentInterpKeyFrameSize * (frame - offset3) -
+                    (0u - (u32)param_3));
         alpha = *(f32*)(in2 + 0x30);
         param_2->keyFrameBlendCB(out + 0x4c, in1 + 0x4c, in2,
                                  param_1 * alpha);
