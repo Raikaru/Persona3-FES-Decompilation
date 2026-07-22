@@ -1132,7 +1132,7 @@ void func_001a3bf0(KwlnTask* task, u32 request)
     }
 }
 
-// FUN_001A3C30
+// FUN_001A3C30 NONMATCHING
 void func_001a3c30(KwlnTask* task)
 {
     KWindowManagerWork* manager;
@@ -1157,8 +1157,7 @@ void func_001a3c30(KwlnTask* task)
                 width += strlen(entry->text) + 1;
                 break;
             case 2:
-                __asm__ volatile ("addiu %0, $gp, -0x6b70"
-                                  : "=r"(type2String));
+                type2String = sKWindowType2Label;
                 width += strlen(type2String) + 1;
                 break;
             case 3:
