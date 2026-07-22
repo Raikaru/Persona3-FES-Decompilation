@@ -23,11 +23,14 @@ RwInt32 RpMaterialGetUserDataArrayCount(const RpMaterial* material)
     RwInt32 count;
     RwInt32 i;
     RwInt32 numElements;
+    RwInt32 offset;
     RpUserDataList* userDataList;
     RpUserDataArray* current;
 
-    userDataList = (RpUserDataList*)((RwUInt8*)material + rpMaterialUserDataOffset);
+    offset = rpMaterialUserDataOffset;
+    asm volatile("" : "+m"(offset));
     count = 0;
+    userDataList = (RpUserDataList*)((RwUInt8*)material + offset);
     numElements = userDataList->numElements;
     if (numElements > 0)
     {
@@ -3283,21 +3286,23 @@ int FUN_0048ede0(int param_1)
   RwBool hasElements;
 
   offset = DAT_007ce7c8;
+  asm volatile("" : "+m"(offset));
   count = 0;
   userDataList = (const RpUserDataList *)(param_1 + offset);
   numElements = userDataList->numElements;
   hasElements = 0 < numElements;
-  if (hasElements) {
-    i = 0;
-    current = userDataList->userData;
-    do {
-      if (current->data != NULL) {
-        ++count;
-      }
-      ++current;
-      ++i;
-    } while (i < numElements);
-  }
+  if (hasElements == 0)
+    goto done;
+  i = 0;
+  current = userDataList->userData;
+  do {
+    if (current->data != NULL) {
+      ++count;
+    }
+    ++i;
+    ++current;
+  } while (i < numElements);
+done:
   return count;
 }
 
@@ -3364,18 +3369,24 @@ void FUN_0048efc0(int param_1,int param_2,f32 param_3)
 // FUN_0048EFE0 NONMATCHING
 RwInt32 FUN_0048efe0(RpUserDataFormat format)
 {
-  switch (format) {
-  case rpINTUSERDATA:
-    return sizeof(RwInt32);
-    break;
-  case rpREALUSERDATA:
-    return sizeof(RwReal);
-    break;
-  case rpSTRINGUSERDATA:
-    return sizeof(RwChar *);
-    break;
-  default:
-    return 0;
-    break;
-  }
+  RwInt32 size;
+
+  if (format == rpSTRINGUSERDATA)
+    goto case_string;
+  if (format == rpREALUSERDATA)
+    goto case_real;
+  if (format == rpINTUSERDATA)
+    goto case_int;
+  size = 0;
+  goto done;
+case_int:
+  size = 4;
+  goto done;
+case_real:
+  size = 4;
+  goto done;
+case_string:
+  size = 4;
+done:
+  return size;
 }
