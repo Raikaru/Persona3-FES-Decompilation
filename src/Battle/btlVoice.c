@@ -7644,7 +7644,7 @@ void func_002ea060(void)
       position.x = point[0];
       position.z = point[1];
       *(u8 *)(iVar1 + 0x9f0) = slots[slotIndex];
-      index = index + 1;
+      index++;
     }
     FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&position);
     FUN_0027f650(iVar1,&position);
