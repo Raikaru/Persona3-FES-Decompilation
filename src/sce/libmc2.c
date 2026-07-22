@@ -6751,13 +6751,14 @@ LAB_0051d8c4:
   }
   return 0xffffffff;
 }
+#pragma push
+#pragma schedule on
 // FUN_0051DA48
-asm u64 FUN_0051da48(void)
+u64 FUN_0051da48(void)
 {
-  .set noreorder
-  jr $ra
-  daddu $v0, $zero, $zero
+  return 0;
 }
+#pragma pop
 // FUN_0051DA50 NONMATCHING
 u64 FUN_0051da50(u64 param_1)
 
