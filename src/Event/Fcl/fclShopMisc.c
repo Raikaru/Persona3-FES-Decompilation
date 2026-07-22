@@ -166,8 +166,18 @@ u32 FUN_003fe2b0(void);
 u64 FUN_003fe3e0(u16 param_1);
 u8 FUN_003fe5d0(u64 param_1);
 u64 FUN_003fe690(u64 param_1,u64 param_2);
+#pragma alias FUN_003fe690_p FUN_003fe690
+u64 FUN_003fe690_p(u32 param_1,u64 param_2,int param_3);
+#pragma alias FUN_003fe690_3 FUN_003fe690
+u64 FUN_003fe690_3(u64 param_1,u64 param_2,int param_3);
+#pragma alias FUN_003c5e80_p FUN_003c5e80
+void FUN_003c5e80_p(u32 param_1,u32 param_2);
+#pragma alias FUN_003c5e20_p FUN_003c5e20
+void FUN_003c5e20_p(u32 param_1,u32 param_2);
+#pragma alias FUN_003c5ee0_p FUN_003c5ee0
+void FUN_003c5ee0_p(u32 param_1,u32 param_2);
 u64 FUN_003fe7d0(u64 param_1,int param_2);
-u64 FUN_003fe850(u16 param_1,u64 param_2);
+u32 FUN_003fe850(u16 param_1,u64 param_2);
 u8 FUN_003fe950(u64 param_1);
 u64 FUN_003fea10(u64 param_1,u32 *param_2);
 u64 FUN_003feb30(u64 param_1,int param_2);
@@ -11848,48 +11858,28 @@ u64 FUN_003fe7d0(u64 param_1,int param_2)
 // FUN_003FE850 NONMATCHING
 
 
-u64 FUN_003fe850(u16 param_1,u64 param_2)
-
-
-
+u32 FUN_003fe850(u16 param_1,u64 param_2)
 {
-
+  u32 *pVar;
   int iVar1;
 
-  int iVar2;
-
-  u64 uVar3;
-
-  
-
-  uVar3 = FUN_003c58f0(0,0x58,6,0x1e);
-
-  iVar2 = (int)uVar3;
-
-  iVar1 = *(int *)(*(int *)(iVar2 + 0x24) + 0x44);
-
+  pVar = (u32 *)FUN_003c58f0_ptr(0,0x58,6,0x1e);
+  iVar1 = *(int *)(pVar[9] + 0x44);
   *(u16 *)(iVar1 + 4) = param_1;
+  *(s16 *)(iVar1 + 6) = -5;
 
-  *(u16 *)(iVar1 + 6) = 0xfffb;
+  FUN_003fe690_p((u32)pVar,param_2,0);
+  FUN_003c6ee0((u32)pVar);
+  FUN_003c5e80_p((u32)pVar,(u32)FUN_003fadc0);
+  FUN_003c5e20_p((u32)pVar,(u32)FUN_003f4de0);
+  FUN_003c5ee0_p((u32)pVar,(u32)FUN_003f9510);
+  FUN_003c6d40((u32)pVar,0x19,0x79);
 
-
-  FUN_003c6ee0(uVar3);
-
-  FUN_003c5e80(uVar3,0x3fadc0);
-
-  FUN_003c5e20(uVar3,0x3f4de0);
-
-  FUN_003c5ee0(uVar3,0x3f9510);
-
-  FUN_003c6d40(uVar3,0x19,0x79);
-
-  *(u16 *)(*(int *)(iVar2 + 0x24) + 6) = 0xb;
-
-  *(u16 *)(*(int *)(iVar2 + 0x24) + 8) = 6;
-
-  return uVar3;
-
+  *(u16 *)(pVar[9] + 6) = 0xb;
+  *(u16 *)(pVar[9] + 8) = 6;
+  return (u32)pVar;
 }
+
 
 // FUN_003FE950 NONMATCHING
 
