@@ -65,6 +65,10 @@ extern u8 DAT_0069ff60_abs[];
 #pragma alias DAT_0069ffc0_abs DAT_0069ffc0
 extern u8 DAT_0069ffc0_abs[];
 extern u32 DAT_0069e420;
+#pragma alias DAT_0069e420_abs DAT_0069e420
+extern u8 DAT_0069e420_abs[];
+#pragma alias DAT_0069e422_abs DAT_0069e422
+extern u8 DAT_0069e422_abs[];
 extern s8 DAT_0069e422[];
 extern code DAT_006a0270[];
 extern u32 DAT_006a0bf8;
@@ -101,6 +105,8 @@ extern u32 DAT_007ce608;
 extern u32 DAT_007ce60c;
 extern u32 DAT_007e094c;
 extern u32 DAT_007e094e;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e094e_abs[];
 extern u32 DAT_007e0952;
 extern u32 DAT_007e095e;
 extern u32 DAT_007e095f;
@@ -618,7 +624,7 @@ int FUN_00361f20(int param_1);
 int FUN_00361f60(int param_1,int param_2);
 int FUN_00361fe0(long param_1,int param_2);
 int FUN_0036be60(u64 param_1,long param_2,u64 param_3);
-int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3);
+int FUN_0036fda0(int param_1,int param_2,int param_3);
 int FUN_00371dd0(u64 param_1,u64 param_2,u64 param_3);
 int FUN_00372790(u64 param_1,u64 param_2,u64 param_3);
 int FUN_00375000(u64 param_1,u64 param_2,u64 param_3);
@@ -1439,7 +1445,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 // FUN_0036FDA0 NONMATCHING
 
 
-int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
+int FUN_0036fda0(int param_1,int param_2,int param_3)
 
 
 
@@ -1469,7 +1475,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
   }
 
-  else if (*(short *)(&DAT_0069e420 + *piVar3 * 0xc) == 0) {
+  else if (*(short *)(DAT_0069e420_abs + *piVar3 * 0xc) == 0) {
 
     iVar5 = 0;
 
@@ -1477,11 +1483,11 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
   else {
 
-    FUN_0036f900(param_1,param_2,0x1c,3,0,1,param_3,0,0);
+    FUN_0036f900(param_1,param_2,0x1c,3,0,1,param_3,0,(code *)FUN_0036fa80);
 
     if (*(int *)(iVar5 + 0xd4) == 0xf) {
 
-      sVar2 = *(short *)(&DAT_0069e420 + *piVar3 * 0xc);
+      sVar2 = *(short *)(DAT_0069e420_abs + *piVar3 * 0xc);
 
       if (((long)sVar2 <= (long)*(int *)(iVar5 + 0x268)) && (0 < (long)sVar2)) {
 
@@ -1493,13 +1499,11 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
       iVar4 = *(int *)(iVar5 + 0x268);
 
-      cVar1 = DAT_0069e422[iVar4 + iVar6];
+      cVar1 = DAT_0069e422_abs[iVar4 + iVar6];
 
-      if ((DAT_007e094e & 0x2000) == 0) {
-
-        if ((DAT_007e094e & 0x8000) == 0) {
-
-          if ((DAT_007e094e & 0x40) != 0) {
+      if ((*(u16 *)DAT_007e094e_abs & 0x2000) == 0) {
+        if ((*(u16 *)DAT_007e094e_abs & 0x8000) == 0) {
+          if ((*(u16 *)DAT_007e094e_abs & 0x40) != 0) {
 
             if (cVar1 == '\x03') {
 
@@ -1593,7 +1597,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
           }
 
-          if ((DAT_007e094e & 0x1000) != 0) {
+          if ((*(u16 *)DAT_007e094e_abs & 0x1000) != 0) {
 
             if (iVar4 == 0) {
 
@@ -1635,7 +1639,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
           }
 
-          if ((DAT_007e094e & 0x4000) != 0) {
+          if ((*(u16 *)DAT_007e094e_abs & 0x4000) != 0) {
 
             if (iVar4 == 0) {
 
@@ -1661,7 +1665,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
         else if (iVar4 < 1) {
 
-          if (*(short *)(&DAT_0069e420 + iVar6) == 0) {
+          if (*(short *)(DAT_0069e420_abs + iVar6) == 0) {
 
             iVar4 = 0;
 
@@ -1669,7 +1673,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
           else {
 
-            iVar4 = *(short *)(&DAT_0069e420 + iVar6) + -1;
+            iVar4 = *(short *)(DAT_0069e420_abs + iVar6) + -1;
 
           }
 
@@ -1685,7 +1689,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
       }
 
-      else if (iVar4 < *(short *)(&DAT_0069e420 + iVar6) + -1) {
+      else if (iVar4 < *(short *)(DAT_0069e420_abs + iVar6) + -1) {
 
         *(int *)(iVar5 + 0x268) = iVar4 + 1;
 
@@ -1697,7 +1701,7 @@ int FUN_0036fda0(u64 param_1,u64 param_2,u64 param_3)
 
       }
 
-      iVar5 = -(u32)((DAT_007e094e & 0x20) != 0);
+      iVar5 = -(u32)((*(u16 *)DAT_007e094e_abs & 0x20) != 0);
 
     }
 
