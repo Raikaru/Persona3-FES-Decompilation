@@ -372,7 +372,7 @@ u32 FUN_004243d0(void)
 
 }
 
-// FUN_00424470 NONMATCHING
+// FUN_00424470
 u32 FUN_00424470(void)
 {
   u32 uVar1;
@@ -388,7 +388,7 @@ u32 FUN_00424480(void)
   return *(char *)(iGpffffb9b8 + 8) == 1;
 }
 
-// FUN_004244A0 NONMATCHING
+// FUN_004244A0
 u32 FUN_004244a0(void)
 {
   u8 uVar1;
@@ -1003,7 +1003,7 @@ u32 FUN_004250b0(void)
 
 }
 
-// FUN_004250E0 NONMATCHING
+// FUN_004250E0
 
 
 u32 FUN_004250e0(void)
@@ -1046,7 +1046,7 @@ u32 FUN_004250e0(void)
 
 }
 
-// FUN_00425190 NONMATCHING
+// FUN_00425190
 
 
 u32 FUN_00425190(void)
