@@ -125,7 +125,7 @@ void func_001a60a0(KwlnTask* rmdFadeTask)
     RwFree(rmdFadeTask->workData);
 }
 
-// FUN_001A60D0 NONMATCHING
+// FUN_001A60D0
 KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl, u32 targetAlpha, s32 frames)
 {
     KwlnTask* task;
@@ -154,7 +154,7 @@ KwlnTask* func_001a60d0(KwlnTask* parentTask, Model* mdl, u32 targetAlpha, s32 f
     work->mdl = mdl;
     work->targetAlpha = (f32)targetAlpha;
     work->framesRemaining = frames;
-    if (targetAlpha == 0)
+    if ((f32)targetAlpha == 0.0f)
     {
         work->currentAlpha = 255.0f;
         color.a = 255;
