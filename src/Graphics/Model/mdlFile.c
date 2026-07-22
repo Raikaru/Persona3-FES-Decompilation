@@ -153,7 +153,7 @@ static float _fStack_50;
 static u32 *piGpffffa850;
 static u8 *puGpffffbd04;
 static int cGpffffb857;
-static u16 sGpffffb880;
+extern u16 sGpffffb880;
 static u8 bGpffffb854, bGpffffb855, bGpffffb856, bGpffffb857;
 static Vec128 mdlVecZero(void) { Vec128 v; v._0_8_ = 0; v._8_8_ = 0; return v; }
 static Vec128 mdlVecKeep(Vec128 v) { return v; }
@@ -728,7 +728,7 @@ void FUN_0034bc80(u32 param_1);
 u32 FUN_0034bcf0(u32 param_1);
 void FUN_0034bd10(void);
 void FUN_0034bd60(u32 param_1);
-u32 FUN_0034bdf0(u64 param_1,u64 param_2);
+u32 FUN_0034bdf0(u32 param_1,u32 param_2);
 void FUN_0034bef0();
 u64 FUN_0034bf10(int param_1);
 u64 FUN_0034bfc0(long param_1);
@@ -949,6 +949,8 @@ extern u64 FUN_00316910_typed(u16 type,u16 id,u32 mode);
 extern u64 FUN_00316bd0();
 #pragma alias FUN_00316bd0_u32 FUN_00316bd0
 extern u32 FUN_00316bd0_u32();
+#pragma alias FUN_00316bd0_typed FUN_00316bd0
+extern u32 FUN_00316bd0_typed(u16 type,u16 id,u32 param_1,u32 param_2,u32 mode);
 extern u64 FUN_00316e00();
 #pragma alias FUN_00316e00_u32 FUN_00316e00
 extern u32 FUN_00316e00_u32(u16 type,u16 id,u32 readMode);
@@ -48410,7 +48412,7 @@ void FUN_0034bd60(u32 param_1)
 // FUN_0034BDF0 NONMATCHING
 
 
-u32 FUN_0034bdf0(u64 param_1,u64 param_2)
+u32 FUN_0034bdf0(u32 param_1,u32 param_2)
 
 
 
@@ -48428,7 +48430,7 @@ u32 FUN_0034bdf0(u64 param_1,u64 param_2)
 
   }
 
-  uVar2 = FUN_00316bd0_u32(6,sGpffffb880,param_1,param_2,1);
+  uVar2 = FUN_00316bd0_typed(6,sGpffffb880,param_1,param_2,1);
 
   FUN_00318b10(uVar2);
 
@@ -52962,19 +52964,14 @@ void FUN_00350190(void)
 
   uVar2 = FUN_0035ed20_i(1);
 
-  *(u32 *)DAT_00957bc0_abs = uVar1;
-
-  *(u16 *)DAT_00957bc4_abs = uVar2;
-
-  *(u32 *)DAT_00957bc8_abs = 0;
-
-  *(u32 *)DAT_00957bcc_abs = 0;
-
+  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
+  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
+  *(volatile u32 *)DAT_00957bc8_abs = 0;
+  *(volatile u32 *)DAT_00957bcc_abs = 0;
   DAT_007ce574 = 0;
-
   DAT_007ce578 = 1;
-
   return;
+
 
 }
 
