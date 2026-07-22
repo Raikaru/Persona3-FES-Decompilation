@@ -1327,7 +1327,7 @@ void func_002b9600(u32 *param_1)
   u32 *puVar4;
   int iVar3 = 0;
   
-  puVar4 = (u32 *)(uintptr_t)0x00957100;
+  puVar4 = (u32 *)(uintptr_t)DAT_00957100_abs;
   iVar3 = 8;
   do {
     uVar1 = *param_1;
