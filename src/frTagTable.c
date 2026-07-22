@@ -14,6 +14,8 @@ extern s32 DAT_006a2680[];
 extern u8 DAT_006a26b0[];
 extern char DAT_006a26f0[];
 extern u32 DAT_007cd4e8;
+extern void FUN_0019d3f0(const char *file, s32 line);
+extern void FUN_0017c7f0(s32 index, s64 value);
 extern u32 uGpffffa7f8;
 extern u32 DAT_007cd500;
 extern u32 DAT_007ce648;
@@ -124,6 +126,9 @@ void FUN_003af7a0(int param_1,u64 param_2);
 #define FUN_003af770(...) ((void (*)(...))FUN_003af770)(__VA_ARGS__)
 #define FUN_003af7a0(...) ((void (*)(...))FUN_003af7a0)(__VA_ARGS__)
 
+#pragma push
+#pragma opt_rebuildconditionals off
+ 
 #undef FUN_003ae420
 // FUN_003AE420 NONMATCHING
 
@@ -160,15 +165,22 @@ u64 FUN_003ae420(u64 param_1, int param_2)
   }
   second = (u32)high << 8 | low;
 
-  if (first < 0 || first > 7) {
-    FUN_0019d3f0("frTagTable.c",0x2d1);
-  }
-  if (second < 0 || second > 3) {
-    FUN_0019d3f0("frTagTable.c",0x2d2);
-  }
-  FUN_0017c7f0(first, second);
+  if (first < 0) goto first_error;
+  if (first >= 8) goto first_error;
+  goto first_done;
+first_error:
+  FUN_0019d3f0("frTagTable.c",0x2d1);
+first_done:
+  if ((s16)second < 0) goto second_error;
+  if ((s16)second >= 4) goto second_error;
+  goto second_done;
+second_error:
+  FUN_0019d3f0("frTagTable.c",0x2d2);
+second_done:
+  FUN_0017c7f0(first, (s16)second);
   return 0;
 }
+#pragma pop
 #define FUN_003ae420(...) ((u64 (*)(...))FUN_003ae420)(__VA_ARGS__)
 #undef FUN_003ae560
 // FUN_003AE560
