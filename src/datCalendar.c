@@ -4073,6 +4073,7 @@ void func_00186140(void* resource, u64 position, u32 alpha)
 
     packed.value = position;
     y = packed.coords.y + 404.0f;
+    asm volatile("" : "+m"(y));
     x = packed.coords.x;
     drawAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x2a, drawAlpha,
