@@ -289,25 +289,32 @@ u32 func_001a66f0(void* clump, const char* name)
 // FUN_001a6740 NONMATCHING
 u32 func_001a6740(void* geometry, const char* name)
 {
+    void* material;
     s32 resourceIndex;
     s32 materialIndex;
-    void* resourceList;
     RpUserDataArray* userData;
+    u32 result;
 
-    resourceList = *(void**)((u8*)geometry + 0x10);
+    result = 0;
     for (resourceIndex = 0; resourceIndex < (s32)kclump_word(geometry, 0x14); resourceIndex++)
     {
-        void* material = *(void**)((u8*)resourceList + resourceIndex * 4);
+        material = *(void**)((u8*)kclump_word(geometry, 0x10) + resourceIndex * 4);
         for (materialIndex = 0; materialIndex < RpMaterialGetUserDataArrayCount((RpMaterial*)material); materialIndex++)
         {
             userData = RpMaterialGetUserDataArray((RpMaterial*)material, materialIndex);
+            RpUserDataArrayGetName(userData);
             if (strcmp(RpUserDataArrayGetName(userData), name) == 0)
             {
-                return true;
+                result = 1;
+                break;
             }
         }
+        if (result == 1)
+        {
+            break;
+        }
     }
-    return false;
+    return result;
 }
 
 // FUN_001a6860

@@ -541,44 +541,49 @@ void* func_001b8680(void)
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001b8710 NONMATCHING
 u32 func_001b8710(HCdvd* request)
 {
     char path[76];
     void* memory;
+    HCdvd* requestCopy;
     u32 cachedSize;
 
-    if (request == NULL)
+    requestCopy = request;
+    if (requestCopy == NULL)
     {
         return true;
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(request) == 0)
+        if (H_Cdvd_IsFileLoaded(requestCopy) != 0)
         {
-            return false;
+            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+                1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
+            FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
+            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
+                   requestCopy->fileMemory, requestCopy->fileSize);
+            H_Cdvd_Destroy(requestCopy);
+            return true;
         }
-        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, request->fileSize, rwMEMHINTDUR_GLOBAL);
-        FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
-        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
-               request->fileMemory, request->fileSize);
-        H_Cdvd_Destroy(request);
-        return true;
+        return false;
     }
     sprintf(path, "field/pack/nm%03d_%03d.bmd",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    request = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (request != NULL)
+    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (requestCopy != NULL)
     {
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
             1, cachedSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x1154, void*) = memory;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1154, void*),
-               request, cachedSize);
+               requestCopy, cachedSize);
     }
     return true;
 }
+#pragma pop
 
 // FUN_001b8870
 void func_001b8870(void)
@@ -616,46 +621,52 @@ void* func_001b88d0(void)
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001b8960 NONMATCHING
 u32 func_001b8960(HCdvd* request)
 {
     char path[76];
     void* memory;
+    HCdvd* requestCopy;
     u32 cachedSize;
 
-    if (request == NULL)
+    requestCopy = request;
+    if (requestCopy == NULL)
     {
         return true;
     }
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(request) == 0)
+        if (H_Cdvd_IsFileLoaded(requestCopy) != 0)
         {
-            return false;
+            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+                1, requestCopy->fileSize, rwMEMHINTDUR_GLOBAL);
+            FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
+            FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = requestCopy->fileSize;
+            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
+                   requestCopy->fileMemory, requestCopy->fileSize);
+            H_Cdvd_Destroy(requestCopy);
+            return true;
         }
-        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
-            1, request->fileSize, rwMEMHINTDUR_GLOBAL);
-        FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
-        FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = request->fileSize;
-        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
-               request->fileMemory, request->fileSize);
-        H_Cdvd_Destroy(request);
-        return true;
+        return false;
     }
     sprintf(path, "field/pack/ns%03d_%03d.bf",
             PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
-    request = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
-    if (request != NULL)
+    requestCopy = (HCdvd*)H_Cdvd_CacheFindFile(path, &cachedSize);
+    if (requestCopy != NULL)
     {
         memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
             1, cachedSize, rwMEMHINTDUR_GLOBAL);
         FIELD_DATA_AT(K_Field_Get(), 0x114c, void*) = memory;
         FIELD_DATA_AT(K_Field_Get(), 0x1150, u32) = cachedSize;
         memcpy(FIELD_DATA_AT(K_Field_Get(), 0x114c, void*),
-               request, cachedSize);
+               requestCopy, cachedSize);
     }
     return true;
 }
+ 
+#pragma pop
 
 // FUN_001b8ae0
 void func_001b8ae0(void)
