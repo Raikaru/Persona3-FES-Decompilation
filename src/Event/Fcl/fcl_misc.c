@@ -3509,16 +3509,16 @@ u32 FUN_003cdba0(u64 param_1,u32 param_2)
       result = 0;
     }
     else {
-      if ((param_2 & 0xffff) == 0) {
+      if ((param_2 & 0xffff) != 0) {
+        flags &= 0xfffffffe;
+        *(u32 *)(context + 4) = flags;
+        *(u32 *)(context + 8) = 2;
+      }
+      else {
         if (*(s32 *)(context + 0x18) != 0) {
           fclMisc3174e0Call(*(u32 *)(context + 0x18));
           *(u32 *)(context + 0x18) = 0;
         }
-      }
-      else {
-        flags &= 0xfffffffe;
-        *(u32 *)(context + 4) = flags;
-        *(u32 *)(context + 8) = 2;
       }
       *(u16 *)(context + 0xc) = param_2;
       *(u16 *)(context + 0xe) = 0;
