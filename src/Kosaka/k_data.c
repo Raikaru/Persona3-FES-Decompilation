@@ -678,7 +678,9 @@ void func_001b8ae0(void)
     }
 }
 
-// FUN_001b8b40 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_001b8b40
 void func_001b8b40(void)
 {
     char path[128];
@@ -687,7 +689,7 @@ void func_001b8b40(void)
     s32 recordCount;
     u32 fileSize;
     u32 allocSize;
-    u16 emptyId;
+    const u16 emptyId = 0xffff;
     s32 i;
 
     sprintf(path, "field/table/comutbl.bin");
@@ -705,7 +707,6 @@ void func_001b8b40(void)
     recordCount = request->fileSize >> 7;
     sComuTableRecords = recordCount;
     record = sComuTable;
-    emptyId = 0xffff;
     i = 0;
     while (i < recordCount)
     {
@@ -718,6 +719,7 @@ void func_001b8b40(void)
     }
     H_Cdvd_Destroy(request);
 }
+#pragma pop
 
 // FUN_001b8c40
 void func_001b8c40(void)
