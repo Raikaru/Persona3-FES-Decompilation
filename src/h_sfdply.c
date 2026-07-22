@@ -170,6 +170,7 @@ extern s32 func_0051df58(s32 outputHandle, s32 channel, s32 count, s32 value, ..
 extern void func_0051deb0(s32 mode, s32 handle);
 extern void func_0051dd48(s32 mode, s32 handle);
 extern void func_0050b710(void* block);
+extern void func_0010d950(s32 index);
 #pragma alias func_0051e028_t func_0051e028
 extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value);
 #pragma alias func_0051df58_t func_0051df58
@@ -1011,6 +1012,10 @@ void func_0010d6f0(s32 index, s16 fileIndex)
     slot = &sSfdDecodeSlots[index];
     if (slot->state == 1)
     {
+        if ((slot->fileIndex == 1) && (slot->request != NULL))
+        {
+            func_0010d950(index);
+        }
         slot->fileIndex = fileIndex;
         slot->state = 2;
     }
