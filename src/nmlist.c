@@ -23,6 +23,8 @@ extern u8 LAB_003c4420[];
 extern u8 LAB_003c5210[];
 extern void K_Assert(const char *file, s32 line);
 extern const char D_006A3DE8[];
+#pragma alias D_006A3DE8_abs D_006A3DE8
+extern u8 D_006A3DE8_abs[];
 extern void FUN_00521408(u32 dest, int value, u32 size);
 
 #ifndef CONCAT44
@@ -441,19 +443,21 @@ int * FUN_003c4b50(int *param_1,int *param_2,int param_3)
   int *piVar1;
 
   if (param_1 == 0) {
-    FUN_0019d3f0("nmlist.c",0x1c7);
+    K_Assert((const char*)D_006A3DE8_abs,0x1c7);
   }
   if (param_2 == 0) {
-    FUN_0019d3f0("nmlist.c",0x1c8);
+    K_Assert((const char*)D_006A3DE8_abs,0x1c8);
   }
   piVar1 = (int *)*(u32 *)param_2;
+  goto loop_check;
+loop_body:
+  if (*piVar1 == param_3) {
+    return piVar1;
+  }
+  piVar1 = (int *)piVar1[4];
+loop_check:
   if (piVar1 != (int *)0x0) {
-    do {
-      if (*piVar1 == param_3) {
-        return piVar1;
-      }
-      piVar1 = (int *)piVar1[4];
-    } while (piVar1 != (int *)0x0);
+    goto loop_body;
   }
   return (int *)0x0;
 }
@@ -464,18 +468,19 @@ int * FUN_003c4b50(int *param_1,int *param_2,int param_3)
 int FUN_003c4bf0(int *param_1,int *param_2,int param_3)
 {
   int iVar1;
-
   if ((param_1 == 0) || (param_2 == 0)) {
-    FUN_0019d3f0("nmlist.c",0x1f7);
+    K_Assert((const char*)D_006A3DE8_abs,0x1f7);
   }
   iVar1 = *(int *)param_2;
+  goto loop_check_2;
+loop_body_2:
+  if (*(int *)(iVar1 + 4) == param_3) {
+    return iVar1;
+  }
+  iVar1 = *(int *)(iVar1 + 0x10);
+loop_check_2:
   if (iVar1 != 0) {
-    do {
-      if (*(int *)(iVar1 + 4) == param_3) {
-        return iVar1;
-      }
-      iVar1 = *(int *)(iVar1 + 0x10);
-    } while (iVar1 != 0);
+    goto loop_body_2;
   }
   return 0;
 }
