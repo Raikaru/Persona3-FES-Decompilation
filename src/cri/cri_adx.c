@@ -41020,22 +41020,15 @@ void FUN_0054cc98(int param_1,u64 param_2,u64 param_3)
 
 
 
-// FUN_0054CCC0
+// FUN_0054CCC0 NONMATCHING
 
 
 #pragma optimization_level 3
 u16 FUN_0054ccc0(int param_1,u16 *param_2,u16 *param_3)
 {
-  __asm__ volatile (
-      ".set noreorder       \n"
-      "lhu $v1, 0($a1)      \n"
-      "sh $v1, 0x28($a0)    \n"
-      "lhu $v0, 0($a2)      \n"
-      "sh $v0, 0x2a($a0)    \n"
-      "lhu $v1, 2($a1)      \n"
-      "sh $v1, 0x2c($a0)    \n"
-      ".set reorder"
-      : : : "v0", "v1", "memory");
+  *(u16 *)(param_1 + 0x28) = param_2[0];
+  *(u16 *)(param_1 + 0x2a) = param_3[0];
+  *(u16 *)(param_1 + 0x2c) = param_2[1];
   return *(u16 *)(param_1 + 0x2e) = param_3[1];
 }
 #pragma optimization_level 2
@@ -41044,21 +41037,14 @@ u16 FUN_0054ccc0(int param_1,u16 *param_2,u16 *param_3)
 
 
 
-// FUN_0054CCE8
+// FUN_0054CCE8 NONMATCHING
 
 #pragma optimization_level 3
 u16 FUN_0054cce8(int param_1,u16 *param_2,u16 *param_3)
 {
-  __asm__ volatile (
-      ".set noreorder       \n"
-      "lhu $v1, 0x28($a0)   \n"
-      "sh $v1, 0($a1)       \n"
-      "lhu $v0, 0x2a($a0)   \n"
-      "sh $v0, 0($a2)       \n"
-      "lhu $v1, 0x2c($a0)   \n"
-      "sh $v1, 2($a1)       \n"
-      ".set reorder"
-      : : : "v0", "v1", "memory");
+  param_2[0] = *(u16 *)(param_1 + 0x28);
+  param_3[0] = *(u16 *)(param_1 + 0x2a);
+  param_2[1] = *(u16 *)(param_1 + 0x2c);
   return param_3[1] = *(u16 *)(param_1 + 0x2e);
 }
 #pragma optimization_level 2
@@ -41092,20 +41078,14 @@ void FUN_0054cd10(int param_1,u16 param_2,u16 param_3,u16 param_4)
 
 
 
-// FUN_0054CD20
+// FUN_0054CD20 NONMATCHING
 
 
 #pragma optimization_level 3
 u16 FUN_0054cd20(int param_1,u16 *param_2,u16 *param_3,u16 *param_4)
 {
-  __asm__ volatile (
-      ".set noreorder       \n"
-      "lhu $v0, 0x34($a0)   \n"
-      "sh $v0, 0($a1)       \n"
-      "lhu $v1, 0x36($a0)   \n"
-      "sh $v1, 0($a2)       \n"
-      ".set reorder"
-      : : : "v0", "v1", "memory");
+  param_2[0] = *(u16 *)(param_1 + 0x34);
+  param_3[0] = *(u16 *)(param_1 + 0x36);
   return *param_4 = *(u16 *)(param_1 + 0x38);
 }
 #pragma optimization_level 2
@@ -82940,22 +82920,15 @@ asm void FUN_0056ad48(u32 *param_1,u32 *param_2)
 
 
 
-// FUN_0056ADB8
+// FUN_0056ADB8 NONMATCHING
 
 
 #pragma optimization_level 3
 void FUN_0056adb8(u8 *param_1,u8 *param_2)
 {
-  __asm__ volatile (
-      ".set noreorder       \n"
-      "lbu $v0, 0($a0)      \n"
-      "sb $v0, 0($a1)       \n"
-      "lbu $v1, 1($a0)      \n"
-      "sb $v1, 1($a1)       \n"
-      "lbu $v0, 2($a0)      \n"
-      "sb $v0, 2($a1)       \n"
-      ".set reorder"
-      : : : "v0", "v1", "memory");
+  param_2[0] = param_1[0];
+  param_2[1] = param_1[1];
+  param_2[2] = param_1[2];
   param_2[3] = param_1[3];
 }
 #pragma optimization_level 2
