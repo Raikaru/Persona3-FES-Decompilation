@@ -144,7 +144,6 @@ void FUN_0077ffa0(void)
   pcRam80074758();
   return;
 }
-
 #pragma push
 #pragma schedule on
 #pragma optimization_level 3
@@ -343,7 +342,6 @@ int FUN_00780640(int param_1)
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
-  __asm__ volatile("sync");
   return;
 }
 #pragma pop
@@ -359,7 +357,6 @@ volatile u32* FUN_00780800(u32 value)
 
   reg = (volatile u32 *)0xb0001820;
   *reg = value;
-  __asm__ volatile("sync");
   reg = (volatile u32 *)0xb0001810;
   *reg = 0x583;
   return reg;
