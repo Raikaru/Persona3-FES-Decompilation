@@ -574,10 +574,6 @@ void func_001a7170(void* object, void* data)
 void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
 {
     KClumpMaterialNode* node;
-    asm volatile("" : "+r"(state));
-    asm volatile("" : "+r"(kind));
-    asm volatile("" : "+r"(object));
-    asm volatile("" : "+r"(enabled));
 
     node = (KClumpMaterialNode*)kclump_alloc(1, sizeof(KClumpMaterialNode), 0x40000);
     node->object = object;
