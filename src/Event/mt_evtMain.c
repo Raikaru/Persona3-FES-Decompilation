@@ -449,6 +449,8 @@ extern void FUN_003b9550_evt(u32 param_1,u32 param_2);
 extern u32 FUN_00388df0_evt(u32 param_1,u32 *param_2);
 long FUN_0038ab00(int param_1,u64 param_2);
 short FUN_0036f640(int param_1);
+#pragma alias FUN_0036f640_evt FUN_0036f640
+extern int FUN_0036f640_evt(int param_1);
 u16 * FUN_00362290(int param_1);
 u16 * FUN_00362310(int param_1);
 u16 * FUN_00364470(u32 param_1,int param_2);
@@ -7197,6 +7199,7 @@ u32 FUN_003670f0(int param_1,int param_2,int param_3)
   int iVar1;
 
   int iVar3;
+
   int iVar4;
 
   
@@ -7220,13 +7223,13 @@ u32 FUN_003670f0(int param_1,int param_2,int param_3)
 
   }
 
-  if (iVar2 != 0) {
-
-    *(u32 *)(iVar2 + 0x14) = *(u32 *)(iVar3 + 0x16c);
-
-    FUN_0036f640(param_3);
-
+  if (iVar2 == 0) {
+    return 0;
   }
+
+  *(u32 *)(iVar2 + 0x14) = *(u32 *)(iVar3 + 0x16c);
+
+  FUN_0036f640_evt(param_3);
 
   return 0;
 
