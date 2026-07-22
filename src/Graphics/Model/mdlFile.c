@@ -4018,7 +4018,7 @@ void FUN_00320380(float param_1,int *param_2)
         for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
           uVar6 = uVar5 << 2;
 
-          ((code)puVar6[3])(uVar3,*(u32 *)(uVar6 + *piVar2));
+          ((code)puVar6[3])(uVar3,*(u32 *)(*piVar2 + uVar6));
         }
 
       }
