@@ -1153,7 +1153,7 @@ void func_00312e80(int param_1);
 long func_00312f90(long param_1);
 u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
-int func_00313f40(int param_1,void* param_2);
+int func_00313f40(int param_1,u64 param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
 u64 func_003140c0(u64 param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
@@ -3735,21 +3735,23 @@ void func_00313e60(void* param_1)
 // FUN_00313F40 NONMATCHING
 
 
-int func_00313f40(int param_1,void* param_2)
+int func_00313f40(int param_1,u64 param_2)
 {
   int *piVar1;
-  void *registry;
+  int *piVar2;
 
-  registry = param_2;
-  piVar1 = (int *)func_004c21d0(registry);
-  while (param_1 != *piVar1) {
-    piVar1 = piVar1 + 1;
-    if (piVar1 == (int *)func_004c21e0(registry)) {
+  piVar1 = (int *)func_004c21d0(param_2);
+  while( true ) {
+    piVar2 = (int *)func_004c21e0(param_2);
+    if (piVar1 == piVar2) {
       piVar1 = (int *)func_004c1e70(param_2,0);
       *piVar1 = param_1;
       return param_1;
     }
+    if (param_1 == *piVar1) break;
+    piVar1 = piVar1 + 1;
   }
+
   return param_1;
 }
 
