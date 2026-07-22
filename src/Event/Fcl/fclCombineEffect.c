@@ -1725,15 +1725,14 @@ u32 FUN_00418c10(u64 param_1,int *param_2)
 
 {
 
-  u64 uVar1;
-
-  
+  extern void K_View_SetFov(RwCamera*, float);
+  u32 uVar1;
 
   uVar1 = kwlnGetMainCamera();
-
-  K_View_SetFov((float)(*(int *)(*param_2 + 0xc) / 0xffff),uVar1);
-
+  K_View_SetFov((RwCamera *)uVar1,
+                (float)(*(int *)(*param_2 + 0xc) / 0xffff));
   return 1;
+
 
 }
 
