@@ -5,6 +5,16 @@
 /* auto-extern (generated) */
 u32 FUN_0050b710(u32 param_1);
 extern int DAT_0077f558;
+#pragma alias DAT_0077f558_abs DAT_0077f558
+extern u8 DAT_0077f558_abs[];
+#pragma alias DAT_00969d40_abs DAT_00969d40
+extern u8 DAT_00969d40_abs[];
+#pragma alias DAT_00969d80_abs DAT_00969d80
+extern u8 DAT_00969d80_abs[];
+#pragma alias DAT_00969d84_abs DAT_00969d84
+extern u8 DAT_00969d84_abs[];
+#pragma alias DAT_00969d88_abs DAT_00969d88
+extern u8 DAT_00969d88_abs[];
 extern u32 DAT_00969d40;
 extern u32 DAT_00969d80;
 extern u32 DAT_00969d84;
@@ -41,7 +51,6 @@ static int sif_copy_path(char* destination, const char* source, int capacity)
     destination[length] = '\0';
     return length;
 }
-
 // FUN_0050B598 NONMATCHING
 int sceSifInitIopHeap(void)
 {
@@ -55,8 +64,7 @@ int sceSifInitIopHeap(void)
     while (result >= 0 && sIopHeapClient.server == 0);
     return result < 0 ? -1 : 0;
 }
-
-// FUN_0050B620 NONMATCHING
+// FUN_0050b620 NONMATCHING
 u32 FUN_0050b620(u32 param_1)
 {
     long result;
@@ -77,7 +85,7 @@ u32 FUN_0050b690(u32 param_1,u32 param_2,u32 param_3)
 
 {
   u32 uVar1;
-  long lVar2;
+  int lVar2;
   
   uVar1 = 0;
   if (-1 < DAT_0077f558) {
@@ -150,10 +158,9 @@ int sceSifLoadIopHeap(const char* path, void* address)
 
 // FUN_0050B898 NONMATCHING
 u32 FUN_0050b898(void)
-
 {
   u32 uVar1;
-  long lVar2;
+  int lVar2;
   
   if (DAT_0077f558 < 0) {
     uVar1 = 0;
@@ -172,7 +179,7 @@ u32 FUN_0050b908(void)
 
 {
   u32 uVar1;
-  long lVar2;
+  int lVar2;
   
   if (DAT_0077f558 < 0) {
     uVar1 = 0;
@@ -191,7 +198,7 @@ u32 FUN_0050b978(void)
 
 {
   u32 uVar1;
-  long lVar2;
+  int lVar2;
   
   if (DAT_0077f558 < 0) {
     uVar1 = 0;
