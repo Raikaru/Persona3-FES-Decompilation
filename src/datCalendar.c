@@ -1108,7 +1108,7 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 
     month = CALENDAR_MONTH_APRIL;
     days = daysSinceApr5 + 4;
-    numOfDays = gNumOfDaysInMonths;
+    numOfDays = (const s16*)gNumOfDaysInMonths_abs;
 
     while (true)
     {
@@ -3913,7 +3913,7 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
 
 #pragma push
 #pragma schedule off
-// FUN_00185AE0 NONMATCHING
+// FUN_00185AE0
 void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
 {
     union
@@ -3928,7 +3928,9 @@ void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
     (void)day;
     packed.bits = position;
     x = packed.coords[0] + 305.0f;
+    asm volatile("" : "+m"(x));
     y = packed.coords[1] + 188.0f;
+    asm volatile("" : "+m"(y));
     cellAlpha = alpha & 0xff;
     func_001159f0(resource, resource, 0x4e, cellAlpha, x, y, 50.0f);
 }
