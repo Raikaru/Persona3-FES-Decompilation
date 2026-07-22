@@ -375,13 +375,13 @@ void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                          maximum);
 }
 
+#pragma schedule on
 // FUN_00123F80 NONMATCHING
 void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
                                         s16 pcId, s32 fade)
 {
     s32 icon = 0x2B;
     s32 bright = fade;
-
     switch (datGetPhysicalCondition(pcId)) {
     case 0: icon = 0x0B; break;
     case 1: icon = 0x0D; break;
@@ -393,8 +393,9 @@ void h_campStatusDrawPhysicalCondition(CampVec2 position, f32 alpha,
     }
     campStatusDrawSpriteCall((u32)pcId, DAT_00833B90, icon,
                              (u8)bright, position.x + 184.0f,
-                             position.y + 64.0f, alpha);
+                             position.y + 76.0f, alpha);
 }
+#pragma schedule off
 
 // FUN_00124090 NONMATCHING
 void h_campStatusDrawBadStatus(CampVec2 position, f32 alpha, s16 pcId,
