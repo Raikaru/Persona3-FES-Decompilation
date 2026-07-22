@@ -747,11 +747,9 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 
     *(float *)(iVar1 + 0x90) = fVar3;
 
-    fVar2 = *(float *)(param_2 + 0);
-
-    fVar3 = *(float *)(param_2 + 1);
-
-    fVar1 = *(float *)(param_2 + 2);
+    fVar2 = *(volatile float *)(param_2 + 0);
+    fVar3 = *(volatile float *)(param_2 + 1);
+    fVar1 = *(volatile float *)(param_2 + 2);
 
     *(float *)(iVar1 + 0x94) = fVar2;
 
