@@ -4667,7 +4667,7 @@ void FUN_003bceb0(int param_1)
 }
 #define FUN_003bceb0(...) ((void (*)(...))FUN_003bceb0)(__VA_ARGS__)
 #undef FUN_003bd130
-// FUN_003BD130 NONMATCHING
+// FUN_003BD130
 
 
 void FUN_003bd130(void)
@@ -4689,6 +4689,7 @@ void FUN_003bd130(void)
     if (PTR_s_icon_ICON1_EPL_006a3130[iVar2] != (u8 *)0x0) {
 
       ppVar2 = (void **)(DAT_0095b000_abs + iVar2 * 4);
+      asm volatile("" : "+m"(*ppVar2));
 
       pVar1 = FUN_00100d80_typed_scene((const char *)PTR_s_icon_ICON1_EPL_006a3130[iVar2],0);
 
