@@ -1125,7 +1125,7 @@ extern u32 DAT_007cdffc;
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
     s16 month;
-    s16 days;
+    register s16 days;
     const s16* numOfDays;
 
     month = CALENDAR_MONTH_APRIL;
@@ -2394,26 +2394,31 @@ KwlnTask* func_00182750(KwlnTask* parent)
 }
 
 // FUN_00182810 NONMATCHING
-u8 func_00182810(u16 index)
+u8 func_00182810(u32 index)
 {
     u8* weights;
-    u32 random;
+    s32 random;
+    s32 threshold;
 
     weights = (u8*)(uintptr_t)func_001714b0(index);
     random = func_00488f30() % 100;
-    if (random < weights[4])
+    threshold = weights[4];
+    if (random < threshold)
     {
         return 4;
     }
-    if (random < (u32)weights[4] + weights[3])
+    threshold += weights[3];
+    if (random < threshold)
     {
         return 3;
     }
-    if (random < (u32)weights[4] + weights[3] + weights[2])
+    threshold += weights[2];
+    if (random < threshold)
     {
         return 2;
     }
-    return random < (u32)weights[4] + weights[3] + weights[2] + weights[1];
+    threshold += weights[1];
+    return random < threshold;
 }
 
 // FUN_001828D0 NONMATCHING
