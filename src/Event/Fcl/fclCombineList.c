@@ -1151,7 +1151,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
     }
 }
 
-// FUN_003dc210 NONMATCHING
+// FUN_003dc210
 void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* owner)
 {
     FclList* work = owner->container->work;
@@ -2131,7 +2131,7 @@ s32 fclCombineList003def40(s32 width, s32 count, s32 index)
     return (width >> 1) - step + 0x5a;
 }
 
-// FUN_003def80 NONMATCHING
+// FUN_003def80
 s32 fclCombineList003def80(FclNodeListContext* context)
 {
     FclNodeLink* node;
