@@ -3833,17 +3833,22 @@ s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
     }
     mode = param_3 & 0xffff;
 
-    if (mode == 2 || mode == 4)
+    switch (mode)
     {
-        result = (action->unit->flags3 & 0x80U) != 0 ? 0x16 : -4;
+    case 4:
+    case 2:
+        result = (s8)((action->unit->flags3 & 0x80U) != 0 ? 0x16 : -4);
+        break;
+    default:
+        break;
     }
     if ((*(u16*)((u8*)param_2 + 0x1a) & 4) != 0)
     {
-        result = (action->unit->flags3 & 0x80U) != 0 ? 0x16 : -3;
+        result = (s8)((action->unit->flags3 & 0x80U) != 0 ? 0x16 : -3);
     }
     if (param_5 != 0)
     {
-        result = (action->unit->flags3 & 0x20U) != 0 ? 0x12 : 2;
+        result = (s8)((action->unit->flags3 & 0x20U) != 0 ? 0x12 : 2);
     }
     if ((((u32)param_2[3] & 0x80000U) != 0) &&
         datCalcChkBadStatus(action->unit->datUnit, UNIT_BADSTATUS_DEAD) != 0 &&
