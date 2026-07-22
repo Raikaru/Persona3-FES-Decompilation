@@ -3982,15 +3982,15 @@ void FUN_00320380(float param_1,int *param_2)
 
   u16 uVar1;
 
+  int *piVar2;
+
   int *puVar6;
 
   int iVar6;
 
-  register int *piVar2;
+  u32 uVar4;
 
   u32 uVar5;
-
-  u32 uVar4;
 
   u64 uVar3;
 
@@ -49569,13 +49569,15 @@ void FUN_0034cf30(int param_1)
 
   else {
 
-    uVar5 = *(u32 *)(param_1 + 0x28);
-    puVar3 = *(u32 **)(param_1 + 0x98);
+    lVar1 = *(volatile int *)(param_1 + 0x90);
+    uVar5 = *(volatile u32 *)(param_1 + 0x28);
+    puVar3 = (u32 *)(*(volatile u32 *)(param_1 + 0x98));
+    uVar2 = *(volatile u32 *)(param_1 + 0x2c);
 
-    if ((*(int *)(param_1 + 0x2c) < *(int *)(param_1 + 0x90)) || (*(int *)(param_1 + 0x90) == 0)) {
+    if (((int)uVar2 < lVar1) || (lVar1 == 0)) {
       for (uVar4 = 0; uVar4 < uVar5; uVar4 = uVar4 + 1) {
 
-        FUN_00325500(*puVar3);
+        FUN_00325500(*(int *)puVar3);
 
         puVar3 = puVar3 + 1;
 
