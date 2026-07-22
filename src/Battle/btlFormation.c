@@ -4587,6 +4587,7 @@ u32 func_002bf2b0(u32 param_1)
 }
 
 
+// FUN_002bf370
 void func_002bf370(u64 param_1)
 
 {
@@ -4851,7 +4852,9 @@ void func_002bf9a0(void)
   return;
 }
 
-// FUN_002bf9b0
+// FUN_002bf9b0 NONMATCHING
+// Forbidden inline asm (mtc1/daddu/mov.s) removed and replaced with honest C;
+// residual is 3-word MWCC call-argument evaluation-order scheduling.
 
 void func_002bf9b0(void)
 
@@ -4864,6 +4867,7 @@ void func_002bf9b0(void)
   float zero;
   int callUnit;
   u32 callColor;
+  float *dest;
 
   if ((((*(int *)(DAT_007ce3ec + 0x2b4) != 0x12) &&
         (fadeSuppressed = btlFadeSuppressesFormationUpdates(), fadeSuppressed == 0)) &&
@@ -4873,8 +4877,7 @@ void func_002bf9b0(void)
       for (entry = *(int *)(DAT_007ce3ec + listIndex * 8 + 0x150); entry != 0;
            entry = *(int *)(entry + 0xa34)) {
         if (*(int *)(entry + 0xa2c) != 0) {
-          /* Preserve the retail call-argument setup order. */
-          __asm__ volatile ("mtc1 $zero, %0" : "=f"(zero));
+          zero = 0.0f;
           if (*(u8 *)(entry + 0x37) != 0) {
             alpha = 0xff;
           }
@@ -4882,11 +4885,10 @@ void func_002bf9b0(void)
             alpha = 0;
           }
           callColor = alpha | 0xb4736400;
-          __asm__ volatile ("daddu %0, %2, $zero" : "=r"(callUnit)
-                            : "r"(callColor), "r"(entry));
-          __asm__ volatile ("mov.s %0, %1" : "=f"(firstZero) : "f"(zero));
-          func_002bce10(firstZero, zero, callUnit, callColor,
-                        (float *)(entry + 0xa04));
+          dest = (float *)(entry + 0xa04);
+          callUnit = entry;
+          firstZero = zero;
+          func_002bce10(firstZero, zero, callUnit, callColor, dest);
         }
       }
     }
@@ -14494,6 +14496,7 @@ u32 func_002d08e0(void)
 }
 
 
+// FUN_002d0970
 u32 func_002d0970(void)
 
 {
