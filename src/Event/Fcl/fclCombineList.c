@@ -676,11 +676,11 @@ s32 fclCombineList003da470(FclList* param_1, s32 param_2)
         if (i >= param_1->capacity)
             p = 0;
         else {
-            p = i << 2;
-            p += (s32)(void *)param_1->values;
+            p = (s32)(void *)param_1->values;
+            p += i << 2;
             p = *(s32 *)p;
         }
-        if (p == param_2) return param_2;
+        if (p != 0 && p == param_2) return param_2;
         i++;
     }
     return 0;
