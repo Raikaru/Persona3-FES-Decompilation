@@ -435,7 +435,7 @@ void FUN_003c4a90(long param_1,long param_2)
 }
 #define FUN_003c4a90(...) ((void (*)(...))FUN_003c4a90)(__VA_ARGS__)
 #undef FUN_003c4b50
-// FUN_003C4B50 NONMATCHING
+// FUN_003C4B50
 
 
 int * FUN_003c4b50(int *param_1,int *param_2,int param_3)
@@ -463,7 +463,7 @@ loop_check:
 }
 #define FUN_003c4b50(...) ((int * (*)(...))FUN_003c4b50)(__VA_ARGS__)
 #undef FUN_003c4bf0
-// FUN_003C4BF0 NONMATCHING
+// FUN_003C4BF0
 
 int FUN_003c4bf0(int *param_1,int *param_2,int param_3)
 {
