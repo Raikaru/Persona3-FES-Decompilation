@@ -231,7 +231,7 @@ extern code DAT_00960178_abs[];
 #pragma alias FUN_00100d80_typed_scene FUN_00100d80
 extern void *FUN_00100d80_typed_scene(const char *param_1,u32 param_2);
 
-// FUN_003bd130 keeps an absolute table base in retail.
+// Note: FUN_003bd130 keeps an absolute table base in retail.
 #pragma alias DAT_0095b000_abs DAT_0095b000
 extern u8 DAT_0095b000_abs[];
 
