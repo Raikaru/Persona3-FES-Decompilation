@@ -1581,25 +1581,15 @@ u16 FUN_003b0e70(s16 param_1)
 }
 #define FUN_003b0e70(...) ((u16 (*)(...))FUN_003b0e70)(__VA_ARGS__)
 #undef FUN_003b0e90
-// FUN_003B0E90
+// FUN_003B0E90 NONMATCHING
 
 u16 FUN_003b0e90(u16 param_1)
 {
-  __asm__ volatile (
-      ".set noreorder                 \n"
-      "lh $a1, -0x57f0($gp)           \n"
-      "andi $v0, $a1, 0xffff          \n"
-      "andi $v1, $a0, 0xffff          \n"
-      "not $v1, $v1                   \n"
-      "dsll32 $v1, $v1, 0x10          \n"
-      "dsra32 $v1, $v1, 0x10          \n"
-      "and $v1, $a1, $v1              \n"
-      "sh $v1, -0x57f0($gp)           \n"
-      ".set reorder"
-      :
-      :
-      : "a1", "v0", "v1", "memory"
-  );
+  u16 uVar1;
+
+  uVar1 = uGpffffa810;
+  uGpffffa810 = uGpffffa810 & ~param_1;
+  return uVar1;
 }
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
 #undef FUN_003b0ec0
@@ -3160,25 +3150,13 @@ void FUN_003b22a0(u32 *param_1)
 }
 #define FUN_003b22a0(...) ((void (*)(...))FUN_003b22a0)(__VA_ARGS__)
 #undef FUN_003b2400
-// FUN_003B2400
+// FUN_003B2400 NONMATCHING
 
 void FUN_003b2400(FrFontState *state)
 {
-  __asm__ volatile (
-      ".set noreorder                 \n"
-      "lw $v1, -0x5800($gp)           \n"
-      "sll $a1, $v1, 3                \n"
-      "lw $v1, 4($a0)                 \n"
-      "addu $v1, $v1, $a1             \n"
-      "sw $v1, 4($a0)                 \n"
-      "addiu $v1, $zero, 1            \n"
-      "sb $v1, 0x1c($a0)              \n"
-      "sb $v1, 0x1d($a0)              \n"
-      ".set reorder"
-      :
-      :
-      : "a1", "v1", "memory"
-  );
+  state->text_position += iGpffffa800 * 8;
+  state->layout_dirty = 1;
+  state->position_dirty = 1;
 }
 #define FUN_003b2400(...) ((void (*)(...))FUN_003b2400)(__VA_ARGS__)
 #undef FUN_003b2430
