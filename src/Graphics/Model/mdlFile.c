@@ -672,7 +672,7 @@ void FUN_00347cb0(int param_1);
 void FUN_00347d00(void);
 void FUN_00347d60(void);
 void FUN_00347f80(void);
-u64 FUN_00347fc0(void);
+u32 FUN_00347fc0(void);
 void FUN_00348030(u64 param_1);
 u32 FUN_00348090(int param_1);
 void FUN_003482b0(MdlAnimationCursor *param_1);
@@ -38994,9 +38994,9 @@ u64 FUN_00341fd0(u32 param_1)
  
   u32 uVar2;
  
-  u32 uVar3;
- 
   u32 uVar4;
+ 
+  u32 uVar3;
  
   u32 uVar5;
  
@@ -39030,7 +39030,6 @@ u64 FUN_00341fd0(u32 param_1)
  
 }
 
-}
 
 
 
@@ -44635,7 +44634,7 @@ void FUN_00347f80(void)
 // FUN_00347FC0 NONMATCHING
 
 
-u64 FUN_00347fc0(void)
+u32 FUN_00347fc0(void)
 
 
 
@@ -44643,7 +44642,6 @@ u64 FUN_00347fc0(void)
 
   u64 uVar1;
   u32 uVar2;
-  u64 uVar2;
 
   
 
@@ -52950,10 +52948,10 @@ void FUN_00350190(void)
 
   uVar2 = FUN_0035ed20_i(1);
 
-  *(volatile u32 *)DAT_00957bc0_abs = uVar1;
-  *(volatile u16 *)DAT_00957bc4_abs = uVar2;
-  *(volatile u32 *)DAT_00957bc8_abs = 0;
-  *(volatile u32 *)DAT_00957bcc_abs = 0;
+  DAT_00957bc0 = uVar1;
+  DAT_00957bc4 = (u16)uVar2;
+  DAT_00957bc8 = 0;
+  DAT_00957bcc = 0;
   DAT_007ce574 = 0;
   DAT_007ce578 = 1;
   return;
