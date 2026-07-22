@@ -88,6 +88,7 @@ extern u32 uGpffffb964;
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
 
+extern void FUN_003bb060(u16 param_1,u16 param_2);
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,  long param_7);
 u64 FUN_003a8b00(int param_1,long param_2);
@@ -4399,66 +4400,58 @@ u64 FUN_003add40(u64 param_1,int param_2)
 #define FUN_003add40(...) ((u64 (*)(...))FUN_003add40)(__VA_ARGS__)
 #undef FUN_003ade70
 // FUN_003ADE70 NONMATCHING
-
-
 u64 FUN_003ade70(u64 param_1,int param_2)
-
-
-
 {
-
   u8 bVar1;
+  u8 bVar2;
+  u8 bVar3;
+  u8 bVar4;
+  u16 sVar5;
+  u32 uVar5;
+  u32 uVar6;
+  u32 uVar7;
+  u32 uVar8;
 
-  char cVar2;
-
-  u32 uVar3;
-
-  u32 uVar4;
-
-  u8 *pbVar5;
-
-  int iVar6;
-
-  
-
-  pbVar5 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
-  bVar1 = pbVar5[1];
-
-  if (bVar1 == 0xff) {
-
-    uVar3 = 0;
-
+  bVar1 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[0];
+  uVar5 = (u8)(bVar1 - 1);
+  bVar2 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[1];
+  if (bVar2 == 0xff) {
+    uVar6 = 0;
+  } else {
+    uVar6 = (u8)(bVar2 - 1);
   }
-
-  else {
-
-    uVar3 = (u32)(u8)(bVar1 - 1);
-
+  uVar5 = (u8)uVar6 << 8 | uVar5 & 0xff;
+  bVar3 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[2];
+  uVar7 = (u8)(bVar3 - 1);
+  bVar4 = ((volatile u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18)))[3];
+  if (bVar4 == 0xff) {
+    uVar8 = 0;
+    sVar5 = uVar5;
+  } else {
+    uVar8 = (u8)(bVar4 - 1);
+    sVar5 = uVar5;
   }
-
-  iVar6 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
-  cVar2 = *(char *)(iVar6 + 3);
-
-  if (cVar2 == -1) {
-
-    uVar4 = 0;
-
-  }
-
-  else {
-
-    uVar4 = (u32)(u8)(cVar2 - 1);
-
-  }
-
-  FUN_003bb060(uVar3 << 8 | *pbVar5 - 1 & 0xff,uVar4 << 8 | *(u8 *)(iVar6 + 2) - 1 & 0xff);
-
+  FUN_003bb060(sVar5,(u16)(uVar8 << 8 | uVar7 & 0xff));
   return 0;
-
 }
-#define FUN_003ade70(...) ((u64 (*)(...))FUN_003ade70)(__VA_ARGS__)
+#undef FUN_003adf40
+// FUN_003ADF40
+u64 FUN_003adf40(void)
+{
+  return 0;
+}
+#undef FUN_003adf50
+// FUN_003ADF50
+u64 FUN_003adf50(void)
+{
+  return 0;
+}
+#undef FUN_003adf60
+// FUN_003ADF60
+u64 FUN_003adf60(void)
+{
+  return 0;
+}
 #undef FUN_003adf70
 // FUN_003ADF70
 
