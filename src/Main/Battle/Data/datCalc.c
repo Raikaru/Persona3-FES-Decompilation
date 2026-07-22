@@ -3738,6 +3738,7 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
     *(u32 *)((int)param_3 + 0x18) = 0;
     uVar1 = 1;
   }
+  return uVar1;
 }
 
 
@@ -7851,7 +7852,8 @@ void FUN_0030f3e0(void)
 
 
 
-// FUN_0030f4e0 NONMATCHING
+// FUN_0030f4e0
+#pragma schedule off
 void FUN_0030f4e0(void)
 
 {
@@ -7859,16 +7861,22 @@ void FUN_0030f4e0(void)
   float fVar2;
   
   fVar1 = (float)FUN_0030fdf0(1,0);
+  fVar2 = fVar1 - 1.0f;
+  fVar1 = 2.0f + 3.0f * fVar2;
   fVar2 = (float)FUN_0030fdf0(0x10,0);
-  fVar2 = ((fVar1 - 1.0) * 3.0 + 2.0) * fVar2;
-  if (0.0 < fVar2) {
-    fVar1 = (float)FUN_0030fdf0(0xd,4);
-    fVar1 = (fVar1 / fVar2) * 50.0;
-  }
-  else {
-    fVar1 = 1.0;
-  }
-  FUN_00311190((int)fVar1);
+  fVar1 *= fVar2;
+#pragma push
+#pragma opt_rebuildconditionals off
+  if (fVar1 <= 0.0f)
+    goto nonpositive;
+  fVar2 = (float)FUN_0030fdf0(0xd,4);
+  fVar2 = (fVar2 / fVar1) * 50.0f;
+  goto done;
+nonpositive:
+  fVar2 = 1.0f;
+done:
+#pragma pop
+  FUN_00311190_typed((int)fVar2);
   return;
 }
 
