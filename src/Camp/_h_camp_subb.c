@@ -1297,7 +1297,12 @@ void FUN_00140e30(void* texture,u64 position,CampEquipmentDetailWork* detail,s32
 
 
 
-// FUN_00141590 NONMATCHING
+static inline uintptr_t add_offset_first(uintptr_t offset, uintptr_t base)
+{
+    return offset + base;
+}
+
+// FUN_00141590
 
 void FUN_00141590(CampEquipmentWork* work)
 {
@@ -1310,8 +1315,7 @@ void FUN_00141590(CampEquipmentWork* work)
 
     firstVisibleEntry = view->firstVisibleEntry;
     selectedEntry = view->selectedEntry;
-    recordAddress = (u8*)work;
-    recordAddress += (firstVisibleEntry + selectedEntry) * 0x24;
+    recordAddress = (u8 *)add_offset_first((firstVisibleEntry + selectedEntry) * 0x24, (uintptr_t)work);
     func_0016fea0(1,
                   ((CampEquipmentRecord24*)recordAddress)->sourceIndex,
                   0);
