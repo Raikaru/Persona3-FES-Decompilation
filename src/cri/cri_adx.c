@@ -8386,18 +8386,15 @@ void FUN_00535dd8(int param_1)
 
 
 
-asm void FUN_00535e08(int param_1,int param_2)
+#pragma push
+#pragma schedule on
+// FUN_00535E08 NONMATCHING
+void FUN_00535e08(int param_1,int param_2)
 {
-  .set noreorder
-  .word 0x24020600
-  .word 0xac8500c4
-  .word 0x00a2001a
-  .word 0x50400001
-  .word 0x000001cd
-  .word 0x00001812
-  .word 0x03e00008
-  .word 0xac8300c8
+  *(u32 *)(param_1 + 0xc4) = param_2;
+  *(u32 *)(param_1 + 0xc8) = (u32)(param_2 / 0x600);
 }
+#pragma pop
 
 
 
