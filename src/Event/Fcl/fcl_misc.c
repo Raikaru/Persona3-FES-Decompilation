@@ -3489,30 +3489,28 @@ void FUN_003cda60(u64 param_1)
 // FUN_003CDBA0 NONMATCHING
 
 
-u32 FUN_003cdba0(u64 param_1,u16 param_2)
+u32 FUN_003cdba0(u64 param_1,u32 param_2)
 {
   u32 result;
   s32 context;
-  u32 target;
   u32 flags;
 
-  target = (u32)param_2;
   context = fclMiscContextCall();
   if (context == 0) {
     fclMiscAssertCall((u32)DAT_006a3e18,0x9e2);
   }
-  if (*(s16 *)(context + 0xc) == target) {
+  if (*(s16 *)(context + 0xc) == param_2) {
     *(u16 *)(context + 0xe) = 0;
     result = 0;
   }
   else {
     flags = *(u32 *)(context + 4);
     if ((flags & 1) == 0) {
-      *(u16 *)(context + 0xe) = target;
+      *(u16 *)(context + 0xe) = param_2;
       result = 0;
     }
     else {
-      if (target == 0) {
+      if (param_2 == 0) {
         if (*(s32 *)(context + 0x18) != 0) {
           fclMisc3174e0Call(*(u32 *)(context + 0x18));
           *(u32 *)(context + 0x18) = 0;
@@ -3523,7 +3521,7 @@ u32 FUN_003cdba0(u64 param_1,u16 param_2)
         *(u32 *)(context + 4) = flags;
         *(u32 *)(context + 8) = 2;
       }
-      *(u16 *)(context + 0xc) = target;
+      *(u16 *)(context + 0xc) = param_2;
       *(u16 *)(context + 0xe) = 0;
       result = 1;
     }
