@@ -1574,6 +1574,8 @@ extern u32 DAT_0095efa4;
 extern u32 DAT_0095efc4;
 extern u32 DAT_0095efc8;
 extern u32 DAT_0095efd0;
+#pragma alias DAT_0095efd0_abs DAT_0095efd0
+extern u32 DAT_0095efd0_abs[];
 extern u32 DAT_0095f040;
 #pragma alias DAT_00960074_abs DAT_00960074
 extern u32 DAT_00960074_abs[];
@@ -21717,14 +21719,14 @@ u8 FUN_004a9bd0(int param_1)
 #pragma optimization_level 2
 
 // FUN_004A9BE0
-asm void FUN_004a9be0(void)
+#pragma push
+#pragma schedule on
+#pragma tailcall on
+void FUN_004a9be0(void)
 {
-  .set noreorder
-  lui $v0, 0x96
-  lw $v0, -0x1030($v0)
-  jr $v0
-  nop
+  ((void (*)(void))(uintptr_t)DAT_0095efd0_abs[0])();
 }
+#pragma pop
 
 // FUN_004A9BF0 NONMATCHING
 
