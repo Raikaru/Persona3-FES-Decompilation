@@ -14854,12 +14854,12 @@ undefined8 FUN_004e2b70(ulong param_1)
 }
 
 #pragma optimization_level 3
-// FUN_004E2F00
+// FUN_004E2F00 NONMATCHING
 undefined * FUN_004e2f00(void)
 
 {
   int *base;
-  __asm__ volatile ("lui %0, 0x78" : "=r"(base));
+  base = (int *)0x780000;
   return (undefined *)(base - 0x3c4);
 }
 #pragma optimization_level 2
