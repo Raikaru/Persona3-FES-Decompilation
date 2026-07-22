@@ -1095,7 +1095,7 @@ u8 func_001761b0(DatPersonaWork* param_1)
 
 
 #pragma push
-#pragma opt_rebuildconditionals on
+#pragma opt_rebuildconditionals off
 
 u32 func_00176210(DatPersonaWork* persona, u16 level)
 {
@@ -1103,6 +1103,7 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
     f32 levelF;
     f32 growthF;
     s32 result;
+    u32 scenario;
 
     if ((level & 0xffff) < 2)
     {
@@ -1116,12 +1117,21 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
         }
 
         if ((*(u16*)(persona_i + 2) < 0xc0) ||
-            (0xdf < *(u16*)(persona_i + 2)))
+            (*(u16*)(persona_i + 2) >= 0xe0))
+        {
+            scenario = 1;
+        }
+        else
+        {
+            scenario = 0;
+        }
+
+        if (scenario == 0)
         {
             K_ASSERT(*(u16*)(persona_i + 2) < 0x100, 0x599);
             levelF = (f32)level;
-            growthF = (f32)*(u8*)(DAT_007ce420 +
-                                   (u32)*(u16*)(persona_i + 2) * 0xe + 3);
+            growthF = (f32)*(u8*)((u32)*(u16*)(persona_i + 2) * 0xe +
+                                   (u32)DAT_007ce420 + 3);
 
             if (FUN_0017d800() == 0)
             {
@@ -1137,7 +1147,7 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
         }
         else
         {
-            u16 scenarioLevel;
+            u32 scenarioLevel;
 
             K_ASSERT((*(u16*)(persona_i + 2) >= 0xc0) &&
                      (*(u16*)(persona_i + 2) < 0xe0), 0x5a4);
