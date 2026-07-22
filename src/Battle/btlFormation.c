@@ -1317,7 +1317,7 @@ float func_002b9590(int param_1)
   return fVar1;
 }
 
-// FUN_002b9600
+// FUN_002b9600 NONMATCHING
 
 void func_002b9600(u32 *param_1)
 
@@ -1327,13 +1327,7 @@ void func_002b9600(u32 *param_1)
   u32 *puVar4;
   int iVar3 = 0;
   
-  __asm__ volatile (
-      ".set noreorder          \n"
-      "lui %0, 0x95             \n"
-      "addiu %0, %0, 0x7100     \n"
-      ".set reorder"
-      : "=r" (puVar4)
-  );
+  puVar4 = (u32 *)(uintptr_t)0x00957100;
   iVar3 = 8;
   do {
     uVar1 = *param_1;
