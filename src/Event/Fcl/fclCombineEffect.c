@@ -163,7 +163,7 @@ u32 LAB_0041b798[];
 #include "Kosaka/k_assert.h"
 
 
-// FUN_00417160 NONMATCHING
+// FUN_00417160
 
 
 u32 FUN_00417160(void *param_1)
