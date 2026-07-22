@@ -382,6 +382,8 @@ extern u8 DAT_0069ec48[];
 extern u8 DAT_0069ec60[];
 extern u8 DAT_0069ec80[];
 extern u8 DAT_0069fd78[];
+#pragma alias DAT_0069f8b0_abs DAT_0069f8b0
+extern u8 DAT_0069f8b0_abs[];
 #pragma alias DAT_0069fb70_abs DAT_0069fb70
 extern u8 DAT_0069fb70_abs[];
 extern u8 DAT_0069fd88[];
@@ -17809,7 +17811,7 @@ u32 FUN_00384060(int param_1,int param_2,int param_3)
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  FUN_0038a260(uVar1,param_1 * 0xc,param_2 * 0xc,0,0x69f8b0);
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,DAT_0069f8b0_abs);
 
   return 2;
 
