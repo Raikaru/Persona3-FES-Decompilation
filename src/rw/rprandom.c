@@ -1,6 +1,8 @@
 #include "rw/rprandom.h"
 
 extern RwUInt32 D_0095D410[];
+#pragma alias D_0095D410_abs D_0095D410
+extern u8 D_0095D410_abs[];
 extern RwUInt32 uGpffffaed4;
 
 typedef struct RpRandomGlobals
@@ -17,24 +19,26 @@ extern RwInt32 iGpffffba88;
 
 // FUN_00488c70 NONMATCHING
 #pragma optimization_level 3
+#pragma schedule off
 void RpRandomSeedMT(RwUInt32 seed)
 {
-    RwInt32 count;
+    RwUInt32 value;
     RwUInt32* state;
+    RwInt32 count;
 
-    seed = seed | 1;
+    value = seed | 1;
     uGpffffaed4 = 0;
-    state = &D_0095D410[1];
+    state = (RwUInt32*)((RwUInt8*)D_0095D410_abs + 4);
     count = 0x270;
-    D_0095D410[0] = seed;
+    *(RwUInt32*)D_0095D410_abs = value;
     count = count - 1;
     if (count != 0)
     {
         do
         {
-            seed = seed * 0x10dcd;
+            value = value * 0x10dcd;
             count = count - 1;
-            *state = seed;
+            *state = value;
             state++;
         } while (count != 0);
     }
@@ -2767,7 +2771,7 @@ void FUN_004ab170(u32 *param_1);
 void FUN_004ab910(float *param_1,float *param_2,float *param_3);
 void FUN_004aba20(u64 param_1,u64 param_2,int param_3);
 
-#pragma schedule on
+#pragma schedule off
 // FUN_00488CD0 NONMATCHING
 
 u64 FUN_00488cd0(u64 param_1)
@@ -2813,16 +2817,14 @@ u32 FUN_00488fe0(void)
   return lVar1 >= 0;
 }
 #pragma schedule off
-#pragma schedule off
 // FUN_00489020 NONMATCHING
 u32 FUN_00489020(int param_1)
 {
   u32 *puVar1 = (u32 *)(param_1 + 0x2c);
   u32 uVar2;
-  u32 uVar3;
 
-  uVar3 = *(int *)(param_1 + 0x38);
-  if (uVar3 != 0) {
+  param_1 = *(int *)(param_1 + 0x38);
+  if (param_1 != 0) {
     DAT_0096017c_abs[0]();
   }
   uVar2 = 1;
@@ -2940,7 +2942,7 @@ int FUN_00489320(int *param_1)
   if (param_1[0xc] != 0) {
     iVar2 = param_1[0xc] * 2;
     iVar3 = *param_1;
-    iVar2 = iVar2 + iVar3;
+    iVar2 = iVar3 + iVar2 * 1;
     iVar2 = iVar2 + param_1[0xd] * 2;
     iVar1 = iVar1 + iVar2;
   }
@@ -3740,7 +3742,7 @@ int FUN_0048a7a0(int param_1)
   int *piVar1;
   int iVar2;
 
-  piVar1 = *(int **)(param_1 + DAT_0095de18);
+  piVar1 = *(int **)(param_1 + DAT_0095de18_abs[0]);
   iVar2 = *piVar1 * 0x40 + piVar1[1] + 0x14;
   return iVar2 + 0x10 + FUN_00489320(piVar1);
 }
