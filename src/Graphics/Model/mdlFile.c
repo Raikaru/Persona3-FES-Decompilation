@@ -3980,17 +3980,18 @@ void FUN_00320380(float param_1,int *param_2)
 
 {
 
-  u16 uVar1;
-
-  int *piVar2;
+  u32 uVar1;
 
   int *puVar6;
+
+  u32 *piVar2;
 
   int iVar6;
 
   u32 uVar4;
 
   u32 uVar5;
+  u32 uVar6;
 
   u64 uVar3;
 
@@ -3998,7 +3999,7 @@ void FUN_00320380(float param_1,int *param_2)
 
   for (iVar6 = *param_2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x54)) {
 
-    piVar2 = *(int **)(iVar6 + 0x50);
+    piVar2 = *(u32 **)(iVar6 + 0x50);
 
     uVar1 = *(u16 *)(piVar2 + 1);
 
@@ -4014,9 +4015,9 @@ void FUN_00320380(float param_1,int *param_2)
         uVar3 = ((u64 (*)(float))puVar6[0])(param_1);
 
         for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
+          uVar6 = uVar5 << 2;
 
-          (*(code *)puVar6[3])(uVar3,*(u32 *)(*piVar2 + uVar5 * 4));
-
+          ((code)puVar6[3])(uVar3,*(u32 *)(uVar6 + *piVar2));
         }
 
       }
@@ -37168,7 +37169,6 @@ void FUN_003402c0(int param_1)
     puVar4 = puVar4 + 10;
 
   }
-
   return;
 
 }
