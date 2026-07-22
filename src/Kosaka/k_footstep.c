@@ -703,16 +703,30 @@ void func_001ddca0(s32 index)
 // FUN_001ddd30 NONMATCHING
 u32 func_001ddd30(void)
 {
-    u32 state = K_Footstep_GameState();
-    if (state == 0)
-    {
-        return 1;
-    }
-    if (datGetFlag(0xC35) != 0)
-    {
-        return 0;
-    }
-    return state != 0x21 && state != 0x20 && state != 0x23 && state != 0x25;
+    u32 result = 0;
+    MtScene* scene;
+    s32 major;
+
+    if (func_001a01c0() == 1)
+        result = 1;
+    scene = gMtScene;
+    major = scene->fldMajorId;
+    if (major == 0x20 && scene->fldMinorId == 2)
+        goto footstep_ddd30_false;
+    if (major == 0x1f && scene->fldMinorId == 1)
+        goto footstep_ddd30_false;
+    if (major == 0x23 && scene->fldMinorId == 1)
+        goto footstep_ddd30_false;
+    if (major == 0x25 && scene->fldMinorId == 1)
+        goto footstep_ddd30_false;
+    if (major == 0x21)
+        goto footstep_ddd30_false;
+    goto footstep_ddd30_success;
+
+footstep_ddd30_false:
+    result = 0;
+footstep_ddd30_success:
+    return result;
 }
 
 static u32 K_Footstep_StatusResult(u32 mode)
