@@ -3911,18 +3911,28 @@ void func_00185980(void* resource, u64 position, u32 alpha, s16 month)
                   alpha & 0xff, x + 251.0f, y + 163.0f, 72.0f);
 }
 
+#pragma push
+#pragma schedule off
 // FUN_00185AE0 NONMATCHING
 void func_00185ae0(void* resource, u64 position, u32 alpha, s16 day)
 {
+    union
+    {
+        u64 bits;
+        f32 coords[2];
+    } packed;
+    f32 x;
+    f32 y;
+    u32 cellAlpha;
+
     (void)day;
-    func_001159f0(NULL,
-                  resource,
-                  0x4e,
-                  alpha & 0xff,
-                  clndPackedX(position) + 305.0f,
-                  clndPackedY(position) + 188.0f,
-                  72.0f);
+    packed.bits = position;
+    x = packed.coords[0] + 305.0f;
+    y = packed.coords[1] + 188.0f;
+    cellAlpha = alpha & 0xff;
+    func_001159f0(resource, resource, 0x4e, cellAlpha, x, y, 50.0f);
 }
+#pragma pop
 
 // FUN_00185B40 NONMATCHING
 void func_00185b40(void* resource,
