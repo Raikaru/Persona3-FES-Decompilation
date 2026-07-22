@@ -466,15 +466,16 @@ extern int FUN_00506670(int command, void* packet, int packet_size, void* source
 
 #pragma optimization_level 2
 #pragma schedule off
+#pragma optimization_level 3
 // FUN_00506B38 NONMATCHING
 SifRpcPacket_t* FUN_00506b38(SifRpcAllocatorState_t* state)
 {
-    int packet_count;
     int packet_index;
+    int packet_count;
     int index;
 
-    packet_count = state->packet_count;
     packet_index = state->packet_index;
+    packet_count = state->packet_count;
     index = packet_index % packet_count;
     state->packet_index = index + 1;
     return (SifRpcPacket_t*)(state->packets + index * SIF_RPC_PACKET_SIZE);
@@ -488,44 +489,51 @@ SifRpcPacket_t* FUN_00506b68(SifRpcAllocatorState_t* state, int index)
     }
     return FUN_00506b38(state);
 }
+#pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_00506BA8 NONMATCHING
-void FUN_00506ba8(int param_1)
-
+void FUN_00506ba8(SifRpcEndPacket_t* end)
 {
-  u32 uVar1;
-  int iVar2;
-  u32 *puVar3;
-  
-  uVar1 = *(u32 *)(param_1 + 0x20);
-  if (uVar1 == 0x8000000a) {
-    puVar3 = *(u32 **)(param_1 + 0x1c);
-    if (puVar3[7] == 0) {
-      iVar2 = puVar3[2];
-      goto LAB_00506c40;
+    SifRpcClientData_t* client;
+    int command;
+    int semaphore;
+
+    command = end->command;
+    client = end->client;
+    if (command == SIF_CMD_RPC_CALL)
+    {
+        if (client->end_function == 0)
+        {
+            semaphore = client->header.semaphore;
+            goto done;
+        }
+        client->end_function(client->end_parameter);
+        client = end->client;
     }
-    (*(code *)puVar3[7])(puVar3[8]);
-    puVar3 = *(u32 **)(param_1 + 0x1c);
-  }
-  else {
-    puVar3 = *(u32 **)(param_1 + 0x1c);
-    if (uVar1 < 0x8000000b) {
-      if (uVar1 != 0x80000009) {
-        iVar2 = puVar3[2];
-        goto LAB_00506c40;
-      }
-      puVar3[9] = *(u32 *)(param_1 + 0x24);
-      puVar3[5] = *(u32 *)(param_1 + 0x28);
+    else
+    {
+        client = end->client;
+        if (command < SIF_CMD_RPC_CALL + 1)
+        {
+            if (command != SIF_CMD_RPC_BIND)
+            {
+                semaphore = client->header.semaphore;
+                goto done;
+            }
+            client->server = end->server;
+            client->buffer = end->buffer;
+        }
     }
-  }
-  iVar2 = puVar3[2];
-LAB_00506c40:
-  if (-1 < iVar2) {
-    iSignalSema();
-  }
-  FUN_00506b18(*puVar3);
-  *puVar3 = 0;
-  return;
+    semaphore = client->header.semaphore;
+done:
+    if (semaphore >= 0)
+    {
+        iSignalSema();
+    }
+    FUN_00506b18((u32)client->header.packet);
+    client->header.packet = 0;
 }
+#pragma optimization_level 2
 #pragma schedule on
 // FUN_00506C78 NONMATCHING
 u32 FUN_00506c78(u32 unused0, u32 unused1, u32 unused2, SifRpcSendPacket_t* packet)
@@ -540,37 +548,37 @@ u32 FUN_00506c78(u32 unused0, u32 unused1, u32 unused2, SifRpcSendPacket_t* pack
     return 0x800;
 }
 // FUN_00506CB8 NONMATCHING
-void FUN_00506cb8(int param_1,u64 param_2)
-
+void FUN_00506cb8(void* param_1, SifRpcAllocatorState_t* param_2)
 {
-  u32 uVar1;
-  u64 uVar2;
-  long lVar3;
-  int iVar4;
-  
-  if ((*(u32 *)(param_1 + 0x10) & 4) == 0) {
-    uVar2 = (u64)FUN_00506b38((SifRpcAllocatorState_t*)param_2);
-  }
-  else {
-    uVar2 = (u64)FUN_00506b68((SifRpcAllocatorState_t*)param_2,*(u32 *)(param_1 + 0x10) >> 0x10);
-  }
-  uVar1 = *(u32 *)(param_1 + 0x1c);
-  iVar4 = (int)uVar2;
-  *(u32 *)(iVar4 + 0x14) = *(u32 *)(param_1 + 0x14);
-  *(u32 *)(iVar4 + 0x1c) = uVar1;
-  *(u32 *)(iVar4 + 0x20) = 0x8000000c;
-  *(u32 *)(iVar4 + 0x24) = *(u32 *)(param_1 + 0x20);
-  *(u32 *)(iVar4 + 0x28) = *(u32 *)(param_1 + 0x24);
-  *(u32 *)(iVar4 + 0x2c) = *(u32 *)(param_1 + 0x28);
-  lVar3 = FUN_00506670(0xffffffff80000008,(void *)(u32)uVar2,0x40,
-                       (void *)*(u32 *)(param_1 + 0x20),
-                       (void *)*(u32 *)(param_1 + 0x24),
-                       *(u32 *)(param_1 + 0x28));
-  if (lVar3 == 0) {
-    FUN_0050f1c0(0x800,0x506c78,uVar2);
-    return;
-  }
-  return;
+    u32 flags;
+    SifRpcPacket_t* packet;
+    u8* input;
+    int result;
+
+    input = (u8*)param_1;
+    flags = *(u32*)(input + 0x10);
+    if ((flags & 4) == 0)
+    {
+        packet = FUN_00506b38(param_2);
+    }
+    else
+    {
+        packet = FUN_00506b68(param_2, flags >> 16);
+    }
+    *(u32*)((u8*)packet + 0x14) = *(u32*)(input + 0x14);
+    *(u32*)((u8*)packet + 0x1c) = *(u32*)(input + 0x1c);
+    *(u32*)((u8*)packet + 0x20) = SIF_CMD_RPC_RDATA;
+    *(u32*)((u8*)packet + 0x24) = *(u32*)(input + 0x20);
+    *(u32*)((u8*)packet + 0x28) = *(u32*)(input + 0x24);
+    *(u32*)((u8*)packet + 0x2c) = *(u32*)(input + 0x28);
+    result = FUN_00506670((int)0xffffffff80000008, packet, 0x40,
+                          (void*)*(u32*)(input + 0x20),
+                          (void*)*(u32*)(input + 0x24),
+                          *(u32*)(input + 0x28));
+    if (result == 0)
+    {
+        FUN_0050f1c0(0x800, 0x506c78, (u32)packet);
+    }
 }
 // FUN_00506D88 NONMATCHING
 int sceSifBindRpc(SifRpcClientData_t* client, int server_id, int mode)
@@ -1068,7 +1076,7 @@ int FUN_00507ad8(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
   iVar3 = 0;
   iVar2 = 1;
   while( true ) {
-    iVar1 = FUN_00507230(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8);
+    iVar1 = FUN_00507230(param_1,param_2,param_3,param_4,param_5,param_6,param_7,param_8,0);
     iVar1 = -(iVar1 >> 0x1f);
     if (iVar1 == 0) {
       return 0;
