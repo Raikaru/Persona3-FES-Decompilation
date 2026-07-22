@@ -2580,7 +2580,7 @@ u32 func_002f5320(void)
   return *(u32 *)(DAT_007ce3ec + 0xb58);
 }
 
-// FUN_002f5330 NONMATCHING
+// FUN_002f5330
 void func_002f5330(int param_1)
 
 {
@@ -2617,16 +2617,16 @@ void func_002f5330(int param_1)
     case 0xeb:
       FUN_00288f80(iVar1,0xcb);
       break;
-    case 0xec:
+    case 0xed:
       FUN_00288f80(iVar1,0xc7);
       break;
-    case 0xed:
+    case 0xef:
       FUN_00288f80(iVar1,0xc1);
       break;
-    case 0xee:
+    case 0xec:
       FUN_00288f80(iVar1,0xcd);
       break;
-    case 0xef:
+    case 0xee:
       FUN_00288f80(iVar1,0xcf);
       break;
     case 0xf0:
