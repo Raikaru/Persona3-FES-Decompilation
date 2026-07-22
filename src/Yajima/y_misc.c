@@ -381,7 +381,7 @@ u32 FUN_00424480(void)
 void FUN_004244a0(void)
 {
   u8 uVar1;
-  
+
   uVar1 = scrGetIntPara(0);
   *(u8 *)(DAT_007ce6a8 + 10) = uVar1;
   iGpffffb9b8[9] = 1;
@@ -398,25 +398,19 @@ u32 FUN_004244e0(void)
 
   short sVar1;
 
-  int iVar2;
-
-  long lVar3;
-
   int iVar4;
+
+  int lVar3;
+
+  int iVar2;
 
   
 
   lVar3 = scrGetIntPara(0);
 
-  if ((lVar3 < 1) || (0xb < lVar3)) {
+  if ((0 < lVar3) && (lVar3 < 0xc)) {
 
-    scrSetIntReturnVal(0);
-
-  }
-
-  else {
-
-    iVar2 = func_0016f490((short)lVar3 + 0x100);
+    iVar2 = func_0016f490((short)(lVar3 + 0x100));
 
     for (iVar4 = 0; iVar4 < 0x14; iVar4 = iVar4 + 1) {
 
@@ -432,6 +426,9 @@ u32 FUN_004244e0(void)
 
     scrSetIntReturnVal(iVar2);
 
+  }
+  else {
+    scrSetIntReturnVal(0);
   }
 
   return 1;
