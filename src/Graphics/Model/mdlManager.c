@@ -16,6 +16,8 @@ void mdlStreamDestroy(Model* mdl);
 void mdl003196d0(Model* mdl, u16 wpnIdx, s32 value);
 void mdl00319900(Model* mdl, u32 value);
 extern RtAnimAnimation DAT_009571d0;
+#pragma alias DAT_009571d0_abs DAT_009571d0
+extern u8 DAT_009571d0_abs[];
 extern u8 DAT_0069abb8[];
 extern void* jtbl_00960178[];
 
@@ -738,23 +740,24 @@ u32 mdlAnim003185b0(Model* mdl, u16 slotIdx)
 // FUN_00318770 NONMATCHING
 void mdlAnim00318770(Model* mdl, u16 slotIdx, f32 frame)
 {
-    u8* slotBase;
     MdlAnimEntryTable* table;
     RpHAnimHierarchy* hierarchy;
     s16 id;
     f32 scaledFrame;
 
     scaledFrame = gFrameDuration * frame;
-    slotBase = (u8*)mdl + (u32)slotIdx * sizeof(MdlAnimSlot);
-    id = *(s16*)(slotBase + 4);
-    table = *(MdlAnimEntryTable**)(slotBase + 0x2c);
-    if (id >= 0 && table != NULL && id < table->count &&
-        table->entries[id].rtAnim != NULL &&
-        table->entries[id].rtAnim != &DAT_009571d0)
+    id = mdl->animSlots[slotIdx].anim.id;
+    if (id >= 0)
     {
-        hierarchy = *(RpHAnimHierarchy**)(slotBase + 0x20);
-        FUN_004b74c0(scaledFrame, hierarchy->currentAnim);
-        *(u16*)slotBase |= MDLANIM_FLAG_FRAMESET;
+        table = mdl->animSlots[slotIdx].anim.table;
+        if (table != NULL && id < table->count &&
+            table->entries[id].rtAnim != NULL &&
+            table->entries[id].rtAnim != (RtAnimAnimation*)DAT_009571d0_abs)
+        {
+            hierarchy = mdl->animSlots[slotIdx].anim.hierarchy;
+            FUN_004b74c0(scaledFrame, hierarchy->currentAnim);
+            mdl->animSlots[slotIdx].anim.flags |= MDLANIM_FLAG_FRAMESET;
+        }
     }
 
     if (slotIdx == 0)
