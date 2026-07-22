@@ -2,69 +2,58 @@
 #include "rw/rtquat.h"
 #include "temporary.h"
 
+typedef void (*RtQuatMatrixHelper)(RtQuat* quat, const RwMatrix* matrix);
+
 // FUN_004bdcb0 NONMATCHING
+
 RwBool RtQuatConvertFromMatrix(RtQuat* quat, const RwMatrix* matrix)
 {
     RwReal s;
     RwReal h;
     RwReal trace;
+    RwReal zero;
+    RwBool result;
+    RtQuatMatrixHelper helper;
 
-    if ((quat == NULL) || (matrix == NULL))
+    result = (quat != NULL) && (matrix != NULL);
+    if (result)
     {
-        return false;
-    }
-
-    trace = matrix->at.z + (matrix->right.x + matrix->up.y);
-    if (!(trace <= 0.0f))
-    {
-        s = sqrtf(1.0f + trace);
-        h = 0.5f / s;
-        quat->real = 0.5f * s;
-        quat->imag.x = h * (matrix->up.z - matrix->at.y);
-        quat->imag.y = h * (matrix->at.x - matrix->right.z);
-        quat->imag.z = h * (matrix->right.y - matrix->up.x);
-    }
-    else if (!(matrix->right.x <= matrix->up.y))
-    {
-        if (!(matrix->right.x <= matrix->at.z))
+        zero = 0.0f;
+        trace = matrix->right.x + (matrix->up.y + matrix->at.z);
+        if (!(trace <= zero))
         {
-            s = sqrtf(1.0f + (matrix->right.x - (matrix->up.y + matrix->at.z)));
-            quat->imag.x = 0.5f * s;
+            s = sqrtf(1.0f + trace);
             h = 0.5f / s;
-            quat->real = h * (matrix->up.z - matrix->at.y);
-            quat->imag.y = h * (matrix->right.y + matrix->up.x);
-            quat->imag.z = h * (matrix->right.z + matrix->at.x);
+            quat->real = 0.5f * s;
+            quat->imag.x = h * (matrix->up.z - matrix->at.y);
+            quat->imag.y = h * (matrix->at.x - matrix->right.z);
+            quat->imag.z = h * (matrix->right.y - matrix->up.x);
         }
         else
         {
-            s = sqrtf(1.0f + (matrix->at.z - (matrix->right.x + matrix->up.y)));
-            quat->imag.z = 0.5f * s;
-            h = 0.5f / s;
-            quat->real = h * (matrix->right.y - matrix->up.x);
-            quat->imag.x = h * (matrix->at.x + matrix->right.z);
-            quat->imag.y = h * (matrix->at.y + matrix->up.z);
+            if (!(matrix->right.x <= matrix->up.y))
+            {
+                if (!(matrix->right.x <= matrix->at.z))
+                {
+                    helper = (RtQuatMatrixHelper)((u8*)0x004c0000 - 0x24d0);
+                }
+                else
+                {
+                    helper = (RtQuatMatrixHelper)((u8*)0x004c0000 - 0x23d0);
+                }
+            }
+            else if (!(matrix->up.y <= matrix->at.z))
+            {
+                helper = (RtQuatMatrixHelper)((u8*)0x004c0000 - 0x2450);
+            }
+            else
+            {
+                helper = (RtQuatMatrixHelper)((u8*)0x004c0000 - 0x23d0);
+            }
+            helper(quat, matrix);
         }
     }
-    else if (!(matrix->up.y <= matrix->at.z))
-    {
-        s = sqrtf(1.0f + (matrix->up.y - (matrix->at.z + matrix->right.x)));
-        quat->imag.y = 0.5f * s;
-        h = 0.5f / s;
-        quat->real = h * (matrix->at.x - matrix->right.z);
-        quat->imag.z = h * (matrix->up.z + matrix->at.y);
-        quat->imag.x = h * (matrix->up.x + matrix->right.y);
-    }
-    else
-    {
-        s = sqrtf(1.0f + (matrix->at.z - (matrix->right.x + matrix->up.y)));
-        quat->imag.z = 0.5f * s;
-        h = 0.5f / s;
-        quat->real = h * (matrix->right.y - matrix->up.x);
-        quat->imag.x = h * (matrix->at.x + matrix->right.z);
-        quat->imag.y = h * (matrix->at.y + matrix->up.z);
-    }
-
-    return true;
+    return result;
 }
 // FUN_004BDDE0 NONMATCHING
 long FUN_004bdde0(float param_1,long param_2,long param_3,long param_4)
