@@ -1787,7 +1787,7 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
             if (entry->flag == 0) {
                 return 1;
             }
-            if (FUN_0016f190() != 0) {
+            if (FUN_0016f190(entry->flag) != 0) {
                 return 1;
             }
             param_2 = (s32)(uintptr_t)DAT_007cdfb8;
