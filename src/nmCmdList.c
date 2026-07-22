@@ -38,6 +38,17 @@ extern void FUN_003b2cb0(float param_1,int param_2,int param_3,u32 param_4,
                          u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
 #pragma alias FUN_003c63f0_typed FUN_003c63f0
 extern u64 FUN_003c63f0_typed(int param_1);
+#pragma alias FUN_003c4e70_typed FUN_003c4e70
+extern void FUN_003c4e70_typed(int param_1);
+#pragma alias FUN_003c6f80_typed FUN_003c6f80
+extern u32 FUN_003c6f80_typed(int param_1);
+#pragma alias FUN_003c75b0_typed FUN_003c75b0
+extern u64 FUN_003c75b0_typed(void);
+#pragma alias FUN_003a4360_typed FUN_003a4360
+extern u64 FUN_003a4360_typed(u64 param_1,long param_2);
+extern u8 DAT_0095be90_abs[];
+#pragma alias FUN_003c7d50_ptr FUN_003c7d50
+extern u8 *FUN_003c7d50_ptr(void);
 #pragma alias FUN_003c6380_typed FUN_003c6380
 extern u64 FUN_003c6380_typed(int param_1);
 #pragma alias FUN_003c6900_typed FUN_003c6900
@@ -1125,67 +1136,28 @@ u64 FUN_003c6d60(int param_1,u32 param_2)
 
 
 u32 FUN_003c6d80(int param_1)
-
-
-
 {
+  u32 flags;
+  u32 result;
 
-  u32 uVar1;
-
-  u32 uVar2;
-
-  u32 *puVar3;
-
-  
-
-  uVar2 = 0;
-
-  puVar3 = *(u32 **)(param_1 + 0x24);
-
-  uVar1 = *puVar3;
-
-  if ((uVar1 & 0x400) != 0) {
-
-    uVar2 = 0x80000000;
-
+  flags = **(u32 **)(param_1 + 0x24);
+  result = 0;
+  if ((flags & 0x400) != 0) {
+    result |= 0x80000000;
   }
-
-  if ((uVar1 & 4) != 0) {
-
-    uVar2 = uVar2 | 0x40000000;
-
+  if ((flags & 4) != 0) {
+    result |= 0x40000000;
   }
-
-  if ((uVar1 & 2) == 0) {
-
-    uVar2 = uVar2 | 2;
-
+  if ((flags & 2) == 0) {
+    return result | 2;
   }
-
-  else if ((uVar1 & 0x100) == 0) {
-
-    if ((uVar1 & 0x80) == 0) {
-
-      uVar2 = uVar2 | 1;
-
+  if ((flags & 0x100) == 0) {
+    if ((flags & 0x80) == 0) {
+      return result | 1;
     }
-
-    else {
-
-      uVar2 = uVar2 | 0xc;
-
-    }
-
+    return result | 0xc;
   }
-
-  else {
-
-    uVar2 = uVar2 | 0x14;
-
-  }
-
-  return uVar2;
-
+  return result | 0x14;
 }
 #define FUN_003c6d80(...) ((u32 (*)(...))FUN_003c6d80)(__VA_ARGS__)
 #undef FUN_003c6e10
@@ -1193,49 +1165,22 @@ u32 FUN_003c6d80(int param_1)
 
 
 u64 FUN_003c6e10(int param_1)
-
-
-
 {
+  u32 flags;
+  u32 result;
 
-  u32 uVar1;
-
-  u64 uVar2;
-
-  
-
-  uVar1 = **(u32 **)(param_1 + 0x24);
-
-  if ((uVar1 & 2) == 0) {
-
-    uVar2 = 2;
-
+  flags = **(u32 **)(param_1 + 0x24);
+  result = 0;
+  if ((flags & 2) == 0) {
+    return result | 2;
   }
-
-  else if ((uVar1 & 0x100) == 0) {
-
-    if ((uVar1 & 0x80) == 0) {
-
-      uVar2 = 1;
-
+  if ((flags & 0x100) == 0) {
+    if ((flags & 0x80) == 0) {
+      return result | 1;
     }
-
-    else {
-
-      uVar2 = 0xc;
-
-    }
-
+    return result | 0xc;
   }
-
-  else {
-
-    uVar2 = 0x14;
-
-  }
-
-  return uVar2;
-
+  return result | 0x14;
 }
 #define FUN_003c6e10(...) ((u64 (*)(...))FUN_003c6e10)(__VA_ARGS__)
 #undef FUN_003c6ea0
@@ -1594,11 +1539,12 @@ u8 FUN_003c72d0(u64 param_1)
 
 {
 
+  extern u8 *FUN_003c7d50_direct(void);
   u8 bVar1;
 
   int iVar2;
 
-  u64 uVar3;
+  u8 *uVar3;
 
   
 
@@ -1700,9 +1646,10 @@ u32 FUN_003c7430(u64 param_1)
 
 {
 
+  extern u8 *FUN_003c7d50_direct(void);
   u32 uVar1;
 
-  long lVar2;
+  u8 *lVar2;
 
   int *piVar3;
 
@@ -1758,11 +1705,12 @@ u32 FUN_003c74e0(int param_1)
 
 {
 
+  extern u8 *FUN_003c7d50_direct(void);
   u8 uVar1;
 
   u32 uVar2;
 
-  long lVar3;
+  u8 *lVar3;
 
   int *piVar4;
 
@@ -1843,7 +1791,8 @@ u64 FUN_003c75b0(void)
 
 {
 
-  long lVar1;
+  extern u8 *FUN_003c7d50_direct(void);
+  u8 *lVar1;
 
   u64 uVar2;
 
@@ -1881,7 +1830,8 @@ s8 FUN_003c7610(void)
 {
   s8 uVar1;
 
-  int lVar2;
+  u8 *lVar2;
+  extern u8 *FUN_003c7d50_direct(void);
 
   
 
@@ -2036,8 +1986,9 @@ u32 FUN_003c77a0(void)
 {
 
   u32 uVar1;
+  extern u8 *FUN_003c7d50_direct(void);
 
-  long lVar2;
+  u8 *lVar2;
 
   int *piVar3;
 
@@ -2148,13 +2099,14 @@ u32 FUN_003c78d0(void)
 
 {
 
+  extern u8 *FUN_003c7d50_direct(void);
   u8 uVar1;
 
   u32 uVar2;
 
-  long lVar3;
-
-  long lVar4;
+  u8 *lVar3;
+  int lVar4;
+  u8 *p;
 
   
 
@@ -2184,15 +2136,15 @@ u32 FUN_003c78d0(void)
 
     else {
 
-      lVar4 = FUN_003c7d50_direct();
+      p = FUN_003c7d50_direct();
 
-      if (lVar4 == 0) {
+      if (p == 0) {
 
         uVar1 = 0xff;
 
       }
 
-      else if (*(int *)lVar4 < 0) {
+      else if (*(int *)p < 0) {
 
         uVar1 = 0xff;
 
@@ -2231,6 +2183,7 @@ void FUN_003c7990(long param_1)
   u8 bVar2;
 
   u8 uVar3;
+  extern u8 *FUN_003c7d50_direct(void);
 
   int *piVar4;
 
@@ -2238,9 +2191,9 @@ void FUN_003c7990(long param_1)
 
   int extraout_v0_hi_00;
 
-  long lVar6;
+  u8 *lVar6;
 
-  long lVar5;
+  u8 *lVar5;
 
   
 
@@ -2759,37 +2712,22 @@ FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 
 u64 FUN_003c8230(u32 *param_1,int param_2)
-
-
-
 {
-
-  if (param_2 == 3) {
-
-    FUN_003a4360(*param_1,7);
-
+  switch (param_2) {
+  case 3:
+    FUN_003a4360_typed(*param_1,7);
+    break;
+  case 2:
+    FUN_003a4360_typed(*param_1,6);
+    break;
+  case 1:
+    FUN_003a4360_typed(*param_1,5);
+    break;
+  case 0:
+    FUN_003a4360_typed(*param_1,4);
+    break;
   }
-
-  else if (param_2 == 2) {
-
-    FUN_003a4360(*param_1,6);
-
-  }
-
-  else if (param_2 == 1) {
-
-    FUN_003a4360(*param_1,5);
-
-  }
-
-  else if (param_2 == 0) {
-
-    FUN_003a4360(*param_1,4);
-
-  }
-
   return 0;
-
 }
 #define FUN_003c8230(...) ((u64 (*)(...))FUN_003c8230)(__VA_ARGS__)
 #undef FUN_003c82e0
@@ -2801,37 +2739,24 @@ u64 FUN_003c8230(u32 *param_1,int param_2)
 
 
 u64 FUN_003c82e0(int param_1)
-
-
-
 {
-
-  if (param_1 == 3) {
-
-    FUN_003a4360(DAT_0095be90,7);
-
+  u32 object;
+  object = *(u32 *)DAT_0095be90_abs;
+  switch (param_1) {
+  case 3:
+    FUN_003a4360_typed(object,7);
+    break;
+  case 2:
+    FUN_003a4360_typed(object,6);
+    break;
+  case 1:
+    FUN_003a4360_typed(object,5);
+    break;
+  case 0:
+    FUN_003a4360_typed(object,4);
+    break;
   }
-
-  else if (param_1 == 2) {
-
-    FUN_003a4360(DAT_0095be90,6);
-
-  }
-
-  else if (param_1 == 1) {
-
-    FUN_003a4360(DAT_0095be90,5);
-
-  }
-
-  else if (param_1 == 0) {
-
-    FUN_003a4360(DAT_0095be90,4);
-
-  }
-
   return 0;
-
 }
 #define FUN_003c82e0(...) ((u64 (*)(...))FUN_003c82e0)(__VA_ARGS__)
 #undef FUN_003c83b0
