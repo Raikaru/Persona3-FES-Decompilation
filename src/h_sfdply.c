@@ -167,6 +167,9 @@ typedef struct HSfdDmaDescriptor
 static HSfdDmaDescriptor sSfdDmaDescriptor;
 extern void func_0051e028(s32 outputHandle, s32 channel, s32 count, s32 value);
 extern s32 func_0051df58(s32 outputHandle, s32 channel, s32 count, s32 value, ...);
+extern void func_0051deb0(s32 mode, s32 handle);
+extern void func_0051dd48(s32 mode, s32 handle);
+extern void func_0050b710(void* block);
 #pragma alias func_0051e028_t func_0051e028
 extern void func_0051e028_t(s32 outputHandle, s32 channel, s32 count, s32 value);
 #pragma alias func_0051df58_t func_0051df58
@@ -1066,6 +1069,13 @@ void func_0010d950(s32 index)
     slot->intermediate = NULL;
     slot->output = NULL;
     slot->resource = NULL;
+    slot->state = 0;
+    func_0051deb0(5, (s32)slot->completion);
+    func_0051deb0(0, slot->decodeHandle);
+    func_0051dd48(5, slot->outputHandle);
+    func_0051dd48(3, slot->queueHandle);
+    func_0050b710(slot->input);
+    func_0050b710(slot->output);
     slot->state = 0;
 }
 
