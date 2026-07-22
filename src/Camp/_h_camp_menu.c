@@ -130,7 +130,6 @@ void FUN_00154970(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
 {
     s32 i;
     u32 color;
-
     switch (mode) {
     case 0:
         color = (0xffU - item->alpha) | 0xffffff00U;
