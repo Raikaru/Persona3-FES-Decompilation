@@ -925,29 +925,33 @@ static u32 K_Encount_AppendRecord(EncounterRecord* out, u16 id)
     return 1;
 }
 
+static u32 K_Encount_HpRatio(u16 id, f32* ratio)
+{
+    u32 maxHp = datGetMaxHp((s16)id);
+    if (maxHp == 0)
+    {
+        return 0;
+    }
+    *ratio = (f32)datGetHp((s16)id) / (f32)maxHp;
+    return 1;
+}
+
 // FUN_001d9310 NONMATCHING
 u32 func_001d9310(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
-    u32 maxHp;
-    u32 hp;
-    f32 maxHpF;
-    f32 ratio;
-
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
+        f32 ratio;
         if (unit->genusBase == NULL || unit->resrc == NULL ||
-            func_002ff790(unit->genusBase) == 1)
+            func_002ff790(unit->genusBase) == 1 ||
+            !K_Encount_HpRatio(unit->charId, &ratio))
         {
             continue;
         }
-        maxHp = (u32)datGetMaxHp((s16)unit->charId);
-        maxHpF = (f32)maxHp;
-        hp = (u32)datGetHp((s16)unit->charId);
-        ratio = (f32)hp / maxHpF;
         if (ratio < 0.26f)
         {
             found |= K_Encount_AppendRecord(out, unit->charId);
@@ -961,24 +965,17 @@ u32 func_001d94d0(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
-    u32 maxHp;
-    u32 hp;
-    f32 maxHpF;
-    f32 ratio;
-
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
+        f32 ratio;
         if (unit->genusBase == NULL || unit->resrc == NULL ||
-            (datGetBadStatusNoDown((s16)unit->charId) & UNIT_BADSTATUS_POISON) == 0)
+            (datGetBadStatusNoDown((s16)unit->charId) & UNIT_BADSTATUS_POISON) == 0 ||
+            !K_Encount_HpRatio(unit->charId, &ratio))
         {
             continue;
         }
-        maxHp = (u32)datGetMaxHp((s16)unit->charId);
-        maxHpF = (f32)maxHp;
-        hp = (u32)datGetHp((s16)unit->charId);
-        ratio = (f32)hp / maxHpF;
         if (ratio >= 0.26f)
         {
             found |= K_Encount_AppendRecord(out, unit->charId);
@@ -992,23 +989,16 @@ u32 func_001d96a0(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
-    u32 maxHp;
-    u32 hp;
-    f32 maxHpF;
-    f32 ratio;
-
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
-        if (unit->genusBase == NULL || unit->resrc == NULL)
+        f32 ratio;
+        if (unit->genusBase == NULL || unit->resrc == NULL ||
+            !K_Encount_HpRatio(unit->charId, &ratio))
         {
             continue;
         }
-        maxHp = (u32)datGetMaxHp((s16)unit->charId);
-        maxHpF = (f32)maxHp;
-        hp = (u32)datGetHp((s16)unit->charId);
-        ratio = (f32)hp / maxHpF;
         if (ratio >= 0.26f && ratio < 0.75f)
         {
             found |= K_Encount_AppendRecord(out, unit->charId);
