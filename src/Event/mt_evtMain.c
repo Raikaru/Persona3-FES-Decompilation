@@ -7,6 +7,7 @@ typedef u8 bool;
 #endif
 
 extern u8 D_0069DFF0[];
+extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
 extern int FUN_003b5d10(...);
 extern u32 DAT_0069d590;
@@ -14493,7 +14494,7 @@ u32 FUN_0036e260(int param_1)
 
   lVar3 = FUN_00108710();
   if (lVar3 == 0) {
-    FUN_005225a8(0x69dfd0);
+    FUN_005225a8(DAT_0069ffd0);
     uVar2 = 0;
     goto LAB_0036e2d0;
   }
