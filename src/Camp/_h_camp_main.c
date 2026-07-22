@@ -500,9 +500,9 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
 u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
                  const s16* personaIds, s16 selected, s16 personaIndex)
 {
+    s32 i;
     CampMainDrawItem* item;
     u32 complete;
-    s32 i;
 
     complete = 1;
     for (i = 0; i < 10; i++) {
