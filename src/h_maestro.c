@@ -771,20 +771,14 @@ u32 func_001114b0(KwlnTask* task)
     return false;
 }
 #pragma optimization_level 1
-// FUN_00111500
+// FUN_00111500 NONMATCHING
 void func_00111500(KwlnTask* task)
 {
-    __asm__ volatile (
-        ".set noreorder      \n"
-        "lw $v1, 0x3c($a0)   \n"
-        "addiu $v0, $zero, 1 \n"
-        "sw $v0, 0xc0($v1)   \n"
-        "sw $zero, 0xbc($v1) \n"
-        ".set reorder"
-        :
-        :
-        : "v0", "v1", "memory"
-    );
+    MaestroStreamWork* work;
+
+    work = (MaestroStreamWork*)task->workData;
+    work->stopAtFrame = 1;
+    work->complete = 0;
 }
 #pragma optimization_level 2
 
