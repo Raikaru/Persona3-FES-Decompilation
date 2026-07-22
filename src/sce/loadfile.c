@@ -36,6 +36,8 @@ extern void* PTR_LAB_00780384;
 extern void* PTR_LAB_0078039c;
 extern void* PTR_LAB_00780b0c;
 extern int DAT_0077f560;
+#pragma alias DAT_0077f560_abs DAT_0077f560
+extern u8 DAT_0077f560_abs[];
 extern u32 DAT_0077f898;
 extern u32 DAT_0077f8e0;
 extern u32 DAT_0077f8e8;
@@ -47,6 +49,8 @@ extern u32 DAT_0077fb9c;
 extern u32 DAT_0077fba0;
 extern u32 DAT_0077fba4;
 extern u32 DAT_0077fbb8;
+#pragma alias DAT_0077fbb8_abs DAT_0077fbb8
+extern u8 DAT_0077fbb8_abs[];
 extern u32 DAT_0077fbc0;
 extern u32 DAT_0077fbc8;
 extern u32 DAT_0077fbd0;
@@ -90,6 +94,8 @@ extern u32 DAT_00969ec0;
 extern u32 DAT_00969ec4;
 extern u32 DAT_0096a0e4;
 extern u32 DAT_0096a0e8;
+#pragma alias DAT_0096a0e8_abs DAT_0096a0e8
+extern u8 DAT_0096a0e8_abs[];
 extern u32 DAT_00969ec8;
 extern u32 DAT_00969fc3;
 extern u32 DAT_00969fc4;
@@ -241,11 +247,18 @@ bool FUN_0050bbe8(void)
   return bVar2;
 }
 // FUN_0050BC78 NONMATCHING
-u64 FUN_0050bc78(void)
+u32 FUN_0050bc78(void)
 
 {
-  DAT_0077f560 = 0xffffffff;
-  FUN_00521408(0x96a0e8,0,4);
+  u32 *ptr;
+  u32 value;
+  u32 callAddr;
+  
+  ptr = (u32 *)DAT_0077f560_abs;
+  value = 0xffffffff;
+  *ptr = value;
+  callAddr = (u32)DAT_0096a0e8_abs;
+  FUN_00521408(callAddr,0,4);
   return 0;
 }
 // FUN_0050BCB0 NONMATCHING
@@ -911,20 +924,25 @@ u64 RFU086_WaitEvnetFlag(int param_1,int param_2,int param_3,int param_4,int par
 {
   PS2_SYSCALL(0x56);
 }
+#pragma alias RFU086_WaitEvnetFlag_0 RFU086_WaitEvnetFlag
+extern u64 RFU086_WaitEvnetFlag_0(void);
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0050CD70 NONMATCHING
 u64 FUN_0050cd70(int param_1)
 
 {
   u64 uVar1;
   
-  if (param_1 - 0xdU < 0x23) {
-    uVar1 = RFU086_WaitEvnetFlag(0,0,0,0,0);
-  }
-  else {
+  if (!(param_1 - 0xdU < 0x23)) {
     uVar1 = 0xffffffffffffffff;
+    goto done;
   }
+  uVar1 = RFU086_WaitEvnetFlag_0();
+done:
   return uVar1;
 }
+#pragma pop
 // FUN_0050CE00
 void FUN_0050ce00(void)
 
@@ -1035,6 +1053,8 @@ bool FUN_0050d3a0(void)
   }
   return false;
 }
+#pragma alias FUN_0050d3a0_u32 FUN_0050d3a0
+extern u32 FUN_0050d3a0_u32(void);
 // FUN_0050D3F0 NONMATCHING
 u32 FUN_0050d3f0(void)
 
@@ -1112,10 +1132,10 @@ int FUN_0050d500(u32 param_1,u32 param_2,u32 param_3)
 u32 FUN_0050d510(int param_1)
 
 {
-  u32 auStack_20 [4];
+  u32 local;
   
-  FUN_0050d478(auStack_20,DAT_0077fbb8 + param_1 * 4,4);
-  return auStack_20[0];
+  FUN_0050d478(&local,(u32)((*(u32 *)DAT_0077fbb8_abs) + param_1 * 4),4);
+  return local;
 }
 // FUN_0050D548 NONMATCHING
 void FUN_0050d548(void)
@@ -1836,13 +1856,13 @@ u32 FUN_0050e5d8(void)
   return uVar3 | puVar2[2];
 }
 // FUN_0050E648 NONMATCHING
-u64 FUN_0050e648(void)
+u32 FUN_0050e648(void)
 
 {
-  long lVar1;
-  u64 uVar2;
+  u32 uVar2;
+  u32 lVar1;
   
-  lVar1 = FUN_0050d3a0();
+  lVar1 = FUN_0050d3a0_u32();
   uVar2 = FUN_0050e5d8();
   if (lVar1 != 0) {
     FUN_0050d3f0();
@@ -2698,13 +2718,14 @@ u32 FUN_0050fc38(u64 *param_1,char *param_2,u32 param_3)
   }
   return 0;
 }
-// FUN_0050FF38 NONMATCHING
-void FUN_0050ff38(u64 param_1,u64 param_2)
-
+#pragma schedule on
+// FUN_0050FF38
+void FUN_0050ff38(u32 param_1,u32 param_2)
 {
   FUN_0050fc38((u64 *)param_1,(char *)param_2,0);
   return;
 }
+#pragma schedule off
 // FUN_0050FF58 NONMATCHING
 u32 FUN_0050ff58(u64 param_1)
 
