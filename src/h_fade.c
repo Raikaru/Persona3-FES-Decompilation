@@ -208,7 +208,7 @@ static void H_Fade_Anim()
                 sFadeActive = false;
                 sMaestroInTask = NULL;
             }
-            break;
+            return;
 
         case HFADE_STATE_MAESTROIN:
             if (H_Maestro_FinishedInit(sMaestroInTask))
