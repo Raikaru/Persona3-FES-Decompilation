@@ -24653,7 +24653,7 @@ void FUN_003342c0(int param_1,u16 param_2)
 
 
 
-// FUN_00334310 NONMATCHING
+// FUN_00334310
 void FUN_00334310(int param_1)
 {
   u32 *puVar4;
@@ -26874,7 +26874,7 @@ void FUN_00336630(u64 param_1)
 
 
 
-// FUN_003368A0 NONMATCHING
+// FUN_003368A0
 void FUN_003368a0(int param_1)
 {
   u32 *puVar4;
