@@ -15834,6 +15834,40 @@ int FUN_0049f340(int param_1)
   }
   return iVar14;
 }
+// FUN_0049F500 NONMATCHING
+void FUN_0049f500(int param_1)
+{
+  u32 *puVar1;
+  u32 *puVar2;
+  u8 *puVar3;
+  Vec128 auVar4;
+
+  puVar1 = *(u32 **)(param_1 + 0x14);
+  puVar1[6] = 0;
+  puVar1[7] = 0x3d0;
+  puVar1[8] = 0x20;
+  puVar1[9] = ((u32)puVar1 + 0x28 + 0xf) & 0xfffffff0;
+  puVar2 = (u32 *)puVar1[9];
+  puVar2[4] = 0;
+  puVar2[5] = 0;
+  puVar2[6] = 0;
+  puVar2[7] = 0;
+  auVar4 = rwVecZero();
+  *(Vec128 *)puVar2 = auVar4;
+  puVar3 = (u8 *)puVar1;
+  puVar3[1] = 1;
+  puVar3[2] = 2;
+  puVar3[3] = 1;
+  puVar3[4] = 1;
+  puVar3[5] = 3;
+  puVar3[6] = 1;
+  puVar3[8] = 0;
+  puVar3[9] = 1;
+  puVar3[10] = 0;
+  puVar3[11] = 2;
+  puVar3[12] = 2;
+  puVar3[13] = 0;
+}
 
 // FUN_0049F5D0 NONMATCHING
 
