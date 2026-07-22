@@ -1028,13 +1028,17 @@ u32 FUN_004250e0(void)
 
   iVar4 = (char)(cVar1 + -1) * 6;
 
-  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x7c) = uVar3;
+  *(u16 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+      (uintptr_t)iVar4, (uintptr_t)DAT_007ce6ec_abs) + 0x7c) = uVar3;
 
-  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x7e) = 0;
+  *(u16 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+      (uintptr_t)iVar4, (uintptr_t)DAT_007ce6ec_abs) + 0x7e) = 0;
 
-  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x80) = 0;
+  *(u16 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+      (uintptr_t)iVar4, (uintptr_t)DAT_007ce6ec_abs) + 0x80) = 0;
 
-  *(u8 *)(DAT_007ce6ec_abs + (char)(cVar1 + -1) + 0xa6) = uVar2;
+  *(u8 *)((u8 *)(uintptr_t)Yajima_AddOffsetFirst(
+      (uintptr_t)(char)(cVar1 + -1), (uintptr_t)DAT_007ce6ec_abs) + 0xa6) = uVar2;
 
   return 1;
 
