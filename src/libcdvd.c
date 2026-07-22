@@ -381,11 +381,10 @@ int func_00510ec8(void)
     int result;
 
     result = func_00510e30();
-    if (~result == 0)
-    {
-        result = 0;
+    if (result != -1) {
+        return result;
     }
-    return result;
+    return 0;
 }
 #pragma optimization_level 2
 
@@ -459,13 +458,16 @@ int sceCdMmode(int media)
     return result;
 }
 
+#pragma push
+#pragma optimization_level 3
+#pragma opt_propagation off
 // FUN_00511110 NONMATCHING
 u32 FUN_00511110(void)
-
 {
-  FUN_00505e48(0x7be330);
+  FUN_00505e48((u8*)0x7c0000 - 0x1cd0);
   return 2;
 }
+#pragma pop
 // FUN_00511138 NONMATCHING
 u64 FUN_00511138(u64 param_1)
 
