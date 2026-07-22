@@ -46,7 +46,7 @@ char * FUN_005287d8(int param_1,char *param_2);
 u64 FUN_005279b8(u8 *param_1, int param_2, s64 param_3);
 u32 FUN_0052d428(float *param_1,u64 param_2,int param_3,int param_4,int param_5,int param_6);
 u32 FUN_0052e148(u32 param_1);
-u32 FUN_0052e118(u32 param_1);
+u64 FUN_0052e118(u64 param_1);
 u64 FUN_00527810(u64 param_1,long param_2,int param_3,u32 param_4,u8 *param_5,
             u64 param_6,long param_7,int *param_8);
 u32 FUN_0052c6d0(u64 *param_1,u64 *param_2,int param_3,int param_4,int param_5,
@@ -6498,9 +6498,9 @@ LAB_0052e0b8:
   return;
 }
 // FUN_0052E118 NONMATCHING
-u32 FUN_0052e118(u32 param_1)
+u64 FUN_0052e118(u64 param_1)
 {
-  return param_1;
+  return param_1 & 0x7fffffffffffffffULL;
 }
 // FUN_0052E148 NONMATCHING
 u32 FUN_0052e148(u32 param_1)
