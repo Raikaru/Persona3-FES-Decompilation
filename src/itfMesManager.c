@@ -4532,7 +4532,9 @@ void FUN_003a6b90(int param_1)
 }
 #define FUN_003a6b90(...) ((void (*)(...))FUN_003a6b90)(__VA_ARGS__)
 #undef FUN_003a6c10
-// FUN_003A6C10 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_003A6C10
 
 
 short * FUN_003a6c10(int param_1,short *param_2)
@@ -4544,19 +4546,16 @@ short * FUN_003a6c10(int param_1,short *param_2)
   int iVar1;
   int iVar2;
 
-
   int aiStack_30 [12];
 
-  
 
   iVar1 = 0;
-  iVar2 = 10;
 
   do {
 
-    aiStack_30[iVar1] = param_1 % iVar2;
+    aiStack_30[iVar1] = param_1 % 10;
 
-    param_1 = param_1 / iVar2;
+    param_1 = param_1 / 10;
 
     iVar1 = iVar1 + 1;
 
@@ -4581,6 +4580,7 @@ short * FUN_003a6c10(int param_1,short *param_2)
   return param_2;
 
 }
+#pragma pop
 #define FUN_003a6c10(...) ((short * (*)(...))FUN_003a6c10)(__VA_ARGS__)
 #undef FUN_003a6ca0
 // FUN_003A6CA0 NONMATCHING
