@@ -1723,14 +1723,12 @@ u32 FUN_00370230(int param_1,int param_2,int param_3)
 {
 
   f32 uVar1;
-  u32 uVar2;
 
   
 
   uVar1 = FUN_0038a220(*(u32 *)(param_3 + 0xe0));
 
-  uVar2 = 0x6a000000;
-  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,(void *)(uVar2 - 0x1910));
+  FUN_0038a260_f32_5(uVar1,param_1 * 0xc,param_2 * 0xc,0,(void *)0x69e6f0);
 
   return 2;
 
