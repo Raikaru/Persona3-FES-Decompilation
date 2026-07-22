@@ -1615,7 +1615,7 @@ u32 FUN_002de4e0(int param_1)
 
 // FUN_002DED60 NONMATCHING
 #pragma push
-#pragma opt_rebuildconditionals off
+#pragma opt_rebuildconditionals on
 
 
 u32 FUN_002ded60(int param_1)
@@ -1641,15 +1641,14 @@ u32 FUN_002ded60(int param_1)
         {
             lVar2 = FUN_0016f190(*(s32*)DAT_00697BE0_abs);
         }
-        if (lVar2 == 0)
+        if (lVar2 != 0)
         {
-            goto case2_zero;
+            uVar1 = 0xa5;
         }
-        uVar1 = 0xa5;
-        goto case2_done;
-case2_zero:
-        uVar1 = 0xa4;
-case2_done:
+        else
+        {
+            uVar1 = 0xa4;
+        }
         break;
     case 3:
         if (*(s32*)DAT_00697be4_abs == -1)
