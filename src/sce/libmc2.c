@@ -6896,15 +6896,13 @@ void FUN_0051e028(u32 param_1,u32 param_2,u32 param_3)
   FUN_005129c0(1,0x90f0,0x782c00,0x40);
   return;
 }
-// FUN_0051E0E0
-asm int FUN_0051e0e0(int param_1)
+// FUN_0051E0E0 NONMATCHING
+int FUN_0051e0e0(int param_1)
 {
-  .set noreorder
-  bltzl $a0, 1f
-  subu $a0, $zero, $a0
-1:
-  jr $ra
-  daddu $v0, $a0, $zero
+  if (param_1 < 0) {
+    return -param_1;
+  }
+  return param_1;
 }
 #pragma schedule on
 #pragma optimization_level 3
