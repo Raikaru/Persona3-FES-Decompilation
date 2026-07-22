@@ -143,6 +143,14 @@ u32 DAT_007ce6d8;
 u32 DAT_007ce6dc;
 u32 DAT_007ce6e4;
 u8 *DAT_007ce6ec;
+#pragma alias DAT_007ce6ec_abs DAT_007ce6ec
+extern u8 *DAT_007ce6ec_abs;
+#pragma alias DAT_0086be00_abs DAT_0086be00
+extern u8 DAT_0086be00_abs[];
+#pragma alias DAT_0086be04_abs DAT_0086be04
+extern u8 DAT_0086be04_abs[];
+#pragma alias DAT_0086be0c_abs DAT_0086be0c
+extern u8 DAT_0086be0c_abs[];
 u32 DAT_007ce6f8;
 u32 DAT_007e094c;
 u32 DAT_007e0988;
@@ -1014,7 +1022,7 @@ u32 FUN_004250e0(void)
 
   char cVar1;
 
-  u8 uVar2;
+  char uVar2;
 
   u16 uVar3;
 
@@ -1030,13 +1038,13 @@ u32 FUN_004250e0(void)
 
   iVar4 = (char)(cVar1 + -1) * 6;
 
-  *(u16 *)(iVar4 + DAT_007ce6ec + 0x7c) = uVar3;
+  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x7c) = uVar3;
 
-  *(u16 *)(iVar4 + DAT_007ce6ec + 0x7e) = 0;
+  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x7e) = 0;
 
-  *(u16 *)(iVar4 + DAT_007ce6ec + 0x80) = 0;
+  *(u16 *)(DAT_007ce6ec_abs + iVar4 + 0x80) = 0;
 
-  *(u8 *)((char)(cVar1 + -1) + DAT_007ce6ec + 0xa6) = uVar2;
+  *(u8 *)(DAT_007ce6ec_abs + (char)(cVar1 + -1) + 0xa6) = uVar2;
 
   return 1;
 
@@ -1057,27 +1065,27 @@ u32 FUN_00425190(void)
 
   u16 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   
 
   lVar4 = scrGetIntPara(0);
 
-  iVar1 = (int)DAT_007ce6ec;
 
   if (lVar4 != 0) {
+    iVar1 = (int)DAT_007ce6ec_abs;
 
     uVar2 = scrGetIntPara(0);
 
     *(u8 *)(*(char *)(iVar1 + 0xa0) * 4 + iVar1 + 4) = uVar2;
 
-    iVar1 = (int)DAT_007ce6ec;
+    iVar1 = (int)DAT_007ce6ec_abs;
 
     uVar3 = scrGetIntPara(1);
 
     *(u16 *)(*(char *)(iVar1 + 0xa0) * 4 + iVar1 + 6) = uVar3;
 
-    *(char *)(DAT_007ce6ec + 0xa0) = *(char *)(DAT_007ce6ec + 0xa0) + '\x01';
+    *(char *)(DAT_007ce6ec_abs + 0xa0) = *(char *)(DAT_007ce6ec_abs + 0xa0) + '\x01';
 
   }
 
@@ -1199,7 +1207,7 @@ u32 FUN_00425360(void)
   return 1;
 }
 
-// FUN_004253D0 NONMATCHING
+// FUN_004253D0
 
 
 u32 FUN_004253d0(void)
@@ -1224,15 +1232,15 @@ u32 FUN_004253d0(void)
 
   uVar2 = scrGetIntPara(1);
 
-  *(u32 *)(&DAT_0086be00 + iVar4) = uVar2;
+  *(u32 *)(DAT_0086be00_abs + iVar4) = uVar2;
 
   iVar3 = scrGetIntPara(2);
 
-  *(float *)(&DAT_0086be04 + iVar4) = (float)iVar3;
+  *(float *)(DAT_0086be04_abs + iVar4) = (float)iVar3;
 
   iVar3 = scrGetIntPara(3);
 
-  *(float *)(&DAT_0086be0c + iVar4) = (float)iVar3;
+  *(float *)(DAT_0086be0c_abs + iVar4) = (float)iVar3;
 
   return 1;
 
