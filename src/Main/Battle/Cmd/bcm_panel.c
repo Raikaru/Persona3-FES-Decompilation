@@ -463,6 +463,7 @@ void FUN_002230e0(void)
         i++;
     }
 }
+// FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
     u8* base;
