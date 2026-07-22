@@ -2779,8 +2779,14 @@ long FUN_004b43c0(void)
 
 {
   long lVar1;
-  
-  lVar1 = (*DAT_00960188)(0x95fa98,0x301b1);
+  code callback;
+  int arg0;
+  int arg1;
+
+  callback = (code)(*(int *)0x00960188);
+  arg0 = (int)&DAT_00960188 - 0x568;
+  arg1 = 0x31b1;
+  lVar1 = callback(arg0,arg1);
   if (lVar1 != 0) {
     FUN_004b4230(lVar1);
   }
@@ -4499,14 +4505,17 @@ void FUN_004b7010(int param_1,u32 param_2,u32 param_3)
   return;
 }
 #pragma optimization_level 2
+#pragma schedule off
 // FUN_004B7020 NONMATCHING
 u32 FUN_004b7020(int param_1,int param_2)
-
 {
-  FUN_00521250((param_1 + 0x4c),(param_2 + 0x4c),
-               *(int *)(param_1 + 0x24) * *(int *)(param_1 + 0x2c));
+  int size;
+
+  size = *(int *)(param_1 + 0x24) * *(int *)(param_1 + 0x2c);
+  FUN_00521250((param_1 + 0x4c),(param_2 + 0x4c),size);
   return 1;
 }
+#pragma schedule on
 // FUN_004B7050 NONMATCHING
 u32 FUN_004b7050(float param_1,u64 param_2)
 
@@ -5074,6 +5083,7 @@ int FUN_004b7f30(int param_1)
   iVar2 = FUN_004b91b0_arg(*(u32 *)(param_1 + 0x14));
   return iVar1 + iVar2 + (*(int *)(param_1 + 4) << 5);
 }
+#pragma optimization_level 3
 // FUN_004B7F80 NONMATCHING
 void FUN_004b7f80(RwMatrix *matrix, const f32 *src)
 {
@@ -5089,8 +5099,9 @@ void FUN_004b7f80(RwMatrix *matrix, const f32 *src)
   matrix->pos.x = src[6];
   matrix->pos.y = src[7];
   matrix->pos.z = 0.0f;
-  FUN_004c2f10((int)matrix);
+  RwMatrixUpdate(matrix);
 }
+#pragma optimization_level 2
 // FUN_004B7FD0 NONMATCHING
 void FUN_004b7fd0(f32 t, f32 *out, const f32 *a, const f32 *b)
 {
