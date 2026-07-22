@@ -2957,7 +2957,7 @@ void FUN_003ac350(int param_1,u64 param_2)
 }
 #define FUN_003ac350(...) ((void (*)(...))FUN_003ac350)(__VA_ARGS__)
 #undef FUN_003ac500
-// FUN_003AC500 NONMATCHING
+// FUN_003AC500
 
 
 void FUN_003ac500(int param_1,u64 param_2)
@@ -2991,7 +2991,7 @@ void FUN_003ac500(int param_1,u64 param_2)
   auStack_10[3] = p[7];
   asm volatile("" : "+m"(auStack_10));
 
-  FUN_003b4d10(auStack_10,0x6a2120,p[3],0x240,param_2);
+  FUN_003b4d10(auStack_10,(u32 *)(DAT_006a212c_abs - 0xc),p[3],0x240,param_2);
 
   return;
 
