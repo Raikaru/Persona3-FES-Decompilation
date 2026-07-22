@@ -83,6 +83,10 @@ typedef struct
 {
     s16 values[3];
 } VoiceSlots;
+typedef struct
+{
+  f32 values[4];
+} VoicePositions;
 
 
 
@@ -3685,10 +3689,10 @@ extern f32 DAT_00699c8c;
 #pragma alias DAT_00699c84_abs DAT_00699c84
 #pragma alias DAT_00699c88_abs DAT_00699c88
 #pragma alias DAT_00699c8c_abs DAT_00699c8c
-extern f32 DAT_00699c80_abs[];
-extern f32 DAT_00699c84_abs[];
-extern f32 DAT_00699c88_abs[];
-extern f32 DAT_00699c8c_abs[];
+extern u8 DAT_00699c80_abs[];
+extern u8 DAT_00699c84_abs[];
+extern u8 DAT_00699c88_abs[];
+extern u8 DAT_00699c8c_abs[];
 extern u8 DAT_00699cc0[];
 extern u8 DAT_00699d10[];
 extern u8 DAT_00699db0[];
@@ -7585,7 +7589,6 @@ u32 func_002e9f10(s32 param_1)
 
 // FUN_002ea060 NONMATCHING
 void func_002ea060(void)
-
 {
   int iVar1;
   u16 kind;
@@ -7594,10 +7597,7 @@ void func_002ea060(void)
   f32* point;
   RwV3d position;
   s16 slots[2];
-  positions[0] = DAT_00699c80_abs[0];
-  positions[1] = DAT_00699c84_abs[0];
-  positions[2] = DAT_00699c88_abs[0];
-  positions[3] = DAT_00699c8c_abs[0];
+  *(VoicePositions *)positions = *(VoicePositions *)DAT_00699c80_abs;
   slots[0] = uGpffff9c98;
   slots[1] = uGpffff9c9a;
   index = 0;
