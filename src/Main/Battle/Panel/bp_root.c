@@ -3907,38 +3907,35 @@ u32 FUN_001FF430(u32 id)
 u32 FUN_001FF630(u32 index)
 {
     u8* base;
+    u8* scan;
     u8* node;
-    u32 count;
-    u32 active;
+    s32 count;
 
-    base = panelMiscWork();
+    base = DAT_007ce3ec;
     K_ASSERT(base != NULL, 0x88);
+    scan = DAT_007ce3ec;
+    K_ASSERT(scan != NULL, 0x5d);
     count = 0;
-    node = *(u8**)(base + 0x150);
+    node = *(u8**)(scan + 0x150);
     while (node != NULL)
     {
-        if ((~*(u32*)(node + 0x9c) & 8) != 0)
+        if ((~*(u32*)(node + 0x9c) & 8) == 0)
         {
             count++;
         }
         node = *(u8**)(node + 0xa34);
     }
-    if (count == 0)
-    {
-        K_ASSERT(0, 0x99);
-        return 0;
-    }
-    active = count - 1;
+    count--;
     node = *(u8**)(base + 0x150);
     while (node != NULL)
     {
-        if ((~*(u32*)(node + 0x9c) & 8) != 0)
+        if ((~*(u32*)(node + 0x9c) & 8) == 0)
         {
-            if (active == index)
+            if (count == index)
             {
                 return *(u16*)(node + 0xa4);
             }
-            active--;
+            count--;
         }
         node = *(u8**)(node + 0xa34);
     }
