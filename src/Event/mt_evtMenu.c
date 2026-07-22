@@ -6403,50 +6403,50 @@ void FUN_00375ab0(int param_1,int param_2,u32 param_3,u8 *param_4)
   switch (param_3) {
   case 0:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt6((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)&gp0xffffa108,*(u32 *)(param_4 + 0x16c),fVar1);
+    FUN_0038a260_f32_6(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)&gp0xffffa108,*(u32 *)(param_4 + 0x16c));
     break;
   case 1:
     break;
   case 2:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ecc8,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ecc8);
     break;
   case 3:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ece0,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ece0);
     break;
   case 4:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ed00,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ed00);
     break;
   case 5:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ea78,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ea78);
     break;
   case 6:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ea88,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ea88);
     break;
   case 7:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ed20,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ed20);
     break;
   case 8:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ed40,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ed40);
     break;
   case 9:
     fVar1 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_evt5((u32)(param_1 * 0xc),(int)(param_2 * 0xc),0,
-                      (u32)DAT_0069ed60,fVar1);
+    FUN_0038a260_f32_5(fVar1,(int)(param_1 * 0xc),(int)(param_2 * 0xc),0,
+                       (void *)DAT_0069ed60);
     break;
   }
 }
