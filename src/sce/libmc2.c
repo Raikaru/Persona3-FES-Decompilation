@@ -1398,30 +1398,42 @@ int FUN_00514950(void)
 #pragma schedule off
 #pragma opt_lifetimes off
 #pragma optimization_level 2
+#pragma schedule on
+#pragma optimization_level 3
+#pragma opt_lifetimes on
 // FUN_00514990 NONMATCHING
 int FUN_00514990(void)
 
 {
-  int aiStack_20 [4];
+  int iVar1;
   
-  aiStack_20[0] = FUN_00513598(0);
-  if (aiStack_20[0] == 0) {
-    FUN_00514858(0,0,aiStack_20);
+  iVar1 = FUN_00513598(0);
+  if (iVar1 == 0) {
+    FUN_00514858(0,0,&iVar1);
   }
-  return aiStack_20[0];
+  return iVar1;
 }
+#pragma schedule off
+#pragma opt_lifetimes off
+#pragma optimization_level 2
+#pragma schedule on
+#pragma optimization_level 3
+#pragma opt_lifetimes on
 // FUN_005149D0 NONMATCHING
 int FUN_005149d0(void)
 
 {
-  int aiStack_20 [4];
+  int iVar1;
   
-  aiStack_20[0] = FUN_00513648(0);
-  if (aiStack_20[0] == 0) {
-    FUN_00514858(0,0,aiStack_20);
+  iVar1 = FUN_00513648(0);
+  if (iVar1 == 0) {
+    FUN_00514858(0,0,&iVar1);
   }
-  return aiStack_20[0];
+  return iVar1;
 }
+#pragma schedule off
+#pragma opt_lifetimes off
+#pragma optimization_level 2
 // FUN_00514A10 NONMATCHING
 int FUN_00514a10(void)
 
@@ -8484,6 +8496,7 @@ u8 ** FUN_00520528(void)
   return (u8 **)PTR_DAT_007beb30_abs;
 }
 #pragma pop
+#pragma tailcall on
 // FUN_00520538 NONMATCHING
 void FUN_00520538(u32 param_1,void *param_2)
 
