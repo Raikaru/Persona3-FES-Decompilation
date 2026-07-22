@@ -4456,41 +4456,26 @@ u64 FUN_003adf70(u64 param_1,int param_2)
 
 {
 
-
   u32 uVar5;
-  u32 uVar6;
-
+  u8 uVar6;
   u8 bVar2;
-
   u32 uVar3;
-
-  u64 uVar4;
-
+  int uVar4;
+  u32 combined;
   
-
   uVar5 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-  uVar6 = *(u8 *)uVar5;
-
-
+  uVar6 = *(u8 *)uVar5 - 1;
   bVar2 = *(u8 *)(uVar5 + 1);
-
   if (bVar2 == 0xff) {
-
     uVar3 = 0;
-
-  }
-
-  else {
-
+  } else {
     uVar3 = (u32)(u8)(bVar2 - 1);
-
   }
-
-  uVar3 = uVar3 << 8 | uVar6 - 1 & 0xff;
+  uVar3 = uVar3 & 0xff;
+  combined = uVar3 << 8;
+  uVar3 = combined | uVar6;
   FUN_0017db00();
-
   uVar4 = FUN_0016dd40();
-
   FUN_0016e2b0(uVar4,uVar3);
 
   return 0;
