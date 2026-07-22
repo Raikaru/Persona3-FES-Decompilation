@@ -1564,7 +1564,7 @@ void func_002b9b00(u8 *param_1, int param_2, int param_3, float *param_4)
   param_4[2] = position.z;
 }
 
-// FUN_002b9c00 NONMATCHING
+// FUN_002b9c00
 
 void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
 
@@ -1606,7 +1606,7 @@ void func_002b9c00(int param_1,int param_2,int param_3,float *param_4)
   param_4[2] = position.z;
 }
 
-// FUN_002b9d40 NONMATCHING
+// FUN_002b9d40
 
 void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
 {
