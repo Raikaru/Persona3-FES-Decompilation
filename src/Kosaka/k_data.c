@@ -22,7 +22,7 @@
 
 extern u32 func_0010a720(u32 request);
 extern u32 func_0010a770();
-extern u32 func_0016dba0(u16 value);
+extern u32 func_0016dba0(s16 value);
 extern u32 func_0016ef30(void);
 extern u32 func_0016f190(u32 id);
 extern u32 func_0017d920(void);
@@ -875,14 +875,13 @@ s16* func_001b8db0(s16* table)
     return NULL;
 }
 
-// FUN_001b8fd0 NONMATCHING
-u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
+// FUN_001b8fd0
+u32 func_001b8fd0(register const u8* unit, register const u8* records, register u32 byteSize)
 {
-    const u8* record;
-    u32 count;
-    u32 i;
-    u32 result;
-    u32 type;
+    register const u8* record;
+    register u32 count;
+    register u32 i;
+    register u32 result;
 
     count = byteSize / 0x0c;
     record = records + count * 0x0c - 0x0c;
@@ -890,13 +889,12 @@ u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
     i = 0;
     while (i < count)
     {
-        type = *(const u32*)(record + 0);
-        if (type == 1)
+        if (*(const u32*)(record + 0) == 1)
         {
             result = *(const u32*)(record + 4);
             break;
         }
-        if (type == 2)
+        else if (*(const u32*)(record + 0) == 2)
         {
             if (func_0016f190(*(const u32*)(record + 8)) == 1)
             {
@@ -904,7 +902,7 @@ u32 func_001b8fd0(const u8* unit, const u8* records, u32 byteSize)
                 break;
             }
         }
-        if (type == 3)
+        else if (*(const u32*)(record + 0) == 3)
         {
             if ((s32)*(const u32*)(record + 8) ==
                 (s8)func_0016dba0(*(const s16*)(unit + 0x6c)))
