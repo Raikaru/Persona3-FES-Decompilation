@@ -298,15 +298,15 @@ void FUN_00321f10(u32 param_1);
 extern void FUN_00321f10_passthru(void);
 void FUN_00321fe0(void);
 void FUN_00322010(void);
-u64 FUN_00322530(long param_1);
+u32 FUN_00322530(int param_1);
 #pragma alias FUN_00322530_u32 FUN_00322530
-extern u32 FUN_00322530_u32(long param_1);
-u64 FUN_003225d0(int *param_1);
+extern u32 FUN_00322530_u32(int param_1);
+u32 FUN_003225d0(int *param_1);
 #pragma alias FUN_003225d0_u32 FUN_003225d0
 extern u32 FUN_003225d0_u32(int *param_1);
 void FUN_00322660(int param_1);
 void FUN_003226b0(int *param_1,int param_2);
-u64 FUN_00322880(u64 param_1);
+u32 FUN_00322880(int param_1);
 void FUN_00322a20(int param_1);
 void FUN_00322ab0(int *param_1,int param_2,float *param_3);
 void FUN_00322d10(int param_1,float *param_2);
@@ -419,7 +419,7 @@ void FUN_00326c70(u32 *param_1,u16 param_2,u64 param_3);
 void FUN_00326cf0(int param_1,u16 param_2,long param_3);
 void FUN_00326db0(int param_1,u16 param_2);
 void FUN_00326e50(int param_1,u64 param_2);
-void FUN_00326f00(int param_1,u64 param_2);
+void FUN_00326f00(int param_1,u32 param_2);
 void FUN_00326f60(u32 *param_1,u64 param_2);
 void FUN_00327090(u32 *param_1,u64 param_2);
 void FUN_003271c0(int param_1,u64 param_2);
@@ -5982,7 +5982,7 @@ void FUN_00322010(void)
 // FUN_00322530 NONMATCHING
 
 
-u64 FUN_00322530(long param_1)
+u32 FUN_00322530(int param_1)
 
 
 
@@ -5992,7 +5992,7 @@ u64 FUN_00322530(long param_1)
 
   int *piVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   
 
@@ -6000,11 +6000,11 @@ u64 FUN_00322530(long param_1)
 
   if (param_1 != 0) {
 
-    iVar1 = FUN_00322880((u64)(param_1));
+    iVar1 = FUN_00322880(param_1);
 
   }
 
-  uVar3 = (*DAT_00960178)(*(int *)(iVar1 + 8) * 0x14 + 0x18,0x40000);
+  uVar3 = (*DAT_00960178_abs)(*(int *)(iVar1 + 8) * 0x14 + 0x18,0x40000);
 
   piVar2 = (int *)uVar3;
 
@@ -6026,7 +6026,7 @@ u64 FUN_00322530(long param_1)
 // FUN_003225D0 NONMATCHING
 
 
-u64 FUN_003225d0(int *param_1)
+u32 FUN_003225d0(int *param_1)
 
 
 
@@ -6036,7 +6036,7 @@ u64 FUN_003225d0(int *param_1)
 
   int *piVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   
 
@@ -6044,7 +6044,7 @@ u64 FUN_003225d0(int *param_1)
 
   *(int *)(iVar1 + 0x10) = *(int *)(iVar1 + 0x10) + 1;
 
-  uVar3 = (*DAT_00960178)(*(int *)(iVar1 + 8) * 0x14 + 0x18,0x40000);
+  uVar3 = (*DAT_00960178_abs)(*(int *)(iVar1 + 8) * 0x14 + 0x18,0x40000);
 
   piVar2 = (int *)uVar3;
 
@@ -6229,7 +6229,7 @@ void FUN_003226b0(int *param_1,int param_2)
 // FUN_00322880 NONMATCHING
 
 
-u64 FUN_00322880(u64 param_1)
+u32 FUN_00322880(int param_1)
 
 
 
@@ -10841,7 +10841,7 @@ void FUN_00326e50(int param_1,u64 param_2)
 // FUN_00326F00
 
 
-void FUN_00326f00(int param_1,u64 param_2)
+void FUN_00326f00(int param_1,u32 param_2)
 
 
 
