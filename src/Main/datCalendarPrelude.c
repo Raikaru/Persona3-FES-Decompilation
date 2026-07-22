@@ -20,7 +20,7 @@ extern u8 DAT_00833bb0[];
 extern u8 DAT_00833bd0[];
 extern u8 DAT_00833bf0[];
 extern u8 DAT_00836212[];
-extern char gp0xffff9388[];
+extern char gp0xffff9388[1];
 extern const char D_007cc078[];
 extern const char D_005e3820[];
 extern void FUN_0019d3f0(u32 file, u32 line);
@@ -304,7 +304,7 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     return buffer;
 }
 
-// FUN_00179030 NONMATCHING
+// FUN_00179030
 void FUN_00179030(u32 saveType, void* stream)
 {
     u8* cursor = (u8*)stream;
@@ -332,7 +332,7 @@ void FUN_00179030(u32 saveType, void* stream)
         FUN_00521408(DAT_00833bf0, 0, 0x24);
         FUN_00521250(DAT_00833bb0, DAT_00836200, 0x12);
         FUN_00521250(DAT_00833bd0, DAT_00836212, 0x12);
-        FUN_00523ac8(DAT_00833bf0, D_007cc078, DAT_00833bd0, DAT_00833bb0);
+        FUN_00523ac8(DAT_00833bf0, gp0xffff9388, DAT_00833bd0, DAT_00833bb0);
     }
 }
  
