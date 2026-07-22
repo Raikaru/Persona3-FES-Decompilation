@@ -1,5 +1,14 @@
 #include "temporary.h"
 typedef int (*code)();
+u32 H_Maestro_CreateTask(u32 parent,u32 priority,u32 path);
+u32 H_Maestro_FinishedInit(u32 task);
+void H_Maestro_SetShouldLoop(u32 task,u32 shouldLoop);
+void H_Maestro_00111f20(u32 task,u32 value);
+void H_Maestro_00111c50(u32 task);
+void H_Maestro_00111cb0(u32 task);
+void H_Maestro_SetAlphaMult(float alpha,u32 task);
+void func_00111f10(u32 task,u32 value);
+void func_00111ca0(u32 task,u32 value);
 float fGpffff80d0;
 float fGpffff8110;
 float fGpffff8168;
@@ -23,7 +32,7 @@ u32 FUN_00410d30(int param_1,int param_2);
 u32 FUN_00410e70(u64 param_1,int param_2,long param_3);
 u32 FUN_004110f0(u64 param_1,u64 param_2,int param_3);
 u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3);
-u32 FUN_00411340(u64 param_1,u64 param_2,long param_3);
+u32 FUN_00411340(u64 param_1,u64 param_2,s16 *param_3);
 u32 FUN_004113f0(u64 param_1,int param_2,long param_3);
 u64 FUN_00411710(u64 param_1,int param_2);
 u32 FUN_00411790(u64 param_1,int param_2,long param_3);
@@ -606,11 +615,10 @@ u64 FUN_00410a10(u64 param_1,int param_2)
 
 }
 
-// FUN_00410D30 NONMATCHING
+// FUN_00410D30
 
 
 u32 FUN_00410d30(int param_1,int param_2)
-
 
 
 {
@@ -621,7 +629,7 @@ u32 FUN_00410d30(int param_1,int param_2)
 
   u32 uVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   
 
@@ -639,13 +647,7 @@ u32 FUN_00410d30(int param_1,int param_2)
 
   lVar4 = H_Maestro_FinishedInit(*(u32 *)(iVar1 + 0xc));
 
-  if (lVar4 == 0) {
-
-    uVar3 = 0;
-
-  }
-
-  else {
+  if (lVar4 != 0) {
 
     H_Maestro_SetShouldLoop(*(u32 *)(iVar1 + 0xc),0);
 
@@ -686,6 +688,12 @@ u32 FUN_00410d30(int param_1,int param_2)
     }
 
     uVar3 = 1;
+
+  }
+
+  else {
+
+    uVar3 = 0;
 
   }
 
@@ -995,7 +1003,7 @@ u32 FUN_00411190(u64 param_1,u64 param_2,u32 param_3)
 // FUN_00411340 NONMATCHING
 
 
-u32 FUN_00411340(u64 param_1,u64 param_2,long param_3)
+u32 FUN_00411340(u64 param_1,u64 param_2,s16 *param_3)
 
 
 
@@ -1003,7 +1011,13 @@ u32 FUN_00411340(u64 param_1,u64 param_2,long param_3)
 
   if (param_3 != 0) {
 
-    switch(*(u16 *)((int)param_3 + 6)) {
+    switch(param_3[3]) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      break;
 
     case 5:
 
@@ -1254,7 +1268,10 @@ u32 FUN_004113f0(u64 param_1,int param_2,long param_3)
 
 }
 
-// FUN_00411710
+// FUN_00411710 NONMATCHING
+// Forbidden inline asm (mtc1) removed and replaced with honest C;
+// residual is an 8-word floor. This exact violation was already
+// found and fixed once earlier this session; do not reintroduce it.
 u64 FUN_00411710(u64 param_1, int param_2)
 {
   int iVar1;
@@ -1273,7 +1290,7 @@ u64 FUN_00411710(u64 param_1, int param_2)
     valueA = *(s16 *)(iVar2 + 4);
     valueB = *(s16 *)(iVar2 + 6);
     asm volatile("" : "+r" (valueA), "+r" (valueB));
-    asm volatile("mtc1 $0, %0" : "=f" (zero));
+    zero = 0.0f;
     flag = *(u8 *)(iVar2 + 0xc);
     asm volatile("" : "+r" (flag));
     code = iVar3 + 0x61;
@@ -3450,8 +3467,8 @@ u64 FUN_00413b10(u64 param_1,int param_2)
     float fVar3;
     u8 bVar2;
     puVar1 = *(u8 **)(param_2 + 0xc);
-    bVar2 = puVar1[8];
     fVar3 = *(float *)(puVar1 + 4);
+    bVar2 = puVar1[8];
     FUN_0040e3f0_typed(0.0f, fGpffff80d0 * fVar3,
                        1.0f, 1.0f, 0, 0, bVar2, 0x68, 0, 0x74, 0x7d);
   }
@@ -4066,13 +4083,12 @@ void FUN_00414770(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 
 {
 
-  int iVar1;
-
-  u64 uVar2;
+  u32 uVar2;
+  u8 *puVar1;
 
   
 
-  iVar1 = *(int *)(param_2 + 0xc);
+  puVar1 = *(u8 **)(param_2 + 0xc);
 
   FUN_0040e3c0((float)param_5,param_3 + 0x139,param_4 + 0x27,param_6 & 0xff,0x8a,0);
 
@@ -4082,9 +4098,9 @@ void FUN_00414770(u64 param_1,int param_2,int param_3,int param_4,int param_5,u3
 
   FUN_0040e3c0(0,param_3 + 0x16a,param_4 + 0x2a,param_6 & 0xff,0,
 
-               (u32)*(u8 *)(iVar1 + 0x7c) * 2 + 1);
+               (u32)puVar1[0x7c] * 2 + 1);
 
-  uVar2 = func_00171110(*(u16 *)(iVar1 + 0x78),2);
+  uVar2 = func_00171110(*(s16 *)(puVar1 + 0x78),2);
 
   FUN_003b2cb0(0,param_3 + 0x18a,param_4 + 0x2c,param_6 | 0xffffffffffffff00,6,1,uVar2,0,0);
 
