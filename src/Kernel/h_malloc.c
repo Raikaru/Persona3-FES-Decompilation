@@ -227,6 +227,8 @@ extern u8 D_0083BB30[];
 #pragma alias D_0083BB30_abs D_0083BB30
 extern u8 D_0083BB30_abs[];
 extern u8 D_0083AB30[];
+#pragma alias D_0083AB30_abs D_0083AB30
+extern u8 D_0083AB30_abs[];
 extern const char D_005E4CE0[];
 extern const f32 D_005E4D00;
 extern const f32 D_005E4D04;
@@ -587,10 +589,10 @@ static s32 hmallocTaskUpdateB(void* task)
                 __asm__ volatile ("" : : "r"(destination) : "memory");
                 func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
                 resource = (HCdvd*)(uintptr_t)work[2];
-                fileSize = resource->fileSize;
-                destination = D_0083AB30;
+                fileSize = ((volatile HCdvd*)resource)->fileSize;
+                destination = D_0083AB30_abs;
                 __asm__ volatile ("" : : "r"(destination) : "memory");
-                func_00521250(destination, (u32)(uintptr_t)resource->fileMemory, fileSize);
+                func_00521250(destination, (u32)(uintptr_t)((volatile HCdvd*)resource)->fileMemory, fileSize);
                 H_Cdvd_Destroy((void*)(uintptr_t)work[1]);
                 work[1] = 0;
                 H_Cdvd_Destroy((void*)(uintptr_t)work[2]);
