@@ -44,7 +44,7 @@ extern s32 FUN_00172160(long socialLink);
 extern s32 FUN_001717c0(long socialLink);
 extern s32 FUN_00172660(long socialLink);
 #pragma alias FUN_003be1c0_typed FUN_003be1c0
-extern u32 FUN_003be1c0_typed(long param_1,s32 param_2);
+extern u32 FUN_003be1c0_typed(long param_1,long param_2);
 #pragma alias FUN_003be2a0_typed FUN_003be2a0
 extern u32 FUN_003be2a0_typed(...);
 extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
@@ -619,6 +619,7 @@ u32 FUN_003be1c0(u32 param_1,long param_2)
   u32 lVar2;
   int iVar2;
   int iVar3;
+  u8 *pbBase;
 
   
 
@@ -630,9 +631,12 @@ u32 FUN_003be1c0(u32 param_1,long param_2)
 
   iVar2 = (int)param_2 * 2;
   for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {
-    if (((param_1 == *(u8 *)(DAT_0095b710 + iVar3 * 0x1a)) &&
-        (*(u16 *)(iVar2 + DAT_0095b710 + iVar3 * 0x1a + 4) != 0)) &&
-       (lVar2 = FUN_0016f190(), lVar2 == 0)) {
+    pbBase = (u8 *)DAT_0095b710;
+    if (((param_1 == pbBase[iVar3 * 0x1a]) &&
+        (*(u16 *)(iVar2 + (int)pbBase + iVar3 * 0x1a + 4) != 0)) &&
+       (lVar2 = FUN_0016f190_comu(*(u16 *)(iVar2 + (int)pbBase +
+                                            iVar3 * 0x1a + 4)),
+        lVar2 == 0)) {
       return 1;
     }
   }
@@ -1084,9 +1088,6 @@ u32 FUN_003be8e0(long param_1,u64 param_2)
           var_7 = 1;
           if (lVar2 == 1) {
             var_7 = 2;
-          }
-          else {
-            var_7 = 0;
           }
         }
         else {
