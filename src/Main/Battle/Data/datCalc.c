@@ -1793,7 +1793,7 @@ void FUN_00302380(u32 param_1,u32 param_2,u32 param_3)
 // FUN_00302c50 NONMATCHING
 void FUN_00302c50(u32 param_1)
 {
-    u8 i;
+    u32 i;
     u32 mask;
 
     mask = *(u32*)(param_1 + 0x18);
@@ -1803,16 +1803,16 @@ void FUN_00302c50(u32 param_1)
         {
             if ((mask & (1 << i)) != 0)
             {
-                if (i > 0x14)
+                if ((s32)(i & 0xff) >= 0x15)
                 {
                     FUN_0019d3f0((u32)D_0069aa80, 0x499);
                 }
-                if (i < 0x11)
+                if ((s32)(i & 0xff) < 0x11)
                 {
-                    FUN_00301030(param_1, i, 0);
-                    FUN_00301150(param_1, i, 0);
+                    FUN_00301030(param_1, (u8)i, 0);
+                    FUN_00301150(param_1, (u8)i, 0);
                 }
-                *(u32*)(param_1 + 0x14) &= ~(1 << i);
+                *(u32*)(param_1 + 0x14) &= ~(1 << (i & 0xff));
             }
         }
         *(u32*)(param_1 + 0x18) = 0;
@@ -3704,7 +3704,7 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
   u32 uVar1;
   int iVar2;
   
-  if (0x1cf < (param_1 & 0xffff)) {
+  if (0x1cf < (s32)(param_1 & 0xffff)) {
     FUN_0019d3f0((u32)D_0069aa80, 0xcc5);
   }
   if ((param_2 == 0) || (param_3 == 0)) {
@@ -3720,11 +3720,11 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
       *(u32 *)param_6 = uVar1;
     }
     if (param_7 != 0) {
-      if (0x1cf < (param_1 & 0xffff)) {
+      if (0x1cf < (s32)(param_1 & 0xffff)) {
         FUN_0019d3f0((u32)D_0069aa80, 0xbfa);
       }
       iVar2 = ((u32)param_1 & 0xffff) * 0x2c + DAT_007ce3f8;
-      if (*(char *)(iVar2 + 0x18) == '\x02') {
+      if (*(u8 *)(iVar2 + 0x18) == 2) {
         if (*(u8 *)(iVar2 + 0x19) < 100) {
           FUN_0019d3f0((u32)D_0069aa80, 0xc05);
         }
@@ -3733,13 +3733,11 @@ FUN_00306bc0(u32 param_1,s32 param_2,s32 param_3,u32 param_4,s32 param_5,s32 par
       else {
         uVar1 = 0;
       }
-      *(u32 *)param_7 = uVar1;
     }
     *(u32 *)((int)param_2 + 0x18) = 0;
     *(u32 *)((int)param_3 + 0x18) = 0;
     uVar1 = 1;
   }
-  return uVar1;
 }
 
 
