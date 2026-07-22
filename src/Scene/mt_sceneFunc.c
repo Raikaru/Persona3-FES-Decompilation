@@ -238,7 +238,7 @@ u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
 extern u64 FUN_003b8ce0_scene(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
-u32 FUN_003b8e80(u32 param_1,u64 param_2,u32 param_3);
+u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3);
 u32 FUN_003b8f30(void);
 u32  FUN_003b8ff0(u32 param_1,long param_2,u32 param_3,u64 param_4,u16 param_5,  long param_6,long param_7);
 u64  FUN_003b91c0(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7);
@@ -888,10 +888,10 @@ u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
 }
 #define FUN_003b8e10(...) ((u64 (*)(...))FUN_003b8e10)(__VA_ARGS__)
 #undef FUN_003b8e80
-// FUN_003B8E80 NONMATCHING
+// FUN_003B8E80
 
 
-u32 FUN_003b8e80(u32 param_1,u64 param_2,u32 param_3)
+u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3)
 
 
 {
@@ -922,27 +922,25 @@ u32 FUN_003b8e80(u32 param_1,u64 param_2,u32 param_3)
 
     puVar1 = (u16 *)lVar3;
 
-    if ((int)(*puVar1 & 0xffc00) >> 10 == 7) {
+    if ((int)(*puVar1 & 0xffc00) >> 10 != 7) {
 
-      *(u32 *)(puVar1 + 0x14) = *(u32 *)(puVar1 + 0x14) | 0x400;
-
-      *(u32 *)(puVar1 + 0x62) = *(u32 *)(puVar1 + 0x80);
-
-      *(u32 *)(puVar1 + 100) = param_1;
-
-      *(u32 *)(puVar1 + 0x66) = param_3;
-
-      puVar1[0x68] = 0;
-
-      puVar1[0x69] = 0;
-
-      uVar2 = 1;
+      uVar2 = 0;
 
     }
 
     else {
 
-      uVar2 = 0;
+      *(u32 *)(puVar1 + 0x14) = *(u32 *)(puVar1 + 0x14) | 0x400;
+
+      *(float *)(puVar1 + 0x62) = *(float *)(puVar1 + 0x80);
+
+      *(float *)(puVar1 + 100) = param_2;
+
+      *(u32 *)(puVar1 + 0x66) = param_3;
+
+      *(u32 *)(puVar1 + 0x68) = 0;
+
+      uVar2 = 1;
 
     }
 
