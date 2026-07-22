@@ -2361,23 +2361,26 @@ void func_001bd950(void)
     }
 }
 #pragma schedule off
+#pragma push
+#pragma opt_rebuildconditionals off
 
 // FUN_001bf220 NONMATCHING
 void func_001bf220(RwV3d* dst, u32 x, u32 y)
 {
     Resrc* resource;
     u8* cell;
+    u32 offset;
     u16 id;
     RwV3d result;
-
     resource = MT_Scene_GetResListHead(0x12);
     memset(&result, 0, sizeof(result));
     if (K_Scene_001a0250() == true || func_001a02c0() == true)
     {
-        cell = dungeonCell((s32)(u16)x, (s32)(u16)y);
-        id = *(u16*)(cell + 0x54);
+        offset = ((u32)(u16)y << 8) + ((u32)(u16)x << 4);
         while (resource != NULL)
         {
+            cell = (u8*)K_Field_Get() + offset;
+            id = *(u16*)(cell + 0x54);
             if ((resource->resTypeId & 0x3ff) == (id & 0x3ff))
             {
                 result = *(RwV3d*)((u8*)resource + 0x100);
@@ -2388,6 +2391,7 @@ void func_001bf220(RwV3d* dst, u32 x, u32 y)
     }
     *dst = result;
 }
+#pragma pop
 
 // FUN_001bf340 NONMATCHING
 u32 func_001bf340(const FldDungeonFloorData* floorData)
