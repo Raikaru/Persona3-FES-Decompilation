@@ -2940,7 +2940,7 @@ int FUN_00489320(int *param_1)
   if (param_1[0xc] != 0) {
     iVar2 = param_1[0xc] * 2;
     iVar3 = *param_1;
-    iVar2 = iVar3 + iVar2;
+    iVar2 = iVar2 + iVar3;
     iVar2 = iVar2 + param_1[0xd] * 2;
     iVar1 = iVar1 + iVar2;
   }
