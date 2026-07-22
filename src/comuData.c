@@ -13,7 +13,7 @@ extern s8 DAT_006a3d70[];
 extern u16 DAT_006a3d72[];
 extern u8 * PTR_DAT_006a38e8;
 #pragma alias PTR_DAT_006a38e8_abs PTR_DAT_006a38e8
-extern u8 * PTR_DAT_006a38e8_abs[];
+extern u8 PTR_DAT_006a38e8_abs[];
 extern u8 * PTR_DAT_007cd6ec;
 extern u8 * PTR_s_Susano_o_006a3ca0;
 #pragma alias PTR_s_Susano_o_006a3ca0_abs PTR_s_Susano_o_006a3ca0
@@ -76,7 +76,7 @@ static const char* unkStrings1[5] =
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 const char* Day_GetCurrentDayString(u32 month, u32 day);
 const char* ComuData_FUN_003c4210(s32 idx);
-u8 * FUN_003c4040(int param_1,int param_2);
+u8 * FUN_003c4040(int param_2,int param_1);
 s8 FUN_003c40f0(int param_1);
 u16 FUN_003c4110(int param_1);
 u8 * FUN_003c4270(void);
@@ -151,33 +151,36 @@ const char* ComuData_GetUltSLPersonasString(u32 idx)
 }
 
 #undef FUN_003c4040
+#pragma push
+#pragma opt_propagation off
 // FUN_003C4040 NONMATCHING
 
 
-u8 * FUN_003c4040(int param_1,int param_2)
+u8 * FUN_003c4040(int param_2,int param_1)
 {
   int lVar1;
+  int first;
+  int second;
+  u8 *base;
+  int offset;
 
-  
-  lVar1 = FUN_00172a50((short)param_1);
-
+  first = param_2;
+  second = param_1;
+  lVar1 = FUN_00172a50((short)first);
   if (lVar1 == 0) {
-
     FUN_0019d3f0("comuData.c",0x30);
-
   }
-
-  lVar1 = FUN_00172a50((short)param_2);
-
+  lVar1 = FUN_00172a50((short)second);
   if (lVar1 == 0) {
-
     FUN_0019d3f0("comuData.c",0x32);
-
   }
-
-  return PTR_DAT_006a38e8_abs[param_2 * 6 + param_1];
+  offset = first * 0x18;
+  base = (u8 *)0x006a38e8;
+  asm volatile("" : "+m"(base));
+  return *(u8 **)(base + offset + second * 4);
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
+#pragma pop
 #undef FUN_003c40f0
 // FUN_003C40F0
 
