@@ -1161,11 +1161,7 @@ void FUN_004180a0(u32 *param_1)
 
 
 void FUN_004180e0(u32 *param_1,s16 param_2)
-
-
-
 {
-
   FUN_003c4910(*param_1,param_2,0xc);
   /* Preserve retail's in-register payload write through the call result. */
   __asm__ volatile (
@@ -1174,7 +1170,6 @@ void FUN_004180e0(u32 *param_1,s16 param_2)
       : : "r"(param_2) : "$v0", "memory");
 
   return;
-
 }
 
 // FUN_00418130 NONMATCHING
@@ -2639,24 +2634,28 @@ u32 FUN_00419b80(int param_1)
 
 
 {
+  extern void K_View_SetFov(RwCamera*, float);
 
-  long lVar1;
-
-  u64 uVar2;
+  int lVar1;
+  u32 uVar2;
 
   
-
-  if ((*(int *)(param_1 + 0x38) != 0) && (lVar1 = MT_Scene_GetResListHead(0x14), lVar1 != 0)) {
-
-    FUN_004cb7f0(*(u32 *)(param_1 + 0x38),*(u32 *)((int)lVar1 + 0x108),0);
-
-    uVar2 = kwlnGetMainCamera();
-
-    K_View_SetFov(*(u32 *)((int)lVar1 + 0x104),uVar2);
-
-  }
-
+  if (*(int *)(param_1 + 0x38) != 0)
+    goto resource_ready;
   return 1;
+
+resource_ready:
+  lVar1 = MT_Scene_GetResListHead(0x14);
+  if (lVar1 == 0)
+    goto done;
+
+  FUN_004cb7f0(*(u32 *)(param_1 + 0x38),*(u32 *)((int)lVar1 + 0x108),0);
+  uVar2 = kwlnGetMainCamera();
+  K_View_SetFov((RwCamera*)uVar2,*(float *)((int)lVar1 + 0x104));
+
+done:
+  return 1;
+
 
 }
 
@@ -3846,34 +3845,15 @@ u8 FUN_0041b530(int param_1)
 
 }
 
-// FUN_0041B550
+// FUN_0041B550 NONMATCHING
 
 
 void FUN_0041b550(int param_1)
 {
-  __asm__ volatile (
-      ".set noreorder          \n"
-      "lw $v0, 0x40($a0)       \n"
-      "lw $a2, 4($v0)          \n"
-      "lw $v0, 0x14($a2)       \n"
-      "lw $v0, 0($v0)          \n"
-      "sll $v1, $v0, 3         \n"
-      "lui $v0, 0x6b           \n"
-      "addiu $v0, $v0, 0x2aa0  \n"
-      "addu $v0, $v0, $v1      \n"
-      "sw $v0, 0x44($a0)       \n"
-      "lw $v0, 0x3c($a0)       \n"
-      "sw $zero, 8($v0)        \n"
-      "lw $a1, 0x3c($a0)       \n"
-      "lw $v1, 0x10($a1)       \n"
-      "addiu $v0, $zero, -2    \n"
-      "and $v0, $v1, $v0       \n"
-      "sw $v0, 0x10($a1)       \n"
-      ".set reorder"
-      :
-      :
-      : "v0", "v1", "a0", "a1", "a2", "memory"
-  );
+  *(u32 *)(param_1 + 0x44) =
+      0x006b2aa0 + *(u32 *)*(u32 *)(*(u32 *)(*(u32 *)(param_1 + 0x40) + 4) + 0x14) * 8;
+  *(u32 *)(*(u32 *)(param_1 + 0x3c) + 8) = 0;
+  *(u32 *)(*(u32 *)(param_1 + 0x3c) + 0x10) &= ~1;
   FUN_003c49e0(*(int *)(param_1 + 0x40), *(int *)(param_1 + 0x40) + 4);
 }
 
@@ -4571,7 +4551,7 @@ void FUN_0041bf80(u32 *param_1)
 
 }
 
-// FUN_0041C140
+// FUN_0041C140 NONMATCHING
 
 
 void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
@@ -4581,17 +4561,8 @@ void FUN_0041c140(u32 param_1,u32 param_2,u32 param_3,int param_4)
 {
 
   float afStack_8 [2];
-  __asm__ volatile (
-      ".set noreorder             \n"
-      "lwc1 $f1, -0x5210($gp)     \n"
-      "lwc1 $f0, -0x520c($gp)     \n"
-      "swc1 $f1, 0x18($sp)        \n"
-      "swc1 $f0, 0x1c($sp)        \n"
-      ".set reorder"
-      :
-      :
-      : "f0", "f1", "memory"
-  );
+  afStack_8[0] = DAT_007cdae0;
+  afStack_8[1] = DAT_007cdae4;
 
   FUN_0040e3c0(param_1,param_2,param_3,((u32 *)afStack_8)[param_4]);
 
