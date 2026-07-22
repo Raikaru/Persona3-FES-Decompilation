@@ -44,7 +44,7 @@ bool FUN_0051b3b0(int param_1);
 u32 FUN_0051fe90(u64 param_1,u32 param_2);
 u32 FUN_0051b4a0(int param_1);
 u32 FUN_0051a1a0(u32 param_1);
-u64 FUN_0051a1c0(u64 param_1);
+bool FUN_0051a1c0(u32 param_1);
 u32 FUN_0051ab50(int param_1,int param_2);
 bool FUN_0051c280(int param_1);
 bool FUN_0051c0c0(int param_1);
@@ -4811,18 +4811,14 @@ u32 FUN_0051a1a0(u32 param_1)
   return FUN_0051b1b0((int)param_1);
 }
 #pragma pop
+#pragma push
+#pragma schedule on
 // FUN_0051A1C0
-asm u64 FUN_0051a1c0(u64 param_1)
+bool FUN_0051a1c0(u32 param_1)
 {
-  .set noreorder
-  addiu $sp, $sp, -0x10
-  sd $ra, 0($sp)
-  .word 0x0c146cec
-  nop
-  ld $ra, 0($sp)
-  jr $ra
-  addiu $sp, $sp, 0x10
+  return FUN_0051b3b0((int)param_1);
 }
+#pragma pop
 // FUN_0051A1E0 NONMATCHING
 u32 FUN_0051a1e0(u64 param_1)
 
