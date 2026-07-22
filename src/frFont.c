@@ -3150,7 +3150,7 @@ void FUN_003b22a0(u32 *param_1)
 }
 #define FUN_003b22a0(...) ((void (*)(...))FUN_003b22a0)(__VA_ARGS__)
 #undef FUN_003b2400
-// FUN_003B2400 NONMATCHING
+// FUN_003B2400
 
 void FUN_003b2400(FrFontState *state)
 {

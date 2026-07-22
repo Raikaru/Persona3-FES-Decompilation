@@ -2148,7 +2148,7 @@ void func_0021f0c0(void* work)
     BP_PANEL_GLOBAL = (u8*)work;
 }
 
-// FUN_0021F140 NONMATCHING
+// FUN_0021F140
 void func_0021f140(void)
 {
     DAT_007ce408 = NULL;
