@@ -2661,15 +2661,17 @@ void func_002bb770(void)
 u64 func_002bb7d0(void)
 
 {
-  u64 uVar1 = 0;
-  u64 uVar2 = 0;
-  u16 *puVar3;
   u32 uVar4 = 0;
+  u64 uVar2 = 0;
+  u64 uVar1 = 0;
+  u16 *puVar3;
+  u64 (**allocator)(...);
   
-  uVar1 = (*DAT_00960178)(200,0x40000);
+  allocator = (u64 (**)(...))DAT_00960178_abs;
+  uVar1 = (*allocator)(200,0x40000);
   func_00521408(uVar1,0,200);
   for (uVar4 = 0; uVar4 < 0x30; uVar4 = uVar4 + 1) {
-    uVar2 = (*DAT_00960178)(0x24,0x40000);
+    uVar2 = (*allocator)(0x24,0x40000);
     func_00521408(uVar2,0,0x24);
     puVar3 = (u16 *)uVar2;
     *(u32 *)(puVar3 + 2) = 0xffffffff;
