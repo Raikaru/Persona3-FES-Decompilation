@@ -47,12 +47,12 @@ extern u8 DAT_006a0e60[0x20];
 #endif
 
 /* Region 0x390000-0x3CFFFF recovered prototypes */
-void FUN_00393e30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,  u32 param_5,u32 param_6);
-void FUN_00393f30(u64 param_1,u32 param_2);
+void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6);
+void FUN_00393f30(u8 *param_1,u32 param_2);
 float FUN_00394040(float param_1,float param_2,float param_3,long param_4);
 void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param_5);
 int FUN_00394270(void);
-u64  FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5);
+u8 *FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5);
 void FUN_00394c30(u32 param_1,u32 param_2);
 u32 FUN_00394ce0(u32 *param_1);
 u32 FUN_00394d60(u32 *param_1);
@@ -76,58 +76,37 @@ void FUN_00395000(int param_1,int param_2,u8 *param_3,u8 *param_4,u8 *param_5,u8
 #define FUN_00395000(...) ((void (*)(...))FUN_00395000)(__VA_ARGS__)
 
 #undef FUN_00393e30
-// FUN_00393E30 NONMATCHING
+// FUN_00393E30
 
 
-void FUN_00393e30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
-
-                 u32 param_5,u32 param_6)
-
-
-
+void FUN_00393e30(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u32 param_5,u32 param_6)
 {
+  u8 *pending;
+  *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 0x80;
+  FUN_00521408(param_1 + 0x960,0,0x1c);
 
-  int iVar1;
 
-  
 
-  iVar1 = (int)param_1;
-
-  *(u32 *)(iVar1 + 4) = *(u32 *)(iVar1 + 4) | 0x80;
-
-  FUN_00521408(iVar1 + 0x960,0,0x1c);
-
-  if ((*(u32 *)(iVar1 + 4) & 8) == 0) {
-
-    *(u32 *)(iVar1 + 0x960) = 0;
-
-    if (*(int *)(iVar1 + 0x934) != 0) {
-
-      FUN_00195020();
-
-      *(u32 *)(iVar1 + 0x934) = 0;
-
-    }
-
+  if ((*(u32 *)(param_1 + 4) & 8) != 0) {
+    *(u32 *)(param_1 + 0x960) = 1;
   }
-
   else {
-
-    *(u32 *)(iVar1 + 0x960) = 1;
-
+    *(u32 *)(param_1 + 0x960) = 0;
+    pending = *(u8 **)(param_1 + 0x934);
+    if (pending != 0) {
+      FUN_00195020(pending);
+      *(u32 *)(param_1 + 0x934) = 0;
+    }
   }
 
-  *(u32 *)(iVar1 + 0x964) = param_5;
 
+  *(u32 *)(param_1 + 0x964) = param_5;
   FUN_00386e20(param_1,param_2);
-
   FUN_00386e40(param_1,param_3);
-
   FUN_00397510(param_1,param_4);
-
-  *(u32 *)(iVar1 + 0x978) = param_6;
-
+  *(u32 *)(param_1 + 0x978) = param_6;
   return;
+
 
 }
 #define FUN_00393e30(...) ((void (*)(...))FUN_00393e30)(__VA_ARGS__)
@@ -135,70 +114,37 @@ void FUN_00393e30(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 // FUN_00393F30 NONMATCHING
 
 
-void FUN_00393f30(u64 param_1,u32 param_2)
-
-
-
+void FUN_00393f30(u8 *param_1,u32 param_2)
 {
+  u32 values[3];
+  u8 *base;
+  int result;
+  int i;
+  int j;
+  u32 kind;
+  u8 *entry;
 
-  long lVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
-  u32 uStack_10;
-
-  u8 auStack_c [4];
-
-  u8 auStack_8 [8];
-
-  
-
-  iVar4 = (int)param_1;
-
-  *(u32 *)(iVar4 + 0x18) = *(u32 *)(iVar4 + 0x10);
-
-  *(u32 *)(iVar4 + 0x1c) = 0xffffffff;
-
-  *(u32 *)(iVar4 + 0x8e0) = 0;
-
-  *(u32 *)(iVar4 + 0x918) = 0;
-
-  *(u32 *)(iVar4 + 0x8e4) = 0;
-
-  for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-
-    *(u32 *)(auStack_c + iVar3 * 4 + -4) = 0;
-
+  base = param_1 + 0x8e0;
+  *(u32 *)(param_1 + 0x18) = *(u32 *)(param_1 + 0x10);
+  *(u32 *)(param_1 + 0x1c) = 0xffffffff;
+  *(u32 *)(base + 0) = 0;
+  *(u32 *)(param_1 + 0x918) = 0;
+  *(u32 *)(base + 4) = 0;
+  for (i = 0; i < 3; i = i + 1) {
+    values[i] = 0;
   }
-
-  lVar1 = FUN_003977c0(param_1,&uStack_10,auStack_c,auStack_8);
-
-  if (lVar1 == 1) {
-
-    *(u32 *)(iVar4 + 0x8e4) = 3;
-
-    for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-
-      iVar2 = iVar4 + 0x8e0 + iVar3 * 0xc;
-
-      *(u32 *)(iVar2 + 8) = 5;
-
-      *(u32 *)(iVar2 + 0xc) = *(u32 *)(auStack_c + iVar3 * 4 + -4);
-
+  result = FUN_003977c0(param_1,values,values + 1,values + 2);
+  if (result == 1) {
+    *(u32 *)(base + 4) = 3;
+    kind = 5;
+    for (j = 0; j < 3; j = j + 1) {
+      entry = base + j * 0xc;
+      *(u32 *)(entry + 8) = kind;
+      *(u32 *)(entry + 0xc) = values[j];
     }
-
   }
-
-  *(u32 *)(iVar4 + 4) = *(u32 *)(iVar4 + 4) | 0x10000;
-
-  *(u32 *)(iVar4 + 0x920) = param_2;
-
-  return;
-
+  *(u32 *)(param_1 + 4) = *(u32 *)(param_1 + 4) | 0x10000;
+  *(u32 *)(base + 0x40) = param_2;
 }
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
 #undef FUN_00394040
@@ -210,13 +156,12 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 
 
 {
+  float product;
 
   if (param_4 != 0) {
-
-    param_2 = param_2 * (1.0 - param_1) + param_3 * param_1;
-
+    product = param_3 * param_1;
+    param_2 = product + param_2 * (1.0f - param_1);
   }
-
   return param_2;
 
 }
@@ -230,12 +175,11 @@ void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param
   u32 uVar1;
   u32 uVar2;
   int iVar3;
-  volatile float fStack_90[3];
-  volatile float fStack_80[3];
-  volatile float fStack_70[3];
-  volatile float fStack_60[3];
-  float fVar1;
-  float fVar2;
+  int iVar4;
+  float fStack_40[3];
+  float fStack_30[3];
+  float fStack_20[3];
+  float fStack_10[3];
 
   if (param_5 == (u32 *)0x0) {
     FUN_0019d3f0("mt_evtPolygonMovie.c",0xb5);
@@ -244,7 +188,7 @@ void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param
     param_1 = 0.0f;
   }
   if (param_3 != (u32 *)0x0) {
-    if (param_4 == (u32 *)0x0) {
+    if (param_4 == 0) {
       iVar3 = 6;
       do {
         uVar1 = *param_3;
@@ -257,71 +201,35 @@ void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param
       } while (0 < iVar3);
     }
     else {
-      __asm__ volatile ("mtc1 $zero, $f0" : : : "$f0");
+      iVar4 = (int)param_4;
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-        fVar2 = *(float *)((int)param_4 + iVar3 * 4 + 0x20);
-        fVar1 = *(float *)((int)param_3 + iVar3 * 4 + 0x20);
-        fVar2 = fVar2 - fVar1;
-        __asm__ volatile (
-            "adda.s $f0, %1\n\t"
-            "madd.s %0, %2, %0"
-            : "+f"(fVar2)
-            : "f"(fVar1), "f"(param_1)
-            : "$f0");
-        *(float *)((int)param_5 + iVar3 * 4 + 0x20) = fVar2;
+        *(float *)((int)param_5 + iVar3 * 4 + 0x20) =
+          param_1 *
+            (*(float *)(iVar4 + iVar3 * 4 + 0x20) -
+             *(float *)((int)param_3 + iVar3 * 4 + 0x20)) +
+          *(float *)((int)param_3 + iVar3 * 4 + 0x20);
       }
-      __asm__ volatile ("mtc1 $zero, $f0" : : : "$f0");
       for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
-        fVar2 = *(float *)((int)param_4 + iVar3 * 4);
-        fVar1 = *(float *)((int)param_3 + iVar3 * 4);
-        fVar2 = fVar2 - fVar1;
-        __asm__ volatile (
-            "adda.s $f0, %1\n\t"
-            "madd.s %0, %2, %0"
-            : "+f"(fVar2)
-            : "f"(fVar1), "f"(param_1)
-            : "$f0");
-        *(float *)((int)param_5 + iVar3 * 4) = fVar2;
+        *(float *)((int)param_5 + iVar3 * 4) =
+          param_1 *
+            (*(float *)(iVar4 + iVar3 * 4) -
+             *(float *)((int)param_3 + iVar3 * 4)) +
+          *(float *)((int)param_3 + iVar3 * 4);
       }
-      fStack_90[0] = *(float *)((int)param_3 + 0x10);
-      fStack_90[1] = *(float *)((int)param_3 + 0x14);
-      fStack_90[2] = *(float *)((int)param_3 + 0x18);
-      fStack_80[0] = *(float *)((int)param_4 + 0x10);
-      fStack_80[1] = *(float *)((int)param_4 + 0x14);
-      fStack_80[2] = *(float *)((int)param_4 + 0x18);
-      FUN_003bbaa0((float *)fStack_90,(float *)fStack_80,(float *)fStack_70);
-      __asm__ volatile ("mtc1 $zero, $f2" : : : "$f2");
-      fVar2 = fStack_70[0];
-      fVar1 = *(float *)((int)param_3 + 0x10);
-      __asm__ volatile (
-          "adda.s $f2, %0\n\t"
-          "madd.s %0, %1, %2"
-          : "+f"(fVar1)
-          : "f"(fVar2), "f"(param_1)
-          : "$f2");
-      fStack_60[0] = fVar1;
-      fVar2 = fStack_70[1];
-      fVar1 = *(float *)((int)param_3 + 0x14);
-      __asm__ volatile (
-          "adda.s $f2, %0\n\t"
-          "madd.s %0, %1, %2"
-          : "+f"(fVar1)
-          : "f"(fVar2), "f"(param_1)
-          : "$f2");
-      fStack_60[1] = fVar1;
-      fVar2 = fStack_70[2];
-      fVar1 = *(float *)((int)param_3 + 0x18);
-      __asm__ volatile (
-          "adda.s $f2, %0\n\t"
-          "madd.s %0, %1, %2"
-          : "+f"(fVar1)
-          : "f"(fVar2), "f"(param_1)
-          : "$f2");
-      fStack_60[2] = fVar1;
-      FUN_003bb9b0((float *)fStack_60);
-      *(float *)((int)param_5 + 0x10) = fStack_60[0];
-      *(float *)((int)param_5 + 0x14) = fStack_60[1];
-      *(float *)((int)param_5 + 0x18) = fStack_60[2];
+      fStack_40[0] = *(float *)((int)param_3 + 0x10);
+      fStack_40[1] = *(float *)((int)param_3 + 0x14);
+      fStack_40[2] = *(float *)((int)param_3 + 0x18);
+      fStack_30[0] = *(float *)(iVar4 + 0x10);
+      fStack_30[1] = *(float *)(iVar4 + 0x14);
+      fStack_30[2] = *(float *)(iVar4 + 0x18);
+      FUN_003bbaa0(fStack_40,fStack_30,fStack_20);
+      fStack_10[0] = fStack_20[0] * param_1 + fStack_40[0];
+      fStack_10[1] = fStack_20[1] * param_1 + fStack_40[1];
+      fStack_10[2] = fStack_20[2] * param_1 + fStack_40[2];
+      FUN_003bb9b0(fStack_10);
+      *(float *)((int)param_5 + 0x10) = fStack_10[0];
+      *(float *)((int)param_5 + 0x14) = fStack_10[1];
+      *(float *)((int)param_5 + 0x18) = fStack_10[2];
     }
   }
   return;
@@ -361,15 +269,14 @@ int FUN_00394270(void)
 // FUN_003942F0 NONMATCHING
 
 
-u64
-
-FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
+u8 *
+FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5)
 
 
 
 {
 
-  long lVar1;
+  int lVar1;
 
   int iVar2;
 
@@ -389,7 +296,7 @@ FUN_003942f0(u64 param_1,u64 param_2,long param_3,long param_4,long param_5)
 
     FUN_0019d3f0("mt_evtPolygonMovie.c",0x449);
 
-    param_2 = 0;
+    return 0;
 
   }
 
