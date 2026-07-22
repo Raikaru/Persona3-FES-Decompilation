@@ -4482,17 +4482,18 @@ void* func_00186d50(KwlnTask* task)
 void func_00187050(KwlnTask* task)
 {
     CalendarTransitionWork* work;
+    KwlnTask** child;
+    s32 i;
 
     work = (CalendarTransitionWork*)task->workData;
-    if (work->firstTask != NULL)
+    for (i = 0; i < 2; i++)
     {
-        kwlnTaskDestroyWithHierarchy(work->firstTask);
-        work->firstTask = NULL;
-    }
-    if (work->secondTask != NULL)
-    {
-        kwlnTaskDestroyWithHierarchy(work->secondTask);
-        work->secondTask = NULL;
+        child = &work->firstTask + i;
+        if (*child != NULL)
+        {
+            kwlnTaskDestroyWithHierarchy(*child);
+            *child = NULL;
+        }
     }
     CLND_FREE(work);
 }
