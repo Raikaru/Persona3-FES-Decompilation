@@ -4215,12 +4215,14 @@ void FUN_002a2170(u16 *param_1,f32 *param_2)
     }
 }
 
-// FUN_002A2290 NONMATCHING
+// FUN_002A2290
 
 
 void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
 {
     u16 index;
+    u16 index0;
+    u16 index1;
     u32 address;
     f32 *entry;
     f32 *source;
@@ -4238,10 +4240,10 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
     *(u32*)((u8*)param_1 + 0x7c) = 0;
     if (param_1[0x3b] < 4)
     {
-        index = param_1[0x3c];
+        index0 = param_1[0x3c];
         if (param_2 != ((void*)0))
         {
-            address = (u32)index * 0x1c;
+            address = (u32)index0 * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 4);
             value2 = param_2[0];
@@ -4252,13 +4254,13 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             entry[2] = value1;
             if ((*param_1 & 1) == 0)
             {
-                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, param_2);
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index0, param_2);
             }
         }
         source = param_2 + 3;
         if (source != ((void*)0))
         {
-            address = (u32)index * 0x1c;
+            address = (u32)index0 * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
             value2 = source[0];
@@ -4270,43 +4272,43 @@ void FUN_002a2290(u16 *param_1, f32 *param_2, f32 *param_3, u16 param_4)
             entry[2] = value4;
             entry[3] = value1;
         }
-        index++;
-        if (index >= 4)
+        index0++;
+        if (index0 >= 4)
         {
-            index = 0;
+            index0 = 0;
         }
-        param_1[0x3c] = index;
+        param_1[0x3c] = index0;
         param_1[0x3b]++;
     }
 
     FUN_002a1e00_typed(work, param_2, param_3, fGpffff82c8);
     if (param_1[0x3b] < 4)
     {
-        index = param_1[0x3c];
+        index1 = param_1[0x3c];
         if (work != ((void*)0))
         {
-            address = (u32)index * 0x1c;
+            address = (u32)index1 * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 4);
             *(RwV3d*)entry = *(RwV3d*)work;
             if ((*param_1 & 1) == 0)
             {
-                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index, work);
+                FUN_0048d370(*(u32*)((u8*)param_1 + 0x98), index1, work);
             }
         }
         if (work + 3 != ((void*)0))
         {
-            address = (u32)index * 0x1c;
+            address = (u32)index1 * 0x1c;
             address += (u32)param_1;
             entry = (f32*)(address + 0x10);
             *(RwV4d*)entry = *(RwV4d*)(work + 3);
         }
-        index++;
-        if (index >= 4)
+        index1++;
+        if (index1 >= 4)
         {
-            index = 0;
+            index1 = 0;
         }
-        param_1[0x3c] = index;
+        param_1[0x3c] = index1;
         param_1[0x3b]++;
     }
 
