@@ -15,6 +15,7 @@ typedef unsigned int undefined3;
 typedef char* va_list;
 #define va_start(ap, last) (ap = ((va_list)__builtin_next_arg(last) - (__builtin_args_info(2) >= 8 ? 0 : (8 - __builtin_args_info(2)) * 8)))
 #define va_end(ap) ((void)0)
+extern u32 FUN_00508900(u32 param_1);
 /* auto-extern (generated) */
 extern u8 DAT_00780000[];
 void FUN_004c38c0(void);
@@ -27,7 +28,7 @@ long FUN_004ca090(void);
 u64 FUN_004c53f0(u64 param_1,u64 param_2,u32 param_3);
 void FUN_004ca520(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
 u32 FUN_004c3c30(int param_1);
-RwInt32 FUN_004c1d10(RwInt32 param_1,...);
+long FUN_004c1d10(RwInt32 param_1,...);
 u32 FUN_004bfde0(u64 param_1);
 u64 FUN_004c1c50(u64 param_1);
 u32 FUN_004bfa70(int param_1,u64 param_2);
@@ -1457,11 +1458,11 @@ u64 FUN_004c08a0(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
   // TODO window stub
   return 0;
 }
-// FUN_004C0A70 NONMATCHING
-u64 FUN_004c0a70(u64 param_1)
+// FUN_004C0A70
+u32 FUN_004c0a70(u32 param_1)
 {
-  *(u32 *)((int)param_1 + 0x38) = 1;
-  return ((u64 (*)(u32))0x508900)(*(u32 *)((int)param_1 + 0x60));
+  *(u32 *)(param_1 + 0x38) = 1;
+  return FUN_00508900(*(u32 *)(param_1 + 0x60));
 }
 // FUN_004C0A80
 u64 FUN_004c0a80(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
@@ -1605,7 +1606,6 @@ LAB_004c0eb0:
 }
 // FUN_004C0F70 NONMATCHING
 u32 FUN_004c0f70(int param_1)
-
 {
   if (*(int *)(param_1 + 0x38) != 1) {
     FUN_004c0e70(param_1,0);
@@ -2128,14 +2128,14 @@ u64 FUN_004c1cd0(u64 param_1)
   return param_1;
 }
 // FUN_004C1D10 NONMATCHING
-RwInt32 FUN_004c1d10(RwInt32 param_1,...)
-
+long FUN_004c1d10(RwInt32 param_1,...)
 {
+  long result;
   va_list args;
-  
+  result = param_1;
   va_start(args,param_1);
   va_end(args);
-  return param_1;
+  return result;
 }
 // FUN_004C1D50 NONMATCHING
 long FUN_004c1d50(int param_1,u32 param_2)
@@ -2610,7 +2610,6 @@ float FUN_004c2a70(float *param_1)
 }
 // FUN_004C2AC0 NONMATCHING
 float FUN_004c2ac0(float *param_1)
-
 {
   float fVar1;
   float fVar2;
@@ -2636,7 +2635,6 @@ float FUN_004c2b20(float *param_1)
 }
 // FUN_004C2B90 NONMATCHING
 u64 FUN_004c2b90(u64 param_1)
-
 {
   if (*(int *)(DAT_00960070_abs + (int)iGpffffbbe8) != 0) {
     FUN_004c3c30(*(int *)(DAT_00960070_abs + (int)iGpffffbbe8));
@@ -5762,16 +5760,19 @@ char * FUN_004c7210(char *param_1)
 // FUN_004C7260 NONMATCHING
 char * FUN_004c7260(char *param_1,char param_2)
 {
+  char *pcVar1;
+  pcVar1 = (char *)0x0;
   while (*param_1 != '\0') {
     if (*param_1 == param_2) {
-      return param_1;
+      pcVar1 = param_1;
+      break;
     }
     param_1 = param_1 + 1;
   }
-  return (char *)0x0;
+  return pcVar1;
 }
 // FUN_004C72A0 NONMATCHING
-char * FUN_004c72a0(char *param_1,char param_2)
+char * FUN_004c72a0(char *param_1,int param_2)
 {
   char *pcVar1;
   char *pcVar2;
