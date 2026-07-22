@@ -20,6 +20,11 @@ extern u32 FUN_003bf510(void);
 extern u64 FUN_003b91c0(float param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5,u32 param_6,u32 param_7);
 extern u64 FUN_003b9320(float param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5,u32 param_6,u32 param_7);
 extern void FUN_0039f210(u32 *param_1,int param_2,int param_3,int param_4);
+extern u8 DAT_006a3308[];
+#pragma alias FUN_00194b20_typed FUN_00194b20
+extern void *FUN_00194b20_typed(u64 parent, const char *name, u32 priority,
+                                void *(*update)(void *), void (*destroy)(void *),
+                                u32 workData);
 
 #ifndef CONCAT44
 #define CONCAT44(hi,lo) ((((u64)(hi)) << 32) | (u32)(lo))
@@ -3421,7 +3426,7 @@ void FUN_003c22f0(int param_1)
 }
 #define FUN_003c22f0(...) ((void (*)(...))FUN_003c22f0)(__VA_ARGS__)
 #undef FUN_003c2350
-// FUN_003C2350 NONMATCHING
+// FUN_003C2350
 
 
 void FUN_003c2350(u64 param_1,u16 param_2)
@@ -3440,7 +3445,9 @@ void FUN_003c2350(u64 param_1,u16 param_2)
 
   *(u16 *)((int)uVar1 + 0xc) = param_2;
 
-  FUN_00194b20(param_1,(void*)0x6a3308,0x10,(void*)0x3c1d20,(void*)0x3c22f0,uVar1);
+  FUN_00194b20_typed(param_1,(const char *)DAT_006a3308,0x10,
+                     (void *(*)(void *))FUN_003c1d20,
+                     (void (*)(void *))FUN_003c22f0,uVar1);
 
   return;
 }
