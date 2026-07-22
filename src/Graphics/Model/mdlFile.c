@@ -3991,6 +3991,7 @@ void FUN_00320380(float param_1,int *param_2)
   u32 uVar4;
 
   u32 uVar5;
+
   u32 uVar6;
 
   u64 uVar3;
@@ -37122,7 +37123,8 @@ void FUN_00340100(u64 param_1)
 
 
 
-// FUN_003402C0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003402C0
 
 
 void FUN_003402c0(int param_1)
@@ -37138,6 +37140,7 @@ void FUN_003402c0(int param_1)
   int iVar3;
 
   u32 *puVar4;
+
 
   
 
@@ -37172,6 +37175,7 @@ void FUN_003402c0(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
