@@ -3903,7 +3903,7 @@ u32 FUN_001FF430(u32 id)
     return 0;
 }
 
-// FUN_001FF630 NONMATCHING
+// FUN_001FF630
 u32 FUN_001FF630(u32 index)
 {
     u8* base;
