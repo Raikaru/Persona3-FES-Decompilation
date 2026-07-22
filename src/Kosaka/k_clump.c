@@ -116,7 +116,7 @@ static void kclump_set_float(void* object, u32 offset, f32 value)
     *(f32*)((u8*)object + offset) = value;
 }
 
-static void* kclump_alloc(u32 count, u32 size, u32 flags)
+static inline void* kclump_alloc(u32 count, u32 size, u32 flags)
 {
     return (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags);
 }
@@ -570,16 +570,16 @@ void func_001a7170(void* object, void* data)
     func_004916d0(object, (KClumpCallback)func_001a70a0, data);
 }
 
-// FUN_001a71a0 NONMATCHING
+// FUN_001a71a0
 void func_001a71a0(u32* state, u32 kind, void* object, u32 enabled, u32 flags)
 {
     KClumpMaterialNode* node;
+    asm volatile("" : "+r"(state));
+    asm volatile("" : "+r"(kind));
+    asm volatile("" : "+r"(object));
+    asm volatile("" : "+r"(enabled));
 
     node = (KClumpMaterialNode*)kclump_alloc(1, sizeof(KClumpMaterialNode), 0x40000);
-    if (node == NULL)
-    {
-        return;
-    }
     node->object = object;
     if (enabled == 1)
     {
