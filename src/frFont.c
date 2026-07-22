@@ -1586,9 +1586,11 @@ u16 FUN_003b0e70(s16 param_1)
 u16 FUN_003b0e90(u16 param_1)
 {
   u16 uVar1;
+  long mask;
 
   uVar1 = uGpffffa810;
-  uGpffffa810 = uGpffffa810 & ~param_1;
+  mask = (s16)~param_1;
+  uGpffffa810 = uGpffffa810 & mask;
   return uVar1;
 }
 #define FUN_003b0e90(...) ((u16 (*)(...))FUN_003b0e90)(__VA_ARGS__)
