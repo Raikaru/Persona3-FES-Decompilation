@@ -9,7 +9,11 @@ void FUN_004d0f00();
 void FUN_001124b0();
 void H_Cdvd_Destroy();
 void FUN_003c7dd0();
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
 extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
+extern const char D_005DBD00[];
+extern void* h_campUpdateSystemMenuTask(KwlnTask* task);
 extern u32 FUN_0017d800(void);
 extern KwlnTask *FUN_00194B20(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
 // FUN_00154770. Destroy callback of the "H_CampSystemMenuDraw" task
@@ -55,13 +59,13 @@ KwlnTask *FUN_001548a0(KwlnTask *parent, u32 priority)
     KwlnTask *task;
     void *work;
 
-    work = (*DAT_00960184)(1, 0x17c, 0x40000);
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
     if (work == NULL) {
         return NULL;
     }
 
-    task = FUN_00194B20(parent, (const char *)(uintptr_t)0x005dbd00, priority,
-                        (KwlnTaskUpdateFunc)(uintptr_t)0x0014f7d0,
+    task = FUN_00194B20(parent, D_005DBD00, priority,
+                        h_campUpdateSystemMenuTask,
                         h_campSystemDestroyMenuDrawTask, work);
     if (task == NULL) {
         return NULL;
@@ -753,7 +757,7 @@ KwlnTask *FUN_0015C460(KwlnTask *param_1)
     u32 value;
     task = param_1;
 
-    work = (*DAT_00960184)(1, 0x17c, 0x40000);
+    work = (*DAT_00960184_abs)(1, 0x17c, 0x40000);
     if (work == NULL) {
         return 0;
     }
