@@ -2582,40 +2582,54 @@ u32 func_002f5320(void)
 void func_002f5330(int param_1)
 
 {
+  typedef struct VoiceParam {
+    u8 padding[0x1a];
+    u16 flags;
+  } VoiceParam;
   int iVar1;
+  u16 flags;
+  u16 kind;
   u32 uVar2;
+  VoiceParam *work;
   
-  if (((*(u16 *)(param_1 + 0x1a) & 1) != 0) &&
-     (iVar1 = *(int *)(param_1 + 0x30), *(char *)(iVar1 + 0xa2) == '\x01')) {
-    switch(*(u16 *)(iVar1 + 0xa4)) {
+  work = (VoiceParam *)param_1;
+  flags = work->flags;
+  if (((flags & 1) != 0) &&
+     (iVar1 = *(int *)(param_1 + 0x30), *(u8 *)(iVar1 + 0xa2) == '\x01')) {
+    kind = *(u16 *)(iVar1 + 0xa4);
+    switch(kind) {
     case 0xeb:
     case 0xec:
     case 0xed:
     case 0xee:
     case 0xef:
     case 0xf0:
-      *(u16 *)(param_1 + 0x1a) = *(u16 *)(param_1 + 0x1a) | 0x10;
+      work->flags = flags | 0x10;
       uVar2 = *(u32 *)(iVar1 + 0x9c);
-      *(u32 *)(iVar1 + 0x9c) = uVar2 | 0x100;
-      *(u32 *)(iVar1 + 0x9c) = uVar2 | 0x140;
-      *(u32 *)(iVar1 + 0x9c) = uVar2 | 0x1c0;
+      uVar2 = uVar2 | 0x100;
+      *(u32 *)(iVar1 + 0x9c) = uVar2;
+      uVar2 = uVar2 | 0x40;
+      *(u32 *)(iVar1 + 0x9c) = uVar2;
+      uVar2 = uVar2 | 0x80;
+      *(u32 *)(iVar1 + 0x9c) = uVar2;
       **(u16 **)(iVar1 + 0xa2c) = **(u16 **)(iVar1 + 0xa2c) | 0x40;
     }
-    switch(*(u16 *)(iVar1 + 0xa4)) {
+    kind = *(u16 *)(iVar1 + 0xa4);
+    switch(kind) {
     case 0xeb:
       FUN_00288f80(iVar1,0xcb);
       break;
     case 0xec:
-      FUN_00288f80(iVar1,0xcd);
+      FUN_00288f80(iVar1,0xc7);
       break;
     case 0xed:
-      FUN_00288f80(iVar1,199);
+      FUN_00288f80(iVar1,0xc1);
       break;
     case 0xee:
-      FUN_00288f80(iVar1,0xcf);
+      FUN_00288f80(iVar1,0xcd);
       break;
     case 0xef:
-      FUN_00288f80(iVar1,0xc1);
+      FUN_00288f80(iVar1,0xcf);
       break;
     case 0xf0:
       FUN_00288f80(iVar1,0xc5);
