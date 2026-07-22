@@ -610,11 +610,9 @@ extern u8 DAT_007bdff8[];
 #pragma alias FUN_0050c528_str FUN_0050c528
 extern u32 FUN_0050c528_str(u32 param_1, int param_2, u32* param_3, u32 param_4);
 // FUN_0050C650 NONMATCHING
-void FUN_0050c650(u32 param_1, u32* param_2)
+void FUN_0050c650(u32 param_1, u32 param_2)
 {
-  u32* a2;
-  a2 = param_2;
-  FUN_0050c528_str(param_1, (int)(u8*)DAT_007bdff8, a2, 1);
+  FUN_0050c528_str(param_1, (int)(u8*)DAT_007bdff8, (u32*)param_2, 1);
 }
 
 // FUN_0050C678 NONMATCHING
@@ -734,7 +732,6 @@ bool FUN_0050c848(char *param_1,u32 param_2)
 }
 // FUN_0050C9A0 NONMATCHING
 bool FUN_0050c9a0(void)
-
 {
   u32 uVar1;
   
@@ -924,14 +921,15 @@ u64 FUN_0050cd70(int param_1)
   }
   return uVar1;
 }
-// FUN_0050CE00 NONMATCHING
+// FUN_0050CE00
 void FUN_0050ce00(void)
 
 {
-  long lVar1;
+  u32 lVar1;
   
   lVar1 = GetMemorySize();
   if (lVar1 == 0x2000000) {
+    FUN_0050ce40();
   }
   else {
     _InitTLB();
