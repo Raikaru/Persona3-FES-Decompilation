@@ -28,6 +28,8 @@ extern int FUN_00195340(const char *);
 extern int FUN_00195540(int);
 #pragma alias FUN_00396f50_int FUN_00396f50
 extern void FUN_00396f50_int(int);
+#pragma alias FUN_00397030_int FUN_00397030
+extern void FUN_00397030_int(int);
 extern void FUN_00195020(u32 param_1);
 extern void FUN_0019d3f0(const char *,u32);
 extern int FUN_0035ed20(int);
@@ -120,6 +122,8 @@ u32 FUN_00396ed0(int param_1)
 // FUN_00396F50 NONMATCHING
 
 
+#pragma push
+#pragma opt_rebuildconditionals off
 void FUN_00396f50(int param_1)
 
 
@@ -128,31 +132,36 @@ void FUN_00396f50(int param_1)
 
   int manager;
   int base;
-  int *state_ptr;
-  int *entry;
+  u32 *state_ptr;
+  u32 *entry;
+  int offset;
 
   manager = FUN_00195340("koma_Manager");
-  if ((manager != 0) && (param_1 < 3)) {
-    base = FUN_00195540(manager);
-    entry = (int *)((int)param_1 * 0xc + base);
-    state_ptr = entry + 2;
-    if (*state_ptr != 0) {
-      if (*entry == 2) goto state_action;
-      if (*entry == 1) goto state_action;
-      if (*entry == 0) goto state_done;
-      FUN_00111500();
-      *entry = 0;
-      *state_ptr = 0;
-      goto state_done;
+  if (manager == 0) return;
+  if (param_1 >= 3) return;
+  base = FUN_00195540(manager);
+  offset = (int)param_1 * 0xc;
+  entry = (u32 *)(offset + base);
+  state_ptr = entry + 2;
+  if (*state_ptr != 0) {
+    if (*entry == 2) goto state_action;
+    if (*entry == 1) goto state_action;
+    if (*entry == 0) return;
+    goto state_default;
 state_action:
-      FUN_00397030(param_1);
+    FUN_00397030_int(param_1);
+    goto state_done;
+state_default:
+    FUN_00111500();
+    *entry = 0;
+    *state_ptr = 0;
 state_done:
-      ;
-    }
+    ;
   }
   return;
 
 }
+#pragma pop
 #define FUN_00396f50(...) ((void (*)(...))FUN_00396f50)(__VA_ARGS__)
 #undef FUN_00397030
 // FUN_00397030 NONMATCHING
