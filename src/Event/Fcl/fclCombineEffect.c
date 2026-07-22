@@ -26,7 +26,7 @@ u64 FUN_004175e0(void);
 u64 FUN_00417630(void);
 void FUN_00417680(void);
 u64 FUN_004176f0(long param_1,u16 param_2,long param_3);
-u64 FUN_004177e0(u64 param_1);
+u64 FUN_004177e0(int param_1);
 u32 FUN_004178c0(int param_1);
 int * FUN_00418030(void);
 void FUN_004180a0(u32 *param_1);
@@ -63,7 +63,7 @@ u8 FUN_0041b530(int param_1);
 #pragma alias FUN_0041b530_u32 FUN_0041b530
 u32 FUN_0041b530_u32(int param_1);
 void FUN_0041b550(int param_1);
-u8 FUN_0041b5c0(u64 param_1,u32 *param_2);
+u8 FUN_0041b5c0(int param_1,u32 *param_2);
 u64 FUN_0041b810(int param_1);
 u64 FUN_0041b950(int param_1);
 u64 FUN_0041ba60(int param_1);
@@ -301,94 +301,48 @@ u32 FUN_004173e0(void)
 
 
 u64 FUN_00417410(void)
-
-
-
 {
-
   int iVar1;
-
   u32 uVar2;
-
   int *piVar3;
 
-  u64 uVar4;
 
-  long lVar5;
-
-  
-
-  uVar4 = kwlnTaskGetWorkData();
-
-  piVar3 = (int *)uVar4;
-
+  piVar3 = (int *)kwlnTaskGetWorkData();
   iVar1 = *piVar3;
-
   if (iVar1 != 4) {
-
     if (iVar1 != 3) {
-
       if (iVar1 != 2) {
-
         if (iVar1 != 1) {
-
           if (iVar1 != 0) {
-
             return 0;
-
           }
-
           *piVar3 = 1;
-
-
+          FUN_004177e0((int)piVar3);
         }
-
-
-        if (lVar5 == 0) {
-
+        if (FUN_004178c0((int)piVar3) == 0) {
           return 0;
-
         }
-
         *piVar3 = 2;
-
         piVar3[1] = piVar3[1] & 0xfffffffd;
-
       }
-
-
-      if (lVar5 == 0) {
-
+      if (FUN_0041b530((int)piVar3) == 0) {
         return 0;
-
       }
-
       *piVar3 = 3;
-
+      FUN_0041b550((int)piVar3);
     }
-
-
     *piVar3 = 4;
-
     uVar2 = piVar3[1];
-
-    piVar3[1] = uVar2 | 4;
-
-    piVar3[1] = uVar2 | 5;
-
+    uVar2 = uVar2 | 4;
+    piVar3[1] = uVar2;
+    uVar2 = uVar2 | 1;
+    piVar3[1] = uVar2;
   }
-
-
-  if (lVar5 != 0) {
-
+  if (FUN_0041b5c0((int)piVar3,(u32 *)piVar3[17]) != 0) {
     *piVar3 = 2;
-
     piVar3[1] = piVar3[1] & 0xfffffffb;
-
   }
-
   return 0;
-
 }
 
 // FUN_00417540
@@ -582,7 +536,7 @@ u64 FUN_004176f0(long param_1,u16 param_2,long param_3)
 // FUN_004177E0 NONMATCHING
 
 
-u64 FUN_004177e0(u64 param_1)
+u64 FUN_004177e0(int param_1)
 
 
 
@@ -3893,7 +3847,7 @@ void FUN_0041b550(int param_1)
 // FUN_0041B5C0 NONMATCHING
 
 
-u8 FUN_0041b5c0(u64 param_1,u32 *param_2)
+u8 FUN_0041b5c0(int param_1,u32 *param_2)
 
 
 
