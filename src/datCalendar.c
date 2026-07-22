@@ -4057,11 +4057,26 @@ void func_00186100(void* resource, u64 position, u32 alpha)
 // FUN_00186140 NONMATCHING
 void func_00186140(void* resource, u64 position, u32 alpha)
 {
-    func_001159f0(NULL, resource, 0x2a, alpha & 0xff,
-                  clndPackedX(position), clndPackedY(position) + 404.0f,
-                  48.0f);
-}
+    f32 x;
+    f32 y;
+    u32 drawAlpha;
+    union
+    {
+        u64 value;
+        struct
+        {
+            f32 x;
+            f32 y;
+        } coords;
+    } packed;
 
+    packed.value = position;
+    y = packed.coords.y + 404.0f;
+    x = packed.coords.x;
+    drawAlpha = alpha & 0xff;
+    func_001159f0(resource, resource, 0x2a, drawAlpha,
+                  x, y, 48.0f);
+}
 // FUN_00186190 NONMATCHING
 void* func_00186190(KwlnTask* task)
 {
