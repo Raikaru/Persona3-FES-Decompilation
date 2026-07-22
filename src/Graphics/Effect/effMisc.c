@@ -3,6 +3,8 @@
 #include "Kernel/Kwln/kwln.h"
 #include "sce/eestruct.h"
 #include "temporary.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
 
 static EffRandState sRandState; // 00957bf0
 
@@ -100,16 +102,17 @@ void func_00357e30(void)
     );
 }
 
+#pragma optimization_level 2
 // FUN_00357ea0 NONMATCHING
 void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
 {
     RwV4d quaternion;
     f32 halfAngle;
-    f32 cosX;
-    f32 sinX;
     f32 cosY;
     f32 sinY;
     f32 cosZ;
+    f32 cosX;
+    f32 sinX;
     f32 sinZ;
 
     halfAngle = -angleX * 0.5f;
@@ -121,10 +124,10 @@ void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
     halfAngle = -angleZ * 0.5f;
     cosZ = cosf(halfAngle);
     sinZ = sinf(halfAngle);
-    quaternion.x = sinX * cosY * cosZ + cosX * sinY * sinZ;
-    quaternion.y = cosX * sinY * cosZ - sinX * cosY * sinZ;
-    quaternion.z = sinX * sinY * cosZ + cosX * cosY * sinZ;
-    quaternion.w = sinX * cosY * cosZ - cosX * sinY * sinZ;
+    quaternion.x = sinX * (cosY * cosZ) + cosX * (sinY * sinZ);
+    quaternion.y = cosX * (sinY * cosZ) - sinX * (cosY * sinZ);
+    quaternion.z = sinX * (sinY * cosZ) + cosX * (cosY * sinZ);
+    quaternion.w = sinX * (cosY * cosZ) - cosX * (sinY * sinZ);
 
     __asm__ volatile (
         ".set noreorder          \n"
@@ -135,6 +138,7 @@ void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
         : "vf10", "memory"
     );
 }
+#pragma optimization_level 2
 
 // FUN_00357fd0. [0;16777215]
 u32 effMiscRand(EffRandState* state)
@@ -293,10 +297,6 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     matrix->at.z = z * z + (1.0f - z * z) * cosine;
     matrix->pad2 = 0;
 
-    matrix->pos.x = 0.0f;
-    matrix->pos.y = 0.0f;
-    matrix->pos.z = 0.0f;
-    matrix->pad3 = 1;
 }
 
 // FUN_00358340
@@ -393,9 +393,10 @@ void func_00358410(void)
 void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
     u32 i;
+    u32 j;
     const EffRenderState* renderState;
-    u32 savedRenderStates[6];
     RwIm2DVertex vertices[4];
+    u32 savedRenderStates[6];
     f32 zBufferNear;
     f32 recipZ;
 
@@ -404,61 +405,62 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
         for (i = 0; i < 6; i++)
         {
             renderState = &sEffRenderStates[i];
-            RwRenderStateGet(renderState->renderState, &savedRenderStates[i]);
-            RwRenderStateSet(renderState->renderState, renderState->value);
+            (*((RwGlobals*)rwGlobals_abs)->device.getRenderState)(renderState->renderState, &savedRenderStates[i]);
+            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)renderState->value);
         }
 
-        RwRenderStateSet(rwRENDERSTATETEXTURERASTER, NULL);
+        (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
         RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
         RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 5, 127, 0, 0, 0, 1, 3));
     }
 
-    zBufferNear = rwGlobals.device.zBufferNear;
+    zBufferNear = ((RwGlobals*)rwGlobals_abs)->device.zBufferNear;
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
 
     vertices[0].u.els.scrVertex.x = 0.0f;
     vertices[0].u.els.scrVertex.y = 0.0f;
     vertices[0].u.els.scrVertex.z = zBufferNear;
-    vertices[0].u.els.recipZ = recipZ;
     vertices[0].u.els.color.r = (f32)color->r;
     vertices[0].u.els.color.g = (f32)color->g;
     vertices[0].u.els.color.b = (f32)color->b;
     vertices[0].u.els.color.a = (f32)color->a;
+    vertices[0].u.els.recipZ = recipZ;
 
     vertices[1].u.els.scrVertex.x = 0.0f;
     vertices[1].u.els.scrVertex.y = 448.0f;
     vertices[1].u.els.scrVertex.z = zBufferNear;
-    vertices[1].u.els.recipZ = recipZ;
     vertices[1].u.els.color.r = (f32)color->r;
     vertices[1].u.els.color.g = (f32)color->g;
     vertices[1].u.els.color.b = (f32)color->b;
     vertices[1].u.els.color.a = (f32)color->a;
+    vertices[1].u.els.recipZ = recipZ;
 
     vertices[2].u.els.scrVertex.x = 640.0f;
     vertices[2].u.els.scrVertex.y = 0.0f;
     vertices[2].u.els.scrVertex.z = zBufferNear;
-    vertices[2].u.els.recipZ = recipZ;
     vertices[2].u.els.color.r = (f32)color->r;
     vertices[2].u.els.color.g = (f32)color->g;
     vertices[2].u.els.color.b = (f32)color->b;
     vertices[2].u.els.color.a = (f32)color->a;
+    vertices[2].u.els.recipZ = recipZ;
 
     vertices[3].u.els.scrVertex.x = 640.0f;
     vertices[3].u.els.scrVertex.y = 448.0f;
     vertices[3].u.els.scrVertex.z = zBufferNear;
-    vertices[3].u.els.recipZ = recipZ;
     vertices[3].u.els.color.r = (f32)color->r;
     vertices[3].u.els.color.g = (f32)color->g;
     vertices[3].u.els.color.b = (f32)color->b;
     vertices[3].u.els.color.a = (f32)color->a;
+    vertices[3].u.els.recipZ = recipZ;
 
-    RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
+    (*((RwGlobals*)rwGlobals_abs)->device.fpIm2DRenderPrimitive)(rwPRIMTYPETRISTRIP, vertices, 4);
 
     if (saveAndRestoreRenderState)
     {
-        for (i = 0; i < 6; i++)
+        for (j = 0; j < 6; j++)
         {
-            RwRenderStateSet(sEffRenderStates[i].renderState, savedRenderStates[i]);
+            renderState = &sEffRenderStates[j];
+            (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(renderState->renderState, (void*)savedRenderStates[j]);
         }
     }
 }
