@@ -262,8 +262,8 @@ void H_Dbprt_FmtAt(volatile RwV2d pos, const char* fmt, ...)
     char buffer[HDBPRT_LOG_MAXCHAR];
     s32 character;
     s32 baseX;
-    s32 x;
     s32 y;
+    s32 x;
     char glyph;
     va_list args;
 
