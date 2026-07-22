@@ -563,7 +563,7 @@ extern void func_002bb610(u32 param_1);
 extern void func_002bb6f0(u16 param_1,u64 param_2);
 extern void func_002bb760(void);
 extern void func_002bb770(void);
-extern u64 func_002bb7d0(void);
+extern void *func_002bb7d0(void);
 extern void func_002bb8f0(u32 param_1);
 extern u16 * func_002bb9c0(int param_1);
 extern u32 func_002bbac0(int param_1,u16 *param_2);
@@ -2650,39 +2650,39 @@ void func_002bb770(void)
   return;
 }
 
-// FUN_002bb7d0 NONMATCHING
+// FUN_002bb7d0
 
-u64 func_002bb7d0(void)
+void *func_002bb7d0(void)
 {
-  u32 uVar4 = 0;
-  u64 uVar2 = 0;
-  u64 uVar1 = 0;
-  u16 *puVar3;
-  u64 (**allocator)(...);
+  u32 rootAddress;
+  u32 index;
+  u32 nodeAddress;
+  u16 *node;
+  register u32 (* volatile *allocate)(...);
   
-  allocator = (u64 (**)(...))DAT_00960178_abs;
-  uVar1 = (*allocator)(200,0x40000);
-  func_00521408(uVar1,0,200);
-  for (uVar4 = 0; uVar4 < 0x30; uVar4 = uVar4 + 1) {
-    uVar2 = (*allocator)(0x24,0x40000);
-    func_00521408(uVar2,0,0x24);
-    puVar3 = (u16 *)uVar2;
-    *(u32 *)(puVar3 + 2) = 0xffffffff;
-    *(u8 *)(puVar3 + 4) = 0x14;
-    *(u32 *)(puVar3 + 6) = 0;
-    *puVar3 = 0x200;
-    *(u32 *)(puVar3 + 0xe) = 0;
-    if (*(int *)(iGpffffb6fc + 400) == 0) {
-      *(u32 *)(puVar3 + 0x10) = 0;
+  allocate = DAT_00960178_u32_abs;
+  rootAddress = (*allocate)(0xc8,0x40000);
+  func_00521408((void *)rootAddress,0,0xc8);
+  for (index = 0; index < 0x30; index = index + 1) {
+    nodeAddress = (*allocate)(0x24,0x40000);
+    func_00521408((void *)nodeAddress,0,0x24);
+    node = (u16 *)nodeAddress;
+    *(s32 *)(node + 2) = -1;
+    *(u8 *)(node + 4) = 0x14;
+    *(u32 *)(node + 6) = 0;
+    *node = 0x200;
+    *(u32 *)(node + 0xe) = 0;
+    if (*(int *)(iGpffffb6fc + 400) != 0) {
+      *(u16 **)(*(int *)(iGpffffb6fc + 400) + 0x1c) = node;
+      *(u32 *)(node + 0x10) = *(u32 *)(iGpffffb6fc + 400);
     }
     else {
-      *(u16 **)(*(int *)(iGpffffb6fc + 400) + 0x1c) = puVar3;
-      *(u32 *)(puVar3 + 0x10) = *(u32 *)(iGpffffb6fc + 400);
+      *(u32 *)(node + 0x10) = 0;
     }
-    *(u16 **)(iGpffffb6fc + 400) = puVar3;
-    *(u16 **)((int)uVar1 + uVar4 * 4) = puVar3;
+    *(u16 **)(iGpffffb6fc + 400) = node;
+    *(u16 **)(rootAddress + index * 4) = node;
   }
-  return uVar1;
+  return (void *)rootAddress;
 }
 
 // FUN_002bb8f0 MATCHING
