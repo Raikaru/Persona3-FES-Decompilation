@@ -559,39 +559,37 @@ u64 FUN_003b89f0(u32 param_1,u64 param_2,u64 param_3,u64 param_4)
 #undef FUN_003bba70
 #undef FUN_003bb9b0
 
-// FUN_003B8A60 NONMATCHING
+// FUN_003B8A60
 
 
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
 {
-  float values[3];
+  struct V3 {
+    float x;
+    float y;
+    float z;
+  } values;
   float source10;
   float source14;
   float source18;
+  struct V3 *input;
 
+  input = (struct V3 *)param_2;
+  values = *input;
   source10 = 0.0f;
   source14 = 0.0f;
   source18 = 0.0f;
-  values[0] = param_2[0];
-  values[1] = param_2[1];
-  values[2] = param_2[2];
 
   if (param_1 == 0) {
     return 0;
   }
 
   FUN_003bba70((int)param_1);
-  FUN_003bb9b0(values);
+  FUN_003bb9b0((float *)&values);
   param_1->flags28 |= 4;
-  source10 = param_1->value10;
-  source18 = param_1->value18;
-  source14 = param_1->value14;
-  param_1->value64 = source10;
-  param_1->value68 = source14;
-  param_1->value6c = source18;
-  param_1->value70 = values[0];
-  param_1->value74 = values[1];
-  param_1->value78 = values[2];
+  *(struct V3 *)&param_1->value64 =
+      *(struct V3 *)&param_1->value10;
+  *(struct V3 *)&param_1->value70 = values;
   param_1->value7c = 0;
   param_1->value7d = param_4;
   param_1->value80 = param_3;
