@@ -25,7 +25,6 @@ typedef struct KClumpMaterialNode
     u8 reserved[8];      // 0x20
     struct KClumpMaterialNode* next; // 0x28
 } KClumpMaterialNode;
-
 typedef struct KClumpContainer
 {
     u8 reserved[0x18];
@@ -71,6 +70,8 @@ extern u32 D_007CC1C0;
 extern void (*jtbl_0096017C)(void* memory);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern void (*jtbl_0096017C_abs)(void* memory);
+#pragma alias jtbl_0096017C_addr jtbl_0096017C
+extern u8 jtbl_0096017C_addr[];
 extern void* D_007D2D60;
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
@@ -1319,8 +1320,7 @@ void func_001a8fe0(KwlnTask* task)
     {
         func_0034fcf0((void*)work[5]);
     }
-    func_0034fcf0(work);
-    jtbl_0096017C_abs(parent->workData);
+    (*(void (**)(void*))jtbl_0096017C_addr)(parent->workData);
 }
 
 // FUN_001a9080
