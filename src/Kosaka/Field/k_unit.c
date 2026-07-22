@@ -2695,7 +2695,7 @@ void func_001d4180(void)
     }
 }
 
-// FUN_001d4290 NONMATCHING
+// FUN_001d4290
 void func_001d4290(void)
 {
     char path[128];
@@ -2723,7 +2723,7 @@ void func_001d4290(void)
         func_00100ec0(object);
     }
 }
-// FUN_001d43e0 NONMATCHING
+// FUN_001d43e0
 u32 func_001d43e0(void* object)
 {
     HCdvd* cdvd;
