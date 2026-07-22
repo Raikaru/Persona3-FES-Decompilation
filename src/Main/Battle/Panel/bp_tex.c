@@ -2076,6 +2076,7 @@ void bpTexPrepareNodes(void)
  * The command-panel work area lives in the same GP slot used by bcm_panel.c.
  */
 extern u8* DAT_007ce308;
+extern u8* DAT_007ce408;
 #define BP_PANEL_GLOBAL DAT_007ce308
 
 extern void* func_0021c3f0(s32 texture);
@@ -2147,17 +2148,10 @@ void func_0021f0c0(void* work)
     BP_PANEL_GLOBAL = (u8*)work;
 }
 
-// FUN_0021F140
+// FUN_0021F140 NONMATCHING
 void func_0021f140(void)
 {
-    __asm__ volatile (
-        ".set noreorder           \n"
-        "sw $zero, -0x49e8($gp)   \n"
-        ".set reorder"
-        :
-        :
-        : "memory"
-    );
+    DAT_007ce408 = NULL;
 }
 
 // FUN_0021f150 NONMATCHING
