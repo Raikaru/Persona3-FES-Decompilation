@@ -59,7 +59,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 
             work->vertices[2].u.els.scrVertex.x = work->pos.x;
             work->vertices[2].u.els.scrVertex.y = work->pos.y + work->rect.h;
-            
+
             work->vertices[3].u.els.scrVertex.x = work->pos.x + work->rect.w;
             work->vertices[3].u.els.scrVertex.y = work->pos.y + work->rect.h;
 
@@ -67,7 +67,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 
             work->state = HCURSOR_STATE_UPDATE;
             break;
-        
+
         case HCURSOR_STATE_STOP: return KWLNTASK_STOP;
     }
 

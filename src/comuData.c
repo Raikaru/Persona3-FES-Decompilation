@@ -155,15 +155,10 @@ const char* ComuData_GetUltSLPersonasString(u32 idx)
 
 
 u8 * FUN_003c4040(int param_1,int param_2)
-
-
-
 {
-
   int lVar1;
 
   
-
   lVar1 = FUN_00172a50((short)param_1);
 
   if (lVar1 == 0) {
@@ -181,7 +176,6 @@ u8 * FUN_003c4040(int param_1,int param_2)
   }
 
   return PTR_DAT_006a38e8_abs[param_2 * 6 + param_1];
-
 }
 #define FUN_003c4040(...) ((u8 * (*)(...))FUN_003c4040)(__VA_ARGS__)
 #undef FUN_003c40f0
