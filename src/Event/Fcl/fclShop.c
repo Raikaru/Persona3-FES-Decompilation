@@ -261,78 +261,76 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
 // FUN_003E5E20 NONMATCHING
 void FUN_003e5e20(u8* param_1, u8* param_2)
 {
-    s8 cVar2;
+    char cVar2;
+    s32 iVar1;
     s32 sVar3;
     f32 fVar4;
-    f32 fVar6;
     u32 random;
 
     if (*(u8 *)(param_2 + 0xd) > 0)
     {
         *(u8 *)(param_2 + 0xd) = *(u8 *)(param_2 + 0xd) - 1;
-        return;
-    }
-
-    fVar6 = 0.25f * (f32)(*(s8 *)(param_2 + 0xc) + *(s8 *)(param_2 + 9));
-    *(s16 *)(param_2 + 4) =
-        *(s16 *)(param_2 + 4) + (s16)(int)fVar6;
-
-    *(s16 *)(param_2 + 6) =
-        *(s16 *)(param_2 + 6) +
-        (s16)((*(s8 *)(param_2 + 9) & 1) * 2 + 2);
-
-    cVar2 = *(s8 *)(param_2 + 0xc) - 1;
-    *(s8 *)(param_2 + 0xc) = cVar2;
-    if (cVar2 > 0)
-    {
-        random = RpRandom();
-        *(s8 *)(param_2 + 0xc) =
-            (s8)(((random % 0xffffU) * 10U) / 0xffffU);
-    }
-
-    fVar6 = (f32)*(s8 *)(param_2 + 0xc);
-    fVar6 /= 5.0f;
-    fVar6 = 1.0f + fVar6;
-    fVar4 = (f32)*(s16 *)(param_2 + 0xe);
-    fVar4 += fVar6;
-    sVar3 = (int)fVar4;
-    *(s16 *)(param_2 + 0xe) = sVar3;
-    if (sVar3 < 0)
-    {
-        *(s16 *)(param_2 + 0xe) = sVar3 + 0x168;
-    }
-    if (*(s16 *)(param_2 + 0xe) >= 0x169)
-    {
-        *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) - 0x168;
-    }
-
-    if (*(u16 *)(param_2 + 10) < 0x19)
-    {
-        fVar4 = (f32)(*(u8 *)(param_1 + 5) * *(u16 *)(param_2 + 10)) / 25.0f;
-        *(u8 *)(param_2 + 8) = (u8)fVar4;
     }
     else
     {
-        *(u8 *)(param_2 + 8) = *(u8 *)(param_1 + 5);
-    }
+        fVar4 = 0.25f * (f32)(*(s8 *)(param_2 + 0xc) + *(s8 *)(param_2 + 9));
+        iVar1 = (s32)fVar4;
+        *(s16 *)(param_2 + 4) =
+            *(s16 *)(param_2 + 4) + (s16)iVar1;
 
-    if (*(u8 *)(param_2 + 8) == 0)
-    {
-        goto skip_draw;
-    }
+        *(s16 *)(param_2 + 6) =
+            *(s16 *)(param_2 + 6) +
+            (s16)((*(s8 *)(param_2 + 9) & 1) * 2 + 2);
+        cVar2 = *(char *)(param_2 + 0xc) - 1;
+        *(char *)(param_2 + 0xc) = cVar2;
 
-    FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
-                 1.0f, 1.0f, *(u16 *)(param_2 + 4),
-                 *(u16 *)(param_2 + 6),
-                 (int)(u8)(DAT_007cad84 * (f32)*(u8 *)(param_2 + 8)) & 0xff,
-                 0xf7, 0, 0, 0);
+        if (cVar2 < 1)
+        {
+            random = RpRandom();
+            *(s8 *)(param_2 + 0xc) =
+                (s8)(((random % 0xffffU) * 10U) / 0xffffU);
+        }
 
-skip_draw:
+        fVar4 = (f32)*(s8 *)(param_2 + 0xc);
+        fVar4 /= 5.0f;
+        fVar4 = 1.0f + fVar4;
+        fVar4 += (f32)*(s16 *)(param_2 + 0xe);
+        sVar3 = (int)fVar4;
+        *(s16 *)(param_2 + 0xe) = sVar3;
+        if (sVar3 < 0)
+        {
+            *(s16 *)(param_2 + 0xe) = sVar3 + 0x168;
+        }
+        if (*(s16 *)(param_2 + 0xe) >= 0x169)
+        {
+            *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) - 0x168;
+        }
 
-    *(u16 *)(param_2 + 10) = *(u16 *)(param_2 + 10) - 1;
-    if (*(u16 *)(param_2 + 10) == 0)
-    {
-        *(s32 *)(param_1 + 0x40c) = *(s32 *)(param_1 + 0x40c) - 1;
+        if (*(u16 *)(param_2 + 10) < 0x19)
+        {
+            fVar4 = (f32)(*(u8 *)(param_1 + 5) * *(u16 *)(param_2 + 10)) / 25.0f;
+            *(u8 *)(param_2 + 8) = (u8)fVar4;
+        }
+        else
+        {
+            *(u8 *)(param_2 + 8) = *(u8 *)(param_1 + 5);
+        }
+
+        if (*(u8 *)(param_2 + 8) != 0)
+        {
+            fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
+            FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
+                         1.0f, 1.0f, *(u16 *)(param_2 + 4),
+                         *(u16 *)(param_2 + 6),
+                         (int)fVar4 & 0xff,
+                         0xf7, 0, 0, 0);
+        }
+
+        *(u16 *)(param_2 + 10) = *(u16 *)(param_2 + 10) - 1;
+        if (*(u16 *)(param_2 + 10) == 0)
+        {
+            *(s32 *)(param_1 + 0x40c) = *(s32 *)(param_1 + 0x40c) - 1;
+        }
     }
 }
 
@@ -7414,31 +7412,8 @@ u64 FUN_003ee920(u64 unused, u64 handle)
     work = (u8*)FUN_003c5470(handle);
     value = *(u32*)(work + 8);
     cosf((DAT_007cae00 * (float)*(s16*)(work + 0x18)) / 255.0f);
-    /* Preserve the retail paired-accumulator register schedule. */
-    __asm__ volatile (
-        "mov.s $f21, $f0\n"
-        "lui $v0, 0x4396\n"
-        "mtc1 $v0, $f20"
-        :
-        :
-        : "$v0", "$f20", "$f21");
-    sinf((DAT_007cae00 * (float)*(s16*)(work + 0x1a)) / 255.0f);
-    __asm__ volatile (
-        "lui $v0, 0x4396\n"
-        "mtc1 $v0, $f1\n"
-        "nop\n"
-        ".word 0x4600081a\n"
-        "mtc1 $zero, %0"
-        : "=f"(zero)
-        :
-        : "$v0", "$f1");
-    __asm__ volatile (
-        ".word 0x4615a01c\n"
-        "cvt.w.s $f0, $f0\n"
-        "mfc1 %0, $f0"
-        : "=r"(x)
-        :
-        : "$f0");
+    x = (s32)(sinf((DAT_007cae00 * (float)*(s16*)(work + 0x1a)) / 255.0f) * 300.0f);
+    zero = 0.0f;
     FUN_0040e3c0(zero, x, 0, 0xff, descriptors[*state * 2], 0);
     FUN_0040e3c0(0.0f, x, -3, 0xff, descriptors[*state * 2 + 1], 0);
     sprintf(text, (const char*)&gp0xffffaad8, value);
