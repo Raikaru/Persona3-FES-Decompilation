@@ -93,6 +93,8 @@ extern u32 DAT_007e0952;
 extern u32 DAT_007e0958;
 extern u32 DAT_007e095a;
 extern u32 DAT_00833a50[];
+#pragma alias DAT_00833a50_abs DAT_00833a50
+extern u8 DAT_00833a50_abs[];
 extern void* DAT_00833b78;
 extern s32 (*DAT_00960184)();
 extern u8 DAT_005dbc50[];
@@ -260,37 +262,37 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
     register void* parent;
     switch (param_2) {
     case 0:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x2c,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x2c,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
         break;
     case 1:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x21,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x21,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
         break;
     case 2:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x24,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
         break;
     case 3:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x28,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x28,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
         break;
     case 4:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x24,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x24,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
         break;
     case 5:
-        campDrawSprite(parent, (void*)DAT_00833a50[0], 0x23,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 0), 0x23,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
@@ -299,7 +301,7 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
     case 11:
     case 12:
     case 13:
-        campDrawSprite(parent, (void*)DAT_00833a50[1], 5,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 4), 5,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
@@ -312,25 +314,25 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
     case 0x15:
         break;
     case 0x1f:
-        campDrawSprite(parent, (void*)DAT_00833a50[2], 8,
+        campDrawSprite(parent, (void*)*(void**)(DAT_00833a50_abs + 8), 8,
                        *(u8*)(param_1 + 0x40),
                        *(f32*)(param_1 + 0x38), *(f32*)(param_1 + 0x3c),
                        *(f32*)(param_1 + 0x24));
-        campDrawSpriteX(parent, (void*)DAT_00833a50[2], 4,
+        campDrawSpriteX(parent, (void*)*(void**)(DAT_00833a50_abs + 8), 4,
                         *(f32*)(param_1 + 0x38) + 16.0f,
                         *(u8*)(param_1 + 0x40),
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
         break;
     case 0x20:
-        campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 5,
+        campDrawSpriteX(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 5,
                         *(f32*)(param_1 + 0x38) + 20.0f,
                         *(u8*)(param_1 + 0x40),
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
-        campDrawSpriteXY(parent, (void*)DAT_00833a50[0x55], 9,
+        campDrawSpriteXY(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 9,
                          *(f32*)(param_1 + 0x38) + 97.0f,
-                         (389.0f + *(f32*)(param_1 + 0x3c)) - 415.0f,
+                         (*(f32*)(param_1 + 0x3c) + 389.0f) - 415.0f,
                          *(u8*)(param_1 + 0x40), *(f32*)(param_1 + 0x24));
-        campDrawSpriteX(parent, (void*)DAT_00833a50[0x55], 3,
+        campDrawSpriteX(parent, (void*)*(void**)(DAT_00833a50_abs + 0x154), 3,
                         *(f32*)(param_1 + 0x38) + 122.0f,
                         *(u8*)(param_1 + 0x40),
                         *(f32*)(param_1 + 0x3c), *(f32*)(param_1 + 0x24));
