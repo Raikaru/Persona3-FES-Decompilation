@@ -2,7 +2,7 @@
 #include "Kosaka/k_assert.h"
 
 /* BPC panel subtask state at DAT_007CE324 / GP -0x49CC. */
-u32* sBpc324;
+extern u32* sBpc324; // 007CE324 / GP -0x49CC
 /* BPC command subtask state at DAT_007CE328 / GP -0x49C8. */
 u32* sBpc328;
 
@@ -102,8 +102,8 @@ void FUN_00248580(void* destination, void* origin)
 void FUN_00248620(void)
 {
     u32* entry;
-    u32* work;
     u32 texture;
+    u32* work;
     f32 left;
     f32 base;
     f32 total;

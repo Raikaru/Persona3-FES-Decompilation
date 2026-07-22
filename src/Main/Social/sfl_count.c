@@ -163,20 +163,16 @@ void FUN_0025b690(void)
             resource = (u8*)FUN_0020e610(iVar5);
             fVar6 = (f32)*(s32*)(resource + 0xc);
             fVar7 = (f32)*(s32*)(resource + 0x10);
-            temp_f0 = fGpffff83c4;
-            fVar6 = temp_f0 * fVar6;
-            fVar7 = temp_f0 * fVar7;
+            fVar6 = fGpffff83c4 * fVar6;
+            fVar7 = fGpffff83c4 * fVar7;
             stack.sp80 = 0x436c0000;
             stack.sp84 = 0x43440000;
-            temp_f0_2 = 236.0f + fVar6;
-            stack.sp88 = temp_f0_2;
+            stack.sp88 = 236.0f + fVar6;
             stack.sp8C = 196.0f;
-            stack.sp90 = temp_f0_2;
-            temp_f0_3 = 196.0f + fVar7;
-            stack.sp94 = temp_f0_3;
+            stack.sp90 = stack.sp88;
+            stack.sp94 = 196.0f + fVar7;
             stack.sp98 = 0x436c0000;
-            stack.sp9C = temp_f0_3;
-            iVar3 = (2 - iVar5) * 0x1e + 0x5a;
+            stack.sp9C = stack.sp94;
             uVar2 = puVar2[1];
             if (uVar2 < iVar3) {
                 fVar9 = fOne;
