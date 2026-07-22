@@ -55,7 +55,7 @@ enum
     SFL_GROUND_PANEL_OFFSET = 0x110,
     SFL_GROUND_PANEL_STRIDE = 0x200,
     SFL_GROUND_PARTICLE_OFFSET = 0xD10,
-    SFL_GROUND_PARTICLE_STRIDE = 0x1300,
+    SFL_GROUND_PARTICLE_STRIDE = 0x130,
     SFL_GROUND_TILE_OFFSET = 0x6B00,
     SFL_GROUND_TILE_STRIDE = 0x40
 };
@@ -1183,26 +1183,48 @@ void sflGround0023d240(void)
 void func_0023d2a0(void)
 {
     u32* work;
-    u32* viewport;
+    SflGroundViewport* viewport;
+    f32 width;
+    f32 height;
+    register f32 rect0;
+    register f32 rect1;
+    register f32 rect2;
+    register f32 rect3;
     f32 rect[4];
     s32 i;
     u32* particle;
+    u32 lifetime;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     viewport = sflRes0020e590(2);
-    rect[0] = 0.0f;
-    rect[1] = 1.0f / (f32)viewport[4];
-    rect[2] = 63.0f / (f32)viewport[3];
-    rect[3] = 81.0f / (f32)viewport[4];
-    for (i = 0; i < 48; i++) {
+    width = (f32)viewport->width;
+    height = (f32)viewport->height;
+    i = 0;
+    rect0 = 0.0f / width;
+    rect1 = 1.0f / height;
+    rect2 = 63.0f / width;
+    rect3 = 81.0f / height;
+    for (; i < 48; i++) {
         particle = (u32*)GROUND_PTR(work, SFL_GROUND_PARTICLE_OFFSET + i * SFL_GROUND_PARTICLE_STRIDE);
-        particle[0] = 0;
+        GROUND_U32(particle, 0) = 0;
+        rect[0] = rect0;
+        rect[1] = rect1;
+        rect[2] = rect2;
+        rect[3] = rect3;
         func_0021eb80(GROUND_PTR(particle, 0x10), rect);
     }
     for (i = 0; i < 48; i++) {
         particle = (u32*)GROUND_PTR(work, SFL_GROUND_PARTICLE_OFFSET + i * SFL_GROUND_PARTICLE_STRIDE);
-        sflGroundInitParticle(particle);
+        GROUND_U32(particle, 0) |= 1;
+        lifetime = 0x78 + RpRandom() % 0x3c;
+        GROUND_U32(particle, 0x114) = lifetime;
+        GROUND_U32(particle, 4) = RpRandom() % 3;
+        GROUND_F32(particle, 0x118) = -20.0f + 680.0f * (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_F32(particle, 0x11c) = -20.0f + 488.0f * (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_F32(particle, 0x120) = 640.0f * (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_F32(particle, 0x124) = 448.0f * (f32)(RpRandom() & 0xfff) / 4095.0f;
+        GROUND_U32(particle, 0x110) = RpRandom() % lifetime;
     }
 }
 
