@@ -3640,6 +3640,9 @@ u32 FUN_001FE220(void)
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
+ 
 // FUN_001FE650 NONMATCHING
 void FUN_001FE650(void* descriptor)
 {
@@ -3668,6 +3671,7 @@ void FUN_001FE650(void* descriptor)
     }
     func_00242540(resource);
 }
+#pragma pop
 
 // FUN_001FE810
 void FUN_001FE810(s32 id)
