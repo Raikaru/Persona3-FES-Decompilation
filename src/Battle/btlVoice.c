@@ -166,9 +166,9 @@ extern u32 DAT_007cc9e0;
 extern u32 DAT_007cc9e2;
 extern u32 DAT_007cc9e4;
 extern s16 DAT_007cc9e8[3];
-extern u32 DAT_007cc9f0;
-extern u32 DAT_007cc9f2;
-extern u32 DAT_007cc9f4;
+extern s16 DAT_007cc9f0;
+extern s16 DAT_007cc9f2;
+extern s16 DAT_007cc9f4;
 extern u32 DAT_007ce3ec;
 extern u32 DAT_007ce4bc;
 extern u32 DAT_007ce4d0;
@@ -180,18 +180,18 @@ extern u32 iGpffffb708;
 extern u32 gp0xffff9c80;
 extern u32 uGpffff82dc;
 extern u32 uGpffff82e0;
-extern u32 uGpffff9cd0;
-extern u32 uGpffff9cd2;
-extern u32 uGpffff9cd4;
-extern u32 uGpffff9cd8;
-extern u32 uGpffff9cda;
-extern u32 uGpffff9cdc;
-extern u32 uGpffff9ce0;
-extern u32 uGpffff9ce2;
-extern u32 uGpffff9ce4;
-extern u32 uGpffff9ce8;
-extern u32 uGpffff9cea;
-extern u32 uGpffff9cec;
+extern s16 uGpffff9cd0;
+extern s16 uGpffff9cd2;
+extern s16 uGpffff9cd4;
+extern s16 uGpffff9cd8;
+extern s16 uGpffff9cda;
+extern s16 uGpffff9cdc;
+extern s16 uGpffff9ce0;
+extern s16 uGpffff9ce2;
+extern s16 uGpffff9ce4;
+extern s16 uGpffff9ce8;
+extern s16 uGpffff9cea;
+extern s16 uGpffff9cec;
 extern u64 FUN_001757f0();
 extern u64 FUN_0017b220();
 extern u64 FUN_001fdd40();
@@ -7417,7 +7417,7 @@ void func_002e9950(void)
   RwV3d position;
   
   position.y = 0.0f;
-  for (iVar2 = *(int *)(iGpffffb6fc + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
+  for (iVar2 = *(int *)(iGpffffb6fc_ptr + 0x150); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
     sVar1 = *(u16 *)(iVar2 + 0xa4);
     if (sVar1 != 7) {
       if (sVar1 != 5) {
@@ -7441,7 +7441,7 @@ void func_002e9950(void)
     FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position);
     FUN_0027f650(iVar2,&position);
   }
-  for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
+  for (iVar2 = *(int *)(iGpffffb6fc_ptr + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
     sVar1 = *(u16 *)(iVar2 + 0xa4);
     if (sVar1 != 0x102) {
       if (sVar1 == 0x101) {
