@@ -1984,6 +1984,8 @@ typedef struct
 extern CalendarScenarioEntry CLND_SCENARIO_TABLE[];
 #pragma alias CLND_SCENARIO_TABLE_abs CLND_SCENARIO_TABLE
 extern u8 CLND_SCENARIO_TABLE_abs[];
+#pragma alias adminiGetNowSeqId_u32 adminiGetNowSeqId
+extern u32 adminiGetNowSeqId_u32(void);
 
 typedef struct
 {
@@ -2098,20 +2100,19 @@ void* func_00181cc0(KwlnTask* task)
     CalendarScenarioEntry* scenarioTable;
     KwlnTask* displayTask;
     s32 time;
+    u16 procedure;
     s32 month;
     s32 day;
-    CalendarFieldSequenceData fieldData;
     struct
     {
         u32 floor;
         u32 reserved04;
     } dungeonData;
+    CalendarFieldSequenceData fieldData;
 
     parent = task;
     work = (CalendarAigesWork*)parent->workData;
     scenarioTable = (CalendarScenarioEntry*)CLND_SCENARIO_TABLE_abs;
-    if (work->state < 11)
-    {
     switch (work->state)
     {
         case 0:
@@ -2203,23 +2204,24 @@ void* func_00181cc0(KwlnTask* task)
 
             if (scenarioTable[func_0017d810()].mode != 0xff)
             {
-                work->actionTask = func_001ba5f0(parent,
-                                                0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                                scenarioTable[func_0017d810()].procedure,
-                                                scenarioTable[func_0017d810()].argument,
-                                                scenarioTable[func_0017d810()].mode,
-                                                0);
+                displayTask = func_001ba5f0(parent,
+                                            0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                            scenarioTable[func_0017d810()].procedure,
+                                            scenarioTable[func_0017d810()].argument,
+                                            scenarioTable[func_0017d810()].mode,
+                                            0);
             }
             else
             {
-                work->actionTask = func_003bdd60(0xf,
-                                                  scenarioTable[func_0017d810()].procedure);
+                procedure = scenarioTable[func_0017d810()].procedure;
+                displayTask = func_003bdd60(0xf, procedure);
             }
+            work->actionTask = displayTask;
             work->state = 1;
             break;
 
         case 1:
-            if (adminiGetNowSeqId() == 3 || adminiGetNowSeqId() == 2)
+            if (adminiGetNowSeqId_u32() == 3 || adminiGetNowSeqId_u32() == 2)
             {
                 work->state = 2;
             }
@@ -2237,13 +2239,17 @@ void* func_00181cc0(KwlnTask* task)
                 }
             }
             break;
+        case 2:
+            break;
 
         case 3:
             work->state = 4;
             break;
 
+        case 4:
+            break;
         case 5:
-            if (adminiGetNowSeqId() == 0)
+            if (adminiGetNowSeqId_u32() == 0)
             {
                 work->actionTask = NULL;
                 if (work->specialAction != 0)
@@ -2258,12 +2264,9 @@ void* func_00181cc0(KwlnTask* task)
             }
             break;
 
-        case 8:
-            work->timer--;
-            if (work->timer == 0)
-            {
-                return KWLNTASK_STOP;
-            }
+        case 6:
+            break;
+        case 7:
             break;
 
         case 9:
@@ -2292,8 +2295,14 @@ void* func_00181cc0(KwlnTask* task)
                           D_005E3F00,
                           func_0017d810());
             break;
+        case 8:
+            work->timer--;
+            if (work->timer == 0)
+            {
+                return KWLNTASK_STOP;
+            }
+            break;
     }
-        }
     return KWLNTASK_CONTINUE;
 }
 
@@ -4469,65 +4478,82 @@ KwlnTask* func_001870e0(KwlnTask* parent)
 // FUN_001871A0 NONMATCHING
 void* func_001871a0(KwlnTask* task)
 {
-    static const u16 recoveredColdFlags[13] =
-    {
-        0xa95, 0xa96, 0xa97, 0xa98, 0xa99, 0xa9a, 0xa7a,
-        0xa9b, 0xa9c, 0xa9d, 0xa9f, 0xacd, 0xace
-    };
     CalendarRecoveredColdWork* work;
-    s32 i;
     u32 color;
 
     work = (CalendarRecoveredColdWork*)task->workData;
     if (work->state == 1)
-    {
-        if (work->timer < 10)
-        {
-            color = (u32)((work->timer * 0xff) / 10);
-        }
-        else if (work->timer < 0x51)
-        {
-            color = 0xff;
-        }
-        else
-        {
-            color = (u32)(((0x5a - work->timer) * 0xff) / 10);
-        }
-        func_003b2cb0(0.0f,
-                      0x140,
-                      0x17c,
-                      color | 0xffffff00,
-                      6,
-                      1,
-                      D_005E4150[work->messageIndex],
-                      0x18,
-                      0);
-        work->timer++;
-        if (work->timer > 0x59)
-        {
-            return KWLNTASK_STOP;
-        }
-    }
-    else
+        goto draw;
+    if (work->state == 0)
     {
         work->messageIndex = -1;
-        for (i = 0; i < 13; i++)
-        {
-            if (datGetFlag(recoveredColdFlags[i]) != 0)
-            {
-                work->messageIndex = i;
-            }
-        }
-        for (i = 0; i < 13; i++)
-        {
-            datSetFlag(recoveredColdFlags[i], false);
-        }
+        if (datGetFlag(0xa95) != 0)
+            work->messageIndex = 0;
+        if (datGetFlag(0xa96) != 0)
+            work->messageIndex = 1;
+        if (datGetFlag(0xa97) != 0)
+            work->messageIndex = 2;
+        if (datGetFlag(0xa98) != 0)
+            work->messageIndex = 3;
+        if (datGetFlag(0xa99) != 0)
+            work->messageIndex = 4;
+        if (datGetFlag(0xa9a) != 0)
+            work->messageIndex = 5;
+        if (datGetFlag(0xa7a) != 0)
+            work->messageIndex = 6;
+        if (datGetFlag(0xa9b) != 0)
+            work->messageIndex = 7;
+        if (datGetFlag(0xa9c) != 0)
+            work->messageIndex = 8;
+        if (datGetFlag(0xa9d) != 0)
+            work->messageIndex = 9;
+        if (datGetFlag(0xa9f) != 0)
+            work->messageIndex = 10;
+        if (datGetFlag(0xacd) != 0)
+            work->messageIndex = 11;
+        if (datGetFlag(0xace) != 0)
+            work->messageIndex = 12;
+
+        datSetFlag(0xa95, false);
+        datSetFlag(0xa96, false);
+        datSetFlag(0xa97, false);
+        datSetFlag(0xa98, false);
+        datSetFlag(0xa99, false);
+        datSetFlag(0xa9a, false);
+        datSetFlag(0xa7a, false);
+        datSetFlag(0xa9b, false);
+        datSetFlag(0xa9c, false);
+        datSetFlag(0xa9d, false);
+        datSetFlag(0xa9f, false);
+        datSetFlag(0xacd, false);
+        datSetFlag(0xace, false);
+
         if (work->messageIndex < 0)
-        {
             return KWLNTASK_STOP;
-        }
         work->state = 1;
     }
+    return KWLNTASK_CONTINUE;
+
+draw:
+    if (work->timer < 10)
+        color = (u32)((work->timer * 0xff) / 10);
+    else if (work->timer < 0x51)
+        color = 0xff;
+    else
+        color = (u32)(((0x5a - work->timer) * 0xff) / 10);
+
+    func_003b2cb0(0.0f,
+                  0x140,
+                  0x17c,
+                  color | 0xffffff00,
+                  6,
+                  1,
+                  D_005E4150[work->messageIndex],
+                  0x18,
+                  0);
+    work->timer++;
+    if (work->timer > 0x59)
+        return KWLNTASK_STOP;
     return KWLNTASK_CONTINUE;
 }
 
