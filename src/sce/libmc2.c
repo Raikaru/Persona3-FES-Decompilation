@@ -8489,7 +8489,6 @@ void FUN_00520538(u64 param_1,u64 param_2)
 }
 // FUN_00520560 NONMATCHING
 void FUN_00520560(void)
-
 {
   FUN_00520528();
   return;
@@ -8572,18 +8571,17 @@ LAB_0052065c:
 // FUN_00520728 NONMATCHING
 u32 * FUN_00520728(int param_1)
 {
-  void *base;
-  base = *(void **)PTR_DAT_00782f30_abs;
-  return FUN_005209c0((u64)(u32)base,param_1);
+  return FUN_005209c0((u64)(u32)*(void **)PTR_DAT_00782f30_abs,param_1);
 }
-#pragma schedule off
+#pragma schedule on
 // FUN_00520748 NONMATCHING
 void FUN_00520748(u64 param_1)
 
 {
-  FUN_0051fbb0((u64)(u32)PTR_DAT_00782f30,param_1);
+  FUN_0051fbb0((int)*(void **)PTR_DAT_00782f30_abs,param_1);
   return;
 }
+#pragma schedule off
 // FUN_00520768 NONMATCHING
 void FUN_00520768(u64 param_1,int param_2)
 
