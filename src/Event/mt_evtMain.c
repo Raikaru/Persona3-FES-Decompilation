@@ -1850,7 +1850,6 @@ int FUN_00361ca0(int param_1,int param_2)
 
   int *piVar2;
   int iVar3;
-
   
 
   lVar1 = FUN_00386ae0_evt(0x9c,7);
@@ -7198,6 +7197,7 @@ u32 FUN_003670f0(int param_1,int param_2,int param_3)
   int iVar1;
 
   int iVar3;
+  int iVar4;
 
   
 
@@ -7213,12 +7213,9 @@ u32 FUN_003670f0(int param_1,int param_2,int param_3)
 
     iVar2 = *(int *)(*(int *)(iVar3 + 0x164) + 0x6c);
     iVar1 = 0;
-
-    for (; (iVar1 < *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c) && (iVar2 != 0));
-        iVar2 = *(int *)(iVar2 + 0x4c)) {
-
-      iVar1 = iVar1 + 1;
-
+    iVar4 = *(int *)(iVar3 + 0x160) + *(int *)(iVar3 + 0x15c);
+    for (; (iVar1 < iVar4 && (iVar2 != 0)); iVar1 = iVar1 + 1) {
+      iVar2 = *(int *)(iVar2 + 0x4c);
     }
 
   }
