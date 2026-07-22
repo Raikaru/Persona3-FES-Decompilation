@@ -7591,6 +7591,7 @@ u32 func_002e9f10(s32 param_1)
 void func_002ea060(void)
 {
   int iVar1;
+  int iVar2;
   u16 kind;
   s16 index;
   f32 positions[4];
@@ -7619,18 +7620,19 @@ void func_002ea060(void)
       position.x = point[0];
       position.z = point[1];
       *(u8 *)(iVar1 + 0x9f0) = slots[index];
-      index = index + 1;
+      index = (s16)(index + 1);
     }
     FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&position);
     FUN_0027f650(iVar1,&position);
   }
-  for (iVar1 = *(int *)(iGpffffb6fc + 0x158); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
-    if (*(u16 *)(iVar1 + 0xa4) == 0x103) {
+  for (iVar2 = *(int *)(iGpffffb6fc + 0x158); iVar2 != 0; iVar2 = *(int *)(iVar2 + 0xa34)) {
+    kind = *(u16 *)(iVar2 + 0xa4);
+    if (kind == 0x103) {
       position.x = 0.0f;
       position.z = -300.0f;
     }
-    FUN_002d2280(iVar1 + 0x94,iVar1 + 0x96,&position);
-    FUN_0027f650(iVar1,&position);
+    FUN_002d2280(iVar2 + 0x94,iVar2 + 0x96,&position);
+    FUN_0027f650(iVar2,&position);
   }
 }
 
