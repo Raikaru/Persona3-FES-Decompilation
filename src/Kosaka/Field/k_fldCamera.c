@@ -79,6 +79,8 @@ void func_001d5c10(KwlnTask* fldCameraTask, u32 type)
     void* fieldSub;
     void* curve;
     f32 amount;
+    RwV3d* destination;
+    u32 destinationOffset;
     s32 i;
     RwV3d center;
 
@@ -104,9 +106,14 @@ setup_dead_zone:
         field = K_Field_Get();
         fieldSub = (void*)*(volatile void**)((u8*)field + 0x116c);
         amount = (f32)i * 0.125f;
+        asm volatile("" : "+m"(amount));
+        destinationOffset = (u32)(i * 0xc);
+        asm volatile("" : "+r"(destinationOffset));
+        destination = (RwV3d*)((u8*)fldCamera->deadZonePath +
+                                destinationOffset);
         curve = (void*)*(volatile void**)((u8*)fieldSub + 0xa1c);
         FUN_0048d480(amount, curve, 10,
-                     &fldCamera->deadZonePath[i], NULL);
+                     destination, NULL);
     }
     if (fldCamera->pointTask0 == NULL)
     {
