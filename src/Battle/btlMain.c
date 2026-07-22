@@ -88,9 +88,9 @@ extern f32 DAT_00957188;
 #pragma alias DAT_00957180_abs DAT_00957180
 #pragma alias DAT_00957184_abs DAT_00957184
 #pragma alias DAT_00957188_abs DAT_00957188
-extern f32 DAT_00957180_abs[];
-extern f32 DAT_00957184_abs[];
-extern f32 DAT_00957188_abs[];
+extern u8 DAT_00957180_abs[];
+extern u8 DAT_00957184_abs[];
+extern u8 DAT_00957188_abs[];
 extern u32 DAT_009572b0;
 extern u32 DAT_009572b4;
 extern u32 DAT_009572b8;
@@ -4685,20 +4685,21 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
   afStack_10[2] = fVar6 * fVar8 * 3.0f;
   afStack_10[3] = param_1 * fVar8;
   uVar2 = *(u16 *)(param_2 + 0x74);
-  fVar4 = DAT_00957180_abs[0];
-  fVar5 = DAT_00957184_abs[0];
-  fVar9 = DAT_00957188_abs[0];
+  fVar4 = *(f32 *)DAT_00957180_abs;
+  fVar5 = *(f32 *)DAT_00957184_abs;
+  fVar9 = *(f32 *)DAT_00957188_abs;
   *param_3 = fVar4;
   param_3[1] = fVar5;
   param_3[2] = fVar9;
   for (uVar3 = 0; uVar3 < 4; uVar3 = uVar3 + 1 & 0xffff) {
     fVar6 = afStack_10[uVar3];
     iVar1 = param_2 + uVar2 * 0x1c;
-    fVar4 = *(float *)(iVar1 + 8);
-    fVar5 = *(float *)(iVar1 + 0xc);
-    *param_3 = *(float *)(iVar1 + 4) * fVar6 + *param_3 + 0.0f;
-    param_3[1] = param_3[1] + fVar4 * fVar6;
-    param_3[2] = param_3[2] + fVar5 * fVar6;
+    fVar4 = *(float *)(iVar1 + 8) * fVar6;
+    fVar5 = *(float *)(iVar1 + 0xc) * fVar6;
+    fVar7 = *(float *)(iVar1 + 4);
+    *param_3 = fVar7 * fVar6 + *param_3 + 0.0f;
+    param_3[1] = param_3[1] + fVar4;
+    param_3[2] = param_3[2] + fVar5;
     uVar2 = uVar2 + 1 & 0xffff;
     if (3 < uVar2) {
       uVar2 = 0;
