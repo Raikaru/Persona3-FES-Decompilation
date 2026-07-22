@@ -590,7 +590,7 @@ KwlnTask* func_00180a20(KwlnTask* clndTask)
     return NULL;
 }
 
-// FUN_00180C40 NONMATCHING
+// FUN_00180C40
 KwlnTask* func_00180c40(KwlnTask* clndTask)
 {
     CalendarTaskWork* work;
@@ -690,7 +690,7 @@ KwlnTask* func_00180ee0(KwlnTask* clndTask)
     return func_00181950(clndTask, eventIndex);
 }
 
-// FUN_00181010 NONMATCHING
+// FUN_00181010
 KwlnTask* func_00181010(KwlnTask* clndTask)
 {
     s32 eventIndex;
@@ -2592,7 +2592,7 @@ u32 func_001831e0(s16 pcId, s16 slot, const DatEquipment* record)
     return 1;
 }
 
-// FUN_001832C0 NONMATCHING
+// FUN_001832C0
 void* func_001832c0(KwlnTask* task)
 {
     CalendarXWork* work;
