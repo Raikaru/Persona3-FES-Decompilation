@@ -245,8 +245,6 @@ extern u8 *PTR_s_MOVE_D_0069ee34;
 extern u8 *PTR_s_MOVE_D_007ccf10;
 extern u8 *PTR_s_NORMAL_0069d940;
 extern u8 *PTR_s_NORMAL_007ccc60;
-extern u8 *PTR_s_NORMAL_007cd2d0;
-extern u8 *PTR_s_NOSTOP_007ccfac;
 extern u8 *PTR_s_NO_KEYFREE_007ccfb8;
 extern u8 *PTR_s_OFFSET_0069e6a0;
 extern u8 *PTR_s_RELEASE_0069ee28;
@@ -340,13 +338,22 @@ extern char *s_FADE_MODE_0069dcc8;
 extern char *s_FADE_TYPE_0069db78;
 extern char *s_FIELDOBJ_EDIT_PARAM_0069dd80;
 extern char *s_FIELD_EDIT_GO__0069ddc0;
+#pragma alias s_FIELD_EDIT_GO_abs s_FIELD_EDIT_GO__0069ddc0
+extern u8 s_FIELD_EDIT_GO_abs[];
+ 
 extern char *s_FIELD_EFFECT_MODE_0069dbf0;
 extern char *s_FRAME_SET_OK__0069dda8;
+#pragma alias s_FRAME_SET_OK_abs s_FRAME_SET_OK__0069dda8
+extern u8 s_FRAME_SET_OK_abs[];
+ 
 extern char *s_HOKAN_MODE_0069db48;
 extern char *s_KEYFREE_SELECT_0069dd20;
 extern char *s_KOMA_MODE_0069dc28;
 extern char *s_MESSAGE_STOP_0069dd08;
 extern char *s_MESSAGE_TYPE_0069de08;
+#pragma alias s_MESSAGE_TYPE_abs s_MESSAGE_TYPE_0069de08
+extern u8 s_MESSAGE_TYPE_abs[];
+ 
 extern char *s_ON_OFF_MODE_0069db58;
 extern char *s_PADACT_TYPE_0069dc48;
 extern char *s_PATH_APPLY_MODE_0069e6e0;
@@ -357,7 +364,12 @@ extern char *s_TIMEI_FADE_DOWN_UP_0069dc80;
 extern char *s_TRANS_MODE_0069db68;
 extern char *s_UNIT_CONTROL_TYPE_0069dbb0;
 extern char *s_VOICE_FILE_LOAD__0069ddd0;
+#pragma alias s_VOICE_FILE_LOAD_abs s_VOICE_FILE_LOAD__0069ddd0
+extern u8 s_VOICE_FILE_LOAD_abs[];
+ 
 extern char *s_WAIT_MODE_SELECT_0069dcf0;
+#pragma alias s_BATTLE_BLUR_USE_abs s_BATTLE_BLUR_USE__0069ddf0
+extern u8 s_BATTLE_BLUR_USE_abs[];
 extern u32 uGpffff841c;
 extern u32 uGpffff9d78;
 extern u32 uGpffff9d7c;
@@ -13152,7 +13164,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
     *(u32 *)(iVar3 + 0x11c) = 2;
 
-    *(char **)(iVar3 + 0x120) = s_FRAME_SET_OK__0069dda8;
+    *(char **)(iVar3 + 0x120) = (char *)s_FRAME_SET_OK_abs;
 
     *(u8 ***)(iVar3 + 0x124) = &PTR_DAT_007ccc50;
 
@@ -13198,7 +13210,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
     *(u32 *)(iVar3 + 0x11c) = 2;
 
-    *(char **)(iVar3 + 0x120) = s_FIELD_EDIT_GO__0069ddc0;
+    *(char **)(iVar3 + 0x120) = (char *)s_FIELD_EDIT_GO_abs;
 
     *(u8 ***)(iVar3 + 0x124) = &PTR_DAT_007ccc50;
 
@@ -13270,7 +13282,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
     *(u32 *)(iVar3 + 0x11c) = 2;
 
-    *(char **)(iVar3 + 0x120) = s_VOICE_FILE_LOAD__0069ddd0;
+    *(char **)(iVar3 + 0x120) = (char *)s_VOICE_FILE_LOAD_abs;
 
     *(u8 ***)(iVar3 + 0x124) = &PTR_DAT_007ccc58;
 
@@ -13284,7 +13296,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
     *(u32 *)(iVar3 + 0x11c) = 2;
 
-    *(char **)(iVar3 + 0x120) = s_BATTLE_BLUR_USE__0069ddf0;
+    *(char **)(iVar3 + 0x120) = (char *)s_BATTLE_BLUR_USE_abs;
 
     *(u8 ***)(iVar3 + 0x124) = &PTR_DAT_007ccc58;
 
@@ -13298,7 +13310,7 @@ u64 FUN_0036cc30(u64 param_1,u64 param_2,u8 *param_3)
 
     *(u32 *)(iVar3 + 0x11c) = 2;
 
-    *(char **)(iVar3 + 0x120) = s_MESSAGE_TYPE_0069de08;
+    *(char **)(iVar3 + 0x120) = (char *)s_MESSAGE_TYPE_abs;
 
     *(u8 ***)(iVar3 + 0x124) = &PTR_s_NORMAL_007ccc60;
 
