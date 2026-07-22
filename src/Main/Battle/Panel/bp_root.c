@@ -3476,8 +3476,7 @@ void* FUN_001fdac0(KwlnTask* task)
     u32 flags;
 
     work = (u32*)task->workData;
-    misc = (u32*)panelMiscWork();
-    K_ASSERT(misc != NULL, 0x164);
+    misc = (u32*)DAT_007ce3ec;
     if ((misc[3] & 0x80) && !(misc[3] & 0x800))
     {
         return NULL;
@@ -3490,12 +3489,12 @@ void* FUN_001fdac0(KwlnTask* task)
     func_002095a0();
     func_002532b0();
     flags = work[0];
-    if ((flags & 4) && !(flags & 0x20))
+    if ((flags & 4) && ((~flags & 0x20) != 0))
     {
         FUN_002016B0();
     }
     func_0020f260();
-    if (!(work[0] & 0x40000))
+    if ((~work[0] & 0x40000) != 0)
     {
         func_00243150();
     }
