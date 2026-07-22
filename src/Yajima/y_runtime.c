@@ -18345,7 +18345,7 @@ void FUN_004589d0(int param_1,u8 param_2)
   return;
 }
 
-// FUN_004589E0 NONMATCHING
+// FUN_004589E0
 
 u32 FUN_004589e0(void)
 {
