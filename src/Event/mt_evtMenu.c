@@ -972,7 +972,7 @@ extern u8 DAT_006a0000[];
 #pragma push
 #pragma opt_propagation off
 #pragma opt_rebuildconditionals off
-// FUN_0036F500 NONMATCHING
+// FUN_0036F500
 
 
 u64 FUN_0036f500(int param_1)
@@ -2997,7 +2997,7 @@ u64 FUN_003715b0(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_00371710 NONMATCHING
+// FUN_00371710
 
 
 u32 FUN_00371710(int param_1,int param_2,int param_3)
@@ -15444,7 +15444,7 @@ int FUN_00380d70(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_003810A0 NONMATCHING
+// FUN_003810A0
 
 
 u32 FUN_003810a0(int param_1,int param_2,int param_3)
@@ -15708,7 +15708,7 @@ int FUN_00381280(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_003814D0 NONMATCHING
+// FUN_003814D0
 
 
 u32 FUN_003814d0(int param_1,int param_2,int param_3)
@@ -16310,7 +16310,7 @@ int FUN_003820e0(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_00382320 NONMATCHING
+// FUN_00382320
 
 
 u32 FUN_00382320(int param_1,int param_2,int param_3)
@@ -16546,7 +16546,7 @@ int FUN_00382500(u64 param_1,u64 param_2,u64 param_3)
 }
 
 
-// FUN_003826F0 NONMATCHING
+// FUN_003826F0
 
 
 u32 FUN_003826f0(int param_1,int param_2,int param_3)
