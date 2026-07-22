@@ -148,7 +148,7 @@ void FUN_00393f30(u8 *param_1,u32 param_2)
 }
 #define FUN_00393f30(...) ((void (*)(...))FUN_00393f30)(__VA_ARGS__)
 #undef FUN_00394040
-// FUN_00394040 NONMATCHING
+// FUN_00394040 MATCHING
 
 
 float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
@@ -158,7 +158,7 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 {
 
   if (param_4 != 0) {
-    param_2 = param_3 * param_1 + param_2 * (1.0f - param_1);
+    param_2 = param_2 * (1.0f - param_1) + param_3 * param_1;
   }
   return param_2;
 

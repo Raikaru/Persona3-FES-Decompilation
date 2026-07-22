@@ -55,6 +55,9 @@ extern u32 DAT_0096e080;
 extern u32 _DAT_0096df0c;
 #pragma alias DAT_0096dd10_abs DAT_0096dd10
 extern u8 DAT_0096dd10_abs[];
+extern u32 DAT_007c0000;
+#pragma alias DAT_007c0000_abs DAT_007c0000
+extern u8 DAT_007c0000_abs[];
 
 #define SCE_CDVD_RPC_INIT             0x80000592
 #define SCE_CDVD_RPC_DISK_READY_OLD   0x8000059A
@@ -379,12 +382,11 @@ int func_00510e30(void)
 int func_00510ec8(void)
 {
     int result;
-
     result = func_00510e30();
-    if (result != -1) {
-        return result;
+    if (result < 0) {
+        result = 0;
     }
-    return 0;
+    return result;
 }
 #pragma optimization_level 2
 
@@ -461,10 +463,10 @@ int sceCdMmode(int media)
 #pragma push
 #pragma optimization_level 3
 #pragma opt_propagation off
-// FUN_00511110 NONMATCHING
+// FUN_00511110 MATCHING
 u32 FUN_00511110(void)
 {
-  FUN_00505e48((u8*)0x7c0000 - 0x1cd0);
+  FUN_00505e48((u8*)DAT_007c0000_abs - 0x1cd0);
   return 2;
 }
 #pragma pop

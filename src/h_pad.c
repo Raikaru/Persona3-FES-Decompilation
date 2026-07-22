@@ -66,12 +66,11 @@ static u32 sRwReallocCount;
 static u32 sRwAllocationHint;
 static RwMemoryFunctions sRwMemoryFunctions;
 
-// FUN_00103000 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_00103000 MATCHING
 void H_Pad_Init(void)
 {
-    HPad* workPads;
     s32 i;
-    s32 requestedMainMode;
 
     memset(((HPad*)gWorkPads_abs) + HPAD_PORT_1, 0, sizeof(HPad));
     memset(((HPad*)gWorkPads_abs) + HPAD_PORT_2, 0, sizeof(HPad));
@@ -81,19 +80,18 @@ void H_Pad_Init(void)
     scePadInit(0);
     scePadPortOpen(HPAD_PORT_1, 0, (u_long128*)sAddrPort1_abs);
     scePadPortOpen(HPAD_PORT_2, 0, (u_long128*)sAddrPort2_abs);
-
     i = 0;
-    workPads = (HPad*)gWorkPads_abs;
-    asm volatile("addiu %0, $0, 3" : "=r" (requestedMainMode));
+
     for (; i < HPAD_PORT_MAX; i++)
     {
-        workPads[i].port = i;
-        workPads[i].slot = 0;
-        workPads[i].state = HPAD_STATE_INITIALIZING;
-        workPads[i].mainMode = 0;
-        workPads[i].requestedMainMode = requestedMainMode;
+        ((HPad*)gWorkPads_abs)[i].port = i;
+        ((HPad*)gWorkPads_abs)[i].slot = 0;
+        ((HPad*)gWorkPads_abs)[i].state = HPAD_STATE_INITIALIZING;
+        ((HPad*)gWorkPads_abs)[i].mainMode = 0;
+        ((HPad*)gWorkPads_abs)[i].requestedMainMode = 3;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_00103110 NONMATCHING
 void H_Pad_Poll(HPad* pad)
