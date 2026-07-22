@@ -4,7 +4,7 @@
 
 /* auto-extern (generated) */
 u32 FUN_0050b710(u32 param_1);
-extern int FUN_00507230(u32, u32, u32, u32, u32, u32, u32, u32);
+extern int FUN_00507230(u32, u32, u32, u32, u32, u32, u32, u32, u32);
 extern int DAT_0077f558;
 extern u32 DAT_00969d40;
 extern u32 DAT_00969d80;
@@ -56,13 +56,15 @@ static int sif_copy_path(char* destination, const char* source, int capacity)
 int sceSifInitIopHeap(void)
 {
     int result;
+    SifRpcClientData_t* client = &sIopHeapClient;
 
+    if (client->server != 0) return 0;
     sceSifInitRpc(0);
     do
     {
-        result = sceSifBindRpc(&sIopHeapClient, 0x80000003, 0);
+        result = sceSifBindRpc(client, 0x80000003, 0);
     }
-    while (result >= 0 && sIopHeapClient.server == 0);
+    while (result >= 0 && client->server == 0);
     return result < 0 ? -1 : 0;
 }
 // FUN_0050b620 NONMATCHING
@@ -73,7 +75,7 @@ u32 FUN_0050b620(u32 param_1)
     if (*(int*)DAT_0077f558_abs >= 0)
     {
         *(u32*)DAT_00969d80_abs = param_1;
-        result = FUN_00507230(0x969d00, 1, 0, 0x969d80, 4, 0x969d40, 4, 0);
+        result = FUN_00507230(0x969d00, 1, 0, 0x969d80, 4, 0x969d40, 4, 0, 0);
         if (result >= 0)
         {
             return *(u32*)DAT_00969d40_abs;
@@ -92,7 +94,7 @@ u32 FUN_0050b690(u32 param_1,u32 param_2,u32 param_3)
     DAT_00969d80 = param_2;
     DAT_00969d84 = param_1;
     DAT_00969d88 = param_3;
-    lVar2 = FUN_00507230(0x969d00,4,0,0x969d80,0xc,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,4,0,0x969d80,0xc,0x969d40,4,0,0);
     uVar1 = DAT_00969d40;
     if (lVar2 < 0) {
       uVar1 = 0;
@@ -114,7 +116,7 @@ u32 param_1;
     else
     {
         DAT_00969d80 = param_1;
-        call_result = FUN_00507230(0x969d00, 2, 0, 0x969d80, 4, 0x969d40, 4, 0);
+        call_result = FUN_00507230(0x969d00, 2, 0, 0x969d80, 4, 0x969d40, 4, 0, 0);
         result = DAT_00969d40;
         if (call_result < 0)
         {
@@ -166,7 +168,7 @@ u32 FUN_0050b898(void)
     uVar1 = 0;
   }
   else {
-    lVar2 = FUN_00507230(0x969d00,5,0,0,0,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,5,0,0,0,0x969d40,4,0,0);
     uVar1 = DAT_00969d40;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
@@ -185,7 +187,7 @@ u32 FUN_0050b908(void)
     uVar1 = 0;
   }
   else {
-    lVar2 = FUN_00507230(0x969d00,6,0,0,0,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,6,0,0,0,0x969d40,4,0,0);
     uVar1 = DAT_00969d40;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
@@ -204,7 +206,7 @@ u32 FUN_0050b978(void)
     uVar1 = 0;
   }
   else {
-    lVar2 = FUN_00507230(0x969d00,7,0,0,0,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,7,0,0,0,0x969d40,4,0,0);
     uVar1 = DAT_00969d40;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
@@ -224,7 +226,7 @@ u32 FUN_0050b9e8(u32 param_1)
   }
   else {
     *(u32*)DAT_00969d80_abs = param_1;
-    lVar2 = FUN_00507230(0x969d00,8,0,0x969d80,4,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,8,0,0x969d80,4,0x969d40,4,0,0);
     uVar1 = *(u32*)DAT_00969d40_abs;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
@@ -244,7 +246,7 @@ u32 FUN_0050ba68(u32 param_1)
   }
   else {
     *(u32*)DAT_00969d80_abs = param_1;
-    lVar2 = FUN_00507230(0x969d00,9,0,0x969d80,4,0x969d40,4,0);
+    lVar2 = FUN_00507230(0x969d00,9,0,0x969d80,4,0x969d40,4,0,0);
     uVar1 = *(u32*)DAT_00969d40_abs;
     if (lVar2 < 0) {
       uVar1 = 0xffffffff;
