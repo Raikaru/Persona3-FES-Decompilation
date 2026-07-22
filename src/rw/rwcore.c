@@ -8,6 +8,10 @@
 /* Deci2 wrappers use the syscall entry's two-argument ABI. */
 #pragma alias Deci2Call_typed FUN_00503590_Deci2Call
 extern long Deci2Call_typed(int command, void *args);
+#pragma alias FUN_004fd658_typed FUN_004fd658
+extern unsigned int FUN_004fd658_typed(int param_1,int param_2);
+#pragma alias FUN_004ff7c8_typed FUN_004ff7c8
+extern void FUN_004ff7c8_typed(int param_1);
 /* auto-extern (generated) */
 extern u32 DAT_007cea80;
 extern u32 *DAT_007ce9c8;
@@ -993,8 +997,10 @@ undefined4 FUN_004fcca0(undefined8 param_1,uint *param_2,int *param_3,int *param
 int FUN_004fd1f8(undefined8 param_1);
 long FUN_004fd4d8(int param_1);
 uint FUN_004fd658(undefined8 param_1,uint param_2);
-uint FUN_004fd740(undefined8 param_1,int param_2);
+uint FUN_004fd740(int param_1,int param_2);
 void FUN_004fd7d0(undefined8 param_1,ulong param_2);
+#pragma alias FUN_004fd868_typed FUN_004fd868
+extern void FUN_004fd868_typed(int param_1);
 void FUN_004fd868(void);
 bool FUN_004fd8a8(undefined8 param_1,undefined4 *param_2,undefined4 *param_3,uint *param_4,
                  uint *param_5);
@@ -19905,54 +19911,19 @@ undefined8 FUN_004ec2b0(long param_1,undefined8 *param_2,long param_3)
 
 // FUN_004EC4C0 NONMATCHING
 void FUN_004ec4c0(void)
-
 {
+  Vec128 *puVar2;
   Vec128 auVar1;
-  undefined4 *puVar2;
-  undefined4 uVar3;
-  undefined4 uVar4;
-  undefined4 uVar5;
-  undefined4 in_v1_udw;
-  undefined4 in_register_0000003c;
-  undefined4 in_a0_udw;
-  undefined4 in_register_0000004c;
-  Vec128 auVar6;
-  
-  uVar5 = DAT_0096588c;
-  uVar4 = DAT_00965888;
-  uVar3 = DAT_00965884;
-  puVar2 = (u32 *)(DAT_007ce9f4);
-  *DAT_007ce9f4 = DAT_00965880;
-  puVar2[1] = uVar3;
-  puVar2[2] = uVar4;
-  puVar2[3] = uVar5;
-  auVar6._8_4_ = in_v1_udw;
-  auVar6._0_8_ = 0x11000000;
-  auVar6._12_4_ = in_register_0000003c;
-  auVar1._4_4_ = in_register_0000004c;
-  auVar1._0_4_ = in_a0_udw;
+
+  puVar2 = (Vec128 *)DAT_007ce9f4;
+  puVar2[0] = *(Vec128 *)&DAT_00965880;
+  auVar1._0_4_ = 0x11000000;
+  auVar1._4_4_ = 0;
   auVar1._8_8_ = 0;
-  auVar6 = _pcpyld(auVar1 << 0x40,auVar6);
-  puVar2[4] = auVar6._0_4_;
-  puVar2[5] = auVar6._4_4_;
-  puVar2[6] = auVar6._8_4_;
-  puVar2[7] = auVar6._12_4_;
-  uVar5 = DAT_0096587c;
-  uVar4 = DAT_00965878;
-  uVar3 = DAT_00965874;
-  puVar2[8] = DAT_00965870;
-  puVar2[9] = uVar3;
-  puVar2[10] = uVar4;
-  puVar2[0xb] = uVar5;
-  uVar5 = DAT_009658fc;
-  uVar4 = DAT_009658f8;
-  uVar3 = DAT_009658f4;
-  puVar2[0xc] = DAT_009658f0;
-  puVar2[0xd] = uVar3;
-  puVar2[0xe] = uVar4;
-  puVar2[0xf] = uVar5;
-  DAT_007ce9f4 = DAT_007ce9f4 + 0x10;
-  return;
+  puVar2[1] = auVar1;
+  puVar2[2] = *(Vec128 *)&DAT_00965870;
+  puVar2[3] = *(Vec128 *)&DAT_009658f0;
+  DAT_007ce9f4 = (u32 *)(puVar2 + 4);
 }
 
 // FUN_004EC510 NONMATCHING
@@ -31486,28 +31457,33 @@ LAB_004fd714:
 }
 
 // FUN_004FD740 NONMATCHING
-uint FUN_004fd740(undefined8 param_1,int param_2)
-
+uint FUN_004fd740(int param_1,int param_2)
 {
-  undefined4 uVar1;
-  uint uVar2;
+  int iVar4;
   int iVar3;
-  
-  iVar3 = (int)param_1;
-  if ((*(int *)(iVar3 + 0x828) == 0) && (param_2 <= *(int *)(iVar3 + 0x84c))) {
-    uVar2 = *(uint *)(iVar3 + 0x848);
+  uint uVar1;
+  uint uVar2;
+
+  iVar3 = param_1;
+  if (*(int *)(iVar3 + 0x828) != 0) {
+    goto LAB_004fd780;
   }
-  else {
-    FUN_004fd868();
-    REG_IPU_CMD = 0x40000000;
-    *(undefined4 *)(iVar3 + 0x828) = 0;
-    *(undefined4 *)(iVar3 + 0x82c) = 0x40000000;
-    uVar1 = FUN_004fd4d8(param_1);
-    *(undefined4 *)(iVar3 + 0x848) = uVar1;
-    *(undefined4 *)(iVar3 + 0x84c) = 0x20;
-    uVar2 = *(uint *)(iVar3 + 0x848);
+  iVar4 = param_2;
+  if (*(int *)(iVar3 + 0x84c) < iVar4) {
+    goto LAB_004fd780;
   }
-  return uVar2 >> (-param_2 & 0x1fU);
+  goto LAB_004fd7b0;
+LAB_004fd780:
+  FUN_004fd868_typed(iVar3);
+  *(volatile u32 *)0x10002000 = 0x40000000;
+  *(undefined4 *)(iVar3 + 0x828) = 0;
+  *(undefined4 *)(iVar3 + 0x82c) = 0x40000000;
+  uVar1 = FUN_004fd4d8(iVar3);
+  *(undefined4 *)(iVar3 + 0x848) = uVar1;
+  *(undefined4 *)(iVar3 + 0x84c) = 0x20;
+LAB_004fd7b0:
+  uVar2 = *(uint *)(iVar3 + 0x848);
+  return uVar2 >> (-iVar4 & 0x1fU);
 }
 
 // FUN_004FD7D0 NONMATCHING
@@ -32086,30 +32062,35 @@ void FUN_004feee0(undefined8 param_1)
   return;
 }
 
+#pragma optimization_level 3
+ 
+#pragma schedule on
+ 
 // FUN_004FF190 NONMATCHING
-void FUN_004ff190(undefined8 param_1)
-
+void FUN_004ff190(int param_1)
 {
   undefined4 uVar1;
   int iVar2;
-  
-  iVar2 = (int)param_1;
+  uint uVar3;
+
+  iVar2 = param_1;
+  uVar3 = 1;
   *(undefined4 *)(iVar2 + 0xfc) = 0;
-  *(undefined4 *)(iVar2 + 0x864) = 1;
+  *(undefined4 *)(iVar2 + 0x864) = uVar3;
   *(int *)(iVar2 + 0x85c) = *(int *)(iVar2 + 0x860) + 1;
-  FUN_004fd658(param_1,1);
-  FUN_004fd658(param_1,5);
-  FUN_004fd658(param_1,6);
-  FUN_004fd658(param_1,1);
-  FUN_004fd658(param_1,6);
-  FUN_004fd658(param_1,6);
-  uVar1 = FUN_004fd658(param_1,1);
+  FUN_004fd658_typed(iVar2,1);
+  FUN_004fd658_typed(iVar2,5);
+  FUN_004fd658_typed(iVar2,6);
+  FUN_004fd658_typed(iVar2,1);
+  FUN_004fd658_typed(iVar2,6);
+  FUN_004fd658_typed(iVar2,6);
+  uVar1 = FUN_004fd658_typed(iVar2,1);
   *(undefined4 *)(iVar2 + 0x1b4) = uVar1;
-  uVar1 = FUN_004fd658(param_1,1);
+  uVar1 = FUN_004fd658_typed(iVar2,1);
   *(undefined4 *)(iVar2 + 0x1b8) = uVar1;
-  FUN_004ff7c8(param_1);
-  return;
+  FUN_004ff7c8_typed(iVar2);
 }
+#pragma optimization_level 2
 
 // FUN_004FF230 NONMATCHING
 void FUN_004ff230(undefined8 param_1)
