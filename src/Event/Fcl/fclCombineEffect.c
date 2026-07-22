@@ -8,6 +8,10 @@ float fGpffff8328;
 float fGpffffad78;
 u32 uGpffffad78;
 /* FUSION_EXACT_PROTOS */
+#pragma alias K_View_GetFov_typed K_View_GetFov
+f32 K_View_GetFov_typed(RwCamera *camera);
+#pragma alias K_View_SetFov_typed K_View_SetFov
+void K_View_SetFov_typed(RwCamera *camera,f32 fov);
 #pragma alias mdlAnimSet_u32 mdlAnimSet
 extern u32 mdlAnimSet_u32(u32 mdl, u32 slotIdx, s16 id, u32 blendFrameCount,
                           u32 flags);
@@ -4187,78 +4191,67 @@ u64 FUN_0041baf0(int param_1)
 
   char cVar1;
 
-  u16 *puVar2;
+  s16 *puVar2;
 
-  u64 uVar3;
+  RwCamera *uVar3;
 
-  long lVar4;
+  RwCamera *lVar4;
 
   int iVar5;
 
-  u32 uVar6;
+  float uVar6;
 
   
 
-  uVar3 = kwlnGetMainCamera();
+  uVar3 = (RwCamera *)kwlnGetMainCamera();
 
-  uVar6 = K_View_GetFov(uVar3);
+  uVar6 = K_View_GetFov_typed(uVar3);
 
-  uVar3 = kwlnGetMainCamera();
+  uVar3 = (RwCamera *)kwlnGetMainCamera();
 
-  K_View_SetFov(0x41f00000,uVar3);
+  K_View_SetFov_typed(uVar3,30.0f);
 
-  uVar3 = kwlnGetMainCamera();
+  uVar3 = (RwCamera *)kwlnGetMainCamera();
 
-    lVar4 = (long)RwCameraBeginUpdate((RwCamera*)uVar3);
+    lVar4 = RwCameraBeginUpdate(uVar3);
 
-  if (lVar4 != 0) {
-
-    kwlnSetFlags(0x40000002,0);
-
-    kwlnSetFlags(2,1);
-
-    for (iVar5 = *(int *)(**(int **)(param_1 + 0x3c) + 0xc); iVar5 != 0;
-
-        iVar5 = *(int *)(iVar5 + 0x10)) {
-
-      puVar2 = *(u16 **)(iVar5 + 0x14);
-
-      if (((*puVar2 & 0x10) != 0) && ((*puVar2 & 1) != 0)) {
-
-        cVar1 = (char)puVar2[1];
-
-        if (cVar1 == '\x02') {
-
-
-        }
-
-        else if (cVar1 == '\x06') {
-
-          func_0020ac90(*(u32 *)(puVar2 + 4));
-
-          func_0020b250(*(u32 *)(puVar2 + 4));
-
-        }
-
-        else if (cVar1 == '\x03') {
-
-          FUN_00317a20(*(u32 *)(puVar2 + 4));
-
-        }
-
-      }
-
-    }
-
-    uVar3 = kwlnGetMainCamera();
-
-    K_View_SetFov(uVar6,uVar3);
-
-    uVar3 = kwlnGetMainCamera();
-
-    RwCameraEndUpdate((RwCamera*)uVar3);
-
+  if (lVar4 == 0) {
+    return 0;
   }
+
+  kwlnSetFlags(0x40000002,0);
+
+  kwlnSetFlags(2,1);
+
+  for (iVar5 = *(int *)(**(int **)(param_1 + 0x3c) + 0xc); iVar5 != 0;
+      iVar5 = *(int *)(iVar5 + 0x10)) {
+    puVar2 = *(s16 **)(iVar5 + 0x14);
+    if (((*puVar2 & 0x10) != 0) && ((*puVar2 & 1) != 0)) {
+      cVar1 = (char)puVar2[1];
+      switch (cVar1) {
+      case 3:
+        FUN_00317a20(*(u32 *)(puVar2 + 4));
+        break;
+      case 6:
+        func_0020ac90(*(u32 *)(puVar2 + 4));
+        func_0020b250(*(u32 *)(puVar2 + 4));
+        break;
+      case 2:
+        FUN_0041bf80(*(u32 **)(puVar2 + 4));
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
+  uVar3 = (RwCamera *)kwlnGetMainCamera();
+
+  K_View_SetFov_typed(uVar3,uVar6);
+
+  uVar3 = (RwCamera *)kwlnGetMainCamera();
+
+  RwCameraEndUpdate(uVar3);
 
   return 0;
 
