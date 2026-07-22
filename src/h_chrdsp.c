@@ -791,17 +791,18 @@ void func_00106860(s16 index, s16 characterId, s16 layer, s16 variant)
         }
     }
 
-    strcpy((char*)((u8*)D_007E2680 + offset + 0x568), path);
-    *(s16*)((u8*)D_007E2680 + offset) = HCHRDP_STATE_LOAD_ARCHIVE;
-    *(void**)((u8*)D_007E2BA8 + offset) =
-        H_Cdvd_Request((char*)((u8*)D_007E2680 + offset + 0x568), HCDVD_FILEARCHIVE);
-    *(u8*)((u8*)D_007E2BA0 + offset) = 255;
-    *(u8*)((u8*)D_007E2BA1 + offset) = 255;
-    *(u8*)((u8*)D_007E2BA2 + offset) = 255;
-    *(u8*)((u8*)D_007E2BA3 + offset) = 255;
-    *(f32*)((u8*)D_007E2BAC + offset) = 1.0f;
-    *(f32*)((u8*)D_007E2BB0 + offset) = 1.0f;
-    *(u32*)((u8*)D_007E2BE4 + offset) = true;
+    strcpy((char*)((u8*)D_007E2680 + originalIndex * 0x670 + 0x568), path);
+    *(s16*)((u8*)D_007E2680 + originalIndex * 0x670) = HCHRDP_STATE_LOAD_ARCHIVE;
+    *(void**)((u8*)D_007E2BA8 + originalIndex * 0x670) =
+        H_Cdvd_Request((char*)((u8*)D_007E2680 + originalIndex * 0x670 + 0x568),
+                       HCDVD_FILEARCHIVE);
+    *(u8*)((u8*)D_007E2BA0 + originalIndex * 0x670) = 255;
+    *(u8*)((u8*)D_007E2BA1 + originalIndex * 0x670) = 255;
+    *(u8*)((u8*)D_007E2BA2 + originalIndex * 0x670) = 255;
+    *(u8*)((u8*)D_007E2BA3 + originalIndex * 0x670) = 255;
+    *(f32*)((u8*)D_007E2BAC + originalIndex * 0x670) = 1.0f;
+    *(f32*)((u8*)D_007E2BB0 + originalIndex * 0x670) = 1.0f;
+    *(u32*)((u8*)D_007E2BE4 + originalIndex * 0x670) = true;
 }
 
 // FUN_00106e90
