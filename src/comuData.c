@@ -210,7 +210,7 @@ u16 FUN_003c4110(int param_1)
 }
 #define FUN_003c4110(...) ((u16 (*)(...))FUN_003c4110)(__VA_ARGS__)
 #undef FUN_003c4270
-// FUN_003C4270 NONMATCHING
+// FUN_003C4270
 
 
 u8 * FUN_003c4270(void)
@@ -218,83 +218,46 @@ u8 * FUN_003c4270(void)
 
 
 {
-
-  short sVar1;
-
   int iVar2;
-
+  short sVar1;
   u8 *puVar3;
-
-  u64 uVar4;
-
-  
+  u32 uVar4;
 
   iVar2 = FUN_0017d8b0();
-
   sVar1 = FUN_0016ef20();
-
-  puVar3 = *(u8 **)PTR_s_tomorrow_006a3bfc_abs;
-
-  if (iVar2 != sVar1 + 1) {
-
-    uVar4 = FUN_0017dae0(iVar2);
-
-    switch(uVar4) {
-
-    case 0:
-
-      puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
-
-      break;
-
-    case 1:
-
-      puVar3 = *(u8 **)PTR_s_next_Monday_006a3be4_abs;
-
-      break;
-
-    case 2:
-
-      puVar3 = *(u8 **)PTR_s_next_Tuesday_006a3be8_abs;
-
-      break;
-
-    case 3:
-
-      puVar3 = *(u8 **)PTR_s_next_Wednesday_006a3bec_abs;
-
-      break;
-
-    case 4:
-
-      puVar3 = *(u8 **)PTR_s_next_Thursday_006a3bf0_abs;
-
-      break;
-
-    case 5:
-
-      puVar3 = *(u8 **)PTR_s_next_Friday_006a3bf4_abs;
-
-      break;
-
-    case 6:
-
-      puVar3 = *(u8 **)PTR_s_next_Saturday_006a3bf8_abs;
-
-      break;
-
-    default:
-
-      FUN_0019d3f0("comuData.c",0xba);
-
-      puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
-
-    }
-
+  if (iVar2 == sVar1 + 1) {
+    puVar3 = *(u8 **)PTR_s_tomorrow_006a3bfc_abs;
+    goto ReturnResult;
   }
-
+  uVar4 = FUN_0017dae0(iVar2);
+  switch(uVar4) {
+  case 0:
+    puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
+    break;
+  case 1:
+    puVar3 = *(u8 **)PTR_s_next_Monday_006a3be4_abs;
+    break;
+  case 2:
+    puVar3 = *(u8 **)PTR_s_next_Tuesday_006a3be8_abs;
+    break;
+  case 3:
+    puVar3 = *(u8 **)PTR_s_next_Wednesday_006a3bec_abs;
+    break;
+  case 4:
+    puVar3 = *(u8 **)PTR_s_next_Thursday_006a3bf0_abs;
+    break;
+  case 5:
+    puVar3 = *(u8 **)PTR_s_next_Friday_006a3bf4_abs;
+    break;
+  case 6:
+    puVar3 = *(u8 **)PTR_s_next_Saturday_006a3bf8_abs;
+    break;
+  default:
+    FUN_0019d3f0("comuData.c",0xba);
+    puVar3 = *(u8 **)PTR_s_next_Sunday_006a3be0_abs;
+  }
+ReturnResult:
   return puVar3;
-
 }
 #define FUN_003c4270(...) ((u8 * (*)(...))FUN_003c4270)(__VA_ARGS__)
 #undef FUN_003c4390
