@@ -145,6 +145,14 @@ extern u32 DAT_00958970;
  extern u8 DAT_009589cc_abs[];
  extern u8 DAT_00958970_abs[];
 extern u32 DAT_00958978;
+#pragma alias DAT_00958978_abs DAT_00958978
+extern u8 DAT_00958978_abs[];
+#pragma alias DAT_0095897a_abs DAT_0095897a
+extern u8 DAT_0095897a_abs[];
+#pragma alias DAT_0095897c_abs DAT_0095897c
+extern u8 DAT_0095897c_abs[];
+#pragma alias DAT_0095897e_abs DAT_0095897e
+extern u8 DAT_0095897e_abs[];
 extern u32 DAT_0095897a;
 extern u32 DAT_0095897c;
 extern u32 DAT_0095897e;
@@ -3300,10 +3308,8 @@ void FUN_0038a140(u32 param_1,u32 *param_2)
 void FUN_0038a180(int param_1,int param_2)
 {
   float *pfVar5;
-  s16 *psVar6;
-  s16 *psVar7;
-  s16 *psVar8;
-  s16 *psVar9;
+  float *pfOut;
+  float *pfIn;
   s16 uVar1;
   s16 uVar2;
   s16 uVar3;
@@ -3319,30 +3325,21 @@ void FUN_0038a180(int param_1,int param_2)
   default:
     return;
   }
-  *(u16 *)(param_2 + 2) = *(u16 *)0x958972;
+  *(u16 *)(param_2 + 2) = *(u16 *)DAT_0095897a_abs;
   iVar4 = 0;
-  pfVar5 = (float *)0x958970;
-  asm volatile("" : "+r"(pfVar5));
-  psVar6 = (s16 *)0x96000000;
-  asm volatile("" : "+r"(psVar6));
-  psVar7 = (s16 *)0x96000000;
-  asm volatile("" : "+r"(psVar7));
-  psVar8 = (s16 *)0x96000000;
-  asm volatile("" : "+r"(psVar8));
-  psVar9 = (s16 *)0x96000000;
-  asm volatile("" : "+r"(psVar9));
-  do {
-    *(float *)(param_2 + iVar4 * 4 + 0x10) = pfVar5[iVar4];
-    uVar3 = psVar9[-0x3b44];
-    uVar2 = psVar8[-0x3b43];
-    uVar1 = psVar7[-0x3b42];
-    uVar4 = psVar6[-0x3b41];
-    *(u16 *)(param_2 + 8) = uVar4;
+  pfVar5 = (float *)DAT_00958970_abs;
+  for (; iVar4 < 10; iVar4 = iVar4 + 1) {
+    pfOut = (float *)(param_2 + iVar4 * 4);
+    pfIn = pfVar5 + iVar4;
+    pfOut[4] = pfIn[0];
+    uVar3 = *(s16 *)DAT_0095897e_abs;
+    uVar2 = *(s16 *)DAT_0095897c_abs;
+    uVar1 = *(s16 *)DAT_0095897a_abs;
+    *(u16 *)(param_2 + 8) = *(s16 *)DAT_00958978_abs;
     *(u16 *)(param_2 + 10) = uVar1;
     *(u16 *)(param_2 + 0xc) = uVar2;
     *(u16 *)(param_2 + 0xe) = uVar3;
-    iVar4 = iVar4 + 1;
-  } while (iVar4 < 10);
+  }
   return;
 }
 #pragma pop
