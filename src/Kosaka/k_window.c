@@ -303,17 +303,19 @@ void* func_001a1550(KwlnTask* task)
 
  
 
-// FUN_001A2170 NONMATCHING
+// FUN_001A2170
 void func_001a2170(KwlnTask* task)
 {
     KWindowTaskWork* work;
+    void (**freeSlot)(void*);
 
     work = (KWindowTaskWork*)task->workData;
     func_00494cc0(work->colorDataA);
     func_00494cc0(work->colorDataB);
     func_001e7a60(work->renderData);
-    RwFree(work->buffer);
-    RwFree(task->workData);
+    freeSlot = (void (**)(void*))((u8*)&rwGlobals + 0x17c);
+    (*freeSlot)(work->buffer);
+    (*freeSlot)(task->workData);
 }
 
 // FUN_001A2200 NONMATCHING
