@@ -44,6 +44,11 @@ float DAT_006af9e0;
 extern float DAT_006af9d8_abs[];
 extern float DAT_006af9dc_abs[];
 extern float DAT_006af9e0_abs[];
+typedef struct {
+  float x;
+  float y;
+  float z;
+} FclDrawSpriteVec3;
 u32 DAT_006af9a0;
 u16 DAT_006af9c0[];
 typedef short DAT_006af9c0_abs_t;
@@ -1056,15 +1061,13 @@ u32 FUN_0040f430(int param_1,int param_2)
 
   int iVar5;
 
-  float auStack_10 [4];
+  FclDrawSpriteVec3 auStack_10;
 
   
 
   iVar1 = *(int *)(param_2 + 0xc);
 
-  auStack_10[0] = DAT_006af9d8_abs[0];
-  auStack_10[1] = DAT_006af9dc_abs[0];
-  auStack_10[2] = DAT_006af9e0_abs[0];
+  auStack_10 = *(FclDrawSpriteVec3 *)DAT_006af9d8_abs;
 
 
   lVar4 = FUN_003e6d70();
@@ -1110,7 +1113,7 @@ u32 FUN_0040f430(int param_1,int param_2)
 
         fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
-                          *(u8 *)(iVar3 + 0xc),((u32 *)auStack_10)[*(int *)(param_1 + 0x1c)],0);
+                          *(u8 *)(iVar3 + 0xc),((u32 *)&auStack_10)[*(int *)(param_1 + 0x1c)],0);
 
 
       }
