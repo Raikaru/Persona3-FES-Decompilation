@@ -151,6 +151,8 @@ extern u8 DAT_0069a628[];
 extern u8 DAT_0069a638[];
 extern u8 DAT_0069a648[];
 extern f32 D_00697880[];
+extern const u8 D_006978B0[];
+extern const u8 D_0069A368[];
 extern u32 DAT_0069a650;
 extern u8 DAT_0069a658[];
 extern u32 DAT_0069a65c;
@@ -374,6 +376,8 @@ extern BtlPacket* FUN_002db800_packet_voice(u16, u32);
 extern BtlPacket* FUN_002dd760_packet_voice(u16, void*, u32);
 #pragma alias FUN_0027f410_packet_voice FUN_0027f410
 extern BtlPacket* FUN_0027f410_packet_voice(u32, u32);
+#pragma alias FUN_002dd830_packet_voice FUN_002dd830
+extern BtlPacket* FUN_002dd830_packet_voice(BtlUnit*, u16, u16, u16);
 #pragma alias FUN_002f8810_ptr_voice FUN_002f8810
 extern void* FUN_002f8810_ptr_voice(void);
 
@@ -913,7 +917,7 @@ void func_002f1810(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)((u8*)0x690000 + 0x78b0), NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -1064,7 +1068,8 @@ u32 func_002f1b60(BtlAction* param_1,float *param_2)
   return uVar3;
 }
 
-// FUN_002f1d40 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f1d40
 void func_002f1d40(void)
 {
   BtlUnit* target;
@@ -1092,7 +1097,7 @@ void func_002f1d40(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -1104,6 +1109,7 @@ void func_002f1d40(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f1f00
 void func_002f1f00(void)
@@ -1200,7 +1206,7 @@ void func_002f2090(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)((u8*)0x690000 + 0x78b0), NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -4132,7 +4138,7 @@ void func_002e95f0(void);
 int func_002e97e0(void);
 void func_002e9950(void);
 void func_002e9ac0(void);
-void func_002e9c20(u64 *param_1);
+void func_002e9c20(BtlAction* action);
 u32 func_002e9f10(BtlAction* action);
 void func_002ea060(void);
 void func_002ea210(void);
@@ -4146,7 +4152,7 @@ void func_002eabf0(void);
 u32 func_002eb250(BtlAction* action);
 void func_002eb2c0(void);
 u32 func_002eb9e0(BtlAction* action);
-void func_002eba50(u64 *param_1);
+void func_002eba50(BtlAction* action);
 u32 func_002ebec0(BtlAction* action);
 void func_002ec000(void);
 void func_002ec2c0(void);
@@ -7553,71 +7559,60 @@ void func_002e9ac0(void)
 }
 
 // FUN_002e9c20 NONMATCHING
-void func_002e9c20(u64 *param_1)
-
+void func_002e9c20(BtlAction* action)
 {
-  int iVar1;
-  short sVar2;
-  int iVar3;
-  u8 *puVar4;
-  u64 uVar5;
-  u64 uVar6;
-  
-  *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfdffffff;
-  *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x80000;
-  iVar1 = *(int *)(param_1 + 6);
-  uVar5 = FUN_002b8f90(0);
-  if (*(short *)(iVar1 + 0xa4) == 0x102) {
-    uVar6 = FUN_002f87e0(3);
-    FUN_002b90d0(uVar5,uVar6);
-    uVar6 = FUN_002dd690(3,0x699c68);
-    FUN_0027ed20(uVar6,1);
-  }
-  else if (*(short *)(iVar1 + 0xa4) == 0x101) {
-    uVar6 = FUN_002f87e0(2);
-    FUN_002b90d0(uVar5,uVar6);
-    uVar6 = FUN_002dd690(3,0x699c58);
-    FUN_0027ed20(uVar6,1);
-  }
-  uVar6 = FUN_00284200(0x3f800000,iVar1,0x12,0,2);
-  iVar3 = (int)uVar6;
-  *(u16 *)(iVar3 + 0x48) = 2;
-  *(u64 *)(iVar3 + 0x60) = *param_1;
-  FUN_0027ed20(uVar6,1);
-  uVar6 = FUN_002b8d60(3,0xfff);
-  puVar4 = (u8 *)uVar6;
-  *puVar4 = 4;
-  *(u64 *)(puVar4 + 8) = *(u64 *)(iVar3 + 0x58);
-  *(u64 *)(puVar4 + 0x60) = *param_1;
-  FUN_0027ed20(uVar6,1);
-  uVar6 = FUN_0027fe90(iVar1,0,0x6978b0,0);
-  puVar4 = (u8 *)uVar6;
-  *puVar4 = 4;
-  *(u64 *)(puVar4 + 8) = *(u64 *)(iVar3 + 0x58);
-  *(u64 *)(puVar4 + 0x60) = *param_1;
-  FUN_0027ed20(uVar6,1);
-  uVar6 = FUN_002a3b40(0,1);
-  puVar4 = (u8 *)uVar6;
-  *puVar4 = 4;
-  *(u64 *)(puVar4 + 8) = *(u64 *)(iVar3 + 0x58);
-  *(u64 *)(puVar4 + 0x60) = *param_1;
-  FUN_0027ed20(uVar6,0);
-  uVar6 = FUN_002baf90(uVar5,iVar1,iVar1,0,0x200);
-  *(u64 *)((int)uVar6 + 0x60) = *param_1;
-  FUN_0027ed20(uVar6,2);
-  sVar2 = FUN_002d4e10(2,0x80000);
-  if (sVar2 == 1) {
-    uVar6 = FUN_002db890();
-    *(u16 *)((int)uVar6 + 0x48) = 0x2d;
-    FUN_0027ed20(uVar6,1);
-    uVar6 = FUN_002db800(0x20,0x17);
-    *(u16 *)((int)uVar6 + 0x48) = 0x2d;
-    FUN_0027ed20(uVar6,1);
-  }
-  *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x400000;
-  *(u16 *)(iGpffffb6fc + 0x18) = *(u16 *)(iGpffffb6fc + 0x18) | 7;
-  FUN_002b9030(uVar5);
-  return;
+    void* object;
+    BtlUnit* unit;
+    BtlPacket* parent;
+    BtlPacket* packet;
+
+    *(u32*)((u8*)gBtl + 0xc) &= ~0x02000000;
+    *(u32*)((u8*)gBtl + 0xc) |= 0x00080000;
+    unit = action->unit;
+    object = func_002b8f90(0);
+    if (unit->charId == 0x102) {
+        func_002b90d0(object, func_002f87e0(3));
+        packet = FUN_002dd690_packet_voice(3, (const char*)0x699c68);
+        btlPacketRegister(packet, 1);
+    }
+    else if (unit->charId == 0x101) {
+        func_002b90d0(object, func_002f87e0(2));
+        packet = FUN_002dd690_packet_voice(3, (const char*)0x699c58);
+        btlPacketRegister(packet, 1);
+    }
+    parent = FUN_00284200_packet_voice(1.0f, unit, 0x12, 0, 2);
+    parent->preUpdateDelay = 2;
+    parent->actionUID = action->uid;
+    btlPacketRegister(parent, 1);
+    packet = FUN_002b8d60_packet_voice(3, 0xfff);
+    packet->unk_00 = 4;
+    packet->parentUID = parent->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, 1);
+    packet = FUN_0027fe90_packet_voice(unit, NULL, (const void*)0x6978b0, NULL);
+    packet->unk_00 = 4;
+    packet->parentUID = parent->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, 1);
+    packet = FUN_002a3b40_packet_voice(NULL, 1);
+    packet->unk_00 = 4;
+    packet->parentUID = parent->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, 0);
+    packet = FUN_002baf90_packet_voice(object, unit, unit, 0, 0x200);
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, 2);
+    if (FUN_002d4e10(2, 0x80000) == 1) {
+        packet = FUN_002db890_packet_voice();
+        packet->preUpdateDelay = 0x2d;
+        btlPacketRegister(packet, 1);
+        packet = FUN_002db800_packet_voice(0x20, 0x17);
+        packet->preUpdateDelay = 0x2d;
+        btlPacketRegister(packet, 1);
+    }
+    *(u32*)((u8*)gBtl + 0xc) |= 0x00400000;
+    *(u16*)((u8*)gBtl + 0x18) |= 7;
+    func_002b9030(object);
 }
 
 // FUN_002e9f10
@@ -8418,124 +8413,114 @@ u32 func_002eb9e0(BtlAction* action)
 }
 
 // FUN_002eba50 NONMATCHING
-void func_002eba50(u64 *param_1)
-
+void func_002eba50(BtlAction* action)
 {
-  u8 *puVar1;
-  s32 lVar2;
-  u64 uVar3;
-  u64 uVar4;
-  int iVar5;
-  int unaff_s1_lo;
-  u64 uVar6;
-  int iVar7;
-  u64 unaff_s3;
-  u64 *puVar8;
-  int unaff_s6_lo;
-  int aiStack_10 [4];
-  
-  *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) & 0xfdffffff;
-  *(u32 *)(iGpffffb6fc + 0xc) = *(u32 *)(iGpffffb6fc + 0xc) | 0x80000;
-  puVar8 = param_1;
-  if (param_1 == (u64 *)0x0) {
-    puVar8 = *(u64 **)(iGpffffb6fc + 0x14c);
-    while ((puVar8 != (u64 *)0x0 &&
-           ((((*(u16 *)((int)puVar8 + 0x1a) & 1) == 0 ||
-             (*(char *)(*(int *)(puVar8 + 6) + 0xa2) != '\x01')) ||
-            (*(short *)(*(int *)(puVar8 + 6) + 0xa4) != 0x115))))) {
-      puVar8 = *(u64 **)(puVar8 + 0x95);
+    BtlAction* selected;
+    BtlUnit* unit;
+    BtlPacket* parent;
+    BtlPacket* packet;
+    void* object;
+    u32 mode;
+    s32 lVar2;
+    int iVar5;
+    int last;
+    int aiStack_10[4];
+
+    *(u32*)((u8*)gBtl + 0xc) &= ~0x02000000;
+    *(u32*)((u8*)gBtl + 0xc) |= 0x00080000;
+    selected = action;
+    if (selected == NULL) {
+        selected = gBtl->actionList.tail;
+        while (selected != NULL &&
+               ((selected->unk_1a & 1) == 0 ||
+                selected->unit->genus != UNIT_GENUS_EC ||
+                selected->unit->charId != 0x115)) {
+            selected = selected->prev;
+        }
     }
-  }
-  uVar6 = 0;
-  aiStack_10[0] = 0;
-  aiStack_10[1] = 0;
-  for (iVar5 = *(int *)(iGpffffb6fc + 0x158); iVar7 = aiStack_10[1], iVar5 != 0;
-      iVar5 = *(int *)(iVar5 + 0xa34)) {
-    lVar2 = FUN_0030b5a0(*(u32 *)(iVar5 + 0xa2c),0);
-    if (lVar2 != 0) {
-      if (*(short *)(iVar5 + 0xa4) == 0x106) {
-        aiStack_10[1] = iVar5;
-      }
-      else if (*(short *)(iVar5 + 0xa4) == 0x105) {
-        aiStack_10[0] = iVar5;
-      }
+    aiStack_10[0] = 0;
+    aiStack_10[1] = 0;
+    last = 0;
+    for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
+         unit != NULL; unit = unit->next) {
+        lVar2 = FUN_0030b5a0(unit->datUnit, 0);
+        if (lVar2 != 0) {
+            if (unit->charId == 0x106) {
+                aiStack_10[1] = (int)unit;
+            }
+            else if (unit->charId == 0x105) {
+                aiStack_10[0] = (int)unit;
+            }
+        }
+        last = aiStack_10[1];
     }
-  }
-  if ((aiStack_10[0] == 0) || (aiStack_10[1] == 0)) {
-    for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
-      if (aiStack_10[iVar5] != 0) {
-        uVar6 = FUN_00284200(0x3f800000,aiStack_10[iVar5],0x12,0,2);
-        FUN_0027ed20(uVar6,1);
-      }
+    if ((aiStack_10[0] == 0) || (aiStack_10[1] == 0)) {
+        for (iVar5 = 0; iVar5 < 2; iVar5++) {
+            if (aiStack_10[iVar5] != 0) {
+                parent = FUN_00284200_packet_voice(
+                    1.0f, (BtlUnit*)aiStack_10[iVar5], 0x12, 0, 2);
+                btlPacketRegister(parent, 1);
+            }
+        }
     }
-  }
-  else {
-    uVar3 = FUN_002b8f90(0);
-    iVar5 = aiStack_10[0];
-    if (param_1 == (u64 *)0x0) {
-      aiStack_10[2] = aiStack_10[0];
-      aiStack_10[3] = iVar7;
-      uVar6 = 2;
-      uVar4 = FUN_002dd690(3,0x699d80);
-      FUN_0027ed20(uVar4,1);
-      unaff_s6_lo = iVar7;
-      unaff_s1_lo = iVar5;
+    else {
+        object = func_002b8f90(0);
+        if (action == NULL) {
+            aiStack_10[2] = aiStack_10[0];
+            aiStack_10[3] = last;
+            mode = 2;
+            packet = FUN_002dd690_packet_voice(3, (const char*)0x699d80);
+            btlPacketRegister(packet, 1);
+        }
+        else if (selected->unit == (BtlUnit*)aiStack_10[0]) {
+            aiStack_10[2] = aiStack_10[0];
+            aiStack_10[3] = 0;
+            mode = 3;
+            packet = FUN_002dd690_packet_voice(3, (const char*)0x699d90);
+            btlPacketRegister(packet, 1);
+        }
+        else {
+            aiStack_10[2] = last;
+            aiStack_10[3] = 0;
+            mode = 4;
+            packet = FUN_002dd690_packet_voice(3, (const char*)0x699da0);
+            btlPacketRegister(packet, 1);
+        }
+        func_002b90d0(object, func_002f87e0((u16)mode));
+        for (iVar5 = 0; iVar5 < 2; iVar5++) {
+            if (aiStack_10[iVar5 + 2] != 0) {
+                parent = FUN_00284200_packet_voice(
+                    1.0f, (BtlUnit*)aiStack_10[iVar5 + 2], 0x12, 0, 2);
+                parent->preUpdateDelay = 3;
+                parent->actionUID = selected->uid;
+                btlPacketRegister(parent, 1);
+            }
+        }
+        packet = FUN_002b8d60_packet_voice(3, 0xfff);
+        packet->unk_00 = 4;
+        packet->parentUID = parent->uid;
+        packet->actionUID = selected->uid;
+        btlPacketRegister(packet, 1);
+        for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
+             unit != NULL; unit = unit->next) {
+            packet = FUN_0027fe90_packet_voice(
+                unit, NULL, (const void*)0x6978b0, NULL);
+            packet->unk_00 = 4;
+            packet->parentUID = parent->uid;
+            packet->actionUID = selected->uid;
+            btlPacketRegister(packet, 1);
+        }
+        packet = FUN_002a3b40_packet_voice(NULL, 1);
+        packet->unk_00 = 4;
+        packet->parentUID = parent->uid;
+        packet->actionUID = selected->uid;
+        btlPacketRegister(packet, 0);
+        packet = FUN_002baf90_packet_voice(
+            object, (BtlUnit*)aiStack_10[0], (BtlUnit*)last, 0, 0x200);
+        packet->actionUID = selected->uid;
+        btlPacketRegister(packet, 2);
+        func_002b9030(object);
     }
-    else if (*(int *)(puVar8 + 6) == aiStack_10[0]) {
-      aiStack_10[2] = aiStack_10[0];
-      aiStack_10[3] = 0;
-      uVar6 = 3;
-      uVar4 = FUN_002dd690(3,0x699d90);
-      FUN_0027ed20(uVar4,1);
-      unaff_s6_lo = iVar5;
-      unaff_s1_lo = iVar5;
-    }
-    else if (*(int *)(puVar8 + 6) == iVar7) {
-      aiStack_10[2] = iVar7;
-      aiStack_10[3] = 0;
-      uVar6 = 4;
-      uVar4 = FUN_002dd690(3,0x699da0);
-      FUN_0027ed20(uVar4,1);
-      unaff_s6_lo = iVar7;
-      unaff_s1_lo = iVar7;
-    }
-    uVar6 = FUN_002f87e0(uVar6);
-    FUN_002b90d0(uVar3,uVar6);
-    for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
-      if (aiStack_10[iVar5 + 2] != 0) {
-        unaff_s3 = FUN_00284200(0x3f800000,aiStack_10[iVar5 + 2],0x12,0,2);
-        *(u16 *)((int)unaff_s3 + 0x48) = 3;
-        *(u64 *)((int)unaff_s3 + 0x60) = *puVar8;
-        FUN_0027ed20(unaff_s3,1);
-      }
-    }
-    uVar6 = FUN_002b8d60(3,0xfff);
-    puVar1 = (u8 *)uVar6;
-    *puVar1 = 4;
-    iVar7 = (int)unaff_s3;
-    *(u64 *)(puVar1 + 8) = *(u64 *)(iVar7 + 0x58);
-    *(u64 *)(puVar1 + 0x60) = *puVar8;
-    FUN_0027ed20(uVar6,1);
-    for (iVar5 = *(int *)(iGpffffb6fc + 0x158); iVar5 != 0; iVar5 = *(int *)(iVar5 + 0xa34)) {
-      uVar6 = FUN_0027fe90(iVar5,0,0x6978b0,0);
-      puVar1 = (u8 *)uVar6;
-      *puVar1 = 4;
-      *(u64 *)(puVar1 + 8) = *(u64 *)(iVar7 + 0x58);
-      *(u64 *)(puVar1 + 0x60) = *puVar8;
-      FUN_0027ed20(uVar6,1);
-    }
-    uVar6 = FUN_002a3b40(0,1);
-    puVar1 = (u8 *)uVar6;
-    *puVar1 = 4;
-    *(u64 *)(puVar1 + 8) = *(u64 *)(iVar7 + 0x58);
-    *(u64 *)(puVar1 + 0x60) = *puVar8;
-    FUN_0027ed20(uVar6,0);
-    uVar6 = FUN_002baf90(uVar3,unaff_s1_lo,unaff_s6_lo,0,0x200);
-    *(u64 *)((int)uVar6 + 0x60) = *puVar8;
-    FUN_0027ed20(uVar6,2);
-    FUN_002b9030(uVar3);
-  }
-  return;
 }
 
 #pragma opt_loop_invariants on
@@ -8849,62 +8834,54 @@ void func_002ec5c0(void)
 
 // FUN_002ec790 NONMATCHING
 void func_002ec790(void)
-
 {
-  u8 *puVar1;
-  u64 uVar2;
-  u64 uVar3;
-  u64 uVar4;
-  int iVar5;
-  int iVar6;
-  int iVar7;
-  int iVar8;
-  int iVar9;
-  
-  iVar8 = 0;
-  iVar6 = 0;
-  for (iVar9 = *(int *)(DAT_007ce3ec + 0x158); iVar9 != 0; iVar9 = *(int *)(iVar9 + 0xa34)) {
-    iVar5 = iVar6;
-    iVar7 = iVar9;
-    if ((*(short *)(iVar9 + 0xa4) != 0x10a) &&
-       (iVar5 = iVar9, iVar7 = iVar8, *(short *)(iVar9 + 0xa4) != 0x109)) {
-      iVar5 = iVar6;
+    BtlUnit* iVar5;
+    BtlUnit* iVar6;
+    BtlUnit* iVar7;
+    BtlUnit* iVar8;
+    BtlUnit* unit;
+    void* object;
+    BtlPacket* parent;
+    BtlPacket* packet;
+
+    iVar8 = NULL;
+    iVar6 = NULL;
+    for (unit = gBtl->unitLists[UNIT_GENUS_EC].head;
+         unit != NULL; unit = unit->next) {
+        iVar5 = iVar6;
+        iVar7 = unit;
+        if ((unit->charId != 0x10a) &&
+            (iVar5 = unit, iVar7 = iVar8, unit->charId != 0x109)) {
+            iVar5 = iVar6;
+        }
+        iVar8 = iVar7;
+        iVar6 = iVar5;
     }
-    iVar8 = iVar7;
-    iVar6 = iVar5;
-  }
-  uVar2 = FUN_002b8f90(0);
-  uVar3 = FUN_002f87e0(1);
-  FUN_002b90d0(uVar2,uVar3);
-  uVar3 = FUN_002baf90(uVar2,iVar8,iVar6,0,0x200);
-  FUN_0027ed20(uVar3,2);
-  uVar4 = FUN_002dd830(iVar8,10,0,6);
-  puVar1 = (u8 *)uVar4;
-  *puVar1 = 5;
-  iVar9 = (int)uVar3;
-  *(u64 *)(puVar1 + 8) = *(u64 *)(iVar9 + 0x58);
-  *(u16 *)(puVar1 + 0x48) = 0x40;
-  FUN_0027ed20(uVar4,1);
-  uVar3 = FUN_002dd830(iVar8,0xc,0,7);
-  puVar1 = (u8 *)uVar3;
-  *puVar1 = 5;
-  *(u64 *)(puVar1 + 8) = *(u64 *)(iVar9 + 0x58);
-  *(u16 *)(puVar1 + 0x48) = 0x84;
-  FUN_0027ed20(uVar3,1);
-  uVar3 = FUN_0027f410(0x2ecbe0,iVar6);
-  puVar1 = (u8 *)uVar3;
-  *puVar1 = 5;
-  *(u64 *)(puVar1 + 8) = *(u64 *)(iVar9 + 0x58);
-  *(u16 *)(puVar1 + 0x48) = 0x8c;
-  FUN_0027ed20(uVar3,1);
-  uVar3 = FUN_00284200(0x3f800000,iVar6,0,0,1);
-  puVar1 = (u8 *)uVar3;
-  *puVar1 = 5;
-  *(u64 *)(puVar1 + 8) = *(u64 *)(iVar9 + 0x58);
-  *(u16 *)(puVar1 + 0x48) = 0x8c;
-  FUN_0027ed20(uVar3,1);
-  FUN_002b9030(uVar2);
-  return;
+    object = func_002b8f90(0);
+    func_002b90d0(object, func_002f87e0(1));
+    parent = FUN_002baf90_packet_voice(object, iVar8, iVar6, 0, 0x200);
+    btlPacketRegister(parent, 2);
+    packet = FUN_002dd830_packet_voice(iVar8, 10, 0, 6);
+    packet->unk_00 = 5;
+    packet->parentUID = parent->uid;
+    packet->postUpdateDelay = 0x40;
+    btlPacketRegister(packet, 1);
+    packet = FUN_002dd830_packet_voice(iVar8, 0xc, 0, 7);
+    packet->unk_00 = 5;
+    packet->parentUID = parent->uid;
+    packet->postUpdateDelay = 0x84;
+    btlPacketRegister(packet, 1);
+    packet = FUN_0027f410_packet_voice(0x2ecbe0, (u32)iVar6);
+    packet->unk_00 = 5;
+    packet->parentUID = parent->uid;
+    packet->postUpdateDelay = 0x8c;
+    btlPacketRegister(packet, 1);
+    packet = FUN_00284200_packet_voice(1.0f, iVar6, 0, 0, 1);
+    packet->unk_00 = 5;
+    packet->parentUID = parent->uid;
+    packet->postUpdateDelay = 0x8c;
+    btlPacketRegister(packet, 1);
+    func_002b9030(object);
 }
 
 // FUN_002ec990
