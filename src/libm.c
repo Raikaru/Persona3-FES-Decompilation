@@ -31,6 +31,7 @@ extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
 extern u32 FUN_0052efd8(long, long, long);
+extern u32 FUN_0052f7d0(long, long, long);
 
 static const float sAtanHi[] = {
     0.463647603989f,
@@ -850,13 +851,15 @@ LAB_0052f160:
 LAB_0052f164:
   return (u32)uVar9 | uVar6 << 0x20;
 }
+// Reconstructed signed remainder wrapper; retail keeps a longer scheduled
+// 64-bit negate path that MWCCPS2 does not reproduce from equivalent C.
 // FUN_0052F6A0 NONMATCHING
 u64 FUN_0052f6a0(long param_1,long param_2)
-
 {
   int iVar1;
-  u64 auStack_30 [2];
-  
+  u64 auStack_30[2];
+  u64 uVar2;
+
   iVar1 = 0;
   if (param_1 >> 0x20 < 0) {
     iVar1 = -1;
@@ -865,12 +868,14 @@ u64 FUN_0052f6a0(long param_1,long param_2)
   if (param_2 >> 0x20 < 0) {
     param_2 = CONCAT44(-(u32)(-(int)param_2 != 0) - (int)((u32)param_2 >> 0x20),-(int)param_2);
   }
+  FUN_0052f7d0(param_1,param_2,(long)auStack_30);
+  uVar2 = auStack_30[0];
   if (iVar1 != 0) {
-    auStack_30[0] =
-         CONCAT44(-(u32)(-(int)auStack_30[0] != 0) - (int)((u32)auStack_30[0] >> 0x20),
-                  -(int)auStack_30[0]);
+    uVar2 =
+         CONCAT44(-(u32)(-(int)uVar2 != 0) - (int)((u32)uVar2 >> 0x20),
+                  -(int)uVar2);
   }
-  return auStack_30[0];
+  return uVar2;
 }
 // FUN_0052F7D0 NONMATCHING
 u32 FUN_0052f7d0(long param_1,long param_2,long param_3)
