@@ -749,7 +749,7 @@ int FUN_00383360(int param_1,int param_2,int param_3);
 int FUN_00383d80(int param_1,int param_2,int param_3);
 int FUN_00384370(int param_1,int param_2,int param_3);
 int FUN_00384780(int param_1,int param_2,int param_3);
-int FUN_00385520(u64 param_1,u64 param_2,u64 param_3);
+int FUN_00385520(int param_1,int param_2,int param_3);
 int FUN_003863c0(void);
 int FUN_00388df0(int param_1,int param_2);
 int FUN_0038a480(int param_1,int param_2,int param_3,int param_4);
@@ -2974,6 +2974,7 @@ u64 FUN_003715b0(int param_1,int param_2,int param_3)
 
   
   iVar4 = 0xf;
+  asm volatile("" : "+r"(iVar4));
 
   iVar1 = 0;
 
@@ -17910,7 +17911,7 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
   FUN_00361830(param_3);
 
-  FUN_0036f900(param_1,param_2,0x1e,9,0,1,param_3,0x384060,0);
+  FUN_0036f900(param_1,param_2,0x1e,9,0,1,param_3,0x384060,(code *)FUN_003840d0);
 
   iVar1 = (int)param_3;
 
@@ -18409,7 +18410,7 @@ u32 FUN_00384d30(int param_1,int param_2,int param_3)
 
   iVar2 = FUN_00361830(param_3);
 
-  FUN_0036f900(param_1,param_2,0x1e,6,0,1,param_3,0x3849e0,0);
+  FUN_0036f900(param_1,param_2,0x1e,6,0,1,param_3,0x3849e0,(code *)FUN_00384a50);
 
   iVar4 = (int)param_3;
 
@@ -18793,7 +18794,7 @@ void FUN_00385260(int param_1,int param_2,int param_3,int param_4)
 // FUN_00385520 NONMATCHING
 
 
-int FUN_00385520(u64 param_1,u64 param_2,u64 param_3)
+int FUN_00385520(int param_1,int param_2,int param_3)
 
 
 
@@ -18807,7 +18808,7 @@ int FUN_00385520(u64 param_1,u64 param_2,u64 param_3)
 
   FUN_00361830(param_3);
 
-  FUN_0036f900(param_1,param_2,0x1e,6,0,1,param_3,0x3851f0,0);
+  FUN_0036f900(param_1,param_2,0x1e,6,0,1,param_3,0x3851f0,(code *)FUN_00385260);
 
   iVar2 = (int)param_3;
 
