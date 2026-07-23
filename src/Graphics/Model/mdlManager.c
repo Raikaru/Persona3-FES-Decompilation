@@ -3934,38 +3934,38 @@ u64 func_00314170(u64 param_1,long param_2)
 
 
 
-// FUN_003142B0 NONMATCHING
+// FUN_003142B0
 u32 func_003142b0(void* param_1)
 {
     s32 iVar2;
     s32 iVar1;
-    s32 iVar6;
-    void* uVar3;
+    s32 uVar3;
     char* uVar4;
     s32 lVar5;
-    s32 iVar7;
+    s32 iVar6;
+    void* iVar7;
 
     iVar1 = RpMaterialGetUserDataArrayCount();
-    iVar7 = 0;
-    while (iVar7 < iVar1)
+    uVar3 = 0;
+    while (uVar3 < iVar1)
     {
-        uVar3 = RpMaterialGetUserDataArray(param_1, iVar7);
-        uVar4 = RpUserDataArrayGetName(uVar3);
+        iVar7 = RpMaterialGetUserDataArray(param_1, uVar3);
+        uVar4 = RpUserDataArrayGetName(iVar7);
         if (strcmp(uVar4, DAT_007cca08) == 0)
         {
-            iVar2 = func_0048ef30(uVar3);
+            iVar2 = func_0048ef30(iVar7);
             iVar6 = 0;
             while (iVar6 < iVar2)
             {
-                lVar5 = RpUserDataArrayGetFormat(uVar3);
+                lVar5 = RpUserDataArrayGetFormat(iVar7);
                 if (lVar5 == 3)
                 {
-                    return (u32)func_0048ef80(uVar3, iVar6);
+                    return (u32)func_0048ef80(iVar7, iVar6);
                 }
                 iVar6++;
             }
         }
-        iVar7++;
+        uVar3++;
     }
     return 0;
 }
