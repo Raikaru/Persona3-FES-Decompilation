@@ -5381,24 +5381,35 @@ u32 FUN_00435260(char param_1)
 }
 
 #pragma pop
-// FUN_004352E0 NONMATCHING
+// FUN_004352E0
 
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma opt_loop_invariants on
 u32 FUN_004352e0(void)
 {
   u8 *base;
   int iVar2;
   u8 *row;
+  int valid;
 
-  base = DAT_008717a0_bytes;
-  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+  iVar2 = 1;
+  for (; iVar2 < 4; iVar2 = iVar2 + 1) {
+    base = DAT_008717a0_bytes;
+    valid = 0;
     row = base + iVar2 * 0x1c0;
-    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0) &&
+    if ((*(int *)(row + 0x48) != 0) && (*(int *)(row + 0x54) != 0)) {
+      valid = 1;
+    }
+    valid = valid != 0;
+    if ((valid == 1) &&
         (*(char *)(*(int *)(*(int *)(row + 0x16c) + 0x3c) + 0x1215) == '\x01')) {
       return 1;
     }
   }
   return 0;
 }
+#pragma pop
 
 #pragma push
 #pragma opt_loop_invariants on
