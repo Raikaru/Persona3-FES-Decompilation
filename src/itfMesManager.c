@@ -2485,7 +2485,7 @@ u64 FUN_003a4b90(int param_1,u64 param_2,u64 param_3)
 
   long lVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   
 
