@@ -2223,18 +2223,18 @@ u8 func_001fc230(DatPersonaWork* persona)
 
     skills = datPersonaGetSkills(persona);
     count = datPersonaCountValidSkills(persona);
-    if (FUN_00175ca0(persona) == 0)
+    if (FUN_00175ca0(persona) != 0)
+    {
+        entry = DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
+        func_001fb4b0(entry, 0x20, persona->level,
+                     99 - persona->level, &firstIndex, &indexCount);
+    }
+    else
     {
         entry = DAT_007ce428 + persona->id * 0x46 + 6;
         func_001fb4b0(entry, 0x10,
                      persona->level -
                          DAT_007ce420[persona->id * 0xe + 3],
-                     99 - persona->level, &firstIndex, &indexCount);
-    }
-    else
-    {
-        entry = DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
-        func_001fb4b0(entry, 0x20, persona->level,
                      99 - persona->level, &firstIndex, &indexCount);
     }
 
