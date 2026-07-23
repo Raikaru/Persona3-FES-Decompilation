@@ -453,9 +453,10 @@ long FUN_0052ed30(u64 param_1)
   u64 uVar2;
   
   lVar1 = FUN_005316d0_u64(param_1,0);
-  if (lVar1 < 0) goto LAB_0052ed74;
-  return FUN_0052ec28(param_1);
-LAB_0052ed74:
+  if (-1 < lVar1) {
+    lVar1 = FUN_0052ec28(param_1);
+    return lVar1;
+  }
   uVar2 = FUN_005311c8_u64(0,param_1);
   lVar1 = FUN_0052ec28(uVar2);
   return -lVar1;
