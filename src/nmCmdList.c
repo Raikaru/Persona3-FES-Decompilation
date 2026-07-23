@@ -2714,7 +2714,7 @@ u64 FUN_003c8230(s32 *param_1,int param_2)
 }
 #define FUN_003c8230(...) ((u64 (*)(...))FUN_003c8230)(__VA_ARGS__)
 #undef FUN_003c82e0
-// FUN_003C82E0 NONMATCHING
+// FUN_003C82E0
 
 
 
@@ -2723,20 +2723,23 @@ u64 FUN_003c8230(s32 *param_1,int param_2)
 
 u64 FUN_003c82e0(int param_1)
 {
-  u32 object;
-  object = *(u32 *)DAT_0095be90_abs;
+  u8* p;
+  p = DAT_0095be90_abs;
+  if (p == (u8*)0) {
+    return 0;
+  }
   switch (param_1) {
-  case 3:
-    FUN_003a4360_typed(object,7);
-    break;
-  case 2:
-    FUN_003a4360_typed(object,6);
+  case 0:
+    FUN_003a4360_typed(*(s32 *)p,4);
     break;
   case 1:
-    FUN_003a4360_typed(object,5);
+    FUN_003a4360_typed(*(s32 *)p,5);
     break;
-  case 0:
-    FUN_003a4360_typed(object,4);
+  case 2:
+    FUN_003a4360_typed(*(s32 *)p,6);
+    break;
+  case 3:
+    FUN_003a4360_typed(*(s32 *)p,7);
     break;
   }
   return 0;
