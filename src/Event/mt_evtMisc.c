@@ -1919,13 +1919,14 @@ void FUN_003890e0(int param_1)
 
   u64 uVar2;
 
-  bool bVar3;
+  int bVar3;
 
   u16 *puVar4;
+  u16 *puVar4_first;
 
   u32 *puVar5;
 
-  long lVar6;
+  u32 lVar6;
 
   u32 uVar7;
 
@@ -1953,18 +1954,17 @@ void FUN_003890e0(int param_1)
 
   iVar16 = 0;
 
-  FUN_00388ff0(0);
+  FUN_00388ff0(param_1);
 
   for (iVar10 = 1; iVar10 < 0x16; iVar10 = iVar10 + 1) {
 
-    puVar4 = (u16 *)FUN_003b5d50(iVar10);
+    puVar4_first = (u16 *)FUN_003b5d50(iVar10);
 
-    if (puVar4 != (u16 *)0x0) {
+    if (puVar4_first != (u16 *)0x0) {
 
-      iVar9 = (int)(*puVar4 & 0xffc00) >> 10;
+      iVar9 = (int)(*puVar4_first & 0xffc00) >> 10;
 
       if ((((iVar9 == 0xc) || (iVar9 == 7)) || (iVar9 == 6)) ||
-
          (((iVar9 == 5 || (iVar9 == 3)) || (iVar9 == 1)))) {
 
         bVar3 = true;
@@ -1979,7 +1979,7 @@ void FUN_003890e0(int param_1)
 
       if (bVar3) {
 
-        for (; puVar4 != (u16 *)0x0; puVar4 = *(u16 **)(puVar4 + 0x7c)) {
+        for (; puVar4_first != (u16 *)0x0; puVar4_first = *(u16 **)(puVar4_first + 0x7c)) {
 
           iVar15 = iVar15 + 1;
 
@@ -1992,7 +1992,6 @@ void FUN_003890e0(int param_1)
   }
 
   if (iVar15 != 0) {
-
     *(int *)(param_1 + 0x97c) = iVar15;
 
     lVar6 = (*DAT_00960184)(1,iVar15 << 2,0x40000);
