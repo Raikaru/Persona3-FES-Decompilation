@@ -730,6 +730,7 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     } pos;
     f32 temp;
     s32 i;
+    s32 selectedEntry;
 
     pos.endX = 46.0f;
     pos.endY = 59.0f;
@@ -743,9 +744,11 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     }
     pos.startX = -19.0f;
 
-    temp = (f32)work->selectedEntry;
-    temp = temp * 19.0f;
-    temp = temp + 57.0f;
+    selectedEntry = work->selectedEntry;
+    asm volatile("" : "+r"(selectedEntry));
+    temp = 19.0f;
+    temp = temp * (f32)selectedEntry;
+    temp = 57.0f + temp;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
