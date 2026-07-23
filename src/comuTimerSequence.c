@@ -1091,121 +1091,64 @@ code * FUN_003c07c0(void)
 
 
 code * FUN_003c09a0(void)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar2;
-
   int *piVar3;
-
   long lVar4;
-
   u8 auStack_20 [12];
-
   u32 uStack_14;
-
   u32 uStack_10;
-
   u32 uStack_c;
 
-  
-
   piVar3 = (int *)FUN_00195540();
-
   iVar1 = *piVar3;
-
-  if (iVar1 == 2) {
-
-    lVar4 = FUN_0027c2b0();
-
-    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
-
-      bVar2 = 1;
-
-    }
-
-    else {
-
-      bVar2 = 0;
-
-    }
-
-    if (bVar2) {
-
-      lVar4 = FUN_0038d6f0(0);
-
-      if (lVar4 == 0) {
-
-        return (code *)0xffffffff;
-
-      }
-
-      *piVar3 = 0;
-
-      piVar3[1] = 0;
-
-      piVar3[2] = 0;
-
-      piVar3[3] = 0;
-
-      piVar3[4] = 0;
-
-      piVar3[5] = 0;
-
-      return (code *)&FUN_003c07c0;
-
-    }
-
-  }
-
-  else if (iVar1 == 1) {
-
-    if (piVar3[1] < piVar3[2]) {
-
-      piVar3[1] = piVar3[1] + 1;
-
-    }
-
-    else {
-
-      piVar3[1] = 0;
-
-      piVar3[2] = 0;
-
-      uGpffffb980 = 0;
-
-      FUN_00521408(auStack_20,0,0x1c);
-
-      uStack_14 = 0x321;
-
-      uStack_10 = 1;
-
-      uStack_c = 0;
-
-      FUN_0027c080(3,auStack_20,0x1c,0);
-
-      *piVar3 = 2;
-
-    }
-
-  }
-
-  else if (iVar1 == 0) {
-
+  switch (iVar1) {
+  case 0:
     piVar3[1] = 0;
-
     piVar3[2] = 2;
-
     *piVar3 = 1;
-
+    break;
+  case 1:
+    if (piVar3[1] < piVar3[2]) {
+      piVar3[1] = piVar3[1] + 1;
+    }
+    else {
+      piVar3[1] = 0;
+      piVar3[2] = 0;
+      uGpffffb980 = 0;
+      FUN_00521408(auStack_20,0,0x1c);
+      uStack_14 = 0x321;
+      uStack_10 = 1;
+      uStack_c = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
+    }
+    break;
+  case 2:
+    lVar4 = FUN_0027c2b0();
+    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
+      bVar2 = 1;
+    }
+    else {
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      lVar4 = FUN_0038d6f0(0);
+      if (lVar4 == 0) {
+        return (code *)0xffffffff;
+      }
+      *piVar3 = 0;
+      piVar3[1] = 0;
+      piVar3[2] = 0;
+      piVar3[3] = 0;
+      piVar3[4] = 0;
+      piVar3[5] = 0;
+      return (code *)&FUN_003c07c0;
+    }
+    break;
   }
-
   return (code *)0x0;
-
 }
 #define FUN_003c09a0(...) ((code * (*)(...))FUN_003c09a0)(__VA_ARGS__)
 #undef FUN_003c0b30
