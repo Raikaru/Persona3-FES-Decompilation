@@ -134,9 +134,7 @@ extern u32 FUN_00112420();
 extern u32 FUN_001127d0();
 extern u32 FUN_00113a30();
 extern u32 FUN_00114450();
-extern u64 FUN_001158b0();
-extern u32 FUN_001158b0_typed();
-#pragma alias FUN_001158b0_typed FUN_001158b0
+extern u32 FUN_001158b0();
 extern u32 FUN_00115980();
 extern u32 FUN_001159f0();
 extern u32 FUN_0011abd0();
