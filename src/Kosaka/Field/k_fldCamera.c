@@ -52,6 +52,7 @@ extern void FUN_0019d3f0(const char* file, s32 line);
 extern void FUN_0048d270(void* curve, s32 index, RwV3d* dst);
 extern void FUN_0048d480(f32 time, void* curve, s32 mode, RwV3d* dst, void* aux);
 extern void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
+extern void FUN_004cb890(RwFrame* frame, f32 amount, const RwV3d* axis, u32 mode);
 extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode);
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
@@ -154,12 +155,21 @@ RwV3d* K_FldCamera_GetPos(KwlnTask* fldCameraTask)
     return &((FldCamera*)fldCameraTask->workData)->frame->modelling.pos;
 }
 
+// Reconstructed frame-position capture, axis setup, frame update, and camera look-at.
+// Residual MWCC scheduling differs in axis materialization and final branch placement.
 // FUN_001d5e30 NONMATCHING
 void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
 {
     FldCamera* fldCamera;
     RwCamera* camera;
     RwFrame* cameraFrame;
+    RwV3d cameraPosition;
+    RwV3d target;
+    RwV3d axis;
+    u64 axisXY;
+    u8* targetBytes;
+    u32 i;
+    register RwV3d* axisPtr;
 
     fldCamera = (FldCamera*)fldCameraTask->workData;
     if (fldCamera->type != FLDCAMERA_TYPE_0)
@@ -169,7 +179,26 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
 
     camera = kwlnGetMainCamera();
     cameraFrame = (RwFrame*)camera->object.object.parent;
-    FUN_004c31b0(amount, cameraFrame, CAMERA_UP_AXIS, 2);
+    cameraPosition = cameraFrame->modelling.pos;
+    targetBytes = (u8*)&target;
+    i = 0xc;
+    if (targetBytes != NULL)
+    {
+        do
+        {
+            *targetBytes = 0;
+            targetBytes++;
+            i--;
+        } while (i != 0);
+    }
+    axisPtr = &axis;
+    axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+    *(u64*)axisPtr = axisXY;
+    axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+    FUN_004cb890(cameraFrame, amount, axisPtr, 2);
+    cameraPosition = cameraFrame->modelling.pos;
+    camera = kwlnGetMainCamera();
+    FUN_001a1210(camera, &cameraPosition, &target, NULL);
 }
 
 // FUN_001d5f30
