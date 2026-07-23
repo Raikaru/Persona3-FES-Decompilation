@@ -851,7 +851,7 @@ u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
 void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
-bool FUN_00352c70(int param_1,char *param_2);
+bool FUN_00352c70(int param_1,u8 *param_2);
 u32 FUN_00352e10(u32 param_1,short param_2,int param_3,int param_4);
 u64 FUN_00352eb0(int param_1);
 void FUN_00352f20(u32 param_1);
@@ -55202,16 +55202,20 @@ void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3)
 
 
 
+// Fixed unsigned-byte-compare bug: param_2 was char* (lb) instead of u8*
+// (lbu). Residual: retail restructures the 3-way boolean-membership loop
+// into a shared-tail-block shape (different branch target layout past
+// offset 16) not yet reproduced -- accepted floor (199 -> 197 nd).
 // FUN_00352C70 NONMATCHING
 
 
-bool FUN_00352c70(int param_1,char *param_2)
+bool FUN_00352c70(int param_1,u8 *param_2)
 
 
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
   u32 uVar2;
 
@@ -55616,7 +55620,7 @@ void FUN_00352f70(float *param_1)
 
           iVar6 = *(int *)(iVar6 + 0xa34)) {
 
-        lVar8 = FUN_00352c70((int)(iVar6),(char *)(&fVar3));
+        lVar8 = FUN_00352c70((int)(iVar6), (u8 *)(&fVar3));
 
         if (lVar8 != 0) {
 
@@ -56362,7 +56366,7 @@ void FUN_003542a0(int param_1)
 
       while (iVar8 != 0) {
 
-        lVar5 = FUN_00352c70((int)(iVar8),(char *)((int)lVar9 + 0xc));
+        lVar5 = FUN_00352c70((int)(iVar8), (u8 *)((int)lVar9 + 0xc));
 
         if (lVar5 != 0) {
 
@@ -57771,7 +57775,7 @@ void FUN_003569e0(int param_1)
 
         iVar3 = *(int *)(iVar3 + 0xa34)) {
 
-      lVar4 = FUN_00352c70((int)(iVar3),(char *)(iVar1));
+      lVar4 = FUN_00352c70((int)(iVar3), (u8 *)(iVar1));
 
       if ((lVar4 != 0) &&
 
@@ -57978,7 +57982,7 @@ void FUN_00356c70(float *param_1)
 
             iVar3 = *(int *)(iVar3 + 0xa34)) {
 
-          if (((*(int *)(iVar3 + 0xa2c) != 0) && (lVar4 = FUN_00352c70((int)(iVar3),(char *)(&fVar2)), lVar4 != 0)) &&
+          if (((*(int *)(iVar3 + 0xa2c) != 0) && (lVar4 = FUN_00352c70((int)(iVar3), (u8 *)(&fVar2)), lVar4 != 0)) &&
 
              (lVar4 = FUN_0030b5a0(*(u32 *)(iVar3 + 0xa2c),0), lVar4 == 0)) {
 
@@ -58056,7 +58060,7 @@ void FUN_00356c70(float *param_1)
 
               iVar3 = *(int *)(iVar3 + 0xa34)) {
 
-            lVar4 = FUN_00352c70((int)(iVar3),(char *)(&fVar2));
+            lVar4 = FUN_00352c70((int)(iVar3), (u8 *)(&fVar2));
 
             if ((lVar4 != 0) &&
 
