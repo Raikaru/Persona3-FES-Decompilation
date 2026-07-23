@@ -2519,7 +2519,7 @@ void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
     s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012bce0_s32(position, alpha, unused, persona, drawAlpha);
+    FUN_0012bce0_s32(position, alpha, unused, persona, (u8)drawAlpha);
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
@@ -2544,7 +2544,8 @@ void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
     s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012bfb0_s32(position, alpha, currentStats, persona, drawAlpha);
+    FUN_0012bfb0_s32(position, alpha, currentStats, persona,
+                     (u8)drawAlpha);
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
@@ -3027,12 +3028,9 @@ void* func_00133780(KwlnTask* task)
 {
     u8* work;
     u32 wasReady;
-    u32 state;
     HCdvd* cdvd;
-
     work = (u8*)task->workData;
-    state = *(u32*)work;
-    switch (state) {
+    switch (*(u32*)work) {
     case 0:
         if (*(u32*)(work + 4) == 0) {
             *(u32*)work = 3;
