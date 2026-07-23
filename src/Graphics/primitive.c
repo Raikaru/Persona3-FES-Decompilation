@@ -857,6 +857,9 @@ u64 FUN_0035a770(u64 param_1,u64 param_2)
 
 }
 
+// The retail callback table places a second callback at 0x0035AA10; its
+// marker below narrows this function's true window to 0x1A0 bytes.
+// Remaining differences are MWCCPS2 FPU register allocation/scheduling.
 // FUN_0035A870 NONMATCHING
 
 
@@ -865,20 +868,16 @@ void FUN_0035a870(void* param_1, void* param_2)
     PrimInterpData* out = (PrimInterpData*)param_1;
     const PrimInterpData* in = (const PrimInterpData*)param_2;
     volatile f32 saved[4];
-    f32 ax;
-    f32 ay;
-    f32 az;
-    f32 aw;
     f32 inY;
     f32 inX;
     f32 inZ;
     f32 inW;
     f32 norm;
     f32 inverse;
-    f32 resultW;
-    f32 resultX;
-    f32 resultY;
-    f32 resultZ;
+    f32 ax;
+    f32 ay;
+    f32 az;
+    f32 aw;
 
     ax = out->quat.x;
     ay = out->quat.y;
@@ -903,22 +902,21 @@ void FUN_0035a870(void* param_1, void* param_2)
         inY = inY * inverse;
         inZ = inZ * inverse;
     }
+    ay = saved[1];
+    az = saved[2];
+    aw = saved[3];
+    ax = saved[0];
 
-    resultW = inW * aw - (inY * ay + inX * ax + inZ * az);
-    resultX = inZ * ay - inY * az;
-    resultY = inX * az - inZ * ax;
-    resultZ = inY * ax - inX * ay;
-    out->quat.w = resultW;
-    out->quat.x = resultX;
-    out->quat.y = resultY;
-    out->quat.z = resultZ;
-
-    out->quat.x = out->quat.x + saved[0] * inW + 0.0f;
-    out->quat.y = out->quat.y + saved[1] * inW + 0.0f;
-    out->quat.z = out->quat.z + saved[2] * inW + 0.0f;
-    out->quat.x = out->quat.x + inX * saved[3] + 0.0f;
-    out->quat.y = out->quat.y + inY * saved[3] + 0.0f;
-    out->quat.z = out->quat.z + inZ * saved[3] + 0.0f;
+    out->quat.w = inW * aw - (inY * ay + inX * ax + inZ * az);
+    out->quat.x = inZ * ay - inY * az;
+    out->quat.y = inX * az - inZ * ax;
+    out->quat.z = inY * ax - inX * ay;
+    out->quat.x = out->quat.x + ax * inW + 0.0f;
+    out->quat.y = out->quat.y + ay * inW + 0.0f;
+    out->quat.z = out->quat.z + az * inW + 0.0f;
+    out->quat.x = out->quat.x + inX * aw + 0.0f;
+    out->quat.y = out->quat.y + inY * aw + 0.0f;
+    out->quat.z = out->quat.z + inZ * aw + 0.0f;
 
     out->values[0] = out->values[0] - in->values[0];
     out->values[1] = out->values[1] - in->values[1];
@@ -926,6 +924,36 @@ void FUN_0035a870(void* param_1, void* param_2)
     out->values[3] = out->values[3] - in->values[3];
     out->values[4] = out->values[4] - in->values[4];
     out->values[5] = out->values[5] - in->values[5];
+}
+// FUN_0035AA10
+void FUN_0035aa10(int param_1, int param_2, int param_3)
+{
+    *(f32*)(param_1 + 0x14) =
+        *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0x14) -
+        (*(f32*)(param_2 + 0x10) * *(f32*)(param_3 + 0x10) +
+         *(f32*)(param_2 + 8) * *(f32*)(param_3 + 8) +
+         *(f32*)(param_2 + 0xc) * *(f32*)(param_3 + 0xc));
+    *(f32*)(param_1 + 8) =
+        *(f32*)(param_2 + 0x10) * *(f32*)(param_3 + 0xc) -
+        *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0x10);
+    *(f32*)(param_1 + 0xc) =
+        *(f32*)(param_2 + 8) * *(f32*)(param_3 + 0x10) -
+        *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 8);
+    *(f32*)(param_1 + 0x10) =
+        *(f32*)(param_2 + 0xc) * *(f32*)(param_3 + 8) -
+        *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0xc);
+    *(f32*)(param_1 + 8) += *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 8);
+    *(f32*)(param_1 + 0xc) += *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0xc);
+    *(f32*)(param_1 + 0x10) += *(f32*)(param_2 + 0x14) * *(f32*)(param_3 + 0x10);
+    *(f32*)(param_1 + 8) += *(f32*)(param_2 + 8) * *(f32*)(param_3 + 0x14);
+    *(f32*)(param_1 + 0xc) += *(f32*)(param_2 + 0xc) * *(f32*)(param_3 + 0x14);
+    *(f32*)(param_1 + 0x10) += *(f32*)(param_2 + 0x10) * *(f32*)(param_3 + 0x14);
+    *(f32*)(param_1 + 0x18) = *(f32*)(param_2 + 0x18) + *(f32*)(param_3 + 0x18);
+    *(f32*)(param_1 + 0x1c) = *(f32*)(param_2 + 0x1c) + *(f32*)(param_3 + 0x1c);
+    *(f32*)(param_1 + 0x20) = *(f32*)(param_2 + 0x20) + *(f32*)(param_3 + 0x20);
+    *(f32*)(param_1 + 0x24) = *(f32*)(param_2 + 0x24) + *(f32*)(param_3 + 0x24);
+    *(f32*)(param_1 + 0x28) = *(f32*)(param_2 + 0x28) + *(f32*)(param_3 + 0x28);
+    *(f32*)(param_1 + 0x2c) = *(f32*)(param_2 + 0x2c) + *(f32*)(param_3 + 0x2c);
 }
 
 // FUN_0035ABA0
@@ -938,12 +966,12 @@ u32 FUN_0035aba0(void)
 
     desc.hash = 0x44a07195;
     desc.size1 = 0x34;
-    desc.size0 = 0x34;
+    desc.funcD = FUN_0035a870;
     desc.funcA = FUN_0035a290;
     desc.funcB = FUN_0035a3f0;
     desc.funcB2 = FUN_0035a620;
     desc.funcC = &LAB_0035aa10;
-    desc.funcD = FUN_0035a870;
+    desc.funcD = (PrimFuncE)FUN_0035a870;
     desc.funcE = FUN_0035a770;
     desc.funcF = FUN_0035a6a0;
     desc.funcG = &LAB_0035a850;
