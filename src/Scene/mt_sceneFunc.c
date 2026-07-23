@@ -245,8 +245,8 @@ u32 FUN_003b8f30(void);
 u32  FUN_003b8ff0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
                   u32 param_5,u32 param_6,float param_7);
  #pragma alias FUN_003b8ff0_typed FUN_003b8ff0
- extern u32 FUN_003b8ff0_typed(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
-                                u32 param_5,u32 param_6,float param_7);
+extern u32 FUN_003b8ff0_typed(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
+                               u32 param_5,u32 param_6,float param_7);
 u32  FUN_003b91c0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
                   u32 param_5,u32 param_6,float param_7);
 u32  FUN_003b9260(u32 *param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 param_6,float param_7);
@@ -1008,94 +1008,67 @@ u32 FUN_003b8f30(void)
 #undef FUN_003b8ff0
 // FUN_003B8FF0 NONMATCHING
 
-
-u32
-
-FUN_003b8ff0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,
-
-            u32 param_6,float param_7)
-
-
+u32 FUN_003b8ff0(u32 param_1,u32 param_2,u32 param_3,u32 param_4,u32 param_5,
+                 u32 param_6,float param_7)
 {
-
+  u32 uVar3;
   u32 uVar1;
-
   u32 lVar2;
-
   int iVar3;
 
-  u16 *puVar4;
-
-  
-
   if (param_1 == 0) {
-
-    uVar1 = 0;
-
+    return 0;
+  }
+  iVar3 = (int)(*(u16 *)param_1 & 0xffc00) >> 10;
+  if (iVar3 == 10) {
+    goto type10;
+  }
+  if (iVar3 == 3) {
+    goto type3;
+  }
+  if (iVar3 == 2) {
+    goto type2;
+  }
+  switch (iVar3) {
+  case 1:
+    goto type1;
+  default:
+    goto unknown;
   }
 
-  else {
+type1:
+  uVar1 = *(u32 *)(param_1 + 0x128);
+  goto selected;
+type2:
+  uVar1 = *(u32 *)(param_1 + 0x118);
+  goto selected;
+type3:
+  uVar1 = *(u32 *)(param_1 + 0x128);
+  goto selected;
+type10:
+  uVar1 = *(u32 *)(param_1 + 0x104);
+  goto selected;
+unknown:
+  return 0;
 
-    puVar4 = (u16 *)param_1;
-
-    iVar3 = (int)(*puVar4 & 0xffc00) >> 10;
-
-    if (iVar3 == 10) {
-
-      uVar1 = *(u32 *)(puVar4 + 0x82);
-
-    }
-
-    else if (iVar3 == 3) {
-
-      uVar1 = *(u32 *)(puVar4 + 0x94);
-
-    }
-
-    else if (iVar3 == 2) {
-
-      uVar1 = *(u32 *)(puVar4 + 0x8c);
-
-    }
-
-    else {
-
-      if (iVar3 != 1) {
-
-        return 0;
-
-      }
-
-      uVar1 = *(u32 *)(puVar4 + 0x94);
-
-    }
-
-    lVar2 = FUN_003186e0(uVar1,param_2 & 0xffff,(short)param_3);
-
-    if (lVar2 == 0) {
-
-      FUN_003189f0(uVar1,param_2 & 0xffff,param_3);
-
-      FUN_003182d0(uVar1,param_2 & 0xffff,(short)param_3,param_4,param_5 == 1);
-
-      if (0 < param_6) {
-
-        FUN_00318770((float)(int)param_6,uVar1,param_2 & 0xffff,param_3);
-
-      }
-
-      FUN_005225a8(0x6a2e10,uVar1,param_2,param_3);
-
-    }
-
-    *(u32 *)(puVar4 + 0x14) = *(u32 *)(puVar4 + 0x14) & 0xffffdfff;
-
-    uVar1 = 1;
-
+selected:
+  uVar3 = 0;
+  if (param_5 == 1) {
+    uVar3 |= 1;
   }
-
-  return uVar1;
-
+  lVar2 = FUN_003186e0(uVar1,param_2 & 0xffff,(short)param_3);
+  if (lVar2 != 0) {
+    goto complete;
+  }
+  FUN_003189f0(uVar1,param_2 & 0xffff,param_3);
+  FUN_003182d0(uVar1,param_2 & 0xffff,(short)param_3,param_4,uVar3);
+  if (0 < param_6) {
+    FUN_00318770((float)(int)param_6,uVar1,param_2 & 0xffff,param_3);
+  }
+  FUN_005225a8(0x6a2e10,uVar1,param_2,param_3);
+complete:
+  *(u32 *)(param_1 + 0x14) = *(u32 *)(param_1 + 0x14) & 0xffffdfff;
+  return 1;
 }
 #define FUN_003b8ff0(...) ((u32 (*)(...))FUN_003b8ff0)(__VA_ARGS__)
 #undef FUN_003b91c0
