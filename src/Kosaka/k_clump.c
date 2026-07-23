@@ -738,11 +738,25 @@ u32 func_001a76e0(const u32* state)
     return state[8] != 0;
 }
 
+// The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
+// The nine volatile list traversals and final state release are otherwise instruction-identical.
 // FUN_001a7710 NONMATCHING
 void func_001a7710(u32* state)
 {
-    static const u32 listOffsets[] = {8, 0x18, 0x1c, 0x0c, 0x10, 0x20, 0x14, 0x24, 0x28};
-    s32 i;
+    typedef struct
+    {
+        u8 pad[8];
+        volatile u32 list8;
+        volatile u32 listc;
+        volatile u32 list10;
+        volatile u32 list14;
+        volatile u32 list18;
+        volatile u32 list1c;
+        volatile u32 list20;
+        volatile u32 list24;
+        volatile u32 list28;
+    } KClumpFreeState;
+    KClumpFreeState* work;
     KClumpMaterialNode* node;
     KClumpMaterialNode* next;
 
@@ -750,18 +764,81 @@ void func_001a7710(u32* state)
     {
         return;
     }
-    for (i = 0; i < (s32)(sizeof(listOffsets) / sizeof(listOffsets[0])); i++)
+    work = (KClumpFreeState*)(void*)state;
+
+    while (work->list8 != 0)
     {
-        node = *(KClumpMaterialNode**)((u8*)state + listOffsets[i]);
-        while (node != NULL)
-        {
-            next = node->next;
-            kclump_free(node);
-            node = next;
-        }
-        *(KClumpMaterialNode**)((u8*)state + listOffsets[i]) = NULL;
+        node = (KClumpMaterialNode*)work->list8;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list8 = (u32)next;
     }
-    kclump_free(state);
+
+    while (work->list18 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list18;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list18 = (u32)next;
+    }
+
+    while (work->list1c != 0)
+    {
+        node = (KClumpMaterialNode*)work->list1c;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list1c = (u32)next;
+    }
+
+    while (work->listc != 0)
+    {
+        node = (KClumpMaterialNode*)work->listc;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->listc = (u32)next;
+    }
+
+    while (work->list10 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list10;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list10 = (u32)next;
+    }
+
+    while (work->list20 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list20;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list20 = (u32)next;
+    }
+
+    while (work->list14 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list14;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list14 = (u32)next;
+    }
+
+    while (work->list24 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list24;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list24 = (u32)next;
+    }
+
+    while (work->list28 != 0)
+    {
+        node = (KClumpMaterialNode*)work->list28;
+        next = node->next;
+        (*(void (**)(void*))jtbl_0096017C_abs)(node);
+        work->list28 = (u32)next;
+    }
+
+    (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
 }
 
 // FUN_001a7910 NONMATCHING
