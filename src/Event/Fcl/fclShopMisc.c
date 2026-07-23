@@ -11815,7 +11815,7 @@ u64 FUN_003fe690(u64 param_1,u64 param_2)
 
   long lVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int iVar7;
 
