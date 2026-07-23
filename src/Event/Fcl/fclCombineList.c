@@ -2079,22 +2079,39 @@ void fclCombineList003ded70(FclCallbackProxy* proxy)
     FUN_003c4e70((s32)proxy->created_task);
 }
 
-// FUN_003deda0 NONMATCHING
+// FUN_003deda0
 void fclCombineList003deda0(FclNodeListContext* context)
 {
     FclNodeList* list;
-    FclNodeLink* node;
+    FclNodeLink* primary_node;
+    FclNodeLink* secondary_node;
+    FclAnimationNode* payload;
     FclAnimationNode* selected;
 
     if (context == 0) return;
     list = context->list;
+    selected = (FclAnimationNode*)FUN_003dfac0((int*)context);
     if (selected == 0) return;
 
-    for (node = list->primary_head; node != 0; node = node->next) {
-        if (node == selected->link) break;
+    primary_node = list->primary_head;
+    while (primary_node != 0) {
+        if (primary_node == selected->link) break;
+        payload = primary_node->payload;
+        FUN_003dfae0((int*)context, (int*)payload);
+        primary_node = primary_node->next;
     }
-    for (node = list->secondary_head; node != 0; node = node->secondary_next) {
-        if (node == selected->link) break;
+
+    secondary_node = list->secondary_head;
+    while (secondary_node != 0) {
+        if (secondary_node == selected->link) break;
+        payload = secondary_node->payload;
+        FUN_003dfae0((int*)context, (int*)payload);
+        secondary_node = secondary_node->secondary_next;
+    }
+
+    if (selected->link != 0) {
+        payload = selected->link->payload;
+        FUN_003dfae0((int*)context, (int*)payload);
     }
 }
 
