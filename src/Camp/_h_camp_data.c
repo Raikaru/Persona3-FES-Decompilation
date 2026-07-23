@@ -383,101 +383,109 @@ void FUN_001675b0(KwlnTask* task)
 void* FUN_001675e0(KwlnTask* task)
 {
     CampBridgeStateWork* work;
-    s32 state;
     s32 ready;
-    void* allocated;
-    KwlnTask* child;
-
     work = (CampBridgeStateWork*)task->workData;
-    state = (s32)work->state;
-    if (state == 2) {
-        if (kwlnTaskGetState((KwlnTask*)work->activeTask) == 3) {
-            return KWLNTASK_STOP;
+    switch (work->state) {
+    case 0: {
+        KwlnTask* child;
+
+        datSetFlag(0x1407, 1);
+        if (DAT_007cdf48 != 0) {
+            child = 0;
         }
-    }
-    else {
-        ready = 1;
-        if (state == 1) {
-            if (DAT_007cdf48 == 0) {
-                ready = -1;
+        else {
+            void* allocated;
+
+            allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+            if (allocated == 0) {
+                child = 0;
             }
-            else if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData != 3) {
-                ready = 0;
-            }
-            if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
-                if (work->mode == 0) {
-                    allocated = (*DAT_00960184)(1, 0x30, 0x40000);
-                    if (allocated == 0) {
-                        child = 0;
-                    }
-                    else {
-                        child = kwlnTaskCreate(task, D_005DBD80, 0x18be,
-                                             func_001618a0,
-                                             func_00161d60,
-                                             allocated);
-                        if (child == 0) {
-                            child = 0;
-                        }
-                        else {
-                            *(u32*)((u8*)allocated + 0x0c) =
-                                (u32)(s16)work->screenMode;
-                        }
-                    }
-                    work->activeTask = (u32)child;
-                }
-                else {
-                    allocated = (*DAT_00960184)(1, 0x48, 0x40000);
-                    if (allocated == 0) {
-                        child = 0;
-                    }
-                    else {
-                        child = kwlnTaskCreate(task, D_005DBED0, 0x18be,
-                                             func_00166c70,
-                                             FUN_001675b0,
-                                             allocated);
-                        if (child == 0) {
-                            child = 0;
-                        }
-                        else {
-                            *(u32*)((u8*)allocated + 0x0c) =
-                                (u32)(s16)work->screenMode;
-                        }
-                    }
-                    work->activeTask = (u32)child;
-                }
-                work->state = 2;
-            }
-        }
-        else if (state == 0) {
-            datSetFlag(0x1407, 1);
-            if (DAT_007cdf48 == 0) {
-                allocated = (*DAT_00960184)(1, 0x48, 0x40000);
-                if (allocated == 0) {
+            else {
+                child = kwlnTaskCreate(task, D_005DAC70, 0x18bf,
+                                     h_campUpdateSpriteSetupTask,
+                                     h_campDestroySpriteSetupTask,
+                                     allocated);
+                if (child == 0) {
                     child = 0;
                 }
                 else {
-                    child = kwlnTaskCreate(task, D_005DAC70, 0x18bf,
-                                         h_campUpdateSpriteSetupTask,
-                                         h_campDestroySpriteSetupTask,
-                                         allocated);
-                    if (child == 0) {
-                        child = 0;
-                    }
-                    else {
-                        DAT_007cdf48 = (void*)child;
-                        *(u32*)((u8*)allocated + 0x3c) =
-                            (u32)H_Cdvd_Request(D_005DAC90, 1);
+                    DAT_007cdf48 = (void*)child;
+                    *(u32*)((u8*)allocated + 0x3c) =
+                        (u32)H_Cdvd_Request(D_005DAC90, 1);
+                }
+            }
+        }
+        work->setupTask = (u32)child;
+        DAT_007cdf88 = (void*)FUN_00168770(task, 0x18bf);
+        work->activeTask = (u32)DAT_007cdf88;
+        work->state = 1;
+        break;
+    }
+    case 1: {
+        s16 screenMode;
+        void* allocated;
+
+        ready = 1;
+        if (DAT_007cdf48 == 0) {
+            ready = -1;
+        }
+        else {
+            switch (*(u32*)((KwlnTask*)DAT_007cdf48)->workData) {
+            case 3:
+                break;
+            default:
+                ready = 0;
+                break;
+            }
+        }
+        if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
+            if (work->mode == 0) {
+                screenMode = (s16)work->screenMode;
+                allocated = (*DAT_00960184_abs)(1, 0x30, 0x40000);
+                if (allocated == 0) {
+                    work->activeTask = 0;
+                }
+                else {
+                    work->activeTask = (u32)kwlnTaskCreate(
+                        task, D_005DBD80, 0x18be,
+                        func_001618a0,
+                        func_00161d60,
+                        allocated);
+                    if (work->activeTask != 0) {
+                        *(u32*)((u8*)allocated + 0x0c) =
+                            (u32)screenMode;
                     }
                 }
             }
             else {
-                child = 0;
+                screenMode = (s16)work->screenMode;
+                allocated = (*DAT_00960184_abs)(1, 0x48, 0x40000);
+                if (allocated == 0) {
+                    work->activeTask = 0;
+                }
+                else {
+                    work->activeTask = (u32)kwlnTaskCreate(
+                        task, D_005DBED0, 0x18be,
+                        func_00166c70,
+                        FUN_001675b0,
+                        allocated);
+                    if (work->activeTask != 0) {
+                        *(u32*)((u8*)allocated + 0x0c) =
+                            (u32)screenMode;
+                    }
+                }
             }
-            work->setupTask = (u32)child;
-            DAT_007cdf88 = (void*)FUN_00168770(task, 0x18bf);
-            work->activeTask = (u32)DAT_007cdf88;
-            work->state = 1;
+            work->state = 2;
         }
+        break;
+    }
+    case 2:
+        if (kwlnTaskGetState((KwlnTask*)work->activeTask) == 3) {
+            return KWLNTASK_STOP;
+        }
+        break;
+    default:
+        break;
     }
     return KWLNTASK_CONTINUE;
 }
