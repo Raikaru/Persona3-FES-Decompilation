@@ -1108,7 +1108,7 @@ u64 FUN_003a2ef0(u64 param_1)
 
   int lVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u32 *puVar3;
 
