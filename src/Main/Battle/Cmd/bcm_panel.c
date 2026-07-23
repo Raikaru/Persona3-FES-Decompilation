@@ -2598,7 +2598,7 @@ void FUN_0022C2D0(void)
     (void)table;
 }
 
-// FUN_0022C5A0 NONMATCHING
+// FUN_0022C5A0
 void FUN_0022C5A0(void)
 {
     u8* base;
