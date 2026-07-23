@@ -9125,7 +9125,7 @@ void FUN_003257a0(u64 param_1)
 
 
 
-// FUN_003257E0 NONMATCHING
+// FUN_003257E0
 
 
 void FUN_003257e0(u32 param_1)
@@ -9155,13 +9155,13 @@ void FUN_003257e0(u32 param_1)
       if (*(int *)(iVar2 + 8) != 0) {
 
         (*(code *)(PTR_LAB_0069be20_abs + 0x10 +
-                   ((u32)*(u16 *)(iVar2 + 4) * 0xc + (u32)*(u16 *)(iVar2 + 4)) * 4))();
+                   ((u32)*(u16 *)(iVar2 + 4) * 0xc + (u32)*(u16 *)(iVar2 + 4)) * 4))(*(int *)(iVar2 + 8));
 
       }
 
       if (*(int *)(iVar2 + 0x18) != 0) {
 
-        (*(void (**)(...))0x0096017c)();
+        (*(void (**)(...))0x0096017c)(*(int *)(iVar2 + 0x18));
 
         *(u32 *)(iVar2 + 0x10) = 0;
 
@@ -9173,7 +9173,7 @@ void FUN_003257e0(u32 param_1)
 
       if (*(int *)(iVar2 + 0x28) != 0) {
 
-        (*(void (**)(...))0x0096017c)();
+        (*(void (**)(...))0x0096017c)(*(int *)(iVar2 + 0x28));
 
         *(u32 *)(iVar2 + 0x20) = 0;
 
