@@ -17,6 +17,16 @@ const RwV2d sLogBoxPos = {28.0f, 42.0f};
 const RwV2d sLogStringsPos = {36.0f, 50.0f};
 
 static RwRaster* sFontRaster;
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_00960088_abs D_00960088
+extern u8 D_00960088_abs[];
+extern RwIm2DRenderPrimitiveFunction D_009600A0_abs[];
+
+extern void (*D_00960090)(u32 state, u32 value);
+extern f32 D_00960088;
+extern RwBool (*D_009600A0)(RwPrimitiveType primitiveType,
+                            RwIm2DVertex* vertices, s32 vertexCount);
 static RwImage* sFontImage;
 static HDbText3D* sText3DList;
 static s8 sLogLine;
@@ -84,45 +94,96 @@ void H_Dbprt_Flush()
     }
 }
 
+// Reconstructed inline four-vertex glyph batching and render-state setup.
+// Residual 28-byte overrun / normalized diff reflects MWCC scheduling and
+// register allocation around UV arithmetic and loop control.
 // FUN_00104420 NONMATCHING
 void H_Dbprt_Main()
 {
-    RwRGBA color;
+    f32 uv[8];
+    RwIm2DVertex vertices[4];
     f32 recipZ;
     f32 z;
-    s32 row;
+    f32 rowOffset;
+    f32 rowY;
     s32 column;
-    u8 glyph;
+    s32 row;
+    s32 vertex;
+    s32 glyphIndex;
+    s32 glyphByte;
+    u8* line;
+    RwRenderStateSetFunc* setRenderState;
 
-    RwRenderStateSet(rwRENDERSTATEZTESTENABLE, true);
-    RwRenderStateSet(rwRENDERSTATESHADEMODE, rwSHADEMODEGOURAUD);
-    RwRenderStateSet(rwRENDERSTATEZWRITEENABLE, true);
-    RwRenderStateSet(rwRENDERSTATETEXTUREFILTER, rwFILTERNEAREST);
-    RwRenderStateSet(rwRENDERSTATEVERTEXALPHAENABLE, true);
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    setRenderState = (RwRenderStateSetFunc*)D_00960090_abs;
+    (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
+    (*setRenderState)(rwRENDERSTATEZWRITEENABLE, (void*)true);
+    (*setRenderState)(rwRENDERSTATETEXTUREFILTER, (void*)rwFILTERNEAREST);
+    (*setRenderState)(rwRENDERSTATEVERTEXALPHAENABLE, (void*)true);
 
     kwlnPushCommonRenderStates();
-    RwRenderStateSet(rwRENDERSTATETEXTURERASTER, sFontRaster);
+    (*setRenderState)(rwRENDERSTATETEXTURERASTER, (void*)sFontRaster);
 
-    color.r = 255;
-    color.g = 255;
-    color.b = 255;
-    color.a = 255;
-    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
-    z = RwIm2DGetNearScreenZ();
+    vertex = 0;
+    z = *(f32*)D_00960088_abs;
+
+    for (vertex = 0; vertex < 4; vertex++)
+    {
+        RwIm2DVertex* vertexPtr = &vertices[vertex];
+
+        vertexPtr->u.els.recipZ = recipZ;
+        vertexPtr->u.els.color.r = 255.0f;
+        vertexPtr->u.els.color.g = 255.0f;
+        vertexPtr->u.els.color.b = 255.0f;
+        vertexPtr->u.els.color.a = 255.0f;
+        vertexPtr->u.els.scrVertex.z = z;
+    }
 
     for (row = 0; row < HDBPRT_GRID_HEIGHT; row++)
     {
-        for (column = 0; column < HDBPRT_GRID_WIDTH; column++)
+        column = 0;
+        line = (u8*)sGrid[row];
+        rowOffset = 12.0f * (f32)row;
+        rowY = 11.0f + rowOffset;
+        for (; column < HDBPRT_GRID_WIDTH; column++)
         {
-            glyph = (u8)sGrid[row][column];
-            if (glyph != ' ')
+            if (line[column] != ' ')
             {
-                H_Dbprt_DrawGlyph(12.0f * (f32)column,
-                                   12.0f * (f32)row,
-                                   z,
-                                   recipZ,
-                                   &color,
-                                   (s32)glyph - ' ');
+                vertices[0].u.els.scrVertex.x = 12.0f * (f32)column;
+                vertices[0].u.els.scrVertex.y = rowOffset;
+                vertices[1].u.els.scrVertex.x =
+                    vertices[0].u.els.scrVertex.x + 11.0f;
+                vertices[1].u.els.scrVertex.y = rowOffset;
+                vertices[2].u.els.scrVertex.x =
+                    vertices[0].u.els.scrVertex.x;
+                vertices[2].u.els.scrVertex.y = rowY;
+                vertices[3].u.els.scrVertex.x =
+                    vertices[1].u.els.scrVertex.x;
+                vertices[3].u.els.scrVertex.y = rowY;
+
+                glyphIndex = (s32)line[column] - ' ';
+                glyphByte = glyphIndex & 0xff;
+                uv[0] = 0.0625f * (f32)(glyphByte % 16);
+                uv[1] = 0.0625f * (f32)(glyphByte / 16);
+                uv[2] = uv[0] + 0.03125f;
+                uv[3] = uv[1];
+                uv[4] = uv[0];
+                uv[5] = uv[1] + 0.03125f;
+                uv[6] = uv[2];
+                uv[7] = uv[5];
+
+                for (vertex = 0; vertex < 4; vertex++)
+                {
+                    f32* uvPtr = &uv[vertex * 2];
+                    RwIm2DVertex* vertexPtr = &vertices[vertex];
+
+                    vertexPtr->u.els.u = uvPtr[0];
+                    vertexPtr->u.els.v = uvPtr[1];
+                }
+
+                D_009600A0_abs[0](rwPRIMTYPETRISTRIP, vertices, 4);
             }
         }
     }
@@ -130,6 +191,7 @@ void H_Dbprt_Main()
     H_Dbprt_DrawText3D();
     H_Dbprt_DrawLog();
 }
+
 
 
 // FUN_00104710 NONMATCHING
