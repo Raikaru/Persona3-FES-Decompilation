@@ -113,7 +113,7 @@ extern void FUN_003a2a30_s32(s32 param_1);
 u32 FUN_003a2b30(void);
 u32 FUN_003a2c10(void);
 int FUN_003a2c90(int param_1,int param_2);
-u64 FUN_003a2ef0(u64 param_1);
+u32 FUN_003a2ef0(u64 param_1);
 u32 FUN_003a3010(int param_1);
 u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3);
 void FUN_003a3420(int param_1,s32 param_2);
@@ -235,7 +235,7 @@ extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,
 #define FUN_003a2b30(...) ((u32 (*)(...))FUN_003a2b30)(__VA_ARGS__)
 #define FUN_003a2c10(...) ((u32 (*)(...))FUN_003a2c10)(__VA_ARGS__)
 #define FUN_003a2c90(...) ((int (*)(...))FUN_003a2c90)(__VA_ARGS__)
-#define FUN_003a2ef0(...) ((u64 (*)(...))FUN_003a2ef0)(__VA_ARGS__)
+#define FUN_003a2ef0(...) ((u32 (*)(...))FUN_003a2ef0)(__VA_ARGS__)
 #define FUN_003a3010(...) ((u32 (*)(...))FUN_003a3010)(__VA_ARGS__)
 #define FUN_003a30c0(...) ((u32 (*)(...))FUN_003a30c0)(__VA_ARGS__)
 #define FUN_003a3420(...) ((void (*)(...))FUN_003a3420)(__VA_ARGS__)
@@ -1100,7 +1100,7 @@ int FUN_003a2c90(int param_1,int param_2)
 // FUN_003A2EF0 NONMATCHING
 
 
-u64 FUN_003a2ef0(u64 param_1)
+u32 FUN_003a2ef0(u64 param_1)
 
 
 
@@ -1165,7 +1165,7 @@ u64 FUN_003a2ef0(u64 param_1)
   return uVar2;
 
 }
-#define FUN_003a2ef0(...) ((u64 (*)(...))FUN_003a2ef0)(__VA_ARGS__)
+#define FUN_003a2ef0(...) ((u32 (*)(...))FUN_003a2ef0)(__VA_ARGS__)
 #undef FUN_003a3010
 // FUN_003A3010
 
