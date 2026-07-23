@@ -211,7 +211,8 @@ void FUN_003f9220(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
 void FUN_003f9510(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
 u32 FUN_003f98f0(u16 param_1);
 u64 FUN_003f99d0(u64 param_1,u32 param_2);
-u64 FUN_003f9b20(u64 param_1,u64 param_2);
+u64 FUN_003f9b20(u64 param_1,int param_2);
+s32 FUN_003f9cb0(u32 *param_1, u32 *param_2);
 u64 FUN_003f9e30(int param_1);
 u32 FUN_003fa0d0(u64 param_1);
 u64 FUN_003fa190(int param_1);
@@ -8162,10 +8163,14 @@ u64 FUN_003f99d0(u64 param_1,u32 param_2)
 
 }
 
+// Window was wrongly 784B (should be 400B) - see FUN_003f9cb0 split below.
+// Full logic rewritten from retail disasm: if/else order, switch-based
+// dispatch, and int/long typing all fixed. Residual: register-bank
+// choice for param_1/param_2 (s2/s1 in retail vs s5/s4 here).
 // FUN_003F9B20 NONMATCHING
 
 
-u64 FUN_003f9b20(u64 param_1,u64 param_2)
+u64 FUN_003f9b20(u64 param_1,int param_2)
 
 
 
@@ -8175,11 +8180,13 @@ u64 FUN_003f9b20(u64 param_1,u64 param_2)
 
   int iVar2;
 
-  short sVar3;
+  int sVar3;
 
   u32 uVar4;
 
   long lVar5;
+
+  int iVar7;
 
   int iVar6;
 
@@ -8187,27 +8194,9 @@ u64 FUN_003f9b20(u64 param_1,u64 param_2)
 
   
 
-  iVar2 = *(int *)(*(int *)((int)param_2 + 0x14) + 0x1c);
+  iVar2 = *(int *)(*(int *)(param_2 + 0x14) + 0x1c);
 
-  if ((*(u32 *)(iVar2 + 8) & 0x4000) == 0) {
-
-    lVar5 = datGetEquipmentId(1,*(u16 *)(iVar2 + 6));
-
-    if (lVar5 == 0) {
-
-      *(u16 *)(iVar2 + 0xe) = 0;
-
-    }
-
-    else {
-
-      *(u16 *)(iVar2 + 0xe) = 1;
-
-    }
-
-  }
-
-  else {
+  if ((*(u32 *)(iVar2 + 8) & 0x4000) != 0) {
 
     sVar1 = *(short *)(iVar2 + 4);
 
@@ -8217,31 +8206,44 @@ u64 FUN_003f9b20(u64 param_1,u64 param_2)
 
     func_00170ed0(sVar1,&iStack_4);
 
-    if (iStack_4 == 4) {
-
-      sVar3 = func_00170760(1,sVar1);
-
-    }
-
-    else if ((((iStack_4 == 3) || (iStack_4 == 2)) || (iStack_4 == 1)) || (iStack_4 == 0)) {
-
+    switch (iStack_4) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
       sVar3 = 0;
-
+      lVar5 = sVar1;
       for (iVar6 = 0; iVar6 < 300; iVar6 = iVar6 + 1) {
-
         uVar4 = datGetEquipmentId(1,iVar6);
-
-        if ((long)sVar1 == (uVar4 & 0xffff)) {
-
+        if (lVar5 == (uVar4 & 0xffff)) {
           sVar3 = sVar3 + 1;
-
         }
-
       }
-
+      break;
+    case 4:
+      sVar3 = func_00170760(1,sVar1) & 0xffff;
+      break;
     }
 
     *(short *)(iVar2 + 0xe) = sVar3;
+
+  }
+
+  else {
+
+    iVar7 = datGetEquipmentId(1,*(short *)(iVar2 + 6));
+
+    if (iVar7 != 0) {
+
+      *(u16 *)(iVar2 + 0xe) = 1;
+
+    }
+
+    else {
+
+      *(u16 *)(iVar2 + 0xe) = 0;
+
+    }
 
   }
 
@@ -8254,6 +8256,87 @@ u64 FUN_003f9b20(u64 param_1,u64 param_2)
   return 0;
 
 }
+
+// Hidden sibling: only referenced via FUN_003c7000(uVar7,0x3f9cb0,0) as a
+// raw callback pointer literal in FUN_003f9e30 below, never via jal, so
+// Ghidra's boundary scan absorbed it into FUN_003f9b20's window (784B
+// instead of the true 400B). Splitting it out here as its own function
+// per the p3-window-nullsub-discovery Case C procedure.
+#pragma push
+#pragma opt_rebuildconditionals off
+// FUN_003F9CB0
+s32 FUN_003f9cb0(u32 *param_1, u32 *param_2)
+{
+  u32 entryA;
+  u32 entryB;
+  s32 fieldA;
+  s32 fieldB;
+  s32 result;
+  s32 flagA;
+  s32 flagB;
+  s32 catA;
+  s32 catB;
+
+  entryA = *(u32 *)(*param_1 + 0x14);
+  entryA = *(u32 *)(entryA + 0x1c);
+  entryB = *(u32 *)(*param_2 + 0x14);
+  entryB = *(u32 *)(entryB + 0x1c);
+  flagB = (*(u32 *)entryB & 0x40) == 0;
+  flagA = (*(u32 *)entryA & 0x40) == 0;
+  result = flagB - flagA;
+  if (result != 0) {
+    goto ret;
+  }
+  fieldB = *(u32 *)(entryB + 8);
+  fieldA = *(u32 *)(entryA + 8);
+  result = (fieldA & 0xff) - (fieldB & 0xff);
+  if (result != 0) {
+    goto ret;
+  }
+  switch ((fieldB & 0xf00) >> 8) {
+  case 0:
+    catB = *(short *)(entryB + 0x14);
+    break;
+  case 1:
+    catB = *(short *)(entryB + 0x18);
+    break;
+  case 2:
+    catB = *(short *)(entryB + 0x1a);
+    break;
+  case 4:
+    catB = 0x98967f - *(int *)(entryB + 0x10);
+    break;
+  default:
+    catB = 0;
+    break;
+  }
+  switch ((fieldA & 0xf00) >> 8) {
+  case 0:
+    catA = *(short *)(entryA + 0x14);
+    break;
+  case 1:
+    catA = *(short *)(entryA + 0x18);
+    break;
+  case 2:
+    catA = *(short *)(entryA + 0x1a);
+    break;
+  case 4:
+    catA = 0x98967f - *(int *)(entryA + 0x10);
+    break;
+  default:
+    catA = 0;
+    break;
+  }
+  result = catB - catA;
+  if (result != 0) {
+    goto ret;
+  }
+  result = *(short *)(entryB + 4) - *(short *)(entryA + 4);
+ret:
+  return result;
+}
+#pragma pop
+
 
 // FUN_003F9E30 NONMATCHING
 
