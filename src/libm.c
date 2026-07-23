@@ -14,19 +14,10 @@ extern float FUN_0052b380(float param_1, float param_2);
 extern float FUN_0052b548(float);
 extern float FUN_0052b800(float param_1, float param_2);
 extern float FUN_0052c398(float);
-// Local wrappers for EE intrinsics (declared void in compat header, but return values in FPU regs)
-#define FUN_00531230(a,b) _U64_FN2(FUN_00531230,a,b)
-#define FUN_00531170(a,b) _U64_FN2(FUN_00531170,a,b)
-#define FUN_005316d0(a,b) _LONG_FN2(FUN_005316d0,a,b)
-#define FUN_005311c8(a,b) _U64_FN2(FUN_005311c8,a,b)
-#define FUN_005318f8(a)   _U32_FN1(FUN_005318f8,a)
-#define FUN_00531720(a)   _U64_FN1U(FUN_00531720,a)
-#define FUN_00530da0(a)   _U64_FN1U(FUN_00530da0,a)
-#define _U64_FN2(fn,a,b)   ((u64(*)(u64,u64))(fn))((a),(b))
-#define _LONG_FN2(fn,a,b)  ((long(*)(u64,u64))(fn))((a),(b))
-#define _U64_FN1(fn,a)     ((u64(*)(u64))(fn))((a))
-#define _U64_FN1U(fn,a)    ((u64(*)(u32))(fn))((a))
-#define _U32_FN1(fn,a)     ((u32(*)(u64))(fn))((a))
+#pragma alias FUN_00531170_u64 FUN_00531170
+extern u64 FUN_00531170_u64(u64, u64);
+#pragma alias FUN_00530da0_u64 FUN_00530da0
+extern u64 FUN_00530da0_u64(u32);
 extern u32 FUN_0052efd8(long, long, long);
 
 static const float sAtanHi[] = {
@@ -379,9 +370,9 @@ u64 FUN_0052eac8(long param_1)
   uVar1 = FUN_00531230(uVar1,0x40f0000000000000);
   uVar2 = FUN_00531720((int)param_1);
   if ((int)param_1 < 0) {
-    uVar2 = FUN_00531170(uVar2,0x41f0000000000000);
+    uVar2 = FUN_00531170_u64(uVar2,0x41f0000000000000);
   }
-  FUN_00531170(uVar1,uVar2);
+  FUN_00531170_u64(uVar1,uVar2);
   return (u64)(uVar1 | uVar2);
 }
 // FUN_0052EB60 NONMATCHING
@@ -399,9 +390,9 @@ void FUN_0052eb60(u32 param_1)
   uVar1 = FUN_00531230(uVar1,0x40f0000000000000);
   uVar2 = FUN_00531720((int)param_1);
   if ((int)param_1 < 0) {
-    uVar2 = FUN_00531170(uVar2,0x41f0000000000000);
+    uVar2 = FUN_00531170_u64(uVar2,0x41f0000000000000);
   }
-  uVar1 = FUN_00531170(uVar1,uVar2);
+  uVar1 = FUN_00531170_u64(uVar1,uVar2);
   FUN_005318a0(uVar1);
   return;
 }
@@ -422,7 +413,7 @@ long FUN_0052ec28(u64 param_1)
     lVar4 = uVar3 << 0x20;
     if (lVar4 < 0) {
       uVar2 = FUN_0052eac8((uVar3 & 0xffffffff) << 0x1f);
-      uVar2 = FUN_00531170(uVar2,uVar2);
+      uVar2 = FUN_00531170_u64(uVar2,uVar2);
     }
     else {
       uVar2 = FUN_0052eac8(lVar4);
@@ -468,7 +459,7 @@ long FUN_0052eda0(void)
   u32 uVar4;
   long lVar5;
   
-  uVar1 = FUN_00530da0(0);
+  uVar1 = FUN_00530da0_u64(0);
   lVar2 = FUN_005316d0(uVar1,0);
   lVar5 = 0;
   if (-1 < lVar2) {
@@ -477,7 +468,7 @@ long FUN_0052eda0(void)
     lVar5 = uVar4 << 0x20;
     if (lVar5 < 0) {
       uVar3 = FUN_0052eac8((uVar4 & 0xffffffff) << 0x1f);
-      uVar3 = FUN_00531170(uVar3,uVar3);
+      uVar3 = FUN_00531170_u64(uVar3,uVar3);
     }
     else {
       uVar3 = FUN_0052eac8(lVar5);
