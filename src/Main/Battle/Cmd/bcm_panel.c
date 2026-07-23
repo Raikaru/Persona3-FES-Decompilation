@@ -1448,26 +1448,63 @@ void FUN_002257F0(void)
     }
 }
 
-// FUN_00226040 NONMATCHING
+// FUN_00226040
 void FUN_00226040(void)
 {
-    u32 i;
-    u32 count;
-    u32 table;
+    u8* work;
+    u8* overlay0;
+    u8* overlayI;
+    u32 table0;
+    u32 resource;
+    u32 texture;
+    s32 i;
+    void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
+    void (**setQuad2)(u32*, u32, u32, u32, u32);
+    void (**setQuad3)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    table = FUN_0021c3f0(0);
-    count = bcm_panel_read(0x6070);
-    bcm_panel_write(0, bcm_panel_read(0) | 2);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        if (*(u32*)record == 0) {
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table, 0x2f));
-        } else {
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table, 0x29));
-        }
-        *(u32*)(record + 0x550) = i;
-        *(u32*)(record + 0x55c) = 1;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    overlay0 = work + 0x6080;
+
+    resource = FUN_0021cca0(table0, 0x23);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    texture = FUN_0021cce0(resource);
+    (*setState)(1, texture);
+
+    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad)((u32*)(work + 0x4430), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4430), 4, 0, 2, 3);
+    (*setQuad)((u32*)(work + 0x4530), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4530), 4, 0, 2, 3);
+
+    for (i = 0; i < *(s32*)(overlay0 + 0x55c); ++i) {
+        overlayI = overlay0 + i * 0x110;
+        func_003b1360(*(u32*)(overlayI + 4), 1, 0);
+
+        resource = FUN_0021cca0(table0, 0x29);
+        texture = FUN_0021cce0(resource);
+        (*setState)(1, texture);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+
+        setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad2)((u32*)(overlayI + 0x10), 4, 0, 1, 2);
+        (*setQuad2)((u32*)(overlayI + 0x10), 4, 0, 2, 3);
+    }
+
+    if (*(s32*)(overlay0 + 0x55c) < *(s32*)(overlay0 + 0x550)) {
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+        RpSkyRenderStateSet(2, (void*)0x44);
+
+        resource = FUN_0021cca0(table0, 0x1d);
+        texture = FUN_0021cce0(resource);
+        (*setState)(1, texture);
+
+        setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad3)((u32*)(work + 0x3730), 4, 0, 1, 2);
+        (*setQuad3)((u32*)(work + 0x3730), 4, 0, 2, 3);
     }
 }
 
