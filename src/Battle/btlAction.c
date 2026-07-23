@@ -1023,6 +1023,7 @@ void btlActionInitStateStartHome(BtlAction* action)
     u16 allowMove;
     u16 speedIndex;
     BtlEnemyRecord* enemyRecords;
+    u16 unitId;
 
     if ((gBtl->flags & 0x2000) && (action->unk_1a & 1) && unit->genus == UNIT_GENUS_PC)
     {
@@ -1041,10 +1042,10 @@ void btlActionInitStateStartHome(BtlAction* action)
         switch (action->unit->genus)
         {
         case UNIT_GENUS_EC:
+            unitId = action->unit->datUnit->id;
             enemyRecords = iGpffffb728;
             speedIndex = *(u16*)((u8*)enemyRecords +
-                                 action->unit->datUnit->id * 0xe8 +
-                                 (u32)allowMove * 4 + 0x24);
+                                 unitId * 0xe8 + (u32)allowMove * 4 + 0x24);
             break;
         case UNIT_GENUS_PC:
             break;
