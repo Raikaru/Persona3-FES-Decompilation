@@ -658,7 +658,7 @@ void FUN_003c5a20(void)
 }
 #define FUN_003c5a20(...) ((void (*)(...))FUN_003c5a20)(__VA_ARGS__)
 #undef FUN_003c5a40
-// FUN_003C5A40 NONMATCHING
+// FUN_003C5A40
 
 
 u32 FUN_003c5a40(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
@@ -667,7 +667,7 @@ u32 FUN_003c5a40(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
@@ -681,7 +681,7 @@ u32 FUN_003c5a40(u32 param_1,u32 param_2,u32 param_3,u32 param_4)
 
   if (param_4 != 0) {
 
-    iVar3 = iVar2 + 0x40;
+    iVar3 = iVar3 + 0x20;
 
   }
 
@@ -855,7 +855,7 @@ u32 FUN_003c5c50(u32 param_1)
 
   int iVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   
 
