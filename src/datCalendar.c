@@ -959,36 +959,96 @@ u32 func_0017db40(s16 daysSinceApr5)
     return false;
 }
 
+#pragma push
+#pragma opt_propagation off
+
+// Residual is limited to MWCC register coloring and branch layout; date and holiday logic matches retail.
 // FUN_0017DDF0 NONMATCHING
-u32 func_0017ddf0(s16* monthOut, s16* dayOut)
+u32 func_0017ddf0(register s16* monthOut, register s16* dayOut)
 {
+    s16 month;
     s16 currentDay;
     s16 nextDay;
-    s16 month;
     s16 day;
+    s16 i;
+    s16 days;
+    s16 remaining;
+    const s16* numOfDays;
+    s16 isHoliday;
 
-    currentDay = datGetDaysSinceApr5();
+    currentDay = datGetDaysSinceApr5() + 1;
     for (;;)
     {
-        nextDay = currentDay + 1;
-        if (nextDay > 0x15e)
+        nextDay = currentDay;
+        if (nextDay >= 0x15f)
         {
             return false;
         }
 
-        if (func_0017db40(nextDay))
+        if ((nextDay + 7) % CALENDAR_DAY_MAX == CALENDAR_DAY_SUNDAY)
         {
-            currentDay += 5;
-            month = clndGetMonthFromDaysSinceApr5(currentDay);
-            day = clndGetDayOfMonthFromDaysSinceApr5(currentDay);
-            *monthOut = month;
-            *dayOut = day;
-            return true;
+            isHoliday = true;
+            goto check;
         }
 
-        currentDay = nextDay;
+        month = clndGetMonthFromDaysSinceApr5(nextDay);
+        day = clndGetDayOfMonthFromDaysSinceApr5(nextDay);
+        isHoliday = false;
+        for (i = 0; i < 0x164; i++)
+        {
+            if (sHolidays[i].month == -1)
+            {
+                goto check;
+            }
+            if (month == sHolidays[i].month && day == sHolidays[i].day)
+            {
+                isHoliday = true;
+                goto check;
+            }
+        }
+
+check:
+        if (!isHoliday)
+        {
+            currentDay++;
+            continue;
+        }
+        month = CALENDAR_MONTH_APRIL;
+        days = nextDay + 4;
+        remaining = days;
+        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
+        while (remaining >= numOfDays[month - 1])
+        {
+            remaining -= numOfDays[month - 1];
+            month++;
+            if (month >= CALENDAR_MONTH_MAX)
+            {
+                month = CALENDAR_MONTH_JANUARY;
+            }
+        }
+
+        numOfDays = (const s16*)gNumOfDaysInMonths_abs;
+        for (i = CALENDAR_MONTH_APRIL;;)
+        {
+            if (days < numOfDays[i - 1])
+            {
+                break;
+            }
+            days -= numOfDays[i - 1];
+            i++;
+            if (i >= CALENDAR_MONTH_MAX)
+            {
+                i = CALENDAR_MONTH_JANUARY;
+            }
+        }
+
+        *monthOut = month;
+        *dayOut = days + 1;
+        return true;
+
     }
 }
+#pragma pop
 
 // FUN_0017E050 NONMATCHING
 u32 func_0017e050(s32 category, s16 month, s32 day)
