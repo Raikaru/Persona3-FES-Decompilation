@@ -1394,7 +1394,7 @@ void FUN_00434f70(void);
 void FUN_00435060(u8 param_1);
 void FUN_004350e0(char param_1,char param_2);
 void FUN_00435370(u8 param_1);
-void FUN_00435c00(u64 param_1);
+void FUN_00435c00(int param_1);
 void FUN_00437e00(void);
 void FUN_00437e80(u32 *param_1,char param_2);
 void FUN_00438010(int param_1);
@@ -2808,7 +2808,7 @@ void FUN_00434f70(void);
 void FUN_00435060(u8 param_1);
 void FUN_004350e0(char param_1,char param_2);
 void FUN_00435370(u8 param_1);
-void FUN_00435c00(u64 param_1);
+void FUN_00435c00(int param_1);
 void FUN_00437e00(void);
 void FUN_00437e80(u32 *param_1,char param_2);
 void FUN_00438010(int param_1);
@@ -5709,7 +5709,7 @@ u8 FUN_004359f0(int param_1,u8 param_2,u8 param_3,u32 *param_4,
 #pragma opt_loop_invariants on
 // FUN_00435C00 NONMATCHING
 
-void FUN_00435c00(u64 param_1)
+void FUN_00435c00(int param_1)
 
 {
   u8 bVar1;
@@ -5724,9 +5724,9 @@ void FUN_00435c00(u64 param_1)
   u16 uVar10;
   int iVar11;
   int iVar12;
-  long lVar13;
-  u64 uVar14;
-  long lVar15;
+  int lVar13;
+  int uVar14;
+  int lVar15;
   u32 uVar16;
   u8 uVar17;
   u8 bVar18;
@@ -5837,8 +5837,8 @@ void FUN_00435c00(u64 param_1)
   float afStack_10 [2];
   float fStack_8;
   
-  iVar12 = DAT_007ce290;
   iVar2 = *(int *)((int)param_1 + 0x3c);
+  iVar12 = DAT_007ce290;
   lVar13 = FUN_0016c970(*(u16 *)((u8 *)DAT_00871948 + *(int *)(iVar2 + 4) * 0x1c0));
   if (lVar13 != 0) {
     iVar19 = *(int *)(iVar2 + 4);
