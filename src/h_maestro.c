@@ -192,6 +192,8 @@ extern const char D_005D6BC0[];
 extern const char D_005D6BD0[];
 extern const char D_005D6BF0[];
 extern const char D_005D6C10[];
+extern const char D_005D6CD0[];
+extern const char D_005D6E10[];
 extern void* func_0010f6c0(KwlnTask* task);
 extern const char* func_001022e0(HCdvd* cdvd, s32 entryIndex);
 extern void* func_0010c1a0(void* param_1, const char* path, ...);
@@ -776,8 +778,8 @@ u32 func_001114b0(KwlnTask* task)
 // FUN_00111500 NONMATCHING
 void func_00111500(KwlnTask* task)
 {
-    s32 value;
     MaestroStreamWork* work;
+    s32 value;
 
     work = (MaestroStreamWork*)task->workData;
     value = 1;
@@ -3040,51 +3042,26 @@ void func_001165c0(int param_1)
   return;
 
 }
-// FUN_001166A0 NONMATCHING
-
-
-long func_001166a0(u64 param_1,u32 param_2,u32 param_3)
-
-
-
+// FUN_001166A0
+void* func_001166a0(KwlnTask* parent, u32 param_2, u32 param_3)
 {
+    void* work;
+    KwlnTask* task;
 
-  long lVar1;
-
-  long lVar2;
-
-  
-
-  lVar1 = (long)(*(void* (**)(u32,u32,u32))D_00960184)(1,0xab4,0x40000);
-
-  if (lVar1 == 0) {
-
-    lVar2 = 0;
-
-  }
-
-  else {
-
-    lVar2 = FUN_00194b80(param_1,0x106f,0x5d6cd0,0x115f00,0x1165c0,lVar1);
-
-    if (lVar2 == 0) {
-
-      lVar2 = 0;
-
+    work = MAESTRO_ALLOC(1, 0xab4, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
     }
-
-    else {
-
-      *(u32 *)((int)lVar1 + 4) = param_2;
-
-      *(u32 *)((int)lVar1 + 8) = param_3;
-
+    task = (KwlnTask*)FUN_00194b80(parent, 0x106f, D_005D6CD0,
+                                   func_00115f00, func_001165c0, work);
+    if (task == NULL)
+    {
+        return NULL;
     }
-
-  }
-
-  return lVar2;
-
+    *(u32*)((u8*)work + 4) = param_2;
+    *(u32*)((u8*)work + 8) = param_3;
+    return task;
 }
 // FUN_00116760
 
@@ -3517,49 +3494,25 @@ void func_00116cf0(int param_1)
   return;
 
 }
-// FUN_00116E20 NONMATCHING
-
-
-long func_00116e20(u64 param_1,u32 param_2)
-
-
-
+// FUN_00116E20
+void* func_00116e20(KwlnTask* parent, u32 param_2)
 {
+    void* work;
+    KwlnTask* task;
 
-  long lVar1;
-
-  long lVar2;
-
-  
-
-  lVar1 = (long)(*(void* (**)(u32,u32,u32))D_00960184)(1,0x73c,0x40000);
-
-  if (lVar1 == 0) {
-
-    lVar2 = 0;
-
-  }
-
-  else {
-
-    lVar2 = FUN_00194b80(param_1,0x106f,0x5d6e10,0x1167f0,0x116cf0,lVar1);
-
-    if (lVar2 == 0) {
-
-      lVar2 = 0;
-
+    work = MAESTRO_ALLOC(1, 0x73c, 0x40000);
+    if (work == NULL)
+    {
+        return NULL;
     }
-
-    else {
-
-      *(u32 *)((int)lVar1 + 4) = param_2;
-
+    task = (KwlnTask*)FUN_00194b80(parent, 0x106f, D_005D6E10,
+                                   func_001167f0, func_00116cf0, work);
+    if (task == NULL)
+    {
+        return NULL;
     }
-
-  }
-
-  return lVar2;
-
+    *(u32*)((u8*)work + 4) = param_2;
+    return task;
 }
 // FUN_00116ED0
 
