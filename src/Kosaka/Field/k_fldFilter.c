@@ -33,6 +33,8 @@ extern f32 sFilterPrevious;
 extern f32 sFilterBlend;
 extern s32 sFilterBlendDuration;
 extern FilterQuad sFilterGrid[FLDFILTER_GRID_HEIGHT][FLDFILTER_GRID_WIDTH];
+#pragma alias sFilterGrid_abs sFilterGrid
+extern u8 sFilterGrid_abs[];
 
 /* This word belongs to the neighbouring field-resource work block. */
 extern u32 gp0xffff95d8;
@@ -42,6 +44,10 @@ extern const char D_00683A60[];
 extern const char D_00683A78[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_009600A0)(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
+#pragma alias D_00960090_abs D_00960090
+extern void (*D_00960090_abs[])(u32 state, u32 value);
+#pragma alias D_009600A0_abs D_009600A0
+extern void (*D_009600A0_abs[])(RwPrimitiveType primitiveType, RwIm2DVertex* vertices, s32 vertexCount);
 extern u32 D_00960184[];
 extern void (*D_0096017c)(void* memory);
 #pragma alias D_0096017c_abs D_0096017c
@@ -157,7 +163,20 @@ void K_FldFilter_Main()
     u32 oldPacked1;
     u32 oldPacked2;
     u32 oldPacked3;
+    s32 oldRed0;
+    s32 oldGreen0;
+    s32 oldBlue0;
+    s32 oldRed1;
+    s32 oldGreen1;
+    s32 oldBlue1;
+    s32 oldRed2;
+    s32 oldGreen2;
+    s32 oldBlue2;
+    s32 oldRed3;
+    s32 oldGreen3;
+    s32 oldBlue3;
     u8 color[16];
+    void (**stateFunc)(u32 state, u32 value);
     RwIm2DVertex* vertices;
     u8* currentFrame;
     u8* oldFrame;
@@ -210,20 +229,18 @@ void K_FldFilter_Main()
     previous = sFilterPrevious;
     blend = sFilterBlend;
     inverseBlend = 1.0f - blend;
-
-    D_00960090(6, 0);
-    D_00960090(8, 0);
-    D_00960090(7, 2);
-    D_00960090(1, 0);
-    D_00960090(0x0c, 1);
-    func_004d7f60(3, 0x71801);
-
+    stateFunc = D_00960090_abs;
+    (*stateFunc)(6, 0);
+    (*stateFunc)(8, 0);
+    (*stateFunc)(7, 2);
+    (*stateFunc)(1, 0);
+    (*stateFunc)(0x0c, 1);
     switch (*(u32*)((u8*)sFilterFile + current * 0x124))
     {
-        case 3: func_004d7f60(2, 6); break;
-        case 2: func_004d7f60(2, 0x42); break;
-        case 1: func_004d7f60(2, 0x48); break;
         case 0: func_004d7f60(2, 0x44); break;
+        case 1: func_004d7f60(2, 0x48); break;
+        case 2: func_004d7f60(2, 0x42); break;
+        case 3: func_004d7f60(2, 6); break;
     }
 
     for (y = 0; y < FLDFILTER_GRID_HEIGHT; y++)
@@ -267,6 +284,18 @@ void K_FldFilter_Main()
                 oldPacked1 = *(u32*)(oldFrame + 8);
                 oldPacked2 = *(u32*)(oldFrame + 0x2c);
                 oldPacked3 = *(u32*)(oldFrame + 0x28);
+                oldRed0 = (s32)(oldPacked0 & 0xff);
+                oldGreen0 = (s32)((oldPacked0 >> 8) & 0xff);
+                oldBlue0 = (s32)((oldPacked0 >> 16) & 0xff);
+                oldRed1 = (s32)(oldPacked1 & 0xff);
+                oldGreen1 = (s32)((oldPacked1 >> 8) & 0xff);
+                oldBlue1 = (s32)((oldPacked1 >> 16) & 0xff);
+                oldRed2 = (s32)(oldPacked3 & 0xff);
+                oldGreen2 = (s32)((oldPacked3 >> 8) & 0xff);
+                oldBlue2 = (s32)((oldPacked3 >> 16) & 0xff);
+                oldRed3 = (s32)(oldPacked2 & 0xff);
+                oldGreen3 = (s32)((oldPacked2 >> 8) & 0xff);
+                oldBlue3 = (s32)((oldPacked2 >> 16) & 0xff);
                 oldAlpha0 = (s32)((oldPacked0 >> 24) & 0xff) + sFilterColorOffset;
                 oldAlpha1 = (s32)((oldPacked1 >> 24) & 0xff) + sFilterColorOffset;
                 oldAlpha2 = (s32)((oldPacked3 >> 24) & 0xff) + sFilterColorOffset;
@@ -280,21 +309,21 @@ void K_FldFilter_Main()
 
 #define FLDFILTER_BLEND_CHANNEL(current_, old_) \
                 ((s32)((f32)(current_) * blend + (f32)(old_) * inverseBlend))
-                red0 = FLDFILTER_BLEND_CHANNEL(red0, oldPacked0 & 0xff);
-                green0 = FLDFILTER_BLEND_CHANNEL(green0, (oldPacked0 >> 8) & 0xff);
-                blue0 = FLDFILTER_BLEND_CHANNEL(blue0, (oldPacked0 >> 16) & 0xff);
+                red0 = FLDFILTER_BLEND_CHANNEL(red0, oldRed0);
+                green0 = FLDFILTER_BLEND_CHANNEL(green0, oldGreen0);
+                blue0 = FLDFILTER_BLEND_CHANNEL(blue0, oldBlue0);
                 currentAlpha0 = FLDFILTER_BLEND_CHANNEL(currentAlpha0, oldAlpha0);
-                red1 = FLDFILTER_BLEND_CHANNEL(red1, oldPacked1 & 0xff);
-                green1 = FLDFILTER_BLEND_CHANNEL(green1, (oldPacked1 >> 8) & 0xff);
-                blue1 = FLDFILTER_BLEND_CHANNEL(blue1, (oldPacked1 >> 16) & 0xff);
+                red1 = FLDFILTER_BLEND_CHANNEL(red1, oldRed1);
+                green1 = FLDFILTER_BLEND_CHANNEL(green1, oldGreen1);
+                blue1 = FLDFILTER_BLEND_CHANNEL(blue1, oldBlue1);
                 currentAlpha1 = FLDFILTER_BLEND_CHANNEL(currentAlpha1, oldAlpha1);
-                red2 = FLDFILTER_BLEND_CHANNEL(red2, oldPacked3 & 0xff);
-                green2 = FLDFILTER_BLEND_CHANNEL(green2, (oldPacked3 >> 8) & 0xff);
-                blue2 = FLDFILTER_BLEND_CHANNEL(blue2, (oldPacked3 >> 16) & 0xff);
+                red2 = FLDFILTER_BLEND_CHANNEL(red2, oldRed2);
+                green2 = FLDFILTER_BLEND_CHANNEL(green2, oldGreen2);
+                blue2 = FLDFILTER_BLEND_CHANNEL(blue2, oldBlue2);
                 currentAlpha2 = FLDFILTER_BLEND_CHANNEL(currentAlpha2, oldAlpha2);
-                red3 = FLDFILTER_BLEND_CHANNEL(red3, oldPacked2 & 0xff);
-                green3 = FLDFILTER_BLEND_CHANNEL(green3, (oldPacked2 >> 8) & 0xff);
-                blue3 = FLDFILTER_BLEND_CHANNEL(blue3, (oldPacked2 >> 16) & 0xff);
+                red3 = FLDFILTER_BLEND_CHANNEL(red3, oldRed3);
+                green3 = FLDFILTER_BLEND_CHANNEL(green3, oldGreen3);
+                blue3 = FLDFILTER_BLEND_CHANNEL(blue3, oldBlue3);
                 currentAlpha3 = FLDFILTER_BLEND_CHANNEL(currentAlpha3, oldAlpha3);
 #undef FLDFILTER_BLEND_CHANNEL
             }
@@ -319,6 +348,7 @@ void K_FldFilter_Main()
                 currentAlpha3 = (currentAlpha3 * FLDFILTER_ALPHA) / 0xff;
             }
 
+            memset(color, 0, sizeof(color));
             color[0] = (u8)red0;
             color[1] = (u8)green0;
             color[2] = (u8)blue0;
@@ -334,9 +364,8 @@ void K_FldFilter_Main()
             color[12] = (u8)red3;
             color[13] = (u8)green3;
             color[14] = (u8)blue3;
-            color[15] = (u8)currentAlpha3;
+            vertices = ((FilterQuad*)sFilterGrid_abs)[y * FLDFILTER_GRID_WIDTH + x].vert;
 
-            vertices = sFilterGrid[y][x].vert;
             for (vertex = 0; vertex < 4; vertex++)
             {
                 channel = vertex * 4;
@@ -346,7 +375,7 @@ void K_FldFilter_Main()
                 vertices[vertex].u.els.color.b = (f32)color[channel + 2];
                 vertices[vertex].u.els.color.a = (f32)color[channel + 3];
             }
-            D_009600A0(4, vertices, 4);
+            (*D_009600A0_abs)(4, vertices, 4);
         }
     }
 
