@@ -7614,7 +7614,7 @@ void FUN_0030e760(void)
 
 
 
-// FUN_0030e8a0 NONMATCHING
+// FUN_0030e8a0
 void FUN_0030e8a0(void)
 
 {
@@ -7648,6 +7648,11 @@ void FUN_0030e8a0(void)
   }
   FUN_00311190((int)fVar4);
   return;
+}
+
+// FUN_0030e9f0
+void FUN_0030e9f0(void)
+{
 }
 
 
