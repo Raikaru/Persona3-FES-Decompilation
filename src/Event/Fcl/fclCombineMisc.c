@@ -2598,7 +2598,7 @@ s32 lVar3;
 
   uVar5 = 0;
 
-  if (((param_1 == 0) || ((int)param_2 < 0)) || (0xb < (int)param_2)) {
+  if (((param_1 == 0) || ((int)param_2 < 0)) || ((int)param_2 >= 0xc)) {
 
     K_Assert((const char *)(u32)0x6a5f70,0x4ca);
 
@@ -2659,9 +2659,8 @@ s32 lVar2;
 
   uVar3 = 0;
 
-  if ((((param_1 == 0) || ((int)param_2 < 0)) || (0xb < (int)param_2)) ||
-
-     (((int)param_3 < 0 || (0xb < (int)param_3)))) {
+  if ((((param_1 == 0) || ((int)param_2 < 0)) || ((int)param_2 >= 0xc)) ||
+     (((int)param_3 < 0 || ((int)param_3 >= 0xc)))) {
 
     K_Assert((const char *)(u32)0x6a5f70,0x4dc);
 
