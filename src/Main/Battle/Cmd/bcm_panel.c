@@ -1929,23 +1929,104 @@ void FUN_00227F30(void)
 }
 #pragma pop
 
+// Previous body was a wrong-helper stub unrelated to retail (1168B window).
+// Rewritten from disasm: retail sets a fixed initial vtable state(9,2),
+// draws a 6-slot resource strip, then 4 single quads reusing/refreshing
+// the vtable casts per retail's own re-materialization points, a 4-slot
+// double-quad loop, then a final 2-quad pair - all via the established
+// D_00960090_abs/D_0096009C_abs style. nd 198->16 (obj 1156B/1168B);
+// residual is a table0/loop-counter register-bank swap, unfixable per
+// the usual declaration-order floor (2 attempts tried).
 // FUN_002289B0 NONMATCHING
 void FUN_002289B0(void)
 {
-    u32 i;
-    u32 count;
+    u8* work;
+    u8* target;
     u8* base;
+    u32 table0;
+    u32 resource;
+    u32 texture;
+    s32 i;
+    s32 j;
+    void (**setState)(u32, u32);
+    void (**setState2)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
+    void (**setQuadA)(u32*, u32, u32, u32, u32);
+    void (**setQuadB)(u32*, u32, u32, u32, u32);
+    void (**setQuadC)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_set_resource(record + 0x10, 0, 0x44);
-        *(u32*)(record + 0x50) = i;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(9, 2);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+
+    for (i = 0; i < 6; ++i) {
+        if (i < 4) {
+            resource = FUN_0021cca0(table0, i + 0x1e);
+        } else {
+            resource = FUN_0021cca0(table0, i + 0x1a);
+        }
+        texture = FUN_0021cce0(resource);
+        (*setState)(1, texture);
+
+        target = work + i * 0x100 + 0x2e30;
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)target, 4, 0, 1, 2);
+        (*setQuad)((u32*)target, 4, 0, 2, 3);
     }
-    FUN_0021d3b0(base + 0x4230,
-                 FUN_0021cca0(FUN_0021c3f0(0), 0x24));
+
+    resource = FUN_0021cca0(table0, 0x26);
+    setState2 = (void (**)(u32, u32))D_00960090_abs;
+    texture = FUN_0021cce0(resource);
+    (*setState2)(1, texture);
+
+    setQuadA = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuadA)((u32*)(work + 0x3430), 4, 0, 1, 2);
+    (*setQuadA)((u32*)(work + 0x3430), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table0, 0x27);
+    texture = FUN_0021cce0(resource);
+    (*setState2)(1, texture);
+
+    (*setQuadA)((u32*)(work + 0x3530), 4, 0, 1, 2);
+    (*setQuadA)((u32*)(work + 0x3530), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table0, 0x26);
+    texture = FUN_0021cce0(resource);
+    (*setState2)(1, texture);
+
+    (*setQuadA)((u32*)(work + 0x3630), 4, 0, 1, 2);
+    (*setQuadA)((u32*)(work + 0x3630), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table0, 0x2c);
+    texture = FUN_0021cce0(resource);
+    (*setState2)(1, texture);
+
+    for (j = 0; j < 4; ++j) {
+        base = work + j * 0x200;
+        target = base + 0x3830;
+        setQuadB = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuadB)((u32*)target, 4, 0, 1, 2);
+        (*setQuadB)((u32*)target, 4, 0, 2, 3);
+
+        target = base + 0x3930;
+        (*setQuadB)((u32*)target, 4, 0, 1, 2);
+        (*setQuadB)((u32*)target, 4, 0, 2, 3);
+    }
+
+    resource = FUN_0021cca0(table0, 0x23);
+    texture = FUN_0021cce0(resource);
+    (*setState)(1, texture);
+
+    setQuadC = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuadC)((u32*)(work + 0x4230), 4, 0, 1, 2);
+    (*setQuadC)((u32*)(work + 0x4230), 4, 0, 2, 3);
+    (*setQuadC)((u32*)(work + 0x4330), 4, 0, 1, 2);
+    (*setQuadC)((u32*)(work + 0x4330), 4, 0, 2, 3);
 }
 
 #pragma push
