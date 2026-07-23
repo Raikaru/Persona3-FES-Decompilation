@@ -6860,7 +6860,7 @@ void FUN_0030cec0(void)
 
 
 
-// FUN_0030cf00 NONMATCHING
+// FUN_0030cf00
 void FUN_0030cf00(void)
 {
   float fVar4;
@@ -7310,7 +7310,7 @@ void FUN_0030dec0(void)
 
 
 
-// FUN_0030e030 NONMATCHING
+// FUN_0030e030
 void FUN_0030e030(void)
 
 {
@@ -7366,7 +7366,7 @@ void FUN_0030e140(void)
 
 
 
-// FUN_0030e180 NONMATCHING
+// FUN_0030e180
 void FUN_0030e180(void)
 {
   float fVar4;
