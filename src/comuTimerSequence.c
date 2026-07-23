@@ -1981,9 +1981,9 @@ u64 FUN_003c1ab0(u64 param_1,u64 param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   long lVar3;
 
