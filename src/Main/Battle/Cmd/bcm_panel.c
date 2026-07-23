@@ -750,27 +750,124 @@ alpha_done:
     }
 }
 
+// Previous body was a wrong-helper stub unrelated to retail (1296B window).
+// Rewritten from disasm: retail dispatches per-record state via a switch
+// (case 0/2 shared, case 1 loops 4 quad slots), using the same
+// D_00960090_abs/D_0096009C_abs vtable style as this file's other draw
+// functions. Key finding: D_0096009C_abs must be re-cast to a fresh local
+// inside both the state==1 loop and the case 0/2 body, matching retail's
+// per-branch re-materialization (its cache register doubles as the loop
+// counter on the other switch arm). nd 198->6 (obj 1292B/1296B); residual
+// is a 2-variable register-bank swap (slot0/setQuad), unfixable per the
+// usual declaration/statement-order floor.
 // FUN_00224150 NONMATCHING
 void FUN_00224150(void)
 {
-    u32 i;
-    u32 count;
-    u32 table;
+    u8* work;
+    u8* records;
+    u8* slot0;
+    u8* record;
+    u8* quadTarget;
+    u32 table0;
+    u32 resource;
+    u32 texture;
+    u32 selected;
+    u32 state;
+    s32 current;
+    s32 i;
+    s32 j;
+    void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
+    void (**setQuad2)(u32*, u32, u32, u32, u32);
+    void (**setQuad3)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    table = FUN_0021c3f0(0);
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 state = *(u32*)record;
-        if (state == 0 || state == 2) {
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table, 0x2f));
-        } else {
-            FUN_0021d3b0(record + 0x10, FUN_0021cca0(table, 0x29));
-            FUN_0021d3b0(record + 0x110, FUN_0021cca0(table, 0x2a));
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    records = work + 0x4660;
+    slot0 = work + 0x6080;
+
+    resource = FUN_0021cca0(table0, 0x23);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    texture = FUN_0021cce0(resource);
+    (*setState)(1, texture);
+
+    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad)((u32*)(work + 0x4230), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4230), 4, 0, 2, 3);
+    (*setQuad)((u32*)(work + 0x4330), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x4330), 4, 0, 2, 3);
+
+    if ((*(u32*)work & 4) != 0) {
+        selected = *(u32*)(records + 0x18c0);
+        record = records + selected * 0x420;
+        state = *(u32*)record;
+        switch (state) {
+        case 0:
+            resource = FUN_0021cca0(table0, 0x2f);
+            texture = FUN_0021cce0(resource);
+            (*setState)(1, texture);
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 1, 2);
+            (*setQuad)((u32*)(records + 0x18f0), 4, 0, 2, 3);
+            break;
+        case 1:
+            break;
         }
-        *(u32*)(record + 0x560) = 1;
-        *(u32*)(record + 0x564) = 1;
+        func_003b1360(*(u32*)(slot0 + 0x560), 1, 0);
+        if (*(u32*)(slot0 + 0x564) != 0) {
+            func_003b1360(*(u32*)(slot0 + 0x564), 1, 0);
+        }
+    }
+
+    for (i = 0; i < *(s32*)(work + 0x6070); ++i) {
+        record = records + i * 0x420;
+        state = *(u32*)record;
+        switch (state) {
+        case 0:
+        case 2:
+            current = *(s32*)(work + 0x6068) - *(s32*)(work + 0x606c);
+            if (i == current) {
+                RpSkyRenderStateSet(3, (void*)0x717fb);
+                RpSkyRenderStateSet(2, (void*)0x44);
+            } else {
+                RpSkyRenderStateSet(3, (void*)0x71801);
+                RpSkyRenderStateSet(2, (void*)0x42);
+            }
+            func_003b1360(*(u32*)(record + 8), 1, 0);
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            func_003b1360(*(u32*)(record + 0xc), 1, 0);
+
+            resource = FUN_0021cca0(table0, 0x2f);
+            texture = FUN_0021cce0(resource);
+            (*setState)(1, texture);
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            setQuad3 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+            (*setQuad3)((u32*)(record + 0x10), 4, 0, 1, 2);
+            (*setQuad3)((u32*)(record + 0x10), 4, 0, 2, 3);
+            break;
+        case 1:
+            func_003b1360(*(u32*)(record + 8), 1, 0);
+            for (j = 0; j < 4; ++j) {
+                if (j < 2) {
+                    resource = FUN_0021cca0(table0, 0x29);
+                } else {
+                    resource = FUN_0021cca0(table0, 0x2a);
+                }
+                texture = FUN_0021cce0(resource);
+                (*setState)(1, texture);
+                RpSkyRenderStateSet(3, (void*)0x717fb);
+                RpSkyRenderStateSet(2, (void*)0x44);
+                quadTarget = record + j * 0x100 + 0x10;
+                setQuad2 = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+                (*setQuad2)((u32*)quadTarget, 4, 0, 1, 2);
+                (*setQuad2)((u32*)quadTarget, 4, 0, 2, 3);
+            }
+            break;
+        }
     }
 }
 
