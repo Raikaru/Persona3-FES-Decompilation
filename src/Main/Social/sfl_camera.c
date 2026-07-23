@@ -465,9 +465,10 @@ void func_0024dc90(void* camera)
         queued = 0;
         if ((flags & 1) != 0 && (flags & 2) != 0) {
             state = *(u32*)(node + 0xc);
-            mode = *(u32*)(node + 0x20);
 
-            if (state == 0) {
+            switch (state) {
+            case 0: {
+                mode = *(u32*)(node + 0x20);
                 if (mode == 1) {
 
                     p = (f32*)(node + 0x24);
@@ -605,8 +606,10 @@ void func_0024dc90(void* camera)
                 else if (mode != 0) {
                     K_ASSERT(0, 0x17d);
                 }
+                break;
             }
-            else if (state == 1) {
+            case 1: {
+                mode = *(u32*)(node + 0x20);
                 if (mode == 1) {
                     poses = (u32**)(node + 0x28);
                     queued = 0;
@@ -631,8 +634,10 @@ void func_0024dc90(void* camera)
                 else if (mode != 0) {
                     K_ASSERT(0, 0x1a9);
                 }
+                break;
             }
-            else if (state == 2) {
+            case 2: {
+                mode = *(u32*)(node + 0x20);
                 if (mode == 1) {
                     poses = (u32**)(node + 0x28);
                     queued = 0;
@@ -821,10 +826,13 @@ void func_0024dc90(void* camera)
                 }
                 else {
                     K_ASSERT(0, 0x2ab);
-                }
+                break;
             }
-            else {
+                break;
+            }
+            default:
                 K_ASSERT(0, 0x2ab);
+                break;
             }
         }
         if (queued == 0) {
