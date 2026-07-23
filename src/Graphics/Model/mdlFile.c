@@ -55305,11 +55305,11 @@ u32 FUN_00352e10(u32 param_1,short param_2,int param_3,int param_4)
 
   u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   
 
-  uVar2 = (*DAT_00960178_abs)(4,0x40000);
+  uVar2 = (*DAT_00960178_u32)(4,0x40000);
 
   if ((param_3 == 0) || (param_2 != 3)) {
 
@@ -55345,13 +55345,13 @@ u64 FUN_00352eb0(int param_1)
 
   u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   
 
   piVar1 = *(int **)(param_1 + 0x30);
 
-  uVar3 = (*DAT_00960178)(4,0x40000);
+  uVar3 = (*DAT_00960178_u32)(4,0x40000);
 
   if (*piVar1 == 0) {
 
