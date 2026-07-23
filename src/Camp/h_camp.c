@@ -95,6 +95,8 @@ extern char gp0xffff8978[];
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
 
+#pragma alias h_campNoopRootDrawCallback_4 h_campNoopRootDrawCallback
+extern void h_campNoopRootDrawCallback_4(s32, s32, f32, f32);
 static const char* sCourageLevels[] = {
     "Timid", "Ordinary", "Determined", "Though", "Fearless", "Badass"
 };
@@ -1195,7 +1197,7 @@ void h_campDrawRootMenuEntriesAlternate(CampRootDrawWork* work, f32 alpha)
 // FUN_0011cfb0 NONMATCHING
 void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
 {
-    register CampRootDrawWork* root;
+    s32 temp_16;
     register void* parent;
     f32 sp6C;
     f32 sp68;
@@ -1208,15 +1210,13 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
     s32 temp_3;
     s32 var_3;
     s32 var_8;
-    s64 temp_16;
     u32 temp_3_2;
     u32 var_5;
     void* temp_2;
     void* temp_2_2;
     void* temp_4;
 
-    root = work;
-    temp_3 = root->frame;
+    temp_3 = work->frame;
     if (temp_3 >= 0xa) {
         var_3 = 0xff;
     } else {
@@ -1236,7 +1236,7 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
     }
     if (var_8 != 0) {
         temp_3_2 = 0xff -
-                   (s32)((s64)(temp_16 << 0x30) >> 0x30);
+                   (s16)temp_16;
         var_5 = temp_3_2;
         if (temp_3_2 >= 0x19u) {
             var_5 = 0x19;
@@ -1245,26 +1245,26 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
                       temp_3_2 | ~0xffu, var_5 | 0x4fa4ff00,
                       0x280, 0x280, (const u32*)var_8);
     }
-    h_campNoopRootDrawCallback();
+    h_campNoopRootDrawCallback_4((s32)(s16)temp_16, 0, 0.0f, 4.0f + alpha);
 
     temp_2_2 = func_001158b0(0, DAT_00833B78, 0);
     *(f32*)((u8*)temp_2_2 + 0x2c) = 2.0f + alpha;
     *(u32*)((u8*)temp_2_2 + 0x10) = 0x43d60000;
     *(u32*)((u8*)temp_2_2 + 0x14) = 0x41d80000;
     *(u8*)((u8*)temp_2_2 + 0x18) =
-        (u8)((s64)(temp_16 << 0x30) >> 0x30);
+        (u8)(s16)temp_16;
     *(u16*)((u8*)temp_2_2 + 0x28) = 0;
     *(u16*)((u8*)temp_2_2 + 0x2a) = 0;
     func_001127d0(temp_2_2, 1);
     func_00115980(temp_2_2);
 
-    sp68 = (200.0f * (f32)(0x16 - root->frame)) / 22.0f;
-    temp_f1 = (f32)root->transitionDuration;
+    sp68 = (200.0f * (f32)(0x16 - work->frame)) / 22.0f;
+    temp_f1 = (f32)(s32)work->transitionDuration;
     sp6C = temp_f1;
-    root->transitionDuration = (u32)(temp_f1 + 1.0f);
-    temp_f1_2 = (f32)root->transitionDuration;
+    work->transitionDuration = (s32)(temp_f1 + 1.0f);
+    temp_f1_2 = (f32)(s32)work->transitionDuration;
     if (!(temp_f1_2 <= (f32)0x2ff)) {
-        root->transitionDuration = (u32)(temp_f1_2 - 448.0f);
+        work->transitionDuration = (s32)(temp_f1_2 - 448.0f);
     }
     sp60 = *(s64*)&sp68;
     temp_f21 = 589.0f + *(f32*)&sp60;
@@ -1285,7 +1285,7 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
                          (u32)temp_16 & 0xff, temp_f21_2,
                          (temp_f22 - 129.0f) - 190.0f, 100.0f);
     }
-    h_campDrawRootUi(root, alpha);
+    h_campDrawRootUi(work, alpha);
 }
 
 // FUN_0011d3a0
