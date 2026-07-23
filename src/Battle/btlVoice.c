@@ -7546,8 +7546,8 @@ void func_002e9ac0(void)
 {
   short sVar1;
   int iVar2;
-  u64 uVar3;
-  u64 uVar4;
+  u32 uVar3;
+  u32 uVar4;
   u64 uVar5;
   int iVar6;
   int iVar7;
@@ -7557,8 +7557,8 @@ void func_002e9ac0(void)
   int iVar11;
   int iVar12;
   
-  uVar3 = FUN_002b8f90(0);
-  uVar4 = FUN_002f87e0(1);
+  uVar3 = FUN_002b8f90_u32_voice(0);
+  uVar4 = FUN_002f87e0_u32_voice(1);
   FUN_002b90d0(uVar3,uVar4);
   iVar10 = 0;
   iVar12 = 0;
