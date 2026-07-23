@@ -3809,12 +3809,10 @@ void* func_003140c0(void* param_1,u16 *param_2)
 
 
 {
-
   s32 rawIndex;
   s64 lVar2;
   u32 count;
   int *piVar1;
-
   rawIndex = (s16)param_2[2];
   piVar1 = *(int **)(param_2 + 0xc);
   if (piVar1 != (int *)0x0) {
@@ -7306,25 +7304,22 @@ void func_003196f0(Model* param_1, u16 param_2)
 
 void func_003197c0(Model* param_1,RwMatrix* param_2)
 {
-    u32 uVar1;
-    u32 uVar2;
+    u32 uVar6;
     u32 uVar7;
     u32 uVar8;
-    u16 uVar6;
-    u32 *puVar5;
     u32 *puVar4;
+    u32 *puVar5;
+    u32 uVar1;
+    u32 uVar2;
     int iVar3;
-
     uVar6 = 0;
     uVar7 = 8;
     __asm__ volatile ("" : "+r"(uVar7));
-    do {
+    for (; uVar6 < 5; uVar6 = uVar6 + 1 & 0xffff) {
         iVar3 = *(int *)((u8 *)param_1 + (u16)uVar6 * 0xc + 0x3b8);
         if (iVar3 != 0) {
             puVar4 = (u32 *)(iVar3 + 0x90);
-            uVar8 = uVar7;
-            puVar5 = (u32*)param_2;
-            do {
+            for (uVar8 = uVar7, puVar5 = (u32*)param_2; uVar8 > 0; ) {
                 uVar1 = *puVar5;
                 uVar2 = puVar5[1];
                 puVar5 = puVar5 + 2;
@@ -7332,10 +7327,9 @@ void func_003197c0(Model* param_1,RwMatrix* param_2)
                 *puVar4 = uVar1;
                 puVar4[1] = uVar2;
                 puVar4 = puVar4 + 2;
-            } while (0 < uVar8);
+            }
         }
-        uVar6 = uVar6 + 1 & 0xffff;
-    } while (uVar6 < 5);
+    }
     return;
 }
     
