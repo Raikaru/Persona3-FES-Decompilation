@@ -32520,7 +32520,8 @@ void FUN_0033bda0(int param_1)
 
 
 
-// FUN_0033BE90 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033BE90
 
 
 void FUN_0033be90(int param_1,int param_2)
@@ -32535,9 +32536,9 @@ void FUN_0033be90(int param_1,int param_2)
 
   int iVar3;
 
-  u32 *puVar4;
-
   u32 uVar5;
+
+  u32 *puVar4;
 
   
 
@@ -32548,30 +32549,11 @@ void FUN_0033be90(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    asm volatile("" : "+r"(puVar4));
 
-    for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
+    for (uVar5 = 0; uVar5 < uVar1;) {
 
-      if ((uVar5 & 1) == 0) {
-
-        *puVar4 = 0x3f000000;
-
-        puVar4[1] = 0;
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = 0;
-
-        puVar4[4] = 0x3f000000;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-      }
-
-      else {
+      if ((uVar5 & 1) != 0) {
 
         *puVar4 = 0;
 
@@ -32591,6 +32573,27 @@ void FUN_0033be90(int param_1,int param_2)
 
       }
 
+      else {
+
+        *puVar4 = 0x3f000000;
+
+        puVar4[1] = 0;
+
+        puVar4[2] = 0x3f800000;
+
+        puVar4[3] = 0;
+
+        puVar4[4] = 0x3f000000;
+
+        puVar4[5] = 0x3f800000;
+
+        puVar4[6] = 0x3f800000;
+
+        puVar4[7] = 0x3f800000;
+
+      }
+
+      uVar5 = uVar5 + 1;
       puVar4 = puVar4 + 8;
 
     }
@@ -32612,6 +32615,7 @@ void FUN_0033be90(int param_1,int param_2)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -33451,7 +33455,8 @@ void FUN_0033cb20(int param_1)
 
 
 
-// FUN_0033CC10 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033CC10
 
 
 void FUN_0033cc10(int param_1,int param_2)
@@ -33466,9 +33471,9 @@ void FUN_0033cc10(int param_1,int param_2)
 
   int iVar3;
 
-  u32 *puVar4;
-
   u32 uVar5;
+
+  u32 *puVar4;
 
   
 
@@ -33479,30 +33484,11 @@ void FUN_0033cc10(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    asm volatile("" : "+r"(puVar4));
 
-    for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
+    for (uVar5 = 0; uVar5 < uVar1;) {
 
-      if ((uVar5 & 1) == 0) {
-
-        *puVar4 = 0x3f000000;
-
-        puVar4[1] = 0;
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = 0;
-
-        puVar4[4] = 0x3f000000;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-      }
-
-      else {
+      if ((uVar5 & 1) != 0) {
 
         *puVar4 = 0;
 
@@ -33522,6 +33508,27 @@ void FUN_0033cc10(int param_1,int param_2)
 
       }
 
+      else {
+
+        *puVar4 = 0x3f000000;
+
+        puVar4[1] = 0;
+
+        puVar4[2] = 0x3f800000;
+
+        puVar4[3] = 0;
+
+        puVar4[4] = 0x3f000000;
+
+        puVar4[5] = 0x3f800000;
+
+        puVar4[6] = 0x3f800000;
+
+        puVar4[7] = 0x3f800000;
+
+      }
+
+      uVar5 = uVar5 + 1;
       puVar4 = puVar4 + 8;
 
     }
@@ -33543,6 +33550,7 @@ void FUN_0033cc10(int param_1,int param_2)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -34384,7 +34392,8 @@ void FUN_0033d890(int param_1)
 
 
 
-// FUN_0033D980 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033D980
 
 
 void FUN_0033d980(int param_1,int param_2)
@@ -34399,9 +34408,9 @@ void FUN_0033d980(int param_1,int param_2)
 
   int iVar3;
 
-  u32 *puVar4;
-
   u32 uVar5;
+
+  u32 *puVar4;
 
   
 
@@ -34412,30 +34421,11 @@ void FUN_0033d980(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    asm volatile("" : "+r"(puVar4));
 
-    for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
+    for (uVar5 = 0; uVar5 < uVar1;) {
 
-      if ((uVar5 & 1) == 0) {
-
-        *puVar4 = 0x3f000000;
-
-        puVar4[1] = 0;
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = 0;
-
-        puVar4[4] = 0x3f000000;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-      }
-
-      else {
+      if ((uVar5 & 1) != 0) {
 
         *puVar4 = 0;
 
@@ -34455,6 +34445,27 @@ void FUN_0033d980(int param_1,int param_2)
 
       }
 
+      else {
+
+        *puVar4 = 0x3f000000;
+
+        puVar4[1] = 0;
+
+        puVar4[2] = 0x3f800000;
+
+        puVar4[3] = 0;
+
+        puVar4[4] = 0x3f000000;
+
+        puVar4[5] = 0x3f800000;
+
+        puVar4[6] = 0x3f800000;
+
+        puVar4[7] = 0x3f800000;
+
+      }
+
+      uVar5 = uVar5 + 1;
       puVar4 = puVar4 + 8;
 
     }
@@ -34476,6 +34487,7 @@ void FUN_0033d980(int param_1,int param_2)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -36181,7 +36193,8 @@ void FUN_0033f4a0(int param_1)
 
 
 
-// FUN_0033F590 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0033F590
 
 
 void FUN_0033f590(int param_1,int param_2)
@@ -36196,9 +36209,9 @@ void FUN_0033f590(int param_1,int param_2)
 
   int iVar3;
 
-  u32 *puVar4;
-
   u32 uVar5;
+
+  u32 *puVar4;
 
   
 
@@ -36209,30 +36222,11 @@ void FUN_0033f590(int param_1,int param_2)
     FUN_00493370(*(u32 *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18),0xff0);
 
     puVar4 = *(u32 **)(*(int *)(*(int *)(*(int *)(param_1 + 4) + 0x10) + 0x18) + 0x34);
+    asm volatile("" : "+r"(puVar4));
 
-    for (uVar5 = 0; uVar5 < uVar1; uVar5 = uVar5 + 1) {
+    for (uVar5 = 0; uVar5 < uVar1;) {
 
-      if ((uVar5 & 1) == 0) {
-
-        *puVar4 = 0x3f000000;
-
-        puVar4[1] = 0;
-
-        puVar4[2] = 0x3f800000;
-
-        puVar4[3] = 0;
-
-        puVar4[4] = 0x3f000000;
-
-        puVar4[5] = 0x3f800000;
-
-        puVar4[6] = 0x3f800000;
-
-        puVar4[7] = 0x3f800000;
-
-      }
-
-      else {
+      if ((uVar5 & 1) != 0) {
 
         *puVar4 = 0;
 
@@ -36252,6 +36246,27 @@ void FUN_0033f590(int param_1,int param_2)
 
       }
 
+      else {
+
+        *puVar4 = 0x3f000000;
+
+        puVar4[1] = 0;
+
+        puVar4[2] = 0x3f800000;
+
+        puVar4[3] = 0;
+
+        puVar4[4] = 0x3f000000;
+
+        puVar4[5] = 0x3f800000;
+
+        puVar4[6] = 0x3f800000;
+
+        puVar4[7] = 0x3f800000;
+
+      }
+
+      uVar5 = uVar5 + 1;
       puVar4 = puVar4 + 8;
 
     }
@@ -36273,6 +36288,7 @@ void FUN_0033f590(int param_1,int param_2)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
