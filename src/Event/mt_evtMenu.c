@@ -12329,11 +12329,17 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
   float fStack_18;
 
+
+
+
   float fStack_10;
 
   float fStack_c;
 
   float fStack_8;
+
+
+
 
   
 
@@ -12395,7 +12401,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
       iVar10 = DAT_007ce5fc;
 
-      pfVar8 = (float *)(&DAT_00958704 + DAT_007ce5fc * 3);
+      pfVar8 = DAT_00958704_f32_abs + DAT_007ce5fc * 3;
 
       if ((DAT_007e094c & 0x10) == 0) {
 
@@ -12435,15 +12441,15 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           if ((DAT_007e094c & 0x4000) != 0) {
 
-          *pfVar8 = (*pfVar8 + 0.0) - fStack_10 * 5.0;
+          *pfVar8 = (*pfVar8 + 0.0f) - fStack_10 * 5.0f;
 
-            (&DAT_00958708)[iVar10 * 3] =
+            DAT_00958708_f32_abs[iVar10 * 3] =
 
-               ((float)(&DAT_00958708)[iVar10 * 3] + 0.0) - fStack_c * 5.0;
+               DAT_00958708_f32_abs[iVar10 * 3] - fStack_c * 5.0f;
 
-            (&DAT_0095870c)[iVar10 * 3] =
+            DAT_0095870c_f32_abs[iVar10 * 3] =
 
-                 ((float)(&DAT_0095870c)[iVar10 * 3] + 0.0) - fStack_8 * 5.0;
+                 DAT_0095870c_f32_abs[iVar10 * 3] - fStack_8 * 5.0f;
 
           }
 
@@ -12451,11 +12457,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
         else {
 
-          *pfVar8 = fStack_10 * 5.0 + *pfVar8 + 0.0;
+          *pfVar8 = fStack_10 * 5.0f + *pfVar8 + 0.0f;
 
-          (&DAT_00958708)[iVar10 * 3] = fStack_c * 5.0 + (float)(&DAT_00958708)[iVar10 * 3] + 0.0;
+          DAT_00958708_f32_abs[iVar10 * 3] = fStack_c * 5.0f + DAT_00958708_f32_abs[iVar10 * 3] + 0.0f;
 
-          (&DAT_0095870c)[iVar10 * 3] = fStack_8 * 5.0 + (float)(&DAT_0095870c)[iVar10 * 3] + 0.0;
+          DAT_0095870c_f32_abs[iVar10 * 3] = fStack_8 * 5.0f + DAT_0095870c_f32_abs[iVar10 * 3] + 0.0f;
 
         }
 
@@ -12463,13 +12469,13 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           if ((DAT_007e094c & 0x8000) != 0) {
 
-            *pfVar8 = fStack_20 * 5.0 + *pfVar8 + 0.0;
+            *pfVar8 = fStack_20 * 5.0f + *pfVar8 + 0.0f;
 
-            (&DAT_00958708)[iVar10 * 3] = fStack_1c * 5.0 + (float)(&DAT_00958708)[iVar10 * 3] + 0.0
+            DAT_00958708_f32_abs[iVar10 * 3] = fStack_1c * 5.0f + DAT_00958708_f32_abs[iVar10 * 3] + 0.0f
 
             ;
 
-            (&DAT_0095870c)[iVar10 * 3] = fStack_18 * 5.0 + (float)(&DAT_0095870c)[iVar10 * 3] + 0.0
+            DAT_0095870c_f32_abs[iVar10 * 3] = fStack_18 * 5.0f + DAT_0095870c_f32_abs[iVar10 * 3] + 0.0f
 
             ;
 
@@ -12479,13 +12485,13 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
         else {
 
-          *pfVar8 = (*pfVar8 + 0.0) - fStack_20 * 5.0;
+          *pfVar8 = (*pfVar8 + 0.0f) - fStack_20 * 5.0f;
 
-          (&DAT_00958708)[iVar10 * 3] = ((float)(&DAT_00958708)[iVar10 * 3] + 0.0) - fStack_1c * 5.0
+          DAT_00958708_f32_abs[iVar10 * 3] = (DAT_00958708_f32_abs[iVar10 * 3] + 0.0f) - fStack_1c * 5.0f
 
           ;
 
-          (&DAT_0095870c)[iVar10 * 3] = ((float)(&DAT_0095870c)[iVar10 * 3] + 0.0) - fStack_18 * 5.0
+          DAT_0095870c_f32_abs[iVar10 * 3] = (DAT_0095870c_f32_abs[iVar10 * 3] + 0.0f) - fStack_18 * 5.0f
 
           ;
 
@@ -12497,7 +12503,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
             if ((DAT_007e0952 & 1) != 0) {
 
-              (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] - 5.0;
+              DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] - 5.0f;
 
             }
 
@@ -12505,7 +12511,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           else {
 
-            (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] + 5.0;
+            DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] + 5.0f;
 
           }
 
@@ -12515,11 +12521,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           fStack_50 = *pfVar8;
 
-          fStack_4c = (float)(&DAT_00958708)[iVar10 * 3];
+          fStack_4c = DAT_00958708_f32_abs[iVar10 * 3];
 
           uStack_48 = (&DAT_0095870c)[iVar10 * 3];
 
-          fStack_40 = fStack_4c - 1000.0;
+          fStack_40 = fStack_4c - 1000.0f;
 
           fStack_44 = fStack_50;
 
@@ -12635,11 +12641,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
             for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-              (&DAT_00958704)[iVar10 * 3] = (float)(&DAT_00958704)[iVar10 * 3] - fStack_10 * 5.0;
+              DAT_00958704_f32_abs[iVar10 * 3] = DAT_00958704_f32_abs[iVar10 * 3] - fStack_10 * 5.0f;
 
-              (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] - fStack_c * 5.0;
+              DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] - fStack_c * 5.0f;
 
-              (&DAT_0095870c)[iVar10 * 3] = (float)(&DAT_0095870c)[iVar10 * 3] - fStack_8 * 5.0;
+              DAT_0095870c_f32_abs[iVar10 * 3] = DAT_0095870c_f32_abs[iVar10 * 3] - fStack_8 * 5.0f;
 
             }
 
@@ -12651,11 +12657,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-            (&DAT_00958704)[iVar10 * 3] = (float)(&DAT_00958704)[iVar10 * 3] + fStack_10 * 5.0;
+            DAT_00958704_f32_abs[iVar10 * 3] = DAT_00958704_f32_abs[iVar10 * 3] + fStack_10 * 5.0f;
 
-            (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] + fStack_c * 5.0;
+            DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] + fStack_c * 5.0f;
 
-            (&DAT_0095870c)[iVar10 * 3] = (float)(&DAT_0095870c)[iVar10 * 3] + fStack_8 * 5.0;
+            DAT_0095870c_f32_abs[iVar10 * 3] = DAT_0095870c_f32_abs[iVar10 * 3] + fStack_8 * 5.0f;
 
           }
 
@@ -12667,11 +12673,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
             for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-              (&DAT_00958704)[iVar10 * 3] = (float)(&DAT_00958704)[iVar10 * 3] + fStack_20 * 5.0;
+              DAT_00958704_f32_abs[iVar10 * 3] = DAT_00958704_f32_abs[iVar10 * 3] + fStack_20 * 5.0f;
 
-              (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] + fStack_1c * 5.0;
+              DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] + fStack_1c * 5.0f;
 
-              (&DAT_0095870c)[iVar10 * 3] = (float)(&DAT_0095870c)[iVar10 * 3] + fStack_18 * 5.0;
+              DAT_0095870c_f32_abs[iVar10 * 3] = DAT_0095870c_f32_abs[iVar10 * 3] + fStack_18 * 5.0f;
 
             }
 
@@ -12683,11 +12689,11 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-            (&DAT_00958704)[iVar10 * 3] = (float)(&DAT_00958704)[iVar10 * 3] - fStack_20 * 5.0;
+            DAT_00958704_f32_abs[iVar10 * 3] = DAT_00958704_f32_abs[iVar10 * 3] - fStack_20 * 5.0f;
 
-            (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] - fStack_1c * 5.0;
+            DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] - fStack_1c * 5.0f;
 
-            (&DAT_0095870c)[iVar10 * 3] = (float)(&DAT_0095870c)[iVar10 * 3] - fStack_18 * 5.0;
+            DAT_0095870c_f32_abs[iVar10 * 3] = DAT_0095870c_f32_abs[iVar10 * 3] - fStack_18 * 5.0f;
 
           }
 
@@ -12701,7 +12707,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
             for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-              (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] - 5.0;
+              DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] - 5.0f;
 
             }
 
@@ -12713,7 +12719,7 @@ int FUN_0037d5d0(int param_1,int param_2,int param_3)
 
           for (iVar10 = 0; iVar10 < iVar13; iVar10 = iVar10 + 1) {
 
-            (&DAT_00958708)[iVar10 * 3] = (float)(&DAT_00958708)[iVar10 * 3] + 5.0;
+            DAT_00958708_f32_abs[iVar10 * 3] = DAT_00958708_f32_abs[iVar10 * 3] + 5.0f;
 
           }
 
