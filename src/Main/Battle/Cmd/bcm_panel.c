@@ -10,6 +10,8 @@ extern u32 D_00960090[];
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 extern u32 D_0096009C[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 #pragma alias D_00960090_fn D_00960090
 #pragma alias D_0096009C_fn D_0096009C
 extern void (*D_00960090_fn)(u32, u32);
@@ -1423,26 +1425,106 @@ void FUN_002265D0(void)
 }
 #pragma pop
 
+// Previous body was a wrong-helper stub (232B) unrelated to retail (1296B
+// window). Rewritten from disasm: retail does a 9-entry jump-table
+// resource dispatch + per-slot D_00960090/D_0096009C indirect-vtable
+// quad-draw calls (matching FUN_00229B40's style), not the guessed
+// bcm_panel_* helpers. obj now 1292B/1296B; residual is a single
+// register-bank choice (retail s3/mine s4 for `work`) cascading through
+// the whole body - 2 declaration-order attempts had no effect (floor).
 // FUN_00227800 NONMATCHING
 void FUN_00227800(void)
 {
-    u32 i;
-    u32 count;
-    u8* base;
+    u8* work;
+    u32 table0;
+    u32 resource;
+    u32 texture;
+    u8* record;
+    s32 i;
+    s32 j;
+    s32 loopCount;
+    void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        if (*(u32*)record == 1) {
-            bcm_panel_set_resource(record + 0x10, 0, 0x29);
-        } else {
-            bcm_panel_set_resource(record + 0x10, 0, 0x2f);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+
+    for (i = 0; i < 9; i++) {
+        switch (i) {
+        case 0: case 1: case 2: case 3:
+            resource = FUN_0021cca0(table0, i + 0x1e);
+            break;
+        case 4: case 5:
+            resource = FUN_0021cca0(table0, i + 0x1a);
+            break;
+        case 6:
+            resource = FUN_0021cca0(table0, 0x1f);
+            break;
+        case 7:
+            resource = FUN_0021cca0(table0, 0x21);
+            break;
+        case 8:
+            resource = FUN_0021cca0(table0, 0x1f);
+            break;
         }
-        *(u32*)(record + 0x40) = i;
+        texture = FUN_0021cce0(resource);
+        setState = (void (**)(u32, u32))D_00960090_abs;
+        (*setState)(1, texture);
+        record = work + i * 0x100 + 0x1530;
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)record, 4, 0, 1, 2);
+        (*setQuad)((u32*)record, 4, 0, 2, 3);
     }
-    *(u32*)(base + 0x7210) = count;
+
+    resource = FUN_0021cca0(table0, 0x26);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(1, FUN_0021cce0(resource));
+    setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+    (*setQuad)((u32*)(work + 0x1e30), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x1e30), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table0, 0x27);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)(work + 0x1f30), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x1f30), 4, 0, 2, 3);
+
+    resource = FUN_0021cca0(table0, 0x26);
+    (*setState)(1, FUN_0021cce0(resource));
+    (*setQuad)((u32*)(work + 0x2030), 4, 0, 1, 2);
+    (*setQuad)((u32*)(work + 0x2030), 4, 0, 2, 3);
+
+    if (*(u32*)(work + 0x463c) == 3 && *(s32*)(work + 0x6074) < 5) {
+        resource = FUN_0021cca0(table0, 0x1d);
+        (*setState)(1, FUN_0021cce0(resource));
+        (*setQuad)((u32*)(work + 0x2130), 4, 0, 1, 2);
+        (*setQuad)((u32*)(work + 0x2130), 4, 0, 2, 3);
+    }
+
+    resource = FUN_0021cca0(table0, 0x2c);
+    (*setState)(1, FUN_0021cce0(resource));
+
+    switch (*(u32*)(work + 0x7210)) {
+    case 0:
+        loopCount = 4;
+        break;
+    case 1:
+        loopCount = 5;
+        break;
+    case 2:
+        loopCount = 6;
+        break;
+    }
+
+    for (j = 0; j < loopCount; j++) {
+        record = work + (j << 9);
+        (*setQuad)((u32*)(record + 0x2230), 4, 0, 1, 2);
+        (*setQuad)((u32*)(record + 0x2230), 4, 0, 2, 3);
+        (*setQuad)((u32*)(record + 0x2330), 4, 0, 1, 2);
+        (*setQuad)((u32*)(record + 0x2330), 4, 0, 2, 3);
+    }
 }
 
 // FUN_00227D10
