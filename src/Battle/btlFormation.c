@@ -175,6 +175,14 @@ extern u64 func_0027f650();
 extern u64 func_0027f7c0();
 extern u64 func_0027ffb0();
 extern u64 func_00280870();
+#pragma alias func_00280870_btlFormation_s32 func_00280870
+extern s32 func_00280870_btlFormation_s32(u32 mode, u32 enabled,
+                                          void *out, void *end, void *extra,
+                                          u32 include);
+#pragma alias func_00280870_btlFormation_f32 func_00280870
+extern f32 func_00280870_btlFormation_f32(u32 mode, u32 enabled,
+                                          void *out, void *end, void *extra,
+                                          u32 include);
 extern u64 func_00288f80();
 extern u64 func_00289030();
 extern u64 func_0028a780();
@@ -530,18 +538,18 @@ extern u32 func_002b9370(int param_1,u16 param_2);
 extern u32 func_002b93c0(int param_1,u16 param_2);
 extern u32 func_002b93e0(u32 param_1,u16 param_2,u32 param_3,u32 param_4,u32 param_5);
 extern void func_002b94f0(BtlFormationWork *param_1);
-extern float func_002b9590(int param_1);
+extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
+                          u32 param_6);
 extern void func_002b9600(u32 *param_1);
 extern u32 func_002b9640(int param_1);
 extern void func_002b96e0(int param_1,u32 param_2);
-extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,u64 param_6);
 extern void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9c00(int param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9d40(int param_1,int param_2,int param_3,float *param_4);
-extern void func_002b9e80(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
-extern void func_002b9f30(u64 param_1,int param_2,u64 param_3,u64 param_4);
-extern void func_002ba000(u64 param_1,int param_2,u64 param_3,u64 param_4);
+extern void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4);
+extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
+extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16]);
 extern void func_002ba3a0(u64 param_1);
 extern void func_002ba900(int param_1);
@@ -1390,7 +1398,7 @@ void func_002b96e0(int param_1,u32 param_2)
 // FUN_002b96f0 NONMATCHING
 
 void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int param_5,
-                   u64 param_6)
+                   u32 param_6)
 {
   u8 bVar1 = *(u8 *)(param_5 + 2);
   float fVar3 = 0.0f;
@@ -1647,100 +1655,124 @@ void func_002b9d40(int param_1,int param_2,int param_3,float *param_4)
   param_4[2] = position.z;
 }
 
-// FUN_002b9e80 NONMATCHING
+// FUN_002b9e80
 
-void func_002b9e80(u64 param_1,u64 param_2,u64 param_3,u64 param_4)
+void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4)
 
 {
-  u16 uVar1 = 0;
-  float fVar2 = 0;
-  u32 uStack_20 = 0;
-  u32 uStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  float auStack_10[3] = {0.0f, 0.0f, 0.0f};
-  float fStack_4 = 0;
+  s32 uVar1;
+  float fVar2;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
   
-  fVar2 = (float)func_00280870(3,0,auStack_10,&fStack_4,0,0);
+  fVar2 = func_00280870_btlFormation_f32(3,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 != 0) {
+  if (uVar1 == 0) {
+    __asm__ volatile ("" : "+f"(fVar2));
+  }
+  else {
     fVar2 = (float)uVar1;
   }
-  uStack_14 = 0x3f800000;
-  uStack_20 = 0;
-  uStack_1c = 0;
-  uStack_18 = 0;
-  func_002b96f0(fVar2,fStack_4 * 0.5f,auStack_10,&uStack_20,param_3,param_4);
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar2,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
   return;
 }
 
-// FUN_002b9f30 NONMATCHING
+// FUN_002b9f30
 
-void func_002b9f30(u64 param_1,int param_2,u64 param_3,u64 param_4)
+void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4)
 
 {
-  u16 uVar1 = 0;
-  u32 uVar2 = 0;
-  float fVar3 = 0;
-  u32 uStack_20 = 0;
-  u32 uStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  float auStack_10[3] = {0.0f, 0.0f, 0.0f};
-  float fStack_4 = 0;
+  s32 uVar1;
+  u16 uVar2;
+  float fVar3;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
   
-  if (*(char *)(param_2 + 0xa2) == '\0') {
+  if (*(u8 *)(param_2 + 0xa2) == '\0') {
     uVar2 = 1;
   }
   else {
     uVar2 = 2;
   }
-  fVar3 = (float)func_00280870(uVar2,0,auStack_10,&fStack_4,0,0);
+  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 != 0) {
+  if (uVar1 == 0) {
+    __asm__ volatile ("" : "+f"(fVar3));
+  }
+  else {
     fVar3 = (float)uVar1;
   }
-  uStack_14 = 0x3f800000;
-  uStack_20 = 0;
-  uStack_1c = 0;
-  uStack_18 = 0;
-  func_002b96f0(fVar3,fStack_4 * 0.5f,auStack_10,&uStack_20,param_3,param_4);
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
   return;
 }
 
-// FUN_002ba000 NONMATCHING
+// FUN_002ba000
 
-void func_002ba000(u64 param_1,int param_2,u64 param_3,u64 param_4)
+void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4)
 
 {
-  u16 uVar1 = 0;
-  u32 uVar2 = 0;
-  float fVar3 = 0;
-  u32 uStack_20 = 0;
-  u32 uStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  float auStack_10[3] = {0.0f, 0.0f, 0.0f};
-  float fStack_4 = 0;
+  s32 uVar1;
+  u16 uVar2;
+  float fVar3;
+  struct {
+    u32 uStack_20;
+    u32 uStack_1c;
+    u32 uStack_18;
+    u32 uStack_14;
+    float auStack_10[3];
+    float fStack_4;
+  } work;
   
-  if (*(char *)(param_2 + 0xa2) == '\0') {
+  if (*(u8 *)(param_2 + 0xa2) == '\0') {
     uVar2 = 2;
   }
   else {
     uVar2 = 1;
   }
-  fVar3 = (float)func_00280870(uVar2,0,auStack_10,&fStack_4,0,0);
+  fVar3 = func_00280870_btlFormation_f32(uVar2,0,work.auStack_10,&work.fStack_4,0,0);
   uVar1 = *(u16 *)((int)param_3 + 4);
-  if (uVar1 != 0) {
+  if (uVar1 == 0) {
+    __asm__ volatile ("" : "+f"(fVar3));
+  }
+  else {
     fVar3 = (float)uVar1;
   }
-  uStack_14 = 0x3f800000;
-  uStack_20 = 0;
-  uStack_1c = 0;
-  uStack_18 = 0;
-  func_002b96f0(fVar3,fStack_4 * 0.5f,auStack_10,&uStack_20,param_3,param_4);
+  work.uStack_14 = 0x3f800000;
+  work.uStack_20 = 0;
+  work.uStack_1c = 0;
+  work.uStack_18 = 0;
+  func_002b96f0(fVar3,work.fStack_4 * 0.5f,work.auStack_10,&work.uStack_20,param_3,param_4);
   return;
 }
+// FUN_002ba0d0
+void func_002ba0d0(u32 param_1,u32 param_2,u32 param_3,u32 *param_4)
+{
+  param_4[0] = 0;
+  param_4[1] = 0;
+  param_4[2] = 0;
+  param_4[3] = 0;
+}
+
 
 // FUN_002ba0f0 NONMATCHING
 
