@@ -44,6 +44,8 @@ extern s32 DAT_006a2680[];
 extern u32 DAT_007cd4e8;
 extern s16 DAT_007cd500;
 extern u32 DAT_0095ac70;
+#pragma alias DAT_0095ac70_abs DAT_0095ac70
+extern u32 DAT_0095ac70_abs[];
 extern u32 DAT_00960088;
 extern code DAT_00960090;
 extern code DAT_009600a0;
@@ -4016,7 +4018,7 @@ u64 FUN_003ad740(u64 param_1,int param_2)
 }
 #define FUN_003ad740(...) ((u64 (*)(...))FUN_003ad740)(__VA_ARGS__)
 #undef FUN_003ad860
-// FUN_003AD860 NONMATCHING
+// FUN_003AD860
 
 
 u64 FUN_003ad860(u64 param_1,int param_2)
@@ -4028,9 +4030,9 @@ u64 FUN_003ad860(u64 param_1,int param_2)
   u8 bVar1;
 
   u8 uVar2;
-
   u32 uVar3;
-  u32 index;
+  u32 index32;
+  u16 index;
 
   u8 *pbVar4;
 
@@ -4066,9 +4068,11 @@ u64 FUN_003ad860(u64 param_1,int param_2)
     uVar3 = (u32)(u8)(bVar1 - 1);
 
   }
-  index = uVar3 << 8 | uVar5;
+  index32 = (u8)uVar3 << 8;
+  index32 |= (u8)uVar5;
+  index = index32;
 
-  if (*(int *)(&DAT_0095ac70 + index * 4) != 0) {
+  if (DAT_0095ac70_abs[index] != 0) {
 
     uVar2 = *(u8 *)(iVar6 + 0xd);
 
@@ -4087,7 +4091,7 @@ u64 FUN_003ad860(u64 param_1,int param_2)
 }
 #define FUN_003ad860(...) ((u64 (*)(...))FUN_003ad860)(__VA_ARGS__)
 #undef FUN_003ad930
-// FUN_003AD930 NONMATCHING
+// FUN_003AD930
 
 
 u64 FUN_003ad930(u64 param_1,int param_2)
@@ -4097,11 +4101,11 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 {
 
   u8 bVar1;
-
   u8 uVar2;
 
   u32 uVar3;
-  u32 index;
+  u32 index32;
+  u16 index;
 
   u8 *pbVar4;
 
@@ -4137,9 +4141,11 @@ u64 FUN_003ad930(u64 param_1,int param_2)
     uVar3 = (u32)(u8)(bVar1 - 1);
 
   }
-  index = uVar3 << 8 | uVar5;
+  index32 = (u8)uVar3 << 8;
+  index32 |= (u8)uVar5;
+  index = index32;
 
-  if (*(int *)(&DAT_0095ac70 + index * 4) != 0) {
+  if (DAT_0095ac70_abs[index] != 0) {
 
     uVar2 = *(u8 *)(iVar6 + 0xd);
 
@@ -4603,21 +4609,26 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   u8 bVar2;
 
-  char cVar3;
+  u8 cVar3;
 
   int iVar4;
 
   u32 uVar5;
 
   u32 uVar6;
+  int iVar8;
+  u32 secondIndex;
+  int firstIndex;
+  u32 firstLow;
+  u32 secondLow;
+  int first2;
+  int second2;
 
 
   u8 *pbVar7;
-  int iVar8;
+  int *piVar10;
 
   int *piVar9;
-
-  int *piVar10;
 
   int aiStack_20 [8];
 
@@ -4626,6 +4637,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
   pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
 
   bVar1 = *pbVar7;
+  firstLow = bVar1 - 1 & 0xff;
 
   bVar2 = pbVar7[1];
 
@@ -4641,13 +4653,17 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   }
 
-  iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
 
+  firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
+  second2 = *(volatile int *)(param_2 + 0x10);
+  first2 = *(volatile int *)(param_2 + 0x18);
+  iVar8 = second2 + first2;
   bVar2 = *(u8 *)(iVar8 + 2);
+  secondLow = bVar2 - 1 & 0xff;
 
-  cVar3 = *(char *)(iVar8 + 3);
+  cVar3 = *(u8 *)(iVar8 + 3);
 
-  if (cVar3 == -1) {
+  if (cVar3 == 0xff) {
 
     uVar6 = 0;
 
@@ -4659,8 +4675,8 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   }
 
+  secondIndex = (u8)uVar6 << 8 | (u8)secondLow;
   piVar10 = (int *)DAT_006a2680;
-
   piVar9 = aiStack_20;
 
   iVar8 = 5;
@@ -4679,7 +4695,7 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   } while (0 < iVar8);
 
-  FUN_0016f1f0((uVar6 << 8 | bVar2 - 1 & 0xff) + aiStack_20[uVar5 << 8 | bVar1 - 1 & 0xff],1);
+  FUN_0016f1f0(secondIndex + aiStack_20[firstIndex],1);
 
   return 0;
 
@@ -4699,7 +4715,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   u8 bVar2;
 
-  char cVar3;
+  u8 cVar3;
 
   int iVar4;
 
@@ -4707,13 +4723,19 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   u32 uVar6;
 
-  u8 *pbVar7;
-
   int iVar8;
+  u32 secondIndex;
+  int firstIndex;
+  u32 firstLow;
+  u32 secondLow;
+  int first2;
+  int second2;
+
+
+  u8 *pbVar7;
+  int *piVar10;
 
   int *piVar9;
-
-  int *piVar10;
 
   int aiStack_20 [8];
 
@@ -4722,6 +4744,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
   pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
 
   bVar1 = *pbVar7;
+  firstLow = bVar1 - 1 & 0xff;
 
   bVar2 = pbVar7[1];
 
@@ -4737,13 +4760,17 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   }
 
-  iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
 
+  firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
+  second2 = *(volatile int *)(param_2 + 0x10);
+  first2 = *(volatile int *)(param_2 + 0x18);
+  iVar8 = second2 + first2;
   bVar2 = *(u8 *)(iVar8 + 2);
+  secondLow = bVar2 - 1 & 0xff;
 
-  cVar3 = *(char *)(iVar8 + 3);
+  cVar3 = *(u8 *)(iVar8 + 3);
 
-  if (cVar3 == -1) {
+  if (cVar3 == 0xff) {
 
     uVar6 = 0;
 
@@ -4755,8 +4782,8 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   }
 
+  secondIndex = (u8)uVar6 << 8 | (u8)secondLow;
   piVar10 = (int *)DAT_006a2680;
-
   piVar9 = aiStack_20;
 
   iVar8 = 5;
@@ -4775,7 +4802,7 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   } while (0 < iVar8);
 
-  FUN_0016f1f0((uVar6 << 8 | bVar2 - 1 & 0xff) + aiStack_20[uVar5 << 8 | bVar1 - 1 & 0xff],0);
+  FUN_0016f1f0(secondIndex + aiStack_20[firstIndex],0);
 
   return 0;
 
