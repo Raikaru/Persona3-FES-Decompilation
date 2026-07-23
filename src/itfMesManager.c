@@ -113,7 +113,7 @@ extern void FUN_003a2a30_s32(s32 param_1);
 u32 FUN_003a2b30(void);
 u32 FUN_003a2c10(void);
 int FUN_003a2c90(int param_1,int param_2);
-u32 FUN_003a2ef0(u64 param_1);
+u32 FUN_003a2ef0(u32 param_1);
 u32 FUN_003a3010(int param_1);
 u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3);
 void FUN_003a3420(int param_1,s32 param_2);
@@ -1100,7 +1100,7 @@ int FUN_003a2c90(int param_1,int param_2)
 // FUN_003A2EF0 NONMATCHING
 
 
-u32 FUN_003a2ef0(u64 param_1)
+u32 FUN_003a2ef0(u32 param_1)
 
 
 
