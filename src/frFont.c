@@ -2459,7 +2459,7 @@ int FUN_003b1a90(int param_1)
 #define FUN_003b1a90(...) ((int (*)(...))FUN_003b1a90)(__VA_ARGS__)
 #pragma opt_loop_invariants off
 #undef FUN_003b1b00
-// FUN_003B1B00 NONMATCHING
+// FUN_003B1B00
 
 
 int FUN_003b1b00(int param_1,int param_2)
@@ -2492,26 +2492,22 @@ int FUN_003b1b00(int param_1,int param_2)
       iVar2 = 0;
       iVar6 = param_2;
       iVar7 = *(int *)(param_2 + 8) + 100;
-      goto frFont_b1b00_inner_check;
-frFont_b1b00_inner_check:
-      if (iVar6 == 0 || *(int *)(iVar6 + 8) >= iVar7) {
-        goto frFont_b1b00_inner_done;
-      }
-      goto frFont_b1b00_inner_body;
-frFont_b1b00_inner_body:
-      iVar3 = 0;
-      iVar4 = *(int *)(iVar6 + 0x1c);
-      goto frFont_b1b00_child_check;
+      while (iVar6 != 0) {
+        if (*(int *)(iVar6 + 8) >= iVar7) {
+          break;
+        }
+        iVar3 = 0;
+        iVar4 = *(int *)(iVar6 + 0x1c);
+        goto frFont_b1b00_child_check;
 frFont_b1b00_child_body:
-      iVar3 = iVar3 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar6 + 3);
-      iVar4 = *(int *)(iVar4 + 0x28);
+        iVar3 = iVar3 + *(int *)(iVar4 + 0xc);
+        iVar3 = iVar3 + (int)*(char *)(iVar6 + 3);
+        iVar4 = *(int *)(iVar4 + 0x28);
 frFont_b1b00_child_check:
-      if (iVar4 != 0) goto frFont_b1b00_child_body;
-frFont_b1b00_child_done:
-      iVar2 = iVar2 + iVar3;
-      iVar6 = *(int *)(iVar6 + 0x28);
-      goto frFont_b1b00_inner_check;
-frFont_b1b00_inner_done:
+        if (iVar4 != 0) goto frFont_b1b00_child_body;
+        iVar2 = iVar2 + iVar3;
+        iVar6 = *(int *)(iVar6 + 0x28);
+      }
       iVar7 = iVar5;
       iVar5 = iVar5 + 1;
       if (iVar7 == param_1) break;
