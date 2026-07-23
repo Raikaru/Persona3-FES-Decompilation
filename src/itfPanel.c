@@ -4041,7 +4041,7 @@ u64 FUN_003ad860(u64 param_1,int param_2)
 
   iVar6 = (int)param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x10) + *(int *)(iVar6 + 0x18));
+  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
 
   uVar5 = *pbVar4 - 1 & 0xff;
 
@@ -4103,7 +4103,7 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 
   iVar6 = (int)param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x10) + *(int *)(iVar6 + 0x18));
+  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
 
   uVar5 = *pbVar4 - 1 & 0xff;
 
