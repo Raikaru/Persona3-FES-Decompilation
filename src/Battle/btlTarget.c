@@ -3881,25 +3881,22 @@ s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
 // FUN_002d6620 NONMATCHING
 void FUN_002d6620(BtlAction *action)
 {
-    BtlUnit *unit;
     DatUnit *selfDat;
     u16 specificId;
-    u64 mappedId;
+    s32 mappedId;
     u32 id;
     u32 tableOffset;
     u8 attackType;
     u8 datType;
-    u32 specialFlags;
-    u16 inherited = 0;
-    u16 successfulTargets = 0;
-    u8 finalFlags = 0;
+    volatile u16 inherited = 0;
+    u32 specialFlags = 0;
+    u16 successfulTargets;
+    u8 finalFlags;
     u16 targetIndex;
 
-    unit = action->unit;
-    selfDat = unit->datUnit;
     specificId = action->target.specificId;
     *(u16 *)((u8 *)action + 0x72) = action->target.specificId;
-    mappedId = (u64)FUN_002d5570(specificId);
+    mappedId = FUN_002d5570(specificId);
     if (mappedId != -1)
     {
         id = (u32)mappedId & 0xffff;
@@ -3911,12 +3908,12 @@ void FUN_002d6620(BtlAction *action)
         id = specificId;
     }
 
-    specialFlags = (action->target.commandId == 3) ? 1 : 0;
-    if ((action->target.commandId == 3) && (action->target.unk_38 != 0))
-        specialFlags = 1;
+    if (action->target.commandId == 3)
+        specialFlags |= 1;
 
     tableOffset = id * 0x2c;
     attackType = BTLT_T8(tableOffset, 0x11);
+    selfDat = action->unit->datUnit;
     *(u16 *)((u8 *)selfDat + 0x38) = 0;
     datType = (u8)FUN_003082f0(selfDat, id);
 
@@ -3930,23 +3927,23 @@ void FUN_002d6620(BtlAction *action)
     BTLT_A16(action, 0xdc) = 0;
     BTLT_AS16(action, 0xde) = -1;
 
-    if ((specialFlags == 0) && ((u64)FUN_003088b0(id) == 0))
+    if ((specialFlags == 0) && (FUN_003088b0(id) == 0))
     {
-        u64 tacticResult = (u64)FUN_003086f0(selfDat, id);
+        u32 tacticResult = FUN_003086f0(selfDat, id);
         if (tacticResult == 2)
         {
             BTLT_A32(action, 0xd8) = 1;
-            BTLT_A16(action, 0xdc) = unit->genus == 0 ? 0x3c : 0x3d;
+            BTLT_A16(action, 0xdc) = action->unit->genus == 0 ? 0x3c : 0x3d;
         }
         else if (tacticResult == 1)
         {
             BTLT_A32(action, 0xd8) = 1;
-            BTLT_A16(action, 0xdc) = unit->genus == 0 ? 0x3a : 0x3b;
+            BTLT_A16(action, 0xdc) = action->unit->genus == 0 ? 0x3a : 0x3b;
         }
-        if ((unit->genus == 1) && ((u64)datCalcChkBadStatus(selfDat, 4) != 0))
+        if ((action->unit->genus == 1) && (datCalcChkBadStatus(selfDat, 4) != 0))
         {
             BTLT_A32(action, 0xd8) = 1;
-            BTLT_A16(action, 0xdc) = unit->genus == 0 ? 0x3e : 0x3f;
+            BTLT_A16(action, 0xdc) = action->unit->genus == 0 ? 0x3e : 0x3f;
         }
     }
 
@@ -4020,7 +4017,7 @@ void FUN_002d6620(BtlAction *action)
             else
                 targetSpecial = ((s8)FUN_00301750(targetDat, 0xb) < 1) ? 1 : 0x10;
 
-            if ((u64)FUN_003088b0(id) == 0)
+            if (FUN_003088b0(id) == 0)
             {
                 slotCount = (u8)FUN_0030b9a0(selfDat, id, targetSpecial);
                 chance = 1;
@@ -4121,7 +4118,7 @@ void FUN_002d6620(BtlAction *action)
                 if (attackType == 0x10)
                     *(u16 *)(slotPtr + 0xfa) |= 8;
 
-                terminate = ((u64)datCalcIsDead(candidateDat, total) != 0);
+                terminate = (datCalcIsDead(candidateDat, total) != 0);
                 if ((terminate == 0) && ((slotStatus & 0x80000) != 0))
                     terminate = ((slotOtherStatus & 0x80000) == 0);
                 if (((slotIndex + 1) == slotCount) || (terminate != 0))
@@ -4130,10 +4127,10 @@ void FUN_002d6620(BtlAction *action)
                     {
                         u8 forceFlag = 0;
                         if (((total < 0) || (efficacy == 0x100) || (efficacy == 0x400)) &&
-                            ((u64)datCalcChkBadStatus(candidateDat, 0x100000) != 0))
+                            (datCalcChkBadStatus(candidateDat, 0x100000) != 0))
                             forceFlag = 1;
                         if ((BTLT_A32(target, 0xd4) == 1) &&
-                            ((u64)datCalcChkBadStatus(targetDat, 0x100000) != 0))
+                            (datCalcChkBadStatus(targetDat, 0x100000) != 0))
                             forceFlag = 1;
                         if (forceFlag != 0)
                         {
