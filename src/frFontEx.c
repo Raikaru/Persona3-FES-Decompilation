@@ -5,6 +5,7 @@ typedef u32 int3;
 #define CONCAT13(a,b) ((((u32)(a) & 0xffu) << 24) | ((u32)(b) & 0x00ffffffu))
 
 extern u8 DAT_006a2888[];
+extern u8 DAT_006a2730[];
 extern float fGpffff808c;
 extern float fGpffff80a4;
 extern s8 gp0xffffa808;
@@ -192,11 +193,13 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   int iVar2;
 
-  int iVar3;
-
   int iVar4;
 
+  int iVar3;
+
   int iVar5;
+
+  s32 iVar6;
 
   
 
@@ -210,17 +213,17 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   }
 
-  uGpffffa810 = (uGpffffa810 | 1) & 0xfffd;
+  iVar6 = -3;
+  uGpffffa810 = (s64)(s16)(uGpffffa810 | 1) & iVar6;
 
   iVar2 = FUN_003b0970(param_7,param_6,param_5,0,0);
   if (iVar2 == 0) {
 
-    FUN_0019d3f0("frFont.c",0x848);
+    FUN_0019d3f0(DAT_006a2730,0x848);
 
   }
 
   *(u8 *)(iVar2 + 3) = param_9;
-
   iVar4 = 0;
 
   for (iVar3 = *(int *)(iVar2 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
@@ -231,7 +234,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   *(int *)(iVar2 + 0xc) = iVar4;
 
-  uGpffffa810 = (uGpffffa810 | 2) & 0xfffe;
+  uGpffffa810 = (s64)(s16)(((s16)uGpffffa810 & -2) | 2);
 
   if ((param_8 & 0xb) != 0) {
 
@@ -281,7 +284,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0("frFont.c",0x88c);
+    FUN_0019d3f0(DAT_006a2730,0x88c);
 
   }
 
@@ -291,7 +294,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   if (iVar2 == 0) {
 
-    FUN_0019d3f0("frFontEx.c",0x13);
+    FUN_0019d3f0(DAT_006a2888,0x13);
 
   }
 
