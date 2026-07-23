@@ -1302,7 +1302,7 @@ u32 func_002f2410(int param_1)
 void func_002f2550(BtlAction* action);
 u32 func_002f2840(BtlAction* action);
 
-void func_002f2890(u64* param_1);
+void func_002f2890(BtlAction* param_1);
 u32 func_002f2b40(BtlAction* action);
 
 // FUN_002f2450
@@ -1428,7 +1428,7 @@ u32 func_002f2840(BtlAction* action)
 
 }
 // FUN_002f2890 NONMATCHING
-void func_002f2890(u64* param_1)
+void func_002f2890(BtlAction* param_1)
 {
   BtlAction* action = (BtlAction*)param_1;
   BtlUnit* unit;
