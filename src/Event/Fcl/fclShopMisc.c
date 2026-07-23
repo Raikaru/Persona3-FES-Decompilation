@@ -11966,7 +11966,7 @@ u64 FUN_003fea10(u64 param_1,u32 *param_2)
 
   long lVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int iVar5;
 
