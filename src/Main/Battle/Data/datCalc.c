@@ -6805,27 +6805,24 @@ void FUN_0030cc40(void)
 
 // FUN_0030cdb0 NONMATCHING
 void FUN_0030cdb0(void)
-
 {
   s32 lVar1;
   float fVar2;
   float fVar3;
-  float fVar4;
-  
+
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar2 = (float)FUN_0030fdf0(0xe,4);
-    fVar3 = (float)FUN_0030fdf0(0x14,0);
-    fVar4 = DAT_007cad74 * fVar3 * ((fVar4 + 50.0f) / (fVar2 + 50.0f));
-  }
-  else {
-    fVar2 = (float)FUN_0030fdf0(0xd,4);
-    fVar3 = (float)FUN_0030fdf0(0xe,4);
-    fVar4 = (float)FUN_0030fdf0(0x14,0);
-    fVar4 = fVar4 * ((fVar2 + 50.0f) / (fVar3 + 50.0f));
-  }
-  FUN_00311190((int)fVar4);
+  if (lVar1 == 0)
+    goto zero;
+  fVar2 = (float)FUN_0030fdf0(0xd,4);
+  fVar3 = (float)FUN_0030fdf0(0xe,4);
+  fVar2 = (float)FUN_0030fdf0(0x14,0) * ((fVar2 + 50.0f) / (fVar3 + 50.0f));
+  goto done;
+zero:
+  fVar2 = (float)FUN_0030fdf0(0xd,4);
+  fVar3 = (float)FUN_0030fdf0(0xe,4);
+  fVar2 = DAT_007cad74 * (float)FUN_0030fdf0(0x14,0) * ((fVar2 + 50.0f) / (fVar3 + 50.0f));
+done:
+  FUN_00311190((int)fVar2);
   return;
 }
 
