@@ -11491,7 +11491,7 @@ u64 FUN_003fe020(int param_1,u64 param_2)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int iVar5;
 
