@@ -496,7 +496,7 @@ void H_Pad_RwFreeRaw(void* memory)
 }
 
 // FUN_00103DA0 NONMATCHING
-void* H_Pad_RwAllocateRaw(size_t size)
+void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 {
     HPadRwAllocation* allocation;
     s32 intrState;
@@ -607,16 +607,34 @@ RwMemoryFunctions* H_Pad_GetRwMemoryFunctions(void)
     return &sRwMemoryFunctions;
 }
 
+// Previous body omitted retail's debug-name checks (two kwlnTaskGetUpdating
+// + strcmp guards bracketing the allocation) and the interrupt-disable
+// pair around H_Pad_RwAllocateRaw. That callee was also missing its real
+// second parameter (hint) - added as an unused param (its body never
+// reads it) since the caller passes it in $a1 per retail. obj 88B->312B/
+// 320B; residual is a small OR-condition register-choice floor.
 // FUN_00104140 NONMATCHING
 void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
 {
     HPadRwAllocation* allocation;
     u8* alignmentBase;
     u8* alignedMemory;
+    s32 intrState;
 
-    allocation = (HPadRwAllocation*)H_Pad_RwAllocateRaw(size + 0x14);
-    if (allocation == NULL)
-    {
+    if (kwlnTaskGetUpdating() != NULL) {
+        if (strcmp("H_CutInDraw", (const char*)kwlnTaskGetUpdating()) == 0) {
+            if (size == 0x27d8 || size == 0x1fe0) {
+                printf(D_005CEAE0);
+            }
+        }
+    }
+
+    intrState = func_0050d3a0();
+    allocation = (HPadRwAllocation*)H_Pad_RwAllocateRaw(size + 0x14, hint);
+    if (allocation == NULL) {
+        if (intrState != 0) {
+            func_0050d3f0();
+        }
         return NULL;
     }
 
@@ -624,6 +642,17 @@ void* H_Pad_RwMalloc(RwUInt32 size, RwUInt32 hint)
     alignmentBase = (u8*)allocation + 4;
     alignedMemory = alignmentBase + (16 - ((uintptr_t)alignmentBase & 0xF));
     *(void**)(alignedMemory - sizeof(void*)) = allocation;
+
+    if (intrState != 0) {
+        func_0050d3f0();
+    }
+
+    if (kwlnTaskGetUpdating() != NULL) {
+        if (size == 0x50) {
+            strcmp("\n", (const char*)kwlnTaskGetUpdating());
+        }
+    }
+
     return alignedMemory;
 }
 
