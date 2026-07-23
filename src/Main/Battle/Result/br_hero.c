@@ -47,6 +47,7 @@ extern void* FUN_00233df0(s32);
 extern void* FUN_0021cca0(void*, s32);
 extern u32 FUN_0021cce0(void*);
 extern void FUN_0021d3b0(void*, void*);
+extern void FUN_0021cd00(void*, float*);
 extern void FUN_0021d8e0(void*, float*);
 extern void FUN_0021d890(void*, float*);
 extern void FUN_0021d950(void*, u8*);
@@ -97,6 +98,7 @@ static void brHeroSetRect(void* object, float x, float y, float w, float h)
     FUN_0021d8e0(object, rect);
 }
 
+
 // FUN_00262790 NONMATCHING
 void brHero00262790(void)
 {
@@ -107,6 +109,7 @@ void brHero00262790(void)
     u32 task;
     u8 color[4];
     float rect[4];
+    float sourceRect[4];
     s32 i;
     u32 status;
     u32 level;
@@ -135,11 +138,14 @@ void brHero00262790(void)
     w[0] &= ~2u;
     if (status & 0x80)
         w[0] |= 2;
-    if (99999u < w[0x591])
+    if ((s32)w[0x591] > 99999)
         w[0x591] = 99999;
-
-    for (i = 0; i < 6; i++)
-        FUN_0021d3b0(w + i * 0x40 + 4, FUN_0021cca0(text0, 0x16 + i));
+    FUN_0021d3b0(w + 4, FUN_0021cca0(text0, 0x16));
+    FUN_0021d3b0(w + 0x44, FUN_0021cca0(text0, 0x17));
+    FUN_0021d3b0(w + 0x84, FUN_0021cca0(text0, 0x18));
+    FUN_0021d3b0(w + 0xc4, FUN_0021cca0(text0, 0x19));
+    FUN_0021d3b0(w + 0x104, FUN_0021cca0(text0, 0x1a));
+    FUN_0021d3b0(w + 0x144, FUN_0021cca0(text0, 0x1b));
     for (i = 0; i < 3; i++)
         FUN_0021eac0(w + i * 0x40 + 0x184, 0);
     value = FUN_0021cca0(text0, 0x1c);
@@ -174,10 +180,44 @@ void brHero00262790(void)
     FUN_00238980(w + 0x594, 2, w[0x588], 2);
     FUN_00238980(w + 0x614, 3, w[0x589], 2);
     FUN_00238980(w + 0x6d4, 3, w[0x58a], 2);
-    FUN_0021d3b0(w + 0x794, FUN_0021cca0(text1, 4));
+    value = FUN_0021cca0(text1, 4);
+    FUN_0021cd00(value, sourceRect);
+    rect[0] = sourceRect[0];
+    rect[1] = sourceRect[1];
+    rect[2] = rect[0] + (float)(s32)w[0x589] * (sourceRect[2] - rect[0]) / (float)(s32)w[0x58a];
+    rect[3] = sourceRect[3];
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    FUN_0021eac0(w + 0x794, 0);
+    FUN_0021eae0(w + 0x794, rect);
+    FUN_0021d950(w + 0x794, color);
     FUN_00238980(w + 0x7d4, 3, w[0x58b], 2);
     FUN_00238980(w + 0x894, 3, w[0x58c], 2);
-    FUN_0021d3b0(w + 0x954, FUN_0021cca0(text1, 5));
+
+    value = FUN_0021cca0(text1, 5);
+    FUN_0021cd00(value, sourceRect);
+    rect[0] = sourceRect[0];
+    rect[1] = sourceRect[1];
+    rect[2] = rect[0] + (float)(s32)w[0x58b] * (sourceRect[2] - rect[0]) / (float)(s32)w[0x58c];
+    rect[3] = sourceRect[3];
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    FUN_0021eac0(w + 0x954, 0);
+    FUN_0021eae0(w + 0x954, rect);
+    FUN_0021d950(w + 0x954, color);
+
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 1.0f;
+    rect[3] = 1.0f;
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
     FUN_0021eb80(w + 0xa54, rect);
     FUN_0021eac0(w + 0xa54, 0);
     FUN_0021d950(w + 0xa54, color);
@@ -200,10 +240,10 @@ void brHero00262790(void)
     value = FUN_0021cca0(text1, 0x22);
     FUN_0021d3b0(w + 0xcd8, value);
     FUN_00238980(w + 0xd18, 5, w[0x591], 2);
+
     w[0xe58] = 0;
     *w |= 1;
 }
-
 // FUN_00263170 NONMATCHING
 void brHero00263170(void)
 {
