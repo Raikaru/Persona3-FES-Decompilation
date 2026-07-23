@@ -28,6 +28,8 @@ typedef struct CampTextureParserWork
 } CampTextureParserWork;
 
 extern void* (*DAT_00960184)(u32 elementCount, u32 elementSize, u32 hint);
+#pragma alias DAT_00960184_abs DAT_00960184
+extern void* (*DAT_00960184_abs[])(...);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 extern void (*jtbl_0096017C)(void* memory);
@@ -46,6 +48,7 @@ extern void FUN_00114450(f32 alpha, u32 mode, u32 color,
                          u32 height, void* resource);
 extern s32 printf(const char* format, ...);
 extern KwlnTask* FUN_00133d30(void* stream, HCdvd* cdvd);
+extern u32 func_0018b700(void* animation);
 
 
 // FUN_001339A0 NONMATCHING
@@ -55,7 +58,7 @@ KwlnTask* FUN_001339a0(KwlnTask* parent, u32 priority, u32 personaId, u32 mode,
     CampPersonaDispCtlWork* work;
     KwlnTask* task;
 
-    work = (CampPersonaDispCtlWork*)DAT_00960184(1, 0x12c, 0x40000);
+    work = (CampPersonaDispCtlWork*)(*DAT_00960184_abs)(1, 0x12c, 0x40000);
     if (work == NULL) {
         return NULL;
     }
@@ -457,8 +460,8 @@ static void campMainDrawPersonaCard(const CampMainDrawItem* item,
 
 // FUN_001345B0 NONMATCHING
 void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
-                  const s16* personaIds, s32 personaIndex,
-                  s32 alternatePersonaIndex)
+                  const s16* personaIds, s16 personaIndex,
+                  s16 alternatePersonaIndex)
 {
 
     switch (mode) {
@@ -496,13 +499,13 @@ void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
     }
 }
 
-// FUN_00134900 NONMATCHING
+// FUN_00134900
 u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
                  const s16* personaIds, s16 selected, s16 personaIndex)
 {
     s32 i;
-    CampMainDrawItem* item;
     u32 complete;
+    CampMainDrawItem* item;
 
     complete = 1;
     for (i = 0; i < 10; i++) {
@@ -510,9 +513,10 @@ u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
         if (item->active != 0) {
             if (func_0018b700(item) != 0) {
                 FUN_001345B0(item, resources, i, personaIds,
-                             (s32)selected, (s32)personaIndex);
+                             selected, personaIndex);
             }
-            if (item->progress != item->endFrame) {
+            if (((CampMainDrawItem*)((u8*)items + i * 0x44))->progress !=
+                ((CampMainDrawItem*)((u8*)items + i * 0x44))->endFrame) {
                 complete = 0;
             }
         }
@@ -1548,10 +1552,10 @@ void FUN_001365b0(KwlnTask* task)
 // FUN_00136750 NONMATCHING
 KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority)
 {
-    void* work;
     KwlnTask* task;
+    void* work;
 
-    work = DAT_00960184(1, 0x1a0, 0x40000);
+    work = (void*)(*DAT_00960184_abs)(1, 0x1a0, 0x40000);
     if (work == NULL) {
         return NULL;
     }
