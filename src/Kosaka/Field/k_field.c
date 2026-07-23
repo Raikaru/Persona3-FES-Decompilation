@@ -1668,6 +1668,8 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     func_004c3880(matrix);
 }
 
+// Residual MWCC register allocation and loop scheduling differ from retail; accepted floor.
+// Candidate bounds now follow the pattern dimensions; remaining mismatch is compiler codegen.
 // FUN_001bc630 NONMATCHING
 u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 {
@@ -1682,11 +1684,13 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
     u8 patternFlags;
     u8 neighborFlags;
 
-    startX = *x;
-    startY = *y;
-    for (roomY = startY; roomY >= 0; roomY--)
+    for (roomY = 0, startY = *y;
+         roomY < pattern->raw[2];
+         roomY++, startY--)
     {
-        for (roomX = startX; roomX >= 0; roomX--)
+        for (roomX = 0, startX = *x;
+             roomX < pattern->raw[1];
+             roomX++, startX--)
         {
             for (row = 0; row < pattern->raw[2]; row++)
             {
