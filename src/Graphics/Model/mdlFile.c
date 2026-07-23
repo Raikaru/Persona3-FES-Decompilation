@@ -1237,10 +1237,10 @@ extern u32 DAT_007ce530;
 extern u32 DAT_007ce534;
 extern u32 DAT_007ce538;
 extern u32 DAT_007ce53c;
-extern u32 DAT_007ce544;
-extern u32 DAT_007ce545;
-extern u32 DAT_007ce546;
-extern u32 DAT_007ce547;
+extern u8 DAT_007ce544;
+extern u8 DAT_007ce545;
+extern u8 DAT_007ce546;
+extern u8 DAT_007ce547;
 extern u32 DAT_007ce548;
 extern u8 DAT_007ce54c;
 extern u16 DAT_007ce550;
@@ -28750,6 +28750,10 @@ void FUN_00338360(u64 param_1)
 
 
 
+// Fixed DAT_007ce544-547 mistyped u32 (should be u8 packed color bytes);
+// fixed the u8==-1 int-promotion bug (never true) by comparing 0xff;
+// fixed if/else body order to get retail's positive beq-into-body shape.
+// Residual: pure register allocation (a0/a1 vs a2/a3 scratch choices).
 // FUN_00338530 NONMATCHING
 
 
@@ -28760,40 +28764,23 @@ void FUN_00338530(int param_1)
 {
 
   int iVar1;
-
   int iVar2;
-
-  u8 uVar3;
-
-  u8 uVar4;
-
-  char cVar5;
-
-  
-
-  cVar5 = DAT_007ce547;
-
-  uVar4 = DAT_007ce546;
-
-  uVar3 = DAT_007ce545;
 
   iVar1 = *(int *)(param_1 + 0x3c);
 
   iVar2 = *(int *)(iVar1 + 8);
 
-  if (DAT_007ce547 == -1) {
+  if (DAT_007ce547 != 0xff) {
 
     iVar2 = *(int *)(iVar2 + 0x14);
 
     *(u8 *)(iVar2 + 4) = DAT_007ce544;
 
-    *(u8 *)(iVar2 + 5) = uVar3;
+    *(u8 *)(iVar2 + 5) = DAT_007ce545;
 
-    *(u8 *)(iVar2 + 6) = uVar4;
+    *(u8 *)(iVar2 + 6) = DAT_007ce546;
 
-    *(u8 *)(iVar2 + 7) = 0xfe;
-
-    DAT_007ce547 = -1;
+    *(char *)(iVar2 + 7) = DAT_007ce547;
 
   }
 
@@ -28803,11 +28790,13 @@ void FUN_00338530(int param_1)
 
     *(u8 *)(iVar2 + 4) = DAT_007ce544;
 
-    *(u8 *)(iVar2 + 5) = uVar3;
+    *(u8 *)(iVar2 + 5) = DAT_007ce545;
 
-    *(u8 *)(iVar2 + 6) = uVar4;
+    *(u8 *)(iVar2 + 6) = DAT_007ce546;
 
-    *(char *)(iVar2 + 7) = cVar5;
+    *(u8 *)(iVar2 + 7) = 0xfe;
+
+    DAT_007ce547 = -1;
 
   }
 
@@ -41141,7 +41130,7 @@ void FUN_00344720(u64 param_1)
 
       }
 
-      else if (DAT_007ce547 == -1) {
+      else if (DAT_007ce547 == 0xff) {
 
         iVar8 = *(int *)(*(int *)(puVar2 + 0x14) + (uVar11 & 0xffff) * 4);
 
@@ -41780,7 +41769,7 @@ LAB_003458ac:
 
             uVar10 = DAT_007ce545;
 
-            if (DAT_007ce547 == -1) {
+            if (DAT_007ce547 == 0xff) {
 
               iVar14 = *(int *)(*(int *)(puVar6 + 0x14) + (uVar20 & 0xffff) * 4);
 
@@ -42238,7 +42227,7 @@ void FUN_00345970(u64 param_1)
 
       }
 
-      else if (DAT_007ce547 == -1) {
+      else if (DAT_007ce547 == 0xff) {
 
         iVar8 = *(int *)(*(int *)(puVar2 + 0x14) + (uVar11 & 0xffff) * 4);
 
@@ -43883,7 +43872,7 @@ void FUN_003473b0(u8 (*param_1) [16])
 
           }
 
-          if (DAT_007ce547 == -1) {
+          if (DAT_007ce547 == 0xff) {
 
             iVar6 = *(int *)(*(int *)(puVar1 + 0x14) + (uVar11 & 0xffff) * 4);
 
