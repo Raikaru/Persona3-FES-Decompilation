@@ -1799,7 +1799,7 @@ void* func_001ace90(void* resource, void* unused, FldFrameMaterialSet* set)
     return unused;
 }
 
-// FUN_001acfc0 NONMATCHING
+// FUN_001acfc0
 void* func_001acfc0(void* resource, void* state)
 {
     RwSphere* sphere;
