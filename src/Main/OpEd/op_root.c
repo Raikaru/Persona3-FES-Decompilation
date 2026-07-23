@@ -161,6 +161,7 @@ extern u16 DAT_007e0952;
 extern u16 DAT_007e0956;
 extern u16 DAT_007e095a;
 extern u32 DAT_007ce018;
+extern u8 DAT_007ce384;
 extern u32 FUN_00108710();
 extern u32 FUN_001938e0();
 extern u32 FUN_00195290();
@@ -202,7 +203,10 @@ void opRoot00265030(void)
             if (opLogo0026a1e0() == 0)
             {
                 FUN_002722e0();
-                w[1] = DAT_007ce018 == 0 ? 2 : 4;
+                if (DAT_007ce018 == 0)
+                    w[1] = 2;
+                else
+                    w[1] = 4;
             }
             break;
         case 2:
@@ -219,9 +223,18 @@ void opRoot00265030(void)
             break;
         case 4:
             opResDestroyLogo();
-            value = FUN_0010bc20(w[2], DAT_007ce018 ? 1 : 0x23);
-            w[5] = value;
-            DAT_007ce018 = !DAT_007ce018;
+            if (DAT_007ce384 != 0)
+            {
+                value = FUN_0010bc20(w[2], 1);
+                w[5] = value;
+                DAT_007ce384 = 0;
+            }
+            else
+            {
+                value = FUN_0010bc20(w[2], 0x23);
+                w[5] = value;
+                DAT_007ce384 = 1;
+            }
             w[1] = 5;
             break;
         case 5:
@@ -243,12 +256,16 @@ void opRoot00265030(void)
                 w[1] = 8;
             }
             break;
-        case 7:
-            if (FUN_00108710() != 0)
-                *w &= ~1u;
-            break;
         case 8:
-            if (opWait0026ee80() == 0 || opTitle00269640() == 0 || opWait0026ee30() == 0)
+            if (opWait0026ee80() != 0 && opTitle00269640() != 0 && opWait0026ee30() != 0)
+            {
+                if ((DAT_007e094e & 0x9ff) != 0)
+                {
+                    FUN_00271c10();
+                    opTitle002695b0();
+                }
+            }
+            else
             {
                 if ((s32)w[0x1149] < 0x1c2)
                 {
@@ -271,11 +288,6 @@ void opRoot00265030(void)
                     w[0x114a] = w[1];
                     w[1] = 10;
                 }
-            }
-            else if ((DAT_007e094e & 0x9ff) != 0)
-            {
-                FUN_00271c10();
-                opTitle002695b0();
             }
             break;
         case 9:
@@ -356,6 +368,14 @@ void opRoot00265030(void)
             if (FUN_00271e70() == 0)
                 FUN_00265f80();
             break;
+        case 7:
+            if (FUN_00108710() != 0)
+                *w &= ~1u;
+            break;
+        case 0xc:
+            if (FUN_00108710() != 0)
+                opRoot00265b30();
+            break;
         case 0xb:
             if ((*w & 2) == 0)
             {
@@ -373,20 +393,16 @@ void opRoot00265030(void)
                 }
             }
             break;
-        case 0xc:
-            if (FUN_00108710() != 0)
-                opRoot00265b30();
-            break;
         case 0xd:
             if (FUN_00108710() != 0)
                 opRoot00266060();
             break;
+        case 0xf:
+            opRoot00265bb0();
+            break;
         case 0xe:
             if ((*w & 4) == 0)
                 w[1] = 0x10;
-            break;
-        case 0xf:
-            opRoot00265bb0();
             break;
         case 0x10:
             opRoot00266060();
