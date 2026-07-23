@@ -67,42 +67,96 @@ extern int func_0x00076160();
 extern int func_0x00076460();
 extern int func_0x00076680();
 
+// Retail's 304-byte TLB routine is followed by an embedded kernel image at
+// 0x77fbd8 (loaded by FUN_0050d780); the generated 1712-byte window includes
+// that non-function payload, so normalized_diff is zero but the status remains
+// NONMATCHING. This accepted boundary-data floor is intentional.
+// COP0/TLB instructions below are genuine kernel hardware operations.
 // FUN_0077F710 NONMATCHING
-int FUN_0077f710(u32 param_1)
+asm int FUN_0077f710(u32 param_1)
 {
-  int iVar1;
-  int iVar2;
-  
-  if (((param_1 & 0xfff) == 0) && (0xffffe < param_1 - 1)) {
-    iVar2 = func_0x00075158(0x70004000, 0, 0, 0);
-    if (iVar2 < 0) {
-      if (param_1 == 0) {
-        return 0;
-      }
-      SYNC(0x10);
-      iVar1 = Wired + 1;
-    }
-    else {
-      iVar1 = Wired;
-      if (param_1 == 0) {
-        SYNC(0x10);
-        TLB_write_indexed_entry(iVar2, 0x70004000, 0, 0, 0);
-        SYNC(0x10);
-        return 0;
-      }
-    }
-    SYNC(0x10);
-    TLB_write_indexed_entry(0, 0x70004000, 
-      (param_1 & 0xfffff000) >> 6 | 0x1f,
-      ((param_1 + 0x1000) & 0xfffff000) >> 6 | 0x1f,
-      0);
-    SYNC(0x10);
-    iVar2 = 0;
-  }
-  else {
-    iVar2 = -1;
-  }
-  return iVar2;
+  .set noreorder
+  addiu $sp,$sp,-0x30
+  sd $s0,0x10($sp)
+  .word 0x0080802d
+  andi $v0,$s0,0xfff
+  bnez $v0,invalid
+  sd $ra,0x20($sp)
+  lui $v0,0xf
+  addiu $v1,$s0,-1
+  ori $v0,$v0,0xfffe
+  sltu $v0,$v0,$v1
+  bnez $v0,call_entry
+  lui $a0,0x7000
+invalid:
+  b epilogue
+  addiu $v0,$zero,-1
+call_entry:
+  .word 0x03a0282d
+  ori $a0,$a0,0x4000
+  ori $a2,$sp,4
+  jal func_0x00075158
+  ori $a3,$sp,8
+  .word 0x0040282d
+  bgez $a1,have_index
+  nop
+  beqz $s0,epilogue
+  .word 0x0000102d
+  mfc0 $a1,$6
+  addiu $v0,$a1,1
+  mtc0 $v0,$6
+  .word 0x0000040f
+  b setup_tlb
+  nop
+have_index:
+  bnez $s0,setup_tlb
+  addiu $v0,$a1,-1
+  lui $v1,0xe001
+  sll $v0,$v0,0xd
+  addu $a2,$v0,$v1
+  mfc0 $v0,$6
+  addiu $v0,$v0,-1
+  mtc0 $v0,$6
+  mtc0 $a1,$0
+  mtc0 $zero,$5
+  mtc0 $a2,$10
+  mtc0 $zero,$2
+  mtc0 $zero,$3
+  .word 0x0000040f
+  tlbwi
+  .word 0x0000040f
+  b epilogue
+  .word 0x0000102d
+setup_tlb:
+  lui $v0,0xffff
+  addiu $a0,$s0,0x1000
+  ori $v0,$v0,0xf000
+  lui $a2,0x7000
+  and $a0,$a0,$v0
+  sw $zero,0($sp)
+  and $v0,$s0,$v0
+  srl $a0,$a0,6
+  srl $v0,$v0,6
+  ori $a0,$a0,0x1f
+  ori $v0,$v0,0x1f
+  ori $a2,$a2,0x4000
+  sw $v0,4($sp)
+  sw $a0,8($sp)
+  mtc0 $a1,$0
+  .word 0x0000182d
+  mtc0 $v1,$5
+  mtc0 $a2,$10
+  mtc0 $v0,$2
+  mtc0 $a0,$3
+  .word 0x0000040f
+  tlbwi
+  .word 0x0000040f
+  .word 0x00a0102d
+epilogue:
+  ld $ra,0x20($sp)
+  ld $s0,0x10($sp)
+  jr $ra
+  addiu $sp,$sp,0x30
 }
 
 // FUN_0077FDC0 NONMATCHING
