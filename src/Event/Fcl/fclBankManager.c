@@ -28,19 +28,21 @@ extern short FUN_003cf6c0_ptr(int *param_1);
 #define FUN_003cfe50(...) ((u64 (*)(...))FUN_003cfe50)(__VA_ARGS__)
 
 #undef FUN_003cfe50
-// FUN_003CFE50 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003CFE50
 
 
 s32 FUN_003cfe50(void)
 {
   short uVar1;
-  u8 bVar2;
+  s32 bVar2;
   short sVar3;
   s32 lVar4;
   short *puVar6;
   short *puVar8;
   int iVar8;
   int iVar7;
+  u32 iVar9 = (u32)-0x10000;
 
   if (DAT_007ce680 == 0) {
     FUN_0019d3f0("fclBankManager.c",0x270);
@@ -97,8 +99,6 @@ s32 FUN_003cfe50(void)
               puVar6 = (short *)(*(int *)(DAT_007ce680 + 0x24) + 4);
               {
                 int iVar5;
-                u32 iVar9;
-iVar9 = (u32)-0x10000;
                 for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
                   if ((((puVar6 != puVar8) &&
                         (uVar1 = *puVar6, (uVar1 & 1) != 0)) &&
@@ -124,10 +124,9 @@ LAB_003d00e8:
           FUN_005225a8((&DAT_007cd728),DAT_006a4270,0x2a3);
           FUN_005225a8((&DAT_007cd738));
           FUN_001052b0((&DAT_007cd738));
-          uVar1 = *puVar8;
-          *puVar8 = uVar1 & 0xfbff;
-          if ((uVar1 & 8) != 0) {
-            *puVar8 = uVar1 & 0xfbfb;
+          *puVar8 = *puVar8 & ~0x400;
+          if ((*puVar8 & 8) != 0) {
+            *puVar8 = *puVar8 & ~4;
             puVar8[1] = 4;
           }
         }
@@ -139,10 +138,9 @@ LAB_003d00e8:
             FUN_005225a8((&DAT_007cd728),DAT_006a4270,0x2b2);
             FUN_005225a8((&DAT_007cd740));
             FUN_001052b0((&DAT_007cd740));
-            uVar1 = *puVar8;
-            *puVar8 = uVar1 & 0xf7ff;
-            *puVar8 = uVar1 & 0xf7fb;
-            *puVar8 = uVar1 & 0xf7fa;
+            *puVar8 = *puVar8 & ~0x800;
+            *puVar8 = *puVar8 & ~4;
+            *puVar8 = *puVar8 & ~1;
             FUN_00106730(puVar8[4]);
           }
         }
@@ -150,10 +148,9 @@ LAB_003d00e8:
           FUN_005225a8((&DAT_007cd728),DAT_006a4270,0x2bb);
           FUN_005225a8((&DAT_007cd748));
           FUN_001052b0((&DAT_007cd748));
-          uVar1 = *puVar8;
-          *puVar8 = uVar1 & 0xefff;
-          *puVar8 = uVar1 & 0xeffb;
-          *puVar8 = uVar1 & 0xeffa;
+          *puVar8 = *puVar8 & ~0x1000;
+          *puVar8 = *puVar8 & ~4;
+          *puVar8 = *puVar8 & ~1;
           FUN_00106730(puVar8[4]);
         }
       }
@@ -164,4 +161,5 @@ LAB_003d00e8:
   FUN_003cfb50();
   return 0;
 }
+#pragma opt_loop_invariants off
 #define FUN_003cfe50(...) ((u64 (*)(...))FUN_003cfe50)(__VA_ARGS__)
