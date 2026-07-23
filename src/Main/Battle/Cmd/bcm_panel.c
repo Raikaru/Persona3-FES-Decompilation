@@ -3306,7 +3306,7 @@ void FUN_0022ea40(u32* object, u32 value)
     }
 }
 
-// FUN_0022EB30 NONMATCHING
+// FUN_0022EB30
 void FUN_0022eb30(u32* object, u32 value, u32 colour)
 {
     f32 rect[4];
@@ -3318,7 +3318,7 @@ void FUN_0022eb30(u32* object, u32 value, u32 colour)
     table = FUN_0021c3f0(3);
     sprintf(text, "%d", value);
     length = strlen(text);
-    if (length >= 4) {
+    if (length > 3) {
         K_Assert("bpp_panel.c", 0x471);
     }
     for (i = 0; i < length; ++i) {
