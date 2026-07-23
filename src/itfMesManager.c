@@ -1712,7 +1712,7 @@ void FUN_003a37c0(int param_1,u64 param_2)
 
     else {
 
-      iVar10 = (int)(75.0 / (float)(int)lVar6);
+      iVar10 = (int)(75.0f / (float)(int)lVar6);
 
       uVar8 = (iVar10 >> 1) * 8 + 0x788;
 
@@ -5863,7 +5863,7 @@ void FUN_003a8170(int param_1)
 
     else {
 
-      iVar2 = (int)(75.0 / (float)(int)*(short *)(param_1 + 0x5a));
+      iVar2 = (int)(75.0f / (float)(int)*(short *)(param_1 + 0x5a));
 
       iVar2 = (iVar2 >> 1) * 8 + 0x788 + iVar2 * 8 * (int)sVar1;
 
@@ -5947,11 +5947,11 @@ void FUN_003a8350(int param_1)
 
   
 
-  fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0;
+  fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
-  if (2.1474836e+09 <= fVar1) {
+  if (2.1474836e+09f <= fVar1) {
 
-    fVar1 = fVar1 - 2.1474836e+09;
+    fVar1 = fVar1 - 2.1474836e+09f;
 
   }
 
