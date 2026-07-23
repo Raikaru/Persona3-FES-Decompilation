@@ -933,7 +933,7 @@ void FUN_00424f80(void)
     bVar1 = 0;
     entry = DAT_008717e8_abs + iVar2 * 0x1c0;
     if ((*(u32 *)(entry + 0x48) != 0) && (*(u32 *)(entry + 0x54) != 0)) {
-      bVar1 = (int)1;
+      bVar1 = 1;
     }
     bVar1 = bVar1 > 0;
     if (bVar1 == 1) {
