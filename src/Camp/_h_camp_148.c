@@ -407,31 +407,31 @@ void h_campDrawPersonaOverview(int param_1)
   int iVar4;
   float fVar5;
   
-  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xbc)), 0, 2, 1, 0x41400000430c0000, 0x4140000042200000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x44), 0, 2, 1, 0x41d80000439f8000, 0x41d80000435b0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0xcc), 0, 2, 1, 0x41d8000043d10000, 0x41d80000439f0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x110), 0, 2, 1, 0x41d8000043dc8000, 0x41d8000043aa8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x154), 0, 2, 1, 0x41d8000044120000, 0x41d8000043f20000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x198), 0, 2, 1, 0x41d800004417c000, 0x41d8000043fd8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1dc), 0, 2, 1, 0x4274000043a38000, 0x4274000043630000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x220), 0, 2, 1, 0x435b000043ad8000, 0x435b000043770000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x7f8), 0, 2, 1, 0x4286000044248000, 0x42860000440b8000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xbc)), 0, 2, 1, 0x41400000430c0000, 0x4140000042200000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x44), 0, 2, 1, 0x41d80000439f8000, 0x41d80000435b0000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0xcc), 0, 2, 1, 0x41d8000043d10000, 0x41d80000439f0000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x110), 0, 2, 1, 0x41d8000043dc8000, 0x41d8000043aa8000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x154), 0, 2, 1, 0x41d8000044120000, 0x41d8000043f20000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x198), 0, 2, 1, 0x41d800004417c000, 0x41d8000043fd8000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1dc), 0, 2, 1, 0x4274000043a38000, 0x4274000043630000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x220), 0, 2, 1, 0x435b000043ad8000, 0x435b000043770000, 0, 10, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x7f8), 0, 2, 1, 0x4286000044248000, 0x42860000440b8000, 0, 10, 0, 0);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (iVar3 < *(int *)(param_1 + 0x1c)) {
       fVar5 = (float)(iVar3 * 0x55) + 62.0;
       iVar4 = iVar3 * 10;
       uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar5 + 8.0,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1e) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1e) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 10, 0, 0);
       uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar5 + 31.0,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 10, 0, 0);
       uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar5 + 45.0,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 10, 0, 0);
       uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar5 + 64.0,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, uVar1, uVar1, 0, 10, 0, 0);
       iVar2 = iVar3 * 0x2a8;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x948) = 0;
       uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar5 + 2.0,0x41600000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, uVar1, uVar1, 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, uVar1, uVar1, 0, 10, 0, 0);
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x950) = 0;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x994) = 0;
     }
@@ -446,15 +446,15 @@ void h_campDrawPersonaOverview(int param_1)
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x994) = 0;
     }
   }
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1298), 0, 2, 1, 0x43cf800043220000, 0x43cf800042780000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1298), 0, 2, 1, 0x43cf800043220000, 0x43cf800042780000, 0, 10, 0, 0);
   *(u32 *)(*(int *)(param_1 + 0xbc) + 0x12e0) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 0, 2, 1, 0x43cf800043a98000, 0x43cf8000436f0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 2, 0x4140000043be8000, 0x41400000438c8000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 0, 2, 2, 0x41d8000041500000, 0x41d80000c2ae0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 0, 2, 2, 0x41d8000042e00000, 0x41d8000041400000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 0, 2, 2, 0x41d8000043070000, 0x41d80000420c0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 0, 2, 2, 0x41d8000043888000, 0x41d80000432d0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 0, 2, 2, 0x41d8000043968000, 0x41d8000043490000, 0, 0, 0, 0);
+  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 0, 2, 1, 0x43cf800043a98000, 0x43cf8000436f0000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 2, 0x4140000043be8000, 0x41400000438c8000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 0, 2, 2, 0x41d8000041500000, 0x41d80000c2ae0000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 0, 2, 2, 0x41d8000042e00000, 0x41d8000041400000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 0, 2, 2, 0x41d8000043070000, 0x41d80000420c0000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 0, 2, 2, 0x41d8000043888000, 0x41d80000432d0000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 0, 2, 2, 0x41d8000043968000, 0x41d8000043490000, 0, 10, 0, 0);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (*(int *)(param_1 + 0x1c) + -1 < iVar3) {
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2ac) = 0;
@@ -462,13 +462,13 @@ void h_campDrawPersonaOverview(int param_1)
     else {
       fVar5 = (float)(iVar3 * 0x55) + 64.0;
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2e8) = 0;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, CAMP_PAIR_FLOAT_HIGH(fVar5,0x44188000), CAMP_PAIR_FLOAT_HIGH(fVar5,0xc2340000), 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, CAMP_PAIR_FLOAT_HIGH(fVar5,0x44188000), CAMP_PAIR_FLOAT_HIGH(fVar5,0xc2340000), 0, 10, 0, 0);
     }
   }
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 0, 2, 2, 0x42740000423c0000, 0x42740000c2540000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 0, 2, 2, 0x435b000042860000, 0x435b0000c2040000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 0, 2, 2, 0x43cf800043620000, 0x43cf800042fc0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 0, 2, 2, 0x43cf8000440c4000, 0x43cf800043e68000, 0, 0, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 0, 2, 2, 0x42740000423c0000, 0x42740000c2540000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 0, 2, 2, 0x435b000042860000, 0x435b0000c2040000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 0, 2, 2, 0x43cf800043620000, 0x43cf800042fc0000, 0, 10, 0, 0);
+  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 0, 2, 2, 0x43cf8000440c4000, 0x43cf800043e68000, 0, 10, 0, 0);
   return;
 }
 
