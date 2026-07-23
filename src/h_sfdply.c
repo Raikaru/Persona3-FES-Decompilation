@@ -997,43 +997,41 @@ void func_0010cdd0(void)
 }
 
 // FUN_0010D6F0 NONMATCHING
-void func_0010d6f0(s16 index, s16 fileIndex)
+void func_0010d6f0(s32 index, s16 fileIndex)
 {
-    s32 indexValue;
     HSfdDecodeSlot* slot;
 
-    indexValue = index;
-    slot = &sSfdDecodeSlots[indexValue];
+    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
+    {
+        return;
+    }
+
+    slot = &sSfdDecodeSlots[index];
     if (slot->state == 1)
     {
-        if (slot->status != 0)
-        {
-            func_0010d950(indexValue);
-            slot->fileIndex = fileIndex;
-            slot->state = 2;
-        }
+        slot->fileIndex = fileIndex;
+        slot->state = 2;
     }
 }
 
 // FUN_0010D7B0 NONMATCHING
-void func_0010d7b0(s16 index, s16 fileIndex, void* input, void* output,
+void func_0010d7b0(s32 index, s16 fileIndex, void* input, void* output,
                    s32 inputSize, s32 outputSize, void* resource, void* callback)
 {
-    s32 indexValue;
     HSfdDecodeSlot* slot;
-    indexValue = index;
-    slot = &sSfdDecodeSlots[indexValue];
+
+    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
+    {
+        return;
+    }
+
+    slot = &sSfdDecodeSlots[index];
     if (slot->state != 1)
     {
         return;
     }
 
-    if (slot->status == 0)
-    {
-        return;
-    }
-
-    func_0010d950(indexValue);
+    slot->fileIndex = fileIndex;
     slot->input = input;
     slot->output = output;
     slot->inputSize = inputSize;
@@ -1121,6 +1119,7 @@ void func_0010dd10(HSfdImage* image, const u8* source)
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    y = 0;
     while (y < height)
     {
         x = 0;
