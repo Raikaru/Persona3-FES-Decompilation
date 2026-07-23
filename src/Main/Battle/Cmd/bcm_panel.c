@@ -1252,32 +1252,200 @@ void FUN_00225670(void)
     FUN_0021d8e0(overlay, (const f32*)overlay);
 }
 
+// Previous body was a wrong-helper stub unrelated to retail (2128B window).
+// Rewritten from disasm: retail computes a safe float-to-byte alpha via
+// a magic-2^31 overflow-guarded cast, draws two frame quads, an N-slot
+// overlay strip with a per-record colour switch, then (mode==3 only) a
+// pair of icon draws whose x/y scale differs between the mode-0 (shift)
+// and mode-1/2 (float multiply) paths despite sharing constants. obj
+// 356B->2096B/2128B (98.5%); register-agnostic content-diff confirms
+// correct call sequence/offsets/constants throughout. Residual is a
+// handful of register-bank/scheduling floors, the largest being that
+// the alpha byte does not keep a persistent register as far into the
+// function as retail's build does at the two mode==3 tail call sites.
 // FUN_002257F0 NONMATCHING
 void FUN_002257F0(void)
 {
-    u32 i;
-    u32 j;
-    u32 count;
-    u32 alpha;
+    u8* work;
+    u8* overlay0;
+    u8* overlayI;
+    f32* posB;
+    f32* posA;
+    f32 weight;
+    u32 table0;
+    u32 mode;
+    f32 ratio;
+    f32 alphaF;
+    s32 alphaI;
+    u8 alphaByte;
+    u8 color[4];
+    void* frame;
+    f32 rect[4];
+    u32 colour0;
+    u32 colour1;
+    u32 colour2;
+    u32 colour3;
+    u32 colour4;
+    u32 resource1;
+    u32 obj1;
+    u32 obj2;
+    s32 i;
+    u32 state;
+    u32 colour;
+    s32 diffY;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x6070);
-    alpha = bcm_panel_read(0x4658) & 0xff;
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        u32 state = *(u32*)record;
-        if (state == 0 || state == 2) {
-            bcm_panel_set_resource(record + 0x10, 0, 0x2f);
-        } else if (state == 1) {
-            for (j = 0; j < 4; ++j) {
-                bcm_panel_set_resource(record + 0x10 + j * 0x100,
-                                       0, (j < 2) ? 0x29 : 0x2a);
-            }
-        }
-        bcm_panel_layout_record(record, i, alpha);
-        *(u32*)record |= 4;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    overlay0 = work + 0x6080;
+    weight = *(f32*)(work + 0x7214);
+    posB = (f32*)(work + 0x6058);
+    posA = (f32*)(work + 0x6050);
+
+    mode = *(u32*)(work + 0x4644);
+    switch (mode) {
+    case 1:
+    case 2:
+        ratio = (f32)*(s32*)(work + 0x4658) / 6.0f;
+        break;
+    case 0:
+        ratio = (f32)(6 - *(s32*)(work + 0x4658)) / 6.0f;
+        break;
+    default:
+        K_ASSERT(0, 0x9e0);
+        break;
     }
-    bcm_panel_update_overlays();
+
+    alphaF = 255.0f * ratio * weight;
+    if (2147483648.0f <= alphaF) {
+        alphaI = (s32)(alphaF - 2147483648.0f) | 0x80000000;
+    } else {
+        alphaI = (s32)alphaF;
+    }
+    alphaByte = (u8)alphaI;
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    rect[0] = 47.0f + posB[0];
+    rect[1] = 19.0f + posB[1] +
+              (f32)((*(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558)) * 26);
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4430, rect);
+
+    frame = (void*)FUN_0021cca0(table0, 0x24);
+    rect[0] = 47.0f + posB[0] + (f32)*(s32*)((u8*)frame + 0xc);
+    rect[1] = 19.0f + posB[1] +
+              (f32)((*(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558)) * 26);
+    rect[2] = 276.0f;
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x4530, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = alphaByte;
+    FUN_0021d950(work + 0x4430, color);
+    FUN_0021d950(work + 0x4530, color);
+
+    colour0 = (u32)alphaByte | 0xffffff00u;
+    colour1 = (u32)alphaByte | 0xcccccc00u;
+    colour2 = (u32)alphaByte | 0xbeffd200u;
+    colour3 = (u32)alphaByte | 0x64cc6400u;
+    colour4 = ((u32)alphaByte * 50 / 100) | 0xffffff00u;
+
+    for (i = 0; i < *(s32*)(overlay0 + 0x55c); ++i) {
+        overlayI = overlay0 + i * 0x110;
+        resource1 = *(u32*)(overlayI + 4);
+
+        diffY = i * 26;
+        rect[0] = 103.0f + posB[0];
+        rect[1] = 19.0f + posB[1] + (f32)diffY;
+        FUN_003b0d70(resource1, (s32)rect[0] << 4, (s32)rect[1] << 3);
+
+        state = *(u32*)overlayI;
+        switch (state) {
+        case 0:
+            colour = (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558))
+                         ? colour0
+                         : colour1;
+            break;
+        case 2:
+            colour = (i == *(s32*)(overlay0 + 0x554) - *(s32*)(overlay0 + 0x558))
+                         ? colour2
+                         : colour3;
+            break;
+        case 1:
+            colour = colour4;
+            break;
+        }
+        FUN_003b0e20(resource1, colour);
+
+        frame = (void*)FUN_0021cca0(table0, 0x29);
+        rect[0] = 86.0f + posB[0];
+        rect[1] = 29.0f + posB[1] + (f32)diffY;
+        rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+        FUN_0021d8e0(overlayI + 0x10, rect);
+
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = alphaByte;
+        FUN_0021d950(overlayI + 0x10, color);
+    }
+
+    switch (*(u32*)(work + 0x463c)) {
+    case 3:
+        mode = *(u32*)(work + 0x4644);
+        switch (mode) {
+        case 0:
+            if (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) {
+                if (*(s32*)(work + 0x4658) < 6) {
+                    K_ASSERT((*(u32*)(work + 4) & 4) != 0, 0xa38);
+
+                    obj1 = *(u32*)(overlay0 + 0x560);
+                    colour = (u32)alphaByte | 0xff9d9d00u;
+                    FUN_003b0e20(obj1, colour);
+
+                    rect[0] = 171.0f + posA[0];
+                    rect[1] = 19.0f + posA[1];
+                    FUN_003b0d70(obj1, (s32)rect[0] << 4, (s32)rect[1] << 3);
+
+                    obj2 = *(u32*)(overlay0 + 0x564);
+                    if (obj2 != 0) {
+                        colour = (u32)alphaByte | 0xffffff00u;
+                        FUN_003b0e20(obj2, colour);
+
+                        rect[0] = 171.0f + posA[0] + 27.0f;
+                        rect[1] = 19.0f + posA[1] + 26.0f;
+                        FUN_003b0d70(obj2, (s32)rect[0] << 4, (s32)rect[1] << 3);
+                    }
+                }
+            }
+            break;
+        case 2:
+        case 1:
+            obj1 = *(u32*)(overlay0 + 0x560);
+            colour = (u32)alphaByte | 0xff9d9d00u;
+            FUN_003b0e20(obj1, colour);
+
+            rect[0] = 171.0f + posA[0];
+            rect[1] = 19.0f + posA[1];
+            FUN_003b0d70(obj1, (s32)(rect[0] * 16.0f), (s32)(rect[1] * 8.0f));
+
+            obj2 = *(u32*)(overlay0 + 0x564);
+            if (obj2 != 0) {
+                colour = (u32)alphaByte | 0xffffff00u;
+                FUN_003b0e20(obj2, colour);
+
+                rect[0] = 171.0f + posA[0] + 27.0f;
+                rect[1] = 19.0f + posA[1] + 26.0f;
+                FUN_003b0d70(obj2, (s32)rect[0] << 4, (s32)rect[1] << 3);
+            }
+            break;
+        }
+        break;
+    }
 }
 
 // FUN_00226040 NONMATCHING
