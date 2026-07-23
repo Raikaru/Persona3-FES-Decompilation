@@ -423,6 +423,8 @@ HCdvd* H_Cdvd_Request(const char* path, u32 fileMode)
 }
 
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00100ec0 NONMATCHING
 u32 H_Cdvd_Destroy(HCdvd* cdvd)
 {
@@ -475,6 +477,7 @@ u32 H_Cdvd_Destroy(HCdvd* cdvd)
     (*(void (**)(void*))((u8*)&rwGlobals + 0x17c))(cdvd);
     return true;
 }
+#pragma pop
 
 
 // FUN_00101010 NONMATCHING
