@@ -12103,11 +12103,11 @@ void FUN_0037cfe0(void)
 
       DAT_0095870c = DAT_009585c0;
 
-      fStack_30 = fStack_40 * 200.0;
+      fStack_30 = fStack_40 * 200.0f;
 
-      fStack_2c = fStack_3c * 200.0;
+      fStack_2c = fStack_3c * 200.0f;
 
-      fStack_28 = fStack_38 * 200.0;
+      fStack_28 = fStack_38 * 200.0f;
 
       DAT_00958710 = DAT_009585b8 + DAT_007cb120 * fStack_30;
 
@@ -12177,13 +12177,13 @@ void FUN_0037cfe0(void)
 
       FUN_005225a8(0x69fb40,uVar1,uVar2,uVar3);
 
-      fStack_40 = fStack_40 * 200.0;
+      fStack_40 = fStack_40 * 200.0f;
 
-      fStack_3c = fStack_3c * 200.0;
+      fStack_3c = fStack_3c * 200.0f;
 
       fVar11 = DAT_007cb120 * fStack_3c;
 
-      fStack_38 = fStack_38 * 200.0;
+      fStack_38 = fStack_38 * 200.0f;
 
       fVar10 = DAT_007cb120 * fStack_38;
 
