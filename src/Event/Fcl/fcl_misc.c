@@ -1289,7 +1289,7 @@ u64 FUN_003c9850(u64 param_1,long param_2,u16 param_3,u16 param_4)
 
   u8 *puVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u64 uVar3;
 
