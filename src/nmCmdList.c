@@ -976,7 +976,7 @@ u64 FUN_003c6b70(int param_1)
 
     uVar1 = *(u16 *)(param_1 + 0x10);
 
-    iVar4 = FUN_003c6f80();
+    iVar4 = FUN_003c6f80_typed(param_1);
 
     iVar4 = (u32)uVar1 - iVar4;
 
