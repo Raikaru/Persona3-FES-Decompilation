@@ -4102,52 +4102,38 @@ void* func_00314510(void* param_1)
 
 
 
-// FUN_00314650 NONMATCHING
+// FUN_00314650
 
 
 u32 func_00314650(u32 param_1)
-
-
-
 {
+    int iVar1;
+    int iVar2;
+    u32 lVar3;
+    u32 uVar4;
+    int iVar5;
 
-  int iVar1;
+    iVar1 = *(int *)((int)param_1 + 0x18);
+    if (iVar1 == 0) {
+        return param_1;
+    }
 
-  int iVar2;
-
-  u32 lVar3;
-
-  u32 uVar4;
-
-  int iVar5;
-
-  
-
-  iVar1 = *(int *)((int)param_1 + 0x18);
-
-  if (iVar1 != 0) {
     lVar3 = func_0048a2c0(iVar1);
-    if (lVar3 != 0) {
-      uVar4 = func_0048a3d0(lVar3);
-      if (0x40 < uVar4) {
-        
-        
-        
+    if (lVar3 == 0) {
+        return param_1;
+    }
+
+    uVar4 = func_0048a3d0(lVar3);
+    if (uVar4 <= 0x40) {
+        return param_1;
+    }
 
     iVar2 = *(int *)(iVar1 + 0x24);
-
     for (iVar5 = 0; iVar5 < iVar2; iVar5 = iVar5 + 1) {
-
-      func_00312e80(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar5 * 4));
-
+        func_00312e80(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar5 * 4));
     }
 
-      }
-    }
-  }
-
-  return param_1;
-
+    return param_1;
 }
 
 
