@@ -1178,7 +1178,8 @@ void func_002f1f00(void)
   return;
 }
 
-// FUN_002f2090 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f2090
 void func_002f2090(void)
 {
   BtlUnit* target;
@@ -1206,7 +1207,7 @@ void func_002f2090(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)((u8*)0x690000 + 0x78b0), NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -1218,6 +1219,7 @@ void func_002f2090(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f2250
 void func_002f2250(void)
@@ -1679,7 +1681,7 @@ u32 func_002f3190(u64 *param_1)
   return lVar3 != 0;
 }
 
-// FUN_002f3320 NONMATCHING
+// FUN_002f3320
 void func_002f3320(BtlAction* action)
 {
   BtlUnit* unit;
@@ -1692,7 +1694,7 @@ void func_002f3320(BtlAction* action)
   unit = action->unit;
   object = func_002b8f90(0);
   func_002b90d0(object, func_002f87e0(6));
-  packet = FUN_002dd690_packet_voice(3, (const char*)0x69a368);
+  packet = FUN_002dd690_packet_voice(3, (const char*)D_0069A368);
   btlPacketRegister(packet, 1);
   parent = FUN_00284200_packet_voice(1.0f, unit, 0x12, 0, 2);
   parent->preUpdateDelay = 2;
@@ -1703,7 +1705,7 @@ void func_002f3320(BtlAction* action)
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(unit, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(unit, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
@@ -2277,7 +2279,8 @@ void func_002f4540(void)
   return;
 }
 
-// FUN_002f46d0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f46d0
 void func_002f46d0(void)
 {
   BtlUnit* target;
@@ -2305,7 +2308,7 @@ void func_002f46d0(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -2317,6 +2320,7 @@ void func_002f46d0(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f4890
 void func_002f4890(BtlAction* action)
@@ -2755,14 +2759,14 @@ void func_002f5490(void)
   return;
 }
 
-// FUN_002f5660 NONMATCHING
+// FUN_002f5660
 void func_002f5660(BtlAction* action)
 {
   BtlUnit* unit;
   void* object;
   BtlPacket* parent;
   BtlPacket* packet;
-  u16 state;
+  u32 state;
 
   gBtl->flags &= ~0x02000000;
   gBtl->flags |= 0x80000;
@@ -2790,7 +2794,7 @@ void func_002f5660(BtlAction* action)
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(unit, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(unit, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   packet->actionUID = action->uid;
