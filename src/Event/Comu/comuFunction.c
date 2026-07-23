@@ -12,6 +12,8 @@ extern u32 DAT_007ce66c;
 extern u32 DAT_0095b074;
 extern u8 DAT_0095b070[];
 #pragma alias DAT_0095b070_abs DAT_0095b070
+#pragma alias DAT_0095b714_abs DAT_0095b714
+extern u8 DAT_0095b714_abs[];
 extern u8 DAT_0095b070_abs[];
 extern u32 FUN_0035bb40(u32 param_1,u32 param_2,u32 param_3);
 extern void FUN_0019d3f0(char* param_1,u32 param_2);
@@ -44,7 +46,7 @@ extern s32 FUN_00172160(long socialLink);
 extern s32 FUN_001717c0(long socialLink);
 extern s32 FUN_00172660(long socialLink);
 #pragma alias FUN_003be1c0_typed FUN_003be1c0
-extern u32 FUN_003be1c0_typed(long param_1,long param_2);
+extern u32 FUN_003be1c0_typed(s32 param_1,s32 param_2);
 #pragma alias FUN_003be2a0_typed FUN_003be2a0
 extern u32 FUN_003be2a0_typed(...);
 extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
@@ -71,7 +73,7 @@ extern u32 DAT_0095b708;
 extern u32 DAT_0095b70c;
 extern u32 DAT_0095b710;
 #pragma alias DAT_0095b710_abs DAT_0095b710
-extern u8 DAT_0095b710_abs[];
+extern u8 *DAT_0095b710_abs[];
 extern u32 DAT_0095b714;
 extern u32 DAT_0095b718;
 extern u32 DAT_0095b730;
@@ -98,7 +100,7 @@ u64 FUN_003bded0(u64 param_1);
 u8 FUN_003bdfc0(int param_1);
 u32 FUN_003be020(u64 param_1,int param_2,u32 param_3);
 u32 FUN_003be2a0(int param_1,int *param_2,u32 param_3,u32 param_4,u8 *param_5);
-u32 FUN_003be1c0(u32 param_1,long param_2);
+u32 FUN_003be1c0(u32 param_1,s32 param_2);
 u32 FUN_003be8e0(long param_1,u64 param_2);
 u8 FUN_003bea20(int param_1,int param_2);
 u32 FUN_003beab0(u32 param_1,u32 param_2,int *param_3);
@@ -607,10 +609,10 @@ u8 FUN_003be1a0(int param_1)
 }
 #define FUN_003be1a0(...) ((u8 (*)(...))FUN_003be1a0)(__VA_ARGS__)
 #undef FUN_003be1c0
-// FUN_003BE1C0 NONMATCHING
+// FUN_003BE1C0
 
 
-u32 FUN_003be1c0(u32 param_1,long param_2)
+u32 FUN_003be1c0(u32 param_1,s32 param_2)
 
 
 
@@ -621,17 +623,17 @@ u32 FUN_003be1c0(u32 param_1,long param_2)
   int iVar3;
   u8 *pbBase;
 
-  
+  iVar1 = *(u32 *)DAT_0095b714_abs;
 
-  iVar1 = DAT_0095b714;
 
   if (param_2 < 2) {
     return 0;
   }
 
+  iVar3 = 0;
   iVar2 = (int)param_2 * 2;
-  for (iVar3 = 0; iVar3 < iVar1; iVar3 = iVar3 + 1) {
-    pbBase = (u8 *)DAT_0095b710;
+  for (; iVar3 < iVar1; iVar3 = iVar3 + 1) {
+    pbBase = DAT_0095b710_abs[0];
     if (((param_1 == pbBase[iVar3 * 0x1a]) &&
         (*(u16 *)(iVar2 + (int)pbBase + iVar3 * 0x1a + 4) != 0)) &&
        (lVar2 = FUN_0016f190_comu(*(u16 *)(iVar2 + (int)pbBase +
