@@ -4011,7 +4011,6 @@ void FUN_00414320(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
 {
 
-  float fVar1;
 
   float fVar2;
 
@@ -4023,23 +4022,11 @@ void FUN_00414320(u64 param_1,u64 param_2,int param_3,int param_4,int param_5,
 
   fVar2 = DAT_007cada4 * (float)(int)param_6;
 
-  fVar1 = fVar2;
 
-  if (2.1474836e+09f <= fVar2) {
+  FUN_0040e3c0((float)param_5,param_3 + 0x20,param_4 + 0x65,(u32)fVar2 & 0xff,0x8e,0);
 
-    fVar1 = fVar2 - 2.1474836e+09f;
 
-  }
-
-  FUN_0040e3c0((float)param_5,param_3 + 0x20,param_4 + 0x65,(int)fVar1 & 0xff,0x8e,0);
-
-  if (2.1474836e+09f <= fVar2) {
-
-    fVar2 = fVar2 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3c0((float)param_5,param_3 + 0x20,param_4 + 0x65,(int)fVar2 & 0xff,0x8f,0);
+  FUN_0040e3c0((float)param_5,param_3 + 0x20,param_4 + 0x65,(u32)fVar2 & 0xff,0x8f,0);
 
   FUN_0040e3c0((float)param_5,param_3 + 0x20,param_4 + 0x65,param_6 & 0xff,0x90,0);
 
@@ -4846,7 +4833,6 @@ void FUN_004154e0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 {
 
-  float fVar1;
 
   float fVar2;
 
@@ -4854,15 +4840,9 @@ void FUN_004154e0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   fVar2 = (float)param_6 * 0.5f;
 
-  fVar1 = fVar2;
 
-  if (2.1474836e+09f <= fVar2) {
-
-    fVar1 = fVar2 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,param_4,(int)fVar1 & 0xff,0x5a,0,0,0);
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
+                    (u32)fVar2 & 0xff,0x5a,0,0,0);
 
   if (2.1474836e+09f <= fVar2) {
 
@@ -4870,9 +4850,8 @@ void FUN_004154e0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,(int)param_4 + 0xd8,(int)fVar2 & 0xff,
-
-               0x5b,0,0,0);
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0xd8,
+                     (int)fVar2 & 0xff,0x5b,0,0,0);
 
   return;
 
@@ -4889,7 +4868,6 @@ void FUN_00415650(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 {
 
-  float fVar1;
 
   float fVar2;
 
@@ -4897,15 +4875,9 @@ void FUN_00415650(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   fVar2 = (float)param_6 * 0.5f;
 
-  fVar1 = fVar2;
 
-  if (2.1474836e+09f <= fVar2) {
-
-    fVar1 = fVar2 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,param_4,(int)fVar1 & 0xff,0x5c,0,0,0);
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
+                    (u32)fVar2 & 0xff,0x5c,0,0,0);
 
   if (2.1474836e+09f <= fVar2) {
 
@@ -4913,9 +4885,8 @@ void FUN_00415650(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,(int)param_4 + 0x196,(int)fVar2 & 0xff
-
-               ,0x5d,0,0,0);
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0x196,
+                     (int)fVar2 & 0xff,0x5d,0,0,0);
 
   return;
 
@@ -4953,7 +4924,6 @@ void FUN_00415880(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
 {
 
-  float fVar1;
 
   float fVar2;
 
@@ -4961,37 +4931,17 @@ void FUN_00415880(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   fVar2 = (float)param_6 * 0.5f;
 
-  fVar1 = fVar2;
 
-  if (2.1474836e+09f <= fVar2) {
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,param_4,
+                    (u32)fVar2 & 0xff,0x61,0,0,0);
 
-    fVar1 = fVar2 - 2.1474836e+09f;
 
-  }
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0x132,
+                     (u32)fVar2 & 0xff,0x62,0,0,0);
 
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,param_4,(int)fVar1 & 0xff,0x61,0,0,0);
 
-  fVar1 = fVar2;
-
-  if (2.1474836e+09f <= fVar2) {
-
-    fVar1 = fVar2 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,(int)param_4 + 0x132,(int)fVar1 & 0xff
-
-               ,0x62,0,0,0);
-
-  if (2.1474836e+09f <= fVar2) {
-
-    fVar2 = fVar2 - 2.1474836e+09f;
-
-  }
-
-  FUN_0040e3f0((float)param_5,0,0x40200000,0x40200000,param_3,(int)param_4 + 0x197,(int)fVar2 & 0xff
-
-               ,99,0,0,0);
+  FUN_0040e3f0_typed((float)param_5,0.0f,2.5f,2.5f,param_3,(int)param_4 + 0x197,
+                     (u32)fVar2 & 0xff,99,0,0,0);
 
   return;
 
