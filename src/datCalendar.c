@@ -555,12 +555,13 @@ void func_00180220(void)
     datSetFlag(0x141c, true);
 }
 
-// FUN_00180A20 NONMATCHING
+// FUN_00180A20
 KwlnTask* func_00180a20(KwlnTask* clndTask)
 {
     s32 eventIndex;
     register KwlnTask* task;
     register CalendarTaskWork* work;
+
     task = clndTask;
     work = task->workData;
 
@@ -580,27 +581,30 @@ KwlnTask* func_00180a20(KwlnTask* clndTask)
         {
             return func_00181950(task, eventIndex);
         }
-        if (datGetFlag(0xa00) != 0)
+        if (datGetFlag(0xa00) == 1)
         {
             return NULL;
         }
-        if (datGetFlag(0x1403) == 0)
+        if (datGetSkipToTarget() == 0)
         {
-            datSetFlag(0x1403, true);
-            datSetDaysSkipTarget(datGetDaysSinceApr5());
-            datSetTimeSkipTarget(datGetTime());
-            datSetSkipToTarget(true);
-            if (datGetFlag(0xbdf) != 0)
+            if (datGetFlag(0x1403) == 0)
             {
-                if (datGetTime() == CALENDAR_TIME_NULL)
+                datSetFlag(0x1403, true);
+                datSetDaysSkipTarget(datGetDaysSinceApr5());
+                datSetTimeSkipTarget_u8(datGetTime());
+                datSetSkipToTarget(true);
+                if (datGetFlag(0xbdf) == 1)
                 {
-                    func_00184c80(work->confirmationTask, true);
+                    if ((datGetTime() & 0xff) == 0)
+                    {
+                        func_00184c80(work->confirmationTask, true);
+                    }
+                    else
+                    {
+                        func_001848f0(work->confirmationTask, true);
+                    }
+                    return func_001ba5f0(task, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x320, 1, 0, 0);
                 }
-                else
-                {
-                    func_001848f0(work->confirmationTask, true);
-                }
-                return func_001ba5f0(task, 0, 0, 0, 0, 0, 0, 0);
             }
         }
     }
