@@ -1191,7 +1191,6 @@ void func_0010de40(HSfdImage* image, const u8* source)
     dst = image->pixels;
     width = image->width;
     height = image->height;
-    pixels = (const u16*)source;
     y = 0;
     while (y < height)
     {
@@ -1212,23 +1211,26 @@ void func_0010de40(HSfdImage* image, const u8* source)
     }
 }
 
-// FUN_0010DEE0 NONMATCHING
+// FUN_0010DEE0
 void func_0010dee0(HSfdImage* image, const u8* source)
 {
     u8* dst;
-    s32 width;
     s32 height;
-    s32 y;
+    s32 width;
     s32 x;
+    s32 y;
+    s32 count;
 
     dst = image->pixels;
     width = image->width;
+    asm volatile("" : "+r"(width));
     height = image->height;
     y = 0;
+    count = width >> 1;
     while (y < height)
     {
         x = 0;
-        while (x < (width >> 1))
+        while (x < count)
         {
             u8* pixel = dst + (x * 2);
 
