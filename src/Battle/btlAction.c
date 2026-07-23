@@ -5230,10 +5230,10 @@ void btlActionInitStateExit(BtlAction* action)
 void btlActionUpdateStateExit(BtlAction* action)
 {
     BtlUnit* unit;
+    DatUnitPc* found;
     u16 i;
     DatUnitPc* party;
     Battle* battle;
-    DatUnitPc* found;
 
     if (action->unk_1a & 1)
     {
@@ -5250,28 +5250,16 @@ void btlActionUpdateStateExit(BtlAction* action)
                     found = NULL;
                     i = 0;
                     battle = gBtl;
-                    while (i < 4)
+                    do
                     {
                         party = battle->startInfo.partyUnits[i];
                         if (party != NULL && party->base.unit == unit->datUnit)
                         {
                             found = party;
+                            break;
                         }
                         i++;
-                    }
-                    if (found == NULL)
-                    {
-                        i = 0;
-                        do
-                        {
-                            party = *(DatUnitPc **)((u8 *)battle + 0xbc4 + i * 8);
-                            if (party != NULL && party->base.unit == unit->datUnit)
-                            {
-                                found = party;
-                            }
-                            i++;
-                        } while (i < 3);
-                    }
+                    } while (i < 4);
                     if (found != NULL)
                     {
                         ACTION_U16(found, 0xa) &= ~1;
@@ -5297,7 +5285,6 @@ void btlActionUpdateStateExit(BtlAction* action)
         FUN_001fdd40();
     }
     btlAction00299e50(action);
-    FUN_002a3a90((int)action);
     action->unk_1a |= 2;
 }
 
