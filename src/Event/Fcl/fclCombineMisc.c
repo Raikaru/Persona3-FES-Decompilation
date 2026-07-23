@@ -596,48 +596,27 @@ u64 FUN_003d5bb0(u32 param_1)
 
 
 short FUN_003d5cd0(u32 *param_1)
-
-
-
 {
-
   long lVar1;
-
   u32 uVar2;
-
   u32 *puVar3;
-
   s32 sVar4;
   s32 sVar5;
-
-  
 
   sVar4 = 0;
   memset(param_1,0,0x90);
   for (sVar5 = 0; uVar2 = FUN_00175410(), (long)sVar5 < (long)(uVar2 & 0xffff); sVar5 = sVar5 + 1) {
-
     lVar1 = datPersonaGetHeroPersona(sVar5);
-
     if (lVar1 != 0) {
-
       puVar3 = (u32 *)((int)param_1 + sVar4 * 0xc);
-
       *puVar3 = 0;
-
       puVar3[1] = (int)lVar1;
-
       puVar3[2] = DAT_007ce420 + (u32)*(u16 *)((int)lVar1 + 2) * 0xe;
-
       sVar4 = sVar4 + 1;
-
     }
-
   }
-
   return sVar4;
-
 }
-
 // FUN_003D5DC0
 
 
@@ -1493,17 +1472,17 @@ s32 FUN_003d6e60(s32 param_1,s32 param_2)
   u16 temp_19;
   u16 temp_3;
   u8 *temp_4;
+  void *dest;
 
-  memcpy_003d6e60(sp50,(void *)(param_1 + 4),0x34);
+  dest = sp50;
+  asm volatile("" : "+r"(dest));
+  memcpy_003d6e60(dest,(void *)(param_1 + 4),0x34);
   var_16 = 0;
   goto outer_check;
 outer_body:
   temp_2 = var_16 * 2;
   temp_19 = *(u16 *)(param_2 + temp_2 + 0x3e);
   if (temp_19 != 0) {
-    if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
-      return 0;
-    }
     if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
       datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
     }
