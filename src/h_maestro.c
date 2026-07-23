@@ -147,7 +147,7 @@ typedef struct MaestroOutputRecord
     s32 rightExtension;             // 0x40
     s32 x;                          // 0x44
     s32 y;                          // 0x48
-    u8 reserved2[8];
+    u8 reserved2[12];
     s32 left;                       // 0x54
     s32 top;                        // 0x58
     s32 right;                      // 0x5c
@@ -1415,20 +1415,25 @@ void func_001125d0(void)
 // FUN_001126B0 NONMATCHING
 f32 func_001126b0(void* param_1)
 {
-    MaestroRenderNode* sample;
-    MaestroOutputRecord* record;
     s32 value;
+    u32 offset;
+    u8* output;
+    u8* overrideBase;
+    MaestroRenderNode* sample;
 
     sample = (MaestroRenderNode*)param_1;
-    record = (MaestroOutputRecord*)((u8*)sample->blob->output + sample->outputIndex * 0x80);
-    value = record->right - record->left;
-    if (record->overrideX != 0)
+
+    offset = sample->outputIndex * 0x80;
+    output = sample->blob->output;
+    value = *(s32*)(offset + output + 0x5c) - *(s32*)(offset + output + 0x54);
+    overrideBase = output + 0x74;
+    if (*(s16*)(overrideBase + offset) != 0)
     {
-        value = record->overrideX;
+        value = *(s16*)(overrideBase + offset);
     }
     if (sample->xScale != 0)
     {
-        value = (value * sample->xScale) >> 12;
+        value = (s32)(((u32)value * sample->xScale) >> 12);
     }
     return (f32)value;
 }
@@ -1436,20 +1441,25 @@ f32 func_001126b0(void* param_1)
 // FUN_00112740 NONMATCHING
 f32 func_00112740(void* param_1)
 {
-    MaestroRenderNode* sample;
-    MaestroOutputRecord* record;
     s32 value;
+    u32 offset;
+    u8* output;
+    u8* overrideBase;
+    MaestroRenderNode* sample;
 
     sample = (MaestroRenderNode*)param_1;
-    record = (MaestroOutputRecord*)((u8*)sample->blob->output + sample->outputIndex * 0x80);
-    value = record->bottom - record->top;
-    if (record->overrideY != 0)
+
+    offset = sample->outputIndex * 0x80;
+    output = sample->blob->output;
+    value = *(s32*)(offset + output + 0x60) - *(s32*)(offset + output + 0x58);
+    overrideBase = output + 0x76;
+    if (*(s16*)(overrideBase + offset) != 0)
     {
-        value = record->overrideY;
+        value = *(s16*)(overrideBase + offset);
     }
     if (sample->yScale != 0)
     {
-        value = (value * sample->yScale) >> 12;
+        value = (s32)(((u32)value * sample->yScale) >> 12);
     }
     return (f32)value;
 }
