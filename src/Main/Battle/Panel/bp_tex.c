@@ -677,7 +677,7 @@ void func_0021e170(void* destination,
 }
 #pragma optimization_level 2
 
-// FUN_0021e380 NONMATCHING
+// FUN_0021e380
 void func_0021e380(void* destination, void* frameData, u32 mode)
 {
     BpTexFrameData* frame;
@@ -690,8 +690,8 @@ void func_0021e380(void* destination, void* frameData, u32 mode)
     f32 reciprocalDepth;
     u32 depthAddress;
 
-    frame = (BpTexFrameData*)frameData;
     camera = kwlnGetMainCamera();
+    frame = (BpTexFrameData*)frameData;
     reciprocalDepth = 1.0f / *(f32*)((u8*)camera + 0x80);
     switch (mode)
     {
