@@ -1161,26 +1161,38 @@ u32 FUN_003c6d80(int param_1)
 }
 #define FUN_003c6d80(...) ((u32 (*)(...))FUN_003c6d80)(__VA_ARGS__)
 #undef FUN_003c6e10
-// FUN_003C6E10 NONMATCHING
-
-
+// FUN_003C6E10
+ 
+ 
 u64 FUN_003c6e10(int param_1)
 {
   u32 flags;
   u32 result;
+  u32 temp;
 
-  flags = **(u32 **)(param_1 + 0x24);
   result = 0;
-  if ((flags & 2) == 0) {
-    return result | 2;
+  flags = **(u32 **)(param_1 + 0x24);
+  if ((flags & 0x400) != 0) {
+    result |= 0x80000000;
   }
-  if ((flags & 0x100) == 0) {
-    if ((flags & 0x80) == 0) {
-      return result | 1;
+  if ((flags & 4) != 0) {
+    result |= 0x40000000;
+  }
+  if ((flags & 2) != 0) {
+    if ((flags & 0x100) != 0) {
+      temp = result | 0x14;
+      goto ret;
     }
-    return result | 0xc;
+    if ((flags & 0x80) != 0) {
+      temp = result | 0xc;
+      goto ret;
+    }
+    temp = result | 1;
+    goto ret;
   }
-  return result | 0x14;
+  temp = result | 2;
+ret:
+  return temp & 0xfffffff;
 }
 #define FUN_003c6e10(...) ((u64 (*)(...))FUN_003c6e10)(__VA_ARGS__)
 #undef FUN_003c6ea0
