@@ -19112,7 +19112,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u32 *puVar8;
 
-  u32 auStack_5fa0 [6];
+  u32 auStack_5fa0 [0xc4];
 
   u16 uStack_5f88;
 
@@ -19224,7 +19224,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_5c94;
 
-  u32 auStack_5c90 [6];
+  u32 auStack_5c90 [0xc4];
 
   u16 uStack_5c78;
 
@@ -19336,7 +19336,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_5984;
 
-  u32 auStack_5980 [6];
+  u32 auStack_5980 [0xc4];
 
   u16 uStack_5968;
 
@@ -19448,7 +19448,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_5674;
 
-  u32 auStack_5670 [6];
+  u32 auStack_5670 [0xc4];
 
   u16 uStack_5658;
 
@@ -19560,7 +19560,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_5364;
 
-  u32 auStack_5360 [6];
+  u32 auStack_5360 [0xc4];
 
   u16 uStack_5348;
 
@@ -19672,7 +19672,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_5054;
 
-  u32 auStack_5050 [6];
+  u32 auStack_5050 [0xc4];
 
   u16 uStack_5038;
 
@@ -19784,7 +19784,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_4d44;
 
-  u32 auStack_4d40 [6];
+  u32 auStack_4d40 [0xc4];
 
   u16 uStack_4d28;
 
@@ -19896,7 +19896,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_4a34;
 
-  u32 auStack_4a30 [6];
+  u32 auStack_4a30 [0xc4];
 
   u16 uStack_4a18;
 
@@ -20008,7 +20008,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_4724;
 
-  u32 auStack_4720 [6];
+  u32 auStack_4720 [0xc4];
 
   u16 uStack_4708;
 
@@ -20120,7 +20120,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_4414;
 
-  u32 auStack_4410 [6];
+  u32 auStack_4410 [0xc4];
 
   u16 uStack_43f8;
 
@@ -20232,7 +20232,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_4104;
 
-  u32 auStack_4100 [6];
+  u32 auStack_4100 [0xc4];
 
   u16 uStack_40e8;
 
@@ -20344,7 +20344,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_3df4;
 
-  u32 auStack_3df0 [6];
+  u32 auStack_3df0 [0xc4];
 
   u16 uStack_3dd8;
 
@@ -20456,7 +20456,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_3ae4;
 
-  u32 auStack_3ae0 [6];
+  u32 auStack_3ae0 [0xc4];
 
   u16 uStack_3ac8;
 
@@ -20568,7 +20568,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_37d4;
 
-  u32 auStack_37d0 [6];
+  u32 auStack_37d0 [0xc4];
 
   u16 uStack_37b8;
 
@@ -20680,7 +20680,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_34c4;
 
-  u32 auStack_34c0 [6];
+  u32 auStack_34c0 [0xc4];
 
   u16 uStack_34a8;
 
@@ -20792,7 +20792,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_31b4;
 
-  u32 auStack_31b0 [6];
+  u32 auStack_31b0 [0xc4];
 
   u16 uStack_3198;
 
@@ -20904,7 +20904,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_2ea4;
 
-  u32 auStack_2ea0 [6];
+  u32 auStack_2ea0 [0xc4];
 
   u16 uStack_2e88;
 
@@ -21016,7 +21016,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_2b94;
 
-  u32 auStack_2b90 [6];
+  u32 auStack_2b90 [0xc4];
 
   u16 uStack_2b78;
 
@@ -21128,7 +21128,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_2884;
 
-  u32 auStack_2880 [6];
+  u32 auStack_2880 [0xc4];
 
   u16 uStack_2868;
 
@@ -21240,7 +21240,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_2574;
 
-  u32 auStack_2570 [6];
+  u32 auStack_2570 [0xc4];
 
   u16 uStack_2558;
 
@@ -21352,7 +21352,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_2264;
 
-  u32 auStack_2260 [6];
+  u32 auStack_2260 [0xc4];
 
   u16 uStack_2248;
 
@@ -21464,7 +21464,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1f54;
 
-  u32 auStack_1f50 [6];
+  u32 auStack_1f50 [0xc4];
 
   u16 uStack_1f38;
 
@@ -21576,7 +21576,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1c44;
 
-  u32 auStack_1c40 [6];
+  u32 auStack_1c40 [0xc4];
 
   u16 uStack_1c28;
 
@@ -21688,7 +21688,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1934;
 
-  u32 auStack_1930 [6];
+  u32 auStack_1930 [0xc4];
 
   u16 uStack_1918;
 
@@ -21800,7 +21800,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1624;
 
-  u32 auStack_1620 [6];
+  u32 auStack_1620 [0xc4];
 
   u16 uStack_1608;
 
@@ -21912,7 +21912,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1314;
 
-  u32 auStack_1310 [6];
+  u32 auStack_1310 [0xc4];
 
   u16 uStack_12f8;
 
@@ -22024,7 +22024,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_1004;
 
-  u32 auStack_1000 [6];
+  u32 auStack_1000 [0xc4];
 
   u16 uStack_fe8;
 
@@ -22136,7 +22136,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_cf4;
 
-  u32 auStack_cf0 [6];
+  u32 auStack_cf0 [0xc4];
 
   u16 uStack_cd8;
 
@@ -22248,7 +22248,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_9e4;
 
-  u32 auStack_9e0 [6];
+  u32 auStack_9e0 [0xc4];
 
   u16 uStack_9c8;
 
@@ -22360,7 +22360,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_6d4;
 
-  u32 auStack_6d0 [6];
+  u32 auStack_6d0 [0xc4];
 
   u16 uStack_6b8;
 
@@ -22472,123 +22472,123 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
   u16 uStack_3c4;
 
-  u8 auStack_3c0 [4];
+  u8 auStack_3c0 [0x20];
 
   u32 uStack_3bc;
 
-  u8 auStack_3a0 [4];
+  u8 auStack_3a0 [0x20];
 
   u32 uStack_39c;
 
-  u8 auStack_380 [4];
+  u8 auStack_380 [0x20];
 
   u32 uStack_37c;
 
-  u8 auStack_360 [4];
+  u8 auStack_360 [0x20];
 
   u32 uStack_35c;
 
-  u8 auStack_340 [4];
+  u8 auStack_340 [0x20];
 
   u32 uStack_33c;
 
-  u8 auStack_320 [4];
+  u8 auStack_320 [0x20];
 
   u32 uStack_31c;
 
-  u8 auStack_300 [4];
+  u8 auStack_300 [0x20];
 
   u32 uStack_2fc;
 
-  u8 auStack_2e0 [4];
+  u8 auStack_2e0 [0x20];
 
   u32 uStack_2dc;
 
-  u8 auStack_2c0 [4];
+  u8 auStack_2c0 [0x20];
 
   u32 uStack_2bc;
 
-  u8 auStack_2a0 [4];
+  u8 auStack_2a0 [0x20];
 
   u32 uStack_29c;
 
-  u8 auStack_280 [4];
+  u8 auStack_280 [0x20];
 
   u32 uStack_27c;
 
-  u8 auStack_260 [4];
+  u8 auStack_260 [0x20];
 
   u32 uStack_25c;
 
-  u8 auStack_240 [4];
+  u8 auStack_240 [0x20];
 
   u32 uStack_23c;
 
-  u8 auStack_220 [4];
+  u8 auStack_220 [0x20];
 
   u32 uStack_21c;
 
-  u8 auStack_200 [4];
+  u8 auStack_200 [0x20];
 
   u32 uStack_1fc;
 
-  u8 auStack_1e0 [4];
+  u8 auStack_1e0 [0x20];
 
   u32 uStack_1dc;
 
-  u8 auStack_1c0 [4];
+  u8 auStack_1c0 [0x20];
 
   u32 uStack_1bc;
 
-  u8 auStack_1a0 [4];
+  u8 auStack_1a0 [0x20];
 
   u32 uStack_19c;
 
-  u8 auStack_180 [4];
+  u8 auStack_180 [0x20];
 
   u32 uStack_17c;
 
-  u8 auStack_160 [4];
+  u8 auStack_160 [0x20];
 
   u32 uStack_15c;
 
-  u8 auStack_140 [4];
+  u8 auStack_140 [0x20];
 
   u32 uStack_13c;
 
-  u8 auStack_120 [4];
+  u8 auStack_120 [0x20];
 
   u32 uStack_11c;
 
-  u8 auStack_100 [4];
+  u8 auStack_100 [0x20];
 
   u32 uStack_fc;
 
-  u8 auStack_e0 [4];
+  u8 auStack_e0 [0x20];
 
   u32 uStack_dc;
 
-  u8 auStack_c0 [4];
+  u8 auStack_c0 [0x20];
 
   u32 uStack_bc;
 
-  u8 auStack_a0 [4];
+  u8 auStack_a0 [0x20];
 
   u32 uStack_9c;
 
-  u8 auStack_80 [4];
+  u8 auStack_80 [0x20];
 
   u32 uStack_7c;
 
-  u8 auStack_60 [4];
+  u8 auStack_60 [0x20];
 
   u32 uStack_5c;
 
-  u8 auStack_40 [4];
+  u8 auStack_40 [0x20];
 
   u32 uStack_3c;
 
-  u8 auStack_20 [4];
+  u8 auStack_20 [0x20];
 
   u32 uStack_1c;
 
@@ -22740,7 +22740,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_5984 = 0;
 
-      memcpy(auStack_3a0,auStack_59b8,0x1c);
+      memcpy(auStack_3a0,auStack_5c90,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,0xd,uStack_39c);
 
@@ -22886,7 +22886,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_5c94 = 0;
 
-      memcpy(auStack_3c0,auStack_5cac,0x1c);
+      memcpy(auStack_3c0,auStack_5fa0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,0xd,uStack_3bc);
 
@@ -23036,7 +23036,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_5364 = 0;
 
-      memcpy(auStack_360,auStack_53d0,0x1c);
+      memcpy(auStack_360,auStack_5670,0x1c);
 
       uVar4 = FUN_003dffc0(uVar2,0xc,uStack_35c);
 
@@ -23182,7 +23182,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_5674 = 0;
 
-      memcpy(auStack_380,auStack_56c4,0x1c);
+      memcpy(auStack_380,auStack_5980,0x1c);
 
       uVar4 = FUN_003dffc0(uVar2,0xc,uStack_37c);
 
@@ -23332,7 +23332,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_4d44 = 0;
 
-      memcpy(auStack_320,auStack_4de8,0x1c);
+      memcpy(auStack_320,auStack_5050,0x1c);
 
       uVar4 = FUN_003dffc0(uVar2,0xb,uStack_31c);
 
@@ -23478,7 +23478,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_5054 = 0;
 
-      memcpy(auStack_340,auStack_50dc,0x1c);
+      memcpy(auStack_340,auStack_5360,0x1c);
 
       uVar4 = FUN_003dffc0(uVar2,0xb,uStack_33c);
 
@@ -23628,7 +23628,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_3ae4 = 0;
 
-      memcpy(auStack_260,auStack_3bf8,0x1c);
+      memcpy(auStack_260,auStack_3df0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,9,uStack_25c);
 
@@ -23770,7 +23770,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_3df4 = 0;
 
-      memcpy(auStack_280,auStack_3ed0,0x1c);
+      memcpy(auStack_280,auStack_4100,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,10,uStack_27c);
 
@@ -23912,7 +23912,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_4104 = 0;
 
-      memcpy(auStack_2a0,auStack_42c0,0x1c);
+      memcpy(auStack_2a0,auStack_4410,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,6,uStack_29c);
 
@@ -24058,7 +24058,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_4414 = 0;
 
-      memcpy(auStack_2c0,auStack_450c,0x1c);
+      memcpy(auStack_2c0,auStack_4720,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,9,uStack_2bc);
 
@@ -24200,7 +24200,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_4724 = 0;
 
-      memcpy(auStack_2e0,auStack_47e4,0x1c);
+      memcpy(auStack_2e0,auStack_4a30,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,10,uStack_2dc);
 
@@ -24342,7 +24342,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_4a34 = 0;
 
-      memcpy(auStack_300,auStack_4bd4,0x1c);
+      memcpy(auStack_300,auStack_4d40,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,6,uStack_2fc);
 
@@ -24498,7 +24498,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_1624 = 0;
 
-      memcpy(auStack_e0,auStack_1770,0x1c);
+      memcpy(auStack_e0,auStack_1930,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,8,uStack_dc);
 
@@ -24640,7 +24640,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_1934 = 5;
 
-      memcpy(auStack_100,auStack_1b60,0x1c);
+      memcpy(auStack_100,auStack_1c40,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,4,uStack_fc);
 
@@ -24782,7 +24782,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_1c44 = 5;
 
-      memcpy(auStack_120,auStack_1e38,0x1c);
+      memcpy(auStack_120,auStack_1f50,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,5,uStack_11c);
 
@@ -24924,7 +24924,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_1f54 = 0;
 
-      memcpy(auStack_140,auStack_2110,0x1c);
+      memcpy(auStack_140,auStack_2260,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,6,uStack_13c);
 
@@ -25066,7 +25066,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_2264 = 0;
 
-      memcpy(auStack_160,auStack_23e8,0x1c);
+      memcpy(auStack_160,auStack_2570,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,7,uStack_15c);
 
@@ -25208,7 +25208,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_2574 = 10;
 
-      memcpy(auStack_180,auStack_27d8,0x1c);
+      memcpy(auStack_180,auStack_2880,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,3,uStack_17c);
 
@@ -25360,7 +25360,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_2884 = 0;
 
-      memcpy(auStack_1a0,auStack_29b4,0x1c);
+      memcpy(auStack_1a0,auStack_2b90,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,8,uStack_19c);
 
@@ -25502,7 +25502,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_2b94 = 0;
 
-      memcpy(auStack_1c0,auStack_2da4,0x1c);
+      memcpy(auStack_1c0,auStack_2ea0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,4,uStack_1bc);
 
@@ -25644,7 +25644,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_2ea4 = 0;
 
-      memcpy(auStack_1e0,auStack_307c,0x1c);
+      memcpy(auStack_1e0,auStack_31b0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,5,uStack_1dc);
 
@@ -25786,7 +25786,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_31b4 = 0;
 
-      memcpy(auStack_200,auStack_3354,0x1c);
+      memcpy(auStack_200,auStack_34c0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,6,uStack_1fc);
 
@@ -25928,7 +25928,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_34c4 = 0;
 
-      memcpy(auStack_220,auStack_362c,0x1c);
+      memcpy(auStack_220,auStack_37d0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,7,uStack_21c);
 
@@ -26070,7 +26070,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_37d4 = 0;
 
-      memcpy(auStack_240,auStack_3a1c,0x1c);
+      memcpy(auStack_240,auStack_3ae0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,3,uStack_23c);
 
@@ -26224,7 +26224,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
         uStack_1004 = 0;
 
-        memcpy(auStack_a0,auStack_12a0,0x1c);
+        memcpy(auStack_a0,auStack_1310,0x1c);
 
         uVar4 = FUN_003dffc0(uVar1,2,uStack_9c);
 
@@ -26374,7 +26374,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_1314 = 0;
 
-      memcpy(auStack_c0,auStack_1594,0x1c);
+      memcpy(auStack_c0,auStack_1620,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,2,uStack_bc);
 
@@ -26670,7 +26670,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
         uStack_6d4 = 10;
 
-        memcpy(auStack_40,auStack_9a8,0x1c);
+        memcpy(auStack_40,auStack_9e0,0x1c);
 
         uVar4 = FUN_003dffc0(uVar1,1,uStack_3c);
 
@@ -26818,7 +26818,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
       uStack_9e4 = 0;
 
-      memcpy(auStack_60,auStack_cd4,0x1c);
+      memcpy(auStack_60,auStack_cf0,0x1c);
 
       uVar4 = FUN_003dffc0(uVar1,0,uStack_5c);
 
@@ -26964,7 +26964,7 @@ void FUN_004072d0(int param_1,long param_2,long param_3)
 
         uStack_cf4 = 0;
 
-        memcpy(auStack_80,auStack_fac,0x1c);
+        memcpy(auStack_80,auStack_1000,0x1c);
 
         uVar4 = FUN_003dffc0(uVar1,1,uStack_7c);
 
