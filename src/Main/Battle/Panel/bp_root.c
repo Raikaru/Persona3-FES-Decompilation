@@ -3037,22 +3037,21 @@ void FUN_00206E40(void)
     *(u32*)(work + 0x18) = 9;
 }
 
-// FUN_00206EB0 NONMATCHING
+// FUN_00206EB0
 void FUN_00206EB0(void)
 {
-    u32 i;
-    u32 handle;
+    s32 i;
+    u8* work;
 
-    K_ASSERT((panelWork32(0) & 0x2000) != 0, 0x1192);
-    handle = panelWork32(0x77a8);
-    if (handle != 0) func_003b0170(handle);
-    for (i = 0; i < panelWork32(0x424); i++)
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
+    K_ASSERT((*(u32*)work & 0x2000) != 0, 0x1192);
+    func_003b0170(*(u32*)(work + 0x77a8));
+    for (i = 0; i < *(s32*)(work + 0x424); i++)
     {
-        handle = *(u32*)(panelWork() + 0x414 + i * 4);
-        if (handle != 0) func_003b0170(handle);
-        *(u32*)(panelWork() + 0x414 + i * 4) = 0;
+        func_003b0170(*(u32*)(work + 0x414 + i * 4));
     }
-    panelSetWork32(0, panelWork32(0) & ~0x2001u);
+    *(u32*)work &= ~0x2000u;
 }
 
 // FUN_00206F70
