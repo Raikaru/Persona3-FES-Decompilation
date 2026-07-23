@@ -5449,7 +5449,7 @@ void FUN_00365360(u32 param_1,u64 param_2,int param_3)
 
   u16 *puVar1;
 
-  long lVar2;
+  int lVar2;
 
   u32 uVar3;
 
