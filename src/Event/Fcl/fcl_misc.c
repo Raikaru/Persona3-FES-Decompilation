@@ -2398,7 +2398,7 @@ void FUN_003cb1f0(u64 param_1)
 
   u64 *puVar5;
 
-  u64 uVar6;
+  u16 uVar6;
 
   u64 *puVar7;
 
