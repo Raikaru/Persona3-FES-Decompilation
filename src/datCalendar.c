@@ -779,10 +779,13 @@ ret:
     return result;
 }
 
+extern const char D_005E3E70[];
 // FUN_00181310 NONMATCHING
 KwlnTask* func_00181310(KwlnTask* clndTask)
 {
     s32 eventIndex;
+    register KwlnTask* task = clndTask;
+    register KwlnTask* actionTask = NULL;
 
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
@@ -792,18 +795,18 @@ KwlnTask* func_00181310(KwlnTask* clndTask)
     datSetFlag(0xa85, false);
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
-    H_Dbprt_FmtLog("calendar: after school");
+    H_Dbprt_FmtLog(D_005E3E70);
 
-    if (datGetSkipToTarget() != 0)
+    if (datGetSkipToTarget() == 0)
     {
-        return NULL;
+        eventIndex = clndFindAndExecSiteibiEvents();
+        if (eventIndex != -1)
+        {
+            return func_00181950(task, eventIndex);
+        }
+        actionTask = func_003c1ab0(task, datGetTime() & 0xff);
     }
-    eventIndex = clndFindAndExecSiteibiEvents();
-    if (eventIndex < 0)
-    {
-        return func_003c1ab0(clndTask, datGetTime());
-    }
-    return func_00181950(clndTask, eventIndex);
+    return actionTask;
 }
 
 // FUN_00181430
