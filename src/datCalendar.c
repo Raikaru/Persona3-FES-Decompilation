@@ -1235,7 +1235,7 @@ s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 }
 
 #pragma push
-#pragma opt_propagation off
+#pragma opt_propagation on
 // FUN_0017d8b0 NONMATCHING
 s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 {
