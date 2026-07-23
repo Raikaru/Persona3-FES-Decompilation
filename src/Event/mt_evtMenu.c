@@ -460,6 +460,8 @@ extern u8 *PTR_s_NORMAL_007cd2d0;
 extern u8 *PTR_s_NOSTOP_007ccfac;
 extern u8 *PTR_s_NO_KEYFREE_007ccfb8;
 extern u8 *PTR_s_OFFSET_0069e6a0;
+#pragma alias PTR_s_OFFSET_0069e6a0_abs PTR_s_OFFSET_0069e6a0
+extern u8 *PTR_s_OFFSET_0069e6a0_abs[];
 extern u8 *PTR_s_RELEASE_0069ee28;
 extern u8 *PTR_s_REPEAT_007ccd88;
 extern u8 *PTR_s_REVERSE_006a01c8;
@@ -1413,21 +1415,19 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
 {
 
-  char cVar1;
 
   char cVar2;
 
   int *piVar3;
 
-  int iVar4;
 
-  int iVar5;
 
   int iVar6;
 
-  u64 uVar7;
+  int iVar11;
 
-  long lVar8;
+
+  s32 lVar8;
 
   int iVar9;
 
@@ -1439,13 +1439,20 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
   piVar3 = *(int **)(param_4 + 0x164);
 
-  if (param_3 == 0) {
+  if (param_3 != 1) {
+    switch (param_3) {
+    case 0:
 
+    lVar8 = 0;
+    iVar11 = param_2 * 0xc;
     iVar6 = (param_2 + 1) * 0xc;
 
-    for (lVar8 = 0; lVar8 < *(short *)(&DAT_0069e420 + *piVar3 * 0xc);
+    for (; lVar8 < *(short *)(&DAT_0069e420 + *piVar3 * 0xc);
 
         lVar8 = (long)((int)lVar8 + 1)) {
+      int iVar5;
+      s32 uVar7;
+      s32 cVar1;
 
       cVar1 = *(char *)((int)(&DAT_0069e420 + *piVar3 * 0xc) + (int)lVar8 + 2);
 
@@ -1453,7 +1460,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
       uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
 
-      FUN_0038a260_f32_5(uVar10,iVar5,param_2 * 0xc,0xe,(&PTR_s_OFFSET_0069e6a0)[cVar1]);
+      FUN_0038a260_f32_5(uVar10,iVar5,iVar11,0xe,PTR_s_OFFSET_0069e6a0_abs[cVar1]);
 
       if ((lVar8 == *(int *)(param_4 + 0x268)) && (*(int *)(param_4 + 0xd4) == 0xf)) {
 
@@ -1474,9 +1481,10 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
                            *(u16 *)(*(int *)(param_4 + 0x164) + 0x20));
         break;
 
-      case '\x01':
-        iVar4 = *(int *)(param_4 + 0x164);
-        cVar2 = *(char *)(iVar4 + 0x22);
+      case '\x01': {
+        int *piVar4;
+        piVar4 = *(int **)(param_4 + 0x164);
+        cVar2 = *(char *)((u8 *)piVar4 + 0x22);
         if (cVar2 < '\x03') {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
           FUN_0038a260_f32_6(uVar10,iVar5,iVar6,uVar7,(void *)0x7ccd58,
@@ -1485,9 +1493,10 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
         else {
           uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
           FUN_0038a260_f32_6(uVar10,iVar5,iVar6,uVar7,(void *)0x7ccd60,
-                             *(u16 *)(iVar4 + 0x24));
+                             *(u16 *)((u8 *)piVar4 + 0x24));
         }
         break;
+      }
 
       case '\x02':
         if (*(char *)(*(int *)(param_4 + 0x164) + 0x22) == '\0') {
@@ -1511,6 +1520,8 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
     }
 
+      break;
+    }
   }
 
   return;
