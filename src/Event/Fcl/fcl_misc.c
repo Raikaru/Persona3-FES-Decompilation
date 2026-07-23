@@ -1930,7 +1930,7 @@ FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u16 uVar3;
 
