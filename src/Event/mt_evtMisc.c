@@ -768,20 +768,31 @@ int FUN_00386ae0(int param_1,int param_2)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_00386B70 NONMATCHING
+// FUN_00386B70
 
 
 void FUN_00386b70(u64 param_1,int param_2,int param_3)
 {
   (*DAT_0096017c_abs)();
-  if ((param_2 < 0xd) && (param_2 >= 0) && (param_2 != 9)) {
-    if ((param_2 == 6) || (param_2 == 5) || (param_2 == 4) || (param_2 == 0)) {
-      *(u32 *)(&DAT_00958a60_abs[param_2 * 4]) = 0;
-    } else {
-      *(int *)(&DAT_00958a60_abs[param_2 * 4]) =
-          *(int *)(&DAT_00958a60_abs[param_2 * 4]) - param_3;
-    }
+  if (param_2 >= 0xd) goto done_index;
+  if (param_2 < 0) goto done_index;
+  if (param_2 == 9) goto done_index;
+  if (param_2 == 6) goto zero_index;
+  if (param_2 == 5) goto zero_index;
+  if (param_2 == 4) goto zero_index;
+  switch (param_2) {
+  case 0:
+    goto zero_index;
+  default:
+    goto subtract_index;
   }
+zero_index:
+  *(u32 *)(&DAT_00958a60_abs[param_2 * 4]) = 0;
+  goto done_index;
+subtract_index:
+  *(int *)(&DAT_00958a60_abs[param_2 * 4]) =
+      *(int *)(&DAT_00958a60_abs[param_2 * 4]) - param_3;
+done_index:
   return;
 }
 #pragma pop
@@ -3162,7 +3173,7 @@ void FUN_00389d80(u64 param_1,u64 param_2)
 
 #pragma push
 #pragma opt_rebuildconditionals off
-// FUN_00389F40 NONMATCHING
+// FUN_00389F40
 
 
 void FUN_00389f40(void)
@@ -3197,14 +3208,18 @@ LAB_0038a0b0:
     if (iVar5 == 6) goto LAB_0038a048;
     if (iVar5 == 5) goto LAB_0038a048;
     if (iVar5 == 4) goto LAB_0038a048;
-    if (iVar5 == 0) goto LAB_0038a048;
-    goto LAB_0038a064;
+    switch (iVar5) {
+    case 0:
+      goto LAB_0038a048;
+    default:
+      goto LAB_0038a064;
+    }
+LAB_0038a048:
+    *(u32 *)((u8 *)DAT_00958a60_abs + iVar5 * 4) = 0;
+    goto LAB_0038a080;
 LAB_0038a064:
     puVar1 = (int *)((u8 *)DAT_00958a60_abs + iVar5 * 4);
     *puVar1 = *puVar1 - 1;
-    goto LAB_0038a080;
-LAB_0038a048:
-    *(u32 *)((u8 *)DAT_00958a60_abs + iVar5 * 4) = 0;
 LAB_0038a080:
     *(int *)DAT_009589cc_abs = 0;
     *(int *)DAT_009589c8_abs = 0;
