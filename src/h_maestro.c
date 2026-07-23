@@ -2150,7 +2150,7 @@ typedef struct MaestroCampSpriteSetupWork
 
 
 void* func_001158b0(param_1,param_2,param_3)
-long param_1;
+int param_1;
 int param_2;
 int param_3;
 
