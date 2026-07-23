@@ -333,6 +333,8 @@ void FUN_003237c0(int param_1);
 void FUN_00323860(void);
 void FUN_00323880(int param_1);
 void FUN_003238d0(int param_1);
+#pragma alias FUN_003238d0_4arg FUN_003238d0
+extern void FUN_003238d0_4arg(int param_1,int param_2,int param_3,int param_4);
  #pragma alias FUN_00323920_out FUN_00323920
  extern void FUN_00323920_out(u8 *param_1);
  #pragma alias FUN_00323a30_out FUN_00323a30
@@ -568,7 +570,7 @@ void FUN_003397d0(int param_1);
 u64 FUN_003398c0(int param_1);
 void FUN_00339950(int param_1);
 void FUN_003399a0(int param_1);
-void FUN_0033a220(u64 param_1);
+void FUN_0033a220(u32 param_1);
 void FUN_0033a3e0(int param_1);
 u64 FUN_0033a4d0(int param_1);
 void FUN_0033a560(int param_1);
@@ -30700,146 +30702,95 @@ void FUN_003399a0(int param_1)
 
 
 // FUN_0033A220 NONMATCHING
-
-
-void FUN_0033a220(u64 param_1)
-
-
-
+void FUN_0033a220(u32 param_1)
 {
+    u32 *puVar1;
+    int iVar1;
+    u16 *puVar2;
+    u32 uVar2;
+    u32 uVar3;
+    int iVar3;
+    int owner;
+    u32 rawA;
+    u32 rawB;
+    Vec128 auVar4;
+    Vec128 vectorScratch;
+    char cStack_1;
+    u8 uStack_4;
+    u8 uStack_3;
+    u8 uStack_2;
+    asm volatile("" : "+m"(vectorScratch));
 
-  int iVar1;
-
-  u16 *puVar2;
-
-  __int128 in_zero_qw;
-
-  int iVar3;
-
-  __int128 auVar4;
-
-  int iVar5;
-
-  __int128 auVar6;
-
-  __int128 auVar7;
-
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  char cStack_1;
-
-  
-
-  iVar5 = (int)param_1;
-
-  iVar1 = *(int *)(iVar5 + 0x40);
-
-  puVar2 = *(u16 **)(*(int *)(iVar5 + 0x3c) + 4);
-
-  if ((*(u32 *)(iVar5 + 0x34) <= *(u32 *)(iVar1 + 0x34)) || (*(u32 *)(iVar1 + 0x34) == 0)) {
-
-    iVar3 = FUN_0032a120_2arg((char *)(iVar1),(u32 *)(iVar1 + 0x24));
-
-    auVar4 = _pextlb(0,(long)*(int *)(iVar5 + 0x30));
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar7 = _vmove(auVar4);
-
-    auVar4 = _pextlb(0,(long)iVar3);
-
-    auVar4 = _pextlh(0,auVar4._0_8_);
-
-    auVar4 = _qmtc2(auVar4._0_4_);
-
-    auVar6 = _vitof0(auVar4);
-
-    auVar4 = _qmtc2(uGpffff815c);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar6 = _vmul(auVar4,auVar7);
-
-    auVar4 = _qmtc2(0x437f0000);
-
-    auVar4 = _vmulbc(auVar6,auVar4);
-
-    auVar4 = _vftoi0(auVar4);
-
-    auVar4 = _qmfc2(auVar4._0_4_);
-
-    auVar4 = _ppach(in_zero_qw,auVar4);
-
-    auVar4 = _ppacb(in_zero_qw,auVar4);
-
-    cStack_1 = (*((u8 *)&auVar4 + 3));
-
-    uStack_4 = (*((u8 *)&auVar4 + 0));
-
-    uStack_3 = (*((u8 *)&auVar4 + 1));
-
-    uStack_2 = (*((u8 *)&auVar4 + 2));
-
-    if (cStack_1 == -1) {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(u8 *)(iVar3 + 7) = 0xfe;
-
+    owner = (int)param_1;
+    asm volatile("" : "+r"(owner));
+    puVar1 = *(u32 **)(owner + 0x3c);
+    iVar1 = *(int *)(owner + 0x40);
+    puVar2 = (u16 *)puVar1[1];
+    uVar2 = *(u32 *)(owner + 0x34);
+    uVar3 = *(u32 *)(iVar1 + 0x34);
+    if ((uVar2 <= uVar3) || (uVar3 == 0)) {
+        iVar3 = FUN_0032a120_2arg((char *)iVar1, (u32 *)(iVar1 + 0x24));
+        rawA = *(u32 *)(owner + 0x30);
+        rawB = (u32)iVar3;
+        __asm__ volatile (
+            ".set noreorder\n"
+            "sw %1, 0x48($sp)\n"
+            "addiu $2, $sp, 0x48\n"
+            "lwc1 $f0, -0x7ea4($gp)\n"
+            "lw $2, 0($2)\n"
+            "pextlb $2, $0, $2\n"
+            "pextlh $2, $0, $2\n"
+            "qmtc2.ni $2, $vf10\n"
+            "vitof0.xyzw $vf10, $vf10\n"
+            "mfc1 $2, $f0\n"
+            "nop\n"
+            "qmtc2.ni $2, $vf2\n"
+            "vmulx.xyzw $vf10, $vf10, $vf2x\n"
+            "vmove.xyzw $vf11, $vf10\n"
+            "sw %2, 0x44($sp)\n"
+            "addiu $2, $sp, 0x44\n"
+            "lw $2, 0($2)\n"
+            "pextlb $2, $0, $2\n"
+            "pextlh $2, $0, $2\n"
+            "qmtc2.ni $2, $vf10\n"
+            "vitof0.xyzw $vf10, $vf10\n"
+            "mfc1 $2, $f0\n"
+            "nop\n"
+            "qmtc2.ni $2, $vf2\n"
+            "vmulx.xyzw $vf10, $vf10, $vf2x\n"
+            "vmul.xyzw $vf10, $vf10, $vf11\n"
+            "lui $2, 0x437f\n"
+            "qmtc2.ni $2, $vf2\n"
+            "vmulx.xyzw $vf10, $vf10, $vf2x\n"
+            "vftoi0.xyzw $vf10, $vf10\n"
+            "qmfc2.ni $2, $vf10\n"
+            "ppach $2, $0, $2\n"
+            "ppacb $2, $0, $2\n"
+            "sw $2, %0\n"
+            ".set reorder\n"
+            : "=m"(auVar4._0_4_)
+            : "r"(rawA), "r"(rawB)
+            : "$2", "$f0", "vf2", "vf10", "vf11", "memory");
+        cStack_1 = (char)auVar4._3_1_;
+        uStack_4 = auVar4._0_1_;
+        uStack_3 = auVar4._1_1_;
+        uStack_2 = auVar4._2_1_;
+        if (cStack_1 == -1) {
+            iVar3 = *(int *)(puVar2 + 10);
+            *(u8 *)(iVar3 + 4) = uStack_4;
+            *(u8 *)(iVar3 + 5) = uStack_3;
+            *(u8 *)(iVar3 + 6) = uStack_2;
+            *(u8 *)(iVar3 + 7) = 0xfe;
+        } else {
+            iVar3 = *(int *)(puVar2 + 10);
+            *(u8 *)(iVar3 + 4) = uStack_4;
+            *(u8 *)(iVar3 + 5) = uStack_3;
+            *(u8 *)(iVar3 + 6) = uStack_2;
+            *(char *)(iVar3 + 7) = cStack_1;
+        }
+        FUN_003238d0_4arg((int)(u32)(uintptr_t)puVar2, (int)owner,
+                         (int)(owner + 0x10), (int)(owner + 0x20));
     }
-
-    else {
-
-      iVar3 = *(int *)(puVar2 + 10);
-
-      *(u8 *)(iVar3 + 4) = uStack_4;
-
-      *(u8 *)(iVar3 + 5) = uStack_3;
-
-      *(u8 *)(iVar3 + 6) = uStack_2;
-
-      *(char *)(iVar3 + 7) = cStack_1;
-
-    }
-
-    FUN_003238d0(param_1);
-
-    if (*(char *)(iVar1 + 0x56) == '\0') {
-
-      *puVar2 = *puVar2 & 0xfffe;
-
-    }
-
-    else {
-
-      *puVar2 = *puVar2 | 1;
-
-    }
-
-    FUN_00323860();
-
-  }
-
-  return;
-
 }
 
 
@@ -33616,7 +33567,7 @@ u32 FUN_0033ce10(int param_1)
   int iVar3;
   u32 uVar4;
   int *piVar2;
-
+  
   iVar3 = *(int *)(param_1 + 0x3c);
   iVar1 = *(int *)(param_1 + 0x40);
   uVar4 = (*DAT_00960178_abs)(*(int *)(iVar1 + 0x38) * 0x18 + 0x10,0x40000);
