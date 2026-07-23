@@ -1679,133 +1679,58 @@ void FUN_00388000(float param_1,u32 param_2,float *param_3,float *param_4,u32 *p
 }
 
 
-// FUN_00388A40 NONMATCHING
+// FUN_00388A40
 void FUN_00388a40(float param_1,float *param_2,float *param_3,u8 *param_4)
-
-
-
 {
+  RwIm2DVertex vertices[6];
+  RwRGBA color;
+  f32 recipZ;
+  f32 z;
+  s32 left;
+  s32 right;
+  s32 top;
+  s32 bottom;
+  int camera;
+  code *fn;
 
-  int iVar1;
+  left = (s32)*param_2;
+  right = (s32)*param_3;
+  top = (s32)param_2[1];
+  bottom = (s32)param_3[1];
+  color = *(RwRGBA *)param_4;
+  asm volatile("" : "+m"(color));
 
-  float fVar2;
+  camera = FUN_00198590();
+  recipZ = 1.0f / *(float *)(camera + 0x80);
+  z = *(float *)DAT_00960088_abs - param_1;
 
-  float fVar3;
+  vertices[0].u.els.scrVertex.x = (f32)left;
+  vertices[0].u.els.scrVertex.y = (f32)top;
+  vertices[0].u.els.scrVertex.z = z;
+  vertices[0].u.els.color.r = (f32)color.r;
+  vertices[0].u.els.color.g = (f32)color.g;
+  vertices[0].u.els.color.b = (f32)color.b;
+  vertices[0].u.els.color.a = (f32)color.a;
+  vertices[0].u.els.recipZ = recipZ;
 
-  float fVar4;
+  vertices[1].u.els.scrVertex.x = (f32)right;
+  vertices[1].u.els.scrVertex.y = (f32)bottom;
+  vertices[1].u.els.scrVertex.z = z;
+  vertices[1].u.els.color.r = (f32)color.r;
+  vertices[1].u.els.color.g = (f32)color.g;
+  vertices[1].u.els.color.b = (f32)color.b;
+  vertices[1].u.els.color.a = (f32)color.a;
+  vertices[1].u.els.recipZ = recipZ;
 
-  float fVar5;
-
-  float fStack_190;
-
-  float fStack_18c;
-
-  float fStack_188;
-
-  float fStack_178;
-
-  float fStack_170;
-
-  float fStack_16c;
-
-  float fStack_168;
-
-  float fStack_164;
-
-  float fStack_150;
-
-  float fStack_14c;
-
-  float fStack_148;
-
-  float fStack_138;
-
-  float fStack_130;
-
-  float fStack_12c;
-
-  float fStack_128;
-
-  float fStack_124;
-
-  u8 bStack_4;
-
-  u8 bStack_3;
-
-  u8 bStack_2;
-
-  u8 bStack_1;
-
-  
-
-  fVar2 = *param_2;
-
-  fVar3 = *param_3;
-
-  fVar4 = param_2[1];
-
-  fVar5 = param_3[1];
-
-  bStack_4 = *param_4;
-
-  bStack_3 = param_4[1];
-
-  bStack_2 = param_4[2];
-
-  bStack_1 = param_4[3];
-
-  iVar1 = FUN_00198590();
-
-  fStack_178 = 1.0 / *(float *)(iVar1 + 0x80);
-
-  fStack_188 = DAT_00960088 - param_1;
-
-  fStack_190 = (float)(int)fVar2;
-
-  fStack_18c = (float)(int)fVar4;
-
-  fStack_170 = (float)bStack_4;
-
-  fStack_16c = (float)bStack_3;
-
-  fStack_168 = (float)bStack_2;
-
-  fStack_164 = (float)bStack_1;
-
-  fStack_150 = (float)(int)fVar3;
-
-  fStack_14c = (float)(int)fVar5;
-
-  fStack_130 = (float)bStack_4;
-
-  fStack_12c = (float)bStack_3;
-
-  fStack_128 = (float)bStack_2;
-
-  fStack_124 = (float)bStack_1;
-
-  fStack_148 = fStack_188;
-
-  fStack_138 = fStack_178;
-
-  (*DAT_00960090)(1,0);
-
-  (*DAT_00960090)(7,2);
-
-  (*DAT_00960090)(0xc,1);
-
-  (*DAT_00960090)(10,3);
-
-  (*DAT_00960090)(0xb,6);
-
+  fn = (code *)&DAT_00960090_abs;
+  (*fn)(1,0);
+  (*fn)(7,2);
+  (*fn)(0xc,1);
+  (*fn)(10,3);
+  (*fn)(0xb,6);
   FUN_004d7f60(2,0x44);
-
   FUN_004d7f60(3,0x717fb);
-
-  (*DAT_009600a0)(1,&fStack_190,2);
-
-  return;
-
+  (*DAT_009600a0_abs)(1,vertices,2);
 }
 
 
