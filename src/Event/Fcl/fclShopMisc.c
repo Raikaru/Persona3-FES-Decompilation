@@ -413,6 +413,8 @@ void FUN_0040d640(float param_1,int param_2,int param_3,int param_4,int param_5,
 void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,int param_6, u32 param_7,int param_8,long param_9);
 #pragma alias datGetFlag_s32 datGetFlag
 s32 datGetFlag_s32(s32 param_1);
+#pragma alias datGetFlag_u32 datGetFlag
+u32 datGetFlag_u32();
 #pragma alias datSocialLinkLevelIsNotZero_s32 datSocialLinkLevelIsNotZero
 u32 datSocialLinkLevelIsNotZero_s32(s32 socialLink);
 void FUN_001725a0(u64 socialLink);
@@ -490,6 +492,8 @@ float DAT_007cada4;
 u32 DAT_007ce420;
 u32 DAT_007ce4e8;
 extern u8 DAT_006ac9d0[];
+#pragma alias DAT_006acc60_abs DAT_006acc60
+extern u8 DAT_006acc60_abs[];
 u32 DAT_006acc60;
 extern u8 DAT_006acc70[];
 extern u8 DAT_006acc72[];
@@ -2834,31 +2838,30 @@ u32 FUN_003f2510(void)
 {
 
   u32 uVar1;
+  u32 uVar2;
 
-  long lVar2;
+  s16 sVar1;
 
   u32 uVar3;
 
   
 
   uVar1 = 0;
-
   for (uVar3 = 0; uVar3 < 8; uVar3 = uVar3 + 1) {
-
-    if ((*(short *)(&DAT_006acc60 + uVar3 * 2) == -1) || (lVar2 = datGetFlag(), lVar2 == 0)) {
-
-      if ((uVar3 == 6) && (lVar2 = datGetScenarioMode(), lVar2 != 0)) {
-
-        uVar1 = uVar1 | 0x40;
-
+    sVar1 = *(short *)(DAT_006acc60_abs + uVar3 * 2);
+    if (sVar1 != -1) {
+      if (datGetFlag_u32() != 0) {
+        uVar2 = (1 << uVar3) & 0xffffU;
+        uVar2 = uVar2 | uVar1;
+        uVar1 = uVar2 & 0xffffU;
+        continue;
       }
-
     }
 
-    else {
-
-      uVar1 = uVar1 | 1 << (uVar3 & 0x1f) & 0xffffU;
-
+    if ((uVar3 == 6) && datGetScenarioMode() != 0) {
+      uVar2 = (1 << uVar3) & 0xffffU;
+      uVar2 = uVar2 | uVar1;
+      uVar1 = uVar2 & 0xffffU;
     }
 
   }
