@@ -2712,24 +2712,65 @@ void FUN_0022C210(void)
                  FUN_0021cca0(table, 0x43));
 }
 
+// Previous body was a wrong-helper stub unrelated to retail (720B window).
+// Rewritten from disasm: retail draws 3 rects (2 sharing a resource fetch)
+// with a shared alpha255=255*weight computed once and reused, matching
+// the doubled-alpha idiom used by the other draw functions in this file.
+// obj 228B->572B/720B; residual is register caching for resourceA offset
+// derefs and frame-size (retail keeps 3 s-regs live, this keeps 5).
 // FUN_0022C2D0 NONMATCHING
 void FUN_0022C2D0(void)
 {
-    u8* base;
-    u32 table;
-    u32 alpha;
+    u8* work;
+    u32 table0;
+    void* resourceA;
+    f32 weight;
+    f32 rect[4];
+    u8 color[4];
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    table = FUN_0021c3f0(0);
-    alpha = bcm_panel_read(0x4650) & 0xff;
-    bcm_panel_set_resource(base + 0x6a00, 0, 0x42);
-    bcm_panel_set_colour(base + 0x6a00, alpha | 0xffffff00u);
-    bcm_panel_set_resource(base + 0x6b00, 0, 0x42);
-    bcm_panel_set_colour(base + 0x6b00, alpha | 0xffffff00u);
-    bcm_panel_set_resource(base + 0x6c00, 0, 0x43);
-    bcm_panel_set_colour(base + 0x6c00, alpha | 0xffffff00u);
-    (void)table;
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    weight = *(f32*)(work + 0x7214);
+
+    resourceA = (void*)FUN_0021cca0(table0, 0x42);
+    rect[0] = 57.0f;
+    rect[1] = (f32)0x13d;
+    rect[2] = (f32)*(s32*)((u8*)resourceA + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    FUN_0021d8e0(work + 0x6a00, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    weight = 255.0f * weight;
+    color[3] = (u8)(u32)weight;
+    FUN_0021d950(work + 0x6a00, color);
+
+    rect[0] = 57.0f + (f32)*(s32*)((u8*)resourceA + 0xc);
+    rect[1] = (f32)0x13d;
+    rect[2] = 133.0f;
+    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    FUN_0021d8e0(work + 0x6b00, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)weight;
+    FUN_0021d950(work + 0x6b00, color);
+
+    resourceA = (void*)FUN_0021cca0(table0, 0x43);
+    rect[0] = 400.0f;
+    rect[1] = (f32)0x13d;
+    rect[2] = (f32)*(s32*)((u8*)resourceA + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)resourceA + 0x10);
+    FUN_0021d8e0(work + 0x6c00, rect);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = (u8)(u32)weight;
+    FUN_0021d950(work + 0x6c00, color);
 }
 
 // FUN_0022C5A0
