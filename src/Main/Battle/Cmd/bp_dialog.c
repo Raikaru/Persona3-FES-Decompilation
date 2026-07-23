@@ -309,12 +309,14 @@ void FUN_0025c220(void)
         func_003b0e20(puVar1[1], uVar5);
 
         fVar11 = 255.0f * fVar11 * fVar6;
-        if (fVar11 < 2.1474836e+09f) {
+        if (2.1474836e+09f > fVar11) {
             uVar5 = (u32)(s32)fVar11;
+            uVar5 &= 0xffu;
         } else {
-            uVar5 = (u32)(s32)(fVar11 - 2.1474836e+09f);
+            uVar5 = (u32)(s32)(fVar11 - 2.1474836e+09f) | 0x80000000u;
+            uVar5 &= 0xffu;
         }
-        uVar5 = (uVar5 & 0xffu) | 0xffffff00u;
+        uVar5 |= 0xffffff00u;
         func_003b0e20(puVar1[2], uVar5);
         func_003b0e20(puVar1[3], uVar5);
 
