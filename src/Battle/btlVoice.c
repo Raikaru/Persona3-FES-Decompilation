@@ -887,9 +887,8 @@ void func_002f1680(void)
   return;
 }
 
- #pragma schedule on
- #pragma optimization_level 1
-// FUN_002f1810 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f1810
 void func_002f1810(void)
 {
   BtlUnit* target;
@@ -929,8 +928,7 @@ void func_002f1810(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
- #pragma schedule on
- #pragma optimization_level 2
+#pragma opt_loop_invariants off
 
 // FUN_002f19d0
 void func_002f19d0(void)
@@ -2386,9 +2384,8 @@ void func_002f4950(void)
     }
 }
 
- #pragma schedule on
- #pragma optimization_level 1
-// FUN_002f4a40 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f4a40
 void func_002f4a40(void)
 {
   BtlUnit* target;
@@ -2416,7 +2413,7 @@ void func_002f4a40(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -2428,9 +2425,7 @@ void func_002f4a40(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
- #pragma schedule on
-
- #pragma optimization_level 2
+#pragma opt_loop_invariants off
 // FUN_002f4c00
 void func_002f4c00(BtlAction* action)
 {
@@ -2510,9 +2505,8 @@ void func_002f4ce0(void)
     }
 }
 
- #pragma schedule on
- #pragma optimization_level 1
-// FUN_002f4e70 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002f4e70
 void func_002f4e70(void)
 {
   BtlUnit* target;
@@ -2540,7 +2534,7 @@ void func_002f4e70(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
@@ -2552,8 +2546,7 @@ void func_002f4e70(void)
   btlPacketRegister(packet, 2);
   func_002b9030(object);
 }
- #pragma schedule on
- #pragma optimization_level 2
+#pragma opt_loop_invariants off
 
 // FUN_002f5030 NONMATCHING
 void func_002f5030(int param_1)
