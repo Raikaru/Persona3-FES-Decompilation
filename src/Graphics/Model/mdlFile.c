@@ -1362,6 +1362,8 @@ extern u32 DAT_00957bdc;
 extern u32 DAT_00957be0;
 extern u32 DAT_00960088;
 extern u32 DAT_0096008c;
+#pragma alias DAT_0096008c_abs DAT_0096008c
+extern u8 DAT_0096008c_abs[];
 extern void (*DAT_00960090)(...);
 #pragma alias DAT_00960090_abs DAT_00960090
 extern code DAT_00960090_abs[];
@@ -53686,225 +53688,95 @@ void FUN_00351280(u32 *param_1, u32 param_2)
 
 
 
-// FUN_00351290 NONMATCHING
+// FUN_00351290
 
 
 bool FUN_00351290(int param_1)
-
-
-
 {
-
-  long lVar1;
-
-  u64 uVar2;
-
-  float fVar3;
-
-  float fVar4;
-
-  u32 uStack_100;
-
-  u32 uStack_fc;
-
-  u32 uStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float fStack_e8;
-
-  u32 uStack_e0;
-
-  u32 uStack_dc;
-
-  u32 uStack_d8;
-
-  u32 uStack_d4;
-
-  u32 uStack_c0;
-
-  u32 uStack_bc;
-
-  u32 uStack_b8;
-
-  u32 uStack_b0;
-
-  float fStack_ac;
-
-  float fStack_a8;
-
-  u32 uStack_a0;
-
-  u32 uStack_9c;
-
-  u32 uStack_98;
-
-  u32 uStack_94;
-
-  u32 uStack_80;
-
-  u32 uStack_7c;
-
-  u32 uStack_78;
-
-  float fStack_70;
-
-  u32 uStack_6c;
-
-  float fStack_68;
-
-  u32 uStack_60;
-
-  u32 uStack_5c;
-
-  u32 uStack_58;
-
-  u32 uStack_54;
-
-  u32 uStack_40;
-
-  u32 uStack_3c;
-
-  u32 uStack_38;
-
-  float fStack_30;
-
-  float fStack_2c;
-
-  float fStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_14;
-
-  
-
-  lVar1 = (long)(int)RwCameraBeginUpdate(*(u32 *)(param_1 + 0xc));
-
-  if (lVar1 != 0) {
-
-    uVar2 = FUN_004e3630();
-
-    fVar3 = 640.0 / (float)*(int *)((int)uVar2 + 0xc);
-
-    fVar4 = 448.0 / (float)*(int *)((int)uVar2 + 0x10);
-
-    RpSkyRenderStateSet(2,0x2024);
-
-    RpSkyRenderStateSet(3,0x717fb);
-
-    (*DAT_00960090)(0xe,0);
-
-    (*DAT_00960090)(6,0);
-
-    (*DAT_00960090)(8,0);
-
-    (*DAT_00960090)(9,2);
-
-    (*DAT_00960090)(0xc,1);
-
-    (*DAT_00960090)(1,uVar2);
-
-    (*DAT_00960090)(3,3);
-
-    (*DAT_00960090)(4,3);
-
-    fStack_e8 = 1.0 / *(float *)(*(int *)(param_1 + 0xc) + 0x84);
-
-    uStack_100 = 0;
-
-    uStack_fc = 0;
-
-    uStack_f8 = DAT_0096008c;
-
-    uStack_e0 = 0x437f0000;
-
-    uStack_dc = 0x437f0000;
-
-    uStack_d8 = 0x437f0000;
-
-    uStack_d4 = 0x437f0000;
-
-    uStack_f0 = 0;
-
-    uStack_ec = 0;
-
-    uStack_c0 = 0;
-
-    uStack_bc = 0x43800000;
-
-    uStack_b8 = DAT_0096008c;
-
-    uStack_a0 = 0x437f0000;
-
-    uStack_9c = 0x437f0000;
-
-    uStack_98 = 0x437f0000;
-
-    uStack_94 = 0x437f0000;
-
-    uStack_b0 = 0;
-
-    uStack_80 = 0x44000000;
-
-    uStack_7c = 0;
-
-    uStack_78 = DAT_0096008c;
-
-    uStack_60 = 0x437f0000;
-
-    uStack_5c = 0x437f0000;
-
-    uStack_58 = 0x437f0000;
-
-    uStack_54 = 0x437f0000;
-
-    uStack_6c = 0;
-
-    uStack_40 = 0x44000000;
-
-    uStack_3c = 0x43800000;
-
-    uStack_38 = DAT_0096008c;
-
-    uStack_20 = 0x437f0000;
-
-    uStack_1c = 0x437f0000;
-
-    uStack_18 = 0x437f0000;
-
-    uStack_14 = 0x437f0000;
-
-    fStack_ac = fVar4;
-
-    fStack_a8 = fStack_e8;
-
-    fStack_70 = fVar3;
-
-    fStack_68 = fStack_e8;
-
-    fStack_30 = fVar3;
-
-    fStack_2c = fVar4;
-
-    fStack_28 = fStack_e8;
-
-    (*DAT_009600a0)(4,&uStack_100,4);
-
-    (*DAT_00960090)(1,0);
-
-    RwCameraEndUpdate(*(u32 *)(param_1 + 0xc));
-
+  int* raster;
+  f32 uScale;
+  f32 vScale;
+  f32 recipFov;
+  f32 zScale;
+  f32 buf[64];
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void*, int);
+
+  if (RwCameraBeginUpdate(*(u32 *)(param_1 + 0xc)) == 0) {
+    return 0;
   }
 
-  return lVar1 != 0;
+  raster = FUN_004e3630_ptr();
+  uScale = 640.0f / (f32)raster[3];
+  vScale = 448.0f / (f32)raster[4];
 
+  RpSkyRenderStateSet(2, 0x2024);
+  RpSkyRenderStateSet(3, 0x717fb);
+
+  setState = (void (**)(int, int))DAT_00960090_abs;
+  (*setState)(0xe, 0);
+  (*setState)(6, 0);
+  (*setState)(8, 0);
+  (*setState)(9, 2);
+  (*setState)(0xc, 1);
+  (*setState)(1, (int)raster);
+  (*setState)(3, 3);
+  (*setState)(4, 3);
+
+  zScale = *(f32 *)DAT_0096008c_abs;
+  recipFov = 1.0f / *(float *)(*(int *)(param_1 + 0xc) + 0x84);
+
+  buf[0] = 0.0f;
+  buf[1] = 0.0f;
+  buf[2] = zScale;
+  buf[8] = 255.0f;
+  buf[9] = 255.0f;
+  buf[10] = 255.0f;
+  buf[11] = 255.0f;
+  buf[6] = recipFov;
+  buf[4] = 0.0f;
+  buf[5] = 0.0f;
+
+  buf[16] = 0.0f;
+  buf[17] = 256.0f;
+  buf[18] = zScale;
+  buf[24] = 255.0f;
+  buf[25] = 255.0f;
+  buf[26] = 255.0f;
+  buf[27] = 255.0f;
+  buf[22] = recipFov;
+  buf[20] = 0.0f;
+  buf[21] = vScale;
+
+  buf[32] = 512.0f;
+  buf[33] = 0.0f;
+  buf[34] = zScale;
+  buf[40] = 255.0f;
+  buf[41] = 255.0f;
+  buf[42] = 255.0f;
+  buf[43] = 255.0f;
+  buf[38] = recipFov;
+  buf[36] = uScale;
+  buf[37] = 0.0f;
+
+  buf[48] = 512.0f;
+  buf[49] = 256.0f;
+  buf[50] = zScale;
+  buf[56] = 255.0f;
+  buf[57] = 255.0f;
+  buf[58] = 255.0f;
+  buf[59] = 255.0f;
+  buf[54] = recipFov;
+  buf[52] = uScale;
+  buf[53] = vScale;
+
+  setBuffer = (void (**)(int, void*, int))DAT_009600a0_abs;
+  (*setBuffer)(4, buf, 4);
+
+  (*setState)(1, 0);
+
+  RwCameraEndUpdate(*(u32 *)(param_1 + 0xc));
+  return 1;
 }
 
 
@@ -53926,12 +53798,12 @@ bool FUN_00351290(int param_1)
 
 
 
-// Reconstructed camera-fade full-screen-quad draw; obj 964B/1072B window (90%).
+// Reconstructed camera-fade full-screen-quad draw; obj 904B/1072B window (84%).
 // Residual: retail applies a bltz-guarded halve-then-double idiom to the
 // height/width/alpha float conversions here (6 sites); reproducing it with
 // an explicit if/else inflates codegen well past the window (structural
-// floor, several verified attempts). Camera typing, DAT_00960090/DAT_009600a0
-// vtable caching, and zScale addressing are already fixed.
+// floor, several verified attempts). Camera typing, DAT_00960090/DAT_009600a0/
+// DAT_0096008c_abs vtable+data caching are fixed (see sibling FUN_00351290).
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
 {
@@ -53978,8 +53850,8 @@ void FUN_00351510(int param_1)
     (*setState)(4, 3);
 
     camera = FUN_00198590_camera();
+    zScale = *(f32 *)DAT_0096008c_abs;
     recipFov = 1.0f / *(float *)((u8*)camera + 0x84);
-    zScale = DAT_0096008c;
 
     buf[0] = 0.0f;
     buf[1] = 0.0f;
