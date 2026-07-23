@@ -122,6 +122,8 @@ void FUN_0042ea60(int param_1,u16 param_2,u16 param_3,int param_4,int param_5);
 void FUN_0042f440(int param_1,short param_2,short param_3,int param_4,int param_5);
 void FUN_0042fd80(u32 *param_1,int param_2);
 void FUN_004563b0(f32 value, int object);
+int FUN_0044f120();
+int FUN_0044f170();
 /* FUSION_GLOBALS */
 u32 DAT_0087190c;
 u32 DAT_0095c0e0;
@@ -202,6 +204,10 @@ u32 DAT_0095beac;
 u32 DAT_0095beb0;
 u32 DAT_0095beb4;
 u32 DAT_0095bec0;
+#pragma alias DAT_0095bea0_abs DAT_0095bea0
+extern u8 DAT_0095bea0_abs[];
+#pragma alias DAT_0095bec0_abs DAT_0095bec0
+extern u8 DAT_0095bec0_abs[];
 u32 DAT_0095bec4;
 u32 DAT_0095bec8;
 u32 DAT_0095becc;
@@ -1626,31 +1632,23 @@ void FUN_00425ba0(int param_1)
 
 {
 
+  int object = param_1;
   int iVar1;
 
   
 
   for (iVar1 = 0; iVar1 < 6; iVar1 = iVar1 + 1) {
-
-    if ((&DAT_0095bec0)[iVar1] != 0) {
-
-      mdlDestroy();
-
+    if (((u32 *)DAT_0095bec0_abs)[iVar1] != 0) {
+      mdlDestroy(((u32 *)DAT_0095bec0_abs)[iVar1]);
     }
-
   }
-
   for (iVar1 = 0; iVar1 < 6; iVar1 = iVar1 + 1) {
-
-    if ((&DAT_0095bea0)[iVar1] != 0) {
-
-      mdlDestroy();
-
+    if (((u32 *)DAT_0095bea0_abs)[iVar1] != 0) {
+      mdlDestroy(((u32 *)DAT_0095bea0_abs)[iVar1]);
     }
-
   }
 
-  (*DAT_0096017c)(*(u32 *)(param_1 + 0x3c));
+  (DAT_0096017c_abs[0x5f])(*(u32 *)(object + 0x3c));
 
   return;
 
