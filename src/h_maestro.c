@@ -2605,7 +2605,7 @@ u32 func_00115f00(u64 param_1)
 
   u64 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
