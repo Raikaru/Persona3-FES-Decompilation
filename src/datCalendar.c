@@ -3341,6 +3341,7 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
     }
 }
 
+// FUN_00184C80
 void func_00184c80(KwlnTask* task, u32 confirmed)
 {
     CalendarConfirmWork* work;
