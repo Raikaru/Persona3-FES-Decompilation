@@ -2431,27 +2431,29 @@ void FUN_003b1a80(u32 param_1)
 
 int FUN_003b1a90(int param_1)
 {
-  int iVar1;
-  int iVar2;
   int iVar3;
 
+  int iVar2;
+
   iVar2 = 0;
-  if (param_1 != 0) {
-    for (iVar1 = *(int *)(param_1 + 0x2c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
-
-      for (iVar3 = iVar1; (iVar3 != 0 && (*(int *)(iVar3 + 8) < *(int *)(iVar1 + 8) + 100));
-
-          iVar3 = *(int *)(iVar3 + 0x28)) {
-
+  if (param_1 == 0) {
+    return iVar2;
+  }
+  param_1 = *(int *)(param_1 + 0x2c);
+  for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x28)) {
+    iVar3 = param_1;
+    do {
+      if (*(int *)(iVar3 + 8) >= *(int *)(param_1 + 8) + 100) {
+        break;
       }
+      iVar3 = *(int *)(iVar3 + 0x28);
+    } while (iVar3 != 0);
 
-      iVar2 = iVar2 + 1;
-
-    }
-
+    iVar2 = iVar2 + 1;
   }
 
   return iVar2;
+
 
 }
 #define FUN_003b1a90(...) ((int (*)(...))FUN_003b1a90)(__VA_ARGS__)
@@ -2465,39 +2467,34 @@ int FUN_003b1b00(int param_1,int param_2)
 
 {
 
-  int iVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  int iVar4;
-
   int iVar5;
 
   int iVar6;
 
+  int iVar2;
+
+  int iVar4;
+
+  int iVar3;
   
 
   iVar2 = 0;
 
   if (param_2 == 0) {
-
-    iVar2 = 0;
-
+    return 0;
   }
-
   else {
 
     iVar5 = 0;
 
-    for (iVar1 = *(int *)((int)param_2 + 0x2c); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0x28)) {
+    for (param_2 = *(int *)(param_2 + 0x2c); param_2 != 0;
+         param_2 = *(int *)(param_2 + 0x28)) {
 
       iVar2 = 0;
 
-      for (iVar6 = iVar1; (iVar6 != 0 && (*(int *)(iVar6 + 8) < *(int *)(iVar1 + 8) + 100));
-
-          iVar6 = *(int *)(iVar6 + 0x28)) {
+      for (iVar6 = param_2;
+           (iVar6 != 0 && (*(int *)(iVar6 + 8) < *(int *)(param_2 + 8) + 100));
+           iVar6 = *(int *)(iVar6 + 0x28)) {
 
         iVar3 = 0;
 
@@ -2535,26 +2532,34 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 
 {
 
-  int iVar1;
-
-  int iVar2;
 
   int iVar3;
 
+  int iVar2;
+  int iVar1;
+
+
   
 
+  iVar2 = 0;
   if (param_3 == 0) {
     return;
   }
-  iVar2 = 0;
-  for (param_3 = *(int *)(param_3 + 0x2c); param_3 != 0;
+  param_3 = *(int *)(param_3 + 0x2c);
+  for (; param_3 != 0;
        param_3 = *(int *)(param_3 + 0x28)) {
+    iVar3 = param_3;
     *param_1 = *(u32 *)(param_3 + 4);
     param_1[1] = *(u32 *)(param_3 + 8);
-    for (iVar3 = param_3;
-         (iVar3 != 0 && (*(int *)(iVar3 + 8) < *(int *)(param_3 + 8) + 100));
-         iVar3 = *(int *)(iVar3 + 0x28)) {
-    }
+    iVar1 = *(int *)(param_3 + 8) + 100;
+    goto frFont_b1bc0_inner_check;
+frFont_b1bc0_inner_body:
+    iVar3 = *(int *)(iVar3 + 0x28);
+    if (iVar3 != 0) goto frFont_b1bc0_inner_check;
+    goto frFont_b1bc0_inner_done;
+frFont_b1bc0_inner_check:
+    if (*(int *)(iVar3 + 8) < iVar1) goto frFont_b1bc0_inner_body;
+frFont_b1bc0_inner_done:
     if (iVar2 == param_2) {
       return;
     }
@@ -2615,28 +2620,25 @@ void FUN_003b1c90(int param_1,int param_2,int param_3)
   int iVar4;
 
   int iVar5;
-
-  int iVar6;
-
   int iVar7;
+
+
 
   
 
   if (param_3 != 0) {
 
-    iVar6 = *(int *)((int)param_3 + 0x2c);
-
-    iVar1 = *(int *)(iVar6 + 8);
-
-    while (iVar6 != 0) {
+    param_3 = *(int *)(param_3 + 0x2c);
+    iVar1 = *(int *)(param_3 + 8);
+    iVar1 = param_2 - iVar1;
+    while (param_3 != 0) {
 
       iVar3 = 0;
 
-      iVar2 = *(int *)(iVar6 + 8);
-
-      for (iVar7 = iVar6; (iVar7 != 0 && (*(int *)(iVar7 + 8) < iVar2 + 100));
-
-          iVar7 = *(int *)(iVar7 + 0x28)) {
+      iVar2 = *(int *)(param_3 + 8);
+      for (iVar7 = param_3;
+           (iVar7 != 0 && (*(int *)(iVar7 + 8) < iVar2 + 100));
+           iVar7 = *(int *)(iVar7 + 0x28)) {
 
         iVar5 = 0;
 
@@ -2649,24 +2651,18 @@ void FUN_003b1c90(int param_1,int param_2,int param_3)
         iVar3 = iVar3 + iVar5;
 
       }
-
-      iVar7 = *(int *)(iVar6 + 4);
+      iVar7 = *(int *)(param_3 + 4);
 
       if (iVar3 < 0) {
-
         iVar3 = iVar3 + 1;
-
       }
+      for (; (param_3 != 0 && (*(int *)(param_3 + 8) < iVar2 + 100));
+           param_3 = *(int *)(param_3 + 0x28)) {
 
-      for (; (iVar6 != 0 && (*(int *)(iVar6 + 8) < iVar2 + 100)); iVar6 = *(int *)(iVar6 + 0x28)) {
-
-        iVar4 = *(int *)(iVar6 + 4) + (param_1 - iVar7);
-
-        *(int *)(iVar6 + 4) = iVar4;
-
-        *(int *)(iVar6 + 4) = iVar4 + (iVar3 >> 1) * -0x10;
-
-        *(int *)(iVar6 + 8) = *(int *)(iVar6 + 8) + (param_2 - iVar1);
+        iVar4 = *(int *)(param_3 + 4) + (param_1 - iVar7);
+        *(int *)(param_3 + 4) = iVar4;
+        *(int *)(param_3 + 4) = iVar4 + (iVar3 >> 1) * -0x10;
+        *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
 
       }
 
