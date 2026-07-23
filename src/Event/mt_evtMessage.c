@@ -2918,7 +2918,7 @@ u32 FUN_003a1c00(int param_1)
 
   long lVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   int *piVar8;
 
