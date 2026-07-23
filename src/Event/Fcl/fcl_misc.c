@@ -1920,9 +1920,9 @@ u64
 
 FUN_003ca780(u32 param_1,u32 param_2,float param_3,float param_4,int param_5,
 
-            int param_6,u32 param_7,u64 param_8,u16 param_9,u16 param_10
+            int param_6,u32 param_7,u32 param_8,u16 param_9,u16 param_10
 
-            ,u64 param_11)
+            ,u32 param_11)
 
 
 
