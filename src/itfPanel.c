@@ -351,9 +351,9 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   int iVar3;
 
