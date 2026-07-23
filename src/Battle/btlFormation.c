@@ -547,7 +547,7 @@ extern void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_
 extern void func_002b9600(u32 *param_1);
 extern u32 func_002b9640(int param_1);
 extern void func_002b96e0(int param_1,u32 param_2);
-extern void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4);
+extern void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4);
 extern void func_002b9b00(u8 *param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9c00(int param_1,int param_2,int param_3,float *param_4);
 extern void func_002b9d40(int param_1,int param_2,int param_3,float *param_4);
@@ -1501,19 +1501,22 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
   *(u32 *)(out + 0xc) = 0;
 }
 
-// FUN_002b99d0 NONMATCHING
+// FUN_002b99d0
 
-void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
+void func_002b99d0(u8 *param_1,int param_2,u16 *param_3,u32 *param_4)
 
 {
   s32 uVar1;
+  u32 param3Local, param4Local;
   float fVar2;
   float fVar3;
   RwV3d output;
   RwV3d scaled;
   RwV3d transformed;
   
-  uVar1 = *(u16 *)((int)param_3 + 4);
+  param3Local = (u32)param_3;
+  param4Local = (u32)param_4;
+  uVar1 = *(u16 *)((int)param3Local + 4);
   if (uVar1 == 0) {
     fVar2 = *(float *)(param_1 + 0x30) * *(float *)(param_2 + 0x2c);
   }
@@ -1524,11 +1527,11 @@ void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
   scaled.x = *(float *)(param_1 + 0x20) * *(float *)(param_1 + 0x50);
   scaled.y = *(float *)(param_1 + 0x24) * *(float *)(param_1 + 0x50);
   scaled.z = *(float *)(param_1 + 0x28) * *(float *)(param_1 + 0x50);
-  func_004be1e0(&transformed,&scaled,1,param_1 + 0x40);
+  func_004be1e0(&transformed,&scaled,1,(u8 *)param_1 + 0x40);
   output.x = transformed.x + *(float *)(param_1 + 0x34);
   output.y = transformed.y + *(float *)(param_1 + 0x38);
   output.z = transformed.z + *(float *)(param_1 + 0x3c);
-  func_002b96f0(fVar2,fVar3,(float *)&output,(u32 *)(param_1 + 0x40),param_3,param_4);
+  func_002b96f0(fVar2,fVar3,(float *)&output,(u32 *)(param_1 + 0x40),(int)param3Local,param4Local);
   return;
 }
 
