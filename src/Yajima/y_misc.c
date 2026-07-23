@@ -183,6 +183,8 @@ extern u8 DAT_0086edf4_abs[];
 u32 DAT_0086ef2c;
 u32 DAT_008717a0;
 u32 DAT_008717e8[];
+#pragma alias DAT_008717e8_abs DAT_008717e8
+extern u8 DAT_008717e8_abs[];
 int DAT_008717f4[];
 #pragma alias DAT_008717f4_abs DAT_008717f4
 extern u8 DAT_008717f4_abs[];
@@ -923,33 +925,21 @@ void FUN_00424f80(void)
 
 
 {
-
-  u8 bVar1;
-
+  u8 *entry;
+  int bVar1;
   int iVar2;
 
-  
-
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
-
     bVar1 = 0;
-
-    if ((DAT_008717e8[iVar2 * 0x70] != 0) && (DAT_008717f4[iVar2 * 0x70] != 0)) {
-
+    entry = DAT_008717e8_abs + iVar2 * 0x1c0;
+    if ((*(u32 *)(entry + 0x48) != 0) && (*(u32 *)(entry + 0x54) != 0)) {
       bVar1 = 1;
-
     }
-
     if (bVar1) {
-
       func_001b00c0(*(u32 *)
-
-                    (*(int *)(*(int *)(*(int *)(&DAT_0087190c + iVar2 * 0x1c0) + 0x3c) + 0x24) +
-
+                    (*(int *)(*(int *)(*(int *)(entry + 0x16c) + 0x3c) + 0x24) +
                     0x170));
-
     }
-
   }
 
   return;
