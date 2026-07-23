@@ -3145,7 +3145,7 @@ u32 func_001167f0(u64 param_1)
 
   u64 uVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -3613,11 +3613,11 @@ void* func_00116f80(KwlnTask* task)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
@@ -3641,7 +3641,7 @@ void* func_00116f80(KwlnTask* task)
 
       }
 
-      uVar4 = (u64)func_001158b0(0,piVar1[4],0);
+      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
 
       iVar2 = (int)uVar4;
 
@@ -3671,7 +3671,7 @@ void* func_00116f80(KwlnTask* task)
 
     if (lVar3 != 0) {
 
-      uVar4 = (u64)func_001158b0(0,piVar1[4],0);
+      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
 
       iVar2 = (int)uVar4;
 
@@ -3709,7 +3709,7 @@ void* func_00116f80(KwlnTask* task)
 
     if (lVar3 != 0) {
 
-      uVar4 = (u64)func_001158b0(0,piVar1[4],0);
+      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
 
       iVar2 = piVar1[1];
 
@@ -3803,7 +3803,7 @@ void* func_00116f80(KwlnTask* task)
 
       }
 
-      uVar4 = (u64)func_001158b0(0,piVar1[4],0);
+      uVar4 = (u32)func_001158b0(0,piVar1[4],0);
 
       iVar6 = (int)uVar4;
 
