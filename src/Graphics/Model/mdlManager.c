@@ -5753,17 +5753,25 @@ void func_003164f0(int param_1,int param_2)
 
 
 
-// FUN_003165E0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
+// FUN_003165E0
 
 
 void* func_003165e0(void* param_1)
 {
   int iVar1;
   u32 uVar2;
+  int offset;
+  int base;
   int iVar3;
   int iVar4;
   u32 uVar5;
   f32 two;
+  f32 x;
+  f32 y;
+  f32 z;
+  f32 w;
   volatile f32 values[4];
 
   iVar4 = (int)param_1;
@@ -5777,17 +5785,24 @@ void* func_003165e0(void* param_1)
   goto check;
 
 loop:
-  iVar3 = *(int *)(iVar1 + 0x5c) + uVar5 * 0x1c;
+  offset = uVar5 * 8;
+  offset = offset - uVar5;
+  offset = offset * 4;
+  base = *(int *)(iVar1 + 0x5c);
+  iVar3 = base + offset;
   values[0] = *(f32 *)(iVar3 + 4);
   values[1] = *(f32 *)(iVar3 + 8);
   values[2] = *(f32 *)(iVar3 + 0xc);
-  values[3] = *(f32 *)(iVar3 + 0x10);
+  values[3] = two * *(f32 *)(iVar3 + 0x10);
   asm volatile("" : "+m"(values));
-  values[3] = values[3] * two;
-  *(f32 *)(iVar3 + 4) = values[0];
-  *(f32 *)(iVar3 + 8) = values[1];
-  *(f32 *)(iVar3 + 0xc) = values[2];
-  *(f32 *)(iVar3 + 0x10) = values[3];
+  x = values[0];
+  y = values[1];
+  z = values[2];
+  w = values[3];
+  *(f32 *)(iVar3 + 4) = x;
+  *(f32 *)(iVar3 + 8) = y;
+  *(f32 *)(iVar3 + 0xc) = z;
+  *(f32 *)(iVar3 + 0x10) = w;
   uVar5 = uVar5 + 1;
 check:
   if (uVar5 < uVar2)
@@ -5797,6 +5812,7 @@ done:
   *(u32 *)(iVar4 + 0x4c) = *(u32 *)(iVar4 + 0x4c) | 2;
   return param_1;
 }
+#pragma pop
 
 
 
