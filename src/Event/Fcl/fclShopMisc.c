@@ -8359,7 +8359,7 @@ u64 FUN_003f9e30(int param_1)
 
   int iVar6;
 
-  u64 uVar7;
+  u32 uVar7;
 
   long lVar8;
 
