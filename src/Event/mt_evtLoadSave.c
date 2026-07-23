@@ -1368,7 +1368,7 @@ void FUN_0038f0f0(u64 param_1)
 
   u32 uVar11;
 
-  u64 uVar12;
+  u32 uVar12;
 
   u32 *puVar13;
 
