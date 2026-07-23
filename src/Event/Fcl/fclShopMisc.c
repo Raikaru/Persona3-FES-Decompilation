@@ -6936,6 +6936,10 @@ void FUN_003f7fe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5
 
 
 // FUN_003F8180 NONMATCHING
+// Filled in from retail disassembly, same dispatch family as the sibling
+// functions above (3/3/1 true-branch, 2/2/0 false-branch constants to
+// func_003f55b0/func_003f5830). Residual: a register-bank floor (obj
+// 1088B vs 1056B window); logic and constants verified against retail.
 
 
 void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
@@ -7035,18 +7039,13 @@ void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
     sVar3 = *(short *)((int)puVar4 + 6);
 
     if ((sVar3 == -2) || (sVar3 == -3)) {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,3);
     }
-
     else if (sVar3 == -5) {
-
-
+      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,3);
     }
-
     else {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,1);
     }
 
   }
@@ -7108,18 +7107,13 @@ void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
     sVar3 = *(short *)((int)puVar4 + 6);
 
     if ((sVar3 == -2) || (sVar3 == -3)) {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,2);
     }
-
     else if (sVar3 == -5) {
-
-
+      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,2);
     }
-
     else {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,0);
     }
 
   }
