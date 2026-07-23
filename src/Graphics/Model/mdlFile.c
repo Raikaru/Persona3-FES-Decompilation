@@ -3559,11 +3559,8 @@ void FUN_0031faf0(int param_1,u64 param_2)
   float fVar2;
 
   u8 uStack_4;
-
   u8 uStack_3;
-
   u8 uStack_2;
-
   u8 uStack_1;
 
   
@@ -3573,23 +3570,15 @@ void FUN_0031faf0(int param_1,u64 param_2)
   fVar2 = (1.0 - *(float *)(param_1 + 4)) * 255.0;
 
   if (fVar2 < 2.1474836e+09) {
-
     uStack_1 = (u8)(int)fVar2;
-
   }
-
   else {
-
     uStack_1 = (u8)(int)(fVar2 - 2.1474836e+09);
-
   }
 
   uStack_2 = (u8)uVar1;
-
   uStack_3 = (u8)((u32)uVar1 >> 8);
-
   uStack_4 = (u8)((u32)uVar1 >> 0x10);
-
   FUN_001b5ae0(param_2,&uStack_4);
 
   return;
@@ -8028,7 +8017,7 @@ done:
 
 
 
-// FUN_00324680 NONMATCHING
+// FUN_00324680
 
 
 u32 FUN_00324680(u32 param_1)
@@ -8053,7 +8042,7 @@ u32 FUN_00324680(u32 param_1)
 
   uVar1 = *(u16 *)(iVar4 + 4);
 
-  uVar3 = (*DAT_00960178_u32)(0x2c,0x40000);
+  uVar3 = (*DAT_00960178_abs)(0x2c,0x40000);
 
   FUN_00521408(uVar3,0,0x2c);
 
@@ -52594,47 +52583,26 @@ void FUN_0034fe80(u64 param_1,u32 *param_2)
 {
 
   __int128 extraout_vf10;
-
   u32 uStack_60;
-
   u32 uStack_5c;
-
   u32 uStack_58;
-
   u32 uStack_54;
-
   __int128 auStack_50;
-
   u32 uStack_40;
-
   u32 uStack_3c;
-
   u32 uStack_38;
-
   u32 uStack_34;
-
   u32 uStack_30;
-
   u32 uStack_2c;
-
   u32 uStack_28;
-
   u32 uStack_24;
-
   u32 uStack_20;
-
   u32 uStack_1c;
-
   u32 uStack_18;
-
   u32 uStack_14;
-
   u32 uStack_10;
-
   u32 uStack_c;
-
   u32 uStack_8;
-
   u32 uStack_4;
 
   
