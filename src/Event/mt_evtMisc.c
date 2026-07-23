@@ -3302,7 +3302,7 @@ void FUN_0038a140(u32 param_1,u32 *param_2)
 
 #pragma push
 #pragma opt_loop_invariants on
-// FUN_0038A180 NONMATCHING
+// FUN_0038A180
 
 
 void FUN_0038a180(int param_1,int param_2)
@@ -3329,14 +3329,17 @@ void FUN_0038a180(int param_1,int param_2)
   iVar4 = 0;
   pfVar5 = (float *)DAT_00958970_abs;
   for (; iVar4 < 10; iVar4 = iVar4 + 1) {
+    pfIn = (float *)((u8 *)pfVar5 + iVar4 * 4);
+    asm volatile("" : "+r"(pfIn));
     pfOut = (float *)(param_2 + iVar4 * 4);
-    pfIn = pfVar5 + iVar4;
-    pfOut[4] = pfIn[0];
-    uVar3 = *(s16 *)DAT_0095897e_abs;
-    uVar2 = *(s16 *)DAT_0095897c_abs;
-    uVar1 = *(s16 *)DAT_0095897a_abs;
-    *(u16 *)(param_2 + 8) = *(s16 *)DAT_00958978_abs;
-    *(u16 *)(param_2 + 10) = uVar1;
+    asm volatile("" : "+r"(pfOut));
+    pfOut[4] = pfIn[4];
+    uVar4 = *(volatile s16 *)DAT_00958978_abs;
+    uVar1 = *(volatile s16 *)DAT_0095897a_abs;
+    uVar2 = *(volatile s16 *)DAT_0095897c_abs;
+    uVar3 = *(volatile s16 *)DAT_0095897e_abs;
+    *(u16 *)(param_2 + 8) = uVar4;
+    *(u16 *)(param_2 + 0xa) = uVar1;
     *(u16 *)(param_2 + 0xc) = uVar2;
     *(u16 *)(param_2 + 0xe) = uVar3;
   }
