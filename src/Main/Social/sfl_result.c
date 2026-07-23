@@ -2512,30 +2512,31 @@ void func_001fccc0(u8* src, u8* dst, u32 skillId)
 {
     u16 skill;
     u32 entry;
+    s32 event_id;
     s32 i;
     s16 currentSkill;
-    u16 pcId;
 
     entry = FUN_00170e90((s16)skillId);
     skill = *(u16*)(entry + 8);
     if (FUN_0017b4e0(skill) == 0)
         FUN_0019d3f0(0x684d60, 0x23a);
 
-    FUN_0017b860(*(u16*)(dst + 2), *(u16*)(src + 2), skill, 1);
-    i = 0;
-    while (i < 0xc)
-    {
-        pcId = (u16)i;
-        currentSkill = FUN_001706c0(*(u16*)(src + 2), pcId);
-        if (currentSkill != 0 &&
-            skillId == (FUN_00170670(*(u16*)(src + 2), pcId) & 0xffff))
-            break;
-        i++;
+    FUN_0017b860(*(s16*)(dst + 2), *(s16*)(src + 2), skill, 1);
+    for (i = 0; i < 0xc; i++) {
+        event_id = *(s16*)(src + 2);
+        currentSkill = FUN_001706c0(event_id, (s16)i);
+        if (currentSkill != 0) {
+            event_id = *(s16*)(src + 2);
+            if (skillId == (FUN_00170670(event_id, (s16)i) & 0xffff))
+                break;
+        }
     }
-    if (i > 0xb)
+    if (i >= 0xc)
         FUN_0019d3f0(0x684d60, 0x249);
-    currentSkill = FUN_001706c0(*(u16*)(src + 2), (u16)i);
-    FUN_00170710(*(u16*)(src + 2), (u16)i, currentSkill - 1);
+    event_id = *(s16*)(src + 2);
+    currentSkill = FUN_001706c0(event_id, (s16)i);
+    event_id = *(s16*)(src + 2);
+    FUN_00170710(event_id, (s16)i, currentSkill - 1);
 }
 // FUN_001FCE20 NONMATCHING
 
