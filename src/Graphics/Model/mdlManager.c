@@ -3810,7 +3810,7 @@ void* func_003140c0(void* param_1,u16 *param_2)
 
 {
 
-  s16 rawIndex;
+  s32 rawIndex;
   s64 lVar2;
   u32 count;
   int *piVar1;
@@ -7092,7 +7092,7 @@ void func_003192a0(int parent, u32 slotIdx, u16 type, u16 id, const char* path,
 
 
 
-// FUN_00319390 NONMATCHING
+// FUN_00319390
 
 
 void func_00319390(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5,
@@ -7106,11 +7106,9 @@ void func_00319390(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5,
 
   int iVar2;
 
-  u32 uStack_8;
+  MdlRmdFileMemory rmd;
 
-  u32 uStack_4;
-
-  
+  u8* offset;
 
   uVar1 = mdlInit(param_3,param_4);
 
@@ -7124,15 +7122,14 @@ void func_00319390(int param_1,u32 param_2,u16 param_3,u16 param_4,u32 param_5,
 
   mdlStreamInit(uVar1);
 
-  uStack_8 = param_5;
-
-  uStack_4 = param_6;
-
-  mdlStreamSetRmdFileMemory(uVar1,(const MdlRmdFileMemory*)&uStack_8);
+  rmd.memory = (void*)param_5;
+  rmd.size = param_6;
+  mdlStreamSetRmdFileMemory(uVar1, &rmd);
 
   mdlStreamRead(uVar1);
 
-  param_1 = (param_2 & 0xffff) * 0xc + param_1;
+  offset = (u8*)((param_2 & 0xffff) * 0xc);
+  param_1 = (int)(offset + param_1);
 
   *(int *)(param_1 + 0x3b8) = iVar2;
 
