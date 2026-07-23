@@ -4296,157 +4296,197 @@ void FUN_002b2060(int param_1)
 }
 
 #pragma push
-#pragma opt_common_subs off
+#pragma opt_common_subs on
 // FUN_002b21f0 NONMATCHING
 
 void FUN_002b21f0(BtlCamera *camera, f32 param_1, int param_2)
 {
+    struct {
+        u8 pad_top[32];
+        BtlCameraKeyFrame frame;
+        f32 out[3];
+        RtQuat quat;
+        u8 pad_to_40[8];
+        f32 plane[2];
+        f32 cameraPlane[2];
+        f32 d1from[2];
+        f32 d1to[2];
+        f32 d1result[2];
+        f32 d1eye[2];
+        RwV3d target;
+        u8 pad_target[4];
+        RwV3d delta;
+        u8 pad_delta[4];
+        RwV3d offset;
+        u8 pad_offset[4];
+        RwV3d base;
+        u8 pad_base[4];
+        RwV3d pointB;
+        u8 pad_pointB[4];
+        RwV3d pointA;
+    } stack;
+#define frame stack.frame
+#define out stack.out
+#define quat stack.quat
+#define plane stack.plane
+#define cameraPlane stack.cameraPlane
+#define d1from stack.d1from
+#define d1to stack.d1to
+#define d1result stack.d1result
+#define d1eye stack.d1eye
+#define target stack.target
+#define delta stack.delta
+#define offset stack.offset
+#define base stack.base
+#define pointB stack.pointB
+#define pointA stack.pointA
+    BtlCamera *cam;
     BtlAction *action;
-    BtlUnit *unitA;
-    BtlUnit *unitB;
-    BtlUnit *activeUnit;
-    BtlUnit *effectUnit;
-    BtlCameraKeyFrame frame;
-    RtQuat rotation;
-    RwV3d pointA;
-    RwV3d pointB;
-    RwV3d delta;
-    RwV3d cameraDelta;
-    RwV3d scaled;
-    RwV3d orbit;
-    RwV3d transformed;
-    RwV3d target;
-    f32 from[2];
-    f32 to[2];
-    f32 eye[2];
-    f32 result[2];
+    BtlUnit *unit;
+    BtlUnit *targetUnit;
+    BtlUnit *selected;
+    BtlUnit *other;
     f32 norm;
     f32 depth;
-    f32 orbitScale;
-    f32 angle;
-    f32 distance;
-    f32 tanHalfFov;
-    f32 ratio;
-    f32 clamp;
-    s32 mode;
+    f32 scale;
+    f32 baseY;
+    f32 dot1;
+    f32 dot2;
+    f32 speed;
+    f32 keep;
+    u32 mode;
 
-    action = camera->action;
-    unitA = action->unit;
-    unitB = ((BtlAction *)action->target.targetedActions[0])->unit;
-    FUN_00280130_b21f0v2(unitA, &pointA);
-    FUN_00280130_b21f0v2(unitB, &pointB);
-
+    cam = camera;
+    speed = param_1;
+    keep = param_1;
+    speed = keep;
+    action = cam->action;
+    unit = action->unit;
+    targetUnit = *(BtlUnit **)(*(u8 **)((u8 *)action + 0x38) + 0x30);
+    FUN_00280130_b21f0v2(unit, &pointA);
+    FUN_00280130_b21f0v2(targetUnit, &pointB);
     delta.x = pointA.x - pointB.x;
     delta.y = pointA.y - pointB.y;
     delta.z = pointA.z - pointB.z;
     norm = FUN_004c69f0_b21f0v2(&delta, &delta);
-
-    cameraDelta.x = camera->pos.x - pointA.x;
-    cameraDelta.y = 0.0f;
-    cameraDelta.z = camera->pos.z - pointA.z;
-    FUN_004c6b20_b21f0v2(&cameraDelta, &cameraDelta);
-
+    cameraPlane[0] = cam->pos.x - pointA.x;
+    cameraPlane[1] = cam->pos.z - pointA.z;
+    FUN_004c6b20_b21f0v2((RwV3d *)cameraPlane, (RwV3d *)cameraPlane);
+    dot1 = delta.x * cameraPlane[0] + delta.z * cameraPlane[1];
     if (param_2 != 0) {
         if ((*(u32 *)(iGpffffb6fc + 0xc) & 0x200000) != 0) {
-            *(u32 *)((u8 *)camera + 0x104) = 0;
+            *(u32 *)((u8 *)cam + 0x104) = 0;
         } else {
-            *(u32 *)((u8 *)camera + 0x104) =
-                (0.0f <= delta.x * cameraDelta.x + delta.z * cameraDelta.z);
+            *(u32 *)((u8 *)cam + 0x104) = (u32)(dot1 >= 0.0f);
         }
     }
-
-    if (*(u32 *)((u8 *)camera + 0x104) == 1) {
-        orbit.x = pointA.x;
-        orbit.y = pointA.y;
-        orbit.z = pointA.z;
-        depth = unitA->sphereRadius * unitA->scale * 1.25f;
-        orbitScale = fGpffff8098 * norm;
-        scaled.x = delta.x * orbitScale;
-        scaled.y = delta.y * orbitScale;
-        scaled.z = delta.z * orbitScale;
-        if (orbit.y < 100.0f) {
-            orbit.y = 100.0f;
+    if (*(u32 *)((u8 *)cam + 0x104) == 1) {
+        base = pointA;
+        depth = unit->sphereRadius * unit->scale * 1.25f;
+        scale = fGpffff8098 * norm;
+        offset.x = delta.x * scale;
+        offset.y = delta.y * scale;
+        offset.z = delta.z * scale;
+        if (base.y < 100.0f) {
+            base.y = 100.0f;
         }
-        activeUnit = unitA;
-        effectUnit = unitB;
-        orbitScale = fGpffff809c;
+        baseY = base.y;
+        selected = unit;
+        other = targetUnit;
+        scale = fGpffff809c;
     } else {
-        orbit.x = pointB.x;
-        orbit.y = pointB.y;
-        orbit.z = pointB.z;
-        depth = fGpffff8098 * unitB->sphereRadius * unitB->scale;
-        orbitScale = 2.5f;
-        pointA.y = pointA.y - unitB->unk_8c * unitB->scale * 0.25f;
+        base = pointB;
+        depth = fGpffff8098 * targetUnit->sphereRadius * targetUnit->scale;
+        pointA.y = (pointA.y + 0.0f) -
+                   targetUnit->unk_8c * targetUnit->scale * 0.25f;
         if (pointA.y < 100.0f) {
             pointA.y = 100.0f;
         }
         delta.x = pointA.x - pointB.x;
         delta.y = pointA.y - pointB.y;
         delta.z = pointA.z - pointB.z;
-        norm = FUN_004c69f0_b21f0v2(&delta, &delta) * 0.25f;
-        scaled.x = delta.x * norm;
-        scaled.y = delta.y * norm;
-        scaled.z = delta.z * norm;
-        activeUnit = unitB;
-        effectUnit = unitA;
+        norm = FUN_004c69f0_b21f0v2(&delta, &delta);
+        norm = norm * 0.25f;
+        offset.x = delta.x * norm;
+        offset.y = delta.y * norm;
+        offset.z = delta.z * norm;
+        baseY = base.y;
+        selected = targetUnit;
+        other = unit;
     }
-
-    scaled.x += pointB.x;
-    scaled.y += pointB.y;
-    scaled.z += pointB.z;
-
+    offset.x += pointB.x;
+    offset.y += pointB.y;
+    offset.z += pointB.z;
+    plane[0] = delta.z;
+    plane[1] = -delta.x;
+    dot2 = delta.z * cameraPlane[0] + plane[1] * cameraPlane[1];
     if (param_2 != 0) {
-        *(u32 *)((u8 *)camera + 0x108) =
-            (0.0f <= delta.z * cameraDelta.x - delta.x * cameraDelta.z);
+        *(u32 *)((u8 *)cam + 0x108) = (u32)(dot2 >= 0.0f);
     }
-
-    if (*(u32 *)((u8 *)camera + 0x108) == 1) {
-        from[0] = delta.z * depth + orbit.x;
-        from[1] = orbit.z - delta.x * depth;
+    if (*(u32 *)((u8 *)cam + 0x108) == 1) {
+        target.x = (base.x + 0.0f) + plane[0] * depth;
+        target.z = (base.z + 0.0f) + plane[1] * depth;
     } else {
-        from[0] = orbit.x - delta.z * depth;
-        from[1] = delta.x * depth + orbit.z;
+        target.x = (base.x + 0.0f) - plane[0] * depth;
+        target.z = (base.z + 0.0f) - plane[1] * depth;
     }
-
-    FUN_002a4690(&rotation, from, &scaled, &D_00697880);
-    FUN_004be1e0_typed(&transformed, &D_006978A0, 1, &rotation);
-
-    to[0] = scaled.x;
-    to[1] = scaled.z;
-    eye[0] = orbit.x;
-    eye[1] = orbit.z;
-    angle = FUN_002d1fd0(to, from, eye, result);
-
-    distance = orbitScale * activeUnit->sphereRadius * activeUnit->scale + angle;
-    tanHalfFov = tanf(fGpffff8070 * camera->fovRad * 0.5f);
-    ratio = distance / tanHalfFov;
-    clamp = 500.0f;
-    if (clamp <= ratio) {
-        clamp = ratio;
+    target.y = baseY;
+    FUN_002a4690(&quat, &target, &offset, &D_00697880);
+    FUN_004be1e0_typed(&delta, &D_006978A0, 1, &quat);
+    d1from[0] = offset.x;
+    d1from[1] = offset.z;
+    d1to[0] = target.x;
+    d1to[1] = target.z;
+    d1eye[0] = base.x;
+    d1eye[1] = base.z;
+    norm = FUN_002d1fd0(d1from, d1to, d1eye, d1result);
+    target.x = d1result[0];
+    target.y = baseY;
+    target.z = d1result[1];
+    depth = scale * selected->sphereRadius * selected->scale + norm + 0.0f;
+    norm = tanf(fGpffff8070 * cam->fovRad * 0.5f);
+    scale = 500.0f;
+    if (scale <= depth / norm) {
+        scale = depth / norm;
     }
-    transformed.x *= clamp;
-    transformed.y *= clamp;
-    transformed.z *= clamp;
-    target.x = result[0] + transformed.x;
-    target.y = orbit.y + transformed.y;
-    target.z = result[1] + transformed.z;
-    if (target.y < 12.5f) {
-        target.y = 12.5f;
+    delta.x = delta.x * scale;
+    delta.y = delta.y * scale;
+    delta.z = delta.z * scale;
+    out[0] = d1result[0] + delta.x;
+    out[1] = baseY + delta.y;
+    out[2] = d1result[1] + delta.z;
+    if (out[1] < 12.5f) {
+        out[1] = 12.5f;
     }
-    FUN_002a4470((f32 *)&frame, (f32 *)((u8 *)camera + 0x9c));
-
+    FUN_002a4470((f32 *)&frame, (f32 *)((u8 *)cam + 0x9c));
     if (param_2 != 0) {
-        if (FUN_002d1f30_b21f0v2(&frame.rot, &rotation) > fGpffff80d4) {
-            FUN_002a44f0((f32 *)&frame, (f32 *)&target);
+        norm = FUN_002d1f30_b21f0v2(&frame.rot, &quat);
+        if (norm > fGpffff80d4) {
+            FUN_002a44f0((f32 *)&frame, (f32 *)out);
             mode = 3;
         } else {
             mode = 0x23;
         }
-        FUN_002a3e80(50.0f, (u8 *)camera->action, (u8 *)(effectUnit + 1),
-                     (u8 *)&target, (u32)mode);
+        FUN_002a3e80(50.0f, (u8 *)cam->action, (u8 *)other + 4,
+                     (u8 *)out, mode);
     }
-    FUN_002a2290((u16 *)camera, &frame.pos, &target, 1);
-    FUN_002a3110((u16 *)camera, param_1);
+    FUN_002a2290((u16 *)cam, &frame.pos, (RwV3d *)out, 1);
+    FUN_002a3110((u16 *)cam, speed);
+#undef frame
+#undef out
+#undef quat
+#undef plane
+#undef cameraPlane
+#undef d1from
+#undef d1to
+#undef d1result
+#undef d1eye
+#undef target
+#undef delta
+#undef offset
+#undef base
+#undef pointB
+#undef pointA
 }
 #pragma opt_common_subs on
 #pragma pop
