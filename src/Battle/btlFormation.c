@@ -183,6 +183,10 @@ extern s32 func_00280870_btlFormation_s32(u32 mode, u32 enabled,
 extern f32 func_00280870_btlFormation_f32(u32 mode, u32 enabled,
                                           void *out, void *end, void *extra,
                                           u32 include);
+#pragma alias func_002b96f0_btlFormation_u64 func_002b96f0
+extern void func_002b96f0_btlFormation_u64(float param_1,float param_2,
+                                           float *param_3,u32 *param_4,
+                                           int param_5,u64 param_6);
 extern u64 func_00288f80();
 extern u64 func_00289030();
 extern u64 func_0028a780();
@@ -1531,7 +1535,7 @@ void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
   fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
   fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
   fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
-  func_002b96f0(fVar2,fVar3,&fStack_10,(u32 *)(param_1 + 0x40),param_3,param_4);
+  func_002b96f0_btlFormation_u64(fVar2,fVar3,&fStack_10,(u32 *)(param_1 + 0x40),param_3,param_4);
   return;
 }
 
