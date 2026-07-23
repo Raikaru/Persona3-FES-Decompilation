@@ -4,6 +4,12 @@
 #include "rw/rwplcore.h"
 
 typedef int bool;
+#ifndef UINT32_C
+#define UINT32_C(x) x##u
+#endif
+#ifndef UINT64_C
+#define UINT64_C(x) x##ull
+#endif
 extern void *memcpy(void *dst, const void *src, u32 size);
 void FUN_004d0f00();
 void FUN_001124b0();
@@ -13,6 +19,7 @@ void FUN_003c7dd0();
 extern void* (*DAT_00960184_abs[])(...);
 extern void *(*DAT_00960184)(u32 elementCount, u32 elementSize, u32 heapFlags);
 extern const char D_005DBD00[];
+extern const char D_005E3E70[];
 extern void* h_campUpdateSystemMenuTask(KwlnTask* task);
 extern u32 FUN_0017d800(void);
 extern KwlnTask *FUN_00194B20(KwlnTask *parent, const char *name, u32 priority, KwlnTaskUpdateFunc update, KwlnTaskDestroyFunc destroy, void *workData);
@@ -122,20 +129,20 @@ typedef char CampMenuWorkSizeCheck[(sizeof(CampMenuWork) == 0x17c) ? 1 : -1];
 #define CAMP_MENU_ENTRY_SIZE 0x44
 #define CAMP_MENU_PTR32(address) ((void *)(uintptr_t)(address))
 #define CAMP_MENU_CONST_PTR(address) ((const char *)(uintptr_t)(address))
-static CampMenuWork *camp_menu_work(KwlnTask *task)
+static inline CampMenuWork *camp_menu_work(KwlnTask *task)
 {
     return (CampMenuWork *)task->workData;
 }
-static CampMenuEntry *camp_menu_entry(CampMenuWork *work, s32 index)
+static inline CampMenuEntry *camp_menu_entry(CampMenuWork *work, s32 index)
 {
     return (CampMenuEntry *)((u8 *)CAMP_MENU_PTR32(work->entriesAddress) +
                              index * CAMP_MENU_ENTRY_SIZE);
 }
-static void *camp_menu_record(CampMenuWork *work, u32 offset)
+static inline void *camp_menu_record(CampMenuWork *work, u32 offset)
 {
     return (u8 *)CAMP_MENU_PTR32(work->entriesAddress) + offset;
 }
-static u32 camp_menu_address(const void *pointer)
+static inline u32 camp_menu_address(const void *pointer)
 {
     return (u32)(uintptr_t)pointer;
 }
@@ -477,12 +484,12 @@ void *FUN_0015B430(KwlnTask *task)
     u32 selected;
     u32 allReady;
     bool inputHeld;
-    u32 fileSize;
+    u32 stackScratch[0x24];
     void *fileData;
 
     /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
     FUN_00113a30(100.0f, 0.0f, 20.0f,
-                 ((work->fadeStep * 0xffu) / 10u) | UINT32_C(0x72b5ff00),
+                 ((work->fadeStep * 0xffu) / 10u) | 0x72b5ff00u,
                  0x280, 0x19);
 
     switch (work->state) {
@@ -497,27 +504,30 @@ void *FUN_0015B430(KwlnTask *task)
             return 0;
         }
 
-        if (FUN_0017d800() == 0) {
+        if (FUN_0017d800() != 0) {
             work->request = camp_menu_address(FUN_0010c1a0(
-                0, CAMP_MENU_CONST_PTR(0x005db0a0), 0, 0, 0, 0, 0, 0));
+                0, (const char *)(D_005E3E70 - 0x81f0), 0, 0, 0, 0, 0, 0));
         } else {
             work->request = camp_menu_address(FUN_0010c1a0(
                 0, CAMP_MENU_CONST_PTR(0x005db050), 0, 0, 0, 0, 0, 0));
         }
         work->allocation10 = camp_menu_address(func_0018b6d0(10));
         work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));
-        work->cdvdMain = camp_menu_address(FUN_00100d80(CAMP_MENU_CONST_PTR(0x005dbca0), 0));
-        work->cdvdStatus = camp_menu_address(FUN_00100d80(CAMP_MENU_CONST_PTR(0x005dbcc0), 0));
-        work->cdvdSystem = camp_menu_address(FUN_00100d80(CAMP_MENU_CONST_PTR(0x005dbce0), 1));
+        work->cdvdMain = camp_menu_address(FUN_00100d80(
+            (const char *)(D_005E3E70 - 0x81d0), 0));
+        work->cdvdStatus = camp_menu_address(FUN_00100d80(
+            (const char *)(D_005E3E70 - 0x81b0), 0));
+        work->cdvdSystem = camp_menu_address(FUN_00100d80(
+            (const char *)(D_005E3E70 - 0x8190), 1));
         work->state = 1;
         break;
 
     case 1:
         if (work->requestResult == 0) {
-            u32 loaded = 0;
+            stackScratch[0] = 0;
             work->requestResult = (u32)FUN_0010c3a0(
-                CAMP_MENU_PTR32(work->request), &loaded, 0);
-            if (loaded == 0) {
+                CAMP_MENU_PTR32(work->request), &stackScratch[0], 0);
+            if (stackScratch[0] == 0) {
                 work->requestResult = 0;
                 return 0;
             }
@@ -529,9 +539,11 @@ void *FUN_0015B430(KwlnTask *task)
                 *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdMain) + 0x110));
             FUN_003c7d80(0x08,
                 *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
-            fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 0, &fileSize);
+            fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 0,
+                                    &stackScratch[1]);
             work->archiveBlob0 = camp_menu_address(FUN_00112420(fileData));
-            fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 1, &fileSize);
+            fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 1,
+                                    &stackScratch[1]);
             work->archiveBlob1 = camp_menu_address(FUN_00112420(fileData));
             work->state = 2;
         }
@@ -741,7 +753,7 @@ void *FUN_0015B430(KwlnTask *task)
             }
         }
         if (allReady != 0) {
-            return (void *)(uintptr_t)UINT32_C(0xffffffff);
+            return (void *)(uintptr_t)0xffffffffu;
         }
         break;
     }
