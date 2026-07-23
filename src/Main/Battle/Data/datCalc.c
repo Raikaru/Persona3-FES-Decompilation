@@ -6848,20 +6848,32 @@ void FUN_0030cec0(void)
 
 // FUN_0030cf00 NONMATCHING
 void FUN_0030cf00(void)
-
 {
+  float fVar4;
   float fVar1;
   float fVar2;
   float fVar3;
-  float fVar4;
   
   fVar1 = (float)FUN_0030fdf0(0xd,3);
+  fVar3 = 100.0f;
+  fVar1 = fVar3 + fVar1;
   fVar2 = (float)FUN_0030fdf0(0xe,3);
-  fVar4 = (fVar1 + 100.0f) / (fVar2 + 100.0f);
+  fVar3 = 100.0f;
+  fVar2 = fVar3 + fVar2;
+  fVar4 = fVar1 / fVar2;
   fVar1 = (float)FUN_0030fdf0(0xd,4);
+  fVar3 = 100.0f;
+  fVar1 = fVar3 + fVar1;
   fVar2 = (float)FUN_0030fdf0(0xe,4);
+  fVar3 = 100.0f;
+  fVar2 = fVar3 + fVar2;
+  fVar1 = fVar1 / fVar2;
+  fVar2 = fVar4 * fVar1;
+  fVar2 *= 75.0f;
   fVar3 = (float)FUN_0030fdf0(0x22,0);
-  FUN_00311190((int)(fVar3 * 5.0f + fVar4 * ((fVar1 + 100.0f) / (fVar2 + 100.0f)) * 75.0f + 0.0f));
+  fVar3 *= 5.0f;
+  fVar3 += fVar2;
+  FUN_00311190((int)(fVar3 + 0.0f));
   return;
 }
 
@@ -7337,20 +7349,28 @@ void FUN_0030e140(void)
 
 // FUN_0030e180 NONMATCHING
 void FUN_0030e180(void)
-
 {
+  float fVar4;
   float fVar1;
   float fVar2;
   float fVar3;
-  float fVar4;
   
   fVar1 = (float)FUN_0030fdf0(0xd,3);
+  fVar1 = 60.0f + fVar1;
   fVar2 = (float)FUN_0030fdf0(0xe,3);
-  fVar4 = (fVar1 + 60.0f) / (fVar2 + 60.0f);
+  fVar2 = 60.0f + fVar2;
+  fVar4 = fVar1 / fVar2;
   fVar1 = (float)FUN_0030fdf0(0xd,4);
+  fVar1 = 30.0f + fVar1;
   fVar2 = (float)FUN_0030fdf0(0xe,4);
+  fVar2 = 30.0f + fVar2;
+  fVar1 = fVar1 / fVar2;
+  fVar2 = fVar4 * fVar1;
+  fVar2 *= 85.0f;
   fVar3 = (float)FUN_0030fdf0(0x22,0);
-  FUN_00311190((int)(fVar3 * 5.0f + fVar4 * ((fVar1 + 30.0f) / (fVar2 + 30.0f)) * 85.0f + 0.0f));
+  fVar3 *= 5.0f;
+  fVar3 += fVar2;
+  FUN_00311190((int)(fVar3 + 0.0f));
   return;
 }
 
