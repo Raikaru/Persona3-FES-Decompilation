@@ -2454,7 +2454,6 @@ int FUN_003b1a90(int param_1)
 
   return iVar2;
 
-
 }
 #define FUN_003b1a90(...) ((int (*)(...))FUN_003b1a90)(__VA_ARGS__)
 #undef FUN_003b1b00
@@ -2467,51 +2466,56 @@ int FUN_003b1b00(int param_1,int param_2)
 
 {
 
-  int iVar5;
+  int iVar3;
 
   int iVar6;
 
   int iVar2;
 
+  int iVar5;
+
   int iVar4;
 
-  int iVar3;
+  int iVar7;
   
 
   iVar2 = 0;
+  iVar5 = 0;
 
   if (param_2 == 0) {
     return 0;
   }
   else {
 
-    iVar5 = 0;
 
     for (param_2 = *(int *)(param_2 + 0x2c); param_2 != 0;
          param_2 = *(int *)(param_2 + 0x28)) {
-
       iVar2 = 0;
-
-      for (iVar6 = param_2;
-           (iVar6 != 0 && (*(int *)(iVar6 + 8) < *(int *)(param_2 + 8) + 100));
-           iVar6 = *(int *)(iVar6 + 0x28)) {
-
-        iVar3 = 0;
-
-        for (iVar4 = *(int *)(iVar6 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
-
-          iVar3 = iVar3 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar6 + 3);
-
-        }
-
-        iVar2 = iVar2 + iVar3;
-
+      iVar6 = param_2;
+      iVar7 = *(int *)(param_2 + 8) + 100;
+      goto frFont_b1b00_inner_check;
+frFont_b1b00_inner_check:
+      if (iVar6 == 0 || *(int *)(iVar6 + 8) >= iVar7) {
+        goto frFont_b1b00_inner_done;
       }
-
+      goto frFont_b1b00_inner_body;
+frFont_b1b00_inner_body:
+      iVar3 = 0;
+      iVar4 = *(int *)(iVar6 + 0x1c);
+frFont_b1b00_child_check:
+      if (iVar4 == 0) goto frFont_b1b00_child_done;
+      goto frFont_b1b00_child_body;
+frFont_b1b00_child_body:
+      iVar3 = iVar3 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar6 + 3);
+      iVar4 = *(int *)(iVar4 + 0x28);
+      goto frFont_b1b00_child_check;
+frFont_b1b00_child_done:
+      iVar2 = iVar2 + iVar3;
+      iVar6 = *(int *)(iVar6 + 0x28);
+      goto frFont_b1b00_inner_check;
+frFont_b1b00_inner_done:
       if (iVar5 == param_1) break;
-
       iVar5 = iVar5 + 1;
-
     }
 
     iVar2 = iVar2 << 4;
@@ -2533,10 +2537,9 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
 {
 
 
-  int iVar3;
-
-  int iVar2;
   int iVar1;
+  int iVar3;
+  int iVar2;
 
 
   
