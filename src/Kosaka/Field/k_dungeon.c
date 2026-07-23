@@ -854,7 +854,7 @@ void func_001c0920(KwlnTask* task)
 }
 
 
-// FUN_001c0960 NONMATCHING
+// FUN_001c0960
 void* func_001c0960(KwlnTask* task)
 {
     u8* work;
@@ -869,12 +869,9 @@ void* func_001c0960(KwlnTask* task)
     work = (u8*)task->workData;
     sourceColor = mdlGetColor(*(Model**)(*(u8**)(work + 4) + 0x104));
     color = *sourceColor;
-    if (*(u32*)work == 1)
+    switch (*(u32*)work)
     {
-        goto stop;
-    }
-    if (*(u32*)work == 0)
-    {
+    case 0:
         if (*(s32*)(work + 8) > 0)
         {
             alpha = (f32)sourceColor->a;
@@ -942,20 +939,22 @@ void* func_001c0960(KwlnTask* task)
             *(f32*)(node + 0x18) = normalizedAlpha;
             node = *(u8**)(node + 0x28);
         }
-        node = *(u8**)(modelData + 0x28);
-        while (node != NULL)
+        modelData = *(u8**)(modelData + 0x28);
+        while (modelData != NULL)
         {
-            *(f32*)(node + 0x18) = normalizedAlpha;
-            node = *(u8**)(node + 0x28);
+            *(f32*)(modelData + 0x18) = normalizedAlpha;
+            modelData = *(u8**)(modelData + 0x28);
         }
         mdlSetColor(*(Model**)(*(u8**)(work + 4) + 0x104), &color);
+        break;
+    case 1:
+        goto stop;
     }
-    result = KWLNTASK_CONTINUE;
     goto done;
 stop:
-    result = KWLNTASK_STOP;
+    return KWLNTASK_STOP;
 done:
-    return (void*)result;
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001c0d30
