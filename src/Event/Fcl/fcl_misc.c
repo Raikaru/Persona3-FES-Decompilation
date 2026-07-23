@@ -3337,7 +3337,7 @@ void FUN_003cda60(u64 param_1)
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
