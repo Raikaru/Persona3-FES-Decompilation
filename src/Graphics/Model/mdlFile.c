@@ -1363,8 +1363,12 @@ extern u32 DAT_00957be0;
 extern u32 DAT_00960088;
 extern u32 DAT_0096008c;
 extern void (*DAT_00960090)(...);
+#pragma alias DAT_00960090_abs DAT_00960090
+extern code DAT_00960090_abs[];
 extern void (*DAT_00960094)(...);
 extern void (*DAT_009600a0)(...);
+#pragma alias DAT_009600a0_abs DAT_009600a0
+extern code DAT_009600a0_abs[];
 extern void (*DAT_009600a4)(...);
 extern u64 (*DAT_00960178)(...);
 #pragma alias DAT_00960178_u32 DAT_00960178
@@ -53922,241 +53926,114 @@ bool FUN_00351290(int param_1)
 
 
 
+// Reconstructed camera-fade full-screen-quad draw; obj 964B/1072B window (90%).
+// Residual: retail applies a bltz-guarded halve-then-double idiom to the
+// height/width/alpha float conversions here (6 sites); reproducing it with
+// an explicit if/else inflates codegen well past the window (structural
+// floor, several verified attempts). Camera typing, DAT_00960090/DAT_009600a0
+// vtable caching, and zScale addressing are already fixed.
 // FUN_00351510 NONMATCHING
 void FUN_00351510(int param_1)
-
-
-
 {
+  RwCamera* camera;
+  f32 heightF;
+  f32 widthF;
+  f32 ratio;
+  u32 alphaS32;
+  u32 alphaByte;
+  u32 textureHandle;
+  f32 recipFov;
+  f32 zScale;
+  f32 buf[64];
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void*, int);
 
-  u32 uVar1;
-
-  int iVar2;
-
-  u64 uVar3;
-
-  long lVar4;
-
-  u32 uVar5;
-
-  float fVar6;
-
-  u32 uStack_100;
-
-  u32 uStack_fc;
-
-  u32 uStack_f8;
-
-  u32 uStack_f0;
-
-  u32 uStack_ec;
-
-  float fStack_e8;
-
-  u32 uStack_e0;
-
-  u32 uStack_dc;
-
-  u32 uStack_d8;
-
-  float fStack_d4;
-
-  u32 uStack_c0;
-
-  u32 uStack_bc;
-
-  u32 uStack_b8;
-
-  u32 uStack_b0;
-
-  u32 uStack_ac;
-
-  float fStack_a8;
-
-  u32 uStack_a0;
-
-  u32 uStack_9c;
-
-  u32 uStack_98;
-
-  float fStack_94;
-
-  u32 uStack_80;
-
-  u32 uStack_7c;
-
-  u32 uStack_78;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  float fStack_68;
-
-  u32 uStack_60;
-
-  u32 uStack_5c;
-
-  u32 uStack_58;
-
-  float fStack_54;
-
-  u32 uStack_40;
-
-  u32 uStack_3c;
-
-  u32 uStack_38;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  float fStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_14;
-
-  
-
-  uVar3 = FUN_00198590();
-
-  lVar4 = (long)(int)RwCameraBeginUpdate(uVar3);
-
-  if (lVar4 != 0) {
-
-    fVar6 = (1.0 - (float)*(u16 *)(param_1 + 4) / (float)*(u16 *)(param_1 + 2)) * 255.0;
-
-    if (2.1474836e+09 <= fVar6) {
-
-      fVar6 = fVar6 - 2.1474836e+09;
-
+  camera = FUN_00198590_camera();
+  if (RwCameraBeginUpdate(camera) != 0) {
+    heightF = (f32)(u32)(*(u16 *)(param_1 + 4)) * 2.0f;
+    widthF = (f32)(u32)(*(u16 *)(param_1 + 2)) * 2.0f;
+    ratio = heightF / widthF;
+    ratio = 1.0f - ratio;
+    ratio = 255.0f * ratio;
+    if (2147483648.0f <= ratio) {
+      alphaByte = ((s32)(ratio - 2147483648.0f) | 0x80000000) & 0xff;
+    } else {
+      alphaByte = (s32)ratio & 0xff;
     }
+    alphaS32 = alphaByte & 0xff;
 
-    uVar5 = (int)fVar6 & 0xff;
+    textureHandle = *(u32 *)(*(int *)(param_1 + 0xc) + 0x60);
 
-    uVar1 = *(u32 *)(*(int *)(param_1 + 0xc) + 0x60);
+    RpSkyRenderStateSet(2, 0x44);
+    RpSkyRenderStateSet(3, 0x717fb);
 
-    RpSkyRenderStateSet(2,0x44);
+    setState = (void (**)(int, int))DAT_00960090_abs;
+    (*setState)(0xe, 0);
+    (*setState)(6, 0);
+    (*setState)(8, 0);
+    (*setState)(9, 2);
+    (*setState)(0xc, 1);
+    (*setState)(1, textureHandle);
+    (*setState)(3, 3);
+    (*setState)(4, 3);
 
-    RpSkyRenderStateSet(3,0x717fb);
+    camera = FUN_00198590_camera();
+    recipFov = 1.0f / *(float *)((u8*)camera + 0x84);
+    zScale = DAT_0096008c;
 
-    (*DAT_00960090)(0xe,0);
+    buf[0] = 0.0f;
+    buf[1] = 0.0f;
+    buf[2] = zScale;
+    buf[8] = 255.0f;
+    buf[9] = 255.0f;
+    buf[10] = 255.0f;
+    buf[11] = (f32)alphaS32 * 2.0f;
+    buf[6] = recipFov;
+    buf[4] = 0.0f;
+    buf[5] = 0.0f;
 
-    (*DAT_00960090)(6,0);
+    buf[16] = 0.0f;
+    buf[17] = 448.0f;
+    buf[18] = zScale;
+    buf[24] = 255.0f;
+    buf[25] = 255.0f;
+    buf[26] = 255.0f;
+    buf[27] = (f32)alphaS32 * 2.0f;
+    buf[22] = recipFov;
+    buf[20] = 0.0f;
+    buf[21] = 1.0f;
 
-    (*DAT_00960090)(8,0);
+    buf[32] = 640.0f;
+    buf[33] = 0.0f;
+    buf[34] = zScale;
+    buf[40] = 255.0f;
+    buf[41] = 255.0f;
+    buf[42] = 255.0f;
+    buf[43] = (f32)alphaS32 * 2.0f;
+    buf[38] = recipFov;
+    buf[36] = 1.0f;
+    buf[37] = 0.0f;
 
-    (*DAT_00960090)(9,2);
+    buf[48] = 640.0f;
+    buf[49] = 448.0f;
+    buf[50] = zScale;
+    buf[56] = 255.0f;
+    buf[57] = 255.0f;
+    buf[58] = 255.0f;
+    buf[59] = (f32)alphaS32 * 2.0f;
+    buf[54] = recipFov;
+    buf[52] = 1.0f;
+    buf[53] = 1.0f;
 
-    (*DAT_00960090)(0xc,1);
+    setBuffer = (void (**)(int, void*, int))DAT_009600a0_abs;
+    (*setBuffer)(4, buf, 4);
 
-    (*DAT_00960090)(1,uVar1);
+    (*setState)(1, 0);
 
-    (*DAT_00960090)(3,3);
-
-    (*DAT_00960090)(4,3);
-
-    uVar1 = DAT_0096008c;
-
-    iVar2 = FUN_00198590();
-
-    fStack_e8 = 1.0 / *(float *)(iVar2 + 0x84);
-
-    uStack_100 = 0;
-
-    uStack_fc = 0;
-
-    uStack_f8 = uVar1;
-
-    uStack_e0 = 0x437f0000;
-
-    uStack_dc = 0x437f0000;
-
-    uStack_d8 = 0x437f0000;
-
-    fStack_d4 = (float)uVar5;
-
-    uStack_f0 = 0;
-
-    uStack_ec = 0;
-
-    uStack_c0 = 0;
-
-    uStack_bc = 0x43e00000;
-
-    uStack_b8 = uVar1;
-
-    uStack_a0 = 0x437f0000;
-
-    uStack_9c = 0x437f0000;
-
-    uStack_98 = 0x437f0000;
-
-    fStack_94 = (float)uVar5;
-
-    uStack_b0 = 0;
-
-    uStack_ac = 0x3f800000;
-
-    uStack_80 = 0x44200000;
-
-    uStack_7c = 0;
-
-    uStack_78 = uVar1;
-
-    uStack_60 = 0x437f0000;
-
-    uStack_5c = 0x437f0000;
-
-    uStack_58 = 0x437f0000;
-
-    fStack_54 = (float)uVar5;
-
-    uStack_70 = 0x3f800000;
-
-    uStack_6c = 0;
-
-    uStack_40 = 0x44200000;
-
-    uStack_3c = 0x43e00000;
-
-    uStack_38 = uVar1;
-
-    uStack_20 = 0x437f0000;
-
-    uStack_1c = 0x437f0000;
-
-    uStack_18 = 0x437f0000;
-
-    fStack_14 = (float)uVar5;
-
-    uStack_30 = 0x3f800000;
-
-    uStack_2c = 0x3f800000;
-
-    fStack_a8 = fStack_e8;
-
-    fStack_68 = fStack_e8;
-
-    fStack_28 = fStack_e8;
-
-    (*DAT_009600a0)(4,&uStack_100,4);
-
-    (*DAT_00960090)(1,0);
-
-    uVar3 = FUN_00198590();
-
-    RwCameraEndUpdate(uVar3);
-
+    camera = FUN_00198590_camera();
+    RwCameraEndUpdate(camera);
   }
-
   return;
-
 }
 
 
