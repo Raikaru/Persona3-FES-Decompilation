@@ -58,11 +58,12 @@ extern void* func_001021c0(void* path, u8* mode);
 extern u32 func_001c7130(f32 value, u32 state);
 extern void FUN_001099d0(u32 value, ...);
 extern void FUN_00108fd0(u32 value, ...);
-extern u32 FUN_0016ef30(void);
+extern u8 FUN_0016ef30(void);
 extern u32 FUN_0016f190(u32 flag);
 extern u32 FUN_0017e480(u32 a, u32 b, u32 c, u32 d);
 extern void K_Assert(const char* message, s32 line);
 extern void (*D_00960090)(u32 state, ...);
+extern u32 D_007CE204;
 extern u32 D_007CC1E4;
 extern u32 D_007CC1F4;
 extern u32 D_007CC1F8;
@@ -1705,20 +1706,16 @@ void func_001a9760(KwlnTask* task, u32 value, const RwV3d* position, u32 sound, 
 void func_001a9850(void)
 {
     s32 floor;
-    s32 major;
-    s32 minor;
-    u32 time;
     u32 scenario;
-    u32 state;
 
-    if (*(u32*)0x007ce204 == 1)
+    if (D_007CE204 == 1)
     {
         return;
     }
     floor = (s32)K_FldDungeon_GetCurrentFloor();
     if (floor > 0)
     {
-        if (floor >= 2 && FUN_0016f380(1) > 0)
+        if (floor >= 2 && (s32)FUN_0016f380(1) > 0)
         {
             H_Snd_PlayBgm((s16)FUN_0016f380(1), 1);
             return;
@@ -1736,7 +1733,7 @@ void func_001a9850(void)
             else if (floor >= 0x41) H_Snd_PlayBgm(0x51, 1);
             else if (floor >= 0x11) H_Snd_PlayBgm(0x46, 1);
             else if (floor >= 2) H_Snd_PlayBgm(1, 1);
-            else H_Snd_PlayBgm(0x47, 1);
+            else if (floor > 0) H_Snd_PlayBgm(0x47, 1);
         }
         else
         {
@@ -1749,17 +1746,18 @@ void func_001a9850(void)
             else if (floor >= 2) H_Snd_PlayBgm(0x5e, 1);
             else if (floor == 1) H_Snd_PlayBgm(0x65, 1);
         }
-        return;
     }
-
-    major = gMtScene->fldMajorId;
-    minor = gMtScene->fldMinorId;
-    time = FUN_0016ef30();
-    if (((major == 7 && minor == 6) || (major == 8 && minor == 1) || (major == 9 && minor == 1)) &&
-        time == 8)
+    else
     {
-        FUN_001099d0(0x47, 1);
-        return;
+    if ((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 6) ||
+        (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 1) ||
+        (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1))
+    {
+        if ((u8)FUN_0016ef30() == 8)
+        {
+            FUN_001099d0(0x47, 1);
+            return;
+        }
     }
     if (datGetFlag(0xe00) == 1)
     {
@@ -1771,45 +1769,61 @@ void func_001a9850(void)
         FUN_00108fd0(0x14);
         return;
     }
-    if (major == 0x1f || datGetFlag(0xeef) == 1)
+    if (gMtScene->fldMajorId == 0x1f)
     {
         FUN_001099d0(0x14);
         return;
     }
-    if (major == 0x21) FUN_00108fd0(0x14);
-    else if (major == 0x22) FUN_001099d0(0x16);
-    else if (major == 0x23) FUN_001099d0(0x15);
-    else if (major == 0x25) FUN_001099d0(0x47);
-    else if (major == 0x0e && minor == 5) FUN_00108fd0(0x14);
-    else if ((major == 8 || major == 5) && minor == 3) FUN_001099d0(0x36, 1);
-    else if (major == 8 && minor == 9) FUN_00108fd0(0x14);
-    else if (major == 7 && minor == 1 && (time < 2 || time > 6)) FUN_00108fd0(0x14);
-    else if ((major == 8 || major == 9 || major == 10 || major == 0xc || (major == 7 && minor == 9)) &&
-             (FUN_0017e480(4, 5, 0xc, 0x1f) == 1 || FUN_0017e480(3, 1, 3, 5) == 1))
+    if (datGetFlag(0xeef) == 1)
     {
-        FUN_001099d0(0x19, 1);
+        FUN_001099d0(0x14);
+        return;
     }
-    else if ((major == 8 || major == 9 || major == 10 || major == 0xc || (major == 7 && minor == 9)) &&
+    if (gMtScene->fldMajorId == 0x21) FUN_00108fd0(0x14);
+    else if (gMtScene->fldMajorId == 0x22) FUN_001099d0(0x16);
+    else if (gMtScene->fldMajorId == 0x23) FUN_001099d0(0x15);
+    else if (gMtScene->fldMajorId == 0x25) FUN_001099d0(0x47);
+    else if (gMtScene->fldMajorId == 0x0e && gMtScene->fldMinorId == 5) FUN_00108fd0(0x14);
+    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 5) &&
+             gMtScene->fldMinorId == 3) FUN_001099d0(0x36, 1);
+    else if (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 1)
+    {
+        u8 time = FUN_0016ef30();
+        if (time < 2 || time > 6) FUN_00108fd0(0x14);
+    }
+    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
+              gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
+              (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9)) &&
+             (FUN_0017e480(4, 5, 0xc, 0x1f) == 1 ||
+              FUN_0017e480(3, 1, 3, 5) == 1))
+    {
+        FUN_001099d0(0x57, 1);
+    }
+    else if ((gMtScene->fldMajorId == 8 || gMtScene->fldMajorId == 9 ||
+              gMtScene->fldMajorId == 10 || gMtScene->fldMajorId == 0xc ||
+              (gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 9)) &&
              FUN_0017e480(1, 1, 2, 0x1c) == 1)
     {
         FUN_001099d0(0x50);
     }
-    else if (major == 5 && minor == 1) FUN_001099d0(0x19);
-    else if (major == 0x0e) FUN_001099d0(0x20, 1);
-    else if (major == 6)
+    else if (gMtScene->fldMajorId == 5 && gMtScene->fldMinorId == 1) FUN_001099d0(0x19);
+    else if (gMtScene->fldMajorId == 0x0e) FUN_001099d0(0x20, 1);
+    else if (gMtScene->fldMajorId == 6)
     {
-        if (FUN_0017e480(4, 5, 8, 0x1f) == 1 || FUN_0017e480(3, 1, 3, 5) == 1) FUN_001099d0(0x32, 1);
+        if (FUN_0017e480(4, 5, 8, 0x1f) == 1 ||
+            FUN_0017e480(3, 1, 3, 5) == 1) FUN_001099d0(0x32, 1);
         else if (FUN_0017e480(9, 1, 0xc, 0x1f) == 1) FUN_001099d0(0x33);
         else if (FUN_0017e480(1, 1, 2, 0x1c) == 1) FUN_001099d0(0x34);
     }
-    else if (major == 7)
+    else if (gMtScene->fldMajorId == 7)
     {
         if (FUN_0017e480(4, 5, 0xc, 0x1f) == 1) FUN_001099d0(0x35);
         else if (FUN_0017e480(1, 1, 2, 0x1c) == 1) FUN_001099d0(0x4d);
         else if (FUN_0017e480(3, 1, 3, 5) == 1) FUN_001099d0(0x5c);
     }
-    else if (major == 4) FUN_001099d0(0x4d, 1);
-    else if (major == 0x27 && minor == 1) FUN_001099d0(0x65);
+    else if (gMtScene->fldMajorId == 4) FUN_001099d0(0x4d, 1);
+    else if (gMtScene->fldMajorId == 0x27 && gMtScene->fldMinorId == 1) FUN_001099d0(0x65);
+    }
 }
 
 // FUN_001aa1b0 NONMATCHING
