@@ -30,7 +30,7 @@ extern void FUN_005318a0_void(u64);
 extern u32 FUN_005318f8_u32(u64);
 #pragma alias FUN_00530da0_u64 FUN_00530da0
 extern u64 FUN_00530da0_u64(u32);
-extern u32 FUN_0052efd8(long, long, long);
+extern u64 FUN_0052efd8(u64, u64, u64 *);
 extern u32 FUN_0052f7d0(long, long, long);
 
 static const float sAtanHi[] = {
@@ -524,333 +524,223 @@ u64 FUN_0052eeb0(long param_1,long param_2)
   }
   return uVar1;
 }
+#pragma optimization_level 3
 // FUN_0052EFD8 NONMATCHING
-u32 FUN_0052efd8(long param_1,long param_2,long param_3)
-
+u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
 {
-  u32 uVar1;
-  u32 uVar2;
-  u32 uVar3;
-  u32 uVar4;
-  u32 uVar5;
-  u32 uVar6;
-  u32 uVar7;
-  u32 uVar8;
-  u32 uVar9;
-  int iVar10;
-  u32 uVar11;
-  u32 uVar12;
-  int iVar13;
-  u32 uVar14;
-  int iVar15;
-  int iVar16;
-  int iVar17;
-  u32 uVar18;
-  u32 uVar19;
-  u32 uVar20;
-  
-  uVar6 = param_2 >> 0x20;
-  uVar2 = (u32)param_2;
-  uVar18 = (u32)param_1;
-  uVar7 = param_1 >> 0x20;
-  uVar3 = (u32)(int)uVar2;
-  uVar19 = (u32)(int)uVar18;
-  uVar8 = (u32)((u32)param_1 >> 0x20);
-  uVar20 = (u32)((u32)param_2 >> 0x20);
-  if (uVar6 == 0) {
-    if (uVar7 < uVar3) {
-      if (uVar3 < 0x10000) {
-        iVar13 = 8;
-        if (uVar3 < 0x100) {
-          iVar13 = 0;
-        }
+  u32 d0;
+  u32 d1;
+  u32 n0;
+  u32 n1;
+  u32 n2;
+  u32 q0;
+  u32 q1;
+  u32 b;
+  u32 bm;
+  u32 m0;
+  u32 m1;
+  u64 product;
+  union {
+    u64 ll;
+    struct {
+      u32 low;
+      u32 high;
+    } s;
+  } nn;
+  union {
+    u64 ll;
+    struct {
+      u32 low;
+      u32 high;
+    } s;
+  } dd;
+  union {
+    u64 ll;
+    struct {
+      u32 low;
+      u32 high;
+    } s;
+  } rr;
+  union {
+    u64 ll;
+    struct {
+      u32 low;
+      u32 high;
+    } s;
+  } ww;
+
+#define CLZ32(c, x) \
+  do { \
+    u32 clz_index; \
+    if ((x) < 0x10000) { \
+      clz_index = 8; \
+      if ((x) < 0x100) { \
+        clz_index = 0; \
+      } \
+    } else { \
+      clz_index = 0x10; \
+      if (0xffffff < (x)) { \
+        clz_index = 0x18; \
+      } \
+    } \
+    (c) = 0x20 - ((u32)(u8)(&DAT_007c0388)[(x) >> clz_index] + clz_index); \
+  } while (0)
+
+#define UDIV_QRNND(q, r, nh, nl, dv) \
+  do { \
+    u32 udiv_d1; \
+    u32 udiv_d0; \
+    u32 udiv_q1; \
+    u32 udiv_q0; \
+    u32 udiv_r1; \
+    u32 udiv_r0; \
+    u32 udiv_m; \
+    udiv_d1 = (dv) >> 0x10; \
+    udiv_d0 = (dv) & 0xffff; \
+    udiv_r1 = (nh) % udiv_d1; \
+    udiv_q1 = (nh) / udiv_d1; \
+    udiv_m = udiv_q1 * udiv_d0; \
+    udiv_r1 = (udiv_r1 << 0x10) | ((nl) >> 0x10); \
+    if (udiv_r1 < udiv_m) { \
+      udiv_q1--; \
+      udiv_r1 += (dv); \
+      if (udiv_r1 >= (dv)) { \
+        if (udiv_r1 < udiv_m) { \
+          udiv_q1--; \
+          udiv_r1 += (dv); \
+        } \
+      } \
+    } \
+    udiv_r1 -= udiv_m; \
+    udiv_r0 = udiv_r1 % udiv_d1; \
+    udiv_q0 = udiv_r1 / udiv_d1; \
+    udiv_m = udiv_q0 * udiv_d0; \
+    udiv_r0 = (udiv_r0 << 0x10) | ((nl) & 0xffff); \
+    if (udiv_r0 < udiv_m) { \
+      udiv_q0--; \
+      udiv_r0 += (dv); \
+      if (udiv_r0 >= (dv)) { \
+        if (udiv_r0 < udiv_m) { \
+          udiv_q0--; \
+          udiv_r0 += (dv); \
+        } \
+      } \
+    } \
+    udiv_r0 -= udiv_m; \
+    (q) = (udiv_q1 << 0x10) | udiv_q0; \
+    (r) = udiv_r0; \
+  } while (0)
+
+  nn.ll = n;
+  dd.ll = d;
+  d0 = dd.s.low;
+  d1 = dd.s.high;
+  n0 = nn.s.low;
+  n1 = nn.s.high;
+
+  if (d1 == 0) {
+    if (d0 > n1) {
+      CLZ32(bm, d0);
+      if (bm != 0) {
+        d0 = d0 << (bm & 0x1f);
+        n1 = (n1 << (bm & 0x1f)) | (n0 >> ((0x20 - bm) & 0x1f));
+        n0 = n0 << (bm & 0x1f);
       }
-      else {
-        iVar13 = 0x10;
-        if (0xffffff < uVar3) {
-          iVar13 = 0x18;
-        }
+      UDIV_QRNND(q0, n0, n1, n0, d0);
+      q1 = 0;
+      if (rp != 0) {
+        rr.s.low = n0 >> (bm & 0x1f);
+        rr.s.high = 0;
+        *rp = rr.ll;
       }
-      uVar20 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar2 >> iVar13] + iVar13);
-      if (uVar20 != 0) {
-        uVar3 = (u32)(int)(uVar2 << (uVar20 & 0x1f));
-        uVar7 = (u32)(int)(uVar8 << (uVar20 & 0x1f) | uVar18 >> (0x20 - uVar20 & 0x1f));
-        uVar19 = (u32)(int)(uVar18 << (uVar20 & 0x1f));
+    } else {
+      if (d0 == 0) {
+        d0 = 1 / d0;
       }
-      uVar2 = (u32)uVar3;
-      uVar8 = uVar2 >> 0x10;
-      iVar13 = (int)uVar7 / (int)uVar8;
-      if (uVar8 == 0) {
-        trap(7);
+      CLZ32(bm, d0);
+      if (bm == 0) {
+        n1 -= d0;
+        q1 = 1;
+      } else {
+        b = 0x20 - bm;
+        d0 = d0 << (bm & 0x1f);
+        n2 = n1 >> (b & 0x1f);
+        n1 = (n1 << (bm & 0x1f)) | (n0 >> (b & 0x1f));
+        n0 = n0 << (bm & 0x1f);
+        UDIV_QRNND(q1, n1, n2, n1, d0);
       }
-      iVar15 = iVar13 * (uVar2 & 0xffff);
-      uVar18 = (int)uVar7 % (int)uVar8 << 0x10 | (u32)uVar19 >> 0x10;
-      if ((u32)(long)(int)uVar18 < (u32)(long)iVar15) {
-        iVar16 = uVar18 + uVar2;
-        iVar10 = iVar13 + -1;
-        if (uVar3 <= (u32)(long)iVar16) {
-          if ((u32)(long)iVar15 <= (u32)(long)iVar16) {
-            iVar15 = iVar16 - iVar15;
-            goto LAB_0052f0d0;
-          }
-          iVar10 = iVar13 + -2;
-          iVar16 = iVar16 + uVar2;
-        }
-        iVar15 = iVar16 - iVar15;
+      UDIV_QRNND(q0, n0, n1, n0, d0);
+      if (rp != 0) {
+        rr.s.low = n0 >> (bm & 0x1f);
+        rr.s.high = 0;
+        *rp = rr.ll;
       }
-      else {
-        iVar15 = uVar18 - iVar15;
-        iVar10 = iVar13;
-      }
-LAB_0052f0d0:
-      uVar18 = iVar15 / (int)uVar8;
-      if (uVar8 == 0) {
-        trap(7);
-      }
-      iVar13 = uVar18 * (uVar2 & 0xffff);
-      uVar6 = (long)(iVar15 % (int)uVar8 << 0x10) | uVar19 & 0xffff;
-      uVar9 = uVar18;
-      if (uVar6 < (u32)(long)iVar13) {
-        iVar15 = (int)uVar6 + uVar2;
-        uVar6 = (u32)iVar15;
-        uVar9 = uVar18 - 1;
-        if ((uVar3 <= uVar6) && (uVar6 < (u32)(long)iVar13)) {
-          uVar6 = (u32)(int)(iVar15 + uVar2);
-          uVar9 = uVar18 - 2;
-        }
-      }
-      uVar2 = (int)uVar6 - iVar13;
-      uVar9 = iVar10 << 0x10 | uVar9;
-      uVar6 = 0;
     }
-    else {
-      if (uVar3 == 0) {
-        uVar3 = (u32)(1 / (int)uVar20);
-        trap(7);
-      }
-      if (uVar3 < 0x10000) {
-        iVar13 = 8;
-        if (uVar3 < 0x100) {
-          iVar13 = 0;
-        }
-      }
-      else {
-        iVar13 = 0x10;
-        if (0xffffff < uVar3) {
-          iVar13 = 0x18;
-        }
-      }
-      uVar2 = (u32)uVar3;
-      uVar20 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar2 >> iVar13] + iVar13);
-      if (uVar20 == 0) {
-        iVar16 = uVar8 - uVar2;
-        uVar6 = 1;
-        uVar5 = uVar2 >> 0x10;
-        uVar2 = uVar2 & 0xffff;
-      }
-      else {
-        uVar9 = uVar2 << (uVar20 & 0x1f);
-        uVar3 = (u32)(int)uVar9;
-        uVar5 = uVar9 >> 0x10;
-        uVar11 = uVar8 >> (0x20 - uVar20 & 0x1f);
-        iVar13 = (int)uVar11 / (int)uVar5;
-        uVar2 = uVar9 & 0xffff;
-        uVar8 = uVar8 << (uVar20 & 0x1f) | uVar18 >> (0x20 - uVar20 & 0x1f);
-        uVar19 = (u32)(int)(uVar18 << (uVar20 & 0x1f));
-        if (uVar5 == 0) {
-          trap(7);
-        }
-        iVar15 = iVar13 * uVar2;
-        uVar18 = (int)uVar11 % (int)uVar5 << 0x10 | uVar8 >> 0x10;
-        iVar10 = iVar13;
-        if ((u32)(long)(int)uVar18 < (u32)(long)iVar15) {
-          uVar18 = uVar18 + uVar9;
-          iVar10 = iVar13 + -1;
-          if ((u32)(long)(int)uVar18 < uVar3) goto LAB_0052f378;
-          if ((u32)(long)(int)uVar18 < (u32)(long)iVar15) {
-            iVar10 = iVar13 + -2;
-            uVar18 = uVar18 + uVar9;
-            goto LAB_0052f378;
-          }
-          iVar15 = uVar18 - iVar15;
-        }
-        else {
-LAB_0052f378:
-          iVar15 = uVar18 - iVar15;
-        }
-        iVar13 = iVar15 / (int)uVar5;
-        uVar7 = (u32)iVar13;
-        if (uVar5 == 0) {
-          trap(7);
-        }
-        iVar16 = iVar13 * uVar2;
-        uVar14 = (long)(iVar15 % (int)uVar5 << 0x10) | (long)(int)uVar8 & 0xffffU;
-        uVar6 = (u32)(iVar10 << 0x10);
-        if (uVar14 < (u32)(long)iVar16) {
-          iVar15 = (int)uVar14 + uVar9;
-          uVar14 = (u32)iVar15;
-          uVar7 = (u32)(iVar13 + -1);
-          if (uVar3 <= uVar14) {
-            uVar6 = (u32)(iVar10 << 0x10);
-            if ((u32)(long)iVar16 <= uVar14) goto LAB_0052f3d8;
-            uVar7 = (u32)(iVar13 + -2);
-            uVar14 = (u32)(int)(iVar15 + uVar9);
-          }
-          uVar6 = (u32)(iVar10 << 0x10);
-        }
-LAB_0052f3d8:
-        iVar16 = (int)uVar14 - iVar16;
-        uVar6 = uVar6 | uVar7;
-      }
-      iVar13 = iVar16 / (int)uVar5;
-      if (uVar5 == 0) {
-        trap(7);
-      }
-      iVar15 = iVar13 * uVar2;
-      uVar8 = iVar16 % (int)uVar5 << 0x10 | (u32)uVar19 >> 0x10;
-      iVar10 = (int)uVar3;
-      if ((u32)(long)(int)uVar8 < (u32)(long)iVar15) {
-        iVar17 = uVar8 + iVar10;
-        iVar16 = iVar13 + -1;
-        if (uVar3 <= (u32)(long)iVar17) {
-          if ((u32)(long)iVar15 <= (u32)(long)iVar17) {
-            iVar15 = iVar17 - iVar15;
-            goto LAB_0052f294;
-          }
-          iVar16 = iVar13 + -2;
-          iVar17 = iVar17 + iVar10;
-        }
-        iVar15 = iVar17 - iVar15;
-      }
-      else {
-        iVar15 = uVar8 - iVar15;
-        iVar16 = iVar13;
-      }
-LAB_0052f294:
-      uVar8 = iVar15 / (int)uVar5;
-      if (uVar5 == 0) {
-        trap(7);
-      }
-      iVar13 = uVar8 * uVar2;
-      uVar7 = (long)(iVar15 % (int)uVar5 << 0x10) | uVar19 & 0xffff;
-      uVar9 = uVar8;
-      if (uVar7 < (u32)(long)iVar13) {
-        iVar15 = (int)uVar7 + iVar10;
-        uVar7 = (u32)iVar15;
-        uVar9 = uVar8 - 1;
-        if ((uVar3 <= uVar7) && (uVar7 < (u32)(long)iVar13)) {
-          uVar7 = (u32)(iVar15 + iVar10);
-          uVar9 = uVar8 - 2;
-        }
-      }
-      uVar2 = (int)uVar7 - iVar13;
-      uVar9 = iVar16 << 0x10 | uVar9;
+  } else if (d1 > n1) {
+    q0 = 0;
+    q1 = 0;
+    if (rp != 0) {
+      rr.s.low = n0;
+      rr.s.high = n1;
+      *rp = rr.ll;
     }
-    if (param_3 == 0) goto LAB_0052f164;
-    uVar3 = (u32)(uVar2 >> (uVar20 & 0x1f));
+  } else {
+    CLZ32(bm, d1);
+    if (bm == 0) {
+      if ((n1 > d1) || (n0 >= d0)) {
+        q0 = 1;
+        {
+          u32 old_n0 = n0;
+          n0 -= d0;
+          n1 -= d1 + (u32)(n0 > old_n0);
+        }
+      } else {
+        q0 = 0;
+      }
+      q1 = 0;
+      if (rp != 0) {
+        rr.s.low = n0;
+        rr.s.high = n1;
+        *rp = rr.ll;
+      }
+    } else {
+      b = 0x20 - bm;
+      d1 = (d1 << (bm & 0x1f)) | (d0 >> (b & 0x1f));
+      d0 = d0 << (bm & 0x1f);
+      n2 = n1 >> (b & 0x1f);
+      n1 = (n1 << (bm & 0x1f)) | (n0 >> (b & 0x1f));
+      n0 = n0 << (bm & 0x1f);
+      UDIV_QRNND(q0, n1, n2, n1, d1);
+      product = (u64)q0 * d0;
+      m1 = (u32)(product >> 0x20);
+      m0 = (u32)product;
+      if ((m1 > n1) || ((m1 == n1) && (m0 > n0))) {
+        q0--;
+        {
+          u32 old_n0 = m0;
+          m0 = n0 - m0;
+          m1 = n1 - m1 - (u32)(n0 < old_n0);
+        }
+      }
+      q1 = 0;
+      if (rp != 0) {
+        {
+          u32 old_n0 = n0;
+          n0 -= m0;
+          n1 -= m1 + (u32)(n0 > old_n0);
+        }
+        rr.s.low = (n1 << (b & 0x1f)) | (n0 >> (bm & 0x1f));
+        rr.s.high = n1 >> (bm & 0x1f);
+        *rp = rr.ll;
+      }
+    }
   }
-  else {
-    uVar9 = 0;
-    uVar14 = uVar19;
-    if (uVar6 <= uVar7) {
-      if (uVar6 < 0x10000) {
-        iVar13 = 8;
-        if (uVar6 < 0x100) {
-          iVar13 = 0;
-        }
-      }
-      else {
-        iVar13 = 0x10;
-        if (0xffffff < uVar6) {
-          iVar13 = 0x18;
-        }
-      }
-      uVar11 = 0x20 - ((u32)(u8)(&DAT_007c0388)[uVar20 >> iVar13] + iVar13);
-      uVar5 = 0x20 - uVar11;
-      if (uVar11 != 0) {
-        uVar12 = uVar8 >> (uVar5 & 0x1f);
-        uVar20 = uVar20 << (uVar11 & 0x1f) | uVar2 >> (uVar5 & 0x1f);
-        uVar9 = uVar20 >> 0x10;
-        iVar13 = (int)uVar12 / (int)uVar9;
-        uVar8 = uVar8 << (uVar11 & 0x1f) | uVar18 >> (uVar5 & 0x1f);
-        uVar2 = uVar2 << (uVar11 & 0x1f);
-        uVar18 = uVar18 << (uVar11 & 0x1f);
-        if (uVar9 == 0) {
-          trap(7);
-        }
-        uVar1 = iVar13 * (uVar20 & 0xffff);
-        uVar12 = (int)uVar12 % (int)uVar9 << 0x10 | uVar8 >> 0x10;
-        if (uVar12 < uVar1) {
-          uVar12 = uVar12 + uVar20;
-          iVar15 = iVar13 + -1;
-          if (uVar20 <= uVar12) {
-            if (uVar1 <= uVar12) {
-              iVar10 = uVar12 - uVar1;
-              goto LAB_0052f548;
-            }
-            iVar15 = iVar13 + -2;
-            uVar12 = uVar12 + uVar20;
-          }
-          iVar10 = uVar12 - uVar1;
-        }
-        else {
-          iVar10 = uVar12 - uVar1;
-          iVar15 = iVar13;
-        }
-LAB_0052f548:
-        uVar12 = iVar10 / (int)uVar9;
-        if (uVar9 == 0) {
-          trap(7);
-        }
-        uVar1 = uVar12 * (uVar20 & 0xffff);
-        uVar4 = iVar10 % (int)uVar9 << 0x10 | uVar8 & 0xffff;
-        uVar8 = uVar12;
-        if (uVar4 < uVar1) {
-          uVar4 = uVar4 + uVar20;
-          uVar8 = uVar12 - 1;
-          if ((uVar20 <= uVar4) && (uVar4 < uVar1)) {
-            uVar8 = uVar12 - 2;
-            uVar4 = uVar4 + uVar20;
-          }
-        }
-        uVar9 = iVar15 << 0x10 | uVar8;
-        uVar4 = uVar4 - uVar1;
-        uVar12 = (uVar8 & 0xffff) * (uVar2 & 0xffff);
-        uVar1 = (uVar9 >> 0x10) * (uVar2 & 0xffff);
-        uVar8 = (uVar8 & 0xffff) * (uVar2 >> 0x10) + (uVar12 >> 0x10) + uVar1;
-        iVar13 = (uVar9 >> 0x10) * (uVar2 >> 0x10);
-        if (uVar8 < uVar1) {
-          iVar13 = iVar13 + 0x10000;
-        }
-        uVar1 = iVar13 + (uVar8 >> 0x10);
-        uVar8 = uVar8 * 0x10000 + (uVar12 & 0xffff);
-        if ((uVar4 < uVar1) || ((uVar12 = uVar8, uVar1 == uVar4 && (uVar18 < uVar8)))) {
-          uVar12 = uVar8 - uVar2;
-          uVar9 = uVar9 - 1;
-          uVar1 = (uVar1 - uVar20) - (u32)(uVar8 < uVar12);
-        }
-        uVar6 = 0;
-        if (param_3 == 0) goto LAB_0052f164;
-        uVar2 = (uVar4 - uVar1) - (u32)(uVar18 < uVar18 - uVar12);
-        uVar3 = CONCAT44(uVar2 >> (uVar11 & 0x1f),
-                         uVar2 << (uVar5 & 0x1f) | uVar18 - uVar12 >> (uVar11 & 0x1f));
-        goto LAB_0052f160;
-      }
-      if ((uVar6 < uVar7) || (uVar9 = 0, uVar3 <= uVar19)) {
-        uVar14 = (u32)(int)(uVar18 - uVar2);
-        uVar9 = 1;
-        uVar7 = (u32)(int)((uVar8 - uVar20) - (u32)(uVar19 < uVar14));
-      }
-    }
-    uVar6 = 0;
-    if (param_3 == 0) goto LAB_0052f164;
-    uVar3 = uVar14 & 0xffffffff | uVar7 << 0x20;
-  }
-LAB_0052f160:
-  *(u32 *)param_3 = uVar3;
-LAB_0052f164:
-  return (u32)uVar9 | uVar6 << 0x20;
+
+  ww.s.low = q0;
+  ww.s.high = q1;
+  return ww.ll;
 }
+#pragma optimization_level 2
 // Reconstructed signed remainder wrapper; retail keeps a longer scheduled
 // 64-bit negate path that MWCCPS2 does not reproduce from equivalent C.
 // FUN_0052F6A0 NONMATCHING
