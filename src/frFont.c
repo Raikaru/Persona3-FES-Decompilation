@@ -947,7 +947,7 @@ void FUN_003b0430(int param_1,u64 param_2)
 
   u16 *puVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   u64 uVar5;
 
