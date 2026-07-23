@@ -2206,7 +2206,7 @@ void FUN_003c7990(long param_1)
 
         FUN_003a3420(*piVar4,0);
 
-        FUN_003c7c90(1);
+        FUN_003c7c90_typed(1);
 
         *(u8 *)(piVar4 + 1) = 0;
 
