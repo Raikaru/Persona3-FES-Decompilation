@@ -622,7 +622,7 @@ u64 FUN_003aed10(u64 param_1,int param_2)
 {
   char cVar1;
   short sVar2;
-  u64 uVar3;
+  u32 uVar3;
   char *pcVar4;
 
   pcVar4 = (char *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
