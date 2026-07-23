@@ -1687,7 +1687,7 @@ void FUN_00143ee0(CampEquipmentPanelWork* work)
       }
       labelX = (float)(row * 0x1d) + 61.0;
       spriteTopLeft7 = CONCAT44(labelX,labelY - 100.0);
-      func_0018bc10(0x42ce0000, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 1, spriteTopLeft7, CONCAT44(labelX,labelY), 0, 0, 0, 0);
+      func_0018bc10(103.0f, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 1, spriteTopLeft7, CONCAT44(labelX,labelY), 0, 0, 0, 0);
     }
     else {
       *(u32 *)(work->drawBuffer + row * 0x44 + 0x2ac) = 0;
@@ -1764,7 +1764,7 @@ void FUN_00144910(CampEquipmentPanelWork* work)
         labelY = 0.0;
       }
       labelX = (float)(row * 0x1d) + 61.0;
-      func_0018bc10(0x42ce0000, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 2, CONCAT44(labelX,labelY), CONCAT44(labelX,labelY - 100.0), 0, 0, 0, 0);
+      func_0018bc10(103.0f, (void*)(work->drawBuffer + (row + 10) * 0x44), 0, 2, 2, CONCAT44(labelX,labelY), CONCAT44(labelX,labelY - 100.0), 0, 0, 0, 0);
     }
     else {
       *(u32 *)(work->drawBuffer + row * 0x44 + 0x2ac) = 0;
