@@ -182,6 +182,7 @@ void btlActionUpdateStateTest(BtlAction* action);
 void btlActionSetStateWithDelay(BtlAction* action, u16 btlState, u16 delay);
 void btlAction00299e50(BtlAction* action);
 void FUN_002dc5e0();
+void FUN_002a3a90();
 void FUN_001fdd40();
 u16 FUN_002bff60(BtlAction* action, BtlTarget* target, u16 commandId, u32 param_4);
 u32 FUN_002c0970(BtlTarget* target);
@@ -5232,8 +5233,7 @@ void btlActionUpdateStateExit(BtlAction* action)
     BtlUnit* unit;
     DatUnitPc* found;
     u16 i;
-    DatUnitPc* party;
-    Battle* battle;
+    DatUnitGenusBase* group;
 
     if (action->unk_1a & 1)
     {
@@ -5242,49 +5242,77 @@ void btlActionUpdateStateExit(BtlAction* action)
         {
             return;
         }
+
         switch (unit->genus)
         {
             case UNIT_GENUS_PC:
                 if (action->unk_18 & 0x20)
                 {
                     found = NULL;
-                    i = 0;
-                    battle = gBtl;
-                    do
+                    for (i = 0; i < 4; i++)
                     {
-                        party = battle->startInfo.partyUnits[i];
-                        if (party != NULL && party->base.unit == unit->datUnit)
+                        if (*(DatUnitPc**)((u8*)gBtl +
+                                           (u32)(u16)i * 4 +
+                                           0xbac) != NULL &&
+                            (*(DatUnitPc**)((u8*)gBtl +
+                                            (u32)(u16)i * 4 +
+                                            0xbac))->base.unit ==
+                                unit->datUnit)
                         {
-                            found = party;
+                            found = *(DatUnitPc**)((u8*)gBtl +
+                                                   (u32)(u16)i * 4 +
+                                                   0xbac);
                             break;
                         }
-                        i++;
-                    } while (i < 4);
+                    }
+
+                    if (found == NULL)
+                    {
+                        for (i = 0; i < 3; i++)
+                        {
+                            group = *(DatUnitGenusBase**)((u8*)gBtl +
+                                                          (u32)(u16)i * 8 +
+                                                          0xbc4);
+                            if (group != NULL &&
+                                group->unit == unit->datUnit)
+                            {
+                                found = (DatUnitPc*)group;
+                                break;
+                            }
+                        }
+                    }
+
                     if (found != NULL)
                     {
                         ACTION_U16(found, 0xa) &= ~1;
-                        FUN_00300560(unit->datUnit, 0xfff7ff7f);
-                        FUN_00301690(unit->datUnit);
-                        if (ACTION_U8(unit->datUnit, 0x10) == 10)
-                        {
-                            ACTION_U8(unit->datUnit, 0x10) = 1;
-                        }
+                    }
+
+                    datCalcClearBadStatus(unit->datUnit, 0xfff7ff7f);
+                    FUN_00301690(unit->datUnit);
+                    if (unit->datUnit->aiTactic == 10)
+                    {
+                        unit->datUnit->aiTactic = 1;
                     }
                 }
                 break;
+
             case UNIT_GENUS_EC:
-                if (FUN_0030b5a0(unit->datUnit, 0) != 0)
+                if (datCalcIsDead(unit->datUnit, 0) != 0)
                 {
-                    FUN_002ff660(ACTION_U32(gBtl, 0xbbc), unit->datUnit);
+                    datUnitEcRemoveEnemy(gBtl->startInfo.enmUnits,
+                                         unit->datUnit);
                 }
                 break;
         }
+
         FUN_002878d0(unit);
         action->unit = NULL;
         action->unk_1a &= ~1;
         FUN_001fdd40();
     }
+
     btlAction00299e50(action);
+    FUN_002a3a90(action);
     action->unk_1a |= 2;
 }
 
