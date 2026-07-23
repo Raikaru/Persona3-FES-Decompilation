@@ -1954,7 +1954,7 @@ void FUN_00388ff0(int param_1)
 
       iVar2 = *(int *)(*(int *)(param_1 + 0x980) + iVar3 * 4);
 
-      if ((iVar2 != 0) && (iVar2 != 0)) {
+      if (iVar2 != 0) {
 
         (*DAT_0096017c)();
 
@@ -5033,7 +5033,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
   u16 uVar7;
 
-  long lVar8;
+  int lVar8;
 
   
 
@@ -5089,7 +5089,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
         if (param_3 <= iVar4) {
 
-          lVar8 = (long)(param_2 + iVar4);
+          lVar8 = param_2 + iVar4;
 
           if (lVar8 < sVar1) {
 
@@ -5099,7 +5099,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
           else if (*(int *)(iVar5 + 0xc) < lVar8) {
 
-            *puVar2 = ((short)*(int *)(iVar5 + 0xc) + -1) - sVar1;
+            *puVar2 = *(int *)(iVar5 + 0xc) - 1 - sVar1;
 
           }
 
@@ -5127,7 +5127,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
               if (*(int *)(iVar5 + 0xc) < (short)puVar2[9] + param_2) {
 
-                puVar2[9] = (short)*(int *)(iVar5 + 0xc) - 1;
+                puVar2[9] = *(int *)(iVar5 + 0xc) - 1;
 
               }
 
@@ -5151,7 +5151,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
               if (*(int *)(iVar5 + 0xc) < (short)puVar2[8] + param_2) {
 
-                puVar2[8] = (short)*(int *)(iVar5 + 0xc) - 1;
+                puVar2[8] = *(int *)(iVar5 + 0xc) - 1;
 
               }
 
@@ -5173,7 +5173,7 @@ void FUN_0038b6e0(int param_1,int param_2,int param_3)
 
             if (*(int *)(iVar5 + 0xc) < (short)puVar2[9] + param_2) {
 
-              puVar2[9] = (short)*(int *)(iVar5 + 0xc) - 1;
+              puVar2[9] = *(int *)(iVar5 + 0xc) - 1;
 
             }
 
@@ -6233,7 +6233,7 @@ void FUN_0038c830(int param_1,long param_2)
 
   bool bVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -6241,7 +6241,7 @@ void FUN_0038c830(int param_1,long param_2)
 
   int *piVar7;
 
-  short sStack_2;
+  u16 sStack_2;
 
   
 
@@ -6289,7 +6289,7 @@ switchD_0038c8e0_caseD_0:
 
           if (lVar4 == 1) {
 
-            if (sStack_2 != -1) goto switchD_0038c8e0_caseD_0;
+            if (sStack_2 != (u16)0xffff) goto switchD_0038c8e0_caseD_0;
 
             bVar2 = false;
 
