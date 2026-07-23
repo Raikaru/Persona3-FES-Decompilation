@@ -113,7 +113,7 @@ void FUN_00248620(void)
         u8 reserved[0x1c];
         u8 color[4];
     } layout;
-    s32 y;
+    f32 y;
 
     K_ASSERT(sBpc324 != NULL, 0x3d);
     work = sBpc324;
@@ -195,11 +195,11 @@ void FUN_00248620(void)
         half += (f32)func_003b19d0((u32)entry);
         entry = (u32*)entry[9];
     }
-    y = (s32)662.0f;
+    y = 662.0f;
     entry = (u32*)work[1];
     while (entry != NULL) {
         half -= (f32)func_003b19d0((u32)entry);
-        func_003b0d70((u32)entry, (s32)(16.0f * (base + half)), y);
+        func_003b0d70((u32)entry, (s32)(16.0f * (base + half)), (s32)y);
         entry = (u32*)entry[9];
     }
 
