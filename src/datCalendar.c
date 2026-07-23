@@ -3341,13 +3341,12 @@ void func_001848f0(KwlnTask* task, u32 confirmed)
     }
 }
 
-// FUN_00184C80 NONMATCHING
 void func_00184c80(KwlnTask* task, u32 confirmed)
 {
     CalendarConfirmWork* work;
-    s32 currentMonth;
-    s32 currentDay;
-    s32 currentTime;
+    s16 currentMonth;
+    s16 currentDay;
+    s16 currentTime;
 
     work = (CalendarConfirmWork*)task->workData;
     work->confirmed = confirmed;
@@ -4101,6 +4100,8 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
+    f32 y;
+    void* unused;
     union
     {
         u64 value;
@@ -4110,8 +4111,6 @@ void func_00186050(void* resource, u64 position, u32 alpha)
             f32 y;
         } coords;
     } packed;
-    f32 y;
-    void* unused;
 
     packed.value = position;
     y = packed.coords.y;
