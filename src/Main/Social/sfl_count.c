@@ -22,13 +22,13 @@ extern void FUN_0021d8e0(void* work, const f32* values);
 extern void FUN_0021d950(void* work, const u8* color);
 
 typedef struct {
-    s32 sp80;
-    s32 sp84;
+    f32 sp80;
+    f32 sp84;
     f32 sp88;
     f32 sp8C;
     f32 sp90;
     f32 sp94;
-    s32 sp98;
+    f32 sp98;
     f32 sp9C;
     u8 padA0[0xc];
     u8 spAC;
@@ -161,18 +161,20 @@ void FUN_0025b690(void)
         }
         for (iVar5 = 0; iVar5 < 3; iVar5++) {
             resource = (u8*)FUN_0020e610(iVar5);
+            temp_f0 = fGpffff83c4;
             fVar6 = (f32)*(s32*)(resource + 0xc);
             fVar7 = (f32)*(s32*)(resource + 0x10);
-            fVar6 = fGpffff83c4 * fVar6;
-            fVar7 = fGpffff83c4 * fVar7;
-            stack.sp80 = 0x436c0000;
-            stack.sp84 = 0x43440000;
+            fVar6 = temp_f0 * fVar6;
+            fVar7 = temp_f0 * fVar7;
+            stack.sp80 = 236.0f;
+            stack.sp84 = 196.0f;
             stack.sp88 = 236.0f + fVar6;
             stack.sp8C = 196.0f;
             stack.sp90 = stack.sp88;
             stack.sp94 = 196.0f + fVar7;
-            stack.sp98 = 0x436c0000;
+            stack.sp98 = 236.0f;
             stack.sp9C = stack.sp94;
+            iVar3 = (2 - iVar5) * 0x1e + 0x5a;
             uVar2 = puVar2[1];
             if (uVar2 < iVar3) {
                 fVar9 = fOne;
@@ -202,8 +204,8 @@ void FUN_0025b690(void)
                 *(f32*)(temp_2_8 + 4) = *(f32*)(temp_2_8 + 4) + temp_f0_3;
             }
             FUN_0021d890(puVar2 + iVar5 * 0x40 + 4, (f32*)&stack.sp80);
-            stack.sp80 = 0x436c0000;
-            stack.sp84 = 0x43440000;
+            stack.sp80 = 236.0f;
+            stack.sp84 = 196.0f;
             stack.sp88 = fVar6;
             stack.sp8C = fVar7;
             FUN_0021d8e0(puVar2 + iVar5 * 0x40 + 0xc4, (f32*)&stack.sp80);
@@ -242,8 +244,8 @@ void FUN_0025b690(void)
         }
     }
 }
-#pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants off
 // FUN_0025BBF0
 
 
