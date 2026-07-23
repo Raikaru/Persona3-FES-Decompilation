@@ -8,6 +8,10 @@
 static u32* sSflResult; // iGpffffb5f0 / puGpffffb5f0
 
 extern void brRoot001f1df0(u16* members, s32* count);
+extern u16 datGetHp(s16 pcId);
+extern u16 datGetMaxHp(s16 pcId);
+extern u16 datGetSp(s16 pcId);
+extern u16 func_0016c670(s16 pcId);
 extern void FUN_001f6e80(void);
 
 // FUN_001f9630
@@ -178,16 +182,14 @@ extern u8 DAT_00684d70[];
 extern u8 DAT_00684d60[];
 
 // FUN_001f9170 NONMATCHING
-u32 sflResult001f9170(s32 player)
+u32 sflResult001f9170(u32 player)
 {
-    s32 i;
+    s32 j;
     char* flags;
-    char* base;
+    s32 i;
     s16 members[6];
     s32 memberCount;
-    s32 j;
-    base = (char*)func_00209d00();
-    flags = base + player * 0x1a;
+    flags = (char*)func_00209d00() + player * 0x1a;
     i = 0;
     for (; i <= 0xc; i++) {
         if (flags[i * 2] == 0) {
@@ -198,6 +200,7 @@ u32 sflResult001f9170(s32 player)
             if (datGetHp(1) < datGetMaxHp(1)) {
                 return 1;
             }
+            break;
         case 1:
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
@@ -210,8 +213,8 @@ u32 sflResult001f9170(s32 player)
             if (datGetSp(1) < func_0016c670(1)) {
                 return 1;
             }
+            break;
         case 3:
-            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetSp(members[j]) < func_0016c670(members[j])) {
                     return 1;
@@ -222,8 +225,8 @@ u32 sflResult001f9170(s32 player)
             if ((datGetBadStatusNoDown(1) & 0x80) != 0) {
                 return 1;
             }
+            break;
         case 5:
-            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
                     return 1;
@@ -266,6 +269,7 @@ u32 sflResult001f9170(s32 player)
             if (datGetPhysicalCondition(1) != 2) {
                 return 1;
             }
+            break;
         case 12:
             brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
