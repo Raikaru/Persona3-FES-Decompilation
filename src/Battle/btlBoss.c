@@ -757,78 +757,59 @@ void* func_002f8810()
     return H_Cdvd_ArchiveGetFile(gBtl->bossPakCdvd, 0, &fileSize);
 }
 
+#pragma opt_loop_invariants on
 // FUN_002f88c0 NONMATCHING
-u32 func_002f88c0()
+u64 func_002f88c0()
 {
     BtlUnit* unit;
     u16 encounterId;
     u16 charId;
-    u32 result;
+    u64 result;
 
     encounterId = btlBossGetEncounterId();
     switch (encounterId)
     {
         case 0x1a0:
             unit = *(BtlUnit**)((u8*)gBtl + 0x158);
-loop_12:
-            if (unit == NULL)
+            while (unit != NULL)
             {
-                result = 0;
-            }
-            else
-            {
-                charId = unit->charId;
-                switch (charId)
+                switch (unit->charId)
                 {
-                    case 0x114:
-                    case 0x113:
-                        result = 1;
-                        break;
-                    default:
                     case 0x100:
-                        unit = unit->next;
-                        goto loop_12;
+                    default:
+                        break;
+                    case 0x113:
+                    case 0x114:
+                        return 1LL;
                 }
+                unit = unit->next;
             }
-            return result;
+            return 0;
         case 0x1a4:
             unit = *(BtlUnit**)((u8*)gBtl + 0x158);
-loop_25:
-            if (unit == NULL)
+            while (unit != NULL)
             {
-                result = 0;
-            }
-            else
-            {
-                charId = unit->charId;
-                switch (charId)
+                switch (unit->charId)
                 {
                     case 0x115:
                         if (unit->flags3 & 8)
                         {
-                            result = 0;
-                        }
-                        else
-                        {
-                            unit = unit->next;
-                            goto loop_25;
+                            return 0;
                         }
                         break;
-                    case 0x106:
                     case 0x105:
+                    case 0x106:
                         if (unit->flags3 & 8)
                         {
-                            result = 1;
-                        }
-                        else
-                        {
-                            unit = unit->next;
-                            goto loop_25;
+                            return 1LL;
                         }
                         break;
+                    default:
+                        break;
                 }
+                unit = unit->next;
             }
-            return result;
+            return 0;
         case 0x1a6:
             return func_002ecac0() != 1;
         case 0x1a8:
@@ -837,6 +818,7 @@ loop_25:
             return 0;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_002f8a40 NONMATCHING
 u32 func_002f8a40(BtlUnit* unit)
