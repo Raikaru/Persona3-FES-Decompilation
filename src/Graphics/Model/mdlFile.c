@@ -575,7 +575,7 @@ void FUN_0033a560(int param_1);
 void FUN_0033a5b0(int param_1);
 void FUN_0033af10(u64 param_1);
 void FUN_0033b0d0(int param_1);
-u64 FUN_0033b1c0(int param_1);
+u32 FUN_0033b1c0(int param_1);
 void FUN_0033b250(int param_1);
 void FUN_0033b2a0(int param_1);
 void FUN_0033bbe0(u64 param_1);
@@ -31738,7 +31738,7 @@ void FUN_0033b0d0(int param_1)
 // FUN_0033B1C0 NONMATCHING
 
 
-u64 FUN_0033b1c0(int param_1)
+u32 FUN_0033b1c0(int param_1)
 
 
 
@@ -31750,13 +31750,13 @@ u64 FUN_0033b1c0(int param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   
 
   uVar1 = *(u32 *)(param_1 + 0x38);
 
-  uVar4 = (*DAT_00960178)(uVar1 * 0x2c + 0x10,0x40000);
+  uVar4 = (*DAT_00960178_abs)(uVar1 * 0x2c + 0x10,0x40000);
 
   piVar2 = (int *)uVar4;
 
@@ -31768,7 +31768,7 @@ u64 FUN_0033b1c0(int param_1)
 
   piVar2[1] = iVar3;
 
-  return uVar4;
+  return (u32)piVar2;
 
 }
 
@@ -52843,7 +52843,7 @@ void FUN_003500e0(void)
 
 
 
-// FUN_00350110 NONMATCHING
+// FUN_00350110
 
 
 void FUN_00350110(void)
@@ -52851,12 +52851,14 @@ void FUN_00350110(void)
 
 
 {
+  int iVar1;
 
   if (DAT_007ce578 != 0) {
 
-    if ((DAT_007ce574 < DAT_00957bc0) || (DAT_00957bc0 == 0)) {
+    iVar1 = *(int *)DAT_00957bc0_abs;
+    if (((int)DAT_007ce574 < iVar1) || (iVar1 == 0)) {
 
-      FUN_00348110((int *)0x957bc0, DAT_007ce574);
+      FUN_00348110((int *)DAT_00957bc0_abs, DAT_007ce574);
 
     }
 
