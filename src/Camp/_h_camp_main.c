@@ -458,10 +458,14 @@ static void campMainDrawPersonaCard(const CampMainDrawItem* item,
                  item->spriteScale);
 }
 
+#pragma alias FUN_001345B0_s16 FUN_001345B0
+extern void FUN_001345B0_s16(CampMainDrawItem* item, const void* resources,
+                             s32 mode, const s16* personaIds,
+                             s16 personaIndex, s16 alternatePersonaIndex);
 // FUN_001345B0 NONMATCHING
 void FUN_001345B0(CampMainDrawItem* item, const void* resources, s32 mode,
-                  const s16* personaIds, s16 personaIndex,
-                  s16 alternatePersonaIndex)
+                  const s16* personaIds, s32 personaIndex,
+                  s32 alternatePersonaIndex)
 {
 
     switch (mode) {
@@ -512,8 +516,8 @@ u32 FUN_00134900(CampMainDrawItem* items, const void* resources,
         item = (CampMainDrawItem*)((u8*)items + i * 0x44);
         if (item->active != 0) {
             if (func_0018b700(item) != 0) {
-                FUN_001345B0(item, resources, i, personaIds,
-                             selected, personaIndex);
+                FUN_001345B0_s16(item, resources, i, personaIds,
+                                 selected, personaIndex);
             }
             if (((CampMainDrawItem*)((u8*)items + i * 0x44))->progress !=
                 ((CampMainDrawItem*)((u8*)items + i * 0x44))->endFrame) {
