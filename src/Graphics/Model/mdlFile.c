@@ -1375,6 +1375,8 @@ extern void (*DAT_009600a0)(...);
 #pragma alias DAT_009600a0_abs DAT_009600a0
 extern code DAT_009600a0_abs[];
 extern void (*DAT_009600a4)(...);
+#pragma alias DAT_009600a4_abs DAT_009600a4
+extern code DAT_009600a4_abs[];
 extern u64 (*DAT_00960178)(...);
 #pragma alias DAT_00960178_u32 DAT_00960178
 extern u32 (*DAT_00960178_u32)(...);
@@ -47195,28 +47197,35 @@ void FUN_0034ac70(int param_1)
 
 
 
+// Fixed unsigned byte compare (u8>0 not char!=0), DAT_00960090/DAT_009600a4
+// _abs vtable caching, and address-before-flag-check ordering (98% match).
+// Residual: retail materializes 0x69cb80 via lui+addiu(-0x3480), MWCC here
+// chooses lui+ori(0xcb80) for the identical value -- literal-encoding floor.
 // FUN_0034ADA0 NONMATCHING
 
 
 void FUN_0034ada0(int param_1)
-
-
-
 {
-
+  int iVar1;
+  u8 *puVar2;
   u8 auStack_100 [256];
+  void (**setState)(int, int);
+  void (**setBuffer)(int, void*, int, int, int);
 
-  
+  iVar1 = *(int *)(param_1 + 0x24);
+  puVar2 = (u8 *)(iVar1 + 0xc0);
 
-  if (*(char *)(*(int *)(param_1 + 0x24) + 0xc3) != '\0') {
+  if (*(u8 *)(iVar1 + 0xc3) > 0) {
 
-    FUN_00348bd0((u8 *)(*(int *)(param_1 + 0x24) + 0xc0),(u32 *)(auStack_100));
+    FUN_00348bd0(puVar2,(u32 *)(auStack_100));
 
-    (*DAT_00960090)(1,0);
+    setState = (void (**)(int, int))DAT_00960090_abs;
+    (*setState)(1,0);
 
     RpSkyRenderStateSet(3,0x31001);
 
-    (*DAT_009600a4)(3,auStack_100,4,0x69cb80,6);
+    setBuffer = (void (**)(int, void*, int, int, int))DAT_009600a4_abs;
+    (*setBuffer)(3,auStack_100,4,0x69cb80,6);
 
   }
 
