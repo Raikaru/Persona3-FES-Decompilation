@@ -2426,14 +2426,14 @@ void FUN_003b1a80(u32 param_1)
 }
 #define FUN_003b1a80(...) ((void (*)(...))FUN_003b1a80)(__VA_ARGS__)
 #undef FUN_003b1a90
+#pragma opt_loop_invariants on
 // FUN_003B1A90 NONMATCHING
 
 
 int FUN_003b1a90(int param_1)
 {
-  int iVar3;
-
   int iVar2;
+  int iVar3;
 
   iVar2 = 0;
   if (param_1 == 0) {
@@ -2441,14 +2441,15 @@ int FUN_003b1a90(int param_1)
   }
   param_1 = *(int *)(param_1 + 0x2c);
   for (; param_1 != 0; param_1 = *(int *)(param_1 + 0x28)) {
+    int iVar1;
     iVar3 = param_1;
-    do {
-      if (*(int *)(iVar3 + 8) >= *(int *)(param_1 + 8) + 100) {
+    iVar1 = *(int *)(param_1 + 8) + 100;
+    while (iVar3 != 0) {
+      if (*(int *)(iVar3 + 8) >= iVar1) {
         break;
       }
       iVar3 = *(int *)(iVar3 + 0x28);
-    } while (iVar3 != 0);
-
+    }
     iVar2 = iVar2 + 1;
   }
 
@@ -2456,6 +2457,7 @@ int FUN_003b1a90(int param_1)
 
 }
 #define FUN_003b1a90(...) ((int (*)(...))FUN_003b1a90)(__VA_ARGS__)
+#pragma opt_loop_invariants off
 #undef FUN_003b1b00
 // FUN_003B1B00 NONMATCHING
 
@@ -2481,13 +2483,10 @@ int FUN_003b1b00(int param_1,int param_2)
 
   iVar2 = 0;
   iVar5 = 0;
-
   if (param_2 == 0) {
     return 0;
   }
   else {
-
-
     for (param_2 = *(int *)(param_2 + 0x2c); param_2 != 0;
          param_2 = *(int *)(param_2 + 0x28)) {
       iVar2 = 0;
@@ -2502,26 +2501,23 @@ frFont_b1b00_inner_check:
 frFont_b1b00_inner_body:
       iVar3 = 0;
       iVar4 = *(int *)(iVar6 + 0x1c);
-frFont_b1b00_child_check:
-      if (iVar4 == 0) goto frFont_b1b00_child_done;
-      goto frFont_b1b00_child_body;
+      goto frFont_b1b00_child_check;
 frFont_b1b00_child_body:
       iVar3 = iVar3 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar6 + 3);
       iVar4 = *(int *)(iVar4 + 0x28);
-      goto frFont_b1b00_child_check;
+frFont_b1b00_child_check:
+      if (iVar4 != 0) goto frFont_b1b00_child_body;
 frFont_b1b00_child_done:
       iVar2 = iVar2 + iVar3;
       iVar6 = *(int *)(iVar6 + 0x28);
       goto frFont_b1b00_inner_check;
 frFont_b1b00_inner_done:
-      if (iVar5 == param_1) break;
+      iVar7 = iVar5;
       iVar5 = iVar5 + 1;
+      if (iVar7 == param_1) break;
     }
-
     iVar2 = iVar2 << 4;
-
   }
-
   return iVar2;
 
 }
@@ -2555,18 +2551,20 @@ void FUN_003b1bc0(u32 *param_1,int param_2,int param_3)
     *param_1 = *(u32 *)(param_3 + 4);
     param_1[1] = *(u32 *)(param_3 + 8);
     iVar1 = *(int *)(param_3 + 8) + 100;
-    goto frFont_b1bc0_inner_check;
-frFont_b1bc0_inner_body:
-    iVar3 = *(int *)(iVar3 + 0x28);
-    if (iVar3 != 0) goto frFont_b1bc0_inner_check;
-    goto frFont_b1bc0_inner_done;
-frFont_b1bc0_inner_check:
-    if (*(int *)(iVar3 + 8) < iVar1) goto frFont_b1bc0_inner_body;
-frFont_b1bc0_inner_done:
-    if (iVar2 == param_2) {
-      return;
+    while (iVar3 != 0) {
+      if (*(int *)(iVar3 + 8) >= iVar1) {
+        break;
+      }
+      iVar3 = *(int *)(iVar3 + 0x28);
     }
-    iVar2 = iVar2 + 1;
+    {
+      int iVar4;
+      iVar4 = iVar2;
+      iVar2 = iVar2 + 1;
+      if (iVar4 == param_2) {
+        return;
+      }
+    }
   }
 
   return;
@@ -2630,47 +2628,56 @@ void FUN_003b1c90(int param_1,int param_2,int param_3)
   
 
   if (param_3 != 0) {
-
     param_3 = *(int *)(param_3 + 0x2c);
-    iVar1 = *(int *)(param_3 + 8);
-    iVar1 = param_2 - iVar1;
-    while (param_3 != 0) {
-
-      iVar3 = 0;
-
-      iVar2 = *(int *)(param_3 + 8);
-      for (iVar7 = param_3;
-           (iVar7 != 0 && (*(int *)(iVar7 + 8) < iVar2 + 100));
-           iVar7 = *(int *)(iVar7 + 0x28)) {
-
-        iVar5 = 0;
-
-        for (iVar4 = *(int *)(iVar7 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
-
-          iVar5 = iVar5 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar7 + 3);
-
-        }
-
-        iVar3 = iVar3 + iVar5;
-
-      }
-      iVar7 = *(int *)(param_3 + 4);
-
-      if (iVar3 < 0) {
-        iVar3 = iVar3 + 1;
-      }
-      for (; (param_3 != 0 && (*(int *)(param_3 + 8) < iVar2 + 100));
-           param_3 = *(int *)(param_3 + 0x28)) {
-
-        iVar4 = *(int *)(param_3 + 4) + (param_1 - iVar7);
-        *(int *)(param_3 + 4) = iVar4;
-        *(int *)(param_3 + 4) = iVar4 + (iVar3 >> 1) * -0x10;
-        *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
-
-      }
-
+    iVar1 = param_2 - *(int *)(param_3 + 8);
+    goto frFont_b1c90_outer_body;
+frFont_b1c90_outer_body:
+    iVar3 = 0;
+    iVar2 = *(int *)(param_3 + 8) + 100;
+    iVar7 = param_3;
+    goto frFont_b1c90_inner_check;
+frFont_b1c90_inner_body:
+    iVar5 = 0;
+    iVar4 = *(int *)(iVar7 + 0x1c);
+    goto frFont_b1c90_child_check;
+frFont_b1c90_child_body:
+    iVar5 = iVar5 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar7 + 3);
+    iVar4 = *(int *)(iVar4 + 0x28);
+    if (iVar4 != 0) goto frFont_b1c90_child_body;
+    goto frFont_b1c90_child_done;
+frFont_b1c90_child_check:
+    if (iVar4 != 0) goto frFont_b1c90_child_body;
+frFont_b1c90_child_done:
+    iVar3 = iVar3 + iVar5;
+    iVar7 = *(int *)(iVar7 + 0x28);
+    if (iVar7 != 0) goto frFont_b1c90_inner_check;
+    goto frFont_b1c90_inner_done;
+frFont_b1c90_inner_check:
+    if (iVar7 == 0) goto frFont_b1c90_inner_done;
+    if (*(int *)(iVar7 + 8) < iVar2) goto frFont_b1c90_inner_body;
+frFont_b1c90_inner_done:
+    iVar4 = param_1 - *(int *)(param_3 + 4);
+    if (iVar3 < 0) {
+      iVar3 = iVar3 + 1;
     }
-
+    iVar7 = iVar3 >> 1;
+    iVar7 = iVar7 << 4;
+    iVar5 = iVar4 + 100;
+    goto frFont_b1c90_adjust_check;
+frFont_b1c90_adjust_body:
+    iVar4 = *(int *)(param_3 + 4) + iVar4;
+    *(int *)(param_3 + 4) = iVar4;
+    *(int *)(param_3 + 4) = iVar4 - iVar7;
+    *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
+    param_3 = *(int *)(param_3 + 0x28);
+    if (param_3 != 0) goto frFont_b1c90_adjust_check;
+    goto frFont_b1c90_outer_check;
+frFont_b1c90_adjust_check:
+    if (param_3 != 0 && *(int *)(param_3 + 8) < iVar5) {
+      goto frFont_b1c90_adjust_body;
+    }
+frFont_b1c90_outer_check:
+    if (param_3 != 0) goto frFont_b1c90_outer_body;
   }
 
   return;
