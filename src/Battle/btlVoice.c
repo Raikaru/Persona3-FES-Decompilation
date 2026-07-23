@@ -354,6 +354,9 @@ void* func_002f87e0(u16 index);
  extern BtlPacket* FUN_002a3b40_packet_voice(void*, u32);
  #pragma alias FUN_002baf90_packet_voice FUN_002baf90
  extern BtlPacket* FUN_002baf90_packet_voice(void*, BtlUnit*, BtlUnit*, u16, u32);
+#pragma alias FUN_002d7e20_packet_voice FUN_002d7e20
+extern BtlPacket* FUN_002d7e20_packet_voice(BtlAction*, BtlAction*, void*, u16, u16);
+ 
 #pragma alias FUN_002dd690_packet_voice FUN_002dd690
 extern BtlPacket* FUN_002dd690_packet_voice(u16 channel, const char* streamName);
 #pragma alias FUN_002bd590_packet_voice FUN_002bd590
@@ -10219,14 +10222,14 @@ void func_002ef670(void)
   int iVar1;
   int iVar7;
   int iVar6;
-  u64 uVar2;
-  u64 uVar3;
-  u64 uVar4;
+  u32 uVar2;
+  u32 uVar3;
+  u32 uVar4;
   short sVar5;
   int aiStack_10 [3];
   
-  uVar2 = FUN_002b8f90(0);
-  FUN_002b90d0(uVar2,FUN_002f87e0(1));
+  uVar2 = FUN_002b8f90_u32_voice(0);
+  FUN_002b90d0(uVar2,FUN_002f87e0_u32_voice(1));
   iVar7 = 0;
   aiStack_10[0] = 0;
   aiStack_10[1] = 0;
@@ -10242,7 +10245,7 @@ void func_002ef670(void)
     iVar7 = iVar6;
   }
   FUN_0027ed20(FUN_002bc950(aiStack_10[0],aiStack_10[1],aiStack_10[2]),1);
-  uVar3 = FUN_002baf90(uVar2,iVar7,iVar7,0,0x200);
+  uVar3 = FUN_002baf90_u32_voice(uVar2,iVar7,iVar7,0,0x200);
   FUN_0027ed20(uVar3,2);
   uVar4 = FUN_002bc950(0,0,0);
   *(u8 *)uVar4 = 4;
