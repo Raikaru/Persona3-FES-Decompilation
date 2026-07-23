@@ -128,7 +128,7 @@ void FUN_003c7dd0(int param_1);
 extern void FUN_003a3060_typed(s32 param_1);
 void FUN_003c7e20(u32 p1,u64 p2,u64 p3,u64 p4,u64 p5,u64 p6,u64 p7);
 u64  FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6,u64 param_7,long param_8,u32 param_9);
-u64 FUN_003c8230(u32 *param_1,int param_2);
+u64 FUN_003c8230(s32 *param_1,int param_2);
 u64 FUN_003c82e0(int param_1);
 u8 FUN_003c83b0(void);
 
@@ -2691,23 +2691,23 @@ FUN_003c7e50(u32 param_1,u64 param_2,u64 param_3,u64 param_4,
 }
 #define FUN_003c7e50(...) ((u64 (*)(...))FUN_003c7e50)(__VA_ARGS__)
 #undef FUN_003c8230
-// FUN_003C8230 NONMATCHING
+// FUN_003C8230
 
 
-u64 FUN_003c8230(u32 *param_1,int param_2)
+u64 FUN_003c8230(s32 *param_1,int param_2)
 {
   switch (param_2) {
-  case 3:
-    FUN_003a4360_typed(*param_1,7);
-    break;
-  case 2:
-    FUN_003a4360_typed(*param_1,6);
+  case 0:
+    FUN_003a4360_typed(*param_1,4);
     break;
   case 1:
     FUN_003a4360_typed(*param_1,5);
     break;
-  case 0:
-    FUN_003a4360_typed(*param_1,4);
+  case 2:
+    FUN_003a4360_typed(*param_1,6);
+    break;
+  case 3:
+    FUN_003a4360_typed(*param_1,7);
     break;
   }
   return 0;
