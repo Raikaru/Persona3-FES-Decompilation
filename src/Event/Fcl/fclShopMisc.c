@@ -2839,13 +2839,10 @@ u32 FUN_003f2510(void)
 
   u32 uVar1;
   u32 uVar2;
-
   s16 sVar1;
-
   u32 uVar3;
 
   
-
   uVar1 = 0;
   for (uVar3 = 0; uVar3 < 8; uVar3 = uVar3 + 1) {
     sVar1 = *(short *)(DAT_006acc60_abs + uVar3 * 2);
@@ -13902,15 +13899,11 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
 
 
 {
-
   int iVar1;
-
   int iVar2;
-
+  int iVar3;
   int bVar3;
   short *psVar;
-
-  
 
   iVar1 = *(int *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 4);
 
@@ -13919,9 +13912,10 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
   while (iVar2 != 0) {
     psVar = *(short **)(iVar2 + 0x14);
     bVar3 = FUN_003ffa20_3(psVar[2],psVar[3],psVar);
+    iVar3 = iVar2;
     iVar2 = *(int *)(iVar2 + 0x10);
     if (bVar3 != 0) {
-      FUN_003c49e0(iVar1,iVar1 + 4,iVar2);
+      FUN_003c49e0(iVar1,iVar1 + 4,iVar3);
     }
 
   }
