@@ -2092,6 +2092,7 @@ void func_00114450(f32 depth,
 }
 
 // FUN_00114AF0 NONMATCHING
+// Same reconstruction pattern as func_001140d0 above.
 void func_00114af0(f32 depth,
                    f32 x,
                    f32 y,
@@ -2101,21 +2102,74 @@ void func_00114af0(f32 depth,
                    const u32* textureState)
 {
     RwIm2DVertex vertices[4];
+    f32 corners[4][2];
+    f32 farX;
+    f32 farY;
+    f32 recipZ;
+    f32 z;
+    void (**setState)(u32, u32);
+    s32 r;
+    s32 g;
+    s32 b;
+    s32 a;
+    s32 i;
 
-    Maestro_SetPrimitiveStates(0x48, 0x71801);
-    (*D_00960090)(1, textureState != NULL ? *textureState : 0);
-    Maestro_DrawQuad(&vertices[0],
-                     x,
-                     y,
-                     (f32)width,
-                     (f32)height,
-                     D_00960088 - depth,
-                     Maestro_NearReciprocal(),
-                     color,
-                     0.0f,
-                     0.0f,
-                     0.0f,
-                     0.0f);
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    r = (s32)((color & 0xff000000) >> 24);
+    g = (s32)((color & 0xff0000) >> 16);
+    b = (s32)((color & 0xff00) >> 8);
+    a = (s32)(color & 0xff);
+
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(9, 2);
+    (*setState)(0xc, 1);
+    (*setState)(0xb, 6);
+    (*setState)(0xa, 5);
+    (*setState)(2, 4);
+    RpSkyRenderStateSet(2, (void*)0x48);
+    RpSkyRenderStateSet(3, (void*)0x71801);
+
+    corners[0][0] = x;
+    corners[0][1] = y;
+    farX = x + (f32)width;
+    corners[3][0] = farX;
+    farY = y + (f32)height;
+    corners[3][1] = farY;
+    corners[1][0] = farX;
+    corners[1][1] = y;
+    corners[2][0] = x;
+    corners[2][1] = farY;
+    z = D_00960088 - depth;
+
+    for (i = 0; i < 4; i++)
+    {
+        RwIm2DVertex* v = &vertices[i];
+        v->u.els.scrVertex.z = z;
+        v->u.els.recipZ = recipZ;
+        v->u.els.color.r = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
+        v->u.els.color.g = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
+        v->u.els.color.b = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
+        v->u.els.color.a = a >= 0 ? (f32)a : (f32)(((u32)a >> 1) | (a & 1)) * 2.0f;
+        v->u.els.scrVertex.x = corners[i][0];
+        v->u.els.scrVertex.y = corners[i][1];
+    }
+
+    vertices[0].u.els.u = 0.0f;
+    vertices[0].u.els.v = 0.0f;
+    vertices[1].u.els.u = 1.0f;
+    vertices[1].u.els.v = 0.0f;
+    vertices[2].u.els.u = 0.0f;
+    vertices[2].u.els.v = 1.0f;
+    vertices[3].u.els.u = 1.0f;
+    vertices[3].u.els.v = 1.0f;
+
+    (*setState)(1, *textureState);
+
+    (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 
 // FUN_00114E70 NONMATCHING
