@@ -1483,6 +1483,9 @@ outer_body:
   temp_2 = var_16 * 2;
   temp_19 = *(u16 *)(param_2 + temp_2 + 0x3e);
   if (temp_19 != 0) {
+    if (datPersonaCountValidSkills(param_1 + 4) >= 8) {
+      return 0;
+    }
     if (datPersonaFindSkillIdx_003d6e60(param_1 + 4,temp_19) == -1) {
       datPersonaSetSkill_003d6e60(param_1 + 4,temp_19);
     }
