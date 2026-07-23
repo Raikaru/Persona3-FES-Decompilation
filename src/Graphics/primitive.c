@@ -966,12 +966,12 @@ u32 FUN_0035aba0(void)
 
     desc.hash = 0x44a07195;
     desc.size1 = 0x34;
-    desc.funcD = FUN_0035a870;
+    desc.size0 = 0x34;
     desc.funcA = FUN_0035a290;
     desc.funcB = FUN_0035a3f0;
     desc.funcB2 = FUN_0035a620;
     desc.funcC = &LAB_0035aa10;
-    desc.funcD = (PrimFuncE)FUN_0035a870;
+    desc.funcD = FUN_0035a870;
     desc.funcE = FUN_0035a770;
     desc.funcF = FUN_0035a6a0;
     desc.funcG = &LAB_0035a850;
