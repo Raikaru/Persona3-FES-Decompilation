@@ -1888,131 +1888,67 @@ code * FUN_003c1810(void)
 
 
 u32 FUN_003c18c0(void)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar2;
-
   int *piVar3;
-
   long lVar4;
-
   u16 uStack_40;
-
   u16 uStack_3e;
-
   u16 uStack_3c;
-
   u16 uStack_38;
-
   u16 uStack_20;
-
   u16 uStack_1e;
-
   u16 uStack_1c;
-
   u16 uStack_18;
 
-  
-
   piVar3 = (int *)FUN_00195540();
-
   iVar1 = *piVar3;
-
-  if (iVar1 == 2) {
-
-    lVar4 = FUN_0027c2b0();
-
-    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
-
-      bVar2 = 1;
-
-    }
-
-    else {
-
-      bVar2 = 0;
-
-    }
-
-    if (bVar2) {
-
-      return 0xffffffff;
-
-    }
-
-  }
-
-  else if (iVar1 == 1) {
-
-    if (piVar3[1] < piVar3[2]) {
-
-      piVar3[1] = piVar3[1] + 1;
-
-    }
-
-    else {
-
-      piVar3[1] = 0;
-
-      piVar3[2] = 0;
-
-      lVar4 = FUN_003951d0(0xbd4);
-
-      if (lVar4 == 1) {
-
-        FUN_00521408(&uStack_20,0,0x1c);
-
-        uStack_20 = 7;
-
-        uStack_1e = 1;
-
-        uStack_1c = 5;
-
-        uStack_18 = 0;
-
-        FUN_0027c080(2,&uStack_20,0x1c,0);
-
-      }
-
-      else {
-
-        FUN_00521408(&uStack_40,0,0x1c);
-
-        uStack_40 = 7;
-
-        uStack_3e = 2;
-
-        uStack_3c = 0;
-
-        uStack_38 = 0;
-
-        FUN_0027c080(2,&uStack_40,0x1c,0);
-
-      }
-
-      *piVar3 = 2;
-
-    }
-
-  }
-
-  else if (iVar1 == 0) {
-
+  if (iVar1 == 0) {
     piVar3[1] = 0;
-
     piVar3[2] = 2;
-
     *piVar3 = 1;
-
   }
-
+  else if (iVar1 == 1) {
+    if (piVar3[1] < piVar3[2]) {
+      piVar3[1] = piVar3[1] + 1;
+    }
+    else {
+      piVar3[1] = 0;
+      piVar3[2] = 0;
+      lVar4 = FUN_003951d0(0xbd4);
+      if (lVar4 == 1) {
+        FUN_00521408(&uStack_20,0,0x1c);
+        uStack_20 = 7;
+        uStack_1e = 1;
+        uStack_1c = 5;
+        uStack_18 = 0;
+        FUN_0027c080(2,&uStack_20,0x1c,0);
+      }
+      else {
+        FUN_00521408(&uStack_40,0,0x1c);
+        uStack_40 = 7;
+        uStack_3e = 2;
+        uStack_3c = 0;
+        uStack_38 = 0;
+        FUN_0027c080(2,&uStack_40,0x1c,0);
+      }
+      *piVar3 = 2;
+    }
+  }
+  else if (iVar1 == 2) {
+    lVar4 = FUN_0027c2b0();
+    if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
+      bVar2 = 1;
+    }
+    else {
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      return 0xffffffff;
+    }
+  }
   return 0;
-
 }
 #define FUN_003c18c0(...) ((u32 (*)(...))FUN_003c18c0)(__VA_ARGS__)
 #undef FUN_003c1a70
