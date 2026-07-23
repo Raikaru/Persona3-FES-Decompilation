@@ -119,7 +119,7 @@ void func_00219c90(void* work)
     sGcRes = (u8*)typedWork;
 }
 
-// FUN_00219D90 NONMATCHING
+// FUN_00219D90
 #pragma push
 #pragma opt_rebuildconditionals off
 void func_00219d90(void)
@@ -142,13 +142,14 @@ body:
     if (((~request->flags) & 1) != 0) {
         goto increment;
     }
-    if (request->state == 2) {
-        goto assert_state2;
-    } else if (request->state == 1) {
-        goto process;
-    } else if (request->state == 0) {
+    switch (request->state) {
+    case 0:
         goto assert_state0;
-    } else {
+    case 1:
+        goto process;
+    case 2:
+        goto assert_state2;
+    default:
         goto increment;
     }
 
@@ -160,15 +161,26 @@ process:
     if (H_Cdvd_IsFileLoaded((HCdvd*)request->cdvd) == 0) {
         goto increment;
     }
-    if (request->type == 1) { goto persona; }
-    if (request->type == 0) { goto pair; }
-    if (request->type == 2) { goto misc; }
-    goto set_state;
+    switch (request->type) {
+    case 2:
+        goto misc;
+    case 0:
+        goto pair;
+    case 1:
+        goto persona;
+    default:
+        goto set_state;
+    }
 
 misc:
-    if (request->slot == 1) { goto misc_slot1; }
-    if (request->slot == 0) { goto misc_slot0; }
-    goto set_state;
+    switch (request->slot) {
+    case 0:
+        goto misc_slot0;
+    case 1:
+        goto misc_slot1;
+    default:
+        goto set_state;
+    }
 
 misc_slot0:
     K_ASSERT(((~work->loadedFlags) & 1) != 0, 0xcf);
@@ -185,24 +197,25 @@ misc_slot1:
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
     work->loadedFlags |= 2;
     work->pendingCount = 1;
+    work->flags &= ~4u;
     H_Cdvd_Destroy((HCdvd*)request->cdvd);
     request->flags &= ~1u;
     goto set_state;
 
 pair:
-    K_ASSERT(((~work->pairs[request->slot].flags) & 2) != 0, 0xe3);
-    work->pairs[request->slot].raster =
+    K_ASSERT(((~GC_U32(GC_PAIR(work, request->slot), 0)) & 2) != 0, 0xe3);
+    GC_PTR(GC_PAIR(work, request->slot), 0x0c) =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
-    work->pairs[request->slot].flags |= 2;
+    GC_U32(GC_PAIR(work, request->slot), 0) |= 2;
     H_Cdvd_Destroy((HCdvd*)request->cdvd);
     request->flags &= ~1u;
     goto set_state;
 
 persona:
-    K_ASSERT(((~work->personas[request->slot].flags) & 2) != 0, 0xeb);
-    work->personas[request->slot].raster =
+    K_ASSERT(((~GC_U32(GC_PERSONA(work, request->slot), 0)) & 2) != 0, 0xeb);
+    GC_PTR(GC_PERSONA(work, request->slot), 0x08) =
         bpTexCreateTmxRaster(((HCdvd*)request->cdvd)->fileMemory);
-    work->personas[request->slot].flags |= 2;
+    GC_U32(GC_PERSONA(work, request->slot), 0) |= 2;
     H_Cdvd_Destroy((HCdvd*)request->cdvd);
     request->flags &= ~1u;
 
