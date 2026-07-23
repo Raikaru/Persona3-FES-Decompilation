@@ -807,7 +807,7 @@ void FUN_0034fd70(u64 param_1,u16 param_2);
 void FUN_0034fdb0(u64 param_1,u16 param_2);
 void FUN_0034fdf0(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4);
-void FUN_0034fe80(u64 param_1,u32 *param_2);
+void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2);
 void FUN_0034ff70(float param_1,u8 (*param_2) [16]);
 void FUN_0034ff90(int param_1,u32 *param_2);
 void FUN_0034ffc0(u64 param_1,u64 param_2);
@@ -1837,7 +1837,7 @@ void FUN_0031d9c0(int *param_1,u32 *param_2)
 
     }
 
-    FUN_0034fe80((u64)(*(u32 *)(iVar7 + 8)),(u32 *)(&fStack_80));
+    FUN_0034fe80((u8 (*)[16])(*(u32 *)(iVar7 + 8)),(u32 *)(&fStack_80));
 
     FUN_0034fd30();
 
@@ -52440,88 +52440,55 @@ void FUN_0034fe30(int param_1,float param_2,float param_3,float param_4)
 
 
 
+// Fixed raw-decompiler dead-store elim (buf16/buf64 arrays), float-typed
+// param_2 reads, param_1 retyped to u8(*)[16] to drop a spurious truncate.
+// obj 248B/240B window. Residual: FUN_00325d60's 2nd-arg SQC2 addressing
+// (retail reuses a register the preceding _sqc2 store leaves loaded; a
+// few equivalent call shapes tried, floor accepted).
 // FUN_0034FE80 NONMATCHING
 
 
-void FUN_0034fe80(u64 param_1,u32 *param_2)
+void FUN_0034fe80(u8 (*param_1) [16],u32 *param_2)
 
 
 
 {
 
   __int128 extraout_vf10;
-  u32 uStack_60;
-  u32 uStack_5c;
-  u32 uStack_58;
-  u32 uStack_54;
+  f32 buf64[16];
   __int128 auStack_50;
-  u32 uStack_40;
-  u32 uStack_3c;
-  u32 uStack_38;
-  u32 uStack_34;
-  u32 uStack_30;
-  u32 uStack_2c;
-  u32 uStack_28;
-  u32 uStack_24;
-  u32 uStack_20;
-  u32 uStack_1c;
-  u32 uStack_18;
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
-  u32 uStack_4;
+  f32 buf16[4];
+  f32* fParam2 = (f32*)param_2;
 
-  
+  buf16[0] = fParam2[0xc];
+  buf16[1] = fParam2[0xd];
+  buf16[2] = fParam2[0xe];
+  buf16[3] = 0.0f;
 
-  uStack_60 = param_2[0xc];
+  FUN_00325c10(param_1,(u8 (*) [16])buf16);
 
-  uStack_5c = param_2[0xd];
+  buf64[0] = fParam2[0];
+  buf64[1] = fParam2[1];
+  buf64[2] = fParam2[2];
+  buf64[3] = 0.0f;
+  buf64[4] = fParam2[4];
+  buf64[5] = fParam2[5];
+  buf64[6] = fParam2[6];
+  buf64[7] = 0.0f;
+  buf64[8] = fParam2[8];
+  buf64[9] = fParam2[9];
+  buf64[10] = fParam2[10];
+  buf64[11] = 0.0f;
+  buf64[12] = fParam2[0xc];
+  buf64[13] = fParam2[0xd];
+  buf64[14] = fParam2[0xe];
+  buf64[15] = 0.0f;
 
-  uStack_58 = param_2[0xe];
-
-  uStack_54 = 0;
-
-  FUN_00325c10((u8 (*) [16])(param_1),(u8 (*) [16])(&uStack_60));
-
-  uStack_40 = *param_2;
-
-  uStack_3c = param_2[1];
-
-  uStack_38 = param_2[2];
-
-  uStack_34 = 0;
-
-  uStack_30 = param_2[4];
-
-  uStack_2c = param_2[5];
-
-  uStack_28 = param_2[6];
-
-  uStack_24 = 0;
-
-  uStack_20 = param_2[8];
-
-  uStack_1c = param_2[9];
-
-  uStack_18 = param_2[10];
-
-  uStack_14 = 0;
-
-  uStack_10 = param_2[0xc];
-
-  uStack_c = param_2[0xd];
-
-  uStack_8 = param_2[0xe];
-
-  uStack_4 = 0;
-
-  FUN_00329ed0((float *)(&uStack_40));
+  FUN_00329ed0(buf64);
 
   auStack_50 = _sqc2(extraout_vf10);
 
-  ((code)FUN_00325d60)(param_1);
-
+  FUN_00325d60((u64)param_1, (u8 (*)[16])&auStack_50);
   return;
 
 }
