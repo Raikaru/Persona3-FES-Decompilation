@@ -48382,7 +48382,7 @@ u64 FUN_0034bfc0(long param_1)
 
   u64 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   long lVar5;
 
