@@ -338,10 +338,11 @@ int FUN_00780640(int param_1)
 
 #pragma push
 #pragma schedule on
-// FUN_007807E0 NONMATCHING
+// FUN_007807E0
 void FUN_007807e0(u16 param_1)
 {
   func_0x00076160(param_1);
+  asm volatile("sync");
   return;
 }
 #pragma pop
