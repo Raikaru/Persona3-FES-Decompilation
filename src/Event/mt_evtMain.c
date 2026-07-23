@@ -9545,9 +9545,9 @@ u32 FUN_00368d70(u64 param_1,u64 param_2,u64 param_3)
 
   u32 uVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
