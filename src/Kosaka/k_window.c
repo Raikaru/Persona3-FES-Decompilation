@@ -2,6 +2,9 @@
 #include "rw/rwcore.h"
 #include "h_dbprt.h"
 #include "Kosaka/k_assert.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
+
 #include "Kernel/Kwln/kwlnTask.h"
 extern u32 D_00960184[];
 extern void (*D_0096017c)(void* memory);
@@ -318,13 +321,17 @@ void func_001a2170(KwlnTask* task)
     (*freeSlot)(task->workData);
 }
 
-// FUN_001A2200 NONMATCHING
+// FUN_001A2200
 KwlnTask* func_001a2200(KwlnTask* parent, const RwRect* rect, const RwRGBA* colorA, const RwRGBA* colorB)
 {
-    KWindowTaskWork* work;
     KwlnTask* task;
+    KWindowTaskWork* work;
+    void* (**callocFunc)(u32, u32, u32);
+    s32* bufferSize;
+    void** buffer;
 
-    work = RwCalloc(1, sizeof(KWindowTaskWork), rwMEMHINTDUR_GLOBAL);
+    callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
+    work = (*callocFunc)(1, sizeof(KWindowTaskWork), rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
@@ -340,9 +347,11 @@ KwlnTask* func_001a2200(KwlnTask* parent, const RwRect* rect, const RwRGBA* colo
     work->rect = *rect;
     work->colorA = *colorA;
     work->colorB = *colorB;
-    work->bufferSize = (rect->x / 8) * (rect->y / 8) + 0x20;
-    work->buffer = RwCalloc(1, work->bufferSize, rwMEMHINTDUR_GLOBAL);
-    work->bufferAlias = work->buffer;
+    bufferSize = &work->bufferSize;
+    *bufferSize = (rect->x / 8) * (rect->y / 8) + 0x20;
+    buffer = &work->buffer;
+    *buffer = (*callocFunc)(1, *bufferSize, rwMEMHINTDUR_GLOBAL);
+    work->bufferAlias = *buffer;
 
     return task;
 }
