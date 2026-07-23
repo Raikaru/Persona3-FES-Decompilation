@@ -13820,7 +13820,7 @@ u64 FUN_00400690(u32 *param_1)
 
 }
 
-// FUN_004006C0 NONMATCHING
+// FUN_004006C0
 
 
 void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
@@ -13832,6 +13832,7 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
   int iVar2;
   int iVar3;
   int bVar3;
+  int *piVar4;
   short *psVar;
 
   iVar1 = *(int *)(*(int *)(*(int *)(param_4 + 0x24) + 0x44) + 4);
@@ -13844,7 +13845,8 @@ void FUN_004006c0(int param_1,int param_2,int param_3,int param_4)
     iVar3 = iVar2;
     iVar2 = *(int *)(iVar2 + 0x10);
     if (bVar3 != 0) {
-      FUN_003c49e0(iVar1,iVar1 + 4,iVar3);
+      piVar4 = (int *)iVar1;
+      FUN_003c49e0(piVar4,piVar4 + 1,iVar3);
     }
 
   }
