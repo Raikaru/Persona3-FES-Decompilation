@@ -124,46 +124,49 @@ void bsaMain0020fe20(BsaWork* work)
     work->words[1] = 0;
 }
 
-#pragma optimization_level 1
+#pragma optimization_level 2
 // FUN_0020FE30 NONMATCHING
-#define p ((u32*)work)
 void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
 {
+    u32* p;
     void* unit;
     u32 calc;
     u32 table6;
     u32 table1;
     u32 table2;
     u32 image;
-    u16* slots;
-    s16 categories[9];
     u16 enemyId;
+    u16* slots;
     s16 slotId;
     s32 i;
     s32 count;
+    u32 flags;
+    p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
     if ((~p[1] & BSA_FLAG_ACTIVE) == 0)
         K_ASSERT(0, 0x91);
+    p[1] = 0;
     p[1] = BSA_FLAG_ACTIVE;
-    p[1] |= BSA_FLAG_TRANSITION;
-    p[0] = mode;
+    p[0] = (u32)mode;
     p[0x29ac] = 0;
     p[0x29ad] = 0;
+    p[1] |= BSA_FLAG_TRANSITION;
     p[2] = unitId;
 
     unit = func_001ff430(unitId);
-    p[3] = *(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2);
+    calc = *(u32*)((u8*)unit + 0xa2c);
+    enemyId = *(u16*)((u8*)calc + 2);
+    *(u16*)(p + 3) = enemyId;
     p[1] &= ~BSA_FLAG_BOSS;
-    if (*(u16*)((u8*)p + 0xc) == 0x126)
+    if (enemyId == 0x126)
         p[1] |= BSA_FLAG_BOSS;
 
-    func_0017b1e0(*(u16*)((u8*)unit + 0xa2c) + 0);
+    func_0017b1e0(enemyId);
     func_003b0e70(1);
     func_003b0e90(2);
-    image = func_003b0970(DAT_007ce4e8 + *(u16*)((u8*)p + 0xc) * 0x3e,
-                          2, 6, 0, 0);
+    image = func_003b0970(DAT_007ce4e8 + enemyId * 0x3e, 2, 6, 0, 0);
     func_003b0e90(1);
     func_003b0e70(2);
     func_003b0e20(image, 0xffffffff);
@@ -171,25 +174,15 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_003b2c60(image, 0.0f);
     p[4] = image;
 
-    if ((*(u16*)((u8*)DAT_007ce410 +
-                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 2) != 0)
-        p[1] |= BSA_FLAG_TOP_LABEL;
-    if ((*(u16*)((u8*)DAT_007ce410 +
-                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x40) != 0)
-        p[1] |= BSA_FLAG_RESOURCE;
-    if ((*(u16*)((u8*)DAT_007ce410 +
-                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 8) != 0)
-        p[1] |= BSA_FLAG_STATUS;
-    if ((*(u16*)((u8*)DAT_007ce410 +
-                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x10) != 0)
-        p[1] |= BSA_FLAG_PERSONA;
-    if ((*(u16*)((u8*)DAT_007ce410 +
-                 *(u16*)((u8*)p + 0xc) * 0x3e + 0x1e) & 0x20) != 0)
-        p[1] |= BSA_FLAG_AILMENT;
-    p[0x1310] = DAT_007ce410[*(u16*)((u8*)p + 0xc) * 0x3e + 3];
-    p[0x1394] = *(u16*)(DAT_007ce410 + *(u16*)((u8*)p + 0xc) * 0x3e + 4);
-    p[0x1498] = *(u16*)(DAT_007ce410 + *(u16*)((u8*)p + 0xc) * 0x3e + 6);
-
+    flags = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 0x1e);
+    if ((flags & 2) != 0) p[1] |= BSA_FLAG_TOP_LABEL;
+    if ((flags & 0x40) != 0) p[1] |= BSA_FLAG_RESOURCE;
+    if ((flags & 8) != 0) p[1] |= BSA_FLAG_STATUS;
+    if ((flags & 0x10) != 0) p[1] |= BSA_FLAG_PERSONA;
+    if ((flags & 0x20) != 0) p[1] |= BSA_FLAG_AILMENT;
+    p[0x1310] = DAT_007ce410[enemyId * 0x3e + 3];
+    p[0x1394] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 4);
+    p[0x1498] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 6);
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0: slotId = 0; break;
@@ -203,12 +196,10 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         case 8: slotId = 9; break;
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
-        p[0x159c + i] = (u32)(s32)bsaSkillCategory(
-            func_00306e80(*(u32*)((u8*)unit + 0xa2c), slotId));
+        p[0x159c + i] = (u32)(s32)bsaSkillCategory(func_00306e80(calc, slotId));
     }
-    p[0x17e8] = (u32)(s32)func_003082f0(
-        *(u32*)((u8*)unit + 0xa2c), 0);
-    slots = func_00308bb0(*(u32*)((u8*)unit + 0xa2c));
+    p[0x17e8] = (u32)(s32)func_003082f0(calc, 0);
+    slots = func_00308bb0(calc);
     count = 0;
     while (count < 8 && slots[count] != 0)
         count++;
@@ -224,19 +215,15 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_0021d3b0(p + 0x12d0, p[0x12d0]);
     p[0x1250] = func_0021cca0(table2, 0x31);
     func_0021d3b0(p + 0x1250, p[0x1250]);
-    if ((p[1] & BSA_FLAG_BOSS) == 0 || p[0x17e8] == 7)
-        p[0x17ec] = func_0021cca0(table2, 0x3c);
-    else
+    if ((p[1] & BSA_FLAG_BOSS) == 0 && p[0x17e8] != 7)
         p[0x17ec] = func_0021cca0(table2, p[0x17e8] + 0x16);
+    else
+        p[0x17ec] = func_0021cca0(table2, 0x3c);
     func_0021d3b0(p + 0x17ec, p[0x17ec]);
     p[0x50] = func_0021cca0(table1, 0x47);
     func_0021d3b0(p + 0x50, p[0x50]);
     p[0x90] = func_0021cca0(table2, 0x30);
     func_0021d3b0(p + 0x90, p[0x90]);
-    p[0xd0] = func_0021cca0(table1, 0x48);
-    func_0021d3b0(p + 0xd0, p[0xd0]);
-    p[0x110] = func_0021cca0(table2, 0x30);
-    func_0021d3b0(p + 0x110, p[0x110]);
     p[0x150] = func_0021cca0(table2, 0x21);
     func_0021d3b0(p + 0x150, p[0x150]);
     p[0x190] = func_0021cca0(table2, 0x21);
