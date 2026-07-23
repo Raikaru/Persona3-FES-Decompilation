@@ -121,10 +121,10 @@ void datCalcSetSp(DatUnit* unit, u16 sp)
 // FUN_002ffdf0 NONMATCHING
 u16 datCalcGetMaxHp(DatUnit* unit)
 {
-    u16 pcId;
-    u16 baseHp;
-    s32 bonus;
     s32 hp;
+    s32 bonus;
+    u16 baseHp;
+    u16 pcId;
 
     pcId = unit->id;
     bonus = 0;
@@ -140,6 +140,7 @@ u16 datCalcGetMaxHp(DatUnit* unit)
         baseHp = func_0016cc00((s16)pcId);
     }
 
+    hp = baseHp;
     if (datCalcHasSkill(unit, 0x219))
     {
         bonus += (baseHp * 10) / 100;
@@ -165,7 +166,7 @@ u16 datCalcGetMaxHp(DatUnit* unit)
         bonus -= (baseHp * 50) / 100;
     }
 
-    hp = baseHp + bonus;
+    hp += bonus;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1a) * 10;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1b) * 20;
     hp += (u16)datCalcCountEquipmentWithEffect(unit, 0x1c) * 30;
