@@ -160,6 +160,7 @@ extern u32 func_00195290(KwlnTask* task);
 extern void func_00195020(KwlnTask* task);
 extern u32 func_00488f30(void);
 
+extern const u8 D_005E3C20[];
 #define CLND_SCHEDULE_DEFAULTS ((const u8*)0x005e3bc0)
 void* clndUpdateTask(KwlnTask* clndTask);
 void clndDestroyTask(KwlnTask* clndTask);
@@ -198,22 +199,29 @@ KwlnTask* func_0017fc70(KwlnTask* clndTask)
 }
 #pragma pop
 
-// FUN_0017FD30 NONMATCHING
+// FUN_0017FD30
 u32 func_0017fd30(void)
 {
-    s16 pcId;
-    s16 index;
-    const u8* source;
-    u16* destination;
+    s32 pcId;
+    s32 index;
+    const s16* sourceBase;
+    const s16* source;
+    s16 value;
+    s16* destination;
 
     for (pcId = 2; pcId < 0xb; pcId++)
     {
-        for (index = 0; index < 0xc; index++)
+        index = 0;
+        sourceBase = (const s16*)(D_005E3C20 + pcId * 0x30);
+        for (; index < 0xc; index++)
         {
-            source = CLND_SCHEDULE_DEFAULTS + (pcId - 2) * 0x30 + index * 4;
-            destination = func_00170620(pcId, index);
-            destination[0] = *(const u16*)source;
-            destination[1] = *(const u16*)(source + 2);
+            source = sourceBase + index * 2;
+            value = source[-0x30];
+            destination = (s16*)func_00170620(pcId, index);
+            destination[0] = value;
+            value = source[-0x2f];
+            destination = (s16*)func_00170620(pcId, index);
+            destination[1] = value;
         }
     }
 
@@ -4091,11 +4099,25 @@ void func_00185b40(void* resource,
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
-    func_001159f0(NULL, resource, 0x2b, alpha & 0xff,
-                  clndPackedX(position), clndPackedY(position), 48.0f);
-    func_001159f0(NULL, resource, 0x2c, alpha & 0xff,
-                  clndPackedX(position) + 449.0f,
-                  clndPackedY(position), 48.0f);
+    f32 y;
+    void* unused = NULL;
+    union
+    {
+        u64 value;
+        struct
+        {
+            f32 x;
+            f32 y;
+        } coords;
+    } packed;
+
+    packed.value = position;
+    y = packed.coords.y;
+    asm volatile("" : "+m"(y));
+    func_001159f0(unused, resource, 0x2b, alpha & 0xff,
+                  packed.coords.x, y, 48.0f);
+    func_001159f0(unused, resource, 0x2c, alpha & 0xff,
+                  packed.coords.x + 449.0f, y, 48.0f);
 }
 
 // FUN_00186100
