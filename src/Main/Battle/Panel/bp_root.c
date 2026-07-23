@@ -1233,97 +1233,147 @@ void FUN_00202010(void)
     u8* p;
     DatPersonaWork* persona;
     u16* skills;
-    u32 count;
-    u32 i;
-    u32 out;
-    u32 selected;
-    PanelSkillRow* row;
-    u32 icon;
-    u32* rec;
+    s32 count;
+    s32 i;
+    s32 out;
+    u32 selectedSkill;
+    s32 visible;
+    u16* special;
+    u8* row;
+    u8* rowBase;
+    u8* misc;
+    u8* misc2;
 
-    p = panelWork();
-    K_ASSERT((*(u32*)p & 2) != 0, 0x7c0);
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    p = gBcmWork;
+    rowBase = p + 0x4a90;
+    misc = (u8*)(uintptr_t)bpMisc001ff500(1);
+    K_ASSERT((~*(u32*)p & 2) != 0, 0x7c0);
     persona = datPersonaGetByPcId(1);
     count = datPersonaCountValidSkills(persona);
     skills = datPersonaGetSkills(persona);
     out = 0;
-    if (func_0030c0c0() != NULL)
+    special = (u16*)func_0030c0c0();
+    if (special != NULL)
     {
-        rec = (u32*)(p + out * 8);
-        rec[0x28 / 4] = 2;
-        rec[0x2c / 4] = skills[0];
-        if (func_003086f0(*(u32*)(p + 0xa2c), (u16)rec[0x2c / 4]))
+        *(u32*)(p + 0x28) = 0;
+        *(u16*)(p + 0x2c) = *special;
+        *(u32*)(p + 0x28) |= 2;
+        if (func_003086f0(*(u32*)(misc + 0xa2c), *(u16*)(p + 0x2c)))
         {
-            rec[0x28 / 4] |= 1;
+            *(u32*)(p + 0x28) |= 1;
         }
         out++;
     }
-    for (i = 0; i < count && out < 10; i++)
+    for (i = 0; i < count; i++)
     {
-        if (!panelSkillAccept(skills[i]))
+        if (!FUN_002055F0(skills[i]))
         {
             continue;
         }
-        rec = (u32*)(p + out * 8);
-        rec[0x28 / 4] = 0;
-        rec[0x2c / 4] = skills[i];
-        if (func_003086f0(*(u32*)(p + 0xa2c), skills[i]))
+        *(u16*)(p + out * 8 + 0x2c) = skills[i];
+        *(u32*)(p + out * 8 + 0x28) = 0;
+        if (func_003086f0(*(u32*)(misc + 0xa2c),
+                          *(u16*)(p + out * 8 + 0x2c)))
         {
-            rec[0x28 / 4] |= 1;
+            *(u32*)(p + out * 8 + 0x28) |= 1;
         }
         out++;
     }
     K_ASSERT(out != 0, 0x7e3);
     K_ASSERT(out < 10, 0x7e4);
-    panelSetWork32(0x74, out);
-    panelSetWork32(0x70, out < 5 ? out : 4);
-    panelSetWork32(0x7658, 0);
-    panelSetWork32(0x7660, panelWork32(0x70));
-    panelSetWork32(0x7668, panelWork32(0x74));
-    func_00208570(panelWork() + 0x7658);
-    selected = 0;
-    if (datGetFlag(0x186) && FUN_0016F380(0x31))
+    *(u32*)(p + 0x74) = out;
+    *(u32*)(p + 0x70) = out;
+    if (out >= 5)
     {
-        for (i = 0; i < out; i++)
+        *(u32*)(p + 0x70) = 4;
+    }
+    misc2 = (u8*)(uintptr_t)bpMisc001ff500(1);
+    *(u32*)(p + 0x7658) = 0;
+    *(u32*)(p + 0x7660) = *(u32*)(p + 0x70);
+    *(u32*)(p + 0x7668) = *(u32*)(p + 0x74);
+    func_00208570(p + 0x7658);
+    if (datGetFlag(0x186))
+    {
+        selectedSkill = FUN_0016F380(0x31);
+        if (selectedSkill != 0)
         {
-            if (panelWork16(0x2c + i * 8) == (u16)FUN_0016F380(0x31))
+            for (i = 0; i < *(s32*)(p + 0x74); i++)
             {
-                selected = i;
-                break;
+                if (*(u16*)(p + 0x2c + i * 8) == (u16)selectedSkill)
+                {
+                    break;
+                }
+            }
+            if (i == *(s32*)(p + 0x74))
+            {
+                *(u32*)(p + 0x7664) = 0;
+                *(u32*)(p + 0x765c) = 0;
+            }
+            else if (i == *(s32*)(p + 0x74) - 1)
+            {
+                *(u32*)(p + 0x765c) =
+                    i - (*(s32*)(p + 0x70) - 1);
+                *(u32*)(p + 0x7664) = i;
+            }
+            else if (*(s32*)(p + 0x70) - 2 < i)
+            {
+                *(u32*)(p + 0x765c) =
+                    i - (*(s32*)(p + 0x70) - 2);
+                *(u32*)(p + 0x7664) = i;
+            }
+            else
+            {
+                *(u32*)(p + 0x765c) = 0;
+                *(u32*)(p + 0x7664) = i;
             }
         }
-    }
-    panelSetWork32(0x7664, selected);
-    panelSetWork32(0x765c, selected > 3 ? selected - 3 : 0);
-    FUN_002024B0();
-    for (i = 0; i < panelWork32(0x3ac); i++)
-    {
-        row = panelSkillRow(i);
-        row->flags = 0;
-        if (i < panelWork32(0x70))
+        else
         {
-            rec = (u32*)(p + (panelWork32(0x765c) + i) * 8);
-            row->handle = rec[0x78 / 4];
-            row->type = (rec[0x28 / 4] & 2) ? 1 : 0;
-            icon = func_003083f0(*(u32*)(p + 0xa2c), (u16)rec[0x2c / 4]);
-            row->icon = icon;
+            *(u32*)(p + 0x7664) = 0;
+            *(u32*)(p + 0x765c) = 0;
         }
     }
-    panelSetWork32(0x7640, 0);
-    panelSetWork32(0x64a0, panelWork32(0x70));
-    panelSetWork32(0x6498, panelWork32(0x7664));
-    panelSetWork32(0x649c, panelWork32(0x765c));
-    panelSetWork32(0x64a4, panelWork32(0x74));
-    panelSetWork32(0x6d24, 0);
-    panelSetWork32(0x6d28, 0);
-    if (bcm00207930((u16)panelWork16(0x2c + panelWork32(0x7664) * 8)))
+    else
     {
-        panelSetWork32(0x6d28, 1);
-        panelSetWork32(0x6d24, FUN_00207960(panelWork16(0x2c + panelWork32(0x7664) * 8)));
+        *(u32*)(p + 0x7664) = 0;
+        *(u32*)(p + 0x765c) = 0;
     }
+    FUN_002024B0();
+    visible = *(s32*)(p + 0x74);
+    if (visible >= 5)
+    {
+        visible = 4;
+    }
+    for (i = 0; i < visible; i++)
+    {
+        row = rowBase + i * 0x510;
+        *(u32*)row = 0;
+        if (*(u32*)(p + i * 8 + 0x28) & 1)
+        {
+            *(u32*)row |= 1;
+        }
+        if (*(u32*)(p + i * 8 + 0x28) & 2)
+        {
+            *(u32*)row |= 2;
+        }
+        *(u32*)(row + 4) = *(u32*)(p + i * 4 + 0x78);
+        *(u32*)(row + 8) =
+            (((DAT_007ce3f8 + *(u16*)(p + i * 8 + 0x2c) * 0x2c)[3] == 1) ||
+             ((DAT_007ce3f8 + *(u16*)(p + i * 8 + 0x2c) * 0x2c)[3] == 2)) ? 1 : 0;
+        *(u32*)(row + 0xc) =
+            func_003083f0(*(u32*)(misc2 + 0xa2c), *(u16*)(p + i * 8 + 0x2c));
+    }
+    *(u32*)(p + 0x7640) = 0;
+    *(u32*)(p + 0x64a0) = visible;
+    *(u32*)(p + 0x6498) = *(u32*)(p + 0x7664);
+    *(u32*)(p + 0x649c) = *(u32*)(p + 0x765c);
+    *(u32*)(p + 0x64a4) = *(u32*)(p + 0x74);
+    *(u32*)(p + 0x6d24) = 0;
+    *(u32*)(p + 0x6d28) = 1;
     bcmPanel00222a60();
     FUN_0010a4e0(0, 0, 0, 3);
-    panelSetWork32(0x10, 1);
+    *(u32*)(p + 0x10) = 1;
 }
 
 // FUN_002024B0
