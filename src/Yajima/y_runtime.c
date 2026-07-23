@@ -5299,22 +5299,33 @@ void FUN_00434f70(void)
   return;
 }
 
-// FUN_00435060 NONMATCHING
- 
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma opt_loop_invariants on
+// FUN_00435060
+
 void FUN_00435060(u8 param_1)
 {
   u8 *base;
   int iVar2;
   u8 *puVar1;
+  int valid;
 
-  base = DAT_008717a0_bytes;
-  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+  iVar2 = 1;
+  for (; iVar2 < 4; iVar2 = iVar2 + 1) {
+    base = DAT_008717a0_bytes;
+    valid = 0;
     puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
+      valid = 1;
+    }
+    valid = valid != 0;
+    if (valid == 1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x1215) = param_1;
     }
   }
 }
+#pragma pop
 
 #pragma push
 #pragma opt_loop_invariants on
@@ -5412,25 +5423,32 @@ u32 FUN_004352e0(void)
 #pragma pop
 
 #pragma push
+#pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
-// FUN_00435370 NONMATCHING
+// FUN_00435370
 
 void FUN_00435370(u8 param_1)
 {
   u8 *base;
   int iVar2;
   u8 *puVar1;
+  int valid;
 
-  base = DAT_008717a0_bytes;
-  for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
+  iVar2 = 1;
+  for (; iVar2 < 4; iVar2 = iVar2 + 1) {
+    base = DAT_008717a0_bytes;
+    valid = 0;
     puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
+      valid = 1;
+    }
+    valid = valid != 0;
+    if (valid == 1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x1216) = param_1;
     }
   }
   *(u8 *)&DAT_007cdb10 = param_1;
 }
-
 #pragma pop
 // FUN_004353F0
 s8 FUN_004353f0(int param_1)
