@@ -77,6 +77,7 @@ extern u8 PTR_s_Sayonara_006a24d0_abs[];
 extern f32 fGpffff8110;
 extern f32 fGpffff839c;
 extern f32 fGpffff845c;
+extern u32 uGpffffa7f8;
 extern u32 gp0xffffa7d0;
 extern u32 gp0xffffa7d4;
 extern u32 gp0xffffa7d8;
@@ -143,7 +144,7 @@ void FUN_003ac500(int param_1,u64 param_2);
 void FUN_003b4a90(int *param_1,int param_2,int param_3,int param_4,int param_5,int *param_6,int param_7);
 void FUN_003ac590(void);
 u64 FUN_003ac5a0(int param_1,int param_2);
-u64 FUN_003ac600(u64 param_1,u64 param_2);
+u64 FUN_003ac600(int param_1,int param_2);
 u64 FUN_003ac820(u64 param_1,u64 param_2);
 u64 FUN_003ac890(u64 param_1,u64 param_2);
 u64 FUN_003ac900(u64 param_1,u64 param_2);
@@ -3024,26 +3025,28 @@ u64 FUN_003ac5a0(int param_1,int param_2)
 }
 #define FUN_003ac5a0(...) ((u64 (*)(...))FUN_003ac5a0)(__VA_ARGS__)
 #undef FUN_003ac600
-// FUN_003AC600 NONMATCHING
+// FUN_003AC600
 
 
-u64 FUN_003ac600(u64 param_1,u64 param_2)
+u64 FUN_003ac600(int param_1,int param_2)
 
 
 
 {
 
+  u8 *pbVar3;
+
   u8 bVar1;
 
   u32 uVar2;
 
-  u8 *pbVar3;
-
-  u32 uVar4;
+  u8 uVar4;
+  u16 index;
 
   
 
-  pbVar3 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
+  pbVar3 = (u8 *)(*(int *)((int)param_2 + 0x18));
+  pbVar3 = (u8 *)(*(int *)((int)param_2 + 0x10) + (int)pbVar3);
 
   uVar4 = *pbVar3 - 1 & 0xff;
 
@@ -3060,17 +3063,96 @@ u64 FUN_003ac600(u64 param_1,u64 param_2)
     uVar2 = (u32)(u8)(bVar1 - 1);
 
   }
+  index = (u8)uVar2 << 8 | (u8)uVar4;
 
-  if (*(int *)(&DAT_0095ac70 + (uVar2 << 8 | uVar4) * 4) != 0) {
+  if (DAT_0095ac70_abs[index] != 0) {
 
     FUN_003b22a0(param_2);
 
-    FUN_003b1d90(uVar4,param_2);
+    FUN_003b1d90(index & 0xff,param_2);
 
   }
 
   return 0;
 
+}
+// FUN_003AC6C0
+u64 FUN_003ac6c0(u64 param_1,u64 param_2)
+{
+  uGpffffa7f8 = uGpffffa7f8 | 1;
+  return 1;
+}
+
+// FUN_003AC6E0
+u64 FUN_003ac6e0(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+
+// FUN_003AC6F0
+u64 FUN_003ac6f0(int param_1,int param_2)
+{
+  u8 *pbVar1;
+  u8 bVar2;
+  u8 bVar3;
+
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x18));
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x10) + (int)pbVar1);
+  bVar2 = pbVar1[0] - 1;
+  bVar3 = pbVar1[1];
+  if (bVar3 == 0xff) {
+    bVar3 = 0;
+  } else {
+    bVar3 = bVar3 - 1;
+  }
+  *(u8 *)((int)param_2 + 0xc) = bVar3 << 8 | bVar2;
+  return 0;
+}
+
+// FUN_003AC750
+u64 FUN_003ac750(int param_1,int param_2)
+{
+  u8 *pbVar1;
+  u8 bVar2;
+  u8 bVar3;
+
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x18));
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x10) + (int)pbVar1);
+  bVar2 = pbVar1[0] - 1;
+  bVar3 = pbVar1[1];
+  if (bVar3 == 0xff) {
+    bVar3 = 0;
+  } else {
+    bVar3 = bVar3 - 1;
+  }
+  *(u8 *)((int)param_2 + 0xf) = bVar3 << 8 | bVar2;
+  return 0;
+}
+
+// FUN_003AC7B0
+u64 FUN_003ac7b0(u64 param_1,u64 param_2)
+{
+  return 0;
+}
+
+// FUN_003AC7C0
+u64 FUN_003ac7c0(int param_1,int param_2)
+{
+  u8 *pbVar1;
+  u8 bVar2;
+  u8 bVar3;
+
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x18));
+  pbVar1 = (u8 *)(*(int *)((int)param_2 + 0x10) + (int)pbVar1);
+  bVar2 = pbVar1[0] - 1;
+  bVar3 = pbVar1[1];
+  if (bVar3 == 0xff) {
+    bVar3 = 0;
+  } else {
+    bVar3 = bVar3 - 1;
+  }
+  *(u8 *)((int)param_2 + 0xe) = bVar3 << 8 | bVar2;
+  return 0;
 }
 #define FUN_003ac600(...) ((u64 (*)(...))FUN_003ac600)(__VA_ARGS__)
 #undef FUN_003ac820
