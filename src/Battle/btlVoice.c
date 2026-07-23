@@ -917,7 +917,7 @@ void func_002f1810(void)
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
-  packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)((u8*)0x690000 + 0x78b0), NULL);
+  packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
   packet->unk_00 = 4;
   packet->parentUID = parent->uid;
   btlPacketRegister(packet, 1);
