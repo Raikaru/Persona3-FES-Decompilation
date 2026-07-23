@@ -6756,6 +6756,13 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 }
 
 // FUN_003F7D50 NONMATCHING
+// Filled in from retail disassembly: sibling FUN_003f7fe0's pattern (3/3/1
+// true-branch, 2/2/0 false-branch constants to FUN_003f55b0/FUN_003f5830)
+// applies here too, except the "else" sub-case in each branch substitutes
+// iVar6 (a computed draw-x offset) and iVar5 (a computed fade alpha) for
+// param_1/param_3 - a background/unselected variant of the same draw call.
+// Residual: an unrelated register-widening mismatch in the pre-existing
+// (not touched by this fix) diff/count prefix logic above.
 
 
 void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
@@ -6825,20 +6832,14 @@ void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
     sVar1 = *(short *)(iVar2 + 6);
 
     if ((sVar1 == -2) || (sVar1 == -3)) {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,3);
     }
-
     else if (sVar1 == -5) {
-
-
+      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,3);
     }
-
     else {
-
-
+      FUN_003f55b0(iVar6,param_2,iVar5,param_4,param_5,1);
     }
-
   }
 
   else {
@@ -6846,20 +6847,14 @@ void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
     sVar1 = *(short *)(iVar2 + 6);
 
     if ((sVar1 == -2) || (sVar1 == -3)) {
-
-
+      FUN_003f55b0(param_1,param_2,param_3,param_4,param_5,2);
     }
-
     else if (sVar1 == -5) {
-
-
+      FUN_003f5830(param_1,param_2,param_3,param_4,param_5,2);
     }
-
     else {
-
-
+      FUN_003f55b0(iVar6,param_2,iVar5,param_4,param_5,0);
     }
-
   }
 
   return;
