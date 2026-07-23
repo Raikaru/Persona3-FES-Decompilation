@@ -39367,7 +39367,7 @@ u64 FUN_00342990(int param_1)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   int *piVar4;
 
