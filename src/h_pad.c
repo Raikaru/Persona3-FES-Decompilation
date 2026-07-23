@@ -581,18 +581,23 @@ void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
     }
     return reallocated;
 }
-// FUN_00104040 NONMATCHING
+// FUN_00104040 MATCHING
 void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint)
 {
-    RwUInt32 size;
     void* memory;
+    RwUInt32 size;
+    s32 intrState;
 
-    size = elementCount * elementSize;
-    memory = H_Pad_RwMalloc(size, hint);
-    if (memory != NULL)
+    intrState = func_0050d3a0();
+    size = elementSize * elementCount;
+    if ((memory = H_Pad_RwMalloc(size, hint)) != NULL)
     {
         memset(memory, 0, size);
         sRwCallocCount++;
+    }
+    if (intrState != 0)
+    {
+        func_0050d3f0();
     }
     return memory;
 }
