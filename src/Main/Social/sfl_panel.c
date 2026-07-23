@@ -154,11 +154,11 @@ void func_0023dac0(void)
     if (mode == 2 || mode == 1) {
         goto mode12;
     }
-    if (mode != 0) {
-        return;
-    }
-    frame = work[2];
+    switch (mode) {
+    case 0:
     {
+        int mode0_i;
+        frame = work[2];
         if (frame < 4) {
             xOffset = 526.0f;
         } else if (frame < 8) {
@@ -180,9 +180,9 @@ void func_0023dac0(void)
         quad[5] = 32.0f;
         quad[6] = 0.0f;
         quad[7] = 32.0f;
-        for (i = 0; i < 4; i++) {
-            quad[i * 2] += xOffset + 114.0f;
-            quad[i * 2 + 1] += 59.0f;
+        for (mode0_i = 0; mode0_i < 4; mode0_i++) {
+            quad[mode0_i * 2] += xOffset + 114.0f;
+            quad[mode0_i * 2 + 1] += 59.0f;
         }
         func_0021d8e0(work + 0x44, quad);
         color.r = 0xff;
@@ -204,15 +204,18 @@ void func_0023dac0(void)
         quad[5] = 64.0f;
         quad[6] = 0.0f;
         quad[7] = 64.0f;
-        for (i = 0; i < 4; i++) {
-            quad[i * 2] = quad[i * 2] * DAT_007cae0c + xOffset + 26.0f;
-            quad[i * 2 + 1] = quad[i * 2 + 1] * DAT_007cae0c + 65.0f;
+        for (mode0_i = 0; mode0_i < 4; mode0_i++) {
+            quad[mode0_i * 2] = quad[mode0_i * 2] * DAT_007cae0c + xOffset + 26.0f;
+            quad[mode0_i * 2 + 1] = quad[mode0_i * 2 + 1] * DAT_007cae0c + 65.0f;
         }
         func_0021d890(work + 4, quad);
         color.a = (unsigned char)(alpha * 255.0f);
         func_0021d950(work + 4, &color);
     }
     goto done;
+    default:
+        return;
+    }
 
 mode12:
     frame = work[2];
