@@ -345,29 +345,88 @@ static inline void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
 // FUN_0018A9F0 NONMATCHING
 void* func_0018a9f0(KwlnTask* task)
 {
-    u8* work;
-    u32 state;
+    struct GsLateTimerWork
+    {
+        u8 pad[0xa70];
+        s32 timer;
+    };
     s32 i;
     u32 done;
     u32 allDone;
-    char path[256];
+    struct
+    {
+        u32 pad[4];
+        char text[256];
+    } pathBuffer;
     GsPackedDimensions dimensions;
     void* resource;
-    s32 timer;
     u32 alpha;
+    register u8* work = (u8*)task->workData;
 
-    work = (u8*)task->workData;
-    state = GS_U32(work, 0);
-    switch (state)
+    switch (GS_U32(work, 0))
     {
     case 0:
-        GS_U32(work, 2) = 0;
-        if (GS_U32(work, 4) >= 0x110 && GS_U32(work, 4) <= 0x121)
+        switch (GS_U32(work, 4))
         {
-            GS_U32(work, 8) = GS_U32(work, 4) - 0x110;
+        case 0x110:
+            GS_U32(work, 8) = 0;
+            break;
+        case 0x111:
+            GS_U32(work, 8) = 1;
+            break;
+        case 0x112:
+            GS_U32(work, 8) = 2;
+            break;
+        case 0x113:
+            GS_U32(work, 8) = 3;
+            break;
+        case 0x114:
+            GS_U32(work, 8) = 4;
+            break;
+        case 0x115:
+            GS_U32(work, 8) = 5;
+            break;
+        case 0x116:
+            GS_U32(work, 8) = 6;
+            break;
+        case 0x117:
+            GS_U32(work, 8) = 7;
+            break;
+        case 0x118:
+            GS_U32(work, 8) = 8;
+            break;
+        case 0x119:
+            GS_U32(work, 8) = 9;
+            break;
+        case 0x11a:
+            GS_U32(work, 8) = 10;
+            break;
+        case 0x11b:
+            GS_U32(work, 8) = 11;
+            break;
+        case 0x11c:
+            GS_U32(work, 8) = 12;
+            break;
+        case 0x11d:
+            GS_U32(work, 8) = 13;
+            break;
+        case 0x11e:
+            GS_U32(work, 8) = 14;
+            break;
+        case 0x11f:
+            GS_U32(work, 8) = 15;
+            break;
+        case 0x120:
+            GS_U32(work, 8) = 16;
+            break;
+        case 0x121:
+            GS_U32(work, 8) = 17;
+            break;
+        default:
+            break;
         }
-        sprintf(path, D_005E43C0, GS_U32(work, 8));
-        GS_PTR(work, 0x40) = H_Cdvd_Request(path, HCDVD_FILEARCHIVE);
+        sprintf(pathBuffer.text, D_005E43C0, GS_U32(work, 8));
+        GS_PTR(work, 0x40) = H_Cdvd_Request(pathBuffer.text, HCDVD_FILEARCHIVE);
         GS_U32(work, 0) = 1;
         break;
     case 1:
@@ -377,7 +436,7 @@ void* func_0018a9f0(KwlnTask* task)
             {
                 u8* entry = work + i * 0x364;
                 resource = H_Cdvd_ArchiveGetFile((HCdvd*)GS_PTR(work, 0x40),
-                                                  i + 4, (u32*)(entry + 0x15c));
+                                                  (s32)(work + 4), (u32*)(entry + 0x15c));
                 GS_PTR(entry, 0x154) = resource;
                 func_00102720(D_005E43E0, resource);
             }
@@ -460,11 +519,11 @@ void* func_0018a9f0(KwlnTask* task)
             GS_U32(work, 0) = 4;
         }
         break;
+    case 4:
+        break;
     case 5:
-        timer = GS_S32(work, 0xa70);
-        GS_S32(work, 0xa70) = timer + 1;
-        timer++;
-        if (timer == 0x46)
+        ((struct GsLateTimerWork*)work)->timer++;
+        if (((struct GsLateTimerWork*)work)->timer == 0x46)
         {
             for (i = 0; i < 3; i++)
             {
@@ -480,9 +539,9 @@ void* func_0018a9f0(KwlnTask* task)
                 *child = NULL;
             }
         }
-        if (timer < 6 || timer > 8)
+        if (((struct GsLateTimerWork*)work)->timer < 6 || ((struct GsLateTimerWork*)work)->timer > 8)
         {
-            if (timer > 8 && timer < 0x41)
+            if (((struct GsLateTimerWork*)work)->timer > 8 && ((struct GsLateTimerWork*)work)->timer < 0x41)
             {
                 func_00113a30(200.0f, 0.0f, 0.0f, 0x0f3956ff, 0x280, 0x1c0);
             }
@@ -504,7 +563,7 @@ void* func_0018a9f0(KwlnTask* task)
                 func_001115e0(*child);
             }
         }
-        if (timer > 5 && timer < 0x46)
+        if (((struct GsLateTimerWork*)work)->timer > 5 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
             func_00114af0(198.0f, 0.0f, 0.0f, 0xffffffff,
                           0x280, 0x1c0, GS_PTR(work, 0x34));
@@ -518,31 +577,31 @@ void* func_0018a9f0(KwlnTask* task)
             func_001115b0(GS_TASK(work, 0x1c));
             func_001115e0(GS_TASK(work, 0x1c));
         }
-        if (timer > 0x31 && timer < 0x46)
+        if (((struct GsLateTimerWork*)work)->timer > 0x31 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
-            alpha = (u32)(((timer - 0x32) * 0xff) / 0xf);
+            alpha = (u32)(((((struct GsLateTimerWork*)work)->timer - 0x32) * 0xff) / 0xf);
             func_00114af0(196.0f, 0.0f, 0.0f,
                           alpha | 0xffffff00, 0x280, 0x1c0,
                           GS_PTR(work, 0x30));
         }
-        if (timer > 0x36 && timer < 0x50)
+        if (((struct GsLateTimerWork*)work)->timer > 0x36 && ((struct GsLateTimerWork*)work)->timer < 0x50)
         {
-            if (timer < 0x41)
+            if (((struct GsLateTimerWork*)work)->timer < 0x41)
             {
-                alpha = (u32)(((timer - 0x37) * 0xff) / 10);
+                alpha = (u32)(((((struct GsLateTimerWork*)work)->timer - 0x37) * 0xff) / 10);
             }
-            else if (timer < 0x46)
+            else if (((struct GsLateTimerWork*)work)->timer < 0x46)
             {
                 alpha = 0xff;
             }
             else
             {
-                alpha = 0xff - (u32)(((timer - 0x46) * 0xff) / 10);
+                alpha = 0xff - (u32)(((((struct GsLateTimerWork*)work)->timer - 0x46) * 0xff) / 10);
             }
             func_00113d80(194.0f, 0.0f, 0.0f,
                           alpha | 0xffffff00, 0x280, 0x1c0);
         }
-        if (timer > 0x4f)
+        if (((struct GsLateTimerWork*)work)->timer > 0x4f)
         {
             return KWLNTASK_STOP;
         }
