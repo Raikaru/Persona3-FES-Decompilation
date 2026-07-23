@@ -3042,7 +3042,7 @@ u32 FUN_0039b950(u64 param_1)
 
   int iVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   long lVar6;
 
