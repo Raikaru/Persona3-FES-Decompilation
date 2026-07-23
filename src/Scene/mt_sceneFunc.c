@@ -1236,7 +1236,7 @@ end:
 #pragma pop
 #define FUN_003b9320(...) ((u64 (*)(...))FUN_003b9320)(__VA_ARGS__)
 #undef FUN_003b93c0
-// FUN_003B93C0 NONMATCHING
+// FUN_003B93C0
 
 
 void FUN_003b93c0(u32 param_1,short param_2,short param_3,short param_4,
@@ -1252,6 +1252,7 @@ void FUN_003b93c0(u32 param_1,short param_2,short param_3,short param_4,
   u32 uVar3;
 
   u32 lVar2;
+  u32 lVar4;
 
   
 
@@ -1275,15 +1276,15 @@ void FUN_003b93c0(u32 param_1,short param_2,short param_3,short param_4,
 
   }
 
-  lVar2 = FUN_003b5d10(uVar1);
+  lVar4 = FUN_003b5d10(uVar1);
 
-  if (lVar2 == 0) {
+  if (lVar4 == 0) {
 
     goto second_done;
 
   }
 
-  FUN_003b8ff0_typed(lVar2,0,param_2,param_3,0,0,1.0f);
+  FUN_003b8ff0_typed(lVar4,0,param_2,param_3,0,0,1.0f);
 
 second_done:
 
