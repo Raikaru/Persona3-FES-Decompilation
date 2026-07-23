@@ -103,7 +103,7 @@ void func_00357e30(void)
 }
 
 #pragma optimization_level 2
-// FUN_00357ea0 NONMATCHING
+// FUN_00357ea0
 void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
 {
     RwV4d quaternion;
@@ -124,10 +124,10 @@ void func_00357ea0(f32 angleX, f32 angleY, f32 angleZ)
     halfAngle = -angleZ * 0.5f;
     cosZ = cosf(halfAngle);
     sinZ = sinf(halfAngle);
-    quaternion.x = sinX * (cosY * cosZ) + cosX * (sinY * sinZ);
-    quaternion.y = cosX * (sinY * cosZ) - sinX * (cosY * sinZ);
-    quaternion.z = sinX * (sinY * cosZ) + cosX * (cosY * sinZ);
-    quaternion.w = sinX * (cosY * cosZ) - cosX * (sinY * sinZ);
+    quaternion.x = cosX * (sinZ * sinY) + sinX * (cosZ * cosY);
+    quaternion.y = cosX * (cosZ * sinY) - sinX * (sinZ * cosY);
+    quaternion.z = cosX * (sinZ * cosY) + sinX * (cosZ * sinY);
+    quaternion.w = cosX * (cosZ * cosY) - sinX * (sinZ * sinY);
 
     __asm__ volatile (
         ".set noreorder          \n"
