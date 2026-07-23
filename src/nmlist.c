@@ -16,6 +16,8 @@ typedef struct NmlistList {
 } NmlistList;
 
 extern code DAT_00960178;
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
 extern code DAT_0096017c;
 #pragma alias DAT_0096017c_abs DAT_0096017c
 extern code DAT_0096017c_abs[];
@@ -65,7 +67,7 @@ u32 FUN_003c4e50(u64 param_1, u32* param_2);
 u32 FUN_003c4e60(u64 param_1, int param_2);
 int *FUN_003c4e70(int *param_1);
 void FUN_003c4f30(int param_1);
-void FUN_003c4fc0(int *param_1, int *param_2);
+void FUN_003c4fc0(int param_1, int *param_2);
 int FUN_003c50b0(int param_1,u32 param_2,int param_3);
 void FUN_003c5180(int param_1, int param_2);
 int FUN_003c5210(void);
@@ -360,24 +362,24 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 
 NmlistNode *FUN_003c49e0(int *param_1,int *param_2,NmlistNode *param_3)
 {
-  u32 list;
-  u32 list2;
-  u32 node;
-  u32 uVar1;
+  NmlistList *list;
+  NmlistList *list2;
+  NmlistNode *node;
+  NmlistNode *next;
 
-  list = (u32)param_1;
-  list2 = (u32)param_2;
-  node = (u32)param_3;
-  uVar1 = (u32)FUN_003c4820_typed((int *)list2,(int *)node);
-  if (node == *(u32 *)((u8 *)list2 + 8)) {
-    *(u32 *)((u8 *)list2 + 8) = uVar1;
+  list = (NmlistList *)param_1;
+  list2 = (NmlistList *)param_2;
+  node = param_3;
+  next = FUN_003c4820_typed((int *)list2,(int *)node);
+  if (node == list2->tail) {
+    list2->tail = next;
   }
   (*(code *)((u8 *)list + 0x18))((int *)list,(int *)node);
   if (node != 0) {
-    FUN_00521408(node,0,*(u32 *)((u8 *)node + 8));
-    (*DAT_0096017c)((int *)node);
+    FUN_00521408((u32)node,0,(u32)node->next);
+    (*(code *)0x0096017c)((int *)node);
   }
-  return (NmlistNode *)uVar1;
+  return next;
 }
 
 #define FUN_003c49e0(...) ((NmlistNode * (*)(...))FUN_003c49e0)(__VA_ARGS__)
@@ -724,10 +726,11 @@ int FUN_003c4f80(int param_1)
 }
 #define FUN_003c4f80(...) ((int (*)(...))FUN_003c4f80)(__VA_ARGS__)
 #undef FUN_003c4fc0
+#undef FUN_003c50b0
 // FUN_003C4FC0 NONMATCHING
 
 
-void FUN_003c4fc0(int *param_1,int *param_2)
+void FUN_003c4fc0(int param_1,int *param_2)
 
 
 
@@ -747,8 +750,8 @@ void FUN_003c4fc0(int *param_1,int *param_2)
   iVar4 = *(int *)(iVar2 + 4);
 
   if (iVar4 != 0) {
+    uVar1 = (*(code *)0x00960178)((u32)*(u16 *)(iVar2 + 0x10) << 2,0x40000);
 
-    uVar1 = (*DAT_00960178)((u32)*(u16 *)(iVar2 + 0x10) << 2,0x40000);
 
     for (; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x10)) {
       *(int *)((int)uVar1 + iVar3 * 4) = iVar4;
@@ -761,9 +764,8 @@ void FUN_003c4fc0(int *param_1,int *param_2)
 
     FUN_003c50b0(param_1,uVar1,iVar3);
 
-    *(u32 *)(iVar2 + 0xc) = *(u32 *)(iVar2 + 4);
+    (*(code *)0x0096017c)(uVar1);
 
-    (*DAT_0096017c)(uVar1);
   }
 
   return;

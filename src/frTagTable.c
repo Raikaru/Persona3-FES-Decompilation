@@ -87,8 +87,8 @@ u64 FUN_003ae930(void);
 u64 FUN_003ae970(void);
 u64 FUN_003ae9b0(u64 param_1,u64 param_2);
 u64 FUN_003aea50(u64 param_1,int param_2);
-u64 FUN_003aec20(u64 param_1,u64 param_2);
-u64 FUN_003aed10(u64 param_1,u64 param_2);
+u64 FUN_003aec20(u64 param_1,int param_2);
+u64 FUN_003aed10(u64 param_1,int param_2);
 u64 FUN_003aee20(u64 param_1,int param_2);
 u64 FUN_003af110(u64 param_1,int param_2);
 u32 FUN_003af360(void);
@@ -512,277 +512,138 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 
 
 u64 FUN_003aea50(u64 param_1,int param_2)
-
-
-
 {
-
   char cVar1;
-
   u8 bVar2;
-
   u8 bVar3;
-
   u32 uVar4;
-
   u8 *pbVar5;
-
   int iVar6;
-
   u8 bVar7;
-
   int iVar8;
-
   int iVar9;
-
   int iVar10;
-
   u8 bVar11;
 
-  
-
   pbVar5 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
-
   bVar2 = pbVar5[1];
-
   if (bVar2 == 0xff) {
-
     uVar4 = 0;
-
-  }
-
-  else {
-
+  } else {
     uVar4 = (u32)(u8)(bVar2 - 1);
-
   }
-
   iVar6 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
   cVar1 = *(char *)(iVar6 + 3);
-
   if (cVar1 == -1) {
-
     bVar2 = 0;
-
-  }
-
-  else {
-
+  } else {
     bVar2 = cVar1 - 1;
-
   }
-
   iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
   cVar1 = *(char *)(iVar8 + 5);
-
   if (cVar1 == -1) {
-
     bVar3 = 0;
-
-  }
-
-  else {
-
+  } else {
     bVar3 = cVar1 - 1;
-
   }
-
   iVar10 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
   cVar1 = *(char *)(iVar10 + 7);
-
   if (cVar1 == -1) {
-
     bVar7 = 0;
-
-  }
-
-  else {
-
+  } else {
     bVar7 = cVar1 - 1;
-
   }
-
   iVar9 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-
   cVar1 = *(char *)(iVar9 + 9);
-
   if (cVar1 == -1) {
-
     bVar11 = 0;
-
-  }
-
-  else {
-
+  } else {
     bVar11 = cVar1 - 1;
-
   }
-
-  FUN_003b93c0(uVar4 << 8 | *pbVar5 - 1 & 0xff,(u16)bVar2 << 8 | *(u8 *)(iVar6 + 2) - 1 & 0xff,
-
+  FUN_003b93c0(uVar4 << 8 | *pbVar5 - 1 & 0xff,
+               (u16)bVar2 << 8 | *(u8 *)(iVar6 + 2) - 1 & 0xff,
                (u16)bVar3 << 8 | *(u8 *)(iVar8 + 4) - 1 & 0xff,
-
                (u16)bVar7 << 8 | *(u8 *)(iVar10 + 6) - 1 & 0xff,
-
                (u16)bVar11 << 8 | *(u8 *)(iVar9 + 8) - 1 & 0xff);
-
   return 0;
-
 }
+
 #define FUN_003aea50(...) ((u64 (*)(...))FUN_003aea50)(__VA_ARGS__)
 #undef FUN_003aec20
 // FUN_003AEC20 NONMATCHING
 
 
-u64 FUN_003aec20(u64 param_1,u64 param_2)
-
-
-
+u64 FUN_003aec20(u64 param_1,int param_2)
 {
-
   char cVar1;
-
   u8 bVar2;
-
   short sVar3;
-
   u32 uVar4;
-
   u8 *pbVar5;
-
   int iVar6;
-
   char *pcVar7;
-
   char *pcVar8;
-
   char acStack_20 [28];
-
   u8 uStack_4;
-
   char cStack_3;
-
   u8 uStack_2;
 
-  
-
   pbVar5 = (u8 *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
-
   bVar2 = pbVar5[1];
-
   if (bVar2 == 0xff) {
-
     uVar4 = 0;
-
-  }
-
-  else {
-
+  } else {
     uVar4 = (u32)(u8)(bVar2 - 1);
-
   }
-
   sVar3 = FUN_003082f0(0,uVar4 << 8 | *pbVar5 - 1 & 0xff);
-
   pcVar8 = DAT_006a26f0;
-
   pcVar7 = acStack_20;
-
   iVar6 = 0x13;
-
   do {
-
     cVar1 = *pcVar8;
-
     pcVar8 = pcVar8 + 1;
-
     iVar6 = iVar6 + -1;
-
     *pcVar7 = cVar1;
-
     pcVar7 = pcVar7 + 1;
-
   } while (0 < iVar6);
-
   uStack_4 = 0x8d;
-
   cStack_3 = acStack_20[sVar3] + -0x5a;
-
   uStack_2 = 0;
-
   FUN_003b22a0(param_2);
-
   FUN_003b2020(&uStack_4,param_2);
-
   return 0;
-
 }
 #define FUN_003aec20(...) ((u64 (*)(...))FUN_003aec20)(__VA_ARGS__)
 #undef FUN_003aed10
 // FUN_003AED10 NONMATCHING
 
 
-u64 FUN_003aed10(u64 param_1,u64 param_2)
-
-
-
+u64 FUN_003aed10(u64 param_1,int param_2)
 {
-
   char cVar1;
-
   short sVar2;
-
   u64 uVar3;
-
   char *pcVar4;
 
-  
-
   pcVar4 = (char *)(*(int *)((int)param_2 + 0x10) + *(int *)((int)param_2 + 0x18));
-
   cVar1 = pcVar4[1];
-
   if (cVar1 == -1) {
-
     cVar1 = '\0';
-
-  }
-
-  else {
-
+  } else {
     cVar1 = cVar1 + -1;
-
   }
-
   if (cVar1 == '\0' && *pcVar4 == '\x01') {
-
     sVar2 = FUN_0016dd40();
-
     if (sVar2 == 0) {
-
       FUN_0019d3f0("frTagTable.c",0x38c);
-
     }
-
     uVar3 = FUN_003c3f80(sVar2);
-
-  }
-
-  else {
-
+  } else {
     uVar3 = FUN_003c3f80();
-
   }
-
   FUN_003b22a0(param_2);
-
   FUN_003b2020(uVar3,param_2);
-
   return 0;
-
 }
 #define FUN_003aed10(...) ((u64 (*)(...))FUN_003aed10)(__VA_ARGS__)
 #undef FUN_003aee20
