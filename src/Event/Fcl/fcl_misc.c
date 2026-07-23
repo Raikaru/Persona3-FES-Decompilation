@@ -299,62 +299,42 @@ LAB_003c84bc:
 
 
 u64 FUN_003c8550(u8 *param_1)
-
-
-
 {
-
+  register u8 *context;
   int iVar5;
-  u8 *context;
-
+  int iVar6;
   u32 uVar1;
-
   u32 lVar2;
-
   u32 *puVar3;
-
-  u8 auStack_20 [32];
-
-  
+  u8 auStack_20[32];
 
   if (param_1 == 0) {
-
     FUN_0019d3f0("fclMisc.c",0x3ad);
-
   }
-
-
   context = param_1;
   iVar5 = *(int *)(*(int *)(context + 0x18) + 4);
-
   if (iVar5 != 0) {
     puVar3 = *(u32 **)(iVar5 + 0x14);
-
     if (puVar3[2] == 0) {
       if (puVar3[1] == 0) {
         FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xc8);
-      }
-      else {
+      } else {
         lVar2 = FUN_0017d800();
         if (lVar2 != 0) {
           if (puVar3[1] == 1) {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0xe8);
-          }
-          else if (puVar3[1] == 9) {
+          } else if (puVar3[1] == 9) {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x108);
-          }
-          else {
+          } else {
             FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128);
           }
-        }
-        else {
+        } else {
           FUN_00523ac8(auStack_20,DAT_006a3e18_abs + 0x128,puVar3[1]);
         }
       }
       uVar1 = FUN_00112370(auStack_20);
       puVar3[2] = uVar1;
-    }
-    else {
+    } else {
       lVar2 = FUN_00111f30();
       if (lVar2 != 0) {
         *puVar3 = *puVar3 | 2;
@@ -362,15 +342,10 @@ u64 FUN_003c8550(u8 *param_1)
       }
     }
   }
-
   puVar3 = (u32 *)(context + 0x1c);
-
-  for (iVar5 = 0; iVar5 < 0xb; iVar5 = iVar5 + 1) {
-
+  for (iVar6 = 0; iVar6 < 0xb; iVar6 = iVar6 + 1) {
     uVar1 = *puVar3;
-
     if ((uVar1 & 4) != 0) {
-
       if (puVar3[2] != 0) {
         lVar2 = FUN_00111f30();
         if (lVar2 != 0) {
@@ -379,20 +354,14 @@ u64 FUN_003c8550(u8 *param_1)
           FUN_001124b0(puVar3[2]);
           puVar3[2] = 0;
         }
-      }
-      else {
+      } else {
         *puVar3 &= 0xfffffffb;
         *puVar3 &= 0xfffffffd;
       }
-
     }
-
     puVar3 = puVar3 + 3;
-
   }
-
   return 0;
-
 }
 #define FUN_003c8550(...) ((u64 (*)(...))FUN_003c8550)(__VA_ARGS__)
 #undef FUN_003c8770
