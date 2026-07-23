@@ -865,119 +865,60 @@ u32 FUN_003bffa0(u32 *param_1,u32 *param_2,u32 *param_3)
 
 
 u32 FUN_003c03f0(void)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar2;
-
   int *piVar3;
-
   u32 uVar4;
-
   long lVar5;
-
   u8 auStack_20 [12];
-
   u32 uStack_14;
-
   u32 uStack_10;
-
   u32 uStack_c;
 
-  
-
   piVar3 = (int *)FUN_00195540();
-
   iVar1 = *piVar3;
-
-  if (iVar1 == 3) {
-
-    uVar4 = 0xffffffff;
-
-  }
-
-  else {
-
-    if (iVar1 == 2) {
-
-      lVar5 = FUN_0027c2b0();
-
-      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-
-        bVar2 = 1;
-
-      }
-
-      else {
-
-        bVar2 = 0;
-
-      }
-
-      if (bVar2) {
-
-        *piVar3 = 3;
-
-      }
-
+  switch (iVar1) {
+  case 0:
+    if (DAT_007ce670 == 0) {
+      *piVar3 = 3;
     }
-
-    else if (iVar1 == 1) {
-
-      if (piVar3[1] < piVar3[2]) {
-
-        piVar3[1] = piVar3[1] + 1;
-
-      }
-
-      else {
-
-        piVar3[1] = 0;
-
-        piVar3[2] = 0;
-
-        FUN_00521408(auStack_20,0,0x1c);
-
-        uStack_14 = 0x8c;
-
-        uStack_10 = 4;
-
-        uStack_c = 0;
-
-        FUN_0027c080(3,auStack_20,0x1c,0);
-
-        *piVar3 = 2;
-
-      }
-
+    piVar3[1] = 0;
+    piVar3[2] = 2;
+    *piVar3 = 1;
+    break;
+  case 1:
+    if (piVar3[1] < piVar3[2]) {
+      piVar3[1] = piVar3[1] + 1;
     }
-
-    else if (iVar1 == 0) {
-
-      if (DAT_007ce670 == 0) {
-
-        *piVar3 = 3;
-
-      }
-
+    else {
       piVar3[1] = 0;
-
-      piVar3[2] = 2;
-
-      *piVar3 = 1;
-
+      piVar3[2] = 0;
+      FUN_00521408(auStack_20,0,0x1c);
+      uStack_14 = 0x8c;
+      uStack_10 = 4;
+      uStack_c = 0;
+      FUN_0027c080(3,auStack_20,0x1c,0);
+      *piVar3 = 2;
     }
-
-    uVar4 = 0;
-
+    break;
+  case 2:
+    lVar5 = FUN_0027c2b0();
+    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+      bVar2 = 1;
+    }
+    else {
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      *piVar3 = 3;
+    }
+    break;
+  case 3:
+    return 0xffffffff;
   }
-
+  uVar4 = 0;
   return uVar4;
-
 }
 #define FUN_003c03f0(...) ((u32 (*)(...))FUN_003c03f0)(__VA_ARGS__)
 #undef FUN_003c0570
@@ -985,173 +926,87 @@ u32 FUN_003c03f0(void)
 
 
 code * FUN_003c0570(void)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar2;
-
   int *piVar3;
-
   code *pcVar4;
-
   long lVar5;
-
   long lVar6;
-
   u8 auStack_40 [12];
-
   u32 uStack_34;
-
   u32 uStack_30;
-
   u32 uStack_2c;
-
   u8 auStack_20 [12];
-
   u32 uStack_14;
-
   u32 uStack_10;
-
   u32 uStack_c;
 
-  
-
   piVar3 = (int *)FUN_00195540();
-
   iVar1 = *piVar3;
-
-  if (iVar1 == 3) {
-
-    *piVar3 = 0;
-
+  switch (iVar1) {
+  case 0:
     piVar3[1] = 0;
-
-    piVar3[2] = 0;
-
-    piVar3[3] = 0;
-
-    piVar3[4] = 0;
-
-    piVar3[5] = 0;
-
-    pcVar4 = (code *)&FUN_003c03f0;
-
-  }
-
-  else {
-
-    if (iVar1 == 2) {
-
-      lVar5 = FUN_0027c2b0();
-
-      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-
-        bVar2 = 1;
-
-      }
-
-      else {
-
-        bVar2 = 0;
-
-      }
-
-      if (bVar2) {
-
-        *piVar3 = 3;
-
-      }
-
+    piVar3[2] = 2;
+    *piVar3 = 1;
+    break;
+  case 1:
+    if (piVar3[1] < piVar3[2]) {
+      piVar3[1] = piVar3[1] + 1;
     }
-
-    else if (iVar1 == 1) {
-
-      if (piVar3[1] < piVar3[2]) {
-
-        piVar3[1] = piVar3[1] + 1;
-
-      }
-
-      else {
-
-        piVar3[1] = 0;
-
-        piVar3[2] = 0;
-
-        lVar5 = FUN_0017d920();
-
-        lVar6 = FUN_0017da40();
-
-        if ((lVar5 == 4) && (lVar6 == 0x15)) {
-
-          FUN_00395170(0x24);
-
-          DAT_007ce670 = 0;
-
-          FUN_00521408(auStack_20,0,0x1c);
-
-          uStack_14 = 0x8d;
-
-          uStack_10 = 1;
-
-          uStack_c = 0;
-
-          FUN_0027c080(3,auStack_20,0x1c,0);
-
-          *piVar3 = 2;
-
-        }
-
-        else if ((lVar5 == 4) && (lVar6 == 0x1b)) {
-
-          FUN_00395170(0x10a);
-
-          DAT_007ce670 = 0;
-
-          FUN_00521408(auStack_40,0,0x1c);
-
-          uStack_34 = 0x6f;
-
-          uStack_30 = 2;
-
-          uStack_2c = 0;
-
-          FUN_0027c080(3,auStack_40,0x1c,0);
-
-          *piVar3 = 2;
-
-        }
-
-        else {
-
-          *piVar3 = 3;
-
-        }
-
-      }
-
-    }
-
-    else if (iVar1 == 0) {
-
+    else {
       piVar3[1] = 0;
-
-      piVar3[2] = 2;
-
-      *piVar3 = 1;
-
+      piVar3[2] = 0;
+      lVar5 = FUN_0017d920();
+      lVar6 = FUN_0017da40();
+      if ((lVar5 == 4) && (lVar6 == 0x15)) {
+        FUN_00395170(0x24);
+        DAT_007ce670 = 0;
+        FUN_00521408(auStack_20,0,0x1c);
+        uStack_14 = 0x8d;
+        uStack_10 = 1;
+        uStack_c = 0;
+        FUN_0027c080(3,auStack_20,0x1c,0);
+        *piVar3 = 2;
+      }
+      else if ((lVar5 == 4) && (lVar6 == 0x1b)) {
+        FUN_00395170(0x10a);
+        DAT_007ce670 = 0;
+        FUN_00521408(auStack_40,0,0x1c);
+        uStack_34 = 0x6f;
+        uStack_30 = 2;
+        uStack_2c = 0;
+        FUN_0027c080(3,auStack_40,0x1c,0);
+        *piVar3 = 2;
+      }
+      else {
+        *piVar3 = 3;
+      }
     }
-
-    pcVar4 = (code *)0x0;
-
+    break;
+  case 2:
+    lVar5 = FUN_0027c2b0();
+    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+      bVar2 = 1;
+    }
+    else {
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      *piVar3 = 3;
+    }
+    break;
+  case 3:
+    *piVar3 = 0;
+    piVar3[1] = 0;
+    piVar3[2] = 0;
+    piVar3[3] = 0;
+    piVar3[4] = 0;
+    piVar3[5] = 0;
+    return (code *)&FUN_003c03f0;
   }
-
+  pcVar4 = (code *)0x0;
   return pcVar4;
-
 }
 #define FUN_003c0570(...) ((code * (*)(...))FUN_003c0570)(__VA_ARGS__)
 #undef FUN_003c07c0
@@ -1159,151 +1014,76 @@ code * FUN_003c0570(void)
 
 
 code * FUN_003c07c0(void)
-
-
-
 {
-
   int iVar1;
-
   u8 bVar2;
-
   int *piVar3;
-
   code *pcVar4;
-
   long lVar5;
-
   u8 auStack_30 [12];
-
   u32 uStack_24;
-
   u32 uStack_20;
-
   u32 uStack_1c;
-
   u32 uStack_c;
-
   u32 uStack_8;
-
   u32 uStack_4;
 
-  
-
   piVar3 = (int *)FUN_00195540();
-
   uStack_4 = 0;
-
   uStack_8 = 0;
-
   uStack_c = 0;
-
   iVar1 = *piVar3;
-
-  if (iVar1 == 3) {
-
-    *piVar3 = 0;
-
+  switch (iVar1) {
+  case 0:
     piVar3[1] = 0;
-
-    piVar3[2] = 0;
-
-    piVar3[3] = 0;
-
-    piVar3[4] = 0;
-
-    piVar3[5] = 0;
-
-    pcVar4 = (code *)&FUN_003c0570;
-
-  }
-
-  else {
-
-    if (iVar1 == 2) {
-
-      lVar5 = FUN_0027c2b0();
-
-      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-
-        bVar2 = 1;
-
-      }
-
-      else {
-
-        bVar2 = 0;
-
-      }
-
-      if (bVar2) {
-
-        *piVar3 = 3;
-
-      }
-
+    piVar3[2] = 2;
+    *piVar3 = 1;
+    break;
+  case 1:
+    if (piVar3[1] < piVar3[2]) {
+      piVar3[1] = piVar3[1] + 1;
     }
-
-    else if (iVar1 == 1) {
-
-      if (piVar3[1] < piVar3[2]) {
-
-        piVar3[1] = piVar3[1] + 1;
-
-      }
-
-      else {
-
-        piVar3[1] = 0;
-
-        piVar3[2] = 0;
-
-        lVar5 = FUN_003bffa0(&uStack_4,&uStack_8,&uStack_c);
-
-        uStack_24 = uStack_4;
-
-        uStack_20 = uStack_8;
-
-        uStack_1c = uStack_c;
-
-        if (lVar5 == 0) {
-
-          *piVar3 = 3;
-
-        }
-
-        else {
-
-          DAT_007ce670 = 0;
-
-          FUN_00521408(auStack_30,0,0x1c);
-
-          FUN_0027c080(3,auStack_30,0x1c,0);
-
-          *piVar3 = 2;
-
-        }
-
-      }
-
-    }
-
-    else if (iVar1 == 0) {
-
+    else {
       piVar3[1] = 0;
-
-      piVar3[2] = 2;
-
-      *piVar3 = 1;
-
+      piVar3[2] = 0;
+      lVar5 = FUN_003bffa0(&uStack_4,&uStack_8,&uStack_c);
+      uStack_24 = uStack_4;
+      uStack_20 = uStack_8;
+      uStack_1c = uStack_c;
+      if (lVar5 == 0) {
+        *piVar3 = 3;
+      }
+      else {
+        DAT_007ce670 = 0;
+        FUN_00521408(auStack_30,0,0x1c);
+        FUN_0027c080(3,auStack_30,0x1c,0);
+        *piVar3 = 2;
+      }
     }
-
-    pcVar4 = (code *)0x0;
-
+    break;
+  case 2:
+    lVar5 = FUN_0027c2b0();
+    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+      bVar2 = 1;
+    }
+    else {
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      *piVar3 = 3;
+    }
+    break;
+  case 3:
+    *piVar3 = 0;
+    piVar3[1] = 0;
+    piVar3[2] = 0;
+    piVar3[3] = 0;
+    piVar3[4] = 0;
+    piVar3[5] = 0;
+    return (code *)&FUN_003c0570;
   }
-
+  pcVar4 = (code *)0x0;
   return pcVar4;
-
 }
 #define FUN_003c07c0(...) ((code * (*)(...))FUN_003c07c0)(__VA_ARGS__)
 #undef FUN_003c09a0
