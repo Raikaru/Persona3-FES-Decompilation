@@ -474,44 +474,60 @@ FldUnit* func_001c6d70(const FldUnit* unit, f32 maxDist)
 }
 #pragma pop
 
-// FUN_001c6dd0 NONMATCHING
+// FUN_001c6dd0
 s32 func_001c6dd0(const FldUnit* unit, f32 maxDist)
 {
     RwV3d delta;
     f32 nearest;
-    s32 nearestIndex;
     s32 i;
+    s32 nearestIndex;
 
     nearest = DAT_007caefc;
     nearestIndex = -1;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         FldUnit* candidate;
-        DatUnitGenusBase* genusBase;
-        Model* candidateModel;
+        DatUnitGenusBase** genusBase;
+        Model** candidateModel;
 
         candidate = &gFldUnitsPc[i];
-        genusBase = candidate->genusBase;
-        candidateModel = candidate->mdl;
-        if (candidate == unit || candidate->genusBase == NULL)
+        if (unit == candidate)
         {
             continue;
         }
+        genusBase = &candidate->genusBase;
+        if (*genusBase == NULL)
+        {
+            continue;
+        }
+        candidateModel = &candidate->mdl;
         delta.x = mdlGetMatrix(candidate->mdl)->pos.x -
                   mdlGetMatrix(unit->mdl)->pos.x;
-        delta.y = mdlGetMatrix(candidate->mdl)->pos.y -
-                  mdlGetMatrix(unit->mdl)->pos.y;
-        delta.z = mdlGetMatrix(candidate->mdl)->pos.z -
-                  mdlGetMatrix(unit->mdl)->pos.z;
-        if (func_002ff790(candidate->genusBase) == true)
+        {
+            f32 candidateY;
+
+            candidateY = mdlGetMatrix(*candidateModel)->pos.y;
+            delta.y = candidateY - mdlGetMatrix(unit->mdl)->pos.y;
+        }
+        {
+            f32 candidateZ;
+
+            candidateZ = mdlGetMatrix(*candidateModel)->pos.z;
+            delta.z = candidateZ - mdlGetMatrix(unit->mdl)->pos.z;
+        }
+        if (func_002ff790(*genusBase) == true)
         {
             continue;
         }
-        if (RwV3dLength(&delta) < maxDist &&
-            RwV3dLength(&delta) < nearest)
         {
-            nearest = RwV3dLength(&delta);
-            nearestIndex = i;
+            f32 distance;
+
+            distance = RwV3dLength(&delta);
+            if (distance < maxDist && distance < nearest)
+            {
+                nearestIndex = i;
+                nearest = distance;
+            }
         }
     }
     return nearestIndex;
