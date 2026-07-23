@@ -431,13 +431,13 @@ void brHero00263db0(void)
     void* text0;
     void* text1;
     void* text3;
+    s32 i;
     void (**setRenderState)(u32, u32);
     void (**renderQuad)(u32*, u32, u32, u32, u32);
-    s32 i;
     u32 texture;
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
-    if ((*w & 1) == 0)
+    if ((~*w & 1) != 0)
         return;
     text0 = FUN_00233d70(0);
     text1 = FUN_00233d70(1);
