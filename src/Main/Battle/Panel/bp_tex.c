@@ -152,59 +152,53 @@ static void bpTexWriteVertex(void* destination,
     BP_TEX_F32(destination, (baseOffset) + 0x08) = (depth); \
     BP_TEX_WRITE_COLOR_INLINE(destination, baseOffset, color); \
 } while (0)
+#pragma optimization_level 3
 // FUN_0021c9f0 NONMATCHING
 void* bpTex0021c9f0(void* sprMemory)
 {
-    u8* source;
-    u16 rasterCount;
-    u16 frameCount;
-    u32 frameTableOffset;
-    u32 rasterTableOffset;
-    u32 allocationSize;
     u8* texture;
-    u8* frames;
-    u8* rasters;
+    u8* source;
+    u32 allocationSize;
     u32 i;
 
     source = (u8*)sprMemory;
-    rasterCount = *(u16*)(source + 0x14);
-    frameCount = *(u16*)(source + 0x16);
-    frameTableOffset = *(u32*)(source + 0x1c);
-    rasterTableOffset = *(u32*)(source + 0x18);
-    allocationSize = 0x14 + (u32)rasterCount * 4 +
-                     (u32)frameCount * sizeof(BpTexFrameData);
+    allocationSize = 0;
+    allocationSize += 0x14;
+    allocationSize += (u32)*(u16*)(source + 0x16) * sizeof(BpTexFrameData);
+    allocationSize += (u32)*(u16*)(source + 0x14) * 4;
     texture = (u8*)(*jtbl_00960178)(allocationSize, 0x40000);
     if (texture == NULL)
     {
         return NULL;
     }
 
-    frames = texture + 0x14;
-    rasters = frames + (u32)frameCount * sizeof(BpTexFrameData);
-    BP_TEX_U32(texture, 4) = (u32)frames;
-    BP_TEX_U32(texture, 8) = (u32)rasters;
-    BP_TEX_U32(texture, 0x0c) = rasterCount;
-    BP_TEX_U32(texture, 0x10) = frameCount;
+    BP_TEX_U32(texture, 4) = (u32)(texture + 0x14);
+    BP_TEX_U32(texture, 8) =
+        (u32)(texture + 0x14 +
+              (u32)*(u16*)(source + 0x16) * sizeof(BpTexFrameData));
+    BP_TEX_U32(texture, 0x10) = *(u16*)(source + 0x16);
+    BP_TEX_U32(texture, 0x0c) = *(u16*)(source + 0x14);
 
-    for (i = 0; i < rasterCount; i++)
+    for (i = 0; i < *(u16*)(source + 0x14); i++)
     {
         u8* entry;
         void* raster;
 
-        entry = source + rasterTableOffset + i * 8;
+        entry = source + *(u32*)(source + 0x18) + i * 8;
         raster = bpTexCreateTmxRaster(source + *(u32*)(entry + 4));
-        BP_TEX_U32(rasters, i * 4) = (u32)raster;
+        BP_TEX_U32(texture, 8 + i * 4) = (u32)raster;
     }
 
-    for (i = 0; i < frameCount; i++)
+    for (i = 0; i < *(u16*)(source + 0x16); i++)
     {
         u8* entry;
         BpTexFrameData* frame;
         u32 color;
         u32 j;
 
-        entry = source + frameTableOffset + i * 8;
-        frame = (BpTexFrameData*)(frames + i * sizeof(BpTexFrameData));
+        entry = source + *(u32*)(source + 0x1c) + i * 8;
+        frame = (BpTexFrameData*)BP_TEX_U32(texture, 4) +
+                i;
         frame->texture = (u32)texture;
         frame->id = *(u32*)(source + *(u32*)(entry + 4) + 0x18);
         frame->rasterIndex = *(u32*)(source + *(u32*)(entry + 4) + 0x14);
@@ -218,14 +212,17 @@ void* bpTex0021c9f0(void* sprMemory)
         {
             color = *(u32*)(source + *(u32*)(entry + 4) + 0x64 + j * 4);
             frame->color[j * 4 + 0] = (u8)(((color >> 24) * 0xff) >> 7);
-            frame->color[j * 4 + 1] = (u8)((((color >> 16) & 0xff) * 0xff) >> 7);
-            frame->color[j * 4 + 2] = (u8)((((color >> 8) & 0xff) * 0xff) >> 7);
+            frame->color[j * 4 + 1] =
+                (u8)((((color >> 16) & 0xff) * 0xff) >> 7);
+            frame->color[j * 4 + 2] =
+                (u8)((((color >> 8) & 0xff) * 0xff) >> 7);
             frame->color[j * 4 + 3] = (u8)(((color & 0xff) * 0xff) >> 7);
         }
     }
 
     return texture;
 }
+#pragma optimization_level 2
 
 // FUN_0021ec40 NONMATCHING
 RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
@@ -317,6 +314,7 @@ RwRaster* bpTexCreateTmxRaster(void* tmxMemory)
     func_004cde40(raster);
     return func_004cde00(raster);
 }
+
 
 // FUN_0021cc20
 void func_0021cc20(void* texture)
