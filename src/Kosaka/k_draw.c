@@ -522,15 +522,14 @@ void func_001a5280(KwlnTask* task)
 KwlnTask* func_001a5320(KwlnTask* parent)
 {
     KDrawArcTaskWork* work;
-    KDrawArcData* render;
-    KDrawColorData* colorData;
     KDrawRenderObject* renderObject;
+    u8* indexData;
+    RwV3d* vertices;
     volatile f32 colorValue;
-    KDrawRenderGeometry* geometry;
     RwSphere bounds;
-    RwFrame* frame;
     f32 theta;
-    u32 i;
+    s32 i;
+    s32 j;
     KwlnTask* task;
 
     colorValue = D_007CC1D8;
@@ -549,55 +548,54 @@ KwlnTask* func_001a5320(KwlnTask* parent)
                           work);
 
     work->render = (KDrawArcData*)RwCalloc(1, sizeof(KDrawArcData), rwMEMHINTDUR_GLOBAL);
-    work->render->angle = 0.0f;
     work->render->center.x = 0.0f;
     work->render->center.y = 0.0f;
     work->render->center.z = 0.0f;
     work->render->radius = 400.0f;
-    render = work->render;
-
-    colorData = (KDrawColorData*)func_00494be0();
-    render->colorData = colorData;
-    colorData->color = *(const RwRGBA*)&colorValue;
+    work->render->colorData = (KDrawColorData*)func_00494be0();
+    work->render->colorData->color = *(const RwRGBA*)&colorValue;
     renderObject = (KDrawRenderObject*)func_00493710(0x22, 0x20, 0x4a);
+    indexData = renderObject->indexData;
     for (i = 0; i < 0x20; i++)
     {
         func_00493210(renderObject,
-                      renderObject->indexData,
+                      indexData,
                       0,
                       (i + 2) & 0xffff,
                       (i + 1) & 0xffff);
         func_00493230(renderObject,
-                      renderObject->indexData,
-                      colorData);
+                      indexData,
+                      work->render->colorData);
+        indexData += 8;
     }
 
-    geometry = renderObject->geometry;
-    geometry->vertices[0].x = 0.0f;
-    geometry->vertices[0].y = 5.0f;
-    geometry->vertices[0].z = 0.0f;
+    vertices = renderObject->geometry->vertices;
+    vertices[0].x = 0.0f;
+    vertices[0].y = 5.0f;
+    vertices[0].z = 0.0f;
     theta = 0.0f;
-    for (i = 0; i < 0x20; i++)
+    for (j = 0; j < 0x20; j++)
     {
-        geometry->vertices[i + 1].x = render->radius * cosf(theta);
-        geometry->vertices[i + 1].y = 5.0f;
-        geometry->vertices[i + 1].z = render->radius * sinf(theta);
-        theta += (gPI * 2.0f) / 32.0f;
+        indexData = (u8*)(vertices + j);
+        ((RwV3d*)indexData)[1].x = work->render->radius * cosf(theta);
+        ((RwV3d*)indexData)[1].y = 5.0f;
+        ((RwV3d*)indexData)[1].z = work->render->radius * sinf(theta);
+        theta += gPI;
     }
-    geometry->vertices[0x21].x = render->radius * cosf(0.0f);
-    geometry->vertices[0x21].y = 5.0f;
-    geometry->vertices[0x21].z = render->radius * sinf(0.0f);
+    vertices[j + 1].x = work->render->radius * cosf(0.0f);
+    vertices[j + 1].y = 5.0f;
+    vertices[j + 1].z = work->render->radius * sinf(0.0f);
+
 
     func_004933d0(renderObject);
-    func_00492e20(geometry, &bounds);
-    geometry->bounds = bounds;
+    func_00492e20(renderObject->geometry, &bounds);
+    renderObject->geometry->bounds = bounds;
 
-    render->manager = (KDrawRenderManager*)func_00491880();
-    func_004919b0(render->manager, renderObject, 0);
+    work->render->manager = (KDrawRenderManager*)func_00491880();
+    func_004919b0(work->render->manager, renderObject, 0);
     func_00493b60(renderObject);
-    frame = func_004caf10();
-    func_00492d10(render->manager, frame);
-    func_004cb930(render->manager->frame);
+    func_00492d10(work->render->manager, func_004caf10());
+    func_004cb930(work->render->manager->frame);
 
     return task;
 }
