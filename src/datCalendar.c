@@ -782,7 +782,7 @@ ret:
 }
 
 extern const char D_005E3E70[];
-// FUN_00181310 NONMATCHING
+// FUN_00181310
 KwlnTask* func_00181310(KwlnTask* clndTask)
 {
     s32 eventIndex;
@@ -797,10 +797,10 @@ KwlnTask* func_00181310(KwlnTask* clndTask)
     datSetFlag(0xa85, false);
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
-    H_Dbprt_FmtLog(D_005E3E70);
 
     if (datGetSkipToTarget() == 0)
     {
+        H_Dbprt_FmtLog(D_005E3E70);
         eventIndex = clndFindAndExecSiteibiEvents();
         if (eventIndex != -1)
         {
