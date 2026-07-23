@@ -143,7 +143,7 @@ long FUN_0039ec70(int *param_1,u64 param_2)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -183,7 +183,7 @@ long FUN_0039ed20(int *param_1,u64 param_2)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
@@ -223,7 +223,7 @@ long FUN_0039edd0(int *param_1,u64 param_2)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   
 
