@@ -727,45 +727,52 @@ void bsaMain00210d90(BsaWork* work)
 // FUN_00213E80 NONMATCHING
 void bsaMain00213e80(BsaWork* work)
 {
-    u32* p;
+    void (**renderState)(u32, u32);
+    void (**renderQuad)(u32*, u32, u32, u32, u32);
     u32 table6;
     u32 table1;
     u32 table2;
-    u32 image;
     s32 i;
-    code renderState;
-    code renderQuad;
-
+    u32 image;
+    u32* p;
     p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
     table2 = func_0021c3f0(2);
-    if ((~p[1] & BSA_FLAG_ACTIVE) == 0) {
-        renderState = D_00960090;
-        #define D_00960090_abs renderState
-        renderState(1, 0);
+    if ((~p[1] & BSA_FLAG_ACTIVE) != 0)
+        return;
+        renderState = (void (**)(u32, u32))D_00960090_abs;
+        #define D_00960090_abs (*renderState)
+        (*renderState)(1, 0);
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         D_00960090_abs(8, 0);
         D_00960090_abs(6, 0);
         D_00960090_abs(1, 0);
-        renderQuad = D_0096009C;
-        #define D_0096009C_abs renderQuad
+        renderQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        #define D_0096009C_abs (*renderQuad)
         D_0096009C_abs(p + 0x242c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x242c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x246c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x246c, 4, 0, 2, 3);
         D_0096009C_abs(p + 0x24ac, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x24ac, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x24ec, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x24ec, 4, 0, 2, 3);
         D_0096009C_abs(p + 0x252c, 4, 0, 1, 2);
+        D_0096009C_abs(p + 0x252c, 4, 0, 2, 3);
+        D_0096009C_abs(p + 0x256c, 4, 0, 1, 2);
         D_0096009C_abs(p + 0x256c, 4, 0, 2, 3);
-        if (p[0] == 1) {
+        switch (p[0]) {
+        case 1:
             for (i = 0; i < 8; i++) {
                 D_0096009C_abs(p + i * 0x80 + 0x25ac, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x80 + 0x25ac, 4, 0, 2, 3);
                 D_0096009C_abs(p + i * 0x80 + 0x25ec, 4, 0, 1, 2);
                 D_0096009C_abs(p + i * 0x80 + 0x25ec, 4, 0, 2, 3);
             }
+            break;
         }
-    }
     image = func_0021cce0(func_0021cca0(table2, 0x1f));
     D_00960090_abs(1, image);
     D_0096009C_abs(p + 0x10, 4, 0, 1, 2);
