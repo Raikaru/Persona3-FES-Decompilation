@@ -23270,6 +23270,10 @@ void FUN_00332b60(int *param_1)
 
 
 
+// Same fix/residual as sibling FUN_00332f10: swapped __int128 stack-local
+// declaration order + wrong (float)int cast fixed to raw reinterpret. nd
+// 70 -> 10. Residual: retail evaluates the final call's 2nd argument
+// before the 1st; not reproduced.
 // FUN_00332E10 NONMATCHING
 
 
@@ -23285,9 +23289,9 @@ void FUN_00332e10(int *param_1)
 
   int iVar3;
 
-  __int128 auStack_20;
-
   __int128 auStack_10;
+
+  __int128 auStack_20;
 
   
 
@@ -23312,7 +23316,7 @@ void FUN_00332e10(int *param_1)
 
       if (param_1[0xb] != 0) {
 
-        FUN_003275d0_evt((float)param_1[9] / 10.0f);
+        FUN_003275d0_evt(*(float *)(param_1 + 9) / 10.0f);
 
       }
 
