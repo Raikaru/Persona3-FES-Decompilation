@@ -7729,65 +7729,66 @@ void func_002ea210(void)
   return;
 }
 
-// FUN_002ea400 NONMATCHING
+// FUN_002ea400
 void func_002ea400(void)
-
 {
   u32 uVar1;
   u32 uVar2;
+  u32 *puVar6;
+  u32 *puVar5;
   int iVar3;
   int iVar4;
-  u32 *puVar5;
-  u32 *puVar6;
-  short sVar7;
+  int iVar5;
+  int iVar6;
+  int sVar7;
   u32 auStack_40030 [49158];
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
-  u16 auStack_18 [4];
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
-  
+  union {
+    u32 raw[3];
+    f32 vec[3];
+  } uStack_10;
+  s16 auStack_18[3];
+
   puVar6 = (u32*)DAT_00699cc0;
   puVar5 = auStack_30;
-  iVar4 = 3;
+  iVar5 = 3;
   do {
     uVar1 = *puVar6;
     uVar2 = puVar6[1];
     puVar6 = puVar6 + 2;
-    iVar4 = iVar4 + -1;
+    iVar5 = iVar5 + -1;
     *puVar5 = uVar1;
     puVar5[1] = uVar2;
     puVar5 = puVar5 + 2;
-  } while (0 < iVar4);
-  auStack_18[0] = uGpffff9ca0;
-  auStack_18[1] = uGpffff9ca2;
-  auStack_18[2] = uGpffff9ca4;
+  } while (0 < iVar5);
+  *(VoiceSlots *)auStack_18 = *(VoiceSlots *)&uGpffff9ca0;
   sVar7 = 0;
-  uStack_c = 0;
+  uStack_10.raw[1] = 0;
   for (iVar4 = *(int *)(iGpffffb6fc + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = 0x43160000;
-      uStack_8 = 0x43e10000;
+    if (*(u16 *)(iVar4 + 0xa4) == 1) {
+      uStack_10.raw[0] = 0x43160000;
+      uStack_10.raw[2] = 0x43e10000;
       *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     else {
-      iVar3 = (int)sVar7;
-      uStack_10 = auStack_30[iVar3 * 2];
-      uStack_8 = auStack_30[iVar3 * 2 + 1];
-      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
-      sVar7 = sVar7 + 1;
+      uStack_10.vec[0] = *(f32 *)(auStack_30 + ((short)sVar7 * 2));
+      uStack_10.vec[2] = *(f32 *)(auStack_30 + ((short)sVar7 * 2) + 1);
+      *(char *)(iVar4 + 0x9f0) = (char)auStack_18[(short)sVar7];
+      sVar7 = (short)((int)sVar7 + 1);
     }
     FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
     FUN_0027f650(iVar4,&uStack_10);
   }
-  for (iVar4 = *(int *)(iGpffffb6fc + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
-    if (*(short *)(iVar4 + 0xa4) == 0x104) {
-      uStack_10 = 0;
-      uStack_8 = 0xc3960000;
+  for (iVar6 = *(int *)(iGpffffb6fc + 0x158); iVar6 != 0; iVar6 = *(int *)(iVar6 + 0xa34)) {
+    switch (*(u16 *)(iVar6 + 0xa4)) {
+    case 0x104:
+      uStack_10.raw[0] = 0;
+      uStack_10.raw[2] = 0xc3960000;
+      break;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar6 + 0x94,iVar6 + 0x96,&uStack_10);
+    FUN_0027f650(iVar6,&uStack_10);
   }
   return;
 }
