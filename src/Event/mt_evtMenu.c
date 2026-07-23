@@ -4363,31 +4363,31 @@ bool FUN_00372c40(u64 param_1)
 
     case 7:
 
-      fVar13 = (float)iVar8 / 100.0;
+      fVar13 = (float)iVar8 / 100.0f;
 
       fVar11 = *(float *)(iVar3 + 0x1c) + fVar13;
 
       *(float *)(iVar3 + 0x1c) = fVar11;
 
-      if ((fVar11 <= fVar13 + -10.0) && (fVar13 < 0.0)) {
+      if ((fVar11 <= fVar13 + -10.0f) && (fVar13 < 0.0f)) {
 
         *(u32 *)(iVar3 + 0x1c) = 0x41200000;
 
       }
 
-      if ((fVar13 + 10.0 <= *(float *)(iVar3 + 0x1c)) && (0.0 < fVar13)) {
+      if ((fVar13 + 10.0f <= *(float *)(iVar3 + 0x1c)) && (0.0f < fVar13)) {
 
         *(u32 *)(iVar3 + 0x1c) = 0xc1200000;
 
       }
 
-      if (*(float *)(iVar3 + 0x1c) < -10.0) {
+      if (*(float *)(iVar3 + 0x1c) < -10.0f) {
 
         *(u32 *)(iVar3 + 0x1c) = 0xc1200000;
 
       }
 
-      if (10.0 < *(float *)(iVar3 + 0x1c)) {
+      if (10.0f < *(float *)(iVar3 + 0x1c)) {
 
         *(u32 *)(iVar3 + 0x1c) = 0x41200000;
 
@@ -4397,31 +4397,31 @@ bool FUN_00372c40(u64 param_1)
 
     case 8:
 
-      fVar13 = (float)iVar8 / 100.0;
+      fVar13 = (float)iVar8 / 100.0f;
 
       fVar11 = *(float *)(iVar3 + 0x20) + fVar13;
 
       *(float *)(iVar3 + 0x20) = fVar11;
 
-      if ((fVar11 <= fVar13 + -10.0) && (fVar13 < 0.0)) {
+      if ((fVar11 <= fVar13 + -10.0f) && (fVar13 < 0.0f)) {
 
         *(u32 *)(iVar3 + 0x20) = 0x41200000;
 
       }
 
-      if ((fVar13 + 10.0 <= *(float *)(iVar3 + 0x20)) && (0.0 < fVar13)) {
+      if ((fVar13 + 10.0f <= *(float *)(iVar3 + 0x20)) && (0.0f < fVar13)) {
 
         *(u32 *)(iVar3 + 0x20) = 0xc1200000;
 
       }
 
-      if (*(float *)(iVar3 + 0x20) < -10.0) {
+      if (*(float *)(iVar3 + 0x20) < -10.0f) {
 
         *(u32 *)(iVar3 + 0x20) = 0xc1200000;
 
       }
 
-      if (10.0 < *(float *)(iVar3 + 0x20)) {
+      if (10.0f < *(float *)(iVar3 + 0x20)) {
 
         *(u32 *)(iVar3 + 0x20) = 0x41200000;
 
