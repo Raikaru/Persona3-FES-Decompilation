@@ -1235,35 +1235,52 @@ void FUN_002255F0(void)
     puVar1[0x1192] = 1;
 }
 
+// Previous body used bcm_panel_read/write's wrong work-relative base for
+// the 0x55c/0x550 count/progress fields (should be overlay0-relative,
+// same bug class as FUN_00224150/FUN_00225040) and fabricated the
+// interpolated y-offset via raw integer bit-pattern arithmetic instead
+// of retail's genuine float divide. obj 372B/384B; residual is a 16B
+// frame-size gap plus one commutative mul operand-order floor.
 // FUN_00225670 NONMATCHING
 void FUN_00225670(void)
 {
-    u32 i;
-    u32 count;
-    u32 progress;
-    u8* overlay;
+    u8* work;
+    u8* overlay0;
+    u8* overlayI;
+    u32 table0;
+    u32 resource;
+    void* frame;
+    f32 rect[4];
+    f32 offsetY;
+    s32 i;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    count = bcm_panel_read(0x55c);
-    progress = bcm_panel_read(0x550);
-    for (i = 0; i < count; ++i) {
-        overlay = bcm_panel_overlay(i);
-        bcm_panel_set_resource(overlay + 0x10, 0, 0x29);
+    work = (u8*)sBcmPanel;
+    table0 = FUN_0021c3f0(0);
+    overlay0 = work + 0x6080;
+
+    for (i = 0; i < *(s32*)(overlay0 + 0x55c); ++i) {
+        resource = FUN_0021cca0(table0, 0x29);
+        overlayI = overlay0 + i * 0x110;
+        FUN_0021d3b0(overlayI + 0x10, resource);
     }
-    overlay = bcm_panel_bytes() + 0x3730;
-    if (count < progress) {
-        u32 delta = progress - count;
-        u32 fade = bcm_panel_read(0x558);
-        fade = 0x41000000u + (fade * 0x425c0000u) / (delta ? delta : 1);
-        *(u32*)(overlay + 0x0) = 0x42700000u;
-        *(u32*)(overlay + 0x4) = fade;
-    } else {
-        *(u32*)(overlay + 0x0) = 0x42700000u;
-        *(u32*)(overlay + 0x4) = 0x42100000u;
+
+    frame = (void*)FUN_0021cca0(table0, 0x1d);
+    {
+        s32 count = *(s32*)(overlay0 + 0x55c);
+        s32 progress = *(s32*)(overlay0 + 0x550);
+        if (count < progress) {
+            offsetY = 36.0f + ((f32)*(s32*)(overlay0 + 0x558) * 55.0f) /
+                                   (f32)(progress - count);
+        } else {
+            offsetY = 36.0f;
+        }
     }
-    *(u32*)(overlay + 0x8) = 0;
-    *(u32*)(overlay + 0xc) = 0;
-    FUN_0021d8e0(overlay, (const f32*)overlay);
+    rect[0] = 60.0f;
+    rect[1] = 237.0f + offsetY;
+    rect[2] = (f32)*(s32*)((u8*)frame + 0xc);
+    rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
+    FUN_0021d8e0(work + 0x3730, rect);
 }
 
 // Previous body was a wrong-helper stub unrelated to retail (2128B window).
