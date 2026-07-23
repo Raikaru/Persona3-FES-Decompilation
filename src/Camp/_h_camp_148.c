@@ -135,6 +135,8 @@ extern u32 FUN_001127d0();
 extern u32 FUN_00113a30();
 extern u32 FUN_00114450();
 extern u64 FUN_001158b0();
+extern u32 FUN_001158b0_typed();
+#pragma alias FUN_001158b0_typed FUN_001158b0
 extern u32 FUN_00115980();
 extern u32 FUN_001159f0();
 extern u32 FUN_0011abd0();
@@ -742,7 +744,7 @@ u32 h_campUpdateNewItemTask(int param_1)
   int iVar10;
   s32 lVar11;
   u32 uVar12;
-  u64 uVar13;
+  u32 uVar13;
   int iVar14;
   int *piVar15;
   s16 unaff_s0_lo;
@@ -763,14 +765,11 @@ u32 h_campUpdateNewItemTask(int param_1)
     DAT_007cdf90 = 300;
     lVar11 = FUN_001016b0(puVar1[2]);
     if (lVar11 != 0) {
-      uVar13 = FUN_00102100(puVar1[2],0,auStack_4);
-      uVar6 = FUN_00112420(uVar13);
+      uVar6 = FUN_00112420(FUN_00102100(puVar1[2],0,auStack_4));
       puVar1[0x2c] = uVar6;
-      uVar13 = FUN_00102100(puVar1[2],1,auStack_4);
-      uVar6 = FUN_00112420(uVar13);
+      uVar6 = FUN_00112420(FUN_00102100(puVar1[2],1,auStack_4));
       puVar1[0x2d] = uVar6;
-      uVar13 = FUN_00102100(puVar1[2],2,auStack_4);
-      uVar6 = FUN_00112420(uVar13);
+      uVar6 = FUN_00112420(FUN_00102100(puVar1[2],2,auStack_4));
       puVar1[0x2e] = uVar6;
       for (iVar17 = 0; iVar17 < 3; iVar17 = iVar17 + 1) {
         DAT_00833a50[iVar17] = puVar1[iVar17 + 0x2c];
@@ -857,7 +856,7 @@ u32 h_campUpdateNewItemTask(int param_1)
       iVar17 = puVar1[1];
       if (iVar17 < 6) {
         fVar19 = (float)((iVar17 * 600) / 6);
-        uVar13 = FUN_001158b0(0,DAT_00833b78,0);
+        uVar13 = FUN_001158b0_typed(0,DAT_00833b78,0);
         iVar10 = (int)uVar13;
         *(u32 *)(iVar10 + 0x2c) = 0x42ca0000;
         *(float *)(iVar10 + 0x10) = fVar19 + 428.0;
