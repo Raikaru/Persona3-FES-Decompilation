@@ -480,14 +480,11 @@ u32 K_Fldrc_Init()
 {
     Field* fieldObject;
     u8* field;
-    MtScene* scene;
     u32 state;
     u32 count;
     u32 i;
     u32 errors;
-    u32 range;
     u32 scenePath;
-    s32 major;
     u8* node;
     void* resource;
     void* output;
@@ -503,10 +500,7 @@ u32 K_Fldrc_Init()
 
     fieldObject = K_Field_Get();
     field = (u8*)fieldObject;
-    scene = gMtScene;
     state = *(u32*)(field + 0x1058);
-    major = scene->fldMajorId;
-    range = ((major < 0x3b) || ((major >= 0x47) && (major < 0x4f)));
     if (state == 0x3e7)
     {
         K_Fldrc_DestroyFldPac();
@@ -589,11 +583,11 @@ init_phase2:
         *(u32*)(field + 0x1058) = 0;
         return false;
     }
-    if ((scene->flags & 0x80000000) != 0)
+    if ((gMtScene->flags & 0x80000000) != 0)
     {
         node = *(u8**)(field + 0x116c);
-        scene->fldMajorId = *(u16*)(node + 4);
-        scene->fldMinorId = *(u16*)(node + 6);
+        gMtScene->fldMajorId = *(u16*)(node + 4);
+        gMtScene->fldMinorId = *(u16*)(node + 6);
     }
     for (i = 0; i < *(u32*)(field + 0x1168); i++)
     {
@@ -632,7 +626,7 @@ init_phase4:
     }
     count = *(u32*)0x007ce164;
     *(u32*)0x007ce164 = *(u32*)0x007cdeac - count;
-    if (scene->fldMajorId < 0xc8)
+    if (gMtScene->fldMajorId < 0xc8)
     {
         *(u32*)0x007ce164 += 0x32000;
     }
@@ -664,8 +658,8 @@ init_phase5:
     {
         node = *(u8**)(field + 0x116c);
         *(void**)(node + 0xa44) =
-            func_001e2da0((u16)scene->fldMajorId, (u16)scene->fldMinorId,
-                          scene->unk_14);
+            func_001e2da0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
+                          gMtScene->unk_14);
     }
     else
     {
@@ -674,7 +668,7 @@ init_phase5:
             node = *(u8**)(field + 0x116c + i * 4);
             *(void**)(node + 0xa44) =
                 func_001e2da0(*(u16*)(node + 4), *(u16*)(node + 6),
-                              scene->unk_14);
+                              gMtScene->unk_14);
         }
     }
     *(u32*)(field + 0x1058) = 6;
@@ -686,8 +680,8 @@ init_phase6:
         node = *(u8**)(field + 0x116c);
         if (func_001e2e50(*(void**)(node + 0xa44),
                           (void**)(node + 0xa48),
-                          (u16)scene->fldMajorId, (u16)scene->fldMinorId,
-                          scene->unk_14) == false)
+                          (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
+                          gMtScene->unk_14) == false)
         {
             errors++;
         }
@@ -700,7 +694,7 @@ init_phase6:
             if (func_001e2e50(*(void**)(node + 0xa44),
                               (void**)(node + 0xa48),
                               *(u16*)(node + 4), *(u16*)(node + 6),
-                              scene->unk_14) == false)
+                              gMtScene->unk_14) == false)
             {
                 errors++;
             }
@@ -714,7 +708,9 @@ init_phase6:
 
 init_phase7:
     errors = 0;
-    if ((range != 0) && (uGpffffb590 != NULL) &&
+    if (((gMtScene->fldMajorId < 0x3b) ||
+          ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f))) &&
+         (uGpffffb590 != NULL) &&
         (mdlStreamRead((Model*)uGpffffb590) == false))
     {
         errors++;
@@ -749,7 +745,8 @@ init_phase7:
                 func_001e6cb0(*(u16*)(node + 4), *(u16*)(node + 6));
         }
     }
-    if (range != 0)
+    if ((gMtScene->fldMajorId < 0x3b) ||
+        ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
     {
         HCdvd* eventRequest;
         void* eventPayload;
@@ -766,12 +763,13 @@ init_phase7:
         }
         func_001e7520(eventRequest);
         *(HCdvd**)(field + 0x10cc) =
-            func_001e6cb0((u16)scene->fldMajorId, (u16)scene->fldMinorId);
+            func_001e6cb0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId);
     }
     *(u32*)(field + 0x1058) = 8;
 
 init_phase8:
-    if (range != 0)
+    if ((gMtScene->fldMajorId < 0x3b) ||
+        ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
     {
         for (i = 0; i < *(u32*)(field + 0x1168); i++)
         {
@@ -786,7 +784,7 @@ init_phase8:
         }
         output = NULL;
         if (func_001e6d50(*(HCdvd**)(field + 0x10cc), &output,
-                          (u16)scene->fldMajorId, (u16)scene->fldMinorId) ==
+                          (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId) ==
             false)
         {
             return false;
@@ -811,7 +809,9 @@ init_phase8:
         }
     }
     scenePath = K_Scene_001a0250();
-    if ((scenePath == 1) || (range != 0))
+    if ((scenePath == 1) ||
+        (gMtScene->fldMajorId < 0x3b) ||
+        ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
     {
         for (i = 0; i < 9; i++)
         {
@@ -822,11 +822,11 @@ init_phase8:
         {
             if (datGetScenarioMode() == 0)
             {
-                func_001bd450((u32)(scene->fldMajorId - 0x14), 1);
+                func_001bd450((u32)(gMtScene->fldMajorId - 0x14), 1);
             }
             else
             {
-                func_001bd450((u32)(scene->fldMajorId - 0x28), 1);
+                func_001bd450((u32)(gMtScene->fldMajorId - 0x28), 1);
             }
         }
         func_001bd8c0();
@@ -903,19 +903,19 @@ init_phase8:
     }
 
 init_camera_common:
-    scene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)scene->unk_16);
-    if (scene->fldMajorId >= 0xc8)
+    gMtScene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)gMtScene->unk_16);
+    if (gMtScene->fldMajorId >= 0xc8)
     {
         func_004c9d70(kwlnGetMainCamera(), 35.0f);
     }
-    if (scene->fldMajorId < 0xc8)
+    if (gMtScene->fldMajorId < 0xc8)
     {
         func_004c9d70(kwlnGetMainCamera(), 100.0f);
     }
-    if (scene->cmrCdvd == NULL)
+    if (gMtScene->cmrCdvd == NULL)
     {
-        scene->cmrCdvd = func_001d6b10();
-        if (scene->cmrCdvd == NULL)
+        gMtScene->cmrCdvd = func_001d6b10();
+        if (gMtScene->cmrCdvd == NULL)
         {
             *(u32*)(field + 0x1058) = 0x3e7;
             return false;
@@ -926,12 +926,12 @@ init_camera_common:
     *(u32*)(field + 0x1058) = 9;
 
 init_phase9:
-    if (FUN_001b61f0(scene->cmrCdvd, (u16)scene->unk_16) == false)
+    if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
     {
         return false;
     }
-    scene->cmrCdvd = func_001d6b10();
-    if (scene->cmrCdvd == NULL)
+    gMtScene->cmrCdvd = func_001d6b10();
+    if (gMtScene->cmrCdvd == NULL)
     {
         *(u32*)(field + 0x1058) = 0x3e7;
         return false;
@@ -939,17 +939,17 @@ init_phase9:
     *(u32*)(field + 0x1058) = 0x0a;
 
 init_phase10:
-    if (FUN_001b61f0(scene->cmrCdvd, (u16)scene->unk_16) == false)
+    if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
     {
         return false;
     }
-    scene->cmrCdvd = func_001d6b10();
-    if (scene->cmrCdvd == NULL)
+    gMtScene->cmrCdvd = func_001d6b10();
+    if (gMtScene->cmrCdvd == NULL)
     {
         *(u32*)(field + 0x1058) = 0x3e7;
         return false;
     }
-    if (func_001d6bc0(scene->cmrCdvd, &cameraMatrix, &cameraFov,
+    if (func_001d6bc0(gMtScene->cmrCdvd, &cameraMatrix, &cameraFov,
                       &cameraType, &cameraOffset, &xzDeadZone,
                       &yDeadZone) == false)
     {
@@ -979,8 +979,8 @@ init_phase1e:
     {
         node = *(u8**)(field + 0x116c);
         *(void**)(node + 0xa44) =
-            func_001e2da0((u16)scene->fldMajorId, (u16)scene->fldMinorId,
-                          scene->unk_14);
+            func_001e2da0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
+                          gMtScene->unk_14);
     }
     else
     {
@@ -989,7 +989,7 @@ init_phase1e:
             node = *(u8**)(field + 0x116c + i * 4);
             *(void**)(node + 0xa44) =
                 func_001e2da0(*(u16*)(node + 4), *(u16*)(node + 6),
-                              scene->unk_14);
+                              gMtScene->unk_14);
         }
     }
     *(u32*)(field + 0x1058) = 0x1f;
@@ -1001,8 +1001,8 @@ init_phase1f:
         node = *(u8**)(field + 0x116c);
         if (func_001e2e50(*(void**)(node + 0xa44),
                           (void**)(node + 0xa48),
-                          (u16)scene->fldMajorId, (u16)scene->fldMinorId,
-                          scene->unk_14) == false)
+                          (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
+                          gMtScene->unk_14) == false)
         {
             errors++;
         }
@@ -1015,7 +1015,7 @@ init_phase1f:
             if (func_001e2e50(*(void**)(node + 0xa44),
                               (void**)(node + 0xa48),
                               *(u16*)(node + 4), *(u16*)(node + 6),
-                              scene->unk_14) == false)
+                              gMtScene->unk_14) == false)
             {
                 errors++;
             }
@@ -1062,16 +1062,16 @@ init_phase20:
     goto init_camera_common;
 
 init_phase28:
-    if ((scene->flags & 4) == 0)
+    if ((gMtScene->flags & 4) == 0)
     {
         *(u32*)(field + 0x1058) = 0x3e7;
         return false;
     }
-    scene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)scene->unk_16);
+    gMtScene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)gMtScene->unk_16);
     *(u32*)(field + 0x1058) = 0x29;
 
 init_phase29:
-    if (FUN_001b61f0(scene->cmrCdvd, (u16)scene->unk_16) == false)
+    if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
     {
         return false;
     }
