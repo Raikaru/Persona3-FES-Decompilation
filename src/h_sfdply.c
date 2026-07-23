@@ -1191,6 +1191,7 @@ void func_0010de40(HSfdImage* image, const u8* source)
     dst = image->pixels;
     width = image->width;
     height = image->height;
+    pixels = (const u16*)source;
     y = 0;
     while (y < height)
     {
