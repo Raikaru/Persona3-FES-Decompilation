@@ -846,7 +846,9 @@ u64 FUN_00352980(int param_1);
 void FUN_00352a80(int param_1);
 void FUN_00352ad0(int param_1);
 void FUN_00352b30(int param_1);
-void FUN_00352b80(u64 param_1);
+void FUN_00352b80(int param_1);
+u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src);
+void FUN_00352c20(u32 *param_1, u32 param_2);
 void FUN_00352c30(u32 param_1,u32 param_2);
 void FUN_00352c50(u32 param_1,u32 param_2,u32 param_3);
 bool FUN_00352c70(int param_1,char *param_2);
@@ -1181,6 +1183,8 @@ extern u32 DAT_0069ccc4;
 extern u32 DAT_0069ccc8;
 extern u32 DAT_0069cccc;
 extern MdlStridedCallback24 DAT_0069ccd0[];
+#pragma alias DAT_0069ccd0_abs DAT_0069ccd0
+extern MdlStridedCallback24 DAT_0069ccd0_abs[];
 extern u32 DAT_0069ccd4;
 extern MdlExtendedDispatch DAT_0069ccf0[];
 #pragma alias DAT_0069ccf0_abs DAT_0069ccf0
@@ -55098,10 +55102,10 @@ void FUN_00352b30(int param_1)
 
 
 
-// FUN_00352B80 NONMATCHING
+// FUN_00352B80
 
 
-void FUN_00352b80(u64 param_1)
+void FUN_00352b80(int param_1)
 
 
 
@@ -55109,26 +55113,41 @@ void FUN_00352b80(u64 param_1)
 
   int iVar1;
 
-  int iVar2;
 
   
 
-  iVar2 = (int)param_1;
+  DAT_0069ccc0_abs[*(int *)(param_1 + 0x18)].advance();
 
-  DAT_0069ccc0[*(int *)(iVar2 + 0x18)].advance();
+  iVar1 = *(int *)(param_1 + 0x14) + 1;
 
-  iVar1 = *(int *)(iVar2 + 0x14) + 1;
-
-  *(int *)(iVar2 + 0x14) = iVar1;
+  *(int *)(param_1 + 0x14) = iVar1;
 
   if (0 < iVar1) {
 
-    DAT_0069ccd0[*(int *)(iVar2 + 0x18)].callback(param_1);
+    DAT_0069ccd0_abs[*(int *)(param_1 + 0x18)].callback(param_1);
 
   }
 
   return;
 
+}
+
+
+
+
+// FUN_00352C10
+u_long128 FUN_00352c10(u_long128 *dst, const u_long128 *src)
+{
+    return *dst = *src;
+}
+
+
+
+
+// FUN_00352C20
+void FUN_00352c20(u32 *param_1, u32 param_2)
+{
+  param_1[4] = param_2;
 }
 
 
