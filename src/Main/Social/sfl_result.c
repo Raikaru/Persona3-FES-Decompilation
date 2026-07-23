@@ -138,6 +138,7 @@ void func_001fcb30(u8* event, u32* result, s32* count);
 void func_001fccc0(u8* src, u8* dst, u32 skill);
 void func_001fce20(u8* persona, u16* skills, s32 count);
 void func_001fd350(u8* persona, u32* skills, s32 count);
+extern s16 FUN_001706c0(s16 pcId, s16 index);
 extern u8* pbGpffffb758;
 extern u16* puGpffffb74c;
 extern u16* puGpffffb730;
@@ -173,6 +174,8 @@ extern char* pcGpffffb770;
 extern char* pcGpffffb774;
 extern char* pcGpffffb778;
 extern u8 DAT_00684d70[];
+#pragma alias DAT_00684d60 DAT_00684d70
+extern u8 DAT_00684d60[];
 
 // FUN_001f9170 NONMATCHING
 u32 sflResult001f9170(s32 player)
@@ -2507,7 +2510,7 @@ void func_001fcb30(u8* event, u32* result, s32* count)
 }
 
 
-// FUN_001FCCC0 NONMATCHING
+// FUN_001FCCC0
 void func_001fccc0(u8* src, u8* dst, u32 skillId)
 {
     u16 skill;
@@ -2519,7 +2522,7 @@ void func_001fccc0(u8* src, u8* dst, u32 skillId)
     entry = FUN_00170e90((s16)skillId);
     skill = *(u16*)(entry + 8);
     if (FUN_0017b4e0(skill) == 0)
-        FUN_0019d3f0(0x684d60, 0x23a);
+        FUN_0019d3f0((u32)(DAT_00684d60 - 0x10), 0x23a);
 
     FUN_0017b860(*(s16*)(dst + 2), *(s16*)(src + 2), skill, 1);
     for (i = 0; i < 0xc; i++) {
@@ -2532,11 +2535,11 @@ void func_001fccc0(u8* src, u8* dst, u32 skillId)
         }
     }
     if (i >= 0xc)
-        FUN_0019d3f0(0x684d60, 0x249);
+        FUN_0019d3f0((u32)(DAT_00684d60 - 0x10), 0x249);
     event_id = *(s16*)(src + 2);
     currentSkill = FUN_001706c0(event_id, (s16)i);
     event_id = *(s16*)(src + 2);
-    FUN_00170710(event_id, (s16)i, currentSkill - 1);
+    FUN_00170710(event_id, (s16)i, (s16)(currentSkill - 1));
 }
 // FUN_001FCE20 NONMATCHING
 
