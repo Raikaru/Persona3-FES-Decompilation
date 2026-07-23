@@ -282,6 +282,8 @@ void sflPsel00260e00(void)
 {
     u32* work;
     u32 texture;
+    SflPselStateCallback state;
+    void (*draw)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sSflPsel != NULL, 0x57);
     work = sSflPsel;
@@ -289,75 +291,81 @@ void sflPsel00260e00(void)
         return;
 
     texture = sflRes0020ec50();
-    D_00960090(9, 2);
-    D_00960090(0x14, 2);
-    D_00960090(8, 1);
-    D_00960090(6, 0);
+    state = D_00960090;
+    state(9, 2);
+    state(0x14, 2);
+    state(8, 1);
+    state(6, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(1, 0);
-    D_0096009C((u32*)((u8*)work + 0x310), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x310), 4, 0, 2, 3);
+    state(1, 0);
+    draw = D_0096009C;
+    draw((u32*)((u8*)work + 0x310), 4, 0, 1, 2);
+    draw(&work[0xc4], 4, 0, 2, 3);
 
-    D_00960090(0x14, 2);
-    D_00960090(8, 1);
-    D_00960090(6, 0);
+    state(0x14, 2);
+    state(8, 1);
+    state(6, 0);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(1, 0);
-    D_0096009C((u32*)((u8*)work + 0x10), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x10), 4, 0, 2, 3);
+    state(1, 0);
+    draw((u32*)((u8*)work + 0x10), 4, 0, 1, 2);
+    draw(&work[4], 4, 0, 2, 3);
 
-    D_00960090(8, 0);
-    D_00960090(6, 1);
+    state(8, 0);
+    state(6, 1);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x3a));
-    D_00960090(1, texture);
-    D_0096009C((u32*)((u8*)work + 0x710), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x710), 4, 0, 2, 3);
-    D_00960090(1, 0);
-    D_0096009C((u32*)((u8*)work + 0x810), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x810), 4, 0, 2, 3);
+    state(1, texture);
+    draw((u32*)((u8*)work + 0x710), 4, 0, 1, 2);
+    draw(&work[0x1c4], 4, 0, 2, 3);
+    state(1, 0);
+    draw((u32*)((u8*)work + 0x810), 4, 0, 1, 2);
+    draw(&work[0x204], 4, 0, 2, 3);
 
-    D_00960090(8, 1);
-    D_00960090(6, 1);
+    state(8, 1);
+    state(6, 1);
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    D_00960090(6, 1);
-    D_00960090(6, 1);
-    D_00960090(8, 1);
-    D_00960090(1, 0);
-    D_0096009C((u32*)((u8*)work + 0x210), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x210), 4, 0, 2, 3);
+    state(6, 1);
+    state(6, 1);
+    state(8, 1);
+    state(1, 0);
+    draw((u32*)((u8*)work + 0x210), 4, 0, 1, 2);
+    draw(&work[0x84], 4, 0, 2, 3);
 
-    if (work[1] == 1) {
-        D_00960090(6, 0);
-        D_00960090(8, 1);
-        D_00960090(1, 0);
-        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 2, 3);
-    } else if (work[1] == 0) {
-        D_00960090(6, 1);
-        D_00960090(8, 1);
-        D_00960090(1, 0);
-        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
-        D_0096009C((u32*)((u8*)work + 0x110), 4, 0, 2, 3);
+    switch (work[1])
+    {
+    case 0:
+        ((void (*)(u32))state)(6);
+        state(8, 1);
+        state(1, 0);
+        draw((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        draw(&work[0x44], 4, 0, 2, 3);
+        break;
+    case 1:
+        state(6, 0);
+        state(8, 1);
+        state(1, 0);
+        draw((u32*)((u8*)work + 0x110), 4, 0, 1, 2);
+        draw(&work[0x44], 4, 0, 2, 3);
+        break;
     }
 
-    D_00960090(6, 1);
-    D_00960090(6, 1);
-    D_00960090(8, 0);
+    state(6, 1);
+    state(6, 1);
+    state(8, 0);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x34));
-    D_00960090(1, texture);
-    D_0096009C((u32*)((u8*)work + 0x410), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x410), 4, 0, 2, 3);
+    state(1, texture);
+    draw((u32*)((u8*)work + 0x410), 4, 0, 1, 2);
+    draw(&work[0x104], 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x35));
-    D_00960090(1, texture);
-    D_0096009C((u32*)((u8*)work + 0x510), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x510), 4, 0, 2, 3);
+    state(1, texture);
+    draw((u32*)((u8*)work + 0x510), 4, 0, 1, 2);
+    draw(&work[0x144], 4, 0, 2, 3);
     texture = FUN_0021cce0(FUN_0021cca0(texture, 0x36));
-    D_00960090(1, texture);
-    D_0096009C((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
-    D_0096009C((u32*)((u8*)work + 0x610), 4, 0, 2, 3);
+    state(1, texture);
+    draw((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
+    draw(&work[0x184], 4, 0, 2, 3);
 }
 
 extern void FUN_0021d890(void*, const void*);
