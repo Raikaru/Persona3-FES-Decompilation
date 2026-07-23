@@ -1256,73 +1256,38 @@ code * FUN_003c0bd0(void)
 
 
 u32 FUN_003c0c30(void)
-
-
-
 {
-
   u8 bVar1;
-
   int *piVar2;
-
   long lVar3;
-
   u16 uStack_20;
-
   u16 uStack_1e;
-
   u16 uStack_1c;
-
   u16 uStack_18;
 
-  
-
   piVar2 = (int *)FUN_00195540();
-
-  if (*piVar2 == 1) {
-
-    lVar3 = FUN_0027c2b0();
-
-    if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
-
-      bVar1 = 1;
-
-    }
-
-    else {
-
-      bVar1 = 0;
-
-    }
-
-    if (bVar1) {
-
-      return 0xffffffff;
-
-    }
-
-  }
-
-  else if (*piVar2 == 0) {
-
+  if (*piVar2 == 0) {
     FUN_00521408(&uStack_20,0,0x1c);
-
     uStack_20 = 7;
-
     uStack_1e = 1;
-
     uStack_1c = 0;
-
     uStack_18 = 0;
-
     FUN_0027c080(2,&uStack_20,0x1c,0);
-
     *piVar2 = 1;
-
   }
-
+  else if (*piVar2 == 1) {
+    lVar3 = FUN_0027c2b0();
+    if ((lVar3 == 0) && (lVar3 = FUN_0027c330(), lVar3 == -1)) {
+      bVar1 = 1;
+    }
+    else {
+      bVar1 = 0;
+    }
+    if (bVar1) {
+      return 0xffffffff;
+    }
+  }
   return 0;
-
 }
 #define FUN_003c0c30(...) ((u32 (*)(...))FUN_003c0c30)(__VA_ARGS__)
 #undef FUN_003c0d20
