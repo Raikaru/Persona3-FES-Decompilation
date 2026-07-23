@@ -55,6 +55,10 @@ extern void FUN_0016f1f0(int param_1,int param_2);
 extern u32 FUN_0016f190_comu(int param_1);
 extern u32 DAT_0095b280;
 extern u16* DAT_0095b2a0;
+#pragma alias DAT_0095b2a0_abs DAT_0095b2a0
+extern u8 DAT_0095b2a0_abs[];
+#pragma alias DAT_0095b2a8_abs DAT_0095b2a8
+extern u8 DAT_0095b2a8_abs[];
 extern u32 DAT_0095b2a8;
 extern u32 DAT_0095b4f0;
 extern u32 DAT_0095b568;
@@ -154,93 +158,46 @@ u32 FUN_003bf610(void);
 
 
 void FUN_003bdbd0(int param_1)
-
-
-
 {
-
-  short sVar1;
-
-  u8 bVar2;
-
-  char cVar3;
-
-  long lVar4;
-
+  extern u32 FUN_0016e100(s16 param_1);
+  extern s8 FUN_0016dba0(s16 param_1);
+  u32 bVar2;
+  s8 cVar3;
+  long sVar1;
+  u32 lVar4;
   int iVar5;
-
-  
-
-  lVar4 = FUN_0016dce0((short)param_1);
-
-  if ((lVar4 != 0) && (lVar4 = FUN_00172a50((short)param_1), lVar4 != 0)) {
-
+  lVar4 = FUN_0016dce0((s16)param_1);
+  if ((lVar4 != 0) && (lVar4 = FUN_00172a50((s16)param_1), lVar4 != 0)) {
     for (iVar5 = 0; iVar5 < 6; iVar5 = iVar5 + 1) {
-
       if (param_1 != iVar5 + 6) {
-
-        lVar4 = FUN_0016dce0((short)(iVar5 + 6));
-
+        lVar4 = FUN_0016dce0((s16)(iVar5 + 6));
         if (lVar4 == 0) {
-
           FUN_0019d3f0("comuFunction.c",0x1b6);
-
         }
 
-        sVar1 = (short)iVar5;
-
-        lVar4 = FUN_0016e100(sVar1 + 6);
-
-        if (lVar4 == 0) {
-
+        if (FUN_0016e100((s16)(iVar5 + 6)) == 0) {
           bVar2 = 0;
-
         }
-
+        else if (FUN_00172a50((s16)(iVar5 + 6)) == 0) {
+          bVar2 = 0;
+        }
         else {
-
-          lVar4 = FUN_00172a50(sVar1 + 6);
-
-          if (lVar4 == 0) {
-
-            bVar2 = 0;
-
+          cVar3 = FUN_0016dba0((s16)(iVar5 + 6));
+          if ((long)cVar3 >= (long)(u32)*(u8 *)(*(u32 *)DAT_0095b2a8_abs + iVar5)) {
+            bVar2 = 1;
           }
-
           else {
-
-            cVar3 = FUN_0016dba0(sVar1 + 6);
-
-            if ((long)cVar3 < (long)(u32)*(u8 *)(DAT_0095b2a8 + iVar5)) {
-
-              bVar2 = 0;
-
-            }
-
-            else {
-
-              bVar2 = 1;
-
-            }
-
+            bVar2 = 0;
           }
-
         }
 
         if (bVar2) {
-
-          FUN_00171960(iVar5 + 6,*DAT_0095b2a0);
-
+          FUN_00171960((sVar1 = *(s16 *)(*(u32 *)DAT_0095b2a0_abs), iVar5 + 6),
+                       (s16)sVar1);
         }
-
       }
-
     }
-
   }
-
-  return;
-
 }
 #define FUN_003bdbd0(...) ((void (*)(...))FUN_003bdbd0)(__VA_ARGS__)
 #undef FUN_003bdd40
