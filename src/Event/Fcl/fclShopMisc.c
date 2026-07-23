@@ -415,6 +415,8 @@ void FUN_0040dcc0(float param_1,int param_2,int param_3,int param_4,int param_5,
 s32 datGetFlag_s32(s32 param_1);
 #pragma alias datGetFlag_u32 datGetFlag
 u32 datGetFlag_u32();
+#pragma alias datGetFlag_u32_arg datGetFlag
+u32 datGetFlag_u32_arg(int param_1);
 #pragma alias datSocialLinkLevelIsNotZero_s32 datSocialLinkLevelIsNotZero
 u32 datSocialLinkLevelIsNotZero_s32(s32 socialLink);
 void FUN_001725a0(u64 socialLink);
@@ -2828,7 +2830,7 @@ LAB_003f23a8:
 
 }
 
-// FUN_003F2510 NONMATCHING
+// FUN_003F2510
 
 
 u32 FUN_003f2510(void)
@@ -2837,9 +2839,9 @@ u32 FUN_003f2510(void)
 
 {
 
+  int sVar1;
   u32 uVar1;
   u32 uVar2;
-  s16 sVar1;
   u32 uVar3;
 
   
@@ -2847,18 +2849,13 @@ u32 FUN_003f2510(void)
   for (uVar3 = 0; uVar3 < 8; uVar3 = uVar3 + 1) {
     sVar1 = *(short *)(DAT_006acc60_abs + uVar3 * 2);
     if (sVar1 != -1) {
-      if (datGetFlag_u32() != 0) {
-        uVar2 = (1 << uVar3) & 0xffffU;
-        uVar2 = uVar2 | uVar1;
-        uVar1 = uVar2 & 0xffffU;
+      if (datGetFlag_u32_arg(sVar1) != 0) {
+        uVar1 = (uVar1 | ((1 << uVar3) & 0xffffU)) & 0xffffU;
         continue;
       }
     }
-
     if ((uVar3 == 6) && datGetScenarioMode() != 0) {
-      uVar2 = (1 << uVar3) & 0xffffU;
-      uVar2 = uVar2 | uVar1;
-      uVar1 = uVar2 & 0xffffU;
+      uVar1 = (uVar1 | ((1 << uVar3) & 0xffffU)) & 0xffffU;
     }
 
   }
