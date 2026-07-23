@@ -55033,7 +55033,7 @@ u64 FUN_00352980(int param_1)
 
   u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   u8 (*pauVar6) [16];
 
