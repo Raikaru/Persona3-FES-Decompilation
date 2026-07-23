@@ -292,19 +292,23 @@ void FUN_00243150(void)
     for (iVar10 = 0; iVar10 < (int)puVar1[3]; iVar10 = iVar10 + 1) {
       puVar9 = puVar1 + iVar10 * 0x290 + 0x10;
       uVar8 = puVar1[1];
-      if (uVar8 == 2) {
+      switch (uVar8) {
+      case 0:
+      case 1:
+        for (uVar8 = 0;
+            (uVar8 < (int)puVar1[2] && (puVar1[uVar8 + 4] != puVar1[iVar10 * 0x290 + 0x12]));
+            uVar8 = uVar8 + 1) {
+        }
+        if (((~*puVar9 & 0x20) != 0) && (uVar8 == puVar1[2])) goto LAB_00243a18;
+        break;
+      case 2:
         uVar8 = ~*puVar9;
         if ((((uVar8 & 0x400) == 0) || ((uVar8 & 0x20) == 0)) || ((uVar8 & 0x80) == 0))
         goto LAB_00243348;
+        break;
+      default:
+        goto LAB_00243348;
       }
-      else {
-        if ((uVar8 == 1) || (uVar8 == 0)) {
-          for (uVar8 = 0;
-              ((int)uVar8 < (int)puVar1[2] && (puVar1[uVar8 + 4] != puVar1[iVar10 * 0x290 + 0x12]));
-              uVar8 = uVar8 + 1) {
-          }
-          if (((~*puVar9 & 0x20) != 0) && (uVar8 == puVar1[2])) goto LAB_00243a18;
-        }
 LAB_00243348:
         if ((*puVar9 & 0x40) == 0) {
           if ((*puVar9 & 1) != 0) {
@@ -395,7 +399,6 @@ LAB_00243348:
             D_0096009C(puVar1 + iVar10 * 0x290 + 0xd4,4,0,2,3);
           }
         }
-      }
 LAB_00243a18:
     ;
     }
