@@ -129,17 +129,21 @@ void FUN_00242c60(void)
 
 
 
-// FUN_00242CC0 NONMATCHING
+// FUN_00242CC0
 void FUN_00242cc0(void)
 
 {
   int iVar7;
   int iVar8;
+  int iVar9;
   uint *puVar1;
   uint uVar2;
   u32 uVar3;
-  long lVar4;
+  u32 uVar9;
+  u32 uVar10;
+  u32 lVar4;
   uint *puVar6;
+  uint *puVar7;
   u8 auStack_10 [16];
   
   if (sBpcWork == (uint *)0x0) {
@@ -160,63 +164,73 @@ void FUN_00242cc0(void)
     for (iVar7 = 0; uVar2 = puVar1[3], iVar7 < (int)uVar2; iVar7 = iVar7 + 1) {
       puVar6 = puVar1 + iVar7 * 0x290 + 0x10;
       uVar2 = puVar1[1];
-      if (uVar2 != 2) {
-        if ((uVar2 == 1) || (uVar2 == 0)) {
-          for (iVar8 = 0;
-              (iVar8 < (int)puVar1[2] && (puVar1[iVar8 + 4] != puVar6[2]));
-              iVar8 = iVar8 + 1) {
-          }
-          if (((~*puVar6 & 0x20) != 0) && (iVar8 == puVar1[2])) goto LAB_0024307c;
+      switch (uVar2) {
+      case 0:
+      case 1:
+        iVar8 = 0;
+        uVar10 = puVar1[2];
+        while (iVar8 < (int)uVar10) {
+          puVar7 = puVar1 + iVar8 + 4;
+          if (*puVar7 == puVar6[2]) break;
+          iVar8 = iVar8 + 1;
         }
-      }
-      else {
+        if (((~*puVar6 & 0x20) != 0) && (iVar8 == uVar10)) goto LAB_0024307c;
+        break;
+      case 2:
         uVar2 = ~*puVar6;
         if ((uVar2 & 0x400) == 0) goto LAB_00242e4c;
         if ((uVar2 & 0x20) == 0) goto LAB_00242e4c;
         if ((uVar2 & 0x80) != 0) goto LAB_0024307c;
+        break;
       }
 LAB_00242e4c:
-      if ((uVar2 & 0x10) != 0) {
+      uVar9 = *puVar6;
+      if ((uVar9 & 0x10) != 0) {
         if ((int)puVar6[0x1c4] < 10) {
           puVar6[0x1c4] = puVar6[0x1c4] + 1;
         }
         else {
-          *puVar6 = uVar2 & 0xffffffef;
+          *puVar6 = uVar9 & 0xffffffef;
         }
       }
-      else if ((uVar2 & 0x20) != 0) {
+      else if ((uVar9 & 0x20) != 0) {
         if ((int)puVar6[0x1c4] < 10) {
           puVar6[0x1c4] = puVar6[0x1c4] + 1;
         }
         else {
-          *puVar6 = uVar2 & 0xffffffdf;
+          *puVar6 = uVar9 & 0xffffffdf;
         }
       }
-      else if ((uVar2 & 0x200) != 0) {
+      else if ((uVar9 & 0x200) != 0) {
         if ((int)puVar6[0x1c4] < 4) {
           puVar6[0x1c4] = puVar6[0x1c4] + 1;
         }
         else {
-          *puVar6 = uVar2 & 0xfffffdff;
+          *puVar6 = uVar9 & 0xfffffdff;
         }
       }
-      if ((puVar1[1] == 2) && ((*puVar6 & 0x80) != 0)) {
-        for (uVar2 = 0; (int)uVar2 < 3; uVar2 = uVar2 + 1) {
-          if ((int)puVar6[0x288] < 0) {
-            K_Assert(D_0068E880, 0xff);
-          }
-          if (2 < (int)puVar6[0x288]) {
-            K_Assert(D_0068E880, 0x100);
-          }
-          if (uVar2 == puVar6[0x288]) {
-            if ((int)puVar6[uVar2 + 0x289] < 10) {
-              puVar6[uVar2 + 0x289] = puVar6[uVar2 + 0x289] + 1;
+      switch (puVar1[1]) {
+      case 2:
+        if ((*puVar6 & 0x80) != 0) {
+          for (uVar2 = 0; (int)uVar2 < 3; uVar2 = uVar2 + 1) {
+            if ((int)puVar6[0x288] < 0) {
+              K_Assert(D_0068E880, 0xff);
+            }
+            if ((int)puVar6[0x288] >= 3) {
+              K_Assert(D_0068E880, 0x100);
+            }
+            if (uVar2 == puVar6[0x288]) {
+              puVar7 = puVar6 + 0x289 + uVar2;
+              if ((int)*puVar7 < 10) {
+                *puVar7 = *puVar7 + 1;
+              }
+            }
+            else if (0 < (int)(puVar7 = puVar6 + 0x289 + uVar2, *puVar7)) {
+              *puVar7 = *puVar7 - 1;
             }
           }
-          else if (0 < (int)puVar6[uVar2 + 0x289]) {
-            puVar6[uVar2 + 0x289] = puVar6[uVar2 + 0x289] - 1;
-          }
         }
+        break;
       }
       uVar3 = func_001ff430(puVar6[2]);
       uVar2 = datCalcGetHp(*(u32 *)(uVar3 + 0xa2c));
@@ -234,11 +248,13 @@ LAB_0024307c:
     ;
     }
     if ((*puVar1 & 0x20) != 0) {
-      iVar7 = 0;
-      while (((int)iVar7 < (int)uVar2 && ((puVar1[iVar7 * 0x290 + 0x10] & 0x20) == 0))) {
-        iVar7 = iVar7 + 1;
+      iVar9 = 0;
+      while ((int)iVar9 < (int)uVar2) {
+        puVar7 = puVar1 + iVar9 * 0x290 + 0x10;
+        if ((*puVar7 & 0x20) != 0) break;
+        iVar9 = iVar9 + 1;
       }
-      if (iVar7 == uVar2) {
+      if (iVar9 == uVar2) {
         *puVar1 = *puVar1 & 0xffffffdf;
       }
     }
