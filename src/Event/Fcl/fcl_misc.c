@@ -1653,7 +1653,7 @@ void FUN_003c9fe0(int *param_1)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u8 auStack_4 [4];
 
