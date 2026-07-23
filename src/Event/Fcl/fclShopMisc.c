@@ -213,7 +213,7 @@ u32 FUN_003f98f0(u16 param_1);
 u64 FUN_003f99d0(u64 param_1,u32 param_2);
 u64 FUN_003f9b20(u64 param_1,int param_2);
 s32 FUN_003f9cb0(u32 *param_1, u32 *param_2);
-u64 FUN_003f9e30(int param_1);
+u32 FUN_003f9e30(int param_1);
 u32 FUN_003fa0d0(u64 param_1);
 u64 FUN_003fa190(int param_1);
 u64 FUN_003fa1b0(int param_1);
@@ -8341,7 +8341,7 @@ ret:
 // FUN_003F9E30 NONMATCHING
 
 
-u64 FUN_003f9e30(int param_1)
+u32 FUN_003f9e30(int param_1)
 
 
 
