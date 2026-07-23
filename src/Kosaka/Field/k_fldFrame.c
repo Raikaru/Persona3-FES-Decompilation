@@ -1159,21 +1159,54 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
     return true;
 }
 
-// FUN_001afd40 NONMATCHING
+// FUN_001AFD40 NONMATCHING
+// Same inlining pattern as func_001afa20 above (fldFrameMoveWork,
+// fldFrameMoveResolvePosition, fldFrameMoveAppend/CreateDebugPoint all
+// inlined; retail does not jal any of them) - simpler single-path variant
+// with a fixed kind=3, no pathMode dispatch.
 u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
 {
     FldFrameMoveWork* work;
+    RwV3d line[2];
     RwV3d resolved;
 
-    work = fldFrameMoveWork(task);
+    work = (FldFrameMoveWork*)task->workData;
+    line[1] = *position;
+    line[0] = *position;
+    if (K_Scene_001a0250() != false)
+    {
+        line[0].y += 600.0f;
+    }
+    else
+    {
+        line[0].y += 200.0f;
+    }
+    line[1].y -= 1000.0f;
     if (work->pointCount >= 47)
     {
         return false;
     }
-    fldFrameMoveResolvePosition(position, &resolved);
-    fldFrameMoveAppend(work, 3, &resolved, duration);
-    fldFrameMoveCreateDebugPoint(work, &work->points[work->pointCount - 1],
-                                 &sDebugSphereColor);
+    if (K_FldFrame_Raycast(line, &resolved) != false)
+    {
+        work->points[work->pointCount].position = resolved;
+    }
+    else
+    {
+        work->points[work->pointCount].position = *position;
+    }
+    work->points[work->pointCount].duration = duration;
+    work->points[work->pointCount].kind = 3;
+    if ((work->flags & 0x80000000) != 0)
+    {
+        work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
+        if (work->points[work->pointCount].drawTask != NULL)
+        {
+            K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
+            K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
+                                  &work->points[work->pointCount].position);
+        }
+    }
+    work->pointCount++;
     return true;
 }
 
