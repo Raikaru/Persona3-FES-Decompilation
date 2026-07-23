@@ -1009,13 +1009,14 @@ typedef struct OpTitleMesh
     s32 mode;
 } OpTitleMesh;
 
-// FUN_00269A10 NONMATCHING
+// FUN_00269A10
 void opTitle00269a10(OpTitleMesh* mesh, u32* callback)
 {
     f32 var_f0;
     s32 temp_22;
     s32 temp_4;
     s32 temp_4_2;
+    u32 index;
     s32 var_16;
     s32 var_16_2;
     s32 var_17;
@@ -1042,9 +1043,10 @@ void opTitle00269a10(OpTitleMesh* mesh, u32* callback)
             for (var_16 = 0; var_16 < mesh->width + 1; var_16++)
             {
                 temp_4_2 = mesh->width + 1;
-                args.index = (u32)(var_16 + temp_4_2 * var_17);
+                index = (u32)(var_16 + temp_4_2 * var_17);
                 args.u = (f32)var_16 / (f32)mesh->width;
                 args.v = (f32)var_17 / (f32)mesh->height;
+                args.index = index;
                 ((void (*)(void*))callback[0])(&args);
             }
         }
