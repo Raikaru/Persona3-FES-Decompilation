@@ -25,6 +25,8 @@ extern const char D_00683710[];
 extern u32 func_002ff790(void* object);
 extern s16 D_006836B0[];
 extern f32 DAT_007caefc;
+#pragma alias DAT_0086b180_abs DAT_0086b180
+extern u8 DAT_0086b180_abs[];
 extern s32 func_001c6dd0(const FldUnit* unit, f32 maxDist);
 u32 K_FldEvent_IsPosWithinFov(const RwMatrix* viewerMat,
                                const RwV3d* targetPos,
@@ -281,38 +283,87 @@ done:
     return result;
 }
 
+// Reconstructed cell search, nearest-distance filtering, and collision raycast.
+// Residual MWCC register/control-flow ordering remains; 744B object vs 768B retail window.
 // FUN_001c6720 NONMATCHING
-void* func_001c6720(f32 maxDist, const FldUnit* unit)
+void* func_001c6720(const FldUnit* unit, f32 maxDist)
 {
+    FldUnit* result;
+    const RwV3d* viewerPosX;
+    FldUnit* candidate;
+    const RwV3d* viewerPosZ;
     RwMatrix* viewerMat;
-    u8* cell;
-    void* object;
-    void* result;
     RwV3d delta;
+    RwV3d line[2];
+    RwV3d hitPoint;
+    s32 rawX;
     s32 i;
+    s32 x;
+    f32 nearest;
+    f32 distance;
+    s32 rawZ;
+    s32 z;
+    u8* cell;
 
-    viewerMat = mdlGetMatrix(unit->mdl);
-    cell = FldEvent_MapCell(&viewerMat->pos);
     result = NULL;
-    for (i = 0; i < 0x31; i++)
+    nearest = DAT_007caefc;
+    viewerPosX = &mdlGetMatrix(unit->mdl)->pos;
+    x = 0;
+    if (K_Scene_001a0250() != false)
     {
-        object = *(void**)(cell + 0x60 + i * sizeof(void*));
-        if (object == NULL)
+        rawX = (s32)((s32)(viewerPosX->x + 400.0f) / 800.0f);
+        x = rawX >> 2;
+        if (rawX < 0)
+        {
+            x = (rawX + 3) >> 2;
+        }
+    }
+
+    z = 0;
+    viewerPosZ = &mdlGetMatrix(unit->mdl)->pos;
+    if (K_Scene_001a0250() != false)
+    {
+        rawZ = (s32)((s32)(viewerPosZ->z + 400.0f) / 800.0f);
+        z = rawZ >> 2;
+        if (rawZ < 0)
+        {
+            z = (rawZ + 3) >> 2;
+        }
+    }
+
+    i = 0;
+    cell = DAT_0086b180_abs + z * 0x310;
+    cell += x * 0xc4;
+    for (; ; i++)
+    {
+        candidate = *(FldUnit**)(cell + i * 4);
+        if (candidate == NULL)
         {
             break;
         }
-        if (*(u32*)object == 0)
+        if (candidate->genusBase != NULL)
         {
-            continue;
-        }
-        delta.x = *(f32*)((u8*)object + 0x10c) - viewerMat->pos.x;
-        delta.y = *(f32*)((u8*)object + 0x110) - viewerMat->pos.y;
-        delta.z = *(f32*)((u8*)object + 0x114) - viewerMat->pos.z;
-        if (RwV3dLength(&delta) < maxDist &&
-            RwV3dLength(&delta) < *(f32*)0x007caefc)
-        {
-            result = object;
-            maxDist = RwV3dLength(&delta);
+            viewerMat = mdlGetMatrix(candidate->mdl);
+            delta.x = viewerMat->pos.x -
+                      mdlGetMatrix(unit->mdl)->pos.x;
+            delta.y = mdlGetMatrix(candidate->mdl)->pos.y -
+                      mdlGetMatrix(unit->mdl)->pos.y;
+            delta.z = mdlGetMatrix(candidate->mdl)->pos.z -
+                      mdlGetMatrix(unit->mdl)->pos.z;
+            distance = RwV3dLength(&delta);
+            if (distance < maxDist && distance < nearest)
+            {
+                line[0] = mdlGetMatrix(unit->mdl)->pos;
+                viewerMat = mdlGetMatrix(candidate->mdl);
+                line[1] = viewerMat->pos;
+                line[0].y += 100.0f;
+                line[1].y += 100.0f;
+                if (K_FldFrame_Raycast(line, &hitPoint) == false)
+                {
+                    result = candidate;
+                    nearest = distance;
+                }
+            }
         }
     }
     return result;
