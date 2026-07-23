@@ -49,6 +49,18 @@ extern void func_0018bc10(void* transition, s32 drawMode,
                           f32 depth, s32 startFrame, s32 endFrame);
 extern void* DAT_00833B78;
 extern void* DAT_00833B8C;
+#pragma alias DAT_00833B80_abs DAT_00833B80
+#pragma alias DAT_00833B8C_abs DAT_00833B8C
+#pragma alias DAT_00833B74_abs DAT_00833B74
+#pragma alias DAT_00833B84_abs DAT_00833B84
+#pragma alias DAT_00833B90_abs DAT_00833B90
+#pragma alias DAT_00833BA0_abs DAT_00833BA0
+extern u8 DAT_00833B80_abs[];
+extern u8 DAT_00833B8C_abs[];
+extern u8 DAT_00833B74_abs[];
+extern u8 DAT_00833B84_abs[];
+extern u8 DAT_00833B90_abs[];
+extern u8 DAT_00833BA0_abs[];
 extern void* D_00833B70[14];
 extern void* func_001158b0(s32, void*, s32);
 extern void func_001127d0(void*, u32);
@@ -59,6 +71,26 @@ extern void func_00114450(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
 #pragma alias func_00114450_7arg func_00114450
 extern void func_00114450_7arg(f32 depth, f32 x, f32 y, u32 color, u32 colorAlpha,
                                s32 ignoredWidth, s32 height);
+extern void func_00115ad0(void* parent, void* resource, s32 frame,
+                          u32 alpha, u32 extraAlpha, f32 x, f32 y, f32 depth);
+extern u32 func_0018b700(void* animation);
+extern u32 func_0017d800(void);
+extern u32 func_0017d920(void);
+extern u32 func_0017da40(void);
+extern u32 func_0017db00(void);
+extern u32 func_0017dcf0(void);
+extern u32 func_0016ef30(void);
+extern void* H_Maestro_001120a0(s32 font);
+extern s32 datGetMoney(void);
+extern void func_00523ac8(char* buffer, const void* format, ...);
+extern s32 func_0040eb50(f32 depth, s32 x, s32 y, u32 color,
+                         s32 font, const char* text, s32 shadow);
+extern void* DAT_00833B80;
+extern void* DAT_00833B74;
+extern void* DAT_00833B84;
+extern void* DAT_00833B90;
+extern void* DAT_00833BA0;
+extern char gp0xffff8978[];
 #pragma alias h_campDrawSprite FUN_001159f0
 extern void h_campDrawSprite(void* parent, void* resource, s32 frame,
                              u32 alpha, f32 x, f32 y, f32 scale);
@@ -126,7 +158,7 @@ typedef struct CampUiRecord
     f32 x;
     f32 y;
     u32 color;
-    u8 trailing[0xc];
+    u8 trailing[4];
 } CampUiRecord;
 
 
@@ -682,28 +714,223 @@ KwlnTask* h_campCreateRootDrawTask(KwlnTask* parent, KwlnTask* menuTask, u32 men
     work->menuMode = menuMode;
     return task;
 }
-
-// FUN_0011bba0
-void h_campNoopRootDrawCallback(void)
-{
-}
-
+// Reconstructed root UI rendering and data-driven date/currency draws.
+// Residual differences are compiler register allocation and switch layout.
 // FUN_0011bbb0 NONMATCHING
 void h_campDrawRootUi(CampRootDrawWork* work, f32 alpha)
 {
-    CampUiRecord* records;
+    register void* parent;
+    register CampRootDrawWork* root;
+    register void* reserve;
+    f32 x;
+    f32 y;
+    u32 color;
     s32 i;
+    s32 value;
+    s32 glyph;
+    s32 month;
+    s32 day;
+    s32 weekday;
+    void* font;
+    char text[0x100];
 
-    /* The root UI is a 7-entry record bank followed by calendar and money records. */
-    if (work->menuTask == NULL || work->menuTask->workData == NULL) {
-        return;
-    }
-    records = work->menuTask->workData;
+    root = work;
+    asm volatile("" : "+r"(reserve));
+
     for (i = 0; i < 7; i++) {
-        if (records[i].color != 0) {
-            records[i].color = (records[i].color & 0x00FFFFFF) |
-                               ((u32)(alpha * 255.0f) << 24);
+        if (func_0018b700((u8*)iGpffffb25c + i * 0x44) == 0) {
+            continue;
         }
+        x = *(f32*)((u8*)iGpffffb25c + i * 0x44 + 0x38);
+        y = *(f32*)((u8*)iGpffffb25c + i * 0x44 + 0x3c);
+        color = *(u32*)((u8*)iGpffffb25c + i * 0x44 + 0x40);
+        if (i == 5) {
+            if (func_0017d800() != 0) {
+                func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0x80,
+                              color & 0xff, x - 27.0f, y + 2.0f, alpha);
+                func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0x80,
+                              color & 0xff, x, y, alpha);
+            } else {
+                func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
+                              color & 0xff, x - 27.0f, y + 2.0f, alpha);
+                func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0,
+                              color & 0xff, x, y, alpha);
+            }
+        } else {
+            func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x10, 0,
+                          color & 0xff, x - 27.0f, y + 2.0f, alpha);
+            func_00115ad0(parent, *(void**)DAT_00833B80_abs, i, 0,
+                          color & 0xff, x, y, alpha);
+        }
+    }
+
+    if (func_0018b700((u8*)iGpffffb25c + 0x2a8) != 0) {
+        x = *(f32*)((u8*)iGpffffb25c + 0x2e0);
+        y = *(f32*)((u8*)iGpffffb25c + 0x2e4);
+        color = *(u32*)((u8*)iGpffffb25c + 0x2e8);
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x0e, 0,
+                      color & 0xff, x, y, alpha);
+    }
+
+    if (func_0018b700((u8*)iGpffffb25c + 0x2ec) != 0) {
+        x = *(f32*)((u8*)iGpffffb25c + 0x324);
+        y = *(f32*)((u8*)iGpffffb25c + 0x328);
+        color = *(u32*)((u8*)iGpffffb25c + 0x32c);
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, 0x11, 0,
+                      color & 0xff, x - 27.0f, y, alpha);
+        func_00115ad0(parent, *(void**)DAT_00833B80_abs, root->selectedEntry + 7, 0,
+                      color & 0xff, x, y, alpha);
+    }
+
+    if (func_0018b700((u8*)iGpffffb25c + 0x330) != 0) {
+        x = *(f32*)((u8*)iGpffffb25c + 0x368);
+        y = *(f32*)((u8*)iGpffffb25c + 0x36c);
+        color = *(u32*)((u8*)iGpffffb25c + 0x370);
+        func_00115ad0(parent, *(void**)DAT_00833B8C_abs, 0, 0,
+                      color & 0xff, x, y, alpha);
+        func_00115ad0(parent, *(void**)DAT_00833B8C_abs, 1, 0,
+                      color & 0xff, x + 117.0f, y, alpha);
+        func_00115ad0(parent, *(void**)DAT_00833B8C_abs, 2, 0,
+                      color & 0xff, x + 159.0f, y, alpha);
+
+        switch (func_0016ef30() & 0xff) {
+        case 0:
+            glyph = 0x22;
+            break;
+        case 1:
+            glyph = 0x1c;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
+            break;
+        case 2:
+            glyph = 0x1d;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
+            break;
+        case 3:
+            glyph = 0x1f;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
+            break;
+        case 4:
+            glyph = 0x1e;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
+            break;
+        case 5:
+            glyph = 0x20;
+            if (func_0017dcf0() != 0)
+                glyph = 0x23;
+            break;
+        case 6:
+            glyph = 0x21;
+            break;
+        case 7:
+            glyph = 0x22;
+            break;
+        case 8:
+            glyph = 0x24;
+            break;
+        default:
+            glyph = 0x24;
+            break;
+        }
+
+        y += 320.0f;
+        y -= 41.0f;
+        func_00115ad0(parent, *(void**)DAT_00833B84_abs, glyph, 0x64,
+                      color & 0xff, y, x + 17.0f - 11.0f, alpha);
+        x += 30.0f;
+        x -= 11.0f;
+        x -= 2.0f;
+
+        if (func_0017d920() >= 10) {
+            font = H_Maestro_001120a0(1);
+            month = func_0017d920();
+            value = month / 10 + 0xb;
+            func_00115ad0(parent, font, value, 0x78,
+                          color & 0xff, y, x, alpha);
+            x += 16.0f;
+        }
+        font = H_Maestro_001120a0(1);
+        month = func_0017d920();
+        value = month % 10 + 0xb;
+        func_00115ad0(parent, font, value, 0x78,
+                      color & 0xff, y, x, alpha);
+        x += 17.0f;
+        func_00115ad0(parent, *(void**)DAT_00833B84_abs, 0x2d, 0x78,
+                      color & 0xff, y, x, alpha);
+        x += 10.0f;
+
+        if (func_0017da40() >= 10) {
+            font = H_Maestro_001120a0(1);
+            day = func_0017da40();
+            value = day / 10 + 0xb;
+            func_00115ad0(parent, font, value, 0x78,
+                          color & 0xff, y, x, alpha);
+            x += 16.0f;
+        }
+        font = H_Maestro_001120a0(1);
+        day = func_0017da40();
+        value = day % 10 + 0xb;
+        func_00115ad0(parent, font, value, 0x78,
+                      color & 0xff, y, x, alpha);
+        x += 15.0f;
+
+        weekday = func_0017db00();
+        if (weekday < 7) {
+            switch (weekday) {
+            case 0:
+                glyph = 0x1b;
+                break;
+            case 1:
+                glyph = 0x15;
+                break;
+            case 2:
+                glyph = 0x16;
+                break;
+            case 3:
+                glyph = 0x17;
+                break;
+            case 4:
+                glyph = 0x18;
+                break;
+            case 5:
+                glyph = 0x19;
+                break;
+            default:
+                glyph = 0x1a;
+                break;
+            }
+            func_00115ad0(parent, *(void**)DAT_00833B84_abs, glyph, 0x78,
+                          color & 0xff, y, x, alpha);
+        }
+    }
+
+    if (func_0018b700((u8*)iGpffffb25c + 0x374) != 0) {
+        x = *(f32*)((u8*)iGpffffb25c + 0x3ac);
+        y = *(f32*)((u8*)iGpffffb25c + 0x3b0);
+        color = *(u32*)((u8*)iGpffffb25c + 0x3b4);
+        h_campDrawSprite(parent, *(void**)DAT_00833B74_abs, 0,
+                         color & 0xff, x, y, alpha);
+        h_campDrawSprite(parent, *(void**)DAT_00833B74_abs, root->selectedEntry + 1,
+                         color & 0xff, x + 16.0f, y, alpha);
+        h_campDrawSprite(parent, *(void**)DAT_00833BA0_abs, 0,
+                         color & 0xff, x + 450.0f, y, alpha);
+        h_campDrawSprite(parent, *(void**)DAT_00833BA0_abs, 1,
+                         color & 0xff, x + 561.0f - 44.0f, y, alpha);
+    }
+
+    if (func_0018b700((u8*)iGpffffb25c + 0x3b8) != 0) {
+        x = *(f32*)((u8*)iGpffffb25c + 0x3f0);
+        y = *(f32*)((u8*)iGpffffb25c + 0x3f4);
+        color = *(u32*)((u8*)iGpffffb25c + 0x3f8);
+        h_campDrawSprite(parent, *(void**)DAT_00833B90_abs, 2,
+                         color & 0xff, x, y, alpha);
+        x += 153.0f;
+        func_00523ac8(text, gp0xffff8978, datGetMoney());
+        func_0040eb50(alpha, (s32)(x - 2.0f), (s32)(y + 3.0f),
+                      (0xff - color) & 0xff, 4, text, 9);
     }
 }
 
