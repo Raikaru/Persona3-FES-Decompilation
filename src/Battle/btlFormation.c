@@ -1506,18 +1506,12 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
 void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
 
 {
-  u16 uVar1;
+  s32 uVar1;
   float fVar2;
   float fVar3;
-  float fStack_30;
-  float fStack_2c;
-  float fStack_28;
-  float fStack_20;
-  float fStack_1c;
-  float fStack_18;
-  float fStack_10;
-  float fStack_c;
-  float fStack_8;
+  RwV3d output;
+  RwV3d scaled;
+  RwV3d transformed;
   
   uVar1 = *(u16 *)((int)param_3 + 4);
   if (uVar1 == 0) {
@@ -1527,15 +1521,14 @@ void func_002b99d0(int param_1,int param_2,u32 param_3,u32 param_4)
     fVar2 = (float)uVar1;
   }
   fVar3 = *(float *)(param_1 + 0x2c) * *(float *)(param_2 + 0x2c) * 0.5f;
-  fStack_18 = *(float *)(param_1 + 0x50);
-  fStack_20 = *(float *)(param_1 + 0x20) * fStack_18;
-  fStack_1c = *(float *)(param_1 + 0x24) * fStack_18;
-  fStack_18 = *(float *)(param_1 + 0x28) * fStack_18;
-  func_004be1e0(&fStack_30,&fStack_20,1,param_1 + 0x40);
-  fStack_10 = fStack_30 + *(float *)(param_1 + 0x34);
-  fStack_c = fStack_2c + *(float *)(param_1 + 0x38);
-  fStack_8 = fStack_28 + *(float *)(param_1 + 0x3c);
-  func_002b96f0_btlFormation_u64(fVar2,fVar3,&fStack_10,(u32 *)(param_1 + 0x40),param_3,param_4);
+  scaled.x = *(float *)(param_1 + 0x20) * *(float *)(param_1 + 0x50);
+  scaled.y = *(float *)(param_1 + 0x24) * *(float *)(param_1 + 0x50);
+  scaled.z = *(float *)(param_1 + 0x28) * *(float *)(param_1 + 0x50);
+  func_004be1e0(&transformed,&scaled,1,param_1 + 0x40);
+  output.x = transformed.x + *(float *)(param_1 + 0x34);
+  output.y = transformed.y + *(float *)(param_1 + 0x38);
+  output.z = transformed.z + *(float *)(param_1 + 0x3c);
+  func_002b96f0(fVar2,fVar3,(float *)&output,(u32 *)(param_1 + 0x40),param_3,param_4);
   return;
 }
 
