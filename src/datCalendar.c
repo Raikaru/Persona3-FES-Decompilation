@@ -558,10 +558,12 @@ void func_00180220(void)
 // FUN_00180A20 NONMATCHING
 KwlnTask* func_00180a20(KwlnTask* clndTask)
 {
-    CalendarTaskWork* work;
     s32 eventIndex;
+    register KwlnTask* task;
+    register CalendarTaskWork* work;
+    task = clndTask;
+    work = task->workData;
 
-    work = clndTask->workData;
     datSetFlag(0xa80, false);
     datSetFlag(0xa81, false);
     datSetFlag(0xa82, false);
@@ -574,9 +576,9 @@ KwlnTask* func_00180a20(KwlnTask* clndTask)
     if (datGetSkipToTarget() == 0)
     {
         eventIndex = clndFindAndExecSiteibiEvents();
-        if (eventIndex >= 0)
+        if (eventIndex != -1)
         {
-            return func_00181950(clndTask, eventIndex);
+            return func_00181950(task, eventIndex);
         }
         if (datGetFlag(0xa00) != 0)
         {
@@ -598,7 +600,7 @@ KwlnTask* func_00180a20(KwlnTask* clndTask)
                 {
                     func_001848f0(work->confirmationTask, true);
                 }
-                return func_001ba5f0(clndTask, 0, 0, 0, 0, 0, 0, 0);
+                return func_001ba5f0(task, 0, 0, 0, 0, 0, 0, 0);
             }
         }
     }
