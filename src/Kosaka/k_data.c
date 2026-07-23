@@ -253,50 +253,58 @@ void* func_001b7e60(KwlnTask* task)
 {
     FieldLoadWork* work;
     HCdvd* request;
+    char buffer[128];
 
     work = (FieldLoadWork*)task->workData;
-    if (work == NULL)
+    switch (work->state)
     {
-        return KWLNTASK_STOP;
-    }
-    if (work->state == 2)
-    {
-        return KWLNTASK_STOP;
-    }
-    if (work->state != 0 && work->state != 1)
-    {
-        return KWLNTASK_CONTINUE;
-    }
-    if (work->state == 0)
-    {
-        request = H_Cdvd_Request(work->scenarioMode == 0
-                                     ? "field/table/dungeonAT.bin"
-                                     : "field/table/dungeonFES.bin",
-                                 HCDVD_FILENORMAL);
+    case 0:
+        if (work->scenarioMode == 0)
+        {
+            sprintf(buffer, "field/table/dungeonAT.bin");
+        }
+        else
+        {
+            sprintf(buffer, "field/table/dungeonFES.bin");
+        }
+        request = H_Cdvd_Request(buffer, HCDVD_FILENORMAL);
         work->request = request;
         work->enemyTableRequest = func_001d4360();
         work->state++;
-    }
-    if (work->request != NULL && H_Cdvd_IsFileLoaded(work->request) != 0)
-    {
-        if (work->request->fileSize >= 0x2000)
+    case 1:
+        request = work->request;
+        if (request == NULL || H_Cdvd_IsFileLoaded(request) == 0)
         {
-            K_Assert((const char*)0x0067F440, 0xcd);
+            work->request = NULL;
         }
-        memcpy(gFldDngFloorsData, work->request->fileMemory,
-               work->request->fileSize);
-        H_Cdvd_Destroy(work->request);
-        work->request = NULL;
+        else
+        {
+            if (request->fileSize >= 0x2000)
+            {
+                K_Assert((const char*)0x0067F440, 0xcd);
+            }
+            memcpy(gFldDngFloorsData, request->fileMemory,
+                   request->fileSize);
+            H_Cdvd_Destroy(request);
+            work->request = NULL;
+        }
+        if (work->enemyTableRequest != NULL)
+        {
+            if (func_001d43e0() != 0)
+            {
+                work->enemyTableRequest = NULL;
+            }
+        }
+        if (work->request == NULL && work->enemyTableRequest == NULL)
+        {
+            work->state++;
+        }
+        return KWLNTASK_CONTINUE;
+    case 2:
+        return KWLNTASK_STOP;
+    default:
+        return KWLNTASK_CONTINUE;
     }
-    if (work->enemyTableRequest != NULL && func_001d43e0() != 0)
-    {
-        work->enemyTableRequest = NULL;
-    }
-    if (work->request == NULL && work->enemyTableRequest == NULL)
-    {
-        work->state++;
-    }
-    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001b8000
