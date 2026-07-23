@@ -62,12 +62,12 @@ void opTitle00267430(void)
     f32 layout[11];
     u8 color[4];
     f32 alpha;
-    f32 scale;
     f32 offsetX;
     f32 offsetY;
     f32 scaleX;
     f32 scaleY;
-    u32 timer;
+    f32 scale;
+    s32 timer;
     u32 random;
     s32 i;
     s32 j;
@@ -77,23 +77,13 @@ void opTitle00267430(void)
     resource = opRes00266c50(0);
     scale = 1.0f;
 
-    if ((*work & 1) != 0)
+    if ((~*work & 1) == 0)
     {
         if ((*work & 4) != 0)
         {
-            if (work[2] == 1)
+            switch (work[2])
             {
-                if ((s32)work[1] < 0x200)
-                {
-                    work[1]++;
-                }
-                else
-                {
-                    *work &= ~4;
-                }
-            }
-            else if (work[2] == 0)
-            {
+            case 0:
                 if ((s32)work[1] < 200)
                 {
                     work[1]++;
@@ -102,11 +92,41 @@ void opTitle00267430(void)
                 {
                     *work &= ~4;
                 }
+                break;
+            case 1:
+                if ((s32)work[1] < 0x200)
+                {
+                    work[1]++;
+                }
+                else
+                {
+                    *work &= ~4;
+                }
+                break;
             }
         }
 
-        if (work[2] == 1)
+        switch (work[2])
         {
+        case 0:
+            timer = work[1];
+            if (timer < 0x46)
+            {
+                alpha = 0.0f;
+            }
+            else if (timer < 100)
+            {
+                alpha = (f32)(timer - 0x46) / 30.0f;
+            }
+            else
+            {
+                alpha = 1.0f;
+            }
+            offsetX = 0.0f;
+            offsetY = 0.0f;
+            scale = 1.0f;
+            break;
+        case 1:
             timer = work[1];
             if ((s32)timer < 0)
             {
@@ -160,25 +180,7 @@ void opTitle00267430(void)
                 offsetX = 217.0f;
                 offsetY = -121.0f;
             }
-        }
-        else
-        {
-            timer = work[1];
-            if (timer < 0x46)
-            {
-                alpha = 0.0f;
-            }
-            else if (timer < 100)
-            {
-                alpha = (f32)(timer - 0x46) / 30.0f;
-            }
-            else
-            {
-                alpha = 1.0f;
-            }
-            offsetX = 0.0f;
-            offsetY = 0.0f;
-            scale = 1.0f;
+            break;
         }
 
         frame = func_0021cca0(resource, 0xe);
@@ -273,8 +275,24 @@ void opTitle00267430(void)
         color[3] = (u8)(alpha * 255.0f);
         func_0021d950(work + 0x44, color);
 
-        if (work[2] == 1)
+        switch (work[2])
         {
+        case 0:
+            timer = work[1];
+            if (timer < 0x78)
+            {
+                alpha = 0.0f;
+            }
+            else if (timer < 0xa5)
+            {
+                alpha = (f32)(timer - 0x78) / 45.0f;
+            }
+            else
+            {
+                alpha = 1.0f;
+            }
+            break;
+        case 1:
             timer = work[1];
             if ((s32)timer < 0)
             {
@@ -323,22 +341,7 @@ void opTitle00267430(void)
                 offsetX = (offsetX / 2.0f) * t + offsetX / 2.0f;
                 offsetY = (offsetY / 2.0f) * t + offsetY / 2.0f;
             }
-        }
-        else
-        {
-            timer = work[1];
-            if (timer < 0x78)
-            {
-                alpha = 0.0f;
-            }
-            else if (timer < 0xa5)
-            {
-                alpha = (f32)(timer - 0x78) / 45.0f;
-            }
-            else
-            {
-                alpha = 1.0f;
-            }
+            break;
         }
 
         frame = func_0021cca0(resource, 0x24);
@@ -353,8 +356,32 @@ void opTitle00267430(void)
         color[3] = (u8)(alpha * 255.0f);
         func_0021d950(work + 0x104, color);
 
-        if (work[2] == 1)
+        switch (work[2])
         {
+        case 0:
+            timer = work[1];
+            if (timer < 0x5f)
+            {
+                alpha = 0.0f;
+            }
+            else if (timer < 0x82)
+            {
+                alpha = (f32)(timer - 0x5f) / 35.0f;
+            }
+            else if (timer < 0xa0)
+            {
+                alpha = 1.0f;
+            }
+            else if (timer < 0xb4)
+            {
+                alpha = 1.0f - (f32)(timer - 0xa0) / 20.0f;
+            }
+            else
+            {
+                alpha = 0.0f;
+            }
+            break;
+        case 1:
             timer = work[1];
             alpha = 0.0f;
             if ((s32)timer < 0)
@@ -383,30 +410,7 @@ void opTitle00267430(void)
                 offsetX = 197.0f;
                 offsetY = -125.0f;
             }
-        }
-        else
-        {
-            timer = work[1];
-            if (timer < 0x5f)
-            {
-                alpha = 0.0f;
-            }
-            else if (timer < 0x82)
-            {
-                alpha = (f32)(timer - 0x5f) / 35.0f;
-            }
-            else if (timer < 0xa0)
-            {
-                alpha = 1.0f;
-            }
-            else if (timer < 0xb4)
-            {
-                alpha = 1.0f - (f32)(timer - 0xa0) / 20.0f;
-            }
-            else
-            {
-                alpha = 0.0f;
-            }
+            break;
         }
 
         frame = func_0021cca0(resource, 0x25);
