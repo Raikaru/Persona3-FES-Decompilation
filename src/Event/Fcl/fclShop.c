@@ -970,21 +970,21 @@ u64 FUN_003e6e80(void)
 
   u8 bVar2;
 
-  short sVar3;
-
   u16 uVar4;
 
   int iVar5;
 
-  u64 uVar6;
+  int uVar6;
 
-  long lVar7;
+  int lVar7;
 
-  long lVar8;
+  int lVar8;
+
+  int *piVar10;
 
   int iVar9;
 
-  int *piVar10;
+  short sVar3;
 
   u8 auStack_80 [2];
 
@@ -1006,11 +1006,10 @@ u64 FUN_003e6e80(void)
 
   
 
-  uVar6 = FUN_003c5460();
+  piVar10 = (int *)FUN_003c5460(DAT_007ce688);
 
   FUN_003c7b90();
 
-  piVar10 = (int *)uVar6;
 
   FUN_003e0650(piVar10[0x26]);
 
@@ -1885,11 +1884,14 @@ LAB_003e789c:
   case 0x2b:
 
 
+    uVar6 = FUN_003e8e20((u8*)piVar10);
+    uVar6 = FUN_003e8ff0((int)piVar10);
     switch(uVar6) {
 
     case 1:
 
       piVar10[1] = 0x2c;
+      FUN_003efde0(0,2);
 
 
       break;
@@ -1897,6 +1899,7 @@ LAB_003e789c:
     case 2:
 
       piVar10[1] = 0x30;
+      FUN_003efde0(0,3);
 
 
       break;
@@ -1906,6 +1909,7 @@ LAB_003e789c:
       if (*piVar10 == 8) {
 
         piVar10[1] = 0x32;
+        FUN_003efde0(0,1);
 
 
       }
@@ -1913,6 +1917,7 @@ LAB_003e789c:
       else {
 
         piVar10[1] = 0x34;
+        FUN_003efde0(0,1);
 
 
       }
@@ -1922,6 +1927,7 @@ LAB_003e789c:
     case 4:
 
       piVar10[1] = 0x36;
+      FUN_003efde0(0,1);
 
 
       break;
@@ -1929,6 +1935,7 @@ LAB_003e789c:
     case 5:
 
       piVar10[1] = 0x2d;
+      FUN_003efde0(0,2);
 
 
       break;
@@ -1936,6 +1943,7 @@ LAB_003e789c:
     case 6:
 
       piVar10[1] = 0x2e;
+      FUN_003efde0(0,2);
 
 
       break;
@@ -1947,6 +1955,7 @@ LAB_003e789c:
       if (lVar8 == -1) {
 
         piVar10[1] = 0x41;
+        FUN_003efde0(0,1);
 
 
         uVar6 = FUN_003c5460(DAT_007ce688);
@@ -1962,6 +1971,7 @@ LAB_003e789c:
         if (lVar8 == 0) {
 
           piVar10[1] = 0x43;
+          FUN_003efde0(0,1);
 
 
           uVar6 = FUN_003c5460(DAT_007ce688);
@@ -1973,6 +1983,7 @@ LAB_003e789c:
         else {
 
           piVar10[1] = 0x3f;
+          FUN_003efde0(0,10);
 
 
         }
@@ -1984,6 +1995,7 @@ LAB_003e789c:
     case 8:
 
       piVar10[1] = 0x45;
+      FUN_003efde0(0,6);
 
 
       break;
@@ -1991,6 +2003,7 @@ LAB_003e789c:
     case 9:
 
       piVar10[1] = 0x47;
+      FUN_003efde0(0,7);
 
 
       break;
@@ -1998,6 +2011,7 @@ LAB_003e789c:
     case 10:
 
       piVar10[1] = 0x49;
+      FUN_003efde0(0,1);
 
 
       break;
@@ -2005,6 +2019,7 @@ LAB_003e789c:
     case 0xb:
 
       piVar10[1] = 0x4b;
+      FUN_003efde0(0,1);
 
 
       break;
@@ -2012,6 +2027,7 @@ LAB_003e789c:
     case 0xc:
 
       piVar10[1] = 0x4d;
+      FUN_003efde0(0,1);
 
 
       break;
@@ -2019,6 +2035,7 @@ LAB_003e789c:
     case 0xd:
 
       piVar10[1] = 0x4f;
+      FUN_003efde0(0,1);
 
 
     }
@@ -2099,7 +2116,6 @@ LAB_003e789c:
 
 
     }
-
     break;
 
   case 0x36:
