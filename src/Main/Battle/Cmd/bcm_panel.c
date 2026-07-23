@@ -2550,22 +2550,74 @@ void FUN_0022B630(void)
         break;
     }
 }
+// Previous body was a wrong-helper stub unrelated to retail (624B window).
+// Rewritten from disasm: retail loops 3 quad-setter calls, then computes a
+// flag from state fields 0x463c/0x4644, gating func_003b1360 + a resource
+// draw, matching FUN_0022C5A0's D_00960090_abs/D_0096009C_abs style.
+// nd 89->7 (obj 612B/624B); residual is the state-1 loop's register-bank
+// choice (retail s3, mine s4) - 2 declaration-order attempts had no effect.
 // FUN_0022BCF0 NONMATCHING
 void FUN_0022BCF0(void)
 {
-    u32 i;
-    u32 count;
-    u8* base;
+    u8* work;
+    u32 table6;
+    u32 resource;
+    u32 texture;
+    u8* record;
+    u32 state1;
+    u32 state2;
+    u32 flag;
+    s32 i;
+    void (**setState)(u32, u32);
+    void (**setQuad)(u32*, u32, u32, u32, u32);
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* record = bcm_panel_record(i);
-        bcm_panel_set_colour(record, 0xffffffffu);
-        *(u32*)(record + 0x68f0) = i;
+    work = (u8*)sBcmPanel;
+    FUN_0021c3f0(0);
+    table6 = FUN_0021c3f0(6);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(1, 0);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+    RpSkyRenderStateSet(2, (void*)0x44);
+
+    for (i = 0; i < 3; i++) {
+        record = work + i * 0x100 + 0x65f0;
+        setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+        (*setQuad)((u32*)record, 4, 0, 1, 2);
+        (*setQuad)((u32*)record, 4, 0, 2, 3);
     }
-    *(u32*)(base + 0x463c) = 3;
+
+    state1 = *(u32*)(work + 0x463c);
+    flag = 0;
+    switch (state1) {
+    case 0:
+    case 2:
+    case 1:
+        flag = 1;
+        break;
+    case 3:
+        state2 = *(u32*)(work + 0x4644);
+        switch (state2) {
+        case 1:
+            flag = 1;
+            break;
+        }
+        break;
+    }
+
+    if (flag != 0) {
+        func_003b1360(*(u32*)(work + 0x68f0), 1, 0);
+        if (*(u32*)(work + 0x68f8) != 0) {
+            resource = FUN_0021cca0(table6, *(u32*)(work + 0x68f4) + 0x20);
+            texture = FUN_0021cce0(resource);
+            (*setState)(1, texture);
+            RpSkyRenderStateSet(3, (void*)0x717fb);
+            RpSkyRenderStateSet(2, (void*)0x44);
+            setQuad = (void (**)(u32*, u32, u32, u32, u32))D_0096009C_abs;
+            (*setQuad)((u32*)(work + 0x6900), 4, 0, 1, 2);
+            (*setQuad)((u32*)(work + 0x6900), 4, 0, 2, 3);
+        }
+    }
 }
 // FUN_0022BF60
 void FUN_0022BF60(void)
