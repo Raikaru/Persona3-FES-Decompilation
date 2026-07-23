@@ -2848,66 +2848,46 @@ void func_00312e80(int param_1)
 
 
 
-// FUN_00312F90 NONMATCHING
+// FUN_00312F90
 
 
 u32 func_00312f90(u32 param_1)
-
-
-
 {
+    int iVar1;
+    u32 uVar2;
+    u32 lVar3;
+    u32 uVar4;
+    int iVar5;
+    int iVar6;
 
-  int iVar1;
+    iVar5 = (int)param_1;
+    iVar1 = *(int *)(iVar5 + 0x18);
+    if (iVar1 == 0) {
+        return param_1;
+    }
 
-  u32 uVar2;
-
-  u32 lVar3;
-
-  u32 uVar4;
-
-  int iVar5;
-
-  int iVar6;
-
-  
-
-  iVar5 = (int)param_1;
-
-  iVar1 = *(int *)(iVar5 + 0x18);
-  if (iVar1 != 0) {
     lVar3 = func_0048a2c0(iVar1);
-    if (lVar3 != 0) {
-      uVar4 = func_0048a3d0(lVar3);
-      if (0x40 < uVar4) {
-        if (param_1 != 0) {
-          
-          
-          
-          
-          
-          
-
-    uVar2 = func_0046a890(0x1001f);
-
-    *(u32 *)(iVar5 + 0x6c) = uVar2;
-
-    iVar5 = *(int *)(iVar5 + 0x18);
-
-    iVar1 = *(int *)(iVar5 + 0x24);
-
-    for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
-
-      func_00312e80(*(u32 *)(*(int *)(iVar5 + 0x20) + iVar6 * 4));
-
+    if (lVar3 == 0) {
+        return param_1;
     }
 
+    uVar4 = func_0048a3d0(lVar3);
+    if (uVar4 <= 0x40) {
+        return param_1;
+    }
+
+    if (param_1 != 0) {
+        uVar2 = func_0046a890(0x1001f);
+        *(u32 *)(iVar5 + 0x6c) = uVar2;
+        iVar5 = *(int *)(iVar5 + 0x18);
+        iVar1 = *(int *)(iVar5 + 0x24);
+        for (iVar6 = 0; iVar6 < iVar1; iVar6 = iVar6 + 1) {
+            func_00312e80(*(u32 *)(*(int *)(iVar5 + 0x20) + iVar6 * 4));
         }
-      }
+        return param_1;
     }
-  }
 
-  return param_1;
-
+    return param_1;
 }
 
 
