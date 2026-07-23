@@ -12234,7 +12234,7 @@ u64 FUN_003fef30(u64 param_1,long param_2)
 
   int iVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   long lVar4;
 
