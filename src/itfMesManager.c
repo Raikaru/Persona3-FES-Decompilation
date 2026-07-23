@@ -689,7 +689,7 @@ u32 FUN_003a2660(void)
 
   int lVar3;
 
-  u64 uVar4;
+  s32 uVar4;
 
   
 
