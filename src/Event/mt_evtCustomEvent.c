@@ -203,12 +203,15 @@ u32 FUN_00398530(int param_1)
 
 
 {
+  extern float FUN_0038d840(u32 param_1,char *param_2,int param_3);
+  extern void FUN_0019d3f0(const char *param_1,int param_2,...);
+  float fVar18;
 
   u8 bVar1;
 
   u16 uVar2;
 
-  u32 *puVar3;
+  int *puVar15;
 
   char cVar4;
 
@@ -220,9 +223,9 @@ u32 FUN_00398530(int param_1)
 
   u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
-  long lVar10;
+  int lVar10;
 
   int iVar11;
 
@@ -232,7 +235,7 @@ u32 FUN_00398530(int param_1)
 
   int iVar14;
 
-  u32 *puVar15;
+  int *puVar3;
 
   u32 uVar16;
 
@@ -246,8 +249,7 @@ u32 FUN_00398530(int param_1)
 
   
 
-  puVar3 = *(u32 **)(param_1 + 0x3c);
-
+  puVar3 = (int *)(*(u32 **)(param_1 + 0x3c));
   puVar15 = puVar3 + 0x16;
 
   switch(*puVar3) {
@@ -440,7 +442,7 @@ u32 FUN_00398530(int param_1)
 
       *(u16 *)(puVar3 + 0x25) = uVar5;
 
-      FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
+      fVar18 = FUN_0038d840(*(u32 *)(puVar3[0x13] + 0x40),acStack_140,0);
 
       uVar8 = FUN_0038a900(5);
 
@@ -464,7 +466,7 @@ u32 FUN_00398530(int param_1)
 
       if (acStack_140[0] < '\x01') {
 
-        FUN_0019d3f0("mt_evtCustomEvent.c",0x1df);
+        FUN_0019d3f0("mt_evtCustomEvent.c",0x1df,fVar18);
 
       }
 
