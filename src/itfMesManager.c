@@ -1212,7 +1212,7 @@ u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3)
 
   u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   long lVar7;
 
