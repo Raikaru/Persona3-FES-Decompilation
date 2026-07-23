@@ -5445,9 +5445,7 @@ s16 FUN_002dc670(BtlAction* action)
     DatUnit* datUnit = action->unit->datUnit;
     s16 result = 0;
 
-    switch (datCalcGetBadStatusNoDown(datUnit))
-    {
-    case 0x80:
+    if (datCalcGetBadStatusNoDown(datUnit) == 0x80)
     {
         u16 maxHp = datCalcGetMaxHp(datUnit);
 
@@ -5484,8 +5482,6 @@ s16 FUN_002dc670(BtlAction* action)
                 result = 999;
             }
         }
-        break;
-    }
     }
 
     if (datCalcIsDead(datUnit, result) != 0)
@@ -5512,45 +5508,80 @@ s32 FUN_002dc830(BtlAction* action)
     result = -1;
     status = datCalcGetBadStatusNoDown(unit->datUnit);
 
-    if (status == 0x200)
+    switch (status)
     {
-        if (action->target.commandId == 0xb ||
-            action->target.commandId == 8 ||
-            action->target.commandId == 7)
-            result = 0x14;
-    }
-    else if (status == 0x40)
-    {
-        if (action->target.commandId == 0xb) result = 0xc;
-    }
-    else if (status == 0x20)
-    {
-        if (action->target.commandId == 0xb) result = 10;
-    }
-    else if (status == 0x10)
-    {
+    case 1:
+        switch (action->target.commandId)
+        {
+        case 1:
+            result = 6;
+            break;
+        default:
+            result = 8;
+            break;
+        }
+        break;
+    case 2:
+        break;
+    case 4:
+        break;
+    case 8:
+        switch (action->target.commandId)
+        {
+        case 6:
+        case 0xc:
+            result = 0xe;
+            break;
+        case 7:
+        case 8:
+        case 0xb:
+            result = 0x10;
+            break;
+        }
+        break;
+    case 0x10:
         if (*(u8*)((u8*)action + 0x28) == 0 &&
             *(u8*)((u8*)action + 0x29) == 0)
             result = 0x12;
-    }
-    else if (status == 8)
-    {
-        if (action->target.commandId == 0xb ||
-            action->target.commandId == 8 ||
-            action->target.commandId == 7)
-            result = 0x10;
-        else if (action->target.commandId == 0xc ||
-                 action->target.commandId == 6)
-            result = 0xe;
-    }
-    else if (status == 1)
-    {
-        result = 8;
-        if (action->target.commandId == 1) result = 6;
+        break;
+    case 0x20:
+        switch (action->target.commandId)
+        {
+        case 0xb:
+            result = 10;
+            break;
+        }
+        break;
+    case 0x40:
+        switch (action->target.commandId)
+        {
+        case 0xb:
+            result = 0xc;
+            break;
+        }
+        break;
+    case 0x80:
+        break;
+    case 0x200:
+        switch (action->target.commandId)
+        {
+        case 7:
+        case 8:
+        case 0xb:
+            result = 0x14;
+            break;
+        }
+        break;
     }
 
-    if (result >= 0 && unit->genus != 0)
+    if (result < 0)
+    {
+        return -1;
+    }
+    if (unit->genus != 0)
+    {
         result++;
+    }
     return result;
 }
 
