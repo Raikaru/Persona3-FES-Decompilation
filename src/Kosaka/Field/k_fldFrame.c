@@ -51,6 +51,11 @@ extern void* func_001acb20(void* collisionWorld, FldFrameRaycast* raycast);
 extern void func_00464020(void* collision, void* intersection, void* callback, void* param);
 extern void func_00464120(void* collision, void* state, void* callback, void* param);
 extern void FUN_004916d0(void* collisionWorld, void* callback, void* param);
+extern RwMatrix* func_004cb2f0(void* frame);
+extern RwV3d* func_004c6ca0(RwV3d* out, const RwV3d* in,
+                            u32 count, const RwMatrix* matrix);
+extern f32 func_004c6ac0(const RwV3d* vector);
+extern f32 fGpffff8078;
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
@@ -744,7 +749,7 @@ extern void func_0045edc0(void* work);
 extern s32 func_001dde00(s32 value);
 extern s32 func_001ded40(s32 value);
 extern s32 func_001a5aa0(void* matrix);
-extern s32 func_004c69f0(const RwV3d* value, const RwV3d* unused);
+extern f32 func_004c69f0(RwV3d* out, const RwV3d* in);
 extern f32 func_0052e9e8(f32 value);
 extern KwlnTask* K_Draw_CreatePositionTask(s32 parent);
 extern void K_Draw_SetPositionColor(KwlnTask* task, const RwRGBA* color);
@@ -1368,7 +1373,7 @@ typedef struct FldFrameCollisionCollector
     u32 mode;
     u32 count;
     u32 blockingCount;
-    u8 tail[0x428];
+    u8 tail[0x28];
     void* owner;
 } FldFrameCollisionCollector;
 
@@ -1666,14 +1671,153 @@ void func_001ab390(void* collision, const RwV3d* pos,
     }
 }
 
+// Reconstructed point/triangle collision callback.
+// Remaining differences are MWCCPS2 stack-slot and register scheduling residuals.
 // FUN_001ab640 NONMATCHING
 void* func_001ab640(const RwV3d* point, const void* triangle,
                     FldFrameCollisionCollector* collector)
 {
-    if (point != NULL && triangle != NULL && collector != NULL)
+    const FldFrameCollisionTriangle* candidate;
+    const RwV3d* vertexPointers[3];
+    RwV3d vertices[3];
+    RwV3d projected;
+    RwV3d normal;
+    RwV3d closest;
+    RwV3d delta;
+    RwMatrix* matrix;
+    f32 distance;
+    f32 planeDistance;
+    s32 index;
+    s32 i;
+
+    candidate = (const FldFrameCollisionTriangle*)triangle;
+    normal = candidate->normal;
+    matrix = func_004cb2f0(*(void**)((u8*)collector->owner + 4));
+    func_004c6ca0(&normal, &candidate->normal, 1, matrix);
+    func_004c69f0(&normal, &normal);
+
+    for (i = 0; i < 3; i++)
     {
-        func_001aaf30(point, NULL,
-                      (const FldFrameCollisionTriangle*)triangle, collector);
+        func_004c6c20(&vertices[i], candidate->vertices[i], 1, matrix);
+        vertexPointers[i] = &vertices[i];
+    }
+
+    if (normal.x * *(f32*)((u8*)collector + 0xb0c) +
+        normal.y * *(f32*)((u8*)collector + 0xb10) +
+        normal.z * *(f32*)((u8*)collector + 0xb14) < 0.0f &&
+        collector->mode != 0)
+    {
+        return (void*)triangle;
+    }
+
+    if (fabsf(normal.y) <= fGpffff8078)
+    {
+        return (void*)triangle;
+    }
+
+    planeDistance =
+        (vertices[0].x * normal.x + vertices[0].y * normal.y +
+         vertices[0].z * normal.z) -
+        (point->x * normal.x + point->y * normal.y + point->z * normal.z);
+    projected.x = point->x + normal.x * planeDistance;
+    projected.y = point->y + normal.y * planeDistance;
+    projected.z = point->z + normal.z * planeDistance;
+
+    if (K_FldFrame_IsPointInTriangle(&projected, vertexPointers, &normal))
+    {
+        distance = fabsf(planeDistance);
+        index = 0;
+        while (index < (s32)collector->count &&
+               (collector->normals[index].x != normal.x ||
+                collector->normals[index].y != normal.y ||
+                collector->normals[index].z != normal.z))
+        {
+            index++;
+        }
+        if (index < (s32)collector->count)
+        {
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = projected;
+                collector->normals[index] = normal;
+                collector->distances[index] = distance;
+                if (collector->mode == 1 &&
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) == 0)
+                {
+                    collector->blockingCount++;
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) = 1;
+                }
+            }
+        }
+        else
+        {
+            index = collector->count;
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = projected;
+                collector->normals[index] = normal;
+                collector->distances[index] = distance;
+                if (collector->mode == 1 &&
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) == 0)
+                {
+                    collector->blockingCount++;
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) = 1;
+                }
+                collector->count++;
+            }
+        }
+        return (void*)triangle;
+    }
+
+    for (i = 0; i < 3; i++)
+    {
+        func_001aae10(&closest, &projected, vertexPointers[i],
+                      vertexPointers[(i + 1) % 3]);
+        delta.x = point->x - closest.x;
+        delta.y = point->y - closest.y;
+        delta.z = point->z - closest.z;
+        distance = func_004c6ac0(&delta);
+
+        index = 0;
+        while (index < (s32)collector->count &&
+               (collector->normals[index].x != normal.x ||
+                collector->normals[index].y != normal.y ||
+                collector->normals[index].z != normal.z))
+        {
+            index++;
+        }
+        if (index < (s32)collector->count)
+        {
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = closest;
+                collector->normals[index] = normal;
+                collector->distances[index] = distance;
+                if (collector->mode == 1 &&
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) == 0)
+                {
+                    collector->blockingCount++;
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) = 1;
+                }
+            }
+        }
+        else
+        {
+            index = collector->count;
+            if (distance < collector->distances[index])
+            {
+                collector->points[index] = closest;
+                collector->normals[index] = normal;
+                collector->distances[index] = distance;
+                if (collector->mode == 1 &&
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) == 0)
+                {
+                    collector->blockingCount++;
+                    *(u32*)((u8*)collector + 0xa00 + index * 4) = 1;
+                }
+                collector->count++;
+            }
+        }
     }
     return (void*)triangle;
 }
