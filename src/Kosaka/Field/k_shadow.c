@@ -1336,29 +1336,47 @@ void func_0019c310(KwlnTask* renderTexTask, u16 mode)
 void func_0019c320(KwlnTask* renderTexTask, f32 radius)
 {
     FldShadowRenderTex* shadow;
-    FldShadowRingWork* ring;
     void* layout;
+    void* geometry;
+    u8* vertices;
+    f32* vertex;
+    f32 ringAngle;
+    s32 i;
 
     shadow = (FldShadowRenderTex*)renderTexTask->workData;
-    ring = (FldShadowRingWork*)shadow->radius;
-    if (ring == NULL)
+    if (shadow->radius == NULL)
     {
         return;
     }
 
-    ring->radius = radius;
-    if (ring->renderObject == NULL)
+    ((FldShadowRingWork*)shadow->radius)->radius = radius;
+    if (((FldShadowRingWork*)shadow->radius)->renderObject == NULL)
     {
         return;
     }
 
-    layout = *(void**)((u8*)ring->renderObject + 0x18);
-    if (layout != NULL)
+    layout = *(void**)((u8*)((FldShadowRingWork*)shadow->radius)->renderObject + 0x18);
+    func_00493370(layout, 0xfff);
+    geometry = *(void**)((u8*)layout + 0x5c);
+    vertices = *(u8**)((u8*)geometry + 0x14);
+    *(f32*)(vertices + 0) = 0.0f;
+    *(f32*)(vertices + 4) = 5.0f;
+    *(f32*)(vertices + 8) = 0.0f;
+    ringAngle = 0.0f;
+    for (i = 0; i < 0x20; i++)
     {
-        func_00493370(layout, 0xfff);
-        K_FldShadow_FillRingVertices(layout, radius);
-        func_004933d0(layout);
+        vertex = (f32*)((u8*)vertices + i * 0x0c);
+        vertex[3] = ((FldShadowRingWork*)shadow->radius)->radius * cosf(ringAngle);
+        vertex[4] = 5.0f;
+        vertex[5] = ((FldShadowRingWork*)shadow->radius)->radius * sinf(ringAngle);
+        ringAngle += FLDSHADOW_RING_ANGLE_STEP;
     }
+    vertex = (f32*)((u8*)vertices + i * 0x0c);
+    vertex[3] = ((FldShadowRingWork*)shadow->radius)->radius * cosf(ringAngle);
+    vertex[4] = 5.0f;
+    vertex[5] = ((FldShadowRingWork*)shadow->radius)->radius * sinf(ringAngle);
+
+    func_004933d0(layout);
 }
 
 // FUN_0019c490

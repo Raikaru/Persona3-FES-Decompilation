@@ -1479,15 +1479,16 @@ void func_001fb3f0(int param_1,int param_2,int param_3,int *param_4,int *param_5
 {
     int param_3_p = param_3;
     s32 last;
-    s32 foundStart;
     s32 i;
+    s32 foundStart;
     s32 upperBound;
     s32 first;
     u8 *entry;
 
   upperBound = param_2 + param_3_p;
-  foundStart = 0;
   i = 0;
+  foundStart = 0;
+  asm volatile("" : "+r"(i));
   while (1) {
     entry = (u8 *)(param_1 + i * 10);
     if ((*(u16 *)(entry + 2) == 0) &&
