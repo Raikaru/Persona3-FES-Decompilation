@@ -5074,14 +5074,39 @@ void FUN_00429e90(int param_1,u8 param_2)
 float FUN_00429ef0(float param_1,char param_2)
 {
   int iVar1;
+  volatile YajimaVec3 saved;
   YajimaVec3 pos;
+  float x;
+  float z;
+  float y;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
   K_FldFrame_CtlCopyPos(&pos,
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  x = pos.x;
+  asm volatile("" : "+f"(x));
+  z = pos.z;
+  asm volatile("" : "+f"(z));
+  y = pos.y;
+  asm volatile("" : "+f"(y));
+  saved.x = x;
+  saved.y = y;
+  saved.z = z;
+  asm volatile("" : "+f"(x), "+f"(y), "+f"(z));
   iVar1 = K_FldFrame_CtlGetXGrid(
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  return (float)(int)((param_1 / 2.0f + 0.0f) -
-      (pos.x - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f));
+  grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = saved.x - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return (float)(int)(half + 0.0f - delta * ratio);
 }
 
 // FUN_00429FE0 NONMATCHING
@@ -5090,14 +5115,39 @@ float FUN_00429ef0(float param_1,char param_2)
 float FUN_00429fe0(float param_1,char param_2)
 {
   int iVar1;
+  volatile YajimaVec3 saved;
   YajimaVec3 pos;
+  float x;
+  float z;
+  float y;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
   K_FldFrame_CtlCopyPos(&pos,
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  x = pos.x;
+  asm volatile("" : "+f"(x));
+  z = pos.z;
+  asm volatile("" : "+f"(z));
+  y = pos.y;
+  asm volatile("" : "+f"(y));
+  saved.x = x;
+  saved.y = y;
+  saved.z = z;
+  asm volatile("" : "+f"(x), "+f"(y), "+f"(z));
   iVar1 = K_FldFrame_CtlGetZGrid(
       *(u32 *)(*(u32 *)(DAT_008717f4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
-  return (float)(int)((param_1 / 2.0f + 0.0f) -
-      (pos.z - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f));
+  grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = saved.z - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return (float)(int)(half + 0.0f - delta * ratio);
 }
 
 // FUN_0042A0D0 NONMATCHING
@@ -5133,7 +5183,7 @@ float FUN_0042a0d0(float param_1,float *param_2)
 
 }
 
-// FUN_0042A180 NONMATCHING
+// FUN_0042A180
 
 
 float FUN_0042a180(float param_1,u32 *param_2)
@@ -5148,6 +5198,7 @@ float FUN_0042a180(float param_1,u32 *param_2)
 
   iVar1 = FUN_0044f170(&pos);
   grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
   base = grid * 800.0f;
   base = base - 400.0f;
   delta = pos.z - base;
@@ -5162,21 +5213,35 @@ float FUN_0042a180(float param_1,u32 *param_2)
 float FUN_0042a230(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 pos;
+  volatile YajimaVec3 saved;
+  YajimaVec3 pos;
+  float z;
+  float x;
+  float y;
   float grid;
   float base;
   float delta;
   float ratio;
   float half;
-
-  K_FldFrame_CtlCopyPos((YajimaVec3 *)&pos,
+  K_FldFrame_CtlCopyPos(&pos,
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  x = pos.x;
+  asm volatile("" : "+f"(x));
+  z = pos.z;
+  asm volatile("" : "+f"(z));
+  y = pos.y;
+  asm volatile("" : "+f"(y));
+  saved.x = x;
+  saved.y = y;
+  saved.z = z;
+  asm volatile("" : "+f"(x), "+f"(y), "+f"(z));
   iVar1 = K_FldFrame_CtlGetXGrid(
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
   grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
   base = grid * 800.0f;
   base = base - 400.0f;
-  delta = pos.x - base;
+  delta = saved.x - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
   return half + 0.0f - delta * ratio;
@@ -5188,21 +5253,36 @@ float FUN_0042a230(float param_1,char param_2)
 float FUN_0042a310(float param_1,char param_2)
 {
   int iVar1;
-  volatile YajimaVec3 pos;
+  volatile YajimaVec3 saved;
+  YajimaVec3 pos;
+  float x;
+  float z;
+  float y;
   float grid;
   float base;
   float delta;
   float ratio;
   float half;
 
-  K_FldFrame_CtlCopyPos((YajimaVec3 *)&pos,
+  K_FldFrame_CtlCopyPos(&pos,
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
+  x = pos.x;
+  asm volatile("" : "+f"(x));
+  z = pos.z;
+  asm volatile("" : "+f"(z));
+  y = pos.y;
+  asm volatile("" : "+f"(y));
+  saved.x = x;
+  saved.y = y;
+  saved.z = z;
+  asm volatile("" : "+f"(x), "+f"(y), "+f"(z));
   iVar1 = K_FldFrame_CtlGetZGrid(
       *(u32 *)(*(u32 *)(DAT_0086edf4_abs + (s32)(s8)param_2 * 0x1c0) + 0x1e0));
   grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
   base = grid * 800.0f;
   base = base - 400.0f;
-  delta = pos.z - base;
+  delta = saved.z - base;
   ratio = param_1 / 800.0f;
   half = param_1 / 2.0f;
   return half + 0.0f - delta * ratio;
@@ -5239,17 +5319,28 @@ float FUN_0042a3f0(float param_1,float *param_2)
 
 }
 
-// FUN_0042A4A0 NONMATCHING
+// FUN_0042A4A0
 
 
 float FUN_0042a4a0(float param_1,u32 *param_2)
 {
   int iVar1;
   YajimaVec3 pos = *(YajimaVec3 *)param_2;
+  float grid;
+  float base;
+  float delta;
+  float ratio;
+  float half;
 
   iVar1 = FUN_0044f170(&pos);
-  return (param_1 / 2.0f + 0.0f) -
-      (pos.z - ((float)iVar1 * 800.0f - 400.0f)) * (param_1 / 800.0f);
+  grid = (float)iVar1;
+  asm volatile("" : "+f"(grid));
+  base = grid * 800.0f;
+  base = base - 400.0f;
+  delta = pos.z - base;
+  ratio = param_1 / 800.0f;
+  half = param_1 / 2.0f;
+  return half + 0.0f - delta * ratio;
 }
 
 // FUN_0042A550 NONMATCHING
