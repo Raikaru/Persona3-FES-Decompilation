@@ -15221,13 +15221,13 @@ code * FUN_0036ee30(void)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u64 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   int iVar6;
 
