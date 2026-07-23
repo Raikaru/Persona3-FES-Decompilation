@@ -8,6 +8,36 @@
 #pragma alias rwGlobals_abs rwGlobals
 extern u8 rwGlobals_abs[];
 extern u8 D_0077e4e0[];
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+extern f32 gUnk_007cadd0;
+extern void func_004aa390(f32 nearPlane);
+extern void func_004aa3d0(f32 farPlane);
+extern void func_004a9f20(f32 x, f32 y, f32 z, f32 w);
+extern void func_004aa410(RwCamera* camera);
+extern void* func_004a5470(void);
+extern void func_004a5dd0(void* image, const s8* c0, const s8* c1,
+                          const s8* c2, const s8* c3);
+extern void* func_004ac570(void);
+extern void func_004ac5f0(void* image);
+extern void func_004ab1b0(void* image);
+extern void func_004a62e0(void* image, void* data);
+extern void func_004a6200(void* image, s32* out0, f32* out1,
+                          f32* out2, s32* out3);
+extern void func_004ab6a0(void* image);
+extern void func_004ac710(void* image);
+extern void func_004ace70(void* image, void* quad);
+extern void func_004a6600(void* image, void* quad);
+extern void func_004aaa60(void);
+extern void func_004a9bf0(void);
+extern void func_004aae00(f32 x, f32 y);
+extern void func_004aad50(void);
+extern void func_004ab200(void* image, f32 x, f32 y);
+extern void func_004ab2c0(void* image, f32 x, f32 y);
+extern void func_004ab410(void* image, f32 x0, f32 y0, f32 x1, f32 y1,
+                          f32 x2, f32 y2);
+extern void func_00110650(void* view, s32 from, s32 to);
+extern s8 fGpffff7788[];
 
 #define HSFD_QUEUE_COUNT 256
 #define HSFD_DECODE_SLOTS 6
@@ -1564,27 +1594,341 @@ void func_0010ec50(KwlnTask* task)
     }
 }
 
+// Reconstructed initialization, dispatch, color, and draw processing.
+// Residual differences are MWCC register allocation and 128-bit stack-spill layout.
 // FUN_0010F6C0 NONMATCHING
 void func_0010f6c0(KwlnTask* task)
 {
-    HSfdRenderView* view;
+    u8* work;
+    u8* entry;
+    u8* frames;
+    HSfdRenderFrame* record;
+    void* resource;
+    void* quad;
+    void (**setRenderState)(u32, u32);
+    RwCamera* camera;
     s32 element;
+    s32 frame;
+    s32 type;
+    s32 mode;
+    s32 found;
+    s32 draw;
+    s32 colorReady;
+    s32 layer;
+    s32 i;
+    s32 j;
+    s32 baseX;
+    s32 baseY;
+    s32 x;
+    s32 y;
+    s16 screenY;
+    s64 red;
+    s64 green;
+    s64 blue;
+    s64 alpha;
+    s64 colorBase;
+    u8 colorBytes[4];
+    s32 colorState;
+    f32 zero;
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    f32 x2;
+    f32 y2;
+    s32 out0;
+    f32 out1;
+    f32 out2;
+    f32 out3;
+    f32 out4;
+    s32 out5;
+    s32 out6;
+    s32 out7;
 
-    if ((task == NULL) || (task->workData == NULL))
+    volatile u8 stackPad[0x20];
+    stackPad[0] = 0;
+    work = (u8*)task->workData;
+    setRenderState = (void (**)(u32, u32))D_00960090_abs;
+    (*setRenderState)(8, 0);
+    (*setRenderState)(6, 0);
+    func_004aa390(0.5f);
+    camera = kwlnGetMainCamera();
+    func_004aa3d0(gUnk_007cadd0 * camera->nearPlane);
+    func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
+    func_004aa410(kwlnGetMainCamera());
+
+    if (*(s32*)(work + 0x4e4) != 0)
     {
-        return;
+        RpSkyRenderStateSet(2, (void*)0x48);
+        RpSkyRenderStateSet(3, (void*)0x71801);
+    }
+    else
+    {
+        RpSkyRenderStateSet(2, (void*)0x44);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
     }
 
-    view = (HSfdRenderView*)task->workData;
-    if (view->type == 3)
+    type = *(s32*)work;
+    switch (type)
     {
-        for (element = 0; element < view->elementCount; element++)
-        {
-            view->currentCommand = -1;
-        }
-    }
-    else if (view->type == 1)
-    {
-        view->type = 0;
+        case 0:
+            for (element = 0; element < *(s32*)(work + 0x4e0); element++)
+            {
+                entry = work + element * 4;
+                resource = func_004a5470();
+                *(void**)(entry + 0x148) = resource;
+                func_004a5dd0(resource, fGpffff7788, fGpffff7788,
+                              fGpffff7788, fGpffff7788);
+                *(s32*)(entry + 0x288) = -1;
+            }
+            for (element = 0; element < *(s32*)(work + 0x4e0); element++)
+            {
+                entry = work + element * 4;
+                resource = func_004ac570();
+                *(void**)(entry + 0xa8) = resource;
+                func_004ac5f0(resource);
+                func_004ab1b0(resource);
+                func_004ac5f0(resource);
+                *(s32*)(entry + 0x1e8) = 0;
+            }
+            frames = *(u8**)(work + 4);
+            *(void**)(work + 8) = *(void**)(work + 4);
+            j = 0;
+            i = 1;
+            for (; i < *(s32*)(work + 0x4e0); i++)
+            {
+                while (*(s8*)(frames + j * 0x12 + 1) != -2)
+                {
+                    j++;
+                }
+                j++;
+                *(void**)(work + i * 4 + 8) = frames + j * 0x12;
+            }
+            *(s32*)work = 1;
+            break;
+
+        case 1:
+            *(s32*)work = 2;
+            break;
+
+        case 2:
+            return;
+
+        case 3:
+            if (*(s32*)(work + 0x4e8) != 0)
+            {
+                return;
+            }
+            func_004aaa60();
+            func_004a9bf0();
+            func_004aaa60();
+            colorState = 0;
+            element = 0;
+            for (; element < *(s32*)(work + 0x4e0); element++)
+            {
+                colorReady = 0;
+                layer = 0;
+                found = 0;
+                draw = 0;
+                entry = work + element * 4;
+                frame = *(s32*)(entry + 0x1e8);
+                resource = *(void**)(entry + 0xa8);
+                func_004ac5f0(resource);
+                func_004ab1b0(resource);
+                colorBase = (s64)(work + element * 2);
+                quad = work + colorState * 4;
+                while (draw == 0)
+                {
+                    if (colorReady == 0)
+                    {
+                        frames = *(u8**)(entry + 8);
+                        record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                        if (record->command != -1)
+                        {
+                            red = (record->colorR < 0x100) ?
+                                  (s8)(record->colorR & 0xff) : 0xff;
+                            green = (record->colorG < 0x100) ?
+                                    (s8)(record->colorG & 0xff) : 0xff;
+                            blue = (record->colorB < 0x100) ?
+                                  (s8)(record->colorB & 0xff) : 0xff;
+                            alpha = (record->colorA < 0x100) ?
+                                    (record->colorA & 0xff) : 0xff;
+                            red += *(s16*)((u8*)colorBase + 0x3f0);
+                            green += *(s16*)((u8*)colorBase + 0x440);
+                            blue += *(s16*)((u8*)colorBase + 0x490);
+                            if (red < 0)
+                                red = 0;
+                            if (red >= 0x100)
+                                red = 0xff;
+                            if (green < 0)
+                                green = 0;
+                            if (green >= 0x100)
+                                green = 0xff;
+                            if (blue < 0)
+                                blue = 0;
+                            if (blue >= 0x100)
+                                blue = 0xff;
+                            colorBytes[0] = (u8)red;
+                            colorBytes[1] = (u8)green;
+                            colorBytes[2] = (u8)blue;
+                            colorBytes[3] = (u8)alpha;
+                            colorReady = 1;
+                        }
+                    }
+
+                    frames = *(u8**)(entry + 8);
+                    record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                    if (record->command != -1)
+                    {
+                        if ((record->command == 2) && (draw == 0))
+                        {
+                            draw = 1;
+                            func_004a62e0(*(void**)(entry + 0x148),
+                                          *(void**)((u8*)quad + 0x328));
+                            out0 = 0;
+                            zero = *(f32*)((u8*)work - 0x7cf8);
+                            out1 = zero;
+                            out2 = zero;
+                            out3 = zero;
+                            out4 = zero;
+                            out5 = 0;
+                            out6 = 0;
+                            out7 = 0;
+                            func_004a6200(*(void**)(entry + 0x148),
+                                          &out0, &out2, &out4, &out6);
+                        }
+
+                        switch (record->command)
+                        {
+                            case 0:
+                                if (layer != 0)
+                                {
+                                    if (layer >= 3)
+                                        func_004ab6a0(resource);
+                                    func_004ac710(resource);
+                                    func_004aaa60();
+                                    func_004aae00(0.0f, 0.0f);
+                                    if (layer < 3)
+                                        func_004ace70(resource, *(void**)(entry + 0x148));
+                                    else
+                                        func_004a6600(resource, *(void**)(entry + 0x148));
+                                    func_004aad50();
+                                    func_004ac5f0(resource);
+                                    func_004ab1b0(resource);
+                                    layer = 0;
+                                }
+                                record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                                *(s32*)(entry + 0x288) = record->type;
+                                baseX = (s32)*(f32*)(work + 0x3d8);
+                                baseY = (s32)*(f32*)(work + 0x3dc);
+                                func_004ab200(resource,
+                                              (f32)(baseX + record->x0),
+                                              (f32)(448 - (baseY + record->y0)));
+                                x = baseX + record->x0;
+                                y = 448 - (baseY + record->y0);
+                                screenY = (s16)y;
+                                func_004a5dd0(*(void**)(entry + 0x148),
+                                              (s8*)colorBytes, (s8*)colorBytes,
+                                              (s8*)colorBytes, (s8*)colorBytes);
+                                layer++;
+                                found = 1;
+                                break;
+
+                            case 1:
+                                *(s32*)(entry + 0x288) = record->type;
+                                baseX = (s32)*(f32*)(work + 0x3d8);
+                                baseY = (s32)*(f32*)(work + 0x3dc);
+                                if (layer == 0)
+                                    func_004ab200(resource,
+                                                  (f32)(baseX + record->x0),
+                                                  (f32)(448 - (baseY + record->y0)));
+                                else
+                                    func_004ab2c0(resource,
+                                                  (f32)(baseX + record->x0),
+                                                  (f32)(448 - (baseY + record->y0)));
+                                x = baseX + record->x0;
+                                y = 448 - (baseY + record->y0);
+                                screenY = (s16)y;
+                                func_004a5dd0(*(void**)(entry + 0x148),
+                                              (s8*)colorBytes, (s8*)colorBytes,
+                                              (s8*)colorBytes, (s8*)colorBytes);
+                                found = 1;
+                                layer++;
+                                break;
+
+                            case 2:
+                                *(s32*)(entry + 0x288) = record->type;
+                                frames = *(u8**)(entry + 8);
+                                record = (HSfdRenderFrame*)(frames + frame * 0x12);
+                                baseX = (s32)*(f32*)(work + 0x3d8);
+                                baseY = (s32)*(f32*)(work + 0x3dc);
+                                x0 = (f32)baseX;
+                                y0 = (f32)baseY;
+                                x1 = (f32)(baseX + record->x0);
+                                y1 = (f32)(448 - (baseY + record->y0));
+                                x2 = (f32)(baseX + record->x1);
+                                y2 = (f32)(448 - (baseY + record->y1));
+                                func_004ab410(resource, x0, y0, x1, y1,
+                                              x2, y2);
+                                x = baseX + record->x1;
+                                y = 448 - (baseY + record->y1);
+                                screenY = (s16)y;
+                                func_004a5dd0(*(void**)(entry + 0x148),
+                                              (s8*)colorBytes, (s8*)colorBytes,
+                                              (s8*)colorBytes, (s8*)colorBytes);
+                                layer++;
+                                found = 1;
+                                break;
+                        }
+                        frame++;
+                    }
+                }
+
+                if (found != 0)
+                {
+                    if (layer >= 3)
+                        func_004ab6a0(resource);
+                    func_004ac710(resource);
+                    func_004aaa60();
+                    func_004aae00(0.0f, 0.0f);
+                    mode = *(s32*)(entry + 0x288);
+                    if (mode == 1)
+                    {
+                        if (layer < 3)
+                            func_004ace70(resource, *(void**)(entry + 0x148));
+                        else
+                            func_004a6600(resource, *(void**)(entry + 0x148));
+                    }
+                    else if (mode == 2)
+                    {
+                        j = 0;
+                        for (i = element - 1; i >= 0; i--)
+                        {
+                            quad = work + i * 4;
+                            if (*(s32*)((u8*)quad + 0x288) == 0)
+                            {
+                                func_00110650(work, i, element);
+                                if (layer >= 3)
+                                    func_004a6600(*(void**)((u8*)quad + 0xa8),
+                                                  *(void**)(entry + 0x148));
+                                j = 1;
+                                break;
+                            }
+                        }
+                        if ((j == 0) && (layer >= 3))
+                            func_004a6600(resource, *(void**)(entry + 0x148));
+                    }
+                    func_004aad50();
+                }
+                else
+                {
+                    func_004ac710(resource);
+                }
+                if ((draw != 0) && (colorState != 1))
+                    colorState++;
+            }
+            func_004aad50();
+            func_004aad50();
+            break;
     }
 }
