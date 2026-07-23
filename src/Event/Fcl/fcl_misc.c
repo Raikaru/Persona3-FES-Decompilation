@@ -1159,7 +1159,7 @@ u32 FUN_003c94e0(void)
 // FUN_003C9570 NONMATCHING
 
 
-void FUN_003c9570(u32 param_1)
+void FUN_003c9570(u64 param_1)
 
 
 
