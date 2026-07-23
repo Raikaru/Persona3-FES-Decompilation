@@ -7,6 +7,8 @@ u32 FUN_0021cca0();
 void FUN_0021d3b0();
 u32 FUN_0021cce0();
 extern u32 D_00960090[];
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern u32 D_0096009C[];
 #pragma alias D_00960090_fn D_00960090
 #pragma alias D_0096009C_fn D_0096009C
@@ -2601,28 +2603,22 @@ void FUN_0022C5A0(void)
 {
     u8* base;
     u32 resource;
-
+    void (**setColour)(u32*, u32, u32, u32, u32);
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     base = (u8*)sBcmPanel;
     resource = FUN_0021cca0(FUN_0021c3f0(0), 0x42);
-    ((void (*)(u32, u32))D_00960090)(1, FUN_0021cce0(resource));
+    (*(void (**)(u32, u32))D_00960090_abs)(1, FUN_0021cce0(resource));
     RpSkyRenderStateSet(3, (void*)0x717fb);
     RpSkyRenderStateSet(2, (void*)0x44);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6a00), 4, 0, 1, 2);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6a00), 4, 0, 2, 3);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6b00), 4, 0, 1, 2);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6b00), 4, 0, 2, 3);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6c00), 4, 0, 1, 2);
-    ((void (*)(u32*, u32, u32, u32, u32))D_0096009C)
-        ((u32*)(base + 0x6c00), 4, 0, 2, 3);
+    setColour = (void (**)(u32*, u32, u32, u32, u32))D_0096009C;
+    (*setColour)((u32*)(base + 0x6a00), 4, 0, 1, 2);
+    (*setColour)((u32*)(base + 0x6a00), 4, 0, 2, 3);
+    (*setColour)((u32*)(base + 0x6b00), 4, 0, 1, 2);
+    (*setColour)((u32*)(base + 0x6b00), 4, 0, 2, 3);
+    (*setColour)((u32*)(base + 0x6c00), 4, 0, 1, 2);
+    (*setColour)((u32*)(base + 0x6c00), 4, 0, 2, 3);
 }
-
-// FUN_0022C720
+// FUN_0022c720
 void FUN_0022c720(u32* object, u32 style)
 {
     u32 table;
