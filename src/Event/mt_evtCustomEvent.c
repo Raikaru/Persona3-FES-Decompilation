@@ -5035,7 +5035,7 @@ u32 FUN_0039db60(int param_1)
 
   long lVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int *piVar7;
 
