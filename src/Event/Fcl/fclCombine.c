@@ -5361,7 +5361,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
   int iVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   long lVar9;
 
