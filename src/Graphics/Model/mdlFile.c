@@ -987,6 +987,8 @@ extern u64 FUN_00318b10();
 extern u64 FUN_00318d10();
 extern u64 FUN_00318ed0();
 extern u64 FUN_00318fc0();
+#pragma alias FUN_00318fc0_u32 FUN_00318fc0
+extern u32 FUN_00318fc0_u32(u32 param_1);
 extern u64 FUN_00357dd0();
 extern u64 FUN_00357e00();
 extern u64 FUN_00357e30();
@@ -48471,6 +48473,15 @@ void FUN_0034c160(u32 param_1)
 
 
 
+// Fixed genuine misdecompilation: retail calls FUN_0034c250(dst,src) to
+// transfer/re-acquire a resource handle for the cloned object, not a raw
+// memcpy of 16 bytes (confirmed via direct retail disasm at 0x34c250,
+// which matches FUN_0034c250's exact body). This flips FUN_0034c250 to
+// full MATCH too. Residual: retail explicitly re-zeros the first two
+// Vec128 slots via sqc2 $vf0 (redundant after the FUN_00521408 memset,
+// likely from the original source's literal struct-init syntax); the
+// mdlVecZero() compat shim does not inline here (tried, regressed
+// 47->94), so this remains unreproduced (49 -> 47 nd accepted floor).
 // FUN_0034C1B0 NONMATCHING
 
 u32 FUN_0034c1b0(int param_1)
@@ -48497,10 +48508,9 @@ u32 FUN_0034c1b0(int param_1)
 
   *(u32 *)pauVar3[2] = 0x3f800000;
 
-
   FUN_00521250(pauVar3[2] + 0xc,(int)param_1 + 0x2c,0x68);
 
-  memcpy((void *)uVar2,(void *)param_1,0x10);
+  FUN_0034c250((int)uVar2,param_1);
 
   return uVar2;
 
