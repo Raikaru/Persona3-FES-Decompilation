@@ -95,8 +95,8 @@ u16 FUN_003b5f70(u16 param_1);
 u32 FUN_003b6180(u32 param_1,long param_2);
 u32 FUN_003b64c0(u32 param_1,long param_2,u8 param_3);
 u32 FUN_003b66b0(u32 param_1,long param_2);
-u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
-u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6);
+u16 FUN_003b6870(u16 param_1,RwV3d *param_2,float param_4,float param_5,float param_6,u32 param_3);
+u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,float param_4,float param_5,float param_6,u32 param_3);
 u16 FUN_003b6ad0(u32 param_1, RwV3d* param_2, float param_3);
 u16 FUN_003b6b90(u32 param_1, RwV3d* param_2, float param_3);
 u16 FUN_003b6c50(u32 param_1, RwV3d* param_2, float param_3);
@@ -1122,13 +1122,14 @@ u32 FUN_003b6790(u32 param_1,long param_2)
 }
 #define FUN_003b6790(...) ((u32 (*)(...))FUN_003b6790)(__VA_ARGS__)
 #undef FUN_003b6870
-// FUN_003B6870 NONMATCHING
+// FUN_003B6870
 
 
-u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
+u16 FUN_003b6870(u16 param_1,RwV3d *param_2,float param_4,float param_5,float param_6,u32 param_3)
 {
   u16 uVar1;
   Resrc *res1;
+  RwRGBA color;
   uVar1 = param_1 & 0x3ff | 0x3400;
   if (gMtScene->resManager == NULL) {
     FUN_005225a8(D_006A2BB0_abs);
@@ -1144,10 +1145,8 @@ u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
       *(float *)((u8 *)res1 + 0x110) = param_4;
       *(float *)((u8 *)res1 + 0x114) = param_5;
       *(float *)((u8 *)res1 + 0x118) = param_6;
-      *(u8 *)((u8 *)res1 + 0x100) = ((u8 *)&param_3)[0];
-      *(u8 *)((u8 *)res1 + 0x101) = ((u8 *)&param_3)[1];
-      *(u8 *)((u8 *)res1 + 0x102) = ((u8 *)&param_3)[2];
-      *(u8 *)((u8 *)res1 + 0x103) = ((u8 *)&param_3)[3];
+      color = *(RwRGBA *)&param_3;
+      *(RwRGBA *)((u8 *)res1 + 0x100) = color;
       FUN_001e6af0((u8 *)res1 + 0x11c,param_2,param_4,param_5,param_6);
       res1->flags = res1->flags | 8;
     }
@@ -1156,13 +1155,14 @@ u16 FUN_003b6870(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
 }
 #define FUN_003b6870(...) ((u32 (*)(...))FUN_003b6870)(__VA_ARGS__)
 #undef FUN_003b69a0
-// FUN_003B69A0 NONMATCHING
+// FUN_003B69A0
 
 
-u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float param_5,float param_6)
+u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,float param_4,float param_5,float param_6,u32 param_3)
 {
   u16 uVar1;
   Resrc *res1;
+  RwRGBA color;
 
   uVar1 = param_1 & 0x3ff | 0x5400;
   if (gMtScene->resManager == NULL) {
@@ -1179,10 +1179,8 @@ u16 FUN_003b69a0(u16 param_1,RwV3d *param_2,u32 param_3,float param_4,float para
       *(float *)((u8 *)res1 + 0x110) = param_4;
       *(float *)((u8 *)res1 + 0x114) = param_5;
       *(float *)((u8 *)res1 + 0x118) = param_6;
-      *(u8 *)((u8 *)res1 + 0x100) = ((u8 *)&param_3)[0];
-      *(u8 *)((u8 *)res1 + 0x101) = ((u8 *)&param_3)[1];
-      *(u8 *)((u8 *)res1 + 0x102) = ((u8 *)&param_3)[2];
-      *(u8 *)((u8 *)res1 + 0x103) = ((u8 *)&param_3)[3];
+      color = *(RwRGBA *)&param_3;
+      *(RwRGBA *)((u8 *)res1 + 0x100) = color;
       FUN_001e6af0((u8 *)res1 + 0x11c,param_2,param_4,param_5,param_6);
       res1->flags = res1->flags | 8;
     }
