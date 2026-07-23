@@ -4654,7 +4654,7 @@ LAB_003cf7a4:
 // FUN_003CF960 NONMATCHING
 
 
-u64 FUN_003cf960(int param_1,u16 param_2)
+u32 FUN_003cf960(int param_1,u16 param_2)
 
 
 
@@ -4664,7 +4664,7 @@ u64 FUN_003cf960(int param_1,u16 param_2)
 
   short sVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u16 *puVar4;
 
@@ -4735,7 +4735,7 @@ LAB_003cf9d8:
   } while( 1 );
 
 }
-#define FUN_003cf960(...) ((u64 (*)(...))FUN_003cf960)(__VA_ARGS__)
+#define FUN_003cf960(...) ((u32 (*)(...))FUN_003cf960)(__VA_ARGS__)
 #undef FUN_003cfb50
 // FUN_003CFB50 NONMATCHING
 
