@@ -257,17 +257,17 @@ u32 FUN_003971a0(void)
 
   int lVar3;
 
-  u64 uVar4;
+  s32 uVar4;
 
-  u64 uVar5;
+  s32 uVar5;
 
-  u64 uVar6;
+  s32 uVar6;
 
-  u64 uVar7;
+  s32 uVar7;
 
-  u64 uVar8;
+  s32 uVar8;
 
-  u64 uVar9;
+  s32 uVar9;
 
   int lVar10;
 
