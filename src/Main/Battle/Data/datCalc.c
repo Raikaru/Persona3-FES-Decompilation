@@ -7625,21 +7625,26 @@ void FUN_0030e8a0(void)
   float fVar5;
   
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
     fVar2 = (float)FUN_0030fdf0(0x12,0);
     fVar3 = (float)FUN_0030fdf0(0x10,0);
+    fVar2 = fVar2 * fVar3;
     fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar5 = (float)FUN_0030fdf0(0xe,4);
-    fVar2 = ((fVar2 * fVar3 * (fVar4 + 100.0f)) / (fVar5 + 100.0f)) * 0.5f;
+    fVar2 = fVar2 * (fVar4 + 100.0f);
+    fVar4 = (float)FUN_0030fdf0(0xe,4);
+    fVar4 = fVar2 / (fVar4 + 100.0f);
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0x12,0);
     fVar3 = (float)FUN_0030fdf0(0x10,0);
+    fVar2 = fVar2 * fVar3;
     fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar5 = (float)FUN_0030fdf0(0xe,4);
-    fVar2 = (fVar2 * fVar3 * (fVar4 + 100.0f)) / (fVar5 + 100.0f);
+    fVar2 = fVar2 * (fVar4 + 100.0f);
+    fVar4 = (float)FUN_0030fdf0(0xe,4);
+    fVar4 = fVar2 / (fVar4 + 100.0f);
+    fVar4 = 0.5f * fVar4;
   }
-  FUN_00311190((int)fVar2);
+  FUN_00311190((int)fVar4);
   return;
 }
 
@@ -7798,22 +7803,32 @@ void FUN_0030f120(void)
   float fVar5;
   
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
     fVar2 = (float)FUN_0030fdf0(0xd,3);
+    fVar2 = fVar2 + 200.0f;
     fVar3 = (float)FUN_0030fdf0(0xe,3);
-    fVar5 = (fVar2 + 200.0f) / (fVar3 + 200.0f);
-    fVar2 = (float)FUN_0030fdf0(0xd,3);
-    fVar3 = (float)FUN_0030fdf0(0x1f,0);
+    fVar3 = fVar3 + 200.0f;
+    fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = fVar5 * ((fVar2 + 200.0f) / (fVar3 / 2.0f + 200.0f)) * fVar4;
+    fVar2 = fVar2 * fVar4;
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0xd,3);
+    fVar2 = fVar2 + 200.0f;
     fVar3 = (float)FUN_0030fdf0(0xe,3);
+    fVar3 = fVar3 + 200.0f;
+    fVar5 = fVar2 / fVar3;
+    fVar2 = (float)FUN_0030fdf0(0xd,3);
+    fVar2 = fVar2 + 200.0f;
+    fVar3 = (float)FUN_0030fdf0(0x1f,0);
+    fVar3 = fVar3 / 2.0f;
+    fVar3 = fVar3 + 200.0f;
+    fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x11,0);
-    fVar4 = ((fVar2 + 200.0f) / (fVar3 + 200.0f)) * fVar4;
+    fVar2 = fVar5 * fVar2;
+    fVar2 = fVar2 * fVar4;
   }
-  FUN_00311190((int)fVar4);
+  FUN_00311190((int)fVar2);
   return;
 }
 
@@ -7831,19 +7846,25 @@ void FUN_0030f290(void)
   float fVar4;
   
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
-    fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar2 = (float)FUN_0030fdf0(0xe,4);
-    fVar3 = (float)FUN_0030fdf0(0x14,0);
-    fVar4 = DAT_007cad74 * fVar3 * ((fVar4 + 50.0f) / (fVar2 + 50.0f));
+  if (lVar1 != 0) {
+    fVar2 = (float)FUN_0030fdf0(0xd,4);
+    fVar2 = fVar2 + 50.0f;
+    fVar3 = (float)FUN_0030fdf0(0xe,4);
+    fVar3 = fVar3 + 50.0f;
+    fVar2 = fVar2 / fVar3;
+    fVar4 = (float)FUN_0030fdf0(0x14,0);
+    fVar2 = fVar2 * fVar4;
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0xd,4);
+    fVar2 = fVar2 + 50.0f;
     fVar3 = (float)FUN_0030fdf0(0xe,4);
+    fVar3 = fVar3 + 50.0f;
+    fVar2 = fVar2 / fVar3;
     fVar4 = (float)FUN_0030fdf0(0x14,0);
-    fVar4 = fVar4 * ((fVar2 + 50.0f) / (fVar3 + 50.0f));
+    fVar2 = DAT_007cad74 * fVar4 * fVar2;
   }
-  FUN_00311190((int)fVar4);
+  FUN_00311190((int)fVar2);
   return;
 }
 
@@ -8117,21 +8138,26 @@ void FUN_0030faf0(void)
   float fVar5;
   
   lVar1 = FUN_003111f0();
-  if (lVar1 == 0) {
+  if (lVar1 != 0) {
     fVar2 = (float)FUN_0030fdf0(0x12,0);
     fVar3 = (float)FUN_0030fdf0(0x10,0);
+    fVar2 = fVar2 * fVar3;
     fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar5 = (float)FUN_0030fdf0(0xe,4);
-    fVar2 = ((fVar2 * fVar3 * (fVar4 + 100.0f)) / (fVar5 + 100.0f)) * 1.5f;
+    fVar2 = fVar2 * (fVar4 + 100.0f);
+    fVar4 = (float)FUN_0030fdf0(0xe,4);
+    fVar4 = fVar2 / (fVar4 + 100.0f);
   }
   else {
     fVar2 = (float)FUN_0030fdf0(0x12,0);
     fVar3 = (float)FUN_0030fdf0(0x10,0);
+    fVar2 = fVar2 * fVar3;
     fVar4 = (float)FUN_0030fdf0(0xd,4);
-    fVar5 = (float)FUN_0030fdf0(0xe,4);
-    fVar2 = (fVar2 * fVar3 * (fVar4 + 100.0f)) / (fVar5 + 100.0f);
+    fVar2 = fVar2 * (fVar4 + 100.0f);
+    fVar4 = (float)FUN_0030fdf0(0xe,4);
+    fVar4 = fVar2 / (fVar4 + 100.0f);
+    fVar4 = 1.5f * fVar4;
   }
-  FUN_00311190((int)fVar2);
+  FUN_00311190((int)fVar4);
   return;
 }
 
