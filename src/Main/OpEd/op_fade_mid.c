@@ -1,5 +1,6 @@
 #include "Main/OpEd/op_fade_mid.h"
 #include "Main/Battle/Result/br_res.h"
+typedef int (*code)(...);
 extern void K_Assert(const char* file, s32 line);
 extern const char D_0068ED88[];
 
@@ -16,6 +17,10 @@ extern u32 D_0096017C[];
 extern void (*D_00960090)(u32 state, u32 value);
 extern void (*D_0096009C)(void *vertices, u32 primitive, u32 offset,
                           u32 first, u32 second);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 extern void *D_007D2D60;
 extern u8 *DAT_007ce420;
 extern s32 DAT_007cc4dc;
@@ -507,54 +512,55 @@ void func_00275bc0(void)
     func_002760f0();
 }
 
-// FUN_00275cb0 NONMATCHING
+// FUN_00275cb0
 void func_00275cb0(void)
 {
-    u8 *work;
+    code *state;
+    code *quad;
+    u32 *work;
     u32 resource;
     OP_MATCH_ASSERT(gOpWorkC8 != NULL, 0x3b);
-    work = OP_WORK8;
+    work = (u32 *)OP_WORK8;
     resource = brRes00234630(0);
-    if ((*gOpWorkC8 & 1) == 0 || (*gOpWorkC8 & 8) != 0)
+    if ((~*work & 1) != 0)
         return;
-    D_00960090(8, 0);
-    D_00960090(6, 0);
-    D_00960090(9, 2);
-    D_00960090(9, 1);
+    if ((*work & 8) != 0)
+        return;
+    state = (code *)&D_00960090_abs;
+    (*state)(8, 0);
+    (*state)(6, 0);
+    (*state)(9, 2);
+    (*state)(9, 1);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    resource = func_0021cce0(func_0021cca0(resource, 0xb));
-    D_00960090(1, resource);
-    D_0096009C(work + 0x104, 4, 0, 1, 2);
-    D_0096009C(work + 0x104, 4, 0, 2, 3);
-    D_0096009C(work + 0x144, 4, 0, 1, 2);
-    D_0096009C(work + 0x144, 4, 0, 2, 3);
-    D_00960090(9, 2);
+    (*state)(1, func_0021cce0(func_0021cca0(resource, 0xb)));
+    quad = (code *)&D_0096009C_abs;
+    (*quad)(work + 0x104, 4, 0, 1, 2);
+    (*quad)(work + 0x104, 4, 0, 2, 3);
+    (*quad)(work + 0x144, 4, 0, 1, 2);
+    (*quad)(work + 0x144, 4, 0, 2, 3);
+    (*state)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    resource = func_0021cce0(func_0021cca0(brRes00234630(0), 0));
-    D_00960090(1, resource);
-    D_0096009C(work + 4, 4, 0, 1, 2);
-    D_0096009C(work + 4, 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(resource, 0)));
+    (*quad)(work + 4, 4, 0, 1, 2);
+    (*quad)(work + 4, 4, 0, 2, 3);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    resource = func_0021cce0(func_0021cca0(brRes00234630(0), 2));
-    D_00960090(1, resource);
-    D_0096009C(work + 0x44, 4, 0, 1, 2);
-    D_0096009C(work + 0x44, 4, 0, 2, 3);
-    D_00960090(9, 2);
+    (*state)(1, func_0021cce0(func_0021cca0(resource, 2)));
+    (*quad)(work + 0x44, 4, 0, 1, 2);
+    (*quad)(work + 0x44, 4, 0, 2, 3);
+    (*state)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    resource = func_0021cce0(func_0021cca0(brRes00234630(0), 1));
-    D_00960090(1, resource);
-    D_0096009C(work + 0x84, 4, 0, 1, 2);
-    D_0096009C(work + 0x84, 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(resource, 1)));
+    (*quad)(work + 0x84, 4, 0, 1, 2);
+    (*quad)(work + 0x84, 4, 0, 2, 3);
     func_004d7f60(3, 0x71801);
     func_004d7f60(2, 0x48);
-    resource = func_0021cce0(func_0021cca0(brRes00234630(0), 3));
-    D_00960090(1, resource);
-    D_0096009C(work + 0xc4, 4, 0, 1, 2);
-    D_0096009C(work + 0xc4, 4, 0, 2, 3);
+    (*state)(1, func_0021cce0(func_0021cca0(resource, 3)));
+    (*quad)(work + 0xc4, 4, 0, 1, 2);
+    (*quad)(work + 0xc4, 4, 0, 2, 3);
 }
 
 // FUN_002760f0 NONMATCHING
