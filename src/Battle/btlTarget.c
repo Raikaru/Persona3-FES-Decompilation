@@ -5445,7 +5445,9 @@ s16 FUN_002dc670(BtlAction* action)
     DatUnit* datUnit = action->unit->datUnit;
     s16 result = 0;
 
-    if (datCalcGetBadStatusNoDown(datUnit) == 0x80)
+    switch (datCalcGetBadStatusNoDown(datUnit))
+    {
+    case 0x80:
     {
         u16 maxHp = datCalcGetMaxHp(datUnit);
 
@@ -5482,6 +5484,8 @@ s16 FUN_002dc670(BtlAction* action)
                 result = 999;
             }
         }
+        break;
+    }
     }
 
     if (datCalcIsDead(datUnit, result) != 0)
