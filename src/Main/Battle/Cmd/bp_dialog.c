@@ -267,19 +267,14 @@ void FUN_0025c220(void)
         fVar11 = fVar11 + 30.0f;
         fVar7 = 252.0f - fVar11 / 2.0f;
 
-        if (puVar1[0xca] == 1) {
-            goto mode_367;
+        switch (puVar1[0xca]) {
+        case 0:
+            fVar8 = 339.0f;
+            break;
+        case 1:
+            fVar8 = 367.0f;
+            break;
         }
-        if (puVar1[0xca] == 0) {
-            goto mode_339;
-        }
-        goto mode_done;
-mode_339:
-        fVar8 = 339.0f;
-        goto mode_done;
-mode_367:
-        fVar8 = 367.0f;
-mode_done:
 
         fVar6 = 1.0f - (f32)(s32)puVar1[6] / 4.0f;
         uVar5 = puVar1[5];
