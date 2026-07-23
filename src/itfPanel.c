@@ -4030,22 +4030,30 @@ u64 FUN_003ad860(u64 param_1,int param_2)
   u8 uVar2;
 
   u32 uVar3;
+  u32 index;
 
   u8 *pbVar4;
 
   u32 uVar5;
 
   int iVar6;
+  int offset;
+
+  int base;
 
   
 
   iVar6 = (int)param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
+  offset = *(volatile int *)(iVar6 + 0x18);
 
-  uVar5 = *pbVar4 - 1 & 0xff;
+  base = *(volatile int *)(iVar6 + 0x10);
 
-  bVar1 = pbVar4[1];
+  pbVar4 = (u8 *)(base + offset);
+
+  uVar5 = *(volatile u8 *)pbVar4;
+  uVar5 = uVar5 - 1 & 0xff;
+  bVar1 = *(volatile u8 *)(pbVar4 + 1);
 
   if (bVar1 == 0xff) {
 
@@ -4058,8 +4066,9 @@ u64 FUN_003ad860(u64 param_1,int param_2)
     uVar3 = (u32)(u8)(bVar1 - 1);
 
   }
+  index = uVar3 << 8 | uVar5;
 
-  if (*(int *)(&DAT_0095ac70 + (uVar3 << 8 | uVar5) * 4) != 0) {
+  if (*(int *)(&DAT_0095ac70 + index * 4) != 0) {
 
     uVar2 = *(u8 *)(iVar6 + 0xd);
 
@@ -4067,7 +4076,7 @@ u64 FUN_003ad860(u64 param_1,int param_2)
 
     FUN_003b22a0(param_2);
 
-    FUN_003b1d90(uVar5,param_2);
+    FUN_003b1d90(index & 0xff,param_2);
 
     *(u8 *)(iVar6 + 0xd) = uVar2;
 
@@ -4092,22 +4101,30 @@ u64 FUN_003ad930(u64 param_1,int param_2)
   u8 uVar2;
 
   u32 uVar3;
+  u32 index;
 
   u8 *pbVar4;
 
   u32 uVar5;
 
   int iVar6;
+  int offset;
+
+  int base;
 
   
 
   iVar6 = (int)param_2;
 
-  pbVar4 = (u8 *)(*(int *)(iVar6 + 0x18) + *(int *)(iVar6 + 0x10));
+  offset = *(volatile int *)(iVar6 + 0x18);
 
-  uVar5 = *pbVar4 - 1 & 0xff;
+  base = *(volatile int *)(iVar6 + 0x10);
 
-  bVar1 = pbVar4[1];
+  pbVar4 = (u8 *)(base + offset);
+
+  uVar5 = *(volatile u8 *)pbVar4;
+  uVar5 = uVar5 - 1 & 0xff;
+  bVar1 = *(volatile u8 *)(pbVar4 + 1);
 
   if (bVar1 == 0xff) {
 
@@ -4120,8 +4137,9 @@ u64 FUN_003ad930(u64 param_1,int param_2)
     uVar3 = (u32)(u8)(bVar1 - 1);
 
   }
+  index = uVar3 << 8 | uVar5;
 
-  if (*(int *)(&DAT_0095ac70 + (uVar3 << 8 | uVar5) * 4) != 0) {
+  if (*(int *)(&DAT_0095ac70 + index * 4) != 0) {
 
     uVar2 = *(u8 *)(iVar6 + 0xd);
 
@@ -4129,7 +4147,7 @@ u64 FUN_003ad930(u64 param_1,int param_2)
 
     FUN_003b22a0(param_2);
 
-    FUN_003b1d90(uVar5,param_2);
+    FUN_003b1d90(index & 0xff,param_2);
 
     *(u8 *)(iVar6 + 0xd) = uVar2;
 
