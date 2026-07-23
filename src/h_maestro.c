@@ -1412,10 +1412,9 @@ void func_001125d0(void)
     }
 }
 
-// FUN_001126B0 NONMATCHING
 f32 func_001126b0(void* param_1)
 {
-    s32 value;
+    u32 value;
     u32 offset;
     u8* output;
     u8* overrideBase;
@@ -1425,7 +1424,8 @@ f32 func_001126b0(void* param_1)
 
     offset = sample->outputIndex * 0x80;
     output = sample->blob->output;
-    value = *(s32*)(offset + output + 0x5c) - *(s32*)(offset + output + 0x54);
+    value = *(s32*)((uintptr_t)offset + (uintptr_t)output + 0x5c) -
+            *(s32*)((uintptr_t)offset + (uintptr_t)output + 0x54);
     overrideBase = output + 0x74;
     if (*(s16*)(overrideBase + offset) != 0)
     {
@@ -1438,10 +1438,9 @@ f32 func_001126b0(void* param_1)
     return (f32)value;
 }
 
-// FUN_00112740 NONMATCHING
 f32 func_00112740(void* param_1)
 {
-    s32 value;
+    u32 value;
     u32 offset;
     u8* output;
     u8* overrideBase;
@@ -1451,7 +1450,8 @@ f32 func_00112740(void* param_1)
 
     offset = sample->outputIndex * 0x80;
     output = sample->blob->output;
-    value = *(s32*)(offset + output + 0x60) - *(s32*)(offset + output + 0x58);
+    value = *(s32*)((uintptr_t)offset + (uintptr_t)output + 0x60) -
+            *(s32*)((uintptr_t)offset + (uintptr_t)output + 0x58);
     overrideBase = output + 0x76;
     if (*(s16*)(overrideBase + offset) != 0)
     {
@@ -2533,11 +2533,10 @@ void func_00115de0(int unused0, int unused1, int unused2,
 
   int *piVar2;
 
-  
+
 
   uVar3 = func_001158b0(0);
   piVar2 = (int *)uVar3;
-
   ((f32 *)piVar2)[0xb] = param_3;
 
   ((f32 *)piVar2)[4] = param_1;
