@@ -4009,7 +4009,7 @@ LAB_0041b798:
 
 }
 
-// FUN_0041B810 NONMATCHING
+// FUN_0041B810
 
 
 u64 FUN_0041b810(int param_1)
@@ -4040,12 +4040,16 @@ u64 FUN_0041b810(int param_1)
 
       switch (cVar1) {
       case 1:
-        if (((FUN_0034fdb0(*(u32 *)(puVar2 + 4),5), *(int *)(puVar2 + 2) != 0)) &&
-            (iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) <= iVar3)) {
-          *puVar2 = *puVar2 & 0xfffe;
+        if ((FUN_0034fdb0(*(u32 *)(puVar2 + 4),5), *(int *)(puVar2 + 2) != 0)) {
+          iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4));
+          if (iVar3 < *(int *)(puVar2 + 2)) {
+            continue;
+          }
+          *puVar2 = *puVar2 & -2;
         }
         break;
       case 2:
+        FUN_0041bf80(*(u32 **)(puVar2 + 4));
         break;
       case 6:
         func_0020ac90(*(u32 *)(puVar2 + 4));
@@ -4097,24 +4101,16 @@ u64 FUN_0041b950(int param_1)
 
       if (cVar1 == '\x02') {
 
-
       }
-
       else if (cVar1 == '\x03') {
-
         FUN_00317a20(*(u32 *)(puVar2 + 4));
-
       }
-
       else if (((cVar1 == '\x01') &&
-
                (FUN_0034fdb0(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) != 0)) &&
-
               (iVar3 = FUN_00350070(*(u32 *)(puVar2 + 4)), *(int *)(puVar2 + 2) <= iVar3)) {
-
         *puVar2 = *puVar2 & 0xfffe;
-
       }
+
 
     }
 
