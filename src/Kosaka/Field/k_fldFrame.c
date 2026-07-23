@@ -1088,34 +1088,74 @@ KwlnTask* func_001af930(KwlnTask* parent, void* resource)
     return task;
 }
 
-// FUN_001afa20 NONMATCHING
+// FUN_001AFA20 NONMATCHING
+// Retail fully inlines fldFrameMoveWork/fldFrameMoveResolvePosition, and
+// (pathMode==0 branch) fldFrameMoveAppend/fldFrameMoveCreateDebugPoint -
+// none are called via jal. K_FldFrame_Raycast is duplicated per branch,
+// not shared. Dispatch uses work->pathMode (0x18), not work->mode (0x8,
+// a different field - see func_001b0260/func_001b0240). Residual: a
+// register-bank floor (764B vs 800B window); logic verified vs retail.
 u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
 {
     FldFrameMoveWork* work;
+    RwV3d line[2];
     RwV3d resolved;
-    u8* destination;
 
-    work = fldFrameMoveWork(task);
-    fldFrameMoveResolvePosition(position, &resolved);
-    if (work->mode == 1)
+    work = (FldFrameMoveWork*)task->workData;
+    line[1] = *position;
+    line[0] = *position;
+    if (K_Scene_001a0250() != false)
+    {
+        line[0].y += 600.0f;
+    }
+    else
+    {
+        line[0].y += 200.0f;
+    }
+    line[1].y -= 1000.0f;
+    if (work->pathMode == 1)
     {
         if (work->pendingPointCount >= 7)
         {
             return false;
         }
-        destination = (u8*)work + 0x4e0 + work->pendingPointCount * 0x18;
-        memcpy(destination, &resolved, sizeof(RwV3d));
-        *(f32*)(destination + 0x0c) = duration;
+        if (K_FldFrame_Raycast(line, &resolved) != false)
+        {
+            memcpy((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, &resolved, sizeof(RwV3d));
+        }
+        else
+        {
+            memcpy((u8*)work + 0x4e0 + work->pendingPointCount * 0x18, position, sizeof(RwV3d));
+        }
+        *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
         work->pendingPointCount++;
         return true;
     }
-    if (work->mode != 0 || work->pointCount >= 47)
+    if (work->pathMode != 0 || work->pointCount >= 47)
     {
         return false;
     }
-    fldFrameMoveAppend(work, 0, &resolved, duration);
-    fldFrameMoveCreateDebugPoint(work, &work->points[work->pointCount - 1],
-                                 &sDebugSphereColor);
+    if (K_FldFrame_Raycast(line, &resolved) != false)
+    {
+        work->points[work->pointCount].position = resolved;
+    }
+    else
+    {
+        work->points[work->pointCount].position = *position;
+    }
+    work->points[work->pointCount].duration = duration;
+    work->points[work->pointCount].kind = 0;
+    if ((work->flags & 0x80000000) != 0)
+    {
+        work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
+        if (work->points[work->pointCount].drawTask != NULL)
+        {
+            K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
+            K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
+                                  &work->points[work->pointCount].position);
+        }
+    }
+    work->pointCount++;
     return true;
 }
 
