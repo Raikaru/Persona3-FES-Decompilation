@@ -60,6 +60,8 @@ void func_0031d9c0(void* data, Model* mdl);
 void func_0031ef80(void* data, s16 id, u16 blendFrameCount);
 void FUN_004cb7f0(RwFrame* frame, const RwMatrix* matrix, u32 flags);
 void FUN_004b74c0(f32 frame, RtAnimInterpolator* interpolator);
+#pragma alias func_004b74c0_typed func_004b74c0
+extern void func_004b74c0_typed(f32 frame);
 void func_00316970(Model* mdl);
 u32 func_003115a0(void* param_1, u32* param_2);
 u32 func_00318d10(u8* mdl, u32 slot, u32* matrix);
@@ -1176,7 +1178,7 @@ u64 func_00313090(u64 param_1,u64 param_2);
 void func_00313ca0(int *param_1,u64 param_2);
 int func_00313f40(int param_1,void* param_2);
 void* func_00313fe0(void* param_1,u32 *param_2);
-u64 func_003140c0(u64 param_1,u16 *param_2);
+void* func_003140c0(void* param_1,u16 *param_2);
 u64 func_00314170(u64 param_1,long param_2);
 u32 func_003142b0(void* param_1);
 void* func_00314510(void* param_1);
@@ -1190,7 +1192,7 @@ u64 func_00315f50(u64 param_1,u32 *param_2);
 void func_00316320(u64 param_1,u32* param_2,u16 param_3);
 u32 func_00316360(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
-u64 func_003165e0(u64 param_1);
+void* func_003165e0(void* param_1);
 Model* func_00316c70(u16 param_1,u16 param_2,void* param_3,u32 param_4);
 void func_003176c0(Model* param_1);
 void func_00317a20(u64 param_1);
@@ -3802,37 +3804,30 @@ void FUN_003140b0(void)
 // FUN_003140C0 NONMATCHING
 
 
-u64 func_003140c0(u64 param_1,u16 *param_2)
+void* func_003140c0(void* param_1,u16 *param_2)
 
 
 
 {
 
+  s16 rawIndex;
+  s64 lVar2;
+  u32 count;
   int *piVar1;
 
-  long lVar2;
-
-  
-
+  rawIndex = (s16)param_2[2];
   piVar1 = *(int **)(param_2 + 0xc);
-
   if (piVar1 != (int *)0x0) {
-
-    lVar2 = (long)(short)param_2[2];
-
-    if ((((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3)) &&
-
-         (*(int *)(*piVar1 + (short)param_2[2] * 8) != 0)) && ((*param_2 & 1) == 0)) &&
-
-       ((lVar2 < (long)(u32)*(u16 *)(piVar1 + 3) && (-1 < lVar2)))) {
-
-      func_004b74c0(*(u32 *)(*(int *)param_1 + 0xc));
-
+    lVar2 = (s64)rawIndex;
+    count = *(u16 *)(piVar1 + 3);
+    if ((((lVar2 < (s64)(u32)count) &&
+          (*(int *)(*piVar1 + rawIndex * 8) != 0)) && ((*param_2 & 1) == 0)) &&
+        ((lVar2 < (s64)(u32)count && (0 <= rawIndex)))) {
+      func_004b74c0_typed(*(f32 *)(*(int *)param_1 + 0xc));
       *(u8 *)(param_2 + 1) = 1;
-
     }
-
   }
+
 
   return param_1;
 
@@ -5761,52 +5756,46 @@ void func_003164f0(int param_1,int param_2)
 // FUN_003165E0 NONMATCHING
 
 
-u64 func_003165e0(u64 param_1)
-
-
-
+void* func_003165e0(void* param_1)
 {
-
   int iVar1;
-
   u32 uVar2;
-
   int iVar3;
-
   int iVar4;
-
   u32 uVar5;
-
-  
+  f32 two;
+  volatile f32 values[4];
 
   iVar4 = (int)param_1;
-
   iVar1 = *(int *)(iVar4 + 0x18);
+  if (iVar1 == 0)
+    goto done;
 
-  if (iVar1 != 0) {
+  uVar2 = *(u32 *)(iVar1 + 0x18);
+  uVar5 = 0;
+  two = 2.0f;
+  goto check;
 
-    uVar2 = *(u32 *)(iVar1 + 0x18);
+loop:
+  iVar3 = *(int *)(iVar1 + 0x5c) + uVar5 * 0x1c;
+  values[0] = *(f32 *)(iVar3 + 4);
+  values[1] = *(f32 *)(iVar3 + 8);
+  values[2] = *(f32 *)(iVar3 + 0xc);
+  values[3] = *(f32 *)(iVar3 + 0x10);
+  asm volatile("" : "+m"(values));
+  values[3] = values[3] * two;
+  *(f32 *)(iVar3 + 4) = values[0];
+  *(f32 *)(iVar3 + 8) = values[1];
+  *(f32 *)(iVar3 + 0xc) = values[2];
+  *(f32 *)(iVar3 + 0x10) = values[3];
+  uVar5 = uVar5 + 1;
+check:
+  if (uVar5 < uVar2)
+    goto loop;
 
-    for (uVar5 = 0; uVar5 < uVar2; uVar5 = uVar5 + 1) {
-
-      iVar3 = *(int *)(iVar1 + 0x5c) + uVar5 * 0x1c;
-
-      *(u32 *)(iVar3 + 4) = *(u32 *)(iVar3 + 4);
-
-      *(u32 *)(iVar3 + 8) = *(u32 *)(iVar3 + 8);
-
-      *(u32 *)(iVar3 + 0xc) = *(u32 *)(iVar3 + 0xc);
-
-      *(float *)(iVar3 + 0x10) = *(float *)(iVar3 + 0x10) * 2.0;
-
-    }
-
-  }
-
+done:
   *(u32 *)(iVar4 + 0x4c) = *(u32 *)(iVar4 + 0x4c) | 2;
-
   return param_1;
-
 }
 
 
