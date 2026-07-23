@@ -208,6 +208,7 @@ extern HSfdImage* func_004cbe00(u32 width, u32 height, u32 bits);
 extern void func_004cbf20(HSfdImage* image);
 extern void FlushCache(s32 mode);
 
+extern void func_0010d950(s16 index);
 static void H_SfdPlay_ResetTaskResources(HSfd* work)
 {
     if (work->decoder != NULL)
@@ -996,41 +997,43 @@ void func_0010cdd0(void)
 }
 
 // FUN_0010D6F0 NONMATCHING
-void func_0010d6f0(s32 index, s16 fileIndex)
+void func_0010d6f0(s16 index, s16 fileIndex)
 {
+    s32 indexValue;
     HSfdDecodeSlot* slot;
 
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return;
-    }
-
-    slot = &sSfdDecodeSlots[index];
+    indexValue = index;
+    slot = &sSfdDecodeSlots[indexValue];
     if (slot->state == 1)
     {
-        slot->fileIndex = fileIndex;
-        slot->state = 2;
+        if (slot->status != 0)
+        {
+            func_0010d950(indexValue);
+            slot->fileIndex = fileIndex;
+            slot->state = 2;
+        }
     }
 }
 
 // FUN_0010D7B0 NONMATCHING
-void func_0010d7b0(s32 index, s16 fileIndex, void* input, void* output,
+void func_0010d7b0(s16 index, s16 fileIndex, void* input, void* output,
                    s32 inputSize, s32 outputSize, void* resource, void* callback)
 {
+    s32 indexValue;
     HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return;
-    }
-
-    slot = &sSfdDecodeSlots[index];
+    indexValue = index;
+    slot = &sSfdDecodeSlots[indexValue];
     if (slot->state != 1)
     {
         return;
     }
 
-    slot->fileIndex = fileIndex;
+    if (slot->status == 0)
+    {
+        return;
+    }
+
+    func_0010d950(indexValue);
     slot->input = input;
     slot->output = output;
     slot->inputSize = inputSize;
@@ -1047,14 +1050,9 @@ u32 func_0010d910(s16 index)
 }
 
 // FUN_0010D950 NONMATCHING
-void func_0010d950(s32 index)
+void func_0010d950(s16 index)
 {
     HSfdDecodeSlot* slot;
-
-    if ((index < 0) || (index >= HSFD_DECODE_SLOTS))
-    {
-        return;
-    }
 
     slot = &sSfdDecodeSlots[index];
     if (slot->request != NULL)
@@ -1117,13 +1115,16 @@ void func_0010dd10(HSfdImage* image, const u8* source)
     s32 y;
     s32 x;
     u32 alpha;
+    s32 width;
+    s32 height;
 
     dst = image->pixels;
-    y = 0;
-    while (y < (s32)image->height)
+    width = image->width;
+    height = image->height;
+    while (y < height)
     {
         x = 0;
-        while (x < (s32)image->width)
+        while (x < width)
         {
             u8* pixel = dst + (x * 4);
 
@@ -1137,9 +1138,8 @@ void func_0010dd10(HSfdImage* image, const u8* source)
             }
             else
             {
-                pixel[3] = (u8)(((alpha * 0xFF) - alpha) >> 7);
+                pixel[3] = (u8)((u32)(u16)((alpha * 0xFF) - alpha) >> 7);
             }
-            source += 4;
             x++;
         }
         dst += image->stride;
@@ -1149,18 +1149,23 @@ void func_0010dd10(HSfdImage* image, const u8* source)
 // FUN_0010DDC0 NONMATCHING
 void func_0010ddc0(HSfdImage* image, const u8* source)
 {
-    u8* dst;
-    s32 y;
     s32 x;
+    s32 y;
+    u8* dst;
+    u8* pixel;
+    s32 width;
+    s32 height;
 
     dst = image->pixels;
+    width = image->width;
+    height = image->height;
     y = 0;
-    while (y < (s32)image->height)
+    while (y < height)
     {
         x = 0;
-        while (x < (s32)image->width)
+        while (x < width)
         {
-            u8* pixel = dst + (x * 4);
+            pixel = dst + (x * 4);
 
             pixel[0] = source[0];
             pixel[1] = source[1];
@@ -1179,16 +1184,20 @@ void func_0010ddc0(HSfdImage* image, const u8* source)
 void func_0010de40(HSfdImage* image, const u8* source)
 {
     u8* dst;
+    s32 width;
+    s32 height;
     const u16* pixels;
     s32 y;
     s32 x;
     dst = image->pixels;
+    width = image->width;
+    height = image->height;
     pixels = (const u16*)source;
     y = 0;
-    while (y < (s32)image->height)
+    while (y < height)
     {
         x = 0;
-        while (x < (s32)image->width)
+        while (x < width)
         {
             u8* pixel = dst + (x * 4);
 
@@ -1208,15 +1217,19 @@ void func_0010de40(HSfdImage* image, const u8* source)
 void func_0010dee0(HSfdImage* image, const u8* source)
 {
     u8* dst;
+    s32 width;
+    s32 height;
     s32 y;
     s32 x;
 
     dst = image->pixels;
+    width = image->width;
+    height = image->height;
     y = 0;
-    while (y < (s32)image->height)
+    while (y < height)
     {
         x = 0;
-        while (x < ((s32)image->width >> 1))
+        while (x < (width >> 1))
         {
             u8* pixel = dst + (x * 2);
 
@@ -1240,14 +1253,14 @@ void func_0010df60(HSfdImage* image, const u8* source)
     u8 alpha;
 
     count = 1 << image->depth;
-    dst = image->pixels;
+    dst = image->palette;
     for (i = 0; i < count; i++)
     {
         dst[0] = source[0];
         dst[1] = source[1];
         dst[2] = source[2];
         alpha = source[3];
-        dst[3] = (alpha >= 0x7F) ? 0xFF : (u8)((alpha * 255) / 127);
+        dst[3] = (alpha >= 0x7F) ? 0xFF : (u8)(((alpha * 0xFF) - alpha) >> 7);
         dst += 4;
         source += 4;
     }
