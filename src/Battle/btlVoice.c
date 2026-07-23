@@ -10194,34 +10194,31 @@ void func_002ef670(void)
 
 {
   int iVar1;
+  int iVar7;
+  int iVar6;
   u64 uVar2;
   u64 uVar3;
   u64 uVar4;
   short sVar5;
-  int iVar6;
-  int iVar7;
-  int aiStack_20004 [32761];
-  int aiStack_10 [4];
+  int aiStack_10 [3];
   
   uVar2 = FUN_002b8f90(0);
-  uVar3 = FUN_002f87e0(1);
-  FUN_002b90d0(uVar2,uVar3);
-  sVar5 = 0;
+  FUN_002b90d0(uVar2,FUN_002f87e0(1));
+  iVar7 = 0;
   aiStack_10[0] = 0;
   aiStack_10[1] = 0;
   aiStack_10[2] = 0;
-  iVar7 = 0;
-  for (iVar1 = *(int *)(DAT_007ce3ec + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
+  sVar5 = 0;
+  for (iVar1 = *(int *)(iGpffffb6fc_ptr + 0x150); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xa34)) {
     iVar6 = iVar1;
     if (*(short *)(iVar1 + 0xa4) != 1) {
       aiStack_10[2 - sVar5] = iVar1;
-      sVar5 = sVar5 + 1;
+      sVar5++;
       iVar6 = iVar7;
     }
     iVar7 = iVar6;
   }
-  uVar3 = FUN_002bc950(aiStack_10[0],aiStack_10[1],aiStack_10[2]);
-  FUN_0027ed20(uVar3,1);
+  FUN_0027ed20(FUN_002bc950(aiStack_10[0],aiStack_10[1],aiStack_10[2]),1);
   uVar3 = FUN_002baf90(uVar2,iVar7,iVar7,0,0x200);
   FUN_0027ed20(uVar3,2);
   uVar4 = FUN_002bc950(0,0,0);
