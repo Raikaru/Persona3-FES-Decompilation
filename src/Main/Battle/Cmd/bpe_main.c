@@ -48,7 +48,8 @@ extern void* func_004cb2f0(void* model);
 extern void func_004c6be0(void* destination, const void* source, void* matrix);
 extern void func_00521250(void* destination, const void* source, u32 size);
 extern void func_005225a8(const void* name, ...);
-extern s32 DAT_007ce770;
+extern u32 DAT_007ce770;
+extern const u8 D_0068E880[];
 extern void* func_004c38c0(void);
 extern void func_004c32a0(void* destination, const void* source);
 extern void func_004cb750(void* frame, const void* translation, s32 mode);
@@ -114,6 +115,9 @@ void func_002496e0(void* work)
     s32 j;
     s32 i;
     struct Local local;
+    f32 worldX;
+    f32 worldY;
+    f32 worldZ;
 
     base = (u8*)work;
     camera = (u8*)func_00198590();
@@ -151,7 +155,7 @@ void func_002496e0(void* work)
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x40000;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
-    func_005225a8((const void*)0x0068e8b0, *(void**)node);
+    func_005225a8((const void*)(D_0068E880 + 0x30), *(void**)node);
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x800000;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
@@ -164,7 +168,6 @@ void func_002496e0(void* work)
     *(u32*)(node + 0xb0) = 9;
     node = *(u8**)(*(u8**)(base + 0x600) + DAT_007ce770);
     *(u32*)(node + 0x40) |= 0x10000000;
-
     func_00474640(*(void**)(base + 0x600), (void**)&local.colors.data, 2, 0x40000000);
     func_00474640(*(void**)(base + 0x600), (void**)&local.positions.data, 1, 0x40000000);
     color = local.colors.data;
@@ -181,21 +184,28 @@ void func_002496e0(void* work)
         u32 random;
         f32 ratio;
         f32 value;
-        f32* saved = (f32*)(base + i * 0xc);
+        f32* saved;
 
         random = func_00488f30() & 0xfff;
         ratio = (f32)random / (f32)0xfff;
-        value = ratio * 300.0f - 150.0f;
+        value = ratio;
+        value *= 300.0f;
+        value -= 150.0f;
+        saved = (f32*)(base + i * 0xc);
         saved[0] = value;
         position[0] = value;
         random = func_00488f30() & 0xfff;
         ratio = (f32)random / (f32)0xfff;
-        value = ratio * 300.0f - 150.0f;
+        value = ratio;
+        value *= 300.0f;
+        value -= 150.0f;
         saved[1] = value;
         position[1] = value;
         random = func_00488f30() & 0xfff;
         ratio = (f32)random / (f32)0xfff;
-        value = ratio * 300.0f - 150.0f;
+        value = ratio;
+        value *= 300.0f;
+        value -= 150.0f;
         saved[2] = value;
         position[2] = value;
         position = (f32*)((u8*)position + local.positions.stride);
@@ -207,9 +217,12 @@ void func_002496e0(void* work)
     local.origin[1] = 0.0f;
     local.origin[2] = 100.0f;
     func_004c6be0(local.world, local.origin, matrix);
-    *(f32*)(base + 0x608) = local.world[0];
-    *(f32*)(base + 0x60c) = local.world[1];
-    *(f32*)(base + 0x610) = local.world[2];
+    worldX = local.world[0];
+    worldY = local.world[1];
+    worldZ = local.world[2];
+    *(f32*)(base + 0x608) = worldX;
+    *(f32*)(base + 0x60c) = worldY;
+    *(f32*)(base + 0x610) = worldZ;
     *(u32*)(base + 0x604) |= 1;
 }
 #pragma opt_loop_invariants off
