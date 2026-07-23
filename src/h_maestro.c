@@ -1412,6 +1412,7 @@ void func_001125d0(void)
     }
 }
 
+// FUN_001126B0
 f32 func_001126b0(void* param_1)
 {
     u32 value;
@@ -1438,6 +1439,7 @@ f32 func_001126b0(void* param_1)
     return (f32)value;
 }
 
+// FUN_00112740
 f32 func_00112740(void* param_1)
 {
     u32 value;
