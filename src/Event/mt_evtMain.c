@@ -588,7 +588,7 @@ void FUN_00361c30(int param_1,int param_2);
 void FUN_00361d60(int param_1,u16 param_2,u32 param_3);
 void FUN_00362100(void);
 void FUN_00362110(void);
-void FUN_00362120(int param_1,u64 param_2,int param_3);
+void FUN_00362120(int param_1,int param_2,int param_3);
 #pragma alias FUN_00362120_evt FUN_00362120
 extern void FUN_00362120_evt(int param_1,int param_2,int param_3);
 void FUN_00362240(int param_1);
@@ -2164,7 +2164,7 @@ void FUN_00362110(void)
 // FUN_00362120 NONMATCHING
 
 
-void FUN_00362120(int param_1,u64 param_2,int param_3)
+void FUN_00362120(int param_1,int param_2,int param_3)
 
 
 
@@ -2177,14 +2177,6 @@ void FUN_00362120(int param_1,u64 param_2,int param_3)
   u16 *puVar2;
 
   int iVar3;
-
-
-
-
-
-
-
-  
 
   iVar3 = FUN_003b5d00();
 
