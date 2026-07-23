@@ -917,7 +917,7 @@ done:
   return 1;
 }
 
-// FUN_00424F80 NONMATCHING
+// FUN_00424F80
 
 
 void FUN_00424f80(void)
@@ -926,15 +926,16 @@ void FUN_00424f80(void)
 
 {
   u8 *entry;
-  u8 bVar1;
+  u32 bVar1;
   int iVar2;
 
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
     bVar1 = 0;
     entry = DAT_008717e8_abs + iVar2 * 0x1c0;
     if ((*(u32 *)(entry + 0x48) != 0) && (*(u32 *)(entry + 0x54) != 0)) {
-      bVar1 = 1;
+      bVar1 = (int)1;
     }
+    bVar1 = bVar1 > 0;
     if (bVar1 == 1) {
       func_001b00c0(*(u32 *)
                     (*(int *)(*(int *)(*(int *)(entry + 0x16c) + 0x3c) + 0x24) +
