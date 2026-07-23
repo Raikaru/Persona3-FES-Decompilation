@@ -214,7 +214,9 @@ void FUN_003a8530(void);
 void FUN_003a8590(u32* param_1);
 void FUN_003a8600(int param_1);
 void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,  u64 param_5,u64 param_6);
-u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
+u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5);
+ #pragma alias FUN_003a8710_typed FUN_003a8710
+extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,int param_5);
 
 /* Region call-cast macros */
 #define FUN_003a2150(...) ((u32 (*)(...))FUN_003a2150)(__VA_ARGS__)
@@ -315,7 +317,7 @@ u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5);
 #define FUN_003a8590(...) ((void (*)(...))FUN_003a8590)(__VA_ARGS__)
 #define FUN_003a8600(...) ((void (*)(...))FUN_003a8600)(__VA_ARGS__)
 #define FUN_003a8650(...) ((void (*)(...))FUN_003a8650)(__VA_ARGS__)
-#define FUN_003a8710(...) ((u64 (*)(...))FUN_003a8710)(__VA_ARGS__)
+#define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
 
 // FUN_003a2d80 NONMATCHING
 s32 itfMesMngInitialize(BmdHeader* bmdHeader)
@@ -5845,31 +5847,34 @@ void FUN_003a8170(int param_1)
 
 {
 
+  u8 *puVar2;
   short sVar1;
 
   int iVar2;
-
+  int iVar3;
   
+
+  puVar2 = (u8 *)(param_1 + 0x40);
 
   sVar1 = *(short *)(param_1 + 0x58);
 
-  if ((sVar1 != -1) && (*(int *)(param_1 + 0x4c) != 0)) {
+  if ((sVar1 != -1) && (*(int *)(puVar2 + 0xc) != 0)) {
 
-    if (*(short *)(param_1 + 0x5a) == 4) {
+    if (*(short *)(puVar2 + 0x1a) == 4) {
 
-      iVar2 = sVar1 * 200 + 0x788;
+      iVar3 = sVar1 * 200 + 0x788;
 
     }
 
     else {
 
-      iVar2 = (int)(75.0f / (float)(int)*(short *)(param_1 + 0x5a));
+      iVar3 = (int)(75.0f / (float)(int)*(short *)(puVar2 + 0x1a));
 
-      iVar2 = (iVar2 >> 1) * 8 + 0x788 + iVar2 * 8 * (int)sVar1;
+      iVar3 = (iVar3 >> 1) * 8 + 0x788 + (int)sVar1 * (iVar3 * 8);
 
     }
 
-    iVar2 = (iVar2 >> 3) + 2;
+    iVar2 = (iVar3 >> 3) + 2;
 
     FUN_003a8710(0,0xe1,iVar2,0xff,0x12);
 
@@ -5944,22 +5949,23 @@ void FUN_003a8350(int param_1)
 {
 
   float fVar1;
+  volatile float fVar2;
+  volatile float fVar3;
+  int iVar2;
+  int iVar3;
 
-  
+  fVar2 = (float)(int)*(short *)(param_1 + 0x1e0);
+  fVar3 = (float)(int)*(short *)(param_1 + 0x1e2);
+  iVar2 = (int)fVar2;
+  iVar3 = (int)fVar3 + -5 + (int)*(short *)(param_1 + 0x1da);
 
   fVar1 = (float)(*(short *)(param_1 + 0x1d8) * 0xff) / 5.0f;
 
   if (2.1474836e+09f <= fVar1) {
-
     fVar1 = fVar1 - 2.1474836e+09f;
-
   }
 
-  FUN_003a8710(0,(int)(float)(int)*(short *)(param_1 + 0x1e0),
-
-               (int)(float)(int)*(short *)(param_1 + 0x1e2) + -5 + (int)*(short *)(param_1 + 0x1da),
-
-               (int)fVar1 & 0xff,0x10);
+  FUN_003a8710(0,iVar2,iVar3,(int)fVar1 & 0xff,0x10);
 
   return;
 
@@ -6105,17 +6111,10 @@ void FUN_003a8650(int param_1,u64 param_2,u64 param_3,u64 param_4,
 // FUN_003A8710 NONMATCHING
 
 
-u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5)
-
-
-
+u64 FUN_003a8710(float param_1,int param_2,int param_3,int param_4,int param_5)
 {
-
+  u32 uVar2;
   int iVar1;
-
-  u64 uVar2;
-
-  
 
   uVar2 = FUN_001158b0(0,DAT_007ce654,param_5);
 
@@ -6125,15 +6124,15 @@ u64 FUN_003a8710(u32 param_1,int param_2,int param_3,char param_4,u64 param_5)
 
   *(float *)(iVar1 + 0x14) = (float)param_3;
 
-  *(u32 *)(iVar1 + 0x2c) = param_1;
+  *(float *)(iVar1 + 0x2c) = param_1;
 
-  *(char *)(iVar1 + 0x19) = -1 - param_4;
+  *(char *)(iVar1 + 0x19) = 0xff - (u8)param_4;
 
   FUN_001127d0(uVar2,1);
-
   FUN_00115980(uVar2);
 
   return 0;
 
 }
-#define FUN_003a8710(...) ((u64 (*)(...))FUN_003a8710)(__VA_ARGS__)
+#define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
+
