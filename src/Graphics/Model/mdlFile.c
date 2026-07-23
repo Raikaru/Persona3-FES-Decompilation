@@ -22879,7 +22879,7 @@ u64 FUN_00332780(int param_1)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   u32 *puVar3;
 
