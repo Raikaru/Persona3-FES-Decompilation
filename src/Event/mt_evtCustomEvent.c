@@ -3668,7 +3668,7 @@ u32 FUN_0039c440(int param_1)
 
   u8 *pbVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
   long lVar9;
 
