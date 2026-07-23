@@ -12,7 +12,7 @@ typedef struct CampEquipmentEntry
 {
     u32 itemId;                 /* +0x00 */
     s32 sourceIndex;            /* +0x04 */
-    u8 reserved08[8];          /* +0x08 */
+    u8 reserved08[4];           /* +0x08 */
     u32 ownedFlag;              /* +0x0c */
     u32 availableFlag;          /* +0x10 */
     u32 categoryMask;           /* +0x14 */
@@ -25,6 +25,28 @@ typedef struct CampEquipmentEntry
     u16 valueC;                 /* +0x20 */
     u16 valueD;                 /* +0x22 */
 } CampEquipmentEntry;
+typedef struct CampEquipmentTargetEntry
+{
+    u32 itemId;
+    s32 sourceIndex;
+    u8 reserved08[0x0c];
+    u32 categoryMask;
+    u8 effect;
+    u8 slotType;
+    u8 equipmentClass;
+    u8 reserved1b;
+    u16 valueA;
+    u16 valueB;
+    u16 valueC;
+    u16 valueD;
+} CampEquipmentTargetEntry;
+
+typedef struct CampEquipmentSlotAtBase
+{
+    u8 reserved00[0x64];
+    CampEquipmentTargetEntry entry;
+} CampEquipmentSlotAtBase;
+
 
 typedef struct CampEquipmentRecord24
 {
@@ -522,19 +544,51 @@ void FUN_0013cc90(CampEquipmentWork* work)
     work->entryCount = recordCount;
 }
 
-// FUN_0013cf80 NONMATCHING
-void FUN_0013cf80(s16 pcId, CampEquipmentWork* work)
+// FUN_0013cf80
+void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 {
-    s32 category;
     s32 equipmentType;
     s32 recordCount = 0;
+    s32 category;
+    u32 categoryBit;
+    CampEquipmentSlotAtBase* slot;
+    CampEquipmentTargetEntry* entry;
+    u8* classPtr;
 
     for (category = 0; category < 0x15; category++) {
-        work->categoryCounts[category] = recordCount;
+        *(u32*)(category * 4 + (u8*)work + 0x0c) = recordCount;
+        categoryBit = 1u << category;
         for (equipmentType = 0; equipmentType < 4; equipmentType++) {
-            if ((func_0016f720(pcId, equipmentType) & (1u << category)) != 0) {
-                CampEquipmentEntry* entry = campEquipmentEntry(work, recordCount++);
-                campEquipmentPopulateWithCategory(entry, pcId, equipmentType, category);
+            if ((func_0016f720(pcId, equipmentType) & categoryBit) != 0) {
+                slot = (CampEquipmentSlotAtBase*)(recordCount * 9 * 4 +
+                                                  (u8*)work);
+                entry = &slot->entry;
+                entry->itemId = datGetEquipmentId(pcId, equipmentType);
+                slot->entry.categoryMask = category;
+                classPtr = &slot->entry.equipmentClass;
+                *classPtr = (u8)func_00171250((s16)entry->itemId);
+                slot->entry.effect = datGetEquipmentEffect(pcId, equipmentType);
+                slot->entry.slotType = func_0016f810(pcId, equipmentType);
+                slot->entry.sourceIndex = equipmentType;
+                switch (*classPtr) {
+                case 0:
+                    *(u16*)((u8*)work + recordCount * 9 * 4 + 0x80) =
+                        func_0016f9f0(pcId, equipmentType);
+                    *(u16*)((u8*)work + recordCount * 9 * 4 + 0x82) =
+                        func_0016fae0(pcId, equipmentType);
+                    break;
+                case 1:
+                    slot->entry.valueC = func_0016fbd0(pcId, equipmentType);
+                    break;
+                case 2:
+                    slot->entry.valueD = func_0016fcc0(pcId, equipmentType);
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+                }
+                recordCount++;
             }
         }
     }
