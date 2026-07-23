@@ -871,7 +871,7 @@ void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
