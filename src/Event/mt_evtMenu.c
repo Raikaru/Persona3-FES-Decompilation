@@ -16679,49 +16679,49 @@ int FUN_00382840(u64 param_1,u64 param_2,u64 param_3)
 
       }
 
-      if (1.0 < *(float *)(iVar2 + 0x854)) {
+      if (1.0f < *(float *)(iVar2 + 0x854)) {
 
         *(u32 *)(iVar2 + 0x854) = 0x3f800000;
 
       }
 
-      if (*(float *)(iVar2 + 0x854) < 0.0) {
+      if (*(float *)(iVar2 + 0x854) < 0.0f) {
 
         *(u32 *)(iVar2 + 0x854) = 0;
 
       }
 
-      if (1.0 < *(float *)(iVar2 + 0x84c)) {
+      if (1.0f < *(float *)(iVar2 + 0x84c)) {
 
         *(u32 *)(iVar2 + 0x84c) = 0x3f800000;
 
       }
 
-      if (*(float *)(iVar2 + 0x84c) < 0.0) {
+      if (*(float *)(iVar2 + 0x84c) < 0.0f) {
 
         *(u32 *)(iVar2 + 0x84c) = 0;
 
       }
 
-      if (1.0 < *(float *)(iVar2 + 0x858)) {
+      if (1.0f < *(float *)(iVar2 + 0x858)) {
 
         *(u32 *)(iVar2 + 0x858) = 0x3f800000;
 
       }
 
-      if (*(float *)(iVar2 + 0x858) < 0.0) {
+      if (*(float *)(iVar2 + 0x858) < 0.0f) {
 
         *(u32 *)(iVar2 + 0x858) = 0;
 
       }
 
-      if (1.0 < *(float *)(iVar2 + 0x850)) {
+      if (1.0f < *(float *)(iVar2 + 0x850)) {
 
         *(u32 *)(iVar2 + 0x850) = 0x3f800000;
 
       }
 
-      if (*(float *)(iVar2 + 0x850) < 0.0) {
+      if (*(float *)(iVar2 + 0x850) < 0.0f) {
 
         *(u32 *)(iVar2 + 0x850) = 0;
 
