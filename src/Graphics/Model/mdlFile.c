@@ -2974,38 +2974,29 @@ void FUN_0031eeb0(u32 *param_1)
 
 
 
-// FUN_0031EEE0 NONMATCHING
+// FUN_0031EEE0
 void FUN_0031eee0(int *param_1)
-
-
-
 {
-
   int *piVar1;
-
   int iVar2;
 
-  
-
   piVar1 = (int *)*param_1;
-
   if (piVar1 != (int *)0x0) {
     iVar2 = piVar1[1] - 1;
     piVar1[1] = iVar2;
     if (iVar2 == 0) {
-      if ((u16)piVar1[3] != 1) {
-      } else {
+      switch ((u16)piVar1[3]) {
+      case 1:
         if (*piVar1 != 0) {
           ((void (*)(...))DAT_0096017c_abs[0])(*piVar1);
         }
+        break;
       }
       ((void (*)(...))DAT_0096017c_abs[0])(piVar1);
     }
     *param_1 = 0;
   }
-
   return;
-
 }
 
 
@@ -13698,37 +13689,20 @@ void FUN_00329890(u32 param_1)
 
 
 void FUN_003299b0(void)
-
-
-
 {
-
   __int128 auVar1;
-
   int iVar2;
-
   __int128 in_vf10;
-
   u32 uStack_20;
-
   u32 uStack_1c;
-
   u32 uStack_18;
-
   float fStack_10;
-
   float fStack_c;
-
   float fStack_8;
-
-  
-
 
   _DAT_0069c4d0 = _sqc2(in_vf10);
   uStack_20 = DAT_0069c4d0;
-
   uStack_1c = DAT_0069c4d4;
-
   uStack_18 = DAT_0069c4d8;
 
   iVar2 = FUN_00198590();
