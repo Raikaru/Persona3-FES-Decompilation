@@ -6868,24 +6868,27 @@ void FUN_0030cf00(void)
   float fVar2;
   float fVar3;
   
-  fVar1 = (float)FUN_0030fdf0(0xd,3);
-  fVar1 = 100.0f + fVar1;
+  fVar2 = (float)FUN_0030fdf0(0xd,3);
+  fVar3 = 100.0f;
+  fVar1 = fVar3 + fVar2;
   fVar2 = (float)FUN_0030fdf0(0xe,3);
-  fVar2 = 100.0f + fVar2;
-  fVar4 = fVar1 / fVar2;
-  fVar1 = (float)FUN_0030fdf0(0xd,4);
-  fVar1 = 100.0f + fVar1;
+  fVar3 = 100.0f;
+  fVar3 = fVar3 + fVar2;
+  fVar4 = fVar1 / fVar3;
+  fVar2 = (float)FUN_0030fdf0(0xd,4);
+  fVar3 = 100.0f;
+  fVar1 = fVar3 + fVar2;
   fVar2 = (float)FUN_0030fdf0(0xe,4);
-  fVar2 = 100.0f + fVar2;
-  fVar1 = fVar1 / fVar2;
-  fVar2 = fVar4 * fVar1;
-  fVar2 *= 75.0f;
+  fVar3 = 100.0f;
+  fVar3 = fVar3 + fVar2;
+  fVar3 = fVar1 / fVar3;
+  fVar2 = fVar4 * fVar3;
+  fVar1 = fVar2 * 75.0f;
   fVar3 = (float)FUN_0030fdf0(0x22,0);
-  fVar3 = fVar3 * 5.0f + fVar2;
+  fVar3 = fVar3 * 5.0f + fVar1;
   FUN_00311190((int)(fVar3 + 0.0f));
   return;
 }
-#pragma schedule on
 
 
 
