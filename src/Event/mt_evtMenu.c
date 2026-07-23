@@ -108,6 +108,8 @@ extern u32 DAT_007e094e;
 #pragma alias DAT_007e094e_abs DAT_007e094e
 extern u8 DAT_007e094e_abs[];
 extern u32 DAT_007e0952;
+#pragma alias DAT_007e0952_abs DAT_007e0952
+extern u8 DAT_007e0952_abs[];
 extern u32 DAT_007e095e;
 extern u32 DAT_007e095f;
 extern u32 DAT_007e0960;
@@ -1373,7 +1375,6 @@ void FUN_0036f900(int param_1,int param_2,int param_3,int param_4,int param_5,
     iVar1 = iVar1 + iVar2;
 
   }
-  asm volatile("" : "+r"(iVar1));
 
   for (; iVar1 < param_4; iVar1 = iVar1 + 1) {
 
@@ -4539,51 +4540,42 @@ u64 FUN_00373590(u64 param_1,u64 param_2,int param_3)
   cVar2 = '\x01';
   iVar1 = **(int **)(iVar4 + 0x164);
   FUN_00361830(param_3);
-  if (iVar1 == 6) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0x19) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0x18) {
-    goto LAB_003735e0;
-  }
-  if (iVar1 == 0x11) {
-    goto LAB_003735d0;
-  }
-  if (iVar1 == 0x10) {
-    goto LAB_003735d0;
-  }
-  if (iVar1 == 0x1b) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0x17) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0xf) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0xe) {
-    goto LAB_003736a4;
-  }
-  if (iVar1 == 0xd) {
-    goto LAB_003736a4;
-  }
-  if ((DAT_007e094e & 0x800) != 0) {
-    cVar2 = '\0';
-  }
-  goto LAB_003736a4;
+  switch (iVar1) {
+  case 0xd:
+  case 0xe:
+  case 0xf:
+  case 0x17:
+  case 0x1b:
+    break;
 
-LAB_003735d0:
-  iVar1 = *(int *)(iVar4 + 0xe8);
-  if (iVar1 == 0) {
-    return 1;
+  case 0x10:
+    iVar1 = *(int *)(iVar4 + 0xe8);
+    if (iVar1 == 0) {
+      return cVar2;
+    }
+    break;
+
+  case 0x11:
+    iVar1 = *(int *)(iVar4 + 0xe8);
+    if (iVar1 == 0) {
+      return cVar2;
+    }
+    break;
+
+  case 0x18:
+    cVar2 = FUN_00372c40_ptr(param_3);
+    break;
+
+  case 0x19:
+  case 6:
+    break;
+
+  default:
+    if ((*(u16 *)DAT_007e094e_abs & 0x800) != 0) {
+      cVar2 = '\0';
+    }
+    break;
   }
-  goto LAB_003736a4;
-
-LAB_003735e0:
-  cVar2 = FUN_00372c40_ptr(param_3);
-
 LAB_003736a4:
   if (cVar2 == '\0') {
     if (*(int *)(iVar4 + 0xe8) != 0) {
@@ -16515,6 +16507,7 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
   u32 uVar1;
   f32 fVar2;
   int iVar3;
+  int iVar4;
 
   uVar1 = 0;
   if (*(int *)(param_4 + 400) == param_3) {
@@ -16524,8 +16517,9 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
   case 0:
     iVar3 = param_2 * 0xc;
     asm volatile("" : "+r"(iVar3));
+    iVar4 = iVar3;
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_f32_5(fVar2,param_1 * 0xc,iVar3,0,DAT_0069ffe0);
+    FUN_0038a260_f32_5(fVar2,param_1 * 0xc,iVar4,0,DAT_0069ffe0);
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_f32_6(fVar2,(param_1 + 0x1a) * 0xc,iVar3,uVar1,
                        &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
@@ -17917,11 +17911,33 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
   iVar1 = (int)param_3;
 
-  if (*(int *)(iVar1 + 0xd4) == 0x2c) {
+  if (*(int *)(iVar1 + 0xd4) != 0x2c) {
 
-    if ((DAT_007e0952 & 0x1000) == 0) {
+    iVar1 = 0;
 
-      if ((DAT_007e0952 & 0x4000) != 0) {
+  }
+
+  else {
+
+    if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
+
+      if (*(int *)(iVar1 + 400) == 0) {
+
+        *(u32 *)(iVar1 + 400) = 3;
+
+      }
+
+      else {
+
+        *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + -1;
+
+      }
+
+    }
+
+    else {
+
+      if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
 
         if (*(int *)(iVar1 + 400) == 3) {
 
@@ -17939,18 +17955,6 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
     }
 
-    else if (*(int *)(iVar1 + 400) == 0) {
-
-      *(u32 *)(iVar1 + 400) = 3;
-
-    }
-
-    else {
-
-      *(int *)(iVar1 + 400) = *(int *)(iVar1 + 400) + -1;
-
-    }
-
     if ((DAT_007e094e & 0x40) == 0) {
 
       iVar1 = -(u32)((DAT_007e094e & 0x20) != 0);
@@ -17962,12 +17966,6 @@ int FUN_00384370(int param_1,int param_2,int param_3)
       iVar1 = 1;
 
     }
-
-  }
-
-  else {
-
-    iVar1 = 0;
 
   }
 
