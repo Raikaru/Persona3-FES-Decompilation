@@ -1,5 +1,6 @@
 #include "Kosaka/k_assert.h"
 
+extern const char DAT_006a5f70[];
 extern u8 DAT_006a5410[];
 extern u8 DAT_006a5414[];
 extern u8 DAT_006a5416[];
@@ -2572,9 +2573,9 @@ s32 lVar6;
 
 }
 
-// FUN_003D8260 NONMATCHING
 
 
+// FUN_003D8260
 u32 FUN_003d8260(int param_1,u32 param_2)
 
 
@@ -2600,7 +2601,7 @@ s32 lVar3;
 
   if (((param_1 == 0) || ((int)param_2 < 0)) || ((int)param_2 >= 0xc)) {
 
-    K_Assert((const char *)(u32)0x6a5f70,0x4ca);
+    K_Assert(DAT_006a5f70,0x4ca);
 
   }
 
@@ -2632,9 +2633,9 @@ s32 lVar3;
 
 }
 
-// FUN_003D8370 NONMATCHING
 
 
+// FUN_003D8370
 u32 FUN_003d8370(int param_1,u32 param_2,u32 param_3)
 
 
@@ -2662,7 +2663,7 @@ s32 lVar2;
   if ((((param_1 == 0) || ((int)param_2 < 0)) || ((int)param_2 >= 0xc)) ||
      (((int)param_3 < 0 || ((int)param_3 >= 0xc)))) {
 
-    K_Assert((const char *)(u32)0x6a5f70,0x4dc);
+    K_Assert(DAT_006a5f70,0x4dc);
 
   }
 
