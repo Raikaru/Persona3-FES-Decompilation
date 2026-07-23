@@ -5006,31 +5006,44 @@ void* func_00117540(KwlnTask* task)
 }
 #pragma pop
 
+// Retail unrolls the state-0 resource-load loop (14 literal calls, not a
+// runtime loop) and dispatches via switch, not if/else-if. Rewritten from
+// disasm; nd 261->10. Residual: 1 addu operand-order floor + 1 hoisted
+// D_00833B70 pointer register-bank floor in the state-3-promote loop.
 // FUN_00119AA0 NONMATCHING
 void* func_00119aa0(KwlnTask* task)
 {
     MaestroCampSpriteSetupWork* work;
-    u32 ready;
     u32 size;
     s32 i;
+    u32 ready;
 
     work = (MaestroCampSpriteSetupWork*)task->workData;
-    if (work->state == 0)
+    switch (work->state)
     {
+    case 0:
         if (H_Cdvd_IsFileLoaded(work->archive) != 0)
         {
-            for (i = 0; i < 14; i++)
-            {
-                work->resources[i] = func_00112420(
-                    H_Cdvd_ArchiveGetFile(work->archive, i, &size));
-            }
+            work->resources[0] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 0, &size));
+            work->resources[1] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 1, &size));
+            work->resources[2] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 2, &size));
+            work->resources[3] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 3, &size));
+            work->resources[4] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 4, &size));
+            work->resources[5] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 5, &size));
+            work->resources[6] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 6, &size));
+            work->resources[7] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 7, &size));
+            work->resources[8] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 8, &size));
+            work->resources[9] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 9, &size));
+            work->resources[10] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 10, &size));
+            work->resources[11] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 11, &size));
+            work->resources[12] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 12, &size));
+            work->resources[13] = func_00112420(H_Cdvd_ArchiveGetFile(work->archive, 13, &size));
             work->ownerPool = func_0018b6d0(0xc8);
             iGpffffb25c = work->ownerPool;
             work->state = 1;
         }
-    }
-    else if (work->state == 1)
-    {
+        break;
+    case 1:
         ready = true;
         for (i = 0; i < 14; i++)
         {
@@ -5042,17 +5055,26 @@ void* func_00119aa0(KwlnTask* task)
         }
         if (ready != 0)
         {
-            for (i = 0; i < 14; i++)
             {
-                D_00833B70[i] = work->resources[i];
+                s32 j = 0;
+                void** table = D_00833B70;
+
+                for (; j < 14; j++)
+                {
+                    table[j] = work->resources[j];
+                }
             }
             work->state = 3;
         }
-    }
-    else if (work->state == 2 &&
-             H_Cdvd_IsFileLoaded(work->archive) != 0)
-    {
-        work->state = 3;
+        break;
+    case 2:
+        if (H_Cdvd_IsFileLoaded(work->archive) != 0)
+        {
+            work->state = 3;
+        }
+        break;
+    case 3:
+        break;
     }
     func_003c7b90();
     return KWLNTASK_CONTINUE;
