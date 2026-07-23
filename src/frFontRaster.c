@@ -236,9 +236,9 @@ FUN_003b38f0(float param_1,int param_2,int param_3,u32 param_4,short param_5,u32
 
   
 
-  fVar12 = (float)param_2 / 16.0;
+  fVar12 = (float)param_2 / 16.0f;
 
-  fVar11 = (float)param_3 / 8.0;
+  fVar11 = (float)param_3 / 8.0f;
 
   iVar5 = FUN_00198590();
 
