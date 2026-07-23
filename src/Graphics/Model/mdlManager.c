@@ -7359,7 +7359,7 @@ u32 func_00319970(Model* param_1)
 
   int iVar7;
 
-  u32 uVar8;
+  u16 uVar8;
 
   void* uVar9;
 
@@ -7395,6 +7395,7 @@ u32 func_00319970(Model* param_1)
 
   u16 uStack_4;
 
+  
   u16 uStack_2;
 
   
@@ -7456,7 +7457,6 @@ u32 func_00319970(Model* param_1)
        (u32)*(u16 *)((int)piVar2 + 0x1e) * 4) = uVar5;
 
       func_004c5620(*piVar2,uStack_4c);
-
     }
 
     else if (iStack_50 == -0xf0fff20) {
@@ -7550,7 +7550,6 @@ u32 func_00319970(Model* param_1)
       }
 
       func_004c5620(*piVar2,uStack_2c);
-
     }
 
     else if (iStack_50 == -0xf0fff10) {
@@ -7558,7 +7557,6 @@ u32 func_00319970(Model* param_1)
       func_004c5250(*piVar2,&uStack_2,uStack_4c);
 
       *(u16 *)((int)piVar2 + (u32)*(u16 *)(piVar2 + 7) * 2 + 0x20) = uStack_2;
-
     }
 
     else if (iStack_50 == -0xf0ffffa) {
@@ -7590,7 +7588,6 @@ u32 func_00319970(Model* param_1)
       }
 
       *(u16 **)(iVar12 + 0x3f0) = puVar13;
-
     }
 
     else if (iStack_50 == -0xf0fff90) {
@@ -7602,11 +7599,9 @@ u32 func_00319970(Model* param_1)
       func_003164f0((int)param_1,(int)uVar9);
 
       (*DAT_0096017c)(uVar9);
-
     }
 
     else if ((((iStack_50 == -0xf0fff7e) || (iStack_50 == -0xf0fff7d)) || (iStack_50 == -0xf0fff7f))
-
             || (iStack_50 == -0xf0fff80)) {
 
       if ((*(u16 *)(iVar12 + 0xd8) & 0x4000) == 0) {
@@ -7674,7 +7669,6 @@ u32 func_00319970(Model* param_1)
                      *(u32 *)(iVar12 + 0xdc));
 
       }
-
     }
 
     else if (iStack_50 == -0xf0ffffd) {
@@ -7798,7 +7792,6 @@ u32 func_00319970(Model* param_1)
         }
 
       }
-
     }
 
     else if (iStack_50 == -0xf0ffffe) {
@@ -7808,7 +7801,6 @@ u32 func_00319970(Model* param_1)
       *(u16 *)((int)piVar2 + 0x1e) = 0;
 
       func_004c5620(*piVar2,uStack_4c);
-
     }
 
     else if (iStack_50 == -0xf0ffffc) {
@@ -7816,7 +7808,6 @@ u32 func_00319970(Model* param_1)
       *(short *)((int)piVar2 + 0x1e) = *(short *)((int)piVar2 + 0x1e) + 1;
 
       func_004c5620(*piVar2,uStack_4c);
-
     }
 
     else if (iStack_50 == -0xf0ffffb) {
@@ -7825,8 +7816,8 @@ u32 func_00319970(Model* param_1)
 
                             4 + 0x118) == 0) {
 
-        uVar5 = (u32)(void*)mdlCreateAnimEntryTable(uStack_2);
 
+        uVar5 = (u32)(void*)mdlCreateAnimEntryTable(uStack_2);
         *(u32 *)
 
          (iVar12 + ((u32)*(u16 *)(piVar2 + 7) * 0x28 - (u32)*(u16 *)(piVar2 + 7)) * 4 +
@@ -7840,7 +7831,6 @@ u32 func_00319970(Model* param_1)
                                                (u32)*(u16 *)(piVar2 + 7)) * 4 + 0x118) +
 
                            (u32)*(u16 *)((int)piVar2 + 0x1e) * 0x50,uStack_4c);
-
     }
 
     else if (iStack_50 == -0xf0fffff) {
