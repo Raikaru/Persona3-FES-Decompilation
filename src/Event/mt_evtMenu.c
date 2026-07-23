@@ -2974,7 +2974,6 @@ u64 FUN_003715b0(int param_1,int param_2,int param_3)
 
   
   iVar4 = 0xf;
-  asm volatile("" : "+r"(iVar4));
 
   iVar1 = 0;
 
