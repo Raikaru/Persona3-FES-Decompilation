@@ -168,7 +168,7 @@ FUN_003c5240(u32 param_1,u32 param_2,u32 param_3,u16 param_4,u16 param_5)
 }
 #define FUN_003c5240(...) ((u32 (*)(...))FUN_003c5240)(__VA_ARGS__)
 #undef FUN_003c53e0
-// FUN_003C53E0 NONMATCHING
+// FUN_003C53E0
 
 
 void FUN_003c53e0(u32 *param_1,u32 param_2)
@@ -180,16 +180,16 @@ void FUN_003c53e0(u32 *param_1,u32 param_2)
   while (puVar1 != (u32 *)0x0) {
     if (param_2 < *puVar1) {
       puVar1 = (u32 *)puVar1[3];
-      break;
+      goto found;
     }
     puVar1 = (u32 *)puVar1[4];
+    if (puVar1 == (u32 *)0x0) {
+      FUN_003c4710(param_1,param_1[1]);
+      return;
+    }
   }
-  if (puVar1 == (u32 *)0x0) {
-    FUN_003c4710(param_1,param_1[1]);
-  }
-  else {
-    FUN_003c4710(param_1,(u32)puVar1);
-  }
+found:
+  FUN_003c4710(param_1,(u32)puVar1);
 }
 
 #define FUN_003c53e0(...) ((void (*)(...))FUN_003c53e0)(__VA_ARGS__)
