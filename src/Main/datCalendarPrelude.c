@@ -67,6 +67,11 @@ extern u32 gSpecialStatusMessage;
 extern u8* DAT_007ce3f8;
 extern u8* DAT_007ce420;
 extern u8* DAT_007ce42c;
+extern void* DAT_007ce050;
+extern void* DAT_007ce054;
+extern void* DAT_007ce058;
+extern void* DAT_007ce05c;
+
 extern u8* DAT_007ce4a0;
 
 #define PTR8(addr) ((u8*)(addr))
@@ -429,14 +434,184 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
     if (destination != NULL) memcpy(destination, data, size);
 }
 
-// FUN_0017a430 NONMATCHING
+// FUN_0017a430
 void FUN_0017a430(u32 saveType, u32 id, u32 size, const void* data)
 {
     (void)saveType;
-    if (id == 0x18 && size == 0x2c) memcpy(PTRP(0x007ce05c), data, size);
-    else if (id == 0x11 && size == 0x2c0 && PTRP(0x007ce058) != NULL) memcpy(PTRP(0x007ce058), data, size);
-    else if (id == 0x10 && size == 0x3400 && PTRP(0x007ce054) != NULL) memcpy(PTRP(0x007ce054), data, size);
-    else if (id == 2 && size == 0x50 && PTRP(0x007ce050) != NULL) memcpy(PTRP(0x007ce050), data, size);
+    switch (id)
+    {
+        case 1: break;
+        case 2:
+            if (DAT_007ce050 != NULL && size == 0x50)
+                FUN_00521250(DAT_007ce050, data, 0x50);
+            break;
+        case 3: break;
+        case 4: break;
+        case 5: break;
+        case 6: break;
+        case 7: break;
+        case 8: break;
+        case 9: break;
+        case 10: break;
+        case 11: break;
+        case 12: break;
+        case 13: break;
+        case 14: break;
+        case 15: break;
+        case 16:
+            if (DAT_007ce054 != NULL && size == 0x3400)
+                FUN_00521250(DAT_007ce054, data, size);
+            break;
+        case 17:
+            if (DAT_007ce058 != NULL && size == 0x2c0)
+                FUN_00521250(DAT_007ce058, data, size);
+            break;
+        case 18: break;
+        case 19: break;
+        case 20: break;
+        case 21: break;
+        case 22: break;
+        case 23: break;
+        case 24:
+            if (size == 0x2c)
+                FUN_00521250(DAT_007ce05c, data, size);
+            break;
+        case 25: break;
+        case 26: break;
+        case 27: break;
+        case 28: break;
+        case 29: break;
+        case 30: break;
+        case 31: break;
+        case 32: break;
+        case 33: break;
+        case 34: break;
+        case 35: break;
+        case 36: break;
+        case 0x100: break;
+        case 0x200: break;
+        case 0x300: break;
+        case 0x400: break;
+        case 0x500: break;
+        case 0x600: break;
+        case 0x700: break;
+        case 0x800: break;
+        case 0x900: break;
+        case 0xa00: break;
+        case 0x101: break;
+        case 0x201: break;
+        case 0x301: break;
+        case 0x401: break;
+        case 0x501: break;
+        case 0x601: break;
+        case 0x701: break;
+        case 0x801: break;
+        case 0x901: break;
+        case 0xa01: break;
+        case 0x102: break;
+        case 0x202: break;
+        case 0x302: break;
+        case 0x402: break;
+        case 0x502: break;
+        case 0x602: break;
+        case 0x702: break;
+        case 0x802: break;
+        case 0x902: break;
+        case 0xa02: break;
+        case 0x103: break;
+        case 0x203: break;
+        case 0x303: break;
+        case 0x403: break;
+        case 0x503: break;
+        case 0x603: break;
+        case 0x703: break;
+        case 0x803: break;
+        case 0x903: break;
+        case 0xa03: break;
+        case 0x104: break;
+        case 0x204: break;
+        case 0x304: break;
+        case 0x404: break;
+        case 0x504: break;
+        case 0x604: break;
+        case 0x704: break;
+        case 0x804: break;
+        case 0x904: break;
+        case 0xa04: break;
+        case 0x105: break;
+        case 0x205: break;
+        case 0x305: break;
+        case 0x405: break;
+        case 0x505: break;
+        case 0x605: break;
+        case 0x705: break;
+        case 0x805: break;
+        case 0x905: break;
+        case 0xa05: break;
+        case 0x106: break;
+        case 0x206: break;
+        case 0x306: break;
+        case 0x406: break;
+        case 0x506: break;
+        case 0x606: break;
+        case 0x706: break;
+        case 0x806: break;
+        case 0x906: break;
+        case 0xa06: break;
+        case 0x107: break;
+        case 0x207: break;
+        case 0x307: break;
+        case 0x407: break;
+        case 0x507: break;
+        case 0x607: break;
+        case 0x707: break;
+        case 0x807: break;
+        case 0x907: break;
+        case 0xa07: break;
+        case 0x108: break;
+        case 0x208: break;
+        case 0x308: break;
+        case 0x408: break;
+        case 0x508: break;
+        case 0x608: break;
+        case 0x708: break;
+        case 0x808: break;
+        case 0x908: break;
+        case 0xa08: break;
+        case 0x109: break;
+        case 0x209: break;
+        case 0x309: break;
+        case 0x409: break;
+        case 0x509: break;
+        case 0x609: break;
+        case 0x709: break;
+        case 0x809: break;
+        case 0x909: break;
+        case 0xa09: break;
+        case 0x10a: break;
+        case 0x20a: break;
+        case 0x30a: break;
+        case 0x40a: break;
+        case 0x50a: break;
+        case 0x60a: break;
+        case 0x70a: break;
+        case 0x80a: break;
+        case 0x90a: break;
+        case 0xa0a: break;
+        case 0x10b: break;
+        case 0x20b: break;
+        case 0x30b: break;
+        case 0x40b: break;
+        case 0x50b: break;
+        case 0x60b: break;
+        case 0x70b: break;
+        case 0x80b: break;
+        case 0x90b: break;
+        case 0xa0b: break;
+        case 0x1000: break;
+        case 0x1001: break;
+        default: break;
+    }
 }
 
 // FUN_0017ac60 NONMATCHING
