@@ -7379,7 +7379,8 @@ void func_002e9450(void)
   return;
 }
 
-// FUN_002e95f0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002e95f0
 void func_002e95f0(void)
 {
     BtlUnit* target;
@@ -7409,7 +7410,7 @@ void func_002e95f0(void)
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
@@ -7421,6 +7422,7 @@ void func_002e95f0(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002e97e0 NONMATCHING
 int func_002e97e0(void)
@@ -7708,7 +7710,8 @@ void func_002ea060(void)
   }
 }
 
-// FUN_002ea210 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ea210
 void func_002ea210(void)
 {
     BtlUnit* target;
@@ -7738,7 +7741,7 @@ void func_002ea210(void)
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
@@ -7750,6 +7753,7 @@ void func_002ea210(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ea400
 void func_002ea400(void)
@@ -7815,7 +7819,8 @@ void func_002ea400(void)
   return;
 }
 
-// FUN_002ea590 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ea590
 void func_002ea590(void)
 {
     BtlUnit* target;
@@ -7845,7 +7850,7 @@ void func_002ea590(void)
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
@@ -7857,6 +7862,7 @@ void func_002ea590(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ea780
 void func_002ea780(BtlAction* action)
@@ -8674,7 +8680,8 @@ void func_002ec190(BtlAction* source, BtlAction* target, BtlTargetResult* result
     }
 }
 
-// FUN_002ec2c0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ec2c0
 void func_002ec2c0(void)
 {
     BtlUnit* target;
@@ -8704,7 +8711,7 @@ void func_002ec2c0(void)
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
@@ -8716,6 +8723,7 @@ void func_002ec2c0(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ec4b0
 void func_002ec4b0(BtlUnit* unit)
@@ -10227,7 +10235,8 @@ void func_002ef670(void)
   return;
 }
 
-// FUN_002ef7e0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_002ef7e0
 void func_002ef7e0(void)
 {
     BtlUnit* target;
@@ -10257,7 +10266,7 @@ void func_002ef7e0(void)
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
-    packet = FUN_0027fe90_packet_voice(target, NULL, (const void*)0x6978b0, NULL);
+    packet = FUN_0027fe90_packet_voice(target, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
     packet->parentUID = parent->uid;
     btlPacketRegister(packet, 1);
@@ -10269,6 +10278,7 @@ void func_002ef7e0(void)
     btlPacketRegister(packet, 2);
     func_002b9030(object);
 }
+#pragma opt_loop_invariants off
 
 // FUN_002ef9d0 NONMATCHING
 int func_002ef9d0(void)
