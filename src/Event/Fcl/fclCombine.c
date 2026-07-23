@@ -2610,12 +2610,12 @@ struct _m2c_stack_func_003d06d0 {
 // FUN_003D06D0 NONMATCHING
 void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
     struct _m2c_stack_func_003d06d0 stack;
-    s32 *var_6;
-    s32 *var_5;
+    s32 var_4;
     s32 temp_16;
     s32 temp_2;
+    s32 *var_5;
+    s32 *var_6;
     s32 temp_3;
-    s32 var_4;
 
     switch (param_2) {                                 /* switch 1 */
     case 0:                                         /* switch 1 */
@@ -2674,7 +2674,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp2BD4 = 0;
             stack.sp2BEC = 0;
             memcpy(&stack.sp2E50, &stack.sp29C0, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 0, stack.sp2E54), &stack.sp2E50);
+            temp_2 = stack.sp2E54;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 0, temp_2), &stack.sp2E50);
             return;
         }
     case 1:                                         /* switch 1 */
@@ -2733,15 +2734,12 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp29A4 = 0;
             stack.sp29BC = 0;
             memcpy(&stack.sp2E30, &stack.sp27AC, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 0, stack.sp2E34), &stack.sp2E30);
+            temp_2 = stack.sp2E34;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 0, temp_2), &stack.sp2E30);
             return;
         }
-    default:                                        /* switch 1 */
-        return;
-        break;
     case 2:                                         /* switch 1 */
-        switch (param_3) {                             /* switch 2; irregular */
-        case 0:                                     /* switch 2 */
+        if (param_3 == 0) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp2560;
@@ -2796,9 +2794,11 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp2774 = 1;
             stack.sp278C = 0;
             memcpy(&stack.sp2E10, &stack.sp2598, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 1, stack.sp2E14), &stack.sp2E10);
+            temp_2 = stack.sp2E14;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 1, temp_2), &stack.sp2E10);
             return;
-        case 1:                                     /* switch 2 */
+        }
+        if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp2330;
@@ -2853,7 +2853,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp2544 = 1;
             stack.sp255C = 0;
             memcpy(&stack.sp2DF0, &stack.sp2384, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 1, stack.sp2DF4), &stack.sp2DF0);
+            temp_2 = stack.sp2DF4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 1, temp_2), &stack.sp2DF0);
             return;
         }
         break;
@@ -2914,7 +2915,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp2314 = 2;
             stack.sp232C = 0;
             memcpy(&stack.sp2DD0, &stack.sp2170, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 2, stack.sp2DD4), &stack.sp2DD0);
+            temp_2 = stack.sp2DD4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 2, temp_2), &stack.sp2DD0);
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp1ED0;
@@ -2969,7 +2971,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp20E4 = 3;
             stack.sp20FC = 0;
             memcpy(&stack.sp2DB0, &stack.sp1F78, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 3, stack.sp2DB4), &stack.sp2DB0);
+            temp_2 = stack.sp2DB4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 3, temp_2), &stack.sp2DB0);
             return;
         }
         break;
@@ -3029,7 +3032,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp1EB4 = 2;
             stack.sp1ECC = 0;
             memcpy(&stack.sp2D90, &stack.sp1D2C, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 2, stack.sp2D94), &stack.sp2D90);
+            temp_2 = stack.sp2D94;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 2, temp_2), &stack.sp2D90);
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp1A70;
@@ -3084,7 +3088,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp1C84 = 3;
             stack.sp1C9C = 0;
             memcpy(&stack.sp2D70, &stack.sp1B34, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 3, stack.sp2D74), &stack.sp2D70);
+            temp_2 = stack.sp2D74;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 3, temp_2), &stack.sp2D70);
             return;
         }
         break;
@@ -3145,7 +3150,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp1A54 = 4;
             stack.sp1A6C = 0;
             memcpy(&stack.sp2D50, &stack.sp1920, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 4, stack.sp2D54), &stack.sp2D50);
+            temp_2 = stack.sp2D54;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 4, temp_2), &stack.sp2D50);
             return;
         }
         if (param_3 == 1) {
@@ -3203,7 +3209,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp1824 = 4;
             stack.sp183C = 0;
             memcpy(&stack.sp2D30, &stack.sp170C, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 4, stack.sp2D34), &stack.sp2D30);
+            temp_2 = stack.sp2D34;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 4, temp_2), &stack.sp2D30);
             return;
         }
         break;
@@ -3264,7 +3271,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp15F4 = 5;
             stack.sp160C = 0;
             memcpy(&stack.sp2D10, &stack.sp14F8, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 5, stack.sp2D14), &stack.sp2D10);
+            temp_2 = stack.sp2D14;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 5, temp_2), &stack.sp2D10);
             return;
         }
         break;
@@ -3324,7 +3332,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp13C4 = 5;
             stack.sp13DC = 0;
             memcpy(&stack.sp2CF0, &stack.sp12E4, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 5, stack.sp2CF4), &stack.sp2CF0);
+            temp_2 = stack.sp2CF4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 5, temp_2), &stack.sp2CF0);
             return;
         }
         break;
@@ -3385,7 +3394,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp1194 = 6;
             stack.sp11AC = 0;
             memcpy(&stack.sp2CD0, &stack.sp10D0, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 6, stack.sp2CD4), &stack.sp2CD0);
+            temp_2 = stack.sp2CD4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 6, temp_2), &stack.sp2CD0);
             return;
         }
         if (param_3 == 1) {
@@ -3443,7 +3453,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.spF64 = 6;
             stack.spF7C = 0;
             memcpy(&stack.sp2CB0, &stack.spEBC, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 6, stack.sp2CB4), &stack.sp2CB0);
+            temp_2 = stack.sp2CB4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 6, temp_2), &stack.sp2CB0);
             return;
         }
         break;
@@ -3504,7 +3515,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.spD34 = 7;
             stack.spD4C = 0;
             memcpy(&stack.sp2C90, &stack.spCA8, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 7, stack.sp2C94), &stack.sp2C90);
+            temp_2 = stack.sp2C94;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 7, temp_2), &stack.sp2C90);
             return;
         }
         if (param_3 == 1) {
@@ -3562,11 +3574,11 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.spB04 = 7;
             stack.spB1C = 0;
             memcpy(&stack.sp2C70, &stack.spA94, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 7, stack.sp2C74), &stack.sp2C70);
+            temp_2 = stack.sp2C74;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 7, temp_2), &stack.sp2C70);
             return;
         }
-        switch (param_3) {                             /* switch 3; irregular */
-        case 0:                                     /* switch 3 */
+        if (param_3 == 0) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp6C0;
@@ -3621,9 +3633,11 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp8D4 = 8;
             stack.sp8EC = 0;
             memcpy(&stack.sp2C50, &stack.sp880, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 8, stack.sp2C54), &stack.sp2C50);
+            temp_2 = stack.sp2C54;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 8, temp_2), &stack.sp2C50);
             return;
-        case 1:                                     /* switch 3 */
+            }
+        if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp490;
@@ -3678,7 +3692,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp6A4 = 8;
             stack.sp6BC = 0;
             memcpy(&stack.sp2C30, &stack.sp66C, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 8, stack.sp2C34), &stack.sp2C30);
+            temp_2 = stack.sp2C34;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 8, temp_2), &stack.sp2C30);
             return;
         }
         break;
@@ -3739,7 +3754,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp474 = 9;
             stack.sp48C = 0;
             memcpy(&stack.sp2C10, &stack.sp458, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 9, stack.sp2C14), &stack.sp2C10);
+            temp_2 = stack.sp2C14;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 9, temp_2), &stack.sp2C10);
             return;
         case 1:                                     /* switch 4 */
             temp_16 = *(s32 *)(param_1 + 0xd4);
@@ -3796,9 +3812,13 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             stack.sp244 = 9;
             stack.sp25C = 0;
             memcpy(&stack.sp2BF0, &stack.sp244, 0x1C);
-            fclCombineList003df100(FUN_003dffc0(temp_16, 9, stack.sp2BF4), &stack.sp2BF0);
+            temp_2 = stack.sp2BF4;
+            fclCombineList003df100(FUN_003dffc0(temp_16, 9, temp_2), &stack.sp2BF0);
             break;
         }
+        break;
+    default:                                        /* switch 1 */
+        return;
         break;
     }
 }
