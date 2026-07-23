@@ -9299,7 +9299,7 @@ u64 FUN_00368a30(u64 param_1,u64 param_2,int param_3,int param_4)
 
     *(u32 *)(context + 0x660) = 3;
 
-    FUN_0036f5f0(10,0xd,7,0);
+    FUN_0036f5f0(10,0xd,7,param_4);
 
   }
 
