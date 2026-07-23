@@ -2086,7 +2086,7 @@ int FUN_00361fe0(int param_1,int param_2)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   int iVar2;
 
@@ -2374,7 +2374,7 @@ void FUN_00362390(u64 param_1)
 
   int iVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 
@@ -2478,7 +2478,7 @@ void FUN_00362390(u64 param_1)
 
     else {
 
-      lVar3 = (long)FUN_00362310(0);
+      lVar3 = (int)FUN_00362310(0);
 
       if (lVar3 != 0) {
 
@@ -2492,7 +2492,7 @@ void FUN_00362390(u64 param_1)
 
   else {
 
-    lVar3 = (long)FUN_00362290(0);
+    lVar3 = (int)FUN_00362290(0);
 
     if (lVar3 != 0) {
 
@@ -2550,7 +2550,7 @@ void FUN_003625e0(void)
 
 {
 
-  long lVar1;
+  int lVar1;
 
   int iVar2;
 
