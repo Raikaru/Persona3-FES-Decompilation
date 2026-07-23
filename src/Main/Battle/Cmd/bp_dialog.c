@@ -298,12 +298,14 @@ void FUN_0025c220(void)
         FUN_0025cdb0(30.0f + (25.0f + (fVar9 + (f32)iVar2)),
                      fVar8 - 5.0f, puVar1[3]);
         fVar10 = 255.0f * fVar10 * fVar6;
-        if (fVar10 < 2.1474836e+09f) {
+        if (2.1474836e+09f > fVar10) {
             uVar5 = (u32)(s32)fVar10;
+            uVar5 &= 0xffu;
         } else {
-            uVar5 = (u32)(s32)(fVar10 - 2.1474836e+09f);
+            uVar5 = (u32)(s32)(fVar10 - 2.1474836e+09f) | 0x80000000u;
+            uVar5 &= 0xffu;
         }
-        uVar5 = (uVar5 & 0xffu) | 0xffffff00u;
+        uVar5 |= 0xffffff00u;
         func_003b0e20(puVar1[1], uVar5);
 
         fVar11 = 255.0f * fVar11 * fVar6;
