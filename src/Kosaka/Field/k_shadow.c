@@ -65,6 +65,8 @@ extern RwCamera* func_004c9db0(RwCamera* camera, f32 nearPlane);
 extern RwCamera* func_004c9d70(RwCamera* camera, f32 farPlane);
 extern void func_00317a20(Model* model);
 extern u32 func_001a01c0(void);
+extern RwMatrix* func_001a0a50(void);
+extern RwMatrix* func_001a0d80(void);
 extern RpLight* func_00198580(void);
 extern RpWorld* func_0049c160(RpWorld* world, RwCamera* camera);
 extern void* func_004caf80(void* frame);
@@ -1415,49 +1417,59 @@ f32 func_0019c490(KwlnTask* renderTexTask)
      ((model_)->id == 2 || (model_)->id == 4 || (model_)->id == 5 ||                                     \
       (model_)->id == 7 || (model_)->id == 8))
 
-#define K_FldShadow_PositionCamera(shadow_, direction_, modelPosition_)                                  \
-    do                                                                                                     \
-    {                                                                                                      \
-        RwFrame* cameraFrame;                                                                              \
-        RwMatrixTolerance tolerance;                                                                       \
-        RwV2d viewWindow;                                                                                  \
-        RwV3d translation;                                                                                 \
-        RwMatrix* ltm;                                                                                     \
-        f32 scale;                                                                                         \
-                                                                                                           \
-        cameraFrame = (RwFrame*)(shadow_)->camera->object.object.parent;                                  \
-        cameraFrame->modelling = *(direction_);                                                           \
-        RwEngineGetMatrixTolerances(&tolerance);                                                          \
-        RwMatrixOptimize(&cameraFrame->modelling, &tolerance);                                            \
-        RwMatrixUpdate(&cameraFrame->modelling);                                                          \
-                                                                                                           \
-        scale = FLDSHADOW_VIEW_SCALE * (shadow_)->projectionDistance;                                    \
-        func_004c9db0((shadow_)->camera, 10.0f * scale);                                                  \
-        func_004c9d70((shadow_)->camera, FLDSHADOW_FAR_SCALE * scale);                                   \
-                                                                                                           \
-        if (func_001a01c0() == 1)                                                                          \
-        {                                                                                                  \
-            viewWindow.x = 2.0f * scale;                                                                  \
-            viewWindow.y = 2.0f * scale;                                                                  \
-        }                                                                                                  \
-        else                                                                                               \
-        {                                                                                                  \
-            viewWindow.x = FLDSHADOW_FAR_SCALE * scale;                                                   \
-            viewWindow.y = FLDSHADOW_FAR_SCALE * scale;                                                   \
-        }                                                                                                  \
-        RwCameraSetViewWindow((shadow_)->camera, &viewWindow);                                           \
-                                                                                                           \
-        translation.x = (modelPosition_)->x - cameraFrame->modelling.pos.x;                              \
-        translation.y = (modelPosition_)->y + ((shadow_)->projectionDistance / 2.0f) -                   \
-                        cameraFrame->modelling.pos.y;                                                     \
-        translation.z = (modelPosition_)->z - cameraFrame->modelling.pos.z;                              \
-        translation.x += cameraFrame->modelling.at.x * ((shadow_)->camera->farPlane * -0.5f);            \
-        translation.y += cameraFrame->modelling.at.y * ((shadow_)->camera->farPlane * -0.5f);            \
-        translation.z += cameraFrame->modelling.at.z * ((shadow_)->camera->farPlane * -0.5f);            \
-                                                                                                           \
-        func_004cb750(cameraFrame, &translation, rwCOMBINEPOSTCONCAT);                                    \
-        ltm = RwFrameGetLTM(cameraFrame);                                                                  \
-        func_004c2fb0(ltm, ltm);                                                                           \
+#define K_FldShadow_PositionCamera(shadow_, direction_, modelPosition_, useCustom_, fallback_)         \
+    do                                                                                                  \
+    {                                                                                                   \
+        RwFrame* cameraFrame;                                                                           \
+        RwMatrixTolerance tolerance;                                                                    \
+        RwV2d viewWindow;                                                                               \
+        RwV3d translation;                                                                              \
+        RwMatrix* ltm;                                                                                  \
+        f32 scale;                                                                                      \
+                                                                                                        \
+        cameraFrame = (RwFrame*)(shadow_)->camera->object.object.parent;                               \
+        if ((useCustom_) != 0)                                                                          \
+        {                                                                                               \
+            cameraFrame->modelling = *(direction_);                                                    \
+            RwEngineGetMatrixTolerances(&tolerance);                                                   \
+            RwMatrixOptimize(&cameraFrame->modelling, &tolerance);                                     \
+            RwMatrixUpdate(&cameraFrame->modelling);                                                   \
+        }                                                                                               \
+        else                                                                                            \
+        {                                                                                               \
+            cameraFrame->modelling = *((fallback_)());                                                \
+            RwEngineGetMatrixTolerances(&tolerance);                                                   \
+            RwMatrixOptimize(&cameraFrame->modelling, &tolerance);                                     \
+            RwMatrixUpdate(&cameraFrame->modelling);                                                   \
+        }                                                                                               \
+                                                                                                        \
+        scale = FLDSHADOW_VIEW_SCALE * (shadow_)->projectionDistance;                                 \
+        func_004c9db0((shadow_)->camera, 10.0f * scale);                                               \
+        func_004c9d70((shadow_)->camera, FLDSHADOW_FAR_SCALE * scale);                                \
+                                                                                                        \
+        if (func_001a01c0() == 1)                                                                       \
+        {                                                                                                \
+            viewWindow.x = 2.0f * scale;                                                               \
+            viewWindow.y = 2.0f * scale;                                                               \
+        }                                                                                                \
+        else                                                                                             \
+        {                                                                                                \
+            viewWindow.x = FLDSHADOW_FAR_SCALE * scale;                                                \
+            viewWindow.y = FLDSHADOW_FAR_SCALE * scale;                                                \
+        }                                                                                                \
+        RwCameraSetViewWindow((shadow_)->camera, &viewWindow);                                          \
+                                                                                                         \
+        translation.x = (modelPosition_)->x - cameraFrame->modelling.pos.x;                            \
+        translation.y = (modelPosition_)->y + ((shadow_)->projectionDistance / 2.0f) -                \
+                        cameraFrame->modelling.pos.y;                                                  \
+        translation.z = (modelPosition_)->z - cameraFrame->modelling.pos.z;                           \
+        translation.x += cameraFrame->modelling.at.x * ((shadow_)->camera->farPlane * -0.5f);         \
+        translation.y += cameraFrame->modelling.at.y * ((shadow_)->camera->farPlane * -0.5f);         \
+        translation.z += cameraFrame->modelling.at.z * ((shadow_)->camera->farPlane * -0.5f);         \
+                                                                                                         \
+        func_004cb750(cameraFrame, &translation, rwCOMBINEPOSTCONCAT);                                 \
+        ltm = RwFrameGetLTM(cameraFrame);                                                               \
+        func_004c2fb0(ltm, ltm);                                                                        \
     } while (false)
 
 #define K_FldShadow_DrawMapBands(camera_)                                                                 \
@@ -1489,12 +1501,12 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         RwRenderStateSet(rwRENDERSTATECULLMODE, (void*)rwCULLMODECULLBACK);                               \
     } while (false)
 
-#define K_FldShadow_RenderModelInline(shadow_, direction_, modelPosition_, tintModel_, useCharRenderGuard_) \
+#define K_FldShadow_RenderModelInline(shadow_, direction_, modelPosition_, useCustom_, fallback_, tintModel_, useCharRenderGuard_) \
     do                                                                                                     \
     {                                                                                                      \
         RwRGBA originalColor;                                                                              \
                                                                                                            \
-        K_FldShadow_PositionCamera((shadow_), (direction_), (modelPosition_));                            \
+        K_FldShadow_PositionCamera((shadow_), (direction_), (modelPosition_), (useCustom_), (fallback_)); \
         RwCameraClear((shadow_)->camera, FLDSHADOW_CLEAR_COLOR, rwCAMERACLEAR1 | rwCAMERACLEARZ);         \
                                                                                                            \
         if (RwCameraBeginUpdate((shadow_)->camera) == NULL)                                               \
@@ -1544,7 +1556,6 @@ f32 func_0019c490(KwlnTask* renderTexTask)
 static inline void K_FldShadow_UpdateModelChar(ResrcModelChar* res)
 {
     FldShadowRenderTex* shadow;
-    ResrcLightChar* light;
     RwV3d modelPosition;
     const RwMatrix* direction;
 
@@ -1564,19 +1575,15 @@ static inline void K_FldShadow_UpdateModelChar(ResrcModelChar* res)
     {
         direction = (const RwMatrix*)((const u8*)res + 0x150);
     }
-    else
-    {
-        light = (ResrcLightChar*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTCHAR);
-        direction = &light->directionalMat;
-    }
 
-    K_FldShadow_RenderModelInline(shadow, direction, &modelPosition, true, true);
+    K_FldShadow_RenderModelInline(shadow, direction, &modelPosition,
+                                  (res->base.flags & FLDSHADOW_RESOURCE_FLAGS_MATRIX) != 0,
+                                  func_001a0a50, true, true);
 }
 
 static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
 {
     FldShadowRenderTex* shadow;
-    ResrcLightNpc* light;
     RwV3d modelPosition;
     const RwMatrix* direction;
 
@@ -1596,14 +1603,12 @@ static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
     {
         direction = (const RwMatrix*)((const u8*)res + 0x150);
     }
-    else
-    {
-        light = (ResrcLightNpc*)MT_Scene_GetResListHead(RESRC_TYPE_LIGHTNPC);
-        direction = &light->dirMat;
-    }
 
-    K_FldShadow_RenderModelInline(shadow, direction, &modelPosition, false, false);
+    K_FldShadow_RenderModelInline(shadow, direction, &modelPosition,
+                                  (res->base.flags & FLDSHADOW_RESOURCE_FLAGS_MATRIX) != 0,
+                                  func_001a0d80, false, false);
 }
+
 #undef K_FldShadow_RenderModelInline
 #undef K_FldShadow_DrawMapBands
 #undef K_FldShadow_PositionCamera
