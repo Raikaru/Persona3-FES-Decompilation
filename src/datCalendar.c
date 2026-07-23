@@ -4096,11 +4096,11 @@ void func_00185b40(void* resource,
     }
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00186050 NONMATCHING
 void func_00186050(void* resource, u64 position, u32 alpha)
 {
-    f32 y;
-    void* unused = NULL;
     union
     {
         u64 value;
@@ -4110,6 +4110,8 @@ void func_00186050(void* resource, u64 position, u32 alpha)
             f32 y;
         } coords;
     } packed;
+    f32 y;
+    void* unused;
 
     packed.value = position;
     y = packed.coords.y;
@@ -4119,6 +4121,7 @@ void func_00186050(void* resource, u64 position, u32 alpha)
     func_001159f0(unused, resource, 0x2c, alpha & 0xff,
                   packed.coords.x + 449.0f, y, 48.0f);
 }
+#pragma pop
 
 // FUN_00186100
 void func_00186100(void* resource, u64 position, u32 alpha)
