@@ -771,13 +771,17 @@ u32 func_001114b0(KwlnTask* task)
     return false;
 }
 #pragma optimization_level 1
+
+
 // FUN_00111500 NONMATCHING
 void func_00111500(KwlnTask* task)
 {
+    s32 value;
     MaestroStreamWork* work;
 
     work = (MaestroStreamWork*)task->workData;
-    work->stopAtFrame = 1;
+    value = 1;
+    work->stopAtFrame = value;
     work->complete = 0;
 }
 #pragma optimization_level 2

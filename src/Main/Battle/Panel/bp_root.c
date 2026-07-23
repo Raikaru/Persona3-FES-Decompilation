@@ -3641,7 +3641,7 @@ u32 FUN_001FE220(void)
 #pragma push
 #pragma opt_rebuildconditionals off
  
-// FUN_001FE650 NONMATCHING
+// FUN_001FE650
 void FUN_001FE650(void* descriptor)
 {
     u8* desc;
@@ -3663,7 +3663,7 @@ void FUN_001FE650(void* descriptor)
     if (*(u32*)(desc + 8) & 0x20) func_00242720(resource, *(u32*)(desc + 4));
     if (*(u32*)(desc + 8) & 0x40) func_00242a30(resource);
     level = *(s32*)(desc + 0x14);
-    if (level >= 2)
+    if (level > 1)
     {
         func_00242c20(resource, *(u32*)(desc + 0x18), level);
     }
