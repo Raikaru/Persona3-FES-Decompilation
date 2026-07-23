@@ -11835,19 +11835,19 @@ void FUN_00447ad0(int param_1)
 }
 
 #pragma pop
-// FUN_00447E70 NONMATCHING
+// FUN_00447E70
 
 u32 FUN_00447e70(u64 param_1,u8 param_2,u8 param_3)
 
 {
   u32 uVar1;
-  u32 lVar2;
   u32 uVar3;
+  u32 lVar2;
   u8 *puVar4;
   
-  lVar2 = (*DAT_00960184)(1,0x95c,0x40000);
+  lVar2 = (*DAT_00960184_abs)(1,0x95c,0x40000);
   if (lVar2 == 0) {
-    uVar3 = 0;
+    return 0;
   }
   else {
     uVar3 = FUN_00194b80_u32(param_1,0x106f,DAT_006b4a00,(u32 (*)(int))FUN_0043ca30,FUN_00447ad0,lVar2);
