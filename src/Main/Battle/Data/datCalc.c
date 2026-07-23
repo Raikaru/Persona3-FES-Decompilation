@@ -621,7 +621,7 @@ u8 FUN_00308fd0(u16 *param_1,u16 param_2);
 u32 FUN_00309080(u16 *param_1,char param_2);
 u32 FUN_00309250(u16 *param_1,char param_2);
 u8 FUN_003093a0(u16 *param_1);
-u32 FUN_00309490(s32 param_1,u32 param_2,u32 param_3,u32 param_4);
+u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4);
 u32 FUN_0030a740(s32 param_1,u32 param_2,u32 param_3,short param_4);
 u32 FUN_0030af00(s32 param_1,u16 *param_2,u32 param_3,u32 param_4,u32 param_5);
 u32
@@ -5037,22 +5037,22 @@ u8 FUN_003093a0(u16 *param_1)
 
 
 // FUN_00309490 NONMATCHING
-u32 FUN_00309490(s32 param_1,u32 param_2,u32 param_3,u32 param_4)
+u32 FUN_00309490(s32 param_1,u32 param_2,u16 param_3,u32 param_4)
 
 {
   u8 bVar1;
   char cVar2;
   u16 uVar3;
   short sVar4;
-  short sVar5;
+  u16 sVar5;
   int iVar6;
   u32 uVar7;
   s32 lVar8;
   u32 uVar9;
   u32 uVar10;
   u8 *pbVar11;
-  u32 uVar12;
-  short sVar13;
+  u16 uVar12;
+  s32 sVar13;
   u16 unaff_s1_lo;
   u16 uVar14;
   u16 *puVar16;
