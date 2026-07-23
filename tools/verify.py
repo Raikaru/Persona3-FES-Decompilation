@@ -723,6 +723,17 @@ def main():
     sizes = json.loads((TOOLS / "slus21621_functions.json").read_text())
     retail = RetailElf(cfg["retail_elf"], expect_sha1=sizes.get("sha1"))
 
+    THIRD_PARTY_PREFIXES = ("rw/", "cri/", "sce/")
+    THIRD_PARTY_FILES = {"crt0.c", "libc_core.c", "libcdvd.c"}
+
+    def is_third_party(rel_file):
+        norm = rel_file.replace("\\", "/")
+        if norm.startswith("src/"):
+            norm = norm[len("src/"):]
+        if norm in THIRD_PARTY_FILES:
+            return True
+        return norm.startswith(THIRD_PARTY_PREFIXES)
+
     def is_generated(p):
         # permuter droppings: hit regions (*.match.c) and scratch TUs (.permute_*)
         return p.name.endswith(".match.c") or p.name.startswith(".permute_")
@@ -747,14 +758,26 @@ def main():
             all_results += verify_file(cpath, cfg, retail, boundaries, Path(td))
 
     counts = {}
+    fp_counts = {}
     for r in all_results:
         counts[r["status"]] = counts.get(r["status"], 0) + 1
+        if not is_third_party(r["file"]):
+            fp_counts[r["status"]] = fp_counts.get(r["status"], 0) + 1
     total = len(all_results)
+    fp_total = sum(fp_counts.values())
     print(f"functions scanned: {total}")
     for st in ("MATCH", "STUB", "NONMATCHING", "STALE_NONMATCHING", "MISMATCH",
                "SIZE_MISMATCH", "NO_SYMBOL", "COMPILE_ERROR", "UNKNOWN_ADDR"):
         if counts.get(st):
             print(f"  {st:<14} {counts[st]}")
+    fp_match = fp_counts.get("MATCH", 0)
+    fp_pct = f" ({100 * fp_match / fp_total:.1f}%)" if fp_total else ""
+    print(f"first-party functions scanned: {fp_total}")
+    print(f"  MATCH          {fp_match}{fp_pct}")
+    for st in ("STUB", "NONMATCHING", "STALE_NONMATCHING", "MISMATCH",
+               "SIZE_MISMATCH", "NO_SYMBOL", "COMPILE_ERROR", "UNKNOWN_ADDR"):
+        if fp_counts.get(st):
+            print(f"  {st:<14} {fp_counts[st]}")
 
     bad = [r for r in all_results
            if r["status"] not in ("MATCH", "STUB", "NONMATCHING")]
@@ -770,7 +793,8 @@ def main():
 
     if args.json:
         Path(args.json).write_text(json.dumps(
-            dict(summary=counts, results=all_results), indent=1), newline="\n")
+            dict(summary=counts, summary_first_party=fp_counts, results=all_results),
+            indent=1), newline="\n")
         print(f"report: {args.json}")
 
     sys.exit(1 if bad else 0)
