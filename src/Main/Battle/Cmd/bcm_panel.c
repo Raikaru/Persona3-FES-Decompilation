@@ -413,18 +413,6 @@ static void bcm_panel_refresh_records(void)
     }
 }
 
-static void bcm_panel_update_overlays(void)
-{
-    u32 i;
-    u32 count = bcm_panel_read(0x6070);
-    for (i = 0; i < count; ++i) {
-        u8* overlay = bcm_panel_overlay(i);
-        if (*(u32*)overlay != 0) {
-            bcm_panel_set_resource(overlay + 0x10, 0, 0x29);
-        }
-    }
-}
-
 // FUN_002230e0 NONMATCHING
 void FUN_002230e0(void)
 {
