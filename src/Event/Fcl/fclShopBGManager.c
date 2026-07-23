@@ -364,7 +364,7 @@ u32 FUN_004105e0(int param_1,int param_2,long param_3)
 
       puVar1[7] = sVar4 + 1;
 
-      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0f);
+      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0);
 
       if (9 < (short)puVar1[7]) {
 
