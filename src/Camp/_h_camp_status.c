@@ -2515,21 +2515,22 @@ void FUN_001332f0(CampVec2 position, f32 alpha, void* unused,
                   void* persona, s32 fade)
 {
     CampVec2 drawPosition;
-    CampStatusSpriteDrawFn drawSprite;
     s32 drawAlpha;
     s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012bce0(position, alpha, unused, persona, (u8)drawAlpha);
+    FUN_0012bce0_s32(position, alpha, unused, persona, drawAlpha);
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
-    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
-    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
-               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
+    campStatusDrawSpriteCall((u32)0, DAT_00833B90, 1, (u32)drawAlpha,
+                             drawPosition.x + 22.0f,
+                             drawPosition.y + 117.0f, alpha);
     arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
-               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
+    campStatusDrawSpriteCall((u32)0, DAT_00833B88, arcanaFrame,
+                             (u32)drawAlpha,
+                             drawPosition.x + 105.0f,
+                             drawPosition.y + 142.0f, alpha);
     FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
     FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
 }
@@ -2539,21 +2540,22 @@ void FUN_00133460(CampVec2 position, f32 alpha, void* currentStats,
                   void* persona, s32 fade)
 {
     CampVec2 drawPosition;
-    CampStatusSpriteDrawFn drawSprite;
     s32 drawAlpha;
     s32 arcanaFrame;
 
     drawAlpha = 0xff - fade;
-    FUN_0012bfb0(position, alpha, currentStats, persona, (u8)drawAlpha);
+    FUN_0012bfb0_s32(position, alpha, currentStats, persona, drawAlpha);
     drawPosition = position;
     drawPosition.x += 12.0f;
     drawPosition.y += 96.0f;
-    drawSprite = (CampStatusSpriteDrawFn)FUN_001159f0;
-    drawSprite(NULL, DAT_00833B90, 1, (u32)drawAlpha,
-               drawPosition.x + 22.0f, drawPosition.y + 117.0f, alpha);
+    campStatusDrawSpriteCall((u32)0, DAT_00833B90, 1, (u32)drawAlpha,
+                             drawPosition.x + 22.0f,
+                             drawPosition.y + 117.0f, alpha);
     arcanaFrame = (FUN_00173280(persona) & 0xff) - 1;
-    drawSprite(NULL, DAT_00833B88, arcanaFrame, (u32)drawAlpha,
-               drawPosition.x + 105.0f, drawPosition.y + 142.0f, alpha);
+    campStatusDrawSpriteCall((u32)0, DAT_00833B88, arcanaFrame,
+                             (u32)drawAlpha,
+                             drawPosition.x + 105.0f,
+                             drawPosition.y + 142.0f, alpha);
     FUN_00124e60(drawPosition, alpha, persona, drawAlpha);
     FUN_00124fd0(drawPosition, alpha, persona, drawAlpha);
 }
