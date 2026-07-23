@@ -4701,7 +4701,7 @@ void FUN_002a2a20(u8* param_2,f32* param_3,f32 param_1)
     param_3[1] = param_3[1] + fVar4;
     param_3[2] = param_3[2] + fVar5;
     uVar2 = uVar2 + 1 & 0xffff;
-    if (3 < uVar2) {
+    if (uVar2 >= 4) {
       uVar2 = 0;
     }
   }
