@@ -6807,31 +6807,36 @@ void FUN_0030cc40(void)
 void FUN_0030cdb0(void)
 {
   s32 lVar1;
-  float fVar3;
   float fVar2;
+  float fVar3;
+  float fVar4;
 
   lVar1 = FUN_003111f0();
   if (lVar1 == 0)
     goto zero;
   fVar2 = (float)FUN_0030fdf0(0xd,4);
   fVar3 = 50.0f;
-  fVar2 = fVar3 + fVar2;
-  fVar3 = (float)FUN_0030fdf0(0xe,4);
-  fVar3 = fVar3 + 50.0f;
-  fVar2 = fVar2 / fVar3;
-  fVar3 = (float)FUN_0030fdf0(0x14,0) * fVar2;
+  fVar4 = fVar3 + fVar2;
+  fVar2 = (float)FUN_0030fdf0(0xe,4);
+  fVar3 = 50.0f;
+  fVar3 = fVar3 + fVar2;
+  fVar4 = fVar4 / fVar3;
+  fVar2 = (float)FUN_0030fdf0(0x14,0);
+  fVar2 = fVar2 * fVar4;
   goto done;
 zero:
   fVar2 = (float)FUN_0030fdf0(0xd,4);
   fVar3 = 50.0f;
-  fVar2 = fVar3 + fVar2;
-  fVar3 = (float)FUN_0030fdf0(0xe,4);
-  fVar3 = fVar3 + 50.0f;
-  fVar2 = fVar2 / fVar3;
-  fVar3 = (float)FUN_0030fdf0(0x14,0) * fVar2;
-  fVar3 = DAT_007cad74 * fVar3;
+  fVar4 = fVar3 + fVar2;
+  fVar2 = (float)FUN_0030fdf0(0xe,4);
+  fVar3 = 50.0f;
+  fVar3 = fVar3 + fVar2;
+  fVar4 = fVar4 / fVar3;
+  fVar2 = (float)FUN_0030fdf0(0x14,0);
+  fVar2 = fVar2 * fVar4;
+  fVar2 = DAT_007cad74 * fVar2;
 done:
-  FUN_00311190((int)fVar3);
+  FUN_00311190((int)fVar2);
   return;
 }
 
