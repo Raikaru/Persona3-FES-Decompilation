@@ -46,7 +46,7 @@ extern s32 FUN_00172160(long socialLink);
 extern s32 FUN_001717c0(long socialLink);
 extern s32 FUN_00172660(long socialLink);
 #pragma alias FUN_003be1c0_typed FUN_003be1c0
-extern u32 FUN_003be1c0_typed(s32 param_1,s32 param_2);
+extern u32 FUN_003be1c0_typed(long param_1,long param_2);
 #pragma alias FUN_003be2a0_typed FUN_003be2a0
 extern u32 FUN_003be2a0_typed(...);
 extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
