@@ -348,6 +348,9 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             if (work->ownsCamera != 0)
             {
                 work->ownsCamera = 0;
+                FUN_004aa550(kwlnGetMainCamera());
+                FUN_004b6350();
+                FUN_004b7630(D_0077e4e0);
             }
             if (work->isStart != 0)
             {
