@@ -149,6 +149,7 @@ extern char gp0xffff9710[];
 extern u8* DAT_007ce420;
 extern u8* DAT_007ce428;
 extern u8* DAT_007ce430;
+
 extern u8* iGpffffb738;
 extern int iGpffffb75c;
 extern int iGpffffb760;
@@ -2211,14 +2212,15 @@ void func_001fc1f0(void)
 #pragma schedule on
 #pragma optimization_level 2
 #pragma opt_loop_invariants on
-// FUN_001FC230 NONMATCHING
+// FUN_001FC230
 
 
 u8 func_001fc230(DatPersonaWork* persona)
 {
     u16* skills;
     s32 count;
-    u8* entry;
+    s8* entry;
+    s8* current;
     s32 firstIndex;
     s32 indexCount;
     s32 i;
@@ -2228,30 +2230,34 @@ u8 func_001fc230(DatPersonaWork* persona)
     count = datPersonaCountValidSkills(persona);
     if (FUN_00175ca0(persona) != 0)
     {
-        entry = DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
+        entry = (s8*)DAT_007ce430 + (persona->id - 0xc0) * 0x26e + 4;
         func_001fb4b0(entry, 0x20, persona->level,
                      99 - persona->level, &firstIndex, &indexCount);
     }
     else
     {
-        entry = DAT_007ce428 + persona->id * 0x46 + 6;
+        entry = (s8*)DAT_007ce428 + persona->id * 0x46 + 6;
         func_001fb4b0(entry, 0x10,
                      persona->level -
                          DAT_007ce420[persona->id * 0xe + 3],
                      99 - persona->level, &firstIndex, &indexCount);
     }
 
-    entry += firstIndex * 4;
-    for (i = 0; i < indexCount; i++)
+    current = entry + firstIndex * 4;
+    for (i = 0; i < indexCount; i++, current += 4)
     {
-        if (entry[1] == 1)
+        if (current[1] == 1)
         {
-            for (j = 0; j < count && *(u16*)(entry + 2) != skills[j]; j++)
-                ;
+            j = 0;
+            while (j < count)
+            {
+                if (*(u16*)(current + 2) == skills[j])
+                    break;
+                j++;
+            }
             if (j == count)
                 break;
         }
-        entry += 4;
     }
     return i < indexCount;
 }
