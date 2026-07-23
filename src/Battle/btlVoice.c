@@ -354,6 +354,16 @@ void* func_002f87e0(u16 index);
  extern BtlPacket* FUN_002a3b40_packet_voice(void*, u32);
  #pragma alias FUN_002baf90_packet_voice FUN_002baf90
  extern BtlPacket* FUN_002baf90_packet_voice(void*, BtlUnit*, BtlUnit*, u16, u32);
+#pragma alias FUN_002d1d00_packet_voice FUN_002d1d00
+extern BtlPacket* FUN_002d1d00_packet_voice(BtlAction*, u16, const char*);
+#pragma alias FUN_002bac00_packet_voice FUN_002bac00
+extern BtlPacket* FUN_002bac00_packet_voice(u32, void*, u16);
+#pragma alias FUN_0029ec00_u32_voice FUN_0029ec00
+extern u32 FUN_0029ec00_u32_voice(s32);
+#pragma alias FUN_0029ec50_u32_voice FUN_0029ec50
+extern u32 FUN_0029ec50_u32_voice(s32);
+ 
+ 
 #pragma alias FUN_002d7e20_packet_voice FUN_002d7e20
 extern BtlPacket* FUN_002d7e20_packet_voice(BtlAction*, BtlAction*, void*, u16, u16);
  
@@ -1528,9 +1538,9 @@ void func_002f2b90(u64 param_1)
   u8 *puVar4;
   u8 *puVar5;
   u8 *puVar6;
-  u64 uVar7;
-  u64 uVar8;
-  u64 uVar9;
+  u32 uVar7;
+  u32 uVar8;
+  u32 uVar9;
   u64 *puVar10;
   u64 uVar11;
   u8 auStack_90 [136];
@@ -1541,39 +1551,39 @@ void func_002f2b90(u64 param_1)
   uVar11 = *puVar10;
   sVar2 = FUN_002835e0(0x3f800000,*(u32 *)(puVar10 + 6),0x17);
   uVar1 = *(u16 *)(DAT_0069a1d2 + (u32)*(u16 *)(iGpffffb6fc + 0xb48) * 4);
-  uVar7 = FUN_002b8f90(0);
-  uVar8 = FUN_002b8f90(1);
-  uVar9 = FUN_002f87e0(5);
+  uVar7 = FUN_002b8f90_u32_voice(0);
+  uVar8 = FUN_002b8f90_u32_voice(1);
+  uVar9 = FUN_002f87e0_u32_voice(5);
   FUN_002b90d0(uVar7,uVar9);
-  uVar9 = FUN_002d1d00(param_1,2,0x69a350);
+  uVar9 = (u32)FUN_002d1d00_packet_voice((BtlAction*)param_1,2,(const char*)0x69a350);
   iVar3 = (int)uVar9;
   *(u16 *)(iVar3 + 0x48) = 0x1e;
   *(u64 *)(iVar3 + 0x60) = *puVar10;
   FUN_0027ed20(uVar9,0);
-  uVar9 = FUN_002a3b40(0,1);
+  uVar9 = (u32)FUN_002a3b40_packet_voice(0,1);
   puVar4 = (u8 *)uVar9;
   *puVar4 = 4;
   *(u64 *)(puVar4 + 8) = *(u64 *)(iVar3 + 0x58);
   *(u16 *)(puVar4 + 0x48) = 0x10;
   FUN_0027ed20(uVar9,0);
-  uVar9 = FUN_002bb2f0(uVar7,*(u32 *)(puVar10 + 6),sVar2 + 6,0,0x200);
+  uVar9 = (u32)FUN_002bb2f0_packet_voice(uVar7,(BtlUnit*)*(u32 *)(puVar10 + 6),sVar2 + 6,0,0x200);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(u64 *)(puVar5 + 0x60) = *puVar10;
   FUN_0027ed20(uVar9,2);
-  uVar9 = FUN_00284200(0x3f800000,*(u32 *)(puVar10 + 6),0x17,0,0);
+  uVar9 = (u32)FUN_00284200_packet_voice(0x3f800000,(BtlUnit*)*(u32 *)(puVar10 + 6),0x17,0,0);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(u16 *)(puVar5 + 0x48) = 4;
   *(u64 *)(puVar5 + 0x60) = *puVar10;
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_002b8d60(3,0xfff);
+  uVar9 = (u32)FUN_002b8d60_packet_voice(3,0xfff);
   *(u8 *)uVar9 = 4;
   *(u64 *)((u8 *)uVar9 + 8) = *(u64 *)(puVar5 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_002bd590(*(u32 *)(puVar10 + 6),uVar1);
+  uVar9 = (u32)FUN_002bd590_packet_voice((BtlUnit*)*(u32 *)(puVar10 + 6),uVar1);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -1585,14 +1595,14 @@ void func_002f2b90(u64 param_1)
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(u64 *)(puVar5 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_0029ec00(uVar1);
+  uVar9 = FUN_0029ec00_u32_voice(uVar1);
   FUN_0029ec80(uVar1,&uStack_4,&uStack_8);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(u64 *)(puVar5 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_0029ec50(uVar1);
+  uVar9 = FUN_0029ec50_u32_voice(uVar1);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
@@ -1604,19 +1614,19 @@ void func_002f2b90(u64 param_1)
   *(u64 *)(puVar5 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,1);
   FUN_002bb6f0(uVar1,auStack_90);
-  uVar9 = FUN_002bac00(uVar8,auStack_90,0);
+  uVar9 = (u32)FUN_002bac00_packet_voice(uVar8,auStack_90,0);
   puVar5 = (u8 *)uVar9;
   *puVar5 = 4;
   *(u64 *)(puVar5 + 8) = *(u64 *)(puVar4 + 0x58);
   *(short *)(puVar5 + 0x48) = sVar2;
   *(u64 *)(puVar5 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_002dd4a0(uVar1,0);
+  uVar9 = (u32)FUN_002dd4a0_packet_voice(uVar1,0);
   puVar4 = (u8 *)uVar9;
   *puVar4 = 4;
   *(u64 *)(puVar4 + 8) = *(u64 *)(puVar5 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_002baf90(uVar8,*(u32 *)(puVar10 + 6),*(u32 *)(puVar10 + 6),0,0);
+  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(puVar10 + 6),(BtlUnit*)*(u32 *)(puVar10 + 6),0,0);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -1624,11 +1634,11 @@ void func_002f2b90(u64 param_1)
   *(u64 *)(puVar6 + 0x18) = *(u64 *)(puVar4 + 0x58);
   *(u64 *)(puVar6 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,2);
-  uVar9 = FUN_002dd5e0(0);
+  uVar9 = (u32)FUN_002dd5e0_packet_voice(0);
   *(u8 *)uVar9 = 5;
   *(u64 *)((u8 *)uVar9 + 8) = *(u64 *)(puVar6 + 0x58);
   FUN_0027ed20(uVar9,1);
-  uVar9 = FUN_002baf90(uVar8,*(u32 *)(puVar10 + 6),*(u32 *)(puVar10 + 6),1,0);
+  uVar9 = (u32)FUN_002baf90_packet_voice((void*)uVar8,(BtlUnit*)*(u32 *)(puVar10 + 6),(BtlUnit*)*(u32 *)(puVar10 + 6),1,0);
   puVar6 = (u8 *)uVar9;
   *puVar6 = 4;
   *(u64 *)(puVar6 + 8) = *(u64 *)(puVar5 + 0x58);
@@ -1636,7 +1646,7 @@ void func_002f2b90(u64 param_1)
   *(u64 *)(puVar6 + 0x18) = *(u64 *)(puVar4 + 0x58);
   *(u64 *)(puVar6 + 0x60) = uVar11;
   FUN_0027ed20(uVar9,2);
-  uVar9 = FUN_002dd5e0(1);
+  uVar9 = (u32)FUN_002dd5e0_packet_voice(1);
   *(u8 *)uVar9 = 5;
   *(u64 *)((u8 *)uVar9 + 8) = *(u64 *)(puVar6 + 0x58);
   FUN_0027ed20(uVar9,1);
