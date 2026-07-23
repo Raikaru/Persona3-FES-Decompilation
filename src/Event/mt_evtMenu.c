@@ -108,8 +108,6 @@ extern u32 DAT_007e094e;
 #pragma alias DAT_007e094e_abs DAT_007e094e
 extern u8 DAT_007e094e_abs[];
 extern u32 DAT_007e0952;
-#pragma alias DAT_007e0952_abs DAT_007e0952
-extern u8 DAT_007e0952_abs[];
 extern u32 DAT_007e095e;
 extern u32 DAT_007e095f;
 extern u32 DAT_007e0960;
@@ -4577,15 +4575,15 @@ u64 FUN_00373590(u64 param_1,u64 param_2,int param_3)
     break;
   }
 LAB_003736a4:
-  if (cVar2 == '\0') {
+  if (cVar2 != '\0') {
+    uVar3 = 0;
+  }
+  else {
     if (*(int *)(iVar4 + 0xe8) != 0) {
       FUN_0035adb0(*(int *)(iVar4 + 0xe8),1);
       *(u32 *)(iVar4 + 0xe8) = 0;
     }
     uVar3 = 1;
-  }
-  else {
-    uVar3 = 0;
   }
   return uVar3;
 }
@@ -16507,7 +16505,6 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
   u32 uVar1;
   f32 fVar2;
   int iVar3;
-  int iVar4;
 
   uVar1 = 0;
   if (*(int *)(param_4 + 400) == param_3) {
@@ -16516,10 +16513,8 @@ void FUN_00382760(int param_1,int param_2,int param_3,int param_4)
   switch (param_3) {
   case 0:
     iVar3 = param_2 * 0xc;
-    asm volatile("" : "+r"(iVar3));
-    iVar4 = iVar3;
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
-    FUN_0038a260_f32_5(fVar2,param_1 * 0xc,iVar4,0,DAT_0069ffe0);
+    FUN_0038a260_f32_5(fVar2,param_1 * 0xc,iVar3,0,DAT_0069ffe0);
     fVar2 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
     FUN_0038a260_f32_6(fVar2,(param_1 + 0x1a) * 0xc,iVar3,uVar1,
                        &gp0xffffa3b8,*(u32 *)(param_4 + 0x198));
@@ -17919,7 +17914,7 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
   else {
 
-    if ((*(u16 *)DAT_007e0952_abs & 0x1000) != 0) {
+    if ((DAT_007e0952 & 0x1000) != 0) {
 
       if (*(int *)(iVar1 + 400) == 0) {
 
@@ -17937,7 +17932,7 @@ int FUN_00384370(int param_1,int param_2,int param_3)
 
     else {
 
-      if ((*(u16 *)DAT_007e0952_abs & 0x4000) != 0) {
+      if ((DAT_007e0952 & 0x4000) != 0) {
 
         if (*(int *)(iVar1 + 400) == 3) {
 
