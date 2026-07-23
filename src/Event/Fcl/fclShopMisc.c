@@ -200,10 +200,10 @@ void FUN_003f7730(u64 param_1,u64 param_2,u8 param_3,int param_4,int param_5);
 void FUN_003f7890(u64 param_1,u64 param_2,u8 param_3,int param_4, u64 param_5,int param_6);
 void FUN_003f7a80(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5);
 void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5);
-void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4, int param_5);
+void FUN_003f7d50(int param_1,int param_2,u64 param_3,int param_4, int param_5);
 void FUN_003f7fe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5 );
-void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
-void FUN_003f85a0(u64 param_1,u64 param_2,u64 param_3,u64 param_4, u64 param_5);
+void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5 );
+void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4, int param_5);
 void FUN_003f86a0(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
 void FUN_003f8a00(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
 void FUN_003f8e10(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5 );
@@ -6765,7 +6765,7 @@ void FUN_003f7c60(u32 param_1,u32 param_2,u32 param_3,int param_4,int param_5)
 // (not touched by this fix) diff/count prefix logic above.
 
 
-void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
+void FUN_003f7d50(int param_1,int param_2,u64 param_3,int param_4,
 
                  int param_5)
 
@@ -6787,7 +6787,7 @@ void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   
 
-  iVar5 = *(int *)((int)param_4 + 0x24);
+  iVar5 = *(int *)(param_4 + 0x24);
 
   iVar2 = *(int *)(iVar5 + 0x44);
 
@@ -6807,7 +6807,7 @@ void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  iVar6 = (int)param_1 - (0x1e - (iVar3 * 0x1e) / 5);
+  iVar6 = param_1 - (0x1e - (iVar3 * 0x1e) / 5);
 
   iVar5 = (iVar3 * 0xff) / 5;
 
@@ -6825,7 +6825,7 @@ void FUN_003f7d50(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   }
 
-  if (*(int *)((int)param_4 + 0xc) == param_5) {
+  if (*(int *)(param_4 + 0xc) == param_5) {
 
     FUN_0040e3c0(0,param_1,param_2,uVar4 & 0xff,0x23,0);
 
@@ -6942,7 +6942,7 @@ void FUN_003f7fe0(u64 param_1,u64 param_2,u32 param_3,int param_4,int param_5
 // 1088B vs 1056B window); logic and constants verified against retail.
 
 
-void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
+void FUN_003f8180(int param_1,int param_2,u32 param_3,int param_4,int param_5
 
                  )
 
@@ -6974,9 +6974,9 @@ void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
 
   
 
-  puVar4 = *(u32 **)(*(int *)((int)param_4 + 0x24) + 0x44);
+  puVar4 = *(u32 **)(*(int *)(param_4 + 0x24) + 0x44);
 
-  if (*(int *)((int)param_4 + 0xc) == param_5) {
+  if (*(int *)(param_4 + 0xc) == param_5) {
 
     puVar9 = (u16 *)(&DAT_006aeee0);
 
@@ -7122,12 +7122,16 @@ void FUN_003f8180(u64 param_1,u64 param_2,u32 param_3,u64 param_4,int param_5
 
 }
 
+// Retyped params to match retail's dispatch to func_003f7d50/7fe0/8180
+// (int coords/index, not u64); case 0xc/1 now byte-identical to retail.
+// Residual: case 0x14's two adds route through a scratch reg instead of
+// landing directly in $a0/$a1 - compiler scheduling floor.
 // FUN_003F85A0 NONMATCHING
 
 
-void FUN_003f85a0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
+void FUN_003f85a0(int param_1,int param_2,u64 param_3,int param_4,
 
-                 u64 param_5)
+                 int param_5)
 
 
 
@@ -7135,30 +7139,24 @@ void FUN_003f85a0(u64 param_1,u64 param_2,u64 param_3,u64 param_4,
 
   int iVar1;
 
-  long lVar2;
+  int lVar2;
 
   
 
   lVar2 = FUN_003c6e10(param_4);
 
-  if (lVar2 == 1) {
-
-
-  }
-
-  else if (lVar2 == 0x14) {
-
-    iVar1 = *(int *)(*(int *)((int)param_4 + 0x24) + 0x44);
-
-    FUN_003f7fe0((int)param_1 + (int)*(short *)(iVar1 + 0x28),
-
-                 (int)param_2 + (int)*(short *)(iVar1 + 0x2a),param_3,param_4,param_5);
-
-  }
-
-  else if (lVar2 == 0xc) {
-
-
+  switch (lVar2) {
+  case 0xc:
+    FUN_003f7d50(param_1,param_2,param_3,param_4,param_5);
+    break;
+  case 0x14:
+    iVar1 = *(int *)(*(int *)(param_4 + 0x24) + 0x44);
+    FUN_003f7fe0(param_1 + *(short *)(iVar1 + 0x28),
+                 param_2 + *(short *)(iVar1 + 0x2a),param_3,param_4,param_5);
+    break;
+  case 1:
+    FUN_003f8180(param_1,param_2,param_3,param_4,param_5);
+    break;
   }
 
   return;
