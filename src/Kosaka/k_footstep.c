@@ -44,6 +44,28 @@ extern const char D_00683D00[];
 extern const char D_00683D20[];
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
+extern void func_004c69f0(RwV3d* output, const RwV3d* input);
+extern RwMatrix* func_004c2fb0(RwMatrix* output, RwMatrix* input);
+extern void func_004cb750(RwFrame* frame, const RwV3d* translation, s32 mode);
+extern void func_004cb890(RwFrame* frame, f32 angle, const RwV3d* axis, s32 mode);
+extern f32 func_0052ea00(f32 value);
+extern f32 func_0052ea18(f32 x, f32 y);
+extern s32 func_00530da0(f32 value);
+extern f32 cosf(f32 value);
+extern int printf(const char* format, ...);
+extern f32 fGpffff8398;
+extern f32 fGpffff8420;
+extern f32 fGpffff8424;
+extern f32 fGpffff8248;
+extern const char gp0xffff95e0[];
+extern u8 D_007E095E[];
+extern u8 D_007E095F[];
+extern u8 D_007E0960[];
+extern u8 D_007E0961[];
+extern u8 D_007E094C[];
+extern u8 D_007E094E[];
+extern const char D_00683D50[];
+
 
 typedef s32 (*FootstepAnimSelector)(s32 charId);
 
@@ -317,6 +339,7 @@ typedef struct
 {
     u32 state;
     u32 mode;
+
     u32 timer;
     KwlnTask* eplTask;
 } FldEffectWork;
@@ -339,6 +362,15 @@ typedef struct
     void* resource;
     u8 padding[0xc];
 } FldEffectResourceWork;
+typedef struct
+{
+    RwMatrix cameraMatrix;
+    f32 translation[4];
+    f32 rotationAxis[4];
+    f32 inverse[4];
+    f32 position[4];
+} FootstepEffectScratch;
+
 
 extern void* func_001a9080(KwlnTask* parent, const char* name, u32 priority, u32 flags);
 extern u32 func_001a01c0(void);
@@ -1677,33 +1709,309 @@ footstep_target_done:
     return (s32)result;
 }
 
+// Reconstructed controller input, camera diagnostics, and frame transforms from retail.
+// Remaining differences are compiler scheduling/register allocation in the large state-1 path.
 // FUN_001dfa70 NONMATCHING
 void* func_001dfa70(KwlnTask* task)
 {
     FldEffectResourceWork* work;
-    if (task == NULL || task->workData == NULL)
-    {
-        return KWLNTASK_CONTINUE;
-    }
+    RwFrame* frame;
+    s32 state;
+
     work = (FldEffectResourceWork*)task->workData;
-    if (work->state == 2)
+    frame = *(RwFrame**)((u8*)work->resource + 4);
+    state = (s32)work->state;
+    switch (state)
     {
+    case 0:
+        {
+            u32* src;
+            u32* dst;
+            s32 count;
+            u32 value0;
+            u32 value1;
+
+            src = (u32*)((u8*)frame + 0x10);
+            dst = (u32*)((u8*)work + 0x10);
+            count = 8;
+            do
+            {
+                value0 = src[0];
+                value1 = src[1];
+                src += 2;
+                count -= 1;
+                dst[0] = value0;
+                dst[1] = value1;
+                dst += 2;
+            } while (count > 0);
+            work->state += 1;
+            goto footstep_continue;
+        }
+
+    case 1:
+        {
+            FootstepEffectScratch scratch;
+            RwV3d* rotationAxis;
+            u8* zero;
+            s32 stickValue;
+            s32 moved;
+            s32 count;
+            f32 stick;
+            f32 axisDelta;
+            f32 angle;
+            f32 cameraAngle0;
+            f32 cameraAngle1;
+            f32 cameraAngle2;
+            rotationAxis = (RwV3d*)scratch.rotationAxis;
+            moved = 0;
+            zero = (u8*)scratch.translation;
+            count = 0xc;
+            do
+            {
+                *zero++ = 0;
+                count -= 1;
+            } while (count != 0);
+            angle = 0.0f;
+
+            stickValue = (s32)D_007E095E[0];
+            if (stickValue >= 0)
+            {
+                stick = (f32)stickValue;
+            }
+            else
+            {
+                stick = (f32)((stickValue >> 1) | (stickValue & 1));
+                stick *= 2.0f;
+            }
+            axisDelta = stick - 128.0f;
+            if ((axisDelta < -48.0f) || !(axisDelta <= 48.0f))
+            {
+                rotationAxis->x = 0.0f;
+                rotationAxis->y = 1.0f;
+                rotationAxis->z = 0.0f;
+                angle = fGpffff8398 * axisDelta - angle;
+                moved = 1;
+            }
+
+            stickValue = (s32)D_007E095F[0];
+            if (stickValue >= 0)
+            {
+                stick = (f32)stickValue;
+            }
+            else
+            {
+                stick = (f32)((stickValue >> 1) | (stickValue & 1));
+                stick *= 2.0f;
+            }
+            axisDelta = stick - 128.0f;
+            if ((axisDelta < -48.0f) || !(axisDelta <= 48.0f))
+            {
+                rotationAxis = &frame->modelling.right;
+                angle = fGpffff8398 * axisDelta - angle;
+                moved = 1;
+            }
+
+            stickValue = (s32)D_007E0961[0];
+            if (stickValue >= 0)
+            {
+                stick = (f32)stickValue;
+            }
+            else
+            {
+                stick = (f32)((stickValue >> 1) | (stickValue & 1));
+                stick *= 2.0f;
+            }
+            axisDelta = stick - 128.0f;
+            if ((axisDelta < -48.0f) || !(axisDelta <= 48.0f))
+            {
+                ((RwV3d*)scratch.translation)->x = frame->modelling.at.x;
+                ((RwV3d*)scratch.translation)->y = frame->modelling.at.y;
+                ((RwV3d*)scratch.translation)->z = frame->modelling.at.z;
+                func_004c69f0((RwV3d*)scratch.translation,
+                              (RwV3d*)scratch.translation);
+                ((RwV3d*)scratch.translation)->x *= fGpffff8420 * axisDelta;
+                ((RwV3d*)scratch.translation)->y *= fGpffff8420 * axisDelta;
+                ((RwV3d*)scratch.translation)->z *= fGpffff8420 * axisDelta;
+                moved = 1;
+            }
+
+            stickValue = (s32)D_007E0960[0];
+            if (stickValue >= 0)
+            {
+                stick = (f32)stickValue;
+            }
+            else
+            {
+                stick = (f32)((stickValue >> 1) | (stickValue & 1));
+                stick *= 2.0f;
+            }
+            axisDelta = stick - 128.0f;
+            if ((axisDelta < -48.0f) || !(axisDelta <= 48.0f))
+            {
+                ((RwV3d*)scratch.translation)->x = frame->modelling.right.x;
+                ((RwV3d*)scratch.translation)->y = frame->modelling.right.y;
+                ((RwV3d*)scratch.translation)->z = frame->modelling.right.z;
+                func_004c69f0((RwV3d*)scratch.translation,
+                              (RwV3d*)scratch.translation);
+                ((RwV3d*)scratch.translation)->x *= fGpffff8420 * axisDelta;
+                ((RwV3d*)scratch.translation)->y *= fGpffff8420 * axisDelta;
+                ((RwV3d*)scratch.translation)->z *= fGpffff8420 * axisDelta;
+                moved = 1;
+            }
+            else if ((*(u16*)D_007E094C & 6) != 0)
+            {
+                ((RwV3d*)scratch.translation)->y -= 10.0f;
+                moved = 1;
+            }
+            else if ((*(u16*)D_007E094C & 9) != 0)
+            {
+                ((RwV3d*)scratch.translation)->y += 10.0f;
+                moved = 1;
+            }
+            else if ((*(u16*)D_007E094E & 0x1000) != 0)
+            {
+                rotationAxis->x = 0.0f;
+                rotationAxis->y = 1.0f;
+                rotationAxis->z = 0.0f;
+                scratch.position[0] = frame->modelling.pos.x;
+                scratch.position[1] = frame->modelling.pos.y;
+                scratch.position[2] = frame->modelling.pos.z;
+                scratch.inverse[0] = -scratch.position[0];
+                scratch.inverse[1] = -scratch.position[1];
+                scratch.inverse[2] = -scratch.position[2];
+                func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
+                func_004cb890(frame, 0.0f, rotationAxis, 0);
+                func_004cb750(frame, (RwV3d*)scratch.position, 2);
+            }
+            else if ((*(u16*)D_007E094E & 0x4000) != 0)
+            {
+                rotationAxis->x = 0.0f;
+                rotationAxis->y = 1.0f;
+                rotationAxis->z = 0.0f;
+                scratch.position[0] = frame->modelling.pos.x;
+                scratch.position[1] = frame->modelling.pos.y;
+                scratch.position[2] = frame->modelling.pos.z;
+                scratch.inverse[0] = -scratch.position[0];
+                scratch.inverse[1] = -scratch.position[1];
+                scratch.inverse[2] = -scratch.position[2];
+                func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
+                func_004cb890(frame, 180.0f, rotationAxis, 0);
+                func_004cb750(frame, (RwV3d*)scratch.position, 2);
+            }
+            else if ((*(u16*)D_007E094E & 0x8000) != 0)
+            {
+                rotationAxis->x = 0.0f;
+                rotationAxis->y = 1.0f;
+                rotationAxis->z = 0.0f;
+                scratch.position[0] = frame->modelling.pos.x;
+                scratch.position[1] = frame->modelling.pos.y;
+                scratch.position[2] = frame->modelling.pos.z;
+                scratch.inverse[0] = -scratch.position[0];
+                scratch.inverse[1] = -scratch.position[1];
+                scratch.inverse[2] = -scratch.position[2];
+                func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
+                func_004cb890(frame, 90.0f, rotationAxis, 0);
+                func_004cb750(frame, (RwV3d*)scratch.position, 2);
+            }
+            else if ((*(u16*)D_007E094E & 0x2000) != 0)
+            {
+                rotationAxis->x = 0.0f;
+                rotationAxis->y = 1.0f;
+                rotationAxis->z = 0.0f;
+                scratch.position[0] = frame->modelling.pos.x;
+                scratch.position[1] = frame->modelling.pos.y;
+                scratch.position[2] = frame->modelling.pos.z;
+                scratch.inverse[0] = -scratch.position[0];
+                scratch.inverse[1] = -scratch.position[1];
+                scratch.inverse[2] = -scratch.position[2];
+                func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
+                func_004cb890(frame, 270.0f, rotationAxis, 0);
+                func_004cb750(frame, (RwV3d*)scratch.position, 2);
+            }
+            else if ((*(u16*)D_007E094E & 0x20) != 0)
+            {
+                work->state += 1;
+            }
+
+            if ((*(u16*)D_007E094E & 0x40) != 0)
+            {
+                RwFrame* cameraFrame;
+                u32* src;
+                u32* dst;
+                s32 value0;
+                s32 value1;
+                s32 value2;
+
+                cameraFrame = (RwFrame*)kwlnGetMainCamera()->object.object.parent;
+                value0 = func_00530da0(cameraFrame->modelling.right.x);
+                value1 = func_00530da0(cameraFrame->modelling.right.y);
+                value2 = func_00530da0(cameraFrame->modelling.right.z);
+                printf(D_00683D50, value0, value1, value2);
+                value0 = func_00530da0(cameraFrame->modelling.up.x);
+                value1 = func_00530da0(cameraFrame->modelling.up.y);
+                value2 = func_00530da0(cameraFrame->modelling.up.z);
+                printf(D_00683D50, value0, value1, value2);
+                value0 = func_00530da0(cameraFrame->modelling.at.x);
+                value1 = func_00530da0(cameraFrame->modelling.at.y);
+                value2 = func_00530da0(cameraFrame->modelling.at.z);
+                printf(D_00683D50, value0, value1, value2);
+                value0 = func_00530da0(cameraFrame->modelling.pos.x);
+                value1 = func_00530da0(cameraFrame->modelling.pos.y);
+                value2 = func_00530da0(cameraFrame->modelling.pos.z);
+                printf(D_00683D50, value0, value1, value2);
+                printf(gp0xffff95e0);
+
+                src = (u32*)&cameraFrame->modelling;
+                dst = (u32*)&scratch.cameraMatrix;
+                count = 8;
+                do
+                {
+                    dst[0] = src[0];
+                    dst[1] = src[1];
+                    src += 2;
+                    count -= 1;
+                    dst += 2;
+                } while (count != 0);
+                func_004c2fb0(&scratch.cameraMatrix, &scratch.cameraMatrix);
+                cameraAngle0 = func_0052ea18(scratch.cameraMatrix.up.z,
+                                             scratch.cameraMatrix.up.y);
+                cameraAngle1 = -func_0052ea00(scratch.cameraMatrix.up.x);
+                (void)func_0052ea00(scratch.cameraMatrix.at.x / cosf(cameraAngle1));
+                cameraAngle2 = func_0052ea18(scratch.cameraMatrix.right.z,
+                                             scratch.cameraMatrix.right.x);
+                if (scratch.cameraMatrix.right.x <= 0.0f)
+                {
+                    cameraAngle0 = fGpffff8248 - cameraAngle0;
+                }
+                value0 = func_00530da0(cameraAngle0 * fGpffff8424);
+                value1 = func_00530da0(cameraAngle2 * fGpffff8424);
+                value2 = func_00530da0(cameraAngle1 * fGpffff8424);
+                printf(D_00683D50, value0, value1, value2);
+            }
+
+            if (moved != 0)
+            {
+                scratch.position[0] = frame->modelling.pos.x;
+                scratch.position[1] = frame->modelling.pos.y;
+                scratch.position[2] = frame->modelling.pos.z;
+                scratch.inverse[0] = -scratch.position[0];
+                scratch.inverse[1] = -scratch.position[1];
+                scratch.inverse[2] = -scratch.position[2];
+                func_004cb750(frame, (RwV3d*)scratch.inverse, 2);
+                func_004cb890(frame, angle, rotationAxis, 2);
+                func_004cb750(frame, (RwV3d*)scratch.translation, 2);
+                func_004cb750(frame, (RwV3d*)scratch.position, 2);
+            }
+            goto footstep_continue;
+        }
+
+    case 2:
         return KWLNTASK_STOP;
-    }
-    if (work->state == 0)
-    {
-        work->state = 1;
+
+    default:
         return KWLNTASK_CONTINUE;
     }
-    if (work->resource == NULL)
-    {
-        work->state = 2;
-        return KWLNTASK_CONTINUE;
-    }
-    if (func_001ddd30() != 0)
-    {
-        work->state = 2;
-    }
+footstep_continue:
     return KWLNTASK_CONTINUE;
 }
 
