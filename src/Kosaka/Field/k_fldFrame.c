@@ -868,9 +868,12 @@ u32 func_001ae480(KwlnTask* task)
         for (i = 0; i < work->pointCount; i++)
         {
             s32 j;
-            u8* pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
-            u32* source = (u32*)(pointBase + 0x38);
-            u32* destination = (u32*)(pointBase + 0x20);
+            u8* pointBase;
+            u32* source;
+            u32* destination;
+            pointBase = (u8*)work + i * sizeof(FldFrameMovePoint);
+            source = (u32*)(pointBase + 0x38);
+            destination = (u32*)(pointBase + 0x20);
 
             j = 3;
             do
@@ -1309,6 +1312,14 @@ typedef struct FldFrameResourceSet
     u32 reserved;
     void* items[64];
 } FldFrameResourceSet;
+typedef struct FldFrameResourceQuery
+{
+    void* output;
+    u32 direction[6];
+    u32 directionMode;
+    RwV4d position;
+    void* resource;
+} FldFrameResourceQuery;
 typedef struct FldFrameResourceTable
 {
     u32 count;
@@ -1789,15 +1800,16 @@ void* func_001ace90(void* resource, void* unused, FldFrameMaterialSet* set)
 }
 
 // FUN_001acfc0 NONMATCHING
-void* func_001acfc0(void* resource, FldFrameResourceSet* set)
+void* func_001acfc0(void* resource, void* state)
 {
-    if (resource != NULL && set != NULL)
+    RwSphere* sphere;
+
+    func_004912b0(resource);
+    sphere = func_004912b0(resource);
+    if (RwCameraFrustumTestSphere(*(RwCamera**)DAT_00960070_abs, sphere) != rwSPHEREOUTSIDE)
     {
-        if (set->count < 64)
-        {
-            set->items[set->count++] = resource;
-        }
-        func_00464120(resource, (u8*)set + 4, func_001ace90, set);
+        *(void**)((u8*)state + 0x30) = resource;
+        func_00464120(resource, (u8*)state + 4, func_001ace90, state);
     }
     return resource;
 }
