@@ -2022,7 +2022,7 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     {
         return;
     }
-    if (func_0016dbc0(socialLink, &personaId))
+    if (func_0016dbc0(socialLink, &personaId) == true)
     {
         amount = (s32)((f32)amount * FUN_003BDB80());
     }
@@ -2037,7 +2037,6 @@ void func_0016e2b0(s16 socialLink, s32 amount)
     *progress = table[(u8)level - 1];
     FUN_001723A0(socialLink, level + 1, true);
 }
-
 #pragma opt_propagation off
 // FUN_0016e410
 void func_0016e410(s16 socialLink, s8 level)
