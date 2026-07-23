@@ -11,6 +11,7 @@ extern char DAT_006a6af8[];
 extern u8 DAT_006a9930[];
 /* FUSION_EXACT_PROTOS */
 void FUN_003e5e20(u8* param_1, u8* param_2);
+void FUN_0040e3f0(float param_1, float param_2, float param_3, float param_4, s32 param_5, s32 param_6, u8 param_7, s32 param_8, s32 param_9, s32 param_10, s32 param_11);
 void FUN_003e6130(int param_1);
 void FUN_003e6400(u64 param_1,u64 param_2);
 u64 FUN_003e6d40(void);
@@ -158,10 +159,10 @@ extern s16 DAT_006a7530[];
 extern s16 DAT_006a7550[];
 extern s16 DAT_006a7570[];
 extern u32 DAT_006a7590;
-float DAT_007cad7c;
-float DAT_007cad84;
-float DAT_007cadd0;
-float DAT_007cae00;
+extern float DAT_007cad7c;
+extern float DAT_007cad84;
+extern float DAT_007cadd0;
+extern float DAT_007cae00;
 u32 DAT_007cd7d0;
 u32 DAT_007cd7d4;
 extern u32 DAT_007ce688;
@@ -261,9 +262,8 @@ void FUN_003e5b00(u32* ownerWords, u32 source, char direction, int count, int ma
 // FUN_003E5E20 NONMATCHING
 void FUN_003e5e20(u8* param_1, u8* param_2)
 {
-    char cVar2;
-    s32 iVar1;
-    s32 sVar3;
+    s16 iVar1;
+    u8 alpha;
     f32 fVar4;
     u32 random;
 
@@ -275,16 +275,16 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
     {
         fVar4 = 0.25f * (f32)(*(s8 *)(param_2 + 0xc) + *(s8 *)(param_2 + 9));
         iVar1 = (s32)fVar4;
+        __asm__ volatile ("" : "+r"(iVar1));
         *(s16 *)(param_2 + 4) =
             *(s16 *)(param_2 + 4) + (s16)iVar1;
 
         *(s16 *)(param_2 + 6) =
             *(s16 *)(param_2 + 6) +
             (s16)((*(s8 *)(param_2 + 9) & 1) * 2 + 2);
-        cVar2 = *(char *)(param_2 + 0xc) - 1;
-        *(char *)(param_2 + 0xc) = cVar2;
+        *(char *)(param_2 + 0xc) = *(char *)(param_2 + 0xc) - 1;
 
-        if (cVar2 < 1)
+        if (*(char *)(param_2 + 0xc) < 1)
         {
             random = RpRandom();
             *(s8 *)(param_2 + 0xc) =
@@ -293,13 +293,12 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
 
         fVar4 = (f32)*(s8 *)(param_2 + 0xc);
         fVar4 /= 5.0f;
-        fVar4 = 1.0f + fVar4;
-        fVar4 += (f32)*(s16 *)(param_2 + 0xe);
-        sVar3 = (int)fVar4;
-        *(s16 *)(param_2 + 0xe) = sVar3;
-        if (sVar3 < 0)
+        fVar4 = fVar4 + 1.0f;
+        fVar4 = (f32)*(s16 *)(param_2 + 0xe) + fVar4;
+        *(s16 *)(param_2 + 0xe) = (s16)(int)fVar4;
+        if (*(s16 *)(param_2 + 0xe) < 0)
         {
-            *(s16 *)(param_2 + 0xe) = sVar3 + 0x168;
+            *(s16 *)(param_2 + 0xe) = *(s16 *)(param_2 + 0xe) + 0x168;
         }
         if (*(s16 *)(param_2 + 0xe) >= 0x169)
         {
@@ -319,10 +318,11 @@ void FUN_003e5e20(u8* param_1, u8* param_2)
         if (*(u8 *)(param_2 + 8) != 0)
         {
             fVar4 = DAT_007cad84 * (f32)*(u8 *)(param_2 + 8);
+            alpha = (u8)fVar4;
             FUN_0040e3f0(0.0f, (f32)(int)*(s16 *)(param_2 + 0xe),
                          1.0f, 1.0f, *(u16 *)(param_2 + 4),
                          *(u16 *)(param_2 + 6),
-                         (int)fVar4 & 0xff,
+                         alpha,
                          0xf7, 0, 0, 0);
         }
 
