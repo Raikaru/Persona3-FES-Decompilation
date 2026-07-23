@@ -9175,7 +9175,7 @@ u64 FUN_003688d0(u64 param_1,u64 param_2,int param_3,int param_4)
 
     *(u32 *)(context + 0x660) = 3;
 
-    FUN_0036f5f0(10,0x26,0xd,0);
+    FUN_0036f5f0(10,0x26,0xd,param_4);
 
   }
 
