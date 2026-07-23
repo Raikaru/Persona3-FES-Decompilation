@@ -1120,7 +1120,7 @@ extern u32 DAT_0069c4d8;
 extern u32 DAT_0069c4e0;
 extern u32 DAT_0069c4e4;
 extern u32 DAT_0069c4e8;
-extern u32 DAT_0069c510;
+extern MdlDispatchSlot DAT_0069c510[];
 extern MdlDispatchSlot DAT_0069c514[];
 extern u32 DAT_0069c518;
 extern u32 DAT_0069c51c;
@@ -22471,6 +22471,11 @@ void FUN_00332200(int param_1)
 
 
 
+// Fixed jump-table indexing bug: DAT_0069c510 retyped MdlDispatchSlot[]
+// (matching sibling DAT_0069c514) to fix a genuine x64-vs-x16 stride bug
+// from raw pointer arithmetic scaling by the old u32 element type.
+// Residual: retail hoists a loop-invariant 0xffffffff store constant and
+// uses a different loop-register mapping; not reproduced after 3 tries.
 // FUN_00332210 NONMATCHING
 
 
@@ -22480,15 +22485,11 @@ void FUN_00332210(int param_1)
 
 {
 
-  u32 uVar1;
-
   u16 *puVar2;
-
   int iVar3;
-
   u32 uVar4;
-
-  
+  u32 uVar1;
+  u32 negOne;
 
   puVar2 = (u16 *)param_1;
 
@@ -22498,9 +22499,11 @@ void FUN_00332210(int param_1)
 
     iVar3 = *(int *)(puVar2 + 0xc);
 
+    negOne = 0xffffffff;
+
     for (uVar4 = 0; uVar4 < uVar1; uVar4 = uVar4 + 1) {
 
-      *(u32 *)(iVar3 + 0x10) = 0xffffffff;
+      *(u32 *)(iVar3 + 0x10) = negOne;
 
       iVar3 = iVar3 + 0x20;
 
@@ -22508,7 +22511,7 @@ void FUN_00332210(int param_1)
 
   }
 
-  (*(code *)(&DAT_0069c510 + (u32)*puVar2 * 0x10))(param_1);
+  (*(code *)&DAT_0069c510[(u32)*puVar2])(param_1);
 
   *(int *)(puVar2 + 8) = *(int *)(puVar2 + 8) + 1;
 
