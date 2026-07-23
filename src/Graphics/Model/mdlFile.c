@@ -245,7 +245,7 @@ u32 FUN_0031f740(float param_1,int *param_2);
 u8 * FUN_0031f7a0(float param_1,int *param_2);
 u8 * FUN_0031f870(float param_1,int *param_2,float param_3,int *param_4,float param_5);
 void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4);
-void FUN_0031faf0(int param_1,u64 param_2);
+void FUN_0031faf0(f32 *param_1,u64 param_2);
 u32 * FUN_0031fbd0(float param_1,int *param_2);
 u8 * FUN_0031fd00(void);
 void FUN_0031fde0(void);
@@ -3552,43 +3552,36 @@ void FUN_0031f9d0(float param_1,int *param_2,float param_3,int *param_4)
 
 
 // FUN_0031FAF0 NONMATCHING
-
-
-void FUN_0031faf0(int param_1,u64 param_2)
-
-
-
+// Fixed two bugs in the raw decompiler output: (1) separate uStack_1..4
+// scalars were dead-store-eliminated since only &uStack_4 was passed out
+// - switched to a real u8[4] array; (2) 1.0/255.0 literals forced double-
+// precision software float calls instead of retail's hardware sub.s/
+// mul.s - added f suffixes. obj 88B->220B/224B; residual is the usual
+// safe-float-to-byte compare-shape floor (compare op now matches
+// exactly, branch polarity/placement doesn't).
+void FUN_0031faf0(f32 *param_1,u64 param_2)
 {
-
   u32 uVar1;
-
   float fVar2;
-
-  u8 uStack_4;
-  u8 uStack_3;
-  u8 uStack_2;
-  u8 uStack_1;
-
-  
+  u8 rgba[4];
 
   uVar1 = FUN_001a6400(param_2,0x69baf0);
 
-  fVar2 = (1.0 - *(float *)(param_1 + 4)) * 255.0;
+  fVar2 = (1.0f - param_1[1]) * 255.0f;
 
-  if (fVar2 < 2.1474836e+09) {
-    uStack_1 = (u8)(int)fVar2;
+  if (2147483648.0f <= fVar2) {
+    rgba[3] = (u8)((int)(fVar2 - 2147483648.0f) | 0x80000000);
   }
   else {
-    uStack_1 = (u8)(int)(fVar2 - 2.1474836e+09);
+    rgba[3] = (u8)(int)fVar2;
   }
 
-  uStack_2 = (u8)uVar1;
-  uStack_3 = (u8)((u32)uVar1 >> 8);
-  uStack_4 = (u8)((u32)uVar1 >> 0x10);
-  FUN_001b5ae0(param_2,&uStack_4);
+  rgba[2] = (u8)uVar1;
+  rgba[1] = (u8)((u32)uVar1 >> 8);
+  rgba[0] = (u8)((u32)uVar1 >> 0x10);
+  FUN_001b5ae0(param_2,rgba);
 
   return;
-
 }
 
 
