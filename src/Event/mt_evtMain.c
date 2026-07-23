@@ -13605,13 +13605,13 @@ code * FUN_0036d500(void)
 
   int iVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
   long lVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   
 
