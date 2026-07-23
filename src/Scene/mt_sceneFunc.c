@@ -236,7 +236,7 @@ u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
-u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4);
+u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
 extern u64 FUN_003b8ce0_scene(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
@@ -764,7 +764,7 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 // FUN_003B8CE0 NONMATCHING
 
 
-u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4)
+u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4)
 
 
 
