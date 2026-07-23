@@ -5,6 +5,15 @@ typedef u8 bool;
 #ifndef CONCAT44
 #define CONCAT44(hi, lo) ((((u64)(hi)) << 32) | (u32)(lo))
 #endif
+extern u32 FUN_00530da0(float);
+extern void FUN_00523ac8(u8 *,const char *,u32);
+extern char DAT_006a0a20[];
+#pragma alias DAT_006a0a20_abs DAT_006a0a20
+extern u8 DAT_006a0a20_abs[];
+typedef struct MtEvtMiscObj {
+  u8 pad_928[0x928];
+  int value_928;
+} MtEvtMiscObj;
 
 extern u32 DAT_0069d590;
 extern u32 DAT_0069d5c8;
@@ -52,7 +61,7 @@ extern u32 DAT_007cce4c;
 extern u32 DAT_007cce78;
 extern u32 DAT_007ccf94;
 extern u32 DAT_007cd130;
-extern u32 DAT_007cdeac;
+extern int DAT_007cdeac;
 extern u32 DAT_007ce5d8;
 extern u32 DAT_007ce5e4;
 extern u32 DAT_007ce5e8;
@@ -686,7 +695,7 @@ void FUN_00386390(u32 *param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 void FUN_00386aa0(void);
 void FUN_00386b70(u64 param_1,int param_2,int param_3);
 void FUN_00386c40(int param_1,int param_2);
-void FUN_00386d50(int param_1);
+void FUN_00386d50(MtEvtMiscObj *param_1);
 void FUN_00386e20(int param_1,u32 param_2);
 void FUN_00386e40(int param_1,u32 param_2);
 void FUN_00386e50(void);
@@ -850,16 +859,16 @@ u32 FUN_00386cd0(void)
 #pragma pop
 
 
-// FUN_00386D50 NONMATCHING
+// FUN_00386D50
 
 
-void FUN_00386d50(int param_1)
+void FUN_00386d50(MtEvtMiscObj *param_1)
 
 
 
 {
 
-  u64 uVar1;
+  u32 uVar1;
 
   int iVar2;
 
@@ -871,15 +880,14 @@ void FUN_00386d50(int param_1)
 
   }
 
-  if (DAT_007cdeac < *(int *)(param_1 + 0x928)) {
+  if (DAT_007cdeac < param_1->value_928) {
 
-    *(int *)(param_1 + 0x928) = DAT_007cdeac;
+    param_1->value_928 = DAT_007cdeac;
 
   }
 
-  uVar1 = FUN_00530da0(((float)(DAT_007cdeac - *(int *)(param_1 + 0x928)) / 1024.0) / 1024.0);
-
-  FUN_00523ac8(auStack_20,0x6a0a20,uVar1);
+  uVar1 = FUN_00530da0(((float)(DAT_007cdeac - param_1->value_928) / 1024.0f) / 1024.0f);
+  FUN_00523ac8(auStack_20,(const char *)DAT_006a0a20_abs,uVar1);
 
   return;
 
