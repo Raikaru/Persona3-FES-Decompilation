@@ -54,8 +54,10 @@ extern u32 FUN_0017d920();
 extern u32 FUN_0017da40();
 extern u32 FUN_0017e480();
 extern u32 FUN_00194b20();
+typedef u32 (*KFldTaskUpdateFunc)(u32 task);
+typedef void (*KFldTaskDestroyFunc)(u32 task);
 extern u32 FUN_00194b80(u32 parent, u32 priority, const char* name,
-                        u32 init, u32 destroy, u32 work);
+                        KFldTaskUpdateFunc init, KFldTaskDestroyFunc destroy, u32 work);
 extern u32 FUN_00195460();
 extern u32 FUN_00198540();
 extern u32 FUN_00198560();
@@ -2216,7 +2218,7 @@ void FUN_001b76b0(u32 task)
     (*(void (**)(void*))DAT_0096017c_abs)(*(void**)(task + 0x3c));
 }
 
-// FUN_001b7700 NONMATCHING
+// FUN_001b7700
 void* FUN_001b7700(void* parent)
 {
     void* task;
@@ -2228,7 +2230,7 @@ void* FUN_001b7700(void* parent)
         return NULL;
     }
     task = (void*)FUN_00194b80((u32)parent, 10, D_00679030_abs,
-                               (u32)FUN_001b75e0, (u32)FUN_001b76b0, work);
+                               FUN_001b75e0, FUN_001b76b0, work);
     *(u32*)(work + 4) = FUN_00100d80(D_00679040_abs, 0);
     return task;
 }
