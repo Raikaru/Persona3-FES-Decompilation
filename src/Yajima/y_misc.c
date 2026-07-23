@@ -1392,9 +1392,9 @@ u64 FUN_00425690(int param_1)
 
   u32 uVar7;
 
-  u64 uVar8;
+  u32 uVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
   long lVar10;
 
