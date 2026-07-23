@@ -14015,11 +14015,11 @@ u32 FUN_0036db20(int param_1)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   long lVar7;
 
