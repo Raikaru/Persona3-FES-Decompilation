@@ -2667,7 +2667,7 @@ void FUN_003905f0(int param_1,u64 param_2)
 
   int iVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   int iVar7;
 
