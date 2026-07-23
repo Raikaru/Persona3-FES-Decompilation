@@ -5648,6 +5648,12 @@ u64 FUN_00321eb0(void)
 
 
 
+// Fixed a genuine correctness bug: &DAT_xxx (u32*) + byte-offset scaled by
+// 4 in standard C pointer arithmetic (writing to wrong addresses at
+// runtime); switched to the array-typed _abs alias for byte-level scale
+// and absolute addressing. Residual: retail caches all 7 base addresses
+// before the loop and uses a structurally different loop shape (nd
+// unchanged by this fix alone -- a separate, larger restructuring floor).
 // FUN_00321F10 NONMATCHING
 
 
@@ -5671,19 +5677,19 @@ void FUN_00321f10(u32 param_1)
 
     iVar3 = uVar1 * 4;
 
-    *(u32 *)(&DAT_00957920 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957920_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957320 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957320_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957620 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957620_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957520 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957520_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957420 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957420_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957820 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957820_abs + iVar3 + iVar2) = 0;
 
-    *(u32 *)(&DAT_00957720 + iVar3 + iVar2) = 0;
+    *(u32 *)(DAT_00957720_abs + iVar3 + iVar2) = 0;
 
   }
 
