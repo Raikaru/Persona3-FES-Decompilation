@@ -4634,7 +4634,10 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
   
 
-  pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  first2 = *(volatile int *)(param_2 + 0x18);
+  second2 = *(volatile int *)(param_2 + 0x10);
+  iVar8 = second2 + first2;
+  pbVar7 = (u8 *)iVar8;
 
   bVar1 = *pbVar7;
   firstLow = bVar1 - 1 & 0xff;
@@ -4655,9 +4658,9 @@ u64 FUN_003ae160(u64 param_1,int param_2)
 
 
   firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
-  second2 = *(volatile int *)(param_2 + 0x10);
   first2 = *(volatile int *)(param_2 + 0x18);
-  iVar8 = second2 + first2;
+  second2 = *(volatile int *)(param_2 + 0x10);
+  iVar8 = first2 + second2;
   bVar2 = *(u8 *)(iVar8 + 2);
   secondLow = bVar2 - 1 & 0xff;
 
@@ -4741,7 +4744,10 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
   
 
-  pbVar7 = (u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18));
+  first2 = *(volatile int *)(param_2 + 0x18);
+  second2 = *(volatile int *)(param_2 + 0x10);
+  iVar8 = second2 + first2;
+  pbVar7 = (u8 *)iVar8;
 
   bVar1 = *pbVar7;
   firstLow = bVar1 - 1 & 0xff;
@@ -4762,9 +4768,9 @@ u64 FUN_003ae260(u64 param_1,int param_2)
 
 
   firstIndex = (u8)uVar5 << 8 | (u8)firstLow;
-  second2 = *(volatile int *)(param_2 + 0x10);
   first2 = *(volatile int *)(param_2 + 0x18);
-  iVar8 = second2 + first2;
+  second2 = *(volatile int *)(param_2 + 0x10);
+  iVar8 = first2 + second2;
   bVar2 = *(u8 *)(iVar8 + 2);
   secondLow = bVar2 - 1 & 0xff;
 
