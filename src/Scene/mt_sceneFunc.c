@@ -236,7 +236,7 @@ u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
-u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
+u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
 extern u64 FUN_003b8ce0_scene(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
@@ -761,90 +761,65 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 }
 #define FUN_003b8c30(...) ((u32 (*)(...))FUN_003b8c30)(__VA_ARGS__)
 #undef FUN_003b8ce0
+#pragma push
+#pragma opt_rebuildconditionals off
+ 
 // FUN_003B8CE0 NONMATCHING
 
 
-u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4)
-
-
-
+u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4)
 {
+    u32 uVar1;
+    int iVar2;
+    u16 *puVar3;
+    u8 auStack_8[8];
 
-  u32 uVar1;
-
-  int iVar2;
-
-  u16 *puVar3;
-
-  u8 auStack_8 [3];
-
-  u8 uStack_5;
-
-  
-
-  if (param_1 == 0) {
-
-    uVar1 = 0;
-
-  }
-
-  else {
-
-    puVar3 = (u16 *)param_1;
-
-    iVar2 = (int)(*puVar3 & 0xffc00) >> 10;
-
-    if (iVar2 == 6) {
-
-      FUN_00350040(*(u32 *)(puVar3 + 0x82),auStack_8);
-
+    if (param_1 == 0)
+    {
+        return 0;
     }
 
-    else {
+    puVar3 = (u16 *)param_1;
+    iVar2 = (int)(*puVar3 & 0xffc00) >> 10;
+    if (iVar2 == 6)
+    {
+        goto type6;
+    }
+    if (iVar2 == 3)
+    {
+        goto type3;
+    }
+    return 0;
 
-      if (iVar2 != 3) {
+type3:
+    iVar2 = FUN_00318b00(*(u32 *)(puVar3 + 0x94));
+    auStack_8[4] = *(u8 *)(iVar2 + 0);
+    auStack_8[5] = *(u8 *)(iVar2 + 1);
+    auStack_8[6] = *(u8 *)(iVar2 + 2);
+    auStack_8[7] = *(u8 *)(iVar2 + 3);
 
-        return 0;
-
-      }
-
-      iVar2 = FUN_00318b00(*(u32 *)(puVar3 + 0x94));
-
-      uStack_5 = *(u8 *)(iVar2 + 3);
-
-      if (param_4 == 1) {
-
+    if (param_4 == 1)
+    {
         *(u8 *)(puVar3 + 0x60) = 1;
-
-      }
-
-      else {
-
+    }
+    else
+    {
         *(u8 *)(puVar3 + 0x60) = 0;
-
-      }
-
     }
 
     *(u32 *)(puVar3 + 0x14) = *(u32 *)(puVar3 + 0x14) | 0x4000;
-
-    *(u8 *)(puVar3 + 0x5a) = uStack_5;
-
+    *(u8 *)(puVar3 + 0x5a) = auStack_8[7];
     *(u8 *)((int)puVar3 + 0xb5) = param_2;
-
     *(u32 *)(puVar3 + 0x5c) = param_3;
-
-    puVar3[0x5e] = 0;
-
-    puVar3[0x5f] = 0;
-
+    *(u32 *)((u8 *)puVar3 + 0xbc) = 0;
     uVar1 = 1;
+    return uVar1;
 
-  }
-
-  return uVar1;
-
+type6:
+    FUN_00350040(*(u32 *)(puVar3 + 0x82), auStack_8);
+    return 0;
 }
+#pragma pop
 #define FUN_003b8ce0(...) ((u32 (*)(...))FUN_003b8ce0)(__VA_ARGS__)
 #undef FUN_003b8e10
 // FUN_003B8E10
