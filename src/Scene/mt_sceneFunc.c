@@ -236,7 +236,7 @@ u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
 u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
-u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4);
+u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
 extern u64 FUN_003b8ce0_scene(u32 param_1,u64 param_2,u64 param_3,u64 param_4);
 u64 FUN_003b8e10(u64 param_1,u64 param_2,u64 param_3,u64 param_4);
@@ -619,7 +619,7 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
   u32 uVar1;
 
-  long lVar2;
+  u32 lVar2;
 
   int iVar3;
 
@@ -775,7 +775,7 @@ u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3)
 // FUN_003B8CE0 NONMATCHING
 
 
-u32 FUN_003b8ce0(long param_1,u8 param_2,u32 param_3,long param_4)
+u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4)
 
 
 
@@ -953,7 +953,7 @@ u32 FUN_003b8e80(u32 param_1,float param_2,u32 param_3)
 }
 #define FUN_003b8e80(...) ((u32 (*)(...))FUN_003b8e80)(__VA_ARGS__)
 #undef FUN_003b8f30
-// FUN_003B8F30 NONMATCHING
+// FUN_003B8F30
 
 
 u32 FUN_003b8f30(void)
@@ -968,7 +968,7 @@ u32 FUN_003b8f30(void)
 
   u32 uVar3;
 
-  long lVar4;
+  u32 lVar4;
 
   
 
@@ -990,25 +990,15 @@ u32 FUN_003b8f30(void)
 
     iVar2 = (int)lVar4;
 
-    uVar1 = *(u32 *)(iVar2 + 0x28);
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xfffffffe;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xfffffffa;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff7ffa;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff7fba;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff7bba;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff73ba;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff63ba;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff43ba;
-
-    *(u32 *)(iVar2 + 0x28) = uVar1 & 0xffff03ba;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xfffffffe;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xfffffffb;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xffff7fff;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xffffffbf;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xfffffbff;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xfffff7ff;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xffffefff;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xffffdfff;
+    *(u32 *)(iVar2 + 0x28) = *(u32 *)(iVar2 + 0x28) & 0xffffbfff;
 
     uVar3 = 1;
 
