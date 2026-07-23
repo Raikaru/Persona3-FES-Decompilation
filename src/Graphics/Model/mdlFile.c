@@ -23329,6 +23329,11 @@ void FUN_00332e10(int *param_1)
 
 
 
+// Fixed genuine bugs: swapped __int128 stack-local declaration order to
+// match retail's slot allocation, and a wrong (float)int numeric-convert
+// cast that should have been a raw float reinterpret (*(float*)). nd
+// 65 -> 10. Residual: retail evaluates the final call's second argument
+// before the first (reversed vs source-written order); not reproduced.
 // FUN_00332F10 NONMATCHING
 
 
@@ -23344,9 +23349,9 @@ void FUN_00332f10(int *param_1)
 
   int iVar3;
 
-  __int128 auStack_20;
-
   __int128 auStack_10;
+
+  __int128 auStack_20;
 
   
 
@@ -23373,7 +23378,7 @@ void FUN_00332f10(int *param_1)
 
       if (param_1[0xb] != 0) {
 
-        FUN_003275d0_evt((float)param_1[9] / 10.0f);
+        FUN_003275d0_evt(*(float *)(param_1 + 9) / 10.0f);
 
       }
 
