@@ -1210,36 +1210,29 @@ u32 func_001afd40(f32 duration, KwlnTask* task, const RwV3d* position)
     return true;
 }
 
-// FUN_001aff70 NONMATCHING
+// FUN_001AFF70
+// The existing model/matrix-derived position guess did not match retail
+// at all - retail's bytes have NO fldFrameMoveModel/mdlGetMatrix calls
+// and never write points[pointCount].position for this kind=1 point (it
+// is a duration/kind-only marker point, position is left whatever it was).
 u32 func_001aff70(KwlnTask* task, s32 duration)
 {
     FldFrameMoveWork* work;
-    Model* model;
-    RwV3d position;
 
-    work = fldFrameMoveWork(task);
-    if (work->pointCount >= 47)
+    work = (FldFrameMoveWork*)task->workData;
+    if (work->pointCount < 47)
     {
-        return false;
+        if (work->pointCount > 0 &&
+            work->points[work->pointCount - 1].kind == 1)
+        {
+            return false;
+        }
+        work->points[work->pointCount].kind = 1;
+        work->points[work->pointCount].duration = (f32)duration;
+        work->pointCount++;
+        return true;
     }
-    if (work->pointCount > 0 &&
-        work->points[work->pointCount - 1].kind == 1)
-    {
-        return false;
-    }
-    model = fldFrameMoveModel(work);
-    if (model != NULL)
-    {
-        position = mdlGetMatrix(model)->pos;
-    }
-    else
-    {
-        position.x = 0.0f;
-        position.y = 0.0f;
-        position.z = 0.0f;
-    }
-    fldFrameMoveAppend(work, 1, &position, (f32)duration);
-    return true;
+    return false;
 }
 
 // FUN_001b0020
