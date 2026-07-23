@@ -679,10 +679,12 @@ void func_00180e60(void)
     datSetFlag(0xa00, false);
 }
 
-// FUN_00180EE0 NONMATCHING
+// FUN_00180EE0
 KwlnTask* func_00180ee0(KwlnTask* clndTask)
 {
     s32 eventIndex;
+    register KwlnTask* task = clndTask;
+    register KwlnTask* actionTask = NULL;
 
     H_Dbprt_FmtLog("calendar: morning");
     datSetFlag(0xa80, false);
@@ -694,16 +696,17 @@ KwlnTask* func_00180ee0(KwlnTask* clndTask)
     datSetFlag(0xa86, false);
     datSetFlag(0xa87, false);
 
-    if (datGetSkipToTarget() != 0)
+    if (datGetSkipToTarget() == 0)
     {
-        return NULL;
+        eventIndex = clndFindAndExecSiteibiEvents();
+        if (eventIndex != -1)
+        {
+            return func_00181950(task, eventIndex);
+        }
+        func_0017db40(datGetDaysSinceApr5());
+        actionTask = func_003c1ab0(task, datGetTime() & 0xff);
     }
-    eventIndex = clndFindAndExecSiteibiEvents();
-    if (eventIndex < 0)
-    {
-        return func_003c1ab0(clndTask, datGetTime());
-    }
-    return func_00181950(clndTask, eventIndex);
+    return actionTask;
 }
 
 // FUN_00181010
