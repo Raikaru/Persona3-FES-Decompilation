@@ -2208,6 +2208,9 @@ void func_001fc1f0(void)
     persona = datPersonaGetByPcId(1);
     datPersonaAddExp(persona, 0x18);
 }
+#pragma schedule on
+#pragma optimization_level 2
+#pragma opt_loop_invariants on
 // FUN_001FC230 NONMATCHING
 
 
@@ -2252,6 +2255,8 @@ u8 func_001fc230(DatPersonaWork* persona)
     }
     return i < indexCount;
 }
+#pragma opt_loop_invariants off
+#pragma schedule off
 // FUN_001FC3C0 NONMATCHING
 u32 func_001fc3c0(DatPersonaWork* persona)
 {
