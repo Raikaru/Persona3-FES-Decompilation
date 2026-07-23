@@ -11329,7 +11329,7 @@ void FUN_003fdcc0(int param_1,int param_2,int *param_3)
 
   int iVar3;
 
-  u64 uVar4;
+  u32 uVar4;
 
   int iVar5;
 
