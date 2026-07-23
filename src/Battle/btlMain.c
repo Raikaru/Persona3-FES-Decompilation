@@ -3062,6 +3062,11 @@ u32 FUN_0029faa0(BtlMainColorWork *param_1)
   return uVar3;
 
 }
+#pragma schedule on
+#pragma optimization_level 3
+#pragma opt_common_subs on
+#pragma opt_rebuildconditionals off
+ 
 // FUN_002A0440 NONMATCHING
 u32 FUN_002a0440(float *param_1)
 
@@ -3077,20 +3082,20 @@ u32 FUN_002a0440(float *param_1)
 
   float fVar17;
 
-  float fStack_20;
+  volatile float fStack_20;
 
-  float fStack_1c;
+  volatile float fStack_1c;
 
-  float fStack_18;
+  volatile float fStack_18;
 
-  float fStack_14;
-  float fStack_10;
+  volatile float fStack_14;
+  volatile float fStack_10;
 
-  float fStack_c;
+  volatile float fStack_c;
 
-  float fStack_8;
+  volatile float fStack_8;
 
-  float fStack_4;
+  volatile float fStack_4;
 
   
 
@@ -3205,13 +3210,13 @@ u32 FUN_002a0440(float *param_1)
 
           *(u8 *)(iVar7 + 0x3b) = *(u8 *)(iVar7 + 0x3f);
 
-          *(u32 *)(iVar7 + 0x60) = *(u32 *)(iVar7 + 0x70);
+          *(float *)(iVar7 + 0x60) = *(float *)(iVar7 + 0x70);
 
-          *(u32 *)(iVar7 + 100) = *(u32 *)(iVar7 + 0x74);
+          *(float *)(iVar7 + 100) = *(float *)(iVar7 + 0x74);
 
-          *(u32 *)(iVar7 + 0x68) = *(u32 *)(iVar7 + 0x78);
+          *(float *)(iVar7 + 0x68) = *(float *)(iVar7 + 0x78);
 
-          *(u32 *)(iVar7 + 0x6c) = *(u32 *)(iVar7 + 0x7c);
+          *(float *)(iVar7 + 0x6c) = *(float *)(iVar7 + 0x7c);
 
           if (((*(u16 *)((u8 *)param_1 + 0x58) & 4) == 0) && ((*(u32 *)(iVar7 + 0x98) & 2) != 0)) {
 
@@ -3622,6 +3627,10 @@ u32 FUN_002a0440(float *param_1)
   return uVar9;
 
 }
+#pragma opt_rebuildconditionals on
+#pragma opt_common_subs on
+#pragma optimization_level 2
+#pragma schedule off
 // FUN_002A10E0 NONMATCHING
 
 
