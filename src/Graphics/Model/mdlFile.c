@@ -1106,9 +1106,17 @@ extern u64 FUN_00531230();
 extern u64 FUN_005318a0();
 extern u32 DAT_0069ba18;
 extern u32 DAT_0069bb90;
+#pragma alias DAT_0069bb90_abs DAT_0069bb90
+extern u8 DAT_0069bb90_abs[];
 extern u32 DAT_0069bb94;
+#pragma alias DAT_0069bb94_abs DAT_0069bb94
+extern u8 DAT_0069bb94_abs[];
 extern u32 DAT_0069bbd0;
+#pragma alias DAT_0069bbd0_abs DAT_0069bbd0
+extern u8 DAT_0069bbd0_abs[];
 extern u32 DAT_0069bbd4;
+#pragma alias DAT_0069bbd4_abs DAT_0069bbd4
+extern u8 DAT_0069bbd4_abs[];
 extern u32 DAT_0069bcb0;
 extern u32 DAT_0069bcb4;
 extern u32 DAT_0069bcb8;
@@ -5077,6 +5085,17 @@ void FUN_00321320(u32 *param_1)
 
 
 
+// Fixed the same genuine correctness bug as sibling FUN_00321f10: all 11
+// &DAT_xxx (scalar-typed) + byte-offset pointer arithmetic sites were
+// scaled 4x by standard C rules (writing to wrong addresses at runtime);
+// switched to array-typed _abs aliases for correct byte-level addressing
+// (4 new aliases added: DAT_0069bb90/94/bbd0/bbd4). This intentionally
+// costs a small normalized_diff regression (1150 -> 1165): retail hoists
+// all 7 DAT_0095xxxx_abs base addresses plus a cached DAT_00960090
+// function pointer into persistent registers before/across the loop,
+// while this version recomputes each lui+addiu per use; same documented
+// residual class as FUN_00321f10, kept because it fixes real wrong-memory
+// writes that the diff scorer does not account for.
 // FUN_00321360 NONMATCHING
 
 
@@ -5112,11 +5131,11 @@ void FUN_00321360(u32 param_1)
 
   for (uVar7 = 0; uVar7 < 9; uVar7 = uVar7 + 1) {
 
-    (*DAT_00960094)(*(u32 *)(&DAT_0069bbd0 + uVar7 * 8),auStack_30 + uVar7);
+    (*DAT_00960094)(*(u32 *)(DAT_0069bbd0_abs + uVar7 * 8),auStack_30 + uVar7);
 
-    (*DAT_00960090)(*(u32 *)(&DAT_0069bbd0 + uVar7 * 8),
+    (*DAT_00960090)(*(u32 *)(DAT_0069bbd0_abs + uVar7 * 8),
 
-                    *(u32 *)(&DAT_0069bbd4 + uVar7 * 8));
+                    *(u32 *)(DAT_0069bbd4_abs + uVar7 * 8));
 
   }
 
@@ -5130,13 +5149,13 @@ void FUN_00321360(u32 param_1)
 
     iVar5 = (u32)bVar1 * 8;
 
-    uVar2 = *(u32 *)(&DAT_0069bb90 + iVar5);
+    uVar2 = *(u32 *)(DAT_0069bb90_abs + iVar5);
 
-    uVar3 = *(u32 *)(&DAT_0069bb94 + iVar5);
+    uVar3 = *(u32 *)(DAT_0069bb94_abs + iVar5);
 
     iVar6 = (u32)bVar1 * 4;
 
-    iVar5 = *(int *)(&DAT_00957320 + iVar6 + iVar4);
+    iVar5 = *(int *)(DAT_00957320_abs + iVar6 + iVar4);
 
     if (iVar5 != 0) {
 
@@ -5152,19 +5171,19 @@ void FUN_00321360(u32 param_1)
 
       } while (iVar5 != 0);
 
-      *(int *)(&DAT_00957320 + iVar6 + iVar4) = 0;
+      *(int *)(DAT_00957320_abs + iVar6 + iVar4) = 0;
 
       for (uVar8 = 0; uVar8 < 9; uVar8 = uVar8 + 1) {
 
-        (*DAT_00960090)(*(u32 *)(&DAT_0069bbd0 + uVar8 * 8),
+        (*DAT_00960090)(*(u32 *)(DAT_0069bbd0_abs + uVar8 * 8),
 
-                        *(u32 *)(&DAT_0069bbd4 + uVar8 * 8));
+                        *(u32 *)(DAT_0069bbd4_abs + uVar8 * 8));
 
       }
 
     }
 
-    puVar9 = *(u16 **)(&DAT_00957920 + iVar6 + iVar4);
+    puVar9 = *(u16 **)(DAT_00957920_abs + iVar6 + iVar4);
 
     if (puVar9 != (u16 *)0x0) {
 
@@ -5200,11 +5219,11 @@ void FUN_00321360(u32 param_1)
 
       } while (puVar9 != (u16 *)0x0);
 
-      *(u32 *)(&DAT_00957920 + iVar6 + iVar4) = 0;
+      *(u32 *)(DAT_00957920_abs + iVar6 + iVar4) = 0;
 
     }
 
-    iVar5 = *(int *)(&DAT_00957620 + iVar6 + iVar4);
+    iVar5 = *(int *)(DAT_00957620_abs + iVar6 + iVar4);
 
     if (iVar5 != 0) {
 
@@ -5246,7 +5265,7 @@ void FUN_00321360(u32 param_1)
 
       } while (iVar5 != 0);
 
-      *(int *)(&DAT_00957620 + iVar6 + iVar4) = 0;
+      *(int *)(DAT_00957620_abs + iVar6 + iVar4) = 0;
 
       (*DAT_00960090)(0x14,1);
 
@@ -5258,7 +5277,7 @@ void FUN_00321360(u32 param_1)
 
     }
 
-    iVar5 = *(int *)(&DAT_00957520 + iVar6 + iVar4);
+    iVar5 = *(int *)(DAT_00957520_abs + iVar6 + iVar4);
 
     if (iVar5 != 0) {
 
@@ -5276,13 +5295,13 @@ void FUN_00321360(u32 param_1)
 
       } while (iVar5 != 0);
 
-      *(int *)(&DAT_00957520 + iVar6 + iVar4) = 0;
+      *(int *)(DAT_00957520_abs + iVar6 + iVar4) = 0;
 
       (*DAT_00960090)(1,0);
 
     }
 
-    piVar10 = (int *)(&DAT_00957420 + iVar6 + iVar4);
+    piVar10 = (int *)(DAT_00957420_abs + iVar6 + iVar4);
 
     iVar5 = *piVar10;
 
@@ -5344,7 +5363,7 @@ void FUN_00321360(u32 param_1)
 
     if (4 < (param_1 & 0xffff)) {
 
-      iVar5 = *(int *)(&DAT_00957820 + iVar6 + iVar4);
+      iVar5 = *(int *)(DAT_00957820_abs + iVar6 + iVar4);
 
       if (iVar5 != 0) {
 
@@ -5362,11 +5381,11 @@ void FUN_00321360(u32 param_1)
 
         } while (iVar5 != 0);
 
-        *(int *)(&DAT_00957820 + iVar6 + iVar4) = 0;
+        *(int *)(DAT_00957820_abs + iVar6 + iVar4) = 0;
 
       }
 
-      iVar5 = *(int *)(&DAT_00957720 + iVar6 + iVar4);
+      iVar5 = *(int *)(DAT_00957720_abs + iVar6 + iVar4);
 
       if (iVar5 != 0) {
 
@@ -5384,7 +5403,7 @@ void FUN_00321360(u32 param_1)
 
         } while (iVar5 != 0);
 
-        *(int *)(&DAT_00957720 + iVar6 + iVar4) = 0;
+        *(int *)(DAT_00957720_abs + iVar6 + iVar4) = 0;
 
       }
 
@@ -5394,7 +5413,7 @@ void FUN_00321360(u32 param_1)
 
   for (uVar7 = 0; uVar7 < 9; uVar7 = uVar7 + 1) {
 
-    (*DAT_00960090)(*(u32 *)(&DAT_0069bbd0 + uVar7 * 8),auStack_30[uVar7]);
+    (*DAT_00960090)(*(u32 *)(DAT_0069bbd0_abs + uVar7 * 8),auStack_30[uVar7]);
 
   }
 
