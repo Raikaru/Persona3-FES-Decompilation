@@ -6803,7 +6803,7 @@ void FUN_0030cc40(void)
 
 
 
-// FUN_0030cdb0 NONMATCHING
+// FUN_0030cdb0
 void FUN_0030cdb0(void)
 {
   s32 lVar1;
@@ -6832,9 +6832,9 @@ zero:
   fVar3 = 50.0f;
   fVar3 = fVar3 + fVar2;
   fVar4 = fVar4 / fVar3;
-  fVar2 = (float)FUN_0030fdf0(0x14,0);
-  fVar2 = fVar2 * fVar4;
-  fVar2 = DAT_007cad74 * fVar2;
+  fVar3 = (float)FUN_0030fdf0(0x14,0);
+  fVar3 = fVar3 * fVar4;
+  fVar2 = DAT_007cad74 * fVar3;
 done:
   FUN_00311190((int)fVar2);
   return;
