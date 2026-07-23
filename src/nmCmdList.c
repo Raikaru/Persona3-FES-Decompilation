@@ -1696,7 +1696,7 @@ u32 FUN_003c7430(u64 param_1)
 }
 #define FUN_003c7430(...) ((u32 (*)(...))FUN_003c7430)(__VA_ARGS__)
 #undef FUN_003c74e0
-// FUN_003C74E0 NONMATCHING
+// FUN_003C74E0
 
 
 u32 FUN_003c74e0(int param_1)
@@ -1738,7 +1738,7 @@ u32 FUN_003c74e0(int param_1)
 
       piVar4[2] = param_1;
 
-      uVar1 = FUN_003c75b0();
+      uVar1 = FUN_003c75b0_typed();
 
       *(u8 *)((int)piVar4 + 0xd) = uVar1;
 
