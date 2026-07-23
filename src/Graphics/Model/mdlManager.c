@@ -6726,7 +6726,7 @@ u32 func_00318d10(u8* param_1,u32 param_2,u32* param_3)
 
   u32 *puVar5;
 
-  u64 uVar6;
+  u32 uVar6;
 
   long lVar7;
 
