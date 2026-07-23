@@ -926,7 +926,7 @@ void FUN_00424f80(void)
 
 {
   u8 *entry;
-  int bVar1;
+  u8 bVar1;
   int iVar2;
 
   for (iVar2 = 1; iVar2 < 4; iVar2 = iVar2 + 1) {
@@ -935,7 +935,7 @@ void FUN_00424f80(void)
     if ((*(u32 *)(entry + 0x48) != 0) && (*(u32 *)(entry + 0x54) != 0)) {
       bVar1 = 1;
     }
-    if (bVar1) {
+    if (bVar1 == 1) {
       func_001b00c0(*(u32 *)
                     (*(int *)(*(int *)(*(int *)(entry + 0x16c) + 0x3c) + 0x24) +
                     0x170));
@@ -1637,7 +1637,6 @@ void FUN_00425ba0(int param_1)
       mdlDestroy(((u32 *)DAT_0095bea0_abs)[iVar1]);
     }
   }
-
   (DAT_0096017c_abs[0x5f])(*(u32 *)(object + 0x3c));
 
   return;
