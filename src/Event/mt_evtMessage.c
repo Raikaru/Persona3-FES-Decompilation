@@ -2143,7 +2143,7 @@ u32 FUN_003a0e90(int param_1)
 
   char cVar3;
 
-  long lVar4;
+  int lVar4;
 
   int iVar5;
 
@@ -2155,15 +2155,14 @@ u32 FUN_003a0e90(int param_1)
 
   u32 uVar9;
 
-  u8 auStack_90 [64];
-
   u8 auStack_50 [72];
 
-  undefined3 uStack_8;
+  u8 auStack_90 [112];
 
-  u8 uStack_5;
+  float fStack_4;
 
   u8 auStack_4 [4];
+
 
   
 
@@ -2233,9 +2232,9 @@ u32 FUN_003a0e90(int param_1)
 
       uVar2 = FUN_0016df30(*(u16 *)(iVar1 + 4));
 
-      FUN_00523ac8(auStack_90,0x6a1920,uVar2);
+      FUN_00523ac8(auStack_90 + 0x30,0x6a1920,uVar2);
 
-      uVar9 = FUN_0010c1a0(0,auStack_90,0,0,0,0,0,0);
+      uVar9 = FUN_0010c1a0(0,auStack_90 + 0x30,0,0,0,0,0,0);
 
       *(u32 *)(iVar1 + 100) = uVar9;
 
@@ -2457,11 +2456,11 @@ u32 FUN_003a0e90(int param_1)
 
   case 0xf:
 
-    fVar8 = *(float *)(iVar1 + 0xa8) + 8.0;
+    fVar8 = *(float *)(iVar1 + 0xa8) + 8.0f;
 
     *(float *)(iVar1 + 0xa8) = fVar8;
 
-    if (90.0 < fVar8) {
+    if (90.0f < fVar8) {
 
       *(u32 *)(iVar1 + 0xa8) = 0x42b40000;
 
@@ -2473,11 +2472,11 @@ u32 FUN_003a0e90(int param_1)
 
   case 0x10:
 
-    fVar8 = *(float *)(iVar1 + 0xa8) + 4.0;
+    fVar8 = *(float *)(iVar1 + 0xa8) + 4.0f;
 
     *(float *)(iVar1 + 0xa8) = fVar8;
 
-    if (180.0 <= fVar8) {
+    if (180.0f <= fVar8) {
 
       *(u32 *)(iVar1 + 0xa8) = 0x43340000;
 
@@ -2569,7 +2568,7 @@ u32 FUN_003a0e90(int param_1)
 
     if ((*(u8 *)(iVar1 + 0xb1) < 0xa0) &&
 
-       (fVar8 = *(float *)(iVar1 + 0xac) + 12.0, *(float *)(iVar1 + 0xac) = fVar8, 180.0 <= fVar8))
+       (fVar8 = *(float *)(iVar1 + 0xac) + 12.0f, *(float *)(iVar1 + 0xac) = fVar8, 180.0f <= fVar8))
 
     {
 
@@ -2577,7 +2576,7 @@ u32 FUN_003a0e90(int param_1)
 
     }
 
-    if ((*(char *)(iVar1 + 0xb1) == '\x0e') && (180.0 <= *(float *)(iVar1 + 0xac))) {
+    if ((*(char *)(iVar1 + 0xb1) == '\x0e') && (180.0f <= *(float *)(iVar1 + 0xac))) {
 
       FUN_00398390(iVar1 + 0xd4,0x1e);
 
@@ -2593,7 +2592,7 @@ u32 FUN_003a0e90(int param_1)
 
     if ((lVar4 != 0) &&
 
-       (fVar8 = *(float *)(iVar1 + 0xac) + 12.0, *(float *)(iVar1 + 0xac) = fVar8, 180.0 <= fVar8))
+       (fVar8 = *(float *)(iVar1 + 0xac) + 12.0f, *(float *)(iVar1 + 0xac) = fVar8, 180.0f <= fVar8))
 
     {
 
@@ -2871,7 +2870,7 @@ u32 FUN_003a0e90(int param_1)
 
   if (lVar4 != 0) {
 
-    FUN_00350040(*(u32 *)((int)lVar4 + 0x104),auStack_4);
+    FUN_00350040(*(u32 *)((int)lVar4 + 0x104),(u32 *)&fStack_4);
 
     iVar7 = *(int *)(iVar1 + 0x9c);
 
@@ -2883,9 +2882,9 @@ u32 FUN_003a0e90(int param_1)
 
     }
 
-    uStack_8 = CONCAT13(uVar2,(*(u32 *)auStack_4 & 0xffffff));
+    *(u32 *)auStack_4 = CONCAT13(uVar2,(*(u32 *)&fStack_4 & 0xffffff));
 
-    FUN_0034ff90(*(u32 *)((int)lVar4 + 0x104),&uStack_8);
+    FUN_0034ff90(*(u32 *)((int)lVar4 + 0x104),auStack_4);
 
   }
 
