@@ -89,7 +89,7 @@ void H_Pad_StopRumble(void);
 void H_Pad_IgnoreRumbleCallback(void);
 
 void H_Pad_RwFreeRaw(void* memory);
-void* H_Pad_RwAllocateRaw(size_t size);
+void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint);
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint);
 void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint);
 RwMemoryFunctions* H_Pad_GetRwMemoryFunctions(void);
