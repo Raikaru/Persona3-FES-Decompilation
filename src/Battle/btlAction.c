@@ -1020,9 +1020,9 @@ void btlActionInitStateStartHome(BtlAction* action)
     BtlPacket* packet;
     BtlUnit* unit = action->unit;
     RwV3d homePos;
-    u16 speedIndex;
     u16 allowMove;
-    u16 unitId;
+    u16 speedIndex;
+    BtlEnemyRecord* enemyRecords;
 
     if ((gBtl->flags & 0x2000) && (action->unk_1a & 1) && unit->genus == UNIT_GENUS_PC)
     {
@@ -1038,11 +1038,18 @@ void btlActionInitStateStartHome(BtlAction* action)
     {
         speedIndex = 2;
         allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
-        unitId = action->unit->datUnit->id;
-        if (action->unit->genus == UNIT_GENUS_EC)
+        switch (action->unit->genus)
         {
-            speedIndex = *(u16*)((u8*)iGpffffb728 + unitId * 0xe8 +
+        case UNIT_GENUS_EC:
+            enemyRecords = iGpffffb728;
+            speedIndex = *(u16*)((u8*)enemyRecords +
+                                 action->unit->datUnit->id * 0xe8 +
                                  (u32)allowMove * 4 + 0x24);
+            break;
+        case UNIT_GENUS_PC:
+            break;
+        default:
+            break;
         }
         packet = btlUnitCreateMovePacket(unit, &homePos, D_00693300[speedIndex], 0);
         packet->actionUID = action->uid;
@@ -5221,29 +5228,55 @@ void btlActionInitStateExit(BtlAction* action)
 // FUN_00299b00 NONMATCHING
 void btlActionUpdateStateExit(BtlAction* action)
 {
-    BtlUnit* unit = action->unit;
+    BtlUnit* unit;
+    DatUnitPc* found;
+    u16 i;
+    DatUnitPc* party;
+    Battle* battle;
 
     if (action->unk_1a & 1)
     {
+        unit = action->unit;
         if (unit->packetCount != 0)
         {
             return;
         }
-        if (unit->genus == UNIT_GENUS_PC)
+        switch (unit->genus)
         {
-            if (FUN_0030b5a0(unit->datUnit, 0) != 0)
-            {
-                FUN_002ff660(ACTION_U32(gBtl, 0xbbc), unit->datUnit);
-            }
-        }
-        else if (action->unk_18 & 0x20)
-        {
-            FUN_00300560(unit->datUnit, 0xfff7ff7f);
-            FUN_00301690(unit->datUnit);
-            if (ACTION_U8(unit->datUnit, 0x10) == 10)
-            {
-                ACTION_U8(unit->datUnit, 0x10) = 1;
-            }
+            case UNIT_GENUS_PC:
+                if (action->unk_18 & 0x20)
+                {
+                    found = NULL;
+                    i = 0;
+                    battle = gBtl;
+                    do
+                    {
+                        party = battle->startInfo.partyUnits[i];
+                        if (party != NULL && party->base.unit == unit->datUnit)
+                        {
+                            found = party;
+                            break;
+                        }
+                        i++;
+                    } while (i < 4);
+                    if (found != NULL)
+                    {
+                        ACTION_U16(found, 0xa) &= ~1;
+                        FUN_00300560(unit->datUnit, 0xfff7ff7f);
+                        FUN_00301690(unit->datUnit);
+                        if (ACTION_U8(unit->datUnit, 0x10) == 10)
+                        {
+                            ACTION_U8(unit->datUnit, 0x10) = 1;
+                        }
+                    }
+                }
+                break;
+            case UNIT_GENUS_EC:
+                if (FUN_0030b5a0(unit->datUnit, 0) != 0)
+                {
+                    FUN_002ff660(ACTION_U32(gBtl, 0xbbc), unit->datUnit);
+                }
+                break;
         }
         FUN_002878d0(unit);
         action->unit = NULL;
