@@ -865,7 +865,7 @@ void FUN_003c8fa0(void)
 
 void FUN_003c9000(u32 param_1,float param_2,float param_3,int param_4,int param_5,
 
-                 char param_6,int param_7,u64 param_8)
+                 char param_6,int param_7,u32 param_8)
 
 
 
