@@ -1022,6 +1022,7 @@ void btlActionInitStateStartHome(BtlAction* action)
     RwV3d homePos;
     u16 speedIndex;
     u16 allowMove;
+    u16 unitId;
 
     if ((gBtl->flags & 0x2000) && (action->unk_1a & 1) && unit->genus == UNIT_GENUS_PC)
     {
@@ -1036,10 +1037,11 @@ void btlActionInitStateStartHome(BtlAction* action)
     if (FUN_002d1ed0(&unit->pos, &homePos) > 75.0f)
     {
         speedIndex = 2;
-        allowMove = (iGpffffb708[(u32)action->target.specificId * 0x2c] & 2) == 0;
-        if (unit->genus == UNIT_GENUS_EC)
+        allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
+        unitId = action->unit->datUnit->id;
+        if (action->unit->genus == UNIT_GENUS_EC)
         {
-            speedIndex = *(u16*)((u8*)iGpffffb728 + unit->datUnit->id * 0xe8 +
+            speedIndex = *(u16*)((u8*)iGpffffb728 + unitId * 0xe8 +
                                  (u32)allowMove * 4 + 0x24);
         }
         packet = btlUnitCreateMovePacket(unit, &homePos, D_00693300[speedIndex], 0);
