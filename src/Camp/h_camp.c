@@ -719,7 +719,7 @@ static void h_campDrawMenuEntryPass(CampRootDrawWork* work, f32 alpha, s32 mode)
     h_campDrawRootUi(work, alpha);
 }
 
-// FUN_0011c550 NONMATCHING
+// FUN_0011c550
 void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
 {
     struct {
@@ -729,6 +729,7 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
         f32 startY;
     } pos;
     f32 temp;
+    f32 offset;
     s32 i;
     s32 selectedEntry;
 
@@ -748,7 +749,9 @@ void h_campDrawRootMenuEntries(CampRootDrawWork* work, f32 alpha)
     asm volatile("" : "+r"(selectedEntry));
     temp = 19.0f;
     temp = temp * (f32)selectedEntry;
-    temp = 57.0f + temp;
+    offset = temp;
+    temp = 57.0f;
+    temp = temp + offset;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
@@ -1058,7 +1061,7 @@ void h_campUpdateRootMenuEntryTransition(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(root, alpha);
 }
 
-// FUN_0011d3a0 NONMATCHING
+// FUN_0011d3a0
 void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
 {
     struct {
@@ -1068,8 +1071,9 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
         f32 startY;
     } pos;
     f32 temp;
+    f32 offset;
     s32 i;
-
+    s32 selectedEntry;
     pos.endX = 46.0f;
     pos.endY = 59.0f;
     pos.startX = pos.endX - 200.0f;
@@ -1082,9 +1086,13 @@ void h_campDrawRootMenuEntriesClosing(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = (f32)work->selectedEntry;
-    temp = temp * 19.0f;
-    temp = temp + 57.0f;
+    selectedEntry = work->selectedEntry;
+    asm volatile("" : "+r"(selectedEntry));
+    temp = 19.0f;
+    temp = temp * (f32)selectedEntry;
+    offset = temp;
+    temp = 57.0f;
+    temp = temp + offset;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
@@ -1206,7 +1214,7 @@ void h_campUpdateRootMenuEntryFadeOut(CampRootDrawWork* work, f32 alpha)
     h_campDrawRootUi(work, alpha);
 }
 
-// FUN_0011da80 NONMATCHING
+// FUN_0011da80
 void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
 {
     struct {
@@ -1216,7 +1224,9 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
         f32 startY;
     } pos;
     f32 temp;
+    f32 offset;
     s32 i;
+    s32 selectedEntry;
 
     pos.endX = 46.0f;
     pos.endY = 59.0f;
@@ -1230,9 +1240,13 @@ void h_campDrawRootMenuEntriesFadeOut(CampRootDrawWork* work, f32 alpha)
     }
 
     pos.startX = -19.0f;
-    temp = (f32)work->selectedEntry;
-    temp = temp * 19.0f;
-    temp = temp + 57.0f;
+    selectedEntry = work->selectedEntry;
+    asm volatile("" : "+r"(selectedEntry));
+    temp = 19.0f;
+    temp = temp * (f32)selectedEntry;
+    offset = temp;
+    temp = 57.0f;
+    temp = temp + offset;
     pos.startY = temp;
     pos.endX = 181.0f;
     pos.endY = pos.startY;
