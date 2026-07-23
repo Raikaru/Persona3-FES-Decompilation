@@ -452,47 +452,162 @@ void func_0021cd00(void* frameData, f32* uv)
 #pragma opt_common_subs on
 
 #pragma optimization_level 3
+#pragma opt_common_subs off
+#pragma schedule on
+// Reconstructed full mode dispatch and duplicated axis calculations.
+// Remaining differences are MWCC register allocation and branch scheduling.
 // FUN_0021cec0 NONMATCHING
 void func_0021cec0(void* frameData, f32* uv, u32 mode)
 {
-    static const u8 xModes[8] = {0, 2, 0, 1, 2, 2, 2, 1};
-    static const u8 yModes[8] = {1, 0, 2, 0, 1, 2, 1, 1};
     BpTexFrameData* frame;
     u8* texture;
     u8* rasterList;
     u8* raster;
-    s32 rasterWidth;
-    s32 rasterHeight;
-    f32 x;
-    f32 xEnd;
-    f32 y;
-    f32 yEnd;
-    u32 xMode;
-    u32 yMode;
+    u32 rasterIndex;
 
     frame = (BpTexFrameData*)frameData;
+    rasterIndex = frame->rasterIndex;
     texture = (u8*)(uintptr_t)frame->texture;
     rasterList = (u8*)(uintptr_t)BP_TEX_U32(texture, 8);
-    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, frame->rasterIndex * 4);
-    rasterWidth = *(s32*)(raster + 0x0c);
-    rasterHeight = *(s32*)(raster + 0x10);
-    x = (f32)frame->x;
-    xEnd = (f32)(frame->x + frame->width);
-    y = (f32)frame->y;
-    yEnd = (f32)(frame->y + frame->height);
-    xMode = 0;
-    yMode = 0;
-    if (mode < 8)
+    raster = (u8*)(uintptr_t)BP_TEX_U32(rasterList, rasterIndex * 4);
     {
-        xMode = xModes[mode];
-        yMode = yModes[mode];
+        volatile f32 xRange[2] = {0};
+        volatile f32 yRange[2];
+        s32 rasterWidth;
+        s32 rasterHeight;
+        u32 xMode;
+        u32 yMode;
+        f32 extent;
+    xRange[0] = (f32)frame->x;
+    xRange[1] = (f32)(frame->x + frame->width);
+    rasterWidth = *(s32*)(raster + 0x0c);
+    yRange[0] = (f32)frame->y;
+    yRange[1] = (f32)(frame->y + frame->height);
+    rasterHeight = *(s32*)(raster + 0x10);
+
+    switch (mode)
+    {
+    case 0:
+        xMode = 0;
+        yMode = 1;
+        break;
+    case 1:
+        xMode = 2;
+        yMode = 2;
+        break;
+    case 2:
+        xMode = 0;
+        yMode = 2;
+        break;
+    case 3:
+        xMode = 1;
+        yMode = 0;
+        break;
+    case 4:
+        xMode = 2;
+        yMode = 1;
+        break;
+    case 5:
+        xMode = 2;
+        yMode = 2;
+        break;
+    case 6:
+        xMode = 2;
+        yMode = 1;
+        break;
+    case 7:
+        xMode = 1;
+        yMode = 1;
+        break;
     }
 
-    bpTexSetUvAxis(x, xEnd, rasterWidth, frame->id, xMode,
-                   &uv[0], &uv[2]);
-    bpTexSetUvAxis(y, yEnd, rasterHeight, frame->id >> 1, yMode,
-                   &uv[1], &uv[3]);
+    if (xMode == 0)
+    {
+        extent = (f32)rasterWidth;
+        if ((frame->id & 1) != 0)
+        {
+            uv[0] = xRange[1] / extent;
+            uv[2] = xRange[0] / extent;
+        }
+        else
+        {
+            uv[0] = xRange[0] / extent;
+            uv[2] = xRange[1] / extent;
+        }
+    }
+    else if (xMode == 1)
+    {
+        extent = (f32)rasterWidth;
+        if ((frame->id & 1) != 0)
+        {
+            uv[0] = xRange[1] / extent;
+            uv[2] = (xRange[1] - 1.0f) / extent;
+        }
+        else
+        {
+            uv[0] = xRange[0] / extent;
+            uv[2] = (xRange[0] + 1.0f) / extent;
+        }
+    }
+    else
+    {
+        extent = (f32)rasterWidth;
+        if ((frame->id & 1) != 0)
+        {
+            uv[0] = (xRange[0] + 1.0f) / extent;
+            uv[2] = xRange[0] / extent;
+        }
+        else
+        {
+            uv[0] = (xRange[1] - 1.0f) / extent;
+            uv[2] = xRange[1] / extent;
+        }
+    }
+    if (yMode == 0)
+    {
+        extent = (f32)rasterHeight;
+        if ((frame->id >> 1 & 1) != 0)
+        {
+            uv[1] = yRange[1] / extent;
+            uv[3] = yRange[0] / extent;
+        }
+        else
+        {
+            uv[1] = yRange[0] / extent;
+            uv[3] = yRange[1] / extent;
+        }
+    }
+    else if (yMode == 1)
+    {
+        extent = (f32)rasterHeight;
+        if ((frame->id >> 1 & 1) != 0)
+        {
+            uv[1] = yRange[1] / extent;
+            uv[3] = (yRange[1] - 1.0f) / extent;
+        }
+        else
+        {
+            uv[1] = yRange[0] / extent;
+            uv[3] = (yRange[0] + 1.0f) / extent;
+        }
+    }
+    else
+    {
+        extent = (f32)rasterHeight;
+        if ((frame->id >> 1 & 1) != 0)
+        {
+            uv[1] = (yRange[0] + 1.0f) / extent;
+            uv[3] = yRange[0] / extent;
+        }
+        else
+        {
+            uv[1] = (yRange[1] - 1.0f) / extent;
+            uv[3] = yRange[1] / extent;
+        }
+    }
+    }
 }
+#pragma schedule on
 #pragma optimization_level 2
 
 // FUN_0021d3b0
