@@ -1182,26 +1182,40 @@ void FUN_00225040(void)
     (*setQuad4)((u32*)(records + 0x1050), 4, 0, 2, 3);
 }
 
-// FUN_002254A0 NONMATCHING
+// FUN_002254A0
 void FUN_002254A0(void)
 {
+    u8* work;
+    u8* records;
+    u32 table0;
     u32 current;
-    u8* base;
+    u32 resource;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
-    base = bcm_panel_bytes();
-    current = bcm_panel_read(0x6068) - bcm_panel_read(0x606c);
-    bcm_panel_write(0x18c0, current);
-    bcm_panel_write(0x18e0, *(u32*)(base + 0x4660 + current * 0x420 + 0xc));
-    bcm_panel_write(0x4630, 4);
-    bcm_panel_write(0x4658, 0);
-    bcm_panel_write(0, bcm_panel_read(0) | 8);
-    bcm_panel_write(0x4644, 1);
+    work = (u8*)sBcmPanel;
+    records = work + 0x4660;
+    table0 = FUN_0021c3f0(0);
+
+    K_ASSERT((*(u32*)(work + 4) & 4) != 0, 0x973);
+
+    current = *(u32*)(work + 0x6068) - *(u32*)(work + 0x606c);
+    *(u32*)(records + 0x18c0) = current;
+    *(u32*)(records + 0x18e0) = *(u32*)(records + current * 0x420 + 0xc);
+    *(u32*)(work + 0x4630) = 4;
+    *(u32*)(work + 0x4658) = 0;
+    *(u32*)work |= 8;
+    *(u32*)(work + 0x4644) = 1;
     FUN_00227d10();
-    bcm_panel_set_resource(base + 0x4430, 0, 0x25);
-    FUN_0021e380(base + 0x4530,
-                 FUN_0021cca0(FUN_0021c3f0(0), 0x25), 1);
-    bcm_panel_set_resource(base + 0x18f0, 0, 0x2f);
+
+    resource = FUN_0021cca0(table0, 0x25);
+    FUN_0021d3b0(work + 0x4430, resource);
+
+    resource = FUN_0021cca0(table0, 0x25);
+    FUN_0021e380(work + 0x4530, resource, 1);
+
+    resource = FUN_0021cca0(table0, 0x2f);
+    FUN_0021d3b0(records + 0x18f0, resource);
+
     FUN_00225670();
 }
 
