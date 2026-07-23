@@ -259,7 +259,7 @@ void FUN_00320770(int *param_1);
 void FUN_00320810(int *param_1);
 u32 FUN_00320880(u64 param_1,int *param_2,int param_3,u64 param_4);
 u64 FUN_00320ba0(u64 param_1,u32 *param_2);
-u64 FUN_00320cf0(u64 param_1,u64 param_2);
+u32 FUN_00320cf0(u32 param_1,u32 param_2);
 u64 FUN_00320da0(u64 param_1,u64 param_2);
 u64 FUN_00320de0(u64 param_1,u32 *param_2);
 u16 FUN_00320f70(u64 param_1,u32 param_2);
@@ -4584,10 +4584,10 @@ u64 FUN_00320ba0(u64 param_1,u32 *param_2)
 
 
 
-// FUN_00320CF0 NONMATCHING
+// FUN_00320CF0
 
 
-u64 FUN_00320cf0(u64 param_1,u64 param_2)
+u32 FUN_00320cf0(u32 param_1,u32 param_2)
 
 
 
@@ -4608,25 +4608,21 @@ u64 FUN_00320cf0(u64 param_1,u64 param_2)
   iVar2 = *(int *)(iVar1 + 0x24);
 
   iVar4 = 0;
-
-  while( true ) {
-
-    if (iVar2 <= iVar4) {
-
-      return param_1;
-
-    }
-
-    lVar3 = FUN_00320ba0((u64)(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar4 * 4)),(u32 *)(param_2));
-
-    if (lVar3 == 0) break;
-
-    iVar4 = iVar4 + 1;
-
+  goto check;
+loop:
+  lVar3 = FUN_00320ba0((int)(*(u32 *)(*(int *)(iVar1 + 0x20) + iVar4 * 4)),(u32 *)(param_2));
+  if (lVar3 != 0) {
+    goto increment;
   }
-
   *(u32 *)(iVar1 + 8) = *(u32 *)(iVar1 + 8) | 0x40;
-
+  goto done;
+increment:
+  iVar4 = iVar4 + 1;
+check:
+  if (iVar4 < iVar2) {
+    goto loop;
+  }
+done:
   return param_1;
 
 }
