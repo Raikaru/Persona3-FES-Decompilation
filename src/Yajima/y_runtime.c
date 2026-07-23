@@ -16029,22 +16029,33 @@ void FUN_004532d0(char param_1)
 }
 
 #pragma pop
-// FUN_004533E0 NONMATCHING
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma opt_loop_invariants on
+// FUN_004533E0
 
 void FUN_004533e0(u8 param_1)
 {
   u8 *base;
   int iVar2;
   u8 *puVar1;
+  int valid;
 
-  base = DAT_0086eda0_bytes;
-  for (iVar2 = 0; iVar2 < 0x18; iVar2 = iVar2 + 1) {
+  iVar2 = 0;
+  for (; iVar2 < 0x18; iVar2 = iVar2 + 1) {
+    base = DAT_0086eda0_bytes;
+    valid = 0;
     puVar1 = base + iVar2 * 0x1c0;
     if ((*(int *)(puVar1 + 0x48) != 0) && (*(int *)(puVar1 + 0x54) != 0)) {
+      valid = 1;
+    }
+    valid = valid != 0;
+    if (valid == 1) {
       *(u8 *)(*(int *)(*(int *)(puVar1 + 0x16c) + 0x3c) + 0x41) = param_1;
     }
   }
 }
+#pragma pop
 
 // FUN_00453460
 
