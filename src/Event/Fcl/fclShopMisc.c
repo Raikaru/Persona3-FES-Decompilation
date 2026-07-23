@@ -8686,7 +8686,7 @@ void FUN_003fa210(int param_1)
 
 }
 
-// FUN_003FA520 NONMATCHING
+// FUN_003FA520
 
 
 void FUN_003fa520(int param_1)
@@ -8711,37 +8711,9 @@ void FUN_003fa520(int param_1)
 
   if (lVar3 != 1) {
 
-    if (lVar3 == 0x14) {
+    switch (lVar3) {
 
-      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
-      if (sVar1 < 0xb) {
-
-        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x28) = 0xff60;
-
-      }
-
-      if (sVar1 < 6) {
-
-        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x34) = 0;
-
-      }
-
-    }
-
-    else if (lVar3 == 0xc) {
+    case 0xc:
 
       sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
 
@@ -8795,11 +8767,45 @@ void FUN_003fa520(int param_1)
 
       }
 
-      if ((0xc < sVar1) && (iVar4 = sVar1 + -0xd, iVar4 < 5)) {
+      iVar4 = sVar1 < 0xd;
 
-        *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
+      if (iVar4) goto done;
 
-        *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
+      iVar4 = sVar1 + -0xd;
+
+      if (iVar4 >= 5) goto done;
+
+      *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
+
+      *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
+
+      goto done;
+
+    case 0x14:
+
+      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
+
+      if (sVar1 < 0xb) {
+
+        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
+
+      }
+
+      else {
+
+      *(short *)(iVar2 + 0x28) = -0xa0;
+
+      }
+
+      if (sVar1 < 6) {
+
+        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
+
+      }
+
+      else {
+
+        *(u16 *)(iVar2 + 0x34) = 0;
 
       }
 
@@ -8807,11 +8813,13 @@ void FUN_003fa520(int param_1)
 
   }
 
+done:
+
   return;
 
 }
 
-// FUN_003FA800 NONMATCHING
+// FUN_003FA800
 
 
 void FUN_003fa800(int param_1)
@@ -8836,37 +8844,9 @@ void FUN_003fa800(int param_1)
 
   if (lVar3 != 1) {
 
-    if (lVar3 == 0x14) {
+    switch (lVar3) {
 
-      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
-      if (sVar1 < 0xb) {
-
-        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x28) = 0xff60;
-
-      }
-
-      if (sVar1 < 6) {
-
-        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x34) = 0;
-
-      }
-
-    }
-
-    else if (lVar3 == 0xc) {
+    case 0xc:
 
       sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
 
@@ -8920,11 +8900,45 @@ void FUN_003fa800(int param_1)
 
       }
 
-      if ((0xc < sVar1) && (iVar4 = sVar1 + -0xd, iVar4 < 5)) {
+      iVar4 = sVar1 < 0xd;
 
-        *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
+      if (iVar4) goto done;
 
-        *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
+      iVar4 = sVar1 + -0xd;
+
+      if (iVar4 >= 5) goto done;
+
+      *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
+
+      *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
+
+      goto done;
+
+    case 0x14:
+
+      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
+
+      if (sVar1 < 0xb) {
+
+        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
+
+      }
+
+      else {
+
+        *(short *)(iVar2 + 0x28) = -0xa0;
+
+      }
+
+      if (sVar1 < 6) {
+
+        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
+
+      }
+
+      else {
+
+        *(u16 *)(iVar2 + 0x34) = 0;
 
       }
 
@@ -8932,134 +8946,80 @@ void FUN_003fa800(int param_1)
 
   }
 
+done:
+
   return;
 
 }
 
-// FUN_003FAAE0 NONMATCHING
+// FUN_003FAAE0
 
 
 void FUN_003faae0(int param_1)
-
-
-
 {
-
   short sVar1;
-
   int iVar2;
-
   int lVar3;
-
   int iVar4;
 
-  
-
   iVar2 = *(int *)(*(int *)(param_1 + 0x24) + 0x44);
-
   lVar3 = FUN_003c6e10();
-
   if (lVar3 != 1) {
-
-    if (lVar3 == 0x14) {
-
+    switch (lVar3) {
+    case 0xc:
       sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
-      if (sVar1 < 0xb) {
-
-        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x28) = 0xff60;
-
-      }
-
-      if (sVar1 < 6) {
-
-        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
-
-      }
-
-      else {
-
-        *(u16 *)(iVar2 + 0x34) = 0;
-
-      }
-
-    }
-
-    else if (lVar3 == 0xc) {
-
-      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
       *(u16 *)(iVar2 + 0x28) = 0;
-
       *(u16 *)(iVar2 + 0x2a) = 0;
-
       if (sVar1 < 6) {
-
         *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * 0xff) / 5.0f);
-
       }
-
       else {
-
         *(u16 *)(iVar2 + 0x34) = 0xff;
-
       }
-
       sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
       if (sVar1 < 5) {
-
         *(short *)(iVar2 + 0x38) = (short)(int)((float)(sVar1 * 0xa0) / 4.0f + -160.0f);
-
         *(u16 *)(iVar2 + 0x3a) = 0;
-
         *(u16 *)(iVar2 + 0x44) = 0xff;
-
       }
-
       sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
-
       if (sVar1 < 8) {
-
         *(u16 *)(iVar2 + 0x54) = 0;
-
       }
-
       else {
-
         iVar4 = sVar1 + -8;
-
         if (iVar4 < 6) {
-
           *(u16 *)(iVar2 + 0x54) = 0xff;
-
           *(float *)(iVar2 + 0x50) = fGpffff8234 + (fGpffff8230 * (float)iVar4) / 5.0f;
-
         }
-
       }
-
-      if ((0xc < sVar1) && (iVar4 = sVar1 + -0xd, iVar4 < 5)) {
-
-        *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
-
-        *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
-
+      iVar4 = sVar1 < 0xd;
+      if (iVar4) goto done;
+      iVar4 = sVar1 + -0xd;
+      if (iVar4 >= 5) goto done;
+      *(short *)(iVar2 + 0x4a) = (short)(int)((float)(iVar4 * -3) / 4.0f + 3.0f);
+      *(float *)(iVar2 + 0x50) = fGpffff823c + (fGpffff8238 * (float)iVar4) / 4.0f;
+      goto done;
+    case 0x14:
+      sVar1 = *(short *)(*(int *)(param_1 + 0x24) + 4);
+      if (sVar1 < 0xb) {
+        *(short *)(iVar2 + 0x28) = (short)(int)((float)(sVar1 * -0xa0) / 10.0f);
       }
-
+      else {
+        *(short *)(iVar2 + 0x28) = -0xa0;
+      }
+      if (sVar1 < 6) {
+        *(short *)(iVar2 + 0x34) = (short)(int)((float)(sVar1 * -0xff) / 5.0f + 255.0f);
+      }
+      else {
+        *(u16 *)(iVar2 + 0x34) = 0;
+      }
     }
-
   }
-
+done:
   return;
-
 }
+
 
 // FUN_003FADC0 NONMATCHING
 
