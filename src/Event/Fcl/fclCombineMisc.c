@@ -32,7 +32,7 @@ extern void *memcpy_003d6e60(void *dest,const void *src,u32 size);
 extern s32 datPersonaFindSkillIdx_003d6e60(s32 param_1,u16 param_2);
 #pragma alias datPersonaSetSkill_003d6e60 datPersonaSetSkill
 extern void datPersonaSetSkill_003d6e60(s32 param_1,u16 param_2);
-u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4);
+u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 #pragma alias FUN_003d5510_i FUN_003d5510
 extern s16 FUN_003d5510_i(u32 *param_1,u16 *param_2,int param_3,u32 *param_4);
 s16 FUN_003d5730(void *param_1,int param_2,int param_3,u32 *param_4);
@@ -242,7 +242,7 @@ void fclCombineMisc003d9c90(s32 param_1, s32 param_2)
 // FUN_003D5510 NONMATCHING
 
 
-u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
+u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
 
 
@@ -270,8 +270,9 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 
   short *psVar11;
 
+  short *psVar12;
   u32 uVar12;
-
+  u8 *puVar14;
   u32 *puVar13;
 
   
@@ -284,7 +285,7 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 
   psVar11 = (short *)param_2;
 
-  if (*psVar11 == 0) {
+  if (*param_2 == 0) {
 
     uVar4 = 0;
 
@@ -295,15 +296,17 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
     sVar9 = 0;
 
     uVar6 = 0;
+    psVar12 = psVar11 + 2;
+    puVar13 = (u32 *)param_1;
 
-    for (sVar8 = 0; puVar13 = (u32 *)param_1, sVar8 < 8; sVar8 = sVar8 + 1) {
+    for (sVar8 = 0, iVar10 = 0; iVar10 < 8; sVar8 = sVar8 + 1, iVar10 = (int)sVar8) {
 
-      iVar10 = (int)sVar8;
 
-      uVar5 = ((long)psVar11[iVar10 + 4] << 0x36) >> 0x36;
+      uVar5 = ((long)psVar12[iVar10 + 2] << 0x36) >> 0x36;
 
       if (uVar5 != 0) {
 
+        puVar14 = (u8 *)DAT_007ce420;
         for (sVar7 = 0; bVar2 = 0, sVar7 < 0xc; sVar7 = sVar7 + 1) {
 
           uVar1 = *(u32 *)((int)param_4 + sVar7 * 0xc + 4);
@@ -316,12 +319,11 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 
             if ((uVar6 & uVar3) == 0) {
 
-              if ((long)*(char *)((int)psVar11 + iVar10 * 2 + 9) << 0x39 < 0) {
+              if ((long)*(char *)((int)psVar12 + iVar10 * 2 + 5) << 0x39 < 0) {
 
-                uVar12 = (u32)*(u8 *)(DAT_007ce420 + (u32)*(u16 *)(uVar1 + 2) * 0xe + 2);
+                uVar12 = (u32)puVar14[(u32)*(u16 *)(uVar1 + 2) * 0xe + 2];
 
               }
-
               if (uVar12 == uVar5) {
 
                 puVar13[iVar10 + 2] = uVar1;
@@ -342,12 +344,11 @@ u32 FUN_003d5510(u32 *param_1,short *param_2,short param_3,u32 *param_4)
 
         }
 
-        if (((long)*(char *)((int)psVar11 + iVar10 * 2 + 9) << 0x38 < 0) && (!bVar2)) {
+        if (((long)*(char *)((int)psVar12 + iVar10 * 2 + 5) << 0x38 < 0) && (!bVar2)) {
 
           *puVar13 = *puVar13 | 1;
 
         }
-
       }
 
     }
