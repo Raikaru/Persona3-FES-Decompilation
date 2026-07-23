@@ -4639,9 +4639,8 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
   bVar2 = true;
 
-  fVar13 = 5.0;
-
-  fVar14 = 2.0;
+  fVar13 = 5.0f;
+  fVar14 = 2.0f;
 
   iVar12 = (int)param_3;
 
@@ -4805,11 +4804,9 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       iVar6 = FUN_004cb2f0(*(u32 *)((int)lVar10 + 4));
 
-      fStack_68 = *(float *)(iVar6 + 0x20) * 40.0 + *(float *)(iVar6 + 0x30) + 0.0;
-
-      fStack_64 = *(float *)(iVar6 + 0x24) * 40.0 + *(float *)(iVar6 + 0x34) + 0.0;
-
-      fStack_60 = *(float *)(iVar6 + 0x28) * 40.0 + *(float *)(iVar6 + 0x38) + 0.0;
+      fStack_68 = *(float *)(iVar6 + 0x20) * 40.0f + *(float *)(iVar6 + 0x30) + 0.0f;
+      fStack_64 = *(float *)(iVar6 + 0x24) * 40.0f + *(float *)(iVar6 + 0x34) + 0.0f;
+      fStack_60 = *(float *)(iVar6 + 0x28) * 40.0f + *(float *)(iVar6 + 0x38) + 0.0f;
 
       FUN_004c35d0(auStack_120,&fStack_68,2);
 
@@ -4885,9 +4882,8 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     if ((DAT_007e094c & 0x10) != 0) {
 
-      fVar13 = fVar13 * 5.0;
-
-      fVar14 = 10.0;
+      fVar13 = fVar13 * 5.0f;
+      fVar14 = 10.0f;
 
     }
 
@@ -4901,11 +4897,9 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       if ((DAT_007e094c & 0x4000) != 0) {
 
-        *pfStack_4 = (*pfStack_4 + 0.0) - fStack_28 * fVar13;
-
-        pfStack_4[1] = (pfStack_4[1] + 0.0) - fStack_24 * fVar13;
-
-        pfStack_4[2] = (pfStack_4[2] + 0.0) - fStack_20 * fVar13;
+        *pfStack_4 = (*pfStack_4 + 0.0f) - fStack_28 * fVar13;
+        pfStack_4[1] = (pfStack_4[1] + 0.0f) - fStack_24 * fVar13;
+        pfStack_4[2] = (pfStack_4[2] + 0.0f) - fStack_20 * fVar13;
 
       }
 
@@ -4913,11 +4907,9 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     else {
 
-      *pfStack_4 = fStack_28 * fVar13 + *pfStack_4 + 0.0;
-
-      pfStack_4[1] = fStack_24 * fVar13 + pfStack_4[1] + 0.0;
-
-      pfStack_4[2] = fStack_20 * fVar13 + pfStack_4[2] + 0.0;
+      *pfStack_4 = fStack_28 * fVar13 + *pfStack_4 + 0.0f;
+      pfStack_4[1] = fStack_24 * fVar13 + pfStack_4[1] + 0.0f;
+      pfStack_4[2] = fStack_20 * fVar13 + pfStack_4[2] + 0.0f;
 
     }
 
@@ -4925,11 +4917,9 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       if ((DAT_007e094c & 0x8000) != 0) {
 
-        *pfStack_4 = fStack_38 * fVar13 + *pfStack_4 + 0.0;
-
-        pfStack_4[1] = fStack_34 * fVar13 + pfStack_4[1] + 0.0;
-
-        pfStack_4[2] = fStack_30 * fVar13 + pfStack_4[2] + 0.0;
+        *pfStack_4 = fStack_38 * fVar13 + *pfStack_4 + 0.0f;
+        pfStack_4[1] = fStack_34 * fVar13 + pfStack_4[1] + 0.0f;
+        pfStack_4[2] = fStack_30 * fVar13 + pfStack_4[2] + 0.0f;
 
       }
 
@@ -4937,11 +4927,9 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     else {
 
-      *pfStack_4 = (*pfStack_4 + 0.0) - fStack_38 * fVar13;
-
-      pfStack_4[1] = (pfStack_4[1] + 0.0) - fStack_34 * fVar13;
-
-      pfStack_4[2] = (pfStack_4[2] + 0.0) - fStack_30 * fVar13;
+      *pfStack_4 = (*pfStack_4 + 0.0f) - fStack_38 * fVar13;
+      pfStack_4[1] = (pfStack_4[1] + 0.0f) - fStack_34 * fVar13;
+      pfStack_4[2] = (pfStack_4[2] + 0.0f) - fStack_30 * fVar13;
 
     }
 
@@ -4949,7 +4937,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       if ((DAT_007e094c & 1) != 0) {
 
-        pfStack_4[1] = pfStack_4[1] - fVar13 / 2.0;
+        pfStack_4[1] = pfStack_4[1] - fVar13 / 2.0f;
 
       }
 
@@ -4957,7 +4945,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     else {
 
-      pfStack_4[1] = pfStack_4[1] + fVar13 / 2.0;
+      pfStack_4[1] = pfStack_4[1] + fVar13 / 2.0f;
 
     }
 
@@ -5043,7 +5031,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       fStack_12c = pfStack_4[2];
 
-      fStack_130 = pfStack_4[1] - 1000.0;
+      fStack_130 = pfStack_4[1] - 1000.0f;
 
       lVar10 = FUN_001acc30(&fStack_140,&fStack_78);
 
@@ -5197,7 +5185,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       if ((DAT_007e094c & 0x8000) != 0) {
 
-        pfStack_8[1] = pfStack_8[1] + 2.0;
+        pfStack_8[1] = pfStack_8[1] + 2.0f;
 
       }
 
@@ -5205,7 +5193,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     else {
 
-      pfStack_8[1] = pfStack_8[1] - 2.0;
+      pfStack_8[1] = pfStack_8[1] - 2.0f;
 
     }
 
@@ -5213,7 +5201,7 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
       if ((DAT_007e094c & 0x4000) != 0) {
 
-        *pfStack_8 = *pfStack_8 - 2.0;
+        *pfStack_8 = *pfStack_8 - 2.0f;
 
       }
 
@@ -5221,15 +5209,14 @@ u32 FUN_00373700(u64 param_1,u64 param_2,u64 param_3)
 
     else {
 
-      *pfStack_8 = *pfStack_8 + 2.0;
+      *pfStack_8 = *pfStack_8 + 2.0f;
 
     }
 
     if ((DAT_007e094c & 0x100) != 0) {
 
-      *pfStack_8 = 0.0;
-
-      pfStack_8[1] = 0.0;
+      *pfStack_8 = 0.0f;
+      pfStack_8[1] = 0.0f;
 
     }
 
