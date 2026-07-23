@@ -234,7 +234,7 @@ u32 FUN_003b88c0(float param_1,Resrc *param_2,u32 *param_3,u32 param_4,u32 param
 extern u32 FUN_003b88c0_scene(Resrc *param_1,u32 param_2,float param_3,u32 param_4);
 u32 FUN_003b89f0(u32 param_1,u32 param_2,float param_3,u32 param_4);
 u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4);
-u32  FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4);
+u32  FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4);
 u32 FUN_003b8c30(u64 param_1,float *param_2,u32 param_3);
 u32 FUN_003b8ce0(u32 param_1,u8 param_2,u32 param_3,u32 param_4);
 #pragma alias FUN_003b8ce0_scene FUN_003b8ce0
@@ -606,12 +606,14 @@ u8 FUN_003b8a60(SceneInterpWork *param_1,float *param_2,u32 param_3,u8 param_4)
 #define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
 #define FUN_003b8a60(...) ((u8 (*)(...))FUN_003b8a60)(__VA_ARGS__)
 #undef FUN_003b8b30
-// FUN_003B8B30 NONMATCHING
+#undef FUN_003bba70
+#undef FUN_003bb9b0
+// FUN_003B8B30
 
 
 u32
 
-FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
+FUN_003b8b30(u64 param_1,float *param_2,u32 param_3,u8 param_4)
 
 
 
@@ -619,21 +621,20 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
   u32 uVar1;
 
-  u32 lVar2;
 
   int iVar3;
 
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
+  struct V3 {
+    float x;
+    float y;
+    float z;
+  } values;
+  struct V3 *input;
   
 
-  lVar2 = FUN_003b5d10();
+  iVar3 = FUN_003b5d10();
 
-  if (lVar2 == 0) {
+  if (iVar3 == 0) {
 
     uVar1 = 0;
 
@@ -641,13 +642,10 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
   else {
 
-    uStack_10 = *param_2;
+    input = (struct V3 *)param_2;
+    values = *input;
 
-    uStack_c = param_2[1];
-
-    uStack_8 = param_2[2];
-
-    if (lVar2 == 0) {
+    if (iVar3 == 0) {
 
       uVar1 = 0;
 
@@ -655,26 +653,15 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
     else {
 
-      FUN_003bba70(lVar2);
+      FUN_003bba70(iVar3);
 
-      FUN_003bb9b0(&uStack_10);
+      FUN_003bb9b0((float *)&values);
 
-      iVar3 = (int)lVar2;
 
       *(u32 *)(iVar3 + 0x28) = *(u32 *)(iVar3 + 0x28) | 4;
 
-      *(u32 *)(iVar3 + 100) = *(u32 *)(iVar3 + 0x10);
-
-      *(u32 *)(iVar3 + 0x68) = *(u32 *)(iVar3 + 0x14);
-
-      *(u32 *)(iVar3 + 0x6c) = *(u32 *)(iVar3 + 0x18);
-
-      *(u32 *)(iVar3 + 0x70) = uStack_10;
-
-      *(u32 *)(iVar3 + 0x74) = uStack_c;
-
-      *(u32 *)(iVar3 + 0x78) = uStack_8;
-
+      *(struct V3 *)(iVar3 + 0x64) = *(struct V3 *)(iVar3 + 0x10);
+      *(struct V3 *)(iVar3 + 0x70) = values;
       *(u8 *)(iVar3 + 0x7c) = 0;
 
       *(u8 *)(iVar3 + 0x7d) = param_4;
@@ -693,6 +680,8 @@ FUN_003b8b30(u64 param_1,u32 *param_2,u32 param_3,u8 param_4)
 
 }
 #define FUN_003b8b30(...) ((u32 (*)(...))FUN_003b8b30)(__VA_ARGS__)
+#define FUN_003bba70(...) ((void (*)(...))FUN_003bba70)(__VA_ARGS__)
+#define FUN_003bb9b0(...) ((void (*)(...))FUN_003bb9b0)(__VA_ARGS__)
 #undef FUN_003b8c30
 // FUN_003B8C30
 
