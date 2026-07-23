@@ -25,7 +25,7 @@ u64 FUN_00417590(void);
 u64 FUN_004175e0(void);
 u64 FUN_00417630(void);
 void FUN_00417680(void);
-u64 FUN_004176f0(long param_1,u16 param_2,long param_3);
+u32 FUN_004176f0(int param_1,u16 param_2,int param_3);
 u64 FUN_004177e0(int param_1);
 u32 FUN_004178c0(int param_1);
 int * FUN_00418030(void);
@@ -472,10 +472,10 @@ void FUN_00417680(void)
 
 }
 
-// FUN_004176F0 NONMATCHING
+// FUN_004176F0
 
 
-u64 FUN_004176f0(long param_1,u16 param_2,long param_3)
+u32 FUN_004176f0(int param_1,u16 param_2,int param_3)
 
 
 
@@ -485,7 +485,7 @@ u64 FUN_004176f0(long param_1,u16 param_2,long param_3)
 
   u16 *puVar2;
 
-  u64 uVar3;
+  u32 uVar3;
 
   u32 uVar4;
 
@@ -503,7 +503,7 @@ u64 FUN_004176f0(long param_1,u16 param_2,long param_3)
 
      (*(int *)(iVar1 + 0x14) == 0)) {
 
-    K_Assert((const char *)0x6b2ad0,0x2cd);
+    K_Assert(DAT_006b2ad0,0x2cd);
 
   }
 
@@ -515,17 +515,17 @@ u64 FUN_004176f0(long param_1,u16 param_2,long param_3)
 
   *puVar2 = param_2;
 
-  if (uVar4 == 0) {
+  if (uVar4 != 0) {
 
-    *(u32 *)(puVar2 + 2) = 0;
+    *(u16 **)(puVar2 + 2) = puVar2 + 4;
+
+    memcpy((void*)(puVar2 + 4),(const void*)param_3,uVar4 & 0xffff);
 
   }
 
   else {
 
-    *(u16 **)(puVar2 + 2) = puVar2 + 4;
-
-    memcpy((void*)(puVar2 + 4),(const void*)param_3,uVar4 & 0xffff);
+    *(u32 *)(puVar2 + 2) = 0;
 
   }
 
