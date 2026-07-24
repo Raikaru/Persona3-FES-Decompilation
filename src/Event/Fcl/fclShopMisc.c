@@ -147,7 +147,7 @@ int FUN_003f0350(int param_1,int *param_2);
 char FUN_003f03e0(int param_1);
 #pragma alias FUN_003f03e0_u64 FUN_003f03e0
 char FUN_003f03e0_u64(u64 param_1);
-u32 FUN_003f04f0(long param_1,int param_2);
+u32 FUN_003f04f0(u32 param_1,int param_2);
 u32 * FUN_003f06e0(int *param_1,u32 param_2);
 short FUN_003f0830(int param_1);
 short FUN_003f0ac0(int param_1);
@@ -160,6 +160,10 @@ void FUN_003f1520(int param_1);
 int FUN_003f15d0(int param_1,int param_2);
 int FUN_003f1690(u64 param_1);
 int clndIsDateInRangeFromStart(s8 month, s8 day, u32 range);
+#pragma alias clndIsDateInRangeFromStart_long clndIsDateInRangeFromStart
+int clndIsDateInRangeFromStart_long(long month,long day,u32 range);
+#pragma alias clndIsDateInRange_long clndIsDateInRange
+int clndIsDateInRange_long(long startMonth,long startDay,long endMonth,long endDay);
 void FUN_0017c220(u16 *param_1);
 u16 FUN_003f1720(u32 param_1,u16 param_2);
 u32 FUN_003f1830(short *param_1,short param_2);
@@ -974,131 +978,77 @@ char FUN_003f03e0(int param_1)
 
 }
 
+/* Reconstructed the packed shop-date availability gate and all date-mode paths. */
 // FUN_003F04F0 NONMATCHING
 
 
-u32 FUN_003f04f0(long param_1,int param_2)
-
-
-
+u32 FUN_003f04f0(u32 param_1,int param_2)
 {
-
-  u8 bVar1;
-
   u32 uVar2;
-
-  u32 uVar3;
-
+  int bVar1;
   long lVar4;
-
+  int iVar5;
+  u32 uVar3;
   short *psVar5;
 
-  
-
   if (param_1 == 0) {
-
     K_Assert((const char *)(u32)0x6aede8,0x16c);
-
   }
 
   uVar2 = clndGetCurrentWeekDay();
-
   psVar5 = (short *)param_1;
-
   bVar1 = 1;
-
-  if (((long)*psVar5 & (long)(1 << (uVar2 & 0x1f))) == 0) {
-
+  if (((u32)*psVar5 & (1u << (uVar2 & 0x1f))) == 0) {
     uVar3 = 0;
-
   }
-
   else {
-
-    if ((psVar5[1] != 0) && (lVar4 = datGetFlag(), lVar4 == 0)) {
-
+    if ((psVar5[1] != 0) && (datGetFlag() == 0)) {
       bVar1 = 0;
-
     }
-
     if (bVar1) {
-
-      if ((long)psVar5[2] == 0) {
-
+      if (psVar5[2] == 0) {
         uVar3 = (u32)(param_2 != 1);
-
       }
-
       else if (param_2 == 2) {
-
-        uVar3 = clndIsDateInRangeFromStart(((long)psVar5[2] << 0x34) >> 0x3a,
-
-                             ((long)(char)psVar5[2] << 0x3a) >> 0x3a,0x16d);
-
+        uVar3 = clndIsDateInRangeFromStart_long(
+            ((long)psVar5[2] << 0x34) >> 0x3a,
+            ((long)*(s8 *)((int)psVar5 + 4) << 0x3a) >> 0x3a,0x16d);
       }
-
       else {
-
         if (((long)*(char *)((int)psVar5 + 5) << 0x38) >> 0x3c != 1) {
-
           K_Assert((const char *)(u32)0x6aede8,0x17f);
-
         }
-
         lVar4 = ((long)*(char *)((int)psVar5 + 7) << 0x38) >> 0x3c;
-
-        if (lVar4 == 0) {
-
+        switch (lVar4) {
+        case 1:
+          iVar5 = clndIsDateInRange_long(
+              ((long)psVar5[2] << 0x34) >> 0x3a,
+              ((long)*(s8 *)((int)psVar5 + 4) << 0x3a) >> 0x3a,
+              ((long)psVar5[3] << 0x34) >> 0x3a,
+              ((long)*(s8 *)((int)psVar5 + 6) << 0x3a) >> 0x3a);
+          uVar3 = (u32)(iVar5 != 0);
+          break;
+        case 2:
+          iVar5 = clndIsDateInRangeFromStart_long(
+              ((long)psVar5[2] << 0x34) >> 0x3a,
+              ((long)*(s8 *)((int)psVar5 + 4) << 0x3a) >> 0x3a,
+              ((long)psVar5[3] << 0x34) >> 0x34);
+          uVar3 = (u32)(iVar5 != 0);
+          break;
+        case 0:
           uVar3 = 1;
-
-        }
-
-        else if (lVar4 == 2) {
-
-          lVar4 = clndIsDateInRangeFromStart(((long)psVar5[2] << 0x34) >> 0x3a,
-
-                               ((long)(char)psVar5[2] << 0x3a) >> 0x3a,
-
-                               ((long)psVar5[3] << 0x34) >> 0x34);
-
-          uVar3 = (u32)(lVar4 != 0);
-
-        }
-
-        else if (lVar4 == 1) {
-
-          lVar4 = clndIsDateInRange(((long)psVar5[2] << 0x34) >> 0x3a,
-
-                               ((long)(char)psVar5[2] << 0x3a) >> 0x3a,
-
-                               ((long)psVar5[3] << 0x34) >> 0x3a,
-
-                               ((long)(char)psVar5[3] << 0x3a) >> 0x3a);
-
-          uVar3 = (u32)(lVar4 != 0);
-
-        }
-
-        else {
-
+          break;
+        default:
           uVar3 = 0;
-
+          break;
         }
-
       }
-
     }
-
     else {
-
       uVar3 = 0;
-
     }
-
   }
-
   return uVar3;
-
 }
 
 // FUN_003F06E0 NONMATCHING
@@ -1128,7 +1078,7 @@ loop_body:
   }
   uVar1 = *(u16 *)(puVar4 + 4);
   if ((uVar1 == 0xffff || datGetFlag(uVar1) != 0) &&
-      FUN_003f04f0((long)(puVar4 + 0x10),param_2) != 0) {
+      FUN_003f04f0((u32)(puVar4 + 0x10),param_2) != 0) {
     uVar1 = *(u16 *)(puVar4 + 4);
     if (uVar1 == 0xffff) {
       return (u32 *)puVar4;
