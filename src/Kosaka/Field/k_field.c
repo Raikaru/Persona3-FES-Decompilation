@@ -2104,12 +2104,10 @@ void func_001bd950(void)
     Resrc* heroResource;
     Resrc* modelFld;
     Resrc* modelNpc;
-    Resrc* parent;
     s32 xGrid;
     s32 zGrid;
     s32 i;
     f32 angle;
-
     if (K_Scene_001a0250() != true && func_001a02c0() != true)
     {
         return;
@@ -2145,7 +2143,7 @@ void func_001bd950(void)
 
     angle = FUN_001A5AA0(
         &((RwFrame*)kwlnGetMainCamera()->object.object.parent)->modelling);
-    if (angle >= -22.5f && angle <= 22.5f)
+    if (angle <= 22.5f && angle >= -22.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
@@ -2171,30 +2169,6 @@ void func_001bd950(void)
     }
     else if (angle > 22.5f && angle <= 67.5f)
     {
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x12c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x16c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x22c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x24c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x25c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x26c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x33c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
-        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
-    }
-    else if (angle > 67.5f && angle <= 112.5f)
-    {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x23c), 1);
@@ -2216,7 +2190,7 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
     }
-    else if (angle > 112.5f && angle <= 157.5f)
+    else if (angle > 67.5f && angle <= 112.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
@@ -2240,7 +2214,7 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x7c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x17c), 1);
     }
-    else if (angle > 157.5f || angle < -157.5f)
+    else if (angle > 112.5f && angle <= 157.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
@@ -2263,7 +2237,7 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
     }
-    else if (angle >= -157.5f && angle < -112.5f)
+    else if (angle > 157.5f || angle < -157.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x34c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x35c), 1);
@@ -2286,7 +2260,7 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
     }
-    else if (angle >= -112.5f && angle < -67.5f)
+    else if (angle >= -157.5f && angle < -112.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
@@ -2310,7 +2284,7 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x1c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x11c), 1);
     }
-    else
+    else if (angle >= -112.5f && angle < -67.5f)
     {
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
@@ -2330,11 +2304,36 @@ void func_001bd950(void)
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
+    }
+    else
+    {
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x13c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x14c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x15c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x2c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x3c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x4c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x5c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + 0x6c), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xd4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xc4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xb4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0xa4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x94), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1d4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1c4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1b4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x1a4), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x194), 1);
+        func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2c4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2b4), 1);
         func_001a0150(*(u16*)((u8*)K_Field_Get() + zGrid * 0x100 + xGrid * 0x10 + -0x2a4), 1);
     }
     for (; modelFld != NULL; modelFld = modelFld->next)
     {
+        Resrc* parent;
         parent = *(Resrc**)((u8*)modelFld + 0x100);
         if (parent != NULL && (parent->flags & 2) != 0)
         {
@@ -2347,6 +2346,7 @@ void func_001bd950(void)
     }
     for (; modelNpc != NULL; modelNpc = modelNpc->next)
     {
+        Resrc* parent;
         parent = *(Resrc**)((u8*)modelNpc + 0x100);
         if (parent != NULL && (parent->flags & 2) != 0)
         {
