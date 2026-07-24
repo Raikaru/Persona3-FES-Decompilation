@@ -4505,6 +4505,15 @@ void FUN_0022f3b0(u32* object)
     }
 }
 
+// Partially reconstructed. Retail dispatches on the state at byte 0x830
+// (object[0x20c]) through an 11-entry jump table at 0x7b77e0, decoded from the
+// retail ELF as [0x22fb44, 0x230078, 0x2305e4, 0x230bf0, 0x231108, 0x2316d8,
+// 0x231c7c, 0x2328a4, 0x232d70, 0x232dd8, 0x231108] - ten distinct bodies with
+// cases 4 and 10 sharing one. Each case opens by bumping its own animation
+// counter or fetching its own panel resource; those verified openings are
+// implemented here. The case bodies themselves (panel layout, sinf/cosf corner
+// rotation, alpha threshold chains) are still unrecovered and are the bulk of
+// the 13344-byte window.
 // FUN_0022FA80 NONMATCHING
 void FUN_0022fa80(u32* object)
 {
@@ -4514,31 +4523,61 @@ void FUN_0022fa80(u32* object)
     u32 count;
     u32 state;
 
-    if (object == NULL) {
-        return;
-    }
     bytes = (u8*)object;
     table = FUN_0021c3f0(4);
     state = object[0x20c];
-    count = *(u32*)(bytes + 0x6070);
-    if (count > 8) {
-        count = 8;
-    }
-    for (i = 0; i < count; ++i) {
-        u8* record = bytes + 0x4660 + i * 0x420;
-        u32 active = *(u32*)record;
-        if (active == 0) {
-            FUN_0021d3b0(record + 0x10,
-                         FUN_0021cca0(table, 0x2f));
-        } else {
-            FUN_0021d3b0(record + 0x10,
-                         FUN_0021cca0(table, 0x29 + (state & 1)));
+    switch (state) {
+    case 0:
+        *(u32*)(bytes + 0x136c) = *(u32*)(bytes + 0x136c) + 1;
+        count = *(u32*)(bytes + 0x6070);
+        if (count > 8) {
+            count = 8;
         }
-        bcm_panel_layout_record(record, i, *(u32*)(bytes + 0x4650));
-        *(u32*)record |= 4;
-    }
-    if ((object[0] & 4) != 0) {
-        bcm_panel_refresh_records();
+        for (i = 0; i < count; ++i) {
+            u8* record = bytes + 0x4660 + i * 0x420;
+            u32 active = *(u32*)record;
+            if (active == 0) {
+                FUN_0021d3b0(record + 0x10,
+                             FUN_0021cca0(table, 0x2f));
+            } else {
+                FUN_0021d3b0(record + 0x10,
+                             FUN_0021cca0(table, 0x29 + (state & 1)));
+            }
+            bcm_panel_layout_record(record, i, *(u32*)(bytes + 0x4650));
+            *(u32*)record |= 4;
+        }
+        if ((object[0] & 4) != 0) {
+            bcm_panel_refresh_records();
+        }
+        break;
+    case 1:
+        *(u32*)(bytes + 0x166c) = *(u32*)(bytes + 0x166c) + 1;
+        break;
+    case 2:
+        *(u32*)(bytes + 0x1374) = *(u32*)(bytes + 0x1374) + 1;
+        break;
+    case 3:
+        FUN_0021cca0(table, 8);
+        break;
+    case 4:
+    case 10:
+        *(u32*)(bytes + 0x126c) = *(u32*)(bytes + 0x126c) + 1;
+        break;
+    case 5:
+        *(u32*)(bytes + 0x1570) = *(u32*)(bytes + 0x1570) + 1;
+        break;
+    case 6:
+        *(u32*)(bytes + 0x1360) = *(u32*)(bytes + 0x1360) + 1;
+        break;
+    case 7:
+        *(u32*)(bytes + 0x147c) = *(u32*)(bytes + 0x147c) + 1;
+        break;
+    case 8:
+        FUN_0021cca0(table, 0x11);
+        break;
+    case 9:
+        FUN_0021cca0(table, 0);
+        break;
     }
 }
 
