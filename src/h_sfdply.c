@@ -1786,9 +1786,6 @@ HSfdImage* func_0010e0d0(const u8* stream)
         case 0x1B:
             func_0010dee0(image, payload);
             break;
-        case 0x14:
-        case 0x24:
-        case 0x2C:
         default:
             if (image->pixels != NULL)
             {
