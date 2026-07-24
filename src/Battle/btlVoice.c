@@ -9345,20 +9345,21 @@ u32 func_002ed360(u64 *param_1)
   bVar3 = false;
   LAB_002ed420:
   sVar22 = *(short *)(DAT_007ce3ec + 0xb54);
-  if (sVar22 == 0x172) {
-    unaff_s2 = 0xe6;
-  }
-  else if (sVar22 == 0x171) {
-    unaff_s2 = 0xe5;
-  }
-  else if (sVar22 == 0x16f) {
-    unaff_s2 = 0xe4;
-  }
-  else if (sVar22 == 0x16e) {
-    unaff_s2 = 0xe3;
-  }
-  else if (sVar22 == 0x16d) {
+  switch (*(u16 *)(DAT_007ce3ec + 0xb54)) {
+  case 0x16d:
     unaff_s2 = 0xe2;
+    break;
+  case 0x16e:
+    unaff_s2 = 0xe3;
+    break;
+  case 0x16f:
+    unaff_s2 = 0xe4;
+    break;
+  case 0x171:
+    unaff_s2 = 0xe5;
+    break;
+  case 0x172:
+    unaff_s2 = 0xe6;
   }
   *(u16 *)(DAT_007ce3ec + 0xb56) = 0;
   *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x80000;
@@ -9368,7 +9369,7 @@ u32 func_002ed360(u64 *param_1)
   *(u32 *)(DAT_007ce3ec + 0xb48) = uVar5;
   uVar5 = FUN_002875a0(1);
   *(u32 *)(DAT_007ce3ec + 0xb4c) = uVar5;
-  *(short *)(*(int *)(DAT_007ce3ec + 0xb44) + 0xa4) = (short)unaff_s2;
+  *(short *)(*(int *)(DAT_007ce3ec + 0xb44) + 0xa4) = unaff_s2;
   *(u16 *)(*(int *)(DAT_007ce3ec + 0xb48) + 0xa4) = 0xe7;
   *(u16 *)(*(int *)(DAT_007ce3ec + 0xb4c) + 0xa4) = 0xe8;
   uStack_28[0] = 0;
