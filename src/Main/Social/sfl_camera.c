@@ -206,11 +206,14 @@ void func_0024d4c0(s32 id)
     }
 }
 
-// FUN_0024D5E0 NONMATCHING
+// FUN_0024D5E0 MATCHING
 void func_0024d5e0(u8* node)
 {
     RwV3d forward;
     RwV3d right;
+    f32 axisX;
+    f32 axisY;
+    f32 axisZ;
     RwV3d up;
     RwV3d posePosition;
     void* matrix;
@@ -227,15 +230,18 @@ void func_0024d5e0(u8* node)
         }
         switch (*(u32*)(node + 0x38)) {
         case 1:
-            gcPose0024f960(node + 0x3c, &posePosition);
+            gcPose0024f960((void*)*(u32*)(node + 0x3c), &posePosition);
             forward.x = posePosition.x - *(f32*)(node + 0x20);
             forward.y = posePosition.y - *(f32*)(node + 0x24);
             forward.z = posePosition.z - *(f32*)(node + 0x28);
             RwV3dLength(&forward);
             RwV3dNormalize(&forward, &forward);
-            right.x = 1.0f * forward.z - 0.0f * forward.y;
-            right.y = 0.0f * forward.x - 0.0f * forward.z;
-            right.z = 0.0f * forward.y - 1.0f * forward.x;
+            axisX = 0.0f;
+            axisY = 1.0f;
+            axisZ = 0.0f;
+            right.x = axisY * forward.z - axisZ * forward.y;
+            right.y = axisZ * forward.x - axisX * forward.z;
+            right.z = axisX * forward.y - axisY * forward.x;
             up.x = forward.y * right.z - forward.z * right.y;
             up.y = forward.z * right.x - forward.x * right.z;
             up.z = forward.x * right.y - forward.y * right.x;
