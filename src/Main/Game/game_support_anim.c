@@ -133,8 +133,6 @@ void* func_00188c30(KwlnTask* task)
             {
                 return KWLNTASK_STOP;
             }
-            fVar1 = 183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f;
-            fVar2 = 16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f;
             iVar3 = ((((puVar1[2] * 0x1e) / 0x32 + 0x5f) * 0x1000) / 100) * 0x80;
             if (iVar3 < 0)
             {
@@ -143,7 +141,9 @@ void* func_00188c30(KwlnTask* task)
             func_001140d0(0xffffff00U |
                               (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
                           iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+                          (const void*)(u32)puVar1[3], 0.0f,
+                          183.0f - ((f32)(iVar2 + -0x10) * 41.0f) / 34.0f,
+                          16.0f - ((f32)(iVar2 + -0x10) * 50.0f) / 34.0f);
             break;
     }
     return KWLNTASK_CONTINUE;
@@ -583,7 +583,9 @@ void* func_00189df0(KwlnTask* task)
             func_001140d0(0xffffff00U |
                               (0xffU - ((iVar2 + -0x27) * 0xff) / 0xb),
                           iVar3 >> 0xc, iVar3 >> 0xc,
-                          (const void*)(u32)puVar1[3], 0.0f, fVar1, fVar2);
+                          (const void*)(u32)puVar1[3], 0.0f,
+                          ((f32)(iVar2 + -0x19) * 9.0f) / 25.0f + 352.0f,
+                          ((f32)(iVar2 + -0x19) * 3.0f) / 25.0f + 214.0f);
             break;
     }
     return KWLNTASK_CONTINUE;
