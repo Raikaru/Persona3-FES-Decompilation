@@ -121,6 +121,10 @@ void FUN_0025a120(void)
 
 }
 
+/* Reconstructed the state dispatch, interpolation, and six-slot alpha update.
+ * The remaining differences are MWCC register allocation and floating-point
+ * spill placement; object size now exactly matches the retail function window.
+ */
 // FUN_0025A130 NONMATCHING
 
 
@@ -130,9 +134,13 @@ void FUN_0025a130(void)
   u32 *puVar2;
   s32 uVar3;
   f32 fVar4;
-  f32 fStack_10;
-  f32 fStack_14;
-  f32 fStack_18;
+  f32 f10;
+  f32 f14;
+  f32 f18;
+  volatile f32 fPad;
+  volatile f32 fStack_18;
+  volatile f32 fStack_14;
+  volatile f32 fStack_10;
 
   K_ASSERT(sSflCursor != NULL, 0x47);
   puVar1 = sSflCursor;
@@ -141,43 +149,57 @@ void FUN_0025a130(void)
     puVar1[0xd] = puVar1[0xd] % 0x3c;
     if ((*puVar1 & 2) != 0) {
       uVar3 = puVar1[0x328];
-      if (uVar3 == 2) {
-        puVar1[10] = puVar1[10] + 1;
-        if (puVar1[10] == 0x10) {
-          *puVar1 = *puVar1 & 0xfffffffd;
-        }
-      } else if (uVar3 == 3) {
-        puVar1[10] = puVar1[10] + 1;
-        if (puVar1[10] == 0x10) {
-          *puVar1 = *puVar1 & 0xfffffffd;
-          *puVar1 = *puVar1 & 0xfffffffc;
-        }
-      } else if (uVar3 == 1) {
-        puVar1[10] = puVar1[10] + 1;
-        if (puVar1[10] == 4) {
-          *puVar1 = *puVar1 & 0xfffffffd;
-        }
-      } else if (uVar3 == 0) {
+      switch (uVar3) {
+      case 0:
         puVar1[10] = puVar1[10] + 1;
         if (puVar1[10] == 4) {
           *puVar1 = *puVar1 & 0xfffffffd;
         }
         fVar4 = (f32)(s32)puVar1[10] / 4.0f;
-        fStack_10 = ((SflCursorWork*)puVar1)->to[0] -
-                    ((SflCursorWork*)puVar1)->from[0];
-        fStack_14 = ((SflCursorWork*)puVar1)->to[1] -
-                    ((SflCursorWork*)puVar1)->from[1];
-        fStack_18 = ((SflCursorWork*)puVar1)->to[2] -
-                    ((SflCursorWork*)puVar1)->from[2];
-        fStack_10 *= fVar4;
-        fStack_14 *= fVar4;
-        fStack_18 *= fVar4;
-        fStack_10 += ((SflCursorWork*)puVar1)->from[0];
-        fStack_14 += ((SflCursorWork*)puVar1)->from[1];
-        fStack_18 += ((SflCursorWork*)puVar1)->from[2];
+        f10 = ((SflCursorWork*)puVar1)->to[0] -
+              ((SflCursorWork*)puVar1)->from[0];
+        f14 = ((SflCursorWork*)puVar1)->to[1] -
+              ((SflCursorWork*)puVar1)->from[1];
+        f18 = ((SflCursorWork*)puVar1)->to[2] -
+              ((SflCursorWork*)puVar1)->from[2];
+        fStack_10 = f10;
+        fStack_14 = f14;
+        fStack_18 = f18;
+        f10 *= fVar4;
+        f14 *= fVar4;
+        f18 *= fVar4;
+        fStack_10 = f10;
+        fStack_14 = f14;
+        fStack_18 = f18;
+        f10 += ((SflCursorWork*)puVar1)->from[0];
+        f14 += ((SflCursorWork*)puVar1)->from[1];
+        f18 += ((SflCursorWork*)puVar1)->from[2];
+        fStack_10 = f10;
+        fStack_14 = f14;
+        fStack_18 = f18;
         ((SflCursorWork*)puVar1)->position[0] = fStack_10;
         ((SflCursorWork*)puVar1)->position[1] = fStack_14;
         ((SflCursorWork*)puVar1)->position[2] = fStack_18;
+        break;
+      case 1:
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 4) {
+          *puVar1 = *puVar1 & 0xfffffffd;
+        }
+        break;
+      case 3:
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 0x10) {
+          *puVar1 = *puVar1 & 0xfffffffd;
+          *puVar1 = *puVar1 & 0xfffffffc;
+        }
+        break;
+      case 2:
+        puVar1[10] = puVar1[10] + 1;
+        if (puVar1[10] == 0x10) {
+          *puVar1 = *puVar1 & 0xfffffffd;
+        }
+        break;
       }
     }
     for (uVar3 = 0; uVar3 < 6; uVar3 = uVar3 + 1) {
