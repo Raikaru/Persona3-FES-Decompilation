@@ -1151,6 +1151,12 @@ extern u32 DAT_0069bccc;
 extern u32 DAT_0069c4a8;
 extern u32 DAT_0069c4ac;
 extern u32 DAT_0069c4d0;
+#pragma alias DAT_0069c4d0_f32 DAT_0069c4d0
+extern f32 DAT_0069c4d0_f32;
+#pragma alias DAT_0069c4d4_f32 DAT_0069c4d4
+extern f32 DAT_0069c4d4_f32;
+#pragma alias DAT_0069c4d8_f32 DAT_0069c4d8
+extern f32 DAT_0069c4d8_f32;
 extern u32 DAT_0069c4d4;
 extern u32 DAT_0069c4d8;
 extern u32 DAT_0069c4e0;
@@ -37684,7 +37690,7 @@ void FUN_003407e0(int param_1)
 
       auVar39 = _vitof0(auVar20);
 
-      auVar20 = _qmtc2(DAT_007cae4c);
+      auVar20 = _qmtc2(uVar45);
 
       auVar20 = _vmulbc(auVar39,auVar20);
 
@@ -37739,7 +37745,7 @@ void FUN_003407e0(int param_1)
 
       auVar42 = _vitof0(auVar41);
 
-      auVar41 = _qmtc2(uVar45);
+      auVar41 = _qmtc2(fVar10);
 
       auVar41 = _vmulbc(auVar42,auVar41);
 
@@ -37991,11 +37997,9 @@ void FUN_003407e0(int param_1)
 
             _DAT_0069c4d0 = _sqc2(auVar43);
 
-            pfVar25[6] = DAT_0069c4d0;
-
-            pfVar25[7] = DAT_0069c4d4;
-
-            pfVar25[8] = DAT_0069c4d8;
+            pfVar25[6] = DAT_0069c4d0_f32;
+            pfVar25[7] = DAT_0069c4d4_f32;
+            pfVar25[8] = DAT_0069c4d8_f32;
 
             auVar43 = _vsub(auVar43,auVar44);
 
@@ -38003,11 +38007,9 @@ void FUN_003407e0(int param_1)
 
             _DAT_0069c4d0 = _sqc2(auVar43);
 
-            pfVar25[9] = DAT_0069c4d0;
-
-            pfVar25[10] = DAT_0069c4d4;
-
-            pfVar25[0xb] = DAT_0069c4d8;
+            pfVar25[9] = DAT_0069c4d0_f32;
+            pfVar25[10] = DAT_0069c4d4_f32;
+            pfVar25[0xb] = DAT_0069c4d8_f32;
 
             fVar31 = (float)piVar26[3];
 
@@ -38041,11 +38043,9 @@ void FUN_003407e0(int param_1)
 
             _DAT_0069c4d0 = _sqc2(auVar42);
 
-            *pfVar25 = DAT_0069c4d0;
-
-            pfVar25[1] = DAT_0069c4d4;
-
-            pfVar25[2] = DAT_0069c4d8;
+            *pfVar25 = DAT_0069c4d0_f32;
+            pfVar25[1] = DAT_0069c4d4_f32;
+            pfVar25[2] = DAT_0069c4d8_f32;
 
             auVar42 = _vsub(auVar42,auVar44);
 
@@ -38053,11 +38053,9 @@ void FUN_003407e0(int param_1)
 
             _DAT_0069c4d0 = _sqc2(auVar42);
 
-            pfVar25[3] = DAT_0069c4d0;
-
-            pfVar25[4] = DAT_0069c4d4;
-
-            pfVar25[5] = DAT_0069c4d8;
+            pfVar25[3] = DAT_0069c4d0_f32;
+            pfVar25[4] = DAT_0069c4d4_f32;
+            pfVar25[5] = DAT_0069c4d8_f32;
 
             pfVar25[6] = fStack_40;
 
