@@ -2165,12 +2165,11 @@ u32 FUN_0039a8a0(int param_1)
 
 
 {
+  extern u32 *FUN_003c2ee0(u32 param_1);
 
   short sVar1;
-
-  u16 uVar2;
-
-  u32 *puVar3;
+  u32 *puVar11;
+  u32 uVar2;
 
   u8 *puVar4;
 
@@ -2185,24 +2184,25 @@ u32 FUN_0039a8a0(int param_1)
   u32 uVar9;
 
   int lVar10;
+  u32 *puVar13;
 
-  u32 *puVar11;
+  u32 *puVar3;
 
   int iVar12;
 
-  u16 auStack_40 [8];
-
   u16 auStack_30 [14];
 
-  int iStack_14;
+  u16 auStack_40 [8];
 
-  int iStack_10;
-
-  u8 auStack_c [4];
+  u8 auStack_4 [4];
 
   u16 auStack_8 [2];
 
-  u8 auStack_4 [4];
+  u8 auStack_c [4];
+
+  int iStack_10;
+
+  int iStack_14;
 
   
 
@@ -2288,9 +2288,9 @@ u32 FUN_0039a8a0(int param_1)
 
         FUN_003beb70(puVar3[0x230]);
 
-        lVar10 = FUN_003c2ee0(puVar3[0x230]);
+        puVar13 = FUN_003c2ee0(puVar3[0x230]);
 
-        if (lVar10 == 0) {
+        if (puVar13 == 0) {
 
           FUN_0019d3f0("mt_evtCustomEvent.c",0x6b7);
 
@@ -2302,7 +2302,7 @@ u32 FUN_0039a8a0(int param_1)
 
         FUN_0039f050(puVar11,2,puVar3[0x230]);
 
-        iVar12 = (int)lVar10;
+        iVar12 = (int)puVar13;
 
         uVar9 = FUN_003c4270(*(u32 *)(iVar12 + 4),*(u32 *)(iVar12 + 8));
 
