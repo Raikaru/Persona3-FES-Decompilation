@@ -476,6 +476,8 @@ void kwlnTaskSetFlagsRecursive(u32 enabled, KwlnTask* task, u32 flags)
 }
 #pragma optimization_level 2
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_001944C0 NONMATCHING. Set task flags for one task, its hierarchy, or the task lists.
 void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
 {
@@ -587,6 +589,7 @@ scopeDefault:
     K_ASSERT(false, 708);
     return;
 }
+#pragma pop
 
 // FUN_00194750
 void kwlnTaskPrintRecursive(const KwlnTask* task, s32 indentDepth)
