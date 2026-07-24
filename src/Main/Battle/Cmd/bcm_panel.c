@@ -4533,37 +4533,452 @@ void FUN_0022fa80(u32* object)
     state = object[0x20c];
     switch (state) {
     case 0:
+    {
+        u8* base;
+        u8 colour[4];
+        u32 resource;
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x136c) = *(u32*)(bytes + 0x136c) + 1;
-        count = *(u32*)(bytes + 0x6070);
-        if (count > 8) {
-            count = 8;
+
+        // Initialize 3 slot counters
+        for (i = 0; i < 3; i++) {
+            u32 val = *(u32*)(base + 0x30c) + i * 10;
+            *(u32*)(base + i * 4 + 0x300) = val % 30;
         }
-        for (i = 0; i < count; ++i) {
-            u8* record = bytes + 0x4660 + i * 0x420;
-            u32 active = *(u32*)record;
-            if (active == 0) {
-                FUN_0021d3b0(record + 0x10,
-                             FUN_0021cca0(table, 0x2f));
+
+        // Alpha threshold chain for 3 slots
+        colour[0] = 0xFF;
+        colour[1] = 0xFF;
+        colour[2] = 0xFF;
+        colour[3] = 0xFF;
+        for (i = 0; i < 3; i++) {
+            f32 val = (f32)*(u32*)(base + i * 4 + 0x300);
+            f32 t = val / 30.0f;
+            f32 alpha;
+
+            if (t <= 0.6f) {
+                alpha = t / 0.6f;
+                if (alpha > 1.0f) {
+                    alpha = 1.0f;
+                }
+            } else if (t <= 0.7f) {
+                alpha = 1.0f;
             } else {
-                FUN_0021d3b0(record + 0x10,
-                             FUN_0021cca0(table, 0x29 + (state & 1)));
+                alpha = (1.0f - t) / (1.0f - 0.7f);
             }
-            bcm_panel_layout_record(record, i, *(u32*)(bytes + 0x4650));
-            *(u32*)record |= 4;
+
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            }
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + i * 256, colour);
         }
-        if ((object[0] & 4) != 0) {
-            bcm_panel_refresh_records();
+
+        // Corner rotation and draw
+        resource = FUN_0021cca0(table, 0);
+        {
+            f32 pos_x = 66.0f + offset_x;
+            f32 pos_y = 11.0f + offset_y;
+            for (i = 0; i < 3; i++) {
+                f32 rect0[4], rect1[4], rect2[4];
+                f32 t = (f32)*(u32*)(base + i * 4 + 0x300);
+                f32 angle;
+                f32 s, c;
+                f32 x0, y0, x1, y1, x2, y2, x3, y3;
+                f32 w, h;
+
+                t = t / 30.0f;
+                angle = (1.0f - t) * 3.14159265f;
+                s = sinf(angle);
+                c = cosf(angle);
+
+                x0 = D_0068E4F0[i * 4 + 0];
+                y0 = D_0068E4F0[i * 4 + 1];
+                x1 = D_0068E4F0[i * 4 + 2];
+                y1 = D_0068E4F0[i * 4 + 3];
+                x2 = D_0068E4F0[i * 4 + 2];
+                y2 = D_0068E4F0[i * 4 + 3];
+                x3 = D_0068E4F0[i * 4 + 0];
+                y3 = D_0068E4F0[i * 4 + 1];
+
+                rect0[0] = pos_x + x0 * c - y0 * s;
+                rect0[1] = pos_y + x0 * s + y0 * c;
+                rect0[2] = pos_x + x1 * c - y1 * s;
+                rect0[3] = pos_y + x1 * s + y1 * c;
+                rect1[0] = pos_x + x2 * c - y2 * s;
+                rect1[1] = pos_y + x2 * s + y2 * c;
+                rect1[2] = pos_x + x3 * c - y3 * s;
+                rect1[3] = pos_y + x3 * s + y3 * c;
+
+                w = (f32)((u32*)resource)[3];
+                h = (f32)((u32*)resource)[4];
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
+
+                FUN_0021e170(base + i * 256, rect0, rect1, rect2);
+            }
         }
         break;
+    }
     case 1:
+    {
+        u8* base;
+        u32 resource;
+        u32 s3, s4;
+        u8 colour[4];
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x166c) = *(u32*)(bytes + 0x166c) + 1;
+
+        // First loop: process 3 slots (counter at base + t0*4 + 0x600)
+        for (i = 0; i < 3; i++) {
+            u32 cnt = *(u32*)(base + i * 4 + 0x600) + 1;
+            *(u32*)(base + i * 4 + 0x600) = cnt % 10;
+        }
+
+        colour[0] = 0xFF;
+        colour[1] = 0xFF;
+        colour[2] = 0xFF;
+        colour[3] = 0xFF;
+
+        // Alpha write for 3 slots with 2 sub-slots each
+        for (s3 = 0; s3 < 3; s3++) {
+            for (s4 = 0; s4 < 2; s4++) {
+                f32 cnt_f = (f32)*(u32*)(base + s3 * 4 + 0x600);
+                f32 t = cnt_f / 10.0f;
+                f32 alpha;
+
+                if (t <= 0.6f) {
+                    alpha = t / 0.6f;
+                } else if (t <= 0.7f) {
+                    alpha = 1.0f;
+                } else {
+                    alpha = (1.0f - t) / (1.0f - 0.7f);
+                }
+                if (alpha < 0.0f) {
+                    alpha = 0.0f;
+                }
+                if (s4 == 1) {
+                    alpha = alpha * 15.0f / 100.0f;
+                }
+                colour[3] = (u8)(s32)(alpha * 255.0f);
+                FUN_0021d950(base + (s3 * 2 + s4) * 256, colour);
+            }
+        }
+
+        // Draw phase with rotation for 3 slots
+        {
+            f32 pos_x = 66.0f + offset_x;
+            f32 pos_y = 11.0f + offset_y;
+            resource = FUN_0021cca0(table, 1);
+            for (s3 = 0; s3 < 3; s3++) {
+                f32 rect0[4], rect1[4], rect2[4];
+                f32 t, angle, s, c;
+                f32 x0, y0, x1, y1, x2, y2, x3, y3;
+                f32 w, h;
+
+                w = (f32)((u32*)resource)[3];
+                h = (f32)((u32*)resource)[4];
+
+                t = (f32)*(u32*)(base + s3 * 4 + 0x600);
+                t = (t + 1.0f) / 10.0f;
+                angle = (1.0f - t) * 3.14159265f;
+                s = sinf(angle);
+                c = cosf(angle);
+
+                x0 = D_0068E4F0[s3 * 4 + 0];
+                y0 = D_0068E4F0[s3 * 4 + 1];
+                x1 = D_0068E4F0[s3 * 4 + 2];
+                y1 = D_0068E4F0[s3 * 4 + 3];
+                x2 = x1;
+                y2 = y1;
+                x3 = x0;
+                y3 = y0;
+
+                rect0[0] = pos_x + x0 * c - y0 * s;
+                rect0[1] = pos_y + x0 * s + y0 * c;
+                rect0[2] = pos_x + x1 * c - y1 * s;
+                rect0[3] = pos_y + x1 * s + y1 * c;
+                rect1[0] = pos_x + x2 * c - y2 * s;
+                rect1[1] = pos_y + x2 * s + y2 * c;
+                rect1[2] = pos_x + x3 * c - y3 * s;
+                rect1[3] = pos_y + x3 * s + y3 * c;
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
+
+                FUN_0021e170(base + s3 * 512, rect0, rect1, rect2);
+            }
+        }
+
+        // Second draw phase
+        {
+            f32 pos_x = 66.0f + offset_x;
+            f32 pos_y = 11.0f + offset_y;
+            resource = FUN_0021cca0(table, 2);
+            for (s3 = 0; s3 < 3; s3++) {
+                f32 rect0[4], rect1[4], rect2[4];
+                f32 t, angle, s, c;
+                f32 x0, y0, x1, y1, x2, y2, x3, y3;
+                f32 w, h;
+
+                w = (f32)((u32*)resource)[3];
+                h = (f32)((u32*)resource)[4];
+
+                t = (f32)*(u32*)(base + s3 * 4 + 0x600);
+                t = (t + 1.0f) / 10.0f;
+                angle = (1.0f - t) * 3.14159265f;
+                s = sinf(angle);
+                c = cosf(angle);
+
+                x0 = D_0068E4F0[s3 * 4 + 0];
+                y0 = D_0068E4F0[s3 * 4 + 1];
+                x1 = D_0068E4F0[s3 * 4 + 2];
+                y1 = D_0068E4F0[s3 * 4 + 3];
+                x2 = x1;
+                y2 = y1;
+                x3 = x0;
+                y3 = y0;
+
+                rect0[0] = pos_x + x0 * c - y0 * s;
+                rect0[1] = pos_y + x0 * s + y0 * c;
+                rect0[2] = pos_x + x1 * c - y1 * s;
+                rect0[3] = pos_y + x1 * s + y1 * c;
+                rect1[0] = pos_x + x2 * c - y2 * s;
+                rect1[1] = pos_y + x2 * s + y2 * c;
+                rect1[2] = pos_x + x3 * c - y3 * s;
+                rect1[3] = pos_y + x3 * s + y3 * c;
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
+
+                FUN_0021e170(base + s3 * 512 + 256, rect0, rect1, rect2);
+            }
+        }
         break;
+    }
     case 2:
+    {
+        u8* base;
+        u8 colour[4];
+        u32 resource;
+        u32 i;
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x1374) = *(u32*)(bytes + 0x1374) + 1;
+
+        // Initialize 3 slot counters (same pattern as case 0)
+        for (i = 0; i < 3; i++) {
+            u32 val = *(u32*)(base + 0x30c) + i * 10;
+            *(u32*)(base + i * 4 + 0x300) = val % 30;
+        }
+
+        // Alpha threshold chain for 3 slots
+        colour[0] = 0xFF;
+        colour[1] = 0xFF;
+        colour[2] = 0xFF;
+        colour[3] = 0xFF;
+        for (i = 0; i < 3; i++) {
+            f32 val = (f32)*(u32*)(base + i * 4 + 0x300);
+            f32 t = val / 30.0f;
+            f32 alpha;
+
+            if (t <= 0.6f) {
+                alpha = t / 0.6f;
+                if (alpha > 1.0f) {
+                    alpha = 1.0f;
+                }
+            } else if (t <= 0.7f) {
+                alpha = 1.0f;
+            } else {
+                alpha = (1.0f - t) / (1.0f - 0.7f);
+            }
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            }
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + i * 256, colour);
+        }
+
+        // Corner rotation and draw
+        resource = FUN_0021cca0(table, 0);
+        {
+            f32 pos_x = 66.0f + offset_x;
+            f32 pos_y = 11.0f + offset_y;
+            for (i = 0; i < 3; i++) {
+                f32 rect0[4], rect1[4], rect2[4];
+                f32 t, angle, s, c;
+                f32 x0, y0, x1, y1, x2, y2, x3, y3;
+                f32 w, h;
+
+                t = (f32)*(u32*)(base + i * 4 + 0x300);
+                t = t / 30.0f;
+                angle = (1.0f - t) * 3.14159265f;
+                s = sinf(angle);
+                c = cosf(angle);
+
+                x0 = D_0068E4F0[i * 4 + 0];
+                y0 = D_0068E4F0[i * 4 + 1];
+                x1 = D_0068E4F0[i * 4 + 2];
+                y1 = D_0068E4F0[i * 4 + 3];
+                x2 = D_0068E4F0[i * 4 + 2];
+                y2 = D_0068E4F0[i * 4 + 3];
+                x3 = D_0068E4F0[i * 4 + 0];
+                y3 = D_0068E4F0[i * 4 + 1];
+
+                rect0[0] = pos_x + x0 * c - y0 * s;
+                rect0[1] = pos_y + x0 * s + y0 * c;
+                rect0[2] = pos_x + x1 * c - y1 * s;
+                rect0[3] = pos_y + x1 * s + y1 * c;
+                rect1[0] = pos_x + x2 * c - y2 * s;
+                rect1[1] = pos_y + x2 * s + y2 * c;
+                rect1[2] = pos_x + x3 * c - y3 * s;
+                rect1[3] = pos_y + x3 * s + y3 * c;
+
+                w = (f32)((u32*)resource)[3];
+                h = (f32)((u32*)resource)[4];
+                rect2[0] = 255.0f * x1;
+                rect2[1] = 255.0f * y1;
+                rect2[2] = 255.0f * x0;
+                rect2[3] = 255.0f * y0;
+
+                FUN_0021e170(base + i * 256, rect0, rect1, rect2);
+            }
+        }
         break;
+    }
     case 3:
-        FUN_0021cca0(table, 8);
+    {
+        u8* base = bytes + 0x1060;
+        u32 resource;
+        u32 i;
+        u32 j;
+        f32 pos_x0, pos_y0;
+        f32 pos_x1, pos_y1;
+        f32 size_w, size_h;
+        u8 colour[4];
+
+        resource = FUN_0021cca0(table, 8);
+        *(u32*)(bytes + 0x126c) = *(u32*)(bytes + 0x126c) + 1;
+
+        // First loop: initialize 2 slots with counters at base + i*4 + 0x200
+        for (i = 0; i < 2; i++) {
+            u32 cnt = *(u32*)(base + i * 4 + 0x200) + 1;
+            *(u32*)(base + i * 4 + 0x200) = cnt;
+            if (cnt >= 30) {
+                *(base + i + 0x208) = (u8)RpRandom();
+                cnt = cnt % 30;
+                *(u32*)(base + i * 4 + 0x200) = cnt;
+            }
+        }
+
+        // Position constants
+        pos_x0 = 80.0f + offset_x;  // f22
+        pos_y0 = 15.0f + offset_y;  // f21
+        pos_x1 = 40.0f + offset_x;  // f20
+        pos_y1 = 10.0f + offset_y;  // f31
+
+        // Outer loop: two slots
+        for (i = 0; i < 2; i++) {
+            f32 rect[8]; // 4 corners x,y pairs at [0..7]
+            f32 cnt_f;
+            f32 t;
+            f32 scale_x, scale_y;
+            f32 cx, cy;
+            f32 f26, f25;
+            f32 angle;
+            f32 s, c;
+            f32 tmp;
+
+            cnt_f = (f32)*(u32*)(base + i * 4 + 0x200);
+            t = cnt_f / 30.0f;
+
+            if (i == 0) {
+                rect[0] = pos_x0; rect[1] = pos_y0;
+                f26 = pos_x0;
+                f25 = pos_y0 + (f32)((u32*)resource)[4];
+            } else {
+                rect[0] = pos_x1; rect[1] = pos_y1;
+                f26 = pos_x1 + (f32)((u32*)resource)[3];
+                f25 = pos_y1 + (f32)((u32*)resource)[4];
+            }
+            size_w = (f32)((u32*)resource)[3];
+            size_h = (f32)((u32*)resource)[4];
+            rect[2] = rect[0] + size_w; rect[3] = rect[1];
+            rect[4] = rect[2]; rect[5] = rect[1] + size_h;
+            rect[6] = rect[0]; rect[7] = rect[5];
+
+            // Make relative to (f26, f25)
+            cx = f26;
+            cy = f25;
+            for (j = 0; j < 4; j++) {
+                rect[j * 2 + 0] -= cx;
+                rect[j * 2 + 1] -= cy;
+            }
+
+            // Scale
+            if (i == 0) {
+                scale_x = cnt_f + cnt_f * t * 0.5f;
+                scale_y = scale_x;
+            } else {
+                scale_x = cnt_f + cnt_f * t * 0.25f;
+                scale_y = scale_x;
+            }
+            for (j = 0; j < 4; j++) {
+                rect[j * 2 + 0] *= scale_x;
+                rect[j * 2 + 1] *= scale_y;
+            }
+
+            // Rotation angle from random byte
+            {
+                f32 rand_f = (f32)(s32)(s8)*(base + i + 0x208);
+                angle = rand_f * 40.0f / 256.0f / 360.0f;
+                angle = angle * 2.0f * 3.14159265f;
+            }
+
+            // Rotate 4 corners
+            s = sinf(angle);
+            c = cosf(angle);
+            for (j = 0; j < 4; j++) {
+                f32 x = rect[j * 2 + 0];
+                f32 y = rect[j * 2 + 1];
+                rect[j * 2 + 0] = x * c - y * s;
+                rect[j * 2 + 1] = x * s + y * c;
+            }
+
+            // Add back (cx, cy)
+            for (j = 0; j < 4; j++) {
+                rect[j * 2 + 0] += cx;
+                rect[j * 2 + 1] += cy;
+            }
+
+            // Draw rect
+            FUN_0021d890(base + i * 256, rect);
+
+            // Alpha computation based on counter
+            {
+                f32 alpha;
+                if (cnt_f < 7.0f) {
+                    alpha = cnt_f / 7.0f;
+                } else if (cnt_f < 20.0f) {
+                    alpha = 1.0f;
+                } else {
+                    alpha = 1.0f - (cnt_f - 20.0f) / 10.0f;
+                }
+                colour[0] = 0xFF;
+                colour[1] = 0xFF;
+                colour[2] = 0xFF;
+                colour[3] = (u8)(s32)(alpha * 255.0f);
+                FUN_0021d950(base + i * 256, colour);
+            }
+        }
         break;
+    }
     case 4:
     case 10:
         *(u32*)(bytes + 0x126c) = *(u32*)(bytes + 0x126c) + 1;
