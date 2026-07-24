@@ -93,7 +93,11 @@ extern u8 DAT_007e0952_abs[];
 extern u8 DAT_007e095a_abs[];
 extern u8 DAT_007e094e_abs[];
 extern void* DAT_00833B70;
+#pragma alias DAT_00833B70_abs DAT_00833B70
+extern u8 DAT_00833B70_abs[];
 extern void* DAT_00833BA0;
+#pragma alias DAT_00833BA0_abs DAT_00833BA0
+extern u8 DAT_00833BA0_abs[];
 #pragma alias DAT_007cb66c_scalar DAT_007cb66c
 extern char DAT_007cb66c[];
 extern char DAT_007cb66c_scalar;
@@ -926,6 +930,10 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
     }
 }
 
+/* Retail reloads these atlas globals from their absolute addresses in each
+ * branch. Keep explicit aliases so the source preserves those load modes,
+ * even though the remaining function-wide register/scheduling residual is
+ * larger than the direct GP-relative form. */
 #pragma opt_loop_invariants on
 #pragma optimization_level 3
 // FUN_0012E3B0 NONMATCHING
@@ -976,7 +984,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                         28.0f + *(f32*)(record + 0x38),
                                         6.0f + *(f32*)(record + 0x3c),
                                         *(f32*)(record + 0x24));
-                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                campEquipDrawSpriteCall(parent, *(void**)DAT_00833B70_abs,
                                         styles[0] * 2 + 1,
                                         *(u8*)(record + 0x40),
                                         139.0f + *(f32*)(record + 0x38),
@@ -1017,7 +1025,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                     6.0f + *(f32*)(record + 0x3c),
                                     *(f32*)(record + 0x24));
             campEquipDrawSpriteAltCall(
-                parent, DAT_00833B70, styles[0] * 2,
+                parent, *(void**)DAT_00833B70_abs, styles[0] * 2,
                 *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
                 139.0f + *(f32*)(record + 0x38),
                 1.0f + *(f32*)(record + 0x3c),
@@ -1069,7 +1077,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                         28.0f + *(f32*)(record + 0x38),
                                         6.0f + *(f32*)(record + 0x3c),
                                         *(f32*)(record + 0x24));
-                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                campEquipDrawSpriteCall(parent, *(void**)DAT_00833B70_abs,
                                         styles[1] * 2 + 1,
                                         *(u8*)(record + 0x40),
                                         139.0f + *(f32*)(record + 0x38),
@@ -1100,7 +1108,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                     6.0f + *(f32*)(record + 0x3c),
                                     *(f32*)(record + 0x24));
             campEquipDrawSpriteAltCall(
-                parent, DAT_00833B70, styles[1] * 2,
+                parent, *(void**)DAT_00833B70_abs, styles[1] * 2,
                 *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
                 139.0f + *(f32*)(record + 0x38),
                 1.0f + *(f32*)(record + 0x3c),
@@ -1142,7 +1150,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                         28.0f + *(f32*)(record + 0x38),
                                         6.0f + *(f32*)(record + 0x3c),
                                         *(f32*)(record + 0x24));
-                campEquipDrawSpriteCall(parent, DAT_00833B70,
+                campEquipDrawSpriteCall(parent, *(void**)DAT_00833B70_abs,
                                         styles[2] * 2 + 1,
                                         *(u8*)(record + 0x40),
                                         139.0f + *(f32*)(record + 0x38),
@@ -1173,7 +1181,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                     6.0f + *(f32*)(record + 0x3c),
                                     *(f32*)(record + 0x24));
             campEquipDrawSpriteAltCall(
-                parent, DAT_00833B70, styles[2] * 2,
+                parent, *(void**)DAT_00833B70_abs, styles[2] * 2,
                 *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
                 139.0f + *(f32*)(record + 0x38),
                 1.0f + *(f32*)(record + 0x3c),
@@ -1209,7 +1217,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                     28.0f + *(f32*)(record + 0x38),
                                     6.0f + *(f32*)(record + 0x3c),
                                     *(f32*)(record + 0x24));
-            campEquipDrawSpriteCall(parent, DAT_00833B70,
+            campEquipDrawSpriteCall(parent, *(void**)DAT_00833B70_abs,
                                     styles[3] * 2 + 1,
                                     *(u8*)(record + 0x40),
                                     139.0f + *(f32*)(record + 0x38),
@@ -1229,7 +1237,7 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                 6.0f + *(f32*)(record + 0x3c),
                                 *(f32*)(record + 0x24));
         campEquipDrawSpriteAltCall(
-            parent, DAT_00833B70, styles[3] * 2,
+            parent, *(void**)DAT_00833B70_abs, styles[3] * 2,
             *(u8*)(record + 0x40), 0x20, 0x43, 0x78,
             139.0f + *(f32*)(record + 0x38),
             1.0f + *(f32*)(record + 0x3c),
@@ -1287,12 +1295,12 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
                                 (44.0f + *(f32*)(record + 0x38)) - 28.0f,
                                 *(f32*)(record + 0x3c),
                                 *(f32*)(record + 0x24));
-        campEquipDrawSpriteCall(parent, DAT_00833BA0, 0,
+        campEquipDrawSpriteCall(parent, *(void**)DAT_00833BA0_abs, 0,
                                 *(u8*)(record + 0x40),
                                 (486.0f + *(f32*)(record + 0x38)) - 28.0f,
                                 *(f32*)(record + 0x3c),
                                 *(f32*)(record + 0x24));
-        campEquipDrawSpriteCall(parent, DAT_00833BA0, 1,
+        campEquipDrawSpriteCall(parent, *(void**)DAT_00833BA0_abs, 1,
                                 *(u8*)(record + 0x40),
                                 ((f32)0x231 + *(f32*)(record + 0x38)) - 28.0f,
                                 *(f32*)(record + 0x3c),
