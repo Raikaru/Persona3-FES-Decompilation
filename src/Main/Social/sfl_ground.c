@@ -386,12 +386,21 @@ void func_002392d0(void)
     s32 j;
     s32 row;
     s32 column;
+    f32 normProgress;
+    f32 normFade;
+    f32 invNormFade;
+    f32 work2F;
     s32 active;
+    f32 sixHundred;
+    f32 sinAngle;
+    f32 cosAngle;
+    f32 angleArg;
     s32 found;
-
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
     (void)kwlnGetMainCamera();
+    angleArg = -0.17453294f;
+    sixHundred = 600.0f;
 
     /*
      * The first switch is deliberately written as four separate arms.  The
@@ -447,7 +456,10 @@ void func_002392d0(void)
         break;
     }
     work[2] = (work[2] + 1) % 180;
-
+    normProgress = (f32)work[1] / 30.0f;
+    work2F = (f32)work[2];
+    normFade = sflGroundClamp01(normProgress);
+    invNormFade = 1.0f - normFade;
     switch (work[3]) {
     case 1:
         fade = (f32)(work[1] % 40) / 40.0f;
@@ -457,7 +469,7 @@ void func_002392d0(void)
         break;
     case 3:
     case 4:
-        fade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        fade = invNormFade;
         break;
     case 5:
         fade = 1.0f;
@@ -505,8 +517,8 @@ void func_002392d0(void)
      * radial calculation here (rather than replacing it with a helper): the
      * original has one independent wave calculation per tile.
      */
-    frameAngle = (2.0f * gPI) * ((f32)work[2] / 90.0f);
-    frameFraction = (f32)work[2] / 180.0f;
+    frameFraction = work2F / 180.0f;
+    frameAngle = (4.0f * gPI) * frameFraction;
     panelScale = 204.0f * panelFade;
     for (row = 0; row < 9; row++) {
         for (column = 0; column < 11; column++) {
@@ -557,8 +569,10 @@ void func_002392d0(void)
             panelPhase = 1.0f - (f32)((s32)work[1] - 10) / 10.0f;
         panelScale = 1.0f;
         color.a = sflGroundAlpha(panelFade * panelPhase);
-        direction.x = func_0052e6d8(-0.17453294f);
-        direction.y = func_0052e878(-0.17453294f);
+        sinAngle = func_0052e6d8(angleArg);
+        cosAngle = func_0052e878(angleArg);
+        direction.x = sinAngle;
+        direction.y = cosAngle;
         center.x = 320.0f;
         center.y = 224.0f;
         scale.x = panelScale;
@@ -566,89 +580,88 @@ void func_002392d0(void)
         func_0023c520(GROUND_PTR(work, 0x910), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x910), &color);
 
-        trig1 = func_0052e6d8(-0.17453294f);
-        trig2 = func_0052e6d8(-0.17453294f);
-        trig3 = func_0052e6d8(-0.17453294f);
-        motion = 600.0f * (panelPhase * (trig2 + trig3) - trig1);
+        trig1 = func_0052e6d8(angleArg);
+        trig2 = func_0052e6d8(angleArg);
+        trig3 = func_0052e6d8(angleArg);
+        motion = sixHundred * (panelPhase * (trig2 + trig3) - trig1);
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(-0.17453294f);
-        trig2 = func_0052e878(-0.17453294f);
-        trig3 = func_0052e878(-0.17453294f);
-        motion = 600.0f * (panelPhase * (trig2 + trig3) - trig1);
+        trig1 = func_0052e878(angleArg);
+        trig2 = func_0052e878(angleArg);
+        trig3 = func_0052e878(angleArg);
+        motion = sixHundred * (panelPhase * (trig2 + trig3) - trig1);
         center.y = 30.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0xb10), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0xb10), &color);
 
-        trig1 = func_0052e6d8(-0.17453294f);
-        trig2 = func_0052e6d8(-0.17453294f);
-        trig3 = func_0052e6d8(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e6d8(angleArg);
+        trig2 = func_0052e6d8(angleArg);
+        trig3 = func_0052e6d8(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(-0.17453294f);
-        trig2 = func_0052e878(-0.17453294f);
-        trig3 = func_0052e878(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e878(angleArg);
+        trig2 = func_0052e878(angleArg);
+        trig3 = func_0052e878(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x110), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x110), &color);
 
-        trig1 = func_0052e6d8(-0.17453294f);
-        trig2 = func_0052e6d8(-0.17453294f);
-        trig3 = func_0052e6d8(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e6d8(angleArg);
+        trig2 = func_0052e6d8(angleArg);
+        trig3 = func_0052e6d8(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(-0.17453294f);
-        trig2 = func_0052e878(-0.17453294f);
-        trig3 = func_0052e878(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e878(angleArg);
+        trig2 = func_0052e878(angleArg);
+        trig3 = func_0052e878(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x310), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x310), &color);
 
-        trig1 = func_0052e6d8(-0.17453294f);
-        trig2 = func_0052e6d8(-0.17453294f);
-        trig3 = func_0052e6d8(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e6d8(angleArg);
+        trig2 = func_0052e6d8(angleArg);
+        trig3 = func_0052e6d8(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(-0.17453294f);
-        trig2 = func_0052e878(-0.17453294f);
-        trig3 = func_0052e878(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e878(angleArg);
+        trig2 = func_0052e878(angleArg);
+        trig3 = func_0052e878(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x510), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x510), &color);
 
-        trig1 = func_0052e6d8(-0.17453294f);
-        trig2 = func_0052e6d8(-0.17453294f);
-        trig3 = func_0052e6d8(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e6d8(angleArg);
+        trig2 = func_0052e6d8(angleArg);
+        trig3 = func_0052e6d8(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.x = 320.0f + motion;
-        trig1 = func_0052e878(-0.17453294f);
-        trig2 = func_0052e878(-0.17453294f);
-        trig3 = func_0052e878(-0.17453294f);
-        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        trig1 = func_0052e878(angleArg);
+        trig2 = func_0052e878(angleArg);
+        trig3 = func_0052e878(angleArg);
+        motion = sixHundred * (trig1 - panelPhase * (trig2 + trig3));
         center.y = 418.0f + motion;
         scale.x = panelScale;
         scale.y = panelScale;
         func_0023c520(GROUND_PTR(work, 0x710), &center, &direction, &scale);
         func_0023c850(GROUND_PTR(work, 0x710), &color);
     }
-
     /*
      * States 3/4 draw seven four-quad effects.  Their particle pool is
      * topped up before the update pass, so a partially initialized scene is
      * still rendered deterministically.
      */
     if (work[3] == 3 || work[3] == 4) {
-        panelFade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        panelFade = invNormFade;
     }
     /*
      * Particle opacity is a separate state transition from the curtain
@@ -662,7 +675,7 @@ void func_002392d0(void)
     case 2:
     case 3:
     case 4:
-        particleFade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        particleFade = invNormFade;
         break;
     case 5:
         particleFade = 1.0f;
@@ -765,7 +778,7 @@ void func_002392d0(void)
     if (work[3] == 3 || work[3] == 4) {
         f32 ribbonPhase;
 
-        panelScale = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        panelScale = invNormFade;
         for (i = 0; i < 7; i++) {
             tile = (u8*)work + 0x4810 + i * 0x420;
             ribbonPhase = GROUND_F32(tile, 0x410) + 0.033333335f;
@@ -794,7 +807,7 @@ void func_002392d0(void)
         }
     }
     if (work[3] == 2 || work[3] == 3 || work[3] == 4) {
-        panelScale = sflGroundClamp01((f32)work[1] / 30.0f);
+        panelScale = normFade;
         rect[0] = 0.0f;
         rect[1] = 220.0f;
         rect[2] = 640.0f;
@@ -804,7 +817,7 @@ void func_002392d0(void)
         func_0021d950(GROUND_PTR(work, 0x4610), &color);
     }
     if (work[3] == 3 || work[3] == 4) {
-        panelScale = sflGroundClamp01((f32)work[1] / 30.0f);
+        panelScale = normFade;
         panelPhase = 1.0f - panelScale;
         rect[0] = 0.0f;
         rect[1] = 206.0f + panelPhase * 40.0f;
@@ -914,7 +927,7 @@ void func_002392d0(void)
         rect[1] = 0.0f;
         rect[2] = 503.0f;
         rect[3] = 44.0f;
-        stripAlpha = (f32)work[1] < 30.0f ? (f32)work[1] / 30.0f : 1.0f;
+        stripAlpha = normProgress < 1.0f ? normProgress : 1.0f;
         color.a = sflGroundAlpha(stripAlpha);
         func_0021d8e0(GROUND_PTR(work, 0x64f0), rect);
         func_0021d950(GROUND_PTR(work, 0x64f0), &color);
