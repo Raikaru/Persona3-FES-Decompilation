@@ -248,7 +248,6 @@ static void sflGroundInitParticle(u32* particle)
     GROUND_F32(particle, 0x11c) = 448.0f * sflGroundRandomUnit();
     GROUND_F32(particle, 0x120) = 640.0f * sflGroundRandomUnit();
     GROUND_F32(particle, 0x124) = 448.0f * sflGroundRandomUnit();
-    particle[0x40] = RpRandom() % lifetime;
 }
 
 static void sflGroundInitFxLayout(u32 flag, s32 state)
@@ -366,6 +365,10 @@ void func_002392d0(void)
     f32 panelPhase;
     f32 frameAngle;
     f32 frameFraction;
+    f32 trig1;
+    f32 trig2;
+    f32 trig3;
+    f32 motion;
     f32 x;
     f32 y;
     f32 distance;
@@ -427,8 +430,8 @@ void func_002392d0(void)
     default:
         break;
     }
-
     work[2] = (work[2] + 1) % 180;
+
     if (work[3] == 5)
         fade = 1.0f;
     else
@@ -515,23 +518,93 @@ void func_002392d0(void)
      * these out in this non-address order (the first two are the top pair).
      */
     if (work[3] == 1 && (work[0] & 1) != 0) {
-        static const u32 panelOffsets[6] = { 0x910, 0xb10, 0x110,
-                                             0x310, 0x510, 0x710 };
         panelPhase = (f32)(work[1] % 40) / 40.0f;
         panelScale = 1.0f;
         color.a = sflGroundAlpha(panelFade);
-        direction.x = cosf(0.8f);
-        direction.y = sinf(0.8f);
-        for (i = 0; i < 6; i++) {
-            angle = 0.8f + (f32)i * 0.25f;
-            center.x = 320.0f + cosf(angle) * (60.0f + panelPhase * 8.0f);
-            center.y = 224.0f + sinf(angle) * (60.0f + panelPhase * 8.0f);
-            scale.x = panelScale;
-            scale.y = panelScale;
-            func_0023c520(GROUND_PTR(work, panelOffsets[i]), &center,
-                          &direction, &scale);
-            func_0023c850(GROUND_PTR(work, panelOffsets[i]), &color);
-        }
+        direction.x = cosf(-0.17453294f);
+        direction.y = sinf(-0.17453294f);
+
+        center.x = 320.0f;
+        center.y = 224.0f;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0x910), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0x910), &color);
+
+        trig1 = cosf(-0.17453294f);
+        trig2 = cosf(-0.17453294f);
+        trig3 = cosf(-0.17453294f);
+        motion = 600.0f * (panelPhase * (trig2 + trig3) - trig1);
+        center.x = 320.0f + motion;
+        trig1 = sinf(-0.17453294f);
+        trig2 = sinf(-0.17453294f);
+        trig3 = sinf(-0.17453294f);
+        motion = 600.0f * (panelPhase * (trig2 + trig3) - trig1);
+        center.y = 30.0f + motion;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0xb10), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0xb10), &color);
+
+        trig1 = cosf(-0.17453294f);
+        trig2 = cosf(-0.17453294f);
+        trig3 = cosf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.x = 320.0f + motion;
+        trig1 = sinf(-0.17453294f);
+        trig2 = sinf(-0.17453294f);
+        trig3 = sinf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.y = 418.0f + motion;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0x110), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0x110), &color);
+
+        trig1 = cosf(-0.17453294f);
+        trig2 = cosf(-0.17453294f);
+        trig3 = cosf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.x = 320.0f + motion;
+        trig1 = sinf(-0.17453294f);
+        trig2 = sinf(-0.17453294f);
+        trig3 = sinf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.y = 418.0f + motion;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0x310), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0x310), &color);
+
+        trig1 = cosf(-0.17453294f);
+        trig2 = cosf(-0.17453294f);
+        trig3 = cosf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.x = 320.0f + motion;
+        trig1 = sinf(-0.17453294f);
+        trig2 = sinf(-0.17453294f);
+        trig3 = sinf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.y = 418.0f + motion;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0x510), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0x510), &color);
+
+        trig1 = cosf(-0.17453294f);
+        trig2 = cosf(-0.17453294f);
+        trig3 = cosf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.x = 320.0f + motion;
+        trig1 = sinf(-0.17453294f);
+        trig2 = sinf(-0.17453294f);
+        trig3 = sinf(-0.17453294f);
+        motion = 600.0f * (trig1 - panelPhase * (trig2 + trig3));
+        center.y = 418.0f + motion;
+        scale.x = panelScale;
+        scale.y = panelScale;
+        func_0023c520(GROUND_PTR(work, 0x710), &center, &direction, &scale);
+        func_0023c850(GROUND_PTR(work, 0x710), &color);
     }
 
     /*
@@ -582,21 +655,21 @@ void func_002392d0(void)
             continue;
         }
         if (GROUND_U32(particle, 4) == 0) {
-            width = 0.015f;
-            height = 0.08f;
+            width = 1.3f;
+            height = 0.2f;
         } else if (GROUND_U32(particle, 4) == 1) {
-            width = 0.16f;
-            height = 0.08f;
+            width = 1.8f;
+            height = 0.2f;
         } else {
-            width = 0.16f;
-            height = 0.35f;
+            width = 1.2f;
+            height = 0.13333334f;
         }
         progress = (f32)GROUND_U32(particle, 0x110) /
                    (f32)GROUND_U32(particle, 0x114);
-        if (progress < 0.08f)
-            progress /= 0.08f;
+        if (progress < 0.2f)
+            progress /= 0.2f;
         else if (progress >= 0.8f)
-            progress = 1.0f - (progress - 0.8f) / 0.43f;
+            progress = 1.0f - (progress - 0.8f) / 0.2f;
         scale.x = 63.0f * width;
         scale.y = 81.0f * width;
         deltaX = GROUND_F32(particle, 0x120) -
@@ -652,21 +725,39 @@ void func_002392d0(void)
      * phases are used, repeated for the two halves of the strip array.
      */
     if (work[3] == 3 || work[3] == 4) {
-        static const u32 stripOffsets[6] = { 0x64f0, 0x65f0, 0x66f0,
-                                             0x67f0, 0x68f0, 0x69f0 };
-        static const s32 stripPhases[6] = { 0, 160, 80, 160, 160, 80 };
-        for (i = 0; i < 6; i++) {
-            f32 phase;
+        panelPhase = (f32)(work[0x1abc] % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        rect[1] = 0.0f;
+        rect[2] = 1659.0f;
+        rect[3] = 44.0f;
+        color.a = sflGroundAlpha(fade);
+        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x64f0), &color);
 
-            phase = (f32)((work[0x1abc] + stripPhases[i]) % 240) / 240.0f;
-            rect[0] = (1.0f - phase) * 1659.0f - 503.0f;
-            rect[1] = 0.0f;
-            rect[2] = 1659.0f;
-            rect[3] = 44.0f;
-            color.a = sflGroundAlpha(fade);
-            func_0021d8e0(GROUND_PTR(work, stripOffsets[i]), rect);
-            func_0021d950(GROUND_PTR(work, stripOffsets[i]), &color);
-        }
+        panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x65f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
+
+        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x66f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
+
+        panelPhase = (f32)(work[0x1abc] % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x67f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
+
+        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x68f0), &color);
+
+        panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
+        rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x69f0), &color);
     }
 
     color.a = sflGroundAlpha(panelFade);
