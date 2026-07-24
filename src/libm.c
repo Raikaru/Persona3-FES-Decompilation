@@ -61,6 +61,7 @@ static const float sAtanTerms[] = {
     0.0162858199328f,
 };
 
+#pragma optimization_level 3
 // FUN_0052e408 NONMATCHING
 float atanf(float x)
 {
@@ -241,7 +242,6 @@ float floorf(register float x)
     ux.i = bits;
     return ux.f;
 }
-#pragma optimization_level 2
 
 #pragma optimization_level 3
 // FUN_0052e878 NONMATCHING
@@ -302,8 +302,8 @@ u64 FUN_0052e9a0(long param_1)
 }
 #pragma tailcall off
 #pragma optimization_level 2
-// FUN_0052E9B8 NONMATCHING
 #pragma tailcall on
+// FUN_0052E9B8 NONMATCHING
 u64 FUN_0052e9b8(u32 param_1)
 {
   return FUN_00529578(param_1);
@@ -358,7 +358,7 @@ float FUN_0052ea60(float param_1)
   return FUN_0052c398(param_1);
 }
 #pragma tailcall off
-#pragma optimization_level 3
+#pragma optimization_level 2
 // FUN_0052EA78 NONMATCHING
 u64 FUN_0052ea78(long param_1, long param_2)
 {
