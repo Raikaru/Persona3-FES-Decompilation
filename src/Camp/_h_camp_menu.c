@@ -1296,9 +1296,27 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
             campSprite(item, campDrawX(item) + 68.0f, campDrawY(item));
         }
         campSprite(item, campDrawX(item) + 93.0f, campDrawY(item) - 2.0f);
-        (void)FUN_0017dae0(FUN_0017d8b0(category, selected));
-        campSprite(item, campDrawX(item) + 104.0f, campDrawY(item) - 2.0f);
-        campSprite(item, campDrawX(item) + 128.0f, campDrawY(item) - 2.0f);
+        {
+            s32 val = FUN_0017dae0(FUN_0017d8b0(category, selected));
+            s32 spriteType = 0x40;
+            if (val < 7) {
+                switch (val) {
+                case 0: spriteType = 0x41; break;
+                case 1: spriteType = 0x3b; break;
+                case 2: spriteType = 0x3c; break;
+                case 3: spriteType = 0x3d; break;
+                case 4: spriteType = 0x3e; break;
+                case 5: spriteType = 0x3f; break;
+                case 6: spriteType = 0x40; break;
+                }
+            }
+            campMenuDrawSprite(0, NULL, spriteType, item->alpha,
+                               campDrawX(item) + 104.0f, campDrawY(item) - 2.0f,
+                               item->scale);
+            campMenuDrawSprite(0, NULL, 0x43, item->alpha,
+                               campDrawX(item) + 128.0f, campDrawY(item) - 2.0f,
+                               item->scale);
+        }
         break;
     case 2:
         campDrawRows(item, 5, 28.0f);
