@@ -12236,12 +12236,14 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
   int iVar6;
 
   int iVar7;
+  u8 *pVar;
 
   
 
   bVar1 = 0;
 
   iVar7 = (int)param_3;
+  pVar = (u8 *)param_3;
 
   switch (param_2) {
   case 1:
@@ -12253,13 +12255,13 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
       if (*(int *)(iVar7 + 0x118) == 0) {
 
-        iVar6 = *(int *)(iVar7 + 0x18);
+        iVar6 = *(int *)(pVar + 0x18);
 
-        *(int *)(iVar7 + 0x10) = iVar6;
+        *(int *)(pVar + 0x10) = iVar6;
 
-        if (*(int *)(iVar7 + 0x14) < iVar6) {
+        if (*(int *)(pVar + 0x14) < iVar6) {
 
-          *(int *)(iVar7 + 0x14) = iVar6;
+          *(int *)(pVar + 0x14) = iVar6;
 
         }
 
@@ -12278,13 +12280,13 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
       if (*(int *)(iVar7 + 0x118) == 0) {
 
-        iVar6 = *(int *)(iVar7 + 0x18);
+        iVar6 = *(int *)(pVar + 0x18);
 
-        *(int *)(iVar7 + 0x14) = iVar6;
+        *(int *)(pVar + 0x14) = iVar6;
 
-        if (iVar6 < *(int *)(iVar7 + 0x10)) {
+        if (iVar6 < *(int *)(pVar + 0x10)) {
 
-          *(int *)(iVar7 + 0x10) = iVar6;
+          *(int *)(pVar + 0x10) = iVar6;
 
         }
 
@@ -12303,13 +12305,13 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
       if (*(int *)(iVar7 + 0x118) == 0) {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) & 0xfe;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) & -2;
 
       }
 
       else {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) | 1;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) | 1;
 
       }
 
@@ -12320,13 +12322,13 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
       if (*(int *)(iVar7 + 0x118) == 0) {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) & 0xfb;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) & -5;
 
       }
 
       else {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) | 4;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) | 4;
 
       }
 
@@ -12337,13 +12339,13 @@ int FUN_0036be60(u64 param_1,int param_2,int param_3)
 
       if (*(int *)(iVar7 + 0x118) == 0) {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) & 0xfd;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) & -3;
 
       }
 
       else {
 
-        *(u8 *)(iVar7 + 0x4c) = *(u8 *)(iVar7 + 0x4c) | 2;
+        *(char *)(iVar7 + 0x4c) = *(char *)(iVar7 + 0x4c) | 2;
 
       }
 
