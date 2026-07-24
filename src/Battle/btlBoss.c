@@ -3500,13 +3500,13 @@ void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5)
 
   FUN_004d7f60(3,param_5);
 
-  fVar7 = 1.0 / *(float *)(iVar2 + 0x84);
+  fVar7 = 1.0f / *(float *)(iVar2 + 0x84);
 
-  fVar8 = 0.0;
+  fVar8 = 0.0f;
 
-  afStack_a80[0] = 320.0;
+  afStack_a80[0] = 320.0f;
 
-  afStack_a80[1] = 224.0;
+  afStack_a80[1] = 224.0f;
 
   afStack_a80[2] = (float)(uintptr_t)DAT_0096008c;
 
@@ -3530,9 +3530,9 @@ void FUN_002fe780(float param_1,u8 *param_2,u8 *param_3,u64 param_4,u64 param_5)
 
     fVar5 = (float)FUN_0052e878(fVar8);
 
-    afStack_a80[uVar3 * 0x10] = param_1 * 390.60977 * fVar4 + 320.0;
+    afStack_a80[uVar3 * 0x10] = param_1 * 390.60977f * fVar4 + 320.0f;
 
-    afStack_a80[uVar3 * 0x10 + 1] = param_1 * 390.60977 * fVar5 + 224.0;
+    afStack_a80[uVar3 * 0x10 + 1] = param_1 * 390.60977f * fVar5 + 224.0f;
 
     afStack_a80[uVar3 * 0x10 + 2] = fVar6;
 
