@@ -1887,114 +1887,144 @@ void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
     u32 textId;
     u32* drawData;
     undefined1 text[0x100];
-
-    x = *(f32*)((u8*)&param_3 + 4);
-    y = *(f32*)&param_3;
+    x = *(f32*)&param_3;
+    y = *(f32*)((u8*)&param_3 + 4);
     drawData = (u32*)param_2;
     alpha = 0xffU - (u32)param_5;
 
-    FUN_001159f0(x + 36.0f, y + 242.0f, param_1, drawData[1], 0x48, param_5);
-    FUN_001159f0(x + 348.0f, y + 242.0f, param_1, drawData[1], 0x49, param_5);
-    FUN_001159f0(x + 55.0f, y + 252.0f, param_1, drawData[1], 0x4a, param_5);
-    FUN_001159f0(x + 55.0f, y + 286.0f, param_1, drawData[1], 0x4b, param_5);
-    FUN_001159f0(x + 198.0f, y + 286.0f, param_1, drawData[1], 0x4c, param_5);
-    FUN_001159f0(x + 55.0f, y + 313.0f, param_1, drawData[1], 0x4d, param_5);
-    FUN_001159f0(x + 198.0f, y + 313.0f, param_1, drawData[1], 0x4e, param_5);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x48,
+                       (u8)param_5, x + 36.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x49,
+                       (u8)param_5, x + 348.0f, y + 242.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4a,
+                       (u8)param_5, x + 55.0f, y + 252.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4b,
+                       (u8)param_5, x + 55.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4c,
+                       (u8)param_5, x + 198.0f, y + 286.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4d,
+                       (u8)param_5, x + 55.0f, y + 313.0f, param_1);
+    FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4e,
+                       (u8)param_5, x + 198.0f, y + 313.0f, param_1);
 
     totalCount = *(s32*)((u8*)param_4 + 0x2d64);
-    if (totalCount == 0) {
-        /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
-        FUN_001159f0(x + 129.0f, y + 294.0f, param_1, drawData[1], 0x4f,
-                     param_5);
-        FUN_001159f0(x + 272.0f, y + 294.0f, param_1, drawData[1], 0x4f,
-                     param_5);
-        FUN_001159f0(x + 129.0f, y + 321.0f, param_1, drawData[1], 0x4f,
-                     param_5);
-        FUN_001159f0(x + 272.0f, y + 321.0f, param_1, drawData[1], 0x4f,
-                     param_5);
-        return;
-    }
+    if (totalCount != 0) {
+        row = *(s32*)((u8*)param_4 + 0x2d6c);
+        selected = *(s32*)((u8*)param_4 + 0x2d68);
+        recordIndex = row + selected;
+        record = (u8*)param_4 + recordIndex * 0x24;
+        type = *(u32*)(record + 0x78);
 
-    row = *(s32*)((u8*)param_4 + 0x2d6c);
-    selected = *(s32*)((u8*)param_4 + 0x2d68);
-    recordIndex = row + selected;
-    record = (u8*)param_4 + recordIndex * 0x24;
-    type = *(u32*)(record + 0x78);
+        /* jtbl_007B6400 selects the main selected-persona icon. */
+        mainSprite = 0x51;
+        switch (type) {
+        case 0:  mainSprite = 0x51; break;
+        case 1:  mainSprite = 0x52; break;
+        case 2:  mainSprite = 0x53; break;
+        case 3:  mainSprite = 0x54; break;
+        case 4:  mainSprite = 0x55; break;
+        case 5:  mainSprite = 0x56; break;
+        case 6:  mainSprite = 0x5b; break;
+        case 7:  mainSprite = 0x57; break;
+        case 8:  mainSprite = 0x51; break;
+        case 9:  mainSprite = 0x52; break;
+        case 10: mainSprite = 0x53; break;
+        case 11: mainSprite = 0x54; break;
+        case 12: mainSprite = 0x55; break;
+        case 13: mainSprite = 0x56; break;
+        case 14: mainSprite = 0x5b; break;
+        case 15: mainSprite = 0x57; break;
+        case 16: mainSprite = 0x58; break;
+        case 17: mainSprite = 0x59; break;
+        case 18: mainSprite = 0x5a; break;
+        case 19: mainSprite = 0x5a; break;
+        case 20: mainSprite = 0x5a; break;
+        default: break;
+        }
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], mainSprite,
+                           (u8)param_5, x + 127.0f, y + 253.0f, param_1);
 
-    /* jtbl_007B6400 selects the main selected-persona icon. */
-    mainSprite = 0x51;
-    switch (type) {
-    case 0:  mainSprite = 0x51; break;
-    case 1:  mainSprite = 0x52; break;
-    case 2:  mainSprite = 0x53; break;
-    case 3:  mainSprite = 0x54; break;
-    case 4:  mainSprite = 0x55; break;
-    case 5:  mainSprite = 0x56; break;
-    case 6:  mainSprite = 0x5b; break;
-    case 7:  mainSprite = 0x57; break;
-    case 8:  mainSprite = 0x51; break;
-    case 9:  mainSprite = 0x52; break;
-    case 10: mainSprite = 0x53; break;
-    case 11: mainSprite = 0x54; break;
-    case 12: mainSprite = 0x55; break;
-    case 13: mainSprite = 0x56; break;
-    case 14: mainSprite = 0x5b; break;
-    case 15: mainSprite = 0x57; break;
-    case 16: mainSprite = 0x58; break;
-    case 17: mainSprite = 0x59; break;
-    case 18: mainSprite = 0x5a; break;
-    case 19: mainSprite = 0x5a; break;
-    case 20: mainSprite = 0x5a; break;
-    default: break;
-    }
-    FUN_001159f0(x + 127.0f, y + 253.0f, param_1, drawData[1],
-                 mainSprite, param_5);
+        condition = *(s8*)((u8*)record + 0x7e);
+        if (condition == 2) {
+            textId = *(undefined2*)((u8*)record + 0x86);
+            FUN_00523ac8(text, gp0xffff8998, textId);
+            FUN_0040eb50(param_1, (s32)(x + 198.0f + 74.0f),
+                         (s32)(y + 313.0f + 8.0f), alpha & 0xffU, 4, text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 1) {
+            textId = *(undefined2*)((u8*)record + 0x84);
+            FUN_00523ac8(text, gp0xffff8998, textId);
+            FUN_0040eb50(param_1, (s32)(x + 55.0f + 74.0f),
+                         (s32)(y + 313.0f + 8.0f), alpha & 0xffU, 4, text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else if (condition == 0) {
+            textId = *(undefined2*)((u8*)record + 0x80);
+            FUN_00523ac8(text, gp0xffff8998, textId);
+            FUN_0040eb50(param_1, (s32)(x + 55.0f + 74.0f),
+                         (s32)(y + 286.0f + 8.0f), alpha & 0xffU, 4, text, 0);
+            textId = *(undefined2*)((u8*)record + 0x82);
+            FUN_00523ac8(text, gp0xffff8998, textId);
+            FUN_0040eb50(param_1, (s32)(x + 198.0f + 74.0f),
+                         (s32)(y + 286.0f + 8.0f), alpha & 0xffU, 4, text, 0);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        } else {
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 286.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 55.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+            FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                               (u8)param_5, x + 198.0f + 74.0f,
+                               y + 313.0f + 8.0f, param_1);
+        }
 
-    condition = *(s8*)((u8*)record + 0x7e);
-    xLeft = x + 55.0f + 74.0f;
-    xRight = x + 198.0f + 74.0f;
-    yTop = y + 286.0f + 8.0f;
-    yBottom = y + 313.0f + 8.0f;
-    if (condition == 2) {
-        textId = *(undefined2*)((u8*)record + 0x86);
-        FUN_00523ac8(text, gp0xffff8998, textId);
-        FUN_0040eb50(param_1, (s32)xRight, (s32)yBottom, alpha & 0xffU,
-                     4, text, 0);
-        FUN_001159f0(xLeft, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xLeft, yBottom, param_1, drawData[1], 0x4f, param_5);
-    } else if (condition == 1) {
-        textId = *(undefined2*)((u8*)record + 0x84);
-        FUN_00523ac8(text, gp0xffff8998, textId);
-        FUN_0040eb50(param_1, (s32)xLeft, (s32)yBottom, alpha & 0xffU,
-                     4, text, 0);
-        FUN_001159f0(xLeft, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yBottom, param_1, drawData[1], 0x4f, param_5);
-    } else if (condition == 0) {
-        textId = *(undefined2*)((u8*)record + 0x80);
-        FUN_00523ac8(text, gp0xffff8998, textId);
-        FUN_0040eb50(param_1, (s32)xLeft, (s32)yTop, alpha & 0xffU,
-                     4, text, 0);
-        textId = *(undefined2*)((u8*)record + 0x82);
-        FUN_00523ac8(text, gp0xffff8998, textId);
-        FUN_0040eb50(param_1, (s32)xRight, (s32)yTop, alpha & 0xffU,
-                     4, text, 0);
-        FUN_001159f0(xLeft, yBottom, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yBottom, param_1, drawData[1], 0x4f, param_5);
+        rowY = y + 356.0f;
+        barY = x + 55.0f;
+        FUN_003c7e20(param_1, (s32)barY, (s32)rowY,
+                     alpha | 0xffffff00U, 1, 10, 1,
+                     (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
+                           *(undefined2*)((u8*)record + 100)));
     } else {
-        FUN_001159f0(xLeft, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yTop, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xLeft, yBottom, param_1, drawData[1], 0x4f, param_5);
-        FUN_001159f0(xRight, yBottom, param_1, drawData[1], 0x4f, param_5);
+        /* Retail uses the same 0x4f glyph/frame for all four empty slots. */
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 286.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 55.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
+        FUN_001159f0_typed(NULL, (void*)(uintptr_t)drawData[1], 0x4f,
+                           (u8)param_5, x + 198.0f + 74.0f,
+                           y + 313.0f + 8.0f, param_1);
     }
 
-    rowY = y + 356.0f;
-    barY = x + 55.0f;
-    FUN_003c7e20(param_1, (s32)barY, (s32)rowY,
-                 alpha | 0xffffff00U, 1, 10, 1,
-                 (u32)((*(undefined1*)((u8*)record + 0x7c) << 16) |
-                       *(undefined2*)((u8*)record + 100)));
 }
 
 
