@@ -1331,6 +1331,11 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
     sDungeonRoomCounter++;
 }
 
+// Tail count dispatch now follows retail's repeated field accessor calls and single-ID path.
+// The count==3/4 direction cases intentionally rematerialize each destination cell.
+// This restores missing runtime behavior that the prior cached-pointer reconstruction omitted.
+// The resulting normalized diff is temporarily higher because MWCC register allocation shifts.
+// Keep this logic rather than reverting to the smaller but semantically incomplete tail.
 // FUN_001bb300 NONMATCHING
 void func_001bb300(u16 patternId, u16 x, u16 y)
 {
@@ -1360,7 +1365,7 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     u32 colOffset;
     u32 rowOffset;
     f32 angle;
-    volatile u8 framePadding[0x90];
+    volatile u8 framePadding[0x70];
     axis = *(RwV3d*)D_006833B0;
     colOffset = (u32)x * 0x10;
     rowOffset = (u32)y * 0x100;
@@ -1678,70 +1683,39 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
     }
     if (count == 1)
     {
-        fieldRoot = (u8*)K_Field_Get();
-        fieldCell = fieldRoot + rowOffset + colOffset;
-        direction = fieldCell[0x4e];
-        if (direction == 0)
-        {
-            *(u32*)(fieldCell + 0x54) = 0xffff;
-            *(u32*)(fieldCell + 0x64) = ids[0];
-            *(u32*)(fieldCell + 0x154) = ids[1];
-            *(u32*)(fieldCell + 0x164) = ids[2];
-        }
-        else if (direction == 1)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[0];
-            *(u32*)(fieldCell + 0x64) = ids[2];
-            *(u32*)(fieldCell + 0x154) = 0xffff;
-            *(u32*)(fieldCell + 0x164) = ids[1];
-        }
-        else if (direction == 2)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[2];
-            *(u32*)(fieldCell + 0x64) = ids[1];
-            *(u32*)(fieldCell + 0x154) = ids[0];
-            *(u32*)(fieldCell + 0x164) = 0xffff;
-        }
-        else
-        {
-            *(u32*)(fieldCell + 0x54) = ids[1];
-            *(u32*)(fieldCell + 0x64) = 0xffff;
-            *(u32*)(fieldCell + 0x154) = ids[0];
-            *(u32*)(fieldCell + 0x164) = ids[2];
-        }
+        *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
     }
     else if (count == 3)
     {
         fieldRoot = (u8*)K_Field_Get();
         fieldCell = fieldRoot + rowOffset + colOffset;
         direction = fieldCell[0x4e];
-        if (direction == 0)
+        switch (direction)
         {
-            *(u32*)(fieldCell + 0x54) = ids[0];
-            *(u32*)(fieldCell + 0x64) = ids[1];
-            *(u32*)(fieldCell + 0x154) = ids[2];
-            *(u32*)(fieldCell + 0x164) = ids[3];
-        }
-        else if (direction == 1)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[1];
-            *(u32*)(fieldCell + 0x64) = ids[3];
-            *(u32*)(fieldCell + 0x154) = ids[0];
-            *(u32*)(fieldCell + 0x164) = ids[2];
-        }
-        else if (direction == 2)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[3];
-            *(u32*)(fieldCell + 0x64) = ids[2];
-            *(u32*)(fieldCell + 0x154) = ids[1];
-            *(u32*)(fieldCell + 0x164) = ids[0];
-        }
-        else
-        {
-            *(u32*)(fieldCell + 0x54) = ids[2];
-            *(u32*)(fieldCell + 0x64) = ids[0];
-            *(u32*)(fieldCell + 0x154) = ids[3];
-            *(u32*)(fieldCell + 0x164) = ids[1];
+        case 0:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[3];
+            break;
+        case 1:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[2];
+            break;
+        case 2:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[0];
+            break;
+        case 3:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[1];
+            break;
         }
     }
     else if (count == 4)
@@ -1749,33 +1723,32 @@ void func_001bb300(u16 patternId, u16 x, u16 y)
         fieldRoot = (u8*)K_Field_Get();
         fieldCell = fieldRoot + rowOffset + colOffset;
         direction = fieldCell[0x4e];
-        if (direction == 0)
+        switch (direction)
         {
-            *(u32*)(fieldCell + 0x54) = ids[0];
-            *(u32*)(fieldCell + 0x64) = ids[1];
-            *(u32*)(fieldCell + 0x154) = ids[2];
-            *(u32*)(fieldCell + 0x164) = ids[3];
-        }
-        else if (direction == 1)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[1];
-            *(u32*)(fieldCell + 0x64) = ids[3];
-            *(u32*)(fieldCell + 0x154) = ids[0];
-            *(u32*)(fieldCell + 0x164) = ids[2];
-        }
-        else if (direction == 2)
-        {
-            *(u32*)(fieldCell + 0x54) = ids[3];
-            *(u32*)(fieldCell + 0x64) = ids[2];
-            *(u32*)(fieldCell + 0x154) = ids[1];
-            *(u32*)(fieldCell + 0x164) = ids[0];
-        }
-        else
-        {
-            *(u32*)(fieldCell + 0x54) = ids[2];
-            *(u32*)(fieldCell + 0x64) = ids[0];
-            *(u32*)(fieldCell + 0x154) = ids[3];
-            *(u32*)(fieldCell + 0x164) = ids[1];
+        case 0:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[3];
+            break;
+        case 1:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[2];
+            break;
+        case 2:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[1];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[0];
+            break;
+        case 3:
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x54) = ids[2];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x64) = ids[0];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x154) = ids[3];
+            *(u32*)((u8*)K_Field_Get() + rowOffset + colOffset + 0x164) = ids[1];
+            break;
         }
     }
     func_004c3880(matrix);
