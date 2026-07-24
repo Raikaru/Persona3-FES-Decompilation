@@ -29,6 +29,8 @@ int * FUN_003dfeb0(int param_1);
 void FUN_003dff00(s32 param_1);
 u32 FUN_003dff30(int *param_1);
 int FUN_003dff80(int *param_1,int param_2);
+void FUN_003c4710(int *param_1, int *param_2, int *param_3);
+int *FUN_003c4820(int *param_1, int *param_2);
 int FUN_003dffc0(int *param_1,int param_2,long param_3);
 void FUN_003e0080(u64 param_1,int param_2,int param_3,u16 param_4);
 int FUN_003e0260(u64 param_1,u64 param_2);
@@ -3480,7 +3482,24 @@ u32 FUN_003e0bc0(void)
         FclAnimationNode* s0 = *(FclAnimationNode **)((unsigned char *)param_1 + 0x98); \
         unsigned char table[0x3f0]; \
         FclAnimationResultRecord result; \
-        memcpy(table, DAT_006a6b20, 0x3f0); \
+        FclAnimationNode* node; \
+        u32 *src; \
+        u32 *dst; \
+        s32 count; \
+        u32 value0; \
+        u32 value1; \
+        src = (u32 *)DAT_006a6b20; \
+        dst = (u32 *)table; \
+        count = 0x7e; \
+        do { \
+            value0 = src[0]; \
+            value1 = src[1]; \
+            src += 2; \
+            count--; \
+            dst[0] = value0; \
+            dst[1] = value1; \
+            dst += 2; \
+        } while (count > 0); \
         FCL_SET_RESULT(table, 0, ID) \
         FCL_SET_RESULT(table, 1, ID) \
         FCL_SET_RESULT(table, 2, ID) \
@@ -3518,9 +3537,12 @@ u32 FUN_003e0bc0(void)
         FCL_SET_RESULT(table, 34, ID) \
         FCL_SET_RESULT(table, 35, ID) \
         memcpy(&result, &((FclAnimationResultRecord *)table)[(SLOT)], 0x1c); \
-        fclCombineList003df100( \
-            (FclAnimationNode *)FUN_003dffc0((int *)s0, (ID), result.value), \
-            &result); \
+        node = (FclAnimationNode *)FUN_003dffc0((int *)s0, (ID), result.value); \
+        if ((ID) == 0) { \
+            FUN_003c4820((int *)(s0->value + 4), (int *)node->link); \
+            FUN_003c4710((int *)(s0->value + 4), 0, (int *)node->link); \
+        } \
+        fclCombineList003df100(node, &result); \
     } while (0)
 
 // FUN_003E0C20 NONMATCHING
@@ -3659,6 +3681,16 @@ void FUN_003e0c20(void *param_1, u32 param_2, u32 param_3)
             FCL_COMBINE_CASE(17, 34);
         } else if (param_3 == 1) {
             FCL_COMBINE_CASE(17, 35);
+        } else if (param_3 == 3) {
+            FclAnimationNode* node =
+                (FclAnimationNode *)FUN_003dff80(
+                    *(int **)((unsigned char *)param_1 + 0x98), 0x11);
+            node->value_storage->values[0] |= 2;
+        } else if (param_3 == 4) {
+            FclAnimationNode* node =
+                (FclAnimationNode *)FUN_003dff80(
+                    *(int **)((unsigned char *)param_1 + 0x98), 0x11);
+            node->value_storage->values[0] &= ~2;
         }
         break;
     default:
