@@ -944,13 +944,15 @@ void* func_001ae580(KwlnTask* task)
 
     work = fldFrameMoveWork(task);
     model = fldFrameMoveModel(work);
-    if (work->state == 0)
+    switch (work->state)
+    {
+    case 0:
     {
         work->drawMatrix = func_004c38c0();
         work->state = 1;
         return KWLNTASK_CONTINUE;
     }
-    if (work->state == 1)
+    case 1:
     {
         if (work->pendingPointCount > 0)
         {
@@ -985,7 +987,7 @@ void* func_001ae580(KwlnTask* task)
         }
         return KWLNTASK_CONTINUE;
     }
-    if (work->state == 2)
+    case 2:
     {
         if (work->pointCount <= 0)
         {
@@ -1014,8 +1016,9 @@ void* func_001ae580(KwlnTask* task)
             work->frameCount = 1;
         }
         work->state = (work->points[0].kind == 3) ? 4 : 3;
+        return KWLNTASK_CONTINUE;
     }
-    if (work->state == 3 || work->state == 4)
+    case 3:
     {
         RwV3d translation;
         f32 amount;
@@ -1045,7 +1048,39 @@ void* func_001ae580(KwlnTask* task)
         }
         return KWLNTASK_CONTINUE;
     }
-    if (work->state == 5 || work->state == 6 || work->state == 7)
+    case 4:
+    {
+        RwV3d translation;
+        f32 amount;
+
+        if (model == NULL)
+        {
+            func_001ae480(task);
+            work->state = 1;
+            return KWLNTASK_CONTINUE;
+        }
+        amount = work->directionLength / (f32)work->frameCount;
+        translation.x = work->direction.x * amount;
+        translation.y = work->direction.y * amount;
+        translation.z = work->direction.z * amount;
+        mdlTranslate(model, &translation, rwCOMBINEPOSTCONCAT);
+        if (work->points[0].drawTask != NULL)
+        {
+            K_Draw_SetPositionPos(work->points[0].drawTask,
+                                  &mdlGetMatrix(model)->pos);
+        }
+        work->frameCount--;
+        if (work->frameCount <= 0)
+        {
+            mdlGetMatrix(model)->pos = work->points[0].position;
+            func_001ae480(task);
+            work->state = (work->mode == 1 || work->mode == 4) ? 1 : 2;
+        }
+        return KWLNTASK_CONTINUE;
+    }
+    case 5:
+    case 6:
+    case 7:
     {
         RwV3d axis = {0.0f, 1.0f, 0.0f};
         if (model != NULL)
@@ -1058,6 +1093,15 @@ void* func_001ae580(KwlnTask* task)
             func_001ae480(task);
             work->state = 1;
         }
+        break;
+    }
+    case 8:
+    {
+        work->state = 1;
+        return KWLNTASK_CONTINUE;
+    }
+    default:
+        break;
     }
     return KWLNTASK_CONTINUE;
 }
