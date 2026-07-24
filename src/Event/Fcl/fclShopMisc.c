@@ -19097,7 +19097,7 @@ void FUN_00407210(u32 param_1,u32 param_2,u16 param_3,int param_4,int param_5)
   return;
 }
 
-// FUN_004072D0 NONMATCHING
+// FUN_004072D0
 
 
 void FUN_004072d0(int param_1, long param_2, long param_3)
@@ -19194,7 +19194,7 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
     if (param_3 == 0) {
       FCL_SHOP_MISC_BUILD(&storage.tail1, &storage.output[1], owner, 13, 13, 0, 26);
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(&storage.tail0, &storage.output[0], owner, 13, 13, 0, 0);
+      FCL_SHOP_MISC_BUILD(&storage.tail0, &storage.output[0], owner, 13, 13, 0, 27);
     }
     break;
 }
