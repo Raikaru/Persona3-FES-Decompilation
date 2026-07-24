@@ -19,7 +19,7 @@ typedef struct DatUnit DatUnit;
 u32 datCalcRand(u32 max);
 
 u8 datCalcGetLevel(DatUnit* unit);
-s32 datCalcGetHp(DatUnit* unit);
+u16 datCalcGetHp(DatUnit* unit);
 u16 datCalcGetSp(DatUnit* unit);
 void datCalcSetHp(DatUnit* unit, u16 hp);
 void datCalcSetSp(DatUnit* unit, u16 sp);
