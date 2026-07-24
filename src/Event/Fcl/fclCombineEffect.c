@@ -1225,6 +1225,9 @@ u8 FUN_00418390(int param_1,int *param_2)
 
 }
 
+#pragma optimization_level 3
+#pragma schedule off
+ 
 // FUN_00418510 NONMATCHING
 
 
@@ -1288,11 +1291,9 @@ u8 FUN_00418510(int param_1,int *param_2)
 
     iVar4 = kwlnGetMainCamera();
 
-    fStack_20 = (-(fStack_10 - 320.0) * *(float *)(iVar4 + 0x68)) / 320.0;
-
-    fStack_1c = (-(fStack_c - 224.0) * *(float *)(iVar4 + 0x6c)) / 224.0;
-
-    fStack_18 = 1.0;
+    fStack_20 = (-(fStack_10 - 320.0f) * *(float *)(iVar4 + 0x68)) / 320.0f;
+    fStack_1c = (-(fStack_c - 224.0f) * *(float *)(iVar4 + 0x6c)) / 224.0f;
+    fStack_18 = 1.0f;
 
     RwV3dNormalize((RwV3d*)&fStack_20,(RwV3d*)&fStack_20);
 
@@ -1319,44 +1320,24 @@ u8 FUN_00418510(int param_1,int *param_2)
   cVar1 = *(char *)(iVar3 + 4);
 
   if (cVar1 == '@') {
-
     if ((*(char *)(iVar3 + 5) != '\x02') && (*(char *)(iVar3 + 5) == '\x01')) {
-
       FUN_004cb750(uVar5,&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
-
     }
-
   }
-
   else if (cVar1 == '\x06') {
-
     fStack_38 = (float)(*(int *)(iVar3 + 0xc) / 0xffff);
-
     fStack_34 = (float)(*(int *)(iVar3 + 0x10) / 0xffff);
-
     uVar5 = func_0020c500((float)(*(int *)(iVar3 + 0x14) / 0xffff),*(u32 *)(iVar2 + 8));
-
     func_0020c320(uVar5,*(u32 *)(iVar2 + 8),&fStack_38,&fStack_10);
-
     sflRes0020d650(*(u32 *)(iVar2 + 8),&fStack_10);
-
   }
-
   else if (cVar1 == '\x03') {
-
     mdlTranslate(*(u32 *)(iVar2 + 8),&fStack_10,auStack_30[*(u32 *)(iVar3 + 0x18) & 3]);
-
   }
-
   else if (cVar1 == '\x02') {
-
-
   }
-
   else if (cVar1 == '\x01') {
-
     FUN_0034fdf0(*(u32 *)(iVar2 + 8),&fStack_10);
-
   }
 
   iVar2 = param_2[3];
@@ -1366,9 +1347,11 @@ u8 FUN_00418510(int param_1,int *param_2)
   return *(int *)(iVar3 + 8) <= iVar2 + 1;
 
 }
+#pragma optimization_level 2
+#pragma schedule off
 
+#pragma optimization_level 3
 // FUN_00418880 NONMATCHING
-
 
 u32 FUN_00418880(int param_1,int *param_2)
 
@@ -1560,6 +1543,7 @@ u32 FUN_00418880(int param_1,int *param_2)
   return 1;
 
 }
+#pragma optimization_level 2
 
 // FUN_00418C10
 
@@ -1581,6 +1565,7 @@ u32 FUN_00418c10(u64 param_1,int *param_2)
 
 }
 
+#pragma optimization_level 3
 // FUN_00418C70 NONMATCHING
 
 
@@ -1757,7 +1742,9 @@ u8 FUN_00418c70(int param_1,int *param_2)
   return *(int *)(iVar1 + 8) <= iVar4 + 1;
 
 }
+#pragma optimization_level 2
 
+#pragma optimization_level 3
 // FUN_00419050 NONMATCHING
 
 
@@ -2104,6 +2091,7 @@ u8 FUN_00419050(int param_1,int *param_2)
   return *(int *)(iVar2 + 8) <= iVar1 + 1;
 
 }
+#pragma optimization_level 2
 
 // FUN_004195F0 NONMATCHING
 
@@ -2576,6 +2564,7 @@ u32 FUN_00419c10(int param_1,int *param_2)
   return 1;
 }
 
+#pragma optimization_level 3
 // FUN_00419F20 NONMATCHING
 u8 FUN_00419f20(int param_1,int *param_2)
 
@@ -2764,6 +2753,7 @@ u8 FUN_00419f20(int param_1,int *param_2)
   return piVar1[2] <= iVar5;
 
 }
+#pragma optimization_level 2
 
 // FUN_0041A2C0
 u32 FUN_0041a2c0(int param_1, int* param_2)
@@ -3079,6 +3069,7 @@ u8 FUN_0041a730(u64 param_1,int param_2)
 
 }
 
+#pragma optimization_level 3
 // FUN_0041A900 NONMATCHING
 
 
@@ -3235,7 +3226,9 @@ u8 FUN_0041a900(u64 param_1,int param_2)
   return 5.0 < (float)*(int *)(param_2 + 0xc);
 
 }
+#pragma optimization_level 2
 
+#pragma optimization_level 3
 // FUN_0041ABC0 NONMATCHING
 
 
@@ -3360,6 +3353,7 @@ u8 FUN_0041abc0(int param_1,int *param_2)
   return *(int *)(iVar1 + 8) <= iVar4 + 1;
 
 }
+#pragma optimization_level 2
 
 // FUN_0041AE20 NONMATCHING
 
@@ -3458,6 +3452,7 @@ u32 FUN_0041ae20(int param_1)
 
 
 
+#pragma optimization_level 3
 // FUN_0041AFF0 NONMATCHING
 u8 FUN_0041aff0(int param_1,int param_2)
 
@@ -3676,6 +3671,7 @@ u8 FUN_0041aff0(int param_1,int param_2)
   return bVar3;
 
 }
+#pragma optimization_level 2
 
 // FUN_0041B530
 
