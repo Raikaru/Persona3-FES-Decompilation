@@ -346,12 +346,11 @@ void FUN_00179030(u32 saveType, void* stream)
 // FUN_001791d0 NONMATCHING
 bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
 {
-    const u8* start = (const u8*)stream;
     const u8* cursor = (const u8*)stream;
+    const u8* start = (const u8*)stream;
     u32 id;
     u32 size;
     u32 consumed;
-    u32 limit;
     u32 checksum;
     u32 i;
     u8 stored;
@@ -364,8 +363,25 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
     }
     if (saveType < 3) return true;
     consumed = 0;
-    limit = (u32)(streamSize - 0x34);
     for (;;)
+    {
+        memcpy(&id, cursor, 4);
+        if (id == 0xffffffff) return false;
+        if (id == 0x2000)
+        {
+            checksum = 0;
+            for (i = 0; i < consumed; i++)
+                checksum = (checksum + start[i]) & 0xff;
+            memcpy(&size, cursor + 4, 4);
+            memcpy(&stored, cursor + 8, 1);
+            return (((u8)checksum ^ stored) == 0);
+        }
+        memcpy(&size, cursor + 4, 4);
+        if (size == 0) return false;
+        cursor += 8 + size;
+        consumed += 8 + size;
+        if (consumed >= (u32)(streamSize - 0x34)) return false;
+    }
     {
         memcpy(&id, cursor, 4);
         if (id == 0xffffffff) return false;
