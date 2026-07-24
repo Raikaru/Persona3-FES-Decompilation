@@ -493,10 +493,15 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
     }
     *(u32*)0x007ce164 = *(u32*)0x007cdeac;
 }
+/*
+ * Retail keeps the field resource table as direct archive pointers.
+ * The initialization phases therefore store and pass those pointers directly,
+ * rather than treating each table entry as a wrapper with an a44 member.
+ * Archive readiness and destruction are inlined to preserve the retail calls.
+ */
 // FUN_001b10f0 NONMATCHING
 u32 K_Fldrc_Init()
 {
-    Field* fieldObject;
     u8* field;
     u32 state;
     u32 count;
@@ -515,13 +520,16 @@ u32 K_Fldrc_Init()
     f32 yDeadZone;
     u32 cameraType;
     u16 handle;
+    field = (u8*)K_Field_Get();
 
-    fieldObject = K_Field_Get();
-    field = (u8*)fieldObject;
     state = *(u32*)(field + 0x1058);
     if (state == 0x3e7)
     {
-        K_Fldrc_DestroyFldPac();
+        if (sFldPacCdvd != NULL)
+        {
+            H_Cdvd_Destroy(sFldPacCdvd);
+            sFldPacCdvd = NULL;
+        }
         return true;
     }
     switch (state)
@@ -563,24 +571,24 @@ u32 K_Fldrc_Init()
     }
 
 init_phase0:
-    if ((K_Fldrc_IsFldPacLoaded() == false) ||
-        (func_001b09b0() == false))
+    if ((sFldPacCdvd != NULL &&
+         H_Cdvd_IsFileLoaded(sFldPacCdvd) == false) ||
+        (sFldFpcCdvd != NULL &&
+         H_Cdvd_IsFileLoaded(sFldFpcCdvd) == false))
     {
         return false;
     }
     count = (u32)(*(s32*)(field + 0x105c) - 1);
     *(u32*)(field + 0x105c) = count;
-    node = *(u8**)(field + 0x116c + count * 4);
-    *(void**)(node + 0xa44) =
+    *(void**)(field + 0x116c + count * 4) =
         FUN_001b2780((u16)*(s16*)(field + 0x1060 + count * 4),
                      (u16)*(s16*)(field + 0x1062 + count * 4));
     *(u32*)(field + 0x1058) = 1;
 
 init_phase1:
     count = *(u32*)(field + 0x1168);
-    node = *(u8**)(field + 0x116c + count * 4);
-    resource = *(void**)(node + 0xa44);
-    if (resource == NULL || FUN_001b2b30((u32)resource) == false)
+    resource = *(void**)(field + 0x116c + count * 4);
+    if (FUN_001b2b30((u32)resource) == false)
     {
         return false;
     }
@@ -589,9 +597,8 @@ init_phase1:
 
 init_phase2:
     count = *(u32*)(field + 0x1168);
-    node = *(u8**)(field + 0x116c + count * 4);
-    resource = *(void**)(node + 0xa44);
-    if (resource == NULL || FUN_001b2f00((u32*)resource) == false)
+    resource = *(void**)(field + 0x116c + count * 4);
+    if (FUN_001b2f00((u32*)resource) == false)
     {
         return false;
     }
@@ -609,8 +616,8 @@ init_phase2:
     }
     for (i = 0; i < *(u32*)(field + 0x1168); i++)
     {
-        node = *(u8**)(field + 0x116c + i * 4);
-        FUN_001b3480(*(u32*)(node + 0xa44));
+        resource = *(void**)(field + 0x116c + i * 4);
+        FUN_001b3480((u32)resource);
     }
     *(u32*)(field + 0x1058) = 3;
 
@@ -618,8 +625,8 @@ init_phase3:
     errors = 0;
     for (i = 0; i < *(u32*)(field + 0x1168); i++)
     {
-        node = *(u8**)(field + 0x116c + i * 4);
-        if (FUN_001b39e0(*(u32*)(node + 0xa44)) == false)
+        resource = *(void**)(field + 0x116c + i * 4);
+        if (FUN_001b39e0((u32)resource) == false)
         {
             errors++;
         }
@@ -628,7 +635,11 @@ init_phase3:
     {
         return false;
     }
-    K_Fldrc_DestroyFldFpc();
+    if (sFldFpcCdvd != NULL)
+    {
+        H_Cdvd_Destroy(sFldFpcCdvd);
+        sFldFpcCdvd = NULL;
+    }
     *(u32*)(field + 0x1058) = 4;
 
 init_phase4:
