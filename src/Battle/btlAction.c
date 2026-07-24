@@ -4766,13 +4766,12 @@ void btlActionInitStateEscape(BtlAction* action)
 void btlActionUpdateStateEscape(BtlAction* action)
 {
     BtlAction* current;
-    BtlAction* escapeActions[32];
+    BtlAction* escapeActions[24];
     BtlUnit* unit;
     BtlUnit* ecUnit;
     BtlPacket* root;
     BtlPacket* packet;
     BtlPacket* movePacket;
-    BtlPacket* voicePacket;
     RwV3d destination;
     RwV3d home;
     RwV3d ecHome;
@@ -4780,7 +4779,6 @@ void btlActionUpdateStateEscape(BtlAction* action)
     RwV3d rot;
     u16 escapeCount;
     u16 i;
-    u32 hasBadStatus;
 
     btlAction0028a780(action);
     root = func_002bd780(action->unit, action->target.commandId);
@@ -4790,248 +4788,113 @@ void btlActionUpdateStateEscape(BtlAction* action)
     action->unk_1a &= ~8;
 
     unit = action->unit;
-    if (unit->genus == UNIT_GENUS_PC)
+    escapeCount = 0;
+    for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
     {
-        escapeCount = 0;
-        for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
-        {
-            if ((current->unk_1a & 1) == 0)
-            {
-                continue;
-            }
-            ecUnit = current->unit;
-            if (ecUnit->genus != UNIT_GENUS_EC)
-            {
-                continue;
-            }
-            if (datCalcIsDead(ecUnit->datUnit, 0) != 0)
-            {
-                continue;
-            }
-            hasBadStatus = datCalcChkBadStatus(ecUnit->datUnit, 0x100000);
-            if (hasBadStatus != 0)
-            {
-                continue;
-            }
-            current->unk_18 |= 0x8000;
-            escapeActions[escapeCount] = current;
-            escapeCount++;
-        }
-        for (i = 0; i < escapeCount; i++)
-        {
-            current = escapeActions[i];
-            ecUnit = current->unit;
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 500.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 500.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
-            movePacket->unk_00 = 5;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            btlUnit0027f7c0(ecUnit, NULL, NULL, &rot);
-            packet = btlUnitCreateRotatePacket(ecUnit, &rot, 2);
-            packet->unk_00 = 4;
-            packet->parentUID = movePacket->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 8, 0, 4, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
-            movePacket->unk_00 = 4;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 4, 0, 0, 0);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        btlUnit0027f7c0(action->unit, &home, NULL, NULL);
-        destination = action->unit->pos;
-        destination.x += (action->unit->pos.x - home.x) * 500.0f;
-        destination.z += (action->unit->pos.z - home.z) * 500.0f;
-        packet = btlUnitCreateMovePacket(action->unit, &destination, 1.0f, 8);
+        if ((current->unk_1a & 1) == 0)
+            continue;
+        ecUnit = current->unit;
+        if (ecUnit->genus != UNIT_GENUS_EC)
+            continue;
+        if (datCalcIsDead(ecUnit->datUnit, 0) != 0)
+            continue;
+        current->unk_18 |= 0x8000;
+        escapeActions[escapeCount] = current;
+        escapeCount++;
+    }
+
+    if (unit->genus == UNIT_GENUS_PC && (gBtl->flags & 2) != 0)
+    {
+        FUN_0029a750();
+        gBtl->flags &= ~2;
+    }
+
+    for (i = 0; i < escapeCount; i++)
+    {
+        current = escapeActions[i];
+        ecUnit = current->unit;
+        btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
+        ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 500.0f;
+        ecDest.y = ecUnit->pos.y;
+        ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 500.0f;
+        movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
+        movePacket->unk_00 = 5;
+        movePacket->parentUID = root->uid;
+        movePacket->actionUID = action->uid;
+        btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+        btlUnit0027f7c0(ecUnit, NULL, NULL, &rot);
+        packet = btlUnitCreateRotatePacket(ecUnit, &rot, 2);
+        packet->unk_00 = 4;
+        packet->parentUID = movePacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        packet = btlUnit00285d30(ecUnit, 0xffffff, 8, 0, 4, 0);
         packet->unk_00 = 5;
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlUnit00285d30(action->unit, 0xffffff, 8, 0, 4, 0);
-        packet->unk_00 = 5;
-        packet->parentUID = root->uid;
+    }
+
+    btlUnit0027f7c0(action->unit, &home, NULL, NULL);
+    destination = action->unit->pos;
+    destination.x += (action->unit->pos.x - home.x) * 500.0f;
+    destination.z += (action->unit->pos.z - home.z) * 500.0f;
+    packet = btlUnitCreateMovePacket(action->unit, &destination, 1.0f, 8);
+    packet->unk_00 = 5;
+    packet->parentUID = root->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = btlUnit00285d30(action->unit, 0xffffff, 8, 0, 4, 0);
+    packet->unk_00 = 5;
+    packet->parentUID = root->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    packet = FUN_002d7fb0(action, 0);
+    packet->parentUID = root->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    for (i = 0; i < escapeCount; i++)
+    {
+        current = escapeActions[i];
+        ecUnit = current->unit;
+        btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
+        ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
+        ecDest.y = ecUnit->pos.y;
+        ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
+        movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
+        movePacket->unk_00 = 4;
+        movePacket->parentUID = root->uid;
+        movePacket->actionUID = action->uid;
+        btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+        packet = btlUnitCreateRotatePacket(ecUnit, NULL, 0x20);
+        packet->unk_00 = 4;
+        packet->parentUID = movePacket->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002d7fb0(action, 0);
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        voicePacket = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_ESCAPE);
-        voicePacket->parentUID = root->uid;
-        voicePacket->actionUID = action->uid;
-        btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-        packet = FUN_002dd100(10, 2, 0x12);
+        packet = btlUnit00285d30(ecUnit, -1, 4, 0, 4, 0);
         packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
     }
-    else if (unit->genus == UNIT_GENUS_EC)
+
+    if (escapeCount != 0)
     {
-        escapeCount = 0;
-        for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
-        {
-            if ((current->unk_1a & 1) == 0)
-            {
-                continue;
-            }
-            ecUnit = current->unit;
-            if (ecUnit->genus != UNIT_GENUS_EC)
-            {
-                continue;
-            }
-            current->unk_18 |= 0x8000;
-            escapeActions[escapeCount] = current;
-            escapeCount++;
-        }
-        for (i = 0; i < escapeCount; i++)
-        {
-            current = escapeActions[i];
-            ecUnit = current->unit;
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 500.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 500.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
-            movePacket->unk_00 = 5;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 8, 0, 4, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
-            movePacket->unk_00 = 4;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 4, 0, 0, 0);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        if ((gBtl->flags & 2) != 0)
-        {
-            FUN_0029a750();
-            gBtl->flags &= ~2;
-        }
-        btlUnit0027f7c0(action->unit, &home, NULL, NULL);
-        destination = action->unit->pos;
-        destination.x += (action->unit->pos.x - home.x) * 500.0f;
-        destination.z += (action->unit->pos.z - home.z) * 500.0f;
-        packet = btlUnitCreateMovePacket(action->unit, &destination, 1.0f, 8);
-        packet->unk_00 = 5;
+        packet = btlCameraCreateSetStatePacket(action, 7);
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlUnit00285d30(action->unit, 0xffffff, 8, 0, 4, 0);
-        packet->unk_00 = 5;
+        packet = FUN_002dd100(10, 2, 0x12);
+        packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002d7fb0(action, 0);
-        packet->parentUID = root->uid;
+        packet = btlVoice002e2be0(action, 4, 0, 0, 0);
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        if (escapeCount != 0)
-        {
-            voicePacket = btlCameraCreateSetStatePacket(action, 7);
-            voicePacket->parentUID = root->uid;
-            voicePacket->actionUID = action->uid;
-            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
-        }
-    }
-    else
-    {
-        escapeCount = 0;
-        for (current = gBtl->actionList.tail; current != NULL; current = current->prev)
-        {
-            if ((current->unk_1a & 1) == 0)
-            {
-                continue;
-            }
-            ecUnit = current->unit;
-            if (ecUnit->genus != UNIT_GENUS_EC)
-            {
-                continue;
-            }
-            current->unk_18 |= 0x8000;
-            escapeActions[escapeCount] = current;
-            escapeCount++;
-        }
-        for (i = 0; i < escapeCount; i++)
-        {
-            current = escapeActions[i];
-            ecUnit = current->unit;
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 500.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 500.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
-            movePacket->unk_00 = 5;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 8, 0, 4, 0);
-            packet->unk_00 = 5;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
-            ecDest.y = ecUnit->pos.y;
-            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
-            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
-            movePacket->unk_00 = 4;
-            movePacket->parentUID = root->uid;
-            movePacket->actionUID = action->uid;
-            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
-            packet = btlUnit00285d30(ecUnit, 0xffffff, 4, 0, 0, 0);
-            packet->unk_00 = 4;
-            packet->parentUID = root->uid;
-            packet->actionUID = action->uid;
-            btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        }
-        btlUnit0027f7c0(action->unit, &home, NULL, NULL);
-        destination = action->unit->pos;
-        destination.x += (action->unit->pos.x - home.x) * 500.0f;
-        destination.z += (action->unit->pos.z - home.z) * 500.0f;
-        packet = btlUnitCreateMovePacket(action->unit, &destination, 1.0f, 8);
-        packet->unk_00 = 5;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = btlUnit00285d30(action->unit, 0xffffff, 8, 0, 4, 0);
-        packet->unk_00 = 5;
-        packet->parentUID = root->uid;
-        packet->actionUID = action->uid;
-        btlPacketRegister(packet, BTLPACKET_TYPE_1);
-        packet = FUN_002d7fb0(action, 0);
+        packet = FUN_002db740(action, 2, 0, 0, 0);
+        packet->unk_00 = 4;
         packet->parentUID = root->uid;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
