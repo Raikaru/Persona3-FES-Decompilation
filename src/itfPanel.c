@@ -48,6 +48,17 @@ extern u32 DAT_0095ac70;
 extern u32 DAT_0095ac70_abs[];
 extern u32 DAT_00960088;
 extern code DAT_00960090;
+/* Absolute callback addresses keep the render-state setup in one local pointer. */
+#pragma alias DAT_00960090_abs DAT_00960090
+extern code DAT_00960090_abs[];
+#pragma alias DAT_009600a0_abs DAT_009600a0
+extern code DAT_009600a0_abs[];
+#pragma alias DAT_00960178_abs DAT_00960178
+extern code DAT_00960178_abs[];
+#pragma alias DAT_0096017c_abs DAT_0096017c
+extern code DAT_0096017c_abs[];
+#pragma alias DAT_00960088_abs DAT_00960088
+extern u32 DAT_00960088_abs[];
 extern code DAT_009600a0;
 extern code DAT_00960178;
 extern code DAT_0096017c;
@@ -258,87 +269,63 @@ u64 FUN_003ae360(u64 param_1,int param_2);
 #undef FUN_003a87d0
 // FUN_003A87D0 NONMATCHING
 void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,
-
-                 long param_7)
-
-
-
+                  long param_7)
 {
-
-  u64 uVar1;
-
-  float *pfVar2;
-
+  u32 uVar1;
   float *pfVar3;
-
+  float *pfVar2;
+  u32 uVar5;
+  u32 uVar6;
+  u32 uVar7;
+  u32 uVar8;
   u32 uVar4;
-
-  
+  float fVar1;
+  float fVar2;
+  code *renderState;
 
   if ((param_4 == 0) || (param_5 == 0)) {
-
-    FUN_0019d3f0(DAT_006a1bf8, 0x39);
-
+    FUN_0019d3f0(DAT_006a1bf8,0x39);
   }
 
   if (param_7 == 0) {
-
     FUN_004d7f60(2,0x44);
-
     FUN_004d7f60(3,0x717fb);
-
-    (*DAT_00960090)(6,1);
-
-    (*DAT_00960090)(8,1);
-
-    (*DAT_00960090)(7,2);
-
-    (*DAT_00960090)(9,2);
-
-    (*DAT_00960090)(0xc,1);
-
-    (*DAT_00960090)(0xe,0);
-
-    (*DAT_00960090)(1,0);
-
+    renderState = (code *)&DAT_00960090_abs;
+    (*renderState)(6,1);
+    (*renderState)(8,1);
+    (*renderState)(7,2);
+    (*renderState)(9,2);
+    (*renderState)(0xc,1);
+    (*renderState)(0xe,0);
+    (*renderState)(1,0);
   }
 
-  param_1 = DAT_00960088 - param_1;
+  uVar5 = param_6 >> 0x18 & 0xff;
+  uVar6 = param_6 >> 0x10 & 0xff;
+  uVar7 = param_6 >> 8 & 0xff;
+  uVar8 = param_6 & 0xff;
+  param_1 = *(float *)&DAT_00960088_abs - param_1;
 
-  if ((param_7 != 0) || ((param_6 & 0xff) != 0)) {
-
-    uVar1 = (*DAT_00960178)(param_5 << 6,0x40000);
-
-    for (uVar4 = 0; uVar4 < param_5; uVar4 = uVar4 + 1) {
-
+  if ((param_7 != 0) || ((u8)param_6 > 0)) {
+    uVar1 = (*DAT_00960178_abs)(param_5 << 6,0x40000);
+    uVar4 = 0;
+    fVar1 = (float)param_2;
+    fVar2 = (float)param_3;
+    do {
       pfVar3 = (float *)((int)param_4 + uVar4 * 8);
-
       pfVar2 = (float *)((int)uVar1 + uVar4 * 0x40);
-
-      *pfVar2 = (float)param_2 + *pfVar3;
-
-      pfVar2[1] = (float)param_3 + pfVar3[1];
-
+      *pfVar2 = fVar1 + *pfVar3;
+      pfVar2[1] = fVar2 + pfVar3[1];
       pfVar2[2] = param_1;
-
-      pfVar2[8] = (float)(param_6 >> 0x18);
-
-      pfVar2[9] = (float)(param_6 >> 0x10 & 0xff);
-
-      pfVar2[10] = (float)(param_6 >> 8 & 0xff);
-
-      pfVar2[0xb] = (float)(param_6 & 0xff);
-
-    }
-
-    (*DAT_009600a0)(4,uVar1,param_5);
-
-    (*DAT_0096017c)(uVar1);
-
+      pfVar2[8] = (float)uVar5;
+      pfVar2[9] = (float)uVar6;
+      pfVar2[10] = (float)uVar7;
+      pfVar2[0xb] = (float)uVar8;
+      uVar4 = uVar4 + 1;
+    } while (uVar4 < param_5);
+    (*DAT_009600a0_abs)(4,uVar1,param_5);
+    (*DAT_0096017c_abs)(uVar1);
   }
-
-  return;
-
 }
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
 #undef FUN_003a8b00
