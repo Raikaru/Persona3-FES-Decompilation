@@ -88,7 +88,9 @@ extern u16 DAT_007e095a;
 extern u16 DAT_007e094e;
 extern void* DAT_00833B70;
 extern void* DAT_00833BA0;
-extern void* DAT_007cb66c;
+#pragma alias DAT_007cb66c_scalar DAT_007cb66c
+extern char DAT_007cb66c[];
+extern char DAT_007cb66c_scalar;
 extern void* H_Maestro_001120a0(s32 font);
 
 void* FUN_0012c430(KwlnTask*);
@@ -934,14 +936,14 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
         u16 id;
         u8 effect;
 
-        equipment = datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+        equipment = datGetEquipmentIdx(*(s16*)((u8*)work + 0x12),
                                        (s16)i);
         styles[i] = FUN_0012df50(func_0016f720(1, equipment));
-        id = (u16)datGetEquipmentId(*(s16*)((u8*)(int)work + 0x12),
+        id = (u16)datGetEquipmentId(*(s16*)((u8*)work + 0x12),
                                     equipment);
-        effect = (u8)func_0016f810(*(s16*)((u8*)(int)work + 0x12),
+        effect = (u8)func_0016f810(*(s16*)((u8*)work + 0x12),
                                    equipment);
-        campEquipFormatTextCall(labels[i], DAT_007cb66c,
+        campEquipFormatTextCall(labels[i], &DAT_007cb66c_scalar,
                                 func_00171110((s16)id, (s16)effect));
     }
 
@@ -952,11 +954,11 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
             s32 valueB;
 
             valueA = func_0016f9f0(
-                *(s16*)((u8*)(int)work + 0x12),
-                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 0)) & 0xffff;
+                *(s16*)((u8*)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)work + 0x12), 0)) & 0xffff;
             valueB = func_0016fae0(
-                *(s16*)((u8*)(int)work + 0x12),
-                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 0)) & 0xffff;
+                *(s16*)((u8*)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)work + 0x12), 0)) & 0xffff;
             if (*(s16*)((u8*)work + 0x1c) == 0) {
                 campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
                                         0x18, *(u8*)(record + 0x40),
@@ -1048,8 +1050,8 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
             s32 value;
 
             value = func_0016fbd0(
-                *(s16*)((u8*)(int)work + 0x12),
-                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 1)) & 0xffff;
+                *(s16*)((u8*)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)work + 0x12), 1)) & 0xffff;
             if (*(s16*)((u8*)work + 0x1c) == 1) {
                 campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
                                         0x18, *(u8*)(record + 0x40),
@@ -1121,8 +1123,8 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
             s32 value;
 
             value = func_0016fcc0(
-                *(s16*)((u8*)(int)work + 0x12),
-                datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12), 2)) & 0xffff;
+                *(s16*)((u8*)work + 0x12),
+                datGetEquipmentIdx(*(s16*)((u8*)work + 0x12), 2)) & 0xffff;
             if (*(s16*)((u8*)work + 0x1c) == 2) {
                 campEquipDrawSpriteCall(parent, *(void**)((u8*)work + 0x2b0),
                                         0x18, *(u8*)(record + 0x40),
@@ -1239,12 +1241,12 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
             s32 color;
 
             id = datGetEquipmentId(
-                     *(s16*)((u8*)(int)work + 0x12),
-                     datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+                     *(s16*)((u8*)work + 0x12),
+                     datGetEquipmentIdx(*(s16*)((u8*)work + 0x12),
                                         *(s16*)((u8*)work + 0x1c))) & 0xffff;
             color = func_0016f900(
-                        *(s16*)((u8*)(int)work + 0x12),
-                        datGetEquipmentIdx(*(s16*)((u8*)(int)work + 0x12),
+                        *(s16*)((u8*)work + 0x12),
+                        datGetEquipmentIdx(*(s16*)((u8*)work + 0x12),
                                            *(s16*)((u8*)work + 0x1c))) & 0xff;
             campEquipDrawValueCall(
                 *(f32*)(record + 0x24), (s32)*(f32*)(record + 0x38),
