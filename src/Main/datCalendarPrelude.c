@@ -395,46 +395,67 @@ void FUN_00179360(u32 saveType, u32 id, u32 size, const void* data)
     u8* destination = NULL;
     u32 index;
     (void)saveType;
+    
+    /* Special cases with direct destination */
     if (id == 0x1000 && size == 400) destination = PTR8(0x00833e80);
     else if (id == 0x1001 && size == 600) destination = PTR8(0x00833c20);
+    
+    /* Indexed dispatch: ids 0x0100 through 0x0a0b with low byte selecting sub-field */
     else if (id >= 0x100 && id <= 0xa0b)
     {
         index = (id >> 8) - 1;
-        switch (id & 0xff)
-        {
-            case 0: if (size == 4) destination = PTR8(0x00834010 + index * 0x364); break;
-            case 1: if (size == 0x50) destination = PTR8(0x00834014 + index * 0x364); break;
-            case 2: if (size == 8) destination = PTR8(0x00834064 + index * 0x364); break;
-            case 3: if (size == 0x50) destination = PTR8(0x0083406c + index * 0x364); break;
-            case 4: if (size == 0x30) destination = PTR8(0x008340bc + index * 0x364); break;
-            case 5: if (size == 0x34) destination = PTR8(0x008340ec + index * 0x364); break;
-            case 6: if (size == 0x10) destination = PTR8(0x00834120 + index * 0x364); break;
-            case 7: if (size == 0x10) destination = PTR8(0x00834130 + index * 0x364); break;
-            case 8: if (size == 0x50) destination = PTR8(0x00834140 + index * 0x364); break;
-            case 9: if (size == 0x190) destination = PTR8(0x00834190 + index * 0x364); break;
-            case 10: if (size == 0x50) destination = PTR8(0x00834320 + index * 0x364); break;
-            case 11: if (size == 4) destination = PTR8(0x00834370 + index * 0x364); break;
-        }
+        if ((id & 0xff) == 0 && size == 4) destination = PTR8(0x00834010 + index * 0x364);
+        else if ((id & 0xff) == 1 && size == 0x50) destination = PTR8(0x00834014 + index * 0x364);
+        else if ((id & 0xff) == 2 && size == 8) destination = PTR8(0x00834064 + index * 0x364);
+        else if ((id & 0xff) == 3 && size == 0x50) destination = PTR8(0x0083406c + index * 0x364);
+        else if ((id & 0xff) == 4 && size == 0x30) destination = PTR8(0x008340bc + index * 0x364);
+        else if ((id & 0xff) == 5 && size == 0x34) destination = PTR8(0x008340ec + index * 0x364);
+        else if ((id & 0xff) == 6 && size == 0x10) destination = PTR8(0x00834120 + index * 0x364);
+        else if ((id & 0xff) == 7 && size == 0x10) destination = PTR8(0x00834130 + index * 0x364);
+        else if ((id & 0xff) == 8 && size == 0x50) destination = PTR8(0x00834140 + index * 0x364);
+        else if ((id & 0xff) == 9 && size == 0x190) destination = PTR8(0x00834190 + index * 0x364);
+        else if ((id & 0xff) == 10 && size == 0x50) destination = PTR8(0x00834320 + index * 0x364);
+        else if ((id & 0xff) == 11 && size == 4) destination = PTR8(0x00834370 + index * 0x364);
     }
-    else if (id >= 1 && id <= 0x35)
-    {
-        static const u32 sizes[] = { 0, 0x24, 0x50, 0x508, 0x10, 8, 6000, 600, 2, 1, 4,
-            2, 1, 0x400, 2, 0x270, 0x3400, 0x2c0, 4, 8, 4, 4, 4, 4, 0x2c, 0x200,
-            0x1c, 0x10, 8, 4, 0x100, 0x90, 0, 0x1a8, 1, 4 };
-        static const u32 addrs[] = { 0, 0x00836200, 0x00836224, 0x00836274, 0x0083677c,
-            0x0083678c, 0, 0, 0x0083679c, 0x0083679e, 0x008367a0, 0x008367a4, 0x008367a6,
-            0x008367a7, 0x00836ba8, 0x00836bac, 0x00836e1c, 0x0083a21c, 0x0083a6dc,
-            0x0083a6e0, 0x0083a6e8, 0x0083a6ec, 0x0083a6f0, 0x0083a6f4, 0x0083a8c4,
-            0x0083a4dc, 0x0083a6fc, 0x0083a718, 0x0083a728, 0x0083a730, 0x0083a734,
-            0x0083a834 };
-        if (id < ARRAY_SIZE(sizes) && size == sizes[id])
-        {
-            destination = PTR8(addrs[id]);
-            if (id == 6) destination = PTRP(0x00836794);
-            if (id == 7) destination = PTRP(0x00836798);
-        }
-    }
-    if (destination != NULL) memcpy(destination, data, size);
+    
+    /* Low IDs 1-0x24 with individual size checks and destinations */
+    else if (id == 1 && size == 0x24) destination = PTR8(0x00836200);
+    else if (id == 2 && size == 0x50) destination = PTR8(0x00836224);
+    else if (id == 3 && size == 0x508) destination = PTR8(0x00836274);
+    else if (id == 4 && size == 0x10) destination = PTR8(0x0083677c);
+    else if (id == 5 && size == 8) destination = PTR8(0x0083678c);
+    else if (id == 6 && size == 6000) destination = PTRP(0x00836794);
+    else if (id == 7 && size == 600) destination = PTRP(0x00836798);
+    else if (id == 8 && size == 2) destination = PTR8(0x0083679c);
+    else if (id == 9 && size == 1) destination = PTR8(0x0083679e);
+    else if (id == 10 && size == 4) destination = PTR8(0x008367a0);
+    else if (id == 11 && size == 2) destination = PTR8(0x008367a4);
+    else if (id == 12 && size == 1) destination = PTR8(0x008367a6);
+    else if (id == 13 && size == 0x400) destination = PTR8(0x008367a7);
+    else if (id == 14 && size == 2) destination = PTR8(0x00836ba8);
+    else if (id == 15 && size == 0x270) destination = PTR8(0x00836bac);
+    else if (id == 16 && size == 0x3400) destination = PTR8(0x00836e1c);
+    else if (id == 17 && size == 0x2c0) destination = PTR8(0x0083a21c);
+    else if (id == 18 && size == 4) destination = PTR8(0x0083a6dc);
+    else if (id == 19 && size == 8) destination = PTR8(0x0083a6e0);
+    else if (id == 20 && size == 4) destination = PTR8(0x0083a6e8);
+    else if (id == 21 && size == 4) destination = PTR8(0x0083a6ec);
+    else if (id == 22 && size == 4) destination = PTR8(0x0083a6f0);
+    else if (id == 23 && size == 4) destination = PTR8(0x0083a6f4);
+    else if (id == 24 && size == 0x2c) destination = PTR8(0x0083a8c4);
+    else if (id == 25 && size == 0x200) destination = PTR8(0x0083a4dc);
+    else if (id == 26 && size == 0x1c) destination = PTR8(0x0083a6fc);
+    else if (id == 27 && size == 0x10) destination = PTR8(0x0083a718);
+    else if (id == 28 && size == 8) destination = PTR8(0x0083a728);
+    else if (id == 29 && size == 4) destination = PTR8(0x0083a730);
+    else if (id == 30 && size == 0x100) destination = PTR8(0x0083a734);
+    else if (id == 31 && size == 0x90) destination = PTR8(0x0083a834);
+    else if (id == 32 && size == 0) destination = PTR8(0);
+    else if (id == 33 && size == 0x1a8) destination = PTR8(0);
+    else if (id == 34 && size == 1) destination = PTR8(0);
+    else if (id == 35 && size == 4) destination = PTR8(0);
+    
+    if (destination != NULL) FUN_00521250(destination, data, size);
 }
 
 // FUN_0017a430
