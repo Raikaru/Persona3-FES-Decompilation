@@ -3307,6 +3307,11 @@ void FUN_0022c850(u32* object)
 }
 
 
+// The retail routine keeps separate color paths for each animation flag.
+// Preserve the bounded-index fixed colors before the interpolated paths.
+// The fixed colors still pass through the source's float conversion idiom.
+// This restores the missing flag-0x100 interpolation and color snapshots.
+// MWCCPS2 retains a different branch layout, so the function stays pending.
 // FUN_0022C8A0 NONMATCHING
 void FUN_0022c8a0(u32* object_param)
 {
@@ -3323,6 +3328,8 @@ void FUN_0022c8a0(u32* object_param)
     f32 pos1X, pos1Y;
     f32 pos2X, pos2Y;
     f32 pos3X, pos3Y;
+    f32 colorF;
+    s32 colorI;
 
     object = (u8*)object_param;
     K_ASSERT((*(u32*)object & 1) != 0, 0x1cd);
@@ -3417,15 +3424,34 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     } else if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0xb) {
-            color[0] = 0x32;
-            color[1] = 0;
-            color[2] = 0;
+            color[0] = (u8)(u32)50.0f;
+            color[1] = (u8)(u32)0.0f;
+            color[2] = (u8)(u32)0.0f;
             color[3] = 0xff;
         } else {
             f32 t2 = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
-            color[0] = (u8)(u32)(50.0f + 205.0f * t2);
-            color[1] = (u8)(u32)(255.0f * t2);
-            color[2] = (u8)(u32)(255.0f * t2);
+            f32 f3 = 1.0f - t2;
+            colorF = 255.0f + -205.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = 255.0f + -255.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = 255.0f + -255.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
             color[3] = 0xff;
         }
     } else if (*(u32*)object & 8) {
@@ -3437,8 +3463,20 @@ void FUN_0022c8a0(u32* object_param)
         f32 t3 = (f32)*(s32*)(object + 0x84c) / 20.0f;
         f32 f3 = 1.0f - t3;
         color[0] = 0xff;
-        color[1] = (u8)(u32)(255.0f + -115.0f * f3);
-        color[2] = (u8)(u32)(255.0f + -185.0f * f3);
+        colorF = 255.0f + -115.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[1] = (u8)colorI;
+        colorF = 255.0f + -185.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[2] = (u8)colorI;
         color[3] = 0xff;
     } else {
         color[0] = 0xff;
@@ -3456,10 +3494,60 @@ void FUN_0022c8a0(u32* object_param)
     } else if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
         /* reuse color[] as computed for color1 */
     } else if (*(u32*)object & 0x20) {
-        color[0] = 0x32;
-        color[1] = 0;
-        color[2] = 0;
-        color[3] = 0xff;
+        if (*(s32*)(object + 0x844) < 0xb) {
+            colorF = 50.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = 0.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = 0.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
+            color[3] = 0xff;
+        } else {
+            color[0] = 0x32;
+            color[1] = 0;
+            color[2] = 0;
+            color[3] = 0xff;
+        }
+    } else if (*(u32*)object & 0x100) {
+        f32 t = (f32)*(s32*)(object + 0x84c) / 20.0f;
+        f32 f3 = 1.0f - t;
+        color[0] = 0xff;
+        colorF = 255.0f + -65.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[1] = (u8)colorI;
+        colorF = 255.0f + -125.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[2] = (u8)colorI;
+        colorF = 255.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[3] = (u8)colorI;
     } else {
         color[0] = 0xff;
         color[1] = 0xff;
@@ -3467,19 +3555,62 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     }
     color2 = *(u32*)color;
-
-    if ((*(u32*)object & 0x20) && *(s32*)(object + 0x844) < 0xb) {
-        color[0] = 0xc8;
-        color[1] = 0;
-        color[2] = 0;
-        color[3] = 0xff;
-    } else if (*(u32*)object & 0x20) {
-        f32 t = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
-        f32 f3 = 1.0f - t;
-        color[0] = (u8)(u32)(255.0f + -55.0f * f3);
-        color[1] = (u8)(u32)(255.0f - 255.0f * f3);
-        color[2] = (u8)(u32)(255.0f - 255.0f * f3);
-        color[3] = (u8)(u32)(255.0f * f3);
+    if (*(u32*)object & 0x20) {
+        if (*(s32*)(object + 0x844) < 0xb) {
+            colorF = 200.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = 0.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = 0.0f;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
+            color[3] = 0xff;
+        } else {
+            f32 t = (f32)(*(s32*)(object + 0x844) - 0xa) / 6.0f;
+            f32 f3 = 1.0f - t;
+            colorF = 255.0f + -55.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[0] = (u8)colorI;
+            colorF = 255.0f + -255.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[1] = (u8)colorI;
+            colorF = 255.0f + -255.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[2] = (u8)colorI;
+            colorF = 255.0f * f3;
+            if (2147483648.0f <= colorF) {
+                colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+            } else {
+                colorI = (s32)colorF;
+            }
+            color[3] = (u8)colorI;
+        }
     } else if (*(u32*)object & 8) {
         color[0] = 0xff;
         color[1] = 0xbe;
@@ -3489,9 +3620,27 @@ void FUN_0022c8a0(u32* object_param)
         f32 t = (f32)*(s32*)(object + 0x84c) / 20.0f;
         f32 f3 = 1.0f - t;
         color[0] = 0xff;
-        color[1] = (u8)(u32)(255.0f + -65.0f * f3);
-        color[2] = (u8)(u32)(255.0f + -125.0f * f3);
-        color[3] = (u8)(u32)(255.0f * f3);
+        colorF = 255.0f + -65.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[1] = (u8)colorI;
+        colorF = 255.0f + -125.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[2] = (u8)colorI;
+        colorF = 255.0f * f3;
+        if (2147483648.0f <= colorF) {
+            colorI = (s32)(colorF - 2147483648.0f) | 0x80000000;
+        } else {
+            colorI = (s32)colorF;
+        }
+        color[3] = (u8)colorI;
     } else {
         color[0] = 0xff;
         color[1] = 0xff;
@@ -3499,7 +3648,6 @@ void FUN_0022c8a0(u32* object_param)
         color[3] = 0xff;
     }
     color3 = *(u32*)color;
-
     {
         void* resource = (void*)FUN_0021cca0(styleTable, 0);
         rect[0] = 30.0f + pos2X;
