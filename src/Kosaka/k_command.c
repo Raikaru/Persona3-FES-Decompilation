@@ -1371,16 +1371,12 @@ u32 FUN_001C4120()
     s32 mode;
     s32 resourceTypeId;
     Resrc* hit;
-    Resrc* resource;
-    Model* model;
     RwMatrix* matrix;
     RwV3d oldPosition;
     RwV3d inversePosition;
-    RwV3d targetPosition;
     RwV3d axis;
     RwV3d scale;
     RwMatrixTolerance tolerance;
-    f32 angle;
     u32 type;
 
     resourceTypeId = scrGetIntPara(0);
@@ -1394,100 +1390,90 @@ u32 FUN_001C4120()
     K_ASSERT(hit != NULL, 1292);
 
     type = RESRC_GET_TYPE(resourceTypeId);
-    angle = *(f32*)((u8*)hit + 0x10c);
 
     switch (type)
     {
-    case RESRC_TYPE_MODELFLD:
+    case RESRC_TYPE_MODELCHAR:
+    {
+        Resrc* resource;
         resource = MT_Scene_GetRes((u16)resourceTypeId);
         if (resource != NULL)
         {
-            model = ((ResrcModelFld*)resource)->mdl;
-            matrix = mdlGetMatrix(model);
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
             oldPosition = matrix->pos;
             inversePosition.x = -oldPosition.x;
             inversePosition.y = -oldPosition.y;
             inversePosition.z = -oldPosition.z;
-            mdlTranslate(model, &inversePosition, rwCOMBINEPOSTCONCAT);
-            mdlRotate(model, &axis, angle, rwCOMBINEREPLACE);
-            mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
-            matrix = mdlGetMatrix(model);
-            targetPosition.x = *(f32*)((u8*)hit + 0x100);
-            targetPosition.y = *(f32*)((u8*)hit + 0x104);
-            targetPosition.z = *(f32*)((u8*)hit + 0x108);
-            matrix->pos = targetPosition;
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
             RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(matrix, &tolerance);
-            RwMatrixUpdate(matrix);
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)));
         }
         break;
+    }
     case RESRC_TYPE_MODELNPC:
+    {
+        Resrc* resource;
+        resource = MT_Scene_GetRes((u16)resourceTypeId);
+        if (resource != NULL)
         {
-            ResrcModelNpc* npc;
-
-            resource = MT_Scene_GetRes((u16)resourceTypeId);
-            if (resource != NULL)
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            oldPosition = matrix->pos;
+            inversePosition.x = -oldPosition.x;
+            inversePosition.y = -oldPosition.y;
+            inversePosition.z = -oldPosition.z;
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x128), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x128), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128));
+            matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
+            RwEngineGetMatrixTolerances(&tolerance);
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x128)));
+            if ((Model*)*(volatile Model**)((u8*)resource + 0x1ec) != NULL)
             {
-                npc = (ResrcModelNpc*)resource;
-                model = npc->mdl;
-                matrix = mdlGetMatrix(model);
-                oldPosition = matrix->pos;
-                inversePosition.x = -oldPosition.x;
-                inversePosition.y = -oldPosition.y;
-                inversePosition.z = -oldPosition.z;
-                mdlTranslate(model, &inversePosition, rwCOMBINEPOSTCONCAT);
-                mdlRotate(model, &axis, angle, rwCOMBINEPOSTCONCAT);
-                mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
-                matrix = mdlGetMatrix(model);
-                targetPosition.x = *(f32*)((u8*)hit + 0x100);
-                targetPosition.y = *(f32*)((u8*)hit + 0x104);
-                targetPosition.z = *(f32*)((u8*)hit + 0x108);
-                matrix->pos = targetPosition;
-                RwEngineGetMatrixTolerances(&tolerance);
-                RwMatrixOptimize(matrix, &tolerance);
-                RwMatrixUpdate(matrix);
-                if (npc->baseMdl != NULL)
-                {
-                    scale.x = K_FldFrame_CtlGetSphereCollisRadius(npc->collisCtlTask);
-                    scale.y = scale.x;
-                    scale.z = scale.x;
-                    mdlRotate(npc->baseMdl, &axis, angle, rwCOMBINEPOSTCONCAT);
-                    mdlScale(npc->baseMdl, &scale, rwCOMBINEPOSTCONCAT);
-                    mdlTranslate(npc->baseMdl, &targetPosition, rwCOMBINEPOSTCONCAT);
-                    mdl00317730(npc->baseMdl);
-                }
+                scale.x = K_FldFrame_CtlGetSphereCollisRadius(*(KwlnTask**)((u8*)resource + 0x1e8));
+                scale.y = scale.x;
+                scale.z = scale.x;
+                mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x1ec), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEPOSTCONCAT);
+                mdlScale((Model*)*(volatile Model**)((u8*)resource + 0x1ec), &scale, rwCOMBINEPOSTCONCAT);
+                mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x1ec), (RwV3d*)((u8*)hit + 0x100), rwCOMBINEPOSTCONCAT);
+                mdl00317730((Model*)*(volatile Model**)((u8*)resource + 0x1ec));
             }
         }
         break;
-    case RESRC_TYPE_MODELCHAR:
+    }
+    case RESRC_TYPE_MODELFLD:
+    {
+        Resrc* resource;
         resource = MT_Scene_GetRes((u16)resourceTypeId);
         if (resource != NULL)
         {
-            model = ((ResrcModelChar*)resource)->mdl;
-            matrix = mdlGetMatrix(model);
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104));
             oldPosition = matrix->pos;
             inversePosition.x = -oldPosition.x;
             inversePosition.y = -oldPosition.y;
             inversePosition.z = -oldPosition.z;
-            mdlTranslate(model, &inversePosition, rwCOMBINEPOSTCONCAT);
-            mdlRotate(model, &axis, angle, rwCOMBINEREPLACE);
-            mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
-            matrix = mdlGetMatrix(model);
-            targetPosition.x = *(f32*)((u8*)hit + 0x100);
-            targetPosition.y = *(f32*)((u8*)hit + 0x104);
-            targetPosition.z = *(f32*)((u8*)hit + 0x108);
-            matrix->pos = targetPosition;
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x104), &inversePosition, rwCOMBINEPOSTCONCAT);
+            mdlRotate((Model*)*(volatile Model**)((u8*)resource + 0x104), &axis, *(f32*)((u8*)hit + 0x10c), rwCOMBINEREPLACE);
+            mdlTranslate((Model*)*(volatile Model**)((u8*)resource + 0x104), &oldPosition, rwCOMBINEPOSTCONCAT);
+            matrix = mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104));
+            matrix->pos = *(RwV3d*)((u8*)hit + 0x100);
             RwEngineGetMatrixTolerances(&tolerance);
-            RwMatrixOptimize(matrix, &tolerance);
-            RwMatrixUpdate(matrix);
+            RwMatrixOptimize(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104)), &tolerance);
+            RwMatrixUpdate(mdlGetMatrix((Model*)*(volatile Model**)((u8*)resource + 0x104)));
         }
         break;
+    }
     default:
         K_ASSERT(false, 1389);
         break;
     }
 
-    return true;
 }
 
 // FUN_001C4700
