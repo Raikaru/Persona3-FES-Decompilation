@@ -729,16 +729,15 @@ s32 fclCombineList003da700(FclList* param_1)
 {
     FclTaskLink* node;
     FclTaskLink* candidate;
-    FclFusionDetail* selection_detail;
     FclNodeData* data;
-    FclOwner* list = param_1->list;
     s32 selection_result;
     s32 selector_mode;
     s32 i;
     s32 candidate_index;
     u16 selected_ids[12];
     byte transformed[0x54];
-
+    FclOwner* list;
+    list = param_1->list;
     if (FUN_003c6270((s32)list) == 3) {
         if (param_1->flags & 0x10) return 1;
         FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 5, 1);
@@ -753,7 +752,7 @@ s32 fclCombineList003da700(FclList* param_1)
     case 0:
     case 1:
     case 2:
-        break;
+        return 0;
 
     case 3:
         FUN_003d8850((s32)param_1, 0xb, 1);
@@ -762,23 +761,13 @@ s32 fclCombineList003da700(FclList* param_1)
         data = candidate->payload->data.node_data;
         K_ASSERT(param_1 != 0, 0x465);
         K_ASSERT(data != 0, 0x466);
-        selection_detail = data->selection_detail;
-
-        if (selection_detail != 0)
-            goto state3_selection_check;
-        goto state3_reject;
-
-state3_selection_check:
-        if (fclCombineList003da470(param_1, (s32)selection_detail) == 0)
-            goto state3_flag_check;
-        goto state3_reject;
-
-state3_flag_check:
-        if ((param_1->flags & 1) == 0)
-            goto state3_accept;
-        if (data->fusion.detail.persona_id != 0)
-            goto state3_accept;
-
+        if (data->selection_detail == 0)
+            goto state3_reject;
+        if (fclCombineList003da470(param_1, (s32)data->selection_detail) != 0)
+            goto state3_reject;
+        if ((param_1->flags & 1) != 0 && data->fusion.detail.persona_id == 0)
+            goto state3_reject;
+        goto state3_accept;
 state3_reject:
         FUN_0010a4e0(0, 0, 0, 8);
         return 0;
@@ -786,7 +775,7 @@ state3_reject:
 state3_accept:
         FUN_0010a4e0(0, 0, 0, 1);
         FUN_003c4e50((s32)list, (s32)list + 4);
-        param_1->values[param_1->used] = selection_detail;
+        param_1->values[param_1->used] = data->selection_detail;
         param_1->used++;
         if (param_1->used >= param_1->capacity) {
             param_1->state = 4;
