@@ -251,7 +251,7 @@ u32 func_001b9130(void)
     return DAT_007ce24c;
 }
 // FUN_001b9140 NONMATCHING
-void func_001b9140(s16 majorId, s16 minorId)
+void func_001b9140(u16 majorId, u16 minorId)
 {
     f32 scale;
     f32 distance;
@@ -260,9 +260,9 @@ void func_001b9140(s16 majorId, s16 minorId)
     RwMatrix* cameraMatrix;
 
     scale = 0.0f;
-    if (FIELD_U32(0x008717e8) != 0)
+    if ((void*)FIELD_U32(0x008717e8) != NULL)
     {
-        if (FIELD_U32(0x008717f4) != 0)
+        if ((void*)FIELD_U32(0x008717f4) != NULL)
         {
             cameraMatrix = (RwMatrix*)func_004cb2f0(
                 kwlnGetMainCamera()->object.object.parent);
@@ -572,7 +572,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                         {
                             FUN_00188650();
                         }
-                        func_001b9140((s16)majorId, (s16)minorId);
+                        func_001b9140((u16)majorId, (u16)minorId);
                         FUN_00187ea0();
                         ROOT_U32(work, 0x44) = 0;
                         FUN_001085c0();
@@ -693,7 +693,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
                 camera = FIELD_U32(0x008717f4);
                 FIELD_U32(0x00869f7c) =
                     FUN_001c1f30(fldRootTask, *(u32*)((u8*)camera + 0xf0));
-                func_001b9140((s16)majorId, (s16)minorId);
+                func_001b9140((u16)majorId, (u16)minorId);
                 FUN_001085c0();
                 ROOT_U32(work, 0) = 0x0b;
             }
@@ -720,8 +720,7 @@ void* func_001b9480(KwlnTask* fldRootTask)
 void func_001ba3d0(KwlnTask* fldRootTask)
 {
     u8* work;
-    s8 nextSeq;
-    RwCamera* camera;
+    s32 nextSeq;
 
     work = (u8*)fldRootTask->workData;
     if (ROOT_U32(work, 0x44) != 0)
@@ -769,8 +768,7 @@ void func_001ba3d0(KwlnTask* fldRootTask)
     func_00350080(2);
     func_00350080(3);
     func_00350080(5);
-    camera = kwlnGetMainCamera();
-    func_004cb930(camera->object.object.parent);
+    func_004cb930(kwlnGetMainCamera()->object.object.parent);
     sField.rootTask = NULL;
     (*jtbl_0096017C)(fldRootTask->workData);
 }
@@ -1168,7 +1166,7 @@ void func_001bab60(DungeonPattern* pattern, u32 orientationMask)
 }
 
 // FUN_001bb090 NONMATCHING
-void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u8 direction)
+void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u16 direction)
 {
     s32 startX;
     s32 startY;
@@ -1177,16 +1175,17 @@ void func_001bb090(const DungeonPattern* pattern, u16 x, u16 y, u8 direction)
     u8* cell;
     const u8* patternCell;
 
-    startX = (u16)x;
-    startY = (u16)y;
-    if (startX + pattern->raw[1] - 1 >= 0x10)
+    if ((u16)x + pattern->raw[1] - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x106);
     }
-    if (startY + pattern->raw[2] - 1 >= 0x10)
+    if ((u16)y + pattern->raw[2] - 1 >= 0x10)
     {
         K_Assert((const char*)D_006833A0, 0x107);
     }
+
+    startX = (u16)x;
+    startY = (u16)y;
 
     cell = (u8*)K_Field_Get() + startY * 0x100 + startX * 0x10;
     cell[0x49] = 1;
