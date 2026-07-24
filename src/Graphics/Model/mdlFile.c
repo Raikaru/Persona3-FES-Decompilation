@@ -1228,17 +1228,33 @@ extern u32 DAT_0069cd04;
 extern MdlStridedValue DAT_0069cd08[];
 extern u32 DAT_007cad6c;
 extern u32 DAT_007cad7c;
+#pragma alias DAT_007cad7c_f32 DAT_007cad7c
+extern f32 DAT_007cad7c_f32;
 extern u32 DAT_007cada0;
 extern u32 DAT_007cadb0;
 #pragma alias DAT_007cadb0_f32 DAT_007cadb0
 extern f32 DAT_007cadb0_f32;
 extern u32 DAT_007cadc0;
 extern u32 DAT_007cadc4;
+#pragma alias DAT_007cadc4_f32 DAT_007cadc4
+extern f32 DAT_007cadc4_f32;
 extern u32 DAT_007cadd0;
+#pragma alias DAT_007cadd0_f32 DAT_007cadd0
+extern f32 DAT_007cadd0_f32;
 extern u32 DAT_007cade4;
+#pragma alias DAT_007cade4_f32 DAT_007cade4
+extern f32 DAT_007cade4_f32;
 extern u32 DAT_007cae00;
 extern u32 DAT_007cae18;
+#pragma alias DAT_007cae18_f32 DAT_007cae18
+extern f32 DAT_007cae18_f32;
 extern u32 DAT_007cae4c;
+extern u32 DAT_007cae58;
+#pragma alias DAT_007cae58_f32 DAT_007cae58
+extern f32 DAT_007cae58_f32;
+extern u32 DAT_007cae98;
+#pragma alias DAT_007cae98_f32 DAT_007cae98
+extern f32 DAT_007cae98_f32;
 #pragma alias DAT_007cada0_f32 DAT_007cada0
 extern f32 DAT_007cada0_f32;
 #pragma alias DAT_007cae90_f32 DAT_007cae90
@@ -26102,7 +26118,7 @@ void FUN_00335a70(int param_1)
 
     fVar39 = *(float *)(iVar3 + 0x84) / (float)*(u32 *)(iVar3 + 0x3c);
 
-    fVar24 = (DAT_007cae58 * (float)*(u32 *)(iVar3 + 0x4c)) / (float)*(u32 *)(iVar3 + 0x3c);
+    fVar24 = (DAT_007cae58_f32 * (float)*(u32 *)(iVar3 + 0x4c)) / (float)*(u32 *)(iVar3 + 0x3c);
 
     fVar38 = *(float *)(iVar3 + 0x50);
 
@@ -26114,9 +26130,9 @@ void FUN_00335a70(int param_1)
 
       FUN_00329740((u32 *)(&auStack_80));
 
-      fVar33 = DAT_007cae94;
+      fVar33 = 2.0f;
 
-      fVar26 = -(DAT_007cade4 * (fVar39 / 10.0f));
+      fVar26 = -(DAT_007cade4_f32 * (fVar39 / 10.0f));
 
       fVar32 = 0.0f;
       afStack_40[0] = 0.0f;
@@ -26137,17 +26153,17 @@ void FUN_00335a70(int param_1)
 
       *(float *)(puVar21 + 1) = fVar34 + *(float *)(puVar21 + 2);
 
-      fVar12 = DAT_007cae98;
+      fVar12 = DAT_007cae98_f32;
 
-      fVar11 = DAT_007cae58;
+      fVar11 = DAT_007cae58_f32;
 
-      fVar10 = DAT_007cae18;
+      fVar10 = DAT_007cae18_f32;
 
-      fVar9 = DAT_007cadd0;
+      fVar9 = DAT_007cadd0_f32;
 
-      fVar8 = DAT_007cadc4;
+      fVar8 = DAT_007cadd0_f32;
 
-      fVar7 = DAT_007cad7c;
+      fVar7 = DAT_007cad7c_f32;
 
       fVar31 = 2.0f;
 
