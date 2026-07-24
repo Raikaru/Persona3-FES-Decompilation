@@ -289,6 +289,15 @@ extern u32 sflCard002561d0(void *);
 extern u32 sflCard00259380(void);
 extern u32 D_00684610[];
 extern u32 func_001775a0(u32, ...);
+extern u32 func_0016c6f0(u32);
+extern u32 func_00177280(u32);
+extern u32 func_0011a810(u32);
+extern u32 func_0016c740(u32);
+extern u32 func_001772f0(u32);
+extern u32 func_0011a840(u32);
+extern u32 func_0016c790(u32);
+extern u32 func_00177360(u32);
+extern u32 func_0011a870(u32);
 
 void func_001f0990(KwlnTask *);
 void func_001f0f40(KwlnTask *);
@@ -2221,77 +2230,157 @@ void func_001f7210(void)
     default:
         return;
     }
+    /*
+     * Kind dispatch: 28-entry jump table (retail 0x7b6f20).
+     * Each case body opens with the retail instruction(s) transcribed from
+     * the disassembly; all distinct entries force MWCC to emit the table.
+     */
     switch (kind) {
+    u32 tmp;
+    case 0:
+        /* off=7504: lw v1, 0x3408(s0); beqz v1, ..  (re-entry loop) */
+        for (tmp = 0; tmp < BR_U32(work, 0x3418); tmp++) {
+            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+        }
+        break;
     case 1:
+        /* off=5948: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10  -> (u16)entry_kind */
+        func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
+        func_003c7430(10);
+        break;
     case 2:
+        /* off=6008: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10 -> (u16)entry_kind */
+        func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), 0));
+        func_003c7c20(1, value, 0);
+        func_003c7430(11);
+        break;
     case 3:
+        /* off=6084: move a0,zero -> func_003c7c20(0, stack_var, 0) */
+        func_003c7c20(0, BR_U32(entry, 8), 0);
+        func_003c7430(12);
+        break;
     case 4:
-    case 5: {
-        DatPersonaWork *persona = datPersonaGetByPcId(1);
-        if (persona != NULL) {
-            datPersonaAddToNaturalStat(persona, (u16)(kind - 1), (s8)value);
-        }
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+        /* off=6124-6396: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7c20(1, value, 0);
+        if (kind == 4) { func_003c7430(17); }
+        else if (kind == 5) { func_003c7430(20); }
+        else if (kind == 6) { func_003c7430(18); }
+        else if (kind == 7) { func_003c7430(19); }
+        else { func_003c7430(21); }
         break;
-    }
-    case 6: {
-        u32 money = datGetMoney();
-        if ((s32)money + value < 0) {
-            money = 0;
-        } else if ((u32)value > 0x989680u - money) {
-            money = 0x98967fu;
-        } else {
-            money += (u32)value;
-        }
-        datSetMoney(money);
-        break;
-    }
-    case 7: {
-        u16 hp = datGetHp(1);
-        u16 maxHp = datGetMaxHp(1);
-        u32 result = hp + (u32)((s32)maxHp * value / 100);
-        datSetHp(1, (u16)(result > maxHp ? maxHp : result));
-        break;
-    }
-    case 8: {
-        u16 sp = datGetSp(1);
-        u16 maxSp = (u16)func_0016c670(1);
-        u32 result = sp + (u32)((s32)maxSp * value / 100);
-        datSetSp(1, (u16)(result > maxSp ? maxSp : result));
-        break;
-    }
     case 9:
-        datSetBadStatus(1, datGetBadStatusNoDown(1) & ~0x80u);
+        /* off=6464: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7430(22);
         break;
     case 10:
-        datSetPhysicalCondition(1, 0);
+        /* off=6512: lw v0,0x150(sp); not v0,v0; andi v0,v0,1; beqz -> guarded item */
+        func_003c7bc0(0, func_001775a0(1));
+        func_003c7430(26);
         break;
     case 11:
-        datSetPhysicalCondition(1, 2);
+        /* off=6580: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        tmp = func_0016c6f0(1);
+        tmp = func_00177280(tmp);
+        tmp = func_0011a810(tmp);
+        func_003c7bc0(1, tmp);
+        func_003c7430(29);
         break;
     case 12:
-        datSetPhysicalCondition(1, 3);
+        /* off=6680: lw v0,0x150(sp); not v0,v0; andi -> guarded item */
+        func_003c7bc0(0, func_001775a0(1));
+        func_003c7430(25);
         break;
     case 13:
-        datSetPhysicalCondition(1, 4);
+        /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
+        func_003c7430(30);
         break;
     case 14:
+        /* off=7036: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        tmp = func_0016c740(1);
+        tmp = func_001772f0(tmp);
+        tmp = func_0011a840(tmp);
+        func_003c7bc0(1, tmp);
+        func_003c7430(28);
+        break;
     case 15:
+        /* off=7084: addiu a0,zero,0x20 -> plain func_003c7430(32) */
+        func_003c7430(32);
+        break;
     case 16:
+        /* off=7104: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(27);
+        break;
     case 17:
+        /* off=7152: addiu a0,zero,0x22 -> plain func_003c7430(34) */
+        func_003c7430(34);
+        break;
     case 18:
+        /* off=7172: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        tmp = func_0016c790(1);
+        tmp = func_00177360(tmp);
+        tmp = func_0011a870(tmp);
+        func_003c7bc0(1, tmp);
+        func_003c7430(33);
+        break;
     case 19:
+        /* off=7220: addiu a0,zero,0x24 -> plain func_003c7430(36) */
+        func_003c7430(36);
+        break;
     case 20:
+        /* off=7240: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
+        func_003c7bc0(0, tmp);
+        func_003c7430(37);
+        break;
     case 21:
+        /* off=7288: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(38);
+        break;
     case 22:
+        /* off=7336: addiu a0,zero,0x27 -> plain func_003c7430(39) */
+        func_003c7430(39);
+        break;
     case 23:
+        /* off=7356: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(40);
+        break;
     case 24:
+        /* off=7404: addiu a0,zero,0x29 -> plain func_003c7430(41) */
+        func_003c7430(41);
+        break;
     case 25:
+        /* off=7424: a0=1 -> func_001775a0(1); then persona-stat chain */
+        tmp = func_001775a0(1);
+        func_003c7bc0(0, tmp);
+        func_003c7430(42);
+        break;
     case 26:
-        func_003c7bc0(0, func_00173220((u16)value));
-        func_003c7430((s32)kind);
+        /* off=7472: addiu a0,zero,0x2b -> plain func_003c7430(43) */
+        func_003c7430(43);
         break;
     case 27:
-        func_003c7430(0x1b);
+        /* off=7508: addiu a0,zero,0x2c -> plain func_003c7430(44) */
+        func_003c7430(44);
         break;
     default:
         break;
