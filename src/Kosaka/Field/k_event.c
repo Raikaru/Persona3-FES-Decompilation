@@ -1237,6 +1237,7 @@ u32 K_FldEvent_IsCharNearHeroBeforeBtl(u32 charId)
     return ret;
 }
 
+// Retail routes the camera aggregate through an aligned 0x60-byte scratch area before copying six quadwords back; this preserves that real data flow even though the wider function remains NONMATCHING.
 // FUN_001c8620 NONMATCHING
 void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 {
@@ -1255,6 +1256,11 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
     u32 active;
     u32 allLoaded;
     u8 scriptPath[128];
+    struct
+    {
+        u8 pad[0x90];
+        u_long128 eventData[6];
+    } eventStack;
 
 #define EVENT_WORD(index) (eventWords[(index)])
 #define EVENT_S16(offset) (*(s16*)((u8*)fldEvent + (offset)))
@@ -2070,7 +2076,20 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 if (FIELD_WORD(0x0c) != 0) { FUN_00195020(FIELD_WORD(0x0c)); FIELD_WORD(0x0c) = 0; }
                 if (FIELD_WORD(0x04) != 0)
                 {
-                    FUN_001d68e0(&EVENT_WORD(0x20), (void*)FIELD_WORD(0x04));
+                    FUN_001d68e0(eventStack.eventData, (void*)FIELD_WORD(0x04));
+                    {
+                        u_long128* dataSrc = eventStack.eventData;
+                        u_long128* dataDst = (u_long128*)&EVENT_WORD(0x20);
+                        i = 3;
+                        do
+                        {
+                            u_long128 data0 = *dataSrc++;
+                            u_long128 data1 = *dataSrc++;
+                            i--;
+                            *dataDst++ = data0;
+                            *dataDst++ = data1;
+                        } while (i > 0);
+                        }
                     FUN_00195020(FIELD_WORD(0x04));
                     FIELD_WORD(0x04) = 0;
                 }
