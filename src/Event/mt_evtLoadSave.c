@@ -26,8 +26,8 @@ extern u32 LAB_00392bb0;
 /* Region 0x390000-0x3CFFFF recovered prototypes */
 void FUN_0038dad0(u32 param_1,long param_2,u64 param_3);
 void FUN_0038e660(int param_1,int param_2,int param_3);
-u32 FUN_0038e860(long param_1,u64 param_2);
-void FUN_0038f0f0(u64 param_1);
+u32 FUN_0038e860(u32 param_1,u32 param_2);
+void FUN_0038f0f0(u32 param_1);
 void FUN_0038f440(u8 *param_1,void *param_2,int param_3);
 void FUN_0038f8c0(int param_1,u64 param_2,int param_3,u16 param_4);
 #pragma alias FUN_00361350_direct FUN_00361350
@@ -48,7 +48,7 @@ void FUN_00390920(int param_1,u64 param_2);
 void FUN_00390c90(int param_1,u64 param_2);
 void FUN_00390ef0(int param_1,int param_2);
 void FUN_00391080(u64 param_1,u64 param_2);
-u32 FUN_003912f0(u64 param_1,u64 param_2);
+u32 FUN_003912f0(u32 param_1,u32 param_2);
 
 
 /* Region call-cast macros */
@@ -930,7 +930,7 @@ next_node:
 // FUN_0038E860 NONMATCHING
 
 
-u32 FUN_0038e860(long param_1,u64 param_2)
+u32 FUN_0038e860(u32 param_1,u32 param_2)
 
 
 
@@ -1353,12 +1353,13 @@ u32 FUN_0038e860(long param_1,u64 param_2)
 
 #define FUN_0038e860(...) ((u32 (*)(...))FUN_0038e860)(__VA_ARGS__)
 #undef FUN_0038f0f0
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_0038F0F0 NONMATCHING
 
 
-void FUN_0038f0f0(u64 param_1)
 
-
+void FUN_0038f0f0(u32 param_1)
 
 {
 
@@ -1376,9 +1377,8 @@ void FUN_0038f0f0(u64 param_1)
 
   int iVar7;
 
-  long lVar8;
-
-  long lVar9;
+  u32 lVar8;
+  u32 lVar9;
 
   u32 uVar10;
 
@@ -1605,6 +1605,7 @@ void FUN_0038f0f0(u64 param_1)
   return;
 
 }
+#pragma pop
 
 
 #define FUN_0038f0f0(...) ((void (*)(...))FUN_0038f0f0)(__VA_ARGS__)
@@ -1633,7 +1634,7 @@ void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
   int iVar7;
 
   int iVar8;
-  MtEvtHalf4 half4;
+  volatile MtEvtHalf4 half4;
 
   
 
@@ -1645,7 +1646,6 @@ void FUN_0038f440(u8 *param_1,void *param_2,int param_3)
 
   half4 = *(MtEvtHalf4 *)(iVar8 + 0xc);
 
-  asm volatile("" : "+m"(half4));
 
   *(MtEvtHalf4 *)(iVar7 + 8) = half4;
 
@@ -3370,7 +3370,7 @@ LAB_00391290:
 // FUN_003912F0 NONMATCHING
 
 
-u32 FUN_003912f0(u64 param_1,u64 param_2)
+u32 FUN_003912f0(u32 param_1,u32 param_2)
 
 
 
