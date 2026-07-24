@@ -58,8 +58,8 @@ extern void campPersonaSetRenderState(s32 state, s32 value);
 typedef struct CampPersonaKaniWork
 {
     s32 state;
+    s32 reserved04;
     s32 timer;
-    s32 reserved08;
     s32 command;
     void* persona;
     s32 visible;
@@ -307,19 +307,30 @@ u32 FUN_00122710(KwlnTask* task, u32 command)
 // FUN_00122940 NONMATCHING
 void* FUN_00122940(KwlnTask* task)
 {
-    CampPersonaKaniWork* work;
     s32 alpha;
     f32 displacement;
+    CampVec2 position;
+    CampVec2 otherPosition;
+    CampPersonaKaniWork* work;
 
     work = task->workData;
     work->persona = (void*)FUN_00174800(work->personaId);
     switch (work->state) {
     case 0:
         if (work->visible != 0) {
-            if (work->screen == 1) {
-                FUN_00124e00((CampVec2){12.0f, 96.0f}, (CampVec2){12.0f, 96.0f}, 100.0f, work->persona, 1, 0, 0);
-            } else if (work->screen == 0) {
-                FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            switch (work->screen) {
+            case 0:
+                position.x = 12.0f;
+                position.y = 96.0f;
+                otherPosition = position;
+                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+                break;
+            case 1:
+                position.x = 30.0f;
+                position.y = 219.0f;
+                otherPosition = position;
+                FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
+                break;
             }
         }
         break;
@@ -332,7 +343,10 @@ void* FUN_00122940(KwlnTask* task)
             work->screen = 0;
             work->state = 0;
         }
-        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 0, work->timer, 0);
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 0, work->timer, 0);
         work->visible = 1;
         break;
     case 3:
@@ -346,14 +360,20 @@ void* FUN_00122940(KwlnTask* task)
             work->screen = 0;
         }
         alpha = 0xFF - work->timer * 0xFF / 20;
-        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, alpha);
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
         break;
     case 5:
         if (work->visible == 0) {
             work->state = 0;
         } else {
             work->timer = 0;
-            FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            position.x = 30.0f;
+            position.y = 219.0f;
+            otherPosition = position;
+            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
             work->state = 6;
         }
         break;
@@ -363,7 +383,10 @@ void* FUN_00122940(KwlnTask* task)
             work->state = 0;
             work->screen = 0;
         }
-        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0,
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
                       work->timer * 0xFF / 20);
         break;
     case 7:
@@ -371,7 +394,10 @@ void* FUN_00122940(KwlnTask* task)
             work->state = 0;
         } else {
             work->timer = 0;
-            FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0);
+            position.x = 30.0f;
+            position.y = 219.0f;
+            otherPosition = position;
+            FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, 0);
             work->state = 8;
         }
         break;
@@ -387,7 +413,11 @@ void* FUN_00122940(KwlnTask* task)
             displacement += (work->timer - 2) * 80.0f;
             alpha = (work->timer - 2) * 0xFF / 5;
         }
-        FUN_00124e00((CampVec2){30.0f, displacement}, (CampVec2){30.0f, displacement}, 100.0f, work->persona, 1, 0, alpha);
+        position.x = displacement;
+        position.y = 219.0f;
+        otherPosition.x = 30.0f;
+        otherPosition.y = 219.0f;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
         break;
     case 9:
         work->state = 10;
@@ -400,7 +430,10 @@ void* FUN_00122940(KwlnTask* task)
             work->screen = 1;
         }
         displacement = 12.0f + (10 - work->timer) * 40.0f;
-        FUN_00124e00((CampVec2){displacement, displacement}, (CampVec2){displacement, displacement}, 100.0f, work->persona, 1, 0,
+        position.x = displacement;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
                       0xFF - work->timer * 0xFF / 10);
         break;
     case 11:
@@ -414,7 +447,10 @@ void* FUN_00122940(KwlnTask* task)
             work->screen = 1;
         }
         displacement = 12.0f + work->timer * 80.0f;
-        FUN_00124e00((CampVec2){displacement, displacement}, (CampVec2){displacement, displacement}, 100.0f, work->persona, 1, 0,
+        position.x = displacement;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
                       work->timer * 0xFF / 10);
         break;
     case 13:
@@ -428,8 +464,15 @@ void* FUN_00122940(KwlnTask* task)
             work->screen = 0;
         }
         alpha = work->timer * 0xFF / 20;
-        FUN_00124e00((CampVec2){12.0f, 96.0f}, (CampVec2){12.0f, 96.0f}, 100.0f, work->persona, 1, 0, alpha);
-        FUN_00124e00((CampVec2){30.0f, 219.0f}, (CampVec2){30.0f, 219.0f}, 100.0f, work->persona, 1, 0, 0xFF - alpha);
+        position.x = 12.0f;
+        position.y = 96.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0, alpha);
+        position.x = 30.0f;
+        position.y = 219.0f;
+        otherPosition = position;
+        FUN_00124e00(position, otherPosition, 100.0f, work->persona, 1, 0,
+                     0xFF - alpha);
         break;
     }
     return KWLNTASK_CONTINUE;
