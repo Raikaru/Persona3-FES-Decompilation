@@ -2455,6 +2455,7 @@ void func_00170860(s16 pcId, s16 index, u16 value)
     u8* heroEquip;
     s32 address;
     s32 i;
+    s32 j;
 
     K_ASSERT(value <= 99, 2341);
     if (pcId == PC_HERO)
@@ -2474,37 +2475,30 @@ void func_00170860(s16 pcId, s16 index, u16 value)
     {
         goto done;
     }
-
     i = 0;
     idBase = (u8*)gPcs + pcId * 0x364;
     for (; i < 20; i++)
     {
         if (*(u16*)(idBase + i * 4 - 0x367b8) == pcId)
         {
-            u16* entry;
-
-            entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
-            entry[1] = value;
+            *(u16*)(D_007FD85A + pcId * 0x364 + i * 4) = value;
             if (value == 0)
             {
-                *entry = 0;
+                *(u16*)(D_007FD858 + pcId * 0x364 + i * 4) = 0;
             }
             goto done;
         }
     }
 
-    i = 0;
-    for (; i < 20; i++)
+    j = 0;
+    for (; j < 20; j++)
     {
-        u16* entry;
-
-        entry = (u16*)(D_007FD858 + pcId * 0x364 + i * 4);
-        if (*entry == 0)
+        if (*(u16*)(idBase + j * 4 - 0x367b8) == 0)
         {
-            entry[1] = value;
+            *(u16*)(D_007FD85A + pcId * 0x364 + j * 4) = value;
             if (value == 0)
             {
-                *entry = 0;
+                *(u16*)(D_007FD858 + pcId * 0x364 + j * 4) = 0;
             }
             goto done;
         }
