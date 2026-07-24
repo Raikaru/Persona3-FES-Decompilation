@@ -724,6 +724,7 @@ void fclCombineList003da570(FclList* param_1, s32 param_2)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_003da700 NONMATCHING
 s32 fclCombineList003da700(FclList* param_1)
 {
@@ -976,6 +977,7 @@ selection_back:
     FUN_003d8850((s32)param_1, 0x1c, 0);
     return 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_003db580
 s32 fclCombineList003db580(FclList* param_1)
@@ -999,6 +1001,7 @@ void fclCombineList003db5e0(FclOwner* param_1)
 }
 
 
+#pragma opt_loop_invariants on
 // FUN_003db650 NONMATCHING
 void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
                              FclOwner* owner)
@@ -1145,6 +1148,7 @@ void fclCombineList003db650(FclResultStream* stream, FclDb650Result* result,
         return;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_003dc210
 void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* owner)
@@ -1167,6 +1171,7 @@ void fclCombineList003dc210(s32 unused0, s32 unused1, s32 unused2, FclOwner* own
     work->flags &= 0xfffeffff;
 }
 
+#pragma opt_loop_invariants on
 // FUN_003dc2d0 NONMATCHING
 void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected_style,
@@ -1247,6 +1252,7 @@ void fclCombineList003dc2d0(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
 
     (void)owner;
 }
+#pragma opt_loop_invariants off
 
 // FUN_003dc700 NONMATCHING
 void fclCombineList003dc700(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
@@ -1352,6 +1358,7 @@ void fclCombineList003dca10(s32 base_x, s32 base_y, s16 alpha, FclOwner* owner,
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_003dcc90 NONMATCHING
 void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
                              FclTaskLink* source_link, s32 selected)
@@ -1417,6 +1424,7 @@ void fclCombineList003dcc90(s32 x, s32 y, s16 alpha, FclOwner* owner,
 
     (void)owner;
 }
+#pragma opt_loop_invariants off
 
 // FUN_003dcfb0 NONMATCHING
 void fclCombineList003dcfb0(FclResultStream* callback_target, FclDrawResult* result,
@@ -1883,13 +1891,13 @@ FclList* fclCombineList003de290(void* input, s32 state)
 // FUN_003de470 NONMATCHING
 s32 fclCombineList003de470(FclList* work)
 {
-    FclOwner* task = work->list;
     s32 selection_state;
     s32 i;
     byte validated_input[0x54];
     s16 selected_values[0xc];
     FclResourceNode* selection;
     FclResourceData* resource_data;
+    FclOwner* task = work->list;
 
     if (FUN_003c6270((s32)task) == 3) {
         if ((work->flags & 0x10) != 0) return 1;
@@ -1952,7 +1960,28 @@ s32 fclCombineList003de470(FclList* work)
         }
     case 5:
         selection_state = fclCombineList003ddd20(&work->selection);
-        if (selection_state == 2) {
+        switch (selection_state) {
+        case 1:
+            FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 9, 1);
+            if (FUN_003d6c90(2) != 0) {
+                memset(selected_values, 0, sizeof(selected_values));
+                for (i = 0; i < work->capacity; i++) {
+                    K_ASSERT(work->values[i] != 0, 0x9c4);
+                    selected_values[i] = work->values[i]->persona_id;
+                }
+                if (FUN_003d6f80(validated_input, &work->fusion, selected_values) != 0) {
+                    work->flags |= 0x40;
+                    memcpy(&work->fusion, validated_input, sizeof(work->fusion));
+                }
+            }
+            FUN_003d72f0((s32)&work->fusion.detail);
+            FUN_003c6f10((s32)task);
+            FUN_003c6f50((s32)task);
+            work->state = 2;
+            work->flags |= 0x10;
+            break;
+
+        case 2:
             FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 6, 0);
             FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 9, 1);
             work->state = 3;
@@ -1968,25 +1997,6 @@ s32 fclCombineList003de470(FclList* work)
             FUN_003d8850((s32)work, 0xc, 0);
             FUN_003d8850((s32)work, 0xf, 0);
             FUN_003d8850((s32)work, 0x16, 0);
-        } else if (selection_state == 1) {
-            FUN_003d06d0(FUN_003c5460(FUN_003d02e0()), 9, 1);
-            if (FUN_003d6c90(2) != 0) {
-                memset(selected_values, 0, sizeof(selected_values));
-                for (i = 0; i < work->capacity; i++) {
-                    K_ASSERT(work->values[i] != 0, 0x9c4);
-                    selected_values[i] = work->values[i]->persona_id;
-                }
-                memset(validated_input, 0, sizeof(validated_input));
-                if (FUN_003d6f80(validated_input, &work->fusion, selected_values) != 0) {
-                    work->flags |= 0x40;
-                    memcpy(&work->fusion, validated_input, sizeof(work->fusion));
-                }
-            }
-            FUN_003d72f0((s32)&work->fusion.detail);
-            FUN_003c6f10((s32)task);
-            FUN_003c6f50((s32)task);
-            work->state = 2;
-            work->flags |= 0x10;
         }
         break;
     }
@@ -2305,6 +2315,8 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
   iVar1 = *(int *)(param_2 + 0x14);
 
   switch(*(u32 *)(iVar1 + 0xc)) {
+  case 0:
+    break;
 
   case 1:
 
@@ -2352,7 +2364,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
          (short)(int)((float)((int)*(short *)(iVar1 + 0x1c) - (int)sVar2) * fVar3 +
 
-                     (float)(int)sVar2 + 0.0);
+                     (float)(int)sVar2 + 0.0f);
 
     sVar2 = *(short *)(iVar1 + 0x1a);
 
@@ -2364,7 +2376,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
          (short)(int)((float)((int)*(short *)(iVar1 + 0x1e) - (int)sVar2) * fVar3 +
 
-                     (float)(int)sVar2 + 0.0);
+                     (float)(int)sVar2 + 0.0f);
 
     sVar2 = *(short *)(iVar1 + 0x22);
 
@@ -2376,7 +2388,7 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
          (short)(int)((float)((int)*(short *)(iVar1 + 0x24) - (int)sVar2) * fVar3 +
 
-                     (float)(int)sVar2 + 0.0);
+                     (float)(int)sVar2 + 0.0f);
 
     *(short *)(iVar1 + 0x26) =
 
@@ -2436,9 +2448,9 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
     fVar4 = (float)sinf(fVar4);
 
-    *(short *)(iVar1 + 0x14) = (short)(int)(fVar3 * 464.0 + 320.0);
+    *(short *)(iVar1 + 0x14) = (short)(int)(fVar3 * 464.0f + 320.0f);
 
-    *(short *)(iVar1 + 0x16) = (short)(int)(504.0 - fVar4 * 464.0);
+    *(short *)(iVar1 + 0x16) = (short)(int)(504.0f - fVar4 * 464.0f);
 
     *(short *)(iVar1 + 0x26) =
 
@@ -2468,6 +2480,8 @@ u64 FUN_003df4a0(u64 param_1,int param_2)
 
     }
 
+  case 6:
+    break;
   }
 
   return 0;
@@ -2526,11 +2540,9 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
   
 
-  iVar7 = param_2[4];
+  fVar10 = 1.0f;
 
   bVar1 = *(int *)(*param_1 + 0xc) == *param_2;
-
-  fVar10 = 1.0;
 
   if (bVar1) {
 
@@ -2556,19 +2568,20 @@ void FUN_003dfae0(int *param_1,int *param_2)
 
       if (iVar7 == 6) {
 
-        fVar11 = 36.0 - fVar10 * 68.0;
+        fVar11 = 36.0f - fVar10 * 68.0f;
 
-        fVar14 = -2.0 - fVar10;
+        fVar14 = -2.0f - fVar10;
 
       }
 
       else {
 
-        fVar11 = fVar10 * -34.0;
+        fVar11 = fVar10 * -34.0f;
 
-        fVar14 = 42.0 - fVar10 * 41.0;
+        fVar14 = 42.0f - fVar10 * 41.0f;
 
       }
+
 
       fVar13 = DAT_007caf14 * (float)iVar6;
 
