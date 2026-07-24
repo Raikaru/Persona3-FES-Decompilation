@@ -5,6 +5,18 @@
 /* Recovered battle-misc support prelude */
 typedef int (*code)(...);
 typedef struct { f32 x; f32 y; f32 z; } SflCardVec;
+typedef struct {
+    f32 transformed[4];
+    u8 pad0[8];
+    f32 origin[3];
+    u8 pad1[4];
+    f32 rotation[3];
+    u8 pad2[4];
+    f32 rect[4];
+    f32 frame_offset;
+    f32 frame_const;
+    f32 scale[3];
+} SflCardDrawFrame;
 void FUN_00253600(u32 *param_1);
 void FUN_00250cf0();
 void FUN_00253a40(void);
@@ -1082,12 +1094,13 @@ void FUN_00258630(u32 *param_1)
     u32 flags;
     u32 *node;
     s32 count;
-    f32 scale[3];
-    f32 frame_offset;
-    f32 rect[4];
-    f32 rotation[3];
-    f32 transformed[4];
-    f32 origin[3];
+    SflCardDrawFrame local;
+#define scale local.scale
+#define frame_offset local.frame_offset
+#define rect local.rect
+#define rotation local.rotation
+#define transformed local.transformed
+#define origin local.origin
     f32 frame;
 
     *(u64 *)origin = *(u64 *)DAT_0068eab0_abs;
@@ -1095,24 +1108,27 @@ void FUN_00258630(u32 *param_1)
     flags = *param_1;
     *param_1 = flags | 0x100;
     if ((~(flags | 0x100) & 8) != 0) {
-        if (param_1[1] != 2) {
-            if (param_1[1] == 0) {
-                FUN_00209f00(param_1 + 6);
-                FUN_0020c590(param_1 + 6, (u16)param_1[2]);
-                if ((*param_1 & 1) != 0) {
-                    FUN_0020d6c0(param_1 + 6);
-                }
-                if ((*param_1 & 0x400) != 0) {
-                    FUN_0020d710(param_1 + 6);
-                }
-            } else if (param_1[1] == 1) {
-                FUN_0020a800(param_1 + 6);
-                FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
-            } else {
-                K_ASSERT(0, 0x8de);
+        switch (param_1[1]) {
+        case 1:
+            FUN_0020a800(param_1 + 6);
+            FUN_0020c5f0(param_1 + 6, param_1[2], param_1[3]);
+            break;
+        case 0:
+            FUN_00209f00(param_1 + 6);
+            FUN_0020c590(param_1 + 6, (u16)param_1[2]);
+            if ((*param_1 & 1) != 0) {
+                FUN_0020d6c0(param_1 + 6);
             }
-        } else {
+            if ((*param_1 & 0x400) != 0) {
+                FUN_0020d710(param_1 + 6);
+            }
+            break;
+        case 2:
             FUN_0020ab30(param_1 + 6);
+            break;
+        default:
+            K_ASSERT(0, 0x8de);
+            break;
         }
 
         scale[0] = 10.0f;
@@ -1175,6 +1191,12 @@ void FUN_00258630(u32 *param_1)
     }
     param_1[0x498] = 0x100;
 }
+#undef scale
+#undef frame_offset
+#undef rect
+#undef rotation
+#undef transformed
+#undef origin
 #pragma pop
 
 // FUN_00258B40 NONMATCHING
@@ -1192,7 +1214,8 @@ void FUN_00258b40(void)
 
   u32 uVar3;
 
-  int iVar6;
+  int iSecond;
+  int iLast;
 
   u32 iVar4;
   u32 iVar5;
@@ -1202,6 +1225,8 @@ void FUN_00258b40(void)
   u32 *unaff_s2_lo;
 
   u32 *unaff_s3_lo;
+
+  int iFirst;
 
   f32 uVar8;
   f32 uVar9;
@@ -1226,22 +1251,22 @@ void FUN_00258b40(void)
 
   puVar1 = sSflCardB664;
 
-  for (iVar6 = 0; iVar6 < (int)puVar1[0x49a1]; iVar6 = iVar6 + 1) {
+  for (iFirst = 0; iFirst < (int)puVar1[0x49a1]; iFirst = iFirst + 1) {
 
-    FUN_00258f80(*(u32 **)((u8 *)puVar1 + 0x12664 + 4 * (puVar1[0x49a1] - 1U - (u32)iVar6)));
+    FUN_00258f80(*(u32 **)((u8 *)puVar1 + 0x12664 + 4 * (puVar1[0x49a1] - 1U - (u32)iFirst)));
   }
 
+
   uVar3 = puVar1[0x499f];
+  for (iSecond = 0; iSecond < (int)uVar3; iSecond = iSecond + 1) {
 
-  for (iVar6 = 0; iVar6 < (int)uVar3; iVar6 = iVar6 + 1) {
-
-    aiStack_50[iVar6] = iVar6;
+    aiStack_50[iSecond] = iSecond;
 
   }
 
   uVar3 = 0x400;
   uVar3 = uVar3 + (FUN_00488f30() & 0xf);
-  for (iVar6 = 0; iVar6 < (int)uVar3; iVar6 = iVar6 + 1) {
+  for (iFirst = 0; iFirst < (int)uVar3; iFirst = iFirst + 1) {
 
     iVar4 = FUN_00488f30();
 
@@ -1289,9 +1314,9 @@ void FUN_00258b40(void)
 
   }
 
-  for (iVar6 = 0; iVar6 < (int)puVar1[0x499f]; iVar6 = iVar6 + 1) {
+  for (iLast = 0; iLast < (int)puVar1[0x499f]; iLast = iLast + 1) {
 
-    *(int *)(aiStack_30[iVar6] + 0x10) = aiStack_50[iVar6];
+    *(int *)(aiStack_30[iLast] + 0x10) = aiStack_50[iLast];
 
   }
 
