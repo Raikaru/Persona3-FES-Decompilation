@@ -485,61 +485,80 @@ extern s32 FUN_002d2470_call(f32 tolerance, const f32* a, const f32* b,
 // FUN_002d1660 NONMATCHING
 void FUN_002d1660(void* source, BtlTarget* target, u64 mask)
 {
-    u8* table = NULL;
+    u8* selected = NULL;
     u32 state = 0;
     u16 total = 0;
     u16 roll;
     u16 i;
-    u8* selected = NULL;
 
-    FUN_002d15a0(target);
+    target->targetedCount = 0;
+    target->specificId = 0;
+    target->unk_38 = 0;
+    target->commandId = 0;
+    FUN_00521408(target->unk_3e, 0, 6);
     mask &= 0xFFFFFu;
-    if (mask == 0x200) {
-        selected = gp0xffff9c78;
-    } else if (mask == 0x40) {
-        selected = gp0xffff9c70;
-    } else if (mask == 0x20) {
-        selected = gp0xffff9c68;
-    } else if (mask == 0x10) {
-        selected = gp0xffff9c60;
-    } else if (mask == 8) {
-        u8* work = *(u8**)((u8*)source + 0x30);
-        if (work[0xA2] != 0 || *(s16*)(work + 0xA4) != 1) {
-            state = PTR_FUN_00697294(source, 0) != 1;
-        } else {
-            state = 1;
-        }
-        table = DAT_006977D0;
-    } else if (mask == 1) {
+    switch (mask) {
+    case 1:
+    {
         s32 first = PTR_FUN_006973cc(source, 0);
         s32 second = PTR_FUN_0069721c(source, 1);
-        if (first == 1 && second == 0) {
-            state = 0;
-        } else if (first != 1 && second == 0) {
-            state = first == 0 ? 2 : state;
-        } else if (first == 0 && second != 0) {
-            state = 3;
-        } else {
-            state = 1;
+        if (first == 1) {
+            if (second == 0) {
+                state = 0;
+            } else {
+                state = 1;
+            }
+        } else if (first == 0) {
+            if (second == 0) {
+                state = 2;
+            } else {
+                state = 3;
+            }
         }
-        table = DAT_00697730;
+        selected = DAT_00697730;
+        break;
     }
-    if (table != NULL) {
-        table += (state & 0xFFFFu) * 0x28;
-        for (i = 0; i < 5; i++) {
-            total = (u16)(total + table[i * 8]);
+    case 8:
+    {
+        u8* work = *(u8**)((u8*)source + 0x30);
+        if (work[0xA2] == 0 && *(u16*)(work + 0xA4) == 1) {
+            state = 1;
+        } else {
+            state = PTR_FUN_00697294(source, 0) == 0;
+        }
+        selected = DAT_006977D0;
+        break;
+    }
+    case 0x10:
+        selected = gp0xffff9c60;
+        break;
+    case 0x20:
+        selected = gp0xffff9c68;
+        break;
+    case 0x40:
+        selected = gp0xffff9c70;
+        break;
+    case 0x200:
+        selected = gp0xffff9c78;
+        break;
+    default:
+        break;
+    }
+    if (selected == DAT_00697730 || selected == DAT_006977D0) {
+        selected += (state & 0xFFFFu) * 0x28;
+        for (i = 0, total = 0; i < 5; i++) {
+            total = (u16)(total + selected[i * 8]);
         }
         roll = (u16)FUN_002FFBC0(total);
         total = 0;
-        selected = NULL;
         for (i = 0; i < 5; i++) {
-            u8 weight = table[i * 8];
-            selected = table + i * 8;
+            u8 weight = selected[i * 8];
             total = (u16)(total + weight);
             if (roll <= total && weight != 0) {
                 break;
             }
         }
+        selected += i * 8;
     }
     FUN_002C6A00(source, target, *(u16*)(selected + 2));
     {
