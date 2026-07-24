@@ -5745,7 +5745,7 @@ void FUN_00435c00(int param_1)
   u8 uVar6;
   u8 uVar7;
   short sVar8;
-  u16 uVar9;
+  short uVar9;
   u16 uVar10;
   int iVar11;
   int iVar12;
@@ -5805,7 +5805,7 @@ void FUN_00435c00(int param_1)
   if (lVar13 != 0) {
     iVar19 = *(int *)(iVar2 + 4);
     cVar3 = FUN_00435810();
-    if ((long)iVar19 == (long)cVar3) {
+    if (iVar19 == cVar3) {
       FUN_00456670(param_1,(char)iVar19);
     }
   }
@@ -5813,15 +5813,15 @@ void FUN_00435c00(int param_1)
   if (sVar8 != -1) {
     iVar19 = *(int *)(iVar2 + 4);
     cVar3 = FUN_00435810();
-    if ((long)iVar19 == (long)cVar3) {
+    if (iVar19 == cVar3) {
       uVar9 = FUN_00435660((char)iVar19);
       *(u16 *)(iVar2 + 0x1226) = uVar9;
-      FUN_00456a90(param_1,*(u8 *)(iVar2 + 4),(char)uVar9);
+      FUN_00456a90(param_1,*(s8 *)(iVar2 + 4),(s8)uVar9);
     }
   }
   cVar3 = *(char *)(iVar2 + 4);
-  for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-    if ((long)iVar19 != (long)cVar3) {
+  for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+    if (iVar19 != cVar3) {
       bVar18 = 0;
       if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
         bVar18 = 1;
@@ -5838,8 +5838,8 @@ void FUN_00435c00(int param_1)
 LAB_00435de4:
   if (cVar3 != '\0') {
     cVar3 = *(char *)(iVar2 + 4);
-    for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-      if ((long)iVar19 != (long)cVar3) {
+    for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+      if (iVar19 != cVar3) {
         bVar18 = 0;
         if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
           bVar18 = 1;
@@ -5857,8 +5857,8 @@ LAB_00435ed4:
     sVar8 = FUN_0043c910(uVar17);
     if (sVar8 == 0) {
       cVar3 = *(char *)(iVar2 + 4);
-      for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-        if ((long)iVar19 != (long)cVar3) {
+      for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+        if (iVar19 != cVar3) {
           bVar18 = 0;
           if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
             bVar18 = 1;
@@ -5876,8 +5876,8 @@ LAB_00435fc8:
       sVar8 = FUN_0043c180(uVar17);
       if (sVar8 == 0) {
         cVar3 = *(char *)(iVar2 + 4);
-        for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-          if ((long)iVar19 != (long)cVar3) {
+      for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+        if (iVar19 != cVar3) {
             bVar18 = 0;
             if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
               bVar18 = 1;
@@ -5894,10 +5894,10 @@ LAB_00435fc8:
 LAB_004360c0:
         iVar19 = *(int *)(iVar2 + 4);
         sVar8 = FUN_0043c340(uVar17);
-        if ((long)iVar19 == (long)sVar8) {
+        if (iVar19 == sVar8) {
           cVar3 = (char)iVar19;
-          for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-            if ((long)iVar19 != (long)cVar3) {
+          for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+            if (iVar19 != cVar3) {
               bVar18 = 0;
               if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
                 bVar18 = 1;
@@ -5920,8 +5920,8 @@ LAB_004361c0:
       }
       else {
         cVar3 = *(char *)(iVar2 + 4);
-        for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-          if ((long)iVar19 != (long)cVar3) {
+        for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+          if (iVar19 != cVar3) {
             bVar18 = 0;
             if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
               bVar18 = 1;
@@ -5938,10 +5938,10 @@ LAB_004361c0:
 LAB_004362c0:
         iVar19 = *(int *)(iVar2 + 4);
         sVar8 = FUN_0043c180(uVar17);
-        if ((long)iVar19 == (long)sVar8) {
+        if (iVar19 == sVar8) {
           cVar3 = (char)iVar19;
-          for (iVar19 = 1; (long)iVar19 < 4; iVar19 = iVar19 + 1) {
-            if ((long)iVar19 != (long)cVar3) {
+          for (iVar19 = 1; iVar19 < 4; iVar19 = iVar19 + 1) {
+            if (iVar19 != cVar3) {
               bVar18 = 0;
               if ((((u8 *)DAT_008717e8)[iVar19 * 0x70] != 0) && (((u8 *)DAT_008717f4)[iVar19 * 0x70] != 0)) {
                 bVar18 = 1;
@@ -5964,7 +5964,7 @@ LAB_004363c0:
       }
     }
   }
-  switch(*(u8 *)(iVar2 + 0x1223)) {
+  switch(*(s8 *)(iVar2 + 0x1223)) {
   case 0:
     FUN_001b0240(*(u32 *)(*(int *)(iVar2 + 0x24) + 0x170),1);
     FUN_001b00c0(*(u32 *)(*(int *)(iVar2 + 0x24) + 0x170));
