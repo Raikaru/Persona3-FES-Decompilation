@@ -785,64 +785,64 @@ done:
     return result;
 }
 
-// FUN_002d56a0 NONMATCHING
+// FUN_002d56a0
 u32 FUN_002d56a0(s32 param_1)
 {
     switch (param_1)
     {
-        case 0x14b: return 0x98;
-        case 0x14a: return 0x96;
-        case 0x149: return 0x94;
-        case 0x148: return 0x92;
-        case 0x147: return 0x90;
-        case 0x67:
-        case 0x66:  return 0x44;
-        case 0x170: return 0xa4;
-        case 0x134: return 0x86;
-        case 0x122: return 0x84;
-        case 0x120: return 0xae;
-        case 0x10e: return 0x82;
-        case 0x10d: return 0x80;
-        case 0x10c: return 0x7e;
-        case 0x10b: return 0x7c;
-        case 0x10a: return 0x7a;
-        case 0x109: return 0x76;
-        case 0x108: return 0x74;
-        case 0x107: return 0x72;
-        case 0x106: return 0x70;
-        case 0x105: return 0x6e;
-        case 0x104: return 0x6c;
-        case 0x103: return 0x6a;
-        case 0x102: return 0x68;
-        case 0x101: return 0x66;
-        case 0x100: return 0x64;
-        case 0x0e8: return 0xaa;
-        case 0x0e7: return 0xac;
-        case 0x0e6: return 0xa8;
-        case 0x0e5: return 0xa6;
-        case 0x117: return 0x58;
-        case 0x114: return 0x56;
-        case 0x113: return 0x54;
-        case 0x4a:
-        case 0x49:  return 0x52;
-        case 0xdd:  return 0xa0;
-        case 0xdc:  return 0x9e;
-        case 0xe3:  return 0x50;
-        case 0xe2:  return 0x4e;
-        case 0xd4:  return 0x9c;
-        case 0xd3:
-        case 0xd2:  return 0x8e;
-        case 0xd1:
-        case 0xd0:  return 0x8c;
-        case 0xcf:
-        case 0xce:  return 0x8a;
+        case 0xd6:
+        case 0xd7:  return 0x48;
+        case 0xd8:
+        case 0xd9:  return 0x4a;
+        case 0xda:
+        case 0xdb:  return 0x4c;
         case 0xdf:  return 0x9a;
-        case 0xdb:
-        case 0xda:  return 0x4c;
-        case 0xd9:
-        case 0xd8:  return 0x4a;
-        case 0xd7:
-        case 0xd6:  return 0x48;
+        case 0xce:
+        case 0xcf:  return 0x8a;
+        case 0xd0:
+        case 0xd1:  return 0x8c;
+        case 0xd2:
+        case 0xd3:  return 0x8e;
+        case 0xd4:  return 0x9c;
+        case 0xe2:  return 0x4e;
+        case 0xe3:  return 0x50;
+        case 0xdc:  return 0x9e;
+        case 0xdd:  return 0xa0;
+        case 0x49:
+        case 0x4a:  return 0x52;
+        case 0x113: return 0x54;
+        case 0x114: return 0x56;
+        case 0x117: return 0x58;
+        case 0xe5:  return 0xa6;
+        case 0xe6:  return 0xa8;
+        case 0xe7:  return 0xac;
+        case 0xe8:  return 0xaa;
+        case 0x100: return 0x64;
+        case 0x101: return 0x66;
+        case 0x102: return 0x68;
+        case 0x103: return 0x6a;
+        case 0x104: return 0x6c;
+        case 0x105: return 0x6e;
+        case 0x106: return 0x70;
+        case 0x107: return 0x72;
+        case 0x108: return 0x74;
+        case 0x109: return 0x76;
+        case 0x10a: return 0x7a;
+        case 0x10b: return 0x7c;
+        case 0x10c: return 0x7e;
+        case 0x10d: return 0x80;
+        case 0x10e: return 0x82;
+        case 0x120: return 0xae;
+        case 0x122: return 0x84;
+        case 0x134: return 0x86;
+        case 0x170: return 0xa4;
+        case 0x66:
+        case 0x67:  return 0x44;
+        case 0x147: return 0x90;
+        case 0x148: return 0x92;
+        case 0x149: return 0x94;
+        case 0x14a: return 0x96;
+        case 0x14b: return 0x98;
         default:    return 0;
     }
 }
@@ -2544,14 +2544,7 @@ void FUN_002d32b0(float param_1)
     u8* other;
     int j;
     int haveBounds = 0;
-    s16 corner0X;
-    s16 corner0Y;
-    s16 corner1X;
-    s16 corner1Y;
-    s16 corner2X;
-    s16 corner2Y;
-    s16 corner3X;
-    s16 corner3Y;
+    s16 corners[8];
     float extent[4];
     int i;
     u8 *node;
@@ -2563,14 +2556,14 @@ void FUN_002d32b0(float param_1)
             s16 tileX = *(s16 *)(node + 0x00);
             s16 tileY = *(s16 *)(node + 0x02);
             float z = *(float *)(node + 0x04);
-            corner3X = tileX;
-            corner2X = tileX;
-            corner1X = tileX;
-            corner0X = tileX;
-            corner3Y = tileY;
-            corner2Y = tileY;
-            corner1Y = tileY;
-            corner0Y = tileY;
+            corners[6] = tileX;
+            corners[4] = tileX;
+            corners[2] = tileX;
+            corners[0] = tileX;
+            corners[7] = tileY;
+            corners[5] = tileY;
+            corners[3] = tileY;
+            corners[1] = tileY;
             extent[3] = z;
             extent[2] = z;
             extent[1] = z;
@@ -2582,28 +2575,28 @@ void FUN_002d32b0(float param_1)
             s16 tileX = *(s16 *)(node + 0x00);
             s16 tileY = *(s16 *)(node + 0x02);
             float z = *(float *)(node + 0x04);
-            if ((tileX <= corner0X) && (tileY <= corner0Y))
+            if ((tileX <= corners[0]) && (tileY <= corners[1]))
             {
-                corner0X = tileX;
-                corner0Y = tileY;
+                corners[0] = tileX;
+                corners[1] = tileY;
                 extent[0] = z;
             }
-            if ((corner1X <= tileX) && (tileY <= corner1Y))
+            if ((corners[2] <= tileX) && (tileY <= corners[3]))
             {
-                corner1X = tileX;
-                corner1Y = tileY;
+                corners[2] = tileX;
+                corners[3] = tileY;
                 extent[1] = z;
             }
-            if ((corner2X <= tileX) && (corner2Y <= tileY))
+            if ((corners[4] <= tileX) && (corners[5] <= tileY))
             {
-                corner2X = tileX;
-                corner2Y = tileY;
+                corners[4] = tileX;
+                corners[5] = tileY;
                 extent[2] = z;
             }
-            if ((tileX <= corner3X) && (corner3Y <= tileY))
+            if ((tileX <= corners[6]) && (corners[7] <= tileY))
             {
-                corner3X = tileX;
-                corner3Y = tileY;
+                corners[6] = tileX;
+                corners[7] = tileY;
                 extent[3] = z;
             }
         }
@@ -2623,8 +2616,8 @@ void FUN_002d32b0(float param_1)
 
         if (i == 3)
         {
-            x = (s16)(corner3X - margin);
-            y = (s16)(margin + corner3Y);
+            x = (s16)(corners[6] - margin);
+            y = (s16)(margin + corners[7]);
             if (x < 0)
             {
                 x = 0;
@@ -2632,13 +2625,13 @@ void FUN_002d32b0(float param_1)
         }
         else if (i == 2)
         {
-            x = (s16)(margin + corner2X);
-            y = (s16)(margin + corner2Y);
+            x = (s16)(margin + corners[4]);
+            y = (s16)(margin + corners[5]);
         }
         else if (i == 1)
         {
-            x = (s16)(margin + corner1X);
-            y = (s16)(corner1Y - margin);
+            x = (s16)(margin + corners[2]);
+            y = (s16)(corners[3] - margin);
             if (y < 0)
             {
                 y = 0;
@@ -2646,8 +2639,8 @@ void FUN_002d32b0(float param_1)
         }
         else
         {
-            x = (s16)(corner0X - margin);
-            y = (s16)(corner0Y - margin);
+            x = (s16)(corners[0] - margin);
+            y = (s16)(corners[1] - margin);
             if (x < 0)
             {
                 x = 0;
@@ -4339,9 +4332,9 @@ u32 FUN_002d79a0(void *arg)
     BtlTargetPacketWork *work = (BtlTargetPacketWork *)arg;
     BtlAction *action = work->action;
     BtlUnit *unit;
-    u64 oldDead;
-    u64 oldLowHp;
-    u64 oldDown;
+    u32 oldDead;
+    u32 oldLowHp;
+    u32 oldDown;
 
     if ((action->unk_1a & 1) == 0)
         return 1;
@@ -4374,20 +4367,8 @@ u32 FUN_002d79a0(void *arg)
         FUN_00302380(unit->datUnit, *(u32 *)(work->data + 16), 1);
 
     {
-        u64 currentDead = datCalcIsDead(unit->datUnit, 0);
-        if ((currentDead == 0) || (oldDead != 0))
-        {
-            u64 currentLowHp = datCalcIsLowHp(unit->datUnit);
-            if ((currentLowHp == 0) || (oldLowHp != 0))
-            {
-                u64 currentDown = datCalcChkBadStatus(unit->datUnit, 0x200);
-                if ((currentDown != 0) && (oldDown == 0))
-                    FUN_002daa20(action, 0x1c, 0, 0, 0);
-            }
-            else
-                FUN_002daa20(action, 0x1a, 0, 0, 0);
-        }
-        else
+        u32 currentDead = datCalcIsDead(unit->datUnit, 0);
+        if ((currentDead != 0) && (oldDead == 0))
         {
             if (unit->genus == 1)
             {
@@ -4422,7 +4403,7 @@ u32 FUN_002d79a0(void *arg)
                     unit->flags3 = oldFlags & 0xffffffef;
                 }
             }
-            if ((u64)datCalcIsDead(unit->datUnit, 0) != 0)
+            if ((u32)datCalcIsDead(unit->datUnit, 0) != 0)
             {
                 if (BTLT_B32(0x148) == (u32)(uintptr_t)action)
                 {
@@ -4432,6 +4413,18 @@ u32 FUN_002d79a0(void *arg)
                 else
                     FUN_002daa20(action, 0x1b, 0, 0, 0);
             }
+        }
+        else
+        {
+            u32 currentLowHp = datCalcIsLowHp(unit->datUnit);
+            if ((currentLowHp == 0) || (oldLowHp != 0))
+            {
+                u32 currentDown = datCalcChkBadStatus(unit->datUnit, 0x200);
+                if ((currentDown != 0) && (oldDown == 0))
+                    FUN_002daa20(action, 0x1c, 0, 0, 0);
+            }
+            else
+                FUN_002daa20(action, 0x1a, 0, 0, 0);
         }
     }
     func_002faa50(work->source, action, (BtlTargetResult*)work->data);
