@@ -2301,7 +2301,7 @@ typedef KwlnTask* (*CampStatusPersonaChildCreateFn)(KwlnTask* parent,
                                                     u32 personaId, u32 mode,
                                                     f32 alpha);
 
-static u64 campStatusPackPosition(CampVec2 position)
+static inline u64 campStatusPackPosition(CampVec2 position)
 {
     CampStatusPackedPosition packed;
 
@@ -2310,7 +2310,7 @@ static u64 campStatusPackPosition(CampVec2 position)
     return packed.value;
 }
 
-static void campStatusAnimateRecord(void* records, s32 index, s32 alphaMode,
+static inline void campStatusAnimateRecord(void* records, s32 index, s32 alphaMode,
                                     CampVec2 start, CampVec2 end,
                                     s32 startFrame, s32 endFrame)
 {
@@ -2319,7 +2319,7 @@ static void campStatusAnimateRecord(void* records, s32 index, s32 alphaMode,
                   0, 0, startFrame, endFrame);
 }
 
-static CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
+static inline CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
 {
     CampVec2 position;
 
@@ -2332,7 +2332,7 @@ static CampVec2 campStatusListPosition(s32 row, s32 selected, s32 alternate)
     return position;
 }
 
-static void campStatusInitializePersonaList(void* records, s32 selected,
+static inline void campStatusInitializePersonaList(void* records, s32 selected,
                                             s32 count)
 {
     CampVec2 zero;
@@ -2365,7 +2365,7 @@ static void campStatusInitializePersonaList(void* records, s32 selected,
     campStatusAnimateRecord(records, 28, 1, start, position, 0, 10);
 }
 
-static void campStatusClosePersonaList(void* records, s32 selected, s32 count)
+static inline void campStatusClosePersonaList(void* records, s32 selected, s32 count)
 {
     CampVec2 position;
     s32 i;
@@ -2389,7 +2389,7 @@ static void campStatusClosePersonaList(void* records, s32 selected, s32 count)
     campStatusAnimateRecord(records, 28, 2, position, position, 0, 10);
 }
 
-static void campStatusAnimateSelection(void* records, s32 oldSelected,
+static inline void campStatusAnimateSelection(void* records, s32 oldSelected,
                                        s32 selected)
 {
     CampVec2 start;
@@ -2409,7 +2409,7 @@ static void campStatusAnimateSelection(void* records, s32 oldSelected,
     campStatusAnimateRecord(records, selected + 14, 0, start, end, 0, 2);
 }
 
-static void campStatusInitializeDetail(void* records, s32 alphaMode)
+static inline void campStatusInitializeDetail(void* records, s32 alphaMode)
 {
     CampVec2 position;
 
@@ -2431,7 +2431,7 @@ static void campStatusInitializeDetail(void* records, s32 alphaMode)
     campStatusAnimateRecord(records, 5, alphaMode, position, position, 0, 8);
 }
 
-static void campStatusAnimateDetailSelection(void* records)
+static inline void campStatusAnimateDetailSelection(void* records)
 {
     CampVec2 zero;
 
@@ -2441,7 +2441,7 @@ static void campStatusAnimateDetailSelection(void* records)
     campStatusAnimateRecord(records, 1, 2, zero, zero, 0, 10);
 }
 
-static void campStatusUpdatePersonaChild(u8* work, s32 selected)
+static inline void campStatusUpdatePersonaChild(u8* work, s32 selected)
 {
     KwlnTask* child;
     u32 personaId;
@@ -2452,7 +2452,7 @@ static void campStatusUpdatePersonaChild(u8* work, s32 selected)
     FUN_00133a80(child);
 }
 
-static void campStatusDrawMain(u8* work, s32 selected)
+static inline void campStatusDrawMain(u8* work, s32 selected)
 {
     u32 result;
 
@@ -2461,14 +2461,14 @@ static void campStatusDrawMain(u8* work, s32 selected)
                           work + 0x32, (s16)selected);
     *(u32*)(work + 0x4c) = result;
 }
-static void campStatusDrawMainDiscardResult(u8* work, s32 selected)
+static inline void campStatusDrawMainDiscardResult(u8* work, s32 selected)
 {
     campStatusUpdatePersonaChild(work, selected);
     FUN_001344B0(*(void**)(work + 0x64), work + 0x58, work + 0x32,
                  (s16)selected);
 }
 
-static void campStatusDrawDetail(u8* work, s32 selected, s32 previous)
+static inline void campStatusDrawDetail(u8* work, s32 selected, s32 previous)
 {
     u32 result;
 
@@ -2480,7 +2480,7 @@ static void campStatusDrawDetail(u8* work, s32 selected, s32 previous)
     *(u32*)(work + 0x4c) = result;
 }
 
-static void campStatusDrawDetailDiscardResult(u8* work, s32 selected,
+static inline void campStatusDrawDetailDiscardResult(u8* work, s32 selected,
                                               s32 previous)
 {
     campStatusUpdatePersonaChild(work, selected);
@@ -2490,7 +2490,7 @@ static void campStatusDrawDetailDiscardResult(u8* work, s32 selected,
                  (s16)selected, (s16)previous);
 }
 
-static void campStatusRebuildPersonaList(u8* work)
+static inline void campStatusRebuildPersonaList(u8* work)
 {
     DatPersonaWork* persona;
     s32 count;
@@ -2513,7 +2513,7 @@ static void campStatusRebuildPersonaList(u8* work)
     }
 }
 
-static void campStatusResetPersonaAnimations(void* records)
+static inline void campStatusResetPersonaAnimations(void* records)
 {
     u8* record;
     s32 i;
@@ -2941,13 +2941,14 @@ void* FUN_001311d0(KwlnTask* task)
     case 10:
     {
         void* primaryRecords;
-        void* detailRecords;
+        KwlnTask* child;
         s32 selected;
         s32 previous;
         s32 result;
+        u32 personaId;
 
         primaryRecords = *(void**)(work + 0x64);
-        detailRecords = *(void**)(work + 0x68);
+        child = *(KwlnTask**)(work + 0x54);
         selected = *(s32*)(work + 0x4);
         previous = *(s32*)(work + 0xc);
         result = FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
@@ -2955,19 +2956,28 @@ void* FUN_001311d0(KwlnTask* task)
         if (result != 0) {
             *(u32*)work = 4;
         }
-        campStatusDrawDetailDiscardResult(work, selected, previous);
+        personaId = *(u16*)(work + 0x1a + selected * 2);
+        FUN_00133b80(child, personaId, (u32)-1);
+        FUN_00133a80(child);
+        FUN_00134900(*(void**)(work + 0x68), work + 0x58, work + 0x32,
+                     (s16)selected, (s16)previous);
         break;
     }
     case 11:
     {
         void* primaryRecords;
+        KwlnTask* child;
         s32 selected;
+        u32 personaId;
 
         primaryRecords = *(void**)(work + 0x64);
+        child = *(KwlnTask**)(work + 0x54);
         selected = *(s32*)(work + 0x4);
-        campStatusDrawMainDiscardResult(work, selected);
-        if (*(u16*)(work + 0x32 + selected * 2) ==
-            (u16)datGetEquippedPersona(1)) {
+        FUN_00133a80(child);
+        FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                     (s16)selected);
+        personaId = *(u16*)(work + 0x32 + selected * 2);
+        if (personaId == (u16)datGetEquippedPersona(1)) {
             FUN_003c7430(2);
             *(u32*)work = 13;
         } else {
@@ -2980,62 +2990,23 @@ void* FUN_001311d0(KwlnTask* task)
     }
     case 12:
     {
-        s32 selected;
-        s32 result;
-
-        selected = *(s32*)(work + 0x4);
-        campStatusDrawMainDiscardResult(work, selected);
-        if (FUN_003c7850() != 0) {
-            break;
-        }
-        result = FUN_003c7610();
-        if (result == 0) {
-            FUN_0010a4e0(0, 0, 2, 4);
-            FUN_00175200(*(u16*)(work + 0x32 + selected * 2));
-            h_campReplacePersonaTextureControlResource(datGetPersonaId(1));
-        }
-        FUN_003c7700();
-        *(u32*)work = 8;
-        break;
-    }
-    case 13:
-    {
-        s32 selected;
-
-        selected = *(s32*)(work + 0x4);
-        campStatusDrawMainDiscardResult(work, selected);
-        if (FUN_003c7850() == 0) {
-            FUN_003c7700();
-            *(u32*)work = 4;
-        }
-        break;
-    }
-    case 14:
-    {
-        void* detailRecords;
-        s32 selected;
-        s32 previous;
-
-        detailRecords = *(void**)(work + 0x68);
-        selected = *(s32*)(work + 0x4);
-        previous = *(s32*)(work + 0xc);
-        campStatusDrawDetailDiscardResult(work, selected, previous);
-        FUN_003c7430(3);
-        FUN_003c74e0(0);
-        FUN_003c7560(0);
-        *(u32*)work = 15;
-        break;
-    }
-    case 15:
-    {
         void* primaryRecords;
+        KwlnTask* child;
+        CampVec2 position;
+        CampVec2 start;
         s32 selected;
+        s32 count;
         s32 result;
+        s32 i;
+        u32 personaId;
 
         primaryRecords = *(void**)(work + 0x64);
+        child = *(KwlnTask**)(work + 0x54);
         selected = *(s32*)(work + 0x4);
-        campStatusDrawDetailDiscardResult(work, selected,
-                                          *(s32*)(work + 0xc));
+        count = *(s16*)(work + 0x4a);
+        FUN_00133a80(child);
+        FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                     (s16)selected);
         if (FUN_003c7850() != 0) {
             break;
         }
@@ -3046,11 +3017,106 @@ void* FUN_001311d0(KwlnTask* task)
             primaryRecords = *(void**)(work + 0x64);
             campStatusResetPersonaAnimations(primaryRecords);
             selected = *(s32*)(work + 0x4);
-            campStatusInitializePersonaList(primaryRecords, selected,
-                                            *(s16*)(work + 0x4a));
+            count = *(s16*)(work + 0x4a);
+            for (i = 0; i < count; i++) {
+                position.x = 119.0f;
+                position.y = 73.0f + (f32)(i * 29);
+                if (i == selected) {
+                    position.x += 21.0f;
+                }
+                start = position;
+                start.x -= 600.0f;
+                campStatusAnimateRecord(primaryRecords, i + 1, 1, start,
+                                        position, 0, 10);
+            }
+            for (i = 0; i < count; i++) {
+                position.x = -11.0f;
+                position.y = 63.0f + (f32)(i * 29);
+                if (i == selected) {
+                    position.x += 21.0f;
+                }
+                start = position;
+                start.x -= 600.0f;
+                campStatusAnimateRecord(primaryRecords, i + 14, 1, start,
+                                        position, 0, 6);
+            }
+            FUN_003c7700();
+            *(u32*)work = 4;
+        } else if (result == 1) {
+            FUN_003c7700();
+            *(u32*)work = 4;
+        } else {
+            FUN_003c7700();
+            *(u32*)work = 4;
         }
-        FUN_003c7700();
-        *(u32*)work = 4;
+        break;
+    }
+    case 13:
+    {
+        void* primaryRecords;
+        KwlnTask* child;
+
+        primaryRecords = *(void**)(work + 0x64);
+        child = *(KwlnTask**)(work + 0x54);
+        FUN_00133a80(child);
+        FUN_001344B0(primaryRecords, work + 0x58, work + 0x32,
+                     *(s16*)(work + 0x4));
+        if (FUN_003c7850() == 0) {
+            FUN_003c7700();
+            *(u32*)work = 4;
+        }
+        break;
+    }
+    case 14:
+    {
+        void* detailRecords;
+        KwlnTask* child;
+        s32 selected;
+        s32 previous;
+        u32 personaId;
+
+        detailRecords = *(void**)(work + 0x68);
+        child = *(KwlnTask**)(work + 0x54);
+        selected = *(s32*)(work + 0x4);
+        previous = *(s32*)(work + 0xc);
+        personaId = *(u16*)(work + 0x1a + selected * 2);
+        FUN_00133b80(child, personaId, (u32)-1);
+        FUN_00133a80(child);
+        FUN_00134900(detailRecords, work + 0x58, work + 0x32,
+                     (s16)selected, (s16)previous);
+        FUN_003c7430(3);
+        FUN_003c74e0(0);
+        FUN_003c7560(0);
+        *(u32*)work = 15;
+        break;
+    }
+    case 15:
+    {
+        void* detailRecords;
+        KwlnTask* child;
+        s32 selected;
+        s32 result;
+        u32 personaId;
+
+        detailRecords = *(void**)(work + 0x68);
+        child = *(KwlnTask**)(work + 0x54);
+        selected = *(s32*)(work + 0x4);
+        personaId = *(u16*)(work + 0x1a + selected * 2);
+        FUN_00133b80(child, personaId, (u32)-1);
+        FUN_00133a80(child);
+        FUN_00134900(detailRecords, work + 0x58, work + 0x32,
+                     (s16)selected, *(s16*)(work + 0xc));
+        if (FUN_003c7850() != 0) {
+            break;
+        }
+        result = FUN_003c7610();
+        if (result == 0) {
+            FUN_0010a4e0(0, 0, 2, 4);
+            FUN_00175200(*(u16*)(work + 0x32 + selected * 2));
+            h_campReplacePersonaTextureControlResource(datGetPersonaId(1));
+            FUN_003c7700();
+            *(u32*)work = 8;
+        }
         break;
     }
     default:
