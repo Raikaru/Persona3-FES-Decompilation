@@ -87,7 +87,7 @@ u8 datCalcGetLevel(DatUnit* unit){
 }
 
 // FUN_002ffd70
-u16 datCalcGetHp(DatUnit* unit)
+s32 datCalcGetHp(DatUnit* unit)
 {
     return unit->hp;
 }
