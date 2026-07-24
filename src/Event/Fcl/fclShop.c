@@ -5,6 +5,31 @@ extern u32 gp0xffffaad8;
 extern u32 gp0xffffaae8;
 typedef int (*code)();
 typedef unsigned int ShopU128 __attribute__((mode(TI)));
+typedef struct {
+    u8 auStack_f0[32];
+    u8 auStack_d0[32];
+    u32 *apuStack_b0[18];
+    u32 _pad_table[2];
+    u32 auStack_60[6];
+    float uStack_48;
+    float uStack_44;
+    float uStack_40;
+    u32 _pad_38;
+    float uStack_38;
+    float uStack_34;
+    float uStack_30;
+    float uStack_2c;
+    float uStack_28;
+    u32 _pad_20;
+    float uStack_20;
+    float uStack_1c;
+    float uStack_18;
+    u32 _pad_10;
+    float uStack_10;
+    float uStack_c;
+    float uStack_8;
+    u32 _pad_end;
+} FclShopStack;
 u32 uGpffffb998;
 extern u8 DAT_006a6a90[];
 extern char DAT_006a6af8[];
@@ -122,18 +147,18 @@ int FUN_003efed0(int param_1);
 u8 ** FUN_003efef0(void);
 extern u8 DAT_006b1f30[];
 /* FUSION_GLOBALS */
-u32 DAT_006a6f10;
-u32 DAT_006a6f14;
-u32 DAT_006a6f18;
-u32 DAT_006a6f20;
-u32 DAT_006a6f24;
-u32 DAT_006a6f28;
-u32 DAT_006a6f30;
-u32 DAT_006a6f34;
-u32 DAT_006a6f38;
-u32 DAT_006a6f40;
-u32 DAT_006a6f44;
-u32 DAT_006a6f48;
+float DAT_006a6f10;
+float DAT_006a6f14;
+float DAT_006a6f18;
+float DAT_006a6f20;
+float DAT_006a6f24;
+float DAT_006a6f28;
+float DAT_006a6f30;
+float DAT_006a6f34;
+float DAT_006a6f38;
+float DAT_006a6f40;
+float DAT_006a6f44;
+float DAT_006a6f48;
 u32 DAT_006a6f50;
 u32 DAT_006a6f70;
 u32 DAT_006a70a0;
@@ -163,6 +188,42 @@ extern float DAT_007cad7c;
 extern float DAT_007cad84;
 extern float DAT_007cadd0;
 extern float DAT_007cae00;
+#pragma alias DAT_006a6f10_abs DAT_006a6f10
+extern u8 DAT_006a6f10_abs[];
+#pragma alias DAT_006a6f14_abs DAT_006a6f14
+extern u8 DAT_006a6f14_abs[];
+#pragma alias DAT_006a6f18_abs DAT_006a6f18
+extern u8 DAT_006a6f18_abs[];
+#pragma alias DAT_006a6f20_abs DAT_006a6f20
+extern u8 DAT_006a6f20_abs[];
+#pragma alias DAT_006a6f24_abs DAT_006a6f24
+extern u8 DAT_006a6f24_abs[];
+#pragma alias DAT_006a6f28_abs DAT_006a6f28
+extern u8 DAT_006a6f28_abs[];
+#pragma alias DAT_006a6f30_abs DAT_006a6f30
+extern u8 DAT_006a6f30_abs[];
+#pragma alias DAT_006a6f34_abs DAT_006a6f34
+extern u8 DAT_006a6f34_abs[];
+#pragma alias DAT_006a6f38_abs DAT_006a6f38
+extern u8 DAT_006a6f38_abs[];
+#pragma alias DAT_006a6f40_abs DAT_006a6f40
+extern u8 DAT_006a6f40_abs[];
+#pragma alias DAT_006a6f44_abs DAT_006a6f44
+extern u8 DAT_006a6f44_abs[];
+#pragma alias DAT_006a6f48_abs DAT_006a6f48
+extern u8 DAT_006a6f48_abs[];
+#define DAT_006a6f10 (*(float*)DAT_006a6f10_abs)
+#define DAT_006a6f14 (*(float*)DAT_006a6f14_abs)
+#define DAT_006a6f18 (*(float*)DAT_006a6f18_abs)
+#define DAT_006a6f20 (*(float*)DAT_006a6f20_abs)
+#define DAT_006a6f24 (*(float*)DAT_006a6f24_abs)
+#define DAT_006a6f28 (*(float*)DAT_006a6f28_abs)
+#define DAT_006a6f30 (*(float*)DAT_006a6f30_abs)
+#define DAT_006a6f34 (*(float*)DAT_006a6f34_abs)
+#define DAT_006a6f38 (*(float*)DAT_006a6f38_abs)
+#define DAT_006a6f40 (*(float*)DAT_006a6f40_abs)
+#define DAT_006a6f44 (*(float*)DAT_006a6f44_abs)
+#define DAT_006a6f48 (*(float*)DAT_006a6f48_abs)
 u32 DAT_007cd7d0;
 u32 DAT_007cd7d4;
 extern u32 DAT_007ce688;
@@ -432,11 +493,12 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
   int *piVar8;
 
-  u64 uVar9;
+  u32 uVar9;
 
-  long lVar10;
+  u32 lVar10;
 
   int iVar11;
+  u8 *owner;
 
   u32 *puVar12;
 
@@ -448,55 +510,28 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
   int iVar18;
 
-  u8 auStack_f0 [32];
 
-  u8 auStack_d0 [32];
+  FclShopStack stack;
 
-  u32 *apuStack_b0 [4];
+#define auStack_f0 (stack.auStack_f0)
+#define auStack_d0 (stack.auStack_d0)
+#define apuStack_b0 (stack.apuStack_b0)
+#define auStack_60 (stack.auStack_60)
+#define uStack_48 (stack.uStack_48)
+#define uStack_44 (stack.uStack_44)
+#define uStack_40 (stack.uStack_40)
+#define uStack_38 (stack.uStack_38)
+#define uStack_34 (stack.uStack_34)
+#define uStack_30 (stack.uStack_30)
+#define uStack_2c (stack.uStack_2c)
+#define uStack_28 (stack.uStack_28)
+#define uStack_20 (stack.uStack_20)
+#define uStack_1c (stack.uStack_1c)
+#define uStack_18 (stack.uStack_18)
+#define uStack_10 (stack.uStack_10)
+#define uStack_c (stack.uStack_c)
+#define uStack_8 (stack.uStack_8)
 
-  u32 *puStack_a0;
-
-  u32 *puStack_98;
-
-  u32 *puStack_90;
-
-  u32 *puStack_88;
-
-  u32 *puStack_80;
-
-  u32 *puStack_78;
-
-  u32 *puStack_70;
-
-  u32 auStack_60 [6];
-
-  u32 uStack_48;
-
-  u32 uStack_44;
-
-  u32 uStack_40;
-
-  u32 uStack_38;
-
-  u32 uStack_34;
-
-  u32 uStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  u32 uStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
 
   int iVar16;
 
@@ -584,27 +619,33 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
   } while (0 < iVar11);
 
-  apuStack_b0[0] = &uStack_10;
+  apuStack_b0[0] = (u32*)&uStack_10;
 
-  apuStack_b0[2] = &uStack_20;
+  apuStack_b0[2] = (u32*)&uStack_20;
 
-  puStack_a0 = &uStack_30;
+  apuStack_b0[4] = (u32*)&uStack_30;
 
-  puStack_98 = &uStack_38;
+  apuStack_b0[6] = (u32*)&uStack_38;
 
-  puStack_90 = &uStack_48;
+  apuStack_b0[8] = (u32*)&uStack_48;
 
-  puStack_70 = auStack_60;
+  apuStack_b0[10] = (u32*)&uStack_48;
 
-  iVar11 = (int)param_2;
+  apuStack_b0[12] = (u32*)&uStack_48;
 
-  sVar1 = *(short *)(iVar11 + 0x14);
+  apuStack_b0[14] = (u32*)&uStack_48;
 
-  sVar2 = *(short *)(iVar11 + 0x16);
+  apuStack_b0[16] = auStack_60;
 
-  uVar3 = *(u16 *)(iVar11 + 0x26);
+  owner = (u8*)param_2;
 
-  if (*(u32 *)(iVar11 + 0x10) < 0x12) {
+  sVar1 = *(short *)(owner + 0x14);
+
+  sVar2 = *(short *)(owner + 0x16);
+
+  uVar3 = *(u16 *)(owner + 0x26);
+
+  if (*(u32 *)(owner + 0x10) < 0x12) {
 
     iVar18 = (int)sVar1;
 
@@ -616,13 +657,8 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
     iVar17 = (int)sVar2;
 
-    puStack_88 = puStack_90;
 
-    puStack_80 = puStack_90;
-
-    puStack_78 = puStack_90;
-
-    switch(*(u32 *)(iVar11 + 0x10)) {
+    switch(*(u32 *)(owner + 0x10)) {
 
     case 0:
 
@@ -667,7 +703,9 @@ void FUN_003e6400(u64 param_1,u64 param_2)
         FUN_0040e3c0(0,sVar1,sVar2,uVar3 & 0xff,0x71,0);
 
 
-        sprintf((char *)auStack_d0,(const char *)0x7cd7c8,uVar9);
+        uVar9 = FUN_003eed50();
+
+        sprintf((char *)auStack_d0,(const char *)&gp0xffffaad8,uVar9);
 
         FUN_0040eb50(0,iVar19 + 0x24f,iVar16 + 0x19,uVar3 & 0xff,3,auStack_d0,9);
 
@@ -690,7 +728,9 @@ void FUN_003e6400(u64 param_1,u64 param_2)
         FUN_0040e3c0(0,sVar1,iVar17 + -1,uVar3 & 0xff,0x71,0);
 
 
-        sprintf((char *)auStack_f0,(const char *)0x7cd7c8,uVar9);
+        uVar9 = FUN_003eed50();
+
+        sprintf((char *)auStack_f0,(const char *)&gp0xffffaad8,uVar9);
 
         FUN_0040eb50(0,iVar19 + 0x24f,iVar16 + 0x18,uVar3 & 0xff,3,auStack_f0,9);
 
@@ -719,6 +759,7 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
 
         puVar12 = apuStack_b0[iVar7 * 2];
+        lVar10 = FUN_003e6dc0();
 
 
         if ((lVar10 == 1) || (lVar10 == 0)) {
@@ -863,9 +904,40 @@ void FUN_003e6400(u64 param_1,u64 param_2)
 
   }
 
+  FUN_003e6130((int)owner);
   return;
 
 }
+#undef auStack_f0
+#undef auStack_d0
+#undef apuStack_b0
+#undef auStack_60
+#undef uStack_48
+#undef uStack_44
+#undef uStack_40
+#undef uStack_38
+#undef uStack_34
+#undef uStack_30
+#undef uStack_2c
+#undef uStack_28
+#undef uStack_20
+#undef uStack_1c
+#undef uStack_18
+#undef uStack_10
+#undef uStack_c
+#undef uStack_8
+#undef DAT_006a6f10
+#undef DAT_006a6f14
+#undef DAT_006a6f18
+#undef DAT_006a6f20
+#undef DAT_006a6f24
+#undef DAT_006a6f28
+#undef DAT_006a6f30
+#undef DAT_006a6f34
+#undef DAT_006a6f38
+#undef DAT_006a6f40
+#undef DAT_006a6f44
+#undef DAT_006a6f48
 
 // FUN_003E6D40
 
