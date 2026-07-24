@@ -97,6 +97,8 @@ extern u32 DAT_00833a50[];
 extern u8 DAT_00833a50_abs[];
 extern void* DAT_00833b78;
 extern s32 (*DAT_00960184)();
+#pragma alias DAT_00960184_abs DAT_00960184
+extern u8 DAT_00960184_abs[];
 extern u8 DAT_005dbc50[];
 extern u8 DAT_005dbc60[];
 #pragma alias campAlloc DAT_00960184
@@ -731,6 +733,8 @@ void h_campDrawSocialEntry(int param_1,int param_2,int param_3)
 u32 h_campUpdateNewItemTask(int param_1)
 
 {
+  s32 (**alloc_ptr)(u32, u32, u32);
+  int alloc_i;
   u32 *puVar1;
   u32 *puVar2;
   s32 bVar3;
@@ -786,25 +790,26 @@ u32 h_campUpdateNewItemTask(int param_1)
       puVar1[0x30] = uVar6;
       uVar6 = (u32)func_0018b6d0(0x28);
       puVar1[0x31] = uVar6;
-      iVar17 = (*DAT_00960184)(1,0x978,0x40000);
-      for (iVar10 = 0; iVar10 < 300; iVar10 = iVar10 + 1) {
-        iVar9 = iVar17 + iVar10 * 8;
+      alloc_ptr = (s32 (**)(u32, u32, u32))DAT_00960184_abs;
+      iVar17 = (*alloc_ptr)(1,0x978,0x40000);
+      for (alloc_i = 0; alloc_i < 300; alloc_i = alloc_i + 1) {
+        iVar9 = iVar17 + alloc_i * 8;
         *(u32 *)(iVar9 + 0xc) = 0xffffffff;
         *(u32 *)(iVar9 + 0x10) = 0;
       }
       puVar1[0x29] = iVar17;
-      iVar17 = (*DAT_00960184)(1,0x2d70,0x40000);
-      for (iVar10 = 0; iVar10 < 0x140; iVar10 = iVar10 + 1) {
-        iVar9 = iVar17 + iVar10 * 0x24;
+      iVar17 = (*alloc_ptr)(1,0x2d70,0x40000);
+      for (alloc_i = 0; alloc_i < 0x140; alloc_i = alloc_i + 1) {
+        iVar9 = iVar17 + alloc_i * 0x24;
         *(u32 *)(iVar9 + 100) = 0xffffffff;
         *(u32 *)(iVar9 + 0x6c) = 0;
         *(u32 *)(iVar9 + 0x68) = 0xffffffff;
         *(u32 *)(iVar9 + 0x70) = 0;
       }
       puVar1[0x2a] = iVar17;
-      iVar17 = (*DAT_00960184)(1,0x978,0x40000);
-      for (iVar10 = 0; iVar10 < 300; iVar10 = iVar10 + 1) {
-        iVar9 = iVar17 + iVar10 * 8;
+      iVar17 = (*alloc_ptr)(1,0x978,0x40000);
+      for (alloc_i = 0; alloc_i < 300; alloc_i = alloc_i + 1) {
+        iVar9 = iVar17 + alloc_i * 8;
         *(u32 *)(iVar9 + 0xc) = 0xffffffff;
         *(u32 *)(iVar9 + 0x10) = 0;
       }
