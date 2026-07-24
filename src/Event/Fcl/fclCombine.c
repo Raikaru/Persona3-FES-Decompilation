@@ -2678,7 +2678,6 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             fclCombineList003df100(FUN_003dffc0(temp_16, 0, temp_2), &stack.sp2E50);
             return;
         }
-    case 1:                                         /* switch 1 */
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -2738,7 +2737,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             fclCombineList003df100(FUN_003dffc0(temp_16, 0, temp_2), &stack.sp2E30);
             return;
         }
-    case 2:                                         /* switch 1 */
+        break;
+    case 1:                                         /* switch 1 */
         if (param_3 == 0) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -2859,8 +2859,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         }
         break;
         break;
-    case 3:                                         /* switch 1 */
-        if (param_3 == 0) {
+    case 10:                                        /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case10_f;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp2100;
@@ -2974,9 +2976,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2DB4;
             fclCombineList003df100(FUN_003dffc0(temp_16, 3, temp_2), &stack.sp2DB0);
             return;
-        }
         break;
-    case 4:                                         /* switch 1 */
+fclCombine_case10_f:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3094,8 +3095,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         }
         break;
         break;
-    case 5:                                         /* switch 1 */
-        if (param_3 == 0) {
+    case 4:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case4_i;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp1840;
@@ -3153,7 +3156,7 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2D54;
             fclCombineList003df100(FUN_003dffc0(temp_16, 4, temp_2), &stack.sp2D50);
             return;
-        }
+fclCombine_case4_i:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3215,8 +3218,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         }
         break;
         break;
-    case 6:                                         /* switch 1 */
-        if (param_3 == 0) {
+    case 5:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case5_k;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp13E0;
@@ -3274,9 +3279,7 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2D14;
             fclCombineList003df100(FUN_003dffc0(temp_16, 5, temp_2), &stack.sp2D10);
             return;
-        }
-        break;
-    case 7:                                         /* switch 1 */
+fclCombine_case5_k:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3338,8 +3341,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         }
         break;
         break;
-    case 8:                                         /* switch 1 */
-        if (param_3 == 0) {
+    case 6:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case6_m;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.spF80;
@@ -3397,7 +3402,7 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2CD4;
             fclCombineList003df100(FUN_003dffc0(temp_16, 6, temp_2), &stack.sp2CD0);
             return;
-        }
+fclCombine_case6_m:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3459,8 +3464,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
         }
         break;
         break;
-    case 9:                                         /* switch 1 */
-        if (param_3 == 0) {
+    case 7:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case7_o;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.spB20;
@@ -3518,7 +3525,7 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2C94;
             fclCombineList003df100(FUN_003dffc0(temp_16, 7, temp_2), &stack.sp2C90);
             return;
-        }
+fclCombine_case7_o:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3578,7 +3585,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             fclCombineList003df100(FUN_003dffc0(temp_16, 7, temp_2), &stack.sp2C70);
             return;
         }
-        if (param_3 == 0) {
+    case 8:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case8_q;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp6C0;
@@ -3636,7 +3646,7 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2C54;
             fclCombineList003df100(FUN_003dffc0(temp_16, 8, temp_2), &stack.sp2C50);
             return;
-            }
+fclCombine_case8_q:
         if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
@@ -3697,9 +3707,10 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             return;
         }
         break;
-    case 10:                                        /* switch 1 */
-        switch (param_3) {                             /* switch 4; irregular */
-        case 0:                                     /* switch 4 */
+    case 9:                                         /* switch 1 */
+        if (param_3 != 0) {
+            goto fclCombine_case9_s;
+        }
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp260;
@@ -3757,7 +3768,8 @@ void FUN_003d06d0(s32 param_1, s32 param_2, s32 param_3) {
             temp_2 = stack.sp2C14;
             fclCombineList003df100(FUN_003dffc0(temp_16, 9, temp_2), &stack.sp2C10);
             return;
-        case 1:                                     /* switch 4 */
+fclCombine_case9_s:
+        if (param_3 == 1) {
             temp_16 = *(s32 *)(param_1 + 0xd4);
             var_6 = DAT_006a43e0;
             var_5 = &stack.sp30;
