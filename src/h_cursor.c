@@ -1,6 +1,8 @@
 #include "h_cursor.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Kernel/Kwln/kwln.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
 
 // FUN_00100230 NONMATCHING
 void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
@@ -10,12 +12,12 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
     RwIm2DVertex* vertex;
     RwRGBA* color;
     f32 recipZ;
-    f32 zBufferNear;
     s16 i;
+    f32 zBufferNear;
 
     work = (HCursorWork*)hcursorTask->workData;
 
-    setRenderState = (RwRenderStateSetFunc*)((u8*)&rwGlobals + 0x90);
+    setRenderState = (RwRenderStateSetFunc*)(rwGlobals_abs + 0x90);
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
     (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
@@ -37,14 +39,14 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            zBufferNear = *(RwReal*)((u8*)&rwGlobals + 0x88);
+            zBufferNear = *(RwReal*)(rwGlobals_abs + 0x88);
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
-                color = &work->colors[i];
 
                 vertex->u.els.scrVertex.z = zBufferNear - work->zOffset;
                 vertex->u.els.recipZ = recipZ;
+                color = &work->colors[i];
                 vertex->u.els.color.r = (f32)color->r;
                 vertex->u.els.color.g = (f32)color->g;
                 vertex->u.els.color.b = (f32)color->b;
@@ -63,7 +65,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
             work->vertices[3].u.els.scrVertex.x = work->pos.x + work->rect.w;
             work->vertices[3].u.els.scrVertex.y = work->pos.y + work->rect.h;
 
-            (*((RwIm2DRenderPrimitiveFunction*)((u8*)&rwGlobals + 0xa0)))(rwPRIMTYPETRISTRIP, work->vertices, 4);
+            (*((RwIm2DRenderPrimitiveFunction*)(rwGlobals_abs + 0xa0)))(rwPRIMTYPETRISTRIP, work->vertices, 4);
 
             work->state = HCURSOR_STATE_UPDATE;
             break;
