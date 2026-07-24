@@ -1187,32 +1187,41 @@ void func_0019fec0(const void* position)
 // FUN_0019ff10 NONMATCHING
 void func_0019ff10()
 {
-    ResrcFld* field;
-    RwV3d axisY;
-    RwV3d axisX;
+    Resrc* res;
+    RwRGBAReal* ambientColor;
+    RwRGBAReal* directionalColor;
+    RwMatrix* directionalMatrix;
+    f32 ambientValue;
+    f32 directionalValue;
+    RwV3d axis;
+    res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    ambientColor = (RwRGBAReal*)((u8*)res + 0x100);
+    res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    directionalColor = (RwRGBAReal*)((u8*)res + 0x110);
+    res = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    directionalMatrix = (RwMatrix*)((u8*)res + 0x120);
+    ambientValue = fGpffff80e0;
+    directionalValue = fGpffff8084;
 
-    field = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-    axisY.x = 0.0f;
-    axisY.y = 1.0f;
-    axisY.z = 0.0f;
-    axisX.x = 1.0f;
-    axisX.y = 0.0f;
-    axisX.z = 0.0f;
+    ambientColor->r = ambientValue;
+    ambientColor->g = ambientValue;
+    ambientColor->b = ambientValue;
+    ambientColor->a = 0.0f;
+    directionalColor->r = directionalValue;
+    directionalColor->g = directionalValue;
+    directionalColor->b = directionalValue;
+    directionalColor->a = 0.0f;
+    RwMatrixSetIdentity(directionalMatrix);
+    *(u32*)((u8*)res + 0x12c) |= 0x20003;
 
-    if (field != NULL)
-    {
-        field->ambLightColor.r = 0.65f;
-        field->ambLightColor.g = 0.65f;
-        field->ambLightColor.b = 0.65f;
-        field->ambLightColor.a = 0.0f;
-        field->dirLightColor.r = 0.5f;
-        field->dirLightColor.g = 0.5f;
-        field->dirLightColor.b = 0.5f;
-        field->dirLightColor.a = 0.0f;
-        RwMatrixSetIdentity(&field->dirLightMat);
-        RwMatrixRotate(&field->dirLightMat, &axisY, -180.0f, rwCOMBINEPOSTCONCAT);
-        RwMatrixRotate(&field->dirLightMat, &axisX, -45.0f, rwCOMBINEPOSTCONCAT);
-    }
+    axis.x = 0.0f;
+    axis.y = 1.0f;
+    axis.z = 0.0f;
+    RwMatrixRotate(directionalMatrix, &axis, -180.0f, rwCOMBINEPOSTCONCAT);
+    axis.x = 1.0f;
+    axis.y = 0.0f;
+    axis.z = 0.0f;
+    RwMatrixRotate(directionalMatrix, &axis, -45.0f, rwCOMBINEPOSTCONCAT);
 }
 
 // FUN_001a0040 NONMATCHING
