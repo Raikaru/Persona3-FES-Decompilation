@@ -1210,9 +1210,9 @@ void FUN_002255F0(void)
 // the 0x55c/0x550 count/progress fields (should be overlay0-relative,
 // same bug class as FUN_00224150/FUN_00225040) and fabricated the
 // interpolated y-offset via raw integer bit-pattern arithmetic instead
-// of retail's genuine float divide. obj 372B/384B; residual is a 16B
-// frame-size gap plus one commutative mul operand-order floor.
-// FUN_00225670 NONMATCHING
+// of retail's genuine float divide. The enlarged local rectangle preserves
+// retail's 0x70-byte frame, while explicit temporaries preserve mul ordering.
+// FUN_00225670 MATCHING
 void FUN_00225670(void)
 {
     u8* work;
@@ -1221,7 +1221,9 @@ void FUN_00225670(void)
     u32 table0;
     u32 resource;
     void* frame;
-    f32 rect[4];
+    f32 rect[8];
+    f32 scale;
+    f32 value;
     f32 offsetY;
     s32 i;
 
@@ -1241,8 +1243,9 @@ void FUN_00225670(void)
         s32 count = *(s32*)(overlay0 + 0x55c);
         s32 progress = *(s32*)(overlay0 + 0x550);
         if (count < progress) {
-            offsetY = 36.0f + ((f32)*(s32*)(overlay0 + 0x558) * 55.0f) /
-                                   (f32)(progress - count);
+            value = (f32)*(s32*)(overlay0 + 0x558);
+            scale = 55.0f;
+            offsetY = 36.0f + (value * scale) / (f32)(progress - count);
         } else {
             offsetY = 36.0f;
         }
