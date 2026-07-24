@@ -391,6 +391,7 @@ u64 FUN_003c6120(int param_1,int param_2)
   u32 uVar8;
   u32 uVar9;
   u32 uVar10;
+  u32 uVar11;
 
   puVar1 = *(u32 **)(param_1 + 0x24);
   puVar2 = *(u32 **)(param_2 + 0x14);
@@ -399,7 +400,8 @@ u64 FUN_003c6120(int param_1,int param_2)
   if ((int)uVar4 < iVar3) {
     return 0;
   }
-  if ((int)(puVar1[8] + iVar3) <= (int)uVar4) {
+  uVar11 = (u32)((int)uVar4 < (int)(puVar1[8] + iVar3));
+  if (uVar11 == 0) {
     return 0;
   }
   uVar5 = puVar1[5];
