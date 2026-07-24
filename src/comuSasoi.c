@@ -636,7 +636,7 @@ LAB_003c2db0:
   return bVar2;
 
 }
-#define FUN_003c2c50(...) ((u8 (*)(...))FUN_003c2c50)(__VA_ARGS__)
+#undef FUN_003c2c50
 #undef FUN_003c2df0
 
 
