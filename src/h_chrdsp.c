@@ -354,6 +354,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     RwCamera* camera;
     RwV2d position;
     f32 recipZ;
+    f32 z;
     f32 overlayYOffset;
     s32 quadIndex;
     s32 vertexIndex;
@@ -362,7 +363,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     switch (work->state)
     {
 
-    case HCHRDP_STATE_UNAVAILABLE:
+    case HCHRDP_STATE_IDLE:
         break;
     case HCHRDP_STATE_LOAD_ARCHIVE:
         if (H_Cdvd_IsFileLoaded(work->archive) == 0)
@@ -371,9 +372,15 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         }
         if (work->usesCustomPath == 0)
         {
-            if ((datGetScenarioMode() != 0) && (work->characterId == 9))
+            if (datGetScenarioMode() == 0)
             {
-                sprintf(archivePath, "test/char/i_bust29_%1d", work->resourceIndex);
+                sprintf(archivePath, "test/char/i_bust%02d_%1d",
+                        work->characterId, work->resourceIndex);
+            }
+            else if (work->characterId == 9)
+            {
+                sprintf(archivePath, "test/char/i_bust29_%1d",
+                        work->resourceIndex);
             }
             else
             {
@@ -398,23 +405,26 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         break;
 
     case HCHRDP_STATE_PARSE_LAYER:
-        isReady = false;
-        texture = (HChrdspTexture*)func_0010c3a0(work->asyncRequest,
-                                                  &isReady, NULL);
-        work->resources[work->resourceIndex] = texture;
+        work->resources[work->resourceIndex] =
+            (HChrdspTexture*)func_0010c3a0(work->asyncRequest, &isReady, NULL);
         if (isReady == false)
         {
             break;
         }
-        texture->renderFlags = (texture->renderFlags & 0xFFFF00FF) | 0x00003300;
+        ((HChrdspTexture*)work->resources[work->resourceIndex])->renderFlags =
+            (((HChrdspTexture*)work->resources[work->resourceIndex])->renderFlags &
+             0xFFFF00FF) | 0x00003300;
         work->asyncRequest = NULL;
         work->resourceIndex++;
         work->state = HCHRDP_STATE_LOAD_ARCHIVE;
         break;
 
+    case HCHRDP_STATE_UNAVAILABLE:
+        break;
     case HCHRDP_STATE_DRAW:
         camera = kwlnGetMainCamera();
         recipZ = 1.0f / camera->nearPlane;
+        z = RwIm2DGetNearScreenZ() - work->zOffset;
         position = work->position;
         if (work->characterId == 39)
         {
@@ -426,7 +436,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
             for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
             {
                 work->vertices[quadIndex][vertexIndex].u.els.scrVertex.z =
-                    RwIm2DGetNearScreenZ() - work->zOffset;
+                    z;
                 work->vertices[quadIndex][vertexIndex].u.els.recipZ = recipZ;
                 work->vertices[quadIndex][vertexIndex].u.els.color.r =
                     (f32)work->color.r;
@@ -541,7 +551,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
         {
             overlayVertices[vertexIndex].u.els.scrVertex.z =
-                RwIm2DGetNearScreenZ() - work->zOffset;
+                z;
             overlayVertices[vertexIndex].u.els.recipZ = recipZ;
             overlayVertices[vertexIndex].u.els.color.r = (f32)work->color.r;
             overlayVertices[vertexIndex].u.els.color.g = (f32)work->color.g;
@@ -588,7 +598,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
         {
             overlayVertices[vertexIndex].u.els.scrVertex.z =
-                RwIm2DGetNearScreenZ() - work->zOffset;
+                z;
             overlayVertices[vertexIndex].u.els.recipZ = recipZ;
             overlayVertices[vertexIndex].u.els.color.r = (f32)work->color.r;
             overlayVertices[vertexIndex].u.els.color.g = (f32)work->color.g;
@@ -627,7 +637,6 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
         break;
 
-    case HCHRDP_STATE_IDLE:
     default:
         break;
     }
