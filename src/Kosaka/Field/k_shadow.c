@@ -83,6 +83,8 @@ extern void (*D_00960090)(u32 state, u32 value);
 #pragma alias D_00960090_abs D_00960090
 extern void (*D_00960090_abs[])(u32 state, u32 value);
 extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
+extern s32 DAT_007cc148;
+extern s32 DAT_007ce13c;
 extern void* func_004ce0f0(s32 width, s32 height, s32 depth, s32 flags);
 extern void (*jtbl_0096017C)(void* memory);
 extern void* memset(void* dest, s32 value, u32 size);
@@ -655,6 +657,7 @@ static void K_FldShadow_SubmitFieldGeometry(const RwV3d* position,
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_0019ab80 NONMATCHING
 u32 func_0019ab80(f32 alpha,
                   f32 projectionHalf,
@@ -819,6 +822,7 @@ u32 func_0019ab80(f32 alpha,
     (*stateSet)(10, 5);
     return true;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0019beb0 NONMATCHING
 KwlnTask* K_FldShadow_CreateRenderTexTask(KwlnTask* parent, u16 resTypeId, s32 param_3)
@@ -1356,46 +1360,50 @@ void func_0019bcf0(KwlnTask* renderTexTask)
 
     task = renderTexTask;
     shadow = (FldShadowRenderTex*)task->workData;
-    if (shadow->mode == 3 || shadow->mode == 4)
+    switch (shadow->mode)
     {
+    case 1:
+        goto destroyMode1;
+    case 4:
+    case 3:
+    default:
         goto destroyRing;
     }
-    if (shadow->mode == 1)
+destroyMode1:
+    camera = shadow->camera;
+    func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), camera);
+    if (camera != NULL)
     {
-        camera = shadow->camera;
-        func_0049c1b0(kwlnGetWorld(gCurrWorldIdx), camera);
-        if (camera != NULL)
+        frame = (RwFrame*)camera->object.object.parent;
+        if (frame != NULL)
         {
-            frame = (RwFrame*)camera->object.object.parent;
-            if (frame != NULL)
-            {
-                func_004d1840(camera, NULL);
-                func_004caf80(frame);
-            }
-            raster = camera->zBuffer;
-            if (raster != NULL)
-            {
-                camera->zBuffer = NULL;
-                func_004cde90(raster);
-            }
-            if (camera->frameBuffer != NULL)
-            {
-                camera->frameBuffer = NULL;
-            }
-            func_004ca030(camera);
+            func_004d1840(camera, NULL);
+            func_004caf80(frame);
         }
-        raster = shadow->raster;
-        func_004f1780(raster, false);
-        func_004cde90(raster);
-        texture = shadow->texture;
-        func_004d0be0(texture, NULL);
-        func_004d0f00(texture);
-        if (shadow->unk_48 != NULL)
+        raster = camera->zBuffer;
+        if (raster != NULL)
         {
-            (*jtbl_0096017C)(shadow->unk_48);
-            shadow->unk_48 = NULL;
+            camera->zBuffer = NULL;
+            func_004cde90(raster);
         }
+        if (camera->frameBuffer != NULL)
+        {
+            camera->frameBuffer = NULL;
+        }
+        func_004ca030(camera);
     }
+    raster = shadow->raster;
+    func_004f1780(raster, false);
+    func_004cde90(raster);
+    texture = shadow->texture;
+    func_004d0be0(texture, NULL);
+    func_004d0f00(texture);
+    if (shadow->unk_48 != NULL)
+    {
+        (*jtbl_0096017C)(shadow->unk_48);
+        shadow->unk_48 = NULL;
+    }
+    goto destroyRing;
 
 destroyRing:
     ring = (FldShadowRingWork*)shadow->radius;
@@ -1722,6 +1730,7 @@ static inline void K_FldShadow_UpdateModelNpc(ResrcModelNpc* res)
 #undef K_FldShadow_PositionCamera
 #undef K_FldShadow_UsesCharRenderGuard
 #undef K_FldShadow_SetAttachedShadowEnabled
+#pragma opt_loop_invariants on
 // FUN_0019c4b0 NONMATCHING
 void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 {
@@ -1779,6 +1788,7 @@ void* K_FldShadow_UpdateShadowMapTask(KwlnTask* fldShadowMapTask)
 
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0019d270
 void K_FldShadow_DestroyShadowMapTask(KwlnTask* fldShadowMapTask)
@@ -1832,24 +1842,24 @@ s32 FUN_0019d320()
     return 0;
 }
 
-// FUN_0019d360 NONMATCHING
+// FUN_0019d360
 s32 func_0019d360()
 {
     s32 handle;
 
     handle = AddIntcHandler(2, (s32 (*)(s32))FUN_0019d320, 0);
-    *(s32*)0x007cc148 = handle;
+    DAT_007cc148 = handle;
     if (handle == -1)
     {
         return 0;
     }
 
     handle = EnableIntc(2);
-    *(s32*)0x007ce13c = handle;
+    DAT_007ce13c = handle;
     if (handle == -1)
     {
-        RemoveIntcHandler(2, *(s32*)0x007cc148);
-        *(s32*)0x007cc148 = -1;
+        RemoveIntcHandler(2, DAT_007cc148);
+        DAT_007cc148 = -1;
         return 0;
     }
 
