@@ -90,13 +90,13 @@ void* func_001a1550(KwlnTask* task)
     {
         case 0:
         {
-            KWindowRenderData* renderData;
-            KWindowQuad* quad;
-            u8* tile;
-            f32 tileColor;
+            volatile f32 tileColor;
             u8* tileBytes;
             s32 alpha;
             s32 i;
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+            u8* tile;
 
             work->renderData = func_001e78c0(5, 0x48);
             work->colorDataA = func_00494be0();
