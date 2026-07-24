@@ -39,6 +39,8 @@ extern u32 DAT_0086e694;
 extern u8 DAT_00871ec0[0x200];
 extern char s__field_script_reserve_xxx_006837af[];
 extern RwV3d DAT_00683780[];
+extern RwV3d DAT_00683910;
+extern RwV3d DAT_00683920;
 extern u64 DAT_00683960;
 extern u32 DAT_00683968;
 extern u64 DAT_00683970;
@@ -454,35 +456,33 @@ static inline void FldUnit_SetPcFormationPosition(s32 index,
     KwlnTask* collisCtlTask;
 
     collisCtlTask = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    if (index == 0)
+    switch (index)
     {
+    case 0:
         func_001adc20(collisCtlTask, fieldPosition);
-    }
-    else if (index == 1)
-    {
+        break;
+    case 1:
         position = reference->pos;
         offset = reference->right;
         RwV3dNormalize(&offset, &offset);
-        position.x += offset.x * 240.0f;
-        position.y += offset.y * 240.0f;
-        position.z += offset.z * 240.0f;
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
         func_001adc20(collisCtlTask, &position);
-    }
-    else if (index == 2)
-    {
+        break;
+    case 2:
         position = reference->pos;
         offset = reference->right;
         RwV3dNormalize(&offset, &offset);
         offset.x = -offset.x;
         offset.y = -offset.y;
         offset.z = -offset.z;
-        position.x += offset.x * 240.0f;
-        position.y += offset.y * 240.0f;
-        position.z += offset.z * 240.0f;
+        position.x += offset.x * 120.0f;
+        position.y += offset.y * 120.0f;
+        position.z += offset.z * 120.0f;
         func_001adc20(collisCtlTask, &position);
-    }
-    else
-    {
+        break;
+    case 3:
         position = reference->pos;
         offset = reference->at;
         RwV3dNormalize(&offset, &offset);
@@ -493,43 +493,35 @@ static inline void FldUnit_SetPcFormationPosition(s32 index,
         position.y += offset.y * 150.0f;
         position.z += offset.z * 150.0f;
         func_001adc20(collisCtlTask, &position);
+        break;
     }
 }
 
 static inline void FldUnit_SetPcDungeonPosition(s32 index,
                                                  FldUnit* unit,
-                                                 RwMatrix* reference)
+                                                 RwMatrix* reference,
+                                                 RwV3d* axis)
 {
     RwV3d position;
     RwV3d offset;
-    RwV3d axis;
     KwlnTask* task;
     f32 angle;
 
     task = ((ResrcModelChar*)unit->resrc)->collisCtlTask;
-    axis.x = 0.0f;
-    axis.y = 1.0f;
-    axis.z = 0.0f;
     angle = *(f32*)((u8*)unit->unk_168 + 0x10c);
-    if (index == 0)
+    switch (index)
     {
-        func_001adff0(task, &axis, angle);
+    case 0:
+        func_001adff0(task, axis, angle);
         func_001adc20(task, (const RwV3d*)((u8*)unit->unk_168 + 0x100));
-    }
-    else if (index == 1 || index == 2)
-    {
+        break;
+    case 1:
         position = reference->pos;
         offset = reference->right;
         RwV3dNormalize(&offset, &offset);
-        if (index == 2)
-        {
-            offset.x = -offset.x;
-            offset.y = -offset.y;
-            offset.z = -offset.z;
-        }
-        position.x += offset.x * 240.0f;
-        position.y += offset.y * 240.0f;
-        position.z += offset.z * 240.0f;
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
         offset = reference->at;
         RwV3dNormalize(&offset, &offset);
         offset.x = -offset.x;
@@ -538,11 +530,31 @@ static inline void FldUnit_SetPcDungeonPosition(s32 index,
         position.x += offset.x * 70.0f;
         position.y += offset.y * 70.0f;
         position.z += offset.z * 70.0f;
-        func_001adff0(task, &axis, angle);
+        func_001adff0(task, axis, angle);
         func_001adc20(task, &position);
-    }
-    else
-    {
+        break;
+    case 2:
+        position = reference->pos;
+        offset = reference->right;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 90.0f;
+        position.y += offset.y * 90.0f;
+        position.z += offset.z * 90.0f;
+        offset = reference->at;
+        RwV3dNormalize(&offset, &offset);
+        offset.x = -offset.x;
+        offset.y = -offset.y;
+        offset.z = -offset.z;
+        position.x += offset.x * 70.0f;
+        position.y += offset.y * 70.0f;
+        position.z += offset.z * 70.0f;
+        func_001adff0(task, axis, angle);
+        func_001adc20(task, &position);
+        break;
+    case 3:
         position = reference->pos;
         offset = reference->at;
         RwV3dNormalize(&offset, &offset);
@@ -552,8 +564,9 @@ static inline void FldUnit_SetPcDungeonPosition(s32 index,
         position.x += offset.x * 150.0f;
         position.y += offset.y * 150.0f;
         position.z += offset.z * 150.0f;
-        func_001adff0(task, &axis, angle);
+        func_001adff0(task, axis, angle);
         func_001adc20(task, &position);
+        break;
     }
 }
 
@@ -601,12 +614,13 @@ u32 func_001ce960(void)
     HCdvd* cdvd;
     RwMatrix* reference;
     RwV3d fieldPosition;
+    RwV3d scale;
     RwV3d fixedPosition;
     RwV3d axis;
-    RwV3d scale;
     void* (*allocate)(u32 count, u32 size, u32 flags);
     Model* weapon;
 
+    axis = DAT_00683910;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         unit = &gFldUnitsPc[i];
@@ -657,12 +671,7 @@ u32 func_001ce960(void)
     {
         return false;
     }
-    fixedPosition.x = 30.0f;
-    fixedPosition.y = 30.0f;
-    fixedPosition.z = 30.0f;
-    axis.x = 0.0f;
-    axis.y = 1.0f;
-    axis.z = 0.0f;
+    fixedPosition = DAT_00683920;
 
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
@@ -692,10 +701,10 @@ u32 func_001ce960(void)
         if (K_Scene_001a0250() == 1)
         {
             field = func_001b9120();
-            fieldPosition.x = (f32)(s8)field[0x3c] * 72.0f;
+            fieldPosition.x = (f32)(u8)field[0x3c] * 72.0f;
             fieldPosition.y = 2.0f;
             field = func_001b9120();
-            fieldPosition.z = (f32)(s8)field[0x3d] * 72.0f;
+            fieldPosition.z = (f32)(u8)field[0x3d] * 72.0f;
             memcpy(reference,
                    mdlGetMatrix(((ResrcModelChar*)gFldUnitsPc[0].resrc)->mdl),
                    sizeof(RwMatrix));
@@ -704,7 +713,7 @@ u32 func_001ce960(void)
             field = func_001b9120();
             orientation += (u8)field[0x3c] << 4;
             cell = func_001b9120();
-            orientation = (s8)cell[orientation + 0x4e] + 2;
+            orientation = (u8)cell[orientation + 0x4e] + 2;
             orientation &= ~3;
             func_001adff0(resource->collisCtlTask,
                           &axis, (f32)orientation * 90.0f);
@@ -724,7 +733,8 @@ u32 func_001ce960(void)
                             partyCount++;
                         }
                     }
-                    func_001d0bc0(partyPositions, (u32)partyCount);
+                    ((void (*)(void*, u32, u32))func_001d0bc0)(
+                        partyPositions, (u32)partyCount, (u32)j);
                     func_001adc20(resource->collisCtlTask,
                                   (const RwV3d*)(partyPositions +
                                       (i - 1) * 0x110 + 0x190));
@@ -755,7 +765,7 @@ u32 func_001ce960(void)
                     func_003182d0(unit->mdl, 0, 0x15, 0, 0);
                     func_00318770(unit->mdl, 0, func_00318910(unit->mdl, 0, 0x15) - 10.0f);
                 }
-                FldUnit_SetPcDungeonPosition(i, unit, reference);
+                FldUnit_SetPcDungeonPosition(i, unit, reference, &axis);
             }
             func_001a01c0();
         }
