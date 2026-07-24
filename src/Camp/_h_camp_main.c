@@ -295,6 +295,14 @@ static void campMainDrawSprite(const CampMainDrawItem* item, void* resource,
     FUN_001159f0(NULL, resource, frame, (u8)item->alpha, x, y,
                  item->spriteScale);
 }
+static void campMainDrawSpriteParent(void* parent,
+                                     const CampMainDrawItem* item,
+                                     void* resource, s32 frame,
+                                     f32 x, f32 y)
+{
+    FUN_001159f0(parent, resource, frame, (u8)item->alpha, x, y,
+                 item->spriteScale);
+}
 
 static void campMainQueueSprite(const CampMainDrawItem* item, void* resource,
                                 s32 frame, f32 x, f32 y)
@@ -328,68 +336,57 @@ static void campMainDrawPersonaRow(const CampMainDrawItem* item,
     s32 tens;
     s32 ones;
     s32 equippedPersona;
+    s32 font;
 
     persona = datPersonaGetHeroPersona(personaIds[row]);
     if (row == selected) {
         campMainDrawSprite(item, campMainResource(resources, 1), 8,
-                           item->x + 60.0f, item->y + 3.0f);
+                           item->x + 112.0f, item->y + 64.0f);
+        font = 1;
     } else {
         equippedPersona = datGetPersonaId(1);
         if (persona->id == (u16)equippedPersona) {
-            campMainDrawSprite(item, campMainResource(resources, 1), 8,
-                               item->x + 60.0f, item->y + 3.0f);
+            campMainDrawSprite(item, campMainResource(resources, 0), 5,
+                               item->x + 112.0f, item->y + 64.0f);
         } else {
-            campMainDrawSprite(item, campMainResource(resources, 1), 8,
-                               item->x + 60.0f, item->y + 3.0f);
+            campMainDrawSprite(item, campMainResource(resources, 1), 7,
+                               item->x + 112.0f, item->y + 64.0f);
         }
+        font = 2;
     }
 
     level = persona->level;
-    if (level > 9) {
+    if (level >= 10) {
         tens = level / 10;
-        campMainDrawFontDigit(item, 1, tens, item->x + 88.0f,
+        campMainDrawFontDigit(item, font, tens, item->x + 88.0f,
                               item->y + 12.0f);
     }
     ones = level % 10;
-    campMainDrawFontDigit(item, row == selected ? 1 : 2, ones,
-                          item->x + 104.0f, item->y + 12.0f);
+    campMainDrawFontDigit(item, font, ones, item->x + 104.0f,
+                          item->y + 12.0f);
 }
 
+/* Reconstructed all mode branches, scrolling, persona labels, highlights,
+ * and level digits from the retail instruction sequence.
+ * Remaining differences are MWCC register coloring and outlined helpers. */
 // FUN_00133E10 NONMATCHING
-void FUN_00133E10(CampMainDrawItem* item, const void* resources, s32 mode,
-                  const s16* personaIds, s16 selected)
+void FUN_00133E10(register CampMainDrawItem* item,
+                  register const void* resources, s32 mode,
+                  const s16* personaIds, register s16 selected)
 {
+    register void* parent;
     DatPersonaWork* persona;
     const char* personaName;
     char text[0x100];
     s32 personaIndex;
+    s32 level;
+    s32 digit;
+    s32 equippedPersona;
+    void* fontResource;
     u32 textColor;
 
-    if (mode == 0x1d) {
-        return;
-    }
-
-    if (mode == 0x1c) {
-        campMainDrawSprite(item, campMainResource(resources, 2), 0,
-                           item->x, item->y);
-        campMainDrawSprite(item, campMainResource(resources, 2), 1,
-                           item->x + 16.0f, item->y);
-        campMainDrawSprite(item, D_00833BA4, 1, item->x + 431.0f,
-                           item->y);
-        campMainDrawSprite(item, D_00833BA4, 3, item->x + 527.0f,
-                           item->y);
-        campMainDrawSprite(item, D_00833BA4, 4, item->x + 336.0f,
-                           item->y);
-        return;
-    }
-
-    if (mode == 0x1b) {
-        campMainDrawSprite(item, campMainResource(resources, 0), 4,
-                           item->x, item->y);
-        return;
-    }
-
-    if (mode == 0) {
+    switch (mode) {
+    case 0:
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
                             item->x + 250.0f, item->y);
         campMainQueueSprite(item, campMainResource(resources, 0), 0,
@@ -398,24 +395,78 @@ void FUN_00133E10(CampMainDrawItem* item, const void* resources, s32 mode,
         if (item->scrollX < -750.0f) {
             item->scrollX += 750.0f;
         }
-        return;
+        break;
+    case 0x1b:
+        FUN_001159f0(parent, campMainResource(resources, 0), 4,
+                     (u8)item->alpha, item->x, item->y,
+                     item->spriteScale);
+        break;
+    case 0x1c:
+        FUN_001159f0(parent, campMainResource(resources, 2), 0,
+                     (u8)item->alpha, item->x, item->y,
+                     item->spriteScale);
+        break;
+    case 0x1d:
+        break;
+    default:
+        if (mode < 0x0e) {
+            personaIndex = mode - 1;
+            persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
+            personaName = FUN_00173220(persona->id);
+            sprintf(text, gp0xffff897c, personaName);
+            textColor = (0xffU - item->alpha) | 0xffffff00U;
+            FUN_003b2cb0(100.0f, (s32)item->x, (s32)item->y,
+                         (s32)textColor, 10, 1, text, 0x10, 0);
+        } else {
+            personaIndex = mode - 0x0e;
+            persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
+            if (personaIndex == (s32)selected) {
+                FUN_001159f0(parent, campMainResource(resources, 1), 8,
+                             (u8)item->alpha, item->x + 60.0f,
+                             item->y + 3.0f, item->spriteScale);
+                level = persona->level;
+                if (level >= 10) {
+                    digit = level / 10;
+                    fontResource = H_Maestro_001120a0(1);
+                    FUN_001159f0(parent, fontResource, digit + 11,
+                                 (u8)item->alpha, item->x + 88.0f,
+                                 item->y + 12.0f, item->spriteScale);
+                }
+                digit = level % 10;
+                fontResource = H_Maestro_001120a0(1);
+                FUN_001159f0(parent, fontResource, digit + 11,
+                             (u8)item->alpha, item->x + 104.0f,
+                             item->y + 12.0f, item->spriteScale);
+            } else {
+                equippedPersona = datGetPersonaId(1);
+                if (persona->id == (u16)equippedPersona) {
+                    FUN_001159f0(parent, campMainResource(resources, 0), 5,
+                                 (u8)item->alpha, item->x + 60.0f,
+                                 item->y + 3.0f, item->spriteScale);
+                } else {
+                    FUN_001159f0(parent, campMainResource(resources, 1), 7,
+                                 (u8)item->alpha, item->x + 60.0f,
+                                 item->y + 3.0f, item->spriteScale);
+                }
+                level = persona->level;
+                if (level >= 10) {
+                    digit = level / 10;
+                    fontResource = H_Maestro_001120a0(2);
+                    FUN_001159f0(parent, fontResource, digit + 11,
+                                 (u8)item->alpha, item->x + 88.0f,
+                                 item->y + 12.0f, item->spriteScale);
+                }
+                digit = level % 10;
+                fontResource = H_Maestro_001120a0(2);
+                FUN_001159f0(parent, fontResource, digit + 11,
+                             (u8)item->alpha, item->x + 104.0f,
+                             item->y + 12.0f, item->spriteScale);
+            }
+        }
+        break;
     }
-
-    if (mode < 0x0e) {
-        personaIndex = mode - 1;
-        persona = datPersonaGetHeroPersona(personaIds[personaIndex]);
-        personaName = FUN_00173220(persona->id);
-        sprintf(text, gp0xffff897c, personaName);
-        textColor = (0xffU - item->alpha) | 0xffffff00U;
-        FUN_003b2cb0(100.0f, (s32)item->x, (s32)item->y,
-                     (s32)textColor, 10, 1, text, 0x10, 0);
-        return;
-    }
-
-    personaIndex = mode - 0x0e;
-    campMainDrawPersonaRow(item, resources, personaIds, personaIndex,
-                           (s32)selected);
 }
+
 
 // FUN_001344B0
 u32 FUN_001344B0(CampMainDrawItem* items, const void* resources,
