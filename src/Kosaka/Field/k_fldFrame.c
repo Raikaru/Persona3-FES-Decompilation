@@ -21,6 +21,7 @@ void K_FldFrame_CollisSphereSetDrawEnabled(KwlnTask* collisSphereTask, u32 drawE
 typedef struct FldFrameResourceCollision
 {
     void* unk_00;
+    void* unk_04;
     void* collisionWorld;
 } FldFrameResourceCollision;
 
@@ -160,60 +161,73 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
     return inside;
 }
 
-// FUN_001ac750 NONMATCHING
+// FUN_001ac750
 void K_FldFrame_HandleCollis(const RwV3d* pos, RwV3d* translation, f32 sphereCollisRadius,
                              u16 resTypeId)
 {
-    FldFrameCollisionState* state;
     Resrc* res;
-    Resrc* fldRes;
-    KwlnTask* collisCtlTask;
     void* collisionWorld;
+    Resrc* fldRes;
     s32 xGrid;
     s32 zGrid;
-    u16 gridResTypeId;
+    u32 gridResTypeId;
+    u32 belowMin;
 
-    state = *(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET);
-    if (state->flags & FLDFRAME_COLLIS_FLAG_STATICWORLD)
+    if ((*(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET))->flags &
+        FLDFRAME_COLLIS_FLAG_STATICWORLD)
     {
-        func_001ab390(state->staticCollision, pos, translation, sphereCollisRadius);
+        func_001ab390(
+            (*(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET))->staticCollision,
+            pos, translation, sphereCollisRadius);
         return;
     }
 
     collisionWorld = NULL;
-    if ((K_Scene_001a0250() == true) ||
-        ((gMtScene->fldMajorId > 0x32) && (gMtScene->fldMajorId < 0x4f)))
+    if (K_Scene_001a0250() == true)
     {
-        fldRes = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
-        res = MT_Scene_GetRes(resTypeId);
-        if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELCHAR)
-        {
-            collisCtlTask = ((ResrcModelChar*)res)->collisCtlTask;
-        }
-        else
-        {
-            collisCtlTask = ((ResrcModelNpc*)res)->collisCtlTask;
-        }
+        goto resource;
+    }
+    belowMin = gMtScene->fldMajorId < 0x33;
+    if (belowMin)
+    {
+        goto fallback;
+    }
+    if (gMtScene->fldMajorId >= 0x4f)
+    {
+        goto fallback;
+    }
 
-        xGrid = K_FldFrame_CtlGetXGrid(collisCtlTask);
-        zGrid = K_FldFrame_CtlGetZGrid(collisCtlTask);
-        gridResTypeId = *(u16*)((u8*)K_Field_Get() + 0x4c + zGrid * 0x100 + xGrid * 0x10);
-
-        while (fldRes != NULL)
-        {
-            if (fldRes->resTypeId == gridResTypeId)
-            {
-                collisionWorld = ((FldFrameResourceCollision*)((ResrcFld*)fldRes)->unk_160)->collisionWorld;
-                break;
-            }
-            fldRes = fldRes->next;
-        }
+resource:
+    fldRes = MT_Scene_GetResListHead(RESRC_TYPE_FLD);
+    res = MT_Scene_GetRes(resTypeId);
+    if (RESRC_GET_TYPE(resTypeId) == RESRC_TYPE_MODELCHAR)
+    {
+        xGrid = K_FldFrame_CtlGetXGrid(((ResrcModelChar*)res)->collisCtlTask);
+        zGrid = K_FldFrame_CtlGetZGrid(((ResrcModelChar*)res)->collisCtlTask);
     }
     else
     {
-        collisionWorld = state->collisionWorld;
+        xGrid = K_FldFrame_CtlGetXGrid(((ResrcModelNpc*)res)->collisCtlTask);
+        zGrid = K_FldFrame_CtlGetZGrid(((ResrcModelNpc*)res)->collisCtlTask);
     }
+    gridResTypeId = *(u16*)((u8*)K_Field_Get() + 0x4c + zGrid * 0x100 + xGrid * 0x10);
 
+    while (fldRes != NULL)
+    {
+        if (fldRes->resTypeId == gridResTypeId)
+        {
+            collisionWorld = ((FldFrameResourceCollision*)((ResrcFld*)fldRes)->unk_160)->collisionWorld;
+            break;
+        }
+        fldRes = fldRes->next;
+    }
+    goto done;
+
+fallback:
+    collisionWorld =
+        (*(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET))->collisionWorld;
+
+done:
     func_001abd20(collisionWorld, pos, translation, sphereCollisRadius, resTypeId);
 }
 
