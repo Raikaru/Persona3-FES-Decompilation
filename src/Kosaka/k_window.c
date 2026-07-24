@@ -8,6 +8,8 @@ extern u8 rwGlobals_abs[];
 #include "Kernel/Kwln/kwlnTask.h"
 extern u32 D_00960184[];
 extern void (*D_0096017c)(void* memory);
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
@@ -79,58 +81,71 @@ typedef struct KWindowRenderData
 // FUN_001a1550 NONMATCHING
 void* func_001a1550(KwlnTask* task)
 {
+    KwlnTask* owner;
     KWindowTaskWork* work;
-    RwRGBA* colorA;
-    RwRGBA* colorB;
-    RwRect frame;
-    f32 progress;
-    f32 width;
-    f32 height;
 
-    work = (KWindowTaskWork*)task->workData;
+    owner = task;
+    work = (KWindowTaskWork*)owner->workData;
     switch (work->state)
     {
         case 0:
         {
             KWindowRenderData* renderData;
             KWindowQuad* quad;
-            RwRGBA* tile;
+            u8* tile;
             f32 tileColor;
             u8* tileBytes;
+            s32 alpha;
             s32 i;
 
             work->renderData = func_001e78c0(5, 0x48);
             work->colorDataA = func_00494be0();
-            colorA = (RwRGBA*)((u8*)work->colorDataA + 4);
-            *colorA = work->colorA;
+            ((RwRGBA*)((u8*)work->colorDataA + 4))->r = work->colorA.r;
+            ((RwRGBA*)((u8*)work->colorDataA + 4))->g = work->colorA.g;
+            ((RwRGBA*)((u8*)work->colorDataA + 4))->b = work->colorA.b;
+            ((RwRGBA*)((u8*)work->colorDataA + 4))->a = work->colorA.a;
             work->colorDataB = func_00494be0();
-            colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
-            *colorB = work->colorB;
+
+            alpha = work->colorB.a;
+            if (alpha >= 0)
+            {
+                work->alphaStep = (f32)alpha;
+            }
+            else
+            {
+                work->alphaStep = (f32)(((u32)alpha >> 1) | (alpha & 1));
+                work->alphaStep += work->alphaStep;
+            }
+            work->colorB.a = 0;
+            ((RwRGBA*)((u8*)work->colorDataB + 4))->r = work->colorB.r;
+            ((RwRGBA*)((u8*)work->colorDataB + 4))->g = work->colorB.g;
+            ((RwRGBA*)((u8*)work->colorDataB + 4))->b = work->colorB.b;
+            ((RwRGBA*)((u8*)work->colorDataB + 4))->a = work->colorB.a;
 
             renderData = (KWindowRenderData*)work->renderData;
-            tile = renderData->layout->tileColors;
             tileColor = *(f32*)((u8*)&gp0xffff9460 - 4);
             tileBytes = (u8*)&tileColor;
             i = 0;
             while (i < 4)
             {
                 func_001e7aa0(work->renderData, i, work->colorDataA);
-                ((u8*)tile)[i * 16 + 0] = tileBytes[0];
-                ((u8*)tile)[i * 16 + 1] = tileBytes[1];
-                ((u8*)tile)[i * 16 + 2] = tileBytes[2];
-                ((u8*)tile)[i * 16 + 3] = tileBytes[3];
-                ((u8*)tile)[i * 16 + 4] = tileBytes[0];
-                ((u8*)tile)[i * 16 + 5] = tileBytes[1];
-                ((u8*)tile)[i * 16 + 6] = tileBytes[2];
-                ((u8*)tile)[i * 16 + 7] = tileBytes[3];
-                ((u8*)tile)[i * 16 + 8] = tileBytes[0];
-                ((u8*)tile)[i * 16 + 9] = tileBytes[1];
-                ((u8*)tile)[i * 16 + 10] = tileBytes[2];
-                ((u8*)tile)[i * 16 + 11] = tileBytes[3];
-                ((u8*)tile)[i * 16 + 12] = tileBytes[0];
-                ((u8*)tile)[i * 16 + 13] = tileBytes[1];
-                ((u8*)tile)[i * 16 + 14] = tileBytes[2];
-                ((u8*)tile)[i * 16 + 15] = tileBytes[3];
+                tile = (u8*)renderData->layout->tileColors + i * 16;
+                tile[0] = tileBytes[0];
+                tile[1] = tileBytes[1];
+                tile[2] = tileBytes[2];
+                tile[3] = tileBytes[3];
+                tile[4] = tileBytes[0];
+                tile[5] = tileBytes[1];
+                tile[6] = tileBytes[2];
+                tile[7] = tileBytes[3];
+                tile[8] = tileBytes[0];
+                tile[9] = tileBytes[1];
+                tile[10] = tileBytes[2];
+                tile[11] = tileBytes[3];
+                tile[12] = tileBytes[0];
+                tile[13] = tileBytes[1];
+                tile[14] = tileBytes[2];
+                tile[15] = tileBytes[3];
                 quad = renderData->layout->quadStore->quad + i;
                 quad->vertex[0].x = 0.0f;
                 quad->vertex[0].y = 0.0f;
@@ -145,22 +160,23 @@ void* func_001a1550(KwlnTask* task)
             }
 
             func_001e7aa0(work->renderData, 4, work->colorDataB);
-            ((u8*)tile)[0x40] = tileBytes[0];
-            ((u8*)tile)[0x41] = tileBytes[1];
-            ((u8*)tile)[0x42] = tileBytes[2];
-            ((u8*)tile)[0x43] = tileBytes[3];
-            ((u8*)tile)[0x44] = tileBytes[0];
-            ((u8*)tile)[0x45] = tileBytes[1];
-            ((u8*)tile)[0x46] = tileBytes[2];
-            ((u8*)tile)[0x47] = tileBytes[3];
-            ((u8*)tile)[0x48] = tileBytes[0];
-            ((u8*)tile)[0x49] = tileBytes[1];
-            ((u8*)tile)[0x4a] = tileBytes[2];
-            ((u8*)tile)[0x4b] = tileBytes[3];
-            ((u8*)tile)[0x4c] = tileBytes[0];
-            ((u8*)tile)[0x4d] = tileBytes[1];
-            ((u8*)tile)[0x4e] = tileBytes[2];
-            ((u8*)tile)[0x4f] = tileBytes[3];
+            tile = (u8*)renderData->layout->tileColors + 0x40;
+            tile[0] = tileBytes[0];
+            tile[1] = tileBytes[1];
+            tile[2] = tileBytes[2];
+            tile[3] = tileBytes[3];
+            tile[4] = tileBytes[0];
+            tile[5] = tileBytes[1];
+            tile[6] = tileBytes[2];
+            tile[7] = tileBytes[3];
+            tile[8] = tileBytes[0];
+            tile[9] = tileBytes[1];
+            tile[10] = tileBytes[2];
+            tile[11] = tileBytes[3];
+            tile[12] = tileBytes[0];
+            tile[13] = tileBytes[1];
+            tile[14] = tileBytes[2];
+            tile[15] = tileBytes[3];
             quad = renderData->layout->quadStore->quad + 4;
             quad->vertex[0].x = (f32)work->rect.x;
             quad->vertex[0].y = (f32)work->rect.y;
@@ -176,129 +192,204 @@ void* func_001a1550(KwlnTask* task)
             work->verticalOffset = 0.0f;
             work->horizontalInset = 0.0f;
             work->verticalInset = 0.0f;
-            work->alphaStep = (f32)work->colorB.a / 8.0f;
             work->fieldOfView = func_001a4600(kwlnGetMainCamera());
             work->state = 1;
             break;
         }
 
         case 1:
-            width = (f32)work->rect.w;
-            progress = work->horizontalInset + width / 2.0f;
-            if (progress >= width)
+        {
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+
+            renderData = (KWindowRenderData*)work->renderData;
+            func_00493370(renderData->layout, 2);
+            if (work->horizontalOffset >= (f32)work->rect.w)
             {
-                progress = width;
-                work->state = 2;
+                work->horizontalOffset = (f32)work->rect.w;
+                work->state++;
             }
-            work->horizontalInset = progress;
-            frame = work->rect;
-            frame.w = (s16)progress;
-            func_001a23e0(task, &frame);
+            quad = renderData->layout->quadStore->quad;
+            quad[0].vertex[0].x = (f32)work->rect.x;
+            quad[0].vertex[0].y = (f32)work->rect.y;
+            quad[0].vertex[1].x = (f32)work->rect.x + work->horizontalOffset;
+            quad[0].vertex[1].y = (f32)work->rect.y;
+            quad[0].vertex[2].x = (f32)work->rect.x;
+            quad[0].vertex[2].y = (f32)(work->rect.y + 2);
+            quad[0].vertex[3].x = (f32)work->rect.x + work->horizontalOffset;
+            quad[0].vertex[3].y = (f32)(work->rect.y + 2);
+            func_001e7b10(&quad[0], func_001e7c20(-16));
+            work->horizontalOffset += (f32)work->rect.w / 2.0f;
+            func_004933d0(renderData->layout);
             break;
+        }
 
         case 2:
-            height = (f32)work->rect.h;
-            progress = work->verticalInset + height / 2.0f;
-            if (progress >= height)
+        {
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+
+            renderData = (KWindowRenderData*)work->renderData;
+            func_00493370(renderData->layout, 2);
+            if (work->verticalOffset >= (f32)work->rect.h)
             {
-                progress = height;
-                work->state = 3;
+                work->verticalOffset = (f32)work->rect.h;
+                work->state++;
             }
-            work->verticalInset = progress;
-            frame = work->rect;
-            frame.y = (s16)((f32)work->rect.y + work->rect.h - progress);
-            frame.h = (s16)progress;
-            func_001a23e0(task, &frame);
+            quad = renderData->layout->quadStore->quad + 1;
+            quad->vertex[0].x = (f32)(work->rect.x + work->rect.w - 2);
+            quad->vertex[0].y = (f32)work->rect.y;
+            quad->vertex[1].x = (f32)(work->rect.x + work->rect.w);
+            quad->vertex[1].y = (f32)work->rect.y;
+            quad->vertex[2].x = (f32)(work->rect.x + work->rect.w - 2);
+            quad->vertex[2].y = (f32)work->rect.y + work->verticalOffset;
+            quad->vertex[3].x = (f32)(work->rect.x + work->rect.w);
+            quad->vertex[3].y = (f32)work->rect.y + work->verticalOffset;
+            func_001e7b10(quad, func_001e7c20(-16));
+            work->verticalOffset += (f32)work->rect.h / 2.0f;
+            func_004933d0(renderData->layout);
             break;
+        }
 
         case 3:
-            width = (f32)work->rect.w;
-            progress = work->horizontalOffset + width / 2.0f;
-            if (progress >= width)
+        {
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+
+            renderData = (KWindowRenderData*)work->renderData;
+            func_00493370(renderData->layout, 2);
+            if (work->horizontalInset >= (f32)work->rect.w)
             {
-                progress = width;
-                work->state = 4;
+                work->horizontalInset = (f32)work->rect.w;
+                work->state++;
             }
-            work->horizontalOffset = progress;
-            frame = work->rect;
-            frame.x = (s16)((f32)work->rect.x + work->rect.w - progress);
-            frame.w = (s16)progress;
-            func_001a23e0(task, &frame);
+            quad = renderData->layout->quadStore->quad + 2;
+            quad->vertex[0].x = (f32)work->rect.x;
+            quad->vertex[0].y = (f32)(work->rect.y + work->rect.h - 2);
+            quad->vertex[1].x = (f32)work->rect.x + work->horizontalInset;
+            quad->vertex[1].y = (f32)(work->rect.y + work->rect.h - 2);
+            quad->vertex[2].x = (f32)work->rect.x;
+            quad->vertex[2].y = (f32)(work->rect.y + work->rect.h);
+            quad->vertex[3].x = (f32)work->rect.x + work->horizontalInset;
+            quad->vertex[3].y = (f32)(work->rect.y + work->rect.h);
+            func_001e7b10(quad, func_001e7c20(-16));
+            work->horizontalInset += (f32)work->rect.w / 2.0f;
+            func_004933d0(renderData->layout);
             break;
+        }
 
         case 4:
-            height = (f32)work->rect.h;
-            progress = work->verticalOffset + height / 2.0f;
-            if (progress >= height)
+        {
+            KWindowRenderData* renderData;
+            KWindowQuad* quad;
+
+            renderData = (KWindowRenderData*)work->renderData;
+            func_00493370(renderData->layout, 2);
+            if (work->verticalInset >= (f32)work->rect.h)
             {
-                progress = height;
-                work->state = 5;
+                work->verticalInset = (f32)work->rect.h;
+                work->state++;
             }
-            work->verticalOffset = progress;
-            frame = work->rect;
-            frame.h = (s16)progress;
-            func_001a23e0(task, &frame);
+            quad = renderData->layout->quadStore->quad + 3;
+            quad->vertex[0].x = (f32)work->rect.x;
+            quad->vertex[0].y = (f32)work->rect.y + work->rect.h - work->verticalInset;
+            quad->vertex[1].x = (f32)(work->rect.x + 2);
+            quad->vertex[1].y = (f32)work->rect.y + work->rect.h - work->verticalInset;
+            quad->vertex[2].x = (f32)work->rect.x;
+            quad->vertex[2].y = (f32)(work->rect.y + work->rect.h);
+            quad->vertex[3].x = (f32)(work->rect.x + 2);
+            quad->vertex[3].y = (f32)(work->rect.y + work->rect.h);
+            func_001e7b10(quad, func_001e7c20(-16));
+            work->verticalInset += (f32)work->rect.h / 2.0f;
+            func_004933d0(renderData->layout);
             break;
+        }
 
         case 5:
-            colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
-            if (work->alphaStep < 1.0f)
+        {
+            s32 alpha;
+            f32 alphaValue;
+            RwRGBA* colorB;
+
+            if (work->colorB.a < (u8)work->alphaStep)
             {
-                work->alphaStep = 1.0f;
-            }
-            if (colorB->a < work->colorB.a)
-            {
-                colorB->a = (u8)((f32)colorB->a + work->alphaStep);
-                if (colorB->a >= work->colorB.a)
+                alpha = work->colorB.a;
+                if (alpha >= 0)
                 {
-                    colorB->a = work->colorB.a;
-                    work->state = 6;
+                    alphaValue = (f32)alpha;
                 }
+                else
+                {
+                    alphaValue = (f32)(((u32)alpha >> 1) | (alpha & 1));
+                    alphaValue += alphaValue;
+                }
+                work->colorB.a = (u8)(alphaValue + work->alphaStep / 8.0f);
             }
             else
             {
-                work->state = 6;
+                work->colorB.a = (u8)work->alphaStep;
+                work->state++;
             }
-            func_001a23e0(task, &work->rect);
+            colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
+            colorB->r = work->colorB.r;
+            colorB->g = work->colorB.g;
+            colorB->b = work->colorB.b;
+            colorB->a = work->colorB.a;
             break;
+        }
 
         case 6:
-            func_001a23e0(task, &work->rect);
-            work->state = 7;
+            func_001a23e0(owner, &work->rect);
+            work->state++;
             break;
 
         case 7:
+        {
+            RwRGBA* colorA;
+            RwRGBA* colorB;
             colorA = (RwRGBA*)((u8*)work->colorDataA + 4);
             colorB = (RwRGBA*)((u8*)work->colorDataB + 4);
-            if (colorB->a != 0)
+            if (work->colorB.a > 0)
             {
-                colorB->a--;
+                work->colorB.a--;
             }
-            if (colorA->a != 0)
+            if (work->colorA.a > 0)
             {
-                colorA->a--;
+                work->colorA.a--;
             }
-            if (colorA->a == 0 && colorB->a == 0)
+            colorA->r = work->colorA.r;
+            colorA->g = work->colorA.g;
+            colorA->b = work->colorA.b;
+            colorA->a = work->colorA.a;
+            colorB->r = work->colorB.r;
+            colorB->g = work->colorB.g;
+            colorB->b = work->colorB.b;
+            colorB->a = work->colorB.a;
+            if (work->colorA.a == 0 && work->colorB.a == 0)
             {
-                work->state = 8;
+                work->state++;
             }
             break;
+        }
 
         case 8:
             return KWLNTASK_STOP;
     }
 
-    if (work->renderData != NULL &&
-        work->fieldOfView != func_001a4600(kwlnGetMainCamera()))
+    if (work->fieldOfView != func_001a4600(kwlnGetMainCamera()))
     {
-        func_001a23e0(task, &work->rect);
+        func_001a23e0(owner, &work->rect);
     }
     if (func_00195790() == 1 && work->request == 1)
     {
-        (*D_00960090)(6, 0);
-        (*D_00960090)(8, 0);
+        void (**stateFunc)(u32 state, u32 value);
+
+        stateFunc = (void (**)(u32, u32))D_00960090_abs;
+        (*stateFunc)(6, 0);
+        (*stateFunc)(8, 0);
         func_004d7f60(2, 0x44);
         func_004d7f60(3, 0x717fb);
+        (*(void (**)(void))((u8*)work->renderData + 0x48))();
     }
     return KWLNTASK_CONTINUE;
 }
