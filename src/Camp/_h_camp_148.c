@@ -1547,6 +1547,60 @@ u32 h_campUpdateNewItemTask(int param_1)
       }
     }
     break;
+  case 0x16:
+    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
+      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
+         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
+        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
+      }
+    }
+    iVar17 = puVar1[0x2a];
+    lVar11 = (s32)*(int *)((*(int *)(iVar17 + 0x2d6c) + *(int *)(iVar17 + 0x2d68)) * 0x24 + iVar17
+                           + 0x68);
+    sVar5 = FUN_0016cb80(1,0);
+    if ((((lVar11 == sVar5) || (sVar5 = FUN_0016cb80(1,1), lVar11 == sVar5)) ||
+        (sVar5 = FUN_0016cb80(1,2), lVar11 == sVar5)) ||
+       (sVar5 = FUN_0016cb80(1,3), lVar11 == sVar5)) {
+      FUN_003c7430(6);
+      *puVar1 = 0x17;
+    }
+    else {
+      FUN_003c7430(5);
+      FUN_003c74e0(0);
+      FUN_003c7560(0);
+      *puVar1 = 0x18;
+    }
+    break;
+  case 0x17:
+    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
+      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
+         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
+        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
+      }
+    }
+    lVar11 = FUN_003c7850();
+    if (lVar11 == 0) {
+      FUN_003c7700();
+      *puVar1 = 0x12;
+    }
+    break;
+  case 0x18:
+    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
+      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
+         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
+        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
+      }
+    }
+    lVar11 = FUN_003c7850();
+    if (lVar11 == 0) {
+      lVar11 = FUN_003c7610();
+      if ((lVar11 != 1) && (lVar11 == 0)) {
+        FUN_00141590(puVar1[0x2a]);
+      }
+      FUN_003c7700();
+      *puVar1 = 0x12;
+    }
+    break;
   case 0x13:
     bVar3 = true;
     for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
@@ -1600,60 +1654,6 @@ u32 h_campUpdateNewItemTask(int param_1)
          (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
         h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
       }
-    }
-    break;
-  case 0x16:
-    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
-      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
-         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
-        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
-      }
-    }
-    iVar17 = puVar1[0x2a];
-    lVar11 = (s32)*(int *)((*(int *)(iVar17 + 0x2d6c) + *(int *)(iVar17 + 0x2d68)) * 0x24 + iVar17
-                           + 0x68);
-    sVar5 = FUN_0016cb80(1,0);
-    if ((((lVar11 == sVar5) || (sVar5 = FUN_0016cb80(1,1), lVar11 == sVar5)) ||
-        (sVar5 = FUN_0016cb80(1,2), lVar11 == sVar5)) ||
-       (sVar5 = FUN_0016cb80(1,3), lVar11 == sVar5)) {
-      FUN_003c7430(6);
-      *puVar1 = 0x17;
-    }
-    else {
-      FUN_003c7430(5);
-      FUN_003c74e0(0);
-      FUN_003c7560(0);
-      *puVar1 = 0x18;
-    }
-    break;
-  case 0x17:
-    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
-      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
-         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
-        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
-      }
-    }
-    lVar11 = FUN_003c7850();
-    if (lVar11 == 0) {
-      FUN_003c7700();
-      *puVar1 = 0x12;
-    }
-    break;
-  case 0x18:
-    for (iVar17 = 0; iVar17 < 0x28; iVar17 = iVar17 + 1) {
-      if ((*(int *)(puVar1[0x30] + iVar17 * 0x44 + 4) != 0) &&
-         (lVar11 = func_0018b700((void*)(puVar1[0x30] + iVar17 * 0x44)), lVar11 != 0)) {
-        h_campDrawListEntry(puVar1[0x30] + iVar17 * 0x44,iVar17,(int)puVar1);
-      }
-    }
-    lVar11 = FUN_003c7850();
-    if (lVar11 == 0) {
-      lVar11 = FUN_003c7610();
-      if ((lVar11 != 1) && (lVar11 == 0)) {
-        FUN_00141590(puVar1[0x2a]);
-      }
-      FUN_003c7700();
-      *puVar1 = 0x12;
     }
     break;
   case 0x19:
