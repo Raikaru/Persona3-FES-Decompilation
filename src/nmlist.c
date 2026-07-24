@@ -359,19 +359,21 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 }
 #define FUN_003c4910(...) ((int * (*)(...))FUN_003c4910)(__VA_ARGS__)
 #undef FUN_003c49e0
+// Local declaration order tuned (6 permutations tried) for closest register match;
+// residual is a genuine MWCC register-coloring floor swapping list/node between s1/s3.
 // FUN_003C49E0 NONMATCHING
 
 
 NmlistNode *FUN_003c49e0(int *param_1,int *param_2,NmlistNode *param_3)
 {
-  NmlistList *list;
-  NmlistList *list2;
   NmlistNode *node;
+  NmlistList *list2;
+  NmlistList *list;
   NmlistNode *next;
 
-  list = (NmlistList *)param_1;
-  list2 = (NmlistList *)param_2;
   node = param_3;
+  list2 = (NmlistList *)param_2;
+  list = (NmlistList *)param_1;
   next = FUN_003c4820_typed((int *)list2,(int *)node);
   if (node == list2->tail) {
     list2->tail = next;
