@@ -967,14 +967,13 @@ static inline void K_Dungeon_ProcessFieldNodes(
     KwlnTask* parentTask,
     u8* node,
     const RwV4d* collisionQueryPosition,
-    const RwV3d* cameraPosition,
+    void* cameraFrame,
     const RwV3d* cameraDirection,
     u8* queryData,
     RwV3d* probe,
     RwV3d* special)
 {
     void* camera;
-    void* cameraFrame;
     u8* fadeWork;
     KwlnTask* child;
     f32 alpha;
@@ -985,7 +984,7 @@ static inline void K_Dungeon_ProcessFieldNodes(
         {
             memset(queryData, 0, 0x208);
 
-            probe[0] = *cameraPosition;
+            probe[0] = *(RwV3d*)((u8*)cameraFrame + 0x30);
             probe[0].x += cameraDirection->x;
             probe[0].y += cameraDirection->y;
             probe[0].z += cameraDirection->z;
@@ -1008,7 +1007,7 @@ static inline void K_Dungeon_ProcessFieldNodes(
 
             if (func_001a01c0() == 0)
             {
-                probe[0] = *cameraPosition;
+                probe[0] = *(RwV3d*)((u8*)cameraFrame + 0x30);
                 func_001ad220(node, &probe[0], queryData);
             }
 
@@ -1097,6 +1096,10 @@ static inline void K_Dungeon_ProcessFieldNodes(
 // The previous reconstruction reused a mutated origin and omitted this scale.
 // Restoring those real probe semantics increases normalized_diff in this pass,
 // but avoids silently testing the wrong collision locations.
+// Field-node probes must reload the camera-frame origin at each node helper call.
+// Passing the frame itself preserves that live-origin behavior when camera state
+// changes during traversal; caching cameraPosition would probe stale locations.
+// This intentional semantic correction currently has a larger normalized diff.
 // FUN_001c0d70 NONMATCHING
 void* func_001c0d70(KwlnTask* task)
 {
@@ -1252,15 +1255,15 @@ void* func_001c0d70(KwlnTask* task)
                 {
                     K_Dungeon_ProcessFieldNodes(
                         task, *(u8**)(entry + 0x14), &collisionQueryPosition,
-                        &cameraPosition, &cameraDirection, queryData,
+                        cameraFrame, &cameraDirection, queryData,
                         &ray[0], &special[0]);
                     K_Dungeon_ProcessFieldNodes(
                         task, *(u8**)(entry + 0x28), &collisionQueryPosition,
-                        &cameraPosition, &cameraDirection, queryData,
+                        cameraFrame, &cameraDirection, queryData,
                         &ray[0], &special[0]);
                     K_Dungeon_ProcessFieldNodes(
                         task, *(u8**)(entry + 0x24), &collisionQueryPosition,
-                        &cameraPosition, &cameraDirection, queryData,
+                        cameraFrame, &cameraDirection, queryData,
                         &ray[0], &special[0]);
                 }
                 i++;
