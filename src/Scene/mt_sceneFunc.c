@@ -1437,17 +1437,18 @@ void FUN_003b9610(Resrc* param_1)
 
   u32 uStack_50;
 
-  float fStack_48;
+  volatile float fStack_48;
 
-  float fStack_44;
+  volatile float fStack_44;
 
-  float fStack_40;
+  volatile float fStack_40;
 
-  float fStack_38;
+  volatile float fStack_38;
 
-  float fStack_34;
+  volatile float fStack_34;
 
-  float fStack_30;
+  volatile float fStack_30;
+
   float fStack_28;
 
   float fStack_24;
@@ -2228,6 +2229,7 @@ void FUN_003b9610(Resrc* param_1)
     }
 
   }
+  
 
   return;
 
