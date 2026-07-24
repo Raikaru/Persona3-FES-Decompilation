@@ -458,12 +458,13 @@ void FUN_002230e0(void)
 // FUN_00223290 NONMATCHING
 void FUN_00223290(void)
 {
+    u8 alphaByte;
+    void* handle;
+    u32 table0;
     u8* base;
     u8* records;
-    u32 table0;
-    f32 weight;
     f32 alpha1;
-    u32 alphaByte;
+    f32 weight;
     u8* pos;
     void* frame;
     f32 layout[4];
@@ -473,11 +474,10 @@ void FUN_00223290(void)
     u32 selIndex;
     u8* selRecord;
     u32 kind;
-    void* handle;
     s32 halfWidth;
     u32 colourA, colourB, colourC, colourD;
     u32 scaledAlphaColour;
-    u32 i;
+    s32 i;
     u32 selColour;
     s32 x, y;
 
@@ -548,19 +548,17 @@ alpha_done:
     *(u32*)base &= ~4;
     if (*(u32*)(base + 0x463c) == 3) {
         secondaryDispatch = *(u32*)(base + 0x4644);
-        if (secondaryDispatch == 2) goto sel_a;
-        if (secondaryDispatch == 1) goto sel_a;
-        if (secondaryDispatch == 0) goto sel_b_check1;
+        if (secondaryDispatch == 2) goto sel;
+        if (secondaryDispatch == 1) goto sel;
+        if (secondaryDispatch == 0) {
+            if (*(u32*)(base + 0x4648) == 1) goto sel_check_timer;
+            if (*(u32*)(base + 0x4648) == 2) goto sel_check_timer;
+        }
         goto sel_done;
-    sel_b_check1:
-        if (*(u32*)(base + 0x4648) == 1) goto sel_b_check2;
-        if (*(u32*)(base + 0x4648) == 2) goto sel_b_check2;
-        goto sel_done;
-    sel_b_check2:
+    sel_check_timer:
         if (*(s32*)(base + 0x4658) >= 6) goto sel_done;
         K_ASSERT((*(u32*)base & 4) != 0, 0x711);
-        goto sel_b;
-    sel_b:
+    sel:
         colourA = (alphaByte & 0xff) | 0xffffff00u;
         *(u32*)(records + 0x18c4) = colourA;
         colourB = 0xff - (alphaByte & 0xff);
@@ -569,42 +567,18 @@ alpha_done:
         selIndex = *(u32*)(records + 0x18c0);
         selRecord = records + selIndex * 0x420;
         kind = *(u32*)selRecord;
-        if (kind == 1) goto sel_b_kind1;
-        if (kind == 2) goto sel_b_kind02;
-        if (kind == 0) goto sel_b_kind02;
+        if (kind == 1) goto sel_kind1;
+        if (kind == 2) goto sel_kind02;
+        if (kind == 0) goto sel_kind02;
         goto sel_join;
-    sel_b_kind1:
+    sel_kind1:
         handle = *(void**)(selRecord + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
         *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
         goto sel_join;
-    sel_b_kind02:
-        *(f32*)(records + 0x18d0) = 51.0f + *(f32*)(pos + 0);
-        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
-        goto sel_join;
-    sel_a:
-        colourA = (alphaByte & 0xff) | 0xffffff00u;
-        *(u32*)(records + 0x18c4) = colourA;
-        colourB = 0xff - (alphaByte & 0xff);
-        *(u32*)(records + 0x18c8) = colourB | 0xff9d9d00u;
-        *(u32*)(records + 0x18cc) = colourB | 0xffffff00u;
-        selIndex = *(u32*)(records + 0x18c0);
-        selRecord = records + selIndex * 0x420;
-        kind = *(u32*)selRecord;
-        if (kind == 1) goto sel_a_kind1;
-        if (kind == 2) goto sel_a_kind02;
-        if (kind == 0) goto sel_a_kind02;
-        goto sel_join;
-    sel_a_kind1:
-        handle = *(void**)(selRecord + 8);
-        halfWidth = FUN_003b19d0((u32)handle);
-        halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
-        *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
-        *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
-        goto sel_join;
-    sel_a_kind02:
+    sel_kind02:
         *(f32*)(records + 0x18d0) = 51.0f + *(f32*)(pos + 0);
         *(f32*)(records + 0x18d4) = 19.0f + *(f32*)(pos + 4) + (f32)(selIndex * 26);
     sel_join:
@@ -724,7 +698,7 @@ alpha_done:
         layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
         FUN_0021d8e0(record + 0x310, layout);
         {
-            u32 j;
+            s32 j;
             for (j = 0; j < 4; j++) {
                 colour[0] = 0xff;
                 colour[1] = 0xff;
