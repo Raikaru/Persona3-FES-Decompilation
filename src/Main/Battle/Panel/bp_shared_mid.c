@@ -111,6 +111,7 @@ void func_00208b30(void)
         }
         enemy = enemy->next;
     }
+    *(s32*)(work + 0x2950) = i;
     i = 0;
     while (i < *(s32*)(work + 0x2950)) {
         slot = work + i * 0x420 + 0x10;
