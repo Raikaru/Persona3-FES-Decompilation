@@ -486,7 +486,7 @@ void FUN_003b4770(int *param_1,int *param_2)
 }
 #define FUN_003b4770(...) ((void (*)(...))FUN_003b4770)(__VA_ARGS__)
 #undef FUN_003b47b0
-// FUN_003B47B0 NONMATCHING
+// FUN_003B47B0
 
 
 int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
@@ -503,17 +503,19 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
 
   int iVar4;
 
-  int iVar5;
-
-  u32 uVar6;
+  u32 uVar8;
 
   int iVar7;
 
-  u32 uVar8;
+  u32 uVar6;
 
-  int iStack_8;
+  int iVar9;
+
+  int iVar5;
 
   u32 uStack_4;
+
+  int iStack_8;
 
   
 
@@ -526,6 +528,7 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
   FUN_00521250(&iStack_8,param_4[1] + (param_2 + 1) * 4,4);
 
   iVar5 = iVar1 + 2;
+  iVar3 = iVar5;
 
   iVar2 = param_4[2];
 
@@ -533,9 +536,7 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
 
   uVar8 = (int)(*(u16 *)(iVar2 + uVar6 * 2) | 0x10000) >> (uStack_4 & 0xf);
 
-  iStack_8 = iStack_8 - uStack_4;
-
-  iVar3 = iVar5;
+  iVar9 = iStack_8 - uStack_4;
 
   do {
 
@@ -543,9 +544,9 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
 
     iVar3 = iVar4 + 2;
 
-    if (*(short *)(iVar4 + 2) == 0) {
+    if (*(u16 *)(iVar4 + 2) == 0) {
 
-      FUN_00521250(param_1 + iVar7,iVar4 + 4,1);
+      FUN_00521250(param_1 + iVar7,iVar3 + 2,1);
 
       iVar7 = iVar7 + 1;
 
@@ -563,9 +564,8 @@ int FUN_003b47b0(int param_1,int param_2,u64 param_3,int *param_4)
 
     }
 
-    iStack_8 = iStack_8 + -1;
-
-  } while (iStack_8 != 0);
+    iVar9 = iVar9 + -1;
+  } while (iVar9 != 0);
 
   DAT_007ce650 = iVar7;
 
