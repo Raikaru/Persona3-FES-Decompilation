@@ -1196,7 +1196,7 @@ u32 FUN_003998b0(int param_1)
 
   u64 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   u32 *puVar7;
 
@@ -2184,7 +2184,7 @@ u32 FUN_0039a8a0(int param_1)
 
   u32 uVar9;
 
-  long lVar10;
+  int lVar10;
 
   u32 *puVar11;
 
@@ -3044,7 +3044,7 @@ u32 FUN_0039b950(u64 param_1)
 
   u32 uVar5;
 
-  long lVar6;
+  int lVar6;
 
   int iVar7;
 
@@ -3670,7 +3670,7 @@ u32 FUN_0039c440(int param_1)
 
   u32 uVar8;
 
-  long lVar9;
+  int lVar9;
 
   u32 uVar10;
 
@@ -4629,7 +4629,7 @@ u32 FUN_0039d550(int param_1)
 
   u64 uVar4;
 
-  long lVar5;
+  int lVar5;
 
   u32 *puVar6;
 
@@ -5197,7 +5197,7 @@ u32 FUN_0039dd90(int param_1)
 
   u64 uVar7;
 
-  long lVar8;
+  int lVar8;
 
   int iVar9;
 
