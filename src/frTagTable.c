@@ -497,7 +497,7 @@ u64 FUN_003ae9b0(u64 param_1,u64 param_2)
 
 u64 FUN_003aea50(u64 param_1,int param_2)
 {
-  char cVar1;
+  u8 cVar1;
   u8 bVar2;
   u8 bVar3;
   u32 uVar4;
@@ -517,28 +517,28 @@ u64 FUN_003aea50(u64 param_1,int param_2)
     uVar4 = (u32)(u8)(bVar2 - 1);
   }
   iVar6 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-  cVar1 = *(char *)(iVar6 + 3);
+  cVar1 = *(u8 *)(iVar6 + 3);
   if (cVar1 == -1) {
     bVar2 = 0;
   } else {
     bVar2 = cVar1 - 1;
   }
   iVar8 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-  cVar1 = *(char *)(iVar8 + 5);
+  cVar1 = *(u8 *)(iVar8 + 5);
   if (cVar1 == -1) {
     bVar3 = 0;
   } else {
     bVar3 = cVar1 - 1;
   }
   iVar10 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-  cVar1 = *(char *)(iVar10 + 7);
+  cVar1 = *(u8 *)(iVar10 + 7);
   if (cVar1 == -1) {
     bVar7 = 0;
   } else {
     bVar7 = cVar1 - 1;
   }
   iVar9 = *(int *)(param_2 + 0x18) + *(int *)(param_2 + 0x10);
-  cVar1 = *(char *)(iVar9 + 9);
+  cVar1 = *(u8 *)(iVar9 + 9);
   if (cVar1 == -1) {
     bVar11 = 0;
   } else {
@@ -629,6 +629,14 @@ u64 FUN_003aed10(u64 param_1,int param_2)
   FUN_003b2020(uVar3,param_2);
   return 0;
 }
+// FUN_003AEE00
+u64 FUN_003aee00(u64 param_1, int param_2)
+{
+  *(u8 *)(param_2 + 0xf) = 0x14;
+  *(u16 *)(param_2 + 0x1e) = 0x20;
+  return 0;
+}
+
 #define FUN_003aed10(...) ((u64 (*)(...))FUN_003aed10)(__VA_ARGS__)
 #undef FUN_003aee20
 // FUN_003AEE20 NONMATCHING
@@ -1208,6 +1216,7 @@ void FUN_003af770(u64 param_1,u64 param_2)
 #define FUN_003af770(...) ((void (*)(...))FUN_003af770)(__VA_ARGS__)
 #undef FUN_003af7a0
 // FUN_003AF7A0 NONMATCHING
+#pragma opt_loop_invariants on
 
 
 
@@ -1233,18 +1242,16 @@ void FUN_003af7a0(int param_1, u64 param_2)
     puVar6[iVar5 * 8 + 7] = 0;
   }
 
-  iVar4 = (int)param_1;
+  iVar4 = (int)param_1 >> 4;
   if (param_1 < 0) {
-    iVar4 += 0xf;
+    iVar4 = ((int)param_1 + 0xf) >> 4;
   }
-  iVar4 >>= 4;
 
   *(u32 *)DAT_0095ae2c_abs = 0x200;
   iVar3 = 0;
   for (uVar1 = 0x200; uVar1 != 0; uVar1 >>= 1) {
     iVar3++;
   }
-  *(u32 *)DAT_0095ae30_abs = (iVar3 - 1) & 0xff;
 
   uVar1 = iVar4 << 5;
   uVar2 = 0;
@@ -1288,4 +1295,5 @@ void FUN_003af7a0(int param_1, u64 param_2)
   DAT_007ce648 = iVar4 << 4;
   FUN_003b35e0(param_2);
 }
+#pragma opt_loop_invariants off
 #define FUN_003af7a0(...) ((void (*)(...))FUN_003af7a0)(__VA_ARGS__)
