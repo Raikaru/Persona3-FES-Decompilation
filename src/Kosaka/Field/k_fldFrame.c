@@ -1853,15 +1853,37 @@ void* func_001abcd0(void* collisionWorld, void* state)
     return collisionWorld;
 }
 
+extern void* func_003b5d50(u32 objectType);
+
+// Partially reconstructed. Retail opens with three func_003b5d50 object-list
+// lookups (types 10, 3 and 1 - the same "first object of type N" iterator head
+// walked via +0xf8 that mt_evtCustomEvent uses), then inlines the collector
+// reset, then walks those three lists calling 0x4c69f0 / 0x4916d0 / 0x318b80 /
+// 0x1acb70 / 0x1a0250 / 0x318b60. The list walks are not yet recovered, which
+// is most of the remaining gap to the 2608-byte window.
 // FUN_001abd20 NONMATCHING
 void func_001abd20(void* collisionWorld, const RwV3d* pos,
                    RwV3d* translation, f32 sphereCollisRadius, u16 resTypeId)
 {
     FldFrameCollisionCollector collector;
     RwV3d query;
+    void* listTen;
+    void* listThree;
+    void* listOne;
     s32 i;
 
     (void)resTypeId;
+    if (pos == NULL || translation == NULL)
+    {
+        return;
+    }
+
+    listTen = func_003b5d50(10);
+    listThree = func_003b5d50(3);
+    listOne = func_003b5d50(1);
+    (void)listTen;
+    (void)listThree;
+    (void)listOne;
     if (pos == NULL || translation == NULL)
     {
         return;
