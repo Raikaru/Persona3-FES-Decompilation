@@ -570,8 +570,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 
                 for (slot = 0; slot < 3; slot++)
                 {
-                    slotMdl = SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*));
-                    if (slotMdl != NULL)
+                    if (SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
                     {
                         if (func_00318ed0(charRes->mdl, 2, &position) == 0)
                         {
@@ -579,8 +578,8 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
                             position.y += 175.0f;
                         }
 
-                        func_0034fdf0(slotMdl, &position);
-                        func_0034fd70(slotMdl, 5);
+                        func_0034fdf0(SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                        func_0034fd70(SCENEDRAW_RESRC_PTR(charRes, Model, 0x100 + slot * sizeof(Model*)), 5);
                     }
                 }
 
@@ -624,8 +623,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 
                         for (slot = 0; slot < 3; slot++)
                         {
-                            slotMdl = SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*));
-                            if (slotMdl != NULL)
+                            if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
                             {
                                 if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
                                 {
@@ -633,8 +631,8 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
                                     position.y += 175.0f;
                                 }
 
-                                func_0034fdf0(slotMdl, &position);
-                                func_0034fd70(slotMdl, 5);
+                                func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                                func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
                             }
                         }
                     }
@@ -680,8 +678,7 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
 
                     for (slot = 0; slot < 3; slot++)
                     {
-                        slotMdl = SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*));
-                        if (slotMdl != NULL)
+                        if (SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)) != NULL)
                         {
                             if (func_00318ed0(npcRes->mdl, 2, &position) == 0)
                             {
@@ -689,8 +686,8 @@ void* K_SceneDraw_UpdateDrwChrMdlTask(KwlnTask* drwChrMdlTask)
                                 position.y += 175.0f;
                             }
 
-                            func_0034fdf0(slotMdl, &position);
-                            func_0034fd70(slotMdl, 5);
+                            func_0034fdf0(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), &position);
+                            func_0034fd70(SCENEDRAW_RESRC_PTR(npcRes, Model, 0x100 + slot * sizeof(Model*)), 5);
                         }
                     }
 
