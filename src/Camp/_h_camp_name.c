@@ -2663,7 +2663,8 @@ extern u32 FUN_00112370_camp(int);
 #pragma alias FUN_00111f30_camp FUN_00111f30
 extern u32 FUN_00111f30_camp(u32);
 #pragma alias FUN_00194b80_camp FUN_00194b80
-extern u32 FUN_00194b80_camp(int,int,int,int,int,u32);
+extern u32 FUN_00194b80_camp(void *,u32,const char *,
+                              void *(*)(void *),void (*)(void *),void *);
 #pragma alias FUN_00195290_camp FUN_00195290
 extern u32 FUN_00195290_camp(u32);
 
@@ -2678,7 +2679,7 @@ extern u8 FUN_0045e3e0_camp[];
 #pragma alias FUN_0045e7b0_camp FUN_0045e7b0
 extern u8 FUN_0045e7b0_camp[];
 
-// FUN_0045E8C0 NONMATCHING
+// FUN_0045E8C0
 
 u32 FUN_0045e8c0(int param_1)
 
@@ -2709,10 +2710,11 @@ u32 FUN_0045e8c0(int param_1)
       }
       else {
         memset((void *)lVar3,0,0x1c68);
-        uVar2 = FUN_00194b80_camp(param_1, 0x106f,
-                                  (int)DAT_006b4e70_camp,
-                                  (int)FUN_0045e3e0_camp,
-                                  (int)FUN_0045e7b0_camp, lVar3);
+        uVar2 = FUN_00194b80_camp((void *)param_1, 0x106f,
+                                  (const char *)DAT_006b4e70_camp,
+                                  (void *(*)(void *))FUN_0045e3e0_camp,
+                                  (void (*)(void *))FUN_0045e7b0_camp,
+                                  (void *)lVar3);
       }
       puVar1[4] = uVar2;
       *puVar1 = 3;
