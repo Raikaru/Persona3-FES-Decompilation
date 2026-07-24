@@ -46,9 +46,11 @@ extern char* strcpy(char* destination, const char* source);
 
 /* Runtime allocator/free-function tables. */
 extern u32 D_00960184[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
 extern u32 jtbl_0096017C[];
 #define GS_ALLOC(count, size, flags) \
-    (*(void* (**)(u32, u32, u32))D_00960184)((count), (size), (flags))
+    (*(void* (**)(u32, u32, u32))D_00960184_abs)((count), (size), (flags))
 #define GS_FREE(ptr) (*(void (**)(void*))jtbl_0096017C)((ptr))
 
 /* Render-state callback table and data resources. */
@@ -252,22 +254,21 @@ static inline void gsDrawHeader(void* object, s32 tile0, s32 tile1, s32 tile2)
 {
     void* atlas;
     void* transition;
-    f32 depth;
-    f32 x;
-    f32 y;
-    u32 alpha;
-    s16 pcId;
 
     transition = GS_PTR(object, 0x70);
-    pcId = GS_S16(object, 0x14);
-    atlas = gsPcAtlas(object, pcId);
-    depth = GS_F32(transition, 0x24);
-    x = GS_F32(transition, 0x38);
-    y = GS_F32(transition, 0x3c);
-    alpha = GS_U8(transition, 0x40);
-    gsDrawSprite(atlas, tile0, alpha, x + 20.0f, y + 18.0f, depth);
-    gsDrawSprite(atlas, tile1, alpha, x + 20.0f, y + 18.0f, depth);
-    gsDrawSprite(GS_PTR(object, 0x2c), tile2, alpha, x + 44.0f, y + 39.0f, depth);
+    atlas = gsPcAtlas(object, GS_S16(object, 0x14));
+    gsDrawSprite(atlas, tile0, GS_U8(transition, 0x40),
+                 GS_F32(transition, 0x38) + 20.0f,
+                 GS_F32(transition, 0x3c) + 18.0f,
+                 GS_F32(transition, 0x24));
+    gsDrawSprite(atlas, tile1, GS_U8(transition, 0x40),
+                 GS_F32(transition, 0x38) + 20.0f,
+                 GS_F32(transition, 0x3c) + 18.0f,
+                 GS_F32(transition, 0x24));
+    gsDrawSprite(GS_PTR(object, 0x2c), tile2, GS_U8(transition, 0x40),
+                 GS_F32(transition, 0x38) + 44.0f,
+                 GS_F32(transition, 0x3c) + 39.0f,
+                 GS_F32(transition, 0x24));
 }
 
 static inline void gsDrawStatusBars(void* object)
@@ -341,6 +342,8 @@ static inline void gsDrawAnimatedSprite(void* object, s32 atlasOffset,
     (void)timer;
     (void)maxTimer;
 }
+
+#pragma opt_loop_invariants on
 
 // FUN_0018A9F0 NONMATCHING
 void* func_0018a9f0(KwlnTask* task)
@@ -611,6 +614,7 @@ void* func_0018a9f0(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_loop_invariants off
 
 // FUN_0018B270
 void func_0018b270(KwlnTask* task)
@@ -798,42 +802,13 @@ void func_0018b7b0(void* transition, f32* position)
     total = GS_S32(transition, 0x20) - GS_S32(transition, 0x1c);
     elapsed = GS_S32(transition, 0x18) - GS_S32(transition, 0x1c);
     mode = GS_S32(transition, 0xc);
-    if (mode == 3)
+    switch (mode)
     {
-        phase = total == 0 ? 90.0f : (f32)((elapsed * 0x5a) / total);
-        phase = sinf((DAT_007caf38 * phase) / 180.0f);
-        if (elapsed == total)
-        {
-            position[0] = GS_F32(transition, 0x28);
-            position[1] = GS_F32(transition, 0x2c);
-        }
-        else
-        {
-            position[0] = GS_F32(transition, 0x30) -
-                          phase * (GS_F32(transition, 0x28) - GS_F32(transition, 0x30));
-            position[1] = GS_F32(transition, 0x34) -
-                          phase * (GS_F32(transition, 0x2c) - GS_F32(transition, 0x34));
-        }
-    }
-    else if (mode == 2)
-    {
-        phase = total == 0 ? 90.0f : (f32)((elapsed * 0x5a) / total);
-        phase = cosf((DAT_007caf38 * phase) / 180.0f);
-        if (elapsed == total)
-        {
-            position[0] = GS_F32(transition, 0x30);
-            position[1] = GS_F32(transition, 0x34);
-        }
-        else
-        {
-            position[0] = phase * (GS_F32(transition, 0x30) - GS_F32(transition, 0x28)) +
-                          GS_F32(transition, 0x28);
-            position[1] = phase * (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) +
-                          GS_F32(transition, 0x2c);
-        }
-    }
-    else if (mode == 1)
-    {
+    case 0:
+        position[0] = GS_F32(transition, 0x30);
+        position[1] = GS_F32(transition, 0x34);
+        break;
+    case 1:
         if (elapsed == total)
         {
             position[0] = GS_F32(transition, 0x30);
@@ -848,11 +823,53 @@ void func_0018b7b0(void* transition, f32* position)
                           ((GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) *
                            (f32)elapsed) / (f32)total;
         }
-    }
-    else if (mode == 0)
-    {
-        position[0] = GS_F32(transition, 0x30);
-        position[1] = GS_F32(transition, 0x34);
+        break;
+    case 2:
+        if (total == 0)
+        {
+            phase = 90.0f;
+        }
+        else
+        {
+            phase = (f32)((elapsed * 0x5a) / total);
+        }
+        phase = cosf((DAT_007caf38 * phase) / 180.0f);
+        if (elapsed == total)
+        {
+            position[0] = GS_F32(transition, 0x30);
+            position[1] = GS_F32(transition, 0x34);
+        }
+        else
+        {
+            position[0] = phase * (GS_F32(transition, 0x30) - GS_F32(transition, 0x28)) +
+                          GS_F32(transition, 0x28);
+            position[1] = phase * (GS_F32(transition, 0x34) - GS_F32(transition, 0x2c)) +
+                          GS_F32(transition, 0x2c);
+        }
+        break;
+    case 3:
+        if (total == 0)
+        {
+            phase = 90.0f;
+        }
+        else
+        {
+            phase = (f32)((elapsed * 0x5a) / total);
+        }
+        phase = sinf((DAT_007caf38 * phase) / 180.0f);
+        if (elapsed == total)
+        {
+            position[0] = GS_F32(transition, 0x28);
+            position[1] = GS_F32(transition, 0x2c);
+        }
+        else
+        {
+            position[0] = GS_F32(transition, 0x30) -
+                          phase * (GS_F32(transition, 0x28) - GS_F32(transition, 0x30));
+            position[1] = GS_F32(transition, 0x34) -
+                          phase * (GS_F32(transition, 0x2c) - GS_F32(transition, 0x34));
+        }
+        break;
     }
 }
 
@@ -1112,7 +1129,7 @@ void func_0018c150(KwlnTask* task)
     u32 maxSp;
     u32 width;
 
-    object = task->workData;
+    object = (void*)task;
     transition = GS_PTR(object, 0x70);
     pcId = GS_S16(object, 0x14);
     atlas = gsPcAtlas(object, pcId);
@@ -1197,7 +1214,7 @@ void func_0018c150(KwlnTask* task)
 // FUN_0018C780 NONMATCHING
 void func_0018c780(KwlnTask* task)
 {
-    void* object = task->workData;
+    void* object = (void*)task;
     void* transition = GS_PTR(object, 0x70);
     u32 alpha = GS_U8(transition, 0x40);
     s32 frame = GS_S32(object, 0x18);
@@ -1264,7 +1281,7 @@ void func_0018c780(KwlnTask* task)
 // FUN_0018CE50 NONMATCHING
 void func_0018ce50(KwlnTask* task)
 {
-    void* object = task->workData;
+    void* object = (void*)task;
     void* transition = GS_PTR(object, 0x70);
     void* sprite;
     GsSprite* node;
@@ -1293,7 +1310,7 @@ void func_0018ce50(KwlnTask* task)
 // FUN_0018D320 NONMATCHING
 void func_0018d320(KwlnTask* task)
 {
-    void* object = task->workData;
+    void* object = (void*)task;
     void* transition = GS_PTR(object, 0x70);
     void* sprite;
     GsSprite* node;
@@ -1377,9 +1394,8 @@ void func_0018d320(KwlnTask* task)
 // FUN_0018DB20 NONMATCHING
 void* func_0018db20(KwlnTask* task)
 {
-    u8* object = (u8*)task->workData;
+    u8* object = (u8*)task;
     void* transition = GS_PTR(object, 0x70);
-    if (func_0018b700(transition) != 0 && GS_U32(object, 0x24) != 0)
     {
         switch (GS_S32(object, 0xc))
         {
