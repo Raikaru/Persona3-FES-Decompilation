@@ -87,12 +87,15 @@ void FUN_00251060(void)
 }
 
 // FUN_002510D0 NONMATCHING
+#pragma push
+#pragma opt_loop_invariants on
 void FUN_002510d0(void)
 {
     BpTutWork* work;
-    u32 value;
     u32 result;
+    s32 value;
     s16 flags[4];
+    u32 value2;
 
     if (sBpTut654 == NULL) {
         FUN_0019d3f0(DAT_0068e9c0, 0x39);
@@ -150,9 +153,9 @@ void FUN_002510d0(void)
                         FUN_003c7650(1);
                         value = work->type;
                         switch (value) {
-                        case 3:
-                        case 2:
                         case 0:
+                        case 2:
+                        case 3:
                             switch (value) {
                             case 0:
                                 FUN_003c7430();
@@ -164,8 +167,8 @@ void FUN_002510d0(void)
                                 FUN_003c7430(0x12);
                                 break;
                             }
-                            value = work->type;
-                            switch (value) {
+                            value2 = work->type;
+                            switch (value2) {
                             case 0:
                                 FUN_003c74e0();
                                 break;
@@ -216,9 +219,9 @@ void FUN_002510d0(void)
                         FUN_003c7650(1);
                         value = work->type;
                         switch (value) {
-                        case 3:
-                        case 2:
                         case 0:
+                        case 2:
+                        case 3:
                             switch (value) {
                             case 0:
                                 FUN_003c7430();
@@ -230,8 +233,8 @@ void FUN_002510d0(void)
                                 FUN_003c7430(0x12);
                                 break;
                             }
-                            value = work->type;
-                            switch (value) {
+                            value2 = work->type;
+                            switch (value2) {
                             case 0:
                                 FUN_003c74e0();
                                 break;
@@ -339,6 +342,7 @@ void FUN_002510d0(void)
         }
     }
 }
+#pragma pop
 
 // FUN_002518B0
 
