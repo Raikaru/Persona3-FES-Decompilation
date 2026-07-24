@@ -440,8 +440,12 @@ void func_002f05f0(BtlAction *action)
     BtlPacket* effectPacket;
     void* object;
     void* file;
-    BtlUnit* units[3];
-    RwV3d position;
+    struct {
+        u8 pad[0x20];
+        RwV3d position;
+        u32 gap;
+        BtlUnit* units[3];
+    } scratch;
     u32 value0;
     u32 value1;
     u32 voiceData;
@@ -490,8 +494,8 @@ void func_002f05f0(BtlAction *action)
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 0);
 
-    FUN_002fddb0(action->unit, &position);
-    packet = FUN_002822b0_packet_voice(action->unit, &position, 0);
+    FUN_002fddb0(action->unit, &scratch.position);
+    packet = FUN_002822b0_packet_voice(action->unit, &scratch.position, 0);
     packet->unk_00 = 4;
     packet->parentUID = rootUID;
     packet->actionUID = actionUID;
@@ -535,7 +539,7 @@ void func_002f05f0(BtlAction *action)
         childId = *(u16*)((u8*)action + i * 2 + 0x76);
         voiceData = (u32)FUN_002ff540(*(u32*)(DAT_007ce3ec + 0xbbc), childId);
         childUnit = ((BtlAction*)FUN_00289650(1, childId, voiceData))->unit;
-        units[i] = childUnit;
+        scratch.units[i] = childUnit;
         FUN_002889c0(childUnit, childId);
 
         voicePacket = FUN_00285690_packet_voice(childUnit, childId, 0x17e);
@@ -553,13 +557,13 @@ void func_002f05f0(BtlAction *action)
         btlPacketRegister(packet, 1);
     }
 
-    FUN_00352c50((u32)units[0], (u32)units[1], (u32)units[2]);
+    FUN_00352c50((u32)scratch.units[0], (u32)scratch.units[1], (u32)scratch.units[2]);
     FUN_002b71e0();
-    position.x = 0.0f;
-    position.y = -1000.0f;
-    position.z = 0.0f;
+    scratch.position.x = 0.0f;
+    scratch.position.y = -1000.0f;
+    scratch.position.z = 0.0f;
     for (i = 0; i < 3; i++) {
-        FUN_0027f650((u32)units[i], &position);
+        FUN_0027f650((u32)scratch.units[i], &scratch.position);
     }
 
     packet = FUN_002bb2f0_packet_voice(*(u32*)(DAT_007ce3ec + 0xca8),
