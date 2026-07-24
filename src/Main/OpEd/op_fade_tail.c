@@ -339,11 +339,16 @@ u32* func_00279940(const u32* header)
     data = out = (u32*)(*DAT_00960178)(size, 0x40000);
     data += 5;
     out[2] = (u32)data;
-    cursor = (u32)(data + header[3]);
-    cursor = (cursor + 3) & ~3;
+    cursor = (u32)data + header[3] * 4;
+    if ((cursor & 3) != 0) {
+        cursor += 4 - (cursor & 3);
+    }
     out[3] = cursor;
     cursor += header[6];
-    out[4] = (cursor + 3) & ~3;
+    if ((cursor & 3) != 0) {
+        cursor += 4 - (cursor & 3);
+    }
+    out[4] = cursor;
     out[1] = header[3];
     out[0] = header[0];
     func_00521250((void*)out[3], (const u8*)header + header[5], header[6]);
