@@ -226,20 +226,10 @@ u64 FUN_004101b0(u64 param_1,int param_2)
 
     fVar7 = (float)(int)(short)puVar3[3];
 
-    fVar4 = fVar7;
-
-    if (2.1474836e+09f <= fVar7) {
-
-      fVar4 = fVar7 - 2.1474836e+09f;
-
-    }
-
-
-    iVar7 = (int)fVar4 & 0xff;
     FUN_0040e3f0_typed(0,DAT_007cadc0 *
-                   ((DAT_007caee8 * (float)*(u16 *)((int)puVar3 + 0x16 + ((iVar7 & 0xff) - iVar7))) / 65535.0f),fVar8,fVar8,
+                   ((DAT_007caee8 * (float)*(u16 *)((int)puVar3 + 0x16)) / 65535.0f),fVar8,fVar8,
 
-                 sVar1 - iVar5,sVar2 - iVar6,iVar7,0x56,0,iVar5,iVar6);
+                 sVar1 - iVar5,sVar2 - iVar6,(int)fVar7 & 0xff,0x56,0,iVar5,iVar6);
 
     fVar4 = fVar7;
 
