@@ -1417,20 +1417,11 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
 
   char cVar2;
-
   int *piVar3;
-
-
-
   int iVar6;
-
   int iVar11;
-
-
   s32 lVar8;
-
   int iVar9;
-
   f32 uVar10;
 
   
@@ -1449,10 +1440,12 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
 
     for (; lVar8 < *(short *)(&DAT_0069e420 + *piVar3 * 0xc);
 
-        lVar8 = (long)((int)lVar8 + 1)) {
+        lVar8 = lVar8 + 1) {
       int iVar5;
       s32 uVar7;
       s32 cVar1;
+      
+      
 
       cVar1 = *(char *)((int)(&DAT_0069e420 + *piVar3 * 0xc) + (int)lVar8 + 2);
 
@@ -1478,7 +1471,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
       case '\0':
         uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
         FUN_0038a260_f32_6(uVar10,iVar5,iVar6,uVar7,(void *)0x7ccd50,
-                           *(u16 *)(*(int *)(param_4 + 0x164) + 0x20));
+                           *(short *)(*(int *)(param_4 + 0x164) + 0x20));
         break;
 
       case '\x01': {
@@ -1512,7 +1505,7 @@ void FUN_0036fa80(int param_1,int param_2,int param_3,int param_4)
       case '\x03':
         uVar10 = FUN_0038a220(*(u32 *)(param_4 + 0xe0));
         FUN_0038a260_f32_6(uVar10,iVar5,iVar6,uVar7,(void *)0x7ccd50,
-                           *(u8 *)(*(int *)(param_4 + 0x164) + 0x22));
+                           *(char *)(*(int *)(param_4 + 0x164) + 0x22));
         break;
       }
 
