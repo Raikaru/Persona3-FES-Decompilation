@@ -327,8 +327,8 @@ extern u64 func_003b2cb0();
 extern u64 func_0045a430();
 extern u64 func_0045af40();
 extern u64 func_0045af70();
-extern u64 func_004bdde0();
-extern u64 func_004be1e0();
+extern void func_004bdde0(float angle, void *frame, const void *vector, u32 mode);
+extern void func_004be1e0(void *out, const void *in, s32 count, const void *matrix);
 extern u64 func_004c69f0();
 extern u64 func_004c6b20();
 extern u64 func_0051e0e0();
@@ -1406,25 +1406,10 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
 {
   u8 bVar1 = *(u8 *)(param_5 + 2);
   float fVar3 = 0.0f;
-  float origin[3] = {0.0f, 0.0f, 0.0f};
-  float originX;
-  float originY;
-  float originZ;
-  float targetX;
-  float targetY;
-  float targetZ;
-  float dx;
-  float dy;
-  float dz;
-  float distance = 0.0f;
-  float scale = 0.0f;
-  u32 uStack_20 = 0;
-  u32 uStack_1c = 0;
-  u32 uStack_18 = 0;
-  u32 uStack_14 = 0;
-  float fStack_10 = 0.0f;
-  float fStack_c = 0.0f;
-  float fStack_8 = 0.0f;
+  float fStack_10[4];
+  float uStack_20[4];
+  float vectorWork[4];
+  float origin[4];
   u8 *out = (u8 *)(u32)param_6;
 
   if (*(u8 *)(param_5 + 1) == 4) {
@@ -1447,40 +1432,81 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
   }
 
   if ((bVar1 == 10) || (bVar1 == 9)) {
+    float scale;
+    u32 scaleBits;
+
     func_003297a0(origin);
-    originX = origin[0];
-    originY = origin[1];
-    originZ = origin[2];
-    if (param_2 <= param_1) {
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf10, 0(%0)        \n"
+        ".set reorder"
+        :
+        : "r" (origin)
+        : "vf10", "memory"
+    );
+    if (param_1 >= param_2) {
       param_2 = param_1;
     }
-
-    targetX = *param_3;
-    targetZ = param_3[2];
+    scale = -param_2;
     if (bVar1 == 9) {
-      targetY = param_3[1];
+      origin[0] = *param_3;
+      origin[1] = param_3[1];
+      origin[2] = param_3[2];
     }
     else {
-      targetY = fVar3;
+      origin[0] = *param_3;
+      origin[1] = fVar3;
+      origin[2] = param_3[2];
     }
-
-    dx = targetX - originX;
-    dy = targetY - originY;
-    dz = targetZ - originZ;
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "lqc2 vf11, 0(%0)        \n"
+        "vsub.xyz vf11, vf11, vf10\n"
+        ".set reorder"
+        :
+        : "r" (origin)
+        : "vf11", "memory"
+    );
     if (bVar1 == 10) {
-      dy = 0.0f;
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "sqc2 vf11, 0(%0)        \n"
+          ".set reorder"
+          :
+          : "r" (vectorWork)
+          : "memory"
+      );
+      *(u32 *)&vectorWork[1] = 0;
+      __asm__ volatile (
+          ".set noreorder          \n"
+          "lqc2 vf11, 0(%0)        \n"
+          ".set reorder"
+          :
+          : "r" (vectorWork)
+          : "vf11", "memory"
+      );
     }
-
-    distance = sqrtf(dx * dx + dy * dy + dz * dz);
-    if (distance > 0.0f) {
-      scale = -param_2 / distance;
-      targetX += dx * scale;
-      targetY += dy * scale;
-      targetZ += dz * scale;
-    }
-    *(float *)(out) = targetX;
-    *(float *)(out + 4) = targetY;
-    *(float *)(out + 8) = targetZ;
+    __asm__ volatile (
+        ".set noreorder             \n"
+        "vmul.xyz vf2, vf11, vf11   \n"
+        "vmulax.w ACC, vf0, vf2x    \n"
+        "vmadday.w ACC, vf0, vf2y   \n"
+        "vmaddz.w vf2, vf0, vf2z    \n"
+        "vrsqrt Q, vf0w, vf2w       \n"
+        "vwaitq                     \n"
+        "vmulq.xyz vf11, vf11, Q    \n"
+        "mfc1 %0, %1                \n"
+        "nop                        \n"
+        "qmtc2.ni %0, vf2           \n"
+        "vmulx.xyzw vf11, vf11, vf2x\n"
+        "lqc2 vf10, 0(%2)           \n"
+        "vadd.xyzw vf10, vf10, vf11 \n"
+        "sqc2 vf10, 0(%3)           \n"
+        ".set reorder"
+        : "=r" (scaleBits)
+        : "f" (scale), "r" (origin), "r" (out)
+        : "vf2", "vf10", "vf11", "ACC", "Q", "memory"
+    );
   }
   else if (bVar1 == 8) {
     *(float *)out = *param_3;
@@ -1488,15 +1514,15 @@ void func_002b96f0(float param_1,float param_2,float *param_3,u32 *param_4,int p
     *(float *)(out + 8) = param_3[2];
   }
   else {
-    uStack_20 = *param_4;
-    uStack_1c = param_4[1];
-    uStack_18 = param_4[2];
-    uStack_14 = param_4[3];
-    func_004bdde0(*(u32 *)(&DAT_00696460 + (u32)bVar1 * 4),&uStack_20,0x697880,2);
-    func_004be1e0(&fStack_10,0x697890,1,&uStack_20);
-    *(float *)out = *param_3 + fStack_10 * param_1;
-    *(float *)(out + 4) = fVar3 + fStack_c * param_1;
-    *(float *)(out + 8) = param_3[2] + fStack_8 * param_1;
+    uStack_20[0] = *(float *)param_4;
+    uStack_20[1] = *((float *)param_4 + 1);
+    uStack_20[2] = *((float *)param_4 + 2);
+    uStack_20[3] = *((float *)param_4 + 3);
+    func_004bdde0(*(float *)(&DAT_00696460 + (u32)bVar1 * 4),uStack_20,(const void *)0x697880,2);
+    func_004be1e0(fStack_10,(const void *)0x697890,1,uStack_20);
+    *(float *)out = *param_3 + fStack_10[0] * param_1;
+    *(float *)(out + 4) = fVar3 + fStack_10[1] * param_1;
+    *(float *)(out + 8) = param_3[2] + fStack_10[2] * param_1;
   }
   *(u32 *)(out + 0xc) = 0;
 }
@@ -1816,7 +1842,7 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
   
   switch(*param_3) {
   case '\0':
-    func_004be1e0(afStack_10,0x697890,1,param_1 + 0x40);
+    func_004be1e0(afStack_10,(const void *)0x697890,1,(const void *)(param_1 + 0x40));
     if ((afStack_10[0] == 0.0f) && (fStack_8 == 0.0f)) {
       __asm__ volatile (
           ".set noreorder          \n"
