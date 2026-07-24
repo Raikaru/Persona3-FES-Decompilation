@@ -231,6 +231,7 @@ void opMenu0026dbd0(void)
     *sOpMenu |= 0x20;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0026A2C0 NONMATCHING
 void opMenu0026a2c0(void)
 {
@@ -513,6 +514,7 @@ void opMenu0026a2c0(void)
     for (i = 0; i < 4; i++)
         ((f32*)((u8*)work + 0xac0))[i] = (f32)color[i];
 }
+#pragma opt_loop_invariants off
 
 // FUN_0026C710
 void opMenu0026c710(void)
@@ -579,6 +581,7 @@ void opMenu0026c710(void)
     (*draw)(work + 0x204, 4, 0, 2, 3);
 }
 
+#pragma opt_loop_invariants on
 // FUN_0026CC90 NONMATCHING
 void opMenu0026cc90(void)
 {
@@ -649,7 +652,6 @@ void opMenu0026cc90(void)
                     4, 0, 1, 2);
             (*draw)((void*)((u8*)work + 0xb10 + i * 0x310),
                     4, 0, 2, 3);
-
             if (i == 0) id = 6;
             else if (i == 1) id = 7;
             else if (i == 2) id = 8;
@@ -660,7 +662,6 @@ void opMenu0026cc90(void)
                     4, 0, 1, 2);
             (*draw)((void*)((u8*)work + 0xc10 + i * 0x310),
                     4, 0, 2, 3);
-
             if (i == 0) id = 1;
             else if (i == 1) id = 3;
             else if (i == 2) id = 5;
@@ -695,7 +696,6 @@ void opMenu0026d430(void)
 {
     u32* work;
     void* atlas;
-    u8* camera;
     f32 layout[4];
     f32 inverseZ;
     void* frame;
@@ -706,8 +706,7 @@ void opMenu0026d430(void)
     K_ASSERT(sOpMenu != NULL, 0x87);
     work = sOpMenu;
     atlas = opResGetTitleSprite(0);
-    camera = (u8*)func_00198590();
-    inverseZ = 1.0f / *(f32*)(camera + 0x80);
+    inverseZ = 1.0f / *(f32*)((u8*)func_00198590() + 0x80);
 
     layout[0] = 0.0f;
     layout[1] = 0.0f;
@@ -755,12 +754,23 @@ void opMenu0026d430(void)
     for (i = 0; i < 4; i++)
     {
         item = (u32*)((u8*)work + 0xb00 + i * 0x310);
-        item[0] = i == 0 ? 0 : 8;
+        item[0] = i == work[0xaf8 / 4] ? 0 : 8;
         item[1] = 0;
-        if (i == 3) choice = 0x19;
-        else if (i == 2) choice = 4;
-        else if (i == 1) choice = 2;
-        else choice = 0;
+        switch (i)
+        {
+        case 0:
+            choice = 0;
+            break;
+        case 1:
+            choice = 2;
+            break;
+        case 2:
+            choice = 4;
+            break;
+        case 3:
+            choice = 0x19;
+            break;
+        }
         frame = func_0021cca0(atlas, choice);
         func_0021d3b0((u8*)item + 0x10, frame);
         if (i == 3) choice = 0x1a;
@@ -788,7 +798,7 @@ void opMenu0026d430(void)
     for (i = 0; i < 2; i++)
     {
         item = (u32*)((u8*)work + 0x1a60 + i * 0x310);
-        item[0] = i == 0 ? 0 : 8;
+        item[0] = i == work[0x1a50 / 4] ? 0 : 8;
         item[1] = 0;
         choice = i == 0 ? 0x1c : 0x1e;
         frame = func_0021cca0(atlas, choice);
@@ -823,3 +833,4 @@ void opMenu0026d430(void)
     opMenu0026dc70();
     work[0] |= 1;
 }
+#pragma opt_loop_invariants off
