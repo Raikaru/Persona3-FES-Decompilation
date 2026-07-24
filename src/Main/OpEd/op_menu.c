@@ -244,6 +244,7 @@ void opMenu0026a2c0(void)
     f32 pulse;
     f32 scale;
     f32 rect[6];
+    f32* p;
     s32 i;
     s32 count;
     u32 base;
@@ -483,20 +484,10 @@ void opMenu0026a2c0(void)
             fGpffff809c * func_0052e878(angle);
     scale = fGpffff83a4 +
             fGpffff809c * func_0052e878(angle);
-    for (i = 0; i < 3; i++)
+    for (p = rect; p != rect + 6; p += 2)
     {
-        rect[i * 2] -= fGpffff83a4;
-        rect[i * 2 + 1] -= 448.0f;
-    }
-    for (i = 0; i < 3; i++)
-    {
-        rect[i * 2] *= pulse;
-        rect[i * 2 + 1] *= scale;
-    }
-    for (i = 0; i < 3; i++)
-    {
-        rect[i * 2] += fGpffff83a4;
-        rect[i * 2 + 1] += 448.0f;
+        p[0] = (p[0] - fGpffff83a4) * pulse + fGpffff83a4;
+        p[1] = (p[1] - 448.0f) * scale + 448.0f;
     }
     ((f32*)((u8*)work + 0xa20))[0] = rect[0];
     ((f32*)((u8*)work + 0xa20))[1] = rect[1];
