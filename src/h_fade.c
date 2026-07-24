@@ -124,7 +124,7 @@ void H_Fade_Clear()
 }
 
 #pragma opt_loop_invariants on
-// FUN_001071f0 NONMATCHING
+// FUN_001071f0 MATCHING
 static void H_Fade_Anim()
 {
     RwIm2DVertex vertices[4];
@@ -165,7 +165,7 @@ static void H_Fade_Anim()
                 H_Maestro_RequestDraw(sMaestroOutTask);
                 sFadeState = HFADE_STATE_OUT;
             }
-            break;
+            goto anim_return;
 
         case HFADE_STATE_OUT:
             if (H_Maestro_00111cb0(sMaestroOutTask))
@@ -178,9 +178,9 @@ static void H_Fade_Anim()
                     sMaestroOutTask = NULL;
                 }
             }
-            break;
+            goto anim_return;
 
-        case HFADE_STATE_HOLD: break;
+        case HFADE_STATE_HOLD: goto anim_render;
         
         case HFADE_STATE_INIT_IN: 
             switch (sFadeType)
@@ -200,14 +200,17 @@ static void H_Fade_Anim()
             }
             H_Maestro_SetShouldLoop(sMaestroInTask, false);
             sFadeState = HFADE_STATE_MAESTROIN;
-            break;
+            goto anim_render;
 
         case HFADE_STATE_IN:
-            if (kwlnTaskGetState(sMaestroInTask) == KWLNTASK_STATE_DESTROY)
+            if (kwlnTaskGetState(sMaestroInTask) != KWLNTASK_STATE_DESTROY)
             {
-                sFadeActive = false;
-                sMaestroInTask = NULL;
+                goto anim_in_return;
             }
+            sFadeActive = false;
+            sMaestroInTask = NULL;
+
+anim_in_return:
             return;
 
         case HFADE_STATE_MAESTROIN:
@@ -223,11 +226,15 @@ static void H_Fade_Anim()
 
                 sFadeState = HFADE_STATE_IN;
             }
-            break;
+            goto anim_render;
 
-        default: return;
+        default: goto anim_return;
     }
 
+anim_return:
+    return;
+
+anim_render:
     recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
     red = 15.0f;
     green = 31.0f;
