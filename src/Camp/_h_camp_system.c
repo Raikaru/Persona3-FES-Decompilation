@@ -361,6 +361,14 @@ extern void *uGpffffb260;
 extern void *uGpffffb264;
 extern void *uGpffffb268;
 extern u32 DAT_00833b78;
+#pragma alias DAT_00833a50_abs DAT_00833a50
+extern u8 DAT_00833a50_abs[];
+#pragma alias DAT_00833a54_abs DAT_00833a54
+extern u8 DAT_00833a54_abs[];
+#pragma alias DAT_00833a58_abs DAT_00833a58
+extern u8 DAT_00833a58_abs[];
+#pragma alias DAT_00833b78_abs DAT_00833b78
+extern u8 DAT_00833b78_abs[];
 extern void *DAT_00833a50;
 extern void *DAT_00833a54;
 extern void *DAT_00833a58;
@@ -446,8 +454,9 @@ extern void FUN_0011DA80(u32 arg0, void *object);
 extern void FUN_00121DE0(void *object, u32 arg1);
 extern void FUN_00122710(void *object, u32 arg1);
 extern s32 FUN_0011E380(void *object, u32 arg1);
-extern void FUN_0011BBA0(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4);
-extern void FUN_00114450(u32 arg0, f32 arg1, f32 arg2, u64 arg3, u32 arg4, u32 arg5, u32 arg6);
+extern void FUN_0011BBA0(f32 arg0, f32 arg1, f32 arg2, s32 arg3, s32 arg4);
+extern void FUN_00114450(f32 arg0, f32 arg1, f32 arg2, s32 arg3,
+                         u32 arg4, u32 arg5, u32 arg6);
 extern void FUN_0011ABD0(u32 count, u32 visible, void *first, void *selected);
 extern u8 FUN_0016C470(u16 arg0);
 extern u64 FUN_0016C970(u16 arg0);
@@ -1762,7 +1771,8 @@ void *FUN_00160800(KwlnTask *task)
     KwlnTask *otherTask;
     void *entryPool;
     void *entry;
-    void *sprite;
+    CampD8Object *sprite;
+    void *ready;
     u32 temp;
     u16 inputLatch;
     u16 itemId;
@@ -1778,28 +1788,37 @@ void *FUN_00160800(KwlnTask *task)
     u32 value;
     u32 value2;
     u32 fadedAlpha;
+    f32 verticalOffset;
     f32 displacement;
-    u64 spriteHandle;
 
     work = (CampDrawWork *)camp_draw_ptr32((u32)(uintptr_t)task->workData);
     switch (work->state) {
     case 0:
         uGpffffb29c = 0;
-        if (camp_other_screen_ready() != 0) {
-            FUN_00114450(0x42cc0000, 0, 0xc2ae0000,
-                         UINT64_C(0xffffffffffffffff), 0x4fa4ff19, 0x280, 0x280);
+        if (iGpffffb270 == NULL) {
+            ready = NULL;
+        } else {
+            ready = iGpffffb270->workData;
+            if (*(u32 *)ready != 3) {
+                ready = NULL;
+            } else {
+                ready = *(void **)((u8 *)ready + 0x0c);
+            }
         }
-        FUN_0011BBA0(0, 0, 0x42cc0000, 0, 0);
-        spriteHandle = FUN_001158B0(0, (void *)(uintptr_t)DAT_00833b78, 0);
-        sprite = (void *)(uintptr_t)spriteHandle;
+        if (ready != NULL) {
+            FUN_00114450(102.0f, 0.0f, -87.0f, -1,
+                         0x4fa4ff19, 0x280, 0x280);
+        }
+        FUN_0011BBA0(0.0f, 0.0f, 102.0f, 0, 0);
+        sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
         camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
         camp_draw_store_u32(sprite, 0x10, 0x43d60000);
         camp_draw_store_u32(sprite, 0x14, 0x41d80000);
         camp_draw_store_u8(sprite, 0x18, 0);
         camp_draw_store_u16(sprite, 0x28, 0);
         camp_draw_store_u16(sprite, 0x2a, 0);
-        FUN_001127D0(spriteHandle, 1);
-        FUN_00115980(spriteHandle);
+        campD8SetSprite(sprite, 1);
+        campD8SubmitSprite(sprite);
         work->records = (u32)(uintptr_t)func_0018b6d0(0x3c);
         work->state = 1;
         work->partyIds[0] = 1;
@@ -1822,29 +1841,38 @@ void *FUN_00160800(KwlnTask *task)
                     displacement = (f32)(((i - 3) * 400) / 5);
                     fade = (s16)(((i - 3) * 0xff) / 5);
                 } else {
-                    displacement = 0.0f;
+                    verticalOffset = 0.0f;
                 }
-                if (camp_other_screen_ready() != 0) {
+                if (iGpffffb270 == NULL) {
+                    ready = NULL;
+                } else {
+                    ready = iGpffffb270->workData;
+                    if (*(u32 *)ready != 3) {
+                        ready = NULL;
+                    } else {
+                        ready = *(void **)((u8 *)ready + 0x0c);
+                    }
+                }
+                if (ready != NULL) {
                     fadedAlpha = 0xffU - (s32)fade;
                     value2 = fadedAlpha;
                     if (fadedAlpha > 0x18) {
                         value2 = 0x19;
                     }
-                    FUN_00114450(0x42cc0000, displacement, 0xc2ae0000,
+                    FUN_00114450(102.0f, displacement, verticalOffset - 87.0f,
                                  fadedAlpha | 0xffffff00U,
                                  value2 | 0x4fa4ff00U, 0x280, 0x280);
                 }
-                FUN_0011BBA0(0, 0, 0x42cc0000, fade, 0);
-                spriteHandle = FUN_001158B0(0, (void *)(uintptr_t)DAT_00833b78, 0);
-                sprite = (void *)(uintptr_t)spriteHandle;
+                FUN_0011BBA0(0.0f, 0.0f, 102.0f, fade, 0);
+                sprite = campD8MakeSprite(0, *(void **)DAT_00833b78_abs, 0);
                 camp_draw_store_u32(sprite, 0x2c, 0x42ca0000);
                 camp_draw_store_f32(sprite, 0x10, displacement + 428.0f);
-                camp_draw_store_u32(sprite, 0x14, 0x41d80000);
+                camp_draw_store_f32(sprite, 0x14, verticalOffset + 27.0f);
                 camp_draw_store_u8(sprite, 0x18, (u8)fade);
                 camp_draw_store_u16(sprite, 0x28, 0);
                 camp_draw_store_u16(sprite, 0x2a, 0);
-                FUN_001127D0(spriteHandle, 1);
-                FUN_00115980(spriteHandle);
+                campD8SetSprite(sprite, 1);
+                campD8SubmitSprite(sprite);
                 if (i == 0) {
                     otherTask = iGpffffb26c;
                     entry = camp_draw_ptr32((u32)(uintptr_t)otherTask->workData);
@@ -1866,16 +1894,16 @@ void *FUN_00160800(KwlnTask *task)
             work->archive0 = (u32)(uintptr_t)FUN_00112420(FUN_00102100(camp_draw_ptr32(work->imageArchive), 0, &temp));
             work->archive1 = (u32)(uintptr_t)FUN_00112420(FUN_00102100(camp_draw_ptr32(work->imageArchive), 1, &temp));
             work->archive2 = (u32)(uintptr_t)FUN_00112420(FUN_00102100(camp_draw_ptr32(work->imageArchive), 2, &temp));
-            entryPool = (*DAT_00960184)(1, 0x7f0, 0x40000);
+            entryPool = (*DAT_00960184_abs)(1, 0x7f0, 0x40000);
             for (i = 0; i < 100; ++i) {
                 camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x0c, 0);
                 camp_draw_store_u32((u8 *)entryPool + i * 0x14, 0x10, 0);
             }
             work->entryPool = camp_draw_addr32(entryPool);
             FUN_0015C840(entryPool);
-            DAT_00833a50 = camp_draw_ptr32(work->archive0);
-            DAT_00833a54 = camp_draw_ptr32(work->archive1);
-            DAT_00833a58 = camp_draw_ptr32(work->archive2);
+            *(void **)DAT_00833a50_abs = camp_draw_ptr32(work->archive0);
+            *(void **)DAT_00833a54_abs = camp_draw_ptr32(work->archive1);
+            *(void **)DAT_00833a58_abs = camp_draw_ptr32(work->archive2);
             work->state = 3;
         }
         break;
@@ -1916,7 +1944,6 @@ void *FUN_00160800(KwlnTask *task)
     case 6:
         allDone = 1;
         for (i = 0; i < 0x3c; ++i) {
-            inputLatch = DAT_00836ba8;
             record = &camp_draw_state_records(work)[i];
             if (record->active != 0) {
                 if (func_0018b700(record) != 0) {
@@ -1939,15 +1966,16 @@ void *FUN_00160800(KwlnTask *task)
                 itemBase = (s32)camp_draw_load_u32(entryPool, 0x7e4);
                 if (itemIndex < itemCount) {
                     entry = (u8 *)entryPool + (itemIndex + itemBase) * 0x14;
-                    value = camp_draw_load_u32(entry, 0x0c) & 0xffff;
+                    value = camp_draw_load_u32(entry, 0x0c);
+                    inputLatch = DAT_00836ba8;
                     FUN_00175200(camp_draw_load_u16(entry, 0x14));
-                    itemResult = FUN_0017B480(value);
-                    if (itemResult == 2 || FUN_0017B660(1, value) != 0 ||
-                        FUN_0017b4e0(value) != 1) {
+                    itemResult = FUN_0017B480((u16)value);
+                    if (itemResult == 2 || FUN_0017B660(1, (u16)value) != 0 ||
+                        FUN_0017B4E0((u16)value) != 1) {
                         FUN_0010a4e0(0, 0, 0, 8);
                     } else {
                         FUN_0010a4e0(0, 0, 0);
-                        work->selectedKind = (s16)FUN_0017bb40(value);
+                        work->selectedKind = (s16)FUN_0017BB40((u16)value);
                         if (work->selectedKind != 3) {
                             if (work->selectedKind == 0) {
                                 work->cursor = 0;
@@ -2054,7 +2082,7 @@ void *FUN_00160800(KwlnTask *task)
                 itemId = (u16)(camp_draw_load_u32(entry, 0x0c) & 0xffff);
                 if (work->selectedKind == 0) {
                     value = (u32)work->partyIds[work->cursor];
-                    if (FUN_001C7CE0(value) == 0 ||
+                    if (campC520NearHero(value) == 0 ||
                         FUN_0017BC20(1, (s16)value, itemId, 0) != 0) {
                         FUN_0010a4e0(0, 0, 0, 8);
                     } else {
@@ -2066,7 +2094,7 @@ void *FUN_00160800(KwlnTask *task)
                     hasInput = 0;
                     for (j = 0; j < work->partyCount; ++j) {
                         value = (u32)work->partyIds[j];
-                        if (FUN_001C7CE0(value) != 0 &&
+                        if (campC520NearHero(value) != 0 &&
                             FUN_0017BC20(1, (s16)value, itemId, 0) == 0) {
                             hasInput = 1;
                         }
