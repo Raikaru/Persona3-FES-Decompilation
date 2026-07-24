@@ -1644,101 +1644,59 @@ void FUN_003c9fb0(void)
 
 
 void FUN_003c9fe0(int *param_1)
-
-
-
 {
-
   int iVar1;
-
   int iVar2;
-
   u32 uVar3;
-
-  u8 auStack_4 [4];
-
-  
+  u8 auStack_4[4];
 
   iVar2 = param_1[0x32];
-
-  FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x718);
-
+  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x718);
   FUN_005225a8(0x6a4130);
-
   FUN_001052b0(0x6a4130);
-
   FUN_00119a20();
-
-  FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x71a);
-
+  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x71a);
   FUN_005225a8(0x6a4150);
-
   FUN_001052b0(0x6a4150);
 
   uVar3 = FUN_00102100(iVar2,0,auStack_4);
-
   uVar3 = FUN_00112420(uVar3);
-
   FUN_00119a80(6,uVar3);
-
   uVar3 = FUN_00102100(iVar2,1,auStack_4);
-
   uVar3 = FUN_00112420(uVar3);
-
   FUN_00119a80(8,uVar3);
-
   uVar3 = FUN_00102100(iVar2,2,auStack_4);
-
   uVar3 = FUN_00112420(uVar3);
-
   FUN_00119a80(10,uVar3);
-
   uVar3 = FUN_00102100(iVar2,3,auStack_4);
-
   iVar1 = FUN_00112420(uVar3);
-
   param_1[0x34] = iVar1;
 
   iVar1 = *param_1;
-
-  if ((iVar1 == 4) || (iVar1 == 2)) {
-
+  switch (iVar1) {
+  case 0:
+  case 1:
     uVar3 = FUN_00102100(iVar2,4,auStack_4);
-
     iVar2 = FUN_00112420(uVar3);
-
+    param_1[0x35] = iVar2;
+    break;
+  case 3:
+    uVar3 = FUN_00102100(iVar2,4,auStack_4);
+    iVar2 = FUN_00112420(uVar3);
+    param_1[0x35] = iVar2;
+    break;
+  case 2:
+  case 4:
+    uVar3 = FUN_00102100(iVar2,4,auStack_4);
+    iVar2 = FUN_00112420(uVar3);
     param_1[0x36] = iVar2;
-
+    break;
   }
 
-  else if (iVar1 == 3) {
-
-    uVar3 = FUN_00102100(iVar2,4,auStack_4);
-
-    iVar2 = FUN_00112420(uVar3);
-
-    param_1[0x35] = iVar2;
-
-  }
-
-  else if ((iVar1 == 1) || (iVar1 == 0)) {
-
-    uVar3 = FUN_00102100(iVar2,4,auStack_4);
-
-    iVar2 = FUN_00112420(uVar3);
-
-    param_1[0x35] = iVar2;
-
-  }
-
-  FUN_005225a8(&gp0xffffaa08,0x6a3e18,0x730);
-
+  FUN_005225a8(&gp0xffffaa08,DAT_006a3e18_abs,0x730);
   FUN_005225a8(0x6a4170);
-
   FUN_001052b0(0x6a4170);
-
   return;
-
 }
 #define FUN_003c9fe0(...) ((void (*)(...))FUN_003c9fe0)(__VA_ARGS__)
 #undef FUN_003ca230
