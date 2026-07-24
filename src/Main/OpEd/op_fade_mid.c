@@ -1093,9 +1093,12 @@ void func_002771f0(void)
     func_0021d950(workB + 0x3b70, color);
 }
 
+#define D_00960090 (*state)
+#define D_0096009C (*quad)
 // FUN_00278550 NONMATCHING
 void func_00278550(void)
 {
+    code *state;
     u8 *work;
     u32 tex8;
     u32 tex10;
@@ -1110,8 +1113,9 @@ void func_00278550(void)
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);
     tex1 = brRes00234630(1);
-    if ((*gOpWorkD0 & 1) == 0 || (*gOpWorkD0 & 0x40) != 0)
+    if ((OP_U32(work, 0) & 1) == 0 || (OP_U32(work, 0) & 0x40) != 0)
         return;
+    state = (code *)&D_00960090_abs;
     D_00960090(0x14, 2);
     D_00960090(8, 0);
     D_00960090(6, 0);
@@ -1119,8 +1123,9 @@ void func_00278550(void)
     D_00960090(0xe, 0);
     D_00960090(7, 2);
     D_00960090(0xc, 1);
-    if ((*gOpWorkD0 & 0x20) != 0)
+    if ((OP_U32(work, 0) & 0x20) != 0)
     {
+        code *quad;
         frame = func_0021cca0(tex1, 2);
         func_0021d3b0(vertices, frame);
         rect[0] = 302.0f;
@@ -1130,25 +1135,30 @@ void func_00278550(void)
         func_0021d8e0(vertices, rect);
         D_00960090(1, func_0021cce0(frame));
         D_0096009C(vertices, 4, 0, 1, 2);
+        quad = (code *)&D_0096009C_abs;
         D_0096009C(vertices, 4, 0, 2, 3);
     }
     for (i = 0; i < 8; i++)
     {
+        code *quad;
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = opTexFrame(tex8, 0x12);
         D_00960090(1, frame);
+        quad = (code *)&D_0096009C_abs;
         D_0096009C(work + (7 - i) * 0x44 + 4, 4, 0, 1, 2);
         D_0096009C(work + (7 - i) * 0x44 + 4, 4, 0, 2, 3);
     }
-    for (i = 0; i < (s32)gOpWorkD0[0xdce]; i++)
-        func_003b1360(gOpWorkD0[i * 0x44 / 4 + 0x44], 1, 0);
-    if ((*gOpWorkD0 & 2) != 0)
+    for (i = 0; i < OP_S32(work, 0x3738); i++)
+        func_003b1360(OP_U32(work, i * 0x44 + 0x110), 1, 0);
+    if ((OP_U32(work, 0) & 2) != 0)
     {
+        code *quad;
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = opTexFrame(tex8, 0x15);
         D_00960090(1, frame);
+        quad = (code *)&D_0096009C_abs;
         D_0096009C(work + 0xb4c, 4, 0, 1, 2);
         D_0096009C(work + 0xb4c, 4, 0, 2, 3);
         D_0096009C(work + 0xb8c, 4, 0, 1, 2);
@@ -1169,8 +1179,8 @@ void func_00278550(void)
         D_00960090(1, func_0021cce0(func_0021cca0(tex1, 0)));
         D_0096009C(work + 0xe98, 4, 0, 1, 2);
         D_0096009C(work + 0xe98, 4, 0, 2, 3);
-        func_003b1360(gOpWorkD0[0xe54], 1, 0);
-        for (i = 0; i < (s32)gOpWorkD0[0xdcc]; i++)
+        func_003b1360(OP_U32(work, 0x3950), 1, 0);
+        for (i = 0; i < OP_S32(work, 0x3730); i++)
         {
             func_004d7f60(3, 0x717fb);
             func_004d7f60(2, 0x44);
@@ -1190,10 +1200,12 @@ void func_00278550(void)
     }
     for (i = 0; i < 5; i++)
     {
+        code *quad;
         func_004d7f60(3, 0x717fb);
         func_004d7f60(2, 0x44);
         frame = opTexFrame(tex10, 0x14);
         D_00960090(1, frame);
+        quad = (code *)&D_0096009C_abs;
         D_0096009C(work + i * 0x1c8 + 0x32c, 4, 0, 1, 2);
         D_0096009C(work + i * 0x1c8 + 0x32c, 4, 0, 2, 3);
         D_0096009C(work + i * 0x1c8 + 0x36c, 4, 0, 1, 2);
@@ -1215,7 +1227,7 @@ void func_00278550(void)
         D_00960090(1, opTexFrame(tex10, 0x18));
         D_0096009C(work + i * 0x1c8 + 0x2ac, 4, 0, 1, 2);
         D_0096009C(work + i * 0x1c8 + 0x2ac, 4, 0, 2, 3);
-        if ((*gOpWorkD0 & 8) != 0)
+        if ((OP_U32(work, 0) & 8) != 0)
         {
             func_004d7f60(3, 0x717fb);
             func_004d7f60(2, 0x44);
@@ -1224,14 +1236,18 @@ void func_00278550(void)
             D_0096009C(work + i * 0x1c8 + 0x2ec, 4, 0, 2, 3);
         }
     }
-    if ((*gOpWorkD0 & 0x20) != 0)
+    if ((OP_U32(work, 0) & 0x20) != 0)
     {
+        code *quad;
         if (DAT_007cc4dc != -1)
             func_003c7e20(0, 0x13c, 0x100, (u64)-1, 1, 6, 3);
         D_00960090(1, func_0021cce0(func_0021cca0(tex1, 0)));
         func_004d7f60(3, 0x71801);
         func_004d7f60(2, 0x48);
+        quad = (code *)&D_0096009C_abs;
         D_0096009C(work + 0xedc, 4, 0, 1, 2);
         D_0096009C(work + 0xedc, 4, 0, 2, 3);
     }
 }
+#undef D_00960090
+#undef D_0096009C
