@@ -4461,9 +4461,9 @@ void* func_001193d0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-static inline void MaestroEffectRequestFiles(MaestroPerEffectWork* work)
+static inline void MaestroEffectRequestFiles(
+    MaestroPerEffectWork* work, char* path)
 {
-    char path[0x100];
     s32 i;
 
     work->effectCount = 0;
@@ -4596,12 +4596,12 @@ static inline void MaestroEffectLoadRecords(KwlnTask* task, MaestroPerEffectWork
     work->state = 2;
 }
 
-static inline void MaestroEffectStartStreams(KwlnTask* task, MaestroPerEffectWork* work)
+static inline void MaestroEffectStartStreams(
+    KwlnTask* task, MaestroPerEffectWork* work, char* path)
 {
     s16 dimensions[4];
     u32 size;
     u32 scenario;
-    char path[0x100];
 
     scenario = datGetScenarioMode();
     if (scenario != 0)
@@ -4839,12 +4839,8 @@ void* func_00117540(KwlnTask* task)
     s32 j;
     s32 frame;
     s32 segment;
+    char path[0x100];
     s32 radius;
-    f32 points[4][2];
-    u64 point0;
-    u64 point1;
-    u64 point2;
-    u64 point3;
 
     work = (MaestroPerEffectWork*)task->workData;
     kwlnGetMainCamera();
@@ -4860,7 +4856,7 @@ void* func_00117540(KwlnTask* task)
     switch (work->state)
     {
     case 0:
-        MaestroEffectRequestFiles(work);
+        MaestroEffectRequestFiles(work, path);
         work->state = 1;
         break;
     case 3:
@@ -4878,7 +4874,7 @@ void* func_00117540(KwlnTask* task)
         if (ready)
         {
             MaestroEffectLoadRecords(task, work);
-            MaestroEffectStartStreams(task, work);
+            MaestroEffectStartStreams(task, work, path);
         }
         break;
     case 2:
@@ -5019,8 +5015,14 @@ void* func_00117540(KwlnTask* task)
                 segment -= 30;
                 if (segment >= 0x29)
                     return KWLNTASK_STOP;
-                radius = segment * 36;
-                for (i = 0; i < 24; i++)
+                {
+                    f32 points[4][2];
+                    u64 point0;
+                    u64 point1;
+                    u64 point2;
+                    u64 point3;
+                    radius = segment * 36;
+                    for (i = 0; i < 24; i++)
                 {
                     f32 angle0;
                     f32 angle1;
@@ -5048,8 +5050,9 @@ void* func_00117540(KwlnTask* task)
                                   point0, point1, point2, point3,
                                   0xff, 0xff, 0xff, 0xff);
                 }
+                }
+                }
             }
-        }
         work->frame = frame + 1;
         for (i = 0; i < 3; i++)
         {
