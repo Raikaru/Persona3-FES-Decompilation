@@ -490,7 +490,7 @@ void *FUN_0015B430(KwlnTask *task)
     /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
     FUN_00113a30(100.0f, 0.0f, 20.0f,
                  ((work->fadeStep * 0xffu) / 10u) | 0x72b5ff00u,
-                 0x280, 0x19);
+                 0x280, 0x19a);
 
     switch (work->state) {
     case 0:
@@ -506,19 +506,19 @@ void *FUN_0015B430(KwlnTask *task)
 
         if (FUN_0017d800() != 0) {
             work->request = camp_menu_address(FUN_0010c1a0(
-                0, (const char *)(D_005E3E70 - 0x81f0), 0, 0, 0, 0, 0, 0));
+                0, (const char *)(D_005E3E70 - 0x8e20), 0, 0, 0, 0, 0, 0));
         } else {
             work->request = camp_menu_address(FUN_0010c1a0(
-                0, CAMP_MENU_CONST_PTR(0x005db050), 0, 0, 0, 0, 0, 0));
+                0, (const char *)(D_005E3E70 - 0x8dd0), 0, 0, 0, 0, 0, 0));
         }
         work->allocation10 = camp_menu_address(func_0018b6d0(10));
         work->entriesAddress = camp_menu_address(func_0018b6d0(CAMP_MENU_ENTRY_COUNT));
         work->cdvdMain = camp_menu_address(FUN_00100d80(
-            (const char *)(D_005E3E70 - 0x81d0), 0));
+            CAMP_MENU_CONST_PTR(0x0059bca0), 0));
         work->cdvdStatus = camp_menu_address(FUN_00100d80(
-            (const char *)(D_005E3E70 - 0x81b0), 0));
+            CAMP_MENU_CONST_PTR(0x0059bcc0), 0));
         work->cdvdSystem = camp_menu_address(FUN_00100d80(
-            (const char *)(D_005E3E70 - 0x8190), 1));
+            CAMP_MENU_CONST_PTR(0x0059bce0), 1));
         work->state = 1;
         break;
 
@@ -540,10 +540,10 @@ void *FUN_0015B430(KwlnTask *task)
             FUN_003c7d80(0x08,
                 *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 0,
-                                    &stackScratch[1]);
+                                    &stackScratch[0x22]);
             work->archiveBlob0 = camp_menu_address(FUN_00112420(fileData));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 1,
-                                    &stackScratch[1]);
+                                    &stackScratch[0x22]);
             work->archiveBlob1 = camp_menu_address(FUN_00112420(fileData));
             work->state = 2;
         }
@@ -558,31 +558,31 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 6:
         work->selectedPanel = 0;
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x000),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
                      0, 2, 1, UINT64_C(0xc3c0800041a80000),
                      UINT64_C(0x4357000041a80000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x044),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
                      0, 2, 1, UINT64_C(0xc3a90000424c0000),
                      UINT64_C(0x43830000424c0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x088),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
                      0, 2, 1, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x0cc),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
                      0, 2, 1, UINT64_C(0xc3fe000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x110),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
                      0, 2, 1, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x154),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
                      0, 2, 1, UINT64_C(0xc3fe000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x198),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
                      0, 2, 1, UINT64_C(0x42ba000043938000),
                      UINT64_C(0x42ba000042be0000), 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x1a4c),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
                      0, 2, 1, UINT64_C(0x43c0800043c40000),
                      UINT64_C(0x43c0800043c40000), 0, 0);
         work->entriesReady = 0;
@@ -705,29 +705,29 @@ void *FUN_0015B430(KwlnTask *task)
                               work->panelFlags);
             }
         }
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x000),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
                      0, 2, 2, UINT64_C(0x4357000041a80000),
                      UINT64_C(0x444bc00041a80000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x044),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
                      0, 2, 2, UINT64_C(0x43830000424c0000),
                      UINT64_C(0x44578000424c0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x088),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
                      0, 2, 2, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x42b8000042ae0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x0cc),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
                      0, 2, 2, UINT64_C(0x42b8000042ae0000),
                      UINT64_C(0x442d000042ae0000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x110),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
                      0, 2, 2, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x42b8000043c20000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x154),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
                      0, 2, 2, UINT64_C(0x42b8000043c20000),
                      UINT64_C(0x442d000043c20000), 0, 0);
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x198),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
                      0, 2, 2, UINT64_C(0x42ba000042be0000),
                      UINT64_C(0x42ba000042be0000), 0, 0);
         work->state = 10;
-        FUN_0018bc10(0x42c80000, camp_menu_record(work, 0x1a4c),
+        FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
                      0, 2, 2, UINT64_C(0x43c0800043c40000),
                      UINT64_C(0x43c0800043c40000), 0, 0);
         break;
