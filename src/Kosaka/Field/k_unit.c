@@ -584,6 +584,7 @@ void func_001ce880(void)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_001CE960 NONMATCHING
 u32 func_001ce960(void)
 {
@@ -785,6 +786,7 @@ u32 func_001ce960(void)
     func_004c3880(reference);
     return true;
 }
+#pragma opt_loop_invariants off
 // FUN_001CF940 NONMATCHING
 FldUnit* func_001cf940(u32 encounter, void* unitData)
 {
@@ -1163,6 +1165,7 @@ static void FldUnit_InitPcUnit(FldUnit* unit, u16 charId, u8* modelNode)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_001d03f0 NONMATCHING
 void func_001d03f0(u16 charId)
 {
@@ -1268,6 +1271,7 @@ void func_001d03f0(u16 charId)
         }
     }
 }
+#pragma opt_loop_invariants off
 
 static RwV3d* FldUnit_NodePos(u8* node)
 {
@@ -1345,6 +1349,7 @@ done:
     return spawned;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001d0880 NONMATCHING
 u8* func_001d0880(s32 ordinal, s32 targetCount)
 {
@@ -1434,6 +1439,7 @@ u8* func_001d0880(s32 ordinal, s32 targetCount)
     }
     return NULL;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001d0bc0 NONMATCHING
 void func_001d0bc0(void* output, u32 count)
@@ -1615,6 +1621,7 @@ u32 func_001d12d0(void)
     return 1;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001d1360 NONMATCHING
 void func_001d1360(void)
 {
@@ -1663,7 +1670,7 @@ void func_001d1360(void)
     }
     func_001d2a10();
 }
-
+#pragma opt_loop_invariants off
 // FUN_001d1640 NONMATCHING
 void func_001d1640(FldUnit* unit, s32 destroyModel)
 {
@@ -1981,6 +1988,7 @@ void func_001d22a0(void* work)
     func_001d2a10();
 }
 
+#pragma opt_loop_invariants on
 // FUN_001d2300 NONMATCHING
 u8* func_001d2300(s32 ordinal, s32 maxCount)
 {
@@ -2056,7 +2064,9 @@ u8* func_001d2300(s32 ordinal, s32 maxCount)
     }
     return node;
 }
+#pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants on
 // FUN_001d2610 NONMATCHING
 void func_001d2610(void)
 {
@@ -2158,8 +2168,9 @@ void func_001d2610(void)
         func_001a0150(resourceId, 1);
     }
 }
+#pragma opt_loop_invariants off
 
-static s32 FldUnit_GridCoord(f32 value)
+static inline s32 FldUnit_GridCoord(f32 value)
 {
     s32 cell;
 
@@ -2171,6 +2182,7 @@ static s32 FldUnit_GridCoord(f32 value)
     return cell >> 2;
 }
 
+#pragma opt_loop_invariants on
 // FUN_001d2a10 NONMATCHING
 void func_001d2a10(void)
 {
@@ -2299,7 +2311,9 @@ void func_001d2a10(void)
     }
     (void)reaper;
 }
+#pragma opt_loop_invariants off
 
+#pragma opt_loop_invariants on
 // FUN_001d32a0 NONMATCHING
 void* func_001d32a0(KwlnTask* task)
 {
@@ -2318,48 +2332,9 @@ void* func_001d32a0(KwlnTask* task)
         return NULL;
     }
     state = work[0];
-    if (state == 2)
+    switch (state)
     {
-        grid = func_001bff20();
-        available = func_001d76e0((u16)piGpffffa850[0], (u16)piGpffffa850[1], grid);
-        if (func_001c0040() != 4)
-        {
-            available = 0;
-        }
-        if (uGpffffb59c < available && func_001d0720(available) > 0)
-        {
-            work[0] = 1;
-        }
-        if (work[3] != 0 && work[3] < work[4] / 0x1e && work[5] == 0)
-        {
-            func_00452010(&spawnPos);
-            K_FldUnit_CreateReaper(1, &spawnPos);
-            datSetFlag(0x1423, 1);
-            work[5]++;
-            work[0] = 1;
-        }
-        else
-        {
-            work[4]++;
-        }
-    }
-    else if (state == 1)
-    {
-        for (i = 0; i < FLDUNIT_EC_MAX; i++)
-        {
-            if (func_001cfdd0(i) == 0)
-            {
-                break;
-            }
-        }
-        if (i == FLDUNIT_EC_MAX)
-        {
-            func_001d2a10();
-            work[0]++;
-        }
-    }
-    else if (state == 0)
-    {
+    case 0:
         if (K_Scene_001a0250() == 1)
         {
             count = 0;
@@ -2392,10 +2367,50 @@ void* func_001d32a0(KwlnTask* task)
         }
         func_001d0720(available);
         work[0]++;
+        break;
+    case 1:
+        for (i = 0; i < FLDUNIT_EC_MAX; i++)
+        {
+            if (func_001cfdd0(i) == 0)
+            {
+                break;
+            }
+        }
+        if (i == FLDUNIT_EC_MAX)
+        {
+            func_001d2a10();
+            work[0]++;
+        }
+        break;
+    case 2:
+        grid = func_001bff20();
+        available = func_001d76e0((u16)piGpffffa850[0], (u16)piGpffffa850[1], grid);
+        if (func_001c0040() != 4)
+        {
+            available = 0;
+        }
+        if (uGpffffb59c < available && func_001d0720(available) > 0)
+        {
+            work[0] = 1;
+        }
+        if (work[3] != 0 && work[3] < work[4] / 0x1e && work[5] == 0)
+        {
+            func_00452010(&spawnPos);
+            K_FldUnit_CreateReaper(1, &spawnPos);
+            datSetFlag(0x1423, 1);
+            work[5]++;
+            work[0] = 1;
+        }
+        else
+        {
+            work[4]++;
+        }
+        break;
     }
     (void)area;
     return NULL;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001d36c0
 void func_001d36c0(KwlnTask* task)
