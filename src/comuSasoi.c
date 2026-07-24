@@ -409,7 +409,7 @@ u32 FUN_003c2ab0(u32 param_1,u32 param_2)
   }
   return 0;
 }
-#define FUN_003c2ab0(...) ((u32 (*)(...))FUN_003c2ab0)(__VA_ARGS__)
+#undef FUN_003c2ab0
 #undef FUN_003c2b40
 #pragma push
 #pragma opt_rebuildconditionals off
