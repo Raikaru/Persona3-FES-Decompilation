@@ -482,144 +482,133 @@ void func_0024dc90(void* camera)
             switch (state) {
             case 0: {
                 mode = *(u32*)(node + 0x20);
-                if (mode == 1) {
-                    u32 oldTimer;
-                    u32 firstDuration;
-
-                    p = (f32*)(node + 0x24);
-                    oldTimer = *(u32*)(node + 0x10);
-                    firstDuration = ((u32)p[13]) << 16;
-                    ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
-
-                    offset.x = p[6] - p[9];
-                    offset.y = p[7] - p[10];
-                    offset.z = p[8] - p[11];
-                    first = offset;
-                    first.x = -first.x;
-                    first.y = -first.y;
-                    first.z = -first.z;
-                    p[0] = p[9];
-                    p[1] = p[10];
-                    p[2] = p[11];
-                    extent = p[12];
-
-                    random = (s32)(RpRandom() & 0xfff);
-                    offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    random = (s32)(RpRandom() & 0xfff);
-                    offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    random = (s32)(RpRandom() & 0xfff);
-                    offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
-                    p[9] = offset.x;
-                    p[10] = offset.y;
-                    p[11] = offset.z;
-                    func_0024f7f0(node, &first);
-                    *(u32*)(node + 0x10) = 0;
-
-                    if (oldTimer >= firstDuration) {
-                        oneMinus = 1.0f - ratio;
-                        value.x = p[0] * oneMinus * oneMinus * oneMinus +
-                                  3.0f * p[3] * ratio * oneMinus * oneMinus +
-                                  3.0f * p[6] * ratio * ratio * oneMinus +
-                                  p[9] * ratio * ratio * ratio;
-                        value.y = p[1] * oneMinus * oneMinus * oneMinus +
-                                  3.0f * p[4] * ratio * oneMinus * oneMinus +
-                                  3.0f * p[7] * ratio * ratio * oneMinus +
-                                  p[10] * ratio * ratio * ratio;
-                        value.z = p[2] * oneMinus * oneMinus * oneMinus +
-                                  3.0f * p[5] * ratio * oneMinus * oneMinus +
-                                  3.0f * p[8] * ratio * ratio * oneMinus +
-                                  p[11] * ratio * ratio * ratio;
-                        *(RwV3d*)(node + 0x14) = value;
-                    }
-                    duration = ((u32)p[4]) << 16;
-                    ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
-                             (f32)(s32)duration;
-                    oneMinus = 1.0f - ratio2;
+                switch (mode) { case 1: { u32 oldTimer;
+                u32 firstDuration;
+                
+                p = (f32*)(node + 0x24);
+                oldTimer = *(u32*)(node + 0x10);
+                firstDuration = ((u32)p[13]) << 16;
+                ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
+                
+                offset.x = p[6] - p[9];
+                offset.y = p[7] - p[10];
+                offset.z = p[8] - p[11];
+                first = offset;
+                first.x = -first.x;
+                first.y = -first.y;
+                first.z = -first.z;
+                p[0] = p[9];
+                p[1] = p[10];
+                p[2] = p[11];
+                extent = p[12];
+                
+                random = (s32)(RpRandom() & 0xfff);
+                offset.x = extent / 2.0f - extent * (f32)random / 4096.0f;
+                random = (s32)(RpRandom() & 0xfff);
+                offset.y = extent / 2.0f - extent * (f32)random / 4096.0f;
+                random = (s32)(RpRandom() & 0xfff);
+                offset.z = extent / 2.0f - extent * (f32)random / 4096.0f;
+                p[9] = offset.x;
+                p[10] = offset.y;
+                p[11] = offset.z;
+                func_0024f7f0(node, &first);
+                *(u32*)(node + 0x10) = 0;
+                
+                if (oldTimer >= firstDuration) {
+                    oneMinus = 1.0f - ratio;
                     value.x = p[0] * oneMinus * oneMinus * oneMinus +
-                              3.0f * p[3] * ratio2 * oneMinus * oneMinus +
-                              3.0f * p[6] * ratio2 * ratio2 * oneMinus +
-                              p[9] * ratio2 * ratio2 * ratio2;
+                              3.0f * p[3] * ratio * oneMinus * oneMinus +
+                              3.0f * p[6] * ratio * ratio * oneMinus +
+                              p[9] * ratio * ratio * ratio;
                     value.y = p[1] * oneMinus * oneMinus * oneMinus +
-                              3.0f * p[4] * ratio2 * oneMinus * oneMinus +
-                              3.0f * p[7] * ratio2 * ratio2 * oneMinus +
-                              p[10] * ratio2 * ratio2 * ratio2;
+                              3.0f * p[4] * ratio * oneMinus * oneMinus +
+                              3.0f * p[7] * ratio * ratio * oneMinus +
+                              p[10] * ratio * ratio * ratio;
                     value.z = p[2] * oneMinus * oneMinus * oneMinus +
-                              3.0f * p[5] * ratio2 * oneMinus * oneMinus +
-                              3.0f * p[8] * ratio2 * ratio2 * oneMinus +
-                              p[11] * ratio2 * ratio2 * ratio2;
+                              3.0f * p[5] * ratio * oneMinus * oneMinus +
+                              3.0f * p[8] * ratio * ratio * oneMinus +
+                              p[11] * ratio * ratio * ratio;
                     *(RwV3d*)(node + 0x14) = value;
                 }
-                else if (mode == 2) {
-                    poses = (u32**)(node + 0x24);
-                    queued = 0;
+                duration = ((u32)p[4]) << 16;
+                ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
+                         (f32)(s32)duration;
+                oneMinus = 1.0f - ratio2;
+                value.x = p[0] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[3] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[6] * ratio2 * ratio2 * oneMinus +
+                          p[9] * ratio2 * ratio2 * ratio2;
+                value.y = p[1] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[4] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[7] * ratio2 * ratio2 * oneMinus +
+                          p[10] * ratio2 * ratio2 * ratio2;
+                value.z = p[2] * oneMinus * oneMinus * oneMinus +
+                          3.0f * p[5] * ratio2 * oneMinus * oneMinus +
+                          3.0f * p[8] * ratio2 * ratio2 * oneMinus +
+                          p[11] * ratio2 * ratio2 * ratio2;
+                *(RwV3d*)(node + 0x14) = value; } break; case 0: break; case 2: { poses = (u32**)(node + 0x24);
+                queued = 0;
+                for (i = 0; i < 3; i++) {
+                    pose = poses[i];
+                    if (pose != NULL && (pose[2] & 2) == 0) {
+                        K_ASSERT(list[0x82] < 0x80, 0x132);
+                        list[list[0x82] + 2] = (u32)pose;
+                        list[0x82]++;
+                        queued = 1;
+                    }
+                }
+                if (queued == 0) {
+                    value.x = 0.0f;
+                    value.y = 0.0f;
+                    value.z = 0.0f;
                     for (i = 0; i < 3; i++) {
-                        pose = poses[i];
-                        if (pose != NULL && (pose[2] & 2) == 0) {
-                            K_ASSERT(list[0x82] < 0x80, 0x132);
-                            list[list[0x82] + 2] = (u32)pose;
-                            list[0x82]++;
-                            queued = 1;
+                        if (poses[i] != NULL) {
+                            gcPose0024f960(poses[i], &first);
+                            value.x += first.x;
+                            value.y += first.y;
+                            value.z += first.z;
                         }
                     }
-                    if (queued == 0) {
-                        value.x = 0.0f;
-                        value.y = 0.0f;
-                        value.z = 0.0f;
-                        for (i = 0; i < 3; i++) {
-                            if (poses[i] != NULL) {
-                                gcPose0024f960(poses[i], &first);
-                                value.x += first.x;
-                                value.y += first.y;
-                                value.z += first.z;
-                            }
-                        }
+                    *(RwV3d*)(node + 0x14) = value;
+                } } break; case 3: { p = (f32*)(node + 0x24);
+                if ((*(u32*)(node + 0x28) & 1u) != 0) {
+                    if (*(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                        *(u32*)(node + 0x10) = *(u32*)(node + 0x2c);
+                    }
+                    if (*(u32*)p == 0) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                (f32)(s32)*(u32*)(node + 0x2c);
+                        first.x = p[6];
+                        first.y = p[7];
+                        first.z = p[8];
+                        second.x = p[3];
+                        second.y = p[4];
+                        second.z = p[5];
+                        second.x -= first.x;
+                        second.y -= first.y;
+                        second.z -= first.z;
+                        second.x *= ratio;
+                        second.y *= ratio;
+                        second.z *= ratio;
+                        value.x = first.x + second.x;
+                        value.y = first.y + second.y;
+                        value.z = first.z + second.z;
+                        *(RwV3d*)(node + 0x14) = value;
+                    }
+                    else if (*(u32*)p == 1) {
+                        ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                1966080.0f;
+                        ratio *= 0.5f;
+                        value.x = p[3] * ratio + p[6];
+                        value.y = p[4] * ratio + p[7];
+                        value.z = p[5] * ratio + p[8];
                         *(RwV3d*)(node + 0x14) = value;
                     }
                 }
-                else if (mode == 3) {
-                    p = (f32*)(node + 0x24);
-                    if ((*(u32*)(node + 0x28) & 1u) != 0) {
-                        if (*(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
-                            *(u32*)(node + 0x10) = *(u32*)(node + 0x2c);
-                        }
-                        if (*(u32*)p == 0) {
-                            ratio = (f32)(s32)*(u32*)(node + 0x10) /
-                                    (f32)(s32)*(u32*)(node + 0x2c);
-                            first.x = p[6];
-                            first.y = p[7];
-                            first.z = p[8];
-                            second.x = p[3];
-                            second.y = p[4];
-                            second.z = p[5];
-                            second.x -= first.x;
-                            second.y -= first.y;
-                            second.z -= first.z;
-                            second.x *= ratio;
-                            second.y *= ratio;
-                            second.z *= ratio;
-                            value.x = first.x + second.x;
-                            value.y = first.y + second.y;
-                            value.z = first.z + second.z;
-                            *(RwV3d*)(node + 0x14) = value;
-                        }
-                        else if (*(u32*)p == 1) {
-                            ratio = (f32)(s32)*(u32*)(node + 0x10) /
-                                    1966080.0f;
-                            ratio *= 0.5f;
-                            value.x = p[3] * ratio + p[6];
-                            value.y = p[4] * ratio + p[7];
-                            value.z = p[5] * ratio + p[8];
-                            *(RwV3d*)(node + 0x14) = value;
-                        }
-                    }
-                    if ((*(u32*)(node + 0x28) & 1u) != 0 &&
-                        *(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
-                        *(u32*)(node + 0x28) &= ~2u;
-                    }
-                }
-                else if (mode != 0) {
-                    K_ASSERT(0, 0x17d);
-                }
+                if ((*(u32*)(node + 0x28) & 1u) != 0 &&
+                    *(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                    *(u32*)(node + 0x28) &= ~2u;
+                } } break; default: { K_ASSERT(0, 0x17d); } break; }
                 break;
             }
             case 1: {
