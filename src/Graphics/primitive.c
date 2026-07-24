@@ -350,6 +350,7 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
 }
 
 #pragma optimization_level 1
+#pragma opt_loop_invariants on
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
@@ -435,6 +436,7 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         }
     }
 }
+#pragma opt_loop_invariants off
 #pragma optimization_level 2
 
 // FUN_00359e50 NONMATCHING

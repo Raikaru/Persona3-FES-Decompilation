@@ -559,12 +559,13 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
     return allocation + 1;
 }
 
+#pragma optimization_level 3
 // FUN_00103F50 NONMATCHING
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
     void* reallocated;
-    size_t copySize;
     s32 intrState;
+    size_t copySize;
     RwUInt32 mallocHint;
 
     mallocHint = hint;
@@ -593,6 +594,7 @@ void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
     }
     return reallocated;
 }
+#pragma optimization_level 2
 // FUN_00104040 MATCHING
 void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint)
 {
