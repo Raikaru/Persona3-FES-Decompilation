@@ -1380,14 +1380,10 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
 // FUN_0012F6D0 NONMATCHING
 void FUN_0012f6d0(void* work, s32 index, u8* record)
 {
-    register void* parent;
     char text[0x100];
+    register void* parent;
 
-    if (index >= 8) {
-        return;
-    }
-
-    switch (index) {
+    switch ((u32)index) {
     case 0:
         campEquipDrawSpriteCall(
             parent, *(void**)((u8*)work + 0x2b0), 0x17,
