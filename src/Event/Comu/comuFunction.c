@@ -1599,7 +1599,7 @@ FUN_003bf270(long param_1,long param_2,long param_3,long param_4,long param_5,lo
 }
 #define FUN_003bf270(...) ((u32 (*)(...))FUN_003bf270)(__VA_ARGS__)
 #undef FUN_003bf370
-// FUN_003BF370 NONMATCHING
+// FUN_003BF370
 
 
 u32 FUN_003bf370(void)
