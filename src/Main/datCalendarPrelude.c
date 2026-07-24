@@ -84,7 +84,7 @@ extern u8* DAT_007ce4a0;
 #define U8(addr) (*PTR8(addr))
 #define U16(addr) (*PTR16(addr))
 #define U32(addr) (*PTR32(addr))
-#define ALLOCATE(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184_abs)(count, size, flags)
+#define ALLOCATE(count, size, flags) (*(void* (**)(u32, u32, u32))(D_00960184_abs + 0x184))(count, size, flags)
 #define ALLOCATE_SMALL(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960178)(count, size, flags)
 #define RELEASE(memory) (*(void (**)(void*))D_0096017C)(memory)
 
