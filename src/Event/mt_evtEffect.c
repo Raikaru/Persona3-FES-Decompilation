@@ -2047,52 +2047,55 @@ u64 FUN_00396a70(void)
 
 {
 
-  int iVar1;
+  u32 *state_ptr;
 
-  long lVar2;
+  u32 *base;
+
+  u32 *piVar4;
 
   u32 *puVar3;
 
-  int *piVar4;
+  int lVar2;
 
   int iVar5;
 
   
 
-  iVar1 = FUN_00195540();
+  base = (u32 *)FUN_00195540();
 
   for (iVar5 = 0; iVar5 < 3; iVar5 = iVar5 + 1) {
 
-    piVar4 = (int *)(iVar1 + iVar5 * 0xc);
+    piVar4 = base + iVar5 * 3;
 
-    if ((*piVar4 == 1) && (lVar2 = FUN_001114b0(piVar4[2]), lVar2 == 1)) {
+    if ((piVar4[0] == 1) && (lVar2 = FUN_001114b0(piVar4[2]), lVar2 == 1)) {
 
-      *piVar4 = 2;
+      piVar4[0] = 2;
 
     }
 
-    if ((*piVar4 == 2) && (piVar4[1] == 1)) {
+    if ((piVar4[0] == 2) && (piVar4[1] == 1)) {
 
-      puVar3 = (u32 *)(iVar1 + iVar5 * 0xc);
+      puVar3 = base + iVar5 * 3;
 
       FUN_00111530(puVar3[2]);
 
-      *puVar3 = 3;
+      puVar3[0] = 3;
 
     }
 
-    if ((piVar4[2] != 0) && (lVar2 = FUN_00195290(), lVar2 == 3)) {
+    state_ptr = piVar4 + 2;
 
-      *(u32 *)(iVar1 + iVar5 * 0xc) = 0;
+    if ((*state_ptr != 0) && (lVar2 = FUN_00195290(), lVar2 == 3)) {
 
-      piVar4[2] = 0;
+      piVar4[0] = 0;
+
+      *state_ptr = 0;
 
     }
 
   }
 
   return 0;
-
 }
 #define FUN_00396a70(...) ((u64 (*)(...))FUN_00396a70)(__VA_ARGS__)
 #undef FUN_00396ba0
