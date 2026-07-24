@@ -2008,17 +2008,20 @@ s16 func_0016e190(s32 socialLink)
 // FUN_0016e2b0 NONMATCHING
 void func_0016e2b0(s16 socialLink, s32 amount)
 {
+    s8* socialLinkBase;
     s8 level;
     u32* progress;
     u32* table;
     u32 personaId;
 
-    level = ((s8*)&gGlobalWork)[socialLink + 0x76];
+    socialLinkBase = gGlobalWork.heroStatus.socialLinkStat + socialLink;
+    level = socialLinkBase[0];
     if (socialLink < 0 || socialLink >= 30)
     {
         return;
     }
-    if (level <= 0 || level >= 10)
+    socialLink = socialLinkBase[0x76];
+    if (socialLink <= 0 || socialLink >= 10)
     {
         return;
     }
