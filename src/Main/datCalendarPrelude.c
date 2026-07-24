@@ -64,6 +64,7 @@ extern u32 DAT_007ce00c;
 extern s8* puGpffffb704;
 extern u8 D_0083A6FC[];
 extern const char D_005e3098[];
+extern const char D_005e3278[];
 extern u8 DAT_00836e1c[];
 extern u32 gSpecialStatusMessage;
 extern u8* DAT_007ce3f8;
@@ -346,11 +347,12 @@ void FUN_00179030(u32 saveType, void* stream)
 // FUN_001791d0 NONMATCHING
 bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
 {
-    const u8* cursor = (const u8*)stream;
     const u8* start = (const u8*)stream;
+    const u8* cursor = (const u8*)stream;
     u32 id;
     u32 size;
     u32 consumed;
+    u32 limit;
     u32 checksum;
     u32 i;
     u8 stored;
@@ -363,6 +365,7 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
     }
     if (saveType < 3) return true;
     consumed = 0;
+    limit = (u32)(streamSize - 0x34);
     for (;;)
     {
         memcpy(&id, cursor, 4);
@@ -380,7 +383,8 @@ bool FUN_001791d0(u32 saveType, const void* stream, s32 streamSize)
         if (size == 0) return false;
         cursor += 8 + size;
         consumed += 8 + size;
-        if (consumed >= (u32)(streamSize - 0x34)) return false;
+        if (consumed < limit) continue;
+        return false;
     }
 }
 
@@ -1366,6 +1370,9 @@ s32 FUN_0017ca10(const void* record)
     u8* stored;
     s32 id;
     s32 i;
+    s32 j;
+    u16 index;
+    s8 value8;
 
     if (record == NULL) FUN_0019d3f0((u32)D_005e3098, 0x1837);
     id = *(const u16*)(source + 2);
@@ -1376,13 +1383,35 @@ s32 FUN_0017ca10(const void* record)
     if (stored[4] != source[4]) return 1;
     if (*(const u32*)(stored + 8) != *(const u32*)(source + 8)) return 1;
     for (i = 0; i < 5; i++)
-        if (stored[0x1c + i] != source[0x1c + i]) return 1;
+    {
+        index = (u16)i;
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
+        value8 = *(s8*)(stored + 0x1c + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x13c);
+        if ((s32)value8 != (s32)*(s8*)(source + 0x1c + i)) return 1;
+    }
     for (i = 0; i < 5; i++)
-        if ((s8)stored[0x21 + i] != (s8)source[0x21 + i]) return 1;
+    {
+        index = (u16)i;
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
+        value8 = *(s8*)(stored + 0x21 + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1c6);
+        if ((s32)value8 != (s32)*(s8*)(source + 0x21 + i)) return 1;
+    }
     for (i = 0; i < 5; i++)
-        if ((s8)stored[0x26 + i] != (s8)source[0x26 + i]) return 1;
-    for (i = 0; i < 8; i++)
-        if (*(const u16*)(stored + 0xc + i * 2) != *(const u16*)(source + 0xc + i * 2)) return 1;
+    {
+        index = (u16)i;
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
+        value8 = *(s8*)(stored + 0x26 + index);
+        if (index >= 5) FUN_0019d3f0((u32)D_005e3278, 0x1f7);
+        if ((s32)value8 != (s32)*(s8*)(source + 0x26 + i)) return 1;
+    }
+    for (j = 0; j < 8; j++)
+    {
+        if (*(const u16*)(stored + 0xc + j * 2) !=
+            *(const u16*)(source + 0xc + j * 2))
+            return 1;
+    }
     return 0;
 }
 
