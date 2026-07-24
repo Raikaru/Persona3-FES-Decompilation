@@ -1455,11 +1455,11 @@ void FUN_003b9610(Resrc* param_1)
 
   float fStack_20;
 
-  float fStack_18;
+  volatile float fStack_18;
 
-  float fStack_14;
+  volatile float fStack_14;
 
-  float fStack_10;
+  volatile float fStack_10;
 
   u8 auStack_8 [3];
 
