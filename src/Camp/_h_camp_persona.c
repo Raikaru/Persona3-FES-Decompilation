@@ -719,7 +719,6 @@ void FUN_00124fd0(CampVec2 position, f32 alpha, void* persona, s32 fade)
         FUN_00115980(particle);
     }
 }
-
 // FUN_00125740 NONMATCHING
 void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
                   s32 frame)
@@ -749,7 +748,26 @@ void FUN_00125740(CampVec2 position, f32 alpha, void* persona,
                               (u8)bright, alpha);
     }
     if (localFrame > 4) {
-        FUN_00124e60(position, alpha, persona, bright);
+        {
+            u8 level;
+
+            level = *((u8*)persona + 4);
+            if (level >= 10) {
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                      level / 10 + 0xb,
+                                      position.x + 67.0f,
+                                      position.y + 127.0f, bright, alpha);
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                      level % 10 + 0xb,
+                                      position.x + 82.0f,
+                                      position.y + 127.0f, bright, alpha);
+            } else {
+                campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                      level % 10 + 0xb,
+                                      position.x + 75.0f,
+                                      position.y + 127.0f, bright, alpha);
+            }
+        }
     }
     if (localFrame > 5) {
         if (localFrame < 9) {
@@ -778,26 +796,7 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     campPersonaDrawSprite(parent, resource, personaId,
                           position.x + 105.0f, position.y + 142.0f,
                           fade, alpha);
-    {
-        u8 level;
-
-        level = *((u8*)persona + 4);
-        if (level >= 10) {
-            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                                  level / 10 + 0xb,
-                                  position.x + 67.0f,
-                                  position.y + 127.0f, fade, alpha);
-            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                                  level % 10 + 0xb,
-                                  position.x + 82.0f,
-                                  position.y + 127.0f, fade, alpha);
-        } else {
-            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
-                                  level % 10 + 0xb,
-                                  position.x + 75.0f,
-                                  position.y + 127.0f, fade, alpha);
-        }
-    }
+    FUN_00124e60(position, alpha, persona, fade);
     FUN_00124fd0(position, alpha, persona, fade);
 }
 
@@ -832,7 +831,9 @@ process:
 
     if (work->mode == 0) {
         if (work->timer < 5) {
-            if (campPersonaTransitionIsReady()) {
+            if (DAT_007cdf60 != NULL &&
+                DAT_007cdf60->workData != NULL &&
+                *((s32*)DAT_007cdf60->workData) == 3) {
                 FUN_00114450(102.0f, 0.0f, -87.0f, -1,
                              0x4fa4ff19, 0x280, 0x280);
             }
@@ -850,7 +851,9 @@ process:
         }
         if (work->timer > 4 && work->timer < 20) {
             fade = ((work->timer - 5) * 800) / 15;
-            if (campPersonaTransitionIsReady()) {
+            if (DAT_007cdf60 != NULL &&
+                DAT_007cdf60->workData != NULL &&
+                *((s32*)DAT_007cdf60->workData) == 3) {
                 FUN_00114450(102.0f, (f32)-fade, (f32)fade - 87.0f,
                              -1, 0x4fa4ff19, 0x280, 0x280);
             }
