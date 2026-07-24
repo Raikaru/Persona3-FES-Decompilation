@@ -4602,7 +4602,6 @@ static inline void MaestroEffectStartStreams(
     s16 dimensions[4];
     u32 size;
     u32 scenario;
-
     scenario = datGetScenarioMode();
     if (scenario != 0)
     {
@@ -4832,6 +4831,7 @@ static inline void MaestroEffectSetReady(MaestroPerEffectWork* work)
 void* func_00117540(KwlnTask* task)
 {
     MaestroPerEffectWork* work;
+    char path[0x140];
     void (**stateFn)(u32, u32);
     u32 ready;
     u32 size;
@@ -4839,7 +4839,6 @@ void* func_00117540(KwlnTask* task)
     s32 j;
     s32 frame;
     s32 segment;
-    char path[0x100];
     s32 radius;
 
     work = (MaestroPerEffectWork*)task->workData;
@@ -4856,7 +4855,7 @@ void* func_00117540(KwlnTask* task)
     switch (work->state)
     {
     case 0:
-        MaestroEffectRequestFiles(work, path);
+        MaestroEffectRequestFiles(work, path + 0x30);
         work->state = 1;
         break;
     case 3:
@@ -4874,7 +4873,7 @@ void* func_00117540(KwlnTask* task)
         if (ready)
         {
             MaestroEffectLoadRecords(task, work);
-            MaestroEffectStartStreams(task, work, path);
+            MaestroEffectStartStreams(task, work, path + 0x30);
         }
         break;
     case 2:
@@ -5023,33 +5022,33 @@ void* func_00117540(KwlnTask* task)
                     u64 point3;
                     radius = segment * 36;
                     for (i = 0; i < 24; i++)
-                {
-                    f32 angle0;
-                    f32 angle1;
-
-                    angle0 = gPI * (f32)(i * 400 / 24) / 180.0f;
-                    angle1 = gPI * (f32)((i + 1) * 400 / 24) / 180.0f;
-                    points[0][0] = cosf(angle0) * 1000.0f;
-                    points[0][1] = sinf(angle0) * 1000.0f;
-                    points[1][0] = cosf(angle1) * 1000.0f;
-                    points[1][1] = sinf(angle1) * 1000.0f;
-                    points[2][0] = cosf(angle0) * (f32)radius;
-                    points[2][1] = sinf(angle0) * (f32)radius;
-                    points[3][0] = cosf(angle1) * (f32)radius;
-                    points[3][1] = sinf(angle1) * (f32)radius;
-                    for (j = 0; j < 4; j++)
                     {
-                        points[j][0] += 320.0f;
-                        points[j][1] += 224.0f;
+                        f32 angle0;
+                        f32 angle1;
+
+                        angle0 = gPI * (f32)(i * 400 / 24) / 180.0f;
+                        angle1 = gPI * (f32)((i + 1) * 400 / 24) / 180.0f;
+                        points[0][0] = cosf(angle0) * 1000.0f;
+                        points[0][1] = sinf(angle0) * 1000.0f;
+                        points[1][0] = cosf(angle1) * 1000.0f;
+                        points[1][1] = sinf(angle1) * 1000.0f;
+                        points[2][0] = cosf(angle0) * (f32)radius;
+                        points[2][1] = sinf(angle0) * (f32)radius;
+                        points[3][0] = cosf(angle1) * (f32)radius;
+                        points[3][1] = sinf(angle1) * (f32)radius;
+                        for (j = 0; j < 4; j++)
+                        {
+                            points[j][0] += 320.0f;
+                            points[j][1] += 224.0f;
+                        }
+                        point0 = *(u64*)&points[0][0];
+                        point1 = *(u64*)&points[1][0];
+                        point2 = *(u64*)&points[2][0];
+                        point3 = *(u64*)&points[3][0];
+                        func_00115350(100.0f, 0x0f3956ff,
+                                      point0, point1, point2, point3,
+                                      0xff, 0xff, 0xff, 0xff);
                     }
-                    point0 = *(u64*)&points[0][0];
-                    point1 = *(u64*)&points[1][0];
-                    point2 = *(u64*)&points[2][0];
-                    point3 = *(u64*)&points[3][0];
-                    func_00115350(100.0f, 0x0f3956ff,
-                                  point0, point1, point2, point3,
-                                  0xff, 0xff, 0xff, 0xff);
-                }
                 }
                 }
             }
