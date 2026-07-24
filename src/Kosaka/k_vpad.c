@@ -70,46 +70,39 @@ void* K_VPad_UpdateTask(KwlnTask* task)
             func_001a5aa0(func_004cb2f0(kwlnGetMainCamera()->object.object.parent));
     }
 
-    if (work->state == 5)
+    switch (work->state)
     {
-        goto state_stop;
-    }
-    if (work->state == 2)
-    {
-        goto state_event;
-    }
-    if (work->state == 0)
-    {
+    case 0:
         work->state++;
-        goto state_done;
-    }
-    if (work->state != 1)
-    {
-        goto state_done;
-    }
-
+        break;
+    case 1:
     {
         RwV3d move = {0};
         RwV3d right = {0};
         s32 value;
+        f32 valueF;
 
-        if (work->controlMode == 1 || work->controlFlags == 1)
+        if (work->controlMode == 1)
         {
-            return KWLNTASK_CONTINUE;
+            goto state1_done;
+        }
+        if (work->controlFlags == 1)
+        {
+            goto state1_done;
         }
 
         value = *(u8*)(gPads_abs + 0x1f);
         if (value >= 0)
         {
-            move.z = (f32)value;
+            valueF = (f32)value;
         }
         else
         {
             value = (value >> 1) | (value & 1);
-            move.z = (f32)value;
-            move.z += move.z;
+            valueF = (f32)value;
+            valueF += valueF;
         }
-        move.z -= 128.0f;
+        move.z = valueF - 128.0f;
         if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_UP) != 0)
         {
             move.z = -128.0f;
@@ -122,15 +115,15 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         value = *(u8*)(gPads_abs + 0x1e);
         if (value >= 0)
         {
-            move.x = (f32)value;
+            valueF = (f32)value;
         }
         else
         {
             value = (value >> 1) | (value & 1);
-            move.x = (f32)value;
-            move.x += move.x;
+            valueF = (f32)value;
+            valueF += valueF;
         }
-        move.x -= 128.0f;
+        move.x = valueF - 128.0f;
         if ((*(u16*)(gPads_abs + 0xc) & HPAD_BTN_LEFT) != 0)
         {
             move.x = -128.0f;
@@ -143,27 +136,27 @@ void* K_VPad_UpdateTask(KwlnTask* task)
         value = *(u8*)(gPads_abs + 0x21);
         if (value >= 0)
         {
-            right.z = (f32)value;
+            valueF = (f32)value;
         }
         else
         {
             value = (value >> 1) | (value & 1);
-            right.z = (f32)value;
-            right.z += right.z;
+            valueF = (f32)value;
+            valueF += valueF;
         }
-        right.z -= 128.0f;
+        right.z = valueF - 128.0f;
         value = *(u8*)(gPads_abs + 0x20);
         if (value >= 0)
         {
-            right.x = (f32)value;
+            valueF = (f32)value;
         }
         else
         {
             value = (value >> 1) | (value & 1);
-            right.x = (f32)value;
-            right.x += right.x;
+            valueF = (f32)value;
+            valueF += valueF;
         }
-        right.x -= 128.0f;
+        right.x = valueF - 128.0f;
         cameraInput = 0;
 
         if ((*(u16*)(gPads_abs + 0xc) & (HPAD_BTN_R2 | HPAD_BTN_R1)) != 0 ||
@@ -269,18 +262,24 @@ void* K_VPad_UpdateTask(KwlnTask* task)
             {
                 playerHeading += 360.0f;
             }
-            if (K_VPad_IsRotating(work->rotateTask) == true)
-            {
-                return KWLNTASK_CONTINUE;
-            }
             inputHeading = func_001b02c0(0, 0);
             RwMatrixSetIdentity(&rotateMat);
             RwMatrixRotate(&rotateMat, &axis, cameraHeading, rwCOMBINEPRECONCAT);
             RwMatrixRotate(&rotateMat, &axis, inputHeading, rwCOMBINEPRECONCAT);
-            speed = 0.0f;
-            if (K_VPad_IsRotating(work->rotateTask) == false)
+            rotated = func_001e1590(work->rotateTask, &rotateMat,
+                                    playerHeading, cameraHeading + inputHeading);
+            if (K_VPad_IsRotating(work->rotateTask) == true)
             {
-                K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &rotateMat);
+                sVPadMoveSpeed = 0.0f;
+                if (rotated != 0)
+                {
+                    work->moveTimer = 0;
+                    work->stationaryFrames = 0;
+                }
+                return KWLNTASK_CONTINUE;
+            }
+            speed = 0.0f;
+            K_FldFrame_CtlUpdateMdlMat(work->collisCtlTask, &rotateMat);
                 movement = RwV3dLength(&move);
                 if (movement > 128.0f)
                 {
@@ -296,7 +295,6 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                             sinf((D_007CAF38 * 0.5f * movement) / 128.0f);
                 }
                 K_FldFrame_CtlMoveForward(speed, work->collisCtlTask);
-            }
             sVPadMoveSpeed = speed;
             if (rotated == 0)
             {
@@ -377,25 +375,24 @@ void* K_VPad_UpdateTask(KwlnTask* task)
                 }
             }
         }
-        return KWLNTASK_CONTINUE;
+        state1_done:
+        break;
 
     }
-state_event:
-    if (kwlnTaskExists(work->eventTask) != true)
-    {
-        func_001e1300(K_Field_Get()->playerPadTask, 0);
-        K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
-        work->state = 1;
+    case 2:
+        if (kwlnTaskExists(work->eventTask) != true)
+        {
+            func_001e1300(K_Field_Get()->playerPadTask, 0);
+            K_FldEvent_001cd650(K_Field_Get()->eventTask, false);
+            work->state = 1;
+        }
+        break;
+    case 5:
+        return KWLNTASK_STOP;
     }
-    goto state_done;
-
-state_stop:
-    return KWLNTASK_STOP;
-
-state_done:
     return KWLNTASK_CONTINUE;
-}
 
+}
 // FUN_001e1200
 void K_VPad_DestroyTask(KwlnTask* rotatePcTask)
 {
