@@ -298,6 +298,22 @@ extern u32 func_0011a840(u32);
 extern u32 func_0016c790(u32);
 extern u32 func_00177360(u32);
 extern u32 func_0011a870(u32);
+extern u32 func_0016c4f0(u32);
+extern u32 func_0016c5f0(u32);
+extern u32 func_0016c570(u32);
+extern u32 func_0016c970(u32);
+extern u32 func_0016c920(u32);
+extern void func_0016cf40(u32, u32);
+extern void func_0016cf90(u32, u32);
+extern void func_0016d8b0(u32, u32);
+extern void func_0016d6b0(u32, u32);
+extern u32 func_00488f30(void);
+extern void func_00174800(u32);
+extern void func_00174650(u32, u32, u32);
+extern void func_0016cfe0(u32, u32);
+extern void func_0016d090(u32, u32);
+extern void func_0016d160(u32, u32);
+
 
 void func_001f0990(KwlnTask *);
 void func_001f0f40(KwlnTask *);
@@ -2886,6 +2902,7 @@ void func_001f7210(void)
     u32 kind = 0;
     s32 value = 0;
     u32 i;
+    u32 item_substate;
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry = work + slot * 0x670 + 0x60;
@@ -2913,8 +2930,9 @@ void func_001f7210(void)
         value = BR_S16(entry, 8);
         break;
     default:
-        return;
+        break;
     }
+    item_substate = BR_U32(entry, 4) % 6;
     /*
      * Kind dispatch: 28-entry jump table (retail 0x7b6f20).
      * Each case body opens with the retail instruction(s) transcribed from
@@ -3083,5 +3101,209 @@ void func_001f7210(void)
         BR_U32(work, 0) |= 0x40;
     }
     BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+    /*
+     * Item substate dispatch: 6-entry jump table (retail 0x7b7080).
+     */
+    switch (item_substate) {
+    u32 substate_slot;
+    s32 substate_val;
+    case 0:
+        /* off=1232: random roll among 5 party-member effects */
+        substate_slot = func_00488f30() % 5;
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        break;
+    case 1:
+        /* off=1388: s4=9, s2=*(s16*)(s5+item_substate*4+2) */
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        kind = 9;
+        value = substate_val;
+        break;
+    case 2:
+        /* off=1408: s4=0xb, s2=*(s16*)(s5+item_substate*4+2) */
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        kind = 11;
+        value = substate_val;
+        break;
+    case 3:
+        /* off=1428: s4=0xc, s2=*(s16*)(s5+item_substate*4+2) */
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        kind = 12;
+        value = substate_val;
+        break;
+    case 4:
+        /* off=1448: s4=0xa, s2=*(s16*)(s5+item_substate*4+2) */
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        kind = 10;
+        value = substate_val;
+        break;
+    case 5:
+        /* off=1468: s4=0xd, s2=*(s16*)(s5+item_substate*4+2) */
+        substate_val = BR_S16(work + item_substate * 4, 2);
+        kind = 13;
+        value = substate_val;
+        break;
+    default:
+        break;
+    }
+    /*
+     * Party effect: 13-entry jump table (retail 0x7b7040),
+     * each case processes one party-member effect type.
+     * Five loop patterns: HP, SP, bad-status, setPhysicalCondition.
+     */
+    {
+        s32 party_eff;
+        s32 party_mem;
+        s32 member_count;
+        u16 scan_arr[12];
+        s32 eff_total = 0;
+        for (party_eff = 0; party_eff < 13; party_eff++) {
+            /* Accumulator slot per effect type */
+            switch (party_eff) {
+            u16 cur;
+            u16 mx;
+            u32 i_idx;
+            u16 mbr;
+            u32 st;
+            case 0:
+                /* HP recover (direct, member 1) */
+                cur = func_0016c4f0(1);
+                mx = func_0016c5f0(1);
+                if (cur < mx) {
+                    eff_total++;
+                }
+                break;
+            case 1:
+                /* HP recover (scan all party members) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    cur = func_0016c4f0(mbr);
+                    mx = func_0016c5f0(mbr);
+                    if (cur < mx) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            case 2:
+                /* SP recover (direct) */
+                cur = func_0016c570(1);
+                mx = func_0016c670(1);
+                if (cur < mx) {
+                    eff_total++;
+                }
+                break;
+            case 3:
+                /* SP recover (scan) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    cur = func_0016c570(mbr);
+                    mx = func_0016c670(mbr);
+                    if (cur < mx) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            case 4:
+                /* Bad-status clear (direct) */
+                st = func_0016c970(1);
+                if ((st & 0x80) == 0) {
+                    eff_total++;
+                }
+                break;
+            case 5:
+                /* Bad-status clear (scan) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    st = func_0016c970(mbr);
+                    if ((st & 0x80) != 0) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            case 6:
+                /* off=3072: loop continuation (empty marker) */
+                break;
+            case 7:
+                /* setPhysicalCondition (direct, a1=0) */
+                st = func_0016c920(1);
+                if (st >= 3 && st <= 5) {
+                    eff_total++;
+                }
+                break;
+            case 8:
+                /* setPhysicalCondition (scan, a1=0) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    st = func_0016c920(mbr);
+                    if (st >= 3 && st <= 5) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            case 9:
+                /* setPhysicalCondition (direct, a1=1, filter 1/2) */
+                st = func_0016c920(1);
+                if (st == 1 || st == 2) {
+                    eff_total++;
+                }
+                break;
+            case 10:
+                /* setPhysicalCondition (scan, a1=2) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    st = func_0016c920(mbr);
+                    if (st == 1) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            case 11:
+                /* setPhysicalCondition (direct, a1=2, filter 2-only) */
+                st = func_0016c920(1);
+                if (st != 2) {
+                    eff_total++;
+                }
+                break;
+            case 12:
+                /* setPhysicalCondition (scan, a1=2, filter !=2) */
+                brRoot001f1df0(scan_arr, &member_count);
+                for (i_idx = 0; i_idx < (u32)member_count; i_idx++) {
+                    mbr = scan_arr[i_idx];
+                    st = func_0016c920(mbr);
+                    if (st != 2) {
+                        break;
+                    }
+                }
+                if (i_idx < (u32)member_count) {
+                    eff_total++;
+                }
+                break;
+            default:
+                break;
+            }
+        }
+        if (eff_total > 0) {
+            kind = eff_total % 28;
+        }
+    }
 }
 #pragma optimization_level 2
