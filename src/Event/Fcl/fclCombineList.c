@@ -3477,12 +3477,12 @@ u32 FUN_003e0bc0(void)
 }
 
 #define FCL_SET_RESULT(T, I, V) (((FclAnimationResultRecord *)(T))[I].value = (V)); (((FclAnimationResultRecord *)(T))[I].field18 = 0);
-#define FCL_COMBINE_CASE(ID, SLOT) \
+#define FCL_COMBINE_CASE(ID, SLOT, INDEX) \
     do { \
         FclAnimationNode* s0 = *(FclAnimationNode **)((unsigned char *)param_1 + 0x98); \
         unsigned char table[0x3f0]; \
-        FclAnimationResultRecord result; \
         FclAnimationNode* node; \
+        FclAnimationResultRecord* source; \
         u32 *src; \
         u32 *dst; \
         s32 count; \
@@ -3536,18 +3536,23 @@ u32 FUN_003e0bc0(void)
         FCL_SET_RESULT(table, 33, ID) \
         FCL_SET_RESULT(table, 34, ID) \
         FCL_SET_RESULT(table, 35, ID) \
-        memcpy(&result, &((FclAnimationResultRecord *)table)[(SLOT)], 0x1c); \
-        node = (FclAnimationNode *)FUN_003dffc0((int *)s0, (ID), result.value); \
+        source = &((FclAnimationResultRecord *)table)[(SLOT)]; \
+        memcpy(&result_storage[37 - (INDEX)].record, source, 0x1c); \
+        node = (FclAnimationNode *)FUN_003dffc0((int *)s0, (ID), result_storage[37 - (INDEX)].record.value); \
         if ((ID) == 0) { \
             FUN_003c4820((int *)(s0->value + 4), (int *)node->link); \
             FUN_003c4710((int *)(s0->value + 4), 0, (int *)node->link); \
         } \
-        fclCombineList003df100(node, &result); \
+        fclCombineList003df100(node, &result_storage[37 - (INDEX)].record); \
     } while (0)
 
 // FUN_003E0C20 NONMATCHING
 void FUN_003e0c20(void *param_1, u32 param_2, u32 param_3)
 {
+    struct {
+        FclAnimationResultRecord record;
+        u32 pad;
+    } result_storage[38];
 
     switch (param_2) {
     case 0:
@@ -3555,132 +3560,132 @@ void FUN_003e0c20(void *param_1, u32 param_2, u32 param_3)
             break;
         }
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(0, 0);
+            FCL_COMBINE_CASE(0, 0, 0);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(0, 1);
+            FCL_COMBINE_CASE(0, 1, 1);
         }
         break;
     case 1:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(1, 2);
+            FCL_COMBINE_CASE(1, 2, 2);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(1, 3);
+            FCL_COMBINE_CASE(1, 3, 3);
         }
         break;
     case 2:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(2, 4);
+            FCL_COMBINE_CASE(2, 4, 4);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(2, 5);
+            FCL_COMBINE_CASE(2, 5, 5);
         } else if (param_3 == 2) {
-            FCL_COMBINE_CASE(2, 5);
+            FCL_COMBINE_CASE(2, 5, 6);
         }
         break;
     case 3:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(3, 6);
+            FCL_COMBINE_CASE(3, 6, 7);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(3, 7);
+            FCL_COMBINE_CASE(3, 7, 8);
         } else if (param_3 == 2) {
-            FCL_COMBINE_CASE(3, 7);
+            FCL_COMBINE_CASE(3, 7, 9);
         }
         break;
     case 4:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(4, 8);
+            FCL_COMBINE_CASE(4, 8, 10);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(4, 9);
+            FCL_COMBINE_CASE(4, 9, 11);
         }
         break;
     case 5:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(5, 10);
+            FCL_COMBINE_CASE(5, 10, 12);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(5, 11);
+            FCL_COMBINE_CASE(5, 11, 13);
         }
         break;
     case 6:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(6, 12);
+            FCL_COMBINE_CASE(6, 12, 14);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(6, 13);
+            FCL_COMBINE_CASE(6, 13, 15);
         }
         break;
     case 7:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(7, 14);
+            FCL_COMBINE_CASE(7, 14, 16);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(7, 15);
+            FCL_COMBINE_CASE(7, 15, 17);
         }
         break;
     case 8:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(8, 16);
+            FCL_COMBINE_CASE(8, 16, 18);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(8, 17);
+            FCL_COMBINE_CASE(8, 17, 19);
         }
         break;
     case 9:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(9, 18);
+            FCL_COMBINE_CASE(9, 18, 20);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(9, 19);
+            FCL_COMBINE_CASE(9, 19, 21);
         }
         break;
     case 10:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(10, 20);
+            FCL_COMBINE_CASE(10, 20, 22);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(10, 21);
+            FCL_COMBINE_CASE(10, 21, 23);
         }
         break;
     case 11:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(11, 22);
+            FCL_COMBINE_CASE(11, 22, 24);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(11, 23);
+            FCL_COMBINE_CASE(11, 23, 25);
         }
         break;
     case 12:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(12, 24);
+            FCL_COMBINE_CASE(12, 24, 26);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(12, 25);
+            FCL_COMBINE_CASE(12, 25, 27);
         }
         break;
     case 13:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(13, 26);
+            FCL_COMBINE_CASE(13, 26, 28);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(13, 27);
+            FCL_COMBINE_CASE(13, 27, 29);
         }
         break;
     case 14:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(14, 28);
+            FCL_COMBINE_CASE(14, 28, 30);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(14, 29);
+            FCL_COMBINE_CASE(14, 29, 31);
         }
         break;
     case 15:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(15, 30);
+            FCL_COMBINE_CASE(15, 30, 32);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(15, 31);
+            FCL_COMBINE_CASE(15, 31, 33);
         }
         break;
     case 16:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(16, 32);
+            FCL_COMBINE_CASE(16, 32, 34);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(16, 33);
+            FCL_COMBINE_CASE(16, 33, 35);
         }
         break;
     case 17:
         if (param_3 == 0) {
-            FCL_COMBINE_CASE(17, 34);
+            FCL_COMBINE_CASE(17, 34, 36);
         } else if (param_3 == 1) {
-            FCL_COMBINE_CASE(17, 35);
+            FCL_COMBINE_CASE(17, 35, 37);
         } else if (param_3 == 3) {
             FclAnimationNode* node =
                 (FclAnimationNode *)FUN_003dff80(
