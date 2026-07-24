@@ -4522,8 +4522,12 @@ void FUN_0022fa80(u32* object)
     u32 table;
     u32 count;
     u32 state;
+    f32 offset_x;
+    f32 offset_y;
 
     bytes = (u8*)object;
+    offset_x = *(f32*)(bytes + 0x510) + *(f32*)(bytes + 0x518) + *(f32*)(bytes + 0x520);
+    offset_y = *(f32*)(bytes + 0x514) + *(f32*)(bytes + 0x51c) + *(f32*)(bytes + 0x524);
     table = FUN_0021c3f0(4);
     state = object[0x20c];
     switch (state) {
@@ -4573,11 +4577,31 @@ void FUN_0022fa80(u32* object)
         *(u32*)(bytes + 0x147c) = *(u32*)(bytes + 0x147c) + 1;
         break;
     case 8:
-        FUN_0021cca0(table, 0x11);
+    {
+        u32 resource;
+        f32 rect[4];
+
+        resource = FUN_0021cca0(table, 0x11);
+        rect[0] = 39.0f + offset_x;
+        rect[1] = 13.0f + offset_y;
+        rect[2] = (f32)((u32*)resource)[3];
+        rect[3] = (f32)((u32*)resource)[4];
+        FUN_0021d8e0(bytes + 0x1060, rect);
         break;
+    }
     case 9:
-        FUN_0021cca0(table, 0);
+    {
+        u32 resource;
+        f32 rect[4];
+
+        resource = FUN_0021cca0(table, 0);
+        rect[0] = 60.0f + offset_x;
+        rect[1] = 41.0f + offset_y;
+        rect[2] = (f32)((u32*)resource)[3];
+        rect[3] = (f32)((u32*)resource)[4];
+        FUN_0021d8e0(bytes + 0x1060, rect);
         break;
+    }
     }
 }
 
