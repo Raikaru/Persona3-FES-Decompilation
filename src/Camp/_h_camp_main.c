@@ -708,16 +708,17 @@ static void h_campDestroyRequestAndResource(u32* work,
     }
 }
 
+#pragma opt_loop_invariants on
+//
 // FUN_00134a10 NONMATCHING
 void* FUN_00134a10(KwlnTask* task)
 {
     u32* work;
     u32 archiveSize;
     s32 i;
-    u32 ready;
+    void* resource;
     s32 resourceSize;
     void* source;
-    void* resource;
 
     work = (u32*)task->workData;
     switch (work[0]) {
@@ -727,28 +728,40 @@ void* FUN_00134a10(KwlnTask* task)
         break;
     case 1:
         if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x30])) {
-            for (i = 0; i < 0x0b; i++) {
-                source = H_Cdvd_ArchiveGetFile((HCdvd*)work[0x30], (s32)i,
-                                                &archiveSize);
-                work[0x34 + i] = (u32)func_00112420(source);
+            {
+                s32 index;
+                for (index = 0; index < 0x0b; index++) {
+                    source = H_Cdvd_ArchiveGetFile((HCdvd*)work[0x30],
+                                                    index, &archiveSize);
+                    work[0x34 + index] = (u32)func_00112420(source);
+                }
             }
             work[0] = 2;
         }
         break;
     case 2:
-        ready = 1;
-        for (i = 0; i < 0x0b; i++) {
-            if (!H_Maestro_00111f30((s16*)work[0x34 + i])) {
-                ready = 0;
+        {
+            u32 ready;
+            s32 index;
+            ready = 1;
+            for (index = 0; index < 0x0b; index++) {
+                if (!H_Maestro_00111f30((s16*)work[0x34 + index])) {
+                    ready = 0;
+                }
             }
-        }
-        if (ready != 0) {
-            for (i = 0; i < 0x0b; i++) {
-                DAT_00833B40[i] = (void*)work[0x34 + i];
+            if (ready != 0) {
+                {
+                    s32 copyIndex;
+                    void** table;
+                    table = DAT_00833B40;
+                    for (copyIndex = 0; copyIndex < 0x0b; copyIndex++) {
+                        table[copyIndex] = (void*)work[0x34 + copyIndex];
+                    }
+                }
+                H_Cdvd_Destroy((HCdvd*)work[0x30]);
+                work[0x30] = 0;
+                work[0] = 3;
             }
-            H_Cdvd_Destroy((HCdvd*)work[0x30]);
-            work[0x30] = 0;
-            work[0] = 3;
         }
         break;
     case 3:
@@ -757,40 +770,47 @@ void* FUN_00134a10(KwlnTask* task)
         break;
     case 4:
         if (H_Cdvd_IsFileLoaded((HCdvd*)work[0x30])) {
-            for (i = 0; i < 0x17; i++) {
-                work[2 + i] = (u32)FUN_0010c1a0(
-                    NULL, D_005DB940[i], 0, 0, 0, 0, 0, 0,
-                    0, 0, D_005DBA38, 0xcb);
+            {
+                s32 index;
+                for (index = 0; index < 0x17; index++) {
+                    work[2 + index] = (u32)FUN_0010c1a0(
+                        NULL, D_005DB940[index], 0, 0, 0, 0, 0, 0,
+                        0, 0, D_005DBA38, 0xcb);
+                }
             }
             work[0] = 5;
         }
         break;
     case 5:
-        ready = 1;
-        for (i = 0; i < 0x17; i++) {
-            if (work[0x19 + i] == 0) {
-                resourceSize = 0;
-                resource = FUN_0010c3a0((void*)work[2 + i],
-                                        &resourceSize, 0);
-                work[0x19 + i] = (u32)resource;
-                if (resourceSize == 0) {
-                    ready = 0;
-                    work[0x19 + i] = 0;
-                    DAT_00833A80[i] = NULL;
-                } else {
-                    work[2 + i] = 0;
-                    DAT_00833A80[i] = resource;
-                    FUN_005225a8(D_005DBA50, i);
+        {
+            u32 ready;
+            s32 index;
+            ready = 1;
+            for (index = 0; index < 0x17; index++) {
+                if (work[0x19 + index] == 0) {
+                    resourceSize = 0;
+                    resource = FUN_0010c3a0((void*)work[2 + index],
+                                            &resourceSize, 0);
+                    work[0x19 + index] = (u32)resource;
+                    if (resourceSize == 0) {
+                        ready = 0;
+                        work[0x19 + index] = 0;
+                        DAT_00833A80[index] = NULL;
+                    } else {
+                        work[2 + index] = 0;
+                        DAT_00833A80[index] = resource;
+                        FUN_005225a8(D_005DBA50, index);
+                    }
                 }
             }
-        }
-        if (ready != 0) {
-            work[1] = 0x17;
-            FUN_005225a8(D_005DBA70);
-            H_Cdvd_Destroy((HCdvd*)work[0x30]);
-            work[0x30] = 0;
-            FUN_005225a8(D_005DBA80);
-            work[0] = 9;
+            if (ready != 0) {
+                work[1] = 0x17;
+                FUN_005225a8(D_005DBA70);
+                H_Cdvd_Destroy((HCdvd*)work[0x30]);
+                work[0x30] = 0;
+                FUN_005225a8(D_005DBA80);
+                work[0] = 9;
+            }
         }
         break;
     case 6:
@@ -801,6 +821,7 @@ void* FUN_00134a10(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00134d80 NONMATCHING
 void FUN_00134d80(KwlnTask* task)
