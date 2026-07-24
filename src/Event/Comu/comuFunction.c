@@ -46,7 +46,9 @@ extern s32 FUN_00172160(long socialLink);
 extern s32 FUN_001717c0(long socialLink);
 extern s32 FUN_00172660(long socialLink);
 #pragma alias FUN_003be1c0_typed FUN_003be1c0
-extern u32 FUN_003be1c0_typed(long param_1,long param_2);
+extern u32 FUN_003be1c0_typed(long param_1,s32 param_2);
+#pragma alias FUN_003be1c0_wide FUN_003be1c0
+extern u32 FUN_003be1c0_wide(long param_1,long param_2);
 #pragma alias FUN_003be2a0_typed FUN_003be2a0
 extern u32 FUN_003be2a0_typed(...);
 extern void adminiChangeSeq(s32 type,void *seq,s32 size,s32 arg4);
@@ -163,7 +165,7 @@ void FUN_003bdbd0(int param_1)
   extern s8 FUN_0016dba0(s16 param_1);
   u32 bVar2;
   s8 cVar3;
-  long sVar1;
+  s16 sVar1;
   u32 lVar4;
   int iVar5;
   lVar4 = FUN_0016dce0((s16)param_1);
@@ -192,8 +194,8 @@ void FUN_003bdbd0(int param_1)
         }
 
         if (bVar2) {
-          FUN_00171960((sVar1 = *(s16 *)(*(u32 *)DAT_0095b2a0_abs), iVar5 + 6),
-                       (s16)sVar1);
+          sVar1 = *(volatile s16 *)(*(u32 *)DAT_0095b2a0_abs);
+          FUN_00171960(iVar5 + 6,(s32)sVar1);
         }
       }
     }
@@ -330,7 +332,7 @@ void FUN_003bdde0(void)
 }
 #define FUN_003bdde0(...) ((void (*)(...))FUN_003bdde0)(__VA_ARGS__)
 #undef FUN_003bded0
-// FUN_003BDED0 NONMATCHING
+// FUN_003BDED0
 
 
 u32 FUN_003bded0(u64 param_1)
@@ -359,7 +361,7 @@ u32 FUN_003bded0(u64 param_1)
   }
   lVar3 = FUN_00172660(param_1);
   if (lVar3 == 1) {
-    lVar3 = FUN_003be1c0(param_1,cVar1 + 1);
+    lVar3 = FUN_003be1c0_typed(param_1,cVar1 + 1);
     if (lVar3 == 1) {
       return 2;
     }
@@ -974,8 +976,6 @@ LAB_003be5a0:
 #define FUN_003be2a0(...) ((u32 (*)(...))FUN_003be2a0)(__VA_ARGS__)
 #undef FUN_003be8e0
 // FUN_003BE8E0 NONMATCHING
-
-
 u32 FUN_003be8e0(long param_1,u64 param_2)
 {
   s32 var_7;
@@ -1003,7 +1003,7 @@ u32 FUN_003be8e0(long param_1,u64 param_2)
       else {
         lVar2 = FUN_00172660(param_1);
         if (lVar2 == 1) {
-          lVar2 = FUN_003be1c0_typed(param_1,cVar1 + 1);
+          lVar2 = FUN_003be1c0_wide(param_1,cVar1 + 1);
           var_7 = 1;
           if (lVar2 == 1) {
             var_7 = 2;
@@ -1734,12 +1734,13 @@ u32 FUN_003bf610(void)
 
   piVar3 = (int *)FUN_00195540();
   iVar1 = *piVar3;
-  if (iVar1 == 0) {
+  switch (iVar1) {
+  case 0:
     piVar3[1] = 0;
     piVar3[2] = 2;
     *piVar3 = 1;
-  }
-  else if (iVar1 == 1) {
+    break;
+  case 1:
     FUN_00521408(auStack_20,0,0x1c);
     auStack_20[0] = 7;
     auStack_20[1] = 1;
@@ -1747,8 +1748,8 @@ u32 FUN_003bf610(void)
     auStack_20[4] = 0;
     FUN_0027c080(2,auStack_20,0x1c,0);
     *piVar3 = 2;
-  }
-  else if (iVar1 == 2) {
+    break;
+  case 2:
     lVar4 = FUN_0027c2b0();
     if ((lVar4 == 0) && (lVar4 = FUN_0027c330(), lVar4 == -1)) {
       bVar2 = 1;
@@ -1759,6 +1760,7 @@ u32 FUN_003bf610(void)
     if (bVar2) {
       return 0xffffffff;
     }
+    break;
   }
   return 0;
 }
