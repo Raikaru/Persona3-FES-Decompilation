@@ -134,6 +134,7 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
   int index;
   u32 uVar6;
   int *piVar7;
+  u32 base;
   int lVar3;
   int lVar8;
   volatile code *alloc;
@@ -185,7 +186,8 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
     index = 0;
     for (iVar5 = 0; iVar5 < param_3; iVar5 = iVar5 + 1) {
       for (iVar4 = 0; iVar4 < param_2; iVar4 = iVar4 + 1) {
-        piVar7 = (int *)(*(u32 *)DAT_0095aebc_abs + index * 0x20);
+        base = *(u32 *)DAT_0095aebc_abs;
+        piVar7 = (int *)(index * 0x20 + base);
         if (piVar7 == (int *)0x0) {
           FUN_003b44a0();
           return 0;
@@ -286,8 +288,8 @@ void FUN_003b4580(int param_1)
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
   iVar2 = *(int *)DAT_0095aebc_abs;
-  iVar1 = *(int *)(*(int *)DAT_0095aebc_abs + 0x1c);
-  *(int *)(param_1 + 0x18) = *(int *)DAT_0095aebc_abs;
+  iVar1 = *(int *)(iVar2 + 0x1c);
+  *(int *)(param_1 + 0x18) = iVar2;
   *(int *)(param_1 + 0x1c) = iVar1;
   *(int *)(iVar2 + 0x1c) = param_1;
   *(int *)(iVar1 + 0x18) = param_1;
