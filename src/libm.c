@@ -295,6 +295,12 @@ float tanf(float x)
 
 #pragma optimization_level 2
 #pragma tailcall on
+// Wrapper floor note: retail is addiu sp,-16 / sd ra,0(sp) / ld ra,0(sp) / j target / addiu sp,+16 (20 bytes plus a 4-byte nop pad in the 24-byte window).
+// The candidate is j target / nop (8 bytes): one genuine differing word at offset 4, plus four missing retail words.
+// This is the tail-call-OFF frame shape with trailing jal/jr ra collapsed to tail j, retaining vestigial ra save/restore.
+// It sits between MWCC tailcall-on and tailcall-off output; ruled out: optimization levels 0-3, schedule/gpopt/leaf/frame pragmas.
+// Also ruled out: tailcall combinations, unused volatile locals/arrays, old-style prototypes, and address-taken locals.
+// All nine wrappers are identical, so one eventual source solution should flip all nine.
 // FUN_0052E9A0 NONMATCHING
 u64 FUN_0052e9a0(long param_1)
 {
