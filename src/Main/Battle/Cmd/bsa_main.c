@@ -463,6 +463,22 @@ void bsaMain00210d90(BsaWork* work)
     image = func_0021cca0(table2, 0x28);
     bsaPlaceQuad(p, 0x510, image, 18.0f, base + 54.0f + slide,
                  -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
+    /*
+     * The transition has a second copy of the command frame.  It is kept
+     * separate from the persistent frame at 0x10 so that the old panel can
+     * fade out while the new one slides in.
+     */
+    image = func_0021cca0(table2, 0x1f);
+    bsaPlaceQuad(p, 0x40, image, 59.0f, base + 60.0f + slide,
+                 -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+    if ((p[1] & BSA_FLAG_TRANSITION) != 0) {
+        f32 origin[2];
+        origin[0] = 18.0f;
+        origin[1] = base + 54.0f + slide;
+        bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
+        for (i = 0; i < 2; i++)
+            bsaSetColor(p + 0x4c50 + i * 0x100, color);
+    }
 
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         f32 origin[2];
