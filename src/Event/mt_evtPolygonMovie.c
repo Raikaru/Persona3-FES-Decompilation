@@ -168,6 +168,8 @@ float FUN_00394040(float param_1,float param_2,float param_3,long param_4)
 
 }
 #define FUN_00394040(...) ((float (*)(...))FUN_00394040)(__VA_ARGS__)
+#pragma push
+#pragma opt_loop_invariants on
 #undef FUN_00394070
 // FUN_00394070 NONMATCHING
 
@@ -236,6 +238,7 @@ void FUN_00394070(float param_1,u32 param_2,u32 *param_3,u32 *param_4,u32 *param
   }
   return;
 }
+#pragma pop
 #define FUN_00394070(...) ((void (*)(...))FUN_00394070)(__VA_ARGS__)
 #undef FUN_00394270
 // FUN_00394270
