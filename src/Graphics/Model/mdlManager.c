@@ -1190,7 +1190,7 @@ u32 func_00315090(RwMatrix* param_1,u16 *param_2,u32 param_3,int param_4);
 void func_003151d0(Model* param_1);
 void func_00315c20(int param_1);
 Model* func_00315ed0(Model* param_1);
-u64 func_00315f50(u64 param_1,u32 *param_2);
+u32 func_00315f50(void* param_1,u32 *param_2);
 void func_00316320(u64 param_1,u32* param_2,u16 param_3);
 u32 func_00316360(void* param_1,u32 *param_2);
 void func_003164f0(int param_1,int param_2);
@@ -1215,7 +1215,7 @@ u32 func_0031b680(int param_1,long param_2,int *param_3,int *param_4);
 void func_0031b820(u64 param_1,u64 param_2);
 u32 func_0031be80(u64 param_1);
 void func_0031c000(char* param_1,u16 param_2);
-u32 func_0031c1d0(u64 param_1);
+u32 func_0031c1d0(int param_1);
 u32 func_0031c7e0(int param_1);
 u32 func_0031c820(u16 param_1,u16 param_2,char* param_3);
 void FUN_0031e4d0(int *param_1,u16 param_2,u16 param_3);
@@ -5447,7 +5447,7 @@ Model* func_00315ed0(Model* param_1)
 
 
 // FUN_00315F50 NONMATCHING
-u64 func_00315f50(u64 param_1,u32 *param_2)
+u32 func_00315f50(void* param_1,u32 *param_2)
 
 
 
@@ -5517,17 +5517,17 @@ u64 func_00315f50(u64 param_1,u32 *param_2)
 
     *(char *)(iVar4 + 4) =
 
-         (char)(int)(DAT_007caf08 * (float)(uVar5 >> 0x10 & 0xff) * fVar12 * 255.0 + 0.5);
+         (char)(int)(DAT_007caf08 * (float)(uVar5 >> 0x10 & 0xff) * fVar12 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 5) = (char)(int)(fVar9 * fVar13 * 255.0 + 0.5);
+    *(char *)(iVar4 + 5) = (char)(int)(fVar9 * fVar13 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 6) = (char)(int)(fVar7 * fVar10 * 255.0 + 0.5);
+    *(char *)(iVar4 + 6) = (char)(int)(fVar7 * fVar10 * 255.0f + 0.5f);
 
-    *(char *)(iVar4 + 7) = (char)(int)(fVar8 * 255.0 + 0.5);
+    *(char *)(iVar4 + 7) = (char)(int)(fVar8 * 255.0f + 0.5f);
 
   }
 
-  return param_1;
+  return (u32)param_1;
 
 }
 
@@ -9386,7 +9386,7 @@ void func_0031c000(char* param_1,u16 param_2)
 // FUN_0031C1D0 NONMATCHING
 
 
-u32 func_0031c1d0(u64 param_1)
+u32 func_0031c1d0(int param_1)
 
 
 
@@ -9414,7 +9414,8 @@ u32 func_0031c1d0(u64 param_1)
 
   iVar7 = (int)param_1;
 
-  if (*(short *)(iVar7 + 0xd4) == 1) {
+  switch (*(u16 *)(iVar7 + 0xd4)) {
+  case 1:
 
     uVar2 = datGetEquipmentIdx(*(u16 *)(iVar7 + 0xd6),0);
 
@@ -9638,16 +9639,13 @@ u32 func_0031c1d0(u64 param_1)
 
     uVar4 = 1;
 
-  }
-
-  else {
-
+    break;
+  default:
     uVar4 = 0;
-
+    break;
   }
 
   return uVar4;
-
 }
 
 
