@@ -181,6 +181,7 @@ extern u8 DAT_00684d70[];
 #pragma alias DAT_00684d60 DAT_00684d70
 extern u8 DAT_00684d60[];
 
+
 // FUN_001f9170 NONMATCHING
 u32 sflResult001f9170(u32 player)
 {
@@ -357,6 +358,7 @@ void sflResult001f98d0(void)
     }
 }
 
+#pragma optimization_level 3
 // FUN_001f9a80 NONMATCHING
 void sflResult001f9a80(void)
 {
@@ -399,6 +401,7 @@ void sflResult001f9a80(void)
     func_001f7210();
     *(u32*)(base + 4) = 7;
 }
+#pragma optimization_level 2
 
 // FUN_001f9c60
 void sflResult001f9c60(void)
@@ -487,6 +490,7 @@ void sflResult001f9e90(u16 owner, s32 exp)
     }
     (void)level;
 }
+#pragma optimization_level 3
 // FUN_001FA0D0 NONMATCHING
 
 
@@ -578,6 +582,7 @@ void func_001fa0d0(void)
         }
     }
 }
+#pragma optimization_level 2
 
 
 // FUN_001fa450
@@ -1174,6 +1179,7 @@ void func_001fa4f0(u32 param_1)
   return;
 
 }
+#pragma optimization_level 3
 // FUN_001FAEA0 NONMATCHING
 
 
@@ -1328,6 +1334,7 @@ u32 func_001faea0(void)
   return 1;
 
 }
+#pragma optimization_level 2
 
 
 // FUN_001fb130
@@ -1576,6 +1583,7 @@ void func_001fb4b0(void* entries, s32 capacity, s32 lowerBound, s32 range,
   }
 }
 #pragma opt_loop_invariants off
+#pragma optimization_level 3
 // FUN_001FB560 NONMATCHING
 
 
@@ -1830,6 +1838,8 @@ LAB_001fb794:
   } while( true );
 
 }
+#pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_001FBA70 NONMATCHING
 
 
@@ -1960,6 +1970,7 @@ LAB_001fbbd0:
   } while( true );
 
 }
+#pragma optimization_level 2
 
 
 // FUN_001fbca0
@@ -2088,32 +2099,32 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   u32 *puVar1;
 
   int iVar2;
-
-  float in_f21;
-
-  float fVar3;
+  int level;
 
   float fVar4;
 
   float fVar5;
 
+  float fVar3;
+
+
   
 
   puVar1 = (u32 *)(iGpffffb7b8 + param_5 * 0x1c);
 
-  param_2 = param_2 - param_1;
+  level = param_2 - param_1;
 
-  if (param_2 < 10) {
+  if (level < 10) {
 
-    if (param_2 < -9) {
+    if (level < -9) {
 
-      param_2 = 0;
+      level = 0;
 
     }
 
     else {
 
-      param_2 = param_2 + 10;
+      level = level + 10;
 
     }
 
@@ -2121,17 +2132,17 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
 
   else {
 
-    param_2 = 0x14;
+    level = 0x14;
 
   }
 
-  if ((param_2 < 0) || (0x14 < param_2)) {
+  if ((level < 0) || (0x14 < level)) {
 
     FUN_0019d3f0(0x684c28,0x20b);
 
   }
 
-  fVar4 = *(float *)(iGpffffb7ac + param_2 * 4);
+  fVar4 = *(float *)(iGpffffb7ac + level * 4);
 
   fVar5 = 0.0;
 
@@ -2162,27 +2173,17 @@ int func_001fbfa0(int param_1,int param_2,int param_3,short param_4,int param_5,
   fVar3 = fGpffff8070;
 
   if (param_6 != 4) {
-
     if (param_6 == 3) {
-
       fVar3 = 1.0;
-
-    }
-
-    else {
-
+    } else {
       fVar3 = fGpffff83b4;
-
-      if ((param_6 != 2) && (fVar3 = fGpffff83b0, param_6 != 1)) {
-
-        FUN_0019d3f0(0x684c28,0x24e);
-
-        fVar3 = in_f21;
-
+      if (param_6 != 2) {
+        fVar3 = fGpffff83b0;
+        if (param_6 != 1) {
+          FUN_0019d3f0(0x684c28,0x24e);
+        }
       }
-
     }
-
   }
 
   if ((*puVar1 & 0x80) == 0) {
@@ -2547,6 +2548,7 @@ void func_001fccc0(u8* src, u8* dst, u32 skillId)
     event_id = *(s16*)(src + 2);
     FUN_00170710(event_id, (s16)i, (s16)(currentSkill - 1));
 }
+#pragma optimization_level 3
 // FUN_001FCE20 NONMATCHING
 
 
@@ -2785,6 +2787,7 @@ void func_001fce20(u8* param_1,u16 *param_2,int param_3)
   return;
 
 }
+#pragma optimization_level 2
 // FUN_001FD350 NONMATCHING
 
 
