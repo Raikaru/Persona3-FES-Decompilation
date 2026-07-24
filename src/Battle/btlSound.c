@@ -45,6 +45,7 @@ void FUN_002e2a10(void);
 u32 FUN_002e2a60(int *param_1);
 extern char gp0xffff9c90[5];
 extern char DAT_00697bb0[15];
+extern char DAT_00697bc0[];
 extern u32 DAT_00697be0;
 extern u32 DAT_00697be4;
 extern u32 DAT_00697be8;
@@ -525,44 +526,62 @@ u32 func_002DD8B0(void** work)
     }
     return 1;
 }
-// FUN_002dd9b0 NONMATCHING
+// FUN_002dd9b0
 void func_002dd9b0(void)
 {
     char path[256];
+    void* (**allocate)(u32 size, u32 heap);
+    u32 state;
     void* memory;
 
-    memory = jtbl_00960178(0xacc, 0x40000);
-    func_00523ac8(path, (const void*)0x697bc0, 0x1c2, 1);
+    allocate = (void* (**)(u32, u32))DAT_00960178_abs;
+    memory = (*allocate)(0xacc, 0x40000);
+    func_00523ac8(path, DAT_00697bc0, 0x1c2, 1);
     func_001024a0((void*)(uintptr_t)3, path, 0, memory);
-    while (func_0053c268(3) != 3)
+    goto btlSound_status1;
+btlSound_retry1:
+    if (state == 4)
     {
-        if (func_0053c268(3) == 4)
-        {
-            func_001024a0((void*)(uintptr_t)3, path, 0, memory);
-        }
+        func_001024a0((void*)(uintptr_t)3, path, 0, memory);
+    }
+btlSound_status1:
+    state = func_0053c268(3);
+    if (state != 3)
+    {
+        goto btlSound_retry1;
     }
     DAT_007CE4FC = 1;
 
-    memory = jtbl_00960178(0x540, 0x40000);
-    func_00523ac8(path, (const void*)0x697bc0, 0x1c3, 1);
+    memory = (*allocate)(0x540, 0x40000);
+    func_00523ac8(path, DAT_00697bc0, 0x1c3, 1);
     func_001024a0((void*)(uintptr_t)4, path, 0, memory);
-    while (func_0053c268(4) != 3)
+    goto btlSound_status2;
+btlSound_retry2:
+    if (state == 4)
     {
-        if (func_0053c268(4) == 4)
-        {
-            func_001024a0((void*)(uintptr_t)4, path, 0, memory);
-        }
+        func_001024a0((void*)(uintptr_t)4, path, 0, memory);
+    }
+btlSound_status2:
+    state = func_0053c268(4);
+    if (state != 3)
+    {
+        goto btlSound_retry2;
     }
 
-    memory = jtbl_00960178(0xa0c, 0x40000);
-    func_00523ac8(path, (const void*)0x697bc0, 0x1c4, 1);
-    func_001024a0((void*)(uintptr_t)5, path, 0, memory);
-    while (func_0053c268(5) != 3)
+    allocate = (void* (**)(u32, u32))(*allocate)(0xa0c, 0x40000);
+    func_00523ac8(path, DAT_00697bc0, 0x1c4, 1);
+    func_001024a0((void*)(uintptr_t)5, path, 0, allocate);
+    goto btlSound_status3;
+btlSound_retry3:
+    if (state == 4)
     {
-        if (func_0053c268(5) == 4)
-        {
-            func_001024a0((void*)(uintptr_t)5, path, 0, memory);
-        }
+        func_001024a0((void*)(uintptr_t)5, path, 0, allocate);
+    }
+btlSound_status3:
+    state = func_0053c268(5);
+    if (state != 3)
+    {
+        goto btlSound_retry3;
     }
     DAT_007CE500 = 1;
 }
