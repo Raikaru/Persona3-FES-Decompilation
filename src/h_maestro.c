@@ -10,6 +10,7 @@ extern f32 FUN_004b1a70(u32 param_1);
 extern f32 FUN_004b1a60(u32 param_1);
 extern void FUN_004b1870(u32 param_1, u32 param_2, u32 param_3);
 extern f32 fGpffff80e4;
+extern f32 gPI;
 extern f32 gUnk_007cadd0;
 extern RwCamera* kwlnGetMainCamera();
 extern void H_Maestro_00111c50(KwlnTask* hmaestroTask);
@@ -4782,13 +4783,12 @@ void* func_00117540(KwlnTask* task)
     s32 j;
     s32 frame;
     s32 segment;
-    f32 radius;
-    f32 x0;
-    f32 y0;
-    f32 x1;
-    f32 y1;
+    s32 radius;
+    f32 points[4][2];
     u64 point0;
     u64 point1;
+    u64 point2;
+    u64 point3;
 
     work = (MaestroPerEffectWork*)task->workData;
     kwlnGetMainCamera();
@@ -4963,25 +4963,33 @@ void* func_00117540(KwlnTask* task)
                 segment -= 30;
                 if (segment >= 0x29)
                     return KWLNTASK_STOP;
-                radius = (f32)(segment * 60);
+                radius = segment * 36;
                 for (i = 0; i < 24; i++)
                 {
                     f32 angle0;
                     f32 angle1;
-                    u32 bits;
 
-                    angle0 = (f32)(i * 400 / 24) * 0.017453292f;
-                    angle1 = (f32)((i + 1) * 400 / 24) * 0.017453292f;
-                    x0 = cosf(angle0) * radius;
-                    y0 = sinf(angle0) * radius;
-                    x1 = cosf(angle1) * radius;
-                    y1 = sinf(angle1) * radius;
-                    bits = *(u32*)&x0;
-                    point0 = ((u64)*(u32*)&y0 << 32) | bits;
-                    bits = *(u32*)&x1;
-                    point1 = ((u64)*(u32*)&y1 << 32) | bits;
+                    angle0 = gPI * (f32)(i * 400 / 24) / 180.0f;
+                    angle1 = gPI * (f32)((i + 1) * 400 / 24) / 180.0f;
+                    points[0][0] = cosf(angle0) * 1000.0f;
+                    points[0][1] = sinf(angle0) * 1000.0f;
+                    points[1][0] = cosf(angle1) * 1000.0f;
+                    points[1][1] = sinf(angle1) * 1000.0f;
+                    points[2][0] = cosf(angle0) * (f32)radius;
+                    points[2][1] = sinf(angle0) * (f32)radius;
+                    points[3][0] = cosf(angle1) * (f32)radius;
+                    points[3][1] = sinf(angle1) * (f32)radius;
+                    for (j = 0; j < 4; j++)
+                    {
+                        points[j][0] += 320.0f;
+                        points[j][1] += 224.0f;
+                    }
+                    point0 = *(u64*)&points[0][0];
+                    point1 = *(u64*)&points[1][0];
+                    point2 = *(u64*)&points[2][0];
+                    point3 = *(u64*)&points[3][0];
                     func_00115350(100.0f, 0x0f3956ff,
-                                  point0, point1, point1, point0,
+                                  point0, point1, point2, point3,
                                   0xff, 0xff, 0xff, 0xff);
                 }
             }
