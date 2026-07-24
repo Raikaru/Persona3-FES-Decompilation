@@ -16,7 +16,8 @@
 #include "libm.h"
 
 extern void* memset(void* dst, int value, u32 count);
-int func_001c0040(void);
+extern s32 func_001c0040(void);
+extern u32 RpRandom(void);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
@@ -99,20 +100,16 @@ u32 K_Encount_001d7300(u32 param_1, u16 flag, u32 areaId)
     s32 temp_16;
     s32 temp_3;
     s32 temp_3_3;
-    s32 temp_5;
     s32 temp_5_2;
-    s32 var_18;
-    s32 var_19;
     s32 var_20;
+    s32 var_19;
+    s32 temp_18;
     s32 var_5;
     s32 var_7;
-    u16 var_17;
     u16 var_21;
-    u32 temp_18;
+    u32 var_17;
     u32 temp_6;
-    u32 temp_hi;
-    u32 var_17_2;
-    u8 temp_4_2;
+    s32 temp_hi;
     u8* temp_3_2;
     u8* temp_4;
 
@@ -141,66 +138,56 @@ block_15:
         temp_4 = DAT_007ce4ac + temp_16;
         temp_18 = temp_4[2] + (temp_4[0] + temp_4[1]);
         temp_hi = RpRandom() % temp_18;
-        temp_5 = (s32)DAT_007ce4ac;
-        temp_4_2 = *(u8*)(temp_5 + temp_16);
-        if ((s32)temp_hi < (s32)temp_4_2)
+        if ((s32)temp_hi < (s32)DAT_007ce4ac[temp_16])
         {
             var_20 = 1;
             var_19 = 0;
-            var_18 = 0x14;
+            temp_18 = 0x14;
         }
-        else if ((s32)temp_hi < (s32)(temp_4_2 +
-                                      *(u8*)(temp_5 + temp_16 + 1)))
+        else if ((s32)temp_hi < (s32)(DAT_007ce4ac[temp_16] +
+                                      DAT_007ce4ac[temp_16 + 1]))
         {
             var_20 = 2;
             var_19 = 0x14;
-            var_18 = 0x19;
+            temp_18 = 0x19;
         }
         else
         {
             var_20 = 4;
             var_19 = 0x19;
-            var_18 = 0x1e;
+            temp_18 = 0x1e;
         }
         if (func_001c0040() == 3)
         {
             var_20 = 4;
             var_19 = 0x19;
-            var_18 = 0x1e;
+            temp_18 = 0x1e;
         }
-        var_17_2 = 0;
-        var_5 = var_19;
-loop_26:
-        if (var_5 < var_18)
+        var_17 = 0;
+        temp_3_2 = DAT_007ce4ac + temp_16;
+        for (var_5 = var_19; var_5 < temp_18; var_5 += 1)
         {
-            temp_3_2 = DAT_007ce4ac + temp_16 + var_5 * 4;
-            if (*(u16*)(temp_3_2 + 4) != 0)
+            temp_3_3 = var_5 * 4;
+            if (*(u16*)(temp_3_2 + temp_3_3 + 4) != 0)
             {
-                var_17_2 += *(u16*)(temp_3_2 + 6);
+                var_17 += *(u16*)(temp_3_2 + temp_3_3 + 6);
             }
-            var_5 += 1;
-            goto loop_26;
         }
-        if (var_17_2 == 0)
+        if (var_17 == 0)
         {
             return 0xffffffff;
         }
-        temp_6 = RpRandom() % var_17_2;
+        temp_6 = RpRandom() % var_17;
         var_7 = 0;
-        temp_5_2 = (s32)DAT_007ce4ac;
-loop_33:
-        if (var_19 < var_18)
+        temp_5_2 = (s32)(DAT_007ce4ac + temp_16);
+        for (; var_19 < temp_18; var_19 += 1)
         {
             temp_3_3 = var_19 * 4;
-            var_7 += *(u16*)(temp_5_2 + temp_16 + temp_3_3 + 6);
+            var_7 += *(u16*)(temp_5_2 + temp_3_3 + 6);
             if ((s32)temp_6 < var_7)
             {
-                var_21 = *(u16*)(temp_3_3 + temp_16 + temp_5_2 + 4);
-            }
-            else
-            {
-                var_19 += 1;
-                goto loop_33;
+                var_21 = *(u16*)(temp_3_3 + temp_5_2 + 4);
+                break;
             }
         }
         return (var_20 << 0x10) | (var_21 & 0xffff);
