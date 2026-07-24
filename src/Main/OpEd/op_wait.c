@@ -568,53 +568,43 @@ void opWait0026eed0(void)
     phase *= DAT_007cad84;
     opWaitSetPoly(work + 0x140, points, -1.0f, 29.0f, 643.0f, 419.0f,
                   1.0f, 1.0f);
-    opWaitSetColor(work + 0x140, alpha * 255.0f * (phase + 0.5f));
+    opWaitSetColor(work + 0x140, alpha * 255.0f * (phase + 0.75f));
 
-    x = 210.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 24.0f;
+    x = 210.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 188.0f;
     y = 69.0f - ((f32)*(s32*)(work + 0x20) / 690.0f) * 93.0f;
     {
         f32 rect[4] = {x, y, 256.0f, 256.0f};
         func_0021d8e0(work + 0x240, rect);
         if (mode == 1)
-            alpha = 1.0f - opWaitClamp01(timer, 0, 0x1e);
+            alpha = 1.0f - opWaitClamp01(timer, 0, 20);
         else if (mode == 0)
-            alpha = opWaitClamp01(timer, 0x64, 0xb4);
+            alpha = opWaitClamp01(timer, 0, 200);
+        else
+            alpha = 1.0f;
         opWaitSetColor(work + 0x240, alpha * 255.0f);
     }
 
     if (mode == 0)
     {
-        phase = opWaitClamp01(timer, 0x37, 0x3c);
-        scale = opWaitClamp01(timer, 0x37, 100);
-        phase = scale * 2.0f - scale * scale;
-        x = 335.0f + (1.0f - phase) * -370.0f;
-        y = 32.0f + (1.0f - phase) * 100.0f;
+        alpha = opWaitClamp01(timer, 0, 60);
         {
-            f32 rect[4] = {x, y, 232.0f, 416.0f};
+            f32 rect[4] = {0.0f, 0.0f, 640.0f, 448.0f};
             func_0021d8e0(work + 0x340, rect);
         }
-        alpha = opWaitClamp01(timer, 0x37, 0x3c);
-    }
-    else if (mode == 1)
-    {
-        alpha = 1.0f - opWaitClamp01(timer, 0, 0x1e);
-        phase = opWaitClamp01(timer, 0, 0x28);
-        opWaitSetPolyPivot(work + 0x340, points, 640.0f, 448.0f,
-                           140.0f, 150.0f, 1.0f + phase * 4.5f,
-                           1.0f + phase * 6.75f);
     }
     opWaitSetColor(work + 0x340, alpha * 255.0f);
 
     if (mode == 0)
     {
-        phase = opWaitClamp01(timer, 0xaa, 0xd2);
-        x = 335.0f;
-        y = 32.0f;
+        phase = opWaitClamp01(timer, 55, 100);
+        scale = phase * 2.0f - phase * phase;
+        x = 335.0f + (1.0f - scale) * -370.0f;
+        y = 32.0f + (1.0f - scale) * 200.0f;
         {
             f32 rect[4] = {x, y, 232.0f, 416.0f};
             func_0021d8e0(work + 0x440, rect);
         }
-        alpha = phase;
+        alpha = opWaitClamp01(timer, 55, 60);
     }
     else if (mode == 1)
     {
@@ -676,8 +666,8 @@ void opWait0026eed0(void)
     if (mode == 1)
     {
         phase = opWaitClamp01(timer, 0, 10);
-        x = 350.0f + (1.0f - phase) * 100.0f;
-        y = 401.0f + (1.0f - phase) * 50.0f;
+        x = 350.0f + phase * 100.0f;
+        y = 401.0f + phase * 50.0f;
         alpha = 1.0f - phase;
     }
     else if (mode == 0)
@@ -753,9 +743,9 @@ void opWait0026eed0(void)
         opWaitSetColor(work + 0xb40, alpha * 255.0f);
     }
     if (mode == 1)
-        alpha = 1.0f - opWaitClamp01(timer, 0, 30);
+        alpha = 1.0f - opWaitClamp01(timer, 0, 10);
     else if (mode == 0)
-        alpha = opWaitClamp01(timer, 70, 150);
+        alpha = opWaitClamp01(timer, 210, 220);
     else
         alpha = 1.0f;
     (void)func_0021cca0(atlas, 0x10);
