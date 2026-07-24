@@ -194,7 +194,9 @@ void func_00108740(void)
 {
     void* context;
     void* backendData;
+    void* (*backendAlloc)(void*, u32);
     s32 i;
+    HsndSlotWork* slotWork;
 
     sSndInitParams.outputLevel = DAT_007cad28;
     sSndInitParams.enabled = true;
@@ -206,13 +208,17 @@ void func_00108740(void)
     func_005497b0(30);
 
     memset(&sBackendControls[0], 0, sizeof(HsndBackendControl));
+    sBackendControls[0].class = 1;
+    sBackendControls[0].data18 = 0;
+    sBackendControls[0].data1C = 0;
+    sBackendControls[0].data20 = 0;
     sBackendControls[0].flags = 3;
     sBackendControls[0].voiceCount = 2;
     sBackendControls[0].timeout = 0xBB80;
     sBackendControls[0].pending = 1;
-    sBackendControls[0].class = 1;
     context = func_0054d080(&sBackendControls[0]);
-    backendData = HSND_BACKEND_ALLOC(context, 0x40000);
+    backendAlloc = (void* (*)(void*, u32))D_00960178;
+    backendData = backendAlloc(context, 0x40000);
     sChannelData0[0] = backendData;
     sChannelData1[0] = context;
     sChannels[0].handle = func_0054d030(&sBackendControls[0], backendData, context);
@@ -226,36 +232,54 @@ void func_00108740(void)
     func_0054d2e0(sChannels[0].handle, 10);
 
     memset(&sBackendControls[2], 0, sizeof(HsndBackendControl));
+    sBackendControls[2].class = 2;
+    sBackendControls[2].data18 = 0;
+    sBackendControls[2].data1C = 0;
+    sBackendControls[2].data20 = 0;
     sBackendControls[2].flags = 3;
     sBackendControls[2].voiceCount = 1;
     sBackendControls[2].timeout = 0x5DC0;
     sBackendControls[2].pending = 1;
-    sBackendControls[2].class = 2;
     context = func_0054d080(&sBackendControls[2]);
-    sChannelData0[2] = HSND_BACKEND_ALLOC(context, 0x40000);
+    sChannelData0[2] = backendAlloc(context, 0x40000);
     sChannelData1[2] = context;
+    sChannels[2].handle = NULL;
 
     memset(&sBackendControls[3], 0, sizeof(HsndBackendControl));
+    sBackendControls[3].class = 3;
+    sBackendControls[3].data18 = 0;
+    sBackendControls[3].data1C = 0;
+    sBackendControls[3].data20 = 0;
     sBackendControls[3].flags = 2;
     sBackendControls[3].voiceCount = 2;
     sBackendControls[3].timeout = 0x5DC0;
     sBackendControls[3].pending = 1;
-    sBackendControls[3].class = 3;
     context = func_0054d080(&sBackendControls[3]);
-    sChannelData0[3] = HSND_BACKEND_ALLOC(context, 0x40000);
+    sChannelData0[3] = backendAlloc(context, 0x40000);
     sChannelData1[3] = context;
 
+    sChannels[3].handle = NULL;
     memset(&sBackendControls[4], 0, sizeof(HsndBackendControl));
+    sBackendControls[4].class = 3;
+    sBackendControls[4].data18 = 0;
+    sBackendControls[4].data1C = 0;
+    sBackendControls[4].data20 = 0;
     sBackendControls[4].flags = 2;
     sBackendControls[4].voiceCount = 2;
     sBackendControls[4].timeout = 0x5DC0;
     sBackendControls[4].pending = 1;
-    sBackendControls[4].class = 3;
     context = func_0054d080(&sBackendControls[4]);
-    sChannelData0[4] = HSND_BACKEND_ALLOC(context, 0x40000);
+    sChannelData0[4] = backendAlloc(context, 0x40000);
     sChannelData1[4] = context;
 
-    memset(sSlotWork, 0, sizeof(sSlotWork));
+    sChannels[4].handle = NULL;
+    slotWork = sSlotWork;
+    memset(slotWork, 0, sizeof(sSlotWork));
+    for (i = 0; i < HSND_SLOT_COUNT; i++)
+    {
+        slotWork[i].state = 0;
+        slotWork[i].completed = false;
+    }
     for (i = 0; i < HSND_CHANNEL_COUNT; i++)
     {
         sChannels[i].active = false;
