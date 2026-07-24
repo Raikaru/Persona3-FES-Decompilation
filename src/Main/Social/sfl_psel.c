@@ -113,7 +113,7 @@ static void sflPselDraw(void* object)
     D_0096009C((u32*)object, 4, 0, 2, 3);
 }
 
-// FUN_00260430 NONMATCHING
+// FUN_00260430
 void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
 {
     u8* entry;
