@@ -434,6 +434,8 @@ void func_002f05f0(BtlAction *action)
     BtlUnit* childUnit;
     BtlPacket* packet;
     BtlPacket* rootPacket;
+    u64 actionUID;
+    u64 rootUID;
     BtlPacket* voicePacket;
     BtlPacket* effectPacket;
     void* object;
@@ -443,7 +445,6 @@ void func_002f05f0(BtlAction *action)
     u32 value0;
     u32 value1;
     u32 voiceData;
-    u64 actionUID;
     s16 voiceId;
     s16 childId;
     s16 i;
@@ -458,49 +459,50 @@ void func_002f05f0(BtlAction *action)
     packet = FUN_002bd590_packet_voice(action->unit, voiceId);
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 3);
+    
 
     rootPacket = FUN_00284200_packet_voice(1.0f, action->unit, 0, 0, 1);
     rootPacket->actionUID = actionUID;
     btlPacketRegister(rootPacket, 1);
+    rootUID = rootPacket->uid;
 
     packet = FUN_002b8d60_packet_voice(3, 0xfff);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 0);
 
     packet = FUN_0027fe90_packet_voice(action->unit, NULL, D_006978B0, NULL);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 0);
 
     packet = FUN_002a3b40_packet_voice(NULL, 1);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 0);
 
     packet = FUN_002a3b40_packet_voice(action, 0x11);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 0);
 
     FUN_002fddb0(action->unit, &position);
     packet = FUN_002822b0_packet_voice(action->unit, &position, 0);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
-
     for (current = *(BtlAction**)(DAT_007ce3ec + 0x14c);
          current != NULL;
          current = current->prev) {
         if ((current != action) && ((current->unk_1a & 1) != 0)) {
             packet = FUN_00285d30_packet_voice(current->unit, 0xffffff, 0, 0, 2, 0);
             packet->unk_00 = 4;
-            packet->parentUID = rootPacket->uid;
+            packet->parentUID = rootUID;
             packet->actionUID = actionUID;
             btlPacketRegister(packet, 0);
         }
@@ -509,7 +511,7 @@ void func_002f05f0(BtlAction *action)
     FUN_0029ea60(voiceId, &value1, &value0);
     packet = FUN_0029f4b0_packet_voice(value1, value0, 0x10);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
 
@@ -517,14 +519,14 @@ void func_002f05f0(BtlAction *action)
     FUN_0029ec80(voiceId, &value1, &value0);
     packet = FUN_002a0050_packet_voice(packet, value1, value0, 0x10, 0);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
 
     packet = (BtlPacket*)FUN_0029ec50(voiceId);
     packet = FUN_002a1280_packet_voice(packet, 0x10);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     packet->actionUID = actionUID;
     btlPacketRegister(packet, 1);
     FUN_002a1b00_voice((s32)action, 0, 0x10);
@@ -538,7 +540,7 @@ void func_002f05f0(BtlAction *action)
 
         voicePacket = FUN_00285690_packet_voice(childUnit, childId, 0x17e);
         voicePacket->unk_00 = 4;
-        voicePacket->parentUID = rootPacket->uid;
+        voicePacket->parentUID = rootUID;
         voicePacket->preUpdateDelay = 0x1e;
         voicePacket->actionUID = actionUID;
         btlPacketRegister(voicePacket, 1);
@@ -563,12 +565,12 @@ void func_002f05f0(BtlAction *action)
     packet = FUN_002bb2f0_packet_voice(*(u32*)(DAT_007ce3ec + 0xca8),
                                        action->unit, 0, voicePacket->uid, 0x300);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     btlPacketRegister(packet, 1);
 
     packet = FUN_002dd100_packet_voice(10, 2, 5);
     packet->unk_00 = 4;
-    packet->parentUID = rootPacket->uid;
+    packet->parentUID = rootUID;
     btlPacketRegister(packet, 1);
 
     effectPacket = FUN_002baf90_packet_voice(object, action->unit, action->unit, 0, 0x200);
