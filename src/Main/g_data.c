@@ -2446,6 +2446,8 @@ invalid:
     return 0;
 }
 
+#pragma opt_loop_invariants on
+
 // FUN_00170860 NONMATCHING
 void func_00170860(s16 pcId, s16 index, u16 value)
 {
@@ -2510,6 +2512,7 @@ void func_00170860(s16 pcId, s16 index, u16 value)
 done:
     return;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00170a40
 u16 func_00170a40(s16 pcId, s16 index)
