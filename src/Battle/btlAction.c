@@ -2445,7 +2445,6 @@ void btlActionUpdateStateSkill(BtlAction *action) {
     s32 var_v0_9;
     s64 temp_s3;
     s64 temp_s3_2;
-    s64 temp_s6;
     s64 temp_v0_30;
     s64 temp_v0_31;
     s64 temp_v1_12;
@@ -2530,8 +2529,8 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         var_s6 = -1;
     }
     sp310 = 1;
-    temp_s6 = (s64) ((s64) var_s6 << 0x38) >> 0x38;
-    if (temp_s6 == 0) {
+    var_s6 = (s64) ((s64) var_s6 << 0x38) >> 0x38;
+    if (var_s6 == 0) {
         temp_a0 = action->unit;
         temp_v1 = temp_a0->charId;
         if ((temp_v1 != 0xA) && (temp_v1 != 3)) {
@@ -2542,7 +2541,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         if ((func_002d5bf0(temp_a0) != 0) || (func_002d5c70(action->unit) != 0)) {
             sp310 = 0x10;
         }
-    } else if (temp_s6 == 1) {
+    } else if (var_s6 == 1) {
         temp_v1_2 = action->unit->charId;
         if ((temp_v1_2 != 0xEE) && (temp_v1_2 != 0xE9) && (temp_v1_2 != 0x126) && (temp_v1_2 != 0x110) && (temp_v1_2 != 0x10B)) {
 
@@ -2550,12 +2549,12 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             sp310 = 0x10;
         }
     }
-    if (temp_s6 >= 0) {
+    if (var_s6 >= 0) {
         if (sp2EC != 0) {
             temp_v0_3 = btlUnitCreateRotateTowardUnitPacket(action->unit, action->target.targetedActions[0]->unit, 0U);
             temp_v0_3->actionUID = temp_s0;
             btlPacketRegister(temp_v0_3, 0U);
-        } else if (temp_s6 == 0) {
+        } else if (var_s6 == 0) {
             func_00280870(func_002d1600(&action->target) & 0xFFFF, 1, &sp518, 0);
             temp_v0_4 = btlUnitCreateRotatePacket(action->unit, &sp518, 0U);
             temp_v0_4->actionUID = temp_s0;
@@ -2595,9 +2594,9 @@ void btlActionUpdateStateSkill(BtlAction *action) {
         temp_v0_10->actionUID = temp_s0;
         btlPacketRegister(temp_v0_10, 3U);
     }
-    if ((sp1D0 == 1) && (temp_s6 != -1)) {
+    if ((sp1D0 == 1) && (var_s6 != -1)) {
         if ((sp1C0 == 0) && (sp1A0 == 0)) {
-            if (temp_s6 == 0) {
+            if (var_s6 == 0) {
                 if (!(action->unk_18 & 0x40) && ((temp_s2 = func_002ddc80(action->unit->charId), (func_002d5eb0(action) != 0)) || (temp_s2 != 0))) {
                     var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
                     if ((var_s1 != -1) && ((datCalcRand(0x64U) < 0x14U) || (temp_s2 != 0))) {
@@ -2605,7 +2604,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                         action->unk_18 |= 0x40;
                     }
                 }
-            } else if ((temp_s6 == 1) && !(action->unk_18 & 0x40)) {
+            } else if ((var_s6 == 1) && !(action->unk_18 & 0x40)) {
                 var_s1 = (s64) (func_002e33f0(action) << 0x30) >> 0x30;
                 if (var_s1 != -1) {
                     sp2F0 = 1;
@@ -2620,9 +2619,9 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             }
             if ((func_002d6370(temp_s7) == 0) && (func_002d5f50(action) == 0)) {
                 temp_a0_2 = func_002d1600(&action->target) & 0xFFFF;
-                if ((temp_s6 == 0) && ((temp_a0_2 & 0xFFFF) == 2)) {
+                if ((var_s6 == 0) && ((temp_a0_2 & 0xFFFF) == 2)) {
                     sp2D0 = (effMiscRand(NULL) & 1) != 0;
-                } else if ((temp_s6 == 1) && ((temp_a0_2 & 0xFFFF) == 1)) {
+                } else if ((var_s6 == 1) && ((temp_a0_2 & 0xFFFF) == 1)) {
                     sp2D0 = 1;
                 }
             }
@@ -2633,7 +2632,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                 sp2D0 = 1;
                 sp3A0 = 0xC;
             }
-            if ((temp_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
+            if ((var_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
                 sp280 = 1;
                 sp2D0 = 1;
                 sp2F0 = 0;
@@ -2645,14 +2644,14 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                 temp_v1_4 = (u8*)gBtl;
                 *(u16*)((u8*)gBtl + 0x18) = (u16)(*(u16*)((u8*)gBtl + 0x18) | 6);
             }
-            if ((temp_s6 == 0) && (func_002d5fb0(action) != 0)) {
+            if ((var_s6 == 0) && (func_002d5fb0(action) != 0)) {
                 btlPacketRegister(btlVoice002e2be0(action, 0x10, 0, 0, 0), 1U);
             } else if (sp2F0 != 0) {
                 temp_v0_12 = func_002dd960(action->unit);
                 temp_v0_12->actionUID = temp_s0;
                 btlPacketRegister(temp_v0_12, 1U);
             }
-            if (temp_s6 == 1) {
+            if (var_s6 == 1) {
                 var_v1 = (s64) (func_002f9690(action->unit) << 0x30) >> 0x30;
                 if (var_v1 == -1) {
                     var_v1 = 6;
@@ -2664,7 +2663,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_13->actionUID = temp_s0;
             btlPacketRegister(temp_v0_13, 1U);
             var_s3_2 = temp_v0_13->uid;
-            if (temp_s6 == 0) {
+            if (var_s6 == 0) {
                 temp_v0_14 = btlUnit00286240(action->unit);
                 temp_v0_14->unk_00 = 4;
                 temp_v0_14->parentUID = var_s3_2;
@@ -2678,7 +2677,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
                 btlPacketRegister(temp_v0_15, 1U);
             }
             var_s2_2 = ((s64) (func_002838d0(action->unit, 0xC, 0x3F800000) << 0x30) >> 0x30) + 6;
-            if (temp_s6 == 0) {
+            if (var_s6 == 0) {
                 var_v0_2 = 0x10;
             } else {
                 var_v0_2 = 0x11;
@@ -2825,7 +2824,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_39->actionUID = temp_s0;
             btlPacketRegister(temp_v0_39, 1U);
             if ((sp2D0 == 1) && (sp280 == 0) && !((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
-                if (temp_s6 == 0) {
+                if (var_s6 == 0) {
                     var_v0_3 = 0x15;
                 } else {
                     var_v0_3 = 0x16;
@@ -3003,7 +3002,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             }
             sp410 = var_s3->uid;
         } else if ((sp1C0 == 1) && (sp1A0 == 0)) {
-            if ((temp_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
+            if ((var_s6 == 0) && (func_002d62d0(action) != 0) && (temp_s7 != 0xEA)) {
                 sp280 = 1;
                 sp2D0 = 1;
                 temp_v0_67 = btlUnitCreateLookAtDeactivatePacket(NULL, 3U);
@@ -3048,7 +3047,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_72->parentUID = var_s3->uid;
             btlPacketRegister(temp_v0_72, 1U);
         }
-    } else if ((sp1D0 == 0) && (temp_s6 != -1)) {
+    } else if ((sp1D0 == 0) && (var_s6 != -1)) {
         sp2B0 = 1;
         if ((sp1E0 == 1) || (func_002d6370(temp_s7) != 0)) {
             if ((sp1E0 == 1) || (var_s2_3 = (s64) (func_002f8fd0(action->unit, temp_s7) << 0x30) >> 0x30, (var_s2_3 == -1))) {
@@ -3370,7 +3369,7 @@ loop_306:
                 btlPacketRegister(temp_v0_108, 1U);
             }
             action->unk_18 |= 0x200;
-        } else if ((sp230 == 0) && (temp_s6 == 0)) {
+        } else if ((sp230 == 0) && (var_s6 == 0)) {
             temp_a0_9 = func_002d1600(&action->target) & 0xFFFF;
             if (temp_a0_9 == 2) {
                 func_00280870(temp_a0_9, 1, &sp518, 0);
@@ -3382,7 +3381,7 @@ loop_306:
             }
         }
         if (sp280 == 1) {
-            if ((sp444 == NULL) && (temp_s6 != -1)) {
+            if ((sp444 == NULL) && (var_s6 != -1)) {
                 if ((sp1D0 == 1) && (sp1A0 == 0) && (sp1C0 == 0)) {
                     temp_v0_110 = btlUnit00285d30(sp450, 0U, 0, 0, 0, 0);
                     temp_v0_110->unk_00 = 5;
@@ -3691,7 +3690,7 @@ loop_302:
         temp_v0_141->actionUID = temp_s0;
         btlPacketRegister(temp_v0_141, 1U);
     } else if (sp390 > 0) {
-        if (temp_s6 == 0) {
+        if (var_s6 == 0) {
             temp_s3_3 = func_002d4e10(2, 0x80000) & 0xFFFF;
             if (((s32) action->unk_28 <= 0) && (action->unit->charId != 1) && (datCalcRand(0x64U) < 0x32U)) {
                 if (action->unit->genus != 0) {
@@ -3743,7 +3742,7 @@ block_325:
         temp_v0_144->preUpdateDelay = (s16) sp3C0;
         temp_v0_144->actionUID = temp_s0;
         btlPacketRegister(temp_v0_144, 1U);
-    } else if ((sp2EC != 0) && (action->unit->charId == 1) && (temp_s6 == 0) && (func_002d5fb0(action) != 0) && (func_002d6090(action) == 0)) {
+    } else if ((sp2EC != 0) && (action->unit->charId == 1) && (var_s6 == 0) && (func_002d5fb0(action) != 0) && (func_002d6090(action) == 0)) {
         temp_v0_145 = btlVoice002e2be0(action->target.targetedActions[0], 0x11, 0, 0, 0);
         temp_v0_145->unk_00 = 5;
         temp_v0_145->parentUID = temp_s2_4;
@@ -3868,7 +3867,7 @@ block_325:
         }
         var_s3_3->unk_00 = 0xB;
         var_s3_3->parentUID = var_s1_3->uid;
-        if (temp_s6 == 0) {
+        if (var_s6 == 0) {
             var_s3_3->preUpdateDelay = sp3E0;
         } else {
             var_s3_3->preUpdateDelay = 8;
@@ -3914,10 +3913,10 @@ block_325:
     temp_v0_160->unk_47 &= 0xDF;
     temp_v0_160->actionUID = temp_s0;
     btlPacketRegister(temp_v0_160, 0U);
-    if ((sp1D0 == 1) && (temp_s6 != -1) && (sp1C0 == 0)) {
+    if ((sp1D0 == 1) && (var_s6 != -1) && (sp1C0 == 0)) {
         if (sp2D0 == 0) {
             if (!((*(u16*)((u8*)iGpffffb710 + temp_fp + 2)) & 0x40)) {
-                if (temp_s6 == 0) {
+                if (var_s6 == 0) {
                     var_v0_11 = 0x15;
                 } else {
                     var_v0_11 = 0x16;
@@ -3980,15 +3979,6 @@ block_394:
         btlPacketRegister(temp_v0_167, 1U);
     }
     func_002b9030(sp438);
-    if (func_002dc130(action) != 0) {
-        btlActionSetState(action, 0x19U);
-        return;
-    }
-    temp_v1_16 = action->target.commandId;
-    if ((temp_v1_16 != 2) && (temp_v1_16 != 3) && (temp_v1_16 != 1)) {
-
-    }
-    btlActionSetState(action, 0x1EU);
 }
 #pragma opt_loop_invariants off
 /* Warning: struct Model is not defined (only forward-declared) */
