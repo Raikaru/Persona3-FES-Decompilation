@@ -243,8 +243,7 @@ void opMenu0026a2c0(void)
     f32 angle;
     f32 pulse;
     f32 scale;
-    f32 rect[8];
-    u8 color[4];
+    f32 rect[6];
     s32 i;
     s32 count;
     u32 base;
@@ -480,14 +479,24 @@ void opMenu0026a2c0(void)
     rect[4] = 0.0f;
     rect[5] = 448.0f;
     angle = fGpffff8248 * ((f32)work[0x918 / 4] / 150.0f) * 2.0f;
-    pulse = func_0052e878(angle);
-    scale = fGpffff809c + fGpffff83a4 * pulse;
+    pulse = fGpffff83a4 +
+            fGpffff809c * func_0052e878(angle);
+    scale = fGpffff83a4 +
+            fGpffff809c * func_0052e878(angle);
     for (i = 0; i < 3; i++)
     {
-        rect[i * 2] = (rect[i * 2] - fGpffff809c) * scale +
-                      fGpffff809c;
-        rect[i * 2 + 1] = (rect[i * 2 + 1] - fGpffff809c) * scale +
-                          fGpffff809c;
+        rect[i * 2] -= fGpffff83a4;
+        rect[i * 2 + 1] -= 448.0f;
+    }
+    for (i = 0; i < 3; i++)
+    {
+        rect[i * 2] *= pulse;
+        rect[i * 2 + 1] *= scale;
+    }
+    for (i = 0; i < 3; i++)
+    {
+        rect[i * 2] += fGpffff83a4;
+        rect[i * 2 + 1] += 448.0f;
     }
     ((f32*)((u8*)work + 0xa20))[0] = rect[0];
     ((f32*)((u8*)work + 0xa20))[1] = rect[1];
@@ -496,23 +505,32 @@ void opMenu0026a2c0(void)
     ((f32*)((u8*)work + 0xaa0))[0] = rect[4];
     ((f32*)((u8*)work + 0xaa0))[1] = rect[5];
 
-    color[0] = 0x0a;
-    color[1] = 0x11;
-    color[2] = 0x30;
-    color[3] = 0;
-    for (i = 0; i < 4; i++)
-        ((f32*)((u8*)work + 0xa40))[i] = (f32)color[i];
+    {
+        volatile u8 color[4];
+        color[0] = 0x0a;
+        color[1] = 0x11;
+        color[2] = 0x30;
+        color[3] = 0;
+        ((f32*)((u8*)work + 0xa40))[0] = (f32)color[0];
+        ((f32*)((u8*)work + 0xa40))[1] = (f32)color[1];
+        ((f32*)((u8*)work + 0xa40))[2] = (f32)color[2];
+        ((f32*)((u8*)work + 0xa40))[3] = (f32)color[3];
 
-    color[0] = 0;
-    color[1] = 7;
-    color[2] = 0x26;
-    color[3] = 0;
-    for (i = 0; i < 4; i++)
-        ((f32*)((u8*)work + 0xa80))[i] = (f32)color[i];
+        color[0] = 0;
+        color[1] = 7;
+        color[2] = 0x26;
+        color[3] = 0;
+        ((f32*)((u8*)work + 0xa80))[0] = (f32)color[0];
+        ((f32*)((u8*)work + 0xa80))[1] = (f32)color[1];
+        ((f32*)((u8*)work + 0xa80))[2] = (f32)color[2];
+        ((f32*)((u8*)work + 0xa80))[3] = (f32)color[3];
 
-    color[3] = (u8)(fGpffff8480 * alpha);
-    for (i = 0; i < 4; i++)
-        ((f32*)((u8*)work + 0xac0))[i] = (f32)color[i];
+        color[3] = (u8)(fGpffff8480 * alpha);
+        ((f32*)((u8*)work + 0xac0))[0] = (f32)color[0];
+        ((f32*)((u8*)work + 0xac0))[1] = (f32)color[1];
+        ((f32*)((u8*)work + 0xac0))[2] = (f32)color[2];
+        ((f32*)((u8*)work + 0xac0))[3] = (f32)color[3];
+    }
 }
 #pragma opt_loop_invariants off
 
