@@ -25,6 +25,10 @@ extern u32 DAT_006a3f8c;
 extern u32 DAT_006a3f90;
 extern u32 DAT_006a41e8;
 extern u32 DAT_006a41f8;
+#pragma alias DAT_006a41e8_abs DAT_006a41e8
+extern u8 DAT_006a41e8_abs[];
+#pragma alias DAT_006a41f8_abs DAT_006a41f8
+extern u8 DAT_006a41f8_abs[];
 extern u32 DAT_006a4218;
 extern u32 DAT_006a4220;
 extern u32 DAT_006a4228;
@@ -70,14 +74,14 @@ extern u32 fGpffff8110;
 extern u32 fGpffff81f0;
 extern u32 iGpffffb730;
 extern u32 iGpffffb98c;
-extern u32 uGpffffaa18;
-extern u32 uGpffffaa1a;
-extern u32 uGpffffaa1c;
-extern u32 uGpffffaa1e;
-extern u32 uGpffffaa20;
-extern u32 uGpffffaa22;
-extern u32 uGpffffaa24;
-extern u32 uGpffffaa26;
+extern s16 uGpffffaa18;
+extern s16 uGpffffaa1a;
+extern s16 uGpffffaa1c;
+extern s16 uGpffffaa1e;
+extern s16 uGpffffaa20;
+extern s16 uGpffffaa22;
+extern s16 uGpffffaa24;
+extern s16 uGpffffaa26;
 extern u32 uGpffffb98c;
 extern code DAT_00960090;
 extern code DAT_00960178;
@@ -2060,11 +2064,11 @@ void FUN_003ca960(int param_1)
 
     if (lVar5 <= iVar8) {
 
-      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0) -
+      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0f) -
 
                                   fGpffff8110 * ((float)(int)lVar5 / (float)iVar8));
 
-      fStack_8 = (fVar7 + 1.0) * 80.0;
+      fStack_8 = (fVar7 + 1.0f) * 80.0f;
 
       if (*(char *)(param_1 + 0xe8) == '\0') {
 
@@ -2076,7 +2080,7 @@ void FUN_003ca960(int param_1)
 
         FUN_00133180(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4,
 
-                     (int)((float)(int)*(short *)(param_1 + 0x12) * (1.0 - (fVar7 + 1.0))));
+                     (int)((float)(int)*(short *)(param_1 + 0x12) * (1.0f - (fVar7 + 1.0f))));
 
       }
 
@@ -2102,11 +2106,11 @@ void FUN_003ca960(int param_1)
 
     if (iVar4 <= lVar5) {
 
-      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0) -
+      fVar7 = (float)FUN_0052e878((fGpffff81f0 + 0.0f) -
 
                                   fGpffff8110 * ((float)((int)lVar5 - iVar4) / (float)iVar8));
 
-      fStack_8 = (1.0 - (fVar7 + 1.0)) * -80.0;
+      fStack_8 = (1.0f - (fVar7 + 1.0f)) * -80.0f;
 
       if (*(char *)(param_1 + 0xe8) == '\0') {
 
@@ -2118,7 +2122,7 @@ void FUN_003ca960(int param_1)
 
         FUN_00133180(0,CONCAT44(uStack_4,fStack_8),iVar6,iVar6 + 4,
 
-                     (int)((float)(int)*(short *)(param_1 + 0x12) * (fVar7 + 1.0)));
+                     (int)((float)(int)*(short *)(param_1 + 0x12) * (fVar7 + 1.0f)));
 
       }
 
@@ -2155,8 +2159,10 @@ void FUN_003cacc0(int param_1)
   short *psVar4;
 
   int iVar5;
-
   long lVar6;
+
+
+  
 
   short asStack_20 [8];
 
@@ -2164,7 +2170,7 @@ void FUN_003cacc0(int param_1)
 
   
 
-  psVar4 = (short *)&DAT_006a41e8;
+  psVar4 = (short *)DAT_006a41e8_abs;
 
   psVar3 = asStack_10;
 
@@ -2184,9 +2190,7 @@ void FUN_003cacc0(int param_1)
 
   } while (0 < iVar2);
 
-  psVar4 = (short *)&DAT_006a41f8;
-
-  psVar3 = asStack_20;
+  psVar4 = (short *)DAT_006a41f8_abs;
 
   iVar2 = 5;
 
