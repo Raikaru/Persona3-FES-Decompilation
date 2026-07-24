@@ -23,7 +23,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u32 param_6,u32 param_7,u32 param_8,u32 param_9);
 s8 FUN_003b35c0(char param_1);
 #pragma alias FUN_003b35c0_raw FUN_003b35c0
-s8 FUN_003b35c0_raw();
+int FUN_003b35c0_raw();
 
 /* Region call-cast macros */
 #define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
@@ -45,6 +45,9 @@ void FUN_003b2c60(void *param_1,f32 param_2)
 
 #define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
 #undef FUN_003b2cb0
+// Reconstructed body now matches the retail instruction stream except for four
+// allocator-only register differences in the final outer-loop pointer.
+// Candidate size is 732 bytes against the 736-byte retail window; tail is padding.
 // FUN_003B2CB0 NONMATCHING
 
 
@@ -81,17 +84,18 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   }
 
 
-  uGpffffa810 = (uGpffffa810 | 1) & 0xfffd;
+  uGpffffa810 = (s64)(s16)(uGpffffa810 | 1) & -3;
   iVar2 = FUN_003b0970(param_7,param_6,param_5,0,0);
 
-  uGpffffa810 = (uGpffffa810 | 2) & 0xfffe;
+  uGpffffa810 = (s64)(s16)((s16)uGpffffa810 & -2) | 2;
 
   if ((param_8 & 0xb) != 0) {
     iVar5 = 0;
 
     for (iVar3 = *(int *)(iVar2 + 0x1c); iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x28)) {
 
-      iVar5 = iVar5 + *(int *)(iVar3 + 0xc) + (int)*(char *)(iVar2 + 3);
+      iVar5 = iVar5 + *(int *)(iVar3 + 0xc);
+      iVar5 = iVar5 + (int)*(char *)(iVar2 + 3);
 
     }
 
@@ -122,12 +126,9 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   }
 
   else {
-
     if ((param_8 & 0x10) != 0) {
 
-      iVar3 = FUN_003b35c0_raw(param_6);
-
-      param_3 = (int)(((float)param_3 + 0.0) - fGpffff808c * (float)iVar3);
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
 
     }
 
@@ -150,7 +151,6 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   }
 
   *(float *)(iVar2 + 0x14) = param_1;
-
   for (iVar3 = iVar2; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
 
     for (iVar4 = *(int *)(iVar3 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
