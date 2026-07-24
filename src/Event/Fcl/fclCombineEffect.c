@@ -615,29 +615,30 @@ u32 FUN_004178c0(int param_1)
 
   u8 uVar2;
 
-  char cVar3;
+  u8 cVar3;
 
   int *piVar4;
 
-  int iVar5;
+  int *iVar5;
 
-  char *pcVar6;
+  u8 *pcVar6;
 
   u32 uVar7;
 
   u8 bVar8;
 
-  u16 *puVar9;
 
   u32 uVar10;
 
-  u32 *puVar11;
 
   u64 uVar12;
 
   long lVar13;
 
   int iVar14;
+  u16 *puVar9;
+
+  u32 *puVar11;
 
   u32 *puVar15;
 
@@ -673,380 +674,241 @@ u32 FUN_004178c0(int param_1)
 
   bVar8 = 0;
 
-  iVar5 = *(int *)(piVar4[5] + 0xc);
+  iVar5 = *(int **)(piVar4[5] + 0xc);
 
-  pcVar6 = *(char **)(iVar5 + 0x14);
+  pcVar6 = *(u8 **)((u8 *)iVar5 + 0x14);
 
-  if (*piVar4 != 1) {
+  switch (*piVar4) {
+  case 0:
+    goto LAB_00417918;
+  case 1:
+    goto LAB_00417a90;
+  default:
+    goto LAB_00417ffc;
+  }
 
-    if (*piVar4 != 0) {
+LAB_00417918:
+  cVar3 = *pcVar6;
 
-      return 0;
-
-    }
-
-    cVar3 = *pcVar6;
-
-    if (cVar3 == '\x06') {
-
-      for (iVar14 = 0; iVar14 < *(short *)(param_1 + 0x20) + 2; iVar14 = iVar14 + 1) {
-
-        func_0021ab80(*(u16 *)(param_1 + iVar14 * 2 + 0x24));
-
-      }
-
-    }
-
-    else if (cVar3 == '\x05') {
-
-
-      func_00219c90(*(u32 *)(iVar14 + 8));
-
-      iVar14 = H_Cdvd_CacheFindFile(0x6b2e20,&iStack_4);
-
+    switch (cVar3) {
+    case '\x01':
+      iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
       piVar4[2] = iVar14;
-
       bVar8 = 1;
+      break;
 
-    }
+    case '\x02':
+      iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
+      piVar4[2] = iVar14;
+      break;
 
-    else if (cVar3 == '@') {
-
-      if (pcVar6[1] == '\x03') {
-
-        FUN_003cdba0(*(u32 *)(param_1 + 0x18),*(u16 *)(param_1 + 0x22));
-
-      }
-
-    }
-
-    else if (cVar3 == '\x03') {
-
+    case '\x03':
       if (*(int *)(pcVar6 + 4) == 0) {
-
         K_Assert((const char *)0x6b2ad0,0x324);
-
       }
-
       iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
-
       piVar4[2] = iVar14;
-
       piVar4[6] = iStack_4;
+      break;
 
-    }
+    case '@':
+      if (pcVar6[1] == '\x03') {
+        FUN_003cdba0(*(u32 *)(param_1 + 0x18),*(u16 *)(param_1 + 0x22));
+      }
+      break;
 
-    else if (cVar3 == '\x02') {
-
-      iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
-
+    case '\x05': {
+      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
+      func_00219c90(*(u32 *)(puVar9 + 4));
+      iVar14 = H_Cdvd_CacheFindFile(0x6b2e20,&iStack_4);
       piVar4[2] = iVar14;
-
-    }
-
-    else if (cVar3 == '\x01') {
-
-      iVar14 = H_Cdvd_CacheFindFile(*(u32 *)(pcVar6 + 4),&iStack_4);
-
-      piVar4[2] = iVar14;
-
       bVar8 = 1;
+      }
+      break;
 
+    case '\x06':
+      for (iVar14 = 0; iVar14 < *(short *)(param_1 + 0x20) + 2; iVar14 = iVar14 + 1) {
+        func_0021ab80(*(u16 *)(param_1 + iVar14 * 2 + 0x24));
+      }
+      break;
     }
 
     *piVar4 = 1;
 
-  }
 
+LAB_00417a90:
   cVar3 = *pcVar6;
 
-  if (cVar3 == '\x06') {
-
-    func_00219d90();
-
-    lVar13 = func_0021a120();
-
-    if (lVar13 == 0) {
-
-
-      *(int *)(*(int *)(iVar14 + 8) + 4) = *(short *)(param_1 + 0x20) + 2;
-
-      for (uVar19 = 0; (int)uVar19 < *(short *)(param_1 + 0x20) + 2; uVar19 = uVar19 + 1) {
-
-        uStack_18 = DAT_006b2e10;
-
-        uStack_10 = DAT_006b2e18;
-
-        uStack_c = DAT_007cda6c;
-
-        puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
-
-        *puVar9 = *puVar9 | 0x10;
-
-        *(u16 **)(*(int *)(iVar14 + 8) + uVar19 * 4 + 8) = puVar9;
-
-        func_00209f00(*(u32 *)(puVar9 + 4));
-
-        func_0020c590(*(u32 *)(puVar9 + 4),*(u16 *)(param_1 + uVar19 * 2 + 0x24));
-
-        func_0020cc80(*(u32 *)(puVar9 + 4),&uStack_c);
-
-        sflRes0020d630(*(u32 *)(puVar9 + 4),&uStack_18);
-
-        func_0020c7a0(*(u32 *)(puVar9 + 4),*(u32 *)(param_1 + 0x38));
-
-      }
-
-      bVar8 = 1;
-
-    }
-
-  }
-
-  else if (cVar3 == '\x05') {
-
-    func_00219d90();
-
-    if ((bVar8) || (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0)) {
-
+  switch (cVar3) {
+  case '\x01': {
+    if ((bVar8 || (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0))) {
       if (piVar4[1] != 0) {
-
         piVar4[2] = *(int *)(piVar4[1] + 0x110);
-
       }
 
-      func_0021b4a0(piVar4[2]);
+      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+      uVar10 = FUN_0034fcd0(piVar4[2]);
+      *(u32 *)(puVar9 + 4) = uVar10;
+      *puVar9 = *puVar9 | 2;
 
       if (piVar4[1] != 0) {
-
         H_Cdvd_Destroy();
-
       }
 
       piVar4[1] = 0;
-
       bVar8 = 1;
 
+      puVar16 = &DAT_006b2d70;
+      puVar15 = auStack_50;
+      iVar14 = 0xd;
+      do {
+        uVar10 = *puVar16;
+        puVar16 = puVar16 + 1;
+        iVar14 = iVar14 + -1;
+        *puVar15 = uVar10;
+        puVar15 = puVar15 + 1;
+      } while (0 < iVar14);
+      *(u32 *)(puVar9 + 2) = auStack_50[(u8)pcVar6[1]];
     }
-
-  }
-
-  else if (cVar3 == '@') {
-
-    if ((pcVar6[1] == '\x03') &&
-
-       (lVar13 = FUN_003cdc80(*(u32 *)(param_1 + 0x18)), lVar13 != 0)) {
-
-      bVar8 = 1;
-
     }
+    break;
 
-  }
-
-  else if (cVar3 == '\x03') {
-
-    if (piVar4[4] == 0) {
-
-      lVar13 = mdlCreateFromRmdMemory(0xb,0x101,piVar4[2],piVar4[6],0);
-
-      piVar4[4] = (int)lVar13;
-
-      if (lVar13 == 0) goto LAB_00417fb0;
-
-    }
-
-    lVar13 = mdlStreamRead(piVar4[4]);
-
-    if (lVar13 != 0) {
-
-
-      *(int *)(puVar9 + 4) = piVar4[4];
-
-      *puVar9 = *puVar9 | 4;
-
+  case '\x02': {
+    if (((piVar4[2] != 0) || (bVar8)) ||
+       (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0)) {
       if (piVar4[1] != 0) {
-
-        H_Cdvd_Destroy();
-
-      }
-
-      piVar4[1] = 0;
-
-      bVar8 = 1;
-
-      piVar4[4] = 0;
-
-    }
-
-  }
-
-  else if (cVar3 == '\x02') {
-
-    if (((piVar4[2] != 0) || (bVar8)) || (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0)) {
-
-      if (piVar4[1] != 0) {
-
         piVar4[2] = *(int *)(piVar4[1] + 0x110);
-
       }
 
       if (piVar4[3] == 0) {
-
         iVar14 = func_0010c1a0(0,*(u32 *)(pcVar6 + 4),0,0,0,0,0,0);
-
         piVar4[3] = iVar14;
-
       }
 
       puVar16 = &DAT_006b2db0;
-
       puVar15 = auStack_80;
-
       iVar14 = 6;
-
       do {
-
         uVar10 = *puVar16;
-
         uVar7 = puVar16[1];
-
         puVar16 = puVar16 + 2;
-
         iVar14 = iVar14 + -1;
-
         *puVar15 = uVar10;
-
         puVar15[1] = uVar7;
-
         puVar15 = puVar15 + 2;
-
       } while (0 < iVar14);
 
       puVar16 = &DAT_006b2de0;
-
       puVar15 = auStack_a0;
-
       iVar14 = 4;
-
       do {
-
         uVar10 = *puVar16;
-
         uVar7 = puVar16[1];
-
         puVar16 = puVar16 + 2;
-
         iVar14 = iVar14 + -1;
-
         *puVar15 = uVar10;
-
         puVar15[1] = uVar7;
-
         puVar15 = puVar15 + 2;
-
       } while (0 < iVar14);
 
       puVar18 = (u8 *)(&DAT_006b2e00);
-
       puVar17 = auStack_b0;
-
       iVar14 = 8;
-
       do {
-
         uVar1 = *puVar18;
-
         uVar2 = puVar18[1];
-
         puVar18 = puVar18 + 2;
-
         iVar14 = iVar14 + -1;
-
         *puVar17 = uVar1;
-
         puVar17[1] = uVar2;
-
         puVar17 = puVar17 + 2;
-
       } while (0 < iVar14);
 
       uVar12 = func_0010c3a0(piVar4[3],&iStack_8,0);
-
       if (iStack_8 != 0) {
-
-
-
+        puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+        puVar11 = (u32 *)FUN_0041bc90((long)auStack_80,(int)auStack_a0,(int)auStack_b0,4,uVar12);
         *(u32 **)(puVar9 + 4) = puVar11;
-
         *puVar11 = *puVar11 | 1;
-
         *puVar9 = *puVar9 | 0x10;
-
         piVar4[3] = 0;
-
         if (piVar4[1] != 0) {
-
           H_Cdvd_Destroy();
-
         }
-
         piVar4[1] = 0;
-
         bVar8 = 1;
-
       }
+    }
+    }
+    break;
 
+  case '\x03': {
+    if (piVar4[4] == 0) {
+      lVar13 = mdlCreateFromRmdMemory(0xb,0x101,piVar4[2],piVar4[6],0);
+      piVar4[4] = (int)lVar13;
+      if (lVar13 == 0) goto LAB_00417fb0;
     }
 
-  }
-
-  else if ((cVar3 == '\x01') && ((bVar8 || (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0)))) {
-
-    if (piVar4[1] != 0) {
-
-      piVar4[2] = *(int *)(piVar4[1] + 0x110);
-
+    lVar13 = mdlStreamRead(piVar4[4]);
+    if (lVar13 != 0) {
+      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),*(s16 *)pcVar6);
+      *(int *)(puVar9 + 4) = piVar4[4];
+      *puVar9 = *puVar9 | 4;
+      if (piVar4[1] != 0) {
+        H_Cdvd_Destroy();
+      }
+      piVar4[1] = 0;
+      bVar8 = 1;
+      piVar4[4] = 0;
     }
-
-
-    uVar10 = FUN_0034fcd0(piVar4[2]);
-
-    *(u32 *)(puVar9 + 4) = uVar10;
-
-    *puVar9 = *puVar9 | 2;
-
-    if (piVar4[1] != 0) {
-
-      H_Cdvd_Destroy();
-
     }
+    break;
 
-    piVar4[1] = 0;
+  case '@':
+    if ((pcVar6[1] == '\x03') &&
+       (lVar13 = FUN_003cdc80(*(u32 *)(param_1 + 0x18)), lVar13 != 0)) {
+      bVar8 = 1;
+    }
+    break;
 
-    bVar8 = 1;
+  case '\x05':
+    func_00219d90();
+    if ((bVar8) || (lVar13 = H_Cdvd_IsFileLoaded(piVar4[1]), lVar13 != 0)) {
+      if (piVar4[1] != 0) {
+        piVar4[2] = *(int *)(piVar4[1] + 0x110);
+      }
+      func_0021b4a0(piVar4[2]);
+      if (piVar4[1] != 0) {
+        H_Cdvd_Destroy();
+      }
+      piVar4[1] = 0;
+      bVar8 = 1;
+    }
+    break;
 
-    puVar16 = &DAT_006b2d70;
-
-    puVar15 = auStack_50;
-
-    iVar14 = 0xd;
-
-    do {
-
-      uVar10 = *puVar16;
-
-      puVar16 = puVar16 + 1;
-
-      iVar14 = iVar14 + -1;
-
-      *puVar15 = uVar10;
-
-      puVar15 = puVar15 + 1;
-
-    } while (0 < iVar14);
-
-    *(u32 *)(puVar9 + 2) = auStack_50[(u8)pcVar6[1]];
-
+  case '\x06': {
+    func_00219d90();
+    lVar13 = func_0021a120();
+    if (lVar13 == 0) {
+      puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),4);
+      *(int *)(*(int *)(puVar9 + 4) + 4) = *(short *)(param_1 + 0x20) + 2;
+      for (uVar19 = 0; (int)uVar19 < *(short *)(param_1 + 0x20) + 2; uVar19 = uVar19 + 1) {
+        uStack_18 = DAT_006b2e10;
+        uStack_10 = DAT_006b2e18;
+        uStack_c = DAT_007cda6c;
+        puVar9 = (u16 *)(*(code *)(FUN_004180e0))(*(u32 *)(param_1 + 0x3c),(u16)((uVar19 & 0xff) << 8) | 6);
+        *puVar9 = *puVar9 | 0x10;
+        *(u16 **)(*(int *)(puVar9 + 4) + uVar19 * 4 + 8) = puVar9;
+        func_00209f00(*(u32 *)(puVar9 + 4));
+        func_0020c590(*(u32 *)(puVar9 + 4),*(u16 *)(param_1 + uVar19 * 2 + 0x24));
+        func_0020cc80(*(u32 *)(puVar9 + 4),&uStack_c);
+        sflRes0020d630(*(u32 *)(puVar9 + 4),&uStack_18);
+        func_0020c7a0(*(u32 *)(puVar9 + 4),*(u32 *)(param_1 + 0x38));
+      }
+      bVar8 = 1;
+    }
+    }
+    break;
   }
 
 LAB_00417fb0:
@@ -1069,6 +931,7 @@ LAB_00417fb0:
 
   }
 
+LAB_00417ffc:
   return 0;
 
 }
