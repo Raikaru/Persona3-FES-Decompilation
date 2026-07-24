@@ -980,10 +980,64 @@ void* func_001ae580(KwlnTask* task)
     }
     case 1:
     {
+        if (pointCount > 0)
+        {
+            localFrameCount = (s32)work->points[0].duration;
+            work->frameCount = localFrameCount;
+            if (localFrameCount < 1)
+            {
+                work->frameCount = 1;
+            }
+            if (work->points[0].kind == 3)
+            {
+                work->state = 4;
+            }
+            else if (work->points[0].kind == 2)
+            {
+                work->state = 6;
+            }
+            else
+            {
+                work->state = 5;
+            }
+            return KWLNTASK_CONTINUE;
+        }
+        {
+            s32 pending = work->pendingPointCount;
+            if (pending > 0)
+            {
+                if (pointCount + pending < 48)
+                {
+                    for (i = 0; i < pending; i++)
+                    {
+                        u8* source = (u8*)work + 0x4e0 + i * 0x18;
+                        FldFrameMovePoint* destination =
+                            &work->points[pointCount + i];
+
+                        destination->kind = 0;
+                        memcpy(&destination->position, source, sizeof(RwV3d));
+                        destination->duration = *(f32*)(source + 0x0c);
+                        destination->drawTask = NULL;
+                        fldFrameMoveCreateDebugPoint(work, destination,
+                                                     &sDebugSphereColor);
+                    }
+                    work->pointCount += pending;
+                }
+                work->pendingPointCount = 0;
+            }
+            if (work->frame > 0)
+            {
+                work->frame--;
+            }
+        }
+        return KWLNTASK_CONTINUE;
+    }
+    case 2:
+    {
         s32 pending = work->pendingPointCount;
         if (pending > 0)
         {
-            if (pointCount + pending < 48)
+            if (pending < 3 && pointCount + pending < 48)
             {
                 for (i = 0; i < pending; i++)
                 {
@@ -1002,20 +1056,6 @@ void* func_001ae580(KwlnTask* task)
             }
             work->pendingPointCount = 0;
         }
-        pointCount = work->pointCount;
-        if (pointCount > 0)
-        {
-            work->state = 2;
-            return KWLNTASK_CONTINUE;
-        }
-        if (work->frame > 0)
-        {
-            work->frame--;
-        }
-        return KWLNTASK_CONTINUE;
-    }
-    case 2:
-    {
         pointCount = work->pointCount;
         if (pointCount <= 0)
         {
