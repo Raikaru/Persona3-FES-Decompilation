@@ -14,7 +14,8 @@ typedef struct CampMenuDrawItem
         u32 texture;
         f32 scale;
     };
-    u8 reserved28[0x10];
+    u8 reserved28[0xc];
+    f32 progress;
     f32 x;
     f32 y;
     u32 alpha;
@@ -34,8 +35,8 @@ extern void campMenuDrawSpriteAlt(u32 parent, const void* resource, s32 frame,
 extern s32 FUN_00115ad0();
 #pragma alias campMenuDrawSpriteDigits FUN_00115ad0
 extern void campMenuDrawSpriteDigits(u32 parent, const void* resource, s32 frame,
-                                     u32 alpha, f32 x, f32 y, f32 scale,
-                                     s32 extra);
+                                     u32 alpha, u32 extraAlpha,
+                                     f32 x, f32 y, f32 scale);
 extern void FUN_001140d0(f32 depth, f32 x, f32 y, u32 color, s32 width,
                          s32 height, const void* textureState);
 extern s32 FUN_001127d0();
@@ -73,6 +74,7 @@ extern char gp0xffff8990[];
 extern s16 iGpffffb2c8[];
 extern char gp0xffff897c[];
 extern u32 DAT_0083aaa0[];
+extern void* DAT_00833BA0;
 extern u32 uGpffff8884;
 
 static inline f32 campDrawX(const CampMenuDrawItem* item)
@@ -88,6 +90,10 @@ static inline f32 campDrawY(const CampMenuDrawItem* item)
 static inline u32 campDrawAlpha(const CampMenuDrawItem* item)
 {
     return (0xffU - item->alpha) | 0xffffff00U;
+}
+static inline u32 campDrawAlpha8(const CampMenuDrawItem* item)
+{
+    return *(const u8*)((const u8*)item + 0x40);
 }
 
 static inline void campSprite(const CampMenuDrawItem* item, f32 x, f32 y)
@@ -125,94 +131,124 @@ static inline void campDrawRows(const CampMenuDrawItem* item, s32 count, f32 spa
  * cases explicit makes the mode contract visible while preserving the same
  * draw helpers used by the screen callbacks below. */
 // FUN_00154970 NONMATCHING
-void FUN_00154970(CampMenuDrawItem* item, const char** labels, s32 mode, s32 first,
+void FUN_00154970(register CampMenuDrawItem* item,
+                  register const char** labels, s32 mode, s32 first,
                   s32 count)
 {
     s32 i;
     u32 color;
+    register u32 parent;
+
     switch (mode) {
     case 0:
         color = (0xffU - item->alpha) | 0xffffff00U;
         FUN_001140d0(item->scale, item->x - 50.0f, item->y, color,
                      0x1cc, 0x399, (const void*)(uintptr_t)first);
-        FUN_001140d0(item->scale, item->x - 50.0f, item->y + 50.0f, color,
-                     0x1cc, 0x399, (const void*)(uintptr_t)first);
+        FUN_001140d0(item->scale, item->x - 50.0f,
+                     item->y + 1000.0f, color, 0x1cc, 0x399,
+                     (const void*)(uintptr_t)first);
+        item->progress -= 1.0f;
+        if (item->progress < -1000.0f) {
+            item->progress += 1000.0f;
+        }
         break;
+
+    case 2:
+        campMenuDrawSprite(parent, *labels, 0xd, campDrawAlpha8(item),
+                           item->x, item->y, item->scale);
+        break;
+
     case 1:
         for (i = 0; i < 6; i++) {
-            campMenuDrawSprite(0, *labels, 0xe, item->alpha, item->x,
+            campMenuDrawSprite(parent, *labels, 0xe,
+                               campDrawAlpha8(item), item->x,
                                item->y + (f32)(i * 0x11), item->scale);
         }
         break;
-    case 2:
-        campMenuDrawSprite(0, *labels, 0xd, item->alpha, item->x, item->y,
-                           item->scale);
-        break;
+
     case 3:
         if (FUN_0017d800() != 0) {
             for (i = 0; i < 6; i++) {
                 if (i == count) {
-                    campMenuDrawSprite(0, *labels, i, item->alpha, item->x,
+                    campMenuDrawSprite(parent, *labels, i,
+                                       campDrawAlpha8(item), item->x,
                                        item->y + (f32)(i * 0x11),
                                        item->scale);
                 } else if (i < 4) {
-                    campMenuDrawSpriteDigits(0, *labels, i + 6, item->alpha,
+                    campMenuDrawSpriteDigits(parent, *labels, i + 6,
+                                             0x80, campDrawAlpha8(item),
                                              item->x,
                                              item->y + (f32)(i * 0x11),
-                                             item->scale, item->alpha);
+                                             item->scale);
                 } else {
-                    campMenuDrawSprite(0, *labels, i, item->alpha, item->x,
+                    campMenuDrawSprite(parent, *labels, i,
+                                       campDrawAlpha8(item), item->x,
                                        item->y + (f32)(i * 0x11),
                                        item->scale);
                 }
             }
         } else {
             for (i = 0; i < 6; i++) {
-                campMenuDrawSprite(0, *labels, i, item->alpha, item->x,
-                                   item->y + (f32)(i * 0x11), item->scale);
+                campMenuDrawSprite(parent, *labels, i,
+                                   campDrawAlpha8(item), item->x,
+                                   item->y + (f32)(i * 0x11),
+                                   item->scale);
             }
         }
         break;
+
     case 4:
         {
-            u32 id = (u32)FUN_001158b0(0, *labels, 0x19);
-            u8* work = (u8*)id;
+            u8* work = (u8*)(uintptr_t)FUN_001158b0(0, *labels, 0x19);
             *(u32*)(work + 0x2c) = item->texture;
             *(f32*)(work + 0x10) = item->x;
             *(f32*)(work + 0x14) = item->y + 200.0f;
-            work[0x18] = (u8)item->alpha;
+            *(u8*)(work + 0x18) = campDrawAlpha8(item);
             *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+            FUN_001127d0((u32)(uintptr_t)work, 1);
+            FUN_00115980((u32)(uintptr_t)work);
         }
         break;
+
     case 5:
         {
-            u32 id = (u32)FUN_001158b0(0, *labels, 0xf);
-            u8* work = (u8*)id;
+            u8* work = (u8*)(uintptr_t)FUN_001158b0(0, *labels, 0xf);
             *(u32*)(work + 0x2c) = item->texture;
             *(f32*)(work + 0x10) = item->x;
             *(f32*)(work + 0x14) = item->y + 200.0f;
-            work[0x18] = (u8)item->alpha;
+            *(u8*)(work + 0x18) = campDrawAlpha8(item);
             *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+            FUN_001127d0((u32)(uintptr_t)work, 1);
+            FUN_00115980((u32)(uintptr_t)work);
         }
         break;
+
     case 6:
-        campMenuDrawSprite(0, *labels, count + 2, item->alpha, item->x,
-                           item->y, item->scale);
-        break;
-    case 7:
-        campMenuDrawSprite(0, *labels, 0, item->alpha, item->x, item->y,
+        campMenuDrawSprite(parent, labels[1], count + 2,
+                           campDrawAlpha8(item), item->x, item->y,
                            item->scale);
-        campMenuDrawSprite(0, *labels, 0, item->alpha, item->x + 16.0f,
-                           item->y, item->scale);
-        campMenuDrawSprite(0, *labels, 0, item->alpha, item->x + 102.0f,
-                           item->y + 30.0f, item->scale);
-        campMenuDrawSprite(0, *labels, 0, item->alpha, item->x + 169.0f,
-                           item->y + 30.0f, item->scale);
         break;
+
+    case 7:
+        campMenuDrawSprite(parent, labels[1], 0,
+                           campDrawAlpha8(item), item->x, item->y,
+                           item->scale);
+        campMenuDrawSprite(parent, labels[1], 0,
+                           campDrawAlpha8(item),
+                           (item->x + 408.0f) - 392.0f,
+                           (item->y + (f32)0x181) - (f32)0x181,
+                           item->scale);
+        campMenuDrawSprite(parent, labels[1], 0,
+                           campDrawAlpha8(item), item->x + 102.0f,
+                           (item->y + (f32)0x19f) - (f32)0x181,
+                           item->scale);
+        campMenuDrawSprite(parent, DAT_00833BA0, 1,
+                           campDrawAlpha8(item),
+                           (item->x + (f32)0x231) - 392.0f,
+                           (item->y + (f32)0x19f) - (f32)0x181,
+                           item->scale);
+        break;
+
     default:
         break;
     }
