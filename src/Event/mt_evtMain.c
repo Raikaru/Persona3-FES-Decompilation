@@ -11,6 +11,12 @@ extern u8 DAT_006a0000[];
 extern u8 DAT_0069ffd0[];
 extern u8 DAT_0069dd98[];
 extern int FUN_003b5d10(...);
+#pragma alias FUN_003b55b0_evt_main FUN_003b55b0
+extern u8 *FUN_003b55b0_evt_main(int param_1);
+#pragma alias FUN_003b5d10_evt_main FUN_003b5d10
+extern u8 *FUN_003b5d10_evt_main(u16 param_1);
+#pragma alias FUN_0039f710_evt_main FUN_0039f710
+extern u32 FUN_0039f710_evt_main(int *param_1);
 extern u32 DAT_0069d590;
 extern u32 DAT_0069d5c8;
 extern u32 DAT_0069d5d0;
@@ -11371,7 +11377,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           *(u32 *)(iVar10 + 0x170) = 0;
 
-          iVar8 = FUN_0039f710(iVar10 + 0x82c);
+          iVar8 = (int)FUN_0039f710_evt_main((int *)(iVar10 + 0x82c));
 
           *(int *)(iVar10 + 0x174) = iVar8 + -1;
 
@@ -11439,7 +11445,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           case '\x02':
 
-            lVar7 = FUN_003b5d10((short)piVar5[3]);
+            lVar7 = (long)FUN_003b5d10_evt_main((u16)piVar5[3]);
 
             if (lVar7 != 0) {
 
@@ -11489,7 +11495,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           case '\x04':
 
-            lVar7 = FUN_003b5d10((short)piVar5[3]);
+            lVar7 = (long)FUN_003b5d10_evt_main((u16)piVar5[3]);
 
             if (lVar7 != 0) {
 
@@ -11750,10 +11756,10 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
             afStack_20[0] = *(f32 *)(puVar9 + 0x10);
 
             afStack_20[1] = *(f32 *)(puVar9 + 0x12);
-
             afStack_20[2] = *(f32 *)(puVar9 + 0x14);
 
             uVar11 = FUN_00386130(param_3,(u32 *)afStack_10,(u32 *)afStack_20);
+
 
             *(u32 *)(iVar10 + 0xe8) = uVar11;
 
@@ -11767,7 +11773,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
           if ((char)puVar9[9] == '\0') {
 
-            lVar7 = FUN_003b5d10(0x1e59);
+            lVar7 = (long)FUN_003b5d10_evt_main(0x1e59);
 
             if (lVar7 != 0) {
 
@@ -12087,7 +12093,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,int param_3)
 
               *(int *)(iVar10 + 0x198) = (int)(char)puVar9[0x18];
 
-              puVar6 = (u32 *)FUN_003b55b0();
+              puVar6 = (u32 *)FUN_003b55b0_evt_main(*(u32 *)(iVar10 + 0x198));
 
               uVar13 = puVar6[1];
 
