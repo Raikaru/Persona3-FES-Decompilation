@@ -61,6 +61,8 @@ extern u8 D_0068E4D8[];
 extern f32 D_007CB0D4;
 extern f32 sinf(f32 angle);
 extern f32 D_0068E4F0[];
+extern f32 D_0068E460[];
+extern f32 D_0068E490[];
 void FUN_0021e170(u8*, const f32*, const f32*, const f32*);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
@@ -4689,10 +4691,10 @@ void FUN_0022fa80(u32* object)
                 s = sinf(angle);
                 c = cosf(angle);
 
-                x0 = D_0068E4F0[s3 * 4 + 0];
-                y0 = D_0068E4F0[s3 * 4 + 1];
-                x1 = D_0068E4F0[s3 * 4 + 2];
-                y1 = D_0068E4F0[s3 * 4 + 3];
+                x0 = D_0068E490[s3 * 4 + 0];
+                y0 = D_0068E490[s3 * 4 + 1];
+                x1 = D_0068E490[s3 * 4 + 2];
+                y1 = D_0068E490[s3 * 4 + 3];
                 x2 = x1;
                 y2 = y1;
                 x3 = x0;
@@ -4735,10 +4737,10 @@ void FUN_0022fa80(u32* object)
                 s = sinf(angle);
                 c = cosf(angle);
 
-                x0 = D_0068E4F0[s3 * 4 + 0];
-                y0 = D_0068E4F0[s3 * 4 + 1];
-                x1 = D_0068E4F0[s3 * 4 + 2];
-                y1 = D_0068E4F0[s3 * 4 + 3];
+                x0 = D_0068E460[s3 * 4 + 0];
+                y0 = D_0068E460[s3 * 4 + 1];
+                x1 = D_0068E460[s3 * 4 + 2];
+                y1 = D_0068E460[s3 * 4 + 3];
                 x2 = x1;
                 y2 = y1;
                 x3 = x0;
@@ -4981,11 +4983,167 @@ void FUN_0022fa80(u32* object)
     }
     case 4:
     case 10:
+    {
+        u8* base;
+        u32 i;
+        u8 colour[4];
+        u32 resource;
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x126c) = *(u32*)(bytes + 0x126c) + 1;
+
+        // 2-slot resource assignment
+        for (i = 0; i < 2; i++) {
+            u32 cnt = *(u32*)(base + i * 4 + 0x200) + 1;
+            *(u32*)(base + i * 4 + 0x200) = cnt;
+            if (cnt >= 12) {
+                u32 rtype;
+                u32 flag;
+                u32 inner;
+
+                flag = RpRandom() & 1;
+                *(base + i + 0x208) = (u8)flag;
+                rtype = RpRandom() % 3;
+
+                // Collision avoidance: ensure unique type among slots
+                for (inner = 0; inner < 2; inner++) {
+                    if (inner == i) continue;
+                    if (*(base + inner + 0x20a) == rtype) {
+                        rtype++;
+                        inner = 0xFFFFFFFF; // restart search
+                        continue;
+                    }
+                }
+
+                if (rtype >= 4) {
+                    K_Assert("bcm_panel.c", 0x7d3);
+                }
+                *(base + i + 0x20a) = (u8)rtype;
+
+                if (flag == 1) {
+                    resource = FUN_0021cca0(table, 9);
+                    FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)resource);
+                } else if (flag == 0) {
+                    resource = FUN_0021cca0(table, 10);
+                    FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)resource);
+                }
+
+                cnt = cnt % 12;
+                *(u32*)(base + i * 4 + 0x200) = cnt;
+            }
+        }
+
+        // Color setup
+        if (object[0x20c] == 4) {
+            colour[0] = 0xFF; colour[1] = 0xFF;
+            colour[2] = 0xFF; colour[3] = 0xFF;
+        } else {
+            colour[0] = 120; colour[1] = 30;
+            colour[2] = 30;  colour[3] = 0xFF;
+        }
+
+        // Draw loop with alpha
+        {
+            f32 pos_x = 66.0f + offset_x;
+            f32 pos_y = 11.0f + offset_y;
+            for (i = 0; i < 2; i++) {
+                f32 val = (f32)*(u32*)(base + i * 4 + 0x200);
+                f32 t = val / 12.0f;
+                f32 alpha;
+
+                if (t <= 0.6f) {
+                    alpha = t / 0.6f;
+                    if (alpha > 1.0f) alpha = 1.0f;
+                } else if (t <= 0.7f) {
+                    alpha = 1.0f;
+                } else {
+                    alpha = (1.0f - t) / (1.0f - 0.7f);
+                }
+                if (alpha < 0.0f) alpha = 0.0f;
+                colour[3] = (u8)(s32)(alpha * 255.0f);
+                FUN_0021d950(base + i * 256, colour);
+            }
+        }
         break;
+    }
     case 5:
+    {
+        u8* base;
+        u32 i;
+        u8 colour[4];
+        u32 resource;
+        u32 slot_resource;
+        f32 rect[4];
+
+        base = bytes + 0x1060;
         *(u32*)(bytes + 0x1570) = *(u32*)(bytes + 0x1570) + 1;
+
+        // Initial resource and rect draw
+        resource = FUN_0021cca0(table, 11);
+        rect[0] = 80.0f + offset_x;
+        rect[1] = 19.0f + offset_y;
+        rect[2] = (f32)((u32*)resource)[3];
+        rect[3] = (f32)((u32*)resource)[4];
+        FUN_0021d8e0(base, rect);
+        FUN_0021d8e0(base + 256, rect);
+
+        // Pre-fetch resource for slot copies
+        slot_resource = FUN_0021cca0(table, 12);
+
+        // 3-slot resource assignment
+        for (i = 0; i < 3; i++) {
+            u32 cnt = *(u32*)(base + i * 4 + 0x500) + 1;
+            *(u32*)(base + i * 4 + 0x500) = cnt;
+            if (cnt >= 40) {
+                u32 rtype;
+                u32 inner;
+
+                rtype = RpRandom() % 6;
+
+                // Collision avoidance
+                for (inner = 0; inner < 3; inner++) {
+                    if (inner == i) continue;
+                    if (*(base + inner + 0x50c) == rtype) {
+                        rtype++;
+                        inner = 0xFFFFFFFF;
+                        continue;
+                    }
+                }
+
+                if (rtype >= 8) {
+                    K_Assert("bcm_panel.c", 0x86e);
+                }
+                *(base + i + 0x50c) = (u8)rtype;
+
+                FUN_0021d3b0(base + i * 256 + 0x200, (u8*)(uintptr_t)slot_resource);
+
+                cnt = cnt % 40;
+                *(u32*)(base + i * 4 + 0x500) = cnt;
+            }
+        }
+
+        // Colour write with alpha computation
+        colour[0] = 0xFF; colour[1] = 0xFF;
+        colour[2] = 0xFF; colour[3] = 0xFF;
+        for (i = 0; i < 3; i++) {
+            f32 val = (f32)*(u32*)(base + i * 4 + 0x500);
+            f32 t = val / 40.0f;
+            f32 alpha;
+
+            if (t <= 0.6f) {
+                alpha = t / 0.6f;
+                if (alpha > 1.0f) alpha = 1.0f;
+            } else if (t <= 0.7f) {
+                alpha = 1.0f;
+            } else {
+                alpha = (1.0f - t) / (1.0f - 0.7f);
+            }
+            if (alpha < 0.0f) alpha = 0.0f;
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + i * 256, colour);
+        }
         break;
+    }
     case 6:
         *(u32*)(bytes + 0x1360) = *(u32*)(bytes + 0x1360) + 1;
         break;
