@@ -1113,13 +1113,19 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
   code *fn;
   float xy[4][2];
   float uv[4][2];
+  float *src;
+  float *dst;
   int i;
 
   for (i = 0; i < 4; i++) {
-    xy[i][0] = param_3[i * 2];
-    xy[i][1] = param_3[i * 2 + 1];
-    uv[i][0] = param_4[i * 2];
-    uv[i][1] = param_4[i * 2 + 1];
+    src = param_3 + i * 2;
+    dst = xy[i];
+    dst[0] = src[0];
+    dst[1] = src[1];
+    src = param_4 + i * 2;
+    dst = uv[i];
+    dst[0] = src[0];
+    dst[1] = src[1];
   }
 
   color = *(RwRGBA *)param_6;
@@ -1132,68 +1138,68 @@ void FUN_003877c0(float param_1,float param_2,float *param_3,float *param_4,u32 
   vertices[0].u.els.scrVertex.x = xy[0][0];
   vertices[0].u.els.scrVertex.y = xy[0][1];
   vertices[0].u.els.scrVertex.z = z;
-  vertices[0].u.els.u = uv[0][0];
-  vertices[0].u.els.v = uv[0][1];
-  vertices[0].u.els.recipZ = recipZ;
   vertices[0].u.els.color.r = (f32)color.r;
   vertices[0].u.els.color.g = (f32)color.g;
   vertices[0].u.els.color.b = (f32)color.b;
   vertices[0].u.els.color.a = (f32)color.a;
+  vertices[0].u.els.u = uv[0][0];
+  vertices[0].u.els.v = uv[0][1];
+  vertices[0].u.els.recipZ = recipZ;
 
   vertices[1].u.els.scrVertex.x = xy[1][0];
   vertices[1].u.els.scrVertex.y = xy[1][1];
   vertices[1].u.els.scrVertex.z = z;
-  vertices[1].u.els.u = uv[1][0];
-  vertices[1].u.els.v = uv[1][1];
-  vertices[1].u.els.recipZ = recipZ;
   vertices[1].u.els.color.r = (f32)color.r;
   vertices[1].u.els.color.g = (f32)color.g;
   vertices[1].u.els.color.b = (f32)color.b;
   vertices[1].u.els.color.a = (f32)color.a;
+  vertices[1].u.els.u = uv[1][0];
+  vertices[1].u.els.v = uv[1][1];
+  vertices[1].u.els.recipZ = recipZ;
 
   vertices[2].u.els.scrVertex.x = xy[2][0];
   vertices[2].u.els.scrVertex.y = xy[2][1];
   vertices[2].u.els.scrVertex.z = z;
-  vertices[2].u.els.u = uv[2][0];
-  vertices[2].u.els.v = uv[2][1];
-  vertices[2].u.els.recipZ = recipZ;
   vertices[2].u.els.color.r = (f32)color.r;
   vertices[2].u.els.color.g = (f32)color.g;
   vertices[2].u.els.color.b = (f32)color.b;
   vertices[2].u.els.color.a = (f32)color.a;
+  vertices[2].u.els.u = uv[2][0];
+  vertices[2].u.els.v = uv[2][1];
+  vertices[2].u.els.recipZ = recipZ;
 
   vertices[3].u.els.scrVertex.x = xy[2][0];
   vertices[3].u.els.scrVertex.y = xy[2][1];
   vertices[3].u.els.scrVertex.z = z;
-  vertices[3].u.els.u = uv[2][0];
-  vertices[3].u.els.v = uv[2][1];
-  vertices[3].u.els.recipZ = recipZ;
   vertices[3].u.els.color.r = (f32)color.r;
   vertices[3].u.els.color.g = (f32)color.g;
   vertices[3].u.els.color.b = (f32)color.b;
   vertices[3].u.els.color.a = (f32)color.a;
+  vertices[3].u.els.u = uv[2][0];
+  vertices[3].u.els.v = uv[2][1];
+  vertices[3].u.els.recipZ = recipZ;
 
   vertices[4].u.els.scrVertex.x = xy[3][0];
   vertices[4].u.els.scrVertex.y = xy[3][1];
   vertices[4].u.els.scrVertex.z = z;
-  vertices[4].u.els.u = uv[3][0];
-  vertices[4].u.els.v = uv[3][1];
-  vertices[4].u.els.recipZ = recipZ;
   vertices[4].u.els.color.r = (f32)color.r;
   vertices[4].u.els.color.g = (f32)color.g;
   vertices[4].u.els.color.b = (f32)color.b;
   vertices[4].u.els.color.a = (f32)color.a;
+  vertices[4].u.els.u = uv[3][0];
+  vertices[4].u.els.v = uv[3][1];
+  vertices[4].u.els.recipZ = recipZ;
 
   vertices[5].u.els.scrVertex.x = xy[3][0];
   vertices[5].u.els.scrVertex.y = xy[3][1];
   vertices[5].u.els.scrVertex.z = z;
-  vertices[5].u.els.u = uv[3][0];
-  vertices[5].u.els.v = uv[3][1];
-  vertices[5].u.els.recipZ = recipZ;
   vertices[5].u.els.color.r = (f32)color.r;
   vertices[5].u.els.color.g = (f32)color.g;
   vertices[5].u.els.color.b = (f32)color.b;
   vertices[5].u.els.color.a = (f32)color.a;
+  vertices[5].u.els.u = uv[3][0];
+  vertices[5].u.els.v = uv[3][1];
+  vertices[5].u.els.recipZ = recipZ;
 
   fn = (code *)&DAT_00960090_abs;
   (*fn)(1,*param_5);
