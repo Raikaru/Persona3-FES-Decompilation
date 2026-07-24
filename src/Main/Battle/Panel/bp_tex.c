@@ -2475,13 +2475,13 @@ static inline void bpPanelSetRotatedQuad(void* destination,
     sourceY[2] = top + height;
     sourceX[3] = left;
     sourceY[3] = top + height;
-    sine = func_0052e878(angle);
-    cosine = func_0052e6d8(angle);
     for (i = 0; i < 4; i++)
     {
         f32 dx;
         f32 dy;
 
+        sine = func_0052e878(angle);
+        cosine = func_0052e6d8(angle);
         dx = sourceX[i] - centerX;
         dy = sourceY[i] - centerY;
         vertices[i * 2] = centerX + dx * cosine - dy * sine;
@@ -2543,16 +2543,22 @@ void func_0021f410(void)
     timerA = *(u32*)(work + 0x464c);
     timerB = *(u32*)(work + 0x4650);
     timerC = *(u32*)(work + 0x4658);
-    if (mode == 1 || mode == 2 || mode == 8)
+    switch (mode)
     {
+    case 0:
+    case 6:
+    case 7:
+        break;
+    case 1:
+    case 2:
+    case 8:
         if (timerA < 4)
         {
             timerA++;
             *(u32*)(work + 0x464c) = timerA;
         }
-    }
-    else if (mode == 3)
-    {
+        break;
+    case 3:
         if (timerB < 3)
         {
             timerB++;
@@ -2562,9 +2568,9 @@ void func_0021f410(void)
                 *(u32*)work &= ~3;
             }
         }
-    }
-    else if (mode == 4 || mode == 5)
-    {
+        break;
+    case 4:
+    case 5:
         if (timerC < 6)
         {
             timerC++;
@@ -2574,6 +2580,7 @@ void func_0021f410(void)
                 *(u32*)work &= ~9;
             }
         }
+        break;
     }
 
     mode = *(u32*)(work + 0x4630);
@@ -2594,38 +2601,39 @@ void func_0021f410(void)
     {
         /* The old image is intentionally left untouched at the end of a fade. */
     }
+    else if (mode == 1 || mode == 2 || mode == 8)
+    {
+        frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
+        bpPanelSetRect(work + 0x1330, commandX, commandY, frame);
+    }
     else
     {
-        if (mode == 1 || mode == 2 || mode == 8)
-        {
-            frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4638));
-        }
-        else
-        {
-            frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
-        }
+        frame = func_0021cca0(texture, (s32)*(u32*)(work + 0x4634));
         bpPanelSetRect(work + 0x1330, commandX, commandY, frame);
     }
 
     if (mode == 3)
     {
-        if (sub == 0)
+        switch (sub)
         {
+        case 0:
             factor = (f32)timerB / 3.0f;
             alpha = (3.0f - (f32)timerB) / 3.0f;
-        }
-        else if (bpPanelInTransition(sub))
-        {
+            bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
             factor = (3.0f - (f32)timerB) / 3.0f;
             alpha = (f32)timerB / 3.0f;
+            bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
+            bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
+            break;
+        default:
+            break;
         }
-        else
-        {
-            factor = 0.0f;
-            alpha = 0.0f;
-        }
-        bpPanelSetColor(work + 0x1230, 0xff, 0xff, 0xff, 255.0f * factor * dt);
-        bpPanelSetColor(work + 0x1330, 0xff, 0xff, 0xff, 255.0f * alpha * dt);
     }
     else if (mode == 1 || mode == 2 || mode == 8)
     {
@@ -2733,7 +2741,7 @@ void func_0021f410(void)
         s32 selected;
         f32 halfWidth;
         f32 halfHeight;
-        u32 id;
+        u32 slotFlags;
 
         if (mode == 1)
         {
@@ -2752,15 +2760,15 @@ void func_0021f410(void)
         angle = 2.0f * pi * phase;
         arcX = -57.0f * func_0052e6d8(angle);
         arcY = -57.0f * func_0052e878(angle);
-        if ((*(u32*)(work + 0x1210 + i * 4) & 1) != 0)
+        slotFlags = *(u32*)(work + 0x1210 + i * 4);
+        if ((slotFlags & 1) != 0)
         {
-            id = i + 0x11;
+            frame = func_0021cca0(texture, i + 0x11);
         }
         else
         {
-            id = i + 0x41;
+            frame = func_0021cca0(texture, i + 0x41);
         }
-        frame = func_0021cca0(texture, (s32)id);
         halfWidth = (f32)(bpPanelFrameWidth(frame) / 2);
         halfHeight = (f32)(bpPanelFrameHeight(frame) / 2);
         bpPanelSetRect(work + 0x410 + i * 0x100,
@@ -2880,6 +2888,8 @@ void func_0021f410(void)
             }
             bpPanelSetColor(work + 0xb10 + i * 0x100, red, green, blue,
                             255.0f * arrowFactor * dt);
+            bpPanelSetColor(work + 0x410 + i * 0x100, 0xff, 0xff, 0xff,
+                            255.0f * arrowFactor * brightness * selectionFactor * dt);
         }
     }
 
