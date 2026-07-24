@@ -20,7 +20,7 @@ static RwRaster* sFontRaster;
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
 #pragma alias D_00960088_abs D_00960088
-extern u8 D_00960088_abs[];
+extern volatile f32 D_00960088_abs[];
 extern RwIm2DRenderPrimitiveFunction D_009600A0_abs[];
 
 extern void (*D_00960090)(u32 state, u32 value);
@@ -128,7 +128,7 @@ void H_Dbprt_Main()
     kwlnPushCommonRenderStates();
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, (void*)sFontRaster);
 
-    z = *(f32*)D_00960088_abs;
+    z = *(volatile f32*)D_00960088_abs;
 
     for (vertex = 0; vertex < 4; vertex++)
     {
