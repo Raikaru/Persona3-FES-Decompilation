@@ -114,7 +114,7 @@ u16 FUN_003b6c50(u32 param_1, RwV3d* param_2, float param_3);
 u16 FUN_003b6d10(u32 param_1, RwV3d* param_2, float param_3);
 u16 FUN_003b6dd0(u32 param_1, RwV3d* param_2, float param_3);
 u16 FUN_003b6e90(u32 param_1, RwV3d* param_2, float param_3);
-u32 FUN_003b6f50(u32 param_1,u32 param_2,u32 param_3,u32 param_4,  u32 param_5,u32 *param_6,u32 *param_7);
+u16 FUN_003b6f50(u32 param_1,u32 param_5,float param_4,u32 *param_6,RwV3d *param_7,float param_2,float param_3);
 void FUN_003b7090(u64 param_1);
 void FUN_003b7460(u8 *param_1,RwV3d *param_2,RwV3d *param_3,RwV3d *param_4);
 void FUN_003b78b0(u64 param_1,RwV3d *param_2,RwV3d *param_3);
@@ -568,61 +568,33 @@ void FUN_003b55d0(u32 param_1,u32 *param_2)
 
 
 u32 FUN_003b5620(int param_1,int param_2)
-
-
-
 {
-
+  int iVar3 = param_1;
+  int iVar4 = param_2;
   u32 uVar1;
-
-  long lVar2;
-
-  u8 auStack_100 [128];
-
-  u8 auStack_80 [128];
-
-  
+  int lVar2;
+  u8 auStack_100[128];
+  u8 auStack_80[128];
 
   FUN_00524270(auStack_100,0x6a2b50);
-
-  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 8),param_1);
-
+  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 8),iVar3);
   FUN_00523e68(auStack_100,auStack_80);
-
-  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 0x10),param_2);
-
+  FUN_00523ac8(auStack_80,((u8 *)&PTR_DAT_007cd540 + 0x10),iVar4);
   FUN_00523e68(auStack_100,auStack_80);
-
   FUN_00523e68(auStack_100,((u8 *)&PTR_DAT_007cd540 + 0x18));
-
   lVar2 = FUN_001008b0(auStack_100);
-
   if (lVar2 == 0) {
-
     uVar1 = 0;
-
-  }
-
-  else {
-
+  } else {
     uVar1 = 1;
-
-    if ((((((0x13 < param_1) && (param_1 < 0x1d)) && (param_2 == 0)) ||
-
-         ((0x32 < param_1 && (param_1 < 0x3b)))) ||
-
-        ((0x27 < param_1 && ((param_1 < 0x31 && (param_2 == 0)))))) ||
-
-       ((0x46 < param_1 && (param_1 < 0x4f)))) {
-
+    if ((((((0x13 < iVar3) && (iVar3 < 0x1d)) && (iVar4 == 0)) ||
+         ((0x32 < iVar3 && (iVar3 < 0x3b)))) ||
+        ((0x27 < iVar3 && ((iVar3 < 0x31 && (iVar4 == 0)))))) ||
+       ((0x46 < iVar3 && (iVar3 < 0x4f)))) {
       uVar1 = 1;
-
     }
-
   }
-
   return uVar1;
-
 }
 #define FUN_003b5620(...) ((u32 (*)(...))FUN_003b5620)(__VA_ARGS__)
 #undef FUN_003b58c0
@@ -630,66 +602,46 @@ u32 FUN_003b5620(int param_1,int param_2)
 
 
 void FUN_003b58c0(short param_1)
-
-
-
 {
+    int iVar1;
 
-  int iVar1;
-
-  
-
-  if ((PTR_DAT_007cd540_u32[3] & 1) == 0) {
-
-    *(short *)(PTR_DAT_007cd540_u32 + 5) = param_1;
-
-  }
-
-  else if (*(short *)(PTR_DAT_007cd540_u32 + 5) == param_1) {
-
-    for (iVar1 = FUN_003b5d50(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
-
-      *(u32 *)(iVar1 + 0x28) = *(u32 *)(iVar1 + 0x28) | 2;
-
+    if ((gMtScene->flags & 1) != 0) {
+        if (gMtScene->unk_14 == param_1) {
+            for (iVar1 = (int)MT_Scene_GetResListHead(3); iVar1 != 0; iVar1 = *(int *)(iVar1 + 0xf8)) {
+                *(u32 *)(iVar1 + 0x28) |= 2;
+            }
+        } else {
+            gMtScene->flags |= 2;
+            gMtScene->unk_14 = param_1;
+            iVar1 = FUN_001b9120();
+            *(u32 *)(iVar1 + 0x1058) = 0x1e;
+            return;
+        }
+        return;
     }
-
-  }
-
-  else {
-
-    PTR_DAT_007cd540_u32[3] = PTR_DAT_007cd540_u32[3] | 2;
-
-    *(short *)(PTR_DAT_007cd540_u32 + 5) = param_1;
-
-    iVar1 = FUN_001b9120();
-
-    *(u32 *)(iVar1 + 0x1058) = 0x1e;
-
-  }
-
-  return;
-
+    gMtScene->unk_14 = param_1;
 }
 #define FUN_003b58c0(...) ((void (*)(...))FUN_003b58c0)(__VA_ARGS__)
 #undef FUN_003b5980
 // FUN_003B5980 NONMATCHING
 
-
 void FUN_003b5980(short param_1)
 {
     int iVar1;
+    int iVar2;
 
-    if ((PTR_DAT_007cd540_u32[3] & 1) == 0) {
-        *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
-    }
-    else if (*(short *)(PTR_DAT_007cd540_u32 + 6) != param_1) {
-        PTR_DAT_007cd540_u32[3] = PTR_DAT_007cd540_u32[3] | 4;
-        *(short *)(PTR_DAT_007cd540_u32 + 6) = param_1;
-        if ((PTR_DAT_007cd540_u32[3] & 2) == 0) {
-            iVar1 = FUN_001b9120();
-            *(u32 *)(iVar1 + 0x1058) = 0x28;
+    if ((gMtScene->flags & 1) != 0) {
+        if (gMtScene->unk_16 != param_1) {
+            gMtScene->flags |= 4;
+            gMtScene->unk_16 = param_1;
+            if ((gMtScene->flags & 2) == 0) {
+                iVar2 = 0x28;
+                iVar1 = FUN_001b9120();
+                *(u32 *)(iVar1 + 0x1058) = iVar2;
+            }
         }
     }
+    gMtScene->unk_16 = param_1;
 }
 #define FUN_003b5980(...) ((void (*)(...))FUN_003b5980)(__VA_ARGS__)
 #undef FUN_003b5d00
@@ -697,13 +649,8 @@ void FUN_003b5980(short param_1)
 
 
 u32 FUN_003b5d00(void)
-
-
-
 {
-
-  return *(u32 *)(PTR_DAT_007cd540 + 8);
-
+    return *(u32 *)(PTR_DAT_007cd540 + 8);
 }
 #define FUN_003b5d00(...) ((u32 (*)(...))FUN_003b5d00)(__VA_ARGS__)
 #undef FUN_003b5da0
@@ -1227,107 +1174,47 @@ u16 FUN_003b6e90(u32 param_1, RwV3d* param_2, float param_3)
 }
 #define FUN_003b6e90(...) ((u32 (*)(...))FUN_003b6e90)(__VA_ARGS__)
 #undef FUN_003b6f50
-// FUN_003B6F50 NONMATCHING
+// FUN_003B6F50
 
 
-u32 FUN_003b6f50(u32 param_1,u32 param_2,u32 param_3,u32 param_4,
-
-                  u32 param_5,u32 *param_6,u32 *param_7)
-
-
-
+u16 FUN_003b6f50(u32 param_1,u32 param_5,float param_4,u32 *param_6,RwV3d *param_7,float param_2,float param_3)
 {
+    u32 *puVar1;
+    u16 uVar2;
+    Resrc* res1;
+    int iVar4;
+    u32 uVar6;
+    u32 uVar7;
 
-  u32 *puVar1;
-
-  u32 uVar2;
-
-  long lVar3;
-
-  int iVar4;
-
-  int iVar5;
-
-  u32 uVar6;
-
-  u32 uVar7;
-
-  
-
-  uVar2 = param_4 & 0x3ff | 0x5000;
-
-  if (*(int *)(PTR_DAT_007cd540 + 8) == 0) {
-
-    FUN_005225a8(0x6a2bb0);
-
-    uVar2 = 0;
-
-  }
-
-  else {
-
-    lVar3 = FUN_003b50d0(*(int *)(PTR_DAT_007cd540 + 8),uVar2);
-
-    if (lVar3 == 0) {
-
-      uVar2 = 0;
-
+    uVar2 = (u16)param_1;
+    uVar2 = (uVar2 & 0x3ff) | 0x5000;
+    if (gMtScene->resManager == NULL) {
+        FUN_005225a8(D_006A2BB0_abs);
+        return 0;
     }
-
-    else {
-
-      iVar5 = (int)lVar3;
-
-      *(u32 *)(iVar5 + 0x100) = param_5;
-
-      *(u32 *)(iVar5 + 0x104) = param_1;
-
-      puVar1 = (u32 *)FUN_004c38c0();
-
-      *(u32 **)(iVar5 + 0x108) = puVar1;
-
-      iVar4 = 8;
-
-      do {
-
+    res1 = resrcMngCreateRes(gMtScene->resManager, uVar2);
+    if (res1 == NULL) {
+        return 0;
+    }
+    *(u32 *)((u8 *)res1 + 0x100) = param_5;
+    *(f32 *)((u8 *)res1 + 0x104) = param_4;
+    puVar1 = (u32 *)FUN_004c38c0();
+    *(u32 **)((u8 *)res1 + 0x108) = puVar1;
+    iVar4 = 8;
+    do {
         uVar6 = *param_6;
-
         uVar7 = param_6[1];
-
-        param_6 = param_6 + 2;
-
-        iVar4 = iVar4 + -1;
-
+        param_6 += 2;
+        iVar4--;
         *puVar1 = uVar6;
-
         puVar1[1] = uVar7;
-
-        puVar1 = puVar1 + 2;
-
-      } while (0 < iVar4);
-
-      uVar6 = param_7[1];
-
-      uVar7 = param_7[2];
-
-      *(u32 *)(iVar5 + 0x10c) = *param_7;
-
-      *(u32 *)(iVar5 + 0x110) = uVar6;
-
-      *(u32 *)(iVar5 + 0x114) = uVar7;
-
-      *(u32 *)(iVar5 + 0x118) = param_2;
-
-      *(u32 *)(iVar5 + 0x11c) = param_3;
-
-      *(u32 *)(iVar5 + 0x28) = *(u32 *)(iVar5 + 0x28) | 8;
-
-    }
-
-  }
-
-  return uVar2;
-
+        puVar1 += 2;
+    } while (0 < iVar4);
+    *(RwV3d *)((u8 *)res1 + 0x10c) = *param_7;
+    *(f32 *)((u8 *)res1 + 0x118) = param_2;
+    *(f32 *)((u8 *)res1 + 0x11c) = param_3;
+    res1->flags |= 8;
+    return uVar2;
 }
 #define FUN_003b6f50(...) ((u32 (*)(...))FUN_003b6f50)(__VA_ARGS__)
 #undef FUN_003b7090
