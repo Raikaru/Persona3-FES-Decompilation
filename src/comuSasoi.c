@@ -705,7 +705,7 @@ u32 * FUN_003c2ee0(u32 param_1)
 
   iVar4 = 0;
 
-  DAT_0095b790 = 0;
+  DAT_0095b790_abs[0] = 0;
 
   if (0x1d < param_1) {
 
@@ -773,9 +773,8 @@ u32 * FUN_003c2ee0(u32 param_1)
 
       else {
 
-        DAT_0095b790 = 1;
-
-        puVar2 = &DAT_0095b790;
+        DAT_0095b790_abs[0] = 1;
+        puVar2 = (u32 *)DAT_0095b790_abs;
 
         DAT_0095b794 = iVar5;
 
