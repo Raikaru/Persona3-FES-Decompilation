@@ -415,6 +415,9 @@ void FUN_001d5130(u32 alpha)
 }
 
 /* Return the closest camera point to the controlled character. */
+#pragma push
+#pragma optimization_level 3
+#pragma schedule on
 // FUN_001d5140 NONMATCHING
 s32 FUN_001d5140(KwlnTask* cameraTask)
 {
@@ -448,6 +451,7 @@ s32 FUN_001d5140(KwlnTask* cameraTask)
     }
     return bestIndex;
 }
+#pragma pop
 // FUN_001d5220 NONMATCHING
 #pragma push
 #pragma optimization_level 3
@@ -671,9 +675,10 @@ void FUN_001d59e0(KwlnTask* cameraTask)
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
-    FldFilterCameraWork* work;
     KwlnTask* task;
-    RwFrame* mainFrame;
+    FldFilterCameraWork* work;
+    RwFrame** slot1;
+    RwFrame** slot0;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -686,20 +691,21 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
                                           (KwlnTaskUpdateFunc)FUN_001d5220,
                                           (KwlnTaskDestroyFunc)FUN_001d59e0,
                                           work);
-    work->frame = func_004caf10();
-    if (work->frame == NULL)
+    slot1 = &work->frame;
+    *slot1 = func_004caf10();
+    if (*slot1 == NULL)
     {
         kwlnTaskDestroyWithHierarchy(task);
         return NULL;
     }
-    func_004cb930(work->frame);
-    mainFrame = kwlnGetMainCamera()->object.object.parent;
-    work->parentFrame = mainFrame->object.parent;
-    if (work->parentFrame != NULL)
+    func_004cb930(*slot1);
+    slot0 = &work->parentFrame;
+    *slot0 = ((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent;
+    if (*slot0 != NULL)
     {
-        func_004cb590(mainFrame);
-        func_004cb420(work->parentFrame, work->frame);
-        func_004cb420(work->frame, mainFrame);
+        func_004cb590(kwlnGetMainCamera()->object.object.parent);
+        func_004cb420(*slot0, work->frame);
+        func_004cb420(*slot1, kwlnGetMainCamera()->object.object.parent);
     }
     else
     {
