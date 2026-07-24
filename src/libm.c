@@ -192,28 +192,30 @@ float fabsf(float x)
 
 #pragma optimization_level 3
 // FUN_0052e7a0 NONMATCHING
-float floorf(float x)
+float floorf(register float x)
 {
     s32 exponent;
     u32 bits;
     u32 fractionMask;
-    u32 magnitude;
-    static const float huge = 1.0e30f;
+    union {
+        float f;
+        u32 i;
+    } ux;
 
-    bits = *(u32*)&x;
-    magnitude = bits & 0x7FFFFFFF;
-    exponent = (magnitude >> 23) - 127;
+    ux.f = x;
+    bits = ux.i;
+    exponent = ((bits & 0x7FFFFFFF) >> 23) - 127;
     if (exponent < 23)
     {
         if (exponent < 0)
         {
-            if (x + huge > 0.0f)
+            if (x + 1.0e30f > 0.0f)
             {
                 if ((s32)bits >= 0)
                 {
                     bits = 0;
                 }
-                else if (magnitude != 0)
+                else if ((bits & 0x7FFFFFFF) != 0)
                 {
                     bits = 0xBF800000;
                 }
@@ -226,7 +228,7 @@ float floorf(float x)
             {
                 return x;
             }
-            if (x + huge > 0.0f)
+            if (x + 1.0e30f > 0.0f)
             {
                 if ((s32)bits < 0)
                 {
@@ -236,7 +238,8 @@ float floorf(float x)
             }
         }
     }
-    return *(float*)&bits;
+    ux.i = bits;
+    return ux.f;
 }
 #pragma optimization_level 2
 
@@ -355,29 +358,20 @@ float FUN_0052ea60(float param_1)
   return FUN_0052c398(param_1);
 }
 #pragma tailcall off
+#pragma optimization_level 3
 // FUN_0052EA78 NONMATCHING
-u32 FUN_0052ea78(u64 param_1,u64 param_2)
-
+u64 FUN_0052ea78(long param_1, long param_2)
 {
-  long lVar1;
-  Vec128 in_zero_qw;
-  Vec128 auVar2;
-  
-  lVar1 = (long)(int)param_1 * (long)(int)((u32)param_2 >> 0x20);
-  auVar2 = _pmfhllw();
-  auVar2._8_8_ = in_zero_qw._8_8_;  // _pcpyud equivalent
-  return auVar2._0_8_ & 0xffffffff |
-         (long)(int)(auVar2._4_4_ +
-                    ((u32)lVar1 | (u32)((u32)lVar1 >> 0x20)) +
-                    (int)((u32)param_1 >> 0x20) * (int)param_2) << 0x20;
+    return param_1 * param_2;
 }
+#pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_0052EAC8 NONMATCHING
-u64 FUN_0052eac8(long param_1)
-
+u64 FUN_0052eac8(u64 param_1)
 {
   u64 uVar1;
   u64 uVar2;
-  
+
   uVar1 = FUN_00531720_u64(param_1 >> 0x20);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
   uVar1 = FUN_00531230_u64(uVar1,0x40f0000000000000);
@@ -388,6 +382,7 @@ u64 FUN_0052eac8(long param_1)
   FUN_00531170_u64(uVar1,uVar2);
   return (u64)(uVar1 | uVar2);
 }
+#pragma optimization_level 2
 // FUN_0052EB60 NONMATCHING
 void FUN_0052eb60(u32 param_1)
 
@@ -409,6 +404,7 @@ void FUN_0052eb60(u32 param_1)
   FUN_005318a0_void(uVar1);
   return;
 }
+#pragma optimization_level 3
 // FUN_0052EC28 NONMATCHING
 long FUN_0052ec28(u64 param_1)
 
@@ -446,6 +442,7 @@ long FUN_0052ec28(u64 param_1)
   }
   return lVar4;
 }
+#pragma optimization_level 2
 // FUN_0052ED30 NONMATCHING
 long FUN_0052ed30(u64 param_1)
 
@@ -463,6 +460,7 @@ long FUN_0052ed30(u64 param_1)
   return -lVar1;
 }
 // FUN_0052EDA0 NONMATCHING
+#pragma optimization_level 3
 long FUN_0052eda0(void)
 
 {
@@ -502,6 +500,8 @@ long FUN_0052eda0(void)
   return lVar5;
 }
 #pragma optimization_level 2
+#pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_0052EEB0 NONMATCHING
 u64 FUN_0052eeb0(long param_1,long param_2)
 
@@ -509,7 +509,6 @@ u64 FUN_0052eeb0(long param_1,long param_2)
   u64 uVar1;
   u32 uVar2;
   
-  uVar2 = 0;
   if (param_1 >> 0x20 < 0) {
     uVar2 = 0xffffffff;
     param_1 = CONCAT44(-(u32)(-(int)param_1 != 0) - (int)((u32)param_1 >> 0x20),-(int)param_1);
@@ -525,6 +524,7 @@ u64 FUN_0052eeb0(long param_1,long param_2)
   return uVar1;
 }
 #pragma optimization_level 3
+#pragma optimization_level 2
 // FUN_0052EFD8 NONMATCHING
 u64 FUN_0052efd8(u64 n, u64 d, u64 *rp)
 {
