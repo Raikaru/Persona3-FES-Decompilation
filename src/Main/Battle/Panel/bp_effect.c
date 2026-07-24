@@ -31,8 +31,8 @@ void FUN_0024c100(u32* work)
 void FUN_0024c110(void)
 {
     u8* work;
-    f32 vertices[8];
     f32 rect[4];
+    f32 vertices[8];
     u8 color[4];
     f32 fade;
     f32 baseX;
@@ -44,6 +44,7 @@ void FUN_0024c110(void)
     f32 centerX;
     f32 centerY;
     s32 i;
+    s32 timer;
 
     K_ASSERT(sBpEffect != NULL, 0x37);
     work = (u8*)sBpEffect;
@@ -176,6 +177,14 @@ void FUN_0024c110(void)
     color[2] = 0xff;
     color[3] = (u8)(u32)(255.0f * baseY);
     func_0021d950(work + 0x210, color);
+    timer = *(s32*)(work + 0xc);
+
+    if (timer < 12) {
+        baseX = (f32)timer / 12.0f;
+    } else if (timer < 0x30) {
+    } else {
+        baseX = 1.0f - (f32)(timer - 0x30) / 12.0f;
+    }
 
     rect[0] = 0.0f;
     rect[1] = 0.0f;
@@ -212,14 +221,19 @@ void FUN_0024c110(void)
         color[2] = 0xc8;
     }
     color[3] = 0;
-    *(f32*)(work + 0x330) = (f32)(u32)color[0];
-    *(f32*)(work + 0x334) = (f32)(u32)color[1];
-    *(f32*)(work + 0x338) = (f32)(u32)color[2];
-    *(f32*)(work + 0x33c) = (f32)(u32)color[3];
-    *(f32*)(work + 0x370) = (f32)(u32)color[0];
-    *(f32*)(work + 0x374) = (f32)(u32)color[1];
-    *(f32*)(work + 0x378) = (f32)(u32)color[2];
-    *(f32*)(work + 0x37c) = (f32)(u32)color[3];
+    *(f32*)(work + 0x330) = (f32)color[0];
+    *(f32*)(work + 0x334) = (f32)color[1];
+    *(f32*)(work + 0x338) = (f32)color[2];
+    *(f32*)(work + 0x33c) = (f32)color[3];
+    *(f32*)(work + 0x370) = (f32)color[0];
+    *(f32*)(work + 0x374) = (f32)color[1];
+    *(f32*)(work + 0x378) = (f32)color[2];
+    *(f32*)(work + 0x37c) = (f32)color[3];
+    color[3] = (u8)(u32)(255.0f * baseX);
+    *(f32*)(work + 0x3b0) = (f32)color[0];
+    *(f32*)(work + 0x3b4) = (f32)color[1];
+    *(f32*)(work + 0x3b8) = (f32)color[2];
+    *(f32*)(work + 0x3bc) = (f32)color[3];
 }
 // FUN_0024CCA0
 
