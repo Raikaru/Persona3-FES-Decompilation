@@ -30,6 +30,13 @@ typedef struct KClumpContainer
     u8 reserved[0x18];
     void* resources;     // 0x18
 } KClumpContainer;
+typedef struct KClumpResourceList
+{
+    u8 reserved[0x20];
+    void** materials;     // 0x20
+    u32 count;            // 0x24
+} KClumpResourceList;
+
 
 /* The retail code uses these engine entry points through the split executable. */
 extern void* func_004916d0(void* object, KClumpCallback callback, void* data);
@@ -246,26 +253,35 @@ u32 K_Clump_MatUsrDataHasData(const RpMaterial* material, const char* name)
     return result;
 }
 
-// FUN_001a65c0 NONMATCHING
+// FUN_001a65c0
 void* func_001a65c0(void* geometry, const char** name)
 {
-    s32 materialIndex;
+    KClumpResourceList* resourceList;
     s32 resourceIndex;
-    void* resourceList;
+    void* material;
+    s32 materialIndex;
+    u32 found;
     RpUserDataArray* userData;
 
-    resourceList = *(void**)((u8*)geometry + 0x18);
-    for (resourceIndex = 0; resourceIndex < (s32)kclump_word(resourceList, 0x24); resourceIndex++)
+    resourceList = *(KClumpResourceList**)((u8*)geometry + 0x18);
+    for (resourceIndex = 0; resourceIndex < (s32)resourceList->count; resourceIndex++)
     {
-        void* material = *(void**)((u8*)kclump_word(resourceList, 0x20) + resourceIndex * 4);
+        material = resourceList->materials[resourceIndex];
+        found = 0;
         for (materialIndex = 0; materialIndex < RpMaterialGetUserDataArrayCount((RpMaterial*)material); materialIndex++)
         {
             userData = RpMaterialGetUserDataArray((RpMaterial*)material, materialIndex);
-            if (strcmp(RpUserDataArrayGetName(userData), name[1]) == 0)
+            RpUserDataArrayGetName(userData);
+            if (strcmp(RpUserDataArrayGetName(userData), (const char*)(name + 1)) == 0)
             {
-                *(u32*)name = 1;
-                return NULL;
+                found = 1;
+                break;
             }
+        }
+        if (found == 1)
+        {
+            *(u32*)name = 1;
+            return NULL;
         }
     }
     return geometry;
