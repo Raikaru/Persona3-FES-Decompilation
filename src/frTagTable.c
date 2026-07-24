@@ -24,6 +24,8 @@ extern u32 DAT_0095abe4;
 extern u32 DAT_0095abe8;
 extern u32 DAT_0095abec;
 extern u32 DAT_0095abf0;
+#pragma alias DAT_0095abf0_abs DAT_0095abf0
+extern u8 DAT_0095abf0_abs[];
 extern u32 DAT_0095ac70;
 extern u32 DAT_0095ad0c;
 extern u32 DAT_0095ae10;
@@ -225,57 +227,39 @@ u64 FUN_003ae560(u64 param_1,int param_2)
 
 
 u64 FUN_003ae650(u64 param_1,int param_2)
-
-
-
 {
+  int index;
+  int base;
+  int offset;
+  u8 *data;
+  u32 value;
+  u32 mask;
+  u32 newline;
 
-  u32 uVar1;
-
-  int iVar2;
-
-  int iVar3;
-
-  
-
-  iVar3 = 0;
-
-  while( 1 ) {
-
-    iVar2 = iVar3;
-
-    iVar3 = iVar2 + 1;
-
-    uVar1 = (u32)*(u8 *)(*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18) + iVar2);
-
-    if (uVar1 == 10) break;
-
-    if ((uVar1 & 0xf0) == 0xf0) {
-
-      iVar3 = iVar3 + ((uVar1 & 0xf) - 1) * 2 + 1;
-
+  index = 0;
+  offset = *(volatile int *)(param_2 + 0x18);
+  base = *(volatile int *)(param_2 + 0x10);
+  data = (u8 *)(base + offset);
+  mask = 0xf0;
+  newline = 10;
+  do {
+    value = data[index];
+    index++;
+    if (value != newline) {
+      if ((value & mask) == mask) {
+        index += ((value & 0xf) - 1) * 2 + 1;
+      } else if (value >= 0x80) {
+        index++;
+      }
     }
+  } while (value != newline);
 
-    else if (0x7f < uVar1) {
-
-      iVar3 = iVar2 + 2;
-
-    }
-
-  }
-
-  FUN_00521408(0x95abf0,0,0x80);
-
-  FUN_00521250(0x95abf0,*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18),iVar3);
-
-  (&DAT_0095abf0)[iVar2] = 0;
-
+  FUN_00521408(DAT_0095abf0_abs,0,0x80);
+  FUN_00521250(DAT_0095abf0_abs,*(int *)(param_2 + 0x10) + *(int *)(param_2 + 0x18),index);
+  DAT_0095abf0_abs[index] = 0;
   DAT_007cd4e8 = DAT_007cd4e8 | 0x10;
-
-  *(int *)(param_2 + 0x18) = *(int *)(param_2 + 0x18) + iVar3;
-
+  *(int *)(param_2 + 0x18) = *(int *)(param_2 + 0x18) + index;
   return 0;
-
 }
 #define FUN_003ae650(...) ((u64 (*)(...))FUN_003ae650)(__VA_ARGS__)
 #undef FUN_003ae750
