@@ -456,6 +456,12 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 
 
 
+/* Retail converts the final color bytes into float vertex fields.
+ * Keep these stores typed; raw u32 bit patterns drop those conversion paths.
+ * The two geometry coordinates at the tail are integer-to-float conversions.
+ * This preserves the state-independent color setup emitted by retail.
+ * The expanded tail is intentional even though residual codegen differences remain.
+ */
 // FUN_0025DA30 NONMATCHING
 void FUN_0025da30(void)
 
@@ -1104,41 +1110,28 @@ void FUN_0025da30(void)
 
   FUN_0021d950(puVar2 + 0x1c4,&color[0]);
 
-  puVar2[0x204] = 0x44014000;
-
+  *(float *)(puVar2 + 0x204) = 0x205;
   puVar2[0x205] = 0x43e00000;
-
   puVar2[0x214] = 0x44200000;
-
-  puVar2[0x215] = 0x43a28000;
-
+  *(float *)(puVar2 + 0x215) = 0x145;
   puVar2[0x224] = 0x44200000;
-
   puVar2[0x225] = 0x43e00000;
-
-  puVar2[0x20c] = 0x429e0000;
-
-  puVar2[0x20d] = 0x43240000;
-
-  puVar2[0x20e] = 0x437f0000;
-
-  puVar2[0x20f] = 0x437f0000;
-
-  puVar2[0x21c] = 0x429e0000;
-
-  puVar2[0x21d] = 0x43240000;
-
-  puVar2[0x21e] = 0x437f0000;
-
-  puVar2[0x21f] = 0x437f0000;
-
-  puVar2[0x22c] = 0x429e0000;
-
-  puVar2[0x22d] = 0x43240000;
-
-  puVar2[0x22e] = 0x437f0000;
-
-  puVar2[0x22f] = 0x437f0000;
+  color[0] = 0x4f;
+  color[1] = 0xa4;
+  color[2] = 0xff;
+  color[3] = 0xff;
+  *(float *)(puVar2 + 0x20c) = (float)color[0];
+  *(float *)(puVar2 + 0x20d) = (float)color[1];
+  *(float *)(puVar2 + 0x20e) = (float)color[2];
+  *(float *)(puVar2 + 0x20f) = (float)color[3];
+  *(float *)(puVar2 + 0x21c) = (float)color[0];
+  *(float *)(puVar2 + 0x21d) = (float)color[1];
+  *(float *)(puVar2 + 0x21e) = (float)color[2];
+  *(float *)(puVar2 + 0x21f) = (float)color[3];
+  *(float *)(puVar2 + 0x22c) = (float)color[0];
+  *(float *)(puVar2 + 0x22d) = (float)color[1];
+  *(float *)(puVar2 + 0x22e) = (float)color[2];
+  *(float *)(puVar2 + 0x22f) = (float)color[3];
 
   return;
 
