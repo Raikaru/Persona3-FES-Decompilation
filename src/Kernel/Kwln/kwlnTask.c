@@ -1082,6 +1082,8 @@ u32 kwlnTaskGetState(KwlnTask* task)
     return KWLNTASK_STATE_NULL;
 }
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_00195340 NONMATCHING
 KwlnTask* kwlnTaskGetTaskByName(const char* name)
 {
@@ -1141,6 +1143,7 @@ KwlnTask* kwlnTaskGetTaskByName(const char* name)
 
     return NULL;
 }
+#pragma pop
 
 // FUN_00195450. Get the current task updating
 KwlnTask* kwlnTaskGetUpdating()
