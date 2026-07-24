@@ -162,6 +162,16 @@ extern u16 DAT_007e0956;
 extern u16 DAT_007e095a;
 extern u32 DAT_007ce018;
 extern u8 DAT_007ce384;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e094c_abs DAT_007e094c
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e0956_abs DAT_007e0956
+#pragma alias DAT_007e095a_abs DAT_007e095a
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e094c_abs[];
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e0956_abs[];
+extern u8 DAT_007e095a_abs[];
 extern u32 FUN_00108710();
 extern u32 FUN_001938e0();
 extern u32 FUN_00195290();
@@ -179,12 +189,21 @@ void opRoot00265030(void)
     u32 state;
     u32 value;
     int changed;
+    typedef struct
+    {
+        u8 pad[28];
+        u8 color[4];
+    } ColorWork;
+    ColorWork colorWork;
+    u32 flags;
 
     K_ASSERT(sOpRoot != NULL, 0x9a);
     w = sOpRoot;
-    if ((*w & 1) == 0)
+    flags = *w;
+
+    if ((~flags & 1) != 0)
         return;
-    if ((*w & 2) != 0 && FUN_00195460(w[4]) == 0)
+    if ((flags & 2) != 0 && FUN_00195460(w[4]) == 0)
         *w &= ~2u;
     if ((*w & 4) != 0 && FUN_00195460(w[6]) == 0)
         *w &= ~4u;
@@ -203,10 +222,10 @@ void opRoot00265030(void)
             if (opLogo0026a1e0() == 0)
             {
                 FUN_002722e0();
-                if (DAT_007ce018 == 0)
-                    w[1] = 2;
-                else
+                if (DAT_007ce018 != 0)
                     w[1] = 4;
+                else
+                    w[1] = 2;
             }
             break;
         case 2:
@@ -223,17 +242,17 @@ void opRoot00265030(void)
             break;
         case 4:
             opResDestroyLogo();
-            if (DAT_007ce384 != 0)
-            {
-                value = FUN_0010bc20(w[2], 1);
-                w[5] = value;
-                DAT_007ce384 = 0;
-            }
-            else
+            if (DAT_007ce384 == 0)
             {
                 value = FUN_0010bc20(w[2], 0x23);
                 w[5] = value;
                 DAT_007ce384 = 1;
+            }
+            else
+            {
+                value = FUN_0010bc20(w[2], 1);
+                w[5] = value;
+                DAT_007ce384 = 0;
             }
             w[1] = 5;
             break;
@@ -257,38 +276,40 @@ void opRoot00265030(void)
             }
             break;
         case 8:
-            if (opWait0026ee80() != 0 && opTitle00269640() != 0 && opWait0026ee30() != 0)
+            if (opWait0026ee80() != 0 && opTitle00269640() != 0 && opWait0026ee30() != 0 &&
+                (DAT_007e094e & 0x9ff) != 0)
             {
-                if ((DAT_007e094e & 0x9ff) != 0)
-                {
-                    FUN_00271c10();
-                    opTitle002695b0();
-                }
+                FUN_00271c10();
+                opTitle002695b0();
             }
             else
             {
-                if ((s32)w[0x1149] < 0x1c2)
+                switch ((s32)w[0x1149] < 0x1c2)
                 {
-                    w[0x1149]++;
-                    if ((DAT_007e094e & 0x9ff) != 0)
-                    {
-                        opMenu0026d430();
-                        opWait0026edb0();
-                        opTitle00269550();
-                        w[0x1148] = 0;
-                        FUN_0010a4e0(0, 0, 0, 1);
-                        FUN_002660d0();
-                    }
+                    case 0:
+                        colorWork.color[0] = 0;
+                        colorWork.color[1] = 0;
+                        colorWork.color[2] = 0;
+                        colorWork.color[3] = 0xff;
+                        FUN_00272220(colorWork.color);
+                        FUN_00271db0();
+                        w[0x114a] = w[1];
+                        w[1] = 10;
+                        break;
+                    case 1:
+                        w[0x1149]++;
+                        if ((DAT_007e094e & 0x9ff) != 0)
+                        {
+                            opMenu0026d430();
+                            opWait0026edb0();
+                            opTitle00269550();
+                            w[0x1148] = 0;
+                            FUN_0010a4e0(0, 0, 0, 1);
+                            FUN_002660d0();
+                        }
+                        break;
                 }
-                else
-                {
-                    u8 color[4] = {0, 0, 0, 0xff};
-                    FUN_00272220(color);
-                    FUN_00271db0();
-                    w[0x114a] = w[1];
-                    w[1] = 10;
                 }
-            }
             break;
         case 9:
             if (opMenu0026dcc0() == 0)
@@ -301,30 +322,31 @@ void opRoot00265030(void)
                     {
                         FUN_0010a4e0(0, 0, 0, 1);
                         value = w[0x1148];
-                        if (value == 3)
+                        switch (value)
                         {
-                            w[0x1148] = 0;
-                            opMenu0026dc20();
-                            opMenu0026db30(0);
-                            w[1] = 0x11;
-                        }
-                        else if (value == 2)
-                            w[1] = 0xf;
-                        else if (value == 0)
-                        {
-                            FUN_00108570();
-                            FUN_00108670(5);
-                            FUN_001086a0(0x14);
-                            FUN_00108f70();
-                            w[1] = 0xc;
-                        }
-                        else if (value == 1)
-                        {
-                            FUN_00266660(0);
-                            FUN_00108570();
-                            FUN_00108670(5);
-                            FUN_001086a0(0x14);
-                            w[1] = 7;
+                            case 1:
+                                FUN_00266660(0);
+                                FUN_00108570();
+                                FUN_00108670(5);
+                                FUN_001086a0(0x14);
+                                w[1] = 7;
+                                break;
+                            case 0:
+                                FUN_00108570();
+                                FUN_00108670(5);
+                                FUN_001086a0(0x14);
+                                FUN_00108f70();
+                                w[1] = 0xc;
+                                break;
+                            case 2:
+                                w[1] = 0xf;
+                                break;
+                            case 3:
+                                w[0x1148] = 0;
+                                opMenu0026dc20();
+                                opMenu0026db30(0);
+                                w[1] = 0x11;
+                                break;
                         }
                         changed = 1;
                     }
@@ -356,8 +378,11 @@ void opRoot00265030(void)
                 }
                 else
                 {
-                    u8 color[4] = {0, 0, 0, 0xff};
-                    FUN_00272220(color);
+                    colorWork.color[0] = 0;
+                    colorWork.color[1] = 0;
+                    colorWork.color[2] = 0;
+                    colorWork.color[3] = 0xff;
+                    FUN_00272220(colorWork.color);
                     FUN_00271db0();
                     w[0x114a] = w[1];
                     w[1] = 10;
@@ -449,8 +474,11 @@ void opRoot00265030(void)
                 }
                 else
                 {
-                    u8 color[4] = {0, 0, 0, 0xff};
-                    FUN_00272220(color);
+                    colorWork.color[0] = 0;
+                    colorWork.color[1] = 0;
+                    colorWork.color[2] = 0;
+                    colorWork.color[3] = 0xff;
+                    FUN_00272220(colorWork.color);
                     FUN_00271db0();
                     w[0x114a] = w[1];
                     w[1] = 10;
