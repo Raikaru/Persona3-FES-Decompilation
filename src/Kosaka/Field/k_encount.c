@@ -698,35 +698,45 @@ void func_001d89b0(KwlnTask* task)
     EncounterWork* work;
     u32 i;
 
-    if (task == NULL || task->workData == NULL)
-    {
-        return;
-    }
     work = (EncounterWork*)task->workData;
-    for (i = 0; i < work->pcCount && i < 4; ++i)
+    for (i = 0; i < work->pcCount; ++i)
     {
-        if (work->pc[i] != NULL && work->pc[i]->genusBase != NULL &&
-            func_002ff790(work->pc[i]->genusBase) == 0)
+        FldUnit** slot = &work->pc[i];
+        FldUnit* unit = *slot;
+
+        if (unit->genusBase == NULL)
         {
-            void* field28 = K_Encount_FieldWord(0x28);
-            if (field28 != NULL)
-            {
-                func_0018bee0(field28, work->pc[i]->charId, 0);
-            }
+            continue;
+        }
+        if (datGetFlag(0xC22) != 0 || datGetScenarioMode() != 0)
+        {
+            continue;
+        }
+        if (RpRandom() % 100 >= 50)
+        {
+            continue;
+        }
+        if (func_002ff790((*slot)->genusBase) != 0)
+        {
+            continue;
+        }
+        if (K_Encount_FieldWord(0x28) != NULL)
+        {
+            func_0018bee0(K_Encount_FieldWord(0x28), (*slot)->charId, 0);
         }
     }
     if (work->taskSlot < 3)
     {
         D_00875A40[work->taskSlot] = NULL;
     }
-    RwFree(work);
+    RwFree(task->workData);
 }
 
 // FUN_001d8b00 NONMATCHING
 KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
 {
-    EncounterWork* work;
     KwlnTask* task;
+    EncounterWork* work;
     u32 i;
 
     work = (EncounterWork*)RwCalloc(1, sizeof(EncounterWork), rwMEMHINTDUR_GLOBAL);
@@ -740,23 +750,22 @@ KwlnTask* func_001d8b00(KwlnTask* parent, FldUnit* pc, FldUnit* ec)
     work->pcCount = pc != NULL ? 1 : 0;
     work->ec[0] = ec;
     work->ecCount = ec != NULL ? 1 : 0;
+    for (i = 0; i < 3 && D_00875A40[i] != NULL; ++i)
+    {
+    }
+    if (i >= 3)
+    {
+        i = (u32)-1;
+        K_ASSERT(false, 0x29C);
+    }
+    work->taskSlot = i;
+    D_00875A40[i] = task;
     work->duration = 0x78;
     if (ec != NULL && ec->genusBase != NULL &&
         *(u16*)((u8*)ec->genusBase + 8) == 0x1FA)
     {
         work->reaperFlag = 1;
     }
-    for (i = 0; i < 3; ++i)
-    {
-        if (D_00875A40[i] == NULL)
-        {
-            work->taskSlot = i;
-            D_00875A40[i] = task;
-            return task;
-        }
-    }
-    work->taskSlot = 3;
-    K_ASSERT(false, 0x29C);
     return task;
 }
 
@@ -928,20 +937,39 @@ u32 func_001d9310(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
+
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
-        f32 ratio;
+        s32 maxHp;
+        s32 hp;
+        f32 maxValue;
+        f32 hpValue;
+
         if (unit->genusBase == NULL || unit->resrc == NULL ||
-            func_002ff790(unit->genusBase) == 1 ||
-            !K_Encount_HpRatio(unit->charId, &ratio))
+            func_002ff790(unit->genusBase) == 1)
         {
             continue;
         }
-        if (ratio < 0.26f)
+        maxHp = datGetMaxHp((s16)unit->charId);
+        if (maxHp < 0)
         {
-            found |= K_Encount_AppendRecord(out, unit->charId);
+            continue;
+        }
+        maxValue = (f32)maxHp;
+        maxValue += maxValue;
+        hp = datGetHp((s16)unit->charId);
+        if (hp < 0)
+        {
+            continue;
+        }
+        hpValue = (f32)hp;
+        hpValue += hpValue;
+        if (hpValue / maxValue < 0.26f)
+        {
+            out->ids[out->count++] = unit->charId;
+            found = 1;
         }
     }
     return found;
@@ -952,20 +980,39 @@ u32 func_001d94d0(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
+
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
-        f32 ratio;
+        s32 maxHp;
+        s32 hp;
+        f32 maxValue;
+        f32 hpValue;
+
         if (unit->genusBase == NULL || unit->resrc == NULL ||
-            (datGetBadStatusNoDown((s16)unit->charId) & UNIT_BADSTATUS_POISON) == 0 ||
-            !K_Encount_HpRatio(unit->charId, &ratio))
+            (datGetBadStatusNoDown((s16)unit->charId) & UNIT_BADSTATUS_POISON) == 0)
         {
             continue;
         }
-        if (ratio >= 0.26f)
+        maxHp = datGetMaxHp((s16)unit->charId);
+        if (maxHp < 0)
         {
-            found |= K_Encount_AppendRecord(out, unit->charId);
+            continue;
+        }
+        maxValue = (f32)maxHp;
+        maxValue += maxValue;
+        hp = datGetHp((s16)unit->charId);
+        if (hp < 0)
+        {
+            continue;
+        }
+        hpValue = (f32)hp;
+        hpValue += hpValue;
+        if (hpValue / maxValue >= 0.26f)
+        {
+            out->ids[out->count++] = unit->charId;
+            found = 1;
         }
     }
     return found;
@@ -976,23 +1023,43 @@ u32 func_001d96a0(EncounterRecord* out)
 {
     u32 i;
     u32 found = 0;
+
     memset(out, 0, sizeof(*out));
     for (i = 1; i < 4; ++i)
     {
         FldUnit* unit = &gFldUnitsPc[i];
-        f32 ratio;
-        if (unit->genusBase == NULL || unit->resrc == NULL ||
-            !K_Encount_HpRatio(unit->charId, &ratio))
+        s32 maxHp;
+        s32 hp;
+        f32 maxValue;
+        f32 hpValue;
+
+        if (unit->genusBase == NULL || unit->resrc == NULL)
         {
             continue;
         }
-        if (ratio >= 0.26f && ratio < 0.75f)
+        maxHp = datGetMaxHp((s16)unit->charId);
+        if (maxHp < 0)
         {
-            found |= K_Encount_AppendRecord(out, unit->charId);
+            continue;
+        }
+        maxValue = (f32)maxHp;
+        maxValue += maxValue;
+        hp = datGetHp((s16)unit->charId);
+        if (hp < 0)
+        {
+            continue;
+        }
+        hpValue = (f32)hp;
+        hpValue += hpValue;
+        if (hpValue / maxValue >= 0.26f && hpValue / maxValue < 0.75f)
+        {
+            out->ids[out->count++] = unit->charId;
+            found = 1;
         }
     }
     return found;
 }
+
 
 static KwlnTask* K_Encount_CreatePeriodicScript(PeriodicWork* work, u32 slot, u32 procedure)
 {
