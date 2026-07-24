@@ -102,6 +102,18 @@ typedef struct CampMenuEntry
     f32 y;
     u32 alpha;
 } CampMenuEntry;
+typedef union CampMenuAnimPair
+{
+    u64 q;
+    f32 f[2];
+} CampMenuAnimPair;
+typedef struct CampMenuScratch
+{
+    u32 words[0x1e];
+    CampMenuAnimPair shifted;
+    CampMenuAnimPair pair;
+    u32 tail[2];
+} CampMenuScratch;
 typedef struct CampMenuWork
 {
     u32 state;
@@ -389,7 +401,7 @@ extern CampD8Object *campD8MakeSprite(u32 parent, void *resource, u32 frame);
 extern void campD8SetSprite(CampD8Object *object, s32 mode);
 #pragma alias campD8SubmitSprite FUN_00115980
 extern void campD8SubmitSprite(CampD8Object *object);
-extern void FUN_00113a30(f32 x, f32 y, f32 z, u64 color, s32 width, s32 height);
+extern void FUN_00113a30(f32 x, f32 y, f32 z, u32 color, s32 width, s32 height);
 extern void FUN_00155830(void *record, void *blobPair, s32 index, u32 selectedPanel, const u32 *panelFlags);
 extern void FUN_001599f0(void *record, void *blobPair, s32 category, u32 selectedPage, u32 subPage);
 extern u32 FUN_0016f190(s32 flag);
@@ -482,6 +494,13 @@ u32 FUN_0015B330(void *entries, void *blobPair,
     return allReady;
 }
 
+/*
+ * Retail stores each animation endpoint as adjacent float pairs on the stack.
+ * The state 6 and state 9 setup paths now preserve those copies and offsets.
+ * This restores the missing add/subtract float operations and all panel calls.
+ * The reconstructed object is larger and has a higher normalized diff for now.
+ * Keep this marker NONMATCHING until register layout and dispatch scheduling converge.
+ */
 // FUN_0015B430 NONMATCHING
 void *FUN_0015B430(KwlnTask *task)
 {
@@ -491,7 +510,7 @@ void *FUN_0015B430(KwlnTask *task)
     u32 selected;
     u32 allReady;
     bool inputHeld;
-    u32 stackScratch[0x24];
+    CampMenuScratch scratch;
     void *fileData;
 
     /* The retail fade rectangle uses 100.0f, 20.0f and an encoded colour. */
@@ -531,10 +550,10 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 1:
         if (work->requestResult == 0) {
-            stackScratch[0] = 0;
+            scratch.words[0] = 0;
             work->requestResult = (u32)FUN_0010c3a0(
-                CAMP_MENU_PTR32(work->request), &stackScratch[0], 0);
-            if (stackScratch[0] == 0) {
+                CAMP_MENU_PTR32(work->request), &scratch.words[0], 0);
+            if (scratch.words[0] == 0) {
                 work->requestResult = 0;
                 return 0;
             }
@@ -547,10 +566,10 @@ void *FUN_0015B430(KwlnTask *task)
             FUN_003c7d80(0x08,
                 *(u32 *)((u8 *)CAMP_MENU_PTR32(work->cdvdStatus) + 0x110));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 0,
-                                    &stackScratch[0x22]);
+                                    &scratch.tail[0]);
             work->archiveBlob0 = camp_menu_address(FUN_00112420(fileData));
             fileData = FUN_00102100(CAMP_MENU_PTR32(work->cdvdSystem), 1,
-                                    &stackScratch[0x22]);
+                                    &scratch.tail[0]);
             work->archiveBlob1 = camp_menu_address(FUN_00112420(fileData));
             work->state = 2;
         }
@@ -565,33 +584,47 @@ void *FUN_0015B430(KwlnTask *task)
 
     case 6:
         work->selectedPanel = 0;
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 1, UINT64_C(0xc3c0800041a80000),
-                     UINT64_C(0x4357000041a80000), 0, 0);
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 1, UINT64_C(0xc3a90000424c0000),
-                     UINT64_C(0x43830000424c0000), 0, 0);
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 1, UINT64_C(0x42b8000042ae0000),
-                     UINT64_C(0x42b8000042ae0000), 0, 0);
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 1, UINT64_C(0xc3fe000042ae0000),
-                     UINT64_C(0x42b8000042ae0000), 0, 0);
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 1, UINT64_C(0x42b8000043c20000),
-                     UINT64_C(0x42b8000043c20000), 0, 0);
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] -= 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 1, UINT64_C(0xc3fe000043c20000),
-                     UINT64_C(0x42b8000043c20000), 0, 0);
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 200.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 1, UINT64_C(0x42ba000043938000),
-                     UINT64_C(0x42ba000042be0000), 0, 0);
+                     0, 2, 1, scratch.shifted.q, scratch.pair.q, 0, 0);
         for (index = 0; index < 7; index++) {
             work->panelFlags[index] = FUN_0016f190(index + 0x183);
         }
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 1, UINT64_C(0x43c0800043c40000),
-                     UINT64_C(0x43c0800043c40000), 0, 0);
+                     0, 2, 1, scratch.pair.q, scratch.pair.q, 0, 0);
         work->entriesReady = 0;
         work->state = 7;
         break;
@@ -712,31 +745,43 @@ void *FUN_0015B430(KwlnTask *task)
                               work->panelFlags);
             }
         }
+        scratch.pair.f[0] = 21.0f;
+        scratch.pair.f[1] = 215.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x000),
-                     0, 2, 2, UINT64_C(0x4357000041a80000),
-                     UINT64_C(0x444bc00041a80000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 50.0f;
+        scratch.pair.f[1] = 263.0f;
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x044),
-                     0, 2, 2, UINT64_C(0x43830000424c0000),
-                     UINT64_C(0x44578000424c0000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 87.0f;
+        scratch.pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x088),
-                     0, 2, 2, UINT64_C(0x42b8000042ae0000),
-                     UINT64_C(0x42b8000042ae0000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x0cc),
-                     0, 2, 2, UINT64_C(0x42b8000042ae0000),
-                     UINT64_C(0x442d000042ae0000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 388.0f;
+        scratch.pair.f[1] = 92.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x110),
-                     0, 2, 2, UINT64_C(0x42b8000043c20000),
-                     UINT64_C(0x42b8000043c20000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
+        scratch.shifted = scratch.pair;
+        scratch.shifted.f[1] += 600.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x154),
-                     0, 2, 2, UINT64_C(0x42b8000043c20000),
-                     UINT64_C(0x442d000043c20000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.shifted.q, 0, 0);
+        scratch.pair.f[0] = 95.0f;
+        scratch.pair.f[1] = 93.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x198),
-                     0, 2, 2, UINT64_C(0x42ba000042be0000),
-                     UINT64_C(0x42ba000042be0000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
         work->state = 10;
+        scratch.pair.f[0] = 392.0f;
+        scratch.pair.f[1] = 385.0f;
         FUN_0018bc10(100.0f, camp_menu_record(work, 0x1a4c),
-                     0, 2, 2, UINT64_C(0x43c0800043c40000),
-                     UINT64_C(0x43c0800043c40000), 0, 0);
+                     0, 2, 2, scratch.pair.q, scratch.pair.q, 0, 0);
         break;
 
     case 10:
