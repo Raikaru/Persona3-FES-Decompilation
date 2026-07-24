@@ -502,6 +502,8 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
 {
     int iVar1;
     int iVar2;
+    int index;
+    int length;
     u32 bVar2;
 
     iVar1 = *(int *)(param_1 + 8);
@@ -511,17 +513,22 @@ u32 FUN_00397580(int param_1,int param_2,u16 *param_3)
         iVar2 = *(int *)(iVar1 + 0x60);
         if (iVar2 == 0) {
             bVar2 = 0;
-        } else if (*(int *)(param_1 + 0x970) <
-                   (int)(u32)*(u16 *)(iVar2 + 2)) {
-            bVar2 = 1;
         } else {
-            bVar2 = 0;
+            index = *(volatile int *)(param_1 + 0x970);
+            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            if (length <= index) {
+                bVar2 = 0;
+            } else {
+            bVar2 = 1;
         }
     }
-    if (bVar2) {
-        *param_3 = *(u16 *)((int)*(int *)((u8 *)iVar1 + 0x60) + 4 +
-                            *(int *)(param_1 + 0x970) * 0x8c + param_2 * 2);
     }
+    if (!bVar2) goto done;
+    index = *(volatile int *)(param_1 + 0x970);
+    iVar2 = *(volatile int *)((u8 *)iVar1 + 0x60);
+    *param_3 = *(u16 *)(*(int *)(iVar2 + 4) +
+                        index * 0x8c + param_2 * 2);
+done:
     return bVar2;
 }
 #define FUN_00397580(...) ((u32 (*)(...))FUN_00397580)(__VA_ARGS__)
@@ -533,6 +540,8 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
 {
     int iVar1;
     int iVar2;
+    int index;
+    int length;
     u8 bVar2;
     u32 uVar3;
 
@@ -543,10 +552,14 @@ u32 FUN_00397630(int param_1,int param_2,u32 *param_3)
         iVar2 = *(int *)(iVar1 + 0x60);
         if (iVar2 == 0) {
             bVar2 = 0;
-        } else if ((int)(u32)*(u16 *)(iVar2 + 2) <= *(int *)(param_1 + 0x970)) {
-            bVar2 = 0;
         } else {
-            bVar2 = 1;
+            index = *(volatile int *)(param_1 + 0x970);
+            length = (int)(u32)*(volatile u16 *)(iVar2 + 2);
+            if (index < length) {
+                bVar2 = 1;
+            } else {
+                bVar2 = 0;
+            }
         }
     }
     if (bVar2) {
