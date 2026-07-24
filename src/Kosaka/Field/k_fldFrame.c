@@ -1859,6 +1859,7 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
 {
     FldFrameCollisionCollector collector;
     RwV3d query;
+    s32 i;
 
     (void)resTypeId;
     if (pos == NULL || translation == NULL)
@@ -1866,7 +1867,16 @@ void func_001abd20(void* collisionWorld, const RwV3d* pos,
         return;
     }
 
-    FldFrame_CollisionCollectorReset(&collector);
+    collector.mode = 0;
+    collector.count = 0;
+    collector.blockingCount = 0;
+    collector.owner = NULL;
+    for (i = 0; i < 64; i++)
+    {
+        memset(&collector.points[i], 0, sizeof(RwV3d));
+        memset(&collector.normals[i], 0, sizeof(RwV3d));
+        collector.distances[i] = 1.0e30f;
+    }
     query.x = pos->x + translation->x;
     query.y = pos->y + translation->y;
     query.z = pos->z + translation->z;
