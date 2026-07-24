@@ -134,7 +134,6 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
   int index;
   u32 uVar6;
   int *piVar7;
-  u32 base;
   int lVar3;
   int lVar8;
   volatile code *alloc;
@@ -186,8 +185,7 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
     index = 0;
     for (iVar5 = 0; iVar5 < param_3; iVar5 = iVar5 + 1) {
       for (iVar4 = 0; iVar4 < param_2; iVar4 = iVar4 + 1) {
-        base = *(u32 *)DAT_0095aebc_abs;
-        piVar7 = (int *)(index * 0x20 + base);
+        piVar7 = (int *)(*(u32 *)DAT_0095aebc_abs + index * 0x20);
         if (piVar7 == (int *)0x0) {
           FUN_003b44a0();
           return 0;
@@ -240,7 +238,7 @@ work:
 }
 #define FUN_003b44a0(...) ((u8 (*)(...))FUN_003b44a0)(__VA_ARGS__)
 #undef FUN_003b4520
-// FUN_003B4520 NONMATCHING
+// FUN_003B4520
 
 
 int * FUN_003b4520(void)
@@ -253,7 +251,7 @@ int * FUN_003b4520(void)
 
   
 
-  piVar1 = *(int **)(DAT_0095aebc + 0x1c);
+  piVar1 = *(int **)(*(u32 *)DAT_0095aebc_abs + 0x1c);
 
   if (*piVar1 == 0) {
 
@@ -267,7 +265,7 @@ int * FUN_003b4520(void)
 
     *(int *)(piVar1[7] + 0x18) = piVar1[6];
 
-    DAT_0095aeb8 = DAT_0095aeb8 + -1;
+    *(u32 *)DAT_0095aeb8_abs = *(u32 *)DAT_0095aeb8_abs - 1;
 
   }
 
@@ -288,8 +286,8 @@ void FUN_003b4580(int param_1)
     FUN_0019d3f0("fmGslCont.c",0xc2);
   }
   iVar2 = *(int *)DAT_0095aebc_abs;
-  iVar1 = *(int *)(iVar2 + 0x1c);
-  *(int *)(param_1 + 0x18) = iVar2;
+  iVar1 = *(int *)(*(int *)DAT_0095aebc_abs + 0x1c);
+  *(int *)(param_1 + 0x18) = *(int *)DAT_0095aebc_abs;
   *(int *)(param_1 + 0x1c) = iVar1;
   *(int *)(iVar2 + 0x1c) = param_1;
   *(int *)(iVar1 + 0x18) = param_1;
@@ -585,13 +583,13 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
 
 {
 
+  char cVar4;
+
   u32 *puVar1;
 
   u32 *puVar2;
 
   u32 *puVar3;
-
-  char cVar4;
 
   
 
@@ -602,26 +600,17 @@ void FUN_003b4920(u32 *param_1,u32 *param_2,int param_3,int param_4)
   puVar1 = param_2;
 
   do {
-
-    puVar3 = puVar1;
-
-    *puVar3 = (u32)puVar2;
-
-    puVar1 = (u32 *)((int)puVar3 + param_4);
-
-    puVar3[1] = (u32)puVar1;
-
-    puVar3[2] = (int)cVar4;
-
+    *puVar1 = (u32)puVar2;
+    puVar3 = (u32 *)((int)puVar1 + param_4);
+    puVar1[1] = (u32)puVar3;
+    puVar1[2] = (int)cVar4;
+    puVar2 = puVar1;
+    puVar1 = puVar3;
     param_3 = param_3 + -1;
-
     cVar4 = cVar4 + '\x01';
-
-    puVar2 = puVar3;
-
   } while (1 < param_3);
 
-  *puVar1 = (u32)puVar3;
+  *puVar1 = (u32)puVar2;
 
   puVar1[1] = 0;
 
