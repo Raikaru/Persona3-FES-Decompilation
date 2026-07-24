@@ -944,6 +944,8 @@ u32 scrComu00360d40(void)
     return 1;
 }
 
+#pragma push
+#pragma opt_common_subs off
 // FUN_00360ed0 NONMATCHING. Checks a comu event's availability condition ('objtype' 0..2)
 u32 scrComu00360ed0(int param_1)
 {
@@ -1009,3 +1011,4 @@ CheckFlagValue:
     }
     return result;
 }
+#pragma pop
