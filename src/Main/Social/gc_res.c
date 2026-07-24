@@ -739,16 +739,17 @@ void* func_0021b420(s32 index)
     return GC_PTR((u32)scaledIndex + (u32)work, 0x3c);
 }
 
+#pragma opt_loop_invariants on
 // FUN_0021B4A0 NONMATCHING
 void func_0021b4a0(u8* resource)
 {
-    u8* work;
+    GcResWork* work;
     u8* data;
     s32 i;
     s32 j;
 
     K_ASSERT(sGcRes != NULL, 0x7c);
-    work = sGcRes;
+    work = (GcResWork*)sGcRes;
     K_ASSERT(((~GC_U32(work, 0x0c)) & 4) != 0, 0x317);
     K_ASSERT(((~GC_U32(work, 0x0c)) & 8) != 0, 0x318);
     K_ASSERT(((~GC_U32(work, 0x0c)) & 1) != 0, 0x319);
@@ -756,7 +757,7 @@ void func_0021b4a0(u8* resource)
 
     data = (u8*)resource;
     for (i = 0; i < 7; i++) {
-        GC_PTR(work, 0x20 + i * 4) =
+        work->cardResources[i] =
             bpTexCreateTmxRaster(data + *(s32*)(data + i * 8 + 8));
     }
     GC_PTR(work, 0x04) =
@@ -769,3 +770,4 @@ void func_0021b4a0(u8* resource)
     GC_U32(work, 0x0c) |= 4;
     GC_U32(work, 0x0c) |= 8;
 }
+#pragma opt_loop_invariants off
