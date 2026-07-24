@@ -963,6 +963,9 @@ extern f32 FUN_0052e878(f32 angle);
 extern f32 FUN_0052e6d8(f32 angle);
 extern void func_0020cf20(void* destination, void* source);
 
+// Reconstructed state interpolation, UV projection, and corner rotation from retail control flow.
+// Remaining excess is retained pending MWCCPS2 register-allocation and scheduling convergence.
+
 // FUN_0020ac90 NONMATCHING
 void func_0020ac90(void* work)
 {
@@ -974,15 +977,23 @@ void func_0020ac90(void* work)
     s32 i;
     f32 corner[4][2];
     f32 angle;
+    f32 x;
+    f32 y;
+    f32 rotatedX;
+    f32 rotatedY;
     f32 sinA;
     f32 cosA;
-
     *(f32*)(panel + 0x3c) += DAT_007cadd4;
     state = *(s32*)(panel + 4);
+    switch (state) {
+    case 0:
+        goto state0;
+    case 1:
+        goto state1;
+    default:
+        goto shared_tail;
+    }
 
-    if (state == 1) goto state1;
-    if (state == 0) goto state0;
-    goto shared_tail;
 
 state0:
     phase = *(f32*)(panel + 0x3c) / 8.0f;
@@ -1025,17 +1036,19 @@ state0:
 
     phase = *(f32*)(panel + 0x3c) / 20.0f;
     frac = phase - (f32)(s32)phase;
-    blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
-    *(f32*)(panel + 0x2b4) = 0.5f + blend;
-    *(f32*)(panel + 0x2d8) = 0.5f - blend;
-    *(f32*)(panel + 0x2fc) = 0.5f - blend;
-    *(f32*)(panel + 0x320) = 0.5f + blend;
+    blend = (100.0f + 20.0f * frac) / 100.0f;
+    blend = 0.38671875f / blend;
+    *(f32*)(panel + 0x4f4) = 0.5f + blend;
+    *(f32*)(panel + 0x518) = 0.5f - blend;
+    *(f32*)(panel + 0x53c) = 0.5f - blend;
+    *(f32*)(panel + 0x560) = 0.5f + blend;
 
-    blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
-    *(f32*)(panel + 0x2b8) = 0.5f - blend;
-    *(f32*)(panel + 0x2dc) = 0.5f - blend;
-    *(f32*)(panel + 0x300) = 0.5f + blend;
-    *(f32*)(panel + 0x324) = 0.5f + blend;
+    blend = (100.0f + 20.0f * frac) / 100.0f;
+    blend = 0.41015625f / blend;
+    *(f32*)(panel + 0x4f8) = 0.5f - blend;
+    *(f32*)(panel + 0x51c) = 0.5f - blend;
+    *(f32*)(panel + 0x540) = 0.5f + blend;
+    *(f32*)(panel + 0x564) = 0.5f + blend;
     goto shared_tail;
 
 state1:
@@ -1053,13 +1066,15 @@ state1:
 
     phase = *(f32*)(panel + 0x3c) / 20.0f;
     frac = phase - (f32)(s32)phase;
-    blend = (1.0f + frac) * DAT_007cad74 / 70.0f;
+    blend = (70.0f + 20.0f * frac) / 100.0f;
+    blend = 0.38671875f / blend;
     *(f32*)(panel + 0x4f4) = 0.5f + blend;
     *(f32*)(panel + 0x518) = 0.5f - blend;
     *(f32*)(panel + 0x53c) = 0.5f - blend;
     *(f32*)(panel + 0x560) = 0.5f + blend;
 
-    blend = (1.0f - frac) * DAT_007cad74 / 70.0f;
+    blend = (70.0f + 20.0f * frac) / 100.0f;
+    blend = 0.41015625f / blend;
     *(f32*)(panel + 0x4f8) = 0.5f - blend;
     *(f32*)(panel + 0x51c) = 0.5f - blend;
     *(f32*)(panel + 0x540) = 0.5f + blend;
@@ -1078,21 +1093,26 @@ shared_tail:
         corner[3][0] = 1.0f;
         corner[3][1] = 0.0f;
 
+        angle = *(f32*)(panel + 0x3c) / 4.0f;
+        angle *= DAT_007caee8;
+
         for (i = 0; i < 4; i++)
         {
             corner[i][0] -= 0.5f;
             corner[i][1] -= 0.5f;
         }
-
-        angle = DAT_007caee8 * (*(f32*)(panel + 0x3c) / 4.0f);
         for (i = 0; i < 4; i++)
         {
+            y = corner[i][1];
+            x = corner[i][0];
             sinA = FUN_0052e878(angle);
             cosA = FUN_0052e6d8(angle);
-            corner[i][0] = corner[i][0] * cosA - corner[i][1] * sinA;
+            rotatedX = x * cosA - y * sinA;
             sinA = FUN_0052e878(angle);
             cosA = FUN_0052e6d8(angle);
-            corner[i][1] = corner[i][0] * sinA + corner[i][1] * cosA;
+            rotatedY = x * sinA + y * cosA;
+            corner[i][0] = rotatedX;
+            corner[i][1] = rotatedY;
         }
 
         for (i = 0; i < 4; i++)
