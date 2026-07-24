@@ -168,12 +168,12 @@ u32 uGpffffabd4;
 u32 uGpffffabe4;
 extern u32 uGpffffabec;
 u32 uGpffffabf4;
-u32 uGpffffacf0;
-u32 uGpffffacf4;
-u32 uGpffffacf8;
-u32 uGpffffacfc;
-u32 uGpffffad00;
-u32 uGpffffad04;
+float fGpffffacf0;
+float fGpffffacf4;
+float fGpffffacf8;
+float fGpffffacfc;
+float fGpffffad00;
+float fGpffffad04;
 u32 uGpffffb9a8;
 /* FUSION_EXACT_PROTOS */
 void FUN_003c45f0(int param_1);
@@ -19792,6 +19792,11 @@ void FUN_0040a7c0(u64 param_1,u64 param_2,u8 param_3)
 
 }
 
+// Retail preserves this table as single-precision values across the callbacks.
+// Keep the table and globals float-typed so MWCC emits the EE FPU path.
+// The values are still consumed as raw bytes/words by the rendering helpers.
+// Initialization order mirrors retail's table-index and alpha setup sequence.
+// This reconstruction is semantically complete despite a small code-size floor.
 // FUN_0040A7F0 NONMATCHING
 
 
@@ -19822,14 +19827,11 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
   int iVar10;
 
   int uVar11;
-
-  u8 auStack_60 [32];
-
+  u8 auStack_60[32];
   u8 auStack_40[16];
+  u8 auStack_30[24];
+  float auStack_18[6];
 
-  u8 auStack_30 [24];
-
-  u32 auStack_18 [6];
 
   
 
@@ -19880,17 +19882,13 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
         if ((*puVar1 & 4) == 0) {
 
-          auStack_18[4] = uGpffffacf0;
-
-          auStack_18[5] = uGpffffacf4;
-
-          auStack_18[2] = uGpffffacf8;
-
-          auStack_18[3] = uGpffffacfc;
-
           iVar2 = *(int *)(*(int *)(iVar7 + 0x14) + 0x1c);
-
           uVar9 = (u32)bVar4;
+          auStack_18[4] = fGpffffacf0;
+          auStack_18[5] = fGpffffacf4;
+          auStack_18[2] = fGpffffacf8;
+          auStack_18[3] = fGpffffacfc;
+ 
 
           FUN_0040e3c0(0,iVar6,iVar10,uVar11 & 0xff,0x8e,
 
@@ -19952,9 +19950,9 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
         if ((*puVar1 & 4) == 0) {
 
-          auStack_18[0] = uGpffffad00;
 
-          auStack_18[1] = uGpffffad04;
+          auStack_18[0] = fGpffffad00;
+          auStack_18[1] = fGpffffad04;
 
           sprintf((char *)auStack_40,&gp0xffffac10,
 
