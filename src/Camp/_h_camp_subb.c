@@ -2384,11 +2384,8 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   int row;
   int entryIndex;
   float slotY;
-  u64 spriteTopLeftA;
-  u64 spriteTopLeftB;
-  u64 spriteTopLeftC;
-  u64 spriteTopLeftD;
-  u64 spriteTopLeftE;
+  volatile u32 spritePairs[4];
+  u32 spriteYBits;
   
   func_0018bc10(100.0f, (void*)(work->drawBuffer), 0, 2, 1, 0x41400000c2700000, 0x4140000042200000, 0, 0, 0, 0);
   func_0018bc10(100.0f, (void*)(work->drawBuffer + 0x44), 0, 2, 1, 0x41d8000042ee0000, 0x41d80000435b0000, 0, 0, 0, 0);
@@ -2402,17 +2399,37 @@ void FUN_001474f0(CampEquipmentPanelWork* work)
   for (entryIndex = 0; entryIndex < 4; entryIndex = entryIndex + 1) {
     if (entryIndex < work->visibleCount) {
       slotY = (float)(entryIndex * 0x55) + 62.0f;
-      spriteTopLeftA = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 8.0f, 0xc20c0000);
+      spriteYBits = campSubbFloatBits(slotY + 8.0f);
+      spritePairs[0] = 0xc20c0000;
+      spritePairs[1] = spriteYBits;
+      spritePairs[2] = 0x42820000;
+      spritePairs[3] = spriteYBits;
       row = entryIndex * 10;
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, spriteTopLeftA, CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 8.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeftB = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 31.0f, 0xc20c0000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, spriteTopLeftB, CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 31.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeftC = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 45.0f, 0xc20c0000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, spriteTopLeftC, CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 45.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeftD = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 64.0f, 0xc20c0000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, spriteTopLeftD, CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 64.0f, 0x42820000), 0, 0, 0, 0);
-      spriteTopLeftE = CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 2.0f, 0xc2ac0000);
-      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, spriteTopLeftE, CAMP_SUBB_PAIR_FLOAT_HIGH(slotY + 2.0f, 0x41600000), 0, 0, 0, 0);
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1e) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
+      spriteYBits = campSubbFloatBits(slotY + 31.0f);
+      spritePairs[0] = 0xc20c0000;
+      spritePairs[1] = spriteYBits;
+      spritePairs[2] = 0x42820000;
+      spritePairs[3] = spriteYBits;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x1f) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
+      spriteYBits = campSubbFloatBits(slotY + 45.0f);
+      spritePairs[0] = 0xc20c0000;
+      spritePairs[1] = spriteYBits;
+      spritePairs[2] = 0x42820000;
+      spritePairs[3] = spriteYBits;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x20) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
+      spriteYBits = campSubbFloatBits(slotY + 64.0f);
+      spritePairs[0] = 0xc20c0000;
+      spritePairs[1] = spriteYBits;
+      spritePairs[2] = 0x42820000;
+      spritePairs[3] = spriteYBits;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x21) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
+      spriteYBits = campSubbFloatBits(slotY + 2.0f);
+      spritePairs[0] = 0xc2ac0000;
+      spritePairs[1] = spriteYBits;
+      spritePairs[2] = 0x41600000;
+      spritePairs[3] = spriteYBits;
+      func_0018bc10(100.0f, (void*)(work->drawBuffer + (row + 0x22) * 0x44), 0, 2, 1, *(u64*)&spritePairs[0], *(u64*)&spritePairs[2], 0, 0, 0, 0);
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x950) = 0;
       *(u32 *)(work->drawBuffer + entryIndex * 0x2a8 + 0x994) = 0;
     }
