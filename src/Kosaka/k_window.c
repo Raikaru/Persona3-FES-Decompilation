@@ -1350,12 +1350,9 @@ u32 func_001a3f20(KwlnTask* task, const char* name)
     manager = KWindow_GetManager(task);
     entry = (KWindowEntry*)RwCalloc(1, sizeof(KWindowEntry),
                                     rwMEMHINTDUR_GLOBAL);
-    if (manager == NULL || entry == NULL)
+    if (entry == NULL)
     {
-        if (entry == NULL)
-        {
-            func_0019d3f0(D_00678B08, 0x31b);
-        }
+        func_0019d3f0(D_00678B08, 0x31b);
         return 0;
     }
 

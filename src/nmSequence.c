@@ -68,7 +68,7 @@ void FUN_003c5d40(u32 param_1,int param_2,int param_3);
 #define FUN_003c5810(...) ((u64 (*)(...))FUN_003c5810)(__VA_ARGS__)
 #define FUN_003c5840(...) ((void (*)(...))FUN_003c5840)(__VA_ARGS__)
 #define FUN_003c5870(...) ((u64 (*)(...))FUN_003c5870)(__VA_ARGS__)
-#define FUN_003c58f0(...) ((u32 (*)(...))FUN_003c58f0)(__VA_ARGS__)
+#define FUN_003c58f0(...) ((u64 (*)(...))FUN_003c58f0)(__VA_ARGS__)
 #define FUN_003c5a20(...) ((void (*)(...))FUN_003c5a20)(__VA_ARGS__)
 #define FUN_003c5a40(...) ((u32 (*)(...))FUN_003c5a40)(__VA_ARGS__)
 #define FUN_003c5af0(...) ((void (*)(...))FUN_003c5af0)(__VA_ARGS__)
