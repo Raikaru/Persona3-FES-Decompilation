@@ -60,9 +60,11 @@ extern f32 fGpffff8078;
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
 
+#pragma opt_loop_invariants on
 // FUN_001aaad0 NONMATCHING
 u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const RwV3d* normal)
 {
+    s32 i;
     s32 axis;
     s32 previous;
     u32 inside;
@@ -104,53 +106,53 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
         {
         case 0:
             primary0 = point->y;
-            for (axis = 0; axis < 3; axis++)
+            for (i = 0; i < 3; i++)
             {
-                if (((tri[axis]->y <= primary0) && (primary0 < tri[previous]->y)) ||
-                    ((tri[previous]->y <= primary0) && (primary0 < tri[axis]->y)))
+                if (((tri[i]->y <= primary0) && (primary0 < tri[previous]->y)) ||
+                    ((tri[previous]->y <= primary0) && (primary0 < tri[i]->y)))
                 {
-                    if (point->z < tri[axis]->z +
-                        ((primary0 - tri[axis]->y) * (tri[previous]->z - tri[axis]->z)) /
-                        (tri[previous]->y - tri[axis]->y))
+                    if (point->z < tri[i]->z +
+                        ((primary0 - tri[i]->y) * (tri[previous]->z - tri[i]->z)) /
+                        (tri[previous]->y - tri[i]->y))
                     {
                         inside = !inside;
                     }
                 }
-                previous = axis;
+                previous = i;
             }
             break;
         case 1:
             primary1 = point->z;
-            for (axis = 0; axis < 3; axis++)
+            for (i = 0; i < 3; i++)
             {
-                if (((tri[axis]->z <= primary1) && (primary1 < tri[previous]->z)) ||
-                    ((tri[previous]->z <= primary1) && (primary1 < tri[axis]->z)))
+                if (((tri[i]->z <= primary1) && (primary1 < tri[previous]->z)) ||
+                    ((tri[previous]->z <= primary1) && (primary1 < tri[i]->z)))
                 {
-                    if (point->x < tri[axis]->x +
-                        ((primary1 - tri[axis]->z) * (tri[previous]->x - tri[axis]->x)) /
-                        (tri[previous]->z - tri[axis]->z))
+                    if (point->x < tri[i]->x +
+                        ((primary1 - tri[i]->z) * (tri[previous]->x - tri[i]->x)) /
+                        (tri[previous]->z - tri[i]->z))
                     {
                         inside = !inside;
                     }
                 }
-                previous = axis;
+                previous = i;
             }
             break;
         case 2:
             primary2 = point->y;
-            for (axis = 0; axis < 3; axis++)
+            for (i = 0; i < 3; i++)
             {
-                if (((tri[axis]->y <= primary2) && (primary2 < tri[previous]->y)) ||
-                    ((tri[previous]->y <= primary2) && (primary2 < tri[axis]->y)))
+                if (((tri[i]->y <= primary2) && (primary2 < tri[previous]->y)) ||
+                    ((tri[previous]->y <= primary2) && (primary2 < tri[i]->y)))
                 {
-                    if (point->x < tri[axis]->x +
-                        ((primary2 - tri[axis]->y) * (tri[previous]->x - tri[axis]->x)) /
-                        (tri[previous]->y - tri[axis]->y))
+                    if (point->x < tri[i]->x +
+                        ((primary2 - tri[i]->y) * (tri[previous]->x - tri[i]->x)) /
+                        (tri[previous]->y - tri[i]->y))
                     {
                         inside = !inside;
                     }
                 }
-                previous = axis;
+                previous = i;
             }
             break;
         default:
@@ -160,6 +162,7 @@ u32 K_FldFrame_IsPointInTriangle(const RwV3d* point, const RwV3d** tri, const Rw
 
     return inside;
 }
+#pragma opt_loop_invariants off
 
 // FUN_001ac750
 void K_FldFrame_HandleCollis(const RwV3d* pos, RwV3d* translation, f32 sphereCollisRadius,
@@ -248,6 +251,7 @@ u32 K_FldFrame_Raycast(const RwV3d* line, RwV3d* hitPointDst)
     raycast.line[1] = line[1];
     raycast.intersectionType = 1;
     raycast.nearestFraction = 1.0f;
+    raycast.hitObject = NULL;
 
     state = *(FldFrameCollisionState**)((u8*)K_Field_Get() + FLDFRAME_FIELD_STATE_OFFSET);
     if (state->flags & FLDFRAME_COLLIS_FLAG_STATICWORLD)
@@ -1132,8 +1136,36 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
         line[0].y += 200.0f;
     }
     line[1].y -= 1000.0f;
-    if (work->pathMode == 1)
+    switch (work->pathMode)
     {
+    case 0:
+        if (work->pointCount >= 47)
+        {
+            return false;
+        }
+        if (K_FldFrame_Raycast(line, &resolved) != false)
+        {
+            work->points[work->pointCount].position = resolved;
+        }
+        else
+        {
+            work->points[work->pointCount].position = *position;
+        }
+        work->points[work->pointCount].duration = duration;
+        work->points[work->pointCount].kind = 0;
+        if ((work->flags & 0x80000000) != 0)
+        {
+            work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
+            if (work->points[work->pointCount].drawTask != NULL)
+            {
+                K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
+                K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
+                                      &work->points[work->pointCount].position);
+            }
+        }
+        work->pointCount++;
+        return true;
+    case 1:
         if (work->pendingPointCount >= 7)
         {
             return false;
@@ -1149,33 +1181,9 @@ u32 func_001afa20(f32 duration, KwlnTask* task, const RwV3d* position)
         *(f32*)((u8*)work + 0x4e0 + work->pendingPointCount * 0x18 + 0x0c) = duration;
         work->pendingPointCount++;
         return true;
-    }
-    if (work->pathMode != 0 || work->pointCount >= 47)
-    {
+    default:
         return false;
     }
-    if (K_FldFrame_Raycast(line, &resolved) != false)
-    {
-        work->points[work->pointCount].position = resolved;
-    }
-    else
-    {
-        work->points[work->pointCount].position = *position;
-    }
-    work->points[work->pointCount].duration = duration;
-    work->points[work->pointCount].kind = 0;
-    if ((work->flags & 0x80000000) != 0)
-    {
-        work->points[work->pointCount].drawTask = K_Draw_CreatePositionTask(0);
-        if (work->points[work->pointCount].drawTask != NULL)
-        {
-            K_Draw_SetPositionColor(work->points[work->pointCount].drawTask, &sDebugSphereColor);
-            K_Draw_SetPositionPos(work->points[work->pointCount].drawTask,
-                                  &work->points[work->pointCount].position);
-        }
-    }
-    work->pointCount++;
-    return true;
 }
 
 // FUN_001AFD40 NONMATCHING
