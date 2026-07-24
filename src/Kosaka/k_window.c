@@ -24,7 +24,7 @@ extern u32 gp0xffff9474;
 extern u32 gp0xffff9478;
 extern u32 gp0xffff947c;
 extern u32 gp0xffff9480;
-extern const char gp0xffff9484[];
+extern u8 gp0xffff9484;
 extern const char gp0xffff9488[];
 extern const char gp0xffff9490[];
 extern const char gp0xffff9498[];
@@ -1234,7 +1234,7 @@ void func_001a3bf0(KwlnTask* task, u32 request)
     }
 }
 
-// FUN_001A3C30 NONMATCHING
+// FUN_001A3C30
 void func_001a3c30(KwlnTask* task)
 {
     KWindowManagerWork* manager;
@@ -1243,7 +1243,6 @@ void func_001a3c30(KwlnTask* task)
     s32 width;
     s32 height;
     s32 lineCount;
-    const char* type2String;
 
     manager = (KWindowManagerWork*)task->workData;
     entry = manager->entries;
@@ -1259,8 +1258,7 @@ void func_001a3c30(KwlnTask* task)
                 width += strlen(entry->text) + 1;
                 break;
             case 2:
-                type2String = sKWindowType2Label;
-                width += strlen(type2String) + 1;
+                width += strlen((const char*)&gp0xffff9484) + 1;
                 break;
             case 3:
                 if (entry->flags == 0)
@@ -1340,12 +1338,12 @@ void func_001a3dc0(KwlnTask* task, const KWindowEntryDescriptor* descriptors,
 }
 #pragma pop
 
-// FUN_001A3F20 NONMATCHING
+// FUN_001A3F20
 u32 func_001a3f20(KwlnTask* task, const char* name)
 {
     KWindowManagerWork* manager;
     KWindowEntry* entry;
-    KWindowEntry* tail;
+    KWindowEntry** link;
 
     manager = KWindow_GetManager(task);
     entry = (KWindowEntry*)RwCalloc(1, sizeof(KWindowEntry),
@@ -1353,25 +1351,19 @@ u32 func_001a3f20(KwlnTask* task, const char* name)
     if (entry == NULL)
     {
         func_0019d3f0(D_00678B08, 0x31b);
-        return 0;
     }
 
     func_00524270(entry->name, name);
-    entry->id = manager->nextId++;
-    if (manager->entries == NULL)
+    entry->type = 0;
+    entry->id = manager->nextId;
+    manager->nextId++;
+    link = &manager->entries;
+    while (*link != NULL)
     {
-        manager->entries = entry;
+        entry->previous = *link;
+        link = &(*link)->next;
     }
-    else
-    {
-        tail = manager->entries;
-        while (tail->next != NULL)
-        {
-            tail = tail->next;
-        }
-        tail->next = entry;
-        entry->previous = tail;
-    }
+    *link = entry;
     manager->entryCount++;
     func_001a3c30(task);
     return (u32)entry->id;
