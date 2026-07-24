@@ -740,30 +740,32 @@ void* func_0021b420(s32 index)
 }
 
 // FUN_0021B4A0 NONMATCHING
-void func_0021b4a0(void* resource)
+void func_0021b4a0(u8* resource)
 {
     u8* work;
     u8* data;
     s32 i;
-    s32 offset;
+    s32 j;
 
     K_ASSERT(sGcRes != NULL, 0x7c);
     work = sGcRes;
-    K_ASSERT((GC_U32(work, 0x0c) & 4) != 0, 0x317);
-    K_ASSERT((GC_U32(work, 0x0c) & 8) != 0, 0x318);
-    K_ASSERT((GC_U32(work, 0x0c) & 1) != 0, 0x319);
-    K_ASSERT(*(s16*)((u8*)resource + 4) == 10, 0x31a);
+    K_ASSERT(((~GC_U32(work, 0x0c)) & 4) != 0, 0x317);
+    K_ASSERT(((~GC_U32(work, 0x0c)) & 8) != 0, 0x318);
+    K_ASSERT(((~GC_U32(work, 0x0c)) & 1) != 0, 0x319);
+    K_ASSERT(*(u16*)((u8*)resource + 4) == 10, 0x31a);
 
     data = (u8*)resource;
     for (i = 0; i < 7; i++) {
-        offset = *(s32*)(data + i * 8 + 8);
-        GC_PTR(work, 0x20 + i * 4) = bpTexCreateTmxRaster(data + offset);
+        GC_PTR(work, 0x20 + i * 4) =
+            bpTexCreateTmxRaster(data + *(s32*)(data + i * 8 + 8));
     }
-    offset = *(s32*)(data + 0x40);
-    GC_PTR(work, 0x04) = bpTexCreateTmxRaster(data + offset);
-    for (i = 0; i < 2; i++) {
-        offset = *(s32*)(data + i * 8 + 0x48);
-        GC_PTR(work, 0x3c + i * 4) = bpTexCreateTmxRaster(data + offset);
+    GC_PTR(work, 0x04) =
+        bpTexCreateTmxRaster(data + *(s32*)(data + 0x40));
+    for (j = 0; j < 2; j++) {
+        GC_PTR(work, 0x3c + j * 4) =
+            bpTexCreateTmxRaster(data + *(s32*)(data + j * 8 + 0x48));
     }
-    GC_U32(work, 0x0c) |= 0xd;
+    GC_U32(work, 0x0c) = (*(u32*)((u8*)resource + 0x14)) | 1;
+    GC_U32(work, 0x0c) |= 4;
+    GC_U32(work, 0x0c) |= 8;
 }
