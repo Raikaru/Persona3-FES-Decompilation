@@ -17,6 +17,21 @@ typedef struct CampVec2
     f32 x;
     f32 y;
 } CampVec2;
+extern KwlnTask* iGpffffb258;
+extern KwlnTask* func_00119f10(KwlnTask* parent, u32 initializeMessages);
+extern KwlnTask* FUN_00122660(KwlnTask* parent);
+extern KwlnTask* FUN_00123000(KwlnTask* parent, void* persona);
+extern KwlnTask* FUN_00130F20(KwlnTask* parent, u32 priority, CampVec2 position, u16 param_4);
+extern KwlnTask* FUN_00123570(KwlnTask* parent, u32 priority, s16 param_3);
+extern KwlnTask* FUN_001336B0(KwlnTask* parent, u32 priority, CampVec2 position, u16 param_4);
+extern KwlnTask* FUN_00136750(KwlnTask* parent, u32 priority);
+extern KwlnTask* FUN_001548A0(KwlnTask* parent, u32 priority);
+extern KwlnTask* FUN_0014EE80(KwlnTask* parent, u32 priority);
+extern KwlnTask* FUN_001617D0(KwlnTask* parent, u32 priority);
+extern u16 datGetPersonaId(s16 pcId);
+extern void* func_00174800(u32 pcId);
+extern u32 func_0016f190(s32 flag);
+extern u32 FUN_00122710(KwlnTask* task, u32 command);
 #pragma alias h_campStatusDrawScreen_typed func_00123640
 extern void h_campStatusDrawScreen_typed(CampVec2 position, CampVec2 otherPosition,
                                           f32 alpha, s16 pcId, s32 mode,
@@ -167,51 +182,198 @@ typedef struct CampUiRecord
 
 
 
+// Reconstructed the retail Camp task state machine and all screen transition paths.
+// Remaining differences are compiler control-flow/register scheduling and relocation layout;
+// the implementation covers states 0-20, task readiness, menu commands, and teardown.
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
 {
     CampDrawWork* work;
+    u32 ready;
+    u32 command;
+    CampVec2 size;
 
     work = task->workData;
     switch (work->state) {
     case 0:
-        /* The Camp UI owns the menu state task and the two persona children. */
-        if (sCampMenuTask == NULL) {
-            sCampMenuTask = h_campCreateMenuTask(task);
-            work->menuTask = sCampMenuTask;
+        ready = (iGpffffb258 == NULL) ? (u32)-1 :
+                (*(u32*)iGpffffb258->workData == 3);
+        if (ready == (u32)-1) {
+            func_00119f10(task, 1);
         }
+        h_campCreatePersonaTextureControlTask(task, datGetPersonaId(1));
+        work->menuTask = h_campCreateMenuTask(task);
+        sCampPersonaDisplayTask = FUN_00122660(task);
+        sCampPersonaControlTask = FUN_00123000(task, func_00174800(1));
+        sCampMenuTask = work->menuTask;
+        work->rootStarted = 0;
         work->state = 1;
         break;
     case 1:
-        if (sCampPersonaDisplayTask == NULL ||
-            kwlnTaskGetState(sCampPersonaDisplayTask) == KWLNTASK_STATE_DESTROY) {
+        ready = (iGpffffb258 == NULL) ? (u32)-1 :
+                (*(u32*)iGpffffb258->workData == 3);
+        if (ready == 1) {
             datSetFlag(0x1407, 1);
             work->state = 2;
         }
         break;
     case 2:
-        if (sCampRootDrawTask == NULL) {
-            sCampRootDrawTask = h_campCreateRootDrawTask(task, work->menuTask, work->rootStarted);
+        if (sCampRootDrawTask != NULL) {
+            h_campBeginRootClose(sCampRootDrawTask);
+        } else {
+            sCampRootDrawTask = h_campCreateRootDrawTask(
+                task, work->menuTask, work->rootStarted);
         }
-        work->rootTask = sCampRootDrawTask;
+        work->rootStarted = 1;
         work->state = 3;
         break;
     case 3:
-        if (sCampRootDrawTask == NULL) {
-            work->state = 2;
+        command = h_campGetRootCommand(sCampRootDrawTask);
+        switch (command) {
+        case (u32)-2:
+            h_campBeginRootScreenExit(sCampRootDrawTask);
+            h_campRequestRootMenuTransition(work->menuTask, 0);
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 0);
+            FUN_00122710(sCampPersonaControlTask, 0);
+            work->state = 4;
+            break;
+        case (u32)-1:
+            break;
+        case 0:
+            sCampSelectedEntry = 0;
+            work->state = 19;
+            break;
+        case 1:
+            sCampSelectedEntry = 1;
+            work->state = 17;
+            break;
+        case 2:
+            sCampSelectedEntry = 2;
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 4);
+            FUN_00122710(sCampPersonaControlTask, 4);
+            h_campBeginRootItemExit(sCampRootDrawTask);
+            work->state = 11;
+            break;
+        case 3:
+            sCampSelectedEntry = 3;
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 15);
+            FUN_00122710(sCampPersonaControlTask, 15);
+            h_campBeginRootItemExit(sCampRootDrawTask);
+            work->state = 5;
+            break;
+        case 4:
+            sCampSelectedEntry = 4;
+            work->state = 9;
+            break;
+        case 5:
+            sCampSelectedEntry = 5;
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 0);
+            work->state = 13;
+            break;
+        case 6:
+            sCampSelectedEntry = 6;
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 0);
+            work->state = 15;
             break;
         }
-        if (h_campGetRootCommand(sCampRootDrawTask) == (u32)-1) {
-            return KWLNTASK_STOP;
+        break;
+    case 4:
+        if (sCampRootDrawTask != NULL) {
+            break;
+        }
+        return KWLNTASK_STOP;
+    case 5:
+        size.x = 50.0f;
+        size.y = 50.0f;
+        work->activeScreenTask = FUN_00130F20(task, 0x18be, size, 1);
+        work->state = 6;
+        break;
+    case 6:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->state = 2;
+        }
+        break;
+    case 7:
+    case 8:
+        break;
+    case 9:
+        work->activeScreenTask = FUN_00123570(task, 0x18be, 1);
+        work->state = 10;
+        break;
+    case 10:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->state = 2;
+        }
+        break;
+    case 11:
+        size.x = 50.0f;
+        size.y = 50.0f;
+        work->activeScreenTask = FUN_001336B0(task, 0x18be, size, 1);
+        work->state = 12;
+        break;
+    case 12:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->needsRootRedraw = 1;
+            work->state = 2;
+        }
+        break;
+    case 13:
+        h_campRequestMenuTransition(sCampPersonaDisplayTask, 7);
+        FUN_00122710(sCampPersonaControlTask, 7);
+        size.x = 50.0f;
+        size.y = 50.0f;
+        work->activeScreenTask = FUN_00136750(task, 0x18be);
+        work->state = 14;
+        break;
+    case 14:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->needsRootRedraw = 1;
+            work->state = 2;
+        }
+        break;
+    case 15:
+        h_campRequestMenuTransition(sCampPersonaDisplayTask, 6);
+        FUN_00122710(sCampPersonaControlTask, 6);
+        work->activeScreenTask = FUN_001548A0(task, 0x18be);
+        work->state = 16;
+        break;
+    case 16:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->needsRootRedraw = 1;
+            work->state = 2;
+        }
+        break;
+    case 17:
+        work->activeScreenTask = FUN_0014EE80(task, 0x18be);
+        work->state = 18;
+        break;
+    case 18:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            if (func_0016f190(0x1417) != 0) {
+                return KWLNTASK_STOP;
+            }
+            work->activeScreenTask = NULL;
+            work->needsRootRedraw = 1;
+            work->state = 2;
+        }
+        break;
+    case 19:
+        work->activeScreenTask = FUN_001617D0(task, 0x18be);
+        work->state = 20;
+        break;
+    case 20:
+        if (kwlnTaskGetState(work->activeScreenTask) == 3) {
+            work->activeScreenTask = NULL;
+            work->needsRootRedraw = 1;
+            work->state = 2;
         }
         break;
     default:
-        /* Screen tasks are owned by their parent hierarchy and finish independently. */
-        if (work->activeScreenTask != NULL &&
-            kwlnTaskGetState(work->activeScreenTask) == KWLNTASK_STATE_DESTROY) {
-            work->activeScreenTask = NULL;
-            work->needsRootRedraw = 1;
-        }
         break;
     }
     return KWLNTASK_CONTINUE;
