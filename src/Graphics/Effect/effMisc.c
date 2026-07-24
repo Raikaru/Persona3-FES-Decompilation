@@ -389,6 +389,10 @@ void func_00358410(void)
     );
 }
 
+// Corrected SCE_GS_SET_TEST_1 afail argument to match retail's ATEST_1 constant.
+// Remaining residual is MWCC's fixed argument-register order for getRenderState/
+// setRenderState calls (simple-load arg vs computed-address arg); 2 independent
+// reorder attempts (temp var, syntactic variant) had zero effect on emitted code.
 // FUN_00358460 NONMATCHING
 void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
@@ -411,7 +415,7 @@ void func_00358460(const RwRGBA* color, u32 saveAndRestoreRenderState)
 
         (*((RwGlobals*)rwGlobals_abs)->device.setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
         RpSkyRenderStateSet(rpSKYRENDERSTATEALPHA_1, (void*)SCE_GS_SET_ALPHA_1(0, 1, 0, 1, 0));
-        RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 5, 127, 0, 0, 0, 1, 3));
+        RpSkyRenderStateSet(rpSKYRENDERSTATEATEST_1, (void*)SCE_GS_SET_TEST_1(1, 5, 127, 1, 0, 0, 1, 3));
     }
 
     zBufferNear = ((RwGlobals*)rwGlobals_abs)->device.zBufferNear;
