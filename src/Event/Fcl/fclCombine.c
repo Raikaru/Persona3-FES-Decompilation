@@ -35,7 +35,7 @@ extern int iGpffffb7f4;
 extern int iGpffffb800;
 extern int printf();
 extern void H_Dbprt_FmtLog();
-extern u32 uGpffffaa78;
+extern float uGpffffaa78;
 extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
 /* FUSION_PROTOS */
@@ -5386,7 +5386,8 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
 
   u32 uStack_8;
 
-  u32 uStack_4;
+  float uStack_4;
+  
 
   
 
@@ -6195,6 +6196,7 @@ u8 * FUN_003d3d20(u64 param_1,u64 param_2)
   return (u8 *)0x0;
 
 }
+
 
 // FUN_003D4DE0 NONMATCHING
 
