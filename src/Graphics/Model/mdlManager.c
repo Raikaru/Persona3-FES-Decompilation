@@ -1102,8 +1102,12 @@ typedef u8 bool;
 #endif
 extern s32 DAT_0096012c;
 extern u8 LAB_00464760;
-extern u32 DAT_009571c0;
-extern u32 DAT_009571c4;
+extern f32 DAT_009571c0;
+extern f32 DAT_009571c4;
+#pragma alias DAT_009571c0_abs DAT_009571c0
+extern u8 DAT_009571c0_abs[];
+#pragma alias DAT_009571c4_abs DAT_009571c4
+extern u8 DAT_009571c4_abs[];
 extern float fGpffff80d0;
 extern float fGpffff80f4;
 extern float fGpffff814c;
@@ -1326,6 +1330,7 @@ u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
 
 
 
+// Matrix callback storage is contiguous to preserve all RenderWare matrix fields.
 // FUN_00311730 NONMATCHING
 
 
@@ -1475,31 +1480,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
   u8 auStack_240 [48];
 
-  float fStack_210;
-
-  float fStack_20c;
-
-  float fStack_208;
-
-  u32 uStack_204;
-
-  float fStack_200;
-
-  float fStack_1fc;
-
-  float fStack_1f8;
-
-  float fStack_1f0;
-
-  float fStack_1ec;
-
-  float fStack_1e8;
-
-  u32 uStack_1e0;
-
-  u32 uStack_1dc;
-
-  u32 uStack_1d8;
+  RwMatrix matrix210;
 
   float afStack_1d0 [16];
 
@@ -1574,6 +1555,20 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
   u32 uStack_8;
 
   
+
+#define fStack_210 matrix210.right.x
+#define fStack_20c matrix210.right.y
+#define fStack_208 matrix210.right.z
+#define uStack_204 matrix210.flags
+#define fStack_200 matrix210.up.x
+#define fStack_1fc matrix210.up.y
+#define fStack_1f8 matrix210.up.z
+#define fStack_1f0 matrix210.at.x
+#define fStack_1ec matrix210.at.y
+#define fStack_1e8 matrix210.at.z
+#define uStack_1e0 (*(u32*)&matrix210.pos.x)
+#define uStack_1dc (*(u32*)&matrix210.pos.y)
+#define uStack_1d8 (*(u32*)&matrix210.pos.z)
 
   bVar14 = false;
 
@@ -1769,6 +1764,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             pfVar5 = pfVar5 + 4;
 
+
           } while (0 < iVar15);
 
           RwMatrixMultiply((RwMatrix*)afStack_90,(RwMatrix*)afStack_1d0,(RwMatrix*)(iVar11 + 0x10));
@@ -1877,9 +1873,9 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       if ((*param_2 & 0x10) != 0) {
 
-        fStack_30 = fStack_30 * (1.0f / DAT_009571c0);
+        fStack_30 = fStack_30 * (1.0f / *(f32*)DAT_009571c0_abs);
 
-        fVar20 = (1.0f / DAT_009571c0) * DAT_009571c4;
+        fVar20 = (1.0f / *(f32*)DAT_009571c0_abs) * *(f32*)DAT_009571c4_abs;
 
         fStack_2c = fStack_2c * fVar20;
 
@@ -2459,11 +2455,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         if ((*param_2 & 0x10) != 0) {
 
-          fStack_30 = fStack_30 * DAT_009571c0;
+          fStack_30 = fStack_30 * *(f32*)DAT_009571c0_abs;
 
-          fStack_2c = fStack_2c * DAT_009571c0 * DAT_009571c4;
+          fStack_2c = fStack_2c * *(f32*)DAT_009571c0_abs * *(f32*)DAT_009571c4_abs;
 
-          fStack_28 = fStack_28 * DAT_009571c0 * DAT_009571c4;
+          fStack_28 = fStack_28 * *(f32*)DAT_009571c0_abs * *(f32*)DAT_009571c4_abs;
 
         }
 
@@ -2529,11 +2525,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         if ((*param_2 & 0x10) != 0) {
 
-          fStack_30 = fStack_30 * DAT_009571c0;
+          fStack_30 = fStack_30 * *(f32*)DAT_009571c0_abs;
 
-          fStack_2c = fStack_2c * DAT_009571c0 * DAT_009571c4;
+          fStack_2c = fStack_2c * *(f32*)DAT_009571c0_abs * *(f32*)DAT_009571c4_abs;
 
-          fStack_28 = fStack_28 * DAT_009571c0 * DAT_009571c4;
+          fStack_28 = fStack_28 * *(f32*)DAT_009571c0_abs * *(f32*)DAT_009571c4_abs;
 
         }
 
@@ -2692,6 +2688,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
   return 1;
 
 }
+#undef fStack_210
+#undef fStack_20c
+#undef fStack_208
+#undef uStack_204
+#undef fStack_200
+#undef fStack_1fc
+#undef fStack_1f8
+#undef fStack_1f0
+#undef fStack_1ec
+#undef fStack_1e8
+#undef uStack_1e0
+#undef uStack_1dc
+#undef uStack_1d8
 
 
 
