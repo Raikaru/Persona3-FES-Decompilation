@@ -1506,7 +1506,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
   u32 auStack_14c [31];
 
-  float afStack_d0 [3];
+  u32 auStack_d0 [16];
 
   u32 uStack_c4;
 
@@ -1594,33 +1594,33 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
     else {
 
-      uStack_a8 = 0x3f800000;
+      auStack_d0[10] = 0x3f800000;
 
-      uStack_bc = 0x3f800000;
+      auStack_d0[5] = 0x3f800000;
 
-      afStack_d0[0] = 1.0;
+      auStack_d0[0] = 0x3f800000;
 
-      uStack_c0 = 0;
+      auStack_d0[4] = 0;
 
-      afStack_d0[2] = 0.0;
+      auStack_d0[2] = 0;
 
-      afStack_d0[1] = 0.0;
+      auStack_d0[1] = 0;
 
-      uStack_ac = 0;
+      auStack_d0[9] = 0;
 
-      uStack_b0 = 0;
+      auStack_d0[8] = 0;
 
-      uStack_b8 = 0;
+      auStack_d0[6] = 0;
 
-      uStack_98 = 0;
+      auStack_d0[14] = 0;
 
-      uStack_9c = 0;
+      auStack_d0[13] = 0;
 
-      uStack_a0 = 0;
+      auStack_d0[12] = 0;
 
-      uStack_c4 = uStack_c4 | 0x20003;
+      auStack_d0[3] = 0x20003;
 
-      pfVar16 = afStack_d0;
+      pfVar16 = (float *)auStack_d0;
 
       if ((uVar2 & 0x2000) != 0) {
 
@@ -1654,21 +1654,21 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       uStack_68 = 0x3f800000;
 
-      afStack_90[5] = 1.0;
+      afStack_90[5] = 1.0f;
 
-      afStack_90[0] = 1.0;
+      afStack_90[0] = 1.0f;
 
-      afStack_90[4] = 0.0;
+      afStack_90[4] = 0.0f;
 
-      afStack_90[2] = 0.0;
+      afStack_90[2] = 0.0f;
 
-      afStack_90[1] = 0.0;
+      afStack_90[1] = 0.0f;
 
       uStack_6c = 0;
 
       uStack_70 = 0;
 
-      afStack_90[6] = 0.0;
+      afStack_90[6] = 0.0f;
 
       uStack_58 = 0;
 
@@ -1824,23 +1824,23 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       fVar21 = *(float *)(iVar15 + 0x14);
 
-      fStack_210 = 1.0 - (fVar23 * fVar23 + fVar20 * fVar20) * 2.0;
+      fStack_210 = 1.0f - (fVar23 * fVar23 + fVar20 * fVar20) * 2.0f;
 
-      fStack_20c = (fVar22 * fVar23 + fVar21 * fVar20) * 2.0;
+      fStack_20c = (fVar22 * fVar23 + fVar21 * fVar20) * 2.0f;
 
-      fStack_208 = (fVar20 * fVar22 - fVar21 * fVar23) * 2.0;
+      fStack_208 = (fVar20 * fVar22 - fVar21 * fVar23) * 2.0f;
 
-      fStack_200 = (fVar22 * fVar23 - fVar21 * fVar20) * 2.0;
+      fStack_200 = (fVar22 * fVar23 - fVar21 * fVar20) * 2.0f;
 
-      fStack_1fc = 1.0 - (fVar22 * fVar22 + fVar20 * fVar20) * 2.0;
+      fStack_1fc = 1.0f - (fVar22 * fVar22 + fVar20 * fVar20) * 2.0f;
 
-      fStack_1f8 = (fVar23 * fVar20 + fVar21 * fVar22) * 2.0;
+      fStack_1f8 = (fVar23 * fVar20 + fVar21 * fVar22) * 2.0f;
 
-      fStack_1f0 = (fVar20 * fVar22 + fVar21 * fVar23) * 2.0;
+      fStack_1f0 = (fVar20 * fVar22 + fVar21 * fVar23) * 2.0f;
 
-      fStack_1ec = (fVar23 * fVar20 - fVar21 * fVar22) * 2.0;
+      fStack_1ec = (fVar23 * fVar20 - fVar21 * fVar22) * 2.0f;
 
-      fStack_1e8 = 1.0 - (fVar22 * fVar22 + fVar23 * fVar23) * 2.0;
+      fStack_1e8 = 1.0f - (fVar22 * fVar22 + fVar23 * fVar23) * 2.0f;
 
       uStack_204 = 3;
 
@@ -1868,17 +1868,17 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
       bVar14 = false;
 
-      fStack_30 = 1.0 / *(float *)(param_3 + 0x18);
+      fStack_30 = 1.0f / *(float *)(param_3 + 0x18);
 
-      fStack_2c = 1.0 / *(float *)(param_3 + 0x1a);
+      fStack_2c = 1.0f / *(float *)(param_3 + 0x1a);
 
-      fStack_28 = 1.0 / *(float *)(param_3 + 0x1c);
+      fStack_28 = 1.0f / *(float *)(param_3 + 0x1c);
 
       if ((*param_2 & 0x10) != 0) {
 
-        fStack_30 = fStack_30 * (1.0 / DAT_009571c0);
+        fStack_30 = fStack_30 * (1.0f / DAT_009571c0);
 
-        fVar20 = (1.0 / DAT_009571c0) * DAT_009571c4;
+        fVar20 = (1.0f / DAT_009571c0) * DAT_009571c4;
 
         fStack_2c = fStack_2c * fVar20;
 
@@ -1978,11 +1978,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             RwV3dNormalize((RwV3d*)&fStack_30,(RwV3d*)&fStack_30);
 
-            fStack_50 = 0.0;
+            fStack_50 = 0.0f;
 
-            fStack_4c = 0.0;
+            fStack_4c = 0.0f;
 
-            fStack_48 = -100.0;
+            fStack_48 = -100.0f;
 
             RwV3dTransformPoint((RwV3d*)&fStack_50,(const RwV3d*)&fStack_50,(const RwMatrix*)afStack_190);
 
@@ -1998,35 +1998,35 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             fVar20 = (float)func_0052e9e8(fStack_3c);
 
-            fVar23 = fGpffff80d0 * fVar20 - 90.0;
+            fVar23 = fGpffff80d0 * fVar20 - 90.0f;
 
             fVar20 = (float)func_0052ea18(fStack_40,fStack_38);
 
-            fVar22 = fGpffff80d0 * fVar20 + 180.0;
+            fVar22 = fGpffff80d0 * fVar20 + 180.0f;
 
             fVar20 = (float)func_0052e9e8(fStack_2c);
 
-            fVar21 = fGpffff80d0 * fVar20 - 90.0;
+            fVar21 = fGpffff80d0 * fVar20 - 90.0f;
 
             fVar20 = (float)func_0052ea18(fStack_30,fStack_28);
 
             fVar20 = fGpffff80d0 * fVar20;
 
-            for (fVar21 = fVar21 - fVar23; fVar21 < 0.0; fVar21 = fVar21 + 360.0) {
+            for (fVar21 = fVar21 - fVar23; fVar21 < 0.0f; fVar21 = fVar21 + 360.0f) {
 
             }
 
-            for (; 360.0 < fVar21; fVar21 = fVar21 - 360.0) {
+            for (; 360.0f < fVar21; fVar21 = fVar21 - 360.0f) {
 
             }
 
             fVar24 = *(float *)(param_3 + 4);
 
-            if ((fVar24 < fVar21) && (fVar21 < 360.0 - fVar24)) {
+            if ((fVar24 < fVar21) && (fVar21 < 360.0f - fVar24)) {
 
-              if (180.0 <= fVar21) {
+              if (180.0f <= fVar21) {
 
-                fVar24 = 360.0 - fVar24;
+                fVar24 = 360.0f - fVar24;
 
               }
 
@@ -2038,21 +2038,21 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             RwMatrixRotate((RwMatrix*)auStack_290,(const RwV3d*)auStack_240,-(fVar21 + fVar23),0);
 
-            for (fVar20 = (fVar20 + 180.0) - fVar22; fVar20 < 0.0; fVar20 = fVar20 + 360.0) {
+            for (fVar20 = (fVar20 + 180.0f) - fVar22; fVar20 < 0.0f; fVar20 = fVar20 + 360.0f) {
 
             }
 
-            for (; 360.0 < fVar20; fVar20 = fVar20 - 360.0) {
+            for (; 360.0f < fVar20; fVar20 = fVar20 - 360.0f) {
 
             }
 
             fVar21 = *(float *)(param_3 + 6);
 
-            if ((fVar21 < fVar20) && (fVar20 < 360.0 - fVar21)) {
+            if ((fVar21 < fVar20) && (fVar20 < 360.0f - fVar21)) {
 
-              if (180.0 <= fVar20) {
+              if (180.0f <= fVar20) {
 
-                fVar21 = 360.0 - fVar21;
+                fVar21 = 360.0f - fVar21;
 
               }
 
@@ -2146,7 +2146,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                      *(float *)(param_3 + 8) * fStack_320 + *(float *)(param_3 + 10) * fStack_31c;
 
-            if (fVar20 < 0.0) {
+            if (fVar20 < 0.0f) {
 
               fVar20 = *(float *)(param_3 + 0xe) * -fStack_314 +
 
@@ -2154,13 +2154,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        *(float *)(param_3 + 8) * -fStack_320 +
 
-                       *(float *)(param_3 + 10) * -fStack_31c + 0.0 + 0.0 + 0.0;
+                       *(float *)(param_3 + 10) * -fStack_31c + 0.0f + 0.0f + 0.0f;
 
             }
 
             fVar20 = (float)func_0052e9e8(fVar20);
 
-            if (fVar20 * 2.0 < fGpffff80f4) {
+            if (fVar20 * 2.0f < fGpffff80f4) {
 
               *param_3 = *param_3 & 0xfe1f;
 
@@ -2184,7 +2184,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           fVar20 = *(float *)(param_3 + 2);
 
-          if (fVar20 <= 0.0) {
+          if (fVar20 <= 0.0f) {
 
             fStack_360 = fStack_370;
 
@@ -2196,7 +2196,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           }
 
-          else if (1.0 <= fVar20) {
+          else if (1.0f <= fVar20) {
 
             fStack_360 = fStack_320;
 
@@ -2210,7 +2210,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           else {
 
-            fVar21 = 1.0 - fVar20;
+            fVar21 = 1.0f - fVar20;
 
             if (iStack_32c == 0) {
 
@@ -2222,11 +2222,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff814c * fVar22 +
 
-                                                               fGpffff8048 + 0.0) +
+                                                               fGpffff8048 + 0.0f) +
 
-                                                     fGpffff8118 + 0.0) + fGpffff8050 + 0.0) +
+                                                     fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
 
-                                 fGpffff8054 + 0.0) + fGpffff8058 + 0.0) + fVar21 + 0.0;
+                                 fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar21 + 0.0f;
 
               fVar20 = fVar20 * fStack_330;
 
@@ -2236,19 +2236,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                        (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff814c * fVar22 +
 
-                                                               fGpffff8048 + 0.0) +
+                                                               fGpffff8048 + 0.0f) +
 
-                                                     fGpffff8118 + 0.0) + fGpffff8050 + 0.0) +
+                                                     fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
 
-                                 fGpffff8054 + 0.0) + fGpffff8058 + 0.0) + fVar20 + 0.0;
+                                 fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar20 + 0.0f;
 
             }
 
-            fStack_360 = fStack_340 * fVar20 + fStack_350 * fVar21 + 0.0;
+            fStack_360 = fStack_340 * fVar20 + fStack_350 * fVar21 + 0.0f;
 
-            fStack_35c = fStack_33c * fVar20 + fStack_34c * fVar21 + 0.0;
+            fStack_35c = fStack_33c * fVar20 + fStack_34c * fVar21 + 0.0f;
 
-            fStack_358 = fStack_338 * fVar20 + fStack_348 * fVar21 + 0.0;
+            fStack_358 = fStack_338 * fVar20 + fStack_348 * fVar21 + 0.0f;
 
             fStack_354 = fStack_344 * fVar21 + fStack_334 * fVar20;
 
@@ -2274,19 +2274,19 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                      fStack_378 * fStack_358 + fStack_380 * fStack_360 + fStack_37c * fStack_35c;
 
-            if (fVar20 < 0.0) {
+            if (fVar20 < 0.0f) {
 
               fVar20 = fStack_374 * -fStack_354 +
 
                        fStack_378 * -fStack_358 +
 
-                       fStack_380 * -fStack_360 + fStack_37c * -fStack_35c + 0.0 + 0.0 + 0.0;
+                       fStack_380 * -fStack_360 + fStack_37c * -fStack_35c + 0.0f + 0.0f + 0.0f;
 
             }
 
             fVar20 = (float)func_0052e9e8(fVar20);
 
-            if (fVar20 * 2.0 <= fGpffff8150 * *(float *)(param_3 + 6)) {
+            if (fVar20 * 2.0f <= fGpffff8150 * *(float *)(param_3 + 6)) {
 
               *(float *)(param_3 + 8) = fStack_360;
 
@@ -2300,11 +2300,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
             else {
 
-              fVar20 = 1.0 - fGpffff8154 / (fVar20 * 2.0);
+              fVar20 = 1.0f - fGpffff8154 / (fVar20 * 2.0f);
 
               func_004be310(&fStack_360,&fStack_380,&fStack_350);
 
-              if (fVar20 <= 0.0) {
+              if (fVar20 <= 0.0f) {
 
                 *(float *)(param_3 + 8) = fStack_360;
 
@@ -2316,7 +2316,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
               }
 
-              else if (1.0 <= fVar20) {
+              else if (1.0f <= fVar20) {
 
                 *(float *)(param_3 + 8) = fStack_380;
 
@@ -2330,7 +2330,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
               else {
 
-                fVar21 = 1.0 - fVar20;
+                fVar21 = 1.0f - fVar20;
 
                 if (iStack_32c == 0) {
 
@@ -2342,11 +2342,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                            (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff8158 * fVar22 +
 
-                                                                   fGpffff8048 + 0.0) +
+                                                                   fGpffff8048 + 0.0f) +
 
-                                                         fGpffff8118 + 0.0) + fGpffff8050 + 0.0) +
+                                                         fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
 
-                                     fGpffff8054 + 0.0) + fGpffff8058 + 0.0) + fVar21 + 0.0;
+                                     fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar21 + 0.0f;
 
                   fVar20 = fVar20 * fStack_330;
 
@@ -2356,11 +2356,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                            (fVar22 * (fVar22 * (fVar22 * (fVar22 * (fGpffff8158 * fVar22 +
 
-                                                                   fGpffff8048 + 0.0) +
+                                                                   fGpffff8048 + 0.0f) +
 
-                                                         fGpffff8118 + 0.0) + fGpffff8050 + 0.0) +
+                                                         fGpffff8118 + 0.0f) + fGpffff8050 + 0.0f) +
 
-                                     fGpffff8054 + 0.0) + fGpffff8058 + 0.0) + fVar20 + 0.0;
+                                     fGpffff8054 + 0.0f) + fGpffff8058 + 0.0f) + fVar20 + 0.0f;
 
                 }
 
@@ -2370,11 +2370,11 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
                 *(float *)(param_3 + 0xc) = fStack_348 * fVar21;
 
-                *(float *)(param_3 + 8) = fStack_340 * fVar20 + *(float *)(param_3 + 8) + 0.0;
+                *(float *)(param_3 + 8) = fStack_340 * fVar20 + *(float *)(param_3 + 8) + 0.0f;
 
-                *(float *)(param_3 + 10) = fStack_33c * fVar20 + *(float *)(param_3 + 10) + 0.0;
+                *(float *)(param_3 + 10) = fStack_33c * fVar20 + *(float *)(param_3 + 10) + 0.0f;
 
-                *(float *)(param_3 + 0xc) = fStack_338 * fVar20 + *(float *)(param_3 + 0xc) + 0.0;
+                *(float *)(param_3 + 0xc) = fStack_338 * fVar20 + *(float *)(param_3 + 0xc) + 0.0f;
 
                 *(float *)(param_3 + 0xe) = fStack_344 * fVar21 + fStack_334 * fVar20;
 
@@ -2416,7 +2416,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fVar22 = *(float *)(param_3 + 0xe);
 
-        fVar21 = 2.0 / (fVar22 * fVar22 + fVar25 * fVar25 + fVar26 * fVar26 + fVar24 * fVar24);
+        fVar21 = 2.0f / (fVar22 * fVar22 + fVar25 * fVar25 + fVar26 * fVar26 + fVar24 * fVar24);
 
         fVar23 = fVar26 * fVar21;
 
@@ -2424,7 +2424,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fVar21 = fVar25 * fVar21;
 
-        *pfVar5 = 1.0 - (fVar24 * fVar20 + fVar25 * fVar21);
+        *pfVar5 = 1.0f - (fVar24 * fVar20 + fVar25 * fVar21);
 
         pfVar5[1] = fVar26 * fVar20 + fVar21 * fVar22;
 
@@ -2432,7 +2432,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         pfVar5[4] = fVar26 * fVar20 - fVar21 * fVar22;
 
-        pfVar5[5] = 1.0 - (fVar25 * fVar21 + fVar26 * fVar23);
+        pfVar5[5] = 1.0f - (fVar25 * fVar21 + fVar26 * fVar23);
 
         pfVar5[6] = fVar24 * fVar21 + fVar23 * fVar22;
 
@@ -2440,15 +2440,15 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         pfVar5[9] = fVar24 * fVar21 - fVar23 * fVar22;
 
-        pfVar5[10] = 1.0 - (fVar26 * fVar23 + fVar24 * fVar20);
+        pfVar5[10] = 1.0f - (fVar26 * fVar23 + fVar24 * fVar20);
 
-        pfVar5[0xc] = 0.0;
+        pfVar5[0xc] = 0.0f;
 
-        pfVar5[0xd] = 0.0;
+        pfVar5[0xd] = 0.0f;
 
-        pfVar5[0xe] = 0.0;
+        pfVar5[0xe] = 0.0f;
 
-        pfVar5[3] = 4.2039e-45;
+        pfVar5[3] = 4.2039e-45f;
 
         fStack_30 = *(float *)(param_3 + 0x18);
 
@@ -2486,7 +2486,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fVar22 = *(float *)(param_3 + 0xe);
 
-        fVar21 = 2.0 / (fVar22 * fVar22 + fVar25 * fVar25 + fVar26 * fVar26 + fVar24 * fVar24);
+        fVar21 = 2.0f / (fVar22 * fVar22 + fVar25 * fVar25 + fVar26 * fVar26 + fVar24 * fVar24);
 
         fVar23 = fVar26 * fVar21;
 
@@ -2494,7 +2494,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fVar21 = fVar25 * fVar21;
 
-        fStack_310 = 1.0 - (fVar24 * fVar20 + fVar25 * fVar21);
+        fStack_310 = 1.0f - (fVar24 * fVar20 + fVar25 * fVar21);
 
         fStack_30c = fVar26 * fVar20 + fVar21 * fVar22;
 
@@ -2502,7 +2502,7 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fStack_300 = fVar26 * fVar20 - fVar21 * fVar22;
 
-        fStack_2fc = 1.0 - (fVar25 * fVar21 + fVar26 * fVar23);
+        fStack_2fc = 1.0f - (fVar25 * fVar21 + fVar26 * fVar23);
 
         fStack_2f8 = fVar24 * fVar21 + fVar23 * fVar22;
 
@@ -2510,13 +2510,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         fStack_2ec = fVar24 * fVar21 - fVar23 * fVar22;
 
-        fStack_2e8 = 1.0 - (fVar26 * fVar23 + fVar24 * fVar20);
+        fStack_2e8 = 1.0f - (fVar26 * fVar23 + fVar24 * fVar20);
 
-        fStack_2e0 = 0.0;
+        fStack_2e0 = 0.0f;
 
-        fStack_2dc = 0.0;
+        fStack_2dc = 0.0f;
 
-        fStack_2d8 = 0.0;
+        fStack_2d8 = 0.0f;
 
         uStack_304 = 3;
 
