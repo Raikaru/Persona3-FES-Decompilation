@@ -77,7 +77,7 @@ void FUN_00415a70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u
 void FUN_00415b30(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u8 param_6);
 void FUN_00415b70(u64 param_1,u64 param_2,int param_3,int param_4,int param_5, u32 param_6);
 u64 FUN_00415c30(u64 param_1,u64 param_2);
-u64 FUN_00415dc0(u64 param_1,int param_2,long param_3);
+u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3);
 void FUN_00416240(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_004163f0(u64 param_1,int param_2,int param_3,int param_4,int param_5,u32 param_6);
 void FUN_004166d0(u64 param_1,int param_2,int param_3,int param_4,int param_5, u32 param_6);
@@ -277,6 +277,7 @@ u64 FUN_004101b0(u64 param_1,int param_2)
 
 }
 
+#pragma opt_loop_invariants on
 // FUN_004105E0 NONMATCHING
 
 
@@ -360,7 +361,7 @@ u32 FUN_004105e0(int param_1,int param_2,long param_3)
 
       puVar1[7] = sVar4 + 1;
 
-      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0);
+      puVar1[2] = (short)(int)(255.0f - (float)((short)(sVar4 + 1) * 0xff) / 10.0f);
 
       if (9 < (short)puVar1[7]) {
 
@@ -529,6 +530,7 @@ u32 FUN_004105e0(int param_1,int param_2,long param_3)
   return uVar5;
 
 }
+#pragma opt_loop_invariants off
 
 // FUN_00410A10 NONMATCHING
 
@@ -2224,15 +2226,10 @@ u32 FUN_00412610(u64 param_1,int param_2,long param_3)
   int iVar10;
 
   short asStack_c0 [2];
-
   float afStack_bc [11];
-
   float afStack_90 [12];
-
   short asStack_60 [2];
-
   float afStack_5c [11];
-
   float afStack_30 [12];
 
   
@@ -5118,7 +5115,7 @@ u64 FUN_00415c30(u64 param_1,u64 param_2)
 // FUN_00415DC0 NONMATCHING
 
 
-u64 FUN_00415dc0(u64 param_1,int param_2,long param_3)
+u64 FUN_00415dc0(u64 param_1,int param_2,u8 *param_3)
 
 
 
@@ -5198,7 +5195,7 @@ u64 FUN_00415dc0(u64 param_1,int param_2,long param_3)
 
   if (param_3 != 0) {
 
-    sVar1 = *(short *)((int)param_3 + 6);
+    sVar1 = *(short *)(param_3 + 6);
 
     if (sVar1 == 1) {
 
@@ -5212,7 +5209,7 @@ u64 FUN_00415dc0(u64 param_1,int param_2,long param_3)
 
     }
 
-    sVar1 = *(short *)((int)param_3 + 6);
+    sVar1 = *(short *)(param_3 + 6);
 
     if (sVar1 != 2) {
 
