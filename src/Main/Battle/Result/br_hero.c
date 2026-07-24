@@ -113,7 +113,6 @@ void brHero00262790(void)
     s32 i;
     u32 status;
     u32 level;
-    static const s32 menuIds[6] = {6, 7, 8, 10, 9, 9};
 
     K_ASSERT(sBrHero != NULL, 0x53);
     w = sBrHero;
@@ -146,18 +145,20 @@ void brHero00262790(void)
     FUN_0021d3b0(w + 0xc4, FUN_0021cca0(text0, 0x19));
     FUN_0021d3b0(w + 0x104, FUN_0021cca0(text0, 0x1a));
     FUN_0021d3b0(w + 0x144, FUN_0021cca0(text0, 0x1b));
-    for (i = 0; i < 3; i++)
-        FUN_0021eac0(w + i * 0x40 + 0x184, 0);
-    value = FUN_0021cca0(text0, 0x1c);
-    for (i = 0; i < 3; i++)
-        FUN_0021d3b0(w + i * 0x40 + 0x244, value);
-    value = FUN_0021cca0(text0, 0x1d);
-    for (i = 0; i < 3; i++)
-        FUN_0021d3b0(w + i * 0x40 + 0x304, value);
+    {
+        s32 k;
+        for (k = 0; k < 3; k++)
+            FUN_0021eac0(w + k * 0x40 + 0x184, 0);
+        value = FUN_0021cca0(text0, 0x1c);
+        for (k = 0; k < 3; k++)
+            FUN_0021d3b0(w + k * 0x40 + 0x244, value);
+        value = FUN_0021cca0(text0, 0x1d);
+        for (k = 0; k < 3; k++)
+            FUN_0021d3b0(w + k * 0x40 + 0x304, value);
+    }
     FUN_0021d3b0(w + 0x3c4, FUN_0021cca0(text0, w[0x484]));
     FUN_0021d3b0(w + 0x404, FUN_0021cca0(text0, w[0x485] + 7));
     FUN_0021d3b0(w + 0x444, FUN_0021cca0(text0, w[0x486] + 0xe));
-
     rect[0] = 0.0f;
     rect[1] = 0.0f;
     rect[2] = 1.0f;
@@ -172,6 +173,10 @@ void brHero00262790(void)
         FUN_0021eac0(w + i * 0x40 + 0x4c8, 0);
         FUN_0021d950(w + i * 0x40 + 0x4c8, color);
     }
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 1.0f;
+    rect[3] = 1.0f;
     FUN_0021eb80(w + 0x488, rect);
     FUN_0021eac0(w + 0x488, 0);
     FUN_0021d950(w + 0x488, color);
@@ -180,8 +185,7 @@ void brHero00262790(void)
     FUN_00238980(w + 0x594, 2, w[0x588], 2);
     FUN_00238980(w + 0x614, 3, w[0x589], 2);
     FUN_00238980(w + 0x6d4, 3, w[0x58a], 2);
-    value = FUN_0021cca0(text1, 4);
-    FUN_0021cd00(value, sourceRect);
+    FUN_0021cd00(FUN_0021cca0(text1, 4), sourceRect);
     rect[0] = sourceRect[0];
     rect[1] = sourceRect[1];
     rect[2] = rect[0] + (float)(s32)w[0x589] * (sourceRect[2] - rect[0]) / (float)(s32)w[0x58a];
@@ -196,8 +200,7 @@ void brHero00262790(void)
     FUN_00238980(w + 0x7d4, 3, w[0x58b], 2);
     FUN_00238980(w + 0x894, 3, w[0x58c], 2);
 
-    value = FUN_0021cca0(text1, 5);
-    FUN_0021cd00(value, sourceRect);
+    FUN_0021cd00(FUN_0021cca0(text1, 5), sourceRect);
     rect[0] = sourceRect[0];
     rect[1] = sourceRect[1];
     rect[2] = rect[0] + (float)(s32)w[0x58b] * (sourceRect[2] - rect[0]) / (float)(s32)w[0x58c];
@@ -224,8 +227,33 @@ void brHero00262790(void)
     FUN_0021d3b0(w + 0xa94, brPersona00264ca0(w[0x58d]));
 
     if (w[0] & 2)
+    {
         for (i = 0; i < 6; i++)
-            FUN_0021d3b0(w + i * 0x40 + 0xad8, FUN_0021cca0(text1, menuIds[i]));
+        {
+            switch (i)
+            {
+            case 0:
+                value = FUN_0021cca0(text1, 6);
+                break;
+            case 1:
+                value = FUN_0021cca0(text1, 7);
+                break;
+            case 2:
+                value = FUN_0021cca0(text1, 8);
+                break;
+            case 3:
+                value = FUN_0021cca0(text1, 10);
+                break;
+            case 4:
+                value = FUN_0021cca0(text1, 9);
+                break;
+            case 5:
+                value = FUN_0021cca0(text1, 9);
+                break;
+            }
+            FUN_0021d3b0(w + i * 0x40 + 0xad8, value);
+        }
+    }
     FUN_003b0e70(1);
     FUN_003b0e90(2);
     uGpffffb948 = 0x78;
