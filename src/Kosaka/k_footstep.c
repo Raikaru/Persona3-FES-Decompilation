@@ -712,9 +712,13 @@ void func_001dca10(void)
 
 // Reconstructed from the retail window: this is a billboard quad builder,
 // not the screen-projection stub that previously stood here. Retail builds
-// two 4-vertex quads (stride 0x40) at work+0x20 and work+0x120, writes unit
-// UVs and 255.0f vertex colours, and animates the second quad's corners from
-// a u32 counter at work+0x220 through a 6-case jump table on work+8.
+// two 4-vertex quads (stride 0x40) at work+0x20 and work+0x120 with unit UVs
+// and per-vertex colour, driven by a 6-entry jump table on work+8 whose case
+// mapping was decoded from the retail table at 0x7b6d10 = cases 0/3/5 fade
+// (work+0x220 -= 10, alpha from the byte), case 1 wraps at 9 using count>>1,
+// cases 2/4 wrap at 5. Still short of the window: retail keeps eight floats
+// (f20-f27) live giving a -0x70 frame, and has a second work+8 dispatch near
+// offset 1896 that is not yet reconstructed.
 // FUN_001dcb60 NONMATCHING
 void* func_001dcb60(KwlnTask* task)
 {
@@ -725,12 +729,19 @@ void* func_001dcb60(KwlnTask* task)
     f32 depth;
     f32 x;
     f32 y;
-    f32 left;
-    f32 right;
-    f32 top;
-    f32 bottom;
+    f32 cornerX0;
+    f32 cornerY0;
+    f32 cornerX1;
+    f32 cornerX2;
+    f32 cornerY2;
     f32 scale;
+    f32 nearScale;
+    f32 farScale;
+    f32 baseDepth;
+    f32 camZ;
+    f32 viewZ;
     u32 counter;
+    u32 alpha;
     u32 i;
 
     work = (u8*)task->workData;
@@ -758,9 +769,13 @@ void* func_001dcb60(KwlnTask* task)
         func_001dd530(task, &position);
     }
 
-    scale = (DAT_00960088 - DAT_0096008c) /
-            (*(f32*)((u8*)kwlnGetMainCamera() + 0x80) - DAT_00960084);
-    depth = (*(f32*)(work + 0x14) - DAT_00960084) * scale;
+    nearScale = DAT_0096008c;
+    farScale = DAT_00960088;
+    baseDepth = DAT_00960084;
+    camZ = *(f32*)((u8*)kwlnGetMainCamera() + 0x80);
+    viewZ = *(f32*)(work + 0x14);
+    scale = (farScale - nearScale) / (camZ - baseDepth);
+    depth = (viewZ - baseDepth) * scale;
     *(f32*)(work + 0x14) =
         *(f32*)((u8*)kwlnGetMainCamera() + 0x80) / *(f32*)(work + 0x14);
     if (*(f32*)(work + 0x14) < 0.0f)
@@ -784,15 +799,19 @@ void* func_001dcb60(KwlnTask* task)
         return NULL;
     }
 
+    alpha = 0xff;
     switch (*(u32*)(work + 8))
     {
     case 0:
+    case 3:
+    case 5:
         *(u32*)(work + 0x220) = *(u32*)(work + 0x220) - 10;
-        counter = *(u8*)(work + 0x220);
-        left = x;
-        top = *(f32*)(work + 0x10);
-        right = 32.0f + x;
-        bottom = 32.0f + top;
+        alpha = *(u8*)(work + 0x220);
+        cornerX0 = x;
+        cornerY0 = *(f32*)(work + 0x10);
+        cornerX1 = 32.0f + x;
+        cornerX2 = x;
+        cornerY2 = 32.0f + cornerY0;
         break;
     case 1:
         counter = *(u32*)(work + 0x220) + 1;
@@ -802,12 +821,14 @@ void* func_001dcb60(KwlnTask* task)
             *(u32*)(work + 0x220) = 0;
         }
         counter = *(u32*)(work + 0x220) >> 1;
-        left = x + (f32)counter;
-        top = y + (f32)counter;
-        right = (32.0f + x) - (f32)counter;
-        bottom = (32.0f + y) - (f32)counter;
+        cornerX2 = x + (f32)counter;
+        cornerX0 = cornerX2;
+        cornerY0 = y + (f32)counter;
+        cornerX1 = (32.0f + x) - (f32)counter;
+        cornerY2 = (32.0f + y) - (f32)counter;
         break;
-    default:
+    case 2:
+    case 4:
         counter = *(u32*)(work + 0x220) + 1;
         *(u32*)(work + 0x220) = counter;
         if (counter >= 5)
@@ -815,10 +836,11 @@ void* func_001dcb60(KwlnTask* task)
             *(u32*)(work + 0x220) = 0;
         }
         counter = *(u32*)(work + 0x220);
-        left = x + (f32)counter;
-        top = y + (f32)counter;
-        right = (32.0f + x) - (f32)counter;
-        bottom = (32.0f + y) - (f32)counter;
+        cornerX2 = x + (f32)counter;
+        cornerX0 = cornerX2;
+        cornerY0 = y + (f32)counter;
+        cornerX1 = (32.0f + x) - (f32)counter;
+        cornerY2 = (32.0f + y) - (f32)counter;
         break;
     }
 
@@ -849,17 +871,17 @@ void* func_001dcb60(KwlnTask* task)
     *(f32*)(work + 0xf0) = 1.0f;
     *(f32*)(work + 0xf4) = 1.0f;
 
-    *(f32*)(work + 0x120) = left;
-    *(f32*)(work + 0x124) = top;
+    *(f32*)(work + 0x120) = cornerX0;
+    *(f32*)(work + 0x124) = cornerY0;
     *(f32*)(work + 0x128) = depth;
-    *(f32*)(work + 0x160) = right;
-    *(f32*)(work + 0x164) = top;
+    *(f32*)(work + 0x160) = cornerX1;
+    *(f32*)(work + 0x164) = cornerY0;
     *(f32*)(work + 0x168) = depth;
-    *(f32*)(work + 0x1a0) = left;
-    *(f32*)(work + 0x1a4) = bottom;
+    *(f32*)(work + 0x1a0) = cornerX2;
+    *(f32*)(work + 0x1a4) = cornerY2;
     *(f32*)(work + 0x1a8) = depth;
-    *(f32*)(work + 0x1e0) = right;
-    *(f32*)(work + 0x1e4) = bottom;
+    *(f32*)(work + 0x1e0) = cornerX1;
+    *(f32*)(work + 0x1e4) = cornerY2;
     *(f32*)(work + 0x1e8) = depth;
 
     *(f32*)(work + 0x138) = rhw;
@@ -876,13 +898,22 @@ void* func_001dcb60(KwlnTask* task)
     *(f32*)(work + 0x1f0) = 1.0f;
     *(f32*)(work + 0x1f4) = 1.0f;
 
-    for (i = 0; i < 8; i = i + 1)
+    for (i = 0; i < 4; i = i + 1)
     {
         u8* vertex = work + i * 0x40;
         *(f32*)(vertex + 0x40) = 255.0f;
         *(f32*)(vertex + 0x44) = 255.0f;
         *(f32*)(vertex + 0x48) = 255.0f;
-        *(f32*)(vertex + 0x4c) = 255.0f;
+        *(f32*)(vertex + 0x4c) = (f32)alpha;
+    }
+
+    for (i = 0; i < 4; i = i + 1)
+    {
+        u8* vertex = work + 0x100 + i * 0x40;
+        *(f32*)(vertex + 0x40) = 255.0f;
+        *(f32*)(vertex + 0x44) = 255.0f;
+        *(f32*)(vertex + 0x48) = 255.0f;
+        *(f32*)(vertex + 0x4c) = (f32)alpha;
     }
 
     return (void*)0xff;
