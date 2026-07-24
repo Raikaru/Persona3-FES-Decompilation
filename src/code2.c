@@ -18,6 +18,10 @@ extern u32 EntryHi;
 /* EE kernel symbols referenced by decompiled functions */
 extern void TLB_write_indexed_entry(int idx, u32 entryhi, u32 entrylo0, u32 entrylo1, u32 pagemask);
 extern u32 REG_INTC_STAT;
+#pragma alias iRambc0003c0_abs iRambc0003c0
+extern u8 iRambc0003c0_abs[];
+#pragma alias uRam80074700_abs uRam80074700
+extern u8 uRam80074700_abs[];
 extern u64 uRam80074700;
 extern int iRam80076700;
 extern int iRam80074748;
@@ -165,16 +169,16 @@ void FUN_0077fdc0(void)
   int iVar3;
   int iVar4;
   
-  if (iRambc0003c0 != 0) {
-    iVar4 = iRambc0003c0 + -0x43fffff1;
+  if (*(int *)iRambc0003c0_abs != 0) {
+    iVar4 = *(int *)iRambc0003c0_abs + -0x43fffff1;
     iVar3 = 0;
     do {
-      *(u8 *)(iVar3 + -0x7ff8b900) = *(u8 *)(iVar4 + iVar3);
+      *(u8 *)(uRam80074700_abs + iVar3) = *(u8 *)(iVar4 + iVar3);
       iVar3 = iVar3 + 1;
     } while (iVar3 < 0x26);
   }
-  if (((long)(uRam80074700 << 0x1a) >> 0x20 & 7U) == 0) {
-    uRam80074700 = uRam80074700 & 0xffff02ffffffffffULL;
+  if (((long)(*(u64 *)uRam80074700_abs << 0x1a) >> 0x20 & 7U) == 0) {
+    *(u64 *)uRam80074700_abs = *(u64 *)uRam80074700_abs & 0xffff02ffffffffffULL;
   }
   return;
 }
