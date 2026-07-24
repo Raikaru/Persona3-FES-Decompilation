@@ -245,21 +245,27 @@ u32 FUN_003c5490(u32 param_1)
 
 {
 
+  u32 uVar8;
+
+  int iVar4;
+
+  u32 *puVar10;
+
   u16 sVar1;
 
   u32 *puVar2;
 
-  int iVar3;
+  u32 *puVar14;
 
-  int iVar4;
+  u32 *puVar13;
+
+  int iVar3;
 
   u32 *puVar5;
 
   u32 *puVar6;
 
   u32 uVar7;
-
-  u32 uVar8;
 
   u32 *puVar9;
 
@@ -268,10 +274,6 @@ u32 FUN_003c5490(u32 param_1)
   u32 lVar11;
 
   int iVar12;
-
-  u32 *puVar14;
-
-  u32 *puVar13;
 
   
 
@@ -287,17 +289,18 @@ u32 FUN_003c5490(u32 param_1)
 
     puVar2 = *(u32 **)(iVar12 + 0x24);
 
-    uVar8 = puVar2[8];
+    puVar10 = (u32 *)puVar2[8];
 
-    while (uVar8 != 0) {
+    while (puVar10 != 0) {
+      iVar4 = *(int *)((u8 *)puVar10 + 0x14);
 
-      sVar1 = *(u16 *)(*(int *)(uVar8 + 0x14) + 0x2e);
+      sVar1 = *(u16 *)((u8 *)iVar4 + 0x2e);
 
-      if (((sVar1 != 0) && (*(u16 *)(*(int *)(uVar8 + 0x14) + 0x2e) = sVar1 + -1, sVar1 != 0)) ||
+      if (((sVar1 != 0) && (*(u16 *)((u8 *)iVar4 + 0x2e) = sVar1 + -1, sVar1 != 0)) ||
 
-         (uVar8 = FUN_003c49e0(param_1,puVar2 + 8), uVar8 != 0)) {
+         (puVar10 = (u32 *)FUN_003c49e0(param_1,puVar2 + 8), puVar10 != 0)) {
 
-        uVar8 = *(u32 *)(uVar8 + 0x10);
+        puVar10 = *(u32 **)((u8 *)puVar10 + 0x10);
 
       }
 
@@ -322,7 +325,6 @@ LAB_003c5598:
       goto LAB_003c5594;
 
     }
-
     if ((*puVar2 & 1) == 0) {
 
       lVar11 = (*(code *)puVar2[2])(param_1);
