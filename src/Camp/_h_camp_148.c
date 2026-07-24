@@ -1819,7 +1819,6 @@ u32 h_campIsSocialLinkAvailable(s32 param_1, s32 param_2)
 u32 h_campUpdateSystemMenuTask(int param_1)
 
 {
-  u32 *puVar1;
   u32 uVar2;
   int iVar3;
   s32 lVar4;
@@ -1834,6 +1833,7 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   u64 uStack_20;
   int iStack_8;
   u8 auStack_4 [4];
+  u32 *puVar1;
   
   puVar1 = *(u32 **)(param_1 + 0x3c);
   switch(*puVar1) {
@@ -1985,7 +1985,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
       }
       fVar10 = (float)(puVar1[1] * 0x21) + 124.0f;
       uStack_20 = CAMP_PAIR_FLOAT_HIGH(fVar10 - 300.0f,0x44138000);
-      func_0018bc10(0x42c80000, (void*)(puVar1[3] + 0x88), 0, 2, 1, uStack_20, CAMP_PAIR_FLOAT_HIGH(fVar10,0x44138000), 0, 0, 0, 0);
+      func_0018bc10(0x42c80000, (void*)(puVar1[3] + 0x88), 0, 2, 1, uStack_20,
+                    CAMP_PAIR_FLOAT_HIGH(fVar10,0x44138000), 0, 0, 0, 0);
     }
     uVar2 = FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     puVar1[0xc] = uVar2;
