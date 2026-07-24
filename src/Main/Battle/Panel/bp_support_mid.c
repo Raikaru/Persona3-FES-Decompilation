@@ -1166,6 +1166,10 @@ void func_0020b250(void* work)
     u8* common;
     u8* mode2;
     u8 color[4];
+    register u8 c0;
+    register u8 c1;
+    register u8 c2;
+    register u8 c3;
     f32 alpha;
     u32 value;
     s32 mode;
@@ -1196,10 +1200,14 @@ void func_0020b250(void* work)
         case 0:
             func_0020ccc0(mode0 + 0x178, panel + 0x40);
             func_0020ccc0(mode0 + 0x208, panel + 0x40);
-            color[0] = panel[0x40];
-            color[1] = panel[0x41];
-            color[2] = panel[0x42];
-            color[3] = panel[0x43];
+            c1 = panel[0x40];
+            c3 = panel[0x41];
+            c2 = panel[0x42];
+            c0 = panel[0x43];
+            color[0] = c1;
+            color[1] = c3;
+            color[2] = c2;
+            color[3] = c0;
             value = panel[0x43];
             if (value >= 0) {
                 alpha = (f32)value;
@@ -1216,10 +1224,14 @@ void func_0020b250(void* work)
             }
             func_0020ccc0(mode0 + 0x298, color);
             func_0020ccc0(mode0 + 0x328, color);
-            color[0] = panel[0x40];
-            color[1] = panel[0x41];
-            color[2] = panel[0x42];
-            color[3] = panel[0x43];
+            c1 = panel[0x40];
+            c3 = panel[0x41];
+            c2 = panel[0x42];
+            c0 = panel[0x43];
+            color[0] = c1;
+            color[1] = c3;
+            color[2] = c2;
+            color[3] = c0;
             alpha = 255.0f * *(f32*)(mode0 + 0x5FC);
             if (alpha < 2.1474836e9f) {
                 color[3] = (u8)(s32)alpha;
@@ -1228,10 +1240,14 @@ void func_0020b250(void* work)
             }
             func_0020ccc0(mode0 + 0x3B8, color);
             if (*(u32*)(mode0 + 0x170) & 1) {
-                color[0] = panel[0x40];
-                color[1] = panel[0x41];
-                color[2] = panel[0x42];
-                color[3] = panel[0x43];
+                c1 = panel[0x40];
+                c3 = panel[0x41];
+                c2 = panel[0x42];
+                c0 = panel[0x43];
+                color[0] = c1;
+                color[1] = c3;
+                color[2] = c2;
+                color[3] = c0;
                 color[0] = 0;
                 color[1] = 0;
                 color[2] = 0;
@@ -1904,8 +1920,6 @@ void func_0020cf20(void* destination, void* source)
     s32 width;
     s32 alternating;
     u8* vertex;
-    f32 centerY;
-    f32 centerZ;
 
     *(u64*)&axisZ = *(const u64*)D_0068E0C8_abs;
     axisZ.z = *(f32*)(D_0068E0C8_abs + 8);
@@ -1921,9 +1935,7 @@ void func_0020cf20(void* destination, void* source)
     func_0020ca90(matrix, transform);
     func_004c6c60(&facingAxis, &facingAxis, matrix);
 
-    resourceCenter.x = *(f32*)(out + 0x994);
-    resourceCenter.y = centerY = *(f32*)(out + 0x998);
-    resourceCenter.z = centerZ = *(f32*)(out + 0x99c);
+    resourceCenter = *(const PanelVec3*)(out + 0x994);
     if (transform->model != NULL) {
         RwV3dTransformPoint(&transformedSource, &transform->translation,
                             func_004cb2f0(transform->model));
@@ -1993,8 +2005,8 @@ void func_0020cf20(void* destination, void* source)
                 cameraDirection.z = transformedPoint.z - cameraPosition->z;
                 RwV3dNormalize(&cameraDirection, &cameraDirection);
                 resourceDirection.x = transformedPoint.x - resourceCenter.x;
-                resourceDirection.y = transformedPoint.y - centerY;
-                resourceDirection.z = transformedPoint.z - centerZ;
+                resourceDirection.y = transformedPoint.y - resourceCenter.y;
+                resourceDirection.z = transformedPoint.z - resourceCenter.z;
                 RwV3dNormalize(&resourceDirection, &resourceDirection);
 
                 dot = axisZ.x * cameraDirection.x +
@@ -2020,8 +2032,8 @@ void func_0020cf20(void* destination, void* source)
                 }
 
                 resourceDirection.x = transformedPoint.x - resourceCenter.x;
-                resourceDirection.y = transformedPoint.y - centerY;
-                resourceDirection.z = transformedPoint.z - centerZ;
+                resourceDirection.y = transformedPoint.y - resourceCenter.y;
+                resourceDirection.z = transformedPoint.z - resourceCenter.z;
                 RwV3dNormalize(&resourceDirection, &resourceDirection);
                 diffuse = resourceDirection.x * transformedAxis.x +
                           resourceDirection.y * transformedAxis.y +
