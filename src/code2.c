@@ -405,13 +405,14 @@ void FUN_007807e0(u16 param_1)
 #pragma schedule on
 #pragma opt_propagation off
 #pragma opt_common_subs off
-// FUN_00780800 NONMATCHING
+// FUN_00780800
 volatile u32* FUN_00780800(u32 value)
 {
   volatile u32* reg;
 
   reg = (volatile u32 *)0xb0001820;
   *reg = value;
+  __asm__ volatile("sync");
   reg = (volatile u32 *)0xb0001810;
   *reg = 0x583;
   return reg;
