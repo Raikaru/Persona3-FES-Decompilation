@@ -153,7 +153,6 @@ static u8 opClampByte(f32 value)
 
 
 // FUN_00275050 NONMATCHING
-#pragma opt_loop_invariants off
 void func_00275050(s32 index)
 {
     register u8 *temp_19;
@@ -207,7 +206,6 @@ loop_11:
         goto block_16;
     }
 }
-#pragma opt_loop_invariants on
 
 // FUN_002751e0 NONMATCHING
 s32 func_002751e0(void)
