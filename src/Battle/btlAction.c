@@ -2075,7 +2075,7 @@ void btlActionInitStateSkill(BtlAction* action)
 
 
 extern u32 func_0027fc80(BtlUnit *);
-extern u32 func_00280870(s32, u32, RwV3d *, u32);
+extern u32 func_00280870(s32, u32, RwV3d *, u32, u32, u32);
 extern s64 func_002835e0(BtlUnit *, u16, u32);
 extern s64 func_002838d0(BtlUnit *, u32, u32);
 extern u16 func_00283a70(BtlUnit *, u32);
@@ -2555,7 +2555,7 @@ void btlActionUpdateStateSkill(BtlAction *action) {
             temp_v0_3->actionUID = temp_s0;
             btlPacketRegister(temp_v0_3, 0U);
         } else if (var_s6 == 0) {
-            func_00280870(func_002d1600(&action->target) & 0xFFFF, 1, &sp518, 0);
+            func_00280870(func_002d1600(&action->target) & 0xFFFF, 1, &sp518, 0, 0, 1);
             temp_v0_4 = btlUnitCreateRotatePacket(action->unit, &sp518, 0U);
             temp_v0_4->actionUID = temp_s0;
             btlPacketRegister(temp_v0_4, 0U);
@@ -3372,7 +3372,7 @@ loop_306:
         } else if ((sp230 == 0) && (var_s6 == 0)) {
             temp_a0_9 = func_002d1600(&action->target) & 0xFFFF;
             if (temp_a0_9 == 2) {
-                func_00280870(temp_a0_9, 1, &sp518, 0);
+                func_00280870(temp_a0_9, 1, &sp518, 0, 0, 1);
                 temp_v0_109 = btlUnitCreateLookAtPacket(NULL, &sp518, 1U);
                 temp_v0_109->unk_00 = 5;
                 temp_v0_109->parentUID = var_s1_3->uid;
