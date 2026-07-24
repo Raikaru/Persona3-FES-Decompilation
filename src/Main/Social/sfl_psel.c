@@ -123,7 +123,7 @@ void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
     s32 height;
 
     entry = (u8*)(uintptr_t)(base[0x61] + (index << 7));
-    resource = *(u8**)((u8*)base + 0x104 + *(u32*)(entry + 0x14) * 4);
+    resource = (u8*)(uintptr_t)base[0x41 + *(u32*)(entry + 0x14)];
     {
         f32 x[2] = {0.0f, 0.0f};
         x[0] = (f32)*(s32*)(entry + 0x54);
@@ -146,56 +146,64 @@ void sflPsel00260430(u32* base, s32 index, float* uv, u32 axis)
             case 7: xMode = 1; axis = 1; break;
             }
 
-            if (xMode == 2) {
-                if ((*(u32*)(entry + 0x18) & 1) == 0) {
-                    uv[0] = (x[1] - 1.0f) / (f32)width;
+            switch (xMode) {
+            case 0:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
+                    uv[0] = x[0] / (f32)width;
                     uv[2] = x[1] / (f32)width;
                 } else {
-                    uv[0] = (x[0] + 1.0f) / (f32)width;
+                    uv[0] = x[1] / (f32)width;
                     uv[2] = x[0] / (f32)width;
                 }
-            } else if (xMode == 1) {
-                if ((*(u32*)(entry + 0x18) & 1) == 0) {
+                break;
+            case 1:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
                     uv[0] = x[0] / (f32)width;
                     uv[2] = (x[0] + 1.0f) / (f32)width;
                 } else {
                     uv[0] = x[1] / (f32)width;
                     uv[2] = (x[1] - 1.0f) / (f32)width;
                 }
-            } else if (xMode == 0) {
-                if ((*(u32*)(entry + 0x18) & 1) == 0) {
-                    uv[0] = x[0] / (f32)width;
+                break;
+            case 2:
+                if (((~*(u32*)(entry + 0x18)) & 1) != 0) {
+                    uv[0] = (x[1] - 1.0f) / (f32)width;
                     uv[2] = x[1] / (f32)width;
                 } else {
-                    uv[0] = x[1] / (f32)width;
+                    uv[0] = (x[0] + 1.0f) / (f32)width;
                     uv[2] = x[0] / (f32)width;
                 }
+                break;
             }
 
-            if (axis == 2) {
-                if ((*(u32*)(entry + 0x18) & 2) == 0) {
-                    uv[1] = (y[1] - 1.0f) / (f32)height;
+            switch (axis) {
+            case 0:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
+                    uv[1] = y[0] / (f32)height;
                     uv[3] = y[1] / (f32)height;
                 } else {
-                    uv[1] = (y[0] + 1.0f) / (f32)height;
+                    uv[1] = y[1] / (f32)height;
                     uv[3] = y[0] / (f32)height;
                 }
-            } else if (axis == 1) {
-                if ((*(u32*)(entry + 0x18) & 2) == 0) {
+                break;
+            case 1:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
                     uv[1] = y[0] / (f32)height;
                     uv[3] = (y[0] + 1.0f) / (f32)height;
                 } else {
                     uv[1] = y[1] / (f32)height;
                     uv[3] = (y[1] - 1.0f) / (f32)height;
                 }
-            } else if (axis == 0) {
-                if ((*(u32*)(entry + 0x18) & 2) == 0) {
-                    uv[1] = y[0] / (f32)height;
+                break;
+            case 2:
+                if (((~*(u32*)(entry + 0x18)) & 2) != 0) {
+                    uv[1] = (y[1] - 1.0f) / (f32)height;
                     uv[3] = y[1] / (f32)height;
                 } else {
-                    uv[1] = y[1] / (f32)height;
+                    uv[1] = (y[0] + 1.0f) / (f32)height;
                     uv[3] = y[0] / (f32)height;
                 }
+                break;
             }
         }
     }
