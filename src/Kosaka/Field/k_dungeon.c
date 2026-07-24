@@ -1091,6 +1091,7 @@ static inline void K_Dungeon_ProcessFieldNodes(
     }
 }
 
+#pragma optimization_level 3
 // FUN_001c0d70 NONMATCHING
 void* func_001c0d70(KwlnTask* task)
 {
@@ -1263,6 +1264,7 @@ done:
 stop:
     return KWLNTASK_STOP;
 }
+#pragma optimization_level 2
 
 
 extern void K_FldFrame_CtlCopyPos(RwV3d* dst, KwlnTask* collisCtlTask);
