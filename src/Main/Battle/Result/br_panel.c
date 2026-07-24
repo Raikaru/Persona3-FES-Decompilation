@@ -266,8 +266,9 @@ void brPanel00235010(void)
 #pragma opt_common_subs off
 #pragma optimization_level 3
 #pragma schedule on
-#define D_00960090 brPanelSetState
 #define D_0096009C brPanelSetQuad
+#define D_00960090 brPanelSetState
+#pragma opt_loop_invariants on
 // FUN_002350f0 NONMATCHING
 void brPanel002350f0(void)
 {
@@ -436,6 +437,7 @@ void brPanel002350f0(void)
         D_0096009C((u32*)(work + 0x2060), 4, 0, 2, 3);
     }
 }
+#pragma opt_loop_invariants off
 #undef D_00960090
 #undef D_0096009C
 #pragma schedule off
@@ -575,6 +577,7 @@ u32 brPanel00236340(void)
         color[3] = (u8)(u32)(255.0f * (alpha)); \
         func_0021d950((dst), color); \
     } while (0)
+#pragma opt_loop_invariants on
 // FUN_00236390 NONMATCHING
 static void brPanel00236390(void)
 {
@@ -1017,6 +1020,7 @@ static void brPanel00236390(void)
     color[3] = 0xff;
     func_0021d950(work + 0x2460, color);
 }
+#pragma opt_loop_invariants off
 #undef brRes00234570
 #undef BR_PANEL_SET_RECT
 #undef BR_PANEL_SET_VERTICES
