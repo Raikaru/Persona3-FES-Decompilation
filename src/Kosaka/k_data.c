@@ -375,56 +375,71 @@ void* func_001b8160(void)
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_001b81f0 NONMATCHING
 u32 func_001b81f0(HCdvd* request)
 {
     char path[76];
+    void* memory;
     void* source;
-    u32 sourceSize;
+    void* data;
     u32 cachedSize;
-    Field* field;
 
     if (request == NULL)
     {
         return true;
     }
-    field = K_Field_Get();
-    source = NULL;
-    sourceSize = 0;
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        if (H_Cdvd_IsFileLoaded(request) != 0)
+        if (H_Cdvd_IsFileLoaded(request) == 0)
         {
-            source = request->fileMemory;
-            sourceSize = request->fileSize;
+            goto failed;
         }
+        memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+            1, request->fileSize, rwMEMHINTDUR_GLOBAL);
+        FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = memory;
+        memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*),
+               request->fileMemory, request->fileSize);
+        data = FIELD_DATA_AT(K_Field_Get(), 0x1158, void*);
+        FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) =
+            *(u32*)data;
+        FIELD_DATA_AT(K_Field_Get(), 0x1160, void*) =
+            (u8*)data + 0x20;
+        FIELD_DATA_AT(K_Field_Get(), 0x1164, void*) =
+            (u8*)FIELD_DATA_AT(K_Field_Get(), 0x1160, void*) +
+            *(u32*)data * 0x20;
+        H_Cdvd_Destroy(request);
+        return true;
     }
     else
     {
-        sprintf(path, "field/pack/n%03d_%03d.bin", fieldCurrentMajor(),
-                fieldCurrentMinor());
+        sprintf(path, "field/pack/n%03d_%03d.bin",
+                PTR_DAT_007cd540[0], PTR_DAT_007cd540[1]);
         source = H_Cdvd_CacheFindFile(path, &cachedSize);
-        sourceSize = cachedSize;
-    }
-    if (source == NULL || sourceSize == 0)
-    {
-        return false;
-    }
-    fieldReplaceBuffer((void**)&FIELD_DATA_AT(field, 0x1158, void*),
-                       NULL, source, sourceSize);
-    FIELD_DATA_AT(field, 0x115c, u32) =
-        *(u32*)FIELD_DATA_AT(field, 0x1158, void*);
-    FIELD_DATA_AT(field, 0x1160, void*) =
-        (u8*)FIELD_DATA_AT(field, 0x1158, void*) + 0x20;
-    FIELD_DATA_AT(field, 0x1164, void*) =
-        (u8*)FIELD_DATA_AT(field, 0x1160, void*) +
-        FIELD_DATA_AT(field, 0x115c, u32) * 0x20;
-    if (K_Fldrc_GetFldPacCdvd() == NULL)
-    {
-        H_Cdvd_Destroy(request);
+        if (source != NULL)
+        {
+            memory = (*(void* (**)(u32, u32, u32))D_00960184_abs)(
+                1, cachedSize, rwMEMHINTDUR_GLOBAL);
+            FIELD_DATA_AT(K_Field_Get(), 0x1158, void*) = memory;
+            memcpy(FIELD_DATA_AT(K_Field_Get(), 0x1158, void*),
+                   source, cachedSize);
+            data = FIELD_DATA_AT(K_Field_Get(), 0x1158, void*);
+            FIELD_DATA_AT(K_Field_Get(), 0x115c, u32) =
+                *(u32*)data;
+            FIELD_DATA_AT(K_Field_Get(), 0x1160, void*) =
+                (u8*)data + 0x20;
+            FIELD_DATA_AT(K_Field_Get(), 0x1164, void*) =
+                (u8*)FIELD_DATA_AT(K_Field_Get(), 0x1160, void*) +
+                *(u32*)data * 0x20;
+        }
     }
     return true;
+
+failed:
+    return false;
 }
+#pragma pop
 
 // FUN_001b83f0 NONMATCHING
 u16* func_001b83f0(void)
