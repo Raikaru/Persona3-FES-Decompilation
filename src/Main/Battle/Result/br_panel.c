@@ -610,9 +610,15 @@ static void brPanel00236390(void)
     mode = *(s32*)(work + 0x266c);
     timer = *(s32*)(work + 0x2668);
 
-    if (mode == 0) {
-        shift = 0.0f;
+    if (mode == 2) {
+        shift = (f32)((*(s32*)((u8*)frame + 0xc) + 1) / 2);
         alpha = 0.0f;
+        if (timer < 10) {
+            shift *= (f32)timer / 32.0f;
+            alpha = 1.0f - (f32)timer / 32.0f;
+        } else {
+            shift = 0.0f;
+        }
     } else if (mode == 1) {
         shift = 1.0f;
         alpha = 1.0f;
@@ -624,14 +630,8 @@ static void brPanel00236390(void)
             shift = 0.0f;
         }
     } else {
-        shift = (f32)((*(s32*)((u8*)frame + 0xc) + 1) / 2);
+        shift = 0.0f;
         alpha = 0.0f;
-        if (timer < 10) {
-            shift *= (f32)timer / 32.0f;
-            alpha = 1.0f - (f32)timer / 32.0f;
-        } else {
-            shift = 0.0f;
-        }
     }
     BR_PANEL_SET_RECT(work + 0x10, 381.0f + shift, 55.0f,
                       (f32)*(s32*)((u8*)frame + 0xc),
@@ -899,7 +899,6 @@ static void brPanel00236390(void)
         rect[7] = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
-        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
@@ -912,7 +911,6 @@ static void brPanel00236390(void)
         rect[7] = rect[1] + shift;
         alpha = 1.0f;
     } else {
-        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
@@ -944,7 +942,6 @@ static void brPanel00236390(void)
         rect[7] = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
-        root2 = sqrtf(2.0f);
         rect[0] = 320.0f;
         rect[1] = -640.0f / root2;
         rect[2] = -448.0f / root2;
@@ -957,7 +954,6 @@ static void brPanel00236390(void)
         rect[7] = rect[1] + shift;
         alpha = 1.0f;
     } else {
-        root2 = sqrtf(2.0f);
         scale = (f32)timer / 10.0f;
         if (timer >= 10) {
             scale = 0.0f;
@@ -991,7 +987,6 @@ static void brPanel00236390(void)
         rect[6] = 0.0f;
         rect[7] = 0.0f;
     } else if (mode == 1) {
-        root2 = sqrtf(2.0f);
         scale = (f32)timer / 10.0f;
         rect[0] = 320.0f;
         rect[1] = -320.0f / root2;
@@ -1003,7 +998,6 @@ static void brPanel00236390(void)
         rect[6] = rect[0] + shift;
         rect[7] = rect[1] + shift;
     } else {
-        root2 = sqrtf(2.0f);
         scale = (f32)timer / 10.0f;
         shift = (350.0f / root2 - 350.0f) * scale;
         rect[0] = 320.0f + shift;
