@@ -298,6 +298,9 @@ extern void func_001edbe0(void* work);
 extern void func_001edf10(void* work);
 extern void func_001eba50(RuntimeResetWork* work);
 extern void func_001eba80(RuntimeCommandWork* work, u32* result);
+extern void func_001ebd80(RuntimeWork* work, s32 param2);
+extern f32 func_001ecd90(void* data, s32 index, s32 vectorSet);
+extern f32 func_001ecec0(void* data, s32 index);
 extern s32 func_00236340(void);
 extern void func_002362e0(void);
 extern void func_003c7430(s32 mode);
@@ -3337,13 +3340,466 @@ void func_001eba80(RuntimeCommandWork* work, u32* unused)
 }
 
 // FUN_001EBD80 NONMATCHING
-s32 func_001ebd80(RuntimeWork* work)
+void func_001ebd80(RuntimeWork* work, s32 param2)
 {
-    if (work == NULL)
+    typedef struct RuntimeSurfaceQueue
     {
-        return 0;
+        u8* config;
+        u32 reserved;
+        s32 count;
+        s32 cursor;
+        RuntimeVec3* vectors[2];
+        RuntimeVec3* axisOut[4];
+    } RuntimeSurfaceQueue;
+
+    RuntimeSurfaceQueue* queue = (RuntimeSurfaceQueue*)work;
+    u8* config;
+    f32 weightNear[2];
+    f32 weightFar[2];
+    f32 vel0;
+    f32 vel1;
+    s32 sideBool;
+    f32 coefA;
+    f32 coefB;
+    f32 coefC;
+    RuntimeVec3 accum;
+    RuntimeVec3 delta;
+    s32 idxA;
+    s32 idxB;
+    s32 idxW;
+    f32 weight0;
+    f32 weight1;
+    s32 section2;
+
+    config = *(u8**)queue->config;
+    weightNear[0] = *(f32*)(config + 0x1c);
+    weightFar[0] = *(f32*)(config + 0x24);
+    weightNear[1] = *(f32*)(config + 0x20);
+    weightFar[1] = *(f32*)(config + 0x28);
+
+    vel0 = func_001ecd90(queue, param2, 0);
+    vel1 = func_001ecd90(queue, param2, 1);
+    sideBool = (vel0 <= vel1) ? 1 : 0;
+
+    if (queue->count == 2)
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0xc);
+        coefB = *(f32*)(config + 0x10);
+        coefC = 0.0f;
     }
-    return (work->flags & 1) != 0;
+    else if (param2 == 0)
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0xc);
+        coefB = *(f32*)(config + 0x10);
+        coefC = 0.0f;
+    }
+    else
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0x0);
+        coefB = *(f32*)(config + 0x8);
+        coefC = *(f32*)(config + 0x4);
+    }
+
+    /* ---- iteration 1: section=param2, side=0(sideBool), axisOut[0] ---- */
+    accum.x = 0.0f;
+    accum.y = 0.0f;
+    accum.z = 0.0f;
+
+    weight0 = weightNear[sideBool] * func_001ecd90(queue, param2, 0);
+    weight0 += weightFar[sideBool] * func_001ecec0(queue, param2);
+
+    func_001e8360((RuntimeWork*)queue, param2, 0, &delta);
+    delta.x *= coefA;
+    delta.y *= coefA;
+    delta.z *= coefA;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x151);
+    }
+    if (param2 != 0)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - param2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = queue->count - param2;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[0][idxB].x - queue->vectors[0][idxA].x;
+        delta.y = queue->vectors[0][idxB].y - queue->vectors[0][idxA].y;
+        delta.z = queue->vectors[0][idxB].z - queue->vectors[0][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefC;
+    delta.y *= coefC;
+    delta.z *= coefC;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x13a);
+    }
+    if (param2 == queue->count - 1)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - param2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = (-2 - param2) + queue->count;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[1][idxB].x - queue->vectors[1][idxA].x;
+        delta.y = queue->vectors[1][idxB].y - queue->vectors[1][idxA].y;
+        delta.z = queue->vectors[1][idxB].z - queue->vectors[1][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefB;
+    delta.y *= coefB;
+    delta.z *= coefB;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    accum.x *= weight0;
+    accum.y *= weight0;
+    accum.z *= weight0;
+
+    idxW = (queue->cursor - 1) - param2;
+    if (idxW < 0)
+    {
+        idxW += queue->count;
+    }
+    queue->axisOut[0][idxW] = accum;
+
+    /* ---- iteration 2: section=param2, side=1(!sideBool), axisOut[2] ---- */
+    accum.x = 0.0f;
+    accum.y = 0.0f;
+    accum.z = 0.0f;
+
+    weight1 = weightNear[!sideBool] * func_001ecd90(queue, param2, 1);
+    weight1 += weightFar[!sideBool] * func_001ecec0(queue, param2);
+
+    func_001e8360((RuntimeWork*)queue, param2, 1, &delta);
+    delta.x *= coefA;
+    delta.y *= coefA;
+    delta.z *= coefA;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x151);
+    }
+    if (param2 != 0)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - param2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = queue->count - param2;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[0][idxB].x - queue->vectors[0][idxA].x;
+        delta.y = queue->vectors[0][idxB].y - queue->vectors[0][idxA].y;
+        delta.z = queue->vectors[0][idxB].z - queue->vectors[0][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefC;
+    delta.y *= coefC;
+    delta.z *= coefC;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x13a);
+    }
+    if (param2 == queue->count - 1)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - param2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = (-2 - param2) + queue->count;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[1][idxB].x - queue->vectors[1][idxA].x;
+        delta.y = queue->vectors[1][idxB].y - queue->vectors[1][idxA].y;
+        delta.z = queue->vectors[1][idxB].z - queue->vectors[1][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefB;
+    delta.y *= coefB;
+    delta.z *= coefB;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    accum.x *= weight1;
+    accum.y *= weight1;
+    accum.z *= weight1;
+
+    idxW = (queue->cursor - 1) - param2;
+    if (idxW < 0)
+    {
+        idxW += queue->count;
+    }
+    queue->axisOut[2][idxW] = accum;
+
+    if (queue->count == 2)
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0x14);
+        coefB = 0.0f;
+        coefC = *(f32*)(config + 0x18);
+    }
+    else if (queue->count == 3 && param2 == 1)
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0x14);
+        coefB = 0.0f;
+        coefC = *(f32*)(config + 0x18);
+    }
+    else
+    {
+        config = *(u8**)queue->config;
+        coefA = *(f32*)(config + 0x0);
+        coefB = *(f32*)(config + 0x8);
+        coefC = *(f32*)(config + 0x4);
+    }
+    section2 = param2 + 1;
+
+    /* ---- iteration 3: section=param2+1, side=0(sideBool), axisOut[1], reuses weight0 ---- */
+    accum.x = 0.0f;
+    accum.y = 0.0f;
+    accum.z = 0.0f;
+
+    func_001e8360((RuntimeWork*)queue, section2, 0, &delta);
+    delta.x *= coefA;
+    delta.y *= coefA;
+    delta.z *= coefA;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x151);
+    }
+    if (section2 != 0)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - section2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = queue->count - section2;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[0][idxB].x - queue->vectors[0][idxA].x;
+        delta.y = queue->vectors[0][idxB].y - queue->vectors[0][idxA].y;
+        delta.z = queue->vectors[0][idxB].z - queue->vectors[0][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefC;
+    delta.y *= coefC;
+    delta.z *= coefC;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x13a);
+    }
+    if (section2 == queue->count - 1)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - section2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = (-2 - section2) + queue->count;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[1][idxB].x - queue->vectors[1][idxA].x;
+        delta.y = queue->vectors[1][idxB].y - queue->vectors[1][idxA].y;
+        delta.z = queue->vectors[1][idxB].z - queue->vectors[1][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefB;
+    delta.y *= coefB;
+    delta.z *= coefB;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    accum.x *= weight0;
+    accum.y *= weight0;
+    accum.z *= weight0;
+
+    idxW = (queue->cursor - 1) - param2;
+    if (idxW < 0)
+    {
+        idxW += queue->count;
+    }
+    queue->axisOut[1][idxW] = accum;
+
+    /* ---- iteration 4: section=param2+1, side=1(!sideBool), axisOut[3], reuses weight1 ---- */
+    accum.x = 0.0f;
+    accum.y = 0.0f;
+    accum.z = 0.0f;
+
+    func_001e8360((RuntimeWork*)queue, section2, 1, &delta);
+    delta.x *= coefA;
+    delta.y *= coefA;
+    delta.z *= coefA;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x151);
+    }
+    if (section2 != 0)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - section2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = queue->count - section2;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[0][idxB].x - queue->vectors[0][idxA].x;
+        delta.y = queue->vectors[0][idxB].y - queue->vectors[0][idxA].y;
+        delta.z = queue->vectors[0][idxB].z - queue->vectors[0][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefC;
+    delta.y *= coefC;
+    delta.z *= coefC;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    if (queue->count < 2)
+    {
+        func_0019d3f0(D_006844F8, 0x13a);
+    }
+    if (section2 == queue->count - 1)
+    {
+        delta.x = 0.0f;
+        delta.y = 0.0f;
+        delta.z = 0.0f;
+    }
+    else
+    {
+        idxA = (queue->count - 1) - section2;
+        if (idxA < 0)
+        {
+            idxA += queue->count;
+        }
+        idxB = (-2 - section2) + queue->count;
+        if (idxB < 0)
+        {
+            idxB += queue->count;
+        }
+        delta.x = queue->vectors[1][idxB].x - queue->vectors[1][idxA].x;
+        delta.y = queue->vectors[1][idxB].y - queue->vectors[1][idxA].y;
+        delta.z = queue->vectors[1][idxB].z - queue->vectors[1][idxA].z;
+    }
+    func_004c69f0(&delta, &delta);
+    delta.x *= coefB;
+    delta.y *= coefB;
+    delta.z *= coefB;
+    accum.x += delta.x;
+    accum.y += delta.y;
+    accum.z += delta.z;
+
+    accum.x *= weight1;
+    accum.y *= weight1;
+    accum.z *= weight1;
+
+    idxW = (queue->cursor - 1) - param2;
+    if (idxW < 0)
+    {
+        idxW += queue->count;
+    }
+    queue->axisOut[3][idxW] = accum;
+
 }
 
 // FUN_001ECD90
