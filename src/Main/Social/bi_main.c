@@ -637,12 +637,13 @@ void func_0023f540(void)
                 } else if ((BI_U32(slot, 0) & BI_SLOT_NUMERIC_1) != 0) {
                     digitOffset = -28.0f;
                 }
+                frame = func_0021cca0(renderContext, 0x2e);
                 layout[0] = x + 28.0f * (f32)j;
                 layout[1] = y + vertical + digitOffset;
                 layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
                 layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
                 func_0021d8e0(slot + 0x320 + j * 0x100, layout);
-                if ((BI_U32(slot, 0) & BI_SLOT_TEXT_1) != 0) {
+                if ((BI_U32(slot, 0) & BI_SLOT_TEXT_0) != 0) {
                     color[0] = 0xff;
                     color[1] = 0xff;
                     color[2] = 0xff;
@@ -686,12 +687,13 @@ void func_0023f540(void)
                     vertical = 0.0f;
                     alpha = 0.0f;
                 }
+                frame = func_0021cca0(renderContext, 0x2e);
                 layout[0] = x + 28.0f * (f32)j;
                 layout[1] = y + vertical;
                 layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
                 layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
                 func_0021d8e0(slot + 0x830 + j * 0x100, layout);
-                if ((BI_U32(slot, 0) & BI_SLOT_TEXT_0) != 0) {
+                if ((BI_U32(slot, 0) & BI_SLOT_TEXT_1) != 0) {
                     color[0] = 0xf0;
                     color[1] = 0xaa;
                     color[2] = 0xff;
