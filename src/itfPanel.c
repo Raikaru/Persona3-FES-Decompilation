@@ -7,6 +7,8 @@ typedef u32 int3;
 extern void FUN_0019d3f0(const char *file,s32 line);
 extern const char DAT_006a1bf8[];
 extern u32 DAT_006a1d10;
+#pragma alias DAT_006a1d10_abs DAT_006a1d10
+extern u32 DAT_006a1d10_abs[];
 extern const char DAT_006a1d70[];
 extern const char DAT_006a1d50[];
 extern const char DAT_006a1d90[];
@@ -267,6 +269,7 @@ u64 FUN_003ae360(u64 param_1,int param_2);
 #define FUN_003ae360(...) ((u64 (*)(...))FUN_003ae360)(__VA_ARGS__)
 
 #undef FUN_003a87d0
+#pragma opt_loop_invariants on
 // FUN_003A87D0 NONMATCHING
 void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5,u32 param_6,
                   long param_7)
@@ -327,12 +330,13 @@ void FUN_003a87d0(float param_1,int param_2,int param_3,long param_4,u32 param_5
     (*DAT_0096017c_abs)(uVar1);
   }
 }
+#pragma opt_loop_invariants off
 #define FUN_003a87d0(...) ((void (*)(...))FUN_003a87d0)(__VA_ARGS__)
 #undef FUN_003a8b00
+
+
 // FUN_003A8B00 NONMATCHING
-
-
-u64 FUN_003a8b00(int param_1,long param_2)
+u32 FUN_003a8b00(int param_1,int param_2)
 
 
 
@@ -344,7 +348,6 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
   int iVar3;
 
-  u32 uVar4;
 
   
 
@@ -366,7 +369,7 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
   *(char *)(iVar3 + 0x3c) = (char)param_1;
 
-  if (*(int *)(&DAT_006a1d10 + param_1 * 4) != 0) {
+  if (DAT_006a1d10_abs[param_1] != 0) {
 
     uVar2 = FUN_00191af0();
 
@@ -374,84 +377,54 @@ u64 FUN_003a8b00(int param_1,long param_2)
 
     *(int *)(iVar3 + 8) = (int)uVar2;
 
-    FUN_00521408(uVar2,0,*(int *)(&DAT_006a1d10 + param_1 * 4));
+    FUN_00521408(uVar2,0,DAT_006a1d10_abs[param_1]);
 
   }
 
-  if (param_1 == 0xe) {
-
-    *(u32 *)(iVar3 + 0x44) = 0;
-
-    *(u32 *)(iVar3 + 0x48) = 0;
-
-    *(u32 *)(iVar3 + 0x4c) = 0;
-
-  }
-
-  else if (param_1 == 0xd) {
-
-    *(code *)(iVar3 + 0x40) = (code)FUN_003a94e0;
-
-    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a9510;
-    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a9580;
-
-  }
-
-  else if (param_1 == 0xc) {
-
-    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a9400;
-    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a9470;
-
-    *(u32 *)(iVar3 + 0x4c) = 0;
-
-  }
-
-  else if (param_1 == 0xb) {
-
-    *(code *)(iVar3 + 0x40) = (code)FUN_003a92a0;
-
-    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a92d0;
-    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a93a0;
-
-  }
-
-  else if (param_1 == 10) {
-
+  switch (param_1) {
+  case 10:
     *(code *)(iVar3 + 0x40) = (code)FUN_003a9140;
-
     *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a9170;
     *(u8 **)(iVar3 + 0x48) = (u8 *)&FUN_003a9230;
-
+    break;
+  case 0xb:
+    *(code *)(iVar3 + 0x40) = (code)FUN_003a92a0;
+    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a92d0;
+    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a93a0;
+    break;
+  case 0xc:
+    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a9400;
+    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a9470;
+    *(u32 *)(iVar3 + 0x4c) = 0;
+    break;
+  case 0xd:
+    *(code *)(iVar3 + 0x40) = (code)FUN_003a94e0;
+    *(u8 **)(iVar3 + 0x44) = (u8 *)&LAB_003a9510;
+    *(u8 **)(iVar3 + 0x48) = (u8 *)&LAB_003a9580;
+    break;
+  case 0xe:
+    *(u32 *)(iVar3 + 0x44) = 0;
+    *(u32 *)(iVar3 + 0x48) = 0;
+    *(u32 *)(iVar3 + 0x4c) = 0;
+    break;
   }
 
   if (param_2 != 0) {
 
-    uVar4 = (u32)param_2;
-
-    if (param_1 == 8) {
-
-      **(u32 **)(iVar3 + 8) = uVar4;
-
+    switch (param_1) {
+    case 6:
+      **(u32 **)(iVar3 + 8) = param_2;
+      break;
+    case 7:
+      **(u32 **)(iVar3 + 8) = param_2;
+      break;
+    case 9:
+      **(u32 **)(iVar3 + 8) = param_2;
+      break;
+    case 8:
+      **(u32 **)(iVar3 + 8) = param_2;
+      break;
     }
-
-    else if (param_1 == 9) {
-
-      **(u32 **)(iVar3 + 8) = uVar4;
-
-    }
-
-    else if (param_1 == 7) {
-
-      **(u32 **)(iVar3 + 8) = uVar4;
-
-    }
-
-    else if (param_1 == 6) {
-
-      **(u32 **)(iVar3 + 8) = uVar4;
-
-    }
-
   }
 
   return uVar1;
@@ -1023,9 +996,9 @@ void FUN_003a9780(int *param_1,int param_2,int param_3,int param_4,int param_5)
 
   int iVar1;
 
-  int iVar2;
-
   int iVar3;
+
+  int iVar2;
 
   int aiStack_10 [4];
 
