@@ -1567,12 +1567,14 @@ void FUN_002265D0(void)
     f32 stateAlpha;
     f32 transAlpha;
     f32 rowOffset;
+    f32 rowStep;
 
     K_ASSERT(sBcmPanel != NULL, 0xe6);
     work = (u8*)sBcmPanel;
     table0 = FUN_0021c3f0(0);
     stateAlpha = *(f32*)(work + 0x7214);
     rowOffset = -26.0f * (f32)*(s32*)(work + 0x7210);
+    rowStep = 26.0f * (f32)*(s32*)(work + 0x7210);
 
     if (*(u32*)(work + 0x463c) == 3) {
         if (*(u32*)(work + 0x4644) == 1 || *(u32*)(work + 0x4644) == 2) {
@@ -1638,7 +1640,7 @@ void FUN_002265D0(void)
     *(f32*)(work + 0x6054) = rowY;
 
     {
-        f32 y75 = 75.0f + rowOffset;
+        f32 y150 = 150.0f + rowStep;
         for (i = 0; i < 9; ++i) {
             switch (i) {
             case 0: case 1: case 2: case 3:
@@ -1652,11 +1654,11 @@ void FUN_002265D0(void)
             rect[1] = rowY;
             switch (i) {
             case 0: rect[0] += 11.0f; rect[1] += 4.0f; break;
-            case 1: rect[0] += 11.0f; rect[1] += y75; break;
+            case 1: rect[0] += 11.0f; rect[1] += y150; break;
             case 2: rect[0] += 241.0f; rect[1] += 4.0f; break;
-            case 3: rect[0] += 241.0f; rect[1] += y75; break;
+            case 3: rect[0] += 241.0f; rect[1] += y150; break;
             case 4: rect[0] += 159.0f; rect[1] += 4.0f; break;
-            case 5: rect[0] += 159.0f; rect[1] += y75; break;
+            case 5: rect[0] += 159.0f; rect[1] += y150; break;
             case 6: rect[0] += 11.0f; rect[1] += 75.0f; break;
             case 7: rect[0] += 241.0f; rect[1] += 75.0f; break;
             case 8: rect[0] += 159.0f; rect[1] += 75.0f; break;
@@ -1672,11 +1674,11 @@ void FUN_002265D0(void)
                 break;
             case 6: case 7:
                 rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-                rect[3] = rowOffset;
+                rect[3] = rowStep;
                 break;
             case 8:
                 rect[2] = 82.0f;
-                rect[3] = rowOffset;
+                rect[3] = rowStep;
                 break;
             }
             FUN_0021d8e0(work + i * 0x100 + 0x1530, rect);
@@ -1695,31 +1697,31 @@ void FUN_002265D0(void)
     resource = (void*)FUN_0021cca0(table0, 0x26);
     {
         f32 baseX = 20.0f + posX;
-        f32 baseY = 40.0f + rowY;
+        f32 baseY = 32.0f + rowY;
 
         rect[0] = baseX;
-        rect[1] = baseY - 3.0f;
+        rect[1] = baseY - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1e30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x27);
         rect[0] = baseX;
-        rect[1] = 102.0f + rowY + rowOffset;
+        rect[1] = 102.0f + rowY + rowStep;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
         rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
         FUN_0021d8e0(work + 0x1f30, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x26);
         rect[0] = baseX;
-        rect[1] = 16.0f + baseY - 3.0f;
+        rect[1] = 16.0f + baseY - 4.0f;
         rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-        rect[3] = 57.0f + rowOffset;
+        rect[3] = 57.0f + rowStep;
         FUN_0021d8e0(work + 0x2030, rect);
 
         resource = (void*)FUN_0021cca0(table0, 0x1d);
         {
-            f32 top = (36.0f + rowY + rowOffset) - 3.0f;
+            f32 top = (36.0f + rowY + rowOffset) - 4.0f;
             f32 bottom = 91.0f + rowY + rowOffset;
             rect[0] = 22.0f + posX;
             if (*(s32*)(work + 0x6074) >= 5) {
