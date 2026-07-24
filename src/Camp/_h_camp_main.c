@@ -2194,7 +2194,7 @@ void FUN_001387b0(f32 alpha, u64 position, const s32* entries, s32 count,
 }
 
 extern void FUN_00139FC0(f32 alpha, u64 position, const s32* entries, u64 unused,
-                         s32 count, s32 offset, s32 selected, s64 frame,
+                         s32 offset, s32 selected, s32 menuFlags, s64 frame,
                          s32 transition);
 extern void FUN_0013AFD0(f32 alpha, u64 position, const s32* entries, u64 unused,
                          s32 count, s32 offset, s32 transition, s32 transitionHi);
@@ -2488,8 +2488,9 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     f32 rowY;
     u64 shiftedPosition;
     s32 itemOffset;
+    s32 stage;
 
-    (void)param_4;
+    stage = (s32)param_8;
     FUN_00139DC0(param_1);
     FUN_001368A0(param_1, 0, 0);
 
@@ -2499,11 +2500,11 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
     item = param_3 + itemOffset;
     id = *item;
 
-    if (param_8 > 7)
+    if (stage > 7)
     {
-        if ((s32)param_8 - 8 < 5)
+        if (stage - 8 < 5)
         {
-            i = 5 - ((s32)param_8 - 8);
+            i = 5 - (stage - 8);
             x = (position.x - (f32)((i * 0xDC) / 5)) - 5.0f;
             y = (f32)((i * 0x32) / 5) + position.y + 10.0f;
             shiftedPosition = campPackPosition(x, y);
@@ -2520,11 +2521,11 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
     }
 
-    if (param_8 > 4)
+    if (stage > 4)
     {
-        if ((s32)param_8 - 5 < 5)
+        if (stage - 5 < 5)
         {
-            alpha = ((5 - ((s32)param_8 - 5)) * 0xFF) / 5;
+            alpha = ((5 - (stage - 5)) * 0xFF) / 5;
         }
         else
         {
@@ -2586,11 +2587,11 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
     }
 
-    if (param_8 > 1)
+    if (stage > 1)
     {
-        if ((s32)param_8 - 2 < 5)
+        if (stage - 2 < 5)
         {
-            alpha = ((5 - ((s32)param_8 - 2)) * 0xFF) / 5;
+            alpha = ((5 - (stage - 2)) * 0xFF) / 5;
         }
         else
         {
@@ -2610,11 +2611,11 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
                        position.x + 231.0f, position.y + 48.0f, param_1);
     }
 
-    if (param_8 > 2)
+    if (stage > 2)
     {
-        if ((s32)param_8 - 3 < 5)
+        if (stage - 3 < 5)
         {
-            alpha = ((5 - ((s32)param_8 - 3)) * 0xFF) / 5;
+            alpha = ((5 - (stage - 3)) * 0xFF) / 5;
         }
         else
         {
@@ -2658,11 +2659,11 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
     }
 
-    if (param_8 > 4)
+    if (stage > 4)
     {
-        if ((s32)param_8 - 5 < 5)
+        if (stage - 5 < 5)
         {
-            alpha = ((5 - ((s32)param_8 - 5)) * 0xFF) / 5;
+            alpha = ((5 - (stage - 5)) * 0xFF) / 5;
         }
         else
         {
@@ -2712,9 +2713,9 @@ void FUN_00139FC0(f32 param_1, u64 param_2, const s32* param_3, u64 param_4,
         }
     }
 
-    if (param_8 < 5)
+    if (stage < 5)
     {
-        alpha = ((5 - (s32)param_8) * 0xFF) / 5;
+        alpha = ((5 - stage) * 0xFF) / 5;
     }
     else
     {
