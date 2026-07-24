@@ -2001,21 +2001,66 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlAction* basis;
     BtlPacket* packet;
     BtlPacket* hitPacket;
+    BtlPacket* skillPacket;
+    BtlPacket* cameraPacket;
+    BtlPacket* voicePacket;
+    BtlPacket* effectPacket;
+    BtlPacket* movePacket;
+    BtlPacket* turnPacket;
+    BtlPacket* syncPacket;
+    u32 stackBuf[80];
+    s32 workBuf[12];
+    u32 scratchBuf[16];
+    u16 sp190;
+    u16 sp180;
+    s16 delay;
+    s16 aDelay;
+    s16 animId;
+    s16 soundId;
+    s16 tempS16;
+    s32 animLength;
+    u32 sp160;
+    u32 rotCount;
+    u32 randExtra;
+    u32 pkCount;
+    u32 animMode;
     u8 group;
     u8 hit;
     u8 groupCount;
     u8 hitCount;
+    u8 genus;
     f32 speed;
+    f32 animSpeed;
+    f32 accF;
+    u8* result;
+    u16 groupFlags;
+    u16 resultFlags;
+    u8 attackAnim;
 
-    victim = action->target.targetedActions[0];
-    if (victim == NULL)
-    {
-        btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
-        return;
-    }
     btlAction0028a780(action);
-    speed = (action->unk_18 & 0x4000) ? 1.75f : 1.0f;
+    speed = 1.0f;
+    animSpeed = 1.75f;
+    accF = 0.0f;
+    sp190 = -1;
+    sp180 = -1;
+    stackBuf[0] = 0;
+    stackBuf[1] = 0;
+    stackBuf[2] = 0;
+    FUN_002d5dc0(workBuf);
+    FUN_002d5dc0((s32*)stackBuf);
+    FUN_002d5dc0((s32*)scratchBuf);
+    if (action->unk_18 & 0x4000)
+    {
+        speed = 1.75f;
+        animSpeed = 1.0f;
+    }
+    victim = action->target.targetedActions[0];
     basis = ACTION_U32(victim, 0xd4) != 0 ? action : victim;
+    if (ACTION_U32(victim, 0xd0) == 0 && action->unit->genus == victim->unit->genus)
+    {
+        basis = action;
+    }
+    rotCount = 1;
     packet = FUN_002bd590(action->unit, action->target.specificId);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_2D);
@@ -2026,24 +2071,24 @@ void btlActionUpdateStateAttack(BtlAction* action)
     hitCount = (action->unk_18 & 0x4000) ? 1 : groupCount;
     for (group = 0; group < groupCount; group++)
     {
-        u8* result = (u8*)victim + 0xe0 + group * 0x1c;
-        u16 groupFlags = ACTION_U16(victim, 0xcc);
-        u16 resultFlags = ACTION_U16(result, 0x1a);
-        u8 attackAnim = resultFlags & 4 ? 11 : 4;
-        s16 delay = 0;
+        result = (u8*)victim + 0xe0 + group * 0x1c;
+        groupFlags = ACTION_U16(victim, 0xcc);
+        resultFlags = ACTION_U16(result, 0x1a);
+        attackAnim = resultFlags & 4 ? 11 : 4;
+        delay = 0;
 
         for (hit = 0; hit < hitCount; hit++)
         {
-            s16 animLength = btlUnitGetAnimFrame(action->unit);
+            animLength = btlUnitGetAnimFrame(action->unit);
             packet = btlUnitCreateAnimPacket(action->unit, attackAnim, 4, speed,
-                                              attackAnim == 11 ? BTLUNIT_ANIM_MODE_LOOP : BTLUNIT_ANIM_MODE_ONCE);
-            ACTION_U16(packet, 0x48) = delay;
+                                             attackAnim == 11 ? BTLUNIT_ANIM_MODE_LOOP : BTLUNIT_ANIM_MODE_ONCE);
+            ACTION_S16(packet, 0x48) = delay;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
-            hitPacket = btlUnitCreateAnimPacket(basis->unit, ACTION_U8(result, 0x18), 0, 1.0f, BTLUNIT_ANIM_MODE_ONCE);
+            hitPacket = btlUnitCreateAnimPacket(basis->unit, ACTION_U8(result, 0x18), 0, animSpeed, BTLUNIT_ANIM_MODE_ONCE);
             hitPacket->unk_00 = 4;
             hitPacket->parentUID = packet->uid;
-            ACTION_U16(hitPacket, 0x48) = delay;
+            ACTION_S16(hitPacket, 0x48) = delay;
             hitPacket->actionUID = action->uid;
             btlPacketRegister(hitPacket, BTLPACKET_TYPE_1);
             if ((groupFlags & 4) == 0 && (resultFlags & 4) == 0)
@@ -2058,7 +2103,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
             delay += animLength > 0 ? animLength : 4;
         }
         packet = FUN_002d7e20(action, basis, result, ACTION_U16(victim, 0xcc), ACTION_U16(victim, 0xce));
-        ACTION_U16(packet, 0x48) = 0;
+        ACTION_S16(packet, 0x48) = delay;
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_1);
         packet = FUN_002bdbd0(action->unit, basis->unit, action->target.specificId,
@@ -2068,6 +2113,30 @@ void btlActionUpdateStateAttack(BtlAction* action)
         packet->actionUID = action->uid;
         btlPacketRegister(packet, BTLPACKET_TYPE_2D);
     }
+
+    /* Post-loop */
+    genus = action->unit->genus;
+    animId = ACTION_U16(victim, 0xce);
+    soundId = ACTION_U16(victim, 0xcc);
+    pkCount = stackBuf[0] + stackBuf[1] + stackBuf[2];
+
+    if (animSpeed > 1.0f)
+    {
+        accF = speed + animSpeed;
+    }
+
+    {
+        u32 vf = ACTION_U32(victim, 0xe8);
+        if ((vf & 0x100000) != 0)
+        {
+            cameraPacket = FUN_00282130(basis->unit, 0x10);
+            cameraPacket->unk_00 = 5;
+            cameraPacket->parentUID = hitPacket->uid;
+            cameraPacket->actionUID = action->uid;
+            btlPacketRegister(cameraPacket, BTLPACKET_TYPE_1);
+        }
+    }
+
     btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
 }
 
