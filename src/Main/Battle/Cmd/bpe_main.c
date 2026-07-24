@@ -245,14 +245,15 @@ void func_00249c10(void* work)
     };
     u8* base;
     u8* camera;
-    void* frame;
-    void* matrix;
     void* cameraMatrix;
+    void* matrix;
+    void* frame;
     struct Local local;
     f32 deltaX;
     f32 deltaY;
     f32 deltaZ;
     f32 alpha;
+    f32 distance;
     s32 i;
 
     base = (u8*)work;
@@ -284,45 +285,60 @@ void func_00249c10(void* work)
         color = local.colors.data;
         position = (f32*)local.positions.data;
         for (i = 0; i < 0x80; i++) {
-            f32* vertex;
+            f32* particle;
+            f32* particleY;
+            f32* particleZ;
 
-            vertex = (f32*)(base + i * 0xc);
-            vertex[0] -= deltaX;
-            if (vertex[0] < -150.0f) {
-                vertex[0] += 300.0f;
-            } else if (vertex[0] > 150.0f) {
-                vertex[0] -= 300.0f;
+            particle = (f32*)(base + i * 0xc);
+            particle[0] -= deltaX;
+            particleY = (f32*)((u8*)particle + 4);
+            particleY[0] -= deltaY;
+            particleZ = (f32*)((u8*)particle + 8);
+            particleZ[0] -= deltaZ;
+            if (particle[0] < -150.0f) {
+                particle[0] += 300.0f;
+            } else if (particle[0] > 150.0f) {
+                particle[0] -= 300.0f;
             }
-            vertex[1] -= deltaY;
-            if (vertex[1] < -150.0f) {
-                vertex[1] += 300.0f;
-            } else if (vertex[1] > 150.0f) {
-                vertex[1] -= 300.0f;
+            if (particleY[0] < -150.0f) {
+                particleY[0] += 300.0f;
+            } else if (particleY[0] > 150.0f) {
+                particleY[0] -= 300.0f;
             }
-            vertex[2] -= deltaZ;
-            if (vertex[2] < -150.0f) {
-                vertex[2] += 300.0f;
-            } else if (vertex[2] > 150.0f) {
-                vertex[2] -= 300.0f;
+            if (particleZ[0] < -150.0f) {
+                particleZ[0] += 300.0f;
+            } else if (particleZ[0] > 150.0f) {
+                particleZ[0] -= 300.0f;
             }
-
-            position[0] = local.transformed[0] + vertex[0];
-            position[1] = local.transformed[1] + vertex[1];
-            position[2] = local.transformed[2] + vertex[2];
+            position[0] = local.transformed[0] + *(f32*)(base + i * 0xc);
+            position[1] = local.transformed[1] + *(f32*)(base + i * 0xc + 4);
+            position[2] = local.transformed[2] + *(f32*)(base + i * 0xc + 8);
             RwV3dTransformPoint(local.point, position, matrix);
 
             if (local.point[2] < 100.0f) {
                 if (local.point[2] < 40.0f) {
                     alpha = 0.0f;
-                } else {
+                } else if (local.point[2] < 100.0f) {
                     alpha = (local.point[2] - 40.0f) / 60.0f;
+                } else if (local.point[2] < 170.0f) {
+                    alpha = 1.0f;
+                } else if (local.point[2] < 230.0f) {
+                    alpha = 1.0f - (local.point[2] - 170.0f) / 60.0f;
+                } else {
+                    alpha = 0.0f;
                 }
-            } else if (local.point[2] < 170.0f) {
-                alpha = 1.0f;
-            } else if (local.point[2] < 230.0f) {
-                alpha = 1.0f - (local.point[2] - 170.0f) / 60.0f;
             } else {
+                distance = local.point[2] - 100.0f;
+                distance = local.point[1] * local.point[1] +
+                           local.point[0] * local.point[0] +
+                           distance * distance;
                 alpha = 0.0f;
+                distance = sqrtf(distance);
+                if (distance < 100.0f) {
+                    alpha = 1.0f;
+                } else if (distance < 150.0f) {
+                    alpha = 1.0f - (distance - 100.0f) / 50.0f;
+                }
             }
 
             color[0] = *(u8*)(base + 0x614);
