@@ -267,12 +267,27 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
         {
             if (mdlType == 9)
             {
-                if ((u32)(mdlId & 0xff) >= 9)
-                {
-                    return;
-                }
                 switch (mdlId & 0xff)
                 {
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                    if (animId == func_001de630(charId))
+                    {
+                        if (K_Footstep_IsFrameWindow(frame, 10.0f, 11.0f, 25.0f, 26.0f))
+                        {
+                            K_Footstep_Play(resTypeId, material, 1);
+                        }
+                        return;
+                    }
+                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                          8.0f, 9.0f, 18.0f, 19.0f, 0,
+                                          resTypeId, material, 1);
+                    return;
                 case 4:
                     if (animId == func_001de630(charId) &&
                         K_Footstep_IsFrameWindow(frame, 8.0f, 9.0f, 23.0f, 24.0f))
@@ -285,25 +300,14 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                                               8.0f, 9.0f, 18.0f, 19.0f, 0,
                                               resTypeId, material, 1);
                     }
-                     return;
+                    return;
                 case 6:
                     K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
                                           9.0f, 10.0f, 19.0f, 20.0f, 0,
                                           resTypeId, material, 1);
-                     return;
+                    return;
                 default:
-                    if (animId == func_001de630(charId))
-                    {
-                        if (K_Footstep_IsFrameWindow(frame, 10.0f, 11.0f, 25.0f, 26.0f))
-                        {
-                            K_Footstep_Play(resTypeId, material, 1);
-                        }
-                        return;
-                    }
-                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
-                                          8.0f, 9.0f, 18.0f, 19.0f, 0,
-                                          resTypeId, material, 1);
-                     return;
+                    return;
                 }
             }
             if (mdlType == 1)
