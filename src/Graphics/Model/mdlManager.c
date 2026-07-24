@@ -1690,19 +1690,12 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         do {
 
-          fVar20 = *pfVar5;
+          *(u32*)pfVar12 = *(u32*)pfVar5;
 
-          fVar21 = pfVar5[1];
-
-          pfVar5 = pfVar5 + 2;
-
-          iVar11 = iVar11 + -1;
-
-          *pfVar12 = fVar20;
-
-          pfVar12[1] = fVar21;
+          *(u32*)(pfVar12 + 1) = *(u32*)(pfVar5 + 1);
 
           pfVar12 = pfVar12 + 2;
+          iVar11 = iVar11 + -1;
 
         } while (0 < iVar11);
 
@@ -1718,17 +1711,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
         do {
 
-          fVar20 = *pfVar12;
+          *(u32*)pfVar5 = *(u32*)pfVar12;
 
-          fVar21 = pfVar12[1];
+          *(u32*)(pfVar5 + 1) = *(u32*)(pfVar12 + 1);
 
           pfVar12 = pfVar12 + 2;
 
           iVar15 = iVar15 + -1;
-
-          *pfVar5 = fVar20;
-
-          pfVar5[1] = fVar21;
 
           pfVar5 = pfVar5 + 2;
 
@@ -1744,26 +1733,13 @@ u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4)
 
           do {
 
-            uVar4 = *(u64 *)pfVar12;
-
-            fVar20 = pfVar12[2];
-
-            fVar21 = pfVar12[3];
+            *(unsigned __int128*)pfVar5 = *(unsigned __int128*)pfVar12;
 
             pfVar12 = pfVar12 + 4;
 
             iVar15 = iVar15 + -1;
 
-            *pfVar5 = (float)uVar4;
-
-            pfVar5[1] = (float)((u32)uVar4 >> 0x20);
-
-            pfVar5[2] = fVar20;
-
-            pfVar5[3] = fVar21;
-
             pfVar5 = pfVar5 + 4;
-
 
           } while (0 < iVar15);
 
