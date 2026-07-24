@@ -889,7 +889,7 @@ u32 FUN_003c3190(int *param_1)
 
   u32 uVar6;
 
-  long lVar7;
+  int lVar7;
 
   u8 *pbVar8;
 
