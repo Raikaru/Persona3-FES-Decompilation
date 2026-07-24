@@ -671,10 +671,9 @@ void FUN_001d59e0(KwlnTask* cameraTask)
 // FUN_001d5a90 NONMATCHING
 KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
 {
-    KwlnTask* task;
     FldFilterCameraWork* work;
-    RwFrame** slot1;
-    RwFrame** slot0;
+    KwlnTask* task;
+    RwFrame* mainFrame;
 
     work = (*(void* (**)(u32, u32, u32))D_00960184)(1, 0xd0, rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
@@ -687,21 +686,20 @@ KwlnTask* FUN_001d5a90(KwlnTask* parentTask)
                                           (KwlnTaskUpdateFunc)FUN_001d5220,
                                           (KwlnTaskDestroyFunc)FUN_001d59e0,
                                           work);
-    slot1 = &work->frame;
-    *slot1 = func_004caf10();
-    if (*slot1 == NULL)
+    work->frame = func_004caf10();
+    if (work->frame == NULL)
     {
         kwlnTaskDestroyWithHierarchy(task);
         return NULL;
     }
-    func_004cb930(*slot1);
-    slot0 = &work->parentFrame;
-    *slot0 = ((RwFrame*)kwlnGetMainCamera()->object.object.parent)->object.parent;
-    if (*slot0 != NULL)
+    func_004cb930(work->frame);
+    mainFrame = kwlnGetMainCamera()->object.object.parent;
+    work->parentFrame = mainFrame->object.parent;
+    if (work->parentFrame != NULL)
     {
-        func_004cb590(kwlnGetMainCamera()->object.object.parent);
-        func_004cb420(*slot0, work->frame);
-        func_004cb420(*slot1, kwlnGetMainCamera()->object.object.parent);
+        func_004cb590(mainFrame);
+        func_004cb420(work->parentFrame, work->frame);
+        func_004cb420(work->frame, mainFrame);
     }
     else
     {
