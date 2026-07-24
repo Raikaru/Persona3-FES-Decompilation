@@ -82,12 +82,12 @@ void opTitle00267430(void)
     void* frame;
     f32 layout[11];
     u8 color[4];
-    f32 scale;
     f32 alpha;
     f32 offsetX;
     f32 offsetY;
     f32 scaleX;
     f32 scaleY;
+    f32 scale;
     s32 timer;
     u32 random;
     s32 i;
@@ -195,7 +195,7 @@ void opTitle00267430(void)
             {
                 f32 t = (f32)(timer - 0xc) / 20.0f;
                 offsetX = t * 108.5f + 108.5f;
-                offsetY = t * -60.5f - 60.5f;
+                offsetY = t * -60.5f + -60.5f;
             }
             else
             {
@@ -263,7 +263,7 @@ void opTitle00267430(void)
                 }
             }
             offsetX = (405.0f - scale * 8.0f) - (scale * -8.0f + 188.0f);
-            offsetY = (scale * 84.0f + 23.0f) - (scale * 84.0f + 144.0f);
+            offsetY = (23.0f - scale * 6.0f) - (scale * -6.0f + 144.0f);
             if ((s32)timer < 0)
             {
                 offsetX = 0.0f;
@@ -430,7 +430,7 @@ void opTitle00267430(void)
             {
                 f32 t = (f32)(timer - 0xc) / 20.0f;
                 offsetX = t * 98.5f + 98.5f;
-                offsetY = t * -62.5f - 62.5f;
+                offsetY = t * -62.5f + -62.5f;
             }
             else
             {
@@ -475,7 +475,7 @@ void opTitle00267430(void)
             {
                 f32 t = (f32)(timer - 0xc) / 20.0f;
                 offsetX = t * 98.5f + 98.5f;
-                offsetY = t * -62.5f - 62.5f;
+                offsetY = t * -62.5f + -62.5f;
             }
             else
             {
