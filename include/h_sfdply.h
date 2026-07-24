@@ -40,9 +40,9 @@ typedef struct HSfd
     s16 state;                      // 0x1E4. See enum 'HSfdState'.
     s16 movieFrame;                 // 0x1E6
     s16 unknown1E8;                 // 0x1E8
-    u16 id;                         // 0x1EA. See enum 'HSfdId'.
+    s16 id;                         // 0x1EA. See enum 'HSfdId'.
     s16 unknown1EC;                 // 0x1EC
-    u16 stateTimer;                 // 0x1EE
+    s16 stateTimer;                 // 0x1EE
     u8 reserved1F0[0x04];           // 0x1F0
     u32 isStart;                    // 0x1F4
     s32 decodeResult;               // 0x1F8

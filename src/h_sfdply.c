@@ -1,6 +1,8 @@
 #include "Kernel/Kwln/kwln.h"
 #include "Kernel/Kwln/kwlnTask.h"
 #include "Script/scrTraceCode.h"
+#include "h_dbprt.h"
+#include "h_fade.h"
 #include "h_cdvd.h"
 #include "h_sfdply.h"
 #include "rw/rwplcore.h"
@@ -10,6 +12,49 @@ extern u8 rwGlobals_abs[];
 extern u8 D_0077e4e0[];
 #pragma alias D_00960090_abs D_00960090
 extern u8 D_00960090_abs[];
+extern f32 D_00960088;
+extern void (*D_00960090)(u32 state, u32 value);
+extern void (*D_00960094)(u32 state, void* value);
+extern void (*D_009600A0)(u32 primitive, void* vertices, s32 count);
+extern void* (*D_00960178)(u32 size, u32 flags);
+extern void* (*D_00960184)(u32 count, u32 size, u32 flags);
+extern void (*D_0096017c)(void* memory);
+extern u16 DAT_007e094e;
+extern void* D_0077e4f0;
+extern s16 D_005D4B70[];
+extern u8 D_005D4B74[];
+extern u8 D_005D4B7C[];
+extern u8 D_005D4B80[];
+extern u8 D_005D4B84[];
+extern u8 D_005D4B8C[];
+extern u8 D_005D4B90[];
+extern u8 D_005D4B92[];
+extern u8 D_005D4B94[];
+extern const char D_005D5250[];
+extern const char D_005D5260[];
+extern const char D_005D5280[];
+extern void* uGpffffb220;
+extern s16 uGpffffb228;
+extern s16 uGpffffb218;
+extern s32 uGpffffb230;
+extern s32 uGpffffb22c;
+extern char uGpffff8840[];
+extern void H_Pad_IgnoreRumbleCallback(s32 a, s32 b, s32 c, s32 d);
+extern void func_004b6500(void);
+extern void func_004aa5c0(void);
+extern void func_001cd8e0(void);
+extern void adminiForcePassedCheck(void);
+extern void func_003b5ab0(void);
+extern s32 func_004c2120(void* value);
+extern void K_Assert(const char* message, s32 line);
+extern void func_004b7690(void* value);
+extern void func_004faec0(void* stream, s32 a, s32 b);
+extern void func_004f1780(void* target, s32 mode);
+extern void func_00191d70(void* target, void* pixels, s32 width, s32 height);
+extern void* func_004fa8f0(s32 mode);
+extern int printf(const char* format, ...);
+extern void* memcpy(void* destination, const void* source, u32 size);
+#define HSFD_TABLE(base, index) ((u8*)(base) + ((index) * 0x28))
 extern f32 gUnk_007cadd0;
 extern void func_004aa390(f32 nearPlane);
 extern void func_004aa3d0(f32 farPlane);
@@ -334,23 +379,49 @@ static void H_SfdPlay_BeginStream(HSfd* work)
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
     HSfd* work;
-    s32 decodeStatus;
+    u8* camera;
+    u8* raster;
+    u8 frameInfo[0x30];
+    volatile u8 stackPad[0x30];
+    u8* source;
+    u8* destination;
+    u32 savedState;
+    s16 state;
+    s16 movieId;
+    s16 movieType;
+    s16 movieLimit;
+    s32 i;
+    s32 width;
+    s32 height;
+    s32 powerWidth;
+    s32 powerHeight;
+    s32 alpha;
+    s32 fadeValue;
+    s32 frameResult;
+    f32 reciprocalNear;
+    f32 cameraWidth;
+    f32 cameraHeight;
+    f32 topBottom;
+    void* decoder;
+    void* rasterTarget;
+    u8* config;
+    void* framePixels;
 
     work = (HSfd*)sfdPlayTask->workData;
-    if (work == NULL)
-    {
-        return KWLNTASK_CONTINUE;
-    }
+    state = work->state;
+    stackPad[0] = 0;
+    config = work->streamConfig;
+    movieId = work->id;
 
-    switch (work->state)
+    switch (state)
     {
         case HSFD_STATE_IDLE:
             if (work->ownsCamera != 0)
             {
                 work->ownsCamera = 0;
-                FUN_004aa550(kwlnGetMainCamera());
-                FUN_004b6350();
-                FUN_004b7630(D_0077e4e0);
+                func_004aa550(kwlnGetMainCamera());
+                func_004b6350();
+                func_004b7630(D_0077e4e0);
             }
             if (work->isStart != 0)
             {
@@ -361,63 +432,356 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             break;
 
         case HSFD_STATE_WAIT_FOR_FADE:
+            camera = (u8*)kwlnGetMainCamera();
+            reciprocalNear = 1.0f / *(f32*)(camera + 0x80);
+            uGpffffb228 = -1;
+            if (H_Fade_IsFadeOutDone() == 0)
+                return KWLNTASK_CONTINUE;
             work->stateTimer++;
-            if (work->stateTimer >= 3)
+            if (work->stateTimer == 1)
             {
-                work->stateTimer = 0;
+                func_004b6500();
+                func_004aa5c0();
                 work->ownsCamera = 1;
+                func_001cd8e0();
+                adminiForcePassedCheck();
+            }
+            if (work->stateTimer == 3)
+                func_003b5ab0();
+            if (work->stateTimer == 6)
+            {
+                if (func_004c2120(D_0077e4f0) != 0)
+                    K_Assert(D_005D5250, 0x180);
+                func_004b7690(D_0077e4e0);
+            }
+            if (work->stateTimer != 10)
+                break;
+
+            printf(D_005D5260);
+            H_Pad_IgnoreRumbleCallback(0, -1, 0, -1);
+            datSetFlag(0x1407, 1);
+            work->streamAux = *(void**)HSFD_TABLE(D_005D4B84, movieId);
+            memset(config, 0, 0x30);
+            *(s32*)(config + 0x20) = 0x11;
+            *(s32*)(config + 0x00) = 1;
+            *(s32*)(config + 0x04) = 0x4C4B40;
+            *(s32*)(config + 0x08) =
+                *(s32*)HSFD_TABLE(D_005D4B7C, movieId);
+            *(s32*)(config + 0x0C) =
+                *(s32*)HSFD_TABLE(D_005D4B80, movieId);
+            *(s32*)(config + 0x10) = 2;
+            *(s32*)(config + 0x14) = 1;
+            *(s32*)(config + 0x24) = 2;
+            decoder = func_0057c680(config);
+            work->decoder = decoder;
+            datSetFlag(0x141A, 1);
+            work->compressedFrameBuffer =
+                D_00960178((u32)((u8*)decoder + 0x40), 0x40000);
+            work->displayBuffer = D_00960184(1, 0x118000, 0x40000);
+            datSetFlag(0x141A, 0);
+            if (work->compressedFrameBuffer == NULL ||
+                work->displayBuffer == NULL)
+                goto cleanup;
+
+            *(void**)(config + 0x18) = work->compressedFrameBuffer;
+            work->streamDescriptor = func_0057d5d8(config);
+            if (work->streamDescriptor == NULL)
+            {
+                D_0096017c(work->compressedFrameBuffer);
+                work->compressedFrameBuffer = NULL;
+                if (work->displayBuffer != NULL)
+                {
+                    D_0096017c(work->displayBuffer);
+                    work->displayBuffer = NULL;
+                    uGpffffb220 = NULL;
+                }
+            }
+            func_0057e378(work->streamDescriptor, 0);
+            work->decoder = work->streamDescriptor;
+            if (work->streamAux != NULL)
+                func_001023f0(work->streamDescriptor,
+                              *(const char**)HSFD_TABLE(D_005D4B74, movieId), 1);
+            else
+                func_001023f0(work->streamDescriptor,
+                              *(const char**)HSFD_TABLE(D_005D4B74, movieId), 0);
+            datSetFlag(0x141A, 1);
+            movieType = *(s16*)HSFD_TABLE(D_005D4B70, movieId);
+            if (movieType == 5)
+                work->renderTarget = func_004ce0f0(0x280, 0x1C0, 0x20, 0x584);
+            else if (movieType == 6)
+                work->renderTarget = func_004ce0f0(0x280, 0x170, 0x20, 0x584);
+            datSetFlag(0x141A, 0);
+            if (work->renderTarget == NULL)
+                goto cleanup;
+
+            for (i = 0; i < 4; i++)
+            {
+                *(f32*)(work->quads[i].data + 8) = D_00960088;
+                *(f32*)(work->quads[i].data + 0x18) = reciprocalNear;
+                *(u32*)(work->quads[i].data + 0x20) = 0x437F0000;
+                *(u32*)(work->quads[i].data + 0x24) = 0x437F0000;
+                *(u32*)(work->quads[i].data + 0x28) = 0x437F0000;
+                if (*(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0)
+                    *(u32*)(work->quads[i].data + 0x2C) = 0;
+                else
+                    *(u32*)(work->quads[i].data + 0x2C) = 0x437F0000;
+            }
+            if (*(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0)
+            {
+                work->movieFrame = *(s16*)HSFD_TABLE(D_005D4B90, movieId);
+                work->unknown1E8 = 0;
                 work->state = HSFD_STATE_CREATE_STREAM;
             }
+            else
+                work->state = HSFD_STATE_CREATE_STREAM;
+
+            camera = (u8*)kwlnGetMainCamera();
+            raster = *(u8**)(camera + 0x60);
+            cameraWidth = (f32)*(s32*)(raster + 0x0C);
+            camera = (u8*)kwlnGetMainCamera();
+            raster = *(u8**)(camera + 0x60);
+            cameraHeight = (f32)*(s32*)(raster + 0x10);
+            reciprocalNear = 1.0f / *(f32*)(camera + 0x80);
+            movieType = *(s16*)HSFD_TABLE(D_005D4B70, movieId);
+            if (movieType == 5)
+            {
+                *(s32*)((u8*)work + 0xE0) = 0;
+                *(s32*)((u8*)work + 0x120) = 0;
+                *(f32*)((u8*)work + 0x160) = cameraWidth;
+                *(f32*)((u8*)work + 0x1A0) = cameraWidth;
+                *(s32*)((u8*)work + 0x124) = 0;
+                *(f32*)((u8*)work + 0x124) = cameraHeight;
+                *(s32*)((u8*)work + 0x164) = 0;
+                *(f32*)((u8*)work + 0x1A4) = cameraHeight;
+            }
+            else
+            {
+                *(s32*)((u8*)work + 0xE0) = 0;
+                *(s32*)((u8*)work + 0x120) = 0;
+                *(f32*)((u8*)work + 0x160) = cameraWidth;
+                *(f32*)((u8*)work + 0x1A0) = cameraWidth;
+                *(s32*)((u8*)work + 0xE4) = 0x42200000;
+                topBottom = cameraHeight - 40.0f;
+                *(f32*)((u8*)work + 0x124) = topBottom;
+                *(s32*)((u8*)work + 0x164) = 0x42200000;
+                *(f32*)((u8*)work + 0x1A4) = topBottom;
+            }
+            *(f32*)((u8*)work + 0xE8) = D_00960088;
+            *(f32*)((u8*)work + 0x128) = D_00960088;
+            *(f32*)((u8*)work + 0x168) = D_00960088;
+            *(f32*)((u8*)work + 0x1A8) = D_00960088;
+            powerWidth = 0x10;
+            powerHeight = 0x10;
+            width = *(s32*)HSFD_TABLE(D_005D4B7C, movieId) + 1;
+            height = *(s32*)HSFD_TABLE(D_005D4B80, movieId) + 1;
+            while (powerWidth < width)
+                powerWidth <<= 1;
+            while (powerHeight < height)
+                powerHeight <<= 1;
+            *(s32*)((u8*)work + 0xF0) = 0;
+            *(s32*)((u8*)work + 0x130) = 0;
+            *(f32*)((u8*)work + 0x170) = (f32)width / (f32)powerWidth;
+            *(f32*)((u8*)work + 0x1B0) = (f32)width / (f32)powerWidth;
+            *(s32*)((u8*)work + 0xF4) = 0;
+            *(f32*)((u8*)work + 0x134) = (f32)height / (f32)powerHeight;
+            *(s32*)((u8*)work + 0x174) = 0;
+            *(f32*)((u8*)work + 0x1B4) = (f32)height / (f32)powerHeight;
+            *(f32*)((u8*)work + 0xF8) = reciprocalNear;
+            *(f32*)((u8*)work + 0x138) = reciprocalNear;
+            *(f32*)((u8*)work + 0x178) = reciprocalNear;
+            *(f32*)((u8*)work + 0x1B8) = reciprocalNear;
             break;
 
         case HSFD_STATE_CREATE_STREAM:
-            H_SfdPlay_BeginStream(work);
-            break;
-
         case HSFD_STATE_PLAYING:
-            if (work->decoder == NULL)
+        case HSFD_STATE_FADE_OUT:
+            if (movieId == 1 || movieId == 0x23)
             {
-                work->state = HSFD_STATE_CLEANUP;
-                break;
+                if ((DAT_007e094e & 0x9FF) != 0)
+                    work->state = HSFD_STATE_CLEANUP;
             }
+            else if (movieId != 0x20 && movieId != 0x21 &&
+                     movieId != 0x2A && (DAT_007e094e & 0x800) != 0)
+                work->state = HSFD_STATE_CLEANUP;
 
-            decodeStatus = 0;
-            if (func_0057e530(work->decoder, &decodeStatus) != 0)
+            func_0057e530(work->decoder, (s32*)frameInfo);
+            framePixels = *(void**)frameInfo;
+            if (framePixels != NULL)
             {
-                func_0057ee50(work->decoder);
-                work->decodeResult = func_00581840(work->decoder);
-                work->playbackFrame++;
-                if ((work->decodeResult == 3) || (work->decodeResult == 4))
+                if (work->state == HSFD_STATE_FADE_OUT &&
+                    *(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0 &&
+                    *(s32*)frameInfo >= *(s16*)HSFD_TABLE(D_005D4B90, movieId))
                 {
-                    work->state = HSFD_STATE_FADE_OUT;
+                    if (movieId == 0x18 || movieId == 0x1C || movieId == 0x29)
+                    {
+                        H_Fade_SetType(8);
+                        H_Fade_SetCustomColor(0xFF, 0xFF, 0xFF);
+                    }
+                    else if (movieId == 0x17 || movieId == 0x0A || movieId == 0x0F)
+                    {
+                        H_Fade_SetType(8);
+                        H_Fade_SetCustomColor(0x0F, 0x1F, 0x28);
+                    }
                     work->fadeFrame = 0;
+                    work->state = HSFD_STATE_CLEANUP;
+                    if (uGpffffb228 != -1)
+                    {
+                        uGpffffb218 = uGpffffb228;
+                        uGpffffb228 = -1;
+                    }
+                }
+                work->frameWidth = *(s32*)(frameInfo + 0x0C);
+                work->frameHeight = *(s32*)(frameInfo + 0x10);
+                uGpffffb230 = *(s32*)(frameInfo + 0x14);
+                uGpffffb22c = *(s32*)(frameInfo + 0x18);
+                func_004faec0(func_004fa8f0(2), 0, 0);
+                memcpy(work->displayBuffer, framePixels,
+                       work->frameWidth * work->frameHeight * 4);
+                uGpffffb220 = work->displayBuffer;
+                source = framePixels;
+                destination = (u8*)work + 0x40;
+                for (i = 0; i < 9; i++)
+                {
+                    *(u64*)destination = *(u64*)source;
+                    *(u64*)(destination + 8) = *(u64*)(source + 8);
+                    source += 0x10;
+                    destination += 0x10;
+                }
+                if (work->state == HSFD_STATE_CREATE_STREAM)
+                {
+                    if (*(s16*)HSFD_TABLE(D_005D4B94, movieId) == 0)
+                        alpha = 0xFF;
+                    else
+                    {
+                        work->playbackFrame++;
+                        movieLimit = *(s16*)HSFD_TABLE(D_005D4B94, movieId);
+                        alpha = (work->playbackFrame * 0xFF) / movieLimit;
+                        if (work->playbackFrame == movieLimit)
+                            work->state = HSFD_STATE_PLAYING;
+                    }
+                    for (i = 0; i < 4; i++)
+                    {
+                        *(u32*)(work->quads[i].data + 0x20) = 0x437F0000;
+                        *(u32*)(work->quads[i].data + 0x24) = 0x437F0000;
+                        *(u32*)(work->quads[i].data + 0x28) = 0x437F0000;
+                        *(f32*)(work->quads[i].data + 0x2C) =
+                            (f32)(u8)alpha;
+                    }
+                }
+                if (work->state == HSFD_STATE_FADE_OUT)
+                {
+                    work->fadeFrame++;
+                    movieLimit = *(s16*)HSFD_TABLE(D_005D4B92, movieId);
+                    fadeValue = 0xFF -
+                        ((work->fadeFrame * 0xFF) / movieLimit & 0xFF);
+                    if (work->fadeFrame >= movieLimit)
+                        work->state = HSFD_STATE_CLEANUP;
+                    for (i = 0; i < 4; i++)
+                    {
+                        *(u32*)(work->quads[i].data + 0x20) = 0x437F0000;
+                        *(u32*)(work->quads[i].data + 0x24) = 0x437F0000;
+                        *(u32*)(work->quads[i].data + 0x28) = 0x437F0000;
+                        *(f32*)(work->quads[i].data + 0x2C) =
+                            (f32)(u8)fadeValue;
+                    }
                 }
             }
-            break;
-
-        case HSFD_STATE_FADE_OUT:
-            work->fadeFrame++;
-            if (work->fadeFrame >= 30)
-            {
+            func_0057ee50(work->decoder);
+            frameResult = func_00581840(work->decoder);
+            work->decodeResult = frameResult;
+            if (frameResult == 3 || frameResult == 4)
                 work->state = HSFD_STATE_CLEANUP;
+            if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
+            {
+                D_00960094(0x0E, &savedState);
+                D_00960090(0x0E, 0);
+                func_004f1780(work->renderTarget, 1);
+                if (uGpffffb220 != NULL)
+                {
+                    func_00191d70(work->renderTarget, uGpffffb220,
+                                  uGpffffb230, uGpffffb22c);
+                    D_00960090(0x14, 1);
+                    D_00960090(6, 0);
+                    D_00960090(7, 2);
+                    D_00960090(8, 0);
+                    D_00960090(0x0A, 5);
+                    D_00960090(0x0B, 9);
+                    D_00960090(9, 1);
+                    D_00960090(0x0C, 1);
+                    D_00960090(2, 3);
+                    D_00960090(1, (u32)work->renderTarget);
+                    D_009600A0(4, (u8*)work + 0xE0, 4);
+                }
+                func_004f1780(work->renderTarget, 0);
+                D_00960090(0x0E, savedState);
+                RwCameraEndUpdate(kwlnGetMainCamera());
             }
             break;
 
         case HSFD_STATE_CLEANUP:
-            H_SfdPlay_ResetTaskResources(work);
-            work->stateTimer = 0;
-            work->state = HSFD_STATE_IDLE;
-            if (work->isStart != 0)
+            if (uGpffffb228 != -1)
             {
-                return KWLNTASK_STOP;
+                uGpffffb218 = uGpffffb228;
+                uGpffffb228 = -1;
             }
+            if (movieId == 0x18 || movieId == 0x1C)
+            {
+                H_Fade_SetType(8);
+                H_Fade_SetCustomColor(0xFF, 0xFF, 0xFF);
+            }
+            goto cleanup;
+
+        case 7:
+            work->stateTimer = 0x1E;
+            work->state = 8;
+        case 8:
+            work->state = 9;
+        case 9:
+            work->state = 10;
+        case 10:
+            work->stateTimer--;
+            if (work->stateTimer == 0)
+                goto cleanup;
             break;
 
-        default:
-            work->state = HSFD_STATE_CLEANUP;
+        case 11:
+            H_Dbprt_FmtAt((RwV2d){2.0f, 10.0f}, D_005D5280);
+            H_Dbprt_FmtAt((RwV2d){2.0f, 11.0f}, uGpffff8840);
+            if ((DAT_007e094e & 0x10) != 0)
+                goto cleanup;
             break;
     }
+    return KWLNTASK_CONTINUE;
 
+cleanup:
+    if (work->isStart != 0)
+        return KWLNTASK_STOP;
+    if (work->decoder != NULL)
+    {
+        if (work->streamAux != NULL)
+            func_00584338(work->decoder);
+        func_0057db58(work->decoder);
+        work->decoder = NULL;
+    }
+    if (work->compressedFrameBuffer != NULL)
+    {
+        D_0096017c(work->compressedFrameBuffer);
+        work->compressedFrameBuffer = NULL;
+    }
+    if (work->displayBuffer != NULL)
+    {
+        D_0096017c(work->displayBuffer);
+        work->displayBuffer = NULL;
+        uGpffffb220 = NULL;
+    }
+    if (work->renderTarget != NULL)
+    {
+        func_004cde90(work->renderTarget);
+        work->renderTarget = NULL;
+    }
+    datSetFlag(0x1407, 0);
+    work->stateTimer = 0;
+    work->state = HSFD_STATE_IDLE;
     return KWLNTASK_CONTINUE;
 }
 
