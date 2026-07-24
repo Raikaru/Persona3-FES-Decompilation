@@ -45,10 +45,7 @@ void FUN_003b2c60(void *param_1,f32 param_2)
 
 #define FUN_003b2c60(...) ((void (*)(...))FUN_003b2c60)(__VA_ARGS__)
 #undef FUN_003b2cb0
-// Reconstructed body now matches the retail instruction stream except for four
-// allocator-only register differences in the final outer-loop pointer.
-// Candidate size is 732 bytes against the 736-byte retail window; tail is padding.
-// FUN_003B2CB0 NONMATCHING
+// FUN_003B2CB0 MATCHING
 
 
 
@@ -65,9 +62,11 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   int iVar2;
 
-  int iVar3;
+  int iVar6;
 
   int iVar4;
+
+  int iVar3;
 
   int iVar5;
 
@@ -151,9 +150,9 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   }
 
   *(float *)(iVar2 + 0x14) = param_1;
-  for (iVar3 = iVar2; iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x24)) {
+  for (iVar6 = iVar2; iVar6 != 0; iVar6 = *(int *)(iVar6 + 0x24)) {
 
-    for (iVar4 = *(int *)(iVar3 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
+    for (iVar4 = *(int *)(iVar6 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
 
       *(u32 *)(iVar4 + 0x10) = param_4;
 
