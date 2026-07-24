@@ -69,6 +69,15 @@ static u32 campFloatBits(f32 value)
         campDrawTransition((depth), (target), 0, 2, (mode), \
                            (tmp).u, *(u64*)&pair, 0, 0, 0, 0); \
     } while (0)
+#define CAMP_DRAW_CALC_FIRST_AT_TILE(tmp, depth, target, mode, xval, yval, delta, tile) \
+    do { \
+        pair.x = (xval); \
+        pair.y = (yval); \
+        (tmp).u = *(u64*)&pair; \
+        (tmp).f[0] = (tmp).f[0] + (delta); \
+        campDrawTransition((depth), (target), 0, 2, (mode), \
+                           (tmp).u, *(u64*)&pair, 0, (tile), 0, 0); \
+    } while (0)
 
 extern s16 DAT_005e3b5e[];
 extern s32 DAT_005e3b64;
@@ -520,47 +529,66 @@ void h_campDrawPersonaOverview(int param_1)
   }
   CAMP_DRAW_CALC_FIRST_AT(spd8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,
                        -53.0f, 61.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(sp98, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 2,
-                       -33.0f, 219.0f, 100.0f);
   CAMP_DRAW_CALC_FIRST_AT(spe0, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 2,
                        126.0f, 415.0f, 100.0f);
   CAMP_DRAW_CALC_FIRST_AT(spe8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
                        461.0f, 415.0f, 100.0f);
 }
 
+/* Reconstructed the retail transition aggregates and full equipment-entry
+ * dispatch, including per-entry packed-coordinate updates and inactive-slot
+ * clears.  The recovered calls intentionally preserve the contiguous pair
+ * updates and stack-passed tile values visible in retail.  This increases
+ * source coverage and object size toward the retail window, although the
+ * instruction schedule remains NONMATCHING. */
 // FUN_0014A490 NONMATCHING
 void h_campDrawPersonaEquipment(int param_1)
-
 {
-  u64 uVar1;
+  volatile CampBits sp68;
+  volatile CampPair pair;
+  volatile CampBits spb0;
+  volatile CampBits spb8;
+  volatile CampBits spc0;
+  volatile CampBits spc8;
+  volatile CampBits spd0;
+  volatile CampBits spe0;
+  volatile CampBits spe8;
+  volatile CampBits spf0;
+  volatile CampBits spf8;
+  volatile CampBits sp100;
+  volatile CampBits sp108;
+  volatile CampBits sp110;
+  volatile CampBits sp118;
+  volatile CampBits spa8;
+  volatile CampBits spa0;
+  volatile CampBits sp98;
+  volatile CampBits sp90;
+  volatile CampBits sp88;
+  volatile CampBits sp80;
+  volatile CampBits sp78;
+  volatile CampBits sp70;
   int iVar2;
   int iVar3;
   float fVar4;
-  u64 uStack_38;
-  
-  func_0018bc10(100.0f, (void*)(*(u32 *)(param_1 + 0xbc)), 0, 2, 2, 0x4140000042200000, 0x41400000430c0000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x44), 0, 2, 2, 0x41d80000435b0000, 0x41d80000439f8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0xcc), 0, 2, 2, 0x41d80000439f0000, 0x41d8000043d10000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x110), 0, 2, 2, 0x41d8000043aa8000, 0x41d8000043dc8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x154), 0, 2, 2, 0x41d8000043f20000, 0x41d8000044120000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x198), 0, 2, 2, 0x41d8000043fd8000, 0x41d800004417c000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1dc), 0, 2, 2, 0x4274000043630000, 0x4274000043a38000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x220), 0, 2, 2, 0x435b000043770000, 0x435b000043ad8000, 0, 0, 0, 0);
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x7f8), 0, 2, 2, 0x42860000440b8000, 0x4286000044248000, 0, 0, 0, 0);
+
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp68, 100.0f, (void*)(*(u32 *)(param_1 + 0xbc)), 2, 40.0f, 12.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp70, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x44), 2, 219.0f, 27.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp78, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0xcc), 2, 318.0f, 27.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp80, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x110), 2, 341.0f, 27.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp88, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x154), 2, 484.0f, 27.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp90, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x198), 2, 507.0f, 27.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp98, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1dc), 2, 227.0f, 61.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spa0, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x220), 2, 247.0f, 219.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spa8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x7f8), 2, 558.0f, 67.0f, 100.0f, 10);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (iVar3 < *(int *)(param_1 + 0x1c)) {
       fVar4 = (float)(iVar3 * 0x55) + 62.0f;
       iVar2 = iVar3 * 10;
-      uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar4 + 8.0f,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x1e) * 0x44), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 0);
-      uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar4 + 31.0f,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x1f) * 0x44), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 0);
-      uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar4 + 45.0f,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x20) * 0x44), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 0);
-      uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar4 + 64.0f,0x42820000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x21) * 0x44), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 0);
-      uVar1 = CAMP_PAIR_FLOAT_HIGH(fVar4 + 2.0f,0x41600000);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x22) * 0x44), 0, 2, 2, uVar1, uVar1, 0, 0, 0, 0);
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spb0, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x1e) * 0x44), 2, 65.0f, fVar4 + 8.0f, 0.0f, 4);
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spb8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x1f) * 0x44), 2, 65.0f, fVar4 + 31.0f, 0.0f, 4);
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spc0, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x20) * 0x44), 2, 65.0f, fVar4 + 45.0f, 0.0f, 4);
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spc8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x21) * 0x44), 2, 65.0f, fVar4 + 64.0f, 0.0f, 4);
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spd0, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar2 + 0x22) * 0x44), 2, 14.0f, fVar4 + 2.0f, 0.0f, 2);
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar3 * 0x2a8 + 0x950) = 0;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar3 * 0x2a8 + 0x994) = 0;
     }
@@ -575,31 +603,29 @@ void h_campDrawPersonaEquipment(int param_1)
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x994) = 0;
     }
   }
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1298), 0, 2, 2, 0x43cf800042780000, 0x43cf800043220000, 0, 0, 0, 0);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spe0, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1298), 2, 62.0f, 415.0f, 100.0f, 10);
   *(u32 *)(*(int *)(param_1 + 0xbc) + 0x12e0) = 0;
-  func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 0, 2, 2, 0x43cf8000436f0000, 0x43cf800043a98000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(u32 *)(param_1 + 0xc4)), 0, 2, 1, 0x41400000438c8000, 0x4140000043be8000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 0, 2, 1, 0x41d80000c2ae0000, 0x41d8000041500000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 0, 2, 1, 0x41d8000041400000, 0x41d8000042e00000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 0, 2, 1, 0x41d80000420c0000, 0x41d8000043070000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 0, 2, 1, 0x41d80000432d0000, 0x41d8000043888000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 0, 2, 1, 0x41d8000043490000, 0x41d8000043968000, 0, 0, 0, 0);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spe8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 2, 239.0f, 415.0f, 100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spf0, 100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 1, 381.0f, 12.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spf8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 1, 13.0f, 27.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp100, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 1, 112.0f, 27.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp108, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 1, 135.0f, 27.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp110, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 1, 273.0f, 27.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp118, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 1, 301.0f, 27.0f, -100.0f, 10);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (*(int *)(param_1 + 0x1c) + -1 < iVar3) {
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2ac) = 0;
     }
     else {
       fVar4 = (float)(iVar3 * 0x55) + 64.0f;
-      uStack_38 = (u32)(u32)fVar4 << 0x20;
+      CAMP_DRAW_CALC_FIRST_AT_TILE(spe0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 610.0f, fVar4, -610.0f, 10);
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2e8) = 0;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, uStack_38, CAMP_PAIR_FLOAT_HIGH(fVar4,0x44188000), 0, 0, 0, 0);
     }
   }
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 0, 2, 1, 0x42740000c2540000, 0x42740000423c0000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 0, 2, 1, 0x435b0000c2040000, 0x435b000042860000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 0, 2, 1, 0x43cf800042fc0000, 0x43cf800043620000, 0, 0, 0, 0);
-  func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 0, 2, 1, 0x43cf800043e68000, 0x43cf8000440c4000, 0, 0, 0, 0);
-  return;
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spf0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 1, 47.0f, 61.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(spf8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x594), 1, 67.0f, 219.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp100, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 1, 226.0f, 415.0f, -100.0f, 10);
+  CAMP_DRAW_CALC_FIRST_AT_TILE(sp108, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 1, 561.0f, 415.0f, -100.0f, 10);
 }
 
 // FUN_0014B210 NONMATCHING
