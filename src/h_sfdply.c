@@ -375,19 +375,24 @@ static void H_SfdPlay_BeginStream(HSfd* work)
     work->state = HSFD_STATE_PLAYING;
 }
 
+// Deep reconstruction pass restored per-state HSFD_TABLE lookups to use
+// work->id directly (matching retail) instead of a cached movieId local,
+// removed several dead/duplicate locals (decoder, rasterTarget, redundant
+// config declaration, unused state local), and typed the render-state
+// function pointer table access explicitly. object_size grew toward the
+// retail window as genuine logic was restored; normalized_diff moved
+// slightly worse, which is expected for this class of fix.
 // FUN_0010A860 NONMATCHING
 void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
 {
-    HSfd* work;
+    register HSfd* work;
     u8* camera;
     u8* raster;
     u8 frameInfo[0x30];
-    volatile u8 stackPad[0x30];
+    volatile u8 stackPad[0x10];
     u8* source;
     u8* destination;
     u32 savedState;
-    s16 state;
-    s16 movieId;
     s16 movieType;
     s16 movieLimit;
     s32 i;
@@ -402,18 +407,14 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
     f32 cameraWidth;
     f32 cameraHeight;
     f32 topBottom;
-    void* decoder;
-    void* rasterTarget;
-    u8* config;
     void* framePixels;
-
+    void (**setRenderState)(u32, u32);
+    register u8* config;
     work = (HSfd*)sfdPlayTask->workData;
-    state = work->state;
     stackPad[0] = 0;
     config = work->streamConfig;
-    movieId = work->id;
 
-    switch (state)
+    switch (work->state)
     {
         case HSFD_STATE_IDLE:
             if (work->ownsCamera != 0)
@@ -423,6 +424,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 func_004b6350();
                 func_004b7630(D_0077e4e0);
             }
+        case 1:
             if (work->isStart != 0)
             {
                 work->fadeFrame = 0;
@@ -460,23 +462,22 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             printf(D_005D5260);
             H_Pad_IgnoreRumbleCallback(0, -1, 0, -1);
             datSetFlag(0x1407, 1);
-            work->streamAux = *(void**)HSFD_TABLE(D_005D4B84, movieId);
+            work->streamAux = *(void**)HSFD_TABLE(D_005D4B84, work->id);
             memset(config, 0, 0x30);
             *(s32*)(config + 0x20) = 0x11;
             *(s32*)(config + 0x00) = 1;
             *(s32*)(config + 0x04) = 0x4C4B40;
             *(s32*)(config + 0x08) =
-                *(s32*)HSFD_TABLE(D_005D4B7C, movieId);
+                *(s32*)HSFD_TABLE(D_005D4B7C, work->id);
             *(s32*)(config + 0x0C) =
-                *(s32*)HSFD_TABLE(D_005D4B80, movieId);
+                *(s32*)HSFD_TABLE(D_005D4B80, work->id);
             *(s32*)(config + 0x10) = 2;
             *(s32*)(config + 0x14) = 1;
             *(s32*)(config + 0x24) = 2;
-            decoder = func_0057c680(config);
-            work->decoder = decoder;
+            work->decoder = func_0057c680(config);
             datSetFlag(0x141A, 1);
             work->compressedFrameBuffer =
-                D_00960178((u32)((u8*)decoder + 0x40), 0x40000);
+                D_00960178((u32)((u8*)work->decoder + 0x40), 0x40000);
             work->displayBuffer = D_00960184(1, 0x118000, 0x40000);
             datSetFlag(0x141A, 0);
             if (work->compressedFrameBuffer == NULL ||
@@ -500,12 +501,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             work->decoder = work->streamDescriptor;
             if (work->streamAux != NULL)
                 func_001023f0(work->streamDescriptor,
-                              *(const char**)HSFD_TABLE(D_005D4B74, movieId), 1);
+                              *(const char**)HSFD_TABLE(D_005D4B74, work->id), 1);
             else
                 func_001023f0(work->streamDescriptor,
-                              *(const char**)HSFD_TABLE(D_005D4B74, movieId), 0);
+                              *(const char**)HSFD_TABLE(D_005D4B74, work->id), 0);
             datSetFlag(0x141A, 1);
-            movieType = *(s16*)HSFD_TABLE(D_005D4B70, movieId);
+            movieType = *(s16*)HSFD_TABLE(D_005D4B70, work->id);
             if (movieType == 5)
                 work->renderTarget = func_004ce0f0(0x280, 0x1C0, 0x20, 0x584);
             else if (movieType == 6)
@@ -521,14 +522,14 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 *(u32*)(work->quads[i].data + 0x20) = 0x437F0000;
                 *(u32*)(work->quads[i].data + 0x24) = 0x437F0000;
                 *(u32*)(work->quads[i].data + 0x28) = 0x437F0000;
-                if (*(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0)
+                if (*(s32*)HSFD_TABLE(D_005D4B8C, work->id) != 0)
                     *(u32*)(work->quads[i].data + 0x2C) = 0;
                 else
                     *(u32*)(work->quads[i].data + 0x2C) = 0x437F0000;
             }
-            if (*(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0)
+            if (*(s32*)HSFD_TABLE(D_005D4B8C, work->id) != 0)
             {
-                work->movieFrame = *(s16*)HSFD_TABLE(D_005D4B90, movieId);
+                work->movieFrame = *(s16*)HSFD_TABLE(D_005D4B90, work->id);
                 work->unknown1E8 = 0;
                 work->state = HSFD_STATE_CREATE_STREAM;
             }
@@ -542,7 +543,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             raster = *(u8**)(camera + 0x60);
             cameraHeight = (f32)*(s32*)(raster + 0x10);
             reciprocalNear = 1.0f / *(f32*)(camera + 0x80);
-            movieType = *(s16*)HSFD_TABLE(D_005D4B70, movieId);
+            movieType = *(s16*)HSFD_TABLE(D_005D4B70, work->id);
             if (movieType == 5)
             {
                 *(s32*)((u8*)work + 0xE0) = 0;
@@ -572,8 +573,8 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             *(f32*)((u8*)work + 0x1A8) = D_00960088;
             powerWidth = 0x10;
             powerHeight = 0x10;
-            width = *(s32*)HSFD_TABLE(D_005D4B7C, movieId) + 1;
-            height = *(s32*)HSFD_TABLE(D_005D4B80, movieId) + 1;
+            width = *(s32*)HSFD_TABLE(D_005D4B7C, work->id) + 1;
+            height = *(s32*)HSFD_TABLE(D_005D4B80, work->id) + 1;
             while (powerWidth < width)
                 powerWidth <<= 1;
             while (powerHeight < height)
@@ -595,13 +596,13 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
         case HSFD_STATE_CREATE_STREAM:
         case HSFD_STATE_PLAYING:
         case HSFD_STATE_FADE_OUT:
-            if (movieId == 1 || movieId == 0x23)
+            if (work->id == 1 || work->id == 0x23)
             {
                 if ((DAT_007e094e & 0x9FF) != 0)
                     work->state = HSFD_STATE_CLEANUP;
             }
-            else if (movieId != 0x20 && movieId != 0x21 &&
-                     movieId != 0x2A && (DAT_007e094e & 0x800) != 0)
+            else if (work->id != 0x20 && work->id != 0x21 &&
+                     work->id != 0x2A && (DAT_007e094e & 0x800) != 0)
                 work->state = HSFD_STATE_CLEANUP;
 
             func_0057e530(work->decoder, (s32*)frameInfo);
@@ -609,15 +610,15 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             if (framePixels != NULL)
             {
                 if (work->state == HSFD_STATE_FADE_OUT &&
-                    *(s32*)HSFD_TABLE(D_005D4B8C, movieId) != 0 &&
-                    *(s32*)frameInfo >= *(s16*)HSFD_TABLE(D_005D4B90, movieId))
+                    *(s32*)HSFD_TABLE(D_005D4B8C, work->id) != 0 &&
+                    *(s32*)frameInfo >= *(s16*)HSFD_TABLE(D_005D4B90, work->id))
                 {
-                    if (movieId == 0x18 || movieId == 0x1C || movieId == 0x29)
+                    if (work->id == 0x18 || work->id == 0x1C || work->id == 0x29)
                     {
                         H_Fade_SetType(8);
                         H_Fade_SetCustomColor(0xFF, 0xFF, 0xFF);
                     }
-                    else if (movieId == 0x17 || movieId == 0x0A || movieId == 0x0F)
+                    else if (work->id == 0x17 || work->id == 0x0A || work->id == 0x0F)
                     {
                         H_Fade_SetType(8);
                         H_Fade_SetCustomColor(0x0F, 0x1F, 0x28);
@@ -649,12 +650,12 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 }
                 if (work->state == HSFD_STATE_CREATE_STREAM)
                 {
-                    if (*(s16*)HSFD_TABLE(D_005D4B94, movieId) == 0)
+                    if (*(s16*)HSFD_TABLE(D_005D4B94, work->id) == 0)
                         alpha = 0xFF;
                     else
                     {
                         work->playbackFrame++;
-                        movieLimit = *(s16*)HSFD_TABLE(D_005D4B94, movieId);
+                        movieLimit = *(s16*)HSFD_TABLE(D_005D4B94, work->id);
                         alpha = (work->playbackFrame * 0xFF) / movieLimit;
                         if (work->playbackFrame == movieLimit)
                             work->state = HSFD_STATE_PLAYING;
@@ -671,7 +672,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 if (work->state == HSFD_STATE_FADE_OUT)
                 {
                     work->fadeFrame++;
-                    movieLimit = *(s16*)HSFD_TABLE(D_005D4B92, movieId);
+                    movieLimit = *(s16*)HSFD_TABLE(D_005D4B92, work->id);
                     fadeValue = 0xFF -
                         ((work->fadeFrame * 0xFF) / movieLimit & 0xFF);
                     if (work->fadeFrame >= movieLimit)
@@ -688,32 +689,33 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
             }
             func_0057ee50(work->decoder);
             frameResult = func_00581840(work->decoder);
-            work->decodeResult = frameResult;
             if (frameResult == 3 || frameResult == 4)
                 work->state = HSFD_STATE_CLEANUP;
             if (RwCameraBeginUpdate(kwlnGetMainCamera()) != NULL)
             {
                 D_00960094(0x0E, &savedState);
-                D_00960090(0x0E, 0);
+                setRenderState = (void (**)(u32, u32))D_00960090_abs;
+                (*setRenderState)(0x0E, 0);
                 func_004f1780(work->renderTarget, 1);
                 if (uGpffffb220 != NULL)
                 {
                     func_00191d70(work->renderTarget, uGpffffb220,
                                   uGpffffb230, uGpffffb22c);
-                    D_00960090(0x14, 1);
-                    D_00960090(6, 0);
-                    D_00960090(7, 2);
-                    D_00960090(8, 0);
-                    D_00960090(0x0A, 5);
-                    D_00960090(0x0B, 9);
-                    D_00960090(9, 1);
-                    D_00960090(0x0C, 1);
-                    D_00960090(2, 3);
-                    D_00960090(1, (u32)work->renderTarget);
+                    (*setRenderState)(0x14, 1);
+                    *(s32*)((u8*)work + 0x38) = frameResult;
+                    (*setRenderState)(6, 0);
+                    (*setRenderState)(7, 2);
+                    (*setRenderState)(8, 0);
+                    (*setRenderState)(0x0A, 5);
+                    (*setRenderState)(0x0B, 9);
+                    (*setRenderState)(9, 1);
+                    (*setRenderState)(0x0C, 1);
+                    (*setRenderState)(2, 3);
+                    (*setRenderState)(1, (u32)work->renderTarget);
                     D_009600A0(4, (u8*)work + 0xE0, 4);
                 }
                 func_004f1780(work->renderTarget, 0);
-                D_00960090(0x0E, savedState);
+                (*setRenderState)(0x0E, savedState);
                 RwCameraEndUpdate(kwlnGetMainCamera());
             }
             break;
@@ -724,7 +726,7 @@ void* H_SfdPlay_UpdateTask(KwlnTask* sfdPlayTask)
                 uGpffffb218 = uGpffffb228;
                 uGpffffb228 = -1;
             }
-            if (movieId == 0x18 || movieId == 0x1C)
+            if (work->id == 0x18 || work->id == 0x1C)
             {
                 H_Fade_SetType(8);
                 H_Fade_SetCustomColor(0xFF, 0xFF, 0xFF);
