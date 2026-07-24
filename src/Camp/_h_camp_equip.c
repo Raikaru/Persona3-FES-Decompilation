@@ -641,6 +641,7 @@ static inline void campEquipAnimateList(u32* work, s32 mode)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_0012C430 NONMATCHING
 void* FUN_0012c430(KwlnTask* task)
 {
@@ -803,6 +804,7 @@ void* FUN_0012c430(KwlnTask* task)
     }
     return NULL;
 }
+#pragma opt_loop_invariants off
 
 static inline CampVec2 campEquipRecordPosition(const u8* record)
 {
@@ -916,14 +918,16 @@ static void campEquipDrawCategory(void* work, u8* record, s16 category,
     }
 }
 
+#pragma opt_loop_invariants on
+#pragma optimization_level 3
 // FUN_0012E3B0 NONMATCHING
 void FUN_0012e3b0(void* work, s32 index, u8* record)
 {
+    register void* parent;
     s32 styles[4];
     char labels[4][0x100];
     CampVec2 position;
     s32 i;
-    register void* parent;
 
     for (i = 0; i < 4; i++) {
         s16 equipment;
@@ -1290,6 +1294,8 @@ void FUN_0012e3b0(void* work, s32 index, u8* record)
         return;
     }
 }
+#pragma optimization_level 2
+#pragma opt_loop_invariants off
 
 static void campEquipDrawEquipmentEffect(void* work, u8* record,
                                          s32 tile, f32 xOffset, f32 yOffset)
@@ -1311,8 +1317,9 @@ static void campEquipDrawEquipmentEffect(void* work, u8* record,
 }
 
 static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
-                                  s32 yOffset)
+                                  s32 yOffset, char* text)
 {
+    register void* parent;
     s32 row;
     s32 first;
     s32 count;
@@ -1320,9 +1327,8 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
     f32 scale;
     void* atlas;
     u8 alpha;
-    char text[0x100];
 
-    first = *(s32*)((u8*)work + 0x20);
+    first = *(s32*)((u8*)work + 0x24);
     count = *(s32*)((u8*)work + 0x2ac);
     pcId = *(s16*)((u8*)work + 0x12);
     scale = *(f32*)(record + 0x24);
@@ -1344,55 +1350,57 @@ static inline void campEquipDrawItemList(void* work, u8* record, s32 xOffset,
         id = datGetEquipmentId(pcId, equipment);
         effect = datGetEquipmentEffect(pcId, equipment);
         sprintf(text, "%d", (s32)func_00171110(id, effect));
-        selected = *(s32*)((u8*)work + 0x24) == item;
+        selected = *(s32*)((u8*)work + 0x20) == item;
         y = *(f32*)(record + 0x3c) + (f32)(row * 30);
-        FUN_001159f0(*(f32*)(record + 0x38) + (f32)xOffset, y,
-                     atlas, selected != 0 ? 0x25 : 0x26, scale, alpha);
+        campEquipDrawSpriteCall(
+            parent, atlas, selected != 0 ? 0x25 : 0x26, alpha,
+            *(f32*)(record + 0x38) + (f32)xOffset, y, scale);
         FUN_003b2cb0(scale, (s32)(*(f32*)(record + 0x38) + xOffset + 20),
                      (s32)y, 0xff - alpha, selected != 0 ? 6 : 10,
                      1, text, 0x10, 0);
     }
 }
+#pragma opt_loop_invariants on
 // FUN_0012F6D0 NONMATCHING
-void FUN_0012f6d0(void* work, s32 index, void* recordData)
+void FUN_0012f6d0(void* work, s32 index, u8* record)
 {
-    u8* record;
-    s16 category;
-    CampVec2 position;
-    f32 scale;
-    void* atlas;
-    u8 alpha;
+    register void* parent;
+    char text[0x100];
 
-    if (index < 0 || index >= 8) {
+    if (index >= 8) {
         return;
     }
-    record = (u8*)recordData;
-    category = *(s16*)((u8*)work + 0x1c);
-    position = campEquipRecordPosition(record);
-    scale = *(f32*)(record + 0x24);
-    atlas = *(void**)((u8*)work + 0x2b0);
-    alpha = (u8)*(u32*)(record + 0x40);
 
     switch (index) {
     case 0:
-        campEquipDrawSprite(atlas, 0x17, scale, position.x, position.y,
-                            alpha);
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b0), 0x17,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         break;
     case 1:
-        switch (category) {
+        switch (*(s16*)((u8*)work + 0x1c)) {
         case 0:
-            campEquipDrawSprite(atlas, 0x12, scale, position.x, position.y,
-                                alpha);
-            campEquipDrawSprite(atlas, 0x15, scale, position.x + 89.0f,
-                                position.y, alpha);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x12,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+                *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x15,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 89.0f,
+                *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
             break;
         case 1:
-            campEquipDrawSprite(atlas, 0x13, scale, position.x + 12.0f,
-                                position.y, alpha);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x13,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 12.0f,
+                *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
             break;
         case 2:
-            campEquipDrawSprite(atlas, 0x14, scale, position.x + 12.0f,
-                                position.y, alpha);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x14,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 12.0f,
+                *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
             break;
         default:
             break;
@@ -1405,43 +1413,59 @@ void FUN_0012f6d0(void* work, s32 index, void* recordData)
             s32 style;
             u16 id;
             u8 effect;
-            char text[0x100];
 
             pcId = *(s16*)((u8*)work + 0x12);
-            equipment = datGetEquipmentIdx(pcId, category);
+            equipment = datGetEquipmentIdx(
+                pcId, *(s16*)((u8*)work + 0x1c));
             style = FUN_0012df50(func_0016f720(1, equipment));
             id = datGetEquipmentId(pcId, equipment);
             effect = func_0016f810(pcId, equipment);
             sprintf(text, "%d", (s32)func_00171110(id, effect));
-            campEquipDrawSprite(atlas, 0x18, scale, position.x, position.y,
-                                alpha);
-            campEquipDrawSprite(atlas, style, scale, position.x + 48.0f,
-                                position.y + 6.0f, alpha);
-            FUN_003b2cb0(scale, (s32)(position.x + 179.0f),
-                         (s32)(position.y + 10.0f), 0xff - alpha,
-                         category == 0 ? 6 : 10, 1, text, 0x10, 0x78);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x18,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+                *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), style,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 48.0f,
+                *(f32*)(record + 0x3c) + 6.0f, *(f32*)(record + 0x24));
+            FUN_003b2cb0(
+                *(f32*)(record + 0x24),
+                (s32)(*(f32*)(record + 0x38) + 179.0f),
+                (s32)(*(f32*)(record + 0x3c) + 10.0f),
+                0xff - (u8)*(u32*)(record + 0x40),
+                *(s16*)((u8*)work + 0x1c) == 0 ? 6 : 10, 1, text, 0x10,
+                0x78);
         }
         break;
     case 3:
-        campEquipDrawSprite(atlas, 0x18, scale, position.x, position.y,
-                            alpha);
-        campEquipDrawItemList(work, record, 0, 0);
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b0), 0x18,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
+        campEquipDrawItemList(work, record, 0, 0, text);
         break;
     case 4:
-        campEquipDrawSprite(atlas, 0x27, scale, position.x + 483.0f,
-                            position.y + 1.0f, alpha);
-        campEquipDrawSprite(atlas, 0x28, scale, position.x + 483.0f,
-                            position.y + 3.0f, alpha);
-        campEquipDrawItemList(work, record, 16, -10);
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b0), 0x27,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 483.0f,
+            *(f32*)(record + 0x3c) + 1.0f, *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b0), 0x28,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 483.0f,
+            *(f32*)(record + 0x3c) + 3.0f, *(f32*)(record + 0x24));
+        campEquipDrawItemList(work, record, 16, -10, text);
         break;
     case 5:
-        campEquipDrawSprite(atlas, 0x1b, scale, position.x, position.y,
-                            alpha);
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b0), 0x1b,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         break;
     case 6:
         {
             s16 pcId;
-            s16 equipment;
+            u16 equipment;
             u16 id;
             u8 effect;
 
@@ -1451,20 +1475,31 @@ void FUN_0012f6d0(void* work, s32 index, void* recordData)
                                  *(s32*)((u8*)work + 0x24)) * 2);
             id = datGetEquipmentId(pcId, equipment);
             effect = datGetEquipmentEffect(pcId, equipment);
-            FUN_003c7e20(scale, (s32)position.x, (s32)position.y,
-                         0xff - alpha, 1, 10, 1,
-                         (id & 0xffff) | ((effect & 0xff) << 16));
+            FUN_003c7e20(
+                *(f32*)(record + 0x24), (s32)*(f32*)(record + 0x38),
+                (s32)*(f32*)(record + 0x3c),
+                0xff - (u8)*(u32*)(record + 0x40), 1, 10, 1,
+                (id & 0xffff) | ((effect & 0xff) << 16));
         }
         break;
     case 7:
-        atlas = *(void**)((u8*)work + 0x2b4);
-        FUN_001159f0(position.x, position.y, atlas, 0, scale, alpha);
-        FUN_001159f0(position.x + 1.0f, position.y + 32.0f, atlas, 6,
-                     scale, alpha);
-        campEquipDrawSprite(DAT_00833BA0, 2, scale, position.x + 435.0f,
-                            position.y + 2.0f, alpha);
-        campEquipDrawSprite(DAT_00833BA0, 1, scale, position.x + 561.0f,
-                            position.y + 2.0f, alpha);
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b4), 0,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(
+            parent, *(void**)((u8*)work + 0x2b4), 6,
+            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 1.0f,
+            *(f32*)(record + 0x3c) + 32.0f, *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(
+            parent, DAT_00833BA0, 2, (u8)*(u32*)(record + 0x40),
+            *(f32*)(record + 0x38) + 435.0f,
+            *(f32*)(record + 0x3c) + 2.0f, *(f32*)(record + 0x24));
+        campEquipDrawSpriteCall(
+            parent, DAT_00833BA0, 1, (u8)*(u32*)(record + 0x40),
+            *(f32*)(record + 0x38) + 561.0f,
+            *(f32*)(record + 0x3c) + 2.0f, *(f32*)(record + 0x24));
         break;
     }
 }
+#pragma opt_loop_invariants off
