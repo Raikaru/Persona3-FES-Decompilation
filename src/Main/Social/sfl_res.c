@@ -160,8 +160,8 @@ void sflRes0020d7d0(void* value)
     sSflRes = work;
 }
 
-// One commutative addu operand order remains compiler-selected; all data and call sequences match.
-// FUN_0020d820 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_0020d820 MATCHING
 void sflRes0020d820(void)
 {
     u32* work;
@@ -345,6 +345,7 @@ void sflRes0020d820(void)
         *work &= ~0x10u;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_0020dfe0
 u32 sflRes0020dfe0(void)
