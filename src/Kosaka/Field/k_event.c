@@ -224,54 +224,58 @@ done:
     return result;
 }
 
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma opt_loop_invariants on
 // FUN_001c65e0 NONMATCHING
 u32 func_001c65e0(const FldUnit* unit)
 {
-    const FldUnit* target;
-    FldUnit* units;
-    const s16* thresholds;
+    s32 i;
+    s32 j;
+    s32 active;
+    s32 sum;
+    s32 average;
     u32 result;
     u32 expected;
     u32 valid;
-    s32 sum;
-    s32 active;
-    s32 i;
-    s32 average;
-
+    const FldUnit* target;
+    const s16* thresholds;
     target = unit;
     result = true;
     expected = result;
-    if (datGetFlag(0xc65) != expected)
+    if (datGetFlag(0xc65) == expected)
     {
-        goto scan;
+        return expected;
     }
-    goto done;
-
-scan:
     sum = 0;
     active = 0;
-    units = gFldUnitsPc;
-    for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
-        valid = false;
-        if (units[i].genusBase != NULL && units[i].resrc != NULL)
+        FldUnit* units;
+        i = 0;
+        units = gFldUnitsPc;
+        for (; i < FLDUNIT_PC_MAX; i++)
         {
-            valid = true;
-        }
-        if (valid != false)
-        {
-            sum += units[i].unk_184;
-            active++;
+            valid = false;
+            if (units[i].genusBase != NULL && units[i].resrc != NULL)
+            {
+                valid = true;
+            }
+            valid = valid != false;
+            if (valid == 1)
+            {
+                sum += units[i].unk_184;
+                active++;
+            }
         }
     }
 
     average = sum / active;
     thresholds = D_006836B0;
-    for (i = 0; thresholds[i * 2] != -1; i++)
+    for (j = 0; thresholds[j * 2] != -1; j++)
     {
-        if (average <= thresholds[i * 2])
+        if (average <= thresholds[j * 2])
         {
-            if ((average - target->unk_184) < thresholds[i * 2 + 1])
+            if ((average - target->unk_184) < thresholds[j * 2 + 1])
             {
                 goto done;
             }
@@ -282,6 +286,7 @@ scan:
 done:
     return result;
 }
+#pragma pop
 
 // Reconstructed cell search, nearest-distance filtering, and collision raycast.
 // Residual MWCC register/control-flow ordering remains; 744B object vs 768B retail window.
