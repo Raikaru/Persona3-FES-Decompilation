@@ -58,6 +58,14 @@ extern s32 FUN_00171110();
 extern s32 FUN_00171250();
 extern s32 FUN_00173220();
 extern s32 FUN_0030c220();
+/* Typed ABI aliases keep the scale in f12 instead of treating it as a ninth integer argument. */
+#pragma alias FUN_003b2cb0_typed FUN_003b2cb0
+extern s32 FUN_003b2cb0_typed(f32 scale, s32 x, s32 y, s32 color,
+                              s32 font, s32 alignment, const char* text,
+                              s32 maxWidth, s32 shadow);
+#pragma alias FUN_0040eb50_typed FUN_0040eb50
+extern s32 FUN_0040eb50_typed(f32 scale, s32 x, s32 y, u8 color, s16 font,
+                              const char* text, s32 maxWidth);
 extern s32 FUN_003b2cb0();
 extern s32 FUN_003b32d0();
 extern s32 FUN_003c3fe0();
@@ -1036,7 +1044,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
         record = FUN_00403880(dataId);
         category = *((u8*)record + 6);
         if (category == 0) {
-            dataId = *((u16*)record + 4);
+            dataId = *((u16*)record + 2);
             if (FUN_00171250(dataId) == 4) {
                 campMenuDrawSprite(parent, DAT_00833B70, 0x1b,
                                    item->alpha, item->x, item->y,
@@ -1054,61 +1062,37 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             }
             FUN_00523ac8(text, 0x7cb66c,
                          FUN_00171110(dataId, *((s8*)record + 10)));
-            width = FUN_003b2cb0((s32)(item->x + 35.0f),
-                                 (s32)(item->y + 11.0f), alpha,
-                                 6, 1, text, 0x11, 0, item->scale);
+            width = FUN_003b2cb0_typed(item->scale,
+                                       (s32)(item->x + 35.0f),
+                                       (s32)(item->y + 11.0f), alpha,
+                                       6, 1, (const char*)text, 0x11, 0);
             campMenuDrawSprite(parent, *labels, 0x33, item->alpha,
                                item->x + 41.0f + (f32)width,
                                item->y + 7.0f, item->scale);
-            if (*((u8*)record + 7) >= 10) {
-                campMenuDrawSprite(parent, FUN_001120a0(1), 0xb,
-                                   item->alpha,
+            value = *((u8*)record + 7);
+            if (value >= 10) {
+                campMenuDrawSprite(parent, FUN_001120a0(1),
+                                   value / 10 + 0xb, item->alpha,
+                                   item->x + 72.0f + (f32)width,
+                                   item->y + 12.0f, item->scale);
+                campMenuDrawSprite(parent, FUN_001120a0(1),
+                                   value % 10 + 0xb, item->alpha,
+                                   item->x + 88.0f + (f32)width,
+                                   item->y + 12.0f, item->scale);
+            } else {
+                campMenuDrawSprite(parent, FUN_001120a0(1),
+                                   value + 0xb, item->alpha,
                                    item->x + 72.0f + (f32)width,
                                    item->y + 12.0f, item->scale);
             }
         } else if (category == 3) {
             FUN_00523ac8(text, 0x7cb67c, *((u32*)record + 2));
-            width = FUN_0040eb50((s32)item->x,
-                                 (s32)(item->y + 16.0f), alpha,
-                                 3, text, 8, item->scale);
+            width = FUN_0040eb50_typed(item->scale, (s32)item->x,
+                                       (s32)(item->y + 16.0f),
+                                       (u8)alpha, 3, (const char*)text, 8);
             campMenuDrawSprite(parent, *labels, 0x35, item->alpha,
                                item->x + 3.0f + (f32)width,
                                item->y + 7.0f, item->scale);
-        } else {
-            values = (u32*)FUN_00170ed0(dataId, &valueKind);
-            valueU = 0;
-            if (values != NULL) {
-                switch (valueKind) {
-                case 0:
-                    valueU = values[0];
-                    break;
-                case 1:
-                case 2:
-                case 3:
-                    valueU = values[1];
-                    break;
-                default:
-                    break;
-                }
-            }
-            frame = FUN_0012df50(valueU) * 2 + 1;
-            campMenuDrawSprite(parent, DAT_00833B70, frame,
-                               item->alpha, item->x, item->y,
-                               item->scale);
-            FUN_00523ac8(text, 0x7cb66c,
-                         FUN_00171110(dataId, *((s8*)record + 10)));
-            width = FUN_003b2cb0((s32)(item->x + 35.0f),
-                                 (s32)(item->y + 11.0f), alpha,
-                                 6, 1, text, 0x11, 0, item->scale);
-            campMenuDrawSprite(parent, *labels, 0x33, item->alpha,
-                               item->x + 41.0f + (f32)width,
-                               item->y + 7.0f, item->scale);
-            if (*((u8*)record + 7) >= 10) {
-                campMenuDrawSprite(parent, FUN_001120a0(1), 0xb,
-                                   item->alpha,
-                                   item->x + 72.0f + (f32)width,
-                                   item->y + 12.0f, item->scale);
-            }
         }
         for (i = 0; i < 5; i++) {
             if (FUN_00403900(*(u16*)itemRecord) >= i + 1) {
