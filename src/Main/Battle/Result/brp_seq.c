@@ -255,7 +255,7 @@ void func_00272380(void)
     sBrpSeq = NULL;
 }
 
-// FUN_00272400 NONMATCHING
+// FUN_00272400 MATCHING
 void func_00272400(u32* param)
 {
     u32* work;
@@ -266,6 +266,7 @@ void func_00272400(u32* param)
     s32 resultCount;
     s32 resultIndex;
     u8* entry;
+    u8* tableEntry;
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = sBrpSeq;
@@ -305,11 +306,13 @@ void func_00272400(u32* param)
     {
         DatPersonaWork* persona;
         s32 difference;
+        u32 work38;
         persona = (DatPersonaWork*)(uintptr_t)work[0xc];
         difference = (s32)persona->level -
                      (s32)DAT_007ce420[persona->id * 0x0e + 3];
+        work38 = ((u8*)work)[0x38];
         FUN_001fb4b0((u8*)(uintptr_t)work[0xd] + 6, 0x10, difference,
-                     ((u8*)work)[0x38], (u8*)work + 0x78,
+                     work38, (u8*)work + 0x78,
                      (u8*)work + 0x7c);
     }
     work[0x6c] = 0;
@@ -354,10 +357,10 @@ result_body:
     entry = FUN_00275050(resultIndex);
     *(u16*)((u8*)work + 0x1c4 + resultIndex * 8) =
         *(u16*)(entry + 2);
+    tableEntry = DAT_007ce420 +
+                 (u32)(*(u16*)((u8*)(uintptr_t)work[0xc] + 2)) * 0x0e;
     *(u32*)((u8*)work + 0x1c8 + resultIndex * 8) =
-        DAT_007ce420[
-            (*(u16*)((u8*)(uintptr_t)work[0xc] + 2)) * 0x0e + 3] +
-        (u32)entry[0];
+        (u32)entry[0] + tableEntry[3];
     resultIndex++;
 result_check:
     if (resultIndex < resultCount)
