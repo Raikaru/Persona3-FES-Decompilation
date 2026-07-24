@@ -114,6 +114,10 @@ u32 FUN_003a2b30(void);
 u32 FUN_003a2c10(void);
 int FUN_003a2c90(int param_1,int param_2);
 u32 FUN_003a2ef0(u32 param_1);
+#pragma alias FUN_003a2ef0_typed FUN_003a2ef0
+extern u32 FUN_003a2ef0_typed(BmdHeader* param_1);
+#pragma alias FUN_003a2c90_typed FUN_003a2c90
+extern int FUN_003a2c90_typed(void* param_1,int param_2);
 u32 FUN_003a3010(int param_1);
 u32 FUN_003a30c0(u64 param_1,u64 param_2,u16 param_3);
 void FUN_003a3420(int param_1,s32 param_2);
@@ -319,7 +323,7 @@ extern u64 FUN_003a8710_typed(float param_1,int param_2,int param_3,int param_4,
 #define FUN_003a8650(...) ((void (*)(...))FUN_003a8650)(__VA_ARGS__)
 #define FUN_003a8710(...) FUN_003a8710_typed(__VA_ARGS__)
 
-// FUN_003a2d80 NONMATCHING
+// FUN_003a2d80
 s32 itfMesMngInitialize(BmdHeader* bmdHeader)
 {
     void* system;
@@ -333,7 +337,7 @@ s32 itfMesMngInitialize(BmdHeader* bmdHeader)
     K_ASSERT(system != NULL, 0x6a1);
 
     result = *(s32*)((u8*)system + 8);
-    mes = (ItfMes*)(u32)FUN_003a2ef0(bmdHeader);
+    mes = (ItfMes*)(u32)FUN_003a2ef0_typed(bmdHeader);
     K_ASSERT(system != NULL && mes != NULL, 0x66d);
 
     for (slot = 0; slot < 4; slot++)
@@ -351,7 +355,7 @@ s32 itfMesMngInitialize(BmdHeader* bmdHeader)
 found:
     K_ASSERT(slot == 0, 0x6a8);
 
-    FUN_003a2c90(system, slot);
+    FUN_003a2c90_typed(system, slot);
     D_00959EC0[0]++;
     FUN_005225a8(D_006A1AC0, *(s16*)((u8*)mes + 0x12));
     return result;
