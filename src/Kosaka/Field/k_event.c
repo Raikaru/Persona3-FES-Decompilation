@@ -227,7 +227,7 @@ done:
 #pragma push
 #pragma opt_rebuildconditionals off
 #pragma opt_loop_invariants on
-// FUN_001c65e0 NONMATCHING
+// FUN_001c65e0 MATCHING
 u32 func_001c65e0(const FldUnit* unit)
 {
     s32 i;
@@ -239,7 +239,6 @@ u32 func_001c65e0(const FldUnit* unit)
     u32 expected;
     u32 valid;
     const FldUnit* target;
-    const s16* thresholds;
     target = unit;
     result = true;
     expected = result;
@@ -270,12 +269,11 @@ u32 func_001c65e0(const FldUnit* unit)
     }
 
     average = sum / active;
-    thresholds = D_006836B0;
-    for (j = 0; thresholds[j * 2] != -1; j++)
+    for (j = 0; D_006836B0[j * 2] != -1; j++)
     {
-        if (average <= thresholds[j * 2])
+        if (average <= D_006836B0[j * 2])
         {
-            if ((average - target->unk_184) < thresholds[j * 2 + 1])
+            if ((average - target->unk_184) < D_006836B0[j * 2 + 1])
             {
                 goto done;
             }
@@ -541,35 +539,42 @@ s32 func_001c6dd0(const FldUnit* unit, f32 maxDist)
 // FUN_001c6f50 NONMATCHING
 FldUnit* func_001c6f50(const FldUnit* unit, f32 fov, f32 maxDist)
 {
+    Model** candidateModel;
     RwV3d delta;
     f32 nearest;
-    FldUnit* nearestUnit;
+    f32 distance;
     s32 i;
+    FldUnit* nearestUnit;
 
-    nearest = 100000.0f;
+    nearest = DAT_007caefc;
     nearestUnit = NULL;
     for (i = 0; i < FLDUNIT_PC_MAX; i++)
     {
         FldUnit* candidate;
 
         candidate = &gFldUnitsPc[i];
-        if (candidate == unit || candidate->genusBase == NULL ||
-            candidate->mdl == NULL || func_002ff790(candidate->genusBase) == true)
+        if (candidate == unit || candidate->genusBase == NULL)
         {
             continue;
         }
+        if (func_002ff790(candidate->genusBase) == true)
+        {
+            continue;
+        }
+        candidateModel = &candidate->mdl;
         if (K_FldEvent_IsPosWithinFov(mdlGetMatrix(unit->mdl),
-                                       &mdlGetMatrix(candidate->mdl)->pos,
+                                       &mdlGetMatrix(*candidateModel)->pos,
                                        fov) == false)
         {
             continue;
         }
-        delta.x = mdlGetMatrix(candidate->mdl)->pos.x - mdlGetMatrix(unit->mdl)->pos.x;
-        delta.y = mdlGetMatrix(candidate->mdl)->pos.y - mdlGetMatrix(unit->mdl)->pos.y;
-        delta.z = mdlGetMatrix(candidate->mdl)->pos.z - mdlGetMatrix(unit->mdl)->pos.z;
-        if (RwV3dLength(&delta) < maxDist && RwV3dLength(&delta) < nearest)
+        delta.x = mdlGetMatrix(*candidateModel)->pos.x - mdlGetMatrix(unit->mdl)->pos.x;
+        delta.y = mdlGetMatrix(*candidateModel)->pos.y - mdlGetMatrix(unit->mdl)->pos.y;
+        delta.z = mdlGetMatrix(*candidateModel)->pos.z - mdlGetMatrix(unit->mdl)->pos.z;
+        distance = RwV3dLength(&delta);
+        if (distance < maxDist && distance < nearest)
         {
-            nearest = RwV3dLength(&delta);
+            nearest = distance;
             nearestUnit = candidate;
         }
     }
@@ -577,7 +582,7 @@ FldUnit* func_001c6f50(const FldUnit* unit, f32 fov, f32 maxDist)
 }
 
 // FUN_001c7270 NONMATCHING
-void* func_001c7270(f32 maxDist, const FldUnit* unit)
+void* func_001c7270(const FldUnit* unit, f32 maxDist)
 {
     RwMatrix* viewerMat;
     u8* cell;
@@ -677,12 +682,12 @@ void func_001c7830(void* output, void* script)
 }
 
 // FUN_001c7e70 NONMATCHING
-u32 func_001c7e70(u32 resourceId, u16 variant)
+u32 func_001c7e70(u16 resourceId, u16 variant)
 {
     char path[128];
     void* loaded;
 
-    if ((u16)resourceId == 0xffff)
+    if ((s32)resourceId == -1)
     {
         return false;
     }
@@ -692,8 +697,8 @@ u32 func_001c7e70(u32 resourceId, u16 variant)
         {
             return false;
         }
-        loaded = func_00100d80(path, 0);
-        return loaded != NULL;
+        func_00100d80(path, 0);
+        return true;
     }
     return true;
 }
