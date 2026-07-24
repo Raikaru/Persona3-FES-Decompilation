@@ -850,7 +850,7 @@ u16 FUN_003b6180(u16 param_1, void* param_2)
 }
 #define FUN_003b6180(...) ((u32 (*)(...))FUN_003b6180)(__VA_ARGS__)
 #undef FUN_003b64c0
-// FUN_003B64C0 NONMATCHING
+// FUN_003B64C0
 
 
 u32 FUN_003b64c0(u32 param_1, u32 param_2, u8 param_3)
@@ -893,7 +893,7 @@ u32 FUN_003b64c0(u32 param_1, u32 param_2, u8 param_3)
 }
 #define FUN_003b64c0(...) ((u32 (*)(...))FUN_003b64c0)(__VA_ARGS__)
 #undef FUN_003b66b0
-// FUN_003B66B0 NONMATCHING
+// FUN_003B66B0
 
 
 u32 FUN_003b66b0(u32 param_1, u32 param_2)
@@ -944,7 +944,7 @@ u32 FUN_003b66b0(u32 param_1, u32 param_2)
 }
 #define FUN_003b66b0(...) ((u32 (*)(...))FUN_003b66b0)(__VA_ARGS__)
 #undef FUN_003b6790
-// FUN_003B6790 NONMATCHING
+// FUN_003B6790
 
 
 u32 FUN_003b6790(u32 param_1, u32 param_2)
@@ -1804,7 +1804,7 @@ void FUN_003b7930(u64 param_1,RwV3d *param_2)
 #define FUN_003b7460(...) ((void (*)(...))FUN_003b7460)(__VA_ARGS__)
 #define FUN_003b7930(...) ((void (*)(...))FUN_003b7930)(__VA_ARGS__)
 #undef FUN_003b79a0
-// FUN_003B79A0 NONMATCHING
+// FUN_003B79A0
 
 
 void FUN_003b79a0(u32 *param_1, u64 param_2, u32 *param_3)
