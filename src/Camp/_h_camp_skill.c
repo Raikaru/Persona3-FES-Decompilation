@@ -1548,7 +1548,7 @@ static inline void campSkillSwapEquipment(CampSkillInnerWork* work)
 
 #pragma push
 #pragma schedule on
-#pragma optimization_level 3
+#pragma optimization_level 2
 // FUN_00164920 NONMATCHING
 void* FUN_00164920(KwlnTask* task)
 {
@@ -1650,6 +1650,16 @@ void* FUN_00164920(KwlnTask* task)
                     } else {
                         FUN_0010a4e0(0, 0, 0, 0);
                         work->category++;
+                    }
+                } else if (work->commandFlags != 0) {
+                    if ((buttons & 4) != 0) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        work->command = 3;
+                        work->state = 8;
+                    } else if ((buttons & 8) != 0) {
+                        FUN_0010a4e0(0, 0, 0, 0);
+                        work->command = 2;
+                        work->state = 8;
                     }
                 }
             }
