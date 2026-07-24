@@ -71,7 +71,7 @@ u32 FUN_003c2ab0(u32 param_1,u32 param_2);
 u32 FUN_003c2b40(int *param_1,int *param_2);
 u8 FUN_003c2c50(u32 param_1);
 u32 FUN_003c2df0(u32 param_1);
-u32 * FUN_003c2ee0(long param_1);
+u32 * FUN_003c2ee0(u32 param_1);
 u32 * FUN_003c3050(u32 param_1);
 u8 FUN_003c30b0(void);
 u8 FUN_003c3120(void);
@@ -677,7 +677,7 @@ u32 FUN_003c2df0(u32 param_1)
 // FUN_003C2EE0 NONMATCHING
 
 
-u32 * FUN_003c2ee0(long param_1)
+u32 * FUN_003c2ee0(u32 param_1)
 
 
 
