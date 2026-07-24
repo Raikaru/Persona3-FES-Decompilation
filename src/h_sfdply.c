@@ -1321,6 +1321,8 @@ void func_0010cdd0(void)
             case 0:
                 slot->state = 1;
                 break;
+            case 1:
+                break;
 
             case 2:
                 path = sSfdDecodePaths[pathIndex];
@@ -1710,7 +1712,6 @@ HSfdImage* func_0010e0d0(const u8* stream)
     u8 encoding;
     u32 pixels;
     const u8* payload;
-
     if ((stream == NULL) || (stream[0] != 2) || (stream[1] != 0) ||
         (stream[8] != 'T') || (stream[9] != 'M') ||
         (stream[10] != 'X') || (stream[11] != '0'))
@@ -1785,10 +1786,29 @@ HSfdImage* func_0010e0d0(const u8* stream)
         case 0x1B:
             func_0010dee0(image, payload);
             break;
+        case 0x14:
+        case 0x24:
+        case 0x2C:
         default:
             if (image->pixels != NULL)
             {
-                memcpy(image->pixels, payload, pixels);
+                u8* dst = image->pixels;
+                u32 y;
+                u32 x;
+
+                y = 0;
+                while (y < image->height)
+                {
+                    x = 0;
+                    while (x < image->width)
+                    {
+                        dst[x] = payload[0];
+                        payload++;
+                        x++;
+                    }
+                    dst += image->stride;
+                    y++;
+                }
             }
             break;
     }
