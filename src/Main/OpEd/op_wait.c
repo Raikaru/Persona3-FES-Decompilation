@@ -438,26 +438,26 @@ void opWait0026e780(void)
     func_0021d3b0(work + 0x940, frame);
     frame = func_0021cca0(atlas, 0x26);
     func_0021d3b0(work + 0xa40, frame);
-    frame = func_0021cca0(atlas, 10);
+    frame = func_0021cca0(atlas, 0xa);
     func_0021d3b0(work + 0xb40, frame);
     frame = func_0021cca0(atlas, 0xb);
     func_0021d3b0(work + 0xc40, frame);
     frame = func_0021cca0(atlas, 0x10);
     func_0021d3b0(work + 0xd40, frame);
     opWait0026ec50();
-    work[0x0c] = 0;
-    work[0x10] = 0;
-    work[0x14] = 0;
-    work[0x18] = 0;
-    work[0x1c] = 0;
-    work[0x20] = 0;
-    work[0x24] = 0;
-    work[0x28] = 0;
+    *(u32*)(work + 0x0c) = 0;
+    *(u32*)(work + 0x10) = 0;
+    *(u32*)(work + 0x14) = 0;
+    *(u32*)(work + 0x18) = 0;
+    *(u32*)(work + 0x1c) = 0;
+    *(u32*)(work + 0x20) = 0;
+    *(u32*)(work + 0x24) = 0;
+    *(u32*)(work + 0x28) = 0;
     *(u32*)work |= 8;
     opWait0026eca0();
     opWait0026eed0();
-    work[0x2c] = 0;
-    work[0x30] = 0;
+    *(u32*)(work + 0x2c) = 0;
+    *(u32*)(work + 0x30) = 0;
     *(u32*)work |= 1;
 }
 
