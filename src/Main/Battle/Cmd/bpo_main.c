@@ -182,20 +182,23 @@ void FUN_00252340(void)
     }
 
     fVar13 = 1.5f;
-    afStack_30[0] = ((float)*(int *)(unaff_s2_lo + 0xc) * -0.5f) / 2.0f + 133.0f;
-    afStack_30[1] = ((float)*(int *)(unaff_s2_lo + 0x10) * -0.5f) / 2.0f + 146.0f;
-    afStack_30[2] = (float)*(int *)(unaff_s2_lo + 0xc) * 1.5f;
-    afStack_30[3] = (float)*(int *)(unaff_s2_lo + 0x10) * 1.5f;
+    afStack_30[0] = (-0.5f * (float)*(int *)(unaff_s2_lo + 0xc)) / 2.0f + 133.0f;
+    afStack_30[1] = (-0.5f * (float)*(int *)(unaff_s2_lo + 0x10)) / 2.0f + 146.0f;
+    afStack_30[2] = 1.5f * (float)*(int *)(unaff_s2_lo + 0xc);
+    afStack_30[3] = 1.5f * (float)*(int *)(unaff_s2_lo + 0x10);
     FUN_0021d8e0(puVar2 + 4, afStack_30);
 
-    if (puVar2[2] == 1) {
-        auStack_20[0] = *(u8 *)(unaff_s2_lo + 0x1c);
-        auStack_20[1] = *(u8 *)(unaff_s2_lo + 0x1d);
-        auStack_20[2] = *(u8 *)(unaff_s2_lo + 0x1e);
-    } else if (puVar2[2] == 0) {
+    switch (puVar2[2]) {
+    case 0:
         auStack_20[0] = 0x66;
         auStack_20[1] = 0x99;
         auStack_20[2] = 0xff;
+        break;
+    case 1:
+        auStack_20[0] = *(u8 *)(unaff_s2_lo + 0x1c);
+        auStack_20[1] = *(u8 *)(unaff_s2_lo + 0x1d);
+        auStack_20[2] = *(u8 *)(unaff_s2_lo + 0x1e);
+        break;
     }
     fVar11 = fVar11 * 255.0f;
     if (!(2.1474836e+09f <= fVar11)) {
@@ -205,11 +208,13 @@ void FUN_00252340(void)
     }
     FUN_0021d950(puVar2 + 4, auStack_20);
 
-    uVar1 = puVar2[2];
-    if (uVar1 == 1) {
-        fVar13 = fGpffff8070 * ((float)(int)puVar2[1] / 30.0f) + fGpffff83e0 + 0.0f;
-    } else if (uVar1 == 0) {
+    switch (puVar2[2]) {
+    case 0:
         fVar13 = fGpffff8070 * (1.0f - (float)(int)puVar2[1] / 30.0f) + fGpffff83e0 + 0.0f;
+        break;
+    case 1:
+        fVar13 = fGpffff8070 * ((float)(int)puVar2[1] / 30.0f) + fGpffff83e0 + 0.0f;
+        break;
     }
     if (uVar1 == 1) {
         in_f21 = ((float)(int)puVar2[1] / 30.0f) * -20.0f + 10.0f;
@@ -241,10 +246,6 @@ void FUN_00252340(void)
         afStack_30[iVar4 * 2] = afStack_30[iVar4 * 2] - 127.0f;
         afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] - 61.0f;
     }
-    for (iVar4 = 0; iVar4 < 4; iVar4 = iVar4 + 1) {
-        afStack_30[iVar4 * 2] = afStack_30[iVar4 * 2] * fVar13;
-        afStack_30[iVar4 * 2 + 1] = afStack_30[iVar4 * 2 + 1] * fVar13;
-    }
 
     fVar13 = fGpffff8248 * (in_f21 / 360.0f) * 2.0f;
     for (iVar8 = 0; iVar8 < 4; iVar8 = iVar8 + 1) {
@@ -271,14 +272,17 @@ void FUN_00252340(void)
     }
     FUN_0021d890(puVar2 + 0x44, afStack_30);
 
-    if (puVar2[2] == 1) {
-        auStack_20[0] = 0x99;
-        auStack_20[1] = 0;
-        auStack_20[2] = 0;
-    } else if (puVar2[2] == 0) {
+    switch (puVar2[2]) {
+    case 0:
         auStack_20[0] = 0;
         auStack_20[1] = 0;
         auStack_20[2] = 0xcc;
+        break;
+    case 1:
+        auStack_20[0] = 0x99;
+        auStack_20[1] = 0;
+        auStack_20[2] = 0;
+        break;
     }
     fVar11 = fVar11 * 255.0f * 0.5f;
     if (!(2.1474836e+09f <= fVar11)) {
@@ -332,14 +336,17 @@ void FUN_00252340(void)
     afStack_30[3] = (float)*(int *)(unaff_s2_lo + 0x10) * fVar12;
     FUN_0021d8e0(puVar2 + 0x84, afStack_30);
 
-    if (puVar2[2] == 1) {
-        auStack_20[0] = *(u8 *)(unaff_s2_lo + 0x1c);
-        auStack_20[1] = *(u8 *)(unaff_s2_lo + 0x1d);
-        auStack_20[2] = *(u8 *)(unaff_s2_lo + 0x1e);
-    } else if (puVar2[2] == 0) {
+    switch (puVar2[2]) {
+    case 0:
         auStack_20[0] = 0x66;
         auStack_20[1] = 0x99;
         auStack_20[2] = 0xff;
+        break;
+    case 1:
+        auStack_20[0] = *(u8 *)(unaff_s2_lo + 0x1c);
+        auStack_20[1] = *(u8 *)(unaff_s2_lo + 0x1d);
+        auStack_20[2] = *(u8 *)(unaff_s2_lo + 0x1e);
+        break;
     }
     fVar11 = fVar11 * 255.0f;
     if (!(2.1474836e+09f <= fVar11)) {
