@@ -11,6 +11,13 @@
 extern u32 DAT_008717e8;
 extern u32 DAT_008717f0;
 extern u32 DAT_008717f4;
+extern f32 fGpffff844c;
+extern f32 fGpffff8450;
+extern f32 fGpffff82fc;
+extern f32 fGpffff82b8;
+extern f32 fGpffffb544;
+extern f32 fGpffffb540;
+extern u32 uGpffffb53c;
 
 extern u8 D_0067F600[];
 extern const char D_0067F5E0[];
@@ -243,44 +250,46 @@ u32 func_001b9130(void)
 {
     return DAT_007ce24c;
 }
-
 // FUN_001b9140 NONMATCHING
 void func_001b9140(s16 majorId, s16 minorId)
 {
     f32 scale;
     f32 distance;
-    RwV3d delta;
     RwV3d cameraPosition;
+    RwV3d delta;
     RwMatrix* cameraMatrix;
 
     scale = 0.0f;
-    if (FIELD_U32(0x008717e8) != 0 && FIELD_U32(0x008717f4) != 0)
+    if (FIELD_U32(0x008717e8) != 0)
     {
-        cameraMatrix = (RwMatrix*)func_004cb2f0(
-            kwlnGetMainCamera()->object.object.parent);
-        cameraPosition = cameraMatrix->pos;
-        delta.x = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.x -
-                  cameraPosition.x;
-        delta.y = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.y -
-                  cameraPosition.y;
-        delta.z = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.z -
-                  cameraPosition.z;
-        distance = RwV3dLength(&delta);
-        if (distance < 720.0f)
+        if (FIELD_U32(0x008717f4) != 0)
         {
-            distance = 720.0f;
+            cameraMatrix = (RwMatrix*)func_004cb2f0(
+                kwlnGetMainCamera()->object.object.parent);
+            cameraPosition = cameraMatrix->pos;
+            delta.x = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.x -
+                      cameraPosition.x;
+            delta.y = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.y -
+                      cameraPosition.y;
+            delta.z = ((RwMatrix*)FUN_00318b60((void*)FIELD_U32(0x008717f0)))->pos.z -
+                      cameraPosition.z;
+            distance = RwV3dLength(&delta);
+            if (distance < 720.0f)
+            {
+                distance = 720.0f;
+            }
+            if (distance > 1100.0f)
+            {
+                distance = 1100.0f;
+            }
+            scale = fGpffff82fc * (distance / 1100.0f);
         }
-        if (distance > 1100.0f)
-        {
-            distance = 1100.0f;
-        }
-        scale = FIELD_F32(0x007cafec) * (distance / 1100.0f);
     }
 
     if (majorId == 0x0e && minorId == 5)
     {
-        FIELD_F32(0x007ce234) = FIELD_F32(0x007cb13c);
-        FIELD_F32(0x007ce230) = FIELD_F32(0x007cb140);
+        fGpffffb544 = fGpffff844c;
+        fGpffffb540 = fGpffff8450;
     }
     else if (((majorId == 6) &&
               (minorId == 1 || minorId == 2 || minorId == 4 || minorId == 7 ||
@@ -288,20 +297,20 @@ void func_001b9140(s16 majorId, s16 minorId)
              ((majorId == 7) &&
               (minorId == 2 || minorId == 3 || minorId == 4 || minorId == 5)))
     {
-        FIELD_F32(0x007ce234) = FIELD_F32(0x007cafec);
-        FIELD_F32(0x007ce230) = FIELD_F32(0x007cafa8);
+        fGpffffb544 = fGpffff82fc;
+        fGpffffb540 = fGpffff82b8;
     }
     else if (scale > 0.0f)
     {
-        FIELD_F32(0x007ce230) = scale * 128.0f;
-        FIELD_F32(0x007ce234) = scale;
+        fGpffffb540 = scale * 128.0f;
+        fGpffffb544 = scale;
     }
     else
     {
-        FIELD_F32(0x007ce234) = FIELD_F32(0x007cafec);
-        FIELD_F32(0x007ce230) = FIELD_F32(0x007cafa8);
+        fGpffffb544 = fGpffff82fc;
+        fGpffffb540 = fGpffff82b8;
     }
-    FIELD_U32(0x007ce22c) = 0x40800000;
+    uGpffffb53c = 0x40800000;
 
 }
 // FUN_001b9480 NONMATCHING
