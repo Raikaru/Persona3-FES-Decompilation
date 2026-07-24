@@ -726,9 +726,9 @@ void FUN_0038b550(int param_1,u32 *param_2,u32 *param_3,u32 *param_4);
 void FUN_0038b600(u32 *param_1,u32 *param_2);
 void FUN_0038b6e0(int param_1,int param_2,int param_3);
 void FUN_0038b960(int param_1,long param_2,short param_3);
-void FUN_0038bc70(int param_1,short param_2,int param_3);
+void FUN_0038bc70(int param_1,int param_2,int param_3);
 void FUN_0038c460(long param_1,int param_2,int *param_3,u32 *param_4);
-void FUN_0038c540(int param_1,u64 param_2,u64 param_3,u64 param_4, u32 *param_5,u32 *param_6);
+void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4, u32 *param_5,u32 *param_6);
 void FUN_0038c830(int param_1,long param_2);
 void FUN_0038ca00(void);
 void FUN_0038ca80(int param_1);
@@ -5297,13 +5297,13 @@ void FUN_0038b960(int param_1,long param_2,short param_3)
 // FUN_0038BC70 NONMATCHING
 
 
-void FUN_0038bc70(int param_1,short param_2,int param_3)
+void FUN_0038bc70(int param_1,int param_2,int param_3)
 
 
 
 {
 
-  short sVar1;
+  int sVar1;
 
   int iVar2;
 
@@ -5339,7 +5339,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x10) + param_3) {
 
-            *(short *)(iVar2 + 0x10) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x10) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5363,7 +5363,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x18) + param_3) {
 
-            *(short *)(iVar2 + 0x18) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x18) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5383,7 +5383,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1a) + param_3) {
 
-            *(short *)(iVar2 + 0x1a) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1a) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5403,7 +5403,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1c) + param_3) {
 
-            *(short *)(iVar2 + 0x1c) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1c) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5423,7 +5423,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1e) + param_3) {
 
-            *(short *)(iVar2 + 0x1e) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1e) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5449,7 +5449,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
             if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x14) + param_3) {
 
-              *(short *)(iVar2 + 0x14) = (short)*(int *)(param_1 + 0xc) + -1;
+              *(short *)(iVar2 + 0x14) = *(int *)(param_1 + 0xc) + -1;
 
             }
 
@@ -5469,7 +5469,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
             if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x16) + param_3) {
 
-              *(short *)(iVar2 + 0x16) = (short)*(int *)(param_1 + 0xc) + -1;
+              *(short *)(iVar2 + 0x16) = *(int *)(param_1 + 0xc) + -1;
 
             }
 
@@ -5489,7 +5489,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
             if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x18) + param_3) {
 
-              *(short *)(iVar2 + 0x18) = (short)*(int *)(param_1 + 0xc) + -1;
+              *(short *)(iVar2 + 0x18) = *(int *)(param_1 + 0xc) + -1;
 
             }
 
@@ -5509,7 +5509,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
             if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1a) + param_3) {
 
-              *(short *)(iVar2 + 0x1a) = (short)*(int *)(param_1 + 0xc) + -1;
+              *(short *)(iVar2 + 0x1a) = *(int *)(param_1 + 0xc) + -1;
 
             }
 
@@ -5531,7 +5531,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x10) + param_3) {
 
-            *(short *)(iVar2 + 0x10) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x10) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5555,7 +5555,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x10) + param_3) {
 
-            *(short *)(iVar2 + 0x10) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x10) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5575,7 +5575,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x12) + param_3) {
 
-            *(short *)(iVar2 + 0x12) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x12) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5595,7 +5595,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x14) + param_3) {
 
-            *(short *)(iVar2 + 0x14) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x14) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5615,7 +5615,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x16) + param_3) {
 
-            *(short *)(iVar2 + 0x16) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x16) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5635,7 +5635,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x18) + param_3) {
 
-            *(short *)(iVar2 + 0x18) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x18) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5655,7 +5655,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1a) + param_3) {
 
-            *(short *)(iVar2 + 0x1a) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1a) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5679,7 +5679,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x10) + param_3) {
 
-            *(short *)(iVar2 + 0x10) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x10) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5699,7 +5699,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x12) + param_3) {
 
-            *(short *)(iVar2 + 0x12) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x12) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5723,7 +5723,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x18) + param_3) {
 
-            *(short *)(iVar2 + 0x18) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x18) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5743,7 +5743,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1a) + param_3) {
 
-            *(short *)(iVar2 + 0x1a) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1a) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5763,7 +5763,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1c) + param_3) {
 
-            *(short *)(iVar2 + 0x1c) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1c) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5783,7 +5783,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x1e) + param_3) {
 
-            *(short *)(iVar2 + 0x1e) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x1e) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5807,7 +5807,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x10) + param_3) {
 
-            *(short *)(iVar2 + 0x10) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x10) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5827,7 +5827,7 @@ void FUN_0038bc70(int param_1,short param_2,int param_3)
 
           if (*(int *)(param_1 + 0xc) < *(short *)(iVar2 + 0x12) + param_3) {
 
-            *(short *)(iVar2 + 0x12) = (short)*(int *)(param_1 + 0xc) + -1;
+            *(short *)(iVar2 + 0x12) = *(int *)(param_1 + 0xc) + -1;
 
           }
 
@@ -5917,9 +5917,8 @@ void FUN_0038c460(long param_1,int param_2,int *param_3,u32 *param_4)
 // FUN_0038C540 NONMATCHING
 
 
-void FUN_0038c540(int param_1,u64 param_2,u64 param_3,u64 param_4,
-
-                 u32 *param_5,u32 *param_6)
+void FUN_0038c540(int param_1,long param_2,int param_3,u32 *param_4,
+                  u32 *param_5,u32 *param_6)
 
 
 
@@ -5987,7 +5986,7 @@ void FUN_0038c540(int param_1,u64 param_2,u64 param_3,u64 param_4,
 
   if (uVar2 - uVar5 == 0) {
 
-    fVar10 = 0.0;
+    fVar10 = 0.0f;
 
   }
 
