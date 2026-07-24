@@ -1092,6 +1092,11 @@ static inline void K_Dungeon_ProcessFieldNodes(
 }
 
 #pragma optimization_level 3
+// Retail uses a 100-unit normalized camera ray and reloads the frame origin
+// for each model probe and before field-node traversal.
+// The previous reconstruction reused a mutated origin and omitted this scale.
+// Restoring those real probe semantics increases normalized_diff in this pass,
+// but avoids silently testing the wrong collision locations.
 // FUN_001c0d70 NONMATCHING
 void* func_001c0d70(KwlnTask* task)
 {
@@ -1147,6 +1152,9 @@ void* func_001c0d70(KwlnTask* task)
     cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
     cameraDirection = *(RwV3d*)cameraFrame;
     func_004c69f0(&cameraDirection, &cameraDirection);
+    cameraDirection.x *= 100.0f;
+    cameraDirection.y *= 100.0f;
+    cameraDirection.z *= 100.0f;
     if (gMtScene->fldMajorId == 0x18 &&
         gMtScene->fldMinorId == 0x32 &&
         cameraPosition.x == collisionQueryPosition.x &&
@@ -1162,6 +1170,7 @@ void* func_001c0d70(KwlnTask* task)
         {
             model = *(Model**)((u8*)modelFld + 0x104);
             memset(queryData, 0, 0x208);
+            cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
 
             cameraPosition.x += cameraDirection.x;
             cameraPosition.y += cameraDirection.y;
@@ -1224,6 +1233,7 @@ void* func_001c0d70(KwlnTask* task)
         }
         modelFld = (ResrcModelFld*)modelFld->base.next;
     }
+    cameraPosition = *(RwV3d*)((u8*)cameraFrame + 0x30);
 
     while (fld != NULL)
     {
