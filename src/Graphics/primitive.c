@@ -602,114 +602,82 @@ void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
 u32 FUN_0035a6a0(int param_1,u64 param_2);
 u64 FUN_0035a770(u64 param_1,u64 param_2);
 void FUN_0035a870(void* param_1, void* param_2);
+typedef struct
+{
+    f32 m00;
+    f32 m01;
+    f32 m02;
+    u32 mode;
+    f32 m10;
+    f32 m11;
+    f32 m12;
+    u32 pad1;
+    f32 m20;
+    f32 m21;
+    f32 m22;
+    u32 unused;
+    u32 pad2;
+    u32 pad3;
+    u32 pad4;
+} PrimMatrixData;
 
 // FUN_0035A290 NONMATCHING
 
 
-void FUN_0035a290(u64 param_1,int param_2)
-
-
-
+void FUN_0035a290(u64 param_1, int param_2)
 {
+    u8 buffer[64];
+    PrimMatrixData matrix;
+    f32 xx;
+    f32 yy;
+    f32 zz;
+    f32 yz;
+    f32 zx;
+    f32 xy;
+    f32 wx;
+    f32 wy;
+    f32 wz;
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
 
-  int iVar1;
+    x = *(f32*)(param_2 + 8);
+    y = *(f32*)(param_2 + 0xc);
+    z = *(f32*)(param_2 + 0x10);
+    w = *(f32*)(param_2 + 0x14);
+    xx = x * x;
+    yy = y * y;
+    zz = z * z;
+    yz = y * z;
+    zx = z * x;
+    xy = x * y;
+    wx = w * x;
+    wy = w * y;
+    wz = w * z;
 
-  float fVar2;
+    matrix.m00 = 1.0f - (yy + zz) * 2.0f;
+    matrix.m01 = (xy + wz) * 2.0f;
+    matrix.m02 = (zx - wy) * 2.0f;
+    matrix.m10 = (xy - wz) * 2.0f;
+    matrix.m11 = 1.0f - (xx + zz) * 2.0f;
+    matrix.m12 = (yz + wx) * 2.0f;
+    matrix.m20 = (zx + wy) * 2.0f;
+    matrix.m21 = (yz - wx) * 2.0f;
+    matrix.m22 = 1.0f - (xx + yy) * 2.0f;
 
-  u32 uVar3;
+    matrix.pad2 = 0;
+    matrix.pad3 = 0;
+    matrix.pad4 = 0;
+    matrix.mode = 3;
 
-  float fVar4;
+    FUN_004c33d0(buffer, param_2 + 0x24, 0);
+    FUN_004c2f30(param_1, buffer, (f32*)&matrix);
 
-  u32 uVar5;
-
-  float fVar6;
-
-  float fVar7;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  u32 uStack_74;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  u32 uStack_50;
-
-  u32 uStack_4c;
-
-  u32 uStack_48;
-
-  u8 auStack_40 [64];
-
-  
-
-  fVar6 = *(float *)(param_2 + 8);
-
-  fVar7 = *(float *)(param_2 + 0xc);
-
-  fVar2 = *(float *)(param_2 + 0x10);
-
-  fVar4 = *(float *)(param_2 + 0x14);
-
-  fStack_80 = 1.0 - (fVar7 * fVar7 + fVar2 * fVar2) * 2.0;
-
-  fStack_7c = (fVar6 * fVar7 + fVar4 * fVar2) * 2.0;
-
-  fStack_78 = (fVar2 * fVar6 - fVar4 * fVar7) * 2.0;
-
-  fStack_70 = (fVar6 * fVar7 - fVar4 * fVar2) * 2.0;
-
-  fStack_6c = 1.0 - (fVar6 * fVar6 + fVar2 * fVar2) * 2.0;
-
-  fStack_68 = (fVar7 * fVar2 + fVar4 * fVar6) * 2.0;
-
-  fStack_60 = (fVar2 * fVar6 + fVar4 * fVar7) * 2.0;
-
-  fStack_5c = (fVar7 * fVar2 - fVar4 * fVar6) * 2.0;
-
-  fStack_58 = 1.0 - (fVar6 * fVar6 + fVar7 * fVar7) * 2.0;
-
-  uStack_50 = 0;
-
-  uStack_4c = 0;
-
-  uStack_48 = 0;
-
-  uStack_74 = 3;
-
-  FUN_004c33d0(auStack_40,param_2 + 0x24,0);
-
-  FUN_004c2f30(param_1,auStack_40,&fStack_80);
-
-  uVar3 = *(u32 *)(param_2 + 0x1c);
-
-  uVar5 = *(u32 *)(param_2 + 0x20);
-
-  iVar1 = (int)param_1;
-
-  *(u32 *)(iVar1 + 0x30) = *(u32 *)(param_2 + 0x18);
-
-  *(u32 *)(iVar1 + 0x34) = uVar3;
-
-  *(u32 *)(iVar1 + 0x38) = uVar5;
-
-  *(u32 *)(iVar1 + 0xc) = *(u32 *)(iVar1 + 0xc) & 0xfffdffff;
-
-  return;
-
+    *(f32*)((int)param_1 + 0x30) = *(f32*)(param_2 + 0x18);
+    *(f32*)((int)param_1 + 0x34) = *(f32*)(param_2 + 0x1c);
+    *(f32*)((int)param_1 + 0x38) = *(f32*)(param_2 + 0x20);
+    *(u32*)((int)param_1 + 0xc) = *(u32*)((int)param_1 + 0xc) & 0xfffdffff;
 }
 
 // FUN_0035A3F0
