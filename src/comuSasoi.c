@@ -228,7 +228,7 @@ u32 *FUN_003c2770(void)
 }
 #define FUN_003c2770(...) ((u32 * (*)(...))FUN_003c2770)(__VA_ARGS__)
 #undef FUN_003c2780
-// FUN_003C2780 NONMATCHING
+// FUN_003C2780
 
 
 u8 * FUN_003c2780(u32 param_1)
@@ -239,15 +239,16 @@ u8 * FUN_003c2780(u32 param_1)
 
   char cVar1;
 
+  u8 bVar7;
   int iVar2;
 
   int iVar3;
 
-  long lVar4;
-
-  u8 *pbVar5;
+  int lVar4;
 
   int iVar6;
+
+  u8 *pbVar5;
 
   
 
@@ -259,23 +260,13 @@ u8 * FUN_003c2780(u32 param_1)
 
   iVar3 = *(int *)(iVar3 + 0x678);
 
-  iVar6 = 0;
-
-  do {
-
-    if (iVar3 <= iVar6) {
-
-      FUN_0019d3f0("comuSasoi.c",0x3cd);
-
-      return (u8 *)0x0;
-
-    }
+  for (iVar6 = 0; iVar6 < iVar3; iVar6 = iVar6 + 1) {
 
     pbVar5 = (u8 *)(iVar2 + iVar6 * 0xc);
 
     if (*pbVar5 == param_1) {
 
-      lVar4 = FUN_0016e100(*pbVar5);
+      lVar4 = FUN_0016e100((short)(u32)*pbVar5);
 
       if (lVar4 == 0) {
 
@@ -285,17 +276,27 @@ u8 * FUN_003c2780(u32 param_1)
 
       cVar1 = FUN_0016dba0((short)param_1);
 
-      if (((long)(u32)pbVar5[1] <= (long)cVar1) && ((long)cVar1 <= (long)(u32)pbVar5[2])) {
+      if ((long)(u32)pbVar5[1] <= (long)cVar1) {
+
+        bVar7 = (long)(u32)pbVar5[2] < (long)cVar1;
+
+        if (bVar7) {
+
+          continue;
+
+        }
 
         return pbVar5;
 
       }
 
+
     }
+  }
 
-    iVar6 = iVar6 + 1;
+  FUN_0019d3f0("comuSasoi.c",0x3cd);
 
-  } while( 1 );
+  return (u8 *)0x0;
 
 }
 #define FUN_003c2780(...) ((u8 * (*)(...))FUN_003c2780)(__VA_ARGS__)
