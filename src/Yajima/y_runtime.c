@@ -466,7 +466,7 @@ extern void FUN_00177410_typed(u8 *param_1, u8 *param_2);
 extern code FUN_0017b500;
 #pragma alias FUN_0017b500_ret FUN_0017b500
 extern short FUN_0017b500_ret(s16 player, u64 value);
-extern u32 FUN_0017b5b0(u32 param_1, u32 param_2);
+extern s32 FUN_0017b5b0(u32 param_1, u32 param_2);
 extern code FUN_0017b660;
 #pragma alias FUN_0017b660_2arg FUN_0017b660
 extern long FUN_0017b660_2arg(u16 param_1, u16 param_2);
@@ -7809,6 +7809,11 @@ void FUN_0043a960(int param_1)
   return;
 }
 
+// The duration values selected by cases 0xc0 through 0xc5 are one contiguous
+// six-element vector: the later selector indexes every case, including c4/c5.
+// Keeping the last two values as separate scalar locals changes the generated
+// stack layout and can eliminate their writes under MWCC alias analysis.
+// The signed result from FUN_0017b5b0 also preserves the retail sign path.
 // FUN_0043A9D0 NONMATCHING
 
 u32 FUN_0043a9d0(u64 param_1,u64 param_2,char param_3)
@@ -7826,7 +7831,7 @@ u32 FUN_0043a9d0(u64 param_1,u64 param_2,char param_3)
   u32 uVar10;
   int iVar11;
   long lVar12;
-  u32 uVar13;
+  s32 uVar13;
   short sVar14;
   int iVar15;
   u16 *puVar16;
@@ -7845,12 +7850,10 @@ u32 FUN_0043a9d0(u64 param_1,u64 param_2,char param_3)
   char cStack_70;
   u16 uStack_60;
   short sStack_50;
-  float afStack_30 [4];
-  float fStack_20;
-  float fStack_1c;
-  u8 auStack_c [4];
-  u8 auStack_8 [4];
+  float afStack_30 [6];
   int iStack_4;
+  u8 auStack_8 [4];
+  u8 auStack_c [4];
   
   uVar23 = 0xffffffff;
   bVar1 = 0;
@@ -7959,16 +7962,16 @@ LAB_0043acec:
               FUN_0017be10(1,1,*puVar16,0,&iStack_4,auStack_8,auStack_c);
               afStack_30[0] = (float)iStack_4;
               uVar13 = FUN_0017b5b0(1,*puVar16);
-              if ((long)uVar13 < 0) {
-                fVar24 = (float)(uVar13 & 0xffffffff);
-              }
-              else {
+              if (uVar13 >= 0) {
                 fVar24 = (float)(int)uVar13;
               }
+              else {
+                fVar24 = (float)(uVar13 & 0xffffffff);
+              }
               fVar25 = (float)iVar22 / afStack_30[0];
-              fVar26 = 0.0;
-              if (fVar25 < 1.0) {
-                fVar26 = (float)(int)(short)(int)((1.0 - fVar25) * 10.0) / 10.0;
+              fVar26 = 0.0f;
+              if (fVar25 < 1.0f) {
+                fVar26 = (float)(int)(short)(int)((1.0f - fVar25) * 10.0f) / 10.0f;
               }
               fVar24 = fVar24 * fVar25 + fVar26 * fVar24;
               if (sVar21 == -1) {
@@ -7990,16 +7993,16 @@ LAB_0043acec:
               FUN_0017be10(1,1,*puVar16,0,&iStack_4,auStack_8,auStack_c);
               afStack_30[1] = (float)iStack_4;
               uVar13 = FUN_0017b5b0(1,*puVar16);
-              if ((long)uVar13 < 0) {
-                fVar24 = (float)(uVar13 & 0xffffffff);
-              }
-              else {
+              if (uVar13 >= 0) {
                 fVar24 = (float)(int)uVar13;
               }
+              else {
+                fVar24 = (float)(uVar13 & 0xffffffff);
+              }
               fVar25 = (float)iVar22 / afStack_30[1];
-              fVar26 = 0.0;
-              if (fVar25 < 1.0) {
-                fVar26 = (float)(int)(short)(int)((1.0 - fVar25) * 10.0) / 10.0;
+              fVar26 = 0.0f;
+              if (fVar25 < 1.0f) {
+                fVar26 = (float)(int)(short)(int)((1.0f - fVar25) * 10.0f) / 10.0f;
               }
               fVar24 = fVar24 * fVar25 + fVar26 * fVar24;
               if (sVar21 == -1) {
@@ -8021,16 +8024,16 @@ LAB_0043acec:
               FUN_0017be10(1,1,*puVar16,0,&iStack_4,auStack_8,auStack_c);
               afStack_30[2] = (float)(int)sStack_50;
               uVar13 = FUN_0017b5b0(1,*puVar16);
-              if ((long)uVar13 < 0) {
-                fVar24 = (float)(uVar13 & 0xffffffff);
-              }
-              else {
+              if (uVar13 >= 0) {
                 fVar24 = (float)(int)uVar13;
               }
+              else {
+                fVar24 = (float)(uVar13 & 0xffffffff);
+              }
               fVar25 = (float)iVar22 / afStack_30[2];
-              fVar26 = 0.0;
-              if (fVar25 < 1.0) {
-                fVar26 = (float)(int)(short)(int)((1.0 - fVar25) * 10.0) / 10.0;
+              fVar26 = 0.0f;
+              if (fVar25 < 1.0f) {
+                fVar26 = (float)(int)(short)(int)((1.0f - fVar25) * 10.0f) / 10.0f;
               }
               fVar24 = fVar24 * fVar25 + fVar26 * fVar24;
               if (sVar21 == -1) {
@@ -8053,9 +8056,9 @@ LAB_0043acec:
               afStack_30[3] = (float)iStack_4;
               iVar11 = FUN_0017b5b0(1,*puVar16);
               fVar26 = (float)iVar22 / afStack_30[3];
-              fVar24 = 0.0;
-              if (fVar26 < 1.0) {
-                fVar24 = (float)(int)(short)(int)((1.0 - fVar26) * 10.0) / 10.0;
+              fVar24 = 0.0f;
+              if (fVar26 < 1.0f) {
+                fVar24 = (float)(int)(short)(int)((1.0f - fVar26) * 10.0f) / 10.0f;
               }
               fVar24 = (float)(u32)(iVar11 / iVar9) * fVar26 +
                        fVar24 * (float)(u32)(iVar11 / iVar9);
@@ -8076,12 +8079,12 @@ LAB_0043acec:
             if (lVar12 == 0) {
               puVar16 = (u16 *)(iVar8 + iVar18 * 2);
               FUN_0017be10(1,1,*puVar16,0,&iStack_4,auStack_8,auStack_c);
-              fStack_20 = (float)iStack_4;
+              afStack_30[4] = (float)iStack_4;
               iVar11 = FUN_0017b5b0(1,*puVar16);
-              fVar26 = (float)iVar22 / fStack_20;
-              fVar24 = 0.0;
-              if (fVar26 < 1.0) {
-                fVar24 = (float)(int)(short)(int)((1.0 - fVar26) * 10.0) / 10.0;
+              fVar26 = (float)iVar22 / afStack_30[4];
+              fVar24 = 0.0f;
+              if (fVar26 < 1.0f) {
+                fVar24 = (float)(int)(short)(int)((1.0f - fVar26) * 10.0f) / 10.0f;
               }
               fVar24 = (float)(u32)(iVar11 / iVar9) * fVar26 +
                        fVar24 * (float)(u32)(iVar11 / iVar9);
@@ -8102,12 +8105,12 @@ LAB_0043acec:
             if (lVar12 == 0) {
               puVar16 = (u16 *)(iVar8 + iVar18 * 2);
               FUN_0017be10(1,1,*puVar16,0,&iStack_4,auStack_8,auStack_c);
-              fStack_1c = (float)(int)sStack_50;
+              afStack_30[5] = (float)(int)sStack_50;
               iVar11 = FUN_0017b5b0(1,*puVar16);
-              fVar26 = (float)iVar22 / fStack_1c;
-              fVar24 = 0.0;
-              if (fVar26 < 1.0) {
-                fVar24 = (float)(int)(short)(int)((1.0 - fVar26) * 10.0) / 10.0;
+              fVar26 = (float)iVar22 / afStack_30[5];
+              fVar24 = 0.0f;
+              if (fVar26 < 1.0f) {
+                fVar24 = (float)(int)(short)(int)((1.0f - fVar26) * 10.0f) / 10.0f;
               }
               fVar24 = (float)(u32)(iVar11 / iVar9) * fVar26 +
                        fVar24 * (float)(u32)(iVar11 / iVar9);
