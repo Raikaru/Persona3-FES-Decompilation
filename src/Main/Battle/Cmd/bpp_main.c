@@ -112,6 +112,7 @@ void bppMain0020edf0(void)
     u32* work;
     u8* entry;
     u32 value;
+    s32 masked;
     u32 actionId;
     u32 flags;
     s32 transition;
@@ -172,37 +173,31 @@ void bppMain0020edf0(void)
             }
             *work &= ~1u;
             if (func_0029b0c0(action) != 0) {
-                    void* target;
-
-                    target = *(void**)((u8*)action + 0x30);
-                    switch (*(u8*)((u8*)target + 0xa2)) {
-                    case 0:
-                        bppPanelActivateDetail((BppPanelWork*)(
-                            bppMain0020f720(
-                                *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2)) + 0x20));
-                        *(u16*)((u8*)work + 0x5a58) =
-                            *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2);
-                        *work |= 4;
-                        break;
-                    }
+                switch (*(u8*)((u8*)*(void**)((u8*)action + 0x30) + 0xa2)) {
+                case 0:
+                    bppPanelActivateDetail((BppPanelWork*)(
+                        bppMain0020f720(
+                            *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2)) + 0x20));
+                    *(u16*)((u8*)work + 0x5a58) =
+                        *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2);
+                    *work |= 4;
+                    break;
+                }
                 work[0x1695] = *(u32*)((u8*)action + 0xa8);
                 *work |= 1;
             }
         } else if (action != NULL && (~*work & 1) != 0 &&
                    func_0029b0c0(action) != 0) {
-                void* target;
-
-                target = *(void**)((u8*)action + 0x30);
-                switch (*(u8*)((u8*)target + 0xa2)) {
-                case 0:
-                    bppPanelActivateDetail((BppPanelWork*)(
-                        bppMain0020f720(
-                            *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2)) + 0x20));
-                    *(u16*)((u8*)work + 0x5a58) =
-                        *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2);
-                    *work |= 4;
-                    break;
-                }
+            switch (*(u8*)((u8*)*(void**)((u8*)action + 0x30) + 0xa2)) {
+            case 0:
+                bppPanelActivateDetail((BppPanelWork*)(
+                    bppMain0020f720(
+                        *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2)) + 0x20));
+                *(u16*)((u8*)work + 0x5a58) =
+                    *(u16*)((u8*)*(void**)((u8*)*(void**)((u8*)action + 0x30) + 0xa2c) + 2);
+                *work |= 4;
+                break;
+            }
             work[0x1695] = *(u32*)((u8*)action + 0xa8);
             *work |= 1;
         }
@@ -211,23 +206,24 @@ void bppMain0020edf0(void)
     for (i = 0; i < (s32)work[0x1694]; i++) {
         entry = (u8*)work + i * BPP_MAIN_ENTRY_STRIDE + BPP_MAIN_ENTRY_BASE;
         value = datGetHp(*(s16*)(entry + 4));
-        if (*(u32*)(entry + 0x10) != (value & 0xffff)) {
-            *(u32*)(entry + 0x10) = value & 0xffff;
+        if (*(u32*)(entry + 0x10) != value) {
+            *(u32*)(entry + 0x10) = value;
             func_0022e900(entry + 0x20, value);
         }
         value = datGetSp(*(s16*)(entry + 4));
-        if (*(u32*)(entry + 0x14) != (value & 0xffff)) {
-            *(u32*)(entry + 0x14) = value & 0xffff;
+        if (*(u32*)(entry + 0x14) != value) {
+            *(u32*)(entry + 0x14) = value;
             func_0022e9a0(entry + 0x20, value);
         }
         value = datGetBadStatusNoDown(*(s16*)(entry + 4));
-        if (*(u32*)(entry + 0x18) != (value & 0xfffff)) {
-            *(u32*)(entry + 0x18) = value & 0xfffff;
+        masked = value & 0xfffff;
+        if (*(u32*)(entry + 0x18) != masked) {
+            *(u32*)(entry + 0x18) = masked;
             func_0022f1c0(entry + 0x20, value);
         }
         value = datGetPhysicalCondition(*(s16*)(entry + 4));
-        if (*(u32*)(entry + 0x1c) != (value & 0xffff)) {
-            *(u32*)(entry + 0x1c) = value & 0xffff;
+        if (*(u32*)(entry + 0x1c) != value) {
+            *(u32*)(entry + 0x1c) = value;
             func_0022e780(entry + 0x20);
         }
     }
