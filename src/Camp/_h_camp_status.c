@@ -68,18 +68,23 @@ extern void FUN_00133b80(KwlnTask* task, u32 personaId, u32 mode);
 extern s32 FUN_00121de0();
 extern s32 FUN_00122710();
 extern s32 FUN_00127af0(KwlnTask* task);
-extern KwlnTask* FUN_00127b00();
+extern KwlnTask* FUN_00127b00(KwlnTask* task, s32 resource, f32 unused,
+                              CampVec2 packed, s32 mode, s32 selected);
 extern s32 FUN_00127ad0(KwlnTask* task);
 extern s32 FUN_00128030(KwlnTask* task);
-extern KwlnTask* FUN_00128040();
+extern KwlnTask* FUN_00128040(KwlnTask* task, s32 resource, f32 unused,
+                              CampVec2 packed, s32 mode, s32 selected);
 extern void FUN_00127ab0(KwlnTask* task);
 extern void FUN_00127ff0(KwlnTask* task);
 extern void FUN_00128010(KwlnTask* task);
 extern void FUN_003b32d0();
 extern void FUN_00523ac8();
 extern void* DAT_00833B90;
+extern void* DAT_00833B98;
 #pragma alias DAT_00833B90_abs DAT_00833B90
 extern u8 DAT_00833B90_abs[];
+#pragma alias DAT_00833B98_abs DAT_00833B98
+extern u8 DAT_00833B98_abs[];
 extern void* DAT_00833B74;
 extern void* DAT_00833BA0;
 extern char gp0xffff897c[];
@@ -226,33 +231,25 @@ static void campStatusDrawParticle(f32 texture, f32 x, f32 y, s8 alpha,
     FUN_001127d0(particle, 1);
     FUN_00115980(particle);
 }
-
 // FUN_001230C0 NONMATCHING
 void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
 {
     CampStatusWork* work;
     s32 result;
+    CampVec2 packed;
 
     work = task->workData;
     switch (work->state) {
-    case 4:
-        if (work->alpha != 0xff) {
-            work->alpha += 5;
-            if (work->alpha > 0xff) {
-                work->alpha = 0xff;
-            }
-        }
-        FUN_001159f0((f32)sCampStatusScrollX, 0.0f, 104.0f);
-        FUN_001159f0((f32)(sCampStatusScrollX + 0x280), 0.0f, 104.0f);
-        sCampStatusScrollX--;
-        if (sCampStatusScrollX < -400) {
-            sCampStatusScrollX += 0x280;
-        }
-        if (FUN_00195290(work->child) == 3) {
-            return KWLNTASK_STOP;
-        }
+    case 0:
+        packed.x = 0.0f;
+        packed.y = 0.0f;
+        sCampStatusScrollX = 0x140;
+        work->selectedScreen = 0;
+        work->child = FUN_00127b00(task, 0x18be, 0.0f, packed, 1, 0);
+        work->timer = 0x1e;
+        work->alpha = 0;
+        work->state = 1;
         break;
-    case 2:
     case 1:
         if (work->alpha != 0) {
             work->alpha -= 5;
@@ -260,47 +257,86 @@ void* h_campStatusUpdatePcStatusRootTask(KwlnTask* task)
                 work->alpha = 0;
             }
         }
-        FUN_001159f0((f32)sCampStatusScrollX, 0.0f, 104.0f);
-        FUN_001159f0((f32)(sCampStatusScrollX + 0x280), 0.0f, 104.0f);
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha, (f32)sCampStatusScrollX,
+                                 0.0f, 104.0f);
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha,
+                                 (f32)(sCampStatusScrollX + 0x280),
+                                 0.0f, 104.0f);
         sCampStatusScrollX--;
         if (sCampStatusScrollX < -400) {
             sCampStatusScrollX += 0x280;
         }
-        if (work->state == 2) {
+        result = work->selectedScreen == 0
+               ? FUN_00127af0(work->child)
+               : FUN_00128030(work->child);
+        if (result == -1) {
             if (work->selectedScreen == 1) {
-                FUN_00128010(work->child);
-                work->selectedScreen = 0;
-                work->child = FUN_00127b00(NULL, task, 0x18be, 0, 1, 1);
+                FUN_00127ff0(work->child);
             } else {
-                FUN_00127ad0(work->child);
-                work->selectedScreen = 1;
-                work->child = FUN_00128040(NULL, task, 0x18be, 0, 1, 0);
+                FUN_00127ab0(work->child);
             }
-            work->state = 1;
-        } else {
-            result = work->selectedScreen == 0
-                   ? FUN_00127af0(work->child)
-                   : FUN_00128030(work->child);
-            if (result == -1) {
-                if (work->selectedScreen == 1) {
-                    FUN_00127ff0(work->child);
-                } else {
-                    FUN_00127ab0(work->child);
-                }
-                work->state = 4;
-            } else if (result == 1) {
-                work->inputResult = 0;
-                work->state = 2;
-            }
+            work->state = 4;
+        } else if (result == 1) {
+            work->inputResult = 0;
+            work->state = 2;
         }
         break;
-    case 0:
-        sCampStatusScrollX = 0x140;
-        work->selectedScreen = 0;
-        work->child = FUN_00127b00(NULL, task, 0x18be, 0, 1, 0);
-        work->timer = 0x1e;
-        work->alpha = 0;
+    case 2:
+        if (work->alpha != 0) {
+            work->alpha -= 5;
+            if (work->alpha < 0) {
+                work->alpha = 0;
+            }
+        }
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha, (f32)sCampStatusScrollX,
+                                 0.0f, 104.0f);
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha,
+                                 (f32)(sCampStatusScrollX + 0x280),
+                                 0.0f, 104.0f);
+        sCampStatusScrollX--;
+        if (sCampStatusScrollX < -400) {
+            sCampStatusScrollX += 0x280;
+        }
+        if (work->selectedScreen == 1) {
+            FUN_00128010(work->child);
+            packed.x = 0.0f;
+            packed.y = 0.0f;
+            work->selectedScreen = 0;
+            work->child = FUN_00127b00(task, 0x18be, 0.0f, packed, 1, 1);
+        } else {
+            FUN_00127ad0(work->child);
+            packed.x = 0.0f;
+            packed.y = 0.0f;
+            work->selectedScreen = 1;
+            work->child = FUN_00128040(task, 0x18be, 0.0f, packed, 1, 0);
+        }
         work->state = 1;
+        break;
+    case 4:
+        if (work->alpha != 0xff) {
+            work->alpha += 5;
+            if (work->alpha > 0xff) {
+                work->alpha = 0xff;
+            }
+        }
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha, (f32)sCampStatusScrollX,
+                                 0.0f, 104.0f);
+        campStatusDrawSpriteCall((u32)task, *(void**)DAT_00833B98_abs, 0x1e,
+                                 (u8)work->alpha,
+                                 (f32)(sCampStatusScrollX + 0x280),
+                                 0.0f, 104.0f);
+        sCampStatusScrollX--;
+        if (sCampStatusScrollX < -400) {
+            sCampStatusScrollX += 0x280;
+        }
+        if (FUN_00195290(work->child) == 3) {
+            return KWLNTASK_STOP;
+        }
         break;
     }
     return KWLNTASK_CONTINUE;
