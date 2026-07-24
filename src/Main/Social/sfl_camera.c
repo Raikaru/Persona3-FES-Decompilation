@@ -253,12 +253,12 @@ void func_0024d5e0(u8* node)
     func_004c3880(matrix);
 }
 
-// FUN_0024D7D0 NONMATCHING
+// FUN_0024D7D0 MATCHING
 void func_0024d7d0(void* camera, const RwV3d* position)
 {
     u8* matrix;
-    f32 x;
     f32 y;
+    f32 x;
     f32 z;
     f32 real;
     f32 norm;
@@ -277,38 +277,38 @@ void func_0024d7d0(void* camera, const RwV3d* position)
     f32 zw;
 
     matrix = *(u8**)((u8*)camera + 4);
-    x = *(f32*)((u8*)position + 0x14);
-    y = *(f32*)((u8*)position + 0x10);
+    y = *(f32*)((u8*)position + 0x14);
+    x = *(f32*)((u8*)position + 0x10);
     z = *(f32*)((u8*)position + 0x18);
     real = *(f32*)((u8*)position + 0x1c);
 
-    norm = x * x;
-    norm += y * y;
+    norm = y * y;
+    norm += x * x;
     norm += z * z;
     norm = norm + real * real;
     scale = 2.0f / norm;
-    twoX = y * scale;
-    twoY = x * scale;
+    twoX = x * scale;
+    twoY = y * scale;
     twoZ = z * scale;
     xw = twoX * real;
     yw = twoY * real;
     zw = twoZ * real;
-    xx = y * twoX;
+    xx = x * twoX;
     xy = y * twoY;
-    xz = y * twoZ;
-    yy = x * twoY;
-    yz = x * twoZ;
-    zz = z * twoZ;
+    xz = z * twoZ;
+    yy = y * twoZ;
+    yz = z * twoX;
+    zz = x * twoY;
 
-    *(f32*)(matrix + 0x10) = 1.0f - (yy + zz);
-    *(f32*)(matrix + 0x14) = xy + zw;
-    *(f32*)(matrix + 0x18) = xz - yw;
-    *(f32*)(matrix + 0x20) = xy - zw;
-    *(f32*)(matrix + 0x24) = 1.0f - (zz + xx);
-    *(f32*)(matrix + 0x28) = yz + xw;
-    *(f32*)(matrix + 0x30) = xz + yw;
-    *(f32*)(matrix + 0x34) = yz - xw;
-    *(f32*)(matrix + 0x38) = 1.0f - (xx + yy);
+    *(f32*)(matrix + 0x10) = 1.0f - (xy + xz);
+    *(f32*)(matrix + 0x14) = zz + zw;
+    *(f32*)(matrix + 0x18) = yz - yw;
+    *(f32*)(matrix + 0x20) = zz - zw;
+    *(f32*)(matrix + 0x24) = 1.0f - (xz + xx);
+    *(f32*)(matrix + 0x28) = yy + xw;
+    *(f32*)(matrix + 0x30) = yz + yw;
+    *(f32*)(matrix + 0x34) = yy - xw;
+    *(f32*)(matrix + 0x38) = 1.0f - (xx + xy);
     *(u32*)(matrix + 0x40) = 0;
     *(u32*)(matrix + 0x44) = 0;
     *(u32*)(matrix + 0x48) = 0;
