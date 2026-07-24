@@ -823,105 +823,170 @@ u64 func_002f88c0()
 // FUN_002f8a40 NONMATCHING
 u32 func_002f8a40(BtlUnit* unit)
 {
-    u32 encounterId;
+    u16 encounterId;
 
     encounterId = btlBossGetEncounterId();
-    if (encounterId == 0x1b4) goto block_1b4;
-    if (encounterId == 0x1b3) goto block_zero_1b3;
-    if (encounterId == 0x1b2) goto block_zero_1b2;
-    if (encounterId == 0x1b1) goto block_zero_1b1;
-    if (encounterId == 0x1b0) goto block_zero_1b0;
-    if (encounterId == 0x1af) goto block_zero_1af;
-    if (encounterId == 0x1ae) goto block_zero_1ae;
-    if (encounterId == 0x1ad) goto block_1ad;
-    if (encounterId == 0x1ac) goto block_1ac;
-    if (encounterId == 0x1ab) goto block_zero_1ab;
-    if (encounterId == 0x1aa) goto block_zero_1aa;
-    if (encounterId == 0x1a9) goto block_zero_1a9;
-    if (encounterId == 0x1a8) goto block_1a8;
-    if (encounterId == 0x1a7) goto block_zero_1a7;
-    if (encounterId == 0x1a6) goto block_1a6;
-    if (encounterId == 0x1a5) goto block_1a5;
-    if (encounterId == 0x1a4) goto block_1a4;
-    if (encounterId == 0x1a3) goto block_1a3;
-    if (encounterId == 0x1a2) goto block_1a2;
-    if (encounterId == 0x1a1) goto block_1a1;
-    if (encounterId == 0x1a0) goto block_1a0;
-    if (encounterId == 0x1c8) goto block_1c8;
-    goto block_default;
+    switch (encounterId)
+    {
+        case 0x1c8:
+            goto block_1c8;
+        case 0x1a0:
+            goto block_1a0;
+        case 0x1a1:
+            goto block_1a1;
+        case 0x1a2:
+            goto block_1a2;
+        case 0x1a3:
+            goto block_1a3;
+        case 0x1a4:
+            goto block_1a4;
+        case 0x1a5:
+            goto block_1a5;
+        case 0x1a6:
+            goto block_1a6;
+        case 0x1a7:
+            goto block_zero_1a7;
+        case 0x1a8:
+            goto block_1a8;
+        case 0x1a9:
+            goto block_zero_1a9;
+        case 0x1aa:
+            goto block_zero_1aa;
+        case 0x1ab:
+            goto block_zero_1ab;
+        case 0x1ac:
+            goto block_1ac;
+        case 0x1ad:
+            goto block_1ad;
+        case 0x1ae:
+            goto block_zero_1ae;
+        case 0x1af:
+        case 0x1b0:
+        case 0x1b1:
+        case 0x1b2:
+        case 0x1b3:
+            goto block_zero_1af;
+        case 0x1b4:
+            goto block_1b4;
+        default:
+            goto block_default;
+    }
 
 block_1c8:
     return 0;
 
 block_1a0:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x100)
-        {
+        case 1:
+            goto block_1a0_genus1;
+    }
+    return 0;
+
+block_1a0_genus1:
+    switch (unit->charId)
+    {
+        case 0x100:
             return 1;
-        }
     }
     return 0;
 
 block_1a1:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x102 || unit->charId == 0x101)
-        {
+        case 1:
+            goto block_1a1_genus1;
+    }
+    return 0;
+
+block_1a1_genus1:
+    switch (unit->charId)
+    {
+        case 0x101:
+        case 0x102:
             return 1;
-        }
     }
     return 0;
 
 block_1a2:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x103)
-        {
+        case 1:
+            goto block_1a2_genus1;
+    }
+    return 0;
+
+block_1a2_genus1:
+    switch (unit->charId)
+    {
+        case 0x103:
             return 1;
-        }
     }
     return 0;
 
 block_1a3:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x104)
-        {
+        case 1:
+            goto block_1a3_genus1;
+    }
+    return 0;
+
+block_1a3_genus1:
+    switch (unit->charId)
+    {
+        case 0x104:
             return 1;
-        }
     }
     return 0;
 
 block_1a4:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x106 ||
-            unit->charId == 0x105 ||
-            unit->charId == 0x115)
-        {
+        case 1:
+            goto block_1a4_genus1;
+    }
+    return 0;
+
+block_1a4_genus1:
+    switch (unit->charId)
+    {
+        case 0x115:
+        case 0x105:
+        case 0x106:
             return 1;
-        }
     }
     return 0;
 
 block_1a5:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x107)
-        {
+        case 1:
+            goto block_1a5_genus1;
+    }
+    return 0;
+
+block_1a5_genus1:
+    switch (unit->charId)
+    {
+        case 0x107:
             return 1;
-        }
     }
     return 0;
 
 block_1a6:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x10a)
-        {
+        case 1:
+            goto block_1a6_genus1;
+    }
+    return 0;
+
+block_1a6_genus1:
+    switch (unit->charId)
+    {
+        case 0x10a:
             return 1;
-        }
     }
     return 0;
 
@@ -929,12 +994,18 @@ block_zero_1a7:
     return 0;
 
 block_1a8:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x10d)
-        {
+        case 1:
+            goto block_1a8_genus1;
+    }
+    return 0;
+
+block_1a8_genus1:
+    switch (unit->charId)
+    {
+        case 0x10d:
             return 1;
-        }
     }
     return 0;
 
@@ -951,12 +1022,18 @@ block_1ac:
     return unit->genus == 1;
 
 block_1ad:
-    if (unit->genus == 1)
+    switch (unit->genus)
     {
-        if (unit->charId == 0x112)
-        {
+        case 1:
+            goto block_1ad_genus1;
+    }
+    return 0;
+
+block_1ad_genus1:
+    switch (unit->charId)
+    {
+        case 0x112:
             return 1;
-        }
     }
     return 0;
 
@@ -964,18 +1041,6 @@ block_zero_1ae:
     return 0;
 
 block_zero_1af:
-    return 0;
-
-block_zero_1b0:
-    return 0;
-
-block_zero_1b1:
-    return 0;
-
-block_zero_1b2:
-    return 0;
-
-block_zero_1b3:
     return 0;
 
 block_1b4:
