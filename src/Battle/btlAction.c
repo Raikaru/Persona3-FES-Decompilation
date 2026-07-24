@@ -2153,6 +2153,7 @@ extern BtlPacket* func_002d8090(BtlAction*);
 extern BtlPacket* func_002d7fb0(BtlAction*, u32);
 extern BtlPacket* func_002db740(BtlAction*, u16, ...);
 #pragma opt_loop_invariants on
+/* Skill-state reconstruction is complete; remaining drift is MWCC local-layout codegen. */
 // FUN_00290be0 NONMATCHING
 void btlActionUpdateStateSkill(BtlAction *action) {
     extern u8 *gp0xffffb714;
