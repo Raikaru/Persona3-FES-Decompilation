@@ -2625,51 +2625,32 @@ void FUN_003b1c90(int param_1,int param_2,int param_3)
 
   if (param_3 != 0) {
     param_3 = *(int *)(param_3 + 0x2c);
-    iVar1 = param_2 - *(int *)(param_3 + 8);
-    goto frFont_b1c90_outer_body;
-frFont_b1c90_outer_body:
-    iVar3 = 0;
-    iVar7 = param_3;
-    iVar2 = *(int *)(param_3 + 8) + 100;
-    goto frFont_b1c90_inner_check;
-frFont_b1c90_inner_body:
-    iVar5 = 0;
-    iVar4 = *(int *)(iVar7 + 0x1c);
-    goto frFont_b1c90_child_check;
-frFont_b1c90_child_body:
-    iVar5 = iVar5 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar7 + 3);
-    iVar4 = *(int *)(iVar4 + 0x28);
-frFont_b1c90_child_check:
-    if (iVar4 != 0) goto frFont_b1c90_child_body;
-frFont_b1c90_child_done:
-    iVar3 = iVar3 + iVar5;
-    iVar7 = *(int *)(iVar7 + 0x28);
-    if (iVar7 != 0) goto frFont_b1c90_inner_check;
-    goto frFont_b1c90_inner_done;
-frFont_b1c90_inner_check:
-    if (*(int *)(iVar7 + 8) >= iVar2) goto frFont_b1c90_inner_done;
-    goto frFont_b1c90_inner_body;
-frFont_b1c90_inner_done:
-    iVar4 = param_1 - *(int *)(param_3 + 4);
-    if (iVar3 < 0) {
-      iVar2 = (iVar3 + 1) >> 1;
+    iVar1 = *(int *)(param_3 + 8);
+    iVar1 = param_2 - iVar1;
+    while (param_3 != 0) {
+      iVar3 = 0;
+      iVar2 = *(int *)(param_3 + 8);
+      for (iVar7 = param_3;
+           (iVar7 != 0 && (*(int *)(iVar7 + 8) < iVar2 + 100));
+           iVar7 = *(int *)(iVar7 + 0x28)) {
+        iVar5 = 0;
+        for (iVar4 = *(int *)(iVar7 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
+          iVar5 = iVar5 + *(int *)(iVar4 + 0xc) + (int)*(char *)(iVar7 + 3);
+        }
+        iVar3 = iVar3 + iVar5;
+      }
+      iVar7 = *(int *)(param_3 + 4);
+      if (iVar3 < 0) {
+        iVar3 = iVar3 + 1;
+      }
+      for (; (param_3 != 0 && (*(int *)(param_3 + 8) < iVar2 + 100));
+           param_3 = *(int *)(param_3 + 0x28)) {
+        iVar4 = *(int *)(param_3 + 4) + (param_1 - iVar7);
+        *(int *)(param_3 + 4) = iVar4;
+        *(int *)(param_3 + 4) = iVar4 + (iVar3 >> 1) * -0x10;
+        *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
+      }
     }
-    else {
-      iVar2 = iVar3 >> 1;
-    }
-    iVar2 = iVar2 << 4;
-    iVar5 = iVar4 + 100;
-    goto frFont_b1c90_outer_check;
-frFont_b1c90_adjust_check:
-    if (*(int *)(param_3 + 8) >= iVar5) goto frFont_b1c90_outer_check;
-frFont_b1c90_adjust_body:
-    *(int *)(param_3 + 4) = *(int *)(param_3 + 4) + iVar4;
-    *(int *)(param_3 + 4) = *(int *)(param_3 + 4) - iVar2;
-    *(int *)(param_3 + 8) = *(int *)(param_3 + 8) + iVar1;
-    param_3 = *(int *)(param_3 + 0x28);
-frFont_b1c90_outer_check:
-    if (param_3 != 0) goto frFont_b1c90_adjust_check;
-    if (param_3 != 0) goto frFont_b1c90_outer_body;
   }
 
 }
