@@ -2884,29 +2884,30 @@ void func_0021f410(void)
     }
 
     sub = *(u32*)(work + 0x463c);
-    previous = *(u32*)(work + 0x4640);
-    switch (sub)
+    if (*(u32*)(work + 0x4658) < 6)
     {
-    case 2:
-    case 1:
-    case 3:
-    case 4:
-        func_002265d0();
-        break;
-    case 0:
+        switch (sub)
+        {
+        case 2:
+        case 1:
+        case 3:
+        case 4:
+            func_002265d0();
+            break;
+        }
+    }
+    previous = *(u32*)(work + 0x4640);
+    if (*(u32*)(work + 0x4650) != 3)
+    {
         switch (previous)
         {
         case 3:
         case 4:
         case 1:
         case 2:
-            if (*(u32*)(work + 0x4650) != 3)
-            {
-                func_002265d0();
-            }
+            func_002265d0();
             break;
         }
-        break;
     }
     sub = *(u32*)(work + 0x463c);
     switch (sub)
@@ -2920,7 +2921,6 @@ void func_0021f410(void)
         case 0:
             switch (*(u32*)(work + 0x4648))
             {
-            case 2:
             case 1:
                 if (*(u32*)(work + 0x4658) != 6)
                 {
@@ -2937,8 +2937,9 @@ void func_0021f410(void)
     {
     case 2:
     case 1:
-    case 3:
-    case 4:
+        func_0022c2d0();
+        break;
+    default:
         switch (*(u32*)(work + 0x4644))
         {
         case 0:
