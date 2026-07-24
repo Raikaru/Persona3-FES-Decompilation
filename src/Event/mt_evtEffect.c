@@ -249,6 +249,12 @@ void FUN_00395430(int param_1,int param_2,int param_3,int param_4,u32 param_5);
 void FUN_00396760(int param_1,int param_2,int param_3,u64 param_4);
 void FUN_00395550(int param_1,u32 param_2,u32 param_3);
 void FUN_00395570(int param_1);
+#pragma alias FUN_00395570_typed FUN_00395570
+extern void FUN_00395570_typed(int param_1);
+#pragma alias FUN_00395810_typed FUN_00395810
+extern void FUN_00395810_typed(int param_1);
+#pragma alias FUN_00395950_typed FUN_00395950
+extern void FUN_00395950_typed(int param_1);
 void FUN_003957d0(f32 param_1, int param_2, u32 *param_3);
 void FUN_00395810(int param_1);
 void FUN_00395910(u8* param_1);
@@ -1564,71 +1570,67 @@ u64 FUN_003962c0(int param_1)
 
 {
 
-  long lVar1;
+  u32 lVar1;
 
-  u64 uVar2;
+  u32 uVar2;
 
-  long lVar3;
+  u32 lVar3;
 
   int iVar4;
 
-  u8 uStack_4;
-
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 uStack_1;
+  u8 auStack_4[4];
 
   
 
   lVar1 = FUN_0035ae10(*(u32 *)(param_1 + 0x4c));
 
-  if (lVar1 != 0) {
+  if (lVar1 == 0) {
+
+    return 0;
+
+  }
+
+  uVar2 = FUN_00198590();
+
+  lVar3 = FUN_004c9d10(uVar2);
+
+  if (lVar3 != 0) {
+
+    FUN_00395570_typed(lVar1);
+
+    FUN_00395810_typed(lVar1);
+
+    iVar4 = (int)lVar1;
+
+    if (*(int *)(iVar4 + 0x67c) == 1) {
+
+      FUN_00386e50();
+
+      *(u32 *)(iVar4 + 0x67c) = 0;
+
+    }
+
+    if (1 == *(int *)(iVar4 + 0x680)) {
+
+      auStack_4[0] = 0x14;
+
+      auStack_4[1] = 0x14;
+
+      auStack_4[2] = 0xff;
+
+      auStack_4[3] = 0xff;
+
+      FUN_00359b40(*(f32 *)(iVar4 + 0x690),(void *)(iVar4 + 0x684),auStack_4);
+
+      *(u32 *)(iVar4 + 0x680) = 0;
+
+    }
+
+    FUN_00395950_typed(lVar1);
 
     uVar2 = FUN_00198590();
 
-    lVar3 = FUN_004c9d10(uVar2);
-
-    if (lVar3 != 0) {
-
-      FUN_00395570(lVar1);
-
-      FUN_00395810(lVar1);
-
-      iVar4 = (int)lVar1;
-
-      if (*(int *)(iVar4 + 0x67c) == 1) {
-
-        FUN_00386e50();
-
-        *(u32 *)(iVar4 + 0x67c) = 0;
-
-      }
-
-      if (*(int *)(iVar4 + 0x680) == 1) {
-
-        uStack_4 = 0x14;
-
-        uStack_3 = 0x14;
-
-        uStack_2 = 0xff;
-
-        uStack_1 = 0xff;
-
-        FUN_00359b40(*(f32 *)(iVar4 + 0x690),(void *)(iVar4 + 0x684),&uStack_4);
-
-        *(u32 *)(iVar4 + 0x680) = 0;
-
-      }
-
-      FUN_00395950(lVar1);
-
-      uVar2 = FUN_00198590();
-
-      FUN_004c9d00(uVar2);
-
-    }
+    FUN_004c9d00(uVar2);
 
   }
 
