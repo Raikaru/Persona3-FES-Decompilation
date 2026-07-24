@@ -3686,9 +3686,10 @@ u8 FUN_0041b530(int param_1)
 
 }
 
-// FUN_0041B550 NONMATCHING
+// FUN_0041B550 MATCHING
 
 
+#pragma optimization_level 2
 void FUN_0041b550(int param_1)
 {
   u32 *effect_data;
@@ -3700,7 +3701,8 @@ void FUN_0041b550(int param_1)
       (u32)DAT_006b2aa0 + *(u32 *)*(u32 **)(model_data + 5) * 8;
   *(u32 *)(*(u32 *)(param_1 + 0x3c) + 8) = 0;
   *(u32 *)(*(u32 *)(param_1 + 0x3c) + 0x10) &= ~1;
-  FUN_003c49e0(*(int *)(param_1 + 0x40), *(int *)(param_1 + 0x40) + 4);
+  FUN_003c49e0(*(int *)(param_1 + 0x40), *(int *)(param_1 + 0x40) + 4,
+               (int *)model_data);
 }
 
 // FUN_0041B5C0 NONMATCHING
