@@ -3367,6 +3367,20 @@ LAB_00391290:
 }
 #define FUN_00391080(...) ((void (*)(...))FUN_00391080)(__VA_ARGS__)
 #undef FUN_003912f0
+#undef FUN_0038dad0
+#undef FUN_0038e660
+#undef FUN_0038e860
+#undef FUN_0038f0f0
+#undef FUN_0038f440
+#undef FUN_0038f8c0
+#undef FUN_0038fa10
+#undef FUN_0038ffb0
+#undef FUN_003902c0
+#undef FUN_003905f0
+#undef FUN_00390920
+#undef FUN_00390c90
+#undef FUN_00390ef0
+#undef FUN_00391080
 // FUN_003912F0 NONMATCHING
 
 
@@ -3402,6 +3416,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
   long lVar13;
 
+
   int iVar14;
 
   short *psVar15;
@@ -3428,7 +3443,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
   
 
-  FUN_005225a8(0x6a0c10);
+  FUN_005225a8((const char *)0x6a0c10);
 
   uVar7 = FUN_0016c920(1);
 
@@ -4504,7 +4519,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
               if (lVar13 == 0) {
 
-                FUN_0019d3f0("mt_evtLoadSave.c",0xcd3);
+                FUN_0019d3f0(0x6a0b00,0xcd3);
 
               }
 
@@ -4546,7 +4561,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
                 if (lVar13 == 0) {
 
-                  FUN_0019d3f0("mt_evtLoadSave.c",0xcf5);
+                  FUN_0019d3f0(0x6a0b00,0xcf5);
 
                 }
 
@@ -4584,7 +4599,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
                 if (lVar23 == 0) {
 
-                  FUN_0019d3f0("mt_evtLoadSave.c",0xd14);
+                  FUN_0019d3f0(0x6a0b00,0xd14);
 
                 }
 
@@ -4834,7 +4849,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
           if (sVar4 == 0x13) {
 
-            FUN_0019d3f0("mt_evtLoadSave.c",0xd8f);
+            FUN_0019d3f0(0x6a0b00,0xd8f);
 
             if (*(int *)(*(int *)(iVar24 + 0x84) + 0x14) == 4) {
 
@@ -5632,7 +5647,7 @@ u32 FUN_003912f0(u32 param_1,u32 param_2)
 
         }
 
-        FUN_0019d3f0("mt_evtLoadSave.c",0x7e7);
+        FUN_0019d3f0(0x6a0b00,0x7e7);
 
 LAB_00392bb0:
         ;
