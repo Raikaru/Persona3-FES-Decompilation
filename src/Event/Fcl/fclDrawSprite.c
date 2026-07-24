@@ -1032,7 +1032,7 @@ u32 FUN_0040f030(int param_1,int param_2,int param_3)
 
 }
 
-// FUN_0040F430 NONMATCHING
+// FUN_0040F430
 
 
 u32 FUN_0040f430(int param_1,int param_2)
@@ -1044,10 +1044,10 @@ u32 FUN_0040f430(int param_1,int param_2)
   int iVar1;
 
   u32 uVar2;
-
   int iVar3;
 
-  long lVar4;
+  u32 lVar4;
+
 
   int iVar5;
 
@@ -1070,8 +1070,8 @@ u32 FUN_0040f430(int param_1,int param_2)
 
   else {
 
-    if (*(int *)(param_1 + 0x1c) == 2) {
-
+    switch (*(int *)(param_1 + 0x1c)) {
+    case 2:
       for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
         iVar3 = iVar1 + iVar5 * 0x14;
 
@@ -1090,24 +1090,17 @@ u32 FUN_0040f430(int param_1,int param_2)
         fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
                           *(u8 *)(iVar3 + 0xc),0x59,0);
-
-
       }
-
-    }
-
-    else {
-
+      break;
+    default:
       for (iVar5 = 0; iVar5 < 2; iVar5 = iVar5 + 1) {
         iVar3 = iVar1 + iVar5 * 0x14;
 
         fclDrawSpriteEmit(*(short *)(iVar3 + 4),*(short *)(iVar3 + 6),0.0f,
 
                           *(u8 *)(iVar3 + 0xc),((u32 *)&auStack_10)[*(int *)(param_1 + 0x1c)],0);
-
-
       }
-
+      break;
     }
 
     uVar2 = 0;
