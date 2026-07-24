@@ -1321,6 +1321,8 @@ void FUN_001b4720(void* camera, u32* resource)
     FUN_00198610(3, 0);
 }
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_001b4e00 NONMATCHING
 void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)
 {
@@ -1430,6 +1432,8 @@ void FUN_001b4e00(u32 unused, u32* resource, const f32* offset)
         }
     }
 }
+#pragma opt_loop_invariants off
+#pragma pop
 
 // FUN_001b5200 NONMATCHING
 void FUN_001b5200(u32 unused, u32* resource)
@@ -1672,45 +1676,56 @@ void FUN_001b5ae0(u32 value, const u8* rgba)
     FUN_0048efa0(target, 0, (u32)rgba[2] | packed);
 }
 
-// FUN_001b5b50 NONMATCHING
+// FUN_001b5b50 MATCHING
 void* FUN_001b5b50(void* color, const f32* scale)
 {
     u32 mode;
-    u8* rgba;
+    volatile u8 rgba[4];
     u32 value;
+    u32 packed;
     u32 r;
     u32 g;
     u32 b;
     u32 a;
+    u8 out0;
+    u8 out1;
+    u8 out2;
+    u8 out3;
 
     if (FUN_001a64f0((u32)color, D_00678F90) == 0)
     {
-        rgba = (u8*)color + 4;
+        packed = (u32)((u8*)color)[7] << 24 |
+                 (u32)((u8*)color)[4] << 16 |
+                 (u32)((u8*)color)[5] << 8 |
+                 (u32)((u8*)color)[6];
         value = FUN_0048ee70((u32)color, D_00678F90, 1, 1);
         value = FUN_0048eed0((u32)color, value);
-        FUN_0048efa0(value, 0,
-                     (u32)rgba[2] |
-                     ((u32)rgba[1] << 8) |
-                     ((u32)rgba[3] << 24) |
-                     ((u32)rgba[0] << 16));
+        FUN_0048efa0(value, 0, packed);
     }
     mode = FUN_001a64f0((u32)color, D_00678F90);
     if (mode == 1)
     {
         value = FUN_001a6400((u32)color, D_00678F90);
-        r = (u32)((f32)((value >> 16) & 0xff) * scale[0]);
-        g = (u32)((f32)((value >> 8) & 0xff) * scale[1]);
-        b = (u32)((f32)(value & 0xff) * scale[2]);
-        a = (u32)((f32)(value >> 24) * scale[3]);
+        r = (s32)((f32)((value >> 16) & 0xff) * scale[0]);
+        g = (s32)((f32)((value >> 8) & 0xff) * scale[1]);
+        b = (s32)((f32)(value & 0xff) * scale[2]);
+        a = (s32)((f32)((value >> 24) & 0xff) * scale[3]);
         if (r > 0xff) r = 0xff;
-        if (g > 0xff) g = 0xff;
-        if (b > 0xff) b = 0xff;
-        if (a > 0xff) a = 0xff;
-        rgba = (u8*)color + 4;
         rgba[0] = (u8)r;
+        if (g > 0xff) g = 0xff;
         rgba[1] = (u8)g;
+        if (b > 0xff) b = 0xff;
         rgba[2] = (u8)b;
+        if (a > 0xff) a = 0xff;
         rgba[3] = (u8)a;
+        out0 = rgba[0];
+        out1 = rgba[1];
+        out2 = rgba[2];
+        out3 = rgba[3];
+        ((u8*)color)[4] = out0;
+        ((u8*)color)[5] = out1;
+        ((u8*)color)[6] = out2;
+        ((u8*)color)[7] = out3;
     }
     return color;
 }
@@ -2016,6 +2031,8 @@ static inline void fldrc_apply_field_config(u32 config)
     }
 }
 
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_001b61f0 NONMATCHING
 u32 FUN_001b61f0(void* resource, u32 archiveEntry)
 {
@@ -2053,6 +2070,8 @@ u32 FUN_001b61f0(void* resource, u32 archiveEntry)
     }
     return 1;
 }
+#pragma opt_loop_invariants off
+#pragma pop
 static u32 fldrc_event_override(u16 group, u32 id)
 {
     if (((group == 6) && ((id == 4) || (id == 5) || (id == 7) || (id == 8) ||
@@ -2691,6 +2710,8 @@ outer_check:
 done:
     return result;
 }
+#pragma push
+#pragma opt_loop_invariants on
 // FUN_001b3480 NONMATCHING
 void FUN_001b3480(u32 resource)
 {
@@ -2809,6 +2830,8 @@ void FUN_001b3480(u32 resource)
         }
     }
 }
+#pragma opt_loop_invariants off
+#pragma pop
 // FUN_001b39e0 NONMATCHING
 u32 FUN_001b39e0(u32 resource)
 {
