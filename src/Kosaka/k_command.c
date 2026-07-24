@@ -1344,19 +1344,22 @@ u32 FUN_001C3FE0()
 u32 FUN_001C4080()
 {
     s32 index;
-    u32 offset;
-    u32* entry;
-    u32* second;
     u32 result;
+    u32 valid;
+    u32 offset;
 
     index = scrGetIntPara(0);
-    offset = ((index << 3) - index) << 6;
-    entry = (u32*)(D_008717E8 + offset);
-    second = (u32*)(D_008717F4 + offset);
     result = 0;
-    if (*entry != 0 && *second != 0)
+    valid = 0;
+    offset = ((index << 3) - index) << 6;
+    if (*(volatile u32*)(D_008717E8 + offset) != 0 &&
+        *(volatile u32*)(D_008717F4 + offset) != 0)
     {
-        result = *(u16*)*second;
+        valid = 1;
+    }
+    if (valid > 0)
+    {
+        result = *(u16*)*(volatile u32**)(D_008717F4 + offset);
     }
     scrSetIntReturnVal((s32)result);
     return true;
