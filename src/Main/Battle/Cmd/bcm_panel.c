@@ -2251,11 +2251,11 @@ void FUN_00228E40(void)
     u32 table6;
     void* frame;
     f32* basePos;
-    f32 weight;
     f32 alpha1;
     f32 alpha2;
     f32 rawScaled;
     f32 blend;
+    f32 weight;
     u8 alphaByte;
     s32 rawInt;
     u32 percentColour;
@@ -2276,18 +2276,27 @@ void FUN_00228E40(void)
     basePos = (f32*)(work + 0x6050);
     weight = *(f32*)(work + 0x7214);
 
-    if (*(u32*)(work + 0x463c) == 0) {
-        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
-    } else if (*(u32*)(work + 0x463c) == 2) {
+    switch (*(u32*)(work + 0x463c)) {
+    case 2:
         alpha1 = (f32)*(s32*)(work + 0x4650) / 3.0f;
-    } else {
+        break;
+    case 0:
+        alpha1 = (f32)(3 - *(s32*)(work + 0x4650)) / 3.0f;
+        break;
+    default:
         K_ASSERT(0, 0xe59);
+        break;
     }
 
-    if (*(u32*)(work + 0x4644) == 3) {
-        alpha2 = 0.0f;
-    } else if (*(u32*)(work + 0x4644) == 0) {
+    switch (*(u32*)(work + 0x4644)) {
+    case 0:
         alpha2 = 1.0f;
+        break;
+    case 3:
+        alpha2 = 0.0f;
+        break;
+    default:
+        break;
     }
     rawScaled = alpha1 * alpha2;
     blend = 1.0f - rawScaled;
