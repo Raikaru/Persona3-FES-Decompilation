@@ -761,13 +761,10 @@ s32 fclCombineList003da700(FclList* param_1)
         data = candidate->payload->data.node_data;
         K_ASSERT(param_1 != 0, 0x465);
         K_ASSERT(data != 0, 0x466);
-        if (data->selection_detail == 0)
-            goto state3_reject;
-        if (fclCombineList003da470(param_1, (s32)data->selection_detail) != 0)
-            goto state3_reject;
-        if ((param_1->flags & 1) != 0 && data->fusion.detail.persona_id == 0)
-            goto state3_reject;
-        goto state3_accept;
+        if (data->selection_detail != 0 &&
+            fclCombineList003da470(param_1, (s32)data->selection_detail) == 0 &&
+            ((param_1->flags & 1) == 0 || data->fusion.detail.persona_id != 0))
+            goto state3_accept;
 state3_reject:
         FUN_0010a4e0(0, 0, 0, 8);
         return 0;
