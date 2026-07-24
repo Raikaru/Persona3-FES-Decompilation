@@ -306,10 +306,9 @@ void func_00272400(u32* param)
         DatPersonaWork* persona;
         s32 difference;
         persona = (DatPersonaWork*)(uintptr_t)work[0xc];
-        entry = (u8*)(uintptr_t)work[0xd];
         difference = (s32)persona->level -
                      (s32)DAT_007ce420[persona->id * 0x0e + 3];
-        FUN_001fb4b0(entry + 6, 0x10, difference,
+        FUN_001fb4b0((u8*)(uintptr_t)work[0xd] + 6, 0x10, difference,
                      ((u8*)work)[0x38], (u8*)work + 0x78,
                      (u8*)work + 0x7c);
     }
@@ -324,6 +323,7 @@ void func_00272400(u32* param)
         work[0] |= 0x10;
     work[0xa] = 0;
     i = 0;
+    goto first_check;
 first_body:
     if (*(u8*)((u8*)work + 0x5a + i) != 0)
         goto first_done;
@@ -355,9 +355,9 @@ result_body:
     *(u16*)((u8*)work + 0x1c4 + resultIndex * 8) =
         *(u16*)(entry + 2);
     *(u32*)((u8*)work + 0x1c8 + resultIndex * 8) =
-        (u32)entry[0] +
         DAT_007ce420[
-            (*(u16*)((u8*)(uintptr_t)work[0xc] + 2)) * 0x0e + 3];
+            (*(u16*)((u8*)(uintptr_t)work[0xc] + 2)) * 0x0e + 3] +
+        (u32)entry[0];
     resultIndex++;
 result_check:
     if (resultIndex < resultCount)
@@ -377,20 +377,21 @@ u32 func_002727c0(void)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     return brpSeqU32(0) & 1;
 }
-#define brpSeqBytes() work
-#define brpSeqU32(offset) (*(u32*)(work + (offset)))
-#define brpSeqS32(offset) (*(s32*)(work + (offset)))
-#define brpSeqU16(offset) (*(u16*)(work + (offset)))
-#define brpSeqS16(offset) (*(s16*)(work + (offset)))
-#define brpSeqU8(offset) (*(u8*)(work + (offset)))
-#define brpSeqPutU32(offset, value) (*(u32*)(work + (offset)) = (value))
-#define brpSeqPutU16(offset, value) (*(u16*)(work + (offset)) = (value))
-#define brpSeqPutU8(offset, value) (*(u8*)(work + (offset)) = (value))
+#define brpSeqBytes() ((u8*)work)
+#define brpSeqU32(offset) (*(u32*)((u8*)work + (offset)))
+#define brpSeqS32(offset) (*(s32*)((u8*)work + (offset)))
+#define brpSeqU16(offset) (*(u16*)((u8*)work + (offset)))
+#define brpSeqS16(offset) (*(s16*)((u8*)work + (offset)))
+#define brpSeqU8(offset) (*(u8*)((u8*)work + (offset)))
+#define brpSeqPutU32(offset, value) (*(u32*)((u8*)work + (offset)) = (value))
+#define brpSeqPutU16(offset, value) (*(u16*)((u8*)work + (offset)) = (value))
+#define brpSeqPutU8(offset, value) (*(u8*)((u8*)work + (offset)) = (value))
 
 // FUN_00272810 NONMATCHING
+#pragma opt_loop_invariants on
 void func_00272810(void)
 {
-    u8* work;
+    u32* work;
     DatPersonaWork* persona;
     u32 state;
     u32 slot;
@@ -405,7 +406,7 @@ void func_00272810(void)
     u8 text[256];
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    work = (u8*)sBrpSeq;
+    work = sBrpSeq;
     if ((brpSeqU32(0) & 1) != 0)
     {
         state = brpSeqU32(0x10);
@@ -724,6 +725,7 @@ void func_00272810(void)
             func_0024adf0();
     }
 }
+#pragma opt_loop_invariants off
 
 #undef brpSeqBytes
 #undef brpSeqU32
