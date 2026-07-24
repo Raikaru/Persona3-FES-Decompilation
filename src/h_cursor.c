@@ -15,7 +15,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
 
     work = (HCursorWork*)hcursorTask->workData;
 
-    setRenderState = &rwGlobals.device.setRenderState;
+    setRenderState = (RwRenderStateSetFunc*)((u8*)&rwGlobals + 0x90);
 
     (*setRenderState)(rwRENDERSTATEZTESTENABLE, (void*)true);
     (*setRenderState)(rwRENDERSTATESHADEMODE, (void*)rwSHADEMODEGOURAUD);
@@ -37,7 +37,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
         case HCURSOR_STATE_UPDATE:
             recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
             i = 0;
-            zBufferNear = RwIm2DGetNearScreenZ();
+            zBufferNear = *(RwReal*)((u8*)&rwGlobals + 0x88);
             for (; i < 4; i++)
             {
                 vertex = &work->vertices[i];
@@ -63,7 +63,7 @@ void* H_Cursor_UpdateTask(KwlnTask* hcursorTask)
             work->vertices[3].u.els.scrVertex.x = work->pos.x + work->rect.w;
             work->vertices[3].u.els.scrVertex.y = work->pos.y + work->rect.h;
 
-            RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, work->vertices, 4);
+            (*((RwIm2DRenderPrimitiveFunction*)((u8*)&rwGlobals + 0xa0)))(rwPRIMTYPETRISTRIP, work->vertices, 4);
 
             work->state = HCURSOR_STATE_UPDATE;
             break;
