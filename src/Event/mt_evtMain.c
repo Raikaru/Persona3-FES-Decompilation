@@ -10329,7 +10329,6 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
   int iVar8;
 
   u16 *puVar9;
-  u8 *iVar10;
 
   u32 uVar11;
 
@@ -10337,17 +10336,11 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
 
   u32 uVar13;
 
-  u32 uStack_20;
+  f32 afStack_20[3];
 
-  u32 uStack_1c;
+  f32 afStack_10[3];
 
-  u32 uStack_18;
-
-  u32 uStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
+  u8 *iVar10;
 
   
   iVar10 = (u8 *)param_3;
@@ -11748,19 +11741,19 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
 
           if ((*piVar5 == 0x25) && (((char)puVar9[8] == '\0' || ((char)puVar9[8] == '\x01')))) {
 
-            uStack_10 = *(u32 *)(puVar9 + 10);
+            afStack_10[0] = *(f32 *)(puVar9 + 10);
 
-            uStack_c = *(u32 *)(puVar9 + 0xc);
+            afStack_10[1] = *(f32 *)(puVar9 + 0xc);
 
-            uStack_8 = *(u32 *)(puVar9 + 0xe);
+            afStack_10[2] = *(f32 *)(puVar9 + 0xe);
 
-            uStack_20 = *(u32 *)(puVar9 + 0x10);
+            afStack_20[0] = *(f32 *)(puVar9 + 0x10);
 
-            uStack_1c = *(u32 *)(puVar9 + 0x12);
+            afStack_20[1] = *(f32 *)(puVar9 + 0x12);
 
-            uStack_18 = *(u32 *)(puVar9 + 0x14);
+            afStack_20[2] = *(f32 *)(puVar9 + 0x14);
 
-            uVar11 = FUN_00386130(param_3,&uStack_10,&uStack_20);
+            uVar11 = FUN_00386130(param_3,(u32 *)afStack_10,(u32 *)afStack_20);
 
             *(u32 *)(iVar10 + 0xe8) = uVar11;
 
