@@ -1255,25 +1255,37 @@ static inline void campSkillOpenDetail(CampSkillInnerWork* work)
     pair.f[1] = work->listRecords[0].animationTail;
     FUN_0018bc10(100.0f, work->listRecords, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
+    pair.f[0] = 358.0f;
+    pair.f[1] = 36.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 415.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
 
     pair.f[0] = 19.0f;
     pair.f[1] = 36.0f;
-    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x44, 0, 2, 1,
+    FUN_0018bc10(100.0f, work->detailRecords, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
-    pair.f[0] = 20.1875f;
+    pair.f[0] = 419.0f;
     pair.f[1] = 37.0f;
-    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x88, 0, 2, 1,
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x44, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
     pair.f[0] = 0.0f;
     pair.f[1] = 60.0f;
-    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0xcc, 0, 2, 1,
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x88, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
     pair.f[0] = 117.0f;
     pair.f[1] = 108.0f;
-    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x110, 0, 2, 1,
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0xcc, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
     pair.f[0] = 486.0f;
     pair.f[1] = 364.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x110, 0, 2, 1,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 182.0f;
+    pair.f[1] = 242.0f;
     FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x198, 0, 2, 1,
                  pair.q, pair.q, 0, 0);
     pair.f[0] = 28.0f;
@@ -1290,10 +1302,56 @@ static inline void campSkillAnimateDetail(CampSkillInnerWork* work, s32 mode)
     for (i = 0; i < 4; i++) {
         pair.f[0] = 15.0f;
         pair.f[1] = 47.0f + (f32)(i * 0x24);
-        FUN_0018bc10(100.0f, &work->detailRecords[i + 2], 0, 2, mode,
+        FUN_0018bc10(100.0f, &work->listRecords[i + 2], 0, 2, mode,
                      pair.q, pair.q, 0, 0);
     }
+    pair.f[0] = 400.0f;
+    pair.f[1] = 0.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[6], 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = work->listRecords[0].animation;
+    pair.f[1] = work->listRecords[0].animationTail;
+    FUN_0018bc10(100.0f, work->listRecords, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 358.0f;
+    pair.f[1] = 36.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[7], 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 415.0f;
+    FUN_0018bc10(100.0f, &work->listRecords[8], 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+
+    pair.f[0] = 19.0f;
+    pair.f[1] = 36.0f;
+    FUN_0018bc10(100.0f, work->detailRecords, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 419.0f;
+    pair.f[1] = 37.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x44, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 0.0f;
+    pair.f[1] = 60.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x88, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 117.0f;
+    pair.f[1] = 108.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0xcc, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 486.0f;
+    pair.f[1] = 364.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x110, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 182.0f;
+    pair.f[1] = 242.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x198, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
+    pair.f[0] = 28.0f;
+    pair.f[1] = 421.0f;
+    FUN_0018bc10(100.0f, (u8*)work->detailRecords + 0x1dc, 0, 2, mode,
+                 pair.q, pair.q, 0, 0);
 }
+
 
 static inline s32 campSkillUpdateMainRecords(CampSkillInnerWork* work,
                                       s32 drawRecords)
@@ -1734,7 +1792,7 @@ void* FUN_00164920(KwlnTask* task)
             FUN_001685e0(DAT_007cdf88, 1);
         }
         campSkillUpdateMainRecords(work, 1);
-        campSkillAnimateDetail(work, 2);
+        campSkillAnimateDetail(work, 1);
         work->state = 13;
         break;
     case 13:
