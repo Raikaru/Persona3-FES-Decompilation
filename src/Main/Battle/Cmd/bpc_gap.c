@@ -101,13 +101,14 @@ void FUN_00248580(void* destination, void* origin)
 // FUN_00248620 NONMATCHING
 void FUN_00248620(void)
 {
-    u32* entry;
-    u32 texture;
     u32* work;
-    f32 left;
-    f32 base;
+    u32 texture;
+    u32* entry;
     f32 total;
     f32 half;
+    f32 base;
+    f32 left;
+    f32 x;
     struct {
         f32 rect[4];
         u8 reserved[0x1c];
@@ -126,7 +127,7 @@ void FUN_00248620(void)
             *work &= ~1u;
         }
     }
-    if ((*work & 1u) == 0) {
+    if ((~*work & 1u) != 0) {
         return;
     }
     *work |= 2;
@@ -153,10 +154,10 @@ void FUN_00248620(void)
     layout.color[3] = 0xff;
     func_0021d950(work + 4, layout.color);
 
-    layout.rect[0] = (f32)*(s32*)((u8*)entry + 0xc) + left;
-    layout.rect[1] = 100.0f;
+    x = (f32)*(s32*)((u8*)entry + 0xc) + left;
+    layout.rect[0] = x;
     half = 309.0f + half;
-    layout.rect[2] = 57.0f + half - 16.0f;
+    layout.rect[2] = 57.0f + half - 16.0f - x;
     layout.rect[3] = (f32)*(s32*)((u8*)entry + 0x10);
     func_0021d8e0(work + 0x44, layout.rect);
     layout.color[0] = 0xff;
@@ -181,7 +182,7 @@ void FUN_00248620(void)
     layout.rect[0] = base - 86.0f;
     layout.rect[1] = 54.0f;
     layout.rect[2] = 86.0f + half - layout.rect[0];
-    layout.rect[3] = (f32)((*(s32*)((u8*)entry + 0x10) * 518) / 100);
+    layout.rect[3] = (f32)((*(s32*)((u8*)entry + 0x10) * 390) / 100);
     func_0021d8e0(work + 0xc4, layout.rect);
     layout.color[0] = 0xff;
     layout.color[1] = 0xff;
