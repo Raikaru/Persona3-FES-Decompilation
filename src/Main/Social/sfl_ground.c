@@ -859,6 +859,97 @@ void func_002392d0(void)
     color.a = sflGroundAlpha(panelFade);
     func_0024a230(GROUND_PTR(work, SFL_GROUND_WORK_SIZE), &color);
     func_00249c10(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
+
+    /*
+     * Second ribbon pass: the 7×4 grid is rendered a second time
+     * unconditionally, with a wider horizontal pitch.
+     */
+    for (i = 0; i < 7; i++) {
+        f32 ribbonPhase;
+        f32 ribbonI;
+        tile = (u8*)work + 0x4810 + i * 0x420;
+        ribbonPhase = GROUND_F32(tile, 0x410) + 0.033333335f;
+        if (ribbonPhase > 1.0f)
+            ribbonPhase -= 1.0f;
+        GROUND_F32(tile, 0x410) = ribbonPhase;
+        GROUND_U32(tile, 0x414) =
+            (GROUND_U32(tile, 0x414) + 1) & 0xfff;
+        scale.x = 76.5f;
+        scale.y = 192.0f;
+        direction.x = 0.0f;
+        direction.y = 0.43f;
+        ribbonI = (f32)i;
+        for (j = 0; j < 4; j++) {
+            center.x = 640.0f * (ribbonI + 0.5f) / 7.0f;
+            center.y = 224.0f * (ribbonPhase + (f32)j / 4.0f);
+            if ((i & 1) != 0)
+                center.y = 224.0f * (1.0f - ribbonPhase -
+                                     (f32)j / 4.0f);
+            center.y -= 96.0f;
+            func_0021e170(tile + 0x10 + j * 0x100, &center,
+                          &direction, &scale);
+            color.a = sflGroundAlpha(panelScale * 0.43f);
+            func_0021d950(tile + 0x10 + j * 0x100, &color);
+        }
+    }
+
+    /*
+     * Second rendering pass: six texture strips rendered again after the
+     * ribbon grid, with different alpha calculation per strip (using
+     * work[1] directly rather than the state-derived fade).
+     */
+    if (work[3] == 3 || work[3] == 4) {
+        u32 clockVal;
+        f32 stripPhase;
+        f32 stripAlpha;
+
+        color.r = 0xff;
+        color.g = 0xff;
+        color.b = 0xff;
+        clockVal = work[0x1abc];
+
+        /* Top half: scroll left, rect[1]=0 */
+        stripPhase = (f32)clockVal / 240.0f;
+        rect[0] = (1.0f - stripPhase) * 1659.0f - 503.0f;
+        rect[1] = 0.0f;
+        rect[2] = 503.0f;
+        rect[3] = 44.0f;
+        stripAlpha = (f32)work[1] < 30.0f ? (f32)work[1] / 30.0f : 1.0f;
+        color.a = sflGroundAlpha(stripAlpha);
+        func_0021d8e0(GROUND_PTR(work, 0x64f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x64f0), &color);
+
+        stripPhase = (f32)((clockVal + 160) % 240) / 240.0f;
+        rect[0] = (1.0f - stripPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x65f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x65f0), &color);
+
+        stripPhase = (f32)((clockVal + 80) % 240) / 240.0f;
+        rect[0] = (1.0f - stripPhase) * 1659.0f - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x66f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x66f0), &color);
+
+        /* Bottom half: scroll right, rect[1]=404 */
+        rect[1] = 404.0f;
+        stripPhase = (f32)clockVal / 240.0f;
+        rect[0] = 1659.0f * stripPhase - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x67f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x67f0), &color);
+
+        stripPhase = (f32)((clockVal + 160) % 240) / 240.0f;
+        rect[0] = 1659.0f * stripPhase - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x68f0), &color);
+
+        stripPhase = (f32)((clockVal + 80) % 240) / 240.0f;
+        rect[0] = 1659.0f * stripPhase - 503.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
+        func_0021d950(GROUND_PTR(work, 0x69f0), &color);
+    }
+
+    color.a = sflGroundAlpha((128.0f / 255.0f) * panelFade);
+    func_0024a230(GROUND_PTR(work, SFL_GROUND_WORK_SIZE), &color);
+    func_00249c10(GROUND_PTR(work, SFL_GROUND_WORK_SIZE));
 }
 
 // FUN_0023B990 NONMATCHING
