@@ -206,6 +206,8 @@ void FUN_0025c220(void)
     u32* puVar1;
     s32 iVar2;
     s32 iVar3;
+    s32 uVar6;
+    s32 uVar7;
     u32 uVar4;
     u32 uVar5;
     f32 fVar6;
@@ -299,26 +301,28 @@ void FUN_0025c220(void)
                      fVar8 - 5.0f, puVar1[3]);
         fVar10 = 255.0f * fVar10 * fVar6;
         if (2.1474836e+09f > fVar10) {
-            uVar5 = (u32)(s32)fVar10;
-            uVar5 &= 0xffu;
+            uVar6 = (s32)fVar10;
+            uVar6 &= 0xffu;
         } else {
-            uVar5 = (u32)(s32)(fVar10 - 2.1474836e+09f) | 0x80000000u;
-            uVar5 &= 0xffu;
+            uVar6 = (s32)(fVar10 - 2.1474836e+09f) | 0x80000000;
+            uVar6 &= 0xffu;
         }
-        uVar5 |= 0xffffff00u;
-        func_003b0e20(puVar1[1], uVar5);
+        uVar6 &= 0xffu;
+        uVar6 |= 0xffffff00u;
+        func_003b0e20(puVar1[1], uVar6);
 
-        fVar11 = 255.0f * fVar11 * fVar6;
+        fVar11 = fVar11 * (255.0f * fVar6);
         if (2.1474836e+09f > fVar11) {
-            uVar5 = (u32)(s32)fVar11;
-            uVar5 &= 0xffu;
+            uVar7 = (s32)fVar11;
+            uVar7 &= 0xffu;
         } else {
-            uVar5 = (u32)(s32)(fVar11 - 2.1474836e+09f) | 0x80000000u;
-            uVar5 &= 0xffu;
+            uVar7 = (s32)(fVar11 - 2.1474836e+09f) | 0x80000000;
+            uVar7 &= 0xffu;
         }
-        uVar5 |= 0xffffff00u;
-        func_003b0e20(puVar1[2], uVar5);
-        func_003b0e20(puVar1[3], uVar5);
+        uVar7 &= 0xffu;
+        uVar7 |= 0xffffff00u;
+        func_003b0e20(puVar1[2], uVar7);
+        func_003b0e20(puVar1[3], uVar7);
 
         iVar2 = FUN_0021cca0(uVar4, puVar1[200]);
         layout.rect[0] = 32.0f;
@@ -342,11 +346,14 @@ void FUN_0025c220(void)
         layout.color[0] = 0xff;
         layout.color[1] = 0xff;
         layout.color[2] = 0xff;
-        if (fVar10 < 2.1474836e+09f) {
-            layout.color[3] = (u8)(s32)fVar10;
+        if (2.1474836e+09f > fVar10) {
+            uVar6 = (s32)fVar10;
+            uVar6 &= 0xffu;
         } else {
-            layout.color[3] = (u8)(s32)(fVar10 - 2.1474836e+09f);
+            uVar6 = (s32)(fVar10 - 2.1474836e+09f) | 0x80000000;
+            uVar6 &= 0xffu;
         }
+        layout.color[3] = (u8)uVar6;
         for (i = 0; i < 3; i++) {
             FUN_0021d950(puVar1 + i * 0x40 + 8, layout.color);
         }
@@ -357,11 +364,9 @@ void FUN_0025c220(void)
         layout.rect[2] = (f32)*(s32*)(iVar2 + 0xc);
         layout.rect[3] = (f32)*(s32*)(iVar2 + 0x10);
         FUN_0021d8e0(puVar1 + 0xcc, layout.rect);
-
         iVar2 = FUN_0021cca0(uVar4, 0x5a);
         iVar3 = FUN_003b19d0(puVar1[2]);
-        layout.rect[0] = fVar9 + (f32)iVar3;
-        layout.rect[0] = layout.rect[0] + 25.0f;
+        layout.rect[0] = fVar9 + (f32)iVar3 + 25.0f;
         layout.rect[1] = fVar8;
         layout.rect[2] = (f32)*(s32*)(iVar2 + 0xc);
         layout.rect[3] = (f32)*(s32*)(iVar2 + 0x10);
@@ -370,11 +375,14 @@ void FUN_0025c220(void)
         layout.color[0] = 0xff;
         layout.color[1] = 0xff;
         layout.color[2] = 0xff;
-        if (fVar11 < 2.1474836e+09f) {
-            layout.color[3] = (u8)(s32)fVar11;
+        if (2.1474836e+09f > fVar11) {
+            uVar7 = (s32)fVar11;
+            uVar7 &= 0xffu;
         } else {
-            layout.color[3] = (u8)(s32)(fVar11 - 2.1474836e+09f);
+            uVar7 = (s32)(fVar11 - 2.1474836e+09f) | 0x80000000;
+            uVar7 &= 0xffu;
         }
+        layout.color[3] = (u8)uVar7;
         for (i = 0; i < 2; i++) {
             FUN_0021d950(puVar1 + i * 0x40 + 0xcc, layout.color);
         }
