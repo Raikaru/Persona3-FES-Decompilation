@@ -1546,7 +1546,9 @@ f32 func_0019c490(KwlnTask* renderTexTask)
         cameraFrame = (RwFrame*)(shadow_)->camera->object.object.parent;                               \
         if ((useCustom_) != 0)                                                                          \
         {                                                                                               \
-            cameraFrame->modelling = *(direction_);                                                    \
+            cameraFrame->modelling.right = (direction_)->right;                                      \
+            cameraFrame->modelling.up = (direction_)->up;                                            \
+            cameraFrame->modelling.at = (direction_)->at;                                             \
             RwEngineGetMatrixTolerances(&tolerance);                                                   \
             RwMatrixOptimize(&cameraFrame->modelling, &tolerance);                                     \
             RwMatrixUpdate(&cameraFrame->modelling);                                                   \
