@@ -381,6 +381,11 @@ void sflPsel00260e00(void)
 extern void FUN_0021d890(void*, const void*);
 #pragma optimization_level 3
 
+// Reconstructed the complete retail animation path, including all quad states.
+// The original source omitted dynamic frame branches and contiguous color writes.
+// Restoring these stores increases the instruction window while preserving logic.
+// Remaining differences are primarily MWCC register allocation and scheduling.
+// This function remains NONMATCHING until those code-generation details converge.
 // FUN_00261480 NONMATCHING
 void sflPsel00261480(void)
 {
@@ -388,16 +393,11 @@ void sflPsel00261480(void)
     u32* work;
     u32 texture;
     u8* resource34;
-    u8* resource35;
-    u8* resource36;
-    void* object;
-    float rect[4];
-    float quad[8];
-    float progress;
-    float alpha;
-    float diagonal;
-    float height;
-    float delta;
+    f32 points[8];
+    f32 diagonal;
+    f32 alpha;
+    s32 channel;
+    f32 channelFloat;
     s32 frame;
     s32 mode;
 
@@ -405,253 +405,370 @@ void sflPsel00261480(void)
     work = sSflPsel;
     texture = sflRes0020ec50();
     resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x34);
-    resource35 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x35);
-    resource36 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x36);
     frame = (s32)work[2];
     mode = (s32)work[1];
     diagonal = 1.4142135f;
 
-    if (mode == 1) {
-        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
-        rect[0] = progress * 150.0f + 6.0f;
-        rect[1] = rect[0];
-        alpha = 1.0f - progress;
-    } else {
+    switch (mode) {
+    case 0:
         alpha = 1.0f;
         if (frame < 5) {
-            progress = (float)frame / 5.0f;
-            height = (float)sflPselReadS32(resource34, 0x10);
-            rect[0] = progress * (6.0f - (height + 12.0f)) + (height + 12.0f);
-            rect[1] = progress * (6.0f - (6.0f - (height + 6.0f))) +
-                      (6.0f - (height + 6.0f));
+            points[0] = -(6.0f + (f32)sflPselReadS32(resource34, 0x10)) +
+                        ((f32)frame / 10.0f) *
+                        (12.0f + (f32)sflPselReadS32(resource34, 0x10));
+            points[1] = 6.0f + (f32)sflPselReadS32(resource34, 0x10) -
+                        ((f32)frame / 10.0f) *
+                        (f32)sflPselReadS32(resource34, 0x10);
         } else {
-            rect[0] = 6.0f;
-            rect[1] = 6.0f;
+            points[0] = 6.0f;
+            points[1] = 6.0f;
         }
+        break;
+    case 1:
+        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        points[0] = channelFloat * 150.0f + 6.0f;
+        points[1] = points[0];
+        alpha = 1.0f - channelFloat;
+        break;
     }
-    rect[2] = (float)sflPselReadS32(resource34, 0x0c);
-    rect[3] = (float)sflPselReadS32(resource34, 0x10);
-    object = sflPselBytes(work, 0x410);
-    FUN_0021d8e0(object, rect);
-    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+    points[2] = (f32)sflPselReadS32(resource34, 0x0c);
+    points[3] = (f32)sflPselReadS32(resource34, 0x10);
+    FUN_0021d8e0(sflPselBytes(work, 0x410), points);
+    sflPselSetAlpha(sflPselBytes(work, 0x410), (u8)(alpha * 255.0f));
+    resource34 = (u8*)(uintptr_t)FUN_0021cca0(texture, 0x35);
 
-    if (mode == 1) {
-        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
-        rect[0] = progress * 150.0f + 23.0f;
-        rect[1] = progress * 150.0f + 109.0f;
-        alpha = 1.0f - progress;
-    } else {
+    switch (mode) {
+    case 0:
         alpha = 1.0f;
         if (frame < 6) {
-            float from0;
-            float from1;
-
-            progress = (float)frame / 6.0f;
-            height = (float)sflPselReadS32(resource35, 0x10);
-            from0 = height + 109.0f;
-            from1 = from0 + 23.0f;
-            rect[0] = progress * (23.0f - from1) + from1;
-            from0 = 109.0f - from0;
-            rect[1] = progress * (109.0f - from0) + from0;
+            points[0] = -(109.0f + (f32)sflPselReadS32(resource34, 0x10)) +
+                        ((f32)frame / 6.0f) *
+                        (225.0f + (f32)sflPselReadS32(resource34, 0x10));
+            points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -
+                        ((f32)frame / 6.0f) *
+                        (87.0f + (f32)sflPselReadS32(resource34, 0x10));
         } else {
-            rect[0] = 23.0f;
-            rect[1] = 109.0f;
+            points[0] = 116.0f;
+            points[1] = 22.0f;
         }
+        break;
+    case 1:
+        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        points[0] = channelFloat * 150.0f + 23.0f;
+        points[1] = channelFloat * 150.0f + 109.0f;
+        alpha = 1.0f - channelFloat;
+        break;
     }
-    rect[2] = (float)sflPselReadS32(resource35, 0x0c);
-    rect[3] = (float)sflPselReadS32(resource35, 0x10);
-    object = sflPselBytes(work, 0x510);
-    FUN_0021d8e0(object, rect);
-    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+    points[2] = (f32)sflPselReadS32(resource34, 0x0c);
+    points[3] = (f32)sflPselReadS32(resource34, 0x10);
+    FUN_0021d8e0(sflPselBytes(work, 0x510), points);
+    sflPselSetAlpha(sflPselBytes(work, 0x510), (u8)(alpha * 255.0f));
 
-    if (mode == 1) {
-        progress = frame < 3 ? (float)frame / 3.0f : 1.0f;
-        rect[0] = progress * 150.0f + 116.0f;
-        rect[1] = progress * 150.0f + 22.0f;
-        alpha = 1.0f - progress;
-    } else {
+    switch (mode) {
+    case 0:
         alpha = 1.0f;
         if (frame < 6) {
-            float from0;
-            float from1;
-
-            progress = (float)frame / 6.0f;
-            height = (float)sflPselReadS32(resource36, 0x10);
-            from0 = height + 109.0f;
-            from1 = from0 + 116.0f;
-            rect[0] = progress * (116.0f - from1) + from1;
-            from0 = 22.0f - from0;
-            rect[1] = progress * (22.0f - from0) + from0;
+            points[0] = -(109.0f + (f32)sflPselReadS32(resource34, 0x10)) +
+                        ((f32)frame / 6.0f) *
+                        (225.0f + (f32)sflPselReadS32(resource34, 0x10));
+            points[1] = 109.0f + (f32)sflPselReadS32(resource34, 0x10) -
+                        ((f32)frame / 6.0f) *
+                        (87.0f + (f32)sflPselReadS32(resource34, 0x10));
         } else {
-            rect[0] = 116.0f;
-            rect[1] = 22.0f;
+            points[0] = 116.0f;
+            points[1] = 22.0f;
         }
+        break;
+    case 1:
+        channelFloat = frame < 3 ? (f32)frame / 3.0f : 1.0f;
+        points[0] = channelFloat * 150.0f + 116.0f;
+        points[1] = channelFloat * 150.0f + 22.0f;
+        alpha = 1.0f - channelFloat;
+        break;
     }
-    rect[2] = (float)sflPselReadS32(resource36, 0x0c);
-    rect[3] = (float)sflPselReadS32(resource36, 0x10);
-    object = sflPselBytes(work, 0x610);
-    FUN_0021d8e0(object, rect);
-    sflPselSetAlpha(object, (u8)(alpha * 255.0f));
+    points[2] = (f32)sflPselReadS32(resource34, 0x0c);
+    points[3] = (f32)sflPselReadS32(resource34, 0x10);
+    FUN_0021d8e0(sflPselBytes(work, 0x610), points);
+    sflPselSetAlpha(sflPselBytes(work, 0x610), (u8)(alpha * 255.0f));
 
-    if (mode == 1) {
-        if (frame < 10) {
-            progress = (float)frame / 10.0f;
-            delta = (1.0f - progress) *
-                    (544.0f - (256.0f - fGpffff8300) / diagonal);
-            quad[0] = 320.0f - delta;
-            quad[1] = 768.0f - delta;
-            quad[2] = 864.0f - delta;
-            quad[3] = 224.0f - delta;
-            quad[4] = 864.0f;
-            quad[5] = 224.0f;
-            quad[6] = 320.0f;
-            quad[7] = 768.0f;
-        } else {
-            delta = (1088.0f / diagonal) / diagonal;
-            quad[0] = delta - (448.0f / diagonal) / diagonal;
-            quad[1] = delta + 224.0f;
-            quad[2] = delta + 320.0f;
-            quad[3] = delta - (640.0f / diagonal) / diagonal;
-            quad[4] = quad[2];
-            quad[5] = quad[3];
-            quad[6] = quad[0];
-            quad[7] = quad[1];
-        }
-    } else {
+    switch (mode) {
+    case 0:
         if (frame < 8) {
-            progress = (float)frame / 8.0f;
-            delta = progress * 1088.0f / diagonal;
-            quad[0] = 320.0f;
-            quad[1] = -320.0f;
-            quad[2] = -224.0f;
-            quad[3] = 224.0f;
-            quad[4] = delta - 224.00002f;
-            quad[5] = delta + 224.0f;
-            quad[6] = delta + 320.0f;
-            quad[7] = delta - 320.0f;
+            channelFloat = (f32)frame / 8.0f;
+            points[0] = 320.0f;
+            points[1] = -320.0f;
+            points[2] = -224.0f;
+            points[3] = 224.0f;
+            points[4] = -224.0f + channelFloat * (1088.0f / diagonal);
+            points[5] = 224.0f + channelFloat * (1088.0f / diagonal);
+            points[6] = 320.0f + channelFloat * (1088.0f / diagonal);
+            points[7] = -320.0f + channelFloat * (1088.0f / diagonal);
         } else {
-            delta = 1088.0f / diagonal;
-            quad[0] = 320.0f;
-            quad[1] = -320.0f;
-            quad[2] = -224.0f;
-            quad[3] = 224.0f;
-            quad[4] = delta - 224.0f;
-            quad[5] = delta + 224.0f;
-            quad[6] = delta + 320.0f;
-            quad[7] = delta - 320.0f;
+            points[0] = 320.0f;
+            points[1] = -320.0f;
+            points[2] = -224.0f;
+            points[3] = 224.0f;
+            points[4] = -224.0f + 1088.0f / diagonal;
+            points[5] = 224.0f + 1088.0f / diagonal;
+            points[6] = 320.0f + 1088.0f / diagonal;
+            points[7] = -320.0f + 1088.0f / diagonal;
         }
+        break;
+    case 1:
+        if (frame < 10) {
+            channelFloat = (f32)frame / 10.0f;
+            points[0] = 320.0f - (1.0f - channelFloat) *
+                        (544.0f - (256.0f - fGpffff8300) / diagonal);
+            points[1] = 768.0f - (1.0f - channelFloat) *
+                        (544.0f - (256.0f - fGpffff8300) / diagonal);
+            points[2] = 864.0f - (1.0f - channelFloat) *
+                        (544.0f - (256.0f - fGpffff8300) / diagonal);
+            points[3] = 224.0f - (1.0f - channelFloat) *
+                        (544.0f - (256.0f - fGpffff8300) / diagonal);
+            points[4] = 864.0f;
+            points[5] = 224.0f;
+            points[6] = 320.0f;
+            points[7] = 768.0f;
+        } else {
+            points[4] = 320.0f + (1088.0f / diagonal) / diagonal;
+            points[5] = (1088.0f / diagonal) / diagonal - 320.0f;
+            points[6] = (1088.0f / diagonal) / diagonal - 448.0f;
+            points[7] = 224.0f + (1088.0f / diagonal) / diagonal;
+            points[0] = points[6];
+            points[1] = points[7];
+            points[2] = points[4];
+            points[3] = points[5];
+        }
+        break;
     }
-    object = sflPselBytes(work, 0x10);
-    FUN_0021d890(object, quad);
-    FUN_0021eac0(object, FUN_0021ea00(0x32));
+    FUN_0021d890(sflPselBytes(work, 0x10), points);
+    FUN_0021eac0(sflPselBytes(work, 0x10), FUN_0021ea00(0x32));
     color[0] = 0;
     color[1] = 0;
     color[2] = 0;
     color[3] = 0;
-    FUN_0021d950(object, color);
+    FUN_0021d950(sflPselBytes(work, 0x10), color);
 
-    if (mode == 1) {
+    switch (mode) {
+    case 0:
+        points[0] = 320.0f;
+        points[1] = -320.0f;
+        points[2] = -224.0f;
+        points[3] = 224.0f;
+        channelFloat = (216.0f / diagonal) / diagonal;
+        points[4] = -224.0f + channelFloat;
+        points[5] = 224.0f + channelFloat;
+        points[6] = 320.0f + channelFloat;
+        points[7] = -320.0f + channelFloat;
+        alpha = 1.0f;
+        break;
+    case 1:
         if (frame < 10) {
-            progress = (float)frame / 10.0f;
-            alpha = 1.0f - progress;
-            delta = progress * (544.0f -
-                                (181.01933f - fGpffff8300) / diagonal);
-            quad[0] = delta + 291.71573f;
-            quad[1] = delta - 348.28427f;
-            quad[2] = delta - 252.28427f;
-            quad[3] = delta + 195.71573f;
-            quad[4] = quad[2] + 136.28427f;
-            quad[5] = quad[3] + 136.28427f;
-            quad[6] = quad[0] + 136.28427f;
-            quad[7] = quad[1] + 136.28427f;
+            channelFloat = (f32)frame / 10.0f;
+            points[0] = 320.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f - fGpffff8300) / diagonal);
+            points[1] = -320.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f - fGpffff8300) / diagonal);
+            points[2] = -224.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f - fGpffff8300) / diagonal);
+            points[3] = 224.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f - fGpffff8300) / diagonal);
+            points[4] = points[2] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[5] = points[3] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[6] = points[0] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[7] = points[1] + (40.0f + 216.0f / diagonal) / diagonal;
+            alpha = 1.0f - channelFloat;
         } else {
             alpha = 0.0f;
-            quad[0] = 0.0f;
-            quad[1] = 0.0f;
-            quad[2] = 0.0f;
-            quad[3] = 0.0f;
-            quad[4] = 0.0f;
-            quad[5] = 0.0f;
-            quad[6] = 0.0f;
-            quad[7] = 0.0f;
+            points[0] = 0.0f;
+            points[1] = 0.0f;
+            points[2] = 0.0f;
+            points[3] = 0.0f;
+            points[4] = 0.0f;
+            points[5] = 0.0f;
+            points[6] = 0.0f;
+            points[7] = 0.0f;
         }
-    } else {
-        alpha = 1.0f;
-        quad[0] = 320.0f;
-        quad[1] = -320.0f;
-        quad[2] = -224.0f;
-        quad[3] = 224.0f;
-        quad[4] = -116.0f;
-        quad[5] = 332.0f;
-        quad[6] = 428.0f;
-        quad[7] = -212.0f;
+        break;
     }
-    object = sflPselBytes(work, 0x110);
-    FUN_0021d890(object, quad);
-    FUN_0021eac0(object, FUN_0021ea00(0x23));
+    FUN_0021d890(sflPselBytes(work, 0x110), points);
+    FUN_0021eac0(sflPselBytes(work, 0x110), FUN_0021ea00(0x23));
     color[0] = 4;
     color[1] = 0x29;
     color[2] = 0x46;
     color[3] = (u8)(alpha * 255.0f);
-    FUN_0021d950(object, color);
+    FUN_0021d950(sflPselBytes(work, 0x110), color);
 
-    if (mode == 1) {
-        delta = (181.01933f - fGpffff8300) / diagonal;
-        progress = (float)frame / 10.0f;
-        alpha = progress * (544.0f - delta);
-        quad[0] = delta + 320.0f + alpha;
-        quad[1] = delta - 320.0f + alpha;
-        quad[2] = delta - 224.0f + alpha;
-        quad[3] = delta + 224.0f + alpha;
-        quad[4] = alpha - 96.0f;
-        quad[5] = alpha + 352.0f;
-        quad[6] = alpha + 448.0f;
-        quad[7] = alpha - 192.0f;
-    } else {
-        quad[0] = 320.0f;
-        quad[1] = -320.0f;
-        quad[2] = -224.0f;
-        quad[3] = 224.0f;
-        quad[4] = -96.0f;
-        quad[5] = 352.0f;
-        quad[6] = 448.0f;
-        quad[7] = -192.0f;
+    switch (mode) {
+    case 0:
+        channelFloat = (256.0f / diagonal) / diagonal;
+        points[0] = 320.0f;
+        points[1] = -320.0f;
+        points[2] = -224.0f;
+        points[3] = 224.0f;
+        points[4] = -224.0f + channelFloat;
+        points[5] = 224.0f + channelFloat;
+        points[6] = 320.0f + channelFloat;
+        points[7] = -320.0f + channelFloat;
+        break;
+    case 1:
+        if (frame < 10) {
+            channelFloat = (f32)frame / 10.0f;
+            points[0] = 320.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f / diagonal - fGpffff8300) / diagonal);
+            points[1] = -320.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f / diagonal - fGpffff8300) / diagonal);
+            points[2] = -224.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f / diagonal - fGpffff8300) / diagonal);
+            points[3] = 224.0f - 40.0f / diagonal +
+                        channelFloat * (544.0f -
+                        (256.0f / diagonal - fGpffff8300) / diagonal);
+            points[4] = points[2] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[5] = points[3] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[6] = points[0] + (40.0f + 216.0f / diagonal) / diagonal;
+            points[7] = points[1] + (40.0f + 216.0f / diagonal) / diagonal;
+        } else {
+            channelFloat = 0.0f;
+            points[0] = 0.0f;
+            points[1] = 0.0f;
+            points[2] = 0.0f;
+            points[3] = 0.0f;
+            points[4] = 0.0f;
+            points[5] = 0.0f;
+            points[6] = 0.0f;
+            points[7] = 0.0f;
+        }
+        break;
     }
-    object = sflPselBytes(work, 0x210);
-    FUN_0021d890(object, quad);
-    FUN_0021eac0(object, FUN_0021ea00(0x23));
+    FUN_0021d890(sflPselBytes(work, 0x210), points);
+    FUN_0021eac0(sflPselBytes(work, 0x210), FUN_0021ea00(0x23));
     color[0] = 0x4f;
     color[1] = 0xa4;
     color[2] = 0xff;
     color[3] = 0xff;
-    FUN_0021d950(object, color);
+    FUN_0021d950(sflPselBytes(work, 0x210), color);
 
-    rect[0] = 0.0f;
-    rect[1] = 0.0f;
-    rect[2] = 640.0f;
-    rect[3] = 448.0f;
-    object = sflPselBytes(work, 0x710);
-    FUN_0021d8e0(object, rect);
-    sflPselSetAlpha(object, 0xff);
+    points[0] = 0.0f;
+    points[1] = 0.0f;
+    points[2] = 640.0f;
+    points[3] = 448.0f;
+    FUN_0021d8e0(sflPselBytes(work, 0x710), points);
+    sflPselSetAlpha(sflPselBytes(work, 0x710), 0xff);
 
-    *(u32*)sflPselBytes(work, 0x810) = 0x44014000;
+    *(f32*)sflPselBytes(work, 0x810) = 517.0f;
     *(u32*)sflPselBytes(work, 0x814) = 0x43e00000;
     *(u32*)sflPselBytes(work, 0x850) = 0x44200000;
-    *(u32*)sflPselBytes(work, 0x854) = 0x43a28000;
+    *(f32*)sflPselBytes(work, 0x854) = 325.0f;
     *(u32*)sflPselBytes(work, 0x890) = 0x44200000;
     *(u32*)sflPselBytes(work, 0x894) = 0x43e00000;
-    *(u32*)sflPselBytes(work, 0x830) = 0x429e0000;
-    *(u32*)sflPselBytes(work, 0x834) = 0x43240000;
-    *(u32*)sflPselBytes(work, 0x838) = 0x437f0000;
-    *(u32*)sflPselBytes(work, 0x83c) = 0x437f0000;
-    *(u32*)sflPselBytes(work, 0x870) = 0x429e0000;
-    *(u32*)sflPselBytes(work, 0x874) = 0x43240000;
-    *(u32*)sflPselBytes(work, 0x878) = 0x437f0000;
-    *(u32*)sflPselBytes(work, 0x87c) = 0x437f0000;
-    *(u32*)sflPselBytes(work, 0x8b0) = 0x429e0000;
-    *(u32*)sflPselBytes(work, 0x8b4) = 0x43240000;
-    *(u32*)sflPselBytes(work, 0x8b8) = 0x437f0000;
-    *(u32*)sflPselBytes(work, 0x8bc) = 0x437f0000;
+
+    color[0] = 0x4f;
+    color[1] = 0xa4;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    channel = color[0];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x830) = channelFloat;
+    channel = color[1];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x834) = channelFloat;
+    channel = color[2];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x838) = channelFloat;
+    channel = color[3];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x83c) = channelFloat;
+    channel = color[0];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x870) = channelFloat;
+    channel = color[1];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x874) = channelFloat;
+    channel = color[2];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x878) = channelFloat;
+    channel = color[3];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x87c) = channelFloat;
+    channel = color[0];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x8b0) = channelFloat;
+    channel = color[1];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x8b4) = channelFloat;
+    channel = color[2];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x8b8) = channelFloat;
+    channel = color[3];
+    if (channel >= 0) {
+        channelFloat = (f32)channel;
+    } else {
+        channelFloat = (f32)((channel >> 1) | (channel & 1));
+        channelFloat += channelFloat;
+    }
+    *(f32*)sflPselBytes(work, 0x8bc) = channelFloat;
 }
 #pragma optimization_level 2
 
