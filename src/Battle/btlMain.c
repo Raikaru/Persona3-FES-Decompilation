@@ -518,7 +518,7 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     BtlUnit* unit;
     BtlPacket* packet;
     BtlEncountTable* encount;
-    DatUnitEc* enemy;
+    DatUnit* enemy;
     Model* model;
     u64 modelPacketUID;
     u64 targetMask;
@@ -532,7 +532,8 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
     i = 0;
     while (i < 4 && gBtl->startInfo.partyUnits[i] != ((void*)0))
     {
-        u16 charId = *(u16*)((u8*)gBtl->startInfo.partyUnits[i] + 6);
+        u16 charId = gBtl->startInfo.partyUnits[i]->base.unit->id;
+        action = FUN_00289650(0, charId);
         unit = action->unit;
         model = FUN_00316910(unit->genus + 1, charId, 0);
         unit->mdl = model;
@@ -560,11 +561,12 @@ void btlMainInitStateUnitCreate(BtlStateWork* work)
         i++;
     }
     gBtl->unk_ba4 = i;
-    enemy = gBtl->startInfo.enmUnits;
-    for (i = 0; i < 6; i++, enemy = (DatUnitEc*)((u8*)enemy + 0x3c))
+    enemy = gBtl->startInfo.enmUnits->base.unit;
+    for (i = 0; i < 6; i++, enemy++)
     {
-        if (btlMainGetDatUnitId((DatUnit*)enemy) != 0 && FUN_0030b5a0(enemy, 0) == 0)
+        if (enemy->id != 0 && FUN_0030b5a0(enemy, 0) == 0)
         {
+            FUN_00289650(1, enemy->id, enemy);
         }
     }
     FUN_002b71e0();
