@@ -1480,6 +1480,17 @@ f32 func_00112740(void* param_1)
     }
     return (f32)value;
 }
+#pragma push
+#pragma opt_common_subs off
+ 
+/* Retail keeps each extension direction as a distinct render path: the four
+ * record extensions are followed by node extraHeight and extraWidth fallback
+ * paths, each rebuilding the immediate-mode strip before returning.  The
+ * explicit branches below preserve those state transitions and duplicated
+ * draw calls instead of folding them into one common tail.  This restores
+ * real retail behavior even though MWCC's remaining register scheduling
+ * differences increase normalized_diff while bringing object_size toward the
+ * retail window. */
 // FUN_001127D0 NONMATCHING
 void func_001127d0(void* param_1, u32 enabled)
 {
@@ -1640,14 +1651,20 @@ void func_001127d0(void* param_1, u32 enabled)
         positions[i].x = (f32)node->pivotX + transformed[i].x + node->x + (f32)record->x;
         positions[i].y = (f32)node->pivotY + transformed[i].y + node->y + (f32)record->y;
         positions[i].z = 0.0f;
+    }
 
+    for (i = 0; i < 4; i++)
+    {
         vertices[i].u.els.scrVertex.x = positions[i].x;
         vertices[i].u.els.scrVertex.y = positions[i].y;
         vertices[i].u.els.scrVertex.z = D_00960088 - node->depth;
         vertices[i].u.els.u = uv[i].x;
         vertices[i].u.els.v = uv[i].y;
         vertices[i].u.els.recipZ = recipZ;
+    }
 
+    for (i = 0; i < 4; i++)
+    {
         packedColor = record->colors[i == 2 ? 3 : (i == 3 ? 2 : i)];
         red = ((packedColor >> 24) & 0xFF) * node->red / 255;
         green = ((packedColor >> 16) & 0xFF) * node->green / 255;
@@ -1695,10 +1712,12 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[0].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[1].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[1].y;
+        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-    else if (record->bottomExtension != 0 || node->extraHeight != 0)
+    else if (record->bottomExtension != 0)
     {
-        edge = record->bottomExtension != 0 ? record->bottomExtension : node->extraHeight;
+        edge = record->bottomExtension;
         vertices[0].u.els.scrVertex.x = positions[2].x;
         vertices[0].u.els.scrVertex.y = positions[2].y;
         vertices[1].u.els.scrVertex.x = positions[3].x;
@@ -1711,6 +1730,8 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
         vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
+        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
     else if (record->leftExtension != 0)
     {
@@ -1727,10 +1748,12 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[0].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[2].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[2].y;
+        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-    else if (record->rightExtension != 0 || node->extraWidth != 0)
+    else if (record->rightExtension != 0)
     {
-        edge = record->rightExtension != 0 ? record->rightExtension : node->extraWidth;
+        edge = record->rightExtension;
         vertices[0].u.els.scrVertex.x = positions[1].x;
         vertices[0].u.els.scrVertex.y = positions[1].y;
         vertices[1].u.els.scrVertex.x = positions[1].x + edge;
@@ -1743,14 +1766,47 @@ void func_001127d0(void* param_1, u32 enabled)
         vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
         vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
         vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
+        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
-
-    if (edge != 0)
+    else if (node->extraHeight != 0)
     {
+        edge = node->extraHeight;
+        vertices[0].u.els.scrVertex.x = positions[2].x;
+        vertices[0].u.els.scrVertex.y = positions[2].y;
+        vertices[1].u.els.scrVertex.x = positions[3].x;
+        vertices[1].u.els.scrVertex.y = positions[3].y;
+        vertices[2].u.els.scrVertex.x = positions[2].x;
+        vertices[2].u.els.scrVertex.y = positions[2].y + edge;
+        vertices[3].u.els.scrVertex.x = positions[3].x;
+        vertices[3].u.els.scrVertex.y = positions[3].y + edge;
+        vertices[0].u.els.u = vertices[2].u.els.u = uv[2].x;
+        vertices[0].u.els.v = vertices[2].u.els.v = uv[2].y;
+        vertices[1].u.els.u = vertices[3].u.els.u = uv[3].x;
+        vertices[1].u.els.v = vertices[3].u.els.v = uv[3].y;
+        D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
+        D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
+    }
+    else if (node->extraWidth != 0)
+    {
+        edge = node->extraWidth;
+        vertices[0].u.els.scrVertex.x = positions[1].x;
+        vertices[0].u.els.scrVertex.y = positions[1].y;
+        vertices[1].u.els.scrVertex.x = positions[1].x + edge;
+        vertices[1].u.els.scrVertex.y = positions[1].y;
+        vertices[2].u.els.scrVertex.x = positions[3].x;
+        vertices[2].u.els.scrVertex.y = positions[3].y;
+        vertices[3].u.els.scrVertex.x = positions[3].x + edge;
+        vertices[3].u.els.scrVertex.y = positions[3].y;
+        vertices[0].u.els.u = vertices[1].u.els.u = uv[1].x;
+        vertices[0].u.els.v = vertices[1].u.els.v = uv[1].y;
+        vertices[2].u.els.u = vertices[3].u.els.u = uv[3].x;
+        vertices[2].u.els.v = vertices[3].u.els.v = uv[3].y;
         D_00960090(1, (record->flags & 8) != 0 ? 0 : (u32)resource);
         D_009600A0(rwPRIMTYPETRISTRIP, vertices, 4);
     }
 }
+#pragma pop
 
 /* The following helpers are the pre-Camp Maestro immediate-mode renderer.  The
  * retail module keeps these entry points in this translation unit (the same
