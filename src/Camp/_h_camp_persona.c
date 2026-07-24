@@ -778,7 +778,26 @@ void FUN_00125b40(CampVec2 position, CampVec2 unused, f32 alpha,
     campPersonaDrawSprite(parent, resource, personaId,
                           position.x + 105.0f, position.y + 142.0f,
                           fade, alpha);
-    FUN_00124e60(position, alpha, persona, fade);
+    {
+        u8 level;
+
+        level = *((u8*)persona + 4);
+        if (level >= 10) {
+            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                  level / 10 + 0xb,
+                                  position.x + 67.0f,
+                                  position.y + 127.0f, fade, alpha);
+            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                  level % 10 + 0xb,
+                                  position.x + 82.0f,
+                                  position.y + 127.0f, fade, alpha);
+        } else {
+            campPersonaDrawSprite(parent, (void*)FUN_001120a0(2),
+                                  level % 10 + 0xb,
+                                  position.x + 75.0f,
+                                  position.y + 127.0f, fade, alpha);
+        }
+    }
     FUN_00124fd0(position, alpha, persona, fade);
 }
 

@@ -418,7 +418,9 @@ void H_Pad_UpdateRumble(void)
                 if (sRumblePhase == 0)
                 {
                     u16 intensity;
-                    intensity = sRumbleIntensity.b;
+                    u8 intensityByte;
+                    intensityByte = sRumbleIntensity.b;
+                    intensity = intensityByte;
                     ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator0 = intensity;
                     ((HPad*)gWorkPads_abs)[HPAD_PORT_1].actuator1 = intensity;
                     sRumbleCadence = sRumbleOnFrames;
@@ -561,8 +563,8 @@ void* H_Pad_RwAllocateRaw(size_t size, RwUInt32 hint)
 void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
 {
     void* reallocated;
+    size_t copySize;
     s32 intrState;
-    u32 copySize;
     RwUInt32 mallocHint;
 
     mallocHint = hint;
@@ -591,6 +593,7 @@ void* H_Pad_RwRealloc(void* memory, RwUInt32 newSize, RwUInt32 hint)
     }
     return reallocated;
 }
+#pragma optimization_level 2
 // FUN_00104040 MATCHING
 void* H_Pad_RwCalloc(RwUInt32 elementCount, RwUInt32 elementSize, RwUInt32 hint)
 {
