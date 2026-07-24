@@ -1941,17 +1941,17 @@ u32 FUN_00303130(u32 param_1,u32 param_2,u32 param_3,u16 param_4,short param_5,
 
 {
   char cVar1;
-  u8 bVar2;
+  short unaff_s6_lo;
   u8 uVar3;
   short sVar4;
   short sVar5;
-  u32 uVar6;
+  u8 bVar2;
   u32 uVar7;
   s32 lVar8;
   u16 *puVar9;
   u16 *puVar10;
   short unaff_s5_lo;
-  short unaff_s6_lo;
+  u32 uVar6;
   int iVar11;
   float fVar12;
   float fVar13;
