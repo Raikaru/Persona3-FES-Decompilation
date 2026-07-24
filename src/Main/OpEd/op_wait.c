@@ -19,6 +19,8 @@ extern void* func_0021cce0(void* frame);
 extern void func_002699d0(void* value);
 extern void func_002699a0(void* value);
 extern void func_004d7f60(s32 state, u32 value);
+#pragma alias opWaitGetTitleRasterU32 opResGetTitleRaster
+extern u32 opWaitGetTitleRasterU32(u32 id);
 extern u32 D_00960090[];
 extern u32 D_0096009C[];
 extern void func_00269a10(u32 id, void* callback);
@@ -262,13 +264,14 @@ void opWait0026e000(void)
     void (**setState)(u32 state, u32 value);
     void (**setQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
     void (**loopSetQuad)(void* quad, u32 layer, u32 group, u32 pass, u32 blend);
+    void* loopQuad;
     u32 frameId;
     s32 i;
 
     K_ASSERT(sOpWait != NULL, 0xdb);
     work = (u8*)sOpWait;
     atlas = opResGetTitleSprite(0);
-    if ((*(u32*)work & 1) == 0)
+    if ((~*(u32*)work & 1) != 0)
         return;
     setState = (void (**)(u32, u32))D_00960090;
     (*setState)(8, 0);
@@ -276,47 +279,47 @@ void opWait0026e000(void)
     (*setState)(9, 2);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    frame = opResGetTitleRaster(6);
-    (*setState)(1, (u32)(unsigned long)frame);
+    (*setState)(1, opWaitGetTitleRasterU32(6));
     setQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
     (*setQuad)(work + 0x40, 4, 0, 1, 2);
     (*setQuad)(work + 0x40, 4, 0, 2, 3);
-    frame = opResGetTitleRaster(7);
-    (*setState)(1, (u32)(unsigned long)frame);
+    (*setState)(1, opWaitGetTitleRasterU32(7));
     (*setQuad)(work + 0x140, 4, 0, 1, 2);
     (*setQuad)(work + 0x140, 4, 0, 2, 3);
-    frame = opResGetTitleRaster(8);
-    (*setState)(1, (u32)(unsigned long)frame);
+    (*setState)(1, opWaitGetTitleRasterU32(8));
     (*setQuad)(work + 0x240, 4, 0, 1, 2);
     (*setQuad)(work + 0x240, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
-    loopSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
-    func_004d7f60(2, 0x44);
     for (i = 0; i < 3; i++)
     {
-        if (i == 2)
-            frameId = 0xb;
-        else if (i == 1)
-            frameId = 0xa;
-        else if (i == 0)
-            frameId = 9;
-        else
-            continue;
-        frame = opResGetTitleRaster(frameId);
-        (*setState)(1, (u32)(unsigned long)frame);
-        (*loopSetQuad)(work + 0xe50 + (u32)i * 0x110, 4, 0, 1, 2);
-        (*loopSetQuad)(work + 0xe50 + (u32)i * 0x110, 4, 0, 2, 3);
+        loopQuad = work + 0xe50 + (u32)i * 0x110;
+        switch (i)
+        {
+            case 0:
+                frameId = 9;
+                break;
+            case 1:
+                frameId = 0xa;
+                break;
+            case 2:
+                frameId = 0xb;
+                break;
+            default:
+                continue;
+        }
+        (*setState)(1, opWaitGetTitleRasterU32(frameId));
+        loopSetQuad = (void (**)(void*, u32, u32, u32, u32))D_0096009C;
+        (*loopSetQuad)(loopQuad, 4, 0, 1, 2);
+        (*loopSetQuad)(loopQuad, 4, 0, 2, 3);
     }
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    frame = opResGetTitleRaster(0xc);
-    (*setState)(1, (u32)(unsigned long)frame);
+    (*setState)(1, opWaitGetTitleRasterU32(0xc));
     (*setQuad)(work + 0x340, 4, 0, 1, 2);
     (*setQuad)(work + 0x340, 4, 0, 2, 3);
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
-    frame = opResGetTitleRaster(0xd);
-    (*setState)(1, (u32)(unsigned long)frame);
+    (*setState)(1, opWaitGetTitleRasterU32(0xd));
     func_004d7f60(3, 0x717fb);
     func_004d7f60(2, 0x44);
     func_002699d0(*(void**)(work + 0x1170));
