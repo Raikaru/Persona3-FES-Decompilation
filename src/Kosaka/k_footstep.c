@@ -26,6 +26,8 @@ extern u32 func_00318ed0();
 extern s32 func_00318ed0_v3d(u32 model, u32 index, RwV3d* out);
 extern u8* FUN_00318b60(u32 model);
 void func_001dd530(KwlnTask* task, const RwV3d* position);
+extern void func_004c9d00(RwCamera* camera);
+extern void func_004c9d10(RwCamera* camera);
 extern u8* D_0067EF00[];
 extern Model* D_008717F0;
 extern u32 D_00875A50[RESRC_ID_MASK + 1];
@@ -742,6 +744,9 @@ void* func_001dcb60(KwlnTask* task)
     f32 viewZ;
     u32 counter;
     u32 alpha;
+    void (**renderState)(u32, u32);
+    void (**drawPrim)(u32, void*, u32);
+    u32 savedState;
     u32 i;
 
     work = (u8*)task->workData;
@@ -916,6 +921,34 @@ void* func_001dcb60(KwlnTask* task)
         *(f32*)(vertex + 0x4c) = (f32)alpha;
     }
 
+
+    renderState = (void (**)(u32, u32))0x960090;
+    if (*(s32*)(work + 4) != 0)
+    {
+        func_004c9d10(kwlnGetMainCamera());
+        (*(void (**)(u32, void*))0x960094)(0xe, &savedState);
+        (*renderState)(0xe, 0);
+    }
+    (*renderState)(6, 1);
+    if (*(s32*)(work + 4) != 0)
+    {
+        (*renderState)(8, 1);
+    }
+    else
+    {
+        (*renderState)(8, 0);
+    }
+
+    drawPrim = (void (**)(u32, void*, u32))0x9600a0;
+    (*drawPrim)(4, work + 0x20, 4);
+    (*renderState)(1, *(u32*)D_00875A60[*(u32*)(work + 8) + 1]);
+    (*drawPrim)(4, work + 0x120, 4);
+
+    if (*(s32*)(work + 4) != 0)
+    {
+        (*renderState)(0xe, savedState);
+    }
+    func_004c9d00(kwlnGetMainCamera());
     return (void*)0xff;
 }
 
