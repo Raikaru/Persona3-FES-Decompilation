@@ -246,6 +246,99 @@ static inline void K_FldShadow_EmitTriangle(FldShadowProjectionWork* work,
     output[2].c.color.a = alpha2;
     work->vertexCount = vertexCount + 3;
 }
+static inline u32 K_FldShadow_EmitProjectedTriangle(
+    FldShadowProjectionWork* work,
+    const u8* workFields,
+    const RwV3d* clipVertices,
+    const RwV3d* outputVertices)
+{
+    RwIm3DVertex* output;
+    s32 vertexCount;
+    u8 alpha0;
+    u8 alpha1;
+    u8 alpha2;
+
+    if (clipVertices[0].z < 0.0f &&
+        clipVertices[1].z < 0.0f &&
+        clipVertices[2].z < 0.0f)
+    {
+        return 0;
+    }
+    if (clipVertices[0].x < 0.0f &&
+        clipVertices[1].x < 0.0f &&
+        clipVertices[2].x < 0.0f)
+    {
+        return 0;
+    }
+    if (clipVertices[0].x > 1.0f &&
+        clipVertices[1].x > 1.0f &&
+        clipVertices[2].x > 1.0f)
+    {
+        return 0;
+    }
+    if (clipVertices[0].y < 0.0f &&
+        clipVertices[1].y < 0.0f &&
+        clipVertices[2].y < 0.0f)
+    {
+        return 0;
+    }
+    if (clipVertices[0].y > 1.0f &&
+        clipVertices[1].y > 1.0f &&
+        clipVertices[2].y > 1.0f)
+    {
+        return 0;
+    }
+
+    vertexCount = work->vertexCount;
+    if (vertexCount >= 0x256)
+    {
+        if (func_004f1ed0(work, (u32)vertexCount, 0, 0x19) != NULL)
+        {
+            func_004f2150(3);
+            func_004f1f80();
+        }
+        work->flushedTriangles++;
+        work->vertexCount = 0;
+        vertexCount = 0;
+    }
+
+    output = (RwIm3DVertex*)work->vertexBuffer;
+    output += vertexCount;
+    output[0].objVertex = outputVertices[0];
+    output[1].objVertex = outputVertices[1];
+    output[2].objVertex = outputVertices[2];
+
+    if (*(const s32*)(workFields + 0x54) == 0)
+    {
+        alpha0 = *(const u8*)(workFields + 0x50);
+        alpha1 = *(const u8*)(workFields + 0x50);
+        alpha2 = *(const u8*)(workFields + 0x50);
+    }
+    else
+    {
+        alpha0 = K_FldShadow_DepthAlpha(
+            clipVertices[0].z, *(const u8*)(workFields + 0x50));
+        alpha1 = K_FldShadow_DepthAlpha(
+            clipVertices[1].z, *(const u8*)(workFields + 0x50));
+        alpha2 = K_FldShadow_DepthAlpha(
+            clipVertices[2].z, *(const u8*)(workFields + 0x50));
+    }
+
+    output[0].c.color.r = alpha0;
+    output[0].c.color.g = alpha0;
+    output[0].c.color.b = alpha0;
+    output[0].c.color.a = alpha0;
+    output[1].c.color.r = alpha1;
+    output[1].c.color.g = alpha1;
+    output[1].c.color.b = alpha1;
+    output[1].c.color.a = alpha1;
+    output[2].c.color.r = alpha2;
+    output[2].c.color.g = alpha2;
+    output[2].c.color.b = alpha2;
+    output[2].c.color.a = alpha2;
+    work->vertexCount = vertexCount + 3;
+    return 1;
+}
 
 // FUN_00199c60
 void func_00199c60(RwCamera* camera)
@@ -305,25 +398,40 @@ void* func_00199d90(void* ignored1,
 {
     RwV3d sourceVertices[3];
     RwV3d vertices[3];
+    const RwV3d* projectionNormal;
+    f32 normalX;
+    f32 normalY;
+    f32 normalZ;
 
     (void)ignored1;
     (void)ignored2;
-    if (!(RwV3dDotProductMacro(&triangle->normal, &work->projectionNormal) > 0.0f))
+    projectionNormal = &work->projectionNormal;
+    if (RwV3dDotProductMacro(&triangle->normal, projectionNormal) > 0.0f)
     {
-        sourceVertices[0] = *triangle->vertices[0];
-        sourceVertices[1] = *triangle->vertices[1];
-        sourceVertices[2] = *triangle->vertices[2];
-        func_004c6c20(vertices, sourceVertices, 3, &work->projectionMatrix);
-        vertices[0].x += triangle->normal.x * 1.5f;
-        vertices[0].y += triangle->normal.y * 1.5f;
-        vertices[0].z += triangle->normal.z * 1.5f;
-        vertices[1].x += triangle->normal.x * 1.5f;
-        vertices[1].y += triangle->normal.y * 1.5f;
-        vertices[1].z += triangle->normal.z * 1.5f;
-        vertices[2].x += triangle->normal.x * 1.5f;
-        vertices[2].y += triangle->normal.y * 1.5f;
-        vertices[2].z += triangle->normal.z * 1.5f;
-        K_FldShadow_EmitTriangle(work, &triangle->normal, vertices);
+        return (void*)triangle;
+    }
+
+    sourceVertices[0] = *triangle->vertices[0];
+    sourceVertices[1] = *triangle->vertices[1];
+    sourceVertices[2] = *triangle->vertices[2];
+    func_004c6c20(vertices, sourceVertices, 3, &work->projectionMatrix);
+
+    normalX = triangle->normal.x * 1.5f;
+    normalY = triangle->normal.y * 1.5f;
+    normalZ = triangle->normal.z * 1.5f;
+    sourceVertices[0].x += normalX;
+    sourceVertices[0].y += normalY;
+    sourceVertices[0].z += normalZ;
+    sourceVertices[1].x += normalX;
+    sourceVertices[1].y += normalY;
+    sourceVertices[1].z += normalZ;
+    sourceVertices[2].x += normalX;
+    sourceVertices[2].y += normalY;
+    sourceVertices[2].z += normalZ;
+    if (!K_FldShadow_EmitProjectedTriangle(
+            work, (const u8*)projectionNormal, vertices, sourceVertices))
+    {
+        return (void*)triangle;
     }
     return (void*)triangle;
 }
