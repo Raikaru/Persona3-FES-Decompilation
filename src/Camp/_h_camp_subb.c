@@ -927,13 +927,13 @@ LAB_0013e694:
   } while( true );
 }
 #define campEquipmentDrawFixed(texture,alpha,frame,x,y) \
-  campDrawSprite((void*)(u32)(texture),DAT_00833A50[0],(frame),(alpha),(x),(y),(texture))
+  campDrawSprite(parent,DAT_00833A50[0],(frame),(alpha),(x),(y),(texture))
 #define campEquipmentDrawAtlas(texture,alpha,frame,x,y) \
-  campDrawSprite((void*)(u32)(texture),DAT_00833B70,(frame),(alpha),(x),(y),(texture))
+  campDrawSprite(parent,DAT_00833B70,(frame),(alpha),(x),(y),(texture))
 #define campEquipmentDrawAlt(texture,alpha,frame,x,y) \
-  campDrawSpriteAlt((void*)(u32)(texture),DAT_00833B70,(frame),(alpha),0x20,0x43,0x78,(x),(y),(texture))
+  campDrawSpriteAlt(parent,DAT_00833B70,(frame),(alpha),0x20,0x43,0x78,(x),(y),(texture))
 #define campEquipmentDrawDigit(texture,alpha,font,frame,x,y) \
-  campDrawSprite((void*)(u32)(texture),H_Maestro_001120a0(font),(frame),(alpha),(x),(y),(texture))
+  campDrawSprite(parent,H_Maestro_001120a0(font),(frame),(alpha),(x),(y),(texture))
 
 
 
@@ -948,6 +948,9 @@ LAB_0013e694:
 void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alpha)
 
 {
+  register void* parent;
+  volatile f32 framePad[20];
+  char textBuffer[256];
   char category;
   u16 value;
   u32 color;
@@ -966,10 +969,11 @@ void FUN_0013e710(CampPair position,f32 texture,CampEquipmentWork* work,s32 alph
   float yValue3;
   float originX;
   float originY;
-  char textBuffer[256];
   
   originX = position.x;
   originY = position.y;
+  framePad[0] = originX;
+  color = 0xffU - alpha | 0xffffff00;
   if (work->entryCount != 0) {
     campEquipmentDrawFixed(texture, (u32)alpha, 0x19, originX + 2.0f,
                            originY + 6.0f + (f32)(work->selectedEntry * 0x1a));
