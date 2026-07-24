@@ -665,16 +665,17 @@ void func_001a5700(KwlnTask* task, const RwRGBA* color)
     func_004933d0(renderObject);
 }
 
+#pragma opt_loop_invariants on
 // FUN_001A57A0 NONMATCHING
 void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
 {
     KDrawArcTaskWork* work;
+    u32 i;
     KDrawRenderObject* renderObject;
     f32 fullAngle;
     f32 normalizedAngle;
     f32 startAngle;
     f32 theta;
-    u32 i;
 
     work = (KDrawArcTaskWork*)task->workData;
     work->render->radius = radius;
@@ -730,6 +731,7 @@ void func_001a57a0(f32 angle, f32 radius, KwlnTask* task)
     }
     func_004933d0(renderObject);
 }
+#pragma opt_loop_invariants off
 
 
 // FUN_001A5AA0
