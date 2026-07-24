@@ -432,14 +432,11 @@ void func_0024dc10(void)
 // FUN_0024DC90 NONMATCHING
 void func_0024dc90(void* camera)
 {
-    u32* list;
+    u8* node;
     u32 count;
     u32 queued;
     u32 i;
-    u8* node;
-    u32 flags;
-    u32 state;
-    u32 mode;
+    u32* list;
     u32 oldTimer;
     u32 firstDuration;
     u32* pose;
@@ -463,7 +460,6 @@ void func_0024dc90(void* camera)
     RtQuat nextQuat;
     RtQuat composed;
 
-    node = (u8*)camera;
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     list = sSflCameraNodes;
     K_ASSERT(list[0x82] == 0, 0xe6);
