@@ -1364,6 +1364,16 @@ KwlnTask* FUN_001617d0(KwlnTask* parent, u32 priority)
     return task;
 }
 
+#pragma push
+#pragma optimization_level 3
+// FUN_001618A0 NONMATCHING
+// 
+// 
+// 
+// 
+// 
+// 
+
 // FUN_001618A0 NONMATCHING
 void* FUN_001618a0(KwlnTask* task)
 {
