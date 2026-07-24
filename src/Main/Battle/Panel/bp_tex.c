@@ -2219,27 +2219,27 @@ extern void func_0021d950(void* destination, const u8* color);
 extern u32 func_002d1a70(void);
 extern void bcmPanel0022b580(void);
 
-static s32 bpPanelFrameWidth(void* frame)
+static inline s32 bpPanelFrameWidth(void* frame)
 {
     return *(s32*)((u8*)frame + 0x0c);
 }
 
-static s32 bpPanelFrameHeight(void* frame)
+static inline s32 bpPanelFrameHeight(void* frame)
 {
     return *(s32*)((u8*)frame + 0x10);
 }
 
-static int bpPanelInTransition(u32 value)
+static inline int bpPanelInTransition(u32 value)
 {
     return value >= 1 && value <= 4;
 }
 
-static u8 bpPanelColor(f32 value)
+static inline u8 bpPanelColor(f32 value)
 {
     return (u8)value;
 }
 
-static void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
+static inline void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
 {
     f32 rect[4];
 
@@ -2250,7 +2250,7 @@ static void bpPanelSetRect(void* destination, f32 x, f32 y, void* frame)
     func_0021d8e0(destination, rect);
 }
 
-static void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
+static inline void bpPanelSetColor(void* destination, u8 red, u8 green, u8 blue, f32 alpha)
 {
     u8 color[4];
 
@@ -2296,14 +2296,13 @@ void func_0021f150(u32 selection)
     K_ASSERT(BP_PANEL_GLOBAL != NULL, 0xe6);
     work = BP_PANEL_GLOBAL;
     words = (u32*)work;
+    texture = func_0021c3f0(0);
     K_ASSERT((words[0] & 1) != 0, 0x103);
     words[0] &= ~0x11;
     if (func_002d1a70() == 0)
     {
         words[0] |= 0x10;
     }
-
-    texture = func_0021c3f0(0);
     frame = func_0021cca0(texture, 0x10);
     func_0021d3b0(work + 0x10, frame);
     frame = func_0021cca0(texture, 0x1b);
@@ -2368,7 +2367,7 @@ extern void func_00226040(void);
 extern void (*D_00960090)(u32, u32);
 extern void (*D_0096009C)(u32*, u32, u32, u32, u32);
 
-static void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32* y)
+static inline void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32* y)
 {
     if (mode == 3)
     {
@@ -2408,7 +2407,7 @@ static void bpPanelGetCenter(u8* work, u32 mode, u32 sub, f32 timer, f32* x, f32
     (void)work;
 }
 
-static void bpPanelGetCommandPosition(u32 mode, u32 sub, f32 timer, f32* x, f32* y)
+static inline void bpPanelGetCommandPosition(u32 mode, u32 sub, f32 timer, f32* x, f32* y)
 {
     if (mode == 3)
     {
@@ -2450,7 +2449,7 @@ static void bpPanelSetCenteredRect(void* destination, f32 x, f32 y, void* frame)
     bpPanelSetRect(destination, x - halfWidth, y - halfHeight, frame);
 }
 
-static void bpPanelSetRotatedQuad(void* destination,
+static inline void bpPanelSetRotatedQuad(void* destination,
                                   f32 centerX,
                                   f32 centerY,
                                   f32 left,
@@ -2492,7 +2491,7 @@ static void bpPanelSetRotatedQuad(void* destination,
     func_0021d890(destination, vertices);
 }
 
-static void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
+static inline void bpPanelBindAndDraw(u8* work, u32 offset, void* frame)
 {
     D_00960090(1, func_0021cce0(frame));
     RpSkyRenderStateSet(3, (void*)0x717fb);
