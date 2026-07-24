@@ -217,9 +217,9 @@ void func_002496e0(void* work)
     local.origin[1] = 0.0f;
     local.origin[2] = 100.0f;
     func_004c6be0(local.world, local.origin, matrix);
+    worldZ = local.world[2];
     worldX = local.world[0];
     worldY = local.world[1];
-    worldZ = local.world[2];
     *(f32*)(base + 0x608) = worldX;
     *(f32*)(base + 0x60c) = worldY;
     *(f32*)(base + 0x610) = worldZ;
@@ -245,9 +245,9 @@ void func_00249c10(void* work)
     };
     u8* base;
     u8* camera;
+    void* frame;
     void* cameraMatrix;
     void* matrix;
-    void* frame;
     struct Local local;
     f32 deltaX;
     f32 deltaY;
