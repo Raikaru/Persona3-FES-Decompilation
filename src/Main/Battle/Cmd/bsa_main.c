@@ -20,8 +20,8 @@ extern u8* DAT_007ce410;
 extern code D_00960090;
 #pragma alias D_00960090_abs D_00960090
 #pragma alias D_0096009C_abs D_0096009C
-extern code D_00960090_abs[];
-extern code D_0096009C_abs[];
+extern u8 D_00960090_abs[];
+extern u8 D_0096009C_abs[];
 extern code D_0096009C;
 
 extern void* func_001ff430(u32 id);
