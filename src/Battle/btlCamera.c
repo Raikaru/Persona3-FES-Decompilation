@@ -781,14 +781,14 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
     BtlUnit* unit;
     f32 halfDistance;
     f32 desiredDistance;
-    f32 radius;
-    f32 nearAngle;
     f32 angle;
     f32 ratio;
     f32 sideOffset;
     f32 scale;
     f32 x;
     f32 xSquared;
+    f32 nearAngle;
+    f32 radius;
 
     unit = *(BtlUnit**)((u8*)camera->action + 0x30);
     radius = unit->sphereRadius * unit->scale;
@@ -820,10 +820,9 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
     }
 
     RtQuatTransformVectors(&work.delta, &D_00697890, 1, &unit->rot);
-    x = 0.5f * radius;
-    work.candidate.x = work.delta.x * x;
-    work.candidate.y = work.delta.y * x;
-    work.candidate.z = work.delta.z * x;
+    work.candidate.x = work.delta.x * (0.5f * radius);
+    work.candidate.y = work.delta.y * (0.5f * radius);
+    work.candidate.z = work.delta.z * (0.5f * radius);
     work.pointNear.x = work.center.x + work.candidate.x;
     work.pointNear.y = work.center.y + work.candidate.y;
     work.pointNear.z = work.center.z + work.candidate.z;
@@ -880,7 +879,7 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
         {
             work.blendedRot = work.current.rot;
         }
-        else if (ratio >= 1.0f)
+        else if (1.0f <= ratio)
         {
             work.blendedRot = work.targetRot;
         }
@@ -961,8 +960,8 @@ void FUN_002a4c70(f32 param_1, f32 param_2, BtlCamera* camera)
 
     sideOffset = halfDistance *
                  FUN_0052e930(gp0xffff8070 *
-                              (0.5f * camera->fovRad)) *
-                 0.21875f;
+                              (0.5f * camera->fovRad));
+    sideOffset = sideOffset * 0.21875f;
     work.horizontal.x = work.delta.x;
     work.horizontal.y = work.delta.z;
     FUN_004c6b20((f32*)&work.horizontal,
