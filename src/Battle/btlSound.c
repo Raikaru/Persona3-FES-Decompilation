@@ -1772,7 +1772,6 @@ u32 FUN_002defe0(int param_1)
   int aiStack_30 [12];
 
   
-
   lVar2 = FUN_0010a500(4);
 
   if (lVar2 == 1) {
@@ -3092,37 +3091,61 @@ int FUN_002e0620(int param_1,int param_2)
 
   }
 
-  if (*(u8 *)(iVar2 + 0xa2) == 1) { sVar1 = *(u16 *)(iVar2 + 0xa4); switch (sVar1) { case 0xf0: return 0x160; case 0xef: return 0xaa; case 0xee: return 0x2c4; case 0xed: return 0x1a9; case 0xec: return 0x23b; case 0xeb: return 0x1f2; case 0xea: switch (param_2) { case 0xc0: return 0x377; case 0xc1: return 0x378; case 0xc2: return 0x379; case 0xc3: return 0x37a; case 0xc4: return 0x37b; case 0xc5: return 0x37c; case 0xc6: return 0x37d; case 0xc7: return 0x37e; case 0xc8: return 0x37f; case 0xc9: return 0x380; case 0xca: return 0x381; case 0xcb: return 0x382; case 0xcc: return 0x383; case 0xcd: return 0x384; case 0xce: return 0x385; case 0xcf: return 0x386; case 0xd3: return 0x387; default: return -1; } case 0xe9: return 0x46e; case 0x108: return 0x321; case 0x10f: return 0x30c; case 0x110: return 0x2f8; case 0x10c: return 0x30b; case 0x10b: return 0x2f7; default: return -1; } } else { if (*(int *)(DAT_007ce3ec + 0x148) == param_1) {
-      
-        lVar3 = FUN_0017d800();
-      
-        if (lVar3 != 0) {
-      
-          if (param_2 == 0xa9) {
-      
-            return 0x388;
-      
-          }
-      
-          return param_2 + 0x387;
-      
-        }
-      
-        if (param_2 == 0xa9) {
-      
-          return 1;
-      
-        }
-      
-        if (param_2 < 0x92) {
-      
-          return param_2;
-      
-        }
-      
-        return param_2 + 0x2ce;
-      
+  if (*(u8 *)(iVar2 + 0xa2) == 1) {
+    sVar1 = *(u16 *)(iVar2 + 0xa4);
+    switch (sVar1) {
+    case 0x10b: return 0x2f7;
+    case 0x10c: return 0x30b;
+    case 0x110: return 0x2f8;
+    case 0x10f: return 0x30c;
+    case 0x108: return 0x321;
+    case 0xe9: return 0x46e;
+    case 0xea:
+      switch (param_2) {
+      case 0xc0: return 0x377;
+      case 0xc1: return 0x378;
+      case 0xc2: return 0x379;
+      case 0xc3: return 0x37a;
+      case 0xc4: return 0x37b;
+      case 0xc5: return 0x37c;
+      case 0xc6: return 0x37d;
+      case 0xc7: return 0x37e;
+      case 0xc8: return 0x37f;
+      case 0xc9: return 0x380;
+      case 0xca: return 0x381;
+      case 0xcb: return 0x382;
+      case 0xcc: return 0x383;
+      case 0xcd: return 0x384;
+      case 0xce: return 0x385;
+      case 0xcf: return 0x386;
+      case 0xd3: return 0x387;
+      default: goto outer_default;
       }
+    case 0xeb: return 0x1f2;
+    case 0xec: return 0x23b;
+    case 0xed: return 0x1a9;
+    case 0xee: return 0x2c4;
+    case 0xef: return 0xaa;
+    case 0xf0: return 0x160;
+    default:
+outer_default:
+      return -1;
+    }
+  } else {
+    if (*(int *)(DAT_007ce3ec + 0x148) == param_1) {
+      lVar3 = FUN_0017d800();
+      if (lVar3 != 0)
+        goto journey_true;
+      if (param_2 == 0xa9)
+        return 1;
+      if (param_2 < 0x92)
+        return param_2;
+      return param_2 + 0x2ce;
+journey_true:
+      if (param_2 == 0xa9)
+        return 0x388;
+      return param_2 + 0x387;
+    }
       
       switch(*(u16 *)(iVar2 + 0xa4)) {
       
@@ -4352,6 +4375,7 @@ default_case:
   return result;
 }
 
+ 
 // FUN_002E2680 NONMATCHING
 
 
