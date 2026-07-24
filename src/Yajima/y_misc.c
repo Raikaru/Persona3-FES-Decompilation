@@ -7727,6 +7727,12 @@ void FUN_0042cfc0(int param_1,u16 param_2,u16 param_3,int param_4,int param_5)
 
 }
 
+/*
+ * The retail routine keeps collision positions as contiguous three-float
+ * temporaries before deriving grid coordinates and distance checks.
+ * Reconstruct those aggregate copies here so all vector components remain
+ * live across helper calls instead of being eliminated as unrelated scalars.
+ */
 // FUN_0042DD90 NONMATCHING
 
 
@@ -7742,7 +7748,6 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
   char cVar3;
 
-  short sVar4;
 
   int iVar5;
 
@@ -7848,6 +7853,7 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
   float fStack_8;
 
+
   
 
   iVar2 = *(int *)(param_1 + 0x3c);
@@ -7856,29 +7862,36 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
     if (*(int *)(&DAT_0086be00 + iVar15 * 0x10) != 0) {
 
-      sVar4 = FUN_0044f120(&DAT_0086be04 + iVar15 * 0x10);
+      lVar8 = FUN_0044f120(&DAT_0086be04 + iVar15 * 0x10);
 
-      if ((param_2 == sVar4) &&
+      if ((CONCAT44((int)((long)((u32)param_2 << 0x30) >> 0x3f),(int)(short)param_2) == lVar8) &&
 
          (lVar8 = FUN_0044f170(&DAT_0086be04 + iVar15 * 0x10),
 
          CONCAT44((int)((long)((u32)param_3 << 0x30) >> 0x3f),(int)(short)param_3) == lVar8)) {
 
         if (*(char *)(iVar2 + 0x865) == '\0') {
+          volatile YajimaVec3 savedMain;
+          YajimaVec3 posMain;
+          YajimaVec3 worldPos1;
+          YajimaVec3 worldPos2;
+
+
+
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
-          K_FldFrame_CtlCopyPos(&fStack_70,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fStack_60 = fStack_70;
+          savedMain = *(YajimaVec3 *)&posMain;
 
-          uStack_5c = uStack_6c;
 
-          uStack_58 = uStack_68;
 
           iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fVar17 = fStack_60 - ((float)iVar5 * 800.0f - 400.0f);
+          fVar17 = savedMain.x - ((float)iVar5 * 800.0f - 400.0f);
+
+
 
           fVar18 = (float)(int)*(char *)(iVar2 + 0xb29);
 
@@ -7886,13 +7899,10 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
           pfVar14 = (float *)(&DAT_0086be04 + iVar10);
 
-          fStack_50 = *(float *)(&DAT_0086be04 + iVar10);
+          worldPos1 = *(YajimaVec3 *)(&DAT_0086be04 + iVar10);
 
-          uStack_4c = *(u32 *)(&DAT_0086be08 + iVar10);
+          iVar6 = FUN_0044f120(&worldPos1);
 
-          uStack_48 = *(u32 *)(&DAT_0086be0c + iVar10);
-
-          iVar6 = FUN_0044f120(&fStack_50);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -7912,7 +7922,8 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                      ((fVar18 / 2.0f + 0.0f) -
 
-                     (fStack_50 - ((float)iVar6 * 800.0f - 400.0f)) * (fVar18 / 800.0f))) +
+                     (worldPos1.x - ((float)iVar6 * 800.0f - 400.0f)) * (fVar18 / 800.0f))) +
+
 
                     (float)(int)(((float)(int)cVar3 / 2.0f + 0.0f) -
 
@@ -7920,27 +7931,23 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                    - 8.0f;
 
-          K_FldFrame_CtlCopyPos(&uStack_a0,*(u32 *)(DAT_008717f4 + 0x1e0));
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          uStack_90 = uStack_a0;
+          savedMain = *(YajimaVec3 *)&posMain;
 
-          uStack_8c = uStack_9c;
 
-          fStack_88 = fStack_98;
 
           iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fVar17 = fStack_88 - ((float)iVar5 * 800.0f - 400.0f);
+          fVar17 = savedMain.z - ((float)iVar5 * 800.0f - 400.0f);
+
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
-          fStack_80 = *pfVar14;
+          worldPos2 = *(YajimaVec3 *)(&DAT_0086be04 + iVar10);
 
-          uStack_7c = *(u32 *)(&DAT_0086be08 + iVar10);
+          iVar6 = FUN_0044f170(&worldPos2);
 
-          fStack_78 = *(float *)(&DAT_0086be0c + iVar10);
-
-          iVar6 = FUN_0044f170(&fStack_80);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -7958,7 +7965,8 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                      (((float)(int)cVar3 / 2.0f + 0.0f) -
 
-                     (fStack_78 - ((float)iVar6 * 800.0f - 400.0f)) * ((float)(int)cVar3 / 800.0f))) +
+                     (worldPos2.z - ((float)iVar6 * 800.0f - 400.0f)) * ((float)(int)cVar3 / 800.0f))) +
+
 
                     (float)(int)(((float)iVar11 / 2.0f + 0.0f) - fVar17 * ((float)iVar11 / 800.0f))) -
 
@@ -7967,18 +7975,19 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
         }
 
         else {
+          YajimaVec3 worldPos1;
+          YajimaVec3 worldPos2;
+
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
-          fStack_c0 = *(float *)(iVar2 + 0x868);
+          worldPos1 = *(YajimaVec3 *)(iVar2 + 0x868);
 
-          uStack_bc = *(u32 *)(iVar2 + 0x86c);
+          iVar5 = FUN_0044f120(&worldPos1);
 
-          uStack_b8 = *(u32 *)(iVar2 + 0x870);
 
-          iVar5 = FUN_0044f120(&fStack_c0);
+          fVar17 = worldPos1.x - ((float)iVar5 * 800.0f - 400.0f);
 
-          fVar17 = fStack_c0 - ((float)iVar5 * 800.0f - 400.0f);
 
           fVar18 = (float)(int)*(char *)(iVar2 + 0xb29);
 
@@ -7986,13 +7995,10 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
           pfVar14 = (float *)(&DAT_0086be04 + iVar10);
 
-          fStack_b0 = *(float *)(&DAT_0086be04 + iVar10);
+          worldPos2 = *(YajimaVec3 *)(&DAT_0086be04 + iVar10);
 
-          uStack_ac = *(u32 *)(&DAT_0086be08 + iVar10);
+          iVar6 = FUN_0044f120(&worldPos2);
 
-          uStack_a8 = *(u32 *)(&DAT_0086be0c + iVar10);
-
-          iVar6 = FUN_0044f120(&fStack_b0);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -8012,7 +8018,8 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                      ((fVar18 / 2.0f + 0.0f) -
 
-                     (fStack_b0 - ((float)iVar6 * 800.0f - 400.0f)) * (fVar18 / 800.0f))) +
+                     (worldPos2.x - ((float)iVar6 * 800.0f - 400.0f)) * (fVar18 / 800.0f))) +
+
 
                     (float)(int)(((float)(int)cVar3 / 2.0f + 0.0f) -
 
@@ -8020,25 +8027,20 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
 
                    - 8.0f;
 
-          uStack_e0 = *(u32 *)(iVar2 + 0x868);
+          worldPos1 = *(YajimaVec3 *)(iVar2 + 0x868);
 
-          uStack_dc = *(u32 *)(iVar2 + 0x86c);
+          iVar5 = FUN_0044f170(&worldPos1);
 
-          fStack_d8 = *(float *)(iVar2 + 0x870);
 
-          iVar5 = FUN_0044f170(&uStack_e0);
+          fVar17 = worldPos1.z - ((float)iVar5 * 800.0f - 400.0f);
 
-          fVar17 = fStack_d8 - ((float)iVar5 * 800.0f - 400.0f);
 
           cVar3 = *(char *)(iVar2 + 0xb29);
 
-          fStack_d0 = *pfVar14;
+          worldPos2 = *(YajimaVec3 *)(&DAT_0086be04 + iVar10);
 
-          uStack_cc = *(u32 *)(&DAT_0086be08 + iVar10);
+          iVar6 = FUN_0044f170(&worldPos2);
 
-          fStack_c8 = *(float *)(&DAT_0086be0c + iVar10);
-
-          iVar6 = FUN_0044f170(&fStack_d0);
 
           cVar1 = *(char *)(iVar2 + 0xb29);
 
@@ -8053,10 +8055,9 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
           fVar17 = (float)(iVar5 >> 1) +
 
                    ((((*(float *)(iVar2 + 0x860) + (float)(cVar1 * param_5)) -
-
                      (((float)(int)cVar3 / 2.0f + 0.0f) -
 
-                     (fStack_c8 - ((float)iVar6 * 800.0f - 400.0f)) * ((float)(int)cVar3 / 800.0f))) +
+                     (worldPos2.z - ((float)iVar6 * 800.0f - 400.0f)) * ((float)(int)cVar3 / 800.0f))) +
 
                     (float)(int)(((float)iVar11 / 2.0f + 0.0f) - fVar17 * ((float)iVar11 / 800.0f))) -
 
@@ -8175,20 +8176,25 @@ void FUN_0042dd90(int param_1,short param_2,u16 param_3,int param_4,int param_5)
         }
 
         else if (iVar5 == 2) {
+          YajimaVec3 posMain;
+          YajimaVec3 posY;
+          YajimaVec3 posZ;
+          YajimaVec3 delta;
 
-          K_FldFrame_CtlCopyPos(afStack_20,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fStack_10 = *pfVar14 - afStack_20[0];
+          K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          K_FldFrame_CtlCopyPos(auStack_30,*(u32 *)(DAT_008717f4 + 0x1e0));
+          delta.x = *pfVar14 - posMain.x;
 
-          fStack_c = *(float *)(&DAT_0086be08 + iVar15 * 0x10) - fStack_2c;
+          K_FldFrame_CtlCopyPos(&posY,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          K_FldFrame_CtlCopyPos(auStack_40,*(u32 *)(DAT_008717f4 + 0x1e0));
+          delta.y = *(float *)(&DAT_0086be08 + iVar15 * 0x10) - posY.y;
 
-          fStack_8 = *(float *)(&DAT_0086be0c + iVar15 * 0x10) - fStack_38;
+          K_FldFrame_CtlCopyPos(&posZ,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-          fVar16 = (float)RwV3dLength(&fStack_10);
+          delta.z = *(float *)(&DAT_0086be0c + iVar15 * 0x10) - posZ.z;
+
+          fVar16 = (float)RwV3dLength(&delta);
 
           if (fVar16 < 2000.0f) {
 
