@@ -19441,8 +19441,8 @@ void FUN_0045a490(void)
   float fVar7;
   float fVar8;
   
+  puVar1 = *(struct YRuntimeWork **)(iGpffffba08 + 0x3c);
   if (iGpffffba08 != 0) {
-    puVar1 = *(struct YRuntimeWork **)(iGpffffba08 + 0x3c);
     uVar3 = FUN_001158b0(0,puVar1->data[0],0);
     iVar2 = (int)uVar3;
     *(char *)(iVar2 + 0x18) = (char)*(u16 *)((int)puVar1 + 10);
