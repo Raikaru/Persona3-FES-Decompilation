@@ -83,9 +83,9 @@ extern void campEquipDrawValueCall(f32 scale, s32 x, s32 y, u32 color,
 extern void campEquipFormatTextCall(char* buffer, const char* format, ...);
 extern int sprintf(char* buffer, const char* format, ...);
 extern void* DAT_007cdf50;
-extern s32 DAT_007e0952;
-extern s32 DAT_007e095a;
-extern s32 DAT_007e094e;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e095a;
+extern u16 DAT_007e094e;
 extern void* DAT_00833B70;
 extern void* DAT_00833BA0;
 extern void* DAT_007cb66c;
@@ -727,7 +727,7 @@ void* FUN_0012c430(KwlnTask* task)
             work[8] = 0;
             work[0xab] = (u32)FUN_00131090(work + 10, work + 0xa0,
                                             *(u16*)((u8*)work + 0x12),
-                                            *(u16*)((u8*)work + 0x1c));
+                                            *(s16*)((u8*)work + 0x1c));
             work[1] = 8;
         }
         FUN_0012ddc0(work);
