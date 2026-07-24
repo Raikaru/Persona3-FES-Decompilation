@@ -255,7 +255,7 @@ void func_0023f540(void)
                 layout[4] = layout[2];
                 layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
                 layout[6] = 0.0f;
-                layout[7] = layout[3];
+                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
                     layout[j * 2] -= 150.0f;
                     layout[j * 2 + 1] -= 34.0f;
@@ -303,7 +303,7 @@ void func_0023f540(void)
                 layout[4] = layout[2];
                 layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
                 layout[6] = 0.0f;
-                layout[7] = layout[3];
+                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
                     layout[j * 2] -= 150.0f;
                     layout[j * 2 + 1] -= 34.0f;
@@ -369,6 +369,14 @@ void func_0023f540(void)
             func_0021d950(slot + 0x10, color);
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
                 frame = func_0021cca0(renderContext, 0xa);
+                if (age < 0) {
+                    alpha = 1.0f;
+                } else if (age < 12) {
+                    t = (f32)age / 12.0f;
+                    alpha = 2.0f * t - t * t;
+                } else {
+                    alpha = 1.0f;
+                }
                 layout[0] = 0.0f;
                 layout[1] = 0.0f;
                 layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
@@ -376,19 +384,10 @@ void func_0023f540(void)
                 layout[4] = layout[2];
                 layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
                 layout[6] = 0.0f;
-                layout[7] = layout[3];
+                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
                     layout[j * 2] -= 150.0f;
                     layout[j * 2 + 1] -= 34.0f;
-                }
-                if (age < 0) {
-                    alpha = 1.0f;
-                } else if (age < 8) {
-                    alpha = 1.0f;
-                } else if (age < 34) {
-                    alpha = 1.0f - (f32)(age - 8) / 26.0f;
-                } else {
-                    alpha = 0.0f;
                 }
                 for (j = 0; j < 4; j++) {
                     layout[j * 2] *= alpha;
@@ -425,7 +424,7 @@ void func_0023f540(void)
                 layout[4] = layout[2];
                 layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
                 layout[6] = 0.0f;
-                layout[7] = layout[3];
+                layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
                 for (j = 0; j < 4; j++) {
                     layout[j * 2] -= 150.0f;
                     layout[j * 2 + 1] -= 34.0f;
@@ -465,6 +464,16 @@ void func_0023f540(void)
                 color[3] = (u8)(u32)(255.0f * colorAlpha);
                 func_0021d950(slot + 0x200, color);
             }
+            break;
+        case 3:
+            frame = func_0021cca0(renderContext, 0x22);
+            layout[0] = projected[0] -
+                        (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
+            layout[1] = projected[1] -
+                        (f32)((s32)*(s32*)((u8*)frame + 0x10) / 2);
+            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
+            func_0021d8e0(slot + 0x10, layout);
             break;
         case 2:
             x = projected[0] - 135.0f;
@@ -509,7 +518,7 @@ void func_0023f540(void)
             layout[4] = layout[2];
             layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
             layout[6] = 0.0f;
-            layout[7] = layout[3];
+            layout[7] = (f32)*(s32*)((u8*)frame + 0x10);
             for (j = 0; j < 4; j++) {
                 layout[j * 2] -=
                     (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
@@ -524,7 +533,7 @@ void func_0023f540(void)
                 layout[j * 2] += 83.0f + x;
                 layout[j * 2 + 1] += 63.0f + y;
             }
-            func_0021d8e0(slot + 0x110, layout);
+            func_0021d890(slot + 0x110, layout);
             color[0] = 0xff;
             color[1] = 0xff;
             color[2] = 0xff;
@@ -568,16 +577,6 @@ void func_0023f540(void)
             color[2] = 0xff;
             color[3] = (u8)(u32)(255.0f * alpha);
             func_0021d950(slot + 0x210, color);
-            break;
-        case 3:
-            frame = func_0021cca0(renderContext, 0x22);
-            layout[0] = projected[0] -
-                        (f32)((s32)*(s32*)((u8*)frame + 0xc) / 2);
-            layout[1] = projected[1] -
-                        (f32)((s32)*(s32*)((u8*)frame + 0x10) / 2);
-            layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
-            layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
-            func_0021d8e0(slot + 0x10, layout);
             break;
         }
 
@@ -708,6 +707,7 @@ void func_0023f540(void)
                 layout[0] = x;
                 layout[1] = y;
                 layout[2] = 0.0f;
+                layout[3] = 0.0f;
                 func_0021d8e0(slot + 0x830 + j * 0x100, layout);
             }
         }
