@@ -351,8 +351,8 @@ void H_Chrdsp_Main(void)
 // FUN_001059B0 NONMATCHING
 void H_Chrdsp_UpdateWork(HChrdspWork* work)
 {
-    RwIm2DVertex overlayVertices[4];
     char archivePath[256];
+    RwIm2DVertex overlayVertices[4];
     const char* archiveEntry;
     HChrdspTexture* texture;
     RwCamera* camera;
@@ -363,7 +363,6 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     s32 quadIndex;
     s32 vertexIndex;
     u32 isReady;
-
     switch (work->state)
     {
 
@@ -426,6 +425,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
     case HCHRDP_STATE_UNAVAILABLE:
         break;
     case HCHRDP_STATE_DRAW:
+    {
         camera = kwlnGetMainCamera();
         recipZ = 1.0f / camera->nearPlane;
         z = RwIm2DGetNearScreenZ() - work->zOffset;
@@ -439,9 +439,6 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         {
             for (vertexIndex = 0; vertexIndex < 4; vertexIndex++)
             {
-                work->vertices[quadIndex][vertexIndex].u.els.scrVertex.z =
-                    z;
-                work->vertices[quadIndex][vertexIndex].u.els.recipZ = recipZ;
                 work->vertices[quadIndex][vertexIndex].u.els.color.r =
                     (f32)work->color.r;
                 work->vertices[quadIndex][vertexIndex].u.els.color.g =
@@ -450,6 +447,9 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
                     (f32)work->color.b;
                 work->vertices[quadIndex][vertexIndex].u.els.color.a =
                     (f32)work->color.a;
+                work->vertices[quadIndex][vertexIndex].u.els.scrVertex.z =
+                    z;
+                work->vertices[quadIndex][vertexIndex].u.els.recipZ = recipZ;
             }
 
             work->vertices[quadIndex][0].u.els.scrVertex.x =
@@ -641,6 +641,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         D_009600A0(rwPRIMTYPETRISTRIP, overlayVertices, 4);
         break;
 
+    }
     default:
         break;
     }
