@@ -96,14 +96,20 @@ void H_Pad_Init(void)
 // FUN_00103110 NONMATCHING
 void H_Pad_Poll(HPad* pad)
 {
+    u16 mainMode;
     s32 padState;
     s32 requestState;
+    s32 port;
+    s32 slot;
     u8 actuatorData[2];
     u8 hasDigitalInput;
     u8 hasAnalogSticks;
-
+    u16 actuator0;
+    u16 actuator1;
     sRDataPort1[0] = 0xFF;
-    padState = scePadGetState(pad->port, pad->slot);
+    port = pad->port;
+    slot = pad->slot;
+    padState = scePadGetState(port, slot);
 
     switch (pad->state)
     {
@@ -112,9 +118,10 @@ void H_Pad_Poll(HPad* pad)
         {
             pad->appliedActuator0 = 0xFFFF;
             pad->appliedActuator1 = 0xFFFF;
-            pad->mainMode = pad->requestedMainMode;
+            mainMode = pad->requestedMainMode;
+            pad->mainMode = mainMode;
+            switch (mainMode)
 
-            switch (pad->mainMode)
             {
             case 0:
                 pad->state = HPAD_STATE_CONFIGURING_ACTUATORS;
@@ -123,7 +130,7 @@ void H_Pad_Poll(HPad* pad)
             case 1:
                 if (padState == HPAD_PAD_STATE_STABLE)
                 {
-                    if (scePadSetMainMode(pad->port, pad->slot, 0, 0) == 1)
+                    if (scePadSetMainMode(port, slot, 0, 0) == 1)
                     {
                         pad->state = HPAD_STATE_MODE_REQUESTED;
                     }
@@ -135,14 +142,14 @@ void H_Pad_Poll(HPad* pad)
                 break;
 
             case 2:
-                if (scePadSetMainMode(pad->port, pad->slot, 0, 0) == 1)
+                if (scePadSetMainMode(port, slot, 0, 0) == 1)
                 {
                     pad->state = HPAD_STATE_WAITING_FOR_MODE;
                 }
                 break;
 
             case 3:
-                if (scePadSetMainMode(pad->port, pad->slot, 1, 0) == 1)
+                if (scePadSetMainMode(port, slot, 1, 0) == 1)
                 {
                     pad->state = HPAD_STATE_MODE_REQUESTED;
                 }
@@ -154,7 +161,7 @@ void H_Pad_Poll(HPad* pad)
     case HPAD_STATE_WAITING_FOR_MODE:
         if (padState == HPAD_PAD_STATE_STABLE)
         {
-            if (scePadSetMainMode(pad->port, pad->slot, 0, 0) == 1)
+            if (scePadSetMainMode(port, slot, 0, 0) == 1)
             {
                 pad->state = HPAD_STATE_WAITING_FOR_MODE;
             }
@@ -166,18 +173,18 @@ void H_Pad_Poll(HPad* pad)
         break;
 
     case HPAD_STATE_CONFIGURING_ACTUATORS:
-        if (scePadInfoAct(pad->port, pad->slot, -1, 0) == 0)
+        if (scePadInfoAct(port, slot, -1, 0) == 0)
         {
             pad->state = HPAD_STATE_READY;
         }
-        else if (scePadSetActAlign(pad->port, pad->slot, sRDataPort1) != 0)
+        else if (scePadSetActAlign(port, slot, sRDataPort1) != 0)
         {
             pad->state = HPAD_STATE_WAITING_FOR_ACTUATORS;
         }
         break;
 
     case HPAD_STATE_WAITING_FOR_ACTUATORS:
-        requestState = scePadGetReqState(pad->port, pad->slot);
+        requestState = scePadGetReqState(port, slot);
         if (requestState == 0)
         {
             pad->state = HPAD_STATE_READY;
@@ -197,29 +204,42 @@ void H_Pad_Poll(HPad* pad)
             }
             else
             {
-                scePadRead(pad->port, pad->slot, sRDataPort1);
+                scePadRead(port, slot, sRDataPort1);
             }
         }
         break;
     }
-
+    actuator0 = pad->actuator0;
+    actuator1 = pad->actuator1;
+    if (actuator0 != pad->appliedActuator0 || actuator1 != pad->appliedActuator1)
+    {
+        pad->appliedActuator0 = actuator0;
+        pad->appliedActuator1 = actuator1;
+        actuatorData[0] = (u8)actuator0;
+        actuatorData[1] = (u8)actuator1;
+        scePadSetActDirect(port, slot, actuatorData);
+    }
+ 
     hasDigitalInput = false;
     hasAnalogSticks = false;
     if (sRDataPort1[0] == 0)
     {
-        if (sRDataPort1[1] == 'A')
+        switch (sRDataPort1[1])
         {
+        case 'A':
             hasDigitalInput = true;
-        }
-        else if (sRDataPort1[1] == 's' || sRDataPort1[1] == 'y')
-        {
+            break;
+
+        case 's':
+        case 'y':
             hasDigitalInput = true;
             hasAnalogSticks = true;
+            break;
         }
     }
-
     pad->btn[0].released = pad->btn[0].pressed;
     pad->virtualPreviousPressed = pad->btn[1].justPressed;
+
     if (hasDigitalInput != false)
     {
         pad->btn[0].pressed = (u16)~((sRDataPort1[2] << 8) | sRDataPort1[3]);
@@ -247,14 +267,6 @@ void H_Pad_Poll(HPad* pad)
         pad->virtualPreviousPressed = 0;
     }
 
-    if (pad->actuator0 != pad->appliedActuator0 || pad->actuator1 != pad->appliedActuator1)
-    {
-        pad->appliedActuator0 = pad->actuator0;
-        pad->appliedActuator1 = pad->actuator1;
-        actuatorData[0] = (u8)pad->actuator0;
-        actuatorData[1] = (u8)pad->actuator1;
-        scePadSetActDirect(pad->port, pad->slot, actuatorData);
-    }
 }
 
 // FUN_00103580
