@@ -46,7 +46,7 @@ int *FUN_003c4650(u32 param_1, int *param_2, int *param_3);
 void FUN_003c4710(int *param_1, int *param_2, int *param_3);
 NmlistNode *FUN_003c4820(int *param_1, int *param_2);
 int *FUN_003c4910(int *param_1, int *param_2, int *param_3);
-NmlistNode *FUN_003c49e0(int *param_1, int *param_2, NmlistNode *param_3);
+NmlistNode *FUN_003c49e0(NmlistList *param_1, NmlistList *param_2, int *param_3);
 #pragma alias FUN_003c4430_typed FUN_003c4430
 extern int *FUN_003c4430_typed(int *param_1);
 #pragma alias FUN_003c4710_typed FUN_003c4710
@@ -359,28 +359,26 @@ int *FUN_003c4910(int *param_1,int *param_2,int *param_3)
 }
 #define FUN_003c4910(...) ((int * (*)(...))FUN_003c4910)(__VA_ARGS__)
 #undef FUN_003c49e0
-// Local declaration order tuned (6 permutations tried) for closest register match;
-// residual is a genuine MWCC register-coloring floor swapping list/node between s1/s3.
-// FUN_003C49E0 NONMATCHING
+// FUN_003C49E0
 
 
-NmlistNode *FUN_003c49e0(int *param_1,int *param_2,NmlistNode *param_3)
+NmlistNode *FUN_003c49e0(NmlistList *param_1,NmlistList *param_2,int *param_3)
 {
   NmlistNode *node;
   NmlistList *list2;
   NmlistList *list;
   NmlistNode *next;
 
-  node = param_3;
-  list2 = (NmlistList *)param_2;
-  list = (NmlistList *)param_1;
+  node = (NmlistNode *)param_3;
+  list2 = param_2;
+  list = param_1;
   next = FUN_003c4820_typed((int *)list2,(int *)node);
-  if (node == list2->tail) {
-    list2->tail = next;
+  if (node == list2->cursor) {
+    list2->cursor = (NmlistNode *)next;
   }
   (*(code *)((u8 *)list + 0x18))((int *)list,(int *)node);
   if (node != 0) {
-    FUN_00521408((u32)node,0,(u32)node->next);
+    FUN_00521408((u32)node,0,(u32)node->unk0[2]);
     (*(code *)0x0096017c)((int *)node);
   }
   return next;
@@ -797,12 +795,9 @@ int FUN_003c50b0(int param_1, u32 param_2, int param_3)
     values = (u32*)param_2;
     for (index = 0; index < param_3; index++)
     {
-        u32* entry;
-        u32 current;
-        entry = &values[index];
-        current = *entry;
         FUN_003c4710_u32((u32)(param_1 + 4),
-                         *(u32 *)(param_1 + 8), current);
+                         *(u32 *)(param_1 + 8),
+                         *(u32 *)((int)param_2 + index * 4));
     }
     return index;
 }
