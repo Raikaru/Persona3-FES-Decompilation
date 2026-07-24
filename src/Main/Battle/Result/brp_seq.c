@@ -261,8 +261,8 @@ void func_00272400(u32* param)
     u32* work;
     u16* skills;
     s32 skillCount;
+    s32 skillIndex;
     s32 i;
-    s32 j;
     s32 resultCount;
     s32 resultIndex;
     u8* entry;
@@ -287,11 +287,11 @@ void func_00272400(u32* param)
     work[0xc] = (u32)(uintptr_t)FUN_001749a0((u16)work[1]);
     K_ASSERT(FUN_001761b0((DatPersonaWork*)(uintptr_t)work[0xc]) != 0, 0xe8);
     {
-        DatPersonaWork* persona;
         u8* destination;
-        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        DatPersonaWork* persona;
         destination = (u8*)work + 0x38;
-        FUN_00175ce0(persona, destination);
+        persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        FUN_00175ce0(persona, (u8*)(work + 0xe));
     }
     work[0xd] = (u32)(uintptr_t)
         (DAT_007ce428 + (u32)(u16)work[1] * 0x46);
@@ -299,33 +299,31 @@ void func_00272400(u32* param)
     skillCount = (s32)FUN_00176a30(
         (DatPersonaWork*)(uintptr_t)work[0xc]);
     skills = FUN_00173370((DatPersonaWork*)(uintptr_t)work[0xc]);
-    for (i = 0; i < skillCount; i++)
-        *(u16*)((u8*)work + 0x60 + i * 2) = skills[i];
+    for (skillIndex = 0; skillIndex < skillCount; skillIndex++)
+        *(u16*)((u8*)work + 0x60 + skillIndex * 2) = skills[skillIndex];
     work[0x1d] = skillCount;
     {
         DatPersonaWork* persona;
         s32 difference;
         persona = (DatPersonaWork*)(uintptr_t)work[0xc];
+        entry = (u8*)(uintptr_t)work[0xd];
         difference = (s32)persona->level -
                      (s32)DAT_007ce420[persona->id * 0x0e + 3];
-        FUN_001fb4b0((u8*)(uintptr_t)work[0xd] + 6, 0x10,
-                     difference, *(u8*)((u8*)work + 0x38),
-                     (u8*)work + 0x78, (u8*)work + 0x7c);
+        FUN_001fb4b0(entry + 6, 0x10, difference,
+                     ((u8*)work)[0x38], (u8*)work + 0x78,
+                     (u8*)work + 0x7c);
     }
     work[0x6c] = 0;
     work[0x6d] = func_00274f00();
     {
         DatPersonaWork* persona;
-        u8* destination;
         persona = (DatPersonaWork*)(uintptr_t)work[0xc];
-        destination = (u8*)work + 0x38;
-        FUN_00176100(persona, destination);
+        FUN_00176100(persona, (u8*)(work + 0xe));
     }
     if (func_002741f0() != 0)
         work[0] |= 0x10;
     work[0xa] = 0;
     i = 0;
-    goto first_check;
 first_body:
     if (*(u8*)((u8*)work + 0x5a + i) != 0)
         goto first_done;
@@ -336,16 +334,16 @@ first_check:
 first_done:
     work[0xa] = i;
     work[0xb] = 0;
-    j = 0;
+    i = 0;
     goto last_check;
 last_body:
-    if (*(u8*)((u8*)work + 0x5a + j) == 0)
+    if (*(u8*)((u8*)work + 0x5a + i) == 0)
         goto last_after;
-    work[0xb] = j;
+    work[0xb] = i;
 last_after:
-    j++;
+    i++;
 last_check:
-    if (j < 5)
+    if (i < 5)
         goto last_body;
 
     resultCount = (s32)FUN_002751e0();
