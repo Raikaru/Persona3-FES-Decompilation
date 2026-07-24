@@ -1242,7 +1242,6 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 {
     FldEvent* fldEvent;
     u32* eventWords;
-    u32* fieldWords;
     RwMatrix* heroMat;
     RwV3d markerPos;
     RwV3d offset;
@@ -1261,8 +1260,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 #define EVENT_S16(offset) (*(s16*)((u8*)fldEvent + (offset)))
 #define EVENT_U16(offset) (*(u16*)((u8*)fldEvent + (offset)))
 #define EVENT_U8(offset)  (*(u8*)((u8*)fldEvent + (offset)))
-#define FIELD_WORD(offset) (fieldWords[(offset) / sizeof(u32)])
-#define FIELD_U16(offset) (*(u16*)((u8*)fieldWords + (offset)))
+#define FIELD_WORD(offset) (((u32*)K_Field_Get())[(offset) / sizeof(u32)])
+#define FIELD_U16(offset) (*(u16*)((u8*)K_Field_Get() + (offset)))
 #define DATA_U8(address)  (*(volatile u8*)(address))
 #define DATA_U16(address) (*(volatile u16*)(address))
 #define DATA_U32(address) (*(volatile u32*)(address))
@@ -1322,7 +1321,6 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
 
     fldEvent = (FldEvent*)fldEventTask->workData;
     eventWords = (u32*)fldEvent;
-    fieldWords = (u32*)K_Field_Get();
 
     /* Keep the draw-command work in sync even while an interaction owns input. */
     K_FldEvent_001cd650((KwlnTask*)FIELD_WORD(0x08), DATA_U32(0x007ce20c));
@@ -1587,61 +1585,104 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     if (active == 1)
                     {
                         currentActor = PTR_S16((void*)PTR_U32((void*)npc, 0x1f8), 8);
-                        if (currentActor == -1)
+                        if (currentActor != -1)
+                        {
+                            FUN_003c72d0(FIELD_WORD(0x1154));
+                            FUN_003c7430(currentActor);
+
+                            FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
+                            FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
+                            EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
+                            currentActor = DATA_S32(0x007cd540);
+                            if ((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) > 3)
+                            {
+                                FUN_003191f0(PTR_U32((void*)npc, 0x128), FUN_00319200(PTR_U32((void*)npc, 0x128)) & ~0x800);
+                            }
+                            else
+                            {
+                                if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
+                                else if (EVENT_WORD(8) == 0) currentActor = 3;
+                                else currentActor = EVENT_WORD(8) + 1;
+                                FUN_003182d0(PTR_U32((void*)npc, 0x128), 0, currentActor, 7, false);
+                            }
+                            if (FIELD_WORD(0x18) != 0) FUN_00429e80((void*)FIELD_WORD(0x18), false);
+                            if (FIELD_WORD(0x28) != 0) func_0018c0c0((void*)FIELD_WORD(0x28), false);
+                            if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), false);
+                            fldEvent->eventType = 0x15;
+                        }
+                        else
                         {
                             currentActor = PTR_S16((void*)PTR_U32((void*)npc, 0x1f8), 0xc);
                             if (currentActor != -1)
                             {
                                 EVENT_WORD(0x18) = FUN_0035bc00(10, FIELD_WORD(0x114c), FIELD_WORD(0x1150), currentActor);
+
+                                FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
+                                FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
+                                EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
+                                currentActor = DATA_S32(0x007cd540);
+                                if ((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) > 3)
+                                {
+                                    FUN_003191f0(PTR_U32((void*)npc, 0x128), FUN_00319200(PTR_U32((void*)npc, 0x128)) & ~0x800);
+                                }
+                                else
+                                {
+                                    if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
+                                    else if (EVENT_WORD(8) == 0) currentActor = 3;
+                                    else currentActor = EVENT_WORD(8) + 1;
+                                    FUN_003182d0(PTR_U32((void*)npc, 0x128), 0, currentActor, 7, false);
+                                }
+                                if (FIELD_WORD(0x18) != 0) FUN_00429e80((void*)FIELD_WORD(0x18), false);
+                                if (FIELD_WORD(0x28) != 0) func_0018c0c0((void*)FIELD_WORD(0x28), false);
+                                if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), false);
                                 fldEvent->eventType = 0x16;
                             }
-                        }
-                        else
-                        {
-                            FUN_003c72d0(FIELD_WORD(0x1154));
-                            FUN_003c7430(currentActor);
-                            fldEvent->eventType = 0x15;
                         }
                     }
                     else if (active == 2)
                     {
                         currentActor = PTR_S16((void*)PTR_U32((void*)npc, 0x1fc), 0x6c);
-                        if (currentActor == -1)
+                        if (currentActor != -1)
+                        {
+                            FUN_003c72d0(PTR_U32((void*)npc, 0x208));
+                            FUN_003c7430(FUN_001b8fd0(PTR_U32((void*)npc, 0x1fc), PTR_U32((void*)npc, 0x200), PTR_U32((void*)npc, 0x204)));
+
+                            FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
+                            FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
+                            EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
+                            currentActor = DATA_S32(0x007cd540);
+                            if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
+                            else if (EVENT_WORD(8) == 0) currentActor = 3;
+                            else currentActor = EVENT_WORD(8) + 1;
+                            FUN_003182d0(PTR_U32((void*)npc, 0x128), 0, currentActor, 7, false);
+                            if (PTR_U32((void*)npc, 0x210) != 0) FUN_001dd5e0((void*)PTR_U32((void*)npc, 0x210), true);
+                            if (FIELD_WORD(0x18) != 0) FUN_00429e80((void*)FIELD_WORD(0x18), false);
+                            if (FIELD_WORD(0x28) != 0) func_0018c0c0((void*)FIELD_WORD(0x28), false);
+                            if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), false);
+                            fldEvent->eventType = 0x15;
+                        }
+                        else
                         {
                             currentActor = PTR_S16((void*)PTR_U32((void*)npc, 0x1fc), 0x70);
                             if (currentActor != -1)
                             {
                                 EVENT_WORD(0x18) = FUN_0035bc00(10, DATA_U32(0x007ce23c), DATA_U32(0x007ce238));
+
+                                FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
+                                FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
+                                EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
+                                currentActor = DATA_S32(0x007cd540);
+                                if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
+                                else if (EVENT_WORD(8) == 0) currentActor = 3;
+                                else currentActor = EVENT_WORD(8) + 1;
+                                FUN_003182d0(PTR_U32((void*)npc, 0x128), 0, currentActor, 7, false);
+                                if (PTR_U32((void*)npc, 0x210) != 0) FUN_001dd5e0((void*)PTR_U32((void*)npc, 0x210), true);
+                                if (FIELD_WORD(0x18) != 0) FUN_00429e80((void*)FIELD_WORD(0x18), false);
+                                if (FIELD_WORD(0x28) != 0) func_0018c0c0((void*)FIELD_WORD(0x28), false);
+                                if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), false);
                                 fldEvent->eventType = 0x16;
                             }
                         }
-                        else
-                        {
-                            FUN_003c72d0(PTR_U32((void*)npc, 0x208));
-                            FUN_003c7430(FUN_001b8fd0(PTR_U32((void*)npc, 0x1fc), PTR_U32((void*)npc, 0x200), PTR_U32((void*)npc, 0x204)));
-                            fldEvent->eventType = 0x15;
-                        }
-                    }
-                    if (fldEvent->eventType == 0x15 || fldEvent->eventType == 0x16)
-                    {
-                        FUN_001e1300((KwlnTask*)FIELD_WORD(0x0c), true);
-                        FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
-                        EVENT_WORD(8) = FUN_00318540(PTR_U32((void*)npc, 0x128), 0);
-                        currentActor = DATA_S32(0x007cd540);
-                        if ((currentActor == 7 || currentActor == 4) && EVENT_WORD(8) > 3)
-                        {
-                            FUN_003191f0(PTR_U32((void*)npc, 0x128), FUN_00319200(PTR_U32((void*)npc, 0x128)) & ~0x800);
-                        }
-                        else
-                        {
-                            if (currentActor == 7 || currentActor == 4) currentActor = EVENT_WORD(8) + 1;
-                            else if (EVENT_WORD(8) == 0) currentActor = 3;
-                            else currentActor = EVENT_WORD(8) + 1;
-                            FUN_003182d0(PTR_U32((void*)npc, 0x128), 0, currentActor, 7, false);
-                        }
-                        if (FIELD_WORD(0x18) != 0) FUN_00429e80((void*)FIELD_WORD(0x18), false);
-                        if (FIELD_WORD(0x28) != 0) func_0018c0c0((void*)FIELD_WORD(0x28), false);
-                        if (FIELD_WORD(0x2c) != 0) func_0018eb30((void*)FIELD_WORD(0x2c), false);
                     }
                 }
                 break;
