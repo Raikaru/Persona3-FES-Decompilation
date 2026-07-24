@@ -28,6 +28,8 @@ u16 func_00170a40(s16 pcId, s16 index);
 s16 func_00170ab0(s16 pcId, s16 index);
 void func_00170b20(s16 pcId, s16 index, u16 value);
 void func_00170b90(s16 pcId, s16 index, u16 value);
+s32 func_0016f490(s16 pcId);
+u16 datGetEquipmentId(s16 pcId, s32 equipmentIdx);
 u32 FUN_00421de0(s8 param_1, s8 param_2, s8 param_3, s8 param_4, s8 param_5);
 u32 FUN_00424230(void);
 u8 FUN_004242b0(void);
@@ -456,37 +458,34 @@ u32 FUN_004244e0(void)
 
 }
 
-// FUN_004245C0 NONMATCHING
+// FUN_004245C0
 
 
 u32 FUN_004245c0(void)
 {
-  short sVar1;
-  u16 uVar2;
-  short sVar3;
   int iVar4;
   int iVar5;
   int lVar6;
-  u32 uVar7;
   int iVar8;
+  u32 uVar7;
+  u16 uVar2;
+  short sVar3;
 
   uVar7 = 0xffffffffffffffff;
   lVar6 = scrGetIntPara(0);
   iVar4 = scrGetIntPara(1);
-  if ((lVar6 < 1) || (0xb < lVar6)) {
-    scrSetIntReturnVal(0);
-  } else {
-    sVar1 = (short)lVar6;
-    iVar5 = func_0016f490(sVar1 + 0x100);
+  if ((0 < lVar6) && (lVar6 < 0xc)) {
+    iVar5 = func_0016f490(lVar6 + 0x100);
     if ((iVar4 < iVar5) && (0 < iVar5)) {
-      uVar2 = datGetEquipmentId(sVar1 + 0x100,iVar4);
+      uVar2 = datGetEquipmentId(lVar6 + 0x100,iVar4);
       scrSetIntReturnVal(uVar2);
+      return 1;
     } else {
       for (iVar8 = 0; iVar8 < 0x14; iVar8 = iVar8 + 1) {
-        sVar3 = func_00170ab0(sVar1,(short)iVar8);
+        sVar3 = func_00170ab0(lVar6,(short)iVar8);
         if (0 < sVar3) {
           if (iVar4 == iVar5) {
-            uVar7 = func_00170a40(sVar1,(short)iVar8);
+            uVar7 = func_00170a40(lVar6,(short)iVar8);
             uVar7 = uVar7 & 0xffff;
           }
           iVar5 = iVar5 + 1;
@@ -494,6 +493,8 @@ u32 FUN_004245c0(void)
       }
       scrSetIntReturnVal(uVar7);
     }
+  } else {
+    scrSetIntReturnVal(0);
   }
   return 1;
 }
