@@ -214,30 +214,61 @@ void K_FldCamera_SetPlayerResrcByTypeid(KwlnTask* fldCameraTask, u16 resTypeId)
     }
 }
 
+// Reconstructed the complete camera-rotation state machine and gated look-at updates.
+// Remaining differences are MWCC branch/layout scheduling and axis setup ordering.
 // FUN_001d5f90 NONMATCHING
 void* func_001d5f90(KwlnTask* cameraRotationTask)
 {
     FldCameraRotationWork* work;
-    RwCamera* camera;
-    RwFrame* cameraFrame;
+    f32 initialRotation;
     f32 sine;
     f32 sineDelta;
+    RwCamera* camera;
+    RwFrame* cameraFrame;
+    Field* field;
 
     work = (FldCameraRotationWork*)cameraRotationTask->workData;
     if (work->state == 2)
     {
         return KWLNTASK_STOP;
     }
-    if (work->state != 1)
+    if (work->state == 0)
     {
-        if (work->state != 0)
+        initialRotation = work->initialRotation;
+        field = K_Field_Get();
+        if (((FldCamera*)field->cameraCtlTask->workData)->type == FLDCAMERA_TYPE_0)
         {
-            return KWLNTASK_CONTINUE;
-        }
+            RwV3d cameraPosition;
+            RwV3d target;
+            RwV3d axis;
+            u64 axisXY;
+            u8* targetBytes;
+            u32 i;
+            register RwV3d* axisPtr;
 
-        camera = kwlnGetMainCamera();
-        cameraFrame = (RwFrame*)camera->object.object.parent;
-        FUN_004c31b0(work->initialRotation, cameraFrame, CAMERA_UP_AXIS, 2);
+            camera = kwlnGetMainCamera();
+            cameraFrame = (RwFrame*)camera->object.object.parent;
+            cameraPosition = cameraFrame->modelling.pos;
+            targetBytes = (u8*)&target;
+            i = 0xc;
+            if (targetBytes != NULL)
+            {
+                do
+                {
+                    *targetBytes = 0;
+                    targetBytes++;
+                    i--;
+                } while (i != 0);
+            }
+            axisPtr = &axis;
+            axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+            *(u64*)axisPtr = axisXY;
+            axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+            FUN_004cb890(cameraFrame, initialRotation, axisPtr, 2);
+            cameraPosition = cameraFrame->modelling.pos;
+            camera = kwlnGetMainCamera();
+            FUN_001a1210(camera, &cameraPosition, &target, NULL);
+        }
         work->state++;
     }
 
@@ -246,10 +277,41 @@ void* func_001d5f90(KwlnTask* cameraRotationTask)
         work->frame++;
         sine = sinf((2.0f * gPI * (f32)work->frame) / (f32)work->duration);
         sineDelta = sine - work->lastSine;
-        camera = kwlnGetMainCamera();
-        cameraFrame = (RwFrame*)camera->object.object.parent;
-        FUN_004c31b0(work->angleDelta * sineDelta, cameraFrame,
-                     CAMERA_UP_AXIS, 2);
+        sineDelta *= work->angleDelta;
+        field = K_Field_Get();
+        if (((FldCamera*)field->cameraCtlTask->workData)->type == FLDCAMERA_TYPE_0)
+        {
+            RwV3d cameraPosition;
+            RwV3d target;
+            RwV3d axis;
+            u64 axisXY;
+            u8* targetBytes;
+            u32 i;
+            register RwV3d* axisPtr;
+
+            camera = kwlnGetMainCamera();
+            cameraFrame = (RwFrame*)camera->object.object.parent;
+            cameraPosition = cameraFrame->modelling.pos;
+            targetBytes = (u8*)&target;
+            i = 0xc;
+            if (targetBytes != NULL)
+            {
+                do
+                {
+                    *targetBytes = 0;
+                    targetBytes++;
+                    i--;
+                } while (i != 0);
+            }
+            axisPtr = &axis;
+            axisXY = *(volatile u64*)(uintptr_t)0x00683a98;
+            *(u64*)axisPtr = axisXY;
+            axisPtr->z = *(volatile f32*)(uintptr_t)0x00683aa0;
+            FUN_004cb890(cameraFrame, sineDelta, axisPtr, 2);
+            cameraPosition = cameraFrame->modelling.pos;
+            camera = kwlnGetMainCamera();
+            FUN_001a1210(camera, &cameraPosition, &target, NULL);
+        }
         work->lastSine = sine;
     }
     else
