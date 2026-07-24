@@ -166,6 +166,7 @@ void func_0023f540(void)
     f32 alpha;
     f32 t;
     f32 vertical;
+    f32 digitOffset;
     u8 color[4];
 
     K_ASSERT(sBiMain != NULL, 0x8a);
@@ -281,6 +282,44 @@ void func_0023f540(void)
                 color[3] = (u8)(u32)(255.0f * alpha);
                 func_0021d950(slot + 0x100, color);
             }
+            if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
+                frame = func_0021cca0(renderContext, 0xa);
+                layout[0] = 0.0f;
+                layout[1] = 0.0f;
+                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[3] = 0.0f;
+                layout[4] = layout[2];
+                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[6] = 0.0f;
+                layout[7] = layout[3];
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] -= 150.0f;
+                    layout[j * 2 + 1] -= 34.0f;
+                }
+                if (age < 0) {
+                    alpha = 1.0f;
+                } else if (age < 8) {
+                    alpha = 2.0f;
+                } else if (age < 34) {
+                    alpha = 2.0f - (f32)(age - 8) / 26.0f;
+                } else {
+                    alpha = 1.0f;
+                }
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] *= alpha;
+                    layout[j * 2 + 1] *= alpha;
+                }
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] += 75.0f + x;
+                    layout[j * 2 + 1] += 29.0f + y;
+                }
+                func_0021d890(slot + 0x200, layout);
+                color[0] = 0x64;
+                color[1] = 0x64;
+                color[2] = 0xff;
+                color[3] = (u8)(u32)(255.0f * alpha);
+                func_0021d950(slot + 0x200, color);
+            }
             break;
         case 1:
             frame = func_0021cca0(renderContext, 0xb);
@@ -343,6 +382,44 @@ void func_0023f540(void)
                 color[3] = (u8)(u32)(255.0f * alpha);
                 func_0021d950(slot + 0x100, color);
             }
+            if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
+                frame = func_0021cca0(renderContext, 0xa);
+                layout[0] = 0.0f;
+                layout[1] = 0.0f;
+                layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
+                layout[3] = 0.0f;
+                layout[4] = layout[2];
+                layout[5] = (f32)*(s32*)((u8*)frame + 0x10);
+                layout[6] = 0.0f;
+                layout[7] = layout[3];
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] -= 150.0f;
+                    layout[j * 2 + 1] -= 34.0f;
+                }
+                if (age < 0) {
+                    alpha = 1.0f;
+                } else if (age < 8) {
+                    alpha = 2.0f;
+                } else if (age < 34) {
+                    alpha = 2.0f - (f32)(age - 8) / 26.0f;
+                } else {
+                    alpha = 1.0f;
+                }
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] *= alpha;
+                    layout[j * 2 + 1] *= alpha;
+                }
+                for (j = 0; j < 4; j++) {
+                    layout[j * 2] += 75.0f + x;
+                    layout[j * 2 + 1] += 29.0f + y;
+                }
+                func_0021d890(slot + 0x200, layout);
+                color[0] = 0x46;
+                color[1] = 0x32;
+                color[2] = 0x0a;
+                color[3] = (u8)(u32)(255.0f * alpha);
+                func_0021d950(slot + 0x200, color);
+            }
             break;
         case 2:
             x = projected[0] - 135.0f;
@@ -374,7 +451,7 @@ void func_0023f540(void)
             if (age < 0) {
                 alpha = 0.0f;
             } else if (age < 8) {
-                alpha = (f32)age / 32.0f;
+                alpha = (f32)age / 8.0f;
             } else if (age < 30) {
                 alpha = 1.0f;
             } else {
@@ -417,8 +494,8 @@ void func_0023f540(void)
                 age -= 8;
                 if (age < 6) {
                     vertical = 50.0f * (1.0f - (f32)age / 6.0f);
-                    x = -vertical * sinf(D_007CB0D4);
-                    y = vertical * cosf(D_007CB0D4);
+                    x = -vertical * cosf(D_007CB0D4);
+                    y = vertical * sinf(D_007CB0D4);
                 } else {
                     x = 0.0f;
                     y = 0.0f;
@@ -491,8 +568,33 @@ void func_0023f540(void)
                     vertical = 0.0f;
                     alpha = 0.0f;
                 }
+                digitOffset = 0.0f;
+                if ((BI_U32(slot, 0) & 0x20) != 0) {
+                    if (BI_U32(slot, 0xf44) == BI_U32(slot, 0xf40) - 1) {
+                        digitOffset = 0.0f;
+                    } else if (age < 7) {
+                        digitOffset = 0.0f;
+                    } else if (age < 0xd) {
+                        digitOffset = -28.0f * (f32)(age - 7) / 6.0f;
+                    } else if (BI_U32(slot, 0xf40) - BI_U32(slot, 0xf44) >=
+                               3) {
+                        if (age < 0xe) {
+                            digitOffset = -28.0f;
+                        } else if (age < 0x14) {
+                            digitOffset = -28.0f *
+                                           (f32)(age - 0xe) / 6.0f -
+                                           28.0f;
+                        } else {
+                            digitOffset = -56.0f;
+                        }
+                    } else {
+                        digitOffset = -28.0f;
+                    }
+                } else if ((BI_U32(slot, 0) & BI_SLOT_NUMERIC_1) != 0) {
+                    digitOffset = -28.0f;
+                }
                 layout[0] = x + 28.0f * (f32)j;
-                layout[1] = y + vertical;
+                layout[1] = y + vertical + digitOffset;
                 layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
                 layout[3] = (f32)*(s32*)((u8*)frame + 0x10);
                 func_0021d8e0(slot + 0x320 + j * 0x100, layout);
@@ -510,7 +612,7 @@ void func_0023f540(void)
             }
             for (; j < 5; j++) {
                 layout[0] = x;
-                layout[1] = y + vertical;
+                layout[1] = y;
                 layout[2] = 0.0f;
                 layout[3] = 0.0f;
                 func_0021d8e0(slot + 0x320 + j * 0x100, layout);
@@ -559,9 +661,8 @@ void func_0023f540(void)
             }
             for (; j < 5; j++) {
                 layout[0] = x;
-                layout[1] = y + vertical;
+                layout[1] = y;
                 layout[2] = 0.0f;
-                layout[3] = 0.0f;
                 func_0021d8e0(slot + 0x830 + j * 0x100, layout);
             }
         }
@@ -601,14 +702,14 @@ void func_0023f540(void)
 // FUN_00241910 NONMATCHING
 void func_00241910(void)
 {
-    s32 i;
     u8* work;
-    u8* slot;
-    void* frame;
     void* renderContext;
     void (**stateSet)(u32, u32);
+    void* frame;
     u32 flags;
     u32 mode;
+    s32 i;
+    u8* slot;
 
     K_ASSERT(sBiMain != NULL, 0x8a);
     work = sBiMain;
