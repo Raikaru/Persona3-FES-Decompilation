@@ -459,7 +459,8 @@ void FUN_002230e0(void)
 void FUN_00223290(void)
 {
     u8 alphaByte;
-    void* handle;
+    s32 alphaInt;
+    u32 handle;
     u32 table0;
     u8* base;
     u8* records;
@@ -468,7 +469,7 @@ void FUN_00223290(void)
     u8* pos;
     void* frame;
     f32 layout[4];
-    u8 colour[4];
+    u8 colour[36];
     u32 dispatch;
     u32 secondaryDispatch;
     u32 selIndex;
@@ -494,11 +495,17 @@ void FUN_00223290(void)
     goto alpha_assert;
 alpha_case3:
     secondaryDispatch = *(u32*)(base + 0x4644);
-    if (secondaryDispatch == 2) goto alpha_ratio;
-    if (secondaryDispatch == 1) goto alpha_ratio;
-    if (secondaryDispatch == 0) goto alpha_check_state;
-    goto alpha_done;
-alpha_check_state:
+    switch (secondaryDispatch) {
+    case 0:
+        goto alpha_secondary0;
+    case 1:
+        goto alpha_ratio;
+    case 2:
+        goto alpha_ratio;
+    default:
+        goto alpha_done;
+    }
+alpha_secondary0:
     if (*(u32*)(base + 0x4648) == 1) goto alpha_check_timer;
     if (*(u32*)(base + 0x4648) == 2) goto alpha_check_timer;
     goto alpha_frac;
@@ -519,11 +526,12 @@ alpha_assert:
     K_ASSERT(0, 0x6e5);
 alpha_done:
     ;
-    alphaByte = (u8)(u32)(255.0f * alpha1 * weight);
+    alphaInt = (s32)(255.0f * alpha1 * weight);
+    alphaByte = (u8)alphaInt;
     pos = base + 0x6050;
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
-    layout[0] = 47.0f + *(f32*)(pos + 0);
+    layout[0] = *(f32*)(pos + 0) + 47.0f;
     layout[1] = 19.0f + *(f32*)(pos + 4) +
                 (f32)((*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c)) * 26);
     layout[2] = (f32)*(s32*)((u8*)frame + 0xc);
@@ -531,7 +539,8 @@ alpha_done:
     FUN_0021d8e0(base + 0x4230, layout);
 
     frame = (void*)FUN_0021cca0(table0, 0x24);
-    layout[0] = 47.0f + *(f32*)(pos + 0) + (f32)*(s32*)((u8*)frame + 0xc);
+    layout[0] = *(f32*)(pos + 0) + 47.0f +
+                (f32)*(s32*)((u8*)frame + 0xc);
     layout[1] = 19.0f + *(f32*)(pos + 4) +
                 (f32)((*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c)) * 26);
     layout[2] = 312.0f;
@@ -572,7 +581,7 @@ alpha_done:
         if (kind == 0) goto sel_kind02;
         goto sel_join;
     sel_kind1:
-        handle = *(void**)(selRecord + 8);
+        handle = (u32)*(void**)(selRecord + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         *(f32*)(records + 0x18d0) = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
@@ -604,11 +613,11 @@ alpha_done:
     }
 
     colourA = (alphaByte & 0xff) | 0xffffff00u;
-    colourB = (alphaByte & 0xff) | 0xffbeffd2u;
+    colourB = (alphaByte & 0xff) | 0xbeffd200u;
+    colourC = (alphaByte & 0xff) | 0xcccccc00u;
+    colourD = (alphaByte & 0xff) | 0x64cc6400u;
     scaledAlphaColour = ((alphaByte & 0xff) << 7) / 0xff;
     scaledAlphaColour = 0xffffff00u | scaledAlphaColour;
-    colourC = (alphaByte & 0xff) | 0xffcccccc00u;
-    colourD = (alphaByte & 0xff) | 0xff64cc6400u;
     for (i = 0; i < *(u32*)(base + 0x6070); i++) {
         u8* record = records + i * 0x420;
         kind = *(u32*)record;
@@ -617,7 +626,7 @@ alpha_done:
         if (kind == 0) goto loop_kind02;
         goto loop_next;
     loop_kind02:
-        handle = *(void**)(record + 8);
+        handle = (u32)*(void**)(record + 8);
         layout[0] = 51.0f + *(f32*)(pos + 0);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
         if (i == (u32)(*(s32*)(base + 0x6068) - *(s32*)(base + 0x606c))) {
@@ -641,7 +650,7 @@ alpha_done:
         y = (s32)layout[1] << 3;
         FUN_003b0d70((u32)handle, x, y);
         FUN_003b0e20((u32)handle, selColour);
-        handle = *(void**)(record + 0xc);
+        handle = (u32)*(void**)(record + 0xc);
         layout[0] = 182.0f + *(f32*)(pos + 0);
         layout[1] = 19.0f + *(f32*)(pos + 4) + (f32)(i * 26);
         x = (s32)layout[0] << 4;
@@ -661,7 +670,7 @@ alpha_done:
         FUN_0021d950(record + 0x10, colour);
         goto loop_next;
     loop_kind1:
-        handle = *(void**)(record + 8);
+        handle = (u32)*(void**)(record + 8);
         halfWidth = FUN_003b19d0((u32)handle);
         halfWidth = (halfWidth >= 0) ? (halfWidth >> 1) : ((halfWidth + 1) >> 1);
         layout[0] = 112.0f + *(f32*)(pos + 0) + 70.5f - (f32)halfWidth;
