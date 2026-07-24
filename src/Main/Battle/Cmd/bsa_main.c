@@ -125,6 +125,7 @@ void bsaMain0020fe20(BsaWork* work)
 }
 
 #pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_0020FE30 NONMATCHING
 void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
 {
@@ -162,12 +163,11 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     if (enemyId == 0x126)
         p[1] |= BSA_FLAG_BOSS;
 
-    func_0017b1e0(*(u16*)((u8*)*(u32*)((u8*)unit + 0xa2c) + 2));
+    func_0017b1e0(enemyId);
     func_003b0e70(1);
     func_003b0e90(2);
-    image = func_003b0970(
-        DAT_007ce4e8 + *(u16*)((u8*)p + 0xc) * 0x12 +
-        *(u16*)((u8*)p + 0xc), 2, 6, 0, 0);
+    image = func_003b0970(DAT_007ce4e8 + enemyId * 0x3e,
+                          2, 6, 0, 0);
     func_003b0e90(1);
     func_003b0e70(2);
     func_003b0e20(image, 0xffffffff);
@@ -175,22 +175,15 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_003b2c60(image, 0.0f);
     p[4] = image;
 
-    flags = *(u16*)(DAT_007ce410 +
-                     *(u16*)((u8*)p + 0xc) * 0x12 +
-                     *(u16*)((u8*)p + 0xc) + 0x1e);
+    flags = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 0x1e);
     if ((flags & 2) != 0) p[1] |= BSA_FLAG_TOP_LABEL;
     if ((flags & 0x40) != 0) p[1] |= BSA_FLAG_RESOURCE;
     if ((flags & 8) != 0) p[1] |= BSA_FLAG_STATUS;
     if ((flags & 0x10) != 0) p[1] |= BSA_FLAG_PERSONA;
     if ((flags & 0x20) != 0) p[1] |= BSA_FLAG_AILMENT;
-    p[0x1310] = DAT_007ce410[
-        *(u16*)((u8*)p + 0xc) * 0x12 + *(u16*)((u8*)p + 0xc) + 3];
-    p[0x1394] = *(u16*)(DAT_007ce410 +
-                         *(u16*)((u8*)p + 0xc) * 0x12 +
-                         *(u16*)((u8*)p + 0xc) + 4);
-    p[0x1498] = *(u16*)(DAT_007ce410 +
-                         *(u16*)((u8*)p + 0xc) * 0x12 +
-                         *(u16*)((u8*)p + 0xc) + 6);
+    p[0x1310] = DAT_007ce410[enemyId * 0x3e + 3];
+    p[0x1394] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 4);
+    p[0x1498] = *(u16*)(DAT_007ce410 + enemyId * 0x3e + 6);
     for (i = 0; i < 9; i++) {
         switch (i) {
         case 0: slotId = 0; break;
@@ -232,7 +225,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     func_0021d3b0(p + 0x50, p[0x50]);
     p[0x90] = func_0021cca0(table2, 0x30);
     func_0021d3b0(p + 0x90, p[0x90]);
-    p[0xd0] = func_0021cca0(table2, 0x48);
+    p[0xd0] = func_0021cca0(table1, 0x48);
     func_0021d3b0(p + 0xd0, p[0xd0]);
     p[0x110] = func_0021cca0(table2, 0x30);
     func_0021d3b0(p + 0x110, p[0x110]);
@@ -276,8 +269,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         func_0021d3b0(p + i * 0x40 + 0x1050, image);
     }
     p[0x590] = bsaMain00215830(
-        DAT_007ce410[*(u16*)((u8*)p + 0xc) * 0x12 +
-                     *(u16*)((u8*)p + 0xc) + 2]);
+        DAT_007ce410[enemyId * 0x3e + 2]);
     func_0021d3b0(p + 0x590, p[0x590]);
     p[0x5d0] = func_0021cca0(table2, 0x2f);
     func_0021d3b0(p + 0x5d0, p[0x5d0]);
@@ -370,6 +362,7 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     }
     func_0010a4e0(1, 0, 2, 0x15);
 }
+#pragma optimization_level 2
 #undef p
 
 #pragma optimization_level 2
@@ -418,6 +411,7 @@ static inline void bsaTransition(s32* p, f32* alpha, f32* slide, f32* iconAlpha)
     }
 }
 
+#pragma optimization_level 3
 // FUN_00210D90 NONMATCHING
 void bsaMain00210d90(BsaWork* work)
 {
@@ -723,18 +717,19 @@ void bsaMain00210d90(BsaWork* work)
         }
     }
 }
+#pragma optimization_level 2
 
 // FUN_00213E80 NONMATCHING
 void bsaMain00213e80(BsaWork* work)
 {
-    void (**renderState)(u32, u32);
-    void (**renderQuad)(u32*, u32, u32, u32, u32);
+    u32* p;
     u32 table6;
     u32 table1;
     u32 table2;
+    void (**renderState)(u32, u32);
+    void (**renderQuad)(u32*, u32, u32, u32, u32);
     s32 i;
     u32 image;
-    u32* p;
     p = work->words;
     table6 = func_0021c3f0(6);
     table1 = func_0021c3f0(1);
