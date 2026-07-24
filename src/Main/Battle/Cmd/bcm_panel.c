@@ -60,7 +60,8 @@ extern u8 D_0068E4B0[];
 extern u8 D_0068E4D8[];
 extern f32 D_007CB0D4;
 extern f32 sinf(f32 angle);
-extern f32 cosf(f32 angle);
+extern f32 D_0068E4F0[];
+void FUN_0021e170(u8*, const f32*, const f32*, const f32*);
 void FUN_0022f1c0(u32*, u64);
 void FUN_0022f3b0(u32*);
 void FUN_0022fa80(u32*);
@@ -4574,8 +4575,96 @@ void FUN_0022fa80(u32* object)
         *(u32*)(bytes + 0x1360) = *(u32*)(bytes + 0x1360) + 1;
         break;
     case 7:
+    {
+        u32 i;
+        u8 colour[4];
+        u8* base = bytes + 0x1060;
+        f32 pos_x;
+        f32 pos_y;
+
         *(u32*)(bytes + 0x147c) = *(u32*)(bytes + 0x147c) + 1;
+        // First loop: counter management and random resource assignment
+        for (i = 0; i < 4; i++) {
+            u32* slot = (u32*)(base + i * 4);
+            u32 cnt = slot[0x100] + 1;
+            slot[0x100] = cnt;
+            if (cnt >= 40) {
+                u8* record = base + i;
+                record[0x410] = RpRandom() & 1;
+                record[0x414] = (u8)RpRandom();
+                record[0x418] = RpRandom() & 1;
+                if (record[0x410] == 0) {
+                    u32 res = FUN_0021cca0(table, 0x0f);
+                    FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)res);
+                } else if (record[0x410] == 1) {
+                    u32 res = FUN_0021cca0(table, 0x10);
+                    FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)res);
+                }
+                slot[0x100] = cnt % 40;
+            }
+        }
+        // Second loop: colour write with alpha computation
+        colour[0] = 0xFF;
+        colour[1] = 0xFF;
+        colour[2] = 0xFF;
+        colour[3] = 0xFF;
+        for (i = 0; i < 4; i++) {
+            f32 val = (f32)((u32*)(base + i * 4))[0x100];
+            f32 alpha;
+            u32 alpha_bits;
+
+            alpha = val / 40.0f;
+            if (alpha <= 0.0f) {
+                alpha = 0.0f;
+            } else if (alpha <= 0.6f) {
+                alpha = alpha / 0.6f;
+            } else if (alpha <= 0.7f) {
+                alpha = 1.0f;
+            } else {
+                alpha = (1.0f - alpha) / (1.0f - 0.7f);
+            }
+            colour[3] = (u8)(s32)(alpha * 255.0f);
+            FUN_0021d950(base + i * 256, colour);
+        }
+        // Third loop: corner rotation and draw
+        pos_x = 66.0f + offset_x;
+        pos_y = 11.0f + offset_y;
+        for (i = 0; i < 4; i++) {
+            f32 rect0[4], rect1[4], rect2[4];
+            f32 angle;
+            f32 s, c;
+            f32 x0, y0, x1, y1, x2, y2, x3, y3;
+            f32 t;
+
+            t = (f32)((u32*)(base + i * 4))[0x100];
+            t = (t + 1.0f) / 40.0f;
+            angle = (1.0f - t) * 3.14159f;
+            s = sinf(angle);
+            c = cosf(angle);
+            x0 = D_0068E4F0[i * 4 + 0];
+            y0 = D_0068E4F0[i * 4 + 1];
+            x1 = D_0068E4F0[i * 4 + 2];
+            y1 = D_0068E4F0[i * 4 + 3];
+            x2 = D_0068E4F0[i * 4 + 2];
+            y2 = D_0068E4F0[i * 4 + 3];
+            x3 = D_0068E4F0[i * 4 + 0];
+            y3 = D_0068E4F0[i * 4 + 1];
+            rect0[0] = pos_x + x0 * c - y0 * s;
+            rect0[1] = pos_y + x0 * s + y0 * c;
+            rect0[2] = pos_x + x1 * c - y1 * s;
+            rect0[3] = pos_y + x1 * s + y1 * c;
+            rect1[0] = pos_x + x2 * c - y2 * s;
+            rect1[1] = pos_y + x2 * s + y2 * c;
+            rect1[2] = pos_x + x3 * c - y3 * s;
+            rect1[3] = pos_y + x3 * s + y3 * c;
+            rect2[0] = 255.0f * D_0068E4F0[i * 4 + 2];
+            rect2[1] = 255.0f * D_0068E4F0[i * 4 + 3];
+            rect2[2] = 255.0f * D_0068E4F0[i * 4 + 0];
+            rect2[3] = 255.0f * D_0068E4F0[i * 4 + 1];
+            FUN_0021e170(base + i * 256, rect0, rect1, rect2);
+        }
         break;
+    }
     case 8:
     {
         u32 resource;
