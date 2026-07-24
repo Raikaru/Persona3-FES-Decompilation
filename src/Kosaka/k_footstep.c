@@ -191,7 +191,7 @@ static s32 K_Footstep_Surface(Model* mdl, RwV3d* position)
 }
 
 // Recovered the scene-hit material fallback path and signed 16-bit sound-call arguments.
-// Corrected model-id 6 to use the direct selector and preserved the retail animation windows.
+// Recovered the model-id 4 fallback and the model-id 6 legacy selector paths.
 // The remaining case dispatch/code layout still differs from retail.
 // FUN_001da020 NONMATCHING
 void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
@@ -267,7 +267,7 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
         {
             if (mdlType == 9)
             {
-                if ((mdlId & 0xff) >= 9)
+                if ((u32)(mdlId & 0xff) >= 9)
                 {
                     return;
                 }
@@ -279,9 +279,15 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                     {
                         K_Footstep_Play(resTypeId, material, 1);
                     }
+                    else
+                    {
+                        K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                              8.0f, 9.0f, 18.0f, 19.0f, 0,
+                                              resTypeId, material, 1);
+                    }
                      return;
                 case 6:
-                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001de630,
+                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
                                           9.0f, 10.0f, 19.0f, 20.0f, 0,
                                           resTypeId, material, 1);
                      return;
