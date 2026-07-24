@@ -29,6 +29,27 @@ void opTitle00269500(void);
 
 
 static u32* sOpTitle; // DAT_007ce3ac / puGpffffb6bc
+static inline void opTitleSetPoly(void* destination, f32* layout, f32 scaleX, f32 scaleY)
+{
+    s32 i;
+
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] -= 320.0f;
+        layout[i * 2 + 1] -= 224.0f;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] *= scaleX;
+        layout[i * 2 + 1] *= scaleY;
+    }
+    for (i = 0; i < 4; i++)
+    {
+        layout[i * 2] += 320.0f;
+        layout[i * 2 + 1] += 224.0f;
+    }
+    func_0021d890(destination, layout);
+}
 
 // FUN_002673a0
 void opTitle002673a0(u32* param_1)
@@ -61,8 +82,8 @@ void opTitle00267430(void)
     void* frame;
     f32 layout[11];
     u8 color[4];
-    f32 alpha;
     f32 scale;
+    f32 alpha;
     f32 offsetX;
     f32 offsetY;
     f32 scaleX;
@@ -531,22 +552,7 @@ void opTitle00267430(void)
             layout[5] = 448.0f;
             layout[6] = 0.0f;
             layout[7] = 448.0f;
-            for (i = 0; i < 4; i++)
-            {
-                layout[i * 2] -= 320.0f;
-                layout[i * 2 + 1] -= 224.0f;
-            }
-            for (i = 0; i < 4; i++)
-            {
-                layout[i * 2] *= scaleX;
-                layout[i * 2 + 1] *= scaleY;
-            }
-            for (i = 0; i < 4; i++)
-            {
-                layout[i * 2] += 320.0f;
-                layout[i * 2 + 1] += 224.0f;
-            }
-            func_0021d890(work + 0x84, layout);
+            opTitleSetPoly(work + 0x84, layout, scaleX, scaleY);
         }
         else
         {
@@ -658,22 +664,7 @@ void opTitle00267430(void)
                         layout[5] = offsetY + 40.0f;
                         layout[6] = offsetX;
                         layout[7] = offsetY + 40.0f;
-                        for (j = 0; j < 4; j++)
-                        {
-                            layout[j * 2] -= 320.0f;
-                            layout[j * 2 + 1] -= 224.0f;
-                        }
-                        for (j = 0; j < 4; j++)
-                        {
-                            layout[j * 2] *= scaleX;
-                            layout[j * 2 + 1] *= scaleY;
-                        }
-                        for (j = 0; j < 4; j++)
-                        {
-                            layout[j * 2] += 320.0f;
-                            layout[j * 2 + 1] += 224.0f;
-                        }
-                        func_0021d890(slot + 4, layout);
+                        opTitleSetPoly(slot + 4, layout, scaleX, scaleY);
                     }
                     else
                     {
