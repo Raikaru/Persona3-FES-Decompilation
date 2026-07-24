@@ -439,10 +439,11 @@ void func_001f0ab0(KwlnTask *task)
 // FUN_001f0ad0 NONMATCHING
 void func_001f0ad0(KwlnTask *task, const u8 *params)
 {
-    u8 *work = BR_TASK_WORK(task);
+    u8 *work;
     s32 i;
     s32 j;
 
+    work = BR_TASK_WORK(task);
     if ((BR_U32(params, 0) & 1) != 0) {
         BR_U32(work, 0) |= 2;
     }
@@ -458,11 +459,12 @@ void func_001f0ad0(KwlnTask *task, const u8 *params)
     printf((const char *)0x006845d0, BR_U32(work, 0x11c));
     BR_U32(work, 0x114) = 0;
     for (j = 0; j < (s32)BR_U32(params, 0x2c); j++) {
-        u16 id = BR_U16(params, 0x24 + j * 2);
-        if (id != 1) {
-            BR_U16(work, 0x10c + BR_U32(work, 0x114) * 2) = id;
-            BR_U32(work, 0x114) = BR_U32(work, 0x114) + 1;
+        u16 id = BR_U16(params + j * 2, 0x24);
+        if (id == 1) {
+            continue;
         }
+        BR_U16(work, 0x10c + BR_U32(work, 0x114) * 2) = id;
+        BR_U32(work, 0x114) = BR_U32(work, 0x114) + 1;
     }
     BR_U32(work, 0x2a58) = BR_U32(params, 0x3c);
     BR_U32(work, 0x12c) = BR_U32(params, 0x34);
