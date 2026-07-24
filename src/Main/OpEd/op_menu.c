@@ -235,22 +235,22 @@ void opMenu0026dbd0(void)
 // FUN_0026A2C0 NONMATCHING
 void opMenu0026a2c0(void)
 {
-    u32* work;
+    s32* work;
     void* sprite;
     void* frame;
     f32 alpha;
-    f32 fade;
+    s32 fade;
     f32 angle;
     f32 pulse;
     f32 scale;
     f32 rect[6];
-    f32* p;
     s32 i;
     s32 count;
     u32 base;
+    f32* p;
 
     K_ASSERT(sOpMenu != NULL, 0x87);
-    work = sOpMenu;
+    work = (s32*)sOpMenu;
     sprite = opResGetTitleSprite(0);
     if ((work[0] & 1) == 0)
         return;
@@ -290,8 +290,8 @@ void opMenu0026a2c0(void)
     if (count == 4 && *(s32*)((u8*)work + 0x1740) < 8)
         work[0x1740 / 4] = work[0x1740 / 4] + 1;
 
-    fade = (f32)*(s32*)((u8*)work + 0x91c);
-    alpha = opMenuClamp01((s32)fade, 0, 0x46);
+    fade = *(s32*)((u8*)work + 0x91c);
+    alpha = opMenuClamp01(fade, 0, 0x46);
     opMenuSetRect(0x10, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x10, alpha * 255.0f);
 
@@ -331,7 +331,7 @@ void opMenu0026a2c0(void)
     opMenuColor((u8*)work + 0x310, 255.0f);
     opMenuColor((u8*)work + 0x410, 255.0f);
 
-    alpha = opMenuClamp01((s32)fade, 0, 0x46);
+    alpha = opMenuClamp01(fade, 0, 0x46);
     angle = fGpffff8248 *
             (fGpffff82fc + (f32)*(s32*)((u8*)work + 0xae4) / 150.0f) * 2.0f;
     pulse = fGpffff8248 * ((func_0052e878(angle) * 25.0f) / 360.0f) * 2.0f;
@@ -342,21 +342,21 @@ void opMenu0026a2c0(void)
     opMenuColor((u8*)work + 0x510, alpha * 255.0f);
     opMenuColor((u8*)work + 0x610, alpha * 255.0f * 0.6f);
 
-    alpha = opMenuClamp01((s32)fade, 0x14, 0x32);
+    alpha = opMenuClamp01(fade, 0x14, 0x32);
     opMenuSetRect(0x710, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x710, alpha * 204.0f);
-    alpha = opMenuClamp01((s32)fade, 0x0a, 0x50);
+    alpha = opMenuClamp01(fade, 0x0a, 0x50);
     opMenuSetRect(0x810, 0.0f, 0.0f, 640.0f, 448.0f);
     opMenuColor((u8*)work + 0x810, alpha * 255.0f);
 
-    pulse = fade < 20.0f ? 750.0f :
-            fade < 40.0f ? (1.0f - (fade - 20.0f) / 20.0f) * 750.0f :
+    pulse = fade < 20 ? 750.0f :
+            fade < 40 ? (1.0f - (f32)(fade - 20) / 20.0f) * 750.0f :
             0.0f;
     frame = func_0021cca0(sprite, 0x15);
     opMenuSetIcon(0x920, frame, pulse, 95.0f);
     opMenuColor((u8*)work + 0x920, 255.0f);
 
-    alpha = opMenuClamp01((s32)fade, 0x14, 0x28);
+    alpha = opMenuClamp01(fade, 0x14, 0x28);
     if (count == 2)
     {
         u8* slot;
