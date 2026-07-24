@@ -137,7 +137,7 @@ void FUN_00154970(register CampMenuDrawItem* item,
 {
     s32 i;
     u32 color;
-    register u32 parent;
+    u32 parent = campDrawAlpha(item);
 
     switch (mode) {
     case 0:
