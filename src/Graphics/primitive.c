@@ -350,7 +350,6 @@ void primCircleLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, cons
 }
 
 #pragma optimization_level 1
-#pragma opt_loop_invariants on
 // FUN_00359b40 NONMATCHING
 void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 saveAndRestoreRenderState)
 {
@@ -436,7 +435,6 @@ void primSphereLine3D(const RwV3d* center, f32 radius, const RwRGBA* color, u32 
         }
     }
 }
-#pragma opt_loop_invariants off
 #pragma optimization_level 2
 
 // FUN_00359e50 NONMATCHING
@@ -558,7 +556,7 @@ typedef struct
 } PrimInterpData;
 
 typedef void (*PrimFuncB)(void*, void*, void*, f32);
-typedef void (*PrimFuncA)(u64, int);
+typedef void (*PrimFuncA)(int, int);
 typedef u32 (*PrimFuncC)(int, u64);
 typedef u64 (*PrimFuncD)(u64, u64);
 typedef void (*PrimFuncE)(void*, void*);
@@ -589,7 +587,7 @@ extern u8 gp0xffff9d68;
 extern void LAB_0035aa10(void);
 extern void LAB_0035a850(void);
 extern void FUN_004c33d0(u8* out, int src, int mode);
-extern void FUN_004c2f30(u64 dst, u8* a, float* b);
+extern void FUN_004c2f30(int dst, u8* a, float* b);
 extern long FUN_004c1750(u64 stream, void* buf, int size);
 extern long FUN_004c17f0(u64 stream, void* buf, int size);
 extern long FUN_004c18b0(u64 stream, void* buf, int size);
@@ -598,7 +596,7 @@ extern long FUN_004b6680(void* desc);
 extern void FUN_005225a8(u8* fmt, ...);
 extern f32 FUN_0052e878(f32 angle);
 extern f32 FUN_0052e9e8(f32 param_1);
-void FUN_0035a290(u64 param_1, int param_2);
+void FUN_0035a290(int param_1, int param_2);
 void FUN_0035a3f0(void* param_2, void* param_3, void* param_4, f32 param_1);
 void FUN_0035a620(void* param_2, void* param_3, void* param_4, f32 param_1);
 u32 FUN_0035a6a0(int param_1,u64 param_2);
@@ -626,7 +624,7 @@ typedef struct
 // FUN_0035A290 NONMATCHING
 
 
-void FUN_0035a290(u64 param_1, int param_2)
+void FUN_0035a290(int param_1, int param_2)
 {
     u8 buffer[64];
     PrimMatrixData matrix;
@@ -643,6 +641,9 @@ void FUN_0035a290(u64 param_1, int param_2)
     f32 y;
     f32 z;
     f32 w;
+    f32 value30;
+    f32 value34;
+    f32 value38;
 
     x = *(f32*)(param_2 + 8);
     y = *(f32*)(param_2 + 0xc);
@@ -676,9 +677,12 @@ void FUN_0035a290(u64 param_1, int param_2)
     FUN_004c33d0(buffer, param_2 + 0x24, 0);
     FUN_004c2f30(param_1, buffer, (f32*)&matrix);
 
-    *(f32*)((int)param_1 + 0x30) = *(f32*)(param_2 + 0x18);
-    *(f32*)((int)param_1 + 0x34) = *(f32*)(param_2 + 0x1c);
-    *(f32*)((int)param_1 + 0x38) = *(f32*)(param_2 + 0x20);
+    value30 = *(volatile f32*)(param_2 + 0x18);
+    value34 = *(volatile f32*)(param_2 + 0x1c);
+    value38 = *(volatile f32*)(param_2 + 0x20);
+    *(f32*)((int)param_1 + 0x30) = value30;
+    *(f32*)((int)param_1 + 0x34) = value34;
+    *(f32*)((int)param_1 + 0x38) = value38;
     *(u32*)((int)param_1 + 0xc) = *(u32*)((int)param_1 + 0xc) & 0xfffdffff;
 }
 
