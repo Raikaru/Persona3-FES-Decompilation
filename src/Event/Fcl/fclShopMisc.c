@@ -94,9 +94,7 @@ extern u32 fclCombineList003df100();
 #define FCL_SHOP_MISC_BUILD(SRC, OUT, OWNER, ID, VALUE, FIELD) do { \
     u32 *copy_src = D_006AF3E0; \
     u32 *copy_dst = (u32 *)(SRC); \
-    volatile FclShopDispatchResult *dst = \
-        (volatile FclShopDispatchResult *)(SRC); \
-    int copy_count = 0x3f; \
+    int copy_count = 0x62; \
     u32 copy_value0; \
     u32 copy_value1; \
     do { \
@@ -107,31 +105,41 @@ extern u32 fclCombineList003df100();
         copy_dst += 2; \
         copy_count--; \
     } while (copy_count > 0); \
-    dst[0].value = (VALUE); dst[0].field18 = (FIELD); \
-    dst[1].value = (VALUE); dst[1].field18 = (FIELD); \
-    dst[2].value = (VALUE); dst[2].field18 = (FIELD); \
-    dst[3].value = (VALUE); dst[3].field18 = (FIELD); \
-    dst[4].value = (VALUE); dst[4].field18 = (FIELD); \
-    dst[5].value = (VALUE); dst[5].field18 = (FIELD); \
-    dst[6].value = (VALUE); dst[6].field18 = (FIELD); \
-    dst[7].value = (VALUE); dst[7].field18 = (FIELD); \
-    dst[8].value = (VALUE); dst[8].field18 = (FIELD); \
-    dst[9].value = (VALUE); dst[9].field18 = (FIELD); \
-    dst[10].value = (VALUE); dst[10].field18 = (FIELD); \
-    dst[11].value = (VALUE); dst[11].field18 = (FIELD); \
-    dst[12].value = (VALUE); dst[12].field18 = (FIELD); \
-    dst[13].value = (VALUE); dst[13].field18 = (FIELD); \
-    dst[14].value = (VALUE); dst[14].field18 = (FIELD); \
-    dst[15].value = (VALUE); dst[15].field18 = (FIELD); \
-    dst[16].value = (VALUE); dst[16].field18 = (FIELD); \
-    dst[17].value = (VALUE); dst[17].field18 = (FIELD); \
+    (SRC)[0].value = (VALUE); (SRC)[0].field18 = (FIELD); \
+    (SRC)[1].value = (VALUE); (SRC)[1].field18 = (FIELD); \
+    (SRC)[2].value = (VALUE); (SRC)[2].field18 = (FIELD); \
+    (SRC)[3].value = (VALUE); (SRC)[3].field18 = (FIELD); \
+    (SRC)[4].value = (VALUE); (SRC)[4].field18 = (FIELD); \
+    (SRC)[5].value = (VALUE); (SRC)[5].field18 = (FIELD); \
+    (SRC)[6].value = (VALUE); (SRC)[6].field18 = (FIELD); \
+    (SRC)[7].value = (VALUE); (SRC)[7].field18 = (FIELD); \
+    (SRC)[8].value = (VALUE); (SRC)[8].field18 = (FIELD); \
+    (SRC)[9].value = (VALUE); (SRC)[9].field18 = (FIELD); \
+    (SRC)[10].value = (VALUE); (SRC)[10].field18 = (FIELD); \
+    (SRC)[11].value = (VALUE); (SRC)[11].field18 = (FIELD); \
+    (SRC)[12].value = (VALUE); (SRC)[12].field18 = (FIELD); \
+    (SRC)[13].value = (VALUE); (SRC)[13].field18 = (FIELD); \
+    (SRC)[14].value = (VALUE); (SRC)[14].field18 = (FIELD); \
+    (SRC)[15].value = (VALUE); (SRC)[15].field18 = (FIELD); \
+    (SRC)[16].value = (VALUE); (SRC)[16].field18 = (FIELD); \
+    (SRC)[17].value = (VALUE); (SRC)[17].field18 = (FIELD); \
+    (SRC)[18].value = (VALUE); (SRC)[18].field18 = (FIELD); \
+    (SRC)[19].value = (VALUE); (SRC)[19].field18 = (FIELD); \
+    (SRC)[20].value = (VALUE); (SRC)[20].field18 = (FIELD); \
+    (SRC)[21].value = (VALUE); (SRC)[21].field18 = (FIELD); \
+    (SRC)[22].value = (VALUE); (SRC)[22].field18 = (FIELD); \
+    (SRC)[23].value = (VALUE); (SRC)[23].field18 = (FIELD); \
+    (SRC)[24].value = (VALUE); (SRC)[24].field18 = (FIELD); \
+    (SRC)[25].value = (VALUE); (SRC)[25].field18 = (FIELD); \
+    (SRC)[26].value = (VALUE); (SRC)[26].field18 = (FIELD); \
+    (SRC)[27].value = (VALUE); (SRC)[27].field18 = (FIELD); \
     memcpy((OUT), (SRC), 0x1c); \
     fclCombineList003df100( \
         FUN_003dffc0((OWNER), (ID), \
             *((volatile u32 *)((u8 *)(OUT) + 4))), (OUT)); \
 } while (0)
-
-/* auto-extern (generated) */
+#define FCL_SHOP_MISC_AT(OFFSET) \
+    ((volatile FclShopDispatchResult *)((u8 *)source + (OFFSET)))
 u32 datSocialLinkLevelIsNotZero(s16 socialLink);
 u64 FUN_00172660(s32 socialLink);
 extern u8 DAT_006aede8[];
@@ -19087,26 +19095,26 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
   volatile u8 pre[0x2f0];
   int anchor;
   int node;
-  u32 owner;
   u32 tmp;
+  u32 owner;
 
   anchor = *(int *)(*(int *)(param_1 + 0x24) + 0x44);
-  tmp = *(u32 *)(anchor + 0x20);
   owner = *(u32 *)(anchor + 0x1c);
+  tmp = *(u32 *)(anchor + 0x20);
 
   switch (param_2) {
   case 0xe:
     if (param_3 == 0) {
-      FCL_SHOP_MISC_BUILD(source[0], &output[0], owner, 0, 0, 5);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x55e0), &output[29], owner, 0, 0, 5);
       if (*(int *)(anchor + 4) == -8) {
         owner = *(u32 *)(anchor + 0x1c);
-        FCL_SHOP_MISC_BUILD(source[1], &output[1], owner, 1, 1, 10);
+        FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x52d0), &output[28], owner, 1, 1, 10);
       }
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(source[2], &output[2], owner, 0, 0, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4fc0), &output[27], owner, 0, 0, 0);
       if (*(int *)(anchor + 4) == -8) {
         owner = *(u32 *)(anchor + 0x1c);
-        FCL_SHOP_MISC_BUILD(source[3], &output[3], owner, 1, 1, 0);
+        FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4cb0), &output[26], owner, 1, 1, 0);
       }
     }
     break;
@@ -19115,12 +19123,12 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
     if (param_3 == 0) {
       for (node = *(int *)(param_1 + 4); node != 0; node = *(int *)(node + 0x10)) {
         owner = *(u32 *)(*(int *)(*(int *)(node + 0x14) + 0x1c) + 0xc);
-        FCL_SHOP_MISC_BUILD(source[4], &output[4], owner, 2, 2, 0);
+        FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x49a0), &output[25], owner, 2, 2, 0);
       }
     } else if ((param_3 == 1) && (*(int *)(param_1 + 0xc) != 0)) {
       node = *(int *)(param_1 + 0xc);
       owner = *(u32 *)(*(int *)(*(int *)(node + 0x14) + 0x1c) + 0xc);
-      FCL_SHOP_MISC_BUILD(source[5], &output[5], owner, 2, 2, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4690), &output[24], owner, 2, 2, 0);
     }
     break;
 
@@ -19129,58 +19137,58 @@ void FUN_004072d0(int param_1, long param_2, long param_3)
       tmp = FUN_003e0940();
       tmp = FUN_003c5460(tmp);
       FUN_003e0c20(tmp, 2, 0);
-      FCL_SHOP_MISC_BUILD(source[6], &output[6], owner, 8, 8, 0);
-      FCL_SHOP_MISC_BUILD(source[7], &output[7], owner, 4, 4, 5);
-      FCL_SHOP_MISC_BUILD(source[8], &output[8], owner, 5, 5, 5);
-      FCL_SHOP_MISC_BUILD(source[9], &output[9], owner, 6, 6, 0);
-      FCL_SHOP_MISC_BUILD(source[10], &output[10], owner, 7, 7, 0);
-      FCL_SHOP_MISC_BUILD(source[11], &output[11], owner, 3, 3, 10);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4380), &output[23], owner, 8, 8, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4070), &output[22], owner, 4, 4, 5);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x3d60), &output[21], owner, 5, 5, 5);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x3a50), &output[20], owner, 6, 6, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x3740), &output[19], owner, 7, 7, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x3430), &output[18], owner, 3, 3, 10);
     } else if (param_3 == 1) {
       tmp = FUN_003e0940();
       tmp = FUN_003c5460(tmp);
       FUN_003e0c20(tmp, 2, 2);
-      FCL_SHOP_MISC_BUILD(source[12], &output[12], owner, 8, 8, 0);
-      FCL_SHOP_MISC_BUILD(source[13], &output[13], owner, 4, 4, 0);
-      FCL_SHOP_MISC_BUILD(source[14], &output[14], owner, 5, 5, 0);
-      FCL_SHOP_MISC_BUILD(source[15], &output[15], owner, 6, 6, 0);
-      FCL_SHOP_MISC_BUILD(source[16], &output[16], owner, 7, 7, 0);
-      FCL_SHOP_MISC_BUILD(source[17], &output[17], owner, 3, 3, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x3120), &output[17], owner, 8, 8, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x2e10), &output[16], owner, 4, 4, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x2b00), &output[15], owner, 5, 5, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x27f0), &output[14], owner, 6, 6, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x24e0), &output[13], owner, 7, 7, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x21d0), &output[12], owner, 3, 3, 0);
     }
     break;
 
   case 0x10:
     if (param_3 == 0) {
-      FCL_SHOP_MISC_BUILD(source[18], &output[18], owner, 9, 9, 0);
-      FCL_SHOP_MISC_BUILD(source[19], &output[19], owner, 10, 10, 0);
-      FCL_SHOP_MISC_BUILD(source[20], &output[20], owner, 6, 6, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x1ec0), &output[11], owner, 9, 9, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x1bb0), &output[10], owner, 10, 10, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x18a0), &output[9], owner, 6, 6, 0);
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(source[21], &output[21], owner, 9, 9, 0);
-      FCL_SHOP_MISC_BUILD(source[22], &output[22], owner, 10, 10, 0);
-      FCL_SHOP_MISC_BUILD(source[23], &output[23], owner, 6, 6, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x1590), &output[8], owner, 9, 9, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x1280), &output[7], owner, 10, 10, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0xf70), &output[6], owner, 6, 6, 0);
     }
     break;
 
   case 0xb:
     if (param_3 == 0) {
-      FCL_SHOP_MISC_BUILD(source[24], &output[24], tmp, 11, 11, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0xc60), &output[5], tmp, 11, 11, 0);
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(source[25], &output[25], tmp, 11, 11, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x950), &output[4], tmp, 11, 11, 0);
     }
     break;
 
   case 0xc:
     if (param_3 == 0) {
-      FCL_SHOP_MISC_BUILD(source[26], &output[26], tmp, 12, 12, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x640), &output[3], tmp, 12, 12, 0);
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(source[27], &output[27], tmp, 12, 12, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x330), &output[2], tmp, 12, 12, 0);
     }
     break;
 
   case 0xd:
     if (param_3 == 0) {
-      FCL_SHOP_MISC_BUILD(source[28], &output[28], owner, 13, 13, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x20), &output[1], owner, 13, 13, 0);
     } else if (param_3 == 1) {
-      FCL_SHOP_MISC_BUILD(source[29], &output[29], owner, 13, 13, 0);
+      FCL_SHOP_MISC_BUILD(FCL_SHOP_MISC_AT(0x4), &output[0], owner, 13, 13, 0);
     }
     break;
   }
