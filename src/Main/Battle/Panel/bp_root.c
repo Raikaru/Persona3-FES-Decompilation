@@ -1058,38 +1058,66 @@ void FUN_00201780(void)
     gBcmWork = NULL;
 }
 
+#pragma opt_loop_invariants on
 // FUN_00201880 NONMATCHING
 void FUN_00201880(void)
 {
-    u32 i;
+    s32 i;
+    s32 selector;
     u32 request;
-    u8* entry;
-    u32 table[] = { 0x20, 1, 2, 4, 8, 0x10, 0x40 };
+    u32* entry;
+    u32* flags;
+    u8* work;
 
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = gBcmWork;
     for (i = 0; i < 7; i++)
     {
-        entry = panelWork() + i * 4;
-        *(u32*)(entry + 0x1640) &= ~2u;
         request = 0;
-        if (panelWork32(0xc) & table[i])
+        entry = (u32*)work + i;
+        flags = entry + 0x590;
+        *flags &= ~1u;
+        selector = i;
+        switch (selector)
         {
-            request = 1;
+        case 0:
+            if (*(u32*)(work + 0xc) & 0x20) request = 1;
+            break;
+        case 1:
+            if (*(u32*)(work + 0xc) & 1) request = 1;
+            break;
+        case 2:
+            if (*(u32*)(work + 0xc) & 2) request = 1;
+            break;
+        case 3:
+            if (*(u32*)(work + 0xc) & 4) request = 1;
+            break;
+        case 4:
+            if (*(u32*)(work + 0xc) & 8) request = 1;
+            break;
+        case 5:
+            if (*(u32*)(work + 0xc) & 0x10) request = 1;
+            break;
+        case 6:
+            if (*(u32*)(work + 0xc) & 0x40) request = 1;
+            break;
         }
         if (request)
         {
-            *(u32*)(entry + 0x1640) |= 1;
+            *flags |= 1;
         }
     }
-    if (panelWork32(0) & 0x800000)
+    if (*(u32*)work & 0x800000)
     {
         func_00208360();
     }
     request = func_003a5540(100, 100, -0x4e, 2, 6,
-                            *(void**)(panelWork() + 0x7790),
-                            panelWork32(0x24));
+                            *(void**)(work + 0x7790),
+                            *(u32*)(work + 0x24));
     func_002082c0(request);
-    panelSetWork32(0x6d28, 0);
+    *(u32*)(work + 0x6d28) = 0;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00201A50
 void FUN_00201A50(void)
