@@ -2881,6 +2881,9 @@ void btlCameraFrameActionAll(BtlCamera* camera, u32 suppressEffects)
     if (suppressEffects != 0) FUN_00351bb0(0xc);
 }
 
+// The near-window candidate still differs in saved-register layout and long-lived
+// temporary coloring; declaration and access-order probes were codegen-neutral.
+// Keep this marker NONMATCHING until those register lifetimes are reconstructed.
 // FUN_002a95d0 NONMATCHING
 void btlCameraFrameActionResult(BtlCamera* camera, u32 suppressEffects,
                                 u32 useCurrentTarget)
