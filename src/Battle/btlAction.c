@@ -1994,6 +1994,8 @@ void btlActionInitStateAttack(BtlAction* action)
 {
     (void)action;
 }
+extern BtlPacket* func_002b7bd0(BtlUnit*, BtlUnit*, u16, f32);
+
 // FUN_0028eb50 NONMATCHING
 void btlActionUpdateStateAttack(BtlAction* action)
 {
@@ -2005,10 +2007,9 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlPacket* cameraPacket;
     BtlPacket* voicePacket;
     BtlPacket* effectPacket;
-    BtlPacket* movePacket;
-    BtlPacket* turnPacket;
+    BtlPacket* rootPacket;
     BtlPacket* syncPacket;
-    u32 stackBuf[80];
+    u32 stackBuf[60];
     s32 workBuf[12];
     u32 scratchBuf[16];
     u16 sp190;
@@ -2061,9 +2062,9 @@ void btlActionUpdateStateAttack(BtlAction* action)
         basis = action;
     }
     rotCount = 1;
-    packet = FUN_002bd590(action->unit, action->target.specificId);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_2D);
+    rootPacket = FUN_002bd590(action->unit, action->target.specificId);
+    rootPacket->actionUID = action->uid;
+    btlPacketRegister(rootPacket, BTLPACKET_TYPE_2D);
     packet = btlUnitCreateRotateTowardUnitPacket(action->unit, victim->unit, 0);
     packet->actionUID = action->uid;
     btlPacketRegister(packet, BTLPACKET_TYPE_0);
@@ -2135,6 +2136,255 @@ void btlActionUpdateStateAttack(BtlAction* action)
             cameraPacket->actionUID = action->uid;
             btlPacketRegister(cameraPacket, BTLPACKET_TYPE_1);
         }
+    }
+
+    /* Genus-based animation dispatch */
+    animMode = 11;
+    if (genus == 0)
+    {
+        s16 soundResult;
+        soundResult = FUN_002f8eb0(action->unit, action->target.specificId);
+        if (soundResult == -1)
+        {
+            animMode = 4;
+        }
+    }
+    else if (genus == 1)
+    {
+        animMode = 5;
+        sp180 = 0xd;
+    }
+    else if (genus == 2)
+    {
+        animMode = 6;
+        sp180 = 0xe;
+    }
+    else
+    {
+        animMode = 4;
+        sp180 = 0xc;
+    }
+
+    /* Animation frame calculations */
+    pkCount = FUN_00283fe0(basis->unit, animMode);
+    if (pkCount != 0)
+    {
+        animLength = FUN_00283e40(basis->unit, animMode);
+    }
+    else
+    {
+        animLength = 0;
+    }
+
+    /* Create attack animation packet */
+    {
+        u32 animArg = (animMode == 11) ? 2 : 0;
+        packet = FUN_00284200(basis->unit, animMode, 0, animArg, animSpeed);
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+        effectPacket = packet;
+    }
+
+    /* Voice packets based on genus and conditions */
+    {
+        u32 hasVoice = 0;
+        if (genus == 1)
+        {
+            if (victim->unit->genus == 0)
+            {
+                packet = func_002b7bd0(action->unit, basis->unit, 3, 400.0f);
+                packet->unk_00 = 5;
+                packet->parentUID = effectPacket->uid;
+                packet->actionUID = action->uid;
+                btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            }
+            voicePacket = btlVoice002e2be0(action, 0xc, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+            {
+                *(u32*)((u8*)gBtl + 0xc) |= 0x400000;
+                *(u16*)((u8*)gBtl + 0x18) |= 0xe;
+            }
+            hasVoice = 1;
+        }
+        else if (FUN_0028a0f0(action))
+        {
+            voicePacket = btlVoice002e2be0(action, 0xb, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+            hasVoice = 1;
+        }
+
+        if (hasVoice == 0)
+        {
+            voicePacket = btlVoice002e2be0(action, 0xa, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+        }
+    }
+    /* Target info extraction and effect packets */
+    {
+        u16 outA, outB, outC, outD;
+        u32 poolId;
+        FUN_0028a540(action, action->target.specificId, &outA, &outB, &outC, &outD);
+        poolId = *(u32*)((u8*)gBtl + outA * 4 + 0xc24);
+        skillPacket = FUN_002baf90(rootPacket->uid, action->unit, basis->unit, 0, 0);
+        skillPacket->unk_00 = 5;
+        skillPacket->parentUID = effectPacket->uid;
+        skillPacket->actionUID = action->uid;
+        btlPacketRegister(skillPacket, BTLPACKET_TYPE_1);
+
+        /* Additional voice for genus 0 - check conditions inline */
+        if (!FUN_0028a0f0(action) && victim->unit->genus == 0)
+        {
+            voicePacket = btlVoice002e2be0(action, 0xa, 0, 0, 0);
+            voicePacket->unk_00 = 5;
+            voicePacket->parentUID = effectPacket->uid;
+            voicePacket->actionUID = action->uid;
+            btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+        }
+    }
+
+    /* Hit animation chain */
+    {
+        s32 j;
+        for (j = 0; j < 1; j++)
+        {
+            animLength = FUN_002838d0(basis->unit, animMode, animSpeed);
+        }
+    }
+
+    /* Voice if genus 0 */
+    if (victim->unit->genus == 0)
+    {
+        voicePacket = btlVoice002e2be0(action, 0xe, 0, 0, 0);
+        voicePacket->unk_00 = 4;
+        voicePacket->parentUID = effectPacket->uid;
+        voicePacket->actionUID = action->uid;
+        btlPacketRegister(voicePacket, BTLPACKET_TYPE_1);
+
+        /* Effect packet */
+        syncPacket = FUN_002dd100(0xc, 2, 9);
+        syncPacket->unk_00 = 4;
+        syncPacket->parentUID = effectPacket->uid;
+        syncPacket->actionUID = action->uid;
+        btlPacketRegister(syncPacket, BTLPACKET_TYPE_1);
+    }
+
+    /* Another voice/effect packet */
+    if (action->unit->genus == 1 && action->unit->charId == 1)
+    {
+        cameraPacket = FUN_00282130(basis->unit, 0x10);
+        cameraPacket->unk_00 = 5;
+        cameraPacket->parentUID = effectPacket->uid;
+        cameraPacket->actionUID = action->uid;
+        btlPacketRegister(cameraPacket, BTLPACKET_TYPE_1);
+    }
+
+    /* Support packets */
+    {
+        u32* gBt = (u32*)((u8*)gBtl);
+        skillPacket = FUN_002baf90(gBt[0xcf4/4], basis->unit, action->unit, 1, 0);
+        skillPacket->unk_00 = 5;
+        skillPacket->parentUID = effectPacket->uid;
+        skillPacket->actionUID = action->uid;
+        btlPacketRegister(skillPacket, BTLPACKET_TYPE_1);
+
+        skillPacket = FUN_00284c90(basis->unit);
+        skillPacket->unk_00 = 5;
+        skillPacket->parentUID = effectPacket->uid;
+        skillPacket->actionUID = action->uid;
+        btlPacketRegister(skillPacket, BTLPACKET_TYPE_1);
+    }
+
+    /* Hit result packet */
+    {
+        packet = FUN_002d7e20(action, basis, (u8*)victim + 0xe0, soundId, animId);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    /* Effect for victim */
+    packet = FUN_002d8090(victim);
+    packet->unk_00 = 5;
+    packet->parentUID = effectPacket->uid;
+    packet->actionUID = action->uid;
+    btlPacketRegister(packet, BTLPACKET_TYPE_1);
+
+    /* Effect for action */
+    if (victim != action)
+    {
+        packet = FUN_002d8090(action);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    /* Parameter packet */
+    if (!(action->unk_18 & 4))
+    {
+        packet = FUN_002d7fb0(action, ACTION_U8(action, 0xca));
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_1);
+    }
+
+    /* Weapon packets */
+    {
+        s16 weaponDelay = ACTION_S16(action, 0xdc);
+        if (weaponDelay != 0)
+        {
+            packet = FUN_002bd850(action->unit, weaponDelay);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->unk_47 &= ~0x20;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+        }
+    }
+    {
+        s16 weaponDelay = ACTION_S16(victim, 0xdc);
+        if (weaponDelay != 0)
+        {
+            packet = FUN_002bd850(basis->unit, weaponDelay);
+            packet->unk_00 = 5;
+            packet->parentUID = effectPacket->uid;
+            packet->unk_47 &= ~0x20;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+        }
+    }
+
+    /* Final hit result packet */
+    {
+        packet = FUN_002bdbd0(action->unit, basis->unit, action->target.specificId,
+                              soundId, animId, 0, groupCount, (u8*)victim + 0xe0);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->unk_47 &= ~0x20;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
+    }
+
+    /* Rotation/movement packet */
+    if (ACTION_U32(victim, 0xe0) != 0)
+    {
+        packet = FUN_002bd230(basis->unit, 0, 0);
+        packet->unk_00 = 5;
+        packet->parentUID = effectPacket->uid;
+        packet->unk_47 &= ~0x20;
+        packet->actionUID = action->uid;
+        btlPacketRegister(packet, BTLPACKET_TYPE_3D);
     }
 
     btlActionSetState(action, FUN_002dc130(action) ? BTLACTION_STATE_BADDMG : BTLACTION_STATE_PACKET);
