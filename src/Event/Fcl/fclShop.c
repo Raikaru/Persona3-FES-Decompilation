@@ -1029,6 +1029,11 @@ u32 FUN_003e6e20(u32 param_1)
   return result;
 }
 
+// Exact-size sniper pass retained as NONMATCHING after diff characterization.
+// 1065 non-relocation differing words span all 256-byte buckets of the body.
+// The residual is diffuse register-bank/control-flow layout drift, not a
+// localized type, signedness, addressing-mode, or operand-order mismatch.
+// No source-level experiment improved the authoritative normalized_diff (3396).
 // FUN_003E6E80 NONMATCHING
 
 
