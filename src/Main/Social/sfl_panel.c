@@ -162,14 +162,18 @@ void func_0023dac0(void)
         if (frame < 4) {
             xOffset = 526.0f;
         } else if (frame < 8) {
-            xOffset = (1.0f - (float)(frame - 4) / 4.0f) * 526.0f;
+            scale = (float)(frame - 4) / 4.0f;
+            xOffset = 526.0f;
+            scale = 1.0f - scale;
+            xOffset *= scale;
         } else {
             xOffset = 0.0f;
         }
         if (frame < 0x1a) {
             alpha = 1.0f;
         } else {
-            alpha = 1.0f - (float)(frame - 0x1a) / 24.0f;
+            alpha = (float)(frame - 0x1a) / 24.0f;
+            alpha = 1.0f - alpha;
         }
 
         quad[0] = 0.0f;
@@ -181,7 +185,11 @@ void func_0023dac0(void)
         quad[6] = 0.0f;
         quad[7] = 32.0f;
         for (mode0_i = 0; mode0_i < 4; mode0_i++) {
-            quad[mode0_i * 2] += xOffset + 114.0f;
+        }
+        mode0_i = 0;
+        xOffset += 114.0f;
+        for (; mode0_i < 4; mode0_i++) {
+            quad[mode0_i * 2] += xOffset;
             quad[mode0_i * 2 + 1] += 59.0f;
         }
         func_0021d8e0(work + 0x44, quad);
@@ -191,10 +199,20 @@ void func_0023dac0(void)
         color.a = (unsigned char)(alpha * 255.0f);
         func_0021d950(work + 0x44, &color);
 
+        frame = work[2];
         if (frame < 4) {
-            xOffset = (1.0f - (float)frame / 4.0f) * 614.0f;
+            scale = (float)frame / 4.0f;
+            xOffset = 614.0f;
+            scale = 1.0f - scale;
+            xOffset *= scale;
         } else {
             xOffset = 0.0f;
+        }
+        if (frame < 0x1a) {
+            alpha = 1.0f;
+        } else {
+            alpha = (float)(frame - 0x1a) / 24.0f;
+            alpha = 1.0f - alpha;
         }
         quad[0] = 0.0f;
         quad[1] = 0.0f;
@@ -204,9 +222,16 @@ void func_0023dac0(void)
         quad[5] = 64.0f;
         quad[6] = 0.0f;
         quad[7] = 64.0f;
+        scale = DAT_007cae0c;
         for (mode0_i = 0; mode0_i < 4; mode0_i++) {
-            quad[mode0_i * 2] = quad[mode0_i * 2] * DAT_007cae0c + xOffset + 26.0f;
-            quad[mode0_i * 2 + 1] = quad[mode0_i * 2 + 1] * DAT_007cae0c + 65.0f;
+            quad[mode0_i * 2] *= scale;
+            quad[mode0_i * 2 + 1] *= scale;
+        }
+        mode0_i = 0;
+        xOffset += 26.0f;
+        for (; mode0_i < 4; mode0_i++) {
+            quad[mode0_i * 2] += xOffset;
+            quad[mode0_i * 2 + 1] += 65.0f;
         }
         func_0021d890(work + 4, quad);
         color.a = (unsigned char)(alpha * 255.0f);
@@ -221,7 +246,8 @@ mode12:
     frame = work[2];
 
     for (i = 0; i < 2; i++) {
-        if (i == 0) {
+        switch (i) {
+        case 0:
             panelDirection[0] = 0.0f;
             panelDirection[1] = -1.0f;
             scale = 1.0f;
@@ -246,7 +272,8 @@ mode12:
                                DAT_0068e820[interval];
             scale = alpha * (DAT_0068e810[interval + 1] - DAT_0068e810[interval]) +
                     DAT_0068e810[interval];
-        } else {
+            break;
+        case 1:
             if (frame == 0x1e) {
                 interval = 2;
                 scale = DAT_0068e858;
@@ -273,6 +300,7 @@ mode12:
                     360.0f * 2.0f;
             panelDirection[0] = sinf(angle);
             panelDirection[1] = -cosf(angle);
+            break;
         }
         panelPosition[1] = 224.0f;
         panelSize[0] = scale * 690.0f;
