@@ -1332,25 +1332,157 @@ footstep_default_status_zero:
 // FUN_001de630 NONMATCHING
 s32 func_001de630(s32 charId)
 {
-    u32 state = K_Footstep_StatusResult(1);
-    if (charId == 0)
+    s32 result = 0;
+    s32 major;
+    s32 minor;
+
+    switch (charId)
     {
-        return 0;
+    case 1:
+        if (datGetScenarioMode() == 1 &&
+            (gMtScene->fldMajorId == 4 || gMtScene->fldMajorId == 5))
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
+            {
+                result = 2;
+            }
+        }
+        else if (func_001a0310() == 1)
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
+            {
+                result = 2;
+            }
+        }
+        else if ((gMtScene->fldMajorId == 7 && gMtScene->fldMinorId == 6 &&
+                  datGetTime() == 8) ||
+                 (gMtScene->fldMajorId == 8 && gMtScene->fldMinorId == 1 &&
+                  datGetTime() == 8) ||
+                 (gMtScene->fldMajorId == 9 && gMtScene->fldMinorId == 1 &&
+                  datGetTime() == 8))
+        {
+            result = 3;
+            if (datGetFlag(0xC35) != 0)
+            {
+                result = 2;
+            }
+        }
+        else
+        {
+            major = gMtScene->fldMajorId;
+            minor = gMtScene->fldMinorId;
+            if (major == 14 && minor == 5)
+            {
+                result = 1;
+            }
+            else if (major == 33)
+            {
+                result = 3;
+                if (datGetFlag(0xC35) != 0)
+                {
+                    result = 2;
+                }
+            }
+            else if (major == 7 && datGetFlag(0xE00) == 1)
+            {
+                result = 1;
+            }
+            else if (major == 6 && datGetFlag(0xE60) == 1)
+            {
+                result = 3;
+                if (datGetFlag(0xC35) != 0)
+                {
+                    result = 2;
+                }
+            }
+            else if (func_001a01c0() == 1 ||
+                     ((major == 21 || major == 22 || major == 23 || major == 24 ||
+                       major == 25 || major == 26 || major == 27 || major == 41 ||
+                       major == 42 || major == 43 || major == 44 || major == 45 ||
+                       major == 46 || major == 47) && minor == 50) ||
+                     (major == 22 && minor == 51) ||
+                     (major == 23 && minor == 51) ||
+                     (major == 24 && minor == 51) ||
+                     (major == 39 && (minor == 1 || minor == 2 || minor == 3)))
+            {
+                result = 3;
+            }
+            else
+            {
+                result = 3;
+                if (datGetFlag(0xC35) != 0)
+                {
+                    result = 2;
+                }
+            }
+        }
+        break;
+
+    case 2:
+        major = gMtScene->fldMajorId;
+        if (major == 6 || major == 7)
+        {
+            result = 1;
+        }
+        else if (major == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        else
+        {
+            result = 3;
+        }
+        break;
+
+    case 5:
+        major = gMtScene->fldMajorId;
+        if (major == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        else if (datGetFlag(0xC2F) == 1 || major == 33)
+        {
+            result = 1;
+        }
+        else
+        {
+            result = 3;
+        }
+        break;
+
+    case 7:
+        major = gMtScene->fldMajorId;
+        if ((major == 14 && gMtScene->fldMinorId == 5) || major == 33)
+        {
+            result = 1;
+        }
+        else
+        {
+            result = 3;
+        }
+        break;
+
+    case 10:
+    case 13:
+        major = gMtScene->fldMajorId;
+        result = (major == 14 && gMtScene->fldMinorId == 5) ? 1 : 3;
+        break;
+
+    case 6:
+        if (gMtScene->fldMajorId == 14 && gMtScene->fldMinorId == 5)
+        {
+            result = 1;
+        }
+        break;
+
+    default:
+        result = 3;
+        break;
     }
-    if (!state)
-    {
-        return 3;
-    }
-    if (charId == 6 || charId == 10 || charId == 13)
-    {
-        return 1;
-    }
-    if (charId == 1 || charId == 2 || charId == 3 || charId == 4 || charId == 5 ||
-        charId == 7 || charId == 8 || charId == 9 || charId == 11 || charId == 12)
-    {
-        return datGetFlag(0xC35) != 0 ? 2 : 3;
-    }
-    return 0;
+
+    return result;
 }
 
 // FUN_001ded40 NONMATCHING
