@@ -71,7 +71,8 @@ extern void func_004932c0(u32 object, u32 arg1, u32 arg2);
 extern void func_004916d0_typed(u64 object, void* callback, void* data);
 void func_0031f5c0(void* data);
 
-// FUN_00311310 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_00311310
 MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 {
     MdlAnimEntryTable* table;
@@ -106,6 +107,7 @@ MdlAnimEntryTable* mdlCreateAnimEntryTable(u16 animCount)
 
     return table;
 }
+#pragma opt_loop_invariants off
 
 void FUN_0048a2a0(void);
 
