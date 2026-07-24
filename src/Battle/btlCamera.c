@@ -8114,6 +8114,7 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   long lVar5;
   int iVar6;
   int iVar7;
+  u32 targeting;
   float fVar8;
   float fVar9;
   float fVar10;
@@ -8242,7 +8243,8 @@ void func_002ab330(BtlCamera* camera, int param_2, int param_3)
   fStack_b8 = *(float *)(iVar6 + 0x9c) - fStack_50;
   fStack_b4 = *(float *)(iVar6 + 0xa4) - fStack_48;
   FUN_004c6b20(&fStack_b8,&fStack_b8);
-  if (bVar3) {
+  targeting = (u32)FUN_002a3380((u8*)camera);
+  if (targeting) {
     btlUnit002880e0((BtlUnit*)(uintptr_t)(iVar2),1);
     *(int *)(iVar6 + 0x120) = iVar2;
     *(undefined2 *)(iVar6 + 0x124) = 0;
