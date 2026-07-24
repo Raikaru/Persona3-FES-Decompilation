@@ -377,21 +377,20 @@ u32 func_002727c0(void)
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     return brpSeqU32(0) & 1;
 }
-#define brpSeqBytes() ((u8*)work)
-#define brpSeqU32(offset) (*(u32*)((u8*)work + (offset)))
-#define brpSeqS32(offset) (*(s32*)((u8*)work + (offset)))
-#define brpSeqU16(offset) (*(u16*)((u8*)work + (offset)))
-#define brpSeqS16(offset) (*(s16*)((u8*)work + (offset)))
-#define brpSeqU8(offset) (*(u8*)((u8*)work + (offset)))
-#define brpSeqPutU32(offset, value) (*(u32*)((u8*)work + (offset)) = (value))
-#define brpSeqPutU16(offset, value) (*(u16*)((u8*)work + (offset)) = (value))
-#define brpSeqPutU8(offset, value) (*(u8*)((u8*)work + (offset)) = (value))
+#define brpSeqBytes() work
+#define brpSeqU32(offset) (*(u32*)(work + (offset)))
+#define brpSeqS32(offset) (*(s32*)(work + (offset)))
+#define brpSeqU16(offset) (*(u16*)(work + (offset)))
+#define brpSeqS16(offset) (*(s16*)(work + (offset)))
+#define brpSeqU8(offset) (*(u8*)(work + (offset)))
+#define brpSeqPutU32(offset, value) (*(u32*)(work + (offset)) = (value))
+#define brpSeqPutU16(offset, value) (*(u16*)(work + (offset)) = (value))
+#define brpSeqPutU8(offset, value) (*(u8*)(work + (offset)) = (value))
 
 // FUN_00272810 NONMATCHING
-#pragma opt_loop_invariants on
 void func_00272810(void)
 {
-    u32* work;
+    u8* work;
     DatPersonaWork* persona;
     u32 state;
     u32 slot;
@@ -406,7 +405,7 @@ void func_00272810(void)
     u8 text[256];
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
-    work = sBrpSeq;
+    work = (u8*)sBrpSeq;
     if ((brpSeqU32(0) & 1) != 0)
     {
         state = brpSeqU32(0x10);
@@ -725,7 +724,6 @@ void func_00272810(void)
             func_0024adf0();
     }
 }
-#pragma opt_loop_invariants off
 
 #undef brpSeqBytes
 #undef brpSeqU32
@@ -1070,7 +1068,12 @@ void func_00274590(void)
 {
     u32* work;
     u16* skills;
-    u8 scratch[0x60];
+    s8* rankMap;
+    u8 level;
+    u16 excluded[16];
+    u16 candidates[8];
+    s32 indices[8];
+    s32 flags[2];
     s32 excludedCount;
     s32 skillCount;
     s32 candidateCount;
@@ -1082,14 +1085,8 @@ void func_00274590(void)
     s32 randomIndex;
     s32 selected;
     s32 desiredRank;
-    s8* rankMap;
-    u8 level;
     u16* pair;
 
-#define BRP_EXCLUDED ((u16*)scratch)
-#define BRP_CANDIDATES ((u16*)(scratch + 0x20))
-#define BRP_INDICES ((s32*)(scratch + 0x30))
-#define BRP_FLAGS ((s32*)(scratch + 0x50))
 
     K_ASSERT(sBrpSeq != NULL, 0xb0);
     work = sBrpSeq;
@@ -1097,7 +1094,7 @@ void func_00274590(void)
     skillCount = (s32)FUN_00176a30(
         (DatPersonaWork*)(uintptr_t)work[0xc]);
     rankMap = (s8*)FUN_003d5c90();
-    func_002743e0(BRP_EXCLUDED, &excludedCount);
+    func_002743e0(excluded, &excludedCount);
     FUN_005225a8((u32)(uintptr_t)D_0068EDC0);
     randomValue = FUN_00488f30();
     randomValue = (s32)((u32)randomValue % 100);
@@ -1122,20 +1119,20 @@ void func_00274590(void)
     FUN_005225a8((u32)(uintptr_t)D_0068EE10, randomValue, 1);
     if (randomValue == 0)
     {
-        BRP_FLAGS[0] = 0;
-        BRP_FLAGS[1] = 1;
+        flags[0] = 0;
+        flags[1] = 1;
     }
     else
     {
-        BRP_FLAGS[0] = 1;
-        BRP_FLAGS[1] = 0;
+        flags[0] = 1;
+        flags[1] = 0;
     }
 
     for (modeIndex = 0; modeIndex < 2; modeIndex++)
     {
-        if (BRP_FLAGS[modeIndex] == 1)
+        if (flags[modeIndex] == 1)
             goto mode_one;
-        if (BRP_FLAGS[modeIndex] != 0)
+        if (flags[modeIndex] != 0)
             goto next_mode;
 
         candidateCount = 0;
@@ -1150,12 +1147,12 @@ void func_00274590(void)
             if (i < skillCount)
             {
                 j = 0;
-                while (j < excludedCount && BRP_EXCLUDED[j] != pair[1])
+                while (j < excludedCount && excluded[j] != pair[1])
                     j++;
                 if (j == excludedCount)
                 {
-                    BRP_INDICES[candidateCount] = i;
-                    BRP_CANDIDATES[candidateCount] = pair[1];
+                    indices[candidateCount] = i;
+                    candidates[candidateCount] = pair[1];
                     candidateCount++;
                 }
             }
@@ -1170,11 +1167,11 @@ void func_00274590(void)
         randomValue = FUN_00488f30();
         randomIndex = randomValue % candidateCount;
         FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
-        selected = skills[BRP_INDICES[randomIndex]];
+        selected = skills[indices[randomIndex]];
         FUN_005225a8((u32)(uintptr_t)D_0068EE60, selected,
-                     BRP_CANDIDATES[randomIndex]);
+                     candidates[randomIndex]);
         *(u16*)((u8*)work + 0xa0) = (u16)selected;
-        *(u16*)((u8*)work + 0xa2) = BRP_CANDIDATES[randomIndex];
+        *(u16*)((u8*)work + 0xa2) = candidates[randomIndex];
         work[0x27] = 0;
         work[0] |= 0x20;
         goto done;
@@ -1192,12 +1189,12 @@ mode_one:
             if (i < skillCount)
             {
                 j = 0;
-                while (j < excludedCount && BRP_EXCLUDED[j] != pair[1])
+                while (j < excludedCount && excluded[j] != pair[1])
                     j++;
                 if (j == excludedCount)
                 {
-                    BRP_INDICES[candidateCount] = i;
-                    BRP_CANDIDATES[candidateCount] = pair[1];
+                    indices[candidateCount] = i;
+                    candidates[candidateCount] = pair[1];
                     candidateCount++;
                 }
             }
@@ -1212,7 +1209,7 @@ mode_one:
         randomValue = FUN_00488f30();
         randomIndex = randomValue % candidateCount;
         FUN_005225a8((u32)(uintptr_t)D_0068EE40, randomIndex);
-        selected = skills[BRP_INDICES[randomIndex]];
+        selected = skills[indices[randomIndex]];
         desiredRank = (s32)rankMap[selected] + 1;
 
         candidateCount = 0;
@@ -1222,7 +1219,7 @@ mode_one:
             if ((s32)rankMap[i] == desiredRank)
             {
                 j = 0;
-                while (j < excludedCount && BRP_EXCLUDED[j] != i)
+                while (j < excludedCount && excluded[j] != i)
                     j++;
                 if (j == excludedCount)
                     candidateCount++;
@@ -1245,7 +1242,7 @@ mode_one:
             if ((s32)rankMap[i] == desiredRank)
             {
                 k = 0;
-                while (k < excludedCount && BRP_EXCLUDED[k] != i)
+                while (k < excludedCount && excluded[k] != i)
                     k++;
                 if (k == excludedCount)
                 {
@@ -1269,10 +1266,6 @@ next_mode:
     }
 
 done:
-#undef BRP_EXCLUDED
-#undef BRP_CANDIDATES
-#undef BRP_INDICES
-#undef BRP_FLAGS
     return;
 }
 
