@@ -429,16 +429,19 @@ void func_0024dc10(void)
     }
 }
 
+// Retail cross-check restored the state-0 interpolation path and state-2 mode fields.
+// The state-0 mode-3 path now clamps, interpolates, and clears completion flags.
+// State-2 mode-3 uses the node's inline pose payload, matching retail addressing.
+// State-2 mode-4 uses its distinct duration field for the second cubic segment.
+// Queue setup and cleanup avoid an unnecessary persistent counter local.
+// The function remains NONMATCHING while these semantic repairs alter scheduling.
 // FUN_0024DC90 NONMATCHING
 void func_0024dc90(void* camera)
 {
+    u32* list;
     u8* node;
-    u32 count;
     u32 queued;
     u32 i;
-    u32* list;
-    u32 oldTimer;
-    u32 firstDuration;
     u32* pose;
     u32** poses;
     f32* p;
@@ -463,16 +466,14 @@ void func_0024dc90(void* camera)
     K_ASSERT(sSflCameraNodes != NULL, 0x5d);
     list = sSflCameraNodes;
     K_ASSERT(list[0x82] == 0, 0xe6);
-    count = list[0x82];
-    list[count + 2] = (u32)camera;
-    list[0x82] = count + 1;
+    list[list[0x82] + 2] = (u32)camera;
+    list[0x82]++;
 
     while (list[0x82] != 0) {
         u32 flags;
         u32 state;
         u32 mode;
-        count = list[0x82];
-        node = (u8*)list[count + 1];
+        node = (u8*)list[list[0x82] + 1];
         flags = *(u32*)(node + 8);
         queued = 0;
         if ((flags & 1) != 0 && (flags & 2) != 0) {
@@ -482,10 +483,12 @@ void func_0024dc90(void* camera)
             case 0: {
                 mode = *(u32*)(node + 0x20);
                 if (mode == 1) {
+                    u32 oldTimer;
+                    u32 firstDuration;
 
                     p = (f32*)(node + 0x24);
                     oldTimer = *(u32*)(node + 0x10);
-                    firstDuration = ((u32)p[22]) << 16;
+                    firstDuration = ((u32)p[13]) << 16;
                     ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
 
                     offset.x = p[6] - p[9];
@@ -574,45 +577,44 @@ void func_0024dc90(void* camera)
                     }
                 }
                 else if (mode == 3) {
-                    poses = (u32**)(node + 0x28);
-                    queued = 0;
-                    for (i = 0; i < 2; i++) {
-                        pose = poses[i];
-                        if (pose != NULL && (pose[2] & 2) == 0) {
-                            K_ASSERT(list[0x82] < 0x80, 0x198);
-                            list[list[0x82] + 2] = (u32)pose;
-                            list[0x82]++;
-                            queued = 1;
+                    p = (f32*)(node + 0x24);
+                    if ((*(u32*)(node + 0x28) & 1u) != 0) {
+                        if (*(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                            *(u32*)(node + 0x10) = *(u32*)(node + 0x2c);
+                        }
+                        if (*(u32*)p == 0) {
+                            ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                    (f32)(s32)*(u32*)(node + 0x2c);
+                            first.x = p[6];
+                            first.y = p[7];
+                            first.z = p[8];
+                            second.x = p[3];
+                            second.y = p[4];
+                            second.z = p[5];
+                            second.x -= first.x;
+                            second.y -= first.y;
+                            second.z -= first.z;
+                            second.x *= ratio;
+                            second.y *= ratio;
+                            second.z *= ratio;
+                            value.x = first.x + second.x;
+                            value.y = first.y + second.y;
+                            value.z = first.z + second.z;
+                            *(RwV3d*)(node + 0x14) = value;
+                        }
+                        else if (*(u32*)p == 1) {
+                            ratio = (f32)(s32)*(u32*)(node + 0x10) /
+                                    1966080.0f;
+                            ratio *= 0.5f;
+                            value.x = p[3] * ratio + p[6];
+                            value.y = p[4] * ratio + p[7];
+                            value.z = p[5] * ratio + p[8];
+                            *(RwV3d*)(node + 0x14) = value;
                         }
                     }
-                    if (queued == 0) {
-                        first = *gcPose0024faa0(poses[0]);
-                        second = *gcPose0024faa0(poses[1]);
-                        RwV3dNormalize(&first, &first);
-                        RwV3dNormalize(&second, &second);
-                        dot = first.x * second.x + first.y * second.y +
-                              first.z * second.z;
-                        value.x = second.x - first.x * dot;
-                        value.y = second.y - first.y * dot;
-                        value.z = second.z - first.z * dot;
-                        RwV3dNormalize(&value, &value);
-                        axis.x = 0.0f;
-                        axis.y = 0.0f;
-                        axis.z = 1.0f;
-                        if (value.z == -1.0f || value.z == 1.0f) {
-                            axis.x = 0.0f;
-                            axis.y = 1.0f;
-                            axis.z = 0.0f;
-                        }
-                        else {
-                            cross.x = value.y * axis.z - value.z * axis.y;
-                            cross.y = value.z * axis.x - value.x * axis.z;
-                            cross.z = value.x * axis.y - value.y * axis.x;
-                            axis = cross;
-                        }
-                        angle = 180.0f * (value.z - 1.0f) / 2.0f;
-                        FUN_004bdde0(angle, (f32*)(node + 0x14),
-                                     (const f32*)&axis, 0);
+                    if ((*(u32*)(node + 0x28) & 1u) != 0 &&
+                        *(u32*)(node + 0x10) >= *(u32*)(node + 0x2c)) {
+                        *(u32*)(node + 0x28) &= ~2u;
                     }
                 }
                 else if (mode != 0) {
@@ -649,7 +651,7 @@ void func_0024dc90(void* camera)
                 break;
             }
             case 2: {
-                mode = *(u32*)(node + 0x20);
+                mode = *(u32*)(node + 0x24);
                 if (mode == 1) {
                     poses = (u32**)(node + 0x28);
                     queued = 0;
@@ -718,14 +720,9 @@ void func_0024dc90(void* camera)
                     }
                 }
                 else if (mode == 3) {
-                    poses = (u32**)(node + 0x28);
-                    pose = poses[0];
+                    pose = (u32*)(node + 0x28);
                     if ((*(u32*)(node + 0x10) >= pose[2]) &&
                         ((pose[1] & 1) != 0)) {
-                        *(u32*)(node + 0x10) = pose[2];
-                    }
-                    if ((pose[1] & 1) != 0 &&
-                        *(u32*)(node + 0x10) >= pose[2]) {
                         *(u32*)(node + 0x10) = pose[2];
                     }
                     if (pose[0] == 0) {
@@ -756,6 +753,8 @@ void func_0024dc90(void* camera)
                     }
                 }
                 else if (mode == 4) {
+                    u32 oldTimer;
+                    u32 firstDuration;
 
                     p = (f32*)(node + 0x28);
                     oldTimer = *(u32*)(node + 0x10);
@@ -799,7 +798,7 @@ void func_0024dc90(void* camera)
                                   p[11] * ratio * ratio * ratio;
                         *(RwV3d*)(node + 0x14) = value;
                     }
-                    duration = ((u32)p[3]) << 16;
+                    duration = ((u32)p[5]) << 16;
                     ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
                              (f32)(s32)duration;
                     oneMinus = 1.0f - ratio2;
@@ -849,7 +848,7 @@ void func_0024dc90(void* camera)
         }
         if (queued == 0) {
             *(u32*)(node + 8) &= ~3u;
-            list[0x82] = count - 1;
+            list[0x82]--;
         }
     }
 }
