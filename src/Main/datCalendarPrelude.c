@@ -51,6 +51,8 @@ u32 FUN_0017d450(s32 index, const void* date);
 extern u32 D_00960178[];
 extern u32 D_0096017C[];
 extern u32 D_00960184[];
+#pragma alias D_00960184_abs D_00960184
+extern u8 D_00960184_abs[];
 extern u8 D_00834010[];
 extern u8 D_00833994[];
 extern s32 D_005e3840[][2];
@@ -81,7 +83,7 @@ extern u8* DAT_007ce4a0;
 #define U8(addr) (*PTR8(addr))
 #define U16(addr) (*PTR16(addr))
 #define U32(addr) (*PTR32(addr))
-#define ALLOCATE(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184)(count, size, flags)
+#define ALLOCATE(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960184_abs)(count, size, flags)
 #define ALLOCATE_SMALL(count, size, flags) (*(void* (**)(u32, u32, u32))D_00960178)(count, size, flags)
 #define RELEASE(memory) (*(void (**)(void*))D_0096017C)(memory)
 
@@ -163,19 +165,19 @@ static u32 bit_mask(s32 value)
 #define SAVE_CHUNK(cursor, id_value, chunk_size, source) \
     do { \
         id = (id_value); \
+        FUN_00521250((cursor), &id, 4); \
         size = (chunk_size); \
-        memcpy((cursor), &id, 4); \
-        memcpy((cursor) + 4, &size, 4); \
-        memcpy((cursor) + 8, (source), size); \
+        FUN_00521250((cursor) + 4, &size, 4); \
+        FUN_00521250((cursor) + 8, (source), size); \
         (cursor) += size + 8; \
     } while (0)
 #define SAVE_AT(base, offset, id_value, chunk_size, source) \
     do { \
         id = (id_value); \
+        FUN_00521250((base) + (offset), &id, 4); \
         size = (chunk_size); \
-        memcpy((base) + (offset), &id, 4); \
-        memcpy((base) + (offset) + 4, &size, 4); \
-        memcpy((base) + (offset) + 8, (source), size); \
+        FUN_00521250((base) + (offset) + 4, &size, 4); \
+        FUN_00521250((base) + (offset) + 8, (source), size); \
     } while (0)
 
 // FUN_00177d40
@@ -203,8 +205,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
     u32 month;
     u32 day;
 
-    U32(0x0083a6ec) = ((u32*)D_00960184)[0];
-    U32(0x0083a6f0) = ((u32*)D_00960184)[1];
+    U32(0x0083a6ec) = ((u32*)D_00960184_abs)[0];
+    U32(0x0083a6f0) = ((u32*)D_00960184_abs)[1];
     U32(0x0083a6f4) = (u32)FUN_001bff20();
     buffer = (u8*)ALLOCATE(1, 0x20000, 0x40000);
     chunkOffset = 0;
@@ -233,8 +235,8 @@ void* FUN_00177db0(u32 saveType, s32* saveSize)
         header[0x0c + i] = DAT_00836200[i];
     for (i = 0; i < 0x12; i++)
         header[0x1e + i] = DAT_00836200[0x12 + i];
-    header[0x30] = (u8)((u32*)D_00960184)[0];
-    header[0x31] = (u8)((u32*)D_00960184)[1];
+    header[0x30] = (u8)((u32*)D_00960184_abs)[0];
+    header[0x31] = (u8)((u32*)D_00960184_abs)[1];
 
     memcpy(buffer + 4, header, sizeof(header));
     SAVE_AT(buffer, 0x38, 1, 0x24, PTR8(0x00836200));
