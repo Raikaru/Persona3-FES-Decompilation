@@ -3304,6 +3304,193 @@ void func_001f7210(void)
         if (eff_total > 0) {
             kind = eff_total % 28;
         }
+    /*
+     * Second party effect: APPLY each effect via the same 13-effect structure.
+     * Iterates the same cases as the counting loop above, but instead of
+     * incrementing eff_total, actually calls the recovery/status set functions.
+     * Uses the inline-stack scan array built by brRoot001f1df0 above.
+     * 
+     * Retail at func+4900-5864: the application case bodies reached via
+     * the 13-entry dispatch table at 0x7b7000 -> kind mapping (14-26) ->
+     * second 28-entry dispatch table at 0x7b6f90.
+     */
+    for (party_eff = 0; party_eff < 13; party_eff++) {
+        u16 cur_hp, max_hp;
+        u16 cur_sp, max_sp;
+        u32 st_val;
+        u32 apply_idx;
+        u16 apply_mbr;
+        switch (party_eff) {
+        case 0:
+            /* off=4924: DIRECT HP apply (member 1) */
+            cur_hp = (u16)func_0016c4f0(1);
+            max_hp = (u16)func_0016c5f0(1);
+            if (cur_hp < max_hp) {
+                u32 amount = max_hp * value / 100;
+                u32 new_hp = cur_hp + amount;
+                if (new_hp > max_hp) new_hp = max_hp;
+                func_0016cf40(1, new_hp);
+            }
+            break;
+        case 1:
+            /* off=5020: LOOP HP apply (scan array, bounded by sp+0x24c) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                cur_hp = (u16)func_0016c4f0(apply_mbr);
+                max_hp = (u16)func_0016c5f0(apply_mbr);
+                if (cur_hp < max_hp) {
+                    u32 amount = max_hp * value / 100;
+                    u32 new_hp = cur_hp + amount;
+                    if (new_hp > max_hp) new_hp = max_hp;
+                    func_0016cf40(apply_mbr, new_hp);
+                    break;
+                }
+            }
+            break;
+        case 2:
+            /* off=5160: DIRECT SP apply (member 1) */
+            cur_sp = (u16)func_0016c570(1);
+            max_sp = (u16)func_0016c670(1);
+            if (cur_sp < max_sp) {
+                u32 amount = max_sp * value / 100;
+                u32 new_sp = cur_sp + amount;
+                if (new_sp > max_sp) new_sp = max_sp;
+                func_0016cf90(1, new_sp);
+            }
+            break;
+        case 3:
+            /* off=5256: LOOP SP apply (scan array, bounded by sp+0x24c) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                cur_sp = (u16)func_0016c570(apply_mbr);
+                max_sp = (u16)func_0016c670(apply_mbr);
+                if (cur_sp < max_sp) {
+                    u32 amount = max_sp * value / 100;
+                    u32 new_sp = cur_sp + amount;
+                    if (new_sp > max_sp) new_sp = max_sp;
+                    func_0016cf90(apply_mbr, new_sp);
+                    break;
+                }
+            }
+            break;
+        case 4:
+            /* off=5396: DIRECT bad-status clear (member 1) */
+            st_val = func_0016c970(1);
+            if ((st_val & 0x80) == 0) {
+                func_0016d8b0(1, st_val & ~0x80);
+            }
+            break;
+        case 5:
+            /* off=5436: LOOP bad-status clear (scan array, bounded by sp+0x24c) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c970(apply_mbr);
+                if ((st_val & 0x80) != 0) {
+                    func_0016d8b0(apply_mbr, st_val & ~0x80);
+                    break;
+                }
+            }
+            break;
+        case 6:
+            /* off=3072: empty marker (loop continuation) */
+            break;
+        case 7:
+            /* off=5520: DIRECT setPhysicalCondition (a1=0) */
+            st_val = func_0016c920(1);
+            if (st_val >= 3 && st_val <= 5) {
+                func_0016d6b0(1, 0);
+            }
+            break;
+        case 8:
+            /* off=5556: LOOP setPhysicalCondition (a1=0, scan) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                if (st_val >= 3 && st_val <= 5) {
+                    func_0016d6b0(apply_mbr, 0);
+                    break;
+                }
+            }
+            break;
+        case 9:
+            /* off=5636: DIRECT setPhysicalCondition (a1=1) */
+            st_val = func_0016c920(1);
+            if (st_val == 1 || st_val == 2) {
+                func_0016d6b0(1, 1);
+            }
+            break;
+        case 10:
+            /* off=5672: LOOP setPhysicalCondition (a1=2, scan) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                if (st_val == 1) {
+                    func_0016d6b0(apply_mbr, 2);
+                    break;
+                }
+            }
+            break;
+        case 11:
+            /* off=5752: DIRECT setPhysicalCondition (a1=2) */
+            st_val = func_0016c920(1);
+            if (st_val != 2) {
+                func_0016d6b0(1, 2);
+            }
+            break;
+        case 12:
+            /* off=5788: LOOP setPhysicalCondition (a1=2, scan) */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                if (st_val != 2) {
+                    func_0016d6b0(apply_mbr, 2);
+                    break;
+                }
+            }
+            break;
+        default:
+            break;
+        }
     }
+    /*
+     * Reward-card animation tail (retail at func+7504-7908).
+     * Iterates slots bounded by work[0x3418], animating each card position.
+     * Float constants: 0x435c=184.0f, 0x43a0=320.0f, 0x4348=200.0f,
+     * 0x42c8=100.0f.  Calls func_0020c500, func_0020c400, func_002508c0.
+     */
+    {
+        u32 slot_count = BR_U32(work, 0x3408);
+        u32 anim_i;
+        if (slot_count != 0) {
+            for (anim_i = 0; anim_i < BR_U32(work, 0x3418); anim_i++) {
+                u32 slot_idx = BR_U32(work, 0x1c + anim_i * 4);
+                u8 *card = work + slot_idx * 0x670 + 0x5c;
+                f32 offset = (f32)((s32)(anim_i - slot_count));
+                f32 t;
+                f32 result;
+                f32 vec_in[2];
+                /* offset * 184.0f -> 0x435c0000 */
+                offset = offset * 184.0f;
+                t = func_0020c500(card + 0xc, offset);
+                /* build vec_in for func_0020c400 */
+                vec_in[0] = 184.0f;
+                vec_in[1] = 200.0f;
+                func_0020c400(card + 0xc, vec_in, t, &result);
+                result = result + 100.0f;
+                func_002508c0(card + 0x60c, &result, 0x14);
+            }
+        }
+        if (slot_count == BR_U32(work, 0x3418) - 1) {
+            BR_U32(work, 0) |= 0x40;
+        }
+        if ((BR_U32(work, 0) & 0x800) == 0) {
+            K_ASSERT(work != NULL, 0x770);
+            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+        } else {
+            func_001f9c60();
+            BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
+        }
+    }
+}
 }
 #pragma optimization_level 2
