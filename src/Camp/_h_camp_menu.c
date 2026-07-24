@@ -1224,59 +1224,31 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
 {
     s32 i;
     u8 text[0x100];
+    u32 workId;
 
     switch (mode) {
-    case 99:
-        campSprite(item, campDrawX(item), campDrawY(item));
-        campSprite(item, campDrawX(item) + 16.0f, campDrawY(item));
-        campSprite(item, campDrawX(item) + 530.0f, campDrawY(item) + 30.0f);
-        break;
-    case 20:
-        campDrawSkillGrid(item, category, selected, selected, 0);
-        break;
-    case 19:
-        campDrawSkillGrid(item, category, selected, selected, 1);
-        break;
-    case 18:
+    case 0:
         {
-            s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
-            s32 slot = start + selected - 1;
-            campSprite(item, campDrawX(item) + (f32)((slot % 7) * 0x29),
-                       campDrawY(item) + (f32)((slot / 7) * 0x2c));
+            workId = (u32)FUN_001158b0(0, *labels, 0x10);
+            {
+                u8* work;
+                work = (u8*)workId;
+                *(u32*)(work + 0x2c) = item->texture;
+                *(f32*)(work + 0x10) = campDrawX(item);
+                *(f32*)(work + 0x14) = campDrawY(item);
+                work[0x18] = (u8)item->alpha;
+                *(f32*)(work + 0x20) = -90.0f;
+            }
+            FUN_001127d0(workId, 1);
+            FUN_00115980(workId);
         }
         break;
-    case 17:
-        if (category == (s32)FUN_0017d920()) {
-            s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
-            start += FUN_0017da40() - 1;
-            campSprite(item, campDrawX(item) + (f32)((start % 7) * 0x29),
-                       campDrawY(item) + (f32)((start / 7) * 0x2c));
-        }
+    case 1:
+        campMenuDrawSprite(0, *labels, 0x1a, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
         break;
-    case 16:
-        campDrawSkillGrid(item, category, selected, selected, 0);
-        campSprite(item, campDrawX(item) - 1.0f, campDrawY(item) - 1.0f);
-        break;
-    case 15:
-        campDrawRows(item, 6, 0x2c);
-        for (i = 1; i < 0x2b; i++) {
-            campSprite(item, campDrawX(item) + (f32)(((i - 1) % 7) * 0x29),
-                       campDrawY(item) + (f32)(((i - 1) / 7) * 0x2c));
-        }
-        break;
-    case 14:
-    case 13:
-    case 12:
-    case 11:
-    case 10:
-    case 9:
-    case 8:
-    case 7:
-    case 5:
-        campDrawPanel(item);
-        break;
-    case 4:
-        campDrawSkillSources(item, category, selected);
+    case 2:
+        campDrawRows(item, 5, 28.0f);
         break;
     case 3:
         campSprite(item, campDrawX(item) + 242.0f, campDrawY(item) - 11.0f);
@@ -1318,11 +1290,12 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                                item->scale);
         }
         break;
-    case 2:
-        campDrawRows(item, 5, 28.0f);
+    case 4:
+        campDrawSkillSources(item, category, selected);
         break;
-    case 1:
-        campDrawPanel(item);
+    case 5:
+        campMenuDrawSprite(0, NULL, 0x4a, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
         break;
     case 6:
         if (category < 4) {
@@ -1338,18 +1311,75 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
         }
         campSprite(item, campDrawX(item) + 40.0f, campDrawY(item) - 3.0f);
         break;
-    case 0:
-        {
-            u32 id = (u32)FUN_001158b0(0, *labels, 0x10);
-            u8* work = (u8*)id;
-            *(u32*)(work + 0x2c) = item->texture;
-            *(f32*)(work + 0x10) = campDrawX(item);
-            *(f32*)(work + 0x14) = campDrawY(item);
-            work[0x18] = (u8)item->alpha;
-            *(f32*)(work + 0x20) = -90.0f;
-            FUN_001127d0(id, 1);
-            FUN_00115980(id);
+    case 7:
+        campMenuDrawSprite(0, NULL, 0x55, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 8:
+        campMenuDrawSprite(0, NULL, 0x54, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 9:
+        campMenuDrawSprite(0, NULL, 0x4e, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 10:
+        campMenuDrawSprite(0, NULL, 0x4f, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 11:
+        campMenuDrawSprite(0, NULL, 0x50, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 12:
+        campMenuDrawSprite(0, NULL, 0x51, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 13:
+        campMenuDrawSprite(0, NULL, 0x52, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 14:
+        campMenuDrawSprite(0, NULL, 0x53, item->alpha,
+                           campDrawX(item), campDrawY(item), item->scale);
+        break;
+    case 15:
+        campDrawRows(item, 6, 0x2c);
+        for (i = 1; i < 0x2b; i++) {
+            campSprite(item, campDrawX(item) + (f32)(((i - 1) % 7) * 0x29),
+                       campDrawY(item) + (f32)(((i - 1) / 7) * 0x2c));
         }
+        break;
+    case 16:
+        campDrawSkillGrid(item, category, selected, selected, 0);
+        campSprite(item, campDrawX(item) - 1.0f, campDrawY(item) - 1.0f);
+        break;
+    case 17:
+        if (category == (s32)FUN_0017d920()) {
+            s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
+            start += FUN_0017da40() - 1;
+            campSprite(item, campDrawX(item) + (f32)((start % 7) * 0x29),
+                       campDrawY(item) + (f32)((start / 7) * 0x2c));
+        }
+        break;
+    case 18:
+        {
+            s32 start = (s32)FUN_0017dae0(FUN_0017d8b0(category, 1));
+            s32 slot = start + selected - 1;
+            campSprite(item, campDrawX(item) + (f32)((slot % 7) * 0x29),
+                       campDrawY(item) + (f32)((slot / 7) * 0x2c));
+        }
+        break;
+    case 19:
+        campDrawSkillGrid(item, category, selected, selected, 1);
+        break;
+    case 20:
+        campDrawSkillGrid(item, category, selected, selected, 0);
+        break;
+    case 99:
+        campSprite(item, campDrawX(item), campDrawY(item));
+        campSprite(item, campDrawX(item) + 16.0f, campDrawY(item));
+        campSprite(item, campDrawX(item) + 530.0f, campDrawY(item) + 30.0f);
         break;
     default:
         if (mode > 0x14 && mode < 0x35) {
