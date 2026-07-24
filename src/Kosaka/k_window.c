@@ -814,70 +814,25 @@ static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
     KWindowRenderData* renderData;
     KWindowRenderLayout* layout;
     KWindowQuad* quad;
-    RwRGBA colorA;
-    RwRGBA colorB;
-    RwRGBA* color;
+    RwRGBA* colorData;
     RwRGBA* tile;
     s32 i;
 
-    if (manager == NULL)
-    {
-        return;
-    }
-    color = (RwRGBA*)&gp0xffff9460;
-    colorA = *color;
-    color = (RwRGBA*)&gp0xffff9464;
-    colorB = *color;
-    uGpffff94c4 = 0xff004ae3;
-    if (manager->mode == 1)
-    {
-        colorA = *(RwRGBA*)&gp0xffff9468;
-        colorB = *(RwRGBA*)&gp0xffff946c;
-        uGpffff94c4 = 0xff000054;
-    }
-    else if (manager->mode == 2)
-    {
-        colorA = *(RwRGBA*)&gp0xffff9470;
-        colorB = *(RwRGBA*)&gp0xffff9474;
-        uGpffff94c4 = 0xff004ae3;
-    }
-    else if (manager->mode == 3)
-    {
-        colorA = *(RwRGBA*)&gp0xffff9478;
-        colorB = *(RwRGBA*)&gp0xffff947c;
-        uGpffff94c4 = 0xff404040;
-    }
+    colorData = (RwRGBA*)((u8*)manager->colorData + 4);
+    *(volatile u8*)&colorData->r = *(volatile u8*)((u8*)&uGpffff94c4 + 0);
+    *(volatile u8*)&colorData->g = *(volatile u8*)((u8*)&uGpffff94c4 + 1);
+    *(volatile u8*)&colorData->b = *(volatile u8*)((u8*)&uGpffff94c4 + 2);
+    *(volatile u8*)&colorData->a = *(volatile u8*)((u8*)&uGpffff94c4 + 3);
+    func_001e7aa0(manager->renderData, 0, manager->colorData);
 
-    if (manager->colorData != NULL)
-    {
-        RwRGBA* colorData;
-        colorData = (RwRGBA*)((u8*)manager->colorData + 4);
-        *colorData = colorA;
-        func_001e7aa0(manager->renderData, 0, manager->colorData);
-    }
     renderData = (KWindowRenderData*)manager->renderData;
-    layout = renderData != NULL ? renderData->layout : NULL;
-    if (layout == NULL)
+    layout = renderData->layout;
+    tile = layout->tileColors;
+    for (i = 0; i < 4; i++)
     {
-        return;
-    }
-    tile = *(RwRGBA**)((u8*)layout + 0x30);
-    if (tile != NULL)
-    {
-        for (i = 0; i < 4; i++)
-        {
-            tile[i] = colorA;
-        }
-    }
-    if (layout->quadStore == NULL)
-    {
-        return;
+        tile[i] = *(RwRGBA*)&gp0xffff9460;
     }
     quad = layout->quadStore->quad;
-    if (quad == NULL)
-    {
-        return;
-    }
     quad[0].vertex[0].x = 0.0f;
     quad[0].vertex[0].y = 0.0f;
     quad[0].vertex[1].x = 0.0f;
@@ -888,7 +843,6 @@ static inline void KWindow_SetManagerRender(KWindowManagerWork* manager)
     quad[0].vertex[3].y = 0.0f;
     func_001e7b10(quad, func_001e7c20(-16));
     func_004933d0(layout);
-    (void)colorB;
 }
 
 static inline void KWindow_DrawSelection(KWindowManagerWork* manager)
@@ -1010,73 +964,130 @@ void func_001a2720(KwlnTask* task)
 void* func_001a2a80(KwlnTask* task)
 {
     KWindowManagerWork* manager;
-    KWindowEntry* entry;
-    RwRect rect;
-    RwRGBA colorA;
-    RwRGBA colorB;
-    u16 input;
 
     manager = KWindow_GetManager(task);
-    if (manager == NULL)
-    {
-        return KWLNTASK_STOP;
-    }
-    rect.x = (s16)manager->x;
-    rect.y = (s16)manager->y;
-    rect.w = (s16)manager->width;
-    rect.h = (s16)manager->height;
-
     switch (manager->state)
     {
+
         case 0:
+        {
             if (manager->request == 1)
             {
                 manager->state++;
             }
             break;
+        }
 
         case 1:
-            colorA = *(RwRGBA*)&gp0xffff9460;
-            colorB = *(RwRGBA*)&gp0xffff9464;
+        {
             if (manager->mode == 1)
             {
-                colorA = *(RwRGBA*)&gp0xffff9468;
-                colorB = *(RwRGBA*)&gp0xffff946c;
+                RwRect rect;
+                f32 colorA;
+                f32 colorB;
+
+                rect.x = manager->x;
+                rect.y = manager->y;
+                rect.w = manager->width;
+                rect.h = manager->height;
+                colorA = *(f32*)&gp0xffff9468;
+                colorB = *(f32*)&gp0xffff946c;
+                manager->windowTask =
+                    func_001a2200(task, &rect, (RwRGBA*)&colorA,
+                                  (RwRGBA*)&colorB);
+                ((volatile u8*)&uGpffff94c4)[0] = 0xe3;
+                ((volatile u8*)&uGpffff94c4)[1] = 0x4a;
+                ((volatile u8*)&uGpffff94c4)[2] = 0;
+                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
             }
             else if (manager->mode == 2)
             {
-                colorA = *(RwRGBA*)&gp0xffff9470;
-                colorB = *(RwRGBA*)&gp0xffff9474;
+                RwRect rect;
+                f32 colorA;
+                f32 colorB;
+
+                rect.x = manager->x;
+                rect.y = manager->y;
+                rect.w = manager->width;
+                rect.h = manager->height;
+                colorA = *(f32*)&gp0xffff9470;
+                colorB = *(f32*)&gp0xffff9474;
+                manager->windowTask =
+                    func_001a2200(task, &rect, (RwRGBA*)&colorA,
+                                  (RwRGBA*)&colorB);
+                ((volatile u8*)&uGpffff94c4)[0] = 0x54;
+                ((volatile u8*)&uGpffff94c4)[1] = 0;
+                ((volatile u8*)&uGpffff94c4)[2] = 0;
+                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
             }
             else if (manager->mode == 3)
             {
-                colorA = *(RwRGBA*)&gp0xffff9478;
-                colorB = *(RwRGBA*)&gp0xffff947c;
+                RwRect rect;
+                f32 colorA;
+                f32 colorB;
+
+                rect.x = manager->x;
+                rect.y = manager->y;
+                rect.w = manager->width;
+                rect.h = manager->height;
+                colorA = *(f32*)&gp0xffff9478;
+                colorB = *(f32*)&gp0xffff947c;
+                manager->windowTask =
+                    func_001a2200(task, &rect, (RwRGBA*)&colorA,
+                                  (RwRGBA*)&colorB);
+                ((volatile u8*)&uGpffff94c4)[0] = 0x40;
+                ((volatile u8*)&uGpffff94c4)[1] = 0x40;
+                ((volatile u8*)&uGpffff94c4)[2] = 0x40;
+                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
             }
-            manager->windowTask =
-                func_001a2200(task, &rect, &colorA, &colorB);
+            else
+            {
+                RwRect rect;
+                f32 colorA;
+                f32 colorB;
+
+                rect.x = manager->x;
+                rect.y = manager->y;
+                rect.w = manager->width;
+                rect.h = manager->height;
+                colorA = *(f32*)&gp0xffff9460;
+                colorB = *(f32*)&gp0xffff9464;
+                manager->windowTask =
+                    func_001a2200(task, &rect, (RwRGBA*)&colorA,
+                                  (RwRGBA*)&colorB);
+                ((volatile u8*)&uGpffff94c4)[0] = 0xe3;
+                ((volatile u8*)&uGpffff94c4)[1] = 0x4a;
+                ((volatile u8*)&uGpffff94c4)[2] = 0;
+                ((volatile u8*)&uGpffff94c4)[3] = 0xff;
+            }
+
             manager->renderData = func_001e78c0(1, 0x48);
             manager->colorData = func_00494be0();
-            if (manager->renderData != NULL && manager->colorData != NULL)
-            {
-                KWindow_SetManagerRender(manager);
-            }
+            KWindow_SetManagerRender(manager);
             manager->state++;
             break;
+        }
 
         case 2:
+        {
             if (manager->windowTask == NULL ||
                 func_001a2390(manager->windowTask) != 1)
             {
                 if (manager->windowTask != NULL)
                 {
-                    func_001a23e0(manager->windowTask, &rect);
+                    func_001a23e0(manager->windowTask,
+                                  (RwRect*)&manager->x);
                 }
                 manager->state++;
             }
             break;
+        }
 
         case 3:
+        {
+            KWindowEntry* entry;
+            u16 input;
+
             if ((DAT_007e094c & 1) != 0)
             {
                 uGpffffb450++;
@@ -1153,6 +1164,10 @@ void* func_001a2a80(KwlnTask* task)
                 KWindow_MoveUp(manager);
             }
             func_001a2720(task);
+            break;
+        }
+
+        case 4:
             break;
 
         case 5:
