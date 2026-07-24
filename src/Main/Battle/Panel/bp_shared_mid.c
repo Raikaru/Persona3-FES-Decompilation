@@ -63,15 +63,16 @@ void func_00208b20(void)
 void func_00208b30(void)
 {
     u8* work;
+    void* initialUnit;
+    void* unit;
+    u32 unitIds[0x14];
     u32 texture1;
     u32 texture5;
     s32 count;
     u8* battleWork;
-    BtlUnit* unit;
-    BtlUnit* player;
-    BtlUnit* enemy;
-    u32 unitIds[0x14];
     s32 i;
+    s32 slotIndex;
+    s32 renderIndex;
     s32 j;
     u8* slot;
 
@@ -82,39 +83,39 @@ void func_00208b30(void)
     texture5 = func_0021c3f0(5);
     count = 0;
     for (;;) {
-        unit = (BtlUnit*)btlOrderGetUnitByIdx((u16)count);
-        if (unit == NULL)
+        initialUnit = btlOrderGetUnitByIdx((u16)count);
+        if (initialUnit == NULL)
             break;
         K_ASSERT(count < 0x14, 0x6f);
-        if (datCalcIsDead(unit->datUnit, 0) != 0)
+        if (datCalcIsDead(*(void**)((u8*)initialUnit + 0xa2c), 0) != 0)
             K_ASSERT(0, 0x70);
-        unitIds[count] = unit->id;
+        unitIds[count] = *(u32*)((u8*)initialUnit + 0xa8);
         count++;
     }
 
     i = 0;
-    player = *(BtlUnit**)(battleWork + 0x150);
-    while (player != NULL) {
-        if (((player->flags3 & 8) != 0) &&
-            (datCalcIsDead(player->datUnit, 0) == 0)) {
-            *(u32*)(work + i * 0x420 + 0x14) = player->id;
+    unit = *(void**)(battleWork + 0x150);
+    while (unit != NULL) {
+        if (((*(u32*)((u8*)unit + 0x9c) & 8) != 0) &&
+            (datCalcIsDead(*(void**)((u8*)unit + 0xa2c), 0) == 0)) {
+            *(u32*)(work + i * 0x420 + 0x14) = *(u32*)((u8*)unit + 0xa8);
             i++;
         }
-        player = player->next;
+        unit = *(void**)((u8*)unit + 0xa34);
     }
-    enemy = *(BtlUnit**)(battleWork + 0x158);
-    while (enemy != NULL) {
-        if (((enemy->flags3 & 8) != 0) &&
-            (datCalcIsDead(enemy->datUnit, 0) == 0)) {
-            *(u32*)(work + i * 0x420 + 0x14) = enemy->id;
+    unit = *(void**)(battleWork + 0x158);
+    while (unit != NULL) {
+        if (((*(u32*)((u8*)unit + 0x9c) & 8) != 0) &&
+            (datCalcIsDead(*(void**)((u8*)unit + 0xa2c), 0) == 0)) {
+            *(u32*)(work + i * 0x420 + 0x14) = *(u32*)((u8*)unit + 0xa8);
             i++;
         }
-        enemy = enemy->next;
+        unit = *(void**)((u8*)unit + 0xa34);
     }
     *(s32*)(work + 0x2950) = i;
-    i = 0;
-    while (i < *(s32*)(work + 0x2950)) {
-        slot = work + i * 0x420 + 0x10;
+    slotIndex = 0;
+    while (slotIndex < *(s32*)(work + 0x2950)) {
+        slot = work + slotIndex * 0x420 + 0x10;
         *(u32*)slot = 0;
         *(u32*)(slot + 0x218) = 0;
         j = 0;
@@ -133,15 +134,15 @@ void func_00208b30(void)
             j++;
         }
         K_ASSERT(*(u32*)(slot + 0x218) != 0, 0xaa);
-        unit = (BtlUnit*)func_001ff430(*(u32*)(slot + 4));
-        *(u32*)(slot + 8) = datCalcGetHp(unit->datUnit) & 0xffff;
-        *(u32*)(slot + 0xc) = datCalcGetMaxHp(unit->datUnit) & 0xffff;
-        i++;
+        unit = func_001ff430(*(u32*)(slot + 4));
+        *(u32*)(slot + 8) = datCalcGetHp(*(void**)((u8*)unit + 0xa2c)) & 0xffff;
+        *(u32*)(slot + 0xc) = datCalcGetMaxHp(*(void**)((u8*)unit + 0xa2c)) & 0xffff;
+        slotIndex++;
     }
 
-    i = 0;
-    while (i < *(s32*)(work + 0x2950)) {
-        slot = work + i * 0x420 + 0x10;
+    renderIndex = 0;
+    while (renderIndex < *(s32*)(work + 0x2950)) {
+        slot = work + renderIndex * 0x420 + 0x10;
         j = 0;
         while (j < *(s32*)(slot + 0x218)) {
             s32 value = *(s32*)(slot + 0x210 + j * 4);
@@ -157,8 +158,9 @@ void func_00208b30(void)
         }
         func_0021d3b0(slot + 0x310, func_0021cca0(texture1, 1));
         func_0021d3b0(slot + 0x210, func_0021cca0(texture5, 4));
-        i++;
+        renderIndex++;
     }
+
     func_00208f60();
     *(u32*)work |= 1;
 }
@@ -169,7 +171,6 @@ void func_00208f60(void)
     u8* work;
     u32 texture1;
     u32 texture5;
-    u8* base;
     u8* slot;
     BtlUnit* unit;
     void* frame;
@@ -194,10 +195,9 @@ void func_00208f60(void)
     texture1 = func_0021c3f0(1);
     texture5 = func_0021c3f0(5);
     for (i = 0; i < *(s32*)(work + 0x2950); i++) {
-        base = work + i * 0x420;
-        slot = base + 0x10;
-        *(u32*)(base + 0x10) &= ~1u;
-        unit = (BtlUnit*)func_001ff430(*(u32*)(base + 0x14));
+        slot = work + i * 0x420 + 0x10;
+        *(u32*)slot &= ~1u;
+        unit = (BtlUnit*)func_001ff430(*(u32*)(slot + 4));
         func_00280580(unit, &position);
         if (func_002d20a0(&position, &projected) == 0) {
             *(u32*)slot |= 1;
@@ -212,7 +212,7 @@ void func_00208f60(void)
         originY = y + 40.0f;
         originX2 = originX + 31.0f;
         for (j = 0; j < *(s32*)(slot + 0x218); j++) {
-            s32 value = *(s32*)(slot + 0x200 + j * 4);
+            s32 value = *(s32*)(slot + 0x210 + j * 4);
             u8* destination = slot + 0x10 + (j << 8);
 
             if (value == 0) {
