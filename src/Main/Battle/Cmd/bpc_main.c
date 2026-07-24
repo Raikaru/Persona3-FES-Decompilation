@@ -692,19 +692,26 @@ void FUN_00244770(void)
   if ((*sBpcWork & 2) != 0) {
     func_003b0170(sBpcWork[0x1b30]);
   }
-  for (iVar4 = 0; iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
-    iVar5 = func_001ff430(puVar2[iVar4 + 4]);
-    if (*(u8 *)(iVar5 + 0xa2) == '\0') {
+  for (iVar4 = 0; (int)iVar4 < (int)puVar2[2]; iVar4 = iVar4 + 1) {
+    iVar5 = func_001ff430(*(puVar2 + iVar4 + 4));
+    switch (*(u8 *)(iVar5 + 0xa2)) {
+    case 0:
       bppMain0020f8b0_u16(*(u16 *)(*(int *)(iVar5 + 0xa2c) + 2));
+      break;
     }
   }
-  if (((*puVar2 & 2) != 0) && (iVar4 = func_001ff430(puVar2[4]), *(u8 *)(iVar4 + 0xa2) == '\0')) {
-    iVar5 = bpMisc001ff5b0();
-    for (iVar7 = 0; iVar7 < (u32)iVar5; iVar7 = iVar7 + 1) {
-      sVar3 = (u16)func_001ff630(iVar7);
-      if (sVar3 != *(u16 *)(*(int *)(iVar4 + 0xa2c) + 2)) {
-        bppMain0020fb60_u16(0);
+  if ((*puVar2 & 2) != 0) {
+    iVar4 = func_001ff430(puVar2[4]);
+    switch (*(u8 *)(iVar4 + 0xa2)) {
+    case 0:
+      iVar5 = bpMisc001ff5b0();
+      for (iVar7 = 0; (int)iVar7 < iVar5; iVar7 = iVar7 + 1) {
+        sVar3 = (u16)func_001ff630(iVar7);
+        if (sVar3 != *(u16 *)(*(int *)(iVar4 + 0xa2c) + 2)) {
+          bppMain0020fb60_u16(0);
+        }
       }
+      break;
     }
   }
   uVar1 = puVar2[1];
@@ -1061,7 +1068,7 @@ void FUN_00245420(uint *param_1,uint param_2)
   if (lVar10 == 0) {
     *param_1 = *param_1 | 0x40;
   }
-  param_1[0x28f] = (uint)((float)param_1[0x28f] + 20.0f);
+  param_1[0x28f] = (uint)((float)param_1[0x28f] + 20.0);
   if (((*puVar1 & 2) != 0) && (param_1[2] == puVar1[4])) {
     *param_1 = *param_1 | 0x400;
   }
