@@ -9291,12 +9291,12 @@ u32 func_002ed360(u64 *param_1)
   u32 uVar20;
   u64 uVar21;
   u16 sVar22;
-  f32 uStack_48[3];
-  f32 uStack_38[3];
-  u32 uStack_28[3];
   u32 auStack_18 [4];
   u32 uStack_8;
   u32 uStack_4;
+  f32 uStack_48[3];
+  f32 uStack_38[3];
+  u32 uStack_28[3];
   
   puVar16 = (u64 *)param_1;
   uVar18 = *puVar16;
@@ -9385,16 +9385,17 @@ u32 func_002ed360(u64 *param_1)
   *(u64 *)(puVar7 + 8) = *(u64 *)(iVar6 + 0x58);
   *(u64 *)(puVar7 + 0x60) = uVar18;
   FUN_0027ed20(uVar15,0);
+  uVar14 = uVar15;
   uVar15 = FUN_002a3b40(0,1);
   puVar7 = (u8 *)uVar15;
   *puVar7 = 4;
-  *(u64 *)(puVar7 + 8) = *(u64 *)(iVar6 + 0x58);
+  *(u64 *)(puVar7 + 8) = *(u64 *)((u8 *)uVar14 + 0x58);
   *(u64 *)(puVar7 + 0x60) = uVar18;
   FUN_0027ed20(uVar15,0);
   uVar15 = FUN_002a3b40(param_1,0x11);
   puVar7 = (u8 *)uVar15;
   *puVar7 = 4;
-  *(u64 *)(puVar7 + 8) = *(u64 *)(iVar6 + 0x58);
+  *(u64 *)(puVar7 + 8) = *(u64 *)((u8 *)uVar14 + 0x58);
   *(u64 *)(puVar7 + 0x60) = uVar18;
   FUN_0027ed20(uVar15,0);
   sVar4 = FUN_002838d0(0x3f800000,*(u32 *)(puVar16 + 6),0x18);
