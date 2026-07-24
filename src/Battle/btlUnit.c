@@ -623,6 +623,7 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
 }
 
 // FUN_00280DA0 NONMATCHING
+#pragma optimization_level 3
 void func_00280da0(BtlUnit* unit)
 {
     f32* path;
@@ -763,6 +764,7 @@ void func_00280da0(BtlUnit* unit)
     }
     unit->flags2 |= BTLUNIT_FLAG2_DIRTY;
 }
+#pragma optimization_level 2
 
 // FUN_002812D0
 f32 func_002812d0(BtlUnit* unit, BtlUnit* target, s32 id)
@@ -3168,6 +3170,7 @@ void btlUnitInit00285d30Packet(void* work)
 }
 
 // FUN_00285880 NONMATCHING
+#pragma optimization_level 3
 u32 btlUnitUpdate00285d30Packet(void* work)
 {
     BtlUnitPacket00285d30* packet;
@@ -3286,6 +3289,7 @@ u32 btlUnitUpdate00285d30Packet(void* work)
     packet->counter = counter + 1;
     return 0;
 }
+#pragma optimization_level 2
 
 // FUN_00285d10
 void btlUnitDestroy00285d30Packet(void* work)
@@ -4835,6 +4839,7 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
 }
 
 // FUN_00286540 NONMATCHING
+#pragma optimization_level 3
 void func_00286540(void)
 {
     u32 genus;
@@ -5046,6 +5051,7 @@ void func_00286540(void)
         genus++;
     } while (genus < UNIT_GENUS_MAX);
 }
+#pragma optimization_level 2
 extern void func_00287ea0(BtlUnit* unit);
 extern u32 DAT_007cc970;
 void FUN_002878d0(BtlUnit* unit);
