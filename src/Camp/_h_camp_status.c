@@ -143,10 +143,10 @@ extern KwlnTask* DAT_007cdf5c;
 extern KwlnTask* DAT_007cdf60;
 extern s32 DAT_007cdf64;
 extern s32 DAT_007cdf68;
-extern s32 DAT_007e094e;
-extern s32 DAT_007e0958;
-extern s32 DAT_007e0952;
-extern s32 DAT_007e095a;
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0958;
+extern u16 DAT_007e0952;
+extern u16 DAT_007e095a;
 
 extern void FUN_0012b300(CampVec2 position, f32 scale, void* persona,
                          u8 alpha);
@@ -2606,8 +2606,6 @@ void* FUN_001311d0(KwlnTask* task)
     switch (*(u32*)work) {
     case 0:
     {
-        void* primaryRecords;
-        void* detailRecords;
         HCdvd* cdvd;
         DatPersonaWork* persona;
         s32 count;
@@ -2616,10 +2614,8 @@ void* FUN_001311d0(KwlnTask* task)
         if (h_campRequestRootMenuTransition(DAT_007cdf50, 4) == 0) {
             return KWLNTASK_CONTINUE;
         }
-        primaryRecords = func_0018b6d0(100);
-        detailRecords = func_0018b6d0(10);
-        *(void**)(work + 0x64) = primaryRecords;
-        *(void**)(work + 0x68) = detailRecords;
+        *(void**)(work + 0x64) = func_0018b6d0(100);
+        *(void**)(work + 0x68) = func_0018b6d0(10);
         cdvd = H_Cdvd_Request(D_005DB140, HCDVD_FILEARCHIVE);
         *(HCdvd**)(work + 0x50) = cdvd;
         count = 0;
