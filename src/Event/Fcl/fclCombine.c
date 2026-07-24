@@ -11,6 +11,8 @@ extern u8 DAT_006a4383[];
 extern char *PTR_s_fcl_combine_pak_006a4384[];
 extern u8 **PTR_FUN_006a4620;
 extern u8 **PTR_FUN_006a46b0;
+#pragma alias PTR_FUN_006a46b0_abs PTR_FUN_006a46b0
+extern u8 PTR_FUN_006a46b0_abs[];
 #pragma alias PTR_FUN_006a4620_abs PTR_FUN_006a4620
 extern u8 PTR_FUN_006a4620_abs[];
 extern u8 **PTR_FUN_006a46e0;
@@ -38,11 +40,11 @@ extern u8 DAT_007e094e;
 extern u8 DAT_007e0958;
 /* FUSION_PROTOS */
 void FUN_003d06d0(s32 param_1,s32 param_2,s32 param_3);
-void FUN_003d1df0(u64 param_1,int param_2);
+void FUN_003d1df0(s32 param_1,int param_2);
 u32 FUN_003d2200(void);
 void FUN_003d25c0(long param_1);
-u8 * FUN_003d2740(u64 param_1,u32 param_2);
-u32 FUN_003d2c10(long param_1);
+u8 * FUN_003d2740(s32 param_1,u32 param_2);
+u32 FUN_003d2c10(s32 param_1);
 #pragma alias FUN_003d2f00_result FUN_003d2f00
 extern s32 FUN_003d2f00_result(void);
 u64 FUN_003d32e0(u64 param_1,u32 param_2);
@@ -3838,7 +3840,7 @@ fclCombine_case9_s:
 // FUN_003D1DF0 NONMATCHING
 
 
-void FUN_003d1df0(u64 param_1,int param_2)
+void FUN_003d1df0(s32 param_1,int param_2)
 
 
 
@@ -4023,7 +4025,7 @@ u32 FUN_003d2200(void)
 
   u32 uVar2;
 
-  u64 uVar3;
+  s32 uVar3;
 
   long lVar4;
 
@@ -4369,7 +4371,7 @@ void FUN_003d25c0(long param_1)
 // FUN_003D2740 NONMATCHING
 
 
-u8 * FUN_003d2740(u64 param_1,u32 param_2)
+u8 * FUN_003d2740(s32 param_1,u32 param_2)
 
 
 
@@ -4389,9 +4391,9 @@ u8 * FUN_003d2740(u64 param_1,u32 param_2)
 
   int iVar7;
 
-  u64 uVar8;
-
-  long lVar9;
+  s32 uVar8;
+  
+  s32 lVar9;
 
   int iVar10;
 
@@ -4706,7 +4708,7 @@ LAB_003d29c0:
 // FUN_003D2C10 NONMATCHING
 
 
-u32 FUN_003d2c10(long param_1)
+u32 FUN_003d2c10(s32 param_1)
 
 
 
@@ -4714,7 +4716,7 @@ u32 FUN_003d2c10(long param_1)
 
   u32 uVar1;
 
-  u64 uVar2;
+  s32 uVar2;
 
   u8 *puVar3;
 
@@ -4730,7 +4732,7 @@ u32 FUN_003d2c10(long param_1)
 
   
 
-  ppuVar7 = PTR_FUN_006a46b0;
+  ppuVar7 = (u8 **)PTR_FUN_006a46b0_abs;
 
   puVar6 = auStack_30;
 
@@ -4739,23 +4741,14 @@ u32 FUN_003d2c10(long param_1)
   do {
 
     uVar1 = *(u64 *)ppuVar7;
-
     puVar3 = ppuVar7[2];
-
     puVar4 = ppuVar7[3];
-
     ppuVar7 = ppuVar7 + 4;
-
     iVar5 = iVar5 + -1;
-
     *puVar6 = (int)uVar1;
-
     puVar6[1] = (int)((u32)uVar1 >> 0x20);
-
     puVar6[2] = (u32)puVar3;
-
     puVar6[3] = (u32)puVar4;
-
     puVar6 = puVar6 + 4;
 
   } while (0 < iVar5);
@@ -4862,9 +4855,9 @@ u64 FUN_003d32e0(u64 param_1,u32 param_2)
   u32 uVar5;
 
   u64 uVar6;
-
+  
   long lVar7;
-
+  
   long lVar8;
 
   int iVar9;
