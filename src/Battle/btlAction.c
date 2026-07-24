@@ -363,9 +363,9 @@ void FUN_002899e0(BtlAction* action)
 // FUN_00289b50 NONMATCHING
 void FUN_00289b50(BtlAction* action)
 {
+    BtlPacket* movePacket;
     BtlAction* current;
     BtlUnit* unit;
-    BtlPacket* movePacket;
     BtlPacket* rotatePacket;
     RwV3d home;
     RwV3d target;
@@ -386,8 +386,10 @@ void FUN_00289b50(BtlAction* action)
         unit = current->unit;
         if (unit->genus != 0)
         {
+            FUN_002fd8a0(current);
             continue;
         }
+        
         if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
             btlUnit00282c60(unit) == 0 ||
             btlUnitIsMoving(unit) != 0 ||
@@ -398,15 +400,18 @@ void FUN_00289b50(BtlAction* action)
         {
             continue;
         }
-        if (current->currState != BTLACTION_STATE_TARGET &&
-            current->currState != BTLACTION_STATE_COMMAND &&
-            current->currState != BTLACTION_STATE_STANDBY)
+        switch (current->currState)
         {
-            continue;
-        }
-        if (btlActionIdleWeaponAnim(current) != 0 ||
-            (gBtl->flags & BTL_FLAG_MULTIENEMY) == 0)
-        {
+        case BTLACTION_STATE_STANDBY:
+        case BTLACTION_STATE_COMMAND:
+        case BTLACTION_STATE_TARGET:
+            if (btlActionIdleWeaponAnim(current) != 0 ||
+                (gBtl->flags & BTL_FLAG_MULTIENEMY) == 0)
+            {
+                continue;
+            }
+            break;
+        default:
             continue;
         }
         if (current->rand != 0)
@@ -414,11 +419,11 @@ void FUN_00289b50(BtlAction* action)
             current->rand--;
             continue;
         }
+
         if (current == action || unit->charId == 4)
         {
             continue;
         }
-
         btlUnit0027f7c0(unit, &home, NULL, &target);
         direction.x = target.x - home.x;
         direction.y = target.y - home.y;
