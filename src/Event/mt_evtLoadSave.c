@@ -157,6 +157,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
   u32 uStack_8;
 
   u32 uStack_4;
+  volatile u64 aSize[15];
 
   
 
@@ -177,12 +178,15 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
     iVar3 = FUN_00361ee0(1,param_3);
 
     iVar4 = FUN_00361f60(param_2,param_3);
+    aSize[1] = iVar4 * 0x3c;
 
     iVar11 = (int)param_3;
 
     iVar1 = *(int *)(iVar11 + 0x50);
+    aSize[0] = iVar1 * 0x20;
 
     lVar5 = FUN_00361ee0(2,param_3);
+    aSize[2] = lVar5 * 0x10;
 
     iVar15 = 0;
 
@@ -201,6 +205,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[3] = iVar15 * 0x30;
 
     iStack_60 = 0;
 
@@ -219,6 +224,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[4] = iStack_60 * 0x20;
 
     iVar16 = 0;
 
@@ -237,6 +243,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[5] = iVar16 * 0x28;
 
     iVar10 = 0;
 
@@ -255,6 +262,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[6] = iVar10 * 0x2c;
 
     iVar13 = 0;
 
@@ -273,6 +281,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[7] = iVar13 * 0x2c;
 
     iStack_70 = 0;
 
@@ -291,6 +300,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[8] = iStack_70 * 0x18;
 
     iStack_80 = 0;
 
@@ -309,6 +319,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[9] = iStack_80 * 0x24;
 
     iVar14 = 0;
 
@@ -327,6 +338,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[10] = iVar14 * 0x2c;
 
     iStack_90 = 0;
 
@@ -345,8 +357,10 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[12] = iStack_90 * 0x28;
 
     lVar6 = FUN_00361f20(param_3);
+    aSize[11] = lVar6 * 0x14;
 
     iStack_a0 = 0;
 
@@ -365,6 +379,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[13] = iStack_a0 * 0x40;
 
     iVar9 = 0;
 
@@ -387,6 +402,7 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
       }
 
     }
+    aSize[14] = iVar9 * 0x130;
 
     FUN_005225a8(0x6a0ae0,iVar9);
 
@@ -496,13 +512,13 @@ void FUN_0038dad0(u32 param_1,long param_2,u64 param_3)
 
         iStack_50 = iVar12 * 0x10 + 0x20;
 
-        iStack_1c = iStack_50 + iVar1 * 0x20 + 0x24 + iVar4 * 0x3c + (int)lVar5 * 0x10 +
+        iStack_1c = iStack_50 + (int)aSize[0] + 0x24 + (int)aSize[1] + (int)aSize[2] +
 
-                    iVar15 * 0x30 + iStack_60 * 0x20 + iVar16 * 0x28 + iVar10 * 0x2c + iVar13 * 0x2c
+                    (int)aSize[3] + (int)aSize[4] + (int)aSize[5] + (int)aSize[6] + (int)aSize[7]
 
-                    + iStack_70 * 0x18 + iStack_80 * 0x24 + iVar14 * 0x2c + (int)lVar6 * 0x14 +
+                    + (int)aSize[8] + (int)aSize[9] + (int)aSize[10] + (int)aSize[11] +
 
-                    iStack_90 * 0x28 + iStack_a0 * 0x40 + iVar9 * 0x130;
+                    (int)aSize[12] + (int)aSize[13] + (int)aSize[14];
 
       }
 
