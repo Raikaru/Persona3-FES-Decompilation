@@ -160,14 +160,15 @@ void sflRes0020d7d0(void* value)
     sSflRes = work;
 }
 
+// One commutative addu operand order remains compiler-selected; all data and call sequences match.
 // FUN_0020d820 NONMATCHING
 void sflRes0020d820(void)
 {
     u32* work;
-    s32 i;
-    u32 fileSize;
     void* file;
     void* copy;
+    u32 fileSize;
+    s32 i;
 
     K_ASSERT(sSflRes != NULL, 0x65);
     work = sSflRes;
@@ -192,11 +193,12 @@ void sflRes0020d820(void)
                         H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
                 case 3: {
+                    void* file;
                     void* caseCopy;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     caseCopy = (*DAT_00960178)(fileSize, 0x40000);
                     work[0x16] = (u32)caseCopy;
-                    memcpy((void*)work[0x16], file, fileSize);
+                    memcpy(caseCopy, file, *(volatile u32*)&fileSize);
                     break;
                 }
                 case 4:
@@ -208,12 +210,14 @@ void sflRes0020d820(void)
                 case 7:
                 case 8:
                 case 9:
-                case 10:
+                case 10: {
+                    void* file;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     K_ASSERT(i - 5 >= 0, 0xa2);
                     K_ASSERT(i - 5 < 6, 0xa3);
-                    work[i + 5] = (u32)bpTexCreateTmxRaster(file);
+                    *(work + 5 + i) = (u32)bpTexCreateTmxRaster(file);
                     break;
+                }
                 case 11:
                     func_0021b4a0(H_Cdvd_ArchiveGetFile(
                         (void*)work[0x1a], i, &fileSize));
@@ -222,18 +226,24 @@ void sflRes0020d820(void)
                     work[9] = (u32)bpTexCreateTmxRaster(
                         H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize));
                     break;
-                case 13:
+                case 13: {
+                    void* file;
+                    void* copy;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
-                    memcpy(copy, file, fileSize);
+                    memcpy(copy, file, *(volatile u32*)&fileSize);
                     work[0x1e] = (u32)copy;
                     break;
-                case 14:
+                }
+                case 14: {
+                    void* file;
+                    void* copy;
                     file = H_Cdvd_ArchiveGetFile((void*)work[0x1a], i, &fileSize);
                     copy = (*DAT_00960178)(fileSize, 0x40000);
-                    memcpy(copy, file, fileSize);
+                    memcpy(copy, file, *(volatile u32*)&fileSize);
                     work[0x1f] = (u32)copy;
                     break;
+                }
                 default:
                     K_ASSERT(0, 0xbb);
                     break;
@@ -314,12 +324,12 @@ void sflRes0020d820(void)
             case 0:
                 file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], k, &fileSize);
                 work[0x17] = (u32)(*DAT_00960178)(fileSize, 0x40000);
-                memcpy((void*)work[0x17], file, fileSize);
+                memcpy((void*)work[0x17], file, (s32)fileSize);
                 break;
             case 1:
                 file = H_Cdvd_ArchiveGetFile((void*)work[0x1c], k, &fileSize);
                 work[0x18] = (u32)(*DAT_00960178)(fileSize, 0x40000);
-                memcpy((void*)work[0x18], file, fileSize);
+                memcpy((void*)work[0x18], file, (s32)fileSize);
                 break;
             }
             H_Cdvd_Destroy((void*)work[0x1c]);
