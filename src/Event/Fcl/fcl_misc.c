@@ -253,10 +253,9 @@ u32 fclMisc003c9c10(u32 param_1, void* param_2, void* param_3)
 // FUN_003C8400 NONMATCHING
 u32 FUN_003c8400(u32 param_1,int param_2)
 {
-  int iVar1;
   u32 lVar2;
-  int iVar3;
   int iVar4;
+  int iVar3;
   u32 *puVar5;
   int iVar6;
 
@@ -267,9 +266,8 @@ u32 FUN_003c8400(u32 param_1,int param_2)
     FUN_0019d3f0("fclMisc.c",0x397);
   }
   iVar6 = (int)param_1;
-  iVar1 = iVar6 + param_2 * 0xc;
-  puVar5 = (u32 *)(iVar1 + 0x1c);
-  if ((*(u32 *)(iVar1 + 0x1c) & 2) == 0) {
+  puVar5 = (u32 *)(iVar6 + param_2 * 0xc + 0x1c);
+  if ((*puVar5 & 2) == 0) {
     for (iVar3 = *(int *)(*(int *)(iVar6 + 0x18) + 4);
          iVar3 != 0; iVar3 = *(int *)(iVar3 + 0x10)) {
       iVar4 = *(int *)(iVar3 + 0x14);
@@ -278,7 +276,7 @@ u32 FUN_003c8400(u32 param_1,int param_2)
     iVar4 = 0;
 LAB_003c84bc:
     if (iVar4 == 0) {
-      *(int *)(iVar1 + 0x20) = param_2;
+      *(int *)((int)puVar5 + 4) = param_2;
       lVar2 = FUN_003c4910(*(int *)(iVar6 + 0x18),
                            *(u16 *)(*(int *)(iVar6 + 0x18) + 0x10) + 1, 0);
       if (lVar2 == 0) {
@@ -288,7 +286,7 @@ LAB_003c84bc:
       return 1;
     }
   }
-  if ((*(u32 *)(iVar1 + 0x1c) & 4) != 0) {
+  if ((*puVar5 & 4) != 0) {
     *puVar5 = *puVar5 & 0xfffffffb;
   }
   return 0;
