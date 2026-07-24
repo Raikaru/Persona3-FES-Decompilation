@@ -189,6 +189,7 @@ static u32 kclump_scale_color(u32 component, f32 scale)
     return (u32)value;
 }
 
+// FUN_001a74b0 MATCHING
 static void* kclump_alpha_callback(void* material, void* data)
 {
     if (*(u8*)((u8*)material + 7) == 0xff)
@@ -312,9 +313,9 @@ u32 func_001a6740(void* geometry, const char* name)
     u32 result;
 
     result = 0;
-    for (resourceIndex = 0; resourceIndex < (s32)kclump_word(geometry, 0x14); resourceIndex++)
+    for (resourceIndex = 0; resourceIndex < (s32)*(u32*)((u8*)geometry + 0x14); resourceIndex++)
     {
-        material = *(void**)((u8*)kclump_word(geometry, 0x10) + resourceIndex * 4);
+        material = *(void**)(*(u32*)((u8*)geometry + 0x10) + resourceIndex * 4);
         for (materialIndex = 0; materialIndex < RpMaterialGetUserDataArrayCount((RpMaterial*)material); materialIndex++)
         {
             userData = RpMaterialGetUserDataArray((RpMaterial*)material, materialIndex);
@@ -755,6 +756,7 @@ u32 func_001a76e0(const u32* state)
     return state[8] != 0;
 }
 
+
 // The retail entry uses the opposite null-state branch layout; MWCC keeps the equivalent beqz form.
 // The nine volatile list traversals and final state release are otherwise instruction-identical.
 // FUN_001a7710 NONMATCHING
@@ -857,6 +859,7 @@ void func_001a7710(u32* state)
 
     (*(void (**)(void*))jtbl_0096017C_abs)((void*)state);
 }
+
 
 // FUN_001a7910 NONMATCHING
 void func_001a7910(void* object, f32* scale)
