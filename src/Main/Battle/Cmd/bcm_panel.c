@@ -3286,24 +3286,21 @@ void FUN_0022c850(u32* object)
     object[0] = 0;
 }
 
+
 // FUN_0022C8A0 NONMATCHING
 void FUN_0022c8a0(u32* object_param)
 {
-    u32 styleTable;
     u8* object;
     u32 table3;
     u32 table5;
-    void* resource;
     f32 rect[4];
     u8 color[4];
-    u8 color1[4];
-    u8 color2[4];
-    u8 color3[4];
+    u32 color1;
+    u32 color2;
+    u32 color3;
     u8 colorTmp[4];
     s32 s0;
     f32 pos1X, pos1Y;
-    f32 posAX, posAY;
-    f32 posBX, posBY;
     f32 pos2X, pos2Y;
     f32 pos3X, pos3Y;
 
@@ -3311,7 +3308,8 @@ void FUN_0022c8a0(u32* object_param)
     K_ASSERT((*(u32*)object & 1) != 0, 0x1cd);
     table3 = FUN_0021c3f0(3);
     table5 = FUN_0021c3f0(5);
-    styleTable = FUN_0021c450(*(u16*)(object + 4));
+    {
+        u32 styleTable = FUN_0021c450(*(u16*)(object + 4));
 
     if (*(u32*)object & 0x20) {
         if (*(s32*)(object + 0x844) < 0x10) {
@@ -3369,34 +3367,28 @@ void FUN_0022c8a0(u32* object_param)
     pos1X = *(f32*)(object + 0x520) + *(f32*)(object + 0x510) + *(f32*)(object + 0x518);
     pos1Y = *(f32*)(object + 0x524) + *(f32*)(object + 0x514) + *(f32*)(object + 0x51c);
 
+    pos2X = 0.0f;
+    pos2Y = 0.0f;
+    pos3X = 0.0f;
+    pos3Y = 0.0f;
     if (*(u32*)object & 0x20) {
-        s32 counter = *(s32*)(object + 0x844);
-        if (counter < 0xb) {
-            f32 magA = D_0068E380[counter];
-            f32 magB = D_0068E3BC[counter];
-            posAX = magA * cosf(D_007CB0D4);
-            posAY = -magA * sinf(D_007CB0D4);
-            posBX = magB * cosf(D_007CB0D4);
-            posBY = -magB * sinf(D_007CB0D4);
+        if (*(s32*)(object + 0x844) < 0xb) {
+            f32 magA = D_0068E380[*(s32*)(object + 0x844)];
+            pos2X = magA * cosf(D_007CB0D4);
+            pos2Y = -magA * sinf(D_007CB0D4);
         } else {
-            f32 magB;
-            posAX = 0.0f;
-            posAY = 0.0f;
-            K_ASSERT((counter - 1) < 0x10, 0x233);
-            magB = D_0068E3BC[counter];
-            posBX = magB * cosf(D_007CB0D4);
-            posBY = -magB * sinf(D_007CB0D4);
+            K_ASSERT((*(s32*)(object + 0x844) - 1) < 0x10, 0x233);
         }
-    } else {
-        posAX = 0.0f;
-        posAY = 0.0f;
-        posBX = 0.0f;
-        posBY = 0.0f;
+        {
+            f32 magB = D_0068E3BC[*(s32*)(object + 0x844)];
+            pos3X = magB * cosf(D_007CB0D4);
+            pos3Y = -magB * sinf(D_007CB0D4);
+        }
     }
-    pos2X = pos1X + posAX;
-    pos2Y = pos1Y + posAY;
-    pos3X = pos1X + posBX;
-    pos3Y = pos1Y + posBY;
+    pos2X += pos1X;
+    pos2Y += pos1Y;
+    pos3X += pos1X;
+    pos3Y += pos1Y;
 
     if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
         color[0] = 0xff;
@@ -3434,10 +3426,7 @@ void FUN_0022c8a0(u32* object_param)
         color[2] = 0xff;
         color[3] = 0xff;
     }
-    color1[0] = color[0];
-    color1[1] = color[1];
-    color1[2] = color[2];
-    color1[3] = color[3];
+    color1 = *(u32*)color;
 
     if (*(u32*)object & 8) {
         color[0] = 0xff;
@@ -3457,10 +3446,7 @@ void FUN_0022c8a0(u32* object_param)
         color[2] = 0xff;
         color[3] = 0xff;
     }
-    color2[0] = color[0];
-    color2[1] = color[1];
-    color2[2] = color[2];
-    color2[3] = color[3];
+    color2 = *(u32*)color;
 
     if ((*(u32*)object & 0x20) && *(s32*)(object + 0x844) < 0xb) {
         color[0] = 0xc8;
@@ -3492,17 +3478,16 @@ void FUN_0022c8a0(u32* object_param)
         color[2] = 0xff;
         color[3] = 0xff;
     }
-    color3[0] = color[0];
-    color3[1] = color[1];
-    color3[2] = color[2];
-    color3[3] = color[3];
+    color3 = *(u32*)color;
 
-    resource = (void*)FUN_0021cca0(styleTable, 0);
-    rect[0] = 30.0f + pos2X;
-    rect[1] = 15.0f + pos2Y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0x10, rect);
+    {
+        void* resource = (void*)FUN_0021cca0(styleTable, 0);
+        rect[0] = 30.0f + pos2X;
+        rect[1] = 15.0f + pos2Y;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0x10, rect);
+    }
 
     if (*(u32*)object & 4) {
         s32 idx = *(s32*)(object + 0x830);
@@ -3521,25 +3506,27 @@ void FUN_0022c8a0(u32* object_param)
     }
     FUN_0021d950(object + 0x10, colorTmp);
 
-    resource = (void*)FUN_0021cca0(styleTable, 1);
-    rect[0] = pos2X;
-    rect[1] = pos2Y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0x110, rect);
-    FUN_0021d8e0(object + 0x210, rect);
+    {
+        void* resource = (void*)FUN_0021cca0(styleTable, 1);
+        rect[0] = pos2X;
+        rect[1] = pos2Y;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0x110, rect);
+        FUN_0021d8e0(object + 0x210, rect);
+        rect[0] = 30.0f + pos3X;
+        rect[1] = 15.0f + pos3Y;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0x310, rect);
+        FUN_0021d8e0(object + 0x410, rect);
+    }
+    }
 
-    rect[0] = 30.0f + pos3X;
-    rect[1] = 15.0f + pos3Y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0x310, rect);
-    FUN_0021d8e0(object + 0x410, rect);
-
-    FUN_0021d950(object + 0x110, color1);
-    FUN_0021d950(object + 0x310, color2);
-    FUN_0021d950(object + 0x210, color3);
-    FUN_0021d950(object + 0x410, color3);
+    FUN_0021d950(object + 0x110, (u8*)&color1);
+    FUN_0021d950(object + 0x310, (u8*)&color2);
+    FUN_0021d950(object + 0x210, (u8*)&color3);
+    FUN_0021d950(object + 0x410, (u8*)&color3);
 
 
     rect[0] = 102.0f + pos1X + 2.0f;
@@ -3586,21 +3573,25 @@ void FUN_0022c8a0(u32* object_param)
         }
     }
 
-    resource = (void*)FUN_0021cca0(table5, 2);
-    rect[0] = 65.0f + pos1X;
-    rect[1] = 83.0f + pos1Y;
-    rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x834)) /
-                     *(s32*)(object + 0x838));
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0xe60, rect);
+    {
+        void* resource = (void*)FUN_0021cca0(table5, 2);
+        rect[0] = 65.0f + pos1X;
+        rect[1] = 83.0f + pos1Y;
+        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x834)) /
+                         *(s32*)(object + 0x838));
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0xe60, rect);
+    }
 
-    resource = (void*)FUN_0021cca0(table5, 3);
-    rect[0] = pos1X;
-    rect[1] = 89.0f + pos1Y;
-    rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x83c)) /
-                     *(s32*)(object + 0x840));
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0xf60, rect);
+    {
+        void* resource = (void*)FUN_0021cca0(table5, 3);
+        rect[0] = pos1X;
+        rect[1] = 89.0f + pos1Y;
+        rect[2] = (f32)((*(s32*)((u8*)resource + 0xc) * *(s32*)(object + 0x83c)) /
+                         *(s32*)(object + 0x840));
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0xf60, rect);
+    }
 
     if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
         colorTmp[0] = 0xd7;
@@ -3617,12 +3608,14 @@ void FUN_0022c8a0(u32* object_param)
 
     if (*(u32*)object & 2) {
         u32 resourceId = FUN_0022e850(*(u32*)(object + 0x528));
-        resource = (void*)FUN_0021cca0(table3, resourceId);
-        rect[0] = 116.0f + pos1X;
-        rect[1] = 43.0f + pos1Y;
-        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-        FUN_0021d8e0(object + 0x530, rect);
+        {
+            void* resource = (void*)FUN_0021cca0(table3, resourceId);
+            rect[0] = 116.0f + pos1X;
+            rect[1] = 43.0f + pos1Y;
+            rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+            rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+            FUN_0021d8e0(object + 0x530, rect);
+        }
 
         s0 = 0;
         if ((*(u32*)object & 4) && *(s32*)(object + 0x830) == 8) {
@@ -3661,15 +3654,17 @@ void FUN_0022c8a0(u32* object_param)
         }
         FUN_0021d950(object + 0x530, colorTmp);
     }
-    resource = (void*)FUN_0021cca0(table3, 0xa);
-    rect[0] = 60.0f + pos1X;
-    rect[1] = 79.0f + pos1Y;
-    rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
-    rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
-    FUN_0021d8e0(object + 0x630, rect);
-    FUN_0021d8e0(object + 0x730, rect);
-    FUN_0021d950(object + 0x630, color1);
-    FUN_0021d950(object + 0x730, color3);
+    {
+        void* resource = (void*)FUN_0021cca0(table3, 0xa);
+        rect[0] = 60.0f + pos1X;
+        rect[1] = 79.0f + pos1Y;
+        rect[2] = (f32)*(s32*)((u8*)resource + 0xc);
+        rect[3] = (f32)*(s32*)((u8*)resource + 0x10);
+        FUN_0021d8e0(object + 0x630, rect);
+        FUN_0021d8e0(object + 0x730, rect);
+    }
+    FUN_0021d950(object + 0x630, (u8*)&color1);
+    FUN_0021d950(object + 0x730, (u8*)&color3);
 
     if (*(u32*)object & 4) {
         FUN_0022fa80((u32*)object);
