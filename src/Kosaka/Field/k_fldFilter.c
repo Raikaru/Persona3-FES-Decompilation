@@ -155,6 +155,12 @@ void K_FldFilter_Init()
 #pragma schedule on
 void K_FldFilter_Main()
 {
+    s32 current;
+    s32 previous;
+    s32 x;
+    s32 y;
+    s32 vertex;
+    s32 channel;
     u32 packed0;
     u32 packed1;
     u32 packed2;
@@ -175,17 +181,10 @@ void K_FldFilter_Main()
     s32 oldRed3;
     s32 oldGreen3;
     s32 oldBlue3;
-    u8 color[16];
     void (**stateFunc)(u32 state, u32 value);
     RwIm2DVertex* vertices;
     u8* currentFrame;
     u8* oldFrame;
-    s32 current;
-    s32 previous;
-    s32 x;
-    s32 y;
-    s32 vertex;
-    s32 channel;
     s32 currentAlpha0;
     s32 currentAlpha1;
     s32 currentAlpha2;
@@ -206,6 +205,7 @@ void K_FldFilter_Main()
     s32 red3;
     s32 green3;
     s32 blue3;
+    u8 color[16];
     f32 blend;
     f32 inverseBlend;
     f32 value;
@@ -235,6 +235,7 @@ void K_FldFilter_Main()
     (*stateFunc)(7, 2);
     (*stateFunc)(1, 0);
     (*stateFunc)(0x0c, 1);
+    func_004d7f60(3, 0x71801);
     switch (*(u32*)((u8*)sFilterFile + current * 0x124))
     {
         case 0: func_004d7f60(2, 0x44); break;
@@ -274,8 +275,8 @@ void K_FldFilter_Main()
             if (currentAlpha0 > 0xff) currentAlpha0 = 0xff;
             if (currentAlpha1 < 0) currentAlpha1 = 0;
             if (currentAlpha1 > 0xff) currentAlpha1 = 0xff;
-            if (currentAlpha3 < 0) currentAlpha3 = 0;
-            if (currentAlpha3 > 0xff) currentAlpha3 = 0xff;
+            if (currentAlpha2 < 0) currentAlpha2 = 0;
+            if (currentAlpha2 > 0xff) currentAlpha2 = 0xff;
 
             if (sFilterBlend < 1.0f)
             {
@@ -304,8 +305,8 @@ void K_FldFilter_Main()
                 if (oldAlpha0 > 0xff) oldAlpha0 = 0xff;
                 if (oldAlpha1 < 0) oldAlpha1 = 0;
                 if (oldAlpha1 > 0xff) oldAlpha1 = 0xff;
-                if (oldAlpha3 < 0) oldAlpha3 = 0;
-                if (oldAlpha3 > 0xff) oldAlpha3 = 0xff;
+                if (oldAlpha2 < 0) oldAlpha2 = 0;
+                if (oldAlpha2 > 0xff) oldAlpha2 = 0xff;
 
 #define FLDFILTER_BLEND_CHANNEL(current_, old_) \
                 ((s32)((f32)(current_) * blend + (f32)(old_) * inverseBlend))
@@ -348,7 +349,10 @@ void K_FldFilter_Main()
                 currentAlpha3 = (currentAlpha3 * FLDFILTER_ALPHA) / 0xff;
             }
 
-            memset(color, 0, sizeof(color));
+            for (channel = 0; channel < 0x10; channel++)
+            {
+                color[channel] = 0;
+            }
             color[0] = (u8)red0;
             color[1] = (u8)green0;
             color[2] = (u8)blue0;
@@ -364,6 +368,7 @@ void K_FldFilter_Main()
             color[12] = (u8)red3;
             color[13] = (u8)green3;
             color[14] = (u8)blue3;
+            color[15] = (u8)currentAlpha3;
             vertices = ((FilterQuad*)sFilterGrid_abs)[y * FLDFILTER_GRID_WIDTH + x].vert;
 
             for (vertex = 0; vertex < 4; vertex++)
