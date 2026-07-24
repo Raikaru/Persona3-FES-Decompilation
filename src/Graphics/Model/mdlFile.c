@@ -1314,6 +1314,22 @@ extern u32 DAT_009572c4;
 extern u32 DAT_009572c8;
 extern u32 DAT_009572cc;
 extern u32 DAT_009572d0;
+#pragma alias DAT_009572b0_f32 DAT_009572b0
+extern f32 DAT_009572b0_f32;
+#pragma alias DAT_009572b4_f32 DAT_009572b4
+extern f32 DAT_009572b4_f32;
+#pragma alias DAT_009572b8_f32 DAT_009572b8
+extern f32 DAT_009572b8_f32;
+#pragma alias DAT_009572bc_f32 DAT_009572bc
+extern f32 DAT_009572bc_f32;
+#pragma alias DAT_009572c0_f32 DAT_009572c0
+extern f32 DAT_009572c0_f32;
+#pragma alias DAT_009572c4_f32 DAT_009572c4
+extern f32 DAT_009572c4_f32;
+#pragma alias DAT_009572c8_f32 DAT_009572c8
+extern f32 DAT_009572c8_f32;
+#pragma alias DAT_009572cc_f32 DAT_009572cc
+extern f32 DAT_009572cc_f32;
 extern u32 DAT_009572e0;
 extern u32 DAT_009572e4;
 extern u32 DAT_009572e8;
@@ -57332,6 +57348,8 @@ void FUN_00355f30(int *param_1)
 
   int *piVar2;
 
+  float *pfVar2;
+
   u32 *pfVar3;
 
   u64 uVar4;
@@ -57379,6 +57397,8 @@ void FUN_00355f30(int *param_1)
 
   piVar2 = (int *)param_1[0xc];
 
+  pfVar2 = (float *)piVar2;
+
   pfVar3 = (u32 *)param_1[0xe];
 
   iVar14 = param_1[10];
@@ -57404,7 +57424,7 @@ void FUN_00355f30(int *param_1)
 
           if (uVar1 == 0) {
 
-            unaff_f20 = 0.0;
+            unaff_f20 = 0.0f;
 
           }
 
@@ -57424,7 +57444,7 @@ void FUN_00355f30(int *param_1)
 
         if (uVar1 == 0) {
 
-          unaff_f20 = 1.0;
+          unaff_f20 = 1.0f;
 
         }
 
@@ -57500,23 +57520,23 @@ void FUN_00355f30(int *param_1)
 
       }
 
-      fVar14 = 1.0 - unaff_f20;
+      fVar14 = 1.0f - unaff_f20;
 
-      DAT_009572b0 = *pfVar6 * fVar14 + (float)piVar2[1] * unaff_f20;
+      DAT_009572b0_f32 = *pfVar6 * fVar14 + pfVar2[1] * unaff_f20;
 
-      DAT_009572b4 = pfVar6[1] * fVar14 + (float)piVar2[2] * unaff_f20;
+      DAT_009572b4_f32 = pfVar6[1] * fVar14 + pfVar2[2] * unaff_f20;
 
-      DAT_009572b8 = pfVar6[2] * fVar14 + (float)piVar2[3] * unaff_f20;
+      DAT_009572b8_f32 = pfVar6[2] * fVar14 + pfVar2[3] * unaff_f20;
 
-      DAT_009572bc = (float)piVar2[4] * unaff_f20 + pfVar6[3] * fVar14;
+      DAT_009572bc_f32 = pfVar2[4] * unaff_f20 + pfVar6[3] * fVar14;
 
-      DAT_009572c0 = pfVar6[4] * fVar14 + (float)piVar2[5] * unaff_f20;
+      DAT_009572c0_f32 = pfVar6[4] * fVar14 + pfVar2[5] * unaff_f20;
 
-      DAT_009572c4 = pfVar6[5] * fVar14 + (float)piVar2[6] * unaff_f20;
+      DAT_009572c4_f32 = pfVar6[5] * fVar14 + pfVar2[6] * unaff_f20;
 
-      DAT_009572c8 = pfVar6[6] * fVar14 + (float)piVar2[7] * unaff_f20;
+      DAT_009572c8_f32 = pfVar6[6] * fVar14 + pfVar2[7] * unaff_f20;
 
-      DAT_009572cc = (float)piVar2[8] * unaff_f20 + pfVar6[7] * fVar14;
+      DAT_009572cc_f32 = pfVar2[8] * unaff_f20 + pfVar6[7] * fVar14;
 
       DAT_009572d0 = 1;
 
@@ -57546,39 +57566,39 @@ void FUN_00355f30(int *param_1)
 
       uColor1 = pfVar3[2];
 
-      fVar13 = 1.0 - unaff_f20;
+      fVar13 = 1.0f - unaff_f20;
 
-      DAT_009572b0 = (float)piVar2[1] * fVar13 +
+      DAT_009572b0_f32 = pfVar2[1] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor1 & 0xff) * unaff_f20;
 
-      DAT_009572b4 = (float)piVar2[2] * fVar13 +
+      DAT_009572b4_f32 = pfVar2[2] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor1 >> 8 & 0xff) * unaff_f20;
 
-      DAT_009572b8 = (float)piVar2[3] * fVar13 +
+      DAT_009572b8_f32 = pfVar2[3] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor1 >> 0x10 & 0xff) * unaff_f20;
 
-      DAT_009572bc = DAT_007cae4c * (float)(uColor1 >> 0x18) * unaff_f20 +
+      DAT_009572bc_f32 = DAT_007cae4c * (float)(uColor1 >> 0x18) * unaff_f20 +
 
-                     (float)piVar2[4] * fVar13;
+                     pfVar2[4] * fVar13;
 
       uColor2 = pfVar3[3];
 
-      DAT_009572c0 = (float)piVar2[5] * fVar13 +
+      DAT_009572c0_f32 = pfVar2[5] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor2 & 0xff) * unaff_f20;
 
-      DAT_009572c4 = (float)piVar2[6] * fVar13 +
+      DAT_009572c4_f32 = pfVar2[6] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor2 >> 8 & 0xff) * unaff_f20;
 
-      DAT_009572c8 = (float)piVar2[7] * fVar13 +
+      DAT_009572c8_f32 = pfVar2[7] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor2 >> 0x10 & 0xff) * unaff_f20;
 
-      DAT_009572cc = (float)piVar2[8] * fVar13 +
+      DAT_009572cc_f32 = pfVar2[8] * fVar13 +
 
                      DAT_007cae4c * (float)(uColor2 >> 0x18) * unaff_f20;
 
@@ -57590,23 +57610,23 @@ void FUN_00355f30(int *param_1)
 
       uColor1 = pfVar3[2];
 
-      DAT_009572b0 = DAT_007cae4c * (float)(uColor1 & 0xff);
+      DAT_009572b0_f32 = DAT_007cae4c * (float)(uColor1 & 0xff);
 
-      DAT_009572b4 = DAT_007cae4c * (float)(uColor1 >> 8 & 0xff);
+      DAT_009572b4_f32 = DAT_007cae4c * (float)(uColor1 >> 8 & 0xff);
 
-      DAT_009572b8 = DAT_007cae4c * (float)(uColor1 >> 0x10 & 0xff);
+      DAT_009572b8_f32 = DAT_007cae4c * (float)(uColor1 >> 0x10 & 0xff);
 
-      DAT_009572bc = DAT_007cae4c * (float)(uColor1 >> 0x18);
+      DAT_009572bc_f32 = DAT_007cae4c * (float)(uColor1 >> 0x18);
 
       uColor2 = pfVar3[3];
 
-      DAT_009572c0 = DAT_007cae4c * (float)(uColor2 & 0xff);
+      DAT_009572c0_f32 = DAT_007cae4c * (float)(uColor2 & 0xff);
 
-      DAT_009572c4 = DAT_007cae4c * (float)(uColor2 >> 8 & 0xff);
+      DAT_009572c4_f32 = DAT_007cae4c * (float)(uColor2 >> 8 & 0xff);
 
-      DAT_009572c8 = DAT_007cae4c * (float)(uColor2 >> 0x10 & 0xff);
+      DAT_009572c8_f32 = DAT_007cae4c * (float)(uColor2 >> 0x10 & 0xff);
 
-      DAT_009572cc = DAT_007cae4c * (float)(uColor2 >> 0x18);
+      DAT_009572cc_f32 = DAT_007cae4c * (float)(uColor2 >> 0x18);
 
       DAT_009572d0 = 1;
 
