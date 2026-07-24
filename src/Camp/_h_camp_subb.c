@@ -123,6 +123,10 @@ static CampEquipmentDetailEntry* campDetailEntry(CampEquipmentDetailWork* work, 
 {
     return &work->entries[index];
 }
+static s16 campMenuCategoryValue(const CampEquipmentMenuWork* menu, s32 index)
+{
+    return *(const s16*)((const u8*)menu + 0x0c + index * 4);
+}
 
 typedef struct CampEquipmentDrawItem
 {
@@ -160,17 +164,7 @@ static u16 campEquipmentResourceItem(const void* resource)
     return ((const CampEquipmentResourceRecord*)resource)->itemId;
 }
 
-static f32 campTextureAsFloat(const CampEquipmentDrawItem* item)
-{
-    union
-    {
-        u32 bits;
-        f32 value;
-    } textureValue;
-
-    textureValue.bits = (u32)item->texture;
-    return textureValue.value;
-}
+#define campTextureAsFloat(item) (*(f32*)&(item)->texture)
 
 static f32 campPackedX(u64 position)
 {
@@ -220,6 +214,16 @@ extern s8 FUN_0017bfa0(u16 id, u8 field);
 #pragma alias campDrawSprite FUN_001159f0
 extern void campDrawSprite(void* parent, void* resource, s32 frame,
                            u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteDigit FUN_00115ad0
+extern void campDrawSpriteDigit(void* parent, void* resource, s32 frame,
+                                u32 alpha, f32 x, f32 y, f32 scale);
+extern void campDrawGauge(f32 scale, f32 x, f32 y, u32 color,
+                          s32 width, s32 height);
+#pragma alias campDrawGauge FUN_00113a30
+#pragma alias campDrawTextAlt FUN_003b32d0
+extern void campDrawTextAlt(s32 x, s32 y, u32 color, f32 scale,
+                            u32 font, u32 alignment, const char* text,
+                            u32 maxWidth, u32 shadow);
 #pragma alias campDrawSpriteAlt FUN_00115bc0
 extern void campDrawSpriteAlt(void* parent, void* resource, s32 frame,
                               u32 alpha, s32 red, s32 green, s32 blue,
@@ -2003,6 +2007,7 @@ void FUN_00145350(CampEquipmentPanelWork* work, s32 hoverSlot)
 void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
 {
     CampEquipmentMenuWork* menu = (CampEquipmentMenuWork*)workData;
+    register void* parent;
     DatPersonaWork* persona;
     void* resourceRecord;
     const char* resourceText;
@@ -2011,7 +2016,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     u32 textColor;
     u32 value;
     u32 denominator;
-    u16 statValue;
+    s16 statValue;
     s32 statIndex;
     s32 gaugeWidth;
     s32 selected;
@@ -2024,13 +2029,32 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
 
     switch (menuCode) {
     case 0:
+        campDrawSprite(parent, DAT_00833A50[0], 0x2b, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 1:
+        campDrawSprite(parent, DAT_00833A50[0], 0x27, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 2:
+        campDrawSprite(parent, DAT_00833A50[0], 0x21, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 3:
+        campDrawSprite(parent, DAT_00833A50[0], 0x24, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 4:
+        campDrawSprite(parent, DAT_00833A50[0], 0x22, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 5:
+        campDrawSprite(parent, DAT_00833A50[0], 0x24, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 6:
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[0], 0x23, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 7:
         FUN_001406d0(item->texture, *(u64*)&item->x, menu->detailList,
@@ -2050,8 +2074,9 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x15:
         persona = datPersonaGetHeroPersona((s16)(menuCode - 10));
         selected = menu->highlightedSlot == menuCode - 10;
-        FUN_001159f0(item->x + 50.0f, item->y + 3.0f, item->texture);
-
+        campDrawSprite(parent, DAT_00833A50[1], selected ? 8 : 7,
+                       item->alpha, item->x + 50.0f, item->y + 3.0f,
+                       campTextureAsFloat(item));
         resourceRecord = func_00170e90(DAT_007cdf94);
         resourceItemId = campEquipmentResourceItem(resourceRecord);
         hasAvailableBonus = 0;
@@ -2064,30 +2089,24 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
             }
         }
         if (hasAvailableBonus != 0) {
-            if (selected != 0) {
-                FUN_001159f0(item->x + 9.0f, item->y + 9.0f, item->texture);
-            } else {
-                FUN_001159f0(item->x + 8.0f, item->y + 8.0f, item->texture);
-            }
+            campDrawSprite(parent, DAT_00833A50[0], selected ? 0x26 : 0x25,
+                           item->alpha, item->x + (selected ? 9.0f : 8.0f),
+                           item->y + (selected ? 9.0f : 8.0f),
+                           campTextureAsFloat(item));
         }
-        if (selected != 0) {
-            if (persona->level > 9) {
-                H_Maestro_001120a0(1);
-                FUN_001159f0(item->x + 78.0f, item->y + 11.0f, item->texture);
-            }
-            H_Maestro_001120a0(1);
-            FUN_001159f0(item->x + 94.0f, item->y + 11.0f, item->texture);
-        } else {
-            if (persona->level > 9) {
-                H_Maestro_001120a0(2);
-                FUN_001159f0(item->x + 78.0f, item->y + 11.0f, item->texture);
-            }
-            H_Maestro_001120a0(2);
-            FUN_001159f0(item->x + 94.0f, item->y + 11.0f, item->texture);
+        if (persona->level > 9) {
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
+                                persona->level / 10 + 0xb, item->alpha,
+                                item->x + 78.0f, item->y + 11.0f,
+                                campTextureAsFloat(item));
         }
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(selected ? 1 : 2),
+                            persona->level % 10 + 0xb, item->alpha,
+                            item->x + 94.0f, item->y + 11.0f,
+                            campTextureAsFloat(item));
         resourceText = FUN_00173220(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
-        FUN_003b2cb0((void*)0x42c80000, (s32)(item->x + 120.0f - 10.0f),
+        campDrawText(100.0f, (s32)(item->x + 120.0f - 10.0f),
                      (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
                      0x10, 0);
         break;
@@ -2096,88 +2115,114 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
     case 0x32:
     case 0x3c:
         statIndex = (menuCode - 0x1e) / 10;
-        statValue = (u16)menu->categoryValues[statIndex];
-        resourceText = FUN_00177790((s16)statValue);
+        statValue = campMenuCategoryValue(menu, statIndex);
+        resourceText = FUN_00177790(statValue);
         textColor = (0xffU - item->alpha) | 0xffffff00;
         sprintf(textBuffer, DAT_007cb66c, resourceText);
-        FUN_003b32d0(item->texture, (s32)item->x, (s32)item->y + 3,
-                     textColor, 10, 1, textBuffer, 0x10, 0x78);
+        campDrawTextAlt((s32)item->x, (s32)item->y + 3, textColor,
+                        campTextureAsFloat(item), 10, 1, textBuffer, 0x10,
+                        0x78);
         break;
     case 0x1f:
     case 0x29:
     case 0x33:
     case 0x3d:
         statIndex = (menuCode - 0x1f) / 10;
-        statValue = (u16)menu->categoryValues[statIndex];
+        statValue = campMenuCategoryValue(menu, statIndex);
         value = FUN_0016c4f0(statValue) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
-            H_Maestro_001120a0(2);
-            FUN_00115ad0(item->x, item->y, item->texture);
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, item->alpha,
+                                item->x, item->y, campTextureAsFloat(item));
             value %= 100;
         }
         if (value > 9 || rank != 0) {
-            H_Maestro_001120a0(2);
-            FUN_00115ad0(item->x + 16.0f, item->y, item->texture);
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, item->alpha,
+                                item->x + 16.0f, item->y,
+                                campTextureAsFloat(item));
         }
-        H_Maestro_001120a0(2);
-        FUN_00115ad0(item->x + 32.0f, item->y, item->texture);
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, item->alpha,
+                            item->x + 32.0f, item->y,
+                            campTextureAsFloat(item));
         value = FUN_0016c4f0(statValue) & 0xffff;
         denominator = FUN_0016c5f0(statValue) & 0xffff;
         gaugeWidth = 0x4c - (value * 0x4c) / denominator;
-        FUN_001159f0(item->x + 50.0f, item->y + 2.0f, item->texture);
-        FUN_001159f0(item->x + 55.0f, item->y + 1.0f, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 0xd, item->alpha,
+                       item->x + 50.0f, item->y + 2.0f,
+                       campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       campTextureAsFloat(item));
         if (gaugeWidth != 0) {
-            FUN_00113a30(campTextureAsFloat(item) - 1.0f,
-                         item->x + 56.0f + (f32)(0x4c - gaugeWidth),
-                         item->y + 1.0f, 0xffffffffffffff00, gaugeWidth, 10);
+            campDrawGauge(campTextureAsFloat(item) - 1.0f,
+                          item->x + 56.0f + (f32)(0x4c - gaugeWidth),
+                          item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
         }
-        FUN_001159f0(item->x + 55.0f, item->y + 1.0f, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       campTextureAsFloat(item));
         break;
     case 0x20:
     case 0x2a:
     case 0x34:
     case 0x3e:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = (u16)menu->categoryValues[statIndex];
+        statValue = campMenuCategoryValue(menu, statIndex);
         value = FUN_0016c570(statValue) & 0xffff;
         rank = value > 99;
         if (rank != 0) {
-            H_Maestro_001120a0(2);
-            FUN_00115ad0(item->x, item->y, item->texture);
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 100 + 0xb, item->alpha,
+                                item->x, item->y, campTextureAsFloat(item));
             value %= 100;
         }
         if (value > 9 || rank != 0) {
-            H_Maestro_001120a0(2);
-            FUN_00115ad0(item->x + 16.0f, item->y, item->texture);
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                value / 10 + 0xb, item->alpha,
+                                item->x + 16.0f, item->y,
+                                campTextureAsFloat(item));
         }
-        H_Maestro_001120a0(2);
-        FUN_00115ad0(item->x + 32.0f, item->y, item->texture);
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            value % 10 + 0xb, item->alpha,
+                            item->x + 32.0f, item->y,
+                            campTextureAsFloat(item));
         value = FUN_0016c570(statValue) & 0xffff;
         denominator = func_0016c670(statValue) & 0xffff;
         gaugeWidth = 0x4c - (value * 0x4c) / denominator;
-        FUN_001159f0(item->x + 50.0f, item->y + 2.0f, item->texture);
-        FUN_001159f0(item->x + 55.0f, item->y + 1.0f, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 0xd, item->alpha,
+                       item->x + 50.0f, item->y + 2.0f,
+                       campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       campTextureAsFloat(item));
         if (gaugeWidth != 0) {
-            FUN_00113a30(campTextureAsFloat(item) - 1.0f,
-                         item->x + 56.0f + (f32)(0x4c - gaugeWidth),
-                         item->y + 1.0f, 0xffffffffffffff00, gaugeWidth, 10);
+            campDrawGauge(campTextureAsFloat(item) - 1.0f,
+                          item->x + 56.0f + (f32)(0x4c - gaugeWidth),
+                          item->y + 1.0f, 0xffffff00U, gaugeWidth, 10);
         }
-        FUN_001159f0(item->x + 55.0f, item->y + 1.0f, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 0xb, item->alpha,
+                       item->x + 55.0f, item->y + 1.0f,
+                       campTextureAsFloat(item));
         break;
     case 0x21:
     case 0x2b:
     case 0x35:
     case 0x3f:
         statIndex = (menuCode - 0x20) / 10;
-        statValue = (u16)menu->categoryValues[statIndex];
+        statValue = campMenuCategoryValue(menu, statIndex);
         rank = FUN_0016c470(statValue);
         if (rank > 9) {
-            H_Maestro_001120a0(2);
-            FUN_00115ad0(item->x, item->y, item->texture);
+            campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                                rank / 10 + 0xb, item->alpha,
+                                item->x, item->y, campTextureAsFloat(item));
         }
-        H_Maestro_001120a0(2);
-        FUN_00115ad0(item->x + 16.0f, item->y, item->texture);
+        campDrawSpriteDigit(parent, H_Maestro_001120a0(2),
+                            rank % 10 + 0xb, item->alpha,
+                            item->x + 16.0f, item->y,
+                            campTextureAsFloat(item));
         resourceFlags = FUN_0016c970(statValue);
         if ((resourceFlags & 0x80000) != 0) {
             icon = 0xe;
@@ -2196,44 +2241,63 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
             }
         }
         if (icon != -1) {
-            FUN_001159f0(item->x + 44.0f, item->y - 6.0f, item->texture);
+            campDrawSprite(parent, DAT_00833A50[1], icon, item->alpha,
+                           item->x + 44.0f, item->y - 6.0f,
+                           campTextureAsFloat(item));
         }
         break;
     case 0x22:
     case 0x2c:
     case 0x36:
     case 0x40:
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 3, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 0x23:
     case 0x2d:
     case 0x37:
     case 0x41:
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 3, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 0x24:
     case 0x2e:
     case 0x38:
     case 0x42:
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[1], 4, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 0x46:
+        campDrawSprite(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x - 16.0f, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[2], 1, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        break;
     case 0x47:
-        FUN_001159f0(item->x - 16.0f, item->y, item->texture);
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x - 16.0f, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[2], 2, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 0x48:
-        FUN_001159f0(item->x, item->y, item->texture);
-        FUN_001159f0(item->x + 16.0f, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[2], 8, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[2], 3, item->alpha,
+                       item->x + 16.0f, item->y, campTextureAsFloat(item));
         break;
     case 0x49:
-        FUN_001159f0(item->x + 246.0f, item->y, item->texture);
-        FUN_001159f0(item->x + 322.0f, item->y, item->texture);
-        FUN_001159f0(item->x, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[0x55], 0, item->alpha,
+                       item->x + 246.0f, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[0x55], 3, item->alpha,
+                       item->x + 322.0f, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[0x55], 5, item->alpha,
+                       item->x, item->y, campTextureAsFloat(item));
         break;
     case 0x4a:
-        FUN_001159f0(item->x + 32.0f, item->y, item->texture);
-        FUN_001159f0(item->x + 108.0f, item->y, item->texture);
+        campDrawSprite(parent, DAT_00833A50[0x55], 0, item->alpha,
+                       item->x + 32.0f, item->y, campTextureAsFloat(item));
+        campDrawSprite(parent, DAT_00833A50[0x55], 3, item->alpha,
+                       item->x + 108.0f, item->y, campTextureAsFloat(item));
         break;
     default:
         break;
