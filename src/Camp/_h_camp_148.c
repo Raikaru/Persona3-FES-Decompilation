@@ -22,7 +22,7 @@ typedef union CampBits
 } CampBits;
 
 /* CONCAT44 packs IEEE-754 words, not numeric float casts. */
-static u32 campFloatBits(f32 value)
+static inline u32 campFloatBits(f32 value)
 {
     union { f32 f; u32 u; } bits;
     bits.f = value;
