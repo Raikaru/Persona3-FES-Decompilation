@@ -2166,7 +2166,18 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         alpha = 0xff - (frame * 0xff) / 5;
     }
     else {
+        drawPos.x = position.x;
         alpha = 0;
+    }
+    drawPos.y = position.y;
+    if (frame >= 15) {
+        s32 fade = frame - 15;
+        if (fade < 5) {
+            alpha = 0xff - (fade * 0xff) / 5;
+        }
+        else {
+            alpha = 0;
+        }
     }
     for (i = 0; i < 9; i++) {
         if (i <= frame) {
