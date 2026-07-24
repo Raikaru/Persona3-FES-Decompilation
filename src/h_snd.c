@@ -738,7 +738,6 @@ void H_Snd_FUN_00109ae0(s32 slotIndex, void* data0, u32 data0Size, void* data1,
     slot->data2 = data2;
     slot->data5 = data2Size;
 }
-
 // FUN_00109CA0
 u8 H_Snd_FUN_00109ca0(s16 slotIndex, s16 parameter)
 {
@@ -989,7 +988,7 @@ s32 func_0010a500(s16 channelIndex)
     }
 }
 
-// FUN_0010A5A0 NONMATCHING
+// FUN_0010A5A0
 void* H_Snd_StreamTaskUpdate(KwlnTask* task)
 {
     HsndStreamTaskWork* work;
@@ -997,49 +996,44 @@ void* H_Snd_StreamTaskUpdate(KwlnTask* task)
     s32 status;
 
     work = task->workData;
-    if (work->state == 2)
+    switch (work->state)
     {
-        goto done;
-    }
-    if (work->state == 1)
-    {
-        goto state1;
-    }
-    if (work->state == 0)
-    {
-        goto state0;
-    }
-    goto done;
+        case 0:
+            work->completedFrames = 0;
+            sprintf(filename, "sound/v%03d%03d.afs", work->namePart0, work->namePart1);
+            if (work->callback == NULL)
+            {
+                func_001024a0(work->source, filename, false, D_007E39F0);
+            }
+            else
+            {
+                func_001024a0(work->source, filename, false, work->callback);
+            }
+            work->state = 1;
+            break;
 
-state0:
-    work->completedFrames = 0;
-    sprintf(filename, "sound/v%03d%03d.afs", work->namePart0, work->namePart1);
-    if (work->callback == NULL)
-    {
-        func_001024a0(work->source, filename, false, D_007E39F0);
-    }
-    else
-    {
-        func_001024a0(work->source, filename, false, work->callback);
-    }
-    work->state = 1;
-    goto done;
+        case 1:
+            work->completedFrames++;
+            status = func_0053c268(work->source);
+            if (status == 4)
+            {
+                work->state = 0;
+            }
+            else if (status == 3)
+            {
+                printf("##### AFS =[%03d:%03d]  : TIME[%d] \n", work->namePart0,
+                       work->namePart1, work->completedFrames);
+                work->state = 2;
+            }
+            break;
 
-state1:
-    work->completedFrames++;
-    status = func_0053c268(work->source);
-    if (status == 4)
-    {
-        work->state = 0;
-    }
-    else if (status == 3)
-    {
-        printf("##### AFS =[%03d:%03d]  : TIME[%d] \n", work->namePart0,
-               work->namePart1, work->completedFrames);
-        work->state = 2;
+        case 2:
+            break;
+
+        default:
+            break;
     }
 
-done:
     return KWLNTASK_CONTINUE;
 }
 
