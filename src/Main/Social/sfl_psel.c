@@ -285,6 +285,7 @@ void sflPsel00260d20(void)
     FUN_00261480();
 }
 
+#pragma optimization_level 3
 // FUN_00260e00 NONMATCHING
 void sflPsel00260e00(void)
 {
@@ -375,8 +376,10 @@ void sflPsel00260e00(void)
     draw((u32*)((u8*)work + 0x610), 4, 0, 1, 2);
     draw(&work[0x184], 4, 0, 2, 3);
 }
+#pragma optimization_level 2
 
 extern void FUN_0021d890(void*, const void*);
+#pragma optimization_level 3
 
 // FUN_00261480 NONMATCHING
 void sflPsel00261480(void)
@@ -650,6 +653,7 @@ void sflPsel00261480(void)
     *(u32*)sflPselBytes(work, 0x8b8) = 0x437f0000;
     *(u32*)sflPselBytes(work, 0x8bc) = 0x437f0000;
 }
+#pragma optimization_level 2
 
 // FUN_00260a10
 void sflPsel00260a10(void)
@@ -879,6 +883,7 @@ void func_00215b00(void)
     *sSflPsel |= 1;
 }
 
+#pragma optimization_level 3
 // FUN_00215FC0 NONMATCHING
 void func_00215fc0(void)
 {
@@ -1166,6 +1171,7 @@ void func_00215fc0(void)
     }
     func_00217780();
 }
+#pragma optimization_level 2
 // FUN_00216800
 void func_00216800(void)
 {
@@ -1190,6 +1196,7 @@ u32 func_002168a0(void)
     return *sSflPsel & 0x20;
 }
 
+#pragma optimization_level 3
 // FUN_002168F0 NONMATCHING
 void func_002168f0(void)
 {
@@ -1288,6 +1295,7 @@ void func_002168f0(void)
         (*draw)((u32*)(work + 0x5f90), 4, 0, 2, 3);
     }
 }
+#pragma optimization_level 2
 
 // FUN_002170C0
 void func_002170c0(void)
@@ -1450,6 +1458,7 @@ void func_00217610(void)
         func_0021eac0(work + 0x5a40 + i * 0x100, func_0021ea00(0x28));
     }
 }
+#pragma optimization_level 3
 // FUN_00217780 NONMATCHING
 void func_00217780(void)
 {
@@ -1590,6 +1599,7 @@ void func_00217780(void)
     func_0021d950(work + 0x5d90, color);
     func_0021d950(work + 0x5e90, color);
 }
+#pragma optimization_level 2
 
 // FUN_002180B0
 u32 func_002180b0(u32 value)
@@ -1811,6 +1821,7 @@ void func_00218810(void* panel, const u32* entry, s32 selected)
     func_0021eac0(destination + 0x800, func_0021ea00(0x28));
 }
 
+#pragma optimization_level 3
 // FUN_00218B20 NONMATCHING
 void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
                    const f32* origin)
@@ -1929,6 +1940,8 @@ void func_00218b20(f32 alpha, void* panel, const u32* entry, s32 selected,
     func_003b0e54(*(u32*)(destination + 0x900), colorValue);
     (void)handle;
 }
+#pragma optimization_level 2
+#pragma optimization_level 3
 // FUN_00219370 NONMATCHING
 void func_00219370(void* panel, const u32* entry, s32 selected)
 {
@@ -2002,6 +2015,7 @@ void func_00219370(void* panel, const u32* entry, s32 selected)
     }
     func_003b1360(*(u32*)((u8*)panel + 0x900), 1, 0);
 }
+#pragma optimization_level 2
 
 // FUN_00219970
 void func_00219970(void)
