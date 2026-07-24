@@ -160,10 +160,11 @@ void func_0023f540(void)
     void* renderContext;
     f32 projected[2];
     f32 transform[4];
-    f32 layout[4];
+    f32 layout[8];
     f32 x;
     f32 y;
     f32 alpha;
+    f32 colorAlpha;
     f32 t;
     f32 vertical;
     f32 digitOffset;
@@ -276,10 +277,21 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x100, layout);
+                if (age < 0) {
+                    colorAlpha = 0.0f;
+                } else if (age < 8) {
+                    colorAlpha = (f32)age / 8.0f;
+                } else if (age < 30) {
+                    colorAlpha = 1.0f;
+                } else if (age < 34) {
+                    colorAlpha = 1.0f - (f32)(age - 30) / 4.0f;
+                } else {
+                    colorAlpha = 0.0f;
+                }
                 color[0] = 0xff;
                 color[1] = 0xff;
                 color[2] = 0xff;
-                color[3] = (u8)(u32)(255.0f * alpha);
+                color[3] = (u8)(u32)(255.0f * colorAlpha);
                 func_0021d950(slot + 0x100, color);
             }
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
@@ -314,10 +326,21 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x200, layout);
+                if (age < 0) {
+                    colorAlpha = 0.0f;
+                } else if (age < 8) {
+                    colorAlpha = (f32)age / 8.0f;
+                } else if (age < 30) {
+                    colorAlpha = 1.0f;
+                } else if (age < 34) {
+                    colorAlpha = 1.0f - (f32)(age - 30) / 4.0f;
+                } else {
+                    colorAlpha = 0.0f;
+                }
                 color[0] = 0x64;
                 color[1] = 0x64;
                 color[2] = 0xff;
-                color[3] = (u8)(u32)(255.0f * alpha);
+                color[3] = (u8)(u32)(255.0f * colorAlpha);
                 func_0021d950(slot + 0x200, color);
             }
             break;
@@ -376,10 +399,21 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x100, layout);
+                if (age < 0) {
+                    colorAlpha = 0.0f;
+                } else if (age < 8) {
+                    colorAlpha = (f32)age / 8.0f;
+                } else if (age < 30) {
+                    colorAlpha = 1.0f;
+                } else if (age < 34) {
+                    colorAlpha = 1.0f - (f32)(age - 30) / 4.0f;
+                } else {
+                    colorAlpha = 0.0f;
+                }
                 color[0] = 0xff;
                 color[1] = 0xff;
                 color[2] = 0xff;
-                color[3] = (u8)(u32)(255.0f * alpha);
+                color[3] = (u8)(u32)(255.0f * colorAlpha);
                 func_0021d950(slot + 0x100, color);
             }
             if ((BI_U32(slot, 0) & BI_SLOT_ALT_STYLE) != 0) {
@@ -414,10 +448,21 @@ void func_0023f540(void)
                     layout[j * 2 + 1] += 29.0f + y;
                 }
                 func_0021d890(slot + 0x200, layout);
+                if (age < 0) {
+                    colorAlpha = 0.0f;
+                } else if (age < 8) {
+                    colorAlpha = (f32)age / 8.0f;
+                } else if (age < 30) {
+                    colorAlpha = 1.0f;
+                } else if (age < 34) {
+                    colorAlpha = 1.0f - (f32)(age - 30) / 4.0f;
+                } else {
+                    colorAlpha = 0.0f;
+                }
                 color[0] = 0x46;
                 color[1] = 0x32;
                 color[2] = 0x0a;
-                color[3] = (u8)(u32)(255.0f * alpha);
+                color[3] = (u8)(u32)(255.0f * colorAlpha);
                 func_0021d950(slot + 0x200, color);
             }
             break;
