@@ -10306,8 +10306,6 @@ u64 FUN_003698a0(u64 param_1,u64 param_2,u64 param_3)
 
 
 // FUN_00369A20 NONMATCHING
-
-
 u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
 
 
@@ -10331,8 +10329,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
   int iVar8;
 
   u16 *puVar9;
-
-  int iVar10;
+  u8 *iVar10;
 
   u32 uVar11;
 
@@ -10353,8 +10350,7 @@ u64 FUN_00369a20(int param_1,u64 param_2,u64 param_3)
   u32 uStack_8;
 
   
-
-  iVar10 = (int)param_3;
+  iVar10 = (u8 *)param_3;
 
   if (param_1 == -4) {
 
