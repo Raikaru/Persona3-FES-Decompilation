@@ -50,6 +50,8 @@ extern RwV3d D_00697880;
 extern RwV3d D_00697890;
 extern RwV3d D_006978A0;
 extern RwV3d D_00957180;
+#pragma alias D_00957180_abs D_00957180
+extern RwV3d D_00957180_abs;
 extern u8* DAT_007ce42c;
 
 BtlPacket* btlUnitCreateResNullifiedAnimPacket(BtlUnit* unit, f32 param_2);
@@ -463,29 +465,27 @@ void func_002807a0(BtlUnit* unit, RwV3d* param_2)
 f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
                   f32* param_4, f32* param_5, u32 param_6)
 {
+    u32 genus;
+    u32 count;
     BtlUnit* unit;
     BtlUnit* lastUnit;
     RwV3d scaled;
     RwV3d transformed;
     RwV3d center;
     RwV3d delta;
-    f32 sumX;
-    f32 sumY;
-    f32 sumZ;
-    f32 maxY;
+    RwV3d sum;
     f32 minY;
+    f32 maxY;
     f32 radius;
     f32 extent;
-    u32 count;
-    u32 genus;
 
-    sumX = 0.0f;
-    sumY = 0.0f;
-    sumZ = 0.0f;
     maxY = 0.0f;
     minY = 100000000.0f;
     count = 0;
     lastUnit = NULL;
+    sum = D_00957180_abs;
+    param_1 = (u16)param_1;
+    param_6 = (u16)param_6;
 
     for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
     {
@@ -497,6 +497,9 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
         for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
         {
             f32 top;
+            f32 pointX;
+            f32 pointY;
+            f32 pointZ;
 
             if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
                 (unit->flags3 & param_2) != 0)
@@ -510,21 +513,21 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
                 scaled.y = unit->sphereCenter.y * unit->scale;
                 scaled.z = unit->sphereCenter.z * unit->scale;
                 RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
-                center.x = transformed.x + unit->pos.x;
-                center.y = transformed.y + unit->pos.y;
-                center.z = transformed.z + unit->pos.z;
+                pointX = transformed.x + unit->pos.x;
+                pointY = transformed.y + unit->pos.y;
+                pointZ = transformed.z + unit->pos.z;
             }
             else
             {
-                center.x = unit->unk_94 * 25 - 0x6d6;
-                center.y = unit->sphereCenter.y * unit->scale + unit->pos.y;
-                center.z = unit->unk_96 * 25 - 0x6d6;
+                pointX = unit->unk_94 * 25 - 0x6d6;
+                pointY = unit->sphereCenter.y * unit->scale + unit->pos.y;
+                pointZ = unit->unk_96 * 25 - 0x6d6;
             }
 
-            sumX += center.x;
-            sumY += center.y;
-            sumZ += center.z;
-            top = center.y + unit->unk_8c * unit->scale * 0.5f;
+            sum.x += pointX;
+            sum.y += pointY;
+            sum.z += pointZ;
+            top = pointY + unit->unk_8c * unit->scale * 0.5f;
             if (top > maxY)
             {
                 maxY = top;
@@ -545,9 +548,7 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
 
     if (count == 1)
     {
-        center.x = sumX;
-        center.y = sumY;
-        center.z = sumZ;
+        center = sum;
         extent = lastUnit->unk_8c * lastUnit->scale * 0.5f;
         radius = lastUnit->sphereRadius * lastUnit->scale;
         if (radius < extent)
@@ -557,45 +558,47 @@ f32 func_00280870(u32 param_1, u32 param_2, RwV3d* param_3,
     }
     else
     {
+        BtlUnit* unit2;
+        u32 genus2;
         f32 invCount;
 
         invCount = 1.0f / count;
-        center.x = sumX * invCount;
-        center.y = sumY * invCount;
-        center.z = sumZ * invCount;
+        center.x = sum.x * invCount;
+        center.y = sum.y * invCount;
+        center.z = sum.z * invCount;
         radius = 0.0f;
 
-        for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
+        for (genus2 = 0; genus2 < UNIT_GENUS_MAX; genus2++)
         {
-            if ((param_1 & (1u << genus)) == 0)
+            if ((param_1 & (1u << genus2)) == 0)
             {
                 continue;
             }
 
-            for (unit = gBtl->unitLists[genus].head; unit != NULL; unit = unit->next)
+            for (unit2 = gBtl->unitLists[genus2].head; unit2 != NULL; unit2 = unit2->next)
             {
-                if ((unit->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
-                    (unit->flags3 & param_2) != 0)
+                if ((unit2->flags3 & BTLUNIT_FLAG3_UNK08) == 0 ||
+                    (unit2->flags3 & param_2) != 0)
                 {
                     continue;
                 }
 
                 if ((param_6 & 1) == 0)
                 {
-                    scaled.x = unit->sphereCenter.x * unit->scale;
-                    scaled.y = unit->sphereCenter.y * unit->scale;
-                    scaled.z = unit->sphereCenter.z * unit->scale;
-                    RtQuatTransformVectors(&transformed, &scaled, 1, &unit->rot);
-                    delta.x = transformed.x + unit->pos.x - center.x;
-                    delta.z = transformed.z + unit->pos.z - center.z;
+                    scaled.x = unit2->sphereCenter.x * unit2->scale;
+                    scaled.y = unit2->sphereCenter.y * unit2->scale;
+                    scaled.z = unit2->sphereCenter.z * unit2->scale;
+                    RtQuatTransformVectors(&transformed, &scaled, 1, &unit2->rot);
+                    delta.x = transformed.x + unit2->pos.x - center.x;
+                    delta.z = transformed.z + unit2->pos.z - center.z;
                 }
                 else
                 {
-                    delta.x = (unit->unk_94 * 25 - 0x6d6) - center.x;
-                    delta.z = (unit->unk_96 * 25 - 0x6d6) - center.z;
+                    delta.x = (unit2->unk_94 * 25 - 0x6d6) - center.x;
+                    delta.z = (unit2->unk_96 * 25 - 0x6d6) - center.z;
                 }
                 delta.y = 0.0f;
-                extent = RwV3dLength(&delta) + unit->sphereRadius * unit->scale;
+                extent = RwV3dLength(&delta) + unit2->sphereRadius * unit2->scale;
                 if (extent > radius)
                 {
                     radius = extent;
