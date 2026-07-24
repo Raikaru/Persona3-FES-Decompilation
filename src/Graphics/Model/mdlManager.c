@@ -1140,13 +1140,13 @@ extern u8 LAB_0031494c;
 extern u8 LAB_003140a0;
 extern u8 LAB_003140b0;
 extern u32 DAT_007cadd4;
-extern u32 DAT_007caf0c;
-extern u32 DAT_007caf10;
-extern u32 DAT_007cad38;
-extern u32 DAT_007cae08;
-extern u32 DAT_007cad40;
-extern u32 DAT_007cad44;
-extern u32 DAT_007caed0;
+extern f32 DAT_007caf0c;
+extern f32 DAT_007caf10;
+extern f32 DAT_007cad38;
+extern f32 DAT_007cae08;
+extern f32 DAT_007cad40;
+extern f32 DAT_007cad44;
+extern f32 DAT_007caed0;
 extern u32 DAT_007cada0;
 extern void (*DAT_00960090[])(...);
  #pragma alias DAT_00960090_abs DAT_00960090
@@ -1169,6 +1169,7 @@ extern void* PTR_PTR_0069ae80[];
 extern void* RpMaterialGetUserDataArray(void* material,int data);
 extern char* RpUserDataArrayGetName(void* userData);
 extern int RpUserDataArrayGetFormat(void* userData);
+extern f32 func_0052e9e8(f32 value);
 u32 func_00311640(RtAnimInterpolator* param_2, RtAnimInterpolator* param_3,
                   RtAnimInterpolator* param_4, f32 param_1);
 u32 func_00311730(u32 *param_1,u16 *param_2,u16 *param_3,int param_4);
@@ -4867,11 +4868,11 @@ void func_003151d0(Model* param_1)
 
   uStack_2 = 0;
 
-  fVar15 = ((float)((u32)*(u8 *)(iVar11 + 0x3a8) * (u32)*(u8 *)(iVar11 + 0xd3)) / 65025.0) *
+  fVar15 = ((float)((u32)*(u8 *)(iVar11 + 0x3a8) * (u32)*(u8 *)(iVar11 + 0xd3)) / 65025.0f) *
 
-           255.0;
+           255.0f;
 
-  if (fVar15 < 2.1474836e+09) {
+  if (fVar15 < 2.1474836e+09f) {
 
     cStack_1 = (char)(int)fVar15;
 
@@ -4879,7 +4880,7 @@ void func_003151d0(Model* param_1)
 
   else {
 
-    cStack_1 = (char)(int)(fVar15 - 2.1474836e+09);
+    cStack_1 = (char)(int)(fVar15 - 2.1474836e+09f);
 
   }
 
@@ -4925,9 +4926,9 @@ void func_003151d0(Model* param_1)
 
       fStack_130 = DAT_007caf0c;
 
-      fStack_12c = 0.0;
+      fStack_12c = 0.0f;
 
-      fStack_128 = 0.0;
+      fStack_128 = 0.0f;
 
       fStack_124 = DAT_007caf0c;
 
@@ -4939,7 +4940,7 @@ void func_003151d0(Model* param_1)
 
              *(float *)(iVar11 + 0x38c) * fStack_130 + *(float *)(iVar11 + 0x390) * fStack_12c;
 
-    if (fVar15 < 0.0) {
+    if (fVar15 < 0.0f) {
 
       fStack_114 = -fStack_124;
 
@@ -4955,7 +4956,7 @@ void func_003151d0(Model* param_1)
 
                *(float *)(iVar11 + 0x38c) * fStack_120 +
 
-               *(float *)(iVar11 + 0x390) * fStack_11c + 0.0 + 0.0 + 0.0;
+               *(float *)(iVar11 + 0x390) * fStack_11c + 0.0f + 0.0f + 0.0f;
 
     }
 
@@ -4963,11 +4964,11 @@ void func_003151d0(Model* param_1)
 
     fVar15 = *(float *)(iVar11 + 0x3ac);
 
-    if (fVar15 < 1.0) {
+    if (fVar15 < 1.0f) {
 
-      if ((*(float *)(iVar11 + 0x3b0) < fVar16 * 2.0) &&
+      if ((*(float *)(iVar11 + 0x3b0) < fVar16 * 2.0f) &&
 
-         (fVar16 = *(float *)(iVar11 + 0x3b0) / (fVar16 * 2.0), fVar15 <= fVar16)) {
+         (fVar16 = *(float *)(iVar11 + 0x3b0) / (fVar16 * 2.0f), fVar15 <= fVar16)) {
 
         fVar15 = fVar16;
 
@@ -4975,7 +4976,7 @@ void func_003151d0(Model* param_1)
 
       func_004be310(iVar11 + 0x38c,&fStack_130,&fStack_110);
 
-      if (fVar15 <= 0.0) {
+      if (fVar15 <= 0.0f) {
 
         fStack_120 = *(float *)(iVar11 + 0x38c);
 
@@ -4987,7 +4988,7 @@ void func_003151d0(Model* param_1)
 
       }
 
-      else if (1.0 <= fVar15) {
+      else if (1.0f <= fVar15) {
 
         fStack_120 = fStack_130;
 
@@ -5001,7 +5002,7 @@ void func_003151d0(Model* param_1)
 
       else {
 
-        fVar16 = 1.0 - fVar15;
+        fVar16 = 1.0f - fVar15;
 
         if (iStack_ec == 0) {
 
@@ -5013,11 +5014,11 @@ void func_003151d0(Model* param_1)
 
                    (fVar17 * (fVar17 * (fVar17 * (fVar17 * (DAT_007caf10 * fVar17 +
 
-                                                           DAT_007cad38 + 0.0) + DAT_007cae08 + 0.0)
+                                                           DAT_007cad38 + 0.0f) + DAT_007cae08 + 0.0f)
 
-                                       + DAT_007cad40 + 0.0) + DAT_007cad44 + 0.0) +
+                                       + DAT_007cad40 + 0.0f) + DAT_007cad44 + 0.0f) +
 
-                   DAT_007caed0 + 0.0) + fVar16 + 0.0;
+                   DAT_007caed0 + 0.0f) + fVar16 + 0.0f;
 
           fVar15 = fVar15 * fStack_f0;
 
@@ -5027,19 +5028,19 @@ void func_003151d0(Model* param_1)
 
                    (fVar17 * (fVar17 * (fVar17 * (fVar17 * (DAT_007caf10 * fVar17 +
 
-                                                           DAT_007cad38 + 0.0) + DAT_007cae08 + 0.0)
+                                                           DAT_007cad38 + 0.0f) + DAT_007cae08 + 0.0f)
 
-                                       + DAT_007cad40 + 0.0) + DAT_007cad44 + 0.0) +
+                                       + DAT_007cad40 + 0.0f) + DAT_007cad44 + 0.0f) +
 
-                   DAT_007caed0 + 0.0) + fVar15 + 0.0;
+                   DAT_007caed0 + 0.0f) + fVar15 + 0.0f;
 
         }
 
-        fStack_120 = fStack_100 * fVar15 + fStack_110 * fVar16 + 0.0;
+        fStack_120 = fStack_100 * fVar15 + fStack_110 * fVar16 + 0.0f;
 
-        fStack_11c = fStack_fc * fVar15 + fStack_10c * fVar16 + 0.0;
+        fStack_11c = fStack_fc * fVar15 + fStack_10c * fVar16 + 0.0f;
 
-        fStack_118 = fStack_f8 * fVar15 + fStack_108 * fVar16 + 0.0;
+        fStack_118 = fStack_f8 * fVar15 + fStack_108 * fVar16 + 0.0f;
 
         fStack_114 = fStack_104 * fVar16 + fStack_f4 * fVar15;
 
@@ -5075,7 +5076,7 @@ void func_003151d0(Model* param_1)
 
   if (cStack_1 != '\0') {
 
-    if (0.0 <= fStack_14) {
+    if (0.0f <= fStack_14) {
 
       *(float *)(iVar11 + 0x38c) = DAT_007caf0c;
 
@@ -5095,13 +5096,14 @@ void func_003151d0(Model* param_1)
 
       *(float *)(iVar11 + 0x39c) =
 
-           *(float *)(iVar11 + 0x3a4) * (*(float *)(iVar11 + 0x3a0) - fVar15) + fVar15 + 0.0;
+           *(float *)(iVar11 + 0x3a4) * (*(float *)(iVar11 + 0x3a0) - fVar15) + fVar15 + 0.0f;
 
     }
 
     fVar15 = *(float *)(iVar11 + 0x39c);
 
-    if ((ABS(fStack_14) < fVar15) && (bVar7 = fStack_14 < 0.0, fStack_14 = fVar15, bVar7)) {
+    if (((fStack_14 < 0.0f ? -fStack_14 : fStack_14) < fVar15) &&
+        (bVar7 = fStack_14 < 0.0f, fStack_14 = fVar15, bVar7)) {
 
       fStack_14 = -fVar15;
 
