@@ -1639,7 +1639,7 @@ void bpTexUpdateNode(void* nodeData)
     s32 finalCount;
     s32 i;
     f32 phase;
-    f32 offsets[3];
+    volatile f32 offsets[3];
     f32 rotation[4];
     f32 position[3];
     f32 direction[3];
@@ -1678,29 +1678,10 @@ void bpTexUpdateNode(void* nodeData)
     {
         node[0x494]++;
         mode = node[0x493];
-        if (mode == 3)
+        switch (mode)
         {
-            node[0x497] = (u32)((f32)node[0x494] /
-                                (f32)node[0x495] * 256.0f);
-        }
-        else if (mode == 2)
-        {
-            node[0x497] = (u32)((1.0f - (f32)node[0x494] /
-                                (f32)node[0x495]) * 256.0f);
-        }
-        else if (mode == 1)
-        {
-            phase = (f32)node[0x494] / (f32)node[0x495];
-            func_0024f2c0((u8*)node + 0x1030, phase);
-            func_00250ef0(phase, (u8*)node + 0x11d8);
-            func_00251030((u8*)node + 0xfcc);
-            func_0024dc90((u8*)node + 0xfcc);
-            func_00251030((u8*)node + 0x10f8);
-            func_0024dc90((u8*)node + 0x10f8);
-        }
-        else if (mode == 0)
-        {
-            phase = 1.0f - (f32)node[0x494] / (f32)node[0x495];
+        case 0:
+            phase = 1.0f - (f32)(s32)node[0x494] / (f32)(s32)node[0x495];
             func_00259190(node, leaves, &parentCount);
             for (i = 0; i < parentCount; i++)
             {
@@ -1711,6 +1692,24 @@ void bpTexUpdateNode(void* nodeData)
                 func_00251030((u8*)leaves[i] + 0x10f8);
                 func_0024dc90((u8*)leaves[i] + 0x10f8);
             }
+            break;
+        case 1:
+            phase = (f32)(s32)node[0x494] / (f32)(s32)node[0x495];
+            func_0024f2c0((u8*)node + 0x1030, phase);
+            func_00250ef0(phase, (u8*)node + 0x11d8);
+            func_00251030((u8*)node + 0xfcc);
+            func_0024dc90((u8*)node + 0xfcc);
+            func_00251030((u8*)node + 0x10f8);
+            func_0024dc90((u8*)node + 0x10f8);
+            break;
+        case 2:
+            node[0x497] = (u32)((1.0f - (f32)(s32)node[0x494] /
+                                (f32)(s32)node[0x495]) * 256.0f);
+            break;
+        case 3:
+            node[0x497] = (u32)((f32)(s32)node[0x494] /
+                                (f32)(s32)node[0x495] * 256.0f);
+            break;
         }
         if (node[0x494] == node[0x495])
         {
@@ -1817,7 +1816,7 @@ void bpTexUpdateNode(void* nodeData)
             color[0] = 0xff;
             color[1] = 0xff;
             color[2] = 0xff;
-            color[3] = (u8)((f32)node[0x497] * 255.0f / 256.0f);
+            color[3] = (u8)((f32)(s32)node[0x497] * 255.0f / 256.0f);
             func_0034ff90(resource, color);
             func_0034ff70(resource, DAT_007cad60);
             func_0034fdf0(resource, position);
@@ -1830,12 +1829,12 @@ void bpTexUpdateNode(void* nodeData)
     func_00256fa0(node, leaves, &count);
     for (i = 0; i < count; i++)
     {
-        alpha = (f32)BP_TEX_U32(work, 0x12880) / 256.0f;
-        leafAlpha = (f32)leaves[i][0x1260] / 256.0f;
+        alpha = (f32)BP_TEX_S32(work, 0x12880) / 256.0f;
+        leafAlpha = (f32)(s32)leaves[i][0x1260] / 256.0f;
         if ((*node & 0x80) != 0)
         {
             func_0052e878(DAT_007caf38 *
-                          ((f32)node[0x496] / 90.0f) * 2.0f);
+                          ((f32)(s32)node[0x496] / 90.0f) * 2.0f);
         }
         color[0] = 0xff;
         color[1] = 0xff;
