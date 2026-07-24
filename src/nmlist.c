@@ -295,6 +295,7 @@ NmlistNode *FUN_003c4820(int *param_1,int *param_2)
         else {
             prev->next = next;
             next->prev = prev;
+            next = prev->next;
         }
     }
     node->prev = 0;
