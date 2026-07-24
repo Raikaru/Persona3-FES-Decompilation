@@ -301,33 +301,32 @@ u32 func_001104d0(KwlnTask* task)
 // FUN_00110510 NONMATCHING
 u32 func_00110510(KwlnTask* task)
 {
-    MaestroResourceWork* work;
     s32 i;
+    MaestroResourceWork* work;
 
     work = (MaestroResourceWork*)task->workData;
-    if (work->state != 3)
+    if (work->state == 3)
     {
-        return true;
-    }
-
-    for (i = 0; i < (s32)work->resourceCount; i++)
-    {
-        s8 recordType;
-
-        for (;;)
+        for (i = 0; i < (s32)work->resourceCount; i++)
         {
-            recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1];
-            if (recordType == -1)
+            s8 recordType;
+
+            for (;;)
             {
+                recordType = ((s8*)work->resources[i])[work->recordIndices[i] * 18 + 1];
+                if (recordType != -1)
+                {
+                    if (recordType == -2)
+                    {
+                        return false;
+                    }
+                    work->recordIndices[i]++;
+                    continue;
+                }
                 work->recordIndices[i]++;
                 work->completedRecords++;
                 break;
             }
-            if (recordType == -2)
-            {
-                return false;
-            }
-            work->recordIndices[i]++;
         }
     }
 
@@ -587,7 +586,14 @@ void func_00110e70(KwlnTask* task)
     work = (MaestroStreamWork*)task->workData;
     if (work->stream != NULL)
     {
-        func_00133d30(work->stream, work->useCdvd != 0 ? work->cdvd : NULL);
+        if (work->useCdvd != 0)
+        {
+            func_00133d30(work->stream, work->cdvd);
+        }
+        else
+        {
+            func_00133d30(work->stream, NULL);
+        }
         work->cdvd = NULL;
     }
     else if (work->useCdvd != 0 && work->cdvd != NULL)
@@ -1397,18 +1403,24 @@ void func_001124b0(void* param_1)
 void func_001125d0(void)
 {
     MaestroRenderNode* node;
+    void (**setState)(u32, u32);
 
-    D_00960090(6, 1);
-    D_00960090(7, 2);
-    D_00960090(8, 1);
-    D_00960090(9, 1);
-    D_00960090(12, 1);
-    D_00960090(11, 6);
-    D_00960090(10, 5);
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(6, 1);
+    (*setState)(7, 2);
+    (*setState)(8, 1);
+    (*setState)(9, 1);
+    (*setState)(12, 1);
+    (*setState)(11, 6);
+    (*setState)(10, 5);
 
     node = DAT_00833a4c;
-    while (node != NULL)
+    for (;;)
     {
+        if (node == NULL)
+        {
+            break;
+        }
         func_001127d0(node, true);
         node = node->next;
     }
@@ -3657,70 +3669,59 @@ u32 func_001167f0(u64 param_1)
 
 
 void func_00116cf0(int param_1)
-
-
-
 {
+    u8* work;
+    s32 i;
+    s32 j;
 
-  int iVar1;
+    work = *(u8**)(param_1 + 0x3c);
+    func_001124b0(*(void**)(work + 0x738));
 
-  int iVar2;
+    for (i = 0; i < 2; i++)
+    {
+        u8* entry;
+        u32* slot;
 
-  int iVar3;
-
-  
-
-  iVar1 = *(int *)(param_1 + 0x3c);
-
-  FUN_001124b0(*(u32 *)(iVar1 + 0x738));
-
-  for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
-
-    iVar2 = iVar1 + iVar3 * 0x364;
-
-    if (*(int *)(iVar2 + 0x180) != 0) {
-
-      FUN_00102870();
-
-      *(u32 *)(iVar2 + 0x180) = 0;
-
+        entry = work + i * 0x364;
+        slot = (u32*)(entry + 0x180);
+        if (*(void**)(entry + 0x180) != NULL)
+        {
+            H_Cdvd_CacheRemove(*(void**)(entry + 0x180));
+            *slot = 0;
+        }
     }
 
-  }
+    for (j = 0; j < 3; j++)
+    {
+        u8* entry;
+        u32* slot;
 
-  for (iVar3 = 0; iVar3 < 3; iVar3 = iVar3 + 1) {
-
-    iVar2 = iVar1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0x24) != 0) {
-
-      FUN_00100ec0();
-
-      *(u32 *)(iVar2 + 0x24) = 0;
-
+        entry = work + j * 4;
+        slot = (u32*)(entry + 0x24);
+        if (*(void**)(entry + 0x24) != NULL)
+        {
+            FUN_00100ec0(*(void**)(entry + 0x24));
+            *slot = 0;
+        }
     }
 
-  }
+    for (j = 0; j < 2; j++)
+    {
+        u8* entry;
+        u32* slot;
 
-  for (iVar3 = 0; iVar3 < 2; iVar3 = iVar3 + 1) {
-
-    iVar2 = iVar1 + iVar3 * 4;
-
-    if (*(int *)(iVar2 + 0x1c) != 0) {
-
-      FUN_004d0f00();
-
-      *(u32 *)(iVar2 + 0x1c) = 0;
-
+        entry = work + j * 4;
+        slot = (u32*)(entry + 0x1c);
+        if (*(void**)(entry + 0x1c) != NULL)
+        {
+            func_004d0f00(*(void**)(entry + 0x1c));
+            *slot = 0;
+        }
     }
 
-  }
-
-  MAESTRO_FREE((void*)iVar1);
-
-  return;
-
+    MAESTRO_FREE(work);
 }
+
 // FUN_00116E20
 void* func_00116e20(KwlnTask* parent, u32 param_2)
 {
