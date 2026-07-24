@@ -2169,6 +2169,12 @@ typedef struct
 } CalendarFieldSequenceData;
 
 extern const char D_005E3F00[];
+extern u16 DAT_007e094e;
+extern u16 DAT_007e0952;
+#pragma alias DAT_007e094e_abs DAT_007e094e
+#pragma alias DAT_007e0952_abs DAT_007e0952
+extern u8 DAT_007e094e_abs[];
+extern u8 DAT_007e0952_abs[];
 
 
 extern void* func_00170d60(s16 id);
@@ -2263,13 +2269,13 @@ void* func_00181cc0(KwlnTask* task)
     u16 procedure;
     s32 month;
     s32 day;
+    RwV2d position;
     struct
     {
         u32 floor;
         u32 reserved04;
     } dungeonData;
     CalendarFieldSequenceData fieldData;
-
     parent = task;
     work = (CalendarAigesWork*)parent->workData;
     scenarioTable = (CalendarScenarioEntry*)CLND_SCENARIO_TABLE_abs;
@@ -2435,13 +2441,13 @@ void* func_00181cc0(KwlnTask* task)
             break;
 
         case 10:
-            if ((*(u16*)0x007e094e & 0x40) != 0)
+            if ((*(u16*)DAT_007e094e_abs & 0x40) != 0)
             {
                 work->state = 0;
             }
             else
             {
-                u16 debugPad = *(u16*)0x007e0952;
+                u16 debugPad = *(u16*)DAT_007e0952_abs;
                 if ((debugPad & 0x1000) != 0)
                 {
                     func_0017d820(func_0017d810() + 1);
@@ -2451,9 +2457,14 @@ void* func_00181cc0(KwlnTask* task)
                     func_0017d820(func_0017d810() - 1);
                 }
             }
-            H_Dbprt_FmtAt((RwV2d){2.0f, 2.0f},
-                          D_005E3F00,
-                          func_0017d810());
+            position.x = 2.0f;
+            position.y = 2.0f;
+            {
+                u32 debugIndex = func_0017d810();
+                H_Dbprt_FmtAt(position,
+                              D_005E3F00,
+                              debugIndex);
+            }
             break;
         case 8:
             work->timer--;
