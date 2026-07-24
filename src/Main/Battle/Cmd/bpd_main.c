@@ -164,22 +164,22 @@ void FUN_00252f30(void)
       fVar11 = (float)puVar2[iVar8 * 0x48 + 0x49];
       fVar12 = (float)puVar2[iVar8 * 0x48 + 0x4a];
       fVar9 = (float)FUN_0052e878(
-          fGpffff8248 * ((float)(int)puVar2[0x2d5] / 15.0) * 2.0);
-      fVar9 = fVar9 * 3.0;
+          fGpffff8248 * ((float)(int)puVar2[0x2d5] / 15.0f) * 2.0f);
+      fVar9 = fVar9 * 3.0f;
       iVar4 = FUN_0021cca0(uVar5,0x4c);
       fStack_38 = (float)*(int *)(iVar4 + 0xc);
-      fStack_40 = fVar10 - fStack_38 / 2.0;
+      fStack_40 = fVar10 - fStack_38 / 2.0f;
       fStack_34 = (float)*(int *)(iVar4 + 0x10);
-      fStack_3c = fVar9 + ((fVar11 - fStack_34 / 2.0) - 10.0);
+      fStack_3c = fVar9 + ((fVar11 - fStack_34 / 2.0f) - 10.0f);
       FUN_0021d8e0(puVar2 + iVar8 * 0x48 + 8,&fStack_40);
       uStack_4 = 0xff;
       uStack_3 = 0xff;
       uStack_2 = 0xff;
-      fVar12 = fVar12 * 255.0;
-      if (fVar12 < 2.1474836e+09) {
+      fVar12 = fVar12 * 255.0f;
+      if (fVar12 < 2.1474836e+09f) {
         uStack_1 = (u8)(int)fVar12;
       } else {
-        uStack_1 = (u8)(int)(fVar12 - 2.1474836e+09);
+        uStack_1 = (u8)(int)(fVar12 - 2.1474836e+09f);
       }
       FUN_0021d950(puVar2 + iVar8 * 0x48 + 8,&uStack_4);
     }
