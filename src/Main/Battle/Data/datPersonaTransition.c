@@ -306,15 +306,107 @@ s8 FUN_00173c60(DatPersonaWork* persona, u16 statId)
     s16 equipmentIdx;
     u16 owner;
 
-    assertStat(statId, 0x22D);
-    owner = personaEquipmentOwner(persona);
+    K_ASSERT(statId < PERSONA_STAT_MAX, 0x22D);
+    if (FUN_00175ca0(persona) != 0)
+    {
+        owner = persona->id;
+        K_ASSERT(owner >= 0xC0 && owner <= 0xDF, 0x234);
+        owner = *(u16*)(iGpffffb740 + owner * 0x26E - 0x1D280);
+    }
+    else
+    {
+        owner = 1;
+    }
     K_ASSERT(owner < 0xB, 0x239);
-    equipmentIdx = personaEquipmentIndex(owner);
+    if ((u16)(u32)persona == 1)
+    {
+        equipmentIdx = gGlobalWork.heroEquip.equipmentsIdx[3];
+    }
+    else if ((u16)(u32)persona < PC_MAX)
+    {
+        equipmentIdx = gPcs[(u16)(u32)persona].equipmentsIdx[3];
+    }
+    else
+    {
+        equipmentIdx = -1;
+    }
     if (equipmentIdx >= 0)
     {
-        total += personaEquipmentBonus(owner, equipmentIdx, statId);
+        u16 itemId = 0;
+        u8* itemTable = NULL;
+
+        if ((u16)(u32)persona == 0xFFFF)
+        {
+            itemId = *(u16*)(D_00833E80 + equipmentIdx * sizeof(DatEquipment));
+        }
+        else if ((u16)(u32)persona == 1)
+        {
+            itemId = gGlobalWork.heroEquip.equipments[equipmentIdx].id;
+        }
+        else if ((u16)(u32)persona < 0x100)
+        {
+            itemId = gPcs[(u16)(u32)persona].equipments[equipmentIdx].id;
+        }
+        else
+        {
+            itemTable = D_007FD6C8 + (u16)(u32)persona * sizeof(DatPc);
+            itemId = *(u16*)(itemTable + equipmentIdx * sizeof(DatEquipment));
+        }
+        if (itemId >= 3000 && itemId <= 3999)
+        {
+            itemTable = iGpffffb2e4 + (itemId - 3000) * 0x24;
+            total += *(s16*)(itemTable + 4 + statId * 2);
+        }
     }
-    total += personaEquipmentEffects(owner, statId);
+    switch (statId)
+    {
+    case 0:
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0);
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 2) * 2;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 3) * 3;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 4) * 4;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 5) * 5;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x83) * 10;
+        break;
+    case 1:
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xB);
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xC) * 2;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xD) * 3;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xE) * 4;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xF) * 5;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x85) * 10;
+        break;
+    case 2:
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 6);
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 7) * 2;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 8) * 3;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 9) * 4;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0xA) * 5;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x84) * 10;
+        break;
+    case 3:
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x10);
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x11) * 2;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x12) * 3;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x13) * 4;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x14) * 5;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x86) * 10;
+        break;
+    case 4:
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x15);
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x16) * 2;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x17) * 3;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x18) * 4;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x19) * 5;
+        total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x87) * 10;
+        break;
+    }
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x88);
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x89) * 2;
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x8A) * 3;
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x8B) * 4;
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x8C) * 5;
+    total += datCalcCountEquipmentWithEffectById((u16)(u32)persona, 0x8D) * 10;
     return total;
 }
 
