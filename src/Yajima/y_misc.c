@@ -6636,91 +6636,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
   float fVar19;
 
-  u32 uStack_e0;
 
-  u32 uStack_dc;
-
-  float fStack_d8;
-
-  u32 uStack_d0;
-
-  u32 uStack_cc;
-
-  float fStack_c8;
-
-  u32 uStack_c0;
-
-  u32 uStack_bc;
-
-  float fStack_b8;
-
-  float fStack_b0;
-
-  u32 uStack_ac;
-
-  u32 uStack_a8;
-
-  float fStack_a0;
-
-  u32 uStack_9c;
-
-  u32 uStack_98;
-
-  float fStack_90;
-
-  u32 uStack_8c;
-
-  u32 uStack_88;
-
-  u32 uStack_80;
-
-  u32 uStack_7c;
-
-  float fStack_78;
-
-  u32 uStack_70;
-
-  u32 uStack_6c;
-
-  float fStack_68;
-
-  u32 uStack_60;
-
-  u32 uStack_5c;
-
-  float fStack_58;
-
-  u32 uStack_50;
-
-  u32 uStack_4c;
-
-  float fStack_48;
-
-  float fStack_40;
-
-  u32 uStack_3c;
-
-  u32 uStack_38;
-
-  float fStack_30;
-
-  u32 uStack_2c;
-
-  u32 uStack_28;
-
-  float fStack_20;
-
-  u32 uStack_1c;
-
-  u32 uStack_18;
-
-  float fStack_10;
-
-  u32 uStack_c;
-
-  u32 uStack_8;
-
-  
 
   iVar10 = *(int *)(param_1 + 0x3c);
 
@@ -6745,20 +6661,23 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
        param_4 == sVar4)) {
 
       if (*(char *)(iVar10 + 0x865) == '\0') {
+        volatile YajimaVec3 savedMain;
+
+        YajimaVec3 posMain;
+
+        volatile YajimaVec3 savedObj;
+
+        YajimaVec3 posObj;
+
 
         cVar1 = *(char *)(iVar10 + 0xb29);
+        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-        K_FldFrame_CtlCopyPos(&fStack_40,*(u32 *)(DAT_008717f4 + 0x1e0));
-
-        fStack_30 = fStack_40;
-
-        uStack_2c = uStack_3c;
-
-        uStack_28 = uStack_38;
+        savedMain = *(YajimaVec3 *)&posMain;
 
         iVar5 = K_FldFrame_CtlGetXGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-        fVar17 = fStack_30 - ((float)iVar5 * 800.0f - 400.0f);
+        fVar17 = savedMain.x - ((float)iVar5 * 800.0f - 400.0f);
 
         uVar18 = 0x40000000;
 
@@ -6766,13 +6685,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         piVar12 = DAT_008717f4 + param_2 * 0x70;
 
-        K_FldFrame_CtlCopyPos(&fStack_20,*(u32 *)(*piVar12 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posObj,*(u32 *)(*piVar12 + 0x1e0));
 
-        fStack_10 = fStack_20;
-
-        uStack_c = uStack_1c;
-
-        uStack_8 = uStack_18;
+        savedObj = *(YajimaVec3 *)&posObj;
 
         iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(*piVar12 + 0x1e0));
 
@@ -6794,7 +6709,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
                      (float)(int)(((float)(int)cVar2 / 2.0f + 0.0f) -
 
-                                 (fStack_10 - ((float)iVar6 * 800.0f - 400.0f)) *
+                                 (savedObj.x - ((float)iVar6 * 800.0f - 400.0f)) *
 
                                  ((float)(int)cVar2 / 800.0f))) +
 
@@ -6806,27 +6721,19 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar1 = *(char *)(iVar10 + 0xb29);
 
-        K_FldFrame_CtlCopyPos(&uStack_80,*(u32 *)(DAT_008717f4 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posMain,*(u32 *)(DAT_008717f4 + 0x1e0));
 
-        uStack_70 = uStack_80;
-
-        uStack_6c = uStack_7c;
-
-        fStack_68 = fStack_78;
+        savedMain = *(YajimaVec3 *)&posMain;
 
         iVar5 = K_FldFrame_CtlGetZGrid(*(u32 *)(DAT_008717f4 + 0x1e0));
 
-        fVar17 = fStack_68 - ((float)iVar5 * 800.0f - 400.0f);
+        fVar17 = savedMain.z - ((float)iVar5 * 800.0f - 400.0f);
 
         fVar19 = (float)(int)*(char *)(iVar10 + 0xb29);
 
-        K_FldFrame_CtlCopyPos(&uStack_60,*(u32 *)(*piVar12 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posObj,*(u32 *)(*piVar12 + 0x1e0));
 
-        uStack_50 = uStack_60;
-
-        uStack_4c = uStack_5c;
-
-        fStack_48 = fStack_58;
+        savedObj = *(YajimaVec3 *)&posObj;
 
         iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(*piVar12 + 0x1e0));
 
@@ -6848,7 +6755,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
                      (float)(int)((fVar19 / 2.0f + 0.0f) -
 
-                                 (fStack_48 - ((float)iVar6 * 800.0f - 400.0f)) * (fVar19 / 800.0f))) +
+                                 (savedObj.z - ((float)iVar6 * 800.0f - 400.0f)) *
+
+                                 (fVar19 / 800.0f))) +
 
                     (float)(int)(((float)(int)cVar1 / 2.0f + 0.0f) -
 
@@ -6859,18 +6768,25 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
       }
 
       else {
+        volatile YajimaVec3 savedObj1;
+
+        YajimaVec3 posObj1;
+
+        YajimaVec3 worldPos1;
+
+        volatile YajimaVec3 savedObj2;
+
+        YajimaVec3 posObj2;
+
+        YajimaVec3 worldPos2;
 
         cVar1 = *(char *)(iVar10 + 0xb29);
 
-        fStack_b0 = *(float *)(iVar10 + 0x868);
+        worldPos1 = *(YajimaVec3 *)(iVar10 + 0x868);
 
-        uStack_ac = *(u32 *)(iVar10 + 0x86c);
+        iVar5 = FUN_0044f120(&worldPos1);
 
-        uStack_a8 = *(u32 *)(iVar10 + 0x870);
-
-        iVar5 = FUN_0044f120(&fStack_b0);
-
-        fVar17 = fStack_b0 - ((float)iVar5 * 800.0f - 400.0f);
+        fVar17 = worldPos1.x - ((float)iVar5 * 800.0f - 400.0f);
 
         uVar18 = 0x40000000;
 
@@ -6878,13 +6794,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         piVar12 = DAT_008717f4 + param_2 * 0x70;
 
-        K_FldFrame_CtlCopyPos(&fStack_a0,*(u32 *)(*piVar12 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posObj1,*(u32 *)(*piVar12 + 0x1e0));
 
-        fStack_90 = fStack_a0;
-
-        uStack_8c = uStack_9c;
-
-        uStack_88 = uStack_98;
+        savedObj1 = *(YajimaVec3 *)&posObj1;
 
         iVar6 = K_FldFrame_CtlGetXGrid(*(u32 *)(*piVar12 + 0x1e0));
 
@@ -6906,7 +6818,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
                      (float)(int)(((float)(int)cVar2 / 2.0f + 0.0f) -
 
-                                 (fStack_90 - ((float)iVar6 * 800.0f - 400.0f)) *
+                                 (savedObj1.x - ((float)iVar6 * 800.0f - 400.0f)) *
 
                                  ((float)(int)cVar2 / 800.0f))) +
 
@@ -6918,25 +6830,17 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
         cVar1 = *(char *)(iVar10 + 0xb29);
 
-        uStack_e0 = *(u32 *)(iVar10 + 0x868);
+        worldPos2 = *(YajimaVec3 *)(iVar10 + 0x868);
 
-        uStack_dc = *(u32 *)(iVar10 + 0x86c);
+        iVar5 = FUN_0044f170(&worldPos2);
 
-        fStack_d8 = *(float *)(iVar10 + 0x870);
-
-        iVar5 = FUN_0044f170(&uStack_e0);
-
-        fVar17 = fStack_d8 - ((float)iVar5 * 800.0f - 400.0f);
+        fVar17 = worldPos2.z - ((float)iVar5 * 800.0f - 400.0f);
 
         fVar19 = (float)(int)*(char *)(iVar10 + 0xb29);
 
-        K_FldFrame_CtlCopyPos(&uStack_d0,*(u32 *)(*piVar12 + 0x1e0));
+        K_FldFrame_CtlCopyPos(&posObj2,*(u32 *)(*piVar12 + 0x1e0));
 
-        uStack_c0 = uStack_d0;
-
-        uStack_bc = uStack_cc;
-
-        fStack_b8 = fStack_c8;
+        savedObj2 = *(YajimaVec3 *)&posObj2;
 
         iVar6 = K_FldFrame_CtlGetZGrid(*(u32 *)(*piVar12 + 0x1e0));
 
@@ -6958,7 +6862,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
 
                      (float)(int)((fVar19 / 2.0f + 0.0f) -
 
-                                 (fStack_b8 - ((float)iVar6 * 800.0f - 400.0f)) * (fVar19 / 800.0f))) +
+                                 (savedObj2.z - ((float)iVar6 * 800.0f - 400.0f)) *
+
+                                 (fVar19 / 800.0f))) +
 
                     (float)(int)(((float)(int)cVar1 / 2.0f + 0.0f) -
 
@@ -6969,8 +6875,11 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
       }
 
       if (*(float *)(iVar10 + 0x85c) < *pfVar15 + 8.0f) {
+
         if (((*(float *)(iVar10 + 0x860) < *pfVar13 + 8.0f) &&
+
             (*pfVar15 + 12.0f < *(float *)(iVar10 + 0x85c) + 126.0f)) &&
+
            (*pfVar13 + 12.0f < *(float *)(iVar10 + 0x860) + 126.0f)) {
 
           *(u8 *)(param_2 + iVar10 + 0x937) = 1;
@@ -7030,7 +6939,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
               iVar10 = param_2 * 8 + iVar10;
 
               *(float *)(iVar7 + 0x10) = *(float *)(iVar10 + 0x8b8) + 3.0f;
+
               *(float *)(iVar7 + 0x14) = *(float *)(iVar10 + 0x8bc) + 3.0f;
+
               if (fVar17 < 2.1474836e+09f) {
 
                 uVar16 = (u8)(int)fVar17;
@@ -7098,7 +7009,9 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
             iVar10 = param_2 * 8 + iVar10;
 
             *(float *)(iVar7 + 0x10) = *(float *)(iVar10 + 0x8b8) + 3.0f;
+
             *(float *)(iVar7 + 0x14) = *(float *)(iVar10 + 0x8bc) + 3.0f;
+
             if (fVar17 < 2.1474836e+09f) {
 
               uVar16 = (u8)(int)fVar17;
@@ -7146,6 +7059,7 @@ void FUN_0042c0a0(int param_1,char param_2,short param_3,short param_4,int param
   return;
 
 }
+
 
 // FUN_0042CD80 NONMATCHING
 
