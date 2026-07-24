@@ -487,7 +487,7 @@ void func_0024dc90(void* camera)
                 
                 p = (f32*)(node + 0x24);
                 oldTimer = *(u32*)(node + 0x10);
-                firstDuration = ((u32)p[13]) << 16;
+                firstDuration = (*(u32*)(node + 0x58)) << 16;
                 ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
                 
                 offset.x = p[6] - p[9];
@@ -530,7 +530,7 @@ void func_0024dc90(void* camera)
                               p[11] * ratio * ratio * ratio;
                     *(RwV3d*)(node + 0x14) = value;
                 }
-                duration = ((u32)p[4]) << 16;
+                duration = (*(u32*)(node + 0x34)) << 16;
                 ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
                          (f32)(s32)duration;
                 oneMinus = 1.0f - ratio2;
@@ -747,7 +747,7 @@ void func_0024dc90(void* camera)
 
                     p = (f32*)(node + 0x28);
                     oldTimer = *(u32*)(node + 0x10);
-                    firstDuration = ((u32)p[15]) << 16;
+                    firstDuration = (*(u32*)(node + 0x64)) << 16;
                     ratio = (f32)(s32)oldTimer / (f32)(s32)firstDuration;
                     offset.x = p[6] - p[9];
                     offset.y = p[7] - p[10];
@@ -787,7 +787,7 @@ void func_0024dc90(void* camera)
                                   p[11] * ratio * ratio * ratio;
                         *(RwV3d*)(node + 0x14) = value;
                     }
-                    duration = ((u32)p[5]) << 16;
+                    duration = (*(u32*)(node + 0x3c)) << 16;
                     ratio2 = (f32)(s32)*(u32*)(node + 0x10) /
                              (f32)(s32)duration;
                     oneMinus = 1.0f - ratio2;
