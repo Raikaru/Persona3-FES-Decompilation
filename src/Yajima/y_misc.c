@@ -3829,7 +3829,7 @@ u32 FUN_004281f0(u32 param_1)
 
   float fStack_34;
 
-  u32 uStack_30;
+  u64 uStack_30;
 
   u32 uStack_2c;
 
@@ -4681,7 +4681,8 @@ u32 FUN_004281f0(u32 param_1)
 
             fStack_44 = fStack_44 - 6.0f;
 
-            FUN_00430220(*(u32 *)(pcVar1 + 0xb1c),CONCAT44(fStack_44,fStack_48));
+            uStack_30 = ((u64)(*(u32 *)&fStack_44) << 32) | *(u32 *)&fStack_48;
+            FUN_00430220(*(u32 *)(pcVar1 + 0xb1c),uStack_30);
 
           }
 
