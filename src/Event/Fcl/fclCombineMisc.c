@@ -293,9 +293,9 @@ u32 FUN_003d5510(u32 *param_1,u16 *param_2,int param_3,u32 *param_4)
 
   else {
 
-    sVar9 = 0;
-
     uVar6 = 0;
+
+    sVar9 = 0;
     psVar12 = psVar11 + 2;
     puVar13 = (u32 *)param_1;
 
