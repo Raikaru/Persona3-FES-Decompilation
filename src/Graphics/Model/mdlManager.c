@@ -9681,128 +9681,80 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
 {
 
-  char cVar1;
+  u8 cVar1;
 
-  u16 uVar2;
+  short uVar2;
 
   short sVar3;
 
-  long lVar4;
+  u32 lVar4;
 
-  u64 uVar5;
+  u32 uVar5;
 
   
 
   switch(param_1) {
 
-  default:
-
-    sprintf(param_3, (const char*)0x7cca18, 0x7cca10,
-    
-                 *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
-
-    break;
 
   case 1:
 
-    uVar2 = datGetEquipmentIdx(param_2,1);
+    uVar2 = datGetEquipmentIdx((short)param_2,1);
 
-    sVar3 = datGetEquipmentId(param_2,uVar2);
+    sVar3 = datGetEquipmentId((short)param_2,uVar2);
 
     if (param_2 == 1) {
 
       lVar4 = datGetScenarioMode();
 
-      if (lVar4 == 0) {
-
-        uVar5 = datGetUnit(1);
-
-        cVar1 = datCalcGetHeldWeaponType(uVar5);
-
-        if ((((cVar1 == '\0') && (lVar4 = datGetFlag(0x15), lVar4 == 0)) &&
-
-            (lVar4 = datGetFlag(0x1310), lVar4 == 0)) && (lVar4 = func_0031e420(1,1), lVar4 == 0))
-
-        {
-
-          sprintf(param_3, (const char*)0x69b2d0, 0x7cca10);
-
+      if (lVar4 != 0) {
+        switch (sVar3) {
+        case 0x43d:
+          sprintf(param_3, (char*)0x69b230);
+          break;
+        case 0x466:
+          sprintf(param_3, (char*)0x69b250);
+          break;
+        case 0x464:
+          sprintf(param_3, (char*)0x69b270);
+          break;
+        default:
+          lVar4 = datGetFlag(0x2f0);
+          if (lVar4 == 1) {
+            sprintf(param_3, (char*)0x69b290);
+          }
+          else {
+            sprintf(param_3, (char*)0x69b2b0);
+          }
+          break;
         }
-
-        else if (sVar3 == 0x40e) {
-
-          sprintf(param_3, (const char*)0x69b370, 0x7cca10,1,cVar1);
-
-        }
-
-        else if (sVar3 == 0x45f) {
-
-          sprintf(param_3, (const char*)0x69b350, 0x7cca10,1,cVar1);
-
-        }
-
-        else if (sVar3 == 0x453) {
-
-          sprintf(param_3, (const char*)0x69b330, 0x7cca10,1,cVar1);
-
-        }
-
-        else if (sVar3 == 0x452) {
-
-          sprintf(param_3, (const char*)0x69b310, 0x7cca10,1,cVar1);
-
-        }
-
-        else if (sVar3 == 0x439) {
-
-          sprintf(param_3, (const char*)0x69b2f0, 0x7cca10,1,cVar1);
-
-        }
-
-        else {
-
-          sprintf(param_3, (const char*)0x69b390, 0x7cca10,1,cVar1);
-
-        }
-
       }
-
-      else if (sVar3 == 0x464) {
-
-        sprintf(param_3, (const char*)0x69b270, 0x7cca10);
-
-      }
-
-      else if (sVar3 == 0x466) {
-
-        sprintf(param_3, (const char*)0x69b250, 0x7cca10);
-
-      }
-
-      else if (sVar3 == 0x43d) {
-
-        sprintf(param_3, (const char*)0x69b230, 0x7cca10);
-
-      }
-
       else {
-
-        lVar4 = datGetFlag(0x2f0);
-
-        if (lVar4 == 1) {
-
-          sprintf(param_3, (const char*)0x69b290, 0x7cca10);
-
+        uVar5 = datGetUnit(1);
+        cVar1 = datCalcGetHeldWeaponType(uVar5);
+        if ((((cVar1 == '\0') && (lVar4 = datGetFlag(0x15), lVar4 == 0)) &&
+            (lVar4 = datGetFlag(0x1310), lVar4 == 0)) && (lVar4 = func_0031e420(1,1), lVar4 == 0))
+        {
+          sprintf(param_3, (char*)0x69b2d0);
         }
-
+        else if (sVar3 == 0x40e) {
+          sprintf(param_3, (char*)0x69b370, 1, cVar1);
+        }
+        else if (sVar3 == 0x45f) {
+          sprintf(param_3, (char*)0x69b350, 1, cVar1);
+        }
+        else if (sVar3 == 0x453) {
+          sprintf(param_3, (char*)0x69b330, 1, cVar1);
+        }
+        else if (sVar3 == 0x452) {
+          sprintf(param_3, (char*)0x69b310, 1, cVar1);
+        }
+        else if (sVar3 == 0x439) {
+          sprintf(param_3, (char*)0x69b2f0, 1, cVar1);
+        }
         else {
-
-          sprintf(param_3, (const char*)0x69b2b0, 0x7cca10);
-
+          sprintf(param_3, (char*)0x69b390, 1, cVar1);
         }
-
       }
-
     }
 
     else {
@@ -10199,6 +10151,15 @@ u32 func_0031c820(u16 param_1,u16 param_2,char* param_3)
 
     sprintf(param_3, (const char*)0x69b9f0, 0x7cca10,param_2);
 
+    break;
+
+  default:
+
+    sprintf(param_3, (const char*)0x7cca18, 0x7cca10,
+
+                 *(u32 *)((u8*)PTR_PTR_0069ae80[(u32)param_1 * 2] + (u32)param_2 * 4));
+
+    break;
   }
 
   return 1;
