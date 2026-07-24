@@ -850,135 +850,247 @@ void func_002770f0(void)
 // FUN_002771f0 NONMATCHING
 void func_002771f0(void)
 {
+    s32 i;
     u32 *work;
-    u32 *work32;
+    u8 *workB;
     u32 tex8;
     u32 tex10;
     u32 tex1;
-    s32 i;
+    u32 frame;
+    u8 *entry;
     f32 layout[4];
-    u8 color[4];
     f32 alpha;
+    f32 alpha2;
+    u8 color[4];
+
     K_ASSERT(gOpWorkD0 != NULL, 0x61);
     work = (u32 *)OP_WORKD;
-    work32 = work;
+    workB = (u8 *)work;
     tex8 = func_00119a60(8);
     tex10 = func_00119a60(10);
     tex1 = brRes00234630(1);
+
     layout[0] = 411.0f;
     layout[1] = 326.0f;
     layout[2] = (f32)opTexW(tex8, 0x15);
     layout[3] = (f32)opTexH(tex8, 0x15);
-    func_0021d8e0(work + 0xb4c, layout);
+    func_0021d8e0(workB + 0x2d30, layout);
     layout[0] = (f32)opTexW(tex8, 0x15) + 411.0f;
     layout[1] = 326.0f;
     layout[2] = 31.0f;
     layout[3] = (f32)opTexH(tex8, 0x15);
-    func_0021d8e0(work + 0xb8c, layout);
+    func_0021d8e0(workB + 0x2e30, layout);
     layout[0] = 557.0f;
     layout[1] = 326.0f;
     layout[2] = (f32)opTexW(tex8, 0x17);
     layout[3] = (f32)opTexH(tex8, 0x17);
-    func_0021d8e0(work + 0xbcc, layout);
-    color[0] = color[1] = color[2] = color[3] = 0xff;
-    func_0021d950(work + 0xb4c, color);
-    func_0021d950(work + 0xb8c, color);
-    func_0021d950(work + 0xbcc, color);
+    func_0021d8e0(workB + 0x2f30, layout);
+
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0021d950(workB + 0x2d30, color);
+    func_0021d950(workB + 0x2e30, color);
+    func_0021d950(workB + 0x2f30, color);
+
     for (i = 0; i < 8; i++)
     {
+        entry = workB + i * 0x44 + 0x10;
         layout[0] = (f32)(i / 4) * 190.0f + 34.0f;
         layout[1] = (f32)(i % 4) * 24.0f + 316.0f;
         layout[2] = (f32)opTexW(tex8, 0x12);
         layout[3] = (f32)opTexH(tex8, 0x12);
-        func_0021d8e0(work + i * 0x44 + 4, layout);
-        func_0021d950(work + i * 0x44 + 4, color);
+        func_0021d8e0(entry, layout);
+        func_0021d950(entry, color);
     }
+
+    for (i = 0; i < OP_S32(work, 0x3738); i++)
+    {
+        f32 x = (f32)(i / 4) * 190.0f + 44.0f;
+        f32 y = (f32)(i % 4) * 24.0f + 155.0f - DAT_007cad74;
+        u32 resource = OP_U32(work, i * 0x44 + 0x110);
+
+        func_003b0d70(resource, (s32)(x * 16.0f), (s32)(y * 8.0f));
+        func_003b0e20(resource, (u32)color[3] | ((u32)color[2] << 8) |
+                      ((u32)color[1] << 16) | ((u32)color[0] << 24));
+    }
+
     color[0] = 0xc7;
     color[1] = 0xb9;
     color[2] = 0xff;
     color[3] = 0xff;
-    for (i = 0; i < (s32)work32[0xdce]; i++)
+
+    if ((OP_U32(work, 0) & 2) != 0)
     {
-        s32 x = (i / 4) * 190 + 44;
-        s32 y = (i % 4) * 24 + 315 - (s32)DAT_007cad74;
-        func_003b0d70(work32[i * 0x44 / 4 + 0x44], x * 16, y * 8);
-        func_003b0e20(work32[i * 0x44 / 4 + 0x44],
-                      (u32)color[3] | ((u32)color[2] << 8) |
-                      ((u32)color[1] << 16) | ((u32)color[0] << 24));
-    }
-    if ((work32[0] & 2) != 0)
-    {
-        if ((work32[0] & 0x10) == 0)
+        if ((OP_U32(work, 0) & 0x10) == 0)
             alpha = 0.0f;
-        else if ((s32)work32[0xdd1] < 5)
+        else if (OP_S32(work, 0x3744) < 5)
             alpha = 0.0f;
-        else if ((s32)work32[0xdd1] < 10)
-            alpha = (f32)(work32[0xdd1] - 5) / 5.0f;
-        else if ((s32)work32[0xdd1] < 0x14)
+        else if (OP_S32(work, 0x3744) < 10)
+            alpha = (f32)(OP_S32(work, 0x3744) - 5) / 5.0f;
+        else if (OP_S32(work, 0x3744) < 0x14)
             alpha = 1.0f;
-        else if ((s32)work32[0xdd1] < 0x1e)
-            alpha = 1.0f - (f32)(work32[0xdd1] - 0x14) / 10.0f;
+        else if (OP_S32(work, 0x3744) < 0x1e)
+            alpha = 1.0f - (f32)(OP_S32(work, 0x3744) - 0x14) / 10.0f;
         else
             alpha = 0.0f;
-        func_003b0d70(work32[0xe54], 0x1a80, 0xa90);
-        color[0] = opClampByte(alpha * 199.0f + 199.0f);
+
+        func_003b0d70(OP_U32(work, 0x3950), 680, 2704);
+        color[0] = opClampByte(alpha * 55.0f + 199.0f);
         color[1] = opClampByte(alpha * 70.0f + 185.0f);
         color[2] = opClampByte(alpha * -95.0f + 255.0f);
         color[3] = 0xff;
-        func_003b0e20(work32[0xe54], (u32)color[3] | ((u32)color[2] << 8) |
+        func_003b0e20(OP_U32(work, 0x3950),
+                      (u32)color[3] | ((u32)color[2] << 8) |
                       ((u32)color[1] << 16) | ((u32)color[0] << 24));
         layout[0] = 414.0f;
         layout[1] = 343.0f;
         layout[2] = (f32)opTexW(tex8, 0x13);
         layout[3] = (f32)opTexH(tex8, 0x13);
-        func_0021d8e0(work + 0xb0c, layout);
-        func_0021d950(work + 0xb0c, (u8[4]){0xff, 0xff, 0xff, 0xff});
+        func_0021d8e0(workB + 0x2c30, layout);
+        func_0021d950(workB + 0x2c30, color);
+
+        frame = func_0021cca0(tex1, 1);
+        layout[0] = 407.0f;
+        layout[1] = 319.0f;
+        layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
+        layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
+        func_0021d8e0(workB + 0x3960, layout);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = 0xff;
+        func_0021d950(workB + 0x3960, color);
+
+        frame = func_0021cca0(tex1, 0);
+        layout[0] = 405.0f;
+        layout[1] = 333.0f;
+        layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
+        layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
+        func_0021d8e0(workB + 0x3a60, layout);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = opClampByte(255.0f * alpha);
+        func_0021d950(workB + 0x3a60, color);
+
+
+        if ((OP_U32(work, 0) & 0x10) == 0)
+            alpha2 = 0.0f;
+        else if (OP_S32(work, 0x3744) < 5)
+            alpha2 = 0.0f;
+        else if (OP_S32(work, 0x3744) < 10)
+            alpha2 = (f32)(OP_S32(work, 0x3744) - 5) / 5.0f;
+        else if (OP_S32(work, 0x3744) < 0x14)
+            alpha2 = 1.0f;
+        else if (OP_S32(work, 0x3744) < 0x1e)
+            alpha2 = 1.0f - (f32)(OP_S32(work, 0x3744) - 0x14) / 10.0f;
+        else
+            alpha2 = 0.0f;
     }
-    for (i = 0; i < (s32)work32[0xdcc]; i++)
+    else
     {
-        u8 *entry = (u8 *)(uintptr_t)(work + i * 0x1c8);
+        alpha = 0.0f;
+        alpha2 = 0.0f;
+    }
+
+    for (i = 0; i < OP_S32(work, 0x3730); i++)
+    {
+        entry = workB + i * 0x100 + 0x3030;
         layout[0] = (f32)(i / 2) * 62.0f + 414.0f;
         layout[1] = (f32)(i % 2) * 24.0f + 366.0f;
-        layout[2] = (f32)opTexW(tex8, 0x14);
-        layout[3] = (f32)opTexH(tex8, 0x14);
-        func_0021d8e0(entry + 0xc0c, layout);
-        func_0021d950(entry + 0xc0c, color);
+        layout[2] = (f32)opTexW(tex10, 0x14);
+        layout[3] = (f32)opTexH(tex10, 0x14);
+        func_0021d8e0(entry, layout);
+        func_0021d950(entry, color);
+    }
+
+    layout[0] = 526.0f;
+    layout[1] = 328.0f;
+    func_00238dc0(workB + 0x3750, 2, OP_U32(work, 0x3734), 2, layout);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    for (i = 0; i < 2; i++)
+        func_0021d950(workB + i * 0x100 + 0x3750, color);
+
+    for (i = 0; i < 5; i++)
+    {
+        entry = workB + i * 0x1c8 + 0x890;
+
         layout[0] = 104.0f;
         layout[1] = (f32)i * 19.0f + 104.0f;
         layout[2] = (f32)opTexW(tex10, 0x14);
         layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x14);
-        func_0021d8e0(entry + 0x32c, layout);
+        func_0021d8e0(entry + 0x420, layout);
+
         layout[0] = (f32)opTexW(tex10, 0x14) + 104.0f;
         layout[2] = 220.0f;
-        func_0021d8e0(entry + 0x36c, layout);
-        func_0021d950(entry + 0x32c, color);
-        func_0021d950(entry + 0x36c, color);
+        layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x14);
+        func_0021d8e0(entry + 0x520, layout);
+        color[0] = 0xff;
+        color[1] = 0xff;
+        color[2] = 0xff;
+        color[3] = 0xff;
+        func_0021d950(entry + 0x420, color);
+        func_0021d950(entry + 0x520, color);
+
         layout[0] = DAT_007cb04c;
+        layout[1] = (f32)i * 19.0f + 104.0f;
         layout[2] = (f32)opTexW(tex10, 0x15);
-        func_0021d8e0(entry + 0x3ac, layout);
-        func_0021d950(entry + 0x3ac, color);
+        layout[3] = DAT_007caf8c + (f32)opTexH(tex10, 0x15);
+        func_0021d8e0(entry + 0x620, layout);
+        func_0021d950(entry + 0x620, color);
+
         layout[0] = 69.0f;
         layout[1] = (f32)i * 19.0f + 106.0f;
-        func_00238dc0(entry + 0x228, 2, OP_U32(entry, 0x224), 2, layout);
-        func_0021d950(entry + 0x22c, color);
-        layout[0] = 108.0f;
-        layout[1] = (f32)i * 19.0f + 105.0f;
-        layout[2] = (f32)opTexH(tex10, 0x18);
-        func_0021d8e0(entry + 0x2ac, layout);
-        func_0021eac0(entry + 0x2ac, 0x477fff00);
-        func_0021d950(entry + 0x2ac, color);
-        layout[0] = 108.0f;
-        layout[2] = (f32)opTexH(tex10, 0x1b);
-        func_0021d8e0(entry + 0x2ec, layout);
-        func_0021d950(entry + 0x2ec, color);
+        func_00238dc0(entry + 0x10, 2, OP_U32(entry, 0), 2, layout);
+        func_0021d950(entry + 0x10, color);
+        func_0021d950(entry + 0x110, color);
+
+        {
+            s32 mode = OP_S32(entry, 0x210);
+
+            if (mode == 0)
+                layout[0] = 0.0f;
+            else if (mode == 0x63)
+                layout[0] = 229.0f;
+            else
+                layout[0] = 225.0f * (f32)mode / 98.0f + 2.0f;
+
+            mode = OP_S32(entry, 0x214);
+            if (mode == 0)
+                layout[2] = 0.0f;
+            else if (mode == 1)
+                layout[2] = 4.0f;
+            else
+                layout[2] = 224.0f * (f32)mode / 98.0f + 3.0f;
+
+            layout[0] = 108.0f + layout[0] - layout[2];
+            layout[1] = (f32)i * 19.0f + 104.0f;
+            layout[3] = (f32)opTexH(tex10, 0x1b);
+            func_0021d8e0(entry + 0x320, layout);
+            color[0] = 0xff;
+            color[1] = 0xff;
+            color[2] = 0xff;
+            color[3] = opClampByte(255.0f * alpha2 * (f32)i * 19.0f);
+            func_0021d950(entry + 0x320, color);
+        }
     }
-    layout[0] = (f32)work32[0xed8] * 190.0f + 25.0f;
-    layout[1] = (f32)work32[0xed9] * 24.0f + 309.0f;
-    tex1 = func_0021cca0(tex1, 0);
-    layout[2] = (f32)OP_S32((void *)(uintptr_t)tex1, 0xc);
-    layout[3] = (f32)OP_S32((void *)(uintptr_t)tex1, 0x10);
-    func_0021d8e0(work + 0xedc, layout);
-    func_0021d950(work + 0xedc, color);
+
+    layout[0] = (f32)OP_S32(work, 0x3b60) * 190.0f + 25.0f;
+    layout[1] = (f32)OP_S32(work, 0x3b64) * 24.0f + 309.0f;
+    frame = func_0021cca0(tex1, 0);
+    layout[2] = (f32)OP_S32((void *)(uintptr_t)frame, 0xc);
+    layout[3] = (f32)OP_S32((void *)(uintptr_t)frame, 0x10);
+    func_0021d8e0(workB + 0x3b70, layout);
+    color[0] = 0xff;
+    color[1] = 0xff;
+    color[2] = 0xff;
+    color[3] = 0xff;
+    func_0021d950(workB + 0x3b70, color);
 }
 
 // FUN_00278550 NONMATCHING
