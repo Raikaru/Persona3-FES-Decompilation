@@ -779,11 +779,11 @@ void* FUN_0012c430(KwlnTask* task)
             datSetEquipmentIdx(pcId, category, newIndex);
             newMaxHp = (u16)FUN_0016c5f0(pcId);
             if (oldMaxHp != newMaxHp) {
-                FUN_0016cf40(pcId, (s16)((oldHp * newMaxHp) / oldMaxHp));
+                FUN_0016cf40(pcId, (s16)((oldHp * FUN_0016c5f0(pcId)) / oldMaxHp));
             }
             newMaxSp = (u16)func_0016c670(pcId);
             if (oldMaxSp != newMaxSp) {
-                FUN_0016cf90(pcId, (s16)((oldSp * newMaxSp) / oldMaxSp));
+                FUN_0016cf90(pcId, (s16)((oldSp * func_0016c670(pcId)) / oldMaxSp));
             }
         } else if ((*(u16*)DAT_007e094e_abs & 0x20) != 0) {
             FUN_0010a4e0(0, 0, 0, 2);
