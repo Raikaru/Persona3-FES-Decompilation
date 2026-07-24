@@ -137,7 +137,7 @@ void FUN_00154970(register CampMenuDrawItem* item,
 {
     s32 i;
     u32 color;
-    u32 parent = campDrawAlpha(item);
+    register u32 parent;
 
     switch (mode) {
     case 0:
@@ -276,6 +276,7 @@ u32 FUN_00154F70(CampMenuDrawItem* items, const char** labels, s32 count,
     return complete;
 }
 
+#pragma opt_loop_invariants on
 // FUN_00155070 NONMATCHING
 void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 first,
                   s32 count, s32 page, s32 selected)
@@ -341,6 +342,7 @@ void FUN_00155070(CampMenuDrawItem* item, const char** labels, s32 mode, s32 fir
     (void)alpha;
     (void)first;
 }
+#pragma opt_loop_invariants off
 
 // FUN_00155710
 u32 FUN_00155710(CampMenuDrawItem* items, const char** labels, s32 count, s32 first,
