@@ -868,6 +868,7 @@ work:
 #define FUN_003c3120(...) ((u8 (*)(...))FUN_003c3120)(__VA_ARGS__)
 #undef FUN_003c3190
 // FUN_003C3190 NONMATCHING
+#pragma opt_loop_invariants on
 
 
 u32 FUN_003c3190(int *param_1)
@@ -1005,6 +1006,7 @@ LAB_003c3274:
   return uVar4;
 
 }
+#pragma opt_loop_invariants off
 #define FUN_003c3190(...) ((u32 (*)(...))FUN_003c3190)(__VA_ARGS__)
 #undef FUN_003c3390
 // FUN_003C3390
