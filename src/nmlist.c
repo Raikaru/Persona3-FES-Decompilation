@@ -730,7 +730,7 @@ int FUN_003c4f80(int param_1)
 #define FUN_003c4f80(...) ((int (*)(...))FUN_003c4f80)(__VA_ARGS__)
 #undef FUN_003c4fc0
 #undef FUN_003c50b0
-// FUN_003C4FC0 NONMATCHING
+// FUN_003C4FC0
 
 
 void FUN_003c4fc0(int param_1,int *param_2)
@@ -766,6 +766,7 @@ void FUN_003c4fc0(int param_1,int *param_2)
     FUN_005225f8(uVar1,iVar3,4,param_2);
 
     FUN_003c50b0(param_1,uVar1,iVar3);
+    *(u32 *)(iVar2 + 0xc) = *(u32 *)(iVar2 + 4);
 
     (*(code *)0x0096017c)(uVar1);
 
