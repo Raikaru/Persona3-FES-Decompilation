@@ -390,91 +390,109 @@ void K_Fldrc_DestroyFldFpc()
     }
 }
 
+/*
+ * Reconstructed field resource selection and FPC registration paths from
+ * the retail call/store sequence; duplicated K_Field_Get accesses and the
+ * secondary pack path are intentional. Branch/register layout still differs
+ * from retail in the large dispatch prologue.
+ */
 // FUN_001b0a20 NONMATCHING
 void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
 {
-    Field* field;
-    u8* bytes;
-    u32* flags;
+    char path[64];
+    char path2[64];
     u32 count;
     u32 index;
-    u32 special;
     u32 dungeon;
-    char path[64];
 
-    field = K_Field_Get();
-    bytes = (u8*)field;
-    flags = (u32*)(bytes + 0x38);
-    *(u32*)(bytes + 0x1168) = 0;
-    *(u32*)(bytes + 0x1058) = 0;
-    special = (((majorId >= 21) && (majorId < 29) && (minorId == 0)) ||
-               ((majorId >= 41) && (majorId < 49) && (minorId == 0)) ||
-               ((majorId >= 51) && (majorId < 59)) ||
-               ((majorId >= 71) && (majorId < 79)));
+    *(u32*)((u8*)K_Field_Get() + 0x1168) = 0;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0;
+
+    index = (u16)majorId;
     dungeon = (((majorId >= 51) && (majorId < 59)) ||
                ((majorId >= 71) && (majorId < 79)));
-    index = (u16)majorId;
-    if (dungeon != 0)
+    if (((majorId >= 21) && (majorId < 51) && (minorId == 0)) ||
+        (dungeon != 0))
     {
-        index = (u16)(majorId - 30);
-        *flags |= 0x80000000;
-        *(void**)(bytes + 0x10cc) = func_001e7470((u16)majorId,
-                                                   (u16)minorId);
-        if (uGpffffb590 == NULL)
+        if (dungeon != 0)
         {
-            uGpffffb590 = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
-                                             D_00678DA0, MDL_READASYNC);
+            index = (u16)(majorId - 30);
+            *(u32*)((u8*)K_Field_Get() + 0x38) |= 0x80000000;
+            *(void**)((u8*)K_Field_Get() + 0x10cc) =
+                func_001e7470((u16)majorId, (u16)minorId);
+            if (uGpffffb590 == NULL)
+            {
+                uGpffffb590 = mdlCreateFromPath(MODEL_TYPE_FLD, 0xffff,
+                                                 D_00678DA0, MDL_READASYNC);
+            }
         }
-    }
-    if ((*flags & 0x80000000) != 0)
-    {
-        if (sFldFpcCdvd == NULL)
+        if (*(u32*)((u8*)K_Field_Get() + 0x38) & 0x80000000)
         {
-            sprintf(path, D_00678D80, majorId, minorId);
-            sFldFpcCdvd = H_Cdvd_Request(path, HCDVD_FILEARCHIVE);
+            if (sFldFpcCdvd == NULL)
+            {
+                sprintf(path, D_00678D80, majorId, minorId);
+                sFldFpcCdvd = H_Cdvd_Request(path, HCDVD_FILEARCHIVE);
+            }
+            count = *(u32*)((u8*)K_Field_Get() + 0x105c);
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4) = 18;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 1) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 1) * 4) = 8;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 2) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 2) * 4) = 7;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 3) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 3) * 4) = 6;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 4) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 4) * 4) = 5;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 5) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 5) * 4) = 4;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 6) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 6) * 4) = 3;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 7) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 7) * 4) = 2;
+            *(s16*)((u8*)K_Field_Get() + 0x1060 + (count + 8) * 4) = (s16)index;
+            *(s16*)((u8*)K_Field_Get() + 0x1062 + (count + 8) * 4) = 1;
+            *(u32*)((u8*)K_Field_Get() + 0x105c) = count + 9;
         }
-        count = *(u32*)(bytes + 0x105c);
-        *(s16*)(bytes + 0x1060 + count * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + count * 4) = 18;
-        *(s16*)(bytes + 0x1060 + (count + 1) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 1) * 4) = 8;
-        *(s16*)(bytes + 0x1060 + (count + 2) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 2) * 4) = 7;
-        *(s16*)(bytes + 0x1060 + (count + 3) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 3) * 4) = 6;
-        *(s16*)(bytes + 0x1060 + (count + 4) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 4) * 4) = 5;
-        *(s16*)(bytes + 0x1060 + (count + 5) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 5) * 4) = 4;
-        *(s16*)(bytes + 0x1060 + (count + 6) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 6) * 4) = 3;
-        *(s16*)(bytes + 0x1060 + (count + 7) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 7) * 4) = 2;
-        *(s16*)(bytes + 0x1060 + (count + 8) * 4) = (s16)index;
-        *(s16*)(bytes + 0x1062 + (count + 8) * 4) = 1;
-        *(u32*)(bytes + 0x105c) = count + 9;
+        else
+        {
+            for (count = 0; count < 9; count++)
+            {
+                *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
+                    D_0086BDC0[count];
+            }
+            *(u32*)((u8*)K_Field_Get() + 0x1168) = 9;
+            *(u32*)((u8*)K_Field_Get() + 0x1058) = 4;
+        }
     }
     else
     {
-        for (count = 0; count < 9; count++)
+        if (uGpffffb590 == NULL)
         {
-            *(void**)(bytes + 0x116c + count * 4) = D_0086BDC0[count];
+            sprintf(path2, D_00678D80, majorId, minorId);
+            sFldFpcCdvd = H_Cdvd_Request(path2, HCDVD_FILEARCHIVE);
         }
-        *(u32*)(bytes + 0x1168) = 9;
-        *(u32*)(bytes + 0x1058) = 4;
+        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
+        *(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4) = majorId;
+        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
+        *(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4) = minorId;
+        count = *(u32*)((u8*)K_Field_Get() + 0x105c);
+        *(u32*)((u8*)K_Field_Get() + 0x105c) = count + 1;
     }
-    if (special != 0)
+    if (((majorId >= 21) && (majorId < 29) && (minorId == 0)) ||
+        ((majorId >= 41) && (majorId < 49) && (minorId == 0)) ||
+        ((majorId >= 51) && (majorId < 59)) ||
+        ((majorId >= 71) && (majorId < 79)))
     {
-        *(Model**)(bytes + 0x11ec) =
+        *(Model**)((u8*)K_Field_Get() + 0x11ec) =
             mdlCreateFromPath(MODEL_TYPE_FLD, 0xfffe, D_00678DC0,
                               MDL_READASYNC);
-        *(Model**)(bytes + 0x11f0) =
+        *(Model**)((u8*)K_Field_Get() + 0x11f0) =
             mdlCreateFromPath(MODEL_TYPE_FLD, 0xfffd, D_00678DE0,
                               MDL_READASYNC);
     }
     *(u32*)0x007ce164 = *(u32*)0x007cdeac;
 }
-
 // FUN_001b10f0 NONMATCHING
 u32 K_Fldrc_Init()
 {
