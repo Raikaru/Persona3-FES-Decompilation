@@ -437,6 +437,7 @@ void func_001f0ab0(KwlnTask *task)
 }
 
 // FUN_001f0ad0 NONMATCHING
+#pragma optimization_level 3
 void func_001f0ad0(KwlnTask *task, const u8 *params)
 {
     u8 *work;
@@ -476,6 +477,7 @@ void func_001f0ad0(KwlnTask *task, const u8 *params)
         BR_U32(work, 0x120) |= 1;
     }
 }
+#pragma optimization_level 2
 // FUN_001f0c40 NONMATCHING
 void func_001f0c40(KwlnTask *task)
 {
@@ -643,9 +645,10 @@ void *func_001f1210(void)
 }
 
 // FUN_001f1240 NONMATCHING
+#pragma optimization_level 3
 void func_001f1240(KwlnTask *task)
 {
-    u8 *work = BR_TASK_WORK(task);
+    u32 *work = (u32 *)BR_TASK_WORK(task);
     f32 ratio;
 
     K_ASSERT((BR_U32(work, 0) & 0x20000) == 0, 0x603);
@@ -669,8 +672,10 @@ void func_001f1240(KwlnTask *task)
     func_001f13b0(task);
     BR_U32(work, 0) |= 0x20000;
 }
+#pragma optimization_level 2
 
 // FUN_001f13b0 NONMATCHING
+#pragma optimization_level 3
 void *func_001f13b0(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
@@ -773,6 +778,7 @@ void *func_001f13b0(KwlnTask *task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma optimization_level 2
 
 // FUN_001f1aa0
 void *func_001f1aa0(KwlnTask *task)
@@ -948,6 +954,7 @@ u32 func_001f1f40(void)
 }
 
 // FUN_001f2080 NONMATCHING
+#pragma optimization_level 3
 KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
 {
     u8 *work = (u8 *)BR_ALLOC2(0x2a220, 0x40000);
@@ -1001,8 +1008,10 @@ KwlnTask *func_001f2080(KwlnTask *parent, const u8 *params)
     BR_U32(work, 0x2a210) = 0;
     return task;
 }
+#pragma optimization_level 2
 
 // FUN_001f2300 NONMATCHING
+#pragma optimization_level 3
 void *func_001f2300(KwlnTask *task)
 {
     u8 *work = BR_TASK_WORK(task);
@@ -1189,6 +1198,7 @@ void *func_001f2300(KwlnTask *task)
     BR_U32(work, 4) &= ~3u;
     return KWLNTASK_CONTINUE;
 }
+#pragma optimization_level 2
 
 // FUN_001f2f50
 void *func_001f2f50(KwlnTask *task)
@@ -1445,6 +1455,7 @@ u32 func_001f4990(void)
 }
 
 // FUN_001f4a00 NONMATCHING
+#pragma optimization_level 3
 void func_001f4a00(void)
 {
     u8 *work = sBrCard;
@@ -1614,6 +1625,7 @@ void func_001f4a00(void)
     func_0010a4e0(1, 0, 6, 1);
     BR_U32(work, 8) = 7;
 }
+#pragma optimization_level 2
 
 // FUN_001f53a0
 void func_001f53a0(void)
@@ -1878,6 +1890,7 @@ reward_done:
 
 // FUN_001f5b20 NONMATCHING
 void *func_001f5b20(void)
+#pragma optimization_level 3
 {
     u8 *work = sBrReward;
     u32 state;
@@ -1952,6 +1965,7 @@ void *func_001f5b20(void)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma optimization_level 2
 
 // FUN_001f64c0 NONMATCHING
 void func_001f64c0(void)
@@ -2068,6 +2082,7 @@ void func_001f6a60(void)
 }
 
 // FUN_001f6d20 NONMATCHING
+#pragma optimization_level 3
 void func_001f6d20(const f32 *entry)
 {
     u8 *work = sBrReward;
@@ -2099,6 +2114,7 @@ void func_001f6d20(const f32 *entry)
     BR_U32(work, BR_U32(work, 0x33dc) * 0x670 + 0x64) = *(const u32 *)(entry + 2);
     BR_U32(work, 0x33dc)++;
 }
+#pragma optimization_level 2
 
 // FUN_001f6e80 NONMATCHING
 void func_001f6e80(void)
@@ -2167,6 +2183,7 @@ void func_001f7170(void)
 }
 
 // FUN_001f7210 NONMATCHING
+#pragma optimization_level 3
 void func_001f7210(void)
 {
     u8 *work = sBrReward;
@@ -2293,3 +2310,4 @@ void func_001f7210(void)
     }
     BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
 }
+#pragma optimization_level 2
