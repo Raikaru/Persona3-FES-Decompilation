@@ -555,7 +555,7 @@ extern void func_002b9e80(u64 param_1,u64 param_2,u32 param_3,u32 param_4);
 extern void func_002b9f30(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba000(u64 param_1,int param_2,u32 param_3,u32 param_4);
 extern void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16]);
-extern void func_002ba3a0(u64 param_1);
+extern void func_002ba3a0(int param_1);
 extern void func_002ba900(int param_1);
 extern void func_002baa20(int *param_1);
 extern u32 func_002baad0(int *param_1);
@@ -669,7 +669,7 @@ extern u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4);
 // Typed alias for callers that consume the helper's full 16-bit result.
 #pragma alias func_002bff60_u16 func_002bff60
 extern u16 func_002bff60_u16(u32 param_1,u32 param_2,u16 param_3,u32 param_4);
-extern void func_002c0070(int param_1,u64 param_2);
+extern void func_002c0070(int param_1,int param_2);
 extern u32 func_002c0880(int param_1);
 extern void func_002c08a0(int param_1,u64 *param_2);
 extern void func_002c08b0(int param_1,int param_2);
@@ -2005,7 +2005,7 @@ void func_002ba0f0(int param_1,int param_2,char *param_3,u8 (*param_4) [16])
 
 // FUN_002ba3a0 NONMATCHING
 
-void func_002ba3a0(u64 param_1)
+void func_002ba3a0(int param_1)
 
 {
   char cVar1 = 0;
@@ -3343,6 +3343,7 @@ void func_002bc950(u32 param_1,u32 param_2,u32 param_3)
   return;
 }
 
+#pragma opt_loop_invariants on
 // FUN_002bc9c0 NONMATCHING
 
 void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float param_5,
@@ -3397,6 +3398,7 @@ void func_002bc9c0(float param_1,float param_2,float param_3,float param_4,float
   (*DAT_009600a4)(3,&fStack_100,4,0x696da8,6);
   return;
 }
+#pragma opt_loop_invariants off
 
 // FUN_002bccd0
 
@@ -5153,7 +5155,7 @@ u8 func_002bff60(u64 param_1,long param_2,u32 param_3,long param_4)
 
 // FUN_002c0070 NONMATCHING
 
-void func_002c0070(int param_1,u64 param_2)
+void func_002c0070(int param_1,int param_2)
 
 {
   typedef struct {
