@@ -1115,13 +1115,14 @@ void* func_001c0d70(KwlnTask* task)
     modelFld = (ResrcModelFld*)MT_Scene_GetResListHead(RESRC_TYPE_MODELFLD);
     fld = (ResrcFld*)MT_Scene_GetResListHead(RESRC_TYPE_FLD);
 
-    if (*(u32*)work == 1)
+    switch (*(u32*)work)
     {
-        return KWLNTASK_STOP;
-    }
-    if (*(u32*)work != 0)
-    {
-        return KWLNTASK_CONTINUE;
+    case 0:
+        break;
+    case 1:
+        goto stop;
+    default:
+        goto done;
     }
 
     K_FldFrame_CtlCopyPos(&collisionPosition,
@@ -1255,10 +1256,13 @@ void* func_001c0d70(KwlnTask* task)
                 i++;
             }
         }
+
         fld = (ResrcFld*)fld->base.next;
     }
-
+done:
     return KWLNTASK_CONTINUE;
+stop:
+    return KWLNTASK_STOP;
 }
 
 
