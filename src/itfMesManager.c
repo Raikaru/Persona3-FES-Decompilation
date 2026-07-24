@@ -1064,7 +1064,7 @@ u32 FUN_003a2c10(void)
 #define FUN_003a4a70(...) ((u32 (*)(...))FUN_003a4a70)(__VA_ARGS__)
 #define FUN_003a2c10(...) ((u32 (*)(...))FUN_003a2c10)(__VA_ARGS__)
 #undef FUN_003a2c90
-// FUN_003A2C90 NONMATCHING
+// FUN_003A2C90 MATCHING
 
 
 int FUN_003a2c90(int param_1,int param_2)
@@ -1072,15 +1072,15 @@ int FUN_003a2c90(int param_1,int param_2)
   u32 *slot;
   int iVar1;
   int oldPtr;
+  int offset;
   u32 *dest;
   u32 auStack_1f0[0x7a];
-
   iVar1 = 0;
   if ((param_2 < 0) || (param_2 >= 4)) {
     FUN_0019d3f0("itfMesManager.c",0x659);
   }
-  param_2 = param_2 * 8;
-  if (*(int *)(param_2 + param_1 + 0x14) == 0) {
+  offset = param_2 * 8;
+  if (*(int *)(offset + param_1 + 0x14) == 0) {
     return 0;
   } else {
     oldPtr = *(int *)(param_1 + 0xc);
@@ -1088,7 +1088,7 @@ int FUN_003a2c90(int param_1,int param_2)
       FUN_00521250(auStack_1f0,oldPtr,0x1e8);
       iVar1 = 1;
     }
-    param_2 = param_1 + param_2;
+    param_2 = (int)((u8 *)param_1 + offset);
     slot = (u32 *)(param_2 + 0x14);
     *(volatile u32 *)((u8 *)param_1 + 0xc) = *slot;
     *(volatile u32 *)((u8 *)param_1 + 0x10) = *slot;
@@ -1974,7 +1974,7 @@ extern void FUN_003a4270_typed(int param_1);
 #pragma alias FUN_003a6c10_typed FUN_003a6c10
 extern u16 *FUN_003a6c10_typed(int param_1,u16 *param_2);
 extern const char *func_00171110(s16 param_1,s16 param_2);
-// FUN_003A4010 NONMATCHING
+// FUN_003A4010 MATCHING
 
 void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
 {
@@ -2006,7 +2006,7 @@ void FUN_003a4010(int param_1,int param_2,int param_3,u32 param_4)
     break;
   case 4:
     cursor = text;
-    if (param_3 < 0x3e9) goto LAB_003a4134;
+    if (param_3 <= 0x3e8) goto LAB_003a4134;
     cursor[0] = 0xb280;
     cursor[1] = 0;
     goto LAB_003a4164;
@@ -5852,7 +5852,7 @@ void FUN_003a8080(u32 *param_1)
 }
 #define FUN_003a8080(...) ((void (*)(...))FUN_003a8080)(__VA_ARGS__)
 #undef FUN_003a8170
-// FUN_003A8170 NONMATCHING
+// FUN_003A8170 MATCHING
 
 
 void FUN_003a8170(int param_1)
@@ -5863,8 +5863,8 @@ void FUN_003a8170(int param_1)
 
   u8 *puVar2;
   short sVar1;
-
   int iVar2;
+  int product;
   int iVar3;
   
 
@@ -5876,7 +5876,7 @@ void FUN_003a8170(int param_1)
 
     if (*(short *)(puVar2 + 0x1a) == 4) {
 
-      iVar3 = sVar1 * 200 + 0x788;
+      iVar3 = 200 * sVar1 + 0x788;
 
     }
 
@@ -5884,7 +5884,8 @@ void FUN_003a8170(int param_1)
 
       iVar3 = (int)(75.0f / (float)(int)*(short *)(puVar2 + 0x1a));
 
-      iVar3 = (iVar3 >> 1) * 8 + 0x788 + (int)sVar1 * (iVar3 * 8);
+      product = iVar3 * 8;
+      iVar3 = (iVar3 >> 1) * 8 + 0x788 + product * (int)sVar1;
 
     }
 
