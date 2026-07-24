@@ -149,10 +149,11 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
     if ((~p[1] & BSA_FLAG_ACTIVE) == 0)
         K_ASSERT(0, 0x91);
     p[1] = 0;
-    p[1] = BSA_FLAG_ACTIVE | BSA_FLAG_TRANSITION;
+    p[1] = BSA_FLAG_ACTIVE;
     p[0] = (u32)mode;
     p[0x29ac] = 0;
     p[0x29ad] = 0;
+    p[1] |= BSA_FLAG_TRANSITION;
     p[2] = unitId;
 
     unit = func_001ff430(unitId);
@@ -197,7 +198,8 @@ void bsaMain0020fe30(BsaWork* work, s32 mode, u32 unitId)
         case 8: slotId = 9; break;
         default: slotId = 0; K_ASSERT(0, 0xd9); break;
         }
-        p[0x159c + i] = (u32)(s32)bsaSkillCategory(func_00306e80(calc, slotId));
+        p[0x159c + i] = (u32)(s32)bsaSkillCategory(
+            func_00306e80(calc, slotId));
     }
     p[0x17e8] = (u32)(s32)func_003082f0(calc, 0);
     slots = func_00308bb0(calc);
