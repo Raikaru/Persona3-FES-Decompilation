@@ -215,6 +215,7 @@ u32 sflResult001f9170(u32 player)
             }
             break;
         case 3:
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if (datGetSp(members[j]) < func_0016c670(members[j])) {
                     return 1;
@@ -227,6 +228,7 @@ u32 sflResult001f9170(u32 player)
             }
             break;
         case 5:
+            brRoot001f1df0((u16*)members, &memberCount);
             for (j = 0; j < memberCount; j++) {
                 if ((datGetBadStatusNoDown(members[j]) & 0x80) != 0) {
                     return 1;
