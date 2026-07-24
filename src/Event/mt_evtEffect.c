@@ -811,7 +811,7 @@ void FUN_003957d0(f32 param_1, int param_2, u32 *param_3)
 }
 #define FUN_003957d0(...) ((void (*)(f32, int, u32*))FUN_003957d0)(__VA_ARGS__)
 #undef FUN_00395810
-// FUN_00395810 NONMATCHING
+// FUN_00395810
 
 
 void FUN_00395810(int param_1)
@@ -820,39 +820,38 @@ void FUN_00395810(int param_1)
 
 {
 
-  u8 uStack_4;
+  u8 auStack_4[4];
 
-  u8 uStack_3;
-
-  u8 uStack_2;
-
-  u8 uStack_1;
 
   
 
   if (*(int *)(param_1 + 0x694) != 0) {
 
-    (*DAT_00960090)(1,0);
+    code *p;
 
-    (*DAT_00960090)(7,2);
+    p = (code *)&DAT_00960090_abs;
 
-    (*DAT_00960090)(0xc,1);
+    (*p)(1,0);
 
-    (*DAT_00960090)(10,3);
+    (*p)(7,2);
 
-    (*DAT_00960090)(0xb,6);
+    (*p)(0xc,1);
+
+    (*p)(10,3);
+
+    (*p)(0xb,6);
 
     FUN_00359380(*(f32 *)(param_1 + 0x6e0),(void *)(param_1 + 0x6a0),1);
 
-    uStack_4 = 0x14;
+    auStack_4[0] = 0x14;
 
-    uStack_3 = 0x14;
+    auStack_4[1] = 0x14;
 
-    uStack_2 = 0xff;
+    auStack_4[2] = 0xff;
 
-    uStack_1 = 0xff;
+    auStack_4[3] = 0xff;
 
-    FUN_00359b40(*(f32 *)(param_1 + 0x6e0) / 6.0,(void *)(param_1 + 0x6d0),&uStack_4,1);
+    FUN_00359b40(*(f32 *)(param_1 + 0x6e0) / 6.0f,(void *)(param_1 + 0x6d0),auStack_4,1);
 
     *(u32 *)(param_1 + 0x694) = 0;
 
