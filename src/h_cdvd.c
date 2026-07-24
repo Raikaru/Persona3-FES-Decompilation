@@ -205,43 +205,35 @@ u32 H_Cdvd_FileExists(const char* path)
 void H_Cdvd_Read()
 {
     HCdvd* cdvd;
+    HCdvd* prev;
     HCdvd* next;
-    HCdvdCache* cache;
     s32 i;
     u32 readResult;
 
     cdvd = sCdvdListHead.next;
     while (cdvd != NULL)
     {
-        if (cdvd->readState == HCDVD_READ_COMPLETE)
+        switch (cdvd->readState)
         {
+        case HCDVD_READ_QUEUED:
+            goto queued;
+        case HCDVD_READ_OPENED:
+            goto opened;
+        case HCDVD_READ_IN_PROGRESS:
+            goto inProgress;
+        case HCDVD_READ_FINALIZING:
+            goto finalizing;
+        case HCDVD_READ_COMPLETE:
+        default:
             goto complete;
         }
-        if (cdvd->readState == HCDVD_READ_FINALIZING)
-        {
-            goto finalizing;
-        }
-        if (cdvd->readState == HCDVD_READ_IN_PROGRESS)
-        {
-            goto inProgress;
-        }
-        if (cdvd->readState == HCDVD_READ_OPENED)
-        {
-            goto opened;
-        }
-        if (!cdvd->readState)
-        {
-            goto queued;
-        }
-        goto complete;
-
 queued:
         cdvd->readPollCount = 0;
         func_00101520(cdvd->dir);
         cdvd->adxf = func_0053c910(cdvd->fileName, 0);
         if (cdvd->adxf == NULL)
         {
-            return;
+            goto complete;
         }
 
         cdvd->readByteSize = cdvd->adxf->fileSize;
@@ -267,8 +259,18 @@ opened:
                 return;
             }
 
-            cdvd->fileMemory =
-                (void*)(((uintptr_t)cdvd->unalignedFileMemory + 0x3f) & ~(uintptr_t)0x3f);
+            {
+                s32 address;
+                s32 alignedAddress;
+
+                address = (s32)(uintptr_t)cdvd->unalignedFileMemory;
+                alignedAddress = (address / 0x40) * 0x40;
+                if ((address % 0x40) != 0)
+                {
+                    alignedAddress += 0x40;
+                }
+                cdvd->fileMemory = (void*)alignedAddress;
+            }
         }
 
         readResult = func_0053d380(cdvd->adxf, func_0053d968(cdvd->adxf), cdvd->fileMemory);
@@ -300,28 +302,24 @@ inProgress:
             {
                 memset((u8*)cdvd->fileMemory + cdvd->readByteSize, 0, 0x100);
             }
+            goto finalizing;
         }
-        else if (readResult == HCDVD_READ_COMPLETE)
-        {
-            func_0053cdd0(cdvd->adxf);
-            cdvd->adxf = NULL;
-            cdvd->readState = HCDVD_READ_QUEUED;
-
-            if (cdvd->hasExternalMemory == false)
-            {
-                RwFree(cdvd->unalignedFileMemory);
-                cdvd->fileMemory = NULL;
-                cdvd->unalignedFileMemory = NULL;
-            }
-
-            return;
-        }
-
-        if (cdvd->readState != HCDVD_READ_FINALIZING)
+        if (readResult != HCDVD_READ_COMPLETE)
         {
             goto complete;
         }
+        func_0053cdd0(cdvd->adxf);
+        cdvd->adxf = NULL;
+        cdvd->readState = HCDVD_READ_QUEUED;
 
+        if (cdvd->hasExternalMemory == false)
+        {
+            RwFree(cdvd->unalignedFileMemory);
+            cdvd->fileMemory = NULL;
+            cdvd->unalignedFileMemory = NULL;
+        }
+
+        return;
 finalizing:
         func_00101e30(&cdvd->hasExternalMemory);
         cdvd->readState = HCDVD_READ_COMPLETE;
@@ -339,10 +337,16 @@ complete:
         cdvd->pendingDestroyCount = 0;
         if (cdvd->refCount < 1)
         {
-            cdvd->prev->next = cdvd->next;
-            if (cdvd->next != NULL)
             {
-                cdvd->next->prev = cdvd->prev;
+                HCdvd* next2;
+
+                prev = cdvd->prev;
+                next2 = cdvd->next;
+                prev->next = next2;
+                if (next2 != NULL)
+                {
+                    next2->prev = prev;
+                }
             }
 
             if (cdvd->fileMemory != NULL && cdvd->hasExternalMemory == false)
@@ -352,11 +356,17 @@ complete:
                 cdvd->unalignedFileMemory = NULL;
             }
 
-            for (i = 0, cache = sCdvdCache; i < HCDVD_CACHE_MAX; i++)
             {
-                if (cache[i].isValid && cache[i].requestData == &cdvd->hasExternalMemory)
+                HCdvdCache* cache;
+                void* requestData;
+
+                requestData = &cdvd->hasExternalMemory;
+                for (i = 0, cache = sCdvdCache; i < HCDVD_CACHE_MAX; i++)
                 {
-                    cache[i].isValid = false;
+                    if (cache[i].isValid && cache[i].requestData == requestData)
+                    {
+                        cache[i].isValid = false;
+                    }
                 }
             }
 
