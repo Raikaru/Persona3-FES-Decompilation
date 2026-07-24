@@ -1493,7 +1493,6 @@ void* clndUpdateTask(KwlnTask* clndTask)
     s16 totalDaysBeforeMonth;
     s16 dayOfWeek;
     s16 i;
-    RwV2d pos;
     u16 padState;
     u32 specialAction;
     KwlnTask* actionTask;
@@ -1501,22 +1500,48 @@ void* clndUpdateTask(KwlnTask* clndTask)
     switch (work->state)
     {
         case CLNDTASK_STATE_DEBUG_INIT:
-            pos.x = 21.0f;
-            pos.y = 84.0f;
+        {
+            struct
+            {
+                RwRect rect;
+                RwV2d pos;
+                RwRGBA color;
+            } debug;
+            debug.rect.x = 0;
+            debug.rect.y = 0;
+            debug.rect.w = 252;
+            debug.rect.h = 168;
+            debug.pos.x = 24.0f;
+            debug.pos.y = 84.0f;
+            debug.color.r = 0;
+            debug.color.g = 0;
+            debug.color.b = 100;
+            debug.color.a = 255;
             work->debugCursorBg = H_Cursor_CreateTask(clndTask,
                                                        2.0f,
-                                                       pos,
-                                                       (RwRect){0, 0, 252, 168},
-                                                       (RwRGBA){0, 0, 100, 255});
+                                                       debug.pos,
+                                                       debug.rect,
+                                                       debug.color);
+            debug.rect.x = 0;
+            debug.rect.y = 0;
+            debug.rect.w = 36;
+            debug.rect.h = 12;
+            debug.color.r = 120;
+            debug.color.g = 0;
+            debug.color.b = 0;
+            debug.color.a = 255;
             work->debugCursor = H_Cursor_CreateTask(clndTask,
                                                      1.0f,
-                                                     pos,
-                                                     (RwRect){0, 0, 36, 12},
-                                                     (RwRGBA){120, 0, 0, 255});
+                                                     debug.pos,
+                                                     debug.rect,
+                                                     debug.color);
             work->state = CLNDTASK_STATE_DEBUG_UPDATE;
             break;
+        }
 
         case CLNDTASK_STATE_DEBUG_UPDATE:
+        {
+            RwV2d pos;
             padState = *(u16*)0x007e0952;
             if (padState & 0x8000)
             {
@@ -1673,6 +1698,7 @@ void* clndUpdateTask(KwlnTask* clndTask)
             }
             H_Cursor_SetPos(work->debugCursor, pos);
             break;
+        }
 
         case CLNDTASK_STATE_DEBUG_WAIT_OPEN:
             if (work->confirmationTask == NULL)
