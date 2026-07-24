@@ -2106,20 +2106,22 @@ void FUN_0016bdb0(u32 param_1, u32 param_2, f32* param_3)
         .records[param_2 & 0xffff].color1 & 0xff) / 255.0f;
 }
 
-// FUN_0016BEE0 NONMATCHING
+// FUN_0016BEE0 MATCHING
 void FUN_0016bee0(u32 param_1, u32 param_2, void* param_3)
 {
+    u32 groupOffset;
     CampDataBridgeGroup* group;
     CampDataBridgeRecord* record;
+    u32 recordOffset;
 
     if (iGpffffb2c0 == NULL) {
         FUN_0019d3f0(D_005E3098, 0xb8);
     }
-    group = (CampDataBridgeGroup*)((param_1 & 0xffff) * sizeof(CampDataBridgeGroup) +
-        (u8*)iGpffffb2c0);
+    groupOffset = (param_1 & 0xffff) * 0x10;
+    group = (CampDataBridgeGroup*)(groupOffset + (u32)(uintptr_t)iGpffffb2c0);
     record = group->records;
-    record = (CampDataBridgeRecord*)((param_2 & 0xffff) * sizeof(CampDataBridgeRecord) +
-        (u8*)record);
+    recordOffset = (param_2 & 0xffff) * 0x20;
+    record = (CampDataBridgeRecord*)(recordOffset + (u32)(uintptr_t)record);
     FUN_00521250(param_3, group->auxiliaryData + (s32)record->helpIndex * 0x10, 0x10);
 }
 
