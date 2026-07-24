@@ -521,6 +521,11 @@ static inline void opWaitSetPolyPivot(void* destination, f32* points,
     func_0021d890(destination, points);
 }
 
+// Retail's frame-0x10 overlay uses a dynamic x offset and fixed 256/375/202 geometry.
+// Keep the explicit atlas lookup and default-mode alpha path even though this
+// source-shape correction currently increases normalized_diff while preserving
+// the runtime behavior for the overlay's documented mode 0/1 paths.
+// The frame dimensions and mode fallback were previously approximated.
 // FUN_0026EED0 NONMATCHING
 void opWait0026eed0(void)
 {
@@ -751,13 +756,15 @@ void opWait0026eed0(void)
         alpha = 1.0f - opWaitClamp01(timer, 0, 30);
     else if (mode == 0)
         alpha = opWaitClamp01(timer, 70, 150);
+    else
+        alpha = 1.0f;
     (void)func_0021cca0(atlas, 0x10);
     {
         f32 rect[4];
         f32 offset = ((f32)*(s32*)(work + 0x18) / 690.0f) * -300.0f;
         rect[0] = 341.0f + offset;
-        rect[1] = 438.0f;
-        rect[2] = 374.0f;
+        rect[1] = 256.0f;
+        rect[2] = 375.0f;
         rect[3] = 202.0f;
         func_0021d8e0(work + 0xd40, rect);
     }
