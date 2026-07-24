@@ -37494,17 +37494,11 @@ void FUN_003407e0(int param_1)
   __int128 in_vf0;
 
   __int128 auVar39;
-
   __int128 auVar40;
-
   __int128 auVar41;
-
   __int128 auVar42;
-
   __int128 auVar43;
-
   __int128 auVar44;
-
   __int128 extraout_vf12;
 
   u32 uVar45;
@@ -37566,6 +37560,15 @@ void FUN_003407e0(int param_1)
   float fStack_2c;
 
   float fStack_28;
+  float mdlStack_b0[3];
+  float mdlStack_a0[3];
+  float mdlStack_90[3];
+  float mdlStack_80[3];
+  float mdlStack_70[3];
+  float mdlStack_60[3];
+  float mdlStack_50[3];
+  float mdlStack_40[3];
+  float mdlStack_30[3];
 
   u32 uStack_20;
 
@@ -37582,6 +37585,33 @@ void FUN_003407e0(int param_1)
   int iStack_8;
 
   int iStack_4;
+#define fStack_b0 mdlStack_b0[0]
+#define fStack_ac mdlStack_b0[1]
+#define fStack_a8 mdlStack_b0[2]
+#define fStack_a0 mdlStack_a0[0]
+#define fStack_9c mdlStack_a0[1]
+#define fStack_98 mdlStack_a0[2]
+#define fStack_90 mdlStack_90[0]
+#define fStack_8c mdlStack_90[1]
+#define fStack_88 mdlStack_90[2]
+#define fStack_80 mdlStack_80[0]
+#define fStack_7c mdlStack_80[1]
+#define fStack_78 mdlStack_80[2]
+#define fStack_70 mdlStack_70[0]
+#define fStack_6c mdlStack_70[1]
+#define fStack_68 mdlStack_70[2]
+#define fStack_60 mdlStack_60[0]
+#define fStack_5c mdlStack_60[1]
+#define fStack_58 mdlStack_60[2]
+#define fStack_50 mdlStack_50[0]
+#define fStack_4c mdlStack_50[1]
+#define fStack_48 mdlStack_50[2]
+#define fStack_40 mdlStack_40[0]
+#define fStack_3c mdlStack_40[1]
+#define fStack_38 mdlStack_40[2]
+#define fStack_30 mdlStack_30[0]
+#define fStack_2c mdlStack_30[1]
+#define fStack_28 mdlStack_30[2]
 
   
 
@@ -38575,6 +38605,33 @@ void FUN_003407e0(int param_1)
   return;
 
 }
+#undef fStack_b0
+#undef fStack_ac
+#undef fStack_a8
+#undef fStack_a0
+#undef fStack_9c
+#undef fStack_98
+#undef fStack_90
+#undef fStack_8c
+#undef fStack_88
+#undef fStack_80
+#undef fStack_7c
+#undef fStack_78
+#undef fStack_70
+#undef fStack_6c
+#undef fStack_68
+#undef fStack_60
+#undef fStack_5c
+#undef fStack_58
+#undef fStack_50
+#undef fStack_4c
+#undef fStack_48
+#undef fStack_40
+#undef fStack_3c
+#undef fStack_38
+#undef fStack_30
+#undef fStack_2c
+#undef fStack_28
 
 
 
