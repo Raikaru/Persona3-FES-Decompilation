@@ -406,7 +406,7 @@ code * FUN_003bfc50(void)
 }
 #define FUN_003bfc50(...) ((code * (*)(...))FUN_003bfc50)(__VA_ARGS__)
 #undef FUN_003bfdb0
-// FUN_003BFDB0 NONMATCHING
+// FUN_003BFDB0
 
 
 code * FUN_003bfdb0(void)
@@ -421,7 +421,8 @@ code * FUN_003bfdb0(void)
 
   code *pcVar3;
 
-  long lVar4;
+  int lVar4;
+  int iVar5;
 
   short sStack_2;
 
@@ -429,110 +430,59 @@ code * FUN_003bfdb0(void)
 
   puVar2 = (u32 *)FUN_00195540();
 
-  lVar4 = FUN_00172c50(&sStack_2);
+  iVar5 = FUN_00172c50(&sStack_2);
 
-  if (lVar4 == 0) {
-
-    *puVar2 = 0;
-
-    puVar2[1] = 0;
-
-    puVar2[2] = 0;
-
-    puVar2[3] = 0;
-
-    puVar2[4] = 0;
-
-    puVar2[5] = 0;
-
-    pcVar3 = (code *)&FUN_003bf950;
-
-  }
-
-  else {
-
+  if (iVar5 != 0) {
     cVar1 = FUN_0016dba0(sStack_2);
-
     if (cVar1 == '\n') {
-
       DAT_007ce674 = sStack_2 + 0x1e;
-
       *puVar2 = 0;
-
       puVar2[1] = 0;
-
       puVar2[2] = 0;
-
       puVar2[3] = 0;
-
       puVar2[4] = 0;
-
       puVar2[5] = 0;
-
       pcVar3 = (code *)&FUN_003bfc50;
-
     }
-
     else {
-
       lVar4 = FUN_001717c0(sStack_2);
-
       if ((lVar4 == 1) || (lVar4 = FUN_00172160(sStack_2), lVar4 == 1)) {
-
         DAT_007ce674 = (int)sStack_2;
-
         *puVar2 = 0;
-
         puVar2[1] = 0;
-
         puVar2[2] = 0;
-
         puVar2[3] = 0;
-
         puVar2[4] = 0;
-
         puVar2[5] = 0;
-
         pcVar3 = (code *)&FUN_003bfc50;
-
       }
-
       else {
-
         lVar4 = FUN_003c3050(sStack_2);
-
         if (lVar4 == 0) {
-
           FUN_0019d3f0("comuTimerSequence.c",0x249);
-
         }
-
         lVar4 = FUN_003c3120();
-
         if (lVar4 == 0) {
-
           FUN_0019d3f0("comuTimerSequence.c",0x24b);
-
         }
-
         *puVar2 = 0;
-
         puVar2[1] = 0;
-
         puVar2[2] = 0;
-
         puVar2[3] = 0;
-
         puVar2[4] = 0;
-
         puVar2[5] = 0;
-
         pcVar3 = (code *)&FUN_003bfae0;
-
       }
-
     }
-
+  }
+  else {
+    *puVar2 = 0;
+    puVar2[1] = 0;
+    puVar2[2] = 0;
+    puVar2[3] = 0;
+    puVar2[4] = 0;
+    puVar2[5] = 0;
+    pcVar3 = (code *)&FUN_003bf950;
   }
 
   return pcVar3;
@@ -930,8 +880,8 @@ code * FUN_003c0570(void)
   u8 bVar2;
   int *piVar3;
   code *pcVar4;
-  long lVar5;
-  long lVar6;
+  int lVar5;
+  int lVar6;
   u8 auStack_40 [12];
   u32 uStack_34;
   u32 uStack_30;
