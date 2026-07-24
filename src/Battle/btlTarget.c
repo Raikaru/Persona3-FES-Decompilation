@@ -3890,9 +3890,16 @@ s32 FUN_002d6460(BtlAction* action, s32* param_2, u32 param_3,
     return result;
 }
 
+/* Retail initializes the target-loop result state before dispatch.
+ * Keep these aggregate values live across each target's slot loop.
+ * The original reconstruction left successfulTargets/finalFlags indeterminate.
+ * Retail also selects the nonnegative HP path before the negative callback.
+ * This source follows that state transition order intentionally.
+ */
 // FUN_002d6620 NONMATCHING
 void FUN_002d6620(BtlAction *action)
 {
+    volatile u16 inherited = 0;
     DatUnit *selfDat;
     u16 specificId;
     s32 mappedId;
@@ -3900,7 +3907,6 @@ void FUN_002d6620(BtlAction *action)
     u32 tableOffset;
     u8 attackType;
     u8 datType;
-    volatile u16 inherited = 0;
     u32 specialFlags = 0;
     u16 successfulTargets;
     u8 finalFlags;
@@ -3927,6 +3933,8 @@ void FUN_002d6620(BtlAction *action)
     attackType = BTLT_T8(tableOffset, 0x11);
     selfDat = action->unit->datUnit;
     *(u16 *)((u8 *)selfDat + 0x38) = 0;
+    if ((action->target.commandId == 3) && (action->target.unk_38 > 0))
+        specialFlags |= 1;
     datType = (u8)FUN_003082f0(selfDat, id);
 
     BTLT_A8(action, 0xc8) = 0;
@@ -3966,6 +3974,8 @@ void FUN_002d6620(BtlAction *action)
     else
     {
         u16 targetCount = action->target.targetedCount;
+        successfulTargets = 0;
+        finalFlags = 0;
         if (targetCount > 1)
         {
             u16 index = 0;
@@ -4135,7 +4145,11 @@ void FUN_002d6620(BtlAction *action)
                     terminate = ((slotOtherStatus & 0x80000) == 0);
                 if (((slotIndex + 1) == slotCount) || (terminate != 0))
                 {
-                    if (resultA == 0)
+                    if (resultA != 0)
+                    {
+                        *(u32 *)(slotPtr + 0xe8) |= 0x100000;
+                    }
+                    else
                     {
                         u8 forceFlag = 0;
                         if (((total < 0) || (efficacy == 0x100) || (efficacy == 0x400)) &&
@@ -4152,40 +4166,31 @@ void FUN_002d6620(BtlAction *action)
                                 *(u16 *)(slotPtr + 0xfa) |= 2;
                         }
                     }
-                    else
-                    {
-                        *(u32 *)(slotPtr + 0xe8) |= 0x100000;
-                    }
                     if (resultB != 0)
                         *(u16 *)(slotPtr + 0xfa) |= 4;
-                    if ((efficacy == 1) && (BTLT_A32(target, 0xd4) == 0) && (resultB != 1))
-                    {
-                        if (resultA != 0)
-                            successfulTargets++;
-                    }
-                    else
-                    {
-                        finalFlags = 2;
-                    }
+                    if ((efficacy != 1) || (BTLT_A32(target, 0xd4) == 1) || (resultB == 1))
+                        finalFlags |= 2;
+                    else if (resultA != 0)
+                        successfulTargets++;
                 }
 
                 if (terminate != 0)
                 {
                     s16 hpDelta = (s16)FUN_0030b640(candidateAction->unit->datUnit, id);
-                    if (hpDelta < 0)
+                    if (hpDelta >= 0)
+                    {
+                        BTLT_AS16(target, 0x460) = hpDelta;
+                        *(u16 *)(slotPtr + 0xfa) |= 0x10;
+                        callbackResult = (u8)FUN_002d6460(candidateAction, (int *)(slotPtr + 0xe0), efficacy, targetSpecial, 0);
+                        BTLT_A8(target, 0xf8 + slotOffset) = callbackResult;
+                    }
+                    else
                     {
                         callbackResult = (u8)FUN_002d6460(candidateAction, (int *)(slotPtr + 0xe0), efficacy, targetSpecial, 1);
                         BTLT_A32(target, 0xd0) = 1;
                         BTLT_A8(target, 0xf8 + slotOffset) = callbackResult;
                         if (action == candidateAction)
                             *(u16 *)(slotPtr + 0xf4) = 0;
-                    }
-                    else
-                    {
-                        BTLT_AS16(target, 0x460) = hpDelta;
-                        *(u16 *)(slotPtr + 0xfa) |= 0x10;
-                        callbackResult = (u8)FUN_002d6460(candidateAction, (int *)(slotPtr + 0xe0), efficacy, targetSpecial, 0);
-                        BTLT_A8(target, 0xf8 + slotOffset) = callbackResult;
                     }
                     slotCount = (u8)(slotIndex + 1);
                     break;
@@ -4197,19 +4202,16 @@ void FUN_002d6620(BtlAction *action)
 
             {
                 u16 targetValue = BTLT_D16(selfDat, 0x38);
-                if ((targetValue == 0) && (BTLT_D16(targetDat, 0x38) != 0))
+                if (targetValue == 0)
                     targetValue = BTLT_D16(targetDat, 0x38);
                 inherited = targetValue;
             }
             {
                 s16 overrideValue = (s16)FUN_002d56a0(id);
-                if (overrideValue == 0)
-                {
-                    if (inherited != 0)
-                        BTLT_A16(target, 0xdc) = inherited;
-                }
-                else
+                if (overrideValue != 0)
                     BTLT_AS16(target, 0xdc) = overrideValue;
+                else if (inherited != 0)
+                    BTLT_A16(target, 0xdc) = inherited;
             }
             BTLT_A8(target, 0xc8) = slotCount;
             BTLT_A8(target, 0xc9) = chance;
