@@ -175,7 +175,8 @@ int FUN_003b2cb0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 }
 #define FUN_003b2cb0(...) ((int (*)(...))FUN_003b2cb0)(__VA_ARGS__)
 #undef FUN_003b2f90
-// FUN_003B2F90 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003B2F90 MATCHING
 
 
 
@@ -276,9 +277,7 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
     if ((param_8 & 0x10) != 0) {
 
-      iVar3 = FUN_003b35c0_raw(param_6);
-
-      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)iVar3);
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
 
     }
 
@@ -302,11 +301,11 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
   *(float *)(iVar2 + 0x14) = param_1;
 
-  for (iVar7 = iVar2; iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x24)) {
+  for (iVar4 = iVar2; iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x24)) {
 
-    for (iVar4 = *(int *)(iVar7 + 0x1c); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0x28)) {
+    for (iVar7 = *(int *)(iVar4 + 0x1c); iVar7 != 0; iVar7 = *(int *)(iVar7 + 0x28)) {
 
-      *(u32 *)(iVar4 + 0x10) = param_4;
+      *(u32 *)(iVar7 + 0x10) = param_4;
 
     }
 
@@ -326,8 +325,10 @@ int FUN_003b2f90(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
 }
 #define FUN_003b2f90(...) ((int (*)(...))FUN_003b2f90)(__VA_ARGS__)
+#pragma opt_loop_invariants off
 #undef FUN_003b32d0
-// FUN_003B32D0 NONMATCHING
+#pragma opt_loop_invariants on
+// FUN_003B32D0 MATCHING
 
 
 
@@ -411,9 +412,7 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
   else {
 
     if ((param_8 & 0x10) != 0) {
-      iVar3 = FUN_003b35c0_raw(param_6);
-
-      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)iVar3);
+      param_3 = (int)(((float)param_3 + 0.0f) - fGpffff808c * (float)FUN_003b35c0_raw(param_6));
 
     }
 
@@ -461,6 +460,7 @@ int FUN_003b32d0(int param_2,int param_3,float param_1,u32 param_4,u32 param_5,u
 
 }
 #define FUN_003b32d0(...) ((int (*)(...))FUN_003b32d0)(__VA_ARGS__)
+#pragma opt_loop_invariants off
 #undef FUN_003b35c0
 // FUN_003B35C0
 
