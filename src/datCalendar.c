@@ -1227,28 +1227,26 @@ extern u32 DAT_007cdffc;
 #pragma push
 #pragma opt_loop_invariants on
  
-// FUN_0017d830 NONMATCHING
+// FUN_0017d830 MATCHING
 s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
     s16 days;
     s16 month;
-    const s16* numOfDays;
 
     month = CALENDAR_MONTH_APRIL;
     days = daysSinceApr5 + 4;
-    numOfDays = (const s16*)gNumOfDaysInMonths_abs;
 
     while (true)
     {
-        if (days < numOfDays[month - 1])
+        if (days < ((const s16*)gNumOfDaysInMonths_abs)[month - 1])
         {
             break;
         }
 
-        days -= numOfDays[month - 1];
+        days -= ((const s16*)gNumOfDaysInMonths_abs)[month - 1];
         month++;
 
-        if (month >= CALENDAR_MONTH_MAX)
+        if (month > CALENDAR_MONTH_DECEMBER)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
@@ -1296,27 +1294,25 @@ s32 clndGetDaysSinceStartFromDate(s32 month, s32 day)
 }
 #pragma pop
 
-// FUN_0017d920 NONMATCHING
+// FUN_0017d920 MATCHING
 u32 clndGetCurrentMonth()
 {
     s16 daysSinceApr5;
     s16 month;
-    const s16* numOfDays;
 
     daysSinceApr5 = datGetDaysSinceApr5();
     month = CALENDAR_MONTH_APRIL;
     daysSinceApr5 += 4;
-    numOfDays = gNumOfDaysInMonths;
     while (true)
     {
-        if (daysSinceApr5 < numOfDays[month - 1])
+        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
         {
             break;
         }
 
-        daysSinceApr5 -= numOfDays[month - 1];
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
         month++;
-        if (month >= CALENDAR_MONTH_MAX)
+        if (month > CALENDAR_MONTH_DECEMBER)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
@@ -1325,28 +1321,26 @@ u32 clndGetCurrentMonth()
     return month;
 }
 
-// FUN_0017d9c0 NONMATCHING
+// FUN_0017d9c0 MATCHING
 s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
 {
     s16 days;
     s16 month;
-    const s16* numOfDays;
 
     month = CALENDAR_MONTH_APRIL;
     days = daysSinceApr5 + 4;
-    numOfDays = gNumOfDaysInMonths;
 
     while (true)
     {
-        if (days < numOfDays[month - 1])
+        if (days < gNumOfDaysInMonths[month - 1])
         {
             break;
         }
 
-        days -= numOfDays[month - 1];
+        days -= gNumOfDaysInMonths[month - 1];
         month++;
 
-        if (month >= CALENDAR_MONTH_MAX)
+        if (month > CALENDAR_MONTH_DECEMBER)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
@@ -1355,26 +1349,24 @@ s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5)
     return days + 1;
 }
 
-// FUN_0017da40. Return the current day of the month NONMATCHING
+// FUN_0017da40. Return the current day of the month MATCHING
 u32 clndGetCurrentDay()
 {
     s16 daysSinceApr5;
     s16 month;
-    const s16* numOfDays;
     daysSinceApr5 = datGetDaysSinceApr5();
     month = CALENDAR_MONTH_APRIL;
     daysSinceApr5 += 4;
-    numOfDays = gNumOfDaysInMonths;
     while (true)
     {
-        if (daysSinceApr5 < numOfDays[month - 1])
+        if (daysSinceApr5 < gNumOfDaysInMonths[month - 1])
         {
             break;
         }
 
-        daysSinceApr5 -= numOfDays[month - 1];
+        daysSinceApr5 -= gNumOfDaysInMonths[month - 1];
         month++;
-        if (month >= CALENDAR_MONTH_MAX)
+        if (month > CALENDAR_MONTH_DECEMBER)
         {
             month = CALENDAR_MONTH_JANUARY;
         }
