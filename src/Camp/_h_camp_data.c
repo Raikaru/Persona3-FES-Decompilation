@@ -92,7 +92,14 @@ extern u32 FUN_001124b0();
 extern u32 FUN_00113a30();
 extern u32 FUN_00114450();
 extern u32 FUN_001159f0();
+#pragma alias FUN_001159f0_typed FUN_001159f0
+extern void FUN_001159f0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                f32 x, f32 y, f32 depth);
 extern u32 FUN_00115bc0();
+#pragma alias FUN_00115bc0_typed FUN_00115bc0
+extern void FUN_00115bc0_typed(void* owner, void* atlas, s32 tile, u8 alpha,
+                                u32 red, u32 green, u32 blue, f32 x, f32 y,
+                                f32 depth);
 extern u32 FUN_00115de0();
 extern u32 FUN_00119f10();
 extern u32 FUN_0011abd0();
@@ -209,7 +216,8 @@ undefined4 FUN_00169330(void);
 bool FUN_00169420(void);
 undefined4 FUN_00169470(undefined8);
 void FUN_00169AE0(int);
-void FUN_00169B90(undefined8, undefined8, undefined8, undefined8);
+void FUN_00169B90(void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
 undefined4 FUN_0016A030(void);
 undefined4 FUN_0016A6A0(void);
 f32 FUN_0016ba00(u32, u32);
@@ -224,8 +232,10 @@ void FUN_0016bf80(u32, u32, void*) __attribute__((aligned(16)));
 void FUN_0016c010(void) __attribute__((aligned(16)));
 void FUN_0016c1d0(void);
 void FUN_0016c2f0(void);
-void FUN_0016a700(undefined4, undefined8, undefined8, s32, s32);
-void FUN_0016af90(undefined4, undefined8, undefined8, s32, s32);
+void FUN_0016a700(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
+void FUN_0016af90(f32 depth, void* resources, undefined8 coordinates,
+                  void* list, s32 alpha);
 
 
 typedef struct CampBridgeScreenWork
@@ -839,6 +849,7 @@ camp_blend_mode0:
         child = (u32)H_Maestro_CreateTask(task, 0x18bd,
                                           (const char*)D_005DBF40_abs);
         work->targetTask = child;
+        goto camp_blend_mode_done;
 camp_blend_mode_done:
         work->timer = 0;
         work->state = 4;
@@ -1356,8 +1367,8 @@ undefined4 FUN_00169470(undefined8 param_1)
         }
         stackHeaderA = 0;
         stackHeaderB = 0;
-        FUN_00169B90(CAMP_PTR64(work->resources), 0, CAMP_PTR64(work->list),
-                     0xff - (work->frame * 0xff) / 0x14);
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 0x14));
         break;
     case 3:
         if ((DAT_007e094e & 0x40) == 0) {
@@ -1381,7 +1392,7 @@ undefined4 FUN_00169470(undefined8 param_1)
         }
         stackHeaderA = 0;
         stackHeaderB = 0;
-        FUN_00169B90(CAMP_PTR64(work->resources), 0, CAMP_PTR64(work->list), 0);
+        FUN_00169B90(work->resources, 0, work->list, 0);
         break;
     case 4:
         if (FUN_003c7850() == 0) {
@@ -1440,7 +1451,7 @@ undefined4 FUN_00169470(undefined8 param_1)
         }
         stackHeaderA = 0;
         stackHeaderB = 0;
-        FUN_00169B90(CAMP_PTR64(work->resources), 0, CAMP_PTR64(work->list), 0);
+        FUN_00169B90(work->resources, 0, work->list, 0);
         break;
     case 5:
         if (FUN_003c7850() == 0) {
@@ -1449,7 +1460,7 @@ undefined4 FUN_00169470(undefined8 param_1)
         }
         stackHeaderA = 0;
         stackHeaderB = 0;
-        FUN_00169B90(CAMP_PTR64(work->resources), 0, CAMP_PTR64(work->list), 0);
+        FUN_00169B90(work->resources, 0, work->list, 0);
         break;
     case 6:
         nextFrame = work->frame - 1;
@@ -1459,8 +1470,8 @@ undefined4 FUN_00169470(undefined8 param_1)
         }
         stackHeaderA = 0;
         stackHeaderB = 0;
-        FUN_00169B90(CAMP_PTR64(work->resources), 0, CAMP_PTR64(work->list),
-                     0xff - (work->frame * 0xff) / 10);
+        FUN_00169B90(work->resources, 0, work->list,
+                     (s32)(0xff - (work->frame * 0xff) / 10));
         break;
     case 7:
         return 0xffffffff;
@@ -1492,50 +1503,50 @@ void FUN_00169AE0(int param_1)
 }
 
 // FUN_00169B90 NONMATCHING
-void FUN_00169B90(undefined8 param_1, undefined8 param_2,
-                  undefined8 param_3, undefined8 param_4)
+void FUN_00169B90(void* param_1, undefined8 param_2,
+                  void* param_3, s32 param_4)
 {
     f32 x;
     f32 y;
     f32 depth;
     f32 drawY;
 
-    y = (f32)((undefined8)param_2 >> 0x20);
-    x = (f32)param_2;
+    y = *(f32*)((u8*)&param_2 + 4);
+    x = *(f32*)&param_2;
     depth = (f32)FUN_0021ea00(0x28);
     FUN_0016a700(DAT_00960088 - depth, param_1, param_2, param_3, param_4);
     depth = (f32)FUN_0021ea00(0x28);
     FUN_0016af90(DAT_00960088 - depth, param_1, param_2, param_3, param_4);
-    drawY = y + 18.0;
+    drawY = y + 18.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_001159f0(x + 240.0, drawY, DAT_00960088 - depth);
+    FUN_001159f0(x + 240.0f, drawY, DAT_00960088 - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_001159f0(x + 416.0, drawY, DAT_00960088 - depth);
-    drawY = x + 468.0;
+    FUN_001159f0(x + 416.0f, drawY, DAT_00960088 - depth);
+    drawY = x + 468.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_001159f0(drawY, y + 408.0, DAT_00960088 - depth);
+    FUN_001159f0(drawY, y + 408.0f, DAT_00960088 - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_001159f0(x + 386.0, y + 379.0, DAT_00960088 - depth);
+    FUN_001159f0(x + 386.0f, y + 379.0f, DAT_00960088 - depth);
     {
         s32 count = ((CampTargetList*)(uintptr_t)param_3)->count;
         if (count >= 100) {
             depth = (f32)FUN_0021ea00(0x28);
-            FUN_00115bc0(drawY, y + 384.0, DAT_00960088 - depth);
+            FUN_00115bc0(drawY, y + 384.0f, DAT_00960088 - depth);
         }
         if (count >= 10) {
             depth = (f32)FUN_0021ea00(0x28);
-            FUN_00115bc0(x + 495.0, y + 384.0, DAT_00960088 - depth);
+            FUN_00115bc0(x + 495.0f, y + 384.0f, DAT_00960088 - depth);
         }
     }
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_00115bc0(x + 522.0, y + 384.0, DAT_00960088 - depth);
-    y += 404.0;
+    FUN_00115bc0(x + 522.0f, y + 384.0f, DAT_00960088 - depth);
+    y += 404.0f;
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_00115de0(x + 565.0, y, DAT_00960088 - depth);
+    FUN_00115de0(x + 565.0f, y, DAT_00960088 - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_00115de0(x + 584.0, y, DAT_00960088 - depth);
+    FUN_00115de0(x + 584.0f, y, DAT_00960088 - depth);
     depth = (f32)FUN_0021ea00(0x28);
-    FUN_00115de0(x + 603.0, y, DAT_00960088 - depth);
+    FUN_00115de0(x + 603.0f, y, DAT_00960088 - depth);
 }
 
 // FUN_0016A030 NONMATCHING
@@ -1684,8 +1695,8 @@ undefined4 FUN_0016A6A0(void)
 
 
 // FUN_0016A700 NONMATCHING
-void FUN_0016a700(undefined4 param_1, undefined8 param_2, undefined8 param_3,
-                  s32 param_4, s32 param_5)
+void FUN_0016a700(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
 {
     f32 x;
     f32 y;
@@ -1706,10 +1717,9 @@ void FUN_0016a700(undefined4 param_1, undefined8 param_2, undefined8 param_3,
     u32* drawData;
     undefined1 text[0x100];
 
-    (void)param_2;
-    x = (f32)(u32)param_3;
-    y = (f32)((u64)param_3 >> 32);
-    drawData = (u32*)param_1;
+    x = *(f32*)((u8*)&param_3 + 4);
+    y = *(f32*)&param_3;
+    drawData = (u32*)param_2;
     textAlpha = 0xffU - (u32)param_5;
 
     /* The six-argument form preserves the texture/sprite selectors carried
@@ -1854,8 +1864,8 @@ void FUN_0016a700(undefined4 param_1, undefined8 param_2, undefined8 param_3,
 }
 
 // FUN_0016AF90 NONMATCHING
-void FUN_0016af90(undefined4 param_1, undefined8 param_2, undefined8 param_3,
-                  s32 param_4, s32 param_5)
+void FUN_0016af90(f32 param_1, void* param_2, undefined8 param_3,
+                  void* param_4, s32 param_5)
 {
     f32 x;
     f32 y;
@@ -1878,10 +1888,9 @@ void FUN_0016af90(undefined4 param_1, undefined8 param_2, undefined8 param_3,
     u32* drawData;
     undefined1 text[0x100];
 
-    (void)param_2;
-    x = (f32)(u32)param_3;
-    y = (f32)((u64)param_3 >> 32);
-    drawData = (u32*)param_1;
+    x = *(f32*)((u8*)&param_3 + 4);
+    y = *(f32*)&param_3;
+    drawData = (u32*)param_2;
     alpha = 0xffU - (u32)param_5;
 
     FUN_001159f0(x + 36.0f, y + 242.0f, param_1, drawData[1], 0x48, param_5);
