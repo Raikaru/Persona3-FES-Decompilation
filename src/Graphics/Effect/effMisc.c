@@ -297,6 +297,14 @@ void func_003581f0(const RwV3d* axis, RwMatrix* matrix, f32 angle)
     matrix->at.z = z * z + (1.0f - z * z) * cosine;
     matrix->pad2 = 0;
 
+    __asm__ volatile (
+        ".set noreorder          \n"
+        "sqc2 vf0, 0x30(%0)       \n"
+        ".set reorder"
+        :
+        : "r" (matrix)
+        : "memory"
+    );
 }
 
 // FUN_00358340
