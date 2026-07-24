@@ -284,6 +284,7 @@ void FUN_00243150(void)
   BpcRenderState renderState;
   BpcRenderQuad renderQuad;
   
+  
   if (sBpcWork == (uint *)0x0) {
     K_Assert(D_0068E880, 0x97);
   }
@@ -297,8 +298,8 @@ void FUN_00243150(void)
     if ((uVar8 & 0x100) != 0) {
       FUN_00245ea0();
     }
-    renderState = (BpcRenderState)D_00960090;
-    renderQuad = (BpcRenderQuad)D_0096009C;
+    renderState = D_00960090;
+    renderQuad = D_0096009C;
 #define D_00960090 renderState
 #define D_0096009C renderQuad
     D_00960090(9,2);
@@ -489,14 +490,16 @@ LAB_00243a18:
         D_0096009C(puVar1 + 0x1bb4,4,0,2,3);
         for (iVar10 = 0; iVar10 < 3; iVar10 = iVar10 + 1) {
           uVar8 = puVar1[iVar10 + 0x1b31];
-          if (uVar8 == 0) {
-            uVar7 = func_0021cca0(uVar4,0x41);
-          }
-          else if (uVar8 == 2) {
-            uVar7 = func_0021cca0(uVar5,0x12);
-          }
-          else if (uVar8 == 1) {
+          switch (uVar8) {
+          case 1:
             uVar7 = func_0021cca0(uVar5,0x11);
+            break;
+          case 2:
+            uVar7 = func_0021cca0(uVar5,0x12);
+            break;
+          case 0:
+            uVar7 = func_0021cca0(uVar4,0x41);
+            break;
           }
           uVar3 = func_0021cce0(uVar7);
           D_00960090(1,uVar3);
