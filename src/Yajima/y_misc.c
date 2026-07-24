@@ -3797,19 +3797,15 @@ u32 FUN_004281f0(u32 param_1)
 
   u32 uStack_50;
 
-  float fStack_48;
-
-  float fStack_44;
-
   float fStack_40;
 
   float fStack_3c;
-
   float fStack_38;
 
   float fStack_34;
 
   u64 uStack_30;
+  YajimaVec2 packedCoord;
 
   u32 uStack_2c;
 
@@ -4621,7 +4617,7 @@ u32 FUN_004281f0(u32 param_1)
               iVar7 = (int)cVar6;
               iVar13 = iVar7;
               if (cVar6 < '\0') iVar13 = iVar7 + 1;
-              fStack_48 = (float)(iVar13 >> 1) + fVar27 - 6.0f;
+              packedCoord.x = (float)(iVar13 >> 1) + fVar27 - 6.0f;
 
               cVar6 = pcVar1[0xb29];
               fVar24 = FUN_00429fe0((float)cVar6,0);
@@ -4632,7 +4628,7 @@ u32 FUN_004281f0(u32 param_1)
               fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
               iVar13 = (int)cVar6;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              fStack_44 = (float)(iVar13 >> 1) + fVar27;
+              packedCoord.y = (float)(iVar13 >> 1) + fVar27;
             }
             else {
               cVar6 = pcVar1[0xb29];
@@ -4645,7 +4641,7 @@ u32 FUN_004281f0(u32 param_1)
               iVar7 = (int)cVar6;
               iVar13 = iVar7;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              fStack_48 = (float)(iVar13 >> 1) + fVar27 - 6.0f;
+              packedCoord.x = (float)(iVar13 >> 1) + fVar27 - 6.0f;
 
               cVar6 = pcVar1[0xb29];
               fVar24 = FUN_0042a180((float)cVar6,(u32 *)(pcVar1 + 0x868));
@@ -4656,13 +4652,12 @@ u32 FUN_004281f0(u32 param_1)
               fVar27 = fVar27 - fVar24 - (float)((int)cVar6 << 1);
               iVar13 = (int)cVar6;
               if (cVar6 < '\0') iVar13 = iVar13 + 1;
-              fStack_44 = (float)(iVar13 >> 1) + fVar27;
+              packedCoord.y = (float)(iVar13 >> 1) + fVar27;
             }
 
-            fStack_44 = fStack_44 - 6.0f;
+            packedCoord.y = packedCoord.y - 6.0f;
 
-            uStack_30 = ((u64)(*(u32 *)&fStack_44) << 32) | *(u32 *)&fStack_48;
-            FUN_00430220(*(u32 *)(pcVar1 + 0xb1c),uStack_30);
+            FUN_00430220(*(u32 *)(pcVar1 + 0xb1c),*(u64 *)&packedCoord);
 
           }
 
