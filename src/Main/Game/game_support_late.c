@@ -436,7 +436,7 @@ void* func_0018a9f0(KwlnTask* task)
             {
                 u8* entry = work + i * 0x364;
                 resource = H_Cdvd_ArchiveGetFile((HCdvd*)GS_PTR(work, 0x40),
-                                                  (s32)(work + 4), (u32*)(entry + 0x15c));
+                                                  i + 4, (u32*)(entry + 0x15c));
                 GS_PTR(entry, 0x154) = resource;
                 func_00102720(D_005E43E0, resource);
             }
@@ -543,12 +543,12 @@ void* func_0018a9f0(KwlnTask* task)
         {
             if (((struct GsLateTimerWork*)work)->timer > 8 && ((struct GsLateTimerWork*)work)->timer < 0x41)
             {
-                func_00113a30(200.0f, 0.0f, 0.0f, 0x0f3956ff, 0x280, 0x1c0);
+                func_00113a30(100.0f, 0.0f, 0.0f, 0x0f3956ff, 0x280, 0x1c0);
             }
         }
         else
         {
-            func_00113a30(200.0f, 0.0f, 0.0f, 0x0f395603, 0x280, 0x1c0);
+            func_00113a30(100.0f, 0.0f, 0.0f, 0x0f395603, 0x280, 0x1c0);
         }
         for (i = 0; i < 2; i++)
         {
@@ -565,7 +565,7 @@ void* func_0018a9f0(KwlnTask* task)
         }
         if (((struct GsLateTimerWork*)work)->timer > 5 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
-            func_00114af0(198.0f, 0.0f, 0.0f, 0xffffffff,
+            func_00114af0(99.0f, 0.0f, 0.0f, 0xffffffff,
                           0x280, 0x1c0, GS_PTR(work, 0x34));
         }
         if (GS_TASK(work, 0x1c) != NULL && kwlnTaskGetState(GS_TASK(work, 0x1c)) == 3)
@@ -580,7 +580,7 @@ void* func_0018a9f0(KwlnTask* task)
         if (((struct GsLateTimerWork*)work)->timer > 0x31 && ((struct GsLateTimerWork*)work)->timer < 0x46)
         {
             alpha = (u32)(((((struct GsLateTimerWork*)work)->timer - 0x32) * 0xff) / 0xf);
-            func_00114af0(196.0f, 0.0f, 0.0f,
+            func_00114af0(98.0f, 0.0f, 0.0f,
                           alpha | 0xffffff00, 0x280, 0x1c0,
                           GS_PTR(work, 0x30));
         }
@@ -598,7 +598,7 @@ void* func_0018a9f0(KwlnTask* task)
             {
                 alpha = 0xff - (u32)(((((struct GsLateTimerWork*)work)->timer - 0x46) * 0xff) / 10);
             }
-            func_00113d80(194.0f, 0.0f, 0.0f,
+            func_00113d80(97.0f, 0.0f, 0.0f,
                           alpha | 0xffffff00, 0x280, 0x1c0);
         }
         if (((struct GsLateTimerWork*)work)->timer > 0x4f)
