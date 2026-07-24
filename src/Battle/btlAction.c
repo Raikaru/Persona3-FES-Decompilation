@@ -5002,6 +5002,20 @@ void btlActionUpdateStateEscape(BtlAction* action)
             packet->parentUID = root->uid;
             packet->actionUID = action->uid;
             btlPacketRegister(packet, BTLPACKET_TYPE_1);
+            btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
+            ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 250.0f;
+            ecDest.y = ecUnit->pos.y;
+            ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 250.0f;
+            movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 0.5f, 24);
+            movePacket->unk_00 = 4;
+            movePacket->parentUID = root->uid;
+            movePacket->actionUID = action->uid;
+            btlPacketRegister(movePacket, BTLPACKET_TYPE_1);
+            packet = btlUnit00285d30(ecUnit, 0xffffff, 4, 0, 0, 0);
+            packet->unk_00 = 4;
+            packet->parentUID = root->uid;
+            packet->actionUID = action->uid;
+            btlPacketRegister(packet, BTLPACKET_TYPE_1);
         }
         btlUnit0027f7c0(action->unit, &home, NULL, NULL);
         destination = action->unit->pos;
