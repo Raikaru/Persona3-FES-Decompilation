@@ -4842,11 +4842,12 @@ BtlPacket* func_002864a0(BtlUnit* unit, u16 id, u16 flags)
 #pragma optimization_level 3
 void func_00286540(void)
 {
-    u32 genus;
-    u32 i;
-    u32 magic;
-    s16 statusId;
     BtlUnit* unit;
+    u32 genus;
+    u32 badStatus;
+    s16 statusId;
+    u32 magic;
+    u32 i;
     BtlUnit* child;
     Model* mdl;
     f32 fade;
@@ -4854,8 +4855,7 @@ void func_00286540(void)
     RwV3d vector;
     RwRGBA color;
 
-    genus = 0;
-    do
+    for (genus = 0; genus < UNIT_GENUS_MAX; genus++)
     {
         unit = *(BtlUnit**)((u8*)gBtl + 0x154 + (genus << 3));
         while (unit != NULL)
@@ -4908,17 +4908,16 @@ void func_00286540(void)
                 {
                     fade = (f32)unit->unk_4c / 8.0f;
                     unit->cols[BTLUNIT_COL_MAX - 1].r =
-                        (u8)((f32)unit->unk_44[4] + fade *
-                             ((f32)unit->unk_44[0] - (f32)unit->unk_44[4]));
+                        (u8)(unit->unk_44[4] +
+                             (s32)(fade * (f32)(unit->unk_44[0] - unit->unk_44[4])));
                     unit->cols[BTLUNIT_COL_MAX - 1].g =
-                        (u8)((f32)unit->unk_44[5] + fade *
-                             ((f32)unit->unk_44[1] - (f32)unit->unk_44[5]));
+                        (u8)(unit->unk_44[5] +
+                             (s32)(fade * (f32)(unit->unk_44[1] - unit->unk_44[5])));
                     unit->cols[BTLUNIT_COL_MAX - 1].b =
-                        (u8)((f32)unit->unk_44[6] + fade *
-                             ((f32)unit->unk_44[2] - (f32)unit->unk_44[6]));
-                }
-                unit->unk_4c--;
+                        (u8)(unit->unk_44[6] +
+                             (s32)(fade * (f32)(unit->unk_44[2] - unit->unk_44[6])));
 
+                }
                 if (unit->flags2 & BTLUNIT_FLAG2_DIRTY)
                 {
                     f32 xx;
@@ -5030,10 +5029,11 @@ void func_00286540(void)
                 {
                     if (unit->datUnit != NULL)
                     {
-                        statusId = (s16)func_002bbfa0(unit->datUnit->bad);
+                        badStatus = unit->datUnit->bad;
+                        statusId = (s16)func_002bbfa0(badStatus);
                         if (statusId != (s16)func_002bbdf0(unit->unk_9f8))
                         {
-                            func_002bc0e0(unit->datUnit->bad, &unit->unk_44[4]);
+                            func_002bc0e0(badStatus, &unit->unk_44[4]);
                             unit->unk_44[0] = unit->cols[4].r;
                             unit->unk_44[1] = unit->cols[4].g;
                             unit->unk_44[2] = unit->cols[4].b;
@@ -5048,8 +5048,7 @@ void func_00286540(void)
             }
             unit = unit->prev;
         }
-        genus++;
-    } while (genus < UNIT_GENUS_MAX);
+    }
 }
 #pragma optimization_level 2
 extern void func_00287ea0(BtlUnit* unit);
