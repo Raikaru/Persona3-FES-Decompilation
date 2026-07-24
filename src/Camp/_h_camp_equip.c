@@ -1395,6 +1395,8 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
     f32 posY;
     f32 scale;
     u8 alpha;
+    CampVec2 equipVecA;
+    CampVec2 equipVecB;
 
     switch ((u32)index) {
     case 0:
@@ -1450,28 +1452,32 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         posX = *(f32*)(record + 0x38);
         posY = *(f32*)(record + 0x3c);
         alpha = (u8)*(u32*)(record + 0x40);
+        equipVecA.x = posX + 443.0f;
+        equipVecA.y = posY + 15.0f;
+        equipVecB.x = posX + 544.0f;
+        equipVecB.y = posY + 15.0f;
         switch (slot) {
         case 0:
             valA = func_0016f9f0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         (CampVec2){posX + 443.0f, posY + 15.0f},
+                         equipVecA,
                          (s32)scale, 0xff, 0, 0, alpha, valA, 3);
             valB = func_0016fae0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         (CampVec2){posX + 544.0f, posY + 15.0f},
+                         equipVecB,
                          (s32)scale, 0xff, 0, 0, alpha, valB, 3);
             break;
         case 1:
             valA = func_0016fbd0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         (CampVec2){posX + 443.0f, posY + 15.0f},
+                         equipVecA,
                          (s32)scale, 0xff, 0, 0, alpha, valA, 3);
             break;
         case 2:
         default:
             valA = func_0016fcc0(pcId, equipment);
             FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         (CampVec2){posX + 443.0f, posY + 15.0f},
+                         equipVecA,
                          (s32)scale, 0xff, 0, 0, alpha, valA, 3);
             break;
         }
@@ -1598,29 +1604,32 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                 eq = *(u16*)((u8*)work + 0x28 + item * 2);
 
                 statY = posY + 3.0f + (f32)yDiv + (f32)(row * 30) + 15.0f;
-
+                equipVecA.x = posX + 483.0f;
+                equipVecA.y = statY;
+                equipVecB.x = posX + 544.0f;
+                equipVecB.y = statY;
                 switch (slot) {
                 case 0:
                     statA = func_0016f9f0(pcId, eq);
                     FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 (CampVec2){posX + 483.0f, statY},
+                                 equipVecA,
                                  (s32)scale, 0xff, 0, 0, alpha, statA, 3);
                     statB = func_0016fae0(pcId, eq);
                     FUN_0012e170(H_Maestro_001120a0(2), 0xb,
-                                 (CampVec2){posX + 544.0f, statY},
+                                 equipVecB,
                                  (s32)scale, 0xff, 0, 0, alpha, statB, 3);
                     break;
                 case 1:
                     statA = func_0016fbd0(pcId, eq);
                     FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 (CampVec2){posX + 483.0f, statY},
+                                 equipVecA,
                                  (s32)scale, 0xff, 0, 0, alpha, statA, 3);
                     break;
                 case 2:
                 default:
                     statA = func_0016fcc0(pcId, eq);
                     FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 (CampVec2){posX + 483.0f, statY},
+                                 equipVecA,
                                  (s32)scale, 0xff, 0, 0, alpha, statA, 3);
                     break;
                 }
