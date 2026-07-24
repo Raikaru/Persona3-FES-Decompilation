@@ -75,7 +75,7 @@ extern void func_0034fd70(void* resource, u32 layer);
 extern f32 DAT_007cad60;
 extern f32 DAT_007caf38;
 
-extern void* (*jtbl_00960178)(u32 size, u32 hint);
+extern u32 jtbl_00960178[];
 extern void (*jtbl_0096017C)(void* memory);
 #pragma alias jtbl_0096017C_abs jtbl_0096017C
 extern u32 jtbl_0096017C_abs[];
@@ -153,75 +153,92 @@ static void bpTexWriteVertex(void* destination,
     BP_TEX_WRITE_COLOR_INLINE(destination, baseOffset, color); \
 } while (0)
 #pragma optimization_level 3
+#pragma push
+#pragma opt_rebuildconditionals off
+#pragma schedule off
+/*
+ * Retail orders the raster/frame pointer arithmetic differently from MWCCPS2.
+ * The reconstructed allocation, raster loop, frame fields, and color loop are complete.
+ */
 // FUN_0021c9f0 NONMATCHING
 void* bpTex0021c9f0(void* sprMemory)
 {
-    u8* texture;
     u8* source;
+    u8* texture;
+    u8* frameBase;
+    u8* rasterTable;
+    u8* frameTable;
+    s32 i;
     u32 allocationSize;
-    u32 i;
 
     source = (u8*)sprMemory;
     allocationSize = 0;
     allocationSize += 0x14;
-    allocationSize += (u32)*(u16*)(source + 0x16) * sizeof(BpTexFrameData);
+    allocationSize +=
+        (u32)*(u16*)(source + 0x16) * sizeof(BpTexFrameData);
     allocationSize += (u32)*(u16*)(source + 0x14) * 4;
-    texture = (u8*)(*jtbl_00960178)(allocationSize, 0x40000);
-    if (texture == NULL)
-    {
-        return NULL;
-    }
-
-    BP_TEX_U32(texture, 4) = (u32)(texture + 0x14);
+    texture = (u8*)(*(void* (**)(u32, u32))jtbl_00960178)(
+        allocationSize, 0x40000);
+    frameBase = texture + 0x14;
+    BP_TEX_U32(texture, 4) = (u32)frameBase;
     BP_TEX_U32(texture, 8) =
-        (u32)(texture + 0x14 +
+        (u32)(frameBase +
               (u32)*(u16*)(source + 0x16) * sizeof(BpTexFrameData));
     BP_TEX_U32(texture, 0x10) = *(u16*)(source + 0x16);
     BP_TEX_U32(texture, 0x0c) = *(u16*)(source + 0x14);
 
+    rasterTable = source + *(u32*)(source + 0x18);
     for (i = 0; i < *(u16*)(source + 0x14); i++)
     {
         u8* entry;
         void* raster;
 
-        entry = source + *(u32*)(source + 0x18) + i * 8;
+        entry = rasterTable + i * 8;
         raster = bpTexCreateTmxRaster(source + *(u32*)(entry + 4));
         BP_TEX_U32(texture, 8 + i * 4) = (u32)raster;
     }
 
+    frameTable = source + *(u32*)(source + 0x1c);
     for (i = 0; i < *(u16*)(source + 0x16); i++)
     {
         u8* entry;
         BpTexFrameData* frame;
+        u8* frameSource;
         u32 color;
-        u32 j;
+        s32 j;
 
-        entry = source + *(u32*)(source + 0x1c) + i * 8;
-        frame = (BpTexFrameData*)BP_TEX_U32(texture, 4) +
-                i;
+        entry = frameTable + i * 8;
+        frameSource = source + *(u32*)(entry + 4);
+        frame = (BpTexFrameData*)(*(volatile u32*)(texture + 4)) + i;
         frame->texture = (u32)texture;
-        frame->id = *(u32*)(source + *(u32*)(entry + 4) + 0x18);
-        frame->rasterIndex = *(u32*)(source + *(u32*)(entry + 4) + 0x14);
-        frame->width = *(s32*)(source + *(u32*)(entry + 4) + 0x5c) -
-                       *(s32*)(source + *(u32*)(entry + 4) + 0x54);
-        frame->height = *(s32*)(source + *(u32*)(entry + 4) + 0x60) -
-                        *(s32*)(source + *(u32*)(entry + 4) + 0x58);
-        frame->x = *(s32*)(source + *(u32*)(entry + 4) + 0x54);
-        frame->y = *(s32*)(source + *(u32*)(entry + 4) + 0x58);
-        for (j = 0; j < 4; j++)
-        {
-            color = *(u32*)(source + *(u32*)(entry + 4) + 0x64 + j * 4);
-            frame->color[j * 4 + 0] = (u8)(((color >> 24) * 0xff) >> 7);
-            frame->color[j * 4 + 1] =
-                (u8)((((color >> 16) & 0xff) * 0xff) >> 7);
-            frame->color[j * 4 + 2] =
-                (u8)((((color >> 8) & 0xff) * 0xff) >> 7);
-            frame->color[j * 4 + 3] = (u8)(((color & 0xff) * 0xff) >> 7);
-        }
+        frame->rasterIndex = *(u32*)(frameSource + 0x14);
+        frame->id = *(u32*)(frameSource + 0x18);
+        frame->width = *(s32*)(frameSource + 0x5c) -
+                       *(s32*)(frameSource + 0x54);
+        frame->height = *(s32*)(frameSource + 0x60) -
+                        *(s32*)(frameSource + 0x58);
+        frame->x = *(s32*)(frameSource + 0x54);
+        frame->y = *(s32*)(frameSource + 0x58);
+        j = 0;
+        goto color_check;
+color_body:
+        color = *(u32*)(frameSource + 0x64 + j * 4);
+        frame->color[j * 4 + 0] = (u8)(((color >> 24) * 0xff) >> 7);
+        frame->color[j * 4 + 1] =
+            (u8)((((color >> 16) & 0xff) * 0xff) >> 7);
+        frame->color[j * 4 + 2] =
+            (u8)((((color >> 8) & 0xff) * 0xff) >> 7);
+        frame->color[j * 4 + 3] =
+            (u8)(((color & 0xff) * 0xff) >> 7);
+        j++;
+color_check:
+        if (j < 4)
+            goto color_body;
     }
 
     return texture;
 }
+#pragma pop
 #pragma optimization_level 2
 
 // FUN_0021ec40 NONMATCHING
