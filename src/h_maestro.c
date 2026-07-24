@@ -578,12 +578,13 @@ void* func_001107d0(KwlnTask* task)
     return KWLNTASK_CONTINUE;
 }
 
-// FUN_00110E70 NONMATCHING
+// FUN_00110E70 MATCHING
 void func_00110e70(KwlnTask* task)
 {
     MaestroStreamWork* work;
     s32 i;
-
+    u8* entry;
+    void** slot;
     work = (MaestroStreamWork*)task->workData;
     if (work->stream != NULL)
     {
@@ -605,10 +606,12 @@ void func_00110e70(KwlnTask* task)
 
     for (i = 0; i < 40; i++)
     {
-        if (work->resources[i] != NULL)
+        entry = (u8*)work + i * 4;
+        slot = (void**)(entry + 8);
+        if (*(void**)(entry + 8) != NULL)
         {
-            func_004d0f00(work->resources[i]);
-            work->resources[i] = NULL;
+            func_004d0f00(*(void**)(entry + 8));
+            *slot = NULL;
         }
     }
 
@@ -793,7 +796,6 @@ void func_00111500(KwlnTask* task)
     work->stopAtFrame = value;
     work->complete = 0;
 }
-#pragma optimization_level 2
 
 // FUN_00111520
 void func_00111520(KwlnTask* task, s16 count)
