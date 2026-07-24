@@ -119,7 +119,7 @@ static u32 K_Footstep_Try(Model* mdl, u16 charId, s16 animId, f32 frame,
     do { \
         u16 _index = RESRC_GET_ID(resId); \
         u32* _counter = &D_00875A50[_index]; \
-        func_0010a4e0(0, _index + 1, var, mat * 4 + *_counter); \
+        func_0010a4e0(0, (s16)(_index + 1), var, (s16)(mat * 4 + *_counter)); \
         *_counter += 1; \
         if (*_counter >= 4) { \
             *_counter = 0; \
@@ -190,12 +190,15 @@ static s32 K_Footstep_Surface(Model* mdl, RwV3d* position)
     return material;
 }
 
+// Recovered the scene-hit material fallback path and signed 16-bit sound-call arguments.
+// Corrected model-id 6 to use the direct selector and preserved the retail animation windows.
+// The remaining case dispatch/code layout still differs from retail.
 // FUN_001da020 NONMATCHING
 void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
 {
     u16 mdlType = mdl->type;
     u16 mdlId = mdl->id;
-    s16 animId = mdlAnimGetId(mdl, 0);
+    u16 animId = mdlAnimGetId(mdl, 0);
     f32 frame = mdlAnimGetCurrentFrame(mdl, 0);
     RwMatrix* matrix;
     RwV3d* position;
@@ -217,16 +220,17 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
     position = &matrix->pos;
     primary = (u32)gMtScene->fldMajorId;
     secondary = (u32)gMtScene->fldMinorId;
-    material = 0;
     if ((primary >= 0x14) && (primary < 0x1d) && (secondary >= 0x32))
     {
         secondary -= 0x31;
     }
+    hit = (ResrcFldHit*)MT_Scene_GetResListHead(0x15);
     materialTable = D_0067EF00[primary];
+    material = 0;
     if (materialTable != NULL)
     {
         material = materialTable[secondary];
-        hit = (ResrcFldHit*)MT_Scene_GetResListHead(0x15);
+    }
         while (hit != NULL)
         {
             tri[0] = &hit->vertices[0];
@@ -252,7 +256,6 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
             }
             hit = (ResrcFldHit*)hit->base.next;
         }
-    }
     switch (charId)
     {
     case 0:
@@ -278,7 +281,7 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                     }
                      return;
                 case 6:
-                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001de630,
                                           9.0f, 10.0f, 19.0f, 20.0f, 0,
                                           resTypeId, material, 1);
                      return;
