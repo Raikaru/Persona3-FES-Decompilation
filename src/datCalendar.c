@@ -146,6 +146,9 @@ typedef struct
 } CalendarDateTable;
 
 extern u16* func_00170620(s16 pcId, s16 index);
+extern void datSetFlag(s32 bit, u8 enabled);
+extern s32 clndGetMonthFromDaysSinceApr5(s32 daysSinceApr5);
+extern s32 clndGetDayOfMonthFromDaysSinceApr5(s32 daysSinceApr5);
 extern void func_0016d6b0(s16 socialLink, s16 condition);
 extern void func_0027d8d0(void);
 extern CalendarDateTable* func_003bd890(void);
@@ -233,10 +236,15 @@ void func_0017fe10(KwlnTask* clndTask)
 {
     CalendarDateTable* table;
     const u8* record;
-    u32 i;
-    s16 month;
-    s16 day;
+    s32 i;
+    s32 day;
+    s32 month;
     u16 flag;
+    u32 index;
+    const s16* sourceBase;
+    const s16* source;
+    s16 value;
+    u16* destination;
 
     for (i = 0xbd0; i < 0xc00; i++)
     {
@@ -246,15 +254,31 @@ void func_0017fe10(KwlnTask* clndTask)
     datSetFlag(0xa02, false);
     datSetFlag(0xa04, false);
 
-    func_0017fd30();
     table = func_003bd8a0();
-    month = clndGetCurrentMonth();
-    day = clndGetCurrentDay();
-    for (i = 0; i < table->total; i++)
+    for (month = 2; month < 0xb; month++)
     {
-        record = table->records + i * 6;
-        if (record[0] == month && record[1] == day)
+        day = 0;
+        sourceBase = (const s16*)(D_005E3C20 + month * 0x30);
+        for (; day < 0xc; day++)
         {
+            source = sourceBase + day * 2;
+            value = source[-0x30];
+            destination = func_00170620(month, day);
+            destination[0] = value;
+            value = source[-0x2f];
+            destination = func_00170620(month, day);
+            destination[1] = value;
+        }
+    }
+
+    for (index = 0; index < table->total; index++)
+    {
+        if (clndGetMonthFromDaysSinceApr5(datGetDaysSinceApr5()) ==
+                table->records[index * 6] &&
+            clndGetDayOfMonthFromDaysSinceApr5(datGetDaysSinceApr5()) ==
+                table->records[index * 6 + 1])
+        {
+            record = table->records + index * 6;
             flag = *(const u16*)(record + 2);
             if (flag != 0)
             {
@@ -267,7 +291,6 @@ void func_0017fe10(KwlnTask* clndTask)
             }
         }
     }
-
     func_001b7700(clndTask);
 }
 
