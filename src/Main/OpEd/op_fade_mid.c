@@ -155,56 +155,49 @@ static u8 opClampByte(f32 value)
 // FUN_00275050 NONMATCHING
 void func_00275050(s32 index)
 {
-    register u8 *temp_19;
-    register u16 *temp_18;
-    register u32 temp_17;
-    register s32 var_20;
-    register s32 var_21;
-    register s32 var_5;
-    register s8 temp_4;
+    u8 *work;
+    u16 *skills;
+    s32 count;
+    s32 slot;
+    s32 found;
+    s32 i;
+
     if (gOpWorkC0 == NULL)
         K_Assert(D_0068ED88, 0xb0);
-    temp_19 = (u8 *)gOpWorkC0;
-    temp_18 = datPersonaGetSkills(OP_PTR(temp_19, 0x30));
-    temp_17 = datPersonaCountValidSkills(OP_PTR(temp_19, 0x30));
-    if (index >= OP_S32(temp_19, 0x1c0))
+    work = (u8 *)gOpWorkC0;
+    skills = datPersonaGetSkills(OP_PTR(work, 0x30));
+    count = (s32)datPersonaCountValidSkills(OP_PTR(work, 0x30));
+    if (index >= OP_S32(work, 0x1c0))
         K_Assert(D_0068ED88, 0x638);
-    var_21 = 0;
-    var_20 = 0;
+    slot = 0;
+    found = 0;
 loop_5:
-    temp_4 = OP_S8((u8 *)(uintptr_t)(OP_S32(temp_19, 0x34) +
-        (OP_S32(temp_19, 0x78) + var_21) * 4), 7);
-    if (temp_4 == 4)
-    {
-block_16:
-        var_21 += 1;
-        if (OP_S32(temp_19, 0x78) + var_21 >= 0x10)
-            K_Assert(D_0068ED88, 0x65b);
-        goto loop_5;
-    }
-    if (temp_4 != 1)
+    if (OP_S8((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
+        (OP_S32(work, 0x78) + slot) * 4), 7) == 4)
+        goto block_16;
+    if (OP_S8((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
+        (OP_S32(work, 0x78) + slot) * 4), 7) != 1)
     {
         K_Assert(D_0068ED88, 0x644);
         goto block_16;
     }
-    var_5 = 0;
-loop_11:
-    if (var_5 < (s32)temp_17)
+    for (i = 0; i < count; i++)
     {
-        if (OP_U16((u8 *)(uintptr_t)(OP_S32(temp_19, 0x34) +
-            (OP_S32(temp_19, 0x78) + var_21) * 4), 8) != temp_18[var_5])
-        {
-            var_5 += 1;
-            goto loop_11;
-        }
+        if (OP_U16((u8 *)(uintptr_t)(OP_S32(work, 0x34) +
+            (OP_S32(work, 0x78) + slot) * 4), 8) == skills[i])
+            break;
     }
-    if (var_5 != (s32)temp_17)
-        goto block_16;
-    if (var_20 != index)
+    if (i == count)
     {
-        var_20 += 1;
-        goto block_16;
+        if (found == index)
+            return;
+        found += 1;
     }
+block_16:
+    slot += 1;
+    if (OP_S32((u8 *)gOpWorkC0, 0x78) + slot >= 0x10)
+        K_Assert(D_0068ED88, 0x65b);
+    goto loop_5;
 }
 
 // FUN_002751e0 NONMATCHING
@@ -216,7 +209,7 @@ s32 func_002751e0(void)
     s32 var_5;
     s8 temp_3;
     u16 *temp_17;
-    u32 temp_16;
+    s32 temp_16;
     void *temp_18;
     void *temp_2;
 
