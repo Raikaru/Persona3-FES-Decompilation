@@ -687,7 +687,7 @@ u32 * FUN_003c2ee0(long param_1)
 
   u32 *puVar2;
 
-  long lVar3;
+  int lVar3;
 
   int iVar4;
 
