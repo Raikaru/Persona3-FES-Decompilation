@@ -1923,9 +1923,19 @@ HSfdTexture* func_0010e880(const u8* stream)
     return texture;
 }
 
+// Reconstructed from the retail window. The opening is the same render-state
+// prologue the sibling func_0010f6c0 already carries: two indirect calls
+// through the D_00960090 render-state hook, near/far plane setup, a full
+// 640x448 viewport, camera bind, then the 0x4e4 flag selecting between two
+// RpSkyRenderStateSet pairs. Retail then gates the whole body on work[0] == 3
+// (bne $a0, 3 skips to the tail near offset 0xa38); that body is still only
+// partially recovered.
 // FUN_0010EC50 NONMATCHING
 void func_0010ec50(KwlnTask* task)
 {
+    u8* work;
+    void (**setRenderState)(u32, u32);
+    RwCamera* camera;
     HSfdRenderView* view;
     HSfdRenderFrame* frame;
     s32 element;
@@ -1933,13 +1943,34 @@ void func_0010ec50(KwlnTask* task)
     s32 command;
     s32 component;
 
-    if ((task == NULL) || (task->workData == NULL))
+    work = (u8*)task->workData;
+    setRenderState = (void (**)(u32, u32))0x960090;
+    (*setRenderState)(8, 0);
+    (*setRenderState)(6, 0);
+    func_004aa390(0.5f);
+    camera = kwlnGetMainCamera();
+    func_004aa3d0(gUnk_007cadd0 * camera->nearPlane);
+    func_004a9f20(0.0f, 0.0f, 640.0f, 448.0f);
+    func_004aa410(kwlnGetMainCamera());
+
+    if (*(s32*)(work + 0x4e4) != 0)
+    {
+        RpSkyRenderStateSet(2, (void*)0x48);
+        RpSkyRenderStateSet(3, (void*)0x71801);
+    }
+    else
+    {
+        RpSkyRenderStateSet(2, (void*)0x44);
+        RpSkyRenderStateSet(3, (void*)0x717fb);
+    }
+
+    if (*(s32*)work != 3)
     {
         return;
     }
 
-    view = (HSfdRenderView*)task->workData;
-    if ((view->type != 3) || (view->frames == NULL))
+    view = (HSfdRenderView*)work;
+    if (view->frames == NULL)
     {
         return;
     }
