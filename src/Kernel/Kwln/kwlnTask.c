@@ -484,39 +484,36 @@ void kwlnTaskSetFlags(u32 enabled, KwlnTask* task, u32 flags, u32 scope)
     u32 maskedFlags;
     u32 clearFlags;
     currentTask = NULL;
-    asm volatile("" : "+m"(currentTask));
 
-    if (scope == 2)
+    switch (scope)
     {
-        goto scopeTwo;
+        case 0:
+            goto scopeZero;
+        case 1:
+            goto scopeOne;
+        case 3:
+            goto scopeLists;
+        case 2:
+            goto scopeTwo;
+        default:
+            goto scopeDefault;
     }
-    if (scope == 3)
-    {
-        goto scopeLists;
-    }
-    if (scope == 1)
-    {
-        goto scopeOne;
-    }
-    if (scope == 0)
-    {
-        if (task == NULL)
-        {
-            K_ASSERT(false, 669);
-        }
 
-        if (enabled != 0)
-        {
-            task->stateAndFlags |= flags & ~KWLNTASK_STATE_MASK;
-        }
-        else
-        {
-            task->stateAndFlags &= ~(flags & ~KWLNTASK_STATE_MASK);
-        }
-        return;
+scopeZero:
+    if (task == NULL)
+    {
+        K_ASSERT(false, 669);
     }
-    goto scopeDefault;
 
+    if (enabled != 0)
+    {
+        task->stateAndFlags |= flags & 0x0ffffff0;
+    }
+    else
+    {
+        task->stateAndFlags &= ~(flags & 0x0ffffff0);
+    }
+    return;
 
 scopeOne:
     if (task == NULL)
@@ -525,10 +522,9 @@ scopeOne:
     }
 
 scopeLists:
-    maskedFlags = flags & ~KWLNTASK_STATE_MASK;
+    maskedFlags = flags & 0x0ffffff0;
     clearFlags = ~maskedFlags;
     listIndex = 0;
-    asm volatile("" : "+m"(listIndex));
     for (; listIndex < 3; listIndex++)
     {
         switch (listIndex)
@@ -572,11 +568,11 @@ scopeTwo:
 
     if (enabled != 0)
     {
-        task->stateAndFlags |= flags & ~KWLNTASK_STATE_MASK;
+        task->stateAndFlags |= flags & 0x0ffffff0;
     }
     else
     {
-        task->stateAndFlags &= ~(flags & ~KWLNTASK_STATE_MASK);
+        task->stateAndFlags &= ~(flags & 0x0ffffff0);
     }
 
     currentTask = task->child;
