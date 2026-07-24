@@ -459,8 +459,8 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
 /* Retail converts the final color bytes into float vertex fields.
  * Keep these stores typed; raw u32 bit patterns drop those conversion paths.
  * The two geometry coordinates at the tail are integer-to-float conversions.
- * This preserves the state-independent color setup emitted by retail.
- * The expanded tail is intentional even though residual codegen differences remain.
+ * Ascending case labels preserve retail's case-0 body layout and dispatch order.
+ * The expanded switch/tail reconstruction is intentional despite residual codegen differences.
  */
 // FUN_0025DA30 NONMATCHING
 void FUN_0025da30(void)
@@ -485,11 +485,11 @@ void FUN_0025da30(void)
 
   float fVar8;
 
+  float unaff_f22;
+
   float in_f21;
 
   float fVar9;
-
-  float unaff_f22;
 
   float quad[8];
 
@@ -550,61 +550,51 @@ void FUN_0025da30(void)
 
   iVar4 = FUN_00260920(puVar2[2],0x34);
 
-  if (puVar2[1] == 1) {
-
-    if ((int)puVar2[3] < 3) {
-
-      in_f21 = (float)(int)puVar2[3] / 3.0f;
-
-      quad[0] = in_f21 * 150.0f + 6.0f;
-
-      in_f21 = 1.0f - in_f21;
-
-      quad[1] = quad[0];
-
-    }
-
-    else {
-
-      quad[0] = 156.0f;
-
-      quad[1] = 156.0f;
-
-      in_f21 = 0.0f;
-
-    }
-
-  }
-
-  else if (puVar2[1] == 0) {
-
+  switch (puVar2[1]) { case 0: in_f21 = 1.0f;
+  
+  if ((int)puVar2[3] < 5) {
+  
+    fVar9 = (float)(int)puVar2[3] / 5.0f;
+  
+    fVar6 = (float)iVar4 + 6.0f + 6.0f;
+  
+    fVar8 = 6.0f - ((float)iVar4 + 6.0f);
+  
+    quad[0] = fVar9 * (6.0f - fVar6) + fVar6 + 0.0f;
+  
+    quad[1] = fVar9 * (6.0f - fVar8) + fVar8 + 0.0f;
+  
     in_f21 = 1.0f;
-
-    if ((int)puVar2[3] < 5) {
-
-      fVar9 = (float)(int)puVar2[3] / 5.0f;
-
-      fVar6 = (float)iVar4 + 6.0f + 6.0f;
-
-      fVar8 = 6.0f - ((float)iVar4 + 6.0f);
-
-      quad[0] = fVar9 * (6.0f - fVar6) + fVar6 + 0.0f;
-
-      quad[1] = fVar9 * (6.0f - fVar8) + fVar8 + 0.0f;
-
-      in_f21 = 1.0f;
-
-    }
-
-    else {
-
-      quad[0] = 6.0f;
-
-      quad[1] = 6.0f;
-
-    }
-
+  
   }
+  
+  else {
+  
+    quad[0] = 6.0f;
+  
+    quad[1] = 6.0f;
+  
+  } break; case 1: if ((int)puVar2[3] < 3) {
+  
+    in_f21 = (float)(int)puVar2[3] / 3.0f;
+  
+    quad[0] = in_f21 * 150.0f + 6.0f;
+  
+    in_f21 = 1.0f - in_f21;
+  
+    quad[1] = quad[0];
+  
+  }
+  
+  else {
+  
+    quad[0] = 156.0f;
+  
+    quad[1] = 156.0f;
+  
+    in_f21 = 0.0f;
+  
+  } break; }
 
   quad[2] = (float)iVar3;
 
@@ -620,17 +610,7 @@ void FUN_0025da30(void)
 
   fVar6 = in_f21 * 255.0f;
 
-  if (fVar6 < 2.1474836e+09f) {
-
-    color[3] = (u8)(int)fVar6;
-
-  }
-
-  else {
-
-    color[3] = (u8)(int)(fVar6 - 2.1474836e+09f);
-
-  }
+  if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
 
   FUN_0021d950(puVar2 + 0x104,&color[0]);
 
@@ -638,63 +618,53 @@ void FUN_0025da30(void)
 
   iVar4 = FUN_00260920(puVar2[2],0x35);
 
-  if (puVar2[1] == 1) {
-
-    if ((int)puVar2[3] < 3) {
-
-      in_f21 = (float)(int)puVar2[3] / 3.0f;
-
-      quad[1] = in_f21 * 150.0f;
-
-      quad[0] = quad[1] + 23.0f;
-
-      quad[1] = quad[1] + 109.0f;
-
-      in_f21 = 1.0f - in_f21;
-
-    }
-
-    else {
-
-      quad[0] = 173.0f;
-
-      quad[1] = 259.0f;
-
-      in_f21 = 0.0f;
-
-    }
-
+  switch (puVar2[1]) { case 0: in_f21 = 1.0f;
+  
+  if ((int)puVar2[3] < 6) {
+  
+    fVar9 = (float)(int)puVar2[3] / 6.0f;
+  
+    iVar5 = FUN_00260920(puVar2[2],0x35);
+  
+    fVar6 = (float)iVar5 + 109.0f + 23.0f;
+  
+    fVar8 = 109.0f - ((float)iVar5 + 109.0f);
+  
+    quad[0] = fVar9 * (23.0f - fVar6) + fVar6 + 0.0f;
+  
+    quad[1] = fVar9 * (109.0f - fVar8) + fVar8 + 0.0f;
+  
   }
-
-  else if (puVar2[1] == 0) {
-
-    in_f21 = 1.0f;
-
-    if ((int)puVar2[3] < 6) {
-
-      fVar9 = (float)(int)puVar2[3] / 6.0f;
-
-      iVar5 = FUN_00260920(puVar2[2],0x35);
-
-      fVar6 = (float)iVar5 + 109.0f + 23.0f;
-
-      fVar8 = 109.0f - ((float)iVar5 + 109.0f);
-
-      quad[0] = fVar9 * (23.0f - fVar6) + fVar6 + 0.0f;
-
-      quad[1] = fVar9 * (109.0f - fVar8) + fVar8 + 0.0f;
-
-    }
-
-    else {
-
-      quad[0] = 23.0f;
-
-      quad[1] = 109.0f;
-
-    }
-
+  
+  else {
+  
+    quad[0] = 23.0f;
+  
+    quad[1] = 109.0f;
+  
+  } break; case 1: if ((int)puVar2[3] < 3) {
+  
+    in_f21 = (float)(int)puVar2[3] / 3.0f;
+  
+    quad[1] = in_f21 * 150.0f;
+  
+    quad[0] = quad[1] + 23.0f;
+  
+    quad[1] = quad[1] + 109.0f;
+  
+    in_f21 = 1.0f - in_f21;
+  
   }
+  
+  else {
+  
+    quad[0] = 173.0f;
+  
+    quad[1] = 259.0f;
+  
+    in_f21 = 0.0f;
+  
+  } break; }
 
   quad[2] = (float)iVar3;
 
@@ -710,17 +680,7 @@ void FUN_0025da30(void)
 
   fVar6 = in_f21 * 255.0f;
 
-  if (fVar6 < 2.1474836e+09f) {
-
-    color[3] = (u8)(int)fVar6;
-
-  }
-
-  else {
-
-    color[3] = (u8)(int)(fVar6 - 2.1474836e+09f);
-
-  }
+  if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
 
   FUN_0021d950(puVar2 + 0x144,&color[0]);
 
@@ -728,63 +688,53 @@ void FUN_0025da30(void)
 
   iVar4 = FUN_00260920(puVar2[2],0x36);
 
-  if (puVar2[1] == 1) {
-
-    if ((int)puVar2[3] < 3) {
-
-      in_f21 = (float)(int)puVar2[3] / 3.0f;
-
-      quad[1] = in_f21 * 150.0f;
-
-      quad[0] = quad[1] + 116.0f;
-
-      quad[1] = quad[1] + 22.0f;
-
-      in_f21 = 1.0f - in_f21;
-
-    }
-
-    else {
-
-      quad[0] = 266.0f;
-
-      quad[1] = 172.0f;
-
-      in_f21 = 0.0f;
-
-    }
-
+  switch (puVar2[1]) { case 0: in_f21 = 1.0f;
+  
+  if ((int)puVar2[3] < 6) {
+  
+    fVar9 = (float)(int)puVar2[3] / 6.0f;
+  
+    iVar5 = FUN_00260920(puVar2[2],0x35);
+  
+    fVar8 = (float)iVar5 + 109.0f + 116.0f;
+  
+    fVar6 = 22.0f - ((float)iVar5 + 109.0f);
+  
+    quad[0] = fVar9 * (116.0f - fVar8) + fVar8 + 0.0f;
+  
+    quad[1] = fVar9 * (22.0f - fVar6) + fVar6 + 0.0f;
+  
   }
-
-  else if (puVar2[1] == 0) {
-
-    in_f21 = 1.0f;
-
-    if ((int)puVar2[3] < 6) {
-
-      fVar9 = (float)(int)puVar2[3] / 6.0f;
-
-      iVar5 = FUN_00260920(puVar2[2],0x35);
-
-      fVar8 = (float)iVar5 + 109.0f + 116.0f;
-
-      fVar6 = 22.0f - ((float)iVar5 + 109.0f);
-
-      quad[0] = fVar9 * (116.0f - fVar8) + fVar8 + 0.0f;
-
-      quad[1] = fVar9 * (22.0f - fVar6) + fVar6 + 0.0f;
-
-    }
-
-    else {
-
-      quad[0] = 116.0f;
-
-      quad[1] = 22.0f;
-
-    }
-
+  
+  else {
+  
+    quad[0] = 116.0f;
+  
+    quad[1] = 22.0f;
+  
+  } break; case 1: if ((int)puVar2[3] < 3) {
+  
+    in_f21 = (float)(int)puVar2[3] / 3.0f;
+  
+    quad[1] = in_f21 * 150.0f;
+  
+    quad[0] = quad[1] + 116.0f;
+  
+    quad[1] = quad[1] + 22.0f;
+  
+    in_f21 = 1.0f - in_f21;
+  
   }
+  
+  else {
+  
+    quad[0] = 266.0f;
+  
+    quad[1] = 172.0f;
+  
+    in_f21 = 0.0f;
+  
+  } break; }
 
   quad[2] = (float)iVar3;
 
@@ -800,117 +750,97 @@ void FUN_0025da30(void)
 
   fVar6 = in_f21 * 255.0f;
 
-  if (fVar6 < 2.1474836e+09f) {
-
-    color[3] = (u8)(int)fVar6;
-
-  }
-
-  else {
-
-    color[3] = (u8)(int)(fVar6 - 2.1474836e+09f);
-
-  }
+  if (fVar6 <= 2.1474836e+09f) { color[3] = (u8)(int)fVar6; } else { color[3] = (u8)(int)(fVar6 - 2.1474836e+09f); }
 
   FUN_0021d950(puVar2 + 0x184,&color[0]);
 
-  if (puVar2[1] == 1) {
-
-    if ((int)puVar2[3] < 10) {
-
-      quad[4] = 864.0f;
-
-      quad[5] = 224.0f;
-
-      quad[6] = 320.0f;
-
-      quad[7] = 768.0f;
-
-      quad[3] = (1.0f - (float)(int)puVar2[3] / 10.0f) *
-
-                  (544.0f - (256.0f - DAT_007caff0 * 1.4142135f) / 1.4142135f);
-
-      quad[0] = 320.0f - quad[3];
-
-      quad[1] = 768.0f - quad[3];
-
-      quad[2] = 864.0f - quad[3];
-
-      quad[3] = 224.0f - quad[3];
-
-    }
-
-    else {
-
-      quad[1] = (1088.0f / unaff_f22) / unaff_f22;
-
-      quad[2] = quad[1] + 320.0f;
-
-      quad[3] = quad[1] + -(640.0f / unaff_f22) / unaff_f22;
-
-      quad[0] = quad[1] + -(448.0f / unaff_f22) / unaff_f22;
-
-      quad[1] = quad[1] + 224.0f;
-
-      quad[4] = quad[2];
-
-      quad[5] = quad[3];
-
-      quad[6] = quad[0];
-
-      quad[7] = quad[1];
-
-    }
-
+  switch (puVar2[1]) { case 0: if ((int)puVar2[3] < 8) {
+  
+    quad[0] = 320.0f;
+  
+    quad[1] = -320.0f;
+  
+    quad[2] = -224.00002f;
+  
+    quad[3] = 224.0f;
+  
+    quad[7] = (((float)(int)puVar2[3] / 8.0f) * 1088.0f) / 1.4142135f;
+  
+    quad[4] = quad[7] + -224.00002f;
+  
+    quad[5] = quad[7] + 224.0f;
+  
+    quad[6] = quad[7] + 320.0f;
+  
+    quad[7] = quad[7] + -320.0f;
+  
   }
-
-  else if (puVar2[1] == 0) {
-
-    if ((int)puVar2[3] < 8) {
-
-      quad[0] = 320.0f;
-
-      quad[1] = -320.0f;
-
-      quad[2] = -224.00002f;
-
-      quad[3] = 224.0f;
-
-      quad[7] = (((float)(int)puVar2[3] / 8.0f) * 1088.0f) / 1.4142135f;
-
-      quad[4] = quad[7] + -224.00002f;
-
-      quad[5] = quad[7] + 224.0f;
-
-      quad[6] = quad[7] + 320.0f;
-
-      quad[7] = quad[7] + -320.0f;
-
-    }
-
-    else {
-
-      quad[0] = 320.0f;
-
-      quad[1] = -(640.0f / unaff_f22) / unaff_f22;
-
-      quad[2] = -(448.0f / unaff_f22) / unaff_f22;
-
-      quad[3] = 224.0f;
-
-      quad[7] = 1088.0f / unaff_f22;
-
-      quad[4] = quad[2] + quad[7];
-
-      quad[5] = quad[7] + 224.0f;
-
-      quad[6] = quad[7] + 320.0f;
-
-      quad[7] = quad[1] + quad[7];
-
-    }
-
+  
+  else {
+  
+    quad[0] = 320.0f;
+  
+    quad[1] = -(640.0f / unaff_f22) / unaff_f22;
+  
+    quad[2] = -(448.0f / unaff_f22) / unaff_f22;
+  
+    quad[3] = 224.0f;
+  
+    quad[7] = 1088.0f / unaff_f22;
+  
+    quad[4] = quad[2] + quad[7];
+  
+    quad[5] = quad[7] + 224.0f;
+  
+    quad[6] = quad[7] + 320.0f;
+  
+    quad[7] = quad[1] + quad[7];
+  
+  } break; case 1: if ((int)puVar2[3] < 10) {
+  
+    quad[4] = 864.0f;
+  
+    quad[5] = 224.0f;
+  
+    quad[6] = 320.0f;
+  
+    quad[7] = 768.0f;
+  
+    quad[3] = (1.0f - (float)(int)puVar2[3] / 10.0f) *
+  
+                (544.0f - (256.0f - DAT_007caff0 * 1.4142135f) / 1.4142135f);
+  
+    quad[0] = 320.0f - quad[3];
+  
+    quad[1] = 768.0f - quad[3];
+  
+    quad[2] = 864.0f - quad[3];
+  
+    quad[3] = 224.0f - quad[3];
+  
   }
+  
+  else {
+  
+    quad[1] = (1088.0f / unaff_f22) / unaff_f22;
+  
+    quad[2] = quad[1] + 320.0f;
+  
+    quad[3] = quad[1] + -(640.0f / unaff_f22) / unaff_f22;
+  
+    quad[0] = quad[1] + -(448.0f / unaff_f22) / unaff_f22;
+  
+    quad[1] = quad[1] + 224.0f;
+  
+    quad[4] = quad[2];
+  
+    quad[5] = quad[3];
+  
+    quad[6] = quad[0];
+  
+    quad[7] = quad[1];
+  
+  } break; }
 
   FUN_0021d890(puVar2 + 4,&quad[0]);
 
@@ -928,79 +858,69 @@ void FUN_0025da30(void)
 
   FUN_0021d950(puVar2 + 4,&color[0]);
 
-  if (puVar2[1] == 1) {
-
-    if ((int)puVar2[3] < 10) {
-
-      quad[3] = (float)(int)puVar2[3] / 10.0f;
-
-      in_f21 = 1.0f - quad[3];
-
-      quad[3] = quad[3] * (544.0f - (181.01933f - DAT_007caff0) / 1.4142135f);
-
-      quad[0] = quad[3] + 291.71573f;
-
-      quad[1] = quad[3] + -348.28427f;
-
-      quad[2] = quad[3] + -252.28427f;
-
-      quad[3] = quad[3] + 195.71573f;
-
-      quad[4] = quad[2] + 136.28427f;
-
-      quad[5] = quad[3] + 136.28427f;
-
-      quad[6] = quad[0] + 136.28427f;
-
-      quad[7] = quad[1] + 136.28427f;
-
-    }
-
-    else {
-
-      in_f21 = 0.0f;
-
-      quad[0] = 0.0f;
-
-      quad[1] = 0.0f;
-
-      quad[2] = 0.0f;
-
-      quad[3] = 0.0f;
-
-      quad[4] = 0.0f;
-
-      quad[5] = 0.0f;
-
-      quad[6] = 0.0f;
-
-      quad[7] = 0.0f;
-
-    }
-
+  switch (puVar2[1]) { case 0: quad[0] = 320.0f;
+  
+  quad[1] = -320.0f;
+  
+  quad[2] = -224.00002f;
+  
+  quad[3] = 224.0f;
+  
+  quad[4] = -116.000015f;
+  
+  quad[5] = 332.0f;
+  
+  quad[6] = 428.0f;
+  
+  quad[7] = -212.0f;
+  
+  in_f21 = 1.0f; break; case 1: if ((int)puVar2[3] < 10) {
+  
+    quad[3] = (float)(int)puVar2[3] / 10.0f;
+  
+    in_f21 = 1.0f - quad[3];
+  
+    quad[3] = quad[3] * (544.0f - (181.01933f - DAT_007caff0) / 1.4142135f);
+  
+    quad[0] = quad[3] + 291.71573f;
+  
+    quad[1] = quad[3] + -348.28427f;
+  
+    quad[2] = quad[3] + -252.28427f;
+  
+    quad[3] = quad[3] + 195.71573f;
+  
+    quad[4] = quad[2] + 136.28427f;
+  
+    quad[5] = quad[3] + 136.28427f;
+  
+    quad[6] = quad[0] + 136.28427f;
+  
+    quad[7] = quad[1] + 136.28427f;
+  
   }
-
-  else if (puVar2[1] == 0) {
-
-    quad[0] = 320.0f;
-
-    quad[1] = -320.0f;
-
-    quad[2] = -224.00002f;
-
-    quad[3] = 224.0f;
-
-    quad[4] = -116.000015f;
-
-    quad[5] = 332.0f;
-
-    quad[6] = 428.0f;
-
-    quad[7] = -212.0f;
-
-    in_f21 = 1.0f;
-
-  }
+  
+  else {
+  
+    in_f21 = 0.0f;
+  
+    quad[0] = 0.0f;
+  
+    quad[1] = 0.0f;
+  
+    quad[2] = 0.0f;
+  
+    quad[3] = 0.0f;
+  
+    quad[4] = 0.0f;
+  
+    quad[5] = 0.0f;
+  
+    quad[6] = 0.0f;
+  
+    quad[7] = 0.0f;
+  
+  } break; }
 
   FUN_0021d890(puVar2 + 0x44,&quad[0]);
 
@@ -1016,63 +936,43 @@ void FUN_0025da30(void)
 
   in_f21 = in_f21 * 255.0f;
 
-  if (in_f21 < 2.1474836e+09f) {
-
-    color[3] = (u8)(int)in_f21;
-
-  }
-
-  else {
-
-    color[3] = (u8)(int)(in_f21 - 2.1474836e+09f);
-
-  }
+  if (in_f21 <= 2.1474836e+09f) { color[3] = (u8)(int)in_f21; } else { color[3] = (u8)(int)(in_f21 - 2.1474836e+09f); }
 
   FUN_0021d950(puVar2 + 0x44,&color[0]);
 
-  if (puVar2[1] == 1) {
-
-    fVar6 = (181.01933f - DAT_007caff0) / 1.4142135f;
-
-    quad[7] = ((float)(int)puVar2[3] / 10.0f) * (544.0f - fVar6);
-
-    quad[0] = fVar6 + 320.0f + quad[7];
-
-    quad[1] = fVar6 + -320.0f + quad[7];
-
-    quad[2] = fVar6 + -224.0f + quad[7];
-
-    quad[3] = fVar6 + 224.0f + quad[7];
-
-    quad[4] = quad[7] + -96.0f;
-
-    quad[5] = quad[7] + 352.0f;
-
-    quad[6] = quad[7] + 448.0f;
-
-    quad[7] = quad[7] + -192.0f;
-
-  }
-
-  else if (puVar2[1] == 0) {
-
-    quad[0] = 320.0f;
-
-    quad[1] = -320.0f;
-
-    quad[2] = -224.0f;
-
-    quad[3] = 224.0f;
-
-    quad[4] = -96.0f;
-
-    quad[5] = 352.0f;
-
-    quad[6] = 448.0f;
-
-    quad[7] = -192.0f;
-
-  }
+  switch (puVar2[1]) { case 0: quad[0] = 320.0f;
+  
+  quad[1] = -320.0f;
+  
+  quad[2] = -224.0f;
+  
+  quad[3] = 224.0f;
+  
+  quad[4] = -96.0f;
+  
+  quad[5] = 352.0f;
+  
+  quad[6] = 448.0f;
+  
+  quad[7] = -192.0f; break; case 1: fVar6 = (181.01933f - DAT_007caff0) / 1.4142135f;
+  
+  quad[7] = ((float)(int)puVar2[3] / 10.0f) * (544.0f - fVar6);
+  
+  quad[0] = fVar6 + 320.0f + quad[7];
+  
+  quad[1] = fVar6 + -320.0f + quad[7];
+  
+  quad[2] = fVar6 + -224.0f + quad[7];
+  
+  quad[3] = fVar6 + 224.0f + quad[7];
+  
+  quad[4] = quad[7] + -96.0f;
+  
+  quad[5] = quad[7] + 352.0f;
+  
+  quad[6] = quad[7] + 448.0f;
+  
+  quad[7] = quad[7] + -192.0f; break; }
 
   FUN_0021d890(puVar2 + 0x84,&quad[0]);
 
