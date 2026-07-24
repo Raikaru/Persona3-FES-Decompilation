@@ -1031,6 +1031,8 @@ extern void FUN_0038a260_f32_5(f32 param_1,int param_2,int param_3,int param_4,
 #pragma alias FUN_0038a260_f32_6 FUN_0038a260
 extern void FUN_0038a260_f32_6(f32 param_1,int param_2,int param_3,u32 param_4,
                                void *param_5,u32 param_6);
+#pragma alias FUN_0038a260_f32_var FUN_0038a260
+extern void FUN_0038a260_f32_var(f32 param_1,...);
 extern void FUN_0038a260_evt6(u32 param_1,int param_2,int param_3,u32 param_4,u32 param_5,
 
                               f32 param_6);
@@ -4832,13 +4834,14 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
     *(float *)(iVar12 + 0x1a8) = *piVar4;
 
     piVar4 = FUN_001a42f0_evt_f32(*(u32 *)(iVar12 + 0xe8),5);
+
     *(float *)(iVar12 + 0x1ac) = *piVar4;
 
-    piVar4 = FUN_001a42f0_evt_f32(*(u32 *)(iVar12 + 0xe8),6);
-    *(float *)(iVar12 + 0x1b0) = *piVar4;
+    *(float *)(iVar12 + 0x1b0) =
+        (float)*(int *)FUN_001a41b0(*(u32 *)(iVar12 + 0xe8),6);
 
-    piVar4 = FUN_001a42f0_evt_f32(*(u32 *)(iVar12 + 0xe8),7);
-    *(float *)(iVar12 + 0x1b4) = *piVar4;
+    *(float *)(iVar12 + 0x1b4) =
+        (float)*(int *)FUN_001a41b0(*(u32 *)(iVar12 + 0xe8),7);
 
     uStack_d0 = *(u32 *)(iVar12 + 0x198);
 
@@ -4968,8 +4971,8 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     if ((DAT_007e094c & 0x10) != 0) {
 
-      fVar13 = fVar13 * 5.0f;
-      fVar14 = 10.0f;
+      fVar13 = fVar13 * 10.0f;
+      fVar14 = fVar14 * 10.0f;
 
     }
 
@@ -5167,31 +5170,32 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
       iVar6 = (int)lVar10;
 
-      *(u32 *)(iVar6 + 4) = *(u32 *)(iVar12 + 0x198);
+      *(float *)(iVar6 + 4) = *(float *)(iVar12 + 0x198);
 
-      *(u32 *)(iVar6 + 8) = *(u32 *)(iVar12 + 0x19c);
+      *(float *)(iVar6 + 8) = *(float *)(iVar12 + 0x19c);
 
-      *(u32 *)(iVar6 + 0xc) = *(u32 *)(iVar12 + 0x1a0);
+      *(float *)(iVar6 + 0xc) = *(float *)(iVar12 + 0x1a0);
 
-      *(u32 *)(iVar6 + 0x10) = *(u32 *)(iVar12 + 0x1a4);
+      *(float *)(iVar6 + 0x10) = *(float *)(iVar12 + 0x1a4);
 
-      *(u32 *)(iVar6 + 0x14) = *(u32 *)(iVar12 + 0x1a8);
+      *(float *)(iVar6 + 0x14) = *(float *)(iVar12 + 0x1a8);
 
-      *(u32 *)(iVar6 + 0x100) = *(u32 *)(iVar12 + 0x1ac);
+      *(float *)(iVar6 + 0x100) = *(float *)(iVar12 + 0x1ac);
 
       FUN_003628f0(param_3);
 
-      *(u32 *)(iVar12 + 0x198) = *(u32 *)(iVar6 + 4);
+      *(float *)(iVar12 + 0x198) = *(float *)(iVar6 + 4);
 
-      *(u32 *)(iVar12 + 0x19c) = *(u32 *)(iVar6 + 8);
+      *(float *)(iVar12 + 0x19c) = *(float *)(iVar6 + 8);
 
-      *(u32 *)(iVar12 + 0x1a0) = *(u32 *)(iVar6 + 0xc);
+      *(float *)(iVar12 + 0x1a0) = *(float *)(iVar6 + 0xc);
 
-      *(u32 *)(iVar12 + 0x1a4) = *(u32 *)(iVar6 + 0x10);
+      *(float *)(iVar12 + 0x1a4) = *(float *)(iVar6 + 0x10);
 
-      *(u32 *)(iVar12 + 0x1a8) = *(u32 *)(iVar6 + 0x14);
+      *(float *)(iVar12 + 0x1a8) = *(float *)(iVar6 + 0x14);
 
-      *(u32 *)(iVar12 + 0x1ac) = *(u32 *)(iVar6 + 0x100);
+      *(float *)(iVar12 + 0x1ac) = *(float *)(iVar6 + 0x100);
+
 
     }
 
@@ -5209,7 +5213,7 @@ u32 FUN_00373700(int param_1,int param_2,int param_3)
 
     if (lVar10 != 0) {
 
-      FUN_00396270(0x42340000,param_3,(int)lVar10 + 4);
+      FUN_00396270(45.0f,param_3,(int)lVar10 + 4);
 
     }
 
@@ -6725,6 +6729,7 @@ u32 FUN_00375f30(int param_1,int param_2,int param_3)
 }
 
 
+#define FUN_0038a260(...) FUN_0038a260_f32_var(__VA_ARGS__)
 // FUN_003760A0 NONMATCHING
 
 
@@ -8891,6 +8896,8 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
   return;
 
 }
+#undef FUN_0038a260
+#undef FUN_0038a260_SELECT
 
 
 // FUN_003797B0 NONMATCHING
