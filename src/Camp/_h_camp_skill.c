@@ -99,6 +99,7 @@ typedef struct CampSkillSelectorWork
     u32 displayMode;      /* 0x04 */
     s16 pcId;             /* 0x08 */
     s16 reserved0a;       /* 0x0a */
+    u8 reserved0c[4];
     s16 sourcePcId;         /* 0x10 */
     s16 reserved12;         /* 0x12 */
     u32 reserved14;         /* 0x14 */
@@ -384,7 +385,7 @@ static void campSkillDrawSkillAnimatedTail(CampSkillRecord* record,
     FUN_001140d0(color, 0x200, 0x400, work->archiveParser, record->depth,
                  record->x, record->y);
     if (record->y < -616.0f) {
-        wrappedY = record->y + 1056.0f;
+        wrappedY = record->y + 1064.0f;
         FUN_001140d0(color, 0x200, 0x400, work->archiveParser,
                      record->depth, record->x, wrappedY);
     }
@@ -1588,7 +1589,7 @@ void* FUN_00164920(KwlnTask* task)
         if (H_Maestro_00111f30((s16*)work->resource0) == 0) {
             parserReady = 0;
         }
-        if (H_Maestro_00111f30((s16*)work->resource0) == 0) {
+        if (H_Maestro_00111f30((s16*)work->resource1) == 0) {
             parserReady = 0;
         }
         if (parserReady != 0) {
