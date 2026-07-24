@@ -8,6 +8,12 @@ extern u32 D_0095b790[];
 extern u8 DAT_0095b79c[];
 #pragma alias DAT_0095b790_abs DAT_0095b790
 extern u32 DAT_0095b790_abs[];
+#pragma alias DAT_0095b794_abs DAT_0095b794
+extern u8 DAT_0095b794_abs[];
+#pragma alias DAT_0095b798_abs DAT_0095b798
+extern u8 DAT_0095b798_abs[];
+#pragma alias DAT_0095b79c_abs DAT_0095b79c
+extern u8 DAT_0095b79c_abs[];
 extern u32 DAT_0095b790;
 extern u32 DAT_0095b794;
 extern u32 DAT_0095b798;
@@ -772,13 +778,10 @@ u32 * FUN_003c2ee0(u32 param_1)
       }
 
       else {
-
         DAT_0095b790_abs[0] = 1;
+        DAT_0095b790_abs[1] = iVar5;
+        DAT_0095b790_abs[2] = iVar4;
         puVar2 = (u32 *)DAT_0095b790_abs;
-
-        DAT_0095b794 = iVar5;
-
-        DAT_0095b798 = iVar4;
 
       }
 
