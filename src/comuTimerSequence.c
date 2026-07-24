@@ -107,51 +107,53 @@ u32 FUN_003c23f0(u32 param_1,u32 param_2,u32 param_3);
 
 u32 FUN_003bf720(void)
 {
-  int iVar1;
-  u8 bVar2;
   int *piVar3;
+  int lVar5;
   u32 uVar4;
-  long lVar5;
-  u8 auStack_20 [12];
-  u32 uStack_14;
-  u32 uStack_10;
-  u32 uStack_c;
+  u8 bVar2;
+  u8 auStack_30[0x1c];
 
   piVar3 = (int *)FUN_00195540();
-  iVar1 = *piVar3;
-  switch (iVar1) {
+  switch (*piVar3) {
   case 0:
     piVar3[1] = 0;
-    piVar3[2] = 2;
+    piVar3[2] = 3;
     *piVar3 = 1;
     break;
   case 1:
-    if (piVar3[1] < piVar3[2]) {
-      piVar3[1] = piVar3[1] + 1;
-    }
-    else {
+    if (piVar3[1] >= piVar3[2]) {
       piVar3[1] = 0;
       piVar3[2] = 0;
-      FUN_0016e920(DAT_007ce678);
+      bVar2 = 1;
+    }
+    else {
+      piVar3[1] = piVar3[1] + 1;
+      bVar2 = 0;
+    }
+    if (bVar2) {
+      FUN_0016e920((s16)DAT_007ce678);
       uVar4 = _DAT_007ce678;
-      FUN_00521408(auStack_20,0,0x1c);
-      uStack_14 = 0x329;
-      uStack_10 = 1;
-      uStack_c = uVar4;
-      FUN_0027c080(3,auStack_20,0x1c,0);
+      FUN_00521408(auStack_30,0,0x1c);
+      ((u32 *)auStack_30)[3] = 0x329;
+      ((u32 *)auStack_30)[4] = 1;
+      ((u32 *)auStack_30)[5] = uVar4;
+      FUN_0027c080(3,auStack_30,0x1c,0);
       *piVar3 = 2;
     }
     break;
   case 2:
-    lVar5 = FUN_0027c2b0();
-    if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
-      bVar2 = 1;
-    }
-    else {
-      bVar2 = 0;
-    }
-    if (bVar2) {
-      *piVar3 = 3;
+    {
+      int bVar3;
+      lVar5 = FUN_0027c2b0();
+      if ((lVar5 == 0) && (lVar5 = FUN_0027c330(), lVar5 == -1)) {
+        bVar3 = 1;
+      }
+      else {
+        bVar3 = 0;
+      }
+      if (bVar3 == 1) {
+        *piVar3 = 3;
+      }
     }
     break;
   case 3:
@@ -161,12 +163,9 @@ u32 FUN_003bf720(void)
       if (lVar5 == 0) {
         FUN_0019d3f0("comuTimerSequence.c",0x1a9);
       }
-      uVar4 = 0xffffffff;
+      return 0xffffffff;
     }
-    else {
-      uVar4 = 0xffffffff;
-    }
-    return uVar4;
+    return 0xffffffff;
   }
   uVar4 = 0;
   return uVar4;
