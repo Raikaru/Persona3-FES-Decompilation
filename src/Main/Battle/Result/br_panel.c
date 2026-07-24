@@ -712,11 +712,11 @@ static void brPanel00236390(void)
         shift = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
-        shift = 100.0f;
+        shift = 40.0f;
         alpha = 0.0f;
         if (timer >= 5) {
             if (timer < 11) {
-                shift = (1.0f - (f32)(timer - 5) / 6.0f) * 100.0f;
+                shift = (1.0f - (f32)(timer - 5) / 6.0f) * 40.0f;
             } else {
                 shift = 0.0f;
                 alpha = 1.0f;
@@ -757,11 +757,11 @@ static void brPanel00236390(void)
         shift = 0.0f;
         alpha = 0.0f;
     } else if (mode == 1) {
-        shift = 40.0f;
+        shift = -40.0f;
         alpha = 0.0f;
-        if (timer >= 5) {
-            if (timer < 11) {
-                shift = (1.0f - (f32)(timer - 5) / 6.0f) * 40.0f;
+        if (timer >= 2) {
+            if (timer < 7) {
+                shift = (1.0f - (f32)(timer - 2) / 5.0f) * -40.0f;
             } else {
                 shift = 0.0f;
                 alpha = 1.0f;
@@ -771,9 +771,7 @@ static void brPanel00236390(void)
         shift = 0.0f;
         alpha = 1.0f;
         if (timer >= 0 && timer < 10) {
-            scale = (f32)timer / 10.0f;
-            shift = scale * 40.0f;
-            alpha = 1.0f - scale;
+            alpha = 1.0f - (f32)timer / 10.0f;
         }
     }
     sprintf(text, "%d", *(s32*)(work + 0x2664));
@@ -807,6 +805,7 @@ static void brPanel00236390(void)
     BR_PANEL_ANIMATE(work + 0xc20, 0x28);
     BR_PANEL_SET_COLOR(work + 0xc20, alpha);
 
+
     for (i = 0; i < (s32)*(u32*)(work + 0x1d50); i++) {
         entry = work + 0xe20 + i * 0x510;
         if (mode == 0) {
@@ -818,11 +817,11 @@ static void brPanel00236390(void)
             alpha = 1.0f;
             shift = (f32)(*(s32*)(work + 0x2668) - (i + 4));
             if (shift <= 0.0f) {
-                shift = -100.0f;
+                shift = -40.0f;
                 alpha = 0.0f;
             } else if (shift < 4.0f) {
                 scale = 1.0f - (shift - 1.0f) / 3.0f;
-                shift = -100.0f * scale;
+                shift = -40.0f * scale;
             } else {
                 shift = 0.0f;
             }
@@ -837,7 +836,7 @@ static void brPanel00236390(void)
             }
         }
         func_003b0d70(*(u32*)(entry + 0xc),
-                      (s32)((210.0f + shift) * 16.0f),
+                      (s32)((174.0f - (f32)(i * 30) + shift) * 16.0f),
                       (210 + i * 30) * 8);
         packedColor = 0xffffff00 | (u8)(u32)(255.0f * alpha);
         func_003b0e20(*(u32*)(entry + 0xc), packedColor);
