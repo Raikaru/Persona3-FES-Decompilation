@@ -2886,29 +2886,69 @@ void func_0021f410(void)
 
     sub = *(u32*)(work + 0x463c);
     previous = *(u32*)(work + 0x4640);
-    if (bpPanelInTransition(sub) ||
-        (sub == 0 && bpPanelInTransition(previous) && *(u32*)(work + 0x4650) != 3))
+    switch (sub)
     {
+    case 2:
+    case 1:
+    case 3:
+    case 4:
         func_002265d0();
-    }
-    sub = *(u32*)(work + 0x463c);
-    if (sub == 3)
-    {
-        if (*(u32*)(work + 0x4644) == 1 ||
-            (*(u32*)(work + 0x4644) == 0 &&
-             *(u32*)(work + 0x4648) == 1 &&
-             *(u32*)(work + 0x4658) != 6))
+        break;
+    case 0:
+        switch (previous)
         {
-            func_00227f30();
+        case 3:
+        case 4:
+        case 1:
+        case 2:
+            if (*(u32*)(work + 0x4650) != 3)
+            {
+                func_002265d0();
+            }
+            break;
         }
+        break;
     }
     sub = *(u32*)(work + 0x463c);
-    if (bpPanelInTransition(sub) &&
-        (*(u32*)(work + 0x4644) == 0 ||
-         *(u32*)(work + 0x4644) == 3 ||
-         *(u32*)(work + 0x4644) == 4))
+    switch (sub)
     {
-        func_0022c2d0();
+    case 3:
+        switch (*(u32*)(work + 0x4644))
+        {
+        case 1:
+            func_00227f30();
+            break;
+        case 0:
+            switch (*(u32*)(work + 0x4648))
+            {
+            case 2:
+            case 1:
+                if (*(u32*)(work + 0x4658) != 6)
+                {
+                    func_00227f30();
+                }
+                break;
+            }
+            break;
+        }
+        break;
+    }
+    sub = *(u32*)(work + 0x463c);
+    switch (sub)
+    {
+    case 2:
+    case 1:
+    case 3:
+    case 4:
+        switch (*(u32*)(work + 0x4644))
+        {
+        case 0:
+        case 3:
+        case 4:
+            func_0022c2d0();
+            break;
+        }
+        break;
     }
     sub = *(u32*)(work + 0x463c);
     previous = *(u32*)(work + 0x4640);
@@ -2929,13 +2969,29 @@ void func_0021f410(void)
         func_00223290();
     }
     sub = *(u32*)(work + 0x463c);
-    if (sub == 3 &&
-        (*(u32*)(work + 0x4644) == 1 ||
-         (*(u32*)(work + 0x4644) == 0 &&
-          (*(u32*)(work + 0x4648) == 1 || *(u32*)(work + 0x4648) == 2) &&
-          *(u32*)(work + 0x4658) < 6)))
+    switch (sub)
     {
-        func_002257f0();
+    case 3:
+        switch (*(u32*)(work + 0x4644))
+        {
+        case 0:
+            switch (*(u32*)(work + 0x4648))
+            {
+            case 2:
+            case 1:
+                if (*(u32*)(work + 0x4658) < 6)
+                {
+                    func_002257f0();
+                }
+                break;
+            }
+            break;
+        case 1:
+        case 2:
+            func_002257f0();
+            break;
+        }
+        break;
     }
 }
 #pragma optimization_level 2
