@@ -1049,12 +1049,12 @@ u32 func_00176210(DatPersonaWork* persona, u16 level)
             {
                 result = (s32)(((DAT_007caed8 + 0.0f) -
                                 DAT_007caed4 * growthF) *
-                               levelF * DAT_007cada8 * levelF * levelF + 10.0f);
+                               (DAT_007cada8 * levelF * levelF * levelF) + 10.0f);
             }
             else
             {
                 result = (s32)((2.5f - DAT_007caedc * growthF) *
-                               levelF * DAT_007cada8 * levelF * levelF + 10.0f);
+                               (DAT_007cada8 * levelF * levelF * levelF) + 10.0f);
             }
         }
         else
