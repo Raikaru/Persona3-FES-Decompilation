@@ -103,14 +103,16 @@ static void brHeroSetRect(void* object, float x, float y, float w, float h)
 void brHero00262790(void)
 {
     u32* w;
+    void* value;
     void* text0;
     void* text1;
-    void* value;
     u32 task;
     u8 color[4];
     float rect[4];
     float sourceRect[4];
     s32 i;
+    void* valueLoop;
+    void* tailValue;
     u32 status;
     u32 level;
 
@@ -149,12 +151,12 @@ void brHero00262790(void)
         s32 k;
         for (k = 0; k < 3; k++)
             FUN_0021eac0(w + k * 0x40 + 0x184, 0);
-        value = FUN_0021cca0(text0, 0x1c);
+        valueLoop = FUN_0021cca0(text0, 0x1c);
         for (k = 0; k < 3; k++)
-            FUN_0021d3b0(w + k * 0x40 + 0x244, value);
-        value = FUN_0021cca0(text0, 0x1d);
+            FUN_0021d3b0(w + k * 0x40 + 0x244, valueLoop);
+        valueLoop = FUN_0021cca0(text0, 0x1d);
         for (k = 0; k < 3; k++)
-            FUN_0021d3b0(w + k * 0x40 + 0x304, value);
+            FUN_0021d3b0(w + k * 0x40 + 0x304, valueLoop);
     }
     FUN_0021d3b0(w + 0x3c4, FUN_0021cca0(text0, w[0x484]));
     FUN_0021d3b0(w + 0x404, FUN_0021cca0(text0, w[0x485] + 7));
@@ -224,7 +226,8 @@ void brHero00262790(void)
     FUN_0021eb80(w + 0xa54, rect);
     FUN_0021eac0(w + 0xa54, 0);
     FUN_0021d950(w + 0xa54, color);
-    FUN_0021d3b0(w + 0xa94, brPersona00264ca0(w[0x58d]));
+    value = brPersona00264ca0(w[0x58d]);
+    FUN_0021d3b0(w + 0xa94, value);
 
     if (w[0] & 2)
     {
@@ -262,11 +265,10 @@ void brHero00262790(void)
     w[0xad4] = task;
     FUN_003b0e90(1);
     FUN_003b0e70(2);
-    value = FUN_0021cca0(text1, 0x11);
-    FUN_0021d3b0(w + 0xc58, value);
-    FUN_0021e380(w + 0xc98, value, 1);
-    value = FUN_0021cca0(text1, 0x22);
-    FUN_0021d3b0(w + 0xcd8, value);
+    tailValue = FUN_0021cca0(text1, 0x11);
+    FUN_0021d3b0(w + 0xc58, tailValue);
+    FUN_0021e380(w + 0xc98, tailValue, 1);
+    FUN_0021d3b0(w + 0xcd8, FUN_0021cca0(text1, 0x22));
     FUN_00238980(w + 0xd18, 5, w[0x591], 2);
 
     w[0xe58] = 0;
