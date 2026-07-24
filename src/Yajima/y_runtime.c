@@ -8674,7 +8674,7 @@ u32 FUN_0043ca30(int param_1)
   u8 uVar18;
   u16 uVar19;
   float fVar20;
-  u32 uVar21;
+  int uVar21;
   float fVar22;
   float fVar23;
   u32 uStack_e0;
@@ -9349,7 +9349,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(char *)(DAT_007ce6ec + 0xad) == '\x06') {
       fVar22 = (float)FUN_00421fe0(0,0,0xff,*(u16 *)(DAT_007ce6ec + 0x7c),0xf);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -9488,7 +9488,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(char *)(DAT_007ce6ec + 0xad) == '\x06') {
       fVar22 = (float)FUN_00421fe0(0,0,0xff,*(u16 *)(DAT_007ce6ec + 0x7c),0xf);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -9643,7 +9643,7 @@ u32 FUN_0043ca30(int param_1)
         fVar22 = (float)FUN_00421fe0(0,0,0xff,*(u16 *)(iVar13 + 0x7e),
                                      *(u16 *)(iVar13 + 0x7c));
         if (fVar22 < 2147483648.0f) {
-          uVar21 = (u32)fVar22;
+          uVar21 = (int)fVar22;
         }
         else {
           uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -9667,7 +9667,7 @@ u32 FUN_0043ca30(int param_1)
           bVar14 = 1;
         }
         if (fVar22 < 2147483648.0f) {
-          uVar21 = (u32)fVar22;
+          uVar21 = (int)fVar22;
         }
         else {
           uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -10561,7 +10561,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(char *)(DAT_007ce6ec + 0xad) == '\x06') {
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -10574,7 +10574,7 @@ u32 FUN_0043ca30(int param_1)
       iVar17 = (int)lVar8;
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + iVar17 * 6 + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -10779,7 +10779,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(short *)(puVar2 + 0x87c) < 0xf) {
       fVar22 = (float)FUN_00421fe0(0,0,0xff,*(short *)(puVar2 + 0x87c),0xf);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -10960,7 +10960,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(char *)(DAT_007ce6ec + 0xad) == '\x06') {
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -10974,7 +10974,7 @@ u32 FUN_0043ca30(int param_1)
       iVar17 = (int)lVar8;
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + iVar17 * 6 + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -11115,7 +11115,7 @@ u32 FUN_0043ca30(int param_1)
     }
     fVar22 = (float)FUN_00421fe0(0,0,0xff,*(u16 *)(puVar2 + 0x87c),0xf);
     if (fVar22 < 2147483648.0f) {
-      uVar21 = (u32)fVar22;
+      uVar21 = (int)fVar22;
     }
     else {
       uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -11280,7 +11280,7 @@ u32 FUN_0043ca30(int param_1)
     if (*(char *)(DAT_007ce6ec + 0xad) == '\x06') {
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
@@ -11293,7 +11293,7 @@ u32 FUN_0043ca30(int param_1)
       iVar17 = (int)lVar8;
       fVar22 = (float)FUN_00421fe0(0,0xff,0,*(u16 *)(DAT_007ce6ec + iVar17 * 6 + 0x7e),10);
       if (fVar22 < 2147483648.0f) {
-        uVar21 = (u32)fVar22;
+        uVar21 = (int)fVar22;
       }
       else {
         uVar21 = (int)(fVar22 - 2147483648.0f) | 0x80000000;
