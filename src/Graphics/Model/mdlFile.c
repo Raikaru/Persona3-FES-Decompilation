@@ -1345,10 +1345,10 @@ extern u32 DAT_00957a94;
 extern u32 DAT_00957a98;
 extern u32 DAT_00957b44;
 extern u32 DAT_00957b48;
-extern u32 DAT_00957b4c;
-extern u32 DAT_00957b4d;
-extern u32 DAT_00957b4e;
-extern u32 DAT_00957b4f;
+extern u8 DAT_00957b4c;
+extern u8 DAT_00957b4d;
+extern u8 DAT_00957b4e;
+extern u8 DAT_00957b4f;
 extern u32 DAT_00957b64;
 extern u32 DAT_00957ba8;
 #pragma alias DAT_00957ba8_abs DAT_00957ba8
@@ -53005,7 +53005,6 @@ void FUN_003505d0(int *param_1)
   int iVar9;
 
   __int128 auVar10;
-
   u32 uVar11;
 
   float *pfVar12;
@@ -53027,7 +53026,7 @@ void FUN_003505d0(int *param_1)
   float fVar20;
 
   __int128 auVar21;
-
+  
   __int128 auVar22;
 
   float fStack_b0;
@@ -57332,6 +57331,9 @@ void FUN_00355f30(int *param_1)
   int iVar10;
   int iVar13;
   int iVar14;
+  u32 uColor1;
+
+  u32 uColor2;
 
   u32 *puVar11;
 
@@ -57444,7 +57446,7 @@ void FUN_00355f30(int *param_1)
 
       FUN_00318a30(*piVar2,&fStack_10,2);
 
-      FUN_003189f0(pfVar3[4],*piVar2,0);
+      FUN_003189f0_f32(*(float *)(pfVar3 + 4),*piVar2,0);
 
       FUN_00317730(*piVar2);
 
@@ -57504,7 +57506,7 @@ void FUN_00355f30(int *param_1)
 
     else if (iVar10 == 1) {
 
-      if (fVar14 == 0.0) {
+      if (iVar14 == 0) {
 
         piVar2[1] = (int)DAT_009572b0;
 
@@ -57524,69 +57526,69 @@ void FUN_00355f30(int *param_1)
 
       }
 
-      fVar14 = pfVar3[2];
+      uColor1 = pfVar3[2];
 
       fVar13 = 1.0 - unaff_f20;
 
       DAT_009572b0 = (float)piVar2[1] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fVar14 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor1 & 0xff) * unaff_f20;
 
       DAT_009572b4 = (float)piVar2[2] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fVar14 >> 8 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor1 >> 8 & 0xff) * unaff_f20;
 
       DAT_009572b8 = (float)piVar2[3] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fVar14 >> 0x10 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor1 >> 0x10 & 0xff) * unaff_f20;
 
-      DAT_009572bc = DAT_007cae4c * (float)((u32)fVar14 >> 0x18) * unaff_f20 +
+      DAT_009572bc = DAT_007cae4c * (float)(uColor1 >> 0x18) * unaff_f20 +
 
                      (float)piVar2[4] * fVar13;
 
-      fStack_4 = pfVar3[3];
+      uColor2 = pfVar3[3];
 
       DAT_009572c0 = (float)piVar2[5] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fStack_4 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor2 & 0xff) * unaff_f20;
 
       DAT_009572c4 = (float)piVar2[6] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fStack_4 >> 8 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor2 >> 8 & 0xff) * unaff_f20;
 
       DAT_009572c8 = (float)piVar2[7] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fStack_4 >> 0x10 & 0xff) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor2 >> 0x10 & 0xff) * unaff_f20;
 
       DAT_009572cc = (float)piVar2[8] * fVar13 +
 
-                     DAT_007cae4c * (float)((u32)fStack_4 >> 0x18) * unaff_f20;
+                     DAT_007cae4c * (float)(uColor2 >> 0x18) * unaff_f20;
 
       DAT_009572d0 = 1;
 
     }
 
-    else if ((iVar10 == 0) && (fVar14 == 0.0)) {
+    else if ((iVar10 == 0) && (iVar14 == 0)) {
 
-      fVar14 = pfVar3[2];
+      uColor1 = pfVar3[2];
 
-      DAT_009572b0 = DAT_007cae4c * (float)((u32)fVar14 & 0xff);
+      DAT_009572b0 = DAT_007cae4c * (float)(uColor1 & 0xff);
 
-      DAT_009572b4 = DAT_007cae4c * (float)((u32)fVar14 >> 8 & 0xff);
+      DAT_009572b4 = DAT_007cae4c * (float)(uColor1 >> 8 & 0xff);
 
-      DAT_009572b8 = DAT_007cae4c * (float)((u32)fVar14 >> 0x10 & 0xff);
+      DAT_009572b8 = DAT_007cae4c * (float)(uColor1 >> 0x10 & 0xff);
 
-      DAT_009572bc = DAT_007cae4c * (float)((u32)fVar14 >> 0x18);
+      DAT_009572bc = DAT_007cae4c * (float)(uColor1 >> 0x18);
 
-      fStack_4 = pfVar3[3];
+      uColor2 = pfVar3[3];
 
-      DAT_009572c0 = DAT_007cae4c * (float)((u32)fStack_4 & 0xff);
+      DAT_009572c0 = DAT_007cae4c * (float)(uColor2 & 0xff);
 
-      DAT_009572c4 = DAT_007cae4c * (float)((u32)fStack_4 >> 8 & 0xff);
+      DAT_009572c4 = DAT_007cae4c * (float)(uColor2 >> 8 & 0xff);
 
-      DAT_009572c8 = DAT_007cae4c * (float)((u32)fStack_4 >> 0x10 & 0xff);
+      DAT_009572c8 = DAT_007cae4c * (float)(uColor2 >> 0x10 & 0xff);
 
-      DAT_009572cc = DAT_007cae4c * (float)((u32)fStack_4 >> 0x18);
+      DAT_009572cc = DAT_007cae4c * (float)(uColor2 >> 0x18);
 
       DAT_009572d0 = 1;
 
