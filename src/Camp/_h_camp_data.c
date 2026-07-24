@@ -388,7 +388,6 @@ void* FUN_001675e0(KwlnTask* task)
     switch (work->state) {
     case 0: {
         KwlnTask* child;
-
         datSetFlag(0x1407, 1);
         if (DAT_007cdf48 != 0) {
             child = 0;
@@ -416,8 +415,8 @@ void* FUN_001675e0(KwlnTask* task)
             }
         }
         work->setupTask = (u32)child;
-        DAT_007cdf88 = (void*)FUN_00168770(task, 0x18bf);
-        work->activeTask = (u32)DAT_007cdf88;
+        work->activeTask = (u32)FUN_00168770(task, 0x18bf);
+        DAT_007cdf88 = (void*)work->activeTask;
         work->state = 1;
         break;
     }
@@ -430,19 +429,17 @@ void* FUN_001675e0(KwlnTask* task)
             ready = -1;
         }
         else {
-            switch (*(u32*)((KwlnTask*)DAT_007cdf48)->workData) {
-            case 3:
-                break;
-            default:
+            if (*(u32*)((KwlnTask*)DAT_007cdf48)->workData != 3) {
                 ready = 0;
-                break;
             }
         }
         if ((ready != 0) && FUN_001685b0((KwlnTask*)work->activeTask)) {
             if (work->mode == 0) {
-                screenMode = (s16)work->screenMode;
-                allocated = (*DAT_00960184_abs)(1, 0x30, 0x40000);
-                if (allocated == 0) {
+                s16 screenMode0;
+                void* allocated0;
+                screenMode0 = (s16)work->screenMode;
+                allocated0 = (*DAT_00960184_abs)(1, 0x30, 0x40000);
+                if (allocated0 == 0) {
                     work->activeTask = 0;
                 }
                 else {
@@ -450,10 +447,10 @@ void* FUN_001675e0(KwlnTask* task)
                         task, D_005DBD80, 0x18be,
                         func_001618a0,
                         func_00161d60,
-                        allocated);
+                        allocated0);
                     if (work->activeTask != 0) {
-                        *(u32*)((u8*)allocated + 0x0c) =
-                            (u32)screenMode;
+                        *(u32*)((u8*)allocated0 + 0x0c) =
+                            (u32)screenMode0;
                     }
                 }
             }
