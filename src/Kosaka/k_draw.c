@@ -5,6 +5,8 @@
 #include "Kosaka/Field/k_fldFrame.h"
 #include "Graphics/Model/mdlManager.h"
 #include "libm.h"
+#pragma alias rwGlobals_abs rwGlobals
+extern u8 rwGlobals_abs[];
 
 extern KwlnTask* func_001a3ae0(KwlnTask* parent, u32 width, u32 height);
 extern u32 func_001a3f20(KwlnTask* task, const void* descriptor);
@@ -518,36 +520,45 @@ void func_001a5280(KwlnTask* task)
     (*freeMemory)(task->workData);
 }
 
+// Reconstructed the arc mesh setup, color table, manager, and geometry bounds pipeline.
+// The remaining residual is MWCC register/scheduling layout in color initialization and tail calls.
 // FUN_001A5320 NONMATCHING
 KwlnTask* func_001a5320(KwlnTask* parent)
 {
+    void* (**callocFunc)(u32, u32, u32);
     KDrawArcTaskWork* work;
     KDrawRenderObject* renderObject;
     u8* indexData;
+    u8* colors;
     RwV3d* vertices;
     volatile f32 colorValue;
     RwSphere bounds;
     f32 theta;
     s32 i;
     s32 j;
+    s32 k;
+    register u32 colorR;
+    register u32 colorA;
     KwlnTask* task;
 
     colorValue = D_007CC1D8;
-    work = (KDrawArcTaskWork*)RwCalloc(1, sizeof(KDrawArcTaskWork),
-                                       rwMEMHINTDUR_GLOBAL);
+    callocFunc = &((RwGlobals*)rwGlobals_abs)->memFuncs.RwCalloc;
+    work = (KDrawArcTaskWork*)(*callocFunc)(1, sizeof(KDrawArcTaskWork),
+                                             rwMEMHINTDUR_GLOBAL);
     if (work == NULL)
     {
         return NULL;
     }
 
     task = kwlnTaskCreate(parent,
-                          (const char*)0x00678b68,
+                          D_00678B48 + 0x20,
                           0x104e,
                           func_001a50f0,
                           func_001a5280,
                           work);
 
-    work->render = (KDrawArcData*)RwCalloc(1, sizeof(KDrawArcData), rwMEMHINTDUR_GLOBAL);
+    work->render = (KDrawArcData*)(*callocFunc)(1, sizeof(KDrawArcData),
+                                                rwMEMHINTDUR_GLOBAL);
     work->render->center.x = 0.0f;
     work->render->center.y = 0.0f;
     work->render->center.z = 0.0f;
@@ -587,11 +598,25 @@ KwlnTask* func_001a5320(KwlnTask* parent)
     vertices[j + 1].z = work->render->radius * sinf(0.0f);
 
 
+    colorR = 0xff;
+    colorA = 0x80;
+    colors = renderObject->colors;
+    colors[0] = colorR;
+    colors[1] = 0;
+    colors[2] = 0;
+    colors[3] = colorA;
+    for (k = 0; k < 0x21; k++)
+    {
+        colors[4] = colorR;
+        colors[5] = 0;
+        colors[6] = 0;
+        colors[7] = colorA;
+        colors += 4;
+    }
+    work->render->manager = (KDrawRenderManager*)func_00491880();
     func_004933d0(renderObject);
     func_00492e20(renderObject->geometry, &bounds);
     renderObject->geometry->bounds = bounds;
-
-    work->render->manager = (KDrawRenderManager*)func_00491880();
     func_004919b0(work->render->manager, renderObject, 0);
     func_00493b60(renderObject);
     func_00492d10(work->render->manager, func_004caf10());
