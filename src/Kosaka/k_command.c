@@ -1391,9 +1391,6 @@ u32 FUN_001C4120()
     K_ASSERT(hit != NULL, 1292);
 
     type = RESRC_GET_TYPE(resourceTypeId);
-    targetPosition.x = *(f32*)((u8*)hit + 0x100);
-    targetPosition.y = *(f32*)((u8*)hit + 0x104);
-    targetPosition.z = *(f32*)((u8*)hit + 0x108);
     angle = *(f32*)((u8*)hit + 0x10c);
 
     switch (type)
@@ -1412,6 +1409,9 @@ u32 FUN_001C4120()
             mdlRotate(model, &axis, angle, rwCOMBINEREPLACE);
             mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
             matrix = mdlGetMatrix(model);
+            targetPosition.x = *(f32*)((u8*)hit + 0x100);
+            targetPosition.y = *(f32*)((u8*)hit + 0x104);
+            targetPosition.z = *(f32*)((u8*)hit + 0x108);
             matrix->pos = targetPosition;
             RwEngineGetMatrixTolerances(&tolerance);
             RwMatrixOptimize(matrix, &tolerance);
@@ -1436,6 +1436,9 @@ u32 FUN_001C4120()
                 mdlRotate(model, &axis, angle, rwCOMBINEPOSTCONCAT);
                 mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
                 matrix = mdlGetMatrix(model);
+                targetPosition.x = *(f32*)((u8*)hit + 0x100);
+                targetPosition.y = *(f32*)((u8*)hit + 0x104);
+                targetPosition.z = *(f32*)((u8*)hit + 0x108);
                 matrix->pos = targetPosition;
                 RwEngineGetMatrixTolerances(&tolerance);
                 RwMatrixOptimize(matrix, &tolerance);
@@ -1467,6 +1470,9 @@ u32 FUN_001C4120()
             mdlRotate(model, &axis, angle, rwCOMBINEREPLACE);
             mdlTranslate(model, &oldPosition, rwCOMBINEPOSTCONCAT);
             matrix = mdlGetMatrix(model);
+            targetPosition.x = *(f32*)((u8*)hit + 0x100);
+            targetPosition.y = *(f32*)((u8*)hit + 0x104);
+            targetPosition.z = *(f32*)((u8*)hit + 0x108);
             matrix->pos = targetPosition;
             RwEngineGetMatrixTolerances(&tolerance);
             RwMatrixOptimize(matrix, &tolerance);
