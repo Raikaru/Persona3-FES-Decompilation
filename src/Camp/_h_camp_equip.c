@@ -455,24 +455,97 @@ static inline void campEquipAnimateMain(u32* work, s32 mode)
 }
 static inline void campEquipInitializeMain(u32* work)
 {
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1, 0x42700000c4160000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1, 0x42b40000c4160000ULL, 0x42b4000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 1, 0x42f00000c4160000ULL, 0x42f0000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 1, 0x43160000c4160000ULL, 0x4316000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1, 0x436a00004444c000ULL, 0x436a000043f38000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 1, 0x43720000c3d10000ULL, 0x4372000043360000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1, 0x43cf8000c40f0000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
+    CampVec2 position;
+    CampVec2 start;
+
+    position.x = 0.0f;
+    position.y = 60.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 90.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 120.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 150.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 487.0f;
+    position.y = 234.5f;
+    start = position;
+    start.x += 300.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 182.0f;
+    position.y = 242.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 28.0f;
+    position.y = 415.0f;
+    start = position;
+    start.x -= 600.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1,
+                  *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
 }
 
 static inline void campEquipCloseMain(u32* work)
 {
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1, 0x4270000000000000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1, 0x42b4000000000000ULL, 0x42b4000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 1, 0x42f0000000000000ULL, 0x42f0000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 1, 0x4316000000000000ULL, 0x4316000000000000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1, 0x436a000043f38000ULL, 0x436a000043f38000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 1, 0x4372000043360000ULL, 0x4372000043360000ULL, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1, 0x43cf800041e00000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
+    CampVec2 position;
+
+    position.x = 0.0f;
+    position.y = 60.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x00), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 90.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x44), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 120.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x88), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 0.0f;
+    position.y = 150.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0xcc), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 487.0f;
+    position.y = 234.5f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 182.0f;
+    position.y = 242.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x110), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+    position.x = 28.0f;
+    position.y = 415.0f;
+    func_0018bc10(100.0f, (void*)(work[0xae] + 0x198), 0, 2, 1,
+                  *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
 }
 
 static inline void campEquipAnimateList(u32* work, s32 mode)
@@ -529,13 +602,42 @@ static inline void campEquipAnimateList(u32* work, s32 mode)
         func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode,
                       *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
     } else {
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode, 0x4210000041980000ULL, 0x4210000041980000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode, 0x4214000043d18000ULL, 0x4214000043d18000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x88), 0, 2, mode, 0x4270000000000000ULL, 0x4270000000000000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, mode, 0x42d8000042ea0000ULL, 0x42d8000042ea0000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, mode, 0x43b6800043f38000ULL, 0x43b6800043f38000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x198), 0, 2, mode, 0x4372000043290000ULL, 0x4372000043290000ULL, 0, 0, 0, 0);
-        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode, 0x43cf800041e00000ULL, 0x43cf800041e00000ULL, 0, 0, 0, 0);
+        CampVec2 position;
+
+        position.x = 19.0f;
+        position.y = 36.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x00), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 419.0f;
+        position.y = 37.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x44), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 0.0f;
+        position.y = 60.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x88), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 117.0f;
+        position.y = 108.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0xcc), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 487.0f;
+        position.y = 365.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x110), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 169.0f;
+        position.y = 242.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x198), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
+
+        position.x = 28.0f;
+        position.y = 415.0f;
+        func_0018bc10(100.0f, (void*)(work[0xaf] + 0x1dc), 0, 2, mode,
+                      *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
     }
 }
 
@@ -559,8 +661,12 @@ void* FUN_0012c430(KwlnTask* task)
     case 1:
         if (FUN_001016b0(work[0]) != 0) {
             u8 scratch[4];
+            CampVec2 position;
 
-            func_0018bc10(100.0f, (void*)(work[0xb0]), 0, 2, 1, 0x43bf000000000000ULL, 0x43bf000000000000ULL, 0, 0, 0, 0);
+            position.x = 0.0f;
+            position.y = 382.0f;
+            func_0018bc10(100.0f, (void*)(work[0xb0]), 0, 2, 1,
+                          *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
             work[0xac] = (u32)FUN_00112420(FUN_00102100(work[0], 0, scratch));
             work[0xad] = (u32)FUN_00112420(FUN_00102100(work[0], 1, scratch));
             work[1] = 2;
