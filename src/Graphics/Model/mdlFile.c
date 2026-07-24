@@ -57596,9 +57596,8 @@ void FUN_00355f30(int *param_1)
 
     if (bVar5) {
 
-      puVar12 = &uStack_50;
 
-      puVar11 = &DAT_00957270;
+      puVar12 = &uStack_50;
 
       iVar10 = 4;
 
