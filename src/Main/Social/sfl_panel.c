@@ -243,11 +243,11 @@ void func_0023dac0(void)
     }
 
 mode12:
-    frame = work[2];
 
     for (i = 0; i < 2; i++) {
         switch (i) {
         case 0:
+            frame = work[2];
             panelDirection[0] = 0.0f;
             panelDirection[1] = -1.0f;
             scale = 1.0f;
@@ -274,6 +274,7 @@ mode12:
                     DAT_0068e810[interval];
             break;
         case 1:
+            frame = work[2];
             if (frame == 0x1e) {
                 interval = 2;
                 scale = DAT_0068e858;
@@ -312,6 +313,7 @@ mode12:
         color.b = 0xff;
         func_0021d950(work + 0x84 + i * 0x40, &color);
     }
+    frame = work[2];
 
     panelDirection[0] = sinf(DAT_007cb034);
     panelDirection[1] = -cosf(DAT_007cb034);
@@ -381,20 +383,20 @@ mode12:
 done:
     return;
 }
-
+ 
 // FUN_0023e970 NONMATCHING
 void func_0023e970(void)
 {
-    int base;
-    s32 mode;
-    s32 i;
     void* texture;
     volatile code *quad;
-    volatile code *state;
+    s32 mode;
     volatile code *render;
+    volatile code *state;
+    s32 i;
+    u8* base;
 
     K_ASSERT(sSflPanel != NULL, 0x7f);
-    base = (int)sSflPanel;
+    base = (u8*)sSflPanel;
     K_ASSERT(*(u32*)base & 1, 0x29b);
 
     render = (code *)&DAT_00960090_abs;
@@ -406,7 +408,23 @@ void func_0023e970(void)
     RpSkyRenderStateSet(2, (void*)0x44);
 
     mode = *(s32*)(base + 4);
-    if (mode == 2 || mode == 1) {
+    switch (mode) {
+    case 0:
+        RpSkyRenderStateSet(3, (void*)0x71801);
+        RpSkyRenderStateSet(2, (void*)0x48);
+        state = render;
+        (*state)(1, sflRes0020e510(0));
+        quad = (code *)&DAT_0096009c_abs;
+        (*quad)(base + 0x110, 4, 0, 1, 2);
+        (*quad)(base + 0x110, 4, 0, 2, 3);
+        texture = sflRes0020e610(*(s32*)(base + 0xc) - 1);
+        (*state)(1, texture);
+        quad = (code *)&DAT_0096009c_abs;
+        (*quad)(base + 0x10, 4, 0, 1, 2);
+        (*quad)(base + 0x10, 4, 0, 2, 3);
+        break;
+    case 1:
+    case 2:
         RpSkyRenderStateSet(3, (void*)0x71801);
         RpSkyRenderStateSet(2, (void*)0x48);
         state = (code *)&DAT_00960090_abs;
@@ -440,19 +458,9 @@ void func_0023e970(void)
         quad = (code *)&DAT_0096009c_abs;
         (*quad)(base + 0x410, 4, 0, 1, 2);
         (*quad)(base + 0x410, 4, 0, 2, 3);
-    } else if (mode == 0) {
-        RpSkyRenderStateSet(3, (void*)0x71801);
-        RpSkyRenderStateSet(2, (void*)0x48);
-        state = render;
-        (*state)(1, sflRes0020e510(0));
-        quad = (code *)&DAT_0096009c_abs;
-        (*quad)(base + 0x110, 4, 0, 1, 2);
-        (*quad)(base + 0x110, 4, 0, 2, 3);
-        texture = sflRes0020e610(*(s32*)(base + 0xc) - 1);
-        (*state)(1, texture);
-        quad = (code *)&DAT_0096009c_abs;
-        (*quad)(base + 0x10, 4, 0, 1, 2);
-        (*quad)(base + 0x10, 4, 0, 2, 3);
+        break;
+    default:
+        break;
     }
 }
 
