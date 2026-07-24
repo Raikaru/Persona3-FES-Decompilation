@@ -301,18 +301,20 @@ static void H_Chrdsp_ParseLayer(HChrdspWork* work)
     work->state = HCHRDP_STATE_LOAD_ARCHIVE;
 }
 
+#pragma opt_loop_invariants on
 // FUN_00105800 NONMATCHING
 void H_Chrdsp_Init(void)
 {
-    s16 workIndex = 0;
-    s32 stride = 0x670;
-    u8* base = (u8*)D_007E2680;
+    s16 workIndex;
     s16 resourceIndex;
+    s32 offset;
     HChrdspWork* work;
 
-    for (; workIndex < HCHRDP_WORK_COUNT; workIndex++)
+    for (workIndex = 0; workIndex < HCHRDP_WORK_COUNT; workIndex++)
     {
-        work = (HChrdspWork*)(base + workIndex * stride);
+        offset = workIndex;
+        offset *= 0x670;
+        work = (HChrdspWork*)((u8*)D_007E2680 + offset);
         work->state = HCHRDP_STATE_IDLE;
         work->drawMiddleLayer = 0;
         work->drawTopLayer = 0;
@@ -323,6 +325,7 @@ void H_Chrdsp_Init(void)
         }
     }
 }
+#pragma opt_loop_invariants off
 // FUN_001058A0
 void H_Chrdsp_Main(void)
 {
@@ -344,6 +347,7 @@ void H_Chrdsp_Main(void)
     }
 }
 
+#pragma opt_loop_invariants on
 // FUN_001059B0 NONMATCHING
 void H_Chrdsp_UpdateWork(HChrdspWork* work)
 {
@@ -641,6 +645,7 @@ void H_Chrdsp_UpdateWork(HChrdspWork* work)
         break;
     }
 }
+#pragma opt_loop_invariants off
 
 // FUN_00106730
 void func_00106730(s16 index)
