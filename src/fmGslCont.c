@@ -116,7 +116,7 @@ extern u8 DAT_0095aea8_abs[];
 extern u8 DAT_0095aeac_abs[];
 #undef FUN_003b44a0
 #pragma opt_loop_invariants on
-// FUN_003B41A0 NONMATCHING
+// FUN_003B41A0 MATCHING
 
 
 u32
@@ -133,6 +133,7 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
   int half;
   int index;
   u32 uVar6;
+  u32 offset;
   int *piVar7;
   int lVar3;
   int lVar8;
@@ -172,7 +173,8 @@ FUN_003b41a0(u64 param_1,int param_2,int param_3,int param_4,int param_5,int par
           *(u32 *)DAT_0095aebc_abs + (uVar6 + 1) * 0x20;
       uVar6 = uVar6 + 1;
     }
-    *(int *)(uVar6 * 0x20 + *(u32 *)DAT_0095aebc_abs + 0x1c) =
+    offset = uVar6 * 0x20;
+    *(int *)(offset + *(u32 *)DAT_0095aebc_abs + 0x1c) =
         *(u32 *)DAT_0095aebc_abs;
     iVar1 = *(u32 *)DAT_0095aeb8_abs + -1;
     while (0 < iVar1) {
