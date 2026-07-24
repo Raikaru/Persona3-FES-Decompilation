@@ -225,15 +225,11 @@ void FUN_0025fb60(int contextAddress, int entryIndex, float* uv)
 
 // FUN_0025FC50 NONMATCHING
 void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
-
-
-
 {
 
   int iVar1;
-
-    u32 unaff_s5_lo;
     u32 unaff_s4_lo;
+    u32 unaff_s5_lo;
     u32 unaff_s3_lo;
     u32 unaff_s2_lo;
     float fVar2;
@@ -432,8 +428,6 @@ void FUN_0025fc50(int param_1,void* param_2,int param_3,int param_4)
   return;
 
 }
-
-/* Recovered battle-misc harvest: 0x0025DA30-0x0025F5D0 */
 
 
 
