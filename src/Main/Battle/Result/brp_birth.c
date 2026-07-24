@@ -296,6 +296,7 @@ static void brpBirthSetOrigin(void* resource, f32 x, f32 y, f32 z)
 // FUN_0024ADF0 NONMATCHING
 void func_0024adf0(void)
 {
+    s32* work;
     u32 flags;
     BrpBirthColor color;
     BrpBirthVec rotation;
@@ -304,10 +305,9 @@ void func_0024adf0(void)
     f32 opacity;
     f32 wave;
     u8* frame;
-    u32* work;
 
     K_ASSERT(sBrpBirthWork != NULL, 0x7f);
-    work = sBrpBirthWork;
+    work = (s32*)sBrpBirthWork;
     rotation = sBrpBirthRotation;
     func_0024bb30();
     sflRes0020d820();
@@ -315,33 +315,30 @@ void func_0024adf0(void)
     flags = work[1];
     if ((flags & 2) != 0)
     {
-        if (work[0] != 1)
-        {
-            if (work[0] == 0)
-            {
-                if ((flags & 4) == 0 &&
-                    func_003cdc80(work[0x3158]) == 0)
-                {
-                    func_003cdcd0(work[0x3158], 0, 0, 1);
-                    work[1] |= 4;
-                }
-                if ((work[1] & 8) == 0 && func_0021a120() == 0)
-                {
-                    work[1] |= 8;
-                }
-                if ((work[1] & 0xC) == 0xC && brpRes0024bed0() == 0)
-                {
-                    work[1] &= ~2;
-                }
-            }
-        }
-        else
+        if (work[0] == 1)
         {
             if ((flags & 8) == 0 && func_0021a120() == 0)
             {
                 work[1] |= 8;
             }
             if ((work[1] & 8) != 0 && brpRes0024bed0() == 0)
+            {
+                work[1] &= ~2;
+            }
+        }
+        else if (work[0] == 0)
+        {
+            if ((flags & 4) == 0 &&
+                func_003cdc80(work[0x3158]) == 0)
+            {
+                func_003cdcd0(work[0x3158], 0, 0, 1);
+                work[1] |= 4;
+            }
+            if ((work[1] & 8) == 0 && func_0021a120() == 0)
+            {
+                work[1] |= 8;
+            }
+            if ((work[1] & 0xC) == 0xC && brpRes0024bed0() == 0)
             {
                 work[1] &= ~2;
             }
@@ -391,7 +388,7 @@ void func_0024adf0(void)
                 color.g = 0;
                 color.b = 0;
                 color.a = (u8)(255.0f -
-                    (255.0f * ((f32*)work)[4]) / 20.0f);
+                    (255.0f * (f32)work[4]) / 20.0f);
                 func_0034ff90((void*)(uintptr_t)work[0x3F3], &color);
             }
             else
@@ -501,9 +498,9 @@ void func_0024adf0(void)
             {
                 func_003c72d0(brpRes0024c090());
                 func_003c7bc0(1,
-                    func_00173220(*(u16*)((u8*)work + 0x0C)));
+                    func_00173220((s16)work[3]));
                 func_003c7430(
-                    func_0017d790(*(u16*)((u8*)work + 0x0C)));
+                    func_0017d790((s16)work[3]));
                 work[2] = 0xB;
             }
             break;
@@ -528,14 +525,14 @@ void func_0024adf0(void)
             opacity = 0.0f;
             break;
         case 3:
-            opacity = ((f32*)work)[4] / 40.0f;
+            opacity = (f32)work[4] / 40.0f;
             break;
         case 4:
         case 5:
             opacity = 1.0f;
             break;
         case 6:
-            opacity = 1.0f - ((f32*)work)[4] / 60.0f;
+            opacity = 1.0f - (f32)work[4] / 60.0f;
             break;
         case 7:
         case 8:
@@ -548,12 +545,12 @@ void func_0024adf0(void)
 
         work[5]++;
         wave = fGpffff8248 *
-            (-(((f32*)work)[5] / 50.0f) * 2.0f);
+            (-((f32)work[5] / 50.0f) * 2.0f);
         ((f32*)work)[0x3EC] = func_0052e878(wave) * -300.0f;
         ((f32*)work)[0x3EE] = func_0052e6d8(wave) * -300.0f;
         ((f32*)work)[0x3ED] =
             func_0052e6d8(fGpffff8248 *
-                ((((f32*)work)[5] / 30.0f) * 2.0f)) *
+                ((f32)work[5] / 30.0f) * 2.0f) *
             400.0f + 100.0f;
 
         color.r = 0xFF;
@@ -570,7 +567,7 @@ void func_0024adf0(void)
             angle = 180.0f;
             break;
         case 4:
-            angle = (1.0f - ((f32*)work)[4] / 20.0f) * 180.0f;
+            angle = (1.0f - (f32)work[4] / 20.0f) * 180.0f;
             break;
         case 5:
         case 6:
