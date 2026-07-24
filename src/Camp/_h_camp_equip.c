@@ -1395,6 +1395,8 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         break;
     case 1:
+        datGetEquipmentIdx(
+            *(s16*)((u8*)work + 0x12), *(s16*)((u8*)work + 0x1c));
         switch (*(s16*)((u8*)work + 0x1c)) {
         case 0:
             campEquipDrawSpriteCall(
@@ -1409,13 +1411,13 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         case 1:
             campEquipDrawSpriteCall(
                 parent, *(void**)((u8*)work + 0x2b0), 0x13,
-                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 12.0f,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 4.0f,
                 *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
             break;
         case 2:
             campEquipDrawSpriteCall(
                 parent, *(void**)((u8*)work + 0x2b0), 0x14,
-                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 12.0f,
+                (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 4.0f,
                 *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
             break;
         default:
@@ -1455,28 +1457,147 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         }
         break;
     case 3:
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), 0x18,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
-            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
-        campEquipDrawItemList(work, record, 0, 0, text);
+        {
+            s16 pcId;
+            s16 slot;
+            s16 equipmentIdx;
+            s32 itemCount;
+            s32 firstItem;
+            s32 yDiv;
+            s32 valA;
+            s32 valB;
+            s32 row;
+
+            pcId = *(s16*)((u8*)work + 0x12);
+            slot = *(s16*)((u8*)work + 0x1c);
+            itemCount = *(s32*)((u8*)work + 0x2ac);
+            firstItem = *(s32*)((u8*)work + 0x24);
+
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x27,
+                (u8)*(u32*)(record + 0x40),
+                483.0f + *(f32*)(record + 0x38),
+                1.0f + *(f32*)(record + 0x3c),
+                *(f32*)(record + 0x24));
+
+            if (itemCount > 5) {
+                yDiv = (s32)(90 * firstItem) / (itemCount - 5);
+            } else {
+                yDiv = 0;
+            }
+
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x28,
+                (u8)*(u32*)(record + 0x40),
+                483.0f + *(f32*)(record + 0x38),
+                3.0f + *(f32*)(record + 0x3c) + (f32)yDiv,
+                *(f32*)(record + 0x24));
+
+            equipmentIdx = datGetEquipmentIdx(pcId, slot);
+
+            switch (slot) {
+            case 0:
+                valA = func_0016f9f0(pcId, equipmentIdx);
+                valB = func_0016fae0(pcId, equipmentIdx);
+                break;
+            case 1:
+                valA = func_0016fbd0(pcId, equipmentIdx);
+                break;
+            case 2:
+            default:
+                valA = func_0016fcc0(pcId, equipmentIdx);
+                break;
+            }
+
+            for (row = 0; row < 5; row++) {
+                s32 item;
+                u16 equipment;
+                u16 id;
+                u8 effect;
+                s32 style;
+
+                item = firstItem + row;
+                if (item >= itemCount) {
+                    continue;
+                }
+                equipment = *(u16*)((u8*)work + 0x28 + item * 2);
+                style = FUN_0012df50(func_0016f720(1, equipment));
+                id = datGetEquipmentId(pcId, equipment);
+                effect = func_0016f810(pcId, equipment);
+                sprintf(text, "%d", (s32)func_00171110(id, effect));
+                if (*(s32*)((u8*)work + 0x20) != item) {
+                    campEquipDrawSpriteCall(
+                        parent, *(void**)((u8*)work + 0x2b0), style,
+                        (u8)*(u32*)(record + 0x40),
+                        *(f32*)(record + 0x38),
+                        *(f32*)(record + 0x3c) + (f32)(row * 30),
+                        *(f32*)(record + 0x24));
+                } else {
+                    campEquipDrawSpriteCall(
+                        parent, *(void**)((u8*)work + 0x2b0), style,
+                        (u8)*(u32*)(record + 0x40),
+                        *(f32*)(record + 0x38),
+                        *(f32*)(record + 0x3c) + (f32)(row * 30),
+                        *(f32*)(record + 0x24));
+                }
+
+                FUN_003b2cb0(
+                    *(f32*)(record + 0x24),
+                    (s32)(*(f32*)(record + 0x38) + 20.0f),
+                    (s32)(*(f32*)(record + 0x3c) + (f32)(row * 30)),
+                    0xff - (u8)*(u32*)(record + 0x40),
+                    *(s32*)((u8*)work + 0x20) == item ? 6 : 10,
+                    1, text, 0x10, 0);
+            }
+
+            for (row = 0; row < itemCount - firstItem; row++) {
+                s32 item;
+                u16 equipment;
+                u16 id;
+                u8 effect;
+                s32 style;
+                s32 selected;
+
+                item = firstItem + row;
+                if (item >= itemCount) {
+                    continue;
+                }
+                equipment = *(u16*)((u8*)work + 0x28 + item * 2);
+                style = FUN_0012df50(func_0016f720(1, equipment));
+                id = datGetEquipmentId(pcId, equipment);
+                effect = func_0016f810(pcId, equipment);
+                sprintf(text, "%d", (s32)func_00171110(id, effect));
+                selected = *(s32*)((u8*)work + 0x20) == item;
+                campEquipDrawSpriteCall(
+                    parent, *(void**)((u8*)work + 0x2b0), selected != 0 ? 0x25 : 0x26,
+                    (u8)*(u32*)(record + 0x40),
+                    *(f32*)(record + 0x38) + 483.0f,
+                    *(f32*)(record + 0x3c) + 3.0f + (f32)yDiv + (f32)(row * 30),
+                    *(f32*)(record + 0x24));
+                FUN_003b2cb0(
+                    *(f32*)(record + 0x24),
+                    (s32)(*(f32*)(record + 0x38) + 483.0f + 20.0f),
+                    (s32)(*(f32*)(record + 0x3c) + 3.0f + (f32)yDiv + (f32)(row * 30)),
+                    0xff - (u8)*(u32*)(record + 0x40),
+                    selected != 0 ? 6 : 10, 1, text, 0x10, 0);
+            }
+        }
         break;
     case 4:
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), 0x27,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 483.0f,
-            *(f32*)(record + 0x3c) + 1.0f, *(f32*)(record + 0x24));
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), 0x28,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 483.0f,
-            *(f32*)(record + 0x3c) + 3.0f, *(f32*)(record + 0x24));
-        campEquipDrawItemList(work, record, 16, -10, text);
+        {
+            void* sprite;
+            sprite = campEquipMakeSpriteCall(
+                NULL, *(void**)((u8*)work + 0x2b0), 0x1b);
+            *(f32*)((u8*)sprite + 0x2c) = *(f32*)(record + 0x24);
+            *(f32*)((u8*)sprite + 0x10) = *(f32*)(record + 0x38);
+            *(f32*)((u8*)sprite + 0x14) = *(f32*)(record + 0x3c);
+            *(u8*)((u8*)sprite + 0x18) = (u8)*(u32*)(record + 0x40);
+            *(f32*)((u8*)sprite + 0x20) = -164.0f;
+            campEquipSetSpriteCall(sprite, 1);
+            campEquipSubmitSpriteCall(sprite);
+        }
         break;
     case 5:
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), 0x1b,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
-            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         break;
     case 6:
         {
