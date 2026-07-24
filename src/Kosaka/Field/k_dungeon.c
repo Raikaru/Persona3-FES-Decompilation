@@ -809,7 +809,7 @@ void func_001c07f0(void)
         }
     }
 }
-// FUN_001C0880 NONMATCHING
+// FUN_001C0880
 void* func_001c0880(KwlnTask* task)
 {
     u8* work;
@@ -819,31 +819,30 @@ void* func_001c0880(KwlnTask* task)
 
     work = (u8*)task->workData;
     state = *(s32*)work;
-    if (state == 1)
+    switch (state)
     {
-        return KWLNTASK_STOP;
-    }
-    else
-    {
-        if (state == 0)
+    case 0:
+        frames = *(s32*)(work + 8);
+        if (frames > 0)
         {
-            frames = *(s32*)(work + 8);
-            if (frames <= 0)
-            {
-                alpha = *(f32*)(work + 0x0c);
-                *(s32*)work = state + 1;
-            }
-            else
-            {
-                alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
-                        (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) /
-                            (f32)frames;
-                *(s32*)(work + 8) = frames - 1;
-            }
-            *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
+            alpha = *(f32*)(*(u8**)(work + 4) + 0x18) -
+                    (*(f32*)(*(u8**)(work + 4) + 0x18) - *(f32*)(work + 0x0c)) /
+                        (f32)frames;
+            *(s32*)(work + 8) = frames - 1;
         }
-        return KWLNTASK_CONTINUE;
+        else
+        {
+            alpha = *(f32*)(work + 0x0c);
+            *(s32*)work = state + 1;
+        }
+        *(f32*)(*(u8**)(work + 4) + 0x18) = alpha;
+        break;
+    case 1:
+        return KWLNTASK_STOP;
+    default:
+        break;
     }
+    return KWLNTASK_CONTINUE;
 }
 
 // FUN_001c0920
