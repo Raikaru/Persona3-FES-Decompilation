@@ -86,6 +86,12 @@ extern void* DAT_007cdf50;
 extern u16 DAT_007e0952;
 extern u16 DAT_007e095a;
 extern u16 DAT_007e094e;
+#pragma alias DAT_007e0952_abs DAT_007e0952
+#pragma alias DAT_007e095a_abs DAT_007e095a
+#pragma alias DAT_007e094e_abs DAT_007e094e
+extern u8 DAT_007e0952_abs[];
+extern u8 DAT_007e095a_abs[];
+extern u8 DAT_007e094e_abs[];
 extern void* DAT_00833B70;
 extern void* DAT_00833BA0;
 #pragma alias DAT_007cb66c_scalar DAT_007cb66c
@@ -435,7 +441,7 @@ static inline void campEquipAnimateMain(u32* work, s32 mode)
                   *(u64*)&position, *(u64*)&start, 0, 0, 0, 0);
 
     position.x = 487.0f;
-    position.y = 234.5f;
+    position.y = 234.0f;
     start = position;
     start.x += 300.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, mode,
@@ -489,7 +495,7 @@ static inline void campEquipInitializeMain(u32* work)
                   *(u64*)&start, *(u64*)&position, 0, 0, 0, 0);
 
     position.x = 487.0f;
-    position.y = 234.5f;
+    position.y = 234.0f;
     start = position;
     start.x += 300.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1,
@@ -535,7 +541,7 @@ static inline void campEquipCloseMain(u32* work)
                   *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
 
     position.x = 487.0f;
-    position.y = 234.5f;
+    position.y = 234.0f;
     func_0018bc10(100.0f, (void*)(work[0xae] + 0x154), 0, 2, 1,
                   *(u64*)&position, *(u64*)&position, 0, 0, 0, 0);
 
@@ -687,20 +693,20 @@ void* FUN_0012c430(KwlnTask* task)
         break;
     case 4:
         if (work[6] != 0) {
-            if ((DAT_007e0952 & 0x40) != 0) {
+            if ((*(u16*)DAT_007e0952_abs & 0x40) != 0) {
                 FUN_0010a4e0(0, 0, 0, 1);
                 work[1] = 7;
-            } else if ((DAT_007e0952 & 0x20) != 0) {
+            } else if ((*(u16*)DAT_007e0952_abs & 0x20) != 0) {
                 FUN_0010a4e0(0, 0, 0, 2);
                 work[1] = 5;
-            } else if ((DAT_007e0952 & 0x1000) != 0 ||
-                       (DAT_007e095a & 0x1000) != 0) {
+            } else if ((*(u16*)DAT_007e0952_abs & 0x1000) != 0 ||
+                       (*(u16*)DAT_007e095a_abs & 0x1000) != 0) {
                 if (*(s16*)((u8*)work + 0x1c) != 0) {
                     FUN_0010a4e0(0, 0, 0, 0);
                     --*(s16*)((u8*)work + 0x1c);
                 }
-            } else if ((DAT_007e0952 & 0x4000) != 0 ||
-                       (DAT_007e095a & 0x4000) != 0) {
+            } else if ((*(u16*)DAT_007e0952_abs & 0x4000) != 0 ||
+                       (*(u16*)DAT_007e095a_abs & 0x4000) != 0) {
                 if (*(s16*)((u8*)work + 0x1c) != 3) {
                     FUN_0010a4e0(0, 0, 0, 0);
                     ++*(s16*)((u8*)work + 0x1c);
@@ -751,7 +757,7 @@ void* FUN_0012c430(KwlnTask* task)
         }
         break;
     case 10:
-        if ((DAT_007e094e & 0x40) != 0) {
+        if ((*(u16*)DAT_007e094e_abs & 0x40) != 0) {
             s16 pcId;
             s16 category;
             u16 oldMaxHp;
@@ -779,7 +785,7 @@ void* FUN_0012c430(KwlnTask* task)
             if (oldMaxSp != newMaxSp) {
                 FUN_0016cf90(pcId, (s16)((oldSp * newMaxSp) / oldMaxSp));
             }
-        } else if ((DAT_007e094e & 0x20) != 0) {
+        } else if ((*(u16*)DAT_007e094e_abs & 0x20) != 0) {
             FUN_0010a4e0(0, 0, 0, 2);
             work[1] = 0xb;
         } else {
