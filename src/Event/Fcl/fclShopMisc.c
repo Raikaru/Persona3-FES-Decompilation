@@ -19793,8 +19793,8 @@ void FUN_0040a7f0(u64 param_1,int param_2,int *param_3)
 
 {
 
-  u32 *puVar1;
 
+  u32 *puVar1;
   int iVar2;
 
   u64 uVar3;
