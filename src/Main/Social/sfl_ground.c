@@ -365,6 +365,7 @@ void func_002392d0(void)
     SflGroundColor color;
     f32 rect[4];
     f32 fade;
+    f32 particleFade;
     f32 panelFade;
     f32 panelScale;
     f32 panelPhase;
@@ -421,7 +422,12 @@ void func_002392d0(void)
             else
                 work[0] &= ~2;
         }
-        work[0x1abc] = (work[0x1abc] + 1) % 240;
+        work[0x1abc] = work[0x1abc] + 1;
+        if (work[0x1abc] >= 80)
+            work[0] &= ~9;
+        if (work[0x1abc] >= 160)
+            work[0] &= ~0x11;
+        work[0x1abc] %= 240;
         break;
     case 4:
         if ((work[0] & 0x20) != 0) {
@@ -430,7 +436,12 @@ void func_002392d0(void)
             else
                 work[0] &= ~0x20;
         }
-        work[0x1abc] = (work[0x1abc] + 1) % 240;
+        work[0x1abc] = work[0x1abc] + 1;
+        if (work[0x1abc] >= 80)
+            work[0] &= ~9;
+        if (work[0x1abc] >= 160)
+            work[0] &= ~0x11;
+        work[0x1abc] %= 240;
         break;
     default:
         break;
@@ -471,22 +482,23 @@ void func_002392d0(void)
         if ((work[0] & 1) != 0) {
             if ((s32)work[1] < 10)
                 panelFade = 0.0f;
-            else if ((s32)work[1] < 42)
-                panelFade = (f32)((s32)work[1] - 10) / 32.0f;
             else
-                panelFade = 1.0f;
+                panelFade = (f32)((s32)work[1] - 10) / 10.0f;
+        } else {
+            panelFade = 1.0f;
         }
-    } else if (work[3] == 5 || work[3] == 2 ||
-               work[3] == 3 || work[3] == 4) {
+    } else if (work[3] == 2 || work[3] == 3 || work[3] == 4) {
         panelFade = 1.0f;
     }
-    rect[0] = 0.0f;
-    rect[1] = 0.0f;
-    rect[2] = 640.0f;
-    rect[3] = 448.0f;
-    func_0021d8e0(GROUND_PTR(work, 0x10), rect);
-    color.a = sflGroundAlpha(panelFade);
-    func_0021d950(GROUND_PTR(work, 0x10), &color);
+    if (work[3] >= 1 && work[3] <= 4) {
+        rect[0] = 0.0f;
+        rect[1] = 0.0f;
+        rect[2] = 640.0f;
+        rect[3] = 448.0f;
+        func_0021d8e0(GROUND_PTR(work, 0x10), rect);
+        color.a = sflGroundAlpha(panelFade);
+        func_0021d950(GROUND_PTR(work, 0x10), &color);
+    }
 
     /*
      * The 9x11 curtain grid is animated in the ground task itself.  Keep the
@@ -538,12 +550,12 @@ void func_002392d0(void)
      */
     if (work[3] == 1 && (work[0] & 1) != 0) {
         if ((s32)work[1] < 4)
-            panelPhase = (f32)work[1] / 8.0f;
+            panelPhase = (f32)work[1] / 4.0f;
         else if ((s32)work[1] < 10)
             panelPhase = 1.0f;
         else
             panelPhase = 1.0f - (f32)((s32)work[1] - 10) / 10.0f;
-        panelScale = 0.75f + panelPhase * 0.25f;
+        panelScale = 1.0f;
         color.a = sflGroundAlpha(panelFade * panelPhase);
         direction.x = func_0052e6d8(-0.17453294f);
         direction.y = func_0052e878(-0.17453294f);
@@ -638,6 +650,27 @@ void func_002392d0(void)
     if (work[3] == 3 || work[3] == 4) {
         panelFade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
     }
+    /*
+     * Particle opacity is a separate state transition from the curtain
+     * opacity.  State 1 follows the full-screen fade, while states 2-4
+     * fade out over the 30-frame transition; state 5 is fully opaque.
+     */
+    switch (work[3]) {
+    case 1:
+        particleFade = panelFade;
+        break;
+    case 2:
+    case 3:
+    case 4:
+        particleFade = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
+        break;
+    case 5:
+        particleFade = 1.0f;
+        break;
+    default:
+        particleFade = 0.0f;
+        break;
+    }
     color.a = sflGroundAlpha(fade);
     active = 0;
     for (i = 0; i < 48; i++) {
@@ -725,7 +758,7 @@ void func_002392d0(void)
         direction.x = deltaX;
         direction.y = deltaY;
         func_0021e170(particle + 0x10, &center, &direction, &scale);
-        color.a = sflGroundAlpha(fade * height * progress);
+        color.a = sflGroundAlpha(particleFade * height * progress);
         func_0021d950(particle + 0x10, &color);
     }
 
@@ -733,7 +766,6 @@ void func_002392d0(void)
         f32 ribbonPhase;
 
         panelScale = 1.0f - sflGroundClamp01((f32)work[1] / 30.0f);
-        color.a = sflGroundAlpha(panelScale);
         for (i = 0; i < 7; i++) {
             tile = (u8*)work + 0x4810 + i * 0x420;
             ribbonPhase = GROUND_F32(tile, 0x410) + 0.033333335f;
@@ -742,19 +774,17 @@ void func_002392d0(void)
             GROUND_F32(tile, 0x410) = ribbonPhase;
             GROUND_U32(tile, 0x414) =
                 (GROUND_U32(tile, 0x414) + 1) & 0xfff;
-            scale.x = 102.0f * (0.08f + 0.033333335f *
-                                 ((f32)GROUND_U32(tile, 0x414) / 4096.0f));
-            scale.y = 192.0f * (0.08f + 0.033333335f *
-                                 ((f32)GROUND_U32(tile, 0x414) / 4096.0f));
+            scale.x = 76.5f;
+            scale.y = 192.0f;
             direction.x = 0.0f;
             direction.y = 0.43f;
             for (j = 0; j < 4; j++) {
-                center.x = (f32)i * (640.0f / 7.0f) + 45.714287f;
-                center.y = 640.0f *
-                           (ribbonPhase + (f32)j / 8.0f);
+                center.x = ((f32)i + 0.5f) * (224.0f / 7.0f);
+                center.y = 224.0f *
+                           (ribbonPhase + (f32)j / 4.0f);
                 if ((i & 1) != 0)
-                    center.y = 640.0f * (1.0f - ribbonPhase -
-                                         (f32)j / 8.0f);
+                    center.y = 224.0f * (1.0f - ribbonPhase -
+                                         (f32)j / 4.0f);
                 center.y -= 96.0f;
                 func_0021e170(tile + 0x10 + j * 0x100, &center,
                               &direction, &scale);
@@ -763,18 +793,8 @@ void func_002392d0(void)
             }
         }
     }
-
-    /*
-     * The transition has two narrow white bands between the particle pass
-     * and the scrolling strips.  The first band is also present in state 2;
-     * its alpha ramps in over the first 30 ticks.  The second band is only
-     * used while states 3/4 are fading out and rises by 40 pixels.
-     */
     if (work[3] == 2 || work[3] == 3 || work[3] == 4) {
-        if (work[3] == 2)
-            panelScale = sflGroundClamp01((f32)work[1] / 30.0f);
-        else
-            panelScale = 1.0f;
+        panelScale = sflGroundClamp01((f32)work[1] / 30.0f);
         rect[0] = 0.0f;
         rect[1] = 220.0f;
         rect[2] = 640.0f;
@@ -803,7 +823,7 @@ void func_002392d0(void)
         panelPhase = (f32)(work[0x1abc] % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         rect[1] = 0.0f;
-        rect[2] = 1659.0f;
+        rect[2] = 503.0f;
         rect[3] = 44.0f;
         color.a = sflGroundAlpha(fade);
         func_0021d8e0(GROUND_PTR(work, 0x64f0), rect);
@@ -818,8 +838,9 @@ void func_002392d0(void)
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         func_0021d8e0(GROUND_PTR(work, 0x66f0), rect);
         func_0021d950(GROUND_PTR(work, 0x66f0), &color);
+        rect[1] = 404.0f;
 
-        panelPhase = (f32)(work[0x1abc] % 240) / 240.0f;
+        panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         func_0021d8e0(GROUND_PTR(work, 0x67f0), rect);
         func_0021d950(GROUND_PTR(work, 0x67f0), &color);
@@ -829,7 +850,7 @@ void func_002392d0(void)
         func_0021d8e0(GROUND_PTR(work, 0x68f0), rect);
         func_0021d950(GROUND_PTR(work, 0x68f0), &color);
 
-        panelPhase = (f32)((work[0x1abc] + 160) % 240) / 240.0f;
+        panelPhase = (f32)((work[0x1abc] + 80) % 240) / 240.0f;
         rect[0] = (1.0f - panelPhase) * 1659.0f - 503.0f;
         func_0021d8e0(GROUND_PTR(work, 0x69f0), rect);
         func_0021d950(GROUND_PTR(work, 0x69f0), &color);
