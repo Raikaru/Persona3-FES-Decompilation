@@ -269,6 +269,7 @@ int FUN_00394270(void)
 #define FUN_00394270(...) ((int (*)(...))FUN_00394270)(__VA_ARGS__)
 #undef FUN_003942f0
 // FUN_003942F0 NONMATCHING
+// Dispatch handlers are reconstructed; the final animation-state path still needs byte-level tuning.
 
 
 u8 *
@@ -318,9 +319,9 @@ FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5)
 
     }
 
-    for (iVar7 = 0; iVar7 < 0x7f; iVar7 = iVar7 + 1) {
+    for (lVar1 = 0; lVar1 < 0x7f; lVar1 = lVar1 + 1) {
 
-      *(u32 *)(*(int *)(iVar6 + 300) + iVar7 * 4) = 0;
+      *(u32 *)(*(int *)(iVar6 + 300) + lVar1 * 4) = 0;
 
     }
 
@@ -370,117 +371,132 @@ FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5)
 
     for (iVar7 = 0; iVar7 < *(int *)(*(int *)(iVar6 + 0x10) + 0x10); iVar7 = iVar7 + 1) {
 
-      iVar3 = iVar7 * 0x10;
+      piVar4 = (int *)(*(int *)(iVar6 + 0x14));
 
-      piVar4 = (int *)(*(int *)(iVar6 + 0x14) + iVar3);
+      piVar4 = piVar4 + iVar7 * 4;
 
       iVar2 = *piVar4;
 
-      if (iVar2 == 0x1b) {
+      if (iVar2 == 0x1b) goto mt_evtPolygonMovie_case_1b;
 
-        if (piVar4[2] != 0) {
+      if (iVar2 == 0x17) goto mt_evtPolygonMovie_case_17;
 
-          iVar2 = iVar5 + piVar4[3];
+      if (iVar2 == 0x16) goto mt_evtPolygonMovie_case_16;
 
-          *(int *)(iVar6 + 0x60) = iVar2;
+      if (iVar2 == 8) goto mt_evtPolygonMovie_case_8;
 
-          *(int *)(iVar2 + 4) = iVar2 + 0x10;
+      if (iVar2 == 7) goto mt_evtPolygonMovie_case_7;
 
-          FUN_005225a8(0x6a0c60,**(u32 **)(iVar6 + 0x60));
+      if (iVar2 == 6) goto mt_evtPolygonMovie_case_6;
 
-        }
+      if (iVar2 == 1) goto mt_evtPolygonMovie_case_1;
+
+      if (iVar2 == 9) goto mt_evtPolygonMovie_case_9;
+
+      if (iVar2 == 3) goto mt_evtPolygonMovie_case_3;
+
+      if (iVar2 == 0xc) goto mt_evtPolygonMovie_case_c;
+
+      if (iVar2 == 0xb) goto mt_evtPolygonMovie_case_b;
+
+      if (iVar2 == 10) goto mt_evtPolygonMovie_case_a;
+
+      if (iVar2 == 2) goto mt_evtPolygonMovie_case_2;
+
+      goto mt_evtPolygonMovie_case_default;
+
+mt_evtPolygonMovie_case_2:
+      *(int *)(iVar6 + 0x20) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x24) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_a:
+      *(int *)(iVar6 + 0x28) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_b:
+      *(int *)(iVar6 + 0x2c) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_c:
+      *(int *)(iVar6 + 0x30) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_3:
+      *(int *)(iVar6 + 0x34) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x38) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_9:
+      *(int *)(iVar6 + 0x3c) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_1:
+      *(int *)(iVar6 + 0x18) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x1c) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_6:
+      *(int *)(iVar6 + 0x4c) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x50) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_7:
+      *(int *)(iVar6 + 0x40) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x44) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_8:
+      *(int *)(iVar6 + 0x48) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_16:
+      *(int *)(iVar6 + 0x54) = iVar5 + piVar4[3];
+
+      *(u32 *)(iVar6 + 0x58) = piVar4[2];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_17:
+      *(int *)(iVar6 + 0x5c) = iVar5 + piVar4[3];
+
+      goto mt_evtPolygonMovie_case_done;
+
+mt_evtPolygonMovie_case_1b:
+      if (piVar4[2] != 0) {
+
+        iVar2 = iVar5 + piVar4[3];
+
+        *(int *)(iVar6 + 0x60) = iVar2;
+
+        *(int *)(iVar2 + 4) = iVar2 + 0x10;
+
+        FUN_005225a8(0x6a0c60,**(u32 **)(iVar6 + 0x60));
 
       }
 
-      else if (iVar2 == 0x17) {
+      goto mt_evtPolygonMovie_case_done;
 
-        *(int *)(iVar6 + 0x5c) = iVar5 + piVar4[3];
+mt_evtPolygonMovie_case_default:
+      FUN_0019d3f0("mt_evtPolygonMovie.c",0x4c5);
 
-      }
-
-      else if (iVar2 == 0x16) {
-
-        *(int *)(iVar6 + 0x54) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x58) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else if (iVar2 == 8) {
-
-        *(int *)(iVar6 + 0x48) = iVar5 + piVar4[3];
-
-      }
-
-      else if (iVar2 == 7) {
-
-        *(int *)(iVar6 + 0x40) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x44) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else if (iVar2 == 6) {
-
-        *(int *)(iVar6 + 0x4c) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x50) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else if (iVar2 == 1) {
-
-        *(int *)(iVar6 + 0x18) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x1c) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else if (iVar2 == 9) {
-
-        *(int *)(iVar6 + 0x3c) = iVar5 + piVar4[3];
-
-      }
-
-      else if (iVar2 == 3) {
-
-        *(int *)(iVar6 + 0x34) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x38) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else if (iVar2 == 0xc) {
-
-        *(int *)(iVar6 + 0x30) = iVar5 + piVar4[3];
-
-      }
-
-      else if (iVar2 == 0xb) {
-
-        *(int *)(iVar6 + 0x2c) = iVar5 + piVar4[3];
-
-      }
-
-      else if (iVar2 == 10) {
-
-        *(int *)(iVar6 + 0x28) = iVar5 + piVar4[3];
-
-      }
-
-      else if (iVar2 == 2) {
-
-        *(int *)(iVar6 + 0x20) = iVar5 + piVar4[3];
-
-        *(u32 *)(iVar6 + 0x24) = *(u32 *)(*(int *)(iVar6 + 0x14) + iVar3 + 8);
-
-      }
-
-      else {
-
-        FUN_0019d3f0("mt_evtPolygonMovie.c",0x4c5);
-
-      }
+mt_evtPolygonMovie_case_done:
+      ;
 
     }
 
@@ -574,153 +590,171 @@ FUN_003942f0(u8 *param_1,u8 *param_2,u8 *param_3,u8 *param_4,u8 *param_5)
 
         iVar2 = *piVar4;
 
-        if (iVar2 == 0x1a) {
+        if (iVar2 == 0x1a) goto mt_evtPolygonMovie2_case_1a;
 
-          *(int *)(iVar6 + 100) = iVar7 + piVar4[3];
+        if (iVar2 == 0x19) goto mt_evtPolygonMovie2_case_19;
 
-          *(u32 *)(iVar6 + 0x68) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+        if (iVar2 == 0x15) goto mt_evtPolygonMovie2_case_15;
 
-        }
+        if (iVar2 == 0x18) goto mt_evtPolygonMovie2_case_18;
 
-        else if (iVar2 == 0x19) {
+        if (iVar2 == 0x14) goto mt_evtPolygonMovie2_case_14;
 
-          *(int *)(iVar6 + 0x10c) = iVar7 + piVar4[3];
+        if (iVar2 == 0x13) goto mt_evtPolygonMovie2_case_13;
 
-          *(u32 *)(iVar6 + 0x110) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+        if (iVar2 == 0x12) goto mt_evtPolygonMovie2_case_12;
 
-        }
+        if (iVar2 == 0x11) goto mt_evtPolygonMovie2_case_11;
 
-        else if (iVar2 == 0x15) {
+        if (iVar2 == 0x10) goto mt_evtPolygonMovie2_case_10;
 
-          *(int *)(iVar6 + 0x104) = iVar7 + piVar4[3];
+        if (iVar2 == 0xf) goto mt_evtPolygonMovie2_case_f;
 
-          *(u32 *)(iVar6 + 0x108) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+        if (iVar2 == 0xe) goto mt_evtPolygonMovie2_case_e;
 
-          FUN_005225a8(0x6a0cb0);
+        if (iVar2 == 0xd) goto mt_evtPolygonMovie2_case_d;
 
-        }
+        if (iVar2 == 5) goto mt_evtPolygonMovie2_case_5;
 
-        else if (iVar2 == 0x18) {
+        if (iVar2 == 1) goto mt_evtPolygonMovie2_case_1;
 
-          *(int *)(iVar6 + 0xfc) = iVar7 + piVar4[3];
+        if (iVar2 == 4) goto mt_evtPolygonMovie2_case_4;
 
-          *(u32 *)(iVar6 + 0x100) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+        if (iVar2 == 0) goto mt_evtPolygonMovie2_case_0;
 
-        }
+        goto mt_evtPolygonMovie2_case_default;
 
-        else if (iVar2 == 0x14) {
+mt_evtPolygonMovie2_case_0:
+        *(int *)(iVar6 + 0x94) = iVar7 + piVar4[3];
 
-          *(int *)(iVar6 + 0xf4) = iVar7 + piVar4[3];
+        goto mt_evtPolygonMovie2_case_done;
 
-          *(u32 *)(iVar6 + 0xf8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+mt_evtPolygonMovie2_case_4:
+        if (*(int *)(*(int *)(iVar6 + 0x84) + 0x14) == 4) {
 
-        }
+          *(int *)(iVar6 + 0x98) = iVar7 + piVar4[3];
 
-        else if (iVar2 == 0x13) {
-
-          *(int *)(iVar6 + 0xec) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xf0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0x12) {
-
-          *(int *)(iVar6 + 0xe4) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xe8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0x11) {
-
-          *(int *)(iVar6 + 0xdc) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xe0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0x10) {
-
-          *(int *)(iVar6 + 0xd4) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xd8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0xf) {
-
-          *(int *)(iVar6 + 0xcc) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xd0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0xe) {
-
-          *(int *)(iVar6 + 0xc4) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 200) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0xd) {
-
-          *(int *)(iVar6 + 0xbc) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xc0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 5) {
-
-          *(int *)(iVar6 + 0xb4) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0xb8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 1) {
-
-          *(int *)(iVar6 + 0x8c) = iVar7 + piVar4[3];
-
-          *(u32 *)(iVar6 + 0x90) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 4) {
-
-          if (*(int *)(*(int *)(iVar6 + 0x84) + 0x14) == 4) {
-
-            *(int *)(iVar6 + 0x98) = iVar7 + piVar4[3];
-
-            *(u32 *)(iVar6 + 0x9c) = 0;
-
-          }
-
-          else {
-
-            *(int *)(iVar6 + 0x9c) = iVar7 + piVar4[3];
-
-            *(u32 *)(iVar6 + 0x98) = 0;
-
-          }
-
-          *(u32 *)(iVar6 + 0xb0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
-
-        }
-
-        else if (iVar2 == 0) {
-
-          *(int *)(iVar6 + 0x94) = iVar7 + piVar4[3];
+          *(u32 *)(iVar6 + 0x9c) = 0;
 
         }
 
         else {
 
-          FUN_0019d3f0("mt_evtPolygonMovie.c",0x54f);
+          *(int *)(iVar6 + 0x9c) = iVar7 + piVar4[3];
+
+          *(u32 *)(iVar6 + 0x98) = 0;
 
         }
+
+        *(u32 *)(iVar6 + 0xb0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_1:
+        *(int *)(iVar6 + 0x8c) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0x90) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_5:
+        *(int *)(iVar6 + 0xb4) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xb8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_d:
+        *(int *)(iVar6 + 0xbc) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xc0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_e:
+        *(int *)(iVar6 + 0xc4) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 200) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_f:
+        *(int *)(iVar6 + 0xcc) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xd0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_10:
+        *(int *)(iVar6 + 0xd4) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xd8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_11:
+        *(int *)(iVar6 + 0xdc) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xe0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_12:
+        *(int *)(iVar6 + 0xe4) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xe8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_13:
+        *(int *)(iVar6 + 0xec) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xf0) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_14:
+        *(int *)(iVar6 + 0xf4) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0xf8) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_18:
+        *(int *)(iVar6 + 0xfc) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0x100) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_15:
+        *(int *)(iVar6 + 0x104) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0x108) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        FUN_005225a8(0x6a0cb0);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_19:
+        *(int *)(iVar6 + 0x10c) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0x110) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_1a:
+        *(int *)(iVar6 + 100) = iVar7 + piVar4[3];
+
+        *(u32 *)(iVar6 + 0x68) = *(u32 *)(*(int *)(iVar6 + 0x88) + iVar3 + 8);
+
+        goto mt_evtPolygonMovie2_case_done;
+
+mt_evtPolygonMovie2_case_default:
+        FUN_0019d3f0("mt_evtPolygonMovie.c",0x54f);
+
+mt_evtPolygonMovie2_case_done:
+        ;
 
       }
 
