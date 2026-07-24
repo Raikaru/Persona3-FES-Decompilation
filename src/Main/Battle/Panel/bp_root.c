@@ -4180,7 +4180,7 @@ void func_002bf910(void);
 void func_002bf880(void);
 void func_002bf940(void);
 u32 func_002d1a70(void);
-void func_00266f60(u16);
+void bpPersona00266f60(u32);
 void func_00208630(void);
 u32 basRequestAnalyze(u32);
 u32 basIsAnalyzePending(void);
@@ -4199,9 +4199,9 @@ u32 func_003c74e0(u32);
 void func_0024a260(void*);
 u32 func_0024a6e0(u32);
 u32 func_0024a750(void);
-void bpPersona00267210(void);
+u32 bpPersona00267210(void);
 void bpPersona00267120(void);
-void bpPersona00267070(u16);
+void bpPersona00267070(u32);
 
 static u16 panelRootInputFlags(void)
 {
@@ -4237,16 +4237,18 @@ void FUN_001FFF40(void)
     renderFlags = 0;
     flags = work[0];
     panelFlags = work[1];
-    if (flags & 0x18000000)
+    if (flags & 0x08000000)
     {
         if (work[0x77a4 / 4] != 0)
             work[0x77a4 / 4]--;
     }
-    else if (work[0x77a4 / 4] < 0x10)
+    if (flags & 0x10000000)
     {
-        work[0x77a4 / 4]++;
+        if (work[0x77a4 / 4] < 0x10)
+            work[0x77a4 / 4]++;
     }
-    work[0x7644 / 4] = work[0x77a4 / 4] / 0x10;
+    *(f32*)((u8*)work + 0x7644) =
+        (f32)(s32)work[0x77a4 / 4] / 16.0f;
     if ((panelFlags & 1) && !bcmPanel0022b4e0())
     {
         FUN_00202BC0();
@@ -4272,7 +4274,7 @@ void FUN_001FFF40(void)
     switch (state)
     {
     case 0:
-        if (!FUN_00201AF0() && !(flags & 0x40))
+        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
         {
             if (input & 4)
             {
@@ -4418,12 +4420,65 @@ void FUN_001FFF40(void)
                     if (target & 0x20)
                     {
                         if (work[0x24 / 4] != 0)
+                        {
+                            work[0x24 / 4] = 0;
                             bcmPanel00222870();
+                        }
                         renderFlags |= 1;
                     }
-                    else if (target & 0x40)
+                    else
                     {
-                        renderFlags |= 1;
+                        result = FUN_0016F190(0x188);
+                        effect = 0;
+                        value = 0;
+                        if (result == 0)
+                        {
+                            if ((target & 0x4000) ||
+                                (*(u16*)0x007E095A & 0x4000) ||
+                                (target & 0x8000) ||
+                                (*(u16*)0x007E095A & 0x8000))
+                                effect = 1;
+                            if ((target & 0x1000) ||
+                                (*(u16*)0x007E095A & 0x1000) ||
+                                (target & 0x2000) ||
+                                (*(u16*)0x007E095A & 0x2000))
+                                value = 1;
+                        }
+                        else
+                        {
+                            if ((target & 0x4000) ||
+                                (*(u16*)0x007E095A & 0x4000) ||
+                                (target & 0x2000) ||
+                                (*(u16*)0x007E095A & 0x2000))
+                                effect = 1;
+                            if ((target & 0x1000) ||
+                                (*(u16*)0x007E095A & 0x1000) ||
+                                (target & 0x8000) ||
+                                (*(u16*)0x007E095A & 0x8000))
+                                value = 1;
+                        }
+                        if (effect)
+                        {
+                            menu = work[0x24 / 4];
+                            if (menu < 6)
+                                work[0x24 / 4] = menu + 1;
+                            else
+                                work[0x24 / 4] = 0;
+                            FUN_0010A4E0(0, 0, 0, 5);
+                            bcmPanel002226f0(work[0x24 / 4]);
+                            renderFlags |= 1;
+                        }
+                        else if (value)
+                        {
+                            menu = work[0x24 / 4];
+                            if (menu != 0)
+                                work[0x24 / 4] = menu - 1;
+                            else
+                                work[0x24 / 4] = 6;
+                            FUN_0010A4E0(0, 0, 0, 5);
+                            bcmPanel002227b0(work[0x24 / 4]);
+                            renderFlags |= 1;
+                        }
                     }
                 }
             }
@@ -4477,10 +4532,10 @@ void FUN_001FFF40(void)
         }
         break;
     case 3:
-        if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
+        substate = work[5];
+        if (substate == 0)
         {
-            substate = work[5];
-            if (substate == 0)
+            if (!(flags & 0x40))
             {
                 if (target & 0x20)
                 {
@@ -4490,7 +4545,8 @@ void FUN_001FFF40(void)
                 }
                 else if (target & 0x80)
                 {
-                    func_00266f60(FUN_002055A0());
+                    bpPersona00266f60(
+                        *(u16*)((u8*)work + 0x268 + work[0x76cc / 4] * 8));
                     FUN_002085E0();
                     FUN_0020FC40();
                     work[5] = 1;
@@ -4499,7 +4555,8 @@ void FUN_001FFF40(void)
                 else if (target & 0x40)
                 {
                     persona = datPersonaGetByPcId(0);
-                    if (*(u16*)((u8*)persona + 2) != FUN_002055A0())
+                    if (*(u16*)((u8*)work + 0x268 + work[0x76cc / 4] * 8) !=
+                        *(u16*)((u8*)persona + 2))
                     {
                         FUN_00208630();
                         bppMain0020fc90();
@@ -4518,26 +4575,62 @@ void FUN_001FFF40(void)
                         renderFlags |= 8;
                 }
             }
-            else if (substate == 1)
+        }
+        else if (substate == 1)
+        {
+            if (!FUN_00201AF0() && !bpPersona00267210())
             {
                 if (target & 0x20)
                 {
-                    FUN_00203B70();
-                    func_00208460();
-                    renderFlags |= 1;
+                    bpPersona00267120();
+                    FUN_00208630();
+                    bppMain0020fc90();
+                    FUN_0010A4E0(0, 0, 0, 2);
                 }
                 else if (target & 0x40)
                 {
-                    FUN_00203630();
-                    renderFlags |= 0x10;
+                    persona = datPersonaGetByPcId(1);
+                    entry = (u8*)work + 0x268 + work[0x76cc / 4] * 8;
+                    if (*(u16*)entry != *(u16*)((u8*)persona + 2))
+                    {
+                        bpPersona00267120();
+                        FUN_00208630();
+                        bppMain0020fc90();
+                        work[0] |= 0x20;
+                    }
+                    else
+                    {
+                        FUN_0010A4E0(0, 0, 0, 8);
+                    }
+                    break;
                 }
                 else
                 {
-                    work[0x7728 / 4] &= ~2u;
-                    func_0024a260((u8*)work + 0x7728);
-                    if (work[0x7728 / 4] & 1)
-                        renderFlags |= 0x20;
+                    bppMain0020fc90();
+                    FUN_0010A4E0(0, 0, 0, 2);
                 }
+                if (work[0x2dc / 4] < 5)
+                {
+                    work[0x76c4 / 4] = 0;
+                }
+                else
+                {
+                    value = work[0x76cc / 4];
+                    if (value < 2)
+                    {
+                        work[0x76c4 / 4] = 0;
+                    }
+                    else if (value != work[0x2dc / 4] - 1)
+                    {
+                        work[0x76c4 / 4] = value - 2;
+                    }
+                    else
+                    {
+                        work[0x76c4 / 4] = value - 3;
+                    }
+                    renderFlags |= 8;
+                }
+                work[5] = 0;
             }
         }
         break;
