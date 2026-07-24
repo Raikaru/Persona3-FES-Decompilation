@@ -4203,16 +4203,21 @@ u32 bpPersona00267210(void);
 void bpPersona00267120(void);
 void bpPersona00267070(u32);
 
-static u16 panelRootInputFlags(void)
+static inline u16 panelRootInputFlags(void)
 {
     return *(u16*)0x007E094E;
 }
 
-static u16 panelRootTargetFlags(void)
+static inline u16 panelRootTargetFlags(void)
 {
     return *(u16*)0x007E0952;
 }
 
+// Retail state-3 persona selection also handles input-driven left/right
+// navigation and invokes bpPersona00267070 before the transition effect.
+// The state-1/2/4 branches use the same input flag register as retail;
+// these paths are reconstructed directly even though MWCC lays out the
+// resulting switch differently from the retail object.
 // FUN_001FFF40 NONMATCHING
 void FUN_001FFF40(void)
 {
@@ -4228,12 +4233,11 @@ void FUN_001FFF40(void)
     u32 effect;
     u32 result;
     u32 value;
-    u16 input;
-    u16 target;
     u8* entry;
     void* persona;
 
-    work = (u32*)panelWork();
+    K_ASSERT(gBcmWork != NULL, 0x164);
+    work = (u32*)gBcmWork;
     renderFlags = 0;
     flags = work[0];
     panelFlags = work[1];
@@ -4269,14 +4273,12 @@ void FUN_001FFF40(void)
     }
 
     state = work[4];
-    input = panelRootInputFlags();
-    target = panelRootTargetFlags();
     switch (state)
     {
     case 0:
         if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
         {
-            if (input & 4)
+            if ((*(u16*)0x007E094E) & 4)
             {
                 if (!(work[3] & 4) || bpMisc001ff740() == 2)
                 {
@@ -4293,17 +4295,17 @@ void FUN_001FFF40(void)
             }
             else
             {
-                if (func_002d1a70() == 0 && (input & 0x10))
+                if (func_002d1a70() == 0 && ((*(u16*)0x007E094E) & 0x10))
                 {
                     work[0] |= 0x200000;
                     work[0] |= 0x20;
                 }
-                else if ((work[3] & 0x40) && (input & 0x80))
+                else if ((work[3] & 0x40) && ((*(u16*)0x007E094E) & 0x80))
                 {
                     work[0] |= 0x400000;
                     work[0] |= 0x20;
                 }
-                else if (input & 0x40)
+                else if ((*(u16*)0x007E094E) & 0x40)
                 {
                     menu = work[0x24 / 4];
                     if (menu < 7)
@@ -4417,7 +4419,7 @@ void FUN_001FFF40(void)
                 }
                 else
                 {
-                    if (target & 0x20)
+                    if ((*(u16*)0x007E0952) & 0x20)
                     {
                         if (work[0x24 / 4] != 0)
                         {
@@ -4433,27 +4435,27 @@ void FUN_001FFF40(void)
                         value = 0;
                         if (result == 0)
                         {
-                            if ((target & 0x4000) ||
+                            if (((*(u16*)0x007E0952) & 0x4000) ||
                                 (*(u16*)0x007E095A & 0x4000) ||
-                                (target & 0x8000) ||
+                                ((*(u16*)0x007E0952) & 0x8000) ||
                                 (*(u16*)0x007E095A & 0x8000))
                                 effect = 1;
-                            if ((target & 0x1000) ||
+                            if (((*(u16*)0x007E0952) & 0x1000) ||
                                 (*(u16*)0x007E095A & 0x1000) ||
-                                (target & 0x2000) ||
+                                ((*(u16*)0x007E0952) & 0x2000) ||
                                 (*(u16*)0x007E095A & 0x2000))
                                 value = 1;
                         }
                         else
                         {
-                            if ((target & 0x4000) ||
+                            if (((*(u16*)0x007E0952) & 0x4000) ||
                                 (*(u16*)0x007E095A & 0x4000) ||
-                                (target & 0x2000) ||
+                                ((*(u16*)0x007E0952) & 0x2000) ||
                                 (*(u16*)0x007E095A & 0x2000))
                                 effect = 1;
-                            if ((target & 0x1000) ||
+                            if (((*(u16*)0x007E0952) & 0x1000) ||
                                 (*(u16*)0x007E095A & 0x1000) ||
-                                (target & 0x8000) ||
+                                ((*(u16*)0x007E0952) & 0x8000) ||
                                 (*(u16*)0x007E095A & 0x8000))
                                 value = 1;
                         }
@@ -4487,12 +4489,12 @@ void FUN_001FFF40(void)
     case 1:
         if (!FUN_00201AF0() && !(flags & 0x40))
         {
-            if (target & 0x20)
+            if ((*(u16*)0x007E094E) & 0x20)
             {
                 func_00208460();
                 renderFlags |= 1;
             }
-            else if (target & 0x40)
+            else if ((*(u16*)0x007E094E) & 0x40)
             {
                 if ((work[0x7664 / 4] < 10) &&
                     (*(u32*)((u8*)work + 0x28 + work[0x7664 / 4] * 8) & 1))
@@ -4513,12 +4515,12 @@ void FUN_001FFF40(void)
     case 2:
         if (!FUN_00201AF0() && !(flags & 0x40))
         {
-            if (target & 0x20)
+            if ((*(u16*)0x007E094E) & 0x20)
             {
                 func_00208460();
                 renderFlags |= 1;
             }
-            else if (target & 0x40)
+            else if ((*(u16*)0x007E094E) & 0x40)
             {
                 FUN_00203630();
             }
@@ -4537,13 +4539,13 @@ void FUN_001FFF40(void)
         {
             if (!(flags & 0x40))
             {
-                if (target & 0x20)
+                if ((*(u16*)0x007E094E) & 0x20)
                 {
                     FUN_00204AF0();
                     func_00208460();
                     renderFlags |= 1;
                 }
-                else if (target & 0x80)
+                else if ((*(u16*)0x007E094E) & 0x80)
                 {
                     bpPersona00266f60(
                         *(u16*)((u8*)work + 0x268 + work[0x76cc / 4] * 8));
@@ -4552,7 +4554,7 @@ void FUN_001FFF40(void)
                     work[5] = 1;
                     FUN_0010A4E0(0, 0, 0, 1);
                 }
-                else if (target & 0x40)
+                else if ((*(u16*)0x007E094E) & 0x40)
                 {
                     persona = datPersonaGetByPcId(0);
                     if (*(u16*)((u8*)work + 0x268 + work[0x76cc / 4] * 8) !=
@@ -4580,14 +4582,36 @@ void FUN_001FFF40(void)
         {
             if (!FUN_00201AF0() && !bpPersona00267210())
             {
-                if (target & 0x20)
+                if ((*(u16*)0x007E094E) & 0x20)
                 {
                     bpPersona00267120();
                     FUN_00208630();
                     bppMain0020fc90();
                     FUN_0010A4E0(0, 0, 0, 2);
+                    if (work[0x2dc / 4] < 5)
+                    {
+                        work[0x76c4 / 4] = 0;
+                    }
+                    else
+                    {
+                        value = work[0x76cc / 4];
+                        if (value < 2)
+                        {
+                            work[0x76c4 / 4] = 0;
+                        }
+                        else if (value != work[0x2dc / 4] - 1)
+                        {
+                            work[0x76c4 / 4] = value - 2;
+                        }
+                        else
+                        {
+                            work[0x76c4 / 4] = value - 3;
+                        }
+                        renderFlags |= 8;
+                    }
+                    work[5] = 0;
                 }
-                else if (target & 0x40)
+                else if ((*(u16*)0x007E094E) & 0x40)
                 {
                     persona = datPersonaGetByPcId(1);
                     entry = (u8*)work + 0x268 + work[0x76cc / 4] * 8;
@@ -4602,42 +4626,42 @@ void FUN_001FFF40(void)
                     {
                         FUN_0010A4E0(0, 0, 0, 8);
                     }
-                    break;
                 }
                 else
                 {
-                    bppMain0020fc90();
-                    FUN_0010A4E0(0, 0, 0, 2);
-                }
-                if (work[0x2dc / 4] < 5)
-                {
-                    work[0x76c4 / 4] = 0;
-                }
-                else
-                {
-                    value = work[0x76cc / 4];
-                    if (value < 2)
+                    value = work[0x2dc / 4];
+                    if (value >= 2 && ((*(u16*)0x007E0952) & 8))
                     {
-                        work[0x76c4 / 4] = 0;
+                        menu = work[0x76cc / 4];
+                        if (menu < value - 1)
+                            work[0x76cc / 4] = menu + 1;
+                        else
+                            work[0x76cc / 4] = 0;
+                        bpPersona00267070(
+                            *(u16*)((u8*)work + 0x268 +
+                                    work[0x76cc / 4] * 8));
+                        FUN_0010A4E0(0, 0, 0, 8);
                     }
-                    else if (value != work[0x2dc / 4] - 1)
+                    else if ((*(u16*)0x007E0952) & 4)
                     {
-                        work[0x76c4 / 4] = value - 2;
+                        menu = work[0x76cc / 4];
+                        if (menu != 0)
+                            work[0x76cc / 4] = menu - 1;
+                        else
+                            work[0x76cc / 4] = value - 1;
+                        bpPersona00267070(
+                            *(u16*)((u8*)work + 0x268 +
+                                    work[0x76cc / 4] * 8));
+                        FUN_0010A4E0(0, 0, 0, 8);
                     }
-                    else
-                    {
-                        work[0x76c4 / 4] = value - 3;
-                    }
-                    renderFlags |= 8;
                 }
-                work[5] = 0;
             }
         }
         break;
     case 4:
         if (!FUN_00201AF0() && !(flags & 0x40) && panelFlags == 0)
         {
-            if (target & 0x40)
+            if ((*(u16*)0x007E094E) & 0x40)
             {
                 entry = (u8*)work + work[0x7700 / 4] * 0x18 + 0x2e0;
                 if (*(u32*)entry & 2)
@@ -4661,7 +4685,7 @@ void FUN_001FFF40(void)
                     value = 0xb;
                 FUN_0016F3E0(0x33, value);
             }
-            else if (target & 0x20)
+            else if ((*(u16*)0x007E094E) & 0x20)
             {
                 FUN_00204AF0();
                 func_00208460();
@@ -4682,12 +4706,12 @@ void FUN_001FFF40(void)
             substate = work[7];
             if (substate == 0)
             {
-                if (target & 0x20)
+                if ((*(u16*)0x007E0952) & 0x20)
                 {
                     FUN_00205D60();
                     renderFlags |= 1;
                 }
-                else if (target & 0x40)
+                else if ((*(u16*)0x007E0952) & 0x40)
                 {
                     FUN_002063F0();
                     renderFlags |= 0x10;
@@ -4733,13 +4757,13 @@ void FUN_001FFF40(void)
         switch (secondary)
         {
         case 0:
-            if (target & 0x20)
+            if ((*(u16*)0x007E0952) & 0x20)
             {
                 func_003c77a0();
                 FUN_00206E40();
                 renderFlags |= 1;
             }
-            else if (target & 0x40)
+            else if ((*(u16*)0x007E0952) & 0x40)
             {
                 func_003c77a0();
                 FUN_00207340();
