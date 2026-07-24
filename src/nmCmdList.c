@@ -46,6 +46,8 @@ extern u32 FUN_003c6f80_typed(int param_1);
 extern u64 FUN_003c75b0_typed(void);
 #pragma alias FUN_003a4360_typed FUN_003a4360
 extern u64 FUN_003a4360_typed(u64 param_1,long param_2);
+#pragma alias FUN_003a27c0_typed FUN_003a27c0
+extern void FUN_003a27c0_typed(int param_1,s16 param_2);
 extern u8 DAT_0095be90_abs[];
 #pragma alias FUN_003c7d50_ptr FUN_003c7d50
 extern u8 *FUN_003c7d50_ptr(void);
@@ -1651,7 +1653,7 @@ void FUN_003c73e0(u64 param_1)
 }
 #define FUN_003c73e0(...) ((void (*)(...))FUN_003c73e0)(__VA_ARGS__)
 #undef FUN_003c7430
-// FUN_003C7430 NONMATCHING
+// FUN_003C7430
 
 
 u32 FUN_003c7430(u64 param_1)
@@ -1695,7 +1697,7 @@ u32 FUN_003c7430(u64 param_1)
 
       FUN_003a30c0(*piVar3,param_1,0);
 
-      FUN_003a27c0(*piVar3,0xffffffffffffffff);
+      FUN_003a27c0_typed(*piVar3,-1);
 
       uVar1 = 1;
 
