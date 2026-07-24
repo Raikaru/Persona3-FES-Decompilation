@@ -112,6 +112,7 @@ void bppMain0020edf0(void)
     u32* work;
     u8* entry;
     u32 value;
+    u32 actionId;
     u32 flags;
     s32 transition;
 
@@ -142,61 +143,69 @@ void bppMain0020edf0(void)
                 work[0x1695] &&
             func_0029b0c0(action) == 0) {
             action = func_001ff430(work[0x1695]);
-            if (*(u8*)((u8*)action + 0xa2) == 0) {
+            switch (*(u8*)((u8*)action + 0xa2)) {
+            case 0:
                 K_ASSERT((*work & 4) != 0, 0x93);
                 bppPanelDeactivateDetail((BppPanelWork*)(
                     bppMain0020f720(
                         *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2)) + 0x20));
+                break;
             }
-            *work &= ~5u;
-            *work &= ~2u;
-        }
-
-        if (action != NULL && (*work & 1) != 0 &&
-            *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8) !=
-                work[0x1695]) {
-            if ((*work & 4) != 0) {
+            *work &= ~4u;
+            *work &= ~1u;
+        } else if (action != NULL && ((flags = *work) & 1) != 0 &&
+                   ((actionId = work[0x1695]),
+                    *(u32*)((u8*)*(void**)((u8*)action + 0x30) + 0xa8) != actionId)) {
+            if ((flags & 4) != 0) {
                 void* unit;
+                unit = func_001ff430(actionId);
 
-                unit = func_001ff430(work[0x1695]);
-                if (*(u8*)((u8*)unit + 0xa2) == 0) {
+                switch (*(u8*)((u8*)unit + 0xa2)) {
+                case 0:
                     K_ASSERT((*work & 4) != 0, 0xad);
                     bppPanelDeactivateDetail((BppPanelWork*)(
                         bppMain0020f720(
                             *(u16*)((u8*)*(void**)((u8*)unit + 0xa2c) + 2)) + 0x20));
+                    break;
                 }
+                *work &= ~4u;
             }
-            *work &= ~5u;
-            *work &= ~2u;
+            *work &= ~1u;
             if (func_0029b0c0(action) != 0) {
-                action = *(void**)((u8*)action + 0x30);
-                if (*(u8*)((u8*)action + 0xa2) == 0) {
-                    bppPanelActivateDetail((BppPanelWork*)(
-                        bppMain0020f720(
-                            *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2)) + 0x20));
-                    *(u16*)((u8*)work + 0x5a58) =
-                        *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2);
-                    *work |= 4;
-                }
+                    void* target;
+
+                    target = *(void**)((u8*)action + 0x30);
+                    switch (*(u8*)((u8*)target + 0xa2)) {
+                    case 0:
+                        bppPanelActivateDetail((BppPanelWork*)(
+                            bppMain0020f720(
+                                *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2)) + 0x20));
+                        *(u16*)((u8*)work + 0x5a58) =
+                            *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2);
+                        *work |= 4;
+                        break;
+                    }
                 work[0x1695] = *(u32*)((u8*)action + 0xa8);
                 *work |= 1;
             }
-        }
-        if (action != NULL && (*work & 1) == 0 &&
-            func_0029b0c0(action) != 0) {
-            action = *(void**)((u8*)action + 0x30);
-            if (*(u8*)((u8*)action + 0xa2) == 0) {
-                bppPanelActivateDetail((BppPanelWork*)(
-                    bppMain0020f720(
-                        *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2)) + 0x20));
-                *(u16*)((u8*)work + 0x5a58) =
-                    *(u16*)((u8*)*(void**)((u8*)action + 0xa2c) + 2);
-                *work |= 4;
-            }
+        } else if (action != NULL && (~*work & 1) != 0 &&
+                   func_0029b0c0(action) != 0) {
+                void* target;
+
+                target = *(void**)((u8*)action + 0x30);
+                switch (*(u8*)((u8*)target + 0xa2)) {
+                case 0:
+                    bppPanelActivateDetail((BppPanelWork*)(
+                        bppMain0020f720(
+                            *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2)) + 0x20));
+                    *(u16*)((u8*)work + 0x5a58) =
+                        *(u16*)((u8*)*(void**)((u8*)target + 0xa2c) + 2);
+                    *work |= 4;
+                    break;
+                }
             work[0x1695] = *(u32*)((u8*)action + 0xa8);
             *work |= 1;
         }
-
     }
 
     for (i = 0; i < (s32)work[0x1694]; i++) {
