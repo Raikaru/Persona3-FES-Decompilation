@@ -280,8 +280,6 @@ void* func_001cd9a0(u32 charId)
     u16 id;
     s32 slot;
     s32 i;
-    s32 major;
-    s32 minor;
 
     slot = 0;
     for (i = 0; i < 3; i++)
@@ -293,64 +291,13 @@ void* func_001cd9a0(u32 charId)
         }
     }
 
-    major = PTR_DAT_007cd540[0];
-    minor = PTR_DAT_007cd540[1];
     type = 1;
     id = (u16)charId;
-    if (charId == 13)
+    switch (charId)
     {
-        if (major == 14 && minor == 5)
-        {
-            type = 9;
-            id = 0xd00;
-        }
-        return FldUnit_LoadPcModel(slot, type, id);
-    }
-    if (charId == 10)
-    {
-        if (major == 14 && minor == 5)
-        {
-            type = 9;
-            id = 0xd00;
-        }
-        return FldUnit_LoadPcModel(slot, type, id);
-    }
-    if (charId == 7)
-    {
-        if (major == 14 && minor == 5)
-        {
-            type = 9;
-            id = 0x700;
-        }
-        else if (major == 33)
-        {
-            type = 9;
-            id = 0x701;
-        }
-        return FldUnit_LoadPcModel(slot, type, id);
-    }
-    if (charId == 5)
-    {
-        if (major == 14 && minor == 5)
-        {
-            type = 9;
-            id = 0x502;
-        }
-        else if (func_0016f190(0xc2f) == true)
-        {
-            type = 9;
-            id = 0x500;
-        }
-        else if (major == 33)
-        {
-            type = 9;
-            id = 0x501;
-        }
-        return FldUnit_LoadPcModel(slot, type, id);
-    }
-    if (charId == 1)
-    {
-        if (func_0017d800() == true && (major == 4 || major == 5))
+    case 1:
+        if (func_0017d800() == true &&
+            (PTR_DAT_007cd540[0] == 4 || PTR_DAT_007cd540[0] == 5))
         {
             type = 9;
             id = 0x1400;
@@ -360,49 +307,57 @@ void* func_001cd9a0(u32 charId)
             type = 9;
             id = 0x104;
         }
-        else if (((major == 7 && minor == 6) ||
-                  (major == 8 && minor == 1) ||
-                  (major == 9 && minor == 1)) &&
+        else if (((PTR_DAT_007cd540[0] == 7 && PTR_DAT_007cd540[1] == 6) ||
+                  (PTR_DAT_007cd540[0] == 8 && PTR_DAT_007cd540[1] == 1) ||
+                  (PTR_DAT_007cd540[0] == 9 && PTR_DAT_007cd540[1] == 1)) &&
                  func_0016ef30() == 8)
         {
             type = 9;
             id = 0x104;
         }
-        else if (major == 33)
+        else if (PTR_DAT_007cd540[0] == 33)
         {
             type = 9;
             id = 0x106;
         }
         else if (func_001a01c0() == true ||
-                 (major == 21 && minor == 50) ||
-                 (major == 22 && (minor == 50 || minor == 51)) ||
-                 (major == 23 && (minor == 50 || minor == 51)) ||
-                 (major == 24 && (minor == 50 || minor == 51)) ||
-                 (major == 25 && minor == 50) ||
-                 (major == 26 && minor == 50) ||
-                 (major == 27 && minor == 50) ||
-                 (major >= 41 && major <= 47 && minor == 50) ||
-                 (major == 39 && (minor == 1 || minor == 2 || minor == 3)))
+                 (PTR_DAT_007cd540[0] == 21 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 22 &&
+                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
+                 (PTR_DAT_007cd540[0] == 23 &&
+                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
+                 (PTR_DAT_007cd540[0] == 24 &&
+                  (PTR_DAT_007cd540[1] == 50 || PTR_DAT_007cd540[1] == 51)) ||
+                 (PTR_DAT_007cd540[0] == 25 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 26 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 27 && PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] >= 41 &&
+                  PTR_DAT_007cd540[0] <= 47 &&
+                  PTR_DAT_007cd540[1] == 50) ||
+                 (PTR_DAT_007cd540[0] == 39 &&
+                  (PTR_DAT_007cd540[1] == 1 ||
+                   PTR_DAT_007cd540[1] == 2 ||
+                   PTR_DAT_007cd540[1] == 3)))
         {
             type = 1;
             id = 1;
         }
-        else if (major == 7 && func_0016f190(0xe00) == true)
+        else if (PTR_DAT_007cd540[0] == 7 && func_0016f190(0xe00) == true)
         {
             type = 9;
             id = 0x105;
         }
-        else if (major == 6 && func_0016f190(0xe60) == true)
+        else if (PTR_DAT_007cd540[0] == 6 && func_0016f190(0xe60) == true)
         {
             type = 9;
             id = 0x104;
         }
-        else if (major == 14 && minor == 5)
+        else if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
         {
             type = 9;
             id = 0x107;
         }
-        else if (major == 14 && func_0016ef30() == 6 &&
+        else if (PTR_DAT_007cd540[0] == 14 && func_0016ef30() == 6 &&
                  func_0017d920() == 11 &&
                  (func_0017da40() == 18 || func_0017da40() == 19))
         {
@@ -434,17 +389,59 @@ void* func_001cd9a0(u32 charId)
             }
         }
         return FldUnit_LoadPcModel(slot, type, id);
-    }
-    if (charId == 2)
-    {
-        if (major == 6 || major == 7)
+    case 2:
+        if (PTR_DAT_007cd540[0] == 6 || PTR_DAT_007cd540[0] == 7)
         {
             type = 9;
             id = 0x200;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+    case 5:
+        if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
+        {
+            type = 9;
+            id = 0x502;
+        }
+        else if (func_0016f190(0xc2f) == true)
+        {
+            type = 9;
+            id = 0x500;
+        }
+        else if (PTR_DAT_007cd540[0] == 33)
+        {
+            type = 9;
+            id = 0x501;
+        }
+        return FldUnit_LoadPcModel(slot, type, id);
+    case 7:
+        if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
+        {
+            type = 9;
+            id = 0x700;
+        }
+        else if (PTR_DAT_007cd540[0] == 33)
+        {
+            type = 9;
+            id = 0x701;
+        }
+        return FldUnit_LoadPcModel(slot, type, id);
+    case 10:
+        if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
+        {
+            type = 9;
+            id = 0xd00;
+        }
+        return FldUnit_LoadPcModel(slot, type, id);
+    case 13:
+        if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
+        {
+            type = 9;
+            id = 0xd00;
+        }
+        return FldUnit_LoadPcModel(slot, type, id);
+    default:
+        return FldUnit_LoadPcModel(slot, type, id);
     }
-    return FldUnit_LoadPcModel(slot, type, id);
 }
 
 static inline void FldUnit_SetPcFormationPosition(s32 index,
