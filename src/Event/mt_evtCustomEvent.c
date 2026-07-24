@@ -58,7 +58,7 @@ extern s16 FUN_0016dd40_d010(void);
 #pragma alias FUN_0016dce0_d010 FUN_0016dce0
 extern u32 FUN_0016dce0_d010(s16);
 #pragma alias FUN_003a2090_d010 FUN_003a2090
-extern u32 FUN_003a2090_d010(u32,s16,s8,u16);
+extern u32 FUN_003a2090_d010(u32,int,s8,u16);
 #pragma alias kwlnTaskExists_d010 kwlnTaskExists
 extern u32 kwlnTaskExists_d010(u32);
 
@@ -4355,7 +4355,7 @@ void FUN_0039cfb0(int param_1)
 }
 #define FUN_0039cfb0(...) ((void (*)(...))FUN_0039cfb0)(__VA_ARGS__)
 #undef FUN_0039d010
-// FUN_0039D010 NONMATCHING
+// FUN_0039D010
 
 
 u32 FUN_0039d010(int param_1)
@@ -4375,8 +4375,14 @@ u32 FUN_0039d010(int param_1)
     cVar4 = *(s8 *)(iVar3 + 0x14);
     sVar5 = *(s8 *)(iVar3 + 0x18);
     uVar6 = *(u16 *)(iVar3 + 0x16);
-    if ((cVar4 == 3) || (cVar4 == 2) || (cVar4 == 1)) {
+    switch (cVar4) {
+    case 0:
+      break;
+    case 1:
+    case 2:
+    case 3:
       sVar5 = FUN_0016dd40_d010();
+      break;
     }
     if (FUN_0016dce0_d010((s16)sVar5) == 0) {
       if ((piVar2[1] & 8) != 0) {
@@ -5717,14 +5723,15 @@ void FUN_0039e700(int param_1)
       iVar3 = *(int *)(iVar1 + 0x10);
 
       iVar4 = *(int *)(iVar6 + 0x10);
+      iVar3 = iVar3 + iVar4;
 
       uVar5 = *(u32 *)(iVar6 + 0x14);
 
-      *(short *)(param_1 + iVar2 * 2 + 0x7b8) = (short)iVar2 + 30000;
+      *(short *)(param_1 + iVar2 * 2 + 0x7b8) = iVar2 + 30000;
 
       iVar6 = param_1 + iVar2 * 4;
 
-      *(int *)(iVar6 + 0x790) = iVar3 + iVar4;
+      *(int *)(iVar6 + 0x790) = iVar3;
 
       *(u32 *)(iVar6 + 0x7cc) = uVar5;
 
