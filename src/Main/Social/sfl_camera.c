@@ -207,39 +207,49 @@ void func_0024d4c0(s32 id)
 }
 
 // FUN_0024D5E0 NONMATCHING
-void func_0024d5e0(void* node)
+void func_0024d5e0(u8* node)
 {
-    RwV3d target;
     RwV3d forward;
-    RwV3d up;
     RwV3d right;
+    RwV3d up;
+    RwV3d posePosition;
     void* matrix;
 
-    K_ASSERT(*(u32*)((u8*)node + 0x2c) != 0, 0xd0);
+    K_ASSERT(*(u32*)(node + 0x2c) != 0, 0xd0);
     matrix = func_004c38c0();
-    if (matrix == NULL) {
-        return;
+    *(u32*)(node + 0x40) += 0x10000;
+    switch (*(u32*)(node + 0x2c)) {
+    case 1:
+        switch (*(u32*)(node + 0x30)) {
+        case 1:
+            gcPose0024f960(node + 0x44, (RwV3d*)(node + 0x20));
+            break;
+        }
+        switch (*(u32*)(node + 0x38)) {
+        case 1:
+            gcPose0024f960(node + 0x3c, &posePosition);
+            forward.x = posePosition.x - *(f32*)(node + 0x20);
+            forward.y = posePosition.y - *(f32*)(node + 0x24);
+            forward.z = posePosition.z - *(f32*)(node + 0x28);
+            RwV3dLength(&forward);
+            RwV3dNormalize(&forward, &forward);
+            right.x = 1.0f * forward.z - 0.0f * forward.y;
+            right.y = 0.0f * forward.x - 0.0f * forward.z;
+            right.z = 0.0f * forward.y - 1.0f * forward.x;
+            up.x = forward.y * right.z - forward.z * right.y;
+            up.y = forward.z * right.x - forward.x * right.z;
+            up.z = forward.x * right.y - forward.y * right.x;
+            RwV3dNormalize((RwV3d*)((u8*)matrix + 0x20), &forward);
+            RwV3dNormalize((RwV3d*)((u8*)matrix + 0), &right);
+            RwV3dNormalize((RwV3d*)((u8*)matrix + 0x10), &up);
+            RtQuatConvertFromMatrix((RtQuat*)(node + 0x10), matrix);
+            break;
+        }
+        break;
+    default:
+        K_ASSERT(0, 0xfc);
+        break;
     }
-    target = *(RwV3d*)((u8*)node + 0x20);
-    forward = *(RwV3d*)((u8*)node + 0x30);
-    forward.x -= target.x;
-    forward.y -= target.y;
-    forward.z -= target.z;
-    RwV3dNormalize(&forward, &forward);
-    up.x = 0.0f;
-    up.y = 1.0f;
-    up.z = 0.0f;
-    right.x = up.y * forward.z - up.z * forward.y;
-    right.y = up.z * forward.x - up.x * forward.z;
-    right.z = up.x * forward.y - up.y * forward.x;
-    RwV3dNormalize(&right, &right);
-    up.x = forward.y * right.z - forward.z * right.y;
-    up.y = forward.z * right.x - forward.x * right.z;
-    up.z = forward.x * right.y - forward.y * right.x;
-    RwV3dNormalize(&up, &up);
-    *(RwV3d*)((u8*)matrix + 0) = right;
-    *(RwV3d*)((u8*)matrix + 0x10) = up;
-    *(RwV3d*)((u8*)matrix + 0x20) = forward;
     func_004c3880(matrix);
 }
 
