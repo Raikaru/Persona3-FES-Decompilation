@@ -672,7 +672,7 @@ u32 FUN_003c2df0(u32 param_1)
   return 0;
 }
 #pragma opt_loop_invariants off
-#define FUN_003c2df0(...) ((u32 (*)(...))FUN_003c2df0)(__VA_ARGS__)
+#undef FUN_003c2df0
 #undef FUN_003c2ee0
 // FUN_003C2EE0 NONMATCHING
 
