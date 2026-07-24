@@ -8706,14 +8706,14 @@ u32 FUN_0043c910(char param_1)
 }
 
 #pragma push
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
 // FUN_0043CA30 NONMATCHING
 
 u32 FUN_0043ca30(int param_1)
 
 {
   char cVar1;
-  u8 *puVar2;
+  char *puVar2;
   char cVar3;
   char cVar4;
   int iVar5;
@@ -8784,7 +8784,7 @@ u32 FUN_0043ca30(int param_1)
   int iStack_8;
   u8 auStack_4 [4];
   
-  puVar2 = *(u8 **)((int)param_1 + 0x3c);
+  puVar2 = *(char **)((int)param_1 + 0x3c);
   switch(*puVar2) {
   case 0:
     uVar6 = FUN_00100d80(0x6b4820,1);
