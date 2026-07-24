@@ -62,6 +62,10 @@ enum
 
 extern const f32 D_00960088;
 extern const u32 D_00960090[];
+#pragma alias D_00960090_abs D_00960090
+extern u8 D_00960090_abs[];
+#pragma alias D_0096009C_abs D_0096009C
+extern u8 D_0096009C_abs[];
 extern const u32 D_0096009C[];
 extern const SflGroundVec2 D_0068E7C0[];
 extern f32 gPI;
@@ -772,23 +776,25 @@ void func_0023b990(void)
     s32 state;
     s32 i;
     s32 j;
-    register const volatile u32* const stateTable = &D_00960090[0];
-    register const volatile u32* const drawTable = &D_0096009C[0];
+    register const volatile u32* stateTable;
+    register const volatile u32* drawTable;
 
     K_ASSERT(sSflGround != NULL, 0x87);
     work = sSflGround;
-    state = work[3];
+    stateTable = (const u32*)D_00960090_abs;
     
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(9, 2);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(0x14, 2);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(8, 0);
     ((SflGroundRenderStateCallback)(void*)stateTable[0])(6, 0);
 
+    state = work[3];
     if (state >= 1 && state <= 5) {
         RpSkyRenderStateSet(3, 0x717fb);
         RpSkyRenderStateSet(2, 0x44);
         ((SflGroundRenderStateCallback)(void*)stateTable[0])(
             1, (u32)sflRes0020e590(0));
+        drawTable = (const u32*)D_0096009C_abs;
         
         for (i = 0; i < 6; i++) {
             void* vertices = GROUND_PTR(work, 0x110 + i * 0x200);
@@ -979,10 +985,6 @@ void func_0023c3a0(void* destination)
 void func_0023c520(void* destination, const SflGroundVec2* center,
                    const SflGroundVec2* direction, const SflGroundVec2* scale)
 {
-    static const SflGroundVec2 quad[8] = {
-        { 0.0f, 0.0f }, { 253.0f, 0.0f }, { 253.0f, 51.0f }, { 0.0f, 51.0f },
-        { 251.0f, -15.0f }, { 433.0f, -15.0f }, { 433.0f, 60.0f }, { 251.0f, 60.0f }
-    };
     SflGroundVec2 transformed[8];
     f32 length;
     f32 angle;
@@ -994,7 +996,7 @@ void func_0023c520(void* destination, const SflGroundVec2* center,
     s32 j;
 
     for (i = 0; i < 8; i++) {
-        transformed[i] = quad[i];
+        transformed[i] = D_0068E7C0[i];
     }
 
     length = sqrtf(direction->x * direction->x + direction->y * direction->y);
@@ -1270,6 +1272,7 @@ void sflGround0023d240(void)
     *(u32*)(base + 0xc) = 5;
 }
 
+#pragma opt_loop_invariants on
 // FUN_0023D2A0 NONMATCHING
 void func_0023d2a0(void)
 {
@@ -1318,6 +1321,7 @@ void func_0023d2a0(void)
         GROUND_U32(particle, 0x110) = RpRandom() % lifetime;
     }
 }
+#pragma opt_loop_invariants off
 
 #pragma opt_loop_invariants on
 // FUN_0023D650
