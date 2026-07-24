@@ -115,6 +115,32 @@ static u32 K_Footstep_Try(Model* mdl, u16 charId, s16 animId, f32 frame,
     K_Footstep_Play(resTypeId, material, variant);
     return 1;
 }
+#define K_FOOTSTEP_PLAY_INLINE(resId, mat, var) \
+    do { \
+        u16 _index = RESRC_GET_ID(resId); \
+        u32* _counter = &D_00875A50[_index]; \
+        func_0010a4e0(0, _index + 1, var, mat * 4 + *_counter); \
+        *_counter += 1; \
+        if (*_counter >= 4) { \
+            *_counter = 0; \
+        } \
+    } while (0)
+
+#define K_FOOTSTEP_TRY_INLINE(mdl_, charId_, animId_, frame_, selector_, first_, second_, third_, fourth_, proximity_, resId_, mat_, var_) \
+    do { \
+        u32 _ok = 1; \
+        if (proximity_) { \
+            RwMatrix* _mdlMat = mdlGetMatrix(mdl_); \
+            RwMatrix* _playerMat = mdlGetMatrix(D_008717F0); \
+            _ok = K_FldEvent_ArePosWithinDist(&_mdlMat->pos, &_playerMat->pos, 1600.0f) != 0; \
+        } \
+        if (_ok && (animId_ == selector_(charId_)) && \
+            ((frame_ > first_) && (frame_ < second_) || \
+             (frame_ > third_) && (frame_ < fourth_))) { \
+            K_FOOTSTEP_PLAY_INLINE(resId_, mat_, var_); \
+        } \
+    } while (0)
+
 
 static s32 K_Footstep_Surface(Model* mdl, RwV3d* position)
 {
@@ -172,28 +198,68 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
     s16 animId = mdlAnimGetId(mdl, 0);
     f32 frame = mdlAnimGetCurrentFrame(mdl, 0);
     RwMatrix* matrix;
+    RwV3d* position;
+    ResrcFldHit* hit;
+    const RwV3d* tri[3];
+    const RwV3d normal = {0.0f, 1.0f, 0.0f};
+    u8* materialTable;
+    u32 primary;
+    u32 secondary;
     s32 material;
     u32 scenario;
 
-    if ((gMtScene == NULL) || (gMtScene->fldMajorId >= 200))
+    if (gMtScene->fldMajorId >= 200)
     {
         return;
     }
 
     matrix = mdlGetMatrix(mdl);
-    material = K_Footstep_Surface(mdl, &matrix->pos);
-    if (charId >= 14)
+    position = &matrix->pos;
+    primary = (u32)gMtScene->fldMajorId;
+    secondary = (u32)gMtScene->fldMinorId;
+    material = 0;
+    if ((primary >= 0x14) && (primary < 0x1d) && (secondary >= 0x32))
     {
-        return;
+        secondary -= 0x31;
     }
+    materialTable = D_0067EF00[primary];
+    if (materialTable != NULL)
+    {
+        material = materialTable[secondary];
+        hit = (ResrcFldHit*)MT_Scene_GetResListHead(0x15);
+        while (hit != NULL)
+        {
+            tri[0] = &hit->vertices[0];
+            tri[1] = &hit->vertices[1];
+            tri[2] = &hit->vertices[2];
+            if ((K_FldFrame_IsPointInTriangle(position, tri, &normal) != 0) &&
+                (position->y < tri[0]->y + 100.0f) &&
+                (position->y > tri[0]->y - 100.0f))
+            {
+                material = hit->unk_14c;
+                break;
+            }
 
-    scenario = datGetScenarioMode();
+            tri[0] = &hit->vertices[1];
+            tri[1] = &hit->vertices[2];
+            tri[2] = &hit->vertices[3];
+            if ((K_FldFrame_IsPointInTriangle(position, tri, &normal) != 0) &&
+                (position->y < tri[0]->y + 100.0f) &&
+                (position->y > tri[0]->y - 100.0f))
+            {
+                material = hit->unk_14c;
+                break;
+            }
+            hit = (ResrcFldHit*)hit->base.next;
+        }
+    }
     switch (charId)
     {
     case 0:
         return;
 
     case 1:
+        scenario = datGetScenarioMode();
         if (scenario == SCENARIO_MODE_JOURNEY)
         {
             if (mdlType == 9)
@@ -212,9 +278,9 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                     }
                      return;
                 case 6:
-                    K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                                   9.0f, 10.0f, 19.0f, 20.0f, 0,
-                                   resTypeId, material, 1);
+                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                          9.0f, 10.0f, 19.0f, 20.0f, 0,
+                                          resTypeId, material, 1);
                      return;
                 default:
                     if (animId == func_001de630(charId))
@@ -225,17 +291,17 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                         }
                         return;
                     }
-                    K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                                   8.0f, 9.0f, 18.0f, 19.0f, 0,
-                                   resTypeId, material, 1);
+                    K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                          8.0f, 9.0f, 18.0f, 19.0f, 0,
+                                          resTypeId, material, 1);
                      return;
                 }
             }
             if (mdlType == 1)
             {
-                K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                               8.0f, 9.0f, 18.0f, 19.0f, false,
-                               resTypeId, material, 1);
+                K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                      8.0f, 9.0f, 18.0f, 19.0f, false,
+                                      resTypeId, material, 1);
             }
             return;
         }
@@ -250,89 +316,216 @@ void K_Footstep_Update(Model* mdl, u16 charId, u16 resTypeId)
                 }
                 return;
             }
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           5.0f, 6.0f, 13.0f, 14.0f, 0,
-                           resTypeId, material, 1);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  5.0f, 6.0f, 13.0f, 14.0f, 0,
+                                  resTypeId, material, 1);
         }
         else if (mdlType == 1)
         {
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           5.0f, 6.0f, 13.0f, 14.0f, false,
-                           resTypeId, material, 1);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  5.0f, 6.0f, 13.0f, 14.0f, false,
+                                  resTypeId, material, 1);
         }
         return;
 
     case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
-    case 10:
-    case 11:
-    case 12:
-    case 13:
         if (mdlType == 9)
         {
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           8.0f, 9.0f, 18.0f, 19.0f, false,
-                           resTypeId, material, 5);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
         }
         else if (mdlType == 1)
         {
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           8.0f, 9.0f, 18.0f, 19.0f, true,
-                           resTypeId, material, 5);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 3:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 4:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 5:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 6:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 7:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
         }
         return;
 
     case 8:
         if (mdlType == 9)
         {
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           6.0f, 7.0f, 14.0f, 15.0f, false,
-                           resTypeId, material, 5);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  6.0f, 7.0f, 14.0f, 15.0f, false,
+                                  resTypeId, material, 5);
         }
         else if (mdlType == 1)
         {
-            K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                           6.0f, 7.0f, 14.0f, 15.0f, true,
-                           resTypeId, material, 5);
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  6.0f, 7.0f, 14.0f, 15.0f, true,
+                                  resTypeId, material, 5);
         }
         return;
 
     case 9:
+        scenario = datGetScenarioMode();
         if (scenario == SCENARIO_MODE_JOURNEY)
         {
             if (mdlType == 9)
             {
-                K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                               8.0f, 9.0f, 18.0f, 19.0f, false,
-                               resTypeId, material, 5);
+                K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                      8.0f, 9.0f, 18.0f, 19.0f, false,
+                                      resTypeId, material, 5);
             }
             else if (mdlType == 1)
             {
-                K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                               8.0f, 9.0f, 18.0f, 19.0f, true,
-                               resTypeId, material, 5);
+                K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                      8.0f, 9.0f, 18.0f, 19.0f, true,
+                                      resTypeId, material, 5);
             }
         }
         else
         {
             if (mdlType == 9)
             {
-                K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                               8.0f, 9.0f, 18.0f, 19.0f, false,
-                               resTypeId, material, 5);
+                K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                      8.0f, 9.0f, 18.0f, 19.0f, false,
+                                      resTypeId, material, 5);
             }
             else if (mdlType == 1)
             {
-                K_Footstep_Try(mdl, charId, animId, frame, func_001ded40,
-                               6.0f, 7.0f, 14.0f, 15.0f, true,
-                               resTypeId, material, 5);
+                K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                      6.0f, 7.0f, 14.0f, 15.0f, true,
+                                      resTypeId, material, 5);
             }
         }
         return;
+    case 10:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 11:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 12:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
+    case 13:
+        if (mdlType == 9)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, false,
+                                  resTypeId, material, 5);
+        }
+        else if (mdlType == 1)
+        {
+            K_FOOTSTEP_TRY_INLINE(mdl, charId, animId, frame, func_001ded40,
+                                  8.0f, 9.0f, 18.0f, 19.0f, true,
+                                  resTypeId, material, 5);
+        }
+        return;
+
     }
 }
 typedef struct
