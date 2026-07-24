@@ -185,6 +185,8 @@ typedef struct CampUiRecord
 // Reconstructed the retail Camp task state machine and all screen transition paths.
 // Remaining differences are compiler control-flow/register scheduling and relocation layout;
 // the implementation covers states 0-20, task readiness, menu commands, and teardown.
+#pragma push
+#pragma opt_rebuildconditionals off
 // FUN_0011a050 NONMATCHING
 void* h_campUpdateTask(KwlnTask* task)
 {
@@ -196,8 +198,13 @@ void* h_campUpdateTask(KwlnTask* task)
     work = task->workData;
     switch (work->state) {
     case 0:
-        ready = (iGpffffb258 == NULL) ? (u32)-1 :
-                (*(u32*)iGpffffb258->workData == 3);
+        if (iGpffffb258 == NULL) {
+            ready = (u32)-1;
+        } else if (*(u32*)iGpffffb258->workData == 3) {
+            ready = 1;
+        } else {
+            ready = 0;
+        }
         if (ready == (u32)-1) {
             func_00119f10(task, 1);
         }
@@ -378,6 +385,7 @@ void* h_campUpdateTask(KwlnTask* task)
     }
     return KWLNTASK_CONTINUE;
 }
+#pragma pop
 
 // FUN_0011a710
 void h_campDestroyTask(KwlnTask* task)
@@ -3993,6 +4001,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     case 6:
     {
         s32 timer;
+        s32 drawTimer;
         s32 fade;
 
         work->timer++;
@@ -4001,9 +4010,10 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 0;
             work->state = 0;
         }
-        pos.x = 30.0f - (f32)((timer * 500) / 8);
+        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        pos.x = 30.0f - (f32)((drawTimer * 500) / 8);
         pos.y = 219.0f;
-        fade = (timer * 255) / 8;
+        fade = (drawTimer * 255) / 8;
         h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
     }
@@ -4014,6 +4024,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     case 8:
     {
         s32 timer;
+        s32 drawTimer;
         s32 fade;
 
         work->timer++;
@@ -4022,9 +4033,10 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 1;
             work->state = 0;
         }
-        pos.x = 30.0f - (f32)(500 - (timer * 500) / 8);
+        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
+        pos.x = 30.0f - (f32)(500 - (drawTimer * 500) / 8);
         pos.y = 219.0f;
-        fade = 255 - (timer * 255) / 8;
+        fade = 255 - (drawTimer * 255) / 8;
         h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
     }
@@ -4035,6 +4047,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     case 10:
     {
         s32 timer;
+        s32 drawTimer;
         s32 fade;
 
         work->timer++;
@@ -4043,9 +4056,10 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 1;
             work->state = 0;
         }
+        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f;
         pos.y = 219.0f;
-        fade = 255 - (timer * 255) / 0x14;
+        fade = 255 - (drawTimer * 255) / 0x14;
         h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
     }
@@ -4063,6 +4077,7 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
     case 12:
     {
         s32 timer;
+        s32 drawTimer;
         s32 fade;
 
         work->timer++;
@@ -4071,9 +4086,10 @@ void* h_campUpdatePanelTransition(KwlnTask* task)
             work->transitionComplete = 0;
             work->state = 0;
         }
+        drawTimer = ((volatile CampPanelTransitionWork*)work)->timer;
         pos.x = 30.0f;
         pos.y = 219.0f;
-        fade = (timer * 255) / 0xa;
+        fade = (drawTimer * 255) / 0xa;
         h_campStatusDrawScreen_typed(pos, pos, 100.0f, work->drawId, 1, 0, fade);
         break;
     }
