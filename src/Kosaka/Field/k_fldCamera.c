@@ -57,6 +57,7 @@ extern void FUN_004c31b0(f32 angle, RwFrame* frame, const RwV3d* axis, u32 mode)
 extern void func_004c2330(RwMatrix* dst, const RwMatrix* src);
 extern const char DAT_00683b10[];
 extern const char D_00683A8C[];
+extern const char D_00683AD0[];
 extern const char D_00683A90[];
 extern void* DAT_00960184[];
 extern u32* PTR_DAT_007cd540;
@@ -166,10 +167,10 @@ void func_001d5e30(KwlnTask* fldCameraTask, f32 amount)
     RwV3d cameraPosition;
     RwV3d target;
     RwV3d axis;
+    register RwV3d* axisPtr;
     u64 axisXY;
     u8* targetBytes;
     u32 i;
-    register RwV3d* axisPtr;
 
     fldCamera = (FldCamera*)fldCameraTask->workData;
     if (fldCamera->type != FLDCAMERA_TYPE_0)
@@ -331,8 +332,8 @@ void func_001d6240(KwlnTask* cameraRotationTask)
 // FUN_001d6270 NONMATCHING
 KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
 {
-    FldCameraRotationWork* work;
     KwlnTask* task;
+    FldCameraRotationWork* work;
     RwMatrix* playerMatrix;
     RwFrame* cameraFrame;
     f32 playerHeading;
@@ -437,8 +438,8 @@ KwlnTask* func_001d6270(KwlnTask* parentTask, s32 duration, s32 heading)
 // FUN_001d6630 NONMATCHING
 KwlnTask* func_001d6630(KwlnTask* parentTask, s32 duration, s32 heading)
 {
-    FldCameraRotationWork* work;
     KwlnTask* task;
+    FldCameraRotationWork* work;
     RwFrame* cameraFrame;
     f32 ignoredHeading;
     f32 desiredHeading;
@@ -575,15 +576,15 @@ HCdvd* func_001d6b10(void)
 {
     char path[128];
 
-    if (CAMERA_FIELD_IDS[0] == 0xffffffff)
+    if (PTR_DAT_007cd540[0] == 0xffffffff)
     {
         return NULL;
     }
 
     if (K_Fldrc_GetFldPacCdvd() == NULL)
     {
-        sprintf(path, "field/env/f%03d_%03d.CMR",
-                (s32)CAMERA_FIELD_IDS[0], (s32)CAMERA_FIELD_IDS[1]);
+        sprintf(path, D_00683AD0,
+                (s32)PTR_DAT_007cd540[0], (s32)PTR_DAT_007cd540[1]);
         if (H_Cdvd_FileExists(path) == false)
         {
             return NULL;
