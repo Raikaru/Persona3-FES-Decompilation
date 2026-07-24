@@ -941,9 +941,35 @@ void* func_001ae580(KwlnTask* task)
     FldFrameMoveWork* work;
     Model* model;
     s32 i;
+    f32 directionLength;
+    f32 amount;
+    f32 localAngleStep;
+    f32 localAngle;
+    f32 localAngleB;
+    RwV3d translation;
+    RwV3d localDir;
+    RwV3d localPosition;
+    s32 localFrameCount;
+    s32 mode;
+    s32 pointCount;
 
     work = fldFrameMoveWork(task);
     model = fldFrameMoveModel(work);
+    pointCount = work->pointCount;
+    mode = work->mode;
+    if (mode == 1)
+    {
+        return KWLNTASK_CONTINUE;
+    }
+    localAngleStep = 0.0f;
+    localAngle = 0.0f;
+    localAngleB = 0.0f;
+    localDir.x = 0.0f;
+    localDir.y = 0.0f;
+    localDir.z = 0.0f;
+    localPosition.x = 0.0f;
+    localPosition.y = 0.0f;
+    localPosition.z = 0.0f;
     switch (work->state)
     {
     case 0:
@@ -954,16 +980,16 @@ void* func_001ae580(KwlnTask* task)
     }
     case 1:
     {
-        if (work->pendingPointCount > 0)
+        s32 pending = work->pendingPointCount;
+        if (pending > 0)
         {
-            s32 pending = work->pendingPointCount;
-            if (work->pointCount + pending < 48)
+            if (pointCount + pending < 48)
             {
                 for (i = 0; i < pending; i++)
                 {
                     u8* source = (u8*)work + 0x4e0 + i * 0x18;
                     FldFrameMovePoint* destination =
-                        &work->points[work->pointCount + i];
+                        &work->points[pointCount + i];
 
                     destination->kind = 0;
                     memcpy(&destination->position, source, sizeof(RwV3d));
@@ -976,7 +1002,8 @@ void* func_001ae580(KwlnTask* task)
             }
             work->pendingPointCount = 0;
         }
-        if (work->pointCount > 0)
+        pointCount = work->pointCount;
+        if (pointCount > 0)
         {
             work->state = 2;
             return KWLNTASK_CONTINUE;
@@ -989,29 +1016,36 @@ void* func_001ae580(KwlnTask* task)
     }
     case 2:
     {
-        if (work->pointCount <= 0)
+        pointCount = work->pointCount;
+        if (pointCount <= 0)
         {
             work->state = 1;
             return KWLNTASK_CONTINUE;
         }
         if (model != NULL)
         {
-            work->startPosition = mdlGetMatrix(model)->pos;
-            work->direction.x = work->points[0].position.x - work->startPosition.x;
-            work->direction.y = work->points[0].position.y - work->startPosition.y;
-            work->direction.z = work->points[0].position.z - work->startPosition.z;
-            work->directionLength = sqrtf(work->direction.x * work->direction.x +
-                                          work->direction.y * work->direction.y +
-                                          work->direction.z * work->direction.z);
-            if (work->directionLength > 0.0f)
+            localPosition = mdlGetMatrix(model)->pos;
+            work->startPosition = localPosition;
+            localDir.x = work->points[0].position.x - localPosition.x;
+            localDir.y = work->points[0].position.y - localPosition.y;
+            localDir.z = work->points[0].position.z - localPosition.z;
+            directionLength = sqrtf(localDir.x * localDir.x +
+                                    localDir.y * localDir.y +
+                                    localDir.z * localDir.z);
+            work->directionLength = directionLength;
+            localAngleStep = directionLength;
+            if (directionLength > 0.0f)
             {
-                work->direction.x /= work->directionLength;
-                work->direction.y /= work->directionLength;
-                work->direction.z /= work->directionLength;
+                work->direction.x = localDir.x / directionLength;
+                work->direction.y = localDir.y / directionLength;
+                work->direction.z = localDir.z / directionLength;
+                localAngle = work->direction.x;
+                localAngleB = work->direction.z;
             }
         }
-        work->frameCount = (s32)work->points[0].duration;
-        if (work->frameCount < 1)
+        localFrameCount = (s32)work->points[0].duration;
+        work->frameCount = localFrameCount;
+        if (localFrameCount < 1)
         {
             work->frameCount = 1;
         }
@@ -1020,9 +1054,6 @@ void* func_001ae580(KwlnTask* task)
     }
     case 3:
     {
-        RwV3d translation;
-        f32 amount;
-
         if (model == NULL)
         {
             func_001ae480(task);
@@ -1044,14 +1075,14 @@ void* func_001ae580(KwlnTask* task)
         {
             mdlGetMatrix(model)->pos = work->points[0].position;
             func_001ae480(task);
-            work->state = (work->mode == 1 || work->mode == 4) ? 1 : 2;
+            work->state = (mode == 1 || mode == 4) ? 1 : 2;
         }
         return KWLNTASK_CONTINUE;
     }
     case 4:
     {
-        RwV3d translation;
-        f32 amount;
+        RwV3d targetDir;
+        f32 targetLen;
 
         if (model == NULL)
         {
@@ -1059,7 +1090,21 @@ void* func_001ae580(KwlnTask* task)
             work->state = 1;
             return KWLNTASK_CONTINUE;
         }
-        amount = work->directionLength / (f32)work->frameCount;
+        localPosition = mdlGetMatrix(model)->pos;
+        targetDir.x = work->points[0].position.x - localPosition.x;
+        targetDir.y = work->points[0].position.y - localPosition.y;
+        targetDir.z = work->points[0].position.z - localPosition.z;
+        targetLen = sqrtf(targetDir.x * targetDir.x +
+                          targetDir.y * targetDir.y +
+                          targetDir.z * targetDir.z);
+        work->directionLength = targetLen;
+        if (targetLen > 0.0f)
+        {
+            work->direction.x = targetDir.x / targetLen;
+            work->direction.y = targetDir.y / targetLen;
+            work->direction.z = targetDir.z / targetLen;
+        }
+        amount = targetLen / (f32)work->frameCount;
         translation.x = work->direction.x * amount;
         translation.y = work->direction.y * amount;
         translation.z = work->direction.z * amount;
@@ -1074,18 +1119,16 @@ void* func_001ae580(KwlnTask* task)
         {
             mdlGetMatrix(model)->pos = work->points[0].position;
             func_001ae480(task);
-            work->state = (work->mode == 1 || work->mode == 4) ? 1 : 2;
+            work->state = (mode == 1 || mode == 4) ? 1 : 2;
         }
         return KWLNTASK_CONTINUE;
     }
     case 5:
-    case 6:
-    case 7:
     {
         RwV3d axis = {0.0f, 1.0f, 0.0f};
         if (model != NULL)
         {
-            mdlRotate(model, &axis, work->angleStep, rwCOMBINEPOSTCONCAT);
+            mdlRotate(model, &axis, localAngleStep, rwCOMBINEPOSTCONCAT);
         }
         work->frameCount--;
         if (work->frameCount <= 0)
@@ -1093,7 +1136,41 @@ void* func_001ae580(KwlnTask* task)
             func_001ae480(task);
             work->state = 1;
         }
-        break;
+        return KWLNTASK_CONTINUE;
+    }
+    case 6:
+    {
+        RwV3d axis = {0.0f, 1.0f, 0.0f};
+        f32 step = localAngleStep;
+        f32 cur = localAngle;
+        if (model != NULL)
+        {
+            mdlRotate(model, &axis, step, rwCOMBINEPOSTCONCAT);
+        }
+        work->frameCount--;
+        if (work->frameCount <= 0)
+        {
+            func_001ae480(task);
+            work->state = 1;
+        }
+        return KWLNTASK_CONTINUE;
+    }
+    case 7:
+    {
+        RwV3d axis = {0.0f, 1.0f, 0.0f};
+        f32 step = localAngleStep;
+        f32 angleDiff = localAngle - localAngleB;
+        if (model != NULL)
+        {
+            mdlRotate(model, &axis, step, rwCOMBINEPOSTCONCAT);
+        }
+        work->frameCount--;
+        if (work->frameCount <= 0)
+        {
+            func_001ae480(task);
+            work->state = 1;
+        }
+        return KWLNTASK_CONTINUE;
     }
     case 8:
     {
