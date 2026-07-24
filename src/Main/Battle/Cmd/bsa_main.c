@@ -464,7 +464,7 @@ void bsaMain00210d90(BsaWork* work)
 
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         f32 origin[2];
-        origin[0] = p[0x1310] < 10 ? 66.0f : 58.0f;
+        origin[0] = p[0x1310] < 10 ? 58.0f : 66.0f;
         origin[1] = base + 62.0f;
         bpIFont00238a50(p + 0x1314, 2, p[0x1310], 1, origin);
         bsaSetColor(p + 0x1314, color);
