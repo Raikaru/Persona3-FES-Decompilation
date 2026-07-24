@@ -804,7 +804,7 @@ void FUN_0034fca0(f32 param_1, int param_2);
 void FUN_0034fcd0(void);
 void FUN_0034fcf0(void);
 void FUN_0034fd10();
-void FUN_0034fd30(void);
+void FUN_0034fd30();
 u32 FUN_0034fd50();
 void FUN_0034fd70(u64 param_1,u16 param_2);
 void FUN_0034fdb0(u64 param_1,u16 param_2);
@@ -1687,183 +1687,114 @@ u64 FUN_0031d900(int *param_1,int *param_2,u16 param_3)
 
 
 void FUN_0031d9c0(int *param_1,u32 *param_2)
-
-
-
 {
-
   u32 uVar1;
-
   u32 uVar2;
-
   long lVar3;
-
   int iVar4;
-
   u32 *puVar5;
-
   u32 *puVar6;
-
   int iVar7;
-
-  float fVar8;
-
-  float fVar9;
-
   float fVar10;
+  float fVar9;
+  float fVar8;
+  u32 auStack_40[16];
+  union {
+    float f[16];
+    u32 u[16];
+  } out;
+  float quat[4];
 
-  float fStack_90;
-
-  float fStack_8c;
-
-  float fStack_88;
-
-  float fStack_84;
-
-  float fStack_80;
-
-  float fStack_7c;
-
-  float fStack_78;
-
-  u32 uStack_74;
-
-  float fStack_70;
-
-  float fStack_6c;
-
-  float fStack_68;
-
-  float fStack_60;
-
-  float fStack_5c;
-
-  float fStack_58;
-
-  u32 auStack_40 [16];
-
-  
-
-  for (iVar7 = *param_1; (iVar7 != 0 && (*(int *)(iVar7 + 8) != 0)); iVar7 = *(int *)(iVar7 + 0x10))
-
-  {
-
-    lVar3 = FUN_00318d10(param_2,*(u16 *)(iVar7 + 4),auStack_40);
-
-    if (lVar3 == 0) {
-
-      puVar5 = auStack_40;
-
-      iVar4 = 8;
-
-      puVar6 = param_2;
-
-      do {
-
-        uVar1 = *puVar6;
-
-        uVar2 = puVar6[1];
-
-        puVar6 = puVar6 + 2;
-
-        iVar4 = iVar4 + -1;
-
-        *puVar5 = uVar1;
-
-        puVar5[1] = uVar2;
-
-        puVar5 = puVar5 + 2;
-
-      } while (0 < iVar4);
-
-    }
-
-    if ((((*(short *)((int)param_2 + 0xd6) == 0xf1) && (*(short *)(param_2 + 0x35) == 2)) &&
-
-        (4999 < *(u16 *)(iVar7 + 4))) && (*(u16 *)(iVar7 + 4) < 0x138d)) {
-
-      fStack_58 = 1.0;
-
-      fStack_6c = 1.0;
-
-      fStack_80 = 1.0;
-
-      fStack_70 = 0.0;
-
-      fStack_78 = 0.0;
-
-      fStack_7c = 0.0;
-
-      fStack_5c = 0.0;
-
-      fStack_60 = 0.0;
-
-      fStack_68 = 0.0;
-
-      uStack_74 = uStack_74 | 0x20003;
-
-    }
-
-    else {
-
-      RtQuatConvertFromMatrix(&fStack_90,auStack_40);
-
-      fVar8 = SQRT(fStack_84 * fStack_84 +
-
-                   fStack_88 * fStack_88 + fStack_90 * fStack_90 + fStack_8c * fStack_8c);
-
-      if (fVar8 != 0.0) {
-
-        fStack_90 = fStack_90 / fVar8;
-
-        fStack_8c = fStack_8c / fVar8;
-
-        fStack_88 = fStack_88 / fVar8;
-
-        fStack_84 = fStack_84 / fVar8;
-
+  iVar7 = *param_1;
+  if (iVar7 != 0) {
+    do {
+      if (*(int *)(iVar7 + 8) == 0) {
+        break;
       }
 
-      fVar9 = 2.0 / (fStack_84 * fStack_84 +
+      lVar3 = FUN_00318d10(param_2,*(u16 *)(iVar7 + 4),auStack_40);
+      if (lVar3 == 0) {
+        puVar5 = auStack_40;
+        iVar4 = 8;
+        puVar6 = param_2;
+        do {
+          uVar1 = *puVar6;
+          uVar2 = puVar6[1];
+          puVar6 = puVar6 + 2;
+          iVar4 = iVar4 + -1;
+          *puVar5 = uVar1;
+          puVar5[1] = uVar2;
+          puVar5 = puVar5 + 2;
+        } while (0 < iVar4);
+      }
 
-                    fStack_88 * fStack_88 + fStack_90 * fStack_90 + fStack_8c * fStack_8c);
+      if ((((*(short *)((int)param_2 + 0xd6) == 0xf1) &&
+            (*(short *)(param_2 + 0x35) == 2)) &&
+           (4999 < *(u16 *)(iVar7 + 4))) &&
+          (*(u16 *)(iVar7 + 4) < 0x138d)) {
+        out.f[10] = 1.0f;
+        out.f[5] = 1.0f;
+        out.f[0] = 1.0f;
+        out.f[4] = 0.0f;
+        out.f[2] = 0.0f;
+        out.f[1] = 0.0f;
+        out.f[9] = 0.0f;
+        out.f[8] = 0.0f;
+        out.f[6] = 0.0f;
+        out.f[14] = 0.0f;
+        out.f[13] = 0.0f;
+        out.f[12] = 0.0f;
+        out.u[3] = out.u[3] | 0x20003;
+        fVar8 = ((float *)auStack_40)[12];
+        fVar9 = ((float *)auStack_40)[13];
+        fVar10 = ((float *)auStack_40)[14];
+        out.f[12] = fVar8;
+        out.f[13] = fVar9;
+        out.f[14] = fVar10;
+      }
+      else {
+        RtQuatConvertFromMatrix(quat,auStack_40);
+        fVar8 = sqrtf(quat[0] * quat[0] + quat[1] * quat[1] +
+                      quat[2] * quat[2] + quat[3] * quat[3]);
+        if (fVar8 != 0.0f) {
+          quat[0] = quat[0] / fVar8;
+          quat[1] = quat[1] / fVar8;
+          quat[2] = quat[2] / fVar8;
+          quat[3] = quat[3] / fVar8;
+        }
 
-      fVar10 = fStack_90 * fVar9;
+        fVar9 = 2.0f / (quat[0] * quat[0] + quat[1] * quat[1] +
+                        quat[2] * quat[2] + quat[3] * quat[3]);
+        fVar10 = quat[0] * fVar9;
+        fVar8 = quat[1] * fVar9;
+        fVar9 = quat[2] * fVar9;
+        out.f[0] = 1.0f - (quat[1] * fVar8 + quat[2] * fVar9);
+        out.f[1] = quat[0] * fVar8 + fVar9 * quat[3];
+        out.f[2] = quat[2] * fVar10 - fVar8 * quat[3];
+        out.f[4] = quat[0] * fVar8 - fVar9 * quat[3];
+        out.f[5] = 1.0f - (quat[2] * fVar9 + quat[0] * fVar10);
+        out.f[6] = quat[1] * fVar9 + fVar10 * quat[3];
+        out.f[8] = quat[2] * fVar10 + fVar8 * quat[3];
+        out.f[9] = quat[1] * fVar9 - fVar10 * quat[3];
+        out.f[10] = 1.0f - (quat[0] * fVar10 + quat[1] * fVar8);
+        out.f[14] = 0.0f;
+        out.f[13] = 0.0f;
+        out.f[12] = 0.0f;
+        out.u[3] = 3;
+        fVar8 = ((float *)auStack_40)[12];
+        fVar9 = ((float *)auStack_40)[13];
+        fVar10 = ((float *)auStack_40)[14];
+        out.f[12] = fVar8;
+        out.f[13] = fVar9;
+        out.f[14] = fVar10;
+      }
 
-      fVar8 = fStack_8c * fVar9;
-
-      fVar9 = fStack_88 * fVar9;
-
-      fStack_80 = 1.0 - (fStack_8c * fVar8 + fStack_88 * fVar9);
-
-      fStack_7c = fStack_90 * fVar8 + fVar9 * fStack_84;
-
-      fStack_78 = fStack_88 * fVar10 - fVar8 * fStack_84;
-
-      fStack_70 = fStack_90 * fVar8 - fVar9 * fStack_84;
-
-      fStack_6c = 1.0 - (fStack_88 * fVar9 + fStack_90 * fVar10);
-
-      fStack_68 = fStack_8c * fVar9 + fVar10 * fStack_84;
-
-      fStack_60 = fStack_88 * fVar10 + fVar8 * fStack_84;
-
-      fStack_5c = fStack_8c * fVar9 - fVar10 * fStack_84;
-
-      fStack_58 = 1.0 - (fStack_90 * fVar10 + fStack_8c * fVar8);
-
-      uStack_74 = 3;
-
-    }
-
-    FUN_0034fe80((u8 (*)[16])(*(u32 *)(iVar7 + 8)),(u32 *)(&fStack_80));
-
-    FUN_0034fd30();
-
+      FUN_0034fe80((u8 (*)[16])(*(u32 *)(iVar7 + 8)),out.u);
+      FUN_0034fd30(*(u32 *)(iVar7 + 8));
+      iVar7 = *(int *)(iVar7 + 0x10);
+    } while (iVar7 != 0);
   }
-
   return;
-
 }
 
 
