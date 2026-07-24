@@ -166,6 +166,7 @@ extern u32 DAT_0069a6b4;
 extern u32 DAT_0069a6b8;
 extern u8 DAT_0069a6d0[];
 extern u8 DAT_0069a6f0[];
+extern u8 DAT_006a0000[];
 extern u32 DAT_007cc9e0;
 extern u32 DAT_007cc9e2;
 extern u32 DAT_007cc9e4;
@@ -304,7 +305,7 @@ extern u64 FUN_00302380();
 extern u64 FUN_0030b5a0();
 extern void FUN_00352c50(u32 param_1, u32 param_2, u32 param_3);
 extern u64 FUN_00357fd0();
-extern u64 FUN_0035c090();
+extern u32 FUN_0035c090();
 extern u64 FUN_00395170();
 extern u64 FUN_003951d0();
 extern u64 FUN_004c69f0();
@@ -3492,7 +3493,7 @@ s32 func_002f6c50(u16 charId)
     return animation;
 }
 
-// FUN_002f6e00 NONMATCHING
+// FUN_002f6e00 MATCHING
 void func_002f6e00(void)
 
 {
@@ -3503,48 +3504,41 @@ void func_002f6e00(void)
   FUN_00521408(DAT_007ce3ec + 0xb14,0,0x74);
   *(u16 *)(DAT_007ce3ec + 0xb84) = 0;
   sVar1 = *(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8);
-  if (sVar1 == 0x1b4) {
+  switch (sVar1) {
+  case 0x1c8: goto L_1c8;
+  case 0x1a0: goto L_1a0;
+  case 0x1a1: goto L_1a1;
+  case 0x1a2: goto L_1a2;
+  case 0x1a3: goto L_1a3;
+  case 0x1a4: goto L_1a4;
+  case 0x1a5: goto L_1a5;
+  case 0x1a6: goto L_1a6;
+  case 0x1a7: goto L_1a7;
+  case 0x1a8: goto L_1a8;
+  case 0x1a9: goto L_1a9;
+  case 0x1aa: goto L_1aa;
+  case 0x1ab: goto L_1ab;
+  case 0x1ac: goto L_1ac;
+  case 0x1ad: goto L_1ad;
+  case 0x1ae: goto L_1ae;
+  case 0x1af: goto L_1af;
+  case 0x1b0: goto L_1b0;
+  case 0x1b1: goto L_1b1;
+  case 0x1b2: goto L_1b2;
+  case 0x1b3: goto L_1b3;
+  case 0x1b4: goto L_1b4;
+  default: goto L_done;
+  }
+L_1c8:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x40;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffffbff;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x55a4;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1b3) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x5190;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1b2) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4d7c;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1b1) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4968;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1b0) {
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc;
+    *(u16 *)(DAT_007ce3ec + 0xb84) = 1;
+  goto L_done;
+L_1a0:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3552,10 +3546,80 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4554;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x414;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1af) {
+  goto L_done;
+L_1a1:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x828;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a2:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0xc3c;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a3:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1050;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a4:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1464;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a5:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1878;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a6:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1c8c;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a7:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x20a0;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1a8:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3563,10 +3627,10 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4140;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x24b4;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1ae) {
+  goto L_done;
+L_1a9:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3574,10 +3638,42 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x3d2c;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x28c8;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1ad) {
+  goto L_done;
+L_1aa:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x2cdc;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1ab:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x30f0;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1ac:
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
+    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x3504;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
+  goto L_done;
+L_1ad:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3589,18 +3685,8 @@ void func_002f6e00(void)
     *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x3918;
     *(u16 *)(DAT_007ce3ec + 0xb84) = 2;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1ac) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x3504;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1ab) {
+  goto L_done;
+L_1ae:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3608,10 +3694,10 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x30f0;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x3d2c;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1aa) {
+  goto L_done;
+L_1af:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3619,10 +3705,10 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x2cdc;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4140;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a9) {
+  goto L_done;
+L_1b0:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
@@ -3630,117 +3716,58 @@ void func_002f6e00(void)
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x28c8;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4554;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a8) {
+  goto L_done;
+L_1b1:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x24b4;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4968;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a7) {
+  goto L_done;
+L_1b2:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x20a0;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x4d7c;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a6) {
+  goto L_done;
+L_1b3:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1c8c;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x5190;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a5) {
+  goto L_done;
+L_1b4:
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
     *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1878;
+    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffffbff;
+    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x55a4;
     *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a4) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1464;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a3) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x1050;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a2) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0xc3c;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a1) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x828;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1a0) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 2;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 8;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x80;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc + 0x414;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) | 0x200000;
-  }
-  else if (sVar1 == 0x1c8) {
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfffeffff;
-    *(u32 *)(DAT_007ce3ec + 0xc) = *(u32 *)(DAT_007ce3ec + 0xc) & 0xfbffffff;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x40;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 1;
-    *(u32 *)(DAT_007ce3ec + 0x10) = *(u32 *)(DAT_007ce3ec + 0x10) | 0x10;
-    *(int *)(DAT_007ce3ec + 0xb18) = DAT_007ce4bc;
-    *(u16 *)(DAT_007ce3ec + 0xb84) = 1;
-  }
-  FUN_00523ac8(auStack_40,0x69a710,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
+  goto L_done;
+L_done:
+  FUN_00523ac8(auStack_40,DAT_006a0000 - 0x58f0,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
   uVar2 = FUN_0035c090(DAT_007ce4d0,auStack_40);
   *(u32 *)(DAT_007ce3ec + 0xb1c) = uVar2;
-  FUN_00523ac8(auStack_40,0x69a730,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
+  FUN_00523ac8(auStack_40,DAT_006a0000 - 0x58d0,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
   uVar2 = FUN_0035c090(DAT_007ce4d0,auStack_40);
   *(u32 *)(DAT_007ce3ec + 0xb20) = uVar2;
-  FUN_00523ac8(auStack_40,0x69a750,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
+  FUN_00523ac8(auStack_40,DAT_006a0000 - 0x58b0,*(u16 *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8));
   uVar2 = FUN_0035c090(DAT_007ce4d0,auStack_40);
   *(u32 *)(DAT_007ce3ec + 0xb24) = uVar2;
   *(u32 *)(DAT_007ce3ec + 0xb28) = 0;
