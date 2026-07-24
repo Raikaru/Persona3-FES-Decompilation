@@ -365,9 +365,9 @@ static void H_Fade_Transition()
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, NULL);
     RwIm2DRenderPrimitive(rwPRIMTYPETRISTRIP, vertices, 4);
 }
-#pragma opt_loop_invariants off
+#pragma opt_loop_invariants on
 
-// FUN_001078a0 NONMATCHING
+// FUN_001078a0
 static void H_Fade_White()
 {
     RwRenderStateSetFunc* setRenderState;
