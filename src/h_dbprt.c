@@ -94,6 +94,8 @@ void H_Dbprt_Flush()
     }
 }
 
+#pragma opt_lifetimes on
+#pragma opt_loop_invariants on
 // Reconstructed inline four-vertex glyph batching and render-state setup.
 // Residual 28-byte overrun / normalized diff reflects MWCC scheduling and
 // register allocation around UV arithmetic and loop control.
@@ -110,7 +112,7 @@ void H_Dbprt_Main()
     s32 row;
     s32 vertex;
     s32 glyphIndex;
-    s32 glyphByte;
+    u8 glyphByte;
     u8* line;
     RwRenderStateSetFunc* setRenderState;
 
@@ -126,7 +128,6 @@ void H_Dbprt_Main()
     kwlnPushCommonRenderStates();
     (*setRenderState)(rwRENDERSTATETEXTURERASTER, (void*)sFontRaster);
 
-    vertex = 0;
     z = *(f32*)D_00960088_abs;
 
     for (vertex = 0; vertex < 4; vertex++)
@@ -162,9 +163,8 @@ void H_Dbprt_Main()
                 vertices[3].u.els.scrVertex.x =
                     vertices[1].u.els.scrVertex.x;
                 vertices[3].u.els.scrVertex.y = rowY;
-
                 glyphIndex = (s32)line[column] - ' ';
-                glyphByte = glyphIndex & 0xff;
+                glyphByte = (u8)glyphIndex;
                 uv[0] = 0.0625f * (f32)(glyphByte % 16);
                 uv[1] = 0.0625f * (f32)(glyphByte / 16);
                 uv[2] = uv[0] + 0.03125f;
@@ -191,6 +191,8 @@ void H_Dbprt_Main()
     H_Dbprt_DrawText3D();
     H_Dbprt_DrawLog();
 }
+#pragma opt_loop_invariants off
+#pragma opt_lifetimes off
 
 
 
