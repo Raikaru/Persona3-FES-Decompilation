@@ -47,6 +47,8 @@ extern u32 DAT_0069d6f0;
 extern u8 DAT_0069d910;
 extern u32 DAT_0069de40;
 extern u32 DAT_0069e180;
+#pragma alias DAT_0069e180_char DAT_0069e180
+extern char DAT_0069e180_char[];
 extern char DAT_0069e1a0[];
 extern char DAT_0069e1a2[];
 extern char DAT_0069e1aa[];
@@ -8901,7 +8903,7 @@ void FUN_003760a0(int param_1,int param_2,u32 param_3,u16 *param_4,int param_5)
 
     }
 
-    param_1 = param_1 + (char)(&DAT_0069e180)[*(char *)((int)psVar7 + iVar14 + 2)];
+    param_1 = param_1 + DAT_0069e180_char[*(char *)((int)psVar7 + iVar14 + 2)];
 
     lVar15 = (long)(iVar14 + 1);
 
