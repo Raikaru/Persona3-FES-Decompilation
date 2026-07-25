@@ -599,12 +599,17 @@ void h_campStatusDrawStatusTransition(CampVec2 position, f32 alpha,
     conditionFade = phase < 0x13 ? 0xff - ((phase - 0xf) * 0xff) / 4 : 0;
     effectFade = phase < 0x14 ? 0xff - ((phase - 0x10) * 0xff) / 4 : 0;
     if (phase > 10) {
-        h_campStatusDrawHp(position, alpha, pcId, 0x4c, hpFade);
+        u32 hp = datGetHp(pcId);
+        u32 maxHp = datGetMaxHp(pcId);
+        s32 hpBarOffset = maxHp > 0 ? 0x4c - (hp * 0x4c) / maxHp : 0x4c;
+        h_campStatusDrawHp(position, alpha, pcId, hpBarOffset, hpFade);
     }
     if (phase > 14) {
-        h_campStatusDrawSp(position, alpha, pcId, 0x4c, spFade);
-        h_campStatusDrawPhysicalCondition(position, alpha, pcId,
-                                          conditionFade);
+        u32 sp = datGetSp(pcId);
+        u32 maxSp = func_0016c670(pcId);
+        s32 spBarOffset = maxSp > 0 ? 0x4c - (sp * 0x4c) / maxSp : 0x4c;
+        h_campStatusDrawSp(position, alpha, pcId, spBarOffset, spFade);
+        h_campStatusDrawPhysicalCondition(position, alpha, pcId, conditionFade);
     }
     if (phase > 15) {
         h_campStatusDrawBadStatus(position, alpha, pcId, effectFade);
