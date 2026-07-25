@@ -3338,10 +3338,11 @@ void func_001f7210(void)
     /* Per-kind custom processing (retail first dispatch at 0x7b6f90) */
     if (kind < 28) {
         switch (kind) {
-        u8 item_count;
-        u32 per_kind_val;
         case 0:
-            /* Kind 0: card slot management */
+            /* Kind 0: skip to common code */
+            break;
+        case 1:
+            /* Kind 1: card slot management */
             printf("rank %d\n", value);
             printf("type : get item\n");
             if (BR_S16(entry, 2) < 0) {
@@ -3360,7 +3361,9 @@ void func_001f7210(void)
             }
             BR_U32(work, 0x34c0)++;
             break;
-        case 1:
+        case 2:
+        {
+            u8 item_count;
             /* Kind 1: item reward */
             printf("rank %d\n", value);
             printf("item id : 0x%03x\n", BR_U16(entry, 0));
@@ -3372,7 +3375,10 @@ void func_001f7210(void)
             func_00170860(1, (s16)BR_U16(entry, 0), item_count);
             printf("money : %d\n", item_count);
             break;
-        case 2:
+        }
+        case 3:
+        {
+            u32 per_kind_val;
             /* Kind 2: money reward */
             printf("rank %d\n", value);
             per_kind_val = datGetMoney();
@@ -3382,6 +3388,7 @@ void func_001f7210(void)
             datSetMoney(per_kind_val);
             printf("money : %d\n", per_kind_val);
             break;
+        }
         default:
             break;
         }
@@ -3398,13 +3405,15 @@ void func_001f7210(void)
      * the disassembly; all distinct entries force MWCC to emit the table.
      */
     switch (kind) {
-    u32 tmp;
     case 0:
+    {
+        u32 tmp;
         /* off=7504: lw v1, 0x3408(s0); beqz v1, ..  (re-entry loop) */
         for (tmp = 0; tmp < BR_U32(work, 0x3418); tmp++) {
             BR_U32(work, 0x34e4) = (kind == 9) ? 1 : 0;
         }
         break;
+    }
     case 1:
         /* off=5948: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10  -> (u16)entry_kind */
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
@@ -3422,47 +3431,55 @@ void func_001f7210(void)
         func_003c7430(12);
         break;
     case 4:
-        /* off=6124: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(17);
         break;
+    }
     case 5:
-        /* off=6192: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(20);
         break;
+    }
     case 6:
-        /* off=6260: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(18);
         break;
+    }
     case 7:
-        /* off=6328: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(19);
         break;
+    }
     case 8:
-        /* off=6396: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(21);
         break;
+    }
     case 9:
-        /* off=6464: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(22);
         break;
+    }
     case 10:
+    {
+        u32 tmp;
         /* off=6512: guard check (only for even kind) + HP stat chain */
         if ((kind & 1) == 0) {
             tmp = func_001775a0(1);
@@ -3478,7 +3495,10 @@ void func_001f7210(void)
         func_003c7bc0(1, tmp);
         func_003c7430(29);
         break;
+    }
     case 11:
+    {
+        u32 tmp;
         /* off=6680: guard check (only for even kind) + SP stat chain */
         if ((kind & 1) == 0) {
             tmp = func_001775a0(1);
@@ -3494,7 +3514,10 @@ void func_001f7210(void)
         func_003c7bc0(1, tmp);
         func_003c7430(28);
         break;
+    }
     case 12:
+    {
+        u32 tmp;
         /* off=6848: guard check (only for even kind) + Status stat chain */
         if ((kind & 1) == 0) {
             tmp = func_001775a0(1);
@@ -3510,72 +3533,80 @@ void func_001f7210(void)
         func_003c7bc0(1, tmp);
         func_003c7430(33);
         break;
+    }
     case 13:
         /* off=7016: addiu a0,zero,0x1e -> plain func_003c7430(30) */
         func_003c7430(30);
         break;
     case 14:
-        /* off=7036: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(25) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(25);
         break;
+    }
     case 15:
         /* off=7084: addiu a0,zero,0x20 -> plain func_003c7430(32) */
         func_003c7430(32);
         break;
     case 16:
-        /* off=7104: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(27) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(27);
         break;
+    }
     case 17:
         /* off=7152: addiu a0,zero,0x22 -> plain func_003c7430(34) */
         func_003c7430(34);
         break;
     case 18:
-        /* off=7172: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(31) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(31);
         break;
+    }
     case 19:
         /* off=7220: addiu a0,zero,0x24 -> plain func_003c7430(36) */
         func_003c7430(36);
         break;
     case 20:
-        /* off=7240: lhu a0,2(s3) -> func_00173220(entry[1]) */
-        tmp = func_00173220(BR_U16(entry, 2));
+    {
+        u32 tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7430(37);
         break;
+    }
     case 21:
-        /* off=7288: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(38) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(38);
         break;
+    }
     case 22:
         /* off=7336: addiu a0,zero,0x27 -> plain func_003c7430(39) */
         func_003c7430(39);
         break;
     case 23:
-        /* off=7356: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(40) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(40);
         break;
+    }
     case 24:
         /* off=7404: addiu a0,zero,0x29 -> plain func_003c7430(41) */
         func_003c7430(41);
         break;
     case 25:
-        /* off=7424: a0=1 -> func_001775a0(1); func_003c7bc0(0, tmp); func_003c7430(42) */
-        tmp = func_001775a0(1);
+    {
+        u32 tmp = func_001775a0(1);
         func_003c7bc0(0, tmp);
         func_003c7430(42);
         break;
+    }
     case 26:
         /* off=7472: addiu a0,zero,0x2b -> plain func_003c7430(43) */
         func_003c7430(43);
