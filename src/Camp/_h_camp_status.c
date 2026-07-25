@@ -2333,11 +2333,12 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
     CampVec2 drawPos;
     s32 i;
     s32 row;
-    s32 value;
     s32 alpha;
-    f32 rowY;
     void* glyph;
     char text[0x100];
+    f32 rowYPos[5];
+    s32 rankVals[5];
+
 
     drawPos = position;
     if (frame < 0) {
@@ -2401,32 +2402,32 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         for (row = 0; row < 5; row++) {
             switch (row) {
             case 0:
-                value = FUN_00173660(persona, 0) & 0xff;
+                rankVals[row] = FUN_00173660(persona, 0) & 0xff;
                 break;
             case 1:
-                value = FUN_00173660(persona, 1) & 0xff;
+                rankVals[row] = FUN_00173660(persona, 1) & 0xff;
                 break;
             case 2:
-                value = FUN_00173660(persona, 2) & 0xff;
+                rankVals[row] = FUN_00173660(persona, 2) & 0xff;
                 break;
             case 3:
-                value = FUN_00173660(persona, 3) & 0xff;
+                rankVals[row] = FUN_00173660(persona, 3) & 0xff;
                 break;
             case 4:
-                value = FUN_00173660(persona, 4) & 0xff;
+                rankVals[row] = FUN_00173660(persona, 4) & 0xff;
                 break;
             }
-            rowY = position.y + 129.0f + (f32)(row * 19) - 25.0f;
+            rowYPos[row] = position.y + 129.0f + (f32)(row * 19) - 25.0f;
             campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x14, alpha,
-                                     drawPos.x + 104.0f, rowY, scale);
+                                     drawPos.x + 104.0f, rowYPos[row], scale);
             campStatusDrawSpriteCall(0x42c80000, DAT_00833B98, 0x15, alpha,
-                                     drawPos.x + 333.0f, rowY, scale);
+                                     drawPos.x + 333.0f, rowYPos[row], scale);
             glyph = (void*)FUN_001158b0(0, DAT_00833B98, 0x18);
             *((f32*)glyph + 11) = scale;
             *((f32*)glyph + 4) = drawPos.x + 108.0f;
-            *((f32*)glyph + 5) = rowY + 1.0f;
+            *((f32*)glyph + 5) = rowYPos[row] + 1.0f;
             *((u8*)glyph + 0x18) = (u8)alpha;
-            *((s16*)glyph + 0x0e) = (s16)((value * 0xe3) / 99);
+            *((s16*)glyph + 0x0e) = (s16)((rankVals[row] * 0xe3) / 99);
             FUN_001127d0(glyph, 1);
             FUN_00115980(glyph);
         }
@@ -2445,8 +2446,8 @@ void h_campStatusDrawTransition(CampVec2 position, f32 scale,
         FUN_00523ac8(text, gp0xffff8980);
     }
     else {
-        value = FUN_00173340(persona) - FUN_00173330(persona);
-        FUN_00523ac8(text, gp0xffff8978, value);
+        rankVals[0] = FUN_00173340(persona) - FUN_00173330(persona);
+        FUN_00523ac8(text, gp0xffff8978, rankVals[0]);
     }
     FUN_0040eb50(0x42c80000, (s32)(position.x + 287.0f),
                  (s32)(position.y + 280.0f), 0xff - alpha, 4, text, 1);
