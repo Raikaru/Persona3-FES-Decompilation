@@ -751,7 +751,6 @@ static void brPanel00236390(void)
     rect[3] = 0.0f;
     bpIFont00238a50(work + 0x320, 2, value, 1, rect);
     BR_PANEL_SET_COLOR(work + 0x320, alpha);
-    BR_PANEL_SET_COLOR(work + 0x420, alpha);
 
     if (mode == 0) {
         shift = 0.0f;
@@ -785,16 +784,9 @@ static void brPanel00236390(void)
     rect[3] = (f32)*(s32*)((u8*)frame + 0x10);
     brPanel00235ff0(work + 0x520, 7, *(s32*)(work + 0x2664), 0, rect);
     BR_PANEL_SET_COLOR(work + 0x520, alpha);
-    BR_PANEL_SET_COLOR(work + 0x620, alpha);
-    BR_PANEL_SET_COLOR(work + 0x720, alpha);
-    BR_PANEL_SET_COLOR(work + 0x820, alpha);
-    BR_PANEL_SET_COLOR(work + 0x920, alpha);
-    BR_PANEL_SET_COLOR(work + 0xa20, alpha);
-    BR_PANEL_SET_COLOR(work + 0xb20, alpha);
 
     sprintf(text2, "%d", *(s32*)(work + 0x2664));
     length = (s32)strlen(text2);
-    textWidth = (f32)(length * 23);
     frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 40.0f + textWidth +
               40.0f - 0.0f + shift;
@@ -863,7 +855,6 @@ static void brPanel00236390(void)
         rect[1] = 221.0f + (f32)i;
         brPanel00235ff0(entry + 0x210, 2, *(s32*)(entry + 8), 1, rect);
         BR_PANEL_SET_COLOR(entry + 0x210, alpha);
-        BR_PANEL_SET_COLOR(entry + 0x310, alpha);
 
         if (*(s32*)entry == 0) {
             frame = func_0021cca0(brRes00234570(1), 0xa);
