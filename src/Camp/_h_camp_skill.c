@@ -120,6 +120,7 @@ extern void* DAT_00833B70;
 extern u8 DAT_00833B70_abs[];
 extern void* DAT_00833B94;
 extern void* DAT_00833BA0;
+extern void* DAT_00833B9C;
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
 extern u16 DAT_007e0958;
@@ -1970,10 +1971,15 @@ static s32 campSkillSelectorCommand(CampSkillSelectorWork* work)
 // FUN_00166C70 NONMATCHING
 void* FUN_00166c70(KwlnTask* task)
 {
+    /* Retail preserves and reads this uninitialized owner register here. */
+    void* owner;
     CampSkillSelectorWork* work;
     s32 command;
     s32 i;
+    s32 alpha;
     s16 selectedId;
+    CampPanelTransitionWork* panelWork;
+    u32* personaWork;
 
     work = (CampSkillSelectorWork*)task->workData;
     switch (work->state) {
@@ -2011,7 +2017,33 @@ void* FUN_00166c70(KwlnTask* task)
         }
         if (work->count > 0) {
             selectedId = work->characterIds[0];
-            campSkillStartPanelPersona(task, selectedId);
+            {
+                panelWork = (CampPanelTransitionWork*)RwCalloc(1, 0x18,
+                                                                0x40000);
+
+                if (panelWork != NULL) {
+                    DAT_007cdf54 = kwlnTaskCreate(
+                        task, "H_CampSkillPanel", 0x18c1,
+                        h_campUpdatePanelTransition, FUN_00122630, panelWork);
+                    if (DAT_007cdf54 != NULL) {
+                        panelWork->drawId = selectedId;
+                    } else {
+                        RwFree(panelWork);
+                    }
+                }
+                personaWork = (u32*)RwCalloc(1, 0x1c, 0x40000);
+                if (personaWork != NULL) {
+                    DAT_007cdf58 = kwlnTaskCreate(
+                        task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
+                        h_campPersonaDestroyKaniControlTask, personaWork);
+                    if (DAT_007cdf58 != NULL) {
+                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
+                        *(s16*)((u8*)personaWork + 0x18) = selectedId;
+                    } else {
+                        RwFree(personaWork);
+                    }
+                }
+            }
             work->child = FUN_00166a50(task, 0x18be, selectedId, 1, 0);
         }
         work->state = 1;
@@ -2019,16 +2051,28 @@ void* FUN_00166c70(KwlnTask* task)
     case 1:
         if (DAT_007cdf88 != NULL && FUN_001685d0(DAT_007cdf88) != 0) {
             work->transition = 1;
+            work->frame = 0;
             work->state = 2;
         }
         break;
     case 2:
-        command = campSkillSelectorCommand(work);
+        if (work->displayMode == 0) {
+            CampSkillInnerWork* childWork;
+
+            childWork = (CampSkillInnerWork*)work->child->workData;
+            if (childWork->state == 8) {
+                command = (s32)childWork->command;
+            } else {
+                command = 0;
+            }
+        } else {
+            command = FUN_00167f30(work->child);
+        }
         if (command == -1) {
             if (work->displayMode != 0) {
                 FUN_00167ef0(work->child);
             } else {
-                FUN_00166c30(work->child);
+                ((CampSkillInnerWork*)work->child->workData)->state = 4;
             }
             if (DAT_007cdf88 != NULL) {
                 FUN_001685e0(DAT_007cdf88, 3);
@@ -2041,7 +2085,7 @@ void* FUN_00166c70(KwlnTask* task)
             if (work->displayMode != 0) {
                 FUN_00167ef0(work->child);
             } else {
-                FUN_00166c50(work->child);
+                ((CampSkillInnerWork*)work->child->workData)->state = 6;
             }
             if (command == 2) {
                 work->selected++;
@@ -2064,7 +2108,7 @@ void* FUN_00166c70(KwlnTask* task)
             work->displayMode = 0;
             work->child = FUN_00166a50(task, 0x18be, selectedId, 1, 1);
         } else {
-            FUN_00166c50(work->child);
+            ((CampSkillInnerWork*)work->child->workData)->state = 6;
             work->displayMode = 1;
             work->child = FUN_00167f40(0, task, 0x18be, 0, selectedId,
                                        0, 0);
@@ -2072,16 +2116,43 @@ void* FUN_00166c70(KwlnTask* task)
         work->state = 2;
         break;
     case 5:
-        if (work->child != NULL && FUN_00195290(work->child) == 3) {
+        if (work->child != NULL && kwlnTaskGetState(work->child) == 3) {
             return KWLNTASK_STOP;
         }
         break;
     case 6:
-        if (work->child != NULL && FUN_00195290(work->child) == 3) {
-            campSkillStartPanelPersona(task,
-                                       work->characterIds[work->selected]);
-            work->child = FUN_00166a50(
-                task, 0x18be, work->characterIds[work->selected], 1, 1);
+        if (work->child != NULL && kwlnTaskGetState(work->child) == 3) {
+            kwlnTaskDestroyWithHierarchy(DAT_007cdf54);
+            kwlnTaskDestroyWithHierarchy(DAT_007cdf58);
+            selectedId = work->characterIds[work->selected];
+            {
+                panelWork = (CampPanelTransitionWork*)RwCalloc(1, 0x18,
+                                                                0x40000);
+
+                if (panelWork != NULL) {
+                    DAT_007cdf54 = kwlnTaskCreate(
+                        task, "H_CampSkillPanel", 0x18c1,
+                        h_campUpdatePanelTransition, FUN_00122630, panelWork);
+                    if (DAT_007cdf54 != NULL) {
+                        panelWork->drawId = selectedId;
+                    } else {
+                        RwFree(panelWork);
+                    }
+                }
+                personaWork = (u32*)RwCalloc(1, 0x1c, 0x40000);
+                if (personaWork != NULL) {
+                    DAT_007cdf58 = kwlnTaskCreate(
+                        task, "H_CampSkillPersona", 0x18c1, FUN_00122940,
+                        h_campPersonaDestroyKaniControlTask, personaWork);
+                    if (DAT_007cdf58 != NULL) {
+                        personaWork[4] = FUN_00174800((u32)(u16)selectedId);
+                        *(s16*)((u8*)personaWork + 0x18) = selectedId;
+                    } else {
+                        RwFree(personaWork);
+                    }
+                }
+            }
+            work->child = FUN_00166a50(task, 0x18be, selectedId, 1, 1);
             work->displayMode = 1;
             work->transition = 1;
             work->state = 2;
@@ -2089,8 +2160,22 @@ void* FUN_00166c70(KwlnTask* task)
         break;
     }
     if (work->transition != 0) {
-        for (i = 0; i < 1; i++) {
-            campSkillScroll(&work->scrollX, &work->scrollY);
+        work->frame++;
+        if (work->frame < 10) {
+            /* Keep the retail clamp branch explicit. */
+        } else {
+            work->frame = 10;
+        }
+        alpha = 255 - (work->frame * 255) / 10;
+        FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
+                           work->scrollX, work->scrollY, 100.0f);
+        if (work->scrollX < 0.0f) {
+            FUN_001159f0_typed(owner, DAT_00833B9C, 0, (u8)alpha,
+                               work->scrollX + 640.0f, work->scrollY, 100.0f);
+        }
+        work->scrollX -= 1.0f;
+        if (work->scrollX < -640.0f) {
+            work->scrollX += 640.0f;
         }
     }
     return KWLNTASK_CONTINUE;
