@@ -5932,6 +5932,15 @@ void btlActionUpdateStateEscapeMes(BtlAction* action)
 }
 
 // FUN_00296880
+BtlPacket* func_002bfb50(void);
+BtlPacket* func_002bfae0(void);
+BtlPacket* func_002dd1f0(u32 a, u32 b, u32 c);
+s32 func_0030c2a0(DatUnit* unit);
+void func_00280050(BtlUnit* unit, RwV3d* dst);
+s32 func_002d4cc0(u16 unitId);
+u64 func_002b9640(u8* data);
+BtlPacket* func_002a1db0(u32 a);
+extern RwV3d D_006978A0;
 void btlActionInitStateEscape(BtlAction* action)
 {
     (void)action;
