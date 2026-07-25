@@ -5667,7 +5667,7 @@ void btlActionInitStateEscape(BtlAction* action)
 void btlActionUpdateStateEscape(BtlAction* action)
 {
     BtlAction* current;
-    BtlAction* escapeActions[24];
+    BtlAction* escapeActions[12];
     BtlUnit* unit;
     BtlUnit* ecUnit;
     BtlPacket* root;
@@ -5714,10 +5714,9 @@ void btlActionUpdateStateEscape(BtlAction* action)
     {
         current = escapeActions[i];
         ecUnit = current->unit;
-        btlUnit0027f7c0(ecUnit, &ecHome, NULL, NULL);
-        ecDest.x = ecUnit->pos.x + (ecUnit->pos.x - ecHome.x) * 500.0f;
+        ecDest.x = ecUnit->pos.x * 501.0f;
         ecDest.y = ecUnit->pos.y;
-        ecDest.z = ecUnit->pos.z + (ecUnit->pos.z - ecHome.z) * 500.0f;
+        ecDest.z = ecUnit->pos.z * 501.0f;
         movePacket = btlUnitCreateMovePacket(ecUnit, &ecDest, 1.0f, 8);
         movePacket->unk_00 = 5;
         movePacket->parentUID = root->uid;
