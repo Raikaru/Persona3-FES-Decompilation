@@ -194,18 +194,18 @@ extern u32 FUN_0017d830();
 // FUN_001482F0 NONMATCHING
 void h_campDrawStatusOverview(int param_1)
 {
-    volatile CampBits sp98;
-    volatile CampPair pair;
-    volatile CampBits sp88;
-    volatile CampBits sp80;
-    volatile CampBits sp78;
-    volatile CampBits sp70;
-    volatile CampBits sp68;
-    volatile CampBits sp60;
-    volatile CampBits sp58;
-    volatile CampBits sp50;
-    volatile CampBits sp48;
-    volatile CampBits sp40;
+    CampBits sp98;
+    CampPair pair;
+    CampBits sp88;
+    CampBits sp80;
+    CampBits sp78;
+    CampBits sp70;
+    CampBits sp68;
+    CampBits sp60;
+    CampBits sp58;
+    CampBits sp50;
+    CampBits sp48;
+    CampBits sp40;
     s32 i;
     pair.x = (f32)0x17b;
     pair.y = 12.0f;
@@ -359,8 +359,8 @@ void h_campDrawListEntry(int param_1,int param_2,int param_3)
 void h_campDrawStatusComparison(int param_1)
 
 {
-    volatile CampPair pair;
-    volatile CampBits start;
+    CampPair pair;
+    CampBits start;
     s32 iVar1;
     f32 fVar2;
     u64 uStack_38;
@@ -412,36 +412,38 @@ void h_campDrawStatusComparison(int param_1)
 
 /* Reconstructed retail aggregate temporaries and per-entry coordinate updates.
  * The original decompiler output passed packed constants directly, losing the
- * contiguous stack-pair writes visible in retail.  Keep these volatile pairs
- * to preserve the aggregate copy/update sequence and the repeated loop calls.
+ * contiguous stack-pair writes visible in retail.  The aggregate copy/update
+ * sequence and the repeated loop calls survive without any volatile qualifier
+ * (measured: dropping volatile improved normalized_diff by 359 with the file's
+ * MATCH count unchanged), so plain locals are used here.
  * The resulting instruction layout remains NONMATCHING, but retains the
  * recovered second-loop entry update rather than silently omitting it. */
 // FUN_001496F0 NONMATCHING
 void h_campDrawPersonaOverview(int param_1)
 {
-  volatile CampBits sp128;
-  volatile CampPair pair;
-  volatile CampBits sp118;
-  volatile CampBits sp110;
-  volatile CampBits sp108;
-  volatile CampBits sp100;
-  volatile CampBits spf8;
-  volatile CampBits spf0;
-  volatile CampBits spe8;
-  volatile CampBits spe0;
-  volatile CampBits spd8;
-  volatile CampBits spd0;
-  volatile CampBits spc8;
-  volatile CampBits spc0;
-  volatile CampBits spb8;
-  volatile CampBits spb0;
-  volatile CampBits spa8;
-  volatile CampBits spa0;
-  volatile CampBits sp98;
-  volatile CampBits sp90;
-  volatile CampBits sp88;
-  volatile CampBits sp80;
-  volatile CampBits sp78;
+  CampBits sp128;
+  CampPair pair;
+  CampBits sp118;
+  CampBits sp110;
+  CampBits sp108;
+  CampBits sp100;
+  CampBits spf8;
+  CampBits spf0;
+  CampBits spe8;
+  CampBits spe0;
+  CampBits spd8;
+  CampBits spd0;
+  CampBits spc8;
+  CampBits spc0;
+  CampBits spb8;
+  CampBits spb0;
+  CampBits spa8;
+  CampBits spa0;
+  CampBits sp98;
+  CampBits sp90;
+  CampBits sp88;
+  CampBits sp80;
+  CampBits sp78;
   int iVar2;
   int iVar3;
   int iVar4;
@@ -546,29 +548,29 @@ void h_campDrawPersonaOverview(int param_1)
 // FUN_0014A490 NONMATCHING
 void h_campDrawPersonaEquipment(int param_1)
 {
-  volatile CampBits sp68;
-  volatile CampPair pair;
-  volatile CampBits spb0;
-  volatile CampBits spb8;
-  volatile CampBits spc0;
-  volatile CampBits spc8;
-  volatile CampBits spd0;
-  volatile CampBits spe0;
-  volatile CampBits spe8;
-  volatile CampBits spf0;
-  volatile CampBits spf8;
-  volatile CampBits sp100;
-  volatile CampBits sp108;
-  volatile CampBits sp110;
-  volatile CampBits sp118;
-  volatile CampBits spa8;
-  volatile CampBits spa0;
-  volatile CampBits sp98;
-  volatile CampBits sp90;
-  volatile CampBits sp88;
-  volatile CampBits sp80;
-  volatile CampBits sp78;
-  volatile CampBits sp70;
+  CampBits sp68;
+  CampPair pair;
+  CampBits spb0;
+  CampBits spb8;
+  CampBits spc0;
+  CampBits spc8;
+  CampBits spd0;
+  CampBits spe0;
+  CampBits spe8;
+  CampBits spf0;
+  CampBits spf8;
+  CampBits sp100;
+  CampBits sp108;
+  CampBits sp110;
+  CampBits sp118;
+  CampBits spa8;
+  CampBits spa0;
+  CampBits sp98;
+  CampBits sp90;
+  CampBits sp88;
+  CampBits sp80;
+  CampBits sp78;
+  CampBits sp70;
   int iVar2;
   int iVar3;
   float fVar4;
@@ -633,8 +635,8 @@ void h_campDrawPersonaEquipment(int param_1)
 // FUN_0014B210 NONMATCHING
 void h_campDrawPersonaList(int param_1)
 {
-    volatile CampPair pair;
-    volatile CampBits temp;
+    CampPair pair;
+    CampBits temp;
     s32 i;
 
     CAMP_DRAW_CALC_SECOND(100.0f, (void*)(*(u32*)(param_1 + 0xc0)), 1,
@@ -1921,8 +1923,8 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   u64 uStack_118;
   u64 uStack_40;
   u64 uStack_20;
-  volatile CampBits pair;
-  volatile CampBits tmp;
+  CampBits pair;
+  CampBits tmp;
   int iStack_8;
   u8 auStack_4 [4];
   u32 *puVar1;
