@@ -1085,13 +1085,6 @@ static void brPanel00236390(void)
             rect[i] = 0.0f;
         }
     }
-    BR_PANEL_SET_VERTICES(work + 0x2260);
-    BR_PANEL_ANIMATE(work + 0x2260, 0x32);
-    color[0] = 0xe;
-    color[1] = 0x8b;
-    color[2] = 0xec;
-    color[3] = 0xff;
-    func_0021d950(work + 0x2260, color);
 
     if (mode == 2) {
         if (timer < 10) {
@@ -1131,13 +1124,6 @@ static void brPanel00236390(void)
         }
         alpha = 0.0f;
     }
-    BR_PANEL_SET_VERTICES(work + 0x2360);
-    BR_PANEL_ANIMATE(work + 0x2360, 0x23);
-    color[0] = 4;
-    color[1] = 0x29;
-    color[2] = 0x46;
-    color[3] = (u8)(u32)(255.0f * alpha);
-    func_0021d950(work + 0x2360, color);
 
     if (mode == 2) {
         scale = (f32)timer / 10.0f;
