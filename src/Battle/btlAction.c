@@ -2009,7 +2009,7 @@ void btlActionUpdateStateAttack(BtlAction* action)
     BtlPacket* effectPacket;
     BtlPacket* rootPacket;
     BtlPacket* syncPacket;
-    u32 stackBuf[60];
+    u32 stackBuf[52];
     s32 workBuf[12];
     u32 scratchBuf[16];
     u16 sp190;
