@@ -45,6 +45,9 @@ extern KwlnTask* iGpffffb270;
 extern void func_001958a0(void* source, KwlnTask* destination);
 extern void func_001957b0(KwlnTask* source, KwlnTask* destination);
 extern void func_0010a4e0(s32 bank, s32 cue, s32 variant, s32 pan);
+extern u16 DAT_007e094c;
+#pragma alias DAT_007e094c_abs DAT_007e094c
+extern u8 DAT_007e094c_abs[];
 extern u16 DAT_007e094e;
 extern u16 DAT_007e0952;
 extern u16 DAT_007e0958;
@@ -790,29 +793,134 @@ void* h_campUpdateRootDrawTask(KwlnTask* task)
     case 3:
         if (h_campGetRootMenuTransitionComplete(work->menuTask) != 0) {
             work->frame = 0;
-            if (work->menuMode == 0) {
-                h_campDrawRootMenuEntries(work, 100.0f);
-                work->state = 4;
-            } else {
+            if (work->menuMode == 1) {
                 h_campDrawRootMenuEntriesAlternate(work, 100.0f);
                 work->state = 5;
+            } else if (work->menuMode == 0) {
+                h_campDrawRootMenuEntries(work, 100.0f);
+                work->state = 4;
             }
+            h_campRequestMenuTransition(sCampPersonaDisplayTask, 1);
+            FUN_00122710(sCampPersonaControlTask, 1);
         }
         break;
     case 4:
+        work->frame++;
+        if (work->frame == 0x15) {
+            work->state = 6;
+        }
         h_campUpdateRootMenuEntryEffect(work, 100.0f);
         break;
     case 5:
+        work->frame++;
+        if (work->frame == 0xa) {
+            work->state = 6;
+        }
         h_campUpdateRootMenuEntryTransition(work, 110.0f);
         break;
-    case 6:
+    case 7:
+        work->frame--;
+        if (work->frame == 0) {
+            return KWLNTASK_STOP;
+        }
         h_campUpdateRootMenuEntryFadeOut(work, 100.0f);
         break;
-    case 7:
+    case 8:
+        work->frame -= 4;
+        if (work->frame <= 0) {
+            work->frame = 0;
+            return KWLNTASK_STOP;
+        }
+        h_campUpdateRootMenuEntryFadeOut(work, 100.0f);
+        break;
+    case 9:
+        work->frame++;
+        if (work->frame >= 0xe) {
+            work->frame = 0;
+            return KWLNTASK_STOP;
+        }
         h_campUpdateRootMenuEntryFinish(work, 100.0f);
         break;
+    case 6: {
+        u16 buttons;
+        u16 dpad;
+
+        buttons = *(u16*)DAT_007e094c_abs;
+        if (buttons & 0x20) {
+            func_0010a4e0(0, 0, 0, 2);
+            work->selectedCommand = -2;
+            work->state = 10;
+        } else if (buttons & 0x40) {
+            func_0010a4e0(0, 0, 0, 1);
+            work->selectedCommand = work->selectedEntry;
+            work->state = 10;
+        } else if (work->drawChild != NULL) {
+            s32 changed;
+
+            changed = 1;
+            dpad = *(u16*)DAT_007e0952_abs;
+            if ((dpad & 0x4000) == 0 &&
+                (*(u16*)DAT_007e095a_abs & 0x4000) == 0) {
+                changed = 0;
+            }
+            if (changed != 0) {
+                if (work->selectedEntry == 6) {
+                    if (((*(u16*)DAT_007e094e_abs & 0x4000) != 0) ||
+                        ((*(u16*)DAT_007e0958_abs & 0x4000) != 0)) {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->selectedEntry = 0;
+                        work->transitionKind = 5;
+                        work->selectedEntry = 0;
+                        work->timer = 1;
+                        work->drawChild = NULL;
+                    }
+                } else {
+                    func_0010a4e0(0, 0, 0, 0);
+                    work->transitionKind = 5;
+                    work->selectedEntry++;
+                    if (func_0017d800() != 0 &&
+                        work->selectedEntry == 5) {
+                        work->selectedEntry = 6;
+                    }
+                    work->timer = 1;
+                    work->drawChild = NULL;
+                }
+            } else if ((dpad & 0x1000) != 0 ||
+                       (*(u16*)DAT_007e095a_abs & 0x1000) != 0) {
+                if (work->selectedEntry == 0) {
+                    if (((*(u16*)DAT_007e094e_abs & 0x1000) != 0) ||
+                        ((*(u16*)DAT_007e0958_abs & 0x1000) != 0)) {
+                        func_0010a4e0(0, 0, 0, 0);
+                        work->transitionKind = 5;
+                        work->selectedEntry = 6;
+                        work->timer = 1;
+                        work->drawChild = NULL;
+                    }
+                } else {
+                    func_0010a4e0(0, 0, 0, 0);
+                    work->transitionKind = 5;
+                    work->timer = 1;
+                    work->drawChild = NULL;
+                    work->selectedEntry--;
+                    if (func_0017d800() != 0 &&
+                        work->selectedEntry == 5) {
+                        work->selectedEntry = 4;
+                    }
+                }
+            }
+            *(f32*)(iGpffffb25c + 0x320) =
+                (f32)work->selectedEntry * 19.0f;
+        }
+        h_campUpdateRootMenuSelectionEffect(work, 100.0f);
+        break;
     }
-    h_campUpdateRootMenuSelectionEffect(work, 100.0f);
+    case 10:
+        work->frame = 0x16;
+        h_campUpdateRootMenuEntryTransition(work, 100.0f);
+        break;
+    case 1:
+        break;
+    }
     return KWLNTASK_CONTINUE;
 }
 
