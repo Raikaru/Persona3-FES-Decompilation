@@ -940,18 +940,18 @@ u32 h_campUpdateNewItemTask(int param_1)
           if (0x18 < uVar7) {
             uVar16 = 0x19;
           }
-          FUN_00114450(0x42cc0000,in_f21,unaff_f20 + -87.0f,uVar7 | 0xffffff00,
+          FUN_00114450(102.0f,in_f21,unaff_f20 + -87.0f,uVar7 | 0xffffff00,
                        uVar16 | 0x4fa4ff00,0x280,0x280);
         }
-        FUN_0011bba0(0,0,0x42cc0000,case2_alpha,0);
+        FUN_0011bba0(0,0,102.0f,case2_alpha,0);
         case2_index = puVar1[1];
         if (case2_index < 6) {
           fVar19 = (float)((case2_index * 600) / 6);
           uVar13 = FUN_001158b0_typed(0,DAT_00833b78,0);
           case2_resource = uVar13;
-          *(u32 *)(case2_resource + 0x2c) = 0x42ca0000;
+          *(float *)(case2_resource + 0x2c) = 101.0f;
           *(float *)(case2_resource + 0x10) = fVar19 + 428.0f;
-          *(u32 *)(case2_resource + 0x14) = 0x41d80000;
+          *(float *)(case2_resource + 0x14) = 27.0f;
           *(char *)(case2_resource + 0x18) = (char)((case2_index * 0xff) / 6);
           *(u16 *)(case2_resource + 0x28) = 0;
           *(u16 *)(case2_resource + 0x2a) = 0;
