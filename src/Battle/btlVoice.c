@@ -5769,26 +5769,19 @@ void func_002e58a0(u64 param_1)
   float fStack_ac;
   float fStack_a8;
   float fStack_a4;
-  float fStack_a0;
-  float fStack_9c;
-  float fStack_98;
+  float final2[3];
   u32 uStack_94;
   u32 uStack_90;
   u32 uStack_8c;
   u32 uStack_88;
-  float fStack_84;
-  float fStack_80;
-  float fStack_7c;
+  float final[3];
   u32 uStack_78;
   u32 uStack_74;
   u32 uStack_70;
   u32 uStack_6c;
-  float fStack_68;
-  float fStack_64;
-  float fStack_60;
-  float fStack_5c;
-  float fStack_58;
-  float fStack_54;
+  float normTmp[2];
+  float d1Out[2];
+  float partPos[2];
   float dir[3];
   float cam[3];
   float target[3];
@@ -5908,11 +5901,11 @@ LAB_002e59dc:
     fStack_bc = target[2];
     fStack_b8 = cam[0];
     fStack_b4 = cam[2];
-    fStack_58 = pos1[0];
-    fStack_54 = pos1[2];
-    fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,&fStack_58,&fStack_60);
-    cam[0] = fStack_60;
-    cam[2] = fStack_5c;
+    partPos[0] = pos1[0];
+    partPos[1] = pos1[2];
+    fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,partPos,d1Out);
+    cam[0] = d1Out[0];
+    cam[2] = d1Out[1];
     fVar10 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
     fVar10 = (fVar12 + fVar11 * fVar13) / fVar10;
     dir[0] = dir[0] * fVar10;
@@ -5921,17 +5914,17 @@ LAB_002e59dc:
     if (fVar9 < 0.0) {
       fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
       fVar9 = fVar10 * fVar9 * 0.21875 * 1.25;
-      fStack_68 = dir[0];
-      fStack_64 = dir[2];
-      FUN_004c6b20(&fStack_68,&fStack_68);
-      cam[0] = fStack_64 * fVar9 + cam[0] + 0.0;
-      cam[2] = (cam[2] + 0.0) - fStack_68 * fVar9;
+      normTmp[0] = dir[0];
+      normTmp[1] = dir[2];
+      FUN_004c6b20(normTmp,normTmp);
+      cam[0] = normTmp[1] * fVar9 + cam[0] + 0.0;
+      cam[2] = (cam[2] + 0.0) - normTmp[0] * fVar9;
     }
-    fStack_84 = cam[0] + dir[0];
-    fStack_80 = cam[1] + dir[1];
-    fStack_7c = cam[2] + dir[2];
-    if (fStack_80 < 25.0) {
-      fStack_80 = 25.0;
+    final[0] = cam[0] + dir[0];
+    final[1] = cam[1] + dir[1];
+    final[2] = cam[2] + dir[2];
+    if (final[1] < 25.0) {
+      final[1] = 25.0;
     }
     fVar9 = (float)FUN_002d1f30(&uStack_94,&uStack_78);
     if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
@@ -5944,11 +5937,11 @@ LAB_002e59dc:
       dir[0] = dir[0] * fVar10;
       dir[1] = dir[1] * fVar10;
       dir[2] = dir[2] * fVar10;
-      fStack_a0 = cam[0] + dir[0];
-      fStack_9c = cam[1] + dir[1];
-      fStack_98 = cam[2] + dir[2];
-      if (fStack_9c < 25.0) {
-        fStack_9c = 25.0;
+      final2[0] = cam[0] + dir[0];
+      final2[1] = cam[1] + dir[1];
+      final2[2] = cam[2] + dir[2];
+      if (final2[1] < 25.0) {
+        final2[1] = 25.0;
       }
       FUN_00351bb0(8);
     }
