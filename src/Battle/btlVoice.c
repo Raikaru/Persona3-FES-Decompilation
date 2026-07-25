@@ -5850,8 +5850,8 @@ LAB_002e59dc:
     FUN_00280050(iVar8,pos1);
     FUN_00280050(iVar7,pos2);
     fVar13 = *(float *)(iVar8 + 0x90) * *(float *)(iVar8 + 0x2c);
-    fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5 + pos1[1] + 0.0;
-    fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5 + pos2[1] + 0.0;
+    fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5f + pos1[1] + 0.0f;
+    fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + pos2[1] + 0.0f;
     dir[0] = pos1[0] - pos2[0];
     dir[1] = pos1[1] - pos2[1];
     dir[2] = pos1[2] - pos2[2];
@@ -5867,34 +5867,34 @@ LAB_002e59dc:
     fStack_ac = -dir[0];
     fVar9 = dir[2] * fStack_a8 + fStack_ac * fStack_a4;
     if (bVar1) {
-      fVar10 = 2.5;
+      fVar10 = 2.5f;
     }
     else {
-      fVar10 = 1.5;
+      fVar10 = 1.5f;
     }
     fVar10 = fVar10 * fVar13;
-    if (0.0 <= fVar9) {
-      cam[0] = dir[2] * fVar10 + pos1[0] + 0.0;
-      cam[2] = (pos1[2] + 0.0) - dir[0] * fVar10;
+    if (0.0f <= fVar9) {
+      cam[0] = dir[2] * fVar10 + pos1[0] + 0.0f;
+      cam[2] = (pos1[2] + 0.0f) - dir[0] * fVar10;
     }
     else {
-      cam[0] = (pos1[0] + 0.0) - dir[2] * fVar10;
-      cam[2] = dir[0] * fVar10 + pos1[2] + 0.0;
+      cam[0] = (pos1[0] + 0.0f) - dir[2] * fVar10;
+      cam[2] = dir[0] * fVar10 + pos1[2] + 0.0f;
     }
     cam[1] = fVar11;
     if (bVar1) {
-      target[1] = (target[1] + 0.0) - DAT_007cad84 * fVar12;
-      fVar11 = 3.5;
+      target[1] = (target[1] + 0.0f) - DAT_007cad84 * fVar12;
+      fVar11 = 3.5f;
     }
     else {
       if (fVar11 < fVar12) {
-        target[1] = (target[1] + 0.0) - DAT_007cad84 * fVar12;
+        target[1] = (target[1] + 0.0f) - DAT_007cad84 * fVar12;
       }
       else {
-        target[1] = DAT_007cad20 * fVar12 + target[1] + 0.0;
-        cam[1] = (pos1[1] + 0.0) - DAT_007cad20 * fVar11;
+        target[1] = DAT_007cad20 * fVar12 + target[1] + 0.0f;
+        cam[1] = (pos1[1] + 0.0f) - DAT_007cad20 * fVar11;
       }
-      fVar11 = 2.5;
+      fVar11 = 2.5f;
     }
     FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
     fStack_c0 = target[0];
@@ -5906,25 +5906,25 @@ LAB_002e59dc:
     fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,partPos,d1Out);
     cam[0] = d1Out[0];
     cam[2] = d1Out[1];
-    fVar10 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
+    fVar10 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5f);
     fVar10 = (fVar12 + fVar11 * fVar13) / fVar10;
     dir[0] = dir[0] * fVar10;
     dir[1] = dir[1] * fVar10;
     dir[2] = dir[2] * fVar10;
-    if (fVar9 < 0.0) {
-      fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5);
-      fVar9 = fVar10 * fVar9 * 0.21875 * 1.25;
+    if (fVar9 < 0.0f) {
+      fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5f);
+      fVar9 = fVar10 * fVar9 * 0.21875f * 1.25f;
       normTmp[0] = dir[0];
       normTmp[1] = dir[2];
       FUN_004c6b20(normTmp,normTmp);
-      cam[0] = normTmp[1] * fVar9 + cam[0] + 0.0;
-      cam[2] = (cam[2] + 0.0) - normTmp[0] * fVar9;
+      cam[0] = normTmp[1] * fVar9 + cam[0] + 0.0f;
+      cam[2] = (cam[2] + 0.0f) - normTmp[0] * fVar9;
     }
     final[0] = cam[0] + dir[0];
     final[1] = cam[1] + dir[1];
     final[2] = cam[2] + dir[2];
-    if (final[1] < 25.0) {
-      final[1] = 25.0;
+    if (final[1] < 25.0f) {
+      final[1] = 25.0f;
     }
     fVar9 = (float)FUN_002d1f30(&uStack_94,&uStack_78);
     if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
@@ -5933,15 +5933,15 @@ LAB_002e59dc:
       uStack_8c = uStack_70;
       uStack_88 = uStack_6c;
       FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
-      fVar10 = fVar10 + 200.0;
+      fVar10 = fVar10 + 200.0f;
       dir[0] = dir[0] * fVar10;
       dir[1] = dir[1] * fVar10;
       dir[2] = dir[2] * fVar10;
       final2[0] = cam[0] + dir[0];
       final2[1] = cam[1] + dir[1];
       final2[2] = cam[2] + dir[2];
-      if (final2[1] < 25.0) {
-        final2[1] = 25.0;
+      if (final2[1] < 25.0f) {
+        final2[1] = 25.0f;
       }
       FUN_00351bb0(8);
     }
