@@ -3789,13 +3789,15 @@ typedef struct {
   f32 z;
 } VoiceVector;
 
-extern u32 DAT_00697c80;
-extern u32 DAT_00697c84;
-extern u32 DAT_00697c88;
-extern u32 DAT_00697c8c;
-extern u32 DAT_00697c9c;
-extern u32 DAT_00697ca0;
-extern u32 DAT_00697ca4;
+extern s16 DAT_00697c80;
+extern f32 DAT_00697c84;
+extern f32 DAT_00697c88;
+extern f32 DAT_00697c8c;
+extern f32 DAT_00697c90;
+extern f32 DAT_00697c9c;
+extern f32 DAT_00697ca0;
+extern f32 DAT_00697ca4;
+extern f32 DAT_00697ca8;
 extern u8 DAT_00698d40[];
 extern s16 DAT_00699240[];
 extern f32 DAT_00699244[];
@@ -4167,7 +4169,7 @@ void func_002e4a40(u64 param_1);
 void func_002e4f50(BtlCamera* camera);
 void func_002e5040(void);
 void func_002e5060(BtlCamera* camera);
-void func_002e58a0(u64 param_1);
+void func_002e58a0(BtlCamera* param_1);
 f32 func_002e6130(BtlUnit* param_1,BtlUnit* param_2,float* param_3,float* param_4);
 void func_002e6a20(BtlCamera* camera, float weight);
 void func_002e70b0(BtlCamera* camera);
@@ -5738,14 +5740,13 @@ LAB_002e5140:
 }
 
 // FUN_002e58a0 NONMATCHING
-void func_002e58a0(u64 param_1)
+void func_002e58a0(BtlCamera* param_1)
 
 {
   u32 bVar1;
   char cVar2;
   u32 bVar3;
   int iVar4;
-  int iVar5;
   u32 uVar6;
   int iVar7;
   int iVar8;
@@ -5754,14 +5755,10 @@ void func_002e58a0(u64 param_1)
   float fVar11;
   float fVar12;
   float fVar13;
-  u32 uStack_100;
-  u32 uStack_fc;
-  u32 uStack_f8;
-  u8 auStack_f4 [16];
-  u32 uStack_e4;
-  u32 uStack_e0;
-  u32 uStack_dc;
-  u8 auStack_d8 [24];
+  RwV3d specPos1;
+  RtQuat specQuat1;
+  RwV3d specPos2;
+  RtQuat specQuat2;
   float fStack_c0;
   float fStack_bc;
   float fStack_b8;
@@ -5770,29 +5767,24 @@ void func_002e58a0(u64 param_1)
   float fStack_ac;
   float fStack_a8;
   float fStack_a4;
-  float final2[3];
-  u32 uStack_94;
-  u32 uStack_90;
-  u32 uStack_8c;
-  u32 uStack_88;
-  float final[3];
-  u32 uStack_78;
-  u32 uStack_74;
-  u32 uStack_70;
-  u32 uStack_6c;
+  RwV3d camPos;
+  RtQuat quatCopy;
+  RwV3d finalPos;
+  RtQuat quat;
   float normTmp[2];
   float d1Out[2];
   float partPos[2];
-  float dir[3];
-  float cam[3];
-  float target[3];
-  float pos2[3];
-  float pos1[3];
-  
-  iVar5 = (int)param_1;
-  iVar4 = *(int *)(iVar5 + 0xe0);
+  RwV3d dir;
+  RwV3d camOff;
+  RwV3d target;
+  RwV3d pos2;
+  RwV3d pos1;
+  float fStack_d8;
+  float fStack_dc;
+
+  iVar4 = *(int *)((int)param_1 + 0xe0);
   if ((iVar4 != 0) && (iVar8 = *(int *)(iVar4 + 0x30), *(char *)(iVar8 + 0xa2) == '\0')) {
-    for (uVar6 = 0; iVar4 = *(int *)(iVar5 + 0xe0), uVar6 < *(u16 *)(iVar4 + 0x6a);
+    for (uVar6 = 0; iVar4 = *(int *)((int)param_1 + 0xe0), uVar6 < *(u16 *)(iVar4 + 0x6a);
         uVar6 = uVar6 + 1 & 0xffff) {
       iVar4 = *(int *)(*(int *)(iVar4 + uVar6 * 4 + 0x38) + 0x30);
       if (*(char *)(iVar4 + 0xa2) == '\x01') {
@@ -5822,11 +5814,11 @@ LAB_002e59dc:
   iVar4 = *(int *)(iVar4 + 0x30);
   bVar1 = *(char *)(iVar4 + 0xa2) != '\0';
   if (bVar1) {
-    iVar8 = *(int *)(*(int *)(*(int *)(iVar5 + 0xe0) + 0x38) + 0x30);
+    iVar8 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
     iVar7 = iVar4;
   }
   else {
-    iVar7 = *(int *)(*(int *)(*(int *)(iVar5 + 0xe0) + 0x38) + 0x30);
+    iVar7 = *(int *)(*(int *)(*(int *)((int)param_1 + 0xe0) + 0x38) + 0x30);
     iVar8 = iVar4;
   }
   cVar2 = *(char *)(iVar8 + 0xa2);
@@ -5837,117 +5829,119 @@ LAB_002e59dc:
     else {
       func_002e8f40();
     }
+    return;
   }
-  else if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) && (cVar2 == '\0')) {
-    uStack_100 = DAT_00697c84;
-    uStack_fc = DAT_00697c88;
-    uStack_f8 = DAT_00697c8c;
-    uStack_e4 = DAT_00697c9c;
-    uStack_e0 = DAT_00697ca0;
-    uStack_dc = DAT_00697ca4;
-    iVar4 = (int)DAT_00697c80;
+  if ((*(short *)(*(int *)(DAT_007ce3ec + 0xbbc) + 8) == 0x1b4) && (cVar2 == '\0')) {
+    FUN_002a4690(&specQuat1,&DAT_00697c84,&DAT_00697c90,D_00697880);
+    specPos1.x = DAT_00697c84;
+    specPos1.y = DAT_00697c88;
+    specPos1.z = DAT_00697c8c;
+    FUN_002a4690(&specQuat2,&DAT_00697c9c,&DAT_00697ca8,D_00697880);
+    specPos2.x = DAT_00697c9c;
+    specPos2.y = DAT_00697ca0;
+    specPos2.z = DAT_00697ca4;
+    fVar10 = (float)DAT_00697c80 / 30.0f;
+    FUN_002a2290((void *)(DAT_007ce3ec + 0x20),(f32 *)&specPos1,(f32 *)&specPos2,1);
+    FUN_002a3110((void *)(DAT_007ce3ec + 0x20),fVar10);
+    return;
+  }
+  FUN_002a4470((f32 *)&camPos,(f32 *)&param_1->pos);
+  FUN_00280050(iVar8,&pos1);
+  FUN_00280050(iVar7,&pos2);
+  fVar13 = *(float *)(iVar8 + 0x90) * *(float *)(iVar8 + 0x2c);
+  fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5f + pos1.y + 0.0f;
+  fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + pos2.y + 0.0f;
+  dir.x = pos1.x - pos2.x;
+  dir.y = pos1.y - pos2.y;
+  dir.z = pos1.z - pos2.z;
+  fVar9 = (float)FUN_004c69f0(&dir,&dir);
+  fVar9 = DAT_007cad84 * fVar9;
+  target.x = dir.x * fVar9 + pos2.x;
+  target.y = dir.y * fVar9 + pos2.y;
+  target.z = dir.z * fVar9 + pos2.z;
+  fStack_d8 = param_1->pos.x - target.x;
+  fStack_dc = param_1->pos.z - target.z;
+  FUN_004c6b20(&fStack_d8,&fStack_d8);
+  fStack_b0 = dir.z;
+  fStack_ac = -dir.x;
+  fVar9 = dir.z * fStack_d8 + fStack_ac * fStack_dc;
+  if (bVar1) {
+    fVar10 = 2.5f;
   }
   else {
-    FUN_00280050(iVar8,pos1);
-    FUN_00280050(iVar7,pos2);
-    fVar13 = *(float *)(iVar8 + 0x90) * *(float *)(iVar8 + 0x2c);
-    fVar11 = *(float *)(iVar8 + 0x8c) * *(float *)(iVar8 + 0x2c) * 0.5f + pos1[1] + 0.0f;
-    fVar12 = *(float *)(iVar7 + 0x8c) * *(float *)(iVar7 + 0x2c) * 0.5f + pos2[1] + 0.0f;
-    dir[0] = pos1[0] - pos2[0];
-    dir[1] = pos1[1] - pos2[1];
-    dir[2] = pos1[2] - pos2[2];
-    fVar9 = (float)FUN_004c69f0(dir,dir);
-    fVar9 = DAT_007cad84 * fVar9;
-    target[0] = dir[0] * fVar9 + pos2[0];
-    target[1] = dir[1] * fVar9 + pos2[1];
-    target[2] = dir[2] * fVar9 + pos2[2];
-    fStack_a8 = *(float *)(iVar5 + 0x9c) - target[0];
-    fStack_a4 = *(float *)(iVar5 + 0xa4) - target[2];
-    FUN_004c6b20(&fStack_a8,&fStack_a8);
-    fStack_b0 = dir[2];
-    fStack_ac = -dir[0];
-    fVar9 = dir[2] * fStack_a8 + fStack_ac * fStack_a4;
-    if (bVar1) {
-      fVar10 = 2.5f;
-    }
-    else {
-      fVar10 = 1.5f;
-    }
-    fVar10 = fVar10 * fVar13;
-    if (0.0f <= fVar9) {
-      cam[0] = dir[2] * fVar10 + pos1[0] + 0.0f;
-      cam[2] = (pos1[2] + 0.0f) - dir[0] * fVar10;
-    }
-    else {
-      cam[0] = (pos1[0] + 0.0f) - dir[2] * fVar10;
-      cam[2] = dir[0] * fVar10 + pos1[2] + 0.0f;
-    }
-    cam[1] = fVar11;
-    if (bVar1) {
-      target[1] = (target[1] + 0.0f) - DAT_007cad84 * fVar12;
-      fVar11 = 3.5f;
-    }
-    else {
-      if (fVar11 < fVar12) {
-        target[1] = (target[1] + 0.0f) - DAT_007cad84 * fVar12;
-      }
-      else {
-        target[1] = DAT_007cad20 * fVar12 + target[1] + 0.0f;
-        cam[1] = (pos1[1] + 0.0f) - DAT_007cad20 * fVar11;
-      }
-      fVar11 = 2.5f;
-    }
-    FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
-    fStack_c0 = target[0];
-    fStack_bc = target[2];
-    fStack_b8 = cam[0];
-    fStack_b4 = cam[2];
-    partPos[0] = pos1[0];
-    partPos[1] = pos1[2];
-    fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,partPos,d1Out);
-    cam[0] = d1Out[0];
-    cam[2] = d1Out[1];
-    fVar10 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5f);
-    fVar10 = (fVar12 + fVar11 * fVar13) / fVar10;
-    dir[0] = dir[0] * fVar10;
-    dir[1] = dir[1] * fVar10;
-    dir[2] = dir[2] * fVar10;
-    if (fVar9 < 0.0f) {
-      fVar9 = (float)FUN_0052e930(DAT_007cad60 * *(float *)(iVar5 + 0xb8) * 0.5f);
-      fVar9 = fVar10 * fVar9 * 0.21875f * 1.25f;
-      normTmp[0] = dir[0];
-      normTmp[1] = dir[2];
-      FUN_004c6b20(normTmp,normTmp);
-      cam[0] = normTmp[1] * fVar9 + cam[0] + 0.0f;
-      cam[2] = (cam[2] + 0.0f) - normTmp[0] * fVar9;
-    }
-    final[0] = cam[0] + dir[0];
-    final[1] = cam[1] + dir[1];
-    final[2] = cam[2] + dir[2];
-    if (final[1] < 25.0f) {
-      final[1] = 25.0f;
-    }
-    fVar9 = (float)FUN_002d1f30(&uStack_94,&uStack_78);
-    if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
-      uStack_94 = uStack_78;
-      uStack_90 = uStack_74;
-      uStack_8c = uStack_70;
-      uStack_88 = uStack_6c;
-      FUN_004be1e0(dir,0x6978a0,1,&uStack_78);
-      fVar10 = fVar10 + 200.0f;
-      dir[0] = dir[0] * fVar10;
-      dir[1] = dir[1] * fVar10;
-      dir[2] = dir[2] * fVar10;
-      final2[0] = cam[0] + dir[0];
-      final2[1] = cam[1] + dir[1];
-      final2[2] = cam[2] + dir[2];
-      if (final2[1] < 25.0f) {
-        final2[1] = 25.0f;
-      }
-      FUN_00351bb0(8);
-    }
+    fVar10 = 1.5f;
   }
-  return;
+  fVar10 = fVar10 * fVar13;
+  if (0.0f <= fVar9) {
+    camOff.x = dir.z * fVar10 + pos1.x + 0.0f;
+    camOff.z = (pos1.z + 0.0f) - dir.x * fVar10;
+  }
+  else {
+    camOff.x = (pos1.x + 0.0f) - dir.z * fVar10;
+    camOff.z = dir.x * fVar10 + pos1.z + 0.0f;
+  }
+  camOff.y = fVar11;
+  if (bVar1) {
+    target.y = (target.y + 0.0f) - DAT_007cad84 * fVar12;
+    fVar11 = 3.5f;
+  }
+  else {
+    if (fVar11 < fVar12) {
+      target.y = (target.y + 0.0f) - DAT_007cad84 * fVar12;
+    }
+    else {
+      target.y = DAT_007cad20 * fVar12 + target.y + 0.0f;
+      camOff.y = (pos1.y + 0.0f) - DAT_007cad20 * fVar11;
+    }
+    fVar11 = 2.5f;
+  }
+  FUN_002a4690(&quat,&camOff,&target,D_00697880);
+  FUN_004be1e0(&dir,D_006978A0,1,&quat);
+  fStack_c0 = target.x;
+  fStack_bc = target.z;
+  fStack_b8 = camOff.x;
+  fStack_b4 = camOff.z;
+  partPos[0] = pos1.x;
+  partPos[1] = pos1.z;
+  fVar12 = (float)FUN_002d1fd0(&fStack_c0,&fStack_b8,partPos,d1Out);
+  camOff.x = d1Out[0];
+  camOff.z = d1Out[1];
+  fVar10 = (fVar12 + fVar11 * fVar13) / (float)FUN_0052e930(DAT_007cad60 * param_1->fovRad * 0.5f);
+  dir.x = dir.x * fVar10;
+  dir.y = dir.y * fVar10;
+  dir.z = dir.z * fVar10;
+  if (fVar9 < 0.0f) {
+    fVar9 = fVar10 * (float)FUN_0052e930(DAT_007cad60 * param_1->fovRad * 0.5f) * 0.21875f * 1.25f;
+    normTmp[0] = dir.x;
+    normTmp[1] = dir.z;
+    FUN_004c6b20(normTmp,normTmp);
+    camOff.x = normTmp[1] * fVar9 + camOff.x + 0.0f;
+    camOff.z = (camOff.z + 0.0f) - normTmp[0] * fVar9;
+  }
+  finalPos.x = camOff.x + dir.x;
+  finalPos.y = camOff.y + dir.y;
+  finalPos.z = camOff.z + dir.z;
+  if (finalPos.y < 25.0f) {
+    finalPos.y = 25.0f;
+  }
+  fVar9 = (float)FUN_002d1f30(&quatCopy,&quat);
+  if (((!bVar1) || (DAT_007cad58 < fVar9)) && (bVar3)) {
+    quatCopy = quat;
+    FUN_004be1e0(&dir,D_006978A0,1,&quat);
+    fVar10 = fVar10 + 200.0f;
+    dir.x = dir.x * fVar10;
+    dir.y = dir.y * fVar10;
+    dir.z = dir.z * fVar10;
+    camPos.x = camOff.x + dir.x;
+    camPos.y = camOff.y + dir.y;
+    camPos.z = camOff.z + dir.z;
+    if (camPos.y < 25.0f) {
+      camPos.y = 25.0f;
+    }
+    FUN_00351bb0(8);
+  }
+  FUN_002a2290((void *)param_1,(f32 *)&camPos,(f32 *)&finalPos,1);
+  FUN_002a3110((void *)param_1,1.5f);
 }
 
 // FUN_002e6130 NONMATCHING
