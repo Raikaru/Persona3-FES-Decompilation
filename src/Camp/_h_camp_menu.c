@@ -1039,8 +1039,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             for (i = 0; i < 5; i++) {
                 frame = i + 1 > 0 ? 0xa1 : 0xa2;
                 campMenuDrawSprite(parent, *labels, frame, item->alpha,
-                    item->x + 380.0f + (f32)(i * 0x17),
-                    item->y + 7.0f, item->scale);
+                    499.0f + item->x - 119.0f + (f32)(i * 0x17),
+                    340.0f + item->y - 333.0f, item->scale);
             }
             break;
         }
@@ -1072,7 +1072,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                                        6, 1, (const char*)text, 0x11, 0);
             campMenuDrawSprite(parent, *labels, 0x33, item->alpha,
                                item->x + 41.0f + (f32)width,
-                               item->y + 7.0f, item->scale);
+                               340.0f + item->y - 333.0f, item->scale);
             value = *((u8*)record + 7);
             if (value >= 10) {
                 campMenuDrawSprite(parent, FUN_001120a0(1),
@@ -1096,17 +1096,17 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                                        (u8)alpha, 3, (const char*)text, 8);
             campMenuDrawSprite(parent, *labels, 0x35, item->alpha,
                                item->x + 3.0f + (f32)width,
-                               item->y + 7.0f, item->scale);
+                               340.0f + item->y - 333.0f, item->scale);
         }
         for (i = 0; i < 5; i++) {
             if (FUN_00403900(*(u16*)itemRecord) >= i + 1) {
                 campMenuDrawSprite(parent, *labels, 0xa1, item->alpha,
-                    item->x + 380.0f + (f32)(i * 0x17),
-                    item->y + 7.0f, item->scale);
+                    499.0f + item->x - 119.0f + (f32)(i * 0x17),
+                    340.0f + item->y - 333.0f, item->scale);
             } else {
                 campMenuDrawSprite(parent, *labels, 0xa2, item->alpha,
-                    item->x + 380.0f + (f32)(i * 0x17),
-                    item->y + 7.0f, item->scale);
+                    499.0f + item->x - 119.0f + (f32)(i * 0x17),
+                    340.0f + item->y - 333.0f, item->scale);
             }
         }
         break;
