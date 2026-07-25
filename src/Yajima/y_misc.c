@@ -6495,7 +6495,7 @@ void FUN_0042bd80(u64 param_1)
 
             iVar4 = K_Field_Get();
 
-            iVar4 = FUN_00427670(0x3f200000,0x3f200000,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
+            iVar4 = FUN_00427670(0.625f,0.625f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
                                  *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
 
@@ -6515,7 +6515,7 @@ void FUN_0042bd80(u64 param_1)
 
             iVar4 = K_Field_Get();
 
-            iVar4 = FUN_00427670(0x3f180000,0x3f180000,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
+            iVar4 = FUN_00427670(0.59375f,0.59375f,param_1,(&DAT_0095c0e0)[bVar2],uVar1,
 
                                  *(u8 *)(iVar6 + iVar4 + iVar9 + 0x4e));
 
