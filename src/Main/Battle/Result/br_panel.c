@@ -612,7 +612,7 @@ static void brPanel00236390(void)
     u8 color[4];
     f32 rect[8];
     char text[0x100];
-    char text2[0x100];
+    char text2[0xf0];
     u32 packedColor;
 
     K_ASSERT(sBrPanel != NULL, 0x99);
@@ -780,8 +780,8 @@ static void brPanel00236390(void)
             alpha = 1.0f - (f32)timer / 10.0f;
         }
     }
-    sprintf(text, "%d", *(s32*)(work + 0x2664));
-    length = (s32)strlen(text);
+    sprintf(text2, "%d", *(s32*)(work + 0x2664));
+    length = (s32)strlen(text2);
     textWidth = (f32)(length * 23);
     frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 350.0f - (textWidth + 40.0f +
@@ -792,8 +792,6 @@ static void brPanel00236390(void)
     brPanel00235ff0(work + 0x520, 7, *(s32*)(work + 0x2664), 0, rect);
     BR_PANEL_SET_COLOR(work + 0x520, alpha);
 
-    sprintf(text2, "%d", *(s32*)(work + 0x2664));
-    length = (s32)strlen(text2);
     frame = func_0021cca0(brRes00234570(0), 2);
     rect[0] = 40.0f + textWidth +
               40.0f - 0.0f + shift;
@@ -1029,13 +1027,11 @@ static void brPanel00236390(void)
     BR_PANEL_SET_RECT(work + 0x2160, 34.0f + shift, 180.0f + scale,
                       (f32)*(s32*)((u8*)frame + 0xc),
                       (f32)*(s32*)((u8*)frame + 0x10));
+    BR_PANEL_ANIMATE(work + 0x2160, 0x28);
     BR_PANEL_SET_COLOR(work + 0x2160, alpha);
 
-    frame = func_0021cca0(brRes00234570(0), 9);
-    BR_PANEL_SET_RECT(work + 0x2060, 8.0f + shift, 260.0f + scale,
-                      (f32)*(s32*)((u8*)frame + 0xc),
-                      (f32)*(s32*)((u8*)frame + 0x10));
-    BR_PANEL_SET_COLOR(work + 0x2060, alpha);
+    (void)func_0021cca0(brRes00234570(0), 9);
+    (void)func_0021cca0(brRes00234570(0), 6);
 
     /*
      * The dark quad is submitted once more after the emblem pass.  Retail
