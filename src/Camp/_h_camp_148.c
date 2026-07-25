@@ -468,20 +468,20 @@ void h_campDrawPersonaOverview(int param_1)
     if (iVar3 < *(int *)(param_1 + 0x1c)) {
       fVar5 = (float)(iVar3 * 0x55) + 62.0f;
       iVar4 = iVar3 * 10;
-      CAMP_DRAW_CALC_FIRST_AT(spb0, 0x42c80000,
+      CAMP_DRAW_CALC_FIRST_AT(spb0, 100.0f,
                               (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1e) * 0x44), 1,
                               fVar5 + 8.0f, 65.0f, 100.0f);
       pair.x = fVar5 + 31.0f;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x1f) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
       pair.x = fVar5 + 45.0f;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x20) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
       pair.x = fVar5 + 64.0f;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x21) * 0x44), 0, 2, 1, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
       iVar2 = iVar3 * 0x2a8;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x948) = 0;
       pair.x = fVar5 + 2.0f;
       pair.y = 14.0f;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xbc) + (iVar4 + 0x22) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x950) = 0;
       *(u32 *)(*(int *)(param_1 + 0xbc) + iVar2 + 0x994) = 0;
     }
@@ -502,17 +502,17 @@ void h_campDrawPersonaOverview(int param_1)
   CAMP_DRAW_CALC_FIRST_AT(spb8, 100.0f, (void*)(*(int *)(param_1 + 0xbc) + 0x1364), 1,
                        217.0f, 415.0f, 100.0f);
 
-  CAMP_DRAW_CALC_FIRST_AT(spc0, 0x42c80000, (void*)(*(u32 *)(param_1 + 0xc4)), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spc0, 100.0f, (void*)(*(u32 *)(param_1 + 0xc4)), 2,
                        281.0f, 12.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spb0, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spb0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x44), 2,
                        -87.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spc8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spc8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x88), 2,
                        28.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spa8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spa8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0xcc), 2,
                        35.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spd0, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spd0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x110), 2,
                        173.0f, 27.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spa0, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spa0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x154), 2,
                        201.0f, 27.0f, 100.0f);
   for (iVar3 = 0; iVar3 < 4; iVar3 = iVar3 + 1) {
     if (*(int *)(param_1 + 0x1c) + -1 < iVar3) {
@@ -523,15 +523,15 @@ void h_campDrawPersonaOverview(int param_1)
       *(u32 *)(*(int *)(param_1 + 0xc4) + iVar3 * 0x44 + 0x2e8) = 0;
       pair.x = 610.0f;
       pair.y = fVar5;
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
-      func_0018bc10(0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 11) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 10) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
+      func_0018bc10(100.0f, (void*)(*(int *)(param_1 + 0xc4) + (iVar3 + 11) * 0x44), 0, 2, 0, *(u64*)&pair, *(u64*)&pair, 0, 10, 0, 0);
     }
   }
-  CAMP_DRAW_CALC_FIRST_AT(spd8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spd8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x550), 2,
                        -53.0f, 61.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spe0, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spe0, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x7f8), 2,
                        126.0f, 415.0f, 100.0f);
-  CAMP_DRAW_CALC_FIRST_AT(spe8, 0x42c80000, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
+  CAMP_DRAW_CALC_FIRST_AT(spe8, 100.0f, (void*)(*(int *)(param_1 + 0xc4) + 0x83c), 2,
                        461.0f, 415.0f, 100.0f);
 }
 
