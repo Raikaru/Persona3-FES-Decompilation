@@ -1899,24 +1899,34 @@ void bpTexApplyActions(void)
     u32* work;
     u32* action;
     u32* leaves[8];
-    u32* direct[8];
+    u32* leavesA[8];
+    u32* leavesB[8];
+    u32* leavesC[8];
+    u32* leavesD[8];
+    u32* leavesE[8];
     u32* node;
     u32* child;
+    u32* first;
+    u32* tail;
     s32 actionCount;
     s32 nodeCount;
     s32 leafCount;
     s32 i;
     s32 j;
+    s32 idx;
     s32 frame;
     s32 directCount;
-    u32* first;
-    u32* tail;
     u32 rootCount;
     u8 quad[16];
     f32 position[3];
     f32 offsets[3];
+    f32 offsetsA[3];
     s32 difference;
     u32 tempIndex;
+    u32* direct[8];
+    u32* directOut[8];
+    u64 preload64;
+    f32 preloadFloat;
 
     if (BP_TEX_GLOBAL == NULL)
     {
@@ -1933,12 +1943,16 @@ void bpTexApplyActions(void)
             directCount = 0;
             for (child = BP_TEX_PTR(work, 0x1265c);
                  child != NULL;
-                 child = bpTexNodeNext(child))
+                 child = (u32*)child[0x3f1])
             {
                 if ((child[0] & 2) == 0 && child[0x3f2] == action[2])
                 {
                     directCount++;
                 }
+            }
+            if (BP_TEX_GLOBAL == NULL)
+            {
+                func_0019d3f0((const char*)0x0068ea00, 0xbc);
             }
             frame += directCount - 1;
         }
@@ -1954,12 +1968,16 @@ void bpTexApplyActions(void)
         if (action[0] == 2)
         {
             node = (u32*)action[2];
-            func_00259190(node, direct, &directCount);
+            func_00259190(node, directOut, &directCount);
             func_00258f80(node);
             for (j = 0; j < directCount; j++)
             {
-                child = direct[j];
+                child = directOut[j];
                 bpTexCollect(child, leaves, &leafCount);
+                for (idx = 0; idx < leafCount; idx++)
+                {
+                    leavesA[idx] = (u32*)((u8*)leaves[idx] + 0x18);
+                }
                 bpTexBuildPosition(position,
                                     child[4],
                                     (u8*)leaves[0] + 0x18,
@@ -1972,9 +1990,18 @@ void bpTexApplyActions(void)
                 child[0x493] = 1;
                 child[0] |= 0x200;
             }
-            FUN_0010a4e0(1, 0, 6,
-                         action[1] < 5 ? 4 :
-                         action[1] < 10 ? 3 : 2);
+            if (action[1] < 5)
+            {
+                FUN_0010a4e0(1, 0, 6, 4);
+            }
+            else if (action[1] < 10)
+            {
+                FUN_0010a4e0(1, 0, 6, 3);
+            }
+            else
+            {
+                FUN_0010a4e0(1, 0, 6, 2);
+            }
         }
         else if (action[0] == 1)
         {
@@ -1997,6 +2024,10 @@ void bpTexApplyActions(void)
             BP_TEX_PTR(work, 0x12660) = node;
             node[0] |= 0x3c;
             node[4] = first[4];
+            if (BP_TEX_GLOBAL == NULL)
+            {
+                func_0019d3f0((const char*)0x0068ea00, 0xbc);
+            }
             func_00258630(node);
             func_004bdde0(0, quad, (void*)0x0068ea70, 0);
             func_0024fc40((u8*)node + 0x45a, quad);
@@ -2031,7 +2062,7 @@ void bpTexApplyActions(void)
             }
             for (tail = BP_TEX_PTR(work, 0x1265c);
                  tail != NULL;
-                 tail = bpTexNodeNext(tail))
+                 tail = (u32*)tail[0x3f1])
             {
                 if ((tail[0] & 2) == 0 && node[4] < tail[4])
                 {
@@ -2043,9 +2074,18 @@ void bpTexApplyActions(void)
             node[0x493] = 0;
             *node |= 0x200;
             BP_TEX_U32(work, 0x1267c) = frame;
-            FUN_0010a4e0(1, 0, 6,
-                         action[1] < 5 ? 4 :
-                         action[1] < 10 ? 3 : 2);
+            if (action[1] < 5)
+            {
+                FUN_0010a4e0(1, 0, 6, 4);
+            }
+            else if (action[1] < 10)
+            {
+                FUN_0010a4e0(1, 0, 6, 3);
+            }
+            else
+            {
+                FUN_0010a4e0(1, 0, 6, 2);
+            }
         }
         else if (action[0] == 0)
         {
@@ -2066,37 +2106,54 @@ void bpTexApplyActions(void)
                           position,
                           action[1],
                           offsets);
-            bpTexCollect(right, leaves, &leafCount);
+            bpTexCollect(right, leavesB, &leafCount);
             bpTexBuildPosition(position,
                                 left[4],
-                                (u8*)leaves[0] + 0x18,
+                                (u8*)leavesB[0] + 0x18,
                                 frame);
-            offsets[0] = -100.0f - (f32)func_0051e0e0(difference) * 100.0f;
-            offsets[1] = -400.0f - (f32)func_0051e0e0(difference) * 100.0f;
-            offsets[2] = -200.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            offsetsA[0] = -100.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            offsetsA[1] = -400.0f - (f32)func_0051e0e0(difference) * 100.0f;
+            offsetsA[2] = -200.0f - (f32)func_0051e0e0(difference) * 100.0f;
             func_002505b0((u8*)right + 0x1094,
                           position,
                           action[1],
-                          offsets);
+                          offsetsA);
             tempIndex = left[4];
             left[4] = right[4];
             right[4] = tempIndex;
             BP_TEX_U32(work, 0x1267c) = frame;
-            FUN_0010a4e0(1, 0, 6,
-                         action[1] < 5 ? 4 :
-                         action[1] < 10 ? 3 : 2);
+            if (action[1] < 5)
+            {
+                FUN_0010a4e0(1, 0, 6, 4);
+            }
+            else if (action[1] < 10)
+            {
+                FUN_0010a4e0(1, 0, 6, 3);
+            }
+            else
+            {
+                FUN_0010a4e0(1, 0, 6, 2);
+            }
         }
     }
 
-    nodeCount = bpTexNodeCount();
-    for (i = 0; i < nodeCount; i++)
+    for (node = BP_TEX_PTR(work, 0x1265c);
+         node != NULL;
+         node = (u32*)node[0x3f1])
     {
-        node = bpTexFindNode((u32)i);
         if ((*node & 0x20) == 0)
         {
-            bpTexCollect(node, leaves, &leafCount);
+            if (BP_TEX_GLOBAL == NULL)
+            {
+                func_0019d3f0((const char*)0x0068ea00, 0xbc);
+            }
+            bpTexCollect(node, leavesC, &leafCount);
+            bpTexBuildPosition(position,
+                                node[4],
+                                (u8*)leavesC[0] + 0x18,
+                                frame);
             func_002508c0((u8*)node + 0x1094,
-                          (u8*)leaves[0] + 0x18,
+                          position,
                           BP_TEX_U32(work, 0x127b0));
         }
     }
