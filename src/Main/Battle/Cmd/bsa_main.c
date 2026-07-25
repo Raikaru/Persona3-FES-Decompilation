@@ -685,6 +685,12 @@ void bsaMain00210d90(BsaWork* work)
         }
     }
 
+    /*
+     * The initial base value is dead after the persona/resource drawing.
+     * Re-materialize it here so it does not stay live across that call-heavy
+     * section (retail keeps one fewer callee-saved float register).
+     */
+    base = (p[0] == 0) ? 180.0f : 0.0f;
     switch (p[0]) {
     case 0:
         rect[0] = -1.0f; rect[1] = 219.0f; rect[2] = 51.0f; rect[3] = 190.0f;
