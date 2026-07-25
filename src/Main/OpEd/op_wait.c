@@ -592,6 +592,15 @@ void opWait0026eed0(void)
             func_0021d8e0(work + 0x340, rect);
         }
     }
+    else if (mode == 1)
+    {
+        phase = opWaitClamp01(timer, 0, 40);
+        alpha = 1.0f - opWaitClamp01(timer, 0, 30);
+        opWaitSetPoly(work + 0x340, points, 140.0f, 150.0f,
+                      640.0f, 448.0f,
+                      1.0f + phase * 4.5f,
+                      1.0f + phase * 6.75f);
+    }
     opWaitSetColor(work + 0x340, alpha * 255.0f);
 
     if (mode == 0)
