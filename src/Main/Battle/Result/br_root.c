@@ -3199,6 +3199,14 @@ void func_001f7210(void)
     u32 eff_total = 0;
     u32 crd_flt[24];
     u16 scan_arr[20];
+    s32 member_count;
+    u16 cur_hp, max_hp;
+    u16 cur_sp, max_sp;
+    u32 st_val;
+    u32 apply_idx;
+    u16 apply_mbr;
+    u32 amount;
+    u32 new_val;
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
@@ -3385,6 +3393,7 @@ void func_001f7210(void)
             printf("money : %d\n", per_kind_val);
             per_kind_val += (u32)value;
             if (per_kind_val > 9999999) per_kind_val = 9999999;
+            printf("money : %d\n", per_kind_val);
             datSetMoney(per_kind_val);
             printf("money : %d\n", per_kind_val);
             break;
@@ -3483,6 +3492,104 @@ void func_001f7210(void)
             }
             break;
         }
+        case 13:
+            /* F852C: work[0x18] = work[0x18] * value / 100 */
+            BR_U32(work, 0x18) = (u32)((s32)BR_U32(work, 0x18) * value / 100);
+            break;
+        case 14:
+            /* F854C: HP recover direct (member 1) */
+            cur_hp = (u16)func_0016c4f0(1);
+            max_hp = (u16)func_0016c5f0(1);
+            amount = (u32)((s32)max_hp * value / 100);
+            new_val = cur_hp + amount;
+            if (new_val > max_hp) new_val = max_hp;
+            func_0016cf40(1, (u32)(s16)new_val);
+            break;
+        case 15:
+            /* F85AC: HP recover scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                cur_hp = (u16)func_0016c4f0(apply_mbr);
+                max_hp = (u16)func_0016c5f0(apply_mbr);
+                amount = (u32)((s32)max_hp * value / 100);
+                new_val = cur_hp + amount;
+                if (new_val > max_hp) new_val = max_hp;
+                func_0016cf40(apply_mbr, (u32)(s16)new_val);
+            }
+            break;
+        case 16:
+            /* F8638: SP recover direct (member 1) */
+            cur_sp = (u16)func_0016c570(1);
+            max_sp = (u16)func_0016c670(1);
+            amount = (u32)((s32)max_sp * value / 100);
+            new_val = cur_sp + amount;
+            if (new_val > max_sp) new_val = max_sp;
+            func_0016cf90(1, (u32)(s16)new_val);
+            break;
+        case 17:
+            /* F8698: SP recover scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                cur_sp = (u16)func_0016c570(apply_mbr);
+                max_sp = (u16)func_0016c670(apply_mbr);
+                amount = (u32)((s32)max_sp * value / 100);
+                new_val = cur_sp + amount;
+                if (new_val > max_sp) new_val = max_sp;
+                func_0016cf90(apply_mbr, (u32)(s16)new_val);
+            }
+            break;
+        case 18:
+            /* F8724: bad-status clear direct (member 1) */
+            st_val = func_0016c970(1);
+            func_0016d8b0(1, st_val & ~0x80);
+            break;
+        case 19:
+            /* F874C: bad-status clear scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c970(apply_mbr);
+                func_0016d8b0(apply_mbr, st_val & ~0x80);
+            }
+            break;
+        case 21:
+            /* F87A0: physicalCondition set 0 direct */
+            st_val = func_0016c920(1);
+            func_0016d6b0(1, 0);
+            break;
+        case 22:
+            /* F87C4: physicalCondition set 0 scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                func_0016d6b0(apply_mbr, 0);
+            }
+            break;
+        case 23:
+            /* F8814: physicalCondition set 1 direct */
+            st_val = func_0016c920(1);
+            func_0016d6b0(1, 1);
+            break;
+        case 24:
+            /* F8838: physicalCondition set 1 scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                func_0016d6b0(apply_mbr, 1);
+            }
+            break;
+        case 25:
+            /* F8888: physicalCondition set 2 direct */
+            st_val = func_0016c920(1);
+            func_0016d6b0(1, 2);
+            break;
+        case 26:
+            /* F88AC: physicalCondition set 2 scan */
+            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
+                apply_mbr = scan_arr[apply_idx];
+                st_val = func_0016c920(apply_mbr);
+                func_0016d6b0(apply_mbr, 2);
+            }
+            break;
         default:
             break;
         }
@@ -3776,7 +3883,6 @@ void func_001f7210(void)
     {
         s32 party_eff;
         s32 party_mem;
-        s32 member_count;
         u32 eff_cnt[5];
         u32 i_idx2;
         eff_cnt[0] = 0; eff_cnt[1] = 0; eff_cnt[2] = 0; eff_cnt[3] = 0; eff_cnt[4] = 0;
@@ -3935,155 +4041,6 @@ void func_001f7210(void)
         if (eff_total > 0) {
             kind = eff_total % 28;
         }
-    /*
-     * Second party effect: APPLY each effect via the same 13-effect structure.
-     * Iterates the same cases as the counting loop above, but instead of
-     * incrementing eff_total, actually calls the recovery/status set functions.
-     * Uses the inline-stack scan array built by brRoot001f1df0 above.
-     * 
-     * Retail at func+4900-5864: the application case bodies reached via
-     * the 13-entry dispatch table at 0x7b7000 -> kind mapping (14-26) ->
-     * second 28-entry dispatch table at 0x7b6f90.
-     */
-    for (party_eff = 0; party_eff < 13; party_eff++) {
-        u16 cur_hp, max_hp;
-        u16 cur_sp, max_sp;
-        u32 st_val;
-        u32 apply_idx;
-        u16 apply_mbr;
-        switch (party_eff) {
-        case 0:
-            /* off=4924: DIRECT HP apply (member 1) */
-            cur_hp = (u16)func_0016c4f0(1);
-            max_hp = (u16)func_0016c5f0(1);
-            printf("rank %d\n", cur_hp);
-            if (cur_hp < max_hp) {
-                u32 amount = max_hp * value / 100;
-                u32 new_hp = cur_hp + amount;
-                if (new_hp > max_hp) new_hp = max_hp;
-                func_0016cf40(1, new_hp);
-            }
-            break;
-        case 1:
-            /* off=5020: LOOP HP apply (scan array, bounded by sp+0x24c) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                cur_hp = (u16)func_0016c4f0(apply_mbr);
-                max_hp = (u16)func_0016c5f0(apply_mbr);
-                if (cur_hp < max_hp) {
-                    u32 amount = max_hp * value / 100;
-                    u32 new_hp = cur_hp + amount;
-                    if (new_hp > max_hp) new_hp = max_hp;
-                    func_0016cf40(apply_mbr, new_hp);
-                    break;
-                }
-            }
-            break;
-        case 2:
-            /* off=5160: DIRECT SP apply (member 1) */
-            cur_sp = (u16)func_0016c570(1);
-            max_sp = (u16)func_0016c670(1);
-            if (cur_sp < max_sp) {
-                u32 amount = max_sp * value / 100;
-                u32 new_sp = cur_sp + amount;
-                if (new_sp > max_sp) new_sp = max_sp;
-                func_0016cf90(1, new_sp);
-            }
-            break;
-        case 3:
-            /* off=5256: LOOP SP apply (scan array, bounded by sp+0x24c) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                cur_sp = (u16)func_0016c570(apply_mbr);
-                max_sp = (u16)func_0016c670(apply_mbr);
-                if (cur_sp < max_sp) {
-                    u32 amount = max_sp * value / 100;
-                    u32 new_sp = cur_sp + amount;
-                    if (new_sp > max_sp) new_sp = max_sp;
-                    func_0016cf90(apply_mbr, new_sp);
-                    break;
-                }
-            }
-            break;
-        case 4:
-            /* off=5396: DIRECT bad-status clear (member 1) */
-            st_val = func_0016c970(1);
-            if ((st_val & 0x80) == 0) {
-                func_0016d8b0(1, st_val & ~0x80);
-            }
-            break;
-        case 5:
-            /* off=5436: LOOP bad-status clear (scan array, bounded by sp+0x24c) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c970(apply_mbr);
-                if ((st_val & 0x80) != 0) {
-                    func_0016d8b0(apply_mbr, st_val & ~0x80);
-                    break;
-                }
-            }
-            break;
-        case 6:
-            /* off=3072: empty marker (loop continuation) */
-            break;
-        case 7:
-            /* off=5520: DIRECT setPhysicalCondition (a1=0) */
-            st_val = func_0016c920(1);
-            if (st_val >= 3 && st_val <= 5) {
-                func_0016d6b0(1, 0);
-            }
-            break;
-        case 8:
-            /* off=5556: LOOP setPhysicalCondition (a1=0, scan) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                if (st_val >= 3 && st_val <= 5) {
-                    func_0016d6b0(apply_mbr, 0);
-                    break;
-                }
-            }
-            break;
-        case 9:
-            /* off=5636: DIRECT setPhysicalCondition (a1=1) */
-            st_val = func_0016c920(1);
-            if (st_val == 1 || st_val == 2) {
-                func_0016d6b0(1, 1);
-            }
-            break;
-        case 10:
-            /* off=5672: LOOP setPhysicalCondition (a1=2, scan) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                if (st_val == 1) {
-                    func_0016d6b0(apply_mbr, 2);
-                    break;
-                }
-            }
-            break;
-        case 11:
-            /* off=5752: DIRECT setPhysicalCondition (a1=2) */
-            st_val = func_0016c920(1);
-            if (st_val != 2) {
-                func_0016d6b0(1, 2);
-            }
-            break;
-        case 12:
-            /* off=5788: LOOP setPhysicalCondition (a1=2, scan) */
-            for (apply_idx = 0; apply_idx < (u32)member_count; apply_idx++) {
-                apply_mbr = scan_arr[apply_idx];
-                st_val = func_0016c920(apply_mbr);
-                if (st_val != 2) {
-                    func_0016d6b0(apply_mbr, 2);
-                    break;
-                }
-            }
-            break;
-        default:
-            break;
-        }
-    }
     }
     /*
      * Reward-card animation tail (retail at func+7504-7908).
