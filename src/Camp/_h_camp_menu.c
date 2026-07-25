@@ -1065,27 +1065,27 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             FUN_00523ac8(text, 0x7cb66c,
                          FUN_00171110(dataId, *((s8*)record + 10)));
             width = FUN_003b2cb0_typed(item->scale,
-                                       (s32)(item->x + 35.0f),
-                                       (s32)(item->y + 11.0f), alpha,
+                                       (s32)(154.0f + item->x - 119.0f),
+                                       (s32)(9.0f + item->y + 2.0f), alpha,
                                        6, 1, (const char*)text, 0x11, 0);
             campMenuDrawSprite(parent, *labels, 0x33, item->alpha,
-                               item->x + 41.0f + (f32)width,
+                               154.0f + item->x - 119.0f + (f32)width + 6.0f,
                                340.0f + item->y - 333.0f, item->scale);
             value = *((u8*)record + 7);
             if (value >= 10) {
                 campMenuDrawSprite(parent, FUN_001120a0(1),
                                    value / 10 + 0xb, item->alpha,
                                    item->x + 72.0f + (f32)width,
-                                   item->y + 12.0f, item->scale);
+                                   13.0f + item->y - 1.0f, item->scale);
                 campMenuDrawSprite(parent, FUN_001120a0(1),
                                    value % 10 + 0xb, item->alpha,
                                    item->x + 88.0f + (f32)width,
-                                   item->y + 12.0f, item->scale);
+                                   13.0f + item->y - 1.0f, item->scale);
             } else {
                 campMenuDrawSprite(parent, FUN_001120a0(1),
                                    value + 0xb, item->alpha,
                                    item->x + 72.0f + (f32)width,
-                                   item->y + 12.0f, item->scale);
+                                   13.0f + item->y - 1.0f, item->scale);
             }
         } else if (category == 3) {
             FUN_00523ac8(text, 0x7cb67c, *((u32*)record + 2));
