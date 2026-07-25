@@ -3480,58 +3480,58 @@ void func_001f7210(void)
     case 10:
     {
         u32 tmp;
-        /* off=6512: guard check (only for even kind) + HP stat chain */
-        if ((kind & 1) == 0) {
+        /* off=6512: guard on debug_val, then academic level string */
+        if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
             func_003c7430(26);
+        } else {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            tmp = func_0016c6f0(1);
+            tmp = func_00177280(tmp);
+            tmp = func_0011a810(tmp);
+            func_003c7bc0(1, tmp);
+            func_003c7430(29);
         }
-        /* Pattern 2: HP stat chain */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        tmp = func_0016c6f0(1);
-        tmp = func_00177280(tmp);
-        tmp = func_0011a810(tmp);
-        func_003c7bc0(1, tmp);
-        func_003c7430(29);
         break;
     }
     case 11:
     {
         u32 tmp;
-        /* off=6680: guard check (only for even kind) + SP stat chain */
-        if ((kind & 1) == 0) {
+        /* off=6680: guard on debug_val, then charm level string */
+        if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
-            func_003c7430(26);
+            func_003c7430(25);
+        } else {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            tmp = func_0016c740(1);
+            tmp = func_001772f0(tmp);
+            tmp = func_0011a840(tmp);
+            func_003c7bc0(1, tmp);
+            func_003c7430(28);
         }
-        /* Pattern 2: SP stat chain */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        tmp = func_0016c740(1);
-        tmp = func_001772f0(tmp);
-        tmp = func_0011a840(tmp);
-        func_003c7bc0(1, tmp);
-        func_003c7430(28);
         break;
     }
     case 12:
     {
         u32 tmp;
-        /* off=6848: guard check (only for even kind) + Status stat chain */
-        if ((kind & 1) == 0) {
+        /* off=6848: guard on debug_val, then courage level string */
+        if ((debug_val & 1) == 0) {
             tmp = func_001775a0(1);
             func_003c7bc0(0, tmp);
-            func_003c7430(26);
+            func_003c7430(24);
+        } else {
+            tmp = func_001775a0(1);
+            func_003c7bc0(0, tmp);
+            tmp = func_0016c790(1);
+            tmp = func_00177360(tmp);
+            tmp = func_0011a870(tmp);
+            func_003c7bc0(1, tmp);
+            func_003c7430(27);
         }
-        /* Pattern 2: Status stat chain */
-        tmp = func_001775a0(1);
-        func_003c7bc0(0, tmp);
-        tmp = func_0016c790(1);
-        tmp = func_00177360(tmp);
-        tmp = func_0011a870(tmp);
-        func_003c7bc0(1, tmp);
-        func_003c7430(33);
         break;
     }
     case 13:
