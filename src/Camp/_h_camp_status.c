@@ -374,9 +374,10 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
     char text[0x100];
-    u32 current;
-    u32 maximum;
     s32 bright;
+    u32 val;
+    f32 dx;
+    f32 dy;
 
     FUN_00523ac8(text, gp0xffff897c, FUN_00177790(pcId));
     bright = campStatusClampFade(0xff - fade);
@@ -388,32 +389,99 @@ void h_campStatusDrawHp(CampVec2 position, f32 alpha, s16 pcId,
                      (f32)(0x4c - barOffset),
                      position.x + 59.0f, 0xffffff00, barOffset, 10);
     }
-    current = datGetHp(pcId);
-    maximum = datGetMaxHp(pcId);
-    campStatusDrawNumber(alpha, position.x + 79.0f, (70.0f + position.y) - 12.0f,
-                         current);
-    campStatusDrawNumber(alpha, position.x + 138.0f, (70.0f + position.y) - 12.0f,
-                         maximum);
+    dy = (70.0f + position.y) - 12.0f;
+    campStatusGetFont(2);
+    /* Draw current HP digits */
+    val = datGetHp(pcId);
+    dx = position.x + 79.0f;
+    if (val >= 100) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 100;
+        dx += 15.0f;
+    }
+    if (val >= 10) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 10;
+        dx += 15.0f;
+    }
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
+                            (u32)(u8)alpha, dx, dy, 0);
+    /* Separator */
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 4,
+                            (u32)(u8)alpha, position.x + 85.0f, dy, 0);
+    /* Draw max HP digits */
+    val = datGetMaxHp(pcId);
+    dx = position.x + 138.0f;
+    if (val >= 100) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 100;
+        dx += 15.0f;
+    }
+    if (val >= 10) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 10;
+        dx += 15.0f;
+    }
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
+                            (u32)(u8)alpha, dx, dy, 0);
 }
 
 // FUN_00123B70 NONMATCHING
 void h_campStatusDrawSp(CampVec2 position, f32 alpha, s16 pcId,
                         s32 barOffset, s32 fade)
 {
-    u32 current;
-    u32 maximum;
+    u32 val;
+    f32 dx;
+    f32 dy;
 
     if (barOffset != 0) {
         FUN_00113a30(alpha - 1.0f, position.y + 196.0f +
                      (f32)(0x4c - barOffset),
                      position.x + 75.0f, 0xffffff00, barOffset, 10);
     }
-    current = datGetSp(pcId);
-    maximum = func_0016c670(pcId);
-    campStatusDrawNumber(alpha, position.x + 79.0f, position.y + 73.0f,
-                         current);
-    campStatusDrawNumber(alpha, position.x + 138.0f, position.y + 73.0f,
-                         maximum);
+    dy = position.y + 73.0f;
+    campStatusGetFont(2);
+    /* Draw current SP digits */
+    val = datGetSp(pcId);
+    dx = position.x + 79.0f;
+    if (val >= 100) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 100;
+        dx += 15.0f;
+    }
+    if (val >= 10) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 10;
+        dx += 15.0f;
+    }
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
+                            (u32)(u8)alpha, dx, dy, 0);
+    /* Separator */
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, 4,
+                            (u32)(u8)alpha, position.x + 97.0f, dy, 0);
+    /* Draw max SP digits */
+    val = func_0016c670(pcId);
+    dx = position.x + 138.0f;
+    if (val >= 100) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 100 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 100;
+        dx += 15.0f;
+    }
+    if (val >= 10) {
+        campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val / 10 + 0xb,
+                                (u32)(u8)alpha, dx, dy, 0);
+        val %= 10;
+        dx += 15.0f;
+    }
+    campStatusDrawSpriteCall(0x42c80000, DAT_00833B90, val + 0xb,
+                            (u32)(u8)alpha, dx, dy, 0);
 }
 
 #pragma schedule off
