@@ -471,22 +471,13 @@ void bsaMain00210d90(BsaWork* work)
     image = func_0021cca0(table2, 0x1f);
     bsaPlaceQuad(p, 0x40, image, 59.0f, base + 60.0f + slide,
                  -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
-    if ((p[1] & BSA_FLAG_TRANSITION) != 0) {
-        f32 origin[2];
-        origin[0] = 18.0f;
-        origin[1] = base + 54.0f + slide;
-        bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
-        for (i = 0; i < 2; i++)
-            bsaSetColor(p + 0x4c50 + i * 0x100, color);
-    }
-
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         f32 origin[2];
-        origin[0] = p[0x1310] < 10 ? 58.0f : 66.0f;
-        origin[1] = base + 62.0f;
-        bpIFont00238a50(p + 0x1314, 2, p[0x1310], 1, origin);
-        bsaSetColor(p + 0x1314, color);
-        bsaSetColor(p + 0x1354, color);
+        origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
+        origin[1] = 62.0f + base;
+        bpIFont00238a50(p + 0x4c50, 2, p[0x4c40], 1, origin);
+        bsaSetColor(p + 0x4c50, color);
+        bsaSetColor(p + 0x4c90, color);
     } else {
         image = func_0021cca0(table2, 0x32);
         bsaPlaceQuad(p, 0x182c, image, 110.0f, base + 58.0f,
