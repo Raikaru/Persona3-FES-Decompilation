@@ -433,6 +433,7 @@ void bsaMain00210d90(BsaWork* work)
     s32 i;
     f32 rect[4];
     u8 drawColor[4];
+    u8 colorArray[16];
     u8 color;
 
     p = (s32*)work->words;
@@ -632,68 +633,87 @@ void bsaMain00210d90(BsaWork* work)
             image = func_0021cca0(table2, p[0x17e8] + 0x16);
         else
             image = func_0021cca0(table2, 0x3c);
-        bsaPlaceQuad(p, 0x17ec, image, 50.0f, 233.0f,
-                     -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+        rect[0] = 50.0f;
+        rect[1] = 233.0f;
+        rect[2] = BSA_FRAME_W(image);
+        rect[3] = BSA_FRAME_H(image);
+        func_0021d8e0(p + 0x17ec, rect);
+        drawColor[0] = 0; drawColor[1] = 0; drawColor[2] = 0;
+        drawColor[3] = bsaAlpha(alpha * 255.0f);
+        func_0021d950(p + 0x17ec, drawColor);
 
         for (i = 0; i < 8; i++) {
+            f32 baseX;
             f32 groupX;
             f32 groupY;
-            groupX = ((i / 4) == 0 ? 0.0f : 270.0f) + 46.0f;
+            baseX = (i / 4) == 0 ? 0.0f : 270.0f;
+            groupX = baseX + 46.0f;
             groupY = (f32)(i & 3) * 30.0f + 292.0f;
             image = func_0021cca0(table2, 0x23);
             bsaPlaceQuad(p, i * 0x80 + 0x850, image,
                          groupX, groupY, -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
             bsaPlaceQuad(p, i * 0x80 + 0x890, image,
-                         groupX, groupY - 17.0f, 17.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+                         groupX, groupY - 17.0f, -1.0f, 17.0f, bsaAlpha(alpha * 255.0f));
             image = func_0021cca0(table2, 0x25);
             bsaPlaceQuad(p, i * 0x80 + 0xc50, image,
-                         groupX + 58.0f, groupY, -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+                         baseX + 58.0f, groupY, -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
             bsaPlaceQuad(p, i * 0x80 + 0xc90, image,
-                         groupX + 58.0f, groupY, 236.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+                         baseX + 58.0f + BSA_FRAME_W(image), groupY, 236.0f, -1.0f, bsaAlpha(alpha * 255.0f));
             if (i < (s32)p[0xd]) {
                 image = func_0021cca0(table6,
                                       *(s16*)((u8*)p + i * 2 + 0xa6b8));
-                bsaPlaceQuad(p, i * 0x40 + 0x1050, image,
-                             ((i / 4) == 0 ? 0.0f : 270.0f) + 54.0f,
-                             (f32)(i & 3) * 30.0f + 271.0f,
-                             -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+                rect[0] = baseX + 54.0f;
+                rect[1] = (f32)(i & 3) * 30.0f + 271.0f;
+                rect[2] = BSA_FRAME_W(image);
+                rect[3] = BSA_FRAME_H(image);
+                func_0021d8e0(p + i * 0x40 + 0x1050, rect);
+                drawColor[0] = 0xa9; drawColor[1] = 0xb5; drawColor[2] = 0xc5;
+                drawColor[3] = bsaAlpha(alpha * 255.0f);
+                func_0021d950(p + i * 0x40 + 0x1050, drawColor);
             }
             if ((p[1] & BSA_FLAG_RESOURCE) == 0) {
                 if (i < (s32)p[0xd]) {
-                    func_003b0d70(p[i + 5], (s32)((groupX + 89.0f) * 16.0f),
+                    func_003b0d70(p[i + 5], (s32)((baseX + 89.0f) * 16.0f),
                                   (s32)((groupY - 18.0f) * 8.0f));
                     func_003b0e20(p[i + 5], 0xffffff00u | bsaAlpha(alpha * 255.0f));
                 }
             } else {
                 image = func_0021cca0(table2, 0x32);
                 bsaPlaceQuad(p, i * 0x100 + 0x1c2c, image,
-                             groupX + 142.0f, groupY - 14.0f,
+                             baseX + 142.0f, groupY - 14.0f,
                              -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
                 image = func_0021cca0(table2, 0x35);
                 bsaPlaceQuad(p, i * 0x100 + 0x1c6c, image,
-                             groupX + 101.0f, groupY - 14.0f,
+                             baseX + 101.0f, groupY - 14.0f,
                              -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
                 bsaPlaceQuad(p, i * 0x100 + 0x1cac, image,
-                             groupX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f,
+                             baseX + 101.0f + BSA_FRAME_W(image), groupY - 14.0f,
                              103.0f, -1.0f, bsaAlpha(alpha * 255.0f));
                 image = func_0021cca0(table2, 0x36);
                 bsaPlaceQuad(p, i * 0x100 + 0x1cec, image,
-                             groupX + 208.0f, groupY - 14.0f,
+                             baseX + 208.0f, groupY - 14.0f,
                              -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
             }
         }
     }
 
-    if (p[0] == 1) {
-        y = 39.0f;
-        x = 370.0f;
-    } else {
-        y = 219.0f;
-        x = 190.0f;
+    switch (p[0]) {
+    case 0:
+        rect[0] = -1.0f; rect[1] = 219.0f; rect[2] = 51.0f; rect[3] = 190.0f;
+        break;
+    case 1:
+        rect[0] = -1.0f; rect[1] = 39.0f; rect[2] = 51.0f; rect[3] = 370.0f;
+        break;
     }
-    rect[0] = -1.0f; rect[1] = y; rect[2] = 51.0f;  rect[3] = x;
     func_0021d8e0(p + 0x242c, rect);
-    rect[0] = 50.0f; rect[1] = y; rect[2] = 500.0f; rect[3] = x;
+    switch (p[0]) {
+    case 0:
+        rect[0] = 50.0f; rect[1] = 219.0f; rect[2] = 500.0f; rect[3] = 190.0f;
+        break;
+    case 1:
+        rect[0] = 50.0f; rect[1] = 39.0f; rect[2] = 500.0f; rect[3] = 370.0f;
+        break;
+    }
     func_0021d8e0(p + 0x246c, rect);
     /*
      * Retail lays these panels out with rect writes only; their colours are
@@ -725,32 +745,48 @@ void bsaMain00210d90(BsaWork* work)
         drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
         drawColor[3] = bsaAlpha(alpha * 255.0f);
         func_0021d950(p + 0x242c, drawColor);
-        ((u32*)rect)[0] = *(u32*)drawColor;
-        ((u32*)rect)[1] = *(u32*)drawColor;
-        ((u32*)rect)[2] = *(u32*)drawColor;
-        ((u32*)rect)[3] = *(u32*)drawColor;
-        func_0021dd60(p + 0x246c, (u8*)rect);
+        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
+        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
+        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
+        colorArray[6] = drawColor[2]; colorArray[7] = 0;
+        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
+        colorArray[10] = drawColor[2]; colorArray[11] = 0;
+        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
+        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
+        func_0021dd60(p + 0x246c, colorArray);
         drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
         drawColor[3] = bsaAlpha(alpha * 204.0f);
         func_0021d950(p + 0x24ac, drawColor);
-        ((u32*)rect)[0] = *(u32*)drawColor;
-        ((u32*)rect)[1] = *(u32*)drawColor;
-        ((u32*)rect)[2] = *(u32*)drawColor;
-        ((u32*)rect)[3] = *(u32*)drawColor;
-        func_0021dd60(p + 0x24ec, (u8*)rect);
+        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
+        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
+        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
+        colorArray[6] = drawColor[2]; colorArray[7] = 0;
+        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
+        colorArray[10] = drawColor[2]; colorArray[11] = 0;
+        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
+        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
+        func_0021dd60(p + 0x24ec, colorArray);
         func_0021d950(p + 0x252c, drawColor);
-        ((u32*)rect)[0] = *(u32*)drawColor;
-        ((u32*)rect)[1] = *(u32*)drawColor;
-        ((u32*)rect)[2] = *(u32*)drawColor;
-        ((u32*)rect)[3] = *(u32*)drawColor;
-        func_0021dd60(p + 0x256c, (u8*)rect);
+        colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
+        colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
+        colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
+        colorArray[6] = drawColor[2]; colorArray[7] = 0;
+        colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
+        colorArray[10] = drawColor[2]; colorArray[11] = 0;
+        colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
+        colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
+        func_0021dd60(p + 0x256c, colorArray);
         for (i = 0; i < 8; i++) {
             func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
-            ((u32*)rect)[0] = *(u32*)drawColor;
-            ((u32*)rect)[1] = *(u32*)drawColor;
-            ((u32*)rect)[2] = *(u32*)drawColor;
-            ((u32*)rect)[3] = *(u32*)drawColor;
-            func_0021dd60(p + i * 0x80 + 0x25ec, (u8*)rect);
+            colorArray[0] = drawColor[0]; colorArray[1] = drawColor[1];
+            colorArray[2] = drawColor[2]; colorArray[3] = drawColor[3];
+            colorArray[4] = drawColor[0]; colorArray[5] = drawColor[1];
+            colorArray[6] = drawColor[2]; colorArray[7] = 0;
+            colorArray[8] = drawColor[0]; colorArray[9] = drawColor[1];
+            colorArray[10] = drawColor[2]; colorArray[11] = 0;
+            colorArray[12] = drawColor[0]; colorArray[13] = drawColor[1];
+            colorArray[14] = drawColor[2]; colorArray[15] = drawColor[3];
+            func_0021dd60(p + i * 0x80 + 0x25ec, colorArray);
         }
     }
 }
