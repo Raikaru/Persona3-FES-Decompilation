@@ -3341,15 +3341,15 @@ void func_001f7210(void)
         func_003c7430(20);
         break;
     case 6:
-        /* off=6260: addu a0,s6,v0 -> func_00209d40(entry) */
-        tmp = (u32)func_00209d40(entry);
+        /* off=6260: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(18);
         break;
     case 7:
-        /* off=6328: addu a0,s6,v0 -> func_00209d40(entry) */
-        tmp = (u32)func_00209d40(entry);
+        /* off=6328: lhu a0,2(s3) -> func_00173220(entry[1]) */
+        tmp = func_00173220(BR_U16(entry, 2));
         func_003c7bc0(0, tmp);
         func_003c7c20(1, value, 0);
         func_003c7430(19);
