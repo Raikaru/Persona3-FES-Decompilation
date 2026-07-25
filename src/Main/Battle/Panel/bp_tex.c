@@ -492,7 +492,6 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
         s32 rasterHeight;
         u32 xMode;
         u32 yMode;
-        f32 extent;
     xRange[0] = (f32)frame->x;
     xRange[1] = (f32)(frame->x + frame->width);
     rasterWidth = *(s32*)(raster + 0x0c);
@@ -538,86 +537,80 @@ void func_0021cec0(void* frameData, f32* uv, u32 mode)
 
     if (xMode == 0)
     {
-        extent = (f32)rasterWidth;
         if ((frame->id & 1) != 0)
         {
-            uv[0] = xRange[1] / extent;
-            uv[2] = xRange[0] / extent;
+            uv[0] = xRange[1] / (f32)rasterWidth;
+            uv[2] = xRange[0] / (f32)rasterWidth;
         }
         else
         {
-            uv[0] = xRange[0] / extent;
-            uv[2] = xRange[1] / extent;
+            uv[0] = xRange[0] / (f32)rasterWidth;
+            uv[2] = xRange[1] / (f32)rasterWidth;
         }
     }
     else if (xMode == 1)
     {
-        extent = (f32)rasterWidth;
         if ((frame->id & 1) != 0)
         {
-            uv[0] = xRange[1] / extent;
-            uv[2] = (xRange[1] - 1.0f) / extent;
+            uv[0] = xRange[1] / (f32)rasterWidth;
+            uv[2] = (xRange[1] - 1.0f) / (f32)rasterWidth;
         }
         else
         {
-            uv[0] = xRange[0] / extent;
-            uv[2] = (xRange[0] + 1.0f) / extent;
+            uv[0] = xRange[0] / (f32)rasterWidth;
+            uv[2] = (xRange[0] + 1.0f) / (f32)rasterWidth;
         }
     }
     else
     {
-        extent = (f32)rasterWidth;
         if ((frame->id & 1) != 0)
         {
-            uv[0] = (xRange[0] + 1.0f) / extent;
-            uv[2] = xRange[0] / extent;
+            uv[0] = (xRange[0] + 1.0f) / (f32)rasterWidth;
+            uv[2] = xRange[0] / (f32)rasterWidth;
         }
         else
         {
-            uv[0] = (xRange[1] - 1.0f) / extent;
-            uv[2] = xRange[1] / extent;
+            uv[0] = (xRange[1] - 1.0f) / (f32)rasterWidth;
+            uv[2] = xRange[1] / (f32)rasterWidth;
         }
     }
     if (yMode == 0)
     {
-        extent = (f32)rasterHeight;
         if ((frame->id >> 1 & 1) != 0)
         {
-            uv[1] = yRange[1] / extent;
-            uv[3] = yRange[0] / extent;
+            uv[1] = yRange[1] / (f32)rasterHeight;
+            uv[3] = yRange[0] / (f32)rasterHeight;
         }
         else
         {
-            uv[1] = yRange[0] / extent;
-            uv[3] = yRange[1] / extent;
+            uv[1] = yRange[0] / (f32)rasterHeight;
+            uv[3] = yRange[1] / (f32)rasterHeight;
         }
     }
     else if (yMode == 1)
     {
-        extent = (f32)rasterHeight;
         if ((frame->id >> 1 & 1) != 0)
         {
-            uv[1] = yRange[1] / extent;
-            uv[3] = (yRange[1] - 1.0f) / extent;
+            uv[1] = yRange[1] / (f32)rasterHeight;
+            uv[3] = (yRange[1] - 1.0f) / (f32)rasterHeight;
         }
         else
         {
-            uv[1] = yRange[0] / extent;
-            uv[3] = (yRange[0] + 1.0f) / extent;
+            uv[1] = yRange[0] / (f32)rasterHeight;
+            uv[3] = (yRange[0] + 1.0f) / (f32)rasterHeight;
         }
     }
     else
     {
-        extent = (f32)rasterHeight;
         if ((frame->id >> 1 & 1) != 0)
         {
-            uv[1] = (yRange[0] + 1.0f) / extent;
-            uv[3] = yRange[0] / extent;
+            uv[1] = (yRange[0] + 1.0f) / (f32)rasterHeight;
+            uv[3] = yRange[0] / (f32)rasterHeight;
         }
         else
         {
-            uv[1] = (yRange[1] - 1.0f) / extent;
-            uv[3] = yRange[1] / extent;
+            uv[1] = (yRange[1] - 1.0f) / (f32)rasterHeight;
+            uv[3] = yRange[1] / (f32)rasterHeight;
         }
     }
     }
