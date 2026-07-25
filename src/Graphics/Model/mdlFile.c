@@ -22507,6 +22507,7 @@ void FUN_00332200(int param_1)
 // from raw pointer arithmetic scaling by the old u32 element type.
 // Residual: retail hoists a loop-invariant 0xffffffff store constant and
 // uses a different loop-register mapping; not reproduced after 3 tries.
+#pragma opt_loop_invariants on
 // FUN_00332210 NONMATCHING
 
 
@@ -22549,6 +22550,7 @@ void FUN_00332210(int param_1)
   return;
 
 }
+#pragma opt_loop_invariants off
 
 
 
@@ -39182,6 +39184,7 @@ void FUN_00342460(int param_1,float *param_2)
   *(float *)(param_1 + 0x24) = param_2[1];
   *(float *)(param_1 + 0x28) = param_2[2];
 }
+#pragma opt_loop_invariants on
 // FUN_00342480 NONMATCHING
 void FUN_00342480(int param_1)
 {
@@ -39212,6 +39215,7 @@ void FUN_00342480(int param_1)
     piVar1 = (int *)((u8 *)piVar1 + 0x30);
   }
 }
+#pragma opt_loop_invariants off
 
 
 
