@@ -1973,6 +1973,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             break;
 
         case 8:
+        {
+            RwMatrix case8FldHitMat;
+            RwV3d case8FldHitLine[2];
+
             currentActor = (s32)FUN_00318990(DATA_U32(0x008717f0), 0);
             heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
             case8Offset = heroMat->at;
@@ -1997,6 +2001,37 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 {
                     FUN_001a9330((KwlnTask*)FIELD_WORD(0x1210), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1210), &markerPos), &markerPos);
                 }
+            }
+            if (FUN_0017d800() == true &&
+                currentActor == PTR_S32((void*)EVENT_WORD(0x100), 0x0c) + 5)
+            {
+                case8FldHitMat = *(RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
+                offset = case8FldHitMat.pos;
+                case8Offset = case8FldHitMat.at;
+                RwV3dNormalize(&case8Offset, &case8Offset);
+                case8Offset.x *= *(f32*)((u8*)EVENT_WORD(0x100) + 0x14) - 50.0f;
+                case8Offset.y *= *(f32*)((u8*)EVENT_WORD(0x100) + 0x14) - 50.0f;
+                case8Offset.z *= *(f32*)((u8*)EVENT_WORD(0x100) + 0x14) - 50.0f;
+                offset.x += case8Offset.x;
+                offset.y += case8Offset.y;
+                offset.z += case8Offset.z;
+                case8FldHitLine[0] = case8FldHitMat.pos;
+                case8FldHitLine[1] = offset;
+                case8FldHitLine[0].y += 300.0f;
+                case8FldHitLine[1].y += 300.0f;
+                if (K_FldFrame_Raycast(case8FldHitLine, &markerPos) == false)
+                {
+                    case8FldHitLine[1] = offset;
+                    case8FldHitLine[0] = case8FldHitLine[1];
+                    case8FldHitLine[0].y += 1000.0f;
+                    case8FldHitLine[1].y -= 1000.0f;
+                    if (K_FldFrame_Raycast(case8FldHitLine, &markerPos) == true)
+                    {
+                        offset.y = markerPos.y;
+                    }
+                }
+                taskResult = FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1218), &offset);
+                FUN_001a9390((KwlnTask*)FIELD_WORD(0x1218), taskResult, 3);
             }
             if (currentActor >= PTR_S32((void*)EVENT_WORD(0x40), 0xc) &&
                 currentActor < PTR_S32((void*)EVENT_WORD(0x40), 0xc) + 5 && FUN_004352e0() == false)
@@ -2084,6 +2119,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             }
             break;
 
+            }
         case 9:
             if (FUN_002ff310() == true && func_001d00b0() == true)
             {
