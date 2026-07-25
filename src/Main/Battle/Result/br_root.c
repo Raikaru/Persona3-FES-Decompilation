@@ -3196,6 +3196,9 @@ void func_001f7210(void)
     u32 i;
     u32 item_substate;
     u32 debug_val;
+    u32 eff_total = 0;
+    u32 crd_flt[24];
+    u16 scan_arr[20];
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
@@ -3254,6 +3257,7 @@ void func_001f7210(void)
         u32 new_kind;
         u32 rnd;
         u32 entry_count;
+        u8 *tbl_scan[16];
         /* case 1: item-table scan via func_00209c80 */
         printf("type : get item\n");
         func_0010a4e0(1, 0, 6, 7);
@@ -3262,16 +3266,17 @@ void func_001f7210(void)
         printf("type : get item\n");
         tbl_entry += BR_U32(entry, 4) * 192;
         for (new_kind = 0; new_kind < 16; new_kind++) {
-            u32 ret = (u32)func_00209d40(tbl_entry + new_kind * 12);
+            u8 *p = tbl_entry + new_kind * 12;
+            u32 ret = (u32)func_00209d40(p);
+            tbl_scan[new_kind] = p;
             if (ret == 2) break;
         }
         if (new_kind == 0) {
-            /* No matching entry found */
             K_ASSERT(work != NULL, 0x450);
         } else {
             rnd = func_00488f30() % new_kind;
             printf("item id : 0x%03x\n", rnd);
-            tbl_entry += rnd * 12;
+            tbl_entry = tbl_scan[rnd];
             entry_count = (u32)func_00209d40(tbl_entry);
             if (entry_count == 1) {
                 printf("item id : 0x%03x\n", BR_U16(entry, 4));
@@ -3650,11 +3655,7 @@ void func_001f7210(void)
         s32 party_eff;
         s32 party_mem;
         s32 member_count;
-        u16 scan_arr[12];
-        u32 eff_total = 0;
         u32 eff_cnt[5];
-        /* Additional stack data arrays matching retail's 0x1a0-0x24c usage */
-        u32 crd_flt[24];
         u32 i_idx2;
         eff_cnt[0] = 0; eff_cnt[1] = 0; eff_cnt[2] = 0; eff_cnt[3] = 0; eff_cnt[4] = 0;
         for (party_eff = 0; party_eff < 13; party_eff++) {
