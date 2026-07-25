@@ -686,16 +686,16 @@ void bsaMain00210d90(BsaWork* work)
     }
 
     if (p[0] == 1) {
-        rect[0] = -1.0f; rect[1] = 39.0f; rect[2] = 51.0f; rect[3] = 370.0f;
-        func_0021d8e0(p + 0x242c, rect);
-        rect[0] = 50.0f; rect[1] = 39.0f; rect[2] = 500.0f; rect[3] = 370.0f;
-        func_0021d8e0(p + 0x246c, rect);
+        y = 39.0f;
+        x = 370.0f;
     } else {
-        rect[0] = -1.0f; rect[1] = 219.0f; rect[2] = 51.0f; rect[3] = 190.0f;
-        func_0021d8e0(p + 0x242c, rect);
-        rect[0] = 50.0f; rect[1] = 219.0f; rect[2] = 500.0f; rect[3] = 190.0f;
-        func_0021d8e0(p + 0x246c, rect);
+        y = 219.0f;
+        x = 190.0f;
     }
+    rect[0] = -1.0f; rect[1] = y; rect[2] = 51.0f;  rect[3] = x;
+    func_0021d8e0(p + 0x242c, rect);
+    rect[0] = 50.0f; rect[1] = y; rect[2] = 500.0f; rect[3] = x;
+    func_0021d8e0(p + 0x246c, rect);
     /*
      * Retail lays these panels out with rect writes only; their colours are
      * applied by the shared block below, so a bsaPlaceQuad here would emit a
