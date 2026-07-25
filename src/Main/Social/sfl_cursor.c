@@ -140,7 +140,6 @@ void FUN_0025a130(void)
   f32 f10;
   f32 f14;
   f32 f18;
-  volatile f32 fPad;
   volatile f32 fStack_18;
   volatile f32 fStack_14;
   volatile f32 fStack_10;
