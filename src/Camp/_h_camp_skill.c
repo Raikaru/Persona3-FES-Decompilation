@@ -683,8 +683,10 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
     u8 colourState[0x20];
     s32 selectedRow;
     s32 font;
-    s32 tileUpDown[6][4];
-    char text[0x100];
+    struct {
+        s32 tileUpDown[6][4];
+        char text[0x100];
+    } scratch;
 
     colourState[0] = colourState[1] = colourState[2] = colourState[3] = 0xff;
     colourState[4] = colourState[5] = colourState[6] = colourState[7] = 0xff;
@@ -731,7 +733,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
         style = FUN_0012df50((u32)func_0016f720(work->pcId, equipment));
         id = datGetEquipmentId(work->pcId, equipment);
         effect = func_0016f810(work->pcId, equipment);
-        sprintf(text, "%d", (s32)func_00171110(id, effect));
+        sprintf(scratch.text, "%d", (s32)func_00171110(id, effect));
 
         switch (work->category) {
         case 0:
@@ -743,7 +745,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                record->x + 130.0f, record->y + 1.0f, record->depth);
             FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
                                (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text, 0x10, 0);
+                               6, 1, scratch.text, 0x10, 0);
             {
                 void* numAtlas = (void*)H_Maestro_001120a0(1);
                 valueA = (s32)func_0016f9f0(work->pcId, equipment);
@@ -769,7 +771,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                record->x + 130.0f, record->y + 1.0f, record->depth);
             FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
                                (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text, 0x10, 0);
+                               6, 1, scratch.text, 0x10, 0);
             {
                 void* numAtlas = (void*)H_Maestro_001120a0(1);
                 valueA = (s32)func_0016fbd0(work->pcId, equipment);
@@ -789,7 +791,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                record->x + 130.0f, record->y + 1.0f, record->depth);
             FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
                                (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text, 0x10, 0);
+                               6, 1, scratch.text, 0x10, 0);
             {
                 void* numAtlas = (void*)H_Maestro_001120a0(1);
                 valueA = (s32)func_0016fcc0(work->pcId, equipment);
@@ -809,7 +811,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                record->x + 130.0f, record->y + 1.0f, record->depth);
             FUN_003b2cb0_typed(record->depth, (s32)(record->x + 170.0f),
                                (s32)(record->y + 10.0f), (s32)((0xffU - record->alpha) | 0xffffff00U),
-                               6, 1, text, 0x10, 0);
+                               6, 1, scratch.text, 0x10, 0);
             break;
         }
         break;
@@ -875,16 +877,16 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
             id = *(u16*)(entry + 0x64);
             effect = *(u8*)(entry + 0x7d);
             value = (s32)func_00171110(id, effect);
-            sprintf(text, "%d", value);
+            sprintf(scratch.text, "%d", value);
             rowOffset = row * 26;
             selectedRow = selected == row;
             font = selectedRow ? 6 : 10;
             tileUp = selectedRow ? 0x1e : 0x1f;
             tileDown = selectedRow ? 0x20 : 0x21;
-            tileUpDown[row][0] = tileUp;
-            tileUpDown[row][1] = tileDown;
-            tileUpDown[row][2] = font;
-            tileUpDown[row][3] = selectedRow;
+            scratch.tileUpDown[row][0] = tileUp;
+            scratch.tileUpDown[row][1] = tileDown;
+            scratch.tileUpDown[row][2] = font;
+            scratch.tileUpDown[row][3] = selectedRow;
 
             if (selectedRow) {
                 FUN_001159f0_typed(recordData, atlas, 0x25, record->alpha,
@@ -904,7 +906,7 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
 
             FUN_003b2cb0_typed(record->depth, (s32)(record->x + 53.0f),
                                (s32)(record->y + 9.0f + (f32)rowOffset),
-                               (s32)((0xffU - record->alpha) | 0xffffff00U), font, 1, text, 0x10, 0);
+                               (s32)((0xffU - record->alpha) | 0xffffff00U), font, 1, scratch.text, 0x10, 0);
 
             if (work->category == 0) {
                 u16 statA = *(u16*)(entry + 0x80);
@@ -915,19 +917,19 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][0],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     } else {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][1],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     }
                 }
-                numAtlas = (void*)H_Maestro_001120a0(tileUpDown[row][3] ? 1 : 2);
+                numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
                 {
                     u8 r = 0xff, g = 0xff, b = 0xff;
-                    if (tileUpDown[row][3] && (s32)statA > baselineA) {
+                    if (scratch.tileUpDown[row][3] && (s32)statA > baselineA) {
                         r = 0xf3; g = 0xb3; b = 0xbd;
                     }
                     colourState[0] = r;
@@ -937,26 +939,26 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                  (s32)record->depth,
                                  colourState[0], colourState[1], colourState[2],
                                  (s32)record->alpha, statA, 3);
-                    selectedRow = tileUpDown[row][3];
-                    font = tileUpDown[row][2];
+                    selectedRow = scratch.tileUpDown[row][3];
+                    font = scratch.tileUpDown[row][2];
                 }
 
                 position2.x = record->x + 408.0f;
                 if ((s32)statB != baselineB) {
                     if (statB > baselineB) {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][0],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     } else {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][1],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     }
                 }
-                numAtlas = (void*)H_Maestro_001120a0(tileUpDown[row][3] ? 1 : 2);
+                numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
                 {
                     u8 r = 0xff, g = 0xff, b = 0xff;
-                    if (tileUpDown[row][3] && (s32)statB > baselineB) {
+                    if (scratch.tileUpDown[row][3] && (s32)statB > baselineB) {
                         r = 0xf3; g = 0xb3; b = 0xbd;
                     }
                     colourState[3] = (u8)(r & font);
@@ -966,8 +968,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                  (s32)record->depth,
                                  colourState[3], colourState[4], colourState[5],
                                  (s32)record->alpha, statB, 3);
-                    selectedRow = tileUpDown[row][3];
-                    font = tileUpDown[row][2];
+                    selectedRow = scratch.tileUpDown[row][3];
+                    font = scratch.tileUpDown[row][2];
                 }
             } else if (work->category == 1) {
                 u16 statA = *(u16*)(entry + 0x84);
@@ -977,19 +979,19 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][0],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     } else {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][1],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     }
                 }
-                numAtlas = (void*)H_Maestro_001120a0(tileUpDown[row][3] ? 1 : 2);
+                numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
                 {
                     u8 r = 0xff, g = 0xff, b = 0xff;
-                    if (tileUpDown[row][3] && (s32)statA > baselineA) {
+                    if (scratch.tileUpDown[row][3] && (s32)statA > baselineA) {
                         r = 0xf3; g = 0xb3; b = 0xbd;
                     }
                     colourState[6] = r;
@@ -999,8 +1001,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                  (s32)record->depth,
                                  colourState[6], colourState[7], colourState[8],
                                  (s32)record->alpha, statA, 3);
-                    selectedRow = tileUpDown[row][3];
-                    font = tileUpDown[row][2];
+                    selectedRow = scratch.tileUpDown[row][3];
+                    font = scratch.tileUpDown[row][2];
                 }
             } else if (work->category == 2) {
                 u16 statA = *(u16*)(entry + 0x86);
@@ -1010,19 +1012,19 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                 position2.y = record->y + 9.0f + (f32)rowOffset;
                 if ((s32)statA != baselineA) {
                     if (statA > baselineA) {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][0],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][0],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     } else {
-                        FUN_001159f0_typed(recordData, work->resource1, tileUpDown[row][1],
+                        FUN_001159f0_typed(recordData, work->resource1, scratch.tileUpDown[row][1],
                                            record->alpha, position2.x + 49.0f,
                                            position2.y - 3.0f, record->depth);
                     }
                 }
-                numAtlas = (void*)H_Maestro_001120a0(tileUpDown[row][3] ? 1 : 2);
+                numAtlas = (void*)H_Maestro_001120a0(scratch.tileUpDown[row][3] ? 1 : 2);
                 {
                     u8 r = 0xff, g = 0xff, b = 0xff;
-                    if (tileUpDown[row][3] && (s32)statA > baselineA) {
+                    if (scratch.tileUpDown[row][3] && (s32)statA > baselineA) {
                         r = 0xf3; g = 0xb3; b = 0xbd;
                     }
                     colourState[9] = r;
@@ -1032,8 +1034,8 @@ void FUN_00163330(void* recordData, s32 index, CampSkillInnerWork* work)
                                  (s32)record->depth,
                                  colourState[9], colourState[10], colourState[11],
                                  (s32)record->alpha, statA, 3);
-                    selectedRow = tileUpDown[row][3];
-                    font = tileUpDown[row][2];
+                    selectedRow = scratch.tileUpDown[row][3];
+                    font = scratch.tileUpDown[row][2];
                 }
             }
         }
