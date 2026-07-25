@@ -214,6 +214,8 @@ extern s8 FUN_0017bfa0(u16 id, u8 field);
 #pragma alias campDrawSprite FUN_001159f0
 extern void campDrawSprite(void* parent, void* resource, s32 frame,
                            u32 alpha, f32 x, f32 y, f32 scale);
+#pragma alias campDrawSpriteDirect FUN_001159f0
+extern void campDrawSpriteDirect(f32 x, f32 y, f32 scale);
 #pragma alias campDrawSpriteDigit FUN_00115ad0
 extern void campDrawSpriteDigit(void* parent, void* resource, s32 frame,
                                 u32 alpha, f32 x, f32 y, f32 scale);
@@ -695,7 +697,20 @@ void FUN_0013cf80(u64 pcId, CampEquipmentWork* work)
 }
  
 #pragma optimization_level 2
-
+// Inline macro overrides: expand helpers to direct campDrawSprite calls.
+#undef campEquipmentDrawFixed
+#define campEquipmentDrawFixed(scale,alpha,frame,x,y) \
+    campDrawSprite((void*)(u32)(scale),DAT_00833A50[0],(frame),(u32)(alpha),(x),(y),(scale))
+#undef campEquipmentDrawAtlas
+#define campEquipmentDrawAtlas(scale,alpha,frame,x,y) \
+    campDrawSprite((void*)(u32)(scale),DAT_00833B70,(frame),(u32)(alpha),(x),(y),(scale))
+#undef campEquipmentDrawAlt
+#define campEquipmentDrawAlt(scale,alpha,frame,x,y) \
+    campDrawSpriteAlt((void*)(u32)(scale),DAT_00833B70,(frame),(u32)(alpha),0x20,0x43,0x78,(x),(y),(scale))
+#undef campEquipmentDrawDigit
+#define campEquipmentDrawDigit(scale,alpha,font,frame,x,y) \
+    campDrawSprite((void*)(u32)(scale),H_Maestro_001120a0(font),(frame),(u32)(alpha),(x),(y),(scale))
+ 
 // FUN_0013d1a0 NONMATCHING
 
 void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
@@ -757,7 +772,7 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
     if (rowIndex == work->selectedEntry) {
       textureIndex = rowIndex * 0x1a;
       campEquipmentDrawAtlas(texture, (u32)alpha,
-                             FUN_0012df50(campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask) * 2 + 1,
+                             campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass * 2 + 1,
                              xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       ;
       textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
@@ -768,7 +783,7 @@ void FUN_0013d1a0(f32 texture,u64 position,CampEquipmentWork* work,s32 alpha)
       category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
       if (category != '\x03') {
         if (category == '\x02') {
-          FUN_001159f0(xIcon,yValue + (float)textureIndex,texture);
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
           if (value < 100) {
             if (9 < value) goto LAB_0013dd14;
@@ -843,7 +858,7 @@ LAB_0013ddc4:
     else {
       textureIndex = rowIndex * 0x1a;
       campEquipmentDrawAlt(texture, (u32)alpha,
-                           FUN_0012df50(campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->categoryMask) * 2,
+                           campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass * 2,
                            xRow, (originY + 2.0f + (f32)textureIndex) - 1.0f);
       ;
       textValue = func_00171110((s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->itemId,(s16)campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->slotType);
@@ -854,7 +869,7 @@ LAB_0013ddc4:
       category = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->equipmentClass;
       if (category != '\x03') {
         if (category == '\x02') {
-          FUN_001159f0(xIcon,yValue + (float)textureIndex,texture);
+          campDrawSpriteDirect(xIcon,yValue + (float)textureIndex,texture);
           value = campEquipmentEntry(work, work->firstVisibleEntry + rowIndex)->valueD;
           if (value < 100) {
             if (9 < value) goto LAB_0013e5e4;
@@ -926,6 +941,11 @@ LAB_0013e694:
     rowIndex = rowIndex + 1;
   } while( true );
 }
+#undef campEquipmentDrawFixed
+#undef campEquipmentDrawAtlas
+#undef campEquipmentDrawAlt
+#undef campEquipmentDrawDigit
+ 
 #define campEquipmentDrawFixed(texture,alpha,frame,x,y) \
   campDrawSprite(parent,DAT_00833A50[0],(frame),(alpha),(x),(y),(texture))
 #define campEquipmentDrawAtlas(texture,alpha,frame,x,y) \
