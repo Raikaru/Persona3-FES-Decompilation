@@ -5015,11 +5015,7 @@ void FUN_0022fa80(u32* object)
                     }
                 }
 
-                if (rtype >= 4) {
-                    K_Assert("bcm_panel.c", 0x7d3);
-                }
                 *(base + i + 0x20a) = (u8)rtype;
-
                 if (flag == 1) {
                     resource = FUN_0021cca0(table, 9);
                     FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)resource);
@@ -5110,9 +5106,6 @@ void FUN_0022fa80(u32* object)
                     }
                 }
 
-                if (rtype >= 8) {
-                    K_Assert("bcm_panel.c", 0x86e);
-                }
                 *(base + i + 0x50c) = (u8)rtype;
 
                 FUN_0021d3b0(base + i * 256 + 0x200, (u8*)(uintptr_t)slot_resource);
@@ -5437,11 +5430,15 @@ void FUN_0022fa80(u32* object)
                 record[0x410] = RpRandom() & 1;
                 record[0x414] = (u8)RpRandom();
                 record[0x418] = RpRandom() & 1;
-                if (record[0x410] == 0) {
-                    u32 res = FUN_0021cca0(table, 0x0f);
-                    FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)res);
-                } else if (record[0x410] == 1) {
-                    u32 res = FUN_0021cca0(table, 0x10);
+                {
+                    u32 res;
+                    if (record[0x410] == 0) {
+                        res = FUN_0021cca0(table, 0x0f);
+                    } else if (record[0x410] == 1) {
+                        res = FUN_0021cca0(table, 0x10);
+                    } else {
+                        res = 0;
+                    }
                     FUN_0021d3b0(base + i * 256, (u8*)(uintptr_t)res);
                 }
                 slot[0x100] = cnt % 40;
