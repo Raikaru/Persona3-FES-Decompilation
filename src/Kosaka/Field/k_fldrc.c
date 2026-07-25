@@ -499,10 +499,11 @@ void K_Fldrc_001b0a20(s16 majorId, s16 minorId)
  * rather than treating each table entry as a wrapper with an a44 member.
  * Archive readiness and destruction are inlined to preserve the retail calls.
  */
+#pragma push
+#pragma opt_cse off
 // FUN_001b10f0 NONMATCHING
 u32 K_Fldrc_Init()
 {
-    u8* field;
     u32 state;
     u32 count;
     u32 i;
@@ -520,9 +521,8 @@ u32 K_Fldrc_Init()
     f32 yDeadZone;
     u32 cameraType;
     u16 handle;
-    field = (u8*)K_Field_Get();
 
-    state = *(u32*)(field + 0x1058);
+    state = *(u32*)((u8*)K_Field_Get() + 0x1058);
     if (state == 0x3e7)
     {
         if (sFldPacCdvd != NULL)
@@ -578,54 +578,54 @@ init_phase0:
     {
         return false;
     }
-    count = (u32)(*(s32*)(field + 0x105c) - 1);
-    *(u32*)(field + 0x105c) = count;
-    *(void**)(field + 0x116c + count * 4) =
-        FUN_001b2780((u16)*(s16*)(field + 0x1060 + count * 4),
-                     (u16)*(s16*)(field + 0x1062 + count * 4));
-    *(u32*)(field + 0x1058) = 1;
+    count = (u32)(*(s32*)((u8*)K_Field_Get() + 0x105c) - 1);
+    *(u32*)((u8*)K_Field_Get() + 0x105c) = count;
+    *(void**)((u8*)K_Field_Get() + 0x116c + count * 4) =
+        FUN_001b2780((u16)*(s16*)((u8*)K_Field_Get() + 0x1060 + count * 4),
+                     (u16)*(s16*)((u8*)K_Field_Get() + 0x1062 + count * 4));
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 1;
 
 init_phase1:
-    count = *(u32*)(field + 0x1168);
-    resource = *(void**)(field + 0x116c + count * 4);
+    count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+    resource = *(void**)((u8*)K_Field_Get() + 0x116c + count * 4);
     if (FUN_001b2b30((u32)resource) == false)
     {
         return false;
     }
     FUN_001b2b90((u32)resource);
-    *(u32*)(field + 0x1058) = 2;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 2;
 
 init_phase2:
-    count = *(u32*)(field + 0x1168);
-    resource = *(void**)(field + 0x116c + count * 4);
+    count = *(u32*)((u8*)K_Field_Get() + 0x1168);
+    resource = *(void**)((u8*)K_Field_Get() + 0x116c + count * 4);
     if (FUN_001b2f00((u32*)resource) == false)
     {
         return false;
     }
-    *(u32*)(field + 0x1168) = count + 1;
-    if (*(s32*)(field + 0x105c) > 0)
+    *(u32*)((u8*)K_Field_Get() + 0x1168) = count + 1;
+    if (*(s32*)((u8*)K_Field_Get() + 0x105c) > 0)
     {
-        *(u32*)(field + 0x1058) = 0;
+        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0;
         return false;
     }
     if ((gMtScene->flags & 0x80000000) != 0)
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         gMtScene->fldMajorId = *(u16*)(node + 4);
         gMtScene->fldMinorId = *(u16*)(node + 6);
     }
-    for (i = 0; i < *(u32*)(field + 0x1168); i++)
+    for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
     {
-        resource = *(void**)(field + 0x116c + i * 4);
+        resource = *(void**)((u8*)K_Field_Get() + 0x116c + i * 4);
         FUN_001b3480((u32)resource);
     }
-    *(u32*)(field + 0x1058) = 3;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 3;
 
 init_phase3:
     errors = 0;
-    for (i = 0; i < *(u32*)(field + 0x1168); i++)
+    for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
     {
-        resource = *(void**)(field + 0x116c + i * 4);
+        resource = *(void**)((u8*)K_Field_Get() + 0x116c + i * 4);
         if (FUN_001b39e0((u32)resource) == false)
         {
             errors++;
@@ -640,16 +640,16 @@ init_phase3:
         H_Cdvd_Destroy(sFldFpcCdvd);
         sFldFpcCdvd = NULL;
     }
-    *(u32*)(field + 0x1058) = 4;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 4;
 
 init_phase4:
-    if ((*(Model**)(field + 0x11ec) != NULL) &&
-        (mdlStreamRead(*(Model**)(field + 0x11ec)) == false))
+    if ((*(Model**)((u8*)K_Field_Get() + 0x11ec) != NULL) &&
+        (mdlStreamRead(*(Model**)((u8*)K_Field_Get() + 0x11ec)) == false))
     {
         return false;
     }
-    if ((*(Model**)(field + 0x11f0) != NULL) &&
-        (mdlStreamRead(*(Model**)(field + 0x11f0)) == false))
+    if ((*(Model**)((u8*)K_Field_Get() + 0x11f0) != NULL) &&
+        (mdlStreamRead(*(Model**)((u8*)K_Field_Get() + 0x11f0)) == false))
     {
         return false;
     }
@@ -662,7 +662,7 @@ init_phase4:
     D_00867EF8 = (void*)func_001b8160();
     D_00867EFC = (void*)func_001b8680();
     D_00867F00 = (void*)func_001b88d0();
-    *(u32*)(field + 0x1058) = 5;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 5;
 
 init_phase5:
     if ((D_00867EF8 != NULL) &&
@@ -685,28 +685,28 @@ init_phase5:
     D_00867F00 = NULL;
     if (func_001a02c0() == 1)
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         *(void**)(node + 0xa44) =
             func_001e2da0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
                           gMtScene->unk_14);
     }
     else
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             *(void**)(node + 0xa44) =
                 func_001e2da0(*(u16*)(node + 4), *(u16*)(node + 6),
                               gMtScene->unk_14);
         }
     }
-    *(u32*)(field + 0x1058) = 6;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 6;
 
 init_phase6:
     errors = 0;
     if (func_001a02c0() == 1)
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         if (func_001e2e50(*(void**)(node + 0xa44),
                           (void**)(node + 0xa48),
                           (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
@@ -717,9 +717,9 @@ init_phase6:
     }
     else
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             if (func_001e2e50(*(void**)(node + 0xa44),
                               (void**)(node + 0xa48),
                               *(u16*)(node + 4), *(u16*)(node + 6),
@@ -733,7 +733,7 @@ init_phase6:
     {
         return false;
     }
-    *(u32*)(field + 0x1058) = 7;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 7;
 
 init_phase7:
     errors = 0;
@@ -744,13 +744,13 @@ init_phase7:
     {
         errors++;
     }
-    if (func_001e74e0(*(void**)(field + 0x10cc)) == false)
+    if (func_001e74e0(*(void**)((u8*)K_Field_Get() + 0x10cc)) == false)
     {
         errors++;
     }
-    for (i = 0; i < *(u32*)(field + 0x1168); i++)
+    for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
     {
-        node = *(u8**)(field + 0x116c + i * 4);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
         if (func_001e3940(*(void**)(node + 0xa44),
                           *(void**)(node + 0xa48)) == false)
         {
@@ -765,9 +765,9 @@ init_phase7:
     {
         return false;
     }
-    for (i = 0; i < *(u32*)(field + 0x1168); i++)
+    for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
     {
-        node = *(u8**)(field + 0x116c + i * 4);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
         if (*(void**)(node + 0xa3c) == NULL)
         {
             *(HCdvd**)(node + 0xa38) =
@@ -780,7 +780,7 @@ init_phase7:
         HCdvd* eventRequest;
         void* eventPayload;
 
-        eventRequest = *(HCdvd**)(field + 0x10cc);
+        eventRequest = *(HCdvd**)((u8*)K_Field_Get() + 0x10cc);
         if (eventRequest != NULL)
         {
             eventPayload = *(void**)((u8*)eventRequest + 0x110);
@@ -791,18 +791,18 @@ init_phase7:
             }
         }
         func_001e7520(eventRequest);
-        *(HCdvd**)(field + 0x10cc) =
+        *(HCdvd**)((u8*)K_Field_Get() + 0x10cc) =
             func_001e6cb0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId);
     }
-    *(u32*)(field + 0x1058) = 8;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 8;
 
 init_phase8:
     if ((gMtScene->fldMajorId < 0x3b) ||
         ((gMtScene->fldMajorId >= 0x47) && (gMtScene->fldMajorId < 0x4f)))
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             if (func_001e6d50(*(HCdvd**)(node + 0xa38),
                               (void**)(node + 0xa3c),
                               *(u16*)(node + 4), *(u16*)(node + 6)) == false)
@@ -812,7 +812,7 @@ init_phase8:
             *(HCdvd**)(node + 0xa38) = NULL;
         }
         output = NULL;
-        if (func_001e6d50(*(HCdvd**)(field + 0x10cc), &output,
+        if (func_001e6d50(*(HCdvd**)((u8*)K_Field_Get() + 0x10cc), &output,
                           (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId) ==
             false)
         {
@@ -823,13 +823,13 @@ init_phase8:
             func_001e6ea0(output);
             (*DAT_0096017c)(output);
         }
-        *(HCdvd**)(field + 0x10cc) = NULL;
+        *(HCdvd**)((u8*)K_Field_Get() + 0x10cc) = NULL;
     }
     else
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             if (*(void**)(node + 0xa3c) != NULL)
             {
                 func_001e6ea0(*(void**)(node + 0xa3c));
@@ -844,7 +844,7 @@ init_phase8:
     {
         for (i = 0; i < 9; i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             D_0086BDC0[i] = *(void**)(node + 0xa3c);
         }
         if (scenePath == 1)
@@ -862,7 +862,7 @@ init_phase8:
     }
     else
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         func_003b6790(0, node);
         for (i = 0; i < *(u32*)(node + 0x118); i++)
         {
@@ -946,13 +946,13 @@ init_camera_common:
         gMtScene->cmrCdvd = func_001d6b10();
         if (gMtScene->cmrCdvd == NULL)
         {
-            *(u32*)(field + 0x1058) = 0x3e7;
+            *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
             return false;
         }
-        *(u32*)(field + 0x1058) = 0x0a;
+        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x0a;
         goto init_phase10;
     }
-    *(u32*)(field + 0x1058) = 9;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 9;
 
 init_phase9:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
@@ -962,10 +962,10 @@ init_phase9:
     gMtScene->cmrCdvd = func_001d6b10();
     if (gMtScene->cmrCdvd == NULL)
     {
-        *(u32*)(field + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
         return false;
     }
-    *(u32*)(field + 0x1058) = 0x0a;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x0a;
 
 init_phase10:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
@@ -975,7 +975,7 @@ init_phase10:
     gMtScene->cmrCdvd = func_001d6b10();
     if (gMtScene->cmrCdvd == NULL)
     {
-        *(u32*)(field + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
         return false;
     }
     if (func_001d6bc0(gMtScene->cmrCdvd, &cameraMatrix, &cameraFov,
@@ -986,7 +986,7 @@ init_phase10:
     }
     func_003b6f50(0, cameraType, cameraFov, &cameraMatrix, &cameraOffset,
                   xzDeadZone, yDeadZone);
-    *(u32*)(field + 0x1058) = 0x3e7;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
     return false;
 
 init_phase1e:
@@ -1006,28 +1006,28 @@ init_phase1e:
     }
     if (func_001a02c0() == 1)
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         *(void**)(node + 0xa44) =
             func_001e2da0((u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
                           gMtScene->unk_14);
     }
     else
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             *(void**)(node + 0xa44) =
                 func_001e2da0(*(u16*)(node + 4), *(u16*)(node + 6),
                               gMtScene->unk_14);
         }
     }
-    *(u32*)(field + 0x1058) = 0x1f;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x1f;
 
 init_phase1f:
     errors = 0;
     if (func_001a02c0() == 1)
     {
-        node = *(u8**)(field + 0x116c);
+        node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         if (func_001e2e50(*(void**)(node + 0xa44),
                           (void**)(node + 0xa48),
                           (u16)gMtScene->fldMajorId, (u16)gMtScene->fldMinorId,
@@ -1038,9 +1038,9 @@ init_phase1f:
     }
     else
     {
-        for (i = 0; i < *(u32*)(field + 0x1168); i++)
+        for (i = 0; i < *(u32*)((u8*)K_Field_Get() + 0x1168); i++)
         {
-            node = *(u8**)(field + 0x116c + i * 4);
+            node = *(u8**)((u8*)K_Field_Get() + 0x116c + i * 4);
             if (func_001e2e50(*(void**)(node + 0xa44),
                               (void**)(node + 0xa48),
                               *(u16*)(node + 4), *(u16*)(node + 6),
@@ -1054,10 +1054,10 @@ init_phase1f:
     {
         return false;
     }
-    *(u32*)(field + 0x1058) = 0x20;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x20;
 
 init_phase20:
-    node = *(u8**)(field + 0x116c);
+    node = *(u8**)((u8*)K_Field_Get() + 0x116c);
     for (i = 0; i < *(u32*)(node + 0x118); i++)
     {
         u8* record;
@@ -1093,20 +1093,21 @@ init_phase20:
 init_phase28:
     if ((gMtScene->flags & 4) == 0)
     {
-        *(u32*)(field + 0x1058) = 0x3e7;
+        *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
         return false;
     }
     gMtScene->cmrCdvd = (HCdvd*)FUN_001b6100((u16)gMtScene->unk_16);
-    *(u32*)(field + 0x1058) = 0x29;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x29;
 
 init_phase29:
     if (FUN_001b61f0(gMtScene->cmrCdvd, (u16)gMtScene->unk_16) == false)
     {
         return false;
     }
-    *(u32*)(field + 0x1058) = 0x3e7;
+    *(u32*)((u8*)K_Field_Get() + 0x1058) = 0x3e7;
     return false;
 }
+#pragma pop
 
 // FUN_001b5850
 void* K_Fldrc_UpdateFilterTask(KwlnTask* fldFilterTask)
