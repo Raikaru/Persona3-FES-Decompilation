@@ -1298,9 +1298,6 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                     }
                     if (available) {
                         FUN_00523ac8(text, gp0xffff897c, DAT_0083aaa0[record[4]]);
-                        FUN_003b32d0(0, (s32)campDrawX(item),
-                                     (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
-                                     alpha, 10, 1, text, 0x10, 0);
                         row++;
                     }
                 }
@@ -1313,9 +1310,6 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 if (learned[0] == category && learned[1] == selected) {
                     FUN_00524270(text, uGpffff8884);
                     FUN_00523e68(text, FUN_003c3fe0(learned[2]));
-                    FUN_003b32d0(0, (s32)campDrawX(item),
-                                 (s32)(campDrawY(item) + (f32)(row * 0x1c) + 2.0f),
-                                 alpha, 10, 1, text, 0x10, 0);
                     row++;
                 }
             }
@@ -1528,21 +1522,30 @@ void FUN_001599F0(CampMenuDrawItem* item, const char** labels, s32 mode, s32 cat
                 s32 slot = first + i - 1;
                 f32 x = campDrawX(item) + (f32)((slot % 7) * 0x29);
                 f32 y = campDrawY(item) + (f32)((slot / 7) * 0x2c);
-                void* skill = (void*)FUN_0017d8b0(selected, i);
-                s32 kind = FUN_00181b50(skill);
-                s32 frame = 0;
-                if (kind == 0x1d) {
-                    frame = 0x48;
-                } else if (kind == 6) {
-                    frame = 0x46;
-                } else if (kind == 0x0e) {
-                    frame = 0x45;
-                } else if (kind == 0x16) {
-                    frame = 0x47;
-                }
-                if (frame != 0) {
-                    campMenuDrawSprite(parent, *labels, frame, item->alpha,
-                        x, y, item->scale);
+                {
+                    void* skill = (void*)FUN_0017d8b0(selected, i);
+                    if ((u32)FUN_00181b50(skill) == 0x1d) {
+                        campMenuDrawSprite(parent, *labels, 0x48, item->alpha,
+                            x, y, item->scale);
+                    } else {
+                        skill = (void*)FUN_0017d8b0(selected, i);
+                        if ((u32)FUN_00181b50(skill) == 6) {
+                            campMenuDrawSprite(parent, *labels, 0x46, item->alpha,
+                                x, y, item->scale);
+                        } else {
+                            skill = (void*)FUN_0017d8b0(selected, i);
+                            if ((u32)FUN_00181b50(skill) == 0x0e) {
+                                campMenuDrawSprite(parent, *labels, 0x45, item->alpha,
+                                    x, y, item->scale);
+                            } else {
+                                skill = (void*)FUN_0017d8b0(selected, i);
+                                if ((u32)FUN_00181b50(skill) == 0x16) {
+                                    campMenuDrawSprite(parent, *labels, 0x47, item->alpha,
+                                        x, y, item->scale);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
