@@ -2383,14 +2383,32 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   case 0x10:
     FUN_00154f70(puVar1[3],puVar1 + 5,puVar1[8],puVar1[1]);
     h_campDrawItemFrameSelected((int)puVar1);
-    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, 0x42840000435d0000, 0x4284000041a80000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 1, 0x42b4000042040000, 0x42b4000042040000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, 0x433b000042040000, 0x433b000042040000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, 0xc3680000439a0000, 0x43b80000439a0000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, 0x42ae000043aa8000, 0x42ae000043aa8000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 1, 0xc40040004415c000, 0x42ae00004415c000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 1, 0x42ac0000440a0000, 0x42ac000043b00000, 0, 0, 0, 0);
-    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 1, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 0);
+    { volatile CampBits pair; volatile CampBits tmp;
+    pair.u = CAMP_PAIR_FLOAT_HIGH(66.0f, 0x41a80000U);
+    tmp.u = pair.u;
+    tmp.f[0] += 200.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 1, tmp.u, pair.u, 0, 0, 0, 10);
+    }
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 1, 0x42b4000042040000, 0x42b4000042040000, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 1, 0x433b000042040000, 0x433b000042040000, 0, 0, 0, 10);
+    { volatile CampBits pair; volatile CampBits tmp;
+    pair.u = CAMP_PAIR_FLOAT_HIGH(368.0f, 0x439a0000U);
+    tmp.u = pair.u;
+    tmp.f[1] -= 600.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 1, tmp.u, pair.u, 0, 0, 0, 10);
+    }
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 1, 0x42ae000043aa8000, 0x42ae000043aa8000, 0, 0, 0, 10);
+    { volatile CampBits pair; volatile CampBits tmp;
+    pair.u = CAMP_PAIR_FLOAT_HIGH(87.0f, 0x4415c000U);
+    tmp.u = pair.u;
+    tmp.f[1] -= 600.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 1, tmp.u, pair.u, 0, 0, 0, 10);
+    pair.u = CAMP_PAIR_FLOAT_HIGH(86.0f, 0x43b00000U);
+    tmp.u = pair.u;
+    tmp.f[0] += 200.0f;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 1, tmp.u, pair.u, 0, 0, 0, 10);
+    }
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 1, 0x43c0800041f80000, 0x43c0800041f80000, 0, 0, 0, 10);
     *puVar1 = 0x11;
     break;
   case 0x11:
