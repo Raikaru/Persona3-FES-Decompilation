@@ -147,17 +147,11 @@ void func_0023f500(void)
 // FUN_0023F540 NONMATCHING
 void func_0023f540(void)
 {
-    s32 i;
-    s32 k;
-    s32 j;
-    s32 age;
-    s32 first;
-    s32 last;
     u8* work;
-    u8* slot;
+    void* renderContext;
     void* unit;
     void* frame;
-    void* renderContext;
+    u8* slot;
     f32 projected[2];
     f32 transform[4];
     f32 layout[8];
@@ -168,11 +162,18 @@ void func_0023f540(void)
     f32 t;
     f32 vertical;
     f32 digitOffset;
+    s32 i;
+    s32 k;
+    s32 j;
+    s32 age;
+    s32 first;
+    s32 last;
     u8 color[4];
-
-    K_ASSERT(sBiMain != NULL, 0x8a);
     work = sBiMain;
+    K_ASSERT(work != NULL, 0x8a);
     renderContext = func_0021c3f0(1);
+
+
 
     for (i = 0; i < BI_SLOT_COUNT; i++) {
         slot = BI_SLOT(work, i);
