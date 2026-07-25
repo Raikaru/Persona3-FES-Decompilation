@@ -1,4 +1,6 @@
 #include "temporary.h"
+extern f32 sinf(f32);
+extern f32 cosf(f32);
 typedef int (*code)();
 float fGpffff8110;
 float fGpffff81fc;
