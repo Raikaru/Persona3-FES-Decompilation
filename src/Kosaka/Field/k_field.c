@@ -1865,44 +1865,74 @@ u32 func_001bc630(const DungeonPattern* pattern, s32* x, s32* y)
 void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
 {
     DungeonPattern pattern;
-    u8* field;
-    u8* fieldCell;
+    const u8* table;
+    const s16* src;
+    s16* dst;
     u32 templateId;
     u32 rotation;
     u32 connectionCount;
-    s32 placedX;
-    s32 placedY;
     u32 row;
     u32 col;
     u32 direction;
-    u8 flags;
-    const u8* table;
+    u32 temp20;
+    u32 temp19;
+    u32 temp22;
+    u32 temp20_2;
+    u32 temp23;
+    u32 temp30;
+    u32 temp21;
+    u32 temp20_3;
+    u32 spD0;
+    u32 spC0;
+    u32 spB0;
+    u32 spA0;
+    u32 spF0;
+    u32 spE0;
+    u32 sp100;
+    s32 placedX;
+    s32 placedY;
+    s32 count;
+    u8 value;
 
-    if (sDungeonGenerationFailed != 0 ||
-        x == 0 || y == 0 || x >= 0x0f || y >= 0x0f)
+    temp20 = y << 8;
+    temp19 = x << 4;
+    if (*(u8*)((u8*)K_Field_Get() + temp20 + temp19 + 0x48) != 0 ||
+        sDungeonGenerationFailed == 1)
     {
         return;
     }
-    fieldCell = dungeonCell((s32)x, (s32)y);
-    if (fieldCell[0x48] != 0)
+    if (x == 0 || x == 0xf || y == 0 || y == 0xf)
     {
         return;
     }
 
-    field = (u8*)K_Field_Get();
-    if (x == field[0x3e] &&
-        y == field[0x3f] &&
-        datGetScenarioMode() == 0)
+    if (x == ((u8*)K_Field_Get())[0x3e] &&
+        y == ((u8*)K_Field_Get())[0x3f])
     {
-        table = D_0067FA26 + patternId * 0x35c;
-        memset(pattern.raw, 0, sizeof(pattern.raw));
-        memcpy(pattern.raw, table, 0x56);
-        func_001bab60(&pattern, 1u << field[0x41]);
-        func_001bb090(&pattern, x, y, field[0x41]);
+        if (datGetScenarioMode() == 0)
+        {
+            src = (const s16*)(D_0067FA26 + patternId * 0x35c);
+        }
+        else
+        {
+            src = (const s16*)(D_00681866 + patternId * 0x35c);
+        }
+        dst = (s16*)pattern.raw;
+        count = 0x2b;
+        do
+        {
+            *dst++ = *src++;
+            count--;
+        } while (count > 0);
+        func_001bab60(&pattern, 1u << ((u8*)K_Field_Get())[0x41]);
+        func_001bb090(&pattern, (u16)x, (u16)y,
+                      (u16)((u8*)K_Field_Get())[0x41]);
         return;
     }
 
     sDungeonGenerationAttempts = 0;
+    temp20_2 = temp20 + temp19;
+    temp22 = (fromY << 8) + (fromX << 4);
     for (;;)
     {
         sDungeonGenerationAttempts++;
@@ -1912,42 +1942,27 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
             return;
         }
 
-        field = (u8*)K_Field_Get();
-        if (fromX == field[0x3c] && fromY == field[0x3d])
+        if (x == ((u8*)K_Field_Get())[0x3c] &&
+            y == ((u8*)K_Field_Get())[0x3d])
         {
-            templateId = (RpRandom() & 7) + 1;
-            rotation = RpRandom() & 3;
-            if (templateId == 2 || templateId == 4)
-            {
-                fieldCell = dungeonCell((s32)fromX, (s32)fromY);
-                if (fieldCell[0x48] != 0 &&
-                    (fieldCell[0x4a] == 1 || fieldCell[0x4a] == 3))
-                {
-                    continue;
-                }
-            }
-        }
-        else
-        {
-            fieldCell = dungeonCell((s32)fromX, (s32)fromY);
             connectionCount = 0;
-            if (fieldCell[-0x100 + 0x48] != 0 &&
-                (fieldCell[-0x100 + 0x53] & 0x40) != 0)
+            if (*(u8*)((u8*)K_Field_Get() + temp20_2 - 0xb8) != 0 &&
+                (*(u8*)((u8*)K_Field_Get() + temp20_2 - 0xad) & 0x40) != 0)
             {
                 connectionCount++;
             }
-            if (fieldCell[-0x10 + 0x48] != 0 &&
-                (fieldCell[-0x10 + 0x53] & 0x80) != 0)
+            if (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x38) != 0 &&
+                (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x43) & 0x80) != 0)
             {
                 connectionCount++;
             }
-            if (fieldCell[0x100 + 0x48] != 0 &&
-                (fieldCell[0x100 + 0x53] & 0x10) != 0)
+            if (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x148) != 0 &&
+                (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x153) & 0x10) != 0)
             {
                 connectionCount++;
             }
-            if (fieldCell[0x10 + 0x48] != 0 &&
-                (fieldCell[0x10 + 0x53] & 0x20) != 0)
+            if (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x58) != 0 &&
+                (*(u8*)((u8*)K_Field_Get() + temp20_2 + 0x63) & 0x20) != 0)
             {
                 connectionCount++;
             }
@@ -1958,88 +1973,146 @@ void func_001bcac0(u32 patternId, u32 x, u32 y, u32 fromX, u32 fromY)
             templateId = 5;
             rotation = RpRandom() & 3;
         }
+        else
+        {
+            templateId = (RpRandom() & 7) + 1;
+            rotation = RpRandom() & 3;
+            if ((templateId == 2 || templateId == 4) &&
+                *(u8*)((u8*)K_Field_Get() + temp22 + 0x48) != 0 &&
+                (*(u8*)((u8*)K_Field_Get() + temp22 + 0x4a) == 1 ||
+                 *(u8*)((u8*)K_Field_Get() + temp22 + 0x4a) == 3))
+            {
+                continue;
+            }
+        }
 
-        table = (datGetScenarioMode() == 0
-                     ? D_0067F720
-                     : D_00681866) +
-                patternId * 0x35c + templateId * 0x56;
-        memset(pattern.raw, 0, sizeof(pattern.raw));
-        memcpy(pattern.raw, table, 0x56);
+        if (datGetScenarioMode() == 0)
+        {
+            table = D_0067F720 + patternId * 0x35c + templateId * 0x56;
+        }
+        else
+        {
+            table = D_00681560 + patternId * 0x35c + templateId * 0x56;
+        }
+        src = (const s16*)table;
+        dst = (s16*)pattern.raw;
+        count = 0x2b;
+        do
+        {
+            *dst++ = *src++;
+            count--;
+        } while (count > 0);
+
         func_001bab60(&pattern, 1u << rotation);
-        placedX = (s32)x;
-        placedY = (s32)y;
-        if (!func_001bc630(&pattern, &placedX, &placedY))
+        *(s32*)(pattern.raw + 0x5c) = (s32)x;
+        *(s32*)(pattern.raw + 0x58) = (s32)y;
+        if (func_001bc630(&pattern,
+                          (s32*)(pattern.raw + 0x5c),
+                          (s32*)(pattern.raw + 0x58)) != 1)
+        {
+            continue;
+        }
+        func_001bb090(&pattern,
+                      *(u16*)(pattern.raw + 0x5c),
+                      *(u16*)(pattern.raw + 0x58),
+                      (u16)rotation);
+        placedX = *(s32*)(pattern.raw + 0x5c);
+        placedY = *(s32*)(pattern.raw + 0x58);
+        x = (u32)placedX;
+        y = (u32)placedY;
+        if ((*(u32*)((u8*)K_Field_Get() + 0x38) & 1) != 0)
         {
             continue;
         }
 
-        func_001bb090(&pattern, (u32)placedX, (u32)placedY,
-                      (u8)rotation);
-        if ((*(u32*)((u8*)K_Field_Get() + 0x38) & 1) != 0)
-        {
-            return;
-        }
         for (row = 0; row < pattern.raw[2]; row++)
         {
+            temp20_2 = (y + row) << 8;
+            temp23 = temp20_2 - 0xb8;
+            temp30 = temp20_2 - 0xa8;
+            spD0 = temp20_2 - 0xc8;
+            spC0 = temp20_2 - 0x1b8;
             for (col = 0; col < pattern.raw[1]; col++)
             {
-                fieldCell = dungeonCell(placedX + (s32)col,
-                                        placedY + (s32)row);
-                flags = dungeonPatternCell(&pattern, col, row)[0x0e];
-                if ((flags & 0x10) == 0 &&
-                    fieldCell[-0x100 + 0x48] == 0)
+                temp20_3 = (x + col) << 4;
+                if (*(u8*)((u8*)K_Field_Get() + temp23 + temp20_3) == 0 &&
+                    (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x53) & 0x10) == 0 &&
+                    *(u8*)((u8*)K_Field_Get() + temp30 + temp20_3) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + spD0 + temp20_3) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + spC0 + temp20_3) != 1)
                 {
-                    fieldCell[-0x100 + 0x48] = 2;
+                    *(u8*)((u8*)K_Field_Get() + temp23 + temp20_3) = 2;
                 }
-                if ((flags & 0x20) == 0 &&
-                    fieldCell[-0x10 + 0x48] == 0)
+                if (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x38) == 0 &&
+                    (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x53) & 0x20) == 0 &&
+                    *(u8*)((u8*)K_Field_Get() + spD0 + temp20_3) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x138) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x28) != 1)
                 {
-                    fieldCell[-0x10 + 0x48] = 2;
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x38) = 2;
                 }
-                if ((flags & 0x40) == 0 &&
-                    fieldCell[0x100 + 0x48] == 0)
+                if (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x148) == 0 &&
+                    (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x53) & 0x40) == 0 &&
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x158) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x138) != 1 &&
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x248) != 1)
                 {
-                    fieldCell[0x100 + 0x48] = 2;
+                    *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x148) = 2;
                 }
-                if ((flags & 0x80) == 0 &&
-                    fieldCell[0x10 + 0x48] == 0)
+                if (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x58) == 0 &&
+                    (*(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x53) & 0x80) == 0)
                 {
-                    fieldCell[0x10 + 0x48] = 2;
+                    value = *(u8*)((u8*)K_Field_Get() + temp30 + temp20_3);
+                    if (value != 1)
+                    {
+                        value = *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x158);
+                        if (value != 1)
+                        {
+                            value = *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x68);
+                            if (value != 1)
+                            {
+                                *(u8*)((u8*)K_Field_Get() + temp20_2 + temp20_3 + 0x58) = 2;
+                            }
+                        }
+                    }
                 }
             }
         }
+
         for (row = 0; row < pattern.raw[2]; row++)
         {
+            temp21 = y + row;
+            spB0 = temp21 << 8;
+            sp100 = temp21 + 1;
+            spF0 = x - 1;
+            spE0 = x + 1;
             for (col = 0; col < pattern.raw[1]; col++)
             {
-                flags = dungeonPatternCell(&pattern, col, row)[0x0e];
+                temp20_3 = x + col;
+                spA0 = spB0 + (temp20_3 << 4);
                 for (direction = 0; direction < 4; direction++)
                 {
-                    if ((flags & (1u << (direction + 4))) != 0)
+                    if ((*(u8*)((u8*)K_Field_Get() + spA0 + 0x53) &
+                         (1u << (direction + 4))) != 0)
                     {
-                        if (direction == 0)
+                        switch (direction)
                         {
-                            func_001bcac0(patternId, placedX + (s32)col,
-                                          placedY + (s32)row - 1,
-                                          (u32)placedX, (u32)placedY);
-                        }
-                        else if (direction == 1)
-                        {
-                            func_001bcac0(patternId, placedX + (s32)col - 1,
-                                          placedY + (s32)row,
-                                          (u32)placedX, (u32)placedY);
-                        }
-                        else if (direction == 2)
-                        {
-                            func_001bcac0(patternId, placedX + (s32)col,
-                                          placedY + (s32)row + 1,
-                                          (u32)placedX, (u32)placedY);
-                        }
-                        else
-                        {
-                            func_001bcac0(patternId, placedX + (s32)col + 1,
-                                          placedY + (s32)row,
-                                          (u32)placedX, (u32)placedY);
+                            case 0:
+                                func_001bcac0(patternId, temp20_3,
+                                              temp21 - 1, temp20_3, temp21);
+                                break;
+                            case 1:
+                                func_001bcac0(patternId, spF0, temp21,
+                                              temp20_3, temp21);
+                                break;
+                            case 2:
+                                func_001bcac0(patternId, temp20_3,
+                                              sp100, temp20_3, temp21);
+                                break;
+                            case 3:
+                                func_001bcac0(patternId, spE0, temp21,
+                                              temp20_3, temp21);
+                                break;
                         }
                     }
                 }
