@@ -245,7 +245,8 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 
     cache = &gFldUnitsPcMdl[slot];
     model = NULL;
-    if (cache->type == type && cache->id == id)
+    if (cache->type == type &&
+        gFldUnitsPcMdl[slot].id == id)
     {
         model = cache->mdl;
     }
@@ -264,8 +265,8 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
         cache->mdl = model;
         if (model != NULL)
         {
-            cache->type = *(u16*)((u8*)model + 0xd4);
-            cache->id = *(u16*)((u8*)model + 0xd6);
+            gFldUnitsPcMdl[slot].type = model->type;
+            cache->id = model->id;
         }
     }
     else
@@ -278,10 +279,8 @@ static inline void* FldUnit_LoadPcModel(s32 slot, u16 type, u16 id)
 // FUN_001cd9a0 NONMATCHING
 void* func_001cd9a0(u32 charId)
 {
-    u16 type;
-    u16 id;
-    s32 slot;
     s32 i;
+    s32 slot;
 
     slot = 0;
     for (i = 0; i < 3; i++)
@@ -293,11 +292,12 @@ void* func_001cd9a0(u32 charId)
         }
     }
 
-    type = 1;
-    id = (u16)charId;
     switch (charId)
     {
     case 1:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (func_0017d800() == true &&
             (PTR_DAT_007cd540[0] == 4 || PTR_DAT_007cd540[0] == 5))
         {
@@ -309,10 +309,15 @@ void* func_001cd9a0(u32 charId)
             type = 9;
             id = 0x104;
         }
-        else if (((PTR_DAT_007cd540[0] == 7 && PTR_DAT_007cd540[1] == 6) ||
-                  (PTR_DAT_007cd540[0] == 8 && PTR_DAT_007cd540[1] == 1) ||
-                  (PTR_DAT_007cd540[0] == 9 && PTR_DAT_007cd540[1] == 1)) &&
-                 func_0016ef30() == 8)
+        else if ((PTR_DAT_007cd540[0] == 7 &&
+                  PTR_DAT_007cd540[1] == 6 &&
+                  (func_0016ef30() & 0xff) == 8) ||
+                 (PTR_DAT_007cd540[0] == 8 &&
+                  PTR_DAT_007cd540[1] == 1 &&
+                  (func_0016ef30() & 0xff) == 8) ||
+                 (PTR_DAT_007cd540[0] == 9 &&
+                  PTR_DAT_007cd540[1] == 1 &&
+                  (func_0016ef30() & 0xff) == 8))
         {
             type = 9;
             id = 0x104;
@@ -359,9 +364,10 @@ void* func_001cd9a0(u32 charId)
             type = 9;
             id = 0x107;
         }
-        else if (PTR_DAT_007cd540[0] == 14 && func_0016ef30() == 6 &&
-                 func_0017d920() == 11 &&
-                 (func_0017da40() == 18 || func_0017da40() == 19))
+        else if (PTR_DAT_007cd540[0] == 14 &&
+                 func_0016ef30() == 6 &&
+                 ((func_0017d920() == 11 && func_0017da40() == 18) ||
+                  (func_0017d920() == 11 && func_0017da40() == 19)))
         {
             type = 9;
             id = 0x108;
@@ -391,14 +397,22 @@ void* func_001cd9a0(u32 charId)
             }
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     case 2:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 6 || PTR_DAT_007cd540[0] == 7)
         {
             type = 9;
             id = 0x200;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     case 5:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
         {
             type = 9;
@@ -415,7 +429,11 @@ void* func_001cd9a0(u32 charId)
             id = 0x501;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     case 7:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
         {
             type = 9;
@@ -427,22 +445,35 @@ void* func_001cd9a0(u32 charId)
             id = 0x701;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     case 10:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
         {
             type = 9;
             id = 0xd00;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     case 13:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         if (PTR_DAT_007cd540[0] == 14 && PTR_DAT_007cd540[1] == 5)
         {
             type = 9;
             id = 0xd00;
         }
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     default:
+        {
+            u16 type = 1;
+            u16 id = (u16)charId;
         return FldUnit_LoadPcModel(slot, type, id);
+        }
     }
 }
 
