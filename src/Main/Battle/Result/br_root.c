@@ -3191,9 +3191,13 @@ void func_001f7210(void)
     u32 i;
     u32 item_substate;
     u32 debug_val;
+    u32 frame_pad[0x40];
     K_ASSERT(work != NULL, 0x8c);
     slot = BR_U32(work, 0x3408);
     entry_idx = BR_U32(work, 0x1c + slot * 4);
+    frame_pad[0] = entry_idx;
+    frame_pad[0x3f] = slot;
+    BR_U32(work, 0x34e8) = frame_pad[0] + frame_pad[0x3f];
     BR_U32(work, 0x34e0) = entry_idx * 0x670;
     entry = work + 0x670 + 0x60;
     debug_val = BR_U32(entry, 0);
@@ -3210,11 +3214,13 @@ void func_001f7210(void)
             u32 rnd_tmp = func_00488f30();
             printf("rnd %d/%d\n", BR_U32(entry, 4), 5);
         }
+        printf("money : %d\n", value);
     } else if (debug_val == 1) {
         /* case 1: level/stat */
         kind = 1 + (BR_U32(entry, 4) % 5);
         value = BR_S16(entry, 8);
         printf("item id %d\n", value);
+        printf("type : get item\n");
     } else if (debug_val == 0) {
         /* case 0: recovery/status fallback */
         if (BR_U32(entry, 4) != 0) {
@@ -3245,6 +3251,7 @@ void func_001f7210(void)
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
         func_003c7430(10);
         printf("item id %d\n", BR_U32(entry, 8));
+        printf("item id : 0x%03x\n", BR_U32(entry, 8));
         break;
     case 2:
         /* off=6008: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10 -> (u16)entry_kind */
