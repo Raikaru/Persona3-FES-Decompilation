@@ -2110,7 +2110,7 @@ void FUN_00145520(CampEquipmentDrawItem* item, s32 menuCode, u8* workData)
                             campTextureAsFloat(item));
         resourceText = FUN_00173220(persona->id);
         textColor = (0xffU - item->alpha) | 0xffffff00;
-        campDrawText(100.0f, (s32)(item->x + 120.0f - 10.0f),
+        campDrawText(100.0f, (s32)(130.0f + (f32)(s32)item->x - 10.0f),
                      (s32)(item->y + 10.0f), textColor, 10, 1, resourceText,
                      0x10, 0);
         break;
