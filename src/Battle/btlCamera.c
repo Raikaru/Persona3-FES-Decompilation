@@ -3580,6 +3580,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       fStack_58 = fStack_50 * fVar7 + fStack_18 + 0.0f;
     }
     fVar10 = fStack_18;
+    FUN_002a4690((void*)&uStack_b8,(const void*)&fStack_60,
+                 (const void*)&fStack_40,(const void*)&D_00697880);
     FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_b8);
     fStack_90 = fStack_40;
     fStack_8c = fStack_38;
@@ -3651,6 +3653,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
       fStack_68 = fStack_48;
     }
     fVar10 = fStack_28;
+    FUN_002a4690((void*)&uStack_b8,(const void*)&fStack_60,
+                 (const void*)&fStack_40,(const void*)&D_00697880);
     FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_b8);
     fStack_90 = fStack_40;
     fStack_8c = fStack_38;
@@ -3719,6 +3723,8 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
         fStack_60 = fStack_48 * fVar16 + uStack_30.f._0_4_ + 0.0f;
         fStack_58 = (fVar10 + 0.0f) - fStack_50 * fVar16;
       }
+      FUN_002a4690((void*)&uStack_d4,(const void*)&fStack_60,
+                   (const void*)&fStack_40,(const void*)&D_00697880);
       FUN_004be1e0(&fStack_50,0x6978a0,1,&uStack_d4);
       fStack_90 = fStack_40;
       fStack_8c = fStack_38;
@@ -3775,6 +3781,13 @@ void FUN_002b0280(BtlCamera* param_2,long param_3,long param_4,float param_1)
     }
   }
   FUN_002a3e80(fVar13,(u8*)*(undefined4 *)(iVar4 + 0xe0),(u8*)(iVar5 + 4),(u8*)&uStack_ac,3);
+  if (fVar7 > 1.25f) {
+    FUN_002a3e80(fVar13,(u8*)*(undefined4 *)(iVar4 + 0xe0),
+                 (u8*)(iVar5 + 4),(u8*)&uStack_ac,0x33);
+    FUN_002a2290((u16*)param_2,(RwV3d*)&fStack_e0,
+                 (RwV3d*)&fStack_dc,1);
+    FUN_002a3110((u16*)param_2,fVar7);
+  }
   return;
 }
 
