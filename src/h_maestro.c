@@ -789,7 +789,7 @@ u32 func_001114b0(KwlnTask* task)
 void func_00111500(KwlnTask* task)
 {
     MaestroStreamWork* work;
-    s32 value;
+    register s32 value;
 
     work = (MaestroStreamWork*)task->workData;
     value = 1;
@@ -2321,28 +2321,48 @@ void func_00115350(f32 depth,
     const u64 points[4] = {point0, point1, point2, point3};
     const s32 alphas[4] = {alpha0, alpha1, alpha2, alpha3};
     f32 recipZ;
+    s32 r;
+    s32 g;
+    s32 b;
     s32 i;
+    void (**setState)(u32, u32);
+
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    r = (s32)((color >> 16) & 0xff);
+    g = (s32)((color >> 8) & 0xff);
+    b = (s32)(color & 0xff);
 
     Maestro_SetPrimitiveStates(0x44, 0x717fb);
-    (*D_00960090)(1, 0);
-    recipZ = Maestro_NearReciprocal();
+    setState = (void (**)(u32, u32))D_00960090_abs;
+    (*setState)(1, 0);
+
     for (i = 0; i < 4; i++)
     {
-        f32 point[2];
-        u32 vertexColor;
+        f32 x = ((const f32*)&points[i])[0];
+        f32 y = ((const f32*)&points[i])[1];
+        f32 z = D_00960088 - depth;
+        f32 a = (f32)alphas[i];
+        f32 cr = r >= 0 ? (f32)r : (f32)(((u32)r >> 1) | (r & 1)) * 2.0f;
+        f32 cg = g >= 0 ? (f32)g : (f32)(((u32)g >> 1) | (g & 1)) * 2.0f;
+        f32 cb = b >= 0 ? (f32)b : (f32)(((u32)b >> 1) | (b & 1)) * 2.0f;
 
-        point[0] = ((const f32*)&points[i])[0];
-        point[1] = ((const f32*)&points[i])[1];
-        vertexColor = (color & 0xffffff00) | ((u32)alphas[i] & 0xff);
-        Maestro_SetVertex(&vertices[i],
-                          point[0],
-                          point[1],
-                          D_00960088 - depth,
-                          recipZ,
-                          0.0f,
-                          0.0f,
-                          vertexColor);
+        {
+            RwIm2DVertex* v = &vertices[i];
+            v->u.els.scrVertex.x = x;
+            v->u.els.scrVertex.y = y;
+            v->u.els.scrVertex.z = z;
+            v->u.els.camVertex_z = 0.0f;
+            v->u.els.u = 0.0f;
+            v->u.els.v = 0.0f;
+            v->u.els.recipZ = recipZ;
+            v->u.els.color.r = cr;
+            v->u.els.color.g = cg;
+            v->u.els.color.b = cb;
+            v->u.els.color.a = a;
+        }
     }
+
     (*D_009600A0)(rwPRIMTYPETRISTRIP, vertices, 4);
 }
 /* ------------------------------------------------------------------------- */
