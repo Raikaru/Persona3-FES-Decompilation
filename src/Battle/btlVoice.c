@@ -10150,7 +10150,6 @@ u32 func_002ef250(BtlAction* action)
 
 // FUN_002ef360 NONMATCHING
 void func_002ef360(void)
-
 {
   u32 uVar1;
   u32 uVar2;
@@ -10163,9 +10162,7 @@ void func_002ef360(void)
   u16 auStack_10018 [32748];
   u32 auStack_30 [6];
   u16 auStack_18 [4];
-  u32 uStack_10;
-  u32 uStack_c;
-  u32 uStack_8;
+  RwV3d position;
   
   puVar6 = (u32*)DAT_0069a060;
   puVar5 = auStack_30;
@@ -10183,51 +10180,51 @@ void func_002ef360(void)
   auStack_18[1] = DAT_007cc9ba;
   auStack_18[2] = DAT_007cc9bc;
   sVar7 = 0;
-  uStack_c = 0;
+  position.y = 0.0f;
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x150); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
     if (*(short *)(iVar4 + 0xa4) == 1) {
-      uStack_10 = 0x43160000;
-      uStack_8 = 0x43fa0000;
+      position.x = 150.0f;
+      position.z = 500.0f;
       *(u8 *)(iVar4 + 0x9f0) = 2;
     }
     else {
       iVar3 = (int)sVar7;
-      uStack_10 = auStack_30[iVar3 * 2];
-      uStack_8 = auStack_30[iVar3 * 2 + 1];
+      position.x = *(f32*)&auStack_30[iVar3 * 2];
+      position.z = *(f32*)&auStack_30[iVar3 * 2 + 1];
       *(char *)(iVar4 + 0x9f0) = (char)auStack_18[iVar3];
       sVar7 = sVar7 + 1;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,(f32*)&position);
+    FUN_0027f650(iVar4,&position);
   }
   for (iVar4 = *(int *)(DAT_007ce3ec + 0x158); iVar4 != 0; iVar4 = *(int *)(iVar4 + 0xa34)) {
     sVar7 = *(short *)(iVar4 + 0xa4);
     if (sVar7 == 0x127) {
-      uStack_10 = 0x437a0000;
-      uStack_8 = 0x42c80000;
+      position.x = 250.0f;
+      position.z = 100.0f;
     }
     else if (sVar7 == 0x119) {
-      uStack_10 = 0xc37a0000;
-      uStack_8 = 0x42c80000;
+      position.x = -250.0f;
+      position.z = 100.0f;
     }
     else if (sVar7 == 0x118) {
-      uStack_10 = 0x437a0000;
-      uStack_8 = 0xc3e10000;
+      position.x = 250.0f;
+      position.z = -450.0f;
     }
     else if (sVar7 == 0x117) {
-      uStack_10 = 0;
-      uStack_8 = 0xc3480000;
+      position.x = 0.0f;
+      position.z = -200.0f;
     }
     else if (sVar7 == 0x116) {
-      uStack_10 = 0xc37a0000;
-      uStack_8 = 0xc3e10000;
+      position.x = -250.0f;
+      position.z = -450.0f;
     }
     else if (sVar7 == 0x10d) {
-      uStack_10 = 0;
-      uStack_8 = 0xc3fa0000;
+      position.x = 0.0f;
+      position.z = -500.0f;
     }
-    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,&uStack_10);
-    FUN_0027f650(iVar4,&uStack_10);
+    FUN_002d2280(iVar4 + 0x94,iVar4 + 0x96,(f32*)&position);
+    FUN_0027f650(iVar4,&position);
   }
   return;
 }
