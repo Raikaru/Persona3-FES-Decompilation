@@ -902,18 +902,25 @@ init_phase8:
     {
         node = *(u8**)((u8*)K_Field_Get() + 0x116c);
         func_003b6790(0, node);
-        for (i = 0; i < *(u32*)(node + 0x118); i++)
+        for (i = 0;
+             i < *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0x118);
+             i++)
         {
-            u8* record;
             void* matrix;
 
-            record = node + i * 0x18;
-            matrix = func_004cb2f0(*(u32*)(record + 0x124));
-            if ((*(u16*)(record + 0x11c) == 0) ||
-                (*(u16*)(record + 0x11c) == 2))
+            matrix = func_004cb2f0(
+                *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                        i * 0x18 + 0x124));
+            if ((*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                         i * 0x18 + 0x11c) == 0) ||
+                (*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                         i * 0x18 + 0x11c) == 2))
             {
                 handle = MT_Scene_CreateResModelFld(
-                    *(u16*)(record + 0x120), *(Model**)(record + 0x128));
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                            i * 0x18 + 0x120),
+                    *(Model**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                               i * 0x18 + 0x128));
                 if (handle == 0)
                 {
                     K_Assert(D_00678DF8, 0x2e4);
@@ -926,7 +933,8 @@ init_phase8:
                     angles[2] = func_001a5bc0(matrix);
                     func_003b78b0(handle, (u8*)matrix + 0x30, angles);
                 }
-                if ((*(u16*)(record + 0x11e) & 2) != 0)
+                if ((*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                             i * 0x18 + 0x11e) & 2) != 0)
                 {
                     Resrc* res;
 
@@ -936,23 +944,28 @@ init_phase8:
                         *(u32*)((u8*)res + 0x110) = 1;
                     }
                 }
-                *(void**)(record + 0x128) = NULL;
+                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                          i * 0x18 + 0x128) = NULL;
             }
         }
-        for (i = 0; i < *(u32*)(node + 0x118); i++)
+        for (i = 0;
+             i < *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0x118);
+             i++)
         {
-            u8* record;
-
-            record = node + i * 0x18;
-            if (*(u16*)(record + 0x11c) == 1)
+            if (*(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                        i * 0x18 + 0x11c) == 1)
             {
-                handle = func_003b66b0(*(u16*)(record + 0x120),
-                                       *(void**)(record + 0x12c));
+                handle = func_003b66b0(
+                    *(u16*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                            i * 0x18 + 0x120),
+                    *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                              i * 0x18 + 0x12c));
                 if (handle == 0)
                 {
                     K_Assert(D_00678DF8, 0x305);
                 }
-                *(void**)(record + 0x12c) = NULL;
+                *(void**)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) +
+                          i * 0x18 + 0x12c) = NULL;
                 {
                     Resrc* res;
 
@@ -964,7 +977,7 @@ init_phase8:
                 }
             }
         }
-        *(u32*)(node + 0x118) = 0;
+        *(u32*)((u8*)*(u8**)((u8*)K_Field_Get() + 0x116c) + 0x118) = 0;
         func_0019ff10();
         func_001a0040(1, 1);
     }
