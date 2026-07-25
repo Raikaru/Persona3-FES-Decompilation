@@ -830,7 +830,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             if (record == NULL) {
                 frame = i == selected ? 0xa4 : 0x1d;
                 campMenuDrawSprite(parent, *labels, frame, item->alpha,
-                                   item->x + 324.0f,
+                                   384.0f + item->x - 60.0f,
                                    item->y + 1.0f + (f32)(i * 0x23),
                                    item->scale);
                 continue;
@@ -838,7 +838,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             if (i == selected) {
                 if (FUN_00403380(*(u16*)record) == 2) {
                     campMenuDrawSprite(parent, *labels, 0xa3, item->alpha,
-                                       item->x + 480.0f, rowY - 7.0f,
+                                       540.0f + item->x - 60.0f, 101.0f + item->y + (f32)(i * 0x23) - 108.0f,
                                        item->scale);
                 } else {
                     valueB = (s16)FUN_00403800(*(u16*)record);
@@ -847,7 +847,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                             campMenuDrawSpriteAlt(parent,
                                 FUN_001120a0(1), valueB / 10 + 0xb,
                                 item->alpha, 0xff, 0xbe, 0x5f,
-                                item->x + 484.0f, rowY, item->scale);
+                                544.0f + item->x - 60.0f, rowY, item->scale);
                         }
                         campMenuDrawSpriteAlt(parent,
                             FUN_001120a0(1), valueB % 10 + 0xb,
@@ -874,8 +874,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         }
                     } else {
                         campMenuDrawSprite(parent, *labels, 0xa7,
-                                           item->alpha, item->x + 480.0f,
-                                           rowY - 7.0f, item->scale);
+                                           item->alpha, 540.0f + item->x - 60.0f,
+                                           101.0f + item->y + (f32)(i * 0x23) - 108.0f, item->scale);
                     }
                 }
                 valueA = (s16)FUN_00403740(*(u16*)record);
@@ -907,7 +907,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
             } else {
                 if (FUN_00403380(*(u16*)record) == 2) {
                     campMenuDrawSprite(parent, *labels, 0xa3, item->alpha,
-                                       item->x + 480.0f, rowY - 7.0f,
+                                       540.0f + item->x - 60.0f, 101.0f + item->y + (f32)(i * 0x23) - 108.0f,
                                        item->scale);
                 } else {
                     valueB = (s16)FUN_00403800(*(u16*)record);
@@ -918,7 +918,7 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         if (valueB >= 10) {
                             campMenuDrawSprite(parent,
                                 FUN_001120a0(2), valueB / 10 + 0xb,
-                                fadeAlpha, item->x + 484.0f, rowY,
+                                fadeAlpha, 544.0f + item->x - 60.0f, rowY,
                                 item->scale);
                         }
                         fade = 255.0f -
@@ -958,8 +958,8 @@ void FUN_00156F80(CampMenuDrawItem* item, const char** labels, s32 mode, s32 sel
                         }
                     } else {
                         campMenuDrawSprite(parent, *labels, 0xa7,
-                                           item->alpha, item->x + 480.0f,
-                                           rowY - 7.0f, item->scale);
+                                           item->alpha, 540.0f + item->x - 60.0f,
+                                           101.0f + item->y + (f32)(i * 0x23) - 108.0f, item->scale);
                     }
                 }
                 valueA = (s16)FUN_00403740(*(u16*)record);
