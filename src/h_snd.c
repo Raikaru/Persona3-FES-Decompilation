@@ -539,54 +539,62 @@ u8 func_00109170(void)
 // FUN_00109180 NONMATCHING
 void H_Snd_00109180(s32 channelIndex)
 {
+    char name[0x100];
     HsndChannel* channel;
     HsndBackendControl* control;
-    const char* name;
-
-    channel = H_Snd_GetChannel(channelIndex);
-    if (channel == NULL)
-    {
-        return;
-    }
 
     if (channelIndex == 0)
     {
-        /* BGM uses the first word of the retail D_005D4014 record. */
-        func_0054d1a8(channel->handle, -0x1E);
-        if (func_0054d130(channel->handle) != 0)
+        if (sBgmRestartCountdown == 1)
         {
-            func_0054d118(channel->handle, false);
-        }
-
-        name = sBgmAdxStrings[channel->id][0];
-        sprintf(channel->name, "%s", name);
-        func_0054d238(channel->handle, true);
-        if (channel->id == 0x3D)
-        {
-            H_Snd_ApplyChannelFade(channel, 1);
-            func_0054d2b0(channel->handle, 10);
+            func_0054d1a8(sChannels[0].handle, -0x32);
         }
         else
         {
-            H_Snd_ApplyChannelFade(channel, 0x1E);
-            func_0054d2b0(channel->handle, 0x37);
+            func_0054d1a8(sChannels[0].handle, -0x1E);
         }
-        func_0054d0a0(channel->handle, channel->name);
-        func_0054d208(channel->handle, true);
-        channel->active = true;
-        channel->state = HSND_CHANNEL_STARTING;
+        sprintf(name, "%s", sBgmAdxStrings[sChannels[0].id][0]);
+        if (func_0054d130(sChannels[0].handle) != 0)
+        {
+            func_0054d118(sChannels[0].handle, 0);
+        }
+        if (sChannels[0].id == 0x3D)
+        {
+            func_0054d238(sChannels[0].handle, 1);
+            func_0054d220(sChannels[0].handle, 1);
+            func_0054d2b0(sChannels[0].handle, 10);
+        }
+        else
+        {
+            func_0054d238(sChannels[0].handle, 1);
+            func_0054d220(sChannels[0].handle, 0x1E);
+            func_0054d2b0(sChannels[0].handle, 0x37);
+        }
+        func_0054d0a0(sChannels[0].handle, name);
+        func_0054d208(sChannels[0].handle, 1);
+        sChannels[0].active = 1;
+        sChannels[0].state = HSND_CHANNEL_STARTING;
         return;
     }
 
+    channel = &sChannels[channelIndex];
     if (channel->handle != NULL)
     {
         func_0054d060(channel->handle);
         channel->handle = NULL;
     }
 
-    /* D_007E42E0 + channel * 0x28 is initialized before every request. */
     control = &sBackendControls[channelIndex];
-    memset(control, 0, sizeof(HsndBackendControl));
+    control->flags = 0;
+    control->voiceCount = 0;
+    control->timeout = 0;
+    control->padC = 0;
+    control->pending = 0;
+    control->class = 0;
+    control->data18 = 0;
+    control->data1C = 0;
+    control->data20 = 0;
+    control->data24 = 0;
     control->flags = 2;
     control->voiceCount = 2;
     control->timeout = 0x5DC0;
@@ -597,51 +605,31 @@ void H_Snd_00109180(s32 channelIndex)
         control->voiceCount = 1;
     }
 
-    switch (channel->startMode)
+    switch (channel->requestType)
     {
         case HSND_START_BGM:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            func_0054d238(channel->handle, false);
-            break;
-
         case HSND_START_SE:
-        case HSND_START_SE_WITH_PARAM:
+        case HSND_START_CDVD:
             channel->handle = func_0054d030(control, sChannelData0[channelIndex],
                                              sChannelData1[channelIndex]);
             if (sChannelData3[channelIndex] != NULL)
             {
                 func_0054d328(channel->handle);
             }
-            func_0054d238(channel->handle, false);
-            H_Snd_ApplyChannelFade(channel, channelIndex == 4 ? 0x5A : 0);
-            break;
-
-        case HSND_START_STREAM:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            func_0054d238(channel->handle, false);
-            H_Snd_ApplyChannelFade(channel, channelIndex == 4 ? 0x5A : 0);
-            func_0054d0e8(channel->handle, channel->modeData, channel->modeArg.parameter);
-            break;
-
-        case HSND_START_STREAM_FADE:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            func_0054d0d0(channel->handle, sChannelData0[channelIndex],
-                           sChannelData1[channelIndex]);
-            break;
-
-        case HSND_START_CDVD:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            func_0054d0b8(channel->handle, channel->modeArg.data, channel->id);
-            break;
-
-        case HSND_START_NAMED_STREAM:
-            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
-                                             sChannelData1[channelIndex]);
-            if (channelIndex == 0)
+            func_0054d238(channel->handle, 0);
+            if (channelIndex == 4)
+            {
+                func_0054d220(channel->handle, 0x5A);
+            }
+            else
+            {
+                func_0054d220(channel->handle, 0);
+            }
+            if (channel->requestType == HSND_START_CDVD)
+            {
+                func_0054d0b8(channel->handle, channel->modeArg.data, channel->id);
+            }
+            else if (channelIndex == 0)
             {
                 func_00102530(channel->handle, channel->name);
             }
@@ -651,12 +639,72 @@ void H_Snd_00109180(s32 channelIndex)
             }
             break;
 
+        case HSND_START_SE_WITH_PARAM:
+        case HSND_START_STREAM_FADE:
+            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
+                                             sChannelData1[channelIndex]);
+            if (sChannelData3[channelIndex] != NULL)
+            {
+                func_0054d328(channel->handle);
+            }
+            func_0054d238(channel->handle, 0);
+            if (channelIndex == 4)
+            {
+                func_0054d220(channel->handle, 0x5A);
+            }
+            else
+            {
+                func_0054d220(channel->handle, 0);
+            }
+            func_0054d0d0(channel->handle, sChannelData0[channelIndex],
+                          sChannelData1[channelIndex]);
+            func_0054d208(channel->handle, 1);
+            break;
+
+        case HSND_START_STREAM:
+            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
+                                             sChannelData1[channelIndex]);
+            if (sChannelData3[channelIndex] != NULL)
+            {
+                func_0054d328(channel->handle);
+            }
+            func_0054d238(channel->handle, 0);
+            if (channelIndex == 4)
+            {
+                func_0054d220(channel->handle, 0x5A);
+            }
+            else
+            {
+                func_0054d220(channel->handle, 0);
+            }
+            func_0054d0e8(channel->handle, channel->modeData,
+                          channel->modeArg.parameter);
+            break;
+
+        case HSND_START_NAMED_STREAM:
+            channel->handle = func_0054d030(control, sChannelData0[channelIndex],
+                                             sChannelData1[channelIndex]);
+            func_0054d238(channel->handle, 0);
+            if (channelIndex == 4)
+            {
+                func_0054d220(channel->handle, 0x5A);
+            }
+            else
+            {
+                func_0054d220(channel->handle, 0);
+            }
+            func_0054d0a0(channel->handle, channel->name);
+            break;
+
         default:
             break;
     }
-
-    func_0054d208(channel->handle, true);
-    channel->active = true;
+    if (channel->requestType != HSND_START_STREAM &&
+        channel->requestType != HSND_START_STREAM_FADE)
+    {
+        func_0054d208(channel->handle, 1);
+    }
+    channel->active = 1;
     channel->state = HSND_CHANNEL_STARTING;
 }
 
