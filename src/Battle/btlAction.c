@@ -82,6 +82,10 @@ BtlPacket* FUN_002e3c80(void);
 BtlPacket* FUN_002d8090(BtlAction* action);
 BtlPacket* FUN_002dd690(u32 a, u32 b);
 BtlPacket* FUN_002a1db0();
+BtlPacket* FUN_002e38a0(u16 a);
+BtlPacket* FUN_002b8f40(u32 a);
+BtlPacket* FUN_002b8d60(u32 a, u32 b);
+BtlPacket* FUN_002a3b40(BtlAction* action, u32 a);
 BtlPacket* FUN_002bc7e0();
 extern u16 DAT_007e094c;
 extern u16 DAT_007e094e;
@@ -5963,21 +5967,182 @@ void btlActionUpdateStateEscape(BtlAction* action)
 // FUN_00297a60 NONMATCHING
 void btlActionInitStateRoundUpMes(BtlAction* action)
 {
-    BtlPacket* packet;
-    BtlAction* selected = action->unit->genus == UNIT_GENUS_PC ? action : action->target.targetedActions[0];
+    BtlPacket* pkt;
+    BtlPacket* rootPkt;
+    BtlAction* selected;
+    BtlAction* iter;
+    BtlUnit* unit;
+    u16 i;
+    u16 count;
+    u32 changeForm;
+    u16 speedIdx;
+    f32 distThreshold;
+    RwV3d homePos;
+    s32 workArea[2];
 
-    if (selected == NULL)
+    selected = NULL;
+    unit = action->unit;
+    if (unit->genus == UNIT_GENUS_PC)
     {
         selected = action;
     }
-    packet = btlVoice002e2be0(selected, 0x1d, 0, 0, 0);
-    btlPacketRegister(packet, BTLPACKET_TYPE_1);
-    packet = btlCameraCreateSetStatePacket(action, BTLCAMERA_STATE_ROUNDUP);
-    packet->actionUID = action->uid;
-    btlPacketRegister(packet, BTLPACKET_TYPE_0);
+    else
+    {
+        selected = action->target.targetedActions[0];
+    }
+    if (selected != NULL)
+    {
+        count = ACTION_U16(gBtl, 0xb98);
+        for (i = 0; i < count; i++)
+        {
+            if (*(void**)((u8*)gBtl + 0xb88 + i * 4) == selected)
+            {
+                break;
+            }
+        }
+        if (i >= count)
+        {
+            selected = (void*)*(u32*)((u8*)gBtl + 0xb88 + (FUN_002ffbc0(count) & 0xffff) * 4);
+        }
+    }
+    else
+    {
+        selected = (void*)*(u32*)((u8*)gBtl + 0xb88 + (FUN_002ffbc0(ACTION_U16(gBtl, 0xb98)) & 0xffff) * 4);
+    }
+
+    pkt = FUN_002e38a0(ACTION_U16(selected->unit, 0xa4));
+    pkt->actionUID = action->uid;
+    btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+
+    if (*(u32*)((u8*)gBtl + 0x148) != 0)
+    {
+        pkt = FUN_002886e0(0, *(BtlUnit**)((*(u32*)((u8*)gBtl + 0x148)) + 0x30), 1);
+        pkt->actionUID = action->uid;
+        btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+    }
+    if (*(u32*)((u8*)gBtl + 0x148) != 0)
+    {
+        pkt = FUN_00288950(*(BtlUnit**)((*(u32*)((u8*)gBtl + 0x148)) + 0x30), 0);
+        pkt->actionUID = action->uid;
+        btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+    }
+
+    changeForm = 0;
+    if (unit->genus == UNIT_GENUS_PC)
+    {
+        if (ACTION_S16(gBtl, 0xa38) != -1 &&
+            ((u32)(ACTION_S16(gBtl, 0xa3a) >> 1) >= (FUN_002d4e10(2, 0x80000) & 0xffff)) &&
+            ACTION_S16(gBtl, 0xa38) != FUN_002b7060())
+        {
+            changeForm = 1;
+        }
+    }
+
+    if (changeForm != 0)
+    {
+        rootPkt = FUN_002b8f40(1);
+        rootPkt->actionUID = action->uid;
+        btlPacketRegister(rootPkt, BTLPACKET_TYPE_0);
+
+        iter = *(void**)((u8*)gBtl + 0x150);
+        while (iter != NULL)
+        {
+            if (FUN_00300580(ACTION_U32(iter->unit, 0xa2c), 0x180000) == 0 &&
+                FUN_0030b5a0(ACTION_U32(iter->unit, 0xa2c), 0) == 0)
+            {
+                pkt = FUN_002819d0(iter, 0, D_00693300[0], 24);
+                pkt->unk_00 = 4;
+                pkt->parentUID = rootPkt->uid;
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            }
+            iter = *(void**)((u8*)iter + 0xa34);
+        }
+    }
+    else
+    {
+        pkt = FUN_002b8d60(2, 0xfff);
+        pkt->actionUID = action->uid;
+        btlPacketRegister(pkt, BTLPACKET_TYPE_0);
+
+        if ((gBtl->flags & 0x40000000) && (ACTION_U16(gBtl, 0x18) & 2))
+        {
+            pkt = FUN_002b8d60(1, 0xfff);
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_0);
+        }
+        else
+        {
+            u32 allowMove;
+            u16 unitDatId;
+            u8 genus;
+
+            btlUnit0027f7c0(unit, &homePos, NULL, NULL);
+            distThreshold = 75.0f;
+            if (FUN_002d1ed0(&unit->pos, &homePos) > distThreshold)
+            {
+                if (FUN_00300580(unit->datUnit, 0x180000) == 0)
+                {
+                    allowMove = !(iGpffffb708[(u32)action->target.specificId * 0x2c] & 2);
+                    unitDatId = unit->datUnit->id;
+                    genus = unit->genus;
+                    if (genus == UNIT_GENUS_EC)
+                    {
+                        speedIdx = *(u16*)((u8*)iGpffffb728 + unitDatId * 0xe8 + allowMove * 4 + 0x24);
+                    }
+                    else
+                    {
+                        speedIdx = 0;
+                    }
+                    pkt = FUN_002819d0(selected, 0, D_00693300[speedIdx], 24);
+                    pkt->actionUID = action->uid;
+                    btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+                }
+            }
+
+            pkt = FUN_002822b0(unit, &homePos, 0);
+            pkt->unk_00 = 4;
+            pkt->actionUID = action->uid;
+            btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+        }
+    }
+
+    if ((gBtl->flags & 0x40000000) && (ACTION_U16(gBtl, 0x18) & 2))
+    {
+        iter = *(void**)((u8*)gBtl + 0x14c);
+        while (iter != NULL)
+        {
+            if ((ACTION_U16(iter, 0x1a) & 1) &&
+                FUN_0030b5a0(ACTION_U32(iter->unit, 0xa2c), 0) == 0)
+            {
+                pkt = FUN_002843e0(iter->unit, 0);
+                pkt->actionUID = action->uid;
+                btlPacketRegister(pkt, BTLPACKET_TYPE_1);
+            }
+            iter = *(void**)((u8*)iter + 0x4a8);
+        }
+    }
+
+    pkt = FUN_002a1db0(0);
+    pkt->actionUID = action->uid;
+    btlPacketRegister(pkt, BTLPACKET_TYPE_0);
+
+    pkt = FUN_002a3b40(action, 6);
+    pkt->actionUID = action->uid;
+    btlPacketRegister(pkt, BTLPACKET_TYPE_0);
+
+    gBtl->flags &= 0xffbfffff;
+    ACTION_U16(gBtl, 0x18) = 0;
+
+    if (FUN_002d1a70() == 1)
+    {
+        gBtl->flags &= ~0x4000;
+        FUN_001ff350();
+    }
+
     action->movedAwayFromHome = (u32)selected;
     action->unk_488 = 0;
-    ACTION_U16(action, 0x48c) = 0;
+    ACTION_U32(action, 0x48c) = 0;
     ACTION_U16(action, 0x490) = 0x12;
 }
 // FUN_00298060 NONMATCHING
