@@ -2239,22 +2239,27 @@ u32 h_campUpdateSystemMenuTask(int param_1)
   case 9:
     FUN_00156140(puVar1[4],puVar1 + 5,puVar1[0x55],puVar1 + 0x56);
     campDrawItemFrameAlias((int)puVar1);
-    pair.u = 0x444bc00041a80000ULL;
+    pair.u = 0x4357000041a80000ULL;
     tmp.u = pair.u;
-    tmp.f[0] -= 600.0f;
+    tmp.f[1] += 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4]), 0, 2, 2, tmp.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x44578000424c0000ULL;
+    pair.u = 0x43830000424c0000ULL;
     tmp.u = pair.u;
-    tmp.f[0] -= 600.0f;
+    tmp.f[1] += 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x44), 0, 2, 2, tmp.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x442d000042ae0000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x88), 0, 2, 2, 0x42b8000042ae0000, 0x42b8000042ae0000, 0, 0, 0, 10);
+    pair.u = 0x42b8000042ae0000ULL;
     tmp.u = pair.u;
-    tmp.f[0] -= 600.0f;
+    tmp.f[1] += 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0xcc), 0, 2, 2, tmp.u, pair.u, 0, 0, 0, 10);
-    pair.u = 0x442d000043c20000ULL;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x110), 0, 2, 2, 0x42b8000043c20000, 0x42b8000043c20000, 0, 0, 0, 10);
+    pair.u = 0x42b8000043c20000ULL;
     tmp.u = pair.u;
-    tmp.f[0] -= 600.0f;
+    tmp.f[1] += 600.0f;
     func_0018bc10(100.0f, (void*)(puVar1[4] + 0x154), 0, 2, 2, tmp.u, pair.u, 0, 0, 0, 10);
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x198), 0, 2, 2, 0x42ba000042be0000, 0x42ba000042be0000, 0, 0, 0, 10);
+    *puVar1 = 10;
+    func_0018bc10(100.0f, (void*)(puVar1[4] + 0x1a4c), 0, 2, 2, 0x43c0800043c40000, 0x43c0800043c40000, 0, 0, 0, 10);
     break;
   case 10:
     lVar4 = FUN_00156140(puVar1[4],puVar1 + 5,puVar1[0x55],puVar1 + 0x56);
