@@ -3244,6 +3244,7 @@ void func_001f7210(void)
         /* off=5948: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10  -> (u16)entry_kind */
         func_003c7bc0(0, (u32)func_00171110(BR_U16(entry, 0), BR_S16(entry, 8)));
         func_003c7430(10);
+        printf("item id %d\n", BR_U32(entry, 8));
         break;
     case 2:
         /* off=6008: dsll32 a0,fp,0x10; dsra32 a0,a0,0x10 -> (u16)entry_kind */
