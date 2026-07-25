@@ -171,6 +171,7 @@ void func_0023f540(void)
     u8 color[4];
     work = sBiMain;
     K_ASSERT(work != NULL, 0x8a);
+    work = sBiMain;
     renderContext = func_0021c3f0(1);
 
 
