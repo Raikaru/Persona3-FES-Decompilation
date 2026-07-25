@@ -725,16 +725,32 @@ void bsaMain00210d90(BsaWork* work)
         drawColor[0] = 0x1e; drawColor[1] = 0x1e; drawColor[2] = 0x1e;
         drawColor[3] = bsaAlpha(alpha * 255.0f);
         func_0021d950(p + 0x242c, drawColor);
-        func_0021dd60(p + 0x246c, drawColor);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021dd60(p + 0x246c, (u8*)rect);
         drawColor[0] = 0x22; drawColor[1] = 0x21; drawColor[2] = 0x1f;
         drawColor[3] = bsaAlpha(alpha * 204.0f);
         func_0021d950(p + 0x24ac, drawColor);
-        func_0021dd60(p + 0x24ec, drawColor);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021dd60(p + 0x24ec, (u8*)rect);
         func_0021d950(p + 0x252c, drawColor);
-        func_0021dd60(p + 0x256c, drawColor);
+        ((u32*)rect)[0] = *(u32*)drawColor;
+        ((u32*)rect)[1] = *(u32*)drawColor;
+        ((u32*)rect)[2] = *(u32*)drawColor;
+        ((u32*)rect)[3] = *(u32*)drawColor;
+        func_0021dd60(p + 0x256c, (u8*)rect);
         for (i = 0; i < 8; i++) {
             func_0021d950(p + i * 0x80 + 0x25ac, drawColor);
-            func_0021dd60(p + i * 0x80 + 0x25ec, drawColor);
+            ((u32*)rect)[0] = *(u32*)drawColor;
+            ((u32*)rect)[1] = *(u32*)drawColor;
+            ((u32*)rect)[2] = *(u32*)drawColor;
+            ((u32*)rect)[3] = *(u32*)drawColor;
+            func_0021dd60(p + i * 0x80 + 0x25ec, (u8*)rect);
         }
     }
 }
