@@ -460,19 +460,9 @@ void bsaMain00210d90(BsaWork* work)
     drawColor[2] = 0xff;
     drawColor[3] = bsaAlpha(alpha * 255.0f);
     func_0021d950(p + 0x10, drawColor);
-    /*
-     * Retail has no icon quad here: its call sequence goes straight from the
-     * frame colour write to bpIFont.  The cca0(0x28)/d8e0/d950 triple that
-     * used to sit at this point was three calls retail does not make.
-     */
-    /*
-     * The transition has a second copy of the command frame.  It is kept
-     * separate from the persistent frame at 0x10 so that the old panel can
-     * fade out while the new one slides in.
-     */
-    image = func_0021cca0(table2, 0x1f);
-    bsaPlaceQuad(p, 0x40, image, 59.0f, base + 60.0f + slide,
-                 -1.0f, -1.0f, bsaAlpha(alpha * 255.0f));
+    image = func_0021cca0(table2, 0x28);
+    bsaPlaceQuad(p, 0x510, image, 18.0f, 54.0f + base + slide,
+                 -1.0f, -1.0f, bsaAlpha(iconAlpha * 255.0f));
     if ((p[1] & BSA_FLAG_TOP_LABEL) == 0) {
         f32 origin[2];
         origin[0] = p[0x4c40] < 10 ? 113.0f : 106.0f;
@@ -621,7 +611,7 @@ void bsaMain00210d90(BsaWork* work)
         }
         value = personaSlide;
         image = func_0021cca0(table2, 0x27);
-        bsaPlaceQuad(p, 0x550, image, 18.0f, value + base + 274.0f,
+        bsaPlaceQuad(p, 0x550, image, 18.0f, value + 274.0f,
                      -1.0f, -1.0f, bsaAlpha(personaAlpha * 255.0f));
         image = func_0021cca0(table2, 0x20);
         bsaPlaceQuad(p, 0x12d0, image, 46.0f, 227.0f,
