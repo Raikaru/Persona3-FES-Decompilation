@@ -1546,9 +1546,9 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 if (npc == 0) break;
                 if (PTR_U32((void*)npc, 0) != 0)
                 {
-                    offset.x = *(f32*)((u8*)npc + 0x10c) - heroMat->pos.x;
-                    offset.y = *(f32*)((u8*)npc + 0x110) - heroMat->pos.y;
-                    offset.z = *(f32*)((u8*)npc + 0x114) - heroMat->pos.z;
+                    offset.x = *(f32*)((u8*)npc + 0x10c) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
+                    offset.y = *(f32*)((u8*)npc + 0x110) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
+                    offset.z = *(f32*)((u8*)npc + 0x114) - ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
                     if (RwV3dLength(&offset) < 200.0f)
                     {
                         model = *(u32*)(0x0086b1e0 + i * 4 + currentActor * 0xc4 + currentArea * 0x310);
@@ -1856,9 +1856,10 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                 EVENT_WORD(0x44) = EVENT_WORD(0x42) == 0 ? 0 :
                                     (s32)(*(f32*)((u8*)EVENT_WORD(0x40) + 8) / (f32)EVENT_WORD(0x42));
                 heroMat = (RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0));
-                *(f32*)((u8*)fldEvent + 0x114) = heroMat->pos.x;
-                *(f32*)((u8*)fldEvent + 0x118) = heroMat->pos.y;
-                *(f32*)((u8*)fldEvent + 0x11c) = heroMat->pos.z;
+                /* Retail re-fetches the matrix for every field, not caching. */
+                *(f32*)((u8*)fldEvent + 0x114) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.x;
+                *(f32*)((u8*)fldEvent + 0x118) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.y;
+                *(f32*)((u8*)fldEvent + 0x11c) = ((RwMatrix*)FUN_00318b60(DATA_U32(0x008717f0)))->pos.z;
                 FUN_001d8c60(true);
                 EVENT_WORD(0x3d) = FUN_001d5c00((KwlnTask*)FIELD_WORD(4));
                 FUN_001d5c10((KwlnTask*)FIELD_WORD(4), true);
@@ -1897,7 +1898,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FUN_00318990(PTR_U32(EVENT_WORD(9), 0x50), 0) >= 13.0f)
             {
                 heroMat = (RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]);
-                markerPos = heroMat->pos;
+                markerPos = ((RwMatrix*)FUN_00318b60(((u32*)0x008717f0)[FUN_00453480() * 0x70]))->pos;
                 markerPos.y += 100.0f;
                 FUN_001a9390((KwlnTask*)FIELD_WORD(0x11f4), FUN_001a91b0((KwlnTask*)FIELD_WORD(0x11f4), &markerPos), 3);
                 FUN_00103c30(3, 0xff, 3, 0);
@@ -1926,7 +1927,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             FUN_001da000((KwlnTask*)FIELD_WORD(0x20), true);
             FUN_003189f0(0.0f, DATA_U32(0x008717f0), 0);
             heroMat = (RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50));
-            markerPos = heroMat->pos;
+            markerPos = ((RwMatrix*)FUN_00318b60(PTR_U32(EVENT_WORD(9), 0x50)))->pos;
             markerPos.y += 50.0f;
             if (FUN_0017d800() == true)
             {
@@ -2007,7 +2008,7 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
                     else
                     {
                         heroMat = (RwMatrix*)FUN_00318b60(PTR_U32((void*)EVENT_WORD(9), 0x50));
-                        markerPos = heroMat->pos;
+                        markerPos = ((RwMatrix*)FUN_00318b60(PTR_U32((void*)EVENT_WORD(9), 0x50)))->pos;
                         markerPos.y += 50.0f;
                         FUN_0010a4e0(1, 8, 2, 8);
                         FUN_001a91b0((KwlnTask*)FIELD_WORD(0x1204), &markerPos);
