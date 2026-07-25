@@ -1442,56 +1442,92 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         style = FUN_0012df50(func_0016f720(1, equipment));
         id = datGetEquipmentId(pcId, equipment);
         effect = func_0016f810(pcId, equipment);
-        sprintf(text, "%d", (s32)func_00171110(id, effect));
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), 0x18,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38),
-            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
+        campEquipFormatTextCall(text, "%d", (s32)func_00171110(id, effect));
         slot = *(s16*)((u8*)work + 0x1c);
         scale = *(f32*)(record + 0x24);
         posX = *(f32*)(record + 0x38);
         posY = *(f32*)(record + 0x3c);
         alpha = (u8)*(u32*)(record + 0x40);
-        equipVecA.x = posX + 443.0f;
-        equipVecA.y = posY + 15.0f;
-        equipVecB.x = posX + 544.0f;
-        equipVecB.y = posY + 15.0f;
         switch (slot) {
         case 0:
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x18,
+                alpha, posX, posY, scale);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0,
+                alpha, posX + 19.0f, posY + 6.0f, scale);
+            campEquipDrawSpriteCall(
+                parent, DAT_00833B70, style * 2 + 1,
+                alpha, posX + 130.0f, posY + 1.0f, scale);
+            FUN_003b2cb0(
+                scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
+                (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
+            equipVecA.x = posX + 434.0f;
+            equipVecA.y = posY + 15.0f;
             valA = func_0016f9f0(pcId, equipment);
-            FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         equipVecA,
-                         (s32)scale, 0xff, 0, 0, alpha, valA, 3);
+            FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
+                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
+            equipVecB.x = posX + 525.0f;
+            equipVecB.y = posY + 15.0f;
             valB = func_0016fae0(pcId, equipment);
-            FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         equipVecB,
-                         (s32)scale, 0xff, 0, 0, alpha, valB, 3);
+            FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecB,
+                         (s32)scale, 0xff, 0xff, 0xff, alpha, valB, 3);
             break;
         case 1:
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x18,
+                alpha, posX, posY, scale);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 2,
+                alpha, posX + 19.0f, posY + 6.0f, scale);
+            campEquipDrawSpriteCall(
+                parent, DAT_00833B70, style * 2 + 1,
+                alpha, posX + 130.0f, posY + 1.0f, scale);
+            FUN_003b2cb0(
+                scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
+                (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
+            equipVecA.x = posX + 434.0f;
+            equipVecA.y = posY + 15.0f;
             valA = func_0016fbd0(pcId, equipment);
-            FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         equipVecA,
-                         (s32)scale, 0xff, 0, 0, alpha, valA, 3);
+            FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
+                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
             break;
         case 2:
-        default:
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x18,
+                alpha, posX, posY, scale);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 4,
+                alpha, posX + 19.0f, posY + 6.0f, scale);
+            campEquipDrawSpriteCall(
+                parent, DAT_00833B70, style * 2 + 1,
+                alpha, posX + 130.0f, posY + 1.0f, scale);
+            FUN_003b2cb0(
+                scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
+                (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
+            equipVecA.x = posX + 434.0f;
+            equipVecA.y = posY + 15.0f;
             valA = func_0016fcc0(pcId, equipment);
-            FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                         equipVecA,
-                         (s32)scale, 0xff, 0, 0, alpha, valA, 3);
+            FUN_0012e170(H_Maestro_001120a0(1), 0xb, equipVecA,
+                         (s32)scale, 0xff, 0xff, 0xff, alpha, valA, 3);
+            break;
+        case 3:
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 0x18,
+                alpha, posX, posY, scale);
+            campEquipDrawSpriteCall(
+                parent, *(void**)((u8*)work + 0x2b0), 6,
+                alpha, posX + 19.0f, posY + 6.0f, scale);
+            campEquipDrawSpriteCall(
+                parent, DAT_00833B70, style * 2 + 1,
+                alpha, posX + 130.0f, posY + 1.0f, scale);
+            FUN_003b2cb0(
+                scale, (s32)(posX + 170.0f), (s32)(posY + 13.0f),
+                (0xff - alpha) | 0xffffff00, 6, 1, text, 0x10, 0);
+            break;
+        default:
             break;
         }
-        campEquipDrawSpriteCall(
-            parent, *(void**)((u8*)work + 0x2b0), style,
-            alpha, posX + 48.0f,
-            posY + 6.0f, scale);
-        FUN_003b2cb0(
-            scale,
-            (s32)(posX + 179.0f),
-            (s32)(posY + 10.0f),
-            0xff - alpha,
-            slot == 0 ? 6 : 10, 1, text, 0x10,
-            0x78);
         break;
     case 3:
         {
@@ -1499,6 +1535,18 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             s32 firstItem;
             s16 equipmentIdx;
             s32 row;
+            s32 selected;
+            s32 fontIdx;
+            s32 betterTile;
+            s32 worseTile;
+            s32 betterRed;
+            s32 betterGreen;
+            s32 betterBlue;
+            s32 statRed;
+            s32 statGreen;
+            s32 statBlue;
+            s32 itemStatA;
+            s32 itemStatB;
 
             pcId = *(s16*)((u8*)work + 0x12);
             slot = *(s16*)((u8*)work + 0x1c);
@@ -1511,10 +1559,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
 
             campEquipDrawSpriteCall(
                 parent, *(void**)((u8*)work + 0x2b0), 0x27,
-                alpha,
-                483.0f + posX,
-                1.0f + posY,
-                scale);
+                alpha, 483.0f + posX, 1.0f + posY, scale);
 
             if (itemCount > 5) {
                 yDiv = (s32)(90 * firstItem) / (itemCount - 5);
@@ -1524,10 +1569,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
 
             campEquipDrawSpriteCall(
                 parent, *(void**)((u8*)work + 0x2b0), 0x28,
-                alpha,
-                483.0f + posX,
-                3.0f + posY + (f32)yDiv,
-                scale);
+                alpha, 483.0f + posX, 3.0f + posY + (f32)yDiv, scale);
 
             equipmentIdx = datGetEquipmentIdx(pcId, slot);
 
@@ -1557,100 +1599,169 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
                     continue;
                 }
                 eq = *(u16*)((u8*)work + 0x28 + item * 2);
-                equipStyle = FUN_0012df50(func_0016f720(1, eq));
+                equipStyle = FUN_0012df50(func_0016f720(pcId, eq));
                 equipId = datGetEquipmentId(pcId, eq);
                 equipEffect = func_0016f810(pcId, eq);
-                sprintf(text, "%d", (s32)func_00171110(equipId, equipEffect));
-                if (*(s32*)((u8*)work + 0x20) != item) {
+                campEquipFormatTextCall(text, "%d",
+                                        (s32)func_00171110(equipId, equipEffect));
+                selected = *(s32*)((u8*)work + 0x20) == row;
+
+                campEquipDrawSpriteCall(
+                    parent, *(void**)((u8*)work + 0x2b0), 0x25,
+                    alpha, posX, posY + (f32)(row * 26), scale);
+                campEquipDrawSpriteCall(
+                    parent, *(void**)((u8*)work + 0x2b0), 0x26,
+                    alpha, posX + 470.0f, posY + (f32)(row * 26), scale);
+
+                if (selected) {
+                    fontIdx = 1;
+                    betterTile = 0x1e;
+                    worseTile = 0x20;
+                    betterRed = 0xf3;
+                    betterGreen = 0xb3;
+                    betterBlue = 0xbd;
                     campEquipDrawSpriteCall(
-                        parent, *(void**)((u8*)work + 0x2b0), equipStyle,
-                        alpha,
-                        posX,
-                        posY + (f32)(row * 30),
+                        parent, DAT_00833B70, equipStyle * 2 + 1,
+                        alpha, posX + 13.0f, posY - 5.0f + (f32)(row * 26),
                         scale);
                 } else {
-                    campEquipDrawSpriteCall(
-                        parent, *(void**)((u8*)work + 0x2b0), equipStyle,
-                        alpha,
-                        posX,
-                        posY + (f32)(row * 30),
-                        scale);
+                    fontIdx = 2;
+                    betterTile = 0x1f;
+                    worseTile = 0x21;
+                    betterRed = 0xff;
+                    betterGreen = 0xff;
+                    betterBlue = 0xff;
+                    campEquipDrawSpriteAltCall(
+                        parent, DAT_00833B70, equipStyle * 2,
+                        alpha, 32, 67, 120,
+                        posX + 13.0f, posY - 5.0f + (f32)(row * 26), scale);
                 }
 
                 FUN_003b2cb0(
-                    scale,
-                    (s32)(posX + 20.0f),
-                    (s32)(posY + (f32)(row * 30)),
-                    0xff - alpha,
-                    *(s32*)((u8*)work + 0x20) == item ? 6 : 10,
-                    1, text, 0x10, 0);
-            }
+                    scale, (s32)(posX + 53.0f),
+                    (s32)(posY + 7.0f + (f32)(row * 26)),
+                    (0xff - alpha) | 0xffffff00,
+                    selected ? 6 : 10, 1, text, 0x10, 0);
 
-            for (row = 0; row < itemCount - firstItem; row++) {
-                s32 item;
-                u16 eq;
-                u16 equipId;
-                u8 equipEffect;
-                s32 equipStyle;
-                s32 selected;
-                s32 statA;
-                s32 statB;
-                f32 statY;
+                equipVecA.x = posX + 317.0f;
+                equipVecA.y = posY + 9.0f + (f32)(row * 26);
 
-                item = firstItem + row;
-                if (item >= itemCount) {
-                    continue;
-                }
-                eq = *(u16*)((u8*)work + 0x28 + item * 2);
-
-                statY = posY + 3.0f + (f32)yDiv + (f32)(row * 30) + 15.0f;
-                equipVecA.x = posX + 483.0f;
-                equipVecA.y = statY;
-                equipVecB.x = posX + 544.0f;
-                equipVecB.y = statY;
                 switch (slot) {
                 case 0:
-                    statA = func_0016f9f0(pcId, eq);
-                    FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 equipVecA,
-                                 (s32)scale, 0xff, 0, 0, alpha, statA, 3);
-                    statB = func_0016fae0(pcId, eq);
-                    FUN_0012e170(H_Maestro_001120a0(2), 0xb,
-                                 equipVecB,
-                                 (s32)scale, 0xff, 0, 0, alpha, statB, 3);
+                    itemStatA = func_0016f9f0(pcId, eq);
+                    if (itemStatA == valA) {
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    } else if (valA < itemStatA) {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), betterTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = betterRed;
+                        statGreen = betterGreen;
+                        statBlue = betterBlue;
+                    } else {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), worseTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    }
+                    FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
+                                 equipVecA, (s32)scale,
+                                 statRed, statGreen, statBlue, alpha,
+                                 itemStatA, 3);
+
+                    equipVecB.x = posX + 408.0f;
+                    equipVecB.y = posY + 9.0f + (f32)(row * 26);
+                    itemStatB = func_0016fae0(pcId, eq);
+                    if (itemStatB == valB) {
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    } else if (valB < itemStatB) {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), betterTile,
+                            alpha, posX + 457.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = betterRed;
+                        statGreen = betterGreen;
+                        statBlue = betterBlue;
+                    } else {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), worseTile,
+                            alpha, posX + 457.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    }
+                    FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
+                                 equipVecB, (s32)scale,
+                                 statRed, statGreen, statBlue, alpha,
+                                 itemStatB, 3);
                     break;
                 case 1:
-                    statA = func_0016fbd0(pcId, eq);
-                    FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 equipVecA,
-                                 (s32)scale, 0xff, 0, 0, alpha, statA, 3);
+                    itemStatA = func_0016fbd0(pcId, eq);
+                    if (itemStatA == valA) {
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    } else if (valA < itemStatA) {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), betterTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = betterRed;
+                        statGreen = betterGreen;
+                        statBlue = betterBlue;
+                    } else {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), worseTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    }
+                    FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
+                                 equipVecA, (s32)scale,
+                                 statRed, statGreen, statBlue, alpha,
+                                 itemStatA, 3);
                     break;
                 case 2:
                 default:
-                    statA = func_0016fcc0(pcId, eq);
-                    FUN_0012e170(H_Maestro_001120a0(1), 0xb,
-                                 equipVecA,
-                                 (s32)scale, 0xff, 0, 0, alpha, statA, 3);
+                    itemStatA = func_0016fcc0(pcId, eq);
+                    if (itemStatA == valA) {
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    } else if (valA < itemStatA) {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), betterTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = betterRed;
+                        statGreen = betterGreen;
+                        statBlue = betterBlue;
+                    } else {
+                        campEquipDrawSpriteCall(
+                            parent, *(void**)((u8*)work + 0x2b0), worseTile,
+                            alpha, posX + 366.0f,
+                            posY + 6.0f + (f32)(row * 26), scale);
+                        statRed = 0xff;
+                        statGreen = 0xff;
+                        statBlue = 0xff;
+                    }
+                    FUN_0012e170(H_Maestro_001120a0(fontIdx), 0xb,
+                                 equipVecA, (s32)scale,
+                                 statRed, statGreen, statBlue, alpha,
+                                 itemStatA, 3);
                     break;
                 }
-
-                equipStyle = FUN_0012df50(func_0016f720(1, eq));
-                equipId = datGetEquipmentId(pcId, eq);
-                equipEffect = func_0016f810(pcId, eq);
-                sprintf(text, "%d", (s32)func_00171110(equipId, equipEffect));
-                selected = *(s32*)((u8*)work + 0x20) == item;
-                campEquipDrawSpriteCall(
-                    parent, *(void**)((u8*)work + 0x2b0), selected != 0 ? 0x25 : 0x26,
-                    alpha,
-                    posX + 483.0f,
-                    posY + 3.0f + (f32)yDiv + (f32)(row * 30),
-                    scale);
-                FUN_003b2cb0(
-                    scale,
-                    (s32)(posX + 483.0f + 20.0f),
-                    (s32)(posY + 3.0f + (f32)yDiv + (f32)(row * 30)),
-                    0xff - alpha,
-                    selected != 0 ? 6 : 10, 1, text, 0x10, 0);
             }
         }
         break;
@@ -1663,7 +1774,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             *(f32*)((u8*)sprite + 0x10) = *(f32*)(record + 0x38);
             *(f32*)((u8*)sprite + 0x14) = *(f32*)(record + 0x3c);
             *(u8*)((u8*)sprite + 0x18) = (u8)*(u32*)(record + 0x40);
-            *(f32*)((u8*)sprite + 0x20) = -164.0f;
+            *(f32*)((u8*)sprite + 0x20) = -45.0f;
             campEquipSetSpriteCall(sprite, 1);
             campEquipSubmitSpriteCall(sprite);
         }
@@ -1680,7 +1791,7 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
         FUN_003c7e20(
             *(f32*)(record + 0x24), (s32)*(f32*)(record + 0x38),
             (s32)*(f32*)(record + 0x3c),
-            0xff - (u8)*(u32*)(record + 0x40), 1, 10, 1,
+            (0xff - (u8)*(u32*)(record + 0x40)) | 0xffffff00, 1, 10, 1,
             (id & 0xffff) | ((effect & 0xff) << 16));
         break;
     case 7:
@@ -1690,16 +1801,17 @@ void FUN_0012f6d0(void* work, s32 index, u8* record)
             *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         campEquipDrawSpriteCall(
             parent, *(void**)((u8*)work + 0x2b4), 6,
-            (u8)*(u32*)(record + 0x40), *(f32*)(record + 0x38) + 1.0f,
-            *(f32*)(record + 0x3c) + 32.0f, *(f32*)(record + 0x24));
+            (u8)*(u32*)(record + 0x40),
+            *(f32*)(record + 0x38) + 44.0f - 28.0f,
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         campEquipDrawSpriteCall(
             parent, DAT_00833BA0, 2, (u8)*(u32*)(record + 0x40),
-            *(f32*)(record + 0x38) + 435.0f,
-            *(f32*)(record + 0x3c) + 2.0f, *(f32*)(record + 0x24));
+            *(f32*)(record + 0x38) + 486.0f - 28.0f - 30.0f,
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         campEquipDrawSpriteCall(
             parent, DAT_00833BA0, 1, (u8)*(u32*)(record + 0x40),
-            *(f32*)(record + 0x38) + 561.0f,
-            *(f32*)(record + 0x3c) + 2.0f, *(f32*)(record + 0x24));
+            *(f32*)(record + 0x38) + 561.0f - 28.0f,
+            *(f32*)(record + 0x3c), *(f32*)(record + 0x24));
         break;
     }
 
