@@ -2127,39 +2127,98 @@ void func_00114450(f32 depth,
                    s32 height,
                    const u32* textureState)
 {
-    RwIm2DVertex vertices[4];
-    u32 drawColor;
+    RwIm2DVertex vertices[8];
+    u32 i;
     f32 recipZ;
+    f32 z;
+    s32 red;
+    s32 green;
+    s32 blue;
+    s32 alpha;
+    s32 extraAlpha;
+    f32 corners[8][2];
+    void (**setState)(u32, u32);
 
-    (void)ignoredWidth; /* Retail uses the fixed 320-pixel split width. */
-    Maestro_SetPrimitiveStates(0x44, 0x717fb);
-    (*D_00960090)(1, textureState != NULL ? *textureState : 0);
-    drawColor = (color & 0xffffff00) | (colorAlpha & 0xff);
-    recipZ = Maestro_NearReciprocal();
-    Maestro_DrawQuad(&vertices[0],
-                     x,
-                     y,
-                     320.0f,
-                     (f32)height,
-                     D_00960088 - depth,
-                     recipZ,
-                     drawColor,
-                     0.0f,
-                     0.0f,
-                     0.0f,
-                     0.0f);
-    Maestro_DrawQuad(&vertices[0],
-                     x + 320.0f,
-                     y,
-                     320.0f,
-                     (f32)height,
-                     D_00960088 - depth,
-                     recipZ,
-                     drawColor,
-                     0.0f,
-                     0.0f,
-                     0.0f,
-                     0.0f);
+    (void)ignoredWidth;
+
+    /* Reciprocal Z from the main camera near plane. */
+    recipZ = 1.0f / kwlnGetMainCamera()->nearPlane;
+
+    /* Extract signed colour components. */
+    red   = (s32)((color & 0xff000000) >> 24);
+    green = (s32)((color & 0xff0000)   >> 16);
+    blue  = (s32)((color & 0xff00)     >> 8);
+    alpha = (s32)( color & 0xff);
+    extraAlpha = (s32)(colorAlpha & 0xff);
+
+    setState = (void (**)(u32, u32))D_00960090;
+    setState(6, 1);
+    setState(7, 2);
+    setState(8, 1);
+    setState(9, 2);
+    setState(0xc, 1);
+    setState(0xb, 6);
+    setState(0xa, 5);
+    setState(2, 4);
+    RpSkyRenderStateSet(2, (void*)0x44);
+    RpSkyRenderStateSet(3, (void*)0x717fb);
+
+    /* Corner positions: two 320-wide quads side by side. */
+    corners[0][0] = x;
+    corners[0][1] = y;
+    corners[1][0] = x + 320.0f;
+    corners[1][1] = y;
+    corners[2][0] = x;
+    corners[2][1] = y + (f32)height;
+    corners[3][0] = x + 320.0f;
+    corners[3][1] = y + (f32)height;
+
+    corners[4][0] = x + 320.0f;
+    corners[4][1] = y;
+    corners[5][0] = x + 640.0f;
+    corners[5][1] = y;
+    corners[6][0] = x + 320.0f;
+    corners[6][1] = y + (f32)height;
+    corners[7][0] = x + 640.0f;
+    corners[7][1] = y + (f32)height;
+
+    z = D_00960088 - depth;
+
+    for (i = 0; i < 4; i++)
+    {
+        RwIm2DVertex* v0 = &vertices[i];
+        RwIm2DVertex* v1 = &vertices[i + 4];
+
+        v0->u.els.scrVertex.z = z;
+        v0->u.els.recipZ = recipZ;
+        v1->u.els.scrVertex.z = z;
+        v1->u.els.recipZ = recipZ;
+
+        v0->u.els.scrVertex.x = corners[i][0];
+        v0->u.els.scrVertex.y = corners[i][1];
+        v1->u.els.scrVertex.x = corners[i + 4][0];
+        v1->u.els.scrVertex.y = corners[i + 4][1];
+
+        v0->u.els.color.r = (red       >= 0) ? (f32)red       : 2.0f * (f32)(((u32)red       >> 1) | ( red        & 1));
+        v0->u.els.color.g = (green     >= 0) ? (f32)green     : 2.0f * (f32)(((u32)green     >> 1) | ( green      & 1));
+        v0->u.els.color.b = (blue      >= 0) ? (f32)blue      : 2.0f * (f32)(((u32)blue      >> 1) | ( blue       & 1));
+        v0->u.els.color.a = (alpha     >= 0) ? (f32)alpha     : 2.0f * (f32)(((u32)alpha     >> 1) | ( alpha      & 1));
+
+        v1->u.els.color.r = (red       >= 0) ? (f32)red       : 2.0f * (f32)(((u32)red       >> 1) | ( red        & 1));
+        v1->u.els.color.g = (green     >= 0) ? (f32)green     : 2.0f * (f32)(((u32)green     >> 1) | ( green      & 1));
+        v1->u.els.color.b = (blue      >= 0) ? (f32)blue      : 2.0f * (f32)(((u32)blue      >> 1) | ( blue       & 1));
+        v1->u.els.color.a = (extraAlpha>= 0) ? (f32)extraAlpha : 2.0f * (f32)(((u32)extraAlpha>> 1) | ( extraAlpha & 1));
+
+        v0->u.els.u = (i == 0 || i == 2) ? 0.0f : 1.0f;
+        v0->u.els.v = (i <  2)           ? 0.0f : 1.0f;
+        v1->u.els.u = v0->u.els.u;
+        v1->u.els.v = v0->u.els.v;
+    }
+
+    setState(1, textureState != NULL ? *textureState : 0);
+
+    (*D_009600A0)(rwPRIMTYPETRISTRIP, &vertices[0], 4);
+    (*D_009600A0)(rwPRIMTYPETRISTRIP, &vertices[4], 4);
 }
 
 // FUN_00114AF0 NONMATCHING
