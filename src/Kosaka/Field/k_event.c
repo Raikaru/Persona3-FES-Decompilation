@@ -2255,8 +2255,8 @@ void* K_FldEvent_UpdateFldEventTask(KwlnTask* fldEventTask)
             if (FUN_001dd600() == true && func_0018c0a0((void*)FIELD_WORD(0x28)) == false) break;
             FUN_00453470(-1);
             FUN_001c8120(&EVENT_WORD(10));
-            FUN_001d0e50(true);
-            if (FUN_001dd600() == true) FUN_001dd8e0();
+            K_Field_GetMajorId((KwlnTask*)FIELD_WORD(0));
+            K_Field_GetMinorId((KwlnTask*)FIELD_WORD(0));
             FUN_001d1360();
             if (FUN_0016f190(0x1411) == true) { FUN_001d38d0((KwlnTask*)FIELD_WORD(0x24), 2); FUN_0016f1f0(0x1411, false); }
             if (EVENT_WORD(9) != 0) { if (FUN_002ff790(EVENT_WORD(0x0f)) == false) FUN_001d39c0((KwlnTask*)FIELD_WORD(0x24)); FUN_001d0110(EVENT_WORD(9)); }
