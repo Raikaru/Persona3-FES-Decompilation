@@ -1323,8 +1323,6 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
   }
 
   camera = FUN_00198590();
-  recipZ = 1.0f / *(float *)(camera + 0x80);
-  z = *(float *)DAT_00960088_abs - param_1;
 
   texcoords[0][0] = param_4[0];
   texcoords[0][1] = param_4[1];
@@ -1339,76 +1337,72 @@ void FUN_00388000(float param_1,float *param_2,float *param_3,float *param_4,flo
   texcoords[5][0] = param_4[0];
   texcoords[5][1] = param_5[1];
 
-  fStack_30 = (f32)color.r;
-  fStack_1c = (f32)color.g;
-  fStack_40 = (f32)color.b;
-  fStack_3c = (f32)color.a;
 
   vertices[0].u.els.scrVertex.x = corners[0][0];
   vertices[0].u.els.scrVertex.y = corners[0][1];
-  vertices[0].u.els.scrVertex.z = z;
-  vertices[0].u.els.color.r = fStack_30;
-  vertices[0].u.els.color.g = fStack_1c;
-  vertices[0].u.els.color.b = fStack_40;
-  vertices[0].u.els.color.a = fStack_3c;
+  vertices[0].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[0].u.els.color.r = (f32)color.r;
+  vertices[0].u.els.color.g = (f32)color.g;
+  vertices[0].u.els.color.b = (f32)color.b;
+  vertices[0].u.els.color.a = (f32)color.a;
   vertices[0].u.els.u = texcoords[0][0];
   vertices[0].u.els.v = texcoords[0][1];
-  vertices[0].u.els.recipZ = recipZ;
+  vertices[0].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   vertices[1].u.els.scrVertex.x = corners[1][0];
   vertices[1].u.els.scrVertex.y = corners[1][1];
-  vertices[1].u.els.scrVertex.z = z;
-  vertices[1].u.els.color.r = fStack_30;
-  vertices[1].u.els.color.g = fStack_1c;
-  vertices[1].u.els.color.b = fStack_40;
-  vertices[1].u.els.color.a = fStack_3c;
+  vertices[1].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[1].u.els.color.r = (f32)color.r;
+  vertices[1].u.els.color.g = (f32)color.g;
+  vertices[1].u.els.color.b = (f32)color.b;
+  vertices[1].u.els.color.a = (f32)color.a;
   vertices[1].u.els.u = texcoords[1][0];
   vertices[1].u.els.v = texcoords[1][1];
-  vertices[1].u.els.recipZ = recipZ;
+  vertices[1].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   vertices[2].u.els.scrVertex.x = corners[2][0];
   vertices[2].u.els.scrVertex.y = corners[2][1];
-  vertices[2].u.els.scrVertex.z = z;
-  vertices[2].u.els.color.r = fStack_30;
-  vertices[2].u.els.color.g = fStack_1c;
-  vertices[2].u.els.color.b = fStack_40;
-  vertices[2].u.els.color.a = fStack_3c;
+  vertices[2].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[2].u.els.color.r = (f32)color.r;
+  vertices[2].u.els.color.g = (f32)color.g;
+  vertices[2].u.els.color.b = (f32)color.b;
+  vertices[2].u.els.color.a = (f32)color.a;
   vertices[2].u.els.u = texcoords[2][0];
   vertices[2].u.els.v = texcoords[2][1];
-  vertices[2].u.els.recipZ = recipZ;
+  vertices[2].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   vertices[3].u.els.scrVertex.x = corners[3][0];
   vertices[3].u.els.scrVertex.y = corners[3][1];
-  vertices[3].u.els.scrVertex.z = z;
-  vertices[3].u.els.color.r = fStack_30;
-  vertices[3].u.els.color.g = fStack_1c;
-  vertices[3].u.els.color.b = fStack_40;
-  vertices[3].u.els.color.a = fStack_3c;
+  vertices[3].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[3].u.els.color.r = (f32)color.r;
+  vertices[3].u.els.color.g = (f32)color.g;
+  vertices[3].u.els.color.b = (f32)color.b;
+  vertices[3].u.els.color.a = (f32)color.a;
   vertices[3].u.els.u = texcoords[3][0];
   vertices[3].u.els.v = texcoords[3][1];
-  vertices[3].u.els.recipZ = recipZ;
+  vertices[3].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   vertices[4].u.els.scrVertex.x = corners[3][0];
   vertices[4].u.els.scrVertex.y = corners[3][1];
-  vertices[4].u.els.scrVertex.z = z;
-  vertices[4].u.els.color.r = fStack_30;
-  vertices[4].u.els.color.g = fStack_1c;
-  vertices[4].u.els.color.b = fStack_40;
-  vertices[4].u.els.color.a = fStack_3c;
+  vertices[4].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[4].u.els.color.r = (f32)color.r;
+  vertices[4].u.els.color.g = (f32)color.g;
+  vertices[4].u.els.color.b = (f32)color.b;
+  vertices[4].u.els.color.a = (f32)color.a;
   vertices[4].u.els.u = texcoords[4][0];
   vertices[4].u.els.v = texcoords[4][1];
-  vertices[4].u.els.recipZ = recipZ;
+  vertices[4].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   vertices[5].u.els.scrVertex.x = corners[0][0];
   vertices[5].u.els.scrVertex.y = corners[0][1];
-  vertices[5].u.els.scrVertex.z = z;
-  vertices[5].u.els.color.r = fStack_30;
-  vertices[5].u.els.color.g = fStack_1c;
-  vertices[5].u.els.color.b = fStack_40;
-  vertices[5].u.els.color.a = fStack_3c;
+  vertices[5].u.els.scrVertex.z = *(float *)DAT_00960088_abs - param_1;
+  vertices[5].u.els.color.r = (f32)color.r;
+  vertices[5].u.els.color.g = (f32)color.g;
+  vertices[5].u.els.color.b = (f32)color.b;
+  vertices[5].u.els.color.a = (f32)color.a;
   vertices[5].u.els.u = texcoords[5][0];
   vertices[5].u.els.v = texcoords[5][1];
-  vertices[5].u.els.recipZ = recipZ;
+  vertices[5].u.els.recipZ = 1.0f / *(float *)(camera + 0x80);
 
   fn = (code *)&DAT_00960090_abs;
   (*fn)(1,*param_6);
